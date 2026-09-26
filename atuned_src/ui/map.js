@@ -304,11 +304,43 @@ var PMFIRST=1;
    person reads them against and give nothing back. */
 var PMHEADBOX='38 -1 24 24';
 function pmHead(){return PMLAYER==='bands'&&(PMPICK==='crown'||PMPICK==='eye');}
+/* THE FIGURE WEARS THE PALETTE OF THE GROUND IT IS DRAWN ON, read off that
+   ground and never off the lighting's name.
+
+   Every colour on this figure came from PMC, PMBANDS and ROOTCOL, which are
+   the Dark values written once in the engine, so on Glass white the seven
+   seats and the domain ring were drawn for #101010 onto #F2F1EC paper.
+   Measured on Gordon, domains 2, 6, 10 and 17, 26 September: the seat rings
+   at full stroke 1.60 to 1 at worst against a 3 to 1 floor, and the domain
+   ring at its own .85 opacity 2.22. Snow read 4.68 and 4.95 and was right,
+   because Snow keeps this host on the ruled #101010, which is why the name
+   is the wrong question: LIGHT() says light under Snow and the marks sit on
+   black. frMount in rings.js answers the same question the same way.
+
+   The ground is the first opaque box from the host up, which is the host on
+   every lighting today; the walk is there so a see through host cannot hand
+   back a transparent black and read as dark. PMC is returned itself on a
+   dark ground, so Dark, Snow and every dark lighting draw the table they
+   always drew. Lumen keeps it outright: it is the owner's own palette and
+   whether it moves is his open question, the hold rootPlain keeps. */
+function pmPal(host){
+ if(S.theme==='lumen')return PMC;
+ for(var n=host;n&&n.nodeType===1;n=n.parentElement){
+  var m=/rgba?\(([^)]+)\)/.exec(getComputedStyle(n).backgroundColor||'');
+  if(!m)continue;
+  var c=m[1].split(',').map(parseFloat);
+  if(c.length>3&&!(c[3]>=0.999))continue;
+  return (0.2126*c[0]+0.7152*c[1]+0.0722*c[2])/255>0.5?PAL_LIGHT:PMC;}
+ return PMC;}
 function renderMap(r){
  if(PMFIRST){ PMFIRST=0;
   if(!pmCount(r,PMLAYER)){ for(var pf=0;pf<PML.length;pf++){
    if(pmCount(r,PML[pf][0])){PMLAYER=PML[pf][0];break;} } } }
  var host=document.getElementById('emap');if(!host)return;
+ /* every colour below is looked up in PC, so the figure moves as one; the
+    first pass on the canvas recoloured one mark and drew dark names inside a
+    dark outline, which is what one mark in a different palette looks like */
+ var PC=pmPal(host);
  var seats=flSeats(),speed=flSpeed(),loadedTot=W.filter(function(n){return n.sq>=LOADED;}).length;
  var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
  var dom=seats.slice().sort(function(a,b){return b.hot-a.hot||b.load-a.load;})[0];
@@ -327,7 +359,7 @@ function renderMap(r){
   var pnm=PMPICK.nm, pag=null;
   marks.forEach(function(m){if(m.kind==='bead'&&m.nm===pnm)pag=m.o;});
   PMPICK=pag; S.pin=pag;}
- var domc=PMC[K2B[dom.p.k]]||'var(--gold)';
+ var domc=PC[K2B[dom.p.k]]||'var(--gold)';
  /* THE CONTROLS ARE NOT IN THE PICTURE. They render into the sub bar, which
     is where Field already puts its depth ladder, so this surface stops
     covering its own figure with the buttons that change it. */
@@ -388,7 +420,7 @@ function renderMap(r){
   /* the pain layer wants anatomy, not an outline. the traced branches are the
      nerve map and they are already vector, so they stand in for the raster. */
   if(PMLAYER==='pain')NERVEBR.forEach(function(br){
-   var c=PMC[K2B[br.s]]||'#888';
+   var c=PC[K2B[br.s]]||'#888';
    h+='<path d="M'+br.p.map(function(q){return q[0]+','+q[1];}).join(' L')
     +'" fill="none" stroke="'+c+'" stroke-width=".28" opacity=".22" stroke-linecap="round"/>';});}
  /* the branches, when the flow layer is up */
@@ -397,7 +429,7 @@ function renderMap(r){
   var cum={},run=1;
   ['root','sacral','solar','heart','throat','eye','crown'].forEach(function(k){run*=passOf[k];cum[k]=run;});
   NERVEBR.forEach(function(br){
-   var th=cum[br.s]!=null?cum[br.s]:0.5, c=PMC[K2B[br.s]]||'#888';
+   var th=cum[br.s]!=null?cum[br.s]:0.5, c=PC[K2B[br.s]]||'#888';
    var d='M'+br.p.map(function(q){return q[0]+','+q[1];}).join(' L');
    h+='<path d="'+d+'" fill="none" stroke="'+c+'" stroke-width="'+(0.22+th*0.5).toFixed(2)
     +'" opacity="'+(0.10+th*0.72).toFixed(3)+'" stroke-linecap="round"/>';});}
@@ -448,7 +480,7 @@ function renderMap(r){
   h+='<defs><linearGradient id="'+g1+'" x1="0" y1="0" x2="0" y2="1">'
    +col.map(function(m,i2){
      return '<stop offset="'+(i2/(col.length-1)*100).toFixed(1)+'%" stop-color="'
-      +(PMC[m.band]||'#888')+'" stop-opacity="'+(0.05+m.v*0.15).toFixed(3)+'"/>';}).join('')
+      +(PC[m.band]||'#888')+'" stop-opacity="'+(0.05+m.v*0.15).toFixed(3)+'"/>';}).join('')
    +'</linearGradient></defs>';
   /* A CHANNEL IS ITS BANKS.
 
@@ -466,7 +498,7 @@ function renderMap(r){
      short leader out to clear air and the words land beside the figure. */
   if(stop){
    var sm=col.filter(function(m){return m.o.p.k===stop.p.k;})[0];
-   if(sm){var c2=PMC[sm.band], lx=50+half(sm)+3.5;
+   if(sm){var c2=PC[sm.band], lx=50+half(sm)+3.5;
     h+='<path d="M'+lx.toFixed(2)+','+sm.y+' H'+(lx+8).toFixed(2)+'" stroke="'+c2
      +'" stroke-width=".3" opacity=".7" fill="none"/>'
      +'<circle cx="'+lx.toFixed(2)+'" cy="'+sm.y+'" r=".55" fill="'+c2+'" opacity=".9"/>'
@@ -488,10 +520,10 @@ function renderMap(r){
  PMBANDS.forEach(function(b){
   var g=HGAIN(seatLoad(b.k));
   h+='<radialGradient id="pmh-'+b.k+'">'
-   +'<stop offset="0%" stop-color="'+b.c+'" stop-opacity="'+(0.07+g*0.62).toFixed(3)+'"/>'
-   +'<stop offset="30%" stop-color="'+b.c+'" stop-opacity="'+(0.05+g*0.40).toFixed(3)+'"/>'
-   +'<stop offset="64%" stop-color="'+b.c+'" stop-opacity="'+(0.02+g*0.15).toFixed(3)+'"/>'
-   +'<stop offset="100%" stop-color="'+b.c+'" stop-opacity="0"/></radialGradient>';});
+   +'<stop offset="0%" stop-color="'+PC[b.b]+'" stop-opacity="'+(0.07+g*0.62).toFixed(3)+'"/>'
+   +'<stop offset="30%" stop-color="'+PC[b.b]+'" stop-opacity="'+(0.05+g*0.40).toFixed(3)+'"/>'
+   +'<stop offset="64%" stop-color="'+PC[b.b]+'" stop-opacity="'+(0.02+g*0.15).toFixed(3)+'"/>'
+   +'<stop offset="100%" stop-color="'+PC[b.b]+'" stop-opacity="0"/></radialGradient>';});
  /* THE NUMMENMAA TREATMENT. Ruled, with the four bodily maps supplied as the
     reference, and the finding that came with them was that the zones were not
     noticeable. They were not, and the screenshot says why: seven radial
@@ -541,7 +573,7 @@ function renderMap(r){
   if(LHEAT)return;                 /* a layer's heat is its own, not the field's */
   if(n.sq<LOADED)return;
   var k=B2K[n.b]; if(!k)return;
-  var q=pmNode(n.i,k), c=PMC[n.b]||'#888', g=clamp((n.sq-LOADED)/(10-LOADED),0,1);
+  var q=pmNode(n.i,k), c=PC[n.b]||'#888', g=clamp((n.sq-LOADED)/(10-LOADED),0,1);
   h+='<circle cx="'+q.x.toFixed(2)+'" cy="'+q.y.toFixed(2)+'" r="'+(3.0+g*4.2).toFixed(2)
    +'" fill="'+c+'" opacity="'+(0.03+g*0.085).toFixed(3)+'"/>';});
  h+='</g>';
@@ -578,10 +610,10 @@ function renderMap(r){
      measured points already mark the centre. */
   var held=Object.keys(AN).some(function(id){
    return Math.abs(AN[id].hx-50)<0.01&&Math.abs(AN[id].hy-b.yp)<0.01;});
-  h+='<circle cx="50" cy="'+b.yp+'" r="'+SR.toFixed(2)+'" fill="none" stroke="'+b.c
+  h+='<circle cx="50" cy="'+b.yp+'" r="'+SR.toFixed(2)+'" fill="none" stroke="'+PC[b.b]
    +'" stroke-width="'+((0.24+ld*0.5+(on?0.18:0))*ZS).toFixed(3)+'" opacity="'
    +(on?1:(0.62+ld*0.38)).toFixed(2)+'"/>'
-   +(held?'':'<circle cx="50" cy="'+b.yp+'" r="'+(0.42*ZS).toFixed(3)+'" fill="'+b.c+'" opacity=".92"/>');
+   +(held?'':'<circle cx="50" cy="'+b.yp+'" r="'+(0.42*ZS).toFixed(3)+'" fill="'+PC[b.b]+'" opacity=".92"/>');
   seatHit+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
    +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '+st.hot+' carrying, '
    +Math.round(st.pass*100)+' percent through</title></circle>';});
@@ -592,7 +624,10 @@ function renderMap(r){
  if(PMLAYER==='bands'&&S.doms.length){
   var own={};S.doms.forEach(function(di){W.forEach(function(n){
    if(Math.min(18,Math.floor(n.slot/(108/19)))===di)(own[n.b]=own[n.b]||[]).push(n);});});
-  var dc=ROOTCOL[DOMAINS[S.doms[0]].r]||'#DFCC7E';
+  /* a root is its seat, on this ground. ROOTCOL is the four seats' Dark
+     values written out, so on a dark ground PMC at the root's seat is
+     ROOTCOL to the digit, and on paper it is the seat's PAL_LIGHT value */
+  var dc=PC[ROOTSEAT[DOMAINS[S.doms[0]].r]]||'#DFCC7E';
   Object.keys(own).forEach(function(bn){var k=B2K[bn];if(!k)return;
    h+='<circle cx="50" cy="'+PMYP[k]+'" r="'+(SR+0.95*ZS).toFixed(2)
     +'" fill="none" stroke="'+dc+'" stroke-width="'+(0.3*ZS).toFixed(3)+'" stroke-dasharray="'
@@ -618,7 +653,7 @@ function renderMap(r){
   PMBANDS.forEach(function(b){
    if(inHead&&b.k!=='crown'&&b.k!=='eye')return;
    var st=seats.filter(function(s){return s.p.k===b.k;})[0];
-   h+='<text class="pm-seatn" x="'+snx+'" y="'+b.yp+'" dy=".35em" text-anchor="end" style="fill:'+b.c+'">'
+   h+='<text class="pm-seatn" x="'+snx+'" y="'+b.yp+'" dy=".35em" text-anchor="end" style="fill:'+PC[b.b]+'">'
     +esc(b.nm)+(PMLAYER==='bands'?'<tspan class="pm-seatc" dx=".45em">'+st.hot+'</tspan>':'')
     +'</text>';});}
  /* links, before the marks so beads sit on top */
@@ -629,7 +664,7 @@ function renderMap(r){
   var bySeat={};
   m.links.forEach(function(n){var k=B2K[n.b];if(!k)return;(bySeat[k]=bySeat[k]||[]).push(n);});
   Object.keys(bySeat).forEach(function(k){
-   var hy=PMYP[k], hxp=50+m.gside*4.2, c=PMC[K2B[k]]||'#888';
+   var hy=PMYP[k], hxp=50+m.gside*4.2, c=PC[K2B[k]]||'#888';
    h+='<path d="M'+m.x.toFixed(2)+','+m.y.toFixed(2)+' Q'+((m.x+hxp)/2).toFixed(2)+','
     +((m.y+hy)/2).toFixed(2)+' '+hxp.toFixed(2)+','+hy.toFixed(2)
     +'" fill="none" stroke="'+c+'" stroke-width="'+(pinned?0.5:0.34)
@@ -658,7 +693,7 @@ function renderMap(r){
     is drawn as the arcs from its own centre of mass out to the addresses it
     holds. Weight sets the width. Hovering the rail lights its arcs here. That
     is a structure you can read at a glance and a list is not. */
- var TIERC={sab:PAL.Throat,cx:PAL.Solar,hy:PAL.Sacral,sup:PAL.Root,mask:PAL.Crown};
+ var TIERC={sab:PC.Throat,cx:PC.Solar,hy:PC.Sacral,sup:PC.Root,mask:PC.Crown};
  var chain=marks.filter(function(x){return x.kind==='bead';});
  if(PMLAYER==='pain'&&PAINPICK){
   var reg=PAINREG.filter(function(p){return p.k===PAINPICK;})[0];
@@ -715,7 +750,7 @@ function renderMap(r){
     reads as the instrument having found nothing rather than as waiting to be
     told. One line, imperative, and it goes the moment a region is painted. */
  if(PMLAYER==='pain'&&!PAINPICK){
-  h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Throat+'">'
+  h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PC.Throat+'">'
    +'paint where it hurts</text>';
  }else if(!marks.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
   /* THE EMPTY STATE ASKED THE WRONG QUESTION AND ANSWERED IT ON EVERY PROFILE.
@@ -734,7 +769,7 @@ function renderMap(r){
      The question the caption means is whether anything is drawn. marks is the
      drawn set, so it is what the caption asks. */
   var instN=W.filter(function(n){return n.pole>=4;}).length;
-  h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Heart+'">'
+  h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PC.Heart+'">'
    +(instN?'nothing carrying. '+instN+' addresses hold the opposite instead.'
      :'nothing carrying yet')+'</text>';}
  /* THE OUTER DISC OF A HEAT MARK IS FIELD, AND THE CORE IS A TARGET.
@@ -753,7 +788,7 @@ function renderMap(r){
     where a filter per mark would be one per address. */
  var field='';
  marks.filter(function(m){return m.kind==='heat';}).forEach(function(m){
-  var c=PMC[m.band]||'#888';
+  var c=PC[m.band]||'#888';
   field+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(2.2+m.v*4.4).toFixed(2)
    +'" fill="'+c+'" opacity="'+(0.10+m.v*0.34).toFixed(3)+'"/>';});
  if(field)h+='<g style="mix-blend-mode:screen" filter="url(#pmField)" '
@@ -776,7 +811,7 @@ function renderMap(r){
   var regs=PAINREG.slice().sort(function(a,b){return area(b)-area(a);});
   h+='<g class="pm-paint" clip-path="url(#pmClip)">';
   regs.forEach(function(rg){
-   var on=PAINPICK===rg.k, c=PMC[rg.bands[0]]||'#888';
+   var on=PAINPICK===rg.k, c=PC[rg.bands[0]]||'#888';
    (rg.box||[]).forEach(function(q){
     h+='<rect class="pm-pr'+(on?' on':'')+'" data-reg="'+rg.k+'" x="'+q[0]+'" y="'+q[1]
      +'" width="'+(q[2]-q[0]).toFixed(2)+'" height="'+(q[3]-q[1]).toFixed(2)
@@ -789,7 +824,7 @@ function renderMap(r){
  var pickSeat=(PMLAYER==='bands'&&typeof PMPICK==='string')?PMPICK:null;
  h+='<g clip-path="url(#pmClip)">';
  marks.filter(function(m){return m.kind==='node'||m.kind==='heat';}).forEach(function(m){
-  var c=PMC[m.band]||'#888';
+  var c=PC[m.band]||'#888';
   var fade=(pickSeat&&B2K[m.band]!==pickSeat)?0.28:1;
   if(m.kind==='heat'){
    /* the same point scale as Fetters. At 0.7 to 1.8 these were sized for the
@@ -890,7 +925,7 @@ function renderMap(r){
      Three saboteurs are three of the same glyph, which is correct and says
      nothing, so the ring takes the colour of the seat the pattern centres on
      and the three stop being interchangeable. */
-  var sc=PMC[m.band]||c;
+  var sc=PC[m.band]||c;
   var rr=on?3.1:2.5, sw=0.26+(m.v||0)*0.8;
   h+='<g class="pm-it" data-it="'+m.rank+'" opacity="'+(on?1:0.82)+'">'
    +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+rr.toFixed(2)
