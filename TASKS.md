@@ -12919,3 +12919,35 @@ wanting four more style variations of the overlay itself, beyond Hum,
 Pulse, Relay and Still already built in CL, "the shock was wrapped
 around it" not confidently identified and not guessed at further.
 
+## CV. The marma chart, cleaned into vector art, text gone, 82 points
+## kept. 26 September.
+
+**Verified myself.** Only three new files, nothing in `atuned_src/`,
+`source.html` or this one touched. Looked at the result directly:
+`proto/anatomy-ref/marma-points-clean.png` shows two clean outlines,
+front and back, dots only, no text or leader lines survive.
+
+**Traced rather than reused, and said why.** The product's own body
+outline (`BODYPATH`) was not used, since fitting 82 points onto a
+different outline would add its own landmark error on top of the
+chart's. The chart's own outline was traced instead, checked by laying
+the result in red over the original and confirming every dot still
+sits on the chart's own dot.
+
+**41 points never read before this, read the same way the accuracy
+pass read the rest.** The earlier work (CS) only needed trunk and head
+points for the Body page; the limb points (arms, hands, legs, feet) had
+never been extracted before, 82 in total once they were. Each checked
+against the darkest pixel within 2 px of where it landed, largest shift
+1.5 px.
+
+**Two real questions, since the source and the house rule disagree.**
+**Q1.** The chart draws its points as filled dots. This product's own
+standing rule is icons are ring, not fill. Kept filled since these are
+data markers off a source chart, not product icons, and he asked to
+"keep the points" as drawn. Should they be rings instead?
+**Q2.** Four of the chart's own points (Hridaya, Nabhi, Basti, Guda)
+are drawn larger than the rest on the original, its own way of marking
+them as major points. Built at one consistent size per his own brief.
+Should those four keep a larger mark to carry that distinction over?
+
