@@ -13319,3 +13319,72 @@ itself, whether it moves and responds or is a still comp built to
 show a layout, so a silent click never has to be the way this gets
 discovered again.
 
+## DD. The simulated panel on the shelf and the Dial, and it found real
+## bugs, not only opinions. 26 September.
+
+**A correction to my own dispatch, caught by the pass and not by me.**
+The ages I gave the team to work from, Sofia 64, Derek 24, Angela 51,
+James 22, are wrong, carried forward from earlier in this session
+without checking them again. The file, `engine/data/people.js`, reads
+Sofia 41, Diane 46, Marcus 44, Angela 36, Derek 39, James 57. Checked
+myself against that file directly. Corrected here, not silently; the
+panel itself was run against the real file, not my wrong numbers.
+
+**What a simulated panel can and cannot say, kept at the top of the
+page rather than buried.** It can hold a design against six stated
+sets of needs at once and say which kind of person a defect costs. It
+cannot say what a real person would feel, whether anyone comes back
+tomorrow, or whether the circle reads as a loop, which is this
+project's own standing rule. No invented percentages. The real next
+step named is still five people, twenty minutes each, on their own
+phones.
+
+**Four real bugs found, not matters of taste, one already confirmed by
+me directly against the shipped file.**
+- **The Dial still prints the raw "SQ" wording the mockups meant to
+  retire.** Checked myself: `ui/rings.js` line 909 reads `s.n.b+'. SQ
+  '+s.n.sq.toFixed(1)`, with its own comment beside it saying the
+  mockup's "Held at" wording was considered and not carried over. CE's
+  fix reached the mockup only, never the shipped Dial.
+- **The address card mixes up two different anatomical locations on 3
+  of the 6 heaviest addresses**, because `ui/drills.js` prints an
+  emotion axis's own seat in a sentence that reads as if it were the
+  address's seat. "Axis" itself is used for two different things on
+  every card.
+- **A likely sex mismatch on one address**, engine/data/nodes.js seats
+  address 25 at a female specific structure, Derek's card names it
+  plainly, and his own persona record carries no sex field to have
+  caught it. Flagged as near certain, not fully confirmed.
+- **The single most important finding.** On a phone, the heavier an
+  address's own charge, the less of it can actually be pressed, because
+  the pattern bead sitting on top of it answers first. Measured share
+  of each person's own heaviest address that a real tap can reach:
+  Derek 49% at a desk, 0% on a phone; Sofia and Marcus 53% down to 6%;
+  James 55% down to 10%; Diane 71% down to 20%; Angela 71% down to 46%.
+  The phone median is 8%. A short list under the finger, heaviest
+  first, is the proposed fix, which also answers CZ Q5 left open
+  earlier tonight.
+
+**Two more, smaller and specific to the Dial.** Pressing something on
+the Dial opens the shelf but never rings the pressed mark, 0 of 12
+times checked, because that ring only knows the Wheel and the Body
+figure. And one tap in six landed on the wrong address entirely.
+
+**Sent as a page, not dumped as six persona transcripts in the reply.**
+The full page, all six reactions with their own screenshots, is at
+`proto/icp-review/index.html`, published for him to open if he wants
+the detail; the reply carries only what changes what he decides.
+
+**Four real questions, on the page with their own pictures.**
+**Q1.** On a phone, should a crowded tap open a short list of
+everything under the finger, or should an address always win over the
+bead sitting on it?
+**Q2.** Should the Dial print its heaviest addresses' real names on
+the picture itself, or only the seat and its weight there, with the
+name held back for the shelf?
+**Q3.** Should a sex specific address follow the sex on a person's own
+profile, or be renamed to a structure everyone has? Touches
+`BOOK-ERRATA.md`.
+**Q4.** For the law callout on the Dial, name the law and drop its
+score, or keep the score and drop "most shut"?
+
