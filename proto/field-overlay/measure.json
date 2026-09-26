@@ -1,0 +1,289 @@
+{
+ "profile": "Gordon",
+ "at": "1600x1000",
+ "frames": 300,
+ "runs": {
+  "cpu x1": {
+   "overlay": {
+    "still n12": {
+     "mean": 0.777,
+     "p95": 1.1,
+     "max": 6.7,
+     "movingPeak": 0,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "still n40": {
+     "mean": 2.109,
+     "p95": 2.9,
+     "max": 13.7,
+     "movingPeak": 0,
+     "linesLit": 40,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "still n999": {
+     "mean": 7.144,
+     "p95": 9,
+     "max": 17.1,
+     "movingPeak": 0,
+     "linesLit": 188,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "hum n12": {
+     "mean": 1.235,
+     "p95": 1.5,
+     "max": 5.5,
+     "movingPeak": 12,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "hum n40": {
+     "mean": 3.814,
+     "p95": 4.9,
+     "max": 13.7,
+     "movingPeak": 40,
+     "linesLit": 40,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "hum n999": {
+     "mean": 13.929,
+     "p95": 17.9,
+     "max": 31,
+     "movingPeak": 188,
+     "linesLit": 188,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "pulse n12": {
+     "mean": 1.305,
+     "p95": 1.6,
+     "max": 4.1,
+     "movingPeak": 33,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "pulse n40": {
+     "mean": 4.242,
+     "p95": 5.8,
+     "max": 12.6,
+     "movingPeak": 93,
+     "linesLit": 40,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "pulse n999": {
+     "mean": 12.211,
+     "p95": 15.3,
+     "max": 25.8,
+     "movingPeak": 300,
+     "linesLit": 188,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "relay n12": {
+     "mean": 0.859,
+     "p95": 1,
+     "max": 5,
+     "movingPeak": 3,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "relay n40": {
+     "mean": 1.387,
+     "p95": 1.7,
+     "max": 3.9,
+     "movingPeak": 3,
+     "linesLit": 19,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "relay n999": {
+     "mean": 1.48,
+     "p95": 2.2,
+     "max": 6.6,
+     "movingPeak": 3,
+     "linesLit": 19,
+     "canvas": [
+      664,
+      775
+     ]
+    }
+   },
+   "field": {
+    "mean": 8.533,
+    "p95": 12.6,
+    "max": 22.1
+   }
+  },
+  "cpu x4": {
+   "overlay": {
+    "still n12": {
+     "mean": 2.887,
+     "p95": 5.4,
+     "max": 38.5,
+     "movingPeak": 0,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "still n40": {
+     "mean": 7.197,
+     "p95": 12,
+     "max": 18.5,
+     "movingPeak": 0,
+     "linesLit": 40,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "still n999": {
+     "mean": 26.738,
+     "p95": 39.1,
+     "max": 53.7,
+     "movingPeak": 0,
+     "linesLit": 188,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "hum n12": {
+     "mean": 2.912,
+     "p95": 6.8,
+     "max": 44.8,
+     "movingPeak": 12,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "hum n40": {
+     "mean": 11.533,
+     "p95": 18.4,
+     "max": 31.6,
+     "movingPeak": 40,
+     "linesLit": 40,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "hum n999": {
+     "mean": 44.84,
+     "p95": 65.2,
+     "max": 85.4,
+     "movingPeak": 188,
+     "linesLit": 188,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "pulse n12": {
+     "mean": 5.496,
+     "p95": 11.1,
+     "max": 19.3,
+     "movingPeak": 33,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "pulse n40": {
+     "mean": 13.105,
+     "p95": 23.5,
+     "max": 31.7,
+     "movingPeak": 93,
+     "linesLit": 40,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "pulse n999": {
+     "mean": 40.232,
+     "p95": 67.5,
+     "max": 99.8,
+     "movingPeak": 300,
+     "linesLit": 188,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "relay n12": {
+     "mean": 3.692,
+     "p95": 7.3,
+     "max": 52,
+     "movingPeak": 3,
+     "linesLit": 12,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "relay n40": {
+     "mean": 5.391,
+     "p95": 10.7,
+     "max": 24.6,
+     "movingPeak": 3,
+     "linesLit": 19,
+     "canvas": [
+      664,
+      775
+     ]
+    },
+    "relay n999": {
+     "mean": 4.255,
+     "p95": 8.1,
+     "max": 17.7,
+     "movingPeak": 3,
+     "linesLit": 19,
+     "canvas": [
+      664,
+      775
+     ]
+    }
+   },
+   "field": {
+    "mean": 32.985,
+    "p95": 45.9,
+    "max": 69.1
+   }
+  }
+ }
+}
