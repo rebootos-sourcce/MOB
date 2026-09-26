@@ -363,4 +363,9 @@ Overlay.prototype.relayBeads=function(g,v,fl){
    ring(g,n.p[0],n.p[1],n.s+3+Math.min(12,n.s*1.2)*E.land(k),mix(n.col,WHITE,.6),.8*f,1.4);}});});};
 
 window.Overlay=Overlay; window.OVL_E=E; window.OVL_T=T;
+/* the primitives, lent to hover.js (CU) so the hover round draws with the
+   same curves, the same sampled chord and the same travelling head, and a
+   line lifted by a hover is the same line this file lifts */
+window.OVL_LIB={bez:bez,E:E,T:T,clamp:clamp,mix:mix,rgba:rgba,seed:seed,sample:sample,at:at,
+ poly:poly,ring:ring,disc:disc,head:head,wheelW:wheelW,M:M,WHITE:WHITE};
 })();

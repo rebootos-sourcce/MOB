@@ -1,13 +1,17 @@
 """Builds the GIF and the phase strip for one recording, from the frames
 record.js stepped through. Called by record.js; not run by hand.
 
-  argv: frame_dir out_stem gif_fps on_ms strip_json look
+  argv: frame_dir out_stem gif_fps on_ms strip_json look [width] [event word]
 """
 import sys, os, json, glob
 from PIL import Image, ImageDraw, ImageFont
 
 src, stem, gfps, on_ms, strip, look = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4]), json.loads(sys.argv[5]), sys.argv[6]
 W = int(sys.argv[7]) if len(sys.argv) > 7 else 420
+# what the strip's times count from: Active for CL's toggle, the hover for CU's
+EVT = sys.argv[8] if len(sys.argv) > 8 else 'Active'
+# and, for a recording with more than one event in it, a label per phase
+LABELS = json.loads(sys.argv[9]) if len(sys.argv) > 9 else {}
 frames = sorted(glob.glob(os.path.join(src, '[0-9]*.jpg')))
 step = 1000 / 60
 
@@ -53,7 +57,8 @@ if picks:
         x = pad + (k % cols) * (s + pad)
         y = pad + (k // cols) * (sh + top + pad)
         out.paste(im, (x, y + top))
-        lab = ('%d ms before Active' % -t) if t < 0 else ('%d ms after Active' % t)
+        lab = ('%d ms before %s' % (-t, EVT)) if t < 0 else ('%d ms after %s' % (t, EVT))
+        lab = LABELS.get(str(int(t)), lab)
         d.text((x + 2, y + 7), lab, fill=(180, 176, 168), font=font)
     out.save(stem + '-strip.png', optimize=True)
 print(os.path.basename(stem), 'gif', len(q), 'frames at', gfps, 'fps,', os.path.getsize(stem + '.gif') // 1024, 'KB')
