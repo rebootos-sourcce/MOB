@@ -935,18 +935,54 @@ function helpSheet(){
    Reduced motion has no animation to end on, so that case is handled by the
    timer rather than by the event. The timer is the floor in every case, so a
    dropped animationend never leaves the sheet up. */
+/* when the floor below will remove the sheet, on the page's own clock,
+   published for design gate 11, which holds it to the sheet's own fade */
+var BOOT_FLOOR_AT=0;
 (function(){
- var el=document.getElementById('boot'); if(!el)return;
- var gone=false;
- function clear(){ if(gone)return; gone=true;
+ var el=document.getElementById('boot');
+ if(!el){ if(typeof enterLift==='function')enterLift(); return; }
+ var gone=false, lifted=false;
+ /* THE SHEET HAS STARTED TO LIFT, so the Field underneath starts arriving,
+    ui/wheel.js. Once, whichever way the lift began: the sheet's own fade, a
+    press, the floor, or reduced motion clearing it at once. */
+ function lift(){ if(lifted)return; lifted=true;
+  if(typeof enterLift==='function')enterLift(); }
+ function clear(){ if(gone)return; gone=true; lift();
   if(el.parentNode)el.parentNode.removeChild(el);
   document.body.classList.add('booted'); }
+ /* animationstart fires when the fade's delay is over, which is the first
+    frame the sheet is anything less than solid */
+ el.addEventListener('animationstart',function(e){
+  if(e.target===el&&e.animationName==='bootOut')lift();});
  el.addEventListener('animationend',function(e){
-  if(e.animationName==='bootOut')clear();});
- /* the floor. 5.26s is the end of the sequence now, five beats and the
-    quicker fade included, and this sits just past it. A dropped animationend
-    must never leave the sheet standing over a working instrument. */
- setTimeout(clear,5450);
+  if(e.target===el&&e.animationName==='bootOut')clear();});
+ /* THE FLOOR IS READ OFF THE SHEET'S OWN FADE, NOT TYPED HERE.
+    It was a typed 5450 while shell/head.html set the fade to begin at 7.02s,
+    so the floor cut the sheet 1.57 seconds before its fade could start and
+    the fade never once played (ET, EZ in TASKS.md). Two copies of one number
+    in two files is how that happened, so there is one copy now: the end of
+    bootOut as the browser computed it, --hold included, less the time it has
+    already run, and the floor sits a fifth of a second past that. A dropped
+    animationend still never leaves the sheet standing. 5450 survives only as
+    the fallback for a browser with no getAnimations.
+
+    Read again once the animation has actually started. At the moment this
+    runs the sheet's animations can still be pending, with no start time, and
+    a floor measured from here would sit late by however long the first frame
+    took; ready is the promise that it has started, and the floor is set again
+    from its real clock then. */
+ var ft=0;
+ function floor(ms){ clearTimeout(ft); BOOT_FLOOR_AT=performance.now()+ms; ft=setTimeout(clear,ms); }
+ floor(5450);
+ try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
+  if(fade){ var set=function(){ if(gone)return;
+    /* the fade's end on the page's own clock. The document timeline and
+       performance.now share an origin, and the timeline's time is the last
+       frame's, which during a long script is well behind now, so the end is
+       taken from the start time and not from the current time */
+    var end=fade.effect.getComputedTiming().endTime;
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
+   set(); if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
     skipped automatically on a return visit and no flag is stored: a person
@@ -978,7 +1014,7 @@ function helpSheet(){
       eat an unrelated one later. */
    setTimeout(function(){removeEventListener('click',eat,true);},700); }
   el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
-  el.style.opacity='0'; setTimeout(clear,190); };
+  el.style.opacity='0'; lift(); setTimeout(clear,190); };
  addEventListener('pointerdown',skip,{once:true,capture:true});
  addEventListener('keydown',skip,{once:true,capture:true});
  var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;

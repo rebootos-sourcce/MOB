@@ -737,7 +737,24 @@ var R_SHELL=0, R_EDGE=0;
    complete from the first frame and what moves is how complete it looks. */
 const ENTER_SPAN=380, ENTER_STAGGER=62, ENTER_CORE=300, ENTER_TOTAL=900;
 var ENTER_T0=null, ENTER_SEEN=false;
+/* HELD UNDER THE BOOT, AND STARTED AS IT LIFTS. ET in TASKS.md, measured: the
+   app opens on the Field, so this was called at page load and ran from 263ms
+   to about 1.2s while the boot sheet stood solid until 5.67s. Nobody had ever
+   seen it on a first load. So while the sheet is up the entrance is held, the
+   figure is drawn whole under it (enterA answers 1 while ENTER_T0 is null),
+   and ui/panels.js calls enterLift the moment the sheet starts to lift, by
+   its own fade, a press, or its floor. The switch from whole to assembling
+   happens on a frame the sheet is still opaque over, so it is never seen. */
+var ENTER_HELD=false, BOOT_LIFTED=false;
+function enterLift(){
+ BOOT_LIFTED=true;
+ if(!ENTER_HELD)return;
+ ENTER_HELD=false;
+ /* a person who left the Field while the sheet was up gets the entrance on
+    their first arrival instead, which setTab already asks for */
+ if(typeof S!=='undefined'&&S.tab===TAB.FIELD)enterStart();}
 function enterStart(){
+ if(!BOOT_LIFTED&&!ENTER_SEEN&&document.getElementById('boot')){ENTER_HELD=true;return;}
  /* ONCE A SESSION, NOT ONCE A VISIT. Ruled: "as a one time event." It was
     firing on every arrival at the Field, so a person who stepped to Knowledge
     and back watched the figure assemble again, which turns an entrance into a

@@ -3704,111 +3704,354 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     sequence rather than added to a person's wait. */
  /* two seconds longer than it was. Ruled. The figure settles at 4.06 and
     stands still for the rest, which is the beat the brief asked for. */
- animation:bootOut .24s cubic-bezier(.4,0,.2,1) 7.02s forwards}
+ /* AND THAT RULING WAS NEVER SEEN, which is why this now says 5s. ui/panels.js
+    removed the sheet at a typed 5450ms while this fade was set for 7.02s, so
+    the fade never once played and the sheet was cut from black to the app in
+    one frame (ET, EZ in TASKS.md). The arrival he has seen and called good
+    ends its push at 4.86, so the fade starts at 5.00 and is gone at 5.24, and
+    panels.js reads that end off this animation instead of carrying a copy of
+    it. --hold is the two second ruling, still open, and moves both. */
+ --hold:0s;
+ animation:bootOut .24s cubic-bezier(.4,0,.2,1) calc(5s + var(--hold)) forwards}
 /* the opening beat. Everything inside is held back behind it, so the first
    thing on screen is nothing, on purpose, for a third of a second. */
 .boot::before{content:'';position:absolute;inset:0;background:#000;z-index:2;
  animation:bootIn .46s cubic-bezier(.4,0,1,1) .34s forwards}
 @keyframes bootIn{to{opacity:0}}
-/* FIVE BEATS AT THE TAIL. Ruled, and the count is the animation's iteration
-   count rather than five keyframes written out, so five is five and cannot
-   drift to four by somebody editing a percentage.
+/* ============================================================
+   THE ARRIVAL. Ported from proto/arrival, round ET, refined on EZ and FA.
 
-   The whole mark beats, not one part of it. The core already carries an
-   anticipation and a squash through bootCore and holds its end state with
-   both, so a second transform animation on the same element would fight it
-   for the property. The group above it is free, which is where a beat belongs
-   anyway: a heartbeat moves the whole body.
+   EZ, his words on ET's prototype: "very cool animation, more animation with
+   the elements ... the timing needs to be exceptional, ease in and out to
+   perfection that you can feel. The solid bars come in solid and when they
+   can actually come in one at a time as well. The animation timing is good.
+   Refine it."
 
-   They start at 4.10s, as the wordmark finishes landing, and the last one
-   closes at 5.05s, which is where the fade takes over. */
-.boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
- fill:none;stroke-linecap:round;transform-origin:50% 50%}
-/* THE SQUASH AND STRETCH IS GONE, AND SO IS THE PULSE BEFORE IT. Ruled twice,
-   and the second ruling is the plain one: "get rid of the squash and stretch
-   from the intro animation. Doesn't look good."
+   FA, his words on the five he was then shown side by side: "breath, the
+   outside rings I like. Ori, not so much. Bloom, not so much. Ember, the
+   secondary lines. Those are pretty cool ... like the second ring with all
+   the little hashes. The one I like, needs the kind of like thicker bands.
+   To come in with better timing and animation. I think overall, overall,
+   this is pretty close. It just needs better like tighter direction."
 
-   Both were answers to the same brief, "find a way to give this thing more
-   character," and both put the character in the wrong place. A pulse read as
-   a loading spinner. A non uniform scale reads as a wobble on a figure that
-   is meant to be a standing body, and a body that changes width is a body
-   that is made of rubber. The character is already in the build: the spine
-   rises root to crown, seven seats arrive ninety milliseconds apart and each
-   overshoots, the ring draws while the last two are still landing, and the
-   halo breathes once at the end. That is timing, staging, overlapping action
-   and secondary action doing the work, which is where it belongs.
+   So this is a composite, and every part of it is named to the version it
+   came from. The base is ET's, "the one you liked". The seven colour wave
+   that leaves the centre and travels out past the ring is Breath's. The
+   addresses thrown out from the centre as white hot streaks that overshoot
+   and cool into their seats' colours are Ember's. Nothing of Orrery or
+   Bloom. The length is ET's and not moved, because he has twice said the
+   timing is good; what moved is inside it, and all of it is tighter.
 
-   So the figure now assembles and stands still. Nothing has been added in
-   their place; the held end was already the point of it. */
-/* ANTICIPATION, and uniform scale. The core draws in before it releases and
-   overshoots its size on the way out. It no longer flattens: the width and
-   the height move together, so it reads as a thing arriving rather than as a
-   thing being squeezed. */
-.b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
- animation:bootCore 2.1s cubic-bezier(.34,1.56,.64,1) .62s both}
-@keyframes bootCore{
- 0%  {opacity:0;transform:scale(.35)}
- 14% {opacity:1;transform:scale(.22)}   /* draws in. anticipation, kept. */
- 46% {opacity:1;transform:scale(1.22)}  /* releases past its size */
- 74% {opacity:1;transform:scale(.92)}
- 100%{opacity:1;transform:scale(1)}}
-/* STAGING. The spine rises root to crown before anything sits on it. */
-.b-spine{stroke:var(--edge-2);stroke-width:1.4;
- stroke-dasharray:120;stroke-dashoffset:120;
- animation:bootSpine 1.02s cubic-bezier(.22,1,.36,1) .92s forwards}
-@keyframes bootSpine{to{stroke-dashoffset:0}}
-/* TIMING and FOLLOW THROUGH. Ninety milliseconds apart, each one overshooting
-   its size and settling back. Fast enough to read as one rising movement,
-   slow enough to count. */
-.b-seat{transform-origin:100px 100px;opacity:0;
- animation:bootSeat .66s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes bootSeat{
- 0%  {opacity:0;transform:scale(.2)}
- 60% {opacity:1;transform:scale(1.5)}
- 100%{opacity:.92;transform:scale(1)}}
+   ONE BEAT, NINETY MILLISECONDS, EVERYWHERE A SEAT MOVES. The seats land on
+   the spine ninety apart. They used to leave it sixty apart, and the bars
+   grew in overlapping so heavily that seven bars read as one smear. Now the
+   seats leave on the same ninety, and each seat's bar lands on the same
+   ninety, so the eye counts seven of everything, root to crown, and it is
+   one rhythm from the first seat to the last bar. Ninety sits inside the
+   sixty to a hundred and ten where siblings read as one gesture and can
+   still be counted.
+
+   THE BANDS ARE THICKER AND THEY COME IN SOLID. 5.6 units against ET's 3.2,
+   the most the room between the seats and the addresses allows. They used
+   to draw on from their middle, a line being drawn, which reads as a stroke
+   and not as a thing. Now each band is whole from its first frame and it
+   lands: it falls in from outside the ring, accelerating, the way a thing
+   with mass falls, meets the ring at the same instant its seat arrives from
+   the inside, passes by a hair, and settles back. Two things moving toward
+   each other and meeting on one frame is what makes the landing read.
+   Accelerate into contact, then a rebound, is what separates something
+   solid from something floating, and the two curves meet at contact at the
+   same speed, measured on their tangents, so the landing has no seam.
+
+   THE CENTRE RELEASES ONCE, AND THREE THINGS LEAVE IT ON THAT FRAME. The
+   last band lands, the lens draws in, and as it opens Breath's wave and
+   Ember's addresses leave the centre together: one event, the soul going
+   from collapsed to expressed, which was EV's brief, and not three.
+
+   EVERY OVERSHOOT IS WRITTEN AS A SPRING, NOT AS ONE BEZIER STACKED ON
+   ANOTHER. ET put the landing curve on a keyframe that already overshot, so
+   each seat overshot twice. Here the pose is keyframed, peak and trough, and
+   the curve between two poses is eased at both ends, because a spring is at
+   rest at the top of every swing. The first move off rest is an ease out,
+   because it leaves at speed.
+
+   NOTHING SQUASHES. Ruled BT1, 5 September, of this sheet: "get rid of the
+   squash and stretch from the intro animation. Doesn't look good." Every
+   scale here is uniform.
+
+   THE ORDER, AT --hold 0. The seconds are in the rules below and nowhere
+   else, which is the point of writing them there:
+     0.00  black, the ruled opening beat
+     0.50  the light behind blooms, and drifts until the ring is whole
+     0.70  the spine rises root to crown
+     0.78  the seven seats land on it, one a beat
+     1.62  the column unfurls, a seat a beat, and the spine is spent behind
+           them from the root up, so it is consumed rather than switched off
+     1.78  the bands fall in, a seat a beat, each meeting its seat on the
+           ring at 2.00 plus its beat
+     2.42  the centre draws in, the anticipation, as the last band lands
+     2.56  it releases: the glass lens opens, Breath's wave leaves it, and
+           Ember's addresses are thrown out clockwise from twelve
+     2.74  the lens's ring fills clockwise from twelve, the glass bar's ring
+     3.00  the gold halo closes round the whole figure
+     3.20  the wordmark lands, verbatim, ruled to the pixel
+     3.50  every address is home. The figure stands for most of a second.
+     4.40  a small draw back, then the push through the ring at three depths
+     4.86  black again, the closing beat
+     5.00  the sheet's own ruled fade, eased both ends. Gone at 5.24, and
+           ui/panels.js reads that end off this animation, not off a number.
+
+   --hold IS THE OPEN QUESTION, NOT A DEFAULT. The two second ruling (the old
+   sheet's 7.02) was never once seen, because the old floor cut it at 5.45.
+   What he has seen and called good is ET at 5.24. Setting --hold to 2s
+   gives the 7.2 version and the removal follows it by itself.
+
+   CURVES are the product's own, and two more that are named where used:
+     ease out  .22,1,.36,1     arriving
+     ease in   .4,0,1,1        leaving, and falling
+     land      .34,1.56,.64,1  landing, overshoot
+     in out    .4,0,.2,1       the sheet's fade, ruled
+     swing     .45,0,.55,1     between two poses of a spring, at rest at both
+     fill      .45,0,.15,1     a ring filling at hero size. The bar's ease out
+                               at nine tenths of a second front loads so hard
+                               that it reads as a snap and then a crawl; this
+                               starts gently and settles long, which is the
+                               same fill slowed to a size where it is watched.
+   ============================================================ */
+.boot.bx{--beat:.09s;--S:min(86vw,58vh,600px);overflow:hidden;gap:22px}
+.bx-stage{position:relative;width:var(--S);height:var(--S);flex:0 0 auto}
+/* THE PUSH, WITH ITS BACKSWING. ET went straight out on the ease in. A push
+   with no draw back first starts from rest at full speed, which is the one
+   thing nothing in nature does; a hundred and twenty milliseconds of drawing
+   in by three percent is the anticipation that makes the push read as a
+   push. The figure is the middle depth. */
+.bx-fig{position:absolute;inset:0;
+ animation:bxPush .46s linear calc(4.40s + var(--hold)) forwards}
+@keyframes bxPush{
+ 0%{scale:1;opacity:1;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 26%{scale:.972;opacity:1;animation-timing-function:cubic-bezier(.4,0,1,1)}
+ 100%{scale:1.45;opacity:0;visibility:hidden}}
+
+/* THE LIGHT, the far depth. Seven pools of the seats' own colour on their
+   own bearings, and one of the accent at the centre for the lens to frost.
+   It blooms in from further away than it lands, and drifts a few degrees
+   slower than anything else. It goes out slowest and least, because it is
+   furthest away.
+
+   THE DRIFT STOPS WHEN THE RING IS WHOLE, AND THAT IS A MEASURED CHOICE. It
+   is the one expensive thing in the sheet: a layer two and a half figures
+   wide, turned every frame. Measured at 1600 wide in this sandbox's software
+   compositor, each part switched off in turn: the wash alone takes the boot
+   from 60 frames a second to 35, and nothing else in the sheet moves it by
+   more than 3. ET drifted it for four and a half seconds, and the last two
+   of those moved it under two degrees, which nobody can see and every frame
+   paid for. Ended at 2.9s, as the last bar lands, the back half of the sheet
+   measured 48 to 55 against 31 to 33, and the first half is unchanged. On a
+   machine with a graphics card turning a layer is close to free either way.
+   The ground is still alive after it stops: the prism keeps turning under
+   the glass, and Breath's wave and Ember's throw both leave after it. */
+.bx-wash{position:absolute;left:50%;top:50%;width:calc(var(--S)*2.6);height:calc(var(--S)*2.6);
+ translate:-50% -50%;pointer-events:none;opacity:0;
+ animation:bxWash 2.1s cubic-bezier(.22,1,.36,1) .50s both,
+  bxDrift 2.4s cubic-bezier(.22,1,.36,1) .50s both,
+  bxWashOut .36s cubic-bezier(.4,0,1,1) calc(4.52s + var(--hold)) forwards}
+@keyframes bxWash{from{opacity:0;scale:1.3}to{opacity:1;scale:1}}
+@keyframes bxDrift{from{rotate:-24deg}to{rotate:0deg}}
+/* AND GONE MEANS HIDDEN, NOT ONLY TRANSPARENT. Measured over the handoff,
+   4.95s to 5.9s, when the sheet fades over the Field's entrance: a layer at
+   opacity zero is still composited every frame, and this one is two and a
+   half figures wide. With it still there the handoff ran 38 frames a second
+   at 390 with a 100ms worst frame; with it gone, 60 and 33. So every layer
+   that has finished leaving ends on visibility hidden. */
+@keyframes bxWashOut{from{opacity:1;scale:1}to{opacity:0;scale:1.12;visibility:hidden}}
+
+.bx-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none;stroke-linecap:round}
+
+/* THE SPINE. It rises root to crown, the shipped figure's first move, and
+   then it is spent from the root up as the seats leave it, over the span of
+   their leaving, so the column is consumed by the unfurl rather than faded
+   out from under the last three seats still standing on it. */
+.bx-spine{stroke:var(--edge-2);stroke-width:1.2;stroke-dasharray:100 100;stroke-dashoffset:100;
+ animation:bxSpine .5s cubic-bezier(.22,1,.36,1) .70s forwards,
+  bxSpent .70s cubic-bezier(.45,0,.55,1) 1.66s forwards}
+@keyframes bxSpine{to{stroke-dashoffset:0}}
+@keyframes bxSpent{from{stroke-dashoffset:0;opacity:1}80%{opacity:1}to{stroke-dashoffset:-100;opacity:0}}
+
+/* THE SEVEN. Still .b-seat and still PAL, so design gate 11 reads them as it
+   read the old figure. Each lands on the spine on the beat, as a spring:
+   out of rest at speed, a peak, a trough, rest. Then it leaves on an arc: the
+   group turns and the seat reaches, two properties on two curves, so the
+   path is a spiral and not a straight line. The turn draws back six degrees
+   first and the reach draws in, which is the anticipation; the reach lands
+   past its radius and settles, which is the follow through. */
+.bx .b-seat{opacity:0;transform-origin:100px 100px;translate:0 calc(var(--r0) * -1px);
+ animation:bxPop .44s both,bxReach .64s both;
+ animation-delay:calc(.78s + var(--i) * var(--beat)),calc(1.62s + var(--i) * var(--beat))}
+@keyframes bxPop{
+ 0%{opacity:0;scale:.2;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 45%{opacity:1;scale:1.32;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 75%{opacity:1;scale:.94;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 100%{opacity:1;scale:1}}
+@keyframes bxReach{
+ 0%{translate:0 calc(var(--r0) * -1px);animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 20%{translate:0 calc(var(--r0) * -.86px);animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
+ 100%{translate:0 calc(var(--r1) * -1px)}}
+.bx-sa{transform-origin:100px 100px;rotate:var(--a0);
+ animation:bxTurn .64s both;animation-delay:calc(1.62s + var(--i) * var(--beat))}
+@keyframes bxTurn{
+ 0%{rotate:var(--a0);animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 20%{rotate:calc(var(--a0) + 6deg);animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 100%{rotate:var(--a1)}}
 /* SOLID DRAWING. The seven are PAL, exactly, not an approximation of it. The
    boot runs before any script has painted so it cannot read the palette from
    the engine, and a boot in colours that nearly match the product is worse
    than one that does not try. These are canon.js values, copied, and
    tests/design.js gate 11 fails if the two ever part company. */
-.b-s1{fill:#D6524C;animation-delay:1.18s}   /* Root */
-.b-s2{fill:#D8924E;animation-delay:1.30s}   /* Sacral */
-.b-s3{fill:#DABF6A;animation-delay:1.42s}   /* Solar */
-.b-s4{fill:#5FD5A6;animation-delay:1.54s}   /* Heart */
-.b-s5{fill:#5EBBDB;animation-delay:1.66s}   /* Throat */
-.b-s6{fill:#7D93E0;animation-delay:1.78s}   /* 3rd Eye */
-.b-s7{fill:#A77EDB;animation-delay:1.90s}   /* Crown */
-/* ARCS and OVERLAPPING ACTION. The ring is an arc and it begins at 0.95s,
-   while the last two seats are still arriving. Nothing waits for the thing
-   before it to come to a stop. */
-.b-ring{stroke:var(--accent);stroke-width:1.6;opacity:.85;
- stroke-dasharray:390;stroke-dashoffset:390;transform-origin:100px 100px;
- transform:rotate(-90deg);
- animation:bootRing 1.55s cubic-bezier(.32,.72,.26,1) 1.92s forwards}
-@keyframes bootRing{to{stroke-dashoffset:0}}
-/* the addresses, arriving around the ring behind it */
-.b-addr line{stroke:var(--accent);stroke-width:1.5;opacity:0;
- animation:bootAddr .62s cubic-bezier(.22,1,.36,1) both}
-@keyframes bootAddr{0%{opacity:0}100%{opacity:.5}}
-/* SECONDARY ACTION. The halo breathes once, under the main action and late,
-   so it reads as a consequence rather than as another thing happening. */
-/* THE HALO IS GOLD, WHICH IS WHAT WAS ASKED FOR AND WHAT IT WAS NOT.
-   --gold is an alias for --accent and --accent is the sky blue, so the halo
-   computed rgb(126,184,212) and the one real gold in the sheet, --au, was
-   never read by the boot at all. Measured against every lighting's own bar
-   ground, --au clears 4.5 to 1 in all seven and 3 to 1 by at least half
-   again, so it needs no per lighting override. */
-/* AND IT IS OFF THE TOP OF THE HEAD. Ruled: "the halo is too close to the
-   top." It sat 5 units above the crown seat in a 200 unit frame, which on
-   screen is close enough to read as resting on the scalp rather than floating
-   over it. Moved to 21, which doubles the gap to 10. It also arrives earlier
-   now, so the squash is the last thing that moves. */
-.b-halo{stroke:var(--au);stroke-width:1.4;opacity:0;transform-origin:100px 21px;
- animation:bootHalo 1.05s cubic-bezier(.34,1.56,.64,1) 2.62s both}
-@keyframes bootHalo{
- 0%{opacity:0;transform:scale(.6)}
- 55%{opacity:.95;transform:scale(1.14)}
- 100%{opacity:.8;transform:scale(1)}}
+.b-s1{fill:#D6524C}   /* Root */
+.b-s2{fill:#D8924E}   /* Sacral */
+.b-s3{fill:#DABF6A}   /* Solar */
+.b-s4{fill:#5FD5A6}   /* Heart */
+.b-s5{fill:#5EBBDB}   /* Throat */
+.b-s6{fill:#7D93E0}   /* 3rd Eye */
+.b-s7{fill:#A77EDB}   /* Crown */
+
+/* THE RING. The track comes up first, faint, the way the glass bar's track
+   is there before its value: ink at sixteen percent, fieldbar's own. */
+.bx-trk{stroke-width:5.6;stroke-opacity:0;animation:bxTrk .26s cubic-bezier(.22,1,.36,1) 1.70s forwards}
+@keyframes bxTrk{to{stroke-opacity:.14}}
+/* THE BANDS. Whole from the first frame, landing one a beat, root to crown.
+   Scale is uniform about the centre, so a larger band is the same band
+   further out: it falls inward onto the ring. It falls on the ease in for
+   the first half, meets the ring at the half, which is 2.00s plus its beat,
+   the frame its own seat first reaches its radius from inside; passes it by
+   two percent on the ease out, and swings back. Opacity is its own
+   animation over the first third, so the band is solid before it lands and
+   not fading while it does. */
+.bx-arc{stroke-width:5.6;stroke-linecap:round;opacity:0;transform-origin:100px 100px;scale:1.18;
+ animation:bxBar .44s both,bxBarOp .14s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(1.78s + var(--i) * var(--beat)),calc(1.78s + var(--i) * var(--beat))}
+@keyframes bxBar{
+ 0%{scale:1.18;animation-timing-function:cubic-bezier(.4,0,1,1)}
+ 50%{scale:1;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 70%{scale:.978;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 100%{scale:1}}
+@keyframes bxBarOp{from{opacity:0}to{opacity:.94}}
+
+/* THE ADDRESSES, EMBER'S. Still .b-addr, still counted by gate 11 against
+   the engine. FA: "Ember, the secondary lines ... the second ring with all
+   the little hashes." In Ember every address is thrown out of the centre as
+   a white hot streak with a turn on it, flies past its place, springs back,
+   and cools to its seat's colour as it shortens into its mark. The same
+   here, on ET's geometry, with two differences, both for tighter direction:
+   they leave in order, clockwise from twelve, three milliseconds apart, so
+   the throw is one sweep and not a scatter; and the flight is keyframed as a
+   spring, pose to pose, rather than simulated, so it is the same every time
+   and costs nothing to compute.
+
+   Scale and turn are about the centre, so a tick at a tenth of its scale is
+   the same tick near the middle: under the glass, where the throw starts.
+   It is a full length streak in flight and settles to its seat's resting
+   length only as it lands, which is Ember's stretch along the path of
+   travel, done on the dash rather than on the shape, so nothing squashes. */
+.bx .b-addr line{stroke:var(--c);stroke-width:1.1;opacity:0;stroke-dasharray:100 100;
+ transform-origin:100px 100px;scale:.1;
+ animation:bxThrow .62s both;animation-delay:calc(2.56s + var(--s) * .003s)}
+@keyframes bxThrow{
+ 0%{opacity:0;scale:.1;rotate:-32deg;stroke:#FFF6E8;stroke-dasharray:100 100;
+  animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 10%{opacity:1}
+ 56%{opacity:1;scale:1.08;rotate:3deg;stroke:var(--c);stroke-dasharray:100 100;
+  animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 78%{scale:.986;rotate:-.6deg;stroke-dasharray:var(--pk) 100;
+  animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 100%{opacity:.64;scale:1;rotate:0deg;stroke:var(--c);stroke-dasharray:var(--rs) 100}}
+
+/* BREATH'S OUTSIDE RING. FA: "breath, the outside rings I like." The seven
+   colours on their own bearings, a soft band eighteen units wide with a
+   bright line on it, leaving the centre on the release and travelling out
+   through the ring and past the halo, where it dies. Its echo leaves a beat
+   later, fainter and not as far, which is the follow through: the first
+   ring does not stop the motion, it only leads it. Drawn once at its final
+   size and scaled up from a point, so each frame is a transform and an
+   opacity, which the compositor does and nothing is painted. */
+.bx-wave{position:absolute;left:50%;top:50%;width:calc(var(--S) * var(--wb));height:calc(var(--S) * var(--wb));
+ margin:calc(var(--S) * var(--wb) / -2) 0 0 calc(var(--S) * var(--wb) / -2);border-radius:50%;
+ pointer-events:none;opacity:0;scale:.04;
+ animation:bxWave 1.2s both,bxWaveGo 1.2s cubic-bezier(.22,1,.36,1) both;animation-delay:2.56s,2.56s}
+.bx-echo{animation-delay:2.68s,2.68s;animation-name:bxEcho,bxEchoGo}
+@keyframes bxWaveGo{from{scale:.04}to{scale:1}}
+@keyframes bxEchoGo{from{scale:.04}to{scale:.9}}
+@keyframes bxWave{
+ 0%{opacity:0;visibility:hidden;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 8%{opacity:.62;animation-timing-function:cubic-bezier(.33,0,.67,1)}
+ 100%{opacity:0;visibility:hidden}}
+@keyframes bxEcho{
+ 0%{opacity:0;visibility:hidden;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 8%{opacity:.3;animation-timing-function:cubic-bezier(.33,0,.67,1)}
+ 100%{opacity:0;visibility:hidden}}
+
+/* THE CENTRE, the near depth. A point of the accent under the lens, so
+   through the glass it reads as light rather than as a dot. */
+.bx .b-core{fill:var(--accent);opacity:0;transform-origin:100px 100px;
+ animation:bxDot .3s cubic-bezier(.22,1,.36,1) 2.48s both}
+@keyframes bxDot{from{opacity:0;scale:0}to{opacity:1;scale:1}}
+.bx-pr{stroke-width:7;stroke-linecap:butt}
+/* SOFTENED AT THE SOURCE, NOT ONLY BY THE GLASS. Under the lens's backdrop
+   blur the seven segments still came through nearly sharp in Chromium, a
+   pinwheel rather than light, because whether a backdrop filter sees an SVG
+   sibling depends on the engine's backdrop root. A blur on the prism itself
+   looks the same in every engine. It turns in under the glass and keeps
+   turning, slowing, until the push: the one thing still moving at the
+   centre while the figure stands. */
+.bx-prism{filter:blur(2.4px);opacity:0;transform-origin:100px 100px;
+ animation:bxPrism .62s cubic-bezier(.22,1,.36,1) 2.38s both,
+  bxPrismTurn 2.1s cubic-bezier(.22,1,.36,1) 3.00s both}
+@keyframes bxPrism{from{opacity:0;scale:.2;rotate:-40deg}to{opacity:.85;scale:1;rotate:0deg}}
+@keyframes bxPrismTurn{from{rotate:0deg}to{rotate:51deg}}
+/* THE LENS, the glass bar's own material at hero size: its ground, its one
+   pixel inner highlight and its drop shadow, from .fb-orb in this sheet. It
+   carries a backdrop blur the bar itself is not allowed, because the bar sits
+   over the Field and gate 13 forbids it there; the sheet is gone before the
+   Field is drawn under anything. It draws in before it opens. */
+.bx-lens{position:absolute;left:50%;top:50%;width:calc(var(--S)*.19);height:calc(var(--S)*.19);
+ margin:calc(var(--S)*-.095) 0 0 calc(var(--S)*-.095);border-radius:50%;
+ background:rgba(22,24,32,.40);
+ -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+ border:1px solid rgba(255,255,255,.14);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 28px rgba(0,0,0,.28);
+ overflow:hidden;opacity:0;scale:.3;
+ animation:bxLens .62s 2.42s both,
+  bxLensOut .36s cubic-bezier(.4,0,1,1) calc(4.52s + var(--hold)) forwards}
+@keyframes bxLens{
+ 0%{opacity:0;scale:.3;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 22%{opacity:1;scale:.2;animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
+ 100%{opacity:1;scale:1}}
+/* the nearest layer goes furthest: the lens past the figure's 1.45 */
+@keyframes bxLensOut{from{scale:1}to{scale:1.6}}
+/* the specular: one soft highlight high on the rim, where a light above
+   the screen would catch a disc of glass */
+.bx-lens::after{content:'';position:absolute;inset:0;border-radius:50%;
+ background:radial-gradient(120% 90% at 32% 14%,rgba(255,255,255,.18),rgba(255,255,255,0) 46%)}
+/* the lens's ring: fieldbar's track, ink at sixteen percent, and its value in
+   the accent with a round cap, from twelve and clockwise */
+.bx-ctrk{stroke:rgba(239,237,232,.16);stroke-width:2.2;opacity:0;
+ animation:bxFade .3s cubic-bezier(.22,1,.36,1) 2.62s forwards}
+@keyframes bxFade{to{opacity:1}}
+.bx-cval{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:0 100;opacity:0;
+ transform-origin:100px 100px;rotate:-90deg;
+ animation:bxFill .96s cubic-bezier(.45,0,.15,1) 2.74s both}
+@keyframes bxFill{0%{opacity:0;stroke-dasharray:0 100}4%{opacity:1}100%{opacity:1;stroke-dasharray:100 100}}
+/* THE HALO, gold as ruled, round the whole figure rather than over a head,
+   on the same fill curve as the lens so the two closings are one family */
+.bx-halo{stroke:var(--au);stroke-width:.8;stroke-dasharray:0 100;opacity:0;
+ transform-origin:100px 100px;rotate:-90deg;
+ animation:bxHalo .9s cubic-bezier(.45,0,.15,1) 3.00s both}
+@keyframes bxHalo{0%{opacity:0;stroke-dasharray:0 100}4%{opacity:.7}100%{opacity:.7;stroke-dasharray:100 100}}
+
+/* THE WORDMARK. The shipped landing, untouched, and a leaving added. */
+.bx .boot-wm{animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both,
+ bxWmOut .24s cubic-bezier(.4,0,1,1) calc(4.52s + var(--hold)) forwards}
+@keyframes bxWmOut{from{opacity:1}to{opacity:0;transform:translateY(-6px)}}
 /* ============================================================
    THE COMPASS NAME RAILS. Four axes each side of the figure.
 
@@ -4045,7 +4288,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 /* the beat is motion, so somebody who asked the machine to stop moving does
    not get five of them. Same rule as everything else in this sheet: the end
    state, not a faster version. */
-@media (prefers-reduced-motion:reduce){.boot-svg{animation:none}}
+/* and every part of the arrival stops with it. .boot.bx is more specific
+   than the reduced motion .boot rule below, so without this it would start
+   animations nobody sees; panels.js removes the sheet at once in this case. */
+@media (prefers-reduced-motion:reduce){.boot.bx,.bx *{animation:none!important}}
 /* THE TRADEMARK. Not registered yet and it goes in anyway, ruled. Superscript
    at a third of the name, tracked off the final d rather than after the
    tracking the logotype adds, or it floats away from the word. */

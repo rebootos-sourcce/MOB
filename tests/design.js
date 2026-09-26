@@ -492,6 +492,18 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
     made this gate assert the sheet was up after waiting for it to come
     down, which it then correctly reported as a failure. */
  const p6=await browser.newPage({viewport:{width:1200,height:800}});
+ /* THE FADE AND THE HANDOFF ARE RECORDED AS THEY HAPPEN, from before the
+    first byte, because the thing under test is an order of events: the
+    sheet's own fade starts, the Field's entrance starts, the fade ends, the
+    sheet leaves. ET in TASKS.md found every one of those out of order. */
+ await p6.addInitScript(()=>{window.__BOOTLOG={};
+  addEventListener('animationstart',e=>{if(e.animationName==='bootOut'&&e.target.id==='boot')
+   __BOOTLOG.start=performance.now();},true);
+  addEventListener('animationend',e=>{if(e.animationName==='bootOut'&&e.target.id==='boot')
+   __BOOTLOG.end=performance.now();},true);
+  new MutationObserver(()=>{if(!__BOOTLOG.gone&&document.body&&__BOOTLOG.seen&&!document.getElementById('boot'))
+   __BOOTLOG.gone=performance.now();if(document.getElementById('boot'))__BOOTLOG.seen=1;})
+   .observe(document,{childList:true,subtree:true});});
  await p6.goto(FILE,{waitUntil:'load'});
  await p6.waitForTimeout(250);
  const early=await p6.evaluate(()=>{
@@ -518,6 +530,44 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
    +new Set(early.seats).size);
   ok(early.addr>0,'the addresses are drawn, '+early.addr+' of them');
  }
+ /* THE FIGURE IS THE FIELD'S OWN LOOP, read back against the live engine.
+    tools/bootgeo.js writes it off engine.js because the boot runs before any
+    script and cannot ask; this is what says whether it was rerun when the
+    loop last changed. Every address has its tick, in its own seat's colour,
+    and every seat's bar spans exactly its own run of the loop. Nothing here
+    is a typed count: both sides are read at run time. */
+ const geo=await p6.evaluate(()=>{
+  const e=document.getElementById('boot'); if(!e||typeof W==='undefined')return null;
+  const rgb=h=>{const n=parseInt(h.slice(1),16);return 'rgb('+(n>>16&255)+', '+(n>>8&255)+', '+(n&255)+')';};
+  const ticks=[...e.querySelectorAll('.b-addr line')];
+  /* read off --c, the colour the tick rests at: while it is waiting to be
+     thrown its stroke is Ember's white hot start, on purpose */
+  const badTick=ticks.filter(l=>{const s=+l.getAttribute('data-s'),n=W[s];
+   return !n||getComputedStyle(l).getPropertyValue('--c').trim().toUpperCase()!==PAL[n.b].toUpperCase();}).length;
+  const seen=new Set(ticks.map(l=>+l.getAttribute('data-s')));
+  const run={};W.forEach((n,s)=>{const q=run[n.b]||(run[n.b]={s0:s,n:0});q.n++;});
+  const arcs=[...e.querySelectorAll('.bx-arc')];
+  const badArc=arcs.filter((a,i)=>{const q=run[BANDS[i]];
+   return !q||+a.getAttribute('data-s0')!==q.s0||+a.getAttribute('data-n')!==q.n
+    ||getComputedStyle(a).stroke!==rgb(PAL[BANDS[i]]);}).length;
+  return {ticks:ticks.length,loop:W.length,distinct:seen.size,badTick,arcs:arcs.length,seats:BANDS.length,badArc};});
+ ok(!!geo,'the boot figure can be read against the engine');
+ if(geo){
+  ok(geo.ticks===geo.loop&&geo.distinct===geo.loop,'one boot tick per address on the loop, '
+   +geo.ticks+' ticks, '+geo.distinct+' distinct, loop of '+geo.loop+'. Rerun node tools/bootgeo.js');
+  ok(geo.badTick===0,'every tick is its own seat\'s colour, off by '+geo.badTick);
+  ok(geo.arcs===geo.seats&&geo.badArc===0,'every seat\'s bar spans its own run of the loop, '
+   +geo.arcs+' bars for '+geo.seats+' seats, '+geo.badArc+' wrong');}
+ /* THE FLOOR AGREES WITH THE FADE. The removal timer is read off the fade's
+    own end in ui/panels.js; this holds it there, so the two can never again
+    be the 5450 against 7.02 that ET found: never before the fade has ended,
+    and never more than half a second after it. */
+ const fl=await p6.evaluate(()=>{const e=document.getElementById('boot');
+  const a=e&&e.getAnimations().find(x=>x.animationName==='bootOut');
+  return a&&a.startTime!=null?{floor:BOOT_FLOOR_AT,end:a.startTime+a.effect.getComputedTiming().endTime}:null;});
+ ok(!!fl,'the sheet carries its own fade, and it has started');
+ if(fl)ok(fl.floor>=fl.end&&fl.floor<=fl.end+500,'the removal floor sits just past the fade\'s own end, floor at '
+   +Math.round(fl.floor)+'ms against the fade ending at '+Math.round(fl.end)+'ms');
  /* THE SEQUENCE IS FIVE SECONDS NOW, with two beats of black at each end on
     the owner's ruling, so this waits past the end of it rather than past the
     end of the old one. Measured: booted at 5317ms and the node gone with it. */
@@ -526,6 +576,16 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
    booted:document.body.classList.contains('booted')}));
  ok(late.gone,'the boot is removed from the document, not just faded');
  ok(late.booted,'and the body says so');
+ /* THE FADE PLAYED, AND THE FIELD ARRIVED WHERE IT CAN BE SEEN. The fade
+    reached its own end before the sheet left, so it was not cut; and the
+    Wheel's once a session entrance started no earlier than the first frame
+    the sheet began to lift, so it did not run out under a solid sheet. */
+ const ev=await p6.evaluate(()=>({log:__BOOTLOG,t0:typeof ENTER_T0==='undefined'?null:ENTER_T0}));
+ ok(ev.log.start>0&&ev.log.end>0&&ev.log.end<=ev.log.gone+1,
+  'the sheet\'s fade played to its end before it left: began '+Math.round(ev.log.start)
+  +'ms, ended '+Math.round(ev.log.end)+'ms, removed '+Math.round(ev.log.gone)+'ms');
+ ok(ev.t0>0&&ev.t0>=ev.log.start-5,'the Field\'s entrance started as the sheet lifted, not under it: '
+  +'entrance '+Math.round(ev.t0)+'ms, lift '+Math.round(ev.log.start)+'ms');
  console.log('  cleared:',late.gone);
  await p6.close();
 }
