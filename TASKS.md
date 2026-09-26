@@ -12957,8 +12957,9 @@ Should those four keep a larger mark to carry that distinction over?
 **Verified myself.** `node tests/engine.js` matched the claimed 1649,
 `BUILD-engine.sh` matched 428 exports and host free, `node
 tests/collide.js` matched the claimed 282 passed with the new Dial
-check included. `functional.js` was still finishing under tonight's
-load when this was written. Screenshots confirm both fixes by eye,
+check included. `node tests/functional.js` finished moments later and
+matched the claimed 1013 passed, 0 failed. Screenshots confirm both
+fixes by eye,
 sent below.
 
 **The Dial's six names now sit beside their own mark, inside the ring,
