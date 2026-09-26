@@ -16464,3 +16464,103 @@ privacy promise, "not an asset, not a list, not a segment"
 conflict between two pieces of work landing the same night, his to
 resolve, not mine.
 
+**The onboarding and first run storyboard is done, verified
+directly.** `DESIGN-firstrun.md` and `proto/firstrun/storyboard.html`,
+commit `2f9a376`, zero em dashes. Spot checked its three cited line
+numbers myself rather than trusting them: `ui/ui.js:1313` really does
+carry a second, independent `setTimeout(...,5600)` copy of the boot's
+own length, the exact pairing that already broke the boot's fade once
+(logged ET); `ui/wheel.js:749` really does carry `BOOT_LIFTED`; and
+`ui/account.js` really does already have "The Opening" group with a
+"run it again" action, exactly where the report says the new toggle
+belongs. All three real. A published artifact carries the visual
+storyboard; this session cannot watch it for changes (hit its own
+ten webhook limit tonight) so any edit to it will only be seen if he
+says so or the agent reports it.
+
+Eight open decisions logged in the file's own section 9 rather than
+guessed past, among them whether "the starting square" means Frames
+(FA already answered this once) and a real standing tension: OB15
+(20 September) ruled "at no point are we talking about results or
+purpose," and FH (26 September, this same day) asked the opposite,
+"highest purpose of the product results." Both are his own words on
+two different days; not resolved here.
+
+## FJ. A real scare over the wrong file, a standing instruction to
+## stop asking and act, and a real design punch list once he found
+## the right one. 26 September.
+
+**His words in full: "Sorry, I don't know why you keep asking me
+with these pop-ups whether things should be fixed now. If it's in
+the blocks, fix it. If we haven't opened tasks, queue it up. Put it
+in the fashion in which you need it, and get it done. I don't know
+what you did to my field. Holy shit, dude, what did you do? My field
+is entirely broken. No, the entire field takes up the entire
+graphic, the left of the tools, the right is information, the story
+is its own tool. I don't understand what you did. Go back and
+research what you did. It looks like you broke my program. Okay,
+looks like there's another one, Attuned packed. Okay, that one
+seems, this looks fucking cool. I don't want zoom in, zoom out. Okay,
+actually, you know what, zoom in, zoom out, reframe, that's cool.
+With my layers, where are my animations? Orientation and balance,
+those two elements need to be designed the same way, it's the same
+mechanic. If I choose one, give me two different designs. I
+shouldn't see text when I'm zoomed all the way out; text only fades
+in when I'm zooming in. And where are my animations at? Why aren't
+they like lines animating to show me which is the tension? Go back
+and search everything, make sure you're covering all your bases,
+because I seem to see a bunch of tasks that are not completed yet
+and I don't know if these are on the backlog or you're doing them,
+or what's going on."**
+
+**A standing instruction, applied from here on.** Stop asking whether
+something should be fixed now. A blocking defect gets fixed. A real,
+non blocking request gets queued as a line on this list. Either way
+it gets built, not put to him as a choice first. This changes how
+"What I need from you" gets used going forward: it carries genuine
+open rulings, not confirmations of a default I should have just
+taken.
+
+**Checked directly before saying anything back to him.** Rebuilt
+`atuned-packed.html` fresh, confirmed its embedded build stamp
+matches `source.html`'s exactly, `a7922af 2026-09-26 22:09`, opened it
+in a real browser and took a screenshot: the Field renders with the
+left rail, the top glass bar, the right rail and the centre wheel
+exactly as shipped and verified in FE, zero console errors. The real
+product is not broken. His own words settle what happened: he found
+a second file first, was alarmed by it, then found "Attuned packed"
+and it looked right, including liking the zoom and reframe controls
+that only exist in the real, current build. "The story is its own
+tool" most likely names `seven-seats-layouts.html`'s own layout
+switcher, which literally has an option called Story and no normal
+app navigation, sent to him earlier this same round; not confirmed
+with him directly, said here as the likely explanation rather than
+asserted as fact.
+
+**Read off the ledger rather than estimated, per his own ask to check
+what is open versus in progress.** `TASKS.md` currently carries 567
+lines marked `[ ]` open, 155 marked `[?]` waiting on a ruling, 20
+marked `[~]` specced but not built, and 433 marked `[x]` built and
+gated. `PRIORITY.md` holds the order. Everything built and verified
+tonight (the glass bar port, the boot animation, the Field rail
+rebuild, the marketing gate fix, the mission capture, the founding
+offer design, both storyboards) is marked in its own section above;
+nothing from tonight is silently sitting unmarked.
+
+**The real design feedback, once he was on the right file, itemised
+and dispatched rather than asked about:**
+- Text should not show at all at full zoom out on Wheel, Frames and
+  Dial, and should fade in progressively as a person zooms toward
+  it. A concrete, buildable rule, not previously specced.
+- Orientation and balance are named as the same mechanic and should
+  share one visual design language rather than two different looks;
+  he wants two real design options to react to, not one.
+- Layer toggles need their own animation, not a snap between states,
+  on top of the reading circle motion FE already shipped.
+- "Lines animating to show me which is the tension" is a real,
+  specific request for a visualised connection or pull between
+  elements, not previously built, echoing his earlier "tension
+  animations" line from FH.
+- Dispatched to design and build now, per the standing instruction
+  above, not asked about first.
+
