@@ -14212,3 +14212,81 @@ badge ladder this file already names as now in scope for the accounts
 fork, and belongs with that work and with the mask facet grid itself
 once that is real, not before. Logged, not dispatched.
 
+## DR. His reaction to the glass bar prototype and the rail: seven
+## real items, some ruled outright, some sent back for design
+## options. 26 September.
+
+**Pills read as too much real estate, a new shape ruled.** His words:
+"I'm not a fan of the pills as much as I used to be, they take up a
+lot of real estate. I want the UI UX team to redesign it with a circle
+and the icon inside of it, and the percent complete ring around it are
+the primary features, and then there's a pill to the lower right hand
+side with the percent or whatever the value is." A circle carrying its
+own icon and its own progress ring as the primary shape, with a small
+value pill riding its lower right corner rather than the value and the
+icon sharing one flat pill. Applies at minimum to the glass bar's own
+icon buttons, the surface he was just pressing; whether it also
+reaches the reading strip's CQ, DQ, SQ and similar chips is for the
+team to confirm against the actual screens, not assumed here. Mockups
+asked for by name.
+
+**Wheel, Frames, Dial: ruled off the centre pane entirely.** His
+words: "it's taking up too much real estate being on the centre pane,
+on our overlay add it as options on the right hand side, so after
+shadow, and I don't need the text, just make it the icon." This
+answers the glass bar prototype's own Q5 outright: not inside the bar,
+not back in the left lane either, moved to the right rail, ordered
+after the Shadow reading, icon only, no Wheel, Frames or Dial text.
+
+**His own honest uncertainty about the bar, on the record rather than
+smoothed into a yes.** "I don't know if these are the things that we
+need, I'll definitely give this a shot." Not a rejection and not an
+endorsement; a real trial, and his reaction after using it carries
+more weight than this sentence.
+
+**A real, plain gap: four root domains with no icons.** "I need icons
+for Architect, Engine, Weaver, Witness, I don't know why those don't
+have icons." Checked directly: correct, the four root domain controls
+in the rail are text pills only, no icon, unlike every domain, mask
+and archetype tile beside them.
+
+**Existing icons read dull, a saturation call.** "All our normal icons
+under Blueprint Domains, Primary, I think we want those punched up a
+little more, more saturated, they're just a little dull." A grading
+call on already-shipped icon colour, for art direction.
+
+**The Reading card: he wants the team's answer to its own purpose
+before he sees options, not instead of them.** Checked directly: this
+is the right rail's "Reading" section (`#start`, `#person`, `#stack`,
+`#rows` in `body.html`), the blue-trimmed grey card that opens the
+Field for a person with nothing read yet. His words in full: "the
+information is not valuable yet, so I want to see this element
+redesigned, I just want a couple of design choices, and the question
+that needs to be posed to me from the team is what is the intention
+behind this card, and my first starting question is what is the
+intention from the team for this card." A question before a mockup,
+by his own explicit order, not the usual pattern of options first.
+
+**The Flow element: his own read of it checked and confirmed
+correct.** "The flow element that has like mania and discriminant
+mania and so on... I'm assuming these are patterns that are impairing
+flow." Checked directly: this is the right rail's "Flow" section
+(`#eshelf`, `renderShelf` in `mapshelf.js`), which prints a headline
+flow-through percentage and then a list of whichever pattern layer is
+currently picked, fetters, saboteurs, complexes or hyper complexes
+(`PML` in `engine/data/practice.js`), each named from the family and
+its pole where the pattern has no name of its own, Collapse and Mania,
+Rigidity and Indiscriminate among them (`FAM_POLE` in `engine/core.js`).
+His read is correct: this is a list of patterns and it does bear on
+flow. Four design options asked for, "more in alignment with what
+we're doing now," read as matching the icon led language the glass bar
+and the celestial rail just shipped rather than the bead list's older
+style.
+
+**Dispatched: the glass bar's own Wheel/Frames/Dial move and the pill
+to circle-ring redesign go back to the seat that built it, as a direct
+revision. New root domain icons and the saturation call go to art
+direction. The Reading card's intention question goes up a level
+before any option is drawn. The Flow element's four options go to the
+seat already doing this kind of comparative mockup work tonight.**
+
