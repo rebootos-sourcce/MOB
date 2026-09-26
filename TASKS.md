@@ -12211,8 +12211,9 @@ one names exactly the claimed difference, two dead lists removed
 (`AX_STEM`, `C3_GATE9`), three new (`addrLine`, `relLine`, `relLineRow`),
 and the expected bodies changed to wire them through. `node
 tests/engine.js` matched the claimed 1649, `BUILD-engine.sh` matched
-428 exports and host free. `functional.js` was still finishing under
-tonight's load when this was written.
+428 exports and host free. `functional.js` finished after this was
+first written, slow under tonight's load, and matched the claimed
+1013 passed, 0 failed.
 
 **What it actually does.** Every letting go line in a real release now
 reads "I am letting go of believing, perceiving, thinking, behaving,
