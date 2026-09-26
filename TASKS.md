@@ -16636,3 +16636,49 @@ carries it.
 software directly and against outside sources, corrected to use
 discover, play, flow, embody by name.
 
+## FL. `losssim.js` fixed for real, verified directly, and a second
+## stale copy caught in passing. 26 September.
+
+`losssim.js` now reads its nine reference levels off the live engine
+every run, on both CQ and expression, rather than typing them by
+hand, the same discipline `marketing/field.js` moved to in FG. Commit
+`3004f4d`.
+
+**Independently re-run myself, not taken on report.** `node
+proto/ritual/losssim.js` runs clean, prints both readings side by
+side exactly as described (185 of 1000 on expression, 35 of 1000 on
+CQ), and its own internal check line reads 49 passed 0 failed,
+matching exactly. Diane, Gordon and Rosa's levels in the run match
+the reported table to the digit. `node marketing/tests.js` still 242
+passed 0 failed and `hooksim.js --validate` still 5 groups pass,
+confirming this fix did not disturb the gate closed in FG.
+
+**A second real defect caught in passing, independently confirmed.**
+`ritual.js`'s BO7 fix (commit `3824c63`, checked directly, its own
+commit message and code match) moved the ritual's load tier threshold
+from `DQ>=8/4` to `DQ>=70/40`, but `losssim.js` still carried the old
+8/4 bands, dealing practices the product no longer deals at those
+thresholds. Confirmed fixed: `losssim.js` line 195 now reads
+`DQ>=70?1:(r.DQ>=40?2:3)`, matching `ritual.js` exactly. The agent
+caught this by reconciling against `tools/loopsim.js` before
+publishing, not after; had it not, the wrong deduction and break-even
+figures would have gone into `GUARD.md`.
+
+**The CQ-versus-expression question, again correctly left to him
+rather than settled.** A real recommendation (expression, because
+under CQ alone the harm term only ever reaches Gordon and never
+changes the model's output at any strength tried) sits beside the
+counter case for CQ, both counts given, and it is filed as an open
+question in `GUARD.md` itself now rather than only in this ledger.
+
+**Every dependent figure re-dated, more thoroughly than asked.**
+`GUARD.md`'s loss framing, halving, and asserted affirmation numbers
+are refreshed; the previously quoted "800" is shown to have never
+actually been this tool's own figure (it was 845 on the stale
+levels). Beyond the original scope: `DESIGN-ritual.md`'s own loss
+simulation output was re-dated too, since it is fed by the same
+tool, with every conclusion checked to still hold. Genuinely
+unrelated stale copies (`tools/loopsim.js`, `DESIGN-gamification.md`,
+`proto/avatar/risesim.js`) are named rather than silently fixed, and
+queued as `task_e084f9e1`. Zero em dashes across every changed file.
+
