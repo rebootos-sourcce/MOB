@@ -12490,3 +12490,36 @@ still shows the old single number and two rows of three gates. Bring
 the Wheel in line too, or leave it as the one view that still shows
 the old treatment?
 
+## CN. A note for the funnel, his own words, and a real money back
+## ruling inside it. 26 September.
+
+**His words in full,** given as a note rather than a build order: "the
+spiritual journey is not for the weak. So we made it easy. Well, the
+spiritual journey is deeply personal. It's also mechanical. That's
+this. We help you process unprocessed emotions from the nervous
+system, restoring nerve tone to the tissue, cells, organs. Mental
+clarity, peace of mind, body and spirit. It's a mirror that exposes
+your inner world so you can see you running everywhere and know it by
+name, and know how to integrate it. This is a purpose based product.
+It's a results driven product. If you don't get the results, you don't
+want, get your fucking money back. You have one week to do it."
+
+**Read as three separate things, not one.** A positioning line for the
+funnel's own hook: mechanical, not soft, against a spiritual journey
+he calls not for the weak. A description of what the product actually
+does, in his own words rather than marketing language: processing
+unprocessed emotion, a mirror that names what is running in you. And a
+real business ruling sitting inside the note rather than announced as
+one: a money back guarantee, one week, no condition stated beyond not
+getting results. Logged as a ruling, not softened, since nothing on
+file before this covers refunds at all.
+
+**What this touches, not yet built.** A guarantee has to live somewhere
+beyond a line of copy: what it actually promises, how someone claims
+it, whether it is the same across every tier once tiers exist
+(`DECISIONS.md`'s own tier ladder), and what a controller now owes
+under it once records move off device, all still open. Not answered
+here, since he framed this as a note for the funnel and not a
+build order; sent to the seats who write the funnel and the seats who
+own the business terms, not decided by inference.
+
