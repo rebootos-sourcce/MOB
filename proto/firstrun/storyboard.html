@@ -1,0 +1,378 @@
+<title>First Run Storyboard</title>
+<meta name="description" content="Atuned first run, frame by frame: boot, check in, signal test, the loop, landing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* One look, deliberately: the product's own Dark theme tokens, from
+   atuned_src/shell/head.html. The storyboard is drawn in the product's world. */
+:root{
+ color-scheme:dark;
+ --bg:#0C0D12; --panel:#1A1D26; --panel2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:#2C303C;
+ --sky:#7EB8D4;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+ --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);
+ padding-inline:clamp(16px,4vw,48px);padding-block:40px 72px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-weight:500;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,4vw,40px);font-weight:400}
+h2{font-size:22px}
+h3{font-size:16px}
+p{margin:0;max-width:68ch}
+.eye{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sky)}
+.mid{color:var(--mid)}
+.dim{color:var(--dim)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header{display:flex;flex-direction:column;gap:14px}
+
+/* the thread */
+.thread{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border-top:1px solid var(--line);
+ border-bottom:1px solid var(--line)}
+.thread div{padding:16px 14px;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--line)}
+.thread div:first-child{border-left:0}
+.thread b{font-weight:500}
+.thread span{font:400 13px/1.4 var(--mono);color:var(--dim)}
+@media (max-width:720px){.thread{grid-template-columns:1fr}.thread div{border-left:0;border-top:1px solid var(--line)}
+ .thread div:first-child{border-top:0}}
+
+section{display:flex;flex-direction:column;gap:20px}
+.sec-h{display:flex;flex-direction:column;gap:8px}
+
+/* frames */
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:36px 28px}
+.fr{display:flex;flex-direction:column;gap:12px}
+.phone{width:100%;max-width:236px;aspect-ratio:390/760;background:var(--sunk);border:1px solid var(--line);
+ border-radius:22px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:10px;padding:18px 16px;font-size:12px;line-height:1.4;text-align:center}
+.phone .leave{position:absolute;top:12px;right:14px;font-size:10.5px;color:var(--dim)}
+.phone .big{font-size:17px;font-weight:400}
+.phone .word{font-size:24px;font-weight:300;letter-spacing:.01em}
+.phone .small{font-size:10.5px;color:var(--mid)}
+.phone .tiny{font-size:9.5px;color:var(--dim)}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--sky);color:#0C0D12;
+ border-radius:5px;font-size:11.5px;font-weight:500;padding:7px 20px}
+.btn.ghost{background:transparent;color:var(--mid);border:1px solid var(--line)}
+.field{width:100%;text-align:left;display:flex;flex-direction:column;gap:3px}
+.field label{font-size:9.5px;color:var(--dim)}
+.field i{font-style:normal;display:block;border:1px solid var(--line);background:var(--panel);border-radius:4px;
+ padding:6px 8px;font-size:11.5px;color:var(--ink)}
+.ck{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--mid);align-self:flex-start}
+.ck b{width:13px;height:13px;border:1px solid var(--dim);border-radius:3px;display:inline-block}
+.rows{display:flex;flex-direction:column;gap:6px;text-align:left;width:100%}
+.rows div{display:flex;gap:7px;align-items:flex-start;font-size:10.5px;color:var(--mid)}
+.rows div::before{content:"";flex:0 0 9px;height:9px;margin-top:3px;border:1px solid var(--sky);border-radius:50%}
+.cap{display:flex;flex-direction:column;gap:6px;max-width:236px}
+.cap .id{font:500 12px/1 var(--mono);color:var(--sky);letter-spacing:.04em}
+.cap h3{font-size:16px}
+.cap p{font-size:14px;color:var(--mid);line-height:1.5}
+.cap dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:4px 0 0;font-size:13px}
+.cap dt{color:var(--dim);font-family:var(--mono);font-size:12px;padding-top:1px}
+.cap dd{margin:0;color:var(--ink)}
+.tag{display:inline-block;font:500 11px/1 var(--mono);color:var(--dim);border:1px solid var(--line);
+ border-radius:3px;padding:3px 5px;margin-left:6px;vertical-align:1px}
+
+/* mini field */
+.fld{position:relative;width:100%;height:100%;display:flex;flex-direction:column;gap:6px;text-align:left;
+ padding:0;justify-content:flex-start}
+.fld .bar{height:14px;border-bottom:1px solid var(--line);display:flex;gap:5px;align-items:center;font-size:8.5px;color:var(--dim)}
+.fld .rail{border:1px solid var(--line);border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:3px;font-size:9px;color:var(--mid)}
+.fld .rail b{font-weight:500;color:var(--ink);font-size:9.5px}
+.fld .door{border:1px solid var(--line);border-radius:5px;padding:5px 6px;font-size:9.5px;color:var(--ink)}
+.fld .door.lit{border-color:var(--sky);box-shadow:0 0 0 1px var(--sky) inset}
+.fld .door span{display:block;color:var(--dim);font-size:8.5px}
+.fld .stg{flex:0 0 auto;display:flex;justify-content:center;padding:4px 0}
+
+/* settings mock */
+.acct{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;
+ grid-template-columns:160px 1fr;gap:22px;max-width:760px}
+.acct nav{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--mid)}
+.acct nav span{padding:7px 10px;border-radius:5px}
+.acct nav .on{background:var(--panel);color:var(--ink)}
+.grp{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.grp .gh{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:12px 14px 8px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 14px;border-top:1px solid var(--line);font-size:14px}
+.row em{display:block;font-style:normal;font-size:12.5px;color:var(--dim)}
+.sw{width:38px;height:22px;border-radius:11px;background:var(--sky);position:relative;flex:0 0 auto}
+.sw::after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#0C0D12}
+.gf{padding:10px 14px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--mid)}
+.new{color:var(--sky);font:500 11px/1 var(--mono);margin-left:8px}
+.pane{display:flex;flex-direction:column;gap:14px}
+.grp.quiet{opacity:.55}
+@media (max-width:640px){.acct{grid-template-columns:1fr;padding:16px}.acct nav{flex-direction:row;flex-wrap:wrap}}
+
+/* questions */
+.q{border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;gap:16px}
+.q .qh{display:flex;gap:12px;align-items:baseline}
+.q .qh .num{color:var(--sky);font-size:14px}
+.quote{border-left:2px solid var(--sky);padding:2px 0 2px 14px;color:var(--mid);font-size:15px;max-width:68ch}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+.opt{display:flex;flex-direction:column;gap:12px}
+.opt h3 .num{color:var(--dim);margin-right:8px}
+.strip{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.strip .mini{width:108px;aspect-ratio:390/620;background:var(--sunk);border:1px solid var(--line);border-radius:12px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:9px;text-align:center;padding:8px;color:var(--mid)}
+.strip .mini b{color:var(--ink);font-weight:500;font-size:10px}
+.strip .arr{color:var(--dim);font-family:var(--mono);font-size:12px}
+.cost{font-size:14px;color:var(--mid)}
+.cost b{color:var(--ink);font-weight:500}
+table{border-collapse:collapse;width:100%;font-size:14px}
+.tw{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line)}
+th{font:500 12px/1.2 var(--mono);color:var(--dim);letter-spacing:.04em;text-transform:uppercase;border-top:0}
+td:first-child{white-space:nowrap;color:var(--ink)}
+td{color:var(--mid)}
+.others{display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--mid)}
+.others b{color:var(--ink);font-weight:500}
+footer{font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:no-preference){.pulse{animation:pl 2.4s ease-in-out infinite}
+ @keyframes pl{50%{box-shadow:0 0 0 1px var(--sky) inset,0 0 10px rgba(126,184,212,.35)}}}
+</style>
+
+<div class="wrap">
+<header>
+ <span class="eye">Atuned, first run</span>
+ <h1>From the boot to the first real screen, in five screens and one ring</h1>
+ <p class="mid">Every frame a brand new person meets, in order, drawn at phone width. The seven colour ring the boot ends on is the only progress object in the whole run: it shrinks onto the check in, closes through the signal test, carries the four stations of the loop, and lands on the Field. The full specification, with code citations, is <span class="num">DESIGN-firstrun.md</span> at the repo root. This is a storyboard. Nothing here is built.</p>
+</header>
+
+<div class="thread" aria-label="The sequence">
+ <div><b>Boot</b><span>5.24 s, shipped</span></div>
+ <div><b>Check in</b><span>one press, the name</span></div>
+ <div><b>Signal test</b><span>about 60 s, five states</span></div>
+ <div><b>The loop</b><span>four presses</span></div>
+ <div><b>Landing</b><span>the Field</span></div>
+</div>
+
+<section>
+ <div class="sec-h"><span class="eye">The frames</span><h2>Twelve frames, six forward presses, about 110 words</h2>
+ <p class="mid">Example name: Sofia Alarcon, a reference profile in the product. Frames F2 to F10 are drawn from the stopped prototype in <span class="num">proto/onboard/</span>, which already runs.</p></div>
+ <div class="frames" id="frames"></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Where the box and the toggle live</span><h2>Profile button, Account, The Opening</h2>
+ <p class="mid">The group already exists in Settings, with one control. It gains a switch, the action is renamed, and the foot line is corrected, because the check in now writes a name. Built from the two row types the account area already has.</p></div>
+ <div class="acct">
+  <nav aria-label="Account sections"><span class="on">Account</span><span>Display</span><span>Security</span><span>Privacy</span><span>Billing</span><span>Help</span></nav>
+  <div class="pane">
+   <div class="grp quiet"><div class="gh">Identity</div>
+    <div class="row"><span>Name</span><span class="mid">Sofia Alarcon</span></div>
+    <div class="row"><span>Change it</span><span class="btn ghost">Open Energetics</span></div></div>
+   <div class="grp"><div class="gh">The Opening</div>
+    <div class="row"><span>Show the opening at launch<span class="new">new</span><em>the check in, the signal test and the loop</em></span><span class="sw" role="img" aria-label="switch, on"></span></div>
+    <div class="row"><span>Run the opening now<span class="new">renamed</span></span><span class="btn ghost">Open it</span></div>
+    <div class="gf">The signal test writes nothing to the nine axes. The opening keeps your name, and only if you typed it.</div></div>
+  </div>
+ </div>
+ <div class="tw"><table>
+  <thead><tr><th>Route</th><th>Where</th><th>What happens</th><th>Opening after</th></tr></thead>
+  <tbody>
+   <tr><td>Any press</td><td>Boot</td><td>Skips the boot only, as today</td><td>unchanged</td></tr>
+   <tr><td>Box ticked, Next</td><td>Check in</td><td>Name written, straight to the Field</td><td>off</td></tr>
+   <tr><td>Leave, or Escape</td><td>Signal test, loop</td><td>Straight to the Field. Status line: "The opening is in Account."</td><td>off</td></tr>
+   <tr><td>Last Next</td><td>Loop</td><td>The ring closes onto the Field</td><td>off</td></tr>
+   <tr><td>Tab closed mid run</td><td>Anywhere</td><td>Next launch greets by name and resumes at the settle</td><td>still on</td></tr>
+   <tr><td>Switch on</td><td>Account</td><td>Next launch opens the check in after the boot</td><td>on</td></tr>
+  </tbody></table></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">His to rule</span><h2>The three questions that need the drawing</h2>
+ <p class="mid">Both answers side by side. Five more are in <span class="num">DESIGN-firstrun.md</span> section 9 and are listed at the foot of this page.</p></div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q1</span><h3>What does the box turn off?</h3></div>
+  <p class="quote">"Do you want to check this box so you don't have to see this again?"</p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">A</span>The whole opening, one switch</h3>
+    <div class="strip" id="q1a"></div>
+    <p class="cost"><b>As storyboarded.</b> Ticked, the person goes straight in now and on every later launch, until the switch in Account says otherwise. Costs the greeting by name on later launches.</p></div>
+   <div class="opt"><h3><span class="num">B</span>Only the greeting, shown every launch</h3>
+    <div class="strip" id="q1b"></div>
+    <p class="cost"><b>"Hello, Sofia." after every boot</b> until the box is ticked; the walk through is one time on its own. Costs one press on every launch for everyone who never finds the box.</p></div>
+  </div>
+ </div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q2</span><h3>Is "the starting square" Frames?</h3></div>
+  <p class="quote">"If we can get that lined up with the start, the starting square, that'd be cool. It also needs to have a loading screen in between." FA confirmed "the square" is Frames.</p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">A</span>Land on Frames</h3><div id="q2a"></div>
+    <p class="cost"><b>The first run lands on the Field drawn as nested frames.</b> Later launches keep whatever view the person last chose. Costs porting the Frames arrival, which is not built yet, and its own checks.</p></div>
+   <div class="opt"><h3><span class="num">B</span>Land on the Wheel, as shipped</h3><div id="q2b"></div>
+    <p class="cost"><b>"Starting square" read as square one.</b> The boot hands off to the check in with no cut and the Field opens as it does today. Costs nothing to build, and misses him if he meant the square.</p></div>
+  </div>
+ </div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q3</span><h3>Does the loop say what each tool is for?</h3></div>
+  <p class="quote">20 September: "At no point are we talking about results or purpose." 26 September, in the same breath as the storyboard ask: "Highest purpose of the product results."</p>
+  <div class="tw"><table>
+   <thead><tr><th>Station</th><th>A. Mechanism only, holds the 20 September ruling</th><th>B. Purpose led, from his 26 September words</th></tr></thead>
+   <tbody>
+    <tr><td>discover, Story</td><td>You write the day. It reads charge out of the words.</td><td>It finds your story and the place in the body where it lives.</td></tr>
+    <tr><td>play, imprints</td><td>Your words come apart into imprints. Each one sits at an address in the body.</td><td>It finds what that story is wired to, and what it costs you over time.</td></tr>
+    <tr><td>flow, release</td><td>A release runs one line at a time over one address. You follow it in thought.</td><td>Release takes the charge off, one address at a time.</td></tr>
+    <tr><td>embody, ritual</td><td>A practice comes out of the reading. You mark the day.</td><td>The ritual holds the change, one day at a time.</td></tr>
+   </tbody></table></div>
+  <p class="cost">Both columns pass the voice gate. Column B is his raw material shaped once, and anything claiming healing goes through the marketing refusal gate before it ships. Column A costs the why, and Angela is the person who needs it.</p>
+ </div>
+
+ <div class="q">
+  <div class="qh"><span class="num">Q4 to Q8</span><h3>The rest, in one line each</h3></div>
+  <div class="others">
+   <p><b>Q4. Is the name required?</b> Optional loses the greeting and three numbers for whoever skips it. Required loses Diane and James at an ask placed before a payoff.</p>
+   <p><b>Q5. Does the opening end at the door of the first story, or walk through it?</b> At the door keeps "no real charge". Through it makes the first session end in a change, at the cost of a forced first entry.</p>
+   <p><b>Q6. Which four surfaces are the stations?</b> Journal, imprints, release, ritual, as he said on 20 September, or Story, Field, Ritual, Body, as the prototype drew it for the tour ruling.</p>
+   <p><b>Q7. May the opening keep the two marks?</b> Kept, a replay can show whether the shape moved. Kept nothing, the signal test has no memory.</p>
+   <p><b>Q8. Does Root energetics open on the first landing?</b> Open once, the person lands on three numbers that are theirs. Closed, as ruled, the only thing about them sits behind a fold.</p>
+  </div>
+ </div>
+</section>
+
+<footer>Storyboard for DESIGN-firstrun.md, 26 September 2026. Drawn in the product's Dark theme. Copy lines are proposals that passed the voice gate and still owe the voice seat's ten passes.</footer>
+</div>
+
+<script>
+(function(){
+ var SEATS=['#D6524C','#D8924E','#DABF6A','#5FD5A6','#5EBBDB','#7D93E0','#A77EDB'];
+ function arcPath(cx,cy,r,a0,a1){
+  var p=function(a){a=(a-90)*Math.PI/180;return [(cx+r*Math.cos(a)).toFixed(2),(cy+r*Math.sin(a)).toFixed(2)];};
+  var s=p(a0),e=p(a1),large=(a1-a0)>180?1:0;
+  return 'M'+s[0]+' '+s[1]+'A'+r+' '+r+' 0 '+large+' 1 '+e[0]+' '+e[1];}
+  /* the boot's seven colour ring: seven arcs with small gaps */
+ function sevenRing(size,sw){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
+  for(var i=0;i<7;i++){var a0=i*360/7+4,a1=(i+1)*360/7-4;
+   h+='<path d="'+arcPath(50,50,40,a0,a1)+'" fill="none" stroke="'+SEATS[i]+'" stroke-width="'+sw+'" stroke-linecap="round"/>';}
+  return h+'<circle cx="50" cy="50" r="9" fill="none" stroke="#7EB8D4" stroke-width="1.2" opacity=".7"/></svg>';}
+  /* the progress ring, closed to a fraction */
+ function progRing(size,frac){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">'
+   +'<circle cx="50" cy="50" r="40" fill="none" stroke="#2C303C" stroke-width="3"/>';
+  if(frac>0)h+=(frac>=1)?'<circle cx="50" cy="50" r="40" fill="none" stroke="#7EB8D4" stroke-width="3"/>'
+   :'<path d="'+arcPath(50,50,40,0,360*frac)+'" fill="none" stroke="#7EB8D4" stroke-width="3" stroke-linecap="round"/>';
+  return h+'</svg>';}
+  /* the marker pad, with a mark or two */
+ function pad(size,marks,arc){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">'
+   +'<circle cx="50" cy="50" r="44" fill="#0A0B10" stroke="#2C303C" stroke-width="1"/>'
+   +'<path d="M50 6V94M6 50H94" stroke="#2C303C" stroke-width=".8"/>';
+  if(arc)h+='<path d="'+arcPath(50,50,44,0,360*arc)+'" fill="none" stroke="#7EB8D4" stroke-width="2" stroke-linecap="round"/>';
+  if(marks.length===2)h+='<line x1="'+marks[0][0]+'" y1="'+marks[0][1]+'" x2="'+marks[1][0]+'" y2="'+marks[1][1]+'" stroke="#94908A" stroke-width=".8" stroke-dasharray="2 2"/>';
+  marks.forEach(function(m){h+='<circle cx="'+m[0]+'" cy="'+m[1]+'" r="4.2" fill="'+(m[2]||'#7EB8D4')+'"/>';
+   if(m[3])h+='<text x="'+(m[0]+7)+'" y="'+(m[1]+3)+'" font-size="7" fill="#B4B0A8" font-family="Inter,sans-serif">'+m[3]+'</text>';});
+  return h+'</svg>';}
+  /* the loop, four stations, one lit */
+ var ST=[['discover','Story'],['play','Imprints'],['flow','Release'],['embody','Ritual']];
+ function loop(size,lit){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="-14 -6 128 112" aria-hidden="true">'
+   +'<circle cx="50" cy="50" r="36" fill="none" stroke="#2C303C" stroke-width="2.4"/>';
+  if(lit>=0)h+='<path d="'+arcPath(50,50,36,0,90*(lit+1)-0.01)+'" fill="none" stroke="#7EB8D4" stroke-width="2.4" stroke-linecap="round"/>';
+  for(var i=0;i<4;i++){var a=(i*90-90)*Math.PI/180,x=50+36*Math.cos(a),y=50+36*Math.sin(a),on=i<=lit;
+   h+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="7" fill="#0C0D12" stroke="'+(on?'#7EB8D4':'#2C303C')+'" stroke-width="1.6"/>';
+   var tx=x+(i===1?11:i===3?-11:0),ty=y+(i===0?-11:i===2?15:3);
+   h+='<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" font-size="7" text-anchor="'+(i===1?'start':i===3?'end':'middle')
+    +'" fill="'+(i===lit?'#EFEDE8':'#94908A')+'" font-family="Inter,sans-serif">'+ST[i][0]+'</text>';}
+  return h+'</svg>';}
+  /* a small Field, as Wheel or Frames */
+ function field(view,lit,root){
+  var st='';
+  if(view==='frames'){st='<svg width="118" height="96" viewBox="0 0 118 96" aria-hidden="true">';
+   for(var i=0;i<7;i++){var m=i*6.5;st+='<rect x="'+m+'" y="'+(m*0.8)+'" width="'+(118-2*m)+'" height="'+(96-1.6*m)+'" rx="'+(6-i*0.6)
+    +'" fill="none" stroke="'+SEATS[6-i]+'" stroke-width="1.1" opacity=".85"/>';}
+   st+='<circle cx="59" cy="48" r="4" fill="none" stroke="#7EB8D4"/></svg>';}
+  else{st='<svg width="104" height="104" viewBox="0 0 100 100" aria-hidden="true">';
+   for(var j=0;j<7;j++){st+='<path d="'+arcPath(50,50,42,j*360/7+2,(j+1)*360/7-2)+'" fill="none" stroke="'+SEATS[j]+'" stroke-width="3.2"/>';}
+   for(var k=0;k<3;k++)st+='<circle cx="50" cy="50" r="'+(32-k*9)+'" fill="none" stroke="#2C303C" stroke-width=".8"/>';
+   for(var t=0;t<56;t++){var a=(t*360/56-90)*Math.PI/180;st+='<line x1="'+(50+36*Math.cos(a)).toFixed(1)+'" y1="'+(50+36*Math.sin(a)).toFixed(1)
+    +'" x2="'+(50+39*Math.cos(a)).toFixed(1)+'" y2="'+(50+39*Math.sin(a)).toFixed(1)+'" stroke="#94908A" stroke-width=".5"/>';}
+   st+='<circle cx="50" cy="50" r="5" fill="none" stroke="#7EB8D4"/></svg>';}
+  return '<div class="fld"><div class="bar"><span>Energetics</span><span>Ritual</span><span>Story</span><span style="color:#EFEDE8">Field</span><span>Body</span></div>'
+   +(root?'<div class="rail"><b>Root energetics</b><span>Expression <span class="num">6</span></span><span>Soul urge <span class="num">6</span></span><span>Personality <span class="num">9</span></span></div>'
+     :'<div class="rail"><b>Root energetics</b><span class="tiny">closed</span></div>')
+   +'<div class="stg">'+st+'</div>'
+   +'<div class="door'+(lit?' lit pulse':'')+'">Write what happened<span>The day, in your own words.</span></div>'
+   +'<div class="door">Read nine sentences</div></div>';}
+
+ var F=[
+  {id:'F0',nm:'Boot',tag:'shipped',
+   ph:'<div style="display:flex;flex-direction:column;align-items:center;gap:12px">'+sevenRing(120,4.4)
+     +'<div class="big" style="letter-spacing:.14em">Atuned</div><div class="tiny">Powered by Source OS</div></div>',
+   p:'The FC composite, unchanged. On a first run it lifts onto the check in, and its ring lands there rather than dissolving.',
+   can:'anything, which skips it',time:'5.24 s',exit:'never auto skipped, by ruling'},
+  {id:'F1',nm:'Check in',tag:'new',
+   ph:sevenRing(46,5)+'<div class="big">Hello, Sofia.</div>'
+     +'<div class="field"><label>First name</label><i>Sofia</i></div>'
+     +'<div class="field"><label>Last name</label><i>Alarcon</i></div>'
+     +'<div class="small">Your name sets three of your numbers. Held in this browser.</div>'
+     +'<div class="ck"><b></b>Go straight in from now on</div><span class="btn">Next</span>',
+   p:'His loading screen. Nothing loads, the app is usable at 198 ms, so it carries no spinner. The greeting fills as the name is typed.',
+   can:'4: two fields, the box, Next',time:'about 8 s',exit:'box ticked goes straight to the Field'},
+  {id:'F2',nm:'The settle',tag:'prototype',
+   ph:'<span class="leave">Leave</span>'+progRing(92,0.35)
+     +'<div class="rows"><div>A word arrives ten times. Think it as it lands.</div><div>Keep some attention on your body.</div><div>Move the marker to show what moved.</div></div>',
+   p:'The only prose in the signal test, read while the ring closes. The ring is the Next.',
+   can:'1: Leave',time:'8 s',exit:'Leave, to the Field'},
+  {id:'F3',nm:'Yes',tag:'prototype',
+   ph:'<span class="leave">Leave</span><div class="word">yes</div>'+pad(132,[[62,40]],0.6)+'<div class="small">Move the marker.</div>',
+   p:'Ten beats. The arc runs round the rim of the circle being touched, so there is one circle on screen. No list of words.',
+   can:'2: the marker, Leave',time:'10 beats',exit:'Leave'},
+  {id:'F4',nm:'The hold',tag:'prototype',
+   ph:'<span class="leave">Leave</span>'+progRing(92,0.7)+'<div class="big" style="font-size:14px">Stay with what is left of it.</div>',
+   p:'A pause between the two words, closing the same ring.',
+   can:'1: Leave',time:'about 5 s',exit:'Leave'},
+  {id:'F5',nm:'No',tag:'prototype',
+   ph:'<span class="leave">Leave</span><div class="word">no</div>'+pad(132,[[36,66]],0.4)+'<div class="small">Move the marker.</div>',
+   p:'Ten beats, as yes. The person makes both states. The product picks neither word.',
+   can:'2: the marker, Leave',time:'10 beats',exit:'Leave'},
+  {id:'F6',nm:'The two marks',tag:'prototype',
+   ph:'<span class="leave">Leave</span><div class="big" style="font-size:14px">A thought moved your body.</div>'
+     +pad(132,[[62,40,'#7EB8D4','yes'],[36,66,'#A77EDB','no']])+'<span class="btn">Next</span>',
+   p:'Both marks and the distance between them. No number, no score, and nothing telling the person where they should have felt it.',
+   can:'2: Next, Leave',time:'about 4 s',exit:'Leave'},
+  {id:'F7',nm:'discover',tag:'prototype',
+   ph:'<span class="leave">Leave</span>'+loop(150,0)+'<div class="big" style="font-size:14px">Story</div>'
+     +'<div class="small">You write the day. It reads charge out of the words.</div><span class="btn">Next</span>',
+   p:'The loop, one screen, four states. Next turns the ring a quarter, so the person performs the loop.',
+   can:'2: Next, Leave',time:'about 3 s',exit:'Leave'},
+  {id:'F8',nm:'play',tag:'prototype',
+   ph:'<span class="leave">Leave</span>'+loop(150,1)+'<div class="big" style="font-size:14px">Imprints</div>'
+     +'<div class="small">Your words come apart into imprints. Each one sits at an address in the body.</div><span class="btn">Next</span>',
+   p:'Station mapping from his 20 September words: journal, imprints, release, ritual. Q6 asks.',
+   can:'2: Next, Leave',time:'about 3 s',exit:'Leave'},
+  {id:'F9',nm:'flow',tag:'prototype',
+   ph:'<span class="leave">Leave</span>'+loop(150,2)+'<div class="big" style="font-size:14px">Release</div>'
+     +'<div class="small">A release runs one line at a time over one address. You follow it in thought.</div><span class="btn">Next</span>',
+   p:'Mechanism line shown. The purpose led line is Q3.',
+   can:'2: Next, Leave',time:'about 3 s',exit:'Leave'},
+  {id:'F10',nm:'embody',tag:'prototype',
+   ph:'<span class="leave">Leave</span>'+loop(150,3)+'<div class="big" style="font-size:14px">Ritual</div>'
+     +'<div class="small">A practice comes out of the reading. You mark the day.</div><span class="btn">Next</span>',
+   p:'On this Next the ring closes, sweeps back to discover and opens the Field. There is no last screen.',
+   can:'2: Next, Leave',time:'about 3 s',exit:'the opening switches off here'},
+  {id:'F11',nm:'Landing',tag:'new',
+   ph:field('frames',true,true),
+   p:'The Field, every layer on, its entrance playing now. The first door is lit once. Root energetics open if a name was given (Q8).',
+   can:'the Field, measured at 71 on 19 Sep',time:'',exit:'the standing load problem, not solved here'}
+ ];
+ document.getElementById('frames').innerHTML=F.map(function(f){
+  return '<div class="fr"><div class="phone">'+f.ph+'</div><div class="cap"><span class="id">'+f.id+'</span>'
+   +'<h3>'+f.nm+'<span class="tag">'+f.tag+'</span></h3><p>'+f.p+'</p>'
+   +'<dl><dt>can do</dt><dd>'+f.can+'</dd>'+(f.time?'<dt>time</dt><dd>'+f.time+'</dd>':'')+'<dt>out</dt><dd>'+f.exit+'</dd></dl></div></div>';}).join('');
+
+ function mini(b,s){return '<div class="mini"><b>'+b+'</b>'+(s||'')+'</div>';}
+ var ar='<span class="arr">to</span>';
+ document.getElementById('q1a').innerHTML=mini('Boot')+ar+mini('Field','launch 2, 3, 4')+'<p class="cost" style="flex-basis:100%;margin-top:4px">Every later launch, after the box or after the run.</p>';
+ document.getElementById('q1b').innerHTML=mini('Boot')+ar+mini('Hello, Sofia.','[ ] box, Next')+ar+mini('Field')+'<p class="cost" style="flex-basis:100%;margin-top:4px">Every later launch, until the box is ticked.</p>';
+ document.getElementById('q2a').innerHTML='<div class="phone" style="max-width:236px">'+field('frames',true,true)+'</div>';
+ document.getElementById('q2b').innerHTML='<div class="phone" style="max-width:236px">'+field('wheel',true,true)+'</div>';
+})();
+</script>
