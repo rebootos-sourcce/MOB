@@ -15542,3 +15542,60 @@ drawing's own ring mark still clips at its top edge on a phone,
 present before this change too; drawing code, not layout, left named
 rather than touched under a different task's mandate.
 
+## ET. The boot and Frames/Dial arrival redesigned, and two real bugs
+## found underneath his complaint that explain it directly. Verified
+## myself against the actual source. 26 September.
+
+**Two real, precisely diagnosed bugs, confirmed directly against the
+code rather than taken on the report.** The boot sheet's own removal
+timer fires at a fixed 5,450 milliseconds no matter what the CSS
+says, confirmed at `panels.js:983`, `setTimeout(clear,5450)`; the
+CSS fade is set to begin at 7.02 seconds, confirmed at
+`head.html:3616`, `animation:bootOut .24s ... 7.02s forwards`. The
+fade has therefore never once played: the sheet is cut dead before
+its own ruled two seconds of extra length or its ruled smooth fade
+ever reach the screen. Separately, the Wheel's own one-time arrival
+animation starts at 263 milliseconds and finishes around 1.2 seconds,
+entirely behind the still-solid boot sheet, so nobody has ever seen
+it on a first load either. Both bugs, once named, explain his own
+complaints directly rather than needing a redesign alone to fix them.
+
+**The redesign itself, built to close both gaps at once, in the
+Field's own real vocabulary rather than a new visual language.** The
+spine rises and the seven seats land in their shipped opening pose,
+then unfurls into the ring at the seats' own real sizes read from the
+committed engine; a glass lens in the glass bar's own material opens
+at the centre; the ring fills clockwise exactly as the glass bar's
+own rings fill; the exit pushes through the ring at three different
+depths so it reads as real depth rather than a flat zoom. Frames and
+Dial each get their own arrival tied to the same shared language, the
+core's ring filling exactly as the glass bar's does, but distinct
+from each other, one accent hand sweeping the Dial once round, the
+Frames landing from the outside in.
+
+**A real performance defect found and fixed inside the same pass,
+before it reached me.** The first version repainted roughly a
+thousand SVG marks a frame and ran at 9.7 frames a second with a
+267 millisecond worst frame; rebuilt to draw the finished picture once
+as a raster and reveal it on a canvas, the same technique the Wheel
+itself already uses, reaching 42 to 59 frames a second in this
+sandbox's own software renderer, slower than a machine with a real
+graphics card would show.
+
+**Verified myself before trusting either bug or the fix:** both file
+and line quoted above read exactly as reported, confirmed directly.
+Looked at a filmstrip frame from the actual build: seven seat colours
+on the ring, the address ticks, the glass lens at centre, reads as a
+real, considered piece of motion rather than a described one.
+
+**Four real open questions, his call, each already built into the
+prototype's own comparison panel rather than only written down.**
+Boot length, 5.2 seconds, which fits the existing cut-off, or the
+full 7.2 seconds he originally ruled, which needs that cut-off moved
+to match; whether Frames and Dial replay their arrival every time he
+switches to them or once a session each, matching the Wheel's own
+rule; whether the Dial breathes gently at rest on the heaviest held
+addresses once it has arrived, off by default; and what replaces the
+old boot's gold halo now that the ending has no standing figure to
+crown.
+
