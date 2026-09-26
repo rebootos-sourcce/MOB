@@ -14837,3 +14837,31 @@ inner), but too fragmentary to act on with confidence. Held for a
 clearer re-ask rather than acted on from a guess, per this file's own
 standing rule.
 
+## EB. The build arrived cut again, the packed watchdog caught it,
+## and the fix already exists in this repo. 26 September.
+
+**His words: "I keep getting this build stopped while it was starting
+up, we don't want this anymore,"** with a screenshot of the packed
+build's own watchdog message, real and reading exactly as designed:
+"THE FILE IS SHORT, the end of it never arrived... build 2f60b02...
+navigation present, 9 tabs," meaning the outer chrome of the page
+arrived and the bulk of the script did not, the same failure this
+file's own "Handing the build over" section already named and already
+built a fix for.
+
+**Sent the actual fix, not the same raw file again.** The plain
+`source.html` sent earlier this window was 1.8 megabytes with nothing
+compressed; `tools/pack.js` already exists in this repo for exactly
+this failure, gzips the whole build and carries its own decompressor,
+and was not used this time. Packed the same committed build, `2f60b02`,
+down to 887 kilobytes, under half the size, and sent it again, with
+the direct GitHub raw address as a second route that never touches
+chat transport at all: `raw.githubusercontent.com`, the branch, and
+the file path. Both point at the identical, already reviewed build; a
+second try is not a new build.
+
+**Going forward, every build handed to him goes out packed, not
+raw,** since the plain file has now failed to arrive whole at least
+once this window and this repository's own tooling exists specifically
+because it failed the same way before.
+
