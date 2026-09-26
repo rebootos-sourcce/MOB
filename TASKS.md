@@ -12997,3 +12997,48 @@ reverses the Dial's own original "no word over a mark" rule. Sent with
 its own picture below since this is exactly the kind of change that
 needs confirming by eye, not by description.
 
+## CX. A frustrated round, a real gap closed, and a real idea kept. 26
+## September.
+
+**A real gap: the mobile Frames mockup was built in CE and never sent.**
+His words: "I think on a phone it should be square, right, or
+rectangle, so I think we want to see a rectangle version for mobile,
+and I haven't seen that version yet still." True: `3-frames-a-390.png`
+and `3-frames-b-390.png` were built during CE, and my own reply at the
+time offered them rather than sending them, which he never followed up
+on until now. Sent this round rather than rebuilt, since nothing about
+them has changed.
+
+**He resolved his own confusion mid sentence, about the overlay
+looks.** His words: "I don't know what I'm looking at here, the four
+or six dials, it's like where's Waldo, I can barely tell the
+difference, honestly I can't choose because I can't tell the
+difference... oh, oh, oh, it's, okay, that's just the overlay, I'm my
+bad, duh." Read as: the same Dial or Wheel picture repeated several
+times with only the overlay animation differing between copies is hard
+to tell apart in a still or a short clip, which he worked out himself.
+Nothing to fix here except noting, for whoever builds the next
+comparison sheet, that a base picture repeated more than two or three
+times with only a subtle moving difference is a real presentation
+problem worth designing around, not just a viewer problem.
+
+**A real idea, kept rather than lost in the frustration around it.**
+His words: "you know, those can be icons, and maybe, there you go, this
+is what we can do, maybe zoomed out everything's an icon, when you
+zoom in the resolution the name fades in, that's how we resolve that
+shit, and then you hover over it and you get the information of the
+thing." A real, general design direction: low detail as a small icon
+at a distance, a name appearing as it is approached or enlarged, full
+information only on a direct hover or tap. Worth weighing against the
+Body page's own dense head cluster (CG, CK) and the Field's own
+crowding, both real places this could apply, rather than filed only
+against the overlay work it came up beside.
+
+**Standing down on open questions rather than adding to the load.** His
+closing words, "I don't know what you're asking me to do, dude,
+especially with the icons," landed right after the marma dot-versus-
+ring question (CV Q1). Not re-asked. Decided instead, plainly: keep
+them as dots, which is what he originally asked for and what shipped.
+Every other open question across tonight's rounds stays logged and
+open, not repeated at him in this reply.
+
