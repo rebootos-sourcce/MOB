@@ -15798,3 +15798,100 @@ prototype file.
   larger CQ inside the Frames core itself, and removing the small
   capsule beside the compass marker. Says if either should follow.
 
+## EZ. The boot animation is praised and asked to be refined, and the
+## Field rail is asked to be rebuilt in several concrete ways. 26
+## September.
+
+**His words in full: "very cool animation, more animation with the
+elements. Maybe motion, but the timing needs to be exceptional, ease
+in and out to perfection that you can feel. The solid bars come in
+solid and when they can actually come in one at a time as well. The
+animation timing is good. Um, refine it. Um, we need to log in
+screen with two factor authentication. Oh, uh, well, my systems
+engineer to design and develop that schema. Make sure it works with
+our database. We also have the onboarding and tutorial to do. I
+don't think we're going to do that right now. But I want to make
+sure these things are called out. I like the the one that says I the
+one I like animation. So let's go with that. Um, for the field, this
+isn't what I want. At all. The overlay should have the secondary nav
+buttons that we already had. Um, yeah, the addresses and everything
+should already be on. Yeah, everything should start on. All the
+connections should be present for my particular thing. I guess this
+is starting, so there's nothing really there. So the CQDQ I guess we
+don't need SQ in the upper left nav. And the reason why is because
+SQ is a total sum of the DQ anyway. Accuracy can now move to the
+center menu lower left. I'm sorry, no, no, no, that's not true. Keep
+it in that menu. Uh, just make sure there's just two rows. And I
+want to be able to close up that column. and change the word spirit
+to energy. And I want to be able to see the animations on these. And
+I want the three where are my three fucking styles? On my right hand
+side overlay. Please give that to me and stop making me ask you for
+it. This should be opposite of the overlay items that you have on
+the upper left. Now it's on the put those in the upper right. The
+states Western Eastern number design I need all my numerology stuff
+by the way by the time it's done that is all collapsible and goes
+above where CQDQ and everything else is You can change that to root
+energetics. and I want that one to start closed. And then the Jung
+icons are taking up too much space, so shrink them the icon size
+down so we can collapse the row size down one."**
+
+**A real gap this exposes, the same shape as EV.** The boot animation
+he is praising and giving refinement notes on has never been ported
+into `atuned_src` either. Checked directly: `panels.js:949` still
+reads `setTimeout(clear,5450)` and `shell/head.html:3707` still reads
+`animation:bootOut ... 7.02s forwards`, the exact mismatched pair
+logged in ET. The real product he opens is still on the old, broken
+boot. Everything he has reacted to lives only in `proto/arrival/` and
+`proto/arrival2/`. Named here before it repeats a third time.
+
+**Read as: keep the original, not the four new styles.** "The one
+that says 'I, the one I like'" reads as a garbled dictation of the
+literal button label the EX panel ships, "The one you liked", which
+plays ET's own original animation. Taken as him choosing that one
+over Breath, Orrery, Bloom and Ember, with refinement notes on top of
+it: perfect the ease in and ease out curves, and have the solid
+filled elements (address ticks, seat markers, ring segments) stagger
+in one at a time rather than together. If this reading is wrong, say
+so, since it was reconstructed from a hard transcription.
+
+**Not dispatched, on his own words.** Two factor login and its schema
+against the database: he named his own systems engineer as the owner
+of that design, not this team, so it is called out here and not
+built. Onboarding and tutorial: explicitly not now, called out and
+nothing else.
+
+**The Field feedback, read item by item rather than as one
+paragraph:**
+- Whatever "the secondary nav buttons we already had" refers to is
+  not named precisely enough to act on alone; asked directly rather
+  than guessed at.
+- **Layers start on, not off.** Directly reverses the open question
+  EY raised: Frames and Dial currently open matching whatever Wheel
+  shows, which on the Field's default open means Domains, Masks,
+  Archetypes and the chain tiers start off. He wants everything
+  visible from the first frame.
+- **Drop SQ from the upper left reading row**, his reason given in
+  full: it is only the sum of DQ.
+- **Accuracy stays in that menu**, in his own immediate correction,
+  with the constraint that the whole block reads as two rows.
+- **A collapse control on that whole left column.**
+- **Rename the heading "Spirit" to "Energy".**
+- **Animation on the reading circles themselves**, not just the boot.
+- **Wheel, Frames and Dial have to read as an unmistakable overlay in
+  the upper right,** mirrored against whatever sits upper left. Ported
+  in EY into the right rail's top line, and confirmed there by
+  screenshot at the time, but his words here are that he still cannot
+  find it, so wherever it actually sits is failing to read as the
+  thing he asked for. Being fixed as a distinct, obvious floating
+  overlay rather than a small mark inside the rail.
+- **A new collapsible section, closed by default, above the CQ/DQ
+  row, named "Root energetics."** Western and Eastern numerology,
+  which is real and already shipped, `engine/numerology.js` and
+  `numerologyOf()`, surfaced today only in Summary. This asks for it
+  read onto the Field's own rail as well, not invented fresh.
+- **Shrink the Jungian archetype icons** so that grid loses a row.
+
+Dispatched this round: the real boot animation port plus his
+refinement notes, and the Field rail rebuild above, both against
+`atuned_src` and gated, not left in a prototype a second time.
+
