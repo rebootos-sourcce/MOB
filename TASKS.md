@@ -15226,3 +15226,30 @@ plainly, since the watchdog's own message already named it: whichever
 link he uses, save it to disk first, never let a build open directly
 in a browser tab.
 
+## EK. A third name proposed, with a real philosophical reason, in
+## real tension with EC's own tested verdict. Not settled here.
+## 26 September.
+
+**His words in full.** "I think we should call it Integrate Protocol,
+because that's really what's happening, right, we're just integrating
+the bias, so the mind is freeing up the charge. It's not about you
+becoming less of an asshole, it's about giving you a choice. If you
+still remain an asshole, that's on you."
+
+**A real reframe, not only a word choice.** He is stating what the
+mechanic is actually for: not moral improvement, a choice made
+possible by charge no longer running the decision underneath it. This
+echoes his own words earlier the same night at EI, "becoming means
+integrating," so the two are the same ruling reaching two different
+places in this file.
+
+**The real tension, named rather than smoothed over.** EC tested
+release against protocol across seventy two real strings, a thousand
+runs each, and release won clearly, forty two against fourteen. This
+message proposes a third name, and does not say whether it replaces
+every one of those tested strings or names only the whole mechanic
+while individual buttons and readings keep whichever word EC's own
+evidence favours for each. Not decided here, since deciding it wrongly
+costs real rework either way; put to him plainly next round rather
+than guessed at silently.
+
