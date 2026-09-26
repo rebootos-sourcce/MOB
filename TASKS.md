@@ -15301,3 +15301,76 @@ under all three; the number is drawn, never printed as a fraction.
 
 **Sent to him directly, the packed file, not a link to describe it.**
 
+## EM. Root colour finished across every surface, and the harder
+## Glass white canvas case actually closed. Verified myself directly.
+## 26 September.
+
+**A new `rootPlain` for the surfaces the rail's own icon lift was
+never meant to reach,** confirmed real: `component.js:136`. Wired
+into every surface EH named, Summary, Knowledge, Analytics, the
+rail's own persona rows, the Field's domain rows in `ui.js`. `ROOTCOL`
+itself untouched, Lumen untouched, exactly as asked.
+
+**The harder canvas case, closed rather than half fixed.** `LIGHT()`
+now recognises Glass white as a light ground, confirmed real at
+`component.js:327`, `stageLight()`. Tried and rejected a narrower fix
+first, giving only the canvas colour function its own Glass white
+arm, because the outline reads the same switch and a narrower patch
+would have drawn dark names inside a dark outline; fixed at the root
+instead. Where the Field's own stage stays deliberately black even
+under Snow, per this file's own ruling, the domain marks now read
+their colour from the ground they actually sit on rather than from
+the lighting's name, so Snow's own already-correct dark-ground
+numbers hold unchanged while Glass white, genuinely light, finally
+reads.
+
+**All nine gates re-run myself, matching exactly:** 432 exports, 1687
+engine tests, 1052 functional, 282 collide, 150 design, monitor and
+funnel clean. Looked directly at a fresh Snow screenshot: the rail's
+domain colours read bright and saturated against the paper ground,
+and the Field's own wheel correctly keeps its ruled black stage with
+white seat names, matching the reported "unchanged" numbers rather
+than contradicting them.
+
+**Contrast measured before and after, on every surface named, the
+worst real case rather than a best one.** The probe itself checked
+against the known value first, 1.34 and 1.59, matching commit
+3824c63 exactly before trusting any new number from it. Every
+surface checked crosses its floor after the fix; nothing that should
+not have moved, moved, confirmed by a pixel-identical check against
+Dark and Lumen.
+
+**Three real gaps found and correctly left rather than folded in
+silently.** Whether Snow's Field should keep its black ground or move
+to paper, a real reopening of part of an existing ruling, not decided
+here. Two small Lumen failures on the rail, folded into the Lumen
+question already standing open. The Body page's own seven-seat
+rings and domain ring on Glass white, left alone on purpose since
+recolouring only one mark on that figure would leave it in a
+different palette from its neighbours; queued as its own piece of
+work rather than guessed at.
+
+## EN. His own origin story, offered as raw material for the brand,
+## not a build ask. Logged in full, nothing dispatched. 26 September.
+
+**His words, in full, quoted rather than paraphrased since this is
+founder material.** "Your story is your story, and your experience is
+your experience. Keep the experience, drop the stress that holds it.
+This is integrative somatic healing, using a rapid release technique,
+created by the very person who needed it most. My background, game
+development. I understand systems and I applied it to the spiritual
+experience and went deep. First I ran it on myself, then I ran it on
+others, corroborated it with research, what I was experiencing,
+seeing it from different ontological views and realising that the
+definitions were blocking our ability to see it clearly. This is that
+result."
+
+**His own framing, kept exactly as he gave it.** "I don't know if we
+want to use all that, if there's any hubris in there, obviously it's
+got to come out, but keep going." Raw material for the brand and the
+funnel's own origin story, not a ruling that any of it ships as
+written, and not a build ask; nothing dispatched, per his own "keep
+going" meaning the rest of tonight's work continues uninterrupted.
+Belongs with the funnel and About page copy already standing in this
+file's backlog, when that work is picked up.
+
