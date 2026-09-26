@@ -15929,3 +15929,46 @@ treatment and Ember's tick styling, not a single style in isolation.
 Sent to the agent already building this, mid task, rather than
 waiting for it to finish on the older brief and redoing the work.
 
+## FB. Seven Seats redone against the D minus, six layouts measured,
+## and a real winner named. 26 September.
+
+`proto/avatar/seats4/`, dispatched after his "D minus, the layout
+design is awful" grade in EQ. Six layouts built and measured the same
+way for all six reference people at both widths: Graded (the D
+minus layout, kept as the baseline to beat), Ring, Three, Story, Loop
+and Told. Told scored 9.4 of 10 against Graded's 5.4 and won on every
+other layout too. It puts what somebody said they are becoming, their
+own words for what is in the way, and the one action all on the
+first screen, for all six people at both widths, which none of the
+other five manage together.
+
+**Checked directly rather than taken on report.** Both files' md5
+match the reported hashes to the digit: the packed
+`seven-seats-layouts.html` at 956,304 bytes and the unpacked
+`seats4.html` at 1,989,427 bytes. Opened the packed file in a real
+browser myself: zero console errors, zero outbound requests, and a
+fresh screenshot on the Told layout with James loaded shows exactly
+what the report describes, his stated becoming, the ring, a named
+seat, one release button, before any scroll.
+
+**Committed to the repo**, since the agent had left it staged only on
+disk. Nothing under `atuned_src` moved; this is prototype work for
+him to react to, not shipped.
+
+**Two real defects found in passing, not about layout.** Two of six
+reference people's own highest stated ideal resolves to no seat at
+all: Angela's depends on the word "tired", which the resolver does
+not read, and Derek's "shoulders up by my ears" does not resolve
+either, while "chest is tight" and "jaw is tight" both do. And a
+stranger who only writes the becoming pair, with no journal entry
+yet, sees nothing held on any layout, since a seat carries no weight
+until a journal entry is read; bears on M2, a first session ending in
+a change.
+
+**His to decide, not resolved here.** Should the page lead with the
+ideal the person stated, or with the heaviest thing actually in
+their way? They differ for two of the six people. Heaviest leads, as
+built, names the biggest real cost first; ideal leads starts from
+the person's own words. Both are one press apart in the file's own
+dock.
+
