@@ -12245,4 +12245,48 @@ Which of the two keeps the word "channel" on screen?
 a sentence built straight from the address name, which can read
 ungrammatically, "that I am panic" for one. Write real wording for
 those three by hand, build a generated form instead, or leave them?
+**Closed by him the same night, logged rather than built on yet.** His
+words: "we'll do the cards later, that'll be part of our content pass,
+anything that's remaining for content we'll do then." Q5 above and any
+other card wording gap wait for that pass, not for a rule tonight.
+
+## CJ. A new Field feature asked for as looks, not a build, his own
+## six word line confirmed as he meant it, a timing detail, and a
+## placement confirmed. 26 September.
+
+**A new overlay, wanted as options first.** His words: "for the Field, I
+want to add an overlay button for animations. The animations, I'm not
+certain how I want them to look just yet. Maybe I want the animation
+team, UI UX team, to give me some looks. Here's what I'm thinking, when
+I turn on the overlay it shows me which connections are the most
+active, and maybe it's showing those lines vibrating, humming, maybe
+it's showing active thoughts running back and forth along the line."
+Sent to the animation and UX seats as a looks round, not a build, per
+his own framing.
+
+**His six word line, confirmed exactly as CI guessed and asked back
+about.** His words: "the prompt is 'I'm letting go of believing,
+perceiving, thinking, behaving, acting, feeling,' is that what you
+mean, and then it's just the script after that." Closes CI Q1 and half
+of Q2 together: one line, not six, and the six words are a fixed
+prompt spoken once rather than repeated inside every line, with the
+address's own wording, "the script," following it. Not yet built this
+way, CI's own code today repeats the full sentence including his six
+words on every line; this changes that.
+
+**A real timing detail for the release, and a new control asked for.**
+His words: "each release line runs about four seconds, but you can
+change, adjust the time, it's a quick release and then feel it, but
+then move on to the next one. At the very end there's a cool down
+where you keep your attention in, and then the rest of the release
+just keeps going." Two things follow: the per line hold he wants is
+closer to four seconds than the roughly two CI measured, and a real
+adjustable speed control is wanted, not a single fixed pace. The cool
+down at the end, held longer before the pace resumes, is a real
+structural detail about the release's shape not previously on file.
+
+**A placement confirmed, not changed.** His words: "if the body is
+symmetrical, then that 108 shock will be at the top of the head,
+literally the Crown." Matches what CG already built: 108, not anatomy,
+sits at the Crown marker. Logged as confirmation, nothing to change.
 
