@@ -47,6 +47,9 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
   const ctx=await b.newContext({viewport:{width:W,height:H},hasTouch:phone,isMobile:phone,deviceScaleFactor:1});
   const p=await ctx.newPage(); const errs=[];
   p.on('pageerror',e=>errs.push(e.message));
+  /* the product catches a failed rendition and says so on the console, which
+     is exactly how this prototype's own first cut of the flush frame failed */
+  p.on('console',m=>{if(m.type()==='error'&&/atuned|attribute/.test(m.text()))errs.push(m.text().slice(0,160));});
   await p.goto(PAGE);
   await p.waitForFunction(()=>document.documentElement.getAttribute('data-gb-ready')==='1',null,{timeout:30000});
   await wait(p,1200);
@@ -195,19 +198,90 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
   ok(d.sab>0,'zoom out took off something the person had on');
   await p.evaluate(()=>GB.opt('zoomAdds',false));
 
-  /* 11. the other reading of his sentence: the end of the bar, after Shadow */
-  await p.evaluate(()=>GB.opt('rend','bar')); await wait(p,200);
-  const bp=await p.evaluate(()=>{const e=document.querySelector('#gb .gb-end');if(!e)return null;
-   const kids=[...e.children].map(c=>c.id||c.getAttribute('data-gb'));
-   return {kids:kids,rail:!!document.querySelector('.col #gb-rend'),last:e===document.querySelector('#gb').lastElementChild};});
-  ok(bp&&bp.kids.join()==='shadow,gb-rend'&&!bp.rail&&bp.last,'end of the bar reads Shadow then the renditions '+JSON.stringify(bp));
-  if(!phone){await p.evaluate(()=>scrollTo(0,0)); await shot('15-rend-in-bar');}
-  await tapSel('#gb-rend [data-gb="fv-frames"]'); s=await shown(p);
-  ok(await p.evaluate(()=>FVIEW==='frames'),'renditions pressed at the end of the bar did not switch');
-  await tapSel('#gb-rend [data-gb="fv-wheel"]');
-  await p.evaluate(()=>GB.opt('rend','rail')); await wait(p,200);
-  ok(await p.evaluate(()=>{const r=document.getElementById('gb-rend');return r.previousElementSibling&&r.previousElementSibling.id==='railtop'
-   &&!!document.querySelector('#gb .gb-full [data-grp=carry] [data-gb=shadow]');}),'back to the rail, Shadow back in its cluster');
+  /* 11. Frames and Dial zoom, and F reframes. His words: "with the frame, I
+     want to be able to zoom in and out, and then hit the F key and have it
+     reframe." Real input: the scroll wheel over the picture, the key. */
+  await tapSel('#gb-rend [data-gb="fv-frames"]'); await wait(p,400);
+  if(phone)await p.evaluate(()=>document.getElementById('frend').scrollIntoView({block:'center'}));
+  const fr=await p.evaluate(()=>{const r=document.getElementById('frend').getBoundingClientRect();return {x:r.left+r.width*.3,y:r.top+r.height*.3};});
+  if(!phone){await p.mouse.move(fr.x,fr.y); for(let i=0;i<6;i++){await p.mouse.wheel(0,-120);await wait(p,40);}}
+  else{await tapSel('#gb [data-gb=zin]');await tapSel('#gb [data-gb=zin]');}
+  await wait(p,200);
+  let z=await p.evaluate(()=>({s:GB.zoom().s,tf:(document.querySelector('#frend .frsvg')||{}).style.transform||'',pill:document.querySelector('#gb [data-gb=zfit] .gb-v').textContent}));
+  ok(z.s>1.4&&/scale/.test(z.tf),'Frames did not zoom '+JSON.stringify(z));
+  ok(z.pill===z.s.toFixed(1)+'\u00d7','the reframe circle does not say how far in '+JSON.stringify(z));
+  await shot('15-frames-zoomed');
+  /* the picture is rebuilt when a layer changes; the zoom must survive it */
+  await p.evaluate(()=>{FR_SIG=null;render();}); await wait(p,200);
+  ok(/scale/.test(await p.evaluate(()=>document.querySelector('#frend .frsvg').style.transform)),'zoom lost when the picture was rebuilt');
+  if(!phone){await p.keyboard.press('f');}else{await tapSel('#gb [data-gb=zfit]');}
+  await wait(p,200);
+  z=await p.evaluate(()=>({s:GB.zoom().s,tf:document.querySelector('#frend .frsvg').style.transform}));
+  ok(z.s===1&&!z.tf,'F did not reframe '+JSON.stringify(z));
+  if(!phone){await p.keyboard.press('=');await p.keyboard.press('=');
+   ok(await p.evaluate(()=>GB.zoom().s)>1.5,'plus did not zoom Frames');
+   await p.keyboard.press('f');}
+  /* the frame is flush: the outer ring touches its own box on all four sides */
+  /* measured on the outermost band, so the domains are put on for the reading */
+  await p.evaluate(()=>GB.set('domains',1)); await wait(p,200);
+  const fl=await p.evaluate(()=>{const sv=document.querySelector('#frend .frsvg'),g=sv.querySelector('.L-domains');
+   const b=g.getBBox(),W=+sv.getAttribute('width'),H=+sv.getAttribute('height');
+   return {l:+b.x.toFixed(1),t:+b.y.toFixed(1),r:+(W-b.x-b.width).toFixed(1),b:+(H-b.y-b.height).toFixed(1)};});
+  ok(fl.l<=1&&fl.t<=1&&fl.r<=1&&fl.b<=1,'the frame is not flush to its box '+JSON.stringify(fl));
+  /* and square at the corner: the band reaches within a pixel of the box's own corner */
+  /* square at the corner, read off the geometry rather than a pixel probe:
+     the outer ring's point on the bearing to the box's corner, against the
+     corner itself */
+  const sq=await p.evaluate(()=>{const sv=document.querySelector('#frend .frsvg');const W=+sv.getAttribute('width'),H=+sv.getAttribute('height');
+   const w={a:W/2,b:H/2},R=frRing(W/2,H/2,W/2,H/2,GB_NS(0,w)),q=R.at(Math.atan2(H/2,W/2));
+   const old=frRing(W/2,H/2,W/2-8,H/2-8,12).at(Math.atan2(H/2,W/2));
+   return {now:+Math.hypot(W-q.x,H-q.y).toFixed(2),shipped:+Math.hypot(W-old.x,H-old.y).toFixed(2)};});
+  facts['corner-'+W]=sq;
+  ok(sq.now<=1.5,'a frame corner is still rounded, '+sq.now+' px short of the box corner (shipped '+sq.shipped+')');
+  facts['flushbox-'+W]=await p.evaluate(()=>{const f=document.getElementById('frend').getBoundingClientRect(),s=document.getElementById('stage').getBoundingClientRect();
+   return {frame:[Math.round(f.left-s.left),Math.round(f.top-s.top),Math.round(s.right-f.right),Math.round(s.bottom-f.bottom)]};});
+  await p.evaluate(()=>GB.set('domains',0));
+  /* CQ over DQ, one centre line, CQ the larger figure */
+  const cd=await p.evaluate(()=>{const tx=[...document.querySelectorAll('#frend .frsvg g text')].filter(t=>/^(\d+|CQ|DQ)$/.test(t.textContent.trim()));
+   const f=s=>tx.find(t=>t.textContent.trim()===s);const cq=String(Math.round(compute().CQ)),dq=String(Math.round(compute().DQ));
+   const a=f(cq),b=f(dq),la=f('CQ'),lb=f('DQ');
+   /* on a phone the hole is too small for a stack, so each figure and its
+      letters are one centred line: the same pair, set as two rows */
+   if(!a||!b||!la||!lb){const all=[...document.querySelectorAll('#frend .frsvg g text')];
+    const rc=all.find(t=>t.textContent.trim()===cq+'CQ'),rd=all.find(t=>t.textContent.trim()===dq+'DQ');
+    if(!rc||!rd)return null;const X=e=>{const r=e.getBBox();return +(r.x+r.width/2).toFixed(1);};
+    return {rows:true,cqSize:+rc.firstChild.getAttribute('font-size'),dqSize:+rd.firstChild.getAttribute('font-size'),
+     xs:[+rc.getAttribute('x'),+rd.getAttribute('x')],order:[rc.getBBox().y<rd.getBBox().y]};}
+   const X=e=>{const r=e.getBBox();return +(r.x+r.width/2).toFixed(1);};
+   return {cqSize:+a.getAttribute('font-size'),dqSize:+b.getAttribute('font-size'),xs:[X(a),X(la),X(b),X(lb)],
+    order:[a.getBBox().y<la.getBBox().y,la.getBBox().y<b.getBBox().y,b.getBBox().y<lb.getBBox().y]};});
+  ok(cd&&cd.cqSize>cd.dqSize*(cd.rows?1.3:1.8)&&Math.max(...cd.xs)-Math.min(...cd.xs)<=1.5&&cd.order.every(Boolean),'CQ and DQ are not a centred pair '+JSON.stringify(cd));
+  await shot('16-frames-flush');
+  await tapSel('#gb-rend [data-gb="fv-wheel"]'); await wait(p,300);
+  /* the same controls answer on the Wheel */
+  const z0=await p.evaluate(()=>S.zoom); await tapSel('#gb [data-gb=zin]');
+  ok(await p.evaluate(()=>S.zoom)>z0,'zoom in did nothing on the Wheel');
+  await tapSel('#gb [data-gb=zfit]'); const zz=await p.evaluate(()=>({z:S.zoom,top:(()=>{const e=document.querySelector('#gb [data-gb=zfit]').getBoundingClientRect();const t=document.elementFromPoint(e.left+e.width/2,e.top+e.height/2);const bt=t&&t.closest('button,[id]');return (t?(bt?(bt.id||bt.getAttribute('data-gb')||bt.className):'none')+'':'');})()}));
+  ok(zz.z===1,'reframe did nothing on the Wheel '+JSON.stringify(zz));
+
+  /* 12. the readings left the foot of the stage for the left rail, as circles */
+  const dk=await p.evaluate(()=>{const d=document.getElementById('fdock'),w=document.getElementById('gb-dock');
+   const c=q=>{const e=document.querySelector('#gb-dock .kb[data-q='+q+'] .cr .ring').getBoundingClientRect();return {x:e.left+e.width/2,y:e.top+e.height/2,w:e.width};};
+   const v=q=>parseFloat(getComputedStyle(document.querySelector('#gb-dock .kb[data-q='+q+'] .cr .v')).fontSize);
+   return {inRail:!!w&&w.contains(d)&&!!d.closest('.col')&&!d.closest('.stage'),
+    rings:document.querySelectorAll('#gb-dock .cr').length,
+    cq:c('cq'),dq:c('dq'),sq:c('sq'),vcq:v('cq'),vdq:v('dq'),
+    vb:[...document.querySelectorAll('#gb-dock svg.arc')].every(s=>s.getAttribute('viewBox'))};});
+  ok(dk.inRail,'the readings are not in the left rail');
+  ok(dk.rings===8&&dk.vb,'the rail has '+dk.rings+' reading circles, all scaled '+dk.vb);
+  ok(Math.abs((dk.cq.x-dk.dq.x)-(dk.sq.x-dk.cq.x))<=2&&Math.abs(dk.dq.y-dk.sq.y)<=1&&Math.abs(dk.cq.y-dk.dq.y)<=2,
+   'DQ and SQ do not stand symmetric about CQ '+JSON.stringify([dk.dq,dk.cq,dk.sq]));
+  ok(dk.cq.w>dk.dq.w*1.5&&dk.vcq>=dk.vdq*1.7,'CQ is not the largest figure '+JSON.stringify([dk.cq.w,dk.dq.w,dk.vcq,dk.vdq]));
+  /* and the small capsule mimicking the halo and pitchfork is gone, the scale stays */
+  const pc=await p.evaluate(()=>{const sw=document.querySelector('.pol2-sw');return {sw:sw?getComputedStyle(sw).display:'none',
+   mk:!!document.querySelector('.pol2-mk')};});
+  ok(pc.sw==='none'&&pc.mk,'the capsule beside the marker still shows '+JSON.stringify(pc));
+  if(!phone){await p.evaluate(()=>scrollTo(0,0));await p.screenshot({path:`${OUT}/17-left-readings-${W}.png`,clip:{x:0,y:80,width:330,height:340}});}
 
   /* 11. every lighting, so the glass is seen on each ground it has to sit on */
   if(!phone){await p.evaluate(()=>{GB.preset(2);setZoom(1,CX,CY);});

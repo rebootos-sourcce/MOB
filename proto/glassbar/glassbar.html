@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="a5dfe7f 2026-09-26 14:59"><head><meta charset="utf-8">
+<html lang="en" data-build="2f60b02 2026-09-26 15:12"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Glass bar prototype, over SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -28131,7 +28131,11 @@ body:not(.tab-field) #gb-rend{display:none!important}
 /* ---- one layer, one object. 44 by 44 is the target, the floor ---- */
 .gb-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
  min-width:44px;min-height:44px;padding:0;margin:0;border:0;border-radius:50%;background:transparent;
- color:var(--dim,#94908A);cursor:pointer;font:inherit}
+ color:var(--dim,#94908A);cursor:pointer;font:inherit;
+ /* no double tap zoom on these. Measured at 390: zoom in then reframe, two
+    quick taps a thumb's width apart, and the browser held the second tap
+    as the start of a page zoom and the reframe never arrived */
+ touch-action:manipulation}
 .gb-b:focus-visible{outline:2px solid var(--accent,#7EB8D4);outline-offset:2px}
 .gb-orb{--c:var(--accent,#7EB8D4);position:relative;width:40px;height:40px;border-radius:50%;flex:0 0 auto;
  display:flex;align-items:center;justify-content:center;
@@ -28176,6 +28180,72 @@ body:not(.tab-field) #gb-rend{display:none!important}
 body.punch .gb-b.on .gb-orb{background:var(--c)}
 body.punch .gb-b.on .gb-gl svg{stroke:var(--on-flat,#101010)}
 body.punch .gb-v{background:var(--c);color:var(--on-flat,#101010);border-color:var(--c)}
+
+/* ---- Frames takes the pane. The left lane held the old Wheel, Frames,
+   Dial switch and is empty now, so on a wide screen the frame spans it and
+   runs flush from the pane's left edge to the scale on the right. The Wheel
+   and the Dial are circles and stay centred in the middle cell. ---- */
+@media (min-width:721px){body.gb.tab-field.gb-fv-frames #frend{grid-column:1 / 3!important}}
+
+/* ---- zoom on Frames and Dial ---- */
+#frend{overflow:hidden}
+#frend.gb-zoomed{cursor:grab}
+#frend.gb-drag{cursor:grabbing}
+#frend.gb-drag *{pointer-events:none}
+
+/* ---- the little capsule beside the coherence marker is gone. His words:
+   "there's a little element that's mimicking the halo pitchfork, that's
+   unnecessary." It was the range the reading oscillates across, drawn as a
+   pill with a crossbar riding in it: a small vertical figure, rounded at both
+   ends, sitting beside the scale that runs from the halo down to the
+   pitchfork, and it read as a copy of that scale in miniature. The marker,
+   its number and the scale stay. ---- */
+.pol2-sw,.pol2-sm{display:none}
+
+/* ============================================================
+   THE READINGS, IN THE LEFT RAIL, AS CIRCLES
+   ============================================================ */
+body:not(.tab-field) #gb-dock{display:none}
+.gb-dock{padding:4px 0 16px;margin:0 0 12px;border-bottom:1px solid var(--edge,rgba(255,255,255,.09))}
+.gb-dock .fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;padding:0;position:static;
+ grid-column:auto;grid-row:auto}
+.gb-dock .fdock-br{display:none}
+.gb-dock .key,.gb-dock .keylo{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center}
+.gb-dock .key{display:grid!important;grid-template-columns:1fr 1fr 1fr;justify-items:center;gap:0}
+.gb-dock .keylo{gap:20px}
+.gb-dock .kb{min-width:44px;min-height:44px;padding:0;border:0;background:transparent;justify-content:center;border-radius:50%}
+.gb-dock .kb:hover{background:transparent}
+.gb-dock .kb:focus-visible{outline:2px solid var(--accent,#7EB8D4);outline-offset:3px}
+/* one circle: the ring, the mark or the letters inside, the value on the
+   lower right, the same object as the bar's */
+.gb-dock .cr{position:relative;padding:0!important;background:transparent!important;border:0!important;
+ box-shadow:none!important;border-radius:50%}
+.gb-dock .cr .ring{width:44px;height:44px;border-radius:50%;
+ background:color-mix(in srgb,var(--panel-2,#252833) 70%,transparent)}
+.gb-dock .cr .ring svg.arc{width:44px!important;height:44px!important}
+.gb-dock .cr .ring .gl svg{width:18px!important;height:18px!important}
+.gb-dock .cr .gl-t{font-size:12px}
+.gb-dock .cr .v{position:absolute;left:28px;top:30px;margin:0!important;height:17px;min-width:20px;
+ padding:0 5px!important;font-size:11px;line-height:17px;text-align:center;
+ background:color-mix(in srgb,var(--c) 30%,var(--panel,#1A1D26));
+ border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+/* CQ, THE HERO, in the middle of the pair. The figure is the largest
+   number in the rail and it sits on the ring's lower right like every other
+   value, only larger, so the object is the same and the weight is not. */
+.gb-dock .key .kb[data-q=dq]{order:1}
+.gb-dock .key .kb[data-q=cq]{order:2}
+.gb-dock .key .kb[data-q=sq]{order:3}
+.gb-dock .kb[data-q=cq] .cr .ring{width:72px;height:72px}
+.gb-dock .kb[data-q=cq] .cr .ring svg.arc{width:72px!important;height:72px!important}
+.gb-dock .kb[data-q=cq] .cr .gl-t{font-size:14px;letter-spacing:.02em}
+.gb-dock .kb[data-q=cq] .cr .v{left:44px;top:46px;height:28px;min-width:44px;padding:0 9px!important;
+ font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.01em}
+.gb-dock .kb[data-q=cq]{min-width:72px;min-height:72px}
+/* accuracy keeps its word, to the left of its circle, ruled */
+.gb-dock .acc{margin:0;text-align:center;display:flex;justify-content:center}
+.gb-dock .acc-b{gap:10px;padding:0 6px;min-height:44px}
+.gb-dock .acc-l{align-items:flex-end}
+@media (max-width:720px){.gb-dock{padding-top:10px}}
 
 /* ---- Wheel, Frames, Dial in the right rail, icon only, under the top line ---- */
 .gb-rend{display:flex;gap:8px;align-items:center}
@@ -28298,6 +28368,9 @@ var IC_SEAT='M12 7.1v2.8M12 14.1v2.8'+frCirc(12,4.9,2.2)+frCirc(12,12,2.2)+frCir
    it is a ring cut into short segments, so that is the mark: twelve of them,
    against the Domains' five long ones. */
 var IC_ADDR=frSegRing(12,8.2,13)+frCirc(12,12,1.6);
+var IC_ZIN='M10.5 4.5a6 6 0 110 12 6 6 0 010-12M15 15l5 5M10.5 8v5M8 10.5h5';
+var IC_ZOUT='M10.5 4.5a6 6 0 110 12 6 6 0 010-12M15 15l5 5M8 10.5h5';
+var IC_ZFIT='M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5M9.5 12a2.5 2.5 0 105 0 2.5 2.5 0 00-5 0';
 var IC_LAYERS='M12 3.6l8.4 4.2-8.4 4.2-8.4-4.2zM3.6 12l8.4 4.2 8.4-4.2M3.6 16.2l8.4 4.2 8.4-4.2';
 var IC_DEPTH='M4 19.5h4.4v-4M8.4 15.5h4.2v-4M12.6 11.5h4.2v-4M16.8 7.5H21';
 
@@ -28345,7 +28418,7 @@ function preset(i){var s={};for(var j=0;j<=i;j++)ADDS[j].forEach(function(k){s[k
 function needs(set){for(var i=3;i>0;i--)if(ADDS[i].some(function(k){return set[k];}))return i;return 0;}
 
 var ON=preset(S.view|0);
-var OPT={room:true,zoomAdds:false,fold:null,rend:'rail'};   /* fold null means fitted to the width */
+var OPT={room:true,zoomAdds:false,fold:null};   /* fold null means fitted to the width */
 
 /* what zoom has reached. Only under the "zoom adds" option: the next depth's
    layers draw while zoomed in, and the icon says they came from the
@@ -28406,7 +28479,49 @@ function patchWheel(){(0,eval)(patchFn(drawWheel,PATCH,'drawWheel'));}
    as a class. The seat marks drew unclassed; they take one so Seats can
    answer. Proto only: the design gate would want the class named in a rule,
    and the rule is in glassbar.css. */
+/* THE FRAME GOES FLUSH. His words: "I like the frame, but I don't like the
+   beveled edges because I want the entire thing flush to the rectangle of
+   the area." The frame was drawn eight pixels in from its box, and every
+   ring was a superellipse at an exponent of twelve, which rounds a corner by
+   about a tenth of its side. The outer ring now sits on the box's own edge
+   at an exponent of four hundred, measured square to the pixel at the corner, and the rings
+   inside ease back toward the old shape as they go in, so the picture keeps
+   its nested read and only the outside becomes the rectangle. */
+/* FLUSH WHEN THE OUTER BAND IS OFF, TOO. The domains are the outermost band
+   of the frame, and with them off the frame was flush to a band nobody could
+   see: measured, the first visible line sat 33 pixels in from the box at
+   1600. So Frames makes room the way the Wheel does: with Domains off, every
+   ring moves out by the domain band's depth and the addresses become the
+   edge. Under "holds still" it keeps its place. */
+window.GB_ROOMFR=function(D){return (OPT.room&&!PV('domains'))?D.dom1:0;};
+/* on window, because the patched frFrames is evaluated in the page's own scope */
+var GB_NS=window.GB_NS=function(d,w){var t=Math.min(1,d/(Math.min(w.a,w.b)*.35));return 12+388*Math.pow(1-t,3);};
 function patchRings(){
+ /* THE RING HAS TO SURVIVE A SQUARE CORNER. frRing raised the pixel ratio
+    to the exponent directly, (1/300) to the 400th, which underflows to zero,
+    and the whole Frames picture drew as NaN: measured on the first cut, every
+    path "MZ" and every mark at NaN, logged loudly by the browser and by
+    nothing else. Same arithmetic, scaled by the larger term first, so the
+    powers stay between nought and one at any exponent. */
+ (0,eval)(patchFn(frRing,[['return Math.pow(Math.pow(Math.abs(c/a),n)+Math.pow(Math.abs(s/b),n),-1/n);};',
+  'var u=Math.abs(c/a),v=Math.abs(s/b),m=Math.max(u,v)||1e-12;return 1/(m*Math.pow(Math.pow(u/m,n)+Math.pow(v/m,n),1/n));};']],'frRing'));
+ FR_RINGS={};
+ (0,eval)(patchFn(frMount,[['var pad=8,w={x0:pad','var pad=(FVIEW===\'frames\'?0:8),w={x0:pad']],'frMount'));
+ (0,eval)(patchFn(frFrames,[
+  ['var ring=function(d){return frRingC(cx,cy,w.a-d,w.b-d,NS);};',
+   'var ring=function(d){d=Math.max(0,d-GB_ROOMFR(D));return frRingC(cx,cy,w.a-d,w.b-d,GB_NS(d,w));};']],'frFrames'));
+ (0,eval)(patchFn(frCore,[
+  ['var F1=Math.max(22,38*inner/45)','var F1=Math.max(26,50*inner/45)'],
+  ['H=fits([{h:f1*.727,w:W_(FC,f1,300),g:g1},{h:lc,w:W_(\'CQ\',lab,500),g:g2},{h:f2*.727,w:W_(FD,f2,500)+4+W_(\'DQ\',lab,500)}]);',
+   'H=fits([{h:f1*.727,w:W_(FC,f1,400),g:g1},{h:lc,w:W_(\'CQ\',lab,500),g:g2},{h:f2*.727,w:W_(FD,f2,500),g:g1*.8},{h:lc,w:W_(\'DQ\',lab,500)}]);'],
+  ['   s+=t(y0+f1*.727,frRgb(col),f1,300,cq,\' letter-spacing="-0.02em"\')',
+   '   /* one figure over one label, twice, on one centre line: the pair reads as a pair */\n'
+   +'   var yq=y0+f1*.727,yql=yq+g1+lc,yd=yql+g2+f2*.727,ydl=yd+g1*.8+lc;ry=yql+g2/2+.5;\n'
+   +'   s+=t(yq,frRgb(col),f1,400,cq,\' letter-spacing="-0.03em"\')+t(yql,frRgb(M.dim),lab,500,\'CQ\',\' letter-spacing="0.08em"\')\n'
+   +'    +\'<line x1="\'+(cx-12).toFixed(1)+\'" y1="\'+ry.toFixed(1)+\'" x2="\'+(cx+12).toFixed(1)+\'" y2="\'+ry.toFixed(1)+\'" stroke="\'+rgba(M.ink,.16)+\'" stroke-width="1"/>\'\n'
+   +'    +t(yd,frRgb(M.dq),f2,500,dq)+t(ydl,frRgb(M.dim),lab,500,\'DQ\',\' letter-spacing="0.08em"\');\n'
+   +'   M.L.core.push(s+\'</g>\');return;\n'
+   +'   s+=t(y0+f1*.727,frRgb(col),f1,300,cq,\' letter-spacing="-0.02em"\')']],'frCore'));
  (0,eval)(patchFn(frChains,[
   ['if(frames)Cn.push(\'<path d="\'','if(frames)Cn.push(\'<path class="T-\'+key+\'" d="\''],
   ['Cn.push(\'<path d="\'+frBowD','Cn.push(\'<path class="T-\'+key+\' F-\'+T[7]+\'" d="\'+frBowD'],
@@ -28541,19 +28656,13 @@ function cluster(g,label){
   c.appendChild(b);});
  return c;}
 
-/* ---- Wheel, Frames, Dial. Ruled off the centre pane ----
-   His words: "it's taking up too much real estate being on the centre
-   pane. On our overlay, add it as options on the right-hand side, so after
-   shadow, and I don't need the text, just make it the icon."
-
-   TWO READINGS OF ONE SENTENCE, BOTH BUILT. The right rail has no Shadow
-   reading in it: measured on James, the one visible thing on the whole
-   Field page named Shadow is this bar's own Shadow button. So "on our
-   overlay ... after shadow" can mean the right rail, which is how it was
-   dispatched and is the default here, directly under the rail's top line;
-   or the right hand end of this bar, straight after Shadow, which is where
-   the shipped Frames layer row already puts Shadow, last and set apart.
-   Prototype questions switches between them. Icon only either way. */
+/* ---- Wheel, Frames, Dial. In the right rail, icon only ----
+   Ruled in two steps. First: "it's taking up too much real estate being on
+   the centre pane ... I don't need the text, just make it the icon." Then,
+   settling where: "move that to the secondary nav on the right hand side,
+   and let's just keep those three options there and let people play around
+   with it to see which ones they like better." Secondary nav is his word for
+   the right rail now. They sit directly under its top line. */
 function buildRend(){
  RREND=document.createElement('div'); RREND.id='gb-rend'; RREND.className='gb-rend';
  RREND.setAttribute('role','radiogroup'); RREND.setAttribute('aria-label','How the Field is drawn');
@@ -28564,17 +28673,8 @@ function buildRend(){
   b.addEventListener('click',function(){fviewSet(f.k);});
   RREND.appendChild(b);});}
 function placeRend(){
- var sh=BAR.querySelector('.gb-full [data-gb=shadow], .gb-end [data-gb=shadow]');
- var carry=BAR.querySelector('.gb-full [data-grp=carry]');
- if(OPT.rend==='bar'){
-  END.appendChild(sh); END.appendChild(RREND);
-  document.body.classList.remove('gb-rend-rail');}
- else{
-  /* back to its own place in the carry cluster, before Stories */
-  var st=carry.querySelector('[data-gb=stories]'); carry.insertBefore(sh,st);
-  var top=document.getElementById('railtop');
-  if(top&&top.parentNode)top.parentNode.insertBefore(RREND,top.nextSibling);
-  document.body.classList.add('gb-rend-rail');}}
+ var top=document.getElementById('railtop');
+ if(top&&top.parentNode)top.parentNode.insertBefore(RREND,top.nextSibling);}
 
 function build(){
  var stage=document.querySelector('.stage');
@@ -28596,8 +28696,21 @@ function build(){
  db.setAttribute('aria-haspopup','menu'); db.setAttribute('aria-expanded','false');
  db.addEventListener('click',function(e){e.stopPropagation();openMenu(!MENU.classList.contains('open'));});
  dp.appendChild(db); BAR.appendChild(dp);
- /* the right hand end, used only when the renditions ride the bar */
- END=document.createElement('div'); END.className='gb-grp gb-end'; BAR.appendChild(END);
+ /* ZOOM, ON EVERY RENDITION. His words, for Frames: "I want to be able to
+    zoom in and out, and then hit the F key and have it reframe." The Wheel
+    already zoomed by scroll and already reframed on F, with no control you
+    could see; the same three now sit at the end of the bar for all three
+    pictures, and F works on all three. The reframe circle's ring and pill
+    carry how far in you are. */
+ END=document.createElement('div'); END.className='gb-grp gb-zoom'; END.setAttribute('role','group');
+ END.setAttribute('aria-label','Zoom');
+ [['zout','Zoom out',IC_ZOUT,'Move out. Or press minus.',function(){zoomBy(1/1.25);}],
+  ['zin','Zoom in',IC_ZIN,'Move in. Or press plus. Scrolling on the picture does the same, and drag moves it.',function(){zoomBy(1.25);}],
+  ['zfit','Reframe',IC_ZFIT,'Back to the whole picture. Or press F.',function(){reframeNow();}]].forEach(function(z){
+  var b=orb({k:z[0],nm:z[1],ic:z[2],tip:z[3],val:z[0]==='zfit'});
+  b.addEventListener('click',function(e){e.stopPropagation();z[4]();});
+  END.appendChild(b);});
+ BAR.appendChild(END);
  stage.appendChild(BAR);
  buildRend();
 
@@ -28701,6 +28814,12 @@ function paint(){
   b.classList.toggle('wait',wait);
   setTip(b,l.tip+(V?' '+V.m:'')+(wait?' On. They draw once you scroll in on the ring.':'')
    +(z?' Brought in by zoom. Zoom out and it goes again.':''));});});
+ var zf=BAR.querySelector('[data-gb=zfit]');
+ if(zf){var zn=fzNow(),zp=(zn.s-1)/(zn.max-1)*100;
+  zf.querySelector('.val').setAttribute('stroke-dasharray',Math.max(0,Math.min(100,zp)).toFixed(1)+' 100');
+  zf.querySelector('.gb-v').textContent=zn.s.toFixed(1)+'\u00d7';
+  zf.classList.toggle('on',zn.s>1.001);
+  zf.querySelector('.gb-orb').style.setProperty('--c','var(--accent)');}
  var cur=-1;for(var i=0;i<4;i++){var p=preset(i);
   if(LAYERS.every(function(l){return !!p[l.k]===!!ON[l.k];}))cur=i;}
  if(MENU)MENU.querySelectorAll('[data-preset]').forEach(function(m){
@@ -28723,7 +28842,10 @@ function applyRend(){
   /* the dial's one chain callout names the character layer */
   fr.classList.toggle('gb-off-call',!PV('character'));}
  document.body.classList.toggle('gb-off-shadow',!PV('shadow'));}
-function apply(){applyRend(); paint(); if(typeof render==='function')render();}
+function apply(){applyRend(); paint();
+ /* Frames draws its geometry off the visible set now, so a toggle rebuilds it */
+ if(FVIEW==='frames')FR_SIG=null;
+ if(typeof render==='function')render();}
 
 /* ---- the prototype's own questions, pressable ---- */
 function opts(){
@@ -28736,20 +28858,17 @@ function opts(){
   +'<div class="gb-seg" data-o="zoomAdds"><button data-v="0">Only closer</button><button data-v="1">Also adds the next layer</button></div>'
   +'<p class="gb-oq">On a wide screen, every icon in a row, or folded behind one button?</p>'
   +'<div class="gb-seg" data-o="fold"><button data-v="auto">Row when it fits</button><button data-v="1">Always folded</button></div>'
-  +'<p class="gb-oq">Wheel, Frames and Dial. "On our overlay, on the right hand side, after shadow." Which did he mean?</p>'
-  +'<div class="gb-seg" data-o="rend"><button data-v="rail">Right rail</button><button data-v="bar">End of the bar, after Shadow</button></div>'
   +'<p class="gb-on">Not part of the product. Each is an open question in the report.</p></div>';
  document.body.appendChild(box);
  var ob=box.querySelector('.gb-ob'), oc=box.querySelector('.gb-oc');
  ob.addEventListener('click',function(e){e.stopPropagation();var o=oc.hidden;oc.hidden=!o;ob.setAttribute('aria-expanded',String(o));});
  oc.addEventListener('click',function(e){e.stopPropagation();});
  function sync(){box.querySelectorAll('.gb-seg').forEach(function(sg){var o=sg.getAttribute('data-o');
-  var v=o==='fold'?(OPT.fold?'1':'auto'):o==='rend'?OPT.rend:(OPT[o]?'1':'0');
+  var v=o==='fold'?(OPT.fold?'1':'auto'):(OPT[o]?'1':'0');
   sg.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-v')===v));});});}
  box.querySelectorAll('.gb-seg button').forEach(function(b){b.type='button';
   b.addEventListener('click',function(){var o=b.parentNode.getAttribute('data-o'),v=b.getAttribute('data-v');
-   if(o==='fold')OPT.fold=v==='1'?true:null; else if(o==='rend')OPT.rend=v; else OPT[o]=v==='1';
-   if(o==='rend'){placeRend();tone();}
+   if(o==='fold')OPT.fold=v==='1'?true:null; else OPT[o]=v==='1';
    sync(); fitFold(); unpinHidden(); apply();});});
  sync();}
 
@@ -28759,6 +28878,102 @@ function opts(){
    grey slab on a black field. The ground is read off the stage itself, the
    way rings.js reads it, and the bar and its floats take a dark or a light
    glass to match. */
+/* ============================================================
+   ZOOM ON FRAMES AND DIAL. The picture is one SVG, so it is moved as one
+   thing: a scale and a shift on the element, which keeps every mark's own
+   hit target under the pointer at any zoom. It is re-applied whenever the
+   picture is rebuilt, because the rebuild writes a new SVG.
+
+   Zoom only ever brings it closer: at 1x the picture is whole and cannot be
+   pushed off its own box, and at any zoom the edge of the picture stops at
+   the edge of the box, so the frame's flush edge is never pulled inward.
+   ============================================================ */
+var FZ={s:1,x:0,y:0}, FZ_MAX=6, FZDRAG=null, FZMOVED=false;
+function fzOn(){return FVIEW!=='wheel';}
+function fzNow(){return fzOn()?{s:FZ.s,max:FZ_MAX}:{s:S.zoom||1,max:7};}
+function fzHost(){return document.getElementById('frend');}
+function fvClass(){document.body.classList.toggle('gb-fv-frames',FVIEW==='frames');}
+function fzApply(){var h=fzHost(),sv=h&&h.querySelector('.frsvg');if(!sv)return;
+ sv.style.transformOrigin='0 0';
+ sv.style.transform=(FZ.s===1&&!FZ.x&&!FZ.y)?'':'translate('+FZ.x.toFixed(1)+'px,'+FZ.y.toFixed(1)+'px) scale('+FZ.s.toFixed(4)+')';
+ h.classList.toggle('gb-zoomed',FZ.s>1.001);}
+function fzClamp(){var h=fzHost();if(!h)return;var W=h.clientWidth,H=h.clientHeight;
+ FZ.x=Math.min(0,Math.max(W-W*FZ.s,FZ.x)); FZ.y=Math.min(0,Math.max(H-H*FZ.s,FZ.y));}
+function fzAt(ns,px,py){ns=Math.max(1,Math.min(FZ_MAX,ns));
+ var wx=(px-FZ.x)/FZ.s, wy=(py-FZ.y)/FZ.s;
+ FZ.x=px-wx*ns; FZ.y=py-wy*ns; FZ.s=ns; fzClamp(); fzApply(); paint();}
+function zoomBy(k){
+ if(fzOn()){var h=fzHost();fzAt(FZ.s*k,h.clientWidth/2,h.clientHeight/2);}
+ else setZoom(S.zoom*k,CW/2,CH/2);
+ paint();}
+function reframeNow(quiet){
+ if(fzOn()){FZ={s:1,x:0,y:0};fzApply();}
+ else{S.zoom=1;S.panx=0;S.pany=0;reframe();render();}
+ paint();
+ if(!quiet&&typeof status==='function')status(fzOn()
+  ?'Reframed. Scroll on the picture to move in, drag to move it, F to come back.'
+  :HOWTO_ZOOM_OUT);}
+function fzWire(){
+ var h=fzHost(); if(!h)return;
+ /* the picture is rebuilt by innerHTML, so the move goes back on the new one */
+ new MutationObserver(function(){fzApply();}).observe(h,{childList:true});
+ h.addEventListener('wheel',function(e){if(!fzOn())return;e.preventDefault();
+  var r=h.getBoundingClientRect();fzAt(FZ.s*(e.deltaY<0?1.12:1/1.12),e.clientX-r.left,e.clientY-r.top);},{passive:false});
+ h.addEventListener('pointerdown',function(e){if(!fzOn()||FZ.s<=1.001||e.button!==0)return;
+  FZDRAG={x:e.clientX,y:e.clientY,fx:FZ.x,fy:FZ.y};FZMOVED=false;});
+ addEventListener('pointermove',function(e){if(!FZDRAG)return;
+  var dx=e.clientX-FZDRAG.x,dy=e.clientY-FZDRAG.y;
+  if(Math.abs(dx)+Math.abs(dy)>4)FZMOVED=true;
+  if(FZMOVED){FZ.x=FZDRAG.fx+dx;FZ.y=FZDRAG.fy+dy;fzClamp();fzApply();h.classList.add('gb-drag');}});
+ addEventListener('pointerup',function(){FZDRAG=null;h.classList.remove('gb-drag');});
+ /* a drag that moved the picture is not also a press on whatever it ended on */
+ h.addEventListener('click',function(e){if(FZMOVED){FZMOVED=false;e.stopPropagation();e.preventDefault();}},true);
+ /* F, plus and minus. The Wheel's own handler already reads these on the
+    Field; on Frames and Dial it would reframe a wheel nobody can see and say
+    so, so these are caught first and answered for the picture that is up. */
+ addEventListener('keydown',function(e){
+  if(S.tab!==TAB.FIELD||!fzOn())return;
+  var t=e.target&&e.target.tagName; if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT')return;
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  var k=(e.key||'').toLowerCase(), done=true;
+  if(k==='f')reframeNow(); else if(k==='+'||k==='=')zoomBy(1.25); else if(k==='-'||k==='_')zoomBy(1/1.25); else done=false;
+  if(done){e.preventDefault();e.stopImmediatePropagation();}},true);}
+
+/* ============================================================
+   THE READINGS MOVE TO THE LEFT RAIL, IN THE CIRCLE SHAPE. His words:
+   "now that we've got the circular one up here, all the buttons on the
+   bottom don't make sense, so you should go on the left hand side, so this
+   is more real estate."
+
+   The dock itself moves, not a copy of it: the product's own renderers keep
+   writing CQ, DQ, SQ, the four that move through a person and accuracy into
+   the same elements, with the same doors, and only where they sit and the
+   shape they are drawn in changes. The rings are drawn at their own small
+   size, so each is given a viewBox and scaled up to the circle, with its
+   stroke set back to the circle's weight.
+
+   CQ AND DQ, A PAIR. "Lining those up so they don't look like a design
+   element that's not quite designed right, but has a symmetry, and I do
+   want the CQ number bigger, so it's in your face." CQ is the large circle
+   in the middle, DQ and SQ stand either side of it at one size on one
+   centre line, and the CQ figure is the largest number in the rail.
+   ============================================================ */
+function dockFix(){var d=document.getElementById('gb-dock');if(!d)return;
+ d.querySelectorAll('svg.arc').forEach(function(sv){
+  if(sv.getAttribute('viewBox'))return;
+  var bx=+sv.getAttribute('width')||24;
+  sv.setAttribute('viewBox','0 0 '+bx+' '+bx);
+  var hero=!!sv.closest('[data-q=cq]'), px=hero?72:44, want=hero?4:2.8;
+  sv.querySelectorAll('circle').forEach(function(c){c.setAttribute('stroke-width',(want*bx/px).toFixed(2));});});}
+function moveDock(){
+ var fd=document.getElementById('fdock'); if(!fd)return;
+ var left=document.querySelector('.mid > .col .panel'); if(!left)return;
+ var w=document.createElement('div'); w.id='gb-dock'; w.className='gb-dock';
+ w.setAttribute('role','group'); w.setAttribute('aria-label','Readings');
+ w.appendChild(fd); left.insertBefore(w,left.firstChild);
+ new MutationObserver(dockFix).observe(w,{childList:true,subtree:true});
+ dockFix();}
+
 function darkUnder(e){var rgb=null;
  while(e&&e.nodeType===1){var m=getComputedStyle(e).backgroundColor.match(/[\d.]+/g);
   if(m&&(m.length<4||+m[3]>=0.4)){rgb=m.slice(0,3).map(Number);break;}
@@ -28786,14 +29001,18 @@ function mount(){
  var cp=compute; window.compute=function(){var r=cp.apply(this,arguments);LASTR=r;return r;};
  var rn=render; window.render=function(){var x=rn.apply(this,arguments);queueVals();return x;};
  document.body.classList.add('gb');
- build(); placeRend(); opts();
+ build(); placeRend(); opts(); fzWire(); moveDock();
+ /* a rendition switch starts that picture whole */
+ var fs2=window.fviewSet; window.fviewSet=function(k){FZ={s:1,x:0,y:0};document.body.classList.toggle('gb-fv-frames',k==='frames');
+  fs2(k);if(typeof layout==='function')layout();};
+ fvClass();
  if(typeof layout==='function')layout();
  var sl=setLighting; window.setLighting=function(k){sl(k);tone();};
  fitFold(); tone(); apply();
  window.addEventListener('resize',function(){fitFold();openPanel(false);openMenu(false);});}
 
 return {mount:mount,PV:PV,ON:function(){return ON;},set:function(k,v){if(v)ON[k]=1;else delete ON[k];unpinHidden();apply();},
- preset:function(i){ON=preset(i);S.view=i;S.pin=null;apply();},opt:function(o,v){OPT[o]=v;if(o==='rend'){placeRend();tone();}fitFold();apply();},vals:function(){return VALS;},
+ preset:function(i){ON=preset(i);S.view=i;S.pin=null;apply();},opt:function(o,v){OPT[o]=v;fitFold();apply();},zoom:function(){return fzNow();},vals:function(){return VALS;},
  LAYERS:LAYERS,geomDepth:geomDepth,visible:visible};
 })();
 window.PV=function(k){return GB.PV(k);};

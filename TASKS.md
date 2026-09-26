@@ -14900,3 +14900,48 @@ Summary prints five readings as a score out of ten, "Anger, at 10.0 of
 10," against this project's own standing rule that a reading is never
 a score.
 
+## ED. The glass bar's third revision: all six points from EA and DY
+## built, verified myself with a real screenshot and a real rerun.
+## 26 September.
+
+**All six built, confirmed by looking rather than only reading the
+report.** Wheel, Frames and Dial sit in the right rail only, the
+bar's-tail alternative removed. The reading strip (DQ, CQ, SQ, four
+smaller readings, Accuracy) now lives in the left rail in the same
+circle shape, CQ visibly larger than its neighbours. The small
+capsule beside the coherence marker is gone. Frames sits flush to its
+container's edge. Looked directly at two screenshots, the left rail
+and the flush Frames view, and both read exactly as described.
+
+**Real new interaction, not asked for by name but a reasonable read of
+"zoom in and out, hit F to reframe":** scroll to zoom around the
+pointer, drag to pan, F to reframe, plus dedicated zoom circles at the
+end of the bar, extended to Wheel and Dial as well as Frames, flagged
+as its own open question below rather than assumed to be wanted
+everywhere.
+
+**A real defect found and fixed in its own build before it reached
+me:** the flush frame's own geometry first raised a small ratio to
+the four hundredth power, which rounds to zero and drew nothing;
+fixed and now guarded by a check that fails the run on any drawing
+error, not only a wrong pixel count.
+
+**One number checked and found to disagree with the report, on
+purpose rather than swept past.** The report claims 99 passed, 0
+failed, twice in a row. My own first run read 98 passed, 1 failed,
+"reframe did nothing on the Wheel"; my second run matched the report
+exactly, 99 and 0. A flaky, timing-sensitive check in the prototype's
+own harness, not a claim taken on faith and not hidden either.
+
+**Four real open questions, his call.**
+- Frames now also fills the empty left lane at desk width; keep that,
+  or pull it back to sit centred like Wheel and Dial.
+- On a phone, Wheel/Frames/Dial sit far below the picture at the
+  bottom of the rail, matching his ruling exactly; or a phone-only
+  exception could put the switch back above the picture, at the cost
+  of it living in two different places depending on screen size.
+- Zoom was extended to Wheel and Dial as well as Frames; keep one
+  shared control, or Frames only, matching his words exactly.
+- Accuracy keeps its word beside its circle, per an earlier ruling;
+  or match every other circle exactly and move the word to a tooltip.
+

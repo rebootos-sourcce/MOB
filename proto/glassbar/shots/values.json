@@ -20,6 +20,18 @@
   "domains": "38% ring 38.3",
   "masks": "4.5 ring 44.8"
  },
+ "corner-1600": {
+  "now": 0.98,
+  "shipped": 42.57
+ },
+ "flushbox-1600": {
+  "frame": [
+   1,
+   65,
+   129,
+   1
+  ]
+ },
  "vals-390": {
   "addresses": "5.7 ring 57",
   "seats": "5.5 ring 55",
@@ -34,5 +46,17 @@
   "archetypes": "20% ring 20.2",
   "domains": "38% ring 38.3",
   "masks": "4.5 ring 44.8"
+ },
+ "corner-390": {
+  "now": 0.43,
+  "shipped": 24.83
+ },
+ "flushbox-390": {
+  "frame": [
+   1,
+   59,
+   1,
+   203
+  ]
  }
 }

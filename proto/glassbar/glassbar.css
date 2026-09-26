@@ -48,7 +48,11 @@ body:not(.tab-field) #gb-rend{display:none!important}
 /* ---- one layer, one object. 44 by 44 is the target, the floor ---- */
 .gb-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
  min-width:44px;min-height:44px;padding:0;margin:0;border:0;border-radius:50%;background:transparent;
- color:var(--dim,#94908A);cursor:pointer;font:inherit}
+ color:var(--dim,#94908A);cursor:pointer;font:inherit;
+ /* no double tap zoom on these. Measured at 390: zoom in then reframe, two
+    quick taps a thumb's width apart, and the browser held the second tap
+    as the start of a page zoom and the reframe never arrived */
+ touch-action:manipulation}
 .gb-b:focus-visible{outline:2px solid var(--accent,#7EB8D4);outline-offset:2px}
 .gb-orb{--c:var(--accent,#7EB8D4);position:relative;width:40px;height:40px;border-radius:50%;flex:0 0 auto;
  display:flex;align-items:center;justify-content:center;
@@ -93,6 +97,72 @@ body:not(.tab-field) #gb-rend{display:none!important}
 body.punch .gb-b.on .gb-orb{background:var(--c)}
 body.punch .gb-b.on .gb-gl svg{stroke:var(--on-flat,#101010)}
 body.punch .gb-v{background:var(--c);color:var(--on-flat,#101010);border-color:var(--c)}
+
+/* ---- Frames takes the pane. The left lane held the old Wheel, Frames,
+   Dial switch and is empty now, so on a wide screen the frame spans it and
+   runs flush from the pane's left edge to the scale on the right. The Wheel
+   and the Dial are circles and stay centred in the middle cell. ---- */
+@media (min-width:721px){body.gb.tab-field.gb-fv-frames #frend{grid-column:1 / 3!important}}
+
+/* ---- zoom on Frames and Dial ---- */
+#frend{overflow:hidden}
+#frend.gb-zoomed{cursor:grab}
+#frend.gb-drag{cursor:grabbing}
+#frend.gb-drag *{pointer-events:none}
+
+/* ---- the little capsule beside the coherence marker is gone. His words:
+   "there's a little element that's mimicking the halo pitchfork, that's
+   unnecessary." It was the range the reading oscillates across, drawn as a
+   pill with a crossbar riding in it: a small vertical figure, rounded at both
+   ends, sitting beside the scale that runs from the halo down to the
+   pitchfork, and it read as a copy of that scale in miniature. The marker,
+   its number and the scale stay. ---- */
+.pol2-sw,.pol2-sm{display:none}
+
+/* ============================================================
+   THE READINGS, IN THE LEFT RAIL, AS CIRCLES
+   ============================================================ */
+body:not(.tab-field) #gb-dock{display:none}
+.gb-dock{padding:4px 0 16px;margin:0 0 12px;border-bottom:1px solid var(--edge,rgba(255,255,255,.09))}
+.gb-dock .fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;padding:0;position:static;
+ grid-column:auto;grid-row:auto}
+.gb-dock .fdock-br{display:none}
+.gb-dock .key,.gb-dock .keylo{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center}
+.gb-dock .key{display:grid!important;grid-template-columns:1fr 1fr 1fr;justify-items:center;gap:0}
+.gb-dock .keylo{gap:20px}
+.gb-dock .kb{min-width:44px;min-height:44px;padding:0;border:0;background:transparent;justify-content:center;border-radius:50%}
+.gb-dock .kb:hover{background:transparent}
+.gb-dock .kb:focus-visible{outline:2px solid var(--accent,#7EB8D4);outline-offset:3px}
+/* one circle: the ring, the mark or the letters inside, the value on the
+   lower right, the same object as the bar's */
+.gb-dock .cr{position:relative;padding:0!important;background:transparent!important;border:0!important;
+ box-shadow:none!important;border-radius:50%}
+.gb-dock .cr .ring{width:44px;height:44px;border-radius:50%;
+ background:color-mix(in srgb,var(--panel-2,#252833) 70%,transparent)}
+.gb-dock .cr .ring svg.arc{width:44px!important;height:44px!important}
+.gb-dock .cr .ring .gl svg{width:18px!important;height:18px!important}
+.gb-dock .cr .gl-t{font-size:12px}
+.gb-dock .cr .v{position:absolute;left:28px;top:30px;margin:0!important;height:17px;min-width:20px;
+ padding:0 5px!important;font-size:11px;line-height:17px;text-align:center;
+ background:color-mix(in srgb,var(--c) 30%,var(--panel,#1A1D26));
+ border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+/* CQ, THE HERO, in the middle of the pair. The figure is the largest
+   number in the rail and it sits on the ring's lower right like every other
+   value, only larger, so the object is the same and the weight is not. */
+.gb-dock .key .kb[data-q=dq]{order:1}
+.gb-dock .key .kb[data-q=cq]{order:2}
+.gb-dock .key .kb[data-q=sq]{order:3}
+.gb-dock .kb[data-q=cq] .cr .ring{width:72px;height:72px}
+.gb-dock .kb[data-q=cq] .cr .ring svg.arc{width:72px!important;height:72px!important}
+.gb-dock .kb[data-q=cq] .cr .gl-t{font-size:14px;letter-spacing:.02em}
+.gb-dock .kb[data-q=cq] .cr .v{left:44px;top:46px;height:28px;min-width:44px;padding:0 9px!important;
+ font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.01em}
+.gb-dock .kb[data-q=cq]{min-width:72px;min-height:72px}
+/* accuracy keeps its word, to the left of its circle, ruled */
+.gb-dock .acc{margin:0;text-align:center;display:flex;justify-content:center}
+.gb-dock .acc-b{gap:10px;padding:0 6px;min-height:44px}
+.gb-dock .acc-l{align-items:flex-end}
+@media (max-width:720px){.gb-dock{padding-top:10px}}
 
 /* ---- Wheel, Frames, Dial in the right rail, icon only, under the top line ---- */
 .gb-rend{display:flex;gap:8px;align-items:center}
