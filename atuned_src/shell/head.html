@@ -1002,8 +1002,18 @@ body:not(.hassub) .subbar{display:none}
    rather than merely styled. So the class takes the transform and the one
    element that prints a name opts out with plain, which is the escape hatch
    this block already has. */
-.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
+.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
 .eyebrow,.lbl,.ac-gh{text-transform:capitalize}
+/* PM-EYE CAME OUT OF THE HATCH, RULED AGAINST ITSELF. The label/sentence
+   split above still holds for the other classes in that list, but pm-eye
+   carries the Summary section heads and the same divide reads wrong there:
+   "Where it goes" and "What you told it" are short, yet a phone reading
+   them as "Where It Goes" is exactly the all caps style CLAUDE.md's voice
+   section rules out, capitalize or not. Every pm-eye string in the source
+   is already written the way it should render, so the class takes plain's
+   text-transform:none unconditionally and .pm-eye.plain becomes a no-op,
+   left in place rather than stripped from the strings that carried it. */
+.pm-eye{text-transform:none}
 /* THE HATCH REACHED FIVE CLASSES OF THIRTEEN, and the eight it did not reach
    is where the defect lived. Measured on three profiles across ten surfaces at
    both widths: 99 distinct strings sit in these classes and 42 of them are

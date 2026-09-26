@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="6a89e80 2026-09-26 00:46"><head><meta charset="utf-8">
+<html lang="en" data-build="bd1134f 2026-09-26 01:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1002,8 +1002,18 @@ body:not(.hassub) .subbar{display:none}
    rather than merely styled. So the class takes the transform and the one
    element that prints a name opts out with plain, which is the escape hatch
    this block already has. */
-.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
+.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
 .eyebrow,.lbl,.ac-gh{text-transform:capitalize}
+/* PM-EYE CAME OUT OF THE HATCH, RULED AGAINST ITSELF. The label/sentence
+   split above still holds for the other classes in that list, but pm-eye
+   carries the Summary section heads and the same divide reads wrong there:
+   "Where it goes" and "What you told it" are short, yet a phone reading
+   them as "Where It Goes" is exactly the all caps style CLAUDE.md's voice
+   section rules out, capitalize or not. Every pm-eye string in the source
+   is already written the way it should render, so the class takes plain's
+   text-transform:none unconditionally and .pm-eye.plain becomes a no-op,
+   left in place rather than stripped from the strings that carried it. */
+.pm-eye{text-transform:none}
 /* THE HATCH REACHED FIVE CLASSES OF THIRTEEN, and the eight it did not reach
    is where the defect lived. Measured on three profiles across ten surfaces at
    both widths: 99 distinct strings sit in these classes and 42 of them are
@@ -18425,7 +18435,7 @@ function sumLens(r){
  var L=[lensWestern(r),lensEastern(r),lensDesign(r),lensGene(r)]
   .filter(function(x){return x&&x.a;});
  if(!L.length)return '';
- return '<div class="pm-eye" style="margin-top:18px">Four Lenses</div>'
+ return '<div class="pm-eye" style="margin-top:18px">Four lenses</div>'
   +'<div class="s-lens">'+L.map(function(x){
    return '<div class="s-ln">'
     +'<span class="s-ln-t">'+esc(x.t)+'</span>'
@@ -26251,8 +26261,13 @@ function railTop(r){
     plate disagreed about what colour a person's band is. High coherence is
     the good end, so it never reddens. */
  var tcol=(!r.unread&&TIERCOL[r.tier])||null;
+ /* NO SEAT NAME ON A COHERENCE READING. cr()'s default title is band \u00b7
+    label \u00b7 value, and band here is r.darkB so the title named his heaviest
+    seat on a reading that is about the whole field, not that seat. */
+ var cqv=r.unread?'\u2013':Math.round(Math.max(0,Math.min(100,r.CQ||0)))+'%';
  e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
-   raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined})
+   raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined,
+   title:'coherence \u00b7 '+cqv})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
      with it: there was exactly one tier control in the product and it was the
@@ -26816,5 +26831,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001736538"></div>
+<div id="eof" hidden data-len="001737571"></div>
 </body></html>

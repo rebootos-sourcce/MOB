@@ -792,12 +792,22 @@ console.log('\n=== one tooltip ===');
 /* ============================================================
    GATE 17. A SENTENCE IN A LABEL CLASS CARRIES PLAIN.
 
-   head.html applies text-transform:capitalize to thirteen label classes, on
-   the owner's ruling that a header takes a capital on every word. That ruling
-   stands. What it does not cover is a whole statement that happens to be
-   written in one of those classes, and that is invisible in the source: the
-   strings are written in sentence case and correctly so, because the transform
-   is what does the capitalising. It is only wrong on the screen.
+   head.html applies text-transform:capitalize to the label classes, on the
+   owner's ruling that a header takes a capital on every word. That ruling
+   stands for the classes still in the rule. What it does not cover is a whole
+   statement that happens to be written in one of those classes, and that is
+   invisible in the source: the strings are written in sentence case and
+   correctly so, because the transform is what does the capitalising. It is
+   only wrong on the screen.
+
+   PM-EYE LEFT THE RULE. Ruled again, against the ruling above: the Summary
+   heads carry this class and read "Where It Goes" and "What You Told It" on
+   the shipped build, which is the same defect this gate exists to catch and
+   CLAUDE.md's voice section bans outright. head.html now gives pm-eye
+   text-transform:none unconditionally rather than routing every one of its
+   150-odd call sites through plain, so this gate no longer walks it: there is
+   nothing left for the label/sentence split to decide once the class is never
+   capitalised.
 
    Measured before the fix, on three profiles across ten surfaces at both
    widths: 95 distinct strings in those classes and 42 of them were statements.
@@ -854,7 +864,8 @@ console.log('\n=== a sentence in a label class carries plain ===');
    if(r.style&&r.style.textTransform==='capitalize'&&r.selectorText
      &&!/\.plain/.test(r.selectorText))s=r.selectorText;});}catch(e){}});
   return s;});
- ok(!!SEL&&/\.pm-eye/.test(SEL),'the capitalize rule is in the sheet, got '+SEL);
+ ok(!!SEL&&/\.tier1/.test(SEL)&&!/\.pm-eye/.test(SEL),
+   'the capitalize rule is in the sheet and pm-eye stays out of it, got '+SEL);
  const WALK=function(a){
   const SEL=typeof a==='string'?a:a.sel;
   /* THE ROOT, because a drill renders into one host and walking the whole

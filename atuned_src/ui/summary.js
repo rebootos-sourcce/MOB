@@ -798,7 +798,7 @@ function sumLens(r){
  var L=[lensWestern(r),lensEastern(r),lensDesign(r),lensGene(r)]
   .filter(function(x){return x&&x.a;});
  if(!L.length)return '';
- return '<div class="pm-eye" style="margin-top:18px">Four Lenses</div>'
+ return '<div class="pm-eye" style="margin-top:18px">Four lenses</div>'
   +'<div class="s-lens">'+L.map(function(x){
    return '<div class="s-ln">'
     +'<span class="s-ln-t">'+esc(x.t)+'</span>'

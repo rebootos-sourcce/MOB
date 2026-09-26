@@ -672,8 +672,13 @@ function railTop(r){
     plate disagreed about what colour a person's band is. High coherence is
     the good end, so it never reddens. */
  var tcol=(!r.unread&&TIERCOL[r.tier])||null;
+ /* NO SEAT NAME ON A COHERENCE READING. cr()'s default title is band \u00b7
+    label \u00b7 value, and band here is r.darkB so the title named his heaviest
+    seat on a reading that is about the whole field, not that seat. */
+ var cqv=r.unread?'\u2013':Math.round(Math.max(0,Math.min(100,r.CQ||0)))+'%';
  e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
-   raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined})
+   raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined,
+   title:'coherence \u00b7 '+cqv})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
      with it: there was exactly one tier control in the product and it was the
