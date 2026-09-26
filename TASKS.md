@@ -13786,3 +13786,57 @@ own historical UTC offset, which almost nobody actually knows; a time
 zone accepted by name, with the daylight saving rule for that zone on
 that date worked out by the code rather than by the person.
 
+## DJ. He asked directly: what have I not answered, where are we,
+## what's next. A full backlog audit, not answered from memory.
+## 26 September.
+
+**His words in full:** "what questions have I not answered, where are
+we with our tasks, what are the next steps going forward, I still have
+a lot of feedback but I still feel like we're not done tweaking and
+fine-tuning, I need to see the changes that I've been requesting and I
+have not seen those yet."
+
+**The "haven't seen it" half, handled first, separately from the
+audit.** The pin, trace and release, and phone Frames link from DG
+(`https://claude.ai/artifact/Byb9M4AZ5XBjU6kc8EYV33`) had been sent but
+may not have been opened; it was resurfaced plainly, on its own, as the
+one thing to actually click, rather than left inside a bulleted status
+report where it could be missed twice.
+
+**The backlog itself, audited rather than counted from memory,** per
+this file's own repeated lesson about a number that then drifts. The
+checkbox ledger (`[ ]`/`[x]`/`[~]`/`[?]`) stops at line 7126, 21
+September; every round since, all of 25 and 26 September, is prose
+only, so there is no single reliable done or open count and none was
+given as one. What can be said honestly: 247 section headings in the
+file, 34 lettered rounds from CB to DI on 26 September alone, roughly a
+dozen real fixes shipped into the build today, several more built as
+prototypes or looks only and not yet in the app, and a short list of
+engineering items that need no ruling from him at all and can just be
+fixed (BO6's profile leak, `wheel.js:813`'s bare law read, the
+`validateProfile` gaps).
+
+**Something over a hundred open questions across the 25 and 26
+September rounds, most of them not going to him.** Sorted into what
+each one actually is: about a quarter need his taste and nothing else
+will do; roughly thirty can take a sensible default, decided and
+logged rather than asked; about fifteen did not land the first time
+and are held for a picture rather than repeated cold, following the
+same handling already ruled once this file ("I don't know what you're
+asking me to do, dude" was not re-asked; the original ask shipped);
+around eight he has already parked on purpose (clinician safety, the
+admin interface, the Link game) and stay parked; and a handful are
+things owed the other way, mostly backend account setup he has already
+ruled goes last.
+
+**Seven put to him as the ones that actually need his judgment soon,
+nothing else added to the pile:** the avatar as a working session
+rather than eleven separate questions; Wheel, Frames and Dial kept as
+three choices or narrowed to one; "release" or "protocol" as the one
+word used everywhere; the body map's Crown height rule, waiting on the
+muscle reference image he said he was generating; the funnel
+guarantee's real wording, which three shipped lines already
+contradict; four facts about his own history that the locked
+coherence formula is anchored to; and the one number for what counts
+as heavy shadow load, engineering ready the moment he states it.
+
