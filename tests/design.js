@@ -1209,7 +1209,19 @@ console.log('\n=== the child treatment holds on all seven lightings ===');
       after the switch. Behind the opaque stage that never showed. Behind the
       rail, which is translucent and is where the imprints live since GO, it
       showed as a ground half way between two lightings. So the read waits for
-      the body to hold one colour across 120ms, with a ceiling. */
+      the body to hold one colour across 120ms, with a ceiling.
+
+      AND HOLDING ONE COLOUR FOR 120ms IS NOT ARRIVING, WHEN A FRAME TAKES
+      LONGER THAN THAT. The transition only advances when a frame is drawn,
+      and in this Chromium, which has no GPU, a frame under the Glass
+      lightings can take 380ms. Two reads came back equal half way: on HEAD
+      406c272 Glass read alpha 0.582 against its settled 0.55 and passed on
+      margin, and with the Story's canvas on screen Glass white read 0.867
+      and scored the pills over a half dark ground. So it waits for the body's
+      own transitions to have ended, which is the fact the old test stood in
+      for, and keeps the colour read after it with the same ceiling. */
+   for(const t0=performance.now();document.body.getAnimations().length&&performance.now()-t0<3000;)
+    await new Promise(r=>setTimeout(r,60));
    for(let i=0,was='';i<25;i++){const now=getComputedStyle(document.body).backgroundColor;
     if(now===was)break; was=now; await new Promise(r=>setTimeout(r,120));}
    const kid=document.querySelector('#imp .ip.kid');

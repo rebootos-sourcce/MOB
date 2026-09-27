@@ -219,9 +219,10 @@ function setTab(i){
   WANT[TAB.ENERGY]={right:['flow','running']};
   WANT[TAB.FIELD]={left:['soul','lean'],right:['you']};
   WANT[TAB.COMPASS]={right:['you']};
-  /* the Story's rail is the imprints and the release since GO, and both
-     open, because they are one act: see what was found, then run it. */
-  WANT[TAB.STORY]={right:['simp','srel']};
+  /* the Story's rail is the imprints since GO, opened by the bank now. The
+     release went into the Story's own third column, round IJ, so it has no
+     rail section left to open. */
+  WANT[TAB.STORY]={right:['simp']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;

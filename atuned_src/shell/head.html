@@ -2525,12 +2525,10 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 .cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
 .cn-sp{flex:1 1 auto;min-width:6px}
 body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
-/* the release settings. They sat in the story's right column as its lower
-   half until GO and live in the right rail's Release section now. */
-.st-relp{font-size:13.5px;color:var(--dim);line-height:1.55;margin:4px 0 10px}
-.st-rrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px}
-.st-rlab{font-size:11px;font-weight:600;color:var(--dim);width:62px;flex:0 0 auto}
-/* min-width as well as min-height. A one character label gave a 29px wide
+/* the Story's segmented choices, the sort and the pace. The release settings
+   they were first written for went into the Story's third column, round IJ,
+   and the rows, the list and the foot that held them went with it.
+   min-width as well as min-height. A one character label gave a 29px wide
    target, which passes a height floor and fails a tap floor, and the gate is
    right that 44 is both dimensions. */
 .st-rb{background:transparent;border:1px solid var(--edge);color:var(--mid);
@@ -2539,12 +2537,10 @@ body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
  display:inline-flex;align-items:center;justify-content:center}
 .st-rb:hover{background:var(--panel-2);color:var(--ink)}
 .st-rb.on{border-color:var(--accent);color:var(--accent);font-weight:500}
-.st-rlist{display:flex;flex-direction:column;gap:6px;margin:10px 0}
-.st-rit{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink)}
-.st-rit em{font-style:normal;color:var(--dim);font-size:11.5px;margin-left:auto}
-.st-rfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;
- font-size:12px;color:var(--dim);margin-top:4px}
 body.punch .st-rb{border-color:transparent;background:var(--panel-2)}
+/* the bank and the vault are outlined pills everywhere else, and Punch takes
+   the outline off, which left them as two words floating in the header */
+body.punch .st-ico{border-color:transparent;background:var(--panel-2)}
 .kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
  display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 body.punch .kb-q{border-color:transparent}
@@ -3005,14 +3001,122 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    STORY
    ============================================================ */
 .iq{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;padding:18px}
-.st-wrap{display:grid;grid-template-columns:1fr 396px;gap:16px;width:100%;height:100%;
- padding:4px;align-items:stretch;text-align:left}
-.st-col{min-height:0;display:flex;flex-direction:column}
-/* the column itself no longer scrolls: its two halves do, each on its own, so
-   imprints and the release settings move independently. The rule that made
-   the whole column scroll is gone rather than overridden, because two
-   declarations of one class is how a geometry ends up depending on order. */
-.st-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+/* ============================================================
+   THE STORY IS THREE COLUMNS, LAYOUT H, AND THE ONE IN USE GETS THE ROOM.
+
+   Round IJ wired in round II's prototype, proto/story-redesign2. Write,
+   imprints and release stand side by side with nothing below the fold at
+   1600, his round HY ruling: "I want story, imprints and release to all be
+   above the fold". The flex values are the prototype's as measured. Which
+   column has the room is data-focus on the row, set by ui/storyui.js, so the
+   whole of the shape change is written here and none of it in script.
+
+   The panels inside the stage are tinted with the lighting's own ink rather
+   than given a panel colour, because the stage already is one on every
+   lighting and a panel colour on a panel is invisible on four of the seven.
+   ============================================================ */
+.st-flow{display:flex;gap:12px;width:100%;height:100%;min-height:0;align-items:stretch;text-align:left}
+.st-colw,.st-colr,.st-colx{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
+ transition:flex var(--t-context) var(--ease-out)}
+.st-colw{flex:1.5 1 0}
+.st-colr{flex:1 1 0}
+.st-colx{flex:0 0 300px}
+.st-flow[data-focus="read"] .st-colw{flex:1 1 0}
+.st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
+.st-flow[data-focus="release"] .st-colw{flex:1 1 0}
+.st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
+.st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
+ background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
+ border-radius:var(--r-s);padding:14px 16px}
+.st-jr{flex:1 1 0}
+.st-ch{flex:0 0 50%}
+.st-ls{flex:1 1 0}
+.st-eb{font-size:12px;font-weight:600;color:var(--dim)}
+.st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
+.st-none{color:var(--dim);font-size:13.5px;line-height:1.55;margin:10px 0 0;max-width:52ch}
+.st-ring{display:inline-block;width:12px;height:12px;border-radius:50%;flex:0 0 auto;
+ border:1.6px solid var(--c,var(--accent))}
+/* the column itself does not scroll: the list and the release queue do, each
+   on its own, so a long entry never pushes Run off the screen. */
+.st-hd{display:flex;align-items:center;justify-content:space-between;gap:6px 10px;
+ flex-wrap:wrap;margin-bottom:9px}
+/* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
+.st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
+.st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
+ padding:0 11px;border-radius:999px;border:1px solid var(--edge-2);background:transparent;
+ cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--mid);justify-content:center;
+ transition:border-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.st-ico svg{flex:0 0 auto;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linejoin:round;stroke-linecap:round}
+.st-ico:hover{color:var(--ink)}
+.st-ico[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+.st-ico b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.st-lb{white-space:nowrap}
+/* the list door exists for the phone, where the list folds away */
+.st-open{display:none}
+.st-sort{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px}
+.st-sort .st-eb{margin-right:4px}
+/* the canvas sits on the lighting's sunk ground. .st-cvw carries the ink and
+   the hidden key carries dim and the accent, which is how the canvas reads
+   the lighting: a custom property never reaches a 2D context. */
+.st-cvw{position:relative;flex:1 1 auto;min-height:120px;margin:8px -6px 0;border-radius:var(--r-xs);
+ background:var(--sunk);overflow:hidden;color:var(--ink)}
+.st-cvw canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
+.st-cvk{display:none;color:var(--dim);border-top:1px solid var(--accent)}
+.st-ctr{font-size:12.5px;color:var(--dim);margin-top:6px;min-height:18px}
+/* ---- the list: this entry by lane, or the vault ---- */
+.st-lshd{font-size:12px;font-weight:600;color:var(--dim);min-height:22px}
+.st-lsb{flex:1 1 auto;overflow:auto;margin:4px -6px 0;padding:0 6px;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+.st-grp{margin:10px -6px 0;border-radius:var(--r-xs);padding:2px 6px 6px;
+ transition:background var(--t-element) var(--ease-out)}
+.st-grp.hot{background:color-mix(in srgb,var(--c) 9%,transparent)}
+.st-ghd{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;
+ border-bottom:1px solid var(--edge);padding:4px 0}
+.st-ghd b{color:var(--c);font-weight:600;display:flex;align-items:center;gap:7px}
+.st-ghd svg{width:15px;height:15px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+.st-ghd em{font-style:normal;color:var(--dim);text-align:right}
+.st-ghd em.warn{color:var(--mid)}
+.st-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.st-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid color-mix(in srgb,var(--c) 45%,transparent);
+ border-radius:999px;padding:4px 11px 4px 8px;font-size:13.5px;min-height:30px;color:var(--ink)}
+.st-pill.inf{border-style:dashed}
+.st-pill small{color:var(--mid);font-size:12px}
+.st-pill.new{animation:stPillIn var(--t-surface) var(--ease-land)}
+@keyframes stPillIn{from{transform:scale(.6);opacity:0}}
+/* ---- the release, lit from within by the heaviest address it will run ----
+   Round HX, design B, which he did not strike. The glow is the selected seat
+   and its brightness is how heavy that address is, both set by storyui.js. */
+.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;border-radius:var(--r-s);
+ padding:14px 16px;--glow:var(--accent);
+ background:radial-gradient(70% 90px at 50% 0,color-mix(in srgb,var(--glow) 30%,transparent),transparent),
+  radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
+  color-mix(in srgb,var(--ink) 3%,transparent);
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
+.st-rlhd{display:flex;align-items:center;gap:9px}
+.st-rlhd .st-ring{border-color:var(--glow)}
+.st-rlhd h3{margin:0;font-size:19px;font-weight:600;color:var(--ink)}
+.st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+/* the selection as its rings and nothing else, the card's cut. Each ring is
+   a toggle at the tap floor; out of the run it steps back rather than going,
+   so a second tap brings it back. */
+.st-rings{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.st-rq{display:inline-flex;align-items:center;justify-content:center;min-width:var(--tap);min-height:var(--tap);
+ padding:0;border:0;border-radius:999px;background:transparent;cursor:pointer;
+ transition:opacity var(--t-element) var(--ease-out)}
+.st-rq[aria-pressed="false"]{opacity:.35}
+.st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.st-rlfoot{margin-top:auto;padding-top:10px}
+/* the card's two fields, .rel-field, set to the column's left edge */
+.rel-fields.st-fields{justify-content:flex-start;margin:0}
+.st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
+ font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
+ transition:filter var(--t-micro) var(--ease-out)}
+.st-go:hover{filter:brightness(1.08)}
+.st-go:disabled{opacity:.4;cursor:default}
+/* the negated word, struck, with the negator inside the mark. See stMarks. */
+.st-f.neg{background:none;box-shadow:none;color:var(--dim);text-decoration:line-through;
+ text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
 /* RECORD, AND THE DOT SAYS WHICH MODE YOU ARE IN.
 
    Green while it is recording, red while you are typing, ruled. The dot is
@@ -3097,31 +3201,37 @@ body.tab-story #railtop,body.tab-story #bRel{display:none}
 /* five grouping buttons are wider than a rail, and a row that overflows with
    no affordance reads as a missing control, so it wraps. */
 .st-rail .ip-ctl{flex-wrap:wrap}
-/* ---------- Source AI, beside the journal ----------
-   The opening question is the largest line on the page while nothing is
-   written, and steps back to a heading once the person is writing, because
-   from then on they lead and the question is theirs to answer or not. */
-.st-src{overflow-y:auto;overflow-anchor:none;padding:2px 8px 10px 4px;
- scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
-.src-hd{display:flex;align-items:center;justify-content:space-between;min-height:28px}
+/* THE RAIL STEPS ASIDE ON THE STORY, AND THE BANK BRINGS IT BACK. Round HY,
+   his words: "feel free to break that right navigation." The three columns
+   take its width, so the stage track is the rest of the row. The bank sets
+   st-bank and the rail returns with the Imprints page in it and Selection
+   under it, where that page's Detail opens. Stacked, the rail is a block
+   under the surface, so it is simply not there until the bank asks for it. */
+body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
+@media (min-width:1181px){
+ body.tab-story:not(.st-bank) .mid{grid-template-columns:302px 1fr}
+ body.lshut.tab-story:not(.st-bank) .mid{grid-template-columns:58px 1fr}}
+/* ---------- Source AI, over the journal ----------
+   Its own panel and its own look, HT in TASKS.md: no box, a bar in the
+   accent down its left edge, so it reads as the system speaking and not as
+   another place to type. The opening question is the largest line on the
+   page while nothing is written, and steps back once the person is writing,
+   because from then on they lead and the question is theirs to answer or not. */
+.st-pe{flex:0 0 auto;border-left:3px solid var(--accent);padding:2px 0 2px 16px;min-width:0}
+.src-hd{display:flex;align-items:center;gap:10px;min-height:20px}
 .src-tag{font-size:12px;color:var(--dim)}
-.src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:500;margin:8px 0 6px;
+.src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:400;margin:4px 0 2px;max-width:44ch;
  transition:font-size var(--t-element) var(--ease-out),color var(--t-element) var(--ease-out)}
-.src-open.quiet{font-size:14px;color:var(--dim);font-weight:400}
-.src-jog{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
-.src-jog li{font-size:15px;line-height:1.5;color:var(--mid);padding-left:12px;
- border-left:2px solid var(--edge-2)}
-.src-q{font-size:18px;line-height:1.45;color:var(--ink);margin:12px 0 6px}
+.src-open.quiet{font-size:15px;color:var(--mid)}
+.src-jog{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--dim)}
+.src-jog q{color:var(--mid);quotes:"\201C" "\201D"}
+.src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
-.st-src>.btn{align-self:flex-start;margin-top:10px}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
  white-space:nowrap;margin:0}
-.src-heard{margin-top:20px;border-top:1px solid var(--edge);padding-top:12px}
-.src-row{display:grid;grid-template-columns:76px 1fr auto;gap:10px;align-items:center;
- padding:8px 0;border-bottom:1px solid var(--edge)}
+.src-row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin-top:8px}
+.src-gauge{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim)}
 .src-seat{font-size:12.5px;font-weight:600;color:var(--c)}
-.src-words{font-size:13.5px;color:var(--ink);line-height:1.45;min-width:0}
-.src-words q{quotes:"\201C" "\201D"}
 /* the rung, drawn and never printed. Ten marks; the four it asks at carry
    the seat colour on their edge, so the asking end is visible before
    anything reaches it. */
@@ -4102,7 +4212,44 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .col{min-height:auto}
  .stage{min-height:62vh}
  .panel.sc{max-height:none;overflow:visible}
- .st-wrap{grid-template-columns:1fr}
+ /* THE STORY STACKED IS LAYOUT H ON A PHONE: the two columns a person is not
+    in sit compact, so all three are on the first screen. Round II measured it
+    as the only one of five layouts that kept Run there, where the old page
+    put Run 1558 pixels down. Writing, the instrument is a strip and the list
+    folds away behind List; reading, the journal shrinks and the list opens;
+    and the release is a bar with Run on it until it is touched. */
+ /* centred, a column taller than its host clips its own top where no
+    scroll can reach it, so a stacked Story starts at the top */
+ body.tab-story #story{justify-content:flex-start;padding:10px}
+ /* AND EVERY GAP IS TIGHTER THAN THE PROTOTYPE'S, because the product keeps
+    two things it did not carry: Record, and the line saying where recorded
+    audio goes. Measured at 390 by 844 with the prototype's spacing, Run sat
+    80 pixels under the first screen. These are the pixels that bought it
+    back, and none of them is a tap target. */
+ .st-flow{flex-direction:column;height:auto;gap:8px}
+ .st-flow>*,.st-colr>*,.st-colw>*{flex:0 0 auto!important}
+ .st-colw,.st-colr,.st-colx{gap:8px}
+ .st-pan{padding:10px 12px}
+ .st-hd{margin-bottom:6px}
+ .st-bar{margin-top:8px}
+ .src-row{margin-top:4px}
+ .st-ed,.st-ta,.st-hl{min-height:128px}
+ .st-flow:not([data-focus="write"]) .st-ed,.st-flow:not([data-focus="write"]) .st-ta,
+ .st-flow:not([data-focus="write"]) .st-hl{min-height:96px}
+ .st-cvw{flex:0 0 auto;height:230px;min-height:0}
+ .st-flow:not([data-focus="read"]) .st-cvw{height:100px}
+ .st-flow:not([data-focus="read"]) .st-sort,.st-flow:not([data-focus="read"]) .st-ctr,
+ .st-flow:not([data-focus="read"]) .st-ls{display:none}
+ .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
+ .st-lsb{overflow:visible}
+ .st-lb{display:none}
+ .st-flow:not([data-focus="release"]) .st-rl{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;gap:10px;padding:10px 12px}
+ .st-flow:not([data-focus="release"]) .st-rlhd,.st-flow:not([data-focus="release"]) .st-fields{display:none}
+ .st-flow:not([data-focus="release"]) .st-rings{margin:0}
+ .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0}
+ .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px;padding:0 20px;width:auto}
+ .src-open,.src-q{font-size:18px}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}
 }
@@ -4218,7 +4365,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     below its content's minimum, so the writing column pushed the whole surface
     to 432. Everything in the chain is allowed to shrink, and the mic keeps its
     tap height while its label wraps. */
- .st-wrap,.st-col,.st-hd>*{min-width:0}
+ .st-colw,.st-hd>*{min-width:0}
  .st-mic{flex-wrap:wrap;height:auto;padding-top:6px;padding-bottom:6px}
  /* and the lighting switch is a segmented row of six that cannot fit on one */
  #setthemes{flex-wrap:wrap}

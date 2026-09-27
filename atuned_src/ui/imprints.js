@@ -280,7 +280,11 @@ function impWire(){
  document.querySelectorAll('[data-ig]').forEach(function(el){el.onclick=function(){
   IMP_GROUP=el.dataset.ig; impRender();};});
  document.querySelectorAll('[data-imp]').forEach(function(el){el.onclick=function(){
-  var id=+el.dataset.imp; IMP_PICK[id]=!IMP_PICK[id]; impRender();};});
+  var id=+el.dataset.imp; IMP_PICK[id]=!IMP_PICK[id]; impRender();
+  /* what is picked here is what the Story's release column runs, round IG:
+     "In that imprints I can select what I want to be released". stRelPanel
+     loads after this file and runs at click time. */
+  if(typeof stRelPanel==='function')stRelPanel();};});
  var rb=document.getElementById('imprun');
  if(rb)rb.onclick=function(){
   var ids=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];}).map(Number);

@@ -1365,7 +1365,12 @@ function render(){
  if(S.tab===TAB.FIELD)fbRead(r);
  else if(S.tab===TAB.ENERGY)renderMap(r);
  else if(S.tab===TAB.SUMMARY)sumRender();
- else if(S.tab===TAB.ANALYTICS)anaRender();}
+ else if(S.tab===TAB.ANALYTICS)anaRender();
+ /* a release, an undo and a profile change all move what the Story's
+    release column offers and what its vault holds, and none of them passes
+    through the Story's own code. Without this the vault read nought after a
+    run until the tab was left and entered again. */
+ else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint();}
 
 /* ---- the loop ---- */
 let last=0;
@@ -1377,6 +1382,10 @@ function loop(ts){
     and ringsDraw builds it only when its signature does */
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
  else if(S.tab===TAB.ENERGY){drawAura(r);}
+ /* the Story's instrument draws on this frame and no other, so leaving the
+    tab stops it without a second loop to remember to cancel. It paints only
+    while something on it is moving, ui/storyui.js. */
+ else if(S.tab===TAB.STORY){if(typeof stFrame==='function')stFrame(ts);auraWhole();}
  else auraWhole();
  requestAnimationFrame(loop);}
 
