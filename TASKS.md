@@ -19304,3 +19304,147 @@ above; whether the body map (round GO, GT) replaces the "where it
 sits" shelf here rather than the two being built twice; and the same
 reward-word ruling from round GP, which this round's award slots all
 wait on rather than guess past.
+
+## GX. A real correction: the paywall is half built, not missing. And a real second repository found, already carrying the enterprise build he has been asking for. 27 September
+
+Two things landed close together and are logged as one round because
+the second directly answers the owner's next message.
+
+**The correction first, since it is mine to own.** Round GV stated the
+paywall was "not something built and simply not shown to him." That
+was wrong, carried forward from round GP without checking further. A
+fresh audit (`project-manager`, this round) found it: `engine/plan.js`
+(336 lines, the hundred pattern gift, free at ten a week, four priced
+tiers), `schema.js:1082`'s allowance count, and `ui/release.js:344-397`,
+which already refuses a release once the allowance is spent and hands
+the person to a real "Your plan" panel in Settings
+(`ui/panels.js:875-931`), gated by `tests/functional.js`. Nobody has
+seen it because no reference profile in the roster has ever spent the
+gift; `grep meter` in `ui/personas.js` finds zero. What is genuinely
+missing is sign in, the record store and Stripe, deliberately
+sequenced last by his own 25 September ruling at `DECISIONS.md:1585`,
+"Cloudflare is going to come at the end." The honest fix is
+screenshots of a scratch profile with the gift spent, not a build.
+
+**His words, verbatim, arriving next, and answered directly rather than
+dispatched blind:** "All right, we've been talking about doing a
+copy-paste for a while. We've got a bunch of new rules. Let's do a
+copy sweep for our summary. Well, let's just do a copy sweep for
+everything. We've got our rules. Are there any questions that need to
+be asked before you commit, or can you go with what we have? Okay, so
+I've been asking for, I don't know, a week now for this to be an
+enterprise product. I said not a flat HTML file. I said Supabase.
+That's a separate file. I said we want to break this out so it's
+optimized as an enterprise product. That's online. Why are, where did
+this get lost? Given our lexicon of language, you've got this like
+'where it sits, find an address.' What I need, my story people, my
+copy editors, my website writers to take charge from now with this
+copy, cause we keep having the same issues. Like, screen when entry,
+known, zero entries, what is that, get rid of it. Anything that's
+unnecessary that's not part of just click this, get some information
+on that, I don't need this like third tier tiny information that no
+one's ever going to read, and it's visual noise, it overloads the
+senses. So 'where it sits, crown, third eye, throat,' and then the
+patterns underneath, I don't understand the screen. So on the text
+side, I need a straight answer: is flat HTML the actual way to go? It
+doesn't seem like a good way to protect a product. I'm not the
+developer, I'm using the developer, you tell me. Because I've been
+asking for weeks and wasting tokens because I thought you were already
+doing that. So all your architecture, all your information systems,
+all your schema is in one flat file. That makes it much harder to
+read, doesn't it?"
+
+**Grounded before answering, and it changes the answer entirely: the
+enterprise build he is asking for already exists, in a second
+repository, stalled for two days on rulings only he can make.**
+`rebootos-sourcce/reboot-os`, added to this session and checked
+directly, head commit `d23fff7`, 25 September, branch
+`claude/app-migration-decision-yx56cj`. It is not this repository's
+`source.html`; it is a real client and server split: a Cloudflare
+Workers backend (`atuned/server/`, `wrangler.toml`), a D1 database
+schema, AES-GCM 256 journal encryption with the key wrapped under a
+PIN via PBKDF2 at 600,000 rounds (replacing an unsalted SHA-256 that
+made a four digit PIN guessable in under a second), and a real sync
+protocol, all logged in this file's own AW series with real commits
+(`d6fd75c`, `6cc0027`, `fa7a0f8`). Confirmed directly, not taken on the
+log: `wrangler.toml` at `atuned/server/wrangler.toml:10` still reads
+`database_id = "REPLACE_AFTER_wrangler_d1_create"`, exactly as logged,
+meaning the real database has never actually been created. Two things
+block it, both his: the backend region and provider were never ruled
+("Supabase was proposed... Cloudflare D1 was built anyway"), and its
+CI has read red for eighty one pushes because GitHub Actions itself
+has stopped assigning a runner, which reads as an account level
+billing lock only someone with access to the repository owner's GitHub
+account can check.
+
+**The direct answer, since he asked for one plainly rather than a
+dispatch.** Flat HTML is the right shape for what this repository
+actually is: a single, dependency free, no backend diagnostic
+instrument, and that rule was his own, ruled and restated repeatedly
+in this project's own founding document. It is the wrong shape for an
+enterprise product with real accounts and a database, and it was never
+meant to be that shape; `source.html` is a build artifact, not the
+actual working codebase, which is the organised, multi file
+`atuned_src/` this whole session has been editing. Nothing here
+"lost" the enterprise build: it exists, separately, exactly where he
+asked for it, in a real repository with a real server and a real
+encrypted database schema, and it has been sitting for two days
+waiting on two decisions only he can make, plus a GitHub account
+level lock nobody inside a session can clear. On protection: yes, a
+single client side file makes the whole engine readable to anyone with
+developer tools open, confirmed again directly at round GV; the
+`reboot-os` repository's own server side split is the actual answer to
+that, and it is real, built, and stalled on him, not on the team.
+
+**The copy sweep is authorised to proceed, with one real dependency
+named rather than a blank yes.** He asked whether there are blocking
+questions or whether the team can go with what is already ruled. There
+is one: round GS's rulings (Character, Release over Integrate, the
+dictated opening copy, no naming for masks) were spoken this session
+but never written into `DECISIONS.md`, confirmed still missing at its
+own cited line numbers by this round's audit. A sweep run before that
+happens risks sweeping against rules that are not yet the record of
+truth. Writing them in is small and comes first; the sweep itself has
+no other blocker.
+
+**The two specific complaints, "screen when entry, known, zero
+entries" and "where it sits, crown, third eye, throat, and then the
+patterns underneath, I don't understand the screen," are read
+directly against `proto/knowledge/shots/d-map-1600-Diane-open.png`,
+the mockup just sent him.** That screenshot does carry a line reading
+"Seen 1 entry · Known 0 entries" in its header and a "Where it sits"
+section title over the seven seat bands. This is real, specific
+feedback on a delivered mockup, not a new defect: too much header
+chrome, and a screen whose organising idea did not read clearly enough
+on its own. Folded into whatever revision the Knowledge base work
+takes next rather than treated as separate.
+
+Dispatched:
+1. Writing round GS's rulings into `DECISIONS.md` at the exact lines
+   this round's audit named, to `narrative-director`, ahead of
+   anything else, since the copy sweep depends on it.
+2. The full copy sweep itself, once the above lands, to
+   `narrative-director`, working from `COPY.md` and every objection
+   logged in `.claude/skills/atuned-voice/objections.json` including
+   this session's own new `CO-26`.
+3. Landing the real, already finished work sitting uncommitted in the
+   shared tree, one seat at a time with a full gate run between each,
+   named by this round's audit: the ashamed fix, Fringe plus running
+   hot, the left panel renames, and the Source AI Story rebuild. To me
+   directly, since this is verification and sequencing work rather
+   than new dispatch.
+4. A written brief on the `reboot-os` situation and the two decisions
+   blocking it (backend region and provider; the GitHub Actions
+   billing lock), to `technical-director`, so the choice he needs to
+   make is put to him with real options rather than only named as
+   blocked.
+
+What I need from him: the backend region and provider ruling that has
+blocked `reboot-os` for two days; someone with access to the
+repository owner's GitHub account to check Actions billing and usage,
+since its CI cannot go green until that is resolved regardless of any
+code; and, separately, whether "pain and disease free" in his own
+dictated opening copy should ship word for word or end one clause
+earlier, since it promises a medical outcome against this product's
+own marketing harm guard, a real tension this round's audit surfaced
+and this file will not quietly edit around.
