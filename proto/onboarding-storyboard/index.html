@@ -1,672 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Onboarding Storyboard</title>
-<meta name="description" content="Atuned onboarding, frame by frame, from the boot to the Field, with real copy written to the ten year old rule and every open question marked on the frame it belongs to. A prototype storyboard, not the shipped app.">
+<meta name="description" content="Atuned onboarding, drawn rather than written: the Field's own ring, core and seats as the language, a playable two minute signal test in the body, and one turn of the loop. A prototype storyboard, not the shipped app.">
 <style>
 /* One look, on purpose: the product's own Dark theme tokens, the same ones
-   atuned_src/shell/head.html carries and proto/firstrun drew with. The
-   storyboard is drawn inside the product's world, so it commits to one theme
-   and paints every colour explicitly. No font is fetched: this page follows
-   the product's one file, no network rule, so it runs on the system face. */
+   atuned_src/shell/head.html carries. The storyboard is drawn inside the
+   product's world, so it commits to one theme and paints every colour
+   explicitly. No font is fetched: the product's one file, no network rule. */
 :root{
  color-scheme:dark;
- --bg:#0C0D12; --panel:#1A1D26; --panel2:#252833; --sunk:#090A0E;
+ --bg:#0C0D12; --panel:#1A1D26; --panel2:#252833; --sunk:#090A0E; --glass:rgba(26,29,38,.78);
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:#2C303C;
  --sky:#7EB8D4; --skybg:rgba(126,184,212,.08); --warn:#DABF6A; --warnbg:#2A2412;
- --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
- --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);
- padding-inline:clamp(16px,4vw,48px);padding-block:0 72px}
+ padding-inline:clamp(16px,4vw,48px);padding-block:0 72px;overflow-x:hidden}
 .wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:64px}
 h1,h2,h3{font-weight:500;letter-spacing:-.01em;text-wrap:balance;margin:0}
 h1{font-size:clamp(28px,4.2vw,44px);font-weight:300;line-height:1.15}
 h2{font-size:23px}
 h3{font-size:16.5px}
-p{margin:0;max-width:68ch}
+p{margin:0;max-width:66ch}
 a{color:var(--sky)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
-code,.num{font-family:var(--mono);font-size:.9em}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+code{font-family:var(--mono);font-size:.9em}
 .eye{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sky)}
 .mid{color:var(--mid)} .dim{color:var(--dim)}
 
-/* the prototype band. On the page, first, and sticky: ruled after FK, a
-   prototype says what it is where it is seen. */
-.proto{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-inline:calc(-1 * clamp(16px,4vw,48px));margin-bottom:0;
+.proto{position:sticky;top:0;z-index:5;margin-inline:calc(-1 * clamp(16px,4vw,48px));
  padding:10px clamp(16px,4vw,48px);background:var(--warnbg);border-bottom:1px solid var(--warn);
  color:var(--warn);font:500 13.5px/1.4 var(--sans);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
 .proto b{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--warn);border-radius:3px;padding:3px 6px}
 
-header{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:40px}
-header .txt{display:flex;flex-direction:column;gap:16px}
-header .hero{display:flex;justify-content:center}
-@media (max-width:820px){header{grid-template-columns:1fr}header .hero{order:-1}}
+/* header: words left, the playable signal test right */
+header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px;align-items:center;padding-top:40px}
+header .txt{display:flex;flex-direction:column;gap:18px}
+@media (max-width:860px){header{grid-template-columns:1fr;gap:32px}}
+.counts{display:flex;gap:28px;flex-wrap:wrap}
+.counts div{display:flex;flex-direction:column;gap:2px}
+.counts b{font:300 34px/1 var(--sans)}
+.counts i{font-style:normal;color:var(--dim);font-size:13.5px}
+.counts span{font:500 11.5px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
 
+/* the player */
+.player{display:flex;flex-direction:column;align-items:center;gap:12px;width:320px;max-width:100%}
+.player .phone{max-width:320px;cursor:default}
+.pctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pctl button{min-height:44px;min-width:44px;padding:0 16px;border-radius:22px;border:1px solid var(--line);background:var(--panel);
+ color:var(--ink);font:500 14px/1 var(--sans);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.pctl button[aria-pressed="true"]{border-color:var(--sky);color:var(--sky)}
+.pctl button.go{background:var(--sky);color:#0C0D12;border-color:var(--sky)}
+.said{min-height:3.2em;font-size:14px;line-height:1.45;color:var(--mid);text-align:center;max-width:300px}
+.said::before{content:"spoken";display:block;font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+
+/* the sequence, as glyphs */
 .thread{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.thread div{flex:1 1 150px;padding:14px;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--line)}
+.thread div{flex:1 1 120px;padding:14px;display:flex;gap:10px;align-items:center;border-left:1px solid var(--line);font-size:14.5px}
 .thread div:first-child{border-left:0}
-.thread b{font-weight:500}
-.thread span{font:400 12.5px/1.4 var(--mono);color:var(--dim)}
+.thread svg{flex:0 0 auto}
+.thread em{font-style:normal;font:400 12px/1 var(--mono);color:var(--dim);margin-left:auto}
 .thread .turn{background:var(--skybg)}
-@media (max-width:720px){.thread div{flex-basis:100%;border-left:0;border-top:1px solid var(--line)}.thread div:first-child{border-top:0}}
+@media (max-width:720px){.thread div{flex-basis:50%;border-left:0;border-top:1px solid var(--line)}}
 
 section{display:flex;flex-direction:column;gap:22px}
 .sec-h{display:flex;flex-direction:column;gap:8px}
-.news{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px}
-.news div{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px}
-.news b{font-weight:500}
-.news span{font-size:14.5px;color:var(--mid)}
+.grp-h{display:flex;flex-wrap:wrap;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:18px}
+.grp-h h2{font-size:19px}
+.grp-h em{font-style:normal;font:400 12.5px/1 var(--mono);color:var(--dim)}
 
-/* frames */
-.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:44px 28px}
-.fr{display:flex;flex-direction:column;gap:14px}
-.phone{width:100%;max-width:262px;aspect-ratio:390/760;background:var(--sunk);border:1px solid var(--line);
- border-radius:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;
- justify-content:center;gap:10px;padding:20px 16px;font-size:12px;line-height:1.4;text-align:center}
-.phone .leave{position:absolute;top:12px;right:14px;font-size:10.5px;color:var(--dim)}
-.phone .big{font-size:18px;font-weight:400}
-.phone .word{font-size:26px;font-weight:300;letter-spacing:.01em}
-.phone .small{font-size:11px;color:var(--mid)}
-.phone .tiny{font-size:9.5px;color:var(--dim)}
-.phone .mirror{font-size:11px;line-height:1.5;color:var(--ink);text-align:left}
-.phone .mirror u{text-decoration:underline dashed var(--warn);text-underline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--sky);color:#0C0D12;
- border-radius:5px;font-size:11.5px;font-weight:500;padding:7px 20px}
-.btn.ghost{background:transparent;color:var(--mid);border:1px solid var(--line)}
-.fld{width:100%;text-align:left;display:flex;flex-direction:column;gap:3px}
-.fld label{font-size:9.5px;color:var(--dim)}
-.fld i{font-style:normal;display:block;border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:6px 8px;font-size:11.5px;color:var(--ink)}
-.ck{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--mid);align-self:flex-start}
-.ck b{width:13px;height:13px;border:1px solid var(--dim);border-radius:3px;display:inline-block}
-.rows{display:flex;flex-direction:column;gap:7px;text-align:left;width:100%}
-.rows div{display:flex;gap:7px;align-items:flex-start;font-size:10.5px;color:var(--mid)}
-.rows div::before{content:"";flex:0 0 9px;height:9px;margin-top:3px;border:1px solid var(--sky);border-radius:50%}
+/* frames: the drawing is the frame, the notes are a quieter layer under it */
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:40px 24px}
+.fr{display:flex;flex-direction:column;gap:10px}
+.phone{width:100%;max-width:262px;aspect-ratio:260/500;background:var(--sunk);border:1px solid var(--line);
+ border-radius:24px;position:relative;overflow:hidden}
+.phone>svg{position:absolute;inset:0;width:100%;height:100%}
+.meta{display:flex;flex-direction:column;gap:6px;max-width:262px;font-size:13px;color:var(--dim)}
+.meta .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.meta .id{font:500 11.5px/1 var(--mono);color:var(--sky)}
+.meta .nm{color:var(--ink);font-weight:500;font-size:14px}
+.meta .chip{display:inline-flex;align-items:center;gap:4px;font:400 11.5px/1 var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:3px 7px}
+.meta .chip.q{color:var(--warn);border-color:var(--warn);text-decoration:none}
+.meta details{font-size:13px;line-height:1.5}
+.meta summary{list-style:none;cursor:pointer;color:var(--dim);font:500 11.5px/1 var(--mono);letter-spacing:.04em;padding:8px 0;min-height:32px;display:flex;align-items:center}
+.meta details p{color:var(--mid);font-size:13px}
+.meta .say{color:var(--ink);border-left:2px solid var(--sky);padding-left:9px;margin-bottom:6px}
 
-.cap{display:flex;flex-direction:column;gap:8px;max-width:262px}
-.cap .id{font:500 12px/1 var(--mono);color:var(--sky);letter-spacing:.04em}
-.cap h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
-.cap p{font-size:14px;color:var(--mid);line-height:1.5}
-.copy{display:flex;flex-direction:column;gap:5px;border-left:2px solid var(--sky);padding:2px 0 2px 11px}
-.copy span{font-size:14.5px;color:var(--ink);line-height:1.4}
-.copy span.was{font-size:12.5px;color:var(--dim);text-decoration:line-through}
-.cap dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:2px 0 0;font-size:13px}
-.cap dt{color:var(--dim);font-family:var(--mono);font-size:12px;padding-top:1px}
-.cap dd{margin:0;color:var(--ink)}
-.tag{display:inline-block;font:500 11px/1 var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:3px;padding:3px 5px}
-.tag.new{color:var(--sky);border-color:var(--sky)}
-.qs{display:flex;flex-wrap:wrap;gap:6px}
-.qs a{font:500 11.5px/1 var(--mono);color:var(--warn);border:1px solid var(--warn);border-radius:12px;padding:5px 9px;text-decoration:none;min-height:24px;display:inline-flex;align-items:center}
-.qs a:hover{background:var(--warnbg)}
-
-/* a station, drawn inside the product: a neutral bar with no tab names (it is
-   not wired, ruled after FK), the ring docked, the surface dimmed, one target lit */
-.st{position:absolute;inset:0;display:flex;flex-direction:column;gap:7px;padding:12px 12px 14px;text-align:left}
-.st .nb{display:flex;gap:5px;padding-bottom:7px;border-bottom:1px solid var(--line)}
-.st .nb i{height:8px;border-radius:4px;background:var(--panel2);flex:1}
-.st .dock{display:flex;gap:8px;align-items:center;padding:4px 2px}
-.st .dock .w{font:500 13px/1.2 var(--sans);color:var(--ink)}
-.st .dock .l{font-size:10px;color:var(--mid);line-height:1.35}
-.st .dimmed{opacity:.32}
-.st .blk{height:9px;border-radius:3px;background:var(--panel2)}
-.st .card{border:1px solid var(--line);border-radius:7px;background:var(--panel);padding:8px;display:flex;flex-direction:column;gap:6px}
-.st .lit{border-color:var(--sky);box-shadow:0 0 0 1px var(--sky) inset}
-.st .ta{font-size:10.5px;line-height:1.55;color:var(--ink)}
-.st .ta s{text-decoration:none;border-radius:2px;padding:0 1px}
-.st .note{font-size:10px;color:var(--mid);line-height:1.4}
-.st .prac{font:500 9.5px/1.3 var(--mono);color:var(--warn)}
-.st .chips{display:flex;flex-wrap:wrap;gap:5px}
-.st .chips span{border:1px solid var(--line);border-radius:12px;padding:4px 8px;font-size:9.5px;color:var(--mid)}
-.st .chips span.on{border-color:var(--sky);color:var(--ink)}
-.st .row{display:flex;justify-content:space-between;align-items:center;gap:6px}
-.st .leave{position:absolute;top:24px;right:12px;font-size:10px;color:var(--dim)}
-
-/* tables */
+/* tables and questions */
 .tw{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line)}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-top:1px solid var(--line)}
 th{font:500 12px/1.2 var(--mono);color:var(--dim);letter-spacing:.04em;text-transform:uppercase;border-top:0}
 td{color:var(--mid)}
 td b{color:var(--ink);font-weight:500}
-td.st-open{color:var(--warn)}
-td.st-done{color:var(--heart)}
-
-/* questions */
-.q{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:60px}
+td.big{font:300 22px/1 var(--sans);color:var(--ink)}
+.q{border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:60px}
 .q .qh{display:flex;gap:12px;align-items:baseline}
-.q .qh .num{color:var(--warn);font-size:15px}
+.q .qh .num{color:var(--warn);font:500 15px/1 var(--mono)}
 .quote{border-left:2px solid var(--warn);padding:2px 0 2px 14px;color:var(--mid);font-size:15px;max-width:72ch}
 .quote cite{display:block;font-style:normal;font-size:12.5px;color:var(--dim);margin-top:4px}
-.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
-.pair.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media (max-width:760px){.pair,.pair.three{grid-template-columns:1fr}}
-.opt{display:flex;flex-direction:column;gap:12px}
-.opt h3 .num{color:var(--dim);margin-right:8px}
-.strip{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.mini{width:100px;aspect-ratio:390/620;background:var(--sunk);border:1px solid var(--line);border-radius:12px;
- display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:9px;text-align:center;padding:7px;color:var(--mid)}
-.mini b{color:var(--ink);font-weight:500;font-size:10px}
-.mini.wide{width:170px;font-size:10px;line-height:1.45;text-align:left;justify-content:flex-start;padding:12px}
-.mini.wide u{text-decoration:underline dashed var(--warn);text-underline-offset:3px}
-.arr{color:var(--dim);font-family:var(--mono);font-size:12px}
-.cost{font-size:14.5px;color:var(--mid);max-width:68ch}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.opt{display:flex;flex-direction:column;gap:10px}
+.opt h3 .num{color:var(--dim);margin-right:8px;font-family:var(--mono)}
+.cost{font-size:14.5px;color:var(--mid);max-width:66ch}
 .cost b{color:var(--ink);font-weight:500}
-.others{display:flex;flex-direction:column;gap:12px;font-size:15px;color:var(--mid)}
-.others b{color:var(--ink);font-weight:500}
-
-/* account drawing */
-.acct{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;grid-template-columns:160px 1fr;gap:22px;max-width:780px}
-.acct nav{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--mid)}
-.acct nav span{padding:7px 10px;border-radius:5px}
-.acct nav .on{background:var(--panel);color:var(--ink)}
-.grp{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.grp .gh{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:12px 14px 8px}
-.acct .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 14px;border-top:1px solid var(--line);font-size:14px}
-.acct .row em{display:block;font-style:normal;font-size:12.5px;color:var(--dim)}
-.sw{width:38px;height:22px;border-radius:11px;background:var(--sky);position:relative;flex:0 0 auto}
-.sw::after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#0C0D12}
-.gf{padding:10px 14px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--mid)}
-.newt{color:var(--sky);font:500 11px/1 var(--mono);margin-left:8px}
-.pane{display:flex;flex-direction:column;gap:14px}
-@media (max-width:640px){.acct{grid-template-columns:1fr;padding:16px}.acct nav{flex-direction:row;flex-wrap:wrap}}
-
-.walks{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px 28px}
-.walks div{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px;font-size:14.5px;color:var(--mid)}
-.walks b{color:var(--ink);font-weight:500}
+.mini{width:120px;aspect-ratio:260/500;background:var(--sunk);border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden}
+.mini>svg{position:absolute;inset:0;width:100%;height:100%}
+.list{display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--mid)}
+.list b{color:var(--ink);font-weight:500}
+.list div{border-top:1px solid var(--line);padding-top:10px}
+.walks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px 26px}
+.walks div{border-top:1px solid var(--line);padding-top:12px;font-size:14.5px;color:var(--mid)}
+.walks b{color:var(--ink);font-weight:500;display:block;margin-bottom:6px}
 .walks .stop{color:var(--warn)}
-.src{display:flex;flex-direction:column;gap:10px;font-size:14.5px;color:var(--mid)}
-.src div{border-top:1px solid var(--line);padding-top:10px}
-.src b{color:var(--ink);font-weight:500}
+details.carry{border-top:1px solid var(--line);padding-top:6px}
+details.carry>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:10px;font-size:16px;color:var(--ink);list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details.carry>summary::before,.meta summary::before{content:"+";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;font:500 13px/1 var(--mono);color:var(--sky);margin-right:6px;flex:0 0 auto}
+details[open]>summary::before{content:"\2212"}
+details.carry>summary em{font-style:normal;color:var(--dim);font-size:13.5px}
+details.carry[open]>summary{margin-bottom:14px}
 footer{font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:16px}
-@media (prefers-reduced-motion:no-preference){.pulse{animation:pl 2.4s ease-in-out infinite}
- @keyframes pl{50%{box-shadow:0 0 0 1px var(--sky) inset,0 0 10px rgba(126,184,212,.35)}}}
+
+/* motion. Every loop here is the product's own: the breath of the core, the
+   ripple of a seat, the pulse of a target. Reduced motion stills all of it. */
+.br{transform-box:fill-box;transform-origin:center;animation:br 10s ease-in-out infinite}
+@keyframes br{0%{transform:scale(.86)}40%{transform:scale(1.1)}100%{transform:scale(.86)}}
+.rp{transform-box:fill-box;transform-origin:center;animation:rp 2.5s ease-out infinite}
+@keyframes rp{0%{transform:scale(.3);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+.pl{animation:pl 2.4s ease-in-out infinite}
+@keyframes pl{50%{opacity:.35}}
+.fall{animation:fall 2.5s ease-in infinite}
+@keyframes fall{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(118px);opacity:0}}
+.drift{animation:drift 6s ease-in-out infinite}
+@keyframes drift{0%{opacity:0;transform:translate(var(--dx),var(--dy))}30%{opacity:1}70%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(0,0)}}
+.spin{transform-box:view-box;transform-origin:130px 250px;animation:spin 3.2s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fly{animation:fly 3s ease-in-out infinite}
+@keyframes fly{0%{transform:translate(0,0);opacity:0}20%{opacity:1}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
+@media (prefers-reduced-motion:reduce){.br,.rp,.pl,.fall,.drift,.spin,.fly{animation:none}.rp{opacity:.5}.fall,.fly{opacity:0}.drift{opacity:1;transform:none}}
 </style>
+</head>
+<body>
 
 <div class="proto" role="note"><b>Prototype</b><span>A storyboard, not the shipped app. Nothing here is wired, and no drawn screen carries a real tab name.</span></div>
 <div class="wrap">
 
-
 <header>
  <div class="txt">
-  <span class="eye">Atuned onboarding. Storyboard, 27 September</span>
-  <h1>From the boot to the Field, in plain words, with one turn of the loop done on the way</h1>
-  <p class="mid">Every screen a brand new person meets, in order, drawn at phone width, with the real copy under each one. It starts from the storyboard you reacted to in round FK ("I like the ring with the tune... Hello Sofia's good") and keeps both of those exactly. What changed since then is listed first. Every question that is still yours is marked, in yellow, on the frame it belongs to, and written out in full at the bottom.</p>
-  <p class="mid">Your rule from today is applied to every line a person would read: speak to people as if they are ten, and never use abstract language. Where that rule and precision pulled apart, it is named, not settled quietly.</p>
- </div>
- <div class="hero" id="hero"></div>
-</header>
-
-<div class="thread" aria-label="The sequence">
- <div><b>Boot</b><span>5.4 s, shipped</span></div>
- <div><b>The mirror</b><span>new, your 27 September words</span></div>
- <div><b>Hello</b><span>kept, one line plainer</span></div>
- <div><b>Signal test</b><span>about 60 s, plainer</span></div>
- <div class="turn"><b>discover, play, flow, embody</b><span>one turn, 2 to 3 min</span></div>
- <div><b>The Field</b><span>the circle closed</span></div>
-</div>
-
-<section>
- <div class="sec-h"><span class="eye">What is new since the 26 September storyboard</span><h2>Six changes, each from something you said or ruled after it</h2></div>
- <div class="news">
-  <div><b>Your opening words are on the first screen</b><span>Ruled 27 September (round GS): "the opening screen should say what this does, or maybe say why they're here." Your dictated "This is a mirror" paragraph now sits on the figure the boot just drew, which is the avatar at rest.</span></div>
-  <div><b>Every line rewritten for a ten year old</b><span>Your rule from today. Eight lines changed. The old line is shown struck through under the new one on each frame, and the table further down lists every change.</span></div>
-  <div><b>The findings are real engine output</b><span>The story on the discover frame was run through the engine on 27 September. It finds 12 patterns across the throat, the sacral and the solar plexus, and lights four of the words. Nothing on those frames is made up.</span></div>
-  <div><b>Sign in has a place</b><span>Round JJ asked for a login page. It is not built and is blocked on the backend choice, so it is drawn as a slot beside Hello, with a question about where it goes.</span></div>
-  <div><b>The tutorial is split out</b><span>You asked for two storyboards. Onboarding ends on the Field after one turn. The tutorial is its own storyboard, for a person who has already been through this one.</span></div>
-  <div><b>The twelve questions from 19 September are sorted</b><span>Most were answered the same day in round AN and never marked. Three are still open and are asked again below, where they belong.</span></div>
- </div>
-</section>
-
-<section>
- <div class="sec-h"><span class="eye">The frames</span><h2>From the boot to the Field</h2>
- <p class="mid">Example person: Angela, 36, one of the reference profiles in the product. The blue lines under each frame are the proposed copy, exactly as a person would read it. A yellow chip is an open question of yours on that frame.</p></div>
- <div class="frames" id="frames"></div>
-</section>
-
-<section>
- <div class="sec-h"><span class="eye">Your ten year old rule, applied</span><h2>Every line that changed, and where plain and precise pulled apart</h2>
- <p class="mid">Each new line was run through the house voice gate, <code>check.py --line</code>, and passed with no hard failures. The gate cannot tell whether a ten year old follows a sentence, so that part was read by hand, out loud.</p></div>
- <div class="tw"><table>
-  <thead><tr><th>Frame</th><th>Was</th><th>Now</th></tr></thead>
-  <tbody id="tenrows"></tbody>
- </table></div>
- <h3>Where precision and plain words collided</h3>
- <div class="others">
-  <p><b>"The line" is gone from onboarding.</b> The product uses it for one exact thing: a place in the body carrying enough to show in full. "They show faint until more of your writing makes them heavier" says the same event without the word. Cost: the person meets "the line" later with nobody having said what it is. The tutorial storyboard says it, once, with the wheel on screen.</p>
-  <p><b>"Field" is not said on any frame.</b> It is the tab name and the product's word for everything it has read about you. "This wheel is you" is what a ten year old can hold. Cost: the bar says Field and the frame said wheel, so the person has to join the two themselves.</p>
-  <p><b>The pattern names are kept exactly as the engine prints them.</b> Self-Silencing, People Pleasing, Need For Approval. They are data, not copy, and one word per concept means this storyboard does not rename them. Some are the hardest words on these frames. Manipulation Through Emotion is one of the twelve this story finds, and it is not shown on a chip for that reason.</p>
-  <p><b>"Commit" is kept.</b> It is the shipped control word on the story box. A ten year old says Save. Changing it is a product wide rename, not an onboarding line.</p>
-  <p><b>Your loop words are kept.</b> discover, play, flow, embody are ruled, and embody is not a ten year old's word. Not changed. Asked below.</p>
-  <p><b>Your dictated opening is kept word for word.</b> "Bias", "conditioning" and "highest experience of life" are abstract by your own new rule. The team does not edit dictated words (ruled in <code>DECISIONS.md</code>), so it is question B.</p>
- </div>
-</section>
-
-<section>
- <div class="sec-h"><span class="eye">Where they stop</span><h2>The same walk, as four people who want different things</h2>
- <p class="mid">Levels as the engine read them on 26 September (round FI), dated on purpose because they have moved before. A person stops where the frame gives them a reason to leave.</p></div>
- <div class="walks">
-  <div><b>Angela, 36, seeker. Level 7.</b>The mirror paragraph is written for her and she reads all of it. The signal test is her moment. In discover she writes about her sister and watches "said yes when" light up. <span class="stop">Watch flow:</span> if the practice label reads as "this was fake", she feels tricked on the one screen that should feel real.</div>
-  <div><b>Derek, 39, high performer. Level 5.</b>Types his name, sees three numbers promised. <span class="stop">Stops on the mirror,</span> at "pain and disease free": a promise with no instrument behind it is the thing he is looking for to dismiss the product. Question A decides whether he gets past the first screen.</div>
-  <div><b>James, 57, C suite. Level 5 by one reading, 4 by the other.</b>Ticks the box on Hello and is on the Field in two presses. <span class="stop">Stops on the Field</span> if it still prints readings about a blank record, which it did in the 26 September walk. That is a defect to fix before this ships, listed below, not a question.</div>
-  <div><b>Marcus, 44, creative director.</b>Stays for the signal test because it is an instrument, not a pitch. play is his station: a wheel that answers his own words is proof it is not a template. <span class="stop">Stops on the mirror</span> if it reads like a spa brochure. It is the softest screen in the flow, and the only one he reads before he has done anything.</div>
- </div>
-</section>
-
-<section>
- <div class="sec-h"><span class="eye">Where the switches live</span><h2>Profile, Account: the opening and the tutorial, side by side</h2>
- <p class="mid">A drawing, not wired. The Opening group already exists with one control. The tutorial gets its own group beside it, because you ruled both live in the profile and can be turned back on (round AN, "the tutorial lives in the profile, toggleable and replayable", and round FH, "a check on and off within the profile").</p></div>
- <div class="acct">
-  <nav aria-label="Account sections, drawn"><span class="on">Account</span><span>Display</span><span>Security</span><span>Privacy</span><span>Billing</span><span>Help</span></nav>
-  <div class="pane">
-   <div class="grp"><div class="gh">The opening</div>
-    <div class="row"><span>Show the opening when the app starts<span class="newt">new</span><em>hello, the signal test and one turn of the loop</em></span><span class="sw" role="img" aria-label="switch, on"></span></div>
-    <div class="row"><span>Run the opening now</span><span class="btn ghost">Open it</span></div></div>
-   <div class="grp"><div class="gh">The tutorial</div>
-    <div class="row"><span>Show the tutorial<span class="newt">new</span><em>your avatar, and one full turn on your own story</em></span><span class="sw" role="img" aria-label="switch, on"></span></div>
-    <div class="row"><span>Run the tutorial now<span class="newt">new</span></span><span class="btn ghost">Open it</span></div>
-    <div class="gf">The signal test and the practice run change nothing. The opening keeps your name and your first story, and only if you gave them.</div></div>
+  <span class="eye">Atuned onboarding. Storyboard, 27 September, second pass</span>
+  <h1>Drawn, not written. The Field's own ring, core and seats say it.</h1>
+  <p class="mid">Your note: too many words, we are visual only. So the screens now show what a real screen would show and no more. The instructions a screen used to print are spoken instead, and the drawing does the explaining.</p>
+  <p class="mid">The signal test is new: two minutes in the body, yes then no. Play it, and tap the body where the word lands.</p>
+  <div class="counts" aria-label="Words inside the drawn screens, measured">
+   <div><span>Words on the screens</span><b id="cNow">0</b><i>285 this morning</i></div>
+   <div><span>Big words in the signal test</span><b>2</b><i>yes and no</i></div>
   </div>
  </div>
+ <div class="player" id="player">
+  <div class="phone" id="pPhone" aria-label="The signal test, playable"></div>
+  <div class="pctl">
+   <button type="button" class="go" id="pGo">Play</button>
+   <button type="button" id="pFast" aria-pressed="true" title="Runs at four times speed for review. Off runs the real two minutes.">4x</button>
+   <button type="button" id="pVoice" aria-pressed="false" title="Reads the spoken lines aloud with this device's own voice. Nothing is fetched.">Voice</button>
+  </div>
+  <div class="said" id="pSaid" aria-live="polite">Press Play.</div>
+ </div>
+</header>
+
+<div class="thread" aria-label="The sequence" id="thread"></div>
+
+<section>
+ <div class="grp-h" id="g-arrive"></div>
+ <div class="frames" id="fA"></div>
+</section>
+
+<section>
+ <div class="grp-h" id="g-signal"></div>
+ <div class="frames" id="fS"></div>
+</section>
+
+<section>
+ <div class="grp-h" id="g-turn"></div>
+ <div class="frames" id="fT"></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">The signal test, in full</span><h2>What is on the screen, and what is said over it</h2>
+ <p class="mid">Your words, turned into ten steps. The screen carries a symbol; the voice carries the instruction. About two minutes, and the seven colour ring round the edge fills as it goes, so the person always sees how far along they are without a number.</p></div>
  <div class="tw"><table>
-  <thead><tr><th>Route</th><th>Where</th><th>What happens</th><th>Opening after</th></tr></thead>
+  <thead><tr><th>Time</th><th>On the screen</th><th>Spoken</th><th>Your words it carries</th></tr></thead>
+  <tbody id="script"></tbody>
+ </table></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">What each device is, and where it comes from</span><h2>The Field's language, reused</h2></div>
+ <div class="tw"><table>
+  <thead><tr><th>Device</th><th>On the Field today</th><th>What it says in onboarding</th></tr></thead>
   <tbody>
-   <tr><td><b>Any press</b></td><td>Boot</td><td>Skips the boot only, as today</td><td>unchanged</td></tr>
-   <tr><td><b>Leave</b></td><td>The mirror</td><td>Straight to the Field, nothing kept</td><td>on, it comes back next time</td></tr>
-   <tr><td><b>Box ticked, Next</b></td><td>Hello</td><td>Name kept, straight to the Field</td><td>off</td></tr>
-   <tr><td><b>Leave</b></td><td>Signal test, any station</td><td>Straight to the Field. Quarters already done stay closed on the ring</td><td>off</td></tr>
-   <tr><td><b>Save</b></td><td>embody</td><td>The ring closes onto the Field</td><td>off</td></tr>
-   <tr><td><b>Tab closed part way</b></td><td>Anywhere</td><td>Next time it greets by name and picks up after the last closed quarter</td><td>still on</td></tr>
+   <tr><td><b>The seven colour ring</b></td><td>The seat arcs round the wheel, root red to crown violet</td><td>The two minute timer. It fills one seat at a time, so progress is a colour, never a count</td></tr>
+   <tr><td><b>The core</b></td><td>The ball in the centre. Dark red when nothing is read, sky blue as coherence rises</td><td>Breath. It swells for four seconds and falls for six, which is the pace a person copies without being told</td></tr>
+   <tr><td><b>The seven seats</b></td><td>The rainbow bands and the seat colours on every mark</td><td>Where a word landed. A tap on the body lights the nearest seat in its own colour</td></tr>
+   <tr><td><b>The ring icons with a pill</b></td><td>The six gates round the core: a glyph, a ring, a pill at the lower right holding a dash until something is read</td><td>The three body questions: did it move, warm or cool, which way. Glyph first, a dash until answered</td></tr>
+   <tr><td><b>The ripple and the tick crown</b></td><td>The ticks round the core, one colour per seat</td><td>Ten beats of yes, ten of no. Each beat drops a ripple down the body</td></tr>
+   <tr><td><b>The slider</b></td><td>The vertical needle beside the wheel, sky above, red below</td><td>What a bad day thought does. The needle falls. No number is on it, because nothing of theirs is being read</td></tr>
+   <tr><td><b>The glass panel</b></td><td>The floating bar and the pills over the Field</td><td>The one thing opened, and nothing else</td></tr>
   </tbody></table></div>
 </section>
 
 <section>
- <div class="sec-h"><span class="eye">Must be true before this ships</span><h2>Defects already found, not new asks</h2>
- <p class="mid">From the 26 September walk (round FN, eight defects logged). These are the ones this flow walks a stranger straight into. A person greeted by name who is then told what is "most shut" in them, by a record holding nothing, will not trust the next thing it says.</p></div>
- <div class="others">
-  <p><b>1. Readings on a blank record.</b> The right rail's archetype and domain percentages, and the lit Warrior and Sage seats, still print before anything is entered (backlog item AV24).</p>
-  <p><b>2. Ritual says "the root is carrying the most" on a blank record.</b> The embody frame lands on this surface.</p>
-  <p><b>3. CQ prints "0%" as its largest number after a first story.</b> That reads as a score of zero, and a reading is never a score (a standing ruling).</p>
-  <p><b>4. The When line misprints.</b> Anyone who types "after" at the start reads "When after I put the kettle on, ...". The embody frame's first chip starts with "after".</p>
-  <p><b>5. The faint drawing on discover and play is new.</b> The engine does not change. The wheel has to draw a first story faint where it now draws nothing.</p>
+ <div class="sec-h"><span class="eye">Outside, what was looked at and what was taken</span><h2>Borrowed moves, not borrowed looks</h2></div>
+ <div class="list">
+  <div><b>Apple Watch Breathe, and the Headspace breathing circle.</b> A shape that grows and shrinks is followed without a word. Taken: the core breathes, four seconds in and six out. <a href="https://css-tricks.com/recreating-apple-watch-breathe-app-animation/">CSS-Tricks on the Breathe animation</a>, <a href="https://blakecrosley.com/guides/design/headspace">a design read of Headspace</a>.</div>
+  <div><b>Calm's first screen.</b> It opens on one breath before it asks for anything, and the ask lands on a calmer person. Taken: the signal test comes before discover asks for a story. <a href="https://goodux.appcues.com/blog/calm-app-new-user-experience">GoodUX on Calm's new user flow</a>.</div>
+  <div><b>Bodily maps of emotions, Nummenmaa and others, PNAS 2014.</b> 701 people coloured a body outline where a word or a film was felt, and the maps held across cultures. Taken: tap the outline where it lands, and let the answer be a place. <a href="https://www.pnas.org/doi/abs/10.1073/pnas.1321664111">PNAS</a>.</div>
+  <div><b>Body map tools for felt sense.</b> Pick a sensation, tap where it is. Taken, and cut down: no list of sensation words is offered, three glyphs instead, so nothing is suggested to the person. <a href="https://practiceharbor.com/tools/body-map">an interactive body map</a>, <a href="https://dl.acm.org/doi/abs/10.1145/3430524.3442700">Tangible Body Maps, TEI 2021</a>.</div>
+  <div><b>Journey, thatgamecompany.</b> No words, no instructions, and people still know what to do because the world shows them. Taken: the only large words are the two the person is thinking. <a href="https://en.wikipedia.org/wiki/Journey_(2012_video_game)">Journey</a>.</div>
  </div>
 </section>
 
 <section>
- <div class="sec-h"><span class="eye">The twelve questions from 19 September</span><h2>Backlog item D1, sorted: what you already answered, and what is still open</h2>
- <p class="mid">D1 in <code>TASKS.md</code> still reads "they went out as HTML and nothing has come back". Something did come back: the ninth note, round AN, answered most of them the same day and nobody marked it. Your words are quoted beside each. The three still open are asked again in the questions below.</p></div>
- <div class="tw"><table>
-  <thead><tr><th>19 September question</th><th>Status</th><th>What settled it, or where it is asked now</th></tr></thead>
-  <tbody>
-   <tr><td><b>1. Where does a stranger land</b></td><td class="st-done">answered</td><td>The Field. Ruled 19 September: "The app opens on the Field, reversing Summary."</td></tr>
-   <tr><td><b>2. What counts as day one done</b></td><td class="st-done">answered</td><td>AN3: "Day one done is touching every screen and running that loop once. A badge and points at the end."</td></tr>
-   <tr><td><b>3. What may onboarding ask before it gives</b></td><td class="st-open">partly open</td><td>Round FH asked for first and last name on the check in. Whether the name is required is still open: question F.</td></tr>
-   <tr><td><b>4. A tutorial you finish, or one that never announces itself</b></td><td class="st-done">answered</td><td>AN5: "The tutorial lives in the profile, toggleable and replayable." It is a named thing with an end.</td></tr>
-   <tr><td><b>5. Does the tutorial spend real charge</b></td><td class="st-open">answered, then pulled against</td><td>AN5: "It does not spend real charge." Your loop ruling since then says a person watches the avatar improve through releases. Asked in the tutorial storyboard, question A.</td></tr>
-   <tr><td><b>6. Warm or mechanical</b></td><td class="st-done">answered twice</td><td>AN6: "we do not do mechanical" for onboarding. Today: "speak to people as if they're 10."</td></tr>
-   <tr><td><b>7. Say "63 questions, about fifteen minutes" up front</b></td><td class="st-open">open</td><td>The 26 September walk found the questions page still says neither. It is not on the onboarding path. Asked in the tutorial storyboard, question F.</td></tr>
-   <tr><td><b>8. Four doors, or one</b></td><td class="st-open">open on one path</td><td>After the opening's turn the four doors never show, because a story exists. A person who ticks the box or leaves early still lands on four equal doors. Question L.</td></tr>
-   <tr><td><b>9. Where the somatic opener sits</b></td><td class="st-done">answered</td><td>AN7: "The somatic opener is the one thing onboarding has them do." The signal test frames.</td></tr>
-   <tr><td><b>10. Does the bar start whole</b></td><td class="st-open">answered, not built</td><td>AN8: "The bar grows as they earn it." The locked state was never designed. Tutorial storyboard, question C.</td></tr>
-   <tr><td><b>11. Do the two arrivals get the same onboarding</b></td><td class="st-done">answered</td><td>AN9: "Same onboarding for both arrivals."</td></tr>
-   <tr><td><b>12. Is there a day two, and who asks</b></td><td class="st-done">answered</td><td>AN10: "Day two is the ritual. The ritual pushes notifications and takes over." The embody frame sets it up.</td></tr>
-  </tbody></table></div>
+ <div class="sec-h"><span class="eye">Where they stop</span><h2>Four people, the new two minutes</h2></div>
+ <div class="walks">
+  <div><b>Angela, 36, seeker.</b>The signal test is the thing she came for, and she feels yes and no land in different places. <span class="stop">Stops</span> only if her tap does not light anything, which is why every tap lights the nearest seat.</div>
+  <div><b>Derek, 39, high performer.</b>Two minutes with his eyes closed is where he checks whether this is a meditation app. <span class="stop">Stops at "Stop"</span> unless the ring shows him it ends. The seven colour timer is for him.</div>
+  <div><b>James, 57, C suite.</b>Will not say a word aloud, and does not have to: every step works with a tap and silence. <span class="stop">Stops at the bad day thoughts</span> if they read as his. They drift onto the figure, not onto him.</div>
+  <div><b>Marcus, 44, creative director.</b>Reads the drawing before anything else. Two words on the whole test is the proof it is not a brochure. <span class="stop">No forced stop.</span></div>
+ </div>
 </section>
 
 <section id="questions">
- <div class="sec-h"><span class="eye">Yours to rule</span><h2>The questions, each with the thing it is about</h2>
- <p class="mid">None is answered for you. Where a question is about a screen, both screens are drawn. A, B, C and D are new this round; the rest carry over from 26 September and are still open.</p></div>
+ <div class="sec-h"><span class="eye">Yours to rule</span><h2>Two new questions, then the ones still open from this morning</h2></div>
 
- <div class="q" id="q-a">
-  <div class="qh"><span class="num">A</span><h3>The last four words of your opening: keep "pain and disease free", or end one clause earlier?</h3></div>
-  <p class="quote">"...release the charge that causes you pain, so that you can live your highest experience of life, pain and disease free."<cite>Your dictation, 27 September, round GS. Open in DECISIONS.md since then.</cite></p>
+ <div class="q" id="q-m">
+  <div class="qh"><span class="num">M</span><h3>With the words off the screen, who says the instructions?</h3></div>
+  <p class="quote">"We are visual only, so find the symbolic language to convey this."<cite>Today. The signal test still needs "think yes ten times" said somehow, and the screen no longer says it.</cite></p>
   <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>As you said it</h3><div class="strip" id="qa1"></div>
-    <p class="cost"><b>Your voice, and it speaks to the pain.</b> Cost: the first sentence a person reads promises a medical result the instrument cannot measure, which the product's own rules refuse everywhere else. Anyone who still has pain or disease reads the mirror as having failed them. Derek stops here.</p></div>
-   <div class="opt"><h3><span class="num">2</span>End after "highest experience of life"</h3><div class="strip" id="qa2"></div>
-    <p class="cost"><b>Four of your words go.</b> Pain stays in the sentence, named as the thing the charge causes, which the instrument does read. Only the promise of being free of it goes.</p></div>
+   <div class="opt"><h3><span class="num">1</span>A voice</h3><div id="qm1"></div><p class="cost"><b>Eyes can close, which the exercise wants.</b> Cost: the voice must live inside the one file. The device's own voice is free and sounds like a machine; a recorded voice (the ElevenLabs route from the hosting notes) is about 1 MB for two minutes.</p></div>
+   <div class="opt"><h3><span class="num">2</span>One caption line at the bottom</h3><div id="qm2"></div><p class="cost"><b>Works with the sound off, which is most phones in public.</b> Cost: words are back on the screen, one line at a time.</p></div>
+   <div class="opt"><h3><span class="num">3</span>Symbols only</h3><div id="qm3"></div><p class="cost"><b>Your rule to the letter.</b> Cost: "think the word" and "where does it land" have no symbol a person reads the same way twice. Five people would have to be watched trying it.</p></div>
   </div>
  </div>
 
- <div class="q" id="q-b">
-  <div class="qh"><span class="num">B</span><h3>Does the ten year old rule reach your own dictated words?</h3></div>
-  <p class="quote">"We want to speak to people as if they're 10. That is a core theme of ours. We don't use abstract language ever. That needs to be for all of Atuned, for the tutorial and for onboarding."<cite>Today. And the standing rule in DECISIONS.md: the team does not edit dictated words.</cite></p>
-  <p class="cost">Three phrases in the opening fail the new rule: "the bias", "the conditioning", "your highest experience of life". Each is abstract: a ten year old cannot point at any of them.</p>
-  <div class="pair three">
-   <div class="opt"><h3><span class="num">1</span>Ship it as spoken</h3><p class="cost"><b>Your words, untouched.</b> Cost: the first screen breaks the rule you just made for this exact flow.</p></div>
-   <div class="opt"><h3><span class="num">2</span>You say it again, plainer</h3><p class="cost"><b>Still your words.</b> Cost: a new dictation from you, and a wait on the one screen everything else follows.</p></div>
-   <div class="opt"><h3><span class="num">3</span>The team drafts, you approve</h3><p class="cost"><b>Fastest.</b> Cost: the first screen is no longer in your voice unless you rewrite the draft, and this crosses the rule that dictated words are not edited.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-c">
-  <div class="qh"><span class="num">C</span><h3>Which words go on the figure: the welcome you ruled on the shipped sheet, your mirror paragraph, or both?</h3></div>
-  <p class="quote">Shipped welcome, your ruling: "This is you, and it is okay. No judgment. Nothing here grades you." Opening, your ruling on 27 September: "This is a mirror. We hold up every story that you share..."<cite>The first sits in atuned_src/ui/onboard.js, switched off by default. The second is in DECISIONS.md. Nothing says which one sits over the figure.</cite></p>
-  <div class="pair three">
-   <div class="opt"><h3><span class="num">1</span>The mirror, as drawn</h3><div class="strip" id="qc1"></div><p class="cost"><b>Says what it does and why they are here,</b> which is what you asked the opening to do. Cost: the "it is okay" greeting is lost.</p></div>
-   <div class="opt"><h3><span class="num">2</span>The welcome</h3><div class="strip" id="qc2"></div><p class="cost"><b>Eleven words, and warm.</b> Cost: your 27 September opening moves off the app, most likely to the funnel's page after sign up.</p></div>
-   <div class="opt"><h3><span class="num">3</span>Both, one after the other</h3><div class="strip" id="qc3"></div><p class="cost"><b>Keeps both rulings.</b> Cost: two screens to read before the first thing to do, about 12 more seconds before the signal test.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-d">
-  <div class="qh"><span class="num">D</span><h3>Where does sign in go: before Hello, or after the first turn?</h3></div>
-  <p class="quote">"Make sure there's a login page, the login page is tied to the database."<cite>Round JJ, 27 September. Not built: the backend choice is still open, and building a real login now would mean a real secret in a public repository or a login that only looks connected.</cite></p>
+ <div class="q" id="q-n">
+  <div class="qh"><span class="num">N</span><h3>Your mirror words: on the screen, or spoken over the figure?</h3></div>
+  <p class="quote">"This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life, pain and disease free."<cite>Your dictation, 27 September. Not edited here: the team does not edit dictated words.</cite></p>
   <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>Before Hello</h3><div class="strip" id="qd1"></div>
-    <p class="cost"><b>The record fills in the name</b>, so a person from the quiz is greeted by name with nothing typed. Cost: an ask before anything has been given, which is where Diane and James walked in the funnel.</p></div>
-   <div class="opt"><h3><span class="num">2</span>After the turn, on the Field</h3><div class="strip" id="qd2"></div>
-    <p class="cost"><b>Something is given first,</b> the way Duolingo gives the first lesson before the account. Cost: until then the first story sits only in this browser, and Safari clears that after seven days unused.</p></div>
+   <div class="opt"><h3><span class="num">1</span>Four words shown, all of it spoken</h3><div id="qn1"></div><p class="cost"><b>As drawn.</b> "This is a mirror." sits under the figure and its reflection. Cost: a person with the sound off reads four words of it.</p></div>
+   <div class="opt"><h3><span class="num">2</span>All of it on the screen, as this morning</h3><div id="qn2"></div><p class="cost"><b>Every word seen.</b> Cost: 52 words on the first screen, the one screen your note was most about.</p></div>
   </div>
  </div>
 
- <div class="q" id="q-e">
-  <div class="qh"><span class="num">E</span><h3>What does the box on Hello turn off?</h3></div>
-  <p class="quote">"Do you want to check this box so you don't have to see this again?"<cite>Round FH, 26 September.</cite></p>
-  <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>The whole opening, one switch</h3><div class="strip" id="qe1"></div>
-    <p class="cost"><b>Ticked, it goes straight in now and every time after</b>, until the switch in Account says otherwise. Cost: no greeting by name on later launches.</p></div>
-   <div class="opt"><h3><span class="num">2</span>Only the greeting, every launch</h3><div class="strip" id="qe2"></div>
-    <p class="cost"><b>"Hello, Sofia." after every boot</b> until the box is ticked. Cost: one extra press every launch for everyone who never finds the box.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-f">
-  <div class="qh"><span class="num">F</span><h3>Is the name required?</h3></div>
-  <p class="quote">The one piece of the 19 September question "what may onboarding ask before it gives anything" still open, after round FH put first and last name on the check in.</p>
-  <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>Optional</h3><p class="cost"><b>Next works with the fields empty.</b> Cost: no greeting and none of the three numbers the name sets, for anyone who skips it.</p></div>
-   <div class="opt"><h3><span class="num">2</span>Required</h3><p class="cost"><b>Next waits for a first name.</b> Cost: Diane and James, who both walk away from an ask placed before anything is given.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-g">
-  <div class="qh"><span class="num">G</span><h3>What does flow do on a first story, when there is nothing heavy enough to release?</h3></div>
-  <p class="quote">Measured on the build: on a first story the release says "Nothing is held above the line yet, so there is nothing to release."<cite>Round FN, 26 September.</cite></p>
-  <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>A practice run, labelled</h3><div class="strip" id="qg1"></div>
-    <p class="cost"><b>As drawn.</b> The circle closes on day one. Changes nothing. Cost: a practice mode on the release, and Angela may read "practice" as "fake".</p></div>
-   <div class="opt"><h3><span class="num">2</span>flow waits</h3><div class="strip" id="qg2"></div>
-    <p class="cost"><b>The third quarter stays open</b> until something is heavy enough, usually after the second story. Cost: no closed circle on day one. Day two becomes the day the loop first closes.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-h">
-  <div class="qh"><span class="num">H</span><h3>Is a dimmed product a pop up?</h3></div>
-  <p class="quote">"No pop ups. One screen, not a sheet over the product."<cite>20 September. The turn happens inside the real screens, with everything but one target dimmed.</cite></p>
-  <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>Dimmed, nothing covering it</h3><p class="cost"><b>As drawn.</b> The person touches the real places, which is the "navigating them around the software" you asked for in FK. Cost: a dimmed state on four screens.</p></div>
-   <div class="opt"><h3><span class="num">2</span>Full screen copies of each station</h3><p class="cost"><b>Your 20 September rule to the letter.</b> Cost: the person never touches the real places until the opening ends.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-i">
-  <div class="qh"><span class="num">I</span><h3>A few more questions after the signal test? Open, and yours</h3></div>
-  <p class="quote">"Maybe we can ask them a few more questions that kind of turn on, like not turn on, but activates the expression, activates certain aspects of the diagnostic. I don't know, maybe we don't do that."<cite>Round FK, 26 September.</cite></p>
-  <div class="pair three">
-   <div class="opt"><h3><span class="num">1</span>None</h3><p class="cost"><b>The name stays the only question,</b> and it already sets three real numbers.</p></div>
-   <div class="opt"><h3><span class="num">2</span>One law, asked three ways</h3><p class="cost"><b>Three questions,</b> the fewest the engine can read a spread from, so one spoke of the wheel is real on day one. Cost: about 40 seconds of questionnaire in the opening.</p></div>
-   <div class="opt"><h3><span class="num">3</span>A few that change nothing</h3><p class="cost"><b>Raises starts:</b> Headspace roughly doubled course starts this way. Cost: a question that pretends to tailor the product is a claim the instrument cannot back.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-j">
-  <div class="qh"><span class="num">J</span><h3>Does a station line say what to do, or also what it is for?</h3></div>
-  <p class="quote">20 September: "At no point are we talking about results or purpose." 26 September: "Highest purpose of the product results."<cite>Both yours. The opening screen half was settled on 27 September (it says what the product does). Whether the 20 September rule still binds the four station lines was not.</cite></p>
-  <div class="tw"><table>
-   <thead><tr><th>Station</th><th>1. What to do, as drawn</th><th>2. Plus what it is for, one more line</th></tr></thead>
-   <tbody>
-    <tr><td><b>discover</b></td><td>Write one thing from this week that is still on you.</td><td>It finds where that sits in your body.</td></tr>
-    <tr><td><b>play</b></td><td>Your words landed here. Open one.</td><td>Each mark is one thing your words set off.</td></tr>
-    <tr><td><b>flow</b></td><td>Read each line in your head as it comes.</td><td>Each line takes a little of the weight off.</td></tr>
-    <tr><td><b>embody</b></td><td>Pick when you will come back.</td><td>Doing it at the same time each day is what makes it stick.</td></tr>
-   </tbody></table></div>
-  <p class="cost">Column 1 names an action and lets the screen show the result, which may settle this by showing. Column 2 is written to the ten year old rule and makes no health claim.</p>
- </div>
-
- <div class="q" id="q-k">
-  <div class="qh"><span class="num">K</span><h3>Is "the starting square" Frames?</h3></div>
-  <p class="quote">"If we can get that lined up with the start, the starting square, that'd be cool."<cite>Round FH. Round FA confirmed "the square" is Frames, the nested square view of the Field.</cite></p>
-  <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>Land on Frames</h3><div class="strip" id="qk1"></div><p class="cost"><b>The first landing is the Field drawn as nested squares.</b> Cost: the Frames arrival animation is not ported yet.</p></div>
-   <div class="opt"><h3><span class="num">2</span>Land on the Wheel, as shipped</h3><div class="strip" id="qk2"></div><p class="cost"><b>"Starting square" read as square one.</b> Costs nothing to build, and misses you if you meant the square.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-l">
-  <div class="qh"><span class="num">L</span><h3>One line each, all still open</h3></div>
-  <div class="others">
-   <p><b>L1. Four doors, or one front door, for a person who skips the opening?</b> From 19 September, question 8. Today all four ("Write what happened", "Read nine sentences", "Go year by year", "Say who you are becoming") carry equal weight. One front door means Write what happened at full width; four equal means the choice lands at the moment of least context.</p>
-   <p><b>L2. Keep the two dots from the signal test on the record?</b> Kept, a later run can show whether the shape moved. Not kept, the signal test has no memory.</p>
-   <p><b>L3. Does Root energetics open on the first landing?</b> You said in EZ, "I want that one to start closed". Open once means the person lands on three numbers from their own name.</p>
-   <p><b>L4. Say that the fourteen people in the profile picker are examples?</b> It reads "Custom" above "Sofia, 41, somatic practitioner" and thirteen more, and a stranger reads them as other people's data. One word, "Examples", or leave it.</p>
-   <p><b>L5. Your loop words and the ten year old rule.</b> "embody" and "flow" are not words a ten year old uses. They are yours and ruled, so they stay unless you say otherwise.</p>
-  </div>
- </div>
+ <details class="carry">
+  <summary>Still open from this morning, A to L <em>unchanged, each with what it is about</em></summary>
+  <div class="list" id="carriedQ"></div>
+ </details>
 </section>
 
 <section>
- <div class="sec-h"><span class="eye">What to measure, so the next round can tell if it worked</span><h2>Kept on the record as dated flags, nothing sent</h2></div>
- <div class="others">
-  <p><b>1.</b> Time on the mirror screen, and Leave from it. The one new reading screen, so the one new place to lose people.</p>
-  <p><b>2.</b> Time from the first screen to the first lit word in discover.</p>
-  <p><b>3.</b> Whether a first story was committed, and how long it was.</p>
-  <p><b>4.</b> Whether a mark was opened in play.</p>
-  <p><b>5.</b> Whether the practice run in flow was finished, and where it was left.</p>
-  <p><b>6.</b> Whether a when was set in embody, and which chip or their own words.</p>
-  <p><b>7.</b> Came back on day two within an hour of the chosen when. The number the whole turn exists to move.</p>
-  <p><b>8.</b> Leave, by frame, and how often the box on Hello is ticked.</p>
-  <p>Then five real strangers at phone width, watched. Five people find about 85 percent of what is wrong.</p>
+ <div class="sec-h"><span class="eye">What to measure</span><h2>So the next round can tell whether the drawing worked</h2></div>
+ <div class="list">
+  <div><b>1. Did the tap land.</b> Share of people who placed a mark for yes, and for no. A symbol nobody acts on is a symbol nobody read.</div>
+  <div><b>2. Did the three glyphs get answered.</b> Moves, warm or cool, which way, each on its own. A glyph left on its dash tells which symbol failed.</div>
+  <div><b>3. Different places.</b> How often yes and no land on different seats. That is the moment the test exists for.</div>
+  <div><b>4. Leave, by step.</b> Especially at Stop, Derek's step, and at the bad day thoughts, James's.</div>
+  <div><b>5. Voice on or off</b>, once question M is answered, against finishing the test.</div>
+  <div><b>6. Came back on day two</b> within an hour of the chosen when. The number the whole turn exists to move.</div>
+  <div>Then five strangers at phone width, watched, with the sound off and then on.</div>
  </div>
- <p class="cost"><b>The grade.</b> Today, for a stranger, measured on 26 September: D. The 26 September storyboard: B plus, judgement. This one: B plus, judgement. The ten year old pass raises it and the new reading screen before the first action costs about 12 seconds and pulls it back by the same amount. A minus once the five defects above are fixed and question A is answered.</p>
+ <p class="cost"><b>The grade.</b> This morning's storyboard: B plus, judgement. This one: A minus, judgement. The first screen went from 52 words to 6, and the signal test turned from a thing a person is told into a thing a person does. Held back from A by question M: until the voice is decided, the test has instructions nobody delivers.</p>
 </section>
 
-<section>
- <div class="sec-h"><span class="eye">What this is built from</span><h2>Sources inside the repository</h2></div>
- <div class="src">
-  <div><b>proto/firstrun/storyboard.html and DESIGN-firstrun.md, section 0.</b> The 26 September storyboard, the ring, Hello, the signal test and the one turn. The starting point, kept where you confirmed it.</div>
-  <div><b>RESEARCH-firstrun.md.</b> The six walks and the outside research: NN/g on tours, Duolingo, Headspace, WHOOP and Oura, the head start study.</div>
-  <div><b>TASKS.md rounds AN, FH, FI, FK, FN, IF and JJ.</b> Your rulings and the open questions, quoted where used.</div>
-  <div><b>reviews/QUESTIONS-onboarding.md.</b> The twelve questions of 19 September, backlog item D1.</div>
-  <div><b>DECISIONS.md, "The loop's words, and the opening" and "Character, the masks, Release, and the opening screen".</b> Your dictated opening and its open last four words.</div>
-  <div><b>atuned_src/ui/onboard.js.</b> The shipped welcome, off by default, and its figure.</div>
-  <div><b>engine.js, run 27 September.</b> The discover story, parsed: 12 patterns, four lit words.</div>
+<details class="carry">
+ <summary>Carried from this morning <em>routes out, defects to fix first, where the switches live</em></summary>
+ <div class="list">
+  <div><b>Routes out.</b> Any press skips the boot only. Leave on the mirror goes to the Field and the opening comes back next time. Box ticked on Hello goes straight in from then on. Leave anywhere in the signal test goes to the Field. Save on embody closes the ring. A tab closed part way picks up at the last closed quarter.</div>
+  <div><b>Defects to fix before this ships</b>, from the 26 September walk: readings print on a blank record on the right rail (AV24); the Ritual says "the root is carrying the most" with nothing held; CQ prints "0%" as its largest number after a first story; the When line reads "When after I put the kettle on"; and the wheel must draw a first story faint where it now draws nothing.</div>
+  <div><b>Where the switches live.</b> Profile, Account: "Show the opening when the app starts" and "Run the opening now", beside the tutorial's own pair. Rounds AN5 and FH.</div>
+  <div><b>The 19 September questions (backlog D1).</b> Sorted this morning: seven answered in round AN, the rest carried as A to L above.</div>
  </div>
-</section>
+</details>
 
-<footer>Prototype storyboard, 27 September 2026. Drawn in the product's Dark theme. Not the shipped app. The companion is proto/tutorial-storyboard/index.html.</footer>
+<footer>Prototype storyboard, 27 September 2026, second pass. Drawn in the product's Dark theme. Not the shipped app. The companion is proto/tutorial-storyboard/index.html.</footer>
 </div>
 
 <script>
 (function(){
- var SEATS=['#D6524C','#D8924E','#DABF6A','#5FD5A6','#5EBBDB','#7D93E0','#A77EDB'];
- function P(cx,cy,r,a){a=(a-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
- function arc(cx,cy,r,a0,a1){var s=P(cx,cy,r,a0),e=P(cx,cy,r,a1),lg=(a1-a0)>180?1:0;
-  return 'M'+s[0].toFixed(2)+' '+s[1].toFixed(2)+'A'+r+' '+r+' 0 '+lg+' 1 '+e[0].toFixed(2)+' '+e[1].toFixed(2);}
- /* the boot's seven colour ring, with the centre ball he asked to keep */
- function sevenRing(size,sw,ball){
-  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
-  for(var i=0;i<7;i++)h+='<path d="'+arc(50,50,40,i*360/7+4,(i+1)*360/7-4)+'" fill="none" stroke="'+SEATS[i]+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
-  return h+(ball===false?'':'<circle cx="50" cy="50" r="9" fill="none" stroke="#7EB8D4" stroke-width="1.2" opacity=".7"/>')+'</svg>';}
- /* the figure the shipped welcome draws: seven seats up a spine, a halo */
- function figure(w){
-  var ys=[160,140,120,100,80,60,40],h='<svg width="'+w+'" height="'+(w*0.89).toFixed(0)+'" viewBox="0 0 200 178" aria-hidden="true">'
-   +'<ellipse cx="100" cy="21" rx="13" ry="4.4" fill="none" stroke="#DABF6A" stroke-width="1.4"/>'
-   +'<line x1="100" y1="160" x2="100" y2="40" stroke="#2C303C" stroke-width="2"/>';
-  ys.forEach(function(y,i){h+='<circle cx="100" cy="'+y+'" r="5.2" fill="'+SEATS[i]+'"/>';});
-  return h+'</svg>';}
- function progRing(size,frac){
-  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#2C303C" stroke-width="3"/>';
-  if(frac>0)h+='<path d="'+arc(50,50,40,0,360*frac)+'" fill="none" stroke="#7EB8D4" stroke-width="3" stroke-linecap="round"/>';
-  return h+'</svg>';}
- function pad(size,marks,prog){
-  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="#0A0B10" stroke="#2C303C"/>'
-   +'<path d="M50 6V94M6 50H94" stroke="#2C303C" stroke-width=".8"/>';
-  if(prog)h+='<path d="'+arc(50,50,44,0,360*prog)+'" fill="none" stroke="#7EB8D4" stroke-width="2" stroke-linecap="round"/>';
-  if(marks.length===2)h+='<line x1="'+marks[0][0]+'" y1="'+marks[0][1]+'" x2="'+marks[1][0]+'" y2="'+marks[1][1]+'" stroke="#94908A" stroke-width=".8" stroke-dasharray="2 2"/>';
-  marks.forEach(function(m){h+='<circle cx="'+m[0]+'" cy="'+m[1]+'" r="4.4" fill="'+(m[2]||'#7EB8D4')+'"/>';
-   if(m[3])h+='<text x="'+(m[0]+7)+'" y="'+(m[1]+3)+'" font-size="7" fill="#B4B0A8" font-family="system-ui,sans-serif">'+m[3]+'</text>';});
-  return h+'</svg>';}
- /* the loop, his four words, and it closes. Never a list. */
- var ST=['discover','play','flow','embody'];
- function loop(size,done,labels){
-  var sw=labels?2.4:5,h='<svg width="'+size+'" height="'+size+'" viewBox="'+(labels?'-18 -10 136 120':'4 4 92 92')+'" aria-hidden="true">'
-   +'<circle cx="50" cy="50" r="36" fill="none" stroke="#2C303C" stroke-width="'+sw+'"/>';
-  if(done>=4)h+='<circle cx="50" cy="50" r="36" fill="none" stroke="#7EB8D4" stroke-width="'+sw+'"/>';
-  else if(done>0)h+='<path d="'+arc(50,50,36,0,90*done)+'" fill="none" stroke="#7EB8D4" stroke-width="'+sw+'" stroke-linecap="round"/>';
-  for(var i=0;i<4;i++){var p=P(50,50,36,i*90),on=i<done,cur=i===done;
-   h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(labels?7:9)+'" fill="#0C0D12" stroke="'+(on||cur?'#7EB8D4':'#2C303C')+'" stroke-width="'+(labels?1.6:3)+'"/>';
-   if(on)h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(labels?3:4)+'" fill="#7EB8D4"/>';
-   if(labels){var tx=p[0]+(i===1?11:i===3?-11:0),ty=p[1]+(i===0?-11:i===2?16:3);
-    h+='<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" font-size="7.5" text-anchor="'+(i===1?'start':i===3?'end':'middle')+'" fill="'+(cur||done>=4?'#EFEDE8':'#94908A')+'" font-family="system-ui,sans-serif">'+ST[i]+'</text>';}}
-  return h+'</svg>';}
- /* a small wheel. Marks sit on their own seat's arc: throat, sacral, solar,
-    which is where the engine put this story on 27 September. */
- function mark(seat,k,n){var a0=seat*360/7,a=a0+10+k*((360/7-20)/Math.max(1,n-1)),p=P(50,50,34-((k%2)*7),a);return p;}
- function wheel(size,opts){opts=opts||{};
-  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
-  for(var j=0;j<7;j++)h+='<path d="'+arc(50,50,43,j*360/7+2,(j+1)*360/7-2)+'" fill="none" stroke="'+SEATS[j]+'" stroke-width="3.2" opacity="'+(opts.marks?.35:.9)+'"/>';
-  for(var k=0;k<3;k++)h+='<circle cx="50" cy="50" r="'+(32-k*9)+'" fill="none" stroke="#2C303C" stroke-width=".8"/>';
-  if(opts.marks){[[4,4],[1,4],[2,4]].forEach(function(s){for(var q=0;q<s[1];q++){var p=mark(s[0],q,s[1]),hot=opts.pick&&s[0]===4&&q===0;
-   h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(hot?4:2.6)+'" fill="'+SEATS[s[0]]+'" opacity="'+(hot?1:opts.faint?.45:.9)+'"'+(hot?' stroke="#EFEDE8" stroke-width=".8"':'')+'/>';}});}
-  if(opts.closed)h+='<circle cx="50" cy="50" r="7" fill="none" stroke="#7EB8D4" stroke-width="1.6"/><circle cx="50" cy="50" r="2.4" fill="#7EB8D4"/>';
-  else h+='<circle cx="50" cy="50" r="5" fill="none" stroke="#7EB8D4"/>';
-  return h+'</svg>';}
- function frames(){var st='<svg width="118" height="96" viewBox="0 0 118 96" aria-hidden="true">';
-  for(var i=0;i<7;i++){var m=i*6.5;st+='<rect x="'+m+'" y="'+(m*0.8)+'" width="'+(118-2*m)+'" height="'+(96-1.6*m)+'" rx="'+(6-i*0.6)+'" fill="none" stroke="'+SEATS[6-i]+'" stroke-width="1.1" opacity=".85"/>';}
-  return st+'<circle cx="59" cy="48" r="4" fill="none" stroke="#7EB8D4"/></svg>';}
- function station(done,word,line,body){
-  return '<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="leave">Leave</span>'
-   +'<div class="dock">'+loop(48,done,false)+'<div><div class="w">'+word+'</div><div class="l">'+line+'</div></div></div>'+body+'</div>';}
- var dimRows='<div class="dimmed" style="display:flex;flex-direction:column;gap:6px"><div class="blk" style="width:70%"></div><div class="blk" style="width:88%"></div><div class="blk" style="width:55%"></div></div>';
- var MIRROR='This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life, <u>pain and disease free</u>.';
- var HL=function(w,c,bg){return '<s style="background:'+bg+';color:'+c+'">'+w+'</s>';};
- var STORY='My sister called again and I felt the old '+HL('tightness','#9ED8EC','rgba(94,187,219,.25)')+' in my chest. The same guilt, the same '+HL('shame','#F0B37A','rgba(216,146,78,.28)')+'. I '+HL('said yes when','#9ED8EC','rgba(94,187,219,.25)')+' I meant no and then I was '+HL('angry','#EBD58E','rgba(218,191,106,.25)')+' at myself all night.';
+'use strict';
+var RED_MO=false;try{RED_MO=matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+var AN=!RED_MO;
+var SEATS=['#D6524C','#D8924E','#DABF6A','#5FD5A6','#5EBBDB','#7D93E0','#A77EDB'];
+var SEATN=['root','sacral','solar plexus','heart','throat','third eye','crown'];
+var SKY='#7EB8D4', VIO='#A77EDB', INK='#EFEDE8', MID='#B4B0A8', DIM='#94908A', LINE='#2C303C', RED='#D6524C';
+var FONT='system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+function P(cx,cy,r,a){a=(a-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+function f1(n){return (+n).toFixed(1);}
+function arc(cx,cy,r,a0,a1){var s=P(cx,cy,r,a0),e=P(cx,cy,r,a1),lg=(a1-a0)>180?1:0;
+ return 'M'+f1(s[0])+' '+f1(s[1])+'A'+r+' '+r+' 0 '+lg+' 1 '+f1(e[0])+' '+f1(e[1]);}
+function svg(inner,vb){return '<svg viewBox="'+(vb||'0 0 260 500')+'" aria-hidden="true">'+inner+'</svg>';}
+function txt(x,y,s,size,fill,extra){extra=extra||'';return '<text x="'+x+'" y="'+y+'" font-size="'+size+'" fill="'+(fill||INK)+'"'+(/text-anchor/.test(extra)?'':' text-anchor="middle"')+(/font-family/.test(extra)?'':' font-family="'+FONT+'"')+extra+'>'+s+'</text>';}
 
- document.getElementById('hero').innerHTML=(function(){
-  return '<div style="position:relative;width:280px;height:280px;max-width:100%">'
-   +'<div style="position:absolute;inset:0">'+sevenRing(280,2.6,false)+'</div>'
-   +'<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-52%)">'+figure(120)+'</div></div>';})();
+/* GLYPHS, ring style, 24 unit box, stroked never filled: the product's rule */
+var G={
+ pause:'M9 6v12M15 6v12',
+ close:'M7 7l10 10M17 7L7 17',
+ move:'M12 10a2 2 0 1 0 0 4a2 2 0 1 0 0-4M7 8.5a5 5 0 0 0 0 7M17 8.5a5 5 0 0 1 0 7M4 6a9 9 0 0 0 0 12M20 6a9 9 0 0 1 0 12',
+ temp:'M10 5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0zM12 11v6',
+ dir:'M12 3v18M12 3l-4 4M12 3l4 4M5 12h14',
+ lock:'M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3',
+ lens:'M10.5 4.5a6 6 0 1 0 0 12a6 6 0 1 0 0-12M15 15l5 5',
+ tap:'M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6M12 3v3M12 18v3M3 12h3M18 12h3',
+ wave:'M3 9c3-4 6 4 9 0s6 4 9 0M3 15c3-4 6 4 9 0s6 4 9 0',
+ body:'M12 3.5a1.6 1.6 0 1 0 0 .1M12 7v13M9 10h6M12 20l-3 1M12 20l3 1',
+ mirror:'M12 3v18M7 6h-2v12h2M17 6h2v12h-2',
+ hello:'M5 19c0-4 3-6 7-6s7 2 7 6M12 4a4 4 0 1 0 0 8a4 4 0 1 0 0-8',
+ ring:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16',
+ field:'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6'
+};
+function glyph(k,x,y,s,col,w){var sc=s/24;return '<path d="'+G[k]+'" transform="translate('+f1(x-s/2)+' '+f1(y-s/2)+') scale('+sc.toFixed(3)+')" fill="none" stroke="'+(col||INK)+'" stroke-width="'+f1((w||1.8)/sc)+'" stroke-linecap="round" stroke-linejoin="round"/>';}
+function gsvg(k,size,col){return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" aria-hidden="true"><path d="'+G[k]+'" fill="none" stroke="'+(col||INK)+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
 
- var F=[
-  {id:'S0',nm:'Boot',tag:'shipped',
-   ph:'<div style="display:flex;flex-direction:column;align-items:center;gap:12px">'+sevenRing(124,4.4)+'<div class="big" style="letter-spacing:.14em">Atüned</div><div class="tiny">Powered by Source OS</div></div>',
-   p:'Unchanged. The ring with the tune you liked in FK. On a first run it lifts onto the mirror, and the figure stands up out of the ring.',
-   can:'1: any press skips it',time:'5.4 s, measured 26 September',out:'never skipped for them, by ruling'},
-  {id:'S1',nm:'The mirror',tag:'new',q:['A','B','C'],
-   ph:'<span class="leave">Leave</span>'+figure(116)+'<div class="mirror">'+MIRROR+'</div><span class="btn">Come in</span>',
-   copy:['This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life, pain and disease free.'],
-   p:'Your dictated opening, ruled 27 September, word for word and not edited. The figure is the one the shipped welcome draws: the avatar at rest, the first time a person sees it. "Come in" is the shipped button.',
-   can:'2: Come in, Leave',time:'about 12 s to read',out:'Leave, to the Field'},
-  {id:'S2',nm:'Hello',tag:'kept, one line plainer',q:['D','E','F'],
-   ph:sevenRing(46,5)+'<div class="big">Hello, Sofia.</div><div class="fld"><label>First name</label><i>Sofia</i></div><div class="fld"><label>Last name</label><i>Alarcon</i></div>'
-     +'<div class="small">Your name sets three of your numbers. It stays on this device.</div><div class="ck"><b></b>Go straight in from now on</div><span class="btn">Next</span>',
-   copy:['Hello, Sofia.','Your name sets three of your numbers. It stays on this device.','Go straight in from now on'],was:['Held in this browser.'],
-   p:'As you confirmed it in FK, "Hello Sofia\'s good". The greeting fills in as the name is typed. Sign in, when it exists, sits next to this screen.',
-   can:'4: two fields, the box, Next',time:'about 8 s',out:'box ticked: straight to the Field'},
-  {id:'S3',nm:'The settle',tag:'plainer',
-   ph:'<span class="leave">Leave</span>'+progRing(96,0.35)+'<div class="rows"><div>A word will show up ten times. Say it in your head each time.</div><div>Keep some attention on your body.</div><div>Then move the dot to show what moved.</div></div>',
-   copy:['A word will show up ten times. Say it in your head each time.','Keep some attention on your body.','Then move the dot to show what moved.'],
-   was:['A word arrives ten times. Think it as it lands.','Move the marker to show what moved.'],
-   p:'The only reading in the signal test, and it is read while the ring closes, so it costs no extra time.',
-   can:'1: Leave',time:'8 s',out:'Leave, to the Field'},
-  {id:'S4',nm:'Yes',tag:'kept',
-   ph:'<span class="leave">Leave</span><div class="word">yes</div>'+pad(140,[[62,40]],0.6)+'<div class="small">Move the dot.</div>',
-   copy:['Move the dot.'],was:['Move the marker.'],
-   p:'Ten beats. The person moves the dot to where the word landed. No list of feelings is offered, so nothing is suggested to them.',
-   can:'2: the dot, Leave',time:'10 beats',out:'Leave'},
-  {id:'S5',nm:'No',tag:'kept',
-   ph:'<span class="leave">Leave</span><div class="word">no</div>'+pad(140,[[36,66]],0.4)+'<div class="small">Move the dot.</div>',
-   copy:['Move the dot.'],
-   p:'The same with "no", after a short hold. The two words are the whole test: the difference between them is what the body shows.',
-   can:'2: the dot, Leave',time:'10 beats',out:'Leave'},
-  {id:'S6',nm:'The two dots',tag:'kept',q:['L'],
-   ph:'<span class="leave">Leave</span><div class="big" style="font-size:15px">A thought moved your body.<br>Now write one down.</div>'+pad(140,[[62,40,'#7EB8D4','yes'],[36,66,'#A77EDB','no']])+'<span class="btn">Next</span>',
-   copy:['A thought moved your body. Now write one down.'],
-   p:'Both dots, no number. Already plain enough for a ten year old, so unchanged. Next goes straight into discover.',
-   can:'2: Next, Leave',time:'about 4 s',out:'Leave'},
-  {id:'S7',nm:'discover',tag:'real output',q:['H','J'],
-   ph:station(0,'discover','Write one thing from this week that is still on you.',
-     '<div class="card lit"><div class="ta">'+STORY+'</div><div class="row"><span class="tiny dim">35 words</span><span class="btn pulse">Commit 12</span></div></div>'
-     +'<div class="dimmed" style="display:flex;flex-direction:column;gap:6px"><div class="blk" style="width:40%"></div><div class="row"><div class="blk" style="width:30%"></div><div class="blk" style="width:30%"></div><div class="blk" style="width:30%"></div></div></div>'),
-   copy:['discover','Write one thing from this week that is still on you.'],
-   p:'The real story page, all but the box and Commit dimmed. The words light up as they are typed, which is built. Run through the engine on 27 September, this story lights tightness and said yes when at the throat, shame at the sacral, angry at the solar plexus, and finds 12 patterns.',
-   can:'2: write, Commit. And Leave',time:'45 to 90 s',out:'Commit closes the first quarter'},
-  {id:'S8',nm:'discover, committed',tag:'plainer',
-   ph:station(1,'discover','Write one thing from this week that is still on you.',
-     '<div class="card"><div class="ta dim" style="opacity:.6">What happened. Write it the way you would say it out loud.</div></div>'
-     +'<div class="card lit"><div class="note">12 found. They show faint until more of your writing makes them heavier.</div><div class="chips"><span>Self-Silencing</span><span>People Pleasing</span><span>Need For Approval</span><span>Anger</span></div></div>'+dimRows),
-   copy:['12 found. They show faint until more of your writing makes them heavier.'],
-   was:['12 found, all under the line for now. What you write next adds to them.'],
-   p:'Today this screen says "nothing reaches the line yet" and shows a zero. Instead: what was found, and what makes it grow. The four chips are four of the engine\'s twelve for this story. 12 is a count of what was found, never set against a total.',
-   can:'none, the ring turns on its own',time:'about 2 s',out:'into play'},
-  {id:'S9',nm:'play',tag:'new',q:['H','J'],
-   ph:station(1,'play','Your words landed here. Open one.',
-     '<div style="display:flex;justify-content:center;padding:4px 0">'+wheel(156,{marks:1,faint:1,pick:1})+'</div>'
-     +'<div class="card lit"><div class="note"><b style="color:#EFEDE8;font-weight:500">Self-Silencing</b>, at the throat. Faint for now.</div></div>'+dimRows),
-   copy:['play','Your words landed here. Open one.','Self-Silencing, at the throat. Faint for now.'],
-   p:'The real Field, dimmed. The twelve marks sit on the throat, sacral and solar arcs, faint because one story is not heavy enough to show in full. Opening a mark is built.',
-   can:'the lit marks. And Leave',time:'about 15 s',out:'opening one closes the second quarter'},
-  {id:'S10',nm:'flow',tag:'plainer',q:['G','J'],
-   ph:station(2,'flow','Read each line in your head as it comes.',
-     '<div class="card lit" style="gap:8px"><div class="prac">Practice. This one changes nothing.</div><div class="note">Self-Silencing, at the throat</div><div class="tiny dim">Left, inward</div>'
-     +'<div class="blk" style="width:90%;opacity:.35"></div><div class="blk" style="width:96%;background:#7EB8D4;opacity:.8"></div><div class="blk" style="width:80%;opacity:.35"></div></div>'+dimRows),
-   copy:['flow','Read each line in your head as it comes.','Practice. This one changes nothing.'],
-   was:['Run one release over it. Follow each line in thought.','Practice. This one writes nothing to your field.'],
-   p:'The real release over the mark they opened. On a first story the release refuses today, so it runs as practice and says so on the release itself. "Left, inward" is the shipped side label. Question G is whether it waits instead.',
-   can:'read the lines. And Leave',time:'about 30 s',out:'the last line closes the third quarter'},
-  {id:'S11',nm:'embody',tag:'plainer',q:['J'],
-   ph:station(3,'embody','Pick when you will come back.',
-     '<div class="dimmed card"><div class="blk" style="width:50%"></div><div class="blk" style="width:80%"></div></div>'
-     +'<div class="card lit"><div class="note">When</div><div class="chips"><span class="on">after I put the kettle on</span><span>before the first run of the day</span><span>when I close the laptop</span><span>my own words</span></div>'
-     +'<div class="note">Where</div><div class="chips"><span>the chair by the window</span></div><div class="row"><span></span><span class="btn pulse">Save</span></div></div>'),
-   copy:['embody','Pick when you will come back.'],was:['Pick when you will come back to it.'],
-   p:'The Ritual\'s When and Where rows, which are built. "after I put the kettle on" is the row\'s own shipped example. Day two is the ritual, by your ruling in AN10, and this is what brings day two.',
-   can:'a when, Save. And Leave',time:'about 15 s',out:'Save closes the circle'},
-  {id:'S12',nm:'The Field',tag:'plainer',q:['K','L'],
-   ph:station(4,'','','<div style="display:flex;justify-content:center;padding:8px 0">'+wheel(156,{marks:1,faint:1,closed:1})+'</div><div class="note" style="text-align:center">This wheel is you. The marks came from what you wrote.</div>'+dimRows),
-   copy:['This wheel is you. The marks came from what you wrote.'],
-   was:['The wheel is your field. Left is what you are made of. Right is what it reads.'],
-   p:'The ring sweeps round and lands as the wheel\'s centre ball, closed. The line shows once, then clears. The old line pointed at a left and a right side that a phone does not have.',
-   can:'the Field',time:'',out:'onboarding ends; the tutorial is its own storyboard'}
- ];
- function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
- document.getElementById('frames').innerHTML=F.map(function(f){
-  return '<div class="fr"><div class="phone">'+f.ph+'</div><div class="cap"><span class="id">'+f.id+'</span>'
-   +'<h3>'+f.nm+'<span class="tag'+(/new|plainer|real/.test(f.tag)?' new':'')+'">'+f.tag+'</span></h3>'
-   +(f.copy?'<div class="copy">'+f.copy.map(function(c){return '<span>'+esc(c)+'</span>';}).join('')
-     +(f.was||[]).map(function(c){return '<span class="was">'+esc(c)+'</span>';}).join('')+'</div>':'')
-   +'<p>'+f.p+'</p>'
-   +'<dl><dt>can do</dt><dd>'+f.can+'</dd>'+(f.time?'<dt>time</dt><dd>'+f.time+'</dd>':'')+'<dt>out</dt><dd>'+f.out+'</dd></dl>'
-   +(f.q?'<div class="qs">'+f.q.map(function(q){return '<a href="#q-'+q.toLowerCase()+'">Question '+q+'</a>';}).join('')+'</div>':'')
-   +'</div></div>';}).join('');
+/* THE CORE. Three flat discs, the way ui/wheel.js draws it, plus the sheen.
+   Dark red while nothing is read, sky once it is. */
+function core(cx,cy,r,col,cls){
+ return '<g'+(cls?' class="'+cls+'"':'')+'>'
+  +'<circle cx="'+cx+'" cy="'+cy+'" r="'+f1(r*1.35)+'" fill="'+col+'" opacity=".10"/>'
+  +'<circle cx="'+cx+'" cy="'+cy+'" r="'+f1(r*1.15)+'" fill="'+col+'" opacity=".18"/>'
+  +'<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+col+'" opacity=".92"/>'
+  +'<circle cx="'+f1(cx-r*.34)+'" cy="'+f1(cy-r*.36)+'" r="'+f1(r*.2)+'" fill="#fff" opacity=".55"/></g>';}
+/* the tick crown round the core: three ticks a seat, each in its seat colour */
+function crown(cx,cy,r0,r1,op){var h='';for(var s=0;s<7;s++)for(var k=0;k<3;k++){var a=s*360/7+(k-1)*11+360/14,p0=P(cx,cy,r0,a),p1=P(cx,cy,r1,a);
+ h+='<line x1="'+f1(p0[0])+'" y1="'+f1(p0[1])+'" x2="'+f1(p1[0])+'" y2="'+f1(p1[1])+'" stroke="'+SEATS[s]+'" stroke-width="1.6" stroke-linecap="round" opacity="'+(op||.8)+'"/>';}return h;}
+/* the seven colour ring. frac lights it clockwise from the top, seat by seat */
+function seven(cx,cy,r,w,frac,dimOp){var h='';for(var i=0;i<7;i++){var a0=i*360/7+3,a1=(i+1)*360/7-3;
+ h+='<path d="'+arc(cx,cy,r,a0,a1)+'" fill="none" stroke="'+SEATS[i]+'" stroke-width="'+w+'" stroke-linecap="round" opacity="'+(dimOp==null?.16:dimOp)+'"/>';
+ if(frac!=null){var lit=Math.max(0,Math.min(1,frac*7-i));if(lit>0)h+='<path d="'+arc(cx,cy,r,a0,a0+(a1-a0)*lit)+'" fill="none" stroke="'+SEATS[i]+'" stroke-width="'+w+'" stroke-linecap="round"/>';}}
+ return h;}
+/* a gate: ring, glyph, and the pill at its lower right, a dash until answered */
+function gate(x,y,k,col,pill,on){var h='<circle cx="'+x+'" cy="'+y+'" r="15" fill="#171922" stroke="'+(on?col:LINE)+'" stroke-width="2"/>'+glyph(k,x,y,15,on?INK:MID,1.7);
+ h+='<rect x="'+(x+6)+'" y="'+(y+9)+'" width="22" height="12" rx="6" fill="#252833" stroke="'+LINE+'"/>';
+ h+=pill||txt(x+17,y+18.5,'&#8211;',9,DIM);return h;}
+/* the leave control, a ring with a cross. top right on every screen */
+function leave(){return '<circle cx="236" cy="26" r="13" fill="none" stroke="'+LINE+'" stroke-width="1.4"/>'+glyph('close',236,26,12,DIM,1.6);}
 
- var TEN=[['S2','Held in this browser.','It stays on this device.'],
-  ['S3','A word arrives ten times. Think it as it lands.','A word will show up ten times. Say it in your head each time.'],
-  ['S3, S4','Move the marker to show what moved.','Then move the dot to show what moved.'],
-  ['S8','12 found, all under the line for now. What you write next adds to them.','12 found. They show faint until more of your writing makes them heavier.'],
-  ['S10','Run one release over it. Follow each line in thought.','Read each line in your head as it comes.'],
-  ['S10','Practice. This one writes nothing to your field.','Practice. This one changes nothing.'],
-  ['S11','Pick when you will come back to it.','Pick when you will come back.'],
-  ['S12','The wheel is your field. Left is what you are made of. Right is what it reads.','This wheel is you. The marks came from what you wrote.']];
- document.getElementById('tenrows').innerHTML=TEN.map(function(r){return '<tr><td><b>'+r[0]+'</b></td><td>'+esc(r[1])+'</td><td><b>'+esc(r[2])+'</b></td></tr>';}).join('');
+/* THE BODY. A plain outline for a person to tap, which is the body map move,
+   with the avatar's own spine of seven seats inside it and its halo. */
+var BODY='M88 66v12c-18 2-36 6-44 18-6 10-8 34-10 64l-4 68c0 8 10 8 12 0l6-68c2-20 6-36 10-44l2 84c0 14 2 24 4 32l2 148c0 12 18 12 20 0l8-130h12l8 130c2 12 20 12 20 0l2-148c2-8 4-18 4-32l2-84c4 8 8 24 10 44l6 68c2 8 12 8 12 0l-4-68c-2-30-4-54-10-64-8-12-26-16-44-18V66z';
+var SY=[212,184,150,112,74,42,18];
+function nearestSeat(y){var b=0,d=1e9;SY.forEach(function(s,i){var dd=Math.abs(s-y);if(dd<d){d=dd;b=i;}});return b;}
+function body(tx,ty,sc,o){o=o||{};var lit=o.lit||{};
+ var h='<g transform="translate('+tx+' '+ty+') scale('+sc+')">'
+  +'<circle cx="100" cy="40" r="25" fill="'+(o.fill||'none')+'" stroke="'+(o.stroke||'#3A3F4D')+'" stroke-width="2.2"/>'
+  +'<path d="'+BODY+'" fill="'+(o.fill||'none')+'" stroke="'+(o.stroke||'#3A3F4D')+'" stroke-width="2.2" stroke-linejoin="round"/>'
+  +'<ellipse cx="100" cy="2" rx="15" ry="4.5" fill="none" stroke="'+(o.halo||'#DABF6A')+'" stroke-width="1.8" opacity="'+(o.haloOp==null?.9:o.haloOp)+'"/>'
+  +'<line x1="100" y1="212" x2="100" y2="18" stroke="#2C303C" stroke-width="2.4"/>';
+ SY.forEach(function(y,i){var L=lit[i];h+='<circle cx="100" cy="'+y+'" r="'+(L?8:5.5)+'" fill="'+(L&&L.col?L.col:SEATS[i])+'" opacity="'+(o.seatOp!=null&&!L?o.seatOp:1)+'"/>';
+  if(L&&L.ring)h+='<circle cx="100" cy="'+y+'" r="14" fill="none" stroke="'+(L.col||SEATS[i])+'" stroke-width="1.6"/>';});
+ return h+(o.inner||'')+'</g>';}
+/* a mark where a word landed: its own colour, the seat's colour ring, and the
+   three answers drawn on it: a buzz for moved, a warm or cool swatch, an arrow */
+function markArt(m,col){var x=m.x,y=m.y,h='<circle cx="'+x+'" cy="'+y+'" r="20" fill="'+col+'" opacity=".2"/><circle cx="'+x+'" cy="'+y+'" r="9" fill="'+col+'"/>'
+ +'<circle cx="'+x+'" cy="'+y+'" r="15" fill="none" stroke="'+SEATS[nearestSeat(y)]+'" stroke-width="3"/>';
+ if(m.move)h+='<path d="M'+(x-25)+' '+(y-10)+'a15 15 0 0 0 0 20M'+(x+25)+' '+(y-10)+'a15 15 0 0 1 0 20M'+(x-33)+' '+(y-15)+'a22 22 0 0 0 0 30M'+(x+33)+' '+(y-15)+'a22 22 0 0 1 0 30" fill="none" stroke="'+col+'" stroke-width="3" stroke-linecap="round"/>';
+ if(m.temp)h+='<rect x="'+(x+22)+'" y="'+(y-34)+'" width="24" height="12" rx="6" fill="'+(m.temp===1?'#D8924E':'#5EBBDB')+'"/>';
+ if(m.dir){var v=[[0,0],[0,-1],[0,1],[x<100?1:-1,0],[x<100?-1:1,0]][m.dir],ex=x+v[0]*50,ey=y+v[1]*50,sx=x+v[0]*18,sy=y+v[1]*18;
+  h+='<line x1="'+sx+'" y1="'+sy+'" x2="'+ex+'" y2="'+ey+'" stroke="'+col+'" stroke-width="3.6" stroke-linecap="round"/>'
+   +'<path d="M'+(ex-v[0]*12-v[1]*8)+' '+(ey-v[1]*12+v[0]*8)+'L'+ex+' '+ey+'L'+(ex-v[0]*12+v[1]*8)+' '+(ey-v[1]*12-v[0]*8)+'" fill="none" stroke="'+col+'" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>';}
+ return h;}
 
- function mini(b,s){return '<div class="mini"><b>'+b+'</b>'+(s||'')+'</div>';}
- var ar='<span class="arr">to</span>';
- function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
- var M1='This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life';
- set('qa1','<div class="mini wide">'+figure(60)+M1+', <u>pain and disease free</u>.</div>');
- set('qa2','<div class="mini wide">'+figure(60)+M1+'.</div>');
- set('qc1',mini(figure(54),'This is a mirror. We hold up every story...'));
- set('qc2',mini(figure(54),'This is you, and it is okay. No judgment. Nothing here grades you.'));
- set('qc3',mini(figure(40),'This is you, and it is okay.')+ar+mini('This is a mirror.','We hold up every story...'));
- set('qd1',mini('Boot')+ar+mini('Sign in','the record fills the name')+ar+mini('Hello, Sofia.','already filled'));
- set('qd2',mini('Hello')+ar+mini(loop(34,4,false),'one turn')+ar+mini('Field','Keep this. Sign in.'));
- set('qe1',mini('Boot')+ar+mini('Field','every later launch'));
- set('qe2',mini('Boot')+ar+mini('Hello, Sofia.','box, Next')+ar+mini('Field'));
- set('qg1',mini('flow','practice, changes nothing')+ar+mini(loop(34,3,false),'embody')+ar+mini(loop(34,4,false),'closed, day one'));
- set('qg2',mini(loop(34,2,false),'flow waits')+ar+mini('embody')+ar+mini(loop(34,3,false),'closes after story two'));
- set('qk1','<div class="mini" style="width:150px">'+frames()+'</div>');
- set('qk2','<div class="mini" style="width:150px">'+wheel(110,{marks:1,faint:1,closed:1})+'</div>');
+/* SIGNAL TEST SCENES. One drawing function, called by the frames with a fixed
+   state and by the player on every tick, so the storyboard and the playable
+   version can never disagree. */
+var CX=130, CY=250, R=108;
+var BX=74, BY=134, BS=.56;
+var STEPS=[
+ {k:'stop',   s:8,  say:'Stop. Sit down. Put both feet on the floor.', his:'"we want to have them stop"'},
+ {k:'drop',   s:12, say:'Breathe out slowly. Let your attention drop out of your head and into your body.', his:'"practice moving their awareness into their body"'},
+ {k:'yes',    s:25, say:'Think the word yes. Ten times, slowly. Feel where it lands.', his:'"thinking the word yes 10 times, feeling where it lands"'},
+ {k:'whereY', s:15, say:'Where did it land? Touch that place. Did a muscle move? Is it warm or cool? Does it go up or down, in or out?', his:'"what area in the body it lands... whether a muscle moves or there\'s a temperature to it. Does it move in a direction?"'},
+ {k:'no',     s:25, say:'Now think the word no. Ten times, slowly.', his:'"Then think no multiple times. Feel the words."'},
+ {k:'whereN', s:15, say:'Where does no land? Is it a different place from yes?', his:'"Where does it land? Is it different than yes?"'},
+ {k:'both',   s:6,  say:'', his:'(the two side by side, nothing said)'},
+ {k:'thread', s:6,  say:'If you felt that, a thought just moved your body.', his:'"If you felt that, that\'s the mind-body connection. You\'re showing that pure thought controls the body."'},
+ {k:'stake',  s:12, say:'Now think what you tell yourself on a bad day. I can\'t. I\'m shy. Not good enough. Those move your body too, every day.', his:'"Imagine what we think when we don\'t feel confident or anxious, or believe we\'re shy. This is what\'s at stake."'},
+ {k:'turn',   s:4,  say:'Write one down.', his:'"Then we move on."'}];
+var TOTAL=STEPS.reduce(function(a,b){return a+b.s;},0);
+var START=[];(function(){var t=0;STEPS.forEach(function(s){START.push(t);t+=s.s;});})();
+function mmss(sec){sec=Math.max(0,Math.round(sec));return Math.floor(sec/60)+':'+('0'+sec%60).slice(-2);}
+var DEMO={yes:{x:100,y:80,move:1,temp:1,dir:1},no:{x:100,y:152,move:0,temp:2,dir:2}};
+
+function scene(k,st){st=st||{};var t=st.t==null?.5:st.t, anim=!!st.anim, h='';
+ var idx=STEPS.map(function(s){return s.k;}).indexOf(k), gfrac=st.g!=null?st.g:(START[idx]+STEPS[idx].s*t)/TOTAL;
+ var yes=st.yes||null, no=st.no||null;
+ h+='<rect width="260" height="500" fill="#090A0E"/>';
+ /* the timer: the seven colour ring round everything, filling seat by seat */
+ if(k!=='turn')h+=seven(CX,CY,R+14,3,gfrac,.14);
+ h+=leave();
+ if(k==='stop'){
+  h+=core(CX,CY,34,'#5A1D1B',anim?'br':'')+glyph('pause',CX,CY,22,INK,2.2);
+  return svg(h);}
+ var faint=(k==='drop'&&t<.3)?.4:1;
+ var lit={};
+ if(k==='drop'){
+  /* the light drops from the halo down the spine and settles low in the belly */
+  var y=anim?null:(18+(184-18)*Math.min(1,t*1.4));
+  h+=body(BX,BY,BS,{haloOp:.9,seatOp:.35});
+  h+=anim?'<circle cx="'+(BX+100*BS)+'" cy="'+(BY+18*BS)+'" r="7" fill="'+SKY+'"><animate attributeName="cy" values="'+(BY+2*BS)+';'+(BY+184*BS)+';'+(BY+184*BS)+'" keyTimes="0;.7;1" dur="6s" repeatCount="indefinite"/></circle>'
+   +'<circle cx="'+(BX+100*BS)+'" cy="'+(BY+184*BS)+'" r="16" fill="'+SKY+'" opacity=".15" class="br"/>'
+   : '<circle cx="'+(BX+100*BS)+'" cy="'+f1(BY+y*BS)+'" r="7" fill="'+SKY+'"/><circle cx="'+(BX+100*BS)+'" cy="'+f1(BY+y*BS)+'" r="'+f1(12+6*Math.sin(t*20))+'" fill="'+SKY+'" opacity=".16"/>';
+  return svg(h);}
+ if(k==='yes'||k==='no'){
+  var col=k==='yes'?SKY:VIO, beats=st.beats==null?6:st.beats;
+  h+=txt(CX,86,k,46,INK,' font-weight="300" letter-spacing="1"');
+  for(var b=0;b<10;b++){var bx=CX-58+b*12.9;h+='<circle cx="'+f1(bx)+'" cy="106" r="3.6" fill="'+(b<beats?col:'none')+'" stroke="'+(b<beats?col:LINE)+'" stroke-width="1.3"/>';}
+  h+=body(BX,BY+14,BS,{seatOp:.5});
+  if(k==='no'&&yes)h+='<g transform="translate('+BX+' '+(BY+14)+') scale('+BS+')" opacity=".45">'+markArt(yes,SKY)+'</g>';
+  /* each beat drops a ripple from the head down into the body */
+  if(anim)h+='<g class="fall"><circle cx="'+CX+'" cy="'+(BY+30)+'" r="9" fill="none" stroke="'+col+'" stroke-width="2"/></g>';
+  else h+='<circle cx="'+CX+'" cy="'+f1(BY+30+((st.beatT||.5)*118))+'" r="9" fill="none" stroke="'+col+'" stroke-width="2" opacity="'+f1(1-(st.beatT||.5))+'"/>';
+  return svg(h);}
+ if(k==='whereY'||k==='whereN'){
+  var isY=k==='whereY', m=isY?yes:no, c2=isY?SKY:VIO;
+  h+=txt(CX,78,isY?'yes':'no',22,MID,' font-weight="300"');
+  var inner='';
+  if(!isY&&yes)inner+='<g opacity=".4">'+markArt(yes,SKY)+'</g>';
+  if(m)inner+=markArt(m,c2);
+  var L={};if(m){L[nearestSeat(m.y)]={ring:1};}
+  h+='<g id="tapBody">'+body(BX,BY+6,BS,{seatOp:.45,lit:L,inner:inner})+'</g>';
+  if(!m)h+='<g transform="translate('+CX+' '+(BY+6+100*BS)+')"><circle r="16" fill="none" stroke="'+c2+'" stroke-width="2" class="'+(anim?'rp':'')+'" opacity=".8"/><circle r="5" fill="'+c2+'" class="'+(anim?'pl':'')+'"/></g>';
+  /* the three questions, as gates */
+  var gy=412, on=!!m;
+  h+='<g data-gate="move" style="cursor:pointer">'+gate(78,gy,'move',c2,m&&m.move?'<path d="M'+(78+11)+' '+(gy+15)+'q3-4 6 0t6 0" fill="none" stroke="'+c2+'" stroke-width="1.6"/>':null,on&&m.move)+'<rect x="56" y="'+(gy-22)+'" width="44" height="46" fill="transparent"/></g>';
+  h+='<g data-gate="temp" style="cursor:pointer">'+gate(130,gy,'temp',c2,m&&m.temp?'<rect x="'+(130+10)+'" y="'+(gy+12)+'" width="14" height="6" rx="3" fill="'+(m.temp===1?'#D8924E':'#5EBBDB')+'"/>':null,on&&m.temp)+'<rect x="108" y="'+(gy-22)+'" width="44" height="46" fill="transparent"/></g>';
+  h+='<g data-gate="dir" style="cursor:pointer">'+gate(182,gy,'dir',c2,m&&m.dir?txt(182+17,gy+18.5,['','&#8593;','&#8595;','&#8594;','&#8592;'][m.dir],9,INK):null,on&&m.dir)+'<rect x="160" y="'+(gy-22)+'" width="44" height="46" fill="transparent"/></g>';
+  return svg(h);}
+ if(k==='both'){
+  var inn='';if(yes)inn+=markArt(yes,SKY);if(no)inn+=markArt(no,VIO);
+  var L2={};if(yes)L2[nearestSeat(yes.y)]={ring:1};if(no)L2[nearestSeat(no.y)]={ring:1};
+  h+=body(BX,BY+6,BS,{seatOp:.4,lit:L2,inner:inn});
+  h+=txt(84,90,'yes',20,SKY,' font-weight="300"')+txt(130,90,(yes&&no&&nearestSeat(yes.y)===nearestSeat(no.y))?'=':'&#8800;',22,MID)+txt(176,90,'no',20,VIO,' font-weight="300"');
+  return svg(h);}
+ if(k==='thread'){
+  var inn2='';if(yes)inn2+=markArt(yes,SKY);if(no)inn2+=markArt(no,VIO);
+  /* the line from the halo, where a thought is, down to where it landed */
+  var th='';[[yes,SKY],[no,VIO]].forEach(function(p){if(!p[0])return;th+='<path d="M100 6C'+(p[0].x+40)+' 20 '+(p[0].x+30)+' '+(p[0].y-30)+' '+p[0].x+' '+p[0].y+'" fill="none" stroke="'+p[1]+'" stroke-width="2.4" stroke-dasharray="4 5"'+(anim?'><animate attributeName="stroke-dashoffset" from="36" to="0" dur="1.2s" repeatCount="indefinite"/></path>':'/>');});
+  h+=body(BX,BY+6,BS,{seatOp:.35,haloOp:1,inner:th+inn2});
+  h+=core(CX,BY+6+2*BS,9,'#DABF6A',anim?'br':'');
+  h+=txt(CX,420,'A thought moved your body.',15.5,INK);
+  return svg(h);}
+ if(k==='stake'){
+  /* three bad day thoughts arrive from above, one after another, and each
+     drops a line to the seat it lands on, which goes red: the colour the
+     Field gives a contracted read */
+  var T=[['I can\'t',70,62,150],['I\'m shy',190,62,74],['not good enough',130,100,112]];
+  var L3={};T.forEach(function(x,i){if(anim||t>=(i+1)*.22)L3[nearestSeat(x[3])]={col:RED,ring:1};});
+  var by=BY+6;
+  h+=body(BX,by,BS,{seatOp:.4,lit:anim?{}:L3});
+  T.forEach(function(x,i){var sy=by+x[3]*BS, shown=anim||t>=i*.22;if(!shown)return;
+   var beg=(i*1.4)+'s';
+   var op=anim?' opacity="0"':'';
+   var an=function(){return anim?'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.85;1" dur="7s" begin="'+beg+'" repeatCount="indefinite"/>':'';};
+   h+='<g'+op+'>'+an()+txt(x[1],x[2],x[0],13,MID,' font-style="italic"')
+    +'<line x1="'+x[1]+'" y1="'+(x[2]+6)+'" x2="'+CX+'" y2="'+f1(sy)+'" stroke="'+RED+'" stroke-width="1.2" stroke-dasharray="3 4" opacity=".7"/>'
+    +'<circle cx="'+CX+'" cy="'+f1(sy)+'" r="'+f1(8*BS+3)+'" fill="'+RED+'"/><circle cx="'+CX+'" cy="'+f1(sy)+'" r="'+f1(14*BS+2)+'" fill="none" stroke="'+RED+'" stroke-width="1.6"/></g>';});
+  /* the slider, as it stands beside the Field: sky above, red below. No
+     number on it: this is a picture of what a thought does, never a reading */
+  var sx=212, top=190, bot=330, nv=top+26+(bot-top-52)*Math.min(1,t*1.2);
+  h+='<line x1="'+sx+'" y1="'+top+'" x2="'+sx+'" y2="'+((top+bot)/2)+'" stroke="'+SKY+'" stroke-width="2.4" stroke-linecap="round"/><line x1="'+sx+'" y1="'+((top+bot)/2)+'" x2="'+sx+'" y2="'+bot+'" stroke="'+RED+'" stroke-width="2.4" stroke-linecap="round"/>';
+  h+=anim?'<g><animateTransform attributeName="transform" type="translate" values="0 '+(top+26)+';0 '+(bot-26)+';0 '+(bot-26)+'" keyTimes="0;.7;1" dur="7s" repeatCount="indefinite"/><path d="M'+(sx+12)+' 0l-7-4.5v9z" fill="'+INK+'"/><circle cx="'+sx+'" cy="0" r="3.5" fill="'+INK+'"/></g>'
+   :'<path d="M'+(sx+12)+' '+f1(nv)+'l-7-4.5v9z" fill="'+INK+'"/><circle cx="'+sx+'" cy="'+f1(nv)+'" r="3.5" fill="'+INK+'"/>';
+  return svg(h);}
+ if(k==='turn'){
+  /* the seven colour ring closes and becomes the loop: the bridge into discover */
+  h+=seven(CX,CY,R+14,3,1,.9);
+  h+=loopRing(CX,CY,58,0,true,anim);
+  h+=txt(CX,430,'Write one down.',16,INK);
+  return svg(h);}
+ return svg(h);}
+
+/* THE LOOP. His four words, a circle that closes, never a list. Glyphs at the
+   four stations; the word appears only for the station a person is on. */
+var ST=['discover','play','flow','embody'], SG=['lens','tap','wave','body'];
+function loopRing(cx,cy,r,done,big,anim,cur){var h='',sw=big?3:2.4;
+ h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+LINE+'" stroke-width="'+sw+'"/>';
+ if(done>=4)h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+SKY+'" stroke-width="'+sw+'"/>';
+ else if(done>0)h+='<path d="'+arc(cx,cy,r,0,90*done)+'" fill="none" stroke="'+SKY+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+ /* the travelling light that says it keeps going */
+ if(anim)h+='<g class="spin" style="transform-origin:'+cx+'px '+cy+'px"><circle cx="'+cx+'" cy="'+(cy-r)+'" r="'+(big?5:3.5)+'" fill="'+SKY+'"/><circle cx="'+cx+'" cy="'+(cy-r)+'" r="'+(big?10:7)+'" fill="'+SKY+'" opacity=".25"/></g>';
+ var nr=big?15:(r<30?8:10);
+ for(var i=0;i<4;i++){var p=P(cx,cy,r,i*90),on=i<done||done>=4,c=cur===i;
+  h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="'+nr+'" fill="#0C0D12" stroke="'+(on||c?SKY:LINE)+'" stroke-width="'+(c?2.4:1.6)+'"/>'+glyph(SG[i],p[0],p[1],nr*1.15,on||c?INK:DIM,1.8);}
+ return h;}
+function dock(done,cur){return '<g>'+loopRing(40,42,22,done,false,false,cur)+txt(76,47,ST[cur]||'',15,INK,' text-anchor="start"')+'</g>';}
+
+/* the wheel, the Field in small: seat arcs, rings, crown, core, marks */
+function wheel(cx,cy,r,o){o=o||{};var h='';
+ h+=seven(cx,cy,r,3.2,null,.55);
+ for(var k=0;k<3;k++)h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+f1(r*(.78-k*.2))+'" fill="none" stroke="'+LINE+'" stroke-width="1"/>';
+ h+=crown(cx,cy,r*.3,r*.38,.7);
+ h+=core(cx,cy,r*.16,o.core||'#5A1D1B');
+ if(o.marks)[[4,4],[1,4],[2,4]].forEach(function(s){for(var q=0;q<s[1];q++){var a=s[0]*360/7+10+q*((360/7-20)/3),p=P(cx,cy,r*(.64-(q%2)*.14),a),hot=o.pick&&s[0]===4&&q===0;
+  h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="'+(hot?5:3)+'" fill="'+SEATS[s[0]]+'" opacity="'+(hot?1:o.faint?.45:.9)+'"/>';
+  if(hot&&o.anim)h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="8" fill="none" stroke="'+INK+'" stroke-width="1.4" class="rp"/>';}});
+ return h;}
+function glass(x,y,w,h2,inner){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h2+'" rx="'+Math.min(14,h2/2)+'" fill="rgba(26,29,38,.82)" stroke="'+LINE+'"/>'+inner;}
+function btn(x,y,w,label){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="30" rx="6" fill="'+SKY+'"/>'+txt(x+w/2,y+19.5,label,12.5,'#0C0D12',' font-weight="500"');}
+
+/* ARRIVE */
+function sBoot(){return svg('<rect width="260" height="500" fill="#090A0E"/>'+seven(130,220,56,5,null,.95)+'<circle cx="130" cy="220" r="11" fill="none" stroke="'+SKY+'" stroke-width="1.4" opacity=".7"/>'
+ +txt(130,318,'ATUNED',17,INK,' letter-spacing="4" font-weight="400"')+txt(130,336,'SOURCE OS',8.5,DIM,' letter-spacing="3"'));}
+function sMirror(anim){var h='<rect width="260" height="500" fill="#090A0E"/>'+leave();
+ h+=body(80,70,.5,{});
+ h+='<line x1="46" y1="286" x2="214" y2="286" stroke="'+SKY+'" stroke-width="1.4" opacity=".7"/>';
+ h+='<g opacity=".3" transform="translate(0 '+(286*1.55)+') scale(1 -.55)">'+body(80,70,.5,{})+'</g>';
+ h+='<rect x="30" y="287" width="200" height="130" fill="url(#fadeM)"/>';
+ h+='<defs><linearGradient id="fadeM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#090A0E" stop-opacity="0"/><stop offset="1" stop-color="#090A0E"/></linearGradient></defs>';
+ if(anim)h+='<ellipse cx="130" cy="286" rx="40" ry="3" fill="none" stroke="'+SKY+'" class="rp"/>';
+ h+=txt(130,432,'This is a mirror.',16,INK)+btn(85,452,90,'Come in');
+ return svg(h);}
+function sHello(){var h='<rect width="260" height="500" fill="#090A0E"/>'+seven(130,96,26,4,null,.95);
+ h+=txt(130,168,'Hello, Sofia.',20,INK);
+ h+='<rect x="30" y="196" width="200" height="34" rx="6" fill="#1A1D26" stroke="'+LINE+'"/>'+txt(42,218,'Sofia',13,INK,' text-anchor="start"');
+ h+='<rect x="30" y="238" width="200" height="34" rx="6" fill="#1A1D26" stroke="'+LINE+'"/>'+txt(42,260,'Alarcon',13,INK,' text-anchor="start"');
+ /* the three numbers the name sets, as three gates filling, and the lock */
+ [[86,'#DABF6A',.7],[130,'#5FD5A6',.45],[174,'#7D93E0',.85]].forEach(function(g){h+='<circle cx="'+g[0]+'" cy="312" r="14" fill="#171922" stroke="'+LINE+'" stroke-width="2"/><path d="'+arc(g[0],312,14,0,360*g[2])+'" fill="none" stroke="'+g[1]+'" stroke-width="2" stroke-linecap="round"/><circle cx="'+g[0]+'" cy="312" r="3" fill="'+g[1]+'"/>';});
+ h+=glyph('lock',130,352,16,DIM,1.6);
+ h+='<rect x="30" y="392" width="16" height="16" rx="3" fill="none" stroke="'+DIM+'"/>'+txt(54,405,'Straight in next time',12,MID,' text-anchor="start"');
+ h+=btn(85,438,90,'Next');
+ return svg(h);}
+
+/* ONE TURN */
+var STORY=[['My sister called again and I felt the old ',0],['tightness',4],[' in my chest. The same guilt, the same ',0],['shame',1],['. I ',0],['said yes when',4],[' I meant no and then I was ',0],['angry',2],[' at myself all night.',0]];
+function storyText(x,y,w){/* wrap the story into lines, lit words in their seat colour */
+ var words=[];STORY.forEach(function(p){p[0].split(/(\s+)/).forEach(function(s){if(s.trim())words.push([s,p[1]]);});});
+ var lines=[[]],len=0,max=Math.floor(w/5.6);words.forEach(function(wd){if(len+wd[0].length+1>max){lines.push([]);len=0;}lines[lines.length-1].push(wd);len+=wd[0].length+1;});
+ return lines.map(function(l,i){return '<text x="'+x+'" y="'+(y+i*16)+'" font-size="11" fill="'+INK+'" font-family="'+FONT+'">'+l.map(function(wd,j){var sp=(j&&!/^[.,]/.test(wd[0]))?' ':'';return sp+(wd[1]?'<tspan fill="'+SEATS[wd[1]]+'" font-weight="600">'+wd[0]+'</tspan>':wd[0]);}).join('')+'</text>';}).join('');}
+function sDiscover(anim){var h='<rect width="260" height="500" fill="#090A0E"/>'+leave()+dock(0,0);
+ h+='<rect x="16" y="84" width="228" height="170" rx="10" fill="#1A1D26" stroke="'+SKY+'" stroke-width="1.4"/>'+storyText(28,108,210);
+ h+=btn(148,214,84,'Commit 12');
+ /* lit words fly off as marks toward the wheel waiting below, faint */
+ h+='<g opacity=".3">'+wheel(130,378,86,{})+'</g>';
+ if(anim)[[70,124,4,'40px','230px'],[180,156,1,'-40px','200px'],[118,172,4,'10px','190px'],[60,188,2,'60px','170px']].forEach(function(d,i){h+='<circle cx="'+d[0]+'" cy="'+d[1]+'" r="3.4" fill="'+SEATS[d[2]]+'" class="fly" style="--dx:'+d[3]+';--dy:'+d[4]+';animation-delay:'+(i*.5)+'s"/>';});
+ else [[112,300,4],[150,318,1],[96,340,2]].forEach(function(d){h+='<circle cx="'+d[0]+'" cy="'+d[1]+'" r="3.4" fill="'+SEATS[d[2]]+'"/>';});
+ return svg(h);}
+function sPlay(anim){var h='<rect width="260" height="500" fill="#090A0E"/>'+leave()+dock(1,1);
+ h+=wheel(130,240,100,{marks:1,faint:1,pick:1,anim:anim});
+ h+=glass(46,380,168,34,'<circle cx="64" cy="397" r="5" fill="'+SEATS[4]+'"/>'+txt(76,401.5,'Self-Silencing',12.5,INK,' text-anchor="start"')+txt(200,401.5,'throat',11,SEATS[4],' text-anchor="end"'));
+ return svg(h);}
+function sFlow(anim){var h='<rect width="260" height="500" fill="#090A0E"/>'+leave()+dock(2,2);
+ /* the opened mark in the middle, its glow thinning as each line is read */
+ h+='<circle cx="130" cy="190" r="54" fill="none" stroke="'+SEATS[4]+'" stroke-width="1.4" stroke-dasharray="3 5" opacity=".7"/>';
+ h+='<circle cx="130" cy="190" r="30" fill="'+SEATS[4]+'" opacity=".16"'+(anim?'><animate attributeName="r" values="34;14;34" dur="7s" repeatCount="indefinite"/></circle>':'/>');
+ h+='<circle cx="130" cy="190" r="9" fill="'+SEATS[4]+'"/>';
+ if(anim)for(var i=0;i<6;i++){var a=i*60;h+='<circle cx="130" cy="190" r="2" fill="'+SEATS[4]+'"><animate attributeName="cx" values="130;'+f1(130+Math.cos(a*Math.PI/180)*70)+'" dur="3s" begin="'+(i*.5)+'s" repeatCount="indefinite"/><animate attributeName="cy" values="190;'+f1(190+Math.sin(a*Math.PI/180)*70)+'" dur="3s" begin="'+(i*.5)+'s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="3s" begin="'+(i*.5)+'s" repeatCount="indefinite"/></circle>';}
+ h+=txt(130,264,'practice',10.5,'#DABF6A',' font-family="ui-monospace,monospace"');
+ /* the lines of the release: one lit, the rest waiting */
+ [[318,.35,180],[342,1,200],[366,.35,164],[390,.35,188],[414,.35,150]].forEach(function(l){h+='<rect x="'+(130-l[2]/2)+'" y="'+l[0]+'" width="'+l[2]+'" height="8" rx="4" fill="'+(l[1]===1?SKY:'#252833')+'" opacity="'+l[1]+'"/>';});
+ return svg(h);}
+function sEmbody(anim){var h='<rect width="260" height="500" fill="#090A0E"/>'+leave()+dock(3,3);
+ /* the avatar with the throat seat it is working on, inside a clock face */
+ var cx=130,cy=214;
+ for(var i=0;i<12;i++){var p0=P(cx,cy,98,i*30),p1=P(cx,cy,i%3?92:86,i*30);h+='<line x1="'+f1(p0[0])+'" y1="'+f1(p0[1])+'" x2="'+f1(p1[0])+'" y2="'+f1(p1[1])+'" stroke="'+DIM+'" stroke-width="1.4"/>';}
+ h+='<path d="'+arc(cx,cy,104,212,236)+'" fill="none" stroke="'+SKY+'" stroke-width="3.4" stroke-linecap="round"/>';
+ var q=P(cx,cy,104,224);h+='<circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="5" fill="'+SKY+'"'+(anim?' class="pl"':'')+'/>';
+ var L={};L[4]={ring:1};h+=body(88,132,.42,{lit:L,seatOp:.5});
+ h+='<rect x="16" y="348" width="170" height="34" rx="17" fill="rgba(126,184,212,.1)" stroke="'+SKY+'"/>'+txt(101,369,'after I put the kettle on',12,INK);
+ h+='<rect x="194" y="348" width="50" height="34" rx="17" fill="none" stroke="'+LINE+'"/>'+glyph('lens',219,365,14,DIM,1.6);
+ h+=btn(160,440,72,'Save');
+ return svg(h);}
+function sField(anim){var h='<rect width="260" height="500" fill="#090A0E"/>';
+ h+=wheel(130,240,108,{marks:1,faint:1,core:'#6E3A3A'});
+ h+=anim?'<g>'+loopRing(130,240,40,4,false,true)+'<animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.5;.8;1" dur="4s" repeatCount="indefinite"/></g>':'';
+ return svg(h);}
+
+/* FRAMES */
+function frame(f){
+ return '<div class="fr"><div class="phone">'+f.art+'</div><div class="meta"><div class="top"><span class="id">'+f.id+'</span><span class="nm">'+f.nm+'</span>'
+  +(f.time?'<span class="chip" title="about how long">'+gsvg('ring',11,DIM)+f.time+'</span>':'')
+  +(f.q||[]).map(function(q){return '<a class="chip q" href="#q-'+q.toLowerCase()+'">'+q+'</a>';}).join('')+'</div>'
+  +'<details><summary>notes</summary>'+(f.say?'<p class="say">'+f.say+'</p>':'')+'<p>'+f.note+'</p></details></div></div>';}
+var yesM=DEMO.yes, noM=DEMO.no;
+var FA=[
+ {id:'S0',nm:'Boot',time:'5.4 s',art:sBoot(),note:'Unchanged and shipped. The ring with the tune you liked in FK. Any press skips it.'},
+ {id:'S1',nm:'The mirror',time:'6 s',q:['N','A','B','C'],art:sMirror(AN),say:'Your whole dictated opening, spoken over the figure, word for word.',note:'Was 52 words on the screen. Now the figure and its reflection, a line of light between them that ripples, and four words. The rest is heard, not read. Whether that is right is question N.'},
+ {id:'S2',nm:'Hello',time:'8 s',q:['D','E','F'],art:sHello(),note:'Was "Your name sets three of your numbers. It stays on this device." Now the three numbers are three rings that fill as the name is typed, and a lock. The greeting fills in as the name is typed, as you confirmed in FK.'}];
+var FS=[
+ {id:'T1',nm:'Stop',time:mmss(START[0]),art:scene('stop',{anim:AN}),say:STEPS[0].say,note:'Everything else fades. The core alone, breathing, with a pause mark in it. It is dark red because nothing has been read yet, which is how the Field draws it today. The seven colour ring round the edge is the timer, empty.'},
+ {id:'T2',nm:'Drop in',time:mmss(START[1]),art:scene('drop',{anim:AN}),say:STEPS[1].say,note:'The body appears. A light drops from the halo, where a thought is, down the spine to the belly, and breathes there: four seconds out, six back. No words.'},
+ {id:'T3',nm:'yes',time:mmss(START[2]),art:scene('yes',{anim:AN,beats:6}),say:STEPS[2].say,note:'The only big word on the screen. Ten beats, one every two and a half seconds; each drops a ring from the head into the body. The ten dots under the word fill as it goes.'},
+ {id:'T4',nm:'Where yes lands',time:mmss(START[3]),art:scene('whereY',{anim:AN,yes:yesM}),say:STEPS[3].say,note:'Tap the body where it landed. The nearest seat rings in its own colour. Then three gates, drawn exactly like the six round the Field\'s core: moved, warm or cool, which way. Each holds a dash until answered, and the answer is drawn on the mark itself.'},
+ {id:'T5',nm:'no',time:mmss(START[4]),art:scene('no',{anim:AN,beats:4,yes:yesM}),say:STEPS[4].say,note:'The same, in violet. The yes mark stays on the body, faint, so the two can be felt against each other.'},
+ {id:'T6',nm:'Where no lands',time:mmss(START[5]),art:scene('whereN',{anim:AN,yes:yesM,no:noM}),say:STEPS[5].say,note:'Second tap, second set of answers. Here no has landed lower, at the solar plexus, cool and pressing down.'},
+ {id:'T7',nm:'Side by side',time:mmss(START[6]),art:scene('both',{yes:yesM,no:noM}),say:'(nothing said)',note:'Both marks with everything they carry. The sign between the words is drawn from where they landed: different seats, not equal. The same seat, equal. No number, because it is not a reading.'},
+ {id:'T8',nm:'The thread',time:mmss(START[7]),art:scene('thread',{anim:AN,yes:yesM,no:noM}),say:STEPS[7].say,note:'A line runs from the halo down to each mark, moving. The halo lights. One sentence on the screen, the one the whole test is for. It is the line from this morning, kept.'},
+ {id:'T9',nm:'What is at stake',time:mmss(START[8]),art:scene('stake',{anim:AN}),say:STEPS[8].say,note:'Three bad day thoughts drift in and land. Each seat they land on goes red, which is the colour the Field uses for a contracted read. The slider beside it falls from sky into red. The only words are the thoughts, because they are what a person hears in their own head.'},
+ {id:'T10',nm:'Move on',time:mmss(START[9]),art:scene('turn',{anim:AN}),say:STEPS[9].say,note:'The seven colour ring is full. The loop appears inside it with its light already travelling, and discover is the first station. About two minutes, done.'}];
+var FT=[
+ {id:'D1',nm:'discover',time:'45 to 90 s',q:['H','J'],art:sDiscover(AN),note:'The real story box, all else dimmed. The words light as they are typed, which is built. The lit words fly off as marks toward the wheel waiting below. Real engine output, run 27 September: 12 patterns at the throat, sacral and solar plexus. The instruction line is gone; the box and the flying marks say it.'},
+ {id:'D2',nm:'play',time:'15 s',q:['H'],art:sPlay(AN),note:'The real Field, the marks faint because one story is not heavy enough yet. The brightest one pulses with a target ring. Opened, it shows its name in a glass pill, which is data and not copy. "Your words landed here. Open one." is gone; the marks arriving did that.'},
+ {id:'D3',nm:'flow',time:'30 s',q:['G'],art:sFlow(AN),note:'The release over the mark they opened. The glow thins as each line is read and flecks leave it. A dashed ring and one word, practice, say this run changes nothing, which is question G. The instruction line is gone.'},
+ {id:'D4',nm:'embody',time:'15 s',art:sEmbody(AN),note:'The avatar with the throat seat it is working on, inside a clock face. One chip, their own words, "after I put the kettle on", which is the Ritual row\'s shipped example; the lens opens more. Save closes the ring.'},
+ {id:'D5',nm:'The Field',art:sField(AN),note:'The loop turns once more and sinks into the centre of the wheel. "This wheel is you" is gone: the ring they just walked lands on it, which says it.'}];
+document.getElementById('fA').innerHTML=FA.map(frame).join('');
+document.getElementById('fS').innerHTML=FS.map(frame).join('');
+document.getElementById('fT').innerHTML=FT.map(frame).join('');
+
+function grpH(el,g,label,sub){document.getElementById(el).innerHTML=gsvg(g,22,SKY)+'<h2>'+label+'</h2>'+(sub?'<em>'+sub+'</em>':'');}
+grpH('g-arrive','mirror','Arrive','3 screens');
+grpH('g-signal','body','The signal test','about two minutes, the new part');
+grpH('g-turn','ring','One turn, then the Field','discover, play, flow, embody');
+document.getElementById('thread').innerHTML=[['field','Boot','5 s'],['mirror','Mirror','6 s'],['hello','Hello','8 s'],['body','Signal test','2:08'],['ring','One turn','2 to 3 min',1],['field','Field','']].map(function(x){return '<div'+(x[3]?' class="turn"':'')+'>'+gsvg(x[0],20,x[3]?SKY:MID)+'<span>'+x[1]+'</span><em>'+x[2]+'</em></div>';}).join('');
+document.getElementById('script').innerHTML=STEPS.map(function(s,i){var on={stop:'the core, a pause mark',drop:'a light drops down the spine',yes:'<b>yes</b>, ten dots filling',whereY:'the body to tap; three gates',no:'<b>no</b>, ten dots filling',whereN:'the body to tap; three gates',both:'the two marks, yes and no, and a sign between',thread:'a line from the halo to each mark; <b>A thought moved your body.</b>',stake:'three thoughts land; the seats go red; the needle falls',turn:'the ring fills and becomes the loop; <b>Write one down.</b>'}[s.k];
+ return '<tr><td class="big">'+mmss(START[i])+'</td><td>'+on+'</td><td><b>'+(s.say||'nothing')+'</b></td><td>'+s.his+'</td></tr>';}).join('');
+
+/* question drawings */
+function mini(art){return '<div class="mini">'+art+'</div>';}
+function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
+set('qm1','<div style="display:flex;gap:8px;align-items:center">'+mini(scene('yes',{beats:6}))+'<span class="dim" style="font-size:13px">voice says<br>"think yes"</span></div>');
+set('qm2',mini(scene('yes',{beats:6}).replace('</svg>','<rect x="14" y="452" width="232" height="30" rx="8" fill="rgba(26,29,38,.9)"/>'+txt(130,471,'Think yes. Ten times, slowly.',11.5,INK)+'</svg>')));
+set('qm3',mini(scene('yes',{beats:6})));
+set('qn1',mini(sMirror(false)));
+set('qn2',mini(svg('<rect width="260" height="500" fill="#090A0E"/>'+body(95,40,.35,{})+'<foreignObject x="18" y="200" width="224" height="240"><div xmlns="http://www.w3.org/1999/xhtml" style="font:11.5px/1.5 system-ui,sans-serif;color:#EFEDE8">This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life, pain and disease free.</div></foreignObject>'+btn(85,452,90,'Come in'))));
+
+var CQ=[
+ ['A','The last four words of your opening: keep "pain and disease free", or end one clause earlier?','Kept, it is your voice and speaks to the pain; it also promises a medical result the instrument cannot measure, and Derek stops on it. Cut, pain stays named as what the charge causes.'],
+ ['B','Does the ten year old rule reach your own dictated words?','"The bias", "the conditioning" and "your highest experience of life" fail it. Ship as spoken; say it again plainer yourself; or the team drafts and you approve.'],
+ ['C','Which words go on the figure: the shipped welcome ("This is you, and it is okay."), your mirror, or both?','The mirror says what this does. The welcome is eleven warm words. Both costs about 12 more seconds before the signal test.'],
+ ['D','Where does sign in go: before Hello, or after the first turn?','Before, the record fills the name. After, something is given first, and until then the first story lives only in this browser.'],
+ ['E','What does the box on Hello turn off?','The whole opening, one switch; or only the greeting, which then shows after every boot until ticked.'],
+ ['F','Is the name required?','Optional, Next works empty and the three numbers are lost. Required, Diane and James walk away from an ask before anything is given.'],
+ ['G','What does flow do on a first story, when nothing is heavy enough to release?','A labelled practice run, as drawn on D3, and the circle closes on day one. Or flow waits, and the loop first closes on day two.'],
+ ['H','Is a dimmed product a pop up? You ruled "no pop ups" on 20 September.','Dimmed, nothing covering it, as drawn. Or full screen copies of each station, and the real places are not touched until the opening ends.'],
+ ['I','A few more questions after the signal test?','None; three that make one spoke of the wheel real on day one; or a few that change nothing, which raises starts and is a claim the instrument cannot back.'],
+ ['J','Does a station line say what to do, or also what it is for?','Moot on the drawn frames now: the station lines are gone, and the motion says both. Open only if question M goes to captions.'],
+ ['K','Is "the starting square" Frames?','Land on Frames, the Field as nested squares, not ported yet. Or land on the Wheel, as drawn on D5.'],
+ ['L','Five small ones','Four doors or one for a person who skips; keep the two signal test marks on the record (drawn here, they would let a later run show whether the places moved); Root energetics open on first landing; say the profile picker people are examples; embody and flow and the ten year old rule.']];
+set('carriedQ',CQ.map(function(q){return '<div id="q-'+q[0].toLowerCase()+'"><b>'+q[0]+'. '+q[1]+'</b><br>'+q[2]+'</div>';}).join(''));
+
+/* THE PLAYER */
+var ph=document.getElementById('pPhone'), said=document.getElementById('pSaid');
+var bGo=document.getElementById('pGo'), bFast=document.getElementById('pFast'), bVoice=document.getElementById('pVoice');
+var S={run:false,el:0,last:0,fast:true,voice:false,yes:null,no:null,step:-1};
+function stepAt(el){for(var i=STEPS.length-1;i>=0;i--)if(el>=START[i])return i;return 0;}
+function speak(s){if(!S.voice||!s)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(s);u.rate=S.fast?1.25:.9;speechSynthesis.speak(u);}catch(e){}}
+function draw(){var i=stepAt(S.el),st=STEPS[i],t=(S.el-START[i])/st.s;
+ if(i!==S.step){S.step=i;said.textContent=st.say||'(nothing said)';speak(st.say);}
+ var o={t:t,g:S.el/TOTAL,yes:S.yes,no:S.no,anim:false};
+ if(st.k==='yes'||st.k==='no'){var bt=t*10;o.beats=Math.min(10,Math.floor(bt)+1);o.beatT=bt%1;}
+ /* a person who does not tap gets a demo mark two thirds through, so the
+    sequence never stalls in a storyboard; the real one waits */
+ if(st.k==='whereY'&&!S.yes&&t>.66)S.yes=JSON.parse(JSON.stringify(DEMO.yes)),o.yes=S.yes;
+ if(st.k==='whereN'&&!S.no&&t>.66)S.no=JSON.parse(JSON.stringify(DEMO.no)),o.no=S.no;
+ if(st.k==='drop'||st.k==='stop'){o.anim=!RED_MO;}
+ ph.innerHTML=scene(st.k,o);
+ var tm=ph.querySelector('svg');tm.insertAdjacentHTML('beforeend',txt(130,482,mmss(TOTAL-S.el),11,DIM,' font-family="ui-monospace,monospace"'));}
+function tick(now){if(!S.run)return;var dt=(now-S.last)/1000;S.last=now;S.el+=dt*(S.fast?4:1);
+ if(S.el>=TOTAL){S.el=TOTAL-.01;S.run=false;bGo.textContent='Again';draw();return;}
+ draw();requestAnimationFrame(tick);}
+bGo.addEventListener('click',function(){if(S.run){S.run=false;bGo.textContent='Play';try{speechSynthesis.cancel();}catch(e){}return;}
+ if(S.el>=TOTAL-.1){S.el=0;S.yes=S.no=null;S.step=-1;}
+ S.run=true;S.last=performance.now();bGo.textContent='Pause';requestAnimationFrame(tick);});
+bFast.addEventListener('click',function(){S.fast=!S.fast;bFast.setAttribute('aria-pressed',S.fast);});
+bVoice.addEventListener('click',function(){S.voice=!S.voice;bVoice.setAttribute('aria-pressed',S.voice);if(!S.voice){try{speechSynthesis.cancel();}catch(e){}}else if(S.step>=0)speak(STEPS[S.step].say);});
+/* taps: on the body in a where step places the mark; on a gate cycles it */
+ph.addEventListener('click',function(ev){var i=stepAt(S.el),k=STEPS[i].k;if(k!=='whereY'&&k!=='whereN')return;
+ var key=k==='whereY'?'yes':'no', gEl=ev.target.closest('[data-gate]'), m=S[key];
+ if(gEl){if(!m)return;var gk=gEl.getAttribute('data-gate');m[gk]=(m[gk]+1)%({move:2,temp:3,dir:5}[gk]);draw();return;}
+ var sv=ph.querySelector('svg'),pt=sv.createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;var p=pt.matrixTransform(sv.getScreenCTM().inverse());
+ var fx=(p.x-BX)/BS, fy=(p.y-(BY+6))/BS; if(fx<20||fx>180||fy<-10||fy>400)return;
+ S[key]={x:Math.round(fx),y:Math.round(fy),move:m?m.move:0,temp:m?m.temp:0,dir:m?m.dir:0};draw();});
+ph.innerHTML=scene('stop',{anim:!RED_MO,g:0});
+ph.querySelector('svg').insertAdjacentHTML('beforeend',txt(130,482,mmss(TOTAL),11,DIM,' font-family="ui-monospace,monospace"'));
+
+/* the count in the header is measured off the drawn screens, never typed */
+(function(){var n=0;document.querySelectorAll('.frames .phone').forEach(function(e){n+=(e.textContent.replace(/\s+/g,' ').trim().match(/[A-Za-z0-9'À-ɏ]+/g)||[]).length;});
+ document.getElementById('cNow').textContent=n;})();
 })();
 </script>
+</body>
+</html>

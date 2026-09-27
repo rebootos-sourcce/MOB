@@ -1,566 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tutorial Storyboard</title>
-<meta name="description" content="Atuned tutorial, frame by frame: the avatar in the centre and one full turn of discover, play, flow, embody around it, on the shipped mechanics, with real copy written to the ten year old rule and every open question marked. A prototype storyboard, not the shipped app.">
+<meta name="description" content="Atuned tutorial, drawn rather than written: the loop as a circuit a person keeps walking around their avatar, each station's purpose shown, every screen cut to what a real screen shows. A prototype storyboard, not the shipped app.">
 <style>
 /* One look, on purpose: the product's own Dark theme tokens, the same ones
-   atuned_src/shell/head.html carries and proto/firstrun drew with. The
-   storyboard is drawn inside the product's world, so it commits to one theme
-   and paints every colour explicitly. No font is fetched: this page follows
-   the product's one file, no network rule, so it runs on the system face. */
+   atuned_src/shell/head.html carries. No font is fetched: the product's one
+   file, no network rule. */
 :root{
  color-scheme:dark;
  --bg:#0C0D12; --panel:#1A1D26; --panel2:#252833; --sunk:#090A0E;
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:#2C303C;
  --sky:#7EB8D4; --skybg:rgba(126,184,212,.08); --warn:#DABF6A; --warnbg:#2A2412;
- --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
- --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);
- padding-inline:clamp(16px,4vw,48px);padding-block:0 72px}
+ padding-inline:clamp(16px,4vw,48px);padding-block:0 72px;overflow-x:hidden}
 .wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:64px}
 h1,h2,h3{font-weight:500;letter-spacing:-.01em;text-wrap:balance;margin:0}
 h1{font-size:clamp(28px,4.2vw,44px);font-weight:300;line-height:1.15}
 h2{font-size:23px}
 h3{font-size:16.5px}
-p{margin:0;max-width:68ch}
+p{margin:0;max-width:66ch}
 a{color:var(--sky)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
-code,.num{font-family:var(--mono);font-size:.9em}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+code{font-family:var(--mono);font-size:.9em}
 .eye{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sky)}
 .mid{color:var(--mid)} .dim{color:var(--dim)}
 
-/* the prototype band. On the page, first, and sticky: ruled after FK, a
-   prototype says what it is where it is seen. */
-.proto{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-inline:calc(-1 * clamp(16px,4vw,48px));margin-bottom:0;
+.proto{position:sticky;top:0;z-index:5;margin-inline:calc(-1 * clamp(16px,4vw,48px));
  padding:10px clamp(16px,4vw,48px);background:var(--warnbg);border-bottom:1px solid var(--warn);
  color:var(--warn);font:500 13.5px/1.4 var(--sans);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
 .proto b{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--warn);border-radius:3px;padding:3px 6px}
 
-header{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:40px}
-header .txt{display:flex;flex-direction:column;gap:16px}
-header .hero{display:flex;justify-content:center}
-@media (max-width:820px){header{grid-template-columns:1fr}header .hero{order:-1}}
+header{display:flex;flex-direction:column;gap:16px;padding-top:40px;max-width:760px}
+.counts{display:flex;gap:28px;flex-wrap:wrap}
+.counts div{display:flex;flex-direction:column;gap:2px}
+.counts b{font:300 34px/1 var(--sans)}
+.counts i{font-style:normal;color:var(--dim);font-size:13.5px}
+.counts span{font:500 11.5px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
 
-.thread{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.thread div{flex:1 1 150px;padding:14px;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--line)}
-.thread div:first-child{border-left:0}
-.thread b{font-weight:500}
-.thread span{font:400 12.5px/1.4 var(--mono);color:var(--dim)}
-.thread .turn{background:var(--skybg)}
-@media (max-width:720px){.thread div{flex-basis:100%;border-left:0;border-top:1px solid var(--line)}.thread div:first-child{border-top:0}}
+/* the circuit: the loop drawn large, and the screen for wherever the light is */
+.circuit{display:grid;grid-template-columns:minmax(0,1fr) 262px;gap:40px;align-items:center}
+@media (max-width:860px){.circuit{grid-template-columns:1fr;justify-items:center}}
+.ring{width:100%;max-width:680px;justify-self:center}
+.ring svg,#purpose svg{width:100%;height:auto;display:block}
+.ring [data-node]{cursor:pointer}
+.side{display:flex;flex-direction:column;gap:12px;align-items:center;width:262px;max-width:100%}
+.cctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.cctl button{min-height:44px;min-width:44px;padding:0 16px;border-radius:22px;border:1px solid var(--line);background:var(--panel);
+ color:var(--ink);font:500 14px/1 var(--sans);cursor:pointer}
+.cctl button.go{border-color:var(--sky);color:var(--sky)}
+.legend{font-size:13.5px;color:var(--mid);text-align:center;max-width:262px}
+
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px 28px}
+.why div{border-top:1px solid var(--line);padding-top:12px;font-size:14.5px;color:var(--mid)}
+.why b{display:block;color:var(--ink);font-weight:500;margin-bottom:4px}
 
 section{display:flex;flex-direction:column;gap:22px}
 .sec-h{display:flex;flex-direction:column;gap:8px}
-.news{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px}
-.news div{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px}
-.news b{font-weight:500}
-.news span{font-size:14.5px;color:var(--mid)}
+.grp-h{display:flex;flex-wrap:wrap;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:18px}
+.grp-h h2{font-size:19px}
+.grp-h em{font-style:normal;font:400 12.5px/1 var(--mono);color:var(--dim)}
 
-/* frames */
-.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:44px 28px}
-.fr{display:flex;flex-direction:column;gap:14px}
-.phone{width:100%;max-width:262px;aspect-ratio:390/760;background:var(--sunk);border:1px solid var(--line);
- border-radius:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;
- justify-content:center;gap:10px;padding:20px 16px;font-size:12px;line-height:1.4;text-align:center}
-.phone .leave{position:absolute;top:12px;right:14px;font-size:10.5px;color:var(--dim)}
-.phone .big{font-size:18px;font-weight:400}
-.phone .word{font-size:26px;font-weight:300;letter-spacing:.01em}
-.phone .small{font-size:11px;color:var(--mid)}
-.phone .tiny{font-size:9.5px;color:var(--dim)}
-.phone .mirror{font-size:11px;line-height:1.5;color:var(--ink);text-align:left}
-.phone .mirror u{text-decoration:underline dashed var(--warn);text-underline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--sky);color:#0C0D12;
- border-radius:5px;font-size:11.5px;font-weight:500;padding:7px 20px}
-.btn.ghost{background:transparent;color:var(--mid);border:1px solid var(--line)}
-.fld{width:100%;text-align:left;display:flex;flex-direction:column;gap:3px}
-.fld label{font-size:9.5px;color:var(--dim)}
-.fld i{font-style:normal;display:block;border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:6px 8px;font-size:11.5px;color:var(--ink)}
-.ck{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--mid);align-self:flex-start}
-.ck b{width:13px;height:13px;border:1px solid var(--dim);border-radius:3px;display:inline-block}
-.rows{display:flex;flex-direction:column;gap:7px;text-align:left;width:100%}
-.rows div{display:flex;gap:7px;align-items:flex-start;font-size:10.5px;color:var(--mid)}
-.rows div::before{content:"";flex:0 0 9px;height:9px;margin-top:3px;border:1px solid var(--sky);border-radius:50%}
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:40px 24px}
+.fr{display:flex;flex-direction:column;gap:10px}
+.phone{width:100%;max-width:262px;aspect-ratio:260/500;background:var(--sunk);border:1px solid var(--line);
+ border-radius:24px;position:relative;overflow:hidden}
+.phone>svg{position:absolute;inset:0;width:100%;height:100%}
+.meta{display:flex;flex-direction:column;gap:6px;max-width:262px;font-size:13px;color:var(--dim)}
+.meta .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.meta .id{font:500 11.5px/1 var(--mono);color:var(--sky)}
+.meta .nm{color:var(--ink);font-weight:500;font-size:14px}
+.meta .chip{display:inline-flex;align-items:center;gap:4px;font:400 11.5px/1 var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:3px 7px}
+.meta .chip.q{color:var(--warn);border-color:var(--warn);text-decoration:none}
+.meta details{font-size:13px;line-height:1.5}
+details>summary{list-style:none}
+details>summary::-webkit-details-marker{display:none}
+.meta summary{cursor:pointer;color:var(--dim);font:500 11.5px/1 var(--mono);letter-spacing:.04em;padding:8px 0;min-height:32px;display:flex;align-items:center}
+details.carry>summary::before,.meta summary::before{content:"+";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;font:500 13px/1 var(--mono);color:var(--sky);margin-right:6px;flex:0 0 auto}
+details[open]>summary::before{content:"\2212"}
+.meta details p{color:var(--mid);font-size:13px}
 
-.cap{display:flex;flex-direction:column;gap:8px;max-width:262px}
-.cap .id{font:500 12px/1 var(--mono);color:var(--sky);letter-spacing:.04em}
-.cap h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
-.cap p{font-size:14px;color:var(--mid);line-height:1.5}
-.copy{display:flex;flex-direction:column;gap:5px;border-left:2px solid var(--sky);padding:2px 0 2px 11px}
-.copy span{font-size:14.5px;color:var(--ink);line-height:1.4}
-.copy span.was{font-size:12.5px;color:var(--dim);text-decoration:line-through}
-.cap dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:2px 0 0;font-size:13px}
-.cap dt{color:var(--dim);font-family:var(--mono);font-size:12px;padding-top:1px}
-.cap dd{margin:0;color:var(--ink)}
-.tag{display:inline-block;font:500 11px/1 var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:3px;padding:3px 5px}
-.tag.new{color:var(--sky);border-color:var(--sky)}
-.qs{display:flex;flex-wrap:wrap;gap:6px}
-.qs a{font:500 11.5px/1 var(--mono);color:var(--warn);border:1px solid var(--warn);border-radius:12px;padding:5px 9px;text-decoration:none;min-height:24px;display:inline-flex;align-items:center}
-.qs a:hover{background:var(--warnbg)}
-
-/* a station, drawn inside the product: a neutral bar with no tab names (it is
-   not wired, ruled after FK), the ring docked, the surface dimmed, one target lit */
-.st{position:absolute;inset:0;display:flex;flex-direction:column;gap:7px;padding:12px 12px 14px;text-align:left}
-.st .nb{display:flex;gap:5px;padding-bottom:7px;border-bottom:1px solid var(--line)}
-.st .nb i{height:8px;border-radius:4px;background:var(--panel2);flex:1}
-.st .dock{display:flex;gap:8px;align-items:center;padding:4px 2px}
-.st .dock .w{font:500 13px/1.2 var(--sans);color:var(--ink)}
-.st .dock .l{font-size:10px;color:var(--mid);line-height:1.35}
-.st .dimmed{opacity:.32}
-.st .blk{height:9px;border-radius:3px;background:var(--panel2)}
-.st .card{border:1px solid var(--line);border-radius:7px;background:var(--panel);padding:8px;display:flex;flex-direction:column;gap:6px}
-.st .lit{border-color:var(--sky);box-shadow:0 0 0 1px var(--sky) inset}
-.st .ta{font-size:10.5px;line-height:1.55;color:var(--ink)}
-.st .ta s{text-decoration:none;border-radius:2px;padding:0 1px}
-.st .note{font-size:10px;color:var(--mid);line-height:1.4}
-.st .prac{font:500 9.5px/1.3 var(--mono);color:var(--warn)}
-.st .chips{display:flex;flex-wrap:wrap;gap:5px}
-.st .chips span{border:1px solid var(--line);border-radius:12px;padding:4px 8px;font-size:9.5px;color:var(--mid)}
-.st .chips span.on{border-color:var(--sky);color:var(--ink)}
-.st .row{display:flex;justify-content:space-between;align-items:center;gap:6px}
-.st .leave{position:absolute;top:24px;right:12px;font-size:10px;color:var(--dim)}
-
-/* tables */
 .tw{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line)}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-top:1px solid var(--line)}
 th{font:500 12px/1.2 var(--mono);color:var(--dim);letter-spacing:.04em;text-transform:uppercase;border-top:0}
 td{color:var(--mid)}
 td b{color:var(--ink);font-weight:500}
-td.st-open{color:var(--warn)}
-td.st-done{color:var(--heart)}
-
-/* questions */
-.q{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:60px}
+.q{border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:60px}
 .q .qh{display:flex;gap:12px;align-items:baseline}
-.q .qh .num{color:var(--warn);font-size:15px}
+.q .qh .num{color:var(--warn);font:500 15px/1 var(--mono)}
 .quote{border-left:2px solid var(--warn);padding:2px 0 2px 14px;color:var(--mid);font-size:15px;max-width:72ch}
 .quote cite{display:block;font-style:normal;font-size:12.5px;color:var(--dim);margin-top:4px}
-.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
-.pair.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media (max-width:760px){.pair,.pair.three{grid-template-columns:1fr}}
-.opt{display:flex;flex-direction:column;gap:12px}
-.opt h3 .num{color:var(--dim);margin-right:8px}
-.strip{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.mini{width:100px;aspect-ratio:390/620;background:var(--sunk);border:1px solid var(--line);border-radius:12px;
- display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:9px;text-align:center;padding:7px;color:var(--mid)}
-.mini b{color:var(--ink);font-weight:500;font-size:10px}
-.mini.wide{width:170px;font-size:10px;line-height:1.45;text-align:left;justify-content:flex-start;padding:12px}
-.mini.wide u{text-decoration:underline dashed var(--warn);text-underline-offset:3px}
-.arr{color:var(--dim);font-family:var(--mono);font-size:12px}
-.cost{font-size:14.5px;color:var(--mid);max-width:68ch}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.opt{display:flex;flex-direction:column;gap:10px}
+.opt h3 .num{color:var(--dim);margin-right:8px;font-family:var(--mono)}
+.cost{font-size:14.5px;color:var(--mid);max-width:66ch}
 .cost b{color:var(--ink);font-weight:500}
-.others{display:flex;flex-direction:column;gap:12px;font-size:15px;color:var(--mid)}
-.others b{color:var(--ink);font-weight:500}
-
-/* account drawing */
-.acct{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;grid-template-columns:160px 1fr;gap:22px;max-width:780px}
-.acct nav{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--mid)}
-.acct nav span{padding:7px 10px;border-radius:5px}
-.acct nav .on{background:var(--panel);color:var(--ink)}
-.grp{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.grp .gh{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:12px 14px 8px}
-.acct .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 14px;border-top:1px solid var(--line);font-size:14px}
-.acct .row em{display:block;font-style:normal;font-size:12.5px;color:var(--dim)}
-.sw{width:38px;height:22px;border-radius:11px;background:var(--sky);position:relative;flex:0 0 auto}
-.sw::after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#0C0D12}
-.gf{padding:10px 14px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--mid)}
-.newt{color:var(--sky);font:500 11px/1 var(--mono);margin-left:8px}
-.pane{display:flex;flex-direction:column;gap:14px}
-@media (max-width:640px){.acct{grid-template-columns:1fr;padding:16px}.acct nav{flex-direction:row;flex-wrap:wrap}}
-
-.walks{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px 28px}
-.walks div{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px;font-size:14.5px;color:var(--mid)}
-.walks b{color:var(--ink);font-weight:500}
+.mini{width:120px;aspect-ratio:260/500;background:var(--sunk);border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden}
+.mini>svg{position:absolute;inset:0;width:100%;height:100%}
+.list{display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--mid)}
+.list b{color:var(--ink);font-weight:500}
+.list div{border-top:1px solid var(--line);padding-top:10px}
+.walks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px 26px}
+.walks div{border-top:1px solid var(--line);padding-top:12px;font-size:14.5px;color:var(--mid)}
+.walks b{color:var(--ink);font-weight:500;display:block;margin-bottom:6px}
 .walks .stop{color:var(--warn)}
-.src{display:flex;flex-direction:column;gap:10px;font-size:14.5px;color:var(--mid)}
-.src div{border-top:1px solid var(--line);padding-top:10px}
-.src b{color:var(--ink);font-weight:500}
+details.carry{border-top:1px solid var(--line);padding-top:6px}
+details.carry>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:10px;font-size:16px;color:var(--ink)}
+details.carry>summary em{font-style:normal;color:var(--dim);font-size:13.5px}
+details.carry[open]>summary{margin-bottom:14px}
 footer{font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:16px}
-@media (prefers-reduced-motion:no-preference){.pulse{animation:pl 2.4s ease-in-out infinite}
- @keyframes pl{50%{box-shadow:0 0 0 1px var(--sky) inset,0 0 10px rgba(126,184,212,.35)}}}
+
+.rp{transform-box:fill-box;transform-origin:center;animation:rp 2.5s ease-out infinite}
+@keyframes rp{0%{transform:scale(.3);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+.pl{animation:pl 2.4s ease-in-out infinite}
+@keyframes pl{50%{opacity:.35}}
+.fly{animation:fly 3s ease-in-out infinite}
+@keyframes fly{0%{transform:translate(0,0);opacity:0}20%{opacity:1}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
+@media (prefers-reduced-motion:reduce){.rp,.pl,.fly{animation:none}.rp{opacity:.5}.fly{opacity:0}}
 </style>
-<style>
-/* tutorial only: the dock carries the avatar inside the loop, and the outer
-   ring of five doors */
-.st .dock .av{flex:0 0 auto}
-.door{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 8px;background:var(--panel)}
-.door span{font-size:10px;color:var(--ink)}
-.door.lit{border-color:var(--sky)}
-.door.off{opacity:.4}
-.sat{display:flex;gap:6px;align-items:center;font-size:9.5px;color:var(--mid)}
-.run{display:flex;justify-content:space-between;width:100%;font-size:9.5px;color:var(--mid);border-top:1px solid var(--line);padding-top:5px}
-.run em{font-style:normal;color:var(--ink)}
-.chapters{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.chapters div{padding:14px;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--line)}
-.chapters div:first-child{border-left:0}
-.chapters b{font-weight:500}
-.chapters span{font:400 12.5px/1.45 var(--sans);color:var(--mid)}
-.chapters i{font:500 11.5px/1 var(--mono);font-style:normal;color:var(--sky)}
-@media (max-width:720px){.chapters div{border-left:0;border-top:1px solid var(--line)}.chapters div:first-child{border-top:0}}
-</style>
+</head>
+<body>
 
 <div class="proto" role="note"><b>Prototype</b><span>A storyboard, not the shipped app. Nothing here is wired, and no drawn screen carries a real tab name.</span></div>
 <div class="wrap">
 
-
 <header>
- <div class="txt">
-  <span class="eye">Atuned tutorial. Storyboard, 27 September. First draft, never built before</span>
-  <h1>Your avatar in the middle, one full turn of the loop around it, done on your own story</h1>
-  <p class="mid">The tutorial is for a person who has already been through onboarding and now needs to know how the instrument works. It teaches by doing, inside the real screens, one thing lit at a time. The only progress marker is the loop itself, closing around the avatar in the centre ball you asked to keep.</p>
-  <p class="mid">Every mechanic on these frames is one that ships today, with the file it lives in named on the frame. Nothing is invented. Where a ruling of yours is needed before it can be built, the frame carries a yellow chip and the question is written out in full at the bottom. Every line a person reads is written to your rule from today: as if they are ten, and never abstract.</p>
+ <span class="eye">Atuned tutorial. Storyboard, 27 September, second pass</span>
+ <h1>A circuit you keep walking, with your avatar in the middle</h1>
+ <p class="mid">Your note: too many words, we are visual only, and show discover, play, flow and embody as the circuit it is. So the loop is drawn as a closed path with a light travelling round it, and every screen below is cut to what a real screen would show.</p>
+ <div class="counts" aria-label="Words inside the drawn screens, measured">
+  <div><span>Words on the screens</span><b id="cNow">0</b><i>341 this morning</i></div>
  </div>
- <div class="hero" id="hero"></div>
 </header>
 
-<div class="chapters" aria-label="The chapters">
- <div><i>centre</i><b>Your avatar</b><span>Write who you want to be, and who you do not. It finds where the second one sits.</span></div>
- <div><i>discover</i><b>Write</b><span>What happened today. Watch the words light. Take it back with the arrow. Open the bank.</span></div>
- <div><i>play</i><b>Look</b><span>Open the brightest mark on the wheel. Hide a layer and bring it back.</span></div>
- <div><i>flow</i><b>Let go</b><span>Pick what to release, run it, read each line in your head.</span></div>
- <div><i>embody</i><b>Keep it</b><span>Today's practice, and when you will do it.</span></div>
- <div><i>centre</i><b>Back to your avatar</b><span>The ring closes. Then the rest of the bar lights as each part has something of yours.</span></div>
-</div>
-
-<section>
- <div class="sec-h"><span class="eye">What this is built from, and what is new</span><h2>Grounded in the rulings and the shipped screens. New: all of it, because it was never built</h2></div>
- <div class="news">
-  <div><b>The loop is the tutorial</b><span>Your ruling, round AN3: "The core loop is the tutorial... Day one done is touching every screen and running that loop once. A badge and points at the end." Each chapter is one station.</span></div>
-  <div><b>The avatar is the centre</b><span>Your ruling of 20 September: "What is Atuned? Your avatar." The tutorial starts and ends on the Avatar tab, and the ring closes around it.</span></div>
-  <div><b>It lives in the profile</b><span>AN5: "The tutorial lives in the profile, toggleable and replayable." FH: "Our one time screen tutorial is a check on and off within the profile."</span></div>
-  <div><b>It reaches the release</b><span>The standing brief, backlog item A7: "Not a tour of the interface. Find a pattern, release it, watch it change." And the 19 September review: the walkthrough has to reach the release.</span></div>
-  <div><b>It teaches the arrow</b><span>Undo is built and unlimited (engine/undo.js), and the back arrow is the only way to it. The tutorial is the one place anybody is shown it.</span></div>
-  <div><b>Its words disappear when it ends</b><span>Your rule, three times: no text on a screen that explains the screen (round IF). The tutorial's lines live in the ring at the top and nowhere else, and they are gone once it closes.</span></div>
+<section aria-label="The circuit">
+ <div class="circuit">
+  <div class="ring" id="ring"></div>
+  <div class="side">
+   <div class="phone" id="cPhone"></div>
+   <div class="cctl"><button type="button" class="go" id="cGo">Pause</button><button type="button" id="cReset">From the start</button></div>
+   <p class="legend">Tap a station on the ring to jump the light there. The screen follows the light.</p>
+  </div>
  </div>
 </section>
 
 <section>
- <div class="sec-h"><span class="eye">The frames</span><h2>One full turn, on Angela's own record</h2>
- <p class="mid">Angela has been through onboarding: one story, 12 patterns found, all faint, and "after I put the kettle on" set as her when. The blue lines under each frame are the copy a person reads. The avatar lines on U2 were run through the engine on 27 September.</p></div>
- <div class="frames" id="frames"></div>
-</section>
-
-<section>
- <div class="sec-h"><span class="eye">Your ten year old rule, applied</span><h2>Where plain words and precision pulled apart</h2>
- <p class="mid">Every tutorial line passed the house voice gate, <code>check.py --line</code>, with no hard failures. Whether a ten year old follows it was read by hand, out loud. These are the places the two rules disagreed, and what was chosen.</p></div>
- <div class="others">
-  <p><b>"Held" is the one product word the tutorial teaches.</b> The rest of the product uses it everywhere, so the tutorial says it once, on the wheel, in plain words: "Held means it is heavy enough to show in full." Everything else is described, not named.</p>
-  <p><b>"Imprint" and "pattern" are not said.</b> The bank's own label says "every imprint you hold", and the release counts "patterns". Both are hard words, and pattern means two things to a new person: a habit, and a unit the release is paid in. The tutorial says "everything your writing found" and shows the number on the Patterns box without naming it. Cost: the person learns the box by looking, not by being told.</p>
-  <p><b>The body names stay.</b> "Throat", yes. "Vagus nerve" is there because the shipped card prints it, and a ten year old does not know it. It is data the instrument reads, not a sentence the tutorial writes.</p>
-  <p><b>The book's release order is in the caption, not the copy.</b> Release lines on the left side, then the right, then the true lines on each side. Precise, and too much to read while doing it. The person reads one line at a time and is told one thing: keep some attention on your throat.</p>
-  <p><b>"Active Listening" and "No labelling" are the engine's own words for the practice.</b> "No labelling" is abstract. It is data from the practice table, so it is kept and flagged for the copy seat rather than rewritten here.</p>
-  <p><b>Your loop words are kept.</b> discover, play, flow, embody. Ruled, and yours.</p>
+ <div class="sec-h"><span class="eye">What the circuit says, without saying it</span><h2>A path of becoming, drawn</h2></div>
+ <div class="why">
+  <div><b>It never ends.</b>The light keeps going round. There is no last station and no number, which is your ruling: the four close, never a list.</div>
+  <div><b>Each lap carries one old habit round.</b>A dark knot is picked up at discover, takes its seat's colour at play, comes apart at flow, and at embody goes into the avatar as light. That is your content chain: the journal, the imprint, the release, the ritual.</div>
+  <div><b>The avatar is what changes.</b>One seat lights per lap, root first, crown last, and the core behind it turns from the Field's dark red to its sky blue. Integrating the conditioning, as a picture.</div>
+  <div><b>Each lap leaves a ring.</b>The Field is drawn as rings round a core. Here every lap walked adds one, so the Field reads as the path a person has already walked.</div>
+  <div><b>Free will is the next press.</b>Nothing pushes the light but the person. In the product it moves only when they do the station, which is why the ring is also the tutorial's only progress mark.</div>
  </div>
 </section>
 
 <section>
- <div class="sec-h"><span class="eye">Where they stop</span><h2>The same turn, as four people who want different things</h2>
- <p class="mid">Levels as the engine read them on 26 September (round FI), dated on purpose.</p></div>
+ <div class="sec-h"><span class="eye">What each station is for</span><h2>The tools, by purpose, round the ring</h2></div>
+ <div id="purpose" style="width:100%;max-width:720px;margin:0 auto"></div>
+</section>
+
+<section>
+ <div class="grp-h" id="g0"></div>
+ <div class="frames" id="f0"></div>
+</section>
+<section>
+ <div class="grp-h" id="g1"></div>
+ <div class="frames" id="f1"></div>
+</section>
+<section>
+ <div class="grp-h" id="g2"></div>
+ <div class="frames" id="f2"></div>
+</section>
+<section>
+ <div class="grp-h" id="g3"></div>
+ <div class="frames" id="f3"></div>
+</section>
+<section>
+ <div class="grp-h" id="g4"></div>
+ <div class="frames" id="f4"></div>
+</section>
+<section>
+ <div class="grp-h" id="g5"></div>
+ <div class="frames" id="f5"></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Outside, what was looked at and what was taken</span><h2>Borrowed moves, not borrowed looks</h2></div>
+ <div class="list">
+  <div><b>Apple's Activity rings.</b> A ring closing is read at a glance and the closing is the reward. Taken: the loop closes with light, and nothing else is needed to say a turn is done. Not taken: three rings to close every day, which turns a practice into a quota. <a href="https://developers.apple.com/design/human-interface-guidelines/components/status/activity-rings/">Apple HIG, Activity rings</a>.</div>
+  <div><b>Journey, thatgamecompany.</b> The whole game is one walk toward a light, and at the end you are back at the start. Taken: the circuit has no end screen; the light keeps going. <a href="https://en.wikipedia.org/wiki/Journey_(2012_video_game)">Journey</a>, <a href="https://gdcvault.com/play/1017700/Designing">GDC, Designing Journey</a>.</div>
+  <div><b>Headspace and Calm, the breathing shape.</b> Motion that repeats teaches a rhythm without a word. Taken: one lap is one steady beat, so the loop feels like a rhythm and not a checklist. <a href="https://goodux.appcues.com/blog/calm-app-new-user-experience">GoodUX on Calm</a>.</div>
+  <div><b>How We Feel.</b> Colour carries meaning before any label does. Taken: every knot takes its seat's colour at play, the same seven the Field uses. <a href="https://60fps.design/apps/how-we-feel">How We Feel, UI motion</a>.</div>
+  <div><b>Gentler Streak, Apple Design Award 2024.</b> Progress shown as a path that respects rest, not a streak that shames a missed day. Taken: a missed day does not break the circuit; the light waits where it was. <a href="https://developer.apple.com/news/?id=3m0ht22s">Behind the Design, Gentler Streak</a>.</div>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Where they stop</span><h2>Four people, one lap each</h2></div>
  <div class="walks">
-  <div><b>Angela, 36, seeker. Level 7.</b>Writes "someone who says what she means the first time" and nothing lands, because a good quality has no place in the body. Only the bad day line does. <span class="stop">Stops on U1</span> if nothing happening reads as failing. The tutorial's next line has to arrive before she wonders.</div>
-  <div><b>Derek, 39, high performer. Level 5.</b>His chapter is flow: he sets Pace and the Patterns box and reads the cost. <span class="stop">Stops on U10</span> if the run was practice. He measures everything and nothing moved. Question A decides him.</div>
-  <div><b>Sofia, 41, somatic practitioner. Level 8.</b>Runs the whole turn, then runs it again beside a client. The avatar pair is the first thing she would ask a client anyway. <span class="stop">No forced stop.</span> She wants the real release too, because a practice run in front of a client reads as a demo.</div>
-  <div><b>James, 57, C suite. Level 5 by one reading, 4 by the other.</b>"Who you do not want to be" is the most defended question in the product. <span class="stop">Stops on U2.</span> "Use a bad day" helps: it asks for an event, not a verdict on himself.</div>
+  <div><b>Angela, 36, seeker.</b>Watches the knot come apart at flow and wants it to be hers. <span class="stop">Stops at the first avatar line</span> if nothing happens when she writes a good quality. The second line arrives at once for that reason.</div>
+  <div><b>Derek, 39, high performer.</b>Reads the circuit as a system in two seconds. <span class="stop">Stops at flow, done,</span> if the practice run moved nothing on his avatar. Question A decides him.</div>
+  <div><b>Sofia, 41, somatic practitioner.</b>Walks it twice, the second time beside a client. <span class="stop">No forced stop.</span> The purpose ring is what she would draw for a client anyway.</div>
+  <div><b>James, 57, C suite.</b>"Who you do not want to be" is the most guarded question in the product. <span class="stop">Stops on U2.</span> The red down gate asks for a bad day, an event, not a verdict on him.</div>
  </div>
 </section>
 
 <section id="questions">
- <div class="sec-h"><span class="eye">Yours to rule</span><h2>The questions, each with the thing it is about</h2>
- <p class="mid">None is answered for you. Each one is a real gap: two of your rulings that pull against each other, or a ruling that was never turned into a design. Where it is about a screen, the screens are drawn.</p></div>
+ <div class="sec-h"><span class="eye">Yours to rule</span><h2>One new question, then the ones still open from this morning</h2></div>
 
- <div class="q" id="q-a">
-  <div class="qh"><span class="num">A</span><h3>Does the tutorial's release change anything?</h3></div>
-  <p class="quote">"The tutorial lives in the profile, toggleable and replayable. It does not spend real charge."<cite>Your ruling, round AN5, 19 September.</cite></p>
-  <p class="quote">"The avatar is the centrepiece... A person watches their avatar improve and the improvement is driven by releases and by going through the loop."<cite>Your ruling, 20 September, in CLAUDE.md. And backlog item A7: "Find a pattern, release it, watch it change."</cite></p>
-  <p class="cost">Both are yours. A release that changes nothing cannot show the avatar changing, so the tutorial cannot do both. The storyboard follows AN5, because it is the ruling on the tutorial itself, and draws the other two here.</p>
-  <div class="pair three">
-   <div class="opt"><h3><span class="num">1</span>Practice, as drawn</h3><div class="strip" id="qa1"></div><p class="cost"><b>Nothing is spent and nothing moves.</b> Cost: the turn ends with the avatar exactly as it started, and Derek and Sofia read it as a demo.</p></div>
-   <div class="opt"><h3><span class="num">2</span>Real, and small</h3><div class="strip" id="qa2"></div><p class="cost"><b>A short real run, about five patterns out of the hundred a person gets once.</b> The avatar shows "releasing" and the vault reads 1. Cost: it reverses AN5, and it spends a little of their allowance on a lesson.</p></div>
-   <div class="opt"><h3><span class="num">3</span>The last chapter waits</h3><div class="strip" id="qa3"></div><p class="cost"><b>Practice in the tutorial, and the closing chapter opens the first time they run a real release on their own.</b> Cost: the turn does not close in one sitting.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-b">
-  <div class="qh"><span class="num">B</span><h3>When does the tutorial first run?</h3></div>
-  <p class="quote">"The tutorial turns off once seen."<cite>Your brief for onboarding and the tutorial. Nothing says when it is first seen.</cite></p>
-  <div class="pair three">
-   <div class="opt"><h3><span class="num">1</span>Straight after onboarding</h3><div class="strip" id="qb1"></div><p class="cost"><b>One sitting, start to finish.</b> Cost: about eight minutes of guided doing on day one. NN/g found people who sat through a tour rated the app harder to use than people who skipped it.</p></div>
-   <div class="opt"><h3><span class="num">2</span>Day two, at their when</h3><div class="strip" id="qb2"></div><p class="cost"><b>It meets them on their return,</b> at the time they chose on the embody screen. Day two is the ritual, by your ruling, so this is the ritual's first job. Cost: whoever does not come back never sees it.</p></div>
-   <div class="opt"><h3><span class="num">3</span>Only when asked</h3><div class="strip" id="qb3"></div><p class="cost"><b>From Account, Run the tutorial now.</b> Cost: almost nobody finds it. This is where the shipped onboarding sits today, switched off by default.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-c">
-  <div class="qh"><span class="num">C</span><h3>Does the tutorial grow the bar?</h3></div>
-  <p class="quote">"The bar grows as they earn it."<cite>Your ruling, round AN8, 19 September. Not built. The locked state was never designed, and your standing rule says a control is never hidden without a sign of it.</cite></p>
+ <div class="q" id="q-h">
+  <div class="qh"><span class="num">H</span><h3>In the product, what does one lap leave behind?</h3></div>
+  <p class="quote">"It's a path of free will and embodiment, and it's a path of you becoming the best version of yourself by integrating the conditioning."<cite>Today. The circuit above lights a seat every lap. On a real avatar that would be a claim, and a reading is never invented.</cite></p>
   <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>Each chapter opens its tab</h3><div class="strip" id="qc1"></div><p class="cost"><b>The bar starts with the avatar and the three loop tabs,</b> and the other five show as shut, each saying what opens it. Cost: a new locked state on the bar, and five lines of "what opens this".</p></div>
-   <div class="opt"><h3><span class="num">2</span>The bar is whole from the start</h3><div class="strip" id="qc2"></div><p class="cost"><b>The tutorial does not touch the bar.</b> Cost: AN8 stays unbuilt, and a stranger meets nine tabs at once.</p></div>
+   <div class="opt"><h3><span class="num">1</span>A seat lights every lap</h3><div id="qh1"></div><p class="cost"><b>The picture above, in the product.</b> Cost: the avatar moves because a lap was walked, not because anything was released, so it can glow while the Field still reads heavy.</p></div>
+   <div class="opt"><h3><span class="num">2</span>A ring per lap, a seat only by real weight</h3><div id="qh2"></div><p class="cost"><b>Every lap leaves a ring, which is a fact: it was walked.</b> A seat lights only when a real release takes weight off it. Cost: slower, and some laps change nothing on the avatar.</p></div>
+   <div class="opt"><h3><span class="num">3</span>Nothing but the light moving</h3><div id="qh3"></div><p class="cost"><b>The quietest.</b> Cost: no trace of the path walked, which is the thing your note asked to be shown.</p></div>
   </div>
  </div>
 
- <div class="q" id="q-d">
-  <div class="qh"><span class="num">D</span><h3>"Touching every screen": inside the tutorial, or when each screen first has something of theirs?</h3></div>
-  <p class="quote">"Day one done is touching every screen and running that loop once."<cite>Round AN3. The loop passes through the Avatar, Story, Field and Ritual tabs. Body, Compass, Knowledge, Games and Summary are not on it.</cite></p>
-  <div class="pair">
-   <div class="opt"><h3><span class="num">1</span>A second lap, in the tutorial</h3><div class="strip" id="qd1"></div><p class="cost"><b>Five more stops, one press each.</b> Cost: five screens in a row with nothing to do on them, which is the card deck tour that measures worse than none.</p></div>
-   <div class="opt"><h3><span class="num">2</span>The outer ring, as drawn on U13</h3><div class="strip" id="qd2"></div><p class="cost"><b>Each of the five lights once, the first time it has something of theirs to show.</b> Cost: "every screen" is not done on day one for most people. Games and Knowledge may wait weeks.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-e">
-  <div class="qh"><span class="num">E</span><h3>What does the turn end on?</h3></div>
-  <p class="quote">"A badge and points at the end."<cite>Round AN3. The word for the reward has been open since 20 September: marks (what ships), badges, patterns, points or karma.</cite></p>
-  <p class="cost">U12 draws an empty slot where the reward goes. It cannot be labelled until the word is chosen. <b>Either way:</b> a word now and U12 is finished; no word yet and the tutorial ships with the slot empty, which is honest and flat.</p>
- </div>
-
- <div class="q" id="q-f">
-  <div class="qh"><span class="num">F</span><h3>The 63 questions: does the tutorial say how many and how long, and does it carry what the removed panels said?</h3></div>
-  <p class="quote">From 19 September, question 7, never answered: "Does the product say sixty three and fifteen minutes up front, or does it let a person start and find out." And round IF, 27 September: the questions page's three explanatory panels were cut under your rule against text that explains a screen; completion ran twenty nine points higher with them present.</p>
-  <div class="pair three">
-   <div class="opt"><h3><span class="num">1</span>Say it, in the tutorial, once</h3><p class="cost"><b>One tutorial line on the questions page:</b> "63 questions. About fifteen minutes. Each one is asked three ways." It is gone when the tutorial ends, which is the "we have overlays for all of it" in your ruling. Cost: a person who skips the tutorial is never told.</p></div>
-   <div class="opt"><h3><span class="num">2</span>Say it on the page</h3><p class="cost"><b>One line, always there.</b> The panel records put completion about thirty points higher with the length stated. Cost: text on a screen, against your rule.</p></div>
-   <div class="opt"><h3><span class="num">3</span>Say nothing</h3><p class="cost"><b>The page stays clean.</b> Cost: people drop out part way, after the work, which is the most expensive place to lose them.</p></div>
-  </div>
- </div>
-
- <div class="q" id="q-g">
-  <div class="qh"><span class="num">G</span><h3>One line each, all still open</h3></div>
-  <div class="others">
-   <p><b>G1. Which number does the avatar lead with?</b> CQ, expression, or both (open since rounds EG and EQ). The tutorial's first and last frames sit on the avatar, so they show whichever you pick. Drawn here with no number.</p>
-   <p><b>G2. Is the tutorial the overlay your rule points to?</b> Your ruling against explaining text ends "we have overlays for all of it". The storyboard reads the tutorial's ring as that overlay: lines while it runs, none after. If you meant something else, every tutorial line needs a new home.</p>
-   <p><b>G3. Can the tutorial be left part way and picked up again?</b> Drawn as yes, the same as the opening: the ring keeps the quarters already closed.</p>
-  </div>
- </div>
+ <details class="carry">
+  <summary>Still open from this morning, A to G <em>unchanged, each with what it is about</em></summary>
+  <div class="list" id="carriedQ"></div>
+ </details>
 </section>
 
 <section>
- <div class="sec-h"><span class="eye">What to measure, so the next round can tell if it worked</span><h2>Kept on the record as dated flags, nothing sent</h2></div>
- <div class="others">
-  <p><b>1.</b> Whether the second avatar line found a place in the body, and how many tries it took.</p>
-  <p><b>2.</b> Leave, by chapter. The one to watch is U2, James's stop.</p>
-  <p><b>3.</b> Whether the back arrow was ever pressed after U4. It is the only way to undo, and nobody has been shown it before.</p>
-  <p><b>4.</b> Whether a real release follows the tutorial within 24 hours. This is the number that says whether the tutorial taught the loop.</p>
-  <p><b>5.</b> Day two return at the chosen when, for people who did the tutorial and people who skipped it, side by side. NN/g found skippers can be the happier group.</p>
-  <p><b>6.</b> Replays from Account. A replayed tutorial is either valued or confusing, and the chapter replayed says which.</p>
-  <p>Then five real people, already onboarded, watched at phone width.</p>
+ <div class="sec-h"><span class="eye">What to measure</span><h2>So the next round can tell whether the circuit read as a circuit</h2></div>
+ <div class="list">
+  <div><b>1. Second lap.</b> Share of people who start discover again within a day of finishing embody. A circuit that reads as a list ends at embody.</div>
+  <div><b>2. Tapped a station.</b> Whether anyone taps the ring to move, which says whether it reads as a control.</div>
+  <div><b>3. Leave, by station.</b> The one to watch is U2, James's stop.</div>
+  <div><b>4. The back arrow</b> pressed after U4. It is the only way to undo, and nobody is shown it anywhere else.</div>
+  <div><b>5. A real release within 24 hours</b> of the tutorial, against people who skipped it.</div>
+  <div>Then five people, already onboarded, watched at phone width. Ask them afterwards to draw what they just did. A circle means it worked.</div>
  </div>
- <p class="cost"><b>The grade.</b> Today: nothing exists, so there is nothing to grade; the backlog has said "the tutorial is not built" since round AN. This storyboard: B, judgement. It reaches the release, it teaches the only route to undo, and it ends where it started. Capped by question A, because a turn that ends with nothing changed is a lesson without a result. B plus with A answered either way and D settled.</p>
+ <p class="cost"><b>The grade.</b> This morning's storyboard: B, judgement. This one: B plus, judgement. The loop reads as a circuit now and each station shows what it is for. Held under A by question A from this morning and H today: until one lap is allowed to change something real, the circuit draws growth it cannot yet show on a real avatar.</p>
 </section>
 
-<section>
- <div class="sec-h"><span class="eye">Sources inside the repository</span><h2>Where each mechanic comes from</h2></div>
- <div class="src">
-  <div><b>atuned_src/engine/core.js, TABDEF.</b> The bar: Avatar, Ritual, Story, Field, Body, Compass, Knowledge, Games, Summary.</div>
-  <div><b>atuned_src/ui/avatarui.js.</b> The pair, the tags, the seven satellites, Complete, the Running list (loading, releasing, steady), the rituals queue.</div>
-  <div><b>atuned_src/ui/drills.js, readSeat.</b> How the second avatar line is placed. "A value has no address and a sentence about a bad day does."</div>
-  <div><b>atuned_src/ui/storyui.js.</b> Source AI above the journal, the words lighting as typed, Commit, the Bank and the Vault, the release column: selections, Pace, Patterns, Run release. Read only; another seat is working in this file.</div>
-  <div><b>atuned_src/ui/fieldbar.js.</b> The glass bar: it decides what is drawn, never what is read.</div>
-  <div><b>atuned_src/ui/release.js.</b> The run: left side first, the book's order, "Left, inward".</div>
-  <div><b>atuned_src/ui/ritual.js and the engine's practice table.</b> The practice the heaviest seat calls for, the lightest in its group; the When and Where rows.</div>
-  <div><b>atuned_src/engine/plan.js.</b> A hundred patterns once, then ten a week free, and rerunning anything already opened costs nothing.</div>
-  <div><b>TASKS.md rounds AN, FH, FK, FN, IF, JJ; reviews/QUESTIONS-onboarding.md; DESIGN-firstrun.md; RESEARCH-firstrun.md; BACKLOG-AUDIT.md section 2.9.</b> The rulings and the open questions, quoted where used.</div>
+<details class="carry">
+ <summary>Carried from this morning <em>where each mechanic comes from, and the ten year old notes</em></summary>
+ <div class="list">
+  <div><b>Where each mechanic lives.</b> The bar: <code>engine/core.js</code>, TABDEF. The avatar pair, satellites and Running list: <code>ui/avatarui.js</code>. How the second avatar line is placed: <code>ui/drills.js</code>, readSeat. The story box, words lighting, Commit, Bank, Vault and the release column: <code>ui/storyui.js</code>. The glass bar: <code>ui/fieldbar.js</code>. The run and its order: <code>ui/release.js</code>. The practice and When rows: <code>ui/ritual.js</code>. The allowance: <code>engine/plan.js</code>. Undo: <code>engine/undo.js</code>.</div>
+  <div><b>Engine output used.</b> Run 27 September: "said yes when" places the second avatar line at the throat; the discover story lights "said nothing" at the throat and finds 4.</div>
+  <div><b>Words kept because they are data.</b> Pattern names (Self-Silencing), the practice name (Active Listening), and Pace and Patterns, which are the shipped labels you named in IG.</div>
  </div>
-</section>
+</details>
 
-<footer>Prototype storyboard, 27 September 2026. Drawn in the product's Dark theme. Not the shipped app. The companion is proto/onboarding-storyboard/index.html, which ends where this one begins.</footer>
+<footer>Prototype storyboard, 27 September 2026, second pass. Drawn in the product's Dark theme. Not the shipped app. The companion is proto/onboarding-storyboard/index.html, which ends where this one begins.</footer>
 </div>
 
 <script>
 (function(){
- var SEATS=['#D6524C','#D8924E','#DABF6A','#5FD5A6','#5EBBDB','#7D93E0','#A77EDB'];
- function P(cx,cy,r,a){a=(a-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
- function arc(cx,cy,r,a0,a1){var s=P(cx,cy,r,a0),e=P(cx,cy,r,a1),lg=(a1-a0)>180?1:0;
-  return 'M'+s[0].toFixed(2)+' '+s[1].toFixed(2)+'A'+r+' '+r+' 0 '+lg+' 1 '+e[0].toFixed(2)+' '+e[1].toFixed(2);}
- /* the avatar at rest: seven seats up a spine, a halo. lit = seat index */
- function figure(w,lit,g){
-  var ys=[160,140,120,100,80,60,40],h=(g?'<g transform="'+g+'">':'<svg width="'+w+'" height="'+(w*0.89).toFixed(0)+'" viewBox="0 0 200 178" aria-hidden="true">')
-   +'<ellipse cx="100" cy="21" rx="13" ry="4.4" fill="none" stroke="#DABF6A" stroke-width="1.4"/>'
-   +'<line x1="100" y1="160" x2="100" y2="40" stroke="#2C303C" stroke-width="2"/>';
-  ys.forEach(function(y,i){h+='<circle cx="100" cy="'+y+'" r="'+(lit===i?8:5.2)+'" fill="'+SEATS[i]+'"'+(lit!=null&&lit!==i?' opacity=".4"':'')+'/>';
-   if(lit===i)h+='<circle cx="100" cy="'+y+'" r="13" fill="none" stroke="'+SEATS[i]+'" stroke-width="1.2"/>';});
-  return h+(g?'</g>':'</svg>');}
- var ST=['discover','play','flow','embody'];
- /* the loop around the avatar: the centre ball holds the figure */
- function loopAv(size,done,labels,lit){
-  var sw=labels?2.4:4.4,vb=labels?'-36 -12 172 124':'4 4 92 92';
-  var h='<svg class="av" width="'+size+'" height="'+size+'" viewBox="'+vb+'" aria-hidden="true">'
-   +'<circle cx="50" cy="50" r="38" fill="none" stroke="#2C303C" stroke-width="'+sw+'"/>';
-  if(done>=4)h+='<circle cx="50" cy="50" r="38" fill="none" stroke="#7EB8D4" stroke-width="'+sw+'"/>';
-  else if(done>0)h+='<path d="'+arc(50,50,38,0,90*done)+'" fill="none" stroke="#7EB8D4" stroke-width="'+sw+'" stroke-linecap="round"/>';
-  h+='<circle cx="50" cy="50" r="24" fill="#0C0D12" stroke="#7EB8D4" stroke-width="'+(labels?1:1.6)+'" opacity=".8"/>';
-  h+=figure(0,lit,'translate(27 29.5) scale(.23)');
-  for(var i=0;i<4;i++){var p=P(50,50,38,i*90),on=i<done,cur=i===done;
-   h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(labels?6.5:8)+'" fill="#0C0D12" stroke="'+(on||cur?'#7EB8D4':'#2C303C')+'" stroke-width="'+(labels?1.6:2.6)+'"/>';
-   if(on)h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(labels?2.8:3.6)+'" fill="#7EB8D4"/>';
-   if(labels){var tx=p[0]+(i===1?10:i===3?-10:0),ty=p[1]+(i===0?-10:i===2?15:3);
-    h+='<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" font-size="7.5" text-anchor="'+(i===1?'start':i===3?'end':'middle')+'" fill="#EFEDE8" font-family="system-ui,sans-serif">'+ST[i]+'</text>';}}
-  return h+'</svg>';}
- function mark(seat,k,n){var a=seat*360/7+10+k*((360/7-20)/Math.max(1,n-1));return P(50,50,34-((k%2)*7),a);}
- function wheel(size,opts){opts=opts||{};
-  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
-  for(var j=0;j<7;j++)h+='<path d="'+arc(50,50,43,j*360/7+2,(j+1)*360/7-2)+'" fill="none" stroke="'+SEATS[j]+'" stroke-width="3.2" opacity=".35"/>';
-  for(var k=0;k<3;k++)h+='<circle cx="50" cy="50" r="'+(32-k*9)+'" fill="none" stroke="#2C303C" stroke-width=".8"/>';
-  if(!opts.hide)[[4,4],[1,4],[2,4]].forEach(function(s){for(var q=0;q<s[1];q++){var p=mark(s[0],q,s[1]),full=s[0]===4&&q<(opts.held||0),hot=opts.pick&&s[0]===4&&q===0;
-   h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(hot?4.2:full?3.2:2.5)+'" fill="'+SEATS[s[0]]+'" opacity="'+(full||hot?1:.4)+'"'+(hot?' stroke="#EFEDE8" stroke-width=".8"':'')+'/>';}});
-  return h+'<circle cx="50" cy="50" r="7" fill="none" stroke="#7EB8D4" stroke-width="1.6"/><circle cx="50" cy="50" r="2.4" fill="#7EB8D4"/></svg>';}
- function station(done,word,line,body,lit){
-  return '<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="leave">Leave</span>'
-   +'<div class="dock">'+loopAv(52,done,false,lit)+'<div><div class="w">'+word+'</div><div class="l">'+line+'</div></div></div>'+body+'</div>';}
- var dimRows='<div class="dimmed" style="display:flex;flex-direction:column;gap:6px"><div class="blk" style="width:70%"></div><div class="blk" style="width:88%"></div><div class="blk" style="width:55%"></div></div>';
- function sats(lit){var n=['Root','Sacral','Solar','Heart','Throat','Third eye','Crown'],h='<div style="display:flex;gap:8px;align-items:center;justify-content:center;width:100%">'+figure(70,lit)
-  +'<div style="display:flex;flex-direction:column;gap:3px">';
-  for(var i=6;i>=0;i--)h+='<div class="sat"><svg width="9" height="9" aria-hidden="true"><circle cx="4.5" cy="4.5" r="3.6" fill="'+(lit===i?SEATS[i]:'none')+'" stroke="'+SEATS[i]+'"/></svg>'+n[i]+'</div>';
-  return h+'</div></div>';}
- var HL=function(w,c,bg){return '<s style="background:'+bg+';color:'+c+'">'+w+'</s>';};
- function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+'use strict';
+var RED_MO=false;try{RED_MO=matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+var AN=!RED_MO;
+var SEATS=['#D6524C','#D8924E','#DABF6A','#5FD5A6','#5EBBDB','#7D93E0','#A77EDB'];
+var SKY='#7EB8D4', INK='#EFEDE8', MID='#B4B0A8', DIM='#94908A', LINE='#2C303C', RED='#D6524C', GREEN='#5FD5A6';
+var FONT='system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+function P(cx,cy,r,a){a=(a-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+function f1(n){return (+n).toFixed(1);}
+function arc(cx,cy,r,a0,a1){var s=P(cx,cy,r,a0),e=P(cx,cy,r,a1),lg=(a1-a0)>180?1:0;
+ return 'M'+f1(s[0])+' '+f1(s[1])+'A'+r+' '+r+' 0 '+lg+' 1 '+f1(e[0])+' '+f1(e[1]);}
+function svg(inner,vb){return '<svg viewBox="'+(vb||'0 0 260 500')+'" aria-hidden="true">'+inner+'</svg>';}
+function txt(x,y,s,size,fill,extra){extra=extra||'';return '<text x="'+x+'" y="'+y+'" font-size="'+size+'" fill="'+(fill||INK)+'"'+(/text-anchor/.test(extra)?'':' text-anchor="middle"')+(/font-family/.test(extra)?'':' font-family="'+FONT+'"')+extra+'>'+s+'</text>';}
+function mix(a,b,t){var pa=[1,3,5].map(function(i){return parseInt(a.substr(i,2),16);}),pb=[1,3,5].map(function(i){return parseInt(b.substr(i,2),16);});
+ return '#'+pa.map(function(v,i){return ('0'+Math.round(v+(pb[i]-v)*t).toString(16)).slice(-2);}).join('');}
 
- document.getElementById('hero').innerHTML=loopAv(300,3,true,4);
+/* GLYPHS, ring style, stroked never filled */
+var G={
+ close:'M7 7l10 10M17 7L7 17',
+ lens:'M10.5 4.5a6 6 0 1 0 0 12a6 6 0 1 0 0-12M15 15l5 5',
+ tap:'M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6M12 3v3M12 18v3M3 12h3M18 12h3',
+ wave:'M3 9c3-4 6 4 9 0s6 4 9 0M3 15c3-4 6 4 9 0s6 4 9 0',
+ body:'M12 3.5a1.6 1.6 0 1 0 0 .1M12 7v13M9 10h6M12 20l-3 1M12 20l3 1',
+ back:'M9 7L4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2',
+ bank:'M4 9l8-5 8 5M5 9v9M19 9v9M9 11v5M15 11v5M3 20h18',
+ vault:'M4 5h16v14H4zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6M12 9v-1M15 12h1',
+ up:'M12 19V5M6 11l6-6 6 6',
+ down:'M12 5v14M6 13l6 6 6-6',
+ ear:'M8 9a4 4 0 1 1 8 0c0 3-3 4-3 7a2 2 0 0 1-4 0M11 9a1 1 0 1 1 2 0',
+ eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6',
+ play:'M8 5l11 7-11 7z',
+ lines:'M5 7h14M5 12h14M5 17h9',
+ cone:'M12 3L5 21h14zM8 14h8',
+ book:'M4 5h7v15H4zM13 5h7v15h-7',
+ game:'M6 9h12a3 3 0 0 1 3 3v2a3 3 0 0 1-5 2l-1-1H9l-1 1a3 3 0 0 1-5-2v-2a3 3 0 0 1 3-3zM8 11v3M6.5 12.5h3',
+ layers:'M12 4l8 4-8 4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4',
+ reward:'M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z',
+ check:'M5 12l5 5 9-10'
+};
+function glyph(k,x,y,s,col,w){var sc=s/24;return '<path d="'+G[k]+'" transform="translate('+f1(x-s/2)+' '+f1(y-s/2)+') scale('+sc.toFixed(3)+')" fill="none" stroke="'+(col||INK)+'" stroke-width="'+f1((w||1.8)/sc)+'" stroke-linecap="round" stroke-linejoin="round"/>';}
+function gsvg(k,size,col){return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" aria-hidden="true"><path d="'+G[k]+'" fill="none" stroke="'+(col||INK)+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+function core(cx,cy,r,col){return '<circle cx="'+cx+'" cy="'+cy+'" r="'+f1(r*1.35)+'" fill="'+col+'" opacity=".10"/><circle cx="'+cx+'" cy="'+cy+'" r="'+f1(r*1.15)+'" fill="'+col+'" opacity=".18"/><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+col+'" opacity=".92"/><circle cx="'+f1(cx-r*.34)+'" cy="'+f1(cy-r*.36)+'" r="'+f1(r*.2)+'" fill="#fff" opacity=".55"/>';}
+function crown(cx,cy,r0,r1,op){var h='';for(var s=0;s<7;s++)for(var k=0;k<3;k++){var a=s*360/7+(k-1)*11+360/14,p0=P(cx,cy,r0,a),p1=P(cx,cy,r1,a);
+ h+='<line x1="'+f1(p0[0])+'" y1="'+f1(p0[1])+'" x2="'+f1(p1[0])+'" y2="'+f1(p1[1])+'" stroke="'+SEATS[s]+'" stroke-width="1.6" stroke-linecap="round" opacity="'+(op||.8)+'"/>';}return h;}
+function seven(cx,cy,r,w,op){var h='';for(var i=0;i<7;i++)h+='<path d="'+arc(cx,cy,r,i*360/7+3,(i+1)*360/7-3)+'" fill="none" stroke="'+SEATS[i]+'" stroke-width="'+w+'" stroke-linecap="round" opacity="'+(op==null?.9:op)+'"/>';return h;}
+function leave(){return '<circle cx="236" cy="26" r="13" fill="none" stroke="'+LINE+'" stroke-width="1.4"/>'+glyph('close',236,26,12,DIM,1.6);}
+function glass(x,y,w,h2,inner,stroke){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h2+'" rx="'+Math.min(14,h2/2)+'" fill="rgba(26,29,38,.82)" stroke="'+(stroke||LINE)+'"/>'+(inner||'');}
+function btn(x,y,w,label){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="30" rx="6" fill="'+SKY+'"/>'+txt(x+w/2,y+19.5,label,12.5,'#0C0D12',' font-weight="500"');}
 
- var F=[
-  {id:'U0',nm:'Where it starts',tag:'new',q:['B','G'],
-   ph:'<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'
-     +'<div class="note" style="font-size:11px;color:#EFEDE8">Account</div>'
-     +'<div class="card dimmed"><div class="note">The opening</div><div class="blk" style="width:70%"></div></div>'
-     +'<div class="card lit"><div class="note" style="color:#EFEDE8">The tutorial</div>'
-     +'<div class="row"><span class="note">Show the tutorial</span><span style="width:26px;height:15px;border-radius:8px;background:#7EB8D4;display:inline-block"></span></div>'
-     +'<div class="row"><span class="note">Run the tutorial now</span><span class="btn pulse" style="padding:5px 12px;font-size:10px">Open it</span></div></div>'+dimRows+'</div>',
-   copy:['Show the tutorial','Run the tutorial now'],
-   p:'In the profile, beside the opening, as you ruled in AN5 and FH. When it first opens on its own is question B.',
-   can:'2: the switch, Open it',time:'',out:'Open it goes to the avatar'},
-  {id:'U1',nm:'Your avatar',tag:'centre',q:['G'],
-   ph:station(0,'your avatar','It changes when you write, and when you let a story go.',
-     sats(null)
-     +'<div class="card lit"><div class="note">Who you want to be</div><div class="ta">Someone who says what she means the first time.</div></div>'
-     +'<div class="card dimmed"><div class="note">Who you do not want to be</div><div class="blk" style="width:60%"></div></div>'),
-   copy:['This is your avatar. It changes when you write, and when you let a story go.','Write who you want to be.'],
-   p:'The real Avatar tab. Its first line is a good quality, and the engine finds no place in the body for it: run on 27 September, this line lands nowhere. That is the product\'s own rule, so the next line arrives straight away.',
-   can:'1: write. And Leave',time:'about 20 s',out:'the second line lights'},
-  {id:'U2',nm:'The pair',tag:'real output',q:['A'],
-   ph:station(0,'your avatar','Now write who you do not want to be. Use a bad day.',
-     sats(4)
-     +'<div class="card dimmed"><div class="note">Who you want to be</div><div class="ta">Someone who says what she means the first time.</div></div>'
-     +'<div class="card lit"><div class="note">Who you do not want to be</div><div class="ta">The one who '+HL('said yes when','#9ED8EC','rgba(94,187,219,.25)')+' she meant no, and was '+HL('angry','#EBD58E','rgba(218,191,106,.25)')+' all night.</div>'
-     +'<div class="chips"><span class="on">Throat &middot; said yes when</span></div></div>',4),
-   copy:['Now write who you do not want to be. Use a bad day.','Found. It sits at your throat.'],
-   p:'Run through the engine on 27 September, this line lands at the throat, placed by "said yes when". The throat seat lights on the figure and in the ring\'s centre ball. From here the avatar is working on the throat.',
-   can:'1: write. And Leave',time:'about 30 s',out:'the ring turns to discover'},
-  {id:'U3',nm:'discover',tag:'real output',
-   ph:station(0,'discover','Write what happened today. Say it the way you would out loud.',
-     '<div class="card dimmed"><div class="note">Source AI</div><div class="blk" style="width:75%"></div></div>'
-     +'<div class="card lit"><div class="ta">Work sent a late email and my jaw locked. I went quiet in the meeting and '+HL('said nothing','#9ED8EC','rgba(94,187,219,.25)')+' again.</div>'
-     +'<div class="row"><span class="tiny dim">19 words</span><span class="btn pulse">Commit 4</span></div></div>'+dimRows,4),
-   copy:['discover','Write what happened today. Say it the way you would out loud.'],
-   p:'The real Story page. Source AI\'s prompt sits above the journal, dimmed. Run on 27 September, this story lights "said nothing" at the throat and finds 4, which lands on the same seat the avatar is working on.',
-   can:'2: write, Commit. And Leave',time:'45 to 90 s',out:'Commit lights the arrow'},
-  {id:'U4',nm:'discover, take it back',tag:'new',
-   ph:'<div class="st"><div class="nb" aria-hidden="true"><i style="flex:0 0 22px;background:transparent;border:1px solid #7EB8D4;height:14px;border-radius:4px" class="pulse"></i><i></i><i></i><i></i><i></i></div><span class="leave">Leave</span>'
-     +'<div class="dock">'+loopAv(52,0,false,4)+'<div><div class="w">discover</div><div class="l">Changed your mind? The back arrow takes it off.</div></div></div>'
-     +'<div class="card dimmed"><div class="ta">Work sent a late email and my jaw locked...</div></div>'+dimRows+'</div>',
-   copy:['Changed your mind? The back arrow takes it off.'],
-   p:'Undo is built and has no limit (engine/undo.js), and the arrows at the top are the only way to reach it. Nobody is ever shown them. Pressing it here is optional; the ring moves on either way.',
-   can:'2: the arrow, or carry on. And Leave',time:'about 5 s',out:'into the bank'},
-  {id:'U5',nm:'discover, the bank',tag:'new',
-   ph:station(1,'discover','Open the bank. Everything your writing found is kept there.',
-     '<div class="row" style="justify-content:flex-start;gap:10px"><div class="card lit pulse" style="padding:6px 10px"><div class="note" style="color:#EFEDE8">Bank</div></div><div class="card dimmed" style="padding:6px 10px"><div class="note">Vault 0</div></div></div>'
-     +'<div class="card"><div class="note">Throat</div><div class="chips"><span>Self-Silencing</span><span>People Pleasing</span><span>Interrupting</span></div><div class="note">Sacral</div><div class="chips"><span>Envy</span><span>Need For Approval</span></div></div>'+dimRows,4),
-   copy:['Open the bank. Everything your writing found is kept there.'],
-   was:['The bank: every imprint you hold, on the Imprints page'],
-   p:'The Bank and Vault icons are the shipped ones beside the story. The struck line is the Bank\'s own title, which uses "imprint". The rows are the patterns the engine found in Angela\'s first story. The first quarter closes here.',
-   can:'1: the bank. And Leave',time:'about 10 s',out:'the ring turns to play'},
-  {id:'U6',nm:'play',tag:'teaches one word',
-   ph:station(1,'play','Open the brightest mark.',
-     '<div style="display:flex;justify-content:center;padding:2px 0">'+wheel(148,{held:2,pick:1})+'</div>'
-     +'<div class="card lit"><div class="note"><b style="color:#EFEDE8;font-weight:500">Self-Silencing</b>, at the throat, on the vagus nerve. Held.</div><div class="note">Held means it is heavy enough to show in full.</div></div>',4),
-   copy:['play','Open the brightest mark.','Self-Silencing, at the throat, on the vagus nerve. Held.','Held means it is heavy enough to show in full.'],
-   p:'The real Field. After a second story some marks are heavy enough to show in full: the 26 September walk measured three held after two stories. Which ones is the engine\'s to say; the throat mark here is illustrative. Opening a mark is built.',
-   can:'the bright marks. And Leave',time:'about 15 s',out:'opening one lights the bar'},
-  {id:'U7',nm:'play, the bar on top',tag:'new',
-   ph:'<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="leave">Leave</span>'
-     +'<div class="dock">'+loopAv(52,1,false,4)+'<div><div class="w">play</div><div class="l">Turn the story marks off. Then on again.</div></div></div>'
-     +'<div class="row" style="justify-content:center;gap:6px;border:1px solid #2C303C;border-radius:14px;padding:5px 8px;background:rgba(26,29,38,.8)">'
-     +'<span style="width:14px;height:14px;border-radius:50%;border:1px solid #94908A;opacity:.5"></span><span class="pulse" style="width:16px;height:16px;border-radius:50%;border:1.5px solid #7EB8D4"></span><span style="width:14px;height:14px;border-radius:50%;border:1px solid #94908A;opacity:.5"></span><span style="width:14px;height:14px;border-radius:50%;border:1px solid #94908A;opacity:.5"></span></div>'
-     +'<div style="display:flex;justify-content:center;padding:2px 0">'+wheel(140,{hide:1})+'</div>'
-     +'<div class="note" style="text-align:center">This only hides them. Nothing found is lost.</div></div>',
-   copy:['Turn the story marks off. Then on again.','This only hides them. Nothing found is lost.'],
-   p:'The glass bar that floats over the Field. Its own code says it "decides what is drawn, never what is read", which is what the second line says in ten year old words. Drawn with the marks off. The second quarter closes when they come back on.',
-   can:'1: one switch. And Leave',time:'about 10 s',out:'the ring turns to flow'},
-  {id:'U8',nm:'flow, pick',tag:'new',q:['A'],
-   ph:station(2,'flow','Tick what you want to let go of. Then press Run release.',
-     '<div class="card lit"><div class="note" style="color:#EFEDE8">Your selections</div>'
-     +'<div class="row"><span class="note">&#9745; Self-Silencing, throat</span></div><div class="row"><span class="note dim">&#9744; People Pleasing, throat</span></div>'
-     +'<div class="row"><span class="note">Pace</span><span class="note" style="color:#EFEDE8">1.0</span></div><div class="row"><span class="note">Patterns</span><span class="note" style="color:#EFEDE8">5</span></div>'
-     +'<div class="row"><span></span><span class="btn pulse">Run release</span></div></div>'+dimRows,4),
-   copy:['flow','Tick what you want to let go of. Then press Run release.'],
-   p:'The release column on the Story page, cut to your ruling in IG: "your selections, pace, and how many patterns... and this, just, run release button." Nothing else on it. What a run costs is question A.',
-   can:'4: tick, Pace, Patterns, Run release. And Leave',time:'about 15 s',out:'Run release opens the run'},
-  {id:'U9',nm:'flow, the run',tag:'new',
-   ph:station(2,'flow','Read each line in your head. Keep some attention on your throat.',
-     '<div class="card lit" style="gap:8px"><div class="prac">Practice. This one changes nothing.</div><div class="note">Self-Silencing, at the throat</div><div class="tiny dim">Left, inward</div>'
-     +'<div class="blk" style="width:88%;opacity:.35"></div><div class="blk" style="width:96%;background:#7EB8D4;opacity:.8"></div><div class="blk" style="width:78%;opacity:.35"></div><div class="blk" style="width:84%;opacity:.35"></div></div>'+dimRows,4),
-   copy:['Read each line in your head. Keep some attention on your throat.','Practice. This one changes nothing.'],
-   p:'The real run (ui/release.js): release lines on the left side first, then the right, then the true lines on each side, which is the book\'s order. "Left, inward" is the shipped side label. It runs as practice because of your ruling AN5.',
-   can:'read. And Leave',time:'set by Pace and Patterns',out:'the last line closes the run'},
-  {id:'U10',nm:'flow, done',tag:'new',q:['A'],
-   ph:station(3,'flow','Done. Real runs go in the vault.',
-     '<div class="row" style="justify-content:flex-start;gap:10px"><div class="card dimmed" style="padding:6px 10px"><div class="note">Bank</div></div><div class="card lit pulse" style="padding:6px 10px"><div class="note" style="color:#EFEDE8">Vault 0</div></div></div>'
-     +'<div class="card"><div class="prac">Practice. This one changed nothing.</div><div class="note">Self-Silencing, at the throat. Held.</div></div>'+dimRows,4),
-   copy:['Done. Real runs go in the vault.'],
-   p:'The shipped Vault counts what has really been released. After a practice run it still reads 0, and says so rather than pretending. If question A goes the other way, this frame reads Vault 1 and the throat mark shows lighter.',
-   can:'none, the ring turns',time:'about 3 s',out:'the ring turns to embody'},
-  {id:'U11',nm:'embody',tag:'real practice',
-   ph:station(3,'embody','This is today\'s practice. Pick when you will do it.',
-     '<div class="card lit"><div class="note" style="color:#EFEDE8">Active Listening &middot; 10 minutes</div><div class="note">Ten minutes on sound. No labelling.</div>'
-     +'<div class="note">When</div><div class="chips"><span class="on">after I put the kettle on</span><span>my own words</span></div><div class="row"><span></span><span class="btn pulse">Save</span></div></div>'+dimRows,4),
-   copy:['embody','This is today\'s practice. Pick when you will do it.'],
-   p:'The real Ritual. The practice is picked by which seat carries the most, and it is the shortest one in that seat\'s group (ui/ritual.js). If the throat carries the most, that group is Mind and the shortest is Active Listening, from the engine\'s own practice table. Her when from onboarding is already filled in.',
-   can:'2: a when, Save. And Leave',time:'about 15 s',out:'Save closes the ring'},
-  {id:'U12',nm:'Back to your avatar',tag:'centre',q:['A','E','G'],
-   ph:'<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'
-     +'<div style="display:flex;justify-content:center">'+loopAv(150,4,true,4)+'</div>'
-     +'<div class="card"><div class="run"><span>Throat</span><em>steady</em></div><div class="run"><span>Complete</span><em>no change</em></div></div>'
-     +'<div class="card" style="border-style:dashed;align-items:center"><div class="note">the reward: word not chosen</div></div>'
-     +'<div class="note" style="text-align:center;color:#EFEDE8">One full turn.</div></div>',
-   copy:['One full turn.','Your avatar moves when a real run takes weight off.'],
-   p:'The ring closes around the avatar. The Running list on the Avatar tab says loading, releasing or steady, read off the last real change, never on a timer. After a practice run it reads steady, which is true. The dashed slot waits on the reward word.',
-   can:'1: carry on',time:'about 5 s',out:'the outer ring'},
-  {id:'U13',nm:'The outer ring',tag:'new',q:['C','D'],
-   ph:'<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'
-     +'<div style="display:flex;justify-content:center">'+loopAv(90,4,false,4)+'</div>'
-     +'<div class="door lit"><div><span>Where it sits, drawn on a body.</span></div></div>'
-     +'<div class="door lit"><div><span>Your reading, in plain sentences.</span></div></div>'
-     +'<div class="door off"><div><span>How far each habit has drifted from the good thing it started as.</span></div></div>'
-     +'<div class="door off"><div><span>What every word in here means.</span></div></div>'
-     +'<div class="door off"><div><span>Games for when your head is full.</span></div></div></div>',
-   copy:['Where it sits, drawn on a body.','Your reading, in plain sentences.','How far each habit has drifted from the good thing it started as.','What every word in here means.','Games for when your head is full.'],
-   p:'The five tabs the loop does not pass through. Top to bottom: Body, Summary, Compass, Knowledge, Games. The drawing carries only the lines, never the tab names, because nothing here is wired. Each lights the first time it has something of hers: Body and Summary now, the others later. Compass is the codex\'s two cones; Games is your "brain release".',
-   can:'a lit door, or close. And Leave',time:'',out:'the tutorial ends; its lines are gone'}
- ];
- document.getElementById('frames').innerHTML=F.map(function(f){
-  return '<div class="fr"><div class="phone">'+f.ph+'</div><div class="cap"><span class="id">'+f.id+'</span>'
-   +'<h3>'+f.nm+'<span class="tag'+(/new|real|teaches|centre/.test(f.tag)?' new':'')+'">'+f.tag+'</span></h3>'
-   +(f.copy?'<div class="copy">'+f.copy.map(function(c){return '<span>'+esc(c)+'</span>';}).join('')
-     +(f.was||[]).map(function(c){return '<span class="was">'+esc(c)+'</span>';}).join('')+'</div>':'')
-   +'<p>'+f.p+'</p>'
-   +'<dl><dt>can do</dt><dd>'+f.can+'</dd>'+(f.time?'<dt>time</dt><dd>'+f.time+'</dd>':'')+'<dt>out</dt><dd>'+f.out+'</dd></dl>'
-   +(f.q?'<div class="qs">'+f.q.map(function(q){return '<a href="#q-'+q.toLowerCase()+'">Question '+q+'</a>';}).join('')+'</div>':'')
-   +'</div></div>';}).join('');
+/* THE AVATAR. The body outline and its spine of seven seats, the same figure
+   the onboarding signal test is tapped on, so a person meets one body. */
+var BODY='M88 66v12c-18 2-36 6-44 18-6 10-8 34-10 64l-4 68c0 8 10 8 12 0l6-68c2-20 6-36 10-44l2 84c0 14 2 24 4 32l2 148c0 12 18 12 20 0l8-130h12l8 130c2 12 20 12 20 0l2-148c2-8 4-18 4-32l2-84c4 8 8 24 10 44l6 68c2 8 12 8 12 0l-4-68c-2-30-4-54-10-64-8-12-26-16-44-18V66z';
+var SY=[212,184,150,112,74,42,18];
+function body(tx,ty,sc,o){o=o||{};var lit=o.lit||{};
+ var h='<g transform="translate('+tx+' '+ty+') scale('+sc+')">'
+  +'<circle cx="100" cy="40" r="25" fill="none" stroke="'+(o.stroke||'#3A3F4D')+'" stroke-width="2.2"/>'
+  +'<path d="'+BODY+'" fill="none" stroke="'+(o.stroke||'#3A3F4D')+'" stroke-width="2.2" stroke-linejoin="round"/>'
+  +'<ellipse cx="100" cy="2" rx="15" ry="4.5" fill="none" stroke="#DABF6A" stroke-width="1.8" opacity=".9"/>'
+  +'<line x1="100" y1="212" x2="100" y2="18" stroke="#2C303C" stroke-width="2.4"/>';
+ SY.forEach(function(y,i){var L=lit[i];h+='<circle cx="100" cy="'+y+'" r="'+(L?9:5.5)+'" fill="'+(L&&L.col?L.col:SEATS[i])+'" opacity="'+(L?1:(o.seatOp==null?1:o.seatOp))+'"/>';
+  if(L&&L.ring)h+='<circle cx="100" cy="'+y+'" r="16" fill="none" stroke="'+(L.col||SEATS[i])+'" stroke-width="2"/>';
+  if(L&&L.glow)h+='<circle cx="100" cy="'+y+'" r="22" fill="'+(L.col||SEATS[i])+'" opacity=".18"/>';});
+ return h+(o.inner||'')+'</g>';}
 
- function mini(b,s){return '<div class="mini"><b>'+b+'</b>'+(s||'')+'</div>';}
- var ar='<span class="arr">to</span>';
- function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
- set('qa1',mini('flow','practice')+ar+mini(loopAv(40,4,false,4),'steady, vault 0'));
- set('qa2',mini('flow','5 patterns, real')+ar+mini(loopAv(40,4,false,4),'releasing, vault 1'));
- set('qa3',mini('flow','practice')+ar+mini(loopAv(40,3,false,4),'waits')+ar+mini('first real run','then it closes'));
- set('qb1',mini('onboarding')+ar+mini(loopAv(40,0,false),'straight on'));
- set('qb2',mini('day one ends')+ar+mini('day two','after the kettle')+ar+mini(loopAv(40,0,false),'starts'));
- set('qb3',mini('Account','Run it now')+ar+mini(loopAv(40,0,false),'starts'));
- set('qc1','<div class="mini wide" style="width:220px"><b>Avatar &middot; Ritual &middot; Story &middot; Field</b><span>open</span><b style="opacity:.45">Body &middot; Compass &middot; Knowledge &middot; Games &middot; Summary</b><span>shut, each saying what opens it</span></div>');
- set('qc2','<div class="mini wide" style="width:220px"><b>All nine tabs</b><span>open from the first launch, as today</span></div>');
- set('qd1',mini(loopAv(40,4,false,4),'turn done')+ar+mini('Body')+ar+mini('Compass')+ar+mini('...','three more'));
- set('qd2',mini(loopAv(40,4,false,4),'turn done')+ar+mini('Body lights','when it has her marks')+ar+mini('Games lights','later'));
+/* THE LOOP, as the product's dock: glyphs at four stations, the word only for
+   the station a person is on, a light that keeps travelling */
+var ST=['discover','play','flow','embody'], SG=['lens','tap','wave','body'];
+function loopRing(cx,cy,r,done,cur,opt){opt=opt||{};var h='',sw=opt.sw||2.4,nr=opt.nr||(r<30?8:10);
+ h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+LINE+'" stroke-width="'+sw+'"/>';
+ if(done>=4)h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+SKY+'" stroke-width="'+sw+'"/>';
+ else if(done>0)h+='<path d="'+arc(cx,cy,r,0,90*done)+'" fill="none" stroke="'+SKY+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+ if(opt.light!=null){var q=P(cx,cy,r,opt.light);h+='<circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="'+(nr*.9)+'" fill="'+SKY+'" opacity=".25"/><circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="'+(nr*.42)+'" fill="'+SKY+'"/>';}
+ for(var i=0;i<4;i++){var p=P(cx,cy,r,i*90),on=i<done||done>=4,c=cur===i;
+  h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="'+nr+'" fill="#0C0D12" stroke="'+(on||c?SKY:LINE)+'" stroke-width="'+(c?2.4:1.6)+'"/>'+glyph(SG[i],p[0],p[1],nr*1.15,on||c?INK:DIM,1.8);}
+ return h;}
+function dock(done,cur){return loopRing(40,42,22,done,cur,{light:cur*90+20})+txt(76,47,ST[cur]||'',15,INK,' text-anchor="start"');}
+
+/* the Field, small */
+function wheel(cx,cy,r,o){o=o||{};var h='';
+ h+=seven(cx,cy,r,3.2,.55);
+ for(var k=0;k<3;k++)h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+f1(r*(.78-k*.2))+'" fill="none" stroke="'+LINE+'" stroke-width="1"/>';
+ h+=crown(cx,cy,r*.3,r*.38,.7)+core(cx,cy,r*.16,o.core||'#6E3A3A');
+ [[4,4],[1,4],[2,4]].forEach(function(s){for(var q=0;q<s[1];q++){var a=s[0]*360/7+10+q*((360/7-20)/3),p=P(cx,cy,r*(.64-(q%2)*.14),a),full=s[0]===4&&q<(o.held||0),hot=o.pick&&s[0]===4&&q===0;
+  if(o.hide){h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="3" fill="none" stroke="'+SEATS[s[0]]+'" stroke-width=".9" stroke-dasharray="1.5 1.5" opacity=".6"/>';continue;}
+  h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="'+(hot?5:full?4:3)+'" fill="'+SEATS[s[0]]+'" opacity="'+(hot||full?1:.4)+'"/>';
+  if(hot&&o.anim)h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="8" fill="none" stroke="'+INK+'" stroke-width="1.4" class="rp"/>';}});
+ return h;}
+function hl(w,c){return '<tspan fill="'+c+'" font-weight="600">'+w+'</tspan>';}
+function lines(x,y,arr,size,lh,fill){return arr.map(function(l,i){return '<text x="'+x+'" y="'+(y+i*lh)+'" font-size="'+size+'" fill="'+(fill||INK)+'" font-family="'+FONT+'">'+l+'</text>';}).join('');}
+var BG='<rect width="260" height="500" fill="#090A0E"/>';
+
+/* SCENES */
+function sAccount(){var h=BG;
+ h+=glass(20,70,220,56,glyph('layers',44,98,18,DIM)+'<rect x="70" y="92" width="90" height="8" rx="4" fill="#252833"/>');
+ h+=glass(20,140,220,110,'',SKY);
+ h+=core(48,176,10,'#5A1D1B')+'<circle cx="48" cy="176" r="18" fill="none" stroke="'+SKY+'" stroke-width="1.6"/>';
+ h+='<rect x="186" y="164" width="38" height="22" rx="11" fill="'+SKY+'"/><circle cx="213" cy="175" r="8" fill="#0C0D12"/>';
+ h+=txt(80,181,'Tutorial',13,INK,' text-anchor="start"');
+ h+='<circle cx="130" cy="222" r="17" fill="none" stroke="'+SKY+'" stroke-width="1.8"'+(AN?' class="pl"':'')+'/>'+glyph('play',131,222,13,SKY,1.8);
+ h+='<g opacity=".3"><rect x="20" y="270" width="220" height="12" rx="6" fill="#252833"/><rect x="20" y="292" width="160" height="12" rx="6" fill="#252833"/></g>';
+ return svg(h);}
+function sAvatar(pair){var h=BG+leave();
+ /* the avatar in the ring, the light already travelling round it */
+ h+=loopRing(130,220,104,0,null,{light:24,nr:13,sw:2});
+ var L={};if(pair)L[4]={ring:1,glow:1};
+ h+=body(88,136,.42,{lit:L,seatOp:pair?.35:.9});
+ /* the two gates of the pair: up and green above, down and red below, the
+    way the Field draws its higher and lower gates */
+ h+='<circle cx="30" cy="364" r="13" fill="none" stroke="'+GREEN+'" stroke-width="2"/>'+glyph('up',30,364,12,GREEN,2);
+ h+=glass(50,348,194,34,pair?lines(62,369,['Says what she means the first time.'],11,14,MID):lines(62,369,['I want to be...'],11.5,14,DIM),pair?LINE:GREEN);
+ h+='<circle cx="30" cy="416" r="13" fill="none" stroke="'+RED+'" stroke-width="2"/>'+glyph('down',30,416,12,RED,2);
+ if(pair){h+=glass(50,394,194,62,lines(62,413,['The one who '+hl('said yes when',SEATS[4]),'she meant no, and was '+hl('angry',SEATS[2]),'all night.'],11,15),RED);
+  h+='<path d="M126 404C120 330 160 250 '+f1(88+100*.42+7)+' '+f1(136+74*.42+3)+'" fill="none" stroke="'+SEATS[4]+'" stroke-width="1.6" stroke-dasharray="3 4"/>';}
+ else h+=glass(50,400,194,34,lines(62,421,['I don\'t want to be...'],11.5,14,DIM));
+ return svg(h);}
+var STORY=['Work sent a late email and my jaw','locked. I went quiet in the meeting','and '+hl('said nothing',SEATS[4])+' again.'];
+function sDiscover(anim){var h=BG+leave()+dock(0,0);
+ h+='<rect x="16" y="84" width="228" height="120" rx="10" fill="#1A1D26" stroke="'+SKY+'" stroke-width="1.4"/>'+lines(28,110,STORY,11.5,17);
+ h+=btn(158,164,76,'Commit 4');
+ h+='<g opacity=".3">'+wheel(130,340,96,{})+'</g>';
+ if(anim)[[92,144,'40px','176px'],[122,144,'10px','170px']].forEach(function(d,i){h+='<circle cx="'+d[0]+'" cy="'+d[1]+'" r="3.4" fill="'+SEATS[4]+'" class="fly" style="--dx:'+d[2]+';--dy:'+d[3]+';animation-delay:'+(i*.7)+'s"/>';});
+ return svg(h);}
+function sBack(anim){var h=BG+leave()+dock(0,0);
+ /* the back arrow in the top bar, lit; the story card lifting off, ghosted */
+ h+='<circle cx="188" cy="42" r="15" fill="none" stroke="'+SKY+'" stroke-width="2"/>'+glyph('back',188,42,15,SKY,1.8);
+ if(anim)h+='<circle cx="188" cy="42" r="15" fill="none" stroke="'+SKY+'" class="rp"/>';
+ h+='<g opacity=".35"><rect x="16" y="100" width="228" height="120" rx="10" fill="#1A1D26" stroke="'+LINE+'" stroke-dasharray="4 4"/>'+lines(28,126,STORY,11.5,17,MID)+'</g>';
+ h+='<path d="M188 62C188 90 230 90 230 120" fill="none" stroke="'+SKY+'" stroke-width="1.4" stroke-dasharray="3 4"/>';
+ h+='<g opacity=".3">'+wheel(130,350,90,{})+'</g>';
+ return svg(h);}
+function sBank(anim){var h=BG+leave()+dock(0,0);
+ h+='<circle cx="80" cy="120" r="24" fill="none" stroke="'+SKY+'" stroke-width="2"/>'+glyph('bank',80,120,22,INK,1.7);
+ if(anim)h+='<circle cx="80" cy="120" r="24" fill="none" stroke="'+SKY+'" class="rp"/>';
+ h+='<circle cx="180" cy="120" r="24" fill="none" stroke="'+LINE+'" stroke-width="2"/>'+glyph('vault',180,120,22,DIM,1.7)+'<rect x="192" y="134" width="22" height="12" rx="6" fill="#252833" stroke="'+LINE+'"/>'+txt(203,143.5,'0',9,DIM);
+ /* what the writing found, by seat colour: a dot each, the name only on the one */
+ var rows=[[4,3],[1,2],[2,2]],y=196;
+ rows.forEach(function(r){h+='<rect x="24" y="'+(y-14)+'" width="212" height="28" rx="14" fill="none" stroke="'+LINE+'"/>';
+  for(var i=0;i<r[1];i++)h+='<circle cx="'+(44+i*18)+'" cy="'+y+'" r="5.5" fill="'+SEATS[r[0]]+'"/>';
+  if(r[0]===4)h+=txt(44+r[1]*18+8,y+4,'Self-Silencing',11.5,INK,' text-anchor="start"');
+  y+=40;});
+ if(anim)[[44,196],[62,236],[44,276]].forEach(function(d,i){h+='<circle cx="'+d[0]+'" cy="'+d[1]+'" r="3" fill="'+SKY+'" class="fly" style="--dx:'+(80-d[0])+'px;--dy:'+(120-d[1])+'px;animation-delay:'+(i*.6)+'s"/>';});
+ return svg(h);}
+function sPlay(anim){var h=BG+leave()+dock(1,1);
+ h+=wheel(130,230,100,{held:2,pick:1,anim:anim});
+ h+=glass(40,368,180,34,'<circle cx="58" cy="385" r="5" fill="'+SEATS[4]+'"/>'+txt(70,389.5,'Self-Silencing',12.5,INK,' text-anchor="start"')+txt(206,389.5,'throat',11,SEATS[4],' text-anchor="end"'));
+ /* held, taught by drawing it: faint, then full */
+ h+='<circle cx="112" cy="428" r="4" fill="'+SEATS[4]+'" opacity=".4"/>'+'<path d="M122 428h14M131 424l5 4-5 4" fill="none" stroke="'+DIM+'" stroke-width="1.4"/>'+'<circle cx="148" cy="428" r="6" fill="'+SEATS[4]+'"/>';
+ return svg(h);}
+function sLayers(anim){var h=BG+leave()+dock(1,1);
+ /* the glass bar over the Field; one switch lit. Marks off, their outlines
+    stay: hidden is not lost, and the drawing says so */
+ h+=glass(56,82,148,34,'');
+ [80,113,146,179].forEach(function(x,i){h+='<circle cx="'+x+'" cy="99" r="11" fill="none" stroke="'+(i===1?SKY:DIM)+'" stroke-width="'+(i===1?2:1.2)+'" opacity="'+(i===1?1:.5)+'"'+(i===1&&anim?' class="pl"':'')+'/>';});
+ h+=glyph('layers',113,99,12,SKY,1.8);
+ h+=wheel(130,270,100,{hide:1});
+ return svg(h);}
+function sPick(){var h=BG+leave()+dock(2,2);
+ h+=glass(18,82,224,300,'');
+ [[4,'Self-Silencing',1],[4,'People Pleasing',0],[1,'Need For Approval',0]].forEach(function(r,i){var y=112+i*34;
+  h+='<rect x="32" y="'+(y-9)+'" width="16" height="16" rx="3" fill="'+(r[2]?SKY:'none')+'" stroke="'+(r[2]?SKY:DIM)+'"/>'+(r[2]?glyph('check',40,y-1,12,'#0C0D12',2.4):'');
+  h+='<circle cx="62" cy="'+(y-1)+'" r="5" fill="'+SEATS[r[0]]+'"/>'+txt(74,y+3,r[1],11.5,r[2]?INK:MID,' text-anchor="start"');});
+ /* Pace and Patterns as two dials with their pills, as the Field draws a gate */
+ [[80,'Pace','1.0',.5],[180,'Patterns','5',.25]].forEach(function(d){h+='<circle cx="'+d[0]+'" cy="260" r="26" fill="none" stroke="'+LINE+'" stroke-width="3"/><path d="'+arc(d[0],260,26,0,360*d[3])+'" fill="none" stroke="'+SKY+'" stroke-width="3" stroke-linecap="round"/>'+txt(d[0],265,d[2],14,INK)+txt(d[0],304,d[1],10.5,DIM);});
+ h+=btn(70,330,120,'Run release');
+ return svg(h);}
+function sRun(anim){var h=BG+leave()+dock(2,2);
+ h+='<circle cx="130" cy="190" r="54" fill="none" stroke="'+SEATS[4]+'" stroke-width="1.4" stroke-dasharray="3 5" opacity=".7"/>';
+ h+='<circle cx="130" cy="190" r="30" fill="'+SEATS[4]+'" opacity=".16"'+(anim?'><animate attributeName="r" values="34;14;34" dur="7s" repeatCount="indefinite"/></circle>':'/>');
+ h+='<circle cx="130" cy="190" r="9" fill="'+SEATS[4]+'"/>';
+ if(anim)for(var i=0;i<6;i++){var a=i*60;h+='<circle cx="130" cy="190" r="2" fill="'+SEATS[4]+'"><animate attributeName="cx" values="130;'+f1(130+Math.cos(a*Math.PI/180)*70)+'" dur="3s" begin="'+(i*.5)+'s" repeatCount="indefinite"/><animate attributeName="cy" values="190;'+f1(190+Math.sin(a*Math.PI/180)*70)+'" dur="3s" begin="'+(i*.5)+'s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="3s" begin="'+(i*.5)+'s" repeatCount="indefinite"/></circle>';}
+ h+=txt(130,264,'practice',10.5,'#DABF6A',' font-family="ui-monospace,monospace"');
+ /* left side first, then right: two short brackets say which side is running */
+ h+='<path d="M22 312v96M22 312h6M22 408h6" fill="none" stroke="'+SKY+'" stroke-width="1.6"/><path d="M238 312v96M238 312h-6M238 408h-6" fill="none" stroke="'+LINE+'" stroke-width="1.6"/>';
+ [[318,.35,180],[342,1,200],[366,.35,164],[390,.35,188]].forEach(function(l){h+='<rect x="'+(130-l[2]/2)+'" y="'+l[0]+'" width="'+l[2]+'" height="8" rx="4" fill="'+(l[1]===1?SKY:'#252833')+'" opacity="'+l[1]+'"/>';});
+ /* and one body mark: keep some attention here */
+ var L={};L[4]={ring:1};h+=body(112,420,.18,{lit:L,seatOp:.4});
+ return svg(h);}
+function sDone(anim){var h=BG+leave()+dock(3,2);
+ h+='<circle cx="80" cy="130" r="24" fill="none" stroke="'+LINE+'" stroke-width="2"/>'+glyph('bank',80,130,22,DIM,1.7);
+ h+='<circle cx="180" cy="130" r="24" fill="none" stroke="'+SKY+'" stroke-width="2"/>'+glyph('vault',180,130,22,INK,1.7)+'<rect x="192" y="144" width="22" height="12" rx="6" fill="#252833" stroke="'+LINE+'"/>'+txt(203,153.5,'0',9,INK);
+ if(anim)h+='<circle cx="180" cy="130" r="24" fill="none" stroke="'+SKY+'" class="rp"/>';
+ /* practice: the mark goes back to its seat unchanged, on a dashed path */
+ h+='<path d="M130 230C130 290 180 300 180 340" fill="none" stroke="'+SEATS[4]+'" stroke-width="1.4" stroke-dasharray="3 5"/>';
+ h+='<circle cx="130" cy="230" r="9" fill="'+SEATS[4]+'" opacity=".4"/><circle cx="180" cy="340" r="9" fill="'+SEATS[4]+'"/><circle cx="180" cy="340" r="15" fill="none" stroke="'+SEATS[4]+'" stroke-width="1.4"/>';
+ h+=txt(130,400,'practice',10.5,'#DABF6A',' font-family="ui-monospace,monospace"');
+ return svg(h);}
+function sEmbody(anim){var h=BG+leave()+dock(3,3);
+ var cx=130,cy=200;
+ for(var i=0;i<12;i++){var p0=P(cx,cy,92,i*30),p1=P(cx,cy,i%3?86:80,i*30);h+='<line x1="'+f1(p0[0])+'" y1="'+f1(p0[1])+'" x2="'+f1(p1[0])+'" y2="'+f1(p1[1])+'" stroke="'+DIM+'" stroke-width="1.4"/>';}
+ h+='<path d="'+arc(cx,cy,98,212,236)+'" fill="none" stroke="'+SKY+'" stroke-width="3.4" stroke-linecap="round"/>';
+ h+='<circle cx="'+cx+'" cy="'+cy+'" r="40" fill="none" stroke="'+SEATS[4]+'" stroke-width="1.6"/>'+glyph('ear',cx,cy,34,INK,1.6);
+ h+=glass(24,316,212,40,'<circle cx="46" cy="336" r="6" fill="'+SEATS[4]+'"/>'+txt(60,340.5,'Active Listening',12.5,INK,' text-anchor="start"')+txt(222,340.5,'10 min',11,DIM,' text-anchor="end"'));
+ h+='<rect x="24" y="368" width="170" height="34" rx="17" fill="rgba(126,184,212,.1)" stroke="'+SKY+'"/>'+txt(109,389,'after I put the kettle on',12,INK);
+ h+=btn(160,440,72,'Save');
+ return svg(h);}
+function sClose(anim){var h=BG;
+ h+=loopRing(130,210,104,4,null,{light:AN?null:30,nr:13,sw:2.6});
+ if(anim)h+='<g><animateTransform attributeName="transform" type="rotate" from="0 130 210" to="360 130 210" dur="6s" repeatCount="indefinite"/><circle cx="130" cy="106" r="10" fill="'+SKY+'" opacity=".25"/><circle cx="130" cy="106" r="4.5" fill="'+SKY+'"/></g>';
+ var L={};L[4]={ring:1};h+=body(88,126,.42,{lit:L,seatOp:.9});
+ /* the reward slot, empty and dashed until the word is chosen (question E) */
+ h+='<circle cx="130" cy="380" r="22" fill="none" stroke="'+DIM+'" stroke-width="1.4" stroke-dasharray="3 4"/>'+glyph('reward',130,380,18,DIM,1.4);
+ return svg(h);}
+function sOuter(){var h=BG;
+ h+=loopRing(130,230,56,4,null,{nr:9,sw:2});
+ var L={};L[4]={ring:1};h+=body(113,193,.17,{lit:L});
+ /* the five other tabs as five glyphs orbiting outside the loop. Lit once
+    each has something of hers; the names come on a long press, as the
+    Field's gates do. */
+ [['body',1],['lines',1],['cone',0],['book',0],['game',0]].forEach(function(d,i){var p=P(130,230,108,-72+i*36+ (i>2?108:0));
+  p=P(130,230,108,[300,340,20,60,100][i]);
+  h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="20" fill="#171922" stroke="'+(d[1]?SKY:LINE)+'" stroke-width="2"/>'+glyph(d[0],p[0],p[1],18,d[1]?INK:DIM,1.7);
+  if(!d[1])h+='<circle cx="'+f1(p[0]+14)+'" cy="'+f1(p[1]+14)+'" r="4" fill="#090A0E" stroke="'+LINE+'"/>';});
+ return svg(h);}
+
+/* FRAMES, by station, so the page itself goes round the ring */
+function frame(f){return '<div class="fr"><div class="phone">'+f.art+'</div><div class="meta"><div class="top"><span class="id">'+f.id+'</span><span class="nm">'+f.nm+'</span>'
+ +(f.time?'<span class="chip">'+f.time+'</span>':'')
+ +(f.q||[]).map(function(q){return '<a class="chip q" href="#q-'+q.toLowerCase()+'">'+q+'</a>';}).join('')+'</div>'
+ +'<details><summary>notes</summary><p>'+f.note+'</p></details></div></div>';}
+var GROUPS=[
+ ['body','Your avatar','the centre, where it starts',[
+  {id:'U0',nm:'Where it starts',q:['B'],art:sAccount(),note:'In the profile, beside the opening, as ruled in AN5 and FH. Was two lines of copy; now one word, a switch, and a play ring. When it first opens on its own is question B.'},
+  {id:'U1',nm:'Your avatar',time:'20 s',art:sAvatar(false),note:'The avatar inside the loop, the light already travelling. The two lines of the pair are two gates, green and up above, red and down below, the way the Field draws its higher and lower gates. "This is your avatar. It changes when you write..." is gone; the ring and the empty gates say it. Only the placeholders are words.'},
+  {id:'U2',nm:'The pair',time:'30 s',q:['A'],art:sAvatar(true),note:'Her second line lights "said yes when", and a thread runs from the words to the throat seat, which lights and rings. Run through the engine on 27 September: this line lands at the throat. "Found. It sits at your throat." is gone; the thread says it.'}]],
+ ['lens','discover','write, take it back, keep it',[
+  {id:'U3',nm:'Write',time:'45 to 90 s',art:sDiscover(AN),note:'The real story box. The lit words fly toward the faint wheel below. Run 27 September: "said nothing" lights at the throat and finds 4, on the same seat the avatar is working on. The instruction line is gone.'},
+  {id:'U4',nm:'Take it back',time:'5 s',art:sBack(AN),note:'Undo is built and unlimited (engine/undo.js), and the back arrow is the only way to it. It pulses; a dashed path runs from it to the story, which lifts as a ghost. "Changed your mind? The back arrow takes it off." is gone.'},
+  {id:'U5',nm:'Keep it',time:'10 s',art:sBank(AN),note:'The Bank and the Vault, the shipped pair. What the writing found flies into the Bank as seat coloured dots, one name shown. The Vault holds 0, which is shipped: it counts only what has really been released.'}]],
+ ['tap','play','look, and hide a layer',[
+  {id:'U6',nm:'Look',time:'15 s',art:sPlay(AN),note:'The real Field after a second story. The brightest mark pulses. "Held" is taught by drawing it: a faint dot, an arrow, a full dot. "Held means it is heavy enough to show in full" is gone. Which marks are held is the engine\'s to say; this one is illustrative.'},
+  {id:'U7',nm:'Hide a layer',time:'10 s',art:sLayers(AN),note:'The glass bar over the Field, one switch lit. With the marks off, their dashed outlines stay, so hidden visibly is not lost. "This only hides them. Nothing found is lost." is gone; the outlines say it. The bar\'s own code: it decides what is drawn, never what is read.'}]],
+ ['wave','flow','pick, run, done',[
+  {id:'U8',nm:'Pick',time:'15 s',q:['A'],art:sPick(),note:'The release column, cut to your IG ruling: selections, pace, how many patterns, Run release. Pace and Patterns are drawn as dials with their value in the middle, the Field\'s gate shape. The instruction line is gone.'},
+  {id:'U9',nm:'Run',art:sRun(AN),note:'The run (ui/release.js). The mark comes apart as each line is read. A bracket on the left says the left side runs first, which is the book\'s order. A small body with the throat lit replaces "Keep some attention on your throat". Practice, because of AN5.'},
+  {id:'U10',nm:'Done',time:'3 s',q:['A'],art:sDone(AN),note:'The Vault pulses and still reads 0, which is true after practice. The mark goes back to its seat on a dashed path, unchanged. "Done. Real runs go in the vault." is gone.'}]],
+ ['body','embody','today\'s practice, and when',[
+  {id:'U11',nm:'Practice',time:'15 s',art:sEmbody(AN),note:'The Ritual. An ear in a throat coloured ring, inside a clock face: the practice the heaviest seat calls for, Active Listening, ten minutes, from the engine\'s practice table. Her when from onboarding is already filled. The instruction line is gone.'}]],
+ ['lens','Back to discover','the light goes round again',[
+  {id:'U12',nm:'Round again',q:['A','E','H'],art:sClose(AN),note:'The loop closes round the avatar and the light keeps going. It does not stop at the top: that is the circuit. The dashed star is the reward slot, empty until the word is chosen (question E). "One full turn." is gone.'},
+  {id:'U13',nm:'The rest of the bar',q:['C','D'],art:sOuter(),note:'The five tabs the loop does not pass through, as five glyphs orbiting outside it: Body, Summary, Compass, Knowledge, Games. Two lit, because they already have something of hers. Five sentences were here; now five glyphs, the name on a long press as the Field\'s gates do.'}]]];
+GROUPS.forEach(function(g,i){document.getElementById('g'+i).innerHTML=gsvg(g[0],22,SKY)+'<h2>'+g[1]+'</h2><em>'+g[2]+'</em>';
+ document.getElementById('f'+i).innerHTML=g[3].map(frame).join('');});
+
+/* THE CIRCUIT. One lap is one knot carried round: found at discover, coloured
+   at play, taken apart at flow, carried into the avatar at embody. */
+var ring=document.getElementById('ring'), cPhone=document.getElementById('cPhone');
+var CX=300, CY=300, R=210, LAP=9000;
+var STATE={t:LAP*2+LAP*.05,run:AN,last:0,laps:0};
+var PURPOSE_SCENES=[sDiscover,sPlay,sRun,sEmbody];
+var shown=-1;
+function circuit(ms){var LS=Math.max(1,12/(17*(ring.clientWidth||680)/780)), laps=Math.floor(ms/LAP), th=(ms%LAP)/LAP*360, lit=Math.min(7,laps), h='';
+ /* one faint ring for every lap walked, outward, as the Field is drawn */
+ for(var k=0;k<Math.min(laps,7);k++)h+='<circle cx="'+CX+'" cy="'+CY+'" r="'+(R+22+k*9)+'" fill="none" stroke="'+SEATS[k]+'" stroke-width="1" opacity=".28"/>';
+ h+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="'+LINE+'" stroke-width="3"/>';
+ /* the trail behind the light */
+ h+='<path d="'+arc(CX,CY,R,Math.max(0,th-70),Math.max(.01,th))+'" fill="none" stroke="'+SKY+'" stroke-width="3" stroke-linecap="round" opacity=".55"/>';
+ /* the core behind the avatar: the Field's dark red turning to its sky */
+ var cc=mix('#5A1D1B','#7EB8D4',lit/7);
+ h+='<circle cx="'+CX+'" cy="'+(CY+6)+'" r="100" fill="'+cc+'" opacity=".08"/><circle cx="'+CX+'" cy="'+(CY+6)+'" r="82" fill="'+cc+'" opacity=".14"/><circle cx="'+CX+'" cy="'+(CY+6)+'" r="64" fill="'+cc+'" opacity=".22"/>';
+ var L={};for(var s=0;s<lit;s++)L[s]={glow:1};
+ var seat=laps%7;
+ h+=body(CX-100*.78,CY-196*.78+10,.78,{lit:L,seatOp:.3});
+ /* the four stations, glyph and word */
+ var curSt=Math.floor(((th+20)%360)/90);
+ for(var i=0;i<4;i++){var p=P(CX,CY,R,i*90),near=i===curSt;
+  h+='<g data-node="'+i+'" role="button" aria-label="'+ST[i]+'"><circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="30" fill="#0C0D12" stroke="'+(near?SKY:'#3A3F4D')+'" stroke-width="'+(near?3:2)+'"/>'+glyph(SG[i],p[0],p[1],28,near?INK:MID,1.8);
+  var lp=P(CX,CY,R+44,i*90);h+=txt(f1(lp[0]),f1(lp[1]+(i===0?-4:i===2?16:6)*LS),ST[i],17*LS,near?INK:DIM,' text-anchor="'+(i===1?'start':i===3?'end':'middle')+'"')+'<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="34" fill="transparent"/></g>';}
+ /* the knot and the light */
+ var q=P(CX,CY,R,th), kc, kr, kop=1;
+ if(th<90){kc=mix('#3A1614','#5A1D1B',th/90);kr=5+th/90*6;}
+ else if(th<180){kc=mix('#5A1D1B',SEATS[seat],Math.min(1,(th-90)/30));kr=11;}
+ else if(th<270){var f=(th-180)/90;kc=mix(SEATS[seat],SKY,f);kr=11-f*6;
+  for(var j=0;j<6;j++){var a=j*60+th*3,d=8+f*34;h+='<circle cx="'+f1(q[0]+Math.cos(a*Math.PI/180)*d)+'" cy="'+f1(q[1]+Math.sin(a*Math.PI/180)*d)+'" r="2.2" fill="'+SEATS[seat]+'" opacity="'+f1(1-f)+'"/>';}}
+ else{kc=SKY;kr=5;}
+ if(th>=270&&th<330){/* the light leaves the ring and goes into the avatar's seat */
+  var f2=(th-270)/60, sp=[CX, CY-196*.78+10+SY[seat]*.78], e=P(CX,CY,R,270);
+  var x=e[0]+(sp[0]-e[0])*f2, y=e[1]+(sp[1]-e[1])*f2;
+  h+='<circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="6" fill="'+SEATS[seat]+'"/><circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="13" fill="'+SEATS[seat]+'" opacity=".25"/>';}
+ else if(th<270)h+='<circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="'+f1(kr+10)+'" fill="'+kc+'" opacity=".22"/><circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="'+f1(kr)+'" fill="'+kc+'"/>';
+ h+='<circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="15" fill="'+SKY+'" opacity=".18"/><circle cx="'+f1(q[0])+'" cy="'+f1(q[1])+'" r="5.5" fill="'+SKY+'"/>';
+ ring.innerHTML='<svg viewBox="-90 -40 780 680" role="img" aria-label="The loop as a circuit round the avatar">'+h+'</svg>';
+ var st=Math.floor(((th+20)%360)/90);
+ if(st!==shown){shown=st;cPhone.innerHTML=PURPOSE_SCENES[st](AN);}}
+function tick(now){if(!STATE.run)return;STATE.t+=now-STATE.last;STATE.last=now;circuit(STATE.t);requestAnimationFrame(tick);}
+var bGo=document.getElementById('cGo');
+bGo.addEventListener('click',function(){STATE.run=!STATE.run;bGo.textContent=STATE.run?'Pause':'Play';if(STATE.run){STATE.last=performance.now();requestAnimationFrame(tick);}});
+document.getElementById('cReset').addEventListener('click',function(){STATE.t=0;circuit(0);});
+ring.addEventListener('click',function(e){var n=e.target.closest('[data-node]');if(!n)return;var i=+n.getAttribute('data-node');
+ var lapStart=Math.floor(STATE.t/LAP)*LAP, target=lapStart+i*LAP/4; if(target<STATE.t)target+=LAP; STATE.t=target-LAP*20/360; circuit(STATE.t);});
+if(!AN){bGo.textContent='Play';STATE.t=LAP*3+LAP*.3;}
+circuit(STATE.t);
+if(STATE.run){STATE.last=performance.now();requestAnimationFrame(tick);}
+
+/* THE PURPOSE RING. Each tool at its station, what it is for in words a ten
+   year old has, and the avatar in the middle. It is a circle because the
+   four close. */
+var purposeEl=document.getElementById('purpose');
+function drawPurpose(){var h='',cx=300,cy=300,r=170, m=Math.max(1,11/(18*(purposeEl.clientWidth||720)/900));
+ h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+SKY+'" stroke-width="2.4"/>';
+ /* arrowheads between the stations, clockwise */
+ [45,135,225,315].forEach(function(a){var p=P(cx,cy,r,a),t=(a)*Math.PI/180;var dx=Math.cos(t),dy=Math.sin(t);
+  h+='<path d="M'+f1(p[0]-dx*9+dy*6)+' '+f1(p[1]-dy*9-dx*6)+'L'+f1(p[0])+' '+f1(p[1])+'L'+f1(p[0]+dx*9+dy*6)+' '+f1(p[1]+dy*9-dx*6)+'" fill="none" stroke="'+SKY+'" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" transform="rotate(0)"/>';});
+ var TOOL=[['Story','find what is stuck'],['Field','see where it sits'],['Release','let it go'],['Ritual','practise the new way']];
+ for(var i=0;i<4;i++){var p=P(cx,cy,r,i*90);
+  h+='<circle cx="'+f1(p[0])+'" cy="'+f1(p[1])+'" r="30" fill="#0C0D12" stroke="'+SKY+'" stroke-width="2.4"/>'+glyph(SG[i],p[0],p[1],28,INK,1.8);
+  var lp=P(cx,cy,r+(i%2?44:74),i*90), ly=lp[1]+(i===0?-40:i===2?14:-14), an=' text-anchor="'+(i===1?'start':i===3?'end':'middle')+'"';
+  var words=TOOL[i][1].split(' '), two=m>1&&words.length>3, half=Math.ceil(words.length/2);
+  var parts=two?[words.slice(0,half).join(' '),words.slice(half).join(' ')]:[TOOL[i][1]];
+  if(i===0)ly-=(two?18*m:0)+(m-1)*40;
+  h+=txt(f1(lp[0]),f1(ly),ST[i],24*m,INK,an)+txt(f1(lp[0]),f1(ly+25*m),TOOL[i][0],16*m,SKY,an+' font-family="ui-monospace,monospace"');
+  parts.forEach(function(t,k){h+=txt(f1(lp[0]),f1(ly+(48+k*21)*m),t,18*m,MID,an);});}
+ var L={};for(var s=0;s<7;s++)L[s]={glow:s<4};
+ h+=body(cx-100*.56,cy-116,.56,{lit:L,seatOp:.5});
+ purposeEl.innerHTML='<svg viewBox="-150 -'+(40+(m-1)*120)+' 900 '+(700+(m-1)*200)+'" role="img" aria-label="What each station is for">'+h+'</svg>';}
+drawPurpose();
+var rsz=null;addEventListener('resize',function(){clearTimeout(rsz);rsz=setTimeout(function(){drawPurpose();circuit(STATE.t);},150);});
+
+/* questions */
+function mini(art){return '<div class="mini">'+art+'</div>';}
+function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
+function lapArt(rings,seats){var h=BG;for(var k=0;k<rings;k++)h+='<circle cx="130" cy="230" r="'+(108+k*8)+'" fill="none" stroke="'+SEATS[k]+'" stroke-width="1.2" opacity=".35"/>';
+ h+=loopRing(130,230,96,4,null,{nr:12,sw:2});var L={};for(var s=0;s<seats;s++)L[s]={glow:1};h+=body(92,150,.38,{lit:L,seatOp:.3});return svg(h);}
+set('qh1',mini(lapArt(3,3)));
+set('qh2',mini(lapArt(3,1)));
+set('qh3',mini(lapArt(0,0)));
+var CQ=[
+ ['A','Does the tutorial\'s release change anything?','"It does not spend real charge" (AN5, 19 September) against "a person watches their avatar improve... driven by releases" (20 September). Practice as drawn, nothing moves; a small real run, about five patterns, and the avatar shows releasing; or the last chapter waits for their first real release.'],
+ ['B','When does the tutorial first run?','Straight after onboarding, about eight minutes on day one; on day two at their chosen when, the ritual\'s first job; or only when asked from Account, where almost nobody finds it.'],
+ ['C','Does the tutorial grow the bar? ("The bar grows as they earn it", AN8)','Each chapter opens its tab and the rest show shut, saying what opens them; or the bar is whole from the start and AN8 stays unbuilt. U13 draws the five as glyphs with a small closed dot on the three not yet earned.'],
+ ['D','"Touching every screen" (AN3): inside the tutorial, or when each screen first has something of theirs?','A second lap of five stops with nothing to do on them; or the outer ring on U13, each lighting when it has something of hers.'],
+ ['E','What does the turn end on? ("A badge and points at the end", AN3)','U12 draws the reward slot as a dashed star. It stays empty until the word is chosen: marks, badges, patterns, points or karma.'],
+ ['F','The 63 questions: does the tutorial say how many and how long?','Once, in the tutorial, gone when it ends; always on the page, which put completion about thirty points higher; or nothing.'],
+ ['G','Three small ones','Which number the avatar leads with, CQ or expression (drawn with none); whether the tutorial is the overlay your rule against explaining text points to; whether it can be left part way and picked up (drawn as yes).']];
+set('carriedQ',CQ.map(function(q){return '<div id="q-'+q[0].toLowerCase()+'"><b>'+q[0]+'. '+q[1]+'</b><br>'+q[2]+'</div>';}).join(''));
+
+(function(){var n=0;document.querySelectorAll('.frames .phone').forEach(function(e){n+=(e.textContent.replace(/\s+/g,' ').trim().match(/[A-Za-z0-9'À-ɏ]+/g)||[]).length;});
+ document.getElementById('cNow').textContent=n;})();
 })();
 </script>
+</body>
+</html>
