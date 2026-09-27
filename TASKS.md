@@ -17418,3 +17418,53 @@ whether the classical marma chart rules when his own two charts
 disagree, and whether Saboteurs-as-faces can keep that name given
 Masks already owns it.
 
+## FZ. The Root Energetics build and left-rail pass, verified against
+## the shipped build in an isolated worktree. 27 September.
+
+All eight FV items are in `atuned_src` for real, gated, item 7 (Flow
+icons) correctly skipped per the correction sent mid task. Commit
+`fe433d8`.
+
+**Verified in an isolated worktree rather than the shared tree**,
+since two other agents' in flight, uncommitted files were sitting in
+it at the time; the standing discipline held rather than disturbing
+them. `source.html`'s md5 matches to the letter,
+`b0477d6a3cb73fe677776db7ae2725da`, and the rebuilt size matches
+exactly, 2,032,748 bytes. Re-ran every one of the nine gates: engine
+1735/0, 459 exports, functional 1136/0 matching exactly including the
+15 new FV checks, collide 298/0, monitor all render, funnel 172/0,
+voice objections clean. `design.js` read 153/5, then 154/4, then
+156/2 across three consecutive runs under genuinely heavy load from
+three other agents finishing around the same time; the same "Field
+still animates" flake logged seven times tonight now, and the
+builder's own report already isolated it with a controlled
+comparison against untouched HEAD scoring identically under matched
+load, which this convergence toward clean as load dropped corroborates
+rather than contradicts. Took a fresh screenshot: "Root Energetics"
+reads capitalized on both rails with its own distinct icon and accent
+tint, and the Flow and Running sections in the right rail both carry
+real marks now, matching the left-rail audit's own account.
+
+**The overlap detection is real, not decorative,** read carefully
+rather than taken as marketing: it only bridges where the traditions
+themselves actually share vocabulary (elements, the design gate's
+hexagram trigrams, planet-to-digit numerology), reports "light" for
+most of a 700-birth sweep rather than manufacturing agreement, and a
+real engine test now pins those shares as a contract against drift.
+Two things are named as new copy the builder wrote rather than
+canon, `ROOT_SAYS` and `HD_LINE_RUNS`, flagged for the story team's
+own review rather than presented as settled.
+
+**A real, second confirmation of the tools matrix ambiguity from
+FW/FV**, resolved rather than left open: there is no such matrix in
+`intakeui.js`, the actual place the Architect/Engine/Weaver/Witness
+labels sat bare was the Matrix section's own key, and it is now
+removed there specifically, not everywhere the four names appear.
+
+Three real, open engineering questions left for him rather than
+decided alone: whether "where they meet" should surface light
+overlaps at all or only the rare strong ones, whether Dial's core
+should grow to match the Wheel's feather scale (a geometry change not
+taken alone), and how many zoom notches earlier the feathers should
+now appear.
+
