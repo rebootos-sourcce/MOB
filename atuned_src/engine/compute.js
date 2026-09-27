@@ -51,9 +51,26 @@ function balance(){
    the seed it was given. A headless run that sets S.law with no profile
    loaded has nothing marked unset, so every law it set is in, which is what
    the simulation and the gates mean by setting it.
+
+   THE RECORD ASKED IS THE ONE THE LAWS IN S CAME FROM, NOT CURP. The unset
+   marks and the seeds are written by loadProfile and loadP together with
+   LAW_REC, so they belong to that record, and lawWork below already reads
+   LAW_REC for exactly this reason. This asked CURP, and the front door loads
+   a profile into S without making it CURP. Measured on the IK audit, 27
+   September: with a record current whose laws were all answered at 9,
+   read() of a blank profile returned CQ 60.0, 21 answered, 21 measured, the
+   word Even and unread false, which is the seed 6 counted as twenty one
+   answers the blank never gave. A profile with three laws answered at 2 read
+   54.3 where its own laws sum to 2.9. Every route in the app that moves CURP
+   was read for this (boot, delete, import, the intake switcher, loadP and
+   toYou) and each loads the same record into S, so LAW_REC is CURP there and
+   nothing in the app changes. Only a read of a profile that is not current
+   does.
    ============================================================ */
+function lawRec(){return ((typeof LAW_REC!=='undefined')&&LAW_REC)||CURP;}
 function lawIn(nm){
- if(CURP&&CURP.laws&&CURP.laws[nm]!=null)return true;
+ var p=lawRec();
+ if(p&&p.laws&&p.laws[nm]!=null)return true;
  return !(LAW_UNSET[nm]&&S.law[nm]===LAW_SEED[nm]);}
 /* Which arithmetic a stored reading came from. This is the second; the first
    never stamped its rows, so they read back as 0. snapshot() stamps it so two
@@ -383,7 +400,9 @@ function compute(){
     there now, because no law is in, but a stranger is still unread rather
     than a person at zero, and every surface that names a reading checks
     this first. */
- const measured=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;}).length;
+ /* off the same record lawIn asks, for the same reason */
+ const _lr=lawRec();
+ const measured=SI.filter(function(l){return _lr&&_lr.laws&&_lr.laws[l.nm]!=null;}).length;
  /* BELOW THE LINE. An address counts as carrying at SQ 4. Under that the
     charge is real, a person entered it, and every surface reported nothing
     held. Setting all nine axes to 4 gave an identical reading to setting them

@@ -1522,8 +1522,12 @@ g('19c \u00b7 a label carries what it owes');
   'and a band prints as a range, got '+tierRange(TIERDEF[0])+' and '+tierRange(TIERDEF[9]));
  /* the median, ruled. fifty is the centre and forty to sixty is the swing. */
  ok(MEDIAN===50&&MEDIAN_LO===40&&MEDIAN_HI===60,'fifty is the median, forty to sixty the range');
- ok(medianRange(40)&&medianRange(50)&&medianRange(60)&&!medianRange(39.9)&&!medianRange(60.1),
-  'the median range is closed at forty and sixty');
+ /* closed at forty and sixty AS PRINTED. This asserted 39.9 and 60.1 outside,
+    and both print as 40 and 60, so the drill told a person at "CQ 40" that
+    40 to 60 is the median range and that they were not in it (round IK). */
+ ok(medianRange(40)&&medianRange(50)&&medianRange(60)&&medianRange(39.9)&&medianRange(60.1)
+  &&!medianRange(39.4)&&!medianRange(60.6),
+  'the median range is closed at forty and sixty, as the screen prints them');
  ok(tierOf(50).nm==='Oscillating'&&tierOf(MEDIAN).at===41,
   'and fifty sits at the top of the band named for crossing the line, got '+tierOf(50).nm);
  ok(/median/i.test(TIER_BY.Oscillating.def),'which says median in its own definition');
@@ -4921,6 +4925,37 @@ g('GR · a word that names shame reads as shame, at the seat it sits at');
  const ex=parseStory('I am exhausted. My father died.').imprints;
  ok(ex.some(i=>i.band==='Solar'&&i.fetter==='Apathy'&&i.stated),'exhaustion still states Apathy at the solar plexus');
  ok(!ex.some(i=>i.band==='Heart'&&i.stated),'and no longer states it at the heart, where no word named it');
+}
+
+g('IK · CQ is the profile\'s own laws, and the word agrees with the number printed');
+/* The owner's audit request, round IK. Two defects, each measured before the
+   fix. First, the front door read a profile that is not current against the
+   CURRENT record's answers, so a blank read CQ 60 and Even beside a record
+   answered at 9. Second, the tier word classified the raw CQ while every
+   surface prints it rounded, so 70.6 printed "CQ 71" beside "Gaining 61 to
+   70". Neither case is typed as a count: the walk is read off the run. */
+{
+ const {pImport,blankProfile,bindStore,tierOf,tierTop,tierRange,medianRange,TIERDEF,cqSum}=E;
+ const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ const A=pImport(JSON.stringify(blankProfile('IK current, answered')));
+ SINAMES.forEach(l=>{A.laws[l]=9;S.law[l]=9;});
+ near(compute().CQ,90,1e-9,'the current record reads its own twenty one at 9');
+ const b=E.read(blankProfile('IK blank, not current')).reading;
+ ok(b.CQ===0&&b.answered===0&&b.measured===0&&b.tier===null&&b.unread===true,
+  'a blank read through the front door with another record current is unread at 0, got CQ '
+  +b.CQ+', answered '+b.answered+', measured '+b.measured+', tier '+b.tier);
+ const C=blankProfile('IK three at 2'); SINAMES.slice(0,3).forEach(l=>{C.laws[l]=2;});
+ const c=E.read(C).reading;
+ near(c.CQ,6/210*100,1e-9,'three laws answered at 2 read as those three over 210 and nothing of the current record\'s');
+ ok(c.answered===3,'and three answered, got '+c.answered);
+ /* the word, at every half point either side of every floor */
+ const bad=[];
+ for(let x=0;x<=100;x+=0.05){const t=tierOf(x), s=Math.round(x);
+  if(s<t.at||s>tierTop(t.nm))bad.push(x.toFixed(2)+' prints '+s+' as '+t.nm+' '+tierRange(t));}
+ ok(bad.length===0,'no CQ prints a number outside the range of the word it is given, '+bad.length+' do: '+bad.slice(0,3).join('; '));
+ ok(medianRange(60.4)===true&&medianRange(39.6)===true&&medianRange(60.6)===false&&medianRange(39.4)===false,
+  'and the median range agrees with the printed 40 and 60');
+ ok(TIERDEF.every(t=>tierOf(t.at).nm===t.nm),'every floor still names its own band');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

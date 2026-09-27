@@ -680,7 +680,17 @@ const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
 /* the median, and the width of the swing around it. named once, because three
    renderers asked the same question of the same number. */
 const MEDIAN=50, MEDIAN_LO=40, MEDIAN_HI=60;
-function medianRange(cq){return cq>=MEDIAN_LO&&cq<=MEDIAN_HI;}
+/* THE WORD READS THE NUMBER THE SCREEN PRINTS. Every surface prints CQ as
+   Math.round, and the bands are written in whole numbers, 61 to 70 then 71 to
+   80, which leaves the half point under each floor in neither: 70.6 printed
+   "CQ 71, gaining" beside the row "Gaining 61 to 70". Measured on the IK
+   audit, 27 September, along Marcus's own release walk: 35 of 625 runs put a
+   number on screen outside the range of the word beside it. The median line
+   had the same gap, so 60.4 printed 60 and was told it sat outside "40 to 60".
+   The printed numbers do not move. Only the word, inside half a point of a
+   floor, now agrees with them. */
+function cqShown(cq){return Math.round(cq);}
+function medianRange(cq){var c=cqShown(cq); return c>=MEDIAN_LO&&c<=MEDIAN_HI;}
 /* a band is a range and says so. the ladder printed one number per row, which
    is a threshold, and a threshold does not tell a person how wide the word is.
    the top of a band is one below the floor of the band above it. */
@@ -689,5 +699,6 @@ function tierTop(nm){
  return 100;}
 function tierRange(t){return t.at+' to '+tierTop(t.nm);}
 function tierOf(cq){
- for(var i=0;i<TIERDEF.length;i++) if(cq>=TIERDEF[i].at)return TIERDEF[i];
+ var c=cqShown(cq);
+ for(var i=0;i<TIERDEF.length;i++) if(c>=TIERDEF[i].at)return TIERDEF[i];
  return TIERDEF[TIERDEF.length-1];}
