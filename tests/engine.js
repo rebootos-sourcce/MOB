@@ -2004,6 +2004,90 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(planAllowance({tier:'one',status:'active',granted:0,base:3000},3000).left===PLAN_BY.one.grant,
   'a live plan with no grant written falls back to the tier, not to nothing');
 
+ /* THE DAY AFTER THE GIFT, ON THE RECORD A NEW PERSON ACTUALLY GETS.
+
+    Every allowance row above hands planAllowance a plan typed by hand with
+    base 100 in it, and so did the two browser gates, so none of them ever read
+    the plan blankProfile writes. That plan carried base 0. planAllowance only
+    falls back to the end of the gift on null, 0 is not null, and every free
+    person read "0 left this week" from the moment the gift ran out and for
+    good. Found by the ninety day walk (RESEARCH-90day.md, TASKS FQ), not by a
+    gate. These rows read the blank itself. */
+ {
+  const nb=E.blankProfile('gift gate');
+  ok(nb.plan.base===null,'a new record opens no period, so base is null and not 0, got '
+   +JSON.stringify(nb.plan.base));
+  const d1=planAllowance(nb.plan,PLAN_BY.gift.grant);
+  ok(d1.left===PLAN_BY.free.grant&&d1.say==='10 of 10 left this week',
+   'a new record that has opened exactly the gift reads the free week in full, got '
+   +d1.left+' "'+d1.say+'"');
+  ok(E.GIFT_N===PLAN_BY.gift.grant&&E.GIFT_N===100,'the gift is named once, at the gift row, got '+E.GIFT_N);
+  /* AND THE RECORDS ALREADY ON A DISK. Every profile saved before the fix
+     carries the literal 0. It still loads, it is not rewritten, and it no
+     longer charges the gift against a week. */
+  const old=JSON.parse(JSON.stringify(nb)); old.plan.base=0; delete old.meter.giftAt;
+  const ov=E.validateProfile(old);
+  ok(ov.ok,'a record saved with base 0 still passes the boundary, '+(ov.errs||[]).join('; '));
+  ok(ov.ok&&ov.profile.plan.base===0,'and keeps the 0 it was saved with rather than being rewritten');
+  ok(ov.ok&&planAllowance(ov.profile.plan,PLAN_BY.gift.grant).left===PLAN_BY.free.grant,
+   'but reads the free week in full, because no period opens on ground the gift paid for, got '
+   +(ov.ok&&planAllowance(ov.profile.plan,PLAN_BY.gift.grant).left));
+  ok(planAllowance({tier:'one',status:'active',granted:400,base:40},150).left===350,
+   'a period a host opened inside the gift is charged only past the gift, got '
+   +planAllowance({tier:'one',status:'active',granted:400,base:40},150).left);
+ }
+ /* FREE BANKS, AND THE WEEKS COUNT THEMSELVES. Ruled in DECISIONS: the grant
+    banks rather than expiring. Nothing in a one file build starts a week, so
+    the weeks are counted from the moment the gift ran out, which meterRun
+    stamps. */
+ {
+  const W=E.WEEK_MS, at='2026-01-01T00:00:00.000Z', t0=new Date(at).getTime();
+  const fr={tier:'free',status:'',granted:0,carried:0,base:null};
+  ok(planAllowance(fr,100,at,t0+W-1).left===10,'the first week is ten, to its last moment');
+  ok(planAllowance(fr,100,at,t0+W).left===20,'and ten more arrive seven days on, got '
+   +planAllowance(fr,100,at,t0+W).left);
+  ok(planAllowance(fr,110,at,t0+W).left===10,'spend is everything past the gift, got '
+   +planAllowance(fr,110,at,t0+W).left);
+  ok(planAllowance(fr,110,at,t0+13*W).left===130,'ninety one days on, fourteen weeks have opened, got '
+   +planAllowance(fr,110,at,t0+13*W).left);
+  ok(/banked/.test(planAllowance(fr,100,at,t0+W).say)&&!/ of 10 /.test(planAllowance(fr,100,at,t0+W).say),
+   'a bank says it is banked and never "20 of 10", got "'+planAllowance(fr,100,at,t0+W).say+'"');
+  ok(planAllowance(fr,100,at,t0-5*W).left===10,'a clock set backwards cannot take a week away');
+  ok(planAllowance(fr,100,null,t0+9*W).left===10,'with no date to count from it is one week, as before');
+  ok(planAllowance({tier:'free',status:'',base:3000},3000,at,t0+9*W).left===10,
+   'a baseline a host wrote past the gift is the host\'s period, and does not bank');
+  ok(planAllowance({tier:'one',status:'active',granted:400,base:100},150,at,t0+9*W).left===350,
+   'and a paid tier does not bank either: its periods are the record store\'s');
+  /* the stamp, on the real path */
+  const r=E.blankProfile('stamp');
+  for(let i=0;i<24;i++)E.meterRun(r,[0,1,2,3].map(n=>'s'+i+':k:'+n));
+  ok(r.meter.unique.length===96&&r.meter.giftAt===null,'no stamp while the gift lasts');
+  const pre=Date.now();
+  E.meterRun(r,[0,1,2,3].map(n=>'s24:k:'+n));
+  ok(r.meter.giftAt&&new Date(r.meter.giftAt).getTime()>=pre-1000,
+   'the run that spends the gift stamps it, now, got '+r.meter.giftAt);
+  const st=r.meter.giftAt; r.meter.last='2030-01-01T00:00:00.000Z';
+  E.meterRun(r,['s25:k:0']);
+  ok(r.meter.giftAt===st,'and it is stamped once');
+  ok(E.meterBudget(r).left===9,'the next run spends the first free week, got '+E.meterBudget(r).left);
+  /* a record that ran the gift out before the stamp existed */
+  const o2=E.blankProfile('before'); o2.meter.unique=Array.from({length:100},(_,i)=>'o'+i+':k:0');
+  o2.meter.last='2026-01-01T00:00:00.000Z'; o2.plan.base=0; delete o2.meter.giftAt;
+  ok(E.meterGiftAt(o2)===o2.meter.last,'an unstamped spent gift counts from the last run, which is the run that spent it');
+  ok(E.meterBudget(o2,t0+3*W).left===40,'and is owed every week since, got '+E.meterBudget(o2,t0+3*W).left);
+  E.meterRun(o2,['o100:k:0']);
+  ok(o2.meter.giftAt==='2026-01-01T00:00:00.000Z','and its next run stamps that date, not today, so the weeks never restart, got '
+   +o2.meter.giftAt);
+  /* the boundary */
+  const gv=E.validateProfile(JSON.parse(JSON.stringify(r)));
+  ok(gv.ok&&gv.profile.meter.giftAt===st,'the stamp round trips through the boundary');
+  const bad=JSON.parse(JSON.stringify(r)); bad.meter.giftAt='soon';
+  ok(!E.validateProfile(bad).ok&&/meter\.giftAt/.test(E.validateProfile(bad).errs.join(' ')),
+   'a stamp that is not a date is refused by name, not read as no date');
+  const nul=JSON.parse(JSON.stringify(r)); nul.meter.giftAt=null;
+  ok(E.validateProfile(nul).ok,'a null stamp is a record inside the gift, and passes');
+ }
+
  /* THE UPGRADE, said as what it buys and never as what somebody lacks */
  const up=planUpgrade(t1);
  ok(up&&up.to.k==='two'&&up.ground===400,'an upgrade names the next tier and the ground');

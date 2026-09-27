@@ -828,7 +828,10 @@ function profileSheet(){
 function planSection(m){
  var pl=(CURP&&CURP.plan)||null;
  var t=planOf(pl), st=planState(pl);
- var al=planAllowance(pl,(m&&m.unique)||0);   /* meterRead().unique is already a count */
+ /* through meterBudget, the one read the release panel uses, because the free
+    weeks count from when the gift ran out and only the record knows that. A
+    second read here quoted a different number from the panel that charges it. */
+ var al=(CURP&&meterBudget(CURP).allow)||planAllowance(pl,(m&&m.unique)||0);
  var up=planUpgrade(pl);
  var yr=planYear(t.k);
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
@@ -846,7 +849,7 @@ function planSection(m){
  if(up)h+='<p class="sh-p">'+esc(up.to.nm)+' is '+esc(up.say)+'.</p>';
  /* WHAT IT IS WORTH, in the unit people already price against. Throughput and
     never outcome, at the conservative end of the book's own range. */
- var worth=planWorth(al.inGift?100:t.grant);
+ var worth=planWorth(al.inGift?GIFT_N:t.grant);
  if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
  h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '

@@ -64,6 +64,22 @@ const PLANS=[
  {k:'four',  nm:'Tier four',   per:'month', grant:1200, see:'sup', lead:true,
   d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
+   carried its own literal 100 in five places beside that row, which is the same
+   number held twice and one edit away from two answers. */
+const GIFT_N=PLAN_BY.gift.grant;
+/* A FREE WEEK, as a length. The free tier's weeks are counted from the moment
+   the gift ran out, seven days at a time, so a week needs no calendar, no zone
+   and no host to start it. */
+const WEEK_MS=7*24*3600*1000;
+/* HOW MANY FREE WEEKS HAVE OPENED since the gift ran out, counting the one it
+   ran out in. One when there is no date to count from, which is the reading a
+   record that has never been stamped always had. Never below one, so a clock
+   set backwards cannot take a week away. */
+function planWeeks(at,now){
+ var a=at?new Date(at).getTime():NaN; if(!isFinite(a))return 1;
+ var n=(now!=null)?new Date(now).getTime():Date.now(); if(!isFinite(n))return 1;
+ return Math.max(1,Math.floor((n-a)/WEEK_MS)+1);}
 /* ============================================================
    WHAT A COHORT LEAD SEES OF SOMEBODY THEY LEAD.
 
@@ -147,7 +163,7 @@ function planNextSight(){ return null; }
    spent once, because it is a gift and not a monthly grant. Spend is never
    stored: it is always the unique count minus what has been granted, so the
    two cannot drift. */
-function planAllowance(pl,uniqueCount){
+function planAllowance(pl,uniqueCount,giftAt,now){
  /* IT TAKES A COUNT, AND IT NOW SAYS SO RATHER THAN TRUSTING IT.
 
     Two shapes of the same word live in this codebase and they are easy to
@@ -171,11 +187,11 @@ function planAllowance(pl,uniqueCount){
  var n=Array.isArray(uniqueCount)?uniqueCount.length:uniqueCount;
  n=Number(n); if(!isFinite(n))n=0;
  var used=Math.max(0,n);
- var giftLeft=Math.max(0,100-used);
- if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
-  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN),
+ var giftLeft=Math.max(0,GIFT_N-used);
+ if(giftLeft>0)return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
-  say:giftLeft+' patterns left of the '+100+' you were given'};
+  say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
     written on the record, unless the plan is live and the host has written
@@ -191,19 +207,45 @@ function planAllowance(pl,uniqueCount){
     began, written by the host when it writes the grant, and it defaults to the
     end of the gift so a record that has never had a period still reads
     correctly on its first one. */
- var base=Math.max(0,(pl&&pl.base!=null)?pl.base:100);
+ /* AND IT IS NEVER BELOW THE END OF THE GIFT. That default never fired: the
+    schema wrote a literal 0 into every new record, 0 is not null, so every
+    record read base 0, the gift's hundred were charged against the first free
+    week, and the allowance read nought from the moment the gift ran out, for
+    good. The schema no longer writes it, and the floor is here as well because
+    every record saved before that fix still carries the 0 on disk. It is the
+    rule and not a clamp: a period cannot open on ground the gift already paid
+    for, so a baseline under the gift's end, written by anybody, charges the
+    gift twice. The stored value is left as written. */
+ var stored=(pl&&pl.base!=null&&isFinite(pl.base))?Number(pl.base):null;
+ var base=Math.max(GIFT_N,stored===null?GIFT_N:stored);
  var spent=Math.max(0,used-base-Math.max(0,(pl&&pl.carried)||0));
- var left=Math.max(0,granted-spent);
+ /* FREE BANKS, RULED IN DECISIONS: "the grant banks, the surface says it is
+    banking". Nothing in a one file build starts a new week, so free was ten
+    once and then never again. It is derived instead of written: every week
+    since the gift ran out adds the tier's grant, and spend is everything opened
+    past the gift. Nothing is stored but the date the gift ran out, which
+    meterRun stamps as a fact about the meter, so a week cannot fail to start
+    because no host was there to start it.
+
+    Only while no host has written a period of its own. A record whose baseline
+    sits past the gift's end had a period written by the record store, and the
+    store that wrote it writes the next one. */
+ var weeks=1, total=granted;
+ if(t.k==='free'&&base===GIFT_N){ weeks=planWeeks(giftAt,now); total=granted*weeks; }
+ var left=Math.max(0,total-spent);
  /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
     against the smallest run and not the largest: a run costs the minimum for
     what was picked, so what an allowance buys is answered by the floor. Saying
     nought runs on ten patterns was true only while every run cost twenty five. */
  var runs=Math.floor(left/RUN_MIN);
- return {source:t.k, left:left, of:granted, inGift:false, base:base, spent:spent,
-  runs:runs,
+ return {source:t.k, left:left, of:total, inGift:false, base:base, spent:spent,
+  runs:runs, weeks:weeks,
   say:!granted?'nothing left to open'
+   /* more than one week's grant is only reachable by banking, and "18 of 10"
+      says nothing, so a bank says what it is and what arrives next */
+   :(left>granted?(left+' banked, and '+granted+' more arrive each '+t.per)
    :(runs>0?(left+' of '+granted+' left this '+t.per)
-    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN))};}
+    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)))};}
 /* WHAT AN UPGRADE WOULD BUY, said in the two things a tier actually changes.
    Never phrased as what a person is missing out on, because the product does
    not sell by making somebody feel short. */

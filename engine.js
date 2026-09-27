@@ -4673,6 +4673,22 @@ const PLANS=[
  {k:'four',  nm:'Tier four',   per:'month', grant:1200, see:'sup', lead:true,
   d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
+   carried its own literal 100 in five places beside that row, which is the same
+   number held twice and one edit away from two answers. */
+const GIFT_N=PLAN_BY.gift.grant;
+/* A FREE WEEK, as a length. The free tier's weeks are counted from the moment
+   the gift ran out, seven days at a time, so a week needs no calendar, no zone
+   and no host to start it. */
+const WEEK_MS=7*24*3600*1000;
+/* HOW MANY FREE WEEKS HAVE OPENED since the gift ran out, counting the one it
+   ran out in. One when there is no date to count from, which is the reading a
+   record that has never been stamped always had. Never below one, so a clock
+   set backwards cannot take a week away. */
+function planWeeks(at,now){
+ var a=at?new Date(at).getTime():NaN; if(!isFinite(a))return 1;
+ var n=(now!=null)?new Date(now).getTime():Date.now(); if(!isFinite(n))return 1;
+ return Math.max(1,Math.floor((n-a)/WEEK_MS)+1);}
 /* ============================================================
    WHAT A COHORT LEAD SEES OF SOMEBODY THEY LEAD.
 
@@ -4756,7 +4772,7 @@ function planNextSight(){ return null; }
    spent once, because it is a gift and not a monthly grant. Spend is never
    stored: it is always the unique count minus what has been granted, so the
    two cannot drift. */
-function planAllowance(pl,uniqueCount){
+function planAllowance(pl,uniqueCount,giftAt,now){
  /* IT TAKES A COUNT, AND IT NOW SAYS SO RATHER THAN TRUSTING IT.
 
     Two shapes of the same word live in this codebase and they are easy to
@@ -4780,11 +4796,11 @@ function planAllowance(pl,uniqueCount){
  var n=Array.isArray(uniqueCount)?uniqueCount.length:uniqueCount;
  n=Number(n); if(!isFinite(n))n=0;
  var used=Math.max(0,n);
- var giftLeft=Math.max(0,100-used);
- if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
-  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN),
+ var giftLeft=Math.max(0,GIFT_N-used);
+ if(giftLeft>0)return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
-  say:giftLeft+' patterns left of the '+100+' you were given'};
+  say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
     written on the record, unless the plan is live and the host has written
@@ -4800,19 +4816,45 @@ function planAllowance(pl,uniqueCount){
     began, written by the host when it writes the grant, and it defaults to the
     end of the gift so a record that has never had a period still reads
     correctly on its first one. */
- var base=Math.max(0,(pl&&pl.base!=null)?pl.base:100);
+ /* AND IT IS NEVER BELOW THE END OF THE GIFT. That default never fired: the
+    schema wrote a literal 0 into every new record, 0 is not null, so every
+    record read base 0, the gift's hundred were charged against the first free
+    week, and the allowance read nought from the moment the gift ran out, for
+    good. The schema no longer writes it, and the floor is here as well because
+    every record saved before that fix still carries the 0 on disk. It is the
+    rule and not a clamp: a period cannot open on ground the gift already paid
+    for, so a baseline under the gift's end, written by anybody, charges the
+    gift twice. The stored value is left as written. */
+ var stored=(pl&&pl.base!=null&&isFinite(pl.base))?Number(pl.base):null;
+ var base=Math.max(GIFT_N,stored===null?GIFT_N:stored);
  var spent=Math.max(0,used-base-Math.max(0,(pl&&pl.carried)||0));
- var left=Math.max(0,granted-spent);
+ /* FREE BANKS, RULED IN DECISIONS: "the grant banks, the surface says it is
+    banking". Nothing in a one file build starts a new week, so free was ten
+    once and then never again. It is derived instead of written: every week
+    since the gift ran out adds the tier's grant, and spend is everything opened
+    past the gift. Nothing is stored but the date the gift ran out, which
+    meterRun stamps as a fact about the meter, so a week cannot fail to start
+    because no host was there to start it.
+
+    Only while no host has written a period of its own. A record whose baseline
+    sits past the gift's end had a period written by the record store, and the
+    store that wrote it writes the next one. */
+ var weeks=1, total=granted;
+ if(t.k==='free'&&base===GIFT_N){ weeks=planWeeks(giftAt,now); total=granted*weeks; }
+ var left=Math.max(0,total-spent);
  /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
     against the smallest run and not the largest: a run costs the minimum for
     what was picked, so what an allowance buys is answered by the floor. Saying
     nought runs on ten patterns was true only while every run cost twenty five. */
  var runs=Math.floor(left/RUN_MIN);
- return {source:t.k, left:left, of:granted, inGift:false, base:base, spent:spent,
-  runs:runs,
+ return {source:t.k, left:left, of:total, inGift:false, base:base, spent:spent,
+  runs:runs, weeks:weeks,
   say:!granted?'nothing left to open'
+   /* more than one week's grant is only reachable by banking, and "18 of 10"
+      says nothing, so a bank says what it is and what arrives next */
+   :(left>granted?(left+' banked, and '+granted+' more arrive each '+t.per)
    :(runs>0?(left+' of '+granted+' left this '+t.per)
-    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN))};}
+    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)))};}
 /* WHAT AN UPGRADE WOULD BUY, said in the two things a tier actually changes.
    Never phrased as what a person is missing out on, because the product does
    not sell by making somebody feel short. */
@@ -5063,7 +5105,12 @@ function blankProfile(name){
      ground you may open. It lives on the record and is never derived,
      because a derived count moves when the model moves and then the tier
      gate disagrees with the app about what was run. */
-  meter:{lines:0, unique:[], firsts:[], first:null, last:null},
+  meter:{lines:0, unique:[], firsts:[], first:null, last:null,
+   /* the moment the unique count reached the gift's size, stamped once by
+      meterRun. It is a fact about the work, like first and last, and it is
+      what the free tier's weeks are counted from (planWeeks, engine/plan.js),
+      because nothing in a one file build is there to start a week. */
+   giftAt:null},
   /* THE PLAN. Written by the record store from the processor's own state and
      never by the app, because a record a person can edit must not be able to
      grant itself a tier. Everything here is either the processor's word for
@@ -5073,7 +5120,11 @@ function blankProfile(name){
      There is no customer id, no subscription id, no email and no key. The app
      does not need any of them to answer what somebody may open, and holding an
      identifier it does not need is how a promise about a name gets broken. */
-  plan:{tier:'free', status:'', granted:0, carried:0, base:0, since:null, until:null},
+  /* base is null and not 0: null says no host has opened a period yet, and
+     planAllowance reads that as the end of the gift. A literal 0 here was read
+     as a period opened at nothing, charged the gift against the first free
+     week, and read nought left for good. */
+  plan:{tier:'free', status:'', granted:0, carried:0, base:null, since:null, until:null},
   /* THE BECOMING HALF. Who you are becoming, what that is for, and what is
      yours to protect. Six values in on the purpose map and nothing derived is
      stored, because a derived value that is also stored is one that can
@@ -5122,11 +5173,14 @@ var LAW_REC=null;
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',zone:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',zone:'',timeUnknown:false};
- if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
+ if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
+ if(p.meter.giftAt===undefined)p.meter.giftAt=null;
  /* an older record has no plan, which is a free record and not a broken one */
- if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
- if(p.plan.base==null)p.plan.base=0;
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ /* a missing baseline is filled as missing. A 0 already on disk is left as
+    written and read through the gift floor in planAllowance. */
+ if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  if(!p.purpose)p.purpose=purposeBlank();
@@ -5809,6 +5863,14 @@ function validateProfile(o){
   else if(o.meter.unique!==undefined)errs.push('meter.unique is not a list');
   if(typeof o.meter.first==='string')p.meter.first=o.meter.first;
   if(typeof o.meter.last==='string')p.meter.last=o.meter.last;
+  /* when the gift ran out. Absent or null is an older record, or one still
+     inside the gift. Anything else must be a date, because the free weeks are
+     counted from it, and a value that is not one is refused by name rather
+     than read as no date, which would quietly hand back a week. */
+  if(typeof o.meter.giftAt==='string'&&!isNaN(new Date(o.meter.giftAt).getTime()))
+   p.meter.giftAt=o.meter.giftAt;
+  else if(o.meter.giftAt!==undefined&&o.meter.giftAt!==null)
+   errs.push('meter.giftAt is not a date');
   /* The dated firsts were written by meterFirst, returned by meterRead, and
      dropped here, so every one of them was lost through an import. They are
      the only achievement shape this product allows, which made the boundary
@@ -6066,28 +6128,48 @@ function meterPlan(p,nodeIds,chans,cap){
    Refusing is left to the door, and only when the cap is nought. A run already
    under way is never interrupted, because relCoolDown commits the plan it was
    shown, and that plan is now already inside the allowance. */
-function meterBudget(p){
+/* WHEN THE FREE WEEKS COUNT FROM. The stamp meterRun writes when the gift runs
+   out. A record that ran the gift out before the stamp existed has none, and
+   for that record the last run is used: its allowance read nought from the
+   moment the gift was spent, so its last run is the run that spent it, and
+   the weeks it was owed since are counted from there. meterRun stamps that
+   same value on the next run, before it moves last, so the count never
+   restarts. */
+function meterGiftAt(p){
+ var m=(p&&p.meter)||null; if(!m)return null;
+ if(m.giftAt)return m.giftAt;
+ return ((m.unique||[]).length>=GIFT_N&&m.last)?m.last:null;}
+function meterBudget(p,now){
  var m=(p&&p.meter)||null;
  var a=(typeof planAllowance==='function')
-   ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length) : null;
+   ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length,meterGiftAt(p),now) : null;
  var left=(a&&a.left!=null)?Math.max(0,Math.floor(a.left)):0;
  return {left:left, cap:Math.min(RUN_MAX,left), allow:a};}
 function meterRun(p,keys){
  if(!p)return null;
- if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
+ if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
+ if(p.meter.giftAt===undefined)p.meter.giftAt=null;
  /* an older record has no plan, which is a free record and not a broken one */
- if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
- if(p.plan.base==null)p.plan.base=0;
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0,fresh:[]};
  var have={},added=0,repeated=0,fresh=[];
+ /* whether the gift was already spent before this run, read before the push */
+ var spentBefore=p.meter.unique.length>=GIFT_N;
  p.meter.unique.forEach(function(k){have[k]=1;});
  list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);fresh.push(k);added++;} });
  var now=new Date().toISOString();
+ /* the gift runs out once, and this is where it is seen to. If it ran out in
+    this run, it ran out now. If it ran out before the stamp existed, the date
+    it has been read at is kept, read through meterGiftAt before last moves,
+    so the count of weeks never restarts. */
+ if(!p.meter.giftAt&&p.meter.unique.length>=GIFT_N)
+  p.meter.giftAt=(spentBefore&&meterGiftAt(p))||now;
  if(!p.meter.first)p.meter.first=now;
  p.meter.lines+=list.length; p.meter.last=now;
  /* fresh is the new ground by key, which is what the release lift counts:
@@ -6184,7 +6266,7 @@ function meterRead(p,now){
  var mk=markersFor(est);
  return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */
-  giftLeft:Math.max(0,100-uniq), inGift:uniq<100,
+  giftLeft:Math.max(0,GIFT_N-uniq), inGift:uniq<GIFT_N,
   age:age===null?null:Math.round(age*10)/10,
   estimate:est,
   estimateLow:est===null?null:Math.round(est*(1-PAT_SWING)),
@@ -8741,6 +8823,7 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
+                 planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
                  planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
@@ -8851,6 +8934,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LAW_UNSET:LAW_UNSET,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
+                  meterGiftAt:meterGiftAt,
                   meterNext:meterNext, meterPlan:meterPlan, LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
