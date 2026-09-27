@@ -22630,3 +22630,110 @@ real address a story landed on rather than his own dictated abstract
 phrasing (storyui.js, narrative-director); and a marketing and funnel
 brief built from real cited web research plus what is already decided
 in this repository, not invented fresh (marketing/, marketing-director).
+
+## JQ. A pole display, the avatar in full, the Field's buttons, the Compass rejected, the ritual page, the release carousel
+
+His words, verbatim, another long dictation while the seven round JP
+pieces were still building: "I'm looking at the U page. I'm curious to
+see a different design of this. I want to see both polls compulsion
+and the other side and I want the percent at which we tend to do both,
+obviously the goal is to become coherent, so I think seeing that, and
+that we can use some type of a hashed line or gradient bar, and then
+have the number and the symbol and the percent, and a person can click
+on the either, click on that whole line there, and get more information
+directly on those, how it's running you and what the opposite is. And
+then seeing the story, the story is just the imprint associated with
+those, and you can run those from there.
+
+I'm on the avatar page, the hero graphic is too small, and the
+information area is too big. So give more credence to the graphic. It
+also says running in a sentence negotiator when I haven't, there must
+be something running in the background. There's an organization or
+sense missing to this whole design right now. So run it with the ICP,
+simulate it. There's obviously a data structure here that you're trying
+to provide, and a story, so make it look as interesting as the input
+text box for the story journal. We want it to be able to cycle through
+questions at each chakra, have the box around the text the color of
+each chakra, so if I click on orange the box turns orange, associated.
+And on the left side, it's the patterns to release. And on the right
+side, it's the patterns to embody. And then with the archetypes, we
+want their archetypes to already be pinned in. And we want the sniffer
+to identify the percent of all the ones that it picks up. And I want
+the becoming on its own subtab. I want the archetypes to be on its own
+subtab. And I want the intake questions to be on its own subtab. So if
+I click on avatar, there'll be three subnavigations. That way it's not
+infinite scrolling and we can control the size of these things. And
+then with the laws of integrity questions, we want to ask them moral
+questions. You see a beggar on the street, do you walk over them or
+give them money? You see two kids fighting, do you choose sides or
+break it up? We kind of want to mix it up so that we can pin down
+where a person is. I should have been clear with that last time. Also,
+you guys should have been asking me questions about that.
+
+Okay, I'm looking at the field. The design is outstanding. The
+utilization of the text is terrible. So you get a C for utilization of
+the design, but you get a fail for X. So turn those to buttons, maybe
+on the bottom panel of the screen. So if I press it, it just lights up
+that area. And then if I press the areas in which I'm feeling pain, it
+could offer a summary of suggestions, to dig deeper and show me the
+stories that may be related, and give me a release protocol that I can
+do.
+
+The compass is currently taking up a quarter of the real estate, I
+don't know why, and it doesn't look like a compass. I didn't agree to
+this. So go study the styles that we have, first fix the rendering and
+make sure it's full screen, second all the character names that pop
+up, I need their iconic symbol and their opposing nature's opposing
+character symbol, and this needs to look more like two arrows, one
+pointing up, one pointing down, or two pyramids pointing up, one
+pointing up, one pointing down, with a little gap of limbo in between,
+that's the oscillating.
+
+And then the ritual page needs to be visual, like super visual. This
+is a very graphically designed page, right now it's all text based. So
+I want the UI UX team to go out, scour the net for the best style
+calendar ritual creator given our framework and what we're looking
+for, and attach the accountability tracker to it as well. You have the
+information for all that. Come up with a couple of interactive
+designs. It needs to be very visual, very simple, and pass data from
+my story to the bank to the work I need to do ritually. I need to be
+able to see it as a calendar, see which ones are running, edit, remove,
+log, delete, rearrange, see a list, have history. Simulate the design,
+go out to the internet, find out which solutions are the most sticky
+and retention and interesting, using great design from the UI UX
+information we accumulated earlier.
+
+For the letting go of believing list and the reframes, it needs to be
+a list. You need to be able to see the list right in front of you and
+read it, and you need to see the next word coming up. And I want to be
+able to cycle forward and backward and be able to flag the ones I felt
+were the most heavy. This isn't a flash image, this is a carousel from
+north to south, it's like the infinite scroll, except it's bucketed
+from left and right channels for both masculine and feminine, from
+release and reframe. And the AI is reading the AI generated one, and
+it's using the AI generated one based off my framing, the algorithm.
+Have the team run a UI UX pass on this using the design from the
+field.
+
+And redesign the compass using design from the field. However, it
+needs to be two pyramids pointing up and pointing down with the gap in
+between. We can also have the boundary overlay on that, that's
+actually kind of, that would work, because the compass is like the
+boundary is part of like maintaining your path. Yeah, let's not move
+that there yet, just put it on the backlog.
+
+Okay, what questions have I not asked yet? And then I'm on the avatar
+page, how do I get to my masks? So it looks like the mask page is not
+done yet. Looks like there's a bunch of pages not done yet. Get the
+mask wired in. I already gave you the-"
+
+His message cut off mid sentence on the masks line. "Compulsion" is
+address 12 at the Root, "Safety rituals," so the U page is his own
+description of an address level pole display (charge name against its
+own opposite), not yet confirmed which shipped surface he means by
+"U," so it is investigated before anything is built rather than
+guessed. The Boundary overlay on the Compass is explicitly held to the
+backlog only, his own words, not dispatched. Masks wire in is not
+dispatched either: the masks mosaic redesign from round JP is still in
+flight, and wiring the real page against a design still being iterated
+would build against a moving target.
