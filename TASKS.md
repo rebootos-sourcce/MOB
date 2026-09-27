@@ -22863,3 +22863,21 @@ closeness to the centre, with the person's own field shape drawn
 against them to show where it distorts from that reference geometry.
 Routed to the agent already working `cone.js` rather than dispatched
 separately, since it is the same file.
+
+## JU. The masks mosaic landed and verified
+
+`7be7c9e` is in, `proto/masks/golden/` only, zero em dashes. Confirmed
+directly against `compute.js` lines 266 to 305 that `sabs`, `cxs`,
+`hys` and `sups` are structured exactly as the report describes: a
+complex is two saboteurs of one family at their mean weight, a hyper
+complex compounds on two complexes or one at 6.5 or more, a super
+complex is a pair of hyper complexes at 5.6 or more. Screenshot viewed
+directly: each mask now has a fourth "mosaic" view, real tiles per
+saboteur, complex and hyper complex, weight lighting the share of
+tiles exactly as claimed ("38 of 77 lit" beside a weight of 4.7), with
+a full ledger and a legend. Two real defects surfaced rather than
+hidden: Preteen and Professional still read near identical since both
+sit on the same seat pair, the same open item PRIORITY.md already
+carries; and colour now means two different things across the
+reversal view (by seat) and the mosaic view (by family), named on the
+page itself under "How to read it."
