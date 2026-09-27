@@ -105,6 +105,71 @@ block only the moment a real secret would be typed into a real file.
   above; it has to, before any code in this repository ever reads a
   real key.
 
+## Plain answers, round JP
+
+He said the region question had no context, and he was right: a
+question with no context is exactly what round JK's rule exists to
+catch, so this is answered properly rather than re-asked.
+
+**What a region actually is.** Cloudflare runs its computers in
+buildings all over the world. A database has to physically sit in one
+of them. "Region" just means: which building, roughly, which country
+or continent. It changes two things and two things only:
+1. **Speed.** A person in the same part of the world as the database
+   gets a faster response. A person on the other side of the planet
+   waits a little longer.
+2. **Law.** Some countries require certain kinds of personal data to
+   stay inside their own borders. A therapy-adjacent record, which this
+   product's own record is, is exactly the kind of data this can apply
+   to.
+
+There is no wrong answer that breaks anything today. The two sane
+choices, given the product is in English and its first real users are
+almost certainly American: **United States**, or, if he wants to
+leave room for a European customer base later without moving anything,
+**one of Cloudflare's regions inside the EU.** If he has no reason to
+care yet, United States is the plain default and it can be said out
+loud as exactly that: pick United States for now.
+
+**Where the line sits between GitHub and Cloudflare.** GitHub holds
+code. It is a filing cabinet: it stores every version of every file
+and remembers the history, but it does not run anything and nothing
+lives on a webpage because it is in GitHub. Cloudflare is the part that
+takes code out of that filing cabinet and actually runs it where a
+browser can reach it, plus it holds the database, the actual person
+records. The two are connected by exactly one thing: Cloudflare Pages
+watches a GitHub repository, and every time new code is pushed to the
+right branch, Cloudflare automatically takes it and puts it on the live
+site. Nothing else crosses between them.
+
+**What needs to be hooked up now, and where.** Nothing in this
+repository (`MOB`) needs hooking up today; it produces the one file
+build and nothing here calls a network. The hookup happens entirely in
+`reboot-os`: that repository gets connected to a Cloudflare Pages
+project (step 3 above), and a D1 database gets created on the same
+Cloudflare account (step 4 above). That is the whole hookup. Nothing
+else needs wiring for the sign in shell already built here to have
+somewhere real to send its call.
+
+**What from ElevenLabs or another API is needed.** ("11 labs" is
+ElevenLabs, a company that turns text into a spoken voice, is heard
+correctly here.) Nothing from them is needed to finish the steps
+above; hosting and the database do not touch voice at all. It only
+becomes relevant for one specific, already-named piece: the release
+protocol's opening line is currently a placeholder that says, in
+effect, "his recorded voice goes here" (`atuned_src/ui/release.js`,
+round JF). Two ways to fill that in:
+- **Record it himself,** in his own voice, and the file gets played
+  back. No API, no account, no cost, and it is his own voice, which is
+  what the design already calls for.
+- **Or generate it with a service like ElevenLabs,** which needs an
+  account there and an API key, the same kind of secret as
+  `RECORDS_KEY` above: never committed to a public repository, set only
+  once a real place exists to hold it.
+
+Recording it himself is the simpler path and needs nothing from
+Cloudflare or any other account at all.
+
 ## What happens after
 
 Once the D1 database exists and `AW1` is proven in `reboot-os`, the
