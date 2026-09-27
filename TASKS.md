@@ -22921,3 +22921,128 @@ from the screen, who says "think yes ten times", his own voice, the
 device's synthetic one, or a caption; and whether his mirror paragraph
 should show in full or be spoken while the screen carries only "This
 is a mirror."
+
+## JX. Source AI voice mode, release and ritual copy, Compass gravity, docs scan, the repo question, major patterns, the vault, Story zones, the ten year old rule refined, and storyboard delivery restructured
+
+His words, verbatim: "I want source AI to have an audio and voice. as an
+option. I can record voice, I can type in text, or I can have source
+ask me questions. So within the question field, if I turn that box on,
+source AI can use voice mode and then ask, just ask me A, B questions.
+By the way, I didn't get what you said about API or anything else. You
+keep saying you don't need anything from me. Oh. I think with the
+releases, it's something like this. Note the patterns that felt
+heaviest. That's the work. The patterns you didn't feel removed from
+your pool. To optimize your experience. And flag those that felt
+heaviest. I think with the ritual it needs to say something like you
+know you're, you're avatar wants to be a public speaker you're holding
+on to fear of judgments of others would you like to set up a release
+schedule for that I don't understand the question is by the length.
+It's four minutes sorry four seconds between release patterns and
+letting go of believing thinking feeling behavior right? that I am
+afraid of heights one two three four that I'm weary of you know stairs
+and shit like that I'm not sure what you mean by the cone, but at the
+top of the compass is the coherence, and the bottom is decoherence. As
+symbolized by the halo and pitchfork. From an interactive and
+animation perspective, from the compass I'd love for there to be like
+animations where you tend to lean most into the, the most active so
+that they animate there's just some indicators of where there's just
+the most gravity at which you tend to focus and then make sure we're
+adding all this stuff to our documentation We may need to go do a scan
+and make sure that everything that's been added recently that is of
+like actions or designs or whatever is in documentation. Okay, I'm
+just checking. You, you did add the repo, yeah? So when I say major
+patterns, I guess we should always classify the pattern or the weight
+of the cluster by the weight of the node. Is it flowing? Is it
+blocked? And then what are the states in between? Right, and from
+there we can, it's zero to five, but you can scale that up to zero to
+10. and average it out from there. I think we want to keep the record
+for the sniffer. To hear if a person's repeating the same patterns and
+the pattern's not clear. Plus it's their vault. So their words. I
+meant re the release is just under the imprints. It'll have its own
+little zone. And it should be designed so it has its own aesthetic and
+the release section, right? The imprint section, the journal section,
+right now they read as one, but they need to look at this one screen,
+but four, but three elements. Or even the source elements is its own
+element. So like four, plus the information, I guess, five. Yeah, I
+think so. First off, let's do our copy sweep and replace. Second off,
+I think speak to like where a 10 year old has to do two things. it
+has to be articulate and contextual. It has to provide knowledge and
+information, practitioner needs to be able to understand it. and the
+layman needs to be able to understand it. and we can't speak to them
+in abstract terms that our meaningless to them. So we can't say six
+point three weight, when that doesn't say anything. We need to say
+something like heavily impaired, heavily blocked, right? We can use
+iconography to show um, given example, uh, the iconography within the
+summaries, I think would be a fantastic kind of way to like paint the
+picture. Because it adds a visual to the narrative. And so I think
+everything needs to have that kind of simplicity to it, plus deli
+deliver meaningful information. That's contextual to a person. It
+needs to be grounded and it needs to provide enough detail to where
+they get it. Now, do a sweep of the, of the doc of the entire app with
+that. I think the tutorial needs to not a real run, right? We're
+storyboarding. I want to be on to open it up and show a person and
+walk them through the storyboard and say, hey, like, this is what the
+process is. So you can see it. Um, this is what the onboarding is. Um,
+actually, Why are them into the loading page? So once you have the
+loading page, so it goes an animation to a tune, login page, login
+page has a developer option. of the storyboard onboarding and
+storyboard tutorial, I can turn those both on and off. I enter my
+name, if I have them both off, it takes me to my field, if I have them
+on, it walks me through each one like a storyboard one at a time. And
+then at the very end, the, the tutorial has to give me things to do.
+so it has to walk me through interactive stuff elements of different
+aspects, so I can play with them. Sample talking to the AI, sample and
+run our simulations, see if that's what we want. Understand the
+purpose of integrity and regulating the nervous system. Right. and,
+or, you know what, actually even better, maybe they're just narrated
+story animations. of all the tools. that show how different people
+utilize it. You know, so and so has a so and so. You know, Lance has a
+is a creative director. He um fears public speaking. That's actually
+really cool for the tutorial. He goes to the field to take a look at
+what's keeping him from being so and so. The next character has pain.
+they select the energy field. The next person wants to understand what's
+running them and get a summary. The next person wants to see all their
+masks and understand why they keep doing the same loops. All right, we
+use a discover play flow in, in body methodology. And the heart of it
+is realizing that we're all suffering from the way we relate to
+unprocessed emotions. This is a tool to return your coherence. Your
+better sense of self. And your highest ideal Take the quiz. Find out
+your coherence. And see what you can do about it. Okay, I think I said
+a lot. Sort all that out. Figure out where to go from the marketing
+team and the animation team and the UI UX team and the different
+modules."
+
+Not dispatched yet, sorted by destination below. Two of his questions
+answered here directly rather than routed: `reboot-os` has not been
+added to this session, so this repository still cannot see or touch it;
+and the API and hosting boundary from `HOSTING-SETUP.md` needs a
+plainer restatement, since his own words say the prior one did not
+land.
+
+
+## JY. The signal test script itself, rewritten in his words
+
+His words, verbatim: "you're telling the user to think 10 times. What
+I'm, what you, what I ask them to do We could also use a voice script
+or just use my text. Our first test is a signal test. This introduces
+you to the mind-body connection. You can skip this for later or if
+you're ready, sit back, relax, Take 10 deep breaths and exhale with
+each subsequent exhale longer than the previous. You're relaxing your
+body. Remind yourself that you're grounded and safe. Remind yourself
+that you're grounded. Remove the word safe. This is to get you
+comfortable feeling the sensitivity of the body. Now move your
+awareness in your body right around the heart. And when you're ready,
+think yes 10 times. Actually, have them think around the throat. That
+move their awareness to their throat. And see if they can feel the
+quality difference. Right? That's a man-body connection. And then we
+get into what this tool does."
+
+This answers JW's open question of who says "think yes ten times" by
+replacing the line entirely: the script is his own words above, "grounded"
+without "safe," awareness moved to the heart then to the throat rather
+than a bare yes/no count, framed as feeling the quality difference
+between the two. Whether it plays as his recorded voice or as on
+screen text is left open by "we could also use a voice script or just
+use my text," which reads as either being acceptable rather than a
+choice already made. Targets `proto/onboarding-storyboard/`, the same
+piece JW already delivered and verified; not dispatched yet.
