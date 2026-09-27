@@ -17732,3 +17732,110 @@ a repeat of the last one.
 Dispatched: the concrete mobile fixes as one build, the ICP and focus
 group simulation of the resulting flow as a second piece.
 
+## GG. Avatar page redesign, the Boundary tool surfaced, 8-bit Masks, uniform pills, click for a right hand panel, and new copy rules. 27 September
+
+His words, verbatim: "For the avatar, I think we can merge the Okay,
+when I land on the... avatar page, I should have one of these circles
+outside of the main circle with an icon and a percent complete.
+Actually replacing throat, third eye, etc... when you select that
+icon, you can tell the story of who you want to be and who you don't
+want to be... having the sniffer set that stage listen for the story
+journal, prioritize those things as part of the release. And that all
+the badges here are... maybe there's like five circles per major
+circle... I think this is where the boundary tool goes. I think it's
+an overlay on top of this... the up arrow, down arrow, and the six
+sides that you fill in is part of this. Because that gets fed into
+like reminders as part of your ritual... So the teen and preteen mask,
+what I'm actually thinking of is like an actual mask, like an 8-bit
+design mask... made up of buckets or pixels of the limiting beliefs...
+it's almost like looking at a hard drive fragmentation in the shape of
+a mask... make those uniform and make those square... flush left to
+right... things like instruments where it says integrity, intention,
+pull. Like, I need information, dude. What do these numbers mean? I
+should be able to click on something and have it provide information
+on the right-hand side of the screen... I think the language for our
+copy needs to be... 'A mask is not a fault and it is not a stage you
+fail to leave.' Like, that's too abstract. Simplify it. And when you
+say load 1.9 from now on, tell what the load means. A load of 1.9
+means the nerve is mildly impaired. Affecting these organs and could
+impair blood flow... which Jungian archetypes are powering the masks?
+This is very important... the teen, for example, like the rebel... So
+add that to our style guide and give me some examples. I want to see
+some really clean editorial."
+
+Nine asks in one message: an Avatar page redesign (icon and percent
+complete circles replacing the seat names, opening a who you want to
+be / who you don't want to be story flow that feeds the sniffer and
+prioritizes journal material for release, roughly five badge circles
+per major circle), the Boundary tool as a dimming overlay on that same
+page feeding ritual reminders, Masks rebuilt as actual 8-bit pixel
+mask art built from the limiting beliefs (his own comparison: hard
+drive fragmentation in the shape of a mask), CQ / DQ / Accuracy pills
+made uniform, square, and flush left to right, a click on an
+instrument name opening an explanatory panel on the right rather than
+a tooltip, a cross metric summary of how the numbers play out in the
+body, a new COPY.md rule that abstract lines like "not a fault, not a
+stage you fail to leave" get simplified, a new rule that a numeric
+load always carries its physiological meaning (his own example, a
+load of 1.9 means the nerve is mildly impaired), and a Jungian
+archetype named and explained for every mask (his own example, the
+teen mask is the Rebel).
+
+Grounded before dispatch, not guessed at:
+
+**The Boundary tool is not new scope.** Confirmed again at this round:
+`atuned_src/engine/avatar.js` is real, already in `MANIFEST`, already
+compiled into the build, already validated by `schema.js`, and was
+found and logged at round BM2 (25 September) with its own comment
+reading "Ported from the original Atuned build, not rebuilt." It
+carries a Purpose Map (two overlapping triangles, three soul values
+and three ego values) and a Boundary (a hexagon, six life areas,
+partner, family, friends, community, coworkers, alone, five
+commitments each, thirty total) plus a function that already reads a
+journal entry's words and reports which of the six it touches. No
+`ui/` file has ever rendered either one. His request today is the
+first time either gets a screen, not a rebuild.
+
+**The instrument reading he is pointing at is real and located.**
+`atuned_src/ui/ui.js:1130` prints exactly the line he is describing,
+integrity, intention, pole, with no explanatory copy attached.
+
+**COPY.md is the real target, already ruled and already voiced.**
+`COPY.md` opens "Ruled by the owner... The voice, in five words:
+Grounded. Direct. Humble. Insightful. Specific... Nothing abstract. No
+soft wellness language. Physical metaphors only." His new rules
+sharpen an existing ruling rather than starting a new one.
+
+**The click for a right hand info panel folds into an already open
+pitch rather than being built blind.** `DESIGN-tooltip-copy.md` is
+still open from round FV with nine unanswered questions. His "a
+summary of how my numbers actually play out from the behavior of
+energy" is a new requirement for that same pitch, not a separate build.
+
+Standing discipline held before any dispatch: `git status` showed
+only the two files already owned by the two agents still running from
+round GF (`source.html`, modified; `proto/mobile/`, untracked).
+Nothing here touches either file. Dispatching four pieces of work that
+do not collide with them or with each other:
+
+1. Avatar page redesign plus the Boundary tool overlay, to
+   `uiux-architect`, extending `proto/avatar/seats4/` and built
+   explicitly on `engine/avatar.js`, as a mockup per his own standing
+   preference for seeing new design work before it ships.
+2. The Masks 8-bit pixel fragmentation rebuild, to `art-director`,
+   sharpening the direction already graded well at round GE with the
+   much more specific hard drive fragmentation reference.
+3. The CQ / DQ / Accuracy uniform square flush pill request, relayed
+   by message to the still running mobile fix agent rather than a new
+   dispatch, since that agent already owns Root Energetics circle and
+   Accuracy pill sizing on mobile and a second dispatch would collide
+   with it.
+4. The COPY.md voice rules, the Jungian archetype per mask
+   requirement, the clean editorial examples, and the fold of the
+   cross metric right hand panel into `DESIGN-tooltip-copy.md`, to
+   `narrative-director`.
+
+What I need from him: nothing yet. All four are real requests with
+enough here to build against; no ruling is required before mockups
+can be produced and reviewed.
+
