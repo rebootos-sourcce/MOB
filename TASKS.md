@@ -21322,3 +21322,29 @@ decided either way.
 
 Round HU is now fully closed: the site wide sweep, the Compass and
 Story mockups, and the backlog audit all landed, verified, and pushed.
+
+## IG. Trace picked, the release panel cut hard, and a sharp correction against drift. 27 September
+
+His words, verbatim: "For the story page I like Trace. We need to be
+able to see the bank as an icon, which goes to the main imprints page.
+And the vault, which is what's been released. In that imprints I can
+select what I want to be released and then I've got my settings for
+release, then I can run release. But the release does not have all
+this text: a release empties the story, that's gone. This story
+twelve, that goes away. Need for approval, nihilism, self silencing,
+all that shit goes away because you've selected the ones you want.
+First time, first line, I'm letting go of it, that has to go away.
+Cost runs left, that goes away. And this, just, run release button. So
+it's release your selections, pace, and how many patterns. You already
+have all the logic and rules for this. Please, go, like, stop making
+shit up while you're wasting my tokens. Stick with your priorities
+first."
+
+Trace is his pick for the Story page's imprints treatment. The release
+panel cut is precise: keep only the selections, pace and pattern count
+controls and one run button, remove the per address name and cost
+breakdown, the quoted first line, and the running cost figures the
+mockups added. Relayed directly to the already dispatched release
+port rather than opened as a new round, since he named the release
+panel's own text as the exact thing to stop adding and the port is
+already touching this same file.
