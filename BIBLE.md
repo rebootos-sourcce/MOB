@@ -3,7 +3,8 @@
 Version one. Assembled 25 September 2026 against commit `f885d8f` on branch
 `claude/laughing-feynman-xhfyj3`. Kept by the project manager as a standing
 job, not a document that closes (`DECISIONS.md`, "New, logged the same round",
-One Bible; `TASKS.md` AZ2).
+One Bible; `TASKS.md` AZ2). Current version four, 27 September, read at
+`a0d90b3`. Section 14.5 says what each version changed.
 
 His words: "I want to lock the CQ formula into the brief, and make sure all
 the stuff is combined in our brief, so that we have one Bible that has our
@@ -168,8 +169,9 @@ the centre. A person watches their avatar improve, driven by releases and by
 going round the loop. The layers are sewn: the avatar to the ritual, the
 ritual to the psyche, the psyche to the body locations, the body to the story.
 Then, sharper: "What you're improving is the conductivity of the kundalini.
-That's our primary goal with the avatar." Status: the avatar data model is
-built, nothing writes to it, and no figure exists (section 9.10).
+That's our primary goal with the avatar." Status: the Avatar tab is built
+(round HG, 27 September). It writes pairs and draws the ring of seven areas
+(section 9.9).
 
 **The content chain, in his words.** What a person enters in the journal is
 added to the imprints. Part of that becomes a story they have to release. Part
@@ -198,6 +200,14 @@ Each line is RULED unless marked. The source is named where it is not
   and `CLAUDE.md` was wrong". Two documents still say plain sentence case:
   section 13, item 5.)
 - Menus: one word, and the word says exactly what the thing does.
+- **A section never describes itself** (RULED, repeated: `TASKS.md` TX, KN3,
+  HS). A line that says what the section under it is, or how to use it, is
+  cut. The two he quoted back on 27 September: "twelve ways of acting, each
+  beside the part of your life it acts from" and "your birth moment and the
+  63 questions". His words: "why is that text never being written out ever
+  again after I keep asking for it to never be written out." The symbol, the
+  layout and the control's own label carry what a section is. His words, the
+  same dictation: "I need these designs to give me a reason for that text."
 - One word per concept. A real distinction keeps its own word: held,
   installed and firing are three states and stay three words.
 - **The register** ("We are not judging anybody."). The product says what is
@@ -223,6 +233,28 @@ Each line is RULED unless marked. The source is named where it is not
 - Icons are ring, not fill.
 - If it has a name it has an icon. The icon has a family. The family has a
   colour. The colour means something.
+- **A label that names a concept carries its symbol** (RULED, stated again
+  27 September, round HS, as a rule already standing). His words: "No text
+  by itself if it describes something without an icon. Or a symbol. All
+  right, so you can't have a fetter without a symbol. unless it's in body
+  text." Precisely:
+  - A label standing on its own that names a concept (a fetter, a seat, an
+    archetype, a pattern, a law, a domain, an area, a child emotion) sits
+    beside that concept's own icon, in its family's colour. A heading, a row
+    name, a tag, a chip, a pill and a satellite name are all labels. So is a
+    heading that names a family of concepts, such as Archetypes or Laws.
+  - Body text is exempt. A sentence or a paragraph that names a concept in
+    passing does not put an icon beside each word.
+  - The person's own words quoted back are exempt, because they are theirs
+    and not a name the product gave. The fetter the product named from them
+    is not: "afraid" may stand alone as a word heard in a pair, "fear" may
+    not.
+  - The icon is the concept's own, from its family. A dot, a bullet or a mark
+    borrowed from another family does not satisfy it (`TASKS.md` GL1).
+  - This is `DESIGN.md` Law 4's first sentence with the body text boundary
+    drawn. The two do not disagree. No gate checks it yet, and the three
+    files a writer loads before writing a string do not state it (section
+    13, item 25).
 - Muted palette, argued from autonomic response. Severity is carried by
   saturation and size, never by hue. Lumen is the one named exception: "Lumen
   is about vibrancy."
@@ -337,9 +369,10 @@ It has been ruled three times, so it gets its own entry.
 | 19 September | The app opens on the Field, reversing Summary | `CLAUDE.md`; `TASKS.md` A23 |
 | 20 September | The app opens on the avatar, reversing the Field | `TASKS.md` AV1, AO2; `DESIGN-avatar.md` 16 |
 
-**As built: the Field** (`engine/core.js` `tab:TAB.FIELD`). The avatar is not
-built. `TASKS.md` D11 asks him whether the avatar replaces the Field or sits
-beside it. OPEN. `DECISIONS.md` records only the first of the three rulings
+**As built: the Field** (`engine/core.js` `tab:TAB.FIELD`). The Avatar tab is
+built (round HG, 27 September) and is the first door in `TABDEF`, but the app
+still opens on the Field. `TASKS.md` D11 asks him whether the avatar replaces
+the Field or sits beside it. OPEN. `DECISIONS.md` records only the first of the three rulings
 (section 13, item 1).
 
 What holds under every answer: whatever renders on the opening surface
@@ -1001,6 +1034,63 @@ a drill first; a new tab is the expensive option.
 - **Below 1180px** the grid becomes one column in the order stage, left rail,
   right rail. The stage comes first; it used to sit 1,900 pixels down a phone.
 
+### 5.2a The column law (RULED 27 September, round HS)
+
+His words, verbatim: "This card to the right of the main graphic. The main
+graphic is the interest point. What's happening with this card where I said
+use the right column which is the information column that graphics are hero.
+So do not sideline them by a panel. I hope you understand what I mean. The
+center column is sacrosanct for art. Not for text. The right column is for
+text. The bottom underneath the art is for text. Or design. The left is for a
+tools. The center is for the graphic. Make sure this is worked into our
+our Bible."
+
+| Place | Holds | Not |
+|---|---|---|
+| Centre column | the graphic | text. No panel, card or paragraph is set beside the graphic |
+| Right column | text: what the graphic means, and the answer to whatever was pressed on it | the graphic |
+| Below the art | text or design, across the centre column | |
+| Left column | tools: every control that writes, sets or changes what is drawn | |
+
+How it is applied. Each line is the rule above in working terms, and the
+last is where the rule stops:
+
+1. **Nothing sits beside the graphic.** Inside the centre column the graphic
+   has no neighbour to its left or right. It takes the column's width, up to
+   its own natural size, and centres in it.
+2. **Text about the graphic goes right.** The right rail already carries the
+   one detail host (the drill, 5.2), so a text panel beside the art is also a
+   second detail surface, which 5.2 already refuses.
+3. **Text or design may continue below the art.**
+4. **A control goes left.** A form, a scale, a button that writes: tools.
+5. **Where the law stops.** It does not say what the centre holds on a
+   surface that has no graphic, and it does not say whether a title may sit
+   above the art. Both are his (section 13, item 23).
+
+**The check**, until a gate carries it (14.3): on a surface with a hero
+graphic, no element in the centre column shares a horizontal band with the
+graphic. Read with `getBoundingClientRect`: an element in the stage whose
+vertical extent overlaps the graphic's and whose horizontal extent does not
+is a failure.
+
+**Checked against the Avatar tab at `a0d90b3`, 1600 by 1000, left rail open:
+it fails twice.**
+
+- The hero. The ring is 440 pixels wide at x 341. The pair panel is 418 wide
+  at x 807, in the same band, inside the centre column. The panel carries 92
+  words and the ring 17. The heading above the ring carries 36 more. The
+  right rail beside all of it shows the Energetic Summary, which is not about
+  the avatar. So the avatar's text sits in the centre, and the text column
+  shows something else.
+- The archetype wheel. The wheel is 433 wide at x 341, and the detail card is
+  433 wide at x 792, in the same band. The card carries 74 of the section's 91
+  words.
+- Lesser, and by the same law: the pair form and the scale are tools, and
+  both sit in the centre column.
+
+The zone table in 5.2 stands. This law adds the centre and the band below
+it, and names what the left column is for in one word.
+
 ### 5.3 The surfaces, by identity
 
 The integers are fixed forever. Display order is `TABDEF`, as it stood at the
@@ -1008,7 +1098,7 @@ stamp.
 
 | Bar label | Key | Integer | Host | Renderer file |
 |---|---|---|---|---|
-| Energetics | INTAKE | 5 | `#iq` | `ui/intakeui.js` |
+| Avatar | INTAKE | 5 | `#iq` holding `#avbody` and `#iqbody` | `ui/avatarui.js`, `ui/intakeui.js` |
 | Ritual | RITUAL | 10 | `#rit` | `ui/ritual.js` |
 | Story | STORY | 0 | `#story` | `ui/storyui.js`, `ui/imprints.js` |
 | Field | FIELD | 2 | `#cv` (canvas) | `ui/wheel.js`, `ui/ui.js` |
@@ -1045,8 +1135,19 @@ each; treat them as defects, not intent).
 
 ### 5.5 The surfaces, one paragraph each
 
-- **Energetics (5).** "Measure how I actually act, and record the moment I
-  was born." The only place the 21 laws are measured: 63 questions, three
+- **Avatar (5), with Energetics under it.** Built 27 September, round HG. The
+  integer is the intake's and did not move; the bar label is Avatar, and each
+  renderer writes only its own host. His words, round HG: "it's me telling
+  the story of who I want to become ... and then it gives me the release
+  protocols so I can become that person." The hero is a ring of seven areas, one per seat, each filling as the pairs
+  written at it clear, measured from the load when the pair was written. A
+  panel carries the lead pair, the words the sniffer heard in it, the journal
+  entries that land at its seat, and the release. Under the hero: the pairs
+  written, Running (the saboteurs at those seats and which way each last
+  moved), a ritual queue, and the archetype wheel with its one to five scale.
+  The hero fails the column law (5.2a). Energetics follows on the same tab.
+- **Energetics (under the Avatar).** "Measure how I actually act, and record
+  the moment I was born." The only place the 21 laws are measured: 63 questions, three
   framings per law side by side, because the gap between the three answers is
   the measurement. Seven seat groups, Crown down to Root. Progress says what is
   left, never "N of 63". The birth form seals to one line. Renamed from Intake:
@@ -1729,13 +1830,31 @@ now governed by section 2.
 
 ### 9.9 The avatar
 
-**BUILT (engine only)**: pairs of who a person is at their best and who they
+**BUILT (engine)**: pairs of who a person is at their best and who they
 are not on a bad day, the purpose triangles, and the six sided boundary. A
 pair is a pair because "a value has no address and a sentence about a bad day
-does". **Nothing in the app can write a pair, and no figure exists.** The
-Summary's avatar paragraph can only print an all clear: it becomes a false
-statement the moment a pair writer ships, so it is fixed before or with the
-writer.
+does".
+
+**BUILT (the Avatar tab, round HG, 27 September)**: the pair writer and a
+figure. A pair is written as `{be, notbe}`; the second line goes to the same
+seat resolver the rest of the product asks, and the ring of seven areas fills
+as the load at each pair's seat falls. The line that stood here, "nothing in
+the app can write a pair, and no figure exists", is overtaken.
+
+- **Beside the record, not in it.** The archetype ratings on the one to five
+  scale, and each pair's starting load, are kept under their own key in the
+  bound store (`atuned-avatar-side`), because the boundary rebuilds a record
+  from the fields it names and names neither. They survive a reload, do not
+  travel with an export, and feed nothing in the engine. Putting them in the
+  record is a schema change, which is his.
+- **The Summary's avatar sentence is now false, as this section said it
+  would be.** It reads pair fields named `seat` and `becoming` that the
+  written pairs do not carry, so every pair reads as clear. Reproduced 27
+  September at `a0d90b3`: three pairs held at the root, the solar plexus and
+  the heart, and the Summary prints "Every seat your avatar depends on is
+  passing" (`ui/summary.js`, the gap line).
+- **Two archetype inputs sit on the one tab**, and only one of them reaches
+  the engine (section 13, item 24).
 
 **DESIGNED**: three channels. The record is append only and it is the
 drawing. The reach moves only by conduct, through the laws. The weather is
@@ -2221,6 +2340,31 @@ stale. Where neither is, it is his call.
     release lift (2.1) is fitted to his fifteen thousand in its own ladder's
     unit, so the same constant describes different amounts of work in each.
     His to settle (`TASKS.md` BE3).
+23. **The column law against surfaces whose centre is text.** The law (5.2a)
+    is later and general: "the center column is sacrosanct for art. Not for
+    text." Earlier, 5.5 records the Summary's centre as "text about you, your
+    own words first". The Story's centre is the journal, Knowledge's is the
+    codex, and the 63 questions and the pair form are tools set in the
+    centre. Two readings, and nobody has ruled between them: every surface
+    puts a graphic in its centre, or the law governs only where a graphic
+    stands. Whether a title may sit above the art is the same question at
+    small scale. His.
+24. **Two archetype inputs on the Avatar tab, and a reading that is one of
+    them.** The left rail's Primary and Secondary picks (`soul.arcs`) build
+    the blueprint ring that weights every address, and that ring's archetype
+    affinity comes back twice as a reading: the right rail's Archetypes
+    First, Second and Third, and the wheel's "Your field reads Warrior
+    first". The one to five scale (9.9) is kept beside the record and feeds
+    nothing in the engine. So the scale is compared against the left rail's
+    own pick, not against anything the stories produced. Measured at
+    `a0d90b3` on an own profile with Warrior and Sage picked: affinity reads
+    Warrior 1.00 and Sage 0.72, the two picks. The picture is
+    `proto/avatar-intake-feed/`. Which of the two is the archetype is his.
+25. **The icon rule lives where a writer does not look.** It is in `DESIGN.md`
+    Law 4 and in 1.4. The UX skill, the voice skill and `COPY.md`, the three
+    files loaded before a string is written, do not state it, and no gate
+    checks it. Whether it reaches the top tabs, which are text alone, is not
+    written anywhere.
 
 ---
 
@@ -2262,6 +2406,12 @@ anything in it without asking.
    sections.
 5. **The stale documents in section 13** are each a small correction for the
    seat that owns them.
+6. **A gate for the column law (5.2a) and one for the icon rule (1.4)**,
+   each checked against a known good case and a known bad case before it is
+   trusted. The Avatar tab at `a0d90b3` is the known bad case for both.
+7. **One pointer line to 1.4's icon rule** in the UX skill and in `COPY.md`'s
+   Label bucket, so the rule is in front of whoever writes the next label
+   (section 13, item 25).
 
 ### 14.4 What changed from the first BIBLE.md (19 September)
 
@@ -2288,3 +2438,4 @@ corrections:
 | 1 | 25 September 2026 | `f885d8f` | First assembly. The settled rulings page merged with the 25 September briefs, the CQ rulings of the same day, the standing documents and the skills. The CQ simulation was still running and nothing fitted is printed. |
 | 2 | 25 September 2026 | `21e78ca` | Section 2 updated with the fitted CQ model: the bell curve (centre 5, width 1.25), the expression formula, and the build-up, lever and outside-address rules the simulation settled. Five questions remain of the bundle's fifteen. |
 | 3 | 25 September 2026 | `26827d6` | The correction, after ship: a release does move CQ. Section 2.1 gains the release lift as built in both engines, fitted to his fifteen thousand, and the two sentences that said a release cannot move CQ are recorded as the team's error, not erased. 7.8 says undo takes the lift back. Section 13 gains item 22, the unit of his fifteen thousand. |
+| 4 | 27 September 2026 | `a0d90b3` | Round HS. The column law (5.2a), checked against the Avatar tab, which fails it twice. The icon rule's body text boundary (1.4), and a section never describes itself (1.4). The Avatar tab as built (1.3, 1.5, 5.3, 5.5, 9.9), with the Summary's avatar sentence recorded as false and reproduced. Section 13 gains items 23 to 25. |
