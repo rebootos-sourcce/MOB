@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="d2c76cf 2026-09-27 16:55"><head><meta charset="utf-8">
+<html lang="en" data-build="74acd10 2026-09-27 17:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -592,8 +592,20 @@ body.punch select#psel{border-width:0}
 body.punch .top,body.punch .glass{box-shadow:none}
 body.punch .seg{background:var(--sunk)}
 body.punch .btn.pri{background:var(--accent);border-color:var(--accent)}
-body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent}
-body.punch .st-ta:focus{background:var(--panel-2)}
+/* THE FOCUS FILL GOES ON THE LAYER BEHIND, NEVER ON THE TEXTAREA. Punch was
+   written on 17 September for a one layer field, and on the 19th the Story
+   editor became two layers in register: the text a person reads is drawn by
+   .st-hl behind, and .st-ta in front is transparent apart from its caret. The
+   old fill sat on .st-ta:focus, so the moment the field took focus a solid
+   panel covered every word and every mark, and the person saw only the caret.
+   The fill and the missing outline both belong to .st-hl now, which is the
+   layer that looks like the field. Colour only: the border stays 1px wide on
+   both layers, because width is a metric and the layers must not part. The
+   functional gate checks the focused .st-ta is transparent under every
+   lighting, so a fill put back on it fails there. */
+body.punch .st-ta,body.punch .st-ta:focus,
+body.punch .st-hl,body.punch .st-ed:focus-within .st-hl{border-color:transparent}
+body.punch .st-ed:focus-within .st-hl{background:var(--panel-2)}
 /* No outlines in Punch, so keyboard focus on a field is a solid bar down
    the left edge in the seat colour. Buttons keep the ring, a bar on a pill
    reads as a glyph. */
@@ -28252,7 +28264,16 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
     written assignment to spin would snap, and an animation without a target
     cannot be aimed. front is which axis is nearest the viewer right now, so
     the rail can light up without asking the renderer. */
- spinTo:null, front:0};
+ spinTo:null, front:0,
+ /* side: the arrow figure above, which is no longer what the tab opens on.
+    Round IA wired in the view from above (conePlan, further down) and the
+    turned figure moved behind a switch rather than out of the build, because
+    it carries a dozen of his rulings and nobody has ruled it away.
+    hov: the axis a pointer is on, in the view from above, where nothing
+    turns and so nothing else can say which rail row to light.
+    mir: the springs the view from above draws from, kept across coneOpen so
+    a release made on another surface is seen arriving, not already there. */
+ side:false, hov:-1, mir:null};
 /* THE FLAT VERSION IS THE SAME FIGURE WITH THE TILT TAKEN OUT.
 
    A second renderer for a 2D compass would be a second thing to keep true and
@@ -28394,8 +28415,15 @@ function coneRing(q,W,H){
  var out=[]; for(var i=0;i<=48;i++)out.push(conePtA(q,i*(Math.PI*2/48),W,H)); return out;}
 function coneDraw(){
  var c=CONE.cv, g=CONE.g; if(!c||!g)return;
+ if(!CONE.side){conePlan(); return;}
  var W=c.width/CONE.dpr, H=c.height/CONE.dpr;
- var ink=INK(), gc=GOLDC(), rc=hx(PAL.Root);
+ /* THE FLOOR COLOUR IGNORED THE LIGHTING. It was hx(PAL.Root), the Dark
+    palette, typed in, so under Lumen and Glass white the floor rings, the
+    Decoherent word and the fork were drawn in a red the active lighting does
+    not carry. Named by the round HS art direction pass as one of three places
+    this figure painted off brand. bc() is the canvas twin of seatCol and
+    walks the same ladder. */
+ var ink=INK(), gc=GOLDC(), rc=bc('Root');
  g.setTransform(CONE.dpr,0,0,CONE.dpr,0,0);
  g.clearRect(0,0,W,H);
  CONE.hits=[];
@@ -28431,11 +28459,8 @@ function coneDraw(){
  /* where this person sits on each axis, and the ribbon joining them, which is
     the shape of the field rather than eight unrelated dots */
  var here=MIRROR.map(function(m,i){
-  var grp=W_ADDR().filter(function(n){return n.b===m.seat;});
-  var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
-  var pos=mirrorAt(load,bandIg(m.seat));
-  return {m:m, i:i, pos:pos, p:conePt(pos,i,W,H),
-   c:hx(seatCol(m.seat)), cd:coneDull(hx(seatCol(m.seat)))};});
+  var pos=coneMirPos(m);
+  return {m:m, i:i, pos:pos, p:conePt(pos,i,W,H), c:hx(seatCol(m.seat))};});
  if(!r.unread){
   g.beginPath();
   here.forEach(function(h,i){i?g.lineTo(h.p.x,h.p.y):g.moveTo(h.p.x,h.p.y);});
@@ -28627,12 +28652,17 @@ function coneDraw(){
    g.moveTo(x-4,y-dir*(L-5)); g.lineTo(x,y-dir*L); g.lineTo(x+4,y-dir*(L-5));
    g.strokeStyle=rgba(c,.88); g.lineWidth=1.7;
    g.lineCap='round'; g.lineJoin='round'; g.stroke(); g.lineCap='butt';};
+  /* the same off brand fault as rc above, twice: both arrow colours read
+     the Dark palette by name while the key under the figure, seatCol, read
+     the active one, so under Lumen an arrow and the row naming it were two
+     different reds. PAL is still the question "is this a seat", never the
+     answer to "which colour". */
   rg.up.forEach(function(l,i){
    var y=cyR-hR*0.52*Math.cos(coneTilt())+i*24-24;
-   arrow(W/2-96,y,1,hx(PAL[l.b]||PAL.Heart));});
+   arrow(W/2-96,y,1,bc(PAL[l.b]?l.b:'Heart'));});
   rg.dn.forEach(function(l,i){
    var y=cyR+hR*0.32*Math.cos(coneTilt())+i*24;
-   arrow(W/2-96,y,-1,hx(PAL.Root));});}
+   arrow(W/2-96,y,-1,bc('Root'));});}
 
  /* ============================================================
     THE LAYERS. What compression over time looks like.
@@ -28706,22 +28736,31 @@ function coneDraw(){
    g.moveTo(W/2+9,ty2); g.lineTo(W/2+15,ty2);
    g.strokeStyle=rgba(ink,.30); g.lineWidth=1; g.stroke();});
   var osc=0;
+  /* A LOW READING TURNED ROOT RED, AND THE TIER LAW SAYS IT LOSES COLOUR.
+     This was cq>=50?accent:Root, so everybody under fifty was marked in the
+     seat red at .95, which is the one thing TIERCOL in engine/data/canon.js
+     was written to stop: "a palette that shouts loudest at the bottom tells
+     somebody at the floor that they are an emergency." Every other surface
+     that marks coherence takes the tier's own colour, so this does, and the
+     marker, its range and its halo now agree with the Field and Summary about
+     what forty two looks like. */
+  var tc=hx(TIERCOL[tierOf(cq).nm]);
   if(mine){
    var half=(mine.hi-mine.lo)/2, mid=(mine.hi+mine.lo)/2;
    osc=(mid-cq)+Math.sin(CONE.t*0.55)*half;
    /* the person's own range, drawn on the axis as the span it is */
    var ya=yOf(mine.hi), yb=yOf(mine.lo);
    g.beginPath(); g.moveTo(W/2,ya); g.lineTo(W/2,yb);
-   g.strokeStyle=rgba(cq>=50?gc:rc,.34); g.lineWidth=3; g.stroke();
+   g.strokeStyle=rgba(tc,.34); g.lineWidth=3; g.stroke();
    [ya,yb].forEach(function(yy){
     g.beginPath(); g.moveTo(W/2-7,yy); g.lineTo(W/2+7,yy);
-    g.strokeStyle=rgba(cq>=50?gc:rc,.55); g.lineWidth=1.4; g.stroke();});}
+    g.strokeStyle=rgba(tc,.55); g.lineWidth=1.4; g.stroke();});}
   var my=yOf(cq+osc);
   if(osc){
    g.beginPath(); g.arc(W/2,my,13,0,Math.PI*2);
-   g.strokeStyle=rgba(cq>=50?gc:rc,.22); g.lineWidth=1; g.stroke();}
+   g.strokeStyle=rgba(tc,.22); g.lineWidth=1; g.stroke();}
   g.beginPath(); g.arc(W/2,my,7,0,Math.PI*2);
-  g.fillStyle=rgba(cq>=50?gc:rc,.95); g.fill();}}
+  g.fillStyle=rgba(tc,.95); g.fill();}}
  /* NO TEXT OVER THE HERO GRAPHIC, EVER. Standing rule, and this is where it
     was broken worst: the coherence number was printed in 15 point beside the
     marker, in the middle of the figure, saying 39 and nothing else. Two
@@ -28732,25 +28771,21 @@ function coneDraw(){
     in the information column, where it says what it is out of and which side
     of the band it falls on. The marker keeps its position and its oscillation,
     which is what the figure is for. */
-/* THE DESATURATED TWIN OF A SEAT COLOUR, for the inverted pole.
-
-   Ruled: "the opposites take the dark version of the light colours, and they
-   stay legible and visible." Legible is the constraint, so this pulls
-   saturation out and leaves lightness alone rather than multiplying the
-   channels down, which is what turns a seat colour into mud at the floor of
-   a dark figure. It takes an rgb triple and returns one. */
-function coneDull(c){
- if(!c||c.length<3)return c;
- var r=c[0],g2=c[1],b=c[2];
- var l=0.2126*r+0.7152*g2+0.0722*b;          /* the colour's own lightness */
- var k=0.42;                                  /* how much hue survives */
- return [Math.round(l+(r-l)*k), Math.round(l+(g2-l)*k), Math.round(l+(b-l)*k)];}
-/* one pole glyph, on the 24 unit grid every other icon in this product uses */
-function coneGlyph(g,p,x,y,c,a){
+/* coneDull WENT, round IA. It was the inverted pole's colour: each seat
+   colour pulled toward its own grey by arithmetic, which is a new colour per
+   seat that no palette carries, and the round HS art direction pass named it
+   as off brand. The ruling it served still stands, "the opposites take the
+   dark version of the light colours, and they stay legible and visible", and
+   the brand's own way to a darker version of a token is the token at an
+   opacity over the ground. coneNames does that now. */
+/* one pole glyph, on the 24 unit grid every other icon in this product uses.
+   sz and w are for the view from above, which sizes its glyphs to the
+   figure; the arrow figure passes neither and draws what it always drew. */
+function coneGlyph(g,p,x,y,c,a,sz,w){
  if(!p||a<0.06)return;
- var sc=17/24;
- g.save(); g.translate(x-17/2,y-17/2); g.scale(sc,sc);
- g.strokeStyle=rgba(c,a); g.lineWidth=1.8/sc;
+ var S2=sz||17, sc=S2/24;
+ g.save(); g.translate(x-S2/2,y-S2/2); g.scale(sc,sc);
+ g.strokeStyle=rgba(c,a); g.lineWidth=(w||1.8)/sc;
  g.lineJoin='round'; g.lineCap='round'; g.fillStyle='transparent';
  try{g.stroke(new Path2D(p));}catch(e){}
  g.restore();}
@@ -28759,6 +28794,270 @@ function coneStroke(g,pts,c,a){
  g.beginPath();
  pts.forEach(function(p,i){i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y);});
  g.strokeStyle=rgba(c,a); g.lineWidth=1; g.stroke();}
+/* ============================================================
+   THE COMPASS FROM ABOVE, B AND C TOGETHER. Round IA, 27 September.
+
+   What the tab opens on now. The arrow figure above is the same figure seen
+   from the side, and it sits behind the Side view switch.
+
+   The owner, round HS: "You want your CQ to be 100. And this whole thing
+   should be a circle. And radiating ... it should actually be showing you
+   the balance. Update the compass using the same art direction of the
+   field." Four drawings went to him from proto/compass-redesign. This round
+   first picked B, the mirror axes, as a default under time pressure and not
+   as a ruling. He then said: "Seven seats under load. C is good. Let's do a
+   combination of C and B. There's a lot of meaning between the two." So it
+   is both, and this is what each one reads.
+
+   THE SHELL IS C. The Field's shell, one stretch per seat on the bearings the
+   Field gives that seat, set at your coherence and bent out where the seat's
+   laws run above it and in where they run below. Its mean is CQ exactly,
+   because CQ is the 21 laws over 210, so it is the truest drawing of the
+   number. It moves slowly: a release lifts a law by LIFT_R of what is left,
+   which is thousandths.
+
+   THE RIBBON IS B. The eight mirror axes as spokes, the coherent pole's glyph
+   at the rim and the inversion's at the hub, and the accent ribbon through
+   where you sit on each, which is mirrorAt: 62 per cent how clear the seat is
+   of charge and 38 per cent its laws. It is not CQ. It is what moves when a
+   release takes charge off a seat, by whole points.
+
+   BETWEEN THE TWO is the meaning he named. Where the ribbon sits well inside
+   the shell, the laws at that seat are sound and charge is what holds it
+   down. Where the ribbon runs outside the shell, the seat is clear of charge
+   and its laws have not caught up. Neither drawing alone says which of the
+   two a seat is short of.
+
+   OVER GLOWS, UNDER SINKS, against the coherence circle, and light is the
+   reading, so no red and no green. Over is the seat's own colour. Under is
+   the light taken back off the well, which is the only honest way to sink on
+   a canvas whose ground is already --sunk: there is no darker token to paint
+   with, so nothing is painted.
+
+   Every colour is a token of the active lighting: bc() for a seat, INK(),
+   GOLDC() for the accent, TIERCOL for the tier. The motion is the Field's own
+   (ui/wheel.js fringeStep): the spring at 196 and 2 x 0.42 x 14, five fringe
+   bands, the 4.2 second breath, and travel only after a real change, in the
+   direction of it. Reduced motion gets the end state.
+   ============================================================ */
+const CONE_SPK=196, CONE_SPC=2*0.42*14;
+/* the seats' stretches of the turn, and each axis's bearing inside its seat.
+   Read off W once: engine/core.js sets address i at i over the length of a
+   turn from twelve, clockwise, in seat order, so a seat is where the Field
+   has it. A seat holding two axes spreads them evenly across its stretch,
+   which is frSpread's rule in ui/rings.js. */
+var CONE_SEC=null;
+function coneSec(){
+ if(CONE_SEC)return CONE_SEC;
+ var A=W_ADDR(), sec={}, t=[];
+ BANDS.forEach(function(b){var lo=1e9,hi=-1;
+  A.forEach(function(n,j){if(n.b===b){if(j<lo)lo=j; if(j>hi)hi=j;}});
+  sec[b]=hi<0?{t0:0,t1:0}:{t0:lo/A.length,t1:(hi+1)/A.length};});
+ BANDS.forEach(function(b){
+  var mine=[]; MIRROR.forEach(function(m,i){if(m.seat===b)mine.push(i);});
+  mine.forEach(function(i,k){t[i]=sec[b].t0+(k+.5)/mine.length*(sec[b].t1-sec[b].t0);});});
+ return (CONE_SEC={sec:sec,t:t});}
+function coneSeatAt(t){
+ var s=coneSec().sec; t=((t%1)+1)%1;
+ for(var i=0;i<BANDS.length;i++)if(t>=s[BANDS[i]].t0&&t<s[BANDS[i]].t1)return BANDS[i];
+ return BANDS[BANDS.length-1];}
+/* where a person sits on one mirror axis. One reader for both views, and the
+   same arithmetic the mirror drill prints, so a node and the drill it opens
+   cannot disagree. */
+function coneMirPos(m){
+ var grp=W_ADDR().filter(function(n){return n.b===m.seat;});
+ var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
+ return mirrorAt(load,bandIg(m.seat));}
+/* a seat's laws as CQ reads them, out of a hundred. lawNow and not bandIg,
+   and an unanswered law as nought, because that is what cqSum does, and the
+   shell's mean being CQ is the only reason it is drawn against the coherence
+   circle. bandIg reads the answer without the lift, so a shell drawn from it
+   would sink under CQ everywhere as releases lift the laws. */
+function coneSeatLaw(b){
+ var gl=SI.filter(function(l){return l.b===b;});
+ return gl.length?gl.reduce(function(a,l){
+  return a+(lawIn(l.nm)?lawNow(l.nm):0);},0)/gl.length*10:0;}
+/* THE SPRINGS, set to what the engine reads now. A new record starts every
+   element steady, as hotTrack does on a switch of record, so moving from one
+   person to another is never drawn as a change in either. Otherwise the
+   target moves and the drawn value follows, which is how a release made on
+   another surface arrives here: the Compass remembers where it last drew
+   each element and springs from there. */
+function coneMirSync(r){
+ var M=CONE.mir, fresh=!M||M.who!==CURP||M.ex!==S.who;
+ var cq=r.unread?50:clamp(r.CQ,0,100);
+ if(fresh)M=CONE.mir={who:CURP,ex:S.who,ax:[],seat:[],cq:{x:cq,v:0}};
+ var set=function(arr,i,v){var o=arr[i];
+  if(!o)o=arr[i]={x:v,v:0,last:v,dir:0,ph:0};
+  /* direction is kept until the value changes again, as the Field keeps it */
+  if(Math.abs(v-o.last)>1e-4){o.dir=v>o.last?1:-1; o.last=v;}
+  o.tgt=v; if(REDUCED)o.x=v;};
+ MIRROR.forEach(function(m,i){set(M.ax,i,coneMirPos(m));});
+ BANDS.forEach(function(b,i){set(M.seat,i,coneSeatLaw(b));});
+ M.cq.tgt=cq; if(REDUCED)M.cq.x=cq;
+ return M;}
+function coneMirStep(dt){
+ var M=CONE.mir; if(!M||REDUCED)return;
+ var sp=function(o){if(o.tgt===undefined)return;
+  for(var s=0;s<2;s++){var a=CONE_SPK*(o.tgt-o.x)-CONE_SPC*o.v; o.v+=a*dt/2; o.x+=o.v*dt/2;}};
+ M.ax.forEach(sp); M.seat.forEach(sp); sp(M.cq);
+ /* a fringe travels the way its seat last moved, outward on the side it is
+    on, and a seat that has never moved stands */
+ M.seat.forEach(function(o){o.ph+=dt*0.9*o.dir*(o.x>=M.cq.x?1:-1);});}
+/* the ribbon's radius at a bearing, through every axis exactly: a periodic
+   cardinal spline, so the curve never smooths a reading away */
+function coneSpline(E,t){
+ var n=E.length, tt=t<E[0].t?t+1:t, i=0;
+ for(;i<n;i++){var b=i+1<n?E[i+1].t:E[0].t+1; if(tt>=E[i].t&&tt<b)break;}
+ if(i>=n)i=n-1;
+ var a0=E[i].t, a1=i+1<n?E[i+1].t:E[0].t+1, u=clamp((tt-a0)/((a1-a0)||1),0,1);
+ var p0=E[(i-1+n)%n].x, p1=E[i].x, p2=E[(i+1)%n].x, p3=E[(i+2)%n].x;
+ var m1=(p2-p0)*.5, m2=(p3-p1)*.5, u2=u*u, u3=u2*u;
+ return (2*u3-3*u2+1)*p1+(u3-2*u2+u)*m1+(-2*u3+3*u2)*p2+(u3-u2)*m2;}
+function conePlan(){
+ var c=CONE.cv, g=CONE.g, TAU=Math.PI*2;
+ var W=c.width/CONE.dpr, H=c.height/CONE.dpr;
+ g.setTransform(CONE.dpr,0,0,CONE.dpr,0,0);
+ g.clearRect(0,0,W,H);
+ CONE.hits=[];
+ var r=compute(), M=coneMirSync(r), SC=coneSec(), read=!r.unread;
+ var R=Math.max(20,Math.min(W,H)/2-(W<520?24:34)), cx=W/2, cy=H/2, r0=R*.2;
+ var sk=clamp(R/300,.55,1.3);
+ var rad=function(v){return r0+(R-r0)*clamp(v,0,100)/100;};
+ var ang=function(t){return t*TAU-Math.PI/2;};
+ var ink=INK(), gc=GOLDC();
+ var tc=read&&TIERCOL[r.tier]?hx(TIERCOL[r.tier]):gc;
+ var ref=M.cq.x, rr=rad(ref);
+ /* the shell, C's bend: each seat's gap spread on a gaussian across the
+    turn, a little under half a seat's stretch wide */
+ var N=540, B=[], SE=BANDS.map(function(b,i){var s=SC.sec[b];
+  return {b:b,o:M.seat[i],t:(s.t0+s.t1)/2,sp:Math.max(.01,(s.t1-s.t0)*.42)};});
+ for(var j=0;j<=N;j++){var t=j/N, num=0, den=0;
+  SE.forEach(function(q){var d=t-q.t; d-=Math.round(d);
+   var w=Math.exp(-(d*d)/(2*q.sp*q.sp)); num+=w*q.o.x; den+=w;});
+  B.push(den?num/den:ref);}
+ var bAt=function(t){return B[Math.round((((t%1)+1)%1)*N)];};
+ /* the band between the shell and the circle, sample by sample. pick says
+    which samples, paint says with what.
+    ONE PATH PER COLOUR, NOT ONE FILL PER SAMPLE. The proto filled each of
+    the 540 slivers on its own, twice a frame, which is over a thousand fills
+    sixty times a second on a surface that is left open. The slivers share
+    edges and wind the same way, so one path per colour fills the same
+    pixels in eight fills, and without the hairline seams that separate
+    antialiased fills leave between neighbours. */
+ var band=function(pick,paint){var prev=null, P={};
+  for(var k=0;k<=N;k++){var a=ang(k/N), rs=rad(B[k]);
+   if(prev&&pick(prev.v)){var q=P[prev.seat]||(P[prev.seat]=new Path2D());
+    q.moveTo(cx+Math.cos(prev.a)*prev.rs,cy+Math.sin(prev.a)*prev.rs);
+    q.lineTo(cx+Math.cos(a)*rs,cy+Math.sin(a)*rs);
+    q.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);
+    q.lineTo(cx+Math.cos(prev.a)*rr,cy+Math.sin(prev.a)*rr);
+    q.closePath();}
+   prev={a:a,rs:rs,v:B[k],seat:coneSeatAt((k+.5)/N)};}
+  Object.keys(P).forEach(function(s){g.fillStyle=paint(s); g.fill(P[s]);});};
+ /* THE LIGHT comes from the centre and reaches the coherence circle, in the
+    tier's colour. Coherence is how far it reaches. */
+ if(read){
+  var lg=g.createRadialGradient(cx,cy,r0*.4,cx,cy,rr*1.08);
+  lg.addColorStop(0,rgba(tc,.16)); lg.addColorStop(.75,rgba(tc,.07));
+  lg.addColorStop(1,rgba(tc,0));
+  g.fillStyle=lg; g.beginPath(); g.arc(cx,cy,rr*1.08,0,TAU); g.fill();
+  /* under: the light taken back, not a colour laid down. destination-out
+     reads only the alpha, so the black here is never seen. */
+  g.save(); g.globalCompositeOperation='destination-out';
+  band(function(v){return v<ref;},function(){return 'rgba(0,0,0,.85)';});
+  g.restore();}
+ /* the rim is the circle he asked for, everything at full. A hairline in the
+    accent, never a reading, and the seven seats just outside it. */
+ g.beginPath(); g.arc(cx,cy,R,0,TAU); g.strokeStyle=rgba(gc,.34); g.lineWidth=1; g.stroke();
+ BANDS.forEach(function(b){var s=SC.sec[b];
+  g.beginPath(); g.arc(cx,cy,R+5*sk,ang(s.t0+.004),ang(s.t1-.004));
+  g.strokeStyle=rgba(bc(b),.55); g.lineWidth=2*sk; g.stroke();});
+ /* the room, forty to sixty, where most people stand, with its souls: the
+    arrow figure's own room and the same eighteen, seen from above */
+ g.beginPath(); g.arc(cx,cy,rad(60),0,TAU); g.arc(cx,cy,rad(40),0,TAU,true);
+ g.fillStyle=rgba(ink,.045); g.fill();
+ [[40,.20],[60,.12]].forEach(function(q){g.beginPath(); g.arc(cx,cy,rad(q[0]),0,TAU);
+  g.strokeStyle=rgba(ink,q[1]); g.lineWidth=1; g.stroke();});
+ for(var si=0;si<18;si++){
+  var ph=si*2.399963, spd=0.20+((si*37)%11)/38, sw=REDUCED?0:Math.sin(CONE.t*spd+ph);
+  var sa=ang(ph/TAU+CONE.t*.004), sr=rad(50+sw*9.2);
+  g.beginPath(); g.arc(cx+Math.cos(sa)*sr,cy+Math.sin(sa)*sr,1.9*sk,0,TAU);
+  g.fillStyle=rgba(ink,.30+sw*.12); g.fill();}
+ /* the eight meridians, one per mirror axis, in the seat's colour */
+ MIRROR.forEach(function(m,i){var a=ang(SC.t[i]);
+  g.beginPath(); g.moveTo(cx+Math.cos(a)*r0,cy+Math.sin(a)*r0);
+  g.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);
+  g.strokeStyle=rgba(bc(m.seat),.30); g.lineWidth=1.2*sk; g.stroke();});
+ /* Layers, from above, are the rings they always were: nine released rings
+    outward of the waist and nine compressed ones inward of it */
+ if(CONE.layers){
+  CONE_HI.forEach(function(nm,i){g.beginPath(); g.arc(cx,cy,rad(55+i*5),0,TAU);
+   g.strokeStyle=rgba(gc,.16+i*0.03); g.lineWidth=1; g.stroke();});
+  CONE_LO.forEach(function(nm,i){g.beginPath(); g.arc(cx,cy,rad(45-i*5),0,TAU);
+   g.strokeStyle=rgba(bc('Root'),.16+i*0.03); g.lineWidth=1; g.stroke();});}
+ if(read){
+  /* over: the seat's own colour, between the shell and the circle */
+  band(function(v){return v>=ref;},function(b){return rgba(bc(b),.24);});
+  /* the coherence circle, dashed, in the tier's colour */
+  g.beginPath(); g.arc(cx,cy,rr,0,TAU); g.setLineDash([2*sk,5*sk]);
+  g.strokeStyle=rgba(tc,.6); g.lineWidth=1.2*sk; g.stroke(); g.setLineDash([]);
+  /* THE FRINGES, fringeDraw's own five bands, standing off the shell on the
+     side the seat is on, strength off its gap from coherence, full at twenty
+     points of a hundred, and closer together where the gap is larger */
+  SE.forEach(function(q,i){var o=q.o, dev=o.x-ref, s=clamp(Math.abs(dev)/20,0,1);
+   if(s<.03)return;
+   var sg=dev>=0?1:-1, f=REDUCED?.5:(o.ph-Math.floor(o.ph)), gap=(10-6*s)*sk;
+   var br=REDUCED?1:0.82+0.18*Math.sin(TAU*CONE.t/4.2-i*0.12);
+   var s0=SC.sec[q.b], t0=s0.t0+.01, t1=s0.t1-.01;
+   for(var k=0;k<5;k++){
+    var pos=k+f, al=Math.pow(s,1.3)*Math.sin(Math.PI*pos/5)*.9*br; if(al<.02)continue;
+    g.beginPath();
+    for(var mm=0;mm<=40;mm++){var tt=t0+(t1-t0)*mm/40, aa=ang(tt);
+     var rq=rad(bAt(tt))+sg*(4+pos*gap);
+     mm?g.lineTo(cx+Math.cos(aa)*rq,cy+Math.sin(aa)*rq)
+       :g.moveTo(cx+Math.cos(aa)*rq,cy+Math.sin(aa)*rq);}
+    g.strokeStyle=k%2?rgba(bc(q.b),al):rgba(ink,al*.55);
+    g.lineWidth=(k%2?1.1:1.6)*(.8+.4*s)*sk; g.stroke();}});
+  /* the shell itself, each seat's stretch in its own colour */
+  SE.forEach(function(q){var s0=SC.sec[q.b]; g.beginPath();
+   for(var mm=0;mm<=60;mm++){var tt=s0.t0+(s0.t1-s0.t0)*mm/60, aa=ang(tt), rq=rad(bAt(tt));
+    mm?g.lineTo(cx+Math.cos(aa)*rq,cy+Math.sin(aa)*rq)
+      :g.moveTo(cx+Math.cos(aa)*rq,cy+Math.sin(aa)*rq);}
+   g.strokeStyle=rgba(bc(q.b),.95); g.lineWidth=3.2*sk;
+   g.lineCap='round'; g.stroke(); g.lineCap='butt';});
+  /* the ribbon, B, in the accent, through where you sit on each axis */
+  var E=MIRROR.map(function(m,i){return {t:SC.t[i],x:M.ax[i].x};})
+   .sort(function(a,b){return a.t-b.t;});
+  g.beginPath();
+  for(var q2=0;q2<=360;q2++){var tq=q2/360, aq=ang(tq), rq2=rad(coneSpline(E,tq));
+   q2?g.lineTo(cx+Math.cos(aq)*rq2,cy+Math.sin(aq)*rq2)
+     :g.moveTo(cx+Math.cos(aq)*rq2,cy+Math.sin(aq)*rq2);}
+  g.closePath(); g.fillStyle=rgba(gc,.06); g.fill();
+  g.strokeStyle=rgba(gc,.8); g.lineWidth=1.6*sk; g.stroke();}
+ /* the hub, which is nought: cleared back to the well, and ringed */
+ g.save(); g.globalCompositeOperation='destination-out';
+ g.beginPath(); g.arc(cx,cy,r0,0,TAU); g.fillStyle='rgba(0,0,0,1)'; g.fill(); g.restore();
+ g.beginPath(); g.arc(cx,cy,r0,0,TAU); g.strokeStyle=rgba(ink,.10); g.lineWidth=1; g.stroke();
+ /* each axis: a node where you sit, the coherent pole's glyph at the rim and
+    the inversion's at the hub. The hub glyphs go only where the hub has room
+    for eight: under 16 pixels apart they pile up, measured on the proto
+    board. Ring, never fill, so a node clears the lines under it and is then
+    stroked. The node is the target, as it is on the arrow figure. */
+ MIRROR.forEach(function(m,i){var a=ang(SC.t[i]), col=bc(m.seat), lit=(CONE.front===i);
+  if(read){var nr=rad(M.ax[i].x), x=cx+Math.cos(a)*nr, y=cy+Math.sin(a)*nr;
+   var rn=(lit?5.6:4.4)*sk;
+   g.save(); g.globalCompositeOperation='destination-out';
+   g.beginPath(); g.arc(x,y,rn,0,TAU); g.fillStyle='rgba(0,0,0,1)'; g.fill(); g.restore();
+   g.beginPath(); g.arc(x,y,rn,0,TAU); g.strokeStyle=rgba(col,lit?1:.95);
+   g.lineWidth=(lit?2.2:1.6)*sk; g.stroke();
+   if(lit){g.beginPath(); g.arc(x,y,rn+5*sk,0,TAU);
+    g.strokeStyle=rgba(col,.45); g.lineWidth=1; g.stroke();}
+   CONE.hits.push({x:x,y:y,r:Math.max(16,rn+10),m:m,i:i,end:'up'});}
+  var ro=R+19*sk, ri=r0*.62;
+  coneGlyph(g,m.ic,cx+Math.cos(a)*ro,cy+Math.sin(a)*ro,col,.95,Math.max(12,15*sk),1.7);
+  if(TAU*ri/8>=16)
+   coneGlyph(g,m.dic,cx+Math.cos(a)*ri,cy+Math.sin(a)*ri,col,.55,Math.max(10,11*sk),1.5);});}
 /* THE THREE HIGHEST LAWS AND THE THREE LOWEST, read once for the arrows on
    the figure and the key under it, so the arrow and the row naming it are
    the same law by construction rather than by two sorts agreeing. */
@@ -28775,12 +29074,16 @@ function coneRegLaws(){
    default figure keeps every pixel it had.
    ============================================================ */
 function coneKey(){
- if(!CONE.reg&&!CONE.layers)return '';
+ /* Regulation draws on the spine, and the view from above has no spine, so
+    its switch is only offered on the side view and its rows only print
+    there. A key row for arrows nobody can see is a dead control's caption. */
+ var reg=CONE.reg&&CONE.side;
+ if(!reg&&!CONE.layers)return '';
  var grp=function(h,rows){
   return '<div class="ck-g"><span class="ck-h">'+h+'</span>'
    +'<span class="ck-rows">'+rows+'</span></div>';};
  var h='';
- if(CONE.reg){
+ if(reg){
   var rg=coneRegLaws();
   var row=function(l,col,dir){
    return '<span class="ck-r" style="--ax:'+col+'">'
@@ -28851,11 +29154,15 @@ function coneTick(){
   if(Math.abs(gap)<0.004){CONE.spin=CONE.spinTo; CONE.spinTo=null;}
   else CONE.spin+=gap*0.12;}
  else if(!REDUCED&&!CONE.drag)CONE.spin+=0.0022;
- {var f=coneFront();
+ /* from above nothing turns to the front, so the lit row is the axis a
+    pointer is on, or none. Lighting the row the idle spin reached would
+    walk the rail round on its own with nothing on the figure moving. */
+ {var f=CONE.side?coneFront():CONE.hov;
   if(f!==CONE.front){CONE.front=f; coneNamesSync();}}
  /* the figure had a spin and no clock. Anything that has to breathe rather
     than turn needs its own time, and the band of souls at the median does. */
  if(!REDUCED)CONE.t+=1/60;
+ if(!CONE.side)coneMirStep(1/60);
  coneDraw();
  CONE.raf=requestAnimationFrame(coneTick);}
 /* TWO WAYS IN, ONE FIGURE. As a modal it is what a drill opens, over the top
@@ -29008,10 +29315,16 @@ function coneNames(side){
   .filter(function(x){return side==='l'?(x.i<4):(x.i>=4);});
  return '<div class="cn-nms cn-nms-'+side+'">'
   +half.map(function(x){
-   var c=seatCol(x.m.seat), cd=rgbcss(coneDull(hx(c)));
+   /* the inverted pole is the seat token at an opacity, which is the brand's
+      darker version of a token over the ground. coneDull's grey mix was a new
+      colour per seat, named off brand in round HS. seatCol can hand back a
+      custom property for a seat it does not know, which has no channels to
+      take an opacity from, so that one case keeps the token whole. */
+   var c=seatCol(x.m.seat), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
    return '<button type="button" class="cn-nr" data-cnax="'+x.i+'" '
     +'style="--ax:'+c+';--axd:'+cd+'" '
-    +'title="Turn the figure to '+esc(x.m.up)+' and '+esc(x.m.dn)+'">'
+    +'title="'+(CONE.side?'Turn the figure to ':'Read ')
+    +esc(x.m.up)+' and '+esc(x.m.dn)+'">'
     /* IF IT HAS A NAME IT HAS AN ICON. Standing rule, and the rail would have
        broken it the moment the names came off the canvas, where both poles
        were drawn with their glyph beside them. The same two paths come with
@@ -29021,8 +29334,8 @@ function coneNames(side){
     +'<span class="cn-nd">'+cnGl(x.m.dic)+esc(x.m.dn)+'</span>'
     +'</button>';}).join('')
   +'</div>';}
-/* one rgb triple as a css colour, so the desaturated twin can be handed to
-   the sheet the same way the seat colour is */
+/* one rgb triple as a css colour, so a canvas colour can be handed to the
+   sheet the same way a seat colour is */
 function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
 /* one mirror glyph as markup. currentColor, so the row's own colour carries
    it and the icon can never disagree with the name beside it. */
@@ -29055,12 +29368,22 @@ function coneOpen(inTab){
   +'<div class="cone-body"><div class="cone-fig">'
    +coneNames('l')+coneNames('r')
    +'<canvas id="conecv" class="cone-cv" role="img" '
-   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
+   +'aria-label="'+(CONE.side
+     ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
+     :'The compass from above. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.')
+   +'"></canvas>'
+   /* Flat and Regulation belong to the side view: from above there is no
+      tilt to take out and no spine to draw arrows on, and a switch that
+      changes nothing on the figure is a dead control. */
    +'<div class="cone-ctl">'
-    +'<button type="button" class="cn-b" data-cn="flat" '
-     +'title="Take the tilt out and look straight down on the figure">Flat</button>'
-    +'<button type="button" class="cn-b" data-cn="reg" '
-     +'title="Show which axes are regulating you up and which are regulating you down">Regulation</button>'
+    +'<button type="button" class="cn-b" data-cn="side" '
+     +'title="Show the same figure from the side, as two arrows">Side view</button>'
+    +(CONE.side
+     ?'<button type="button" class="cn-b" data-cn="flat" '
+      +'title="Take the tilt out and look straight down on the figure">Flat</button>'
+      +'<button type="button" class="cn-b" data-cn="reg" '
+      +'title="Show which axes are regulating you up and which are regulating you down">Regulation</button>'
+     :'')
     +'<button type="button" class="cn-b" data-cn="layers" '
      +'title="Show the rings the axes are stacked on">Layers</button>'
    +'</div>'
@@ -29083,7 +29406,9 @@ function coneOpen(inTab){
       most people sit. Drag to turn the figure. Press any name to read that
       axis." was the figure explaining itself under the figure, the class of
       text he has now asked three times never to see. The waist is visible,
-      the drag works without being announced, and every name is a button. */
+      the drag works without being announced, and every name is a button.
+      Round IA: the tab opens on the view from above now, where a drag turns
+      nothing, so that clause would have become false as well as surplus. */
   +'</div>'
   /* THE INFORMATION LAYER LEFT THE CENTRE COLUMN, and the comment that used to
      sit here is why it had to.
@@ -29118,6 +29443,12 @@ function coneOpen(inTab){
    +'<div class="cone-rec">'+ladderHtml()+'</div>'+coneGraph());
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
+ /* ONE FRAME LOOP, NOT ONE PER PRESS. Every switch repaints through here, and
+    this called coneTick with the last frame it scheduled still pending, so
+    each press started a second loop beside the first: the idle spin ran
+    twice as fast after one press and three times after two. The springs of
+    the view from above step per frame, so they would have arrived early too. */
+ if(CONE.raf)cancelAnimationFrame(CONE.raf);
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
  /* the ladder's one control opens the builder that already exists. It does not
@@ -29143,9 +29474,11 @@ function coneOpen(inTab){
     snaps back either. */
  h.querySelectorAll('[data-cnax]').forEach(function(b){
   var i=+b.getAttribute('data-cnax');
-  b.onmouseenter=function(){coneAimAt(i);};
-  b.onfocus=function(){coneAimAt(i);};
-  b.onmouseleave=function(){CONE.spinTo=null;};
+  /* hov is what lights the row and the node from above, where aiming turns
+     nothing */
+  b.onmouseenter=function(){coneAimAt(i); CONE.hov=i;};
+  b.onfocus=function(){coneAimAt(i); CONE.hov=i;};
+  b.onmouseleave=function(){CONE.spinTo=null; CONE.hov=-1;};
   b.onclick=function(){
    var m=MIRROR[i]; if(!m)return;
    coneAimAt(i);
@@ -29168,7 +29501,9 @@ function coneOpen(inTab){
    var x=e.clientX-b.left, y=e.clientY-b.top;
    if(!CONE.drag){
     var h=coneHit(x,y);
-    CONE.cv.style.cursor=h?'pointer':'grab';
+    /* from above a drag turns nothing, so the hand only says press */
+    CONE.cv.style.cursor=h?'pointer':(CONE.side?'grab':'default');
+    if(!CONE.side)CONE.hov=h?h.i:-1;
     if(h!==CONE.hover){CONE.hover=h;coneDraw();}
     return;}
    CONE.drag.moved=CONE.drag.moved
@@ -29184,6 +29519,7 @@ function coneOpen(inTab){
     var h=coneHit(e.clientX-b.left,e.clientY-b.top);
     if(h)runTeacherDrill(h.m,h.end);}};
   CONE.cv.onpointercancel=function(){CONE.drag=null;};
+  CONE.cv.onpointerleave=function(){if(!CONE.side)CONE.hov=-1;};
   }
  addEventListener('resize',coneLayout);}
 function coneClose(){
@@ -32792,7 +33128,32 @@ function accAccount(){
  var nm=[w.first,w.middle,w.last].filter(function(x){return x&&x.trim();}).join(' ');
  var born=[bn.date,(bn.timeUnknown?'time not known':bn.time),bn.place,bn.zone]
   .filter(function(x){return x;}).join(' · ');
- var h=accGroup('This Account',
+ /* SIGN IN, AS A SHELL THAT SAYS SO. Round IA, his words: "I need the login
+    page, I need it wired in". There is nothing to sign in to yet. The record
+    store is not chosen (TASKS.md 2.1, Cloudflare or Supabase), the repository
+    is public, and no account exists anywhere, so a working sign in is not a
+    thing this file can build around. The fields are real, Continue is real,
+    and what Continue does is say that plainly through status(), because a
+    control never claims success before it has it (CLAUDE.md).
+
+    It stood last on this section as three stubs. It goes first now: a sign
+    in is the first thing an account page is for, and it is what he asked to
+    look at. Nothing typed is kept: the password is cleared on every press and
+    neither field is written to the record, storage or the outbox. The footer
+    says so, which is a disclosure and survives the rule against footers that
+    describe their own controls. */
+ var h=accGroup('Sign In',
+   accStub('Signed in as','not signed in')
+   +'<form id="acsignin" novalidate>'
+   +'<div class="ac-row ac-edit"><label class="ac-rl" for="acmail">Email</label>'
+   +'<input type="email" id="acmail" autocomplete="email" spellcheck="false"></div>'
+   +'<div class="ac-row ac-edit"><label class="ac-rl" for="acpass">Password</label>'
+   +'<input type="password" id="acpass" autocomplete="current-password"></div>'
+   +'<div class="ac-row ac-act"><span class="ac-rl"></span>'
+   +'<button class="btn pri" id="acgo" type="submit">Continue</button></div>'
+   +'</form>',
+   'Nothing typed here is sent or kept.');
+ h+=accGroup('This Account',
    '<div class="ac-row ac-edit"><span class="ac-rl">Profile name</span>'
    +'<input type="text" id="acnm" value="'+esc((CURP&&CURP.name)||'')+'" '
    +'aria-label="Profile name"></div>'
@@ -32822,10 +33183,9 @@ function accAccount(){
     does, what a failed load does, that nothing is sent, that storage is
     blocked. Those are obligations to the person, not a section explaining
     itself, and CLAUDE.md names them as the ones that must be visible. */
- h+=accGroup('Sign In',
-   accStub('Signed in as','not signed in')
-   +accStub('Key','no key yet')
-   +accStub('Sign out'));
+ /* Sign In moved to the top of this section in round IA, as a form. Key and
+    Sign out went with the stubs: a sign out row under a sign in that cannot
+    succeed names a state nobody can reach. */
  return h;}
 
 /* ---------- 4.2 display ---------- */
@@ -32985,6 +33345,16 @@ function accWire(){
   var v=nm.value.trim();
   if(!v){status('A profile needs a name. Nothing was changed.','fail');nm.value=CURP.name;return;}
   CURP.name=v; pSave(); statusSaved(); renderAccount(); render();};
+ /* a form, so Enter in either field is the same press as Continue. Every
+    press says the same true thing and clears the password, whatever was
+    typed: checking the shape of an email first would be a second refusal
+    in front of the one that is actually true. 'fail' so it stays on screen
+    until something replaces it, which is how status() holds a refusal. */
+ var si=$('acsignin');
+ if(si)si.onsubmit=function(e){
+  e.preventDefault();
+  var pw=$('acpass'); if(pw)pw.value='';
+  status('Accounts are not live yet. Nothing was sent.','fail');};
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
@@ -36029,5 +36399,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002362637"></div>
+<div id="eof" hidden data-len="002385301"></div>
 </body></html>
