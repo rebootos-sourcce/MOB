@@ -23132,3 +23132,25 @@ Kundalini rise should be computed from the same seat-weight data the
 Compass and analytics already read, or needs its own new measure; and
 whether the six masks moving onto the body map retires their existing
 standalone page or only mirrors it there.
+
+## KA. The Compass is not rendering full screen, a drawing sent with the report
+
+His words, verbatim: "Please fix the compass. It's not rendering full
+screen, period. Do not let this interrupt your current flow, comma,
+unless it's a quick fix, comma, then do it, period. Otherwise, add
+this to the queue."
+
+Sent with a screenshot at what reads as roughly 1965 by 1125: the
+Compass panel itself (header "The Compass," Side view and Layers
+toggles, the ring with its axis labels and the ascendant-teacher names
+already placed at points around it, the released/compressed legend
+along the bottom) fills only the top third or so of the viewport, and
+the remaining lower half of the window is solid black, empty. This
+reads as a container or canvas not sized to its host rather than a
+drawing defect, since every element that does render looks intact.
+
+He gave explicit permission to route this rather than interrupt: fixed
+inline only if quick, otherwise queued. Routed to the agent already
+holding `cone.js` (`a8cecc799cb10b3f5`) since it is the same file and
+that agent is already mid-render-work on this exact page, with his own
+permission to judge whether it is quick.
