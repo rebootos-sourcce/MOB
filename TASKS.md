@@ -20765,3 +20765,78 @@ hundred and eighty pixels, a real layout question for that width.
 Both this and round HQ verified independently before either reaches
 origin, exactly the discipline this project has held to since round
 HH's own mistake. Pushing both now with this log entry.
+
+## HS. His reaction to the Avatar and body map screenshots, in full, verbatim, before any of it is touched. 27 September
+
+His words, verbatim, all one dictation, with a cropped image of the
+body map's front figure attached partway through: "Should the 63
+questions intake feed the avatar's field? It's a great question. Um,
+mock that up. I need to see it. Two archetypes exist in the same page.
+I don't understand that. I need context. The body map I don't know the
+name of this file. um, I like these icons. I'm going to drop that in.
+Um, I love the body map. Uh, let's wire that in. And the text on the
+left or right, we have a standing rule. No text by itself if it
+describes something without an icon. Or a symbol. All right, so you
+can't have a fetter without a symbol. unless it's in body text. So, I
+need these designs. to give me a reason for that text. And then these
+radial designs, I like them. I don't understand them. Like if you've
+got caregiver selected, so many things happening. One, you have this
+text again, where it says archetypes, 12 ways of acting. Each besides
+the part, holy shit, I told you I don't want text like that anymore.
+Energetics, your birth moment is 63 questions. Why is this not being
+fixed in code? Why is that text never being written out ever again
+after I keep asking for it to never be written out? What is in your
+programming? What is happening within our copy Bible where this is
+constantly being violated? Who this is, your energetics were fixed the
+moment I don't want that text. Get rid of it. This card to the right
+of the main graphic. The main graphic is the interest point. What's
+happening with this card where I said use the right column which is
+the information column that graphics are hero. So do not sideline them
+by a panel. I hope you understand what I mean. The center column is
+sacrosanct for art. Not for text. The right column is for text. The
+bottom underneath the art is for text. Or design. The left is for a
+tools. The center is for the graphic. Make sure this is worked into our
+our Bible. And update the Bible with the latest. Because you're
+obviously not... Doing that. And then I need to see the yeah, I need
+to see I need to react to the energetic map. So wire in the body map.
+and wire in the update the compass of the compass isn't broken it's
+been on this fucking plate for a day now fix it what and where's my
+list of things that need to be done and all the open tasks What I like
+about the shape of the outer ring um, is that the CQ is showing where
+things are weighted and it's showing where you're either overexpressed
+or underexpressed. right? You want that to be a circle, right? You
+want your CQ to be 100. And this whole thing should be a circle. And
+radiating. So let's apply it to the wheel. and I want to hide the
+square version and we're going to keep the dial. So we're going to
+start phasing out the square. I haven't used it yet. I don't think I'm
+going to use it. Double check your colors. It looks like you're
+introducing colors that aren't part of our normal brand. Yeah, I think
+it should fade up and fade down. right. But what's cool about this is
+that it's showing the expression of our character and it's showing us
+where it's overly done and underly done. The cells on its own should
+happen as you release and you balance out. It should actually be
+showing you the balance. I like that. Wire this in. Let's take a look
+at it. Review the compass with the team. Update the compass using the
+same art direction of the field. Give me four examples of the compass.
+You've got red text underneath the logo it's like small text there's
+nothing changed get rid of that so it's never there under the left
+window it says two words zero tag get rid of that so it's never there
+you've got five field 25.48 or something like that installed what is
+that please Do a sweep of the entire site with the UI UX team get rid
+of all this like second or three third tier text pick how much to run
+each pattern is what like we have overlays for all this shit clean up
+my UI UX get rid of all this small noodly nuanced shit across the
+entire site I don't want to see it anymore why has the energetics page
+not okay hold on Why is the energetics page not updated yet? To the
+avatar or the summary page. what's happening where I've got whole
+chunks of art direction and design direction completely not done at
+all. Are you, are you seeing things entirely? Like you're fucking up
+my code, you're fucking up my tokens. Dude, you gotta fix it. You
+review the colors, fix my fucking brand, colors, do a sweep, fix a
+copy, do a sweep, and show me what's left to be done."
+
+Logged in full before anything below it is touched. What it is
+grounded against, and what is a real mistake of mine rather than a
+gap in the product, follows in the next entry rather than here, per
+this project's own rule that a finding is checked before it is acted
+on.
