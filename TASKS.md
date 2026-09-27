@@ -21230,3 +21230,29 @@ flight, corrected at round IB to his C plus B combination. The release
 flow is the one real, new priority named here, and it is checked
 against the Bible and the shipped code before anything is dispatched,
 below.
+
+**Grounded before dispatching.** `DESIGN-release.md` already carries
+the whole thing, six hundred and forty one lines, sourced from the
+book itself rather than invented: the exact dose, "fifty release
+statements on the left channel, fifty on the right, transition through
+release, fifty embodied truth on the left, fifty on the right", the
+ten gate statement he quoted almost verbatim, theta under release and
+alpha under install, and a working prototype at `proto/release/`. Its
+own section 7 is a port task list naming every file to touch, never
+carried out. The gap is not a missing design, it is a design that
+never reached `atuned_src/ui/release.js`. `.claude/skills/atuned-voice/SKILL.md`
+already flags "sit back and relax" as a voice violation at the exact
+line he is now asking to hear again, so a real, named collision sits
+inside this port the same way the caret bug's bold ruling did, and
+it is being carried into the dispatch rather than picked silently.
+
+Dispatched to the sound seat with the document's own section 7 as the
+literal task list, and its own section 8 recommendations used to
+answer its five open questions under his stated time pressure rather
+than left blocking: the sixteen kilobit audio choice, a pattern priced
+as new ground against a pass spoken free, the coherent state noun
+alone until a real embodied truth table exists, left channel first per
+the book rather than the prototype's right first default, and the
+full dose kept as the default with the shortening controls real. Every
+one of the five is named in the dispatch as a default made under
+pressure, not a ruling, so it comes back nameable rather than buried.
