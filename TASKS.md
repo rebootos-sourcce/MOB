@@ -19806,3 +19806,51 @@ nameservers to Cloudflare now that this is confirmed simpler, and the
 remaining open items from round HA, Cloudflare versus Supabase as the
 database and compute provider (a related but separate question from
 where the domain's DNS lives) and which product goes online first.
+
+## HE. The body map built for real, not just spec'd, with a measured heat map pick. 27 September
+
+Round GV's body map build, back. Verified directly: both md5s matched
+the report exactly, zero em dashes across every source file, and
+`shots/4-trap-1600.png` opened rather than trusted from description.
+It shows exactly what the report claims: all forty eight regions
+labelled front and back on the approved nervous figure, a live switch
+between four heat map treatments with C, Isotherm, already selected as
+the opening default, and his own trap example returning precisely the
+spec's own answer, two addresses, Comparison and Manic Expression, at
+5.0 and 2.8.
+
+**The heat map choice is measured, not picked by eye.** Its own probe
+was checked against a known case first, the house discipline for
+exactly this kind of claim: a switch that dims nothing measured
+identical to the undimmed baseline, 2.069 against 2.069, before
+trusting any of its other numbers. Scored against all six reference
+profiles at their own stated weights, Isotherm wins at 0.617 against
+0.536, 0.522 and 0.515 for the other three, and is the first choice of
+750 of 900 total weight; only one profile prefers the alternative. A
+fourth option, built only after the first three were measured and
+combining pieces of two of them, lost outright and is kept on the page
+labelled as a measured loss rather than quietly dropped.
+
+**A real limitation named rather than hidden: no address stands on a
+limb at all**, only two of a hundred and twelve sit anywhere on the
+legs and none on the arms, which is why "palm, feet, shin, knee"
+showed nothing before this build and would show nothing after it too,
+without a separate content decision. Proposed limb centres are drawn
+as a dashed, clearly unofficial layer rather than invented into the
+real model silently.
+
+**Question A from round GV, "with the icon of the fetter," is built to
+the most specific reading but honestly still flagged as ambiguous
+rather than settled.** All three readings are drawn side by side on
+the real figure so he can choose by looking rather than by a sentence.
+
+Sent to him: the packed prototype itself, since this is exactly the
+kind of interactive question a screenshot cannot answer on its own.
+
+What I need from him: which of the three readings question A actually
+meant; whether the missing limb regions should stay pain only, gain
+drawn but chargeless centres, or become real new addresses in the
+model, each a different size of work; and confirmation of the
+Isotherm pick, since the one profile who preferred the alternative
+did so specifically because it shows which nerve carries the pain a
+second, clearer way.
