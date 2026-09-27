@@ -119,7 +119,22 @@ function stRender(){
       so the chart reads the lighting's ink and dim off these two computed
       colours, which is the one answer that follows every lighting. */
    +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div>'
-   +'<div class="st-ctr" id="stctr"></div></div>'
+   /* THE VIEW TOGGLE SITS ON THE CHART'S OWN CAPTION LINE, under the drawing
+      it changes. It was first put at the end of the sort row, and measured
+      there it opened a line of its own whenever the journal had the room:
+      the chart lost 48 of its 273 pixels at 1600 by 1000, and at 1280 by 800
+      it reached its 120 pixel floor and this caption ran 9 pixels past the
+      panel's edge. Here it costs the chart 23 pixels at every width and
+      overflows nothing at 1280 by 800. The words wrap beside it rather than
+      being cut, so the count is whole on a phone.
+      THE ROW IS AN INNER WRAPPER, NOT THE LINE ITSELF. Set on #stctr, the
+      inline display beat the stacked rule that hides this line until the
+      imprints are touched, and at 390 by 844 the caption came back on the
+      arrival screen and pushed Run to the bottom edge, which is the one
+      thing layout H exists to stop. The class keeps the say over whether the
+      line shows; the wrapper only lays it out. */
+   +'<div class="st-ctr" id="stctr"><div style="display:flex;align-items:center;gap:8px">'
+   +'<span id="stctrt" style="flex:1 1 0;min-width:0"></span>'+stViewHtml()+'</div></div></div>'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
   +'</div>'
@@ -219,7 +234,7 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],hot:null};
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],hot:null,view:'lanes'};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -245,13 +260,20 @@ function stWire(){
  on('strel','click',function(e){if(!(e.target&&e.target.closest&&e.target.closest('#strun')))stFocus('release');});
  on('stlist','click',function(){stFocus('read');});
  on('stbank','click',stBank);
+ /* the press bubbles on to #stch, which gives the imprints column the room */
+ document.querySelectorAll('#stctr [data-view]').forEach(function(b){
+  b.addEventListener('click',function(){stView(b.getAttribute('data-view'));});});
  on('stvault','click',function(){
   STV.list=STV.list==='vault'?'entry':'vault';
   this.setAttribute('aria-pressed',STV.list==='vault');
   stFocus('read'); stListPaint();});
  var cv=document.getElementById('stcv');
  if(cv){
-  cv.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect(),y=e.clientY-r.top,k=null;
+  /* the hover reads the sorted lanes' rows, which only the Lanes view draws.
+     Over the Ring or the Strip the same height is a different seat, so it
+     would light the wrong group in the list. */
+  cv.addEventListener('pointermove',function(e){if(STV.view!=='lanes'){stHot(null);return;}
+   var r=cv.getBoundingClientRect(),y=e.clientY-r.top,k=null;
    STC.lm.lanes.forEach(function(l){var o=STC.lane[l.key];if(o&&l.active&&y>=o.y&&y<o.y+o.h)k=l.key;});stHot(k);});
   cv.addEventListener('pointerleave',function(){stHot(null);});}
  var w=document.getElementById('stcvw');
@@ -517,6 +539,40 @@ function stLaneModel(){
  var dw=null,best=0; Object.keys(cnt).forEach(function(b){if(cnt[b]>best){best=cnt[b];dw=b;}});
  var dwKey=dw?(STV.sort==='charge'?keyOf({bn:dw}):dw):null;
  return {lanes:lanes,keyOf:keyOf,dwell:best>=2?dwKey:null};}
+/* THREE VIEWS OF ONE READ, round IW, his words: "add little three icons for
+   the three versions of the imprint, so I can see toggle through, see which
+   ones I like." All three are drawn on the one canvas off the same marks,
+   rungs and bands, so switching changes the drawing and never the reading.
+     lanes  what shipped at round IJ: Trace's strip chart with Route's line
+            through it and the five sorts. The default, because he approved it.
+     ring   mockup A of round HT, proto/story-redesign: the Field small, seven
+            seat arcs in the Field's own order, a spoke per kept word.
+     strip  mockup C of round HT, Trace as first drawn and as he picked it in
+            round IG: fixed body lanes, the newest word at the right edge and
+            the chart sliding left as the story is written.
+   The sort still orders the list under all three. Only Lanes re-orders its
+   chart by it, because the other two were drawn in body order on purpose. */
+var ST_VIEWS=[
+ ['lanes','Lanes','Lanes: Trace and Route together, the view wired in',
+  'M3 20h18M6 17v-4M10 17v-9M14 17v-3M18 17v-7M6 11l4-5 4 6 4-4'],
+ ['ring','Ring','Ring: the seven seats as a circle, a spoke for each word kept',
+  'M12 3.5a8.5 8.5 0 1 1 0 17a8.5 8.5 0 1 1 0-17M12 9.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 1 1 0-5M12 7V3.5M16.3 14.5l3 1.7M7.7 14.5l-3 1.7'],
+ ['strip','Strip','Strip: Trace as first drawn, sliding left as you write',
+  'M3 6.5h13M3 12h13M3 17.5h13M19.5 4v16M8 12V9M12 6.5V4M14 17.5v-3']];
+/* inline styles only, because the page's stylesheet is not this file's to
+   change. .st-ico is the Bank and Vault's own button, so the three carry the
+   tap floor, the pressed ring and the Punch treatment those two already have. */
+function stViewHtml(){
+ return '<span role="group" aria-label="Imprints view" style="display:inline-flex;gap:4px;flex:0 0 auto">'
+  +ST_VIEWS.map(function(v){
+   return '<button type="button" class="st-ico" data-view="'+v[0]+'" aria-pressed="'+(STV.view===v[0])+'" '
+    +'aria-label="'+esc(v[1])+'" title="'+esc(v[2])+'">'+stSvg(v[3])+'</button>';}).join('')+'</span>';}
+function stView(v){
+ if(STV.view===v)return; STV.view=v;
+ /* the Strip's slide is banked from the moment it is up, never before */
+ STC.shift=0; STC.lastN=STR.toks.length; stSeatT(); STC.dirty=true;
+ document.querySelectorAll('#stctr [data-view]').forEach(function(b){
+  b.setAttribute('aria-pressed',b.getAttribute('data-view')===v);});}
 function stSortPaint(){
  var el=document.getElementById('stsort'); if(!el)return;
  el.innerHTML='<span class="st-eb">Sort</span>'+ST_SORTS.map(function(s){
@@ -544,13 +600,23 @@ function stSortPaint(){
    ============================================================ */
 var STC={cv:null,g:null,W:0,H:0,dpr:1,lane:{},items:{},prev:{},ro:null,dirty:true,last:0,
  lm:{lanes:[],keyOf:function(){return null;},dwell:null},
- GL:94,GR:64,FLOOR:22,TOP:6,
+ GL:94,GR:64,FLOOR:22,TOP:6,shift:0,lastN:0,
  sync:function(){var now={},items=STC.items;
   STC.stressTo=performance.now()+ST_STRESS_MS;
+  /* at is when the word landed, which the Ring's ripple reads. The prototype
+     stamped it when the flying chip arrived; there is no chip here, see the
+     head of this file, so it is stamped when the read first holds the word. */
   STR.marks.forEach(function(m){now[m.key]=m;
-   if(!items[m.key])items[m.key]={m:m,g:REDUCED?1:0,gv:0,alive:true};
+   if(!items[m.key])items[m.key]={m:m,g:REDUCED?1:0,gv:0,alive:true,at:performance.now()};
    else{items[m.key].m=m;items[m.key].alive=true;}});
   Object.keys(items).forEach(function(k){if(!now[k])items[k].alive=false;});
+  /* the Strip slides only once the words are packed at their narrowest, the
+     prototype's rule: before that each word already moves the strip left by
+     a whole step, because the newest word is pinned to the right edge. */
+  var N=STR.toks.length;
+  if(STV.view==='strip'&&N>STC.lastN&&!REDUCED&&stStripDx()<=3)STC.shift+=(N-STC.lastN)*3;
+  STC.lastN=N;
+  stSeatT();
   STC.dirty=true;}};
 /* the chart's colours, read off the lighting rather than typed. A seat
    colour comes through seatCol, which is the ladder every HTML ring uses. */
@@ -625,12 +691,17 @@ function stFrame(ts){
  var dt=Math.min(.05,(ts-(STC.last||ts))/1000); STC.last=ts;
  var live=!REDUCED&&STC.lm.dwell&&performance.now()<(STC.stressTo||0);
  var moving=stStep(dt);
+ /* the seat springs only drive the Ring and the Strip, so Lanes pays for
+    nothing it does not draw */
+ if(STV.view!=='lanes')moving=stSeatStep(dt)||moving;
  /* one more frame once the pulse ends, so it comes to rest at the still phase */
  if(!live&&STC.pulsing){STC.pulsing=false;STC.dirty=true;}
  if(live)STC.pulsing=true;
  if(!moving&&!live&&!STC.dirty)return;
  STC.dirty=false; stDraw();}
 function stDraw(){
+ if(STV.view==='ring')return stDrawRing();
+ if(STV.view==='strip')return stDrawStrip();
  var g=STC.g,q=stBox(),W=STC.W,H=STC.H; if(!g||!W||!H)return;
  var ink=STC.ink,dim=STC.dim,wide=W>=900;
  g.setTransform(STC.dpr,0,0,STC.dpr,0,0); g.clearRect(0,0,W,H);
@@ -714,6 +785,138 @@ function stHot(k){
  if(STV.hot===k)return; STV.hot=k; STC.dirty=true;
  document.querySelectorAll('#stimps .st-grp').forEach(function(gp){gp.classList.toggle('hot',gp.getAttribute('data-k')===k);});}
 
+/* ============================================================
+   THE RING AND THE STRIP, PORTED FROM proto/story-redesign/src/shared.js,
+   its VA and VC. The drawing is the prototype's, number for number. What
+   changed is only where the numbers come from, and each change is the one
+   this file already made for Lanes:
+     the read is STR and ST_PARSED, not the prototype's own copy of it
+     colours come through stCol and the lighting's ink, dim and accent, so
+       both views follow all seven lightings rather than the Dark one the
+       prototype was drawn on
+     a hollow is cut, not painted, for the reason given at the stations
+     the frame is the product's own, and it stops when nothing moves
+   ============================================================ */
+/* THE SEATS, AS SPRINGS. The prototype's targets, unchanged:
+     rd   the entry's reading at the seat, parseStory bands over three, capped at ten
+     rg   the rung, srcHear
+     bend the Field's own stress curve, frStress in ui/wheel.js, which is the
+          prototype's frStressP on the same LEVER_MU, so it is called rather
+          than copied a second time */
+var STSEAT={}; BANDS.forEach(function(b){STSEAT[b]={rd:0,rv:0,rdT:0,rg:0,rgv:0,rgT:0,bend:0,bv:0,ph:0,rise:0};});
+function stSeatT(){
+ var p=ST_PARSED,rg={},snap=STV.view==='lanes';
+ ((STR.heard&&STR.heard.seats)||[]).forEach(function(s){rg[s.band]=s.rung;});
+ BANDS.forEach(function(b){var o=STSEAT[b],k=ST_BKEY[b],t=p&&p.bands[k]?Math.min(10,p.bands[k]/3):0;
+  if(t>o.rdT+0.01)o.rise=1.6; o.rdT=t; o.rgT=rg[b]||0;
+  /* WHILE LANES IS UP THE SPRINGS ARE NOT STEPPED, so they are held at their
+     targets instead. Left behind, a switch to the Ring grew every arc and
+     spoke from nothing for a reading that had not changed, which is the
+     motion that says a word landed when none had, the defect the head of
+     stRender records for the lanes. */
+  if(snap){o.rd=t;o.rg=o.rgT;o.rv=o.rgv=o.bv=0;o.bend=frStress(t);o.rise=0;}});}
+function stSeatStep(dt){
+ var moving=false,now=performance.now();
+ BANDS.forEach(function(b){var o=STSEAT[b],tb=frStress(Math.max(0,o.rdT));
+  if(REDUCED){o.rd=o.rdT;o.rg=o.rgT;o.rv=o.rgv=0;o.bend=tb;o.bv=0;o.rise=0;return;}
+  var sub=Math.max(1,Math.ceil(dt/(1/120))),sd=dt/sub;
+  for(var s=0;s<sub;s++){
+   var a=144*(o.rdT-o.rd)-2*.72*12*o.rv;o.rv+=a*sd;o.rd+=o.rv*sd;
+   var a2=196*(o.rgT-o.rg)-2*.8*14*o.rgv;o.rgv+=a2*sd;o.rg+=o.rgv*sd;
+   /* the Field's bend: w 14, damping .42, so it lands a fifth past its mark */
+   var a3=196*(tb-o.bend)-2*.42*14*o.bv;o.bv+=a3*sd;o.bend+=o.bv*sd;}
+  o.rise=Math.max(0,o.rise-dt); o.ph+=dt*(o.rise>0?0.9:0);
+  if(Math.abs(o.rdT-o.rd)>.004||Math.abs(o.rv)>.004||Math.abs(o.rgT-o.rg)>.004||Math.abs(o.rgv)>.004
+   ||Math.abs(tb-o.bend)>.002||Math.abs(o.bv)>.004||o.rise>0)moving=true;});
+ if(STV.view==='strip'){STC.shift*=REDUCED?0:Math.exp(-dt*9);
+  if(STC.shift>.05)moving=true; else STC.shift=0;}
+ /* the ripple outlives the spoke's spring by a few hundred milliseconds, and
+    a frame that stopped with it would leave a ring standing on the canvas */
+ if(STV.view==='ring'&&!REDUCED)Object.keys(STC.items).forEach(function(k){if(now-(STC.items[k].at||0)<900)moving=true;});
+ return moving;}
+/* the seven sectors in the Field's own order and size: Root at twelve
+   o'clock, clockwise, each as wide as its share of the somatic addresses */
+var ST_SECT=null;
+function stSect(){
+ if(ST_SECT)return ST_SECT;
+ var cnt={},a=-Math.PI/2,o={};W.forEach(function(n){cnt[n.b]=(cnt[n.b]||0)+1;});
+ BANDS.forEach(function(b){var w=(cnt[b]||0)/W.length*TAU;o[b]={a0:a,a1:a+w};a+=w;});
+ return (ST_SECT=o);}
+/* ---- A. THE LISTENING RING ---- */
+function stDrawRing(){
+ var g=STC.g,CW=STC.W,CH=STC.H; if(!g||!CW||!CH)return;
+ var s=Math.min(CW,CH)/300,q={cx:CW/2,cy:CH/2,core:22*s,sp0:28*s,spL:44*s,ring:100*s};
+ var SE=stSect(),ink=STC.ink,acc=STC.acc,now=performance.now();
+ g.setTransform(STC.dpr,0,0,STC.dpr,0,0); g.clearRect(0,0,CW,CH); g.setLineDash([]);
+ /* the seat arcs, bent by the Field's rule, and the fringes past five */
+ BANDS.forEach(function(b){var o=STSEAT[b],S_=SE[b],c=stCol(b),gap=.025,heard=o.rgT>0||o.rd>0.05;
+  var r=q.ring+o.bend*9*s;
+  g.beginPath();g.arc(q.cx,q.cy,r,S_.a0+gap,S_.a1-gap);g.strokeStyle=rgba(c,heard?.92:.2);g.lineWidth=5*s;g.lineCap='butt';g.stroke();
+  /* the rung, ten ticks along the outside of the arc; seven to ten are the end it asks at */
+  for(var i=0;i<10;i++){var a=S_.a0+gap+(i+.5)/10*(S_.a1-S_.a0-2*gap),on=i<Math.round(o.rg),ask=i>=SRC_ASK-1,r0=r+8*s,r1=r0+(ask?8:6)*s;
+   g.beginPath();g.moveTo(q.cx+Math.cos(a)*r0,q.cy+Math.sin(a)*r0);g.lineTo(q.cx+Math.cos(a)*r1,q.cy+Math.sin(a)*r1);
+   g.strokeStyle=on?rgba(c,1):rgba(c,heard?(ask?.4:.18):.08);g.lineWidth=(on?2.2:1.3)*s;g.stroke();}
+  var str=Math.max(0,o.bend);
+  if(str>=.03){var gp=(10-6*str)*s,f=REDUCED?.5:(o.ph-Math.floor(o.ph)),lift=mixc(c,ink,.55);
+   for(var k=0;k<5;k++){var pos=k+f,al=Math.pow(Math.min(1,str),1.3)*Math.sin(Math.PI*pos/5)*.85;if(al<.02)continue;
+    g.beginPath();g.arc(q.cx,q.cy,r+22*s+pos*gp,S_.a0+gap*2,S_.a1-gap*2);g.strokeStyle=rgba(k%2?c:lift,al);g.lineWidth=(k%2?1.1:1.6)*s;g.stroke();}}
+  if(heard){var am=(S_.a0+S_.a1)/2,lr=q.ring-15*s;g.fillStyle=rgba(c,.95);g.font='600 '+Math.max(11,11*s)+'px Inter,system-ui,sans-serif';
+   g.textAlign='center';g.textBaseline='middle';g.fillText(b,q.cx+Math.cos(am)*lr,q.cy+Math.sin(am)*lr);}});
+ /* the spokes, one per kept stretch of text, as long as it weighed */
+ var per={},coh=[];
+ Object.keys(STC.items).forEach(function(k){var it=STC.items[k];
+  if(it.m.coh){coh.push(it);return;} if(!it.m.bn||!SE[it.m.bn])return; (per[it.m.bn]=per[it.m.bn]||[]).push(it);});
+ Object.keys(per).forEach(function(b){var L=per[b].sort(function(x,y){return x.m.s-y.m.s;}),S_=SE[b],c=stCol(b),n=L.length;
+  L.forEach(function(it,j){var a=S_.a0+(j+1)/(n+1)*(S_.a1-S_.a0),g1=Math.max(0,it.g),len=q.sp0+g1*(0.25+0.75*it.m.depth)*q.spL,
+   ca=Math.cos(a),sa=Math.sin(a);if(g1<.01)return;
+   g.beginPath();g.moveTo(q.cx+ca*q.sp0,q.cy+sa*q.sp0);g.lineTo(q.cx+ca*len,q.cy+sa*len);
+   if(it.m.neg){g.setLineDash([2*s,3*s]);g.strokeStyle=rgba(c,.45);}else{g.setLineDash([]);g.strokeStyle=rgba(c,1);}
+   g.lineWidth=2.2*s;g.lineCap='round';g.stroke();g.setLineDash([]);
+   /* a degree word's share of the spoke is drawn lighter, as on Lanes */
+   if(it.m.mod&&!it.m.neg){var base=q.sp0+g1*(0.25+0.75*it.m.depth/it.m.mod.f)*q.spL;
+    g.beginPath();g.moveTo(q.cx+ca*base,q.cy+sa*base);g.lineTo(q.cx+ca*len,q.cy+sa*len);g.strokeStyle=rgba(mixc(c,ink,.6),1);g.lineWidth=3*s;g.stroke();}
+   var age=(now-(it.at||0))/900;
+   if(age<1&&!REDUCED){var rr=(6+10*age)*s;g.beginPath();g.arc(q.cx+ca*len,q.cy+sa*len,rr,0,TAU);g.strokeStyle=rgba(c,.5*(1-age));g.lineWidth=1.4*s;g.stroke();}});});
+ /* the core. A coherent word places nothing, so it lands here and grows
+    nothing. Hollow by cutting, like the stations on Lanes. */
+ g.save();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.fill();g.restore();
+ g.beginPath();g.arc(q.cx,q.cy,q.core,0,TAU);g.strokeStyle=rgba(acc,Math.min(1,.35+.1*coh.length));g.lineWidth=1.4*s;g.stroke();
+ coh.forEach(function(it,j){var a=-Math.PI/2+j*.5,g1=Math.max(0,it.g),r0=q.core+3*s,r1=r0+6*s*g1;
+  g.beginPath();g.moveTo(q.cx+Math.cos(a)*r0,q.cy+Math.sin(a)*r0);g.lineTo(q.cx+Math.cos(a)*r1,q.cy+Math.sin(a)*r1);
+  g.strokeStyle=rgba(acc,1);g.lineWidth=2*s;g.stroke();});
+ g.lineCap='butt';}
+/* ---- C. THE TRACE, AS FIRST DRAWN: THE STRIP ---- */
+function stStripBox(){return {x0:70,x1:STC.W-60,y0:8,y1:STC.H-26};}
+function stStripLane(b){var q=stStripBox(),i=BANDS.length-1-BANDS.indexOf(b),h=(q.y1-q.y0)/7;return {y:q.y0+i*h,h:h};}
+/* a chart with no width yet reads as packed, and would bank a slide it never
+   drew; nothing slides until the canvas has been measured */
+function stStripDx(){var q=stStripBox(),N=Math.max(1,STR.toks.length);
+ return STC.W?Math.max(3,Math.min(9,(q.x1-q.x0-8)/N)):9;}
+function stStripX(j){var q=stStripBox(),N=STR.toks.length;return q.x1-(N-1-j)*stStripDx()-STC.shift;}
+function stDrawStrip(){
+ var g=STC.g,CW=STC.W,CH=STC.H; if(!g||!CW||!CH)return;
+ var q=stStripBox(),dx=stStripDx(),ink=STC.ink,dim=STC.dim,acc=STC.acc;
+ g.setTransform(STC.dpr,0,0,STC.dpr,0,0); g.clearRect(0,0,CW,CH); g.setLineDash([]);
+ BANDS.forEach(function(b){var l=stStripLane(b),c=stCol(b),o=STSEAT[b],heard=o.rgT>0;
+  g.beginPath();g.moveTo(q.x0,l.y+l.h-1);g.lineTo(q.x1,l.y+l.h-1);g.strokeStyle=rgba(c,heard?.22:.07);g.lineWidth=1;g.stroke();
+  g.fillStyle=rgba(c,heard?1:.76);g.font='600 12px Inter,system-ui,sans-serif';g.textAlign='right';g.textBaseline='middle';g.fillText(b,q.x0-10,l.y+l.h*.6);
+  for(var i=0;i<10;i++){var on=i<Math.round(o.rg);g.fillStyle=on?rgba(c,1):rgba(c,i>=SRC_ASK-1?.3:.12);g.fillRect(CW-54+i*5,l.y+l.h*.6-5,3,10);}});
+ g.save();g.beginPath();g.rect(q.x0,0,q.x1-q.x0+8,CH);g.clip();
+ /* every word read, a tick on the floor; the ones it kept rise into their seat */
+ STR.toks.forEach(function(o,j){var x=stStripX(j);if(x<q.x0-8)return;
+  g.fillStyle=o.m?rgba(o.m.bn?stCol(o.m.bn):acc,1):rgba(dim,.45);g.fillRect(x,CH-20,Math.max(1.5,dx-3),o.m?9:6);});
+ Object.keys(STC.items).forEach(function(k){var it=STC.items[k],m=it.m,g1=Math.max(0,it.g);if(g1<.01||m.t0<0)return;
+  var x=stStripX(m.t0),x2=stStripX(m.t1)+Math.max(5,dx-1.5);
+  if(m.coh){g.fillStyle=rgba(acc,.9);g.fillRect(x,CH-20-12*g1,x2-x,3);return;}
+  if(!m.bn)return;
+  var l=stStripLane(m.bn),c=stCol(m.bn),hh=g1*(0.2+0.8*m.depth)*l.h*.9,base=l.y+l.h-1;
+  if(m.neg){g.strokeStyle=rgba(c,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);return;}
+  g.fillStyle=rgba(c,1);g.fillRect(x,base-hh,x2-x,hh);
+  if(m.mod){var hb=hh/m.mod.f;g.fillStyle=rgba(mixc(c,ink,.55),1);g.fillRect(x,base-hh,x2-x,hh-hb);}});
+ var N=STR.toks.length;if(N){var px=stStripX(N-1)+dx;g.fillStyle=rgba(acc,.55);g.fillRect(px,q.y0,1,CH-q.y0-6);}
+ g.restore();
+ g.fillStyle=rgba(dim,.9);g.font='12px Inter,system-ui,sans-serif';g.textAlign='right';g.textBaseline='middle';g.fillText('read',q.x0-10,CH-15);}
+
 /* ---- the words under the chart and the tag beside its name ---- */
 function stPendPaint(){
  var e=document.getElementById('stpend'); if(!e)return;
@@ -721,7 +924,9 @@ function stPendPaint(){
  e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':'not read yet'));
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
 function stCtrPaint(){
- var e=document.getElementById('stctr'); if(!e)return;
+ /* its own span, because the line also carries the view toggle and writing
+    the whole line's text would take the three buttons off it */
+ var e=document.getElementById('stctrt'); if(!e)return;
  var toks=STR.toks,tg=STR.marks.length,ng=STR.marks.filter(function(m){return m.neg;}).length;
  e.textContent=toks.length?(toks.length+' words read, '+tg+' kept'+(ng?', '+ng+' set aside as negated':'')):'';}
 
