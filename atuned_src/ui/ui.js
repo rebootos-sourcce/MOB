@@ -2,11 +2,11 @@
 /* ============================================================
    POINTER. Drag a segment to load or clear it, click to drill.
    ============================================================ */
-const HOWTO=[
- 'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
- 'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.',
- 'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.',
- 'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'];
+/* HOWTO WAS HERE AND NOTHING READ IT. Four paragraphs of how to use the
+   wheel, one per depth, declared and never rendered. Removed in round HS
+   rather than left for the next seat to wire in: the class of text it holds
+   is the class he has asked, three times, never to see on a surface. The one
+   route that says how the wheel moves is the Help sheet, which a person opens. */
 /* still: the picture asking has no drag. The two renditions in ui/rings.js
    draw every address and none of them can be dragged to set a charge, so an
    address there says click and not drag. Omitted, which is how the wheel
@@ -680,18 +680,27 @@ function railStack(r){
      carrying, and the coherent quality on the other side of it. Held and
      opposite, in both places, with the definition said once here rather than
      left in a tooltip nothing on a phone can reach. */
-  h+='<p class="stk-def">Nine axes, two ends each. <b>Held</b> is the state you are '
-   +'carrying. <b>Opposite</b> is the coherent quality on the far side of it. Release '
-   +'empties the first, replace fills the second.</p>';
+  /* AND THE DEFINITION IS OFF THE RAIL NOW. Round HS: "get rid of all this
+     like second or three third tier text ... we have overlays for all this
+     shit." A four line
+     legend sat above the nine rows on every tab. Each row is a door to its
+     axis's drill, and the drill says both ends and what fills each, so the
+     definition is one press away on a phone as well as a desk, and the rule
+     against a definition living only in a tooltip still holds. The two column
+     words stay, and the same two words are the drill's. */
   h+='<div class="stk-hd"><span>held</span><span>opposite</span></div>';
-  h+=CHILD.map(function(c){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
+  h+=CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
    /* each axis carries its own glyph. canon.js has had one on every entry
       since the port and nothing in the rails was drawing them. */
-   return '<div class="stk-r static"><span class="stk-l">'
+   /* A ROW IS A DOOR NOW, which is what let the legend above come off. It was
+      a static row and the only place held and opposite were defined was the
+      legend, so the legend was cut only once each row opened runFetterDrill,
+      the axis's own drill, which says both halves and what fills each. */
+   return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
     +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
     +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
-      glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
+      glyph:'<path d="'+c.ic+'"/>'})+'</span></button>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
@@ -1385,6 +1394,8 @@ try{ localStorage.getItem(PKEY);
 document.addEventListener('click',function(e){
  var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
  if(st){STACK_TAB=st.getAttribute('data-st');railStack(compute());return;}
+ var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
+ if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
  var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
  if(sr){var rr=compute(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
   if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin); render();} return;}

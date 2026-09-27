@@ -29,9 +29,11 @@ $('mx').addEventListener('mouseleave',mxKey);
 /* AND THE KEY READ THE MODEL ALOUD. "Brightness is the SQ held in that cell"
    and "a 1.3× affinity pair" are a variable name and a weighting constant.
    Said as what a person sees. */
-function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
- +'The brighter a cell, the more charge it holds. A gold ring marks a pair that '
- +'weighs more together. Press any cell.';}
+/* HS sweep: the key keeps what the eye cannot work out alone, brightness and
+   the gold ring. "Columns are domains, rows are child emotions" repeated the
+   label over the grid, and "Press any cell" told a person how to use it. */
+function mxKey(){$('mxk').innerHTML='The brighter a cell, the more charge it holds. '
+ +'A gold ring marks a pair that weighs more together.';}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
@@ -449,7 +451,11 @@ function runAccDrill(){
    The replacement says what will happen, in the order it happens, using words
    that carry their own meaning. */
 PEOPLE.unshift({nm:'You',age:'',role:'custom',dom:0,a1:0,a2:1,
- says:'Nothing has been read yet. Write what happened, or answer the questions, and this fills in.',
+ /* HS SWEEP: no quote on the blank card. On a first load this was the third
+    "Nothing has been read yet" on one rail, under the rail's own line and
+    above the four doors that already say it. The quote slot is for what a
+    person says, and this one has not said anything. */
+ says:'',
  /* This was 3 on every axis, and it is the persona the app opens on. So a
     stranger's first screen showed Fear 3.0, Anger 3.0, Shame 3.0 and the rest,
     three rows below a panel correctly saying nothing was held. Nobody entered
@@ -588,10 +594,24 @@ function toYou(){if(S.who===0)return;
    refusal says what did not happen and why, and nothing else. what still
    names the refused press where it is called; it filled the clause that went,
    and nothing prints it now. */
+/* AND NOW IT SAYS NOTHING AT ALL. Round HS, his words: "You've got red text
+   underneath the logo it's like small text there's nothing changed get rid
+   of that so it's never there" This was that line. It went out with the fail
+   kind, and status() clears every kind but fail, so one press on a domain or
+   an archetype on a worked example left it in red under the logo across every
+   tab and every profile switch until something else was said. Reproduced on
+   Sofia at 1600: one press on a rail domain, and the line was still there six
+   seconds later.
+
+   The press was never a failure. On the wheel it opens the drill, which is
+   the reading the person pressed for, and the picker already reads "Sofia,
+   example". So the refusal holds and is silent: nothing moves, and nothing is
+   said about nothing moving. The save and release refusals are different,
+   because there a person pressed Save or Release and did not get it, and
+   they keep their line. */
 function notYours(what){
  if(S.who===0)return false;
  void what;
- status('Nothing changed on a worked example.','fail');
  return true;}
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 

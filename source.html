@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="1f77036 2026-09-27 13:32"><head><meta charset="utf-8">
+<html lang="en" data-build="4d132e4 2026-09-27 14:48"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -16529,8 +16529,15 @@ const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
    and one delegated listener answers for every copy of them.
    ============================================================ */
 const STARTD=[
+ /* HS SWEEP, THE DOORS. A door's second line says which door is yours, and
+    that is all it is for. "The engine reads the charge out of it" and "A
+    release empties a story out of the body. This is what you are filling it
+    toward" explained the product behind the door, on a button, in small
+    type, on every tab of a blank profile. The two "for anyone who" lines stay:
+    they are the only thing telling a person which of the two middle doors is
+    theirs. The definition of release stays where GS put it, in the drill. */
  ['story','Write what happened',
-  'The day, in your own words. The engine reads the charge out of it.'],
+  'The day, in your own words.'],
  /* TWO REASSURANCES AGAINST FEARS NOBODY HAD RAISED, CUT. V12. "None of them
     is a diagnosis" and "which is most people" answered a worry on a door the
     person has not opened yet; the drill behind the door is where that worry
@@ -16542,7 +16549,7 @@ const STARTD=[
  ['ages','Go year by year',
   'Three to eighteen. For anyone who cannot think of anything they identify with.'],
  ['avatar','Say who you are becoming',
-  'The avatar. A release empties a story out of the body. This is what you are filling it toward.']];
+  'The avatar.']];
 function startHTML(lead){
  return '<div class="pm-eye">Where to start</div>'
   +'<p class="st-lead">'+(lead||'Nothing has been read yet. Four ways in.')+'</p>'
@@ -17793,17 +17800,13 @@ function verpArrows(cr0){
    one word. Definition is on demand. */
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
-  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.',
-  how:'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.'},
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
-  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.',
-  how:'Patterns. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.'},
+  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
-  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.',
-  how:'Chains. Patterns, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
+  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.'},
  {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 6 masks, 21 laws',
-  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.',
-  how:'Blueprint. Chains, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.'}];
 
 /* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
    a separate control for the same idea: how much of the construct is drawn.
@@ -22579,9 +22582,16 @@ function bmLabels(g){
   g.fillText(v?'Back, seen from behind':'Front',bmW2S(v?BMOX+50:50,0)[0],14);
   g.font='500 12px Inter,system-ui,sans-serif';});}
 /* one line of instruction, in the corner, off the figure */
+/* HS SWEEP: ONLY IN PAINT. The default hint, "Press a region to open it.
+   Double press to zoom in. Point at a line to trace it.", sat in the corner
+   of the Body on every load, explaining the figure to a person already
+   looking at it. The regions answer a press and the lines answer a pointer
+   without being told to. Paint keeps its line, because it is the one mode a
+   person chose, and the second press that clears a cell cannot be found by
+   looking: the same case as the archetype scale's own one line. */
 function bmHint(g){
- var t=BM.mode==='pain'?'Paint where it hurts. Press a painted cell again to clear it.'
-  :(BM.phone?'Press a region to open it.':'Press a region to open it. Double press to zoom in. Point at a line to trace it.');
+ if(BM.mode!=='pain')return;
+ var t='Paint where it hurts. Press a painted cell again to clear it.';
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.font='500 12px Inter,system-ui,sans-serif';g.textBaseline='alphabetic';g.textAlign='left';
  g.fillStyle=bmRgba(BMC.dim,.95);g.fillText(t,12,BM.H-12);}
 
@@ -23290,15 +23300,23 @@ function impRender(){
    if(!seg.length&&!gs.length)return;
    var heldN=seg.filter(function(n){return n.sq>=4;});
    var instN=seg.filter(function(n){return n.sq<4&&n.pole>=4;});
-   var sum=heldN.reduce(function(a,n){return a+n.sq;},0);
    /* TWO BUCKETS IN ONE ROW, which is the design: the seat name on the left
       is a label and the reading on the right is a value. The row carried the
       capital on every word straight into the value, so "nothing held, 15
       installed" was printed back as "Nothing Held, 15 Installed", a reading
       wearing a title. Every em in this renderer is a value, so every em opts
       out and the seat name keeps the rule. */
+   /* THE SUMMED CHARGE IS GONE FROM THIS ROW. Round HS, his words: "you've
+      got five field 25.48 or something like that installed what is that"
+      It was "5 held, 26.4, 8 installed" on Derek's sacral: a count, then the
+      charge of all five added together with no unit, then a second count, so
+      the eye ran the sum into the count after it and read one number that
+      does not exist. A sum of charge across addresses is not a quantity a
+      person carries anywhere else in the product, and every pill below the
+      row already prints its own charge. Reproduced on Derek, Sofia, James and
+      Lance before it was cut. */
    h+='<div class="ip-bh" style="--c:'+seatCol(b)+'">'+b+'<em class="plain">'
-    +(heldN.length?heldN.length+' held, '+sum.toFixed(1):'nothing held')
+    +(heldN.length?heldN.length+' held':'nothing held')
     +(instN.length?', '+instN.length+' installed':'')
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
    /* two maps, because ghost is passed as the amount and is a number. The
@@ -23339,8 +23357,11 @@ function impRender(){
     +(seg.length?cloud(seg):'<div class="ip-none" style="padding:6px 0">nothing held at the '
       +e.b.toLowerCase()+'</div>');});}
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];});
+ /* HS sweep: "click a pill to select" told a person how to use the panel.
+    The pills are buttons and the two controls beside this are disabled until
+    one is pressed, so the empty half of this slot says nothing. */
  h+='<div class="ip-bar"><span class="ip-sel">'
-  +(picked.length?picked.length+' selected':'click a pill to select')+'</span>'
+  +(picked.length?picked.length+' selected':'')+'</span>'
   +'<button class="btn" id="impinfo"'+(picked.length===1?'':' disabled')+'>Detail</button>'
   +'<button class="btn pri" id="imprun"'+(picked.length?'':' disabled')+'>Release '
   +(picked.length>1?picked.length:'')+'</button></div>';
@@ -23409,9 +23430,15 @@ function stRender(){
   +'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
   +'<textarea id="sttext" class="st-ta" spellcheck="false" '
   +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>'
+  /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
+     left window it says two words zero tag get rid of that so it's never
+     there" It read "2 words, 0 tagged". The word count is a number nobody
+     acts on, and what the sniffer tagged is already shown twice: lit in the
+     sentence itself, and counted on the Commit button beside it. Reproduced
+     before it was cut, on the blank profile, by typing two words. The spacer
+     keeps the two buttons at the right edge where the counter pushed them. */
   +'<div class="st-bar">'
-   +'<span class="st-ct">'+(ST_TEXT.trim()?ST_TEXT.trim().split(/\s+/).length:0)+' words'
-   +(p?', '+p.hits.length+' tagged':'')+'</span>'
+   +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
@@ -23539,9 +23566,14 @@ function stRelPanel(){
  var secs=Math.round(cost*RUN_SPEED_S[ST_RELSPD]);
  /* the eyebrow that said Release is the rail section's own header now, so
     saying it twice would be the heading read aloud. */
- e.innerHTML='<p class="st-relp">'+(pool.length
-    ? 'Pick how much to run. Each pattern is one thought line at one address.'
-    : 'Nothing is held above the line yet, so there is nothing to release.')+'</p>'
+ /* "PICK HOW MUCH TO RUN. EACH PATTERN IS ONE THOUGHT LINE AT ONE ADDRESS."
+    Gone, and he quoted it in round HS while asking for exactly this sweep:
+    "get rid of all this like second or three third tier text pick how much
+    to run each pattern is what like we have overlays for all this shit." The rows
+    under it are the picker, and each names what it sets. The refusal stays,
+    because with nothing held the rows would be controls that do nothing. */
+ e.innerHTML=(pool.length?''
+    :'<p class="st-relp">Nothing is held above the line yet, so there is nothing to release.</p>')
   +'<div class="st-rrow"><span class="st-rlab">From</span>'
    +'<button type="button" class="st-rb'+(ST_RELSRC==='heavy'?' on':'')+'" data-rsrc="heavy">Heaviest</button>'
    +'<button type="button" class="st-rb'+(ST_RELSRC==='story'?' on':'')+'" data-rsrc="story">'
@@ -23580,9 +23612,7 @@ function stRelPanel(){
 /* refresh only the read column so typing never loses the caret */
 function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
- var ct=document.querySelector('.st-ct');
- if(ct)ct.textContent=(ST_TEXT.trim()?ST_TEXT.trim().split(/\s+/).length:0)+' words'
-  +(ST_PARSED?', '+ST_PARSED.hits.length+' tagged':'');
+ /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
  if(ap){ap.disabled=!(ST_PARSED&&ST_PARSED.imprints.length);
   ap.textContent='Commit '+(ST_PARSED?ST_PARSED.imprints.length:0);}
@@ -24242,8 +24272,9 @@ function sumSpirit(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r);
  if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
-  +'<p class="s-p">No birth data on file. Date, time and place would let this run, and '
-  +'nothing else is stored, because every reading here is derived from those three.</p></div>';
+  /* HS sweep: the refusal keeps what is missing and what would put it in.
+     The tail on what is stored and why explained the section. */
+  +'<p class="s-p">No birth data on file. Date, time and place would let this run.</p></div>';
  var e=C.e;
  function chip(k,v,glyph,lab,val,t){
   return '<button type="button" class="s-chip" data-sp="'+k+'" data-spv="'+esc(String(v))+'" '
@@ -24284,9 +24315,10 @@ function sumSpirit(r){
   out+=C.agree.map(function(a){return '<div class="s-ag">'+esc(a)+'</div>';}).join('');
   out+=C.differ.map(function(d){return '<div class="s-dg">'+esc(d)+'</div>';}).join('');
   out+='</div>';
-  if(C.differ.length)out+='<p class="s-src">The instrument does not pick a winner. A birth '
-   +'chart describes the blueprint and the field describes what is running now. They diverge '
-   +'where something was installed on top of the blueprint.</p>';}
+  /* HS sweep. A three sentence footnote under the list explained how to read
+     a disagreement in it. The Reading paragraph at the top of this page
+     already says what a split between blueprint and field means, in this
+     person's own names, which is the useful half of the same sentence. */}
  return out+'</div>';}
 
 /* ---- full numerology. six numbers, and every name part on its own. ---- */
@@ -24310,9 +24342,10 @@ function sumNum(r){
  if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
  if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
  var out='<div class="s-numer"><div class="pm-eye plain">Numerology, in full</div>'
+  /* HS sweep: the name it was read off stays, because a person checks the
+     spelling. The method sentence after it explained the arithmetic. */
   +'<p class="s-p">Read off <b>'+esc(N.parts.map(function(p){
-    return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>. Pythagorean, with 11, 22 '
-  +'and 33 surviving reduction at every step.</p>'
+    return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>.</p>'
   +'<div class="s-nrows">';
  out+=rows.map(function(x){
   var v=x[2], master=NUM_MASTER.indexOf(v)>=0;
@@ -24368,7 +24401,7 @@ function sumUnread(r){
      who did not ask, and then reassured them they would not need a term. The
      doors underneath are the route. */
   +'<div class="sum-line">Nothing has been read yet.</div></div></div>'
-  +'<div class="sum-start">'+startHTML('Four ways in. Any one of them fills this page.')+'</div>'
+  +'<div class="sum-start">'+startHTML('Four ways in.')+'</div>'
   +sumSpirit(r)+sumNum(r);}
 
 /* ============================================================
@@ -24652,11 +24685,15 @@ function sumLens(r){
  if(!L.length)return '';
  return '<div class="pm-eye" style="margin-top:18px">Four lenses</div>'
   +'<div class="s-lens">'+L.map(function(x){
-   return '<div class="s-ln">'
+   /* WHAT IT WAS READ OFF MOVES TO THE ROW'S TITLE, round HS. It was a
+      fourth line in small italics under every lens, "read off root domain as
+      element", the third tier text he asked to have swept off the site. It
+      is kept, one hover away, because it is the provenance of a label put
+      on a person; it is not printed on the page. */
+   return '<div class="s-ln" title="'+esc('Read off '+x.c+'.')+'">'
     +'<span class="s-ln-t">'+esc(x.t)+'</span>'
     +'<b class="s-ln-a">'+esc(x.a)+'</b>'
     +'<span class="s-ln-b">'+esc(x.b)+'</span>'
-    +'<em class="s-ln-c">read off '+esc(x.c)+'</em>'
    +'</div>';}).join('')+'</div>';}
 
 /* ---- integrity over time ---- */
@@ -24682,8 +24719,7 @@ function sumIg(r){
   body='<p class="cn-gp">'
    +(pts.length?'One reading with an integrity on it in this span, at <b>'
      +pts[0].ig.toFixed(1)+' of 10</b>. Two makes a line.'
-    :'Nothing on the record for this span. Every save writes a point, so this '
-     +'fills in as you go.')
+    :'Nothing on the record for this span.')
    +'</p>';}
  else {
   var lo=0, hi=10;                       /* integrity's real scale, both ends */
@@ -24836,7 +24872,7 @@ function anaField(title,sub,items,w,h){
     if(fit)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+p.it.v.toFixed(1)+'</text>';}}
   s+='</g>';});
- return s+'</svg><div class="ab-s">'+sub+'</div></div>';}
+ return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
  var r=compute(),H=anaHist(),prev=H.length>1?H[H.length-2]:null;
@@ -24931,23 +24967,29 @@ function anaRender(){
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
   +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
- out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
+ /* HS SWEEP. Every chart here carried a caption under it saying how to read
+    it: what the heading means and that a bigger mark is more. A bubble chart
+    says bigger is more by being one, and the heading names the set. The one
+    caption kept is the colour key on What is running, because four kinds
+    share one chart and colour is the only thing telling them apart. Its tail,
+    the bigger the mark, goes with the rest. */
+ out+=anaField('Masks','',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
- out+=anaField('Domains','the blueprint you run. yours are lit, the rest are context',
+ out+=anaField('Domains','',
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
- out+=anaField('Archetypes','how the blueprint expresses. the bigger the mark, the closer the fit',
+ out+=anaField('Archetypes','',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
- out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character. the bigger the mark, the more weight it carries',
+ out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
   [].concat(r.sups,r.hys,r.cxs,r.sabs).slice(0,16).map(function(o){
    return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210);
- out+=anaField('The nine axes','held charge on each poled axis, out of ten',
+ out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','the bigger the mark, the more is held there',
+ out+=anaField('The seven seats','',
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>';
@@ -24965,8 +25007,11 @@ function anaRender(){
     a reading is not a score, and drills.js tells a person in as many words
     that nothing is scored. The intake already counts what a person has
     answered, so answered is the word. */
+ /* AND THE FRAME IS GONE TOO, round HS. "21 laws, each answered from never
+    to every time" was the section describing itself under its own heading.
+    The twenty one bars are the count, and the scale is said once, where it
+    is answered, in the intake's key. */
  out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
-  +'<p class="sum-p">21 laws, each answered from never to every time.</p>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'
@@ -24982,19 +25027,28 @@ function anaRender(){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
    /* the third printing of the same tolerance on one surface. Same ruling,
       same treatment: the warning survives, the arithmetic does not. */
-   +'<p class="sum-p">One bar per session. Height is CQ on 0 to 100, colour is the darkest seat. '
-   +'The needle has play in it, so read the shape of the run.</p>'
+   /* HS sweep: a legend for the strip, and the needle warning said a second
+      time on this surface. Each bar names its CQ and seat on its title, and
+      the warning stands once, beside Identification. */
    +'<div class="ana-strip">';
   H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', '+x.dark
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></div>';});
   out+='</div>';}
  var meas=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;});
- out+='<p class="sum-p" style="margin-top:18px">'
-  +(meas.length===21?'Every law is measured, so nothing here is a default.'
-    :meas.length?'<b>'+(21-meas.length)+'</b> law'+(21-meas.length===1?' is':'s are')+' still unmeasured and sitting at the default 6, which flatters the score. Answer them in Intake.'
-    :'No law is measured yet. All 21 sit at the default 6, which flatters the score. Answer them in Intake.')
-  +'</p></div>';
+ /* HS SWEEP, AND PASS ONE BEFORE IT. "Every law is measured, so nothing here
+    is a default" said nothing a person acts on and is silent now. The other
+    two said an unanswered law "flatters the score", which has been untrue
+    since 25 September: engine/compute.js counts an unanswered law 0 against a
+    fixed 210, and the default 6 never enters CQ. What is true is that the
+    bars above draw an unanswered law at that 6, so that is what is said, and
+    the route names the section by the word on the button that opens it. */
+ var unm=21-meas.length;
+ out+=(unm?'<p class="sum-p" style="margin-top:18px">'
+    +(meas.length?'<b>'+unm+'</b> law'+(unm===1?' is':'s are')+' unmeasured, drawn above at the default 6.'
+      :'No law is measured yet. All 21 are drawn above at the default 6.')
+    +' Answer them in Energetics.</p>':'')
+  +'</div>';
  /* the record. every snapshot the profile carries, and the distance between
     any two of them. the data has been accruing since the rebuild. */
  out+='<div class="ab-f" id="rec"></div>';
@@ -25041,18 +25095,22 @@ function anaHot(r){
   +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
  else s+=anaHotRows(L,t);
  return '<div class="ana-hot">'+s+'</div>';}
+var ANA_DIRSAY={expanding:'Its charge rose on its last change.',
+ collapsing:'Its charge fell on its last change.',
+ steady:'It has not moved since this record was opened.'};
 function anaHotRows(L,t){
  var say=[], s='';
  ['expanding','collapsing','steady'].forEach(function(k){if(t[k])say.push('<b>'+t[k]+'</b> '+k);});
  s='<p class="sum-p"><b>'+L.length+'</b> address'+(L.length===1?' is':'es are')
   +' past five, where an address pulls more than half as hard as it can and the ring on the '
   +'Field bends under it. '+say.join(', ')+'.</p>'
-  +'<p class="sum-p">Expanding means its charge rose on its last change. Collapsing means it fell. '
-  +'Steady means it has not moved since this record was opened.</p>'
+  /* HS sweep: a three sentence legend for the three direction words sat
+     between the count and the rows. Each word now carries its own meaning as
+     its title, and the colour of the word already separates the three. */
   +'<div class="ad-rows">'+L.slice(0,ANA_HOT_ROWS).map(function(n){var d=hotDir(n);
    return '<button type="button" class="ad-r" data-addr="'+n.i+'" data-dir="'+d+'" '
     +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
-    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'">'+d+'</em></button>';}).join('')+'</div>';
+    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'" title="'+esc(ANA_DIRSAY[d]||'')+'">'+d+'</em></button>';}).join('')+'</div>';
  if(L.length>ANA_HOT_ROWS)s+='<p class="sum-p">The '+ANA_HOT_ROWS+' heaviest. '
   +(L.length-ANA_HOT_ROWS)+' more are past five, and the Field draws every one.</p>';
  return s;}
@@ -25457,16 +25515,20 @@ function avArchIc(a,cls){
  return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'><path d="'+a.ic+'"/></svg>';}
 var AV_RANK=['first','second','third'];
 function avCompare(a,rating,r){
- if(r.unread)return 'Nothing read yet, so the field has no reading of its own to set beside yours.';
+ /* HS sweep. Silence on an unread field: there is nothing to set beside the
+    person's own rating, and a sentence saying so is a refusal nobody asked
+    for, sitting under a control they have not pressed. The two tails below,
+    "That gap is what the scale is for" and "Both are kept", explained the
+    scale rather than reading it, and are cut the same way. */
+ if(r.unread)return '';
  var ro=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(x,y){return y.v-x.v;});
  if(!ro.length)return '';
  var at=-1; ro.forEach(function(x,j){if(x.i===a.i)at=j;});
  var top=ARCH[ro[0].i].nm, where=at<3?AV_RANK[at]:'further down';
  if(at===0)return 'Your field reads '+a.nm+' first'+(rating?' too.':'.');
  if(rating&&rating<=2&&at<=2)
-  return 'You set '+a.nm+' low and your field reads it '+where
-   +'. That gap is what the scale is for, and it is part of the reading.';
- return 'Your field reads '+top+' first and '+a.nm+' '+where+'.'+(rating?' Both are kept.':'');}
+  return 'You set '+a.nm+' low and your field reads it '+where+'.';
+ return 'Your field reads '+top+' first and '+a.nm+' '+where+'.';}
 
 /* ---------------- the state the page draws ---------------- */
 function avState(){
@@ -25575,8 +25637,9 @@ function avPanel(st){
   return '<div class="av-card av-panel" style="--c:'+seatCol(A.b)+'"><div class="av-ph">'
    +'<span class="av-pic">'+avSvg(AV_IC[A.k])+'</span><div><div class="av-pn">'+A.nm+'</div>'
    +'<p class="av-pa">'+esc(A.about)+'. At '+AV_THE[A.b]+'.</p></div><span class="av-pp">'+avPct(null)+'</span></div>'
-   +'<p class="av-p">Nothing you have written lands here yet. A pair lands where its second line '
-   +'is held in the body, so write the bad day and this area fills.</p></div>';}
+   /* HS sweep: the empty state keeps its first sentence. The second explained
+      how a pair lands, which the form beside it already shows. */
+   +'<p class="av-p">Nothing you have written lands here yet.</p></div>';}
  if(!x)return avForm(true);
  var g=x.gap, h=avHeard(x.pair.notbe), A2=g?AV_OF[g.seat]:null;
  var out='<div class="av-card av-panel"'+(A2?' style="--c:'+seatCol(A2.b)+'"':'')+'>'
@@ -25603,8 +25666,9 @@ function avPanelFor(x,g,h){
    return '<div class="av-jr-row"><p class="av-jr-q">'+avQuote(j.e,j.marks)+'</p>'
     +'<p class="av-jr-m">'+avAgo(j.days)+(j.marks.length?'. Heard at '+AV_THE[g.seat]:'')+'</p></div>';}).join('')+'</div>';
  else
-  out+='<p class="av-p">Nothing in your journal lands at '+AV_THE[g.seat]+' yet. What you commit on the '
-   +'Story page is read here.</p>';
+  /* HS sweep: "What you commit on the Story page is read here" explained
+     where this row reads from. The row's own label says it: From your journal. */
+  out+='<p class="av-p">Nothing in your journal lands at '+AV_THE[g.seat]+' yet.</p>';
  /* and the protocol that clears it */
  var q=avQueue(g.seat), m=avMinutes(q);
  if(g.clear||!q.length)
@@ -25623,10 +25687,12 @@ function avPanelFor(x,g,h){
    the instrument cannot hear teaches a person the wrong thing on the first try. */
 function avForm(lead){
  var d=AV.draft, h=avHeard(d.notbe);
+ /* HS sweep. The lead form opened on a paragraph describing the two fields
+    under it ("Two lines. Who you want to be, and a bad day..."). The two
+    labels and their placeholders already say it, and the heading above the
+    form asks the question. Both forms open on the same label now. */
  return '<div class="av-card av-form'+(lead?' av-panel':'')+'">'
-  +(lead?'<p class="av-p">Two lines. Who you want to be, and a bad day that stands in the way of it. '
-   +'The bad day is what the sniffer can place in the body.</p>'
-   :'<div class="pm-eye">Tell it</div>')
+  +'<div class="pm-eye">Tell it</div>'
   +'<label class="av-f"><span>Who you want to be</span>'
   +'<input type="text" id="avbe" maxlength="199" autocomplete="off" '
   +'placeholder="A great public speaker. I stand up and the room hears me." value="'+esc(d.be)+'"></label>'
@@ -25656,8 +25722,11 @@ function avRunHTML(st){
  if(!R.rows.length)
   return out+'<p class="av-p">'+(st.r.unread?'Nothing read yet, so no saboteur is running.'
    :'No saboteur is running.')+'</p></section>';
- out+='<p class="av-p">'+(R.mine?'Saboteurs at the seats your avatar is working on':'Saboteurs running in your field')
-  +', heaviest first, and which way the load last moved. Press one to trace its line on the avatar.</p><div class="av-runs">';
+ /* HS sweep. A paragraph here described the list under it: which saboteurs,
+    in what order, what the arrow means, and what a press does. The rows are
+    ordered, carry their direction word and are buttons, so the list shows all
+    four of those things itself. */
+ out+='<div class="av-runs">';
  R.rows.forEach(function(x){
   var c=x.fam?seatCol(x.fam.b):'var(--dim)', on=AV.trace===x.nm;
   out+='<button type="button" class="av-run-row'+(on?' av-on':'')+'" data-avsab="'+esc(x.nm)+'" aria-pressed="'+on+'" style="--c:'+c+'">'
@@ -25676,10 +25745,14 @@ function avRitHTML(st){
   out+='<p class="av-p av-rit-today">Today: '+esc(ts.map(function(p){return p.nm;}).join(', '))
    +', '+((+td.min)||0)+' minutes. '+(td.done?'Done.':'Not done yet.')+'</p>';}
  if(!st.rit.length)
-  return out+'<p class="av-p">Nothing to queue yet. Each pair you write calls for a practice at its own seat.</p></section>';
+  return out+'<p class="av-p">Nothing to queue yet.</p></section>';
  if(AV.q===null){AV.q={}; AV.q[st.rit[0].p.k]=true;}
- out+='<p class="av-p">What each area you are working on calls for, the lightest practice in its track. '
-  +'Queue them here, then task them.</p><div class="av-rits">';
+ /* HS sweep. "What each area you are working on calls for... Queue them
+    here, then task them" described the rows and the button under them, and
+    the empty state above carried a second sentence on how a queue fills. Each
+    row names its practice and the area it is for, and the button says Task
+    these. */
+ out+='<div class="av-rits">';
  var mins=0;
  st.rit.forEach(function(x){
   var on=!!AV.q[x.p.k]; if(on)mins+=x.p.min;
@@ -25743,7 +25816,7 @@ function avDetail(st,a){
     +'" data-avst="'+n+'">'+n+'</button>';}).join('')+'</div>'
   +'<div class="av-ends"><span>Hardly</span><span>Fully</span></div>'
   +'<p class="av-hint">One press sets it. The same press again takes it off.</p>'
-  +'<p class="av-cmp">'+avCompare(a,rt,st.r)+'</p></div>';
+  +(function(t){return t?'<p class="av-cmp">'+t+'</p>':'';})(avCompare(a,rt,st.r))+'</div>';
  return out;}
 
 /* ---------------- the surface ---------------- */
@@ -25902,15 +25975,21 @@ function iqSeedBlock(p){
   +'<select id="wtype"><option value="">not said</option>'
   +TYPE16.map(function(t){return '<option value="'+t+'"'+(sd&&sd.type===t?' selected':'')+'>'+t+'</option>';}).join('')
   +'</select></div>';
- var note;
- if(!sd) note='Optional. A four letter type is the ego\u2019s own account of itself, not a reading. '
-  +'Giving one puts charge on the nine axes so the field is not empty on the first day. '
-  +'Your own answers and your own stories move it from there.';
- else note='Seeded from <b>'+esc(sd.type)+'</b>. <b>'+Math.round(share*100)+'%</b> of what the axes carry is still '
-  +'that seed'+(share<=0.25?', so the field is mostly yours now.':share>=0.9?'. Nothing has moved it yet.':'.')
-  +' It is charge only. No law, no gate and no domain was written by it, because those are measured.';
- return '<div class="iq-seed"><div class="iq-fields">'+sel
-  +'<div class="iq-f" style="grid-column:span 2"><label>&nbsp;</label><p class="iq-why" style="margin:0">'+note+'</p></div>'
+ /* HS sweep. Before a type is chosen this carried three sentences on what a
+    four letter type is and what giving one does, beside a select whose own
+    first option says "not said". That is the section explaining itself, and
+    it is gone. Once a type is chosen the line is a reading, how much of the
+    field is still the seed, and it stays. Its last sentence, on what the seed
+    does not write, explained the mechanism and is cut. */
+ var note=sd?('Seeded from <b>'+esc(sd.type)+'</b>. <b>'+Math.round(share*100)+'%</b> of what the axes carry is still '
+  +'that seed'+(share<=0.25?', so the field is mostly yours now.':share>=0.9?'. Nothing has moved it yet.':'.')):'';
+ /* auto-fill and not the sheet's auto-fit when the note is gone: auto-fit
+    collapses the empty tracks and the one select stretched across the whole
+    row, measured at 1600 on the blank profile. auto-fill keeps the tracks, so
+    the select is one field wide, the width of the fields above it. */
+ return '<div class="iq-seed"><div class="iq-fields"'
+  +(sd?'':' style="grid-template-columns:repeat(auto-fill,minmax(168px,1fr))"')+'>'+sel
+  +(note?'<div class="iq-f" style="grid-column:span 2"><label>&nbsp;</label><p class="iq-why" style="margin:0">'+note+'</p></div>':'')
   +'</div></div>';}
 /* WHAT A TEN MEANS. Ruled by the owner, and the single most consequential
    sentence on this surface: a scale nobody has calibrated is not a
@@ -25948,33 +26027,25 @@ function iqAccuracy(){
     component are one visual unit and they take one case. So all three are
     labels, which is also the shorter answer, and the panel under this one
     already says which three ways. */
- var P=[
-  ['Asked three ways',false,
-   'Each law is asked once where it costs you something, once where nobody would know, '
-   +'and once on an ordinary day. The gap between the three is the reading, so answering '
-   +'the same law differently is the point rather than a mistake.'],
-  ['What a ten means',false,
-   'Not what you intend and not what you would like to be true. What you actually do, '
-   +'every time, without exception. A nine means you slip about one time in ten, and that '
-   +'is a real number this instrument can use.'],
-  ['What accuracy looks like',false,
-   'Do you go to the gym four days a week like you say. Do you tell the truth to yourself '
-   +'as readily as you tell it to other people. Everybody slips, and the slip is what is '
-   +'being measured.']];
+ /* THE THREE PANELS ARE GONE, AND SO IS THE PARAGRAPH UNDER THEM. Round HS,
+    his words: "get rid of all this like second or three third tier text pick
+    how much to run each pattern is what like we have overlays for all this
+    shit." Three headed panels explaining how the
+    questionnaire works, then a fourth paragraph on why accuracy is cheaper,
+    were the section explaining itself four times before the first question.
+
+    What survives is the one thing that has to be in the place it is pressed,
+    and it is the owner's own ruling above: what the number means. The key
+    says it in six words across the three points of the scale. The duration
+    and "stop whenever" stay because they are the two measured panel findings
+    the functional gate holds, and each is a fact a person needs before starting,
+    not a description of the section. The three ways are shown by layout: an
+    open law sets its three framings side by side, each with its own name,
+    Under cost, Unseen and Ordinary day. */
  return '<div class="iq-acc">'
-  +'<div class="iq-accg">'
-  +P.map(function(x){return '<div class="iq-accp"><div class="pm-eye'
-    +(x[1]?' plain':'')+'">'+x[0]+'</div>'
-    +'<p>'+x[2]+'</p></div>';}).join('')
-  +'</div>'
   +'<p class="iq-sc-key"><b>0</b> never <span>·</span> <b>5</b> about half the time '
   +'<span>·</span> <b>10</b> every time <span>·</span> '
-  +'about fifteen minutes for all of it, in any order. Stop whenever and come back: '
-  +'nothing is required and what you have entered is kept.</p>'
-  +'<p class="iq-accw">Integrity regulates the nervous system in both directions: held, the '
-  +'connection stays open, and dropped, it closes. Your stories weight these answers '
-  +'afterwards, so an answer that flatters you gets corrected later by what you write, '
-  +'slowly and at a cost. Answering accurately now is cheaper.</p>'
+  +'about fifteen minutes. Stop whenever and come back.</p>'
   +'</div>';}
 
 /* THE SEVEN SEATS, CROWN DOWN TO ROOT, and one plain line saying what each
@@ -26127,9 +26198,10 @@ function renderIntake(){
      is something to state, and it says so rather than sitting there dead. */
   +'<div class="iq-seal-r">'
    +'<button class="btn pri" id="iqseal"'+(iqSealable(w)?'':' disabled')+'>Save and close</button>'
-   +'<span class="iq-seal-n">'+(iqSealable(w)
-     ?'This rolls up to one line. Edit reopens it.'
-     :'Enter a name or a date of birth first.')+'</span>'
+   /* HS sweep: "This rolls up to one line. Edit reopens it" described what
+      the button does, which pressing it shows. The refusal beside a disabled
+      button stays, because nothing else says why it will not press. */
+   +(iqSealable(w)?'':'<span class="iq-seal-n">Enter a name or a date of birth first.</span>')
   +'</div>'
   +'</div>';
  h+='<div class="iq-top">'
@@ -26892,11 +26964,15 @@ function ritRender(){
    +'<label class="rit-f"><span>Where</span>'
    +'<input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX+'" placeholder="the chair by the window" '
    +'value="'+esc(RIT.where||'')+'"></label>'
-   +'<p class="rit-if">'+(RIT.when||RIT.where
-     ? 'When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
-       +', you will '+esc(String(picked[0].nm).toLowerCase())+'.'
-     : 'A plan with a time and a place gets done. One without them does not.')
-   +'</p></div>';}
+   /* HS sweep. With both fields empty this argued for filling them in, "A
+      plan with a time and a place gets done", which is the section making
+      its own case under two labelled boxes. Silent until something is typed,
+      and then it is the person's own plan read back, which stays. */
+   +(RIT.when||RIT.where
+     ? '<p class="rit-if">When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
+       +', you will '+esc(String(picked[0].nm).toLowerCase())+'.</p>'
+     : '')
+   +'</div>';}
  out+='<div class="rel-act"><button class="btn" id="ritx">Close</button>'
   +'<button class="btn pri" id="ritsave"'+(picked.length?'':' disabled')+'>Save ritual</button></div>';
  /* THE RECORD, ON THE SURFACE THAT EARNS IT. ladderHtml() draws the streak, the
@@ -27626,15 +27702,19 @@ function coneTick(){
    on how to turn the figure. */
 function coneRead(){
  var r=compute();
+ /* HS SWEEP. The empty state takes the one canonical wording, and the two
+    sentences on how to handle the figure are gone from both empty states:
+    "Drag to turn it. Press any name to read that axis." The figure turns under
+    a drag and the names are buttons, and he has asked, more than once, that a
+    section never explain how to use itself. */
  if(r.unread)return '<p class="cone-p">Nothing has been read yet. '
-  +'Write what happened, or answer the questions, and your position on this '
-  +'figure fills in. Drag to turn it. Press any name to read that axis.</p>';
+  +'Write a story or set a charge.</p>';
  /* and while CQ is still filling there is no position to name. CQ 0 with
     no law answered read "below the oscillating band" to somebody who had
     only not done the intake. */
  if(!r.complete)return '<p class="cone-p">Coherence is still filling, with <b>'
   +esc(tierSay(r))+'</b>. Your position on this figure settles once all '
-  +SI.length+' are in. Drag to turn it. Press any name to read that axis.</p>';
+  +SI.length+' are in.</p>';
  var cq=Math.round(r.CQ);
  var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
   :'inside the oscillating band, where most people stand';
@@ -27692,8 +27772,9 @@ function coneGraph(){
      +esc(sp.nm)+'</button>';}).join('')
   +'</div></div>';
  if(sr.state==='none'){
-  h+='<p class="cn-gp">Nothing on the record for this span. Every save writes a '
-   +'point, so this fills in as you go.</p>';}
+  /* HS sweep: "Every save writes a point, so this fills in as you go"
+     explained how the chart fills, which the chart does. */
+  h+='<p class="cn-gp">Nothing on the record for this span.</p>';}
  else if(sr.state==='one'){
   h+='<p class="cn-gp">One reading in this span, at <b>'+Math.round(sr.last)+'</b>. '
    +'Two makes a line.</p>';}
@@ -27815,8 +27896,11 @@ function coneOpen(inTab){
       The numbers went and nothing was lost, because a person looking at a
       waisted figure can see where the waist is. */
    +coneKey()
-   +'<p class="cone-hint">The narrow middle is where most people sit. '
-   +'Drag to turn the figure. Press any name to read that axis.</p>'
+   /* AND THEN THE CLAUSE ITSELF WENT, round HS. "The narrow middle is where
+      most people sit. Drag to turn the figure. Press any name to read that
+      axis." was the figure explaining itself under the figure, the class of
+      text he has now asked three times never to see. The waist is visible,
+      the drag works without being announced, and every name is a button. */
   +'</div>'
   /* THE INFORMATION LAYER LEFT THE CENTRE COLUMN, and the comment that used to
      sit here is why it had to.
@@ -29735,8 +29819,9 @@ function kbRender(){
 
  /* the deck sits under the base, because a card is the base at practice speed */
  h+='<div class="kb-deck"><div class="pm-eye">The Letting Go Deck</div>'
-  +'<p class="kb-p">A deck whose suits are the seven seats and whose ranks are intensity. It deals '
-  +'from what you are actually carrying, so every card is an address with charge on it. '
+  /* HS sweep: two sentences on how the deck is built came before the count.
+     The count, or the reason there is none, is the line. */
+  +'<p class="kb-p">'
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
 
@@ -29929,8 +30014,9 @@ function recRender(){
  var H=recList(), m=meterRead(CURP);
  var h='<div class="pm-eye">The record</div>';
  if(H.length<2){
+  /* HS sweep: the refusal says what is missing. The sentence on when a
+     snapshot is written explained the mechanism and is cut. */
   h+='<p class="sum-p">'+(H.length?'One snapshot on file. ':'No snapshots yet. ')
-   +'A snapshot is written every time a story is committed and every time a release finishes. '
    +'Two are needed before there is a distance to read.</p>';
   host.innerHTML=h; return;}
 
@@ -30180,8 +30266,9 @@ function gmRender(){
     still emitting them. Games keeps the shape it wants under its own gm-
     prefix rather than depending on another surface's internals. */
  var h='<div class="kb-top"><div class="gm-hd"><div class="pm-eye">Games</div>'
-  +'<h2 class="kb-h plain">The instrument at practice speed</h2>'
-  +'<p class="kb-p">Both deal from your own field. Neither invents a pattern.</p></div>'
+  +'<h2 class="kb-h plain">The instrument at practice speed</h2></div>'
+  /* HS sweep: "Both deal from your own field. Neither invents a pattern." sat
+     under the heading describing the two games before either was opened. */
   +'<div class="gm-tabs" role="tablist">'
   +'<button type="button" role="tab" class="kb-t'+(GAME==='lg'?' on':'')+'" data-gm="lg" '
    +'aria-selected="'+(GAME==='lg')+'">The letting go run</button>'
@@ -30194,7 +30281,9 @@ function gmRender(){
    h+='<div class="gm-intro"><p class="gm-p">Twenty four cards, face down, dealt from what you '
     +'are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs '
     +'while you do it.</p>'
-    +'<p class="gm-p">The practice is two or three minutes. Time it once and you will believe it.</p>'
+    /* HS sweep: the rules above the deal button stay, because they are the
+       game and nothing else teaches it. "Time it once and you will believe
+       it" was the game selling itself, and is cut. */
     +'<p class="gm-p">'+esc(CARD_OPEN)+'</p>'
     +'<div class="gm-gates"><span class="pm-eye plain">One statement runs every channel at once</span>'
     +'<div class="gm-glist">'+C3_VERB.map(function(v){
@@ -30926,8 +31015,10 @@ function syncSoul(){
  var lg=$('rootlegend');
  if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
   +(S.roots.length&&nlit?' \u00b7 ':'')
-  +(nlit?'washed, your selection sits here':'')
-  +(!S.roots.length&&!nlit?'click a root to add every domain under it':'');
+  +(nlit?'washed, your selection sits here':'');
+ /* HS sweep: with nothing added and nothing washed this printed "click a root
+    to add every domain under it", a how to line under a row of buttons. The
+    legend now speaks only when there is a state on the row to key. */
  capD();capA();}
 function rebuildSwatches(){
  /* every colour the rail's grids wear is per lighting now, so all three move
@@ -31539,32 +31630,28 @@ function accAccount(){
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
  h+=accGroup('The Opening',
-   accAct('Run the signal test again','acob',{btn:'Open it'}),
-   'The two words and where they land. Nothing it does is written to your '
-   +'record, so it can be run as often as it is useful.');
+   accAct('Run the signal test again','acob',{btn:'Open it'}));
+ /* HS SWEEP, SETTINGS. A footer that only described the control above it is
+    cut: this one, Sign in, Lighting, Screen, Motion, the feedback pair and the
+    reproducibility clause on the build. Every footer that is a disclosure
+    stays, word for word: what is held, where, who has sight, what a delete
+    does, what a failed load does, that nothing is sent, that storage is
+    blocked. Those are obligations to the person, not a section explaining
+    itself, and CLAUDE.md names them as the ones that must be visible. */
  h+=accGroup('Sign In',
    accStub('Signed in as','not signed in')
    +accStub('Key','no key yet')
-   +accStub('Sign out'),
-   'Sign in does not exist yet. This record is in this browser and nowhere '
-   +'else, so there is nothing to sign in to and nothing to sign out of.');
+   +accStub('Sign out'));
  return h;}
 
 /* ---------- 4.2 display ---------- */
 function accDisplay(){
  var h=accGroup('Lighting',
-   '<div class="seg ac-seg" id="acthemes"></div>',
-   'Dark is the default. Snow is the same instrument on paper. Punch removes '
-   +'every outline and fills every shape. Glass puts the panes in front of a '
-   +'moving ground and lets them refract it.');
- h+=accGroup('Screen','<div class="dens-list" id="acdens"></div>',
-   'How much fits on one screen. This scales the whole interface, not just '
-   +'the type.');
+   '<div class="seg ac-seg" id="acthemes"></div>');
+ h+=accGroup('Screen','<div class="dens-list" id="acdens"></div>');
  h+=accGroup('Motion',
    accTog('Quiet','acquiet',!!(CURP&&CURP.ui&&CURP.ui.quiet),
-    'no background wash, no breathing, no motion on arrival'),
-   'If your system already asks for reduced motion, that is honoured whatever '
-   +'this says. This is the switch for when it does not.');
+    'no background wash, no breathing, no motion on arrival'));
  return h;}
 
 /* ---------- 4.3 security ---------- */
@@ -31659,9 +31746,7 @@ function accHelp(){
    +'write is held on this device and the outbox below says so.');
  h+=accGroup('Tell Us How It Is Going',
    accAct('Rate the product','acrate',{btn:'Rate'})
-   +accAct('Product feedback','acsurv',{btn:'Open'}),
-   'The rating is two questions and about five seconds. The feedback is about '
-   +'four minutes and it is never asked for inside the instrument.');
+   +accAct('Product feedback','acsurv',{btn:'Open'}));
  h+=accGroup('Reading This',
    accAct('How to read this','achowto',{btn:'Open'}),'');
  h+=accGroup('What Is Waiting',
@@ -31672,8 +31757,7 @@ function accHelp(){
  h+=accGroup('This Build',
    accRow('Build',(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'not stamped')
    +accRow('Version',(typeof VERSION!=='undefined'&&VERSION)||'alpha'),
-   'Quote this when you report something. It is what makes a report '
-   +'reproducible.');
+   'Quote this when you report something.');
  return h;}
 
 /* ---------- the surface ---------- */
@@ -31951,9 +32035,11 @@ $('mx').addEventListener('mouseleave',mxKey);
 /* AND THE KEY READ THE MODEL ALOUD. "Brightness is the SQ held in that cell"
    and "a 1.3× affinity pair" are a variable name and a weighting constant.
    Said as what a person sees. */
-function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
- +'The brighter a cell, the more charge it holds. A gold ring marks a pair that '
- +'weighs more together. Press any cell.';}
+/* HS sweep: the key keeps what the eye cannot work out alone, brightness and
+   the gold ring. "Columns are domains, rows are child emotions" repeated the
+   label over the grid, and "Press any cell" told a person how to use it. */
+function mxKey(){$('mxk').innerHTML='The brighter a cell, the more charge it holds. '
+ +'A gold ring marks a pair that weighs more together.';}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
@@ -32371,7 +32457,11 @@ function runAccDrill(){
    The replacement says what will happen, in the order it happens, using words
    that carry their own meaning. */
 PEOPLE.unshift({nm:'You',age:'',role:'custom',dom:0,a1:0,a2:1,
- says:'Nothing has been read yet. Write what happened, or answer the questions, and this fills in.',
+ /* HS SWEEP: no quote on the blank card. On a first load this was the third
+    "Nothing has been read yet" on one rail, under the rail's own line and
+    above the four doors that already say it. The quote slot is for what a
+    person says, and this one has not said anything. */
+ says:'',
  /* This was 3 on every axis, and it is the persona the app opens on. So a
     stranger's first screen showed Fear 3.0, Anger 3.0, Shame 3.0 and the rest,
     three rows below a panel correctly saying nothing was held. Nobody entered
@@ -32510,10 +32600,24 @@ function toYou(){if(S.who===0)return;
    refusal says what did not happen and why, and nothing else. what still
    names the refused press where it is called; it filled the clause that went,
    and nothing prints it now. */
+/* AND NOW IT SAYS NOTHING AT ALL. Round HS, his words: "You've got red text
+   underneath the logo it's like small text there's nothing changed get rid
+   of that so it's never there" This was that line. It went out with the fail
+   kind, and status() clears every kind but fail, so one press on a domain or
+   an archetype on a worked example left it in red under the logo across every
+   tab and every profile switch until something else was said. Reproduced on
+   Sofia at 1600: one press on a rail domain, and the line was still there six
+   seconds later.
+
+   The press was never a failure. On the wheel it opens the drill, which is
+   the reading the person pressed for, and the picker already reads "Sofia,
+   example". So the refusal holds and is silent: nothing moves, and nothing is
+   said about nothing moving. The save and release refusals are different,
+   because there a person pressed Save or Release and did not get it, and
+   they keep their line. */
 function notYours(what){
  if(S.who===0)return false;
  void what;
- status('Nothing changed on a worked example.','fail');
  return true;}
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 
@@ -32845,12 +32949,11 @@ function renderRootSum(){
  var h='';
  if(!sp){
   /* the door the left rail's own empty state has, to the same field */
-  h+='<p class="rs-lead">'+(N?'A name gives the numbers. A birth date, time and place add three more '
-     +'systems to meet them.':'No birth data yet. Date, time and place let four systems read you, '
-     +'and this is where they meet.')+'</p>'
+  /* HS SWEEP. The refusal says what is missing and the button beside it is
+     the route. The sentences on how the four systems meet described the
+     panel, with no birth data and again with it, and are gone from both. */
+  h+='<p class="rs-lead">No birth data yet.</p>'
    +'<button class="btn rs-go" type="button">Open Energetics</button>';}
- else h+='<p class="rs-lead">Four systems read the same birth. Where two or more land on the same '
-  +'thing on their own, that is the reading. Where they part, that is the range.</p>';
  if(R.shown.length){
   /* WHERE THEY MEET, not where they agree, because most meetings are light
      and a heading that promised agreement over three light overlaps would be
@@ -32872,7 +32975,7 @@ function renderRootSum(){
      +' land here')+'">'+lit+'</div>'
     +'<p class="rs-say">'+esc(ROOT_SAYS[a.t]||'')+'</p>'
     +'<div class="rs-chips">'+rsChips(a)+'</div></div>';}).join('');}
- else if(sp)h+='<p class="rs-none">These four do not land on the same thing. Read each one as its own view.</p>';
+ else if(sp)h+='<p class="rs-none">These four do not land on the same thing.</p>';
  if(R.range.length){
   h+='<div class="pm-eye plain rs-eye">Other ways this shows up</div><div class="rs-range">'
    +R.range.map(function(x){var say=rsSays(x);
@@ -33174,11 +33277,11 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
 /* ============================================================
    POINTER. Drag a segment to load or clear it, click to drill.
    ============================================================ */
-const HOWTO=[
- 'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
- 'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.',
- 'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.',
- 'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'];
+/* HOWTO WAS HERE AND NOTHING READ IT. Four paragraphs of how to use the
+   wheel, one per depth, declared and never rendered. Removed in round HS
+   rather than left for the next seat to wire in: the class of text it holds
+   is the class he has asked, three times, never to see on a surface. The one
+   route that says how the wheel moves is the Help sheet, which a person opens. */
 /* still: the picture asking has no drag. The two renditions in ui/rings.js
    draw every address and none of them can be dragged to set a charge, so an
    address there says click and not drag. Omitted, which is how the wheel
@@ -33852,18 +33955,27 @@ function railStack(r){
      carrying, and the coherent quality on the other side of it. Held and
      opposite, in both places, with the definition said once here rather than
      left in a tooltip nothing on a phone can reach. */
-  h+='<p class="stk-def">Nine axes, two ends each. <b>Held</b> is the state you are '
-   +'carrying. <b>Opposite</b> is the coherent quality on the far side of it. Release '
-   +'empties the first, replace fills the second.</p>';
+  /* AND THE DEFINITION IS OFF THE RAIL NOW. Round HS: "get rid of all this
+     like second or three third tier text ... we have overlays for all this
+     shit." A four line
+     legend sat above the nine rows on every tab. Each row is a door to its
+     axis's drill, and the drill says both ends and what fills each, so the
+     definition is one press away on a phone as well as a desk, and the rule
+     against a definition living only in a tooltip still holds. The two column
+     words stay, and the same two words are the drill's. */
   h+='<div class="stk-hd"><span>held</span><span>opposite</span></div>';
-  h+=CHILD.map(function(c){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
+  h+=CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
    /* each axis carries its own glyph. canon.js has had one on every entry
       since the port and nothing in the rails was drawing them. */
-   return '<div class="stk-r static"><span class="stk-l">'
+   /* A ROW IS A DOOR NOW, which is what let the legend above come off. It was
+      a static row and the only place held and opposite were defined was the
+      legend, so the legend was cut only once each row opened runFetterDrill,
+      the axis's own drill, which says both halves and what fills each. */
+   return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
     +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
     +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
-      glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
+      glyph:'<path d="'+c.ic+'"/>'})+'</span></button>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
@@ -34557,6 +34669,8 @@ try{ localStorage.getItem(PKEY);
 document.addEventListener('click',function(e){
  var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
  if(st){STACK_TAB=st.getAttribute('data-st');railStack(compute());return;}
+ var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
+ if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
  var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
  if(sr){var rr=compute(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
   if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin); render();} return;}
@@ -34722,5 +34836,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002283274"></div>
+<div id="eof" hidden data-len="002289395"></div>
 </body></html>

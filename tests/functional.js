@@ -1153,9 +1153,12 @@ const setter=await page.evaluate(()=>{
  const who=S.who, st=document.getElementById('status');
  document.querySelector('#doms button').click();
  return {stayed:S.who===who, said:st.textContent||'', kind:st.getAttribute('data-kind')};});
-ok(setter.stayed&&setter.kind==='fail'&&/worked example/.test(setter.said)
- &&!/You are looking at/.test(setter.said)&&(setter.said.match(/[.!?](\s|$)/g)||[]).length===1,
- 'a rail setter on a worked example refuses in one line and stays put, said '
+/* AND NOW IT SAYS NOTHING. Round HS: the one line this held to was the red
+   "Nothing changed on a worked example." under the logo, which a fail status
+   never clears, and he asked for it never to be there. The refusal still
+   holds, so the profile stays put; the status region stays empty. */
+ok(setter.stayed&&!setter.said&&!setter.kind,
+ 'a rail setter on a worked example stays put and prints nothing, said '
  +JSON.stringify(setter.said));
 
 console.log('\n=== the fetters grow, and one of them runs a protocol ===');
@@ -1620,7 +1623,10 @@ ok(open_.tap>=44,'each one clears the tap floor, smallest '+Math.round(open_.tap
 ok(/cannot think of themselves as the problem/.test(open_.txt)
  &&/cannot think of anything they identify with/.test(open_.txt),
  'and each says who it is for rather than only what it is');
-ok(/what you are filling it toward/.test(open_.txt),
+/* THE AVATAR DOOR NAMES ITS DOOR AND STOPS. Round HS cut its second and third
+   sentences, which defined release on a button. "Say who you are becoming" is
+   where the work is aimed, and the line under it names the surface. */
+ok(/Say who you are becoming\s*The avatar\.?/.test(open_.txt),
  'including the one that says where the work is aimed');
 ok(/mind sticks to anything that it defends/.test(open_.three||'')
  &&/none of them is about being a bad person/i.test(open_.two||''),
@@ -2764,19 +2770,26 @@ console.log('\n=== the intake says how long and why it repeats ===');
    person who works out around question 40 that twenty one things are cycling
    feels handled unless it was said at the top, where the same fact reads as
    rigour. None of it was anywhere on the surface. */
+/* THE THREE WAYS ARE SHOWN, NOT SAID. Round HS struck the three panels that
+   explained the questionnaire above its first question, on his standing rule
+   against a section explaining itself. The duration and the resume line are
+   kept, as one line beside the scale key. The three way design is now held by
+   layout: an open law puts its three framings side by side, each named. */
 const iq=await page.evaluate(async()=>{
- loadP(0); setTab(TAB.INTAKE);
+ loadP(0); IQ_OPEN=0; setTab(TAB.INTAKE);
  await new Promise(r=>setTimeout(r,500));
  const el=document.getElementById('iq')||document.body;
  const t=(el.innerText||'').replace(/\s+/g,' ');
+ const qc=[...el.querySelectorAll('.iq-law.open .iq-qc em')].map(e=>e.textContent.trim());
+ IQ_OPEN=null;
  return {mins:/fifteen minutes|15 minutes/i.test(t),
-  three:/three ways|asked three/i.test(t),
-  gap:/gap/i.test(t),
+  three:qc.length===3&&new Set(qc).size===3,
+  framings:qc,
   resume:/come back|stop whenever/i.test(t),
   left:/\bleft\b/i.test(t)};});
 ok(iq.mins,'the intake states how long it takes');
-ok(iq.three,'and that every law is asked three ways');
-ok(iq.gap,'and that the gap between the three is the reading');
+ok(iq.three,'and an open law shows its three framings side by side, each named, got '
+ +JSON.stringify(iq.framings));
 ok(iq.resume,'and that it can be stopped and come back to');
 ok(iq.left,'and the progress line says what is left');
 

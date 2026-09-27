@@ -416,8 +416,9 @@ function sumSpirit(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r);
  if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
-  +'<p class="s-p">No birth data on file. Date, time and place would let this run, and '
-  +'nothing else is stored, because every reading here is derived from those three.</p></div>';
+  /* HS sweep: the refusal keeps what is missing and what would put it in.
+     The tail on what is stored and why explained the section. */
+  +'<p class="s-p">No birth data on file. Date, time and place would let this run.</p></div>';
  var e=C.e;
  function chip(k,v,glyph,lab,val,t){
   return '<button type="button" class="s-chip" data-sp="'+k+'" data-spv="'+esc(String(v))+'" '
@@ -458,9 +459,10 @@ function sumSpirit(r){
   out+=C.agree.map(function(a){return '<div class="s-ag">'+esc(a)+'</div>';}).join('');
   out+=C.differ.map(function(d){return '<div class="s-dg">'+esc(d)+'</div>';}).join('');
   out+='</div>';
-  if(C.differ.length)out+='<p class="s-src">The instrument does not pick a winner. A birth '
-   +'chart describes the blueprint and the field describes what is running now. They diverge '
-   +'where something was installed on top of the blueprint.</p>';}
+  /* HS sweep. A three sentence footnote under the list explained how to read
+     a disagreement in it. The Reading paragraph at the top of this page
+     already says what a split between blueprint and field means, in this
+     person's own names, which is the useful half of the same sentence. */}
  return out+'</div>';}
 
 /* ---- full numerology. six numbers, and every name part on its own. ---- */
@@ -484,9 +486,10 @@ function sumNum(r){
  if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
  if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
  var out='<div class="s-numer"><div class="pm-eye plain">Numerology, in full</div>'
+  /* HS sweep: the name it was read off stays, because a person checks the
+     spelling. The method sentence after it explained the arithmetic. */
   +'<p class="s-p">Read off <b>'+esc(N.parts.map(function(p){
-    return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>. Pythagorean, with 11, 22 '
-  +'and 33 surviving reduction at every step.</p>'
+    return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>.</p>'
   +'<div class="s-nrows">';
  out+=rows.map(function(x){
   var v=x[2], master=NUM_MASTER.indexOf(v)>=0;
@@ -542,7 +545,7 @@ function sumUnread(r){
      who did not ask, and then reassured them they would not need a term. The
      doors underneath are the route. */
   +'<div class="sum-line">Nothing has been read yet.</div></div></div>'
-  +'<div class="sum-start">'+startHTML('Four ways in. Any one of them fills this page.')+'</div>'
+  +'<div class="sum-start">'+startHTML('Four ways in.')+'</div>'
   +sumSpirit(r)+sumNum(r);}
 
 /* ============================================================
@@ -826,11 +829,15 @@ function sumLens(r){
  if(!L.length)return '';
  return '<div class="pm-eye" style="margin-top:18px">Four lenses</div>'
   +'<div class="s-lens">'+L.map(function(x){
-   return '<div class="s-ln">'
+   /* WHAT IT WAS READ OFF MOVES TO THE ROW'S TITLE, round HS. It was a
+      fourth line in small italics under every lens, "read off root domain as
+      element", the third tier text he asked to have swept off the site. It
+      is kept, one hover away, because it is the provenance of a label put
+      on a person; it is not printed on the page. */
+   return '<div class="s-ln" title="'+esc('Read off '+x.c+'.')+'">'
     +'<span class="s-ln-t">'+esc(x.t)+'</span>'
     +'<b class="s-ln-a">'+esc(x.a)+'</b>'
     +'<span class="s-ln-b">'+esc(x.b)+'</span>'
-    +'<em class="s-ln-c">read off '+esc(x.c)+'</em>'
    +'</div>';}).join('')+'</div>';}
 
 /* ---- integrity over time ---- */
@@ -856,8 +863,7 @@ function sumIg(r){
   body='<p class="cn-gp">'
    +(pts.length?'One reading with an integrity on it in this span, at <b>'
      +pts[0].ig.toFixed(1)+' of 10</b>. Two makes a line.'
-    :'Nothing on the record for this span. Every save writes a point, so this '
-     +'fills in as you go.')
+    :'Nothing on the record for this span.')
    +'</p>';}
  else {
   var lo=0, hi=10;                       /* integrity's real scale, both ends */

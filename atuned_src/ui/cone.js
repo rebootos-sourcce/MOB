@@ -668,15 +668,19 @@ function coneTick(){
    on how to turn the figure. */
 function coneRead(){
  var r=compute();
+ /* HS SWEEP. The empty state takes the one canonical wording, and the two
+    sentences on how to handle the figure are gone from both empty states:
+    "Drag to turn it. Press any name to read that axis." The figure turns under
+    a drag and the names are buttons, and he has asked, more than once, that a
+    section never explain how to use itself. */
  if(r.unread)return '<p class="cone-p">Nothing has been read yet. '
-  +'Write what happened, or answer the questions, and your position on this '
-  +'figure fills in. Drag to turn it. Press any name to read that axis.</p>';
+  +'Write a story or set a charge.</p>';
  /* and while CQ is still filling there is no position to name. CQ 0 with
     no law answered read "below the oscillating band" to somebody who had
     only not done the intake. */
  if(!r.complete)return '<p class="cone-p">Coherence is still filling, with <b>'
   +esc(tierSay(r))+'</b>. Your position on this figure settles once all '
-  +SI.length+' are in. Drag to turn it. Press any name to read that axis.</p>';
+  +SI.length+' are in.</p>';
  var cq=Math.round(r.CQ);
  var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
   :'inside the oscillating band, where most people stand';
@@ -734,8 +738,9 @@ function coneGraph(){
      +esc(sp.nm)+'</button>';}).join('')
   +'</div></div>';
  if(sr.state==='none'){
-  h+='<p class="cn-gp">Nothing on the record for this span. Every save writes a '
-   +'point, so this fills in as you go.</p>';}
+  /* HS sweep: "Every save writes a point, so this fills in as you go"
+     explained how the chart fills, which the chart does. */
+  h+='<p class="cn-gp">Nothing on the record for this span.</p>';}
  else if(sr.state==='one'){
   h+='<p class="cn-gp">One reading in this span, at <b>'+Math.round(sr.last)+'</b>. '
    +'Two makes a line.</p>';}
@@ -857,8 +862,11 @@ function coneOpen(inTab){
       The numbers went and nothing was lost, because a person looking at a
       waisted figure can see where the waist is. */
    +coneKey()
-   +'<p class="cone-hint">The narrow middle is where most people sit. '
-   +'Drag to turn the figure. Press any name to read that axis.</p>'
+   /* AND THEN THE CLAUSE ITSELF WENT, round HS. "The narrow middle is where
+      most people sit. Drag to turn the figure. Press any name to read that
+      axis." was the figure explaining itself under the figure, the class of
+      text he has now asked three times never to see. The waist is visible,
+      the drag works without being announced, and every name is a button. */
   +'</div>'
   /* THE INFORMATION LAYER LEFT THE CENTRE COLUMN, and the comment that used to
      sit here is why it had to.

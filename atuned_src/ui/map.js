@@ -2057,9 +2057,16 @@ function bmLabels(g){
   g.fillText(v?'Back, seen from behind':'Front',bmW2S(v?BMOX+50:50,0)[0],14);
   g.font='500 12px Inter,system-ui,sans-serif';});}
 /* one line of instruction, in the corner, off the figure */
+/* HS SWEEP: ONLY IN PAINT. The default hint, "Press a region to open it.
+   Double press to zoom in. Point at a line to trace it.", sat in the corner
+   of the Body on every load, explaining the figure to a person already
+   looking at it. The regions answer a press and the lines answer a pointer
+   without being told to. Paint keeps its line, because it is the one mode a
+   person chose, and the second press that clears a cell cannot be found by
+   looking: the same case as the archetype scale's own one line. */
 function bmHint(g){
- var t=BM.mode==='pain'?'Paint where it hurts. Press a painted cell again to clear it.'
-  :(BM.phone?'Press a region to open it.':'Press a region to open it. Double press to zoom in. Point at a line to trace it.');
+ if(BM.mode!=='pain')return;
+ var t='Paint where it hurts. Press a painted cell again to clear it.';
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.font='500 12px Inter,system-ui,sans-serif';g.textBaseline='alphabetic';g.textAlign='left';
  g.fillStyle=bmRgba(BMC.dim,.95);g.fillText(t,12,BM.H-12);}
 

@@ -115,32 +115,28 @@ function accAccount(){
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
  h+=accGroup('The Opening',
-   accAct('Run the signal test again','acob',{btn:'Open it'}),
-   'The two words and where they land. Nothing it does is written to your '
-   +'record, so it can be run as often as it is useful.');
+   accAct('Run the signal test again','acob',{btn:'Open it'}));
+ /* HS SWEEP, SETTINGS. A footer that only described the control above it is
+    cut: this one, Sign in, Lighting, Screen, Motion, the feedback pair and the
+    reproducibility clause on the build. Every footer that is a disclosure
+    stays, word for word: what is held, where, who has sight, what a delete
+    does, what a failed load does, that nothing is sent, that storage is
+    blocked. Those are obligations to the person, not a section explaining
+    itself, and CLAUDE.md names them as the ones that must be visible. */
  h+=accGroup('Sign In',
    accStub('Signed in as','not signed in')
    +accStub('Key','no key yet')
-   +accStub('Sign out'),
-   'Sign in does not exist yet. This record is in this browser and nowhere '
-   +'else, so there is nothing to sign in to and nothing to sign out of.');
+   +accStub('Sign out'));
  return h;}
 
 /* ---------- 4.2 display ---------- */
 function accDisplay(){
  var h=accGroup('Lighting',
-   '<div class="seg ac-seg" id="acthemes"></div>',
-   'Dark is the default. Snow is the same instrument on paper. Punch removes '
-   +'every outline and fills every shape. Glass puts the panes in front of a '
-   +'moving ground and lets them refract it.');
- h+=accGroup('Screen','<div class="dens-list" id="acdens"></div>',
-   'How much fits on one screen. This scales the whole interface, not just '
-   +'the type.');
+   '<div class="seg ac-seg" id="acthemes"></div>');
+ h+=accGroup('Screen','<div class="dens-list" id="acdens"></div>');
  h+=accGroup('Motion',
    accTog('Quiet','acquiet',!!(CURP&&CURP.ui&&CURP.ui.quiet),
-    'no background wash, no breathing, no motion on arrival'),
-   'If your system already asks for reduced motion, that is honoured whatever '
-   +'this says. This is the switch for when it does not.');
+    'no background wash, no breathing, no motion on arrival'));
  return h;}
 
 /* ---------- 4.3 security ---------- */
@@ -235,9 +231,7 @@ function accHelp(){
    +'write is held on this device and the outbox below says so.');
  h+=accGroup('Tell Us How It Is Going',
    accAct('Rate the product','acrate',{btn:'Rate'})
-   +accAct('Product feedback','acsurv',{btn:'Open'}),
-   'The rating is two questions and about five seconds. The feedback is about '
-   +'four minutes and it is never asked for inside the instrument.');
+   +accAct('Product feedback','acsurv',{btn:'Open'}));
  h+=accGroup('Reading This',
    accAct('How to read this','achowto',{btn:'Open'}),'');
  h+=accGroup('What Is Waiting',
@@ -248,8 +242,7 @@ function accHelp(){
  h+=accGroup('This Build',
    accRow('Build',(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'not stamped')
    +accRow('Version',(typeof VERSION!=='undefined'&&VERSION)||'alpha'),
-   'Quote this when you report something. It is what makes a report '
-   +'reproducible.');
+   'Quote this when you report something.');
  return h;}
 
 /* ---------- the surface ---------- */

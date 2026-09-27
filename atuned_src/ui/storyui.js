@@ -46,9 +46,15 @@ function stRender(){
   +'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
   +'<textarea id="sttext" class="st-ta" spellcheck="false" '
   +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>'
+  /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
+     left window it says two words zero tag get rid of that so it's never
+     there" It read "2 words, 0 tagged". The word count is a number nobody
+     acts on, and what the sniffer tagged is already shown twice: lit in the
+     sentence itself, and counted on the Commit button beside it. Reproduced
+     before it was cut, on the blank profile, by typing two words. The spacer
+     keeps the two buttons at the right edge where the counter pushed them. */
   +'<div class="st-bar">'
-   +'<span class="st-ct">'+(ST_TEXT.trim()?ST_TEXT.trim().split(/\s+/).length:0)+' words'
-   +(p?', '+p.hits.length+' tagged':'')+'</span>'
+   +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
@@ -176,9 +182,14 @@ function stRelPanel(){
  var secs=Math.round(cost*RUN_SPEED_S[ST_RELSPD]);
  /* the eyebrow that said Release is the rail section's own header now, so
     saying it twice would be the heading read aloud. */
- e.innerHTML='<p class="st-relp">'+(pool.length
-    ? 'Pick how much to run. Each pattern is one thought line at one address.'
-    : 'Nothing is held above the line yet, so there is nothing to release.')+'</p>'
+ /* "PICK HOW MUCH TO RUN. EACH PATTERN IS ONE THOUGHT LINE AT ONE ADDRESS."
+    Gone, and he quoted it in round HS while asking for exactly this sweep:
+    "get rid of all this like second or three third tier text pick how much
+    to run each pattern is what like we have overlays for all this shit." The rows
+    under it are the picker, and each names what it sets. The refusal stays,
+    because with nothing held the rows would be controls that do nothing. */
+ e.innerHTML=(pool.length?''
+    :'<p class="st-relp">Nothing is held above the line yet, so there is nothing to release.</p>')
   +'<div class="st-rrow"><span class="st-rlab">From</span>'
    +'<button type="button" class="st-rb'+(ST_RELSRC==='heavy'?' on':'')+'" data-rsrc="heavy">Heaviest</button>'
    +'<button type="button" class="st-rb'+(ST_RELSRC==='story'?' on':'')+'" data-rsrc="story">'
@@ -217,9 +228,7 @@ function stRelPanel(){
 /* refresh only the read column so typing never loses the caret */
 function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
- var ct=document.querySelector('.st-ct');
- if(ct)ct.textContent=(ST_TEXT.trim()?ST_TEXT.trim().split(/\s+/).length:0)+' words'
-  +(ST_PARSED?', '+ST_PARSED.hits.length+' tagged':'');
+ /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
  if(ap){ap.disabled=!(ST_PARSED&&ST_PARSED.imprints.length);
   ap.textContent='Commit '+(ST_PARSED?ST_PARSED.imprints.length:0);}

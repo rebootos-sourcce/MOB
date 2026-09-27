@@ -16,15 +16,21 @@ function iqSeedBlock(p){
   +'<select id="wtype"><option value="">not said</option>'
   +TYPE16.map(function(t){return '<option value="'+t+'"'+(sd&&sd.type===t?' selected':'')+'>'+t+'</option>';}).join('')
   +'</select></div>';
- var note;
- if(!sd) note='Optional. A four letter type is the ego\u2019s own account of itself, not a reading. '
-  +'Giving one puts charge on the nine axes so the field is not empty on the first day. '
-  +'Your own answers and your own stories move it from there.';
- else note='Seeded from <b>'+esc(sd.type)+'</b>. <b>'+Math.round(share*100)+'%</b> of what the axes carry is still '
-  +'that seed'+(share<=0.25?', so the field is mostly yours now.':share>=0.9?'. Nothing has moved it yet.':'.')
-  +' It is charge only. No law, no gate and no domain was written by it, because those are measured.';
- return '<div class="iq-seed"><div class="iq-fields">'+sel
-  +'<div class="iq-f" style="grid-column:span 2"><label>&nbsp;</label><p class="iq-why" style="margin:0">'+note+'</p></div>'
+ /* HS sweep. Before a type is chosen this carried three sentences on what a
+    four letter type is and what giving one does, beside a select whose own
+    first option says "not said". That is the section explaining itself, and
+    it is gone. Once a type is chosen the line is a reading, how much of the
+    field is still the seed, and it stays. Its last sentence, on what the seed
+    does not write, explained the mechanism and is cut. */
+ var note=sd?('Seeded from <b>'+esc(sd.type)+'</b>. <b>'+Math.round(share*100)+'%</b> of what the axes carry is still '
+  +'that seed'+(share<=0.25?', so the field is mostly yours now.':share>=0.9?'. Nothing has moved it yet.':'.')):'';
+ /* auto-fill and not the sheet's auto-fit when the note is gone: auto-fit
+    collapses the empty tracks and the one select stretched across the whole
+    row, measured at 1600 on the blank profile. auto-fill keeps the tracks, so
+    the select is one field wide, the width of the fields above it. */
+ return '<div class="iq-seed"><div class="iq-fields"'
+  +(sd?'':' style="grid-template-columns:repeat(auto-fill,minmax(168px,1fr))"')+'>'+sel
+  +(note?'<div class="iq-f" style="grid-column:span 2"><label>&nbsp;</label><p class="iq-why" style="margin:0">'+note+'</p></div>':'')
   +'</div></div>';}
 /* WHAT A TEN MEANS. Ruled by the owner, and the single most consequential
    sentence on this surface: a scale nobody has calibrated is not a
@@ -62,33 +68,25 @@ function iqAccuracy(){
     component are one visual unit and they take one case. So all three are
     labels, which is also the shorter answer, and the panel under this one
     already says which three ways. */
- var P=[
-  ['Asked three ways',false,
-   'Each law is asked once where it costs you something, once where nobody would know, '
-   +'and once on an ordinary day. The gap between the three is the reading, so answering '
-   +'the same law differently is the point rather than a mistake.'],
-  ['What a ten means',false,
-   'Not what you intend and not what you would like to be true. What you actually do, '
-   +'every time, without exception. A nine means you slip about one time in ten, and that '
-   +'is a real number this instrument can use.'],
-  ['What accuracy looks like',false,
-   'Do you go to the gym four days a week like you say. Do you tell the truth to yourself '
-   +'as readily as you tell it to other people. Everybody slips, and the slip is what is '
-   +'being measured.']];
+ /* THE THREE PANELS ARE GONE, AND SO IS THE PARAGRAPH UNDER THEM. Round HS,
+    his words: "get rid of all this like second or three third tier text pick
+    how much to run each pattern is what like we have overlays for all this
+    shit." Three headed panels explaining how the
+    questionnaire works, then a fourth paragraph on why accuracy is cheaper,
+    were the section explaining itself four times before the first question.
+
+    What survives is the one thing that has to be in the place it is pressed,
+    and it is the owner's own ruling above: what the number means. The key
+    says it in six words across the three points of the scale. The duration
+    and "stop whenever" stay because they are the two measured panel findings
+    the functional gate holds, and each is a fact a person needs before starting,
+    not a description of the section. The three ways are shown by layout: an
+    open law sets its three framings side by side, each with its own name,
+    Under cost, Unseen and Ordinary day. */
  return '<div class="iq-acc">'
-  +'<div class="iq-accg">'
-  +P.map(function(x){return '<div class="iq-accp"><div class="pm-eye'
-    +(x[1]?' plain':'')+'">'+x[0]+'</div>'
-    +'<p>'+x[2]+'</p></div>';}).join('')
-  +'</div>'
   +'<p class="iq-sc-key"><b>0</b> never <span>·</span> <b>5</b> about half the time '
   +'<span>·</span> <b>10</b> every time <span>·</span> '
-  +'about fifteen minutes for all of it, in any order. Stop whenever and come back: '
-  +'nothing is required and what you have entered is kept.</p>'
-  +'<p class="iq-accw">Integrity regulates the nervous system in both directions: held, the '
-  +'connection stays open, and dropped, it closes. Your stories weight these answers '
-  +'afterwards, so an answer that flatters you gets corrected later by what you write, '
-  +'slowly and at a cost. Answering accurately now is cheaper.</p>'
+  +'about fifteen minutes. Stop whenever and come back.</p>'
   +'</div>';}
 
 /* THE SEVEN SEATS, CROWN DOWN TO ROOT, and one plain line saying what each
@@ -241,9 +239,10 @@ function renderIntake(){
      is something to state, and it says so rather than sitting there dead. */
   +'<div class="iq-seal-r">'
    +'<button class="btn pri" id="iqseal"'+(iqSealable(w)?'':' disabled')+'>Save and close</button>'
-   +'<span class="iq-seal-n">'+(iqSealable(w)
-     ?'This rolls up to one line. Edit reopens it.'
-     :'Enter a name or a date of birth first.')+'</span>'
+   /* HS sweep: "This rolls up to one line. Edit reopens it" described what
+      the button does, which pressing it shows. The refusal beside a disabled
+      button stays, because nothing else says why it will not press. */
+   +(iqSealable(w)?'':'<span class="iq-seal-n">Enter a name or a date of birth first.</span>')
   +'</div>'
   +'</div>';
  h+='<div class="iq-top">'

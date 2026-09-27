@@ -660,17 +660,13 @@ function verpArrows(cr0){
    one word. Definition is on demand. */
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
-  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.',
-  how:'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.'},
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
-  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.',
-  how:'Patterns. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.'},
+  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
-  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.',
-  how:'Chains. Patterns, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
+  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.'},
  {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 6 masks, 21 laws',
-  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.',
-  how:'Blueprint. Chains, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.'}];
 
 /* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
    a separate control for the same idea: how much of the construct is drawn.

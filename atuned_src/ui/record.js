@@ -49,8 +49,9 @@ function recRender(){
  var H=recList(), m=meterRead(CURP);
  var h='<div class="pm-eye">The record</div>';
  if(H.length<2){
+  /* HS sweep: the refusal says what is missing. The sentence on when a
+     snapshot is written explained the mechanism and is cut. */
   h+='<p class="sum-p">'+(H.length?'One snapshot on file. ':'No snapshots yet. ')
-   +'A snapshot is written every time a story is committed and every time a release finishes. '
    +'Two are needed before there is a distance to read.</p>';
   host.innerHTML=h; return;}
 

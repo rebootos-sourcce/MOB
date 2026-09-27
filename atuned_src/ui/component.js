@@ -794,8 +794,15 @@ const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
    and one delegated listener answers for every copy of them.
    ============================================================ */
 const STARTD=[
+ /* HS SWEEP, THE DOORS. A door's second line says which door is yours, and
+    that is all it is for. "The engine reads the charge out of it" and "A
+    release empties a story out of the body. This is what you are filling it
+    toward" explained the product behind the door, on a button, in small
+    type, on every tab of a blank profile. The two "for anyone who" lines stay:
+    they are the only thing telling a person which of the two middle doors is
+    theirs. The definition of release stays where GS put it, in the drill. */
  ['story','Write what happened',
-  'The day, in your own words. The engine reads the charge out of it.'],
+  'The day, in your own words.'],
  /* TWO REASSURANCES AGAINST FEARS NOBODY HAD RAISED, CUT. V12. "None of them
     is a diagnosis" and "which is most people" answered a worry on a door the
     person has not opened yet; the drill behind the door is where that worry
@@ -807,7 +814,7 @@ const STARTD=[
  ['ages','Go year by year',
   'Three to eighteen. For anyone who cannot think of anything they identify with.'],
  ['avatar','Say who you are becoming',
-  'The avatar. A release empties a story out of the body. This is what you are filling it toward.']];
+  'The avatar.']];
 function startHTML(lead){
  return '<div class="pm-eye">Where to start</div>'
   +'<p class="st-lead">'+(lead||'Nothing has been read yet. Four ways in.')+'</p>'

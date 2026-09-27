@@ -414,8 +414,9 @@ function kbRender(){
 
  /* the deck sits under the base, because a card is the base at practice speed */
  h+='<div class="kb-deck"><div class="pm-eye">The Letting Go Deck</div>'
-  +'<p class="kb-p">A deck whose suits are the seven seats and whose ranks are intensity. It deals '
-  +'from what you are actually carrying, so every card is an address with charge on it. '
+  /* HS sweep: two sentences on how the deck is built came before the count.
+     The count, or the reason there is none, is the line. */
+  +'<p class="kb-p">'
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
 

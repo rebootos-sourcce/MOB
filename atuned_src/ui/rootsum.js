@@ -97,12 +97,11 @@ function renderRootSum(){
  var h='';
  if(!sp){
   /* the door the left rail's own empty state has, to the same field */
-  h+='<p class="rs-lead">'+(N?'A name gives the numbers. A birth date, time and place add three more '
-     +'systems to meet them.':'No birth data yet. Date, time and place let four systems read you, '
-     +'and this is where they meet.')+'</p>'
+  /* HS SWEEP. The refusal says what is missing and the button beside it is
+     the route. The sentences on how the four systems meet described the
+     panel, with no birth data and again with it, and are gone from both. */
+  h+='<p class="rs-lead">No birth data yet.</p>'
    +'<button class="btn rs-go" type="button">Open Energetics</button>';}
- else h+='<p class="rs-lead">Four systems read the same birth. Where two or more land on the same '
-  +'thing on their own, that is the reading. Where they part, that is the range.</p>';
  if(R.shown.length){
   /* WHERE THEY MEET, not where they agree, because most meetings are light
      and a heading that promised agreement over three light overlaps would be
@@ -124,7 +123,7 @@ function renderRootSum(){
      +' land here')+'">'+lit+'</div>'
     +'<p class="rs-say">'+esc(ROOT_SAYS[a.t]||'')+'</p>'
     +'<div class="rs-chips">'+rsChips(a)+'</div></div>';}).join('');}
- else if(sp)h+='<p class="rs-none">These four do not land on the same thing. Read each one as its own view.</p>';
+ else if(sp)h+='<p class="rs-none">These four do not land on the same thing.</p>';
  if(R.range.length){
   h+='<div class="pm-eye plain rs-eye">Other ways this shows up</div><div class="rs-range">'
    +R.range.map(function(x){var say=rsSays(x);

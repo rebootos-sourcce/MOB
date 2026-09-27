@@ -135,8 +135,9 @@ function gmRender(){
     still emitting them. Games keeps the shape it wants under its own gm-
     prefix rather than depending on another surface's internals. */
  var h='<div class="kb-top"><div class="gm-hd"><div class="pm-eye">Games</div>'
-  +'<h2 class="kb-h plain">The instrument at practice speed</h2>'
-  +'<p class="kb-p">Both deal from your own field. Neither invents a pattern.</p></div>'
+  +'<h2 class="kb-h plain">The instrument at practice speed</h2></div>'
+  /* HS sweep: "Both deal from your own field. Neither invents a pattern." sat
+     under the heading describing the two games before either was opened. */
   +'<div class="gm-tabs" role="tablist">'
   +'<button type="button" role="tab" class="kb-t'+(GAME==='lg'?' on':'')+'" data-gm="lg" '
    +'aria-selected="'+(GAME==='lg')+'">The letting go run</button>'
@@ -149,7 +150,9 @@ function gmRender(){
    h+='<div class="gm-intro"><p class="gm-p">Twenty four cards, face down, dealt from what you '
     +'are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs '
     +'while you do it.</p>'
-    +'<p class="gm-p">The practice is two or three minutes. Time it once and you will believe it.</p>'
+    /* HS sweep: the rules above the deal button stay, because they are the
+       game and nothing else teaches it. "Time it once and you will believe
+       it" was the game selling itself, and is cut. */
     +'<p class="gm-p">'+esc(CARD_OPEN)+'</p>'
     +'<div class="gm-gates"><span class="pm-eye plain">One statement runs every channel at once</span>'
     +'<div class="gm-glist">'+C3_VERB.map(function(v){

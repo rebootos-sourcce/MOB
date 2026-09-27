@@ -159,6 +159,41 @@
       "fix": "nothing. The annual discount is not ruled, so no copy states one."
     },
     {
+      "id": "section-explains-itself",
+      "class": "definition",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-27",
+        "CO-28",
+        "CO-16"
+      ],
+      "why": "A paragraph under a heading whose only job is to explain what the section is, how to read it, or how to use it. The heading, the layout, the icon and the control already say it, and the person does not read the paragraph; they scan past it and it costs the screen. His ruling, the third time: no text that describes something without an icon or a symbol unless it is body text, and we have overlays for all of it.",
+      "re": [
+        "\\b(?:press|click|tap|double press|double click)\\s+(?:on\\s+)?(?:one|any|a|an|each|every)\\s+[a-z]+(?:\\s+[a-z]+)?\\s+to\\s+(?:open|read|trace|turn|select|see|zoom|name|change|pick|set|choose|view|expand|show|add)\\b",
+        "\\b(?:press|click|tap)\\s+(?:one|any one|either)\\s+to\\s+(?:open|read|trace|turn|select|see|zoom|name|change|pick|set|choose|view|expand|show|add)\\b",
+        "\\bdrag to turn\\b",
+        "\\bdouble press to zoom\\b",
+        "\\b(?:point at|hover over|hover) (?:a|any|the|one) [a-z]+ to\\b",
+        "\\bhere you (?:can|will|see)\\b",
+        "\\b(?:this|the) (?:page|section|panel|tab|card|chart|list|rail|screen|surface|column|pane) (?:shows|lists|is where|is for|lets you)\\b",
+        "\\buse this (?:to|when|for)\\b",
+        "\\bthe bigger the (?:mark|circle|bubble|dot|ring|disc)\\b",
+        "\\bcolumns are\\b.{0,60}\\brows are\\b",
+        "\\bfills in as you go\\b",
+        "\\bevery save writes\\b",
+        "\\bways of acting\\b",
+        "\\byour birth moment and the\\b",
+        "\\bpick how much to\\b",
+        "\\bqueue them here\\b",
+        "\\brolls up to one line\\b"
+      ],
+      "fail": "Archetypes. 12 ways of acting, each beside the part of your life it acts from. Set how much of each one is you, from one to five. [Drag to turn it. Press any name to read that axis.]",
+      "fix": "Archetypes. [the wheel, the scale with its two end words, and nothing else]",
+      "keeps": "Four kinds of line are not this defect and are not cut by it. A reading about the person. An empty state or a refusal that says what is missing and what puts it in. A disclosure the person is owed: what is stored, where, who has sight, what a delete does. And one line of instruction at the moment of use, where the control has no other way to be learned, the model being the archetype scale's own: One press sets it. The same press again takes it off.",
+      "note": "The patterns are the shapes the class actually shipped in, read off the corpses rather than imagined. How to use a control is only caught with an object in front of the verb, press a region to open, press one to trace, because a tooltip's own action line, Click to set as primary, is on demand and is the overlay he asked for; the first cut without the object fired on every canvas tooltip. Checked before it was trusted: nothing found on the product after the HS sweep; run over the tree before it, the archetype line, the Energetics subtitle and the release line he quoted all fire, and so does the BA9 caption struck on 25 September; none of the kept lines above fires. Some lines the sweep cut by reading pass these patterns, the birth moment paragraph he also quoted, the deck's description and the Settings footers among them. A paragraph that explains its section in words no pattern foresaw passes this gate, which is why the guidance entry for a legend stays in the list at the foot of this file."
+    },
+    {
       "id": "figure-label",
       "class": "label",
       "severity": "stop",
@@ -366,7 +401,8 @@
         "CO-16"
       ],
       "why": "A card explaining the product's own model to a person who did not ask. Get rid of it.",
-      "not_gateable": "A legend is a whole block and reads as ordinary copy line by line."
+      "not_gateable": "A legend is a whole block and reads as ordinary copy line by line.",
+      "note": "Partly gateable since round HS. The two shapes a legend actually shipped in, the bigger the mark and columns are, rows are, are patterns under section-explains-itself. A legend in any other words still needs a person to see it."
     },
     {
       "id": "heading-a-person-would-say",
@@ -691,6 +727,30 @@
         "plain-field-label"
       ],
       "note": "The strings he saw were in proto/fw/pages/energetics.html, the FW round's Energetics mockup: \"Your name, as you use it\" over one box, \"The date you were born\", and a button reading \"Keep it\". \"As you see it\" is his recollection of \"as you use it\". The shipped form, ui/intakeui.js, already read First name, Middle, Last and Date of birth. The live funnel carried the same button voice in a note, \"Keep it: it is the handoff\", at funnel/quiz.html."
+    },
+    {
+      "id": "CO-27",
+      "date": "27 September, in his words",
+      "where": "TASKS.md, round HS",
+      "verbatim": true,
+      "words": "you have this text again, where it says archetypes, 12 ways of acting. Each besides the part, holy shit, I told you I don't want text like that anymore. Energetics, your birth moment is 63 questions. Why is this not being fixed in code? Why is that text never being written out ever again after I keep asking for it to never be written out? What is in your programming? What is happening within our copy Bible where this is constantly being violated? ... Do a sweep of the entire site with the UI UX team get rid of all this like second or three third tier text pick how much to run each pattern is what like we have overlays for all this shit clean up my UI UX get rid of all this small noodly nuanced shit across the entire site I don't want to see it anymore",
+      "objects": "A paragraph under a section heading explaining what the section is or how to use it, on a shipped screen, after he had asked for the class never to be written.",
+      "rules": [
+        "section-explains-itself"
+      ],
+      "note": "The strings he quoted were the archetype paragraph in ui/avatarui.js, the Energetics subtitle and the birth moment paragraph in ui/intakeui.js, and the release panel's opening line in ui/storyui.js, \"Pick how much to run. Each pattern is one thought line at one address.\" The first three were cut in a0d90b3 and the fourth in the sweep that added this rule. \"five field 25.48\" and \"two words, zero tag\" in the same dictation are two value defects and not this class: an imprint seat row reading \"5 held, 26.4, 8 installed\" and the Story counter reading \"2 words, 0 tagged\"."
+    },
+    {
+      "id": "CO-28",
+      "date": "25 September, marked on a screenshot",
+      "where": "TASKS.md, round BA, BA9",
+      "verbatim": true,
+      "words": "You have unnecessary text, I want those removed.",
+      "objects": "The caption under the wheel explaining the ring and how to press it, struck through on his screenshot beside a notice he struck in the same mark.",
+      "rules": [
+        "section-explains-itself"
+      ],
+      "note": "Logged in round HS, when the class was ruled a third time. It had not been entered here, which is part of why the class had no gate: the caption was cut by hand and nothing held it closed."
     }
   ],
   "handover": [

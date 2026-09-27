@@ -303,16 +303,20 @@ function avArchIc(a,cls){
  return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'><path d="'+a.ic+'"/></svg>';}
 var AV_RANK=['first','second','third'];
 function avCompare(a,rating,r){
- if(r.unread)return 'Nothing read yet, so the field has no reading of its own to set beside yours.';
+ /* HS sweep. Silence on an unread field: there is nothing to set beside the
+    person's own rating, and a sentence saying so is a refusal nobody asked
+    for, sitting under a control they have not pressed. The two tails below,
+    "That gap is what the scale is for" and "Both are kept", explained the
+    scale rather than reading it, and are cut the same way. */
+ if(r.unread)return '';
  var ro=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(x,y){return y.v-x.v;});
  if(!ro.length)return '';
  var at=-1; ro.forEach(function(x,j){if(x.i===a.i)at=j;});
  var top=ARCH[ro[0].i].nm, where=at<3?AV_RANK[at]:'further down';
  if(at===0)return 'Your field reads '+a.nm+' first'+(rating?' too.':'.');
  if(rating&&rating<=2&&at<=2)
-  return 'You set '+a.nm+' low and your field reads it '+where
-   +'. That gap is what the scale is for, and it is part of the reading.';
- return 'Your field reads '+top+' first and '+a.nm+' '+where+'.'+(rating?' Both are kept.':'');}
+  return 'You set '+a.nm+' low and your field reads it '+where+'.';
+ return 'Your field reads '+top+' first and '+a.nm+' '+where+'.';}
 
 /* ---------------- the state the page draws ---------------- */
 function avState(){
@@ -421,8 +425,9 @@ function avPanel(st){
   return '<div class="av-card av-panel" style="--c:'+seatCol(A.b)+'"><div class="av-ph">'
    +'<span class="av-pic">'+avSvg(AV_IC[A.k])+'</span><div><div class="av-pn">'+A.nm+'</div>'
    +'<p class="av-pa">'+esc(A.about)+'. At '+AV_THE[A.b]+'.</p></div><span class="av-pp">'+avPct(null)+'</span></div>'
-   +'<p class="av-p">Nothing you have written lands here yet. A pair lands where its second line '
-   +'is held in the body, so write the bad day and this area fills.</p></div>';}
+   /* HS sweep: the empty state keeps its first sentence. The second explained
+      how a pair lands, which the form beside it already shows. */
+   +'<p class="av-p">Nothing you have written lands here yet.</p></div>';}
  if(!x)return avForm(true);
  var g=x.gap, h=avHeard(x.pair.notbe), A2=g?AV_OF[g.seat]:null;
  var out='<div class="av-card av-panel"'+(A2?' style="--c:'+seatCol(A2.b)+'"':'')+'>'
@@ -449,8 +454,9 @@ function avPanelFor(x,g,h){
    return '<div class="av-jr-row"><p class="av-jr-q">'+avQuote(j.e,j.marks)+'</p>'
     +'<p class="av-jr-m">'+avAgo(j.days)+(j.marks.length?'. Heard at '+AV_THE[g.seat]:'')+'</p></div>';}).join('')+'</div>';
  else
-  out+='<p class="av-p">Nothing in your journal lands at '+AV_THE[g.seat]+' yet. What you commit on the '
-   +'Story page is read here.</p>';
+  /* HS sweep: "What you commit on the Story page is read here" explained
+     where this row reads from. The row's own label says it: From your journal. */
+  out+='<p class="av-p">Nothing in your journal lands at '+AV_THE[g.seat]+' yet.</p>';
  /* and the protocol that clears it */
  var q=avQueue(g.seat), m=avMinutes(q);
  if(g.clear||!q.length)
@@ -469,10 +475,12 @@ function avPanelFor(x,g,h){
    the instrument cannot hear teaches a person the wrong thing on the first try. */
 function avForm(lead){
  var d=AV.draft, h=avHeard(d.notbe);
+ /* HS sweep. The lead form opened on a paragraph describing the two fields
+    under it ("Two lines. Who you want to be, and a bad day..."). The two
+    labels and their placeholders already say it, and the heading above the
+    form asks the question. Both forms open on the same label now. */
  return '<div class="av-card av-form'+(lead?' av-panel':'')+'">'
-  +(lead?'<p class="av-p">Two lines. Who you want to be, and a bad day that stands in the way of it. '
-   +'The bad day is what the sniffer can place in the body.</p>'
-   :'<div class="pm-eye">Tell it</div>')
+  +'<div class="pm-eye">Tell it</div>'
   +'<label class="av-f"><span>Who you want to be</span>'
   +'<input type="text" id="avbe" maxlength="199" autocomplete="off" '
   +'placeholder="A great public speaker. I stand up and the room hears me." value="'+esc(d.be)+'"></label>'
@@ -502,8 +510,11 @@ function avRunHTML(st){
  if(!R.rows.length)
   return out+'<p class="av-p">'+(st.r.unread?'Nothing read yet, so no saboteur is running.'
    :'No saboteur is running.')+'</p></section>';
- out+='<p class="av-p">'+(R.mine?'Saboteurs at the seats your avatar is working on':'Saboteurs running in your field')
-  +', heaviest first, and which way the load last moved. Press one to trace its line on the avatar.</p><div class="av-runs">';
+ /* HS sweep. A paragraph here described the list under it: which saboteurs,
+    in what order, what the arrow means, and what a press does. The rows are
+    ordered, carry their direction word and are buttons, so the list shows all
+    four of those things itself. */
+ out+='<div class="av-runs">';
  R.rows.forEach(function(x){
   var c=x.fam?seatCol(x.fam.b):'var(--dim)', on=AV.trace===x.nm;
   out+='<button type="button" class="av-run-row'+(on?' av-on':'')+'" data-avsab="'+esc(x.nm)+'" aria-pressed="'+on+'" style="--c:'+c+'">'
@@ -522,10 +533,14 @@ function avRitHTML(st){
   out+='<p class="av-p av-rit-today">Today: '+esc(ts.map(function(p){return p.nm;}).join(', '))
    +', '+((+td.min)||0)+' minutes. '+(td.done?'Done.':'Not done yet.')+'</p>';}
  if(!st.rit.length)
-  return out+'<p class="av-p">Nothing to queue yet. Each pair you write calls for a practice at its own seat.</p></section>';
+  return out+'<p class="av-p">Nothing to queue yet.</p></section>';
  if(AV.q===null){AV.q={}; AV.q[st.rit[0].p.k]=true;}
- out+='<p class="av-p">What each area you are working on calls for, the lightest practice in its track. '
-  +'Queue them here, then task them.</p><div class="av-rits">';
+ /* HS sweep. "What each area you are working on calls for... Queue them
+    here, then task them" described the rows and the button under them, and
+    the empty state above carried a second sentence on how a queue fills. Each
+    row names its practice and the area it is for, and the button says Task
+    these. */
+ out+='<div class="av-rits">';
  var mins=0;
  st.rit.forEach(function(x){
   var on=!!AV.q[x.p.k]; if(on)mins+=x.p.min;
@@ -589,7 +604,7 @@ function avDetail(st,a){
     +'" data-avst="'+n+'">'+n+'</button>';}).join('')+'</div>'
   +'<div class="av-ends"><span>Hardly</span><span>Fully</span></div>'
   +'<p class="av-hint">One press sets it. The same press again takes it off.</p>'
-  +'<p class="av-cmp">'+avCompare(a,rt,st.r)+'</p></div>';
+  +(function(t){return t?'<p class="av-cmp">'+t+'</p>':'';})(avCompare(a,rt,st.r))+'</div>';
  return out;}
 
 /* ---------------- the surface ---------------- */

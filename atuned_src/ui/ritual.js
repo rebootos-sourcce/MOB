@@ -156,11 +156,15 @@ function ritRender(){
    +'<label class="rit-f"><span>Where</span>'
    +'<input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX+'" placeholder="the chair by the window" '
    +'value="'+esc(RIT.where||'')+'"></label>'
-   +'<p class="rit-if">'+(RIT.when||RIT.where
-     ? 'When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
-       +', you will '+esc(String(picked[0].nm).toLowerCase())+'.'
-     : 'A plan with a time and a place gets done. One without them does not.')
-   +'</p></div>';}
+   /* HS sweep. With both fields empty this argued for filling them in, "A
+      plan with a time and a place gets done", which is the section making
+      its own case under two labelled boxes. Silent until something is typed,
+      and then it is the person's own plan read back, which stays. */
+   +(RIT.when||RIT.where
+     ? '<p class="rit-if">When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
+       +', you will '+esc(String(picked[0].nm).toLowerCase())+'.</p>'
+     : '')
+   +'</div>';}
  out+='<div class="rel-act"><button class="btn" id="ritx">Close</button>'
   +'<button class="btn pri" id="ritsave"'+(picked.length?'':' disabled')+'>Save ritual</button></div>';
  /* THE RECORD, ON THE SURFACE THAT EARNS IT. ladderHtml() draws the streak, the

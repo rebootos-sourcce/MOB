@@ -644,8 +644,10 @@ function syncSoul(){
  var lg=$('rootlegend');
  if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
   +(S.roots.length&&nlit?' \u00b7 ':'')
-  +(nlit?'washed, your selection sits here':'')
-  +(!S.roots.length&&!nlit?'click a root to add every domain under it':'');
+  +(nlit?'washed, your selection sits here':'');
+ /* HS sweep: with nothing added and nothing washed this printed "click a root
+    to add every domain under it", a how to line under a row of buttons. The
+    legend now speaks only when there is a state on the row to key. */
  capD();capA();}
 function rebuildSwatches(){
  /* every colour the rail's grids wear is per lighting now, so all three move

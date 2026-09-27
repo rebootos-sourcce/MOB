@@ -19,9 +19,9 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 2178ab0, tree dirty   database md5 4acdbd330bfd
-    25 objections logged, 20 of them with a quotation on record
-    19 rules, 8 with patterns in the database, 11 held by a gate elsewhere
+    commit 4d132e4, tree dirty   database md5 edf796e70b63
+    27 objections logged, 22 of them with a quotation on record
+    20 rules, 9 with patterns in the database, 11 held by a gate elsewhere
     10 more objections are guidance, because no check can express them
     0 findings on this run, 0 at a severity that stops a build
 
@@ -281,6 +281,28 @@ Recorded as his ruling inside a list of them, so the wording is the record's rat
 
 The strings he saw were in proto/fw/pages/energetics.html, the FW round's Energetics mockup: "Your name, as you use it" over one box, "The date you were born", and a button reading "Keep it". "As you see it" is his recollection of "as you use it". The shipped form, ui/intakeui.js, already read First name, Middle, Last and Date of birth. The live funnel carried the same button voice in a note, "Keep it: it is the handoff", at funnel/quiz.html.
 
+### CO-27. A paragraph under a section heading explaining what the section is or how to use it, on a shipped screen, after he had asked for the class never to be written.
+
+> you have this text again, where it says archetypes, 12 ways of acting. Each besides the part, holy shit, I told you I don't want text like that anymore. Energetics, your birth moment is 63 questions. Why is this not being fixed in code? Why is that text never being written out ever again after I keep asking for it to never be written out? What is in your programming? What is happening within our copy Bible where this is constantly being violated? ... Do a sweep of the entire site with the UI UX team get rid of all this like second or three third tier text pick how much to run each pattern is what like we have overlays for all this shit clean up my UI UX get rid of all this small noodly nuanced shit across the entire site I don't want to see it anymore
+
+    where    TASKS.md, round HS
+    when     27 September, in his words
+    quoted   verbatim
+    rules    section-explains-itself
+
+The strings he quoted were the archetype paragraph in ui/avatarui.js, the Energetics subtitle and the birth moment paragraph in ui/intakeui.js, and the release panel's opening line in ui/storyui.js, "Pick how much to run. Each pattern is one thought line at one address." The first three were cut in a0d90b3 and the fourth in the sweep that added this rule. "five field 25.48" and "two words, zero tag" in the same dictation are two value defects and not this class: an imprint seat row reading "5 held, 26.4, 8 installed" and the Story counter reading "2 words, 0 tagged".
+
+### CO-28. The caption under the wheel explaining the ring and how to press it, struck through on his screenshot beside a notice he struck in the same mark.
+
+> You have unnecessary text, I want those removed.
+
+    where    TASKS.md, round BA, BA9
+    when     25 September, marked on a screenshot
+    quoted   verbatim
+    rules    section-explains-itself
+
+Logged in round HS, when the class was ruled a third time. It had not been entered here, which is part of why the class had no gate: the caption was cut by hand and nothing held it closed.
+
 ---
 
 ## The rules, and where each one is enforced
@@ -293,6 +315,7 @@ The strings he saw were in proto/fw/pages/energetics.html, the FW round's Energe
     empty-state           value         stop      objections                  CO-09, CO-22
     serial-to-a-person    label         stop      objections                  CO-15
     two-months-free       offer         stop      objections                  CO-25
+    section-explains-itself definition    stop      objections                  CO-27, CO-28, CO-16
     figure-label          label         stop      check.py:figure label       CO-08
     naked-number          number        stop      check.py:naked number       CO-06, CO-07
     em-dash               punctuation   stop      check.py:emdash             CO-19
@@ -371,6 +394,16 @@ The offer is not two months free. Any copy saying so is wrong and comes out.
     fails   Two months free on the annual plan.
     fixed   nothing. The annual discount is not ruled, so no copy states one.
     found   0
+
+### section-explains-itself
+
+A paragraph under a heading whose only job is to explain what the section is, how to read it, or how to use it. The heading, the layout, the icon and the control already say it, and the person does not read the paragraph; they scan past it and it costs the screen. His ruling, the third time: no text that describes something without an icon or a symbol unless it is body text, and we have overlays for all of it.
+
+    fails   Archetypes. 12 ways of acting, each beside the part of your life it acts from. Set how much of each one is you, from one to five. [Drag to turn it. Press any name to read that axis.]
+    fixed   Archetypes. [the wheel, the scale with its two end words, and nothing else]
+    found   0
+
+The patterns are the shapes the class actually shipped in, read off the corpses rather than imagined. How to use a control is only caught with an object in front of the verb, press a region to open, press one to trace, because a tooltip's own action line, Click to set as primary, is on demand and is the overlay he asked for; the first cut without the object fired on every canvas tooltip. Checked before it was trusted: nothing found on the product after the HS sweep; run over the tree before it, the archetype line, the Energetics subtitle and the release line he quoted all fire, and so does the BA9 caption struck on 25 September; none of the kept lines above fires. Some lines the sweep cut by reading pass these patterns, the birth moment paragraph he also quoted, the deck's description and the Settings footers among them. A paragraph that explains its section in words no pattern foresaw passes this gate, which is why the guidance entry for a legend stays in the list at the foot of this file.
 
 ### plain-field-label
 
@@ -466,7 +499,7 @@ The balance pill, and the last piece of the string the objection names. The stru
 
 If an empty label draws an empty box, drop the key rather than passing a space.
 
-### atuned_src/ui/ui.js:884
+### atuned_src/ui/ui.js:893
 
     bucket  refusal
     rule    empty-state, from CO-09

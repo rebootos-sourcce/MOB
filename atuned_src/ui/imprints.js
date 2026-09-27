@@ -210,15 +210,23 @@ function impRender(){
    if(!seg.length&&!gs.length)return;
    var heldN=seg.filter(function(n){return n.sq>=4;});
    var instN=seg.filter(function(n){return n.sq<4&&n.pole>=4;});
-   var sum=heldN.reduce(function(a,n){return a+n.sq;},0);
    /* TWO BUCKETS IN ONE ROW, which is the design: the seat name on the left
       is a label and the reading on the right is a value. The row carried the
       capital on every word straight into the value, so "nothing held, 15
       installed" was printed back as "Nothing Held, 15 Installed", a reading
       wearing a title. Every em in this renderer is a value, so every em opts
       out and the seat name keeps the rule. */
+   /* THE SUMMED CHARGE IS GONE FROM THIS ROW. Round HS, his words: "you've
+      got five field 25.48 or something like that installed what is that"
+      It was "5 held, 26.4, 8 installed" on Derek's sacral: a count, then the
+      charge of all five added together with no unit, then a second count, so
+      the eye ran the sum into the count after it and read one number that
+      does not exist. A sum of charge across addresses is not a quantity a
+      person carries anywhere else in the product, and every pill below the
+      row already prints its own charge. Reproduced on Derek, Sofia, James and
+      Lance before it was cut. */
    h+='<div class="ip-bh" style="--c:'+seatCol(b)+'">'+b+'<em class="plain">'
-    +(heldN.length?heldN.length+' held, '+sum.toFixed(1):'nothing held')
+    +(heldN.length?heldN.length+' held':'nothing held')
     +(instN.length?', '+instN.length+' installed':'')
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
    /* two maps, because ghost is passed as the amount and is a number. The
@@ -259,8 +267,11 @@ function impRender(){
     +(seg.length?cloud(seg):'<div class="ip-none" style="padding:6px 0">nothing held at the '
       +e.b.toLowerCase()+'</div>');});}
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];});
+ /* HS sweep: "click a pill to select" told a person how to use the panel.
+    The pills are buttons and the two controls beside this are disabled until
+    one is pressed, so the empty half of this slot says nothing. */
  h+='<div class="ip-bar"><span class="ip-sel">'
-  +(picked.length?picked.length+' selected':'click a pill to select')+'</span>'
+  +(picked.length?picked.length+' selected':'')+'</span>'
   +'<button class="btn" id="impinfo"'+(picked.length===1?'':' disabled')+'>Detail</button>'
   +'<button class="btn pri" id="imprun"'+(picked.length?'':' disabled')+'>Release '
   +(picked.length>1?picked.length:'')+'</button></div>';

@@ -74,7 +74,7 @@ function anaField(title,sub,items,w,h){
     if(fit)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+p.it.v.toFixed(1)+'</text>';}}
   s+='</g>';});
- return s+'</svg><div class="ab-s">'+sub+'</div></div>';}
+ return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
  var r=compute(),H=anaHist(),prev=H.length>1?H[H.length-2]:null;
@@ -169,23 +169,29 @@ function anaRender(){
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
   +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
- out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
+ /* HS SWEEP. Every chart here carried a caption under it saying how to read
+    it: what the heading means and that a bigger mark is more. A bubble chart
+    says bigger is more by being one, and the heading names the set. The one
+    caption kept is the colour key on What is running, because four kinds
+    share one chart and colour is the only thing telling them apart. Its tail,
+    the bigger the mark, goes with the rest. */
+ out+=anaField('Masks','',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
- out+=anaField('Domains','the blueprint you run. yours are lit, the rest are context',
+ out+=anaField('Domains','',
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
- out+=anaField('Archetypes','how the blueprint expresses. the bigger the mark, the closer the fit',
+ out+=anaField('Archetypes','',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
- out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character. the bigger the mark, the more weight it carries',
+ out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
   [].concat(r.sups,r.hys,r.cxs,r.sabs).slice(0,16).map(function(o){
    return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210);
- out+=anaField('The nine axes','held charge on each poled axis, out of ten',
+ out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','the bigger the mark, the more is held there',
+ out+=anaField('The seven seats','',
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>';
@@ -203,8 +209,11 @@ function anaRender(){
     a reading is not a score, and drills.js tells a person in as many words
     that nothing is scored. The intake already counts what a person has
     answered, so answered is the word. */
+ /* AND THE FRAME IS GONE TOO, round HS. "21 laws, each answered from never
+    to every time" was the section describing itself under its own heading.
+    The twenty one bars are the count, and the scale is said once, where it
+    is answered, in the intake's key. */
  out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
-  +'<p class="sum-p">21 laws, each answered from never to every time.</p>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'
@@ -220,19 +229,28 @@ function anaRender(){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
    /* the third printing of the same tolerance on one surface. Same ruling,
       same treatment: the warning survives, the arithmetic does not. */
-   +'<p class="sum-p">One bar per session. Height is CQ on 0 to 100, colour is the darkest seat. '
-   +'The needle has play in it, so read the shape of the run.</p>'
+   /* HS sweep: a legend for the strip, and the needle warning said a second
+      time on this surface. Each bar names its CQ and seat on its title, and
+      the warning stands once, beside Identification. */
    +'<div class="ana-strip">';
   H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', '+x.dark
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></div>';});
   out+='</div>';}
  var meas=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;});
- out+='<p class="sum-p" style="margin-top:18px">'
-  +(meas.length===21?'Every law is measured, so nothing here is a default.'
-    :meas.length?'<b>'+(21-meas.length)+'</b> law'+(21-meas.length===1?' is':'s are')+' still unmeasured and sitting at the default 6, which flatters the score. Answer them in Intake.'
-    :'No law is measured yet. All 21 sit at the default 6, which flatters the score. Answer them in Intake.')
-  +'</p></div>';
+ /* HS SWEEP, AND PASS ONE BEFORE IT. "Every law is measured, so nothing here
+    is a default" said nothing a person acts on and is silent now. The other
+    two said an unanswered law "flatters the score", which has been untrue
+    since 25 September: engine/compute.js counts an unanswered law 0 against a
+    fixed 210, and the default 6 never enters CQ. What is true is that the
+    bars above draw an unanswered law at that 6, so that is what is said, and
+    the route names the section by the word on the button that opens it. */
+ var unm=21-meas.length;
+ out+=(unm?'<p class="sum-p" style="margin-top:18px">'
+    +(meas.length?'<b>'+unm+'</b> law'+(unm===1?' is':'s are')+' unmeasured, drawn above at the default 6.'
+      :'No law is measured yet. All 21 are drawn above at the default 6.')
+    +' Answer them in Energetics.</p>':'')
+  +'</div>';
  /* the record. every snapshot the profile carries, and the distance between
     any two of them. the data has been accruing since the rebuild. */
  out+='<div class="ab-f" id="rec"></div>';
@@ -279,18 +297,22 @@ function anaHot(r){
   +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
  else s+=anaHotRows(L,t);
  return '<div class="ana-hot">'+s+'</div>';}
+var ANA_DIRSAY={expanding:'Its charge rose on its last change.',
+ collapsing:'Its charge fell on its last change.',
+ steady:'It has not moved since this record was opened.'};
 function anaHotRows(L,t){
  var say=[], s='';
  ['expanding','collapsing','steady'].forEach(function(k){if(t[k])say.push('<b>'+t[k]+'</b> '+k);});
  s='<p class="sum-p"><b>'+L.length+'</b> address'+(L.length===1?' is':'es are')
   +' past five, where an address pulls more than half as hard as it can and the ring on the '
   +'Field bends under it. '+say.join(', ')+'.</p>'
-  +'<p class="sum-p">Expanding means its charge rose on its last change. Collapsing means it fell. '
-  +'Steady means it has not moved since this record was opened.</p>'
+  /* HS sweep: a three sentence legend for the three direction words sat
+     between the count and the rows. Each word now carries its own meaning as
+     its title, and the colour of the word already separates the three. */
   +'<div class="ad-rows">'+L.slice(0,ANA_HOT_ROWS).map(function(n){var d=hotDir(n);
    return '<button type="button" class="ad-r" data-addr="'+n.i+'" data-dir="'+d+'" '
     +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
-    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'">'+d+'</em></button>';}).join('')+'</div>';
+    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'" title="'+esc(ANA_DIRSAY[d]||'')+'">'+d+'</em></button>';}).join('')+'</div>';
  if(L.length>ANA_HOT_ROWS)s+='<p class="sum-p">The '+ANA_HOT_ROWS+' heaviest. '
   +(L.length-ANA_HOT_ROWS)+' more are past five, and the Field draws every one.</p>';
  return s;}

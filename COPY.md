@@ -120,6 +120,10 @@ When the product cannot do something or will not claim something.
 - **Address the product to itself.** "Nothing held. Write in the box and it
   gathers here" is the product narrating. "You have not written anything yet"
   is talking to a person.
+- **Explain a section under its own heading.** No paragraph whose only job is
+  to say what the section is, how to read it, or how to use it. Ruled three
+  times; see round HS below. The gate is `section-explains-itself` in
+  `objections.json`.
 
 ## Ruled 27 September
 
@@ -404,6 +408,85 @@ the instrument reads that the story is still there.
 settle.** It is not written into the product until he has chosen between
 shipping it word for word and ending before "pain and disease free". The team
 does not rewrite dictated words.
+
+## Ruled 27 September, round HS. A section never explains itself.
+
+His words, `TASKS.md` HS, quoting the line back:
+
+> "you have this text again, where it says archetypes, 12 ways of acting.
+> Each besides the part, holy shit, I told you I don't want text like that
+> anymore. Energetics, your birth moment is 63 questions. Why is this not
+> being fixed in code? Why is that text never being written out ever again
+> after I keep asking for it to never be written out? What is in your
+> programming? What is happening within our copy Bible where this is
+> constantly being violated?"
+
+And in the same dictation, the scope: "Do a sweep of the entire site with the
+UI UX team get rid of all this like second or three third tier text pick how
+much to run each pattern is what like we have overlays for all this shit clean
+up my UI UX get rid of all this small noodly nuanced shit across the entire
+site I don't want to see it anymore."
+
+It is the third time. `RT7` on 20 September ("I'm not sure what that is. Get
+rid of it.", a legend) and `BA9` on 25 September ("You have unnecessary text,
+I want those removed.", the caption under the wheel) were the same class, and
+each was fixed by hand with nothing left to hold it closed. That is the
+answer to his question about the copy bible: the rule lived in rulings and
+not in the gate, so every new surface was free to write it again.
+
+**The rule.** A heading, an icon, a layout or a control is the explanation.
+A paragraph under it whose only job is to say what the section is, how to
+read it, or how to use it does not ship. The person does not read it. They
+scan, and it costs them the screen.
+
+**What it looks like, off the corpses.**
+
+    a subtitle restating the heading     Energetics
+                                         Your birth moment and the 63 questions.
+    a paragraph on how the scale works   Set how much of each one is you, from
+                                         one to five.
+    how to handle the figure             Drag to turn it. Press any name to read
+                                         that axis.
+    how the thing fills                  Every save writes a point, so this
+                                         fills in as you go.
+    a legend for a chart                 the bigger the mark, the more weight it
+                                         carries
+    a line selling the section           Time it once and you will believe it.
+
+**What it is not.** Four kinds of line stay, and the sweep kept every one:
+
+    a reading                 Your field reads Warrior first.
+    an empty state or refusal Nothing is held above the line yet, so there is
+                              nothing to release.
+    a disclosure owed         Recording sends the audio to your browser's
+                              speech service. Typing does not leave this device.
+    one line at the moment    One press sets it. The same press again takes it
+    of use                    off.
+
+The last kind is narrow. It is allowed only where the control has no other
+way to be learned: a second press that clears, a mode the person chose. "Press
+a region to open it" is not that, because a region answers a press without
+being told to.
+
+**Where the explanation goes instead.** Into the overlay a person opens: the
+drill behind a row, the Help sheet, a tooltip on a control. A definition still
+never lives only in a tooltip, because a phone cannot reach one, so where a
+legend comes off a surface the rows under it become doors to the drill that
+carries it. The Field's nine axis rows were made doors for exactly that reason
+before their legend was cut.
+
+**The gate.** `section-explains-itself` in
+`.claude/skills/atuned-voice/objections.json`, run by `check.py --objections`,
+severity stop. It reads the shapes the class actually shipped in, and it was
+checked against both ends before it was trusted. Run over the tree before the
+sweep it fires on the archetype line, the Energetics subtitle and the release
+line he quoted, and on the BA9 caption; none of the four kept lines above
+fires. Run over the product after the sweep it finds nothing. It does not
+catch everything the sweep cut: the birth moment paragraph he also quoted,
+the deck's description, the Settings footers and the numerology method line
+were cut by reading, and they pass the patterns. A paragraph
+that explains its section in words no pattern foresaw passes the gate. Read
+the surface.
 
 ## Where each bucket lives
 
