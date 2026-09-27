@@ -21077,3 +21077,41 @@ whether the imprints panel should fold away when long or scrolling to
 the release is fine; and whether showing the release's after weight
 before the run is wanted, which is new but uses numbers the product
 already prints after a run.
+
+## HY. The backlog page becomes a standing tool, the column law is set aside for the Story page by his own hand, and a third file would not open. 27 September
+
+His words, verbatim: "Cool, this is great. So from now on with the
+backlog, you've got this sections that say no reaction. This is
+fantastic. I want you to link up all the HTML files that need to re be
+reviewed and I want you to do that as part of a continuous review. So
+the backlog if there's ever stuff in here that needs my eyes, has a
+link to it with the most recent so I can review. Yeah, the reason why
+I miss stuff is because you're, there's too much volume of your output
+that I can't it's like information overload. Cool, when you link up
+the HTML files also link up the questions and we can use this instead
+of like a backlog, it'll be part of a backlog and review. So for the
+journal, I like that the visuals have changed. I don't like that the
+layout is too rigid. Now, I think I've painted you in a corner with
+this layout. I think we know what the tools are, we know what we're
+asking, but I want everything above the fold, so feel free to break
+that right navigation. Change the UI UX, simulate the flow with the
+ICPs and the focus group to make it frictionless and to find the best
+configuration, that is for retention, user engagement, UI UX and user
+flow. And for my UX guy, this is going to be part of your normal
+simulations all the time, so I need to stop asking it, I need to start
+making it part of your normal set. So let's see four more versions of
+the journal. Oh, you did it already, good. Yeah, I want story,
+imprints and release to all be above the fold, so it's just, not one
+panel, but I should be able to see them all in front of me. So that
+layout needs to be worked on. So the imprints on Trace is interesting,
+and the imprints on Route is interesting, but for the imprints I also
+need to be able to sort by the various types as well, so it looks like
+there's elements missing or the tools regressing. And I can't open the
+tool. Start with the combination between Trace and Route, simulate
+that with the ICPs in the focus group, let's see what that final looks
+like. And then the HTML file that you just made, the attuned story
+redesign that I, it just couldn't open this file."
+
+A third file has now failed to open, sent raw this time on his own
+instruction rather than packed, which rules out compression as the
+cause. Investigated before anything else below.
