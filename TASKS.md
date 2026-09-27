@@ -19707,3 +19707,62 @@ have no tool that performs it and it needs him or another admin on the
 account; and the same Cloudflare or Supabase, and which product goes
 online first, questions from round HA, which this message does not
 answer and which the new research depends on rather than replaces.
+
+## HC. The archetype picker merged onto the Avatar page, four variations, verified. 27 September
+
+Round GV's archetype dispatch, back. Verified directly: all five
+packed md5s matched the report exactly, zero em dashes across every
+source file, and `shots/v4-spine-0-1600-pressed.png` opened rather
+than trusted from description. It shows exactly what the report
+claims: the two part copy pattern (a neutral description, then a
+separate boxed "Impact" line naming the saboteur, its seat and one
+line of cost), the "Rings true" button with a live "Button word"
+switch carrying all four candidates plus his own "This is me" to
+compare against, one press saving and the same press removing it with
+no separate save step, and a moving line drawn from where Warrior acts
+to where its saboteur, Controller, actually sits, exactly the kind of
+concrete visual he asked for this round when he said he wanted the
+Field's own standard of animation and attention applied to the energy
+system.
+
+**Its own recommended pick, "Rings true," is reasoned rather than
+merely preferred:** his own suggested word, "Resonate," is flagged
+honestly against the house voice rule against telling a person to feel
+an outcome rather than naming one, and against being the single most
+used word in wellness writing generally, a register this product has
+ruled against repeatedly. "Rings true" keeps the same underlying idea,
+a struck bell, while stating the person's own judgement rather than an
+instruction.
+
+**A real, useful measurement across all five options, not just a
+description of each:** choices on screen counted live on every
+variation, the merged wheel worst at twenty three, the "Three cards at
+a time" variation best at four, with named stopping points for three
+different reference profiles per variation rather than one generic
+grade.
+
+**A real, concrete follow up list, not just praise:** the two part
+Impact pattern is not yet the rule anywhere else it should be,
+specific line numbers named in `ui/analytics.js`, `ui/drills.js` and
+`funnel/quiz.html` where a saboteur still prints as a bare label, and
+a real, harder problem underneath all of them: the saboteur
+definitions themselves, in `engine/data/kb.js`, are written as
+judgements ("the most dangerous saboteur," "victim mentality for
+attention") rather than neutral descriptions, so making this pattern
+consistent everywhere means rewriting the underlying data, not only
+the templates that print it.
+
+Sent to him: the Spine variation screenshot, since this is a layout
+and interaction question best answered by looking at it, plus two of
+the five packed files as attachments per this project's own standing
+rule that a build goes to him as something real to open, not a
+preview.
+
+What I need from him, the report's own six questions: the button word,
+"Rings true" or his own "Resonate"; whether one archetype can be held
+at a time or up to three; which of the four directions, or the merged
+wheel as already approved; how much the Impact line should say, a name
+alone or the cost sentence beneath it; a read on the eighteen draft
+descriptions themselves; and the two questions still open from round
+GU, twelve archetypes or eighteen, and Rebel or Outlaw for the one that
+carries both names.

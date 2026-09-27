@@ -1,0 +1,1350 @@
+<!doctype html>
+<html lang="en" data-build="round GV prototype avatar-merge over 93dc99c"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Avatar archetype prototype</title>
+<!-- ============================================================
+  ROUND GV. THE ARCHETYPE PICKER, MERGED ONTO THE AVATAR PAGE.
+
+  This file is redesign-GG.html, copied and extended, so the page he already
+  approved is still on record as it was. What is added:
+
+  - an Archetype tool beside Boundaries, opening an overlay the same way
+    Boundaries does. Archetype is not an eighth satellite, because the seven
+    satellites are the seven seats and an archetype is not a part of a life;
+    it is a way of acting that sits at one of them.
+  - the round GU wheel (proto/intake/pages/d-wheel.html), redrawn in this
+    page's language: its seven bands are this page's seven areas with their
+    icons, names read horizontally, marks are real buttons.
+  - the owner's three rulings of 27 September, shared with the four
+    variations through ../lib.js: a warmer commit word, the two part
+    description with Impact underneath, and one press to save or unsave with
+    no Save button.
+  - the pick shows on the avatar: its mark in the core, and its area's
+    satellite lit.
+  ============================================================ -->
+<style>/* THE PICKER'S OWN PARTS, namespaced ar- so the merge page's classes are never
+   touched. What a pick says, the one press, and its ring. */
+.ar-dh{display:flex;gap:14px;align-items:center}
+.ar-dic{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,var(--bg2))}
+.ar-dic svg{width:56%;height:56%;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ar-eyb{margin:0;color:var(--dim);font-size:14px}
+.ar-eyb b{color:var(--c);font-weight:600}
+.ar-dh h3{margin:0;font-size:24px;line-height:1.15;font-weight:620}
+.ar-def{margin:14px 0 0;font-size:17px;line-height:1.5;max-width:60ch}
+.ar-imp{margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--bg2);border-left:3px solid var(--s)}
+.ar-lbl{margin:0;font-size:14px;color:var(--dim)}
+.ar-impv{margin:2px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.ar-impv b{font-size:17px;font-weight:620}
+.ar-impv span{font-size:14px;color:var(--dim)}
+.ar-impc{margin:4px 0 0;font-size:15px;color:#CFCAC2;max-width:60ch}
+.ar-dr{font-size:14px;color:var(--dim);border-left:2px dashed var(--line);padding-left:10px;margin:12px 0 0}
+.ar-act{margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ar-hint{margin:8px 0 0;font-size:14px;color:var(--dim)}
+.ar-st{min-height:22px;margin:6px 0 0;font-size:15px}
+.ar-st.warn{color:#E8B27A}
+.ar-cmp{margin:10px 0 0;color:#CFCAC2;font-size:15px;max-width:60ch}
+
+/* THE ONE PRESS. The label never changes; the button carries the state, which
+   is the house rule that a slot keeps its label. Pressed, it fills with the
+   seat's colour and its ring closes on a check. A press rings once: one
+   circle goes out from the button like a struck bell, which is what the word
+   says and the only animation it has. */
+.ar-rt{position:relative;min-height:48px;display:inline-flex;align-items:center;gap:10px;padding:0 22px 0 14px;border-radius:999px;
+ border:1.5px solid var(--c);background:transparent;color:var(--ink);font-weight:620;font-size:16px;cursor:pointer;
+ transition:background .18s,box-shadow .18s}
+.ar-rt svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ar-rt .ck{opacity:0;transition:opacity .15s}
+.ar-rt:hover{background:color-mix(in srgb,var(--c) 10%,transparent)}
+.ar-rt[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 28%,var(--panel,#171922));box-shadow:0 0 0 1px var(--c),0 0 22px color-mix(in srgb,var(--c) 32%,transparent)}
+.ar-rt[aria-pressed="true"] .ck{opacity:1}
+.ar-rt::after{content:"";position:absolute;inset:-2px;border-radius:inherit;border:2px solid var(--c);opacity:0;pointer-events:none}
+.ar-rt.ar-hit::after{animation:arRing .7s ease-out}
+@keyframes arRing{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.35,1.7)}}
+
+/* an archetype's mark, as a button */
+.ar-mk{position:absolute;transform:translate(-50%,-50%);width:9.5cqw;height:9.5cqw;min-width:44px;min-height:44px;border-radius:50%;
+ border:1px solid rgba(255,255,255,.14);background:#0B0C11;display:grid;place-items:center;padding:0;color:var(--ink);transition:box-shadow .2s,border-color .2s}
+.ar-mk svg{width:52%;height:52%;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ar-mk.dr{border-style:dashed}
+.ar-mk:hover{border-color:var(--c)}
+.ar-mk[aria-pressed="true"]{border:2px solid var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent)}
+.ar-mk.pk::after{content:"";position:absolute;right:-2px;top:-2px;width:12px;height:12px;border-radius:50%;background:var(--c);border:2px solid var(--bg)}
+@media (prefers-reduced-motion:reduce){.ar-rt.ar-hit::after{animation:none}}
+</style>
+<!-- ============================================================
+  AVATAR REDESIGN, ROUND GG. A PROTOTYPE, NOT THE APP.
+
+  Standalone. Plain HTML, CSS and script, no dependencies, no network.
+  Nothing under atuned_src/ is touched and nothing here is wired to the
+  engine. It carries none of the shipped app's navigation, on purpose:
+  round FB recorded two scares from a prototype wearing the real tab bar.
+
+  Extends proto/avatar/seats4 (layout "Told", measured 9.4 against the
+  D minus baseline's 5.4). What is carried over: the sentence above the
+  ring, the ring as the hero, one action. What is new: the seat names are
+  replaced by icon and percent satellites, five badges per satellite,
+  the pair flow per area feeding the sniffer, and the Boundary overlay
+  built on engine/avatar.js (PUR_SIDES, PUR_PER_SIDE, boundaryCount,
+  boundaryCross, purposeRead).
+
+  Mock data only. The journal lines are sim/stories.js plus a few written
+  for this mock and marked in the notes. Pairs are proto/avatar/seats/pairs.js.
+  ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --bg2:#12141B; --panel:#171922; --panel2:#1E212B; --line:#2A2E3A;
+ --ink:#EFEDE8; --dim:#94908A; --faint:#5E5B57;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --acc:#5EBBDB; --proto:#E0A93B; --protobg:#231C0E;
+ --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- THE PROTOTYPE'S OWN CHROME. Striped amber, never the product's look. ---------- */
+.pbar{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+ padding:8px 16px;background:var(--protobg);border-bottom:2px solid var(--proto);
+ background-image:repeating-linear-gradient(135deg,rgba(224,169,59,.10) 0 10px,transparent 10px 20px)}
+.pbar .tag{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:#1A1405;background:var(--proto);
+ padding:4px 10px;border-radius:6px;letter-spacing:.02em}
+.pbar .say{color:#F2D9A6;font-size:14px;line-height:1.35;flex:1 1 280px}
+.pbar .say b{color:#FFE7B8}
+.pbar label{display:flex;align-items:center;gap:8px;font-size:14px;color:#F2D9A6}
+.pbar select,.pbar .pbtn{min-height:44px;background:#16120A;border:1px dashed var(--proto);border-radius:10px;padding:0 12px;color:#FFE7B8}
+.pbar .pbtn[aria-pressed="true"]{background:#3A2C10}
+[data-proto] .pbtn{font-size:14px}
+
+@media (min-width:1000px){.pbar{position:sticky;top:0}}
+.ptag{position:fixed;left:12px;bottom:12px;z-index:70;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+ background:var(--proto);color:#1A1405;font:700 13px/1.2 system-ui,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,.5);pointer-events:none}
+.pin{position:absolute;z-index:5;width:26px;height:26px;border-radius:50%;border:1.5px dashed var(--proto);
+ background:#16120A;color:var(--proto);font:700 12px/1 system-ui,sans-serif;display:grid;place-items:center;padding:0}
+.pin::after{content:"";position:absolute;inset:-9px}  /* 44px hit area around a 26px mark */
+body.nonotes .pin, body.nonotes .notes{display:none!important}
+
+/* ---------- PAGE ---------- */
+.page{max-width:1480px;margin:0 auto;padding:20px 16px 64px}
+.head{text-align:center;max-width:760px;margin:6px auto 18px;position:relative}
+.eyebrow{color:var(--dim);font-size:15px;margin:0}
+.head h1{font-size:clamp(22px,3.2vw,30px);line-height:1.25;font-weight:600;margin:4px 0 10px;text-wrap:balance}
+.quote{font-size:clamp(17px,2vw,20px);margin:0 0 4px;text-wrap:balance}
+.quote::before,.quote::after{color:var(--c,var(--acc))}
+.quote::before{content:"\201C"}.quote::after{content:"\201D"}
+.inway{color:var(--dim);margin:0;font-size:15px}
+.inway b{color:var(--ink);font-weight:600}
+
+.grid{display:grid;gap:24px 32px;grid-template-columns:minmax(0,1fr);
+ grid-template-areas:"fig" "panel" "queue" "notes"}
+@media (min-width:880px){
+ .grid{grid-template-columns:minmax(0,600px) minmax(340px,420px);justify-content:center;
+  grid-template-areas:"fig panel" "queue panel" "notes notes"}}
+@media (min-width:1420px){
+ .grid{grid-template-columns:minmax(0,600px) 400px 360px;
+  grid-template-areas:"fig panel notes" "queue panel notes"}
+ .notes{max-height:calc(100vh - 110px);overflow:auto;position:sticky;top:84px}}
+.figcol{grid-area:fig;min-width:0}
+.panel{grid-area:panel;min-width:0}
+.queue{grid-area:queue;min-width:0}
+.notes{grid-area:notes;min-width:0}
+
+/* ---------- THE FIGURE. Sized in container units so the ring, the
+   satellites and the pips scale as one object at every width. ---------- */
+.figwrap{container-type:inline-size;width:100%;max-width:600px;margin:0 auto;position:relative}
+.fig{position:relative;width:100%;aspect-ratio:1/1}
+.fig svg.draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sat{position:absolute;width:13cqw;height:13cqw;min-width:46px;min-height:46px;transform:translate(-50%,-50%);
+ border-radius:50%;border:0;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:1px;padding:0;color:var(--ink);transition:background .2s, box-shadow .2s}
+.sat svg{width:clamp(16px,4.2cqw,26px);height:clamp(16px,4.2cqw,26px);stroke:var(--c);fill:none;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.sat .pc{font-size:clamp(12px,2.9cqw,17px);font-weight:650;line-height:1;font-variant-numeric:tabular-nums}
+.sat .pc.none{color:var(--dim);font-weight:400}
+.sat:hover{background:color-mix(in srgb,var(--c) 10%,var(--bg2))}
+.sat[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 18%,var(--bg2));
+ box-shadow:0 0 0 2px var(--c),0 0 26px color-mix(in srgb,var(--c) 45%,transparent)}
+.slab{position:absolute;transform:translate(-50%,-50%);font-size:clamp(12px,2.35cqw,14px);color:var(--dim);
+ pointer-events:none;white-space:nowrap;background:var(--bg);padding:0 4px;border-radius:4px;line-height:1.3}
+.slab.on{color:var(--ink)}
+.core{position:absolute;left:50%;top:50%;width:34cqw;height:34cqw;transform:translate(-50%,-50%);border-radius:50%;
+ border:0;background:radial-gradient(circle at 50% 40%,#1B1E28,#101218 70%);display:flex;flex-direction:column;
+ align-items:center;justify-content:center;gap:2px;padding:0}
+.core svg{width:11cqw;height:11cqw;stroke:var(--ink);opacity:.85;fill:none;stroke-width:1.4;stroke-linecap:round}
+.core .big{font-size:clamp(20px,5.2cqw,32px);font-weight:650;line-height:1;font-variant-numeric:tabular-nums}
+.core .lb{font-size:clamp(12px,2.3cqw,14px);color:var(--dim)}
+.core[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+
+.figrow{display:flex;justify-content:center;gap:10px;margin-top:8px;position:relative}
+.bbtn{min-height:48px;display:inline-flex;align-items:center;gap:10px;padding:0 18px;border-radius:999px;
+ background:var(--panel);border:1px solid var(--line)}
+.bbtn svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linejoin:round}
+.bbtn:hover{border-color:var(--dim)}
+
+/* ---------- PANEL ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;position:relative}
+.ph{display:flex;align-items:center;gap:14px}
+.ph .ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,var(--bg2));flex:none}
+.ph .ic svg{width:24px;height:24px;stroke:var(--c);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ph h2{margin:0;font-size:22px;line-height:1.2;font-weight:620}
+.ph p{margin:2px 0 0;color:var(--dim);font-size:14px}
+.ph .fig2{margin-left:auto;text-align:right}
+.ph .fig2 b{display:block;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.ph .fig2 span{font-size:13px;color:var(--dim)}
+.sec{margin-top:18px}
+.lbl{font-size:14px;color:var(--dim);margin:0 0 4px}
+.be{font-size:18px;line-height:1.35;margin:0}
+.nb{margin:0;font-size:16px}
+.lands{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--bg2);font-size:15px;position:relative}
+.lands i{flex:none;width:12px;height:12px;border-radius:50%;margin-top:6px;border:2px solid var(--s,var(--dim))}
+.badges{display:flex;justify-content:space-between;gap:4px;margin-top:6px}
+.bdg{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;color:var(--dim);text-align:center}
+.bdg .ring{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line)}
+.bdg .ring svg{width:20px;height:20px;fill:none;stroke:var(--faint);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.bdg.lit{color:var(--ink)}
+.bdg.lit .ring{border:2px solid var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 35%,transparent)}
+.bdg.lit .ring svg{stroke:var(--c)}
+.bdg.next .ring{border:1.5px dashed var(--dim)}
+.bdg.next .ring svg{stroke:var(--dim)}
+.hint{margin:8px 0 0;font-size:14px;color:var(--dim)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+.go{min-height:52px;padding:6px 22px;border-radius:999px;border:1px solid color-mix(in srgb,var(--c) 70%,#fff 0%);
+ background:color-mix(in srgb,var(--c) 26%,#171922);color:var(--ink);font-weight:620;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15}
+.go small{font-weight:400;color:var(--dim);font-size:13px}
+.go[disabled]{opacity:.45;cursor:not-allowed}
+.go.busy{background-image:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);background-size:200% 100%;animation:sweep 1s linear infinite}
+@keyframes sweep{from{background-position:200% 0}to{background-position:-200% 0}}
+.ghost{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.field{margin-top:14px}
+.field label{display:block;font-weight:600;margin-bottom:2px}
+.field .h{display:block;color:var(--dim);font-size:14px;margin-bottom:6px}
+textarea{width:100%;min-height:76px;resize:vertical;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;line-height:1.4}
+textarea:focus{border-color:var(--c,var(--acc));outline:none}
+.listen{margin-top:14px;padding:12px;border-radius:10px;border:1px dashed var(--line);position:relative}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:14px;padding:3px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}
+.chip em{font-style:normal;color:var(--dim);margin-right:4px}
+.status{min-height:24px;margin:12px 0 0;font-size:15px;color:var(--ink)}
+.status.warn{color:#E8B27A}
+.empty{color:var(--dim)}
+
+/* ---------- RELEASE ORDER ---------- */
+.queue h3,.notes h3{font-size:17px;margin:0 0 4px;font-weight:620}
+.queue .sub{margin:0 0 10px;color:var(--dim);font-size:14px}
+.qi{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.qi:first-of-type{border-top:0}
+.qi .qic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,var(--bg2))}
+.qi .qic svg{width:17px;height:17px;stroke:var(--c);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.qi p{margin:0}
+.qi .why{font-size:14px;color:var(--dim);margin-top:2px}
+.qi.moved{animation:flash 1.6s ease-out}
+@keyframes flash{from{background:color-mix(in srgb,var(--acc) 22%,transparent)}to{background:transparent}}
+.tryj{margin-top:14px;padding:12px;border:1px dashed var(--proto);border-radius:10px;background:var(--protobg)}
+.tryj label{font-size:14px;color:#F2D9A6;display:block;margin-bottom:6px}
+.tryj .row{display:flex;gap:8px}
+.tryj input{flex:1;min-height:44px;background:#16120A;border:1px solid #4A3A18;border-radius:10px;padding:0 12px;min-width:0}
+.tryj .pbtn{min-height:44px;background:#16120A;border:1px dashed var(--proto);border-radius:10px;padding:0 14px;color:#FFE7B8}
+.tryj .out{font-size:14px;color:#F2D9A6;margin:8px 0 0;min-height:20px}
+
+/* ---------- NOTES, the prototype's own ---------- */
+.notes{border:1.5px dashed var(--proto);border-radius:var(--r);padding:16px;background:#110F0A}
+.notes h3{color:var(--proto)}
+.notes .meas{font-size:14px;color:#F2D9A6;margin:6px 0 12px;padding:8px 10px;border-radius:8px;background:var(--protobg)}
+.notes ol{margin:0;padding-left:0;list-style:none;counter-reset:n}
+.notes li{margin:0 0 14px;font-size:14px;line-height:1.5;color:#DCD6CB;padding-left:34px;position:relative}
+.notes li .n{position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;border:1.5px dashed var(--proto);color:var(--proto);font-size:12px;font-weight:700;display:grid;place-items:center}
+.notes li b{color:#FFE7B8}
+.notes li.hl{animation:flashp 2s ease-out}
+@keyframes flashp{from{background:rgba(224,169,59,.25)}to{background:transparent}}
+.notes .q{margin-top:6px;color:#F2D9A6}
+.notes code{font-size:13px;color:#FFE7B8}
+
+/* ---------- THE BOUNDARY OVERLAY ---------- */
+.ov{position:fixed;inset:0;z-index:40;background:rgba(6,7,10,.84);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+ overflow:auto;padding:64px 16px 32px;opacity:0;transition:opacity .22s}
+.ov.show{opacity:1}
+.ov[hidden]{display:none}
+.ovin{max-width:1060px;margin:0 auto;display:grid;gap:20px 32px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:880px){.ovin{grid-template-columns:minmax(0,520px) minmax(320px,1fr);align-items:start}}
+.ovhead{grid-column:1/-1;display:flex;align-items:flex-start;gap:12px}
+.ovhead h2{margin:0;font-size:24px;font-weight:620}
+.ovhead p{margin:2px 0 0;color:var(--dim)}
+.xbtn{margin-left:auto;flex:none;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center}
+.xbtn svg{width:20px;height:20px;stroke:var(--ink);stroke-width:1.8}
+.hexwrap{container-type:inline-size;width:100%;max-width:520px;margin:0 auto;position:relative}
+.hex{position:relative;width:100%;aspect-ratio:1/1}
+.hex > svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.side{position:absolute;transform:translate(-50%,-50%);min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;
+ background:var(--panel);border:1px solid var(--line);font-size:clamp(13px,2.8cqw,15px);white-space:nowrap}
+.side[aria-pressed="true"]{border-color:var(--ink);background:var(--panel2);box-shadow:0 0 18px rgba(94,187,219,.25)}
+.side.thin::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#E8B27A;margin-left:7px;vertical-align:middle}
+.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px}
+.hub .nm{font-size:clamp(15px,3.4cqw,19px);font-weight:620;line-height:1.1}
+.hub .ct{font-size:13px;color:var(--dim)}
+.arr{width:52px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center}
+.arr svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.arr[disabled]{opacity:.35;cursor:not-allowed}
+.tri{position:absolute;transform:translate(-50%,-50%);font-size:12px;color:var(--dim);white-space:nowrap;pointer-events:none}
+.bline{display:flex;gap:8px;align-items:center;margin-top:8px}
+.bline .dot{flex:none;width:10px;height:10px;border-radius:2px;border:1.5px solid var(--acc)}
+.bline .dot.lit{background:var(--acc)}
+.bline input{flex:1;min-height:44px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:0 12px;min-width:0}
+.bline input:focus{border-color:var(--acc);outline:none}
+.rem{padding:10px 12px;border-radius:10px;background:var(--bg2);margin-top:8px}
+.rem p{margin:0}
+.rem .why{font-size:14px;color:var(--dim);margin-top:2px}
+.rem.thin{background:transparent;border:1px dashed #6A5234}
+details.pur{margin-top:16px;border-top:1px solid var(--line);padding-top:8px}
+details.pur summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600;list-style:none}
+details.pur summary::-webkit-details-marker{display:none}
+details.pur summary::after{content:"";width:8px;height:8px;border-right:1.8px solid var(--dim);border-bottom:1.8px solid var(--dim);transform:rotate(45deg);margin-left:10px;margin-top:-4px;transition:transform .2s}
+details.pur[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.pur dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:15px}
+.pur dt{color:var(--dim)}
+.pur dd{margin:0}
+
+/* the note sheet, the prototype's own, above everything */
+.sheet{position:fixed;inset:auto 16px 16px 16px;z-index:80;max-width:560px;margin:0 auto;background:#16120A;border:1.5px dashed var(--proto);
+ border-radius:14px;padding:16px 18px;color:#EDE3CF;font-size:15px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.sheet[hidden]{display:none}
+.sheet h4{margin:0 40px 6px 0;color:var(--proto);font-size:16px}
+.sheet p{margin:0 0 8px}
+.sheet .xbtn{position:absolute;top:8px;right:8px;background:#16120A;border-color:#4A3A18}
+.sheet .xbtn svg{stroke:#FFE7B8}
+
+/* ---------- ROUND GV: THE ARCHETYPE TOOL ---------- */
+.bbtn .bval{color:var(--dim);font-weight:400}
+.figrow{flex-wrap:wrap}
+.p6{left:calc(50% - 205px);top:-14px}.p11{right:calc(50% - 225px);top:-14px}
+@media (max-width:520px){.p6{left:0;top:-14px}.p11{right:0;top:-14px}}
+.bbtn .bval.on{color:var(--c)}
+.core .cic{width:11cqw;height:11cqw;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.core.has .cic{stroke:var(--c);opacity:1}
+.core .anm{font-size:clamp(12px,2.4cqw,14px);color:var(--c);font-weight:600;margin-top:2px}
+.pnav{display:flex;flex-wrap:wrap;gap:4px;font-size:14px}
+.pnav a,.pnav b{min-height:44px;display:inline-flex;align-items:center;padding:0 10px;border-radius:8px;color:#FFE7B8}
+.pnav b{background:#3A2C10}
+.awwrap{container-type:inline-size;width:100%;max-width:560px;margin:0 auto;position:relative}
+.aw{position:relative;width:100%;aspect-ratio:1/1}
+.aw > svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#ova .ovin{max-width:1180px}
+@media (min-width:880px){#ova .ovin{grid-template-columns:minmax(0,620px) minmax(340px,1fr)}}
+#ova .ar-mk{width:8.6cqw;height:8.6cqw}
+.aw-nm{position:absolute;font-size:13px;color:#B4B0A8;white-space:nowrap;pointer-events:none;line-height:1.2}
+.aw-nm.on{color:var(--ink)}
+.aw-ar{position:absolute;transform:translate(-50%,-50%);font-size:12px;color:var(--c);white-space:nowrap;pointer-events:none;font-weight:600}
+.aw-c{position:absolute;left:50%;top:50%;width:28cqw;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.aw-c svg{width:9cqw;height:9cqw;fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.aw-c b{display:block;font-size:clamp(15px,3.6cqw,19px);font-weight:620;line-height:1.15}
+.aw-c span{font-size:13px;color:var(--dim)}
+@container (max-width:459px){.aw-nm,.aw-ar{display:none}}
+.awleg{display:none;flex-direction:column;gap:8px;margin-top:14px}
+.awleg .lr{display:grid;grid-template-columns:76px minmax(0,1fr);gap:8px;align-items:center}
+.awleg .lr b{font-size:14px;color:var(--c)}
+.awleg .lb{display:flex;gap:6px;flex-wrap:wrap}
+.awleg button{min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);display:inline-flex;gap:6px;align-items:center;font-size:14px}
+.awleg button svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6}
+.awleg button[aria-pressed="true"]{border-color:var(--c)}
+@media (max-width:620px){.awleg{display:flex}}
+.ro{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ro button{min-height:44px;display:inline-flex;gap:6px;align-items:center;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);font-size:14px}
+.ro button svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+
+<div class="pbar" data-proto role="region" aria-label="Prototype controls">
+ <span class="tag">Prototype</span>
+ <span class="say"><b>Not the app.</b> Avatar page with the archetype picker, round GV. Mock data. A pick is kept in this browser only, and the halo is the engine's own reading of each person.</span>
+ <label>Person <select id="who">
+  <option value="James">James, 57, level 3</option>
+  <option value="Angela">Angela, 36, level 5</option>
+  <option value="Derek">Derek, 39, level 7</option>
+  <option value="blank">Nobody yet, first run</option>
+ </select></label>
+ <label>Button word <select id="arWord"></select></label>
+ <button type="button" class="pbtn" id="arClear">Clear picks</button>
+ <button type="button" class="pbtn" id="notesT" aria-pressed="true">Design notes on</button>
+ <nav class="pnav" aria-label="Prototype pages"><b>Merge</b><a href="v1-orbit-packed.html">Orbit</a><a href="v2-ladder-packed.html">Ladder</a><a href="v3-three-packed.html">Three</a><a href="v4-spine-packed.html">Spine</a></nav>
+</div>
+
+<div class="ptag" data-proto aria-hidden="true">Prototype, not the app</div>
+
+<main class="page">
+ <header class="head" id="head"></header>
+ <div class="grid">
+  <section class="figcol" aria-label="Your avatar">
+   <div class="figwrap"><div class="fig" id="fig"></div></div>
+   <div class="figrow">
+    <button type="button" class="bbtn" id="openB" aria-haspopup="dialog">
+     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/></svg>Boundaries</button>
+    <button type="button" class="bbtn" id="openA" aria-haspopup="dialog">
+     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 5.5v13M5.5 12h13"/></svg>Archetype <span class="bval" id="aval"></span></button>
+    <button type="button" class="pin p6" data-proto data-note="6" aria-label="Design note 6">6</button>
+    <button type="button" class="pin p11" data-proto data-note="11" aria-label="Design note 11">11</button>
+   </div>
+  </section>
+  <aside class="panel" aria-live="polite"><div class="card" id="panel"></div></aside>
+  <section class="queue card" id="queue" aria-label="Next to release"></section>
+  <aside class="notes" id="notes" data-proto aria-label="Design notes"></aside>
+ </div>
+</main>
+
+<div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ovT">
+ <div class="ovin">
+  <div class="ovhead">
+   <div><h2 id="ovT">Boundaries</h2><p>Six sides, five lines each. Inside is yours to protect.</p></div>
+   <button type="button" class="xbtn" id="closeB" aria-label="Close boundaries"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="hexwrap"><div class="hex" id="hex"></div></div>
+  <div class="card" id="bpanel"></div>
+ </div>
+</div>
+
+<div class="ov" id="ova" hidden role="dialog" aria-modal="true" aria-labelledby="ovaT">
+ <div class="ovin">
+  <div class="ovhead">
+   <div><h2 id="ovaT">Archetype</h2><p>Eighteen ways of acting, each beside the part of your life it acts from. Tap one to read it.</p></div>
+   <button type="button" class="xbtn" id="closeA" aria-label="Close archetype"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div><div class="awwrap"><div class="aw" id="aw"></div></div><div class="awleg" id="awleg"></div></div>
+  <div class="card" id="apanel" aria-live="polite"></div>
+ </div>
+</div>
+
+<div class="sheet" id="sheet" data-proto hidden role="dialog" aria-labelledby="shT">
+ <button type="button" class="xbtn" id="shX" aria-label="Close note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+ <h4 id="shT"></h4><div id="shB"></div>
+</div>
+
+<script>var ARCH=[{"nm":"Warrior","v":"moves on the threat","b":"Root","ic":"M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z"},{"nm":"Sage","v":"reads the situation","b":"Crown","ic":"M4 6h7v13H4zM20 6h-7v13h7"},{"nm":"Rebel","v":"refuses the frame","b":"Throat","ic":"M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5"},{"nm":"Caregiver","v":"attends to the other","b":"Heart","ic":"M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z"},{"nm":"Creator","v":"makes the thing","b":"Sacral","ic":"M3 20l9-16 9 16z"},{"nm":"Magician","v":"changes the conditions","b":"3rd Eye","ic":"M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"},{"nm":"Ruler","v":"orders the field","b":"Solar","ic":"M3 19l3-12 6 6 6-6 3 12z"},{"nm":"Explorer","v":"goes to the edge","b":"Sacral","ic":"M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z"},{"nm":"Lover","v":"closes the distance","b":"Heart","ic":"M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13"},{"nm":"Jester","v":"breaks the tension","b":"Throat","ic":"M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0"},{"nm":"Everyman","v":"stays with the room","b":"Root","ic":"M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7"},{"nm":"Innocent","v":"takes it at face value","b":"Crown","ic":"M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"}];var ARCH18=[["Warrior","Controller","Solar"],["Caregiver","Pleaser","Heart"],["Creator","Stickler","Throat"],["Sage","Hyper-Rational","3rd Eye"],["Jester","Avoider","Sacral"],["Lover","Hyper-Vigilant","Heart"],["Magician","Victim","Crown"],["Innocent","Restless","Root"],["Outlaw","Judge","Solar"],["Ruler","Hyper-Achiever","Crown"],["Explorer","Avoider","Sacral"],["Orphan","Worrywart","Root"],["Hero","Hyper-Achiever","Solar"],["Everyman","Pleaser","Heart"],["Mentor","Stickler","3rd Eye"],["Shadow","Judge","Solar"],["Shapeshifter","Restless","Sacral"],["Healer","Hyper-Vigilant","Heart"]];var AFF={"James":[0.679,1,0.6785,0.2246,0.1031,0.3,0.7859,0.6099,0.1773,0.0883,0.0959,0.2104],"Angela":[0.6124,0.1822,0.0898,0.0978,0.2216,0.6164,0.492,0.1401,0.1228,0.3492,0.8979,1],"Derek":[0.8181,0.6541,0.6575,1,0.6365,0.1878,0.2188,0.6084,0.4704,0.145,0.101,0.2585]};var STAMP="round GV prototype over 93dc99c";
+/* ============================================================
+   THE ARCHETYPE PICKER, ON THE AVATAR PAGE. Round GV in TASKS.md.
+   A PROTOTYPE. Shared by the merge page and the four variations.
+
+   Three rulings from the owner, 27 September, carried here once so that all
+   five pages say them the same way:
+
+   1. The commit word is warmer than "This is me". The default is "Rings
+      true". The prototype bar switches it, so the word is judged on the page
+      and not in a report.
+   2. Every archetype is described in two parts, never one. First what the
+      pattern does, said neutrally. Then, underneath and separately, Impact:
+      the primary saboteur, named plainly, with one line of what taking that
+      role on costs. A person reads what they do before what it is called.
+   3. One press saves. The same press takes it off. There is no Save button.
+
+   Data. ARCH (twelve, with icon, verb and seat) is read out of
+   proto/fw/data.json, which proto/fw/extract.js read off the committed build.
+   ARCH18 (eighteen, each with its primary saboteur and that saboteur's seat)
+   is read out of atuned_src/engine/data/canon.js. AFF is each reference
+   person's archetype affinity, computed by the committed engine.js at build
+   time. None of it is typed in here. The six drafts' icons and verbs are
+   carried over from proto/intake/lib.js and stay marked as drafts.
+   ============================================================ */
+var AR=(function(){
+'use strict';
+
+/* ---------------- the seven seats and the avatar's seven areas ----------------
+   The areas and their angles are proto/avatar/redesign-GG.html's own, so a
+   satellite sits where it sits on that page. */
+var SEATS=['crown','eye','throat','heart','solar','sacral','root'];
+var B2S={'Crown':'crown','3rd Eye':'eye','Throat':'throat','Heart':'heart','Solar':'solar','Sacral':'sacral','Root':'root'};
+var THE={root:'the root',sacral:'the sacral',solar:'the solar plexus',heart:'the heart',throat:'the throat',eye:'the third eye',crown:'the crown'};
+var AREAS=[
+ {k:'meaning', seat:'crown',  nm:'Meaning',  about:'purpose, faith, what it is for', a:-90},
+ {k:'clarity', seat:'eye',    nm:'Clarity',  about:'seeing straight, deciding',      a:-38.57},
+ {k:'voice',   seat:'throat', nm:'Voice',    about:'saying it, being heard',         a:-141.43},
+ {k:'love',    seat:'heart',  nm:'Love',     about:'partner, family, closeness',     a:12.86},
+ {k:'drive',   seat:'solar',  nm:'Drive',    about:'work, will, pressure',           a:167.14},
+ {k:'pleasure',seat:'sacral', nm:'Pleasure', about:'desire, play, making things',    a:64.29},
+ {k:'ground',  seat:'root',   nm:'Ground',   about:'body, money, home, rest',        a:115.71}];
+var AK={}, SA={}; AREAS.forEach(function(x){AK[x.k]=x; SA[x.seat]=x;});
+
+var IC={
+ ground:'<path d="M4 11.5L12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/><path d="M10.5 19v-4.5h3V19"/>',
+ pleasure:'<path d="M3 9.5c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/><path d="M3 15c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/>',
+ drive:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+ love:'<path d="M12 19.5s-7.5-4.4-7.5-9.7A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.2c0 5.3-7.5 9.7-7.5 9.7z"/>',
+ voice:'<path d="M4.5 5.5h15v10h-9l-4.5 3.5v-3.5h-1.5z"/><path d="M8.5 10.5h7"/>',
+ clarity:'<path d="M2.5 12s3.6-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.6 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+ meaning:'<path d="M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z"/>',
+ person:'<circle cx="12" cy="7" r="3.4"/><path d="M4.5 21c0-4.6 3.4-7.8 7.5-7.8s7.5 3.2 7.5 7.8"/>',
+ mark:'<circle cx="12" cy="12" r="8.5"/><path d="M12 5.5v13M5.5 12h13"/>',
+ ring:'<circle cx="12" cy="12" r="8.5"/><path class="ck" d="M8 12.3l2.7 2.7L16.2 9.5"/>'};
+function svg(k,cls){return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'>'+IC[k]+'</svg>';}
+
+/* ---------------- the roster of eighteen ----------------
+   The same join proto/intake/lib.js makes: the twelve keep ARCH's seat, the
+   six take ARCH18's third column. ARCH18 calls the Rebel the Outlaw; one row,
+   two names, and the owner has not ruled which. */
+var DRAFT6={
+ Orphan:{v:'counts on nobody',ic:'M9 7m-3 0a3 3 0 106 0 3 3 0 10-6 0M3 21c0-4 3-6 6-6s6 2 6 6M18 10m-2 0a2 2 0 104 0 2 2 0 10-4 0'},
+ Hero:{v:'steps in front',ic:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6zM12 8v7'},
+ Mentor:{v:'hands on the method',ic:'M8 6m-3 0a3 3 0 106 0 3 3 0 10-6 0M2 21c0-4 3-7 6-7s6 3 6 7M17 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M14 21c0-3 1.5-5 3-5s3 2 3 5'},
+ Shadow:{v:'acts out what gets hidden',ic:'M12 4a8 8 0 100 16 6 6 0 010-16zM12 4a8 8 0 010 16'},
+ Shapeshifter:{v:'becomes what the room wants',ic:'M3 4h7v7H3zM17 17m-4 0a4 4 0 108 0 4 4 0 10-8 0M10 7.5h3.5a3.5 3.5 0 013.5 3.5v2'},
+ Healer:{v:'mends what is broken',ic:'M4 20L20 4M7 10l3 3M11 6l3 3M10 14l3 3M14 10l3 3'}};
+var VFIX={Ruler:'keeps things in order'};
+
+/* WHAT IT DOES. The Definition bucket: the same for everybody, said
+   neutrally, two sentences. The first reuses the archetype's own verb from
+   ARCH. The second is what the pattern does for the person, which is why it
+   is worth having. Warrior, Sage, Ruler and Everyman reuse COPY.md's mask
+   table where it already says this, because reuse beats invention. */
+var DEF={
+ Warrior:'The Warrior moves on the threat and counts the damage after. It gets the thing done on a day when feeling it would stop you.',
+ Sage:'The Sage reads the situation before it moves. It gives you ground to stand on when the moment is unclear.',
+ Rebel:'The Rebel refuses the frame it is handed. It marks where you end and other people begin.',
+ Caregiver:'The Caregiver attends to the other person first. It sees who needs something before they ask.',
+ Creator:'The Creator makes the thing. It turns what is in your head into something other people can hold.',
+ Magician:'The Magician changes the conditions around a problem. It finds the one lever that moves the rest.',
+ Ruler:'The Ruler keeps things in order. It keeps you trusted with people, money and decisions.',
+ Explorer:'The Explorer goes to the edge of what it knows. It brings back what nobody at home has seen yet.',
+ Lover:'The Lover closes the distance to the people it wants near. It stays close when things get hard.',
+ Jester:'The Jester breaks the tension. It gets a tight room laughing, and breathing, again.',
+ Everyman:'The Everyman stays with the room, so it reads the room first. It keeps you in the group.',
+ Innocent:'The Innocent takes things at face value. It lets you trust people and start again after a bad day.',
+ Orphan:'The Orphan counts on nobody. It gets you through on the days nobody else turns up.',
+ Hero:'The Hero steps in front when something has to be done. It takes the hit so the people behind it are spared.',
+ Mentor:'The Mentor hands on the method. It makes other people able to do what you can do.',
+ Shadow:'The Shadow acts out what gets hidden. It holds what you learned to keep out of sight, and brings it out under pressure.',
+ Shapeshifter:'The Shapeshifter becomes what the room wants. It lets you fit in anywhere, fast.',
+ Healer:'The Healer mends what is broken. It sees where other people hurt and knows where to put a hand.'};
+
+/* IMPACT. What taking the role on costs, one line, written as a thing that
+   happens in a day. It names the saboteur and never calls the person by it.
+   Drawn from SABDEF's own "what it is" and "when it fires" at
+   engine/data/kb.js, said in plain words. Eleven, because ARCH18 names eleven
+   saboteurs across its eighteen rows. */
+var IMPACT={
+ 'Controller':'Handing a thing over feels like dropping it, so the grip stays on.',
+ 'Pleaser':'Yes comes out before your own answer has been checked.',
+ 'Stickler':'Time goes into holding everything to the one right way.',
+ 'Hyper-Rational':'What cannot be explained gets set aside, feelings first.',
+ 'Avoider':'What needs dealing with waits, for as long as waiting costs nothing today.',
+ 'Hyper-Vigilant':'Part of your attention stays on the door, even in a safe room.',
+ 'Victim':'What happened to you takes up the room the next step needs.',
+ 'Restless':'Once a thing turns familiar, the next one starts to pull.',
+ 'Judge':'Every shortfall gets a verdict, your own included.',
+ 'Hyper-Achiever':'Rest feels like falling behind, so the output keeps running.',
+ 'Worrywart':'The worst case runs on a loop, and it feels like planning.'};
+
+var ROSTER=(function(){
+ var by={};
+ ARCH.forEach(function(a,i){by[a.nm]={nm:a.nm,v:VFIX[a.nm]||a.v,seat:B2S[a.b],ic:a.ic,read:i,draft:false};});
+ ARCH18.forEach(function(r){var nm=r[0]==='Outlaw'?'Rebel':r[0];
+  if(by[nm]){by[nm].sab=r[1];by[nm].sabSeat=B2S[r[2]];return;}
+  var d=DRAFT6[nm]||{v:'',ic:'M12 12m-8 0a8 8 0 1016 0 8 8 0 10-16 0'};
+  by[nm]={nm:nm,v:d.v,seat:B2S[r[2]],ic:d.ic,read:-1,draft:true,sab:r[1],sabSeat:B2S[r[2]]};});
+ var out=[]; SEATS.forEach(function(s){Object.keys(by).forEach(function(k){if(by[k].seat===s)out.push(by[k]);});});
+ return out;})();
+function A(nm){for(var i=0;i<ROSTER.length;i++)if(ROSTER[i].nm===nm)return ROSTER[i];return null;}
+function inSeat(s){return ROSTER.filter(function(a){return a.seat===s;});}
+
+/* ---------------- the reference people ----------------
+   The avatar pairs are redesign-GG.html's, reduced to what the ring needs:
+   the load when the pair was written, the load now, and whether the resolver
+   reads the sentence at all. Angela's Ground and Derek's Drive land nowhere,
+   because "tired" and "shoulders" are not read (round FB). */
+var PEOPLE={
+ James:{label:'James, 57, level 3',ideal:'voice',areas:{voice:[6,4.1,1],ground:[5.5,5.5,1],drive:[4.2,1.8,1],love:[3.9,3.4,1],clarity:[3.2,3.2,1]}},
+ Angela:{label:'Angela, 36, level 5',ideal:'ground',areas:{ground:[0,0,0],love:[4.6,3.6,1],clarity:[3.8,3.8,1],meaning:[5.1,3,1]}},
+ Derek:{label:'Derek, 39, level 7',ideal:'drive',areas:{drive:[0,0,0],love:[5.8,4.9,1],ground:[4.4,2.4,1],pleasure:[5,5,1]}},
+ blank:{label:'Nobody yet, first run',ideal:null,areas:{}}};
+
+/* ---------------- state ---------------- */
+var WORDS=['Rings true','Resonates','Resonate','Feels like me','This is me'];
+var KEY='atuned-proto-GV-archetype';
+var ST={who:'James',word:WORDS[0],picks:{},sel:null,hooks:[]};
+function readStore(){try{var o=JSON.parse(localStorage.getItem(KEY)||'{}');return o&&typeof o==='object'?o:{};}catch(e){return {};}}
+(function(){var o=readStore(); if(o.picks&&typeof o.picks==='object')ST.picks=o.picks;
+ if(WORDS.indexOf(o.word)>=0)ST.word=o.word;})();
+function writeStore(){try{localStorage.setItem(KEY,JSON.stringify({picks:ST.picks,word:ST.word}));return true;}catch(e){return false;}}
+
+function stranger(){return ST.who==='blank';}
+function aff(a){if(stranger()||!a||a.read<0)return null;var v=(AFF[ST.who]||[])[a.read];return typeof v==='number'?v:null;}
+function readOrder(){if(stranger())return [];
+ return ROSTER.filter(function(a){return aff(a)!=null;}).sort(function(x,y){return aff(y)-aff(x);});}
+function pick(){var p=ST.picks[ST.who];return p&&A(p)?p:null;}
+
+/* ONE PRESS. The press is the save. Pressing the picked one again takes it
+   off. Pressing a different one moves the pick and says what it replaced,
+   because a press that silently undoes another choice is a press that lies.
+   A status is only written after the write has succeeded. */
+function toggle(nm){
+ var was=pick(), msg, warn=false;
+ if(was===nm){delete ST.picks[ST.who]; msg='Taken off. No archetype is picked.';}
+ else{ST.picks[ST.who]=nm; msg=was?'Saved. '+nm+' replaces '+was+'.':'Saved.';}
+ if(!writeStore()){warn=true; msg='Not saved. This browser refused the write, so the pick lasts until the page closes.';}
+ fire(); say(msg,warn,nm);}
+var sayT=null;
+/* the status goes under the button that was pressed, and nowhere else */
+function say(msg,warn,nm){requestAnimationFrame(function(){
+ var b=nm&&document.querySelector('[data-rt="'+nm+'"]'), own=b&&b.closest('.ar-det')&&b.closest('.ar-det').querySelector('.ar-st');
+ [].forEach.call(document.querySelectorAll('.ar-st'),function(s){s.textContent='';});
+ [].forEach.call(own?[own]:document.querySelectorAll('.ar-st'),function(s){s.textContent=msg;s.classList.toggle('warn',!!warn);});
+ clearTimeout(sayT); if(!warn)sayT=setTimeout(function(){[].forEach.call(document.querySelectorAll('.ar-st'),function(s){s.textContent='';});},2400);});}
+function on(fn){ST.hooks.push(fn);}
+function fire(){ST.hooks.forEach(function(f){f();});}
+
+/* ---------------- helpers ---------------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function col(seat){return 'var(--'+seat+')';}
+function pos(a,r){var t=a*Math.PI/180;return [50+r*Math.cos(t),50+r*Math.sin(t)];}
+function aicon(a,cls){return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'><path d="'+a.ic+'"'+(a.draft?' stroke-dasharray="3 2"':'')+'/></svg>';}
+function areaOf(a){return SA[a.seat];}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+/* ---------------- what a pick says, the same on all five pages ---------------- */
+function head(a,sz){var ar=areaOf(a);
+ return '<div class="ar-dh"><span class="ar-dic"'+(sz?' style="width:'+sz+'px;height:'+sz+'px"':'')+'>'+aicon(a)+'</span><div>'
+  +'<p class="ar-eyb"><b>'+esc(ar.nm)+'</b>, '+esc(THE[a.seat])+'</p><h3>'+esc(a.nm)+'</h3></div></div>';}
+function body(a){
+ return '<p class="ar-def">'+esc(DEF[a.nm]||'')+'</p>'
+  +(a.sab?'<div class="ar-imp" style="--s:'+col(a.sabSeat)+'"><p class="ar-lbl">Impact</p>'
+   +'<p class="ar-impv"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+esc(THE[a.sabSeat])+'</span></p>'
+   +'<p class="ar-impc">'+esc(IMPACT[a.sab]||'')+'</p></div>':'')
+  +(a.draft?'<p class="ar-dr">Draft. '+esc(a.nm)+' is in the table of eighteen and not yet in the instrument, so its mark and its lines are proposals and nothing reads it.</p>':'');}
+function button(a){var p=pick()===a.nm;
+ return '<button type="button" class="ar-rt'+(p?' ar-on':'')+'" data-rt="'+esc(a.nm)+'" aria-pressed="'+p+'" style="--c:'+col(a.seat)+'">'
+  +svg('ring')+'<span>'+esc(ST.word)+'</span></button>';}
+/* the page's question follows the button word, so the two always agree */
+function question(){return {'Rings true':'Which of these rings true?','Resonates':'Which of these resonates?',
+ 'Resonate':'Which of these resonates?','Feels like me':'Which of these feels like you?','This is me':'Which of these is most like you?'}[ST.word];}
+function hint(){return '<p class="ar-hint">One press saves it. Press again to take it off.</p>';}
+function status(){return '<p class="ar-st" role="status" aria-live="polite"></p>';}
+function compare(){
+ var p=pick(); if(!p)return '';
+ var first=A(p);
+ if(stranger())return '<p class="ar-cmp">Nothing is on record yet. What you write from here will show whether your field agrees.</p>';
+ var ro=readOrder(), top=ro[0];
+ if(first.draft)return '<p class="ar-cmp">Your field reads <b>'+esc(top.nm)+'</b> first. The instrument does not read '+esc(first.nm)+' yet, so the two cannot be compared.</p>';
+ if(top.nm===first.nm)return '<p class="ar-cmp">Your field reads <b>'+esc(top.nm)+'</b> first too. What you say and what it reads agree.</p>';
+ var at=ro.indexOf(first);
+ return '<p class="ar-cmp">Your field reads <b>'+esc(top.nm)+'</b> first and '+esc(first.nm)+' '
+  +(at===1?'second':at===2?'third':'further down')+'. Both are kept. The gap between what you say and what it reads is part of the reading.</p>';}
+function detail(a,o){o=o||{};
+ return '<div class="ar-det" style="--c:'+col(a.seat)+'">'+(o.nohead?'':head(a))+body(a)
+  +'<div class="ar-act">'+button(a)+'</div>'+hint()+status()+(o.nocmp||pick()!==a.nm?'':compare())+'</div>';}
+
+/* ---------------- the ring, shared by the variations ----------------
+   The avatar figure from redesign-GG.html, drawn the same way: a core, seven
+   satellites at the same angles, percent complete on each. The core carries
+   the picked archetype. */
+function pct(k){var a=PEOPLE[ST.who].areas[k]; if(!a||!a[2]||!(a[0]>0))return null;
+ return Math.round(100*Math.max(0,Math.min(1,1-a[1]/a[0])));}
+function overall(){var v=AREAS.map(function(x){return pct(x.k);}).filter(function(x){return x!=null;});
+ return v.length?Math.round(v.reduce(function(s,x){return s+x;},0)/v.length):null;}
+function arcP(cx,cy,r,f){if(f<=0)return ''; if(f>=1)f=0.9999;
+ var a0=-Math.PI/2,a1=a0+f*Math.PI*2;
+ return 'M'+(cx+r*Math.cos(a0)).toFixed(2)+' '+(cy+r*Math.sin(a0)).toFixed(2)+' A'+r+' '+r+' 0 '+(f>0.5?1:0)+' 1 '+(cx+r*Math.cos(a1)).toFixed(2)+' '+(cy+r*Math.sin(a1)).toFixed(2);}
+/* o: {orb, sr, satBtn, sel (area key), glow (seat to 0..1), extra (svg), over (html), core (html)} */
+function ring(o){o=o||{};
+ var ORB=o.orb||37.5, SR=o.sr||6.5, P=PEOPLE[ST.who], p=pick(), pa=p?A(p):null;
+ var s='<svg class="draw" viewBox="0 0 100 100" aria-hidden="true">';
+ for(var i=0;i<72;i++){var a=i*5,p0=pos(a,19.2),p1=pos(a,i%6===0?21.4:20.4);
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="#3A3E4A" stroke-width=".25"/>';}
+ s+='<circle cx="50" cy="50" r="17.6" fill="none" stroke="#2A2E3A" stroke-width=".5"/>';
+ var ov=overall(); if(ov!=null)s+='<path d="'+arcP(50,50,17.6,ov/100)+'" fill="none" stroke="var(--ink)" stroke-width=".9" stroke-linecap="round" opacity=".8"/>';
+ AREAS.forEach(function(x){
+  var c=pos(x.a,ORB), p0=pos(x.a,22.2), p1=pos(x.a,ORB-SR-0.6), has=!!P.areas[x.k], hot=pa&&pa.seat===x.seat, g=o.glow&&o.glow[x.seat];
+  if(g)s+='<circle cx="'+c[0].toFixed(2)+'" cy="'+c[1].toFixed(2)+'" r="'+(SR+0.8+g*3).toFixed(2)+'" fill="'+col(x.seat)+'" fill-opacity=".14"/>';
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="'+(has||hot?col(x.seat):'#2A2E3A')+'" stroke-opacity="'+(hot?.95:has?.35:.6)+'" stroke-width="'+(hot?.8:.3)+'"'+(has||hot?'':' stroke-dasharray="1 1.2"')+'/>';
+  s+='<circle cx="'+c[0].toFixed(2)+'" cy="'+c[1].toFixed(2)+'" r="'+SR+'" fill="none" stroke="'+(has||hot?col(x.seat):'#3A3E4A')+'" stroke-opacity="'+(hot?.9:has?.3:1)+'" stroke-width="'+(hot?.8:.55)+'"/>';
+  var pc=pct(x.k); if(pc!=null&&pc>0)s+='<path d="'+arcP(c[0],c[1],SR,pc/100)+'" fill="none" stroke="'+col(x.seat)+'" stroke-width="1" stroke-linecap="round"/>';});
+ s+=(o.extra||'')+'</svg>';
+ var core=o.core!=null?o.core:coreHTML(pa,ov);
+ var sats=AREAS.map(function(x){var c=pos(x.a,ORB), pc=pct(x.k), tag=o.satBtn?'button type="button"':'span';
+  return '<'+tag+' class="sat" data-sat="'+x.k+'" style="left:'+c[0].toFixed(2)+'%;top:'+c[1].toFixed(2)+'%;--c:'+col(x.seat)+'"'
+   +(o.satBtn?' aria-pressed="'+(o.sel===x.k)+'" aria-label="'+x.nm+'"':'')+'>'
+   +svg(x.k)+'<span class="pc'+(pc==null?' none':'')+'">'+(pc==null?'–':pc+'%')+'</span></'+(o.satBtn?'button':'span')+'>';}).join('');
+ var labs=o.nolabs?'':AREAS.map(function(x){var l=pos(x.a,ORB-SR-4.6);
+  return '<span class="slab'+(o.sel===x.k?' on':'')+'" style="left:'+l[0].toFixed(2)+'%;top:'+l[1].toFixed(2)+'%">'+x.nm+'</span>';}).join('');
+ return s+labs+core+sats+(o.over||'');}
+function coreHTML(pa,ov){
+ return '<div class="core'+(pa?' has':'')+'"'+(pa?' style="--c:'+col(pa.seat)+'"':'')+'>'
+  +(pa?aicon(pa,'cic'):svg('person','cic'))
+  +'<span class="big">'+(ov==null?'–':ov+'%')+'</span><span class="lb">Complete</span>'
+  +(pa?'<span class="anm">'+esc(pa.nm)+'</span>':'')+'</div>';}
+
+/* ---------------- the prototype's own chrome ---------------- */
+var PAGES=[['avatar-merge','Merge'],['v1-orbit','Orbit'],['v2-ladder','Ladder'],['v3-three','Three'],['v4-spine','Spine']];
+function bar(name,say){
+ var h='<div class="pbar" data-proto role="region" aria-label="Prototype controls"><span class="tag">Prototype</span>'
+  +'<span class="say"><b>Not the app.</b> '+say+'</span>'
+  +'<label>Person <select id="arWho">'+Object.keys(PEOPLE).map(function(k){return '<option value="'+k+'"'+(k===ST.who?' selected':'')+'>'+PEOPLE[k].label+'</option>';}).join('')+'</select></label>'
+  +'<label>Button word <select id="arWord">'+WORDS.map(function(w){return '<option'+(w===ST.word?' selected':'')+'>'+w+'</option>';}).join('')+'</select></label>'
+  +'<button type="button" class="pbtn" id="arClear">Clear picks</button>'
+  +'<nav class="pnav" aria-label="Prototype pages">'+PAGES.map(function(p){return p[0]===name?'<b>'+p[1]+'</b>':'<a href="'+p[0]+'-packed.html">'+p[1]+'</a>';}).join('')+'</nav></div>'
+  +'<div class="ptag" data-proto aria-hidden="true">Prototype, not the app</div>';
+ document.body.insertAdjacentHTML('afterbegin',h);
+ wireBar();}
+function wireBar(){
+ var w=document.getElementById('arWho'), d=document.getElementById('arWord'), c=document.getElementById('arClear');
+ if(w)w.addEventListener('change',function(){setWho(w.value);});
+ if(d)d.addEventListener('change',function(){ST.word=d.value; writeStore(); fire();});
+ if(c)c.addEventListener('click',function(){ST.picks={}; writeStore(); fire(); say('Picks cleared for every person.');});}
+/* #who=Derek&sel=Sage, so a screenshot or a link can open on a state */
+function fromHash(){var h=location.hash, w=(h.match(/who=(\w+)/)||[])[1], s=(h.match(/sel=(\w+)/)||[])[1];
+ if(w&&PEOPLE[w])ST.who=w; if(s&&A(s))ST.sel=s;
+ var sw=document.getElementById('arWho'); if(sw)sw.value=ST.who;}
+function setWho(w){if(!PEOPLE[w])return; ST.who=w; ST.sel=null; var s=document.getElementById('arWho'); if(s)s.value=w; fire();}
+
+/* a press on any "Rings true" button anywhere on the page */
+document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-rt]'); if(!t)return;
+ t.classList.remove('ar-hit'); void t.offsetWidth; toggle(t.dataset.rt);
+ var n=document.querySelector('[data-rt="'+t.dataset.rt+'"]'); if(n){n.classList.add('ar-hit'); n.focus({preventScroll:true});}});
+
+/* THE COUNT, live. Every visible control that is not the prototype's own. */
+function measure(el,root){
+ root=root||document.querySelector('main')||document.body;
+ var els=[].slice.call(root.querySelectorAll('button,input,textarea,select,a[href],summary'));
+ var vis=els.filter(function(e){return e.offsetParent!==null&&!e.closest('[data-proto]')&&!e.disabled;});
+ var first=vis.filter(function(e){var r=e.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0;});
+ if(el)el.textContent='Choices in view now: '+first.length+'. On the whole page: '+vis.length+'. Target: under 12.';
+ return {view:first.length,all:vis.length};}
+
+return {SEATS:SEATS,THE:THE,AREAS:AREAS,AK:AK,SA:SA,ROSTER:ROSTER,A:A,inSeat:inSeat,DEF:DEF,IMPACT:IMPACT,PEOPLE:PEOPLE,ST:ST,
+ svg:svg,aicon:aicon,areaOf:areaOf,esc:esc,col:col,pos:pos,cap:cap,aff:aff,readOrder:readOrder,pick:pick,toggle:toggle,say:say,
+ on:on,fire:fire,stranger:stranger,question:question,head:head,body:body,button:button,hint:hint,status:status,compare:compare,detail:detail,
+ ring:ring,coreHTML:coreHTML,pct:pct,overall:overall,bar:bar,wireBar:wireBar,setWho:setWho,fromHash:fromHash,measure:measure,WORDS:WORDS,STAMP:STAMP};
+})();
+</script>
+<script>
+(function(){
+'use strict';
+
+/* ================= ICONS. Ring, never fill. ================= */
+var IC={
+ ground:'<path d="M4 11.5L12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/><path d="M10.5 19v-4.5h3V19"/>',
+ pleasure:'<path d="M3 9.5c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/><path d="M3 15c2-2.6 4-2.6 6 0s4 2.6 6 0 4-2.6 6 0"/>',
+ drive:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+ love:'<path d="M12 19.5s-7.5-4.4-7.5-9.7A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.2c0 5.3-7.5 9.7-7.5 9.7z"/>',
+ voice:'<path d="M4.5 5.5h15v10h-9l-4.5 3.5v-3.5h-1.5z"/><path d="M8.5 10.5h7"/>',
+ clarity:'<path d="M2.5 12s3.6-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.6 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+ meaning:'<path d="M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z"/>',
+ said:'<path d="M5 19l1-4L16 5l3 3L9 18z"/><path d="M14 7l3 3"/>',
+ heard:'<path d="M8 8.5a5 5 0 0 1 8 0"/><path d="M5.5 6a8.5 8.5 0 0 1 13 0"/><circle cx="12" cy="13.5" r="2"/><path d="M12 15.5v4"/>',
+ released:'<circle cx="12" cy="12" r="8.5"/><path d="M12 16V8M8.5 11.5L12 8l3.5 3.5"/>',
+ practised:'<path d="M19 12a7 7 0 1 1-2.1-5"/><path d="M19 4.5V8h-3.5"/>',
+ embodied:'<circle cx="12" cy="5.5" r="2.3"/><path d="M12 8v7M7 11l5-2 5 2M9 21l3-6 3 6"/>',
+ up:'<path d="M6 15l6-6 6 6"/>', down:'<path d="M6 9l6 6 6-6"/>'};
+function svg(k,cls){return '<svg viewBox="0 0 24 24" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'>'+IC[k]+'</svg>';}
+
+/* ================= THE SEVEN AREAS =================
+   Each satellite is still a seat underneath. The ring keeps the body's order
+   read top to bottom: Meaning at the crown, Ground at the root. The one word
+   names are proposals for his ruling, not settled. */
+var AREAS=[
+ {k:'meaning', seat:'crown',  nm:'Meaning',  about:'purpose, faith, what it is for',   a:-90},
+ {k:'clarity', seat:'eye',    nm:'Clarity',  about:'seeing straight, deciding',        a:-38.57},
+ {k:'voice',   seat:'throat', nm:'Voice',    about:'saying it, being heard',           a:-141.43},
+ {k:'love',    seat:'heart',  nm:'Love',     about:'partner, family, closeness',       a:12.86},
+ {k:'drive',   seat:'solar',  nm:'Drive',    about:'work, will, pressure',             a:167.14},
+ {k:'pleasure',seat:'sacral', nm:'Pleasure', about:'desire, play, making things',      a:64.29},
+ {k:'ground',  seat:'root',   nm:'Ground',   about:'body, money, home, rest',          a:115.71}];
+var AK={}; AREAS.forEach(function(x){AK[x.k]=x;});
+var THE={root:'the root',sacral:'the sacral',solar:'the solar plexus',heart:'the heart',throat:'the throat',eye:'the third eye',crown:'the crown'};
+var BADGES=[
+ {k:'said',nm:'Said',how:'Write both halves of the pair.'},
+ {k:'heard',nm:'Heard',how:'Lights when a journal entry echoes your words here.'},
+ {k:'released',nm:'Released',how:'Lights on the first release for this area.'},
+ {k:'practised',nm:'Practised',how:'Lights when the ritual for this area is done once.'},
+ {k:'embodied',nm:'Embodied',how:'Lights when this area stays clear for seven days.'}];
+
+/* ================= ENGINE, COPIED VERBATIM from atuned_src/engine/avatar.js
+   so the overlay's data shape is the engine's own. Not imported: this file
+   stays standalone. ================= */
+var PUR_SIDES=['partner','family','friends','community','coworkers','alone'];
+var PUR_PER_SIDE=5;
+function boundaryCount(p){
+ if(!p||!p.sides)return {filled:0, of:PUR_SIDES.length*PUR_PER_SIDE, thin:PUR_SIDES.slice()};
+ var n=0, thin=[];
+ PUR_SIDES.forEach(function(s){
+  var a=(p.sides[s]||[]).filter(function(x){return x&&String(x).trim();});
+  n+=Math.min(a.length,PUR_PER_SIDE);
+  if(a.length<PUR_PER_SIDE)thin.push(s);});
+ return {filled:n, of:PUR_SIDES.length*PUR_PER_SIDE, thin:thin};}
+function boundaryCross(text){
+ var t=String(text||'').toLowerCase();
+ var MAP={partner:/\b(wife|husband|partner|girlfriend|boyfriend|spouse|marriage)\b/,
+  family:/\b(mum|mom|mother|dad|father|parent|brother|sister|son|daughter|family)\b/,
+  friends:/\b(friend|mate|friends)\b/,
+  community:/\b(neighbour|neighbor|church|team|club|community|group)\b/,
+  coworkers:/\b(boss|manager|colleague|coworker|co-worker|client|work)\b/,
+  alone:/\b(myself|alone|on my own|by myself)\b/};
+ for(var i=0;i<PUR_SIDES.length;i++)
+  if(MAP[PUR_SIDES[i]].test(t))return PUR_SIDES[i];
+ return null;}
+function avatarValid(pair){
+ return !!(pair&&typeof pair.be==='string'&&pair.be.trim()
+  &&typeof pair.notbe==='string'&&pair.notbe.trim());}
+function purposeCentre(three){
+ var a=(three||[]).filter(function(x){return x&&String(x).trim();});
+ return a.length===3?a.join(', '):null;}
+
+/* ================= A STAND IN FOR THE RESOLVER AND THE SNIFFER =================
+   A dozen words, so the mock can show where words land and what is listened
+   for. The real resolver is readSeat in ui/drills.js and the real scoring is
+   the ai director's. "tired" and "shoulders" deliberately resolve to nothing,
+   because the real resolver does not read them either (round FB). */
+var BODY={chest:'heart',heart:'heart',breath:'heart',throat:'throat',jaw:'throat',neck:'throat',voice:'throat',
+ face:'eye',head:'eye',eyes:'eye',stomach:'solar',gut:'solar',belly:'sacral',hips:'sacral',legs:'root',feet:'root'};
+var FEEL={numb:'sacral',angry:'solar',ashamed:'solar',disgusted:'solar',afraid:'root',terrified:'root',scared:'root',
+ sad:'heart',alone:'heart',nothing:'heart',lonely:'heart',lost:'eye',confused:'eye',guilty:'solar',frightens:'root'};
+var UNREAD={tired:1,shoulders:1,exhausted:1};
+var STOP=('the and that this with have from what when were they them their there then than just like into about been being '+
+ 'every because would could should which while where your yours mine ours after before again still some more most very '+
+ 'said says will shall does doing done make made call called know knew each other anything everything').split(' ');
+var STOPS={}; STOP.forEach(function(w){STOPS[w]=1;});
+function words(s){return String(s||'').toLowerCase().replace(/[^a-z\s'-]/g,' ').split(/\s+/).filter(Boolean);}
+function stem(w){return w.replace(/'s$/,'').replace(/(ing|ed)$/,'').replace(/s$/,'');}
+function toks(s){var o={};words(s).forEach(function(w){if(FEEL[w]||BODY[w]||UNREAD[w]){o[stem(w)]=w;return;}
+ if(w.length<5||STOPS[w])return; o[stem(w)]=w;});return o;}
+function landsAt(text){var ws=words(text),i;
+ for(i=0;i<ws.length;i++)if(BODY[ws[i]])return BODY[ws[i]];
+ for(i=0;i<ws.length;i++)if(FEEL[ws[i]])return FEEL[ws[i]];
+ return null;}
+function listenFor(text){
+ var ws=words(text), f=[], b=[], u=[];
+ ws.forEach(function(w){if(FEEL[w]&&f.indexOf(w)<0)f.push(w);if(BODY[w]&&b.indexOf(w)<0)b.push(w);if(UNREAD[w]&&u.indexOf(w)<0)u.push(w);});
+ return {feel:f, body:b, unread:u, side:boundaryCross(text), seat:landsAt(text)};}
+
+/* ================= MOCK PEOPLE =================
+   Pairs from proto/avatar/seats/pairs.js. Journal lines from sim/stories.js,
+   plus the ones flagged add:1, written for this mock so the Boundary feed has
+   a person named in it. Loads are illustrative. */
+var PEOPLE={
+ James:{about:'57, C suite, third turnaround', ideal:'voice',
+  areas:{
+   voice:{be:'A great public speaker. I stand up and the room hears me.',
+    notbe:'My chest is tight and my throat closes when I stand up in front of the board, so I read the slides.',load0:6.0,load:4.1,rel:2},
+   ground:{be:'Rested, for real, not managed.',notbe:'I am numb every evening and I call it discipline.',load0:5.5,load:5.5,rel:0},
+   drive:{be:'Someone my team can bring bad news to.',notbe:'I am angry before they finish the sentence and they stop bringing it.',load0:4.2,load:1.8,rel:3,prac:1},
+   love:{be:'Present with my people when the news is bad.',notbe:'I felt nothing when we let forty people go and I left the room first.',load0:3.9,load:3.4,rel:1},
+   clarity:{be:'Honest with my doctor and my wife.',notbe:'I have told no one about my chest and I am ashamed of hiding it.',load0:3.2,load:3.2,rel:0}},
+  journal:[
+   {t:'I am numb. I have been numb since the second company and I called it discipline.',d:1},
+   {t:'My wife asked about the doctor again and I changed the subject.',d:2,add:1},
+   {t:'My chest is tight in every meeting and I have told no one, including my doctor.',d:3},
+   {t:'I read the slides to the board again and my team watched me do it.',d:4,add:1},
+   {t:'The finance manager brought me bad news and I was angry before she finished.',d:5,add:1},
+   {t:'I felt nothing when we let forty people go and that is the part that frightens me.',d:6},
+   {t:'Third turnaround. I know exactly what it costs and I do it anyway.',d:8}],
+  sides:{partner:['Tell her the true answer when she asks how I am.','Home by seven on Thursdays.'],
+   family:['Call my father on Sundays.'],friends:[],community:[],
+   coworkers:['Bad news gets heard to the end.','No calls after nine.','Lunch away from the desk.'],
+   alone:['Twenty minutes without the phone before the first meeting.','A walk with no headphones on Saturday.']},
+  soul:['Knowledge','Freedom','Truth'],ego:['Health','Wealth','Family']},
+ Angela:{about:'36, seeker, six modalities tried', ideal:'ground',
+  areas:{
+   ground:{be:'Held, for once, instead of holding.',notbe:'I am so tired of being the one who understands everybody else.',load0:0,load:0,rel:0},
+   love:{be:'Choosing a partner who is good for me.',notbe:'I keep choosing the same kind of person and I am afraid it is who I am.',load0:4.6,load:3.6,rel:1},
+   clarity:{be:'Committed to one practice long enough to feel it land.',notbe:'I drop each modality after a month and feel ashamed that nothing stuck.',load0:3.8,load:3.8,rel:0},
+   meaning:{be:'Grieving what happened, instead of explaining it.',notbe:'I said everything happens for a reason at the funeral and felt sad for weeks.',load0:5.1,load:3.0,rel:3,prac:1}},
+  journal:[
+   {t:'I am so tired of being the one who understands everybody else.',d:1},
+   {t:'My sister called and I listened for an hour and said nothing about me.',d:2,add:1},
+   {t:'I am sad in a way that does not attach to anything and it has been weeks.',d:3},
+   {t:'I want to know why I keep choosing the same kind of person.',d:4},
+   {t:'My friend cancelled on me and I was relieved, then sad.',d:5,add:1},
+   {t:'I have done six modalities and I am still looking for the one that lands.',d:6},
+   {t:'I am afraid that this is just who I am now.',d:7}],
+  sides:{partner:[],family:['Say one thing about my own week on every call.'],
+   friends:['Ask for the lift instead of offering it.','Leave when I am tired, not when everyone else does.'],
+   community:['One class a week, the same one, for three months.'],coworkers:['Lunch is mine.'],
+   alone:['Sunday morning with nobody to understand.']},
+  soul:['Wisdom','Freedom','Compassion'],ego:['Health','Home','Partner']},
+ Derek:{about:'39, endurance athlete', ideal:'drive',
+  areas:{
+   drive:{be:'An athlete who listens to his body.',notbe:'I raced on a stress fracture and my shoulders were up by my ears the whole way.',load0:0,load:0,rel:0},
+   love:{be:'Calm with my family after a hard session.',notbe:'I am angry all the time and I snap at my kids when I get home.',load0:5.8,load:4.9,rel:1},
+   ground:{be:'Someone who sleeps.',notbe:'I have not slept properly in eleven days and I am afraid to stop training.',load0:4.4,load:2.4,rel:3,prac:1},
+   pleasure:{be:'Feeling the last ten percent again.',notbe:'I am numb through the end of every race and I used to feel everything there.',load0:5.0,load:5.0,rel:0}},
+  journal:[
+   {t:'I am angry all the time and there is nothing to be angry at.',d:1},
+   {t:'I snapped at my son when I got home from the session.',d:2,add:1},
+   {t:'I am numb through the last ten percent and I used to feel everything there.',d:3},
+   {t:'My coach wants a rest week and I said no.',d:4,add:1},
+   {t:'My shoulders are up by my ears before I even start. My chest is tight on the warm up.',d:5},
+   {t:'I have not slept properly in eleven days and I am still training twice a day.',d:6},
+   {t:'Pain is information. I have raced on a stress fracture and I would do it again.',d:8}],
+  sides:{partner:['Phone in the kitchen after nine.'],
+   family:['Ten minutes on the floor with the kids before I shower.','No training talk at dinner.'],
+   friends:[],community:['The Saturday group run is for talking, not pace.'],coworkers:[],
+   alone:['One day a week with no watch.','Stretch before the screen.']},
+  soul:['Freedom','Mastery','Truth'],ego:['Fitness','Health','Family']},
+ blank:{about:'first run', ideal:null, areas:{}, journal:[],
+  sides:{partner:[],family:[],friends:[],community:[],coworkers:[],alone:[]}, soul:['','',''],ego:['','','']}};
+
+/* ================= STATE ================= */
+var ST={who:'James', sel:null, edit:false, P:null, side:null, undo:null, moved:null, busy:false, notes:true};
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function bare(t){return String(t||'').replace(/\.\s*$/,'');}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function col(seat){return 'var(--'+seat+')';}
+function $(id){return document.getElementById(id);}
+
+function load(who){
+ ST.who=who; ST.P=clone(PEOPLE[who]); ST.edit=false; ST.moved=null; ST.undo=null;
+ AR.ST.who=who; ST.asel=null;
+ var P=ST.P;
+ Object.keys(P.areas).forEach(function(k){var a=P.areas[k]; a.seat=landsAt(a.notbe); a.rel=a.rel||0; a.prac=a.prac||0; a.emb=a.emb||0;});
+ P.journal.forEach(function(e){e.done=false;});
+ ST.sel=lead()||(who==='blank'?'ground':AREAS[0].k);
+ ST.side=thinnest();
+ paint();}
+
+/* percent complete: the share of the weight held when the pair was written
+   that has since been released. seats4 calls it closure. null when nothing
+   is read, which prints as a dash and never as zero. */
+function pct(k){var a=ST.P.areas[k]; if(!a)return null; if(!a.seat||!(a.load0>0))return null;
+ return Math.round(100*Math.max(0,Math.min(1,1-a.load/a.load0)));}
+function overall(){var v=AREAS.map(function(x){return pct(x.k);}).filter(function(x){return x!=null;});
+ return v.length?Math.round(v.reduce(function(s,x){return s+x;},0)/v.length):null;}
+function lead(){var best=null,bl=-1;Object.keys(ST.P.areas).forEach(function(k){var a=ST.P.areas[k];if(a.seat&&a.load>bl&&a.load>0){bl=a.load;best=k;}});return best;}
+
+/* THE SNIFFER, AS A MOCK. For each journal entry, the area whose pair it
+   echoes: shared words first, then landing at the same seat. */
+function match(e){
+ var et=toks(e.t), eseat=landsAt(e.t), best=null;
+ Object.keys(ST.P.areas).forEach(function(k){var a=ST.P.areas[k];
+  var pt=toks(a.notbe), shared=[];
+  Object.keys(et).forEach(function(s){if(pt[s])shared.push(et[s]);});
+  var same=!!(eseat&&a.seat&&eseat===a.seat);
+  var sc=shared.length*2+(same?1.5:0);
+  if(sc>0&&(!best||sc>best.sc))best={k:k,sc:sc,shared:shared,same:same,seat:eseat};});
+ return best;}
+function order(){
+ return ST.P.journal.filter(function(e){return !e.done;}).map(function(e){return {e:e,m:match(e)};})
+  .sort(function(x,y){var a=x.m?x.m.sc:0,b=y.m?y.m.sc:0;return b-a||x.e.d-y.e.d;});}
+function badges(k){var a=ST.P.areas[k]; if(!a)return [0,0,0,0,0];
+ var heard=ST.P.journal.some(function(e){var m=match(e);return m&&m.k===k;});
+ return [1,heard?1:0,a.rel>0?1:0,a.prac?1:0,a.emb?1:0];}
+
+/* ================= PAINT: HEAD ================= */
+function paintHead(){
+ var P=ST.P, h='';
+ var ideal=P.ideal&&P.areas[P.ideal], L=lead(), la=L&&P.areas[L];
+ if(!ideal){
+  h='<p class="eyebrow">Your avatar</p><h1>Seven parts of a life, around you.</h1>'
+   +'<p class="inway">Pick one. Say who you want to be there, and who you do not.</p>';}
+ else{
+  h='<p class="eyebrow">Becoming</p><h1>'+esc(bare(ideal.be))+'</h1>';
+  if(la)h+='<p class="quote" style="--c:'+col(la.seat)+'">'+esc(bare(la.notbe))+'.</p>'
+   +'<p class="inway">'+(L!==P.ideal?'In the way of <b>'+esc(bare(la.be))+'</b>. ':'')+'Held at '+THE[la.seat]+', and it is costing you.</p>';}
+ h+='<button type="button" class="pin" data-proto data-note="0" style="right:-8px;top:0" aria-label="Design note 0">0</button>';
+ $('head').innerHTML=h;}
+
+/* ================= PAINT: THE FIGURE ================= */
+function pos(a,r){var t=a*Math.PI/180;return [50+r*Math.cos(t),50+r*Math.sin(t)];}
+function arc(cx,cy,r,f){ /* a progress arc from twelve o'clock, f in 0..1 */
+ if(f<=0)return ''; if(f>=1)f=0.9999;
+ var a0=-Math.PI/2, a1=a0+f*Math.PI*2, x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0), x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+ return 'M'+x0.toFixed(2)+' '+y0.toFixed(2)+' A'+r+' '+r+' 0 '+(f>0.5?1:0)+' 1 '+x1.toFixed(2)+' '+y1.toFixed(2);}
+var ORB=37.5, SR=6.5;
+function paintFig(){
+ var P=ST.P, s='<svg class="draw" viewBox="0 0 100 100" aria-hidden="true">';
+ /* ticks around the core, carried from Told's ring */
+ for(var i=0;i<72;i++){var a=i*5, p0=pos(a,19.2), p1=pos(a,i%6===0?21.4:20.4);
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="#3A3E4A" stroke-width=".25"/>';}
+ s+='<circle cx="50" cy="50" r="17.6" fill="none" stroke="#2A2E3A" stroke-width=".5"/>';
+ var ov=overall(); if(ov!=null)s+='<path d="'+arc(50,50,17.6,ov/100)+'" fill="none" stroke="var(--ink)" stroke-width=".9" stroke-linecap="round" opacity=".8"/>';
+ AREAS.forEach(function(x){
+  var c=pos(x.a,ORB), p0=pos(x.a,22.2), p1=pos(x.a,ORB-SR-0.6), has=!!P.areas[x.k], on=ST.sel===x.k;
+  s+='<line x1="'+p0[0].toFixed(2)+'" y1="'+p0[1].toFixed(2)+'" x2="'+p1[0].toFixed(2)+'" y2="'+p1[1].toFixed(2)+'" stroke="'+(has?col(x.seat):'#2A2E3A')+'" stroke-opacity="'+(on?.8:has?.35:.6)+'" stroke-width="'+(on?.5:.3)+'"'+(has?'':' stroke-dasharray="1 1.2"')+'/>';
+  s+='<circle cx="'+c[0].toFixed(2)+'" cy="'+c[1].toFixed(2)+'" r="'+SR+'" fill="none" stroke="'+(has?col(x.seat):'#3A3E4A')+'" stroke-opacity="'+(has?.3:1)+'" stroke-width=".55"/>';
+  var pc=pct(x.k); if(pc!=null&&pc>0)s+='<path d="'+arc(c[0],c[1],SR,pc/100)+'" fill="none" stroke="'+col(x.seat)+'" stroke-width="1" stroke-linecap="round"/>';
+  /* the five badge pips, on the outward side, never buttons */
+  var b=badges(x.k), nx=b.indexOf(0);
+  [-44,-22,0,22,44].forEach(function(d,j){var q=[c[0]+9.6*Math.cos((x.a+d)*Math.PI/180),c[1]+9.6*Math.sin((x.a+d)*Math.PI/180)];
+   s+='<circle cx="'+q[0].toFixed(2)+'" cy="'+q[1].toFixed(2)+'" r="1.15" fill="'+(b[j]?col(x.seat):'none')+'" stroke="'+(b[j]?col(x.seat):(has&&j===nx?'var(--dim)':'#3A3E4A'))+'" stroke-width=".35"'+(has&&j===nx&&!b[j]?' stroke-dasharray=".6 .5"':'')+'/>';});});
+ /* ROUND GV. The picked archetype's area: its spoke carries the seat colour
+    at full strength and a small ring sits on the core side of the satellite. */
+ var pk=AR.pick(), pa=pk?AR.A(pk):null;
+ if(pa){var ar=AR.SA[pa.seat], q=pos(ar.a,ORB-SR-1.8);
+  s+='<line x1="'+pos(ar.a,17.6)[0].toFixed(2)+'" y1="'+pos(ar.a,17.6)[1].toFixed(2)+'" x2="'+pos(ar.a,ORB-SR)[0].toFixed(2)+'" y2="'+pos(ar.a,ORB-SR)[1].toFixed(2)+'" stroke="'+col(pa.seat)+'" stroke-width=".7" stroke-opacity=".9"/>'
+   +'<circle cx="'+q[0].toFixed(2)+'" cy="'+q[1].toFixed(2)+'" r="1.3" fill="var(--bg)" stroke="'+col(pa.seat)+'" stroke-width=".5"/>';}
+ s+='</svg>';
+ var core='<button type="button" class="core'+(pa?' has':'')+'" id="core" aria-pressed="'+(ST.sel==='core')+'" aria-label="Your avatar, all seven areas'+(pa?', archetype '+pa.nm:'')+'"'+(pa?' style="--c:'+col(pa.seat)+'"':'')+'>'
+  +(pa?AR.aicon(pa,'cic'):'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3.4"/><path d="M4.5 21c0-4.6 3.4-7.8 7.5-7.8s7.5 3.2 7.5 7.8"/></svg>')
+  +'<span class="big">'+(ov==null?'–':ov+'%')+'</span><span class="lb">Complete</span>'+(pa?'<span class="anm">'+esc(pa.nm)+'</span>':'')+'</button>';
+ var av=$('aval'); if(av){av.textContent=pa?pa.nm:'–'; av.className='bval'+(pa?' on':''); av.style.setProperty('--c',pa?col(pa.seat):'');}
+ var sats=AREAS.map(function(x){
+  var c=pos(x.a,ORB), pc=pct(x.k), has=!!P.areas[x.k];
+  return '<button type="button" class="sat" data-a="'+x.k+'" style="left:'+c[0].toFixed(2)+'%;top:'+c[1].toFixed(2)+'%;--c:'+col(x.seat)+'" aria-pressed="'+(ST.sel===x.k)+'"'
+   +' aria-label="'+x.nm+', '+(pc==null?(has?'nothing read yet':'no pair yet'):pc+' percent complete')+'">'
+   +svg(x.k)+'<span class="pc'+(pc==null?' none':'')+'">'+(pc==null?'–':pc+'%')+'</span></button>';}).join('');
+ var labs=AREAS.map(function(x){var l=pos(x.a,ORB-SR-4.6);
+  return '<span class="slab'+(ST.sel===x.k?' on':'')+'" style="left:'+l[0].toFixed(2)+'%;top:'+l[1].toFixed(2)+'%">'+x.nm+'</span>';}).join('');
+ var pins='<button type="button" class="pin" data-proto data-note="1" style="left:50%;top:0;transform:translate(24px,0)" aria-label="Design note 1">1</button>'
+  +'<button type="button" class="pin" data-proto data-note="2" style="right:0;top:18%" aria-label="Design note 2">2</button>'
+  +'<button type="button" class="pin" data-proto data-note="10" style="left:0;bottom:4%" aria-label="Design note 10">10</button>';
+ $('fig').innerHTML=s+labs+core+sats+pins;}
+
+/* ================= PAINT: THE PANEL ================= */
+function badgeRow(k,seat){
+ var b=badges(k), nx=b.indexOf(0);
+ var h='<div class="badges" role="list">'+BADGES.map(function(B,j){
+  return '<div class="bdg'+(b[j]?' lit':(j===nx?' next':''))+'" role="listitem" style="--c:'+col(seat)+'">'
+   +'<span class="ring" aria-hidden="true">'+svg(B.k)+'</span>'+B.nm
+   +'<span class="vh">'+(b[j]?', lit':', not yet')+'</span></div>';}).join('')+'</div>';
+ if(nx>=0)h+='<p class="hint">Next: '+BADGES[nx].how+'</p>';
+ else h+='<p class="hint">All five lit. The pair is due for review, and you can write it higher.</p>';
+ return h;}
+function paintPanel(){
+ var P=ST.P, h='';
+ if(ST.sel==='core'){
+  var n=Object.keys(P.areas).length, L=lead();
+  h='<div class="ph" style="--c:var(--ink)"><div><h2>All seven</h2><p>The avatar is the seven areas together.</p></div>'
+   +'<div class="fig2"><b>'+(overall()==null?'–':overall()+'%')+'</b><span>Complete</span></div></div>'
+   +'<div class="sec"><p class="lbl">Written</p><p class="nb">'+(n?n+(n===1?' area has a pair.':' areas have a pair.'):'No pairs yet.')+'</p></div>'
+   +(L?'<div class="sec"><p class="lbl">Heaviest</p><p class="nb">'+AK[L].nm+', held at '+THE[P.areas[L].seat]+'.</p></div>'
+     +'<div class="acts"><button type="button" class="go" data-go="'+L+'" style="--c:'+col(AK[L].seat)+'">Open '+AK[L].nm+'</button></div>':'');
+  $('panel').innerHTML=h; return;}
+ var A=AK[ST.sel], a=P.areas[ST.sel], pc=pct(ST.sel);
+ h='<div class="ph" style="--c:'+col(A.seat)+'"><span class="ic">'+svg(A.k)+'</span><div><h2>'+A.nm+'</h2><p>'+A.about+'</p></div>'
+  +'<div class="fig2"><b>'+(pc==null?'–':pc+'%')+'</b><span>Complete</span></div></div>';
+ h+='<div class="sec" style="position:relative"><p class="lbl">Badges</p>'+badgeRow(ST.sel,A.seat)+'</div>';
+ if(a&&!ST.edit){
+  h+='<div class="sec"><p class="lbl">Who you want to be here</p><p class="be">'+esc(a.be)+'</p></div>'
+   +'<div class="sec"><p class="lbl">Who you do not want to be here</p><p class="nb quote" style="--c:'+col(a.seat||A.seat)+'">'+esc(bare(a.notbe))+'.</p></div>';
+  h+=landsLine(A,a.seat,listenFor(a.notbe).unread);
+  var canGo=a.seat&&a.load>0;
+  h+='<div class="acts">'
+   +(canGo?'<button type="button" class="go" id="rel" style="--c:'+col(a.seat)+'">Release it<small>Under a minute</small></button>'
+     :(a.seat?'<span class="empty">Nothing held. This area is clear.</span>':''))
+   +'<button type="button" class="ghost" id="rew">Rewrite</button></div>';}
+ else{
+  h+=formHTML(A,a);}
+ h+='<p class="status" id="st" role="status" aria-live="polite"></p>';
+ $('panel').innerHTML=h;
+ if(ST.edit||!a)wireForm(A);}
+function landsLine(A,seat,unread){
+ var pin='<button type="button" class="pin" data-proto data-note="5" style="right:-10px;top:-10px" aria-label="Design note 5">5</button>';
+ if(!seat)return '<div class="lands">'+pin+'<i></i><span>Nothing read yet, so this area has no weight to release.'
+  +(unread&&unread.length?' The instrument does not read "'+unread.join('", "')+'" yet.':'')+' Name what your body does or what you feel.</span></div>';
+ if(seat===A.seat)return '<div class="lands" style="--s:'+col(seat)+'">'+pin+'<i></i><span>Your words land at '+THE[seat]+'. The release runs there.</span></div>';
+ return '<div class="lands" style="--s:'+col(seat)+'">'+pin+'<i></i><span>You put this under '+A.nm+'. Your words land at <b>'+THE[seat]+'</b>, and the release runs there.</span></div>';}
+function formHTML(A,a){
+ return '<div style="--c:'+col(A.seat)+';position:relative">'
+  +'<button type="button" class="pin" data-proto data-note="3" style="right:-10px;top:4px" aria-label="Design note 3">3</button>'
+  +'<div class="field"><label for="fbe">Who you want to be here</label><span class="h" id="fbeh">Your best day in this part of your life. One sentence.</span>'
+  +'<textarea id="fbe" aria-describedby="fbeh" maxlength="200">'+esc(a?a.be:'')+'</textarea></div>'
+  +'<div class="field"><label for="fnb">Who you do not want to be here</label><span class="h" id="fnbh">A bad day. What your body does, or what you feel. One sentence.</span>'
+  +'<textarea id="fnb" aria-describedby="fnbh" maxlength="200">'+esc(a?a.notbe:'')+'</textarea></div>'
+  +'<div class="listen" id="lsn"></div>'
+  +'<div class="acts"><button type="button" class="go" id="keep" disabled>Keep both</button>'
+  +(a?'<button type="button" class="ghost" id="cancel">Cancel</button>':'')+'</div></div>';}
+function paintListen(A){
+ var be=$('fbe').value, nb=$('fnb').value, L=listenFor(nb), h='';
+ h='<button type="button" class="pin" data-proto data-note="4" style="right:-10px;top:-10px" aria-label="Design note 4">4</button>'
+  +'<p class="lbl" style="margin:0">Listening for, in your journal</p>';
+ if(!nb.trim())h+='<p class="hint" style="margin-top:4px">Write the second sentence and the words it listens for appear here.</p>';
+ else{
+  var chips=L.feel.map(function(w){return '<span class="chip"><em>feeling</em>'+esc(w)+'</span>';})
+   .concat(L.body.map(function(w){return '<span class="chip"><em>body</em>'+esc(w)+'</span>';}))
+   .concat(L.side?['<span class="chip"><em>boundary</em>'+L.side+'</span>']:[]);
+  var rest=Object.keys(toks(nb)).map(function(k){return toks(nb)[k];}).filter(function(w){return !FEEL[w]&&!BODY[w]&&!UNREAD[w];}).slice(0,5);
+  chips=chips.concat(rest.map(function(w){return '<span class="chip">'+esc(w)+'</span>';}));
+  h+='<div class="chips">'+(chips.join('')||'<span class="empty">No words it reads yet.</span>')+'</div>';
+  h+=L.seat?(L.seat===A.seat?'<p class="hint">Lands at '+THE[L.seat]+'.</p>'
+    :'<p class="hint">You put this under '+A.nm+'. These words land at <b style="color:var(--ink)">'+THE[L.seat]+'</b>.</p>')
+   :'<p class="hint">Nothing read yet'+(L.unread.length?', and "'+L.unread.join('", "')+'" is not read':'')+'. Name what your body does or what you feel.</p>';}
+ $('lsn').innerHTML=h;
+ $('keep').disabled=!avatarValid({be:be,notbe:nb});
+ $('keep').title=$('keep').disabled?'Both halves are kept together.':'';}
+function wireForm(A){
+ var f=function(){paintListen(A);}; $('fbe').addEventListener('input',f); $('fnb').addEventListener('input',f); f();}
+
+/* ================= PAINT: RELEASE ORDER ================= */
+function paintQueue(){
+ var Q=order(), P=ST.P;
+ var h='<button type="button" class="pin" data-proto data-note="4" style="right:10px;top:10px" aria-label="Design note 4">4</button>'
+  +'<h3>Next to release</h3><p class="sub">Your journal, in the order the sniffer puts it. What echoes your own words goes first.</p>';
+ if(!Q.length)h+='<p class="empty" style="margin:0">You have not written anything yet. Whatever you write is read against your pairs and lined up here.</p>';
+ Q.slice(0,4).forEach(function(q){
+  var m=q.m, A=m?AK[m.k]:null, seat=A?A.seat:(landsAt(q.e.t)||null);
+  var why=m?(m.shared.length?'Echoes your words for '+A.nm+': '+m.shared.slice(0,3).join(', ')+'.':'Lands where your '+A.nm+' words land, '+THE[m.seat]+'.')
+   :'Echoes no pair yet.';
+  var side=boundaryCross(q.e.t);
+  if(side)why+=' Names your '+side+' side.';
+  h+='<div class="qi'+(ST.moved===q.e?' moved':'')+'" style="--c:'+(seat?col(seat):'var(--dim)')+'">'
+   +'<span class="qic">'+(A?svg(A.k):'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg>')+'</span>'
+   +'<div><p>'+esc(q.e.t)+'</p><p class="why">'+esc(q.e.d===0?'Just now. ':q.e.d+(q.e.d===1?' day ago. ':' days ago. '))+why+'</p></div></div>';});
+ h+='<div class="tryj" data-proto><label for="tj">Prototype only: try a journal line and watch where it lands in the order</label>'
+  +'<div class="row"><input id="tj" autocomplete="off" placeholder="My jaw was tight all through the call with my boss."><button type="button" class="pbtn" id="tjgo">Add</button></div>'
+  +'<p class="out" id="tjout" role="status"></p></div>';
+ $('queue').innerHTML=h;
+ $('tjgo').onclick=tryLine; $('tj').onkeydown=function(e){if(e.key==='Enter')tryLine();};}
+function tryLine(){
+ var t=$('tj').value.trim(); if(!t){$('tj').focus();return;}
+ var e={t:t,d:0,add:1}; ST.P.journal.unshift(e); ST.moved=e;
+ var Q=order(), at=0; Q.forEach(function(q,i){if(q.e===e)at=i+1;});
+ var m=match(e), side=boundaryCross(t);
+ paint();
+ $('tjout').textContent='Placed '+(at===1?'first':'at '+at)+'. '+(m?'Echoes '+AK[m.k].nm+'.':'Echoes no pair.')+(side?' Touches your '+side+' side, so it also feeds the boundary reminders.':'');}
+
+/* ================= NOTES ================= */
+var NOTES={
+ 0:['What this page is for','The job, in James\'s words: <i>show me who I said I would become, what is in the way, and the one thing to do today.</i> Told\'s order is kept: the sentence above, the ring as the hero, one action. There is no app chrome on this page, on purpose.'],
+ 1:['Seven satellites replace the seat names','Each circle is a part of a life with an icon and a percent complete. Underneath, each is still a seat: the ring keeps the body\'s order top to bottom (Meaning at the crown, Ground at the root) and keeps the seat colour. <b>Percent complete</b> is the share of the weight held when the pair was written that has since been released. seats4 already computes it as <code>closure()</code>, from <code>avatarGap().load</code>. That is work done, which is why it does not break the rule that a reading is not a score. When nothing is read it prints a dash, never a zero.<div class="q">The one word names (Ground, Pleasure, Drive, Love, Voice, Clarity, Meaning) are placeholders for his ruling.</div>'],
+ 2:['Five badges per satellite','Drawn as pips outside each circle, and labelled only in the panel. <b>Said, Heard, Released, Practised, Embodied.</b> That is the loop: Said and Heard are discover, Released is play, Practised is flow, Embodied is embody. The pips are not buttons, on purpose: 35 more buttons around one figure would put the page over 40 choices. The next unlit badge says how it lights, so a badge teaches the next step instead of decorating.'],
+ 3:['The pair, per area','Press a circle, then two sentences: who you want to be here, and who you do not. <b>Keep both</b> stays off until both halves have words, which is <code>avatarValid()</code>: "a pair is written as a pair." Stored per pair: <code>{area, be, notbe, at}</code>. The <code>area</code> field is new: an additive schema change to <code>avatar.pairs</code>, and the schema is his call. One pair per area in this design; the engine allows any number.'],
+ 4:['What the sniffer takes, and how it orders release','From the "do not want to be" sentence it keeps the feeling words, the body words, the person named (read by <code>boundaryCross()</code> into one of the six boundary sides) and the seat the words land at. <b>Priority rule:</b> a journal entry that echoes a person\'s own words for an area goes to the front of the release order, ranked by shared words, then by landing at the same seat, then by how recent it is. The reason is printed beside each entry so the order is never a black box. The listening here is a dozen word stand in. The real one is the ai director\'s scoring.'],
+ 5:['Where you put it, and where it lands','A person files a pair under an area, and the resolver reads the sentence to a seat. They can disagree. James files his public speaking pair under Voice, and "my chest is tight" lands at the heart. This design keeps both: the satellite shows where he wants it to show, the release runs where the words land. Two of the six reference people, Angela and Derek, have pairs that land nowhere, because the real resolver does not read "tired" or "shoulders" (round FB). The page says so rather than printing zero.'],
+ 6:['The Boundary overlay','It opens over the avatar and dims everything else. The shape is the engine\'s own: <code>PUR_SIDES</code> (partner, family, friends, community, coworkers, alone) and <code>PUR_PER_SIDE</code> of five. How full each side is gets drawn as five segments and never printed as "12 of 30". The sides <code>boundaryCount().thin</code> reports carry an amber dot. The two triangles behind it are the Purpose Map: the engine\'s own comment reads "two overlapping triangles, and the overlap is the boundary", and the overlap of two triangles is this hexagon.'],
+ 7:['The arrows','Built as asked: press a side, then the up arrow adds a line to it and the down arrow takes the last line off, with undo. An empty line does not count, which is <code>boundaryCount()</code>\'s own filter.<div class="q">Open, and his to read: in the engine the Purpose Map is an upward triangle (higher purpose, three soul values) and a downward one (earthly purpose, three ego values). His words were "the up arrow, down arrow, and the six sides that you fill in". That may mean these two triangles and the hexagon, not per side arrows.</div>'],
+ 8:['How it feeds ritual reminders','<code>boundaryCross()</code> reads each journal entry and names the side it touches. If that side has lines, the next ritual carries one of them as a reminder, with the entry that raised it quoted. With accounts, the same line goes out as a push notification. A thin side named in the journal gets a prompt instead. <b>Three engine findings, visible in this mock:</b> "team" reads as community, not coworkers, so James\'s board meeting lands on the wrong side. An entry naming a wife and a boss returns partner only, because the first match wins. "Coach" is not read at all.'],
+ 9:['Purpose, folded','Six values in, three per triangle. The centre of each is derived and never typed (<code>purposeCentre()</code>), and the line between them is the engine\'s own sentence. Folded by default behind a visible control, because the page is about boundaries when this opens.'],
+ 11:['Archetype, a tool beside Boundaries','Round GV, his words: <i>"add this to the avatar page for archetype."</i> It opens over the avatar the way Boundaries does, rather than becoming an eighth satellite, because the seven satellites are the seven seats and an archetype is not a part of a life. It is a way of acting that sits at one of them. So the pick shows in two places on the avatar: its mark and name in the core, and a lit spoke to the area it acts from. The button says its value beside its label, <b>Archetype, Sage</b>, so the page states the pick without opening anything.'],
+ 12:['What a pick says, in two parts','His ruling: describe what the pattern is, neutrally, then underneath, separately, <b>Impact</b>, naming the saboteur. <i>"That way they don\'t see it as a judgment, but they can see it as like what the impact is by taking that role on."</i> The first part is a Definition, the same for everybody: the archetype\'s own verb from <code>ARCH</code>, then what it does for you. Impact names the primary saboteur from <code>ARCH18</code>, the seat <code>ARCH18</code> puts it at, and one line of what taking the role on costs in a day. The old line, <i>"Its primary saboteur is Hyper-Rational, which says: If I can\'t explain it, it isn\'t real,"</i> is gone. It also settles round GU\'s question 4: the saboteur surfaces on reading, framed as a cost of the role and never as a name for the person.'],
+ 13:['One press','His words: <i>"once you click it, it\'s saved, you can unclick, or you can click, but there\'s no two clicks, no save after this."</i> The Save button is gone. Tapping a mark reads it and changes nothing. The one button saves on the press and takes it off on the next press. Its label never changes, <b>Rings true</b> pressed or not, and the state is carried by the fill and a check inside the ring, because a slot keeps its label. The status line is written only after the write succeeds. Pressing a different archetype moves the pick and says which one it replaced, so no press silently undoes another. The word itself is switchable in the bar above.'],
+ 14:['The halo','The glow behind each mark is how strongly this person\'s field reads that archetype: <code>compute().aff</code>, read off the committed <code>engine.js</code> at build time, not typed in. The dashed ring marks the one the field reads first. The six drafts (Orphan, Hero, Mentor, Shadow, Shapeshifter, Healer) carry no glow, because the engine has no affinity for them yet. On a first run nothing is read, so nothing glows, and the panel says so.'],
+ 10:['The count, measured live','A working screen should offer fewer than 12 simultaneous choices. The live figure above counts every visible button, field and link that is not the prototype\'s own. Told measured 11 on its first screen, 17 on its own surface and 86 across the whole screen. The 69 between those last two sit outside the surface, in the tab bar and the two rails, and this page carries neither. So compare the surface figures, never the whole screen ones.']};
+function paintNotes(){
+ var h='<h3>Design notes</h3><p class="meas" id="meas"></p><ol>';
+ Object.keys(NOTES).forEach(function(k){h+='<li id="n'+k+'"><span class="n">'+k+'</span><b>'+NOTES[k][0]+'.</b> '+NOTES[k][1]+'</li>';});
+ h+='</ol><p style="font-size:13px;color:#A89F8C;margin:8px 0 0">Mock data. Pairs from proto/avatar/seats/pairs.js. Journal lines from sim/stories.js, plus two or three per person written for this mock so a person is named in the journal. Nothing is wired to the engine; the engine functions it names are copied in verbatim and marked.</p>';
+ $('notes').innerHTML=h;}
+function measure(){
+ var aOpen=!$('ova').hidden, ovOpen=!$('ov').hidden||aOpen;
+ var root=aOpen?$('ova'):ovOpen?$('ov'):document.querySelector('main');
+ var els=[].slice.call(root.querySelectorAll('button,input,textarea,select,a[href],summary'));
+ var vis=els.filter(function(e){return e.offsetParent!==null&&!e.closest('[data-proto]')&&!e.disabled;});
+ var first=vis.filter(function(e){var r=e.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0;});
+ var m=$('meas'); if(m)m.textContent=(aOpen?'Archetype overlay open. ':ovOpen?'Boundary overlay open. ':'')+'Choices in view now: '+first.length+'. On the whole '+(ovOpen?'overlay':'page')+': '+vis.length+'. Target: under 12.';}
+
+/* ================= THE BOUNDARY OVERLAY ================= */
+var SIDEA={partner:-90,family:-30,friends:30,community:90,coworkers:150,alone:210};
+var HINT={partner:'Phone face down at the table.',family:'Leave the room when the voice goes up.',friends:'Say no the same day.',
+ community:'One evening a week nobody else books.',coworkers:'Nothing answered after nine.',alone:'A walk with no headphones.'};
+function lines(s){return ST.P.sides[s]||[];}
+function filled(s){return lines(s).filter(function(x){return x&&String(x).trim();}).length;}
+function thinnest(){var P=ST.P,b=null,n=99;PUR_SIDES.forEach(function(s){var f=filled(s);if(f<n){n=f;b=s;}});return b;}
+function paintHex(){
+ var R=44, H=R/Math.sqrt(3), s='<svg viewBox="0 0 100 100" aria-hidden="true">';
+ var up=[-90,30,150].map(function(a){return pos(a,R);}), dn=[90,210,330].map(function(a){return pos(a,R);});
+ var pts=function(a){return a.map(function(p){return p[0].toFixed(2)+','+p[1].toFixed(2);}).join(' ');};
+ s+='<polygon points="'+pts(up)+'" fill="var(--crown)" fill-opacity=".06" stroke="var(--crown)" stroke-opacity=".45" stroke-width=".35"/>';
+ s+='<polygon points="'+pts(dn)+'" fill="var(--sacral)" fill-opacity=".06" stroke="var(--sacral)" stroke-opacity=".45" stroke-width=".35"/>';
+ var ready=purposeCentre(ST.P.soul)&&purposeCentre(ST.P.ego);
+ PUR_SIDES.forEach(function(sd){
+  var t=SIDEA[sd], v0=pos(t-30,H), v1=pos(t+30,H), n=filled(sd), total=lines(sd).length, on=ST.side===sd;
+  for(var j=0;j<PUR_PER_SIDE;j++){
+   var f0=(j+0.1)/PUR_PER_SIDE, f1=(j+0.9)/PUR_PER_SIDE;
+   var x0=v0[0]+(v1[0]-v0[0])*f0, y0=v0[1]+(v1[1]-v0[1])*f0, x1=v0[0]+(v1[0]-v0[0])*f1, y1=v0[1]+(v1[1]-v0[1])*f1;
+   var lit=j<n, pend=!lit&&j<total;
+   s+='<line x1="'+x0.toFixed(2)+'" y1="'+y0.toFixed(2)+'" x2="'+x1.toFixed(2)+'" y2="'+y1.toFixed(2)+'" stroke="'+(lit?'var(--acc)':pend?'var(--dim)':'#343844')
+    +'" stroke-width="'+(lit?(on?1.9:1.5):1)+'" stroke-linecap="round"'+(pend?' stroke-dasharray="1 .9"':'')+'/>';}});
+ s+='</svg>';
+ var chips=PUR_SIDES.map(function(sd){var p=pos(SIDEA[sd],35.5), thin=filled(sd)<PUR_PER_SIDE&&filled(sd)<=1;
+  return '<button type="button" class="side'+(thin?' thin':'')+'" data-side="'+sd+'" aria-pressed="'+(ST.side===sd)+'" style="left:'+p[0].toFixed(2)+'%;top:'+p[1].toFixed(2)+'%"'
+   +' aria-label="'+cap(sd)+(thin?', thin':'')+'">'+cap(sd)+'</button>';}).join('');
+ var tl=pos(-90,48.5), bl=pos(90,48.5);
+ var tri='<span class="tri" style="left:'+tl[0]+'%;top:'+tl[1]+'%">Higher purpose</span><span class="tri" style="left:'+bl[0]+'%;top:'+bl[1]+'%">Earthly purpose</span>';
+ var n=filled(ST.side), tot=lines(ST.side).length;
+ var hub='<div class="hub"><button type="button" class="arr" id="upA" aria-label="Add a line to '+ST.side+'"'+(tot>=PUR_PER_SIDE?' disabled':'')+'>'+svg('up')+'</button>'
+  +'<span class="nm">'+cap(ST.side)+'</span><span class="ct" aria-hidden="true">'+dots(n)+'</span>'
+  +'<button type="button" class="arr" id="dnA" aria-label="Take the last line off '+ST.side+'"'+(tot<=0?' disabled':'')+'>'+svg('down')+'</button></div>';
+ var pins='<button type="button" class="pin" data-proto data-note="6" style="left:2%;top:2%" aria-label="Design note 6">6</button>'
+  +'<button type="button" class="pin" data-proto data-note="7" style="left:50%;top:50%;transform:translate(46px,-60px)" aria-label="Design note 7">7</button>';
+ $('hex').innerHTML=s+tri+chips+hub+pins;}
+function dots(n){var o='';for(var i=0;i<PUR_PER_SIDE;i++)o+=i<n?'●':'○';return o;}
+function reminders(){
+ var P=ST.P, out=[], thin={}, used={};
+ P.journal.slice().sort(function(a,b){return a.d-b.d;}).forEach(function(e){
+  var sd=boundaryCross(e.t); if(!sd)return;
+  var L=lines(sd).filter(function(x){return x&&x.trim();});
+  if(L.length){var i=(used[sd]=(used[sd]||0)+1)-1; if(i<L.length)out.push({sd:sd,line:L[i],e:e});}
+  else thin[sd]=(thin[sd]||[]).concat([e]);});
+ return {out:out.slice(0,3), thin:thin};}
+function paintB(){
+ var sd=ST.side, L=lines(sd), P=ST.P, h='';
+ h+='<h3 style="margin:0;font-size:19px">'+cap(sd)+'</h3>';
+ if(!L.length)h+='<p class="empty" style="margin:6px 0 0">Nothing written for '+sd+' yet. The up arrow adds a line.</p>';
+ L.forEach(function(x,i){h+='<div class="bline"><span class="dot'+(x&&x.trim()?' lit':'')+'" aria-hidden="true"></span>'
+  +'<label class="vh" for="bl'+i+'">'+cap(sd)+', line '+(i+1)+'</label><input id="bl'+i+'" data-i="'+i+'" value="'+esc(x)+'" placeholder="'+esc(HINT[sd])+'" maxlength="140"></div>';});
+ h+='<p class="status" id="bst" role="status" aria-live="polite"></p>';
+ var R=reminders();
+ h+='<div style="position:relative;margin-top:14px"><button type="button" class="pin" data-proto data-note="8" style="right:-10px;top:-4px" aria-label="Design note 8">8</button>'
+  +'<p class="lbl" style="font-weight:600;color:var(--ink);font-size:16px">Feeds your ritual</p>';
+ if(!R.out.length&&!Object.keys(R.thin).length)h+='<p class="empty" style="margin:0">No journal entry names anybody yet. When one does, the line you wrote for that side comes back as a reminder.</p>';
+ R.out.forEach(function(r){h+='<div class="rem"><p>Reminder: '+esc(bare(r.line))+'.</p><p class="why">Your entry '+(r.e.d===0?'just now':r.e.d+(r.e.d===1?' day ago':' days ago'))+' named your '+r.sd+' side: "'+esc(bare(r.e.t))+'."</p></div>';});
+ Object.keys(R.thin).forEach(function(s){var n=R.thin[s].length;
+  h+='<div class="rem thin"><p>'+cap(s)+' has no lines, and '+(n===1?'one entry names it':n+' entries name it')+'.</p><p class="why">"'+esc(bare(R.thin[s][0].t))+'." One line here becomes a reminder.</p></div>';});
+ h+='</div>';
+ var hi=purposeCentre(P.soul), ea=purposeCentre(P.ego);
+ h+='<details class="pur" style="position:relative"><summary>Purpose</summary>'
+  +'<button type="button" class="pin" data-proto data-note="9" style="right:-10px;top:4px" aria-label="Design note 9">9</button>'
+  +(hi&&ea?'<dl><dt>Higher</dt><dd>'+esc(hi)+'</dd><dt>Earthly</dt><dd>'+esc(ea)+'</dd></dl>'
+    +'<p class="hint">Where those two meet is how you make money and how you find fulfilment doing it.</p>'
+   :'<p class="hint">Three values for the upward triangle, three for the downward one. Nothing written yet.</p>')+'</details>';
+ $('bpanel').innerHTML=h;
+ [].forEach.call($('bpanel').querySelectorAll('.bline input'),function(inp){
+  inp.addEventListener('input',function(){L[+inp.dataset.i]=inp.value; paintHex();
+   inp.previousElementSibling.previousElementSibling.classList.toggle('lit',!!inp.value.trim());});
+  inp.addEventListener('change',function(){paintB();});});}
+function bStatus(t,undo){var s=$('bst'); if(!s)return; s.innerHTML=esc(t)+(undo?' <button type="button" class="ghost" id="undoB" style="min-height:44px;margin-left:6px">Undo</button>':'');
+ if(undo)$('undoB').onclick=function(){lines(ST.undo.sd).push(ST.undo.x); ST.undo=null; paintOv(); bStatus('Put back.');};}
+function paintOv(){paintHex(); paintB(); measure();}
+var lastFocus=null;
+function openOv(){lastFocus=document.activeElement; var o=$('ov'); o.hidden=false;
+ var pb=document.querySelector('.pbar'); o.style.top=(getComputedStyle(pb).position==='sticky'?pb.offsetHeight:0)+'px'; o.style.paddingTop=(innerWidth<600?'24px':'40px'); ST.side=ST.side||thinnest(); paintOv();
+ requestAnimationFrame(function(){o.classList.add('show');}); $('closeB').focus(); document.body.style.overflow='hidden';}
+function closeOv(){var o=$('ov'); o.classList.remove('show'); setTimeout(function(){o.hidden=true; measure();},200);
+ document.body.style.overflow=''; paint(); if(lastFocus&&lastFocus.focus)$('openB').focus();}
+
+/* ================= ROUND GV: THE ARCHETYPE OVERLAY =================
+   The round GU wheel, redrawn in this page's language. Its seven bands carry
+   this page's seven area icons, in body order clockwise from the top. Names
+   read level, under each mark, never rotated. Marks are buttons. At phone
+   width the names would print too small to read, so they come off the wheel
+   and the same eighteen appear below it as buttons grouped by area: hiding a
+   name with no other way to read it would be hiding a control. */
+function band(r0,r1,a0,a1){var p=[pos(a0,r1),pos(a1,r1),pos(a1,r0),pos(a0,r0)],lg=(a1-a0)>180?1:0,
+  f=function(q){return q[0].toFixed(2)+' '+q[1].toFixed(2);};
+ return 'M'+f(p[0])+'A'+r1+' '+r1+' 0 '+lg+' 1 '+f(p[1])+'L'+f(p[2])+'A'+r0+' '+r0+' 0 '+lg+' 0 '+f(p[3])+'Z';}
+var AWR=32.5;
+/* a name sits outside its mark and reads level: to the right of a mark on
+   the right, to the left on the left, above or below near the poles */
+function nmAt(ang){var c=Math.cos(ang*Math.PI/180), sn=Math.sin(ang*Math.PI/180), p=pos(ang,AWR+5.6);
+ if(c>0.4)return 'left:'+p[0].toFixed(2)+'%;top:'+p[1].toFixed(2)+'%;transform:translate(0,-50%)';
+ if(c<-0.4)return 'left:'+p[0].toFixed(2)+'%;top:'+p[1].toFixed(2)+'%;transform:translate(-100%,-50%)';
+ var q=pos(ang,AWR+(sn<0?5.2:5.4));
+ return 'left:'+q[0].toFixed(2)+'%;top:'+q[1].toFixed(2)+'%;transform:translate(-50%,'+(sn<0?'-100%':'0')+')';}
+function paintAW(){
+ var R=AR.ROSTER, step=360/R.length, pk=AR.pick(), ro=AR.readOrder(), top=ro[0];
+ var s='<svg viewBox="0 0 100 100" aria-hidden="true">', k=0;
+ AR.SEATS.forEach(function(seat){var L=AR.inSeat(seat), a0=-90+k*step-step/2, a1=a0+L.length*step, mid=(a0+a1)/2, ar=AR.SA[seat], ip=pos(mid,19.4);
+  s+='<path d="'+band(16.2,22.6,a0+1.2,a1-1.2)+'" fill="'+col(seat)+'" fill-opacity=".12" stroke="'+col(seat)+'" stroke-opacity=".5" stroke-width=".3"/>'
+   +'<svg x="'+(ip[0]-2.1).toFixed(2)+'" y="'+(ip[1]-2.1).toFixed(2)+'" width="4.2" height="4.2" viewBox="0 0 24 24" fill="none" stroke="'+col(seat)+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+IC[ar.k]+'</svg>';
+  k+=L.length;});
+ R.forEach(function(a,i){var p=pos(-90+i*step,AWR), v=AR.aff(a); if(v==null)return;
+  var r=4.6+v*3.4;
+  s+='<circle cx="'+p[0].toFixed(2)+'" cy="'+p[1].toFixed(2)+'" r="'+r.toFixed(2)+'" fill="'+col(a.seat)+'" fill-opacity=".17"/>';
+  if(top&&top.nm===a.nm)s+='<circle cx="'+p[0].toFixed(2)+'" cy="'+p[1].toFixed(2)+'" r="'+(r+1.1).toFixed(2)+'" fill="none" stroke="'+col(a.seat)+'" stroke-width=".35" stroke-dasharray="1 1.1"/>';});
+ s+='<circle cx="50" cy="50" r="15.2" fill="#0E0F14" stroke="rgba(255,255,255,.08)" stroke-width=".3"/></svg>';
+ var mk=R.map(function(a,i){var p=pos(-90+i*step,AWR), on=ST.asel===a.nm;
+  return '<button type="button" class="ar-mk'+(a.draft?' dr':'')+(pk===a.nm?' pk':'')+'" data-ar="'+esc(a.nm)+'" aria-pressed="'+on+'" aria-label="'+esc(a.nm)+(pk===a.nm?', picked':'')+(a.draft?', draft':'')+'"'
+   +' style="left:'+p[0].toFixed(2)+'%;top:'+p[1].toFixed(2)+'%;--c:'+col(a.seat)+'">'+AR.aicon(a)+'</button>'
+   +'<span class="aw-nm'+(on||pk===a.nm?' on':'')+'" style="'+nmAt(-90+i*step)+'">'+esc(a.nm)+'</span>';}).join('');
+ var c=ST.asel?AR.A(ST.asel):(pk?AR.A(pk):null);
+ var ctr='<div class="aw-c" style="--c:'+(c?col(c.seat):'var(--dim)')+'">'
+  +(c?AR.aicon(c)+'<b>'+esc(c.nm)+'</b><span>'+AR.SA[c.seat].nm+'</span>':'<b style="font-weight:400;color:var(--dim)">Tap a mark</b><span>to read it</span>')+'</div>';
+ var pin='<button type="button" class="pin" data-proto data-note="14" style="left:2%;top:2%" aria-label="Design note 14">14</button>';
+ $('aw').innerHTML=s+mk+ctr+pin;
+ $('awleg').innerHTML=AR.SEATS.map(function(seat){var ar=AR.SA[seat];
+  return '<div class="lr" style="--c:'+col(seat)+'"><b>'+ar.nm+'</b><div class="lb">'+AR.inSeat(seat).map(function(a){
+   return '<button type="button" data-ar="'+esc(a.nm)+'" aria-pressed="'+(ST.asel===a.nm)+'" style="--c:'+col(a.seat)+'">'+AR.aicon(a)+esc(a.nm)+'</button>';}).join('')+'</div></div>';}).join('');}
+function paintAP(){
+ var sel=ST.asel?AR.A(ST.asel):null, ro=AR.readOrder(), h='';
+ h+='<button type="button" class="pin" data-proto data-note="12" style="right:-10px;top:-10px" aria-label="Design note 12">12</button>';
+ if(sel)h+='<div style="position:relative">'+AR.detail(sel)
+  +'<button type="button" class="pin" data-proto data-note="13" style="right:-10px;bottom:52px" aria-label="Design note 13">13</button></div>';
+ else h+='<p class="lbl" style="margin:0">Nothing open yet</p><p style="margin:4px 0 0">Tap any mark on the wheel to read it.</p>';
+ h+='<div class="sec" style="border-top:1px solid var(--line);padding-top:14px">';
+ if(ro.length)h+='<p class="lbl" style="margin:0">Your field reads first</p><div class="ro">'+ro.slice(0,3).map(function(a){
+   return '<button type="button" data-ar="'+esc(a.nm)+'" style="--c:'+col(a.seat)+'">'+AR.aicon(a)+esc(a.nm)+'</button>';}).join('')+'</div>'
+  +'<p class="hint">The glow behind a mark is how strongly your field reads it. A dashed mark is a draft the instrument cannot read yet.</p>';
+ else h+='<p class="hint" style="margin:0">Nothing read yet, so nothing glows. A dashed mark is a draft the instrument cannot read yet.</p>';
+ $('apanel').innerHTML=h+'</div>';}
+function paintA(){paintAW(); paintAP(); measure();}
+function openA(){lastFocus=document.activeElement; var o=$('ova'); o.hidden=false;
+ var pb=document.querySelector('.pbar'); o.style.top=(getComputedStyle(pb).position==='sticky'?pb.offsetHeight:0)+'px'; o.style.paddingTop=(innerWidth<600?'24px':'40px');
+ /* it opens on the pick, or on what the field reads first, so a person who
+    wants to be told is told, and one who knows can go straight on */
+ if(!ST.asel)ST.asel=AR.pick()||((AR.readOrder()[0]||{}).nm)||null;
+ paintA(); requestAnimationFrame(function(){o.classList.add('show');}); $('closeA').focus(); document.body.style.overflow='hidden';}
+function closeA(){var o=$('ova'); o.classList.remove('show'); setTimeout(function(){o.hidden=true; measure();},200);
+ document.body.style.overflow=''; paint(); $('openA').focus();}
+AR.on(function(){paintFig(); if(!$('ova').hidden)paintA(); else measure();});
+
+/* ================= RELEASE, MOCKED =================
+   Two seconds, so the indicator is honest (one to three seconds: a moving
+   state). It lowers the load on this area and retires the top matching
+   entry. Nothing is written anywhere. */
+function release(){
+ if(ST.busy)return; var k=ST.sel, a=ST.P.areas[k], A=AK[k]; if(!a||!a.seat)return;
+ ST.busy=true; var b=$('rel'); b.classList.add('busy'); b.disabled=true; b.firstChild.textContent='Releasing';
+ setTimeout(function(){
+  var before=pct(k);
+  a.load=Math.max(0,+(a.load-a.load0*0.22).toFixed(2)); if(a.load<0.25)a.load=0; a.rel++;
+  var q=order().filter(function(q){return q.m&&q.m.k===k;})[0]; if(q)q.e.done=true;
+  ST.busy=false; paint();
+  var after=pct(k);
+  $('st').textContent='Released. '+A.nm+' went from '+before+'% to '+after+'% complete.'+(a.load===0?' Clear. Embodied lights after seven days clear.':'')+(q?' One journal entry left the order.':'');
+ },2000);}
+
+/* ================= WIRING ================= */
+function paint(){paintHead(); paintFig(); paintPanel(); paintQueue(); measure();}
+document.addEventListener('click',function(e){
+ var t=e.target.closest('button,summary'); if(!t)return;
+ if(t.classList.contains('pin')){showNote(t.dataset.note);return;}
+ if(t.dataset.a){ST.sel=t.dataset.a; ST.edit=false; paintFig(); paintPanel(); measure();
+  var p=document.querySelector('.panel'); if(p.getBoundingClientRect().top>innerHeight*0.75)p.scrollIntoView({behavior:'smooth',block:'start'}); return;}
+ if(t.id==='core'){ST.sel='core'; ST.edit=false; paintFig(); paintPanel(); measure(); return;}
+ if(t.dataset.go){ST.sel=t.dataset.go; paintFig(); paintPanel(); measure(); return;}
+ if(t.id==='rel'){release();return;}
+ if(t.id==='rew'){ST.edit=true; paintPanel(); measure(); $('fbe').focus(); return;}
+ if(t.id==='cancel'){ST.edit=false; paintPanel(); measure(); return;}
+ if(t.id==='keep'){
+  var be=$('fbe').value.trim(), nb=$('fnb').value.trim(); if(!avatarValid({be:be,notbe:nb}))return;
+  var k=ST.sel, old=ST.P.areas[k], seat=landsAt(nb), lo=seat?(old&&old.seat===seat?old.load0:4.0):0;
+  ST.P.areas[k]={be:be,notbe:nb,seat:seat,load0:lo,load:seat?(old&&old.seat===seat?old.load:lo):0,rel:old?old.rel:0,prac:old?old.prac:0,emb:0,at:new Date().toISOString()};
+  if(!ST.P.ideal)ST.P.ideal=k;
+  var heard=ST.P.journal.filter(function(e){var m=match(e);return m&&m.k===k;}).length;
+  ST.edit=false; paint();
+  $('st').textContent='Kept. '+(heard?(heard===1?'One journal entry echoes':heard+' journal entries echo')+' these words and moved up the release order.':'Journal entries that echo these words will go to the front of the release order.');
+  return;}
+ if(t.dataset.ar){var nm=t.dataset.ar, inLeg=!!t.closest('#awleg'); ST.asel=nm; paintA();
+  var f=(inLeg?$('awleg'):$('ova')).querySelector('[data-ar="'+nm+'"]'); if(f)f.focus({preventScroll:true});
+  if(inLeg||t.closest('#apanel')){var ap=$('apanel'); if(ap.getBoundingClientRect().top>innerHeight*0.7||ap.getBoundingClientRect().top<0)ap.scrollIntoView({behavior:'smooth',block:'start'});}
+  return;}
+ if(t.id==='openA'){openA();return;}
+ if(t.id==='closeA'){closeA();return;}
+ if(t.id==='openB'){openOv();return;}
+ if(t.id==='closeB'){closeOv();return;}
+ if(t.dataset.side){ST.side=t.dataset.side; paintOv(); return;}
+ if(t.id==='upA'){var L=lines(ST.side); if(L.length>=PUR_PER_SIDE)return; L.push(''); paintOv();
+  var ins=$('bpanel').querySelectorAll('.bline input'); ins[ins.length-1].focus(); bStatus('A line opened on '+ST.side+'. It counts once it has words.'); return;}
+ if(t.id==='dnA'){var L2=lines(ST.side); if(!L2.length)return; var x=L2.pop(); ST.undo={sd:ST.side,x:x}; paintOv();
+  if(x&&x.trim())bStatus('Took "'+bare(x)+'" off '+ST.side+'.',true); else bStatus('Took the empty line off.'); return;}
+ if(t.id==='notesT'){ST.notes=!ST.notes; document.body.classList.toggle('nonotes',!ST.notes); t.setAttribute('aria-pressed',ST.notes); t.textContent=ST.notes?'Design notes on':'Design notes off'; measure(); return;}
+ if(t.id==='shX'){$('sheet').hidden=true; return;}
+});
+$('ov').addEventListener('click',function(e){if(e.target===$('ov')||e.target.classList.contains('ovin'))closeOv();});
+document.addEventListener('keydown',function(e){
+ if(e.key!=='Escape')return;
+ if(!$('sheet').hidden){$('sheet').hidden=true;return;}
+ if(!$('ova').hidden){closeA();return;}
+ if(!$('ov').hidden)closeOv();});
+$('ova').addEventListener('click',function(e){if(e.target===$('ova')||e.target.classList.contains('ovin'))closeA();});
+$('who').addEventListener('change',function(){load(this.value);});
+function showNote(k){var n=NOTES[k]; if(!n)return; $('shT').textContent='Design note '+k+'. '+n[0];
+ $('shB').innerHTML='<p>'+n[1]+'</p>'; $('sheet').hidden=false; $('shX').focus();
+ var li=$('n'+k); if(li&&ST.notes){li.classList.remove('hl'); void li.offsetWidth; li.classList.add('hl');}}
+addEventListener('resize',measure); addEventListener('scroll',function(){clearTimeout(measure.t);measure.t=setTimeout(measure,120);},{passive:true});
+
+paintNotes();
+$('arWord').innerHTML=AR.WORDS.map(function(w){return '<option'+(w===AR.ST.word?' selected':'')+'>'+w+'</option>';}).join('');
+AR.wireBar();
+var hw=(location.hash.match(/who=(\w+)/)||[])[1]; if(hw&&PEOPLE[hw])$('who').value=hw;
+load(hw&&PEOPLE[hw]?hw:'James');
+var hs=(location.hash.match(/sel=(\w+)/)||[])[1]; if(hs&&AR.A(hs))ST.asel=hs;
+if(/boundary=1/.test(location.hash))openOv();
+if(/arch=1/.test(location.hash))openA();
+if(/nonotes=1/.test(location.hash))$('notesT').click();
+addEventListener('hashchange',function(){var w=(location.hash.match(/who=(\w+)/)||[])[1];
+ if(w&&PEOPLE[w]&&w!==ST.who){$('who').value=w; if(!$('ov').hidden)closeOv(); load(w);}});
+})();
+</script>
+</body></html>

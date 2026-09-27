@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" data-build="round GV prototype"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Archetype orbit prototype</title>
+<!-- ============================================================
+  ROUND GV, VARIATION 1 OF 4. ORBIT. A PROTOTYPE, NOT THE APP.
+
+  The archetypes live on the avatar itself, not on a second chart. Each of
+  the seven satellites holds the two or three archetypes that act from its
+  seat. Tap a satellite and they come out of it as moons; the rest stay
+  folded, drawn as small dots so it is plain there is more to open. The
+  field's reading shows first at area level, as a glow on the satellite,
+  then per archetype, as a glow on the moon.
+  ============================================================ -->
+<!--BASE-->
+<!--ARCH-->
+<style>
+.lay{display:grid;gap:24px 36px;grid-template-columns:minmax(0,1fr);align-items:start}
+@media (min-width:960px){.lay{grid-template-columns:minmax(0,680px) minmax(340px,440px);justify-content:center}.side{position:sticky;top:20px}}
+.orbit .figwrap{max-width:600px}
+.orbit .sat{width:11.5cqw;height:11.5cqw}
+.orbit .core{width:30cqw;height:30cqw}
+.moon-nm{position:absolute;font-size:13px;color:#C9C4BB;white-space:nowrap;pointer-events:none;line-height:1.2}
+.moon-nm.on{color:var(--ink);font-weight:600}
+@media (min-width:700px){.orbit .figwrap{padding:6% 9% 2%;max-width:700px}}
+.orbit{padding-top:12px}
+/* AT PHONE WIDTH the names would cross the page edge, so they come off the
+   ring and the open part's two or three are here as buttons instead */
+.mchips{display:none;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.mchips button{min-height:44px;display:inline-flex;align-items:center;gap:6px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);font-size:15px}
+.mchips button svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6}
+.mchips button[aria-pressed="true"]{border-color:var(--c)}
+.mchips .ah{width:100%;text-align:center;font-size:14px;color:var(--dim)}
+@media (max-width:699px){.moon-nm{display:none}.mchips{display:flex}}
+.orbit .ar-mk{width:9cqw;height:9cqw}
+.empty{color:var(--dim);margin:0}
+.side .card h2{margin:0 0 4px;font-size:19px}
+</style></head><body>
+<main class="page">
+ <header class="head"><p class="eyebrow">Your avatar</p><h1 id="q"></h1>
+  <p class="lede">Each part of your life holds the archetypes that act from it. Tap a part to open them.</p></header>
+ <div class="lay">
+  <section class="orbit" aria-label="Your avatar and its archetypes"><div class="figwrap"><div class="fig" id="fig"></div></div><div class="mchips" id="mchips"></div></section>
+  <aside class="side"><div class="card" id="panel" aria-live="polite"></div></aside>
+ </div>
+ <section class="notes" data-proto aria-label="Design notes"><h2>Design notes. Orbit, variation 1</h2><p class="meas" id="meas"></p><dl>
+  <dt>The job</dt><dd>In Angela's words: <i>"show me which of these is me, on me."</i> The wheel put the archetypes on a second chart beside the avatar. Here they are on the avatar, so a pick is visibly a change to the thing she is building.</dd>
+  <dt>The count</dt><dd>Seven satellites, the open satellite's two or three moons, one button: eleven at most, against the round GU wheel's nineteen. Measured live above.</dd>
+  <dt>Where they stop</dt><dd><b>Derek</b> wants the whole system at once and has to open seven satellites to see all eighteen. <b>James</b> may not know which part of his life a way of acting sits in; the glow on a satellite, which is his own field's reading, is what gets him to the right one. <b>A first run</b> has no glow, so the page opens with nothing chosen and one instruction.</dd>
+  <dt>The move</dt><dd>Fold by seat. The wheel's seven bands become the avatar's seven satellites, which the page already has, so no new structure is learned.</dd>
+  <dt>Instrument</dt><dd>Satellites opened before the first press. Whether the first satellite opened is the glowing one. Time from page open to first press.</dd>
+  <dt>Grade</dt><dd>C to B. It removes the second chart and halves the choices. What keeps it from an A: nothing on screen compares all eighteen at once.</dd>
+ </dl></section>
+</main>
+<!--LIB-->
+<script>
+(function(){
+'use strict';
+var ORB=28, SR=5.8, MR=45.5, MSPREAD=15;
+var area=null;
+function glow(){var g={};AR.SEATS.forEach(function(s){var m=0;AR.inSeat(s).forEach(function(a){var v=AR.aff(a);if(v!=null&&v>m)m=v;});if(m>0)g[s]=m;});return g;}
+function pickIn(k){var s=AR.AK[k].seat, L=AR.inSeat(s), p=AR.pick();
+ if(p&&AR.A(p).seat===s)return p;
+ var best=L.slice().sort(function(x,y){return (AR.aff(y)||0)-(AR.aff(x)||0);})[0];
+ return best.nm;}
+function moons(){
+ if(!area)return {svg:'',html:''};
+ var A0=AR.AK[area], L=AR.inSeat(A0.seat), ro=AR.readOrder(), top=ro[0], p=AR.pick(), s='', h='';
+ /* moons at least 52 pixels apart, whatever the width */
+ var W=(document.getElementById('fig').clientWidth||560), spread=Math.max(MSPREAD,52/(MR/100*W)*180/Math.PI);
+ L.forEach(function(a,i){var ang=A0.a+(i-(L.length-1)/2)*spread, q=AR.pos(ang,MR), v=AR.aff(a), on=AR.ST.sel===a.nm;
+  var c0=AR.pos(A0.a,ORB+SR);
+  s+='<line x1="'+c0[0].toFixed(2)+'" y1="'+c0[1].toFixed(2)+'" x2="'+q[0].toFixed(2)+'" y2="'+q[1].toFixed(2)+'" stroke="'+AR.col(a.seat)+'" stroke-opacity="'+(on?.8:.35)+'" stroke-width="'+(on?.5:.3)+'"/>';
+  if(v!=null){var r=4.9+v*3.2; s+='<circle cx="'+q[0].toFixed(2)+'" cy="'+q[1].toFixed(2)+'" r="'+r.toFixed(2)+'" fill="'+AR.col(a.seat)+'" fill-opacity=".17"/>';
+   if(top&&top.nm===a.nm)s+='<circle cx="'+q[0].toFixed(2)+'" cy="'+q[1].toFixed(2)+'" r="'+(r+1).toFixed(2)+'" fill="none" stroke="'+AR.col(a.seat)+'" stroke-width=".35" stroke-dasharray="1 1.1"/>';}
+  h+='<button type="button" class="ar-mk'+(a.draft?' dr':'')+(p===a.nm?' pk':'')+'" data-mo="'+AR.esc(a.nm)+'" aria-pressed="'+on+'" aria-label="'+AR.esc(a.nm)+(p===a.nm?', picked':'')+'" style="left:'+q[0].toFixed(2)+'%;top:'+q[1].toFixed(2)+'%;--c:'+AR.col(a.seat)+'">'+AR.aicon(a)+'</button>';
+  /* the name sits outside the moon, level, on whichever side faces away from the centre */
+  var cx=Math.cos(ang*Math.PI/180), n=AR.pos(ang,MR+5.4), tr=cx>0.3?'translate(0,-50%)':cx<-0.3?'translate(-100%,-50%)':(Math.sin(ang*Math.PI/180)<0?'translate(-50%,-100%)':'translate(-50%,0)');
+  h+='<span class="moon-nm'+(on?' on':'')+'" style="left:'+n[0].toFixed(2)+'%;top:'+n[1].toFixed(2)+'%;transform:'+tr+'">'+AR.esc(a.nm)+'</span>';});
+ return {svg:s,html:h};}
+function dots(){ /* the folded satellites, each with a dot per archetype it holds */
+ var s='';AR.AREAS.forEach(function(x){if(x.k===area)return;var L=AR.inSeat(x.seat);
+  L.forEach(function(a,i){var q=AR.pos(x.a+(i-(L.length-1)/2)*7,ORB+SR+3.2);
+   s+='<circle cx="'+q[0].toFixed(2)+'" cy="'+q[1].toFixed(2)+'" r=".9" fill="'+AR.col(x.seat)+'" fill-opacity="'+(a.draft?.35:.8)+'"/>';});});
+ return s;}
+function paint(){
+ document.getElementById('q').textContent=AR.question();
+ var m=moons();
+ document.getElementById('fig').innerHTML=AR.ring({orb:ORB,sr:SR,satBtn:true,sel:area,glow:glow(),extra:dots()+m.svg,over:m.html,nolabs:false});
+ document.getElementById('mchips').innerHTML=area?'<span class="ah">'+AR.AK[area].nm+' holds</span>'+AR.inSeat(AR.AK[area].seat).map(function(a){
+  return '<button type="button" data-mo="'+AR.esc(a.nm)+'" aria-pressed="'+(AR.ST.sel===a.nm)+'" style="--c:'+AR.col(a.seat)+'">'+AR.aicon(a)+AR.esc(a.nm)+'</button>';}).join(''):'';
+ var sel=AR.ST.sel?AR.A(AR.ST.sel):null, h='';
+ if(sel)h=AR.detail(sel);
+ else if(AR.stranger())h='<h2>Nothing open yet</h2><p class="empty">Tap a part of your life on the ring. The archetypes that act from it open around it. Nothing read yet, so nothing glows.</p>';
+ else h='<h2>Nothing open yet</h2><p class="empty">Tap a part of your life on the ring. The glow on a part is how strongly your field reads the archetypes it holds.</p>';
+ document.getElementById('panel').innerHTML=h;
+ AR.measure(document.getElementById('meas'));}
+document.addEventListener('click',function(e){
+ var t=e.target.closest('[data-sat],[data-mo]'); if(!t)return;
+ if(t.dataset.sat){area=area===t.dataset.sat?null:t.dataset.sat; AR.ST.sel=area?pickIn(area):null; paint();
+  var f=document.querySelector('[data-sat="'+t.dataset.sat+'"]'); if(f)f.focus({preventScroll:true});}
+ else{AR.ST.sel=t.dataset.mo; paint(); var g=document.querySelector('[data-mo="'+t.dataset.mo+'"]'); if(g)g.focus({preventScroll:true});
+  var pn=document.getElementById('panel'); if(pn.getBoundingClientRect().top>innerHeight*0.8)pn.scrollIntoView({behavior:'smooth',block:'start'});}});
+function start(){
+ /* opens on the pick, or on the part the field reads strongest, or on nothing */
+ var p=AR.pick()||AR.ST.sel||((AR.readOrder()[0]||{}).nm);
+ area=p?AR.SA[AR.A(p).seat].k:null; AR.ST.sel=p||null; paint();}
+AR.bar('v1-orbit','Archetype picker on the avatar, round GV, variation 1: Orbit. Mock data. A pick is kept in this browser only.');
+AR.fromHash();
+var who=AR.ST.who;
+AR.on(function(){if(AR.ST.who!==who){who=AR.ST.who; AR.ST.sel=null; start();} else paint();});
+addEventListener('resize',function(){AR.measure(document.getElementById('meas'));});
+start();
+})();
+</script></body></html>

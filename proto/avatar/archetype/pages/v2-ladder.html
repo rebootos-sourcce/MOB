@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-build="round GV prototype"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Archetype ladder prototype</title>
+<!-- ============================================================
+  ROUND GV, VARIATION 2 OF 4. LADDER. A PROTOTYPE, NOT THE APP.
+
+  The halo was the most interesting thing on the round GU wheel and the
+  hardest to read: a soft circle whose size was the field's reading. Here the
+  field's reading IS the order. The archetypes are a list, strongest first,
+  each with its reading drawn as a bar and never printed as a number. A row
+  opens in place, so what a pick says sits under the thing picked and not
+  in a panel across the screen. The avatar sits beside it, small, carrying
+  the pick in its core.
+  ============================================================ -->
+<!--BASE-->
+<!--ARCH-->
+<style>
+.lay{display:grid;gap:24px 36px;grid-template-columns:minmax(0,1fr);align-items:start;max-width:1100px;margin:0 auto}
+@media (min-width:900px){.lay{grid-template-columns:300px minmax(0,1fr)}.mini{position:sticky;top:20px}}
+.mini .figwrap{max-width:300px}
+.mini .sat{width:14cqw;height:14cqw}
+@media (max-width:899px){.mini .figwrap{max-width:240px}}
+.mini .cap{text-align:center;color:var(--dim);font-size:15px;margin:8px 0 0}
+.mini .cap b{color:var(--c,var(--ink));font-weight:620}
+.lad{padding:8px 0}
+.lhd{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,30%);gap:12px;padding:8px 20px 6px;font-size:14px;color:var(--dim)}
+.lhd span:last-child{text-align:left}
+.grp{padding:14px 20px 4px;font-size:14px;color:var(--dim);border-top:1px solid var(--line)}
+.grp b{color:var(--c);font-weight:600}
+.row{border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.lrow{width:100%;min-height:60px;display:grid;grid-template-columns:40px minmax(0,1fr) minmax(90px,30%) 26px;gap:12px;align-items:center;
+ padding:8px 20px;background:transparent;border:0;text-align:left;color:var(--ink)}
+.lrow:hover{background:color-mix(in srgb,var(--c) 6%,transparent)}
+.lrow[aria-expanded="true"]{background:color-mix(in srgb,var(--c) 9%,transparent)}
+.lrow .li{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,var(--bg2))}
+.lrow .li svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lrow .nm{display:block;font-weight:620;font-size:17px;line-height:1.2}
+.lrow .vb{display:block;font-size:14px;color:var(--dim)}
+.lrow .vb.first{color:var(--c)}
+.trk{height:8px;border-radius:4px;background:var(--bg2);overflow:hidden}
+.trk i{display:block;height:100%;border-radius:4px;background:var(--c);opacity:.75}
+.trk.none{background:transparent;border-top:1px dashed var(--line);height:0;border-radius:0}
+.st svg{width:24px;height:24px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lx{padding:4px 20px 20px 72px}
+@media (max-width:560px){.lrow{grid-template-columns:36px minmax(0,1fr) 64px 22px;gap:10px;padding:8px 14px}.lx{padding:4px 14px 18px}.lhd{padding:8px 14px 6px;grid-template-columns:minmax(0,1fr) 108px}}
+.more{margin:10px 20px 14px;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.fr{margin:0;padding:10px 20px 4px;font-size:15px;color:var(--dim)}
+</style></head><body>
+<main class="page">
+ <header class="head"><p class="eyebrow">Your avatar</p><h1 id="q"></h1><p class="lede" id="lede"></p></header>
+ <div class="lay">
+  <aside class="mini" aria-label="Your avatar"><div class="figwrap"><div class="fig" id="fig"></div></div><p class="cap" id="cap"></p></aside>
+  <section class="card lad" id="lad" aria-label="Archetypes"></section>
+ </div>
+ <section class="notes" data-proto aria-label="Design notes"><h2>Design notes. Ladder, variation 2</h2><p class="meas" id="meas"></p><dl>
+  <dt>The job</dt><dd>In Derek's words: <i>"what does the instrument say I am, and do I agree."</i> The wheel answered with a glow whose size had to be judged against seventeen other glows. Here the answer is the order of the list.</dd>
+  <dt>The count</dt><dd>On a loaded profile, five rows, one open row's button, and one control for the rest: seven. On a first run nothing can be ranked, so all eighteen show in body order, grouped by area, and the count is eighteen before one is opened. That is the cost of this layout, and it lands on the person with the least to go on. Measured live above.</dd>
+  <dt>Where they stop</dt><dd><b>Angela</b> is told, in order, which is what she wants, and may press the top row because it is the top row. <b>James</b> reads "reads first" as a verdict on him; the compare line under a pick ("both are kept") is what keeps it a reading. <b>A first run</b> meets a list of eighteen with nothing to sort it.</dd>
+  <dt>The move</dt><dd>The halo becomes the sort order, and the detail opens in place. A bar is drawn and never numbered, because a reading is not a score.</dd>
+  <dt>Instrument</dt><dd>Share of first presses on the top row. Share who open "the rest". How often the pick differs from the top row, which is the gap the compare line names.</dd>
+  <dt>Grade</dt><dd>B minus for a loaded profile, the lowest load and the most legible reading of the five. C for a first run. It also drops the system view: nothing here says an archetype sits at a seat until a row is opened.</dd>
+ </dl></section>
+</main>
+<!--LIB-->
+<script>
+(function(){
+'use strict';
+var open=null, all=false, SHOW=5;
+var CHECK='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></svg>';
+function row(a,top){
+ var v=AR.aff(a), on=open===a.nm, pk=AR.pick()===a.nm;
+ var h='<div class="row" style="--c:'+AR.col(a.seat)+'"><button type="button" class="lrow" data-row="'+AR.esc(a.nm)+'" aria-expanded="'+on+'">'
+  +'<span class="li">'+AR.aicon(a)+'</span><span><span class="nm">'+AR.esc(a.nm)+'</span>'
+  +'<span class="vb'+(top?' first':'')+'">'+(top?'Your field reads this first':AR.esc(a.v))+'</span></span>'
+  +(v!=null?'<span class="trk" aria-hidden="true"><i style="width:'+Math.max(4,Math.round(v*100))+'%"></i></span>':'<span class="trk none" aria-hidden="true"></span>')
+  +'<span class="st">'+(pk?CHECK:'')+'</span><span class="vh">'+(pk?', picked':'')+(a.draft?', draft':'')+'</span></button>';
+ if(on)h+='<div class="lx"><p class="ar-eyb"><b>'+AR.esc(AR.SA[a.seat].nm)+'</b>, '+AR.esc(AR.THE[a.seat])+'</p>'+AR.detail(a,{nohead:true})+'</div>';
+ return h+'</div>';}
+function paint(){
+ document.getElementById('q').textContent=AR.question();
+ var ro=AR.readOrder(), p=AR.pick(), h='';
+ if(ro.length){
+  document.getElementById('lede').textContent='Strongest first, as your field reads them. Open one to read it.';
+  var drafts=AR.ROSTER.filter(function(a){return a.read<0;});
+  var pi=ro.map(function(a){return a.nm;}).indexOf(p); if(p&&(pi>=SHOW||AR.A(p).draft))all=true;
+  h+='<div class="lhd" aria-hidden="true"><span>Archetype</span><span>How strongly your field reads it</span></div>';
+  ro.forEach(function(a,i){if(i<SHOW||all)h+=row(a,i===0);});
+  if(all){h+='<p class="grp">Drafts, not read yet. The instrument has no reading for these six.</p>';
+   drafts.forEach(function(a){h+=row(a,false);});}
+  else h+='<button type="button" class="more" id="more">Show the other '+(ro.length-SHOW+drafts.length===13?'thirteen':String(ro.length-SHOW+drafts.length))+'</button>';}
+ else{
+  document.getElementById('lede').textContent='Grouped by the part of your life each one acts from. Open one to read it.';
+  h+='<p class="fr">Nothing read yet, so there is no order to put these in. They run top to bottom through the body.</p>';
+  AR.SEATS.forEach(function(s){var ar=AR.SA[s]; h+='<p class="grp" style="--c:'+AR.col(s)+'"><b>'+ar.nm+'</b>, '+AR.THE[s]+'</p>';
+   AR.inSeat(s).forEach(function(a){h+=row(a,false);});});}
+ document.getElementById('lad').innerHTML=h;
+ var pa=p?AR.A(p):null;
+ document.getElementById('fig').innerHTML=AR.ring({nolabs:true});
+ var cap=document.getElementById('cap'); cap.style.setProperty('--c',pa?AR.col(pa.seat):'');
+ cap.innerHTML=pa?'Archetype <b>'+AR.esc(pa.nm)+'</b>, at '+AR.esc(AR.SA[pa.seat].nm):'Archetype –';
+ AR.measure(document.getElementById('meas'));}
+document.addEventListener('click',function(e){
+ var t=e.target.closest('[data-row],#more'); if(!t)return;
+ if(t.id==='more'){all=true; paint(); return;}
+ open=open===t.dataset.row?null:t.dataset.row; paint();
+ var f=document.querySelector('[data-row="'+t.dataset.row+'"]'); if(f){f.focus({preventScroll:true});
+  var r=f.getBoundingClientRect(); if(r.top<0||r.top>innerHeight*0.6)f.scrollIntoView({behavior:'smooth',block:'start'});}});
+function start(){all=false; open=AR.pick()||AR.ST.sel||((AR.readOrder()[0]||{}).nm)||null; paint();}
+AR.bar('v2-ladder','Archetype picker on the avatar, round GV, variation 2: Ladder. Mock data. A pick is kept in this browser only.');
+AR.fromHash();
+var who=AR.ST.who;
+AR.on(function(){if(AR.ST.who!==who){who=AR.ST.who; AR.ST.sel=null; start();} else paint();});
+addEventListener('resize',function(){AR.measure(document.getElementById('meas'));});
+start();
+})();
+</script></body></html>
