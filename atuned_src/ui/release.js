@@ -36,37 +36,98 @@
 var CHAN=[['L','Left','limit'],['R','Right','limit'],['L','Left','truth'],['R','Right','truth']];
 /* the book's own words for the two sides, at 1042 */
 var REL_SIDE={L:'Left, inward',R:'Right, outward'};
+/* WHICH NERVOUS SYSTEM A SIDE IS, AND WHICH POLE. Asked 27 September, his
+   words: "the release protocol is a list of the parasympathetic and
+   sympathetic nerves, left and right channels, masculine and feminine." The
+   engine already carried all of it and the card said none of it. C3_POLE in
+   engine/data/cards.js is his printed cards' own split, feminine, left and
+   parasympathetic as one thing and masculine, right and sympathetic as the
+   other, and relLine already picks the side of the card by it. The card said
+   "Left, inward" and stopped, so the pole a line was addressing was known to
+   the engine and to nobody reading. Read off C3_POLE by the side letter, so
+   there is one table and this is not a second one. */
+function relPole(side){
+ var k=side==='L'?'f':'m';
+ return (typeof C3_POLE!=='undefined'&&C3_POLE.filter(function(p){return p.k===k;})[0])||null;}
 /* ============================================================
    THE SCRIPT. DESIGN-release.md section 6, line for line.
 
-   The first line is where his recording goes. It is not in this
-   build, so the synthetic voice reads a line in its place and the
-   card says so. His remembered words, "sit back, relax, we're going
-   to walk through this process", are not typed here: the house
-   voice rules "sit back" and "relax" out of written copy by name
-   (atuned-voice V2, an outcome given as an instruction), and in his
-   own recorded voice they are his, which the rule does not reach.
-   That collision is his to settle and it is asked in the report,
-   not settled here.
+   TWO VOICES, AND THE SEAM BETWEEN THEM IS HIS. Ruled 27 September:
+   "The setup for the user should be to introduce, welcome the
+   person to the journey ... That's my voice, it's human. After that,
+   it's AI. And AI is reading the list."
 
-   The next three are his instruction as RV3 records it, "move your
-   awareness inside your body, feel what your body is doing
-   mechanically, keep your awareness inside your body", which is the
-   book at 2451. The fifth is the product's own line. After it the
-   first head statement opens on the six channels, "I am letting go
-   of believing, perceiving, thinking, behaving, acting, and
-   feeling", which is the prompt he described.
+   This file had one opening, spoken by the synthetic voice in place
+   of his recording. So the one part of the run he said is a person
+   was the part a synthesiser said, and the stand in said it every
+   time. It is two phases now.
+
+   THE WELCOME is his recorded voice and nothing else. The recording
+   is not in this build (DESIGN-release.md section 2, the audio
+   ruling, is still his), so the welcome is read on the screen in
+   silence and the card says so in plain words. The synthetic voice never says a
+   word of it, voice switch on or off, because a stand in for a
+   person is the thing he just ruled out. When the recording lands it
+   plays in this phase, and the lines below stay as what the screen
+   shows under it.
+
+   His spoken script, "sit back and relax ... take a deep breath and
+   feel, keep your senses in there, and when you're ready, repeat
+   this prompt in your mind", is his to say in his own recording and
+   is not typed here. The house voice rules "sit back" and "relax"
+   out of written copy by name (atuned-voice V2, an outcome given as
+   an instruction), which is correct for text and does not reach a
+   recording of him. What the screen shows is the same four moves in
+   written form: a position a body can take, attention moved inside,
+   one breath, attention held there. The first line names what is
+   being released, which is his "you're releasing this pattern", and
+   it is built from the queue in relWelcome.
+
+   THE OPENING is the synthetic voice's first line, the hand over. It
+   is one line and it is the product's, so the first thing the voice
+   ever says is the instruction to repeat what follows, and the next
+   thing it says is the first statement on the six channels, "I am
+   letting go of believing, perceiving, thinking, behaving, acting,
+   and feeling", which is the prompt he described. With the welcome
+   silent, a person with their eyes shut hears this line as the list
+   starting, which is what a seam should sound like.
    ============================================================ */
-var OPENING=['Sit down. We are going to walk through this process.',
+var REL_WELCOME=['Sit down. Put both feet on the floor.',
  'Move your awareness inside your body.',
- 'Feel what your body is doing mechanically.',
- 'Keep your awareness inside your body.',
- 'Each line names one pattern. Follow it in thought as it lands.'];
+ 'Take one deep breath. Feel what your body is doing mechanically.',
+ 'Keep your awareness inside your body.'];
+var OPENING=['Each line names one pattern. Repeat it in thought as it lands.'];
 /* the book's end state, 2705, and its one sensation line that names a place,
-   2355 to 2358 */
+   2355 to 2358. The fourth is his, 27 September: "keep your awareness inside
+   your body ... wait for two minutes", and it hands over to the clock that
+   counts those two minutes, REL_SETTLE_S below. The two say the same length
+   and move together. */
 var COOLING=['Stop the work. Stay where you are.',
  'The charge moves up the channel and out through the mouth.',
- 'Notice which place answers.'];
+ 'Notice which place answers.',
+ 'Keep your awareness inside your body for two minutes.'];
+var REL_SETTLE_S=120;
+/* THE DOSE, AS HE NAMES IT. "Do you want to release 25 left and right, 50 left
+   and right, or 100 left and right." Three quick picks beside the number
+   field, which stays: the field is what round IG ruled ("how many patterns"),
+   the picks are what he reaches for, and both set the same RUN.dose. 50 is the
+   book's and LINES_PER_CH's and is still the default. 100 runs past the fifty
+   lines a printed card carries a side, which is safe because a pass past the
+   head is a spoken repetition and the meter never sees it: the plan, and so
+   the price, is the same at 25 as at 100. The numbers are his words and are
+   typed as his words. */
+var REL_DOSES=[25,50,100];
+/* the welcome's first line, which is his "you're releasing this pattern", read
+   off the queue. Three names and then a count, because eight names read out
+   as one sentence is a list and not a welcome. */
+function relWelcome(){
+ var nm=(RUN.queue||[]).map(function(n){return String(n.k||'').toLowerCase();})
+  .filter(function(x,i,a){return x&&a.indexOf(x)===i;});
+ if(!nm.length)return REL_WELCOME;
+ var said=nm.length<=3
+  ?(nm.length>1?nm.slice(0,-1).join(', ')+' and ':'')+nm[nm.length-1]
+  :nm.slice(0,3).join(', ')+' and '+(nm.length-3)+' more';
+ return ['You are releasing '+said+'.'].concat(REL_WELCOME);}
 /* THE PASSES. "Let go. Give up. Forgive myself. Forgive others. Same
    mechanic. Different entry points." (2315.) They rotate because the book
    says the entry that is hardest to say is the diagnostic. */
@@ -91,7 +152,9 @@ function relBudget(){
 var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0,
          pass:0,cool:0,tok:0,halted:false,
-         dose:LINES_PER_CH,pace:1,spokeMs:0,spokeW:0};
+         dose:LINES_PER_CH,pace:1,spokeMs:0,spokeW:0,
+         t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
+         tally:null,hits:null,settleAt:0,settled:false};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -127,6 +190,9 @@ function relPick(nodeIds){
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
  RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;RUN.paused=false;
  RUN.proj=null;RUN.dq0=null;
+ relTicker(false);
+ RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
+ RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -158,6 +224,8 @@ function relStepAt(at,pass){
  return pass>0?{kind:'pass',text:relShort(at,pass,h.text),truth:h.truth,at:at}
   :{kind:'head',text:h.text,truth:h.truth,at:at,src:h.src};}
 function relCur(){
+ if(RUN.phase==='welcome'){var w=relWelcome();
+  return {kind:'welcome',text:w[Math.min(RUN.line,w.length-1)]};}
  if(RUN.phase==='opening')
   return {kind:'open',text:OPENING[Math.min(RUN.line,OPENING.length-1)]};
  if(RUN.phase==='run')return relStepAt(relAt(RUN.idx),RUN.pass);
@@ -174,27 +242,56 @@ function relCur(){
    starting, the number a person reads is a measurement.
    ============================================================ */
 var REL_WORD_S=0.40, REL_GAP_S=0.30, REL_HEAD_S=0.6, REL_FRAME_S=1.2;
+/* FOUR SECONDS BETWEEN STATEMENTS. His words, 27 September: "The list timing
+   is based off of the timing spacing. The default should be four seconds
+   between." The walker had no spacing at all. A line lasted as long as it
+   took to say, so with the voice off a pass, "I let go of fear.", held the
+   screen for 2.3 seconds, and with the voice on the next line started the
+   moment the last one ended. Measured off relSec at pace 1: every pass of the
+   release half ran between 2.3 and 2.7 seconds.
+
+   So a statement of the list now holds for at least the spacing, start to
+   start, voice on or off, and one that takes longer to say than the spacing
+   runs its own length. The head statement, twenty words on the six channels,
+   is always the second case and is never cut. The frame, the welcome, the
+   opening and the cooldown, is not the list and keeps its own reading time.
+   Pace divides it, so pace 1 is four seconds and 2 is two, and the pace field
+   keeps meaning what round IG ruled it means.
+
+   It is stated in words at the reading rate, ten words at REL_WORD_S, which
+   is four seconds, so the clock has one unit and everything that retimes the
+   reading rate retimes the spacing with it. That includes tests/design.js,
+   which runs the whole walker at the full dose by shrinking these constants,
+   and would otherwise sit through two hundred four second lines. */
+var REL_SPACE_W=10;
+function relSpace(){return REL_SPACE_W*REL_WORD_S/Math.max(0.5,RUN.pace);}
 function relWords(t){return String(t||'').trim().split(/\s+/).length;}
 function relSec(st){
  if(!st)return 0;
  var per=RUN.spokeW>=20?RUN.spokeMs/RUN.spokeW/1000:REL_WORD_S/Math.max(0.5,RUN.pace);
  var s=relWords(st.text)*per+REL_GAP_S;
  if(st.kind==='head')s+=REL_HEAD_S;
- if(st.kind==='open'||st.kind==='cool')s+=REL_FRAME_S;
+ if(st.kind==='welcome'||st.kind==='open'||st.kind==='cool')s+=REL_FRAME_S;
  return s;}
+/* how long a step holds the card: its reading time, and on the list never
+   less than the spacing */
+function relList(st){return !!st&&(st.kind==='head'||st.kind==='pass');}
+function relStepSec(st){var s=relSec(st); return relList(st)?Math.max(s,relSpace()):s;}
 /* seconds of script from a point to the end, cooldown included. from is
    {phase,line,idx,pass}; with no from it is the whole run. */
 function relSecFrom(from){
- var f=from||{phase:'opening',line:0,idx:0,pass:0}, s=0, i;
- if(f.phase==='opening')
-  for(i=f.line;i<OPENING.length;i++)s+=relSec({kind:'open',text:OPENING[i]});
- if(f.phase==='opening'||f.phase==='run'){
+ var f=from||{phase:'welcome',line:0,idx:0,pass:0}, s=0, i;
+ if(f.phase==='welcome'){var w=relWelcome();
+  for(i=f.line;i<w.length;i++)s+=relSec({kind:'welcome',text:w[i]});}
+ if(f.phase==='welcome'||f.phase==='opening')
+  for(i=(f.phase==='opening'?f.line:0);i<OPENING.length;i++)s+=relSec({kind:'open',text:OPENING[i]});
+ if(f.phase==='welcome'||f.phase==='opening'||f.phase==='run'){
   var i0=f.phase==='run'?f.idx:0, p0=f.phase==='run'?f.pass:0;
   for(i=i0;i<(RUN.plan||[]).length;i++){
    var at=relAt(i); if(!at||!at.n)continue;
    var h=relHead(at);
    for(var p=(i===i0?p0:0);p<RUN.dose;p++)
-    s+=relSec(p?{kind:'pass',text:relShort(at,p,h.text)}:{kind:'head',text:h.text});}}
+    s+=relStepSec(p?{kind:'pass',text:relShort(at,p,h.text)}:{kind:'head',text:h.text});}}
  var c0=f.phase==='done'?f.cool:0;
  for(i=c0;i<COOLING.length;i++)s+=relSec({kind:'cool',text:COOLING[i]});
  return s;}
@@ -247,14 +344,24 @@ function relStep(){
  if(!st){ if(RUN.phase==='run')relCoolDown(); return; }
  relBoundary();
  relRender();
- var est=relSec(st)*1000, moved=false;
+ /* raw is how long the line takes to say, and is what the quarter test below
+    judges a voice by. est is how long the card holds it, which on the list is
+    never less than the spacing. gap is the spacing alone, waited out after a
+    voice that finished early, so a spoken run keeps the same four seconds a
+    read one does. Judging the voice against est would have called every short
+    pass unspoken and thrown its measurement away. */
+ var raw=relSec(st)*1000, est=relStepSec(st)*1000, gap=relList(st)?relSpace()*1000:0, moved=false;
  function next(){
   if(moved||tok!==RUN.tok)return; moved=true; clearTimeout(RUN.timer);
   if(!RUN.paused)relAdvance();}
- if(relVoiceOn()&&speak(st.text,RUN.pace,function(ms){
+ /* THE WELCOME IS NEVER SYNTHESISED. It is his recorded voice or it is
+    silence, whatever the voice switch says; see THE SCRIPT above. */
+ if(st.kind!=='welcome'&&relVoiceOn()&&speak(st.text,RUN.pace,function(ms){
     if(tok!==RUN.tok)return;
-    if(ms<est*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,est-ms); return; }
-    RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text); next();},
+    if(ms<raw*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
+    RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text);
+    if(ms<gap){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,gap-ms); return; }
+    next();},
    function(){
     /* the browser refused the line. The run goes on at reading pace. */
     if(tok!==RUN.tok)return;
@@ -262,6 +369,10 @@ function relStep(){
   RUN.timer=setTimeout(next,est+9000);}
  else RUN.timer=setTimeout(next,est);}
 function relAdvance(){
+ if(RUN.phase==='welcome'){
+  RUN.line++;
+  if(RUN.line>=relWelcome().length){RUN.phase='opening';RUN.line=0;}
+  return relStep();}
  if(RUN.phase==='opening'){
   RUN.line++;
   if(RUN.line>=OPENING.length){RUN.phase='run';RUN.line=0;RUN.idx=0;RUN.pass=0;}
@@ -381,8 +492,154 @@ function relShade(dq,dq0){
  return '<div class="rel-clock">'
   +'<div class="rel-fig"><span>DQ</span><b>'+dq.toFixed(2)+'%</b></div>'
   +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,dq0-dq).toFixed(2)+'%</b></div></div>';}
+/* ============================================================
+   THE TWO COUNTS. His words, 27 September: "You should have a
+   countdown of how much is counting. Every time you release one, it
+   should tick down. It should start with the starting number. The
+   install should tick up, show you which positive charges you're
+   adding."
+
+   The card had "Pass 3 of 50 · pattern 1 of 4" in twelve point dim
+   type, and it was not either of these: it counted up, it counted
+   one block and started again at every block, and it said nothing
+   of the install. So these are new and they are the run's own
+   figures, read off where the walker is, never kept by hand beside
+   it. A line counts once it has been said, so the first line of a
+   run shows the whole dose still to release, which is his "start
+   with the starting number", and the release count reaches nought
+   on the cooldown.
+
+   The unit is "patterns" for the release half because it is the word
+   the setup already gives the dose ("Patterns", ruled at round IG)
+   and the word he uses for what was released. The install half is
+   "truths", the book's own noun for it at 2401: "50 embodied truth on
+   the left". Toward is what CHILD calls the coherent opposite and
+   what the finished card already prints beside every address.
+   ============================================================ */
+function relCounts(){
+ var c={left:0,of:0,put:0,putOf:0,said:0,toward:[]};
+ (RUN.plan||[]).forEach(function(k,i){
+  var truth=/truth$/.test(String(k).split(':')[1]||'');
+  var said=RUN.phase==='run'?(i<RUN.idx?RUN.dose:(i===RUN.idx?RUN.pass:0)):0;
+  if(truth){c.putOf+=RUN.dose; c.put+=said;
+   if(RUN.phase==='run'&&i<=RUN.idx){var o=relOpp(BY[+String(k).split(':')[0]]);
+    if(o&&c.toward.indexOf(o)<0)c.toward.push(o);}}
+  else {c.of+=RUN.dose; c.said+=said;}});
+ c.left=c.of-c.said;
+ return c;}
+function relTally(c){
+ if(!c||!c.of)return '';
+ /* the number large and the unit beside it at body size, so two of them fit
+    across a phone's card with the strips on it */
+ function fig(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b style="font-size:30px;line-height:1.1">'
+  +n+'<small style="font-size:13px;font-weight:400;color:var(--dim)"> '+u+'</small></b></div>';}
+ return '<div class="rel-clock" style="flex-wrap:wrap;margin-bottom:6px">'
+  +fig('Remaining',c.left,c.left===1?'pattern':'patterns')
+  +fig('Installed',c.put,c.put===1?'truth':'truths')+'</div>'
+  +(c.toward.length?'<div class="rel-ct">Toward '+esc(c.toward.join(', ').toLowerCase())+'</div>':'');}
+/* which address of the run the card is on, counted in the order the plan
+   speaks them. "pattern 1 of 4" stood here and counted plan blocks, four to an
+   address, under the same word the two counts above now use for lines. */
+function relAddrAt(){
+ var seen=[], at=0;
+ (RUN.plan||[]).forEach(function(k,i){var a=String(k).split(':')[0];
+  if(seen.indexOf(a)<0)seen.push(a); if(i===RUN.idx)at=seen.indexOf(a);});
+ return {at:at,of:seen.length};}
+/* ============================================================
+   THE RUNNING CLOCK AND THE TWO MINUTES. "You should see a running
+   log of how long it's running", and after the list, "wait for two
+   minutes, and there should be a two minute countdown."
+
+   Elapsed is wall time from Run release, less any time spent
+   paused, frozen when the list ends. Left, beside it, is the script
+   still to come, which the card already had. They are two clocks and
+   say two things.
+
+   One ticker, once a second, and it writes two text nodes and the
+   settle dial by id and nothing else. The card is rewritten on every
+   line, and a ticker that rewrote it every second would take focus
+   off Pause under a keyboard and off a Felt mark mid press. It
+   redraws the card once, when the two minutes run out, because that
+   is where the summary appears.
+   ============================================================ */
+function relElapsed(){
+ if(!RUN.t0)return 0;
+ var end=RUN.tEnd||(RUN.paused&&RUN.pauseAt?RUN.pauseAt:Date.now());
+ return Math.max(0,(end-RUN.t0-(RUN.pausedMs||0))/1000);}
+function relSettleLeft(){
+ return RUN.settleAt?Math.max(0,REL_SETTLE_S-(Date.now()-RUN.settleAt)/1000):REL_SETTLE_S;}
+function relTicker(on){
+ clearInterval(RUN.tick); RUN.tick=on?setInterval(relSecond,1000):null;}
+function relSecond(){
+ if(!RUN.open){relTicker(false);return;}
+ var e=document.getElementById('relel'); if(e)e.textContent=relMMSS(relElapsed());
+ if(RUN.phase!=='done'||!RUN.settleAt||RUN.settled)return;
+ var left=relSettleLeft(), s=document.getElementById('relset'), d=document.getElementById('relsetd');
+ if(s)s.textContent=relMMSS(left);
+ if(d)d.setAttribute('stroke-dashoffset',(parseFloat(d.getAttribute('stroke-dasharray'))*(1-left/REL_SETTLE_S)).toFixed(1));
+ if(left<=0){RUN.settled=true; relTicker(false); relRender();}}
+/* ============================================================
+   WHAT THIS RUN REACHED, AND ONLY THAT. His words: "the person
+   should get a badge or reward ... tied to the number of releases
+   and the number of patterns or structures they're releasing. We
+   should have badges for all the saboteurs, complexes, and
+   hypercomplexes."
+
+   This is the literal, bounded half of it and deliberately no more.
+   What it means to have cleared a saboteur is an open question of
+   his (every address of it below the release line, or its
+   replacement installed there), and a badge that says cleared
+   before he answers is a claim the engine cannot back. So nothing
+   here is permanent, nothing is saved, nothing is a currency, and
+   the word cleared is not used. It says which saboteurs, complexes
+   and hyper complexes were running through the addresses this run
+   worked, and how many of each one's addresses it worked.
+
+   Read off compute() taken before the write, because that is the
+   field the run was aimed at; after the write some of them stop
+   running, and a list read then would leave out the ones the run did
+   the most to. An overshot entry is left out: it is the installed
+   opposite driven past where it helps, and a release does not work
+   on it. The character layer is left out because he named three
+   tiers and not four. Kept as names and numbers, never as the live
+   objects, which the next compute() rewrites.
+   ============================================================ */
+function relHits(r){
+ var ids={}, H={sab:[],cx:[],hy:[]};
+ (RUN.queue||[]).forEach(function(n){ids[n.i]=1;});
+ [['sab','sabs'],['cx','cxs'],['hy','hys']].forEach(function(t){
+  var seen={};
+  ((r&&r[t[1]])||[]).forEach(function(o){
+   if(!o||o.over||seen[o.nm])return;
+   var lv=leaves(o), hit=lv.filter(function(n){return ids[n.i];}).length;
+   if(!hit)return; seen[o.nm]=1;
+   H[t[0]].push({nm:o.nm,hit:hit,of:lv.length,b:(lv[0]||{}).b||'Heart'});});
+  /* the ones this run reached furthest into first, and on a tie the larger
+     share of its own addresses */
+  H[t[0]].sort(function(a,b){return b.hit-a.hit||b.hit/b.of-a.hit/a.of;});});
+ return H;}
+function relHitRows(H){
+ if(!H)return '';
+ var NM={sab:'Saboteurs',cx:'Complexes',hy:'Hyper complexes'};
+ var ks=['sab','cx','hy'].filter(function(k){return H[k].length;});
+ if(!ks.length)return '<div class="pm-eye">In this run</div>'
+  +'<div class="rel-sub">No saboteur, complex or hyper complex was running through these addresses.</div>';
+ return '<div class="pm-eye">In this run</div>'+ks.map(function(k){
+  return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
+   /* no scroll of its own: three lists each scrolling inside a card that
+      scrolls is three places for a thumb to catch */
+   +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
+    return '<div class="rel-row">'
+     +crBadge(x.b,x.hit/Math.max(1,x.of)*100,{size:'sm',raw:String(x.hit),
+       glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
+       title:x.nm+', '+x.hit+' of its '+x.of+(x.of===1?' address':' addresses')+' in this run'})
+     +'<span>'+esc(x.nm)+'</span><em>'+x.hit+' of '+x.of+(x.of===1?' address':' addresses')+'</em></div>';}).join('')
+   +'</div>';}).join('');}
 function relCoolDown(){
- if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ if(RUN.done)return;
+ /* where the walker stood, read before the phase moves off the list */
+ var tally=relCounts();
+ RUN.done=true; RUN.phase='done';
  relHush();
  /* THE RUN IS OVER HOWEVER THIS ENDS, AND SO IS THE TONE. relRender is what
     moves the tone, and the refusal below returns without one, so a run walked
@@ -440,6 +697,13 @@ function relCoolDown(){
     the panel reads the move a person can see, and expression carries the lift
     inside it, since expression is CQ times what the pull leaves. */
  var _pre=compute(); RUN.ex0=_pre.EX; RUN.ceil0=exCeiling();
+ /* what the finished card reports, fixed here: the two counts where the list
+    stopped, the elapsed clock stopped with it, and what was running through
+    these addresses before the write moved any of it */
+ RUN.tally=tally;
+ if(RUN.paused&&RUN.pauseAt){RUN.pausedMs+=Date.now()-RUN.pauseAt;RUN.pauseAt=0;}
+ RUN.tEnd=RUN.t0?Date.now():0;
+ RUN.hits=relHits(_pre);
  /* and the shadow, so the row the run counted down on lands on a number the
     engine computed, read before the write and after it */
  RUN.dq0=_pre.DQ;
@@ -498,10 +762,14 @@ function relCoolDown(){
     space" (3656), so the cooldown runs out whichever way the run ended. The
     mark says which: a stop when End was pressed, the close when it ran out. */
  RUN.cool=0; RUN.paused=false;
+ /* THE TWO MINUTES START WITH THE COOLDOWN, not after it: "meanwhile, keep
+    your awareness inside your body". The cooldown's lines are said inside
+    them. Leaving is never blocked; Done is on the card the whole time. */
+ RUN.settleAt=Date.now(); RUN.settled=false; relTicker(true);
  relMark(RUN.halted?'halt':'close');
  syncCh();relRender();render();
  relStep();}
-function relClose(){relHush();RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
+function relClose(){relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
 /* ============================================================
    THE SEAT TONE FOLLOWS THE CARD.
 
@@ -534,14 +802,18 @@ function relToneOn(){
 var REL_GLIDE=0.9;
 function relTone(){
  if(typeof bedFollow!=='function')return;
- var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run');
+ var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run');
  var at=(live&&relToneOn())?relNow():null;
  var hz=(at&&at.n)?seatHz(at.n.b):null;
  /* no tone at this seat is silence, never the last seat's tone held over */
  if(!hz){bedStop();return;}
- var fade=RUN.speed;
- if(RUN.phase==='opening'){fade=0;
-  for(var i=RUN.line;i<OPENING.length;i++)fade+=relSec({kind:'open',text:OPENING[i]});}
+ var fade=RUN.speed, i;
+ /* the fade in takes the whole frame ahead of the list, welcome and opening,
+    so it still arrives with the first address now that the frame is two */
+ if(RUN.phase==='welcome'||RUN.phase==='opening'){fade=0;
+  if(RUN.phase==='welcome'){var w=relWelcome();
+   for(i=RUN.line;i<w.length;i++)fade+=relSec({kind:'welcome',text:w[i]});}
+  for(i=(RUN.phase==='opening'?RUN.line:0);i<OPENING.length;i++)fade+=relSec({kind:'open',text:OPENING[i]});}
  bedFollow(hz, at.ch[2]==='truth'?BED_ALPHA:BED_THETA, fade, RUN.speed*REL_GLIDE);}
 /* THE SWITCH, and it is the account page's own switch, so one control has one
    look wherever it appears. It is on the opening and on the run as well as on
@@ -581,18 +853,29 @@ function relStrips(side){
   return '<div class="rel-strip rel-strip-'+s+(s===side?' on':'')+'" aria-hidden="true"><span>'
    +REL_SIDE[s]+'</span></div>';}).join('');}
 /* angular progress, because a circle has no last place */
-function relDial(p){
+function relDial(p,id){
  var r=22, C=2*Math.PI*r, off=C*(1-Math.max(0,Math.min(1,p)));
  return '<svg class="rel-dial" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">'
   +'<circle cx="26" cy="26" r="'+r+'" fill="none" stroke="var(--sunk)" stroke-width="3"/>'
-  +'<circle cx="26" cy="26" r="'+r+'" fill="none" stroke="var(--accent)" stroke-width="3" '
+  +'<circle'+(id?' id="'+id+'"':'')+' cx="26" cy="26" r="'+r+'" fill="none" stroke="var(--accent)" stroke-width="3" '
   +'stroke-linecap="round" transform="rotate(-90 26 26)" stroke-dasharray="'+C.toFixed(1)
   +'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>';}
+/* ELAPSED REPLACED PLANNED ON THE RUN. Planned is Elapsed plus Left, so three
+   times on one row said one thing twice; the dial still reads the share of
+   the whole script that is behind. */
 function relClock(){
  var total=relSecFrom(null), left=relSecFrom({phase:RUN.phase,line:RUN.line,idx:RUN.idx,pass:RUN.pass,cool:RUN.cool});
  return '<div class="rel-clock">'+relDial(total?1-left/total:0)
-  +'<div class="rel-fig"><span>Left</span><b>'+relMMSS(left)+'</b></div>'
-  +'<div class="rel-fig"><span>Planned</span><b>'+relMMSS(total)+'</b></div></div>';}
+  +'<div class="rel-fig"><span>Elapsed</span><b id="relel">'+relMMSS(relElapsed())+'</b></div>'
+  +'<div class="rel-fig"><span>Left</span><b>'+relMMSS(left)+'</b></div></div>';}
+/* the two minutes, as a dial that empties and the time left on it, with the
+   run's own elapsed time beside it, stopped where the list stopped */
+function relSettle(){
+ var left=relSettleLeft();
+ return '<div class="rel-clock">'+relDial(left/REL_SETTLE_S,'relsetd')
+  +'<div class="rel-fig"><span>Left</span><b id="relset">'+relMMSS(left)+'</b></div>'
+  +(RUN.t0?'<div class="rel-fig"><span>Elapsed</span><b>'+relMMSS(relElapsed())+'</b></div>':'')
+  +'</div>';}
 function relRender(){
  /* the tone first, so the switch below prints what is sounding now */
  relTone();
@@ -601,15 +884,33 @@ function relRender(){
  h.style.display='flex';
  var st=relCur();
  var out='<div class="rel-card'+(RUN.phase==='run'?' rel-running':'')+'">';
- if(RUN.phase==='opening'){
+ if(RUN.phase==='welcome'){
+  /* HIS VOICE'S SLOT. The line is set at the size .rel-speak sets and does not
+     carry that class, on purpose: .rel-speak and .rel-line mean "the line the
+     voice is saying", tests/design.js holds every one of them to what the
+     voice actually said, and this line is never said by the synthesiser. The
+     note says so on its first line, and says the voice starts at the list only
+     while the voice is on, because with it off that sentence is not true. */
+  var wl=relWelcome();
+  out+='<div class="pm-eye" aria-live="polite">Release, opening</div>'
+   +'<div class="rel-human" style="font-size:22px;line-height:1.6;margin:22px 0;min-height:70px;'
+    +'color:var(--ink);font-weight:300">'+esc(st.text)+'</div>'
+   +'<div class="rel-dots">'+wl.map(function(_,i){
+     return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
+   /* plain words, the JK ruling of the same day: "we want to speak to people
+      as if they're 10". "Not in this build" was the engineering word for it. */
+   +(RUN.line===0?'<div class="rel-sub">His recorded voice reads this part. Until it is recorded, '
+     +'read it to yourself.'+(relVoiceOn()?' The app voice starts with the list.':'')+'</div>':'')
+   +relClock()
+   +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
+   +'<button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button></div>'
+   +relSwitches(relNow().n);
+ } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
-     GS ruled one: "stick with release." */
+     GS ruled one: "stick with release." The line is the synthetic voice's
+     first, the hand over from the welcome to the list. */
   out+='<div class="pm-eye" aria-live="polite">Release, opening</div>'
    +'<div class="rel-speak">'+esc(st.text)+'</div>'
-   +'<div class="rel-dots">'+OPENING.map(function(_,i){
-     return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
-   +(RUN.line===0?'<div class="rel-sub">His recorded opening is not in this build. '
-     +'This line stands in its place.</div>':'')
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
    +'<button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button></div>'
@@ -617,7 +918,6 @@ function relRender(){
  } else if(RUN.phase==='run'){
   var at=relNow();
   var ch=at.ch, n=at.n, c=seatCol(n.b);
-  var tot=(RUN.plan||[]).length||1;
   var cur=relStepAt(relAt(RUN.idx),RUN.pass)||relStepAt(at,0);
   /* THE RING ON THE PLATE IS THE ADDRESS BEING RELEASED, so it is where SQ is
      seen going down. It read n.sq, which does not move until the cooldown, so
@@ -625,11 +925,14 @@ function relRender(){
      the count down now, and n.sq still when there is none. */
   var live=relLive(), sqNow=live?live.sqAt(n):null;
   if(sqNow==null)sqNow=n.sq;
+  var pole=relPole(ch[0]), ad=relAddrAt();
   out+=relStrips(ch[0])
    /* THE HALF AND THE SIDE, IN WORDS. "Release, left channel" is the book's
       own order of telling it, and it is the heading so it is read first. */
    +'<div class="pm-eye" aria-live="polite">'+(ch[2]==='truth'?'Reframe':'Release')+', '
      +ch[1].toLowerCase()+' channel</div>'
+   /* and which pole and which nervous system that side is, from C3_POLE */
+   +(pole?'<div class="rel-ct">'+esc(pole.nm)+', '+esc(pole.ans)+'</div>':'')
    +'<div class="rel-plate">'+crNode(Object.assign({},n,{sq:sqNow}),'xs',{raw:Math.round(sqNow*10)+'%'})
    +'<span><span class="rel-node" style="color:'+c+'">'+esc(n.k)+'</span>'
    +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span></span></div>'
@@ -638,7 +941,8 @@ function relRender(){
       pattern the meter charges for, and a limit line carries the six channels
       he ruled through C3_STEM, all six in one sweep. */
    +relLineRow(cur)
-   +'<div class="rel-ct">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · pattern '+(RUN.idx+1)+' of '+tot+'</div>'
+   +'<div class="rel-ct">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · address '+(ad.at+1)+' of '+ad.of+'</div>'
+   +relTally(relCounts())
    +relClock()
    +(live?relShade(live.dq,live.dq0):'')
    +'<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
@@ -651,20 +955,46 @@ function relRender(){
      count with no singular beside it, on the card a person reads at the end
      of the run. The picker below already asks q.length===1; this asks the
      same of the log. */
+  /* WHAT THE RUN DID, IN HIS SENTENCE. Asked 27 September: "You've released X
+     number of patterns. You may not have felt them all, but the ones you did,
+     mark to optimize for better performance." X is the release count that
+     ticked down to nought on the run, read where the list stopped, so a run
+     ended early says what it actually said and not what it planned. "Mark"
+     needs something to mark with, so each address below carries a Felt mark;
+     "to optimize for better performance" is not in the sentence, because
+     nothing in the product reads a mark yet and a sentence promising that it
+     does would be the claim this file refuses to make. The mark is held for
+     this run and rides in the log to the ritual. */
+  var t=RUN.tally||{said:0,put:0};
   out+='<div class="pm-eye">Released</div>'
    +'<div class="rel-speak rel-cool">'+esc(COOLING[Math.min(RUN.cool,COOLING.length-1)])+'</div>'
-   +'<div class="rel-node">'+RUN.log.length+(RUN.log.length===1?' address':' addresses')+'</div>'
-   +'<div class="rel-sub">'+cl+' cleared entirely, '+RUN.freed+' weight freed</div>'
+   +'<div class="rel-node" style="font-size:24px">You released '+t.said+(t.said===1?' pattern.':' patterns.')+'</div>'
+   +'<div class="rel-sub">You may not have felt them all. Mark where you felt them.</div>'
+   /* THE TWO MINUTES, then what the run reached. The summary takes the
+      clock's place when the clock runs out, which is his order: "at the end
+      of that, the person should get a badge". */
+   +(RUN.settleAt&&!RUN.settled
+     ?relSettle()+'<div class="rel-sub">The release keeps moving after the lines stop.</div>'
+     :relHitRows(RUN.hits))
+   +'<div class="rel-sub">'+RUN.log.length+(RUN.log.length===1?' address, ':' addresses, ')
+     +t.put+(t.put===1?' truth':' truths')+' installed, '+cl+' cleared entirely, '+RUN.freed+' weight freed</div>'
    /* the row the run counted down on, landed. Read off compute() after the
       write and against the reading taken before it, never off the projection,
       so if the two ever part it is this number that is true. */
    +relShade(RUN.dq0!=null?compute().DQ:null,RUN.dq0)
    +'<div class="rel-log">';
-  RUN.log.forEach(function(x){
+  RUN.log.forEach(function(x,i){
+   /* the direction goes under the name rather than beside it. As a fourth
+      column it pushed the mark out of the card at 390, measured on
+      Possession, whose "toward Groundedness" is the longest the nine carry. */
    out+='<div class="rel-row'+(x.cleared?' cleared':'')+'">'
     +cr(x.band, (x.w0||0)*10, {size:'xs', raw:x.w0+' '+x.d,
        title:x.name+' · '+x.band+' · '+x.w0})
-    +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em></div>';});
+    +'<span>'+esc(x.name)+'<em style="display:block">toward '+esc(x.opp||'no pole')+'</em></span>'
+    /* a segment of one, so pressed reads the way every other pressed choice
+       in the product reads, and at the tap floor */
+    +'<span class="seg"><button type="button" data-relfelt="'+i+'" aria-pressed="'+(!!x.felt)
+     +'" aria-label="Felt at '+esc(x.name)+'">Felt</button></span></div>';});
   /* WHAT MOVED, AND WHAT RELEASE BARELY MOVES. The panel used to report weight
      freed and nothing else, so a person ran the loop again and again watching
      a number that was never going to answer. Release works on the shadow, and
@@ -722,12 +1052,18 @@ function relRender(){
    +'ritual. A wider allowance is on the plan in settings.</div>';
   /* HOW MANY PATTERNS is the dose a channel, fifty by default, which is the
      book's and what he described hearing (open question 5). Pace is 1 at
-     speaking pace. Both answer to the clock the run shows once it starts. */
+     speaking pace, which is four seconds between statements (relSpace). Both
+     answer to the clock the run shows once it starts. */
   else out+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Pace</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
     +'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
-     +LINES_PER_CH+'" step="1" value="'+RUN.dose+'"></label>'
+     +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>'
+    /* his three, as quick picks on the same number. "Left and right" is his
+       own framing of it and is true: every pick is that many on each side. */
+    +'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Patterns, left and right">'
+     +REL_DOSES.map(function(d){return '<button type="button" data-reldose="'+d+'" aria-pressed="'
+      +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>'
     +'</div>';
   out+='<div class="rel-act"><button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
@@ -744,7 +1080,8 @@ function relRender(){
  /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
     a sound. The technical requirement and the ritual are the same press. */
  if((b=document.getElementById('relgo')))b.onclick=function(){
-  RUN.phase='opening';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;relStep();};
+  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
+  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();};
  if((b=document.getElementById('relskip')))b.onclick=function(){
   RUN.phase='run';RUN.line=0;RUN.idx=0;RUN.pass=0;relStep();};
  if((b=document.getElementById('relcancel')))b.onclick=relClose;
@@ -758,9 +1095,18 @@ function relRender(){
     because half a statement is not one. */
  if((b=document.getElementById('relpause')))b.onclick=function(){
   RUN.paused=!RUN.paused;
-  if(RUN.paused){relHush();relRender();} else relStep();};
+  /* the elapsed clock stops with the run and does not count the pause */
+  if(RUN.paused){RUN.pauseAt=Date.now();relHush();relRender();}
+  else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0; relStep();}};
  if((b=document.getElementById('reldose')))b.onchange=function(){
-  RUN.dose=Math.max(1,Math.min(LINES_PER_CH,Math.round(+this.value)||1));relRender();};
+  RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
+ h.querySelectorAll('[data-reldose]').forEach(function(el){el.onclick=function(){
+  RUN.dose=+this.getAttribute('data-reldose');relRender();};});
+ /* a mark changes one attribute and the log entry under it, never the card:
+    the cooldown is still being said and a redraw would move the list */
+ h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){
+  var x=RUN.log[+this.getAttribute('data-relfelt')]; if(!x)return;
+  x.felt=!x.felt; this.setAttribute('aria-pressed',String(x.felt));};});
  if((b=document.getElementById('relpace')))b.onchange=function(){
   RUN.pace=Math.max(0.5,Math.min(2,Math.round((+this.value||1)*10)/10));relRender();};
  /* uiSet is the one writer for the profile's preferences, so this reports
@@ -773,7 +1119,7 @@ function relRender(){
     sentence over silence */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
   uiSet('voice',!relVoiceOn());
-  var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run'
+  var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
   if(live)relStep(); else {if(!relVoiceOn())speakStop(); relRender();}};
  if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}
