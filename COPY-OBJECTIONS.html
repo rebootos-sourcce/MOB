@@ -73,14 +73,14 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 </header>
 <div class="sec"><div class="his">create a log of all the times I said I do not like this copy type. Create a database, sweep for it, and kill it. And add that to the style guide.</div>
 <div class="grid">
-<div class="tile"><div class="t">Objections logged</div><div class="v">28</div></div>
-<div class="tile"><div class="t">Quoted verbatim</div><div class="v">23</div></div>
-<div class="tile"><div class="t">Rules</div><div class="v">21</div></div>
-<div class="tile"><div class="t">Not gateable</div><div class="v">11</div></div>
-<div class="tile"><div class="t">Findings now</div><div class="v">0</div></div>
+<div class="tile"><div class="t">Objections logged</div><div class="v">29</div></div>
+<div class="tile"><div class="t">Quoted verbatim</div><div class="v">24</div></div>
+<div class="tile"><div class="t">Rules</div><div class="v">22</div></div>
+<div class="tile"><div class="t">Not gateable</div><div class="v">12</div></div>
+<div class="tile"><div class="t">Findings now</div><div class="v">23</div></div>
 <div class="tile"><div class="t">Stopping a build</div><div class="v">0</div></div>
 </div>
-<p class="meta">commit <i>287dd3e</i>, tree dirty &nbsp; database md5 <i>8ca5e20041ca</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
+<p class="meta">commit <i>146533a</i>, tree dirty &nbsp; database md5 <i>11dd5e7d3002</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
 </div>
 <div class="sec"><h2>What the sweep found</h2>
 <p>One line per rule. A rule reading zero is a rule holding a class closed, which is what a gate is for.</p>
@@ -106,7 +106,32 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <tr><td data-k="rule"><code>question-mark</code></td><td data-k="refuses">A document titled questions is a document of questions.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/questions.js</span></td><td data-k="from" class="dim">CO-12</td></tr>
 <tr><td data-k="rule"><code>plain-field-label</code></td><td data-k="refuses">A field is named for what goes in it and a button for what it does.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-26</td></tr>
 <tr><td data-k="rule"><code>abstract-word</code></td><td data-k="refuses">A word that is always an abstraction standing in for a plain one.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-29</td></tr>
+<tr><td data-k="rule"><code>bare-weight</code></td><td data-k="refuses">A weight printed on its own says nothing to either reader.</td><td data-k="found" class="num"><span class="pill flag">23</span></td><td data-k="from" class="dim">CO-30</td></tr>
 </table>
+<h3>bare-weight, 23 found</h3>
+<div class="hit"><span class="w">atuned_src/ui/analytics.js:134</span><span class="s">carrying, at a shadow weight of &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/analytics.js:360</span><span class="s">weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/avatarui.js:999</span><span class="s">&lt;p class=&quot;av-imp-r&quot;&gt;Running at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/avatarui.js:1232</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/component.js:452</span><span class="s">, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/drills.js:261</span><span class="s">Charge held here &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/drills.js:458</span><span class="s">&lt;/b&gt;, shadow weight &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/fieldbar.js:176</span><span class="s">Ring and number: segment depth, SQ, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/fieldbar.js:178</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/fieldbar.js:208</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/imprints.js:75</span><span class="s">Charge left</span></div>
+<div class="hit"><span class="w">atuned_src/ui/imprints.js:254</span><span class="s">weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/knowledge.js:510</span><span class="s">, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/knowledge.js:511</span><span class="s">, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/map.js:946</span><span class="s">addresses, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/map.js:2179</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/rings.js:1056</span><span class="s">Heaviest pattern. Weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/summary.js:263</span><span class="s">axis, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/summary.js:787</span><span class="s">&lt;/b&gt;, at a weight of &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:53</span><span class="s">&lt;hr&gt;charge held &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:79</span><span class="s">&lt;br&gt;weight &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:93</span><span class="s">weight &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:1434</span><span class="s">, weight</span></div>
 </div>
 <div class="sec"><h2>The log</h2>
 <p>Your wording, unsmoothed. Where an entry is not a quotation it says so on the line that says quoted, and says what the class was taken from instead.</p>
@@ -209,6 +234,10 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="his">Ensure you do a copy sweep right now. The copy is at a D for our tools, our tips, as far as the information goes. That layer right there is missing a lot of very key kind of simplification of language, right? We want to speak to people as if they&#x27;re 10. That is a core theme of ours. We don&#x27;t use abstract language ever, so add that. Make sure you do a sweep of all the copy and update it. That will be a priority pass, seeing as how it&#x27;s a blocker. That needs to be for all of Atuned, for the tutorial and for onboarding.</div>
 <p class="meta">where <i>TASKS.md, round JK</i><br>when <i>27 September, in his words</i><br>quoted <i>verbatim</i><br>rules <i>abstract-word</i></p>
 <p class="dim">Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rules and replacing none. The rule itself, whether a ten year old understands a sentence, is a fact about the reader and is in the guidance list as ten-year-old. The lexicon and the abstract rate in check.py are the two parts a program can hold.</p>
+<h3>CO-30. A weight printed as a bare figure, which means nothing to the layman and too little to the practitioner, with no band word to read it by and no picture beside it.</h3>
+<div class="his">I think speak to like where a 10 year old has to do two things. it has to be articulate and contextual. It has to provide knowledge and information, practitioner needs to be able to understand it. and the layman needs to be able to understand it. and we can&#x27;t speak to them in abstract terms that our meaningless to them. So we can&#x27;t say six point three weight, when that doesn&#x27;t say anything. We need to say something like heavily impaired, heavily blocked, right? We can use iconography to show um, given example, uh, the iconography within the summaries, I think would be a fantastic kind of way to like paint the picture. Because it adds a visual to the narrative.</div>
+<p class="meta">where <i>TASKS.md, round JX</i><br>when <i>27 September, in his words</i><br>quoted <i>verbatim</i><br>rules <i>bare-weight</i></p>
+<p class="dim">A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The band ladder for a weight is his and still open, in the same round: &quot;Is it flowing? Is it blocked? And then what are the states in between? ... it&#x27;s zero to five, but you can scale that up to zero to 10.&quot; The icon model he names is Summary&#x27;s, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the ladder and on files other seats hold.</p>
 </div>
 <div class="sec"><h2>The strings that have to change</h2>
 <p>Old and new. The line is found by searching the file for the string, because four of these files were edited while this was being written.</p>
@@ -221,7 +250,7 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <p class="meta">bucket <i>refusal</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;Balance. Not read yet. Neither side reaches 1, so no direction is &#x27;</div><div class="k">new</div><div class="n">&#x27;Balance. Neither side reaches 1, so no direction is &#x27;</div></div>
 <p>The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.</p>
-<h3>atuned_src/ui/drills.js:518</h3>
+<h3>atuned_src/ui/drills.js:559</h3>
 <p class="meta">bucket <i>value</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">+(!b.read?&#x27;not read yet&#x27;</div><div class="k">new</div><div class="n">+(!b.read?&#x27;no direction named&#x27;</div></div>
 <p>The drill&#x27;s headline value, the same slot one door in, where there is room for three words. It says what the instrument did rather than guessing which of three states it is in, and the paragraph two lines below carries the reason with both means printed beside it.</p>
@@ -290,6 +319,10 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <p>The knowledge base was linear and boring. A deck of identical cards is a list wearing a deck&#x27;s clothes.</p>
 <p class="dim">Why no pattern. Structure, not wording.</p>
 <p class="meta">from <i>CO-23</i></p>
+<h3>two-readers</h3>
+<p>One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The band word, the figure and the picture ride together. V22.</p>
+<p class="dim">Why no pattern. Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with none of his band words in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, the way tierOf in engine/data/canon.js reads CQ, and never by a writer choosing it. Read the line as Derek and as Angela, with a profile loaded, and look at the shot.</p>
+<p class="meta">from <i>CO-30</i></p>
 </div>
 <div class="sec"><h2>What the sweep cannot check</h2>
 <p>Four things, and they are the four that decide it. A green run means nothing above it is broken. It does not mean the line is good.</p>

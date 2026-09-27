@@ -392,6 +392,23 @@
       "fail": "The specific location in the body's energetic architecture where a pattern is resident.",
       "fix": "One exact place in your body where a pattern sits.",
       "note": "Measured across the whole corpus on 27 September before it was trusted, with the data tables read for the first time. Every hit then was cleared in the same pass, and none sat in a file another seat was holding. Words the canon uses on purpose are left off: alignment is in the owner's own definition of Coherence, and somatic is the product's word for its own category. Architecture matches the singular only, because the plural is the codex's name for a family of universal laws, The nine architectures, and V21 keeps names. The short word for each: architecture is layout or map, resident is sits, operates is works or runs, construct is thing built, modality is kind, framework is the way you see things, facilitate is help, utilise is use, leverage is a hold over someone, optimise is improve, aperture is opening, substrate is ground, parameter is setting, regulating up and down is speeding up and slowing down, physiological is of the body, cognition is thinking. The first cut read optimi[sz] and anything after it and failed the Cynic's own voice line, Optimism is naive, which is a saboteur speaking in a plain word. It reads the verb now, and utilise the same way. That was the known good case it was checked against."
+    },
+    {
+      "id": "bare-weight",
+      "class": "reading",
+      "severity": "flag",
+      "gate": "objections",
+      "log": [
+        "CO-30"
+      ],
+      "why": "A weight printed on its own says nothing to either reader. The layman needs a band word he reads on sight, the practitioner needs the figure, and the line carries both, with the picture beside them where the surface has one. V22.",
+      "re": [
+        "^(?![^\\n]*\\b(?:heavy|heavily|light|lightly|blocked|flowing|impaired|clear)\\b)[^\\n]*(?<!by )\\b(?:(?:shadow )?weight(?: of)?|charge (?:held|left)(?: here)?)\\s+$",
+        "^(?![^\\n]*\\b(?:heavy|heavily|light|lightly|blocked|flowing|impaired|clear)\\b)[^\\n]*\\bweight(?: of)?\\s+\\d+(?:\\.\\d+)?\\b"
+      ],
+      "fail": "That reaches the body at the anterior heart, on the fear axis, at a weight of 6.3.",
+      "fix": "That reaches the body at the anterior heart, on the fear axis, heavily blocked at a weight of 6.3.",
+      "note": "FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. First, the ladder the band word comes from is not ruled: his words in the same round are \"Is it flowing? Is it blocked? And then what are the states in between?\", which is a question and not a table. A stop here would make every writer pick a band word per surface, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. The words the pattern accepts are his own examples and their opposites, and they are replaced by the ladder's words when he rules it. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run."
     }
   ],
   "guidance": [
@@ -494,6 +511,15 @@
       ],
       "why": "The knowledge base was linear and boring. A deck of identical cards is a list wearing a deck's clothes.",
       "not_gateable": "Structure, not wording."
+    },
+    {
+      "id": "two-readers",
+      "class": "reading",
+      "log": [
+        "CO-30"
+      ],
+      "why": "One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The band word, the figure and the picture ride together. V22.",
+      "not_gateable": "Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with none of his band words in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, the way tierOf in engine/data/canon.js reads CQ, and never by a writer choosing it. Read the line as Derek and as Angela, with a profile loaded, and look at the shot."
     }
   ],
   "log": [
@@ -809,6 +835,18 @@
         "abstract-word"
       ],
       "note": "Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rules and replacing none. The rule itself, whether a ten year old understands a sentence, is a fact about the reader and is in the guidance list as ten-year-old. The lexicon and the abstract rate in check.py are the two parts a program can hold."
+    },
+    {
+      "id": "CO-30",
+      "date": "27 September, in his words",
+      "where": "TASKS.md, round JX",
+      "verbatim": true,
+      "words": "I think speak to like where a 10 year old has to do two things. it has to be articulate and contextual. It has to provide knowledge and information, practitioner needs to be able to understand it. and the layman needs to be able to understand it. and we can't speak to them in abstract terms that our meaningless to them. So we can't say six point three weight, when that doesn't say anything. We need to say something like heavily impaired, heavily blocked, right? We can use iconography to show um, given example, uh, the iconography within the summaries, I think would be a fantastic kind of way to like paint the picture. Because it adds a visual to the narrative.",
+      "objects": "A weight printed as a bare figure, which means nothing to the layman and too little to the practitioner, with no band word to read it by and no picture beside it.",
+      "rules": [
+        "bare-weight"
+      ],
+      "note": "A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The band ladder for a weight is his and still open, in the same round: \"Is it flowing? Is it blocked? And then what are the states in between? ... it's zero to five, but you can scale that up to zero to 10.\" The icon model he names is Summary's, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the ladder and on files other seats hold."
     }
   ],
   "handover": [

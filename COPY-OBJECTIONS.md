@@ -19,11 +19,11 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 287dd3e, tree dirty   database md5 8ca5e20041ca
-    28 objections logged, 23 of them with a quotation on record
-    21 rules, 10 with patterns in the database, 11 held by a gate elsewhere
-    11 more objections are guidance, because no check can express them
-    0 findings on this run, 0 at a severity that stops a build
+    commit 146533a, tree dirty   database md5 11dd5e7d3002
+    29 objections logged, 24 of them with a quotation on record
+    22 rules, 11 with patterns in the database, 11 held by a gate elsewhere
+    12 more objections are guidance, because no check can express them
+    23 findings on this run, 0 at a severity that stops a build
 
 ---
 
@@ -314,6 +314,17 @@ Logged in round HS, when the class was ruled a third time. It had not been enter
 
 Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rules and replacing none. The rule itself, whether a ten year old understands a sentence, is a fact about the reader and is in the guidance list as ten-year-old. The lexicon and the abstract rate in check.py are the two parts a program can hold.
 
+### CO-30. A weight printed as a bare figure, which means nothing to the layman and too little to the practitioner, with no band word to read it by and no picture beside it.
+
+> I think speak to like where a 10 year old has to do two things. it has to be articulate and contextual. It has to provide knowledge and information, practitioner needs to be able to understand it. and the layman needs to be able to understand it. and we can't speak to them in abstract terms that our meaningless to them. So we can't say six point three weight, when that doesn't say anything. We need to say something like heavily impaired, heavily blocked, right? We can use iconography to show um, given example, uh, the iconography within the summaries, I think would be a fantastic kind of way to like paint the picture. Because it adds a visual to the narrative.
+
+    where    TASKS.md, round JX
+    when     27 September, in his words
+    quoted   verbatim
+    rules    bare-weight
+
+A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The band ladder for a weight is his and still open, in the same round: "Is it flowing? Is it blocked? And then what are the states in between? ... it's zero to five, but you can scale that up to zero to 10." The icon model he names is Summary's, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the ladder and on files other seats hold.
+
 ---
 
 ## The rules, and where each one is enforced
@@ -340,6 +351,7 @@ Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rule
     question-mark         form          stop      tools/questions.js          CO-12
     plain-field-label     form          stop      objections                  CO-26
     abstract-word         register      stop      objections                  CO-29
+    bare-weight           reading       flag      objections                  CO-30
 
 ### tolerance
 
@@ -435,6 +447,62 @@ A word that is always an abstraction standing in for a plain one. A ten year old
 
 Measured across the whole corpus on 27 September before it was trusted, with the data tables read for the first time. Every hit then was cleared in the same pass, and none sat in a file another seat was holding. Words the canon uses on purpose are left off: alignment is in the owner's own definition of Coherence, and somatic is the product's word for its own category. Architecture matches the singular only, because the plural is the codex's name for a family of universal laws, The nine architectures, and V21 keeps names. The short word for each: architecture is layout or map, resident is sits, operates is works or runs, construct is thing built, modality is kind, framework is the way you see things, facilitate is help, utilise is use, leverage is a hold over someone, optimise is improve, aperture is opening, substrate is ground, parameter is setting, regulating up and down is speeding up and slowing down, physiological is of the body, cognition is thinking. The first cut read optimi[sz] and anything after it and failed the Cynic's own voice line, Optimism is naive, which is a saboteur speaking in a plain word. It reads the verb now, and utilise the same way. That was the known good case it was checked against.
 
+### bare-weight
+
+A weight printed on its own says nothing to either reader. The layman needs a band word he reads on sight, the practitioner needs the figure, and the line carries both, with the picture beside them where the surface has one. V22.
+
+    fails   That reaches the body at the anterior heart, on the fear axis, at a weight of 6.3.
+    fixed   That reaches the body at the anterior heart, on the fear axis, heavily blocked at a weight of 6.3.
+    found   23
+    atuned_src/ui/analytics.js:134
+        carrying, at a shadow weight of <b>
+    atuned_src/ui/analytics.js:360
+        weight
+    atuned_src/ui/avatarui.js:999
+        <p class="av-imp-r">Running at a weight of
+    atuned_src/ui/avatarui.js:1232
+        , at a weight of
+    atuned_src/ui/component.js:452
+        , weight
+    atuned_src/ui/drills.js:261
+        Charge held here <b>
+    atuned_src/ui/drills.js:458
+        </b>, shadow weight <b>
+    atuned_src/ui/fieldbar.js:176
+        Ring and number: segment depth, SQ, at a weight of
+    atuned_src/ui/fieldbar.js:178
+        , at a weight of
+    atuned_src/ui/fieldbar.js:208
+        , at a weight of
+    atuned_src/ui/imprints.js:75
+        Charge left
+    atuned_src/ui/imprints.js:254
+        weight
+    atuned_src/ui/knowledge.js:510
+        , weight
+    atuned_src/ui/knowledge.js:511
+        , weight
+    atuned_src/ui/map.js:946
+        addresses, weight
+    atuned_src/ui/map.js:2179
+        , at a weight of
+    atuned_src/ui/rings.js:1056
+        Heaviest pattern. Weight
+    atuned_src/ui/summary.js:263
+        axis, at a weight of
+    atuned_src/ui/summary.js:787
+        </b>, at a weight of <b>
+    atuned_src/ui/ui.js:53
+        <hr>charge held <b>
+    atuned_src/ui/ui.js:79
+        <br>weight <b>
+    atuned_src/ui/ui.js:93
+        weight <b>
+    atuned_src/ui/ui.js:1434
+        , weight
+
+FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. First, the ladder the band word comes from is not ruled: his words in the same round are "Is it flowing? Is it blocked? And then what are the states in between?", which is a question and not a table. A stop here would make every writer pick a band word per surface, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. The words the pattern accepts are his own examples and their opposites, and they are replaced by the ladder's words when he rules it. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run.
+
 ---
 
 ## Not gateable, and named rather than dropped
@@ -509,6 +577,12 @@ The knowledge base was linear and boring. A deck of identical cards is a list we
 
 *Why no pattern.* Structure, not wording.
 
+**two-readers.** CO-30
+
+One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The band word, the figure and the picture ride together. V22.
+
+*Why no pattern.* Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with none of his band words in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, the way tierOf in engine/data/canon.js reads CQ, and never by a writer choosing it. Read the line as Derek and as Angela, with a profile loaded, and look at the shot.
+
 ---
 
 ## The strings the build seat has to change
@@ -536,7 +610,7 @@ If an empty label draws an empty box, drop the key rather than passing a space.
 
 The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.
 
-### atuned_src/ui/drills.js:518
+### atuned_src/ui/drills.js:559
 
     bucket  value
     rule    empty-state, from CO-09

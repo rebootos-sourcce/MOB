@@ -34,6 +34,7 @@ were added, which is the defect the repository has been bitten by twelve times:
     a figure with a tolerance on it     "plus or minus 12", "swing 11"
     an abstract noun as a heading       Insights, Journey, Wellness
     a band word standing alone          Severe with nothing attached
+    a weight standing alone             "at a weight of 6.3", V22
     a second wording for the empty state  it is "not read yet", once
     a reassurance to a fear not raised  see V12, which is held and not banned
     two buckets in one string           an instruction that is also a reading
@@ -176,7 +177,8 @@ one of these has a real corpse. The count is not written here: this paragraph
 said sixteen above a list of twenty, which is the defect the repository keeps
 recording.
 
-Cite them by number in review. V21 is the newest and it sits over all of them.
+Cite them by number in review. V21 and V22 sit over all of them, and V22 is
+V21 sharpened: the same plain words, now owed to two readers at once.
 
 ### V1. No Line Whose Job Is To Say A Thing Is Starting
 
@@ -636,6 +638,123 @@ apostrophe inside a definition also split the file into junk spans. The data
 tables are now read with a string walker that knows both quotes. A rule about
 plain words is worth nothing if it cannot see the definitions.
 
+### V22. Two Readers On One Line. A Weight Carries Its Word And Its Picture.
+
+Ruled 27 September 2026, round JX in `TASKS.md`, as a sharpening of V21 and
+not a rule beside it. His words:
+
+> "I think speak to like where a 10 year old has to do two things. it has to
+> be articulate and contextual. It has to provide knowledge and information,
+> practitioner needs to be able to understand it. and the layman needs to be
+> able to understand it. and we can't speak to them in abstract terms that our
+> meaningless to them. So we can't say six point three weight, when that
+> doesn't say anything. We need to say something like heavily impaired,
+> heavily blocked, right? We can use iconography to show um, given example,
+> uh, the iconography within the summaries, I think would be a fantastic kind
+> of way to like paint the picture. Because it adds a visual to the narrative."
+
+Logged as `CO-30` in `objections.json`.
+
+**V21 had one reader. This has two, on the same line.** A practitioner who
+needs real information, and a layman who needs to just get it. Neither is
+served by writing down to the other, and neither may be told something the
+other is not. V21 holds in full: articulate, contextual, never abstract. What
+V22 adds is that a bare figure fails both readers at once. "6.3" means nothing
+to the layman. To the practitioner it is a number with no scale to check it
+against.
+
+So a figure a person reads about themselves ships as three things, and each
+reader takes the part built for them:
+
+    the band word   the layman reads it on sight     heavily blocked
+    the figure      the practitioner reads it        6.3
+    the picture     both read it before any word     the icon and its ring
+
+    FAIL  ui/summary.js:263  That reaches the body at the anterior heart, on
+                             the fear axis, at a weight of 6.3.
+    FIX                      That reaches the body at the anterior heart, on
+                             the fear axis, heavily blocked at a weight of
+                             6.3.
+
+    FAIL  ui/rings.js:1056   Heaviest pattern. Weight 6.3
+    FIX                      Heaviest pattern. Heavily blocked, 6.3
+                             [drawn in the ring, on the pattern's own glyph]
+
+**The words in those fixes are his, and they stand in for a ladder he has not
+ruled.** In the same round: "Is it flowing? Is it blocked? And then what are
+the states in between? ... it's zero to five, but you can scale that up to
+zero to 10." Until he names the rungs, "heavily blocked" shows the shape of
+the fix and makes no claim about where 6.3 falls. Pass 1 still comes first. A
+band word that overstates the figure beside it is a lie with a picture on it.
+
+**The word is read off the figure, never chosen for it.** This is how two
+readers are told the same thing. One table in `engine/data` maps a figure to
+its word, and every surface asks that table. The CQ tiers already work this
+way: `tierOf` in `engine/data/canon.js` reads the word off the number the
+screen prints. The corpse is recorded above it. The word and the figure used
+to disagree at the half point, "CQ 71, gaining" beside a row reading "Gaining
+61 to 70", in 35 of 625 runs on the IK audit of 27 September. That is what a
+contradiction between the practitioner and the layman looks like on a screen.
+A band word picked by a writer per surface would put it on every surface.
+
+**The picture is Summary's, and he named it.** The object already exists.
+`cr()` at `ui/component.js:194` draws every figure on Summary as one thing: an
+icon, a ring carrying the share as an arc, and a pill carrying the number, and
+`ui/summary.js:54` states the rule that surface keeps: nothing on it prints a
+bare figure. Where a surface carries a figure and has room for that object,
+the figure ships inside it. Take the glyph from `SEATGLYPH` in
+`engine/data/canon.js` and do not draw a new one: a second drawing for a thing
+that already has an icon is a second name for it, which is V14 in a picture.
+Icons are ring, not fill.
+
+Where there is no room for a picture, in a sentence or a tooltip, the band
+word does the picture's job alone. A figure in prose never ships without its
+word.
+
+**How it sits with the rules it touches.**
+
+- **V8 holds.** The word does not turn a weight into a score. "Heavily blocked
+  at a weight of 6.3", never "6.3 of 10, heavily blocked".
+- **V9 holds, from the other side.** V9 says a band word never stands without
+  its definition, its behaviour and its direction out. V22 says a figure never
+  stands without its word. The three things V9 asks for live in the band's
+  table entry, the way `TIERDEF` carries `def`, `energy` and `toward`, and
+  ride one door away, in the tooltip or the drill.
+- **V17 holds.** The label stays one word. The band word rides on the value
+  the way the unit does: "Weight" over "heavily blocked, 6.3".
+- **V20 decides first.** Whether a figure appears at all is still V20's call.
+  V22 decides what it wears when it does.
+- **Section 5, rule 6, is not overturned.** Pass 7 and pass 8 still never
+  resolve against each other. V22 does not ask one sentence to please Angela
+  and Derek both. It gives each a part of the line: the word and the picture
+  are Angela's, the figure is Derek's, and a table makes them agree. Where
+  Derek needs more than the figure, the arithmetic, that is still a separate
+  Definition string, one door away.
+
+**What the gate can hold and what it cannot.** `bare-weight` in
+`objections.json`, run by `--objections`, flagged and never failed. It reports
+a literal ending on weight, weight of, charge held or charge left, where a run
+time figure lands, and the rendered "weight 6.3", when none of his band words
+is in the same string. It is a flag and not a stop for three reasons. The
+ladder is not ruled, so a stop would make every writer invent a band word per
+surface, which is the contradiction above. The sweep reads each literal apart,
+so a band word written after the value, in the next literal, is not seen and
+the flag is false there. And the picture is not text. It reaches weight and
+charge, the two he named, and nothing else: a percent match, a pain figure and
+"Waiting to land" are outside it. Whether one line lands for both readers, and
+whether the icon is on the screen, is `two-readers` in the guidance list. Read
+it as Derek and as Angela with a profile loaded, and look at the shot.
+
+Checked against known good cases before it was trusted, the ones it must not
+fire on: `KB_OF` in `ui/knowledge.js`, "of the mask at full weight", where the
+figure comes first; the "By weight" sort control; the "Shadow weight" label;
+the "What it weighed" eyebrow; "No mask carries weight yet". And "Heaviest" is
+a rank and not a band, so it does not clear a line.
+
+**The sweep that applies it is separate work.** Every bare weight the flag
+reports sits in a renderer, and most of those files are held by other seats.
+It waits on the ladder and on those files. Read the count off the run.
+
 ---
 
 ## 3b. His Objections, As A Database
@@ -662,10 +781,11 @@ carries his wording verbatim with the file and line it is recorded at. Where a
 class was taken from a ruling with no quotation behind it, the entry says so
 and says what it was inferred from. Nothing in the log is remembered.
 
-**A rule nobody can express as a check is guidance, and it is named.** Nine of
-them, at the foot of the database: the bucket half of V19, whether a heading is
-a thing a person would say, text over a graphic, a legend nobody asked for, the
-AI six itself. They are written down rather than dropped, and they are not
+**A rule nobody can express as a check is guidance, and it is named.** They
+sit at the foot of the database, and the count is read off the run: this line
+said nine while the list carried eleven. Among them are the bucket half of V19,
+whether a heading is a thing a person would say, text over a graphic, a legend
+nobody asked for, the AI six itself, and V22's two readers. They are written down rather than dropped, and they are not
 turned into a bad pattern, because a tool that lies is worse than no tool.
 
 **A rule enforced somewhere else is cited, not rewritten.** The figure label,
@@ -904,6 +1024,8 @@ Rates, reported against the house rate for the same measure, per file:
     gloss                   , which is
     it-is open              a sentence opening on a demonstrative copula
     reassurance             flagged for a person to rule on, never failed
+    bare weight             V22, a weight with no band word beside it, run
+                            by --objections, flagged and never failed
     abstract                V21, a sentence carrying an embalmed verb:
                             -tion, -ment, -ity, -ness and the rest
     sentence length         median, p90, p95, share over 25 words
@@ -921,6 +1043,10 @@ unmeasurable part left out is a lie about how much has been checked.
 5. **Would a ten year old understand it** without a word explained first. V21.
    The lexicon catches the words that are always abstract. It cannot catch a
    sentence built entirely of short words that still says nothing concrete.
+   And V22: whether the same line serves the practitioner and the layman
+   without telling them different things, and whether the picture sits
+   beside the figure. The bare weight flag sees a missing word, and only in
+   the string it reads.
 
 ### The Gate Was Checked Against Known Good Cases First
 

@@ -664,6 +664,9 @@ WHAT THIS DID NOT CHECK. Five things, and they are the five that decide it.
   5  Would a ten year old understand it, with no word explained first. V21.
      The lexicon catches the words that are always abstract. A sentence built
      of short words can still say nothing a person could point at.
+     And V22: does one line serve the practitioner and the layman without
+     telling them different things, and is the picture beside the figure.
+     The bare-weight flag sees a missing band word, in the string it reads.
 
 A green run here means nothing above this line is broken. It does not mean the
 line is good.
