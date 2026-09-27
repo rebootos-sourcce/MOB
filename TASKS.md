@@ -21208,3 +21208,25 @@ the backlog audit's own closing of question D11 is weaker than it
 looked, since round GH's own words read as a process instruction and
 not a fifth answer, and the Bible still holds D11 open rather than
 following the audit's own close.
+
+## ID. The release flow named as priority number one, against the original app's own voice guided script. 27 September
+
+His words, verbatim: "That body has to be wired in. No matter what.
+The compass has got to be fixed. The release has to be completed.
+Right now, the release logic is nothing like what we had designed. So
+this is priority number one. When I press check the original app, when
+I press the release, I get my voice that says, you know, it runs
+through my script. And it says, sit back, relax. We're going to walk
+through this process. And when you're ready, I'm letting go of
+believing, perceiving, thinking, behaving, acting, feeling. And then it
+runs through fifty left release, fifty right release, fifty left
+install, fifty right install using AI voice. This looks nothing like
+what we designed. Check the Bible. That must."
+
+Logged in full, cut off at the end rather than paraphrased past where
+his own words stop. The body map is not new work, it is already wired
+in at round HR, `4c03123`, pushed. The Compass fix is already in
+flight, corrected at round IB to his C plus B combination. The release
+flow is the one real, new priority named here, and it is checked
+against the Bible and the shipped code before anything is dispatched,
+below.
