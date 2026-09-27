@@ -20178,3 +20178,64 @@ Dispatched:
 What I need from him: nothing new beyond what is already asked; this
 round is the team correcting how it is asking, and showing him what
 already exists, rather than opening new questions of its own.
+
+## HJ. The 300 day setup plan, back, and a real new finding: Safari alone will not hold a record that long. 27 September
+
+`SETUP-PLAN.md`, dispatched at round HI. Verified directly: 294 lines
+against the report's own roughly 290, zero em dashes, and its central
+technical claim checked against the real code rather than trusted:
+`atuned_src/ui/ui.js:1378-1381` confirms the app saves through plain
+`localStorage.getItem`/`setItem` and never calls the browser's own
+storage persistence request, exactly what the finding below rests on.
+
+**A genuinely new finding, not restated from either prior document:**
+Safari erases a website's stored data after seven days of that browser
+going unused for that site, with one exception, a site added to the
+home screen. Since this app stores everything in plain browser
+storage and never asks to be exempted, local storage alone cannot
+carry a record for three hundred days regardless of how efficient the
+app itself is; sign in and server sync stop being a nice addition and
+become the actual mechanism that makes day three hundred possible at
+all on an iPhone. Storage capacity itself is not the constraint, a
+year of heavy use measured well under one megabyte against the
+browser's five.
+
+**The direct answer, in one sentence, exactly as he asked for:** "one
+app on the person's device that saves locally and works without
+signal, one server with one database behind it that keeps the safe
+copy and decides who has paid, and one private team console on that
+same server, nothing more." States plainly what "the right way" does
+not mean, a rewrite, a provider switch, or splitting into many
+services, directly answering the fear inside his own round HB
+frustration without restating that whole argument again.
+
+**The developer console, specified rather than assumed to not exist:**
+`reboot-os` already has a real support console, confirmed directly at
+`atuned/server/src/ops.js`, one account looked up at a time, counts
+only, crash listing, a plan setter, all real. Recommends what it
+should grow into, one page, four panels, retention at day seven
+through three hundred, drop off between the quiz and paying, Stripe
+revenue, and the backlog, counts only ridden along with the existing
+sync, never content, citing real, named regulatory penalties against
+BetterHelp and GoodRx for exactly this kind of data leaving the app,
+about a week of added work.
+
+**A real timeline, reusing the existing staged plan rather than
+re-deriving it:** roughly five to eight weeks in total once the sync
+port and the console are added to the four to seven week estimate
+already given, with a real, paying, counted person reachable in three
+to four weeks, gated entirely on the same stage zero decisions already
+put to him across rounds GZ through HI.
+
+What I need from him: which app goes online first, since the timeline
+above assumes this repository's engine and a different choice adds
+real time; whether the console shows totals only, totals plus one
+named person's usage, or per person detail only for people who opt in,
+since the difference is a real consent and legal question, not a
+design one; who on the team gets a console login; whether the app
+should prompt a person to add it to their home screen, and when; and
+the same stage zero list already standing from earlier rounds,
+repository visibility, Cloudflare or Supabase, the data region, a
+Cloudflare account, the GitHub billing lock, the domain spelling, and
+now a new one this round adds, a Stripe account opened in the
+company's name.
