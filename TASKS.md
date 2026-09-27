@@ -21256,3 +21256,23 @@ the book rather than the prototype's right first default, and the
 full dose kept as the default with the shortening controls real. Every
 one of the five is named in the dispatch as a default made under
 pressure, not a ruling, so it comes back nameable rather than buried.
+
+## IE. The goal restated, and a direct answer on when OAuth and APIs join. 27 September
+
+His words, verbatim: "By the end of this, I need to show the core
+loops. They have to be tight. Visually appealing, and working. The
+systems functions schema framework design need to work. And show that
+this is efficient. And I need to know when to add my OAuth and APIs.
+But first, do the priorities."
+
+His own last sentence defers new dispatch work; nothing here is acted
+on ahead of what is already moving. The one direct, answerable
+question, when OAuth and APIs join, is answered plainly rather than
+deferred: it is gated behind the same two items every "going online"
+thread this session has named, Cloudflare against Supabase and which
+product goes online first, both still open, and behind the
+repository still being public, since sign in and any real API key
+should never be added while the code that would hold them is world
+readable. The honest order is those three first, then OAuth, not
+because of a preference but because a key or a secret committed
+today would sit in a public repository the moment it landed.
