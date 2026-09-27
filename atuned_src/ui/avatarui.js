@@ -615,10 +615,14 @@ function renderAvatar(){
  if(st.rows.length)h+='<div class="av-row2">'+avPairs(st)+avForm(false)+'</div>';
  h+='<div class="av-row2">'+avRunHTML(st)+avRitHTML(st)+'</div>';
  var W2=avWheel(st);
+ /* THE PARAGRAPH EXPLAINING WHAT THIS SECTION IS, AND HOW TO USE THE SCALE,
+    IS GONE. Round HS, his own words, quoting this exact line back: "you have
+    this text again, where it says archetypes, 12 ways of acting, each
+    besides the part, holy shit, I told you I don't want text like that
+    anymore." The scale's own end labels and each archetype's own detail
+    panel already say how the press works; nothing here needs a paragraph
+    to explain itself first. */
  h+='<section class="av-arch"><div class="pm-eye">Archetypes</div>'
-  +'<p class="av-p">'+NUMWORDS[AV_ROSTER.length]+' ways of acting, each beside the part of your life it acts from. '
-  +'Set how much of each one is you, from one to five. A pattern can be yours before you recognise it, '
-  +'and the middle of the scale is there for that.</p>'
   +'<div class="av-row2 av-archg">'+W2.html+avDetail(st,W2.sel)+'</div></section>';
  host.innerHTML=h+'</div>';
  AV.sig=avSig();

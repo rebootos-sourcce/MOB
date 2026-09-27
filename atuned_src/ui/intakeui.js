@@ -194,17 +194,18 @@ function renderIntake(){
     reads: the birth moment and the 63 questions. Energetics was the tab until
     the owner's Avatar ruling, and three buttons elsewhere still open it by that
     name, so the word lands on the thing it names. */
- var hd='<div class="iq-sec"><div class="pm-eye">Energetics</div>'
-  +'<p class="iq-sec-p">Your birth moment and the 63 questions.</p></div>';
+ /* THE PROSE THAT EXPLAINED THIS SECTION IS GONE. His own standing rule,
+    violated twice in this one screen: no text that describes what something
+    is or how to use it, ever, where an icon, a symbol or the layout itself
+    already says it. "Your birth moment and the 63 questions" and the
+    paragraph on how a birth moment is triangulated were exactly that, and
+    stayed only because nobody swept this file after the rule was first
+    given. Round HS, his own words: "why is that text never being written
+    out ever again after I keep asking for it to never be written out." */
+ var hd='<div class="iq-sec"><div class="pm-eye">Energetics</div></div>';
  if(w.sealed) var h=iqSealedCard(p);
  else var h='<div class="iq-who">'
   +'<div class="pm-eye">Who this is</div>'
-  +'<p class="iq-why">Your energetics were fixed at the moment you were cut from your mother. '
-  +'Date, time and place are what locate that moment, and nothing else here can be derived from '
-  +'memory the way the 63 questions are. Every culture with a psycho spiritual practice read this '
-  +'field at a different resolution. Where independent readings overlap, the triangulation is '
-  +'pointing at you, and the inversion of that overlap is where you are compressed. '
-  +'If you do not know the time, say so. It is not guessed.</p>'
   +'<div class="iq-fields">'
   +iqField('First name','first',w.first)
   +iqField('Middle','middle',w.middle)
