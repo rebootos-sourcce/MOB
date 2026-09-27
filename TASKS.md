@@ -21170,3 +21170,23 @@ it was wired in and pushed at round HR, commit `4c03123`, before this
 message arrived; and the Compass mockups he is asking to be finished
 from were built at round HS and verified by me but never actually sent
 to him, an oversight found here rather than repeated further.
+
+## IB. The funnel stood down, and the Compass pick corrected before the wire in finished. 27 September
+
+His words, verbatim: "Actually, you know what? Don't touch the
+funnel. That's a waste of credits. Let's continue building to the
+software stood up. Focus on getting this thing as tight as you can.
+Seven seats under load. C is good. Oh, this is for the practitioner
+page. Let's do a combination of C and B. There's a lot of meaning
+between the two."
+
+The funnel dispatch is stood down; nothing further is queued on it.
+His read of the Compass mockups differs from the pick already
+dispatched, B alone: he wants C, the seven seats under load shell,
+combined with B, the mirror axes, not B by itself. He also names a new
+surface in passing, "the practitioner page," reading C's shell as
+suited to that rather than only to the person's own Compass, which is
+a real, if brief, first mention of the practitioner facing view
+`DECISIONS.md` already names as owed. The in flight wire in dispatch
+is being corrected to this combination before it lands, rather than
+shipping B alone and redoing it after.
