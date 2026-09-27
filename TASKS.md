@@ -18349,4 +18349,215 @@ touched, per his instruction in the same message.
 
 The `task_536cbb47` suggestion this duplicates is now moot; dismissing
 it rather than leaving two open records of the same fix.
-   this task on purpose.
+
+## GO. A very large round: the Field left panel, four renames put to design, the toggles, depth, the body map's own resolution question turned back on us, the compass and knowledge base, and the Story page rebuilt around Source AI. 27 September
+
+His words, verbatim, in full: "Continue updating. okay, root energetics
+on the right hand side. Sorry, root energetics on the left hand side.
+I'm on the field page. This is the most recent. Obviously, this isn't
+completed yet because you haven't changed the size of the icons. I
+think I asked you to get actually start. Yeah, the field left panel
+starts closed. Root energetics to the right. Uh, change the title to
+energetic summary. And then I need icons for all this stuff. I don't
+understand what happened. I don't need this text up here where it
+says four systems all the way down to other ways this shows up. I
+need symbolism. You already had it before and you took it away. So
+clean this up, make the UI UX super clean, simulate it with the ICPs.
+Just make sure it's the similar UI UX to everything else that we
+already have. Where it says close the tools, I want that to be the
+first left, upper left icon. Expand, close. I just clicked on where
+it says seats. Nothing changed in my information page. All of these
+should toggle. I'm clicking on laws, gates. That should all give me
+information on my information pane, the right hand side. Seats needs
+a better name. These are assemblage points. So find a way to say
+that. We don't want to use the word seats. It doesn't mean it's
+meaningless. Make sure that uh, you got a laws button, but. Uh, so
+change laws to integrity. Change gates to action. The shadow, you
+have the description, the weight of all 1200 at, at that's DQ. That's
+the total sum. Don't do character, change it to masks. The total sum
+of all the masks is the character. And depth. It should already start
+at full depth. I'm on the field tab, pressing seats, and I don't
+quite understand what I'm supposed to be seeing here. I want the
+design team to take a look at this UI UX and simulate this with the
+focus group to see what they see in this too, and then to figure out
+how it could be expressed differently. The word laws doesn't provide
+the picture. We want this like, um, Attunement. Or uh, uh, behaviors
+of alignment or alignment behaviors. Maybe alignment behaviors some
+people just understand. Yes, it is from the spiritual laws, but just
+to simplify it for branding's sake, think branding. You know, harmonic
+laws. Yeah, so Gates doesn't say anything to me. That's technically
+what the Buddhists refer to as right action versus wrong action.
+Okay, so for the body map, I'm pretty confident that we want the
+front and back. And that you do need to detail version. And so my
+question to you is, if I supply you with a detailed version, what
+resolution of detail do you actually need? Can you render a version
+and show me? Actually, can you render yourself a version that you
+need? Front and back. Left and right. That would get you better
+triangulation. In fact, why don't you model the system in a fashion
+to which you can be successful? You know what I'm requesting. So what
+system would you need in order to make it actually effective and
+work? Like, let's take a step back and re-examine how to make this
+system the body system successful. If the team needs, maybe they can
+ask me questions about what the intention is. Please fix the compass.
+Please fix the knowledge base. I, those things should be in your
+setup. Whatever happened to the energetic changes? Like, Okay, for
+the story, that's good. Okay, for the story, by the way, can you
+create icons for the menu? Okay, so for the story, when I land on the
+story, This is my journal. This needs to probe deep questions. Simple,
+straightforward questions. To jog to prompt people to to describe
+their story. So the right-hand side menu I want a summary of the
+story. as it's being heard through source AIs through source AI which
+is our own unique algorithm which if you remember it has its own way
+of looking at things to review make sure you tell me how it's
+supposed to look at things I want the protocol settings design just I
+want it redesigned it's not it's not looking good And so as source is
+snip is sniffing out the story, and it's, and it's discerning because
+right, it doesn't use definitions, it's discerning the energy behind
+the story. It's, it's able to probe questions from a scale of zero to
+10 that are just seven, eight, nine, and 10. Looking for the root
+which is usually a 10 why questions are very important we're not a
+clinician we're not their friend We're a peer and a companion who
+sees them for their authentic nature. Not for the conditions that
+created them, which is why that should be part of source AI's core
+programming as well. And so maybe the prompt starts off with what are
+we talking about today? Or what are we writing about today? And then
+the right okay here we go we want to swap the I got it we want to
+swap the imprints and protocol component with the information
+component and the information component then becomes the source kind
+of prompt and summary system that way the, the, all three are tied
+together so the journal the kind of source like hey what are we
+talking about today you know listening to the story discerning the
+story seeing how the person's architecture is how everything's
+running through them and going oh this is what i see why do you think
+this is why do you think that is right in order to get them to find
+the root and you know it's not to badger them um it's their job is to
+lead it's not source if they want to move on source's job isn't to
+dig deeper it's just to go cool yeah commit that to like source ai's
+documentation as well and update all of our documents by the way Yeah,
+that makes sense really clean. So the information pane then becomes
+an imprints and the protocol and there we get to redesign this page a
+bit so it's not so kind of oh maybe on the left hand side the tool
+side The percent of which patterns are running through a person
+that's fucking rad maybe the sniffer is looking for those patterns
+too it's like oh we heard a little architect oh we heard a little
+nature oh we heard a little sage right so a person kind of really see
+like the signal strength at which they run through that's fucking
+baller add that as a system design it run it through figure out where
+it needs to go And we also never added our badges and award system.
+And we also need to work on the release system. And we also need to
+work on the funnel. So what's left in our pile of stuff?"
+
+Grounded before dispatch, item by item, rather than guessed at:
+
+**"Root Energetics" is two different sections wearing the same name,
+and that is the real confusion, not a bug.** `atuned_src/ui/rootsum.js`
+and `atuned_src/shell/body.html:761-767` are the right rail's summary
+of where the systems overlap, already ruled closed on arrival at round
+FV. `atuned_src/shell/body.html:492-495` is the left rail's own list of
+what each system says on its own, section key `energetics`. Two
+sections, one name, on two rails, which is exactly what "root
+energetics on the right hand side, sorry, root energetics on the left
+hand side" is catching in his own words as he corrects himself. His
+ask, read against this: the right one becomes "Energetic Summary" so
+the two are told apart by name, and the left one starts closed like
+the right one already does.
+
+**The left rail's default open state, `OPENSEC={left:{soul:1,lean:1},
+right:{you:1}}` at `ui/ui.js:529`, does not list `energetics`,** so the
+static case says it should already be closed. Whether it renders
+closed in practice is a live rendering question, not a markup one, and
+belongs with whoever takes the left panel work rather than guessed at
+here.
+
+**The glass bar's Seats, Laws, Gates and Character are real, and by
+original design they touch only what is drawn, never what is read.**
+`atuned_src/ui/fieldbar.js`'s own file header states the rule
+directly: "the bar decides what is DRAWN, never what is READ." His
+ask, that pressing Laws or Gates should also open something on the
+information pane, is a real, new feature request against a page that
+was deliberately built not to do that, not a bug in the toggle itself.
+
+**A real naming collision, found before it could ship wrong.** He asks
+to rename Character to Masks, "the total sum of all the masks is the
+character." But `fieldbar.js` already has a separate layer keyed
+`masks`, "The six masks, each at its weight," distinct from Character,
+"The innermost layer. What the whole chain compounds into." Renaming
+Character to Masks would give the bar two buttons with one name. This
+needs a different word for one of the two, not a straight rename, and
+goes back to him as a question rather than picked here.
+
+**Seats to Assemblage Points, and Gates to Action, are not put to
+design; he has settled them himself in this message,** in contrast to
+Laws, which he is explicitly still turning over out loud between
+Attunement, alignment behaviors and harmonic laws and asking the team
+to simulate with the focus group before anything ships.
+
+**The Compass and Knowledge base were checked directly rather than
+assumed broken.** Loaded a real profile and screenshotted both:
+`atuned_src/ui/cone.js`'s `#cone` renders with no console error, a
+seven arc ring in the seven seat colours with tick marks and a lit
+centre, matching what round GA's fix produced, not the truncated
+canvas text that fix corrected. The Knowledge base check did not
+settle inside the time this pass gave it and needs a proper live look
+rather than a guess either way. His "whatever happened to the
+energetic changes" alongside this reads as likely looking at a build
+from before the round GA and GM fixes rather than a fresh regression,
+but that is a real possibility to rule out, not an assumption to log
+as fact.
+
+**The body map question is not mine to answer alone, and he is asking
+the team to spec it rather than build blind.** His own words: "why
+don't you model the system in a fashion to which you can be
+successful... what system would you need... ask me questions about
+what the intention is." This is a real, open request for a
+specification, front, back, left and right, at a resolution the team
+proposes and he then supplies detail against, not a task to guess an
+answer to.
+
+**Source AI is named as already having documentation, and he is asking
+for it to be extended, not started from nothing.** Confirmed
+`ai-director` is the seat this belongs to; whether a Source AI
+document already exists under this name needs a direct check before
+anything is written, so a new file is not opened beside an old one
+saying the same thing twice.
+
+**The Imprints/Protocol swap with the Information pane, and the
+sniffer's signal strength per archetype idea, are both new system
+design, not implementation,** by his own framing, "add that as a
+system design, run it through, figure out where it needs to go," and
+belong with the same design pass as the rest of the Story rebuild.
+
+Dispatched, none of it colliding on files, `git status` clean before
+every hand off:
+
+1. The Field left panel entire cluster, closed by default, the
+   Energetic Summary rename, icons in place of the "four systems...
+   other ways this shows up" prose, the toggle-to-information-pane
+   behaviour, Depth starting full, to `uiux-architect`, with the
+   Seats/Assemblage Points and Gates/Action renames as settled and the
+   Laws rename and the Character/Masks collision as open questions for
+   the mockup rather than picked in code.
+2. A grounded Compass and Knowledge base check, live, both widths,
+   against the last known good state from round GA and GM, to
+   `devops-qa`, before any fix is written against either.
+3. The body map specification, front, back, left, right, at a proposed
+   resolution with the reasoning for it, plus the questions the team
+   actually needs answered about intention, to `technical-director`
+   and `art-director` together, as a document he can answer rather
+   than a build.
+4. The Story page rebuild, Source AI's questioning behaviour (the
+   discerning-not-defining stance, the seven to ten scale hunting the
+   root, peer and companion rather than clinician or friend, seeing
+   the person's authentic nature rather than what conditions produced
+   it, leaving the pace to the person), the Imprints/Protocol swap
+   with the Information pane, and the sniffer signal strength per
+   archetype idea, to `ai-director` working with `narrative-director`,
+   with an explicit instruction to check for and extend rather than
+   duplicate any existing Source AI documentation.
+5. The status question, what is left in the backlog and how long, to
+   `project-manager`, reading the full backlog rather than answered
+   from memory here.
+
+What I need from him: the Character/Masks naming collision above,
+since both cannot be named Masks; and whichever of his own open
+questions the dispatched work comes back asking, once it does.
