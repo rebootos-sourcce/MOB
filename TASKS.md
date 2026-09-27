@@ -19502,3 +19502,81 @@ real, already fixed Compass or an older one; and whether a tapped
 reading on a phone, on either the Knowledge base or the Field picture,
 should rise as a sheet from where his thumb is or jump the page down
 to it, since both defects share the same open question.
+
+## GZ. The security document, back, and it finds the repository is genuinely public. 27 September
+
+`SECURITY-IP.md`, dispatched at round GV. Two of its findings are
+urgent enough to act on immediately rather than sit in a document, and
+both were independently confirmed before being reported as fact.
+
+**The repository is public.** Confirmed directly, independent of the
+report's own claim: `rebootos-sourcce/MOB` reads `"visibility":
+"public"`. Everything in it is reachable by anyone: the full source
+with every comment, `DECISIONS.md`, this file at over nineteen
+thousand lines, every pricing and strategy document, and `index.html`,
+which the report identifies as the owner's own book, "The Mechanics of
+Being, Lance Powell," 5.9 megabytes. A sibling repository,
+`rebootos-sourcce/MOB-Manuscript`, is confirmed private, which may be
+where that book was meant to live instead. No credentials found in a
+scan of current files; git history was not scanned.
+
+**Every packed build sent to him this session carries the full
+internal reasoning, not the stripped copy that already exists for
+exactly this purpose.** Confirmed directly: `source.html` contains 146
+instances of text referencing `TASKS.md` or quoting his own words, and
+`tools/slim.py`'s own header states its purpose plainly, stripping
+comments cuts thirty five percent of the file's size, comments being
+"the most valuable thing in the source and... worth nothing at all
+inside a browser." `atuned-slim.html` exists in the repository, built
+and unused for delivery; every packed file sent to him was built from
+the full `source.html`, not this one, for no recorded reason.
+
+**A real correction to my own earlier verbal answer, at round GV.**
+That answer stated "a clean room copy is still infringement." The
+document corrects this directly: copyright does not cover ideas,
+methods or formulas, only the specific expression, so a rewrite from a
+description is lawful. It also raises a real, unresolved legal
+question neither this file nor round GV had considered: 624 of 629
+commits in this repository are authored by Claude, and current US
+authorship law requires a human author, which is the first question
+for an actual lawyer, not something settled here.
+
+**Measured, not asserted:** stripping comments cuts thirty five
+percent off `engine.js`; full minification and name scrambling cuts
+fifty five percent, and even fully scrambled the lexicon's own word
+table survives intact and the practice formula still reads in one
+line. A black box sweep of the shipped `scanStory` function answers in
+ninety three microseconds a word, recovering the whole word table,
+seat and weight, from a hundred thousand word dictionary in about nine
+seconds, regardless of anything done to the code.
+
+**The paywall's real weak point, found rather than assumed:** the plan
+is a field on the stored profile, accepted on load, and the spending
+budget is computed in the browser, so one edit in developer tools
+grants the top tier for free. Named as the likeliest real loss from
+"clever people," not the code being read.
+
+The document's own recommendation: the code cannot be protected
+technically, so effort belongs elsewhere, in order: make the
+repository private and ship the already stripped build this week;
+register the book, not the code, as the strongest real copyright
+asset; and once accounts land, move the things actually worth
+protecting to the server, the phrase pool that improves the story
+reader, the plan and spend, and practitioner or cohort data, since a
+copier gets a snapshot and he keeps the stream of real use that
+improves on it.
+
+This goes to him now, ahead of any other update, since a public
+repository leaking his own book and every strategy document is live
+exposure every minute it is not addressed, not a finding to queue.
+
+What I need from him, urgently, ahead of the document's other seven
+questions: whether to make the repository private now. Reversible in
+either direction as a setting, but nothing already seen by anyone
+during the time it has been public can be un-seen, so the only real
+question is going forward. Separately, and not urgent: whether the
+book is meant to be public at all, whether the manuscript repository
+being private already answers that, which name to protect first, the
+patent filing deadline the document estimates at roughly 31 May 2027
+if the repository has been public since its creation, and who holds
+the IP, him personally or a company.
