@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Record timeline</title>
+<!--FONT-->
+<style>
+/* ============================================================
+   THE RECORD OVER NINETY DAYS. A prototype, not the app.
+
+   Tokens are the product's own Dark values (shell/head.html) and the seat
+   PAL is read out of the engine through data.json, never retyped. The record
+   panel on the left is ladderHtml() in ui/cone.js redrawn from the engine's
+   own numbers for the chosen day, with its shipped copy kept word for word,
+   defects included, because the point is to show him what ships.
+   ============================================================ */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418; --au:#C2A063;
+ --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter',system-ui,sans-serif;
+ --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.pb{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+ padding:10px 16px;background:#2A2410;color:#F3E3B5;border-bottom:1px solid #5A4A1C;font-size:13.5px}
+.pb b{font-weight:600}
+.wrap{max-width:1360px;margin:0 auto;padding:18px 16px 64px}
+.hd h1{font-size:26px;font-weight:600;margin:4px 0 6px;letter-spacing:-.01em;line-height:1.25}
+.eyebrow{font-size:12.5px;color:var(--dim)}
+.muted{color:var(--mid)} .dim{color:var(--dim)} .small{font-size:13px}
+.lede{max-width:78ch;color:var(--mid);margin:0}
+h2{font-size:19px;font-weight:600;margin:0 0 4px}
+h3{font-size:15px;font-weight:600;margin:0 0 4px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--mid)}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);padding:16px}
+.sec{margin-top:28px}
+
+/* his three words, and where each one stands */
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.three .card{display:flex;flex-direction:column;gap:6px}
+.q{font-size:13.5px;color:var(--mid);border-left:2px solid var(--edge-2);padding-left:10px;margin:0}
+.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;border:1px solid}
+.t-built{color:#5FD5A6;border-color:rgba(95,213,166,.45)}
+.t-des{color:var(--accent);border-color:rgba(126,184,212,.45)}
+.t-none{color:var(--au);border-color:rgba(194,160,99,.5)}
+
+/* the controls */
+.ctl{position:sticky;top:0;z-index:40;margin-top:18px;background:rgba(12,13,18,.94);
+ backdrop-filter:blur(6px);border:1px solid var(--edge-2);border-radius:var(--r);padding:12px 14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.chip{white-space:nowrap;display:inline-flex;align-items:center;border:1px solid var(--edge-2);border-radius:999px;
+ padding:5px 12px;font-size:13.5px;background:var(--panel);cursor:pointer;min-height:36px}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
+.seg{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--edge-2);border-radius:999px;background:var(--sunk);flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:6px 13px;border-radius:999px;cursor:pointer;min-height:36px;color:var(--mid);font-size:13.5px}
+.seg button.on{background:var(--accent);color:var(--on-accent);font-weight:600}
+.when{display:flex;align-items:baseline;gap:10px;min-width:150px}
+.when b{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.slide{flex:1;min-width:220px;display:flex;flex-direction:column;gap:0}
+.slide input{width:100%;accent-color:var(--accent);min-height:32px;margin:0}
+.stops{position:relative;height:16px;font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.stops span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.ib{border:1px solid var(--edge-2);background:var(--panel);border-radius:999px;min-width:40px;min-height:36px;cursor:pointer;padding:0 12px;font-size:13.5px}
+.ib.on{border-color:var(--accent);color:var(--accent)}
+.ctl .sub{margin-top:8px}
+
+/* the two halves */
+.main{display:grid;grid-template-columns:420px minmax(0,1fr);gap:16px;margin-top:16px;align-items:start}
+.lab{font-size:12.5px;color:var(--dim);margin-bottom:8px}
+.lab b{color:var(--mid);font-weight:600}
+
+/* THE RECORD, as ui/cone.js ladderHtml draws it. Class names and sizes are
+   the product's own (.ld, .ld-streak, .ld-n and the rest). */
+.pm-eye{font-size:12px;color:var(--dim);letter-spacing:.02em}
+.ld{padding-top:4px}
+.ld-streak{display:flex;align-items:baseline;gap:9px;margin:8px 0 2px}
+.ld-n{font-family:var(--num);font-size:42px;font-weight:300;line-height:1;color:var(--mid);font-variant-numeric:tabular-nums}
+.ld-streak.live .ld-n{color:var(--ink)}
+.ld-u{font-size:13px;color:var(--dim)}
+.ld-p{margin:6px 0 0;font-size:13px;line-height:1.6;color:var(--mid);max-width:62ch}
+.ld-led{margin-top:14px;display:grid;grid-template-columns:1fr;gap:0}
+.ld-r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+ padding:7px 0;border-bottom:1px solid var(--edge);font-size:13px;color:var(--dim)}
+.ld-r b{font-family:var(--num);font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.ld-mh{margin-top:18px}
+.ld-marks{margin-top:8px;display:grid;grid-template-columns:1fr;gap:8px}
+.ld-m{display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;column-gap:10px;
+ padding:8px 10px;border:1px solid var(--edge);border-radius:10px;background:var(--sunk)}
+.ld-m.fresh{border-color:var(--c)}
+.ld-mi{grid-row:1/3;width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid var(--c);border-radius:50%}
+.ld-mi svg{width:19px;height:19px;fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ld-mn{font-size:13.5px;color:var(--ink);align-self:end}
+.ld-mn i{font-style:normal;font-size:11.5px;color:var(--c);margin-left:6px}
+.ld-md{font-size:12px;line-height:1.5;color:var(--dim)}
+.ld-acc{margin-top:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ld-on,.ld-off{font-size:13px}
+.ld-on{color:var(--mid)} .ld-off{color:var(--ink)}
+.btn{border:1px solid var(--edge-2);background:var(--panel-2);border-radius:999px;padding:7px 14px;font-size:13px;min-height:36px;cursor:default}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.ld-next{margin:14px 0 0;font-size:13px;line-height:1.6;color:var(--mid);max-width:62ch}
+.ld-next b{color:var(--ink);font-weight:500}
+.rec-next{margin-top:14px;padding-top:12px;border-top:1px solid var(--edge);font-size:13px;color:var(--mid);display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}
+.rec-next b{color:var(--ink);font-weight:500}
+
+/* a note from the team, never the product's own voice */
+.nt{border-left:2px solid var(--au);padding:3px 0 3px 10px;font-size:12.5px;line-height:1.5;color:#D9C9A4;margin:8px 0 0}
+.nt code{color:#D9C9A4}
+.nonotes .nt{display:none}
+
+/* the timeline */
+.strip{margin-top:12px}
+.strip:first-child{margin-top:0}
+.sh{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--dim)}
+.sh b{color:var(--ink);font-weight:600}
+.sh .v{color:var(--mid);font-variant-numeric:tabular-nums}
+.strip svg{display:block;width:100%;cursor:pointer;touch-action:pan-y}
+.key{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--dim);margin-top:4px}
+.key span{display:inline-flex;align-items:center;gap:5px}
+.key svg{width:18px;height:10px}
+.sep{border-top:1px dashed var(--edge-2);margin:16px 0 4px;padding-top:10px}
+
+/* the day's events */
+.ev{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.ev li{font-size:13.5px;color:var(--mid);display:flex;gap:8px;align-items:flex-start}
+.ev li svg{flex:none;width:18px;height:18px;margin-top:2px}
+
+/* what is not built */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.ph{border:1.5px dashed var(--edge-2);background:transparent}
+.ph p{margin:6px 0 0;font-size:13.5px;color:var(--mid)}
+.ph .src{font-size:12.5px;color:var(--dim);margin-top:8px}
+
+/* the findings */
+.fd{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.fd .card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+.fd p{margin:4px 0 0;font-size:13.5px;color:var(--mid)}
+.go{border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:999px;padding:6px 14px;min-height:36px;cursor:pointer;font-size:13px;white-space:nowrap}
+.prov{margin-top:28px;font-size:12.5px;color:var(--dim);max-width:90ch}
+
+@media (max-width:1100px){
+ .main{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+ .three,.grid2{grid-template-columns:minmax(0,1fr)}
+ .hd h1{font-size:22px}
+ .ctl{padding:10px 12px;border-radius:0;margin-left:-16px;margin-right:-16px;border-left:0;border-right:0}
+ .when b{font-size:20px}
+ .when{min-width:0;flex:1}
+ #who{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -12px;padding:0 12px}
+ #who::-webkit-scrollbar{display:none}
+ .ctl .sub{margin-top:6px}
+ .slide{order:9;flex-basis:100%;min-width:0}
+ .lede{font-size:14.5px}
+ .fd .card{grid-template-columns:minmax(0,1fr)}
+ .fd .go{justify-self:start}
+}
+</style></head>
+<body>
+<div class="pb"><b>Prototype.</b><span>The shipped engine, driven day by day on a simulated clock. Not the app.</span></div>
+<div class="wrap" id="root">
+
+<header class="hd">
+ <div class="eyebrow">Badges, achievements and scoring</div>
+ <h1>What the record looks like from moment one to day 90</h1>
+ <p class="lede">Pick a person and how often they come back, then move the slider. Everything on the left is what the product draws today on that day, word for word. Everything on the right is how it got there. Nothing is typed in: every figure is the engine's own reading of that person's record on that date.</p>
+</header>
+
+<section class="three" aria-label="His three words, and where each one stands">
+ <div class="card"><div><span class="tag t-built">Built</span></div>
+  <h3>Badges, which the product calls marks</h3>
+  <p class="q">"Badges are completion, flow and consistency."</p>
+  <p class="small muted" style="margin:0" id="markCount"></p></div>
+ <div class="card"><div><span class="tag t-none">Not designed</span></div>
+  <h3>Achievements</h3>
+  <p class="q">"Achievements are success: you cleared a fetter, a saboteur, a hyper complex, and they scale by the fetters upward."</p>
+  <p class="small muted" style="margin:0">Nothing in the code or the designs does this. The nearest is a designed award family, Cleared, one per seat.</p></div>
+ <div class="card"><div><span class="tag t-des">Designed, not built</span></div>
+  <h3>Points, which the designs call karma</h3>
+  <p class="q">"Points are a lightning bolt with lines coming off it, and they buy patterns at the store."</p>
+  <p class="small muted" style="margin:0">Rates are drafted in a prototype. Nothing in the build pays anything for a mark, a run or a game.</p></div>
+</section>
+
+<div class="ctl" id="ctl">
+ <div class="row" id="who" role="group" aria-label="Person"></div>
+ <div class="row sub">
+  <div class="seg" id="cad" role="group" aria-label="How often they come back"></div>
+ </div>
+ <div class="row sub">
+  <div class="when"><b id="dayLab">Moment one</b></div>
+  <button class="ib" id="prev" aria-label="Previous">&#8592;</button>
+  <div class="slide"><input type="range" id="sl" min="0" max="12" step="1" value="0" aria-label="Day">
+   <div class="stops" id="stops"></div></div>
+  <button class="ib" id="next" aria-label="Next">&#8594;</button>
+  <button class="ib" id="play">Play</button>
+ </div>
+ <div class="row sub small dim">
+  <button class="ib" id="fine">Every day</button>
+  <button class="ib on" id="notes">Team notes on</button>
+</div>
+</div>
+<p class="small dim" id="cadNote" style="margin:10px 2px 0"></p>
+
+<div class="main">
+ <div>
+  <div class="lab"><b>What the product draws</b>, on the Ritual surface and in the Compass rail. <code>ladderHtml()</code>, <code>ui/cone.js</code></div>
+  <div class="card" id="rec"></div>
+ </div>
+ <div>
+  <div class="lab"><b>How it got there</b>. Click any strip to jump to that day.</div>
+  <div class="card" id="tl"></div>
+  <div class="card" style="margin-top:12px"><h3 id="evH">On this day</h3><ul class="ev" id="ev"></ul></div>
+ </div>
+</div>
+
+<section class="sec" aria-labelledby="nbh">
+ <h2 id="nbh">Not built yet</h2>
+ <p class="lede small">What the design documents describe and the code does not carry, and what nobody has designed. Placeholders, on purpose: no names or art are invented here.</p>
+ <div class="grid2">
+  <div class="card ph"><span class="tag t-des">Designed, not built</span>
+   <h3 style="margin-top:8px">The turn: one closed circle of the loop</h3>
+   <div id="ring"></div>
+   <p>One turn closes when a person has touched discover, play, flow and embody, in any order, over any number of days. It cannot be farmed: ten stories close nothing. It is the counter his words ask for: "the gamification exists to keep that turning."</p>
+   <p>Known defect in the design: committing a story also takes a reading, so embody is stamped the same moment as discover. Not ported until that is fixed.</p>
+   <div class="src"><code>DESIGN-ladder.md</code> 1 and 2, <code>proto/ladder/turn.js</code>, brief 3.4</div></div>
+  <div class="card ph"><span class="tag t-des">Designed, not built</span>
+   <h3 style="margin-top:8px">Awards: what moved, dated, never removed</h3>
+   <p>Four families. Cleared, one per seat. Held, one per axis, named for the opposite pole. Moved, a band crossed upward. Closed, a share of the distance to the person's own ceiling. Two of the four need new fields on every reading before they can be computed, which is a schema change and his call.</p>
+   <div class="src"><code>DESIGN-ladder.md</code> 3.4 and 3.5, brief 6.3</div></div>
+  <div class="card ph"><span class="tag t-des">Designed, not built</span>
+   <h3 style="margin-top:8px">Karma, the points</h3>
+   <p>Paid after the fact for the record, never promised in advance for the act. Drafted rates: one pattern for a ritual marked done, five for a mark. The rate per mark is unsettled across three documents, and whether karma is a second unit or a name for earned patterns is open.</p>
+   <div class="src"><code>proto/game/data.json</code>, brief 7.2 and 7.3, TASKS AK1 to AK6</div></div>
+  <div class="card ph"><span class="tag t-des">Designed, not built</span>
+   <h3 style="margin-top:8px">The corrected marks</h3>
+   <p>Five corrections to the marks that ship, one per defect the timeline above shows, and six new ones, one of which, Came back, can only be earned by returning after a gap. Families move to one per quarter of the loop.</p>
+   <div class="src"><code>DESIGN-ladder.md</code> 1.4 and 3.2, brief 6.2</div></div>
+  <div class="card ph"><span class="tag t-none">Not designed</span>
+   <h3 style="margin-top:8px">Achievements for clearing a fetter, a saboteur, a hyper complex</h3>
+   <p>His AN4. Scaled "by the fetters upward". No design document, prototype or line of code defines what clearing a saboteur means in the engine's terms, what the thresholds are, or what the scale is.</p>
+   <div class="src"><code>TASKS.md</code> AN4; <code>docs/briefs/design-gamification.md</code> 7.2</div></div>
+  <div class="card ph"><span class="tag t-none">Not designed</span>
+   <h3 style="margin-top:8px">A score</h3>
+   <p>No number called a score exists. CQ is a reading, and his own words rule it out as a rank: "regardless of our score". The nearest thing to a level is the marker ruler: seven distances as a share of the person's own load, of which the record surface shows only the next.</p>
+   <div class="src"><code>engine/ladder.js</code> 4 to 16, <code>engine/schema.js</code> MARKERS, <code>DECISIONS.md</code> 646</div></div>
+ </div>
+</section>
+
+<section class="sec" aria-labelledby="fdh">
+ <h2 id="fdh">What the timeline shows that is wrong today</h2>
+ <p class="lede small">Each one is the shipped engine behaving as written. Show me jumps to the day it happens.</p>
+ <div class="fd" id="fd"></div>
+</section>
+
+<p class="prov" id="prov"></p>
+</div>
+
+<!--DATA-->
+<script>
+(function(){
+var J=DATA, MK=J.tables.MARKS, PAL=J.tables.PAL, P=J.people;
+var ORDER=Object.keys(P);
+var STOPS=[0,1,2,3,7,10,14,21,30,45,60,75,90];
+var CADS=[['model','The model\'s walk'],['daily','Every day'],['twice','Twice a week']];
+var CADNOTE={model:'When they come back is the project\'s retention model, losssim.js, its longest walk for this person. A model, not an observed person.',
+ daily:'Every day for ninety days. The ceiling.',
+ twice:'Mondays and Thursdays, every week. A fixed schedule.'};
+var ST={who:'Marcus',cad:'model',day:0,fine:false,notes:true};
+var FAMC={Practice:PAL.Root,Ground:PAL.Throat,Structure:PAL.Heart};
+var $=function(id){return document.getElementById(id);};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var pl=function(n,a,b){return n+' '+(n===1?a:b);};
+
+/* the hash carries the state so a screenshot or a Show me can land anywhere */
+function readHash(){var h=location.hash.slice(1).split('&');h.forEach(function(kv){var p=kv.split('=');
+ if(p[0]==='who'&&P[p[1]])ST.who=p[1]; if(p[0]==='cad'&&['model','daily','twice'].indexOf(p[1])>=0)ST.cad=p[1];
+ if(p[0]==='d'){var d=+p[1]; if(d>=0&&d<=90)ST.day=d;} if(p[0]==='fine')ST.fine=p[1]==='1';
+ if(p[0]==='notes')ST.notes=p[1]!=='0';});
+ if(!ST.fine&&STOPS.indexOf(ST.day)<0)ST.fine=true;}
+function walk(){return P[ST.who].walks[ST.cad];}
+
+function icon(m,sz){return '<svg viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" aria-hidden="true" style="fill:none;stroke:'+FAMC[m.fam]+';stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="'+m.ic+'"/></svg>';}
+/* the day each mark was first earned on this walk */
+function earnedAt(ds){var at={};ds.forEach(function(x){x.e.forEach(function(i){if(at[i]===undefined)at[i]=x.d;});});return at;}
+
+/* ============================================================
+   THE RECORD. ladderHtml in ui/cone.js, line for line in its copy.
+   ============================================================ */
+function record(){
+ var ds=walk(), x=ds[ST.day], s=x.s, l=x.l, run=s[0], live=!!s[1], best=s[2], days=s[3], gap=s[4];
+ var at=earnedAt(ds), h='<div class="ld"><div class="pm-eye">The record</div>';
+ h+='<div class="ld-streak'+(live?' live':'')+'"><span class="ld-n">'+run+'</span><span class="ld-u">'
+  +(run===1?'day':'days')+(live?' running':', last run')+'</span></div>';
+ if(!days)h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, and the first day is on.</p>';
+ else if(!live){h+='<p class="ld-p">The run ended '+gap+' days ago. Longest held: '+best+'. Practise today and a new one starts.</p>';
+  h+='<p class="nt">This line prints the length of the gap, which the design rules forbid: never name an absence. <code>ui/cone.js:1337</code></p>';
+  if(gap===2)h+='<p class="nt">And it is wrong today. A two day gap is the grace day: practising today would continue this run, not start a new one. The walk allows it (<code>ladder.js:70</code>), the live flag does not (<code>ladder.js:75</code>).</p>';}
+ else if(best>run)h+='<p class="ld-p">Longest held: '+best+' days.</p>';
+ if(days>=4&&run===1&&ST.cad==='twice')h+='<p class="nt">'+days+' days practised and the run reads 1. Every gap of three days or more halves the run, and twice a week every gap is three or four days, so it never climbs. <code>ladder.js:71</code></p>';
+ h+='<div class="ld-acc">'+(gap===0?'<span class="ld-on">Today is on the record.</span>':'<span class="ld-off">Today is not on the record yet.</span>')
+  +'<button type="button" class="btn'+(gap===0?'':' pri')+'" tabindex="-1">'+(gap===0?'Run another':'Build today\'s ritual')+'</button></div>';
+ var LG=[['Practised',pl(l[0],'minute','minutes')]];
+ if(l[1]>l[0])LG.push(['Planned',pl(l[1]-l[0],'minute','minutes')]);
+ LG=LG.concat([['Saved',pl(l[2],'ritual','rituals')],['Opened',pl(l[5],'address','addresses')],['Installed',pl(l[6],'axis','axes')]]);
+ h+='<div class="ld-led">'+LG.map(function(r){return '<div class="ld-r"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>';}).join('')+'</div>';
+ if(l[5]>0&&x.places<l[5])h+='<p class="nt">Opened counts pattern keys, one per address, per channel, per line. The distinct places behind these '+l[5]+' are '+x.places+'. <code>ladder.js:106</code>, <code>:186</code></p>';
+ if(x.e.length){
+  h+='<div class="pm-eye ld-mh">Marks</div><div class="ld-marks">';
+  x.e.forEach(function(i){var m=MK[i], fresh=at[i]===ST.day&&ST.day>0;
+   h+='<div class="ld-m'+(fresh?' fresh':'')+'" style="--c:'+FAMC[m.fam]+'"><span class="ld-mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+m.ic+'"/></svg></span>'
+    +'<span class="ld-mn">'+esc(m.nm)+(ST.notes?'<i>day '+at[i]+'</i>':'')+'</span><span class="ld-md">'+esc(m.d)+'</span></div>';});
+  h+='</div>';}
+ if(x.nx>=0){var n=MK[x.nx];h+='<p class="ld-next"><b>'+esc(n.nm)+'</b> '+esc(n.d)+'</p>';
+  if((n.k==='week'||n.k==='month'||n.k==='season')&&days>best)
+   h+='<p class="nt">'+pl(days,'day','days')+' practised, longest unbroken row '+best+'. '+esc(n.nm)+' reads the unbroken row, not days practised, and the run above it allows a grace day that this mark does not. <code>ladder.js:169</code>, <code>:173</code>, <code>:177</code></p>';}
+ /* the marker ruler, which ui/record.js:111 draws on the record surface */
+ if(x.mk)h+='<div class="rec-next"><span class="pm-eye">Next</span><b>'+esc(x.mk[0])+'</b><span>'+x.mk[2]+(x.mk[2]===1?' new address':' new addresses')+' away</span></div>'
+  +'<p class="nt" style="margin-top:4px">Drawn on the record surface, below the marks. It says new addresses and subtracts pattern keys, the same miscount as Opened. <code>ui/record.js:111</code>, <code>engine/schema.js</code> meterRead</p>';
+ h+='</div>';
+ $('rec').innerHTML=h;
+ $('root').classList.toggle('nonotes',!ST.notes);}
+
+/* ============================================================
+   THE TIMELINE. One strip per quantity, one shared day axis.
+   ============================================================ */
+var NS='http://www.w3.org/2000/svg';
+function strip(title,val,svgH,draw,key){
+ return {title:title,val:val,h:svgH,draw:draw,key:key||''};}
+function timeline(){
+ var ds=walk(), x=ds[ST.day], box=$('tl'), W=Math.max(260,box.clientWidth-32), pad=10;
+ var X=function(d){return pad+d*(W-2*pad)/90;};
+ var cur=function(h){return '<rect x="'+X(ST.day)+'" y="0" width="'+Math.max(0,W-X(ST.day))+'" height="'+h+'" fill="#1A1D26" fill-opacity=".62"/>'+'<line x1="'+X(ST.day)+'" x2="'+X(ST.day)+'" y1="0" y2="'+h+'" stroke="#EFEDE8" stroke-opacity=".55" stroke-width="1"/>';};
+ var axis=function(h){return [0,30,60,90].map(function(d){return '<line x1="'+X(d)+'" x2="'+X(d)+'" y1="0" y2="'+h+'" stroke="rgba(255,255,255,.07)"/>';}).join('');};
+ var path=function(vals,y){return vals.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+y(v).toFixed(1);}).join(' ');};
+ var S=[];
+ /* 1. the days, and what happened on them */
+ S.push(strip('Days practised',pl(x.s[3],'day','days')+' by this day',30,function(h){
+  var o=axis(h);
+  ds.forEach(function(y){if(!y.d)return; var a=y.act;
+   if(a.kept)o+='<line x1="'+X(y.d)+'" x2="'+X(y.d)+'" y1="14" y2="28" stroke="'+PAL.Root+'" stroke-width="2"/>';
+   if(a.rel)o+='<circle cx="'+X(y.d)+'" cy="7" r="3.2" fill="none" stroke="'+PAL.Throat+'" stroke-width="1.4"/>';
+   else if(a.refused)o+='<circle cx="'+X(y.d)+'" cy="7" r="2.4" fill="none" stroke="#94908A" stroke-width="1" stroke-dasharray="1.5 1.5"/>';});
+  return o+cur(h);},
+  '<span><svg viewBox="0 0 18 10"><line x1="9" x2="9" y1="0" y2="10" stroke="'+PAL.Root+'" stroke-width="2"/></svg>practised</span>'
+  +'<span><svg viewBox="0 0 18 10"><circle cx="9" cy="5" r="3.5" fill="none" stroke="'+PAL.Throat+'" stroke-width="1.4"/></svg>release run</span>'
+  +'<span><svg viewBox="0 0 18 10"><circle cx="9" cy="5" r="3" fill="none" stroke="#94908A" stroke-dasharray="1.5 1.5"/></svg>release refused, nothing left</span>'));
+ /* 2. the run, beside what it is counted from */
+ var top=Math.max(7,ds[90].s[3]);
+ S.push(strip('The run',x.s[0]+' running, longest row '+x.s[2]+', practised '+x.s[3],96,function(h){
+  var y=function(v){return h-4-(h-10)*v/top;};
+  var o=axis(h)+'<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y(7)+'" y2="'+y(7)+'" stroke="rgba(255,255,255,.12)" stroke-dasharray="2 4"/>'
+   +'<text x="'+(W-pad)+'" y="'+(y(7)-3)+'" text-anchor="end" font-size="10.5" fill="#94908A">7</text>';
+  o+='<path d="'+path(ds.map(function(z){return z.s[3];}),y)+'" fill="none" stroke="#94908A" stroke-width="1.2" stroke-dasharray="1 3" stroke-linecap="round"/>';
+  o+='<path d="'+path(ds.map(function(z){return z.s[2];}),y)+'" fill="none" stroke="#7EB8D4" stroke-width="1.4" stroke-dasharray="5 3"/>';
+  o+='<path d="'+path(ds.map(function(z){return z.s[0];}),y)+'" fill="none" stroke="#EFEDE8" stroke-width="1.8"/>';
+  return o+cur(h);},
+  '<span><svg viewBox="0 0 18 10"><line x1="0" x2="18" y1="5" y2="5" stroke="#EFEDE8" stroke-width="1.8"/></svg>the run, as shown</span>'
+  +'<span><svg viewBox="0 0 18 10"><line x1="0" x2="18" y1="5" y2="5" stroke="#7EB8D4" stroke-width="1.4" stroke-dasharray="5 3"/></svg>longest unbroken row, what the day marks read</span>'
+  +'<span><svg viewBox="0 0 18 10"><line x1="0" x2="18" y1="5" y2="5" stroke="#94908A" stroke-dasharray="1 3"/></svg>days practised</span>'));
+ /* 3. the marks, on the day each was earned */
+ var at=earnedAt(ds), ev=Object.keys(at).map(function(i){return {i:+i,d:at[i]};}).sort(function(a,b){return a.d-b.d||a.i-b.i;});
+ var rows=[], R=9, placed=ev.map(function(e){var cx=X(e.d), r=0; while(rows[r]!==undefined&&cx-rows[r]<2*R+2)r++; rows[r]=cx; return {i:e.i,d:e.d,cx:cx,r:r};});
+ var mh=Math.max(1,rows.length)*(2*R+4)+4;
+ S.push(strip('Marks',pl(x.e.length,'mark','marks')+' held on this day',mh,function(h){
+  var o=axis(h);
+  placed.forEach(function(p){var m=MK[p.i], cy=h-R-3-p.r*(2*R+4), on=p.d<=ST.day, c=FAMC[m.fam];
+   o+='<g opacity="'+(on?1:.3)+'"><circle cx="'+p.cx+'" cy="'+cy+'" r="'+R+'" fill="#090A0E" stroke="'+c+'" stroke-width="1.3"/>'
+    +'<g transform="translate('+(p.cx-6)+' '+(cy-6)+') scale(.5)" fill="none" stroke="'+c+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="'+m.ic+'"/></g>'
+    +'<title>'+esc(m.nm)+', day '+p.d+'</title></g>';});
+  return o+cur(h);},
+  Object.keys(FAMC).map(function(f){return '<span><svg viewBox="0 0 18 10"><circle cx="9" cy="5" r="4" fill="none" stroke="'+FAMC[f]+'" stroke-width="1.4"/></svg>'+f+'</span>';}).join('')
+  +'<span>Faint marks are not yet earned on this day. The product never shows them.</span>'));
+ /* 4. ground */
+ var gtop=Math.max(10,ds[90].l[5]);
+ S.push(strip('Ground opened',x.l[5]+' pattern keys, '+pl(x.places,'distinct place','distinct places'),64,function(h){
+  var y=function(v){return h-4-(h-10)*v/gtop;};
+  var o=axis(h)+'<path d="'+path(ds.map(function(z){return z.l[5];}),y)+'" fill="none" stroke="'+PAL.Throat+'" stroke-width="1.6"/>';
+  o+='<path d="'+path(ds.map(function(z){return z.places;}),y)+'" fill="none" stroke="'+PAL.Throat+'" stroke-opacity=".6" stroke-width="1.2" stroke-dasharray="3 3"/>';
+  return o+cur(h);},
+  '<span><svg viewBox="0 0 18 10"><line x1="0" x2="18" y1="5" y2="5" stroke="'+PAL.Throat+'" stroke-width="1.6"/></svg>pattern keys, what "Opened" and the ground marks count</span>'
+  +'<span><svg viewBox="0 0 18 10"><line x1="0" x2="18" y1="5" y2="5" stroke="'+PAL.Throat+'" stroke-opacity=".6" stroke-dasharray="3 3"/></svg>distinct places</span>'));
+ /* 5. the allowance */
+ S.push(strip('Patterns left to release with',x.say,54,function(h){
+  var y=function(v){return h-4-(h-10)*v/J.tables.GIFT_N;};
+  var dd=ds.map(function(z,i){return i?'L'+X(i).toFixed(1)+' '+y(ds[i-1].left).toFixed(1)+' L'+X(i).toFixed(1)+' '+y(z.left).toFixed(1):'M'+X(0).toFixed(1)+' '+y(z.left).toFixed(1);}).join(' ');
+  var o=axis(h)+'<path d="'+dd+'" fill="none" stroke="#C2A063" stroke-width="1.5"/>';
+  return o+cur(h);},'<span>The gift of '+J.tables.GIFT_N+', then the free ten a week. <code>engine/plan.js</code></span>'));
+ /* 6. the reading, which is not part of the record */
+ S.push(strip('The reading, CQ',x.unread?'no reading yet':(Math.round(x.cq)+', '+x.tier),60,function(h){
+  var y=function(v){return h-4-(h-10)*v/100;};
+  var o=axis(h)+J.tables.TIERDEF.map(function(t){return '<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y(t.at)+'" y2="'+y(t.at)+'" stroke="rgba(255,255,255,.06)"/>';}).join('');
+  o+='<path d="'+ds.slice(1).map(function(z,i){return (i?'L':'M')+X(z.d).toFixed(1)+' '+y(z.cq).toFixed(1);}).join(' ')+'" fill="none" stroke="#B4B0A8" stroke-width="1.4"/>';
+  return o+cur(h);},'<span>Drawn from 0 to 100 so a move of hundredths looks like what it is. Not part of the record: a reading is never a score.</span>'));
+ var html='', ax='<div class="sh" style="margin-top:6px"><span>moment one</span><span>day 30</span><span>day 60</span><span>day 90</span></div>';
+ S.forEach(function(s,k){
+  html+=(k===5?'<div class="sep"></div>':'')+'<div class="strip"><div class="sh"><b>'+s.title+'</b><span class="v">'+esc(s.val)+'</span></div>'
+   +'<svg data-k="'+k+'" viewBox="0 0 '+W+' '+s.h+'" height="'+s.h+'" preserveAspectRatio="none">'+s.draw(s.h)+'</svg>'
+   +(s.key?'<div class="key">'+s.key+'</div>':'')+'</div>';});
+ box.innerHTML=html+ax;
+ box.querySelectorAll('svg[data-k]').forEach(function(sv){sv.addEventListener('click',function(e){
+  var r=sv.getBoundingClientRect(), d=Math.round((e.clientX-r.left-pad*r.width/W)/((r.width-2*pad*r.width/W)/90));
+  d=Math.max(0,Math.min(90,d)); if(STOPS.indexOf(d)<0)ST.fine=true; ST.day=d; paint();});});}
+
+/* ============================================================
+   WHAT HAPPENED. The day itself, or everything since the last stop.
+   ============================================================ */
+function events(){
+ var ds=walk(), d=ST.day, a=0;
+ if(!ST.fine){var k=STOPS.indexOf(d); a=k>0?STOPS[k-1]+1:d;} else a=d;
+ var win=ds.slice(a,d+1), per=P[ST.who], o=[], sq='<svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="3" fill="#94908A"/></svg>';
+ $('evH').textContent=d===0?'Moment one':(a===d?'On day '+d:'Days '+a+' to '+d);
+ if(d===0){o.push([sq,'A blank profile. No story, no ritual, no reading. The record reads nothing, and the only mark named is the first one.']);}
+ var kept=win.filter(function(z){return z.act.kept;}).length, lit0=win.filter(function(z){return z.act.kept&&!z.act.lit;}).length;
+ var rel=win.filter(function(z){return z.act.rel;}), refused=win.filter(function(z){return z.act.refused;}).length;
+ if(win.some(function(z){return z.act.intake;}))o.push([sq,'The intake answered, from '+per.nm+'\'s reference laws. CQ is measured from here.']);
+ if(d>0)o.push([sq,kept?(pl(kept,'day','days')+' practised: a story from '+per.nm+'\'s own words, then '+per.practice.k+', '+per.practice.min+' min, saved and marked done.'
+  +(lit0?' The reader found nothing in '+lit0+' of those stories.':'')):'No practice'+(a===d?'':' in these days')+'.']);
+ if(rel.length)o.push(['<svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="5" fill="none" stroke="'+PAL.Throat+'" stroke-width="1.5"/></svg>',
+  pl(rel.length,'release','releases')+' run, '+rel.reduce(function(s,z){return s+z.act.rel;},0)+' patterns.']);
+ if(refused)o.push(['<svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="4" fill="none" stroke="#94908A" stroke-dasharray="2 2"/></svg>',
+  pl(refused,'day','days')+' with charge above the line and the release refused, because nothing was left in the allowance.']);
+ var at=earnedAt(ds);
+ Object.keys(at).filter(function(i){return at[i]>=a&&at[i]<=d&&d>0;}).forEach(function(i){var m=MK[i];
+  o.push([icon(m,18),'Earned <b style="color:var(--ink);font-weight:600">'+esc(m.nm)+'</b>, day '+at[i]+'.']);});
+ $('ev').innerHTML=o.map(function(r){return '<li>'+r[0]+'<span>'+r[1]+'</span></li>';}).join('');}
+
+/* ============================================================
+   THE CONTROLS
+   ============================================================ */
+function controls(){
+ $('who').innerHTML='<span class="small dim" style="margin-right:2px">Person</span>'+ORDER.map(function(n){return '<button class="chip'+(n===ST.who?' on':'')+'" data-w="'+n+'">'+n+'</button>';}).join('');
+ $('cad').innerHTML=CADS.map(function(c){return '<button class="'+(c[0]===ST.cad?'on':'')+'" data-c="'+c[0]+'">'+c[1]+'</button>';}).join('');
+ $('cadNote').textContent=CADNOTE[ST.cad]+(ST.cad==='model'?' '+P[ST.who].nm+': '+P[ST.who].model.kept+' of 90 days.':'');
+ var sl=$('sl'); sl.max=ST.fine?90:STOPS.length-1; sl.value=ST.fine?ST.day:STOPS.indexOf(ST.day);
+ $('stops').innerHTML=(ST.fine?[0,30,60,90]:STOPS).map(function(d,i,arr){var f=ST.fine?d/90:i/(arr.length-1);
+  var show=ST.fine||[0,3,7,14,30,60,90].indexOf(d)>=0;
+  return show?'<span style="left:calc('+(f*100)+'% + '+(8-16*f)+'px)">'+(d===0?'0':d)+'</span>':'';}).join('');
+ $('dayLab').textContent=ST.day===0?'Moment one':'Day '+ST.day;
+ $('fine').classList.toggle('on',ST.fine); $('fine').textContent=ST.fine?'Every day':'In intervals';
+ $('notes').classList.toggle('on',ST.notes); $('notes').textContent=ST.notes?'Team notes on':'Team notes off';}
+function paint(){
+ controls(); record(); timeline(); events();
+ var h='who='+ST.who+'&cad='+ST.cad+'&d='+ST.day+(ST.fine?'&fine=1':'')+(ST.notes?'':'&notes=0');
+ if(location.hash.slice(1)!==h)history.replaceState(null,'','#'+h);}
+function step(k){
+ if(ST.fine)ST.day=Math.max(0,Math.min(90,ST.day+k));
+ else{var i=STOPS.indexOf(ST.day); ST.day=STOPS[Math.max(0,Math.min(STOPS.length-1,i+k))];}
+ paint();}
+document.addEventListener('click',function(e){var t=e.target.closest('button'); if(!t)return;
+ if(t.dataset.w){ST.who=t.dataset.w;paint();}
+ else if(t.dataset.c){ST.cad=t.dataset.c;paint();}
+ else if(t.dataset.go){var g=t.dataset.go.split(',');ST.who=g[0];ST.cad=g[1];ST.day=+g[2];ST.fine=STOPS.indexOf(ST.day)<0;paint();
+  $('ctl').scrollIntoView({behavior:'smooth',block:'start'});}});
+$('sl').addEventListener('input',function(){var v=+this.value; ST.day=ST.fine?v:STOPS[v]; paint();});
+$('prev').onclick=function(){step(-1);}; $('next').onclick=function(){step(1);};
+$('fine').onclick=function(){ST.fine=!ST.fine; if(!ST.fine){var b=STOPS[0];STOPS.forEach(function(s){if(s<=ST.day)b=s;});ST.day=b;} paint();};
+$('notes').onclick=function(){ST.notes=!ST.notes;paint();};
+var timer=null;
+$('play').onclick=function(){
+ if(timer){clearInterval(timer);timer=null;this.textContent='Play';return;}
+ if(ST.day===90)ST.day=0; this.textContent='Stop';
+ var self=this; timer=setInterval(function(){
+  if(ST.day>=90){clearInterval(timer);timer=null;self.textContent='Play';return;} step(1);},ST.fine?160:900);};
+window.addEventListener('resize',function(){timeline();});
+
+/* ============================================================
+   THE STATIC PARTS, computed from the data rather than typed
+   ============================================================ */
+var fams={}; MK.forEach(function(m){fams[m.fam]=(fams[m.fam]||0)+1;});
+$('markCount').textContent=MK.length+' marks in '+Object.keys(fams).length+' families: '+Object.keys(fams).map(function(f){return f.toLowerCase()+' '+fams[f];}).join(', ')
+ +'. A run that halves on a gap and never resets, and a ledger of counts. engine/ladder.js.';
+
+/* the loop, drawn as the circle he ruled, dashed because it is not built */
+(function(){var q=['discover','play','flow','embody'], c=['#7D93E0',PAL.Sacral,PAL.Root,PAL.Heart], o='<svg viewBox="0 0 220 150" width="220" height="150" style="display:block;margin:10px auto 0;max-width:100%" aria-label="The loop, discover, play, flow, embody, as a closed circle. Not built.">';
+ for(var i=0;i<4;i++){var a0=(-90+i*90+4)*Math.PI/180, a1=(-90+(i+1)*90-4)*Math.PI/180;
+  o+='<path d="M'+(110+50*Math.cos(a0))+' '+(75+50*Math.sin(a0))+' A50 50 0 0 1 '+(110+50*Math.cos(a1))+' '+(75+50*Math.sin(a1))+'" fill="none" stroke="'+c[i]+'" stroke-width="3" stroke-dasharray="5 4" stroke-linecap="round"/>';
+  var am=(-45+i*90)*Math.PI/180; o+='<text x="'+(110+78*Math.cos(am))+'" y="'+(79+62*Math.sin(am))+'" text-anchor="middle" font-size="12" fill="#B4B0A8">'+q[i]+'</text>';}
+ o+='<text x="110" y="79" text-anchor="middle" font-size="11.5" fill="#94908A">not built</text></svg>'; $('ring').innerHTML=o;})();
+
+/* the findings. every figure in them is read off the walks, not typed. */
+(function(){
+ var F=[], D=function(n,c){return P[n].walks[c];};
+ var tw=D('Marcus','twice')[90];
+ F.push(['Twice a week for ninety days, and the run reads 1 the whole time',
+  tw.s[3]+' days practised. Every gap of three days or more halves the run, and a twice a week gap is always three or four days. Seven days is never earned either, because it reads the unbroken row.','Marcus,twice,90']);
+ var dm=D('Derek','model')[90];
+ F.push(['Seven, thirty and ninety days read the unbroken row, not days practised',
+  'Derek on the model\'s walk: '+dm.s[3]+' days practised by day 90, longest unbroken row '+dm.s[2]+', so the next mark named is still '+MK[dm.nx].nm+'. The run itself allows a grace day. The marks beside it do not.','Derek,model,90']);
+ var d3=D('Derek','twice')[3];
+ F.push(['The lapsed line names the absence, and on the grace day it is wrong',
+  'Two days after a practice the record says "The run ended '+d3.s[4]+' days ago ... Practise today and a new one starts." Practising today would continue it. And on a long absence it prints the whole gap: Gordon on the model\'s walk reads "ended '+D('Gordon','model')[90].s[4]+' days ago" on day 90.','Derek,twice,3']);
+ var wa=D('Angela','daily'), ta=wa.find(function(z){return z.e.indexOf(5)>=0;});
+ F.push(['"Ten addresses" is earned at '+ta.places+' places',
+  'The copy says "Not ten runs. Ten places." The test counts pattern keys, and one address run across four channels is four keys. Angela, every day: earned on day '+ta.d+' with '+ta.l[5]+' keys at '+ta.places+' places.','Angela,daily,'+ta.d]);
+ var wd=D('Derek','daily'), rf=wd.filter(function(z){return z.act.refused;}).length, rr=wd.filter(function(z){return z.act.rel;}).length;
+ var fr=wd.find(function(z){return z.act.refused;});
+ F.push(['The allowance runs dry long before the marks do',
+  'Derek, every day: '+rr+' releases run and '+rf+' days refused with charge above the line, from day '+fr.d+'. The record keeps paying marks for showing up while the release, the act the product is for, is closed. The economy does this, and it lands on the same days as the marks.','Derek,daily,'+fr.d]);
+ var cq=D('Sofia','daily');
+ F.push(['The reading barely moves, which is correct and needs saying',
+  'Sofia, every day: CQ '+cq[1].cq.toFixed(2)+' on day 1 and '+cq[90].cq.toFixed(2)+' on day 90. CQ is the laws, and ninety days of release move it by tenths. If he wants a number that visibly climbs, it is not this one, and it should not be.','Sofia,daily,90']);
+ $('fd').innerHTML=F.map(function(f){return '<div class="card"><div><h3>'+esc(f[0])+'</h3><p>'+esc(f[1])+'</p></div><button class="go" data-go="'+f[2]+'">Show me</button></div>';}).join('');})();
+
+$('prov').textContent='Read off engine.js at commit '+J.stamp.commit+', md5 '+J.stamp.engineMd5+', on '+J.stamp.read+'. Day 0 is '+J.stamp.t0+'. Each kept day: a story from the person\'s bank in sim/stories.js, a release over the three heaviest addresses above the line when the allowance permits (ui/release.js relCoolDown, lifted and guarded), and the practice the model calls for, saved and marked done. That join of cadence to acts is judgement, taken from proto/ninety/arc90.js. The cadence on the model\'s walk is proto/ritual/losssim.js, seed 20260920: a model, not an observed person.';
+
+readHash(); paint();
+})();
+</script>
+</body></html>
