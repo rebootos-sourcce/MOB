@@ -239,6 +239,38 @@ he should say so. Everything below would still hold.
      sized to the painted cells, under the nerves, with its opacity set by
      intensity. It uses no blur filter.
 
+## 1B. A personal observation on the neck, for the body map and the pain map
+
+His words, verbatim, round JD: "The neck is for navigation. When the neck is
+impaired, navigation, like steering wheel power, becomes more difficult. I'm
+not making a note of this from theory, I'm making a note of this from
+observation after releasing the stress response from my spine. The more that
+gets released, the easier it is to use willpower to push through any
+barriers. Focus becomes refined."
+
+Labeled, not tested, the same rule this file already holds for his other
+observations: it is information, and information needs a label, not a test.
+No gate checks it, no address is renamed off it, and no claim is shown to a
+person from it.
+
+Where it sits against the built map. The neck is already a selectable region
+(section 1A, section 5). The addresses already carried there are Throat seat
+ones, and the vagus nerve is already named twice on the addresses at the
+neck (`engine/data/figure.js`, Manya: "the vagus in the neck and the
+larynx's own nerves"; the vagus also appears among the shared nerve names in
+section 2). The vagus is broadly associated with self-regulation in the
+literature (polyvagal theory), which is not the same claim as his, and is
+named here only to say his account points at a real, already mapped nerve
+rather than an invented one. That is a structural note, not a confirmation
+of his mechanism, and not a citation for it.
+
+Nothing to build from this yet. If the body map ever prints a sentence per
+region on hover or on release, this is the kind of line that region would
+carry, sourced to him and dated, the same way the tension line hums on his
+own ruling above. Question for him: does "navigation" mean literal
+steering, decision making under pressure, or both, since the pain map's own
+copy would need to pick one reading rather than his broader one.
+
 ## 2. What is there today (measured)
 
 **The data.** `engine/data/nodes.js` defines 112 addresses. 4 of them are the

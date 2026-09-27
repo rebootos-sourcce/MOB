@@ -22174,3 +22174,18 @@ speaks 6 and part of a 7th), so the number on screen can jump at the
 very end from what was heard to a few points lower, a free extra
 release nobody heard happen. Carried below rather than fixed by
 guessing which way he wants it.
+
+## JD. A personal observation on the neck, for the body map and the pain map
+
+His words, verbatim: "This is a note for the um, body map and for the
+pain map. The neck is for navigation. When the neck is impaired,
+navigation, like steering wheel power, becomes more difficult. I'm not
+making a note of this from theory, I'm making a note of this from
+observation after releasing the stress response from my spine. The
+more that gets released, the easier it is to use willpower to push
+through any barriers. Focus becomes refined."
+
+Not code. Filed into `BODY-MAP-SPEC.md` as a labeled personal
+observation beside the existing neck region and its own nerves, not as
+a tested claim, matching the rule the file already carries for his
+other untested observations: information gets a label, not a test.
