@@ -21348,3 +21348,7 @@ mockups added. Relayed directly to the already dispatched release
 port rather than opened as a new round, since he named the release
 panel's own text as the exact thing to stop adding and the port is
 already touching this same file.
+
+Also landed this round: the avatar gap fix held since round HU,
+`766a87d`, rebased onto the copy sweep and pushed, gates unchanged
+from its first isolated pass.
