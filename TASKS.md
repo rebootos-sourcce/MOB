@@ -20384,3 +20384,63 @@ What I need from him: the report's own ten questions, the two most
 consequential being the Character/Masks collision and whatever Laws is
 renamed to, plus whether "left panel starts closed" meant the column
 or something else, since the built default now assumes the column.
+
+## HN. The three Fringe questions re-asked with real pictures, and his own physiological scale drawn out with a real ambiguity in it. 27 September
+
+Round HI's re-ask dispatch, back, as a published page rather than a
+document, opened directly for verification rather than trusted from
+the report alone: `https://claude.ai/artifact/YFaoyejj9aXi5AXbkdptxL`.
+The page itself is real: four questions, each with a real clip or
+still shot against the reference person Ana, a dashed guide line
+marking where the ring settles, and every option marked plainly where
+it is already what the app does today. Confirmed `RUNHOT_AT` at
+`ui/wheel.js:1033` set to `LEVER_MU`, matching the page's own claim
+that the list and the Field's bend share one threshold; confirmed the
+exact "past five" strings the page proposes replacing, word for word,
+at `ui/analytics.js`; confirmed `DECISIONS.md`'s own scale, flowing
+through collapsed, matches what the page draws.
+
+**The three questions, reframed in plain terms rather than repeated:**
+does the Field remember what just moved across a full close and
+reopen, or forget the moment the app closes, shown as a measured
+27.9px push dropping to 7.0px on reopen; should the push fade on its
+own like a bruise healing, or stay lit until something else happens at
+that address; and should the effect reach Frames and Dial, shown
+against real screenshots of both today, with a rough "still lines,
+nothing moving" mockup drawn honestly as unbuilt.
+
+**A real ambiguity in his own answer, drawn out rather than picked
+silently.** His words for the fourth question, "mildly impaired to
+heavily impaired," read literally would start the running hot list at
+1, which would put ninety nine of Ana's hundred and twelve addresses
+on it, nearly all of them; his other phrase, "heavily impaired would
+be hot," reads as starting at 7. The page draws his own scale as a
+picture and shows what each of three starting points, 4, 5 or 7,
+would actually produce on six real reference profiles, from Ana's
+eight at the strictest to Gordon's ninety seven at the loosest, rather
+than picking the reading that was easiest to build.
+
+**Deliberately not implemented yet, and said so rather than guessed
+around:** the fourth answer's copy change is small and located
+precisely (`anaHot`, `anaHotRows` in `ui/analytics.js`), but committing
+it now would rebuild `source.html` from a tree other seats still have
+open, the exact mistake already made once this session at commit
+`325e923`. Held until his pick and until the shared tree clears.
+
+**A real terminology collision caught in passing, not invented to
+pad the report:** the Field's row word "collapsing," meaning a charge
+that just fell, and his own scale word "collapsed," meaning a charge
+of ten, the heaviest possible, could land on the same row meaning
+opposite things, against this product's own one word per concept rule.
+No reference profile reaches 10 today, so it is not yet a live
+contradiction, but it needs a rename before per row state words ship.
+
+Opened for him directly since the artifact was private and needed
+surfacing rather than left for him to find.
+
+What I need from him: the same four questions the page itself asks,
+each answerable in one word or number: A or B for question one; A or
+B, and if B a duration, for question two; A, B or C for question
+three; and A, B or C for exactly where the running hot list starts,
+now that his own scale is drawn out and the real difference between
+readings is shown on real people rather than argued in the abstract.
