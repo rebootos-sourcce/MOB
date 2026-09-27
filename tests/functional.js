@@ -508,9 +508,15 @@ ok(relsix.first.text&&relsix.first.text.indexOf(SIXSTEM)===0,
  ok(tru.length>0&&tru.every(l=>l.text&&l.text.indexOf('letting go')<0),
   'and every reframe line installs rather than releasing again, '+tru.length+' checked');
  /* the side and the phase are still named above the line. The six sit inside
-    the four passes, they do not replace them. */
- ok(relsix.lines.every(l=>/^(Right|Left) (limit|truth), line \d+$/.test(l.eye)),
-  'every line still names its side and phase: '+relsix.lines.map(l=>l.eye).slice(0,4).join(' | '));}
+    the four blocks, they do not replace them. The heading is the book's
+    order of telling it, the half and then the side, "Release, left channel". */
+ ok(relsix.lines.every(l=>/^(Release|Reframe), (left|right) channel$/.test(l.eye)),
+  'every line still names its half and side: '+relsix.lines.map(l=>l.eye).slice(0,4).join(' | '));
+ /* LEFT FIRST, the book's order at 2401: left release, right release, left
+    reframe, right reframe, at every address. */
+ const ord=relsix.lines.map(l=>String(l.key).split(':')[1]).slice(0,4).join(' ');
+ ok(ord==='Llimit Rlimit Ltruth Rtruth','an address runs left release, right release, left reframe, '
+  +'right reframe, got '+ord);}
 ok(relsix.after===relsix.unique,'reading the lines spends nothing, the meter charges at the end of a run');
 /* an axes card is one statement run bilaterally, so demanding two passes would
    be busywork the card does not ask for. */
@@ -1904,16 +1910,18 @@ const relrun=await page.evaluate(()=>{
 ok(relrun.plan>0&&relrun.plan<=25,
  'a run is at most twenty five thought lines, got '+relrun.plan);
 ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
-ok(new RegExp(relrun.plan+' thought lines of new ground').test(relrun.setup),
- 'the setup says what it costs before anybody begins, quoting '+relrun.plan);
-/* THE ASSERTION IS THAT THE NUMBER SAYS WHAT IT IS OF, not that it says one
-   particular sentence. This demanded "N of your allowance", which is the
-   phrasing the voice work struck: it says N of what, and on a grant of ten a
-   week against a run that caps at twenty five it reads as a bill nobody can
-   pay. A gate that quotes copy word for word turns a fixed defect into a
-   failing row, which this repository has now done twice. */
-ok(new RegExp(relrun.plan+'\\s+patterns of the \\d+ you have left').test(relrun.setup),
- 'and that it says what the number is out of, quoting '+relrun.plan);
+/* THE PANEL PRINTS NO PRICE, RULED 27 SEPTEMBER (round IG): "Cost runs left,
+   that goes away. And just a run release button. So it's release your
+   selections, pace, and how many patterns." These two rows asserted the price
+   sentence he struck. What they now hold is the cut: the setup offers its two
+   settings and its one button and quotes no cost, while the run below still
+   charges exactly the plan it was shown, which is the rule the price sentence
+   was there to keep. */
+ok(/Release your selections/.test(relrun.setup)&&/Pace/.test(relrun.setup)
+ &&/Patterns/.test(relrun.setup)&&/Run release/.test(relrun.setup),
+ 'the setup is the selection, pace, how many patterns and one button: '+relrun.setup.slice(0,120));
+ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
+ 'and it quotes no cost and no framing, '+relrun.setup.slice(0,160));
 ok(relrun.beforeWho===0&&relrun.afterWho===0,
  'the run starts and ends on the person\'s own record, no repoint in the middle');
 ok(relrun.ownGained===relrun.plan,
@@ -2974,7 +2982,8 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  ok(!/\b0 patterns of the 0\b/.test(run.sub),
   'the panel does not quote a price of nought against an allowance of nought, got '
   +JSON.stringify(run.sub));
- console.log('  spent      '+JSON.stringify(run.sub));
+ ok(/allowance/.test(run.note),'and the refusal says why, got '+JSON.stringify(run.note));
+ console.log('  spent      '+JSON.stringify(run.note));
  /* AND THE PARTIAL CASE, which is the half a refusal would have broken. */
  const part=await rl.evaluate(async unique=>{
   loadP(0);
@@ -2999,17 +3008,11 @@ console.log('\n=== the release panel quotes a price it then charges ===');
   +' against '+part.left);
  ok(part.spent===part.plan,'and the run spends exactly what the panel quoted, '
   +part.spent+' against '+part.plan);
- ok(new RegExp('^'+part.plan+' patterns of the '+part.left+' ').test(part.sub),
-  'and the printed sentence is that same number twice, got '+JSON.stringify(part.sub));
- /* WHICH CEILING CUT IT, because the two mean different things to a person.
-    Short of the run ceiling used to print "that is everything still unopened in
-    this queue", which is false the moment the allowance is what cut it: there is
-    more unopened ground and they cannot reach it yet. */
- ok(/allowance has left/.test(part.note)&&!/everything still unopened/.test(part.note),
-  'and the note names the allowance rather than claiming the queue is empty, got '
-  +JSON.stringify(part.note));
- console.log('  partial    '+JSON.stringify(part.sub));
- console.log('             '+JSON.stringify(part.note));
+ /* the price sentence that stood here was struck at round IG. What the
+    panel owes a short allowance now is a run and not a quote: the plan above
+    is exactly what is left and the run spends exactly that. */
+ ok(part.sub===''&&part.note==='','and the panel quotes no price for it, got '
+  +JSON.stringify([part.sub,part.note]));
  await rl.close();
 }
 

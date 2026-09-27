@@ -3546,6 +3546,38 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rel-row b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
 .rel-note{font-size:13.5px;color:var(--dim);line-height:1.7;margin:13px 0 19px;text-align:left;font-weight:300}
 .rel-act{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* THE RELEASE, HEARD (DESIGN-release.md section 6). The card while a run is
+   under way carries a strip on each side, the live one lit and carrying its
+   word, so the side is never told by colour alone. The strips sit inside the
+   card's own padding, which is why the running card is inset further. */
+.rel-card.rel-running{position:relative;padding-left:44px;padding-right:44px}
+.rel-strip{position:absolute;top:0;bottom:0;width:30px;display:flex;align-items:center;
+ justify-content:center;color:var(--dim);font-size:11px;font-weight:600;letter-spacing:.04em}
+.rel-strip span{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap}
+.rel-strip-L{left:0;border-right:1px solid var(--edge)}
+.rel-strip-R{right:0;border-left:1px solid var(--edge)}
+.rel-strip.on{color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.rel-plate{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0 6px;text-align:left}
+.rel-plate .rel-node{display:block;font-size:22px;margin:0}
+.rel-plate .rel-sub{display:block;margin:0}
+/* a pass is four or five words and is read at a glance, so it is set larger
+   than the head statement it repeats */
+.rel-line.pass{font-size:22px;font-weight:400}
+.rel-clock{display:flex;align-items:center;justify-content:center;gap:22px;margin:16px 0 18px}
+.rel-dial{display:block;flex:none}
+.rel-fig{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.rel-fig span{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--dim)}
+.rel-fig b{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:20px;font-weight:500;color:var(--ink)}
+.rel-cool{margin:14px 0 10px}
+/* the selection, shown as its rings and nothing else: it was made upstream */
+.rel-rings{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0 6px}
+.rel-fields{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0 22px}
+.rel-field{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left}
+.rel-field span{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--dim)}
+.rel-field input,.rel-field select{min-height:44px;min-width:96px;padding:9px 12px;
+ background:var(--panel-2);color:var(--ink);border:1px solid var(--edge);border-radius:var(--r-xs);
+ font-family:var(--num);font-size:16px;text-align:center}
+.rel-card .ac-tog+.ac-tog{margin-top:0;border-top:0}
 /* THE SEAT TONE'S SWITCH, IN THE RELEASE. The account page's own row, taken
    out to the card's edges so its label starts on the line the text above it
    starts on, where the row's own inset left it floating fifteen pixels in.

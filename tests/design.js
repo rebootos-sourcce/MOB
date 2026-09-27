@@ -1404,6 +1404,110 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
  await fg.close();
 }
 
+console.log('\n=== the release runs to its end in silence, and says what it speaks ===');
+/* ASKED FOR BY NAME IN DESIGN-release.md SECTION 7: "Add a gate that asserts
+   the flow renders and completes with sound off, because silence is the
+   default and the default is the case that must never break." The voice opens
+   on since TASKS RF10, so silence is now a choice a person makes, and it is
+   still the case that must never break: every fact the voice states is on the
+   screen, so a run with the voice off has to be complete without it.
+
+   Driven through the real button, Run release, and walked by the product's own
+   walker to the last line of the cooldown, at the full dose. Nothing is set by
+   hand but the clock: the walker's own four timing constants are shrunk, so a
+   run that takes twenty minutes at speaking pace takes seconds here and every
+   step still goes through relStep, relAdvance and relCoolDown in order. The
+   dose is read off the engine, LINES_PER_CH, and never typed here. */
+{
+ const rp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const rerr=[]; rp.on('pageerror',e=>rerr.push(e.message));
+ await rp.goto(FILE,{waitUntil:'load'}); await booted(rp);
+ const walk=async(voice,dose)=>rp.evaluate(async a=>{
+  REL_WORD_S=0.0004; REL_GAP_S=0.001; REL_HEAD_S=0; REL_FRAME_S=0;
+  if(!window.__relSeen){
+   const orig=relRender;
+   window.relRender=function(){ orig();
+    const el=document.querySelector('#rel .rel-line')||document.querySelector('#rel .rel-speak');
+    const k=[RUN.phase,RUN.idx,RUN.pass,RUN.line,RUN.cool].join('/');
+    const S0=window.__relSeen, last=S0[S0.length-1];
+    if(!last||last.k!==k)S0.push({k:k,ph:RUN.phase,idx:RUN.idx,pass:RUN.pass,cool:RUN.cool,
+     key:(RUN.plan||[])[RUN.idx]||'',text:el?el.textContent:'',
+     eye:(document.querySelector('#rel .pm-eye')||{}).textContent||''});};}
+  window.__relSeen=[];
+  const spoken=[];
+  if(window.speechSynthesis)speechSynthesis.speak=function(u){
+   spoken.push(u.text); setTimeout(function(){ if(u.onend)u.onend({}); },1);};
+  loadP(0);
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  CURP.ui.voice=a.voice; CURP.ui.tone=false;
+  const ids=compute().carrying.slice(0,1).map(n=>n.i);
+  relPick(ids);
+  if(a.dose){const d=document.getElementById('reldose');
+   d.value=String(a.dose); d.dispatchEvent(new Event('change'));}
+  const before=(CURP.meter.unique||[]).length, plan=RUN.plan.slice(), dose=RUN.dose;
+  const setup=(document.getElementById('rel').textContent||'').replace(/\s+/g,' ');
+  const go=document.getElementById('relgo');
+  if(!go)return {go:false,setup:setup};
+  go.click();
+  const t0=Date.now();
+  while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<90000)
+   await new Promise(r=>setTimeout(r,50));
+  const out={go:true,setup:setup,plan:plan,dose:dose,lpc:LINES_PER_CH,
+   seen:window.__relSeen.slice(),spoken:spoken,opening:OPENING.slice(),cooling:COOLING.slice(),
+   stem:C3_STEM,phase:RUN.phase,cool:RUN.cool,ms:Date.now()-t0,
+   eye:(document.querySelector('#rel .pm-eye')||{}).textContent||'',
+   spent:(CURP.meter.unique||[]).length-before,bed:bedState()};
+  relClose();
+  return out;},{voice:voice,dose:dose});
+ const q=await walk(false,0);
+ ok(q.go,'the setup offers Run release on the person\'s own record: '+q.setup.slice(0,120));
+ if(q.go){
+  const op=q.seen.filter(s=>s.ph==='opening').map(s=>s.text);
+  const run=q.seen.filter(s=>s.ph==='run');
+  /* the card settles on the last line once the cooldown has run out, which is
+     one more render of the same line and not one more line */
+  const cool=q.seen.filter(s=>s.ph==='done'&&s.cool<q.cooling.length).map(s=>s.text);
+  ok(JSON.stringify(op)===JSON.stringify(q.opening),'with the sound off the opening shows every line, in order: '
+   +op.join(' / '));
+  ok(q.dose===q.lpc,'the dose opens at the engine\'s own fifty a channel, LINES_PER_CH, got '+q.dose);
+  /* every block of the plan, each walked through every pass */
+  const blocks=q.plan.map((k,i)=>({k:k,passes:new Set(run.filter(s=>s.idx===i).map(s=>s.pass)).size}));
+  ok(blocks.length===4&&blocks.every(b=>b.passes===q.dose),
+   'one address is four blocks and each runs its full dose: '+blocks.map(b=>b.k+' x'+b.passes).join(', '));
+  const ord=q.plan.map(k=>k.split(':')[1]).join(' ');
+  ok(ord==='Llimit Rlimit Ltruth Rtruth','left release, right release, left reframe, right reframe, got '+ord);
+  ok(run.length===q.plan.length*q.dose,'and the run shows every line of it, '+run.length+' of '
+   +(q.plan.length*q.dose));
+  const head=run.find(s=>s.idx===0&&s.pass===0);
+  ok(head&&head.text.indexOf(q.stem)===0&&head.eye==='Release, left channel',
+   'the first statement opens on the six channels, left: '+(head?head.eye+' | '+head.text:'none'));
+  ok(JSON.stringify(cool)===JSON.stringify(q.cooling),'and the cooldown shows every line: '+cool.join(' / '));
+  ok(q.phase==='done'&&/Released/.test(q.eye),'the run completes to Released, '+q.phase+' '+q.eye);
+  ok(q.spent===q.plan.length,'and charges exactly the plan it was shown, '+q.spent+' of '+q.plan.length);
+  ok(q.spoken.length===0&&q.bed.ctx==='none','and with the sound off nothing was spoken and no audio channel '
+   +'was opened, '+q.spoken.length+' lines, context '+q.bed.ctx);
+  console.log('  silent run  '+q.seen.length+' steps in '+q.ms+' ms, plan '+q.plan.join(' '));}
+ /* AND WITH THE VOICE ON, WHAT IS SAID IS WHAT IS SHOWN. The browser's own
+    speak is stood in for, because a headless browser has no voice to hear,
+    and the stand in ends each line a moment after it starts, which the walker
+    must treat as a line not spoken and wait out rather than race past. */
+ const v=await walk(true,2);
+ if(v.go){
+  const words=t=>String(t).replace(/\s+/g,' ').trim();
+  const shown=words(v.seen.filter(s=>!(s.ph==='done'&&s.cool>=v.cooling.length)).map(s=>s.text).join(' ')),
+   said=words(v.spoken.join(' '));
+  if(said!==shown)console.log('  shown '+shown.slice(0,900)+'\n  said  '+said.slice(0,900));
+  ok(v.spoken.length>0&&said===shown,'with the voice on every line shown is the line spoken, '
+   +v.spoken.length+' utterances, first "'+v.spoken[0]+'"');
+  ok(v.spoken.some(t=>t.indexOf('I am letting go of believing, perceiving, thinking, behaving, acting, and feeling')===0),
+   'and the voice says the six channel statement');
+  ok(v.phase==='done'&&v.spent===v.plan.length,'and the spoken run completes and charges its plan, '
+   +v.phase+' '+v.spent+' of '+v.plan.length);
+  ok(v.bed.ctx==='none','and the voice alone opens no audio channel, '+v.bed.ctx);}
+ ok(rerr.length===0,'the release raised no page error, '+rerr.join(' | '));
+ await rp.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

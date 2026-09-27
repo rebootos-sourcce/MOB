@@ -1,24 +1,77 @@
 /* ============================================================
-   RELEASE. Four channels: right-limit, left-limit, right-truth,
-   left-truth. A queue, so one or many run in the same session.
+   RELEASE. The protocol as the book writes it, heard.
+
+   "The dose pattern: 50 release statements on the left channel,
+   50 on the right, transition through release, 50 embodied truth
+   on the left, 50 on the right." (index.html 2401, and again at
+   2703.) "Reading it, aloud or silently, produces somatic release
+   at the anatomical address the sequence specifies." (2701.)
+
+   So a run is a script and not a ticker. An opening, then per
+   address four blocks, left release, right release, left reframe,
+   right reframe, each block its head statement once and then its
+   passes, then a cooldown. DESIGN-release.md sections 6 and 7 are
+   the specification and this is their port.
+
+   WHAT IS PRICED AND WHAT IS FREE. Open question 2 of that
+   document, answered with its own recommendation under the time
+   pressure of round ID and named as a default he can reverse: a
+   pattern is a unique line of new ground and is what the meter
+   charges, a pass is one spoken repetition and costs nothing. The
+   blocks are meterPlan's keys exactly, and relCoolDown commits
+   exactly those keys through meterRun, so what a person pays is
+   what the engine priced and not a count typed here. The dose is
+   the engine's own LINES_PER_CH, which is fifty.
+
    coolDown takes 21 percent of weight plus 2, clears at 6 or below,
    and installs the coherent opposite at 62 percent of what it removed.
    ============================================================ */
-var CHAN=[['R','Right','limit'],['L','Left','limit'],['R','Right','truth'],['L','Left','truth']];
-/* SEVEN LINES HELD 2.2 SECONDS EACH IS 15.4 SECONDS BEFORE THE FIRST ADDRESS.
-   Line one and line seven read the heading aloud. Line two is vaguer than the
-   product, which already printed the computed run length on the screen before
-   this one. Line three instructs a nervous system in the register this brand
-   refuses. Line four is a sensation with no place in it, in the passive with
-   the agent hidden. Line five carries an instruction and a definition in one
-   string. Line six has no mass and no direction.
+/* LEFT FIRST. Open question 4, answered for the book: "50 release statements
+   on the left channel, 50 on the right." This read right first, with the
+   comment "Right then left, limit before truth", and the prototype followed
+   the code. He is measuring against the book and the original app this round,
+   so the book wins and the change is named in the commit. Only the order
+   moves: the keys are side and phase ("Llimit"), so no key already on a
+   record changes meaning. */
+var CHAN=[['L','Left','limit'],['R','Right','limit'],['L','Left','truth'],['R','Right','truth']];
+/* the book's own words for the two sides, at 1042 */
+var REL_SIDE={L:'Left, inward',R:'Right, outward'};
+/* ============================================================
+   THE SCRIPT. DESIGN-release.md section 6, line for line.
 
-   Three lines, 6.6 seconds, one thing each. The somatic work line four was
-   gesturing at is done by line three with a place in it. "In thought" stays
-   because it is already the product's own term. See the house voice skill. */
-var OPENING=['Sit down. Put both feet on the floor.',
- 'Each line names one pattern. Follow it in thought as it lands.',
- 'Keep some attention on your body, and notice which place answers.'];
+   The first line is where his recording goes. It is not in this
+   build, so the synthetic voice reads a line in its place and the
+   card says so. His remembered words, "sit back, relax, we're going
+   to walk through this process", are not typed here: the house
+   voice rules "sit back" and "relax" out of written copy by name
+   (atuned-voice V2, an outcome given as an instruction), and in his
+   own recorded voice they are his, which the rule does not reach.
+   That collision is his to settle and it is asked in the report,
+   not settled here.
+
+   The next three are his instruction as RV3 records it, "move your
+   awareness inside your body, feel what your body is doing
+   mechanically, keep your awareness inside your body", which is the
+   book at 2451. The fifth is the product's own line. After it the
+   first head statement opens on the six channels, "I am letting go
+   of believing, perceiving, thinking, behaving, acting, and
+   feeling", which is the prompt he described.
+   ============================================================ */
+var OPENING=['Sit down. We are going to walk through this process.',
+ 'Move your awareness inside your body.',
+ 'Feel what your body is doing mechanically.',
+ 'Keep your awareness inside your body.',
+ 'Each line names one pattern. Follow it in thought as it lands.'];
+/* the book's end state, 2705, and its one sensation line that names a place,
+   2355 to 2358 */
+var COOLING=['Stop the work. Stay where you are.',
+ 'The charge moves up the channel and out through the mouth.',
+ 'Notice which place answers.'];
+/* THE PASSES. "Let go. Give up. Forgive myself. Forgive others. Same
+   mechanic. Different entry points." (2315.) They rotate because the book
+   says the entry that is hardest to say is the diagnostic. */
+var REL_ENTRY=['I let go of ','I give up ','I forgive myself for '];
+
 /* what the allowance says is left, read the same way Settings reads it.
    The arithmetic moved into the engine as meterBudget, because this function
    quoted the number and nothing enforced it: the panel said "16 patterns of
@@ -32,8 +85,13 @@ function relLeft(){
 function relBudget(){
  if(typeof meterBudget!=='function')return 0;
  return meterBudget((typeof CURP!=='undefined'&&CURP)||null).cap;}
+/* speed is the seconds a line took on the old ticker. It is kept because the
+   story panel still offers Slow, Steady and Quick through it, and it now sets
+   the pace a run opens at, so that choice still means something. */
 var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
-         paused:false,done:false,line:0,log:[],freed:0};
+         paused:false,done:false,line:0,log:[],freed:0,
+         pass:0,cool:0,tok:0,halted:false,
+         dose:LINES_PER_CH,pace:1,spokeMs:0,spokeW:0};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -61,25 +119,164 @@ function relAt(i){
    opening is spoken ahead of the first address, so it answers with that one. */
 function relNow(){
  return relAt(RUN.phase==='run'?RUN.idx:0)||{n:RUN.queue[0],ch:CHAN[0],line:0};}
+function relOpp(n){
+ return (n&&(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp)||'';}
 function relPick(nodeIds){
+ relHush();
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
- RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;
+ RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
+ RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;RUN.paused=false;
+ RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
-function relTick(){
- clearInterval(RUN.timer);
- RUN.timer=setInterval(function(){
-  if(RUN.paused)return;
-  if(RUN.phase==='opening'){
-   RUN.line++;
-   if(RUN.line>=OPENING.length){RUN.phase='run';RUN.line=0;}
-   relRender(); return;}
-  /* the run walks the plan. one tick is one thought line. */
-  RUN.idx++;
-  if(RUN.idx>=(RUN.plan||[]).length){ clearInterval(RUN.timer); relCoolDown(); return; }
-  relRender();}, RUN.speed*1000);}
+
+/* ============================================================
+   ONE STEP OF THE SCRIPT, read off where the run is. Nothing is
+   built ahead: a full run at three addresses is six hundred lines,
+   and every one of them is a function of the plan key and the pass.
+   ============================================================ */
+/* the head statement, which is relLine's sentence for this key, the printed
+   card first, and on the release side it opens on his six channels. */
+function relHead(at){
+ var L=(typeof relLine==='function')?relLine(at.n,at.ch[0]+at.ch[2],at.line):null;
+ var truth=at.ch[2]==='truth';
+ if(!L)return {text:truth?(relOpp(at.n)||at.n.k)+'.':C3_STEM+String(at.n.k).toLowerCase()+'.',truth:truth};
+ return {text:L.text,truth:truth,src:L.src};}
+/* A PASS. On the release side the entries rotate over the pattern's name. On
+   the reframe side it is the coherent state on its own, which is open
+   question 3 answered with the document's own fallback: the engine carries
+   his written install for the head of each block, and no table of embodied
+   truths to rotate the passes through. The panel says so in one line. */
+function relShort(at,i,head){
+ if(at.ch[2]==='limit')
+  return REL_ENTRY[(i-1)%REL_ENTRY.length]+String(at.n.k||'').toLowerCase()+'.';
+ var o=relOpp(at.n); return o?o+'.':head;}
+function relStepAt(at,pass){
+ if(!at||!at.n)return null;
+ var h=relHead(at);
+ return pass>0?{kind:'pass',text:relShort(at,pass,h.text),truth:h.truth,at:at}
+  :{kind:'head',text:h.text,truth:h.truth,at:at,src:h.src};}
+function relCur(){
+ if(RUN.phase==='opening')
+  return {kind:'open',text:OPENING[Math.min(RUN.line,OPENING.length-1)]};
+ if(RUN.phase==='run')return relStepAt(relAt(RUN.idx),RUN.pass);
+ if(RUN.phase==='done'&&RUN.open)
+  return {kind:'cool',text:COOLING[Math.min(RUN.cool,COOLING.length-1)]};
+ return null;}
+
+/* ============================================================
+   THE CLOCK DOES NOT LIE. Speech synthesis will not say in advance
+   how long it needs, so a line is first estimated at 0.40 seconds a
+   word, about 150 a minute, an unhurried instructional rate. Once
+   the voice has actually spoken twenty words the estimate is the
+   measured rate of this voice on this machine. Within a minute of
+   starting, the number a person reads is a measurement.
+   ============================================================ */
+var REL_WORD_S=0.40, REL_GAP_S=0.30, REL_HEAD_S=0.6, REL_FRAME_S=1.2;
+function relWords(t){return String(t||'').trim().split(/\s+/).length;}
+function relSec(st){
+ if(!st)return 0;
+ var per=RUN.spokeW>=20?RUN.spokeMs/RUN.spokeW/1000:REL_WORD_S/Math.max(0.5,RUN.pace);
+ var s=relWords(st.text)*per+REL_GAP_S;
+ if(st.kind==='head')s+=REL_HEAD_S;
+ if(st.kind==='open'||st.kind==='cool')s+=REL_FRAME_S;
+ return s;}
+/* seconds of script from a point to the end, cooldown included. from is
+   {phase,line,idx,pass}; with no from it is the whole run. */
+function relSecFrom(from){
+ var f=from||{phase:'opening',line:0,idx:0,pass:0}, s=0, i;
+ if(f.phase==='opening')
+  for(i=f.line;i<OPENING.length;i++)s+=relSec({kind:'open',text:OPENING[i]});
+ if(f.phase==='opening'||f.phase==='run'){
+  var i0=f.phase==='run'?f.idx:0, p0=f.phase==='run'?f.pass:0;
+  for(i=i0;i<(RUN.plan||[]).length;i++){
+   var at=relAt(i); if(!at||!at.n)continue;
+   var h=relHead(at);
+   for(var p=(i===i0?p0:0);p<RUN.dose;p++)
+    s+=relSec(p?{kind:'pass',text:relShort(at,p,h.text)}:{kind:'head',text:h.text});}}
+ var c0=f.phase==='done'?f.cool:0;
+ for(i=c0;i<COOLING.length;i++)s+=relSec({kind:'cool',text:COOLING[i]});
+ return s;}
+function relMMSS(sec){
+ var s=Math.max(0,Math.round(sec));
+ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+/* ============================================================
+   THE WALKER. One step is one line, and it lasts as long as the
+   voice takes to say it. With the voice off it lasts as long as the
+   clock above says the line takes to read. It replaced a fixed
+   2.2 second interval, which read a protocol built to be heard.
+
+   A step is a token, so a late callback from a line already left
+   behind (an utterance cancelled by Pause, a timer from before End)
+   can never move the run. A voice that reports the end of a line in
+   less than a quarter of its estimate did not say it: the rest of
+   the estimate is waited out, so a browser with no real voice runs
+   at reading pace instead of racing to the cooldown.
+   ============================================================ */
+function relVoiceOn(){
+ if(typeof voiceCan!=='function'||!voiceCan())return false;
+ return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
+function relBuzzOn(){
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.buzz)&&typeof buzzCan==='function'&&buzzCan();}
+function relHush(){
+ clearTimeout(RUN.timer); RUN.tok++;
+ if(typeof speakStop==='function')speakStop();}
+/* THE MARKS, at a boundary and never on a beat. They ride the seat tone's
+   switch: it is the one switch for sound that is not words, and a run with it
+   off opens no audio channel at all. The vibration doubles the same mark at
+   the same length. */
+function relMark(kind,side,truth){
+ var snd=relToneOn()&&typeof tone==='function';
+ if(kind==='turn'){ if(snd)earTurn(side,truth); if(relBuzzOn())buzz([12]); }
+ else if(kind==='cross'){ if(snd)earCross(); if(relBuzzOn())buzz([30,60,30]); }
+ else if(kind==='close'){ if(snd)earClose(); if(relBuzzOn())buzz([90]); }
+ else if(kind==='halt'){ if(snd)earHalt(); if(relBuzzOn())buzz([20,40,20]); }}
+function relBoundary(){
+ if(RUN.phase!=='run'||RUN.pass!==0)return;
+ var at=relAt(RUN.idx), pr=RUN.idx>0?relAt(RUN.idx-1):null; if(!at)return;
+ var truth=at.ch[2]==='truth';
+ if(pr&&pr.n===at.n&&pr.ch[2]==='limit'&&truth)relMark('cross');
+ else relMark('turn',at.ch[0],truth);}
+function relStep(){
+ clearTimeout(RUN.timer);
+ var tok=++RUN.tok;
+ if(!RUN.open||RUN.paused)return;
+ var st=relCur();
+ if(!st){ if(RUN.phase==='run')relCoolDown(); return; }
+ relBoundary();
+ relRender();
+ var est=relSec(st)*1000, moved=false;
+ function next(){
+  if(moved||tok!==RUN.tok)return; moved=true; clearTimeout(RUN.timer);
+  if(!RUN.paused)relAdvance();}
+ if(relVoiceOn()&&speak(st.text,RUN.pace,function(ms){
+    if(tok!==RUN.tok)return;
+    if(ms<est*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,est-ms); return; }
+    RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text); next();},
+   function(){
+    /* the browser refused the line. The run goes on at reading pace. */
+    if(tok!==RUN.tok)return;
+    clearTimeout(RUN.timer); RUN.timer=setTimeout(next,est);})){
+  RUN.timer=setTimeout(next,est+9000);}
+ else RUN.timer=setTimeout(next,est);}
+function relAdvance(){
+ if(RUN.phase==='opening'){
+  RUN.line++;
+  if(RUN.line>=OPENING.length){RUN.phase='run';RUN.line=0;RUN.idx=0;RUN.pass=0;}
+  return relStep();}
+ if(RUN.phase==='run'){
+  RUN.pass++;
+  if(RUN.pass>=RUN.dose){RUN.pass=0;RUN.idx++;}
+  if(RUN.idx>=(RUN.plan||[]).length){relCoolDown();return;}
+  return relStep();}
+ if(RUN.phase==='done'){
+  RUN.cool++;
+  if(RUN.cool>=COOLING.length){RUN.cool=COOLING.length;relRender();return;}
+  return relStep();}}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ relHush();
  /* THE RUN IS OVER HOWEVER THIS ENDS, AND SO IS THE TONE. relRender is what
     moves the tone, and the refusal below returns without one, so a run walked
     to its end on a worked example left the card on its last line and the tone
@@ -190,8 +387,16 @@ function relCoolDown(){
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
  if(CURP){pSave();pSnap();}
- syncCh();relRender();render();}
-function relClose(){clearInterval(RUN.timer);RUN.open=false;RUN.phase='idle';relRender();render();}
+ /* THE COOLDOWN IS SPOKEN AFTER THE WRITE, never instead of it. End jumps
+    here and does not skip it: an address opened and then abandoned is open
+    territory, "whatever frequency the system encounters first will fill the
+    space" (3656), so the cooldown runs out whichever way the run ended. The
+    mark says which: a stop when End was pressed, the close when it ran out. */
+ RUN.cool=0; RUN.paused=false;
+ relMark(RUN.halted?'halt':'close');
+ syncCh();relRender();render();
+ relStep();}
+function relClose(){relHush();RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
 /* ============================================================
    THE SEAT TONE FOLLOWS THE CARD.
 
@@ -209,28 +414,18 @@ function relClose(){clearInterval(RUN.timer);RUN.open=false;RUN.phase='idle';rel
    ============================================================ */
 function relToneOn(){
  return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.tone);}
-/* THE TIMING IS THE RUN'S, AND NOT THE PROTOTYPE'S.
+/* EVERY MOVE LANDS INSIDE THE LINE THAT CAUSED IT.
 
-   The research sized its ramps for the prototype, where an address is fifty
-   lines a channel and a half runs for minutes: eight seconds to fade in,
-   twelve to rise from theta to alpha, twelve to glide between seats. Here
-   meterPlan gives an address one line a channel, so a half is two lines, 4.4
-   seconds at RUN.speed. A twelve second rise started at the cross would still
-   be climbing when the next address took the card. It tops out near 7.5,
-   which is theta, so no reframe half would ever be heard in alpha, and a
-   twelve second glide never reaches the seat whose name is on the screen.
-   That is the sound stating what the card does not, which DESIGN-release.md
-   rules out: every fact the sound states is on the screen at the same moment.
-
-   So every move lands inside the line that caused it. A glide or a rise takes
-   nine tenths of a line and has arrived before the next line appears. Not the
-   whole line: the bed restarts a glide from its last target, so a target that
-   came while one was still in flight would step the pitch by what was left,
-   and a timer that fires a few milliseconds early is ordinary. The tenth is
-   the margin. The fade in takes what is left of the opening, all of it from
-   Begin, and arrives with the first address; started once the run is under
-   way, by Resume or by the switch, it takes one line. The fade out keeps the
-   research's four seconds, because nothing after it can disagree with it. */
+   The tone only moves at a block's first line, its head, because that is the
+   only place the address or the half changes. A glide takes nine tenths of
+   RUN.speed, about two seconds, and the shortest head the script can speak,
+   one gate at the fastest pace, is longer than that, so the pitch has arrived
+   before the next line appears and a target never lands on a glide still in
+   flight. The bed restarts a glide from its last target, which is why that
+   margin matters. The fade in takes what is left of the opening, all of it
+   from Begin, and arrives with the first address; started once the run is
+   under way, by Resume or by the switch, it takes one line. The fade out
+   keeps the research's four seconds, because nothing after it can disagree. */
 var REL_GLIDE=0.9;
 function relTone(){
  if(typeof bedFollow!=='function')return;
@@ -239,8 +434,10 @@ function relTone(){
  var hz=(at&&at.n)?seatHz(at.n.b):null;
  /* no tone at this seat is silence, never the last seat's tone held over */
  if(!hz){bedStop();return;}
- bedFollow(hz, at.ch[2]==='truth'?BED_ALPHA:BED_THETA,
-  RUN.phase==='opening'?(OPENING.length-RUN.line)*RUN.speed:RUN.speed, RUN.speed*REL_GLIDE);}
+ var fade=RUN.speed;
+ if(RUN.phase==='opening'){fade=0;
+  for(var i=RUN.line;i<OPENING.length;i++)fade+=relSec({kind:'open',text:OPENING[i]});}
+ bedFollow(hz, at.ch[2]==='truth'?BED_ALPHA:BED_THETA, fade, RUN.speed*REL_GLIDE);}
 /* THE SWITCH, and it is the account page's own switch, so one control has one
    look wherever it appears. It is on the opening and on the run as well as on
    the panel before them, because a person finds out mid run, in a quiet room,
@@ -255,49 +452,87 @@ function relToneRow(n){
  if(typeof bedCan!=='function'||!bedCan()||typeof accTog!=='function')return '';
  var st=bedState(), hz=(st.on&&n)?st.carrier:0;
  return accTog('Seat tone','reltone',relToneOn(),hz?hz+' Hz':'',hz?seatCol(n.b):'');}
-/* the sentence under the address, or nothing when the engine has none to give */
-function relLineRow(at){
- if(typeof relLine!=='function'||!at||!at.n)return '';
- var L=relLine(at.n,at.ch[0]+at.ch[2],at.line);
- return L?'<div class="rel-line'+(L.truth?' tru':'')+'">'+esc(L.text)+'</div>':'';}
+/* the voice's own switch, and where there is no voice there is no switch.
+   Its note is the standing privacy line cut to its facts: which voice, and
+   whether the words stay on this machine, said before the voice says a word. */
+function relVoiceRow(){
+ if(typeof voiceCan!=='function'||!voiceCan()||typeof accTog!=='function')return '';
+ var v=voicePick();
+ return accTog('Voice','relvoice',relVoiceOn(),
+  !v?'':v.name+(v.localService?', on this machine':', a network service'));}
+function relBuzzRow(){
+ if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
+ return accTog('Vibration','relbuzz',relBuzzOn(),'');}
+function relSwitches(n){return relVoiceRow()+relToneRow(n)+relBuzzRow();}
+/* the line being said, which is the line being displayed */
+function relLineRow(st){
+ if(!st||!st.text)return '';
+ return '<div class="rel-line'+(st.truth?' tru':'')+(st.kind==='pass'?' pass':'')+'">'
+  +esc(st.text)+'</div>';}
+/* THE TWO STRIPS, left and right, with the live one lit. The heading says the
+   side in words as well, so the colour is never the only carrier. */
+function relStrips(side){
+ return ['L','R'].map(function(s){
+  return '<div class="rel-strip rel-strip-'+s+(s===side?' on':'')+'" aria-hidden="true"><span>'
+   +REL_SIDE[s]+'</span></div>';}).join('');}
+/* angular progress, because a circle has no last place */
+function relDial(p){
+ var r=22, C=2*Math.PI*r, off=C*(1-Math.max(0,Math.min(1,p)));
+ return '<svg class="rel-dial" width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">'
+  +'<circle cx="26" cy="26" r="'+r+'" fill="none" stroke="var(--sunk)" stroke-width="3"/>'
+  +'<circle cx="26" cy="26" r="'+r+'" fill="none" stroke="var(--accent)" stroke-width="3" '
+  +'stroke-linecap="round" transform="rotate(-90 26 26)" stroke-dasharray="'+C.toFixed(1)
+  +'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>';}
+function relClock(){
+ var total=relSecFrom(null), left=relSecFrom({phase:RUN.phase,line:RUN.line,idx:RUN.idx,pass:RUN.pass,cool:RUN.cool});
+ return '<div class="rel-clock">'+relDial(total?1-left/total:0)
+  +'<div class="rel-fig"><span>Left</span><b>'+relMMSS(left)+'</b></div>'
+  +'<div class="rel-fig"><span>Planned</span><b>'+relMMSS(total)+'</b></div></div>';}
 function relRender(){
  /* the tone first, so the switch below prints what is sounding now */
  relTone();
  var h=document.getElementById('rel'); if(!h)return;
  if(!RUN.open){h.style.display='none';h.innerHTML='';return;}
  h.style.display='flex';
- var out='<div class="rel-card">';
+ var st=relCur();
+ var out='<div class="rel-card'+(RUN.phase==='run'?' rel-running':'')+'">';
  if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
      GS ruled one: "stick with release." */
-  out+='<div class="pm-eye">Release</div>'
-   +'<div class="rel-speak">'+esc(OPENING[Math.min(RUN.line,OPENING.length-1)])+'</div>'
+  out+='<div class="pm-eye" aria-live="polite">Release, opening</div>'
+   +'<div class="rel-speak">'+esc(st.text)+'</div>'
    +'<div class="rel-dots">'+OPENING.map(function(_,i){
      return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
-   +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button></div>'
-   +relToneRow(relNow().n);
+   +(RUN.line===0?'<div class="rel-sub">His recorded opening is not in this build. '
+     +'This line stands in its place.</div>':'')
+   +relClock()
+   +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
+   +'<button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button></div>'
+   +relSwitches(relNow().n);
  } else if(RUN.phase==='run'){
   var at=relNow();
   var ch=at.ch, n=at.n, c=seatCol(n.b);
   var tot=(RUN.plan||[]).length||1;
-  out+='<div class="pm-eye">'+ch[1]+' '+ch[2]+', line '+(at.line+1)+'</div>'
-   +'<div class="rel-node" style="color:'+c+'">'+esc(n.k)+'</div>'
-   +'<div class="rel-sub">'+n.b+' · '+(n.n||'')+'</div>'
-   /* THE THOUGHT LINE ITSELF. The opening tells a person each line names one
-      pattern, and until this the card printed the address and never the line,
-      so the one surface that spends allowance could not say what it was
-      running. relLine reads the plan key this card is on, so the sentence is
-      the pattern the meter charges for, and a limit line carries the six
-      channels he ruled through C3_STEM, all six in one sweep. */
-   +relLineRow(at)
-   +'<div class="rel-side rel-'+ch[0]+'"><span>'+ch[1]+'</span></div>'
-   +'<div class="rel-prog"><i style="width:'+
-     (((RUN.idx+1)/tot)*100).toFixed(0)
-     +'%;background:'+c+'"></i></div>'
-   +'<div class="rel-ct">'+(RUN.idx+1)+' of '+tot+' patterns</div>'
+  var cur=relStepAt(relAt(RUN.idx),RUN.pass)||relStepAt(at,0);
+  out+=relStrips(ch[0])
+   /* THE HALF AND THE SIDE, IN WORDS. "Release, left channel" is the book's
+      own order of telling it, and it is the heading so it is read first. */
+   +'<div class="pm-eye" aria-live="polite">'+(ch[2]==='truth'?'Reframe':'Release')+', '
+     +ch[1].toLowerCase()+' channel</div>'
+   +'<div class="rel-plate">'+crNode(n,'xs',{raw:Math.round(n.sq*10)+'%'})
+   +'<span><span class="rel-node" style="color:'+c+'">'+esc(n.k)+'</span>'
+   +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span></span></div>'
+   /* THE THOUGHT LINE ITSELF, and it is the line the voice is saying. relLine
+      reads the plan key this card is on, so the head of every block is the
+      pattern the meter charges for, and a limit line carries the six channels
+      he ruled through C3_STEM, all six in one sweep. */
+   +relLineRow(cur)
+   +'<div class="rel-ct">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · pattern '+(RUN.idx+1)+' of '+tot+'</div>'
+   +relClock()
    +'<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
-   +'<button class="btn" id="relstop">Stop</button></div>'
-   +relToneRow(n);
+   /* End does not abandon the run. It commits the plan and runs the cooldown. */
+   +'<button class="btn" id="relstop">End</button></div>'
+   +relSwitches(n);
  } else if(RUN.phase==='done'){
   var cl=RUN.log.filter(function(x){return x.cleared;}).length;
   /* A ONE ADDRESS RUN PRINTED "1 addresses". The plural was typed onto the
@@ -305,6 +540,7 @@ function relRender(){
      of the run. The picker below already asks q.length===1; this asks the
      same of the log. */
   out+='<div class="pm-eye">Released</div>'
+   +'<div class="rel-speak rel-cool">'+esc(COOLING[Math.min(RUN.cool,COOLING.length-1)])+'</div>'
    +'<div class="rel-node">'+RUN.log.length+(RUN.log.length===1?' address':' addresses')+'</div>'
    +'<div class="rel-sub">'+cl+' cleared entirely, '+RUN.freed+' weight freed</div>'
    +'<div class="rel-log">';
@@ -336,84 +572,99 @@ function relRender(){
      :'Release has about '+_left.toFixed(1)+' points more in it before the laws '
       +'are the only thing holding expression down.')
    +'</div>'
-   /* WHAT A RELEASE EMPTIES IS A STORY, ruled in GS: "the release is any
-      story... empty the body of stories, period." The address is where the
-      instrument reads that story's charge, so it stays in the sentence as the
-      place, not as the thing emptied. */
-   +'<div class="rel-note">A release empties the story held at these addresses. '
-   +'The coherent opposite installs on the same pass. The rebound is day four and a half. Completion is day '
-   +'twenty seven.</div>'
+   /* "A release empties the story, that's gone." Struck by him at round IG,
+      with the rebound and completion days that rode in the same note. */
    +'<div class="rel-act"><button class="btn" id="relclose">Done</button>'
-   +'<button class="btn pri" id="relrit">Build a ritual</button></div>';
+   +'<button class="btn pri" id="relrit">Build a ritual</button></div>'
+   /* the voice can still be silenced while the cooldown is being said */
+   +(RUN.cool<COOLING.length?relVoiceRow():'');
  } else {
   var q=RUN.queue;
-  /* THE PRICE IS ENFORCED AT THE DOOR AND NOWHERE ELSE.
+  /* CUT HARD, RULED 27 SEPTEMBER (round IG). His words: "a release empties
+     the story, that's gone... Need for approval, nihilism, self silencing,
+     all that goes away because you've selected the ones you want... Cost
+     runs left, that goes away. And just a run release button. So it's
+     release your selections, pace, and how many patterns."
 
-     Nought left means the run does not start, and this is the only place that
-     may say so. Stopping a run that is already walking is a worse failure than
-     a wrong label: the person has sat down, the addresses are open in front of
-     them, and half a release is neither a release nor a refund. relPlan is
-     capped at the allowance now, so anything that gets past this branch costs
-     what it printed and is charged in full. */
-  var left=relLeft(), spent=(left<=0), pl=(RUN.plan||[]).length;
-  out+='<div class="pm-eye">Run a release</div>'
-   +'<div class="rel-node">'+(spent?'Nothing left to open'
-     :q.length+(q.length===1?' address':' addresses'))+'</div>'
-   /* A NUMBER CARRIES WHAT IT IS OF. This read "25 of your allowance", which
-      says twenty five of what, and reads as a bill on a grant of ten a week
-      against a run that caps at twenty five. planAllowance already returns
-      both halves, so the honest sentence needs no new field. */
-   +'<div class="rel-sub">'+(spent
-     ?q.length+(q.length===1?' address':' addresses')+' picked, 0 patterns available'
-     :pl+' patterns of the '+left+' you have left')+'</div>'
-   +'<div class="rel-log">';
-  q.forEach(function(n){
-   out+='<div class="rel-row">'+crNode(n,'xs')
-    +'<span>'+esc(n.k)+'</span><em>'+n.b+'</em></div>';});
-  /* WHICH CEILING TRUNCATED THE RUN, because the two mean different things to
-     a person. Short of the run ceiling used to print "that is everything still
-     unopened in this queue", which is false the moment the allowance is what
-     cut it: there is more unopened ground and they cannot reach it yet. */
-  var byAllow=(pl>0&&pl>=left&&left<RUN_MAX);
-  out+='</div><div class="rel-note">'+(spent
-    /* "New ground is what an allowance buys" is the lexicon read aloud, which
-       is his GX complaint about "find an address". Said as what it pays for. */
-    ?'Your allowance pays for addresses you have not released before, and this '
-     +'period\'s is spent. Rerunning an address costs nothing and is in the '
-     +'ritual. A wider allowance is on the plan in settings.'
-    /* the same number said twice, as thought lines and then as patterns, when
-       the line above already gives it in patterns, and a shorthand, "limit
-       before truth", that only the team could read. "Thought line" is his
-       ruled word, DECISIONS.md, "The key, ruled", and stays. */
-    :pl+' thought line'+(pl===1?'':'s')+' of new ground. Each runs right then left, the limit and then its truth. About '
-     +(Math.round(pl*RUN.speed/60*10)/10)+' minutes.'
-     +(byAllow?' That is all the allowance has left, and the rest of this queue stays unopened.'
-       :(pl<RUN_MAX?' That is everything still unopened in this queue.':'')))+'</div>'
-   +'<div class="rel-act"><button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
+     The selection is made in Imprints, so it is not listed again here with
+     commentary: it is shown as its rings and nothing else, each named on
+     hover. Two settings, pace and how many patterns, and one button. The
+     price is still enforced at the door, below, and still nowhere else: nought
+     left means there is no run to offer, and that refusal says why, because a
+     control that silently does nothing is the failure this codebase forbids.
+     The plan it runs is still meterPlan's, capped at what is left, and
+     relCoolDown still charges exactly that plan. */
+  var left=relLeft(), spent=(left<=0);
+  out+='<div class="pm-eye">Release your selections</div>'
+   +'<div class="rel-rings">'+q.map(function(n){
+     return crNode(n,'xs',{raw:''});}).join('')+'</div>';
+  if(spent)out+='<div class="rel-node">Nothing left to open</div>'
+   /* "New ground is what an allowance buys" is the lexicon read aloud, which
+      is his GX complaint about "find an address". Said as what it pays for. */
+   +'<div class="rel-note">Your allowance pays for addresses you have not released before, and this '
+   +'period\'s is spent. Rerunning an address costs nothing and is in the '
+   +'ritual. A wider allowance is on the plan in settings.</div>';
+  /* HOW MANY PATTERNS is the dose a channel, fifty by default, which is the
+     book's and what he described hearing (open question 5). Pace is 1 at
+     speaking pace. Both answer to the clock the run shows once it starts. */
+  else out+='<div class="rel-fields">'
+    +'<label class="rel-field"><span>Pace</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
+     +RUN.pace+'"></label>'
+    +'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
+     +LINES_PER_CH+'" step="1" value="'+RUN.dose+'"></label>'
+    +'</div>';
+  out+='<div class="rel-act"><button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
       would be a control the panel is still offering, and the honest reading of
       a spent allowance is that this run does not exist yet. The route out goes
       where the allowance is, which is the only thing that changes the answer. */
    +(spent?'<button class="btn pri" id="relplan">Open settings</button>'
-         :'<button class="btn pri" id="relgo">Begin</button>')+'</div>'
+         :'<button class="btn pri" id="relgo">Run release</button>')+'</div>'
    /* and no switch for a run that cannot begin */
-   +(spent?'':relToneRow(null));}
+   +(spent?'':relSwitches(null));}
  out+='</div>';
  h.innerHTML=out;
  var b;
- if((b=document.getElementById('relgo')))b.onclick=function(){RUN.phase='opening';RUN.line=0;relTick();relRender();};
- if((b=document.getElementById('relskip')))b.onclick=function(){RUN.phase='run';RUN.line=0;relRender();};
+ /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
+    a sound. The technical requirement and the ritual are the same press. */
+ if((b=document.getElementById('relgo')))b.onclick=function(){
+  RUN.phase='opening';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;relStep();};
+ if((b=document.getElementById('relskip')))b.onclick=function(){
+  RUN.phase='run';RUN.line=0;RUN.idx=0;RUN.pass=0;relStep();};
  if((b=document.getElementById('relcancel')))b.onclick=relClose;
  /* the same call the profile button makes, which is the one route to that
     surface and goes through setTab so the folded surface ruling holds. */
  if((b=document.getElementById('relplan')))b.onclick=function(){relClose();setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
- if((b=document.getElementById('relstop')))b.onclick=function(){clearInterval(RUN.timer);relCoolDown();};
- if((b=document.getElementById('relpause')))b.onclick=function(){RUN.paused=!RUN.paused;relRender();};
+ if((b=document.getElementById('relstop')))b.onclick=function(){RUN.halted=true;relCoolDown();};
+ /* Pause stops the voice mid word. Resume says the line again from its start,
+    because half a statement is not one. */
+ if((b=document.getElementById('relpause')))b.onclick=function(){
+  RUN.paused=!RUN.paused;
+  if(RUN.paused){relHush();relRender();} else relStep();};
+ if((b=document.getElementById('reldose')))b.onchange=function(){
+  RUN.dose=Math.max(1,Math.min(LINES_PER_CH,Math.round(+this.value)||1));relRender();};
+ if((b=document.getElementById('relpace')))b.onchange=function(){
+  RUN.pace=Math.max(0.5,Math.min(2,Math.round((+this.value||1)*10)/10));relRender();};
  /* uiSet is the one writer for the profile's preferences, so this reports
     through statusSaved like the other switches do. A save that fails leaves
     the tone on for this visit and says it will not survive a reload, and both
     halves of that are true. */
- if((b=document.getElementById('reltone')))b.onclick=function(){uiSet('tone',!relToneOn());relRender();};}
-
+ if((b=document.getElementById('reltone')))b.onclick=function(){uiSet('tone',!relToneOn());relRender();};
+ /* the voice, off or on mid line: the line starts again in the new state, so
+    a voice turned on is heard at once and a voice turned off never finishes a
+    sentence over silence */
+ if((b=document.getElementById('relvoice')))b.onclick=function(){
+  uiSet('voice',!relVoiceOn());
+  var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run'
+    ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
+  if(live)relStep(); else {if(!relVoiceOn())speakStop(); relRender();}};
+ if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}
+/* THE LIST OF VOICES ARRIVES LATE. The panel names the voice before a word is
+   said, so when the browser finally names its voices the panel says it again. */
+(function(){
+ try{ if(window.speechSynthesis&&'onvoiceschanged' in speechSynthesis)
+  speechSynthesis.addEventListener('voiceschanged',function(){
+   if(RUN.open&&RUN.phase==='idle')relRender();}); }catch(e){}
+})();

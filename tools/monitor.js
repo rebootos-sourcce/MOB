@@ -145,7 +145,44 @@ const FLOOR_CANVAS=60;
       rl.length,hollow.length,
       hollow.length?hollow.map(x=>'#'+x.id).join(' '):rl.length+' hosts, none hollow']);
     if(hollow.length)fails.push(wn+'/'+who+'/'+nm+' rail host '
-      +hollow.map(x=>'#'+x.id).join(' ')+' is on the screen with nothing in it');}}
+      +hollow.map(x=>'#'+x.id).join(' ')+' is on the screen with nothing in it');}
+   /* THE RELEASE IS NOT IN TABDEF, so this watch never saw it, and it is the
+      one surface built to be heard (DESIGN-release.md section 7: "The release
+      surfaces are not in TABDEF, so the watch does not see them"). Its three
+      renders before anything is committed are opened on the loaded profile's
+      heaviest three: the setup, the opening and the run. The walker is stopped
+      after each press and the voice is held off for the visit and put back, so
+      the watch neither speaks nor spends. The host is #rel, by its id.
+
+      Lance carries nothing, measured: nought addresses loaded on his profile,
+      so a release has nothing to open on him. The watch opens it on whichever
+      profile carries most, read at run time rather than named here, and puts
+      Lance back after. A worked example is fine: nothing is committed. */
+   if(who==='loaded'){
+    const rel=await p.evaluate(L=>{
+     var out=[], best=-1, most=0;
+     PEOPLE.forEach(function(x,i){loadP(i); var c=compute().carrying.length; if(c>most){most=c;best=i;}});
+     if(best>=0)loadP(best);
+     var ids=compute().carrying.slice(0,3).map(function(n){return n.i;});
+     if(!ids.length||typeof relPick!=='function'){loadP(L);return out;}
+     var had=CURP&&CURP.ui?CURP.ui.voice:undefined;
+     if(CURP&&CURP.ui)CURP.ui.voice=false;
+     function m(nm){var h=document.getElementById('rel'), b=h.getBoundingClientRect(), s=getComputedStyle(h);
+      out.push({nm:nm, markup:(s.display!=='none'&&b.width>0)?h.innerHTML.length:0,
+       text:(h.innerText||'').trim().length});}
+     relPick(ids); m('rel setup');
+     var g=document.getElementById('relgo');
+     if(g){ g.click(); clearTimeout(RUN.timer); m('rel open');
+      RUN.phase='run'; RUN.idx=0; RUN.pass=0; relRender(); m('rel run'); }
+     relClose();
+     if(CURP&&CURP.ui)CURP.ui.voice=had;
+     loadP(L);
+     return out;},L);
+    if(!rel.length){rows.push([wn,who,'release','EMPTY',0,0,'#rel, nothing to pick']);
+     fails.push(wn+'/'+who+'/release had nothing carrying to open');}
+    rel.forEach(r=>{const bad=r.markup<FLOOR;
+     rows.push([wn,who,r.nm,bad?'EMPTY':'ok',r.markup,r.text,'#rel']);
+     if(bad)fails.push(wn+'/'+who+'/'+r.nm+' rendered '+r.markup+' characters');});}}
   errs.forEach(e=>{rows.push([wn,'-','pageerror','ERROR',0,0,e]); fails.push(wn+' threw: '+e);});
   await c.close();}
  await b.close();
