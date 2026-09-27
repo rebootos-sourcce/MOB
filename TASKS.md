@@ -21841,3 +21841,32 @@ the instant a run ends (today's behaviour) or settle over nine days as
 the book's tau and these masks draw it; which Energetics treatment, A,
 B or C, or the agent's own suggestion of A's rows on desktop and C's
 strip plus one law at a time on a phone.
+
+## IV. The Reading card and the band word landed, all nine gates re-run fresh
+
+6aa063a is in, pushed. Verified in an isolated worktree, not by trusting
+the report: `BUILD.sh` (div balance 0, no em dashes), `BUILD-engine.sh`
+(host free), `tests/engine.js` 1770/0, `tests/collide.js` 351/0,
+`tests/functional.js` 1229/0, `tests/design.js` 174/0, `tools/monitor.js`
+exit 0 all surfaces render, `tests/funnel.js` 172/0, voice
+`check.py --objections` 0 findings, all matching the report's own
+numbers exactly. `tools/equiv.py` against d4a2c35's source.html: 1494
+declarations both sides, none added or removed, four bodies changed
+(addrRow, fbPaint, railTop, render), matching the report exactly.
+Screenshots viewed directly confirm the Reading card prints "Marcus"
+in place of "You", the Top Three and By Assemblage Point lists render
+with direction words and seat names, and the 62% Gaining capsule sits
+under the Wheel/Frames/Dial switch with Accuracy in the left panel,
+opposite it as asked.
+
+Three real interpretive calls made and named rather than guessed
+silently: this is the Field tab, not Avatar, since Gaining and
+Accuracy only ever print there; the coherence ring left the right
+rail on every other tab along with the band word, since they were one
+control (a small follow up if he wants it back elsewhere); "band" is
+kept for the coherence level and the seven body points are labelled
+"By assemblage point" instead, so the word is not reused for two
+meanings.
+
+Both round IT pieces are now landed and pushed. Open questions carried
+to the owner below.
