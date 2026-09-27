@@ -90,6 +90,40 @@ table.ms{border-collapse:collapse;width:100%;font-size:13.5px}
 .was{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
 .was .f{background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:12px;text-align:center;font-size:13px;color:var(--mid)}
 .was svg{width:100%;max-width:190px;height:auto}
+/* the mosaic, round JP. the six masks as a strip, then one large with its
+   ledger of patterns beside it */
+.mz6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:14px}
+.mz6 button{background:var(--sunk);border:1px solid var(--edge);border-radius:12px;padding:8px 6px 6px;cursor:pointer;
+ display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px;font-size:13px;color:var(--mid)}
+.mz6 button.on{border-color:var(--accent);color:var(--ink)}
+.mz6 button b{font-weight:600;color:var(--ink);font-size:13px}
+.mz6 button span{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.mz6 svg{width:100%;max-width:120px;height:auto}
+.mz{display:grid;grid-template-columns:minmax(0,1fr) 520px;gap:16px;margin-top:14px;align-items:start}
+.mz .stage{flex-direction:row;justify-content:center;align-items:flex-end;gap:18px;flex-wrap:wrap}
+.mz .stage .pair{display:flex;flex-direction:column;align-items:center;gap:6px}
+.mz .stage svg.big{max-width:340px}
+.mz .stage svg.ref{width:120px;height:auto}
+.mz .stage .t{font-size:12.5px;color:var(--dim);text-align:center}
+svg rect.cell.fade,svg path.fade{opacity:.16}
+.led{display:flex;flex-direction:column;gap:6px}
+.led .grp{font-size:12.5px;color:var(--dim);margin:8px 0 2px}
+.led button.u{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;width:100%;
+ background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:8px 10px;cursor:pointer;min-height:44px}
+.led button.u.on{border-color:var(--accent)}
+.led .u .nm{font-size:14px;color:var(--ink);font-weight:500;line-height:1.3}
+.led .u .sub{font-size:12.5px;color:var(--mid);line-height:1.35}
+.led .u .w{font-size:14px;font-variant-numeric:tabular-nums;color:var(--ink);text-align:right;white-space:nowrap}
+.led .u .w small{display:block;font-size:12px;color:var(--dim)}
+.led .u svg{width:28px;height:28px}
+.key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin-top:10px}
+.key .k{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center;font-size:13px;color:var(--mid)}
+.key .k svg{width:44px;height:44px}
+.fams{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:13px;color:var(--mid)}
+.fams span{display:inline-flex;align-items:center;gap:6px}
+.fams svg{width:20px;height:20px}
+@media (max-width:1100px){.mz{grid-template-columns:1fr}}
+@media (max-width:760px){.mz6{grid-template-columns:repeat(3,minmax(0,1fr))}.key{grid-template-columns:1fr}}
 @media (max-width:1100px){.rev,.build{grid-template-columns:1fr}.six{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){.six{grid-template-columns:1fr}}
 @media (max-width:520px){.pb{position:static}.strip{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -98,7 +132,7 @@ table.ms{border-collapse:collapse;width:100%;font-size:13.5px}
 </style></head><body>
 <div class="wrap">
  <div class="hd">
-  <div class="eyebrow">Round IT. The six masks, redrawn on the golden ratio, with the reversal on a time slider.</div>
+  <div class="eyebrow">Round IT. The six masks, redrawn on the golden ratio, with the reversal on a time slider. Round JP adds the mosaic: each mask read as the saboteurs, complexes and hyper complexes running through it.</div>
   <h1>Golden masks</h1>
  </div>
  <div id="mode"></div>
@@ -423,8 +457,250 @@ function oldSvg(){var d='',s=10;for(var r=0;r<OLD.length;r++)for(var c=0;c<16;c+
  var cells='';for(var r2=0;r2<OLD.length;r2++)for(var c2=0;c2<16;c2++)if(OLD[r2][c2]==='#')cells+='<rect x="'+(c2*s+1.1)+'" y="'+(r2*s+1.1)+'" width="7.8" height="7.8" rx=".6" fill="none" stroke="#24262D"/>';
  return '<svg viewBox="-4 -4 168 178" style="max-width:190px">'+cells+'<path d="'+d+'" fill="none" stroke="'+OLDLINE+'" stroke-width="1"/></svg>';}
 
+/* ============================================================
+   THE MOSAIC. Round JP. His words: "the masks should look like a mosaic of
+   the hypercomplexes, complexes, saboteurs. And the more intense, the more
+   the pixel. The heavier the weight of that cluster."
+
+   The data is compute()'s own, read by extract.js: r.sabs, r.cxs, r.hys.
+   A saboteur is a set of addresses with a weight w on the engine's 0 to 10.
+   A complex is two saboteurs of one family, w their mean. A hyper complex
+   is a family that compounded on two complexes, or one at 6.5 or more, w the
+   mean of its complexes. Nothing below re-derives any of it.
+
+   Same face, same cells, same rule from round GG that every address at the
+   mask's seats owns an equal share of the face. What changes is who the
+   share is handed to.
+
+   1. AN ADDRESS HANDS ITS SHARE TO EVERY SABOTEUR RUNNING THROUGH IT, in
+      equal tiles. One address in five saboteurs gives five tiles. This is
+      the network: the same address shows up in more than one pattern.
+   2. A SABOTEUR'S TILES JOIN THE HIGHEST PATTERN IT REACHED. Inside a hyper
+      complex if it compounded that far, else inside its complex, else on its
+      own. That unit is one region of the mosaic, bounded by a thick seam, and
+      a thin seam divides it into the saboteurs it was built from.
+   3. HUE IS THE FAMILY. Each of the six families has a seat in HCX_LIB and is
+      drawn in that seat's colour. A family's overshot pole (FAM_POLE) keeps
+      the family's colour and each lit tile takes a slash: the same axis,
+      pushed past the far end.
+   4. LIT SHARE IS WEIGHT. A saboteur at w 6 lights 6 in 10 of its tiles, and
+      the lit tiles take the step of the round GG charge ladder for 6. So a
+      heavy pattern is both more pixels and brighter ones. Which tiles light
+      is an ordered dither, the way a VGA screen rendered a level with a
+      short palette, so the lit share spreads evenly and never clumps.
+   5. CHARGE IN NO PATTERN is grey, lit by its own charge. It has no family,
+      so it gets no family's colour. An address with nothing is an empty ring.
+
+   The regions run along a space filling curve (a generalised Hilbert curve
+   over the 21 by 34 grid), heaviest first, so a run of tiles in order is a
+   compact patch of the face and not a stripe across it.
+   ============================================================ */
+function gilbert(width,height){var out=[];function sg(x){return x<0?-1:x>0?1:0;}
+ function gen(x,y,ax,ay,bx,by){var w=Math.abs(ax+ay),h=Math.abs(bx+by),dax=sg(ax),day=sg(ay),dbx=sg(bx),dby=sg(by),i;
+  if(h===1){for(i=0;i<w;i++){out.push([x,y]);x+=dax;y+=day;}return;}
+  if(w===1){for(i=0;i<h;i++){out.push([x,y]);x+=dbx;y+=dby;}return;}
+  var ax2=Math.floor(ax/2),ay2=Math.floor(ay/2),bx2=Math.floor(bx/2),by2=Math.floor(by/2),w2=Math.abs(ax2+ay2),h2=Math.abs(bx2+by2);
+  if(2*w>3*h){if((w2%2)&&(w>2)){ax2+=dax;ay2+=day;}gen(x,y,ax2,ay2,bx,by);gen(x+ax2,y+ay2,ax-ax2,ay-ay2,bx,by);}
+  else{if((h2%2)&&(h>2)){bx2+=dbx;by2+=dby;}gen(x,y,bx2,by2,ax2,ay2);gen(x+bx2,y+by2,ax,ay,bx-bx2,by-by2);
+   gen(x+(ax-dax)+(bx2-dbx),y+(ay-day)+(by2-dby),-bx2,-by2,-(ax-ax2),-(ay-ay2));}}
+ if(width>=height)gen(0,0,width,0,0,height);else gen(0,0,0,height,width,0);return out;}
+var CURVE={};gilbert(COLS,ROWS).forEach(function(p,i){CURVE[p[1]+','+p[0]]=i;});
+var BAYER=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+var HCX={};T.HCX.forEach(function(h){HCX[h.nm]=h;});
+var POLEOF={};Object.keys(T.FAM_POLE).forEach(function(k){POLEOF[T.FAM_POLE[k]]=k;});
+function famBase(f){return HCX[f]?f:POLEOF[f]||f;}
+function famSeat(f){var h=HCX[famBase(f)];return h?h.b:null;}
+function isPole(f){return !HCX[f]&&!!POLEOF[f];}
+/* the grey for charge in no pattern: solved to 3 to 1 on the ground, the same
+   floor the ladder's first step is held to, from the product's --mid */
+var NOPAT=(function(){var lo=0,hi=1;for(var k=0;k<24;k++){var m=(lo+hi)/2;if(cr(mix('#B4B0A8',GROUND,m),GROUND)<3)lo=m;else hi=m;}return mix('#B4B0A8',GROUND,hi);})();
+function nopatTone(q){return mix('#B4B0A8',NOPAT,[0,1/3,2/3,1][stepOf(q)]);}
+function famIcon(f,sz,col){var h=HCX[famBase(f)];if(!h)return '';col=col||PAL[h.b];
+ return '<svg viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" aria-hidden="true"><path d="'+h.ic+'" fill="none" stroke="'+col+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'
+  +(isPole(f)?'<path d="M3 21L21 3" stroke="'+col+'" stroke-width="1.6" stroke-linecap="round"/>':'')+'</svg>';}
+var TIERWORD={hy:'Hyper complex',cx:'Complex',sab:'Saboteur'};
+
+var MZ={}, FCY=(function(){var n=0,s=0;for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++)if(FACE[r][c]){n++;s+=r+.5;}return s/n;})();
+function rad(p){var dx=(p[1]+.5-CX)/CX, dy=(p[0]+.5-FCY)/(ROWS/2);return dx*dx+dy*dy;}
+function mosaic(who,nm){var key=who+'|'+nm;if(MZ[key])return MZ[key];
+ var P=DATA.people[who], m=maskOf(nm), cells=cellsOf(nm).slice();
+ cells.sort(function(a,b){return CURVE[a[0]+','+a[1]]-CURVE[b[0]+','+b[1]];});
+ var bel=T.NODES.filter(function(n){return m.b.indexOf(n.b)>=0;}), sq={};
+ P.sq.forEach(function(x){sq[x[0]]=x[1];});
+ var sabs=P.sabs||[], cxs=P.cxs||[], hys=P.hys||[];
+ /* the highest unit each saboteur reached, walked down the engine's own parts */
+ var top=sabs.map(function(s,i){return 'sab'+i;});
+ cxs.forEach(function(c,ci){c.parts.forEach(function(si){top[si]='cx'+ci;});});
+ hys.forEach(function(h,hi){h.parts.forEach(function(ci){cxs[ci].parts.forEach(function(si){top[si]='hy'+hi;});});});
+ function unitOf(k){var kind=k.replace(/\d+$/,''), i=+k.replace(/^\D+/,''), o=kind==='hy'?hys[i]:kind==='cx'?cxs[i]:sabs[i];
+  return {key:k,kind:kind,i:i,nm:o.nm,fam:kind==='hy'?o.nm:o.hcx,w:o.w,over:!!o.over,tiles:[],addr:{},sabs:[]};}
+ var units={}, tess=[], share=cells.length/bel.length;
+ bel.forEach(function(b){
+  var mine=[];sabs.forEach(function(s,si){if(s.parts.indexOf(b.i)>=0)mine.push(si);});
+  if(!mine.length){var q=sq[b.i]||0;tess.push({a:b,unit:q>0.05?'raw':'free',sab:-1,q:q,exact:share});return;}
+  mine.forEach(function(si){var k=top[si];if(!units[k])units[k]=unitOf(k);
+   if(units[k].sabs.indexOf(si)<0)units[k].sabs.push(si);units[k].addr[b.i]=1;
+   tess.push({a:b,unit:k,sab:si,q:sabs[si].w,exact:share/mine.length});});});
+ /* whole tiles by largest remainder, so the shares sum to the face exactly */
+ var left=cells.length;tess.forEach(function(t){t.n=Math.floor(t.exact);left-=t.n;});
+ tess.slice().sort(function(a,b){return (b.exact-b.n)-(a.exact-a.n)||a.a.i-b.a.i;}).slice(0,left).forEach(function(t){t.n++;});
+ var ul=Object.keys(units).map(function(k){return units[k];}).sort(function(a,b){return (b.w-a.w)||(a.key<b.key?-1:1);});
+ var cxOf={};cxs.forEach(function(c,ci){c.parts.forEach(function(si){cxOf[si]=ci;});});
+ function cw(si){return cxOf[si]!==undefined?cxs[cxOf[si]].w:sabs[si].w;}
+ function ck(si){return cxOf[si]!==undefined?cxOf[si]:1e3+si;}
+ var order=ul.map(function(u){return u.key;}).concat(['raw','free']);
+ tess.sort(function(a,b){var d=order.indexOf(a.unit)-order.indexOf(b.unit);if(d)return d;
+  if(a.sab>=0&&b.sab!==a.sab)return (cw(b.sab)-cw(a.sab))||(ck(a.sab)-ck(b.sab))||(b.q-a.q)||(a.sab-b.sab);
+  return (b.q-a.q)||(a.a.i-b.a.i);});
+ /* THE LIGHT SITS IN THE MIDDLE. The patterns take the cells nearest the
+    centre of the face, measured on an oval the face's own shape; charge in
+    no pattern takes the next shell out, and empty addresses the rim. Inside
+    each shell the cells run along the curve, so every patch stays compact.
+    The first cut ran the whole face along the curve and the patterns filled
+    the crown and left the jaw empty, which read as a helmet. */
+ var nPat=0,nRaw=0;tess.forEach(function(t){if(t.unit==='raw')nRaw+=t.n;else if(t.unit!=='free')nPat+=t.n;});
+ var byR=cells.slice().sort(function(a,b){return rad(a)-rad(b)||CURVE[a[0]+','+a[1]]-CURVE[b[0]+','+b[1]];});
+ var byC=function(a,b){return CURVE[a[0]+','+a[1]]-CURVE[b[0]+','+b[1]];};
+ var core=byR.slice(0,nPat), shell=byR.slice(nPat,nPat+nRaw).sort(byC), rim=byR.slice(nPat+nRaw).sort(byC);
+ /* inside the core each pattern is grown as one patch: start at the first
+    free cell along the curve, then always take the neighbour that touches the
+    most cells already in the patch. The same growth, run again inside each
+    patch, lays out the saboteurs it was built from, complex by complex. The
+    second cut walked the curve alone, and a patch broke wherever the curve
+    left the oval and came back, so no patch read as one piece. */
+ var out=[];
+ function light(list,q,seat){var lit=Math.max(q>0.05?1:0,Math.round(list.length*Math.min(10,q)/10));
+  list.slice().sort(function(a,b){return BAYER[a.r%4][a.c%4]-BAYER[b.r%4][b.c%4]||a.r-b.r||a.c-b.c;})
+   .forEach(function(x,j){x.lit=j<lit;});}
+ var pieces=[];tess.forEach(function(t){if(t.unit==='raw'||t.unit==='free')return;
+  var p=pieces.filter(function(x){return x.unit===t.unit&&x.sab===t.sab;})[0];
+  if(!p){p={unit:t.unit,sab:t.sab,q:t.q,n:0};pieces.push(p);}p.n+=t.n;});
+ var uSize=order.map(function(k){return pieces.filter(function(p){return p.unit===k;}).reduce(function(a,p){return a+p.n;},0);});
+ var patches=grow(core,uSize);
+ order.forEach(function(k,ui){if(!units[k])return;var mine=pieces.filter(function(p){return p.unit===k;});
+  var sub=grow(patches[ui],mine.map(function(p){return p.n;}));
+  mine.forEach(function(p,pi){var list=sub[pi].map(function(c){return {r:c[0],c:c[1],unit:k,sab:p.sab,t:p};});
+   light(list,p.q);units[k].tiles=units[k].tiles.concat(list);out=out.concat(list);});});
+ var ci=0;[['raw',shell],['free',rim]].forEach(function(z){ci=0;
+  tess.filter(function(t){return t.unit===z[0];}).forEach(function(t){var list=[];
+   for(var k=0;k<t.n;k++){var c=z[1][ci++];list.push({r:c[0],c:c[1],unit:t.unit,sab:-1,t:t});}
+   light(list,t.unit==='free'?0:t.q);out=out.concat(list);});});
+ var raw=tess.filter(function(t){return t.unit==='raw';}), free=tess.filter(function(t){return t.unit==='free';});
+ return MZ[key]={m:m,cells:out,units:ul,raw:raw,free:free,n:bel.length,sabs:sabs,cxs:cxs,hys:hys,top:top,sups:P.sups||[],
+  lit:out.filter(function(x){return x.lit;}).length,C:cells.length};}
+
+/* grow patches of the given sizes out of a set of cells, in order */
+function grow(avail,sizes){var free={},res=[];avail.forEach(function(c){free[c[0]+','+c[1]]=c;});
+ var N=[[0,1],[1,0],[0,-1],[-1,0]];
+ sizes.forEach(function(k){var got=[],mine={};
+  while(got.length<k){var best=null,bs=-1,bc=1e9;
+   Object.keys(free).forEach(function(key){var c=free[key],sc=0;
+    N.forEach(function(d){if(mine[(c[0]+d[0])+','+(c[1]+d[1])])sc++;});
+    if(got.length&&!sc)return;
+    var ck=CURVE[key];if(sc>bs||(sc===bs&&ck<bc)){best=c;bs=sc;bc=ck;}});
+   if(!best){var keys=Object.keys(free);if(!keys.length)break;
+    keys.sort(function(a,b){return CURVE[a]-CURVE[b];});best=free[keys[0]];}
+   var bk=best[0]+','+best[1];delete free[bk];mine[bk]=1;got.push(best);}
+  res.push(got);});
+ return res;}
+var SEL=null;
+function cellLook(x,sabs){
+ if(x.unit==='free')return {fill:'none',stroke:FREE,sw:1};
+ if(x.unit==='raw')return x.lit?{fill:nopatTone(x.t.q),stroke:'none'}:{fill:'none',stroke:FREE,sw:1};
+ var s=sabs[x.sab], seat=famSeat(s.hcx)||'Heart';
+ return x.lit?{fill:tone(seat,s.w),stroke:'none',slash:!!s.over}:{fill:shade(seat),stroke:'none'};}
+/* an unlit tile of a pattern is its family's colour in shadow, solved to 1.5
+   to 1 on the ground: dark enough that a lit tile, held at 3 to 1 or more,
+   always reads above it, light enough that the patch reads as one territory */
+var SHADE={};function shade(seat){if(SHADE[seat])return SHADE[seat];var lo=0,hi=1;
+ for(var k=0;k<24;k++){var m=(lo+hi)/2;if(cr(mix(PAL[seat],GROUND,m),GROUND)<1.5)lo=m;else hi=m;}return SHADE[seat]=mix(PAL[seat],GROUND,hi);}
+function svgMosaic(M,opt){opt=opt||{};var pad=4,ins=INS_C,sz=U-ins*2;
+ var h='<svg'+(opt.cls?' class="'+opt.cls+'"':'')+' viewBox="'+(-pad)+' '+(-pad)+' '+(COLS*U+pad*2)+' '+(ROWS*U+pad*2)+'" role="img" aria-label="'+esc(M.m.nm+' mask as a mosaic of patterns')+'">';
+ var at={};M.cells.forEach(function(x){at[x.r+','+x.c]=x;});
+ var slash='';
+ M.cells.forEach(function(x){var a=cellLook(x,M.sabs), fade=opt.big&&SEL&&!inSel(x);
+  var i2=a.fill==='none'?INS:ins, s2=U-i2*2;
+  h+='<rect class="cell'+(fade?' fade':'')+'" data-u="'+x.unit+'" data-s="'+x.sab+'" x="'+(x.c*U+i2)+'" y="'+(x.r*U+i2)+'" width="'+s2+'" height="'+s2+'" rx=".8" fill="'+a.fill+'" stroke="'+a.stroke+'"'+(a.sw?' stroke-width="'+a.sw+'"':'')+'/>';
+  if(a.slash&&!fade)slash+='M'+(x.c*U+ins+1)+' '+(x.r*U+U-ins-1)+'L'+(x.c*U+U-ins-1)+' '+(x.r*U+ins+1);});
+ if(slash)h+='<path d="'+slash+'" stroke="'+GROUND+'" stroke-width="1.3" stroke-linecap="round" fill="none"/>';
+ /* the seams. thick where one running pattern meets another, thin where a
+    pattern divides into the saboteurs it compounded from */
+ var thick='',thin={};
+ function edge(a,b,d){if(!a||!b)return;if(a.unit==='free'&&b.unit==='free')return;
+  if(a.unit!==b.unit)thick+=d;else if(a.sab!==b.sab&&a.sab>=0){var f=famSeat(M.sabs[a.sab].hcx)||'Heart';thin[f]=(thin[f]||'')+d;}}
+ M.cells.forEach(function(x){var X=x.c*U,Y=x.r*U;
+  edge(x,at[x.r+','+(x.c+1)],'M'+(X+U)+' '+Y+'v'+U);edge(x,at[(x.r+1)+','+x.c],'M'+X+' '+(Y+U)+'h'+U);});
+ /* a thin seam is a lead line in the family's own colour, at half value,
+    because a dark seam vanishes against the patch's shadowed tiles */
+ Object.keys(thin).forEach(function(f){h+='<path class="seam'+(opt.big&&SEL?' fade':'')+'" d="'+thin[f]+'" stroke="'+GROUND+'" stroke-width="2.8" stroke-linecap="square" fill="none"/>';});
+ if(thick)h+='<path d="'+thick+'" stroke="'+GROUND+'" stroke-width="4.2" stroke-linecap="square" fill="none"/>';
+ h+='<path d="'+outline(M.m.nm)+'" fill="none" stroke="'+LINE+'" stroke-width="1" stroke-linecap="square"/>';
+ return h+'</svg>';}
+function inSel(x){if(!SEL)return true;if(SEL.charAt(0)==='s')return x.sab===+SEL.slice(1);return x.unit===SEL;}
+function fmtW(w){return w.toFixed(1);}
+function unitRow(M,u){var seat=famSeat(u.fam), n=Object.keys(u.addr).length, lit=u.tiles.filter(function(x){return x.lit;}).length;
+ var all=u.kind==='hy'?M.hys[u.i].parts.reduce(function(a,ci){return a+M.cxs[ci].parts.length;},0):u.kind==='cx'?M.cxs[u.i].parts.length:1;
+ var sub=u.kind==='sab'?(isPole(u.fam)?'Overshot, family ':'Family ')+esc(u.fam):
+  (u.sabs.length===all?(all===2?'Both':'All '+all)+' saboteurs reach':u.sabs.length+' of its '+all+' saboteurs reach'+(u.sabs.length===1?'es':''))+' this mask. '+(isPole(u.fam)?'Overshot, family ':'Family ')+esc(u.fam);
+ return '<button class="u'+(SEL===u.key?' on':'')+'" data-sel="'+u.key+'">'+famIcon(u.fam,28)
+  +'<span><span class="nm">'+esc(TIERWORD[u.kind])+'. '+esc(u.nm)+'</span><br><span class="sub">'+sub+'. '+n+' of '+M.n+' addresses here.</span></span>'
+  +'<span class="w">'+fmtW(u.w)+'<small>'+lit+' of '+u.tiles.length+' lit</small></span></button>';}
+function vMosaic(){
+ var h='<div class="mz6">'+T.MASKS.map(function(m){var M=mosaic(WHO,m.nm);
+  var tiers=M.units.length?M.units.length+' pattern'+(M.units.length===1?'':'s'):'no pattern';
+  return '<button data-mz="'+m.nm+'" class="'+(m.nm===PICK?'on':'')+'" aria-label="'+esc(m.nm)+'">'+svgMosaic(M)+'<b>'+esc(m.nm)+'</b><span>'+tiers+'</span></button>';}).join('')+'</div>';
+ var M=mosaic(WHO,PICK), S=simulate(WHO,PICK,CAD);
+ h+='<div class="mz"><div class="stage"><div class="pair">'+svgMosaic(M,{cls:'big',big:1})+'<div class="t">'+esc(PICK)+', as a mosaic of patterns</div></div>'
+  +'<div class="pair">'+svgMask(layout(WHO,PICK,S.frames[0].q,S.had),{cls:'ref'})+'<div class="t">The same mask as raw charge,<br>the reversal view at today</div></div></div>';
+ h+='<div class="card led"><h2>What is running through the '+esc(PICK)+' mask</h2><div class="small muted">'+esc(WHO)+', at '+esc(M.m.b.join(' and '))+'. Weight is the engine\'s 0 to 10 for how hard a pattern is running. Tap a row to light it on the mask.</div>';
+ var by={hy:[],cx:[],sab:[]};M.units.forEach(function(u){by[u.kind].push(u);});
+ [['hy','Hyper complexes. A family that compounded on two complexes, or on one running at 6.5 or more.'],
+  ['cx','Complexes. Two saboteurs of one family, running together.'],
+  ['sab','Saboteurs on their own. Not yet paired inside their family.']].forEach(function(g){
+  if(!by[g[0]].length)return;h+='<div class="grp">'+g[1]+'</div>'+by[g[0]].map(function(u){return unitRow(M,u);}).join('');});
+ var rawN=M.raw.length, freeN=M.free.length;
+ if(rawN){var mean=M.raw.reduce(function(a,t){return a+t.q;},0)/rawN;
+  h+='<div class="grp">Charge in no pattern yet</div><button class="u'+(SEL==='raw'?' on':'')+'" data-sel="raw"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2" fill="'+NOPAT+'"/></svg>'
+   +'<span><span class="nm">Charge in no pattern</span><br><span class="sub">'+rawN+' of '+M.n+' addresses carry charge that no saboteur reads yet. Grey, because it has no family.</span></span>'
+   +'<span class="w">'+fmtW(mean)+'<small>mean charge</small></span></button>';}
+ if(!M.units.length&&!rawN)h+='<div class="grp">Nothing is written at these seats on this profile, so there is no pattern to draw. Every tile is an empty ring.</div>';
+ else if(freeN)h+='<div class="small dim" style="margin-top:6px">'+freeN+' of '+M.n+' addresses hold nothing and stay empty rings.</div>';
+ var sups=M.sups.filter(function(s){return s.parts.some(function(hi){return M.units.some(function(u){return u.key==='hy'+hi;});});});
+ if(sups.length)h+='<div class="wn"><div class="eyebrow">One tier above</div>The engine also pairs two hyper complexes above 5.6 into a super complex: '
+  +sups.map(function(s){return esc(s.nm)+' at '+fmtW(s.w);}).join(', ')+'. It is not drawn as its own seam. The mosaic stops at the three tiers named in round JP.</div>';
+ h+='</div></div>';
+ h+=mosaicKey();
+ return h;}
+function mosaicKey(){
+ function sw(fn){var h='<svg viewBox="-2 -2 44 44" aria-hidden="true"><rect x="-2" y="-2" width="44" height="44" rx="4" fill="'+GROUND+'"/>';for(var r=0;r<4;r++)for(var c=0;c<4;c++)h+=fn(r,c);return h+'</svg>';}
+ var seat='Sacral', full=tone(seat,6), ring=mix(PAL[seat],GROUND,.42);
+ function cell(r,c,lit,col,sl){var x=c*10,y=r*10;return lit?'<rect x="'+(x+.5)+'" y="'+(y+.5)+'" width="9" height="9" rx=".8" fill="'+col+'"/>'+(sl?'<path d="M'+(x+1.5)+' '+(y+8.5)+'L'+(x+8.5)+' '+(y+1.5)+'" stroke="'+GROUND+'" stroke-width="1.6" stroke-linecap="round"/>':''):
+  (col===FREE||col===NOPATK?'<rect x="'+(x+1.1)+'" y="'+(y+1.1)+'" width="7.8" height="7.8" rx=".8" fill="none" stroke="'+FREE+'"/>':
+   '<rect x="'+(x+.5)+'" y="'+(y+.5)+'" width="9" height="9" rx=".8" fill="'+shade(seat)+'"/>');}
+ var NOPATK=nopatTone(4);
+ var k1=sw(function(r,c){return cell(r,c,BAYER[r][c]<3,tone(seat,3));}), k2=sw(function(r,c){return cell(r,c,BAYER[r][c]<10,tone(seat,6.5));});
+ var k3=sw(function(r,c){return c<2?cell(r,c,BAYER[r][c]<10,full):'<rect x="'+(c*10+.5)+'" y="'+(r*10+.5)+'" width="9" height="9" rx=".8" fill="'+(BAYER[r][c]<10?tone('Root',6):shade('Root'))+'"/>';}),
+  k3b='<path d="M20 -1V41" stroke="'+GROUND+'" stroke-width="4.2"/><path d="M0 20H20" stroke="'+mix(PAL[seat],GROUND,.62)+'" stroke-width="1.1" stroke-linecap="round"/>';
+ k3=k3.replace('</svg>',k3b+'</svg>');
+ var k4=sw(function(r,c){return cell(r,c,BAYER[r][c]<10,full,1);}), k5=sw(function(r,c){return cell(r,c,BAYER[r][c]<6,NOPATK);}), k6=sw(function(r,c){return cell(r,c,false,FREE);});
+ var h='<div class="card" style="margin-top:14px"><h2>How to read it</h2><div class="key">'
+  +'<div class="k">'+k1+'<span><b>Lit share is weight.</b> A pattern at weight 3 lights 3 in 10 of its tiles, in a dim step of its colour. The rest of the patch sits in the same colour, in shadow.</span></div>'
+  +'<div class="k">'+k2+'<span>At weight 6.5, 6 or 7 in 10, and a brighter step. The more intense the pattern, the more of its pixels are on.</span></div>'
+  +'<div class="k">'+k3+'<span><b>Seams.</b> A thick seam bounds one running pattern. A thin seam splits it into the saboteurs it was built from. A large patch with thin seams inside is a hyper complex.</span></div>'
+  +'<div class="k">'+k4+'<span><b>A slashed tile is the overshot pole</b> of that family: the cure run past the point where it helps. Same family, same colour.</span></div>'
+  +'<div class="k">'+k5+'<span><b>Grey</b> is charge that no saboteur reads yet. It has no family, so it gets no family colour.</span></div>'
+  +'<div class="k">'+k6+'<span><b>An empty ring</b> is an address that holds nothing.</span></div></div>'
+  +'<div class="grp small dim" style="margin-top:12px">Colour is the family, carried in its seat colour from HCX_LIB. Not the seat the address sits at, which is what the reversal view colours by.</div>'
+  +'<div class="fams">'+T.HCX.map(function(f){return '<span>'+famIcon(f.nm,20)+esc(f.nm)+' <span class="dim">'+esc(f.b)+', pole '+esc(T.FAM_POLE[f.nm])+'</span></span>';}).join('')+'</div></div>';
+ h+='<div class="wn"><div class="eyebrow">Working note, art direction</div>Same face, same 21 by 34 cells, same rule that every address at the mask\'s seats owns an equal share. An address hands its share to every saboteur running through it, so one address can sit in several patches: that is the network. The patterns take the middle of the face, heaviest first, charge in no pattern the shell around them, and empty addresses the rim, so the light sits where a face is read from. Each patch is grown as one compact piece, never a stripe. The patterns are the engine\'s own, compute() on commit '+esc(DATA.stamp.commit)+'.</div>';
+ return h;}
+function wireMosaic(){var v=document.getElementById('view');
+ v.querySelectorAll('[data-mz]').forEach(function(b){b.onclick=function(){PICK=b.dataset.mz;SEL=null;draw();};});
+ v.querySelectorAll('[data-sel]').forEach(function(b){b.onclick=function(){SEL=SEL===b.dataset.sel?null:b.dataset.sel;draw();};});
+ v.querySelectorAll('.mz svg.big rect.cell').forEach(function(e){e.style.cursor='pointer';e.onclick=function(){var u=e.dataset.u;if(u==='free')return;SEL=SEL===u?null:u;draw();};});}
+
 function draw(){var v=document.getElementById('view');stop();
- v.innerHTML=MODE==='rev'?vRev():MODE==='six'?vSix():vBuild();wire();if(MODE==='rev')refreshRev();}
+ v.innerHTML=MODE==='rev'?vRev():MODE==='six'?vSix():MODE==='mosaic'?vMosaic():vBuild();wire();if(MODE==='mosaic')wireMosaic();if(MODE==='rev')refreshRev();}
 function stop(){if(PLAY){cancelAnimationFrame(PLAY);PLAY=null;}document.body.classList.remove('playing');var p=document.getElementById('play');if(p)p.textContent='Play the year';}
 function wire(){
  var v=document.getElementById('view');
@@ -442,16 +718,16 @@ function wire(){
   (function step(now){var s=Math.min(1000,s0+(now-t0)/dur*(1000-s0));TNOW=toT(s);refreshRev();
    if(s<1000)PLAY=requestAnimationFrame(step);else stop();})(t0);};}
 function setMode(){var host=document.getElementById('mode');
- var opts=[['rev','Reversal over time'],['six','The six marks'],['build','The construction']];
+ var opts=[['rev','Reversal over time'],['six','The six marks'],['mosaic','The mosaic'],['build','The construction']];
  host.innerHTML='<div class="seg">'+opts.map(function(o){return '<button data-k="'+o[0]+'" class="'+(o[0]===MODE?'on':'')+'">'+o[1]+'</button>';}).join('')+'</div>';
  host.querySelectorAll('button').forEach(function(b){b.onclick=function(){MODE=b.dataset.k;setMode();draw();};});}
 function banner(){
  var who='<span class="who"><span>Profile</span> '+WHOS.map(function(n){return '<button class="chip'+(n===WHO?' on':'')+'" data-who="'+n+'">'+n+'</button>';}).join('')+'</span>';
- document.body.insertAdjacentHTML('afterbegin','<div class="pb"><b>Prototype, not the app.</b><span>Golden masks, round IT. Charges are the engine\'s own, read on commit '+DATA.stamp.commit
+ document.body.insertAdjacentHTML('afterbegin','<div class="pb"><b>Prototype, not the app.</b><span>Golden masks, rounds IT and JP. Charges and patterns are the engine\'s own, read on commit '+DATA.stamp.commit
   +'. The year is simulated on the engine\'s release step and the book\'s 9 day settle. Nothing here saves.</span><span class="sp"></span>'+who+'</div>');
  document.querySelectorAll('.pb [data-who]').forEach(function(b){b.onclick=function(){WHO=b.dataset.who;
   document.querySelectorAll('.pb [data-who]').forEach(function(x){x.classList.toggle('on',x.dataset.who===WHO);});draw();};});}
 var q=location.hash.slice(1).split('&').reduce(function(a,kv){var p=kv.split('=');if(p[0])a[p[0]]=decodeURIComponent(p[1]||'');return a;},{});
-if(q.mode)MODE=q.mode; if(q.who&&DATA.people[q.who])WHO=q.who; if(q.m&&MARKS[q.m])PICK=q.m; if(q.t)TNOW=+q.t; if(q.cad)CAD=q.cad;
+if(q.mode)MODE=q.mode; if(q.who&&DATA.people[q.who])WHO=q.who; if(q.m&&MARKS[q.m])PICK=q.m; if(q.t)TNOW=+q.t; if(q.cad)CAD=q.cad; if(q.sel)SEL=q.sel;
 banner();setMode();draw();
 </script></body></html>
