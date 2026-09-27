@@ -57,6 +57,56 @@ COUNTEREXAMPLE = re.compile(r'\b(?:bad|not|was|old|wrong|fail)\s*:\s*$')
 GLUE = re.compile(r"'\s*\+\s*'")
 TAGS = re.compile(r'</?(?:b|em|i|br|span|p|div|strong)[^>]*>')
 
+# THE DATA TABLES WERE INVISIBLE, and they are where the definitions live. The
+# literal pattern below reads single quotes only, and GLOSS, SABDEF, DOMDEF and
+# HCX_LIB are double quoted JSON. Worse, an apostrophe inside a double quoted
+# definition ("isn't") opened a single quoted span that ran to the next one, so
+# kb.js reported fourteen junk fragments and not one of its fifty six glossary
+# entries. Measured on 27 September: 307 prose strings across the data tables
+# had never been read by this gate. V21 in SKILL.md was written against the
+# glossary, and a rule about plain words that cannot see the definitions is a
+# gate lying about the product. So a file under engine/data is read with a
+# walker that knows both quotes and where each one ends.
+DATA_DIR = 'engine' + os.sep + 'data'
+
+
+def is_data(path):
+    return DATA_DIR in os.path.normpath(path)
+
+
+def walk_literals(s):
+    """[(start, body)] for every quoted literal in comment blanked source.
+
+    Knows single, double and back quotes and the escapes inside them, so an
+    apostrophe in a double quoted string is only a character. Checked against
+    kb.js before it was trusted: every GLOSS entry comes back whole."""
+    out = []
+    i, n = 0, len(s)
+    while i < n:
+        c = s[i]
+        if c in '"\'`':
+            j = i + 1
+            while j < n and s[j] != c:
+                if s[j] == '\\':
+                    j += 2
+                    continue
+                if s[j] == '\n' and c != '`':
+                    break
+                j += 1
+            out.append((i, s[i + 1:j]))
+            i = j + 1
+            continue
+        i += 1
+    return out
+
+
+def literal_iter(s, path):
+    """(start, body) for the literals the gate reads in this file."""
+    if is_data(path):
+        return walk_literals(s)
+    return [(m.start(), m.group(1))
+            for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'", s)]
+
 
 def root():
     d = os.path.abspath('.')
@@ -89,16 +139,17 @@ def strings_js(path):
                lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
     s = re.sub(r'(?m)^\s*//.*$', '', s)
     s = GLUE.sub('', s)
+    if is_data(path):
+        s = re.sub(r'"\s*\+\s*"', '', s)
     out = []
-    for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'", s):
-        t = m.group(1)
+    for start, t in literal_iter(s, path):
         if len(t) < 14 or not re.search(r'[a-z] [a-z]', t):
             continue
         if re.search(r'[{}#;=]|px\b|\.js\b', t):
             continue
-        if COUNTEREXAMPLE.search(s[:m.start()]):
+        if COUNTEREXAMPLE.search(s[:start]):
             continue
-        out.append((path, s[:m.start()].count('\n') + 1, t))
+        out.append((path, s[:start].count('\n') + 1, t))
     return out
 
 
@@ -217,6 +268,18 @@ UNITS = re.compile(
 # sentence gate above cannot see it. This one reads the literal.
 TEMPLATE_NUM = re.compile(
     r'^\s*of\s+(?:your|the|these|those|his|her|their)\s+(.{0,48})')
+
+# V21, the rate half. A word ending -tion, -ment, -ity, -ness and the rest is
+# usually a verb that has been embalmed, and a ten year old reads the verb. It
+# is a RATE, reported per file against the house rate and never failed: plenty
+# of these words are plain ("question", "moment", "tension"), so the count
+# points at the file to read first and says nothing about any one line.
+# Checked against a known good and a known bad case before it was trusted, on
+# 27 September: the funnel questions, which SKILL.md section 7 holds up as the
+# model, carried one in 12 per cent of sentences and the glossary as it then
+# stood carried one in 44. The renderers under ui/ read 14.
+ABSTRACT = re.compile(
+    r'\b[a-z]{3,}(?:tion|sion|ment|ness|ity|ance|ence|ism|ology)s?\b', re.I)
 
 CAPS = re.compile(r'\b[A-Z]{3,}\b')
 CAPS_OK = {'CQ', 'SQ', 'DQ', 'IQ', 'MBTI', 'INFJ', 'ENTP', 'JSON', 'HTML',
@@ -471,8 +534,8 @@ def literals_raw(target):
     # the real one. Collapsing them to spaces put every finding 50 lines early.
     s = re.sub(r'/\*.*?\*/',
                lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
-    for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'", s):
-        before = s[:m.start()].rstrip()
+    for start, body in literal_iter(s, target):
+        before = s[:start].rstrip()
         # interp is True only when a run time VALUE lands immediately in front
         # of this literal. Preceded by ':' it is a table entry, and preceded by
         # another literal it is the middle of a sentence. The first cut of this
@@ -480,8 +543,9 @@ def literals_raw(target):
         # KBOF denominator table in knowledge.js, which is the correct pattern,
         # and a glued sentence in panels.js. Checked against those known good
         # cases before it was trusted.
-        interp = before.endswith('+') and not before[:-1].rstrip().endswith("'")
-        out.append((target, s[:m.start()].count('\n') + 1, m.group(1), interp))
+        interp = (before.endswith('+')
+                  and not before[:-1].rstrip().endswith(("'", '"')))
+        out.append((target, s[:start].count('\n') + 1, body, interp))
     return out
 
 
@@ -576,6 +640,7 @@ def rates(sents):
         'gloss': 100.0 * sum(1 for _, _, s in sents if GLOSS.search(s)) / n,
         'copula': 100.0 * sum(1 for _, _, s in sents if COPULA.match(s)) / n,
         'reassure': 100.0 * sum(1 for _, _, s in sents if REASSURE.search(s)) / n,
+        'abstract': 100.0 * sum(1 for _, _, s in sents if ABSTRACT.search(s)) / n,
     }
 
 
@@ -587,7 +652,7 @@ def baseline(rt):
 
 
 UNMEASURABLE = """
-WHAT THIS DID NOT CHECK. Four things, and they are the four that decide it.
+WHAT THIS DID NOT CHECK. Five things, and they are the five that decide it.
 
   1  Is it true. Whether the sentence overstates what the instrument measured.
      No regex reads a claim against a reading. Check the value it names exists.
@@ -596,6 +661,9 @@ WHAT THIS DID NOT CHECK. Four things, and they are the four that decide it.
   3  Does it land for Angela, Derek and James. Level 5 who wants magic, level 7
      who wants the diagnostic, level 3 who is defended. Read it as each.
   4  Rhythm. Where the sentence breaks. Read it out loud, standing up.
+  5  Would a ten year old understand it, with no word explained first. V21.
+     The lexicon catches the words that are always abstract. A sentence built
+     of short words can still say nothing a person could point at.
 
 A green run here means nothing above this line is broken. It does not mean the
 line is good.
@@ -611,7 +679,8 @@ def report(label, r, base, bad, verbose=True):
     print()
     print('  %-10s %8s %8s' % ('rate', 'here', 'house'))
     for k, name in [('anti', 'antithesis'), ('gloss', 'gloss'),
-                    ('copula', 'it-is open'), ('reassure', 'reassurance')]:
+                    ('copula', 'it-is open'), ('reassure', 'reassurance'),
+                    ('abstract', 'abstract')]:
         flag = ''
         if r['n'] >= 12 and r[k] > max(6.0, base[k] * 2.0):
             flag = '   <-- over house'

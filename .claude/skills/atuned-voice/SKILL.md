@@ -26,6 +26,7 @@ These fail on sight, before any judgement is needed. The count is not written
 here, because this card said nine while carrying eleven the moment two rules
 were added, which is the defect the repository has been bitten by twelve times:
 
+    a word a ten year old would ask about  "architecture", "operates", V21
     an em dash                          anywhere, including your own notes
     a line that says a thing is starting  "Welcome to", "Let us begin"
     an instruction to a nervous system  "relax", "sit back", "gently"
@@ -169,11 +170,13 @@ raised. A claim the engine cannot produce a field for.
 
 ## 3. The Micro Rules
 
-Sixteen. Each one has a line that failed and the line that replaced it, drawn
-from copy this product ships or shipped. A rule nobody can fail is not a rule,
-so every one of these has a real corpse.
+Each one has a line that failed and the line that replaced it, drawn from copy
+this product ships or shipped. A rule nobody can fail is not a rule, so every
+one of these has a real corpse. The count is not written here: this paragraph
+said sixteen above a list of twenty, which is the defect the repository keeps
+recording.
 
-Cite them as V1 to V20 in review.
+Cite them by number in review. V21 is the newest and it sits over all of them.
 
 ### V1. No Line Whose Job Is To Say A Thing Is Starting
 
@@ -294,12 +297,18 @@ copy, is under 3 per cent of sentences. Onboarding runs it at 14 per cent.
     FAIL  ui/onboard.js:146   a place in the body, not a label
     FIX   ui/onboard.js:145   the day, in your own words
     FIX   ui/onboard.js:146   a named plexus or a named nerve
+    V21   ui/onboard.js       one exact spot in your body
 
 Two of four cells on one card, each defining a thing by what it is not. The fix
 keeps one negation at most per surface and makes the rest positive and
 concrete. Note that "the day, in your own words" is not new copy: it is already
 in the product at `ui/component.js:412`. Reuse beats invention, and it also
 satisfies one word per concept.
+
+The right cell was fixed a second time on 27 September. "A named plexus or a
+named nerve" beat the antithesis and failed V21: a ten year old does not know
+what a plexus is, and the first card is the one place a word cannot be
+explained first. It reads "one exact spot in your body" now.
 
 `check.py` prints this rate per file against the house rate. It does not carry
 a threshold, because the house rate moves as the copy moves.
@@ -527,6 +536,105 @@ The distinction that makes this scrubbable rather than endless: a small scale
 label under a figure is V7 working, and prose that hides behind a scale instead
 of saying something is the defect. Read every one out loud as a sentence and
 keep the ones that survive it.
+
+### V21. Speak To A Ten Year Old. Never Abstract Language.
+
+Ruled 27 September 2026, as a core theme and a blocker, in his words:
+
+> "Ensure you do a copy sweep right now. The copy is at a D for our tools, our
+> tips, as far as the information goes. That layer right there is missing a lot
+> of very key kind of simplification of language, right? We want to speak to
+> people as if they're 10. That is a core theme of ours. We don't use abstract
+> language ever, so add that. Make sure you do a sweep of all the copy and
+> update it. That will be a priority pass, seeing as how it's a blocker. That
+> needs to be for all of Atuned, for the tutorial and for onboarding."
+
+Logged as `CO-29` in `objections.json` and as JK in `TASKS.md`. It is added to
+the rules above and replaces none of them.
+
+    FAIL  engine/data/kb.js  Address. The specific location in the body's
+                             energetic architecture where a pattern is
+                             resident.
+    FIX                      Address. One exact place in your body where a
+                             pattern sits.
+
+    FAIL  engine/data/kb.js  Charge. Stored survival energy held at a node.
+                             Installed by a stress response that never
+                             finished. Felt as heat, pressure, tingling, or
+                             weight when accessed.
+    FIX                      Charge. Survival energy stuck at one place in the
+                             body. It gets stuck when a stress reaction starts
+                             and never gets to finish. When your attention
+                             reaches it, it feels like heat, pressure, tingling
+                             or weight.
+
+**The test is one question.** Would a ten year old understand this sentence
+without somebody first explaining a word in it? If not, it fails. Concrete
+beats abstract every time: a real body sensation, a real number, a real
+action. Never a category word standing in for one.
+
+**What it is not.** It is not baby talk, and it is not a licence to be less
+true. The subject stays adult and the words get small: simple words about
+complex things, never simple things in complex words. "A tight jaw before you
+are properly awake" is a sentence a ten year old understands and a clinician
+signs. Pass 1 still comes first. A plainer line that overstates the reading is
+a defect.
+
+**The names stay, and each one is explained once in words a child already
+has.** Address, pattern, charge, release, seat, fetter, Coherence, the band
+names: these are the product's names and one word per concept (V14) still
+holds. A plain word must never become a second name for a named thing. What
+fails is a name defined by more names. "An address in the body's energetic
+architecture" defines one term with three more; "one exact place in your body"
+defines it with words the person had before they opened the product.
+
+**Five operations, in order.** Each has a real corpse in the glossary.
+
+1. **Put the instance where the category was.** "Physical and observable"
+   becomes "heat, shaking, tears, a change in your breathing".
+2. **Turn the noun back into a verb.** "Reduction of internal contradiction"
+   becomes "fewer parts of you pulling against each other". A word ending in
+   -tion, -ment, -ity or -ness is usually a verb that has been embalmed.
+3. **Take the short word.** Location is place. Resident is sits. Operates is
+   works. Accumulated is built up. Utilise is use. The long word is almost
+   always the Latin one and the short one is almost always the one a child
+   says.
+4. **One new word per sentence, and it gets its meaning in that sentence.**
+   "A bundle of nerves, like the solar plexus behind your stomach."
+5. **A physical picture for anything that cannot be pointed at.** Distortion
+   is a straight stick that looks bent in water. Willpower is a battery. The
+   hull is his and it stays. A computer metaphor is not physical: "the
+   operating system underneath the operating system" became bedrock.
+
+**What the gate can hold and what it cannot, said plainly.** Whether a ten
+year old understands a sentence is a fact about the reader, and no pattern
+reads it. That is the rule itself and it is not gateable; it is entered in the
+guidance list of `objections.json` as `ten-year-old` and it is printed on every
+run as the fifth thing the gate did not check. Two parts of it are
+mechanical, and they are held:
+
+- **`abstract-word`, stop.** A short lexicon of words that are always an
+  abstraction standing in for a plain one: architecture, resident, operates,
+  construct, modality, framework, paradigm, facilitate, utilise, leverage,
+  optimise, aperture, correspondence, substrate, parameter, upregulate,
+  trajectory, dynamics, physiological, cognitive. Every one has a short word
+  that replaces it. The list was measured across the whole corpus before it
+  was trusted, and words the owner's own canon uses on purpose, alignment in
+  the definition of Coherence first among them, are left off it.
+- **`abstract` rate, reported and never failed.** The share of sentences
+  carrying a word ending -tion, -sion, -ment, -ness, -ity, -ance, -ence or
+  -ism, per file against the house rate. Checked against a known good and a
+  known bad case first: the funnel questions, which section 7 holds up as the
+  model, ran 12 per cent of sentences and the old glossary ran 44 on the day
+  it was measured. A rate points at the file to read first. It does not say a
+  line is wrong.
+
+**And the gate was blind to the table this rule was written against.** The
+voice gate read only single quoted literals, and the glossary is double quoted
+JSON, so none of the fifty six definitions had ever been checked by it. An
+apostrophe inside a definition also split the file into junk spans. The data
+tables are now read with a string walker that knows both quotes. A rule about
+plain words is worth nothing if it cannot see the definitions.
 
 ---
 
@@ -788,6 +896,7 @@ Hard failures, which are a red run:
     caps                    all caps in copy, with the real initialisms exempt
     naked number            a run time value with no unit, in rendered and in
                             template form
+    abstract-word           V21, the lexicon, run by --objections
 
 Rates, reported against the house rate for the same measure, per file:
 
@@ -795,11 +904,13 @@ Rates, reported against the house rate for the same measure, per file:
     gloss                   , which is
     it-is open              a sentence opening on a demonstrative copula
     reassurance             flagged for a person to rule on, never failed
+    abstract                V21, a sentence carrying an embalmed verb:
+                            -tion, -ment, -ity, -ness and the rest
     sentence length         median, p90, p95, share over 25 words
 
 ### What It Cannot Check, And Says So On Every Run
 
-Four things, and they are the four that decide it. The gate prints this block
+Five things, and they are the five that decide it. The gate prints this block
 at the end of every run rather than producing a score, because a score with the
 unmeasurable part left out is a lie about how much has been checked.
 
@@ -807,6 +918,9 @@ unmeasurable part left out is a lie about how much has been checked.
 2. **Is it one bucket.** A string that is two passes every mechanical gate.
 3. **Does it land for Angela, Derek and James.**
 4. **Rhythm.** Where the sentence breaks.
+5. **Would a ten year old understand it** without a word explained first. V21.
+   The lexicon catches the words that are always abstract. It cannot catch a
+   sentence built entirely of short words that still says nothing concrete.
 
 ### The Gate Was Checked Against Known Good Cases First
 
@@ -903,6 +1017,7 @@ which is why the first one does not merely read oddly: it reads as a bill.
     FAIL  ['It finds where that sits','a place in the body, not a label'],
     FIX   ['You write what happened','the day, in your own words'],
     FIX   ['It finds where that sits','a named plexus or a named nerve'],
+    V21   ['It finds where that sits','one exact spot in your body'],
 
 V10. Measured, `onboard.js` runs antithesis at 14.3 per cent of its sentences
 and the demonstrative copula opener at 9.5 per cent, against a product rate of

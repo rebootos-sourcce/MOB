@@ -19,10 +19,10 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 4d132e4, tree dirty   database md5 edf796e70b63
-    27 objections logged, 22 of them with a quotation on record
-    20 rules, 9 with patterns in the database, 11 held by a gate elsewhere
-    10 more objections are guidance, because no check can express them
+    commit 287dd3e, tree dirty   database md5 8ca5e20041ca
+    28 objections logged, 23 of them with a quotation on record
+    21 rules, 10 with patterns in the database, 11 held by a gate elsewhere
+    11 more objections are guidance, because no check can express them
     0 findings on this run, 0 at a severity that stops a build
 
 ---
@@ -303,6 +303,17 @@ The strings he quoted were the archetype paragraph in ui/avatarui.js, the Energe
 
 Logged in round HS, when the class was ruled a third time. It had not been entered here, which is part of why the class had no gate: the caption was cut by hand and nothing held it closed.
 
+### CO-29. The tooltips and the definitions behind them, graded a D as a layer, and the tutorial and onboarding with them. A definition that explains one term with three more, in words a ten year old would have to ask about.
+
+> Ensure you do a copy sweep right now. The copy is at a D for our tools, our tips, as far as the information goes. That layer right there is missing a lot of very key kind of simplification of language, right? We want to speak to people as if they're 10. That is a core theme of ours. We don't use abstract language ever, so add that. Make sure you do a sweep of all the copy and update it. That will be a priority pass, seeing as how it's a blocker. That needs to be for all of Atuned, for the tutorial and for onboarding.
+
+    where    TASKS.md, round JK
+    when     27 September, in his words
+    quoted   verbatim
+    rules    abstract-word
+
+Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rules and replacing none. The rule itself, whether a ten year old understands a sentence, is a fact about the reader and is in the guidance list as ten-year-old. The lexicon and the abstract rate in check.py are the two parts a program can hold.
+
 ---
 
 ## The rules, and where each one is enforced
@@ -328,6 +339,7 @@ Logged in round HS, when the class was ruled a third time. It had not been enter
     one-word-per-concept  terminology   stop      tools/terms.py              CO-22
     question-mark         form          stop      tools/questions.js          CO-12
     plain-field-label     form          stop      objections                  CO-26
+    abstract-word         register      stop      objections                  CO-29
 
 ### tolerance
 
@@ -413,6 +425,16 @@ A field is named for what goes in it and a button for what it does. A label writ
     fixed   First name, Middle, Last. [Save]
     found   0
 
+### abstract-word
+
+A word that is always an abstraction standing in for a plain one. A ten year old would have to ask what it means, and every one of these has a short word that says the same thing.
+
+    fails   The specific location in the body's energetic architecture where a pattern is resident.
+    fixed   One exact place in your body where a pattern sits.
+    found   0
+
+Measured across the whole corpus on 27 September before it was trusted, with the data tables read for the first time. Every hit then was cleared in the same pass, and none sat in a file another seat was holding. Words the canon uses on purpose are left off: alignment is in the owner's own definition of Coherence, and somatic is the product's word for its own category. Architecture matches the singular only, because the plural is the codex's name for a family of universal laws, The nine architectures, and V21 keeps names. The short word for each: architecture is layout or map, resident is sits, operates is works or runs, construct is thing built, modality is kind, framework is the way you see things, facilitate is help, utilise is use, leverage is a hold over someone, optimise is improve, aperture is opening, substrate is ground, parameter is setting, regulating up and down is speeding up and slowing down, physiological is of the body, cognition is thinking. The first cut read optimi[sz] and anything after it and failed the Cynic's own voice line, Optimism is naive, which is a saboteur speaking in a plain word. It reads the verb now, and utilise the same way. That was the known good case it was checked against.
+
 ---
 
 ## Not gateable, and named rather than dropped
@@ -420,6 +442,12 @@ A field is named for what goes in it and a button for what it does. A label writ
 A rule nobody can express as a check is guidance. It is written down
 here so the next writer is held to it, and it is not turned into a bad
 pattern, because a tool that lies is worse than no tool.
+
+**ten-year-old.** CO-29
+
+Would a ten year old understand this sentence without somebody first explaining a word in it. V21. Concrete beats abstract every time: a real body sensation, a real number, a real action, never a category word standing in for one.
+
+*Why no pattern.* Whether a reader understands a sentence is a fact about the reader, and a sentence built only of short words can still name nothing a person could point at. The abstract-word lexicon holds the words that are always abstract, and the abstract rate in check.py points at the file to read first. Neither says a line is plain. Read it as a ten year old would, out loud.
 
 **refusal-in-value.** CO-09
 
@@ -499,7 +527,7 @@ The balance pill, and the last piece of the string the objection names. The stru
 
 If an empty label draws an empty box, drop the key rather than passing a space.
 
-### atuned_src/ui/ui.js:893
+### atuned_src/ui/ui.js:915
 
     bucket  refusal
     rule    empty-state, from CO-09
@@ -508,7 +536,7 @@ If an empty label draws an empty box, drop the key rather than passing a space.
 
 The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.
 
-### atuned_src/ui/drills.js:501
+### atuned_src/ui/drills.js:518
 
     bucket  value
     rule    empty-state, from CO-09

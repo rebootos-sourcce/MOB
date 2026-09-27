@@ -73,14 +73,14 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 </header>
 <div class="sec"><div class="his">create a log of all the times I said I do not like this copy type. Create a database, sweep for it, and kill it. And add that to the style guide.</div>
 <div class="grid">
-<div class="tile"><div class="t">Objections logged</div><div class="v">27</div></div>
-<div class="tile"><div class="t">Quoted verbatim</div><div class="v">22</div></div>
-<div class="tile"><div class="t">Rules</div><div class="v">20</div></div>
-<div class="tile"><div class="t">Not gateable</div><div class="v">10</div></div>
+<div class="tile"><div class="t">Objections logged</div><div class="v">28</div></div>
+<div class="tile"><div class="t">Quoted verbatim</div><div class="v">23</div></div>
+<div class="tile"><div class="t">Rules</div><div class="v">21</div></div>
+<div class="tile"><div class="t">Not gateable</div><div class="v">11</div></div>
 <div class="tile"><div class="t">Findings now</div><div class="v">0</div></div>
 <div class="tile"><div class="t">Stopping a build</div><div class="v">0</div></div>
 </div>
-<p class="meta">commit <i>4d132e4</i>, tree dirty &nbsp; database md5 <i>edf796e70b63</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
+<p class="meta">commit <i>287dd3e</i>, tree dirty &nbsp; database md5 <i>8ca5e20041ca</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
 </div>
 <div class="sec"><h2>What the sweep found</h2>
 <p>One line per rule. A rule reading zero is a rule holding a class closed, which is what a gate is for.</p>
@@ -105,6 +105,7 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <tr><td data-k="rule"><code>one-word-per-concept</code></td><td data-k="refuses">Delete or remove, never both.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/terms.py</span></td><td data-k="from" class="dim">CO-22</td></tr>
 <tr><td data-k="rule"><code>question-mark</code></td><td data-k="refuses">A document titled questions is a document of questions.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/questions.js</span></td><td data-k="from" class="dim">CO-12</td></tr>
 <tr><td data-k="rule"><code>plain-field-label</code></td><td data-k="refuses">A field is named for what goes in it and a button for what it does.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-26</td></tr>
+<tr><td data-k="rule"><code>abstract-word</code></td><td data-k="refuses">A word that is always an abstraction standing in for a plain one.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-29</td></tr>
 </table>
 </div>
 <div class="sec"><h2>The log</h2>
@@ -204,6 +205,10 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="his">You have unnecessary text, I want those removed.</div>
 <p class="meta">where <i>TASKS.md, round BA, BA9</i><br>when <i>25 September, marked on a screenshot</i><br>quoted <i>verbatim</i><br>rules <i>section-explains-itself</i></p>
 <p class="dim">Logged in round HS, when the class was ruled a third time. It had not been entered here, which is part of why the class had no gate: the caption was cut by hand and nothing held it closed.</p>
+<h3>CO-29. The tooltips and the definitions behind them, graded a D as a layer, and the tutorial and onboarding with them. A definition that explains one term with three more, in words a ten year old would have to ask about.</h3>
+<div class="his">Ensure you do a copy sweep right now. The copy is at a D for our tools, our tips, as far as the information goes. That layer right there is missing a lot of very key kind of simplification of language, right? We want to speak to people as if they&#x27;re 10. That is a core theme of ours. We don&#x27;t use abstract language ever, so add that. Make sure you do a sweep of all the copy and update it. That will be a priority pass, seeing as how it&#x27;s a blocker. That needs to be for all of Atuned, for the tutorial and for onboarding.</div>
+<p class="meta">where <i>TASKS.md, round JK</i><br>when <i>27 September, in his words</i><br>quoted <i>verbatim</i><br>rules <i>abstract-word</i></p>
+<p class="dim">Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rules and replacing none. The rule itself, whether a ten year old understands a sentence, is a fact about the reader and is in the guidance list as ten-year-old. The lexicon and the abstract rate in check.py are the two parts a program can hold.</p>
 </div>
 <div class="sec"><h2>The strings that have to change</h2>
 <p>Old and new. The line is found by searching the file for the string, because four of these files were edited while this was being written.</p>
@@ -212,11 +217,11 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="ba"><div class="k">old</div><div class="o">label:b.read?dir:&#x27;not read yet&#x27;</div><div class="k">new</div><div class="n">label:b.read?dir:&#x27;&#x27;</div></div>
 <p>The balance pill, and the last piece of the string the objection names. The structural half is landed and right: the pill draws a dash and the refusal moved out from between the two pole labels. The label is the part still to go. Not read yet is false on a field that has been read and is carrying under a mean of one on both sides, which is a real state the engine folds in with the empty one at compute.js:41. A label that can be false about the screen it sits on is worse than no label. The dash is the value, the absence needs no name, and the reason is one tap away in the drill.</p>
 <p class="dim">If an empty label draws an empty box, drop the key rather than passing a space.</p>
-<h3>atuned_src/ui/ui.js:893</h3>
+<h3>atuned_src/ui/ui.js:915</h3>
 <p class="meta">bucket <i>refusal</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;Balance. Not read yet. Neither side reaches 1, so no direction is &#x27;</div><div class="k">new</div><div class="n">&#x27;Balance. Neither side reaches 1, so no direction is &#x27;</div></div>
 <p>The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.</p>
-<h3>atuned_src/ui/drills.js:501</h3>
+<h3>atuned_src/ui/drills.js:518</h3>
 <p class="meta">bucket <i>value</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">+(!b.read?&#x27;not read yet&#x27;</div><div class="k">new</div><div class="n">+(!b.read?&#x27;no direction named&#x27;</div></div>
 <p>The drill&#x27;s headline value, the same slot one door in, where there is room for three words. It says what the instrument did rather than guessing which of three states it is in, and the paragraph two lines below carries the reason with both means printed beside it.</p>
@@ -241,6 +246,10 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 </div>
 <div class="sec"><h2>Not gateable, and named rather than dropped</h2>
 <p>A rule nobody can express as a check is guidance. It is written down so the next writer is held to it, and it is not turned into a bad pattern, because a tool that lies is worse than no tool.</p>
+<h3>ten-year-old</h3>
+<p>Would a ten year old understand this sentence without somebody first explaining a word in it. V21. Concrete beats abstract every time: a real body sensation, a real number, a real action, never a category word standing in for one.</p>
+<p class="dim">Why no pattern. Whether a reader understands a sentence is a fact about the reader, and a sentence built only of short words can still name nothing a person could point at. The abstract-word lexicon holds the words that are always abstract, and the abstract rate in check.py points at the file to read first. Neither says a line is plain. Read it as a ten year old would, out loud.</p>
+<p class="meta">from <i>CO-29</i></p>
 <h3>refusal-in-value</h3>
 <p>A refusal sentence sitting in a value slot. It passes every pattern, because the wording is fine and the slot is wrong. The balance strip is its corpse: the value slot between masculine and feminine carried a refusal, so a person read one sentence across three elements.</p>
 <p class="dim">Why no pattern. No pattern reads which bucket a slot expects. The empty-state rule catches the wording this one arrived in, and nothing catches the next one. Read every value slot&#x27;s empty state out loud, in the order the eye takes it.</p>
