@@ -18937,3 +18937,66 @@ work.
 What I need from him: whether the Field tab screenshot's crossed-out
 refusal line is an objection to worked examples refusing at all, to
 its wording, or neither.
+
+## GT. The body map specification, back, and it is not the image that was limiting the system. 27 September
+
+`BODY-MAP-SPEC.md`, dispatched at round GO and folded with his nervous
+figure feedback relayed at round GQ. Verified directly: the document
+is real, 47,879 bytes, its cited figures checked against its own
+text (the 5.8cm disagreement between his two charts, the 2.1cm median
+distance from the shipped build to them, the 107 marma classical count
+against `marma-validation.md`, zero em dashes across the document and
+every one of its five generator scripts), and the three PNGs it names
+opened directly rather than taken on the report's description.
+`merge.png` shows exactly what the report claims: the approved nervous
+figure, front and back, with a 5cm grid, forty eight regions, address
+dots, and his own trap example pressed, producing a tension line, an
+area of effect and a reading panel matching his own dictated
+interaction almost word for word, "Tension here 40 percent... your
+stories here... the pattern under it... what helps."
+
+**The finding worth reporting to him plainly: more image detail was
+not the actual bottleneck.** The current build already sits a median
+2.1cm from his own two reference charts, and his two charts disagree
+with each other by a median 5.8cm, wider than the gap between the
+build and either one. A 5cm grid cell, not a photographic figure, is
+what the numbers argue for, and the spec gives its reasoning rather
+than asserting it: his own "roughly in the right spot" ruling, the
+charts' own disagreement, and a fingertip covering 5.5cm of body on a
+phone, three independent numbers agreeing on the same resolution.
+
+**Front and back both needed, left and right not,** with one
+exception: the head, cut down the middle, since nineteen of the
+thirty two skull addresses sit on the midline and stack unreadably
+close from the front alone (a median 6.1mm apart, nine pairs under
+10mm) but spread to a readable 18mm apart in the cut.
+
+**A real, separate defect found in passing, not invented:** the
+spine ruler the current body map draws from is built off where the
+seats are drawn rather than off the spine itself, putting one
+landmark 9.8cm off from the reference chart. Named as a real bug, not
+folded into the spec's resolution recommendation.
+
+**The glow defect has two separate causes, not one, and the first
+diagnosis undersold it.** A blur haze at very low opacity, and a
+separate colour field drawn with a screen blend that reads as light
+shining through the figure. The report is explicit that its first
+"after" screenshot only removed one of the two and was corrected
+before being sent up. Removing the haze alone also cut render time by
+roughly a third, a real performance finding alongside the visual one.
+
+**"The hundred and eight chakras" could not be matched to anything
+real** in either the classical marma count (107, not 108) or any
+sourced chakra system, and is logged as an open question rather than
+guessed at.
+
+Sent to him as the three images this round's own standing rule
+requires alongside any drawing-shaped question: `merge.png`,
+`glow.png` and `questions.png`, since a geometry question in prose
+alone was already corrected once this project.
+
+What I need from him: fifteen questions the spec itself could not
+answer without him, listed in full in its own section 9, the two
+most consequential being whether option A is really the nervous
+figure he meant to lock in, and what "the hundred and eight chakras"
+refers to.

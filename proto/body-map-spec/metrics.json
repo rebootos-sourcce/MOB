@@ -1,0 +1,359 @@
+{
+ "stamp": {
+  "read": "2026-09-27T07:07:51.633Z",
+  "statureUnits": 93.674,
+  "cmPerUnit": 1.868,
+  "headMmPerUnit": 19
+ },
+ "addresses": {
+  "all": 112,
+  "somatic": 108,
+  "field": 4
+ },
+ "placement": {
+  "measuredInEngine": 80,
+  "proposedFW": 28,
+  "neither": [],
+  "bySource": {
+   "atlas": 32,
+   "seat": 1,
+   "spine": 6,
+   "chart": 41,
+   "proposed": 28
+  }
+ },
+ "views": {
+  "back": 17,
+  "front": 56,
+  "both": 2,
+  "head": 33
+ },
+ "backDrawnOnFrontToday": [
+  1,
+  6,
+  50,
+  59,
+  38,
+  39,
+  43,
+  45,
+  17,
+  28,
+  4,
+  13,
+  14,
+  9
+ ],
+ "nervesShared": [
+  [
+   "Inferior Hypogastric Plexus",
+   [
+    3,
+    26
+   ]
+  ],
+  [
+   "Pelvic Nerve",
+   [
+    5,
+    24
+   ]
+  ],
+  [
+   "Obturator Nerve",
+   [
+    10,
+    20
+   ]
+  ],
+  [
+   "Celiac Plexus",
+   [
+    33,
+    36
+   ]
+  ],
+  [
+   "Vagus Nerve",
+   [
+    51,
+    65
+   ]
+  ]
+ ],
+ "points": {
+  "total": 110,
+  "bilateralPlaces": 40,
+  "multiAddressPlaces": 18,
+  "maxAddressesOnOnePlace": 8
+ },
+ "addressesByRegion": {
+  "head": 36,
+  "torso": 43,
+  "pelvis": 27,
+  "leg, person's right": 2
+ },
+ "resolution": {
+  "touchFloorPx": 44,
+  "wholeBody": {
+   "w1600_cm": 9.9,
+   "w390_cm": 22
+  },
+  "headOpened": {
+   "w1600_cm": 2.5,
+   "w390_cm": 5.3
+  },
+  "byRegion": {
+   "head/front": {
+    "points": 6,
+    "nnMedianCm": 3.1,
+    "nnMinCm": 3.1,
+    "zoomedTouchCm": {
+     "w1600": 1,
+     "w390": 2.3
+    },
+    "cells5cm": 5,
+    "cells3cm": 6,
+    "cells2cm": 6,
+    "pointsCloserThanTouch": {
+     "whole390": 6,
+     "zoom390": 0,
+     "zoom1600": 0
+    }
+   },
+   "head/head": {
+    "points": 31,
+    "nnMedianCm": 0.7,
+    "nnMinCm": 0.3,
+    "zoomedTouchCm": {
+     "w1600": 2.5,
+     "w390": 5.3
+    },
+    "cells5cm": 7,
+    "cells3cm": 10,
+    "cells2cm": 15,
+    "pointsCloserThanTouch": {
+     "whole390": 31,
+     "zoom390": 31,
+     "zoom1600": 29
+    }
+   },
+   "torso/front": {
+    "points": 43,
+    "nnMedianCm": 2.8,
+    "nnMinCm": 1.2,
+    "zoomedTouchCm": {
+     "w1600": 3.1,
+     "w390": 5.5
+    },
+    "cells5cm": 36,
+    "cells3cm": 37,
+    "cells2cm": 42,
+    "pointsCloserThanTouch": {
+     "whole390": 43,
+     "zoom390": 40,
+     "zoom1600": 25
+    }
+   },
+   "torso/back": {
+    "points": 9,
+    "nnMedianCm": 5,
+    "nnMinCm": 2.4,
+    "zoomedTouchCm": {
+     "w1600": 2.7,
+     "w390": 4.8
+    },
+    "cells5cm": 8,
+    "cells3cm": 8,
+    "cells2cm": 9,
+    "pointsCloserThanTouch": {
+     "whole390": 9,
+     "zoom390": 2,
+     "zoom1600": 2
+    }
+   },
+   "pelvis/front": {
+    "points": 13,
+    "nnMedianCm": 2.6,
+    "nnMinCm": 2,
+    "zoomedTouchCm": {
+     "w1600": 1.3,
+     "w390": 3.3
+    },
+    "cells5cm": 9,
+    "cells3cm": 13,
+    "cells2cm": 13,
+    "pointsCloserThanTouch": {
+     "whole390": 13,
+     "zoom390": 8,
+     "zoom1600": 0
+    }
+   },
+   "pelvis/back": {
+    "points": 8,
+    "nnMedianCm": 6.6,
+    "nnMinCm": 2.6,
+    "zoomedTouchCm": {
+     "w1600": 1.5,
+     "w390": 3.6
+    },
+    "cells5cm": 8,
+    "cells3cm": 8,
+    "cells2cm": 8,
+    "pointsCloserThanTouch": {
+     "whole390": 8,
+     "zoom390": 4,
+     "zoom1600": 0
+    }
+   }
+  }
+ },
+ "head": {
+  "places": 30,
+  "addresses": 32,
+  "midlinePlaces": 11,
+  "midlineAddresses": 19,
+  "frontNearestMedianMm": 6.1,
+  "cutNearestMedianMm": 18,
+  "pairsUnder10mmFront": 9,
+  "pairsUnder10mmCut": 0,
+  "worstFront": [
+   {
+    "a": "Optic chiasm",
+    "b": "Midbrain: dorsal raphe",
+    "frontMm": 2.9,
+    "cutMm": 28.1
+   },
+   {
+    "a": "Optic chiasm",
+    "b": "Occipital nerve",
+    "frontMm": 3.7,
+    "cutMm": 114.1
+   },
+   {
+    "a": "Hypothalamus",
+    "b": "Midbrain: dorsal raphe",
+    "frontMm": 5.4,
+    "cutMm": 20.7
+   },
+   {
+    "a": "Pineal region: pineal",
+    "b": "Pineal to hypothalamus",
+    "frontMm": 6.1,
+    "cutMm": 13.4
+   }
+  ],
+  "touchAtPhoneOpenedMm": 54,
+  "touchAt1600OpenedMm": 25
+ },
+ "spineRuler": {
+  "ourT4T5y": 30.51,
+  "chart112T4T5y": 25.284,
+  "gapCm": 9.8,
+  "note": "the ruler is anchored on the seats' drawn heights; see spec §3.4"
+ },
+ "marmaVsAddresses": {
+  "marma": {
+   "limbs": 44,
+   "chestAbdomen": 12,
+   "back": 14,
+   "aboveCollarbones": 37
+  },
+  "addresses": {
+   "limbs": 2,
+   "chestAbdomen": 53,
+   "back": 17,
+   "aboveCollarbones": 36,
+   "unplaced": 0
+  }
+ },
+ "grid": {
+  "cells5cm": 214,
+  "cells3cm": 614,
+  "cells2cm": 1208
+ },
+ "regionExamples": [
+  {
+   "nm": "Trap, back view",
+   "todayRegion": "Shoulders",
+   "todayBands": [
+    "Throat",
+    "Heart"
+   ],
+   "todayAddresses": 27,
+   "placedAddresses": 2,
+   "placed": [
+    "Comparison",
+    "Manic Expression"
+   ]
+  },
+  {
+   "nm": "Low back, back view",
+   "todayRegion": "Pelvis",
+   "todayBands": [
+    "Sacral",
+    "Root"
+   ],
+   "todayAddresses": 32,
+   "placedAddresses": 7,
+   "placed": [
+    "Fear",
+    "Root_08_Unnamed",
+    "Collapse",
+    "Entitlement",
+    "Rebellion",
+    "Resentment (Solar)",
+    "Anxiety"
+   ]
+  },
+  {
+   "nm": "Chest, front view",
+   "todayRegion": "Torso",
+   "todayBands": [
+    "Heart",
+    "Solar"
+   ],
+   "todayAddresses": 31,
+   "placedAddresses": 13,
+   "placed": [
+    "Hatred",
+    "Self-Judgment (Heart)",
+    "Betrayal",
+    "Separation",
+    "Martyrdom",
+    "Longing",
+    "Closed Heart",
+    "Manipulative Kindness",
+    "False Love",
+    "Rejection",
+    "Avoidance Of Grief",
+    "Need To Be Needed",
+    "Spiritual Language To Manipulate"
+   ]
+  }
+ ],
+ "marmaSizes": {
+  "src": "Sushruta, pramana bheda, by search result (see spec)",
+  "halfAngula": 56,
+  "one": 12,
+  "two": 6,
+  "three": 4,
+  "palm": 29,
+  "cmPerAngula": 2
+ },
+ "pain": {
+  "regions": 9,
+  "views": "front only",
+  "names": [
+   "head",
+   "throat",
+   "shoulders",
+   "arms",
+   "torso",
+   "pelvis",
+   "legs",
+   "hands",
+   "feet"
+  ]
+ }
+}
