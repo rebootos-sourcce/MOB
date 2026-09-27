@@ -20886,3 +20886,67 @@ the."
 Logged in full, same as round HS, before any of it is acted on. One
 concrete, checkable claim inside it is investigated first, ahead of
 any design dispatch: the fieldpanel prototype he says would not open.
+
+## HU. What was checked, what was fixed directly, what was dispatched, on rounds HS and HT together. 27 September
+
+**A real mistake of mine, found and owned, not a gap in the shipped
+code.** The two body map screenshots sent with round HQ and HR's own
+report, `bodymap-gordon-1600.png` and `bodymap-trap-diane-1600.png`,
+were taken by that agent before its own final rebuild onto the Avatar
+commit and still read "Energetics" in the tab bar. The actual shipped
+code has read "Avatar" since commit `1850525`, confirmed again just
+now with a fresh screenshot of the real merged build. His own "why has
+the energetics page not been updated" is answered directly: it has
+been, the picture he was shown of it was stale. Fresh screenshots are
+sent with this round rather than only described.
+
+**Two exact violations he quoted verbatim, found and removed directly
+rather than dispatched,** commit `a0d90b3`: the archetype section's own
+paragraph explaining what it is and how the one to five scale works,
+in `atuned_src/ui/avatarui.js`, and the Energetics heading's "your
+birth moment and the 63 questions" line plus the birth form's own
+triangulation paragraph, in `atuned_src/ui/intakeui.js`. All nine gates
+checked, `tools/equiv.py` against the immediate parent shows exactly
+`renderAvatar` and `renderIntake` changed, nothing wider.
+
+**The fieldpanel prototype he could not open, investigated rather than
+resent blind.** The file itself is sound: a complete, self contained
+build with no external references, `data-build` stamped `7279e05`.
+The likely cause is this project's own already documented lesson from
+`CLAUDE.md`, that a file sent without saying how to present it renders
+in a preview pane instead of downloading, which cannot be saved or
+interacted with as a real app. Resent as an explicit attachment rather
+than guessing at a content problem that a fresh read of the file itself
+does not show.
+
+**Five pieces dispatched, none of them a wire in yet, matching what he
+actually asked for in each case.** Two are mockups only, his own
+explicit words asking to see something before it is built: four Story
+page and release area treatments from the art seat, two of them
+required to borrow from the Field's own art direction, grounding the
+"sniffing, perceiving" motion he asked for in the sniffer's real
+mechanics rather than invented decoration; and four Compass wheel
+treatments from the same seat, CQ read as a completing, radiating
+circle in the Field's own art direction, checked against real brand
+tokens rather than assumed clean. A third, from the UI UX seat, writes
+his own two stated rules, the column law and the icon requirement,
+into the Bible by name, and mocks up rather than silently decides the
+intake to avatar question and the two archetype systems question, plus
+a simplification pass on the archetype wheel's own complexity when a
+pattern is selected. A fourth, from the narrative seat, is the site
+wide sweep he asked for directly rather than as a mockup, the same
+defect class as the two I fixed, everywhere else it hides, plus the
+three specific bugs named in his own words that I could not locate
+from the screenshots on hand, and a new objection written into the
+voice check so this class is caught mechanically from now on rather
+than only by his own eyes. A fifth, from the project management seat,
+is the full backlog and unreacted to prototype audit he asked for
+twice, a real document rather than a promise, cross referencing every
+round this session against his own recorded words rather than assumed
+agreement.
+
+What I need from him: nothing new blocking; every piece above is
+already moving. The Compass and Story page pieces are mockups by his
+own request and wait on his own pick before anything is wired in. The
+copy sweep and the backlog audit are direct work with no decision
+gating them and will come back done.
