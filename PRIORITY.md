@@ -12,6 +12,9 @@ held except the items already named as blocked.
 
 ## The stamp on this measurement
 
+**Superseded. The current stamp is section 17, 27 September.** This block is
+kept as the record of what was true on 21 September.
+
 Every count below was read off the file and off the run, not out of a document.
 Where a document disagrees with the run, section 7 names the document.
 
@@ -52,6 +55,11 @@ stopped, or waiting behind a named ruling.
 ---
 
 # 1. The order
+
+**Status on 27 September, with the commits, is in section 17.** Rows 2, 3, 4
+and 10 are built. Row 5 is built in the funnel. Row 6 is built in the funnel
+and open in the app. Row 9 is overtaken. Row 1 is closed in substance except
+the currency. Rows 7 and 8 are open.
 
 | # | What | Who | Size | Depends on | Moves grade |
 |---|---|---|---|---|---|
@@ -853,6 +861,9 @@ Named, so nothing disappears quietly.
 
 # 11. Needs a ruling
 
+**On 27 September four of these five are ruled or overtaken, and only the
+currency is still his. Section 17 has the evidence.**
+
 Only the ones where the answer changes what gets built. The full argument for
 each is in section 2, and **none of these goes to him as it stands.** Item 1 of
 the order is the snapshot each one needs: what it is, what is at stake, what
@@ -1211,3 +1222,349 @@ on him. Row 10 is visuals and waits on everything above it by his own order.
 - Whether the book branch handoffs bind Atüned (`AW14`).
 - Body typeface, still open from their GAME_PLAN.
 - Push access to reboot-os for this session, or the work is relayed.
+
+---
+
+# 17. 27 September. Round IW placed, and the backlog cleared against git
+
+His closing instruction for round IW, verbatim (`TASKS.md` section IW): "Stick
+with your priorities, add this to the priority list, clear the backlog."
+
+Read as three jobs. The order already on this page stands. The IW items are
+placed in it. Every item this page has ordered is checked against what
+actually shipped, by commit, and its state is corrected. Sections 1 to 16 are
+the record of what was ordered and when, so they are not rewritten; their
+status lines point here.
+
+## The stamp on this measurement
+
+    commit                  6a2cfb3
+    product at that commit  identical to e3b13ae: git diff --stat e3b13ae 6a2cfb3
+                            over atuned_src, source.html, engine.js, tests,
+                            tools and funnel is empty. The two commits between
+                            touch only TASKS.md, docs/briefs and marketing
+    source.html             md5 b8f58ab7, the same bytes as 6aa063a
+    TASKS.md                22,002 lines, md5 75d403b94b72, read at 6a2cfb3
+    measured                27 September, 18:15 to 18:36 UTC, in an isolated
+                            worktree, never the shared tree
+
+    method                  grep -cE "^\s*[-*]?\s*\[\X\]" TASKS.md, once per
+                            state, the method section 12 wrote down
+
+    open        [ ]         567
+    his ruling  [?]         155
+    specced     [~]          20
+    built       [x]         433
+                           1175 lines carrying a state, 37 per cent built
+
+    ./atuned_src/BUILD.sh          div balance 0, no em dashes, 47 funnel tokens,
+                                   and a fresh build differs from the committed
+                                   one by one line, the build stamp
+    ./atuned_src/BUILD-engine.sh   engine is host free, 468 exports
+    node tests/engine.js           1770 passed, 0 failed
+    node tests/functional.js       1228 passed, 1 failed, and again on a re-run
+    node tests/collide.js           351 passed, 0 failed
+    node tests/design.js            167 passed, 7 failed, and again on a re-run
+    node tools/monitor.js          all surfaces render, exit 0
+    node tests/funnel.js            172 passed, 0 failed
+    check.py --objections          0 findings
+
+**Two gates are not green in this pass, and I am not calling that noise or a
+regression until a quiet run says which.** All eight failures are timing
+measurements. Design: six lightings each read the Field's frame rate at 22.8
+to 29.2 against a floor of 30, and the boot sheet's fade read an end time of
+NaN. Functional: a fade read opacity 1 about 120 milliseconds after a press.
+The load average on this machine was 12 to 14 while they ran, with four other
+seats working. The bytes under test are the same bytes as 6aa063a, and the
+tests are unchanged since then, and round IV read that build at 1229 and 174
+with nothing failing. That is strong evidence for load. It is not a green run.
+**The round is not done until both gates read green on a quiet machine,** and
+the design gate's frame checks are `GT1` and `GT3` again, section 4: a red
+frames line costs a re-run and a judgement call every time.
+
+## The finding under the stamp: the ledger has stopped moving
+
+**The four state counts are identical to section 12's, to the item.** Between
+d90bf98, section 12's stamp, and 6a2cfb3:
+
+    measured    372 commits, 54 of them into atuned_src
+    measured    TASKS.md from 8,889 lines to 22,002
+    measured    second level sections from 116 to 504
+    measured    every line carrying a state, diffed between the two commits:
+                0 lines differ
+    measured    the last line carrying a state is 7095, so the 14,907 lines
+                after it are prose that no count reaches
+
+Not one checkbox was added, ticked or moved in three days of shipping. The
+Avatar tab, the Story page, the spoken release, the CQ audit and the data loss
+fixes are all built and none of them reaches the count. **So "37 per cent
+built" is a frozen number, not a measure of progress,** and any plan read off
+it is reading 25 September.
+
+This is section 9's finding grown by a factor of nine: "the part of the file
+nothing counts". The fix is the one section 12 recommended and declined to do
+as a side effect, done on purpose: tick the ledger. I do not own `TASKS.md` and
+have not touched it. The table below names every item whose state moved, with
+the commit, so whoever owns that file can apply it in one pass.
+
+## The order. Round IW placed
+
+Section 12's order still stands, and its rows 2 to 5 (state corruption, the
+boundary, writes that claim success) still go before any new surface is built,
+because they protect the data a new surface would draw. The IW work is placed
+beside that, not above it.
+
+| # | What | Who | Size | Depends on | Moves grade |
+|---|---|---|---|---|---|
+| 1 | **In progress.** Three imprint visualisations wired into the Story page behind a three icon toggle. `ui/storyui.js` | fullstack, dispatched at e3b13ae | as dispatched | nothing | yes, it is his ask to see which he likes |
+| 2 | **In progress.** A live SQ and DQ readout on the release run screen. `ui/release.js` | fullstack, dispatched at e3b13ae | as dispatched | nothing to build. What it shows after a run ends depends on the settle question under "Already his" below | yes, it is the thing he said he should see |
+| 3 | **In progress.** Badges, achievements and scoring as an interactive mockup with a slider from day 0 to day 90. `proto/gamification-timeline/`, design only | game director, dispatched at e3b13ae | as dispatched | the reward word, `Q4`, for its labels. Its numbers can be real from `engine/ladder.js` today; its words are not final until he names the unit | no, it is a drawing he asked to see |
+| 4 | The masks page, specified and drawn at both widths. Not a build | UX architect, art direction | medium | nothing to start. The golden prototype at `proto/masks/golden/` is the starting drawing | no, it makes row 6 buildable |
+| 5 | Six mask weights stored on every history row, the way the twenty one laws were added on 26 September as `lawNow` (`engine/schema.js:231`), with the same rule for a row written before the key existed | engineering | medium: the row, the boundary's whitelist, a series reader, a gate | nothing | no, and without it "how my child mask runs" has no history to summarise |
+| 6 | The masks page, built | engineering, art direction | large | rows 4 and 5, rulings 3 and 4 below, and the art direction change he announced for it | yes, it is a surface he described in full |
+| 7 | The floor on the Field's Top three and By assemblage point card, `ui/ui.js` lines 1190 to 1224 at 6a2cfb3. **The round IX half is already in flight:** at 18:40 UTC the shared tree carries an uncommitted `ui/ui.js` edit that ranks those rows Primary, Secondary, Tertiary and retires the "Top three" heading. The floor lands on top of that seat's commit, not beside it | engineering | small once ruled | ruling 2 below, and the IX seat's commit | yes |
+| 8 | The band word, whichever way he rules | copy, engineering | medium if his new meaning wins, nothing to build if the shipped meaning stays | ruling 1 below | yes, one word per concept |
+
+### Why these rows, one line each
+
+**Row 5 is the dependency nobody mentioned.** He asked for "a summary of how
+my child mask runs." Measured in `engine/schema.js`: a history row carries cq,
+dq, sq, pole, the laws and the tier, and no mask. The six weights exist on
+every reading as `r.maskRing` (`engine/compute.js:311`) and are thrown away.
+Nothing stored can say how any mask has run, and a row that was never written
+cannot be reconstructed later, because a row keeps no per address charge to
+recompute it from. Every day this waits is history lost. It is additive, as
+`lawNow` was, so a v1 record still loads.
+
+**Row 6 costs less arithmetic than it looks.** "As I enter my journal, all the
+masks begin to fill in" is already true of the engine: `r.maskRing` is
+recomputed on every `compute()`, so the live fill is a drawing and not a model.
+The right hand panel has a start: `runMaskDrill` at `ui/drills.js:605`, which
+the Field and Knowledge already open (`0d5fb9c`). It is a new surface, so it
+takes TAB integer 11, appended; the integers are identity and are never
+renumbered.
+
+**No design document for this page exists, said plainly.** Searched every
+tracked markdown file for a masks page, a landing of six masks, or a child
+mask summary. What exists: his original ask at `TASKS.md` `MK2`, "As people
+enter their story the masks begin to fill in", with `MK10` to `MK12` under it;
+the pixel mockup at `proto/masks/` and the golden ratio one at
+`proto/masks/golden/`, both design only; and `DESIGN-sheet.md` line 252, which
+found the table defect under ruling 3. Nothing specifies all six at once, the
+click, the panel's contents, or the per mask summary. Row 4 is that document.
+
+## Needs a ruling. Only where the answer changes the build
+
+Each carries what he said and what it collides with, so he does not have to go
+and find it.
+
+### 1. What "band" means
+
+**He said, round IW:** "A symbolage point is a chakra. A band would be the
+chakra color. So, root is the band."
+
+**What it collides with, his own ruling, `DECISIONS.md` line 380:** "The
+scale, ruled. Ten bands, ten points each... The ruling is a new word every ten
+points." Band is the shipped word for the coherence level, Gaining, Even,
+Oscillating and the rest, and the app says it: "The band is named once all
+[the laws] are in" (`ui/component.js:102`).
+
+**A fact that helps him decide.** Inside the engine, band already means what he
+now means. `BANDS` at `engine/data/canon.js:249` is the seven seats, Root to
+Crown, referenced 58 times across the source, and every mask names its seats
+under a key called `b`, for bands. Only the word a person reads uses band for
+the coherence level.
+
+- **His new meaning.** Band is a seat's own colour and quality. The coherence
+  levels need another word, the ruling at line 380 is amended, and the copy
+  that prints "band" for a level moves. The code does not move. Cost: a copy
+  sweep, medium.
+- **The shipped meaning.** Band stays the coherence level and a seat keeps
+  "assemblage point". His dictation is translated in every brief. Cost:
+  nothing built, and the gap between how he talks and what the screen says
+  stays open.
+- **Neither.** Band leaves the screen in both senses. Cost: two words to find.
+
+### 2. Whether the Top three has a floor at five
+
+**He said, round IW:** "I think we should show, maybe as a system rule,
+everything above from 5 to 10. The close, tens are, everything closer to 10 is
+prioritized. But if you only have five, sixes, and sevens, then your fives
+will show up."
+
+**What shipped at 6aa063a** is the three heaviest addresses carrying any
+charge, heaviest first, so closer to ten already comes first. The code says
+why it did not cut at five, and I re-measured the claim rather than quote it.
+Headless, off the engine's own roster at 6a2cfb3:
+
+    measured    14 reference profiles
+    measured    7 have no address at 5 or more
+    measured    2 of those 7 carry nothing at all, Rosa and Lance
+    measured    5 carry charge and never reach 5: Sofia at 1.54, Angela at
+                1.52, Marcus at 2.51, Abraham at 3.93, Wren at 4.03
+    measured    Diane has 1 address at 5 or more, Derek 9, James 10, Nkem 13,
+                Ana 18, Gordon 51, Tomas 59
+
+**So his rule changes two things, and he should see both.** Rows under five
+disappear, which empties the card for five people who do carry charge. And
+"everything from 5 to 10" could mean every address in that range and not
+three, which is 51 rows for Gordon and 59 for Tomas.
+
+- **A strict floor at five, every row from 5 to 10.** Cost: blank for 7 of 14,
+  and the card's own empty sentence, "Nothing is carrying charge yet", becomes
+  false for Marcus, who has 99 addresses lit. It needs a new sentence. Gordon's
+  list runs to 51.
+- **Five as a preference.** Addresses from 5 to 10 first, heaviest first, three
+  shown. When nothing reaches five, the heaviest three still show, under a line
+  saying nothing is past five. Cost: small. Nobody who carries charge sees a
+  blank card.
+- **As shipped.** The heaviest three, no floor. Cost: nothing, and his rule is
+  not followed.
+
+It goes with the drawing, per his ruling that a question about a drawing is
+asked with the drawing: Marcus and Gordon, each option, 1600 and 390. Round IX
+is relabelling the same rows now ("new labels that reflect the content, like
+primary, secondary"), so the drawing is taken after that seat commits, or he is
+shown a heading that is already gone.
+
+### 3. Two of the six masks can never differ
+
+**He said, round IW:** "for the mask page, I want to see all six on the
+screen... all the masks begin to fill in."
+
+**The table:** Preteen at `engine/data/canon.js:499` and Professional at line
+508 both sit on `['Solar','Throat']`. Measured on all 14 reference profiles,
+the two weights are identical every time: Ana 4.55 and 4.55, Gordon 5.38 and
+5.38, Tomas 4.64 and 4.64. On a page whose whole point is six masks filling,
+two will always fill in lockstep, and a person will notice.
+`DESIGN-sheet.md` line 252 found this and left it, correctly, because the seat
+pairs are the codex and the codex is his.
+
+- **Professional gets its own seat pair,** which one is his. Cost: a data
+  line, and every reading in the roster moves once, named in the commit.
+- **Five on the page, six in the engine,** with the two merged on screen. Cost:
+  the page contradicts the book.
+- **Six, and the lockstep is accepted.** Cost: nothing built, and the defect
+  ships on the page that shows it most.
+
+### 4. Where the masks page lives, and whether a person lands on it
+
+**He said, round IW:** "when I land as a user, I come here, I should be able to
+see as I enter my journal, all the masks begin to fill in."
+
+**What it meets:** the app opens on the Field, ruled 19 September, which
+itself reversed Summary. Section 2 of this page said it: "A third flip is
+affordable. A third flip that is not written down is not." And round GS ruled
+Character is "what all the masks look like, and what's running it."
+
+- **A new tab, and the app still opens on the Field.** "Land" means land on
+  the page when you go to it. Cost: one surface, one TAB integer.
+- **A new tab, and the app opens on it.** A third flip of the opening,
+  written into `CLAUDE.md` and `DECISIONS.md` when it is made. Cost: the unread
+  guard and the four doors move with it.
+- **Inside the Avatar tab,** as the Character view. Cost: the Avatar hero is
+  already open for redesign after "a bunch of text boxes" (HV), so the two
+  redesigns become one.
+
+### Already his, and these rows lean on them. Not new questions
+
+- **Should the shown number drop the moment a run ends, or settle over nine
+  days** as the book's tau draws it. Asked in round IU. It decides what row 2's
+  readout shows after the last line of a run, so it goes with row 2's drawing.
+- **The reward word, `Q4`.** Still open, narrowed in round GP to "marks" as
+  shipped against badges, patterns, points or karma. Row 3's labels wait on it.
+  His IW goal, "for a person to empty their bank and to fill their vault", ties
+  the rewards to the bank and vault the release already runs, which is his
+  direction and not yet a word.
+
+## SQ in real time, and what it connects to
+
+The IW addendum at e3b13ae already measured it: DQ is SQ's own aggregate over
+the 112 (`engine/compute.js:240` to 343), and a release already lowers SQ at
+the run's address and lifts CQ at its seat. So he is asking for a screen and not
+new arithmetic, and row 2 is that screen.
+
+**Cross references, so nothing is specced twice:**
+
+- **The formula lock, `DECISIONS.md` line 1563,** ruled 25 September: "lock
+  this in as sacrosanct." The readout reads the arithmetic and may not change
+  it. Any seat that finds itself editing `compute.js` to make the number move
+  visibly is outside the ruling.
+- **The seed decay policy, section 14 and `CLAUDE.md`,** is related and is not
+  the same question. It asks whether a stated type's charge fades on its own.
+  The readout shows only what a release moves. If decay is ever ruled in, the
+  readout has to say which of the two moved the number, and that is the only
+  place they touch.
+- **The settle question above** is the one that actually governs row 2.
+
+## The backlog, cleared against git
+
+Every item this page has ordered, re-checked at 6a2cfb3. "Built" means a commit
+lands it and the gates above cover it; nothing is marked built on a report.
+
+### Section 1, the order of 21 September
+
+| Item | State now | Evidence |
+|---|---|---|
+| 1. Five rulings with a snapshot each, `QC1` to `QC3` | closed in substance, except the currency | `D11` overtaken: the Avatar tab built at `1850525`, `DECISIONS.md` line 2049. `SQ1` overtaken: "This looks good for the story. Wired in.", ported at `ecbc0a8`. `SN5` to `SN7` ruled 25 September, `a400472` to `7070052`: CQ is the twenty one laws, and the roster is `SI` in the engine. `RV7` overtaken by build, a synthesised voice at `2c6e38b`, his recording `RV1` still his; no audio ruling is recorded in `DECISIONS.md`, so it closes as built on the team's recommendation, not as ruled. `Q4` still open. The method was ruled 25 September, "the team asks" and no shorthand. `QC3`, the generator gate: no commit found, still open |
+| 2. A gate on the funnel | **built** | `ec94db6`, 21 September. `tests/funnel.js` read 172 and 0 today |
+| 3. `E2` and `AC1`, the field leak | **built** | `88181e6` and `94aeb8b`, recorded closed at `55b51ed`. Two further data loss routes closed at `9a5fe14`, 26 September |
+| 4. `ST1`, the sentence read twice | **built** | `fbe941c`, 21 September. `normMap` and `marksOf` live at `engine/sniff.js` lines 148 and 444 and the Story page calls them |
+| 5. `CQR1` to `CQR3`, the ring in the funnel | **built** in the funnel | `ec94db6`, `funnel/ring.js`. `CQR4`, where it goes in the app, is his |
+| 6. The favicon, `TR1`, `TR2` | **half built** | All 4 funnel pages carry `rel="icon"`, `ec94db6`. The app's `source.html` carries 0. `TR1` and `TR2` not checked this pass, left open |
+| 7. `SY1` to `SY4`, the journal box | open, and must be re-measured before anyone builds it | The Story page was rebuilt at `ecbc0a8`. `SY3` asks for a red light while listening; the shipped dot is green while recording and red while typing, `ui/storyui.js` line 49. That is his to reconcile, not a defect to fix by default |
+| 8. `CP7`, then `CP6` | open, and growing | `tests/functional.js` at 6a2cfb3: 18 calls to `GORDON()`, and 39 calls to `loadP` with a literal index. This page counted 17 on 21 September. `CP6` not checked |
+| 9. The left rail, measured | overtaken | The Field lands with its column shut, `1341796`; the rail rebuilt, `fe433d8`. The 52 is no longer measured and must not be cited again until it is |
+| 10. The ritual reconciliation | built | delivered 21 September, already recorded |
+
+### Section 12, the forty two of 25 September
+
+`git log --grep` for every AU and AV identifier since d90bf98 finds no commit
+naming any of them as fixed. Two were fixed under other names, and the rest
+were spot checked in the code.
+
+| Row | State now | Evidence |
+|---|---|---|
+| 1. `AV13`, `equiv.py` | half built | Deleting a declaration now fails the check, `e00b217`, 26 September. The column zero comment half has no commit |
+| 2. `AV8`, `AV9` | open, re-measure | `9a5fe14` closed a neighbouring route, a story's charge lost after visiting a worked example. `AV8`'s own direction is named by no commit |
+| 6. `AU10`, `AV24` | open | `AV24` re-confirmed still present twice in the log, `TASKS.md` lines 16755 and 17394 |
+| 7. `AU5` | open | `#0078C2` appears 0 times in `shell/head.html` |
+| 13. `AU18` | open, and moved the wrong way | the `body.rm` rules the row says come out: 4 at d90bf98, 5 now |
+| 14. `AU9` | **built** | `766a87d`, the Summary avatar line reads the pair's real shape |
+| 15. `AU17` | open | one `:active` rule in the stylesheet at d90bf98 and one now, a cursor on the Compass |
+| Group C, `AU8` | overtaken | the Avatar tab, `1850525` |
+| Group F, `AU13`, the boot length | open, his | `DECISIONS.md` "Still open": 5.24 seconds as built or the 7.2 once ruled |
+| `AU14`, the clipped depth bar | open | he marked it again himself as `BA1`, `TASKS.md` line 9381 |
+| Rows 3, 4, 5, 8 to 12, 16 | open | no commit names them. Not re-measured one by one in this pass, and not marked built on silence |
+
+### Section 16, the desktop rows
+
+Unchanged. They land in reboot-os, which this repository can read and not
+check from here.
+
+### And two from sections 4 and 10 that moved
+
+- **`SIM1` to `SIM4`, the ninety day run.** Built: `f72c3b4` ran the ICPs
+  through ninety days, and it found a defect that locked every free tier user
+  out for good, fixed at `b0eed95`.
+- **The plexus count he asked to be checked.** Confirmed, nothing to build:
+  `BODY-MAP-SPEC.md` lines 244 to 246 against `engine/data/nodes.js`, recorded
+  in the IW addendum at e3b13ae.
+
+## Not doing this round
+
+- **Building the masks page.** Row 4 specifies it first. Building it over two
+  open rulings and an art direction change he has already announced is
+  building it twice.
+- **Masks as pixel art, `MK2` and `MK12`.** Section 6 stands. The golden ratio
+  prototype is the current direction.
+- **Names for a person's own masks.** Ruled out 27 September: "that's
+  identification."
+- **A strict floor at five by default.** Not built until he answers ruling 2.
+- **The seed decay policy.** Still engineering's own, section 14, and not
+  moved by the SQ readout.
+- **Ticking the ledger.** It is the most useful edit on the list and it is not
+  mine to make. `TASKS.md` belongs to another seat this round. The table above
+  is written so it can be applied without re-reading the commits.
+- **Section 12 rows 3 to 16 re-ranked against the IW work.** They keep their
+  order. Rows 2 to 5 still go before any new surface.
