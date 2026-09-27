@@ -20444,3 +20444,75 @@ B, and if B a duration, for question two; A, B or C for question
 three; and A, B or C for exactly where the running hot list starts,
 now that his own scale is drawn out and the real difference between
 readings is shown on real people rather than argued in the abstract.
+
+## HO. The Story page and Source AI, the last of round GO's five, back and verified in isolation. 27 September
+
+Commit `e97c6eb`, on top of `17e6efe`. Verified directly in an isolated
+worktree rather than trusted whole: `BUILD.sh` and `BUILD-engine.sh`
+clean, host free confirmed for the new `engine/sourceai.js`,
+`engine.js` 1755 passed 0 failed with a new `SA` group, `collide.js`
+336 passed 0 failed, `funnel.js` 172 passed 0 failed, all matching the
+report exactly. `tools/equiv.py` against the immediate parent shows
+precisely the new Source AI functions and constants and the changed
+bodies a rail swap on one tab would touch, nothing wider. Opened
+`proto/story-source/story-1600-before-after.png` directly: it shows
+exactly what the report claims, the right rail's Imprints and Release
+sections traded for a Source AI panel that opens with "What are we
+writing about today?", shows what it heard in the person's own words
+with the rung drawn as dots rather than a printed number, and asks one
+why question at the threshold with a "Move on" door that ends it.
+
+**A real cross check the screenshot itself makes possible.** The
+Imprints panel, moved rather than rebuilt, still shows the pre-fix
+"Anger" pills for the ashamed example, since that is a separate,
+still uncommitted fix from a different seat; the new Source AI "Heard"
+panel beside it correctly reads "Solar, ashamed," since its own hearing
+logic is independent of the older bug. Both being true at once, in the
+same picture, is exactly what an honest, correctly scoped commit looks
+like rather than a coincidence.
+
+**The scale problem solved rather than assumed away.** His rule, ask
+only from seven to ten, could not sit on the sniffer's own existing
+zero to ten, since that scale already reads a single strong word at a
+median of 7.33, which would question sixty eight percent of every line
+the sniffer reads at all. Source AI's own scale instead counts how
+often a story returns to a place, not how strong one word is: heard
+once is never asked about however strong the word, seven is a return
+within the same entry, ten is a return that also touches an earlier
+entry, the root. Measured on the real story bank: 7.3 percent of
+single lines draw a question, rising to 17.1 percent read in order
+across a person's real entries.
+
+**A real document correction made rather than a new file opened
+beside an old one.** A Source AI specification already existed,
+`reviews/SPEC-source-ai.md`, from a 20 September ruling; it was
+extended in place rather than duplicated, and an earlier scripted
+Source AI prototype (`proto/restructure/rs.js`, round FY) was left
+alone with a dated note pointing at what has since been ruled, rather
+than silently orphaned.
+
+**A real design piece deliberately left as mockup, not built blind.**
+The "signal strength per pattern" idea from round GQ needs an
+authored trigger phrase list the sniffer does not have today, measured
+directly: zero of forty one story bank lines and zero of fourteen
+persona lines name a pattern by name at all, against three hundred and
+eighty two sentences that do in the book itself. `DESIGN-pattern-signal.md`
+and its mockup make the real gap visible rather than faked with
+invented data.
+
+Sent to him: the before/after Story page pictures, since a rail swap
+is exactly the kind of change a screenshot settles faster than a
+paragraph.
+
+What I need from him, the report's own eight, the two most
+consequential being: may Source AI read a person's earlier entries at
+all, since without it the app can say a story circled back but never
+name where the root actually sits; and whether "a pattern is what
+comes back" is the right reading of his own seven to ten scale, since
+the alternative, reading raw word strength, would turn the question
+into something asked of two out of every three lines a person writes.
+
+This closes every one of round GO's five original dispatches: the
+Field left panel (HM), the Compass and Knowledge base check (GY), the
+body map specification (GT) and its build (HE), and now the Story page
+and Source AI.
