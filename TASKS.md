@@ -22607,3 +22607,26 @@ future recording; answered in the same place as the Cloudflare
 boundary question. Screenshots of the release protocol, already taken
 during round JO's verification, sent directly rather than making him
 wait on a fresh dispatch.
+
+Seven pieces dispatched in parallel, each scoped to files no other
+holds: the boot crash blocking his client meeting plus the blue logo
+wire in (shell files, technical-director, the crash named first and
+explicitly not treated as a silenceable nuisance, since the guard that
+is firing is the error handler working as designed, not the bug
+itself); the avatar rebuilt root to crown with the story capture, the
+sniffer connection and the cycle tracker (avatarui.js and schema.js,
+fullstack-td, told to reuse the existing pair mechanic rather than
+invent a second one); the masks redrawn as a mosaic of saboteurs,
+complexes and hyper complexes weighted by cluster intensity
+(proto/masks/golden, art-director); both storyboards redone toward far
+less text and the new two minute signal test script, the loop redrawn
+as a circuit (proto/onboarding-storyboard and proto/tutorial-storyboard,
+uiux-architect, told it may use real web research for visual language,
+never for copy or branding to copy); the Energetics art pass wired into
+the real app, all three treatments kept as a toggle on the same
+precedent already shipped for the Story page's imprint views
+(intakeui.js, fullstack-td); Source AI given a why, grounded in the
+real address a story landed on rather than his own dictated abstract
+phrasing (storyui.js, narrative-director); and a marketing and funnel
+brief built from real cited web research plus what is already decided
+in this repository, not invented fresh (marketing/, marketing-director).
