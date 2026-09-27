@@ -22448,4 +22448,12 @@ or which product goes online first, does not settle that collision by
 itself. Named rather than assumed settled.
 
 What is genuinely new and unblocked is the document, since it is steps
-for him to take, not code. Written directly as `HOSTING-SETUP.md`.
+for him to take, not code. Written directly as `HOSTING-SETUP.md`,
+grounded in what is already decided (`DECISIONS.md`, "Cloudflare, for
+now, kept", Pages plus D1, "one DNS record") and the already scoped
+task in `PRIORITY.md`, `AW1`, rated one afternoon once Cloudflare and a
+region are named. Named plainly that the server itself lives in
+`reboot-os`, a repository this session cannot see, so the account
+level steps are accurate, and the exact commands inside that
+repository are read off `PRIORITY.md`'s own account of it, not
+verified fresh here.
