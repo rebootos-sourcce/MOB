@@ -16923,3 +16923,29 @@ than a math one.
 **Five open questions logged in the report's own section 8**, each
 with real options and costs, left for him.
 
+## FR. Two more tasks queued off FQ start, one a duplicate diagnosis
+## of the fix already dispatched, one real and new. 27 September.
+
+Two precise task starts arrived close together. The first
+(`task_5d1326ba`, queued in FP) is `proto/avatar/risesim.json`'s own
+staleness, real and new: its release and law lever figures were
+written 20 September against the pre-refit CQ, release no longer
+moves CQ at all under the fitted model, and `DESIGN-avatar.md`,
+`QUESTIONS.md` and `docs/briefs/design-gamification.md` all quote
+figures off it. Dispatched to the seat already running this exact
+class of fix all night.
+
+The second is a duplicate, independently arrived diagnosis of the
+`plan.base` defect already dispatched in FQ, with real additional
+precision worth folding in rather than working twice: the exact
+reproduction command
+(`node -e "const E=require('./engine.js');const
+p=E.blankProfile('You');console.log(E.planAllowance(p.plan,100))"`),
+both call sites in `schema.js` named by line, and a real requirement
+FQ's own dispatch had not stated explicitly: since there is no
+server, the fix has to decide how a one file build knows a week has
+passed at all, deriving a period start from something already on the
+profile (`p.meter.first` suggested) rather than only fixing the
+default. Sent to the agent already mid fix rather than duplicating
+it.
+
