@@ -21115,3 +21115,37 @@ redesign that I, it just couldn't open this file."
 A third file has now failed to open, sent raw this time on his own
 instruction rather than packed, which rules out compression as the
 cause. Investigated before anything else below.
+
+## HZ. The delivery problem solved a different way, round two dispatched, and a real gap in my own record found and fixed. 27 September
+
+**The file-open problem, answered by removing the file rather than by
+guessing at its size again.** Two attempts, packed and then raw, both
+failed. Rather than try a third size, the Story mockups were published
+as a live page instead of something to download: `story-redesign.html`
+was stripped of its own outer document tags and republished through
+the Artifact tool, which serves it directly rather than transferring
+it as a file at all. Opened it myself first and read its head back to
+confirm the real title, the embedded font and the body content
+arrived intact before telling him it was ready.
+
+**Round two dispatched on the journal**, his own words carried in
+full: the Trace and Route imprints treatments combined with a real
+sort control, four more journal layouts that fit Story, Imprints and
+Release together with no scrolling, his own column law explicitly set
+aside for this page since he authorised that himself this round, and
+the ICP and focus group simulation made a standing practice for the
+UI UX seat rather than something asked for each time.
+
+**A real gap in my own record, found by the stop hook rather than by
+me, and fixed rather than argued with.** Round HX's own log entry
+described the Story mockups commit as cleanly split from the
+fieldpanel one and landed. It was half true: splitting the accidental
+combined commit only actually committed the fieldpanel file with
+`--only`; the Story mockups folder was left sitting uncommitted the
+whole time, still present and unchanged in the working tree but never
+given a commit of its own. Found when `git status` turned up
+`proto/story-redesign/` as untracked after other work, confirmed with
+`git log --all -- proto/story-redesign/` returning nothing. Fixed by
+committing it now, unchanged from what round HX already verified
+directly, as `09c5149`. The content itself was never at risk, only its
+record.
