@@ -22360,3 +22360,22 @@ a real database now would mean either committing a real secret into a
 public repository or building something that only looks connected,
 both against this project's own rules. Named here rather than built
 blind or faked.
+
+## JK. A copy sweep, priority, a blocker: speak to a ten year old, never abstract
+
+His words, verbatim: "Ensure you do a copy sweep right now. The copy is
+at a D for our tools, our tips, as far as the information goes. That
+layer right there is missing a lot of very key kind of simplification
+of language, right? We want to speak to people as if they're 10. That
+is a core theme of ours. We don't use abstract language ever, so add
+that. Make sure you do a sweep of all the copy and update it. That
+will be a priority pass, seeing as how it's a blocker. That needs to
+be for all of Atuned, for the tutorial and for onboarding."
+
+A new house rule, added rather than assumed: speak to a ten year old,
+never abstract language. Dispatched as a priority pass across the
+tooltip and information copy, scoped to files not currently held by
+another agent (`atuned_src/ui/release.js` and `storyui.js` are both in
+flight), with a note to sweep those two once they land, and the same
+bar sent to the in-flight onboarding and tutorial storyboards before
+they finish rather than after.
