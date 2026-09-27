@@ -151,7 +151,18 @@ cv.addEventListener('pointerdown',function(e){
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   try{cv.setPointerCapture(e.pointerId);}catch(err){}
   return;}
- if(e.pointerType==='touch'){TAP={h:h,e:{shiftKey:false},id:e.pointerId};return;}
+ /* THE CORE NEVER GOES THROUGH TAP. GF deferred every touch press to
+    pointerup so a drag could still be told from a tap, but pointerup checks
+    TAP before it checks PAN and returns the moment TAP is set, so a core
+    touch armed both and PAN, the branch that actually opens the core
+    reading ("a press on the core that never moved is still a click on the
+    core", below), never ran. hitPress itself has no case for the core, by
+    the design recorded above it: opening it from a synchronous mouse press
+    would fire the reading before a drag could start. Reproduced with
+    proto/mobile/coretap.js: 0 of 6 opened the reading on a coarse pointer,
+    where a tap on an address still opened its own. Left to PAN alone, on
+    every pointer type, as it always was. */
+ if(e.pointerType==='touch'){if(h.k==='core')return; TAP={h:h,e:{shiftKey:false},id:e.pointerId};return;}
  hitPress(h,e);});
 /* WHAT A PRESS ON A MARK DOES, ONE COPY FOR EVERY PICTURE OF THE FIELD.
 

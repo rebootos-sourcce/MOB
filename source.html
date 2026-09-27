@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="e1863d3 2026-09-27 04:37"><head><meta charset="utf-8">
+<html lang="en" data-build="4bf7401 2026-09-27 05:38"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -30329,7 +30329,18 @@ cv.addEventListener('pointerdown',function(e){
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   try{cv.setPointerCapture(e.pointerId);}catch(err){}
   return;}
- if(e.pointerType==='touch'){TAP={h:h,e:{shiftKey:false},id:e.pointerId};return;}
+ /* THE CORE NEVER GOES THROUGH TAP. GF deferred every touch press to
+    pointerup so a drag could still be told from a tap, but pointerup checks
+    TAP before it checks PAN and returns the moment TAP is set, so a core
+    touch armed both and PAN, the branch that actually opens the core
+    reading ("a press on the core that never moved is still a click on the
+    core", below), never ran. hitPress itself has no case for the core, by
+    the design recorded above it: opening it from a synchronous mouse press
+    would fire the reading before a drag could start. Reproduced with
+    proto/mobile/coretap.js: 0 of 6 opened the reading on a coarse pointer,
+    where a tap on an address still opened its own. Left to PAN alone, on
+    every pointer type, as it always was. */
+ if(e.pointerType==='touch'){if(h.k==='core')return; TAP={h:h,e:{shiftKey:false},id:e.pointerId};return;}
  hitPress(h,e);});
 /* WHAT A PRESS ON A MARK DOES, ONE COPY FOR EVERY PICTURE OF THE FIELD.
 
@@ -31695,5 +31706,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002076166"></div>
+<div id="eof" hidden data-len="002076972"></div>
 </body></html>

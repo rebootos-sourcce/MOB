@@ -933,7 +933,30 @@ console.log('\n=== GF: two fingers zoom the picture, and nothing else ===');
  ok(bar.together&&bar.round,'the loader, help and the person sit together at the upper right, all three round');
  ok(bar.lights,'and every lighting is in the main menu');
  ok(bar.hist==='none'&&bar.depth>0,'undo is hidden on a phone and still takes, depth '+bar.depth);
- ok(bar.pol2==='none'&&bar.poles===2,'the poles are inside the core and the strip under the picture is gone, '+bar.poles+' poles');}
+ ok(bar.pol2==='none'&&bar.poles===2,'the poles are inside the core and the strip under the picture is gone, '+bar.poles+' poles');
+
+ /* THE CORE'S OWN RELEASE PATH, ON A COARSE POINTER. GF deferred every touch
+    to fire on release rather than on press, so a drag could still be told
+    from a tap, and the core's own opening lived only in the pointerup
+    handler's PAN branch, never in hitPress. Deferring the core through the
+    same TAP path armed both and PAN never got read, because pointerup checks
+    TAP first and returns. Measured with a real touch dispatch before this
+    line existed: 0 of 6 press lengths opened the reading, where a tap on an
+    address still opened its own. The core is now left out of TAP entirely,
+    on every pointer type, so PAN alone decides it, exactly as before GF. */
+ await touchPg.evaluate(()=>{fviewSet('wheel');S.zoom=1;S.panx=0;S.pany=0;reframe();rdClose();render();});
+ await touchPg.waitForTimeout(300);
+ const coreTouch=await(async()=>{
+  const c=await touchPg.evaluate(()=>{const b=document.getElementById('cv').getBoundingClientRect();
+   const h=HIT.find(h=>h.k==='core'); return {x:b.left+h.x,y:b.top+h.y};});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:c.x,y:c.y,id:7}]});
+  await touchPg.waitForTimeout(150);
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await touchPg.waitForTimeout(400);
+  return touchPg.evaluate(()=>(document.getElementById('rdrill').textContent||'').trim());})();
+ ok(/The core/.test(coreTouch),'a coarse pointer tap on the core opens the core reading, got '
+  +JSON.stringify(coreTouch.slice(0,30)));
+ await touchPg.evaluate(()=>rdClose());}
 await touchPg.close(); await touchCtx.close();
 
 console.log('\n=== the frame moves, and the core opens ===');
