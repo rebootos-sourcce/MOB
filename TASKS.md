@@ -17174,3 +17174,97 @@ Dispatched this round: one build covering the concrete UI and
 consistency items, one research and copy pass covering the tooltip
 language problem and the knowledge base linking rule.
 
+## FW. A full front to back review ordered, and a long list of real
+## defects across Energetics, Compass, Body and Knowledge. 27
+## September.
+
+**His words in full: "All right, when it comes to the energetics
+page, I don't want the left or right menu. I want this redesigned to
+where it feels like you're coming into something that wants to know
+you. More icons, less text. Maybe we keep the right menu, we turn
+everything, all the questions, into an icon with a symbol and its
+name, and when you click on it the questions appear on the right hand
+side. And I think we need to ask some questions around their Jung
+archetypes, like, you have two symbols, which do you identify with,
+and then give them a scenario at which we can isolate which one they
+consider themselves, because that will pin that for us. And I just
+clicked on Awareness as an example, and I see like Awareness,
+Detachment, Intention, etc, but it's got percents and no iconography,
+no design. So the right side of the menu needs a full, here's what I
+want the design team to do. I want them to run a review, actually I
+want the entire team to run a review of the software front to back,
+run it through as if they use the software themselves as developers
+for ninety days. I want them to look at things through the
+developer's eyes, and remember, ultimately, working for frictionless
+as much as possible. We want things to make sense, we want
+consistency. So I want all the teams to identify all the areas that
+require us to take this from a C plus to a B. Here's an example. The
+Compass is completely broken. The hero graphic is being truncated by
+a bunch of small text, the small text doesn't look like it's in our
+design aesthetic. For the Body, this is a massive fail that we keep
+making. I don't like the circles with the curves pointing to things.
+The fetters need to be completely located in their precise
+locations, so you need to simulate that, maybe in a small grid, and
+place them in their exact locations, simulate that until it is
+correct and matched against something that we gave you yesterday. I
+feel like Fetter, Saboteurs, Hypercomplex is ass, I want to see
+something visually more appealing, not these circles and lines. I
+like the idea of the masks, because the saboteurs are very visual
+when you tell them to people, it's not really complexes and hyper
+complexes, but I don't know, I need to see mockups. The pain map, I
+don't like the secondary navigation and the third tier navigation.
+The secondary navigation needs to be an overlay, the third tier
+navigation needs to be an overlay as well, for region you could put
+that on the bottom of the middle centre graphic design area. In our
+heat map for pain, the chakras need to be there so people can click
+on the chakras directly, so this needs a lot of work. Flow is a
+circuitry of the nervous system, this isn't good at all, so this is a
+fail. Pain is a fail. I need the teams to simulate almost an
+anatomically correct plexus system and nervous system, in 2D, maybe
+even front and back images would be better, so generate a front back
+image, and if you need one let me know if you want me to generate
+one. The knowledge base needs to be more visual and needs to be not
+as overwhelming, right now it's just a big wall of stuff. I want to
+be able to see a band that says nature, and if I click on it, then it
+unfurls and shows me all this stuff, so it's not like I come to
+Fetters and it's just holy crap. And start in reverse, start with
+universal laws, and then the psyche architecture, right, it's a
+scale, archetypes, domains, masks, and then down to the fetters, and
+then Summary is not meaningful yet, still the UX is not effective or
+efficient for transferring meaningful information. Review all of the
+UX information, UX person, I gave you a bunch of stuff to add to your
+brain, utilize that information for a lot of this feedback, show me
+what you got out of this and break it out in next."**
+
+**A real, unresolved reference.** "Matched against something that we
+gave you yesterday" names an image or document I could not find
+anywhere in this repository as of this round. Not guessed at; the
+team is told to say so plainly and work from the engine's own real
+anatomical seating data in the meantime rather than invent a
+placement.
+
+**A likely naming collision with FV, corrected before it wastes
+work.** FV's own "icons under Flow" was read as the loop's own
+station (discover, play, flow, embody). This round makes clear
+"Flow" is very likely the Body page's own nervous system tab, graded
+a real fail here, not an icon problem. The agent already building
+FV's list is being corrected directly rather than left to finish the
+wrong interpretation.
+
+**Ordered, in two shapes.** A whole team front to back review, ninety
+days simulated as if the team were the software's own users,
+identifying everything that separates a C plus from a B, is the
+overarching ask and its own deliverable, "show me what you got, break
+it out." Underneath it, several items are named as needing mockups
+and simulated verification before anything ships (the fetters'
+precise placement, the Saboteurs and Complexes visual language, the
+nervous system redesign, the Energetics page itself), not straight to
+production code. One item reads as a real, plain bug rather than a
+design question: the Compass hero graphic truncated by small,
+off aesthetic text, called completely broken.
+
+Dispatched this round: the whole team review and the mockup bearing
+design work to one seat, the Compass bug as a direct fix to another,
+and a correction sent to the agent already mid task on FV's Flow
+item.
+
