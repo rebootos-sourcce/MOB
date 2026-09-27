@@ -19580,3 +19580,55 @@ being private already answers that, which name to protect first, the
 patent filing deadline the document estimates at roughly 31 May 2027
 if the repository has been public since its creation, and who holds
 the IP, him personally or a company.
+
+## HA. The reboot-os brief, back: he already ruled Cloudflare once, and nothing has ever deployed for a second reason beyond billing. 27 September
+
+`REBOOT-OS-STATUS.md`, dispatched at round GX. Verified directly: 192
+lines, matching the report exactly; `DECISIONS.md:1386` quoted
+correctly, word for word, "I don't mind things being on Cloudflare for
+now since it's the easiest to work with... unless you think GitHub
+works," recorded there as "Cloudflare, for now, kept."
+
+**The clearest finding: this is not an unmade decision, it is a
+contradiction between two things he has said, and the brief puts both
+in front of him rather than picking one.** He ruled Cloudflare once,
+25 September, in this repository's own decision record. Two days
+later, in this session, he said "I said Supabase." Read against
+`reboot-os`'s own product bible, Supabase was only ever logged as
+"Proposed," and Cloudflare was chosen over it specifically because the
+project already runs a Cloudflare Worker and D1 is SQLite like the
+product's own canon, with the choice itself recorded as "reversible on
+one word." The brief's real service here is separating two things his
+own words ran together: "a separate file" is true under either
+provider, "Supabase specifically" is the actual open question.
+
+**A second, previously unnamed reason nothing has deployed:** both
+`reboot-os` deploy workflows run only from its `main` branch, and
+`main` carries no `atuned/` folder at all, checked directly against
+GitHub's own branch listing. All of the real work sits on a side
+branch. This is real, and it is not blocked on him, it is ours to fix
+once he actually says which provider stands.
+
+**A finding that reframes what "live" would even mean:** the server
+that already exists talks only to `reboot-os`'s own Atüned app, not to
+this repository's `atuned_src/`, confirmed by a direct search of
+`atuned_src/` for any code that calls it, which found none. The two
+engines are already known to disagree in twenty nine places
+(`TASKS.md` `AW7`). So "which product goes online first" is a real,
+separate, open question the brief puts to him rather than assuming the
+answer.
+
+**PIN recovery, listed in earlier rounds as a blocker, is not one any
+more:** already ruled at `DECISIONS.md:1371` on 25 September, and the
+brief corrects this rather than repeating a stale blocker.
+
+Sent to him alongside the security document, since both bear on the
+same decision he is already weighing.
+
+What I need from him: Cloudflare or Supabase, stated once, since he
+has ruled both ways on record two days apart; which product, this
+repository's engine or `reboot-os`'s own Atüned app, goes online
+first, since the server currently built serves neither of the ones he
+has been reviewing; and the exact domain spelling, since the server is
+configured for `atuned.app` against his own "I think it's .app or
+something."
