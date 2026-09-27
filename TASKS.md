@@ -21190,3 +21190,21 @@ a real, if brief, first mention of the practitioner facing view
 `DECISIONS.md` already names as owed. The in flight wire in dispatch
 is being corrected to this combination before it lands, rather than
 shipping B alone and redoing it after.
+
+## IC. The standing documents brought current, verified and pushed. 27 September
+
+Commit `cb3a674`, his own request from round IA. Verified rather than
+trusted: scope checked at exactly the six named files, zero em dashes,
+one specific claim spot checked directly against the engine, `cqSum`
+in `engine/compute.js:151` sums the twenty one laws over two hundred
+and ten with no SQ divisor, matching `BOOK-ERRATA.md`'s corrected item
+twenty five exactly. Pushed immediately given his own stated urgency
+rather than held for a fuller review, since the content is
+documentation, not shipped code, and the risk of a stale record
+outweighs the risk of a small error in it.
+
+One real, honest disagreement the seat found and did not paper over:
+the backlog audit's own closing of question D11 is weaker than it
+looked, since round GH's own words read as a process instruction and
+not a fifth answer, and the Bible still holds D11 open rather than
+following the audit's own close.
