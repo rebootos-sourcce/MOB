@@ -22457,3 +22457,45 @@ region are named. Named plainly that the server itself lives in
 level steps are accurate, and the exact commands inside that
 repository are read off `PRIORITY.md`'s own account of it, not
 verified fresh here.
+
+## JO. The release protocol quality shot and the copy sweep, both verified, source.html rebuilt clean
+
+`1a7083c` (`release.js`, +408/-62) and the copy sweep's `287dd3e` and
+`16ad60f` all landed while these were being checked, and the tree came
+fully clean for the first time this session. Verified both properly
+before trusting either.
+
+**Release protocol.** Rebuilt and gated in an isolated worktree:
+`BUILD.sh`/`BUILD-engine.sh` clean, `tests/engine.js` 1770/0,
+`tests/collide.js` 351/0, `tests/funnel.js` 172/0, `tools/monitor.js`
+all surfaces render, voice objections 0, `tests/functional.js` 1229/0,
+`tests/design.js` 172/2, the same pre-existing timing flake. Code
+checked directly: `relPole` reads the engine's own `C3_POLE`, doses are
+literally `[25,50,100]`, `REL_SETTLE_S` is 120, and the welcome phase
+is structurally guarded (`st.kind!=='welcome'&&relVoiceOn()`) so it can
+never reach the speech function regardless of the voice switch, not
+merely avoided by convention. Screenshots viewed directly show every
+piece named in the report: the pole label, the welcome screen's honest
+"His recorded voice reads this part" line, the two large counters
+ticking down and up, and the completion screen's exact copy with a per
+run summary broken out by saboteur and complex, each with a Felt
+toggle.
+
+**The copy sweep.** Zero em dashes across both commits. Spot checked a
+long list of the claimed before and after glossary lines directly
+against `kb.js`'s own committed content, word for word: all matched
+exactly. Re-ran the voice gate myself: 0 findings, the new
+`abstract-word` stop rule and the `ten-year-old` guidance line both
+present in the run's own output. The sweep is honest about its own
+limits, covering the tooltip and information layer, onboarding and the
+help sheet, and naming what remains (roughly 1400 sentences across the
+data tables, the funnel and the two files that were held).
+
+Rebuilt `source.html` from the fully combined HEAD, all seven fast
+gates re-run clean on this exact content (`9c02b8f`, md5 420ac5ef),
+and a build sent.
+
+Real open questions carried below from both pieces, the largest being
+whether "You released X patterns" should count statements as built or
+named patterns instead, which collides with the same word already
+meaning something else in the release setup panel.
