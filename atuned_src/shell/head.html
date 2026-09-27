@@ -592,8 +592,20 @@ body.punch select#psel{border-width:0}
 body.punch .top,body.punch .glass{box-shadow:none}
 body.punch .seg{background:var(--sunk)}
 body.punch .btn.pri{background:var(--accent);border-color:var(--accent)}
-body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent}
-body.punch .st-ta:focus{background:var(--panel-2)}
+/* THE FOCUS FILL GOES ON THE LAYER BEHIND, NEVER ON THE TEXTAREA. Punch was
+   written on 17 September for a one layer field, and on the 19th the Story
+   editor became two layers in register: the text a person reads is drawn by
+   .st-hl behind, and .st-ta in front is transparent apart from its caret. The
+   old fill sat on .st-ta:focus, so the moment the field took focus a solid
+   panel covered every word and every mark, and the person saw only the caret.
+   The fill and the missing outline both belong to .st-hl now, which is the
+   layer that looks like the field. Colour only: the border stays 1px wide on
+   both layers, because width is a metric and the layers must not part. The
+   functional gate checks the focused .st-ta is transparent under every
+   lighting, so a fill put back on it fails there. */
+body.punch .st-ta,body.punch .st-ta:focus,
+body.punch .st-hl,body.punch .st-ed:focus-within .st-hl{border-color:transparent}
+body.punch .st-ed:focus-within .st-hl{background:var(--panel-2)}
 /* No outlines in Punch, so keyboard focus on a field is a solid bar down
    the left edge in the seat colour. Buttons keep the ring, a bar on a pill
    reads as a glyph. */

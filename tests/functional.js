@@ -3429,6 +3429,25 @@ console.log('\n=== the story lights what the engine read, once ===');
  console.log('  idiom      '+JSON.stringify(lit.idiom.text)+' as '
   +JSON.stringify(lit.idiom.names));
  }
+ /* THE FRONT LAYER STAYS CLEAR WHILE IT HAS FOCUS, UNDER EVERY LIGHTING.
+    Punch filled .st-ta:focus with a solid panel, which covered the layer the
+    words are drawn on, so a person typing saw only the caret. Every register
+    row above read the DOM and passed, because the text was all there and all
+    lit, just painted over. So this reads the painted background of the focused
+    box itself, and the lighting list off LIGHTINGS so a new one is covered. */
+ await st.focus('#sttext');
+ const clear=await st.evaluate(()=>{const was=S.theme,ta=document.getElementById('sttext'),out=[];
+  const alpha=c=>{const m=c.match(/rgba\([^)]*,\s*([\d.]+)\)|\/\s*([\d.]+)\)/);
+   return m?+(m[1]||m[2]):c==='transparent'?0:1;};
+  for(const L of LIGHTINGS){setLighting(L[0]);
+   if(document.activeElement!==ta)ta.focus();
+   const bg=getComputedStyle(ta).backgroundColor;
+   out.push({k:L[0],focused:document.activeElement===ta,bg,a:alpha(bg)});}
+  setLighting(was);return out;});
+ const covered=clear.filter(r=>!r.focused||r.a!==0);
+ ok(clear.length>2&&covered.length===0,'the focused story box is transparent under all '
+  +clear.length+' lightings, so the words behind it show, failing: '
+  +(covered.map(r=>r.k+(r.focused?' '+r.bg:' not focused')).join('; ')||'none'));
  await st.close();
 }
 
