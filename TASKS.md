@@ -22737,3 +22737,32 @@ backlog only, his own words, not dispatched. Masks wire in is not
 dispatched either: the masks mosaic redesign from round JP is still in
 flight, and wiring the real page against a design still being iterated
 would build against a moving target.
+
+Five new pieces dispatched, each scoped to files no other agent holds:
+the address pole display, investigated before being redesigned since
+"the U page" names nothing that exists (map.js/mapshelf.js or wherever
+it turns out to live, uiux-architect); the Field's text turned to
+pressable buttons with a pain area summary and a release protocol
+reachable from it (map.js, mapshelf.js, fullstack-td); the Compass,
+checked for a real rendering bug before any redesign, then the pole
+shapes rebuilt as two pyramids with a gap, Boundary explicitly not
+touched (cone.js, technical-director); the ritual page rebuilt visual
+first, a calendar and accountability tracker grounded in the real
+content chain, real web research invited (ritual.js, uiux-architect);
+and the release run screen's single line replaced with a scrollable
+north to south carousel of the whole statement list, bucketed by the
+same real four channel and phase combination already shipped
+(release.js, fullstack-td).
+
+Two messages sent rather than new dispatches, since both would have
+collided with agents already in flight: the avatar agent given the
+full new feedback (hero sizing, a real "negotiator" bug report, ICP
+simulation, three subtabs, moral dilemma law questions) to fold into
+its own still-running task rather than starting a second conflicting
+build; the Energetics wire-in agent given a plain heads up that the
+avatar page may later want its file restructured, with no change to
+its current scope.
+
+His "what questions have I not asked yet" is answered directly in the
+reply rather than only here, since it was a direct question to answer
+now, not a build to dispatch and wait on.
