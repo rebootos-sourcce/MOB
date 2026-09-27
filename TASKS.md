@@ -21870,3 +21870,59 @@ meanings.
 
 Both round IT pieces are now landed and pushed. Open questions carried
 to the owner below.
+
+## IW. Bank and vault, the plexus count, SQ in real time, three imprint versions to toggle
+
+His words, verbatim, answering the seven questions above and opening
+new ground:
+
+"A symbolage point is a chakra. A band would be the chakra color. So,
+root is the band. Or the assemblage point we just refer to as root. We
+know that there are, you can go double check this, but we know that
+there are ten major plexus off the spine. We identify seven within the
+system. And we recognize that each major one has smaller branches,
+which make up the total of 108 in the body. I think we should show,
+maybe as a system rule, everything above from 5 to 10. The close, tens
+are, everything closer to 10 is prioritized. But if you only have
+five, sixes, and sevens, then your fives will show up. Number five, I
+don't know what you mean. Number four, I don't know what you mean. I
+need context for four and five. CQ should raise, DQ should lower, SQ
+should lower. You should see SQ lowering in real time since those are
+the patterns releasing. Add that as part of the system logic. Add that
+as part of our uh, scrub this document and make sure that we're
+updating our briefs. Make sure those briefs are saved out to disk if
+you can. The goal is for a person to empty their bank and to fill
+their vault. I also don't understand our badges, achievements, and
+scoring mechanics. We haven't seen that system yet. Create mock-ups
+that are interactive with the time slider from moment one to day 90 in
+intervals so we can see what it looks like over time when we scale it.
+There's an interactions layer that I can't quite see yet until we hook
+it all up. And I need the team to ask me questions if there's any
+questions in particular if they happen to have. Why are the masks in?
+Why are the avatar in? We're going to want to change some of the art
+direction, but for the mask page, I want to see all six on the screen.
+Like when I land as a user, I come here, I should be able to see as I
+enter my journal, all the masks begin to fill in. The information
+panels for when I click on an individual node, what information is
+shown on the right hand side. And a summary of how my child mask runs.
+Yeah, the journal with the, uh, the imprints and the release. That
+works. Why are that in, and I want to see the circle version as a
+second option. So add little three icons for the three versions of the
+imprint, so I can see toggle through, see which ones I like. There's a
+time slider one that you created. There's a circular one that you
+created, and there's a third one that I said that I liked. Either way,
+wire that in. Stick with your priorities, add this to the priority
+list, clear the backlog."
+
+Real collision named, not resolved silently: he is naming "band" as the
+assemblage point's own colour (root's band, sacral's band), which is a
+different word for the same thing "By assemblage point" already
+labels. The product's shipped meaning of "band" is the coherence tier
+word (Gaining, Incoherent). Both meanings cannot hold. Carried to his
+questions below rather than picked for him.
+
+To verify before touching code: whether the book or canon.js supports
+ten major plexus with seven carried and 108 total branches, against
+the shipped count of 112 addresses; what SQ names in the current
+formula, since the CQ audit (round IK, bb2cbe0) is recorded as removing
+an SQ divisor from the sum, not a value the product still shows moving.
