@@ -88,7 +88,7 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    the profile button and nothing else, so it has a host, a class and a
    renderer and no door in the navigation. */
 const TABDEF=[
- {k:TAB.INTAKE,  id:'iq',    nm:'Energetics',cls:'tab-intake'},
+ {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake'},
  /* between the intake and the story, in his order: intake, ritual, story. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual'},
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},

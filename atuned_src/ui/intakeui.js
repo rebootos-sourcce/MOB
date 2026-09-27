@@ -175,7 +175,11 @@ function iqEnsure(){
  if(!CURP){ CURP=PROFILES[0]; loadProfile(CURP); }
  return CURP;}
 function renderIntake(){
- var host=document.getElementById('iq'); if(!host) return;
+ /* ITS OWN BODY, round HG. The tab is the Avatar now and the avatar is its
+    hero, in #avbody above this. This renderer writes the whole of its host on
+    every press, so it writes #iqbody and never #iq, which would take the
+    avatar with it. */
+ var host=document.getElementById('iqbody')||document.getElementById('iq'); if(!host) return;
  var p=iqEnsure(), Q=iqList(), sc=iqScore(p);
  var answered=Object.keys(p.intake.answers).filter(function(k){return p.intake.answers[k]!=null;}).length;
  var scored=Object.keys(sc).length;
@@ -186,6 +190,12 @@ function renderIntake(){
  /* Why this is asked, said once, in the place it is asked. The intake was an
     unlabelled accordion in the left rail and nothing said what it was for. */
  /* sealed, so the form is not the first thing on the surface. */
+ /* THE SECTION KEEPS THE TAB'S OLD NAME, because it is still what this half
+    reads: the birth moment and the 63 questions. Energetics was the tab until
+    the owner's Avatar ruling, and three buttons elsewhere still open it by that
+    name, so the word lands on the thing it names. */
+ var hd='<div class="iq-sec"><div class="pm-eye">Energetics</div>'
+  +'<p class="iq-sec-p">Your birth moment and the 63 questions.</p></div>';
  if(w.sealed) var h=iqSealedCard(p);
  else var h='<div class="iq-who">'
   +'<div class="pm-eye">Who this is</div>'
@@ -338,7 +348,10 @@ function renderIntake(){
    +'</div>'
    +'<div class="iq-laws">'+rows+'</div></section>';});
  h+='</div>';
- host.innerHTML=h;
+ host.innerHTML=hd+h;
+ /* the avatar repaints only when something it reads has moved, so a press on
+    a law never throws away a half typed pair above it */
+ if(typeof avRefresh==='function')avRefresh();
  host.querySelectorAll('[data-law]').forEach(function(el){el.onclick=function(){
   IQ_OPEN=(IQ_OPEN===+el.dataset.law)?null:+el.dataset.law; renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){

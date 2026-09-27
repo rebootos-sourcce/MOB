@@ -325,7 +325,7 @@
    <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
     <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
-   <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false"><span class="n">Energetics</span></button>
+   <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false"><span class="n">Avatar</span></button>
    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false"><span class="n">Ritual</span></button>
    <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false"><span class="n">Story</span></button>
    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true"><span class="n">Field</span></button>
@@ -685,7 +685,11 @@
         bar's own glass; ui/fieldbar.js builds them. -->
    <div class="fzoom" id="fzoom" role="group" aria-label="Zoom"></div>
    <div id="emap" class="emap"></div>
-   <div id="iq" class="iq"></div>
+   <!-- THE AVATAR TAB CARRIES TWO BODIES, round HG. The avatar is the hero and
+        the Energetics intake sits under it, and each renderer writes only its
+        own host, the #know and #knowbody lesson: a renderer that writes the
+        whole of a shared host deletes its sibling on the way past. -->
+   <div id="iq" class="iq"><div id="avbody"></div><div id="iqbody"></div></div>
    <!-- Knowledge carries Games, and Summary carries Analytics. The owner ruled
         both folds, so the host element moved inside its parent rather than the
         tab being hidden while the surface stayed where it was. A folded host is

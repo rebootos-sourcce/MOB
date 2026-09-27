@@ -3808,6 +3808,176 @@ body:not(.tab-know) #know{display:none!important}
  border-top:1px solid var(--edge)}
 .fold:empty{display:none;margin:0;padding:0;border:0}
 .fold>*{min-width:0}
+/* ============================================================
+   THE AVATAR, round HG. The hero of the tab the intake used to own.
+   Two bodies in one host: #avbody above, #iqbody under it. Everything here is
+   read off the tokens, so the four lightings and Punch carry it without a
+   rule of their own beyond the outline Punch takes away.
+   ============================================================ */
+#avbody,#iqbody{width:100%;min-width:0;flex:0 0 auto}
+.av{display:flex;flex-direction:column;gap:18px;padding-bottom:26px;margin-bottom:22px;
+ border-bottom:1px solid var(--edge)}
+.av-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.av-hd-t{min-width:0}
+.av-h{font-size:clamp(22px,2.6vw,32px);line-height:1.2;font-weight:500;color:var(--ink);margin:6px 0 8px;
+ letter-spacing:-.005em;max-width:30ch;overflow-wrap:anywhere}
+.av-hq{font-size:17px;line-height:1.5;color:var(--mid);margin:0 0 6px;max-width:60ch}
+.av-hs{font-size:14px;color:var(--dim);margin:0}
+.av-jump{flex:0 0 auto}
+.av-p{font-size:15px;line-height:1.6;color:var(--mid);margin:0 0 12px;max-width:68ch}
+.av-hero{display:grid;grid-template-columns:minmax(300px,440px) minmax(0,1fr);gap:26px;align-items:start}
+.av-side{min-width:0}
+.av-row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.av-card{background:var(--panel-2);border:1px solid var(--edge);border-radius:var(--r);padding:18px;min-width:0}
+body.punch .av-card{border-color:transparent}
+/* the ring. The svg draws, the satellites and the core sit over it as html so
+   every one of them is a real control with a real tap target. */
+.av-ring,.av-wheel{position:relative;width:100%;aspect-ratio:1/1;max-width:440px;justify-self:center}
+.av-draw{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.av-tick{stroke:var(--edge-2);stroke-width:.25}
+.av-track{fill:none;stroke:var(--edge-2);stroke-width:.5}
+.av-prog{fill:none;stroke:var(--ink);stroke-width:.9;stroke-linecap:round;opacity:.85}
+.av-sring{fill:var(--panel)}
+.av-sarc{fill:none;stroke-width:1;stroke-linecap:round}
+.av-line{fill:none;stroke-linecap:round;opacity:.55}
+.av-pulse{fill:none;stroke-linecap:round;stroke-dasharray:.4 3.6;animation:av-flow 6s linear infinite}
+.av-ld{animation-direction:normal}
+.av-rl{animation-direction:reverse}
+@keyframes av-flow{to{stroke-dashoffset:-8}}
+body.quiet .av-pulse,body.rm .av-pulse{animation:none}
+@media (prefers-reduced-motion:reduce){.av-pulse{animation:none}}
+.av-sat{position:absolute;transform:translate(-50%,-50%);width:14%;min-width:44px;aspect-ratio:1/1;
+ border-radius:50%;border:0;background:transparent;color:var(--c);cursor:pointer;padding:0;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.av-sat svg{width:34%;height:auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.av-sat-pc{font-family:var(--num);font-size:13px;font-weight:600;color:var(--ink);line-height:1}
+.av-sat.av-on{box-shadow:0 0 0 2px var(--c)}
+.av-slab{position:absolute;transform:translate(-50%,-50%);font-size:12px;color:var(--dim);pointer-events:none;white-space:nowrap}
+.av-core,.av-wcore{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:34%;aspect-ratio:1/1;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.av-core-ic{width:22%;height:auto;fill:none;stroke:var(--c,var(--mid));stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.av-core-big{font-family:var(--num);font-size:clamp(24px,3vw,34px);font-weight:500;color:var(--ink);line-height:1.1;margin-top:4px}
+.av-core-lb{font-size:12px;color:var(--dim)}
+.av-core-an{font-size:13px;color:var(--c);margin-top:2px}
+.av-wcore-nm{font-size:16px;font-weight:600;color:var(--ink);margin-top:6px}
+/* the panel beside the ring */
+.av-panel{border-top:3px solid var(--c,var(--edge-2))}
+.av-ph{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.av-ph>div{flex:1 1 auto;min-width:0}
+.av-pic{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ background:var(--sunk);color:var(--c,var(--mid))}
+.av-pic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.av-pn{font-size:21px;font-weight:600;color:var(--ink);line-height:1.2}
+.av-pa{font-size:14px;color:var(--dim);margin:2px 0 0}
+.av-pp{font-family:var(--num);font-size:26px;font-weight:500;color:var(--ink);text-align:right;line-height:1}
+.av-pp small{display:block;font-family:var(--sans);font-size:12px;font-weight:400;color:var(--dim);margin-top:3px}
+.av-pl{font-size:13px;color:var(--dim);margin:12px 0 3px}
+.av-pv{font-size:17px;line-height:1.5;color:var(--ink);margin:0}
+.av-pq{color:var(--mid)}
+.av-tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.av-tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:1;color:var(--ink);
+ padding:7px 11px;border-radius:999px;background:var(--sunk);border:1px solid var(--c,var(--edge))}
+.av-tag svg{width:14px;height:14px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.av-tw{border-color:var(--edge);color:var(--mid)}
+.av-tf{border-style:dashed;border-color:var(--edge-2);color:var(--mid)}
+.av-jr{display:flex;flex-direction:column;gap:10px;margin:4px 0 14px}
+.av-jr-row{padding:10px 12px;border-radius:var(--r-s);background:var(--sunk)}
+.av-jr-q{font-size:15px;line-height:1.55;color:var(--mid);margin:0}
+.av-jr-q b{color:var(--ink);font-weight:600}
+.av-jr-m{font-size:12px;color:var(--dim);margin:4px 0 0}
+.av-act{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:6px}
+.av-go{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15}
+.av-go small{font-size:12px;font-weight:400;opacity:.8}
+.av-form .pm-eye{margin-bottom:6px}
+.av-f{display:flex;flex-direction:column;gap:5px;margin:0 0 12px;font-size:13px;color:var(--dim)}
+.av-f input{min-height:var(--tap);font-size:16px;padding:10px 12px;border-radius:var(--r-s);border:1px solid var(--edge-2);
+ background:var(--sunk);color:var(--ink);font-family:var(--sans);width:100%;min-width:0}
+.av-live{min-height:1px}
+.av-pairs{display:flex;flex-direction:column;gap:6px}
+.av-pair{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:8px 12px;border-radius:var(--r-s);
+ background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);font-family:var(--sans);font-size:15px;
+ text-align:left;cursor:pointer;width:100%}
+.av-pair.av-on{border-color:var(--c,var(--gold))}
+.av-pair-ic{flex:0 0 auto;color:var(--c,var(--mid));display:flex}
+.av-pair-ic svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.av-pair-t{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av-pair-pc{font-family:var(--num);font-size:14px;color:var(--mid)}
+/* running, the body map's list, carried */
+.av-run,.av-rit{display:flex;flex-direction:column}
+.av-runs,.av-rits{display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
+.av-run-row{display:grid;grid-template-columns:24px minmax(0,1fr) auto 82px;grid-template-rows:auto 3px;
+ column-gap:10px;row-gap:5px;align-items:center;min-height:var(--tap);padding:8px 10px;border-radius:var(--r-s);
+ background:transparent;border:1px solid transparent;color:var(--ink);font-family:var(--sans);text-align:left;cursor:pointer;width:100%}
+.av-run-row.av-on{border-color:var(--c);background:var(--sunk)}
+.av-run-ic svg{width:20px;height:20px;fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.av-run-nm{font-size:15px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av-run-v{font-family:var(--num);font-size:14px;color:var(--mid)}
+.av-run-d{font-size:13px}
+.av-loading{color:var(--au)}
+.av-releasing{color:var(--sky)}
+.av-steady{color:var(--dim)}
+.av-run-bar{grid-column:2/5;height:3px;border-radius:2px;background:var(--edge)}
+.av-run-bar i{display:block;height:100%;border-radius:2px;background:var(--c)}
+/* rituals, queued */
+.av-rit-row{display:flex;align-items:center;gap:12px;min-height:var(--tap);padding:8px 12px;border-radius:var(--r-s);
+ background:var(--panel);border:1px solid var(--edge);color:var(--ink);font-family:var(--sans);text-align:left;cursor:pointer;width:100%}
+.av-rit-row.av-on{border-color:var(--c)}
+.av-rit-m{flex:0 0 auto;width:14px;height:14px;border-radius:50%;border:2px solid var(--c)}
+.av-rit-row.av-on .av-rit-m{background:var(--c)}
+.av-rit-t{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+.av-rit-t b{font-size:15px;font-weight:500}
+.av-rit-t em{font-style:normal;font-size:13px;color:var(--dim)}
+.av-rit-n{font-size:13px;color:var(--mid);white-space:nowrap}
+.av-rit-sum{font-size:14px;color:var(--mid);margin-right:auto}
+.av-rit-today{color:var(--ink)}
+/* the archetype wheel and the line of five */
+.av-arch{display:flex;flex-direction:column}
+.av-archg{margin-top:4px}
+.av-wseat{fill:none;stroke-width:3.2;stroke-linecap:round;opacity:.35}
+.av-wic{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.av-mk{position:absolute;transform:translate(-50%,-26px);display:flex;flex-direction:column;align-items:center;gap:3px;
+ min-width:44px;background:transparent;border:0;padding:0;color:var(--ink);cursor:pointer;font-family:var(--sans)}
+.av-mk-ic{position:relative;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ background:var(--panel-2);border:1px solid var(--c);
+ box-shadow:0 0 calc(var(--g)*22px) calc(var(--g)*5px) color-mix(in srgb,var(--c) 45%,transparent)}
+.av-mk-ic svg{width:20px;height:20px;fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.av-mk.av-on .av-mk-ic{box-shadow:0 0 0 2px var(--c),0 0 calc(var(--g)*22px) calc(var(--g)*5px) color-mix(in srgb,var(--c) 45%,transparent)}
+.av-mk-pill{position:absolute;right:-6px;bottom:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;
+ font-family:var(--num);font-size:11px;font-weight:600;line-height:18px;text-align:center;background:var(--c);color:var(--on-flat)}
+.av-mk-nm{font-size:12px;color:var(--mid);white-space:nowrap}
+.av-det .av-ph{margin-bottom:10px}
+.av-det-e{font-size:13px;color:var(--dim);margin:0 0 2px}
+.av-det-e b{color:var(--c);font-weight:600}
+.av-def{font-size:17px;line-height:1.55;color:var(--ink);margin:0 0 14px}
+.av-imp{border-left:3px solid var(--s);padding:10px 14px;border-radius:var(--r-xs);background:var(--sunk);margin-bottom:6px}
+.av-imp-v{margin:4px 0 2px;font-size:16px;color:var(--ink)}
+.av-imp-v span{font-size:13px;color:var(--dim);margin-left:8px}
+.av-imp-c{margin:0;font-size:15px;line-height:1.5;color:var(--mid)}
+.av-imp-r{margin:6px 0 0;font-size:13px;color:var(--dim)}
+.av-scale{position:relative;display:flex;justify-content:space-between;align-items:center;margin:6px 0 2px}
+.av-sl{position:absolute;left:22px;right:22px;top:50%;height:2px;margin-top:-1px;background:var(--edge-2);border-radius:1px}
+.av-sl i{display:block;height:100%;background:var(--c);border-radius:1px}
+.av-st{position:relative;width:44px;height:44px;border-radius:50%;border:2px solid var(--edge-2);background:var(--panel-2);
+ color:var(--mid);font-family:var(--num);font-size:15px;font-weight:600;cursor:pointer;padding:0;
+ transition:background var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.av-st.av-on{border-color:var(--c);color:var(--ink)}
+.av-st.av-at{background:var(--c);color:var(--on-flat)}
+.av-ends{display:flex;justify-content:space-between;font-size:13px;color:var(--dim);margin:2px 0 6px}
+.av-hint{font-size:13px;color:var(--dim);margin:0 0 8px}
+.av-cmp{font-size:15px;line-height:1.55;color:var(--mid);margin:0}
+.iq-sec{margin:0 0 12px}
+.iq-sec-p{font-size:15px;color:var(--mid);margin:4px 0 0}
+@media (max-width:980px){
+ .av-hero,.av-row2{grid-template-columns:minmax(0,1fr)}
+ .av-ring{max-width:400px}
+}
+@media (max-width:720px){
+ .av-hd{flex-direction:column}
+ .av-h{font-size:24px}
+ .av-card{padding:14px}
+ .av-mk-nm{font-size:11px}
+ .av-wheel{max-width:360px}
+}
 body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-intake) #iq{display:none!important}
 body.tab-story #story{display:flex!important;z-index:5;align-items:center;justify-content:center}

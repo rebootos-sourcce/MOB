@@ -46,6 +46,7 @@ ui/imprints.js
 ui/storyui.js
 ui/summary.js
 ui/analytics.js
+ui/avatarui.js
 ui/intakeui.js
 ui/release.js
 ui/ritual.js
