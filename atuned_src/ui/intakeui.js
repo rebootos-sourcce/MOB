@@ -172,6 +172,360 @@ function iqEnsure(){
  if(!PROFILES.length){ pNew('You'); loadProfile(CURP); }
  if(!CURP){ CURP=PROFILES[0]; loadProfile(CURP); }
  return CURP;}
+/* ============================================================
+   THE ART PASS, WIRED IN. Round IT drew the questions three ways in
+   proto/energetics-art and showed them to the owner. His answer, verbatim:
+   "Energetic art pass. I like that for the questions. That design is really
+   cool. Run with it, wire it in." He named no one of the three. The same
+   question came up on the Story page's three imprint views, and his answer
+   there, once asked plainly, was to keep all three as a toggle (TASKS.md
+   round JJ). So the same is done here, with the same three icon control:
+     list   mockup A, a reading list in Summary's treatment. The default,
+            because it is the accordion's own shape redrawn: the seven seats
+            crown to root, and a law opens in place under its own row.
+     wheel  mockup B, the Field's treatment. CQ is the lit orb in the middle,
+            the seats sit on the outer ring, and the law in hand opens in the
+            panel beside the wheel so the figure never leaves the screen.
+     one    mockup C, one law at a time under a strip of all twenty one.
+   PORTED, NOT REBUILT. The prototype carried its own copy of iqScore reading
+   a JSON dump of the engine. None of that came across: every view reads
+   iqScore(p), iqList(), SI and the seat tables off the live profile, and an
+   answer lands in the one handler renderIntake already had. Only the drawing
+   changed, so the arithmetic still has exactly one path.
+   ============================================================ */
+var IQ_VIEW='list', IQ_FOCUS=null;
+/* the labels are said to a ten year old, V21: what the picture is, in words
+   they already have. The icon is the name and the title says what it shows. */
+var IQ_VIEWS=[
+ ['list','List','List: every law, from the top of your body to the bottom',
+  'M4 6.5h2M9 6.5h11M4 12h2M9 12h11M4 17.5h2M9 17.5h11'],
+ ['wheel','Wheel','Wheel: all 21 laws in a circle, your CQ in the middle',
+  'M12 3.5a8.5 8.5 0 1 1 0 17a8.5 8.5 0 1 1 0-17M12 9a3 3 0 1 1 0 6a3 3 0 1 1 0-6M12 3.5V9M20.5 12H15M12 20.5V15M3.5 12H9'],
+ ['one','One at a time','One at a time: one law and its three questions, then the next',
+  'M12 7a5 5 0 1 1 0 10a5 5 0 1 1 0-10M5.5 9l-3 3l3 3M18.5 9l3 3l-3 3']];
+/* .st-ico is the Story page's own view button, so the three carry the tap
+   floor, the pressed ring and the Punch treatment that toggle already has,
+   and the two toggles in the product look like one control. */
+function iqViewHtml(){
+ return '<span class="iqa-views" role="group" aria-label="How the questions are shown">'
+  +IQ_VIEWS.map(function(v){
+   return '<button type="button" class="st-ico" data-iqv="'+v[0]+'" aria-pressed="'+(IQ_VIEW===v[0])+'" '
+    +'aria-label="'+esc(v[1])+'" title="'+esc(v[2])+'">'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+v[3]+'"/></svg></button>';}).join('')+'</span>';}
+/* THE RULES TRAVEL WITH THE RENDERER, for now. The page's stylesheet is in
+   shell/head.html and another seat has that file open this round, so the art
+   pass carries its own sheet, added once, the first time the section draws.
+   Every selector is prefixed iqa so nothing here can reach another surface.
+   Two things about it are load bearing.
+
+   The breakpoints are container queries on .iqa, not media queries on the
+   window. The section sits under the avatar in a centre column whose width is
+   not the window's, and the prototype's 1100 and 760 were measured on a page
+   that was the whole window.
+
+   Every rule inside a container query names two classes. The design gate
+   walks into a container rule, where it does not walk into a media rule, and
+   reads a single class that sets geometry twice as a collision. */
+function iqArtCss(){
+ if(document.getElementById('iqa-css'))return;
+ var st=document.createElement('style'); st.id='iqa-css';
+ st.textContent=[
+  '.iqa{container-type:inline-size;min-width:0;margin-top:14px}',
+  '.iqa-hd{display:flex;justify-content:space-between;align-items:center;gap:14px 18px;flex-wrap:wrap}',
+  '.iqa-cq{display:flex;align-items:center;gap:12px;min-width:0}',
+  '.iqa-cqp{display:inline-flex;align-items:center;gap:10px;padding:6px 16px 6px 6px;border-radius:999px;',
+  ' background:var(--sunk);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}',
+  '.iqa-cqp b{font-family:var(--num);font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.iqa-cqw{display:flex;flex-direction:column;line-height:1.25}',
+  '.iqa-cqt{color:var(--accent);font-size:19px;font-weight:600}',
+  '.iqa-cqs{color:var(--dim);font-size:13px}',
+  '.iqa-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}',
+  '.iqa-views{display:inline-flex;gap:4px}',
+  /* the framings keep the classes the functional gate reads an open law by,
+     and the accordion's card treatment is taken off them here. The id is
+     what outranks body.punch and body.lumen, which paint .iq-qc as a box. */
+  '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
+  '#iqbody .iqa .iq-qc{border:0;background:none;border-radius:0;padding:0}',
+  '.iqa-fr{display:grid;gap:8px;min-width:0}',
+  '.iqa-flr{display:flex;align-items:baseline;gap:8px}',
+  '.iqa-fl{font-style:normal;font-size:12.5px;font-weight:500;color:var(--c)}',
+  '.iqa-ex{font-family:var(--num);font-size:12.5px;color:var(--dim)}',
+  '.iqa-qt{font-size:15.5px;line-height:1.45;color:var(--ink)}',
+  '.iqa-gap{display:block;width:100%;height:auto}',
+  '.iqa-sub{font-size:13px;color:var(--dim)}',
+  '.iqa-sub b{font-weight:500;color:var(--c)}',
+  /* A, the reading list */
+  '.iqa-list{margin-top:22px}',
+  '.iqa-seat{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;padding:18px 0;border-top:1px solid var(--edge)}',
+  '.iqa-seat:first-child{border-top:0}',
+  '.iqa-sh{display:flex;gap:12px;align-items:flex-start}',
+  '.iqa-shn{font-size:17px;font-weight:600;color:var(--c)}',
+  '.iqa-shl{font-size:13px;color:var(--dim)}',
+  '.iqa-laws{display:flex;flex-direction:column;min-width:0}',
+  '.iqa-lawr{display:grid;grid-template-columns:auto minmax(0,1fr) 200px;gap:14px;align-items:center;width:100%;',
+  ' min-height:56px;padding:6px 8px;border-radius:12px;border:1px solid transparent;background:none;',
+  ' color:var(--ink);font-family:var(--sans);text-align:left;cursor:pointer}',
+  '.iqa-lawr:hover{background:var(--sunk)}',
+  '.iqa-lawr[aria-expanded="true"]{border-color:color-mix(in srgb,var(--c) 40%,transparent)}',
+  'body.punch .iqa-lawr[aria-expanded="true"]{border-color:transparent;background:var(--sunk)}',
+  '.iqa-lt{display:block;font-size:16px;font-weight:500}',
+  '.iqa-lv{display:block;font-size:13px;color:var(--dim)}',
+  '.iqa-gw{min-width:0}',
+  '.iqa-open{display:grid;gap:18px;padding:8px 8px 16px 64px}',
+  '.iqa-open .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
+  /* B, the wheel */
+  '.iqa-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,560px);margin-top:18px;overflow:hidden;',
+  ' border-radius:var(--r);background:var(--sunk);border:1px solid var(--edge)}',
+  '.iqa-wheel{display:flex;justify-content:center;align-items:flex-start;padding:14px;min-width:0}',
+  '.iqa-wheel svg{width:100%;max-width:640px;height:auto}',
+  '.iqa-lb{cursor:pointer;outline:none}',
+  '.iqa-lb:focus-visible .iqa-lbf{stroke:var(--accent)}',
+  '.iqa-side{display:flex;flex-direction:column;gap:18px;padding:22px;min-width:0;border-left:1px solid var(--edge)}',
+  '.iqa-sidehd{display:flex;gap:12px;align-items:center}',
+  '.iqa-h3{margin:0;font-size:22px;font-weight:600;color:var(--ink)}',
+  '.iqa-inhand{display:grid;gap:22px}',
+  /* C, one law at a time */
+  '.iqa-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 14px;margin-top:18px;padding:8px 12px;',
+  ' border-radius:28px;background:var(--sunk);border:1px solid var(--edge)}',
+  '.iqa-grp{display:flex;gap:2px}',
+  '.iqa-sb{display:grid;place-items:center;min-width:var(--tap);min-height:var(--tap);padding:0;border:0;',
+  ' border-radius:999px;background:none;cursor:pointer}',
+  '.iqa-sb[aria-current="true"]{box-shadow:inset 0 0 0 1.5px var(--accent)}',
+  'body.punch .iqa-sb[aria-current="true"]{box-shadow:none;background:var(--panel-2)}',
+  '.iqa-bstrip{display:none}',
+  '.iqa-focus{display:grid;grid-template-columns:260px minmax(0,1fr);gap:40px;align-items:start;margin-top:26px}',
+  '.iqa-hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;min-width:0}',
+  '.iqa-ring{width:220px;height:220px;max-width:100%}',
+  '.iqa-ln{font-size:30px;font-weight:600;line-height:1.15;letter-spacing:-.01em;color:var(--ink)}',
+  '.iqa-hgap{width:100%;max-width:240px}',
+  '.iqa-qs{display:flex;flex-direction:column;gap:26px;max-width:720px;min-width:0}',
+  '.iqa-nav{display:flex;justify-content:space-between;gap:10px}',
+  /* Punch outlines nothing and Lumen draws no edge, and both already say so
+     for every other panel in the product */
+  'body.punch .iqa-cqp,body.punch .iqa-stage,body.punch .iqa-strip,body.punch .iqa-side,',
+  'body.lumen .iqa-cqp,body.lumen .iqa-stage,body.lumen .iqa-strip{border-color:transparent}',
+  '@container (max-width:1040px){',
+  ' .iqa .iqa-stage{grid-template-columns:1fr}',
+  ' .iqa .iqa-side{border-left:0;border-top:1px solid var(--edge)}',
+  ' .iqa .iqa-open .iqa-fr{grid-template-columns:1fr;gap:8px}',
+  ' .iqa .iqa-open{padding-left:8px}}',
+  '@container (max-width:700px){',
+  ' .iqa .iqa-seat{grid-template-columns:1fr;gap:10px}',
+  ' .iqa .iqa-lawr{grid-template-columns:auto minmax(0,1fr)}',
+  ' .iqa .iqa-gw{grid-column:1/-1}',
+  ' .iqa .iqa-focus{grid-template-columns:1fr;gap:18px}',
+  /* the wheel's cost, measured in the prototype: at phone width a law on it
+     is about 27 pixels to press, under the 44 floor. So on a phone the wheel
+     is the figure and C's strip above it is the picker. */
+  ' .iqa .iqa-bstrip{display:flex}',
+  ' .iqa .iqa-strip{gap:8px}',
+  ' .iqa .iqa-ln{font-size:24px}',
+  /* the ring at full size put the first question under the fold at 390,
+     so on a phone it is the law's mark and not the page's figure */
+  ' .iqa .iqa-ring{width:140px;height:140px}',
+  ' .iqa .iqa-side{padding:16px 10px}',
+  ' .iqa .iqa-wheel{padding:6px}}'
+ ].join('\n');
+ document.head.appendChild(st);}
+
+function iqLawsOf(b){
+ var out=[]; SI.forEach(function(l,li){if(l.b===b)out.push({l:l,li:li});}); return out;}
+function iqBodyOrder(){
+ var o=[]; IQ_SEATS.forEach(function(b){iqLawsOf(b).forEach(function(x){o.push(x.li);});}); return o;}
+function iqGot(p,li){
+ return [0,1,2].filter(function(t){return p.intake.answers[li*3+t]!=null;}).length;}
+/* THE LAW IN HAND. The list can have nothing open, as the accordion could.
+   The wheel and one at a time always hold one, and with nothing chosen it is
+   the first law in body order that still has a question left, so a person
+   arriving lands on the next thing to answer rather than on the Crown again. */
+function iqInHand(p){
+ if(IQ_OPEN!=null)return IQ_OPEN;
+ var o=iqBodyOrder();
+ for(var i=0;i<o.length;i++)if(iqGot(p,o[i])<3)return o[i];
+ return o[0];}
+/* the accordion's own words for a law, kept word for word */
+function iqLine(s,g){return s?'spread '+s.spread+', '+s.lean:g?(3-g)+' left':'unanswered';}
+/* a law as Summary draws a thing: its own glyph in a ring whose arc is the
+   score once all three are in, and the share answered until then */
+function iqLawBadge(l,s,g,size,bare){
+ return crBadge(l.b,s?s.score*10:g/3*100,{size:size,glyph:'<path d="'+l.ic+'"/>',
+  raw:s?s.score.toFixed(1):null,bare:!!bare||!s});}
+/* THE GAP, DRAWN. The measurement is the distance between three readings of
+   one law, so it is three marks on one line from 0 to 10: hollow for the two
+   framings, solid for the ordinary day, and the seat colour spanning the
+   outer two. The accordion printed it as a sentence. The strokes that are not
+   the seat's colour go through style, because a custom property does not
+   resolve inside a presentation attribute and the four lightings move them. */
+function iqGap(p,li,w){
+ w=w||200; var a=p.intake.answers, c=seatCol(SI[li].b), x0=8, x1=w-8;
+ function X(v){return (x0+(x1-x0)*v/10).toFixed(1);}
+ var v=[0,1,2].map(function(t){return a[li*3+t];}), have=v.filter(function(x){return x!=null;});
+ var s='<svg class="iqa-gap" viewBox="0 0 '+w+' 26" aria-hidden="true">'
+  +'<line x1="'+x0+'" x2="'+x1+'" y1="13" y2="13" style="stroke:var(--dim);stroke-opacity:.35"/>';
+ [0,5,10].forEach(function(t){
+  s+='<line x1="'+X(t)+'" x2="'+X(t)+'" y1="9" y2="17" style="stroke:var(--dim);stroke-opacity:.4"/>';});
+ if(have.length>1)s+='<line x1="'+X(Math.min.apply(null,have))+'" x2="'+X(Math.max.apply(null,have))
+  +'" y1="13" y2="13" stroke="'+c+'" stroke-width="3" stroke-opacity=".55" stroke-linecap="round"/>';
+ v.forEach(function(x,t){if(x==null)return;
+  s+='<circle cx="'+X(x)+'" cy="13" r="'+(t===2?3.2:4.6)+'" stroke="'+c+'" stroke-width="1.6" '
+   +(t===2?'fill="'+c+'"':'style="fill:var(--sunk)"')+'/>';});
+ return s+'</svg>';}
+/* THE THREE FRAMINGS OF ONE LAW, the same in all three views.
+   A REFERENCE PROFILE CARRIES DECIMALS. Marcus answers 4.7, which no point on
+   an eleven point scale equals, and the accordion compared with === so every
+   law he had scored opened onto a scale with nothing selected. The prototype
+   found it; the port fixes it. The nearest point is marked and the exact
+   figure is printed beside the framing's name, so the scale never claims an
+   answer more round than the one on file. */
+function iqFramings(p,Q,li){
+ var c=seatCol(SI[li].b), h='';
+ [0,1,2].forEach(function(t){
+  var idx=li*3+t, qq=Q[idx], v=p.intake.answers[idx];
+  var near=(v==null)?null:Math.round(v);
+  h+='<div class="iq-qc iqa-fr" style="--c:'+c+'"><div>'
+   +'<div class="iqa-flr"><em class="iqa-fl">'+esc(IQ_SIDE[qq.side]||qq.side)+'</em>'
+   +(v!=null&&v!==near?'<span class="iqa-ex">'+esc(v)+'</span>':'')+'</div>'
+   +'<div class="iqa-qt">'+esc(qq.q)+'</div></div>'
+   /* the scale is the accordion's own, one row of eleven even cells, which is
+      ruled, and the prototype's two row wrap is not taken */
+   +'<div class="iq-sl">';
+  for(var n=0;n<=10;n++)
+   h+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-a="'+idx+'" data-v="'+n+'" '
+    +'aria-pressed="'+(near===n)+'">'+n+'</button>';
+  h+='</div></div>';});
+ return h;}
+/* THE HEADER. CQ in a ring, the way Summary carries it, and one line: the
+   tier word once all twenty one are in, and until then what is left. Never a
+   count against a total, which the accordion's own note ruled out: "1 of 3"
+   is a fraction and a fraction is a score. The prototype read "3 of 21 laws
+   measured" there, so that one line was not taken across as drawn. */
+function iqArtHead(r,scored,answered){
+ var cq=scored?r.CQ:null;
+ var glyph='<text x="12" y="16" text-anchor="middle" font-size="9" font-weight="600" '
+  +'fill="currentColor" stroke="none">CQ</text>';
+ return '<div class="iqa-cq"><span class="iqa-cqp">'
+  +crBadge('Throat',cq||0,{size:'md',bare:true,glyph:glyph})
+  +'<b>'+(cq==null?'–':Math.round(cq))+'</b></span>'
+  +'<span class="iqa-cqw"><span class="iqa-cqt">'
+  +(r.tier?esc(r.tier):(63-answered)+' questions left')+'</span>'
+  +'<span class="iqa-cqs">'+scored+' law'+(scored===1?'':'s')+' measured</span></span></div>';}
+
+/* ---------- A. The reading list ---------- */
+function iqViewList(p,Q,sc){
+ var h='<div class="iqa-list">';
+ IQ_SEATS.forEach(function(b){
+  var L=iqLawsOf(b), c=seatCol(b); if(!L.length)return;
+  var ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean);
+  var mean=ms.length?ms.reduce(function(a,s){return a+s.score;},0)/ms.length:0;
+  h+='<section class="iqa-seat" style="--c:'+c+'"><div class="iqa-sh">'
+   +crBadge(b,mean*10,{size:'md',raw:ms.length?mean.toFixed(1):null,bare:!ms.length})
+   +'<div><div class="iqa-shn">'+esc(b)+'</div><div class="iqa-shl">'+esc(IQ_SEATLINE[b])+'</div></div></div>'
+   +'<div class="iqa-laws">';
+  L.forEach(function(x){
+   var s=sc[x.l.nm], g=iqGot(p,x.li), on=(IQ_OPEN===x.li);
+   h+='<button type="button" class="iqa-lawr" data-law="'+x.li+'" aria-expanded="'+on+'">'
+    +iqLawBadge(x.l,s,g,'sm')
+    +'<span><span class="iqa-lt">'+esc(x.l.nm)+'</span><span class="iqa-lv">'+esc(iqLine(s,g))+'</span></span>'
+    +'<span class="iqa-gw">'+iqGap(p,x.li,200)+'</span></button>';
+   if(on)h+='<div class="iq-law open iqa-open">'+iqFramings(p,Q,x.li)+'</div>';});
+  h+='</div></section>';});
+ return h+'</div>';}
+
+/* the twenty one as a row of rings grouped by seat: the map and the progress
+   at once. C's picker, and B's on a phone. */
+function iqStrip(p,sc,ih,extra){
+ return '<div class="iqa-strip'+(extra||'')+'" role="group" aria-label="The 21 laws">'
+  +IQ_SEATS.map(function(b){
+   return '<span class="iqa-grp">'+iqLawsOf(b).map(function(x){
+    var s=sc[x.l.nm], g=iqGot(p,x.li);
+    return '<button type="button" class="iqa-sb" data-law="'+x.li+'" aria-current="'+(ih===x.li)+'" '
+     +'aria-label="'+esc(x.l.nm)+'" title="'+esc(x.l.nm)+'">'+iqLawBadge(x.l,s,g,'sm',true)+'</button>';}).join('')
+   +'</span>';}).join('')+'</div>';}
+
+/* ---------- B. The wheel ----------
+   The prototype's geometry, unchanged: a 640 square, seats on the ring at 292
+   in body order with the crown centred at the top, each law a ring at 214 and
+   a tick running in toward the orb with a length set by its score. What moved
+   is colour: every ink, edge and the orb itself read the lighting's tokens,
+   because the prototype was drawn for the Dark lighting alone. And the figure
+   is a group, not an img, because an img hides the twenty one controls
+   inside it from a screen reader. */
+function iqViewWheel(p,Q,sc,r,scored){
+ var cq=scored?r.CQ:null, lit=(cq!=null), S=640, C=S/2, per=360/SI.length, gapd=4;
+ var start=-iqLawsOf(IQ_SEATS[0]).length*per/2, ih=iqInHand(p);
+ function f(n){return n.toFixed(1);}
+ function pt(rr,deg){var a=(deg-90)*Math.PI/180; return [C+rr*Math.cos(a),C+rr*Math.sin(a)];}
+ function arc(rr,d0,d1){var p0=pt(rr,d0),p1=pt(rr,d1);
+  return 'M'+f(p0[0])+' '+f(p0[1])+'A'+rr+' '+rr+' 0 '+(d1-d0>180?1:0)+' 1 '+f(p1[0])+' '+f(p1[1]);}
+ var s='<svg viewBox="-44 -8 '+(S+88)+' '+(S+16)+'" role="group" aria-label="All 21 laws in a circle, your CQ in the middle">'
+  +'<defs><radialGradient id="iqa-orb" cx="42%" cy="36%" r="70%">'
+  +'<stop offset="0" style="stop-color:color-mix(in srgb,var(--accent) 40%,#fff);stop-opacity:'+(lit?.95:.18)+'"/>'
+  +'<stop offset=".45" style="stop-color:var(--accent);stop-opacity:'+(lit?.85:.12)+'"/>'
+  +'<stop offset="1" style="stop-color:color-mix(in srgb,var(--accent) 45%,#000);stop-opacity:'+(lit?.9:.2)+'"/></radialGradient>'
+  +'<radialGradient id="iqa-halo"><stop offset="0" style="stop-color:var(--accent);stop-opacity:'+(lit?.22:.05)+'"/>'
+  +'<stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></radialGradient></defs>'
+  +'<circle cx="'+C+'" cy="'+C+'" r="200" fill="url(#iqa-halo)"/>';
+ [150,236].forEach(function(rr){
+  s+='<circle cx="'+C+'" cy="'+C+'" r="'+rr+'" fill="none" stroke-width="10" style="stroke:var(--dim);stroke-opacity:.08"/>';});
+ IQ_SEATS.forEach(function(b){
+  var L=iqLawsOf(b), c=seatCol(b), d0=start+gapd/2, d1=start+L.length*per-gapd/2; start+=L.length*per;
+  var ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean);
+  var mean=ms.length?ms.reduce(function(a,q){return a+q.score;},0)/ms.length:0;
+  s+='<path d="'+arc(292,d0,d1)+'" fill="none" stroke="'+c+'" stroke-opacity=".16" stroke-width="5" stroke-linecap="round"/>';
+  if(mean>0)s+='<path d="'+arc(292,d0,d0+(d1-d0)*mean/10)+'" fill="none" stroke="'+c+'" stroke-opacity=".75" stroke-width="5" stroke-linecap="round"/>';
+  var lp=pt(314,(d0+d1)/2);
+  s+='<text x="'+f(lp[0])+'" y="'+f(lp[1]+4)+'" fill="'+c+'" font-size="13" text-anchor="middle">'+esc(b)+'</text>';
+  L.forEach(function(x,k){
+   var deg=d0+(d1-d0)*(k+.5)/L.length, q=sc[x.l.nm], g=iqGot(p,x.li), on=(ih===x.li);
+   var v=q?q.score:0, t0=pt(92,deg), t1=pt(92+(q?v*4.6:0)+4,deg);
+   s+='<line x1="'+f(t0[0])+'" y1="'+f(t0[1])+'" x2="'+f(t1[0])+'" y2="'+f(t1[1])+'" stroke="'+c+'" stroke-width="3" stroke-linecap="round" stroke-opacity="'+(q?.85:.25)+'"/>';
+   var pp=pt(214,deg), px=f(pp[0]), py=f(pp[1]), rr=20, Cc=2*Math.PI*rr, frac=q?v/10:g/3;
+   s+='<g class="iqa-lb" data-law="'+x.li+'" role="button" tabindex="0" aria-pressed="'+on+'" aria-label="'+esc(x.l.nm)+'">'
+    +'<circle cx="'+px+'" cy="'+py+'" r="30" fill="#000" fill-opacity="0"/>'
+    +'<circle class="iqa-lbf" cx="'+px+'" cy="'+py+'" r="28" fill="none" stroke-width="1.4" '
+     +(on?'style="stroke:var(--accent)"':'stroke="none"')+'/>'
+    +'<circle cx="'+px+'" cy="'+py+'" r="'+rr+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="3"/>'
+    +'<circle cx="'+px+'" cy="'+py+'" r="'+rr+'" fill="none" stroke="'+c+'" stroke-width="3" stroke-linecap="round" '
+     +'stroke-dasharray="'+Cc.toFixed(1)+'" stroke-dashoffset="'+(Cc*(1-frac)).toFixed(1)+'" transform="rotate(-90 '+px+' '+py+')"/>'
+    +'<g transform="translate('+f(pp[0]-9)+' '+f(pp[1]-9)+') scale(.75)" fill="none" stroke="'+c+'" stroke-width="2" '
+     +'stroke-linecap="round" stroke-linejoin="round"><path d="'+x.l.ic+'"/></g>'
+    +(q?'<text x="'+px+'" y="'+f(pp[1]+38)+'" font-size="12" text-anchor="middle" style="fill:var(--mid)">'+q.score.toFixed(1)+'</text>':'')
+    +'</g>';});});
+ s+='<circle cx="'+C+'" cy="'+C+'" r="66" fill="url(#iqa-orb)"/>'
+  +'<text x="'+C+'" y="'+(C+12)+'" font-size="36" font-weight="600" text-anchor="middle" '
+  +'style="fill:'+(lit?'var(--on-accent)':'var(--dim)')+'">'+(lit?Math.round(cq):'–')+'</text></svg>';
+ var l=SI[ih], q=sc[l.nm], c=seatCol(l.b), g=iqGot(p,ih);
+ var side='<div class="iqa-side" style="--c:'+c+'"><div class="iqa-sidehd">'+iqLawBadge(l,q,g,'md')
+  +'<div><h3 class="iqa-h3">'+esc(l.nm)+'</h3><div class="iqa-sub"><b>'+esc(l.b)+'</b>, '+esc(IQ_SEATLINE[l.b])+'</div></div></div>'
+  +'<div>'+iqGap(p,ih,356)+'<div class="iqa-sub">'+esc(iqLine(q,g))+'</div></div>'
+  +'<div class="iq-law open iqa-inhand">'+iqFramings(p,Q,ih)+'</div></div>';
+ return iqStrip(p,sc,ih,' iqa-bstrip')
+  +'<div class="iqa-stage"><div class="iqa-wheel">'+s+'</div>'+side+'</div>';}
+
+/* ---------- C. One law at a time ---------- */
+function iqViewOne(p,Q,sc){
+ var ih=iqInHand(p), l=SI[ih], q=sc[l.nm], c=seatCol(l.b), g=iqGot(p,ih);
+ var rr=78, Cc=2*Math.PI*rr, frac=q?q.score/10:g/3;
+ var ring='<svg class="iqa-ring" viewBox="0 0 200 200" aria-hidden="true">'
+  +'<defs><radialGradient id="iqa-lit" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="'+c+'" stop-opacity=".18"/>'
+  +'<stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient></defs>'
+  +'<circle cx="100" cy="100" r="96" fill="url(#iqa-lit)"/>'
+  +'<circle cx="100" cy="100" r="'+rr+'" fill="none" stroke="rgba(128,128,128,.2)" stroke-width="6"/>'
+  +'<circle cx="100" cy="100" r="'+rr+'" fill="none" stroke="'+c+'" stroke-width="6" stroke-linecap="round" '
+  +'stroke-dasharray="'+Cc.toFixed(1)+'" stroke-dashoffset="'+(Cc*(1-frac)).toFixed(1)+'" transform="rotate(-90 100 100)"/>'
+  +'<g transform="translate(64 60) scale(3)" fill="none" stroke="'+c+'" stroke-width="1.3" stroke-linecap="round" '
+  +'stroke-linejoin="round"><path d="'+l.ic+'"/></g>'
+  +(q?'<text x="100" y="150" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">'
+   +q.score.toFixed(1)+'</text>':'')+'</svg>';
+ return iqStrip(p,sc,ih,'')
+  +'<div class="iqa-focus" style="--c:'+c+'"><div class="iqa-hero">'+ring
+  +'<div class="iqa-ln">'+esc(l.nm)+'</div>'
+  +'<div class="iqa-sub"><b>'+esc(l.b)+'</b>, '+esc(IQ_SEATLINE[l.b])+'</div>'
+  +'<div class="iqa-hgap">'+iqGap(p,ih,240)+'</div><div class="iqa-sub">'+esc(iqLine(q,g))+'</div></div>'
+  +'<div class="iqa-qs"><div class="iq-law open iqa-inhand">'+iqFramings(p,Q,ih)+'</div>'
+  +'<div class="iqa-nav"><button type="button" class="btn" data-step="-1">Previous law</button>'
+  +'<button type="button" class="btn pri" data-step="1">Next law</button></div></div></div>';}
+
 function renderIntake(){
  /* ITS OWN BODY, round HG. The tab is the Avatar now and the avatar is its
     hero, in #avbody above this. This renderer writes the whole of its host on
@@ -245,22 +599,13 @@ function renderIntake(){
    +(iqSealable(w)?'':'<span class="iq-seal-n">Enter a name or a date of birth first.</span>')
   +'</div>'
   +'</div>';
- h+='<div class="iq-top">'
-  +'<div class="iq-cq"><b>'+(scored?Math.round(r.CQ):'–')+'</b>'
-  +'<span>'+(scored?'CQ from '+scored+' measured':'no law measured yet')+'</span></div>'
-  +'<div class="iq-pr"><div class="iq-bar"><i style="width:'+(answered/63*100).toFixed(0)+'%"></i></div>'
-  /* WHAT IS LEFT, not what fraction has been done. A count against a total
-     reads as a score and this instrument does not score anybody. It is also
-     the more useful of the two: the panel asked to see the remainder while
-     they were in it, not their progress as a percentage. The bar still carries
-     the proportion, because a bar is a length and not a number. */
-  +'<div class="iq-pl">'+answered+' answered, <b>'+(63-answered)+' left</b>'
-  +' \u00b7 '+scored+' law'+(scored===1?'':'s')+' measured'
-  /* NOT "STILL AT THE DEFAULT" ANY MORE. An unanswered law counts 0 in CQ
-     since 25 September, so CQ fills as they land, and the word waits for the
-     last one: r.tier is null until all 21 are in. */
-  +(scored<21?', '+(21-scored)+' still to answer':'')
-  +(r.tier?' \u00b7 '+r.tier.toLowerCase():'')+'</div></div>'
+ /* THE BAR AND THE PROGRESS LINE ARE GONE, round IT. The header is the art
+    pass's: CQ as the ring Summary draws it with, and one line under it. The
+    rings on the laws are the progress now, each filling as its three land,
+    so a bar above them said the same thing a second time. */
+ h+='<div class="iqa">'
+  +'<div class="iqa-hd">'+iqArtHead(r,scored,answered)
+  +'<div class="iqa-tools">'+iqViewHtml()
   +'<div class="iq-act">'
    /* AND THE SWITCHER NAMES WHAT IS ACTUALLY LOADED. It listed PROFILES only,
       and a reference case is not in that list any more, so with one loaded no
@@ -276,7 +621,7 @@ function renderIntake(){
    +'<button class="btn" id="iqnew">New</button>'
    +'<button class="btn pri" id="iqsave">Save</button>'
    +'<button class="btn" id="iqexp">Export</button>'
-  +'</div></div>';
+  +'</div></div></div>';
  /* THE FRAME, AND THE DURATION. Neither was anywhere on this surface.
 
     Two findings, both from the panel and both measured. Without a stated
@@ -290,70 +635,56 @@ function renderIntake(){
     Nothing here promises a result or flatters anybody. It says how long, what
     is being done, and why the repetition is the measurement. */
  h+=iqAccuracy();
- h+='<div class="iq-grid">';
- IQ_SEATS.forEach(function(bd){
-  var col=seatCol(bd), rows='';
-  SI.forEach(function(l,li){
-   if(l.b!==bd) return;
-   var s=sc[l.nm], open=(IQ_OPEN===li), done=!!s;
-   var got=[0,1,2].filter(function(t){return p.intake.answers[li*3+t]!=null;}).length;
-   /* THE FRAME OF THE CARD IS THE COLOUR OF THE SEAT. Drawn by the owner on a
-      screenshot, in his words so a person knows the band they are answering
-      while they are answering it. The card carries --c itself rather than
-      inheriting it from the group, because an open card is tall enough that
-      its group header is off the top of the screen. */
-   rows+='<div class="iq-law'+(done?' done':'')+(open?' open':'')
-    +'" style="--c:'+col+'">'
-    +'<button class="iq-hd" data-law="'+li+'" aria-expanded="'+(open?'true':'false')+'">'
-     /* ANY NAMED THING WEARS ITS OWN MARK. Every law carries an icon and this
-        header printed a coloured dot, so twenty one distinct things looked like
-        seven. The ring is the law's own, in its seat's colour. */
-     +'<span class="iq-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+l.ic+'"/></svg></span>'
-     +'<span class="iq-nm">'+l.nm+'</span>'
-     /* the seat is the group heading now, so repeating it on every row inside
-        the group was the same word three times on one screen. */
-     +(done?'<span class="iq-sc">'+s.score.toFixed(1)+'</span>'
-           /* NEVER A COUNT AGAINST A TOTAL. It read "1 of 3", which is a
-              fraction and a fraction is a score. What is left is the useful
-              half and carries no verdict. */
-           :'<span class="iq-sc todo">'+(got?(3-got)+' left':'unanswered')+'</span>')
-    +'</button>';
-   if(done&&!open)
-    rows+='<div class="iq-find">spread '+s.spread+', '+s.lean+'</div>';
-   if(open){
-    rows+='<div class="iq-qs">';
-    [0,1,2].forEach(function(t){
-     var idx=li*3+t, qq=Q[idx], v=p.intake.answers[idx];
-     /* THE THREE FRAMINGS SIT SIDE BY SIDE. Stacked, one short question held a
-        full column of nine hundred pixels for a scale thirty two high, and the
-        gap between the three readings, which is the whole measurement, was
-        never on screen at once. Three cards show the gap. */
-     rows+='<div class="iq-qc"><div class="iq-qt"><em>'+(IQ_SIDE[qq.side]||qq.side)+'</em>'+esc(qq.q)+'</div>'
-      +'<div class="iq-sl">';
-     for(var n=0;n<=10;n++)
-      rows+='<button class="iq-n'+(v===n?' on':'')+'" data-a="'+idx+'" data-v="'+n+'">'+n+'</button>';
-     rows+='</div></div>';});
-    if(s)rows+='<div class="iq-find open"><b>'+l.nm+', '+s.score.toFixed(1)+'</b><br>'
-     /* joined by a comma, the same as the closed row six lines above. A full
-        stop with a lower case clause after it is a broken sentence. */
-     +'spread '+s.spread+', '+s.lean+'.</div>';
-    rows+='</div>';}
-   rows+='</div>';});
-  if(!rows) return;
-  h+='<section class="iq-seg" style="--c:'+col+'">'
-   +'<div class="iq-sh">'
-    +'<span class="iq-gl big"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[bd]||SEATGLYPH._)+'</svg></span>'
-    +'<span class="iq-shn">'+bd+'</span>'
-    +'<span class="iq-shd">'+IQ_SEATLINE[bd]+'</span>'
-   +'</div>'
-   +'<div class="iq-laws">'+rows+'</div></section>';});
+ /* THE ACCORDION IS GONE, and what replaces it is the view the toggle names.
+    It went because everything it said is said again by the art pass and said
+    better: the seat group became a row between two hairlines, the law card a
+    ring whose arc is the score, and the spread, which was a sentence, is now
+    three marks on one line. The framings and the scale kept their markup, so
+    a press lands in the same handler with the same arithmetic behind it. */
+ /* THE LAW IN HAND IS PINNED ON ARRIVAL. Left unpinned it was worked out
+    fresh on every draw as the first law still missing an answer, so the third
+    press on a law finished it and the view jumped to the next one before the
+    person had seen what they had just made. Measured by driving it: three
+    answers on Unity landed the page on Awareness with Unity's reading unseen. */
+ if(IQ_VIEW!=='list'&&IQ_OPEN==null)IQ_OPEN=iqInHand(p);
+ h+=(IQ_VIEW==='wheel'?iqViewWheel(p,Q,sc,r,scored):IQ_VIEW==='one'?iqViewOne(p,Q,sc):iqViewList(p,Q,sc));
  h+='</div>';
+ iqArtCss();
  host.innerHTML=hd+h;
  /* the avatar repaints only when something it reads has moved, so a press on
     a law never throws away a half typed pair above it */
  if(typeof avRefresh==='function')avRefresh();
- host.querySelectorAll('[data-law]').forEach(function(el){el.onclick=function(){
-  IQ_OPEN=(IQ_OPEN===+el.dataset.law)?null:+el.dataset.law; renderIntake();};});
+ host.querySelectorAll('[data-law]').forEach(function(el){
+  /* the list opens and closes a law in place, as the accordion did. The wheel
+     and one at a time always have a law in hand, so a press there moves it
+     and never empties the panel. getAttribute and not dataset, because on the
+     wheel the control is an svg g. */
+  var go=function(){var li=+el.getAttribute('data-law');
+   IQ_OPEN=(IQ_VIEW==='list'&&IQ_OPEN===li)?null:li;
+   IQ_FOCUS='[data-law="'+li+'"]'; renderIntake();};
+  el.onclick=go;
+  /* a g is not a button, so Enter and Space are wired by hand */
+  if(el.tagName.toLowerCase()==='g')el.onkeydown=function(k){
+   if(k.key==='Enter'||k.key===' '){k.preventDefault();go();}};});
+ host.querySelectorAll('[data-iqv]').forEach(function(el){el.onclick=function(){
+  IQ_VIEW=el.getAttribute('data-iqv'); IQ_FOCUS='[data-iqv="'+IQ_VIEW+'"]'; renderIntake();};});
+ /* walks the body order the strip shows, crown to root, not the table order */
+ host.querySelectorAll('[data-step]').forEach(function(el){el.onclick=function(){
+  var o=iqBodyOrder(), i=o.indexOf(iqInHand(CURP)), d=+el.getAttribute('data-step');
+  IQ_OPEN=o[(i+d+o.length)%o.length];
+  IQ_FOCUS='[data-step="'+d+'"]'; renderIntake();};});
+ /* THE PRESS KEEPS ITS PLACE. This renderer writes the whole host, so the
+    control a person just pressed is a new element afterwards and focus fell
+    to the page. On the wheel that made the keyboard useless: every Enter sent
+    the next Tab back to the top. The same control is found again by what it
+    is, never by where it sat. */
+ if(IQ_FOCUS){
+  /* the first visible match, because the wheel carries the phone strip ahead
+     of it in the document, hidden on a desktop, and a hidden control takes no
+     focus: the first cut sent it there and it fell to the page */
+  var kf=[].slice.call(host.querySelectorAll(IQ_FOCUS)).filter(function(e){
+   return e.getClientRects().length;})[0]; IQ_FOCUS=null;
+  if(kf&&kf.focus)kf.focus({preventScroll:true});}
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
   /* a changed answer is a new reading of that law, so the releases counted
      against the old one stop counting (engine/compute.js, lawAnswered). Even
