@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="d42d440 2026-09-27 07:53"><head><meta charset="utf-8">
+<html lang="en" data-build="493ed48 2026-09-27 08:40"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -17509,7 +17509,9 @@ function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
    threshold its name and its two ends. Held reads outward from the ring and
    opposite inward, which is the protocol in one shape: release empties the
    first and replace fills the second, at the same address. */
-function fetGrown(n,a,hw,r0,c,ld,fg,fn){
+function fetGrown(n,a,hw,r0,c,ld,fg,fn,rs){
+ /* rs is this address's own shell radius, which the bend moves off R_SHELL */
+ var RS=rs===undefined?R_SHELL:rs;
  var cf=CHILD.filter(function(x){return x.nm===n.cf;})[0];
  var gx=CX+Math.cos(a)*(r0+6), gy=CY+Math.sin(a)*(r0+6);
  /* the axis glyph, sized by charge, on the leading edge of the address */
@@ -17526,7 +17528,7 @@ function fetGrown(n,a,hw,r0,c,ld,fg,fn){
   g.restore();}
  /* an edge, so a grown address reads as one object with a boundary rather
     than as a gradient that happens to be brighter. It is a target now. */
- if(fg>0.3){arcP(r0,R_SHELL,a-hw,a+hw);
+ if(fg>0.3){arcP(r0,RS,a-hw,a+hw);
   g.strokeStyle=rgba(mixc(c,[255,255,255],.35),fg*(.18+ld*.35));
   g.lineWidth=1; g.stroke();}
  if(fn<=0.05)return;
@@ -17534,14 +17536,14 @@ function fetGrown(n,a,hw,r0,c,ld,fg,fn){
     installed against it. Two bars, one axis, and the gap between them is the
     work left. */
  var hl=ld*U*.075*fn, pl=clamp((n.rep||0)/10,0,1)*U*.075*fn;
- if(hl>1){arcP(R_SHELL+2,R_SHELL+2+hl,a-hw*.62,a+hw*.62);
+ if(hl>1){arcP(RS+2,RS+2+hl,a-hw*.62,a+hw*.62);
   g.fillStyle=rgba(c,.30+ld*.5); g.fill();}
  if(pl>1){arcP(r0-2-pl,r0-2,a-hw*.62,a+hw*.62);
   g.fillStyle=rgba(bc('Heart'),.28+(n.rep||0)/10*.5); g.fill();}
  /* the name. only the heaviest, because the collide gate is right that a ring
     of a hundred labels is a ring of no labels. */
  if(n.disp>=6&&fn>0.45)
-  radialTxt(n.k,a,R_SHELL+9+hl,11.5,mixc(c,[255,255,255],.3),.6+fn*.4,600);}
+  radialTxt(n.k,a,RS+9+hl,11.5,mixc(c,[255,255,255],.3),.6+fn*.4,600);}
 var R_SHELL=0, R_EDGE=0;
 /* ============================================================
    THE FIELD ASSEMBLES WHEN YOU LAND ON IT.
@@ -17674,6 +17676,124 @@ function pulses(list){
   g.lineWidth=Math.max(1.2,p.w*0.9);
   g.stroke();}
  g.setLineDash([]); g.lineDashOffset=0; g.restore();}
+/* ============================================================
+   THE RING BENDS UNDER LOAD. GQ in TASKS.md, his words: "what I really like
+   is how the field is distorted, which is exactly what would end up
+   happening ... Please add that as part of the normal field." Ported from
+   the Fringe mockup, proto/field/tension/src/d.js, GK item D, on its own
+   numbers.
+
+   The shell is a membrane and the charge on it is the load. Past five, an
+   address is running hot and the ring gives under it. Five is LEVER_MU, the
+   centre of the lever's bell in engine/compute.js, the point at which one
+   address pulls half as hard as it can, so the line is the engine's and not
+   a number typed here.
+
+   THE BEND. Every hot address pushes the ring out a little just by being
+   loaded, which is a standing bulge a third the size of a moving one. On top
+   of that its direction: expanding bulges it the rest of the way out,
+   collapsing pulls it in past its rest line into a dent. The bend spreads to
+   the neighbours on a gaussian of 2.2 addresses and settles on an
+   underdamped spring, w 14 and damping .42, so it arrives about a fifth past
+   its mark and comes back inside half a second. That is follow through: the
+   ring has mass.
+
+   THE FRINGES. Outside the ring, five bands, the ones a photoelastic model
+   shows under load. They crowd together where the stress is highest. While
+   an address is expanding they are born at the ring and travel out, while it
+   is collapsing they sink back in, and while it is steady they stand where
+   they are and breathe on the Field's own 4.2 second wave. With the labels
+   off, the fringes alone say where the load is and which way it is going.
+
+   CROSSING FIVE IS THE EVENT, so it gets anticipation: the stress dips the
+   wrong way for a few frames before it springs out on w 20 and damping .62,
+   about 8 percent over and settled in 320ms.
+
+   DIRECTION IS WHAT THIS RECORD HAS DONE SINCE IT WAS OPENED, and nothing
+   older. The mockup drifted its loads on a clock, so every address was
+   always rising or falling. A real charge moves only when a story lands, a
+   release installs its opposite, a drag sets it, or an undo takes one of
+   those back. So an address is expanding when its last change went up,
+   collapsing when it went down, and steady until it changes. The record
+   keeps no per address history (its history rows carry the sums), so a
+   direction older than this session is not a thing it can say, and this
+   does not pretend to.
+
+   Reduced motion gets the end state: the bend at its mark, the fringes at a
+   fixed phase, no travel and no breath. The chevrons and the four naming
+   rules from the mockup are not ported. The rules are GK question 2, still
+   his, and a chevron was the mockup's answer to a name appearing by pointer.
+   ============================================================ */
+const RUNHOT_AT=LEVER_MU, FR_BEND=0.06, FR_REST=0.35;
+var RUNHOT_REC=null;
+/* the direction of every address, kept against the record it was seen on,
+   so a switch of record starts every address steady rather than reading the
+   whole move from one person to another as a change in one of them */
+function hotTrack(){
+ var key=S.who+'|'+(S.rec==null?'':S.rec), fresh=key!==RUNHOT_REC;
+ RUNHOT_REC=key;
+ for(var i=0;i<W.length;i++){var n=W[i],v=+n.sq||0;
+  if(fresh||n.frSq===undefined){n.frSq=v;n.frDir=0;continue;}
+  /* a slow drag moves a charge by less than this a frame, and the baseline
+     only moves when the difference does, so the drag still counts */
+  var d=v-n.frSq;
+  if(Math.abs(d)>=0.05){n.frDir=d>0?1:-1;n.frSq=v;}}}
+function hotDir(n){return n.frDir>0?'expanding':(n.frDir<0?'collapsing':'steady');}
+/* who is running hot, heaviest first. The list on Analytics reads this. */
+function hotList(){
+ hotTrack();
+ return W.filter(function(n){return (+n.sq||0)>RUNHOT_AT;})
+  .sort(function(a,b){return b.sq-a.sq;});}
+/* how much stress an address carries, off its displayed charge: nothing at
+   five, a visible step the moment it crosses, full at ten. The mockup's
+   curve, unchanged. */
+function frStress(v){return v>RUNHOT_AT?0.18+0.82*Math.pow((v-RUNHOT_AT)/(10-RUNHOT_AT),0.8):0;}
+function fringeStep(dt){
+ hotTrack();
+ var N=W.length, i, n;
+ for(i=0;i<N;i++){n=W[i];
+  var v=+n.disp||0, tt=frStress(v);
+  if(n.frT===undefined){n.frT=tt;n.frTv=0;n.frB=0;n.frBv=0;n.frPh=0;n.frPv=v;}
+  if(REDUCED){n.frT=tt;n.frTv=0;}
+  else{
+   if(n.frPv<=RUNHOT_AT&&v>RUNHOT_AT)n.frTv-=1.4;
+   var sub=Math.max(1,Math.ceil(dt/(1/120))), sd=dt/sub;
+   for(var s=0;s<sub;s++){var acc=400*(tt-n.frT)-2*0.62*20*n.frTv;n.frTv+=acc*sd;n.frT+=n.frTv*sd;}
+   if(n.frT<-0.08){n.frT=-0.08;n.frTv=Math.max(0,n.frTv);}}
+  n.frPv=v;}
+ /* the bend, spread, then sprung */
+ for(i=0;i<N;i++){var dir=0,str=0;
+  for(var j=-7;j<=7;j++){var m=W[(i+j+N)%N],k=Math.exp(-(j*j)/(2*2.2*2.2));
+   dir+=k*m.frT*(m.frDir||0); str+=k*Math.abs(m.frT);}
+  n=W[i]; n.frStr=clamp(str/1.6,0,1);
+  dir=clamp(dir,-1.4,1.4);
+  n.frDef=clamp(FR_REST*n.frStr+dir,-1.4,1.4);
+  var tgt=n.frDef*U*FR_BEND; n.frTgt=tgt;
+  if(REDUCED){n.frB=tgt;n.frBv=0;}
+  else{var sub2=Math.max(1,Math.ceil(dt/(1/120))), sd2=dt/sub2;
+   for(var s2=0;s2<sub2;s2++){var a2=196*(tgt-n.frB)-2*0.42*14*n.frBv;n.frBv+=a2*sd2;n.frB+=n.frBv*sd2;}
+   /* the fringes travel with the direction only: a steady load stands */
+   n.frPh+=dt*0.9*dir;}}}
+/* the bands, one short arc per address so their strength follows the stress
+   round the ring. Under the addresses, so every word and bar reads over them. */
+function fringeDraw(shell){
+ var N=W.length, z=S.zoom||1, sk=clamp((U/z)/440,0.5,1.2)*clamp(Math.sqrt(z),1,2.2);
+ var t=REDUCED?0:S.t, lt=LIGHT(), half=TAU/N/2+0.002, fn=fetA(1);
+ g.save(); g.lineCap='butt';
+ for(var i=0;i<N;i++){var n=W[i];
+  if(!(n.frStr>=0.03)||enterSeat(n.b)<1)continue;
+  var gap=(10-6*n.frStr)*sk, f=REDUCED?0.5:(n.frPh-Math.floor(n.frPh));
+  var br=REDUCED?1:0.82+0.18*Math.sin(TAU*t/4.2-n.i*0.12);
+  /* past the held bar the fetter layer grows out of the ring, so the bands
+     start where it ends rather than under it */
+  var hb=(n.disp>=4)?fn*clamp(n.disp/10,0,1)*U*.075:0;
+  var c=bc(n.b), lift=lt?mixc(c,[0,0,0],.3):mixc(c,[255,255,255],.55), ro=shell+(n.frB||0)+hb;
+  for(var k=0;k<5;k++){
+   var pos=k+f, al=Math.pow(n.frStr,1.3)*Math.sin(Math.PI*pos/5)*0.9*br;
+   if(al<0.02)continue;
+   g.beginPath(); g.arc(CX,CY,ro+4+pos*gap,n.ang-half,n.ang+half);
+   g.strokeStyle=rgba(k%2?c:lift,al); g.lineWidth=(k%2?1.1:1.6)*(0.8+0.4*n.frStr); g.stroke();}}
+ g.restore();}
 /* the words' strength for this frame, off the wheel's own zoom, and put back
    whatever happens inside, so a throw cannot leave the next surface faded */
 function drawWheel(r,L){
@@ -17881,6 +18001,7 @@ function drawWheel0(r,L){
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
+ lay('addresses',()=>fringeDraw(R.shell));
  lay('addresses',()=>W.forEach(n=>{
   /* its seat's turn to arrive. Nothing is drawn before its turn, which is
      what makes the sweep visible: a band that is merely dim is a band that is
@@ -17896,23 +18017,30 @@ function drawWheel0(r,L){
   /* GROWTH IS BY CHARGE. An address at zero does not move, whatever the zoom:
      there is nothing there to come forward. */
   const grow=carrying?fg*ld*U*.085:0;
-  const d=U*.016+ld*U*.088+grow, r0=R.shell-d;
-  arcP(r0,R.shell,a-hw,a+hw);
-  const gr=g.createRadialGradient(CX,CY,r0,CX,CY,R.shell);
+  /* the bend, from the fringe section above: the whole address rides out on
+     a bulge and in on a dent, its depth unchanged, so the charge still reads
+     as the same length on a ring that has given under it */
+  const bend=n.frB||0, rs=R.shell+bend;
+  const d=U*.016+ld*U*.088+grow, r0=rs-d;
+  arcP(r0,rs,a-hw,a+hw);
+  const gr=g.createRadialGradient(CX,CY,r0,CX,CY,rs);
   gr.addColorStop(0,rgba(mixc(c,[0,0,0],LIGHT()?.05:.36),carrying?.34+ld*.6:.08));
   gr.addColorStop(1,rgba(mixc(c,[255,255,255],.44),carrying?.7:.15));
   g.fillStyle=gr;g.fill();
   if(n.disp>=6.5){g.shadowColor=rgba(c,.9);g.shadowBlur=16;g.fill();g.shadowBlur=0;}
   if(n.disp>=9){g.strokeStyle=rgba(hx('#FF2E1F'),.85);g.lineWidth=1.4;g.stroke();}
   if(S.hover===n||S.pin===n){g.strokeStyle=rgba(gc,1);g.lineWidth=2;g.stroke();}
-  if(fg>0&&carrying)fetGrown(n,a,hw,r0,c,ld,fg,fn);
+  if(fg>0&&carrying)fetGrown(n,a,hw,r0,c,ld,fg,fn,rs);
   /* the target grows with the shape. r0 is where the address now starts. */
   /* THE TARGET IS WHERE IT LANDS, NOT WHERE IT IS MID FLIGHT. A hit box that
      travels with the animation would move under a pointer that had already
      found it, which is worse than no box at all for the second and a half it
      lasts. */
+  /* and the bend it lands at, not the spring's position on the way there */
+  const bt=n.frTgt||0;
   HIT.push({k:'node',n,cx:CX,cy:CY,a0:n.ang-hw,a1:n.ang+hw,
-   r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});}));
+   r0:Math.min(R.shell*.85,r0-bend+Math.min(0,bt)-4),
+   r1:R.shell*1.02+Math.max(0,bt)+(fn>0&&carrying?U*.05:0)});}));
 
  /* AND PAST THE FETTERS, WHAT PUT THE CHARGE THERE.
 
@@ -17935,7 +18063,7 @@ function drawWheel0(r,L){
   if(aa2>0)lay('stories',()=>W.forEach(n=>{
    const a=n.ang, ld=clamp(n.disp/10,0,1), carrying=n.disp>=4;
    const hw=TAU/108*(.43+fg*.24);
-   atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);}));}
+   atomGrow(n,a,hw,R_SHELL+(n.frB||0)+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);}));}
  /* THE SEVEN SEAT BANDS ARE TARGETS. Ruled: "the rainbow bands at the centre,
     say what they are and make them clickable." They were seven names drawn
     around the outside of the shell and nothing else: not a word about what
@@ -18151,6 +18279,7 @@ function draw(r){
  DISP_T=t; if(dt>.1)dt=.1; if(!(dt>0))dt=1/60;
  var k=1-Math.exp(-DISP_RATE*dt);
  W.forEach(n=>{n.disp=(n.disp===undefined?n.sq:(REDUCED?n.sq:n.disp+(n.sq-n.disp)*k));});
+ fringeStep(dt);
  var sig=drawSig(r);
  if(sig!==null&&sig===DRAW_SIG) return;    /* nothing moved and nothing will */
  DRAW_SIG=sig;
@@ -22792,7 +22921,7 @@ function anaRender(){
      +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div><div class="ab-grid">';
+  +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
  out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
@@ -22867,6 +22996,57 @@ function anaRender(){
   ANA_PICK=(ANA_PICK&&ANA_PICK.k===p[0]&&ANA_PICK.nm===p[1])?null:{k:p[0],nm:p[1]};
   anaRender();anaDrill();};});
  anaDrill();}
+/* ============================================================
+   RUNNING HOT. GQ in TASKS.md, his words: "And the running hot, add that to
+   analytics. Yeah, that's really, really good." The list sat beside the
+   Field in the Fringe mockup, proto/field/tension/src/common.js, and it
+   comes here on the same terms the shipped Field now bends by (ui/wheel.js,
+   THE RING BENDS UNDER LOAD): past five, heaviest first, and which way each
+   one last moved.
+
+   A ROW OPENS THE ADDRESS. In the mockup a row flew the camera to it, and
+   there is no camera on this surface. The row is the product's own address
+   row, so it opens the same drill every other address row opens.
+
+   TWELVE ROWS AND A COUNT. A heavy field has fifty addresses past five, and
+   fifty rows is a spreadsheet of feelings, which the badge rule in
+   ui/component.js was written against. The count says how many there are
+   and how they split, and the Field draws every one.
+
+   Nothing on an unread field. The hero above already says nothing is
+   entered, and a list of none says it a second time.
+   ============================================================ */
+const ANA_HOT_ROWS=12;
+/* THE THREE WORDS ARE NOT ONE COLOUR. Collapsing is the opposite going in,
+   and the fetter layer on the Field already draws what is installed in the
+   Heart's colour, so it takes that, off the lighting in force when the row
+   is drawn. Expanding is load arriving and reads at full ink. Steady is the
+   absence of news and sits at the dim step. */
+function anaHotInk(d){return d==='collapsing'?seatCol('Heart'):(d==='steady'?'var(--dim)':'var(--ink)');}
+function anaHot(r){
+ if(r.unread||typeof hotList!=='function')return '';
+ var L=hotList(), t={expanding:0,collapsing:0,steady:0};
+ L.forEach(function(n){t[hotDir(n)]++;});
+ var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>';
+ if(!L.length)s+='<p class="sum-p">No address is past five. Past five an address pulls '
+  +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
+ else s+=anaHotRows(L,t);
+ return '<div class="ana-hot">'+s+'</div>';}
+function anaHotRows(L,t){
+ var say=[], s='';
+ ['expanding','collapsing','steady'].forEach(function(k){if(t[k])say.push('<b>'+t[k]+'</b> '+k);});
+ s='<p class="sum-p"><b>'+L.length+'</b> address'+(L.length===1?' is':'es are')
+  +' past five, where an address pulls more than half as hard as it can and the ring on the '
+  +'Field bends under it. '+say.join(', ')+'.</p>'
+  +'<p class="sum-p">Expanding means its charge rose on its last change. Collapsing means it fell. '
+  +'Steady means it has not moved since this record was opened.</p>'
+  +'<div class="ad-rows">'+L.slice(0,ANA_HOT_ROWS).map(function(n){var d=hotDir(n);
+   return '<button type="button" class="ad-r" data-addr="'+n.i+'" data-dir="'+d+'" '
+    +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
+    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'">'+d+'</em></button>';}).join('')+'</div>';
+ if(L.length>ANA_HOT_ROWS)s+='<p class="sum-p">The '+ANA_HOT_ROWS+' heaviest. '
+  +(L.length-ANA_HOT_ROWS)+' more are past five, and the Field draws every one.</p>';
+ return s;}
 /* THE DRILL. one resolution down, plus the stories that touched it. */
 function anaDrill(){
  var box=document.getElementById('rdrill'); if(!box)return;
@@ -31755,5 +31935,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002080478"></div>
+<div id="eof" hidden data-len="002090733"></div>
 </body></html>
