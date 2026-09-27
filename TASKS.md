@@ -22835,3 +22835,31 @@ All of this is `storyui.js`, which the round JP "Source AI why" agent
 still holds. Not dispatched yet: queued, and the agent already working
 that file was sent a plain heads up rather than a second conflicting
 build.
+
+## JT. The oscillating gap must show data, and the ascendant teachers plotted near the centre
+
+His words, verbatim: "That's a, with the shape of the compass, you want
+to also show the distortion, like where you're overexpressed or
+underexpressed. That's really, really good. So you want to show the
+shape of it, very similar to what you have right now, just with the
+triangles and that kind of oscillating space. The oscillating space, I
+don't want it blank. Make sure there's something between there,
+because it's a range, right? There's still data in there. And I also
+want this page to be super visual, hypervisual and hyperanimated and
+super innovative. And by the way, showing the compass of the ascendant
+teachers closer towards the source of the centre, maybe with Jesus and
+Krishna being closest to the point, and then their opposing behaviors
+on the opposite scale outside of the ring, and you can see where the
+shape of the geometry is distorted in your own field. Holy fucking
+shit, that's rad. And then you can see the shape of your awareness. I
+want that. Give that to me right now, along with everything else."
+
+Two real additions to the Compass work already dispatched this
+session: the gap between the two pyramid poles must show real
+interpolated data across the range, never rendered as an empty space;
+and a new layer plotting the "five paths" already named in the
+glossary (Krishna, Buddha, Christ, Rama, Lao Tzu) positioned by
+closeness to the centre, with the person's own field shape drawn
+against them to show where it distorts from that reference geometry.
+Routed to the agent already working `cone.js` rather than dispatched
+separately, since it is the same file.
