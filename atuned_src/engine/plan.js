@@ -303,9 +303,9 @@ const EQUIV=[
   d:'The same rate as meditation.'},
  {k:'month',   nm:'months of daily practice',lo:270,hi:540, unit:'thirty minutes a day',
   d:'A month of half an hour every day, at the meditation rate.'}];
-const EQUIV_NONE='Plant medicine is not on this list. The book gives no rate for it, '
- +'and a number invented to make a comparison look good is the first thing a person who '
- +'has done it will check.';
+/* the second clause was the team's reasoning printed to the person. The
+   reason a person needs is the first one, and tests/engine.js holds it. */
+const EQUIV_NONE='Plant medicine is not on this list, because the book gives no rate for it.';
 /* how many of a thing an allowance is worth. the low end first, because the
    low end is the claim that survives being checked. */
 function equivOf(patterns,k){

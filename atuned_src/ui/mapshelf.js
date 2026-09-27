@@ -66,24 +66,11 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
     which is where every other surface answers and which rdOpen brings into
     view. The rows and the seats stay here and still show what is picked. */
 
- /* the legend. what a row means on THIS layer. */
- var LEG={
-  bands:[['a row','one held fetter and the child emotion it runs on'],['colour','the seat it lives at'],
-   ['number','SQ held there']],
-  sab:[['a row','one saboteur, matched on charge ranges'],['colour','saboteur tier'],
-   ['number','its weight'],['sub-line','match percentage and addresses beneath']],
-  cx:[['a row','two saboteurs of one family compounded'],['number','mean weight']],
-  hyper:[['a row','two complexes compounded, or two hyper co-mingled'],
-   ['colour','orange hyper, red character'],['sub-line','clinical bridge']],
-  masks:[['a row','one of six developmental eras'],['number','load beneath it'],
-   ['sub-line','the seats it speaks from']],
-  pain:[['a row','an address above the loaded line'],['number','how far above']],
-  nerves:[['a bar','the share that seat passes upward'],['dashed line','the first seat holding'],
-   ['left','held count'],['right','pass percentage']]}[PMLAYER]||[];
- if(LEG.length){
-  sh+='<div class="pm-eye" style="margin-top:14px">Legend</div><div class="pm-leg">';
-  LEG.forEach(function(L){sh+='<span class="pm-lgk">'+L[0]+'</span><span class="pm-lgv">'+L[1]+'</span>';});
-  sh+='</div>';}
+ /* THE LEGEND IS GONE. CO-16, his: "I'm not sure what that is. Get rid of
+    it." It keyed every row, colour and number on this layer in the model's
+    own words, "SQ held there", "clinical bridge", "two hyper co-mingled", to
+    somebody who had not asked, and it is the third tier small print he struck
+    again in GX. Each row opens its own answer in Selection on a press. */
 
  /* the seven seats. bare numbers, per B19. */
  sh+='<div class="pm-eye" style="margin-top:14px">Seats</div><div class="pm-seats">';

@@ -182,7 +182,7 @@ function obRender(){
       copy this product already ships in the story box. */
    +[['You write what happened','the day, in your own words'],
      ['It finds where that sits','a named plexus or a named nerve'],
-     ['You clear what is there','one address at a time'],
+     ['You release what is there','one address at a time'],
      ['And you watch it move','the same numbers, over months']]
     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')

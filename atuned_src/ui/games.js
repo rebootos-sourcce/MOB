@@ -121,7 +121,7 @@ function mtBlock(c){
   +(live.length?'<b>'+live.length+'</b> of them are carrying in your field right now.'
     :'None of them are carrying in your field right now.')+'</p>'
   +'<p class="gm-p">Held <b>'+held.toFixed(1)+'</b>. '+esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. '
-  +'Release empties the address, the opposite is what fills it.</p>'
+  +'A release empties the story held here, and the opposite fills its place.</p>'
   +(live.length?'<button class="btn" data-gmimp="'+esc(c.nm)+'">See the '+live.length+' running you</button>':'')
   +'</div>';}
 
@@ -182,7 +182,9 @@ function gmRender(){
         :did?'<span class="gm-tick">'+(LG.pole==='m'?'right':'left')+'</span>'
         :'<span class="gm-back"></span>')+'</button>';}).join('')+'</div>';
    if(LG.done)h+='<div class="gm-done"><div class="pm-eye">Run complete</div>'
-    +'<p class="gm-p">Twenty four addresses cleared in <b>'
+    /* NOTHING WAS CLEARED. The practice run writes nothing to the record; the
+       sentence after this one says so, and "cleared" said the opposite first. */
+    +'<p class="gm-p">Twenty four addresses run in <b>'
     +lgClock()+'</b>. Deal again, or open the release to commit it.</p></div>';
    h+='<div class="gm-note"><div class="pm-eye">Both sides</div><p class="gm-p">'
     +esc(C3_BILATERAL)+'</p></div>';
@@ -209,9 +211,9 @@ function gmRender(){
       +esc(CHILD[8].nm)+', is not in this deck.</p></div>':'')
     +'<div class="gm-act"><button class="btn" id="mtgo">Deal again</button></div>';}}
 
- h+='<div class="gm-soon"><div class="pm-eye">Phase two</div>'
-  +'<p class="gm-p">A narrated walkthrough of how a matched pair actually runs, unlocked by '
-  +'matching it. Not built.</p></div>';
+ /* "Phase two... Not built." was a roadmap line printed to the person under
+    the game, a promise of a thing that does not exist. It is in TASKS.md,
+    where a plan belongs. */
 
  host.innerHTML=h;
  host.querySelectorAll('[data-gm]').forEach(function(el){el.onclick=function(){

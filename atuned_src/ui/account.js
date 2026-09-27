@@ -97,17 +97,19 @@ function accAccount(){
    '<div class="ac-row ac-edit"><span class="ac-rl">Profile name</span>'
    +'<input type="text" id="acnm" value="'+esc((CURP&&CURP.name)||'')+'" '
    +'aria-label="Profile name"></div>'
-   +accRow('Profiles on this device',PROFILES.length,{num:true}),
-   'The profile picker sits in the top bar today. It is a demo control, and it '
-   +'comes out of the bar when sign in lands.');
+   +accRow('Profiles on this device',PROFILES.length,{num:true}));
+ /* A NOTE TO A TESTER, NOT TO A PERSON. "The profile picker sits in the top
+    bar today. It is a demo control, and it comes out of the bar when sign in
+    lands." is a roadmap line, the kind he named in GX: "screen when entry,
+    known, zero entries, what is that, get rid of it." */
  /* IDENTITY IS READ OUT HERE AND EDITED NOWHERE BUT ENERGETICS. Two editors
     for one field is two answers to one question. */
  h+=accGroup('Identity',
    accRow('Name',nm||'not entered')
    +accRow('Born',born||'not entered')
-   +accAct('Change it','acgoiq',{btn:'Open Energetics'}),
-   'Entered once on Energetics and read here. There is only ever one editor '
-   +'for a field.');
+   +accAct('Change it','acgoiq',{btn:'Open Energetics'}));
+ /* "There is only ever one editor for a field" was the engineering rule
+    printed under the button that already says where to change it. */
  /* REPLAYABLE, AND IT LIVES IN THE PROFILE. Ruled: "the tutorial lives in the
     profile, toggleable and replayable, and it does not spend real charge."
     The onboarding is the same: nothing it does writes to the nine axes, so
@@ -144,17 +146,17 @@ function accDisplay(){
 /* ---------- 4.3 security ---------- */
 function accSecurity(){
  return '<p class="ac-lead">Nothing about this record is protected by a password '
-  +'today. It is held in this browser, so anybody with this browser has it. '
-  +'That is the honest state and it is also the argument for sign in.</p>'
+  +'today. It is held in this browser, so anybody with this browser has it.</p>'
   +accGroup('How This Is Protected',
    accRow('Sign in method','none, this browser only')
    +accStub('Password','not set')
    +accStub('Two factor','not set')
    +accStub('Sessions and devices','this browser only')
    +accStub('Recent account activity','nothing to show'),
-   'Every row here waits on sign in. It will be a one time code to the '
-   +'address, or a signed link. Never the address alone, because an address '
-   +'alone is the key to somatic and psychological self report.');}
+   /* the design of a sign in that does not exist, and "address" meaning an
+      email in a product where an address is a place in the body. One word
+      per concept. The design lives in DECISIONS.md, not on this screen. */
+   'Every row here waits on sign in.');}
 
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
@@ -172,12 +174,11 @@ function accPrivacy(){
  var h='<p class="ac-lead">We never sell anybody’s data. Ever.</p>';
  h+=accGroup('What Is Held Here',
    ACC_HELD.map(function(x){return accRow(x[0],x[1]);}).join(''),
-   'Held in this browser and nowhere else. This is a list rather than a '
-   +'sentence because a list is what makes export and delete mean something.');
+   'Held in this browser and nowhere else.');
  h+=accGroup('This Device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),
-   STORE_BOUND?'A save that fails says so rather than being swallowed.'
+   STORE_BOUND?'If a save fails, it tells you.'
     :'Storage is blocked in this browser, so nothing you do here will survive '
      +'a reload. Export is the only way to keep it.');
  h+=accGroup('Who Has Sight',
@@ -202,9 +203,11 @@ function accPrivacy(){
     that already says what is held and where. */
  h+=accGroup('Load a Record',
    recordImportHtml('ac'),
-   'A record saved from the web reading is a file, and the file is the whole '
-   +'handoff. Nothing is replaced until it has validated, loaded and saved. A '
-   +'refusal names the field that failed and leaves this record where it is.');
+   /* "the whole handoff" is CO-26's own word, "Keep it: it is the handoff",
+      and "validated" is the boundary function's name. Said as what happens. */
+   'The web reading saves your answers as a file. Load it here. Nothing on '
+   +'this device changes unless the whole file loads, and if it does not, '
+   +'this says which field failed.');
  h+=/* A HEADING IS A THING A PERSON WOULD SAY. This one read "Getting It Out,
    And Getting Rid Of It": seven words, a comma, and a conjunction capitalised
    in a file that is otherwise in title case. It names two controls, so it

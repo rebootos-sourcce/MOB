@@ -268,7 +268,9 @@ function relRender(){
  h.style.display='flex';
  var out='<div class="rel-card">';
  if(RUN.phase==='opening'){
-  out+='<div class="pm-eye">Release and reframe</div>'
+  /* "Release and reframe" was the old name for the mechanic, two words where
+     GS ruled one: "stick with release." */
+  out+='<div class="pm-eye">Release</div>'
    +'<div class="rel-speak">'+esc(OPENING[Math.min(RUN.line,OPENING.length-1)])+'</div>'
    +'<div class="rel-dots">'+OPENING.map(function(_,i){
      return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
@@ -334,8 +336,12 @@ function relRender(){
      :'Release has about '+_left.toFixed(1)+' points more in it before the laws '
       +'are the only thing holding expression down.')
    +'</div>'
-   +'<div class="rel-note">Release empties the address. The coherent opposite is '
-   +'installing on the same pass. The rebound is day four and a half. Completion is day '
+   /* WHAT A RELEASE EMPTIES IS A STORY, ruled in GS: "the release is any
+      story... empty the body of stories, period." The address is where the
+      instrument reads that story's charge, so it stays in the sentence as the
+      place, not as the thing emptied. */
+   +'<div class="rel-note">A release empties the story held at these addresses. '
+   +'The coherent opposite installs on the same pass. The rebound is day four and a half. Completion is day '
    +'twenty seven.</div>'
    +'<div class="rel-act"><button class="btn" id="relclose">Done</button>'
    +'<button class="btn pri" id="relrit">Build a ritual</button></div>';
@@ -370,10 +376,16 @@ function relRender(){
      cut it: there is more unopened ground and they cannot reach it yet. */
   var byAllow=(pl>0&&pl>=left&&left<RUN_MAX);
   out+='</div><div class="rel-note">'+(spent
-    ?'New ground is what an allowance buys, and this period\'s is spent. '
-     +'Rerunning an address you have already opened costs nothing and is in '
-     +'the ritual. A wider allowance is on the plan in settings.'
-    :pl+' thought line'+(pl===1?'':'s')+' of new ground, which is '+pl+' pattern'+(pl===1?'':'s')+'. Right then left, limit before truth. About '
+    /* "New ground is what an allowance buys" is the lexicon read aloud, which
+       is his GX complaint about "find an address". Said as what it pays for. */
+    ?'Your allowance pays for addresses you have not released before, and this '
+     +'period\'s is spent. Rerunning an address costs nothing and is in the '
+     +'ritual. A wider allowance is on the plan in settings.'
+    /* the same number said twice, as thought lines and then as patterns, when
+       the line above already gives it in patterns, and a shorthand, "limit
+       before truth", that only the team could read. "Thought line" is his
+       ruled word, DECISIONS.md, "The key, ruled", and stays. */
+    :pl+' thought line'+(pl===1?'':'s')+' of new ground. Each runs right then left, the limit and then its truth. About '
      +(Math.round(pl*RUN.speed/60*10)/10)+' minutes.'
      +(byAllow?' That is all the allowance has left, and the rest of this queue stays unopened.'
        :(pl<RUN_MAX?' That is everything still unopened in this queue.':'')))+'</div>'

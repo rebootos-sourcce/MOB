@@ -865,7 +865,7 @@ function renderMap(r){
     h+='<g class="pm-n" data-node="'+m.o.i+'" opacity="'+fade+'">'
      +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.5*ZS).toFixed(3)
      +'" fill="none" stroke="'+c+'" stroke-width="'+(0.2*ZS).toFixed(3)+'" opacity=".8"/>'
-     +'<title>'+esc(m.nm)+', clear. holds the far pole</title></g>';
+     +'<title>'+esc(m.nm)+' is clear and holds the far pole.</title></g>';
    }else{
     /* A POINT, NOT A COIN. The pass before the rings found solid discs of
        radius 2.7 at ninety eight percent covering the field they sat on, and

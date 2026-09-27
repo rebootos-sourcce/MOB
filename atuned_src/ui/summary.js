@@ -73,8 +73,15 @@ function sumGlance(r){
  var e=(r.X+r.Y+r.Z)/3;
  var row=[
   /* the glance row's coherence ring reads the tier too, for the same reason */
+  /* A PERCENT IS ALREADY OUT OF A HUNDRED. The third line read "of 100" under
+     every figure that already ends in a percent sign, which is the same
+     number's scale said twice on one tile, the "of the same 90 days" he struck
+     (V17), and the third tier small print he named in GX: "I don't need this
+     like third tier tiny information that no one's ever going to read." The
+     line stays only where the figure has no unit of its own, which is where
+     the scale is information. */
   ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.',
-   'of 100', TIERCOL[r.tier]],
+   '', TIERCOL[r.tier]],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
      carrying, so it has no ceiling of ten or of anything else, and a stated
@@ -88,7 +95,7 @@ function sumGlance(r){
      of 100 and the ring is the figure, on the same scale as coherence. */
   ['shadow weight', 'Root', r.DQ, Math.round(r.DQ)+'%',
    'The weight on all 112 addresses, out of the most they can hold.',
-   'of 100'],
+   ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from
      sum+=n.sq over the loaded addresses, and n.sq is HELD charge: an address
@@ -98,20 +105,20 @@ function sumGlance(r){
      of them that had been filled in, which is not a wording problem, it is a
      reading that says the reverse of the truth. */
   ['carried depth', 'Root', r.SQm*10, r.SQm.toFixed(1),
-   'How deep the carrying addresses run, meaned, 0 to 10.', 'of 10'],
+   'How deep the charge runs, on average, across the addresses carrying it.', 'of 10'],
   /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
      to 0 and 10, so ten is the ceiling and always was. */
   ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2),
    'Coherent opposites standing, 0 to 10.', 'of 10'],
   ['energy', 'Solar', e*100, e.toFixed(2),
-   'Vitality, awareness and will, meaned, 0 to 1.', 'of 1']];
+   'The average of vitality, awareness and will.', 'of 1']];
  /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"
     on the third line of a glance tile, which is the smallest place in the
     product and the last place a lab readout belongs. Ruled with the rest of
     the class. The scale stays: every number says what it is out of, and that
     rule is the reason the third line exists at all. */
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
-  'How much of you the instrument has actually measured.','of 100']);
+  'How much of you the instrument has actually measured.','']);
  /* THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
     both were being broken by the same line.
 
@@ -374,7 +381,13 @@ function sumStruct(r){
  var seats=flSeats().filter(function(x){return x.load>0;})
   .sort(function(a,b){return b.load-a.load;}).slice(0,4);
  if(seats.length){
-  out+='<div class="pm-eye" style="margin-top:18px">Where it sits</div>';
+  /* "Where it sits" labelled a list of body places with a pronoun that has
+     nothing to point back to. His words, GX: "'where it sits, crown, third
+     eye, throat,' and then the patterns underneath, I don't understand the
+     screen." A label names the slot, and this slot is the four seats carrying
+     the most, sorted by load. "In the body" is already the axes' eyebrow on
+     this page, and ui/mapshelf.js already calls the top one "Heaviest seat". */
+  out+='<div class="pm-eye" style="margin-top:18px">Heaviest seats</div>';
   out+=seats.map(function(x){
    /* and a seat says what a closed one does rather than the word closed */
    return sumStructRow(x.p.n,
@@ -420,7 +433,7 @@ function sumSpirit(r){
   +'<b>'+C.of+'</b> comparison'+(C.of===1?'':'s')+' could be made between them and the '
   +'field. <b>'+C.agree.length+'</b> point the same way. That is what the convergence is.'
   +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
-    +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')+'</p>'
+    +esc(C.open.join('; '))+'. Those count for neither side.':'')+'</p>'
   +'<div class="s-chips">';
  out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
   'Sun sign. '+(SIGN_RUNS[e.sun]||''));
@@ -522,11 +535,14 @@ function sumUnread(r){
      the same thing in a full sentence, so the label was both changing with the
      data and repeating the line. */
   +'<div><div class="pm-eye">Coherence</div>'
-  +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
-  +'The arithmetic underneath works and it is not being shown, because a number off a '
-  +'default is a number about the default and not about you.</div></div></div>'
-  +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know a term '
-  +'first, and any one of them fills this page.')+'</div>'
+  /* ONE WORDING FOR THE EMPTY STATE, and nothing after it. This said "Nothing
+     has been entered" where the canonical sentence is "Nothing has been read
+     yet" (objections.json, canonical), then spent a sentence on why the
+     arithmetic is hidden, which is the product explaining itself to a person
+     who did not ask, and then reassured them they would not need a term. The
+     doors underneath are the route. */
+  +'<div class="sum-line">Nothing has been read yet.</div></div></div>'
+  +'<div class="sum-start">'+startHTML('Four ways in. Any one of them fills this page.')+'</div>'
   +sumSpirit(r)+sumNum(r);}
 
 /* ============================================================
@@ -619,7 +635,7 @@ function sumOutput(r){
      calls for" was there to say, and the row says it already. */
   +(rit?card('The protocol',rit.nm||'A practice',
      rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
-    :card('The protocol','Not enough read yet',
+    :card('The protocol','Not read yet',
      'Write what happened and this fills in',''))
   /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
      only when there is something to spend it on.
@@ -666,8 +682,15 @@ function sumOutput(r){
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
      'No address is holding anything','');}())
-  +(m&&m.next?card('Next marker',m.next.nm,m.next.left+' away','')
-    :card('Next marker','The first one','Open some ground and it appears',''))
+  /* A NUMBER CARRIES ITS UNIT. This read "12 away", twelve of what; the
+     record card says the same distance in addresses, so this does too. And
+     the fallback said "The first one. Open some ground and it appears",
+     which is false: markersFor() always returns the ladder, on a reference
+     age when there is no birth date, so m.next is null only once every
+     marker is behind the person. */
+  +(m&&m.next?card('Next marker',m.next.nm,
+      m.next.left+(m.next.left===1?' new address':' new addresses')+' away','')
+    :m?card('Next marker','None left','Every marker is behind you',''):'')
   +'</div>';}
 
 function sumFull(r){
@@ -745,16 +768,17 @@ function sumAxes(r){
   .sort(function(a,b){return b.rep-a.rep;});
  var p=[];
  if(!live.length){
-  p.push('Nothing is carrying on any of the nine. That is the reading, not a '
-   +'gap in it.');
+  p.push('Nothing is carrying on any of the nine.');
  }else{
   var top=live[0];
   /* NO "the" IN FRONT OF THE ADDRESS. Half the nine carry a plexus, which
      takes an article, and half carry a phrase like "Below the heart", which
      does not. "It sits at the Below the heart" is what a template does when
      it assumes one shape of noun. */
-  p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at <b>'
-   +top.sq.toFixed(1)+' of 10</b>. It sits at '+esc(top.c.addr)
+  /* "of 10" made a weight a mark out of ten. V8, and ui/summary.js was its
+     own named corpse: "at a weight of 7.4" is what ships, so this says it. */
+  p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at a weight of <b>'
+   +top.sq.toFixed(1)+'</b>. It sits at '+esc(top.c.addr)
    +', which you feel in the '+esc(top.c.loc)+'. The quality on the far side '
    +'of it is <b>'+esc(top.c.opp)+'</b>.');
   if(live.length>1){
@@ -767,15 +791,14 @@ function sumAxes(r){
     /* and the number is spelled, because it opens a sentence and a sentence
        that opens with a digit reads as a list item */
     +'. '+(live.length>4?SUM_WORD(live.length-4)+' more '
-      +(live.length-4===1?'is':'are')+' carrying something.':'')
-    +' Each one is a place in the body before it is a word.');}
+      +(live.length-4===1?'is':'are')+' carrying something.':''));}
  }
  if(standing.length){
   p.push('Standing against them: <b>'+esc(standing[0].c.opp)+'</b> at <b>'
-   +standing[0].rep.toFixed(1)+' of 10</b>'
+   +standing[0].rep.toFixed(1)+'</b>'
    +(standing.length>1?', and '+(standing.length-1)+' other'
      +(standing.length>2?'s':'')+' installed':'')
-   +'. An address with the opposite in does not read zero. It conducts.');}
+   +'. An address with the opposite installed conducts.');}
  return '<div class="s-axes"><div class="pm-eye">In the body</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')+'</div>';}
 
@@ -801,7 +824,7 @@ function sumLens(r){
  var L=[lensWestern(r),lensEastern(r),lensDesign(r),lensGene(r)]
   .filter(function(x){return x&&x.a;});
  if(!L.length)return '';
- return '<div class="pm-eye" style="margin-top:18px">Four Lenses</div>'
+ return '<div class="pm-eye" style="margin-top:18px">Four lenses</div>'
   +'<div class="s-lens">'+L.map(function(x){
    return '<div class="s-ln">'
     +'<span class="s-ln-t">'+esc(x.t)+'</span>'

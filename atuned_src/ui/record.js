@@ -111,10 +111,14 @@ function recRender(){
   h+='<div class="rec-next"><span class="pm-eye">Next</span>'
    +'<b>'+esc(m.next.nm)+'</b>'
    +'<span class="rec-nl">'+m.next.left
-     +(m.next.left===1?' address':' addresses')+' of new ground away</span>'
-   +'<span class="rec-ns">'+(m.scaled
-     ?'your own scale, '+m.next.at+' addresses of about '+m.estimate
-     :'the reference scale. Give a birth date and this becomes yours')+'</span>'
+     +(m.next.left===1?' new address':' new addresses')+' away</span>'
+   /* THE THIRD LINE GOES WHEN IT HAS NOTHING TO SAY. It read "your own scale,
+      50 addresses of about 300" under a distance already given in addresses,
+      a second figure and a count against a total on the smallest line of the
+      card, which is the third tier small print he struck in GX. Only the case
+      a person needs survives: the distance is not theirs yet. */
+   +(m.scaled?'':'<span class="rec-ns">Set by a reference age. Add your birth date '
+     +'to measure it against yours.</span>')
    +'</div>';
  h+='</div>';
 
@@ -125,9 +129,12 @@ function recRender(){
      is the formula changing, not the person, so the two rows are left out
      and the note under the table says why. */
   +(a.m===b.m?recRow('Coherence',a.cq,b.cq,1,false)+recRow('Shadow weight',a.dq,b.dq,1,true):'')
-  +recRow('Segment depth',a.sq,b.sq,2,true)
+  /* ONE WORD PER CONCEPT. This is r.SQm, which the Summary calls carried
+     depth; and jouissance is the French psychoanalytic term ui/ui.js already
+     records removing from a stranger's screen, replaced there by overshot. */
+  +recRow('Carried depth',a.sq,b.sq,2,true)
   +recRow('Opposite installed',a.pole,b.pole,2,false)
-  +recRow('Jouissance',a.jq,b.jq,2,true)
+  +recRow('Overshot',a.jq,b.jq,2,true)
   +recRow('Addresses carrying',a.loaded,b.loaded,0,true)
   +recRow('Saboteurs',a.sab,b.sab,0,true)
   +recRow('Complexes',a.cx,b.cx,0,true)

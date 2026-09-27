@@ -796,16 +796,21 @@ const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
 const STARTD=[
  ['story','Write what happened',
   'The day, in your own words. The engine reads the charge out of it.'],
+ /* TWO REASSURANCES AGAINST FEARS NOBODY HAD RAISED, CUT. V12. "None of them
+    is a diagnosis" and "which is most people" answered a worry on a door the
+    person has not opened yet; the drill behind the door is where that worry
+    arrives, and where it is answered. And the avatar door says what a release
+    empties in the owner's own terms, ruled in GS: "the release is any story...
+    empty the body of stories, period." */
  ['nine','Read nine sentences',
-  'For anyone who cannot think of themselves as the problem. None of them is a diagnosis.'],
+  'For anyone who cannot think of themselves as the problem.'],
  ['ages','Go year by year',
-  'Three to eighteen. For anyone who cannot think of anything they identify with, which is most people.'],
+  'Three to eighteen. For anyone who cannot think of anything they identify with.'],
  ['avatar','Say who you are becoming',
-  'The avatar. Release empties an address and replace fills it. This is what you are filling it toward.']];
+  'The avatar. A release empties a story out of the body. This is what you are filling it toward.']];
 function startHTML(lead){
  return '<div class="pm-eye">Where to start</div>'
-  +'<p class="st-lead">'+(lead||'Nothing has been read yet. Four ways in, and none of them '
-   +'asks you to know anything first.')+'</p>'
+  +'<p class="st-lead">'+(lead||'Nothing has been read yet. Four ways in.')+'</p>'
   +STARTD.map(function(d){
    return '<button type="button" class="stbtn" data-start="'+d[0]+'"><b>'+d[1]+'</b>'
     +'<span>'+d[2]+'</span></button>';}).join('');}

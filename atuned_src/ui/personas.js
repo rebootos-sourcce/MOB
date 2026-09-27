@@ -26,9 +26,12 @@ $('mx').addEventListener('mouseleave',mxKey);
    swatches measured 0 by 0, so what a person saw was four bare words with
    nothing to key them to. The hover line still names a root where a cell is an
    affinity pair, because there it is telling you something about that cell. */
+/* AND THE KEY READ THE MODEL ALOUD. "Brightness is the SQ held in that cell"
+   and "a 1.3× affinity pair" are a variable name and a weighting constant.
+   Said as what a person sees. */
 function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
- +'Brightness is the SQ held in that cell. A gold ring is a <b>1.3× affinity pair</b>. '
- +'Click any cell.';}
+ +'The brighter a cell, the more charge it holds. A gold ring marks a pair that '
+ +'weighs more together. Press any cell.';}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
@@ -343,10 +346,10 @@ function renderPol2(r){
 function renderAcc(r){
  var el=$('acc'); if(!el)return;
  var a=accuracy(r), w=[];
- if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' unmeasured, sitting at the default 6');
+ if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
  if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
  if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
- if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
+ if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  /* This was a figure and three lines of diagnostics, 325 by 140, parked in
     the bottom corner of the stage. A circle inside a rectangle leaves the
     corners free, but not that much of them: the block reached into the wheel
@@ -410,10 +413,10 @@ function renderAcc(r){
 /* the detail the stage used to print whether it was asked for or not */
 function runAccDrill(){
  var r=compute(), a=accuracy(r), w=[];
- if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' unmeasured, sitting at the default 6');
+ if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
  if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
  if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
- if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
+ if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  rdShell('<div class="pm-eye">Family identification</div>'
   +'<div class="ad-nm">'+a.pct.toFixed(1)+'%</div>'
   /* THE SPREAD IS SAID BY ITS CAUSES, NOT BY A TOLERANCE. This printed
@@ -430,7 +433,7 @@ function runAccDrill(){
   +'<div class="pm-eye">What is limiting it</div>'
   +'<p class="ad-p">'+esc(w.length?w.join('. '):'Moral integrity, signal and expression are all full.')+'</p>'
   +'<div class="pm-eye">How reliable</div>'
-  +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Not callable'))
+  +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Too close to call'))
   +'. <b>'+a.rel+'%</b> of the laws are spread three or more, which is what separates one '
   +'family from another. Laws of integrity sitting close together name nothing.</p>');}
 
@@ -446,7 +449,7 @@ function runAccDrill(){
    The replacement says what will happen, in the order it happens, using words
    that carry their own meaning. */
 PEOPLE.unshift({nm:'You',age:'',role:'custom',dom:0,a1:0,a2:1,
- says:'Nothing has been entered yet. Write what happened, or answer the questions, and this fills in.',
+ says:'Nothing has been read yet. Write what happened, or answer the questions, and this fills in.',
  /* This was 3 on every axis, and it is the persona the app opens on. So a
     stranger's first screen showed Fear 3.0, Anger 3.0, Shame 3.0 and the rest,
     three rows below a panel correctly saying nothing was held. Nobody entered

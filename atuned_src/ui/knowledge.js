@@ -461,9 +461,12 @@ function kbOpen(x){
  if(x.k==='axcard'){runAxCardDrill(x.o); return;}
  if(x.k==='band'){runKbDrill('Intensity band '+x.o.lo+' to '+x.o.hi, x.o.nm,
    'why the band exists', 'To '+x.o.why+'. The language at this depth: '
-   +x.o.w.join(', ')+'. A card cannot open here. The curve is pacing, not decoration.');
+   +x.o.w.join(', ')+'.');
+  /* "A card cannot open here" printed on all five bands, and cards.js says it
+     is true only at the bottom one. "The curve is pacing, not decoration" was
+     the team defending its own design to a person who did not ask. */
   return;}
- if(x.k==='kind'){runKbDrill('Pattern kind', x.o.nm, 'what the generator takes',
+ if(x.k==='kind'){runKbDrill('Pattern kind', x.o.nm, 'examples',
    x.o.ex.join(', ')+'.'); return;}
  if(x.k==='pole'){runKbDrill(x.o.ch+', '+x.o.ans, x.o.nm, 'the polarity of '+x.o.of,
    'Themes: '+x.o.th.join(', ')+'. Held in the '+x.o.body.join(', ')+'. The energy is '
@@ -474,7 +477,9 @@ function runCardDrill(c){
  var h='<div class="pm-eye">Release protocol No.'+esc(c.no)+'</div>'
   +'<div class="ad-nm">'+esc(c.nm)+'</div>'
   +'<div class="ad-sub">'+esc(c.dom)+'</div>'
-  +'<div class="pm-eye">Where it sits</div>'
+  /* a pronoun with nothing to point back to, over a seat and a nerve. His, GX:
+     "where it sits, crown, third eye, throat... I don't understand the screen." */
+  +'<div class="pm-eye">In the body</div>'
   +'<p class="ad-p">'+esc(c.seat)+'. '+esc(c.nrv)+'.</p>'
   +'<p class="ad-p">'+esc(c.lad.join(' to '))+'.</p>'
   +'<div class="pm-eye">How to read it</div>'
@@ -494,9 +499,9 @@ function runAxCardDrill(c){
  var h='<div class="pm-eye plain">Letting go card, axis '+esc(c.num)+'</div>'
   +'<div class="ad-nm">'+esc(c.ax||c.un)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.cop)+'. '+esc(c.addr)+'</div>'
-  +(c.ax?'':'<div class="pm-eye">Unmatched</div><p class="ad-p">The engine carries no axis '
-    +'at this address under this name, so the card is kept under its own and is not '
-    +'merged into a neighbour.</p>')
+  /* an Unmatched block stood here: the engine explaining how it filed a card.
+     Nothing a person can do with it, so it is gone. The name line above already
+     carries the card's own name when there is no axis to name. */
   +'<div class="pm-eye">What the pattern says</div>'
   +'<p class="kb-rel" style="font-style:italic">'+esc(c.track)+'</p>'
   +'<div class="pm-eye">Release</div>'

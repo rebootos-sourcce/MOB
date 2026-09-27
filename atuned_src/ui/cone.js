@@ -670,13 +670,13 @@ function coneRead(){
  var r=compute();
  if(r.unread)return '<p class="cone-p">Nothing has been read yet. '
   +'Write what happened, or answer the questions, and your position on this '
-  +'figure fills in. Drag to turn it. Click any name to read that axis.</p>';
+  +'figure fills in. Drag to turn it. Press any name to read that axis.</p>';
  /* and while CQ is still filling there is no position to name. CQ 0 with
     no law answered read "below the oscillating band" to somebody who had
     only not done the intake. */
  if(!r.complete)return '<p class="cone-p">Coherence is still filling, with <b>'
   +esc(tierSay(r))+'</b>. Your position on this figure settles once all '
-  +SI.length+' are in. Drag to turn it. Click any name to read that axis.</p>';
+  +SI.length+' are in. Drag to turn it. Press any name to read that axis.</p>';
  var cq=Math.round(r.CQ);
  var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
   :'inside the oscillating band, where most people stand';
@@ -698,8 +698,10 @@ function coneRead(){
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
   +'integrity again. The loop turns both ways. Yours is currently turning '
-  +'<b>'+(rising?'up':'down')+'</b>. You are floating the ship out of the '
-  +'water so that it can float.</p>'
+  +'<b>'+(rising?'up':'down')+'</b>.</p>'
+  /* "You are floating the ship out of the water so that it can float" came
+     off the end: a ship floats in water, so the sentence cannot be pictured,
+     and the hull line above already carries the metaphor whole. */
   ;}
 
 /* ============================================================
