@@ -20950,3 +20950,37 @@ already moving. The Compass and Story page pieces are mockups by his
 own request and wait on his own pick before anything is wired in. The
 copy sweep and the backlog audit are direct work with no decision
 gating them and will come back done.
+
+## HV. The fieldpanel file failed again, with its own boot guard's error
+screen attached, and a real complaint that the Avatar hero is text
+boxes. 27 September
+
+His words, verbatim, with a screenshot of the app's own boot guard
+error page attached: "This error page is popping up still. I'm not
+sure why. It shouldn't be there ever again. And it seems like you're
+regressing. This is what I'm saying. Who do you want to be? No. You've
+taken the central design element and you've turned it into a bunch of
+text boxes. That's not the design that I want. I want the UI UX team to
+simulate this with the focus group and the ICPs. Find out what kind of
+layout is frictionless. Go out to the internet, find out what products
+do something like this. And make this as frictionless as possible.
+Friction means text boxes and a lot of text. I want this to be
+interactive and smooth. I can't read this task list. I can't see what
+backlog has been completed, not completed. Give me a complete milestone
+and backlog list of what's completed and what's not completed."
+
+The attached screen is the product's own boot watchdog, reading "build
+7279e05 2026-09-27 08:29, THE FILE IS SHORT, the end of it never
+arrived, stopped after nothing had loaded yet." That build stamp is
+the fieldpanel prototype I resent at round HU, believing an explicit
+attach would fix a preview pane rendering it instead of downloading
+it. It did not. Logged here in full before a second attempt at a fix,
+since the first one was a guess that did not hold.
+
+His Avatar hero complaint lands the same hour a `uiux-architect`
+dispatch on the same tab reported back with a real, measured version
+of the same finding, not yet seen by him when he wrote this: the pair
+panel sits beside the ring in the centre column, at 418 pixels wide,
+carrying ninety two words, which is the exact column law his own round
+HS ruling states and this screen breaks. His word "regressing" is
+answered directly below rather than argued with.
