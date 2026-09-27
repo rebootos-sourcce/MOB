@@ -22316,3 +22316,11 @@ rather than paraphrased, and each with real questions rather than a
 bare link. Republished as a live page rather than a file, since the
 field panel and the Story mockups both failed to open for him as
 downloads before and publishing live is what worked.
+
+Rebuilt the same live page from the refreshed audit
+(https://claude.ai/artifact/5tNczpFKx5XYohwpTFaPMu, updated in place,
+same link as round HY's original), all five tabs' data transcribed
+directly from `BACKLOG-AUDIT.md` at `fb9f24c`: the 16 front and centre
+deliveries with their real quotes and questions, the 107 item backlog
+grouped by what it blocks, the 22 row repeat table, and all 90 tracked
+deliveries with their reaction status. Opened it for him.
