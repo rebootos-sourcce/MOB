@@ -83,9 +83,9 @@ function hero(){var n=Object.keys(ANS).filter(done).length;
   +'<p>'+(n===21?'Every law is answered. What you said is on the figure, seat by seat.':'Four things about when you arrived, twenty one about how you actually move, and one choice between two symbols. Press any mark. About fifteen minutes, in any order, and it keeps what you give it.')+'</p>'+knows()+'</div>';}
 function vConst(){
  var h=hero()+'<div class="lay"><div class="spine">';
- h+='<div class="tier"><div class="l">'+tile('id','name','Name',IDIC.name,'var(--accent)')+tile('id','date','Birth date',IDIC.date,'var(--accent)')+'</div>'
+ h+='<div class="tier"><div class="l">'+tile('id','name','Name',IDIC.name,'var(--accent)')+tile('id','date','Date of birth',IDIC.date,'var(--accent)')+'</div>'
   +'<div style="display:flex;justify-content:center">'+tile('arc','pin','Which one are you',ARCHIC,'var(--au)')+'</div>'
-  +'<div class="r">'+tile('id','time','Birth time',IDIC.time,'var(--accent)')+tile('id','place','Birth place',IDIC.place,'var(--accent)')+'</div></div>';
+  +'<div class="r">'+tile('id','time','Time of birth',IDIC.time,'var(--accent)')+tile('id','place','Place of birth',IDIC.place,'var(--accent)')+'</div></div>';
  SEATS.forEach(function(s){var L=lawsOf(s[0]),half=Math.ceil(L.length/2),c=col(s[0]),lit=L.every(function(l){return done(l.nm);});
   h+='<div class="tier"><div class="l">'+L.slice(0,half).map(function(l){return tile('law',l.nm,l.nm,LAWIC[l.nm],c);}).join('')+'</div>'
    +'<div class="seat'+(lit?' lit':'')+'" style="color:'+c+';border-color:'+c+'" title="'+esc(SEATNM[s[1]])+'">'+seatIc(s[0],26)+'</div>'
@@ -95,7 +95,7 @@ function vConst(){
 function vMenu(){
  var cur=SEL||nextOpen();SEL=cur;
  var h='<div class="lay" style="margin-top:14px"><div class="card one" style="max-width:none;min-height:520px" id="panel">'+panel(true)+'</div><div class="card menu"><div class="eyebrow">Everything it asks, as marks</div>'
-  +'<div class="grp">'+['name','date','time','place'].map(function(k){return tile('id',k,({name:'Name',date:'Birth date',time:'Birth time',place:'Birth place'})[k],IDIC[k],'var(--accent)');}).join('')+tile('arc','pin','Which one are you',ARCHIC,'var(--au)')+'</div>';
+  +'<div class="grp">'+['name','date','time','place'].map(function(k){return tile('id',k,({name:'Name',date:'Date of birth',time:'Time of birth',place:'Place of birth'})[k],IDIC[k],'var(--accent)');}).join('')+tile('arc','pin','Which one are you',ARCHIC,'var(--au)')+'</div>';
  SEATS.forEach(function(s){h+='<div class="eyebrow" style="color:'+col(s[0])+';margin-top:4px">'+seatIc(s[0],13)+' '+esc(SEATNM[s[1]])+'</div><div class="grp">'
   +lawsOf(s[0]).map(function(l){return tile('law',l.nm,l.nm,LAWIC[l.nm],col(s[0]),s[0]);}).join('')+'</div>';});
  return h+'</div></div>';}
@@ -149,11 +149,25 @@ function panel(big){
  if(!SEL)return '<div class="eyebrow">How this works</div><h2 style="margin:6px 0 0">Press any mark</h2><p class="muted">Each one asks a single thing and shows you what it heard. The seat in the middle lights when its laws are answered.</p>'
   +'<div class="note">The right hand menu from today is gone. The questions live in the marks themselves, and the answer comes back as a ring and a plain word, not a percent.</div>';
  if(SEL[0]==='arc')return pinPanel();
- if(SEL[0]==='id'){var k=SEL[1],lab=({name:'Your name, as you use it',date:'The date you were born',time:'The time, if you know it',place:'Where you were born'})[k];
+ /* PLAIN LABELS. His, 27 September, TASKS.md GQ: "instead of saying shit like
+    your name as you see it, just ... name, first, middle, last, instead of keep
+    it, just you save ... date". This panel said "Your name, as you use it" over
+    one box, "The date you were born", and a button reading "Keep it". The
+    labels are now the shipped form's own, ui/intakeui.js, so one field has one
+    name in both places, and the button says what it does. */
+ if(SEL[0]==='id'){var k=SEL[1],lab=({name:'Name',date:'Date of birth',time:'Time of birth',place:'Place of birth'})[k];
+  var cur=ID[k]&&ID[k]!=='on record'?ID[k]:'';
+  var box=function(id,label,ph,v,type){return '<label class="small muted" for="'+id+'">'+label+'</label><input id="'+id+'"'+(type?' type="'+type+'"':'')+(ph?' placeholder="'+ph+'"':'')+' value="'+esc(v||'')+'">';};
+  var parts=k==='name'?(cur?cur.split(' '):[]):[];
+  var fields=k==='name'
+   ?box('idf','First name','',parts[0])+box('idm','Middle','',parts.length>2?parts.slice(1,-1).join(' '):'')+box('idl','Last','',parts.length>1?parts[parts.length-1]:'')
+   :k==='date'?box('idin','Date of birth','',cur,'date')
+   :k==='time'?box('idin','Time of birth','',cur,'time')
+   :box('idin','Place of birth','City, region',cur);
   return '<div class="qhead">'+ic(IDIC[k],40,'var(--accent)')+'<div><div class="eyebrow">Who this is</div><h2 style="margin:0">'+esc(lab)+'</h2></div></div>'
-   +'<div class="inp"><input id="idin" placeholder="'+(k==='date'?'Day, month, year':k==='time'?'Hour and minute, or leave it':k==='place'?'Town and country':'First and last')+'" value="'+esc(ID[k]&&ID[k]!=='on record'?ID[k]:'')+'"></div>'
-   +'<p class="small muted" style="margin-top:10px">'+(k==='time'?'If you do not know it, say so. It is not guessed.':'The moment you arrived fixes the root energetics. Nothing else here can be recalled from memory the way the questions can.')+'</p>'
-   +'<p><button class="chip on" id="idok">Keep it</button></p>';}
+   +'<div class="inp">'+fields+'</div>'
+   +'<p class="small muted" style="margin-top:10px">'+(k==='time'?'If you do not know it, say so. It is not guessed.':k==='name'?'Numerology reads the full name.':'Date, time and place set the birth chart.')+'</p>'
+   +'<p><button class="chip on" id="idok">Save</button></p>';}
  var l=SEL[1],law=T.SI.filter(function(x){return x.nm===l;})[0],c=col(law.b),a=ANS[l]||[null,null,null],i=a.findIndex(function(x){return x==null;});
  var head='<div class="qhead"><span style="position:relative">'+ic(LAWIC[l],44,c,1.5)+'<span style="position:absolute;right:-6px;top:-6px">'+seatIc(law.b,14)+'</span></span><div><div class="eyebrow" style="color:'+c+'">'+esc(SEATNM[SEATK[law.b]])+'</div><h2 style="margin:0">'+esc(l)+'</h2></div></div>';
  if(i<0){var m=mean(l),sp=Math.max.apply(null,a)-Math.min.apply(null,a);
@@ -180,7 +194,7 @@ function wire(){var v=document.getElementById('view');
  if(e=document.getElementById('redo'))e.onclick=function(){ANS[SEL[1]]=[null,null,null];draw();};
  if(e=document.getElementById('nxt'))e.onclick=function(){SEL=nextOpen();draw();};
  if(e=document.getElementById('repin'))e.onclick=function(){PIN={r1:[],two:[],sc:[]};ARC=null;draw();};
- if(e=document.getElementById('idok'))e.onclick=function(){var x=document.getElementById('idin').value.trim();if(x)ID[SEL[1]]=x;SEL=null;draw();};}
+ if(e=document.getElementById('idok'))e.onclick=function(){var x=SEL[1]==='name'?['idf','idm','idl'].map(function(i){return document.getElementById(i).value.trim();}).filter(Boolean).join(' '):document.getElementById('idin').value.trim();if(x)ID[SEL[1]]=x;SEL=null;draw();};}
 banner('Energetics arrival, item 5 of the FW round');
 /* a stranger is the default here, because the page is the first thing a new
    person is asked to do. The profile chips load a worked example instead. */

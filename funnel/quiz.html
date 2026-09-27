@@ -621,12 +621,16 @@ function render(){
    /* IT SAID "load it from Settings". There is no Settings in the product and the
       sheet that does carry the loader is not reachable from anything, which is
       measured and reported rather than papered over here. A control must never
-      claim more than it has, so the note says what happened and stops. */
-   note.textContent='Saved as atuned-record.json. Keep it: it is the handoff.';
+      claim more than it has, so the note says what happened and stops.
+      AND IT SAID "Keep it: it is the handoff." Handoff is the team's word for
+      a seam and keep it is a flourish where save is the verb. His, 27
+      September, TASKS.md GQ: "instead of keep it, just you save". The note
+      says what was saved and what is in it. */
+   note.textContent='Saved as atuned-record.json. Your answers are in it.';
   }catch(e){ note.textContent='This browser would not save the file. Use copy instead.'; }};
  if((b=document.getElementById('copy')))b.onclick=function(){
   var note=document.getElementById('dlnote'), txt=recordJSON();
-  var ok=function(){note.textContent='Copied. Keep it: it is the handoff.';};
+  var ok=function(){note.textContent='Copied. Your answers are on the clipboard.';};
   var no=function(){note.textContent='This browser would not copy it. Use save instead.';};
   try{ if(navigator.clipboard&&navigator.clipboard.writeText)
         navigator.clipboard.writeText(txt).then(ok,no);

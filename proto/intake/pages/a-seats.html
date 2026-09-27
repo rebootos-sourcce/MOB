@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archetype picker A</title>
+<!--KIT-->
+<style>
+.lay{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+.panel{position:sticky;top:60px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:210px minmax(0,1fr);gap:12px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--edge)}
+/* THE SEAT IS A HEADING, NOT A BUTTON. The round version drew each seat as a
+   ringed disc the size of a control, did nothing when pressed, and put its
+   name in a hover title. So it reads as text here: glyph, name, the one line
+   of what it governs. It lights when something under it is picked, which is
+   the only thing it does, and the lede says so. */
+.seat{display:flex;gap:10px;align-items:center}
+.seat .g{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;transition:box-shadow .4s,background .4s}
+.row.lit .seat .g{background:color-mix(in srgb,var(--c) 18%,transparent);box-shadow:0 0 18px -4px var(--c)}
+.seat b{display:block;font-size:15px;font-weight:600}
+.seat span{display:block;font-size:13px;color:var(--dim)}
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;min-height:56px;padding:8px 10px;border-radius:12px;border:1px solid var(--edge-2);background:var(--sunk);cursor:pointer;position:relative}
+.opt:hover{border-color:var(--c)}
+.opt b{display:block;font-size:15px;font-weight:600}
+.opt span{display:block;font-size:13px;color:var(--mid);line-height:1.3}
+.opt.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--sunk))}
+.opt .tag{position:absolute;right:8px;top:6px;font-size:11px;color:var(--c);font-weight:600}
+.dft{font-size:11px;color:var(--dim);font-weight:400;border:1px dashed var(--edge-2);border-radius:6px;padding:0 5px;margin-left:4px}
+.pk{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+@media (max-width:1100px){.lay{grid-template-columns:1fr}.panel{position:static}}
+@media (max-width:760px){.row{grid-template-columns:1fr}.opts{grid-template-columns:1fr}}
+</style></head><body>
+<div class="wrap">
+ <div class="eyebrow">Mockup A of four. The whole roster, grouped by seat.</div>
+ <h1 class="ar-h1">Which of these is most like you?</h1>
+ <p class="ar-lede">Eighteen archetypes, grouped by the seat each one acts from, crown down to root. Press the one that sounds most like you on an ordinary day. Press a second if one is not enough. A seat lights when you pick something in it.</p>
+ <div class="lay"><div class="rows" id="rows"></div><div class="card panel" id="panel"></div></div>
+ <div id="foot"></div>
+</div>
+<!--DATA-->
+<script>
+var PICK=[];
+function draw(){
+ var h='';
+ SEATORD.forEach(function(b){var L=inSeat(b),c=col(b),lit=L.some(function(a){return PICK.indexOf(a.nm)>=0;});
+  h+='<div class="row'+(lit?' lit':'')+'" style="--c:'+c+'"><div class="seat"><span class="g">'+seatIc(b,22)+'</span><div><b>'+esc(seatName(b))+'</b><span>'+esc(SEATLINE[b])+'</span></div></div><div class="opts">'
+   +L.map(function(a){var at=PICK.indexOf(a.nm);return '<button class="opt'+(at>=0?' on':'')+'" data-a="'+esc(a.nm)+'" aria-pressed="'+(at>=0)+'">'
+    +(at>=0?'<span class="tag">'+(at===0?'First':'Second')+'</span>':'')+aic(a,30)+'<span><b>'+esc(a.nm)+(a.draft?' <small class="dft">draft</small>':'')+'</b><span>'+esc(a.v)+'</span></span></button>';}).join('')
+   +'</div></div>';});
+ document.getElementById('rows').innerHTML=h;
+ var f=PICK[0]?A(PICK[0]):null, s=PICK[1]?A(PICK[1]):null, p;
+ if(!f)p='<div class="eyebrow">Nothing picked yet</div><p class="muted" style="margin:6px 0 0">Press any archetype. Its seat, what it does and its primary saboteur come up here.</p>'
+  +'<div class="ar-key">'+ic('M12 12m-8 0a8 8 0 1016 0 8 8 0 10-16 0',16,'var(--dim)').replace('<path ','<path stroke-dasharray="3 2" ')+' A dashed mark is a draft: in the table of eighteen, not yet read by the instrument.</div>';
+ else p='<div class="eyebrow">First</div>'+detail(f)+compare(f)
+  +(s?'<div class="eyebrow" style="margin-top:18px">Second</div><div class="pk">'+aic(s,22)+' <b>'+esc(s.nm)+'</b> <span class="muted">'+esc(s.v)+'</span></div>':'')
+  +saveRow(true)+'<p class="small dim" style="margin-top:8px">Press a picked one again to take it back.</p>';
+ if(!f)p+=saveRow(false);
+ document.getElementById('panel').innerHTML=p;
+ document.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){var n=b.dataset.a,i=PICK.indexOf(n);
+  if(i>=0)PICK.splice(i,1);else if(PICK.length<2)PICK.push(n);else PICK[1]=n;draw();};});
+ wireSave();}
+document.getElementById('foot').innerHTML=foot('<p>The job: "tell me which one I am, and let me see the others while I choose." Every archetype is on one screen, so nothing is hidden behind a round you have not reached. The seven seats are headings with their one line, because a group label is what they were already doing. Eighteen options in seven groups of two or three: chunked, working memory holds the seven groups rather than the eighteen names.</p><p>Best for the person who wants to see the whole system before committing, and at 390 it is one long scroll of three per seat.</p>');
+banner('Archetype picker, mockup A of four, round GQ');
+strangerChip(function(){draw();});
+window.draw=draw;
+window.shootPrep=function(){if(!PICK.length){PICK=['Warrior','Healer'];draw();}};
+draw();
+</script></body></html>

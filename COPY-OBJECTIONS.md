@@ -19,11 +19,11 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 4dd412a, tree dirty   database md5 53d3f3e9c71f
-    24 objections logged, 19 of them with a quotation on record
-    18 rules, 7 with patterns in the database, 11 held by a gate elsewhere
+    commit 2178ab0, tree dirty   database md5 4acdbd330bfd
+    25 objections logged, 20 of them with a quotation on record
+    19 rules, 8 with patterns in the database, 11 held by a gate elsewhere
     10 more objections are guidance, because no check can express them
-    2 findings on this run, 2 at a severity that stops a build
+    0 findings on this run, 0 at a severity that stops a build
 
 ---
 
@@ -270,6 +270,17 @@ INFERRED FROM THE RECORD, not quoted. tools/terms.py is the gate that already ho
 
 Recorded as his ruling inside a list of them, so the wording is the record's rather than a quotation. The class is not in doubt and BUYERS.md states it a second way.
 
+### CO-26. A form label or a control written in the story bible's voice. The field is named for what goes in it and the button for what it does.
+
+> instead of saying shit like your name as you see it, just from our narrative story Bible, name, first, middle, last, instead of keep it, just you save, whatever's causing you to write lingo like that, stop that, date
+
+    where    TASKS.md, round GQ
+    when     27 September, in his words
+    quoted   verbatim
+    rules    plain-field-label
+
+The strings he saw were in proto/fw/pages/energetics.html, the FW round's Energetics mockup: "Your name, as you use it" over one box, "The date you were born", and a button reading "Keep it". "As you see it" is his recollection of "as you use it". The shipped form, ui/intakeui.js, already read First name, Middle, Last and Date of birth. The live funnel carried the same button voice in a note, "Keep it: it is the handoff", at funnel/quiz.html.
+
 ---
 
 ## The rules, and where each one is enforced
@@ -293,6 +304,7 @@ Recorded as his ruling inside a list of them, so the wording is the record's rat
     reassurance           register      flag      check.py:reassure           CO-20
     one-word-per-concept  terminology   stop      tools/terms.py              CO-22
     question-mark         form          stop      tools/questions.js          CO-12
+    plain-field-label     form          stop      objections                  CO-26
 
 ### tolerance
 
@@ -328,11 +340,7 @@ A count against a total invites a person to pass or fail, and a reading is not a
 
     fails   11 of 12
     fixed   11 addresses carrying
-    found   2
-    atuned_src/ui/analytics.js:201
-        <p class="sum-p">21 of the 76 laws, each answered from never to every time.</p>
-    atuned_src/ui/games.js:142
-        </b> of the 112 addresses.
+    found   0
 
 Two survivors are ruled and neither has this shape: intake progress and release queue position, where the person is working through a finite list. A SCALE IS NOT A TOTAL, and the first cut of this rule did not know the difference: it fired on "4 of 10 counts as loaded" in funnel/about.html, which is a threshold on the depth scale and is the shape CO-04's own resolution ruled survives. A denominator of 1, 10 or 100 is a scale and is exempt unless a countable set is named after it.
 
@@ -362,6 +370,14 @@ The offer is not two months free. Any copy saying so is wrong and comes out.
 
     fails   Two months free on the annual plan.
     fixed   nothing. The annual discount is not ruled, so no copy states one.
+    found   0
+
+### plain-field-label
+
+A field is named for what goes in it and a button for what it does. A label written in the story bible's voice makes a person work out which box to type in.
+
+    fails   Your name, as you use it. [Keep it]
+    fixed   First name, Middle, Last. [Save]
     found   0
 
 ---
@@ -439,7 +455,7 @@ The knowledge base was linear and boring. A deck of identical cards is a list we
 Old and new, with the reason. The line is found by searching the file
 for the string, not by remembering where it was.
 
-### atuned_src/ui/ui.js:522
+### atuned_src/ui/ui.js, not found
 
     bucket  value
     rule    empty-state, from CO-09
@@ -450,7 +466,7 @@ The balance pill, and the last piece of the string the objection names. The stru
 
 If an empty label draws an empty box, drop the key rather than passing a space.
 
-### atuned_src/ui/ui.js:527
+### atuned_src/ui/ui.js:884
 
     bucket  refusal
     rule    empty-state, from CO-09
@@ -459,7 +475,7 @@ If an empty label draws an empty box, drop the key rather than passing a space.
 
 The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.
 
-### atuned_src/ui/drills.js:441
+### atuned_src/ui/drills.js:501
 
     bucket  value
     rule    empty-state, from CO-09
@@ -468,7 +484,7 @@ The same claim in the tooltip, and the sentence directly after it already says w
 
 The drill's headline value, the same slot one door in, where there is room for three words. It says what the instrument did rather than guessing which of three states it is in, and the paragraph two lines below carries the reason with both means printed beside it.
 
-### atuned_src/ui/analytics.js:164
+### atuned_src/ui/analytics.js, not found
 
     bucket  definition
     rule    interval-word, from CO-03
@@ -477,7 +493,7 @@ The drill's headline value, the same slot one door in, where there is room for t
 
 Marked provisional in the file and waiting on this seat. The fact is the instrument's resolution, and a physical metaphor carries it where the arithmetic used to: play is the slack in a linkage, which is what an interval is. This is an estimate is the product talking about itself, and the sheet behind the profile button already says it once.
 
-### atuned_src/ui/panels.js:883
+### atuned_src/ui/panels.js, not found
 
     bucket  definition
     rule    interval-word, from CO-03
@@ -488,7 +504,7 @@ Thirty words with three antithesis turns in them, X not Y twice and rather than 
 
 The second literal on the following line, 'a reading, it is noise, and the instrument says so rather than flattering you.</p></div>', is replaced by '</p></div>'. The new sentence closes the paragraph.
 
-### atuned_src/ui/analytics.js:201
+### atuned_src/ui/analytics.js, not found
 
     bucket  definition
     rule    count-against-total, from CO-05
@@ -497,7 +513,7 @@ The second literal on the following line, 'a reading, it is noise, and the instr
 
 A count against a total, and the total is a fact about the codex rather than about the person. Said this way it reads as coverage of twenty seven per cent and invites the question why not the rest. The number a person needs is how many they answered and how.
 
-### atuned_src/ui/games.js:142
+### atuned_src/ui/games.js, not found
 
     bucket  reading
     rule    count-against-total, from CO-05

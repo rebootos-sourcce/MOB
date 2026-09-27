@@ -73,14 +73,14 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 </header>
 <div class="sec"><div class="his">create a log of all the times I said I do not like this copy type. Create a database, sweep for it, and kill it. And add that to the style guide.</div>
 <div class="grid">
-<div class="tile"><div class="t">Objections logged</div><div class="v">24</div></div>
-<div class="tile"><div class="t">Quoted verbatim</div><div class="v">19</div></div>
-<div class="tile"><div class="t">Rules</div><div class="v">18</div></div>
+<div class="tile"><div class="t">Objections logged</div><div class="v">25</div></div>
+<div class="tile"><div class="t">Quoted verbatim</div><div class="v">20</div></div>
+<div class="tile"><div class="t">Rules</div><div class="v">19</div></div>
 <div class="tile"><div class="t">Not gateable</div><div class="v">10</div></div>
-<div class="tile"><div class="t">Findings now</div><div class="v">2</div></div>
-<div class="tile"><div class="t">Stopping a build</div><div class="v">2</div></div>
+<div class="tile"><div class="t">Findings now</div><div class="v">0</div></div>
+<div class="tile"><div class="t">Stopping a build</div><div class="v">0</div></div>
 </div>
-<p class="meta">commit <i>4dd412a</i>, tree dirty &nbsp; database md5 <i>53d3f3e9c71f</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
+<p class="meta">commit <i>2178ab0</i>, tree dirty &nbsp; database md5 <i>4acdbd330bfd</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
 </div>
 <div class="sec"><h2>What the sweep found</h2>
 <p>One line per rule. A rule reading zero is a rule holding a class closed, which is what a gate is for.</p>
@@ -88,7 +88,7 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <tr><td data-k="rule"><code>tolerance</code></td><td data-k="refuses">A figure with an interval, a tolerance or a statistical decoration stapled to it is a lab readout and not copy.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-01, CO-02, CO-03</td></tr>
 <tr><td data-k="rule"><code>interval-word</code></td><td data-k="refuses">A sentence naming the interval is a definition and not a lab readout, so it is flagged and never failed.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-03</td></tr>
 <tr><td data-k="rule"><code>scale-prose</code></td><td data-k="refuses">Prose that hides behind a scale instead of saying something.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-04</td></tr>
-<tr><td data-k="rule"><code>count-against-total</code></td><td data-k="refuses">A count against a total invites a person to pass or fail, and a reading is not a score.</td><td data-k="found" class="num"><span class="pill stop">2</span></td><td data-k="from" class="dim">CO-05</td></tr>
+<tr><td data-k="rule"><code>count-against-total</code></td><td data-k="refuses">A count against a total invites a person to pass or fail, and a reading is not a score.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-05</td></tr>
 <tr><td data-k="rule"><code>empty-state</code></td><td data-k="refuses">The empty state has one wording for each of its two states.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-09, CO-22</td></tr>
 <tr><td data-k="rule"><code>serial-to-a-person</code></td><td data-k="refuses">A node serial or a stack integer in front of a person is the data model read out loud.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-15</td></tr>
 <tr><td data-k="rule"><code>two-months-free</code></td><td data-k="refuses">The offer is not two months free.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-25</td></tr>
@@ -103,10 +103,8 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <tr><td data-k="rule"><code>reassurance</code></td><td data-k="refuses">Never a reassurance against a fear nobody has raised.</td><td data-k="found" class="num"><span class="pill clean">gated in check.py:reassure</span></td><td data-k="from" class="dim">CO-20</td></tr>
 <tr><td data-k="rule"><code>one-word-per-concept</code></td><td data-k="refuses">Delete or remove, never both.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/terms.py</span></td><td data-k="from" class="dim">CO-22</td></tr>
 <tr><td data-k="rule"><code>question-mark</code></td><td data-k="refuses">A document titled questions is a document of questions.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/questions.js</span></td><td data-k="from" class="dim">CO-12</td></tr>
+<tr><td data-k="rule"><code>plain-field-label</code></td><td data-k="refuses">A field is named for what goes in it and a button for what it does.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-26</td></tr>
 </table>
-<h3>count-against-total, 2 found</h3>
-<div class="hit"><span class="w">atuned_src/ui/analytics.js:201</span><span class="s">&lt;p class=&quot;sum-p&quot;&gt;21 of the 76 laws, each answered from never to every time.&lt;/p&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/games.js:142</span><span class="s">&lt;/b&gt; of the 112 addresses.</span></div>
 </div>
 <div class="sec"><h2>The log</h2>
 <p>Your wording, unsmoothed. Where an entry is not a quotation it says so on the line that says quoted, and says what the class was taken from instead.</p>
@@ -193,36 +191,40 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="his">Two months free is out. The offer is not two months free. Any copy saying so is wrong and comes out.</div>
 <p class="meta">where <i>TASKS.md:6984</i><br>when <i>ruled, recorded 20 September</i><br>quoted <i>no, inferred from the record</i><br>rules <i>two-months-free</i></p>
 <p class="dim">Recorded as his ruling inside a list of them, so the wording is the record&#x27;s rather than a quotation. The class is not in doubt and BUYERS.md states it a second way.</p>
+<h3>CO-26. A form label or a control written in the story bible&#x27;s voice. The field is named for what goes in it and the button for what it does.</h3>
+<div class="his">instead of saying shit like your name as you see it, just from our narrative story Bible, name, first, middle, last, instead of keep it, just you save, whatever&#x27;s causing you to write lingo like that, stop that, date</div>
+<p class="meta">where <i>TASKS.md, round GQ</i><br>when <i>27 September, in his words</i><br>quoted <i>verbatim</i><br>rules <i>plain-field-label</i></p>
+<p class="dim">The strings he saw were in proto/fw/pages/energetics.html, the FW round&#x27;s Energetics mockup: &quot;Your name, as you use it&quot; over one box, &quot;The date you were born&quot;, and a button reading &quot;Keep it&quot;. &quot;As you see it&quot; is his recollection of &quot;as you use it&quot;. The shipped form, ui/intakeui.js, already read First name, Middle, Last and Date of birth. The live funnel carried the same button voice in a note, &quot;Keep it: it is the handoff&quot;, at funnel/quiz.html.</p>
 </div>
 <div class="sec"><h2>The strings that have to change</h2>
 <p>Old and new. The line is found by searching the file for the string, because four of these files were edited while this was being written.</p>
-<h3>atuned_src/ui/ui.js:522</h3>
+<h3>atuned_src/ui/ui.js, not found, may be fixed already</h3>
 <p class="meta">bucket <i>value</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">label:b.read?dir:&#x27;not read yet&#x27;</div><div class="k">new</div><div class="n">label:b.read?dir:&#x27;&#x27;</div></div>
 <p>The balance pill, and the last piece of the string the objection names. The structural half is landed and right: the pill draws a dash and the refusal moved out from between the two pole labels. The label is the part still to go. Not read yet is false on a field that has been read and is carrying under a mean of one on both sides, which is a real state the engine folds in with the empty one at compute.js:41. A label that can be false about the screen it sits on is worse than no label. The dash is the value, the absence needs no name, and the reason is one tap away in the drill.</p>
 <p class="dim">If an empty label draws an empty box, drop the key rather than passing a space.</p>
-<h3>atuned_src/ui/ui.js:527</h3>
+<h3>atuned_src/ui/ui.js:884</h3>
 <p class="meta">bucket <i>refusal</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;Balance. Not read yet. Neither side reaches 1, so no direction is &#x27;</div><div class="k">new</div><div class="n">&#x27;Balance. Neither side reaches 1, so no direction is &#x27;</div></div>
 <p>The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.</p>
-<h3>atuned_src/ui/drills.js:441</h3>
+<h3>atuned_src/ui/drills.js:501</h3>
 <p class="meta">bucket <i>value</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">+(!b.read?&#x27;not read yet&#x27;</div><div class="k">new</div><div class="n">+(!b.read?&#x27;no direction named&#x27;</div></div>
 <p>The drill&#x27;s headline value, the same slot one door in, where there is room for three words. It says what the instrument did rather than guessing which of three states it is in, and the paragraph two lines below carries the reason with both means printed beside it.</p>
-<h3>atuned_src/ui/analytics.js:164</h3>
+<h3>atuned_src/ui/analytics.js, not found, may be fixed already</h3>
 <p class="meta">bucket <i>definition</i> &nbsp; rule <i>interval-word</i>, from <i>CO-03</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;. This is an estimate. A small move is not a reading.&#x27;</div><div class="k">new</div><div class="n">&#x27;. The needle has play in it, so a small move is not a reading.&#x27;</div></div>
 <p>Marked provisional in the file and waiting on this seat. The fact is the instrument&#x27;s resolution, and a physical metaphor carries it where the arithmetic used to: play is the slack in a linkage, which is what an interval is. This is an estimate is the product talking about itself, and the sheet behind the profile button already says it once.</p>
-<h3>atuned_src/ui/panels.js:883</h3>
+<h3>atuned_src/ui/panels.js, not found, may be fixed already</h3>
 <p class="meta">bucket <i>definition</i> &nbsp; rule <i>interval-word</i>, from <i>CO-03</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;Every reading is an estimate, not a measurement. A small move is not &#x27;</div><div class="k">new</div><div class="n">&#x27;Every reading is an estimate. The needle has play in it, so a small move is not a reading.&#x27;</div></div>
 <p>Thirty words with three antithesis turns in them, X not Y twice and rather than once, against a house rate of 2.7 per cent of sentences. Noise is the lab register with the figure taken out of it, which is the class the sweep refuses. And the instrument saying it does not flatter you is the product praising itself for not praising.</p>
 <p class="dim">The second literal on the following line, &#x27;a reading, it is noise, and the instrument says so rather than flattering you.&lt;/p&gt;&lt;/div&gt;&#x27;, is replaced by &#x27;&lt;/p&gt;&lt;/div&gt;&#x27;. The new sentence closes the paragraph.</p>
-<h3>atuned_src/ui/analytics.js:201</h3>
+<h3>atuned_src/ui/analytics.js, not found, may be fixed already</h3>
 <p class="meta">bucket <i>definition</i> &nbsp; rule <i>count-against-total</i>, from <i>CO-05</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;21 of the 76 laws, each answered from never to every time.&#x27;</div><div class="k">new</div><div class="n">&#x27;21 laws, each answered from never to every time.&#x27;</div></div>
 <p>A count against a total, and the total is a fact about the codex rather than about the person. Said this way it reads as coverage of twenty seven per cent and invites the question why not the rest. The number a person needs is how many they answered and how.</p>
-<h3>atuned_src/ui/games.js:142</h3>
+<h3>atuned_src/ui/games.js, not found, may be fixed already</h3>
 <p class="meta">bucket <i>reading</i> &nbsp; rule <i>count-against-total</i>, from <i>CO-05</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;&lt;/b&gt; of the 112 addresses. &#x27;</div><div class="k">new</div><div class="n">&#x27;&lt;/b&gt; address&#x27;+(at.length===1?&#x27;&#x27;:&#x27;es&#x27;)+&#x27;. &#x27;</div></div>
 <p>A count against a total, and this one is the total stated to a person. The set is the addresses this fetter runs, so the figure carries its own unit and needs no denominator. The sentence after it already says how many of them are carrying.</p>

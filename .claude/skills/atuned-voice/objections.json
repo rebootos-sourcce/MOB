@@ -302,6 +302,24 @@
       "re": [],
       "fail": "A2 kept is undecided.",
       "fix": "Is A2 kept?"
+    },
+    {
+      "id": "plain-field-label",
+      "class": "form",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-26"
+      ],
+      "why": "A field is named for what goes in it and a button for what it does. A label written in the story bible's voice makes a person work out which box to type in.",
+      "re": [
+        "\\bas you (?:use|see|know|carry|hold|go by) it\\b",
+        "^\\s*keep it\\s*[.:]?\\s*$",
+        "\\bkeep it:",
+        "\\bthe handoff\\b"
+      ],
+      "fail": "Your name, as you use it. [Keep it]",
+      "fix": "First name, Middle, Last. [Save]"
     }
   ],
   "guidance": [
@@ -661,6 +679,18 @@
         "two-months-free"
       ],
       "note": "Recorded as his ruling inside a list of them, so the wording is the record's rather than a quotation. The class is not in doubt and BUYERS.md states it a second way."
+    },
+    {
+      "id": "CO-26",
+      "date": "27 September, in his words",
+      "where": "TASKS.md, round GQ",
+      "verbatim": true,
+      "words": "instead of saying shit like your name as you see it, just from our narrative story Bible, name, first, middle, last, instead of keep it, just you save, whatever's causing you to write lingo like that, stop that, date",
+      "objects": "A form label or a control written in the story bible's voice. The field is named for what goes in it and the button for what it does.",
+      "rules": [
+        "plain-field-label"
+      ],
+      "note": "The strings he saw were in proto/fw/pages/energetics.html, the FW round's Energetics mockup: \"Your name, as you use it\" over one box, \"The date you were born\", and a button reading \"Keep it\". \"As you see it\" is his recollection of \"as you use it\". The shipped form, ui/intakeui.js, already read First name, Middle, Last and Date of birth. The live funnel carried the same button voice in a note, \"Keep it: it is the handoff\", at funnel/quiz.html."
     }
   ],
   "handover": [
