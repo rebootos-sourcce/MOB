@@ -17031,3 +17031,47 @@ Ana figure this file's own earlier docs quoted (two release runs move
 coherence 9 points) reproduces on neither the old nor the new engine;
 what actually moves by that much is her expression, not coherence.
 
+## FU. The urgent free-tier lockout is fixed and verified directly,
+## the last of tonight's dispatched work. 27 September.
+
+The defect found by the ninety day simulation (FQ) is closed for
+real. Commit `b0eed95`. This needed more than the null-versus-zero
+default I originally flagged: nothing in a one file build ever
+starts a new billing period, so the fix also had to decide how the
+product knows a week has passed with no server, which the standing
+instruction from FR asked for explicitly. Built: the baseline is now
+floored at the gift's own size rather than trusted from storage,
+free weeks are counted and banked (never expiring, per an existing
+ruling in `DECISIONS.md`) rather than a fixed period, and a new
+`meter.giftAt` stamp is added additively, with no schema version
+bump.
+
+**Independently re-verified myself, at every level, not taken on
+report.** Ran the exact reproduction command directly against the
+committed engine: `planAllowance` on a blank profile now reads `10
+left this week`, not `0`, matching exactly. Rebuilt from a clean
+worktree at the commit and re-ran all nine gates: engine 1713/0 (was
+1687, the new rows exercising the blank-record path directly, which
+is stated plainly as the reason this bug was never caught before),
+`BUILD-engine.sh` 436 exports, functional 1121/0, collide 298/0,
+monitor all render, funnel 172/0, voice objections clean. `design.js`
+read 157/1 on first run, the same load sensitive flake logged six
+times tonight now; 158/0 on re-run alone. All three build hashes
+(`source.html`, `engine.js`, `atuned-packed.html`) match the report
+exactly. Directly tested the backward compatibility claim myself
+rather than trusting it: constructed an old-style profile with a
+literal `base:0` already on disk, confirmed it still validates
+clean, and confirmed the baseline floor correctly treats it as if the
+gift had just ended regardless of the stored value, so no real saved
+data needs migrating and none is silently rewritten.
+
+**Four real defaults chosen, not ruled, each named as his to change
+if he disagrees:** whether free weeks start counting from when the
+gift runs out or from first use, whether a week is a rolling seven
+days or a calendar week, whether the bank should have a ceiling (as
+built, a year of absence banks 520 patterns), and what a paid tier's
+downgrade path does, which needs the record store to exist first.
+
+This closes the most severe defect found tonight. Refreshed and sent
+the real build.
+
