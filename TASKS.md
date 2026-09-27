@@ -22138,3 +22138,39 @@ in isolation.
 
 Only the live release readout is still building. Once it lands and
 verifies, a build goes out, per his own conditional from round JA.
+
+## JC. The live release readout landed, all three round IW pieces done, build sent
+
+`82e7bb7` is in, pushed, `release.js` only. The engine already did what
+he asked, no arithmetic changed. Measured directly against the built
+file rather than estimated: CQ up, DQ down, SQ down on every one of
+seven runs across four profiles, DQ moving by whole points and CQ by
+0.04 to 0.22, which is why the live figure shown is DQ and not CQ, a
+real design call named rather than assumed. Rebuilt and gated fresh in
+an isolated worktree: `BUILD.sh` and `BUILD-engine.sh` clean,
+`tests/engine.js` 1770/0, `tests/collide.js` 351/0, `tests/funnel.js`
+172/0, `tools/monitor.js` all surfaces render, voice objections 0,
+`tests/functional.js` 1229/0. `tests/design.js` read 173/1 here, the
+same pre-existing timing flake as every other run this session, not a
+regression.
+
+Checked the code directly: `relWrite`, `relProject` and `relLive` all
+exist as named, the label reads `DQ` and not the earlier draft's
+"Shadow weight", to two decimals. Screenshots viewed directly match
+the report's own numbers exactly, pass 1 at 19.64 percent and 0.00
+percent down, pass 12 at 19.57 and 0.07, the same figures the report
+gave.
+
+All three round IW pieces are now landed: the imprint toggle, the
+Reading card cut, and this live readout. Rebuilt `source.html` fresh
+from the combined HEAD in the main tree, all nine gates already run
+clean on this exact content before committing (`7d108b7`, md5
+3e3155fe), and sent as a build.
+
+A real open question surfaced in the measurement, his to decide: the
+Release button's own pick can write more addresses than the run
+actually speaks (a pick of 8 addresses against a 25 pattern cap only
+speaks 6 and part of a 7th), so the number on screen can jump at the
+very end from what was heard to a few points lower, a free extra
+release nobody heard happen. Carried below rather than fixed by
+guessing which way he wants it.
