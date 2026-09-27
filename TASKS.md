@@ -23046,3 +23046,89 @@ screen text is left open by "we could also use a voice script or just
 use my text," which reads as either being acceptable rather than a
 choice already made. Targets `proto/onboarding-storyboard/`, the same
 piece JW already delivered and verified; not dispatched yet.
+
+## JZ. The logo, footer spacing, tab icons, the profile page, opposing behaviors visualized, and the Body page rebuilt around one map with a Kundalini overlay. Mayday.
+
+His words, verbatim: "Please integrate the new attuned logo. The
+lowercase ones with the umlauts. I like that. Powered by source OS
+needs to be equally spaced. But 323232 hex and space 15 pixels apart.
+I want icons for avatar ritual story feel body compass knowledge game
+summary I want to be I want to be able to collapse those and open
+those back up let's hide undo redo it's not really necessary Move the
+how to read this icon under user profile. and then build out the
+profile page. So if I enter my profile, it saves my data. Under Lance.
+And I can delete or retrieve it. Continue building what you're
+building, add this to the list. And for the opposing behaviors, this
+is very valuable now that I see it. I want the words in the opposing
+sides. I want their icons of opposing sides. And I want the weight of
+them on the on their their on opposing sides. I want to see their
+weight and I want a bar a graphic visualization underneath showing me
+the tension of both, right? Ultimately, we're trying to lean these
+things towards joy. So we have to release the patterns. But we want
+to show people that there's both patterns. We see which one they're
+attuned toward. This is really good. So you are UX team. That needs a
+better visual. Mayday, mayday, mayday. You did not update the
+saboteur complex and hyper complex page with the map design. The map
+design should have that person with all the chakras and the lines if
+I click on saboteurs the front and back should show me all my
+saboteurs running if I click on complexes I should see all those
+running if I click on hyper complex I should see all those running
+And I don't like these lines anymore, so I want their I do want their
+icons on the center screen organized, but which one's running the
+strongest? Always floats to the top. And then our masks should be
+here. Our masks should be on the body masks. So put all six masks
+here. The flow is a Kundalini map is the snake going around the seven
+chakras rising. And your charge at each Ida and Pingala. How high
+you've risen. As you've released charges from your root to your
+crown. So I need a graphic design of that. But it, the for the body,
+the map should be consistent across Fetter, Saboteurs, Complex,
+Hypercomplex, Mass, Pain. and the overlay, I can turn on and off.
+Chakras, nerves, and that's where Saboteur's complexes, hypercomplexes
+go. Actually, that's what that is. It's one overlay. So when I come to
+the body map, instead of having all these pages, I land on the map,
+and then my overlay has the thing I can I can click, and it opens and
+closes my overlay just like the field map. But I can turn on and off
+my map editors fetters saboteurs complex hyper complexes mass pain
+which is my heat map of where all the tension is and the flow which i
+just explained and then the location like the hand head that works
+equally across all pages To give me information on what's happening
+within those zones. This is also a priority. Make sure you're adding
+all those tasks and sorting them in the documenting them so we don't
+lose track. Add the stuff as well."
+
+Named "Mayday" by him directly, so read as the highest priority item
+in this round. Sorted by destination below, none dispatched yet:
+
+- The logo (lowercase, with umlauts), the footer spacing (`#323232`,
+  15px gaps) and the new tab icon set with a collapse/expand control
+  all touch shell and global chrome. `atuned_src/shell/head.html` and
+  `body.html` are held right now by the boot crash and logo agent
+  already working this exact area (`ac0f8d205b6f881df`); routed there
+  rather than a second dispatch.
+- Hiding undo/redo and moving the "how to read this" icon under a user
+  profile touches the same shell chrome. Same routing.
+- The profile page itself (enter a profile, it saves under a name,
+  delete or retrieve it) is new surface, not yet built anywhere. Not
+  routed to an in-flight agent since none owns it; queued for a fresh
+  dispatch once the shell files free.
+- The opposing behaviors visual (both words, both icons, both weights,
+  a tension bar between them) is the pole display already under
+  investigation and redesign by `aa5ed9203e244ca14`. Routed there
+  rather than a second dispatch.
+- **The Body page rebuild is its own large piece.** One consistent map
+  across what are currently separate pages (Fetter, Saboteurs, Complex,
+  Hypercomplex, Mass, Pain), a single overlay toggle exactly like the
+  Field map's own overlay, the six masks moved onto this same body map,
+  whichever saboteur or complex is running strongest always floating
+  to the top of the centre display, and a new Kundalini layer: the
+  charge risen at Ida and Pingala from root to crown drawn as a rising
+  snake around the seven chakras. This does not yet have an owner and
+  touches files not currently locked by name (the saboteur/complex/mass
+  pages are separate from `map.js`, which is already locked by the
+  Field buttons agent); queued for a fresh, clearly scoped dispatch.
+
+Two open questions this raises rather than answers: whether the
+Kundalini rise should be computed from the same seat-weight data the
+Compass and analytics already read, or needs its own new measure; and
+whether the six masks moving onto the body map retires their existing
+standalone page or only mirrors it there.
