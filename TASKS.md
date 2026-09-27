@@ -20328,3 +20328,59 @@ What I need from him: the repository made private, restated because it
 remains true and remains the single item nothing else waits behind;
 and the ten prioritised rulings above, in order, since the audit's own
 method sorts them by how much downstream work each one alone unblocks.
+
+## HM. The Field left panel, back: two of the brief's own premises were wrong, checked live before anything was built. 27 September
+
+Round GO's Field left panel dispatch, back, commit `1341796`, not yet
+pushed before this entry. Verified directly in an isolated worktree
+rather than trusted whole: `BUILD.sh` and `BUILD-engine.sh` clean,
+`engine.js` 1735 passed 0 failed, `collide.js` 336 passed 0 failed,
+`funnel.js` 172 passed 0 failed, matching the report exactly.
+`tools/equiv.py` against the immediate parent commit shows precisely
+one new declaration and nine changed bodies, all of them exactly the
+functions this change would touch, `FB_LAYERS`, `fbPaint`, `fbSay`,
+`fbValues`, `colFold`, `gatesBlock`, `runGatesDrill`, `runSeatDrill`,
+nothing wider. Opened `proto/fieldpanel/shots/Angela-summary-list.jpg`
+directly: it shows exactly what the report describes, a live question
+panel with switches for who is looking, the Energetic Summary
+treatment, the layer press behaviour and five Laws naming candidates,
+all running against the real build rather than a static mockup.
+
+**Two of the brief's own premises were checked live before anything
+was built, and both were wrong, which the report says plainly rather
+than building against a false assumption.** The left rail's Root
+Energetics section was already closed on arrival; what was open was
+the whole column beside it. Depth already opens at full; the actual
+defect was the Depth ring reading empty the moment any single layer
+was switched off, which made full depth look like none. Both
+corrected at the source of the confusion rather than patched around
+it.
+
+**"Nothing changed when I pressed Seats" was measured, not
+dismissed.** A pixel diff on a real profile found the honest reason:
+pressing Seats off changes zero pixels at the zoom the Field opens on,
+since seat names only draw past 1.4x zoom, so the very first press on
+any layer looks broken regardless of which layer it is.
+
+**A real, measured result on the clutter itself:** a stranger's first
+desktop screen goes from a hundred and three simultaneous choices to
+forty seven, with the next two cuts, the top bar and the glass bar
+itself, correctly left as his call rather than cut without asking.
+
+**Ten real open questions, several of them genuine collisions rather
+than simple preferences,** the two sharpest being: Character and Masks
+cannot both be named Masks, since Masks is already the six mask
+buttons, and the report offers three real ways through it rather than
+picking one silently; and a full product wide rename of "seat" and
+"gate" would cost real length, "assemblage point" against "seat," and
+touches roughly a hundred and eighty strings the report found by
+count, not estimate.
+
+Sent to him: the interactive question panel itself, since these are
+exactly the kind of live, clickable questions this project's own
+standing rule asks to be shown rather than described.
+
+What I need from him: the report's own ten questions, the two most
+consequential being the Character/Masks collision and whatever Laws is
+renamed to, plus whether "left panel starts closed" meant the column
+or something else, since the built default now assumes the column.
