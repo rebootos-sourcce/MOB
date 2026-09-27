@@ -21025,3 +21025,55 @@ defect on its own, unprompted, before this message arrived, and had
 already queued it as a suggested task. That suggestion is withdrawn
 below as superseded, since his own message already carries the exact
 fix and the exact collision to name rather than guess at.
+
+Dispatched to the full stack seat with his own words carried in full,
+told explicitly to reproduce his measurement first, name the
+collision with the standing "Bold and coloured, ruled" line rather
+than quietly overturn it, and hold the commit local for verification
+before it reaches origin.
+
+## HX. The Story page and release mockups, back, another collision caught in the shared tree and split before it was pushed. 27 September
+
+Commit `0ad8ff1` landed with two unrelated pieces of work under one
+message: my own fieldpanel packing, and this dispatch's twenty eight
+files, staged by both of us into the same shared index between one
+check and the next commit. Caught before it reached origin, unlike
+round HH's own version of this. Fixed by soft resetting the commit and
+recommitting each piece separately with `git commit --only`, which
+takes exactly the named paths regardless of what else the index holds
+at that moment, rather than trusting a `git diff --cached --stat` read
+that a concurrent `git add` can invalidate a moment later. The fix
+itself is `45ce621`. Standing discipline updated again: `--only` from
+here on, not a plain stage-then-commit.
+
+**What the round actually built, verified directly rather than trusted
+whole.** Zero em dashes confirmed across every file. Opened
+`shots/a-1600-full.png` directly: it shows exactly what the report
+claims, a small Field style ring standing in for the imprints panel,
+seven seat arcs in the Field's own order, a spoke per scored word, and
+a release card sitting on the Field's own dark stage with one ring per
+queued address in that address's own colour. The same picture
+independently shows the caret defect his round HW message reports,
+"not scared" struck through immediately ahead of where the drift would
+land, the same bug found two ways in the same hour without either
+side prompting the other.
+
+**A real engine disagreement found and shown rather than hidden.** "I
+was not scared" is set aside by Source AI as negated, correctly, but
+`parseStory` still charges four Root imprints from the same sentence.
+The mockups print both, the Root group labelled "only from 'not
+scared'" rather than picking a side for him.
+
+Sent to him: nothing yet, since this is the same round his own caret
+report and this dispatch's own screenshot both land in; both are
+being answered together rather than in two separate messages.
+
+What I need from him, the report's own five: which of the four
+mockups, or which pieces of each, since the imprints stage and the
+release callout can mix; whether the "sniffing" area is its own column
+or the top of the imprints panel, since his own dictation reads both
+ways; whether a negated line should still charge imprints at all;
+whether the imprints panel should fold away when long or scrolling to
+the release is fine; and whether showing the release's after weight
+before the run is wanted, which is new but uses numbers the product
+already prints after a run.
