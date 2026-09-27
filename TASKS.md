@@ -22189,3 +22189,34 @@ Not code. Filed into `BODY-MAP-SPEC.md` as a labeled personal
 observation beside the existing neck region and its own nerves, not as
 a tested claim, matching the rule the file already carries for his
 other untested observations: information gets a label, not a test.
+
+## JE. Re-run arc90 against a simulated clock, since the gamification piece already found the wall clock breaks its own free week count
+
+His words, verbatim: "`proto/ninety/arc90.js` section C drives the
+shipped `engine.js` through ninety simulated days per ICP. The
+engine's `meterRun` and `meterFirst` (in `atuned_src/engine/schema.js`)
+stamp `new Date()` on their own, and `meterBudget(p)` / `planAllowance`
+(in `atuned_src/engine/plan.js`) counts free weeks from
+`meter.giftAt`. arc90 runs ninety days in a few real seconds and calls
+`meterBudget(p)` without a `now`, so no week ever elapses after the
+gift is spent. Its friction ledger item 7 in
+`proto/ninety/arc90-2dff0f3.txt` says: 'The free tier's ten a week
+reads 0 left this week, banking toward a run of 4 because a blank
+profile carries plan.base 0, and nothing in a one file build starts a
+new week.' `proto/gamification-timeline/extract.js` (commit b1d6721)
+runs the same walk under a simulated clock: a Date subclass whose
+no-argument constructor and Date.now() return the simulated moment,
+installed before engine.js is required. Under that clock, Derek on the
+every day walk reads '10 of 10 left this week' on day 24, after the
+gift ran out, so the weekly allowance does refill once simulated weeks
+pass. Task: reproduce both readings, running arc90 as it is then with
+the simulated clock, passing the simulated now to meterBudget; if item
+7 and the gift spent day N figures move, re-run arc90, write a new
+dated output file beside the old one, and correct RESEARCH-90day.md
+wherever it relies on item 7; do not edit atuned_src or source.html,
+this is a measurement correction, not a product change. Done means
+both runs are compared side by side, and the research doc states which
+reading is true, with the run that shows it."
+
+Dispatched, scoped to `proto/ninety/` and `RESEARCH-90day.md` only, no
+other agent in flight to collide with.
