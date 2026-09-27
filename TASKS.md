@@ -19000,3 +19000,75 @@ answer without him, listed in full in its own section 9, the two
 most consequential being whether option A is really the nervous
 figure he meant to lock in, and what "the hundred and eight chakras"
 refers to.
+
+## GU. The intake copy defect traced to a prototype, not the shipped app, and a real second archetype table found. 27 September
+
+Round GQ's intake dispatch, back, commit `ad0cb70`, not yet pushed
+before this entry. Verified directly rather than trusted whole.
+
+**The quoted copy defect was real, just not where it was assumed to
+be.** "Your name, as you use it" and a "Keep it" button live in
+`proto/fw/pages/energetics.html`, the FW round's Energetics mockup,
+not in the shipped `atuned_src/ui/intakeui.js`, which this file
+already confirmed reads plain at round GQ. Both places are fixed now:
+the prototype's fields renamed to match the shipped form's own words,
+and a second, live instance of the same defect found and fixed in the
+shipped funnel itself, `funnel/quiz.html`, which said "Keep it: it is
+the handoff" after a save. Confirmed directly: `funnel/quiz.html` now
+reads "Saved as atuned-record.json. Your answers are in it." and
+"Copied. Your answers are on the clipboard." `tests/funnel.js` re run
+directly, 172 passed, 0 failed, matching.
+
+**His objection is now a permanent, checkable rule, not a one time
+fix.** Confirmed `.claude/skills/atuned-voice/objections.json` carries
+a new entry, `CO-26`, and a new gate rule, `plain-field-label`, which
+fails on "as you use/see/know it" and on a control whose whole label
+is "keep it". `check.py --objections` re run directly, exit 0.
+
+**The archetype count question resolved into a real, separate table,
+not a garbled reference.** `engine/data/canon.js:239` carries `ARCH18`,
+confirmed directly: eighteen rows, the twelve from `ARCH` (with the
+Rebel renamed Outlaw) plus six more, Orphan, Hero, Mentor, Shadow,
+Shapeshifter and Healer. Only one place in the shipped product reads
+it, `ui/analytics.js:319`'s archetype drill, whose own comment already
+says "the eighteen." `COPY.md` currently rules archetypes are named
+"from the twelve... never from outside it," which now directly
+collides with both `ARCH18`'s existence in shipped code and his own
+"I need that system." This is a real, standing contradiction inside
+the product's own rules, not invented for this report, and needs his
+ruling before either table is treated as the true one.
+
+**The seven chakra discs' own confusion diagnosed precisely.** They
+are unstyled divs with no click handler and no visible label, a
+control that looks pressable and does nothing, their name reachable
+only through a hover title a phone can never trigger. Named plainly as
+a defect, not a design preference.
+
+**Four new mockups, verified directly rather than by description.**
+Opened `proto/intake/shots/d-wheel-Derek-mid-1600.jpg` myself: all
+eighteen archetypes shown around the seven seats, dashed marks on the
+six drafts, a live halo reading "Caregiver, Warrior, Rebel" off
+Derek's own field, a picked archetype's seat, description and primary
+saboteur shown together, and a Save button the mockup states plainly
+saves nothing. Md5s of all four packed files matched the report
+exactly. `tests/funnel.js` and the voice check both re run and
+confirmed clean.
+
+Sent to him: the D wheel screenshot, since it is the report's own
+recommended standout and a layout question is answered with the
+layout, not described in prose.
+
+What I need from him, the report's own six questions:
+1. Is the real roster twelve or eighteen, and if eighteen, the six
+   need engine affinity weights, a schema change and a reversal of
+   the `COPY.md` rule above.
+2. Rebel or Outlaw, one archetype carrying two names across `ARCH`
+   and `ARCH18`.
+3. Which of the four mockups, or which parts combined.
+4. Whether a saboteur should surface the moment someone picks, or
+   only after they save, since it can read as an accusation to a
+   defended person the instant they describe themselves.
+5. Whether the six draft lines and seats are right, listed in full in
+   the agent's own report.
+6. Three new opposite pairs the report invented for mockup B, which
+   it flags as its own call to overrule.
