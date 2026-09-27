@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Energetics arrival</title>
+<!--KIT-->
+<style>
+.lay{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:18px;align-items:start}
+.hero{text-align:center;padding:26px 16px 8px}
+.hero h1{font-size:34px;margin:0;font-weight:600;letter-spacing:-.015em}
+.hero p{color:var(--mid);max-width:620px;margin:10px auto 0}
+.knows{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:16px 0 4px}
+.knows span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--edge-2);opacity:.35;transition:all .4s}
+.knows span.lit{opacity:1;border-color:currentColor;box-shadow:0 0 14px -2px currentColor}
+.spine{position:relative;display:flex;flex-direction:column;gap:10px;padding:10px 0 30px}
+.tier{display:grid;grid-template-columns:1fr 96px 1fr;gap:12px;align-items:center}
+.tier .l{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.tier .r{display:flex;gap:8px;justify-content:flex-start;flex-wrap:wrap}
+.seat{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;border:1.5px solid;position:relative;background:#0e0f14;transition:box-shadow .5s}
+.seat.lit{box-shadow:0 0 28px -4px currentColor}
+.tile{display:flex;flex-direction:column;align-items:center;gap:5px;width:96px;padding:10px 6px 8px;border-radius:14px;border:1px solid var(--edge);background:var(--panel);cursor:pointer;font-size:12px;color:var(--mid);text-align:center;transition:all .2s}
+.tile:hover{border-color:var(--edge-2);color:var(--ink)}
+.tile.on{border-color:var(--accent);color:var(--ink);background:#1d2530}
+.tile.done{color:var(--ink)}
+.tile .g{position:relative;width:46px;height:46px}
+.tile .g svg.gauge{position:absolute;inset:0}
+.tile .g .i{position:absolute;inset:0;display:grid;place-items:center}
+.tile .sym{position:absolute;right:-4px;top:-4px}
+.panel{position:sticky;top:56px;min-height:420px}
+.qhead{display:flex;gap:14px;align-items:center}
+.q{font-size:21px;line-height:1.35;margin:18px 0 12px}
+.scale{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+.scale button{height:44px;border-radius:8px;border:1px solid var(--edge-2);background:var(--sunk);cursor:pointer;font-size:13px;color:var(--mid)}
+.scale button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.anch{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-top:6px}
+.steps{display:flex;gap:6px;margin-top:14px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--edge-2)}
+.steps i.on{background:var(--accent)}
+.pick2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.pick2 button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 10px;border-radius:16px;border:1px solid var(--edge-2);background:var(--sunk);cursor:pointer;text-align:center}
+.pick2 button:hover{border-color:var(--accent)}
+.pick2 b{font-size:16px}
+.pick2 span{font-size:13px;color:var(--mid)}
+.menu{display:flex;flex-direction:column;gap:12px}
+.menu .grp{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.menu .tile{width:auto}
+.one{max-width:720px;margin:0 auto}
+.inp{display:grid;gap:10px;margin-top:12px}
+.inp input{width:100%;background:var(--sunk);border:1px solid var(--edge-2);border-radius:10px;padding:12px;color:var(--ink);font:inherit}
+@media (max-width:1100px){.lay{grid-template-columns:1fr}.panel{position:static}}
+@media (max-width:620px){.tier{grid-template-columns:1fr 76px 1fr;gap:6px}.tile{width:74px;font-size:11px;padding:8px 4px}.tile .g{width:38px;height:38px}.seat{width:48px;height:48px}.hero h1{font-size:25px}.scale{grid-template-columns:repeat(6,1fr)}.menu .grp{grid-template-columns:repeat(3,1fr)}}
+</style></head><body>
+<div class="wrap">
+ <div style="margin-bottom:6px" id="mode"></div>
+ <div id="view"></div>
+</div>
+<!--DATA-->
+<script>
+var IDIC={name:'M4 6h16 M4 12h11 M4 18h7',date:'M4 6h16v14H4z M4 10h16 M8 3v5 M16 3v5',time:'M12 12m-8 0a8 8 0 1016 0 8 8 0 10-16 0 M12 7v5l3 2',place:'M12 21s-6-6-6-11a6 6 0 0112 0c0 5-6 11-6 11z M12 10m-2 0a2 2 0 104 0 2 2 0 10-4 0'};
+var ARCHIC='M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 15.6 7.1 18.2 8 12.7 4 8.8l5.5-.8z';
+var SEATS=[['Crown','crown'],['3rd Eye','eye'],['Throat','throat'],['Heart','heart'],['Solar','solar'],['Sacral','sacral'],['Root','root']];
+var MODE=(location.hash.match(/mode=(\w+)/)||[])[1]||'const', SEL=null, ANS={}, ID={}, ARC=null, STEP=0;
+function blank(){return /stranger/.test(location.hash)||WHO==='__';}
+function load(){ANS={};ID={};ARC=null;
+ if(!STRANGER){var P=PP();T.SI.forEach(function(l){var v=Math.round(P.law[l.nm]);ANS[l.nm]=[v,v,v];});ID={name:WHO,date:'on record',time:'on record',place:'on record'};}}
+var STRANGER=true;
+function lawsOf(b){return T.SI.filter(function(l){return l.b===b;});}
+function done(l){var a=ANS[l];return a&&a.every(function(x){return x!=null;});}
+function word(v){return v>=8?'nearly always':v>=6?'more often than not':v>=4?'about half the time':v>=2?'now and then':'rarely';}
+function gauge(v,c,sz){if(v==null)return '<svg class="gauge" viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="2"/></svg>';
+ var a=v/10*2*Math.PI*20;return '<svg class="gauge" viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="2"/><circle cx="23" cy="23" r="20" fill="none" stroke="'+c+'" stroke-width="2.4" stroke-dasharray="'+a.toFixed(1)+' 200" transform="rotate(-90 23 23)" stroke-linecap="round"/></svg>';}
+function mean(l){var a=ANS[l];return done(l)?(a[0]+a[1]+a[2])/3:null;}
+function tile(kind,key,label,icon,c,sym){
+ var v=kind==='law'?mean(key):null, isDone=kind==='law'?done(key):kind==='id'?!!ID[key]:!!ARC;
+ return '<button class="tile'+(SEL&&SEL[0]===kind&&SEL[1]===key?' on':'')+(isDone?' done':'')+'" data-k="'+kind+'" data-v="'+esc(key)+'">'
+  +'<span class="g">'+gauge(kind==='law'?v:(isDone?10:null),c)+'<span class="i">'+ic(icon,22,isDone||kind!=='law'?c:'var(--mid)')+'</span>'
+  +(sym?'<span class="sym">'+seatIc(sym,12)+'</span>':'')+'</span>'+esc(label)+'</button>';}
+function knows(){var h='<div class="knows">';
+ ['name','date','time','place'].forEach(function(k){h+='<span class="'+(ID[k]?'lit':'')+'" style="color:var(--accent)">'+ic(IDIC[k],15)+'</span>';});
+ h+='<span class="'+(ARC?'lit':'')+'" style="color:var(--au)">'+ic(ARCHIC,15)+'</span>';
+ SEATS.forEach(function(s){var all=lawsOf(s[0]).every(function(l){return done(l.nm);});h+='<span class="'+(all?'lit':'')+'" style="color:'+col(s[0])+'">'+seatIc(s[0],15)+'</span>';});
+ return h+'</div>';}
+function hero(){var n=Object.keys(ANS).filter(done).length;
+ return '<div class="hero"><div class="eyebrow">Energetics. Item 5 of 6.</div><h1>'+(n||ID.name?'It is starting to see you'+(ID.name&&ID.name!==WHO?', '+esc(ID.name):''):'Before it reads anything, it asks')+'</h1>'
+  +'<p>'+(n===21?'Every law is answered. What you said is on the figure, seat by seat.':'Four things about when you arrived, twenty one about how you actually move, and one choice between two symbols. Press any mark. About fifteen minutes, in any order, and it keeps what you give it.')+'</p>'+knows()+'</div>';}
+function vConst(){
+ var h=hero()+'<div class="lay"><div class="spine">';
+ h+='<div class="tier"><div class="l">'+tile('id','name','Name',IDIC.name,'var(--accent)')+tile('id','date','Birth date',IDIC.date,'var(--accent)')+'</div>'
+  +'<div style="display:flex;justify-content:center">'+tile('arc','pin','Which one are you',ARCHIC,'var(--au)')+'</div>'
+  +'<div class="r">'+tile('id','time','Birth time',IDIC.time,'var(--accent)')+tile('id','place','Birth place',IDIC.place,'var(--accent)')+'</div></div>';
+ SEATS.forEach(function(s){var L=lawsOf(s[0]),half=Math.ceil(L.length/2),c=col(s[0]),lit=L.every(function(l){return done(l.nm);});
+  h+='<div class="tier"><div class="l">'+L.slice(0,half).map(function(l){return tile('law',l.nm,l.nm,LAWIC[l.nm],c);}).join('')+'</div>'
+   +'<div class="seat'+(lit?' lit':'')+'" style="color:'+c+';border-color:'+c+'" title="'+esc(SEATNM[s[1]])+'">'+seatIc(s[0],26)+'</div>'
+   +'<div class="r">'+L.slice(half).map(function(l){return tile('law',l.nm,l.nm,LAWIC[l.nm],c);}).join('')+'</div></div>';});
+ h+='</div><div class="card panel" id="panel">'+panel()+'</div></div>';
+ return h;}
+function vMenu(){
+ var cur=SEL||nextOpen();SEL=cur;
+ var h='<div class="lay" style="margin-top:14px"><div class="card one" style="max-width:none;min-height:520px" id="panel">'+panel(true)+'</div><div class="card menu"><div class="eyebrow">Everything it asks, as marks</div>'
+  +'<div class="grp">'+['name','date','time','place'].map(function(k){return tile('id',k,({name:'Name',date:'Birth date',time:'Birth time',place:'Birth place'})[k],IDIC[k],'var(--accent)');}).join('')+tile('arc','pin','Which one are you',ARCHIC,'var(--au)')+'</div>';
+ SEATS.forEach(function(s){h+='<div class="eyebrow" style="color:'+col(s[0])+';margin-top:4px">'+seatIc(s[0],13)+' '+esc(SEATNM[s[1]])+'</div><div class="grp">'
+  +lawsOf(s[0]).map(function(l){return tile('law',l.nm,l.nm,LAWIC[l.nm],col(s[0]),s[0]);}).join('')+'</div>';});
+ return h+'</div></div>';}
+function nextOpen(){for(var i=0;i<T.SI.length;i++)if(!done(T.SI[i].nm))return ['law',T.SI[i].nm];return ['arc','pin'];}
+/* ============================================================
+   WHICH ONE ARE YOU. Two symbols, then a scene. The engine already reads
+   an order of archetypes off the field (compute().aff); the pin starts from
+   its top four, so the person is choosing between what the instrument sees,
+   and where the pin and the reading disagree, that disagreement is kept as a
+   reading of its own. On a blank record it starts from six pairs of
+   opposites instead.
+   ============================================================ */
+var SCENE=[{q:'The project is two days late and the room has gone quiet. What do you do first?',a:{
+ Warrior:'Pick the one thing blocking it and go at it.',Sage:'Work out why it is late before anyone moves.',Rebel:'Ask whether the deadline was ever real.',
+ Caregiver:'Check who is carrying too much of it.',Creator:'Build the missing piece yourself.',Magician:'Change the setup so the problem stops existing.',
+ Ruler:'Give every task a name and a time.',Explorer:'Try a route nobody has tried yet.',Lover:'Get everyone back in the same room.',
+ Jester:'Say the thing that lets the room breathe again.',Everyman:'Take your share and do it.',Innocent:'Trust it comes together, and keep going.'}},
+ {q:'Someone close tells you they are leaving. What moves first in you?',a:{
+ Warrior:'You want to fix what made them go.',Sage:'You want to know what actually happened.',Rebel:'You respect it. People should leave what holds them.',
+ Caregiver:'You ask what they need for the road.',Creator:'You start making something of what is left.',Magician:'You look for what this changes and what it opens.',
+ Ruler:'You work out what has to be reorganised now.',Explorer:'Part of you wants to go too.',Lover:'You close the distance before they go.',
+ Jester:'You make them laugh so the goodbye is lighter.',Everyman:'You stay with the people who remain.',Innocent:'You believe it will turn out well for them.'}}];
+var OPP=[['Warrior','Sage'],['Rebel','Everyman'],['Caregiver','Explorer'],['Creator','Ruler'],['Magician','Innocent'],['Lover','Jester']];
+var PIN={r1:[],two:[],sc:[]};
+function archOf(nm){return T.ARCH.filter(function(a){return a.nm===nm;})[0];}
+function seedFour(){var P=PP(),idx=(P.aff||[]).map(function(v,i){return [v,i];}).sort(function(a,b){return b[0]-a[0];}).slice(0,4).map(function(x){return T.ARCH[x[1]].nm;});return idx;}
+function pinPairs(){if(STRANGER)return OPP;var s=seedFour();return [[s[0],s[3]],[s[1],s[2]]];}
+function archBtn(nm,line){var a=archOf(nm);return '<button data-pin="'+nm+'">'+ic(a.ic,44,col(a.b),1.4)+'<b>'+esc(nm)+'</b><span>'+esc(line||a.v)+'</span></button>';}
+function pinPanel(){
+ var pairs=pinPairs(), r1=PIN.r1.length;
+ if(r1<pairs.length){var pr=pairs[r1];
+  return '<div class="eyebrow">Which one are you, '+(r1+1)+' of the symbol pairs</div><div class="q">Two symbols. Which one is closer to you?</div>'
+   +'<div class="pick2">'+archBtn(pr[0])+archBtn(pr[1])+'</div>'
+   +'<p class="small dim" style="margin-top:12px">'+(STRANGER?'Nothing is on record yet, so it starts from six pairs of opposites.':'These four are the ones your field already leans toward, strongest first. You are choosing between what the instrument sees.')+'</p>';}
+ var pool=PIN.r1.slice();
+ if(pool.length>2&&PIN.two.length<2){
+  return '<div class="eyebrow">Which one are you, narrowing</div><div class="q">Of these six, which two are most like you?</div><div class="pick2" style="grid-template-columns:repeat(3,1fr)">'
+   +pool.map(function(nm){var a=archOf(nm),on=PIN.two.indexOf(nm)>=0;return '<button data-two="'+nm+'" style="'+(on?'border-color:var(--accent)':'')+'">'+ic(a.ic,34,col(a.b),1.4)+'<b>'+esc(nm)+'</b><span>'+esc(a.v)+'</span></button>';}).join('')+'</div>';}
+ if(pool.length>2)pool=PIN.two.slice();
+ var s=PIN.sc.length;
+ if(s<SCENE.length){var sc=SCENE[s];
+  return '<div class="eyebrow">Which one are you, the scene '+(s+1)+'</div><div class="q">'+esc(sc.q)+'</div><div class="pick2">'+archBtn(pool[0],sc.a[pool[0]])+archBtn(pool[1],sc.a[pool[1]])+'</div>';}
+ var tally={};PIN.sc.forEach(function(n){tally[n]=(tally[n]||0)+1;});
+ /* two scenes: agreement pins it; a split goes to the second scene, the one about a person, not a project */
+ var win=PIN.sc[0]===PIN.sc[1]?PIN.sc[0]:PIN.sc[1];ARC=win;
+ var top=STRANGER?null:seedFour()[0], a=archOf(win);
+ return '<div class="eyebrow">Pinned</div><div class="qhead" style="margin-top:10px">'+ic(a.ic,56,col(a.b),1.4)+'<div><h2 style="margin:0">'+esc(win)+'</h2><div class="muted">'+esc(a.v)+'</div></div></div>'
+  +'<p style="margin-top:14px">'+(top?(top===win?'Your field reads '+esc(top)+' first too. What you say and what it sees agree, and that overlap is the reading.':'Your field reads '+esc(top)+' first. You pinned '+esc(win)+'. Both are kept: the pin is who you say you are, and the gap between the two is a reading in itself.'):'Kept as who you say you are. Your stories will show whether the field agrees.')+'</p>'
+  +'<p><button class="chip" id="repin">Start the pin again</button></p>';}
+function panel(big){
+ if(!SEL)return '<div class="eyebrow">How this works</div><h2 style="margin:6px 0 0">Press any mark</h2><p class="muted">Each one asks a single thing and shows you what it heard. The seat in the middle lights when its laws are answered.</p>'
+  +'<div class="note">The right hand menu from today is gone. The questions live in the marks themselves, and the answer comes back as a ring and a plain word, not a percent.</div>';
+ if(SEL[0]==='arc')return pinPanel();
+ if(SEL[0]==='id'){var k=SEL[1],lab=({name:'Your name, as you use it',date:'The date you were born',time:'The time, if you know it',place:'Where you were born'})[k];
+  return '<div class="qhead">'+ic(IDIC[k],40,'var(--accent)')+'<div><div class="eyebrow">Who this is</div><h2 style="margin:0">'+esc(lab)+'</h2></div></div>'
+   +'<div class="inp"><input id="idin" placeholder="'+(k==='date'?'Day, month, year':k==='time'?'Hour and minute, or leave it':k==='place'?'Town and country':'First and last')+'" value="'+esc(ID[k]&&ID[k]!=='on record'?ID[k]:'')+'"></div>'
+   +'<p class="small muted" style="margin-top:10px">'+(k==='time'?'If you do not know it, say so. It is not guessed.':'The moment you arrived fixes the root energetics. Nothing else here can be recalled from memory the way the questions can.')+'</p>'
+   +'<p><button class="chip on" id="idok">Keep it</button></p>';}
+ var l=SEL[1],law=T.SI.filter(function(x){return x.nm===l;})[0],c=col(law.b),a=ANS[l]||[null,null,null],i=a.findIndex(function(x){return x==null;});
+ var head='<div class="qhead"><span style="position:relative">'+ic(LAWIC[l],44,c,1.5)+'<span style="position:absolute;right:-6px;top:-6px">'+seatIc(law.b,14)+'</span></span><div><div class="eyebrow" style="color:'+c+'">'+esc(SEATNM[SEATK[law.b]])+'</div><h2 style="margin:0">'+esc(l)+'</h2></div></div>';
+ if(i<0){var m=mean(l),sp=Math.max.apply(null,a)-Math.min.apply(null,a);
+  return head+'<p class="q" style="font-size:19px">You '+esc(T.IQ_STEM[l])+' '+word(m)+'.</p><p class="muted">'+(sp>=3?'It changes with who is watching and what it costs. That gap is the useful part.':'Steady across all three, whether it costs you or nobody would know.')+'</p>'
+   +'<div class="steps">'+a.map(function(){return '<i class="on"></i>';}).join('')+'</div><p style="margin-top:14px"><button class="chip" id="redo">Answer again</button> <button class="chip on" id="nxt">Next mark</button></p>';}
+ var q=T.Q3[i].q.replace('STEM',T.IQ_STEM[l]);
+ return head+'<div class="q"'+(big?' style="font-size:26px"':'')+'>'+esc(q)+'</div>'
+  +'<div class="scale">'+[0,1,2,3,4,5,6,7,8,9,10].map(function(v){return '<button data-a="'+v+'">'+v+'</button>';}).join('')+'</div>'
+  +'<div class="anch"><span>never</span><span>about half the time</span><span>every time</span></div>'
+  +'<div class="steps">'+a.map(function(x,j){return '<i class="'+(x!=null?'on':'')+'"></i>';}).join('')+'</div>'
+  +'<p class="small dim" style="margin-top:10px">Asked three ways: when it costs you, when nobody would know, and on an ordinary day.</p>';}
+function vToday(){return '<div class="grid2" style="margin-top:14px"><div class="today"><img src="{{img:today-energetics.jpg}}" alt="Energetics today"><div class="cap">Energetics today: a five line paragraph and a birth form before any question, the rails either side.</div></div>'
+ +'<div class="today" style="max-width:340px"><img src="{{img:today-laws.jpg}}" alt="The law rail today"><div class="cap">The right rail today, the laws he pressed: a dot, a name, a slider and a number. No mark of its own.</div></div></div>';}
+function draw(){
+ var v=document.getElementById('view');
+ v.innerHTML=MODE==='const'?vConst():MODE==='menu'?vMenu():MODE==='pin'?'<div class="card one" style="margin-top:14px" id="panel">'+((SEL=['arc','pin']),pinPanel())+'</div>':vToday();
+ wire();}
+function wire(){var v=document.getElementById('view');
+ v.querySelectorAll('.tile').forEach(function(t){t.onclick=function(){SEL=[t.dataset.k,t.dataset.v];draw();};});
+ v.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){var l=SEL[1],a=ANS[l]||[null,null,null],i=a.findIndex(function(x){return x==null;});a[i]=+b.dataset.a;ANS[l]=a;draw();};});
+ v.querySelectorAll('[data-two]').forEach(function(b){b.onclick=function(){var n=b.dataset.two,i=PIN.two.indexOf(n);if(i>=0)PIN.two.splice(i,1);else if(PIN.two.length<2)PIN.two.push(n);draw();};});
+ v.querySelectorAll('[data-pin]').forEach(function(b){b.onclick=function(){var pairs=pinPairs();if(PIN.r1.length<pairs.length)PIN.r1.push(b.dataset.pin);else PIN.sc.push(b.dataset.pin);draw();};});
+ var e;
+ if(e=document.getElementById('redo'))e.onclick=function(){ANS[SEL[1]]=[null,null,null];draw();};
+ if(e=document.getElementById('nxt'))e.onclick=function(){SEL=nextOpen();draw();};
+ if(e=document.getElementById('repin'))e.onclick=function(){PIN={r1:[],two:[],sc:[]};ARC=null;draw();};
+ if(e=document.getElementById('idok'))e.onclick=function(){var x=document.getElementById('idin').value.trim();if(x)ID[SEL[1]]=x;SEL=null;draw();};}
+banner('Energetics arrival, item 5 of the FW round');
+/* a stranger is the default here, because the page is the first thing a new
+   person is asked to do. The profile chips load a worked example instead. */
+(function(){var pb=document.querySelector('.pb .who');pb.insertAdjacentHTML('afterbegin','<button class="chip on" data-str="1">A stranger</button>');
+ document.querySelectorAll('.pb [data-who]').forEach(function(b){b.classList.remove('on');b.addEventListener('click',function(){STRANGER=false;document.querySelector('[data-str]').classList.remove('on');PIN={r1:[],two:[],sc:[]};load();draw();});});
+ document.querySelector('[data-str]').onclick=function(){STRANGER=true;this.classList.add('on');document.querySelectorAll('.pb [data-who]').forEach(function(b){b.classList.remove('on');});PIN={r1:[],two:[],sc:[]};load();draw();};})();
+window.draw=draw;
+seg(document.getElementById('mode'),[['const','A. The seven seats, filling in'],['menu','B. One question at a time, the menu as marks'],['pin','C. Which one are you'],['today','Today, for comparison']],MODE,function(k){MODE=k;SEL=null;draw();});
+window.shootPrep=function(){if(MODE==='const'&&!SEL){ANS.Truth=[7,3,6];ANS.Awareness=[5,null,null];ANS.Courage=[8,8,7];ID.name='Dana';SEL=['law','Awareness'];draw();}};
+load();draw();
+</script></body></html>
