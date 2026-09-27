@@ -22787,3 +22787,51 @@ Pushed from here. Nine open questions carried to him, full wording in
 actually means (a programme, a trial, the money back week, or a
 deadline) and whether the funnel build itself is un-parked by this
 brief or stays strategy only.
+
+## JS. Source AI redesigned in full, a readout look for the data areas, four looks wired in
+
+His words, verbatim: "First up for Source AI, I want a logo up there,
+like a design. And I want that background to look like a window. I
+want to have a completely different display background so it feels
+like there's something behind it communicating to you. Then I want it
+to feel like it's animated. And animating, I want it to feel
+interesting. I want it to feel dynamic and alive when the text gets
+typed. I want it to feel like it's breathing and moving, like there's
+a little brain behind it. And I want it to feel a little digital, to
+feel like it could change at any moment. I want it to have a cycle for
+different questions. I want you to get rid of the source AI word
+scripted. I just want you to type, have the word source. And then
+what are we writing about today? That's not quite what I want you to
+use. We need to invite them to writing. We first need to welcome them
+with their name. Hello, Lance. What would you like to write about
+today? Or would you like me to offer some suggestions? And then get
+rid of the or start from, they can figure that out. Get rid of the
+word this day. Get rid of recording sends the audio to your browser
+speech, blah blah blah, they know how to do that. Make the record
+button look like a record button, round and red. When the data gets
+passed over into the sniffer and into the imprints, they can select
+the ones to release, so change that release to rapid release, and
+then add a button to the actual release protocol, so they can go to
+it, and that button will be in the upper right. If they go to that,
+it's a full screen release with imprints merged with it. Maybe that
+screen does something really slick where it slides everything right
+and compresses the journal, so now it's focused on the imprints and
+setting up your release timer and setting up your release flow. With
+our examples, I need story samples already set up. I need their
+imprints and just when I click it, I want to be able to see what
+their data is doing, just as an example, if I show this to somebody.
+The area which says pending imprints, I want that area to look
+different too. I guess what I want the background areas to look like
+is not flat HTML. Wherever data gets displayed, I want that to feel
+like a readout, more interesting. Black is fine, I think there are
+other ways to make it more interesting. So I want the design team to
+take a look at that and see if there's anything we can pull from the
+field page and give me two or three different looks. Then make sure
+it's all wired in as well, to Atuned, so, yeah, under a story in the
+subnav, give me those four different looks so I can see what they all
+look like as an example."
+
+All of this is `storyui.js`, which the round JP "Source AI why" agent
+still holds. Not dispatched yet: queued, and the agent already working
+that file was sent a plain heads up rather than a second conflicting
+build.
