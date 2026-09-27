@@ -20239,3 +20239,92 @@ repository visibility, Cloudflare or Supabase, the data region, a
 Cloudflare account, the GitHub billing lock, the domain spelling, and
 now a new one this round adds, a Stripe account opened in the
 company's name.
+
+## HK. DECISIONS.md carries round GS's rulings at last, and a real copy sweep, about fifty five defects, fixed and gated. 27 September
+
+Round HI's copy dispatch, back in two parts, commits `0f3ee83`,
+`7279e05` and `65201d2`, already on origin. Verified directly:
+`DECISIONS.md`'s new section quotes his own words exactly, matching
+round GS's own log entry word for word; the sweep's gate run in an
+isolated checkout read `engine.js` 1735 passed 0 failed, `collide.js`
+336 passed 0 failed, `funnel.js` 172 passed 0 failed, `monitor.js` all
+surfaces render, the voice check zero findings, matching the report.
+Its own honestly reported functional and design failures (1 and 7)
+were checked against the same unmodified build under the same load,
+which failed the same checks plus more, correctly not blamed on this
+change.
+
+**A real mistake caught and fixed by the agent itself, worth recording
+rather than only the fix:** its first build was made before the
+Fringe commit had landed, so for a short window the committed
+`source.html` did not carry it; a second commit rebuilt from the
+actual branch head and the report states the exact md5 this produced.
+Nothing was quietly left wrong.
+
+**About fifty five real defects fixed across fourteen files**, three
+of them outright false statements caught by reading the data rather
+than the copy (a "next marker" card claiming one remained when none
+did, an intensity band wrongly saying no card can open there when only
+the lowest band is true, a game claiming twenty four addresses cleared
+after a run that writes nothing to the record), the rest small print
+he named as noise, duplicate wordings for one concept collapsed to
+one, and several house style violations including definitions written
+as denials, the exact pattern this file has logged repeatedly as a
+recurring defect class.
+
+**About twenty more found and named but correctly left untouched**,
+each with its exact file and line, because another seat had that file
+open at the time, so nothing was risked on a guess about which version
+would land last.
+
+What I need from him, the sweep's own three: "pain and disease free,"
+ship it or cut it, still the same open question as rounds GS and GX;
+whether the drafted load scale words, tense, heavy and locked, can
+ship beside a bare number like "holding 6.6," since his own rule says
+a load never stands alone but three of the words that would satisfy it
+are themselves unruled; and Click against Press as the one word for
+the same action across the product.
+
+## HL. The final, full backlog audit, and the repository is still public. 27 September
+
+`project-manager`'s consolidated audit, dispatched at round HI, the
+largest single piece of research this session has produced. Verified
+directly rather than trusted: checked the repository's visibility a
+second time this round through a separate listing call, and it still
+reads public, confirming the report's own re-check rather than an
+assumption carried from round GZ. Opened
+`shots/1600-paywall-release-door.png` directly: it shows exactly what
+the report claims, "Nothing left to open," eight addresses picked,
+zero patterns available, a real list of named addresses with their
+real weights, and an "Open settings" button in place of Begin.
+
+**The four things he said he had not seen, settled with evidence
+rather than another description:** the paywall and onboarding are
+real, built, gated, and now actually shown to him, not merely asserted
+a third time; sign in and the tutorial are confirmed, again, genuinely
+not built, the account page saying so honestly on its own screen
+rather than faking a control.
+
+**A single list of every open question across the entire session,
+organised by product area rather than by round, with what has already
+been answered removed rather than repeated.** Its own ten item table
+of "rulings that unblock the most" is the actionable core: repository
+visibility first, since nothing else gets safer until it is flipped
+and only he or another admin can do it; Cloudflare against Supabase
+and which app goes online first; the reward word; twelve or eighteen
+archetypes; the opening screen's last four words; what counts as a
+cleared pair on the Avatar page, which the percent complete figure he
+already approved has no rule behind; the tutorial's own four blocking
+questions; the release threshold; a second word for tension, since one
+word already names two different things in the shipped code; and the
+founding offer referral question against the funnel's own shipped
+privacy promise, which cannot both stand as written.
+
+Sent to him: the paywall and onboarding screenshots, since a "you
+haven't seen this yet" complaint is answered by actually showing it,
+not by asserting a third time that it exists.
+
+What I need from him: the repository made private, restated because it
+remains true and remains the single item nothing else waits behind;
+and the ten prioritised rulings above, in order, since the audit's own
+method sorts them by how much downstream work each one alone unblocks.
