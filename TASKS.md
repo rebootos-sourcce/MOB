@@ -20020,3 +20020,77 @@ concrete scope (the Avatar tab's own creation, the ritual queue, the
 one to five archetype scale, the Pleaser/releasing visual) to the work
 already queued, and it starts as soon as the tree currently in flight
 clears.
+
+## HH. A correction to my own commit `325e923`: the Fringe port landed under the wrong message, but it is real, gated, and exactly what was verified. 27 September
+
+My own mistake, owned plainly rather than smoothed over. Committing
+round HG's log entry, `git commit` with no explicit pathspec picked up
+whatever the index already held rather than only `TASKS.md`, and the
+index held `animation-vfx-director`'s own staged, fully gated Fringe
+port, which it had verified and was about to commit itself under its
+own message. The result: real, correct, gated work landed under a
+commit message that only describes a log entry, not what the commit
+actually contains. It was already pushed before the agent's own report
+reached me.
+
+Checked before assuming either the best or the worst of this. Isolated
+`325e923` in its own worktree and rebuilt: `BUILD.sh` and
+`BUILD-engine.sh` clean, `engine.js` 1735 passed 0 failed. Compared the
+commit against its own immediate parent with `tools/equiv.py`, not
+against an older commit, which the first pass did carelessly and which
+produced a misleadingly huge diff spanning several rounds' worth of
+unrelated history: the actual new content is twelve declarations
+(`RUNHOT_AT`, `fringeDraw`, `fringeStep`, `hotDir`, `hotList`,
+`hotTrack`, `anaHot` and five more) and four changed bodies (`draw`,
+`drawWheel0`, `fetGrown`, `anaRender`), matching the agent's own report
+exactly, function for function. Opened its own screenshot,
+`c0-pair.png`, directly: the ring visibly bulges outward on every
+heavy address with stress fringes trailing behind it, exactly the
+distortion he called "a great visualization" and asked to see in the
+real Field.
+
+**What the agent's own report adds, in full, since it deserves the
+same record any other verified round gets:** the bend triggers past a
+charge of five, the engine's own midpoint where an address pulls half
+as hard as it can; it settles on a real spring rather than snapping;
+five fringe bands crowd toward the highest stress and travel with it;
+a brief wrong way dip on arrival, matching a real physical
+anticipation; and "running hot" on Analytics lists the twelve heaviest
+addresses split by expanding, collapsing or steady, each row opening
+the product's own existing address detail rather than a new control.
+Direction is read only from real events, a story landing, a release,
+a drag, an undo, never simulated on a timer the way the original
+mockup ran; a profile switch correctly resets every address to steady
+rather than reading a switch as motion. Frames and Dial were
+deliberately not ported, since both views only rebuild their picture
+when a reading changes, so continuous motion there would mean
+rebuilding every frame, a real cost this round does not spend blind.
+Thirty five new checks were added to `tests/functional.js` and pass
+with and without reduced motion, and the design gate's frame rate
+flake read the same on the unchanged build under the same machine load
+as it read here, correctly not treated as this change's own failure.
+
+**Also caught in the same report, and worth repeating rather than
+losing:** the agent found it was mid task editing `tests/functional.js`
+at the same moment another seat was too, one working on the phone
+layout, and rebuilt its own copy from a clean starting point rather
+than risk carrying the other seat's untested test changes into a
+commit. That is the discipline this session has asked of every seat,
+caught and applied correctly on its own.
+
+Nothing here is rewritten or force pushed; the record is corrected by
+saying plainly what actually landed, in a new entry, rather than
+altering history.
+
+What I need from him, the agent's own five questions, carried forward
+rather than lost in the mixup: whether a direction should survive a
+reload of the record or only last the session; whether it should fade
+back to steady on its own after a time; which of three real options
+for Frames and Dial, staying Wheel only, a still version on the other
+two, or a full rebuild of both as live canvases; whether five is the
+right threshold for "running hot," since on real profiles it currently
+catches ten to fifty six of a hundred and twelve addresses depending on
+the person; and the same open naming question from round GK, since
+"tension" already names the pulses running along the threads in the
+code, even though nothing shown to a person uses that word for the new
+effect.
