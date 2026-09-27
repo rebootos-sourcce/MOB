@@ -14,6 +14,17 @@ like high level feedback, what their experience was."
 touched.** `tools/loopsim.js` and `proto/ritual/losssim.js` were read and run,
 never edited.
 
+**Corrected 27 September, Sam Oyelaran, QA.** Ledger item 7, the free tier
+after the gift, and every finding that rested on it, re-measured. The first
+run's reading was true of the build it ran on, `2dff0f3`. The engine was
+fixed 25 minutes later (`b0eed95`), and at the current build the unmodified
+script kept reporting "never refills" only because it ran ninety days in a
+few real seconds, so no simulated week could ever open. Re-run on a simulated
+clock, the free tier opens ten patterns a week after the gift and the release
+runs about once a week. The passages below that relied on it are corrected in
+place. Section 9 has both runs side by side, which reading is true, and the
+commands.
+
 ---
 
 # The answer, in six lines
@@ -28,15 +39,22 @@ never edited.
 3. **The first ninety seconds and the first two days are still where most
    people go.** The model loses 40 percent of the thousand by day 2 and 68
    percent by day 7.
-4. **Around day 20 the loop breaks at the release.** A person who does the
-   whole loop daily spends the 100 pattern gift between day 17 and day 41, and
-   from then the release refuses for good: the free tier reads "0 left this
-   week" and never refills. That is a defect, measured, not a policy.
-5. **The number a person watches does not move.** Without the 63 questions,
+4. **Around day 20 the loop narrows at the release to once a week.** A person
+   who does the whole loop daily spends the 100 pattern gift between day 17
+   and day 41. After it the free tier opens ten patterns a week and banks what
+   is not spent, which on the daily walk buys one release run a week. On the
+   days between, the release refuses whenever there is load on the wheel: 20
+   to 56 times over the rest of the quarter for five of the six who spend the
+   gift, and never for Angela. Measured, corrected 27 September: the first
+   run's "never refills" was the old build and then the test harness, not
+   this build (section 9).
+5. **The number a person watches barely moves.** Without the 63 questions,
    CQ reads 0 on day 90 exactly as on day 1. With them, ninety days of daily
-   release moves it by hundredths. Expression, the reading with the load in
-   it, ends lower for all seven and by more than half a point for six, because
-   telling the truth adds load faster than a locked release can take it off.
+   release moves it by a quarter of a point to just under one point.
+   Expression, the reading with the load in it, dips through the first month
+   while the gift is spent and load builds, by up to 2.9 points, and is back
+   within 0.3 of where it started by day 90 for all seven. The first run
+   reported it ending lower for all seven; that was the same harness fault.
 6. **From day 30 to day 90 the ladder is silent.** Somebody who never misses
    earns Thirty days on day 30 and nothing new until Ninety days.
 
@@ -56,6 +74,15 @@ md5 `85941fb4443bc35187c9e6dd5d2cc2c8`, `losssim.js` md5
 `7aa57f73ac69c5660998ab262a81fdda`, storyboard md5
 `886b343a45252b3d884ca873434b5551`. `atuned_src/` has no commit since
 `acc8181`, the build the first run walk measured.
+
+**Re-run 27 September on a simulated clock.** The script now installs the
+simulated clock from `proto/gamification-timeline/extract.js` by default and
+printed `proto/ninety/arc90-1364e0e.txt`, the current reading, on a clean
+engine at commit `1364e0e`, `engine.js` md5
+`0ffab0adbd49c22ceda12aec29e9aa9d`. `--clock wall` keeps the first run's
+harness and printed `proto/ninety/arc90-1364e0e-wall.txt` beside it for the
+comparison. Sections A, B and D are identical in all three files. Only
+section C moved, and section 9 says by how much and why.
 
 **Every number carries one of three labels**, the way `DESIGN-firstrun.md`
 labels its own.
@@ -212,8 +239,9 @@ turns of the loop.
 **Angela, 36, seeker. 150 of 1,000.** Model: 48 percent of her row gone by day
 2, 75 percent by day 7, 94 percent by day 30; the curve flattens at day 30
 with 6 percent left. Measured: 3 of her 6 lines read as nothing; first address
-over the line on day 7; she spends the gift on day 41 and the release refuses
-43 times after it with load on the wheel. Without the 63 her headline reads 0
+over the line on day 7; she spends the gift on day 41 and is never refused
+after it: her load stays under the line on most days and the weekly ten bank
+to 56 by day 90. (The first run had 43 refusals; section 9.) Without the 63 her headline reads 0
 all ninety days. The marks come fast, eleven of them, then nothing between day
 30 and day 90. Simulated: "It saw me once, on the first day. After that it
 mostly did not." The storyboard's own discover text, written for her, puts
@@ -223,15 +251,21 @@ Pride and Arrogance among its imprints from "angry at myself"
 **Derek, 39, endurance. 170.** Model: 42 percent gone by day 2, 77 percent by
 day 7, the row flattens at day 21 with 7 percent left. Measured: his first
 address over the line takes ten turns. With the 63 answered, the gift is gone
-on day 24 and the release refuses 66 times after it. He is the one who takes the 63, so his CQ
-exists: 48.48 on day 1, 48.96 on day 90, a displayed 48 to 49. His expression
-goes from 48.5 to 39.9, load from 0 to 23. Simulated: "I did the protocol every
-day for a quarter and the number got worse." That is his stated exit, "if my
-resting rate does not move ... this is a mood", met in full.
+on day 24; after it he runs a release once a week, ten in all, and is refused
+56 times, the most of anybody. He is the one who takes the 63, so his CQ
+exists: 48.48 on day 1, 49.42 on day 90, a displayed 48 to 49. His expression
+falls from 48.5 to 45.6 by day 30 and is back to 48.2 by day 90; load goes
+from 0 to 15.7 at day 30 and ends at 8.9. The simulated line first written
+here, "I did the protocol every day for a quarter and the number got worse",
+rested on the first run's expression of 39.9 and load of 23, which were the
+harness (section 9). Whether a headline that moves 48 to 49 in a quarter meets
+his stated exit, "if my resting rate does not move ... this is a mood", is
+judgement, and is left open for the author to redo against the corrected run.
 
 **James, 57, C suite. 100.** Model: 49 percent gone on day 1, 92 percent by day
-30. Measured: first over the line day 9, gift gone day 22, CQ with the laws
-42.29 to 42.78, expression 42.3 to 38.6. Judgement: he never reaches the gift.
+30. Measured: first over the line day 9, gift gone day 22, then six weekly
+runs and 27 refusals; CQ with the laws 42.29 to 43.05, expression 42.3 to
+42.6. Judgement: he never reaches the gift.
 He leaves on day 1 at the Summary rail that says it knows nothing and then says
 what is shut in him (`RESEARCH-firstrun.md`, still present). `BUYERS.md` says he
 is not the market; the arc agrees.
@@ -247,15 +281,19 @@ me." He is the inspector, and two in three of his inspections come back empty.
 percent at day 30, 4 percent at day 90, and **59 percent of her exits carry a
 broken run**, the highest in the panel: she practises weekly at eleven at
 night and the run is the thing that breaks. Measured: 3 of 5 lines read as
-nothing; gift gone on day 29 with the laws answered, then 61 refusals. CQ
-72.86 to 73.34. Simulated: "It tells me what to run and how long, which is
-what I asked. Then it stopped letting me run it." She also cannot hand it to a
+nothing; gift gone on day 29 with the laws answered, then five weekly runs
+and 20 refusals, and 42 banked by day 90. CQ 72.86 to 73.58. Simulated: "It
+tells me what to run and how long, which is what I asked." The second line
+first written here, "Then it stopped letting me run it", rested on the first
+run's 61 refusals and a release that never reopened, and is withdrawn
+(section 9). She also cannot hand it to a
 client, which `sim/harness.js` logged as F12.
 
 **Diane, 46, founder. 180.** Model: all of her row opens on day 1, 31 percent
 gone on day 2, 70 percent by day 7, the row flattens at day 30 with 11 percent
-left. Measured: she spends the gift first of the six, on day 21 with the laws
-answered, then 69 refusals. Expression 59.0 to 51.9. Judgement: under today's
+left. Measured: she spends the gift on day 21 with the laws answered, second
+of the six after Ana, then ten weekly runs and 52 refusals. Expression 59.0,
+down to 56.5 at day 30, and 58.8 at day 90. Judgement: under today's
 build she does not take the 63, because nothing states fifteen minutes
 (`RESEARCH-icp.md` section 2), so her headline is 0 for ninety days. Simulated:
 "Does it give me back an hour or does it give me another practice to fail at."
@@ -264,13 +302,17 @@ what it is buying.
 
 **Ana, 47, one year out. 50.** Model: she stays longest of anybody, 23 percent
 at day 30, 12 percent at day 90. Measured: first over the line on day 5, the
-earliest, and **the gift is gone on day 17, the earliest, then 73 refusals
-with load on the wheel.** Load climbs from 0 to 24; expression falls from 41.1
-to 35.5. Judgement: this is the most serious finding in the file. The person
-in the roster for whom a wrong answer costs something is the one who stays
-longest and the one the locked release lands on hardest. She asked one thing,
-"will it tell me this has an end", and at day 90 the product shows her more
-held than on day 17, with the release shut.
+earliest, and **the gift is gone on day 17, the earliest, then nine weekly
+runs and 45 refusals with load on the wheel.** Load climbs from 0 to 11.3 at
+day 30 and is back to 7.7 by day 90, about where it stood on day 14;
+expression dips from 41.1 to 38.9 at day 30 and ends at 41.2. Judgement: the
+person in the roster for whom a wrong answer costs something is the one who
+stays longest and the first to meet the weekly limit, and she meets the
+refusal on 45 of the 73 days after it. The first run called this the most serious
+finding in the file, with the release shut and more held on day 90 than on
+day 17. That was the harness (section 9): the release reopens every week and
+by day 90 her load is lower than at day 30. What she asked, "will it tell me
+this has an end", is still not answered by anything the product says.
 
 **Gordon and Rosa. 35 and 15.** `RESEARCH-icp.md` has neither arriving.
 Measured: every line either writes reads as nothing, all ninety days. Correct
@@ -292,13 +334,13 @@ for Rosa. For Gordon it is the refusal the research already recorded.
 | 8 | Days 1 and 2 | The largest loss in the model: 40 percent of the thousand | James 62%, Angela 48%, Derek 42% | model |
 | 9 | Every session | Share of their own lines read as nothing: Marcus and Sofia 3 of 5, Angela 3 of 6, James 2 of 5, Derek and Diane 2 of 6, Ana 1 of 5 | all | measured, engine |
 | 10 | Weeks 1 and 2 | First address over the line takes 5 to 15 turns of their own writing | Ana 5, Angela 7, James 9, Derek and Sofia 10, Diane 11, Marcus 15 | measured, engine |
-| 11 | Days 17 to 41 | Gift spent; the free tier reads "0 left this week, banking toward a run of 4" and never refills; every release after refuses | Ana d17, Diane d21, James d22, Derek d24, Sofia d29, Angela d41 on the every day walk; d22 to d58 for the most engaged | measured, engine |
+| 11 | Days 17 to 41 | Gift spent; after it the free tier opens ten a week and banks the rest, one release run a week on the daily walk, and the release refuses on the days between when there is load. Corrected 27 Sept: the first run read "0 left this week, banking toward a run of 4" and never refilled (section 9) | Gift spent Ana d17, Diane d21, James d22, Derek d24, Sofia d29, Angela d41 on the every day walk; d22 to d58 for the most engaged. Refused after it: Derek 56, Diane 52, Ana 45, James 27, Sofia 20, Angela 0 | measured, engine |
 | 12 | Days 1 to 90 | Without the 63, CQ reads 0 on day 90 as on day 1 | Diane, James, Angela, Marcus under today's build, by judgement of who takes it | measured, engine |
-| 13 | Days 1 to 90 | With the 63, ninety days of daily release moves CQ by 0.13 to 0.50 | everyone who answers | measured, engine |
-| 14 | Weeks 2 to 13 | Expression ends below where it began | Derek -8.6, Diane -7.1, Ana -5.6, James -3.7, Sofia -2.2, Angela -1.0, Marcus -0.3 | measured, engine |
+| 13 | Days 1 to 90 | With the 63, ninety days of daily release moves CQ by 0.25 to 0.94 (first run: 0.13 to 0.50) | everyone who answers | measured, engine |
+| 14 | Weeks 2 to 5 | Expression dips while the gift is spent and load builds, and recovers on the weekly release: within 0.3 of the start by day 90 for all seven. Corrected 27 Sept: the first run had it ending lower for all seven, Derek by 8.6 (section 9) | Lowest at day 30: Derek -2.9, Diane -2.5, Ana -2.2, James -1.7 | measured, engine |
 | 15 | Days 15 to 40 | The curve flattens with 6 to 26 percent of each row left | all | model |
 | 16 | Any day | A broken run is in 17 to 59 percent of exits, across the seven who arrive | Sofia 59%, Marcus 43% | model |
-| 17 | Days 30 to 90 | No new mark from Thirty days to Ninety days; the most engaged earn their last new mark between day 30 and day 42 | all | measured, engine |
+| 17 | Days 30 to 90 | No new mark from Thirty days to Ninety days, except Derek's First clearing on day 38; the most engaged earn their last new mark between day 34 and day 58 (first run: day 30 to day 42) | all | measured, engine |
 
 ---
 
@@ -309,10 +351,12 @@ it off, and come back when you said you would. Each friction above breaks one
 clause of that sentence, and I read them in my three passes: loop, session,
 week.
 
-**The loop.** It is open at the release from about day 20 for anybody who uses
-it daily (row 11), and it is open at discover for most first entries (rows 4
-and 9). A loop that refuses half of what it is told and then stops letting a
-person act on the rest is not turning. That is measured.
+**The loop.** It narrows at the release from about day 20 for anybody who
+uses it daily (row 11): one run a week, refused on the days between when
+there is load. And it is open at discover for most first entries (rows 4 and
+9). A loop that reads nothing in half of what it is told, and then lets a
+person act on the rest once a week, turns slowly. That is measured. The first
+run said the release stopped for good; that was the harness (section 9).
 
 **The session.** Day 0 is still the product's worst session and nothing about
 it has moved since 26 September (rows 2, 3, 5, 7). The storyboard fixes the
@@ -323,11 +367,14 @@ and flat by day 15 to 40, which is ordinary for the category: `sim/harness.js`
 cites a median of 3.3 percent active at day 30, and the model's built arc is at
 9.9. That is a benchmark from elsewhere, not a promise here. What the model
 cannot see, because it has no term for it, is that the people it keeps are the
-ones who meet rows 11 to 14 hardest: the daily users spend the gift, watch
-expression fall, and earn nothing new after day 30. **Judgement: the model is
-optimistic after day 20 for exactly the people it retains.** The reversal is
-real in the measurement (expression down for all seven, by more than half a
-point for six) and absent from the model.
+ones who meet rows 11 to 14 hardest: the daily users spend the gift, are
+refused on up to 56 of the days after it, watch expression dip through the first month,
+and earn almost nothing new after day 30. **Judgement: the model is
+optimistic after day 20 for exactly the people it retains.** The dip is real
+in the measurement (expression lowest around day 30, by up to 2.9 points) and
+absent from the model. It is not a reversal: on the corrected run it recovers
+to within 0.3 of the start by day 90. The first run's reversal, expression
+down by more than half a point for six at day 90, was the harness (section 9).
 
 **Where the model and the walk disagree.** The model's "built" gives everybody
 the When row, the if then plan. The walk measured that nothing leads a stranger
@@ -361,14 +408,18 @@ it.
 
 # 7. Found in passing, for the backlog, not dispatched
 
-1. **The free tier reads nothing after the gift. Measured, engine seat.** A
-   blank profile carries `plan.base` 0 (`engine/schema.js:111` and `:1063`), so
-   `planAllowance` counts every pattern ever opened against this week's ten and
-   says "0 left this week, banking toward a run of 4" on the first day after
-   the gift. With `base` unset it reads "10 of 10 left this week", which is
-   what the comment in `engine/plan.js` says the default is meant to be.
-   Nothing in the one file build ever writes a new period either. The plan
-   card promises "Ten patterns a week, for life."
+1. **Resolved. The free tier read nothing after the gift.** True of `2dff0f3`,
+   the build this file first ran on: a blank profile carried `plan.base` 0, so
+   `planAllowance` counted every pattern ever opened against this week's ten
+   and said "0 left this week, banking toward a run of 4" from the first day
+   after the gift, and that build had no way to start a new week. Both halves
+   were fixed in the engine by `b0eed95`, 25 minutes after the run: `base` is
+   null and floored at the gift's end, and the free weeks are counted from
+   `meter.giftAt`, the moment the gift ran out. At the current build the day
+   after the gift reads "10 of 10 left this week" and ten more open every
+   seven days. The script only kept reporting "never refills" because of its
+   clock, which is corrected (section 9). The plan card's "Ten patterns a
+   week, for life" is what the build now delivers.
 2. **`losssim.js` `TRACE.alive30` counts the row still in at day 90**, not day
    30: it is incremented after the ninety day loop on `live`. Its three readers
    in `proto/ritual/` label it "survived", which is correct; the name is not.
@@ -407,12 +458,18 @@ draws "12 found, all under the line for now" and nothing for zero.
 - *Widen the reader first.* The stemmer and frame layer in `proto/game/` are
   built and measured and not shipped. Costs engine work before the opening.
 
-**Q3. What should the free tier deliver after the gift?** The plan card says
-"Ten patterns a week, for life." The build delivers zero (backlog item 1).
-- *Fix it to ten a week, as ruled.* Engineering, small. Ten is under one
-  release at three addresses, which opens twelve.
-- *Fix it and revisit the ten.* Ana is the person the shortfall reaches first,
-  on day 17 of daily use.
+**Q3. Is ten a week the right pace after the gift?** Rewritten 27
+September. The question first asked here was whether to fix a free tier that
+delivered zero; the engine was fixed the same night (backlog item 1). The
+plan card says "Ten patterns a week, for life", and the build now delivers
+that, banking what is not spent. Measured on the daily walk: after the gift a
+person runs a release about once a week, and on the days between the release
+refuses whenever there is load on the wheel, 20 to 56 times over the rest of
+the quarter for five of the six who spend the gift.
+- *Keep ten a week.* No work. A daily user runs the release once a week and
+  is told to wait on the other days; Ana meets it first, on day 17.
+- *Revisit the ten.* A change to the tier ladder in `DECISIONS.md`, and to
+  what the paid tiers sell, since more free patterns is less reason to pay.
 
 **Q4. What is the headline for somebody who has not answered the 63?** Today
 it is 0 percent, for ninety days, whatever they do (row 12).
@@ -424,9 +481,142 @@ it is 0 percent, for ninety days, whatever they do (row 12).
   word names CQ or expression.
 
 **Q5. What does day 31 to day 89 give?** Measured: no new mark in that window
-for somebody who never misses. The Structure marks that could fill it (First
-clearing, Five clear) need releases, which the gift has shut by then.
+for somebody who never misses, with one exception on the corrected run:
+Derek earns First clearing on day 38. The Structure marks that could fill it
+(First clearing, Five clear) need releases, which after the gift arrive about
+once a week.
 - *Marks that read the coherent side*, an axis that held for seven days. Already
   designed as the award family in `losssim.js` pass 6, not built.
 - *Leave it quiet.* A quarter with an ending is honest, and it costs the
   people the model keeps longest.
+
+---
+
+# 9. The free tier after the gift, re-measured on a simulated clock
+
+Sam Oyelaran, QA. 27 September 2026.
+
+**What was wrong with the measurement.** The engine stamps time on its own.
+`meterRun` writes `meter.giftAt`, the moment the gift ran out, with
+`new Date()`, and `meterBudget(p, now)` counts free weeks from that stamp up
+to `now`, or up to `Date.now()` when no `now` is given. `arc90.js` walked
+ninety days in about three real seconds and called `meterBudget(p)` with no
+`now`. So the gift was stamped in the real present, every later read was in
+that same present, and no free week could ever open inside the walk. The
+engine already takes `now` (`engine/schema.js`, `meterBudget(p,now)`). The
+fix is in the script alone: the simulated clock from
+`proto/gamification-timeline/extract.js`, a `Date` whose no argument
+constructor and `Date.now()` return the simulated moment, installed before
+`engine.js` is loaded, with that moment passed to every `meterBudget` call.
+Day 0 is 1 September 2026, 07:00 UTC, as in `extract.js`. Nothing under
+`atuned_src/` moved.
+
+**Which reading is true.**
+
+- **For the build as it stands, the simulated clock run is true:**
+  `proto/ninety/arc90-1364e0e.txt`. After the gift the free tier opens ten
+  patterns every seven days and banks what is not spent.
+- **Item 7 as first printed was true of the build it ran on,** `2dff0f3`.
+  That build had no free week at all: `plan.base` was 0 and nothing counted
+  weeks. It reads the same under either clock, line for line, and the
+  committed `arc90-2dff0f3.txt` reproduces byte for byte apart from its
+  timestamp. The engine was fixed 25 minutes after that run, in `b0eed95`.
+- **What was an artifact is the claim at the current build.** Run unmodified
+  on this build, the script still said the allowance never rises again. That
+  was its wall clock. `proto/ninety/arc90-1364e0e-wall.txt` is kept beside the
+  true reading to show it, and is not a reading of the product.
+
+**The two readings of item 7, side by side.**
+
+| Run | Engine | Clock | Blank record, the day after the gift | Seven days later | Allowance rose after the gift, every day walk |
+|---|---|---|---|---|---|
+| `arc90-2dff0f3.txt`, the first run | `2dff0f3` | wall | "0 left this week, banking toward a run of 4" | the same | never |
+| re-run, not kept | `2dff0f3` | simulated | "0 left this week, banking toward a run of 4" | the same | never |
+| `arc90-1364e0e-wall.txt` | `1364e0e` | wall | "10 of 10 left this week" | "10 of 10 left this week" | never |
+| `arc90-1364e0e.txt`, **true** | `1364e0e` | simulated | "10 of 10 left this week" | "10 of 10 left this week" | 7 to 10 times, once per week that opened |
+
+The two middle columns are `planAllowance` read with an explicit date, which
+no clock can move: ten more patterns opened three days into the first free
+week read "0 left this week, banking toward a run of 4", and the same count
+read on the seventh day reads "10 of 10 left this week" on the current
+engine. The last column is the walk, and it is the one the clock decides.
+
+**The every day walk with the 63 answered.** "Gift spent" is the day the
+count of opened patterns reached 100. It is the same in all four runs.
+
+| Who | Gift spent | Refused with load: first run, `2dff0f3` sim, `1364e0e` wall, `1364e0e` sim | Release runs after the gift, same order | Expression day 1 to day 90: first run, then true | Day 90 allowance, true |
+|---|---|---|---|---|---|
+| Ana | d17 | 73, 73, 70, **45** | 0, 0, 1, **9** | 41.1 to 35.5, then **41.1 to 41.2** | "22 banked, and 10 more arrive each week" |
+| Diane | d21 | 69, 69, 67, **52** | 0, 0, 1, **10** | 59.0 to 51.9, then **59.0 to 58.8** | "2 left this week, banking toward a run of 4" |
+| James | d22 | 68, 68, 67, **27** | 0, 0, 1, **6** | 42.3 to 38.6, then **42.3 to 42.6** | "46 banked, and 10 more arrive each week" |
+| Derek | d24 | 66, 66, 65, **56** | 0, 0, 1, **10** | 48.5 to 39.9, then **48.5 to 48.2** | "0 left this week, banking toward a run of 4" |
+| Sofia | d29 | 61, 61, 57, **20** | 0, 0, 1, **5** | 72.9 to 70.7, then **72.9 to 72.9** | "42 banked, and 10 more arrive each week" |
+| Angela | d41 | 43, 43, 36, **0** | 0, 0, 1, **2** | 64.4 to 63.4, then **64.4 to 64.2** | "56 banked, and 10 more arrive each week" |
+
+For the most engaged walk the model deals, the gift is spent on the same days
+as before, d22 to d58, and the refusals fall from Angela 11, Derek 45, James
+53, Sofia 34, Diane 50, Ana 57 to Angela 0, Derek 36, James 33, Sofia 0,
+Diane 35, Ana 36.
+
+**The first run's "gift spent day N" column.** It printed the first day the
+allowance read nought. On `2dff0f3` that was the day the gift ran out. On the
+current engine the first free week's ten come between the two, so the script
+now prints both under their own names: the allowance first reads nought on
+day 20 for Ana, 22 Diane, 23 James, 25 Derek and 30 Sofia on either clock,
+and never for Angela on the true run (day 48 on the wall clock).
+
+**What moved it, one cause at a time.**
+
+- *`2dff0f3` to `1364e0e`, both on the wall clock.* The engine change. The
+  first free week's ten now arrive, so each daily user gets exactly one more
+  release after the gift and 1 to 7 fewer refusals. The engine commits since
+  also moved figures this correction does not rest on: CQ with the laws ends
+  up to 0.12 higher, and Marcus's most engaged walk earns its last new
+  mark on day 53, not day 30.
+- *`1364e0e` wall to simulated.* The clock alone. The allowance rises every
+  seven days, the release runs once a week, and expression recovers.
+- *`2dff0f3` wall to simulated.* Nothing on any measured line. That engine
+  has no week to open.
+
+Sections A, B and D read the same in all three files. In the printed ledger
+every item reads the same except four: item 7 itself, the CQ moved by a
+quarter (item 9), expression (item 10, which the true run no longer prints
+because it no longer ends lower), and the quiet ladder, where Derek's day 38
+is the clock and Marcus's day 53 is the engine change.
+
+**How the tool was checked before it was believed.**
+
+1. The unmodified script at `2dff0f3` reproduces the committed
+   `arc90-2dff0f3.txt` byte for byte, apart from its timestamp.
+2. `--clock wall` reproduces the unmodified script on every measured line at
+   both `2dff0f3` and the current build. Only the typed sentences it replaced
+   differ.
+3. The number of refills has a known answer: a week opens every seven days
+   after the stamp, so inside ninety days it is the whole number of weeks
+   from the gift day to day 90. Predicted Ana 10, Derek 9, James 9, Diane 9,
+   Sofia 8, Angela 7. Measured the same, and 0 on the wall clock. The first
+   cut of this probe read the allowance after the day's release, reported
+   Derek refilled 0 while he ran ten releases after the gift, and was wrong;
+   it reads before the release now.
+4. Under the simulated clock the stamp the engine writes falls on the
+   simulated day (Derek, day 24, `meter.giftAt` 25 September 2026). The
+   script stops if it does not. Proved by removing the clock: it stopped on
+   Angela, stamped with the real date against walk day 29 October.
+5. `extract.js`, built separately on the same engine, gives the same
+   refusals, the same number of releases after the gift, the same day 90 readings and the same
+   expression for all six, and the same Derek reading, "10 of 10 left this
+   week", on day 24.
+6. Three runs on the simulated clock are identical apart from the timestamp.
+
+**To reproduce,** from the repository root:
+
+    node proto/ninety/arc90.js --walk proto/ninety/walk-11830df.jsonl
+    node proto/ninety/arc90.js --walk proto/ninety/walk-11830df.jsonl --clock wall
+
+The first is the simulated clock and the default. For the first run's engine,
+check out `2dff0f3` in a separate worktree and run `arc90.js` from `1364e0e`
+there with either clock.
+
+**What this does not settle.** The walk still rests on the judgement stated
+in section 1, one release over the three heaviest addresses on every kept
+day. Whether a weekly run is enough is a question for him, and it is Q3.
