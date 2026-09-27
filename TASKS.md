@@ -20595,3 +20595,56 @@ claims more certainty than was read, since arithmetic picked it and no
 word said it.
 
 Not pushed yet with this fix. Pushing next with this log entry.
+
+## HP. The tree cleared, and round HG's two approved wirings dispatched. 27 September
+
+Round HG's own sequencing decision, closed out. That round found forty
+five files dirty across four running agents and stated plainly that
+the body map and archetype picker wiring would begin the moment the
+tree cleared, not before. It has now cleared: round HO's Story page
+commit and round GR's sniffer fix both landed and pushed, `git status`
+on the shared tree reads clean, and the two pieces waiting on that are
+now dispatched, each scoped to its own files so they can run at once
+without a repeat of round HH's sweep.
+
+**Dispatch one, to the full stack seat: the body map, wired into the
+real Body tab.** Not a new tab; `TAB.ENERGY`, id `emap`, already
+exists. The dispatch owns `atuned_src/ui/map.js` alone, told explicitly
+not to touch `core.js` or anything the second dispatch owns, and told
+to keep both of round HE's own named open ambiguities exactly as
+undecided as the prototype already drew them: the dashed, unofficial
+limb centres, and the three side by side readings of "the icon of the
+fetter," neither picked for him.
+
+**Dispatch two, to the UI UX seat: the real Avatar tab.** Three things
+at once, all his own words from round HG, quoted to the dispatch in
+full rather than paraphrased: the tab itself, since the rename from
+Energetics to Avatar was ruled at round FY and never actually carried
+into `atuned_src/engine/core.js:91`, which still reads `nm:'Energetics'`
+today; the archetype picker, wired in with a one to five scale
+replacing the prototype's one press "Rings true" toggle, for the
+reason he gave, that a person may carry a pattern without recognising
+it in themselves; and the page's own hero purpose, built for the first
+time, a person telling the story of who they want to become, that
+story populating structured fields the sniffer then reads against
+their journal to surface release protocols, plus a new ritual queue
+and the Pleaser/releasing visual carried onto this page.
+
+Two things told to the dispatch as open rather than handed a silent
+answer: which of round HC's still unruled sub-questions to build
+against (twelve archetypes or eighteen, Rebel or Outlaw, how much the
+Impact line says), and how the new hero-story panel coexists with the
+Energetics intake quiz already on that tab, which his own dictation
+never says to remove and may be exactly what feeds the structured
+fields he described. Both are to come back named, not guessed at
+silently, the way round HE's own ambiguity did.
+
+Neither commit is pushed by the dispatches themselves. Both were told
+to stop at a local, gated commit and hand me the hash, so each can be
+verified in isolation the way every other round this session has been,
+before either reaches origin.
+
+What I need from him: nothing new this round; this dispatches exactly
+what round HG already approved. The repository is still public and
+the Cloudflare against Supabase question from round HA and HF is still
+open; both remain outstanding regardless of this round's own progress.
