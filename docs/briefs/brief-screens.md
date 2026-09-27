@@ -816,6 +816,19 @@ own words is PROPOSED.
 
 ### 4.3 Story (TAB STORY, 0)
 
+**Overtaken in part. Note added 27 September, round IW.** The layout below is
+the Story page at `1c021f4`. It was redesigned after (`TASKS.md` IJ), and this
+section has not been redrawn. One piece of the new page matters for
+everything else, because the owner has now named it as the goal of the
+product. The imprints panel carries two icons (BUILT, round IG,
+`atuned_src/ui/storyui.js`): **Bank**, which opens the Imprints page, every
+imprint the person holds; and **Vault**, which lists what has been released
+and prints the count beside it. His words, round IW: *"The goal is for a
+person to empty their bank and to fill their vault."* The line and the
+mechanic are the same thing, so a port that drops either icon drops the
+stated goal. Where the line may be used in marketing is in
+`marketing/LINES.md` section 6.
+
 **1. The job.** "Let me say what happened, in my own words, and see what the
 instrument heard in it before anything lands." The owner: "This is high
 priority. The most important portion of the product has gotten the least

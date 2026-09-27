@@ -31,12 +31,12 @@ source behind `BIBLE.md` sections 2 to 11.
 
 | File | What it is for | Status |
 |---|---|---|
-| `brief-foundations.md` | The visual language: colour, the seven lightings including Punch, type, icons, space, components | **dated.** The live palette is `funnel/tokens.css`, generated from the app |
-| `brief-screens.md` | Every surface: layout, hierarchy, flow, and why | **partly.** The Story page sections predate the redesign approved 27 September (`TASKS.md` IJ) |
+| `brief-foundations.md` | The visual language: colour, the seven lightings including Punch, type, icons, space, components | **dated.** The live palette is `funnel/tokens.css`, generated from the app. Round IW added one open item to 1.3.6: the word *band* now has two meanings, his call |
+| `brief-screens.md` | Every surface: layout, hierarchy, flow, and why | **partly.** The Story page sections predate the redesign approved 27 September (`TASKS.md` IJ). Section 4.3 now opens with the bank and the vault, which round IW named as the goal of the product |
 | `brief-motion.md` | Everything that moves: transitions, the boot, the Field, the release, timing | **partly.** Section 7, the release ritual, describes the 2.2 second line cadence. The release is now a spoken script, 50 left and 50 right, release then reframe (`2c6e38b`) |
 | `brief-technical.md` | Rendering, frame budget, breakpoints, font delivery, the gates | **current** in substance |
 | `design-architecture.md` | Build order, engine and host, state, validation, undo, the network seam | **dated.** The structure holds; line numbers are at `eb788a2` |
-| `design-mechanisms.md` | The sniffer, the compute core, the seed, birth material, test vectors | **partly, and it matters.** Section 4 still gives CQ as intention times integrity over resistance. CQ is the 21 laws over 210. Read `BIBLE.md` section 2 for the formula |
+| `design-mechanisms.md` | The sniffer, the compute core, the seed, birth material, test vectors | **partly, and it matters.** Section 4 still gives CQ as intention times integrity over resistance. CQ is the 21 laws over 210. Read `BIBLE.md` section 2 for the formula. Section 1.3 is current: round IW re-read the 112, 108, 4 and 7 and wrote out why, against his own description |
 | `design-gamification.md` | The loop, the content chain, the ladder, the economy, the games, the avatar | **partly.** Updated for the fitted CQ in one place (section 9) on 27 September; the rest is at `eb788a2` |
 | `design-uxdeep.md` | Interaction design: the first run, the story, the drill, principles for new surfaces | **partly.** Section 3, the story, predates the Story redesign |
 | `cq-unified.md` | How the one CQ was fitted by simulation, against his rulings | **snapshot, and settled.** Its model was ruled and built the same evening. The record of why CQ is what it is |
@@ -55,7 +55,7 @@ Built, gated and measured. `node marketing/tests.js` is the gate.
 | File | What it is for | Status |
 |---|---|---|
 | `README.md` | Start here. The system in one page and how to run it | **current** |
-| `LINES.md` | **Your own lines, verbatim, in one place**, each with its source, both gate verdicts and where it may go. New 27 September | **current** |
+| `LINES.md` | **Your own lines, verbatim, in one place**, each with its source, both gate verdicts and where it may go. New 27 September; section 6 adds round IW, the bank and the vault | **current** |
 | `TESTIMONY.md` | The testimonial exercise: what landed, what did not, what to do next. New 27 September | **current** |
 | `MAP.md` | What a person carrying each of the nine charges responds to and what closes the page, sourced row by row | **dated**, 26 September panel counts |
 | `GUARD.md` | The line this system will not cross, the argument for it and its measured price | **current**. Its figures still hold after `bb2cbe0` |

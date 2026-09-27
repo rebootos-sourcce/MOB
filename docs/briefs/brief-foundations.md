@@ -20,7 +20,7 @@ Written by Mika Ueda-Salas with Sol Amadi (colour and light), Bjorn Haraldsson (
 
 **How measurements were taken.** Contrast is WCAG 2.1 relative luminance, computed from the literal hex values, always against **the element's own ground** and never against the page. For translucent surfaces (Glass, Glass white), the surface was composited over its own `--bg` first. Live checks were made in Chromium at 1600 x 1000 and 390 x 844 with the most loaded reference profile open (Gordon, 58, every charge maxed, coherence 1 percent). He is the worst case for colour: every reading that can turn red is red, and every reading where high is good sits at the floor.
 
-**Named terms.** A *seat* is one of the seven body centres, root to crown, and each one owns a colour. A *lighting* is a theme. The *stage* is the centre display area where the instruments draw. *Rails* are the left and right side columns. A *reading* is a measured value the product shows the person.
+**Named terms.** A *seat* is one of the seven body centres, root to crown, and each one owns a colour. The owner's name for a seat is *assemblage point* (`TASKS.md` GO); the product has not moved to it yet. The word *band* is contested, see the note closing 1.3.6. A *lighting* is a theme. The *stage* is the centre display area where the instruments draw. *Rails* are the left and right side columns. A *reading* is a measured value the product shows the person.
 
 ---
 
@@ -218,6 +218,8 @@ Coherence is shown as one of ten bands, and each band has its own colour. Every 
 **The argument** (Sol). The ramp runs cool and clear at the top, warms through the middle where the work is, and **desaturates at the floor instead of reddening**. Numb is not more alarming than frustrated; it is less present. A palette that shouts loudest at the bottom tells someone at the floor that they are an emergency. So chroma falls as coherence falls (59.6 down to 14.2), and collapse reads as colour going out of the picture, which is what collapse is. None of the ten is the alarm red. All ten now clear 4.5 on both panels. The two floor bands were lifted from an earlier 3.66 and 4.45 with hue and chroma held.
 
 A band prints as a range ("21 to 30"), never as a threshold, because a threshold does not tell a person how wide the word is.
+
+**Open, the owner's call. Added 27 September, round IW, after this section was written.** The word *band* now has two meanings and only one can hold. As built, and as this section uses it, a band is one of the ten coherence ranges above, with its word and its colour (`tierOf` and `medianRange` in `atuned_src/engine/data/canon.js`, whose comment reads "a band is a range and says so"). In round IW the owner used it for the seat colour of 1.3.1: *"A symbolage point is a chakra. A band would be the chakra color. So, root is the band."* (`TASKS.md` IW). Three ways it can go: band moves to the seat colour and the tier word takes a new name; band stays the tier word and the seat colour takes another word; or neither keeps it. None is chosen here. A port should carry the tier ramp under its token names (`TIERCOL`, `TIERDEF`) and not bake *band* into new labels until he rules. The same question is listed for him in `marketing/LINES.md` section 6.
 
 ### 1.3.7 Family colours are borrowed, never invented
 

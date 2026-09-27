@@ -84,7 +84,7 @@ Counts were read off `engine.js` on 27 September.
 
 | His word | What the engine holds there | Measured or symbolic |
 |---|---|---|
-| physical | 112 addresses, each seated at a named nerve or plexus (104 distinct names), in seven seats plus the two field points above and below the body. `NODES` in `engine/data/nodes.js` | Placed from self report and from what a person writes. A coordinate, never a measurement of a nerve (`RESEARCH-icp.md` section 5, Marcus) |
+| physical | 112 addresses: 108 inside the body, each seated at a named nerve or plexus (104 distinct names) in one of seven seats, and 4 field anchors outside it, two above the body and two below. `NODES` in `engine/data/nodes.js`. Corrected in round IW: this row said "two field points", and the file carries four | Placed from self report and from what a person writes. A coordinate, never a measurement of a nerve (`RESEARCH-icp.md` section 5, Marcus) |
 | mental | the 21 laws of integrity the intake asks (`SI`), the 39 saboteur clusters and 33 named saboteurs they compound into, and the six masks, one per developmental era | Read from answers and from the story |
 | architectural | the six architectures a pattern compounds into: Grandiosity, Predatory, Collapse, Rigidity, Dysregulation, Dissociation (`HCX_LIB`). His kink, cluster and network, which `BRAND.md` section 3 maps rung by rung | Derived: pairs of saboteurs become complexes, families of complexes become the architecture |
 | celestial | birth material: sun, moon and rising signs, human design gates, gene keys, the Chinese year, numerology (`engine/astro.js`, `engine/numerology.js`) | **Symbolic, not measured.** `docs/briefs/design-mechanisms.md` section 6 says so, and `docs/briefs/harmonic-research.md` found no measured basis under the frequency claims. On a page, this layer is offered as a lens and never as a reading |
@@ -240,12 +240,98 @@ Each one is open. None is answered for him by default.
 
 ---
 
+## 6. Round IW, 27 September. The bank and the vault
+
+Quoted from `TASKS.md` IW. Only the lines that position the product are
+here; the rest of that dictation is product work and stays there.
+
+| # | His line | refuse.js | Voice gate | Where it may go |
+|---|---|---|---|---|
+| IW1 | The goal is for a person to empty their bank and to fill their vault. | pass | pass | byline, page. **Held from cold** until the two nouns are defined in the same frame. See the objection below |
+| IW2 | we know that there are ten major plexus off the spine. We identify seven within the system. And we recognize that each major one has smaller branches, which make up the total of 108 in the body. | **refused, voice**: *108* | **fails, hard**: *108* | internal only. The count stated to users is 112 (`CLAUDE.md`, voice). The structure is right and is written out for an outside reader in `docs/briefs/design-mechanisms.md` section 1.3 |
+| IW3 | CQ should raise, DQ should lower, SQ should lower. You should see SQ lowering in real time since those are the patterns releasing. | pass | pass | held. A system rule he asked for this round, not yet on screen. Copy that promises a live fall before the product shows one is a claim with no proof |
+
+The three terms in IW3, so nobody has to go and look. **CQ** is the
+coherence figure: the 21 laws of integrity a person rates, summed, with 210 as
+100 percent. **SQ** is the weight held at one address, 0 to 10, one value for
+each of the 112. **DQ** is all of that weight added up and shown as a
+percentage. His rule is that release moves CQ up and moves the other two down,
+and that the person watches SQ fall while it happens. Definitions from
+`docs/briefs/cq-unified.md`, "Fixed by him".
+
+### The tagline is the mechanic
+
+IW1 is not a slogan laid over the product. It describes two controls that
+are already built. On the Story page, the **Bank** icon opens the Imprints
+page, which holds every imprint the person carries. The **Vault** icon opens
+what has been released, and prints its count beside the word, starting at 0.
+Built in round IG, `atuned_src/ui/storyui.js`, from his words quoted in the
+code: *"We need to be able to see the bank as an icon, which goes to the main
+imprints page. And the vault, which is what's been released."*
+
+So the line passes the test section 2 set for his resolutions: someone who
+does not trust us can open the page and check it. Two icons, one count going
+up. In this category that is rare, and it is the reason IW1 outranks every
+compression below.
+
+- **Segment.** `BUYERS.md` level 6 and level 7. Level 6 is buying a mechanical
+  roadmap to stop a loop, and a ledger with one direction is a roadmap. Level
+  7 wants the diagnostic and gets a count. Levels 8 to 10 read it as a state
+  machine and need nothing more. Level 4 hears work that hurts; do not open
+  their page on it.
+- **The objection, answered in the material.** Cold, *empty your bank* reads
+  as money. Served to a stranger beside a paid tier, it says *spend
+  everything*. The answer is not a rebuttal. It is a frame that names both
+  nouns before the stranger supplies their own: the second compression below.
+- **The second risk, his to rule.** A vault that fills is a score. He ruled
+  that coherence is not a rank (*"Regardless of our score"*, `DECISIONS.md`),
+  and the same round asked what the badges and scoring are, since he has not
+  seen them. How the vault count is shown sits inside that question.
+
+### Compressions, and these are ours
+
+Each passes both gates, run 27 September. None replaces IW1.
+
+| Ours | From his | Note |
+|---|---|---|
+| Empty the bank. Fill the vault. | IW1 | page only, next to the two icons it names. Cold, it is the money reading |
+| Every imprint you hold sits in the bank. Every one you release lands in the vault. | IW1 | cold safe. Defines both nouns in sixteen words and makes no claim |
+| The bank empties as the vault fills. | IW1 | page. True today as a direction. As a live fall on screen it waits on IW3 |
+
+### Open with him, not answered here
+
+5. **"Band" means two things now, and only one can hold.** His words this
+   round: *"A symbolage point is a chakra. A band would be the chakra color.
+   So, root is the band."* The product already prints *band* for something
+   else: the coherence tier word beside CQ (Gaining, Incoherent and the rest),
+   one of ten ranges, each with its own colour (`tierOf` in
+   `atuned_src/engine/data/canon.js`). Logged in
+   `docs/briefs/brief-foundations.md` section 1.3.6. Three ways:
+   - **Band becomes the seat colour, as he said.** The tier word needs a new
+     name, and every place it prints moves with it.
+   - **Band stays the tier word.** His meaning takes another word, such as
+     *colour* or the seat's own name.
+   - **Neither keeps it.** Both get a plain word and *band* leaves the
+     interface.
+   Until he rules, marketing copy uses neither meaning.
+6. **"Ten major plexus off the spine."** His figure. The product carries
+   seven and does not need the ten, and nothing in the repository sources
+   it. Anatomy texts count major plexuses differently depending on whether
+   the autonomic ones are included. It stays under his byline or is left out;
+   it is not a line for a page until it has a source.
+
+---
+
 ## What was run
 
     27 September. Every line in sections 1 and 4, his and ours, through
     marketing/refuse.js check() and through check.py in file mode, one run,
     with the canary the directory's gate uses. Voice gate exit 1, as expected:
     four of his lines and one of ours fail on the soft lexicon, named above.
+
+    27 September, round IW. The three lines and three compressions in
+    section 6, through refuse.js check() and check.py --line, one at a time.
+    One hard failure on each gate, IW2, on 108. Everything else passes.
 
 The negation guard in `refuse.js` was fixed the same day (it read across
 sentence ends, see that file). The verdicts above were taken after the fix.

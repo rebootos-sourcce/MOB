@@ -54,6 +54,17 @@ Measured distribution over the ring: Anger 27, Sad 17, Disgust 16, Fear 11, Sham
 
 Each ring node also gets `slot` (0 to 107, seat order then file order) and `ang = slot/108 * 2π - π/2`.
 
+**Why the numbers are 112, 108, 4 and 7, for a reader outside the team.** Added 27 September, round IW; the counts were re-read off `nodes.js` that day and match the ones above. The owner described the architecture in his own words: *"we know that there are ten major plexus off the spine. We identify seven within the system. And we recognize that each major one has smaller branches, which make up the total of 108 in the body."* (`TASKS.md` IW). The data already has that shape:
+
+| Layer | In `nodes.js` | Count |
+|---|---|---|
+| Seats, the major centres he carries | `b` from Root to Crown | 7 |
+| Branches under each seat | Root 16, Sacral 16, Solar 16, Heart 15, Throat 12, 3rd Eye 12, Crown 21 | 108 inside the body |
+| Field anchors, outside the body | Sol Star and Stellar Gateway above, Earth Star and Gaia Gateway below, `b` of `Field-Above` or `Field-Below`, no nerve | 4 |
+| Addresses in all | | 112, the number stated to users |
+
+So his description and the engine agree, and nothing needs to change. The one figure the engine does not carry is *ten*: the product holds seven seats and never refers to the other three, and nothing in the repository sources the ten. It is his framing, not a table to port. This matches `BODY-MAP-SPEC.md` section 2, which gives the same 112, 4 and 108. The user-facing rule is unchanged: say 112.
+
 ### 1.4 The routing tables in `core.js`
 
 - `CHG2SEAT`: charge word to seat (fear>Root, anger>Solar, shame>Sacral, disgust>Sacral, apathy>Throat, shock>3rd Eye, sadness/grief/surprise>Heart, anticipation/anxiety>Solar, pride/separation>Crown, guilt/craving>Sacral).
