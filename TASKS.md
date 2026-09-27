@@ -17468,3 +17468,60 @@ should grow to match the Wheel's feather scale (a geometry change not
 taken alone), and how many zoom notches earlier the feathers should
 now appear.
 
+## GA. The Compass fix verified against the shipped build, three real
+## causes closed. 27 September.
+
+The Compass was genuinely broken, three distinct ways: about thirty
+words and numbers were painted straight onto the figure's own canvas
+(invisible to every gate that measures markup, since a painted word
+has no box), the figure clipped at both ends on short canvases, and
+on a phone the layer names sat in front of the figure rather than
+below it. Commit `30cdcb6`, built on top of the Root energetics work
+(`fe433d8`).
+
+**Independently re-verified against the actual build, not taken on
+report.** `source.html` md5 matches to the letter,
+`75a5f0728afc03597afd486c27f4438e`. Re-ran all nine gates myself:
+engine 1735/0, 459 exports, functional 1136/0, collide 336/0
+(matching the new painted-word check the fix itself added), design
+158/0, monitor all render, funnel 172/0, voice objections clean. Took
+fresh screenshots and clicked both the Regulation and Layers switches
+on together myself: the figure stays clean, arrows only, and every
+word that used to sit on top of it (up and down regulating axes,
+released and compressed planet and vice names) now reads in an
+organized key below the canvas instead.
+
+**Real, disclosed decisions left as is rather than folded in
+silently:** the seat colours under Lumen and Snow still sit under the
+4.5 contrast floor, matched to what the rest of the same panel
+already measures, named as the standing lighting work rather than
+fixed here; and a pre-existing `resize` listener leak in `coneOpen`
+was found but left alone as out of this fix's scope.
+
+## GB. Real, concrete Field feedback: tooltip heading language, an
+## overlay minimize button, and an uneven reading pill. 27 September.
+
+**His words: "I don't like the term like how it runs through you. I
+think we want like active behavior, opposite behavior, or like
+negative behavior, positive behavior. It needs to be clean, it needs
+to be organized. And then with our overlay nav, I want a button so I
+can minimize it and open it up, the tools menu, upper left hand side.
+The accuracy pill is bigger than everything else. Make all of those
+uniform."**
+
+**A real ruling on the tooltip pitch still waiting in his inbox,**
+not yet built: "How it is built" was the earlier heading from
+`DESIGN-tooltip-copy.md`; his direction is to replace this style of
+heading with a clean active versus opposite, or positive versus
+negative, framing instead. Not answered in that document's own
+numbered questions, so recorded here as a real, separate ruling to
+carry into whichever seat builds the approved pitch.
+
+**Two concrete, dispatchable items:** a minimize and reopen control
+on the Field's own overlay nav (the glass bar, upper left, called
+"the tools menu" in his words), and the Accuracy pill in the left
+rail reading row sized larger than DQ and CQ beside it, needing to be
+brought to the same size.
+
+Dispatched.
+
