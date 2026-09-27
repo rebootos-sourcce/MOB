@@ -863,9 +863,9 @@ function coneKey(){
     +'" fill="none" stroke="currentColor" stroke-width="1.7" '
     +'stroke-linecap="round" stroke-linejoin="round"/></svg>'
     +esc(l.nm)+' <span class="ck-v">'+l.v.toFixed(1)+' of 10</span></span>';};
-  h+=grp('Up regulating',rg.up.map(function(l){
+  h+=grp('Lifting you',rg.up.map(function(l){
     return row(l,seatCol(PAL[l.b]?l.b:'Heart'),1);}).join(''));
-  h+=grp('Down regulating',rg.dn.map(function(l){
+  h+=grp('Pulling you down',rg.dn.map(function(l){
     return row(l,seatCol('Root'),-1);}).join(''));}
  if(CONE.layers){
   var lay=function(list,col){
@@ -1153,7 +1153,7 @@ function coneOpen(inTab){
      ?'<button type="button" class="cn-b" data-cn="flat" '
       +'title="Take the tilt out and look straight down on the figure">Flat</button>'
       +'<button type="button" class="cn-b" data-cn="reg" '
-      +'title="Show which axes are regulating you up and which are regulating you down">Regulation</button>'
+      +'title="Show the three laws lifting you most and the three pulling you down most">Regulation</button>'
      :'')
     +'<button type="button" class="cn-b" data-cn="layers" '
      +'title="Show the rings the axes are stacked on">Layers</button>'

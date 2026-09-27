@@ -3,7 +3,7 @@
 const MXC=[];
 for(let rw=0;rw<9;rw++)for(let c=0;c<19;c++){
  const b=document.createElement('button');b.type='button';
- b.title=DOMAINS[c].nm+' × '+CHILD[rw].nm;
+ b.title=DOMAINS[c].nm+' meets '+CHILD[rw].nm.toLowerCase();
  b.setAttribute('aria-label',DOMAINS[c].nm+' by '+CHILD[rw].nm);
  b.dataset.c=c;b.dataset.rw=rw;
  b.addEventListener('click',function(){runCellDrill(c,rw);});
@@ -482,7 +482,7 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
    A worked example was marked by one line, the release's refusal, and he
    struck it as unnecessary text. The job it did was real and nothing else did
    it. Closed, the picker read "Abraham, 74, retired ju", cut at its 190 pixel
-   cap, and the heading that says Reference cases shows only with the list
+   cap, and the heading that says More examples shows only with the list
    open. So a closed screen never said the field was a demonstration.
 
    The slot keeps its label and the value carries the state: the loaded
@@ -502,8 +502,8 @@ function pselName(p,up){
  PEOPLE.forEach(function(p,i){var o=document.createElement('option');o.value=i;
   o.textContent=pselName(p,false);
   if(p.you){gYou=gYou||mk('Your own');gYou.appendChild(o);}
-  else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
-  else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
+  else if(/ICP/.test(p.role)){gICP=gICP||mk('Examples');gICP.appendChild(o);}
+  else {gRef=gRef||mk('More examples');gRef.appendChild(o);}});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
 /* THE LOADER ON A PHONE, GF in TASKS.md. A circle beside help, and the list it
    opens is read off #psel every time it opens, groups and names and which one

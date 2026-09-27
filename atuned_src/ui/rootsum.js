@@ -76,8 +76,8 @@ const RS_STRENGTH={strong:'They agree strongly.',clear:'They agree.',light:'A li
 /* how the bridge a meeting stands on works, for the tooltip, said once per
    vocabulary so nobody has to take a meeting on trust */
 const RS_BRIDGE={
- el:'Western and Eastern astrology both name fire, earth and water. The design gate is an I Ching '
-  +'hexagram, and each of its two trigrams carries one of the five Chinese elements.',
+ el:'Western and Eastern astrology both name fire, earth and water. The design gate is a figure '
+  +'from the I Ching made of two halves, and each half carries one of the five Chinese elements.',
  pl:'Numerology gives every digit a planet, and astrology gives every sign a ruling planet. '
   +'This is where a number and a sign land on the same one.'};
 function renderRootSum(){

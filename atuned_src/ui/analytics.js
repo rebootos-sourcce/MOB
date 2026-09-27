@@ -216,7 +216,7 @@ function anaRender(){
  out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
-  out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'
+  out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+(l.v<4?', shut':'')+'">'
    +'<s><u style="height:'+Math.max(4,Math.round(l.v/10*60))+'px;background:'
    +seatCol(l.b)+'"></u></s><span>'+l.nm.slice(0,3)+'</span></div>';});
  out+='</div>';
@@ -233,7 +233,7 @@ function anaRender(){
       time on this surface. Each bar names its CQ and seat on its title, and
       the warning stands once, beside Identification. */
    +'<div class="ana-strip">';
-  H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', '+x.dark
+  H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', heaviest at the '+String(x.dark).toLowerCase()
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></div>';});
   out+='</div>';}
@@ -391,12 +391,11 @@ function anaDrill(){
   var ai=-1; ARCH.forEach(function(x,i){if(x.nm===P.nm)ai=i;});
   /* ARCH names it Rebel and the eighteen name it Outlaw. one row, two names. */
   var a18=ARCH18.filter(function(x){return x[0]===P.nm||(P.nm==='Rebel'&&x[0]==='Outlaw');})[0];
-  h+=head('Archetype',P.nm,(ai===r.pi?'primary, how the soul expresses':'secondary affinity'));
-  h+='<p class="ad-p">'+((ARCH[ai]||{}).v||'')+'. Affinity <b>'
-   +(((r.aff||[])[ai]||0)*100).toFixed(0)+'%</b>.'
+  h+=head('Archetype',P.nm,(ai===r.pi?'primary, how the soul expresses':'not your primary'));
+  h+='<p class="ad-p">'+((ARCH[ai]||{}).v||'')+'. <b>'
+   +(((r.aff||[])[ai]||0)*100).toFixed(0)+'%</b> as strong as your strongest.'
    +(a18?' Its primary saboteur is <b>'+a18[1]+'</b>, seated at the '+a18[2].toLowerCase()+'.':'')
-   +' The archetype is invariant. Release does not change it, it only clears what bends its '
-   +'output on the way out.</p>';
+   +' The archetype does not change. Release clears what bends it on the way out.</p>';
  } else if(P.k==='mask'){
   var m2=r.maskRing.filter(function(x){return x.nm===P.nm;})[0];
   if(m2){var sb=(m2.bands||[]);

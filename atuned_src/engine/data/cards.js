@@ -117,8 +117,8 @@ const C3_THEME=['scarcity','abandonment','control','suppression','overwhelm','sh
 /* the six kinds of pattern the generator takes */
 const C3_KIND=[
  {nm:'Emotional',  ex:['grief','anxiety','shame','anger']},
- {nm:'Cognitive',  ex:['overthinking','fear loops','self doubt']},
- {nm:'Somatic',    ex:['tight throat','swollen ankles','jaw tension']},
+ {nm:'Mental',     ex:['overthinking','fear loops','self doubt']},
+ {nm:'Physical',   ex:['tight throat','swollen ankles','jaw tension']},
  {nm:'Relational', ex:['abandonment','approval seeking','rejection fear']},
  {nm:'Financial',  ex:['scarcity','wealth rejection','instability']},
  {nm:'Identity',   ex:['I am broken','I am not enough','I am evil']}];

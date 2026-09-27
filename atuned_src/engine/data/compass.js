@@ -83,7 +83,7 @@ const MIRROR=[
  {k:'RE', q:'Revelation', seat:'Crown',
   up:'Jesus', upd:'Love as the highest charge. The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.',
   dn:'The Furies',      dnd:'Map replacing territory permanently. The belief system defended against any experience that contradicts it.',
-  ask:'Can this person update their framework when direct experience contradicts it?',
+  ask:'Can this person change what they believe when what they live through says otherwise?',
   /* the same radiant he carries at the Heart, because it is the same figure
      and a second drawing would be a second concept. */
   ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8',
@@ -135,7 +135,7 @@ const MASTERS=[
 const BLUEPRINT=[
  {nm:'Malak',   d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
  {nm:'Baal',    d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
- {nm:'Set',     d:'Deception and disorder from within. Operates from inside a coherent system to disrupt it rather than attacking from outside.'},
+ {nm:'Set',     d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
  {nm:'Lucifer', d:'Pride as separation from Source. The highest functioning adversarial expression, hardest to detect, because it uses the vocabulary of coherence in service of decoherence.'}];
 
 /* ---- THE NINE CIRCLES, THE DESCENT ----
@@ -151,7 +151,7 @@ const CIRCLES=[
  {c:5, nm:'Wrath and sloth', by:'Phlegyas', sin:'Wrath and sloth', see:'I either go off, or I go flat. There is not much in between.', p:'Two exits for one suppressed charge. Wrath outward as attack, sloth inward as shutdown. Same origin.', at:'Solar, the fight or freeze split'},
  {c:6, nm:'Heresy',     by:'The Furies', sin:'Pride', see:'I already know how this works, and I stop listening once I have decided.', p:'Ideological decoherence. Belief replacing direct experience. Doctrine as identity armour.', at:'Third eye locked, perception distorted by installed narrative'},
  {c:7, nm:'Violence',   by:'Minotaur',   sin:'Wrath', see:'Something in me wants to break it, and sometimes that something is me.', p:'Against others, against the self, against order. The pattern has escaped containment.', at:'Full system, no single anchor'},
- {c:8, nm:'Fraud',      by:'Geryon',     sin:'Envy', see:'What people meet is a version I run. It costs me nothing to be warm at them.', p:'Beautiful surface, serpentine beneath. Shine without a light source. The mask has become the entire operating system.', at:'Heart inverted, warmth performed rather than generated'},
+ {c:8, nm:'Fraud',      by:'Geryon',     sin:'Envy', see:'What people meet is a version I run. It costs me nothing to be warm at them.', p:'Beautiful surface, serpentine beneath. Shine without a light source. The mask now runs everything.', at:'Heart inverted, warmth performed rather than generated'},
  {c:9, nm:'Treachery',  by:'Satan frozen',sin:'', see:'I went against someone who trusted me, and I have not moved since.', p:'Complete inversion. No flow, no movement, maximum resistance. Stasis at terminal velocity, not active evil.', at:'Full system locked, no circuit completing anywhere'}];
 
 /* ---- THE BEHAVIOURAL CASCADE ----

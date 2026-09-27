@@ -65,10 +65,15 @@ function impPill(n,maxW,IX,ghost,inferred){
  var opp=(CHILD.filter(function(x){return x.nm===n.cf;})[0]||{}).opp||'';
  var on=!!IMP_PICK[n.i], hot=n.sq>=9;
  var val=ghost?('+'+ghost.toFixed(1)):(installed?('\u2713 '+n.pole.toFixed(1)):n.sq.toFixed(1));
- var title=n.k+(opp?', toward '+opp:'')+' · '+n.b
-  +(ghost?' · pending '+ghost.toFixed(1)
-    :(installed?' · '+opp+' installed at '+n.pole.toFixed(1)
-      :' · SQ '+n.sq.toFixed(1)+' · pain '+painOf(n,IX.bandLoad)+' · feeds '+(IX.feeds[n.i]||0)));
+ /* V21. This read "Shame, toward Worth · Root · SQ 5.4 · pain 3 · feeds 2":
+    a variable name and two bare counts. Each figure now says what it counts.
+    feeds is the saboteurs the address is part of, from impIndex. */
+ var fed=IX.feeds[n.i]||0;
+ var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' seat. '
+  +(ghost?'Waiting to land: '+ghost.toFixed(1)+'.'
+    :(installed?opp+' installed at '+n.pole.toFixed(1)+'.'
+      :'Charge left '+n.sq.toFixed(1)+', pain '+painOf(n,IX.bandLoad)+', part of '
+       +fed+' saboteur'+(fed===1?'':'s')+'.'));
  /* WHAT THE SENTENCE NAMED, OR WHAT THE SEAT IS. Never the address name on an
     inferred hit. The scan reads a seat and an intensity out of a sentence, and
     when the words name no child emotion the address is chosen by a fallback:

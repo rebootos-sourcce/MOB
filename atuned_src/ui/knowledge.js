@@ -290,8 +290,8 @@ const KB_OF={
    order. Which laws belong on the coherence axis is open and is not touched. */
 const KB_AXHD={
  nature:'Laws of nature · Sat, how the field behaves',
- human:'Laws of human nature · Chit, how consciousness enters form',
- spirit:'Moral integrity · Ananda, what maintains coherence',
+ human:'Laws of human nature · Chit, how awareness comes into a body',
+ spirit:'Moral integrity · Ananda, what keeps you in one piece',
  express:'Laws of expression · what it comes out as',
  emotion:'The nine architectures', measure:'The instruments', meta:'The frame'};
 

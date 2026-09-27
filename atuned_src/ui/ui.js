@@ -35,14 +35,26 @@ function describe(h,r,still){
   +'<hr><b>Click for detail.</b>';
  if(h.k==='gate'){var v=h.v;
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
-   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
-   +'<br>costs <b>\u00d7'+v.mult.toFixed(2)+'</b> on everything held<hr><b>Click for detail.</b>';}
- if(h.k==='node'){var n=h.n;
-  return '<u>'+String(n.i).padStart(3,'0')+'</u> <b>'+esc(n.k)+'</b><hr>'+n.b+' seat, '+(n.n||'field')
-   +'<hr>axis <b>'+(n.cf||'unrouted')+'</b><br>susceptibility <b>'+n.susc.toFixed(2)+'</b>'
-   +((AFFIN[r.root]||[]).indexOf(n.cf)>=0?'<br><b>1.3×</b> '+r.root+' affinity':'')
-   +'<br>held <b>'+n.held.toFixed(1)+'</b>, opposite <b>'+n.rep.toFixed(1)+'</b>'
-   +'<br><b>SQ '+n.sq.toFixed(1)+'</b><hr><b>'+(still?'Click for detail.':'Drag to change, click for detail.')+'</b>';}
+   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of your story, in '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
+   +'<br>everything held weighs <b>\u00d7'+v.mult.toFixed(2)+'</b><hr><b>Click for detail.</b>';}
+ /* V21, speak to a ten year old. This read "001 Fear / Root seat, Lumbar
+    Plexus / axis Fear / susceptibility 1.00 / held 0.3, opposite 8.8 / SQ
+    0.0": a storage index, which is CO-15 by name, and four variable names.
+    Now it says where the address is, what it does in a life, and what is on
+    it, in words. Every figure it had is still here except the index, and
+    each one says what it counts. SQ is the engine's own sentence for it,
+    compute.js: what is left of the held state after the opposite is in. */
+ if(h.k==='node'){var n=h.n, c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
+  var aff=(AFFIN[r.root]||[]).indexOf(n.cf)>=0;
+  return '<u>address</u> <b>'+esc(n.k)+'</b><hr>'
+   +(n.n?'At the '+esc(n.n.toLowerCase())+', in the '+n.b.toLowerCase()+' seat.'
+        :'Just outside the body, by the '+n.b.toLowerCase()+' seat.')
+   +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')
+   +'<hr>charge held <b>'+n.held.toFixed(1)+'</b>'
+   +(c?'<br>'+esc(c.opp.toLowerCase())+' installed <b>'+n.rep.toFixed(1)+'</b>':'')
+   +'<br>left after that <b>'+n.sq.toFixed(1)+'</b>'
+   +'<br>takes <b>'+n.susc.toFixed(2)+'\u00d7</b> the charge'+(aff?', because of your '+esc(r.root)+' root':'')
+   +'<hr><b>'+(still?'Click for detail.':'Drag to change, click for detail.')+'</b>';}
  /* AN ATOM. One story, one address, one weight, which is the smallest true
     unit this instrument holds. The snippet is the person's own sentence, so
     it goes in their words and not in a summary of them. */
@@ -54,11 +66,15 @@ function describe(h,r,still){
    +'<em>'+esc(snip)+'</em><hr>'
    +(d?d+', ':'')+'weighed <b>'+x.amt.toFixed(1)+'</b> at this address'
    +'<hr><b>Click to hold it.</b>';}
- if(h.k==='law'){var l=SI[h.j];
-  return '<u>law</u> <b>'+l.nm+'</b><hr>seated at the '+l.b.toLowerCase()
+ /* the law says what it is. IQ_STEM is the exact phrase the person was asked
+    about, so the definition is what was measured and nothing is invented. */
+ if(h.k==='law'){var l=SI[h.j], stem=(typeof IQ_STEM!=='undefined'&&IQ_STEM[l.nm])||'';
+  return '<u>law</u> <b>'+l.nm+'</b><hr>'+(stem?'How often you '+esc(stem)+'. ':'')
+   +'Seated at the '+l.b.toLowerCase()+'.'
    +'<br>reads <b>'+S.law[l.nm].toFixed(1)+'</b><hr><b>Click for detail.</b>';}
  if(h.k==='arch')return '<u>archetype</u> <b>'+ARCH[h.j].nm+'</b><hr>'+ARCH[h.j].v
-  +'<br>affinity <b>'+(r.aff[h.j]*100).toFixed(0)+'%</b><hr><b>Click to set as primary.</b>';
+  +'<br><b>'+(r.aff[h.j]*100).toFixed(0)+'%</b> as strong as your strongest'
+  +'<hr><b>Click to set as primary.</b>';
  if(h.k==='dom'){var d=DOMAINS[h.j];
   return '<u>'+d.r+'</u> <b>'+d.nm+'</b><hr>'+d.d+'<br>weight <b>'+(DOMAIN[h.j]||0).toFixed(2)
    +'</b><hr><b>Click to select, shift-click to add.</b>';}
@@ -69,9 +85,13 @@ function describe(h,r,still){
  var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
  if(!nm)return '';
  return '<u>'+nm+'</u> <b>'+esc(o.nm)+'</b>'+(o.unnamed?' <em>inferred</em>':(SAB_PI.indexOf(o.nm)>=0?' <em>Positive Intelligence</em>':''))+'<hr>'
-  +(o.auth?esc(o.auth)+'<br>':'')+(o.sub?esc(o.sub)+'<br>':'')
-  +'weight <b>'+o.w.toFixed(1)+'</b><hr><b>from '+f.length+' addresses</b><br>'
-  +f.slice(0,5).map(function(n){return String(n.i).padStart(3,'0')+' '+esc(n.k)
+  /* never o.sub: on a hyper-complex that is the clinical correspondence,
+     "depression · BPD · anxiety", and the ruling at the drill below keeps it
+     off the screen of the person it is about. d is the plain line. And no
+     storage index in front of a name, CO-15: Fear is not 001 to anybody. */
+  +(o.auth?esc(o.auth)+'<br>':'')+(o.kind==='hy'&&o.d?esc(o.d)+'<br>':'')
+  +'weight <b>'+o.w.toFixed(1)+'</b><hr><b>built on '+f.length+' address'+(f.length===1?'':'es')+'</b><br>'
+  +f.slice(0,5).map(function(n){return esc(n.k)
    +' <b>'+n.sq.toFixed(1)+'</b>';}).join('<br>')
   +(f.length>5?'<br>and '+(f.length-5)+' more':'');}
 /* AN ATOM IS THE SMALLEST THING DRAWN AND IT MUST WIN ITS OWN PIXEL.
@@ -697,17 +717,19 @@ function railStack(r){
       legend, so the legend was cut only once each row opened runFetterDrill,
       the axis's own drill, which says both halves and what fills each. */
    return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
-    +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+esc(c.nm)+'</span>'
+    +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>',
+      title:c.nm+' held '+v.toFixed(1)})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
     +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
-      glyph:'<path d="'+c.ic+'"/>'})+'</span></button>';}).join('');}
+      glyph:'<path d="'+c.ic+'"/>',title:c.opp+' installed '+p.toFixed(1)})+'</span></button>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
   h+=list.length?list.map(function(o,i){var p=poleOf(o);
    return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false})+'</span></button>';}).join('')
+    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
+      title:'Opposite installed '+p.toFixed(1)})+'</span></button>';}).join('')
    :'<div class="rnone">Nothing at this layer.</div>';}
  e.innerHTML=h;}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
@@ -1107,8 +1129,8 @@ function render(){
        shadow on all 112 addresses over the most they can hold, the same
        scale as CQ, so the ring is the figure and the tail is a percent. */
     +cr('Root',r.DQ,{size:'orb',text:'DQ',raw:Math.round(r.DQ)+'%',
-      title:'Shadow weight. The weight on all 112 addresses, out of the most '
-       +'they can hold.'})+'</button>'
+      title:'Shadow weight. All the charge on all 112 addresses, against the most '
+       +'they could hold.'})+'</button>'
   /* SQ LEFT THIS ROW, AND ONLY THIS ROW. EZ in TASKS.md, his words and his
      reason: "we don't need SQ in the upper left nav. And the reason why is
      because SQ is a total sum of the DQ anyway." Its circle stood beside DQ
@@ -1156,22 +1178,22 @@ function render(){
     +cr('Solar',r.unread?0:r.X*100,{size:'orb',hot:false,glyph:QICON.vitality,
       raw:r.unread?'\u2013':r.X.toFixed(2),
       title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
-       +'. What is left after apathy and the shadow weight.'})+'</button>'
+       +'. How much energy is left once apathy and the shadow weight are taken off.'})+'</button>'
   +'<button class="kb" data-q="xyz">'
     +cr('3rd Eye',r.unread?0:r.Y*100,{size:'orb',hot:false,glyph:QICON.awareness,
       raw:r.unread?'\u2013':r.Y.toFixed(2),
       title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
-       +'. Intention read against distortion. Not the rail section of the same name.'})+'</button>'
+       +'. How strong what you mean is, and how little of it gets bent on the way out.'})+'</button>'
   +'<button class="kb" data-q="xyz">'
     +cr('Root',r.unread?0:r.Z*100,{size:'orb',hot:false,glyph:QICON.will,
       raw:r.unread?'\u2013':r.Z.toFixed(2),
       title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
-       +'. Integrity carried through a clear segment.'})+'</button>'
+       +'. How much of your integrity gets through the charge you are carrying.'})+'</button>'
   +'<button class="kb" data-q="flow">'
     +cr('Heart',r.unread?0:f*100,{size:'orb',hot:false,glyph:QICON.flow,
       raw:r.unread?'\u2013':f.toFixed(2),
       title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
-       +'. What reaches the crown from the root, every seat multiplied by the next.'})
+       +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.'})
     +'</button>';})();
  /* who, and what is running hottest in them. */
  (function(){
@@ -1324,18 +1346,27 @@ function render(){
     panel broke it five times in six lines: integrity 1.9, intention 1.9, pole
     in 0.00, overshoot 0.00, distortion 10.0, on four different scales, with
     nothing to measure any of them against. */
+ /* V21. Five words, and none of them defined anywhere on the screen. Each
+    line now carries a plain sentence on its title, true to compute.js, and
+    "pole in" is "pole", the word the Summary tile already uses for it. */
+ var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
-  +'integrity <b>'+r.Ig.toFixed(1)+'</b> of 10<br>'
-  +'intention <b>'+r.It.toFixed(1)+'</b> of 10<br>'
+  +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
+    'integrity <b>'+r.Ig.toFixed(1)+'</b> of 10')
+  +ins('The same laws read seat by seat, up the body.',
+    'intention <b>'+r.It.toFixed(1)+'</b> of 10')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
      what the thing does: JQ is the opposite driven past the point where it
      serves. That is overshoot. The codex keeps its own word. */
-  +'pole in <b>'+r.poleMean.toFixed(2)+'</b> of 10<br>'
-  +'overshoot <b>'+r.JQ.toFixed(2)+'</b> of 10'
-  +(r.excess.length?', '+r.excess.length+' overshot':'')+'<br>'
-  +'distortion <b>'+r.dist.toFixed(1)+'</b> of 10';
+  +ins('How far the installed opposites outweigh the charge, on average, across your body.',
+    'pole <b>'+r.poleMean.toFixed(2)+'</b> of 10')
+  +ins('How far installed opposites have been pushed past the point where they help.',
+    'overshoot <b>'+r.JQ.toFixed(2)+'</b> of 10'
+    +(r.excess.length?', '+r.excess.length+' address'+(r.excess.length===1?'':'es')+' overshot':''))
+  +'<span title="'+esc('How much the patterns running in you bend what you mean. More patterns, '
+    +'and deeper ones, bend it more.')+'">distortion <b>'+r.dist.toFixed(1)+'</b> of 10</span>';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
  const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};

@@ -210,7 +210,7 @@ function gmRender(){
          : '<span class="gm-back"></span>')+'</button>';}).join('')+'</div>'
     +mtBlock(MT.pick)
     +(MT.found>=MT_PAIRS?'<div class="gm-done"><div class="pm-eye">All eight matched</div>'
-      +'<p class="gm-p">The nine axes are the whole emotional architecture. The ninth, '
+      +'<p class="gm-p">The nine axes hold every feeling this instrument reads. The ninth, '
       +esc(CHILD[8].nm)+', is not in this deck.</p></div>':'')
     +'<div class="gm-act"><button class="btn" id="mtgo">Deal again</button></div>';}}
 

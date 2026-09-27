@@ -80,7 +80,7 @@ function sumGlance(r){
      like third tier tiny information that no one's ever going to read." The
      line stays only where the figure has no unit of its own, which is where
      the scale is information. */
-  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.',
+  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'How closely you keep the 21 laws, all added up.',
    '', TIERCOL[r.tier]],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
@@ -94,7 +94,7 @@ function sumGlance(r){
      total shadow on all 112 over the most they can hold, so it has a ceiling
      of 100 and the ring is the figure, on the same scale as coherence. */
   ['shadow weight', 'Root', r.DQ, Math.round(r.DQ)+'%',
-   'The weight on all 112 addresses, out of the most they can hold.',
+   'All the charge on all 112 addresses, against the most they could hold.',
    ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from
@@ -109,7 +109,7 @@ function sumGlance(r){
   /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
      to 0 and 10, so ten is the ceiling and always was. */
   ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2),
-   'Coherent opposites standing, 0 to 10.', 'of 10'],
+   'How much of each opposite is installed, on average, across the body.', 'of 10'],
   ['energy', 'Solar', e*100, e.toFixed(2),
    'The average of vitality, awareness and will.', 'of 1']];
  /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"

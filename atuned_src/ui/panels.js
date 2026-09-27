@@ -6,6 +6,8 @@ const $=function(id){return document.getElementById(id);};
 /* svgI moved to component.js. It is a const, and a const reached for before
    its declaration throws at call time, which is a trap waiting for the first
    renderer that loads earlier than this file and wants an icon. */
+/* a list said out loud: apathy and shock; anger, shame and disgust */
+function panAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
 /* EACH ROW CARRIES ITS OWN MARK, NOT A DOT. FV in TASKS.md, his words:
    "everything should have meaning, everything should have an icon." These
    rows led with an eight pixel dot in the seat's colour, which says the seat
@@ -447,12 +449,15 @@ DOMAINS.forEach(function(d,i){
     "Justice, Architect. <one line>. Shift-click to add." which names the thing
     and then jumps straight to a keyboard trick, with nothing in between about
     what a blueprint domain is or what selecting one changes. */
- b.title=d.nm+'. A blueprint domain, one of nineteen, under the '+d.r+' root.\n\n'
-  +d.d+'\n\n'
-  +'Affinity 1.3 on '+((AFFIN[d.r]||[]).join(', ')||'nothing')+', which means charge on '
-  +'those axes weighs heavier here than elsewhere.\n\n'
-  +'Click to make this the blueprint you run. Shift-click to add it alongside '
-  +'the ones already selected.';
+ /* V21. "A blueprint domain" and "affinity 1.3 on" said what the thing is
+    called and not what it does to a person. The multiplier is suscAll's: a
+    root you run makes its paired axes take 1.3 times the charge. */
+ b.title=d.nm+': '+d.d+'. One of 19 parts of the blueprint you are born with, '
+  +'under the '+d.r+' root.\n\n'
+  +((AFFIN[d.r]||[]).length?'Running it makes '+panAnd(AFFIN[d.r]).toLowerCase()
+    +' land 1.3 times as heavy.\n\n':'')
+  +'Click to make this your blueprint. Shift-click to add it to the ones you '
+  +'already picked.';
  b.setAttribute('aria-label',d.nm+', '+d.r+' cluster');
  b.innerHTML=svgI('<path d="'+d.ic+'"/>')
   +'<span class="rt" style="background:var(--c)"></span>';
@@ -489,8 +494,8 @@ ROOTD.forEach(function(rn){
     reach it and every state had to be written back in script. */
  b.style.setProperty('--rc',rootCol(rn));
  var holds=DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ');
- b.title=rn+'. Holds '+holds+'. Affinity 1.3 on '+(AFFIN[rn]||[]).join(', ')
-  +'. Filled means you added it. Washed means your selection is already in it.';
+ b.title=rn+'. Holds '+holds+'. Running it makes '+panAnd(AFFIN[rn]||[]).toLowerCase()
+  +' land 1.3 times as heavy. Filled means you added it. Pale means something you picked is already in it.';
  b.addEventListener('mouseenter',function(){
   $('capD').innerHTML='<b style="color:'+rootCol(rn)+'">'+rn+'</b> root domain. Holds '
    +holds+'.';});
@@ -519,7 +524,7 @@ function capD(){
      one colour and Primary read flat on every option the board tried.
      Carried here on the 26 September ruling of the same board. */
   b.style.setProperty('--c',icCol(a.b));
-  b.title=a.nm+'. '+a.v+'. Shift-click to add.';b.setAttribute('aria-label',a.nm);
+  b.title=a.nm+', '+a.v+'. Shift-click to add.';b.setAttribute('aria-label',a.nm);
   b.innerHTML=svgI('<path d="'+a.ic+'"/>');
   b.addEventListener('mouseenter',function(){$('capA').innerHTML='<b>'+a.nm+'</b>, '+a.v;});
   b.addEventListener('mouseleave',capA);
@@ -645,8 +650,8 @@ function syncSoul(){
  var lg=$('rootlegend');
  if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
   +(S.roots.length&&nlit?' \u00b7 ':'')
-  +(nlit?'washed, your selection sits here':'');
- /* HS sweep: with nothing added and nothing washed this printed "click a root
+  +(nlit?'pale, something you picked is in here':'');
+ /* HS sweep: with nothing added and nothing pale this printed "click a root
     to add every domain under it", a how to line under a row of buttons. The
     legend now speaks only when there is a state on the row to key. */
  capD();capA();}
@@ -945,9 +950,14 @@ function helpSheet(){
   +'<div class="sh-row"><span>Set a charge</span><b>drag it, on a mouse</b></div>'
   +'</div>'
   +'<div class="sh-sec"><div class="pm-eye">Reading</div>'
-  +'<p class="sh-p">CQ is coherence, 0 to 100, what the field builds against what it costs. '
-  +'DQ is the shadow weight it is carrying. SQ is how deep that charge sits. Pole is how much '
-  +'of the coherent opposite is installed. Hover any of them for the rest.</p></div>'
+  /* PASS 1 FIRST. This said CQ was "what the field builds against what it
+     costs", which stopped being true on 25 September when CQ became the 21
+     laws summed. And "hover" is not a thing a phone can do: the tooltip
+     opens on a pointer resting or a finger held. */
+  +'<p class="sh-p">CQ is your coherence number: how closely you keep the 21 laws, added up. '
+  +'DQ is the shadow weight: all the charge you are carrying. SQ is how deep that charge sits. '
+  +'Pole is how much of each opposite is installed. Rest the pointer on any of them, or hold a '
+  +'finger on it, for more.</p></div>'
   +'<div class="sh-sec"><div class="pm-eye">What it does not claim</div>'
   /* THE DANGLING REFERENCE THE SWEEP LEFT. This said "every reading carries
      an interval" and then told a person to compare a move against it. Once

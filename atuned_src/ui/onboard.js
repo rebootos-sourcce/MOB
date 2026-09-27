@@ -170,27 +170,32 @@ function obRender(){
      what this is, kept as he says it: everything that is running you, from the
      top to the bottom. */
   out=obCard('What this is','Everything that is running you, top to bottom.',
-   '<p class="ob-p">Most of the strain we have agreed to call normal is making '
-   +'us ill. This shows you where it sits in the body, what it costs you, and '
-   +'what to do about it.</p>'
-   +'<p class="ob-p">It reads one thing: the body mind complex. How you run, '
-   +'which patterns are running, and where they are held.</p>'
+   /* V21, speak to a ten year old. "The strain we have agreed to call
+      normal" moves back toward his own sentence, which was already plain:
+      the stress we treat as normal is making us sick. The body mind complex
+      is his term and stays, said once in words a child has. */
+   '<p class="ob-p">Most of the stress we call normal is making us sick. This '
+   +'shows you where it sits in your body, what it costs you, and what to do '
+   +'about it.</p>'
+   +'<p class="ob-p">It reads one thing: the body mind complex, your body and '
+   +'your mind working as one. How you run, which patterns are running, and '
+   +'where in your body they sit.</p>'
    +'<div class="ob-grid">'
    /* TWO OF THESE FOUR DEFINED A THING BY WHAT IT IS NOT, on the first
       screen a person sees, in the file that runs antithesis at five times the
       house rate. The replacements are positive and concrete, and the first is
       copy this product already ships in the story box. */
    +[['You write what happened','the day, in your own words'],
-     ['It finds where that sits','a named plexus or a named nerve'],
-     ['You release what is there','one address at a time'],
+     ['It finds where that sits','one exact spot in your body'],
+     ['You release what is there','one spot at a time'],
      ['And you watch it move','the same numbers, over months']]
     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')
    +'</div>'
    /* "which is the good news" is the writer telling a person how to feel
       about a fact. The fact is the sentence. */
-   +'<p class="ob-p ob-dim">Nothing here is invented. Where it has not read '
-   +'something it says so rather than guessing. The work is yours.</p>',
+   +'<p class="ob-p ob-dim">Nothing here is made up. If it does not know '
+   +'something, it says so. The work is yours.</p>',
    /* a control names what it does, and it starts on the verb. "Then" is
       narration, and nobody says it pressing a button. */
    '<button type="button" class="btn pri" data-ob="next">Try one thing</button>'
@@ -203,15 +208,14 @@ function obRender(){
      right, which is said out loud because a person who thinks they are being
      tested will perform rather than feel. */
   out=obCard('The signal test','Say these to yourself, slowly.',
-   '<p class="ob-p">Read the first word. Let it land. Notice whether anything '
-   +'in your body changes, and do not go looking for it, just let it be there '
-   +'or not.</p>'
+   '<p class="ob-p">Read the first word. Let it land. Notice if anything in '
+   +'your body changes. Do not go looking for it.</p>'
    +'<div class="ob-word ob-word-n">'+esc(OB.neutral)+'</div>'
    /* "Most people get nothing from that one" is a claim about a population
       this instrument has never measured. What is true is why the word is
       there, so that is what it says. */
-   +'<p class="ob-p ob-dim">That word is the flat one, so nothing is the '
-   +'expected answer. Now the second.</p>'
+   +'<p class="ob-p ob-dim">That was a plain word. Feeling nothing is the '
+   +'point of it. Now the second.</p>'
    +'<div class="ob-word ob-word-c">'+esc(OB.charged.nm.toLowerCase())+'</div>'
    +'<p class="ob-p">Where did that one land? There is no right answer, and '
    +'nothing at all is an answer.</p>'
@@ -239,26 +243,31 @@ function obRender(){
   var said;
   if(OB.felt==='none'){
    said='<p class="ob-p">Nothing, and that is a real answer. Sometimes the '
-    +'word is not yours, and sometimes the signal is quiet because it has been '
-    +'quiet for a long time. Both of those are things this instrument reads, '
-    +'and neither of them is a failure.</p>';
+    +'word is not yours. Sometimes your body has been quiet for so long that it '
+    +'stays quiet. This instrument reads both, and neither is a failure.</p>';
   }else{
    var same=(OB.charged.seat===OB.felt);
    said='<p class="ob-p">You felt <b>'+esc(OB.charged.nm.toLowerCase())+'</b> at '
     +'the <b>'+esc(String(OB.felt).toLowerCase())+'</b>. '
-    +(same?'That is where this instrument reads it too, which means your felt '
-        +'sense and the measurement agree before you have entered anything.'
-       :'This instrument usually reads that one at the '
-        +esc(String(OB.charged.seat).toLowerCase())+', and yours went elsewhere. '
-        +'Yours is the one that counts. The measurement follows what you feel, '
-        +'not the other way round.')
+    +(same?'This instrument puts that word there too. Your body and the '
+        +'instrument agree, and you have not typed anything yet.'
+       :'This instrument usually puts that one at the '
+        +esc(String(OB.charged.seat).toLowerCase())+', and yours went somewhere '
+        +'else. Yours is the one that counts. The instrument follows what you '
+        +'feel, not the other way round.')
     +'</p>';}
+  /* PASS 1 BEFORE ANY OTHER. The heading said "A word with no power over you
+     moved your body" to a person who had just pressed Nothing, which tells
+     them something happened that they said did not. Each answer gets a
+     heading that is true of it. */
   out=obCard('What just happened',
-   'A word with no power over you moved your body.',
+   OB.felt==='none'?'Nothing moved this time.':'Just a word, and it moved your body.',
    said
-   +'<p class="ob-p">That is the whole mechanism, and you have just watched it '
-   +'work. A pattern is a word, a picture or a moment that still has a hold '
-   +'somewhere. This finds where, and gives you a way to put it down.</p>'
+   /* and "you just watched it happen" is only true of the felt path */
+   +'<p class="ob-p">'+(OB.felt==='none'?'':'That is how the whole thing works, and '
+   +'you just watched it happen. ')+'A pattern is a word, a picture or a moment '
+   +'that still has a grip somewhere in your body. This finds where, and gives '
+   +'you a way to put it down.</p>'
    +'<p class="ob-p ob-dim">Nothing has been written to your record. You can run '
    +'this again any time from your profile.</p>',
    '<button type="button" class="btn pri" data-ob="done">Go in</button>');

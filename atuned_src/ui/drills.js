@@ -213,10 +213,14 @@ function runLawDrill(l){
  var h='<div class="pm-eye">Law of integrity, '+l.b.toLowerCase()+'</div>'
   +'<div class="ad-nm">'+l.nm+' '+v.toFixed(1)+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +(v<4?'This law is <b>shut</b>. Under 4 it is not resisting, it is closed, and everything '
-    +'seated at the '+l.b.toLowerCase()+' pays for it.'
+  /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
+     everything seated there pays for it" read the threshold aloud, ran an
+     antithesis, and named a cost with no mechanism. compute.js has the
+     mechanism: a law's seat relief scales down what is held there, so a shut
+     law leaves more of the charge held. DESIGN-tooltip-copy.md, example 6. */
+  +(v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
-   :'Working but not strong. It holds in some contexts and slips in others.')
+   :'Working but not strong. It holds in some places and slips in others.')
   /* the count of what is held is the fact. Against the seat's total it is a
      score, and this is a reading. */
   +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> address'
@@ -244,13 +248,22 @@ function runNodeDrill(n){
     person's Scarcity is not 007 to them. The seat is what carries meaning. */
  var h='<div class="pm-eye">'+esc(n.b)+'</div>'
   +'<div class="ad-nm">'+esc(n.k)+'</div>'
-  +'<div class="ad-sub">'+esc(n.n||'field anchor')+(n.a?' · axis '+esc(n.a):'')+'</div>'
+  /* V21. The sentence read "Held 5.4, opposite installed 0.0, net SQ 5.4.
+     Distorts as Self-rejection.", three variable names and a one noun
+     behaviour, which is the string he pressed and could not read. Each figure
+     now says what it counts. SQ is compute.js's own sentence for it: what is
+     left of the held state after the opposite is in. DESIGN-tooltip-copy.md,
+     example 1. */
+  +'<div class="ad-sub">'+esc(n.n||'just outside the body')+(n.a?' · '+esc(n.a):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +'Held <b>'+n.held.toFixed(1)+'</b>, opposite installed <b>'+n.rep.toFixed(1)+'</b>, net SQ <b>'
-  +n.sq.toFixed(1)+'</b>. Distorts as '+esc(n.d||'')+'.</p>'
+  +'Charge held here <b>'+n.held.toFixed(1)+'</b>. '
+  +(c.opp?esc(c.opp)+' installed <b>'+n.rep.toFixed(1)+'</b>. ':'')
+  +'Left after that <b>'+n.sq.toFixed(1)+'</b>.'
+  +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')+'</p>'
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
-  +(c.opp?'This sits on the <b>'+c.nm+' toward '+c.opp+'</b> axis, at the '+c.addr.toLowerCase()
-    +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp+' partly installed.'
+  +(c.opp?'The other end of <b>'+c.nm.toLowerCase()+'</b> is <b>'+c.opp.toLowerCase()+'</b>. '
+    +c.nm+' itself lives mainly at the '+c.addr.toLowerCase()+(c.loc?', in the '+esc(c.loc):'')
+    +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp.toLowerCase()+' partly installed.'
       :c.opp+' is what fills this address once it is emptied.')
    :'A field address, with no poled axis under it. This one is an open ruling.')+'</p>'
   +'<div class="pm-eye">Feeds '+owners.length+'</div><div class="pm-chips">'
@@ -383,9 +396,13 @@ function runQDrill(q){
    +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+r.darkV.toFixed(1)+'</b>. Click a segment on the wheel to read one address.</p>';}
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
-  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+r.poleMean.toFixed(2)+' coherent opposite in</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child emotion has a coherent opposite. Fear to trust, anger to equanimity. '
-   +'Release empties the address, replace fills it with the opposite, and the pole is how much of that opposite is installed, 0 to 1 averaged across the nine.</p>'
+  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+r.poleMean.toFixed(2)+' on average</div>'
+   /* PASS 1 BEFORE V21. This said the pole was "0 to 1 averaged across the
+      nine". compute.js scores each address's pole 0 to 10, as how far the
+      installed opposite outweighs the charge held there, and averages it over
+      every address in the body. DESIGN-tooltip-copy.md, example 7. */
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child emotion has an opposite. Fear turns to trust, and anger to equanimity, a steady calm. '
+   +'Release empties an address and the opposite fills it. The pole is how far the opposite outweighs the charge at each address, 0 to 10, averaged across every address in your body.</p>'
    +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
  rdShell(h);}

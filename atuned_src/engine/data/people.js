@@ -18,7 +18,7 @@ const PEOPLE=[
   says:'I can see what is wrong with anything in four seconds. It has cost me two studios.',
   c:{Fear:2,Anger:3.5,Shame:2,Disgust:4,Apathy:1.5,Shock:1.5,Sad:1.5,Surprise:1,Anticipation:3},
   rep:{Surprise:8.9,Anticipation:8.2}},
- {nm:'Angela',age:36,role:'seeker, six modalities · ICP',dom:17,a1:11,a2:5,
+ {nm:'Angela',age:36,role:'seeker, six kinds of healing · ICP',dom:17,a1:11,a2:5,
   says:'Everything happens for a reason. I have said that at three funerals and I believed it each time.',
   c:{Fear:2,Anger:1,Shame:2.5,Disgust:1,Apathy:2,Shock:2,Sad:3,Surprise:1.5,Anticipation:2},
   rep:{Sad:9.4,Disgust:9.1}},

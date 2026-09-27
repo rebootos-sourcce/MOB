@@ -35,7 +35,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
     +'<span class="pm-ln">'+esc(m.nm)+'</span>'
     +'<span class="pm-lw">'+(m.v*10).toFixed(1)+'</span>'
     +(m.sub?'<span class="pm-ls">'+esc(m.sub)+'</span>':'')
-    +'<span class="pm-lk">'+m.links.length+' addr</span></button>';});
+    +'<span class="pm-lk">'+m.links.length+' address'+(m.links.length===1?'':'es')+'</span></button>';});
   sh+='</div>';
  } else if(PMLAYER==='bands'||PMLAYER==='pain'){
   var top=marks.slice().sort(function(a,b){return b.v-a.v;}).slice(0,10);

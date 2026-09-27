@@ -207,9 +207,18 @@ function cr(band,pct,o){
  var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
  var cls='cr '+size+(hot?' hot':'')+(o.act?' act':'')+(o.on?' on':'');
  var attrs=o.data||'';
- var title=o.title||((band||'')+(o.label?' · '+o.label:'')+' · '+val);
+ /* THE RING NAMED ITS COLOUR AND NOT ITS SUBJECT. The fallback led with the
+    band, which is the seat the ring is painted in, so the Trust ring on the
+    rail titled itself "Heart · 0.0" and the Fear ring "Root · 9.4". A title
+    that names the paint is worse than none. With a label it names the thing;
+    without one it says nothing, and the name printed beside the ring does
+    the job. DESIGN-tooltip-copy.md, example 5. */
+ var title=o.title||(o.label?o.label+', '+val:'');
  var tag=o.act?'button':'span';
- return '<'+tag+' class="'+cls+'" style="--c:'+col+'" title="'+esc(title)+'" '+attrs+'>'
+ /* and no attribute at all when there is nothing to say: an empty title still
+    matches the tooltip's [title] carrier and would eat the hover of the row
+    the ring sits in. */
+ return '<'+tag+' class="'+cls+'" style="--c:'+col+'"'+(title?' title="'+esc(title)+'"':'')+' '+attrs+'>'
   +'<span class="ring"><svg class="arc" width="'+G.box+'" height="'+G.box+'" aria-hidden="true">'
    +'<circle cx="'+(G.box/2)+'" cy="'+(G.box/2)+'" r="'+G.r+'" fill="none" '
     +'stroke="rgba(128,128,128,.22)" stroke-width="'+G.w+'"/>'
@@ -359,7 +368,7 @@ Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
 /* an address, a saboteur or a seat, rendered as one object */
 function crNode(n,size,o){o=o||{};
  return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  label:n.k, title:n.k+' · '+n.b+' · SQ '+n.sq.toFixed(1)},o));}
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+n.sq.toFixed(1)+' left after the opposite'},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -435,12 +444,12 @@ function crBadge(band,pct,o){
    ruling asked for. */
 function crbNode(n,size,o){o=o||{};
  return crBadge(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  title:n.k+' · '+n.b+' · SQ '+n.sq.toFixed(1)},o));}
+  title:n.k+', '+n.b.toLowerCase()+' seat. '+n.sq.toFixed(1)+' left after the opposite'},o));}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,
   hot:p.w>=9||!!p.over,
-  title:p.nm+' · weight '+p.w.toFixed(1)+(p.over?' · overshot':'')},o));}
+  title:p.nm+', weight '+p.w.toFixed(1)+(p.over?', overshot':'')},o));}
 function leaves(o){if(!o||!o.parts)return o?[o]:[];
  var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
   else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}

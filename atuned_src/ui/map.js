@@ -233,7 +233,10 @@ function pmMarks(r){
    return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,sub:'complex'};});
  if(L==='hyper') return r.hys.concat(r.sups).map(function(o){var lv=leaves(o);
    return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,
-     sub:o.sub||(o.kind==='sup'?'character':'hyper-complex')};});
+     /* never o.sub. On a hyper-complex that is the clinical correspondence,
+        "bipolar · ADHD", and ui.js keeps it off a person's screen by name:
+        mapshelf.js recorded this row as the one place still printing it. */
+     sub:o.over?'overshot':(o.kind==='sup'?'character layer':'hyper-complex')};});
  if(L==='masks') return r.maskRing.map(function(m){
    var lv=W.filter(function(n){return m.bands&&m.bands.indexOf(n.b)>=0&&n.sq>=LOADED;});
    return {o:m,kind:'bead',band:(m.bands||['Heart'])[0],v:m.w/10,nm:m.nm,links:lv,
