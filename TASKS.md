@@ -19448,3 +19448,57 @@ dictated opening copy should ship word for word or end one clause
 earlier, since it promises a medical outcome against this product's
 own marketing harm guard, a real tension this round's audit surfaced
 and this file will not quietly edit around.
+
+## GY. The round GO Compass and Knowledge base check, back: the Compass is fixed, the Knowledge base carries two real, old defects. 27 September
+
+`devops-qa`'s live check, dispatched at round GO, back after measuring
+on a frozen copy of the committed build to avoid the same contamination
+this file has hit before from a dirty shared tree. Spot verified: the
+CSS line it names, `.kb-rg{...grid-template-columns:repeat(3,1fr)...}`,
+confirmed at `atuned_src/shell/head.html:2444`, a few lines from where
+it was cited, consistent with other agents editing the same file
+concurrently rather than a wrong citation.
+
+**The Compass: signed off, working as round GA's fix intended.**
+Checked its own probe against a known bad case first, the house
+discipline for exactly this kind of claim: on the pre fix commit the
+same probe reads thirty four words painted onto the figure and no key;
+on the current build, zero, at both widths, on two profiles, in three
+UI states. If he is still seeing a broken Compass, the report gives
+the one question that actually settles it: what build stamp does his
+own boot screen show, since a table of every packed delivery this
+session sent proves which ones still carry the bug.
+
+**The Knowledge base: two real defects, neither new, neither caught by
+any gate.** The third column's percentages run off the page at desktop
+widths, thirteen to twenty six of thirty nine hidden depending on
+width, root caused to a bare `1fr` grid column that cannot shrink below
+its widest unwrapped row name, proven by injecting the one line fix at
+runtime and watching the hidden count drop to zero. And on a phone, a
+tapped row's reading opens roughly ten thousand pixels down the page
+with nothing on screen changing, the same defect the GF mobile review
+already surfaced for the Field picture (round GM's own question 3),
+confirmed identical across three builds spanning before and after that
+mobile work, so one fix should cover both. Both defects are present in
+every delivery back to `fe433d8`, not a regression from anything built
+this session.
+
+**The functional and design gates could not be signed off, on principle
+rather than a guess.** Both showed real failures this run, but under
+measured machine load of nineteen to twenty three on four cores with
+other agents' own gate runs and thirty three Chromium processes
+already up, and the same code measured clean at round GN under quieter
+conditions. Correctly refused to call either red or green until re-run
+alone.
+
+Sent to him, alongside the Compass build-stamp question: nothing new
+this round, since the underlying question ("is my build stale") is
+better answered by him reading his own boot screen than by another
+screenshot.
+
+What I need from him: the exact build stamp his own boot screen shows,
+which settles definitively whether he is looking at a build with the
+real, already fixed Compass or an older one; and whether a tapped
+reading on a phone, on either the Knowledge base or the Field picture,
+should rise as a sheet from where his thumb is or jump the page down
+to it, since both defects share the same open question.
