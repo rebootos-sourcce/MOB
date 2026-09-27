@@ -16999,3 +16999,35 @@ he meant the gap between held and installed charge instead.
 than fixed by rewriting shared history: the commit trailer reads
 Opus 5.5.
 
+## FT. risesim.json fixed, and the dispatch's own diagnosis caught
+## half right rather than applied blindly. 27 September.
+
+`proto/avatar/risesim.json` regenerated against the fitted engine.
+Commit `7f7b391`. The original diagnosis in FR was only half the
+story, and the agent found the other half itself rather than trusting
+the brief: two of the three flagged changes were real engine drift
+(the CQ refit), but the third, `cq`/`smallC` reading -22.7, was a bug
+in the probe's own code, rebuilding a retired ceiling formula by hand
+rather than reading the engine. Fixed at the source: the probe now
+empties charge and reads the engine's real `compute()` for its
+ceiling, and a new self check (run 0) asserts the two agree before
+anything else runs.
+
+**Independently reproduced myself, in a scratch copy with the real
+directory structure so the engine require path resolves correctly.**
+A fresh run of `risesim.js --json` matches the committed
+`risesim.json` byte for byte. Zero em dashes across every file this
+round touched, including `TASKS.md`, where the agent correctly
+touched only two old backlog entries (KU8, KU13) rather than the
+lettered log.
+
+**A real conclusion flip, not just numbers moving.** Release no
+longer moves coherence through charge for anyone, not half the panel
+as before; the only remaining route is a slow, bounded law lift.
+Which lever matters is no longer a property of the person on
+coherence, since a fixed constant applies to everyone identically;
+the real per person difference survives on expression instead. The
+Ana figure this file's own earlier docs quoted (two release runs move
+coherence 9 points) reproduces on neither the old nor the new engine;
+what actually moves by that much is her expression, not coherence.
+
