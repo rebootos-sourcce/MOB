@@ -22101,3 +22101,40 @@ wired into the product (the masks, the Energetics pages, the badges
 and scoring timeline). No build sent on this round, since the honest
 answer to his third question is no, not yet, and a build now would
 just be replaced the moment the three in flight pieces land.
+
+## JB. Two of the three in flight pieces landed and verified, one still building
+
+The Story page's imprint toggle (`ff76edc`) and the Reading card's cut
+and summary (`11a36c0`) are both in, both already sitting on HEAD, both
+rebuilt and gated together in an isolated worktree rather than trusted
+apart. `BUILD.sh` and `BUILD-engine.sh` clean, `tests/engine.js`
+1770/0, `tests/collide.js` 351/0, `tests/funnel.js` 172/0,
+`tools/monitor.js` all surfaces render, voice objections 0. The one
+functional failure on the storyui piece alone (1228/1) is the same
+pre-existing timing flake already reproduced independently in round IZ,
+not a regression.
+
+Code checked directly, not taken on the reports' word: `storyui.js`
+carries the three view keys `lanes`, `ring`, `strip` with their own
+titles: Lanes is Trace and Route together, the already shipped view;
+Ring is the seven seats as a circle; Strip is Trace as first drawn,
+sliding left. `ui.js` no longer carries `.prole` anywhere; `RANK` is
+literally `['Primary','Secondary','Tertiary']`; the two headings read
+"By weight" and "By assemblage point"; the summary line reads each
+band's own `energy` string off `TIERDEF`. Screenshots viewed directly
+confirm the Ring's radial seats, the Strip's per-seat lanes, and
+Marcus's card reading "Gaining. Forward on most days, and one hard
+week takes it back." with Co-Dependency ranked Primary. The release
+panel beside them is still the cut down version, untouched by either
+piece, as both agents claimed.
+
+Two things named rather than fixed silently: the longest address names
+truncate at 1600 now that "Secondary" and "Tertiary" are wider than
+"steady" was ("Need To Be Need…"), a one line CSS fix outside both
+agents' scope; and the band word's colour is faint in the Snow theme
+on this card, the same as it already is on the Field, Summary and the
+compass drill, so it was correctly left alone rather than fixed once
+in isolation.
+
+Only the live release readout is still building. Once it lands and
+verifies, a build goes out, per his own conditional from round JA.
