@@ -21431,3 +21431,12 @@ named; layout H is used as the default, since it is the one round II's
 own simulation favoured and he did not name a different pick. Both
 dispatches touch `atuned_src/shell/head.html`; each is told about the
 other's likely overlap there rather than left to collide blind.
+
+## IK. The CQ formula asked to be audited. 27 September
+
+His words, verbatim: "Do a review of our CQ formula and score, just
+make sure that everything is calculating out correctly." Dispatched to
+the AI seat, since it touches no file any of the other five in flight
+dispatches use, and it is asked to verify rather than assume the
+`cqSum` reading `BOOK-ERRATA.md` already corrected, twenty one laws
+over two hundred and ten with no SQ divisor.
