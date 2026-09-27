@@ -21410,3 +21410,24 @@ count is acceptable or should be tucked behind one more tap; whether
 Source AI should ever follow up on a line that reads nothing, against
 his own standing rule that the person leads; and whether "Martyrdom"
 should ever print for a line like Angela's.
+
+## IJ. A precise Punch lighting bug report, and the Story redesign approved to wire in. 27 September
+
+Two messages, logged together since the second landed mid dispatch of
+the first. The first, verbatim and in full, a caret and highlight
+defect under Punch lighting on the Story tab, sourced to commit
+`b479ba6` (17 September) and reproduced against `ae2e0ff`: the second
+of two rules meant to give Punch a solid, no outline focus state
+instead paints the front, transparent text layer opaque on focus,
+covering the words and highlights beneath it and leaving only the
+caret visible. A precise reproduction script and a likely fix, moving
+the fill onto the highlight layer instead of the textarea, are given
+in full rather than paraphrased here; dispatched as given.
+
+The second, verbatim: "This looks good for the story. Wired in." Read
+as approval of round II's Story redesign and explicit authorisation to
+move it from prototype to the real, shipped Story tab. No layout is
+named; layout H is used as the default, since it is the one round II's
+own simulation favoured and he did not name a different pick. Both
+dispatches touch `atuned_src/shell/head.html`; each is told about the
+other's likely overlap there rather than left to collide blind.
