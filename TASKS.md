@@ -19939,3 +19939,84 @@ server, or both; Cloudflare confirmed given his own two opposite
 rulings four days apart; and the password hashing tradeoff, accept the
 platform's current cap, spend a day moving to Argon2id instead, or
 hand sign in to an outside provider entirely.
+
+## HG. Real approval to wire in the body map and the archetype picker, a one to five scale replacing the one press toggle, and the Avatar page's own hero told in full. 27 September
+
+His words, verbatim: "I really dig the body map system, I think it's
+much more fine than what we had, let's wire it in and we'll get
+feedback directly there. The archetypes, yeah, let's have the person
+select their archetypes, let's wire this in and take a look and give
+feedback directly. Oh wait, here you go: instead of ringing true,
+change it to a line, but we want to give a scale from one to five.
+People may not see their full potential, they're a magician as an
+example, they may not understand it. Yeah, I can get behind this,
+let's wire this in. So the avatar page, let's wire this in too, I'll
+get feedback there. Remember, the centre panel is our hero element,
+and the avatar page is really about building the avatar, so it's me
+telling the story of who I want to become, and then that populating
+within these fields, maybe the tags, and it's using the sniffer to
+sniff those fields for my stories, and then it gives me the release
+protocols so I can become that person. And the percent complete,
+that's good. And then there should be something for the, not the
+release protocol, but the ritual, like which rituals I can queue up
+here, and task my rituals, very cool, let's wire that in. And where it
+says running, where you're visualizing it, the pleaser with the
+releasing loading, that's really excellent, I want you to add that
+design in there too. Really good job."
+
+**Real approval to move from prototype to real, gated implementation,
+on two pieces**, not just another review round: the body map build
+(round HE) and the archetype picker (round HC), both explicitly asked
+to be wired in so feedback can happen against the real, shipped
+surface rather than another packed file.
+
+**A real interaction change on the archetype picker, not a copy
+tweak.** The one press toggle this round's mockup built, "Rings true"
+or otherwise, is replaced with a one to five scale per archetype,
+reasoned in his own words: a person may carry a pattern, his own
+example, a Magician, without recognising or understanding it in
+themselves, so a binary in or out choice forces a certainty a person
+may not have. A graduated scale lets someone register partial or
+uncertain recognition rather than being forced to pick.
+
+**The Avatar page's actual intended shape, told in full for the first
+time this session, and it is larger than anything built against so
+far.** The centre panel is the page's hero element. The page's purpose
+is a person telling the story of who they want to become, that story
+populating structured fields, "maybe the tags," which the sniffer then
+reads to find matching material in their own journal, which then
+surfaces as release protocols aimed at becoming that person. Percent
+complete, already built, confirmed good. New and not yet built
+anywhere: a ritual queue on this same page, letting a person see and
+task which rituals are available to them from here specifically. And
+a visual treatment he calls "the pleaser with the releasing loading,"
+read as: a saboteur named as Impact, here Pleaser, visualised together
+with a loading or releasing animation, which he is asking to be
+carried onto the Avatar page as its own design, not only where it
+already appeared.
+
+**A real gap found while grounding this, not assumed:** the tab this
+whole session's Avatar mockups have been built against does not exist
+in the shipped product under that name. `atuned_src/engine/core.js:91`
+still reads `{k:TAB.INTAKE, id:'iq', nm:'Energetics', ...}`; the
+rename from Energetics to Avatar, decided at round FY before this
+session's own visible window, was never actually carried into
+`atuned_src/`. Wiring any of this in means creating the real Avatar
+tab for the first time, not extending one that already exists.
+
+**Sequencing, stated plainly rather than silently deferred.** `git
+status` at this round shows forty five files already dirty across four
+still running agents (the Field left panel, the Fringe port, the
+Source AI Story rebuild, and the full copy sweep), several of them in
+files this new wiring work would also need to touch. Dispatching two
+more large `atuned_src/` efforts into that same tree right now risks a
+real collision on top of a batch that already needs careful, one at a
+time landing. The wiring work is queued to begin the moment the
+current batch lands and is verified, not dropped, and not started
+blind into a tree already this contested.
+
+What I need from him: nothing new blocking; this round adds real,
+concrete scope (the Avatar tab's own creation, the ritual queue, the
+one to five archetype scale, the Pleaser/releasing visual) to the work
+already queued, and it starts as soon as the tree currently in flight
+clears.

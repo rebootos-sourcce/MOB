@@ -168,7 +168,7 @@ function anaRender(){
      +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div><div class="ab-grid">';
+  +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
  out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
@@ -243,6 +243,57 @@ function anaRender(){
   ANA_PICK=(ANA_PICK&&ANA_PICK.k===p[0]&&ANA_PICK.nm===p[1])?null:{k:p[0],nm:p[1]};
   anaRender();anaDrill();};});
  anaDrill();}
+/* ============================================================
+   RUNNING HOT. GQ in TASKS.md, his words: "And the running hot, add that to
+   analytics. Yeah, that's really, really good." The list sat beside the
+   Field in the Fringe mockup, proto/field/tension/src/common.js, and it
+   comes here on the same terms the shipped Field now bends by (ui/wheel.js,
+   THE RING BENDS UNDER LOAD): past five, heaviest first, and which way each
+   one last moved.
+
+   A ROW OPENS THE ADDRESS. In the mockup a row flew the camera to it, and
+   there is no camera on this surface. The row is the product's own address
+   row, so it opens the same drill every other address row opens.
+
+   TWELVE ROWS AND A COUNT. A heavy field has fifty addresses past five, and
+   fifty rows is a spreadsheet of feelings, which the badge rule in
+   ui/component.js was written against. The count says how many there are
+   and how they split, and the Field draws every one.
+
+   Nothing on an unread field. The hero above already says nothing is
+   entered, and a list of none says it a second time.
+   ============================================================ */
+const ANA_HOT_ROWS=12;
+/* THE THREE WORDS ARE NOT ONE COLOUR. Collapsing is the opposite going in,
+   and the fetter layer on the Field already draws what is installed in the
+   Heart's colour, so it takes that, off the lighting in force when the row
+   is drawn. Expanding is load arriving and reads at full ink. Steady is the
+   absence of news and sits at the dim step. */
+function anaHotInk(d){return d==='collapsing'?seatCol('Heart'):(d==='steady'?'var(--dim)':'var(--ink)');}
+function anaHot(r){
+ if(r.unread||typeof hotList!=='function')return '';
+ var L=hotList(), t={expanding:0,collapsing:0,steady:0};
+ L.forEach(function(n){t[hotDir(n)]++;});
+ var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>';
+ if(!L.length)s+='<p class="sum-p">No address is past five. Past five an address pulls '
+  +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
+ else s+=anaHotRows(L,t);
+ return '<div class="ana-hot">'+s+'</div>';}
+function anaHotRows(L,t){
+ var say=[], s='';
+ ['expanding','collapsing','steady'].forEach(function(k){if(t[k])say.push('<b>'+t[k]+'</b> '+k);});
+ s='<p class="sum-p"><b>'+L.length+'</b> address'+(L.length===1?' is':'es are')
+  +' past five, where an address pulls more than half as hard as it can and the ring on the '
+  +'Field bends under it. '+say.join(', ')+'.</p>'
+  +'<p class="sum-p">Expanding means its charge rose on its last change. Collapsing means it fell. '
+  +'Steady means it has not moved since this record was opened.</p>'
+  +'<div class="ad-rows">'+L.slice(0,ANA_HOT_ROWS).map(function(n){var d=hotDir(n);
+   return '<button type="button" class="ad-r" data-addr="'+n.i+'" data-dir="'+d+'" '
+    +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
+    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'">'+d+'</em></button>';}).join('')+'</div>';
+ if(L.length>ANA_HOT_ROWS)s+='<p class="sum-p">The '+ANA_HOT_ROWS+' heaviest. '
+  +(L.length-ANA_HOT_ROWS)+' more are past five, and the Field draws every one.</p>';
+ return s;}
 /* THE DRILL. one resolution down, plus the stories that touched it. */
 function anaDrill(){
  var box=document.getElementById('rdrill'); if(!box)return;

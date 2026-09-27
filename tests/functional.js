@@ -4270,6 +4270,88 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
  await fj.close();
 }
 
+/* ============================================================
+   GQ. THE RING BENDS UNDER LOAD, AND RUNNING HOT IS ON ANALYTICS.
+   "Please add that as part of the normal field." The Fringe mockup, ported
+   into ui/wheel.js. Held here: only an address past five carries stress; a
+   charge rising bends it out past its standing bulge and a charge falling
+   dents it in; a switch of record starts every address steady rather than
+   reading the move between two people as a move in one; reduced motion
+   lands on the end state in one frame; a bent address is still where its
+   target is; and the list on Analytics names exactly who the Field bends for.
+   ============================================================ */
+console.log('\n=== GQ: the ring bends under load, and running hot is on Analytics ===');
+for(const rm of ['no-preference','reduce']){
+ const gq=await browser.newPage({viewport:{width:1600,height:1000},reducedMotion:rm});
+ const gerr=[];gq.on('pageerror',e=>gerr.push(e.message));
+ await gq.goto(FILE,{waitUntil:'load'}); await booted(gq); await gq.waitForTimeout(400);
+ const settle=()=>gq.waitForTimeout(rm==='reduce'?120:1400);
+ await gq.evaluate(()=>{loadP(PERSON('Ana'));setTab(TAB.FIELD);fviewSet('wheel');S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
+ await settle();
+ const rest=await gq.evaluate(()=>{const hot=W.filter(n=>n.sq>LEVER_MU);
+  /* an address far from every hot one carries nothing: the spread is 7 either side */
+  const far=W.filter((n,i)=>W.every((m,j)=>{const d=Math.min(Math.abs(i-j),W.length-Math.abs(i-j));return m.sq<=LEVER_MU||d>7;}));
+  return {hot:hot.length,list:hotList().length,steady:hotList().every(n=>hotDir(n)==='steady'),
+   hotStress:hot.every(n=>n.frStr>0.03&&n.frB>0),farFlat:far.every(n=>!(n.frStr>0)&&Math.abs(n.frB||0)<0.01),far:far.length};});
+ ok(rest.hot>0&&rest.list===rest.hot,rm+': the list is exactly the addresses past five, '+rest.list+' of '+rest.hot);
+ ok(rest.steady,rm+': on arrival every hot address is steady, nothing has moved yet');
+ ok(rest.hotStress,rm+': every hot address carries stress and a standing bulge');
+ ok(rest.far>0&&rest.farFlat,rm+': an address with nothing hot within reach stays on its circle, '+rest.far+' of them');
+ /* a charge rising, the input a story writes */
+ const up=await gq.evaluate(()=>{const before=W.filter(n=>n.cf==='Anticipation').map(n=>n.frB||0);
+  S.charge.Anticipation=10;render();return before;});
+ await settle();
+ const rise=await gq.evaluate(()=>{const A=W.filter(n=>n.cf==='Anticipation'&&n.sq>LEVER_MU);
+  return {n:A.length,dir:A.map(hotDir),bend:A.map(n=>n.frB),tgt:A.map(n=>n.frTgt)};});
+ ok(rise.n>0&&rise.dir.every(d=>d==='expanding'),rm+': a charge rising reads expanding, '+rise.dir.join(' '));
+ ok(rise.bend.every(b=>b>Math.max(...up)),rm+': and bulges past where it stood, '+rise.bend.map(b=>b.toFixed(1)).join(' '));
+ /* a charge falling, the input a release writes */
+ await gq.evaluate(()=>{S.replace.Anger=(S.replace.Anger||0)+1.2;render();});
+ await settle();
+ const fall=await gq.evaluate(()=>{const A=W.filter(n=>n.cf==='Anger'&&n.sq>LEVER_MU);
+  return {n:A.length,dir:A.map(hotDir),dent:A.filter(n=>n.frB<0).length};});
+ ok(fall.n>0&&fall.dir.every(d=>d==='collapsing'),rm+': the opposite going in reads collapsing, '+fall.n+' addresses');
+ ok(fall.dent>0,rm+': and the ring dents in under them, '+fall.dent+' of '+fall.n);
+ if(rm==='reduce'){
+  const land=await gq.evaluate(()=>W.every(n=>Math.abs((n.frB||0)-(n.frTgt||0))<1e-6));
+  ok(land,'reduce: every bend is at its mark on the first frame, no spring');}
+ /* a bent address is still pressable where it has landed */
+ const hit=await gq.evaluate(()=>{const n=W.filter(x=>x.frTgt>2).sort((a,b)=>b.frTgt-a.frTgt)[0];
+  if(!n)return {none:true};
+  const h=HIT.filter(x=>x.k==='node'&&x.n===n)[0], r=R_SHELL+n.frTgt-2;
+  return {none:false,inside:!!h&&r>=h.r0&&r<=h.r1,r:r.toFixed(1),r1:h?h.r1.toFixed(1):'none'};});
+ ok(!hit.none&&hit.inside,rm+': the most bulged address still answers at its outer edge, '+hit.r+' inside '+hit.r1);
+ /* a switch of record is not a move */
+ const sw=await gq.evaluate(()=>{loadP(PERSON('Tomas'));render();
+  return hotList().every(n=>hotDir(n)==='steady');});
+ ok(sw,rm+': a switch of record starts every address steady');
+ /* the list on Analytics */
+ await gq.evaluate(()=>{loadP(PERSON('Ana'));setTab(TAB.FIELD);render();});
+ await settle();
+ await gq.evaluate(()=>{S.charge.Anticipation=10;render();});
+ await settle();
+ const ana=await gq.evaluate(()=>{setTab(TAB.SUMMARY);render();
+  const box=document.querySelector('#ana .ana-hot'), rows=box?[...box.querySelectorAll('.ad-r[data-addr]')]:[];
+  const L=hotList();
+  return {box:!!box,rows:rows.length,want:Math.min(ANA_HOT_ROWS,L.length),
+   order:rows.every((r,i)=>+r.getAttribute('data-addr')===L[i].i),
+   dirs:rows.every((r,i)=>r.getAttribute('data-dir')===hotDir(L[i])),
+   exp:rows.filter(r=>r.getAttribute('data-dir')==='expanding').length,
+   text:box?box.innerText:''};});
+ ok(ana.box&&ana.rows===ana.want,rm+': Analytics lists the heaviest past five, '+ana.rows+' of '+ana.want);
+ ok(ana.order&&ana.dirs,rm+': in the Field\'s own order, each with the Field\'s own direction');
+ ok(ana.exp>0,rm+': the load that just rose reads expanding there too, '+ana.exp);
+ ok(!/\u2014/.test(ana.text),rm+': no em dash in the list');
+ await gq.click('#ana .ana-hot .ad-r'); await gq.waitForTimeout(300);
+ const drill=await gq.evaluate(()=>{const d=document.getElementById('rdrill');return !!d&&d.style.display!=='none'&&d.innerText.length>20;});
+ ok(drill,rm+': a row opens its address');
+ /* nothing on a field that has not been read */
+ const blank=await gq.evaluate(()=>{loadP(0);setTab(TAB.SUMMARY);render();return !!document.querySelector('#ana .ana-hot');});
+ ok(!blank,rm+': an unread field shows no list');
+ ok(gerr.length===0,rm+': GQ, no errors, '+gerr.join(' | '));
+ await gq.close();
+}
+
 console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box of its own ===');
 /* His words: "with our overlay nav, I want a button so I can minimize it and
    open it up, the tools menu, upper left hand side. The accuracy pill is
