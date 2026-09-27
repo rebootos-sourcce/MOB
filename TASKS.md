@@ -21976,3 +21976,27 @@ briefs (marketing-director, docs only); and folding the masks landing
 page spec, the two open questions, and this round's in-flight work
 into PRIORITY.md with counts read fresh off the run, never typed by
 hand (project-manager).
+
+## IX. The Reading card's identity line is junk, wants a summary and real labels; a build asked for now
+
+His words, verbatim: "I like the right side energetic summary. Where it
+says reading Marcus, codependency, false love, etc. That's super clean.
+We need a summary window underneath Marcus's name and get rid of that
+44 creative director. That's nonsense junk. And then create new labels
+that reflect the content, like primary, secondary. Give me a latest
+build of the software before we run out of tokens. Then continue
+building."
+
+Read plainly: the age/role line under the name ("44, creative director")
+is cut. A summary window goes under the name instead, content not yet
+specified beyond "summary," so this is a real design call and not
+guessed silently. "Primary, secondary" as new labels reflecting the
+content most likely means renaming "Top Three" and "By assemblage
+point," the two section headings just shipped in round IV, though he
+did not point at them by name, so this is named as an interpretation
+for the dispatch to confirm rather than assume.
+
+A build sent now, from the current pushed HEAD (e3b13ae at the time of
+the ask, source.html unchanged since 6aa063a, md5 b8f58ab7 as already
+verified in round IV), since he asked for one before continuing rather
+than waiting on the five pieces already in flight.
