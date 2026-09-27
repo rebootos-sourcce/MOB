@@ -21276,3 +21276,49 @@ should never be added while the code that would hold them is world
 readable. The honest order is those three first, then OAuth, not
 because of a preference but because a key or a secret committed
 today would sit in a public repository the moment it landed.
+
+## IF. The site wide copy sweep, back and verified in isolation, closing round HU's third piece. 27 September
+
+Commit `8da2afb`, dispatched at round HU. Verified in an isolated
+worktree: `BUILD.sh` and `BUILD-engine.sh` clean, `tests/engine.js`
+1763 passed 0 failed with no engine file touched at all, confirmed by
+the diff itself carrying zero lines in `engine/`. `tests/collide.js`
+336 passed 0 failed, `tests/funnel.js` 172 passed 0 failed, the voice
+check clean. Confirmed the scope directly: `atuned_src/ui/summary.js`
+is touched by this sweep too, and read the diff against it line by
+line to confirm no overlap with the held, unpushed avatar gap fix from
+round HU, `c3fe81c`; the two touch different functions in the same
+file and can land in either order.
+
+**The three specific bugs from round HS, all real, all found by
+reading his own words back against the code rather than guessed at.**
+The red "Nothing changed on a worked example" text: `notYours()` in
+`personas.js` called `status(...,'fail')`, and a fail status never
+clears on its own, so a single press on a worked example left it
+sitting under the logo indefinitely. Confirmed directly: the refusal
+is now silent, the profile still refuses to move. "Five field 25.48
+installed": a sum of charge across addresses printed with no unit
+between a held count and an installed count, so the eye read one
+number that never existed. Confirmed directly in `imprints.js`, the
+sum is gone, the counts read clean. The "0 tag" line, the Story page's
+own word and tag counter, is removed outright rather than reworded,
+since the commit button already carries the same count.
+
+**The class itself gated, not just the three instances.** A new
+objection, `section-explains-itself`, was added to
+`.claude/skills/atuned-voice/objections.json`, checked at both ends:
+fires on the exact three lines this round's own complaint quoted, and
+on a fourth, older one from round BA9 that had never been logged
+before now, and fires on none of the roughly forty other lines the
+sweep actually cut, which the rule's own note says plainly it cannot
+see. `COPY.md` carries the ruling in his own words, named as the third
+time this exact pattern has been raised.
+
+**A real, honest tension surfaced rather than resolved for him.** The
+intake's three explanatory panels existed because a measured finding
+showed completion ran twenty nine points higher with them present.
+Removing them for round HS's rule may cost that. Kept open rather than
+decided either way.
+
+Round HU is now fully closed: the site wide sweep, the Compass and
+Story mockups, and the backlog audit all landed, verified, and pushed.
