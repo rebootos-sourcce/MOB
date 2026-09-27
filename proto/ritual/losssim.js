@@ -759,12 +759,17 @@ function validate(){
 
     KNOWN is [level on CQ, level on expression] per person, read on engine.js
     as built at dd0bf23 (the fitted CQ, 25 September) and unchanged since,
-    measured 26 September. If this group fails, the engine moved: re-run,
-    re-date the figures in marketing/GUARD.md, marketing/README.md and
-    DESIGN-ritual.md section 5, then re-pin here and in marketing/field.js,
-    which pins the same nine and is checked for agreement below. */
+    measured 26 September, RE-PINNED AT bb2cbe0 (the CQ audit, round IK, 27
+    September): tierOf now classifies the rounded CQ, the number every
+    screen prints, rather than the raw figure. Ana's expression, 30.7, did
+    not move; it now rounds to 31 rather than reading 30, and 31 sits in
+    the Incoherent band, level 4, where 30 sat in Corrupt, level 3. If this
+    group fails, the engine moved: re-run, re-date the figures in
+    marketing/GUARD.md, marketing/README.md and DESIGN-ritual.md section 5,
+    then re-pin here and in marketing/field.js, which pins the same nine
+    and is checked for agreement below. */
  const KNOWN={Diane:[6,6],Derek:[5,5],Marcus:[7,7],Angela:[7,7],Sofia:[8,8],
-  James:[5,4],Ana:[5,3],Gordon:[2,1],Rosa:[10,10]};
+  James:[5,4],Ana:[5,4],Gordon:[2,1],Rosa:[10,10]};
  const MV=measure();
  ok(E.TIERDEF.length===10&&BANDLEVEL[E.TIERDEF[0].nm]===10
   &&BANDLEVEL[E.TIERDEF[E.TIERDEF.length-1].nm]===1,
