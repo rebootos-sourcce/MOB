@@ -21926,3 +21926,53 @@ ten major plexus with seven carried and 108 total branches, against
 the shipped count of 112 addresses; what SQ names in the current
 formula, since the CQ audit (round IK, bb2cbe0) is recorded as removing
 an SQ divisor from the sum, not a value the product still shows moving.
+
+Checked directly, before dispatching anything. `BODY-MAP-SPEC.md:244-246`
+already states it: `engine/data/nodes.js` carries 112 addresses, 4 are
+field anchors outside the body, so 108 sit inside it, each carrying a
+named nerve or plexus, and the seven seats (assemblage points) are
+already the shipped structure. His "ten major plexus, we identify
+seven, 108 total in the body" matches this exactly. Not a defect,
+a confirmation.
+
+SQ is real and already load bearing, `compute.js:240-343`: `n.sq` is
+computed per address (what is left of the held state after the pole is
+in), and `DQ = SQ.reduce(sum)/1120*100`, the aggregate over all 112. So
+DQ is already, by construction, a direct read of SQ falling.
+`release.js`'s `coolDown` already reduces the weight a run works on
+(21 percent of weight plus 2, clears at 6 or below), which is what
+lowers `n.sq` and therefore DQ, and lifts CQ a little at the run's
+seat, per the 25 September correction recorded in `release.js`
+itself. The direction he wants (CQ up, DQ down, SQ down) is already
+correct arithmetic. What is missing is only the screen: the release
+run shows the current address's own sq as a static percent and shows
+weight freed only once, at the end. There is no live, ticking DQ or
+aggregate reading while a run executes. Dispatched below as a
+screen addition, not new system logic, and the dispatch is asked to
+measure real before and after numbers rather than assume the movement
+is visible enough to be worth a live readout.
+
+A real naming collision, not resolved here, his call: "band" already
+names the coherence tier word in the shipped product (`tierOf` in
+`canon.js`, Gaining, Incoherent, and so on). He is now using "band" to
+mean an assemblage point's own quality, "root is the band." Both
+cannot hold. Carried to the open questions below rather than picked
+for him.
+
+Sent the two questions he flagged as unclear (his numbered four and
+five) back to him with the actual images beside them, per his own
+ruling that a question about a drawing is asked with the drawing.
+
+Five pieces dispatched, in parallel, each scoped to files no other has:
+wiring the three imprint visualizations into the Story page as a
+toggle (storyui.js, fullstack-td); a live DQ or SQ readout on the
+release run screen (release.js, fullstack-td, asked to measure real
+before and after DQ first rather than assume it is visible enough);
+an interactive badges, achievements and scoring mockup with a time
+slider from day 0 to day 90, grounded in ladder.js's real logic, not
+invented (proto/gamification-timeline, game-director); the bank and
+vault line and the band naming collision captured into the marketing
+briefs (marketing-director, docs only); and folding the masks landing
+page spec, the two open questions, and this round's in-flight work
+into PRIORITY.md with counts read fresh off the run, never typed by
+hand (project-manager).
