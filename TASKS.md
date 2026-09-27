@@ -22902,3 +22902,22 @@ uncommitted diffs of unclear origin and the emergency was already
 resolved without needing them. Notified every agent currently in
 flight, since a shared disk failure would have hit all of them, not
 only the one that happened to report it first.
+
+## JW. Both storyboards redone toward far less text, verified
+
+`0365177` is in, pushed, exactly the two storyboard directories, zero
+em dashes. Screenshots viewed directly confirm the claimed cut: the
+signal test frames now show "no" as a single huge word with ten
+filling dots, a yes/no comparison frame, "A thought moved your body."
+as the only line, and the bad day thoughts drawn as red threads into
+the figure rather than described in prose. The tutorial's circuit
+screenshot shows a real moving light travelling the ring past
+discover, play, flow and embody, with the journal and practice panels
+opening beside whichever station is lit, matching the claimed "tap a
+station, the screen follows the light" mechanic.
+
+Two real questions carried to him rather than guessed: with words cut
+from the screen, who says "think yes ten times", his own voice, the
+device's synthetic one, or a caption; and whether his mirror paragraph
+should show in full or be spoken while the screen carries only "This
+is a mirror."
