@@ -1208,19 +1208,39 @@ function render(){
   if(typeof hotTrack==='function')hotTrack();
   var lit=W.filter(function(n){return (+n.sq||0)>0;})
    .sort(function(a,b){return b.sq-a.sq;});
-  var top=lit.slice(0,3).map(function(n){
+  /* EACH ROW SAYS WHICH IT IS. Round IX, his words: "create new labels that
+     reflect the content, like primary, secondary." The right of each row
+     printed the direction word, and on a record nobody has touched since it
+     was opened hotDir() says steady for all 112, so every screenshot of this
+     card read steady three times: a column that said nothing moved, which is
+     the list of none the comment above already refuses. The slot carries the
+     rank now. The direction is kept where it is information: an address that
+     moved on its last change still says which way, after the rank, in the
+     ink Analytics gives the same word.
+
+     PER ROW AND NOT AS THE TWO HEADINGS, which was the other reading of his
+     sentence, and it would print something false. Primary over these three and
+     Secondary over the list by point would call the second list lesser, and it
+     is not: it is the same addresses cut a second way, and on Marcus
+     Co-Dependency and False Love sit in both. */
+  var RANK=['Primary','Secondary','Tertiary'];
+  var top=lit.slice(0,3).map(function(n,i){
    var d=typeof hotDir==='function'?hotDir(n):'steady';
-   return addrRow(n,{em:d,ink:typeof anaHotInk==='function'?anaHotInk(d):null});}).join('');
+   return addrRow(n,{em:RANK[i]+(d==='steady'?'':', '+d),
+    ink:typeof anaHotInk==='function'?anaHotInk(d):null});}).join('');
   var per=BANDS.map(function(b){
    var n=lit.filter(function(x){return x.b===b;})[0];
    return n?addrRow(n,{em:b,ink:seatCol(b)}):'';}).join('');
   /* the rail's own empty sentence for a field with nothing charged, the one
      the glass bar prints on its Stories circle, and nothing at all on an
      unread field, where the doors above already say where to start */
+  /* "Top three" was a count, and the rows under it carry their rank now, so
+     the heading names the order instead, and the two headings read as one
+     list cut two ways: by weight, and by assemblage point. */
   var run=r.unread?'':lit.length
-   ?'<div class="pm-eye" style="margin-top:14px">Top three</div><div class="ad-rows">'+top+'</div>'
+   ?'<div class="pm-eye" style="margin-top:14px">By weight</div><div class="ad-rows">'+top+'</div>'
     +'<div class="pm-eye" style="margin-top:12px">By assemblage point</div><div class="ad-rows">'+per+'</div>'
-   :'<div class="pm-eye" style="margin-top:14px">Top three</div><p class="rnone">Nothing is carrying charge yet.</p>';
+   :'<div class="pm-eye" style="margin-top:14px">By weight</div><p class="rnone">Nothing is carrying charge yet.</p>';
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;
   /* WHERE TO START. Only while there is nothing to read, because a call to
@@ -1246,8 +1266,38 @@ function render(){
      reading, so the two surfaces call a person one thing. A record nobody has
      named is still called You, because that is the name pNew gave it. */
   var who=p.you?(String((CURP&&CURP.name)||'').trim().split(/\s+/)[0]||'You'):p.nm;
+  /* THE AGE AND ROLE LINE IS GONE, ON HIS RULING. Round IX, his words: "get
+     rid of that 44 creative director. That's nonsense junk." It was the worked
+     example's own casting note, p.age and p.role, and it read nothing: a
+     person's own record never printed it at all. Summary's plate and the
+     profile picker are untouched, because he struck this card.
+
+     A SUMMARY WINDOW TAKES ITS PLACE, "underneath Marcus's name", and what it
+     says was not specified, so it is the band's own lived line and not new
+     copy. TIERDEF carries four lines per band. def is the one he struck off
+     this rail in round IT, toward is the instruction the compass drill
+     already gives in full, soma is the codex's register, and energy is what
+     the band is like to live in, which is the one line a summary of a person
+     owes that neither list under it says: they say where the charge is, this
+     says what it is costing day to day. The band word leads it in the band's
+     colour because a behaviour with no band named is a sentence about nobody,
+     and the band word with no behaviour is the judgement the voice rules
+     forbid. It is the tier button's door as well: a tap opens
+     runCompassDrill, which carries the definition and the direction the
+     window leaves out. Nothing while unread, where the doors say where to
+     start; and while CQ is still filling there is no band to name, so it
+     says what is left, in the same sentence the tier button's title uses. */
+  var tdw=r.unread?null:TIER_BY[r.tier];
+  var win=r.unread?'':'<button type="button" id="psum" class="psum" '
+   +'style="display:block;width:100%;margin:10px 0 0;padding:10px 12px;text-align:left;'
+   +'font:inherit;font-size:13.5px;line-height:1.55;color:var(--mid);cursor:pointer;'
+   +'background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s)">'
+   +(tdw?'<b style="font-weight:600;color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
+      +esc(tdw.nm)+'.</b> '+esc(tdw.energy)
+    :esc(tierBuilding()))
+   +'</button>';
   $('person').innerHTML='<h3>'+esc(who)+'</h3>'
-   +(p.you?'':'<div class="prole">'+p.age+', '+esc(String(p.role).replace(' · ICP',''))+'</div>')
+   +win
    /* THE EMPTY STATE OUTLIVED THE EMPTINESS. says was printed whenever it
       existed, and the blank persona's says is the words "Nothing has been
       entered yet". A person who then entered charge got a live reading beside
@@ -1267,7 +1317,8 @@ function render(){
      held?'':(r.under?r.under+' sitting under the line':''))
    +row('Filled in',inst?inst+' addresses':'nothing yet','')
    +row('Heaviest',r.darkB,r.darkV.toFixed(1))
-   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
+   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());
+  var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
  /* EVERY ONE OF THESE SAYS WHAT IT IS OUT OF. His instruction, and this
     panel broke it five times in six lines: integrity 1.9, intention 1.9, pole
