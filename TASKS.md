@@ -17639,3 +17639,96 @@ restructure mockup above is sent as the "new mockups" he is asking to
 see; no new design dispatch follows this round, a real backlog review
 does instead.
 
+## GF. Real, direct feedback from his own mobile device, entry graded
+## C plus, and a real bug where pinch zoom cannot reach the picture.
+## 27 September.
+
+**His words in full: "Okay, this is feedback on Atuned packed on my
+mobile device. Entry is cool, I'm gonna give that a C plus. Primary
+navigation, we're gonna want this to collapse. We're going with the
+profile on the upper right hand side, the kind of questionnaire help,
+whatever, right next to that. We're going to want to move the colour
+profiles like Dark, Lumen, etc, to the lighting section in the main
+menu. Undo, I've never used it, and I don't see the purpose of it
+right now, so let's hide that in the code. And then I want to be
+able to pinch zoom, and I can't, and the second that I put my fingers
+on it, the overlay dominates. And then the load profiles, this is
+all on mobile by the way, that should go on a button next to help,
+circular, small, just like the profile and the help button, and then
+when you press it, it opens up and shows you all the names, but the
+names are really large on here too, they're wrapping onto a second
+line, and that's taking up too much real estate, so the names should
+not take up that much space. The heaven and hell, that's clearly
+causing a problem, on both of these right now it shows up in the
+very bottom of the square. I want you to move that inside of the
+circle, or CQDQ on the square one, and then make the CQDQ a little
+bit smaller. And I also, okay yeah, I can pinch zoom here, that way
+when I zoom in I can actually see the heaven and hell, like where I'm
+heading towards. And then where it says Root Energetics, this is all
+mobile by the way, I want these to be square buttons, these circles
+are taking up too much space. And when I press CQ, DQ, whatever, it
+should pull up a tooltip if I press for a second and a half. Our
+root domains, this may need some work. Primary navigation needs to
+be in tabs, I think. Anyway, take the mobile version, the React,
+React version, floated by the ICPs and the focus group, until you're
+satisfied, have them run through the UI UX user flow, this user
+story, get their feedback, get their ability to see the interaction
+once they understand how the tool works, and then get their feedback
+on the value they're experiencing so far, and then get a gap
+analysis, and then throw this in the backlog and get it moved
+forward. How long, how are we doing with our backlog?"**
+
+**One real ambiguity flagged rather than guessed at.** "The mobile
+version, the React, React version" is not acted on either way. This
+product's own standing architecture is one file, no dependencies,
+stated repeatedly in `CLAUDE.md`; a React rewrite of the mobile
+surface would be a real, first order architecture decision, not a
+UI fix, and is not something to silently start or silently ignore.
+Asked directly rather than assumed.
+
+**Real, concrete mobile defects and requests, itemised:**
+- Pinch zoom does not reach the picture at all in at least one
+  rendition; an overlay captures the gesture instead. A real,
+  reproducible bug, not a design question.
+- Primary navigation should collapse and move to a tab pattern;
+  Profile and a help control move to the upper right, together.
+- The lighting choices (Dark, Lumen, and the rest) move out of
+  wherever they sit now and into the main menu's own lighting
+  section.
+- Undo hidden from the mobile UI. His own reason given plainly: he
+  has never used it and does not see its purpose right now. The
+  underlying mechanic stays in the code, only the visible control
+  goes.
+- The profile loader moves to a small circular button beside Profile
+  and Help, matching their shape; the panel it opens currently prints
+  person names large enough to wrap to a second line, needing to
+  shrink.
+- The Coherent/Decoherent pole markers ("heaven and hell" in his own
+  words) currently collide with the bottom edge on both the round and
+  the square renditions; move them inside the circle on the round
+  one and near CQ/DQ on the square one, and shrink CQ/DQ a little.
+  Read together with his very next sentence, zooming in should be
+  what actually reveals these clearly, which argues the fix is as
+  much about the zoomed out default as the glyphs' own position.
+- Root Energetics's reading circles become square buttons on mobile,
+  since the circles cost too much space there.
+- A one and a half second press on any reading (CQ, DQ, and so on)
+  should raise a tooltip. This is the interaction half of the
+  tooltip work already pitched in `DESIGN-tooltip-copy.md`; the
+  language it shows still waits on his answers there, but the
+  press-and-hold mechanic itself can be built now.
+- Root Domains flagged generally as needing work, no specifics given.
+
+**Ordered on top of the fixes:** run this same mobile flow against
+the ICPs and the focus group once built, watching their actual
+understanding of the interaction and their felt sense of value so
+far, ending in a real gap analysis logged to the backlog rather than
+acted on blind.
+
+**His closing question, answered directly rather than folded into
+the fix list:** a real backlog status, current as of this round, not
+a repeat of the last one.
+
+Dispatched: the concrete mobile fixes as one build, the ICP and focus
+group simulation of the resulting flow as a second piece.
+
