@@ -482,7 +482,10 @@ function fbPaint(){
     on the prototype's lighting sweep. stageLight() is the one reading of
     that ground, the one the wheel's domain ring and the renditions use. */
  var lt=stageLight();
- [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW].forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
+ /* and the coherence corner, which lies on the same ground under the switch
+    since round IT and is made of the same glass */
+ [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW,document.getElementById('railtop')]
+  .forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
  document.body.classList.toggle('noshadow',!layerOn('shadow'));
  [FB,FB_PANEL].forEach(function(host){if(!host)return;
   host.querySelectorAll('[data-fb]').forEach(function(b){

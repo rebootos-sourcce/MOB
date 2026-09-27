@@ -371,9 +371,13 @@ function addrRow(n,o){o=o||{};
     delegated handler in ui.js opens the same drill. */
  /* the badge, not the ring and a bare number. This row is the one that
     prints Lethargy and Disconnection down a rail twenty at a time. */
+ /* o.em and o.ink let a caller say something else at the right of the row,
+    the Reading's direction word and seat name in round IT, without a third
+    copy of this markup. Every caller that passes neither is unchanged. */
  return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
   +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
-  +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></button>';}
+  +'<span>'+esc(n.k)+'</span><em'+(o.ink?' style="color:'+o.ink+'"':'')+'>'
+  +esc(o.em!=null?o.em:(opp||n.b))+'</em></button>';}
 /* ============================================================
    THE BADGE. AN ICON CARRYING ITS OWN PERCENT, AND THE NUMBER IN A PILL.
 

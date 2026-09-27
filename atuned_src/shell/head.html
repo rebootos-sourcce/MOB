@@ -1545,10 +1545,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.fzoom,#railtop{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,#railtop.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -1913,8 +1913,16 @@ body:not(.tab-field) .pol2{display:none}
 .pol2-c{font-family:var(--num);font-size:11px;font-weight:500}
 
 /* ---------- left rail : collapsible sections ---------- */
-.railtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
- padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
+/* THE CORNER ON THE STAGE, NOT THE HEAD OF THE RAIL. Round IT moved it to the
+   Field's upper right, under the Wheel, Frames and Dial switch. It lies on the
+   picture, so it is made of that switch's glass and takes the same capsule,
+   and 64 is the switch's own top of 8 plus its 50 of height plus the 6 the
+   bar keeps between circles. The rail's rule and bottom edge went with the
+   rail: over a canvas they drew a line across the wheel. */
+.railtop{position:absolute;top:64px;right:12px;z-index:6;display:flex;align-items:center;
+ padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+body:not(.tab-field) #railtop{display:none}
 /* it is a button now, and a button that carries a definition owes the tap
    floor like every other control. */
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500;
@@ -1933,10 +1941,9 @@ body:not(.tab-field) .pol2{display:none}
  padding:0 10px 0 4px;box-shadow:inset 0 0 0 1px var(--edge);
  border-radius:var(--r-xs)}
 body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
-/* the band word carries its own meaning, on the screen, not in a tooltip */
-.railtop{flex-wrap:wrap}
-.railtop .rt-d{flex:0 0 100%;font-size:12.5px;line-height:1.55;color:var(--mid);
- margin-top:6px}
+/* inside the capsule the capsule is the edge, so the cell's own inset edge
+   would be a second outline one pixel inside the first */
+.railtop .rt-cell{box-shadow:none;background:transparent;border-radius:999px;padding-right:14px}
 .s-band{font-size:14px;line-height:1.65;color:var(--mid);margin:14px 0 0;max-width:62ch}
 .s-band b{color:var(--ink);font-weight:600}
 /* the tier reads as a word you can open, not as a verdict printed at you */
@@ -3209,7 +3216,9 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    which is where Detail on an imprint opens its drill. */
 body:not(.tab-story) .lsec.st-rail{display:none}
 body.tab-story .lsec[data-rail="right"]:not(.st-rail):not([data-sec="sel"]){display:none}
-body.tab-story #railtop,body.tab-story #bRel{display:none}
+/* #railtop left the rail for the Field's stage in round IT and is hidden off
+   the Field by its own rule, so only #bRel is stepped aside here */
+body.tab-story #bRel{display:none}
 /* five grouping buttons are wider than a rail, and a row that overflows with
    no affordance reads as a missing control, so it wraps. */
 .st-rail .ip-ctl{flex-wrap:wrap}

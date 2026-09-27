@@ -963,15 +963,14 @@ function railTop(r){
   +(tcol?' style="color:'+tcol+'"':'')
   /* while CQ is still filling there is no word, so the slot says what is
      left to answer rather than naming a band off laws nobody answered */
-  +'>'+esc(r.unread?'not read yet':tierSay(r))+'</button></span>'
-  /* ONE STATE, ONE SENTENCE. The button's own title two lines above says
-     "Nothing has been read yet. Write a story or set a charge." for the same
-     unread field, and this said the same thing a second way, three words
-     shorter and missing the auxiliary, an inch away on the same rail. The
-     empty state is said one way across the app. */
-  +'<span class="rt-d">'+esc(r.unread
-    ? 'Nothing has been read yet. Write a story or set a charge.'
-    : (td?td.def:tierBuilding()))+'</span>';
+  +'>'+esc(r.unread?'not read yet':tierSay(r))+'</button></span>';
+ /* THE DEFINITION LINE UNDER THE WORD IS GONE, ON HIS RULING. Round IT, his
+    words: "get rid of that text that said the field builds more than it
+    spends." That line was td.def printed on the rail, put there because hover
+    is not a route on a phone. It still is not, and nothing is lost by the
+    cut: the word is the button, and a tap opens runCompassDrill, which gives
+    the definition, the behaviour and the direction in full. The title below
+    carries the same three for a pointer. */
  /* and a tap gets the whole thing, because hover is not a route on the device
     most of this audience arrives on. */
  var tb=e.querySelector('#tier');
@@ -1174,65 +1173,54 @@ function render(){
       title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
        +'. What reaches the crown from the root, every seat multiplied by the next.'})
     +'</button>';})();
- /* who. proportions, not one label. */
+ /* who, and what is running hottest in them. */
  (function(){
-  var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',v:v};})
-   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
-  var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
-  var T=['First','Second','Third'];
   function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
    +'<span class="tn">'+n+'</span><span class="tp">'+pc+'</span></div>';}
-  /* A PERCENTAGE IS THE PERCENTAGE OBJECT, EVERYWHERE. Ruled, and this rail was
-     the last place still printing a bare figure: Innocent 21%, Everyman 19%,
-     as text, four inches from a surface where the same quantity is an icon, a
-     ring and a pill. The object carries its own glyph, so a person reading this
-     rail is also learning the symbol for the archetype. That is the point of
-     having one object. */
-  /* col, not band. A root domain's colour is a ROOT colour and seatCol only
-     knows the seven seats, so passing Architect where it wanted Heart resolved
-     to the alarm red and printed Imperium 100% in the colour this product
-     reserves for something being wrong. */
-  /* EVERY NAMED THING IN THIS RAIL IS A DOOR.
+  /* THE ARCHETYPES AND THE DOMAINS CAME OFF THIS CARD. Round IT in TASKS.md,
+     his words: "The archetypes, the domains, that's not what's important.
+     What is important is that we're tracking all the things that are the most
+     intense to a person. So this should be the top things running, almost
+     like the top highest three running, and then the highest ones running per
+     band. Since we're showing the animation of the tension and everything
+     else, it just makes sense that this reflects that."
 
-     Warrior, Sage, Creator, Imperium. A person reading their own reading has
-     no idea what any of those words mean and the rail offered no way to find
-     out: the only explanation anywhere was a native browser title on the
-     ring, which is the wrong size, the wrong place, and gone on touch.
+     Nothing is lost by the cut. Both lists are the left rail's own Awareness
+     section, whole, and they were a second copy of it here.
 
-     The row carries the meaning now, on hover, in the product's own tooltip,
-     and it is a button: press it and the knowledge page opens on that entry.
-     Nothing is a dead end that has a name. */
-  function prow(k,n,pct,col,glyph,title,kb,gloss){
-   return '<button type="button" class="tierow pill kbjump" '
-    +(kb?'data-kbs="'+esc(kb[0])+'" data-kbt="'+esc(kb[1])+'" '
-        +'data-tip-a="Press to read it." ':'')
-    +'data-tip-t="'+esc(n)+'" '
-    +'data-tip="'+esc(gloss||title||'')+'">'
-    +'<span class="tk">'+k+'</span>'
-    /* hot:false. cr() turns anything past the hot threshold into the alarm
-       colour, which is right for a charge and wrong for a share: one selected
-       domain is 100 percent of the selection and printed Imperium in the
-       colour this product reserves for something being wrong. A proportion is
-       never an alarm. */
-    +cr('Heart',pct,{size:'xs',raw:Math.round(pct)+'%',glyph:glyph,label:n,
-      title:title,color:col,hot:false})
-    +'</button>';}
-  var ah=aff.slice(0,3).map(function(x,i){
-   var A=ARCH[x.i]||{};
-   /* and the same in the rail, which passed the literal 'Heart' for all twelve.
-      Ruled: the warrior is root, the sage is crown, the mage is third eye. */
-   return prow(T[i],x.nm,x.v/tot*100,seatCol(A.b||'Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
-    x.nm+'. '+(A.v||'')+' Share of how the blueprint expresses.',
-    ['arch',x.nm],
-    'An archetype. '+x.nm+' '+(A.v||'')+'. It is native and was there before '
-    +'anything was conditioned, so it is not released. The work changes where '
-    +'it is pointed.');}).join('');
-  var dsh=S.doms.map(function(di,i){var d=DOMAINS[di];
-   return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),rootPlain(d.r),
-    d.ic?'<path d="'+d.ic+'"/>':null,
-    d.nm+', '+d.r+' root. '+(d.d||''),
-    ['dom',d.nm],
-    'A blueprint domain, on the '+d.r+' root. '+(d.d||'')):'';}).join('');
+     THE THINGS ARE ADDRESSES, BECAUSE THE TENSION IS DRAWN ON ADDRESSES. The
+     fringes in ui/wheel.js bend the ring at each of the 112 by its charge, and
+     hotTrack() is what says which way each one last moved. So the three rows
+     are the three heaviest addresses carrying any charge at all, and each one
+     says expanding, collapsing or steady off hotDir(), the word and the ink
+     Analytics already prints beside the same address in its Running hot list.
+     They are not cut at RUNHOT_AT, the fringes' own line at five: measured
+     across the roster, eight of fifteen profiles have nothing past five,
+     Marcus's heaviest is 2.5, and a card that goes blank for most people is
+     not tracking what is most intense to them. The badge carries the charge,
+     so past five reads on the ring itself.
+
+     And one row per assemblage point, Root to Crown in BANDS order, the
+     heaviest address at each, so the card runs up the body the way the ring
+     does. A point carrying nothing prints no row: a list of none says nothing
+     held seven times. Each row opens runNodeDrill through the delegated .ad-r
+     handler further down this file, the one every address row uses. */
+  if(typeof hotTrack==='function')hotTrack();
+  var lit=W.filter(function(n){return (+n.sq||0)>0;})
+   .sort(function(a,b){return b.sq-a.sq;});
+  var top=lit.slice(0,3).map(function(n){
+   var d=typeof hotDir==='function'?hotDir(n):'steady';
+   return addrRow(n,{em:d,ink:typeof anaHotInk==='function'?anaHotInk(d):null});}).join('');
+  var per=BANDS.map(function(b){
+   var n=lit.filter(function(x){return x.b===b;})[0];
+   return n?addrRow(n,{em:b,ink:seatCol(b)}):'';}).join('');
+  /* the rail's own empty sentence for a field with nothing charged, the one
+     the glass bar prints on its Stories circle, and nothing at all on an
+     unread field, where the doors above already say where to start */
+  var run=r.unread?'':lit.length
+   ?'<div class="pm-eye" style="margin-top:14px">Top three</div><div class="ad-rows">'+top+'</div>'
+    +'<div class="pm-eye" style="margin-top:12px">By assemblage point</div><div class="ad-rows">'+per+'</div>'
+   :'<div class="pm-eye" style="margin-top:14px">Top three</div><p class="rnone">Nothing is carrying charge yet.</p>';
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;
   /* WHERE TO START. Only while there is nothing to read, because a call to
@@ -1249,7 +1237,16 @@ function render(){
       needs the same four and two sets of one id is a broken document. */
    st.hidden=false;
    st.innerHTML=startHTML();})();
-  $('person').innerHTML='<h3>'+(p.you?'You':p.nm)+'</h3>'
+  /* THE PERSON'S NAME, NOT THE WORD YOU. Round IT, his words: "where it says
+     reading and then it says you: first off, change you to the person's
+     name." A worked example already printed its own name here. The person's
+     own record printed the literal You whatever they had called themselves in
+     Settings, which is where account.js writes CURP.name. The first word of
+     it, the way sumPlate on the Summary prints the same name over the same
+     reading, so the two surfaces call a person one thing. A record nobody has
+     named is still called You, because that is the name pNew gave it. */
+  var who=p.you?(String((CURP&&CURP.name)||'').trim().split(/\s+/)[0]||'You'):p.nm;
+  $('person').innerHTML='<h3>'+esc(who)+'</h3>'
    +(p.you?'':'<div class="prole">'+p.age+', '+esc(String(p.role).replace(' · ICP',''))+'</div>')
    /* THE EMPTY STATE OUTLIVED THE EMPTINESS. says was printed whenever it
       existed, and the blank persona's says is the words "Nothing has been
@@ -1257,8 +1254,7 @@ function render(){
       a sentence swearing they had entered nothing. It is an empty state, so it
       goes when the state is not empty. */
    +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'')
-   +'<div class="pm-eye" style="margin-top:14px">Archetypes</div>'+ah
-   +'<div class="pm-eye" style="margin-top:12px">Domains</div>'+dsh
+   +run
    +'<div class="pm-eye" style="margin-top:12px">Field</div>'
    /* "nothing" was being printed over charge a person had entered themselves.
       If something sits under the line, the row says so rather than reporting

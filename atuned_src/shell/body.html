@@ -660,6 +660,21 @@
         opposite the glass bar, made of the bar's own glass. Icon only, still,
         on DR: "I don't need the text, just make it the icon." -->
    <div class="fview" id="fview" role="group" aria-label="How the Field is drawn"></div>
+   <!-- THE BAND WORD COMES BACK TO THE CENTRE, AND IT IS HIS REVERSAL. Round
+        IT in TASKS.md, his words: "take Gaining off that right panel and move
+        it to the centre column, upper right side, so it goes opposite
+        Accuracy, on the top side, and then get rid of that text that said the
+        field builds more than it spends, and raise the text that says reading
+        up to the top." The ruling further down this stage struck the tier word
+        off the centre because the rail already carried it; the rail no longer
+        does, so this is still one copy of it and not two.
+
+        It keeps the id #railtop, the way #key and #acc kept theirs when they
+        moved, so railTop() in ui/ui.js still writes it and crMotion still
+        finds it. Under the Wheel, Frames and Dial switch rather than beside
+        it, because with the left column shut the glass bar runs to within a
+        couple of hundred pixels of that switch at 1600 and folds narrower. -->
+   <div id="railtop" class="railtop"></div>
    <!-- THE LEGEND IS GONE. Ruled 25 September (BA9), struck through on a
         screenshot with the worked example notice: "You have unnecessary text,
         I want those removed." It said what the ring is, that a band or a mark
@@ -798,9 +813,11 @@
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/></svg>Imprints</span><i></i></button>
     <div class="lsec-bd"><div id="imp"></div></div>
    </div>
-   <div id="railtop" class="railtop"></div>
    <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
-        the stage's upper right now, EZ. -->
+        the stage's upper right now, EZ. The coherence ring and its band word
+        followed them in round IT, and the Reading is the first thing under
+        the summary now. -->
+
 
    <div class="lsec open" data-rail="right" data-sec="you">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Reading</span><i></i></button>
