@@ -15,6 +15,10 @@
 
      node proto/ninety/arc90.js
      node proto/ninety/arc90.js --walk proto/ninety/walk-11830df.jsonl
+     node proto/ninety/arc90.js --walk proto/ninety/walk-11830df.jsonl --clock wall
+
+   The clock is simulated by default since 27 September; --clock wall is the
+   first run's harness, kept so that run can be reproduced. See THE CLOCK below.
 
    WHAT THIS FILE WRITES NO ARITHMETIC OF ITS OWN FOR. Four layers, and each
    says which kind of number it prints.
@@ -63,6 +67,43 @@ const ROOT=path.resolve(__dirname,'../..');
 const rel=f=>path.join(ROOT,f);
 
 /* ------------------------------------------------------------
+   THE CLOCK. Added 27 September, after the first run was found to be
+   measuring the harness and not the product.
+
+   The engine stamps time on its own: meterRun writes meter.giftAt and
+   meter.last with new Date(), meterFirst and snapshot likewise, and
+   meterBudget(p) with no second argument counts free weeks up to Date.now().
+   This file walks ninety days in a few real seconds, so on the wall clock the
+   gift is stamped in the real present and every later budget is read in that
+   same present: no free week can ever open, and the allowance reads nought for
+   good whatever the engine would do on day 31.
+
+   --clock sim (the default) installs the simulated clock from
+   proto/gamification-timeline/extract.js, unchanged in technique: a Date
+   subclass whose no argument constructor and Date.now() return the simulated
+   moment, installed before engine.js is required, and every meterBudget call
+   below is handed that moment. Day 0 is the same 1 September 2026, 07:00 UTC,
+   and a day's turn is at 08:00, as extract.js has it.
+
+   --clock wall reproduces the first run's harness exactly: no Date is
+   replaced, the day stamps are counted back from the real present, and the
+   now handed to meterBudget is the real Date.now(), which is what the old
+   argumentless call read anyway.
+   ------------------------------------------------------------ */
+const CLOCK=(function(){const i=process.argv.indexOf('--clock');
+ const v=i>0?process.argv[i+1]:'sim';
+ if(v!=='sim'&&v!=='wall'){console.log('--clock takes sim or wall, not '+v);process.exit(2);}
+ return v;})();
+const RealDate=Date; let SIM=null;
+if(CLOCK==='sim'){
+ class SimDate extends RealDate{
+  constructor(...a){ if(a.length===0&&SIM!==null)super(SIM); else super(...a); }
+  static now(){ return SIM!==null?SIM:RealDate.now(); }}
+ global.Date=SimDate;}
+const DAYMS=86400000;
+const T0=RealDate.UTC(2026,8,1,7,0);
+
+/* ------------------------------------------------------------
    0. PROVENANCE. What was measured, and whether it was clean.
    ------------------------------------------------------------ */
 const sh=c=>{try{return cp.execSync(c,{cwd:ROOT,stdio:['ignore','pipe','ignore']}).toString().trim();}catch(e){return '';}};
@@ -74,10 +115,13 @@ const PROV={commit:sh('git rev-parse --short HEAD'),
   src:!!sh('git status --porcelain atuned_src')},
  md5:{engine:md5('engine.js'), losssim:md5('proto/ritual/losssim.js'),
   storyboard:md5('proto/firstrun/storyboard.html')},
- when:new Date().toISOString()};
+ when:new RealDate().toISOString()};
 
 const E=require(rel('engine.js'));
 let MEM={}; E.bindStore(k=>MEM[k],(k,v)=>{MEM[k]=v;});
+/* the gift's size. Exported as GIFT_N since b0eed95; before that it was a
+   literal 100 in engine/plan.js, which is what an older engine is read at. */
+const GIFT=(typeof E.GIFT_N==='number')?E.GIFT_N:100;
 const {STORYBANK}=require(rel('sim/stories.js'));
 
 /* losssim prints its source table when it is required. Hold the console while
@@ -111,7 +155,7 @@ const CHANS=CHAN.map(c=>c[0]+c[2]);
 function releaseRun(p,ids){
  const q=ids.map(i=>E.BY[i]).filter(n=>n&&n.cf);
  if(!q.length)return {ran:false, why:'nothing picked'};
- const cap=E.meterBudget(p).cap;
+ const cap=E.meterBudget(p,Date.now()).cap;
  const plan=cap>0?E.meterPlan(p,q.map(n=>n.i),CHANS,cap):[];
  if(!plan.length)return {ran:false, why:'no allowance', cap:cap};
  /* relCoolDown, the charge half, verbatim in its arithmetic */
@@ -340,21 +384,37 @@ function textsFor(nm){
    intake: the person's reference laws from LAWSET are their answers, as if
    the 63 were taken on day one. */
 function drive(nm,seq,intake,called){
+ if(CLOCK==='sim')SIM=T0;
  const p=E.blankProfile('You');
  if(intake){const LS=E.LAWSET[nm]||{};
   E.SINAMES.forEach(l=>{p.laws[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:null);});
   p.intake=p.intake||{}; p.intake.completedAt=new Date(0).toISOString();}
  E.loadProfile(p);
  const texts=textsFor(nm), now0=Date.now();
- const tOf=d=>now0-(90-d)*86400000;
+ const tOf=CLOCK==='sim'?(d=>T0+d*DAYMS+3600000):(d=>now0-(90-d)*DAYMS);
  const ev={readNothing:0, firstCarry:null, firstOver:null, firstRelease:null, giftGone:null,
-  refusedLoaded:0, firstRefused:null, releases:0, stories:0, lastMarkDay:null, marksAt:{}};
- const snaps={}; let turns=0; const seenMark={};
+  refusedLoaded:0, firstRefused:null, releases:0, stories:0, lastMarkDay:null, marksAt:{},
+  /* AFTER THE GIFT, measured rather than asserted. giftDay is the first day
+     the unique count reaches the gift's size, which is engine independent.
+     giftStamp is what meterRun wrote into meter.giftAt, if this engine writes
+     one, so the clock can be checked against the day it was written on.
+     refills counts days the allowance rose after the gift was spent, which is
+     the one thing "nothing starts a new week" says cannot happen. */
+  giftDay:null, giftStamp:null, refills:0, relAfterGift:0, refusedAfterGift:0,
+  sayAfterGift:null, sayAt:{}, leftAt:{}};
+ const snaps={}; let turns=0; const seenMark={}; let prevLeft=null;
  const cq0=E.compute().CQ;
  const r0=E.compute();
  const firstShown={cq:Math.round(r0.CQ), ex:Math.round(r0.EX)};
  for(let d=1;d<=seq.length;d++){
+  if(CLOCK==='sim')SIM=tOf(d);
   const kept=seq[d-1]>0;
+  const spentBefore=ev.giftDay!==null;
+  /* A REFILL IS READ AT THE START OF THE DAY, before the turn. Read at the end
+     of it, a week that opens and is spent by that same day's release never
+     shows: the first cut of this probe reported Derek refilled 0 while he ran
+     10 releases after the gift, which cannot both be true. */
+  if(spentBefore&&prevLeft!==null&&E.meterBudget(p,Date.now()).left>prevLeft)ev.refills++;
   if(kept){turns++;
    if(seq[d-1]===1){
     const t=texts[(ev.stories)%texts.length]; ev.stories++;
@@ -369,12 +429,28 @@ function drive(nm,seq,intake,called){
     const live=r.loaded.slice().sort((a,b)=>b.sq-a.sq);
     if(live.length){
      const rr=releaseRun(p,live.slice(0,3).map(n=>n.i));
-     if(rr.ran){ev.releases++; if(ev.firstRelease===null)ev.firstRelease=d;}
-     else{ev.refusedLoaded++; if(ev.firstRefused===null)ev.firstRefused=d;}}}
+     if(rr.ran){ev.releases++; if(ev.firstRelease===null)ev.firstRelease=d; if(spentBefore)ev.relAfterGift++;}
+     else{ev.refusedLoaded++; if(ev.firstRefused===null)ev.firstRefused=d; if(spentBefore)ev.refusedAfterGift++;}}}
    p.rituals.push({t:new Date(tOf(d)).toISOString(),track:'',band:'',steps:[called.k],
     min:+called.min||5,when:'',where:'',done:true});
    E.saveProfile(p);}
-  if(E.meterBudget(p).left<=0&&ev.giftGone===null)ev.giftGone=d;
+  const bud=E.meterBudget(p,Date.now());
+  if(bud.left<=0&&ev.giftGone===null)ev.giftGone=d;
+  const uniq=((p.meter&&p.meter.unique)||[]).length;
+  if(ev.giftDay===null&&uniq>=GIFT){ev.giftDay=d;
+   ev.giftStamp=(p.meter&&p.meter.giftAt)||null;
+   /* THE CLOCK CHECKS ITSELF. Under the simulated clock the stamp the engine
+      wrote on its own must fall on the simulated day. If it does not, the
+      Date was not replaced before the engine read it, every week count below
+      is the wall clock's, and the run stops rather than print it. */
+   if(CLOCK==='sim'&&ev.giftStamp&&String(ev.giftStamp).slice(0,10)!==new RealDate(tOf(d)).toISOString().slice(0,10)){
+    console.log('CLOCK NOT HELD: '+nm+' spent the gift on walk day '+d+' ('+new RealDate(tOf(d)).toISOString().slice(0,10)
+     +') and the engine stamped meter.giftAt '+ev.giftStamp+'. Stopping.');
+    process.exit(4);}}
+  if(ev.giftDay!==null){
+   if(ev.sayAfterGift===null&&d>ev.giftDay)ev.sayAfterGift=bud.allow?bud.allow.say:'';}
+  if(DAYS.indexOf(d)>=0){ev.sayAt[d]=bud.allow?bud.allow.say:''; ev.leftAt[d]=bud.left;}
+  prevLeft=bud.left;
   /* a mark is new the first day its key is earned. Tracked by key, because
      earned[] is in MARKS order and a slice by count reads a mark earned in the
      middle of the list as the one at the end of it. */
@@ -383,9 +459,10 @@ function drive(nm,seq,intake,called){
   if(fresh.length){fresh.forEach(m=>{seenMark[m.k]=d;}); ev.lastMarkDay=d; ev.marksAt[d]=fresh.map(m=>m.nm);}
   if(DAYS.indexOf(d)>=0||d===seq.length){const r=E.compute();
    snaps[d]={turns, cq:r.CQ, ex:r.EX, dq:r.DQ, over:r.loaded.length, carry:r.carrying.length,
-    left:E.meterBudget(p).left, marks:L.earned.length, streak:E.streakRead(p,tOf(d)).best,
+    left:E.meterBudget(p,Date.now()).left, marks:L.earned.length, streak:E.streakRead(p,tOf(d)).best,
     tier:r.tier||'no word'};}}
  const rN=E.compute();
+ SIM=null;
  return {ev, snaps, days:seq.length, turns, cq0, cqN:rN.CQ, firstShown,
   lastShown:{cq:Math.round(rN.CQ), ex:Math.round(rN.EX)}, exN:rN.EX,
   marks:E.ladderRead(p,tOf(seq.length)).earned.map(m=>m.nm)};}
@@ -406,12 +483,23 @@ function sectionC(B){
     which is the default engine/plan.js describes ("it defaults to the end of
     the gift"). */
  const bp=E.blankProfile('You');
- const aft=E.planAllowance(bp.plan,100), aftNull=E.planAllowance(Object.assign({},bp.plan,{base:null}),100);
- console.log('THE DAY AFTER THE GIFT. A blank profile carries plan.base '+bp.plan.base+'. With 100 patterns opened the');
+ const aft=E.planAllowance(bp.plan,GIFT), aftNull=E.planAllowance(Object.assign({},bp.plan,{base:null}),GIFT);
+ console.log('CLOCK: '+(CLOCK==='sim'
+  ?'simulated. Day 0 is '+new RealDate(T0).toISOString().slice(0,16)+'Z, a turn is at 08:00 each day, every engine stamp and every budget read is on that day.'
+  :'wall. Every engine stamp and every budget read is the real present, so no simulated week can pass.'));
+ console.log('THE DAY AFTER THE GIFT. A blank profile carries plan.base '+bp.plan.base+'. With '+GIFT+' patterns opened the');
  console.log('allowance reads "'+aft.say+'", '+aft.left+' left. With base unset it would read "'+aftNull.say+'".');
- console.log('Nothing in the one file build writes a new period, so the first reading is also every later one.\n');
+ /* THE WEEK, read straight off planAllowance with an explicit date, which no
+    clock can move: ten more patterns opened three days after the gift ran out,
+    then the same count read seven days after it. An engine without weekly
+    banking ignores the two dates and reads the same both times. */
+ const gAt=new RealDate(T0).toISOString(), wk3=E.planAllowance(bp.plan,GIFT+10,gAt,T0+3*DAYMS),
+  wk7=E.planAllowance(bp.plan,GIFT+10,gAt,T0+7*DAYMS);
+ console.log('Ten more opened in the first free week, read on day 3 of it: "'+wk3.say+'". The same count read');
+ console.log('on day 7, when the second week opens: "'+wk7.say+'". Whether the walk below ever reaches a second');
+ console.log('week is the clock\'s doing, which is why the clock is printed above.\n');
  const out={};
- out.__gift={base:bp.plan.base, say:aft.say, left:aft.left, sayNull:aftNull.say};
+ out.__gift={base:bp.plan.base, say:aft.say, left:aft.left, sayNull:aftNull.say, wk3:wk3.say, wk7:wk7.say, clock:CLOCK};
  ORDER.forEach(nm=>{
   const m=B?B.meas[nm]:null;
   const called=m?{k:m.called,min:m.min}:{k:'',min:5};
@@ -435,7 +523,12 @@ function sectionC(B){
     +'  refused with load '+e.refusedLoaded
     +'  headline '+w.firstShown.cq+' to '+w.lastShown.cq
     +'  expression '+w.firstShown.ex+' to '+w.lastShown.ex
-    +'  marks '+w.marks.length+(e.lastMarkDay?(', last new on day '+e.lastMarkDay):''));};
+    +'  marks '+w.marks.length+(e.lastMarkDay?(', last new on day '+e.lastMarkDay):''));
+   if(e.giftDay!==null)console.log('    '.padEnd(26)+'after the gift: '+GIFT+' reached day '+e.giftDay
+    +(e.giftStamp?(' (meter.giftAt '+String(e.giftStamp).slice(0,10)+')'):' (no meter.giftAt on this engine)')
+    +'  day after reads "'+e.sayAfterGift+'"  refilled on '+e.refills+' days'
+    +'  releases after '+e.relAfterGift+'  refused after '+e.refusedAfterGift
+    +'  day 90 reads "'+(e.sayAt[90]!==undefined?e.sayAt[90]:'')+'"');};
   /* losssim.js names this field alive30 and counts it after the ninety day
      loop, on `live`, so it is the row still in at day 90. Printed as what it
      counts. */
@@ -510,10 +603,25 @@ function ledger(A,B,C,D){
   add('day 0, landing','Controls in view on the landing: '+D.L16.controls+' at 1600, '+D.L39.controls+' at 390, first door '+((D.L39.doorsTop||[])[0])+' px down on a phone.','everyone who is not led','measured, Chromium','D');
   add('day 0, first commit','"'+(D.s1.after||'').replace(/^.*?(You have)/,'$1').slice(0,70)+'" after a first story.','everyone who writes one','measured, Chromium','D');}
  if(C){
-  const gone=ORDER.map(nm=>[nm,C[nm].walks.every.intake.ev.giftGone]).filter(x=>x[1]);
-  add('days '+Math.min(...gone.map(x=>x[1]))+' to '+Math.max(...gone.map(x=>x[1]))+', every day walk','The gift of 100 patterns is spent and the release refuses from then on. The free tier\'s ten a week reads "'
-   +C.__gift.say+'" because a blank profile carries plan.base '+C.__gift.base+', and nothing in a one file build starts a new week.',
-   gone.map(x=>x[0]+' d'+x[1]).join(', '),'measured, engine','C');
+  /* ITEM 7 IS PRINTED FROM WHAT THE WALK DID AFTER THE GIFT, not from a
+     sentence about it. The first run typed "the release refuses from then
+     on" and "nothing starts a new week" as prose, and the second clause was a
+     fact about this harness's wall clock, not about the engine. */
+  const spent=ORDER.map(nm=>[nm,C[nm].walks.every.intake.ev]).filter(x=>x[1].giftDay!==null);
+  const refilled=spent.filter(x=>x[1].refills>0);
+  const clk=' ['+C.__gift.clock+' clock]';
+  if(spent.length){
+   const lo=Math.min(...spent.map(x=>x[1].giftDay)), hi=Math.max(...spent.map(x=>x[1].giftDay));
+   const says=[...new Set(spent.map(x=>x[1].sayAfterGift))];
+   const what=refilled.length
+    ?'The gift of '+GIFT+' patterns is spent. After it the free tier opens ten more each week and banks what is not spent: it rose on '
+      +Math.min(...refilled.map(x=>x[1].refills))+' to '+Math.max(...refilled.map(x=>x[1].refills))
+      +' days of the rest of each walk, one per week that opened. The release refuses on the days between when there is load on the wheel and less than a run left.'+clk
+    :'The gift of '+GIFT+' patterns is spent and the allowance never rises again inside the walk. The day after, it reads "'+says.join('" or "')+'", and the release refuses on every later day with load on the wheel.'+clk;
+   add('days '+lo+' to '+hi+', every day walk',what,
+    spent.map(x=>x[0]+' gift d'+x[1].giftDay+', first nought '+(x[1].giftGone?'d'+x[1].giftGone:'never')+', rose '+x[1].refills
+     +' times, ran '+x[1].relAfterGift+', refused '+x[1].refusedAfterGift+' after, day 90 "'+x[1].sayAt[90]+'"').join('; '),
+    'measured, engine','C');}
   const flat=ORDER.filter(nm=>C[nm].walks.every.none.firstShown.cq===C[nm].walks.every.none.lastShown.cq);
   add('days 1 to 90, no intake','The headline CQ reads the same whole number on day 90 as on day 1 whatever is done, because it is the laws alone and nothing was answered.',
    flat.join(', '),'measured, engine','C');
@@ -545,7 +653,7 @@ function ledger(A,B,C,D){
 
 /* ============================================================ */
 console.log('arc90. Ninety days from the storyboard, for the ICPs.');
-console.log('commit '+PROV.commit+', '+PROV.when);
+console.log('commit '+PROV.commit+', '+PROV.when+', clock '+CLOCK);
 console.log('dirty: engine.js '+PROV.dirty.engine+', atuned_src '+PROV.dirty.src+', losssim.js '+PROV.dirty.losssim
  +', loopsim.js '+PROV.dirty.loopsim+' (read by nothing here)');
 console.log('md5: engine.js '+PROV.md5.engine+', losssim.js '+PROV.md5.losssim+', storyboard.html '+PROV.md5.storyboard);
