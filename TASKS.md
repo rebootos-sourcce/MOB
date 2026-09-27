@@ -17980,3 +17980,56 @@ asks of every number. Section 10.5 of the pitch.
    `DESIGN-tooltip-copy.md`: the panel's slots, whether "pole in" is renamed
    so "pull" means the real pull, and what to do about distortion at its
    ceiling. These sit behind the nine still open in its section 8.
+
+## GI. Masks pixel mockup verified, and a real disagreement between two seats caught before either ships. 27 September
+
+`proto/masks/masks-packed.html` (md5 `6ea87e7cefb0eb32cae5c3b33f28548a`), the
+8-bit fragmentation mockup dispatched at round GG item 2. Verified directly,
+not on the art director's report alone: opened at 1600 and 390 in headless
+Chromium, zero console errors both widths, the six masks confirmed against
+`engine/data/canon.js:494-511` (Child Root plus Sacral, Preteen Solar plus
+Throat, Teen Throat only, Adult Sacral plus Solar, Professional Solar plus
+Throat, Ideological 3rd Eye), the prototype banner present and reflowing to
+static on the 390 shot, no real tab label reused, zero em dashes by byte
+across every file in `proto/masks/`. `git status` at verification time showed
+only the untracked `proto/masks/` directory as this seat's footprint, nothing
+under `atuned_src/`, `source.html` or `COPY.md` touched.
+
+The screenshot confirms the picture reads as his own reference: a face built
+from coloured blocks with eye holes, brighter blocks where charge sits
+higher, a run of small loose squares where a belief has broken up rather
+than a solid bar.
+
+**A real disagreement, caught by comparing the two reports rather than
+trusting either alone.** The narrative-director's GG4 entry above assigns
+Adult to Warrior and Professional to Ruler, and separately names them both
+close calls. The art director's mockup, working at the same time from the
+same `ARCH` table, assigns Adult to Ruler and Professional to Warrior, the
+two swapped, and raises its own separate question about whether an
+archetype should share its mask's seat colour. Neither seat saw the other's
+pick. This is not logged as settled either way; it goes to him as one
+question, not two, since presenting both tables without saying they
+disagree would let him rule on a difference neither seat flagged.
+
+What I need from him, folded into the standing GG4 list rather than a
+second one:
+6. **Adult and Professional's archetypes are swapped between the two
+   seats that worked on them.** Narrative-director: Adult, Warrior, moves
+   on the threat and files the cost after. Professional, Ruler, orders the
+   field to keep control visible. Art director: Adult, Ruler, absorbs the
+   cost of running a household instead of setting it down. Professional,
+   Warrior, performs competence so the fear underneath is not felt. Both
+   readings are defensible from the mask's own verb (`v:` field in
+   `canon.js`); this needs his call, not a default.
+7. **Should an archetype share its mask's seat colour**, from the art
+   director's mockup: keep the archetype in its own colour, reading as a
+   separate force driving the mask, or choose archetypes by seat match,
+   which would force different picks for Child and Professional than
+   either seat above has proposed.
+8. **Preteen and Professional are built from the same 28 addresses**
+   (`canon.js:499` and `:506`, both `['Solar','Throat']`) and the engine
+   gives them identical weight on every profile measured. Drawn honestly
+   they differ only by which seam cuts the sprite. Should one move to a
+   different seat, or is the seam meant to carry the whole difference.
+9. **Do the 33 saboteurs also become pixel faces**, or does the pixel
+   treatment stay on the six developmental masks he named directly.
