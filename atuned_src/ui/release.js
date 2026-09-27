@@ -126,6 +126,7 @@ function relPick(nodeIds){
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
  RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;RUN.paused=false;
+ RUN.proj=null;RUN.dq0=null;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -274,6 +275,112 @@ function relAdvance(){
   RUN.cool++;
   if(RUN.cool>=COOLING.length){RUN.cool=COOLING.length;relRender();return;}
   return relStep();}}
+/* ONE ADDRESS'S SHARE OF THE WRITE, and the only copy of it. It sat inline in
+   relCoolDown, and the live shadow row below has to run the same arithmetic
+   ahead of the commit. Two copies of it would be two answers to "what does
+   this run do", and the row would count down to a number the run then did not
+   land on. w0 is passed in because relCoolDown reads every weight before the
+   first write moves anything, and the projection has to read them the same
+   way. */
+function relWrite(q,n,w0){
+ var d=-Math.round(w0*0.21+2);
+ var w1=Math.max(0,w0+d);
+ var share=Math.abs(d)/10/Math.max(1,q.filter(function(x){return x.cf===n.cf;}).length);
+ S.charge[n.cf]=clamp((S.charge[n.cf]||0)-share,0,10);
+ /* release empties the address, replace fills it. the second half is not optional. */
+ S.replace[n.cf]=clamp((S.replace[n.cf]||0)+share*0.62,0,10);
+ return {d:d,w1:w1};}
+/* put a saved map back in place. The object is kept and its keys are
+   restored, because S.charge is read by reference elsewhere and a new object
+   would leave those readers holding the projection's numbers. */
+function relPut(o,from){
+ Object.keys(o).forEach(function(k){if(!(k in from))delete o[k];});
+ Object.assign(o,from);}
+/* ============================================================
+   THE SHADOW, COUNTED DOWN WHILE THE RUN IS SPOKEN. His words, 27
+   September: "CQ should raise, DQ should lower, SQ should lower.
+   You should see SQ lowering in real time since those are the
+   patterns releasing."
+
+   The engine already did all three. What it did not do was show it:
+   the write lands once, in relCoolDown, so for the whole of a forty
+   minute run DQ sat still and the only number on the card that moved
+   was the clock. Measured on the shipped build with the Release
+   button's own pick of eight: Diane 19.64 to 14.25, James 26.68 to
+   20.16, Gordon 53.85 to 40.56, Sofia 3.15 to 2.49. Whole points, so
+   DQ is the figure. CQ moved 0.09 to 0.22 on the same runs, which
+   rounds away at the one decimal every surface prints it at, so it is
+   not on this row and relCoolDown still reports it through expression.
+
+   So the row is a projection of the commit and says nothing the
+   commit will not do. The write is run once, address by address in
+   queue order, on the live field, with compute() read after each
+   address, and the field is put back before anything draws. The row
+   then walks from one address's result to the next as that address's
+   lines are spoken. The step inside an address is drawn, never
+   computed: the engine has one write per address and no half way
+   state, and the line count is how far through it the person is.
+
+   A worked example gets no row. relCoolDown refuses it, so a count
+   down there would be a number that never lands.
+   ============================================================ */
+function relProject(){
+ var q=RUN.queue||[], P={queue:RUN.queue,plan:RUN.plan,dq:null};
+ RUN.proj=P;
+ if(typeof S==='undefined'||S.who!==0||!q.length)return P;
+ var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace);
+ try{
+  var r=compute(), w0=q.map(function(n){return n.sq*10;});
+  var dq=[r.DQ], sq=[q.map(function(n){return n.sq;})];
+  q.forEach(function(n,k){
+   relWrite(q,n,w0[k]); r=compute();
+   dq.push(r.DQ); sq.push(q.map(function(x){return x.sq;}));});
+  P.dq=dq; P.sq=sq;}
+ catch(e){P.dq=null;}
+ finally{relPut(S.charge,c0); relPut(S.replace,r0); compute();}
+ if(!P.dq)return P;
+ /* which queue address each plan line speaks for, and how many lines each has.
+    The first place an address sits in the queue is the one the write uses. */
+ P.at={}; q.forEach(function(n,k){if(P.at[n.i]==null)P.at[n.i]=k;});
+ P.of=(RUN.plan||[]).map(function(key){return P.at[+String(key).split(':')[0]];});
+ P.lines=q.map(function(){return 0;});
+ P.of.forEach(function(k){if(k!=null)P.lines[k]++;});
+ return P;}
+/* where the count stands on the line being said. A line counts once it has
+   been said, so the first pass of a run reads the field as it stood. An
+   address the plan was cut before reaching has no lines, so its share lands
+   with the cooldown and not before. */
+function relLive(){
+ var P=RUN.proj;
+ /* keyed to the run it was built for, so a run built by hand, or picked again,
+    is projected again rather than read off the last one */
+ if(!P||P.queue!==RUN.queue||P.plan!==RUN.plan)P=relProject();
+ if(!P.dq)return null;
+ var said=P.lines.map(function(){return 0;});
+ if(RUN.phase==='run')P.of.forEach(function(k,i){
+  if(k==null)return;
+  said[k]+=i<RUN.idx?RUN.dose:(i===RUN.idx?RUN.pass:0);});
+ var f=said.map(function(x,k){return P.lines[k]?Math.min(1,x/(P.lines[k]*RUN.dose)):0;});
+ var dq=P.dq[0];
+ f.forEach(function(x,k){dq+=x*(P.dq[k+1]-P.dq[k]);});
+ return {dq:dq,dq0:P.dq[0],
+  sqAt:function(n){var k=n?P.at[n.i]:null; if(k==null)return null;
+   return P.sq[k][k]+f[k]*(P.sq[k+1][k]-P.sq[k][k]);}};}
+/* THE ROW. A label is one word (V17), and DQ is the word the Field prints beside
+   the same figure. It carries NO TITLE, and the first cut did: tip.js turns
+   every title into the product's tooltip, this row sits directly over Pause
+   and End, and the tooltip it raised on the way down covered Pause so the
+   press did not land. The functional gate timed out on exactly that click.
+   On a run the person is reaching for Pause, so nothing opens on this row. Two
+   decimals, because at one the lightest profile measured, Sofia, moves a tenth
+   every few minutes, and a count down that holds still reads as a count down
+   that stopped. Not aria-live: it changes on every line, and a reader that
+   announced it would talk over the voice. */
+function relShade(dq,dq0){
+ if(dq==null||dq0==null)return '';
+ return '<div class="rel-clock">'
+  +'<div class="rel-fig"><span>DQ</span><b>'+dq.toFixed(2)+'%</b></div>'
+  +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,dq0-dq).toFixed(2)+'%</b></div></div>';}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
  relHush();
@@ -333,22 +440,20 @@ function relCoolDown(){
     the panel reads the move a person can see, and expression carries the lift
     inside it, since expression is CQ times what the pull leaves. */
  var _pre=compute(); RUN.ex0=_pre.EX; RUN.ceil0=exCeiling();
+ /* and the shadow, so the row the run counted down on lands on a number the
+    engine computed, read before the write and after it */
+ RUN.dq0=_pre.DQ;
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
  undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
  var freed=0;
  RUN.queue.forEach(function(n){
   var w0=n.sq*10;                                   /* weights are 0 to 100 here */
-  var d=-Math.round(w0*0.21+2);
-  var w1=Math.max(0,w0+d);
-  freed+=Math.abs(d);
-  var share=Math.abs(d)/10/Math.max(1,RUN.queue.filter(function(q){return q.cf===n.cf;}).length);
-  S.charge[n.cf]=clamp((S.charge[n.cf]||0)-share,0,10);
-  /* release empties the address, replace fills it. the second half is not optional. */
-  S.replace[n.cf]=clamp((S.replace[n.cf]||0)+share*0.62,0,10);
+  var m=relWrite(RUN.queue,n,w0);
+  freed+=Math.abs(m.d);
   RUN.log.push({node:n.i,name:n.k,band:n.b,fetter:n.cf,
    opp:(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'',
-   w0:Math.round(w0),d:d,w1:w1,cleared:(w1<=6)});});
+   w0:Math.round(w0),d:m.d,w1:m.w1,cleared:(m.w1<=6)});});
  RUN.freed=freed;
  /* One pattern is one line: one channel over one address. Every line of the
     run is keyed, so a rerun of the same ground costs nothing and only new
@@ -514,12 +619,18 @@ function relRender(){
   var ch=at.ch, n=at.n, c=seatCol(n.b);
   var tot=(RUN.plan||[]).length||1;
   var cur=relStepAt(relAt(RUN.idx),RUN.pass)||relStepAt(at,0);
+  /* THE RING ON THE PLATE IS THE ADDRESS BEING RELEASED, so it is where SQ is
+     seen going down. It read n.sq, which does not move until the cooldown, so
+     it printed the same percent for every one of two hundred lines. It reads
+     the count down now, and n.sq still when there is none. */
+  var live=relLive(), sqNow=live?live.sqAt(n):null;
+  if(sqNow==null)sqNow=n.sq;
   out+=relStrips(ch[0])
    /* THE HALF AND THE SIDE, IN WORDS. "Release, left channel" is the book's
       own order of telling it, and it is the heading so it is read first. */
    +'<div class="pm-eye" aria-live="polite">'+(ch[2]==='truth'?'Reframe':'Release')+', '
      +ch[1].toLowerCase()+' channel</div>'
-   +'<div class="rel-plate">'+crNode(n,'xs',{raw:Math.round(n.sq*10)+'%'})
+   +'<div class="rel-plate">'+crNode(Object.assign({},n,{sq:sqNow}),'xs',{raw:Math.round(sqNow*10)+'%'})
    +'<span><span class="rel-node" style="color:'+c+'">'+esc(n.k)+'</span>'
    +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span></span></div>'
    /* THE THOUGHT LINE ITSELF, and it is the line the voice is saying. relLine
@@ -529,6 +640,7 @@ function relRender(){
    +relLineRow(cur)
    +'<div class="rel-ct">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · pattern '+(RUN.idx+1)+' of '+tot+'</div>'
    +relClock()
+   +(live?relShade(live.dq,live.dq0):'')
    +'<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
    /* End does not abandon the run. It commits the plan and runs the cooldown. */
    +'<button class="btn" id="relstop">End</button></div>'
@@ -543,6 +655,10 @@ function relRender(){
    +'<div class="rel-speak rel-cool">'+esc(COOLING[Math.min(RUN.cool,COOLING.length-1)])+'</div>'
    +'<div class="rel-node">'+RUN.log.length+(RUN.log.length===1?' address':' addresses')+'</div>'
    +'<div class="rel-sub">'+cl+' cleared entirely, '+RUN.freed+' weight freed</div>'
+   /* the row the run counted down on, landed. Read off compute() after the
+      write and against the reading taken before it, never off the projection,
+      so if the two ever part it is this number that is true. */
+   +relShade(RUN.dq0!=null?compute().DQ:null,RUN.dq0)
    +'<div class="rel-log">';
   RUN.log.forEach(function(x){
    out+='<div class="rel-row'+(x.cleared?' cleared':'')+'">'
