@@ -18273,3 +18273,80 @@ What I need from him, the seat's own three questions, unedited:
    picture on a phone opens its reading 4,600 to 5,100 pixels down the
    page with nothing changing on screen, in all six walks. It sat outside
    this task on purpose.
+
+## GN. His own bug report, reproduced and fixed: the core stopped opening on a phone. 27 September
+
+His words, verbatim, sent direct rather than through a seat: "Atuned /
+SOURCE, repo root. Read CLAUDE.md first. Never edit source.html
+directly, edit atuned_src/ and run BUILD.sh. No em dashes anywhere.
+The defect. On a coarse pointer, a tap on the core of the Field's
+Wheel (HIT entry k:'core') no longer opens the Core reading. Measured
+at 390 by 844 with touch emulation: on commit eae5b75 the tap opened
+The Core in #rdrill 6 of 6 times, on commit e1863d3 it opened nothing,
+0 of 6. Reproduce with proto/mobile/coretap.js. Find which change
+swallows the core's release path. Reproduce before you fix. Done
+when: coretap.js reads 6 of 6 on the fixed build, pinch still works, a
+pole mark still opens its drill, and a functional gate asserts a
+coarse pointer tap on the core cannot regress silently again. Run
+every gate before committing."
+
+This is the same regression the round GL gap analysis had already
+found and queued as `task_536cbb47` for the seat that ran round GM,
+now confirmed independently by him from the code itself before either
+report reached him, and given to me directly.
+
+Reproduced first, per his own instruction: `proto/mobile/coretap.js`
+against `eae5b75` opened "The Core CQ 59..." 6 of 6, against the
+committed `e1863d3` opened nothing, 0 of 6. Matched his own numbers
+exactly before touching a line.
+
+**Root cause, found by reading the code rather than guessing.**
+`atuned_src/ui/ui.js`'s `hitPress` has never had a case for the core:
+opening it lived only in the `cv` pointerup handler's `PAN` branch,
+"a press on the core that never moved is still a click on the core".
+Commit `e1863d3` added a deferred touch path, `TAP`, armed on
+pointerdown and fired on pointerup so a drag could be told from a tap
+before either committed. Pointerup checks `TAP` first and returns the
+moment it is set, before `PAN` is ever read. A touch on the core armed
+both, since the core is truthy and reaches the touch branch same as
+any other hit, so `TAP` shadowed `PAN` and the core's own opening
+never ran. A mouse still worked, because a mouse press calls
+`hitPress` straight from pointerdown and never sets `TAP`.
+
+**Fix, commit `3cd307d`.** The core is left out of `TAP` entirely, on
+every pointer type: `if(e.pointerType==='touch'){if(h.k==='core')
+return; TAP=...}`. `PAN` alone decides it again, exactly as before
+round GF. Considered and rejected: adding a core case to `hitPress`
+itself, which would fix touch but also fire on a mouse's synchronous
+pointerdown, before a drag could start, reintroducing the exact
+problem the file's own removed-code comment already named.
+
+Verified beyond the reproduction: pinch still zooms all three
+pictures with the page scale held at 1 (checked directly with a real
+two finger touch dispatch), a pole mark's own tap still opens its
+drill (checked with reduced motion, since the poles drift on their
+own animation and a captured coordinate can go stale a frame later
+under real motion), and `tools/equiv.py` against `e1863d3` shows
+exactly one changed body, `TAP`, confirming nothing else moved.
+
+**A new functional gate, so this cannot regress silently again, his
+own requirement.** Added inside the existing touch emulation block in
+`tests/functional.js`: a real touch dispatch on the core's own hit
+coordinates, asserting `#rdrill` opens "The core". Proved the gate
+itself works before trusting it: reverted the fix, rebuilt, ran the
+suite, and the new line printed `FAIL a coarse pointer tap on the core
+opens the core reading, got ""`. Restored the fix, rebuilt, ran it
+again: silent, meaning it passed, and the total moved from 1162 to
+1163.
+
+All nine gates re run on the fixed build: `BUILD.sh` and
+`BUILD-engine.sh` clean, `engine.js` 1735/0, `collide.js` 336/0,
+`design.js` 158/0 alone (the same frame rate flake this file has now
+named at least nine times cleared on the isolated re run), `monitor.js`
+all surfaces render, `funnel.js` 172/0, `functional.js` 1163/0, the
+voice check exit 0. Zero em dashes, checked by byte across every file
+touched, per his instruction in the same message.
+
+The `task_536cbb47` suggestion this duplicates is now moot; dismissing
+it rather than leaving two open records of the same fix.
+   this task on purpose.
