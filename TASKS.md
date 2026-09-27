@@ -17268,3 +17268,37 @@ design work to one seat, the Compass bug as a direct fix to another,
 and a correction sent to the agent already mid task on FV's Flow
 item.
 
+**The tooltip copy research and pitch is done, verified directly, not
+a rewrite shipped blind.** `DESIGN-tooltip-copy.md` and `proto/tipcopy/`,
+commit `068cfc0`. All three of his quoted lines found and confirmed
+by me at the exact cited locations: `ui/rings.js:970` really does
+build "Most shut law. [x] of 10", `ui/rings.js:966` really does label
+a chain "Character layer", and `ui/drills.js:249` really does print
+"Held [x], opposite installed [y], net SQ [z]. Distorts as [d]."
+verbatim. Ran one of the proposed rewrites through the real voice
+gate myself: no hard failures. Checked the claimed false statement
+directly too: `drills.js:386` really does say the pole runs "0 to 1
+averaged across the nine," while `compute.js` computes on a 0 to 100
+scale nearby, a real, confirmed defect found in passing.
+
+**Explicitly not code**, per its own brief: a pitch with real external
+sources (Oura, WHOOP, 16Personalities, Enneagram Institute, 23andMe,
+Garmin, Yale's How We Feel, Nielsen Norman, GOV.UK, all marked as read
+through search summaries since direct fetch is blocked here), a
+proposed tooltip and drill template mapped to tables the product
+already has rather than inventing new content, and worked rewrites of
+all three of his examples plus more, all gate checked. Nine real
+questions for him in the document's own section 8, each with real
+options and cost, including whether "character layer" should be kept
+and glossed or renamed, and whether to add a new rule to the
+objections database, since the existing voice gate cannot catch this
+whole class of defect (a candidate rule was written and tested to
+catch all seven bad lines and wrongly flag none of forty one good
+ones, but is not installed pending his answer).
+
+**Correctly stood down rather than run in parallel blind**, per its
+own brief: the agent doing the real Root energetics and left rail
+build in `atuned_src` is a different piece of work, and this one
+says plainly it is not proceeding to code until the pitch is
+approved.
+
