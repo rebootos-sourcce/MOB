@@ -18790,3 +18790,150 @@ Dispatched:
 What I need from him: nothing new logged as blocking; the five
 rulings from round GP still stand as the ones actually holding up
 downstream work.
+
+## GR. A precise bug report: "ashamed" reads as Anger, four identical pills. Reproduced exactly before touching a line. 27 September
+
+A technical report, quoted in full rather than paraphrased, since it
+already carries its own reproduction: "The defect, reproduced on 27
+September: `node -e \"const E=require('./engine.js');const
+p=E.parseStory('I feel ashamed that I am relieved.');p.imprints.forEach(i=>console.log(i.band,i.fetter,i.name,i.inferred,i.amt))\"`
+prints four imprints, all `Solar Anger ... inferred:true`. On the
+Story page the Imprints panel (`atuned_src/ui/imprints.js`, `impPill`,
+which prints `n.cf` for an inferred ghost) shows four identical pills
+reading 'Anger +1.7'. The person wrote 'ashamed' and is shown Anger
+four times." The root cause as given: `LEX['ashamed']` in
+`atuned_src/engine/lexicon.js` is `['solar',20]`, a seat with no
+stated fetter; `ADJ2CHG['ashamed']` is `shame`, adding Shame to
+`wanted` but not `stated`; the solar plexus carries sixteen fettered
+addresses where Shame holds one, under the quarter rule at
+`engine/sniff.js:385`, so the band falls back to its modal fetter,
+Anger. The stated-fetter-survives branch (`sniff.js:371-375`, added
+for exhaustion and Apathy) only fires when the lexicon entry carries a
+third element, which `ashamed` does not.
+
+Reproduced exactly before dispatching anything, per the report's own
+instruction and this file's own standing rule: the command above run
+directly against the committed `engine.js` prints precisely `Solar
+Anger Pride true 1.7`, `Solar Anger Arrogance true 1.7`, `Solar Anger
+Competition true 1.7`, `Solar Anger Anger true 1.7`, four identical
+readings, none of them Shame. Confirmed `impPill` at
+`atuned_src/ui/imprints.js:39` and the quarter rule's exact line and
+comment both cited correctly.
+
+Two separable defects, exactly as the report frames them: the reading
+(a word naming its own fetter through `ADJ2CHG` still loses to the
+quarter rule) and the display (four pills carrying one identical label
+read as four separate findings rather than one). The report asks for
+measurement against the story bank and the persona lines before
+picking between the two reading fixes, an engine gate asserting "I
+feel ashamed" never yields an Anger fetter, and all nine gates before
+committing.
+
+Dispatched to `ai-director`, the seat that owns the sniffer, as a
+fresh task since the ai-director instance already running this round
+is mid-task on the Story page and Source AI rebuild from round GO and
+should not be interrupted for an unrelated engine fix.
+
+## GS. Character defined as the whole of it, masks stay unnamed, Release confirmed over Integrate, and dictated opening screen copy. 27 September
+
+His words, verbatim: "no text there ever the character is a total sum
+of the all of it. Fetters to the mass combinations, right? It's you.
+It's the ego. It's the whole enchilada. You're actually rendering a
+visualization of what all the masks look like, and what's running it.
+I think the badge and achievement system is about removing the masks.
+I think it's about clearing your bank, right, it's about being
+rewarded by your vault, it's about identifying the masks. And the
+names of the masks, by the way, we need a system to define the names
+of the masks once the names, the shapes of the masks start to come
+in, that could be really fun, or really controversial, maybe this is
+better not to have a name for it, because that's identification. Yep,
+take that out. Cool, with the word release, test release against the
+word integrate. I guess never mind release, it is a release because
+you're releasing the charge, fair enough, stick with release. No, the
+release is any story, dude, it's got nothing to do with the charge.
+The purpose of this entire program is to empty the body of charges,
+empty a body of, of all stories. It's find the stories, empty the
+body of stories, period. Why integrate all the stories for a better
+self? I think the opening screen should say what this does, or maybe
+say why they're here, or maybe a little of both. Okay, I'm going to
+speak from the heart, talk to the pain, and say: this is a mirror. We
+hold up every story that you share, show it where you live, and give
+you a protocol to release the bias, release the conditioning, release
+the charge that causes you pain, so that you can live your highest
+experience of life, pain and disease free."
+
+Alongside a screenshot of the Field tab showing a red refusal line,
+"Nothing changed on a worked example," marked with a drawn X, meaning
+he does not want this behaviour or does not understand it, not simply
+noting it. That refusal is the real, working "a rail setter on a
+worked example refuses in one line and stays put" feature logged this
+session (round GJ's verification, and further back). Grounding, not
+guessing: whether he is objecting to worked examples refusing at all,
+or to how the refusal reads, or hit it by accident, is not yet known
+and needs to be asked or reproduced live rather than assumed either
+way.
+
+This message answers three of round GP's five blocking rulings and
+settles the Character/Masks naming collision flagged at rounds GO and
+GP:
+
+**Character is the whole of it, not a fourth thing to rename against
+Masks.** His own definition: Character is the aggregate, "fetters to
+the mass combinations... the whole enchilada... a visualization of
+what all the masks look like and what's running it." This is a sum
+over the masks, not a duplicate of the Masks layer, which resolves the
+naming collision without needing a fourth word: Character keeps its
+own name, sitting above Masks rather than replacing it. `fieldbar.js`
+already carries this shape almost exactly (Character: "the innermost
+layer, what the whole chain compounds into"), so no rename is needed
+here after all, only a clearer description matching his own words.
+
+**No naming system for individual masks.** He floated it and reversed
+himself in the same breath: "that's identification, yep, take that
+out." Settled: masks are not given person-specific names. This lines
+up with the product's own standing rule elsewhere that the governor
+"is a name for a pattern, not a person and not a thing that exists,"
+so this is consistent with, not new against, the house position on
+identification.
+
+**The badge and achievement system now has real direction, answering
+part of round GP's B1.** "About removing the masks... clearing your
+bank... rewarded by your vault... identifying the masks." This ties
+the still-unbuilt award half of the ladder system directly to the
+existing bank/vault release mechanic rather than a separate points
+economy, though the reward word itself (marks, badges, points, karma)
+remains open per GP.
+
+**Release confirmed over Integrate, answering GP's R1, and redefined
+in the same breath.** He tested the two words, briefly settled on
+Release for the wrong reason ("because you're releasing the charge"),
+then corrected himself: "the release is any story... it's got nothing
+to do with the charge. The purpose of this entire program is to empty
+the body of charges, empty a body of stories, period." Release wins
+over Integrate Protocol as a name, and the mechanic's own definition
+widens: releasing a story, not only releasing charge at an address, is
+now the stated purpose of the whole product. This needs checking
+against how `ui/release.js` currently frames a release before anything
+is renamed, since a definition this size may reach further than the
+word on a button.
+
+**Dictated opening screen copy, answering GP's F2.** "This is a
+mirror. We hold up every story that you share, show it where you live,
+and give you a protocol to release the bias, release the conditioning,
+release the charge that causes you pain, so that you can live your
+highest experience of life, pain and disease free." Real, ownerwritten
+copy for the opening screen, settling that it does talk about what the
+product does and why a person is there, both, per his own "a little of
+both."
+
+Relayed rather than redispatched: the Character definition and the
+no-naming-for-masks ruling to the `uiux-architect` still running on
+the round GO Field left panel, since it directly resolves the
+collision that was blocking that dispatch; the Release/Integrate
+ruling and the opening screen copy to the `ai-director` running the
+Story page and Source AI rebuild, since both bear directly on that
+work.
+
+What I need from him: whether the Field tab screenshot's crossed-out
+refusal line is an objection to worked examples refusing at all, to
+its wording, or neither.
