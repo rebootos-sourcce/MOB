@@ -1022,6 +1022,22 @@ the hundred that was ever available to her". The same finding drives the Closed
 award family and the kundalini rise. For about half the panel, coherence barely
 moves under release, and something else has to show the work.
 
+*Re-measured 27 September on engine `248e5d2` (`engine.js` md5
+`85941fb4443bc35187c9e6dd5d2cc2c8`), and the sentence above is wrong on two
+counts. Two release runs move Ana's coherence 0 points (41.1 to 41.1), not 9.
+The 9 does not reproduce on the 20 September engine either, where the same two
+runs moved it 4.3 (7.6 to 11.9). And at 41 she reads Oscillating, mid ladder,
+not near the bottom. What the two runs do move is expression, 30.7 to 38.2. The
+CQ row in the table above is also the retired model: since `dd0bf23` (25
+September) CQ is the twenty one laws summed over 210, `cqCeiling` is gone, and
+the release ceiling is `exCeiling`, on expression. So the conclusion changes
+from "for about half the panel coherence barely moves under release" to "for
+the whole panel coherence does not move under release through charge": all
+1000 of the weighted thousand (`proto/avatar/risesim.json`, run 4). The only
+route is the slow law lift a release writes through the record, bounded at
+1.16 points a quarter at eight patterns a run. The argument for AQ and the rise
+is stronger for it, not weaker.*
+
 **How each ties to the loop.** IQ's recognition term is reachable only through
 what a person writes (Discover). EQ moves with installed opposites, from release
 and reframe (Play and Embody). AQ is the Embody reading of Play. PQ comes from
@@ -1186,7 +1202,11 @@ pct     = round(100 x reach / 7)
 - **Two levers**, each computed on copies of the state: release at that seat,
   and the weakest law carrying that seat, each shown with what it costs.
   Measured: coherence answers to conduct, and the rise answers to release. At
-  the blocked seat, release is the bigger lever for 985 of 1000.
+  the blocked seat, release is the bigger lever for 985 of 1000. Re-measured
+  27 September on engine `248e5d2`: still 985, the law 0, and the remaining
+  15 are Rosa, whose root already conducts 0.99 and neither lever moves. Coherence now answers to
+  conduct alone, since the CQ refit (`dd0bf23`) made it the laws summed over
+  210.
 - **`avatar.rise0`**: seven per-seat `open` values plus a date, **written once**,
   the first time `compute()` returns `unread:false`. It is never recomputed.
   Refused by name at the boundary when a seat is unknown or a value falls outside

@@ -2894,11 +2894,17 @@ them should be deducible by length.
       of 33. A blank field returns 54 through this arithmetic, so the bar is
       gated on the unread flag rather than trusted.
 - [x] **KU8. Twelve releases move the rise a median of 31 points and
-      coherence a median of 2.9.** 530 of 1000 can run every release the
-      product will ever offer and not move the coherence figure they were
-      shown. On coherence the laws are the lever; on the rise the release is,
-      for 985 of 1000. The rise is the channel that reports the work the
-      product is actually built around.
+      coherence a median of 0.** Re-measured 27 September on engine
+      `248e5d2` (md5 `85941fb4443bc35187c9e6dd5d2cc2c8`); on 20 September it
+      read 2.9, before the CQ refit (`dd0bf23`) made coherence the laws alone.
+      1000 of 1000 (was 530) can empty every charge they carry and not move
+      the coherence figure they were shown; expression, where the engine
+      moved the release ceiling, moves a median of 2.1. The only route from
+      release to coherence is the slow law lift through the record,
+      bounded at 1.16 a quarter at eight patterns a run. On coherence the laws
+      are the lever, now for everybody; on the rise the release is, for 985 of
+      1000. The rise is the channel that reports the work the product is
+      actually built around.
 - [x] **KU9. A hard month drops it a median of 9 and the baseline held for
       1000 of 1000,** so it falls as well as rises and the from mark survives.
 - [ ] **KU10. The named seat changes a median of 3 times over twelve releases
@@ -2943,7 +2949,7 @@ them should be deducible by length.
       > **What it is.** Every address carries a fetter, the thing that binds it. One root address carries none and has no name. With no fetter it can never be cleared, so the root never fully conducts.
       > **At stake.** Nobody can ever read 100. Two fully installed people read 99.
       > **Either way.** It gets a fetter and a name, and 100 becomes reachable. It stays unnamed, and the top of the scale is 99 for everybody, which has to be said out loud rather than left as a rounding.
-      > **Look at.** The root block in `atuned_src/engine/data/canon.js`. The two 99s are in `proto/avatar/risesim.json`.
+      > **Look at.** The root block in `atuned_src/engine/data/canon.js`. The two 99s are Rosa and Lance in the engine's roster (`E.PEOPLE`); `proto/avatar/risesim.json` carries only one of them, as the panel high of 99 in `run2.hi`, because Lance is not in the weighted thousand. Checked 27 September on engine `248e5d2`: both still read 99, and a field with no charge, every opposite installed and every law at 10 also reads 99, the root conducting 0.990.
 - [?] **KU14. Does the rise replace coherence as the headline anywhere
       else?** Narrative director asks. They answer to different levers, and
       a person shown both will ask which one is them.

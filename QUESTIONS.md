@@ -452,7 +452,7 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > **What it is.** Every address carries a fetter, the thing that binds it. One root address carries none and has no name. With no fetter it can never be cleared, so the root never fully conducts.
   > **At stake.** Nobody can ever read 100. Two fully installed people read 99.
   > **Either way.** It gets a fetter and a name, and 100 becomes reachable. It stays unnamed, and the top of the scale is 99 for everybody, which has to be said out loud rather than left as a rounding.
-  > **Look at.** The root block in `atuned_src/engine/data/canon.js`. The two 99s are in `proto/avatar/risesim.json`.
+  > **Look at.** The root block in `atuned_src/engine/data/canon.js`. The two 99s are Rosa and Lance in the engine's roster (`E.PEOPLE`); `proto/avatar/risesim.json` carries only one of them, as the panel high of 99 in `run2.hi`, because Lance is not in the weighted thousand. Checked 27 September on engine `248e5d2`: both still read 99, and a field with no charge, every opposite installed and every law at 10 also reads 99, the root conducting 0.990.
 
 - [ ] **KU14. Does the rise replace coherence as the headline anywhere else?** Narrative director asks. They answer to different levers, and a person shown both will ask which one is them.
   > **What it is.** Two numbers about the same person. Coherence answers to the laws. The rise answers to charge cleared and opposites installed. They move independently.

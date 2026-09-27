@@ -278,6 +278,32 @@ and **the product has never said so to anybody.** That sentence, computed live
 from where a person stands, is the single most useful thing this surface can
 say, and it is the thing the prototypes put directly under the figure.
 
+**Re-measured 27 September on engine `248e5d2` (`engine.js` md5
+`85941fb4443bc35187c9e6dd5d2cc2c8`), and the table above is the retired
+model.** It was read when CQ was (Intention x Integrity) / Resistance. Since
+`dd0bf23` (25 September) CQ is the twenty one laws summed over 210 and nothing
+else, so the same four acts, same arithmetic, same roster, now read:
+
+| Who | As they stand | Twelve releases | Two points on the weakest three laws | Both |
+|---|---|---|---|---|
+| Marcus | CQ 62.1, expression 62.0 | CQ **62.1**, expression 62.1 | CQ **65.0**, expression 64.8 | CQ 65.0, expression 65.0 |
+| Diane | CQ 59.0, expression 56.0 | CQ **59.0**, expression 59.0 | CQ **61.8**, expression 58.8 | CQ 61.8, expression 61.8 |
+| Gordon | CQ 17.5, expression 7.9 | CQ **17.5**, expression 17.5 | CQ **20.4**, expression 9.4 | CQ 20.4, expression 20.4 |
+| Sofia | CQ 72.9, expression 72.8 | CQ **72.9**, expression 72.9 | CQ **75.7**, expression 75.7 | CQ 75.7, expression 75.7 |
+
+**What changed is the conclusion on coherence, not only the numbers.** A
+quarter of releases now moves nobody's coherence, where it moved Marcus 1.3
+and Gordon 3.1. Two points on three laws moves everybody's by the same 2.9,
+because 6 over 210 is a constant. So on coherence the lever is no longer a
+property of the person: it is the laws, for everybody. **The finding survives
+on expression**, which is where the engine moved the release ceiling
+(`exCeiling`): there a quarter of releases is worth 9.6 to Gordon against 1.5
+from the laws, and 0.1 to Marcus against 2.8. The sentence under the figure
+is still the right sentence; it has to be computed on expression, not on
+coherence. The product's own release also writes a slow lift into the laws
+(`releaseWork`, `LIFT_R`) that this table does not carry; `risesim.js` run 4
+bounds it at under 1.2 points of coherence a quarter at eight patterns a run.
+
 ### The three channels, and the rule they obey
 
 **RECORD.** Append only. Addresses touched, addresses emptied, seats reached,
@@ -708,6 +734,10 @@ It is the truest thing the instrument can say to him and it also says that the
 release, the thing the product is built around, is not his lever. I think we
 say it. I want you to rule, because it is a sentence that could lose a
 customer.
+*Re-measured 27 September on engine `248e5d2`: under the fitted CQ the figures
+are 0 and 2.9, not 1.3 and 3.3, so the sentence is now starker: release does
+not move his coherence at all. On expression it is 0.1 against 2.8. See the
+dated note at the end of section 5.*
 
 **5. Can a person turn a law peg freely, or does a change have to be earned?**
 Freely is what the standing ruling implies, since the app never adjudicates an
@@ -1130,23 +1160,39 @@ two points on transparency takes it to 74. Gordon: 26 to 87, against 28.
 
 **On coherence the laws are the lever. On the rise the release is the lever.**
 
-Section 5 measured that a quarter of releases moves Marcus 1.3 points of
-coherence and two points on three laws moves him 3.3, and concluded that the
-release, the thing the product is built around, is not his lever. That holds and
-it is still true.
+*Re-measured 27 September on engine `248e5d2` (`engine.js` md5
+`85941fb4443bc35187c9e6dd5d2cc2c8`) after the CQ refit in `dd0bf23`.
+`proto/avatar/risesim.json` was regenerated the same day; until then it still
+held the 20 September run. The figures that moved are given with what they
+were. The conclusion held and got sharper: on 20 September release moved
+coherence a little, and under the fitted model it does not move it through
+charge at all.*
 
-The rise reverses it, and the reason is arithmetic rather than taste. CQ is
-(Intention x Integrity) / Resistance and Integrity is the twenty one laws, so
-coherence answers to conduct. The rise reads `n.open`, which answers to `sq`,
-which is charge. Measured on the thousand:
+Section 5 measured, on 20 September, that a quarter of releases moves Marcus
+1.3 points of coherence and two points on three laws moves him 3.3, and
+concluded that the release, the thing the product is built around, is not his
+lever. On `248e5d2` the same two acts read 0 and 2.9. The release moves none of
+his coherence, and the laws are the only lever coherence has.
 
-    coherence headroom   median 2.2 points of 100   530 of 1000 under 3 points
-    rise headroom        median 28 points of 100    low 0, high 49
+The rise reverses it, and the reason is arithmetic rather than taste. CQ was
+(Intention x Integrity) / Resistance when this was written; since `dd0bf23` it
+is the twenty one laws summed over 210 and nothing else, so coherence answers
+to conduct alone. The rise reads `n.open`, which answers to `sq`, which is
+charge. Measured on the thousand:
 
-**530 of 1000 can run every release the product will ever offer them and not
-move the number they were shown. The same people have a median of 28 points of
-rise waiting.** And at the blocked seat the release is the bigger lever for 985
-of 1000, against 0 for the law.
+    coherence headroom    median 0.0 points of 100   1000 of 1000 under 3 points   (was 2.2, and 530)
+    expression headroom   median 2.1 points of 100    546 of 1000 under 3 points   (not measured before)
+    rise headroom         median 28 points of 100    low 0, high 49                 (unchanged)
+
+**All 1000 can empty every charge they carry and not move the coherence number
+they were shown (it was 530). The same people have a median of 28 points of rise
+waiting.** The one route from release to coherence is the slow lift a release
+writes into the laws at its seat (`releaseWork`, `LIFT_R`). `risesim.js` run 4
+bounds it, with every pattern taken as new ground at the single best seat, at
+1.16 points a quarter at eight patterns a run and 3.36 at the 25 pattern cap,
+both for Gordon at the heart. Expression, where the engine moved the release
+ceiling, has a median of 2.1 points to give. And at the blocked seat the
+release is the bigger lever for 985 of 1000, against 0 for the law.
 
 So the product's core loop finally has a channel that reports it. That is not a
 reason to build the rise; it is the reason the rise is the right primary
@@ -1394,17 +1440,29 @@ assertions against answers the product already states: the blank profile
 validates, `plan.tier` platinum is refused by name, Rosa carries nothing, the
 most loaded of the nine carries 107, and the rise does not read state left by
 another profile. That last one is there because a probe in this repository once
-read shared state after another run and reported a whole lane as empty.
+read shared state after another run and reported a whole lane as empty. A sixth
+was added 27 September: the ceiling run 7 measures must equal the engine's own
+`exCeiling` on a known profile, because run 7 had been rebuilding its ceiling by
+hand from a retired formula and printing a median coherence headroom of minus
+22.7, which no ceiling can have.
+
+**Every row re-run 27 September on engine `248e5d2` (`engine.js` md5
+`85941fb4443bc35187c9e6dd5d2cc2c8`) and `risesim.json` regenerated from it.**
+Rows 4 and 7 changed, because the CQ refit in `dd0bf23` made coherence the laws
+alone; the old figures are given beside the new. Every other row reproduces
+exactly. Row 8 was already right here: it was written from the twelve run lever
+`rise.js` has carried since `4713ab6`, while `risesim.json` still held the one
+run lever's figures (863 release, 122 law) until it was regenerated.
 
 | Run | What it measured | What it found |
 |---|---|---|
 | 1 | how many can be drawn a rise at all | **985 of 1000.** 15 read as nothing entered. A blank field returns 54 per cent, so the bar is gated on `unread`. |
 | 2 | the spread at arrival | low 5, median 33, high 99. **1 of 1000 at or under 5 per cent, 15 at or over 95.** By twenties: 87, 488, 270, 140, 15. |
 | 3 | where it is blocked | Solar 443, Throat 259, Sacral 207, Root 50, Heart 35, Crown 6, third eye none. **Six of seven seats named, the commonest at 44 per cent.** |
-| 4 | does it move for somebody doing the work | twelve releases move the rise a median of **31 points** and coherence a median of **2.9**. 985 of 1000 see the rise move 5 points or more. **468 of 1000 see coherence move under 2 points over the same quarter.** |
+| 4 | does it move for somebody doing the work | twelve releases move the rise a median of **31 points** and coherence a median of **0** (was 2.9), expression a median of 2.1. 985 of 1000 see the rise move 5 points or more. **1000 of 1000 see coherence move under 2 points over the same quarter** (was 468), and 497 see expression move under 2. The slow law lift a release writes through the record is not in the probe and is bounded at 1.16 points of coherence a quarter at eight patterns a run, 3.36 at the 25 pattern cap. |
 | 5 | does it stay still for somebody who is not | **1000 of 1000 read exactly the same number.** The rise has no clock in it. |
 | 6 | a hard month, every axis up 2.2 | the rise fell a median of **9 points**, worst 15. **The baseline mark did not move for 1000 of 1000.** |
-| 7 | whose lever is it | rise headroom median **28** of 100, coherence headroom median **2.2**. 530 of 1000 have under 3 points of coherence to gain from every release the product will ever offer them. |
+| 7 | whose lever is it | rise headroom median **28** of 100, coherence headroom median **0** (was 2.2), expression headroom median 2.1. **1000 of 1000** (was 530) have under 3 points of coherence to gain from emptying every charge they carry, and 546 under 3 points of expression. |
 | 8 | the direction out at the blocked seat | the release is the bigger lever for **985 of 1000**, the seat's weakest law for 0. The laws named: Accountability 228, Courage 180, Transparency 168, Temperance 144, Truth 91, Detachment 63, and six more. |
 | 9 | the sweep | median rise 32 at jitter 0 and 34 at 2.0. The normaliser at 1.00 instead of 1.18 moves the median to 53 and saturates 128 of 1000. |
 | 10 | is the blocked seat stable | the named seat changed a median of **3 times** over twelve releases, worst 10, best 0. |

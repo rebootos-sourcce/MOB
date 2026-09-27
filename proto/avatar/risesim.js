@@ -97,6 +97,22 @@ function thousand(jit, seed) {
   });
   return out;
 }
+/* THE CEILING, MEASURED RATHER THAN RE-DERIVED. Every charge gone, the laws and
+   the installed opposites as they stand, read off compute() itself, then the
+   charge is put back. Until 27 September run 7 rebuilt the ceiling here by hand
+   from (Intention x Integrity) / Resistance. The CQ refit (dd0bf23, 25
+   September) made CQ the 21 laws summed over 210, so the hand copy was a
+   retired model subtracted from a live one and printed a median headroom of
+   minus 22.7, which no ceiling can have. Reading compute() cannot go stale
+   that way: whatever CQ is, this is CQ with nothing held. */
+function ceilings() {
+  var keep = {};
+  E.CHARGES.forEach(function (c) { keep[c] = S.charge[c]; S.charge[c] = 0; });
+  var r0 = E.compute(), out = { cq: r0.CQ, ex: r0.EX };
+  E.CHARGES.forEach(function (c) { S.charge[c] = keep[c]; });
+  E.compute();
+  return out;
+}
 function pc(n, of) { return (100 * n / of).toFixed(1); }
 function med(a) { var s = a.slice().sort(function (x, y) { return x - y; }); return s[Math.floor(s.length / 2)]; }
 
@@ -128,6 +144,13 @@ var A1 = (function () { load('Marcus', 0, Math.random); return JSON.stringify(R.
 load('Gordon', 0, Math.random);
 var A2 = (function () { load('Marcus', 0, Math.random); return JSON.stringify(R.riseRead(E, E.compute()).t); })();
 chk.push(['the rise does not read state left by another profile', A1 === A2]);
+/* run 7 measures a ceiling by emptying the charge and reading compute(). That
+   is only honest if it agrees with the engine's own ceiling, so it is checked
+   against exCeiling on a known profile before any figure below uses it. */
+chk.push(['the measured ceiling is the engine\'s exCeiling', (function () {
+  load('Marcus', 0, Math.random);
+  return Math.abs(ceilings().ex - E.exCeiling()) < 1e-9;
+})()]);
 chk.forEach(function (c) { say('  ' + (c[1] ? 'pass ' : 'FAIL ') + c[0]); });
 var allok = chk.every(function (c) { return c[1]; });
 say('  ' + (allok ? 'the probe is behaving. every figure below is from it.'
@@ -187,23 +210,54 @@ head(3, 'WHERE IT IS BLOCKED. A readout that names one seat for everybody is a c
 
 /* ------------------------------------------------------------ */
 head(4, 'DOES IT MOVE FOR SOMEBODY DOING THE WORK. Twelve releases, a quarter at one a week.');
-say('  CQ is beside it because the point of the channel is that they differ.');
+say('  CQ is beside it because the point of the channel is that they differ, and');
+say('  expression beside that because the engine moved the release ceiling to it.');
+say('  The release here is ui/release.js:88 on charge and replace. The product\'s');
+say('  release also writes a small lift into the laws through the record');
+say('  (releaseWork, LIFT_R 0.00077 a pattern of new ground), which this probe');
+say('  has no record to carry. So the coherence figures below are exact for the');
+say('  release through charge, and the law lift is bounded beside them with the');
+say('  engine\'s own lawLift: twelve runs, every pattern taken as new ground and all');
+say('  of it landing at the one seat whose laws lift CQ most. That is an upper');
+say('  bound, not a forecast; a real quarter repeats ground and spreads over seats.');
+function liftBound(perRun) {
+  var best = { d: 0, nm: null, seat: null };
+  PANEL.forEach(function (p) {
+    var LS = E.LAWSET[p.nm] || { _: 5.5 };
+    var lawOf = function (l) { return LS[l] !== undefined ? LS[l] : (LS._ !== undefined ? LS._ : 5.5); };
+    E.BANDS.forEach(function (b) {
+      var d = E.SI.filter(function (l) { return l.b === b; })
+        .reduce(function (a, l) { var v = lawOf(l.nm); return a + E.lawLift(v, 12 * perRun) - v; }, 0) / 210 * 100;
+      if (d > best.d) best = { d: d, nm: p.nm, seat: b };
+    });
+  });
+  return best;
+}
+var lift8 = liftBound(8), liftCap = liftBound(E.RUN_MAX);
+say('  at eight patterns a run, the run this probe releases: at most ' + lift8.d.toFixed(2)
+  + ' points of CQ a quarter (' + lift8.nm + ', ' + lift8.seat + ')');
+say('  at RUN_MAX, ' + E.RUN_MAX + ' patterns a run, the most a run may open: at most ' + liftCap.d.toFixed(2)
+  + ' (' + liftCap.nm + ', ' + liftCap.seat + ')');
 [0, JIT].forEach(function (j) {
-  var P = thousand(j), dR = [], dC = [], moved = 0, stuckC = 0;
+  var P = thousand(j), dR = [], dC = [], dX = [], moved = 0, stuckC = 0, stuckX = 0;
   P.forEach(function (x) {
     var r = load(x.nm, j, x.rnd);
-    var k0 = R.riseRead(E, r).pct, c0 = r.CQ;
+    var k0 = R.riseRead(E, r).pct, c0 = r.CQ, x0 = r.EX;
     for (var i = 0; i < 12; i++) release();
     var r1 = E.compute(), k1 = R.riseRead(E, r1).pct;
-    dR.push(k1 - k0); dC.push(r1.CQ - c0);
+    dR.push(k1 - k0); dC.push(r1.CQ - c0); dX.push(r1.EX - x0);
     if (k1 - k0 >= 5) moved++;
     if (r1.CQ - c0 < 2) stuckC++;
+    if (r1.EX - x0 < 2) stuckX++;
   });
   say('  jitter ' + j.toFixed(1) + ':  rise moved by median ' + med(dR) + ' points, coherence by median '
-    + med(dC).toFixed(1));
+    + med(dC).toFixed(1) + ', expression by median ' + med(dX).toFixed(1));
   say('           ' + moved + ' of 1000 see the rise move 5 points or more');
   say('           ' + stuckC + ' of 1000 see coherence move less than 2 points over the same quarter');
-  if (j === JIT) J.run4 = { dRise: med(dR), dCQ: +med(dC).toFixed(1), moved: moved, stuckCQ: stuckC };
+  say('           ' + stuckX + ' of 1000 see expression move less than 2 points over the same quarter');
+  if (j === JIT) J.run4 = { dRise: med(dR), dCQ: +med(dC).toFixed(1), moved: moved, stuckCQ: stuckC,
+    dEX: +med(dX).toFixed(1), stuckEX: stuckX,
+    liftBound8: +lift8.d.toFixed(2), liftBoundCap: +liftCap.d.toFixed(2) };
 });
 
 /* ------------------------------------------------------------ */
@@ -239,36 +293,31 @@ J.run6 = { fell: med(fell), keptFrom: keptFrom };
 
 /* ------------------------------------------------------------ */
 head(7, 'WHOSE LEVER IS IT. Rise headroom against coherence headroom, per person.');
-say('  Headroom is every charge gone with the laws as they stand, built the way');
-say('  cqCeiling is built: nothing mutated, held zero by construction.');
-var P7 = thousand(JIT), hr = [], hc = [], smallC = 0;
+say('  Headroom is every charge gone with the laws as they stand. The rise reach is');
+say('  riseReach; the coherence and expression ceilings are compute() read with the');
+say('  charge emptied and then put back (ceilings(), checked against exCeiling in run 0).');
+var P7 = thousand(JIT), hr = [], hc = [], hx = [], smallC = 0, smallX = 0;
 P7.forEach(function (x) {
   var r = load(x.nm, JIT, x.rnd);
   var now = R.riseRead(E, r).pct, reach = R.riseReach(E).pct;
   hr.push(reach - now);
-  /* the coherence ceiling, computed here because cqCeiling is not exported */
-  var lawMean = E.SINAMES.reduce(function (a, l) { return a + S.law[l]; }, 0) / 21;
-  var bandMean = E.BANDS.reduce(function (a, bb) { return a + E.bandIg(bb); }, 0) / 7;
-  var ps = 0, js = 0;
-  E.W.forEach(function (n) {
-    var rel = E.bandIg(n.b) / 10;
-    var rep = n.cf ? Math.max(0, Math.min(10, (S.replace[n.cf] || 0) * (0.72 + 0.28 * rel))) : 0;
-    ps += rep; js += Math.max(0, Math.min(4, rep - 6)) / 4 * 10;
-  });
-  var pm = ps / 108, jq = js / 108;
-  var Ig = Math.max(0, Math.min(10, lawMean + pm * 0.30 - jq * 0.42));
-  var It = Math.max(0, Math.min(10, bandMean + pm * 0.22 - jq * 0.30));
-  var ceil = Math.max(0, Math.min(100, (It * Ig) / Math.max(1, E.verpFactor ? E.verpFactor() : 1)));
-  hc.push(ceil - r.CQ);
-  if (ceil - r.CQ < 3) smallC++;
+  var ceil = ceilings();
+  hc.push(ceil.cq - r.CQ); hx.push(ceil.ex - r.EX);
+  if (ceil.cq - r.CQ < 3) smallC++;
+  if (ceil.ex - r.EX < 3) smallX++;
 });
-say('  rise headroom:      median ' + med(hr) + ' points of 100, low ' + Math.min.apply(null, hr)
+say('  rise headroom:       median ' + med(hr) + ' points of 100, low ' + Math.min.apply(null, hr)
   + ', high ' + Math.max.apply(null, hr));
-say('  coherence headroom: median ' + med(hc).toFixed(1) + ' points of 100, low ' + Math.min.apply(null, hc).toFixed(1)
+say('  coherence headroom:  median ' + med(hc).toFixed(1) + ' points of 100, low ' + Math.min.apply(null, hc).toFixed(1)
   + ', high ' + Math.max.apply(null, hc).toFixed(1));
-say('  ' + smallC + ' of 1000 have under 3 points of coherence to gain from every release the');
-say('  product will ever offer them. The same people have a median of ' + med(hr) + ' points of rise.');
-J.run7 = { rise: med(hr), cq: +med(hc).toFixed(1), smallC: smallC };
+say('  expression headroom: median ' + med(hx).toFixed(1) + ' points of 100, low ' + Math.min.apply(null, hx).toFixed(1)
+  + ', high ' + Math.max.apply(null, hx).toFixed(1));
+say('  ' + smallC + ' of 1000 have under 3 points of coherence to gain from emptying every');
+say('  charge they carry, and ' + smallX + ' of 1000 under 3 points of expression. The slow law');
+say('  lift a release also writes is not in either ceiling, as it is not in exCeiling;');
+say('  run 4 bounds it. The same people have a median of ' + med(hr) + ' points of rise.');
+J.run7 = { rise: med(hr), cq: +med(hc).toFixed(1), smallC: smallC,
+  ex: +med(hx).toFixed(1), smallEX: smallX };
 
 /* ------------------------------------------------------------ */
 head(8, 'THE DIRECTION OUT AT THE BLOCKED SEAT. Release, or the law carrying that seat.');
