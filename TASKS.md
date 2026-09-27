@@ -20094,3 +20094,87 @@ the person; and the same open naming question from round GK, since
 "tension" already names the pulses running along the threads in the
 code, even though nothing shown to a person uses that word for the new
 effect.
+
+## HI. The four Fringe questions did not land, but the physiological language answers one of them. A 300 day retention setup asked directly. A full, final backlog demanded. 27 September
+
+His words, verbatim: "I don't understand what you mean for number one.
+I don't know what you mean for number two. I don't know what you mean
+for number three. Well, we can say it like this: zero through five,
+those are the nerve states, so we can always say running hot is mildly
+impaired to heavily impaired, or heavily impaired would be, I guess,
+hot. So if I wanted to have this app set up for people to go into the
+funnel, get into the app, use it persistently for three hundred days,
+what's the best solution that I should be doing as a developer, how
+should I actually set this up so that the software on atuned.app is
+efficient, optimised and set up the right way, ready to accept a
+paywall, can save files locally, can send files to the database, we've
+got a database in, or a developer in, so we can review the work that
+needs to be done or review customer analytic data. By the way, did you
+go through all your backlog? I haven't seen it yet, show me the
+backlog. It seems like it's left to be done. I haven't seen the
+paywall yet either, I haven't seen a login, I haven't seen onboarding,
+I haven't seen tutorial. What are all the elements? Bring forward all
+the elements that I have not given feedback on, and bring all the four
+of the questions I haven't given feedback on, because there's a bunch
+of things you haven't done yet. So I need to see where we are."
+
+**The first three Fringe questions did not land as posed, and that is
+worth owning rather than repeating them the same way.** Round HH asked
+whether direction should survive a reload, whether it should fade back
+to steady, and which of three real options for Frames and Dial. His
+reply says plainly he does not follow any of the three, which means
+the questions were framed in engineering terms rather than in what he
+would actually experience, and they go back to whoever owns this work
+to re ask concretely, most likely with a picture beside each option
+rather than a sentence, per this project's own standing rule that a
+drawing question is asked with the drawing.
+
+**The fourth question, the "running hot" threshold, is answered,
+translated into language already ruled elsewhere in this session
+rather than a new number.** Round GG4's own scale words, mildly
+impaired up through heavily impaired, over the nerve load range this
+project has already fitted and ruled, are what he wants "running hot"
+described as, rather than a bare "past five." This is not a new
+number, it is a naming instruction: connect the Field's own hot state
+to the same physiological language a load reading already carries.
+
+**A real, concrete setup question, distinct from anything asked
+before it:** funnel to app to a person still active at three hundred
+days, ready for a paywall, saving locally, syncing to a database, with
+a developer console for reviewing outstanding work and customer
+analytics. This is squarely what `ARCHITECTURE-RESEARCH.md`'s own
+staged plan (round HF) already answers in outline, stage by stage, but
+it has not yet been turned into a plan written for him specifically
+rather than for an engineer, and it deserves its own direct answer
+rather than a pointer back to a document he has not necessarily read
+in full.
+
+**Grounded before the backlog request goes out, so the audit starts
+from what is actually true rather than from memory:** onboarding is
+real, built and gated (`atuned_src/ui/onboard.js`, `obOpen`), off by
+default per his own ruling (`OB_AUTO=false`), reachable by replay; a
+tutorial is confirmed, repeatedly, as genuinely not built, logged as
+such as early as this file's own earlier rounds; sign in does not
+exist, and `atuned_src/ui/account.js` says so honestly on the page
+itself rather than faking a control, "Sign in does not exist yet, this
+record is in this browser and nowhere else"; the paywall is real and
+gated but has never been shown to him, confirmed at round GX.
+
+Dispatched:
+1. A written, plain language answer to the three unclear Fringe
+   questions, each with its own picture rather than only a sentence,
+   plus the physiological threshold language now ruled, to
+   `animation-vfx-director`, the seat that raised them.
+2. A concrete, staged setup plan for the funnel to three hundred day
+   retention question, written for him directly rather than as an
+   engineering document, built on `ARCHITECTURE-RESEARCH.md`'s existing
+   staged plan rather than starting over, to `technical-director`.
+3. A single, final, consolidated list of every open question still
+   outstanding across every round this session, not only what changed
+   since the last audit, plus real screenshots or a plain statement of
+   current state for the four things he named not having seen, the
+   paywall, sign in, onboarding and the tutorial, to `project-manager`.
+
+What I need from him: nothing new beyond what is already asked; this
+round is the team correcting how it is asking, and showing him what
+already exists, rather than opening new questions of its own.
