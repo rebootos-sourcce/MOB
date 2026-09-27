@@ -18187,3 +18187,28 @@ What I need from him:
    grow with zoom. Each mockup carries a slider so he can feel both.
 5. The name collision above, since "tension" already means the
    susceptibility pulses in the shipped Field.
+
+## GL. The GF gap analysis, verified after the fact, and committed by the seat itself rather than by me. 27 September
+
+`RESEARCH-mobile-gaps.md`, `proto/mobile/walk.js`, `proto/mobile/observed/*`
+and `proto/mobile/walk-before-eae5b75.jsonl`, commit `02e8041`. This one was
+committed and pushed by the game director seat itself, not staged by me
+first, the one departure from this session's standing discipline of
+verifying before committing. Verified anyway, in full, after the fact,
+since the discipline is about nothing shipping unverified, not about who
+runs `git commit`.
+
+Every cited number checked against the raw measurement file rather than the
+prose summary. `walk-before-eae5b75.jsonl` line 1 carries `"words":11`,
+matching the claimed Field landing word count. `"pan":[[0,0],[-150,0]]`
+matches the claimed 150px sideways slide on pinch. `"hist":
+{"hiddenAttr":true,...,"undoHidden":true,"undoShown":true}` confirms the
+undo pair renders visible while the app's own state says it should be
+hidden, and `git show eae5b75:atuned_src/shell/head.html` at line 807
+confirms `.histpair{display:flex;...}`, the rule that outranks the hidden
+attribute. Confirmed the commit touches nothing under `atuned_src`. Zero em
+dashes in the new files.
+
+This closes the second half of round GF: the mobile fixes are still running
+in the same agent that opened them, now informed by this gap analysis
+rather than guessing at what to prioritise.
