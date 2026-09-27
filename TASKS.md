@@ -23177,3 +23177,38 @@ His three direct questions (GitHub as the final location, whether the
 paywall is wired in, whether the user profile is wired in) and the
 open engineering punch list are answered directly in this round's
 report rather than guessed at.
+
+**Investigated directly, round KB.** `reboot-os` was already attached to
+this session from earlier (found by name via `list_repos`, confirmed
+already cloned at `/home/user/reboot-os`), so his repeated question "you
+did add the repo, yeah" is answered yes as of this round, not the round
+he asked it in. Read directly rather than assumed: `atuned/` inside that
+repository is a full second build, application layer on top of this
+engine ("MOB is the physics layer," its own words), with its own server
+(`atuned/server`, a Cloudflare Worker plus D1), its own docs bible and a
+dated shipping checklist, `atuned/docs/DEV_CHECKLIST.md`.
+
+Real answers, read off that checklist and the server code, not guessed:
+GitHub already holds every file, this repository is private and nothing
+is missing from it; the deploy pipeline (`.github/workflows/server.yml`,
+`web.yml`) is already wired to migrate the database and deploy the
+Worker and the Pages site on every push to main, gated only on two
+GitHub secrets he has not set (`CLOUDFLARE_API_TOKEN`,
+`CLOUDFLARE_ACCOUNT_ID`) and on `wrangler.toml`'s `database_id`, still
+the literal placeholder `REPLACE_AFTER_wrangler_d1_create` since the D1
+database itself has never been created on a real Cloudflare account.
+That is one command (`wrangler d1 create atuned --location wnam`) and
+pasting its output into that one file. Login and profile are built
+server side: `/v1/auth/signup`, `signin`, `forgot`, `reset`, `signout`,
+`/v1/me`, `/v1/export`, account deletion, all real routes in
+`atuned/server/src/index.js`. A paywall is partly built: `/v1/purchase`,
+`/v1/store/apple` and `/v1/store/google` verify a real receipt from
+Apple or Google, `BASE_PLAN` marks every account Growth tier until
+payment exists, and PCI-DSS is ruled out on purpose since card numbers
+never touch this server. What is not confirmed from the code alone:
+whether real products are configured in App Store Connect or Play
+Console, and whether the client actually enforces a tier gate anywhere
+yet. This repository's own `atuned_src/ui/account.js` sign in shell
+still refuses honestly ("Accounts are not live yet") because it has
+never been pointed at this server, which is the one wire not yet run
+between the two repositories.
