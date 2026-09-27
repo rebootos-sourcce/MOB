@@ -20648,3 +20648,120 @@ What I need from him: nothing new this round; this dispatches exactly
 what round HG already approved. The repository is still public and
 the Cloudflare against Supabase question from round HA and HF is still
 open; both remain outstanding regardless of this round's own progress.
+
+## HQ. The real Avatar tab, back and verified in isolation. 27 September
+
+Commit `1850525`, on top of `c4e3ce9`. Verified directly in an isolated
+worktree, not trusted from the report: `BUILD.sh` and `BUILD-engine.sh`
+clean, `tests/engine.js` 1763 passed 0 failed, `tests/collide.js` 336
+passed 0 failed, `tests/funnel.js` 172 passed 0 failed, the voice check
+clean, `tools/monitor.js` reads all surfaces render with the new avatar
+surface's own markup counted by id, not by position. `tools/equiv.py`
+against the immediate parent shows sixty new declarations, all `AV` or
+`av` prefixed, and exactly two changed bodies, `TABDEF` and
+`renderIntake`, matching a tab rename plus one dispatch line, nothing
+wider.
+
+The two heavier gates flake the same way this session has hit
+repeatedly under concurrent load and were cross checked rather than
+taken on faith: `tests/functional.js` read 1212 passed 0 failed on my
+own run, one better than the report's own 1211 passed 1 failed, and
+the single failure either build hits is the same known Field fade
+timing read. `tests/design.js` failed only "the Field still animates"
+frame rate check, and only under load; the report's own quiet run read
+158 passed 0 failed.
+
+**What it actually does, seen directly rather than described.** The
+tab strip reads "Avatar," not "Energetics," confirmed on a fresh
+screenshot I took myself. A person writes a pair, who they want to be
+and who they do not want to be; the example built for the demonstration
+reads "Grieving what happened, instead of explaining it," held at the
+heart at a weight of 0.7, with the ring reading 17% complete and Love
+at 24%. The panel beside it quotes two real journal entries with the
+words the sniffer actually scored shown in bold, "funerals" and "sad,"
+and opens the shipped release protocol with its own run length, "Under
+a minute." The archetype wheel keeps its merged shape from round GU
+and replaces the one press "Rings true" toggle with a line of five
+points, "Hardly" to "Fully," confirmed on screen: Caregiver held at 4,
+its own Impact box reading "Pleaser, primary saboteur, at the heart...
+Running at a weight of 3.9, releasing," and the field's own separate
+read, "Warrior first and Caregiver further down. Both are kept."
+
+**A real design choice made and flagged, not buried.** The existing
+sixty three question Energetics intake was not folded into the new
+hero panel or removed; it stays whole under its own heading below the
+avatar, with a jump button to reach it, on the reading that "these
+fields, maybe the tags" meant the pair's own sniffed tags and not the
+sixty three answers. This is a real judgement call rather than a
+settled one and is asked back to him below.
+
+Real, open questions, named rather than guessed at: whether the sixty
+three questions should feed the avatar at all; two archetype systems
+now exist on the same page, the left rail's older stated archetypes
+which still feed the blueprint and the new one to five scale which
+feeds nothing in the engine yet, and only he can say which one is the
+truth; twelve archetypes shipped, matching `COPY.md`'s own standing
+rule and the engine's own `ARCH` table, not the eighteen `ARCH18`
+carries; Rebel over Outlaw, matching the shipped name; and one word
+collision found in passing, this page reads a saboteur's direction as
+loading and releasing while Analytics reads the same measurement as
+expanding and collapsing, one concept under two names.
+
+Not pushed with the commit itself, held local exactly so it could be
+verified before reaching origin, per this project's own standing rule
+that a claim of working is checked before it is repeated.
+
+## HR. The approved body map, wired into the real Body tab, back and verified in isolation. 27 September
+
+Commit `4c03123`, on top of `1850525`. Verified directly in an isolated
+worktree: `BUILD.sh` and `BUILD-engine.sh` clean, `tests/engine.js`
+1763 passed 0 failed with no engine logic touched at all, confirmed by
+`tools/equiv.py` against the immediate parent showing ninety six new
+`bm` or `BM` prefixed declarations and only three changed bodies,
+`PMLAYER`, `pmCount` and `renderMap`. `tests/collide.js` 336 passed 0
+failed, `tests/funnel.js` 172 passed 0 failed, the voice check clean,
+`tools/monitor.js` reads all surfaces render. Both heavier gates
+checked against the same known load dependent flake this session has
+hit before rather than trusted as a regression: `tests/functional.js`
+read 1212 passed 0 failed on my own run, and `tests/design.js` failed
+only "the Field still animates" under load, four of a hundred and
+fifty eight, on Field timing this change does not touch.
+
+**What it actually does, seen directly.** The Body tab's new Map layer
+opens by default over the seven older layers, which stay untouched and
+one press away. Confirmed on a fresh screenshot I took myself: the
+real nervous system figure, front and back, every layer's own count
+read at zero on a blank profile rather than carried over from a
+demonstration. Pressing a region answers in Selection with the real
+address weight at that seat, not a mock number: the report's own
+demonstration, Diane's left trap, reads Comparison at 3.5 and Manic
+Expression at 1.7, confirmed on its own screenshot, replacing the
+prototype's invented 5.0 and 2.8 from round HE's own spec document.
+
+**A real defect in the approved prototype, found and fixed rather than
+carried over.** Its back view drew every line on the front, mirrored,
+so the back showed nothing and a held line printed twice; each view
+now draws its own. This is a visible change from what he approved and
+is named rather than silently corrected.
+
+**The two open questions from round HE kept open, not settled by
+default.** The limb centres still draw as a dashed ring nothing counts
+as a real address. Question A's three readings, fetter mark, point in
+patch and point, sit as three buttons side by side rather than one
+picked for him; fetter mark opens first because that is where the
+prototype itself opened, not a ruling.
+
+Real, open questions, named rather than guessed at: painted pain is
+held per profile and cleared on switching rather than saved, since
+saving it is a schema change and his call; the twenty eight proposed
+limb places are drawn the same as the eighty measured ones today,
+and moving them into the real model is a ruling, not a port; Pain now
+shows twice on the tab, the old nine region layer and the new
+forty eight region mode, since retiring the old one means editing
+`tests/functional.js`, outside this dispatch's own file scope; and on
+a phone, Pain mode's controls push the whole figure down about five
+hundred and eighty pixels, a real layout question for that width.
+
+Both this and round HQ verified independently before either reaches
+origin, exactly the discipline this project has held to since round
+HH's own mistake. Pushing both now with this log entry.
