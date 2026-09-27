@@ -19854,3 +19854,88 @@ model, each a different size of work; and confirmation of the
 Isotherm pick, since the one profile who preferred the alternative
 did so specifically because it shows which nerve carries the pain a
 second, clearer way.
+
+## HF. The architecture research is back, and it finds that deploying reboot-os as it stands today would make IP exposure worse, not better. 27 September
+
+`ARCHITECTURE-RESEARCH.md`, dispatched at round HB. 812 lines, 83 cited
+links, verified directly, zero em dashes. Its single most important
+finding was independently confirmed against the real server code
+before being treated as fact, not taken on the report alone.
+
+**A real, serious finding: the reboot-os server, as it stands today,
+would expose the lexicon to anyone, no sign in required, the moment it
+goes live.** Confirmed directly at `atuned/server/src/index.js:390-405`:
+`GET /v1/canon` and `GET /v1/canon/:table` sit in the server's own
+`PUBLIC` set, meaning they require no authentication at all;
+`CANON_TIER` is an empty object, its own comment reading "every table
+is free until ruled"; and both routes answer with `cache-control:
+public`. `LEX`, the 232 entry lexicon, is confirmed as a real row in
+`canon_manifest`, one of the tables this open route would serve.
+Deploying the server exactly as it exists right now would not protect
+the word table this session has spent real effort discussing how to
+protect, it would publish it, indexed and cacheable, worse than its
+current state of merely being readable by someone who clones and reads
+the client side code.
+
+**The document's central recommendation runs against the instinct
+this whole thread has been building toward.** Its own words: "don't
+split into many services... every credible source says separately
+deployed services are premature for one team. What protects the
+method and the money is the wall between the person's device and the
+server, not the number of services." Cites real, credible, checkable
+sources for this rather than asserting it, Martin Fowler and Sam
+Newman's own writing on the monolith first pattern, Google's own HotOS
+2023 paper, and Amazon Prime Video's own public account of moving away
+from microservices. Says plainly where its own sourcing is weaker,
+several citations read through search extracts rather than a direct
+fetch the sandbox's network blocked, and advises opening each such
+link once before quoting it to anyone external.
+
+**A real, measured correction to this session's own earlier
+`SECURITY-IP.md`, not a restatement of it.** MOB's engine was actually
+loaded and run in plain Node with no changes, not assumed portable:
+1.9 milliseconds average per reading over five hundred runs, meaning
+server side paid depth moves up the priority order from fifth to
+second, since the thing assumed to be a large migration turns out to
+already run unmodified on a server. Also corrected: reading stories
+only on the device is weaker ground than it looked, since the owner
+already ruled on 25 September that stories are stored on the server
+for recovery; and obfuscation is weaker still than stated, cited
+directly against Google's own CASCADE research on de-obfuscating
+JavaScript at the scale of millions of files a day.
+
+**Real legal exposure named with real, current, named statutes rather
+than generic caution:** the FTC's Health Breach Notification Rule
+(2024) covers wellness apps, Washington's My Health My Data Act
+requires separate consent to collect and to share where the server
+currently has one shared toggle, and pseudonymised research data is
+still personal data under current EU guidance, all real, checkable
+constraints on the accounts work already planned rather than
+theoretical concerns.
+
+**Password hashing is below the recognised standard for a real,
+external reason, not a shortcut anyone took:** the server hashes at
+100,000 rounds against OWASP's recommended 600,000, because Cloudflare
+Workers currently refuse anything above that figure, with the pull
+request to lift that cap open and unmerged as of today.
+
+A full staged plan sits in the document itself, roughly four to seven
+weeks total with a first protected paid reading reachable in about two,
+gated at its own stage zero on exactly the decisions already put to
+him at rounds GZ, HA and HB: repository visibility, Cloudflare against
+Supabase, which engine is canonical between this repository and
+reboot-os, and where a story is read.
+
+Sent to him: the canon exposure finding first and separately from the
+rest, since it directly changes what "just deploy it" would actually
+do right now, ahead of the document's other six questions.
+
+What I need from him, the document's own six, in addition to
+everything already asked at rounds GZ through HB: a modular monolith
+or separate services regardless of the recommendation; which engine is
+the true one between this repository and `reboot-os`, or whether they
+need reconciling first; whether a story is read on the device, the
+server, or both; Cloudflare confirmed given his own two opposite
+rulings four days apart; and the password hashing tradeoff, accept the
+platform's current cap, spend a day moving to Argon2id instead, or
+hand sign in to an outside provider entirely.
