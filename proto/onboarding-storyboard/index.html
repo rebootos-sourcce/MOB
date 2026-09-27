@@ -1,0 +1,672 @@
+<title>Onboarding Storyboard</title>
+<meta name="description" content="Atuned onboarding, frame by frame, from the boot to the Field, with real copy written to the ten year old rule and every open question marked on the frame it belongs to. A prototype storyboard, not the shipped app.">
+<style>
+/* One look, on purpose: the product's own Dark theme tokens, the same ones
+   atuned_src/shell/head.html carries and proto/firstrun drew with. The
+   storyboard is drawn inside the product's world, so it commits to one theme
+   and paints every colour explicitly. No font is fetched: this page follows
+   the product's one file, no network rule, so it runs on the system face. */
+:root{
+ color-scheme:dark;
+ --bg:#0C0D12; --panel:#1A1D26; --panel2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:#2C303C;
+ --sky:#7EB8D4; --skybg:rgba(126,184,212,.08); --warn:#DABF6A; --warnbg:#2A2412;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+ --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);
+ padding-inline:clamp(16px,4vw,48px);padding-block:0 72px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:64px}
+h1,h2,h3{font-weight:500;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,4.2vw,44px);font-weight:300;line-height:1.15}
+h2{font-size:23px}
+h3{font-size:16.5px}
+p{margin:0;max-width:68ch}
+a{color:var(--sky)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+code,.num{font-family:var(--mono);font-size:.9em}
+.eye{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sky)}
+.mid{color:var(--mid)} .dim{color:var(--dim)}
+
+/* the prototype band. On the page, first, and sticky: ruled after FK, a
+   prototype says what it is where it is seen. */
+.proto{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-inline:calc(-1 * clamp(16px,4vw,48px));margin-bottom:0;
+ padding:10px clamp(16px,4vw,48px);background:var(--warnbg);border-bottom:1px solid var(--warn);
+ color:var(--warn);font:500 13.5px/1.4 var(--sans);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.proto b{font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--warn);border-radius:3px;padding:3px 6px}
+
+header{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:40px}
+header .txt{display:flex;flex-direction:column;gap:16px}
+header .hero{display:flex;justify-content:center}
+@media (max-width:820px){header{grid-template-columns:1fr}header .hero{order:-1}}
+
+.thread{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.thread div{flex:1 1 150px;padding:14px;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--line)}
+.thread div:first-child{border-left:0}
+.thread b{font-weight:500}
+.thread span{font:400 12.5px/1.4 var(--mono);color:var(--dim)}
+.thread .turn{background:var(--skybg)}
+@media (max-width:720px){.thread div{flex-basis:100%;border-left:0;border-top:1px solid var(--line)}.thread div:first-child{border-top:0}}
+
+section{display:flex;flex-direction:column;gap:22px}
+.sec-h{display:flex;flex-direction:column;gap:8px}
+.news{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px}
+.news div{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px}
+.news b{font-weight:500}
+.news span{font-size:14.5px;color:var(--mid)}
+
+/* frames */
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:44px 28px}
+.fr{display:flex;flex-direction:column;gap:14px}
+.phone{width:100%;max-width:262px;aspect-ratio:390/760;background:var(--sunk);border:1px solid var(--line);
+ border-radius:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:10px;padding:20px 16px;font-size:12px;line-height:1.4;text-align:center}
+.phone .leave{position:absolute;top:12px;right:14px;font-size:10.5px;color:var(--dim)}
+.phone .big{font-size:18px;font-weight:400}
+.phone .word{font-size:26px;font-weight:300;letter-spacing:.01em}
+.phone .small{font-size:11px;color:var(--mid)}
+.phone .tiny{font-size:9.5px;color:var(--dim)}
+.phone .mirror{font-size:11px;line-height:1.5;color:var(--ink);text-align:left}
+.phone .mirror u{text-decoration:underline dashed var(--warn);text-underline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--sky);color:#0C0D12;
+ border-radius:5px;font-size:11.5px;font-weight:500;padding:7px 20px}
+.btn.ghost{background:transparent;color:var(--mid);border:1px solid var(--line)}
+.fld{width:100%;text-align:left;display:flex;flex-direction:column;gap:3px}
+.fld label{font-size:9.5px;color:var(--dim)}
+.fld i{font-style:normal;display:block;border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:6px 8px;font-size:11.5px;color:var(--ink)}
+.ck{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--mid);align-self:flex-start}
+.ck b{width:13px;height:13px;border:1px solid var(--dim);border-radius:3px;display:inline-block}
+.rows{display:flex;flex-direction:column;gap:7px;text-align:left;width:100%}
+.rows div{display:flex;gap:7px;align-items:flex-start;font-size:10.5px;color:var(--mid)}
+.rows div::before{content:"";flex:0 0 9px;height:9px;margin-top:3px;border:1px solid var(--sky);border-radius:50%}
+
+.cap{display:flex;flex-direction:column;gap:8px;max-width:262px}
+.cap .id{font:500 12px/1 var(--mono);color:var(--sky);letter-spacing:.04em}
+.cap h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
+.cap p{font-size:14px;color:var(--mid);line-height:1.5}
+.copy{display:flex;flex-direction:column;gap:5px;border-left:2px solid var(--sky);padding:2px 0 2px 11px}
+.copy span{font-size:14.5px;color:var(--ink);line-height:1.4}
+.copy span.was{font-size:12.5px;color:var(--dim);text-decoration:line-through}
+.cap dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:2px 0 0;font-size:13px}
+.cap dt{color:var(--dim);font-family:var(--mono);font-size:12px;padding-top:1px}
+.cap dd{margin:0;color:var(--ink)}
+.tag{display:inline-block;font:500 11px/1 var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:3px;padding:3px 5px}
+.tag.new{color:var(--sky);border-color:var(--sky)}
+.qs{display:flex;flex-wrap:wrap;gap:6px}
+.qs a{font:500 11.5px/1 var(--mono);color:var(--warn);border:1px solid var(--warn);border-radius:12px;padding:5px 9px;text-decoration:none;min-height:24px;display:inline-flex;align-items:center}
+.qs a:hover{background:var(--warnbg)}
+
+/* a station, drawn inside the product: a neutral bar with no tab names (it is
+   not wired, ruled after FK), the ring docked, the surface dimmed, one target lit */
+.st{position:absolute;inset:0;display:flex;flex-direction:column;gap:7px;padding:12px 12px 14px;text-align:left}
+.st .nb{display:flex;gap:5px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.st .nb i{height:8px;border-radius:4px;background:var(--panel2);flex:1}
+.st .dock{display:flex;gap:8px;align-items:center;padding:4px 2px}
+.st .dock .w{font:500 13px/1.2 var(--sans);color:var(--ink)}
+.st .dock .l{font-size:10px;color:var(--mid);line-height:1.35}
+.st .dimmed{opacity:.32}
+.st .blk{height:9px;border-radius:3px;background:var(--panel2)}
+.st .card{border:1px solid var(--line);border-radius:7px;background:var(--panel);padding:8px;display:flex;flex-direction:column;gap:6px}
+.st .lit{border-color:var(--sky);box-shadow:0 0 0 1px var(--sky) inset}
+.st .ta{font-size:10.5px;line-height:1.55;color:var(--ink)}
+.st .ta s{text-decoration:none;border-radius:2px;padding:0 1px}
+.st .note{font-size:10px;color:var(--mid);line-height:1.4}
+.st .prac{font:500 9.5px/1.3 var(--mono);color:var(--warn)}
+.st .chips{display:flex;flex-wrap:wrap;gap:5px}
+.st .chips span{border:1px solid var(--line);border-radius:12px;padding:4px 8px;font-size:9.5px;color:var(--mid)}
+.st .chips span.on{border-color:var(--sky);color:var(--ink)}
+.st .row{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.st .leave{position:absolute;top:24px;right:12px;font-size:10px;color:var(--dim)}
+
+/* tables */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line)}
+th{font:500 12px/1.2 var(--mono);color:var(--dim);letter-spacing:.04em;text-transform:uppercase;border-top:0}
+td{color:var(--mid)}
+td b{color:var(--ink);font-weight:500}
+td.st-open{color:var(--warn)}
+td.st-done{color:var(--heart)}
+
+/* questions */
+.q{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:60px}
+.q .qh{display:flex;gap:12px;align-items:baseline}
+.q .qh .num{color:var(--warn);font-size:15px}
+.quote{border-left:2px solid var(--warn);padding:2px 0 2px 14px;color:var(--mid);font-size:15px;max-width:72ch}
+.quote cite{display:block;font-style:normal;font-size:12.5px;color:var(--dim);margin-top:4px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.pair.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){.pair,.pair.three{grid-template-columns:1fr}}
+.opt{display:flex;flex-direction:column;gap:12px}
+.opt h3 .num{color:var(--dim);margin-right:8px}
+.strip{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mini{width:100px;aspect-ratio:390/620;background:var(--sunk);border:1px solid var(--line);border-radius:12px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:9px;text-align:center;padding:7px;color:var(--mid)}
+.mini b{color:var(--ink);font-weight:500;font-size:10px}
+.mini.wide{width:170px;font-size:10px;line-height:1.45;text-align:left;justify-content:flex-start;padding:12px}
+.mini.wide u{text-decoration:underline dashed var(--warn);text-underline-offset:3px}
+.arr{color:var(--dim);font-family:var(--mono);font-size:12px}
+.cost{font-size:14.5px;color:var(--mid);max-width:68ch}
+.cost b{color:var(--ink);font-weight:500}
+.others{display:flex;flex-direction:column;gap:12px;font-size:15px;color:var(--mid)}
+.others b{color:var(--ink);font-weight:500}
+
+/* account drawing */
+.acct{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;grid-template-columns:160px 1fr;gap:22px;max-width:780px}
+.acct nav{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--mid)}
+.acct nav span{padding:7px 10px;border-radius:5px}
+.acct nav .on{background:var(--panel);color:var(--ink)}
+.grp{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.grp .gh{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:12px 14px 8px}
+.acct .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 14px;border-top:1px solid var(--line);font-size:14px}
+.acct .row em{display:block;font-style:normal;font-size:12.5px;color:var(--dim)}
+.sw{width:38px;height:22px;border-radius:11px;background:var(--sky);position:relative;flex:0 0 auto}
+.sw::after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#0C0D12}
+.gf{padding:10px 14px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--mid)}
+.newt{color:var(--sky);font:500 11px/1 var(--mono);margin-left:8px}
+.pane{display:flex;flex-direction:column;gap:14px}
+@media (max-width:640px){.acct{grid-template-columns:1fr;padding:16px}.acct nav{flex-direction:row;flex-wrap:wrap}}
+
+.walks{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px 28px}
+.walks div{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px;font-size:14.5px;color:var(--mid)}
+.walks b{color:var(--ink);font-weight:500}
+.walks .stop{color:var(--warn)}
+.src{display:flex;flex-direction:column;gap:10px;font-size:14.5px;color:var(--mid)}
+.src div{border-top:1px solid var(--line);padding-top:10px}
+.src b{color:var(--ink);font-weight:500}
+footer{font-size:13px;color:var(--dim);border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:no-preference){.pulse{animation:pl 2.4s ease-in-out infinite}
+ @keyframes pl{50%{box-shadow:0 0 0 1px var(--sky) inset,0 0 10px rgba(126,184,212,.35)}}}
+</style>
+
+<div class="proto" role="note"><b>Prototype</b><span>A storyboard, not the shipped app. Nothing here is wired, and no drawn screen carries a real tab name.</span></div>
+<div class="wrap">
+
+
+<header>
+ <div class="txt">
+  <span class="eye">Atuned onboarding. Storyboard, 27 September</span>
+  <h1>From the boot to the Field, in plain words, with one turn of the loop done on the way</h1>
+  <p class="mid">Every screen a brand new person meets, in order, drawn at phone width, with the real copy under each one. It starts from the storyboard you reacted to in round FK ("I like the ring with the tune... Hello Sofia's good") and keeps both of those exactly. What changed since then is listed first. Every question that is still yours is marked, in yellow, on the frame it belongs to, and written out in full at the bottom.</p>
+  <p class="mid">Your rule from today is applied to every line a person would read: speak to people as if they are ten, and never use abstract language. Where that rule and precision pulled apart, it is named, not settled quietly.</p>
+ </div>
+ <div class="hero" id="hero"></div>
+</header>
+
+<div class="thread" aria-label="The sequence">
+ <div><b>Boot</b><span>5.4 s, shipped</span></div>
+ <div><b>The mirror</b><span>new, your 27 September words</span></div>
+ <div><b>Hello</b><span>kept, one line plainer</span></div>
+ <div><b>Signal test</b><span>about 60 s, plainer</span></div>
+ <div class="turn"><b>discover, play, flow, embody</b><span>one turn, 2 to 3 min</span></div>
+ <div><b>The Field</b><span>the circle closed</span></div>
+</div>
+
+<section>
+ <div class="sec-h"><span class="eye">What is new since the 26 September storyboard</span><h2>Six changes, each from something you said or ruled after it</h2></div>
+ <div class="news">
+  <div><b>Your opening words are on the first screen</b><span>Ruled 27 September (round GS): "the opening screen should say what this does, or maybe say why they're here." Your dictated "This is a mirror" paragraph now sits on the figure the boot just drew, which is the avatar at rest.</span></div>
+  <div><b>Every line rewritten for a ten year old</b><span>Your rule from today. Eight lines changed. The old line is shown struck through under the new one on each frame, and the table further down lists every change.</span></div>
+  <div><b>The findings are real engine output</b><span>The story on the discover frame was run through the engine on 27 September. It finds 12 patterns across the throat, the sacral and the solar plexus, and lights four of the words. Nothing on those frames is made up.</span></div>
+  <div><b>Sign in has a place</b><span>Round JJ asked for a login page. It is not built and is blocked on the backend choice, so it is drawn as a slot beside Hello, with a question about where it goes.</span></div>
+  <div><b>The tutorial is split out</b><span>You asked for two storyboards. Onboarding ends on the Field after one turn. The tutorial is its own storyboard, for a person who has already been through this one.</span></div>
+  <div><b>The twelve questions from 19 September are sorted</b><span>Most were answered the same day in round AN and never marked. Three are still open and are asked again below, where they belong.</span></div>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">The frames</span><h2>From the boot to the Field</h2>
+ <p class="mid">Example person: Angela, 36, one of the reference profiles in the product. The blue lines under each frame are the proposed copy, exactly as a person would read it. A yellow chip is an open question of yours on that frame.</p></div>
+ <div class="frames" id="frames"></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Your ten year old rule, applied</span><h2>Every line that changed, and where plain and precise pulled apart</h2>
+ <p class="mid">Each new line was run through the house voice gate, <code>check.py --line</code>, and passed with no hard failures. The gate cannot tell whether a ten year old follows a sentence, so that part was read by hand, out loud.</p></div>
+ <div class="tw"><table>
+  <thead><tr><th>Frame</th><th>Was</th><th>Now</th></tr></thead>
+  <tbody id="tenrows"></tbody>
+ </table></div>
+ <h3>Where precision and plain words collided</h3>
+ <div class="others">
+  <p><b>"The line" is gone from onboarding.</b> The product uses it for one exact thing: a place in the body carrying enough to show in full. "They show faint until more of your writing makes them heavier" says the same event without the word. Cost: the person meets "the line" later with nobody having said what it is. The tutorial storyboard says it, once, with the wheel on screen.</p>
+  <p><b>"Field" is not said on any frame.</b> It is the tab name and the product's word for everything it has read about you. "This wheel is you" is what a ten year old can hold. Cost: the bar says Field and the frame said wheel, so the person has to join the two themselves.</p>
+  <p><b>The pattern names are kept exactly as the engine prints them.</b> Self-Silencing, People Pleasing, Need For Approval. They are data, not copy, and one word per concept means this storyboard does not rename them. Some are the hardest words on these frames. Manipulation Through Emotion is one of the twelve this story finds, and it is not shown on a chip for that reason.</p>
+  <p><b>"Commit" is kept.</b> It is the shipped control word on the story box. A ten year old says Save. Changing it is a product wide rename, not an onboarding line.</p>
+  <p><b>Your loop words are kept.</b> discover, play, flow, embody are ruled, and embody is not a ten year old's word. Not changed. Asked below.</p>
+  <p><b>Your dictated opening is kept word for word.</b> "Bias", "conditioning" and "highest experience of life" are abstract by your own new rule. The team does not edit dictated words (ruled in <code>DECISIONS.md</code>), so it is question B.</p>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Where they stop</span><h2>The same walk, as four people who want different things</h2>
+ <p class="mid">Levels as the engine read them on 26 September (round FI), dated on purpose because they have moved before. A person stops where the frame gives them a reason to leave.</p></div>
+ <div class="walks">
+  <div><b>Angela, 36, seeker. Level 7.</b>The mirror paragraph is written for her and she reads all of it. The signal test is her moment. In discover she writes about her sister and watches "said yes when" light up. <span class="stop">Watch flow:</span> if the practice label reads as "this was fake", she feels tricked on the one screen that should feel real.</div>
+  <div><b>Derek, 39, high performer. Level 5.</b>Types his name, sees three numbers promised. <span class="stop">Stops on the mirror,</span> at "pain and disease free": a promise with no instrument behind it is the thing he is looking for to dismiss the product. Question A decides whether he gets past the first screen.</div>
+  <div><b>James, 57, C suite. Level 5 by one reading, 4 by the other.</b>Ticks the box on Hello and is on the Field in two presses. <span class="stop">Stops on the Field</span> if it still prints readings about a blank record, which it did in the 26 September walk. That is a defect to fix before this ships, listed below, not a question.</div>
+  <div><b>Marcus, 44, creative director.</b>Stays for the signal test because it is an instrument, not a pitch. play is his station: a wheel that answers his own words is proof it is not a template. <span class="stop">Stops on the mirror</span> if it reads like a spa brochure. It is the softest screen in the flow, and the only one he reads before he has done anything.</div>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Where the switches live</span><h2>Profile, Account: the opening and the tutorial, side by side</h2>
+ <p class="mid">A drawing, not wired. The Opening group already exists with one control. The tutorial gets its own group beside it, because you ruled both live in the profile and can be turned back on (round AN, "the tutorial lives in the profile, toggleable and replayable", and round FH, "a check on and off within the profile").</p></div>
+ <div class="acct">
+  <nav aria-label="Account sections, drawn"><span class="on">Account</span><span>Display</span><span>Security</span><span>Privacy</span><span>Billing</span><span>Help</span></nav>
+  <div class="pane">
+   <div class="grp"><div class="gh">The opening</div>
+    <div class="row"><span>Show the opening when the app starts<span class="newt">new</span><em>hello, the signal test and one turn of the loop</em></span><span class="sw" role="img" aria-label="switch, on"></span></div>
+    <div class="row"><span>Run the opening now</span><span class="btn ghost">Open it</span></div></div>
+   <div class="grp"><div class="gh">The tutorial</div>
+    <div class="row"><span>Show the tutorial<span class="newt">new</span><em>your avatar, and one full turn on your own story</em></span><span class="sw" role="img" aria-label="switch, on"></span></div>
+    <div class="row"><span>Run the tutorial now<span class="newt">new</span></span><span class="btn ghost">Open it</span></div>
+    <div class="gf">The signal test and the practice run change nothing. The opening keeps your name and your first story, and only if you gave them.</div></div>
+  </div>
+ </div>
+ <div class="tw"><table>
+  <thead><tr><th>Route</th><th>Where</th><th>What happens</th><th>Opening after</th></tr></thead>
+  <tbody>
+   <tr><td><b>Any press</b></td><td>Boot</td><td>Skips the boot only, as today</td><td>unchanged</td></tr>
+   <tr><td><b>Leave</b></td><td>The mirror</td><td>Straight to the Field, nothing kept</td><td>on, it comes back next time</td></tr>
+   <tr><td><b>Box ticked, Next</b></td><td>Hello</td><td>Name kept, straight to the Field</td><td>off</td></tr>
+   <tr><td><b>Leave</b></td><td>Signal test, any station</td><td>Straight to the Field. Quarters already done stay closed on the ring</td><td>off</td></tr>
+   <tr><td><b>Save</b></td><td>embody</td><td>The ring closes onto the Field</td><td>off</td></tr>
+   <tr><td><b>Tab closed part way</b></td><td>Anywhere</td><td>Next time it greets by name and picks up after the last closed quarter</td><td>still on</td></tr>
+  </tbody></table></div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">Must be true before this ships</span><h2>Defects already found, not new asks</h2>
+ <p class="mid">From the 26 September walk (round FN, eight defects logged). These are the ones this flow walks a stranger straight into. A person greeted by name who is then told what is "most shut" in them, by a record holding nothing, will not trust the next thing it says.</p></div>
+ <div class="others">
+  <p><b>1. Readings on a blank record.</b> The right rail's archetype and domain percentages, and the lit Warrior and Sage seats, still print before anything is entered (backlog item AV24).</p>
+  <p><b>2. Ritual says "the root is carrying the most" on a blank record.</b> The embody frame lands on this surface.</p>
+  <p><b>3. CQ prints "0%" as its largest number after a first story.</b> That reads as a score of zero, and a reading is never a score (a standing ruling).</p>
+  <p><b>4. The When line misprints.</b> Anyone who types "after" at the start reads "When after I put the kettle on, ...". The embody frame's first chip starts with "after".</p>
+  <p><b>5. The faint drawing on discover and play is new.</b> The engine does not change. The wheel has to draw a first story faint where it now draws nothing.</p>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">The twelve questions from 19 September</span><h2>Backlog item D1, sorted: what you already answered, and what is still open</h2>
+ <p class="mid">D1 in <code>TASKS.md</code> still reads "they went out as HTML and nothing has come back". Something did come back: the ninth note, round AN, answered most of them the same day and nobody marked it. Your words are quoted beside each. The three still open are asked again in the questions below.</p></div>
+ <div class="tw"><table>
+  <thead><tr><th>19 September question</th><th>Status</th><th>What settled it, or where it is asked now</th></tr></thead>
+  <tbody>
+   <tr><td><b>1. Where does a stranger land</b></td><td class="st-done">answered</td><td>The Field. Ruled 19 September: "The app opens on the Field, reversing Summary."</td></tr>
+   <tr><td><b>2. What counts as day one done</b></td><td class="st-done">answered</td><td>AN3: "Day one done is touching every screen and running that loop once. A badge and points at the end."</td></tr>
+   <tr><td><b>3. What may onboarding ask before it gives</b></td><td class="st-open">partly open</td><td>Round FH asked for first and last name on the check in. Whether the name is required is still open: question F.</td></tr>
+   <tr><td><b>4. A tutorial you finish, or one that never announces itself</b></td><td class="st-done">answered</td><td>AN5: "The tutorial lives in the profile, toggleable and replayable." It is a named thing with an end.</td></tr>
+   <tr><td><b>5. Does the tutorial spend real charge</b></td><td class="st-open">answered, then pulled against</td><td>AN5: "It does not spend real charge." Your loop ruling since then says a person watches the avatar improve through releases. Asked in the tutorial storyboard, question A.</td></tr>
+   <tr><td><b>6. Warm or mechanical</b></td><td class="st-done">answered twice</td><td>AN6: "we do not do mechanical" for onboarding. Today: "speak to people as if they're 10."</td></tr>
+   <tr><td><b>7. Say "63 questions, about fifteen minutes" up front</b></td><td class="st-open">open</td><td>The 26 September walk found the questions page still says neither. It is not on the onboarding path. Asked in the tutorial storyboard, question F.</td></tr>
+   <tr><td><b>8. Four doors, or one</b></td><td class="st-open">open on one path</td><td>After the opening's turn the four doors never show, because a story exists. A person who ticks the box or leaves early still lands on four equal doors. Question L.</td></tr>
+   <tr><td><b>9. Where the somatic opener sits</b></td><td class="st-done">answered</td><td>AN7: "The somatic opener is the one thing onboarding has them do." The signal test frames.</td></tr>
+   <tr><td><b>10. Does the bar start whole</b></td><td class="st-open">answered, not built</td><td>AN8: "The bar grows as they earn it." The locked state was never designed. Tutorial storyboard, question C.</td></tr>
+   <tr><td><b>11. Do the two arrivals get the same onboarding</b></td><td class="st-done">answered</td><td>AN9: "Same onboarding for both arrivals."</td></tr>
+   <tr><td><b>12. Is there a day two, and who asks</b></td><td class="st-done">answered</td><td>AN10: "Day two is the ritual. The ritual pushes notifications and takes over." The embody frame sets it up.</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="questions">
+ <div class="sec-h"><span class="eye">Yours to rule</span><h2>The questions, each with the thing it is about</h2>
+ <p class="mid">None is answered for you. Where a question is about a screen, both screens are drawn. A, B, C and D are new this round; the rest carry over from 26 September and are still open.</p></div>
+
+ <div class="q" id="q-a">
+  <div class="qh"><span class="num">A</span><h3>The last four words of your opening: keep "pain and disease free", or end one clause earlier?</h3></div>
+  <p class="quote">"...release the charge that causes you pain, so that you can live your highest experience of life, pain and disease free."<cite>Your dictation, 27 September, round GS. Open in DECISIONS.md since then.</cite></p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">1</span>As you said it</h3><div class="strip" id="qa1"></div>
+    <p class="cost"><b>Your voice, and it speaks to the pain.</b> Cost: the first sentence a person reads promises a medical result the instrument cannot measure, which the product's own rules refuse everywhere else. Anyone who still has pain or disease reads the mirror as having failed them. Derek stops here.</p></div>
+   <div class="opt"><h3><span class="num">2</span>End after "highest experience of life"</h3><div class="strip" id="qa2"></div>
+    <p class="cost"><b>Four of your words go.</b> Pain stays in the sentence, named as the thing the charge causes, which the instrument does read. Only the promise of being free of it goes.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-b">
+  <div class="qh"><span class="num">B</span><h3>Does the ten year old rule reach your own dictated words?</h3></div>
+  <p class="quote">"We want to speak to people as if they're 10. That is a core theme of ours. We don't use abstract language ever. That needs to be for all of Atuned, for the tutorial and for onboarding."<cite>Today. And the standing rule in DECISIONS.md: the team does not edit dictated words.</cite></p>
+  <p class="cost">Three phrases in the opening fail the new rule: "the bias", "the conditioning", "your highest experience of life". Each is abstract: a ten year old cannot point at any of them.</p>
+  <div class="pair three">
+   <div class="opt"><h3><span class="num">1</span>Ship it as spoken</h3><p class="cost"><b>Your words, untouched.</b> Cost: the first screen breaks the rule you just made for this exact flow.</p></div>
+   <div class="opt"><h3><span class="num">2</span>You say it again, plainer</h3><p class="cost"><b>Still your words.</b> Cost: a new dictation from you, and a wait on the one screen everything else follows.</p></div>
+   <div class="opt"><h3><span class="num">3</span>The team drafts, you approve</h3><p class="cost"><b>Fastest.</b> Cost: the first screen is no longer in your voice unless you rewrite the draft, and this crosses the rule that dictated words are not edited.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-c">
+  <div class="qh"><span class="num">C</span><h3>Which words go on the figure: the welcome you ruled on the shipped sheet, your mirror paragraph, or both?</h3></div>
+  <p class="quote">Shipped welcome, your ruling: "This is you, and it is okay. No judgment. Nothing here grades you." Opening, your ruling on 27 September: "This is a mirror. We hold up every story that you share..."<cite>The first sits in atuned_src/ui/onboard.js, switched off by default. The second is in DECISIONS.md. Nothing says which one sits over the figure.</cite></p>
+  <div class="pair three">
+   <div class="opt"><h3><span class="num">1</span>The mirror, as drawn</h3><div class="strip" id="qc1"></div><p class="cost"><b>Says what it does and why they are here,</b> which is what you asked the opening to do. Cost: the "it is okay" greeting is lost.</p></div>
+   <div class="opt"><h3><span class="num">2</span>The welcome</h3><div class="strip" id="qc2"></div><p class="cost"><b>Eleven words, and warm.</b> Cost: your 27 September opening moves off the app, most likely to the funnel's page after sign up.</p></div>
+   <div class="opt"><h3><span class="num">3</span>Both, one after the other</h3><div class="strip" id="qc3"></div><p class="cost"><b>Keeps both rulings.</b> Cost: two screens to read before the first thing to do, about 12 more seconds before the signal test.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-d">
+  <div class="qh"><span class="num">D</span><h3>Where does sign in go: before Hello, or after the first turn?</h3></div>
+  <p class="quote">"Make sure there's a login page, the login page is tied to the database."<cite>Round JJ, 27 September. Not built: the backend choice is still open, and building a real login now would mean a real secret in a public repository or a login that only looks connected.</cite></p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">1</span>Before Hello</h3><div class="strip" id="qd1"></div>
+    <p class="cost"><b>The record fills in the name</b>, so a person from the quiz is greeted by name with nothing typed. Cost: an ask before anything has been given, which is where Diane and James walked in the funnel.</p></div>
+   <div class="opt"><h3><span class="num">2</span>After the turn, on the Field</h3><div class="strip" id="qd2"></div>
+    <p class="cost"><b>Something is given first,</b> the way Duolingo gives the first lesson before the account. Cost: until then the first story sits only in this browser, and Safari clears that after seven days unused.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-e">
+  <div class="qh"><span class="num">E</span><h3>What does the box on Hello turn off?</h3></div>
+  <p class="quote">"Do you want to check this box so you don't have to see this again?"<cite>Round FH, 26 September.</cite></p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">1</span>The whole opening, one switch</h3><div class="strip" id="qe1"></div>
+    <p class="cost"><b>Ticked, it goes straight in now and every time after</b>, until the switch in Account says otherwise. Cost: no greeting by name on later launches.</p></div>
+   <div class="opt"><h3><span class="num">2</span>Only the greeting, every launch</h3><div class="strip" id="qe2"></div>
+    <p class="cost"><b>"Hello, Sofia." after every boot</b> until the box is ticked. Cost: one extra press every launch for everyone who never finds the box.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-f">
+  <div class="qh"><span class="num">F</span><h3>Is the name required?</h3></div>
+  <p class="quote">The one piece of the 19 September question "what may onboarding ask before it gives anything" still open, after round FH put first and last name on the check in.</p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">1</span>Optional</h3><p class="cost"><b>Next works with the fields empty.</b> Cost: no greeting and none of the three numbers the name sets, for anyone who skips it.</p></div>
+   <div class="opt"><h3><span class="num">2</span>Required</h3><p class="cost"><b>Next waits for a first name.</b> Cost: Diane and James, who both walk away from an ask placed before anything is given.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-g">
+  <div class="qh"><span class="num">G</span><h3>What does flow do on a first story, when there is nothing heavy enough to release?</h3></div>
+  <p class="quote">Measured on the build: on a first story the release says "Nothing is held above the line yet, so there is nothing to release."<cite>Round FN, 26 September.</cite></p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">1</span>A practice run, labelled</h3><div class="strip" id="qg1"></div>
+    <p class="cost"><b>As drawn.</b> The circle closes on day one. Changes nothing. Cost: a practice mode on the release, and Angela may read "practice" as "fake".</p></div>
+   <div class="opt"><h3><span class="num">2</span>flow waits</h3><div class="strip" id="qg2"></div>
+    <p class="cost"><b>The third quarter stays open</b> until something is heavy enough, usually after the second story. Cost: no closed circle on day one. Day two becomes the day the loop first closes.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-h">
+  <div class="qh"><span class="num">H</span><h3>Is a dimmed product a pop up?</h3></div>
+  <p class="quote">"No pop ups. One screen, not a sheet over the product."<cite>20 September. The turn happens inside the real screens, with everything but one target dimmed.</cite></p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">1</span>Dimmed, nothing covering it</h3><p class="cost"><b>As drawn.</b> The person touches the real places, which is the "navigating them around the software" you asked for in FK. Cost: a dimmed state on four screens.</p></div>
+   <div class="opt"><h3><span class="num">2</span>Full screen copies of each station</h3><p class="cost"><b>Your 20 September rule to the letter.</b> Cost: the person never touches the real places until the opening ends.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-i">
+  <div class="qh"><span class="num">I</span><h3>A few more questions after the signal test? Open, and yours</h3></div>
+  <p class="quote">"Maybe we can ask them a few more questions that kind of turn on, like not turn on, but activates the expression, activates certain aspects of the diagnostic. I don't know, maybe we don't do that."<cite>Round FK, 26 September.</cite></p>
+  <div class="pair three">
+   <div class="opt"><h3><span class="num">1</span>None</h3><p class="cost"><b>The name stays the only question,</b> and it already sets three real numbers.</p></div>
+   <div class="opt"><h3><span class="num">2</span>One law, asked three ways</h3><p class="cost"><b>Three questions,</b> the fewest the engine can read a spread from, so one spoke of the wheel is real on day one. Cost: about 40 seconds of questionnaire in the opening.</p></div>
+   <div class="opt"><h3><span class="num">3</span>A few that change nothing</h3><p class="cost"><b>Raises starts:</b> Headspace roughly doubled course starts this way. Cost: a question that pretends to tailor the product is a claim the instrument cannot back.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-j">
+  <div class="qh"><span class="num">J</span><h3>Does a station line say what to do, or also what it is for?</h3></div>
+  <p class="quote">20 September: "At no point are we talking about results or purpose." 26 September: "Highest purpose of the product results."<cite>Both yours. The opening screen half was settled on 27 September (it says what the product does). Whether the 20 September rule still binds the four station lines was not.</cite></p>
+  <div class="tw"><table>
+   <thead><tr><th>Station</th><th>1. What to do, as drawn</th><th>2. Plus what it is for, one more line</th></tr></thead>
+   <tbody>
+    <tr><td><b>discover</b></td><td>Write one thing from this week that is still on you.</td><td>It finds where that sits in your body.</td></tr>
+    <tr><td><b>play</b></td><td>Your words landed here. Open one.</td><td>Each mark is one thing your words set off.</td></tr>
+    <tr><td><b>flow</b></td><td>Read each line in your head as it comes.</td><td>Each line takes a little of the weight off.</td></tr>
+    <tr><td><b>embody</b></td><td>Pick when you will come back.</td><td>Doing it at the same time each day is what makes it stick.</td></tr>
+   </tbody></table></div>
+  <p class="cost">Column 1 names an action and lets the screen show the result, which may settle this by showing. Column 2 is written to the ten year old rule and makes no health claim.</p>
+ </div>
+
+ <div class="q" id="q-k">
+  <div class="qh"><span class="num">K</span><h3>Is "the starting square" Frames?</h3></div>
+  <p class="quote">"If we can get that lined up with the start, the starting square, that'd be cool."<cite>Round FH. Round FA confirmed "the square" is Frames, the nested square view of the Field.</cite></p>
+  <div class="pair">
+   <div class="opt"><h3><span class="num">1</span>Land on Frames</h3><div class="strip" id="qk1"></div><p class="cost"><b>The first landing is the Field drawn as nested squares.</b> Cost: the Frames arrival animation is not ported yet.</p></div>
+   <div class="opt"><h3><span class="num">2</span>Land on the Wheel, as shipped</h3><div class="strip" id="qk2"></div><p class="cost"><b>"Starting square" read as square one.</b> Costs nothing to build, and misses you if you meant the square.</p></div>
+  </div>
+ </div>
+
+ <div class="q" id="q-l">
+  <div class="qh"><span class="num">L</span><h3>One line each, all still open</h3></div>
+  <div class="others">
+   <p><b>L1. Four doors, or one front door, for a person who skips the opening?</b> From 19 September, question 8. Today all four ("Write what happened", "Read nine sentences", "Go year by year", "Say who you are becoming") carry equal weight. One front door means Write what happened at full width; four equal means the choice lands at the moment of least context.</p>
+   <p><b>L2. Keep the two dots from the signal test on the record?</b> Kept, a later run can show whether the shape moved. Not kept, the signal test has no memory.</p>
+   <p><b>L3. Does Root energetics open on the first landing?</b> You said in EZ, "I want that one to start closed". Open once means the person lands on three numbers from their own name.</p>
+   <p><b>L4. Say that the fourteen people in the profile picker are examples?</b> It reads "Custom" above "Sofia, 41, somatic practitioner" and thirteen more, and a stranger reads them as other people's data. One word, "Examples", or leave it.</p>
+   <p><b>L5. Your loop words and the ten year old rule.</b> "embody" and "flow" are not words a ten year old uses. They are yours and ruled, so they stay unless you say otherwise.</p>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">What to measure, so the next round can tell if it worked</span><h2>Kept on the record as dated flags, nothing sent</h2></div>
+ <div class="others">
+  <p><b>1.</b> Time on the mirror screen, and Leave from it. The one new reading screen, so the one new place to lose people.</p>
+  <p><b>2.</b> Time from the first screen to the first lit word in discover.</p>
+  <p><b>3.</b> Whether a first story was committed, and how long it was.</p>
+  <p><b>4.</b> Whether a mark was opened in play.</p>
+  <p><b>5.</b> Whether the practice run in flow was finished, and where it was left.</p>
+  <p><b>6.</b> Whether a when was set in embody, and which chip or their own words.</p>
+  <p><b>7.</b> Came back on day two within an hour of the chosen when. The number the whole turn exists to move.</p>
+  <p><b>8.</b> Leave, by frame, and how often the box on Hello is ticked.</p>
+  <p>Then five real strangers at phone width, watched. Five people find about 85 percent of what is wrong.</p>
+ </div>
+ <p class="cost"><b>The grade.</b> Today, for a stranger, measured on 26 September: D. The 26 September storyboard: B plus, judgement. This one: B plus, judgement. The ten year old pass raises it and the new reading screen before the first action costs about 12 seconds and pulls it back by the same amount. A minus once the five defects above are fixed and question A is answered.</p>
+</section>
+
+<section>
+ <div class="sec-h"><span class="eye">What this is built from</span><h2>Sources inside the repository</h2></div>
+ <div class="src">
+  <div><b>proto/firstrun/storyboard.html and DESIGN-firstrun.md, section 0.</b> The 26 September storyboard, the ring, Hello, the signal test and the one turn. The starting point, kept where you confirmed it.</div>
+  <div><b>RESEARCH-firstrun.md.</b> The six walks and the outside research: NN/g on tours, Duolingo, Headspace, WHOOP and Oura, the head start study.</div>
+  <div><b>TASKS.md rounds AN, FH, FI, FK, FN, IF and JJ.</b> Your rulings and the open questions, quoted where used.</div>
+  <div><b>reviews/QUESTIONS-onboarding.md.</b> The twelve questions of 19 September, backlog item D1.</div>
+  <div><b>DECISIONS.md, "The loop's words, and the opening" and "Character, the masks, Release, and the opening screen".</b> Your dictated opening and its open last four words.</div>
+  <div><b>atuned_src/ui/onboard.js.</b> The shipped welcome, off by default, and its figure.</div>
+  <div><b>engine.js, run 27 September.</b> The discover story, parsed: 12 patterns, four lit words.</div>
+ </div>
+</section>
+
+<footer>Prototype storyboard, 27 September 2026. Drawn in the product's Dark theme. Not the shipped app. The companion is proto/tutorial-storyboard/index.html.</footer>
+</div>
+
+<script>
+(function(){
+ var SEATS=['#D6524C','#D8924E','#DABF6A','#5FD5A6','#5EBBDB','#7D93E0','#A77EDB'];
+ function P(cx,cy,r,a){a=(a-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+ function arc(cx,cy,r,a0,a1){var s=P(cx,cy,r,a0),e=P(cx,cy,r,a1),lg=(a1-a0)>180?1:0;
+  return 'M'+s[0].toFixed(2)+' '+s[1].toFixed(2)+'A'+r+' '+r+' 0 '+lg+' 1 '+e[0].toFixed(2)+' '+e[1].toFixed(2);}
+ /* the boot's seven colour ring, with the centre ball he asked to keep */
+ function sevenRing(size,sw,ball){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
+  for(var i=0;i<7;i++)h+='<path d="'+arc(50,50,40,i*360/7+4,(i+1)*360/7-4)+'" fill="none" stroke="'+SEATS[i]+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  return h+(ball===false?'':'<circle cx="50" cy="50" r="9" fill="none" stroke="#7EB8D4" stroke-width="1.2" opacity=".7"/>')+'</svg>';}
+ /* the figure the shipped welcome draws: seven seats up a spine, a halo */
+ function figure(w){
+  var ys=[160,140,120,100,80,60,40],h='<svg width="'+w+'" height="'+(w*0.89).toFixed(0)+'" viewBox="0 0 200 178" aria-hidden="true">'
+   +'<ellipse cx="100" cy="21" rx="13" ry="4.4" fill="none" stroke="#DABF6A" stroke-width="1.4"/>'
+   +'<line x1="100" y1="160" x2="100" y2="40" stroke="#2C303C" stroke-width="2"/>';
+  ys.forEach(function(y,i){h+='<circle cx="100" cy="'+y+'" r="5.2" fill="'+SEATS[i]+'"/>';});
+  return h+'</svg>';}
+ function progRing(size,frac){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#2C303C" stroke-width="3"/>';
+  if(frac>0)h+='<path d="'+arc(50,50,40,0,360*frac)+'" fill="none" stroke="#7EB8D4" stroke-width="3" stroke-linecap="round"/>';
+  return h+'</svg>';}
+ function pad(size,marks,prog){
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="#0A0B10" stroke="#2C303C"/>'
+   +'<path d="M50 6V94M6 50H94" stroke="#2C303C" stroke-width=".8"/>';
+  if(prog)h+='<path d="'+arc(50,50,44,0,360*prog)+'" fill="none" stroke="#7EB8D4" stroke-width="2" stroke-linecap="round"/>';
+  if(marks.length===2)h+='<line x1="'+marks[0][0]+'" y1="'+marks[0][1]+'" x2="'+marks[1][0]+'" y2="'+marks[1][1]+'" stroke="#94908A" stroke-width=".8" stroke-dasharray="2 2"/>';
+  marks.forEach(function(m){h+='<circle cx="'+m[0]+'" cy="'+m[1]+'" r="4.4" fill="'+(m[2]||'#7EB8D4')+'"/>';
+   if(m[3])h+='<text x="'+(m[0]+7)+'" y="'+(m[1]+3)+'" font-size="7" fill="#B4B0A8" font-family="system-ui,sans-serif">'+m[3]+'</text>';});
+  return h+'</svg>';}
+ /* the loop, his four words, and it closes. Never a list. */
+ var ST=['discover','play','flow','embody'];
+ function loop(size,done,labels){
+  var sw=labels?2.4:5,h='<svg width="'+size+'" height="'+size+'" viewBox="'+(labels?'-18 -10 136 120':'4 4 92 92')+'" aria-hidden="true">'
+   +'<circle cx="50" cy="50" r="36" fill="none" stroke="#2C303C" stroke-width="'+sw+'"/>';
+  if(done>=4)h+='<circle cx="50" cy="50" r="36" fill="none" stroke="#7EB8D4" stroke-width="'+sw+'"/>';
+  else if(done>0)h+='<path d="'+arc(50,50,36,0,90*done)+'" fill="none" stroke="#7EB8D4" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  for(var i=0;i<4;i++){var p=P(50,50,36,i*90),on=i<done,cur=i===done;
+   h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(labels?7:9)+'" fill="#0C0D12" stroke="'+(on||cur?'#7EB8D4':'#2C303C')+'" stroke-width="'+(labels?1.6:3)+'"/>';
+   if(on)h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(labels?3:4)+'" fill="#7EB8D4"/>';
+   if(labels){var tx=p[0]+(i===1?11:i===3?-11:0),ty=p[1]+(i===0?-11:i===2?16:3);
+    h+='<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" font-size="7.5" text-anchor="'+(i===1?'start':i===3?'end':'middle')+'" fill="'+(cur||done>=4?'#EFEDE8':'#94908A')+'" font-family="system-ui,sans-serif">'+ST[i]+'</text>';}}
+  return h+'</svg>';}
+ /* a small wheel. Marks sit on their own seat's arc: throat, sacral, solar,
+    which is where the engine put this story on 27 September. */
+ function mark(seat,k,n){var a0=seat*360/7,a=a0+10+k*((360/7-20)/Math.max(1,n-1)),p=P(50,50,34-((k%2)*7),a);return p;}
+ function wheel(size,opts){opts=opts||{};
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">';
+  for(var j=0;j<7;j++)h+='<path d="'+arc(50,50,43,j*360/7+2,(j+1)*360/7-2)+'" fill="none" stroke="'+SEATS[j]+'" stroke-width="3.2" opacity="'+(opts.marks?.35:.9)+'"/>';
+  for(var k=0;k<3;k++)h+='<circle cx="50" cy="50" r="'+(32-k*9)+'" fill="none" stroke="#2C303C" stroke-width=".8"/>';
+  if(opts.marks){[[4,4],[1,4],[2,4]].forEach(function(s){for(var q=0;q<s[1];q++){var p=mark(s[0],q,s[1]),hot=opts.pick&&s[0]===4&&q===0;
+   h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(hot?4:2.6)+'" fill="'+SEATS[s[0]]+'" opacity="'+(hot?1:opts.faint?.45:.9)+'"'+(hot?' stroke="#EFEDE8" stroke-width=".8"':'')+'/>';}});}
+  if(opts.closed)h+='<circle cx="50" cy="50" r="7" fill="none" stroke="#7EB8D4" stroke-width="1.6"/><circle cx="50" cy="50" r="2.4" fill="#7EB8D4"/>';
+  else h+='<circle cx="50" cy="50" r="5" fill="none" stroke="#7EB8D4"/>';
+  return h+'</svg>';}
+ function frames(){var st='<svg width="118" height="96" viewBox="0 0 118 96" aria-hidden="true">';
+  for(var i=0;i<7;i++){var m=i*6.5;st+='<rect x="'+m+'" y="'+(m*0.8)+'" width="'+(118-2*m)+'" height="'+(96-1.6*m)+'" rx="'+(6-i*0.6)+'" fill="none" stroke="'+SEATS[6-i]+'" stroke-width="1.1" opacity=".85"/>';}
+  return st+'<circle cx="59" cy="48" r="4" fill="none" stroke="#7EB8D4"/></svg>';}
+ function station(done,word,line,body){
+  return '<div class="st"><div class="nb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="leave">Leave</span>'
+   +'<div class="dock">'+loop(48,done,false)+'<div><div class="w">'+word+'</div><div class="l">'+line+'</div></div></div>'+body+'</div>';}
+ var dimRows='<div class="dimmed" style="display:flex;flex-direction:column;gap:6px"><div class="blk" style="width:70%"></div><div class="blk" style="width:88%"></div><div class="blk" style="width:55%"></div></div>';
+ var MIRROR='This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life, <u>pain and disease free</u>.';
+ var HL=function(w,c,bg){return '<s style="background:'+bg+';color:'+c+'">'+w+'</s>';};
+ var STORY='My sister called again and I felt the old '+HL('tightness','#9ED8EC','rgba(94,187,219,.25)')+' in my chest. The same guilt, the same '+HL('shame','#F0B37A','rgba(216,146,78,.28)')+'. I '+HL('said yes when','#9ED8EC','rgba(94,187,219,.25)')+' I meant no and then I was '+HL('angry','#EBD58E','rgba(218,191,106,.25)')+' at myself all night.';
+
+ document.getElementById('hero').innerHTML=(function(){
+  return '<div style="position:relative;width:280px;height:280px;max-width:100%">'
+   +'<div style="position:absolute;inset:0">'+sevenRing(280,2.6,false)+'</div>'
+   +'<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-52%)">'+figure(120)+'</div></div>';})();
+
+ var F=[
+  {id:'S0',nm:'Boot',tag:'shipped',
+   ph:'<div style="display:flex;flex-direction:column;align-items:center;gap:12px">'+sevenRing(124,4.4)+'<div class="big" style="letter-spacing:.14em">Atüned</div><div class="tiny">Powered by Source OS</div></div>',
+   p:'Unchanged. The ring with the tune you liked in FK. On a first run it lifts onto the mirror, and the figure stands up out of the ring.',
+   can:'1: any press skips it',time:'5.4 s, measured 26 September',out:'never skipped for them, by ruling'},
+  {id:'S1',nm:'The mirror',tag:'new',q:['A','B','C'],
+   ph:'<span class="leave">Leave</span>'+figure(116)+'<div class="mirror">'+MIRROR+'</div><span class="btn">Come in</span>',
+   copy:['This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life, pain and disease free.'],
+   p:'Your dictated opening, ruled 27 September, word for word and not edited. The figure is the one the shipped welcome draws: the avatar at rest, the first time a person sees it. "Come in" is the shipped button.',
+   can:'2: Come in, Leave',time:'about 12 s to read',out:'Leave, to the Field'},
+  {id:'S2',nm:'Hello',tag:'kept, one line plainer',q:['D','E','F'],
+   ph:sevenRing(46,5)+'<div class="big">Hello, Sofia.</div><div class="fld"><label>First name</label><i>Sofia</i></div><div class="fld"><label>Last name</label><i>Alarcon</i></div>'
+     +'<div class="small">Your name sets three of your numbers. It stays on this device.</div><div class="ck"><b></b>Go straight in from now on</div><span class="btn">Next</span>',
+   copy:['Hello, Sofia.','Your name sets three of your numbers. It stays on this device.','Go straight in from now on'],was:['Held in this browser.'],
+   p:'As you confirmed it in FK, "Hello Sofia\'s good". The greeting fills in as the name is typed. Sign in, when it exists, sits next to this screen.',
+   can:'4: two fields, the box, Next',time:'about 8 s',out:'box ticked: straight to the Field'},
+  {id:'S3',nm:'The settle',tag:'plainer',
+   ph:'<span class="leave">Leave</span>'+progRing(96,0.35)+'<div class="rows"><div>A word will show up ten times. Say it in your head each time.</div><div>Keep some attention on your body.</div><div>Then move the dot to show what moved.</div></div>',
+   copy:['A word will show up ten times. Say it in your head each time.','Keep some attention on your body.','Then move the dot to show what moved.'],
+   was:['A word arrives ten times. Think it as it lands.','Move the marker to show what moved.'],
+   p:'The only reading in the signal test, and it is read while the ring closes, so it costs no extra time.',
+   can:'1: Leave',time:'8 s',out:'Leave, to the Field'},
+  {id:'S4',nm:'Yes',tag:'kept',
+   ph:'<span class="leave">Leave</span><div class="word">yes</div>'+pad(140,[[62,40]],0.6)+'<div class="small">Move the dot.</div>',
+   copy:['Move the dot.'],was:['Move the marker.'],
+   p:'Ten beats. The person moves the dot to where the word landed. No list of feelings is offered, so nothing is suggested to them.',
+   can:'2: the dot, Leave',time:'10 beats',out:'Leave'},
+  {id:'S5',nm:'No',tag:'kept',
+   ph:'<span class="leave">Leave</span><div class="word">no</div>'+pad(140,[[36,66]],0.4)+'<div class="small">Move the dot.</div>',
+   copy:['Move the dot.'],
+   p:'The same with "no", after a short hold. The two words are the whole test: the difference between them is what the body shows.',
+   can:'2: the dot, Leave',time:'10 beats',out:'Leave'},
+  {id:'S6',nm:'The two dots',tag:'kept',q:['L'],
+   ph:'<span class="leave">Leave</span><div class="big" style="font-size:15px">A thought moved your body.<br>Now write one down.</div>'+pad(140,[[62,40,'#7EB8D4','yes'],[36,66,'#A77EDB','no']])+'<span class="btn">Next</span>',
+   copy:['A thought moved your body. Now write one down.'],
+   p:'Both dots, no number. Already plain enough for a ten year old, so unchanged. Next goes straight into discover.',
+   can:'2: Next, Leave',time:'about 4 s',out:'Leave'},
+  {id:'S7',nm:'discover',tag:'real output',q:['H','J'],
+   ph:station(0,'discover','Write one thing from this week that is still on you.',
+     '<div class="card lit"><div class="ta">'+STORY+'</div><div class="row"><span class="tiny dim">35 words</span><span class="btn pulse">Commit 12</span></div></div>'
+     +'<div class="dimmed" style="display:flex;flex-direction:column;gap:6px"><div class="blk" style="width:40%"></div><div class="row"><div class="blk" style="width:30%"></div><div class="blk" style="width:30%"></div><div class="blk" style="width:30%"></div></div></div>'),
+   copy:['discover','Write one thing from this week that is still on you.'],
+   p:'The real story page, all but the box and Commit dimmed. The words light up as they are typed, which is built. Run through the engine on 27 September, this story lights tightness and said yes when at the throat, shame at the sacral, angry at the solar plexus, and finds 12 patterns.',
+   can:'2: write, Commit. And Leave',time:'45 to 90 s',out:'Commit closes the first quarter'},
+  {id:'S8',nm:'discover, committed',tag:'plainer',
+   ph:station(1,'discover','Write one thing from this week that is still on you.',
+     '<div class="card"><div class="ta dim" style="opacity:.6">What happened. Write it the way you would say it out loud.</div></div>'
+     +'<div class="card lit"><div class="note">12 found. They show faint until more of your writing makes them heavier.</div><div class="chips"><span>Self-Silencing</span><span>People Pleasing</span><span>Need For Approval</span><span>Anger</span></div></div>'+dimRows),
+   copy:['12 found. They show faint until more of your writing makes them heavier.'],
+   was:['12 found, all under the line for now. What you write next adds to them.'],
+   p:'Today this screen says "nothing reaches the line yet" and shows a zero. Instead: what was found, and what makes it grow. The four chips are four of the engine\'s twelve for this story. 12 is a count of what was found, never set against a total.',
+   can:'none, the ring turns on its own',time:'about 2 s',out:'into play'},
+  {id:'S9',nm:'play',tag:'new',q:['H','J'],
+   ph:station(1,'play','Your words landed here. Open one.',
+     '<div style="display:flex;justify-content:center;padding:4px 0">'+wheel(156,{marks:1,faint:1,pick:1})+'</div>'
+     +'<div class="card lit"><div class="note"><b style="color:#EFEDE8;font-weight:500">Self-Silencing</b>, at the throat. Faint for now.</div></div>'+dimRows),
+   copy:['play','Your words landed here. Open one.','Self-Silencing, at the throat. Faint for now.'],
+   p:'The real Field, dimmed. The twelve marks sit on the throat, sacral and solar arcs, faint because one story is not heavy enough to show in full. Opening a mark is built.',
+   can:'the lit marks. And Leave',time:'about 15 s',out:'opening one closes the second quarter'},
+  {id:'S10',nm:'flow',tag:'plainer',q:['G','J'],
+   ph:station(2,'flow','Read each line in your head as it comes.',
+     '<div class="card lit" style="gap:8px"><div class="prac">Practice. This one changes nothing.</div><div class="note">Self-Silencing, at the throat</div><div class="tiny dim">Left, inward</div>'
+     +'<div class="blk" style="width:90%;opacity:.35"></div><div class="blk" style="width:96%;background:#7EB8D4;opacity:.8"></div><div class="blk" style="width:80%;opacity:.35"></div></div>'+dimRows),
+   copy:['flow','Read each line in your head as it comes.','Practice. This one changes nothing.'],
+   was:['Run one release over it. Follow each line in thought.','Practice. This one writes nothing to your field.'],
+   p:'The real release over the mark they opened. On a first story the release refuses today, so it runs as practice and says so on the release itself. "Left, inward" is the shipped side label. Question G is whether it waits instead.',
+   can:'read the lines. And Leave',time:'about 30 s',out:'the last line closes the third quarter'},
+  {id:'S11',nm:'embody',tag:'plainer',q:['J'],
+   ph:station(3,'embody','Pick when you will come back.',
+     '<div class="dimmed card"><div class="blk" style="width:50%"></div><div class="blk" style="width:80%"></div></div>'
+     +'<div class="card lit"><div class="note">When</div><div class="chips"><span class="on">after I put the kettle on</span><span>before the first run of the day</span><span>when I close the laptop</span><span>my own words</span></div>'
+     +'<div class="note">Where</div><div class="chips"><span>the chair by the window</span></div><div class="row"><span></span><span class="btn pulse">Save</span></div></div>'),
+   copy:['embody','Pick when you will come back.'],was:['Pick when you will come back to it.'],
+   p:'The Ritual\'s When and Where rows, which are built. "after I put the kettle on" is the row\'s own shipped example. Day two is the ritual, by your ruling in AN10, and this is what brings day two.',
+   can:'a when, Save. And Leave',time:'about 15 s',out:'Save closes the circle'},
+  {id:'S12',nm:'The Field',tag:'plainer',q:['K','L'],
+   ph:station(4,'','','<div style="display:flex;justify-content:center;padding:8px 0">'+wheel(156,{marks:1,faint:1,closed:1})+'</div><div class="note" style="text-align:center">This wheel is you. The marks came from what you wrote.</div>'+dimRows),
+   copy:['This wheel is you. The marks came from what you wrote.'],
+   was:['The wheel is your field. Left is what you are made of. Right is what it reads.'],
+   p:'The ring sweeps round and lands as the wheel\'s centre ball, closed. The line shows once, then clears. The old line pointed at a left and a right side that a phone does not have.',
+   can:'the Field',time:'',out:'onboarding ends; the tutorial is its own storyboard'}
+ ];
+ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+ document.getElementById('frames').innerHTML=F.map(function(f){
+  return '<div class="fr"><div class="phone">'+f.ph+'</div><div class="cap"><span class="id">'+f.id+'</span>'
+   +'<h3>'+f.nm+'<span class="tag'+(/new|plainer|real/.test(f.tag)?' new':'')+'">'+f.tag+'</span></h3>'
+   +(f.copy?'<div class="copy">'+f.copy.map(function(c){return '<span>'+esc(c)+'</span>';}).join('')
+     +(f.was||[]).map(function(c){return '<span class="was">'+esc(c)+'</span>';}).join('')+'</div>':'')
+   +'<p>'+f.p+'</p>'
+   +'<dl><dt>can do</dt><dd>'+f.can+'</dd>'+(f.time?'<dt>time</dt><dd>'+f.time+'</dd>':'')+'<dt>out</dt><dd>'+f.out+'</dd></dl>'
+   +(f.q?'<div class="qs">'+f.q.map(function(q){return '<a href="#q-'+q.toLowerCase()+'">Question '+q+'</a>';}).join('')+'</div>':'')
+   +'</div></div>';}).join('');
+
+ var TEN=[['S2','Held in this browser.','It stays on this device.'],
+  ['S3','A word arrives ten times. Think it as it lands.','A word will show up ten times. Say it in your head each time.'],
+  ['S3, S4','Move the marker to show what moved.','Then move the dot to show what moved.'],
+  ['S8','12 found, all under the line for now. What you write next adds to them.','12 found. They show faint until more of your writing makes them heavier.'],
+  ['S10','Run one release over it. Follow each line in thought.','Read each line in your head as it comes.'],
+  ['S10','Practice. This one writes nothing to your field.','Practice. This one changes nothing.'],
+  ['S11','Pick when you will come back to it.','Pick when you will come back.'],
+  ['S12','The wheel is your field. Left is what you are made of. Right is what it reads.','This wheel is you. The marks came from what you wrote.']];
+ document.getElementById('tenrows').innerHTML=TEN.map(function(r){return '<tr><td><b>'+r[0]+'</b></td><td>'+esc(r[1])+'</td><td><b>'+esc(r[2])+'</b></td></tr>';}).join('');
+
+ function mini(b,s){return '<div class="mini"><b>'+b+'</b>'+(s||'')+'</div>';}
+ var ar='<span class="arr">to</span>';
+ function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
+ var M1='This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life';
+ set('qa1','<div class="mini wide">'+figure(60)+M1+', <u>pain and disease free</u>.</div>');
+ set('qa2','<div class="mini wide">'+figure(60)+M1+'.</div>');
+ set('qc1',mini(figure(54),'This is a mirror. We hold up every story...'));
+ set('qc2',mini(figure(54),'This is you, and it is okay. No judgment. Nothing here grades you.'));
+ set('qc3',mini(figure(40),'This is you, and it is okay.')+ar+mini('This is a mirror.','We hold up every story...'));
+ set('qd1',mini('Boot')+ar+mini('Sign in','the record fills the name')+ar+mini('Hello, Sofia.','already filled'));
+ set('qd2',mini('Hello')+ar+mini(loop(34,4,false),'one turn')+ar+mini('Field','Keep this. Sign in.'));
+ set('qe1',mini('Boot')+ar+mini('Field','every later launch'));
+ set('qe2',mini('Boot')+ar+mini('Hello, Sofia.','box, Next')+ar+mini('Field'));
+ set('qg1',mini('flow','practice, changes nothing')+ar+mini(loop(34,3,false),'embody')+ar+mini(loop(34,4,false),'closed, day one'));
+ set('qg2',mini(loop(34,2,false),'flow waits')+ar+mini('embody')+ar+mini(loop(34,3,false),'closes after story two'));
+ set('qk1','<div class="mini" style="width:150px">'+frames()+'</div>');
+ set('qk2','<div class="mini" style="width:150px">'+wheel(110,{marks:1,faint:1,closed:1})+'</div>');
+})();
+</script>
