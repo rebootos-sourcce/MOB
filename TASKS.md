@@ -23212,3 +23212,55 @@ yet. This repository's own `atuned_src/ui/account.js` sign in shell
 still refuses honestly ("Accounts are not live yet") because it has
 never been pointed at this server, which is the one wire not yet run
 between the two repositories.
+
+## KC. A masculine/feminine gradient overlay for the Body map, and the menu reorganized around discover, play, flow
+
+His words, verbatim: "a note, like a graphic art note for the for the
+map. I want to have a gradient. Masculine and energy, uh, masculine
+and feminine energy inside of the body. And have the masculine and
+feminine measured there. As well, so we can see the gradient. That'll
+also be one of the overlay options. To see how much you're leaning
+into your masculine and feminine, and then see where all the chakra
+weights are. Um, that gives you a really powerful map, right? So you
+can see where you're underexpressed or overexpressed. Very powerful.
+Keep going. Add that to the queue.
+
+Menu navigation tweaks. Let's organize our menus by discover, play,
+flow as the core top navigation. And the sub navigation will be
+discover will be avatar and summary. And your journal imprints. Play
+is all the tools. Flow is the knowledge base and ritual. The
+achievements and awards are what you get as you kind of go through the
+experience. And then our third navigation will always be our
+overlays. And then our secondary navigation, or sorry, our kind of
+fourth tier navigation will always be a left or right side, um,
+collapsed on the left, and then our information panel on the right,
+tools on the left, information on the right. That's a pretty good
+organization, I think. And then a collapsible search field in the
+upper right hand side, right next to name where the help button used
+to be. We'll add this to the backlog. If it looks like simple wins, do
+it. We're making great progress now."
+
+Two separate pieces, neither dispatched yet:
+
+- **The masculine/feminine gradient is a fourth overlay for the Body
+  map**, alongside the fetter/saboteur/complex/hyper-complex/mass/pain
+  overlay already queued at round JZ and the Kundalini rise. It reads
+  as: measure how much of the person's charge sits on the masculine
+  pole against the feminine pole (`C3_POLE` in
+  `engine/data/cards.js` already carries right/masculine/sympathetic
+  against left/feminine/parasympathetic), draw it as a gradient across
+  the figure, and show the same seven chakra weights alongside it, so
+  over- and under-expression both read at a glance. Folded into the
+  Body page rebuild queued at JZ rather than a separate piece, since it
+  is one more overlay on the same map.
+- **The navigation reorganization** he explicitly marked backlog, not a
+  build order: top level discover/play/flow (discover holds Avatar,
+  Summary, Journal, Imprints; play holds the tools; flow holds
+  Knowledge and Ritual; achievements and awards are earned through the
+  experience rather than sitting in this structure as their own tab), a
+  third tier that is always the overlays, a fourth tier split left
+  (tools, collapsed) and right (information), and a collapsible search
+  field in the header where the help icon used to sit, which round JZ
+  already asked to move under a user profile. His own instruction: only
+  build the pieces of this that turn out to be simple wins, the rest
+  stays backlog.
