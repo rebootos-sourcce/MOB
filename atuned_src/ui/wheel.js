@@ -520,7 +520,35 @@ function solCore(r,base){
    g.fillText('of 100', CX, CY+big*0.30+sm*1.75);}
   g.restore();}
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
+ /* THE TWO POLES INSIDE THE CIRCLE, on a phone. GF in TASKS.md, his words:
+    "The heaven and hell ... shows up in the very bottom of the square. I want
+    you to move that inside of the circle." The halo over the figure and the
+    pitchfork under it, inside the sphere, in the compass's colours and by its
+    rule for which is lit, the same pair frPoles in ui/rings.js puts in the
+    core of Frames and Dial. They scale with the core, so a pinch is what
+    brings them up to reading size, which is his next sentence: "when I zoom
+    in I can actually see the heaven and hell, like where I'm heading
+    towards." Pushed after the core, so the hit test, which reads HIT from
+    the end, finds either pole before the core it sits in. */
+ if(!r.unread&&phoneW()){
+  var pgs=cr0*0.42, pup=r.CQ>=50, bigP=Math.max(15,Math.min(cr0*0.52,64));
+  var ofL=bigP*0.26>=11?bigP*0.26*2.2:0;
+  [['up',GL_HALO,CY-Math.max(cr0*0.62,bigP*0.43+pgs*0.45),GOLD,pup],
+   ['dn',GL_FORK,CY+Math.max(cr0*0.60,bigP*0.30+ofL+pgs*0.55),PAL.Root,!pup]].forEach(function(p){
+   poleGlyph(p[1],CX,p[2],pgs,hx(p[3]),p[4]?0.95:0.35);
+   HIT.push({k:'pole',end:p[0],x:CX,y:p[2],rad:pgs*0.7});});}
  return cr0;}
+/* a 24 unit glyph stroked at a size and a centre, ring not fill. coneGlyph in
+   ui/cone.js does this at one fixed size for the compass; the core needs the
+   size to follow the sphere, and it loads first. */
+function poleGlyph(p,x,y,size,c,a){
+ if(!p||a<0.06||size<2)return;
+ var sc=size/24;
+ g.save(); g.translate(x-size/2,y-size/2); g.scale(sc,sc);
+ g.strokeStyle=rgba(c,a); g.lineWidth=Math.max(1.2,size*0.075)/sc;
+ g.lineJoin='round'; g.lineCap='round';
+ try{g.stroke(new Path2D(p));}catch(e){}
+ g.restore();}
 
 /* SIX GATES at the core. three higher above, three lower below, each a
    ring icon on a short stem. The ring closes by the share of the story that

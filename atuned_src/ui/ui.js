@@ -30,6 +30,9 @@ function describe(h,r,still){
      CQ's three terms until 25 September. CQ is the 21 laws summed now. */
   +'<span class="tt-q">'+(r.complete?'every law answered':tierSay(r))+'</span>'
   +'<hr><b>Click for the breakdown.</b>';
+ /* the compass's own two words for its two ends, cone.js, and nothing new */
+ if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
+  +'<hr><b>Click for detail.</b>';
  if(h.k==='gate'){var v=h.v;
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
    +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
@@ -117,7 +120,19 @@ let DRAG=null, PAN=null;
    gesture reaches the page so the wheel stops being a dead zone.
    This comes out when undo exists and not before. */
 const COARSE=(typeof matchMedia==='function')&&matchMedia('(pointer:coarse)').matches;
+/* A FINGER'S PRESS WAITS FOR ITS RELEASE. GF in TASKS.md, his words: "I want
+   to be able to pinch zoom, and I can't, and the second that I put my fingers
+   on it, the overlay dominates." Reproduced at 390 with a real two finger
+   touch: the first finger's pointerdown ran hitPress on the spot, so a pinch
+   that began on a mark opened that mark's drill before the second finger had
+   landed. A tap is a press and a release in one place, so on a finger the
+   press is armed here and fired on pointerup, and dropped by a second finger
+   (fieldPinch below) or by the browser taking the gesture for a scroll
+   (pointercancel). A mouse still acts on the press, as it always has. */
+let TAP=null;
 cv.addEventListener('pointerdown',function(e){
+ /* a second finger is a pinch, never a press on whatever it landed on */
+ if(fieldFingers()>1){fieldPressDrop();return;}
  var L=loc(e),x=L[0],y=L[1],h=hitTest(x,y);
  /* empty canvas, or the core, is grab space: the frame moves, nothing is set */
  if(!h||h.k==='core'){
@@ -136,6 +151,7 @@ cv.addEventListener('pointerdown',function(e){
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   try{cv.setPointerCapture(e.pointerId);}catch(err){}
   return;}
+ if(e.pointerType==='touch'){TAP={h:h,e:{shiftKey:false},id:e.pointerId};return;}
  hitPress(h,e);});
 /* WHAT A PRESS ON A MARK DOES, ONE COPY FOR EVERY PICTURE OF THE FIELD.
 
@@ -198,6 +214,8 @@ function hitPress(h,e){
     opens the reading only if the pointer never moved. Opening it here as well
     meant the drill fired on press and the drag never happened. */
  if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
+ /* a pole drawn in the core on a phone, GF, is the door the strip's end was */
+ if(h.k==='pole'){S.pin=null;runPoleDrill(h.end);render();return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
  S.pin=same?null:o; runDrill(S.pin); render();}
@@ -249,19 +267,22 @@ addEventListener('keydown',function(e){
  if(k==='+'||k==='='){fieldZoomBy(1.25);return;}
  if(k==='-'||k==='_'){fieldZoomBy(1/1.25);return;}});
 const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in and the core opens as you go, drag to move the frame, F to come back.';
-cv.addEventListener('pointerup',function(){
+cv.addEventListener('pointerup',function(e){
  cv.style.cursor='';
+ if(TAP){var tp=TAP; TAP=null; if(tp.id===e.pointerId)hitPress(tp.h,tp.e); return;}
  if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
   /* a press on the core that never moved is still a click on the core */
   if(!moved&&wasCore){S.pin=null;runCoreDrill();render();}
   return;}
  if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
-cv.addEventListener('pointercancel',function(){PAN=null;DRAG=null;cv.style.cursor='';});
+cv.addEventListener('pointercancel',function(){PAN=null;DRAG=null;TAP=null;cv.style.cursor='';});
 /* double click puts the frame back, the same thing F does, because a person
    who has panned into a corner should not have to find a keyboard. */
 cv.addEventListener('dblclick',function(){S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
 cv.addEventListener('pointermove',function(e){
+ /* two fingers down is the pinch's, and fieldPinch moves the frame */
+ if(fieldFingers()>1)return;
  var L=loc(e),x=L[0],y=L[1];
  /* PAN. Left press and drag anywhere the wheel is not a target and the frame
     moves under the pointer. The scroll wheel already zoomed and F already
@@ -279,6 +300,12 @@ cv.addEventListener('pointermove',function(e){
   if(Math.abs(DRAG.y-y)>3)DRAG.moved=true;
   toYou();S.charge[DRAG.cf]=clamp(DRAG.s+d,0,10);
   syncCh();saveYou();render();return;}
+ /* A FINGER HAS NO HOVER. This readout is what a mouse sees resting over a
+    mark, and a finger moving on the glass put it up over the middle of the
+    picture: the overlay that "dominates" in GF, measured at 390 as a 158 by
+    147 panel reading "mask Ideological" on top of the core mid pinch. A tap
+    opens the mark's reading instead, on its release. */
+ if(e.pointerType==='touch')return;
  var h=hitTest(x,y),pr=$('probe');
  S.hover=h?(h.n||h.o||null):null;
  if(!h){pr.classList.remove('on');cv.style.cursor='crosshair';return;}
@@ -352,6 +379,8 @@ function frDescribe(h,r){
  var hitOf=function(e){var t=e.target&&e.target.closest?e.target.closest('[data-h]'):null;
   return t?(FR_HIT[+t.getAttribute('data-h')]||null):null;};
  fr.addEventListener('pointermove',function(e){
+  /* a finger has no hover, the wheel's own reason above */
+  if(e.pointerType==='touch')return;
   var h=hitOf(e),pr=$('probe'); if(!pr)return;
   var t=h?frDescribe(h,compute()):'';
   if(!t){pr.classList.remove('on');return;}
@@ -367,6 +396,82 @@ function frDescribe(h,r){
   if(h.k==='anchor')return;
   if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
   hitPress(h,e);});})();
+
+/* ============================================================
+   THE PINCH. GF in TASKS.md, 27 September, his words: "I want to be able to
+   pinch zoom, and I can't, and the second that I put my fingers on it, the
+   overlay dominates."
+
+   Reproduced before this existed, at 390 with isMobile and hasTouch and two
+   real touch points driven through the browser's own input pipeline, a
+   spread from 60 to 200 pixels on each picture:
+
+     Wheel    S.zoom 1 before and 1 after. Nothing anywhere listened for two
+              fingers: the zoom was wired to the mouse wheel and to keys and
+              to nothing else. touch-action pan-y on the canvas, which is
+              right, kept the browser's own zoom off it, so the gesture went
+              nowhere. Each finger was read as a mouse instead: the first
+              pressed whatever mark it landed on and opened its drill, and
+              moving put the hover readout over the core.
+     Frames   FZ.s 1 before and 1 after, and the page's visualViewport scale
+     Dial     went from 1 to 4.96. #frend had no touch-action, so the browser
+              took the pinch as a zoom of the whole page: the bar, the glass
+              bar and every panel grew with it and the picture's own zoom
+              never moved. That is the "I can pinch zoom here" in the same
+              message, and it is why the overlay dominated there too.
+
+   So both hosts take two fingers here, off the touch events, which are the
+   only events that say how many fingers are down and the only ones whose
+   default can still be refused once the browser has seen them. The distance
+   between the fingers scales the picture about their midpoint, the midpoint
+   moving pans it, and the wheel and the renditions each go through the zoom
+   they already had, setZoom in this file and fzAt in ui/rings.js, so the
+   ceilings, the layers a zoom brings in and the glass bar's circles all
+   answer to a pinch exactly as they answer to a scroll. One finger is left
+   alone entirely: it still scrolls the page, which is the lesson recorded at
+   COARSE above and the functional gate's "a finger reads the wheel".
+   ============================================================ */
+var FINGERS={}, PINCH=null, PINCH_END=0;
+/* fingers are counted in the capture phase at the window, so the count is
+   already right when a host's own pointerdown for the second finger runs */
+addEventListener('pointerdown',function(e){if(e.pointerType==='touch')FINGERS[e.pointerId]=1;},true);
+['pointerup','pointercancel'].forEach(function(t){
+ addEventListener(t,function(e){delete FINGERS[e.pointerId];},true);});
+function fieldFingers(){return Object.keys(FINGERS).length;}
+/* whatever one finger had started is not also a press, a pan or a drag */
+function fieldPressDrop(){TAP=null;PAN=null;DRAG=null;FZDRAG=null;
+ var pr=$('probe'); if(pr)pr.classList.remove('on');}
+function fieldPinch(host,wheel){
+ if(!host)return;
+ var two=function(e){var a=e.touches[0],b=e.touches[1],r=host.getBoundingClientRect();
+  return {d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),
+   x:(a.clientX+b.clientX)/2-r.left, y:(a.clientY+b.clientY)/2-r.top};};
+ host.addEventListener('touchstart',function(e){
+  if(S.tab!==TAB.FIELD||e.touches.length<2)return;
+  if(wheel===fviewOn())return;
+  PINCH=two(e); fieldPressDrop();
+  if(e.cancelable)e.preventDefault();},{passive:false});
+ host.addEventListener('touchmove',function(e){
+  if(!PINCH||e.touches.length<2)return;
+  /* refused while the browser still allows it, so no page zoom and no scroll
+     starts under the pinch. A browser that already committed to a scroll
+     makes this uncancelable, and the picture still follows the fingers. */
+  if(e.cancelable)e.preventDefault();
+  var n=two(e), k=PINCH.d>0?n.d/PINCH.d:1, dx=n.x-PINCH.x, dy=n.y-PINCH.y;
+  if(wheel){
+   setZoom(S.zoom*k,n.x,n.y);
+   if(dx||dy){S.panx=(S.panx||0)+dx; S.pany=(S.pany||0)+dy; reframe(); render();}}
+  else{
+   fzAt(FZ.s*k,n.x,n.y);
+   if(dx||dy){FZ.x+=dx; FZ.y+=dy; fzClamp(); fzApply();}}
+  PINCH=n;},{passive:false});
+ var end=function(e){if(PINCH&&e.touches.length<2){PINCH=null;PINCH_END=performance.now();}};
+ host.addEventListener('touchend',end); host.addEventListener('touchcancel',end);
+ /* the last finger up after a pinch is not a tap on what it lifted from */
+ host.addEventListener('click',function(e){
+  if(performance.now()-PINCH_END<400){e.stopPropagation();e.preventDefault();}},true);}
+fieldPinch(cv,true);
+fieldPinch($('frend'),false);
 
 /* ---- collapsible sections ---- */
 /* One open section per rail. It was a single value, so opening anything on

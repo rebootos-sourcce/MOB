@@ -311,6 +311,19 @@
 
        Field is pressed here because Field is where the app opens.
        ============================================================ -->
+  <!-- THE NAVIGATION COLLAPSES ON A PHONE. GF in TASKS.md, 27 September, his
+       words: "Primary navigation, we're gonna want this to collapse" and
+       "Primary navigation needs to be in tabs, I think." At 390 the nine tabs
+       scrolled sideways in a strip that showed five, and the bar under them
+       ran to 240 pixels before the picture began. Folded, the bar is one tab
+       naming the surface a person is on; pressed, it opens the main menu,
+       which is this same #tabbar laid out as a grid of tabs with the lighting
+       under it. Hidden above the phone width, where the strip still fits.
+       The name is written here and repainted by setTab in ui/panels.js. -->
+  <button type="button" class="vt navtog" id="navtog" aria-expanded="false"
+   aria-controls="tabbar"><span class="n" id="navnow">Field</span>
+   <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+    <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
    <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false"><span class="n">Energetics</span></button>
    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false"><span class="n">Ritual</span></button>
@@ -321,6 +334,15 @@
    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false"><span class="n">Knowledge</span></button>
    <button type="button" class="vt tabtop" data-tabk="7" aria-pressed="false"><span class="n">Games</span></button>
    <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false"><span class="n">Summary</span></button>
+  </div>
+  <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
+       Dark, Lumen, etc, to the lighting section in the main menu." On a phone
+       the lighting menu at the right of the bar goes and its seven choices
+       are here, under the tabs, each with its name beside its mark, filled
+       from LIGHTINGS and kept pressed by setLighting in ui/panels.js. -->
+  <div class="navlight" id="navlight">
+   <div class="gmenu-hd">Lighting</div>
+   <div class="navth" id="navthemes"></div>
   </div>
   <!-- One status region for the whole app. Polite so it does not interrupt,
        and it carries the message rather than a button lying about it. -->
@@ -366,7 +388,7 @@
        in the bar as a permanent segmented control, which is a setting taking
        the width of a navigation item. They fold into one menu that names the
        lighting it is currently on. -->
-  <div class="gwrap">
+  <div class="gwrap" id="lightwrap">
    <button class="vt gbtn" id="lightbtn" type="button" aria-expanded="false"
     aria-haspopup="true" title="Lighting">
     <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
@@ -382,6 +404,25 @@
      paper. Punch removes every outline and fills every shape. Glass puts the
      panes in front of a moving ground and lets them refract it.</p>
    </div>
+  </div>
+  <!-- THE PROFILE LOADER, A CIRCLE BESIDE HELP. GF, his words: "the load
+       profiles ... should go on a button next to help, circular, small, just
+       like the profile and the help button, and then when you press it, it
+       opens up and shows you all the names, but the names are really large on
+       here too, they're wrapping onto a second line." On a phone the select
+       opened the system's own picker, which sets its own type and cannot be
+       styled, so this list is ours: one line a name, in the bar's 13 pixel
+       type. It is filled from #psel's own options on every open and a choice
+       goes back through #psel's change handler, so the picker stays the one
+       place a profile is loaded from. Hidden above the phone width, where the
+       select still sits in the bar. -->
+  <div class="gwrap" id="pwrap">
+   <button class="vt" id="ploadbtn" type="button" aria-expanded="false"
+    aria-haspopup="true" aria-controls="pload" aria-label="Load a profile">
+    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+     <circle cx="9" cy="8.4" r="3.2"/><path d="M3.4 19.4c0-3.2 2.5-5 5.6-5s5.6 1.8 5.6 5"/>
+     <path d="M15.4 5.4a3.2 3.2 0 0 1 0 6.1M17.6 14.6c1.9.6 3 2.2 3 4.8"/></svg></button>
+   <div class="gmenu pload" id="pload" hidden></div>
   </div>
   <button class="vt" id="helpbtn" type="button" title="How to read this, and what everything means">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">

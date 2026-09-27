@@ -765,6 +765,24 @@ function roundRect(x,y,w,h,r){
    It is in the history if a surface with a different ruling ever needs it. */
 /* the rAF loop honours reduced motion: the field stops breathing. */
 var REDUCED=(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+/* THE PHONE, asked where it is asked, so a picture drawn by script agrees with
+   the sheet's own phone rules to the pixel. The width is the sheet's, 720, and
+   it is read live because a window can be narrowed without a reload. */
+function phoneW(){try{return matchMedia('(max-width:720px)').matches;}catch(e){return false;}}
+/* THE THREE POLE GLYPHS, on the 24 unit grid every icon in this product uses.
+   Ring, not fill, like the rest. A halo is a ring with nothing in it. Ego
+   compression is a ring with two arrows pressing on it. The pitchfork is a
+   pitchfork.
+
+   Moved here from ui/cone.js on GF in TASKS.md. The compass drew them alone
+   until the Field's own pictures took them into their cores on a phone, and
+   ui/wheel.js and ui/rings.js load before the compass, so the paths live in
+   the module every one of the three loads after. */
+const GL_HALO='M4 12 A8 3.4 0 1 0 20 12 A8 3.4 0 1 0 4 12';
+/* GL_COMPRESS is gone with the third glyph it drew. A constant nothing draws
+   is how the destructive release animation survived in this build for weeks,
+   so an unused path does not stay in the file. */
+const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
 
 /* ============================================================
    WHERE TO START. One set of doors, two places that show them.

@@ -865,6 +865,75 @@ ok(drag.drill>40,'and the tap opens the address instead, got '+drag.drill+' char
 /* the canvas must also stop eating the scroll it used to swallow */
 const ta=await touchPg.evaluate(()=>getComputedStyle(document.getElementById('cv')).touchAction);
 ok(ta!=='none','the wheel lets a coarse pointer scroll the page, touch-action is '+ta);
+
+console.log('\n=== GF: two fingers zoom the picture, and nothing else ===');
+/* GF in TASKS.md, his words from his own phone: "I want to be able to pinch
+   zoom, and I can't, and the second that I put my fingers on it, the overlay
+   dominates." Measured before the fix with these same two touch points: the
+   wheel stayed at 1 with the hover readout up over the core and a drill
+   opened by the first finger, and Frames and Dial stayed at 1 while the page
+   itself zoomed to 4.96. The touches go through the browser's own input
+   pipeline, so touch-action and a refused default are exercised for real. */
+{const cdp=await touchCtx.newCDPSession(touchPg);
+ const pinch=async(sel)=>{
+  const bb=await touchPg.evaluate(s=>{const e=document.querySelector(s);e.scrollIntoView({block:'center'});
+   const r=e.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2-40};},sel);
+  await touchPg.waitForTimeout(200);
+  const tp=d=>[{x:bb.x-d/2,y:bb.y,id:1},{x:bb.x+d/2,y:bb.y,id:2}];
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:tp(50)});
+  for(let i=1;i<=10;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:tp(50+i*15)});
+   await touchPg.waitForTimeout(16);}
+  const mid=await touchPg.evaluate(()=>({probe:document.getElementById('probe').classList.contains('on'),
+   drill:(document.getElementById('rdrill').textContent||'').trim().length}));
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await touchPg.waitForTimeout(250);
+  return Object.assign(mid,await touchPg.evaluate(()=>({wheel:S.zoom,fz:FZ.s,page:visualViewport.scale})));};
+ for(const v of ['wheel','frames','dial']){
+  await touchPg.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);fviewSet(v);
+   S.zoom=1;S.panx=0;S.pany=0;reframe();FZ={s:1,x:0,y:0};fzApply();rdClose();render();},v);
+  await touchPg.waitForTimeout(500);
+  const z=await pinch(v==='wheel'?'#cv':'#frend'), got=v==='wheel'?z.wheel:z.fz;
+  ok(got>2&&z.page===1,v+': a pinch zooms the picture to '+got.toFixed(2)+' and the page stays at '+z.page);
+  ok(!z.probe&&z.drill===0,v+': and no readout and no drill come up under the fingers, probe '+z.probe+', drill '+z.drill);}
+ await touchPg.evaluate(()=>{fviewSet('wheel');S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
+
+ /* "when I press CQ, DQ, whatever, it should pull up a tooltip if I press for
+    a second and a half." A tap still opens the reading; a hold of 1.5s opens
+    the definition, keeps it once the finger lifts, and opens nothing else. */
+ const hold=async(sel,ms)=>{
+  await touchPg.evaluate(()=>{rdClose();TIP.hide();});
+  const bb=await touchPg.evaluate(s=>{const e=document.querySelector(s);e.scrollIntoView({block:'center'});
+   const r=e.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};},sel);
+  await touchPg.waitForTimeout(200);
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:bb.x,y:bb.y,id:5}]});
+  await touchPg.waitForTimeout(ms);
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await touchPg.waitForTimeout(300);
+  return touchPg.evaluate(()=>{const t=document.getElementById('tip'),d=document.getElementById('rdrill');
+   return {tip:!!(t&&t.classList.contains('on')),drill:d.style.display!=='none'&&(d.textContent||'').trim().length>0};});};
+ for(const sel of ['#fdock .kb[data-q=cq]','#fdock .kb[data-q=dq]','#accbtn']){
+  const tap=await hold(sel,60), held=await hold(sel,1650);
+  ok(tap.drill&&!tap.tip,sel+': a tap opens the reading and no definition, '+JSON.stringify(tap));
+  ok(held.tip&&!held.drill,sel+': a hold of 1.5s opens the definition, keeps it, and opens nothing else, '+JSON.stringify(held));}
+ await touchPg.evaluate(()=>{rdClose();TIP.hide();});
+
+ /* the bar on a phone: collapsed to one tab, the loader, help and the person
+    at the upper right, undo and the bar's lighting menu gone, the strip's
+    poles inside the core. Hidden is not removed: the undo stack still takes. */
+ const bar=await touchPg.evaluate(()=>{const d=id=>getComputedStyle(document.getElementById(id)).display;
+  undoPush('a phone edit');
+  const r=id=>document.getElementById(id).getBoundingClientRect();
+  return {tabbar:d('tabbar'),navtog:d('navtog'),psel:d('psel'),hist:d('histpair'),light:d('lightwrap'),
+   pol2:d('pol2'),depth:undoDepth(),poles:HIT.filter(h=>h.k==='pole').length,
+   together:Math.abs(r('ploadbtn').top-r('profbtn').top)<1&&r('ploadbtn').right<=r('helpbtn').left&&r('helpbtn').right<=r('profbtn').left,
+   round:['ploadbtn','helpbtn','profbtn'].every(id=>getComputedStyle(document.getElementById(id)).borderRadius==='50%'),
+   lights:document.querySelectorAll('#navthemes button').length===LIGHTINGS.length};});
+ ok(bar.tabbar==='none'&&bar.navtog!=='none'&&bar.psel==='none'&&bar.light==='none',
+  'on a phone the tabs fold to one, and the picker and the lighting menu leave the bar, '+JSON.stringify(bar));
+ ok(bar.together&&bar.round,'the loader, help and the person sit together at the upper right, all three round');
+ ok(bar.lights,'and every lighting is in the main menu');
+ ok(bar.hist==='none'&&bar.depth>0,'undo is hidden on a phone and still takes, depth '+bar.depth);
+ ok(bar.pol2==='none'&&bar.poles===2,'the poles are inside the core and the strip under the picture is gone, '+bar.poles+' poles');}
 await touchPg.close(); await touchCtx.close();
 
 console.log('\n=== the frame moves, and the core opens ===');

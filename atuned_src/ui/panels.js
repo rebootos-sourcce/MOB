@@ -197,6 +197,11 @@ function setTab(i){
     in a list that could be a different length than TABDEF. */
  document.querySelectorAll('.tabtop').forEach(function(x){
   x.setAttribute('aria-pressed',+x.getAttribute('data-tabk')===i);});
+ /* the folded bar on a phone names the surface, GF. Settings has no tab of
+    its own, so the folded bar says the button that opened it. */
+ var nn=$('navnow');
+ if(nn){var nT=TABDEF.filter(function(T){return T.k===i;})[0];
+  nn.textContent=nT?nT.nm:(i===TAB.SETTINGS?'Profile':nn.textContent);}
  /* THE RAIL OPENS WHAT THE SURFACE IS ABOUT.
 
     The Body page's whole reading is flow through the seven seats, and the
@@ -349,9 +354,11 @@ function setLighting(k){
  S.theme=k;
  ['snow','punch','glass','glasswhite','flat','lumen'].forEach(function(c){
   document.body.classList.toggle(c,k===c);});
- var seg=$('themes');
- if(seg)seg.querySelectorAll('button').forEach(function(x,j){
-  x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});
+ /* the bar's menu and the main menu's lighting on a phone, GF: one list, two
+    doors, one setter, so both say the same lighting is on */
+ ['themes','navthemes'].forEach(function(id){var seg=$(id);
+  if(seg)seg.querySelectorAll('button').forEach(function(x,j){
+   x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});});
  var nw=$('lightnow');
  if(nw){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
   if(e)nw.textContent=e[1];}
@@ -369,7 +376,17 @@ LIGHTINGS.forEach(function(t,i){
   +'<path d="'+(THEMEICON[t[0]]||'')+'"/></svg>';
  if(!THEMEICON[t[0]])b.setAttribute('data-noicon','1');
  b.addEventListener('click',function(){setLighting(t[0]);});
- $('themes').appendChild(b);});
+ $('themes').appendChild(b);
+ /* THE SAME CHOICE IN THE MAIN MENU, GF. The mark and its name side by side,
+    because the menu has the width the bar's segmented row did not, and a
+    person choosing a lighting should not have to know which glyph is Lumen. */
+ var nav=$('navthemes'); if(!nav)return;
+ var n=document.createElement('button');n.type='button';
+ n.setAttribute('aria-pressed',i===0);
+ n.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="'
+  +(THEMEICON[t[0]]||'')+'"/></svg><span>'+esc(t[1])+'</span>';
+ n.addEventListener('click',function(){setLighting(t[0]);});
+ nav.appendChild(n);});
 /* ---- THE LIGHTING MENU ----
    The three lighting buttons moved off the bar and into a menu on the owner's
    ruling. The button names the lighting it is on, so the setting is still
@@ -391,6 +408,23 @@ LIGHTINGS.forEach(function(t,i){
  document.addEventListener('click',function(){if(!menu.hidden)shut();});
  document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
+/* ---- THE MAIN MENU ON A PHONE, GF in TASKS.md ----
+   The folded bar opens and closes the tabs and the lighting under them, the
+   class on .top is the whole state, and the head.html rules under the phone
+   width read it. A tab chosen closes it, because the surface it opens is the
+   thing a person wanted and the menu is in its way; a lighting chosen closes
+   it for the reason the bar's own lighting menu does, the result is behind
+   it. Escape closes it too, the same as every other menu here. */
+(function(){
+ var top=document.querySelector('.top'), tog=$('navtog'), bar=$('tabbar'), lt=$('navthemes');
+ if(!top||!tog||!bar)return;
+ function set(open){top.classList.toggle('navopen',open);
+  tog.setAttribute('aria-expanded',open?'true':'false');}
+ tog.addEventListener('click',function(){set(!top.classList.contains('navopen'));});
+ bar.addEventListener('click',function(e){if(e.target.closest('[data-tabk]'))set(false);});
+ if(lt)lt.addEventListener('click',function(e){if(e.target.closest('button'))set(false);});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&top.classList.contains('navopen')){set(false);tog.focus();}});})();
 /* ---- THE WORDMARK GOES HOME ----
    Home is the field. It is the instrument, it is where the app opens on the
    owner's ruling, and it is what clicking the name of the product asks for. */

@@ -496,6 +496,33 @@ function pselName(p,up){
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
+/* THE LOADER ON A PHONE, GF in TASKS.md. A circle beside help, and the list it
+   opens is read off #psel every time it opens, groups and names and which one
+   is loaded, so it can never list a profile the picker does not have or miss
+   the name pselName just changed. A choice is handed to #psel and its change
+   handler above, so loading a profile still has exactly one route. */
+(function(){
+ var btn=$('ploadbtn'), menu=$('pload'), sel=$('psel'); if(!btn||!menu||!sel)return;
+ function shut(){menu.hidden=true; btn.setAttribute('aria-expanded','false');}
+ function open(){
+  var h='<div class="gmenu-hd">Load a profile</div>';
+  [].forEach.call(sel.children,function(g){
+   var opts=g.tagName==='OPTGROUP'?[].slice.call(g.children):[g];
+   if(g.tagName==='OPTGROUP')h+='<div class="pl-g">'+esc(g.label)+'</div>';
+   opts.forEach(function(o){var on=o.value===sel.value;
+    h+='<button type="button" class="pl-i" data-pv="'+esc(o.value)+'" aria-pressed="'+on+'">'
+     +esc(o.textContent)+'</button>';});});
+  menu.innerHTML=h; menu.hidden=false; btn.setAttribute('aria-expanded','true');}
+ btn.addEventListener('click',function(e){e.stopPropagation(); if(menu.hidden)open(); else shut();});
+ menu.addEventListener('click',function(e){e.stopPropagation();
+  var b=e.target.closest('[data-pv]'); if(!b)return;
+  shut();
+  if(b.getAttribute('data-pv')===sel.value)return;
+  sel.value=b.getAttribute('data-pv');
+  sel.dispatchEvent(new Event('change'));});
+ document.addEventListener('click',function(){if(!menu.hidden)shut();});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
 /* This set the flag and moved the dropdown and left CURP pointing at whichever
    reference case was loaded, so the next save wrote the person's own edit into
    that case's record. It repoints the record without reloading S, because the

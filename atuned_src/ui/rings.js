@@ -579,9 +579,17 @@ function frCore(M,r,cx,cy,R,o){
     the figures are one line each from full size, because a stack shrunk to
     fit is a coherence figure that no longer reads as the largest thing on
     the Field. */
+ /* ON A PHONE THE FIGURES GIVE THE POLES ROOM, GF in TASKS.md, his words:
+    "move that inside of the circle, or CQDQ on the square one, and then make
+    the CQDQ a little bit smaller." The halo sits over CQ and the pitchfork
+    under DQ, frPoles below, so the figures are fitted to the band between
+    them, yl, as well as to the hole. That is what makes them smaller, and by
+    the fitting rule already here rather than by a size typed in. */
+ var ph=phoneW(), yl=ph?(R-w/2-3)*.46:Infinity;
  var inner=R-w/2-3,fits=function(rows){var H=0;rows.forEach(function(q){H+=q.h+(q.g||0);});
   var y=-H/2,ok=true;rows.forEach(function(q){var y0=y,y1=y+q.h,ym=Math.max(Math.abs(y0),Math.abs(y1));
-   if(ym>=inner||q.w/2>Math.sqrt(inner*inner-ym*ym))ok=false;y=y1+(q.g||0);});return ok?H:0;};
+   if(ym>=inner||ym>yl||q.w/2>Math.sqrt(inner*inner-ym*ym))ok=false;y=y1+(q.g||0);});return ok?H:0;};
+ var poles=ph?frPoles(M,r,cx,cy,inner):'';
  var F1=Math.max(22,38*inner/45),F2=Math.max(13,17*inner/45),lc=lab*.727,k,f1,f2,H;
  for(k=1;k>=.79;k-=.05){f1=F1*k;f2=Math.max(lab,F2*k);
   var g1=Math.max(4,6*inner/45),g2=Math.max(7,11*inner/45);
@@ -593,7 +601,7 @@ function frCore(M,r,cx,cy,R,o){
     +'<text x="'+cx.toFixed(1)+'" y="'+(y0+H).toFixed(1)+'" text-anchor="middle">'
     +'<tspan fill="'+frRgb(M.dq)+'" font-size="'+f2.toFixed(1)+'" font-weight="500">'+dq+'</tspan>'
     +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">DQ</tspan></text>';
-   M.L.core.push(s+'</g></g>');return;}}
+   M.L.core.push(s+'</g>'+poles+'</g>');return;}}
  for(k=1;k>=.4;k-=.05){f1=Math.max(lab+2,F1*k);f2=Math.max(lab,F2*k);
   H=fits([{h:f1*.727,w:W_(FC,f1,300)+4+W_('CQ',lab,500),g:6},{h:f2*.727,w:W_(FD,f2,500)+4+W_('DQ',lab,500)}]);
   if(H)break;}
@@ -602,7 +610,28 @@ function frCore(M,r,cx,cy,R,o){
   +'<tspan fill="'+c+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'">'+n.v+'</tspan>'
   +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">'+n.l+'</tspan></text>';};
  s+=row(y1,{v:cq,l:'CQ'},frRgb(col),f1,300)+row(y2,{v:dq,l:'DQ'},frRgb(M.dq),f2,500);
- M.L.core.push(s+'</g></g>');}
+ M.L.core.push(s+'</g>'+poles+'</g>');}
+/* THE TWO POLES IN THE CORE, on a phone. The strip that carried them sat
+   under the picture and its pitchfork landed on the stage's bottom edge; here
+   the halo is over the figures and the pitchfork under them, inside the
+   core's ring, in the compass's own colours and the compass's own rule for
+   which is lit: coherence at 50 or over lights the halo, under it the
+   pitchfork, and the other stands at .35, as renderPol2 draws them. Each
+   is the same door the strip's end was, runPoleDrill through hitPress.
+
+   OUTSIDE .frcq, measured. Inside it they shrank with the figures as the core
+   opened, and at a pinch of 4 the pitchfork was lost in the feathers. Beside
+   it they scale with the picture and nothing else, so the zoom is what brings
+   them up to reading size, which is his own account: "when I zoom in I can
+   actually see the heaven and hell, like where I'm heading towards." */
+function frPoles(M,r,cx,cy,inner){
+ var up=r.CQ>=50, gs=inner*.42, sc=gs/24, f=function(v){return v.toFixed(2);};
+ var one=function(end,d,y,col,on){var x0=cx-gs/2,y0=y-gs/2;
+  return '<g data-h="'+M.hid({k:'pole',end:end})+'" opacity="'+(on?1:.35)+'">'
+   +'<rect x="'+f(x0)+'" y="'+f(y0)+'" width="'+f(gs)+'" height="'+f(gs)+'" fill="transparent"/>'
+   +'<path d="'+d+'" transform="translate('+f(x0)+' '+f(y0)+') scale('+f(sc)+')" fill="none" stroke="'+col
+   +'" stroke-width="'+f(1.5/sc)+'" stroke-linecap="round" stroke-linejoin="round"/></g>';};
+ return one('up',GL_HALO,cy-inner*.70,GOLD,up)+one('dn',GL_FORK,cy+inner*.64,PAL.Root,!up);}
 /* THE SIX GATES AS A COLLAR. Ruled 26 September, CH in TASKS.md: "for the
    six gates I like three", the third on the CE sheet and the round's own
    recommendation. They stood as two rows of three, one above the core and one
@@ -1222,11 +1251,16 @@ function fieldReframe(){
  h.addEventListener('wheel',function(e){if(S.tab!==TAB.FIELD||!fviewOn())return;e.preventDefault();
   var b=h.getBoundingClientRect();fzAt(FZ.s*(e.deltaY<0?1.12:1/1.12),e.clientX-b.left,e.clientY-b.top);},{passive:false});
  h.addEventListener('pointerdown',function(e){if(!fviewOn()||FZ.s<=1.001||e.button!==0)return;
+  /* a second finger is the pinch's, fieldPinch in ui/ui.js */
+  if(typeof fieldFingers==='function'&&fieldFingers()>1)return;
   FZDRAG={x:e.clientX,y:e.clientY,fx:FZ.x,fy:FZ.y};FZMOVED=false;});
  addEventListener('pointermove',function(e){if(!FZDRAG)return;
   var dx=e.clientX-FZDRAG.x,dy=e.clientY-FZDRAG.y;
   if(Math.abs(dx)+Math.abs(dy)>4)FZMOVED=true;
   if(FZMOVED){FZ.x=FZDRAG.fx+dx;FZ.y=FZDRAG.fy+dy;fzClamp();fzApply();h.classList.add('dragging');}});
  addEventListener('pointerup',function(){FZDRAG=null;h.classList.remove('dragging');});
+ /* a finger the browser took for a scroll never sends its pointerup, and the
+    drag it armed stayed armed, so the next pointer anywhere moved the picture */
+ addEventListener('pointercancel',function(){FZDRAG=null;h.classList.remove('dragging');});
  /* a drag that moved the picture is not also a press on whatever it ended on */
  h.addEventListener('click',function(e){if(FZMOVED){FZMOVED=false;e.stopPropagation();e.preventDefault();}},true);})();

@@ -1348,6 +1348,11 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    scroll attempt became a charge write. Vertical panning goes to the page
    and a tap still reaches the canvas. */
 @media (pointer:coarse){ canvas#cv{touch-action:pan-y;cursor:default} }
+/* AND THE RENDITIONS THE SAME, GF in TASKS.md. #frend carried no touch-action,
+   so a pinch on Frames or Dial was the browser's and zoomed the whole page by
+   4.96 while the picture's own zoom stayed at 1. pan-y keeps the page's scroll
+   and gives two fingers to fieldPinch in ui/ui.js, as on the wheel. */
+@media (pointer:coarse){ #frend{touch-action:pan-y} }
 /* ============================================================
    THE FIELD DRAWN THREE WAYS. BP8, 25 September.
 
@@ -4808,5 +4813,134 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  color:var(--ink);border-radius:var(--r-xs);padding:11px 12px;font-family:var(--sans);
  font-size:14px;line-height:1.6;resize:vertical;min-height:110px}
 .ob-f textarea:focus{border-color:var(--accent);outline:none}
+
+/* ============================================================
+   THE PHONE, GF in TASKS.md, 27 September. His feedback from his own phone
+   on the packed build, every item of it "on mobile by the way", so every
+   rule here is under the phone width and the desktop is not touched.
+
+   Last in the sheet on purpose. Several of these narrow a rule written
+   earlier at the same specificity, .pol2's display and the dock's rings
+   among them, and at equal weight the later rule is the one that holds.
+   ============================================================ */
+/* above the phone width the strip still fits, so the fold, the main menu's
+   lighting and the loader circle do not exist there */
+.navtog,.navlight,#pwrap{display:none}
+.navth{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.navth button{display:flex;align-items:center;gap:9px;min-height:var(--tap);padding:0 11px;
+ border:1px solid var(--edge);border-radius:var(--r-xs);background:transparent;color:var(--mid);
+ font-family:var(--sans);font-size:13px;cursor:pointer;text-align:left}
+.navth button svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round;flex:0 0 auto}
+.navth button[aria-pressed=true]{background:var(--gold);border-color:transparent;
+ color:var(--on-accent);font-weight:500}
+/* THE NAMES ON ONE LINE. His words: "the names are really large on here too,
+   they're wrapping onto a second line." The system picker set them in its own
+   type across two lines; here each is the bar's 13 pixels on one line, and a
+   name longer than the panel is cut with an ellipsis rather than given a
+   second row. The row keeps the 44 pixel tap floor. */
+.pload{max-height:min(62vh,480px);overflow:auto;padding:8px 8px 6px}
+.pl-g{font-family:var(--num);font-size:11px;color:var(--dim);padding:9px 8px 3px}
+.pl-i{display:block;width:100%;min-height:var(--tap);padding:0 10px;border:0;
+ border-radius:var(--r-xs);background:transparent;color:var(--ink);text-align:left;
+ font-family:var(--sans);font-size:13px;line-height:var(--tap);cursor:pointer;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-i:hover{background:var(--panel-2)}
+.pl-i[aria-pressed=true]{color:var(--accent);font-weight:500}
+/* a held finger on a control opens its definition, ui/tip.js, and the
+   system's own callout and selection would otherwise open over it */
+@media (pointer:coarse){button,[role=button]{-webkit-touch-callout:none;
+ -webkit-user-select:none;user-select:none}}
+@media (max-width:720px){
+ /* THE BAR IS TWO ROWS. The wordmark on the left, and on the right the
+    loader, help and the person, together, as he placed them: "the profile on
+    the upper right hand side, the kind of questionnaire help, whatever, right
+    next to that", and the loader "on a button next to help, circular, small,
+    just like the profile and the help button". Under them the folded tab. */
+ .top{position:relative;gap:6px;row-gap:6px;padding:6px 10px}
+ .top .brand{order:0}
+ .top .spacer{order:1}
+ .top #pwrap{display:block;order:2;position:static}
+ .top #helpbtn{order:3}
+ .top #profbtn{order:4}
+ .top #ploadbtn,.top #helpbtn,.top #profbtn{width:var(--tap);height:var(--tap);
+  min-width:var(--tap);padding:0;border-radius:50%;justify-content:center}
+ /* the loader's list hangs from the bar, under the first row, and is as wide
+    as the bar, so a name has the whole width before it is cut */
+ .top .pload{top:calc(var(--tap) + 12px);left:8px;right:8px;min-width:0}
+ /* the picker and its label leave the bar for the circle above */
+ .top .toplab,.top #psel{display:none}
+ /* UNDO IS HIDDEN ON A PHONE, NOT REMOVED. His words: "Undo, I've never used
+    it, and I don't see the purpose of it right now, so let's hide that in the
+    code." The stack, its arrows' handlers and the keys are all still there,
+    and the desktop keeps the arrows. The markup toggles [hidden] on the pair,
+    so this has to outweigh the display the pair takes when it is shown. */
+ .top .histpair{display:none!important}
+ /* the lighting menu leaves the bar for the main menu's lighting section */
+ .top #lightwrap{display:none}
+ /* THE FOLDED BAR IS A TAB. The surface's name in the pressed tab's accent
+    and weight, on the strip's hairline, with the chevron saying it opens. */
+ .top .navtog{display:flex;order:5;flex:1 1 100%;justify-content:space-between;
+  border:0;border-bottom:1px solid var(--edge);border-radius:0;background:transparent;
+  color:var(--accent);font-weight:500;padding:8px 11px}
+ /* .n is also the product's figure class and sets ink on itself, so the name
+    takes the tab's accent explicitly or it reads as an unpressed tab */
+ .top .navtog .n{color:inherit}
+ .top .navtog .chev{width:12px;height:12px;opacity:.7;transition:transform var(--t-micro) var(--ease-out)}
+ .top.navopen .navtog .chev{transform:rotate(180deg)}
+ /* the strip itself is the menu's tabs, folded away until the bar opens,
+    then three to a row. !important because its display is written inline. */
+ .top #tabbar{order:6;display:none!important}
+ .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+  flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
+ .top.navopen #tabbar .tabtop{justify-content:center}
+ .top.navopen .navlight{display:block;order:7;flex:1 1 100%;padding:6px 2px 4px}
+ .top #status{order:8}
+
+ /* THE POLES GO INTO THE PICTURE. His words: "The heaven and hell, that's
+    clearly causing a problem, on both of these right now it shows up in the
+    very bottom of the square. I want you to move that inside of the circle,
+    or CQDQ on the square one, and then make the CQDQ a little bit smaller."
+    Measured at 390: the strip sat under the picture as a 190 pixel column and
+    its pitchfork landed on the stage's bottom edge. The halo and the pitchfork
+    are drawn inside the core now, above CQ and below DQ, by frCore in
+    ui/rings.js on Frames and Dial and by solCore in ui/wheel.js on the wheel,
+    the lit one being where the field is heading, and they are doors to the
+    same two drills the strip's ends opened. So the strip goes on a phone. */
+ .pol2{display:none}
+
+ /* ROOT ENERGETICS' READINGS ARE SQUARE BUTTONS ON A PHONE. His words: "I
+    want these to be square buttons, these circles are taking up too much
+    space", and in the round after: "make those uniform and make those square
+    ... flush left to right." Each reading keeps its row, DQ, CQ and accuracy
+    over the four that move through a person, the two rows EZ ruled. Every
+    button in a row is the same width, the rows run from the rail's left edge
+    to its right, and all seven are one height, one edge and one radius. The
+    ring goes, because the figure beside it says the same thing in a quarter
+    of the room; the letters or the mark stay as the button's name, and
+    accuracy keeps its word, ruled, in place of its mark. */
+ .fdock{gap:6px}
+ .fdock .fdrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .fdock .keylo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .fdock .acc{display:block;min-width:0}
+ .fdock .kb,.fdock .acc-b{width:100%;min-width:0;height:48px;min-height:var(--tap);
+  padding:0 6px;display:flex;align-items:center;justify-content:center;gap:6px;
+  border:1px solid var(--edge);border-radius:var(--r-xs);background:transparent}
+ .fdock .key .kb[data-q=cq]{min-width:0;min-height:var(--tap)}
+ .fdock .cr.orb,.fdock .cr.hero{display:flex;align-items:center;gap:6px;border-radius:0}
+ .fdock .cr .ring svg.arc{display:none}
+ .fdock .cr .ring .gl{position:static}
+ .fdock .cr .gl-t,.fdock .cr.hero .gl-t{font-size:12px;letter-spacing:-.03em}
+ .fdock .cr.orb .ring .gl svg{width:17px;height:17px}
+ .fdock .cr.orb .v,.fdock .cr.hero .v{position:static;height:auto;min-width:0;padding:0;
+  background:none;border:0;color:var(--ink);font-size:14px;line-height:1;font-weight:500}
+ .fdock .acc-b .cr .ring{display:none}
+ .fdock .acc-l{transform:none}
+ .fdock .acc-l b{font-size:12px;color:var(--mid)}
+ .fdock .kb:focus-visible,.fdock .acc-b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ /* Punch fills a .kb and never had to fill accuracy, which was a circle; as
+    a tile beside DQ it takes the same fill or the row is not uniform */
+ body.punch .fdock .acc-b{border-color:transparent;background:var(--panel-2)}
+}
 
 </style></head>

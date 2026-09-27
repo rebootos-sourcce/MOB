@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="73702c4 2026-09-27 03:08"><head><meta charset="utf-8">
+<html lang="en" data-build="e0659f3 2026-09-27 04:12"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1348,6 +1348,11 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    scroll attempt became a charge write. Vertical panning goes to the page
    and a tap still reaches the canvas. */
 @media (pointer:coarse){ canvas#cv{touch-action:pan-y;cursor:default} }
+/* AND THE RENDITIONS THE SAME, GF in TASKS.md. #frend carried no touch-action,
+   so a pinch on Frames or Dial was the browser's and zoomed the whole page by
+   4.96 while the picture's own zoom stayed at 1. pan-y keeps the page's scroll
+   and gives two fingers to fieldPinch in ui/ui.js, as on the wheel. */
+@media (pointer:coarse){ #frend{touch-action:pan-y} }
 /* ============================================================
    THE FIELD DRAWN THREE WAYS. BP8, 25 September.
 
@@ -4809,6 +4814,135 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  font-size:14px;line-height:1.6;resize:vertical;min-height:110px}
 .ob-f textarea:focus{border-color:var(--accent);outline:none}
 
+/* ============================================================
+   THE PHONE, GF in TASKS.md, 27 September. His feedback from his own phone
+   on the packed build, every item of it "on mobile by the way", so every
+   rule here is under the phone width and the desktop is not touched.
+
+   Last in the sheet on purpose. Several of these narrow a rule written
+   earlier at the same specificity, .pol2's display and the dock's rings
+   among them, and at equal weight the later rule is the one that holds.
+   ============================================================ */
+/* above the phone width the strip still fits, so the fold, the main menu's
+   lighting and the loader circle do not exist there */
+.navtog,.navlight,#pwrap{display:none}
+.navth{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.navth button{display:flex;align-items:center;gap:9px;min-height:var(--tap);padding:0 11px;
+ border:1px solid var(--edge);border-radius:var(--r-xs);background:transparent;color:var(--mid);
+ font-family:var(--sans);font-size:13px;cursor:pointer;text-align:left}
+.navth button svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round;flex:0 0 auto}
+.navth button[aria-pressed=true]{background:var(--gold);border-color:transparent;
+ color:var(--on-accent);font-weight:500}
+/* THE NAMES ON ONE LINE. His words: "the names are really large on here too,
+   they're wrapping onto a second line." The system picker set them in its own
+   type across two lines; here each is the bar's 13 pixels on one line, and a
+   name longer than the panel is cut with an ellipsis rather than given a
+   second row. The row keeps the 44 pixel tap floor. */
+.pload{max-height:min(62vh,480px);overflow:auto;padding:8px 8px 6px}
+.pl-g{font-family:var(--num);font-size:11px;color:var(--dim);padding:9px 8px 3px}
+.pl-i{display:block;width:100%;min-height:var(--tap);padding:0 10px;border:0;
+ border-radius:var(--r-xs);background:transparent;color:var(--ink);text-align:left;
+ font-family:var(--sans);font-size:13px;line-height:var(--tap);cursor:pointer;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-i:hover{background:var(--panel-2)}
+.pl-i[aria-pressed=true]{color:var(--accent);font-weight:500}
+/* a held finger on a control opens its definition, ui/tip.js, and the
+   system's own callout and selection would otherwise open over it */
+@media (pointer:coarse){button,[role=button]{-webkit-touch-callout:none;
+ -webkit-user-select:none;user-select:none}}
+@media (max-width:720px){
+ /* THE BAR IS TWO ROWS. The wordmark on the left, and on the right the
+    loader, help and the person, together, as he placed them: "the profile on
+    the upper right hand side, the kind of questionnaire help, whatever, right
+    next to that", and the loader "on a button next to help, circular, small,
+    just like the profile and the help button". Under them the folded tab. */
+ .top{position:relative;gap:6px;row-gap:6px;padding:6px 10px}
+ .top .brand{order:0}
+ .top .spacer{order:1}
+ .top #pwrap{display:block;order:2;position:static}
+ .top #helpbtn{order:3}
+ .top #profbtn{order:4}
+ .top #ploadbtn,.top #helpbtn,.top #profbtn{width:var(--tap);height:var(--tap);
+  min-width:var(--tap);padding:0;border-radius:50%;justify-content:center}
+ /* the loader's list hangs from the bar, under the first row, and is as wide
+    as the bar, so a name has the whole width before it is cut */
+ .top .pload{top:calc(var(--tap) + 12px);left:8px;right:8px;min-width:0}
+ /* the picker and its label leave the bar for the circle above */
+ .top .toplab,.top #psel{display:none}
+ /* UNDO IS HIDDEN ON A PHONE, NOT REMOVED. His words: "Undo, I've never used
+    it, and I don't see the purpose of it right now, so let's hide that in the
+    code." The stack, its arrows' handlers and the keys are all still there,
+    and the desktop keeps the arrows. The markup toggles [hidden] on the pair,
+    so this has to outweigh the display the pair takes when it is shown. */
+ .top .histpair{display:none!important}
+ /* the lighting menu leaves the bar for the main menu's lighting section */
+ .top #lightwrap{display:none}
+ /* THE FOLDED BAR IS A TAB. The surface's name in the pressed tab's accent
+    and weight, on the strip's hairline, with the chevron saying it opens. */
+ .top .navtog{display:flex;order:5;flex:1 1 100%;justify-content:space-between;
+  border:0;border-bottom:1px solid var(--edge);border-radius:0;background:transparent;
+  color:var(--accent);font-weight:500;padding:8px 11px}
+ /* .n is also the product's figure class and sets ink on itself, so the name
+    takes the tab's accent explicitly or it reads as an unpressed tab */
+ .top .navtog .n{color:inherit}
+ .top .navtog .chev{width:12px;height:12px;opacity:.7;transition:transform var(--t-micro) var(--ease-out)}
+ .top.navopen .navtog .chev{transform:rotate(180deg)}
+ /* the strip itself is the menu's tabs, folded away until the bar opens,
+    then three to a row. !important because its display is written inline. */
+ .top #tabbar{order:6;display:none!important}
+ .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+  flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
+ .top.navopen #tabbar .tabtop{justify-content:center}
+ .top.navopen .navlight{display:block;order:7;flex:1 1 100%;padding:6px 2px 4px}
+ .top #status{order:8}
+
+ /* THE POLES GO INTO THE PICTURE. His words: "The heaven and hell, that's
+    clearly causing a problem, on both of these right now it shows up in the
+    very bottom of the square. I want you to move that inside of the circle,
+    or CQDQ on the square one, and then make the CQDQ a little bit smaller."
+    Measured at 390: the strip sat under the picture as a 190 pixel column and
+    its pitchfork landed on the stage's bottom edge. The halo and the pitchfork
+    are drawn inside the core now, above CQ and below DQ, by frCore in
+    ui/rings.js on Frames and Dial and by solCore in ui/wheel.js on the wheel,
+    the lit one being where the field is heading, and they are doors to the
+    same two drills the strip's ends opened. So the strip goes on a phone. */
+ .pol2{display:none}
+
+ /* ROOT ENERGETICS' READINGS ARE SQUARE BUTTONS ON A PHONE. His words: "I
+    want these to be square buttons, these circles are taking up too much
+    space", and in the round after: "make those uniform and make those square
+    ... flush left to right." Each reading keeps its row, DQ, CQ and accuracy
+    over the four that move through a person, the two rows EZ ruled. Every
+    button in a row is the same width, the rows run from the rail's left edge
+    to its right, and all seven are one height, one edge and one radius. The
+    ring goes, because the figure beside it says the same thing in a quarter
+    of the room; the letters or the mark stay as the button's name, and
+    accuracy keeps its word, ruled, in place of its mark. */
+ .fdock{gap:6px}
+ .fdock .fdrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .fdock .keylo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .fdock .acc{display:block;min-width:0}
+ .fdock .kb,.fdock .acc-b{width:100%;min-width:0;height:48px;min-height:var(--tap);
+  padding:0 6px;display:flex;align-items:center;justify-content:center;gap:6px;
+  border:1px solid var(--edge);border-radius:var(--r-xs);background:transparent}
+ .fdock .key .kb[data-q=cq]{min-width:0;min-height:var(--tap)}
+ .fdock .cr.orb,.fdock .cr.hero{display:flex;align-items:center;gap:6px;border-radius:0}
+ .fdock .cr .ring svg.arc{display:none}
+ .fdock .cr .ring .gl{position:static}
+ .fdock .cr .gl-t,.fdock .cr.hero .gl-t{font-size:12px;letter-spacing:-.03em}
+ .fdock .cr.orb .ring .gl svg{width:17px;height:17px}
+ .fdock .cr.orb .v,.fdock .cr.hero .v{position:static;height:auto;min-width:0;padding:0;
+  background:none;border:0;color:var(--ink);font-size:14px;line-height:1;font-weight:500}
+ .fdock .acc-b .cr .ring{display:none}
+ .fdock .acc-l{transform:none}
+ .fdock .acc-l b{font-size:12px;color:var(--mid)}
+ .fdock .kb:focus-visible,.fdock .acc-b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ /* Punch fills a .kb and never had to fill accuracy, which was a circle; as
+    a tile beside DQ it takes the same fill or the row is not uniform */
+ body.punch .fdock .acc-b{border-color:transparent;background:var(--panel-2)}
+}
+
 </style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
@@ -5122,6 +5256,19 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 
        Field is pressed here because Field is where the app opens.
        ============================================================ -->
+  <!-- THE NAVIGATION COLLAPSES ON A PHONE. GF in TASKS.md, 27 September, his
+       words: "Primary navigation, we're gonna want this to collapse" and
+       "Primary navigation needs to be in tabs, I think." At 390 the nine tabs
+       scrolled sideways in a strip that showed five, and the bar under them
+       ran to 240 pixels before the picture began. Folded, the bar is one tab
+       naming the surface a person is on; pressed, it opens the main menu,
+       which is this same #tabbar laid out as a grid of tabs with the lighting
+       under it. Hidden above the phone width, where the strip still fits.
+       The name is written here and repainted by setTab in ui/panels.js. -->
+  <button type="button" class="vt navtog" id="navtog" aria-expanded="false"
+   aria-controls="tabbar"><span class="n" id="navnow">Field</span>
+   <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+    <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
    <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false"><span class="n">Energetics</span></button>
    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false"><span class="n">Ritual</span></button>
@@ -5132,6 +5279,15 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false"><span class="n">Knowledge</span></button>
    <button type="button" class="vt tabtop" data-tabk="7" aria-pressed="false"><span class="n">Games</span></button>
    <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false"><span class="n">Summary</span></button>
+  </div>
+  <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
+       Dark, Lumen, etc, to the lighting section in the main menu." On a phone
+       the lighting menu at the right of the bar goes and its seven choices
+       are here, under the tabs, each with its name beside its mark, filled
+       from LIGHTINGS and kept pressed by setLighting in ui/panels.js. -->
+  <div class="navlight" id="navlight">
+   <div class="gmenu-hd">Lighting</div>
+   <div class="navth" id="navthemes"></div>
   </div>
   <!-- One status region for the whole app. Polite so it does not interrupt,
        and it carries the message rather than a button lying about it. -->
@@ -5177,7 +5333,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        in the bar as a permanent segmented control, which is a setting taking
        the width of a navigation item. They fold into one menu that names the
        lighting it is currently on. -->
-  <div class="gwrap">
+  <div class="gwrap" id="lightwrap">
    <button class="vt gbtn" id="lightbtn" type="button" aria-expanded="false"
     aria-haspopup="true" title="Lighting">
     <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
@@ -5193,6 +5349,25 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
      paper. Punch removes every outline and fills every shape. Glass puts the
      panes in front of a moving ground and lets them refract it.</p>
    </div>
+  </div>
+  <!-- THE PROFILE LOADER, A CIRCLE BESIDE HELP. GF, his words: "the load
+       profiles ... should go on a button next to help, circular, small, just
+       like the profile and the help button, and then when you press it, it
+       opens up and shows you all the names, but the names are really large on
+       here too, they're wrapping onto a second line." On a phone the select
+       opened the system's own picker, which sets its own type and cannot be
+       styled, so this list is ours: one line a name, in the bar's 13 pixel
+       type. It is filled from #psel's own options on every open and a choice
+       goes back through #psel's change handler, so the picker stays the one
+       place a profile is loaded from. Hidden above the phone width, where the
+       select still sits in the bar. -->
+  <div class="gwrap" id="pwrap">
+   <button class="vt" id="ploadbtn" type="button" aria-expanded="false"
+    aria-haspopup="true" aria-controls="pload" aria-label="Load a profile">
+    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+     <circle cx="9" cy="8.4" r="3.2"/><path d="M3.4 19.4c0-3.2 2.5-5 5.6-5s5.6 1.8 5.6 5"/>
+     <path d="M15.4 5.4a3.2 3.2 0 0 1 0 6.1M17.6 14.6c1.9.6 3 2.2 3 4.8"/></svg></button>
+   <div class="gmenu pload" id="pload" hidden></div>
   </div>
   <button class="vt" id="helpbtn" type="button" title="How to read this, and what everything means">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
@@ -15886,6 +16061,24 @@ function roundRect(x,y,w,h,r){
    It is in the history if a surface with a different ruling ever needs it. */
 /* the rAF loop honours reduced motion: the field stops breathing. */
 var REDUCED=(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+/* THE PHONE, asked where it is asked, so a picture drawn by script agrees with
+   the sheet's own phone rules to the pixel. The width is the sheet's, 720, and
+   it is read live because a window can be narrowed without a reload. */
+function phoneW(){try{return matchMedia('(max-width:720px)').matches;}catch(e){return false;}}
+/* THE THREE POLE GLYPHS, on the 24 unit grid every icon in this product uses.
+   Ring, not fill, like the rest. A halo is a ring with nothing in it. Ego
+   compression is a ring with two arrows pressing on it. The pitchfork is a
+   pitchfork.
+
+   Moved here from ui/cone.js on GF in TASKS.md. The compass drew them alone
+   until the Field's own pictures took them into their cores on a phone, and
+   ui/wheel.js and ui/rings.js load before the compass, so the paths live in
+   the module every one of the three loads after. */
+const GL_HALO='M4 12 A8 3.4 0 1 0 20 12 A8 3.4 0 1 0 4 12';
+/* GL_COMPRESS is gone with the third glyph it drew. A constant nothing draws
+   is how the destructive release animation survived in this build for weeks,
+   so an unused path does not stay in the file. */
+const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
 
 /* ============================================================
    WHERE TO START. One set of doors, two places that show them.
@@ -16398,23 +16591,71 @@ var TIP=(function(){
      because preventing a pointerdown does not reliably stop the click that
      follows it. */
   var EAT=null;
+  /* PRESS AND HOLD, ON A CONTROL. GF in TASKS.md, 27 September, his words:
+     "when I press CQ, DQ, whatever, it should pull up a tooltip if I press for
+     a second and a half." The first tap explaining was right for a word and
+     wrong for a control: CQ, DQ, accuracy, an address row and a glass bar
+     circle are each a door, and on a phone every one of them asked for two
+     taps to open, the first spent on a panel the person had not asked for. So
+     a carrier inside a control acts on a tap, as it does under a mouse, and
+     explains on a hold of PRESS_MS without moving more than PRESS_SLOP. The
+     click that ends a hold is swallowed, so a hold never also opens the door.
+     A carrier that is only words keeps the first tap, because a tap on it has
+     nothing else to do. The copy is whatever the carrier already says; the
+     words themselves wait on DESIGN-tooltip-copy.md. */
+  var PRESS=null, PRESS_MS=1500, PRESS_SLOP=10;
+  function control(c){return !!(c&&c.closest&&c.closest('button,a[href],[role=button]'));}
+  /* THE WHOLE CONTROL ANSWERS FOR THE DEFINITION INSIDE IT, on a phone. The
+     dock's buttons carry their title on the ring inside, not on the button, so
+     a finger on accuracy's word, or on a tile's edge, found no carrier and the
+     hold explained nothing; and the release focused the button, which read as
+     nothing to explain and closed a panel the hold had just opened. Measured:
+     CQ's panel opened at 1.5s and was gone the moment the finger lifted. */
+  /* And the open carrier counts though it has no title: showFor lifts the
+     title off while its panel is up, so without CUR the release's own focus
+     found nothing and hid the panel it had just opened. */
+  function carrierIn(t){var c=carrier(t); if(c||!t||!t.closest)return c;
+   var k=t.closest('button,a[href],[role=button]'); if(!k)return null;
+   if(CUR&&CUR.nodeType===1&&k.contains(CUR))return CUR;
+   return k.querySelector('[data-tip],[data-tip-t],[title]');}
+  function pressDrop(){if(PRESS){clearTimeout(PRESS.t);PRESS=null;}}
+  function pressArm(c,ev){pressDrop();
+   PRESS={c:c,id:ev.pointerId,x:ev.clientX,y:ev.clientY,t:setTimeout(function(){
+    var p=PRESS; PRESS=null; if(!p)return;
+    clearTimeout(TO); showFor(p.c); EAT=p.c;},PRESS_MS)};}
+  document.addEventListener('pointermove',function(ev){
+   if(PRESS&&ev.pointerId===PRESS.id
+      &&Math.hypot(ev.clientX-PRESS.x,ev.clientY-PRESS.y)>PRESS_SLOP)pressDrop();},true);
+  ['pointerup','pointercancel'].forEach(function(t){
+   document.addEventListener(t,function(ev){if(PRESS&&ev.pointerId===PRESS.id)pressDrop();},true);});
+  /* a held finger is the browser's own cue for a context menu and a text
+     selection, and either would land on top of the panel this opens */
+  document.addEventListener('contextmenu',function(ev){
+   if(sheet()&&(PRESS||EAT)&&carrierIn(ev.target))ev.preventDefault();},true);
   document.addEventListener('pointerdown',function(ev){
-   var c=carrier(ev.target);
+   var c=sheet()?carrierIn(ev.target):carrier(ev.target);
    if(EL&&EL.contains(ev.target))return;
    if(!c){hide();return;}
    if(!sheet())return;                    /* a fine pointer keeps hover */
+   if(control(c)){EAT=null; hide(); pressArm(c,ev); return;}
    if(c===CUR){EAT=null; hide(); return;} /* tap the same thing again and it acts */
    clearTimeout(TO); showFor(c); EAT=c;},true);
   document.addEventListener('click',function(ev){
    if(!EAT)return;
-   var c=carrier(ev.target);
+   var c=sheet()?carrierIn(ev.target):carrier(ev.target);
    if(c!==EAT){EAT=null;return;}
    EAT=null;
    ev.stopPropagation(); ev.preventDefault();},true);
   /* KEYBOARD. Focus opens, escape closes, and escape is caught in the
      capture phase so a carrier inside a sheet cannot eat it. */
   document.addEventListener('focusin',function(ev){
-   var c=carrier(ev.target); if(!c){hide();return;}
+   var c=sheet()?carrierIn(ev.target):carrier(ev.target); if(!c){hide();return;}
+   /* on a phone a tap focuses the button it lands on, and this opened the
+      panel on that focus, so the hold above would never have been the only
+      way in. Keyboard focus still opens it: that is what :focus-visible
+      tells apart. */
+   var kb=true; try{kb=ev.target.matches(':focus-visible');}catch(e){}
+   if(sheet()&&control(c)&&!kb)return;
    clearTimeout(TO); showFor(c);});
   document.addEventListener('focusout',function(ev){
    if(EL&&EL.contains(ev.relatedTarget))return; soon();});
@@ -16968,7 +17209,35 @@ function solCore(r,base){
    g.fillText('of 100', CX, CY+big*0.30+sm*1.75);}
   g.restore();}
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
+ /* THE TWO POLES INSIDE THE CIRCLE, on a phone. GF in TASKS.md, his words:
+    "The heaven and hell ... shows up in the very bottom of the square. I want
+    you to move that inside of the circle." The halo over the figure and the
+    pitchfork under it, inside the sphere, in the compass's colours and by its
+    rule for which is lit, the same pair frPoles in ui/rings.js puts in the
+    core of Frames and Dial. They scale with the core, so a pinch is what
+    brings them up to reading size, which is his next sentence: "when I zoom
+    in I can actually see the heaven and hell, like where I'm heading
+    towards." Pushed after the core, so the hit test, which reads HIT from
+    the end, finds either pole before the core it sits in. */
+ if(!r.unread&&phoneW()){
+  var pgs=cr0*0.42, pup=r.CQ>=50, bigP=Math.max(15,Math.min(cr0*0.52,64));
+  var ofL=bigP*0.26>=11?bigP*0.26*2.2:0;
+  [['up',GL_HALO,CY-Math.max(cr0*0.62,bigP*0.43+pgs*0.45),GOLD,pup],
+   ['dn',GL_FORK,CY+Math.max(cr0*0.60,bigP*0.30+ofL+pgs*0.55),PAL.Root,!pup]].forEach(function(p){
+   poleGlyph(p[1],CX,p[2],pgs,hx(p[3]),p[4]?0.95:0.35);
+   HIT.push({k:'pole',end:p[0],x:CX,y:p[2],rad:pgs*0.7});});}
  return cr0;}
+/* a 24 unit glyph stroked at a size and a centre, ring not fill. coneGlyph in
+   ui/cone.js does this at one fixed size for the compass; the core needs the
+   size to follow the sphere, and it loads first. */
+function poleGlyph(p,x,y,size,c,a){
+ if(!p||a<0.06||size<2)return;
+ var sc=size/24;
+ g.save(); g.translate(x-size/2,y-size/2); g.scale(sc,sc);
+ g.strokeStyle=rgba(c,a); g.lineWidth=Math.max(1.2,size*0.075)/sc;
+ g.lineJoin='round'; g.lineCap='round';
+ try{g.stroke(new Path2D(p));}catch(e){}
+ g.restore();}
 
 /* SIX GATES at the core. three higher above, three lower below, each a
    ring icon on a short stem. The ring closes by the share of the story that
@@ -18465,9 +18734,17 @@ function frCore(M,r,cx,cy,R,o){
     the figures are one line each from full size, because a stack shrunk to
     fit is a coherence figure that no longer reads as the largest thing on
     the Field. */
+ /* ON A PHONE THE FIGURES GIVE THE POLES ROOM, GF in TASKS.md, his words:
+    "move that inside of the circle, or CQDQ on the square one, and then make
+    the CQDQ a little bit smaller." The halo sits over CQ and the pitchfork
+    under DQ, frPoles below, so the figures are fitted to the band between
+    them, yl, as well as to the hole. That is what makes them smaller, and by
+    the fitting rule already here rather than by a size typed in. */
+ var ph=phoneW(), yl=ph?(R-w/2-3)*.46:Infinity;
  var inner=R-w/2-3,fits=function(rows){var H=0;rows.forEach(function(q){H+=q.h+(q.g||0);});
   var y=-H/2,ok=true;rows.forEach(function(q){var y0=y,y1=y+q.h,ym=Math.max(Math.abs(y0),Math.abs(y1));
-   if(ym>=inner||q.w/2>Math.sqrt(inner*inner-ym*ym))ok=false;y=y1+(q.g||0);});return ok?H:0;};
+   if(ym>=inner||ym>yl||q.w/2>Math.sqrt(inner*inner-ym*ym))ok=false;y=y1+(q.g||0);});return ok?H:0;};
+ var poles=ph?frPoles(M,r,cx,cy,inner):'';
  var F1=Math.max(22,38*inner/45),F2=Math.max(13,17*inner/45),lc=lab*.727,k,f1,f2,H;
  for(k=1;k>=.79;k-=.05){f1=F1*k;f2=Math.max(lab,F2*k);
   var g1=Math.max(4,6*inner/45),g2=Math.max(7,11*inner/45);
@@ -18479,7 +18756,7 @@ function frCore(M,r,cx,cy,R,o){
     +'<text x="'+cx.toFixed(1)+'" y="'+(y0+H).toFixed(1)+'" text-anchor="middle">'
     +'<tspan fill="'+frRgb(M.dq)+'" font-size="'+f2.toFixed(1)+'" font-weight="500">'+dq+'</tspan>'
     +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">DQ</tspan></text>';
-   M.L.core.push(s+'</g></g>');return;}}
+   M.L.core.push(s+'</g>'+poles+'</g>');return;}}
  for(k=1;k>=.4;k-=.05){f1=Math.max(lab+2,F1*k);f2=Math.max(lab,F2*k);
   H=fits([{h:f1*.727,w:W_(FC,f1,300)+4+W_('CQ',lab,500),g:6},{h:f2*.727,w:W_(FD,f2,500)+4+W_('DQ',lab,500)}]);
   if(H)break;}
@@ -18488,7 +18765,28 @@ function frCore(M,r,cx,cy,R,o){
   +'<tspan fill="'+c+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'">'+n.v+'</tspan>'
   +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">'+n.l+'</tspan></text>';};
  s+=row(y1,{v:cq,l:'CQ'},frRgb(col),f1,300)+row(y2,{v:dq,l:'DQ'},frRgb(M.dq),f2,500);
- M.L.core.push(s+'</g></g>');}
+ M.L.core.push(s+'</g>'+poles+'</g>');}
+/* THE TWO POLES IN THE CORE, on a phone. The strip that carried them sat
+   under the picture and its pitchfork landed on the stage's bottom edge; here
+   the halo is over the figures and the pitchfork under them, inside the
+   core's ring, in the compass's own colours and the compass's own rule for
+   which is lit: coherence at 50 or over lights the halo, under it the
+   pitchfork, and the other stands at .35, as renderPol2 draws them. Each
+   is the same door the strip's end was, runPoleDrill through hitPress.
+
+   OUTSIDE .frcq, measured. Inside it they shrank with the figures as the core
+   opened, and at a pinch of 4 the pitchfork was lost in the feathers. Beside
+   it they scale with the picture and nothing else, so the zoom is what brings
+   them up to reading size, which is his own account: "when I zoom in I can
+   actually see the heaven and hell, like where I'm heading towards." */
+function frPoles(M,r,cx,cy,inner){
+ var up=r.CQ>=50, gs=inner*.42, sc=gs/24, f=function(v){return v.toFixed(2);};
+ var one=function(end,d,y,col,on){var x0=cx-gs/2,y0=y-gs/2;
+  return '<g data-h="'+M.hid({k:'pole',end:end})+'" opacity="'+(on?1:.35)+'">'
+   +'<rect x="'+f(x0)+'" y="'+f(y0)+'" width="'+f(gs)+'" height="'+f(gs)+'" fill="transparent"/>'
+   +'<path d="'+d+'" transform="translate('+f(x0)+' '+f(y0)+') scale('+f(sc)+')" fill="none" stroke="'+col
+   +'" stroke-width="'+f(1.5/sc)+'" stroke-linecap="round" stroke-linejoin="round"/></g>';};
+ return one('up',GL_HALO,cy-inner*.70,GOLD,up)+one('dn',GL_FORK,cy+inner*.64,PAL.Root,!up);}
 /* THE SIX GATES AS A COLLAR. Ruled 26 September, CH in TASKS.md: "for the
    six gates I like three", the third on the CE sheet and the round's own
    recommendation. They stood as two rows of three, one above the core and one
@@ -19108,12 +19406,17 @@ function fieldReframe(){
  h.addEventListener('wheel',function(e){if(S.tab!==TAB.FIELD||!fviewOn())return;e.preventDefault();
   var b=h.getBoundingClientRect();fzAt(FZ.s*(e.deltaY<0?1.12:1/1.12),e.clientX-b.left,e.clientY-b.top);},{passive:false});
  h.addEventListener('pointerdown',function(e){if(!fviewOn()||FZ.s<=1.001||e.button!==0)return;
+  /* a second finger is the pinch's, fieldPinch in ui/ui.js */
+  if(typeof fieldFingers==='function'&&fieldFingers()>1)return;
   FZDRAG={x:e.clientX,y:e.clientY,fx:FZ.x,fy:FZ.y};FZMOVED=false;});
  addEventListener('pointermove',function(e){if(!FZDRAG)return;
   var dx=e.clientX-FZDRAG.x,dy=e.clientY-FZDRAG.y;
   if(Math.abs(dx)+Math.abs(dy)>4)FZMOVED=true;
   if(FZMOVED){FZ.x=FZDRAG.fx+dx;FZ.y=FZDRAG.fy+dy;fzClamp();fzApply();h.classList.add('dragging');}});
  addEventListener('pointerup',function(){FZDRAG=null;h.classList.remove('dragging');});
+ /* a finger the browser took for a scroll never sends its pointerup, and the
+    drag it armed stayed armed, so the next pointer anywhere moved the picture */
+ addEventListener('pointercancel',function(){FZDRAG=null;h.classList.remove('dragging');});
  /* a drag that moved the picture is not also a press on whatever it ended on */
  h.addEventListener('click',function(e){if(FZMOVED){FZMOVED=false;e.stopPropagation();e.preventDefault();}},true);})();
 
@@ -23793,15 +24096,9 @@ const CONE_NECK=0.14;
    disappears and it is a cone again. */
 const ARROW_SHOULDER=0.64;
 const ARROW_HEAD=0.76;
-/* THE THREE POLE GLYPHS, on the 24 unit grid every icon in this product uses.
-   Ring, not fill, like the rest. A halo is a ring with nothing in it. Ego
-   compression is a ring with two arrows pressing on it. The pitchfork is a
-   pitchfork. */
-const GL_HALO='M4 12 A8 3.4 0 1 0 20 12 A8 3.4 0 1 0 4 12';
-/* GL_COMPRESS is gone with the third glyph it drew. A constant nothing draws
-   is how the destructive release animation survived in this build for weeks,
-   so an unused path does not stay in the file. */
-const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
+/* GL_HALO and GL_FORK, the two pole glyphs, moved to ui/component.js on GF:
+   the Field's own pictures draw them into their cores on a phone now, and
+   both of those load before this file. */
 /* THE LAYERS, waist outward, one per band of five. Lifted out of coneDraw
    because the drawing strokes them and coneKey names them, and two copies of
    a list are two lists that can disagree about which ring is Wrath. */
@@ -27200,6 +27497,11 @@ function setTab(i){
     in a list that could be a different length than TABDEF. */
  document.querySelectorAll('.tabtop').forEach(function(x){
   x.setAttribute('aria-pressed',+x.getAttribute('data-tabk')===i);});
+ /* the folded bar on a phone names the surface, GF. Settings has no tab of
+    its own, so the folded bar says the button that opened it. */
+ var nn=$('navnow');
+ if(nn){var nT=TABDEF.filter(function(T){return T.k===i;})[0];
+  nn.textContent=nT?nT.nm:(i===TAB.SETTINGS?'Profile':nn.textContent);}
  /* THE RAIL OPENS WHAT THE SURFACE IS ABOUT.
 
     The Body page's whole reading is flow through the seven seats, and the
@@ -27352,9 +27654,11 @@ function setLighting(k){
  S.theme=k;
  ['snow','punch','glass','glasswhite','flat','lumen'].forEach(function(c){
   document.body.classList.toggle(c,k===c);});
- var seg=$('themes');
- if(seg)seg.querySelectorAll('button').forEach(function(x,j){
-  x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});
+ /* the bar's menu and the main menu's lighting on a phone, GF: one list, two
+    doors, one setter, so both say the same lighting is on */
+ ['themes','navthemes'].forEach(function(id){var seg=$(id);
+  if(seg)seg.querySelectorAll('button').forEach(function(x,j){
+   x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});});
  var nw=$('lightnow');
  if(nw){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
   if(e)nw.textContent=e[1];}
@@ -27372,7 +27676,17 @@ LIGHTINGS.forEach(function(t,i){
   +'<path d="'+(THEMEICON[t[0]]||'')+'"/></svg>';
  if(!THEMEICON[t[0]])b.setAttribute('data-noicon','1');
  b.addEventListener('click',function(){setLighting(t[0]);});
- $('themes').appendChild(b);});
+ $('themes').appendChild(b);
+ /* THE SAME CHOICE IN THE MAIN MENU, GF. The mark and its name side by side,
+    because the menu has the width the bar's segmented row did not, and a
+    person choosing a lighting should not have to know which glyph is Lumen. */
+ var nav=$('navthemes'); if(!nav)return;
+ var n=document.createElement('button');n.type='button';
+ n.setAttribute('aria-pressed',i===0);
+ n.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="'
+  +(THEMEICON[t[0]]||'')+'"/></svg><span>'+esc(t[1])+'</span>';
+ n.addEventListener('click',function(){setLighting(t[0]);});
+ nav.appendChild(n);});
 /* ---- THE LIGHTING MENU ----
    The three lighting buttons moved off the bar and into a menu on the owner's
    ruling. The button names the lighting it is on, so the setting is still
@@ -27394,6 +27708,23 @@ LIGHTINGS.forEach(function(t,i){
  document.addEventListener('click',function(){if(!menu.hidden)shut();});
  document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
+/* ---- THE MAIN MENU ON A PHONE, GF in TASKS.md ----
+   The folded bar opens and closes the tabs and the lighting under them, the
+   class on .top is the whole state, and the head.html rules under the phone
+   width read it. A tab chosen closes it, because the surface it opens is the
+   thing a person wanted and the menu is in its way; a lighting chosen closes
+   it for the reason the bar's own lighting menu does, the result is behind
+   it. Escape closes it too, the same as every other menu here. */
+(function(){
+ var top=document.querySelector('.top'), tog=$('navtog'), bar=$('tabbar'), lt=$('navthemes');
+ if(!top||!tog||!bar)return;
+ function set(open){top.classList.toggle('navopen',open);
+  tog.setAttribute('aria-expanded',open?'true':'false');}
+ tog.addEventListener('click',function(){set(!top.classList.contains('navopen'));});
+ bar.addEventListener('click',function(e){if(e.target.closest('[data-tabk]'))set(false);});
+ if(lt)lt.addEventListener('click',function(e){if(e.target.closest('button'))set(false);});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&top.classList.contains('navopen')){set(false);tog.focus();}});})();
 /* ---- THE WORDMARK GOES HOME ----
    Home is the field. It is the instrument, it is where the app opens on the
    owner's ruling, and it is what clicking the name of the product asks for. */
@@ -29099,6 +29430,33 @@ function pselName(p,up){
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
+/* THE LOADER ON A PHONE, GF in TASKS.md. A circle beside help, and the list it
+   opens is read off #psel every time it opens, groups and names and which one
+   is loaded, so it can never list a profile the picker does not have or miss
+   the name pselName just changed. A choice is handed to #psel and its change
+   handler above, so loading a profile still has exactly one route. */
+(function(){
+ var btn=$('ploadbtn'), menu=$('pload'), sel=$('psel'); if(!btn||!menu||!sel)return;
+ function shut(){menu.hidden=true; btn.setAttribute('aria-expanded','false');}
+ function open(){
+  var h='<div class="gmenu-hd">Load a profile</div>';
+  [].forEach.call(sel.children,function(g){
+   var opts=g.tagName==='OPTGROUP'?[].slice.call(g.children):[g];
+   if(g.tagName==='OPTGROUP')h+='<div class="pl-g">'+esc(g.label)+'</div>';
+   opts.forEach(function(o){var on=o.value===sel.value;
+    h+='<button type="button" class="pl-i" data-pv="'+esc(o.value)+'" aria-pressed="'+on+'">'
+     +esc(o.textContent)+'</button>';});});
+  menu.innerHTML=h; menu.hidden=false; btn.setAttribute('aria-expanded','true');}
+ btn.addEventListener('click',function(e){e.stopPropagation(); if(menu.hidden)open(); else shut();});
+ menu.addEventListener('click',function(e){e.stopPropagation();
+  var b=e.target.closest('[data-pv]'); if(!b)return;
+  shut();
+  if(b.getAttribute('data-pv')===sel.value)return;
+  sel.value=b.getAttribute('data-pv');
+  sel.dispatchEvent(new Event('change'));});
+ document.addEventListener('click',function(){if(!menu.hidden)shut();});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
 /* This set the flag and moved the dropdown and left CURP pointing at whichever
    reference case was loaded, so the next save wrote the person's own edit into
    that case's record. It repoints the record without reloading S, because the
@@ -29850,6 +30208,9 @@ function describe(h,r,still){
      CQ's three terms until 25 September. CQ is the 21 laws summed now. */
   +'<span class="tt-q">'+(r.complete?'every law answered':tierSay(r))+'</span>'
   +'<hr><b>Click for the breakdown.</b>';
+ /* the compass's own two words for its two ends, cone.js, and nothing new */
+ if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
+  +'<hr><b>Click for detail.</b>';
  if(h.k==='gate'){var v=h.v;
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
    +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
@@ -29937,7 +30298,19 @@ let DRAG=null, PAN=null;
    gesture reaches the page so the wheel stops being a dead zone.
    This comes out when undo exists and not before. */
 const COARSE=(typeof matchMedia==='function')&&matchMedia('(pointer:coarse)').matches;
+/* A FINGER'S PRESS WAITS FOR ITS RELEASE. GF in TASKS.md, his words: "I want
+   to be able to pinch zoom, and I can't, and the second that I put my fingers
+   on it, the overlay dominates." Reproduced at 390 with a real two finger
+   touch: the first finger's pointerdown ran hitPress on the spot, so a pinch
+   that began on a mark opened that mark's drill before the second finger had
+   landed. A tap is a press and a release in one place, so on a finger the
+   press is armed here and fired on pointerup, and dropped by a second finger
+   (fieldPinch below) or by the browser taking the gesture for a scroll
+   (pointercancel). A mouse still acts on the press, as it always has. */
+let TAP=null;
 cv.addEventListener('pointerdown',function(e){
+ /* a second finger is a pinch, never a press on whatever it landed on */
+ if(fieldFingers()>1){fieldPressDrop();return;}
  var L=loc(e),x=L[0],y=L[1],h=hitTest(x,y);
  /* empty canvas, or the core, is grab space: the frame moves, nothing is set */
  if(!h||h.k==='core'){
@@ -29956,6 +30329,7 @@ cv.addEventListener('pointerdown',function(e){
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   try{cv.setPointerCapture(e.pointerId);}catch(err){}
   return;}
+ if(e.pointerType==='touch'){TAP={h:h,e:{shiftKey:false},id:e.pointerId};return;}
  hitPress(h,e);});
 /* WHAT A PRESS ON A MARK DOES, ONE COPY FOR EVERY PICTURE OF THE FIELD.
 
@@ -30018,6 +30392,8 @@ function hitPress(h,e){
     opens the reading only if the pointer never moved. Opening it here as well
     meant the drill fired on press and the drag never happened. */
  if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
+ /* a pole drawn in the core on a phone, GF, is the door the strip's end was */
+ if(h.k==='pole'){S.pin=null;runPoleDrill(h.end);render();return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
  S.pin=same?null:o; runDrill(S.pin); render();}
@@ -30069,19 +30445,22 @@ addEventListener('keydown',function(e){
  if(k==='+'||k==='='){fieldZoomBy(1.25);return;}
  if(k==='-'||k==='_'){fieldZoomBy(1/1.25);return;}});
 const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in and the core opens as you go, drag to move the frame, F to come back.';
-cv.addEventListener('pointerup',function(){
+cv.addEventListener('pointerup',function(e){
  cv.style.cursor='';
+ if(TAP){var tp=TAP; TAP=null; if(tp.id===e.pointerId)hitPress(tp.h,tp.e); return;}
  if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
   /* a press on the core that never moved is still a click on the core */
   if(!moved&&wasCore){S.pin=null;runCoreDrill();render();}
   return;}
  if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
-cv.addEventListener('pointercancel',function(){PAN=null;DRAG=null;cv.style.cursor='';});
+cv.addEventListener('pointercancel',function(){PAN=null;DRAG=null;TAP=null;cv.style.cursor='';});
 /* double click puts the frame back, the same thing F does, because a person
    who has panned into a corner should not have to find a keyboard. */
 cv.addEventListener('dblclick',function(){S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
 cv.addEventListener('pointermove',function(e){
+ /* two fingers down is the pinch's, and fieldPinch moves the frame */
+ if(fieldFingers()>1)return;
  var L=loc(e),x=L[0],y=L[1];
  /* PAN. Left press and drag anywhere the wheel is not a target and the frame
     moves under the pointer. The scroll wheel already zoomed and F already
@@ -30099,6 +30478,12 @@ cv.addEventListener('pointermove',function(e){
   if(Math.abs(DRAG.y-y)>3)DRAG.moved=true;
   toYou();S.charge[DRAG.cf]=clamp(DRAG.s+d,0,10);
   syncCh();saveYou();render();return;}
+ /* A FINGER HAS NO HOVER. This readout is what a mouse sees resting over a
+    mark, and a finger moving on the glass put it up over the middle of the
+    picture: the overlay that "dominates" in GF, measured at 390 as a 158 by
+    147 panel reading "mask Ideological" on top of the core mid pinch. A tap
+    opens the mark's reading instead, on its release. */
+ if(e.pointerType==='touch')return;
  var h=hitTest(x,y),pr=$('probe');
  S.hover=h?(h.n||h.o||null):null;
  if(!h){pr.classList.remove('on');cv.style.cursor='crosshair';return;}
@@ -30172,6 +30557,8 @@ function frDescribe(h,r){
  var hitOf=function(e){var t=e.target&&e.target.closest?e.target.closest('[data-h]'):null;
   return t?(FR_HIT[+t.getAttribute('data-h')]||null):null;};
  fr.addEventListener('pointermove',function(e){
+  /* a finger has no hover, the wheel's own reason above */
+  if(e.pointerType==='touch')return;
   var h=hitOf(e),pr=$('probe'); if(!pr)return;
   var t=h?frDescribe(h,compute()):'';
   if(!t){pr.classList.remove('on');return;}
@@ -30187,6 +30574,82 @@ function frDescribe(h,r){
   if(h.k==='anchor')return;
   if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
   hitPress(h,e);});})();
+
+/* ============================================================
+   THE PINCH. GF in TASKS.md, 27 September, his words: "I want to be able to
+   pinch zoom, and I can't, and the second that I put my fingers on it, the
+   overlay dominates."
+
+   Reproduced before this existed, at 390 with isMobile and hasTouch and two
+   real touch points driven through the browser's own input pipeline, a
+   spread from 60 to 200 pixels on each picture:
+
+     Wheel    S.zoom 1 before and 1 after. Nothing anywhere listened for two
+              fingers: the zoom was wired to the mouse wheel and to keys and
+              to nothing else. touch-action pan-y on the canvas, which is
+              right, kept the browser's own zoom off it, so the gesture went
+              nowhere. Each finger was read as a mouse instead: the first
+              pressed whatever mark it landed on and opened its drill, and
+              moving put the hover readout over the core.
+     Frames   FZ.s 1 before and 1 after, and the page's visualViewport scale
+     Dial     went from 1 to 4.96. #frend had no touch-action, so the browser
+              took the pinch as a zoom of the whole page: the bar, the glass
+              bar and every panel grew with it and the picture's own zoom
+              never moved. That is the "I can pinch zoom here" in the same
+              message, and it is why the overlay dominated there too.
+
+   So both hosts take two fingers here, off the touch events, which are the
+   only events that say how many fingers are down and the only ones whose
+   default can still be refused once the browser has seen them. The distance
+   between the fingers scales the picture about their midpoint, the midpoint
+   moving pans it, and the wheel and the renditions each go through the zoom
+   they already had, setZoom in this file and fzAt in ui/rings.js, so the
+   ceilings, the layers a zoom brings in and the glass bar's circles all
+   answer to a pinch exactly as they answer to a scroll. One finger is left
+   alone entirely: it still scrolls the page, which is the lesson recorded at
+   COARSE above and the functional gate's "a finger reads the wheel".
+   ============================================================ */
+var FINGERS={}, PINCH=null, PINCH_END=0;
+/* fingers are counted in the capture phase at the window, so the count is
+   already right when a host's own pointerdown for the second finger runs */
+addEventListener('pointerdown',function(e){if(e.pointerType==='touch')FINGERS[e.pointerId]=1;},true);
+['pointerup','pointercancel'].forEach(function(t){
+ addEventListener(t,function(e){delete FINGERS[e.pointerId];},true);});
+function fieldFingers(){return Object.keys(FINGERS).length;}
+/* whatever one finger had started is not also a press, a pan or a drag */
+function fieldPressDrop(){TAP=null;PAN=null;DRAG=null;FZDRAG=null;
+ var pr=$('probe'); if(pr)pr.classList.remove('on');}
+function fieldPinch(host,wheel){
+ if(!host)return;
+ var two=function(e){var a=e.touches[0],b=e.touches[1],r=host.getBoundingClientRect();
+  return {d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),
+   x:(a.clientX+b.clientX)/2-r.left, y:(a.clientY+b.clientY)/2-r.top};};
+ host.addEventListener('touchstart',function(e){
+  if(S.tab!==TAB.FIELD||e.touches.length<2)return;
+  if(wheel===fviewOn())return;
+  PINCH=two(e); fieldPressDrop();
+  if(e.cancelable)e.preventDefault();},{passive:false});
+ host.addEventListener('touchmove',function(e){
+  if(!PINCH||e.touches.length<2)return;
+  /* refused while the browser still allows it, so no page zoom and no scroll
+     starts under the pinch. A browser that already committed to a scroll
+     makes this uncancelable, and the picture still follows the fingers. */
+  if(e.cancelable)e.preventDefault();
+  var n=two(e), k=PINCH.d>0?n.d/PINCH.d:1, dx=n.x-PINCH.x, dy=n.y-PINCH.y;
+  if(wheel){
+   setZoom(S.zoom*k,n.x,n.y);
+   if(dx||dy){S.panx=(S.panx||0)+dx; S.pany=(S.pany||0)+dy; reframe(); render();}}
+  else{
+   fzAt(FZ.s*k,n.x,n.y);
+   if(dx||dy){FZ.x+=dx; FZ.y+=dy; fzClamp(); fzApply();}}
+  PINCH=n;},{passive:false});
+ var end=function(e){if(PINCH&&e.touches.length<2){PINCH=null;PINCH_END=performance.now();}};
+ host.addEventListener('touchend',end); host.addEventListener('touchcancel',end);
+ /* the last finger up after a pinch is not a tap on what it lifted from */
+ host.addEventListener('click',function(e){
+  if(performance.now()-PINCH_END<400){e.stopPropagation();e.preventDefault();}},true);}
+fieldPinch(cv,true);
+fieldPinch($('frend'),false);
 
 /* ---- collapsible sections ---- */
 /* One open section per rail. It was a single value, so opening anything on
@@ -31232,5 +31695,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002045834"></div>
+<div id="eof" hidden data-len="002076166"></div>
 </body></html>

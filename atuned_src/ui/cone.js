@@ -100,15 +100,9 @@ const CONE_NECK=0.14;
    disappears and it is a cone again. */
 const ARROW_SHOULDER=0.64;
 const ARROW_HEAD=0.76;
-/* THE THREE POLE GLYPHS, on the 24 unit grid every icon in this product uses.
-   Ring, not fill, like the rest. A halo is a ring with nothing in it. Ego
-   compression is a ring with two arrows pressing on it. The pitchfork is a
-   pitchfork. */
-const GL_HALO='M4 12 A8 3.4 0 1 0 20 12 A8 3.4 0 1 0 4 12';
-/* GL_COMPRESS is gone with the third glyph it drew. A constant nothing draws
-   is how the destructive release animation survived in this build for weeks,
-   so an unused path does not stay in the file. */
-const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
+/* GL_HALO and GL_FORK, the two pole glyphs, moved to ui/component.js on GF:
+   the Field's own pictures draw them into their cores on a phone now, and
+   both of those load before this file. */
 /* THE LAYERS, waist outward, one per band of five. Lifted out of coneDraw
    because the drawing strokes them and coneKey names them, and two copies of
    a list are two lists that can disagree about which ring is Wrath. */

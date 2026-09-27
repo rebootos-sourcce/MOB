@@ -309,23 +309,71 @@ var TIP=(function(){
      because preventing a pointerdown does not reliably stop the click that
      follows it. */
   var EAT=null;
+  /* PRESS AND HOLD, ON A CONTROL. GF in TASKS.md, 27 September, his words:
+     "when I press CQ, DQ, whatever, it should pull up a tooltip if I press for
+     a second and a half." The first tap explaining was right for a word and
+     wrong for a control: CQ, DQ, accuracy, an address row and a glass bar
+     circle are each a door, and on a phone every one of them asked for two
+     taps to open, the first spent on a panel the person had not asked for. So
+     a carrier inside a control acts on a tap, as it does under a mouse, and
+     explains on a hold of PRESS_MS without moving more than PRESS_SLOP. The
+     click that ends a hold is swallowed, so a hold never also opens the door.
+     A carrier that is only words keeps the first tap, because a tap on it has
+     nothing else to do. The copy is whatever the carrier already says; the
+     words themselves wait on DESIGN-tooltip-copy.md. */
+  var PRESS=null, PRESS_MS=1500, PRESS_SLOP=10;
+  function control(c){return !!(c&&c.closest&&c.closest('button,a[href],[role=button]'));}
+  /* THE WHOLE CONTROL ANSWERS FOR THE DEFINITION INSIDE IT, on a phone. The
+     dock's buttons carry their title on the ring inside, not on the button, so
+     a finger on accuracy's word, or on a tile's edge, found no carrier and the
+     hold explained nothing; and the release focused the button, which read as
+     nothing to explain and closed a panel the hold had just opened. Measured:
+     CQ's panel opened at 1.5s and was gone the moment the finger lifted. */
+  /* And the open carrier counts though it has no title: showFor lifts the
+     title off while its panel is up, so without CUR the release's own focus
+     found nothing and hid the panel it had just opened. */
+  function carrierIn(t){var c=carrier(t); if(c||!t||!t.closest)return c;
+   var k=t.closest('button,a[href],[role=button]'); if(!k)return null;
+   if(CUR&&CUR.nodeType===1&&k.contains(CUR))return CUR;
+   return k.querySelector('[data-tip],[data-tip-t],[title]');}
+  function pressDrop(){if(PRESS){clearTimeout(PRESS.t);PRESS=null;}}
+  function pressArm(c,ev){pressDrop();
+   PRESS={c:c,id:ev.pointerId,x:ev.clientX,y:ev.clientY,t:setTimeout(function(){
+    var p=PRESS; PRESS=null; if(!p)return;
+    clearTimeout(TO); showFor(p.c); EAT=p.c;},PRESS_MS)};}
+  document.addEventListener('pointermove',function(ev){
+   if(PRESS&&ev.pointerId===PRESS.id
+      &&Math.hypot(ev.clientX-PRESS.x,ev.clientY-PRESS.y)>PRESS_SLOP)pressDrop();},true);
+  ['pointerup','pointercancel'].forEach(function(t){
+   document.addEventListener(t,function(ev){if(PRESS&&ev.pointerId===PRESS.id)pressDrop();},true);});
+  /* a held finger is the browser's own cue for a context menu and a text
+     selection, and either would land on top of the panel this opens */
+  document.addEventListener('contextmenu',function(ev){
+   if(sheet()&&(PRESS||EAT)&&carrierIn(ev.target))ev.preventDefault();},true);
   document.addEventListener('pointerdown',function(ev){
-   var c=carrier(ev.target);
+   var c=sheet()?carrierIn(ev.target):carrier(ev.target);
    if(EL&&EL.contains(ev.target))return;
    if(!c){hide();return;}
    if(!sheet())return;                    /* a fine pointer keeps hover */
+   if(control(c)){EAT=null; hide(); pressArm(c,ev); return;}
    if(c===CUR){EAT=null; hide(); return;} /* tap the same thing again and it acts */
    clearTimeout(TO); showFor(c); EAT=c;},true);
   document.addEventListener('click',function(ev){
    if(!EAT)return;
-   var c=carrier(ev.target);
+   var c=sheet()?carrierIn(ev.target):carrier(ev.target);
    if(c!==EAT){EAT=null;return;}
    EAT=null;
    ev.stopPropagation(); ev.preventDefault();},true);
   /* KEYBOARD. Focus opens, escape closes, and escape is caught in the
      capture phase so a carrier inside a sheet cannot eat it. */
   document.addEventListener('focusin',function(ev){
-   var c=carrier(ev.target); if(!c){hide();return;}
+   var c=sheet()?carrierIn(ev.target):carrier(ev.target); if(!c){hide();return;}
+   /* on a phone a tap focuses the button it lands on, and this opened the
+      panel on that focus, so the hold above would never have been the only
+      way in. Keyboard focus still opens it: that is what :focus-visible
+      tells apart. */
+   var kb=true; try{kb=ev.target.matches(':focus-visible');}catch(e){}
+   if(sheet()&&control(c)&&!kb)return;
    clearTimeout(TO); showFor(c);});
   document.addEventListener('focusout',function(ev){
    if(EL&&EL.contains(ev.relatedTarget))return; soon();});
