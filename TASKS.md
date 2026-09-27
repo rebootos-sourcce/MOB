@@ -22000,3 +22000,24 @@ A build sent now, from the current pushed HEAD (e3b13ae at the time of
 the ask, source.html unchanged since 6aa063a, md5 b8f58ab7 as already
 verified in round IV), since he asked for one before continuing rather
 than waiting on the five pieces already in flight.
+
+## IY. The marketing and briefs pass verified, and a real number checked against the engine, not a document
+
+6a2cfb3 is in, pushed, docs only: `marketing/LINES.md`,
+`brief-foundations.md`, `brief-screens.md`, `design-mechanisms.md`,
+`docs/briefs/README.md`, five files exactly, nothing under atuned_src,
+source.html, proto or PRIORITY.md. `node marketing/tests.js` re-run
+here: 354 assertions, 0 failures, matching the report. Zero em dashes
+across all five.
+
+The seat count the brief now carries (Root 16, Sacral 16, Solar 16,
+Heart 15, Throat 12, 3rd Eye 12, Crown 21, 108 inside the body, plus
+4 field anchors, 112 in all) was not trusted off the document. Loaded
+the real built `engine.js`, read `NODES.length` and grouped every node
+by its own `.b` field: 112 total, the same seven numbers, the same
+four anchors. The bank and vault line is confirmed already built and
+named in `storyui.js` from round IG, so the brief's claim that the
+tagline is the mechanic is a real, checkable fact and not a marketing
+invention. The band collision is written into `brief-foundations.md`
+section 1.3.6 as open, three ways it could go, none chosen, matching
+what was asked.
