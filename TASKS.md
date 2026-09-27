@@ -22282,3 +22282,25 @@ variable. The threshold never moved, only the name. Fixed directly,
 one line, in `marketing/testimony.js`, since it was small, well
 understood, and touched no file any in-flight agent owned. Re-run
 clean: 354 assertions, 0 failures.
+
+## JH. The arc90 clock correction verified, and it is more precise than either of us guessed
+
+`d1dbf32`, `1364e0e` and `02c1a9e` are in, pushed, exactly the five
+files claimed, nothing under atuned_src or source.html. Reproduced the
+finding directly rather than trusting the report: ran
+`node proto/ninety/arc90.js --walk proto/ninety/walk-11830df.jsonl`
+myself and it matched `arc90-1364e0e.txt` byte for byte apart from the
+timestamp; the same with `--clock wall` against
+`arc90-1364e0e-wall.txt`. Derek's own line under the simulated clock
+read gift spent day 24, refused with load 56, `meter.giftAt`
+2026-09-25, exactly as the report gave it. Under the wall clock the
+same walk read refused with load 65 and refilled on 0 days, the
+artifact itself, reproduced directly. Zero em dashes in both touched
+files.
+
+The finding split cleaner than either of us framed it: item 7 was true
+of the build it was measured on (`2dff0f3` had no free week logic at
+all), and became a harness artifact only after the engine grew one
+25 minutes later in `b0eed95`. Nothing in the engine needed fixing,
+since `meterBudget` already accepted a `now`, only the harness's own
+call sites did not pass one.
