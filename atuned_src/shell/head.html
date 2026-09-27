@@ -1499,6 +1499,20 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
 .fb-grp{display:flex;align-items:center;gap:6px}
 .fbar .fb-foldp,.fbar.folded .fb-full{display:none}
 .fbar.folded .fb-foldp{display:flex}
+/* THE BAR CLOSES, GB in TASKS.md, ui/fieldbar.js fbShutWire. Open, the one
+   control sits in the free corner under the first circle, because the row
+   has 22 pixels spare at 1600 and a circle costs 56. Shut, everything else
+   goes and it is static, so it is the bar's first circle, in the corner the
+   tools were in: lfold's own two states. After the fold rules above, which
+   tie with the first rule here on weight, so shut wins over folded. It has
+   no reading, so it draws the track and no arc, the switch's rule for the
+   two renditions that are not up. */
+.fbar .fb-tog{position:absolute;left:0;top:52px}
+.fbar.shut>*:not(.fb-tog){display:none}
+.fbar.shut .fb-tog{position:static}
+.fb-tog .fb-arc .val{opacity:0}
+.fb-tog .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+.fbar.shut .fb-tog .lf-ch{transform:rotate(180deg)}
 /* THE TWO GLASSES, keyed on the ground and not on the lighting's name. The
    bar reads stageLight(), the one reading of what the stage is painted, and
    takes .fb-lt on a light one. The inks are Dark's own and Glass white's own
@@ -1675,6 +1689,22 @@ body:not(.tab-field) .fdock{display:none}
 .fdock .acc{margin:0;padding:0;text-align:center;display:flex;justify-content:center}
 .fdock .acc-b{gap:8px;padding:0;border:0}
 .fdock .acc-l{transform:translateY(-3px)}
+/* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
+   words: "The accuracy pill is bigger than everything else. Make all of
+   those uniform." Its ring and value pill were already the orb size, DQ's to
+   the pixel, measured on every lighting at five widths. What was bigger was
+   the box round it. DQ and CQ are .kb and the dock cleared .kb's hover fill
+   and gave its focus a round outline; accuracy is .acc-b, the button it was
+   when it sat boxed in the stage's corner, and it kept that button's hover:
+   a rounded slab 112 by 44 behind the word and the circle together, twice
+   the width of anything on the row, run into the rail's edge. Flat went one
+   further and filled the word's own box at rest, from its list of boxed
+   controls. So the slab goes, the word loses its fill, and keyboard focus
+   rings the circle as it rings DQ's, 3 out. */
+.fdock .acc-b:hover{background:transparent}
+body.flat .fdock .acc-l{background:transparent}
+.fdock .acc-b:focus-visible{outline:none}
+.fdock .acc-b:focus-visible .cr{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
@@ -3838,6 +3868,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     the ring, and the strip the stage keeps clear for it on a desktop goes. */
  body.tab-field .stage{padding-top:0}
  .fbar{position:relative;top:auto;left:auto;order:0;align-self:flex-start;margin:10px 12px 4px;flex-wrap:wrap}
+ /* and the bar's fold rides at the head of that row, because here the bar is
+    in flow above the picture and a circle hung under it would lie on the
+    ring. The row is folded to two circles at this width, so it has the room
+    the desktop row does not. */
+ .fbar .fb-tog{position:static;order:-1}
  /* the switch keeps its corner on a phone, level with the folded bar, which
     is one row of two circles here and leaves the right of that row empty.
     Zoom follows the picture, right aligned, in a row: under it there is no

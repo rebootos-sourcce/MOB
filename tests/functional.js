@@ -4178,6 +4178,58 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
  await fj.close();
 }
 
+console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box of its own ===');
+/* His words: "with our overlay nav, I want a button so I can minimize it and
+   open it up, the tools menu, upper left hand side. The accuracy pill is
+   bigger than everything else. Make all of those uniform." A real mouse on
+   both, because a class toggled by a script is not a press, and the hover
+   slab that made accuracy bigger than the rest existed only under a pointer. */
+{
+ const gx=await browser.newContext({viewport:{width:1600,height:1000}});
+ const gp=await gx.newPage();
+ const gerr=[];
+ gp.on('pageerror',e=>gerr.push('PAGEERROR: '+e.message));
+ await gp.goto(FILE,{waitUntil:'load'}); await booted(gp);
+ await gp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();});
+ await gp.waitForTimeout(300);
+ const bar=()=>gp.evaluate(()=>{const F=document.getElementById('fbar'),T=F.querySelector('.fb-tog'),
+   st=document.getElementById('stage').getBoundingClientRect(),r=T.getBoundingClientRect(),
+   vis=[...F.querySelectorAll('.fb-b')].filter(b=>b.offsetParent);
+  return {shut:F.classList.contains('shut'),folded:F.classList.contains('folded'),n:vis.length,
+   lead:vis[0]&&vis[0].getAttribute('aria-label'),x:r.left-st.left,y:r.top-st.top,w:r.width,h:r.height,
+   exp:T.getAttribute('aria-expanded'),label:T.getAttribute('aria-label'),stored:STORE.get('fbar')};});
+ const open=await bar();
+ ok(!open.shut&&!open.folded&&open.lead==='Addresses'&&open.exp==='true'&&open.label==='Close the tools',
+  'open at 1600, the full row stands, Addresses still leads it, and the fold says it closes, '+JSON.stringify(open));
+ ok(open.w>=44&&open.h>=44,'the fold clears the 44 pixel tap floor, '+open.w+' by '+open.h);
+ await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
+ const shut=await bar();
+ ok(shut.shut&&shut.n===1&&shut.lead==='Open the tools'&&shut.exp==='false'&&shut.stored==='shut',
+  'one press shuts it to the one circle, which now says it opens, and the store keeps it, '+JSON.stringify(shut));
+ ok(Math.abs(shut.x-open.x)<=1&&shut.y<open.y,'shut, it is the bar\'s first circle, in the corner the tools were in, at '
+  +Math.round(shut.x)+','+Math.round(shut.y));
+ await gp.reload({waitUntil:'load'}); await booted(gp);
+ await gp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();});
+ const kept=await bar();
+ ok(kept.shut&&kept.n===1,'a reload keeps it shut, '+JSON.stringify(kept));
+ await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
+ const back=await bar();
+ ok(!back.shut&&!back.folded&&back.lead==='Addresses'&&back.n===open.n&&back.stored==='open',
+  'and a second press brings back the whole row at 1600, measured afresh, '+JSON.stringify(back));
+ /* THE ACCURACY BOX. DQ's button is the reference: whatever DQ draws under a
+    pointer, accuracy draws, and on Flat its word carries no fill at rest */
+ const fill=async sel=>{await gp.hover(sel);await gp.waitForTimeout(250);
+  return gp.evaluate(s=>getComputedStyle(document.querySelector(s)).backgroundColor,sel);};
+ const dqBg=await fill('#fdock .kb[data-q=dq]'), accBg=await fill('#accbtn');
+ ok(accBg===dqBg,'hovered, accuracy draws what DQ draws behind it and no slab of its own, '+accBg+' against '+dqBg);
+ await gp.mouse.move(800,900);
+ const flat=await gp.evaluate(()=>{setLighting('flat');render();
+  const w=getComputedStyle(document.querySelector('#acc .acc-l')).backgroundColor;setLighting('dark');return w;});
+ ok(/rgba\(0, 0, 0, 0\)|transparent/.test(flat),'on Flat the word Accuracy sits on no box of its own, '+flat);
+ ok(gerr.length===0,'GB: no errors, '+gerr.join(' | '));
+ await gx.close();
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

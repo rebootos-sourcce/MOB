@@ -52,7 +52,12 @@ const FB_IC={zin:'M10.5 4.5a6 6 0 110 12 6 6 0 010-12M15 15l5 5M10.5 8v5M8 10.5h
  zout:'M10.5 4.5a6 6 0 110 12 6 6 0 010-12M15 15l5 5M8 10.5h5',
  zfit:'M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5M9.5 12a2.5 2.5 0 105 0 2.5 2.5 0 00-5 0',
  layers:'M12 3.6l8.4 4.2-8.4 4.2-8.4-4.2zM3.6 12l8.4 4.2 8.4-4.2M3.6 16.2l8.4 4.2 8.4-4.2',
- depth:'M4 19.5h4.4v-4M8.4 15.5h4.2v-4M12.6 11.5h4.2v-4M16.8 7.5H21'};
+ depth:'M4 19.5h4.4v-4M8.4 15.5h4.2v-4M12.6 11.5h4.2v-4M16.8 7.5H21',
+ /* the left column's own fold mark, #lfold in shell/body.html, drawn to the
+    digit: closing a panel into its corner is one concept, so it is one mark.
+    The chevron carries lf-ch so the sheet can turn it the way lfold's turns. */
+ shut:'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9 4.5v15"/>'
+  +'<path class="lf-ch" d="M15.6 9.4L13 12l2.6 2.6"/>'};
 /* THE FOUR DEPTHS' MARKS, moved here from ui/panels.js with the depth row
    that drew them. They are the depth menu's marks now. */
 const VICON=[
@@ -186,7 +191,7 @@ function fbValues(r){
 
 /* ---- the hosts, which are in the markup so the bar cannot vanish with a
    failed script, and the pieces built into them once ---- */
-var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_ZOOM=null, FB_VIEW=null;
+var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_ZOOM=null, FB_VIEW=null, FB_TOG=null;
 function fbCluster(g,label){
  var c=document.createElement('div'); c.className='fb-grp';
  c.setAttribute('role','group'); c.setAttribute('aria-label',g.nm);
@@ -231,6 +236,28 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
  db.setAttribute('aria-haspopup','menu'); db.setAttribute('aria-expanded','false');
  db.addEventListener('click',function(e){e.stopPropagation();fbOpenMenu(FB_MENU.hidden);});
  dp.appendChild(db); FB.appendChild(dp);
+ /* THE BAR CLOSES. GB in TASKS.md, his words: "with our overlay nav, I want
+    a button so I can minimize it and open it up, the tools menu, upper left
+    hand side." The left column's fold, colFold in ui/ui.js, is the pattern:
+    one control that is the only thing left when it is shut, the same mark,
+    the same two words, and the state kept in the store as a convenience.
+
+    IT SITS UNDER THE BAR AND NOT AT THE HEAD OF IT, because the head of it
+    has no room. At 1600 the stage is 920 across, the switch in the upper
+    right takes 158 of it with its gap, and the full row is 712 against 734
+    available, measured: 22 pixels spare, and a circle at the tap floor with
+    the bar's gap is 56. At the head of the row it folded the bar at 1600,
+    which is the one thing EZ moved zoom out of the bar to prevent. So it
+    takes the free corner under the first circle while the bar is open, the
+    way lfold takes the corner a section header leaves free, and shut it is
+    the bar's first and only circle, where the tools were. It is last in the
+    markup so the first circle of the bar is still Addresses, which is what
+    the switch in the upper right is mirrored against. */
+ FB_TOG=fbOrb({nm:'Close the tools',ic:FB_IC.shut,
+  tip:'Folds the bar into this one circle. Every layer stays as it was set.'});
+ FB_TOG.classList.add('fb-tog'); FB_TOG.setAttribute('aria-controls','fbar');
+ FB_TOG.setAttribute('aria-expanded','true');
+ FB.appendChild(FB_TOG);
  /* ZOOM, ON EVERY PICTURE. His words, for Frames: "I want to be able to zoom
     in and out, and then hit the F key and have it reframe." The wheel already
     zoomed by scroll and reframed on F with no control you could see; the
@@ -359,6 +386,34 @@ function fbOpenMenu(on){if(!FB_MENU||!FB)return;
  db.setAttribute('aria-expanded',String(on));
  if(on)fbPlace(FB_MENU,db);}
 
+/* ---- the bar shut and open, colFold's shape in ui/ui.js. A store that
+   cannot be read opens the bar, which is the state nobody has to find their
+   way back from. Called at boot as a step, because the store is bound in
+   ui/ui.js, which loads after this file. ---- */
+function fbShutPaint(shut){
+ if(!FB||!FB_TOG)return;
+ FB.classList.toggle('shut',shut);
+ var say=shut?'Open the tools':'Close the tools';
+ FB_TOG.setAttribute('aria-expanded',shut?'false':'true');
+ FB_TOG.setAttribute('aria-label',say);
+ if(!FB_COARSE)FB_TOG.setAttribute('data-tip-t',say);
+ fbTip(FB_TOG,shut?'Opens the bar again, every layer as you left it.'
+  :'Folds the bar into this one circle. Every layer stays as it was set.');}
+function fbShutWire(){
+ if(!FB||!FB_TOG)return;
+ var shut=false; try{shut=STORE.get('fbar')==='shut';}catch(e){}
+ fbShutPaint(shut);
+ FB_TOG.onclick=function(e){e.stopPropagation();
+  var now=!FB.classList.contains('shut');
+  /* a panel or menu left open under a circle that has just gone would float
+     under nothing */
+  if(now){fbOpenPanel(false);fbOpenMenu(false);}
+  fbShutPaint(now);
+  try{STORE.set('fbar',now?'shut':'open');}catch(e2){}
+  /* open again, the row is measured afresh: fbFit skips a shut bar, so the
+     width it last cached may be from before a resize */
+  if(!now){FB_FIT=-1;fbFit();}};}
+
 /* ---- the full row or the folded one, measured only when the width moves,
    because measuring means taking the fold off for a frame ---- */
 var FB_FIT=-1;
@@ -369,6 +424,10 @@ function fbFit(){
     display:none, measured nothing, fitted, and cached that width: at 390 the
     full row then ran off the edge for the rest of the session. */
  if(!FB.offsetParent)return;
+ /* NOR ONE THAT IS SHUT. Shut, the row is display:none, scrollWidth reads
+    the one circle left, and the width was cached as fitting: opened again at
+    1440 the full row would have run under the switch until the next resize. */
+ if(FB.classList.contains('shut'))return;
  /* AND THE UPPER RIGHT IS THE SWITCH'S, EZ. The bar fits in what is left
     beside it, with one bar gap between, or it folds; measured off the switch
     itself, because its width is the sheet's to decide. */

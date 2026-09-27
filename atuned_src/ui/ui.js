@@ -1310,6 +1310,7 @@ step('layout',layout);
 step('matrix key',mxKey);
 step('rail sections',wireSections);
 step('left column fold',colFold);
+step('tools bar fold',fbShutWire);
 step('first profile',function(){loadP(0);});
 /* A saved record is the person's own state, so it wins over the demo "You"
    that loadP(0) just installed. Nothing read the store at boot before, so a
