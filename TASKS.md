@@ -21478,3 +21478,53 @@ afterward.
 What I need from him: confirm colour, tint and underline replace bold
 on the Story highlight, or rule that bold stays and the caret drift is
 accepted, or ask for a different editor design entirely.
+
+## IM. The release port, back and verified: a real, spoken script, the 50/50/50/50 dose driven by the engine itself. 27 September
+
+Commit `2c6e38b`, priority number one from round ID. Verified directly:
+`BUILD.sh` and `BUILD-engine.sh` clean and host free, `tests/engine.js`
+1763 passed 0 failed, `tests/collide.js` 336 passed 0 failed,
+`tests/funnel.js` 172 passed 0 failed, the voice check clean.
+Confirmed the one real collision named at dispatch is handled rather
+than guessed at: "sit back" and "relax" appear nowhere in the shipped
+copy, only in comments explaining why, exactly matching the voice
+gate's own standing rule against that phrasing; his own recording is
+named as the real place for those words, with a plain stand in line
+until it exists.
+
+**The dose is real, not typed in.** The four blocks, left release,
+right release, left reframe, right reframe, are `meterPlan`'s own keys
+in address order, each running its head statement once and then up to
+fifty passes, exactly the book's own numbers, and `relCoolDown` still
+charges through the same `meterRun` it always did. Confirmed the
+five open questions from the dispatch were each resolved to the
+document's own recommendation and named rather than silently decided:
+sixteen kilobit audio deferred to his own future recording, a pattern
+priced as new ground against a free pass, the reframe speaking his own
+written install where the engine carries one, left channel first per
+the book, and the full dose kept as default with pace and count still
+adjustable.
+
+**A careful commit under real collision, done more carefully than
+asked.** Four of the touched files, `head.html`, `functional.js`,
+`source.html` and `engine.js`, already carried other agents' uncommitted
+work. Rather than risk even `git commit --only`, the seat committed
+from a clean worktree and moved the branch with `update-ref`, which
+refuses if the branch has moved under it, then reapplied its own
+hunks onto the working copies so nothing else in the tree changed
+size. Confirmed directly: every other agent's uncommitted file was
+still present and unchanged in the shared tree after this landed.
+
+**Deferred rather than done badly.** The Story page's own release
+panel still carries the old, wordy layout, since round IG's cut
+applies there too and that panel is mid rewrite by a different
+dispatch. Relayed directly to that agent with the exact cut already
+verified working on the real release.js panel, rather than left for a
+second pass later.
+
+What I need from him, the report's own two: should "sit back, relax"
+stay only in his own recording, or does the voice rule bend so a
+synthetic voice can say it; and should a run that would run out of
+allowance mid address stop at the address boundary, spending fewer
+patterns than remain, rather than stop between a release and its own
+reframe, which the book itself warns against.
