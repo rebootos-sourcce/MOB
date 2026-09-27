@@ -16823,3 +16823,47 @@ open list at the end is honest rather than inflated: things like the
 avatar's own layout choice and the boot's length are correctly left
 open rather than claimed as ruled.
 
+## FP. The last of the CQ cleanup lands, verified directly, a real
+## dead end and a real defect both told apart honestly. 27 September.
+
+The four items from FM are closed. Commit `2dff0f3`. `tools/loopsim.js`
+now reads its levels off the engine the same way `losssim.js` does;
+`proto/avatar/risesim.js`'s old grid copy is removed rather than
+ported, with evidence it was never actually read (set to 999, NaN, or
+deleted, its output did not change); and `build-data.js`, `ritdata.js`
+and `caldata.js` now gate on one new dated pin, `proto/ritual/pin.js`,
+rather than three separate hand copies.
+
+**Independently re-run myself.** `node tools/loopsim.js` reads 50
+checks passed 0 failed, and its own final design row prints 20.7
+points, delta plus 10.9, matching the reported table to the decimal.
+`engine.js`'s md5 matches the commit message's own citation exactly,
+`85941fb4443bc35187c9e6dd5d2cc2c8`. `node marketing/tests.js` still
+242 passed 0 failed and `hooksim.js --validate` still 5 groups pass,
+confirming this round did not disturb FG's fix. Ran
+`proto/avatar/risesim.js` directly: it exits clean and the grid
+table is gone from its source, only a comment explaining why remains,
+matching the claim it was dead weight rather than silently trusting
+it.
+
+**A real defect this pass caught that a pin alone would have hidden.**
+Of the 25 failures each in `ritdata.js` and `caldata.js`, 8 were not
+stale data at all: each script's own copy of the practice-picking
+logic was still using the old 8 and 4 load bands, dealing seven of
+nine reference people a tier the product no longer deals. The agent's
+own reasoning for pinning rather than reading live is worth recording
+plainly: a check that reads its expected value off the same engine
+call it is checking cannot ever fail, so a live read would have
+buried this exact bug rather than caught it.
+
+**Left honest rather than folded in:** `risesim.json`'s own staleness
+(unrelated to the grid, caused by the same CQ refit) is queued
+separately as `task_5d1326ba` rather than fixed here past scope, and
+the prototype HTML pages that inline this round's JSON are named as
+not rebuilt, so they still show old data until someone does.
+
+This closes the CQ arithmetic drift found in FD. Four rounds, four
+real fixes (`marketing/field.js`, `proto/ritual/losssim.js`,
+`tools/loopsim.js` plus the three ritual extractors), every one
+independently re-run and matched rather than taken on report.
+
