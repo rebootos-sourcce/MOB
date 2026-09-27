@@ -175,6 +175,9 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
  for(const turned of [false,true]){
   const res=await p.evaluate(tn=>{
    loadP(0);setTab(TAB.COMPASS);render();
+   /* the arrow figure is the side view since round IA; the view from above
+      is measured in its own block below */
+   CONE.side=true;
    CONE.reg=true;CONE.layers=true;CONE.flat=!tn;CONE.tilt=0.92;coneOpen(true);
    const said=[];const g=CONE.g;const ft=g.fillText;
    g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
@@ -201,7 +204,7 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
     want:typeof coneKey==='function'?CONE_HI.length+CONE_LO.length
      +coneRegLaws().up.length+coneRegLaws().dn.length:-1,
     phoneNames:nmb&&innerWidth<900?nmb.top>=bx.bottom-0.5:null};
-   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;coneOpen(true);
+   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;CONE.side=false;coneOpen(true);
    return res;},turned);
   const tag=w.join('x')+(turned?'/turned':'/flat');
   ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
@@ -216,6 +219,42 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
   console.log('  '+tag+': '+(res.said.length?res.said.length+' painted words':'no painted words')
    +', glyphs '+Math.round(res.top)+' to '+Math.round(res.bot)+' of '+Math.round(res.H)
    +', key '+res.rows+' rows');}}
+/* ============================================================
+   The view from above, round IA, held to the same two rules: no word
+   painted on the figure at all, and every glyph inside the canvas. It
+   paints sixteen glyphs round a rim and a hub rather than two on an axis,
+   so each one is read off coneGlyph's own translate and scale, which is
+   where it is and how big. Regulation is switched on as well, because
+   from above it has no spine to draw on, and its caption printing under
+   a figure that shows no arrows would be a dead control's key.
+   ============================================================ */
+console.log('\n=== compass from above carries no painted words, and fits its canvas ===');
+for(const w of [[1680,1020],[1280,800],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ const res=await p.evaluate(()=>{
+  loadP(0);setTab(TAB.COMPASS);render();
+  CONE.side=false;CONE.reg=true;CONE.layers=true;coneOpen(true);
+  const said=[],box=[];const g=CONE.g,ft=g.fillText,tx=g.translate,sc=g.scale;let at=null;
+  g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
+  g.translate=function(x,y){at=[x,y];return tx.apply(this,arguments);};
+  g.scale=function(k){if(at){box.push([at[0],at[1],24*k]);at=null;}return sc.apply(this,arguments);};
+  coneDraw();g.fillText=ft;g.translate=tx;g.scale=sc;
+  const cv=CONE.cv,W=cv.width/CONE.dpr,H=cv.height/CONE.dpr;
+  const off=box.filter(b=>b[0]<0||b[1]<0||b[0]+b[2]>W||b[1]+b[2]>H).length;
+  const key=document.querySelector('#cone .cone-key');
+  const res={said:said,glyphs:box.length,off:off,W:W,H:H,
+   rows:key?key.querySelectorAll('.ck-r').length:0,want:CONE_HI.length+CONE_LO.length,
+   axes:MIRROR.length,regBtn:!!document.querySelector('#cone [data-cn="reg"]')};
+  CONE.reg=false;CONE.layers=false;coneOpen(true);
+  return res;});
+ const tag=w.join('x')+'/above';
+ ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
+ ok(res.glyphs>=res.axes,tag+': found '+res.glyphs+' glyphs, want at least '+res.axes+', so nothing was checked');
+ ok(res.off===0,tag+': '+res.off+' glyphs run off the '+Math.round(res.W)+' by '+Math.round(res.H)+' canvas');
+ ok(res.rows===res.want,tag+': the key carries '+res.rows+' rows, want the '+res.want+' Layers rows only');
+ ok(!res.regBtn,tag+': the Regulation switch is offered where it draws nothing');
+ console.log('  '+tag+': '+(res.said.length?res.said.length+' painted words':'no painted words')
+  +', '+res.glyphs+' glyphs, '+res.off+' off the canvas, key '+res.rows+' rows');}
 /* the wheel again, which is what every check below is measured on, and a
    stored view outlives the page */
 await p.evaluate(()=>fviewSet('wheel'));

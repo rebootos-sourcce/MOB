@@ -2263,6 +2263,92 @@ ok(cone.tilt<=0.92&&cone.tilt>=0.08,'and the tilt never passes where up stops be
  +cone.tilt.toFixed(2));
 ok(cone.shut===false&&cone.gone,'and it closes clean, taking its canvas with it');
 
+console.log('\n=== the compass from above, and a release moves it ===');
+/* Round IA. The tab opens on the view from above, B's eight mirror axes and
+   C's seat shell together, and the reason B was in the pick at all is that it
+   moves when a release takes charge off a seat. So that is what is held: a
+   real release on the person's own record, made on another surface, moves at
+   least one axis by at least a pixel on this canvas, and it arrives by the
+   spring from where the Compass last drew it rather than already there.
+
+   And the three off brand colours the round HS art direction pass named are
+   held too, so none of them can come back quietly: the arrow figure under
+   Lumen paints nothing in the Dark palette's Root, a low reading's marker is
+   its tier's colour and not a seat red, and the inverted pole in the rail is
+   its seat's token at an opacity rather than a mixed grey.
+
+   Its own page, because the release writes the person's own record. */
+{
+ const cp=await browser.newPage({viewport:{width:1600,height:1000}});
+ await cp.goto(FILE,{waitUntil:'load'}); await booted(cp);
+ const o=await cp.evaluate(async()=>{
+  const o={}, wait=ms=>new Promise(r=>setTimeout(r,ms));
+  loadP(0);
+  for(let i=0;i<63;i++)CURP.intake.answers[i]=5;
+  iqApply(CURP); syncLw();
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  setTab(TAB.COMPASS); render(); await wait(300);
+  o.above=!CONE.side&&!!CONE.mir;
+  const cv=CONE.cv, W=cv.width/CONE.dpr, H=cv.height/CONE.dpr;
+  const R=Math.min(W,H)/2-(W<520?24:34), per=(R-R*.2)/100;
+  const before=CONE.mir.ax.map(a=>a.tgt);
+  setTab(TAB.FIELD);
+  const r0=compute();
+  relPick(r0.carrying.slice(0,6).map(n=>n.i));
+  RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown(); relClose();
+  setTab(TAB.COMPASS);
+  const after=CONE.mir.ax.map(a=>a.tgt), drawn=CONE.mir.ax.map(a=>a.x);
+  let big=0, bi=-1;
+  after.forEach((v,i)=>{const d=Math.abs(v-before[i]); if(d>big){big=d;bi=i;}});
+  o.pts=big; o.px=big*per; o.axis=bi>=0?MIRROR[bi].q:'none';
+  o.arrives=bi>=0&&Math.abs(drawn[bi]-before[bi])<Math.abs(after[bi]-before[bi])*0.5;
+  o.dir=bi>=0?CONE.mir.ax[bi].dir:0;
+  /* COUNTED IN FRAMES, NOT MILLISECONDS. The spring steps once a frame, so
+     a wait of 1200ms measured the machine and not the spring: under a loaded
+     run it failed with the dial's own pulses reading 0.0px in 160ms, which is
+     frames not arriving. Settled inside three seconds of frames, or it is not
+     settling. */
+  const done=()=>CONE.mir.ax.every(a=>Math.abs(a.x-a.tgt)<0.5);
+  for(let f=0;f<180&&!done();f++)await new Promise(r=>requestAnimationFrame(r));
+  o.settled=done();
+  /* the colours. A worked example with a reading under the oscillating band,
+     so the marker is where the old code reached for Root. */
+  let low=-1;
+  for(let i=0;i<PEOPLE.length&&low<0;i++){loadP(i); const r=compute();
+   if(!r.unread&&r.complete&&r.CQ<45)low=i;}
+  o.low=low;
+  if(low>=0){
+   loadP(low); setLighting('lumen'); CONE.side=true; CONE.reg=true; coneOpen(true);
+   const g=CONE.g, seen=[], P=CanvasRenderingContext2D.prototype;
+   ['fillStyle','strokeStyle'].forEach(k=>{const d=Object.getOwnPropertyDescriptor(P,k);
+    Object.defineProperty(g,k,{configurable:true,get(){return d.get.call(this);},
+     set(v){seen.push(String(v)); d.set.call(this,v);}});});
+   coneDraw(); delete g.fillStyle; delete g.strokeStyle;
+   const darkRoot='rgba('+hx(PAL.Root).join(',')+',';
+   o.darkRoot=seen.filter(s=>s.indexOf(darkRoot)===0).length;
+   const cq=clamp(compute().CQ,0,100);
+   o.tier=tierOf(cq).nm;
+   o.marker=seen.indexOf('rgba('+hx(TIERCOL[o.tier]).join(',')+',0.950)')>=0;
+   CONE.side=false; CONE.reg=false; setLighting('dark'); coneOpen(true);}
+  const row=document.querySelector('#cone .cn-nr[data-cnax="0"]');
+  const want='rgba('+hx(seatCol(MIRROR[0].seat)).join(',')+',0.720)';
+  o.axd=row?row.getAttribute('style'):'';
+  o.axdOk=o.axd.indexOf('--axd:'+want)>=0;
+  o.dull=typeof coneDull;
+  return o;});
+ await cp.close();
+ ok(o.above,'the Compass tab opens on the view from above');
+ ok(o.px>=1,'a release moves an axis on the figure: '+o.axis+' by '+o.pts+' points, '
+  +o.px.toFixed(1)+' pixels');
+ ok(o.arrives,'and it arrives by the spring from where it was, not already there');
+ ok(o.dir!==0,'and the axis keeps the direction it moved in');
+ ok(o.settled,'and it settles');
+ ok(o.low>=0,'a worked example reads under 45, so the marker colour was checked');
+ ok(o.darkRoot===0,'the side view under Lumen paints nothing in the Dark Root, '+o.darkRoot+' found');
+ ok(o.marker,'a low reading marks in its tier colour, '+o.tier+', not a seat red');
+ ok(o.axdOk,'the inverted pole is the seat token at an opacity: '+o.axd);
+ ok(o.dull==='undefined','the mixed grey is gone');}
+
 console.log('\n=== sign in says it is not live, and keeps nothing ===');
 /* Round IA, a sign in shell with no store behind it. What is held is the one
    thing that makes a shell honest rather than a mockup that lies: pressing
