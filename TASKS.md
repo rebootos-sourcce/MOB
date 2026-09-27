@@ -17302,3 +17302,21 @@ build in `atuned_src` is a different piece of work, and this one
 says plainly it is not proceeding to code until the pitch is
 approved.
 
+## FX. The fetter reference named, and it was already in the
+## repository. 27 September.
+
+**His words: "the fetters you already have, use them marma image
+that I dropped in earlier."** The team's own earlier report (FW)
+could not find "something we gave you yesterday" anywhere in the
+repository. Found now: `proto/anatomy-ref/` already carries a marma
+anatomical reference chart, a cleaned derived SVG and PNG with real
+coordinates (`marma-svg.py`), and `docs/research/marma-validation.md`,
+a real, sourced fact check run 25 September against the classical
+Sushruta Samhita text, on a separate pasted "112 node" document,
+finding real, specific errors (misplaced organs, an invented count of
+112 with no source, borrowed modern chakra names for the four points
+outside the body). The team already reviewing the Body page had
+independently pulled `ref-marma.jpg` and `ref-112.jpg` into its own
+working folder minutes before this message arrived, so this is a
+confirmation sent to it, not a new task.
+
