@@ -21352,3 +21352,14 @@ already touching this same file.
 Also landed this round: the avatar gap fix held since round HU,
 `766a87d`, rebased onto the copy sweep and pushed, gates unchanged
 from its first isolated pass.
+
+## IH. Every unreacted prototype pulled forward at once. 27 September
+
+His words, verbatim: "Take two seconds and pull all the mockups that I
+did not give feedback to forward. I just realized that I gave you
+feedback on a journal where I'm just able to communicate with Source
+AI that I did not see a design for. So bring all the HTML and JPEGs
+forward, so I can review."
+
+Answered from `BACKLOG-AUDIT.md`'s own "worth his eyes" list rather
+than rebuilt, since that list already exists and is exactly this.
