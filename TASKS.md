@@ -23154,3 +23154,26 @@ inline only if quick, otherwise queued. Routed to the agent already
 holding `cone.js` (`a8cecc799cb10b3f5`) since it is the same file and
 that agent is already mid-render-work on this exact page, with his own
 permission to judge whether it is quick.
+
+## KB. Connect the database to GitHub, post the files, and the real engineering-left question
+
+His words, verbatim: "cd C:\Users\lance\Documents\GitHub\Reboot OS (so you
+have it, do not index to burn tokens for now - you should have this
+too) Connect the database up to GitHub. The real question I have for
+you is this. Also post all the files that need to be up on GitHub on
+GitHub. My question is this. When all is said and done, This cannot be
+a standalone file. Is GitHub the location for this? Is a paywall wired
+in? Is the user profile wired in? What's left to be done? For the
+engineering side."
+
+The path he gave is a folder on his own Windows machine, not a GitHub
+repository, and this session has no access to his local computer at
+all, only to repositories added to it by owner/name through GitHub.
+Answered plainly rather than acted on as if it were already available:
+this session still cannot see or touch `reboot-os`, the same limit
+`HOSTING-SETUP.md` already named. Nothing was connected and no files
+were posted, since there is nothing on this side to connect from yet.
+His three direct questions (GitHub as the final location, whether the
+paywall is wired in, whether the user profile is wired in) and the
+open engineering punch list are answered directly in this round's
+report rather than guessed at.
