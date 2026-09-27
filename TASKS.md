@@ -16812,3 +16812,14 @@ level feedback, what their experience was."**
 project management, the ninety day simulation to the seat that owns
 session shape, progression and retention across time.
 
+**The migration is done, verified directly.** Eleven files, commit
+`9a42375`, zero em dashes, `TASKS.md` itself untouched. Spot checked
+rather than trusted: `DECISIONS.md`'s new block opens with a real
+quote matched to `TASKS.md` DY word for word, cites real letters
+(DI, DN, DK, DR confirmed to exist and say what is claimed), and its
+own header states plainly what it is, a graduation from DG through
+FO with the letter kept as the way back to the fuller record. The
+open list at the end is honest rather than inflated: things like the
+avatar's own layout choice and the boot's length are correctly left
+open rather than claimed as ruled.
+
