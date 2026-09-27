@@ -21568,3 +21568,87 @@ simulation on that foundation rather than invent a second one, capture
 his own dictated positioning language into the marketing briefs by
 name, and surface every existing brief rather than leave them
 scattered.
+
+## IO. The CQ audit, back and verified: the formula is right, two real defects around it were not. 27 September
+
+Commit `bb2cbe0`. Verified directly in an isolated worktree:
+`BUILD-engine.sh` host free, `tests/engine.js` 1770 passed 0 failed
+with the new "IK" group present, scope exactly `compute.js`,
+`canon.js`, `tests/engine.js` and `engine.js`, nothing in `ui/`. Read
+both fixes' own diffs line by line rather than trusting the summary.
+
+**The formula itself is clean**, checked against all fourteen
+reference people with a real independent sum, not trusted from the
+code's own claim: `cqSum` is exactly the twenty one laws over two
+hundred and ten, no SQ divisor, matching `BOOK-ERRATA.md`'s own
+correction. DQ is its own reading, the hundred and twelve addresses
+over eleven twenty, never one hundred minus CQ. Every surface that
+shows CQ reads the same `compute()` call, none computes a second
+version.
+
+**Two real defects around the formula, not in it.** Reading a profile
+that is not the current one counted the current record's own answered
+laws instead of the read profile's, so a blank profile could read CQ
+sixty with a fully answered record loaded beside it; the fix asks the
+record the scores actually came from, the same rule an existing
+function already followed elsewhere. And the tier word classified the
+unrounded number while every screen prints it rounded, so seventy
+point six read "CQ 71, gaining" beside a band that starts at
+seventy one; thirty five of six hundred and twenty five runs on
+Marcus's own walk showed this. Both are fixed and gated.
+
+**A correction to something I myself relayed earlier, taken rather
+than argued with.** The CQ ranges I passed along from round HS's
+Compass mockup report, Marcus sixty two to eighty seven and similar,
+are not anywhere in TASKS.md or the repository; the seat checked
+against his own quoted words in `compute.js` instead, "about between
+eighty eight and ninety two" after roughly fifteen thousand releases,
+and confirmed the engine reproduces that range. Logged plainly rather
+than let a made up number stand uncorrected.
+
+## IP. The Compass and login shell, back and verified, landed by hand after a permission refusal. 27 September
+
+Two commits, `a4faa99` and `1b3da58`, built and gated but stuck
+detached in the dispatch's own worktree: moving the shared branch
+directly hit a permission refusal, "Modify Shared Resources", and the
+seat stopped rather than force a way around it. Landed here instead,
+cherry picked onto the branch tip after the CQ audit, `source.html`
+rebuilt clean and `tests/functional.js` merged rather than overwritten.
+
+**The Compass, his own C plus B correction, wired in and verified.**
+The tab now opens from above: the Field's seven seats form C's ring at
+his coherence score by construction, bending out where a seat's laws
+score above CQ and in where they score below, and B's eight mirror
+axis spokes draw where a release actually moves, sixty two per cent
+clear of charge against thirty eight per cent law. Confirmed on real
+data: a real release moved six of eight axes two to six points, the
+ring itself moved by six tenths of a point, and CQ read fifty exactly
+before and after to two decimal places, matching the audit's own
+finding that release moves are real but small. The three colour
+violations from the mockup's own report are gone: inverted pole names
+now wear the seat's own colour rather than an invented grey, the
+figure follows the active lighting instead of a hardcoded palette, and
+a low reading loses colour by tier rather than turning a hardcoded
+red. The old arrow figure is kept behind a side view switch rather
+than deleted, since a dozen earlier rulings live in it.
+
+**The login shell, honest rather than faked.** A real Sign In group in
+Settings; pressing Continue always answers "Accounts are not live yet.
+Nothing was sent," through the shared status line, never silently
+succeeding. Nothing typed reaches the record or browser storage,
+checked by a new gate rather than promised in a comment.
+
+All nine gates checked on the landed tree: engine 1763 passed 0
+failed, functional 1227 passed 0 failed on the merged tree, collide
+351 passed 0 failed, funnel 172 passed 0 failed, monitor all surfaces
+render, voice check clean, zero em dashes.
+
+What I need from him, the report's own three: keep the old arrow
+figure behind its own switch, or retire it now that the circle is the
+real Compass; whether a release's own nine pixel move at desktop size
+reads as alive enough, against a thicker ribbon or a larger figure;
+and whether the view from above needs a four item key under it or
+should be left to speak for itself. Also noted rather than acted on:
+his own aside that C's shell style suits "the practitioner page" is
+the first concrete visual he has pointed at for that still unbuilt
+view.
