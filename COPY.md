@@ -375,6 +375,36 @@ and the surface is called Compass.
 Two denials out. The claim they were guarding is kept, said positively: it is a
 name, it is old, and it lasts because the behaviour does.
 
+## Ruled 27 September, round GS
+
+Three naming rulings, `TASKS.md` GS, recorded in full in `DECISIONS.md` under
+"Character, the masks, Release, and the opening screen".
+
+**Character is what all the masks add up to, and what is running them.** His
+words: "the whole enchilada... a visualization of what all the masks look
+like, and what's running it." A Definition of Character says the sum, never a
+single layer. Character and Masks are two words for two things and both stay.
+
+**A mask is never given a name of its own.** "That's identification. Yep, take
+that out." A mask is named by its age, from `MASKS`, and by the archetype that
+powers it. Never a custom name, never a name built from the person's own
+entries.
+
+**Release is the word, and a release empties a story.** "The release is any
+story... empty the body of stories, period." One word per concept: Integrate
+does not name the mechanic or any string in it. A Definition of release names
+the story first and the charge second, because the charge at an address is how
+the instrument reads that the story is still there.
+
+    Before   Release empties the address.
+    After    A release empties a story out of the body. The charge at the
+             address is how the instrument reads what is left.
+
+**The opening screen copy is his, dictated, and one clause of it is his to
+settle.** It is not written into the product until he has chosen between
+shipping it word for word and ending before "pain and disease free". The team
+does not rewrite dictated words.
+
 ## Where each bucket lives
 
     menu          engine/core.js TABDEF, shell/body.html .lsec-hd

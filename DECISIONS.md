@@ -1850,6 +1850,85 @@ log in screen with two factor authentication. Oh, uh, well, my systems
 engineer to design and develop that schema. Make sure it works with our
 database." Called out here, not designed by this team.
 
+## Character, the masks, Release, and the opening screen. Ruled 27 September
+
+Round GS in `TASKS.md`, one message. Four things settled, each in his words.
+
+**Character is the whole of it.** "The character is a total sum of the all of
+it. Fetters to the mass combinations, right? It's you. It's the ego. It's the
+whole enchilada. You're actually rendering a visualization of what all the
+masks look like, and what's running it." Character is the sum over every mask
+and everything running under them. It is not a fourth name for the Masks
+layer and it is not renamed. It keeps its word and sits above Masks, which
+keeps its own. `ui/fieldbar.js` already carries the shape, "The innermost
+layer. What the whole chain compounds into." A description of Character is
+written to his definition from here on: what all the masks add up to, and
+what is running them.
+
+**Masks are never given a name of their own.** He floated a naming system for
+a person's individual masks "once the shapes of the masks start to come in,"
+and reversed it in the same breath: "maybe this is better not to have a name
+for it, because that's identification. Yep, take that out." A mask carries its
+age name from `MASKS` and the archetype that powers it (`COPY.md`, "Every mask
+names the archetype that powers it"), and never a custom or person specific
+name. It is the register ruling, "We are not judging anybody," applied to
+naming: a name for a pattern is a reading, a name a person wears is an
+identification.
+
+**The mechanic is called Release, and what it releases is a story.** He tested
+Release against Integrate, settled on Release for the charge, then corrected
+his own reason: "No, the release is any story, dude, it's got nothing to do
+with the charge. The purpose of this entire program is to empty the body of
+charges, empty a body of, of all stories. It's find the stories, empty the
+body of stories, period." Settled: Release is the one word, and Integrate
+Protocol does not name the mechanic or any string in it. The definition widens
+with the name. A release empties a story from the body, and the charge at an
+address is how the instrument reads that the story is still there. This closes
+"The words" item under "Still open from the night" below, except for the
+finished card's own word, which is still open there.
+
+What the widened definition reaches, and is not yet changed: the release
+surface explains itself at the address, "Release empties the address"
+(`ui/release.js`), and its eyebrow reads "Release and reframe". Both are
+written to the narrower definition. They are rewritten by the copy seat
+against this ruling, not renamed by default.
+
+**The opening screen says what this does and why a person is here.** "I think
+the opening screen should say what this does, or maybe say why they're here,
+or maybe a little of both." He dictated it:
+
+> This is a mirror. We hold up every story that you share, show it where you
+> live, and give you a protocol to release the bias, release the conditioning,
+> release the charge that causes you pain, so that you can live your highest
+> experience of life, pain and disease free.
+
+Settled: the opening carries his words, both what it does and why. "This is a
+mirror" is the product's own founding line and the three releases name the
+mechanism, which is the method "The word heals" in `BRAND.md` section 5 asks
+for.
+
+**Open, and his: the last four words.** "Pain and disease free" promises a
+medical outcome. `BRAND.md` section 5 recorded the last time disease entered
+the copy ("heals disease in the mind and body") and priced it: a therapeutic
+claim, regulated in every market this sells in, and one the instrument refuses
+to make about itself. He settled that one by replacing the claim with the
+mechanism. `marketing/refuse.js` rule `medical` would not catch this sentence
+as worded, because it matches heals against a named condition, but the harm
+guard under "The funnel and the guard" below exists for exactly this promise.
+Two ways, neither decided by the team:
+
+- **Ship it word for word.** It is his voice and it speaks to the pain, which
+  is what he said he was doing. Cost: the product's first sentence promises an
+  outcome it cannot measure, against its own ruling on heals, and a person who
+  still has pain or disease reads the mirror as having failed them.
+- **End it one clause earlier:** "...release the charge that causes you pain,
+  so that you can live your highest experience of life." Cost: four of his
+  words. Pain stays in the sentence, named as the thing the charge causes,
+  which the instrument does read. Only the promise of being free of it goes.
+
+The team does not edit dictated words. It ships as spoken once he answers, in
+whichever form he picks. Until then it is written nowhere in `atuned_src/`.
+
 ## Founding offers, the shape
 
 Per `TASKS.md` FH: the first hundred to sign up for a tier "get that tier for
@@ -1932,13 +2011,13 @@ even after the fix that cleared Snow and Glass white (DX); he asked for more
 versions, "Lumen B and C is really talking to
 me" (DY).
 
-**The words.** Release against protocol against Integrate Protocol. EC
-simulated release against protocol and release won, 42 of 72 pairs against
-14; EK then proposed "Integrate Protocol" for a real reason, "we're just
-integrating the bias, so the mind is freeing up the charge... it's about
-giving you a choice." Whether that names the whole mechanic or replaces every
-tested string is not settled. Separately, "Released" against "Run complete" on
-a finished run's card (EC). Both sit with `BRAND.md` section 9.
+**The words.** Release against Integrate Protocol is ruled: Release, on 27
+September (GS), in "Character, the masks, Release, and the opening screen"
+above. His words: "the release is any story... empty the body of stories,
+period." EC's simulation had release winning 42 of 72 pairs against 14; EK's
+"Integrate Protocol" does not name the mechanic. Still open, and only this:
+"Released" against "Run complete" on a finished run's card (EC), which sits
+with `BRAND.md` section 9.
 
 **The avatar.**
 - Which layout. FB measured Told first, 9.4 of 10 against the D minus
@@ -1977,7 +2056,16 @@ energetics in EZ may have answered this, not confirmed with him.
   and Ana, the crisis persona, is served a hook she was refused before (FG).
   CQ or expression for the harm model (FI, FL, and BB3 and BB5).
 - OB15, 20 September, "at no point are we talking about results or purpose,"
-  against FH, "highest purpose of the product results" (FI).
+  against FH, "highest purpose of the product results" (FI). The opening
+  screen half is ruled on 27 September (GS): it says what the product does
+  and why a person is here, in the copy he dictated, quoted in "Character,
+  the masks, Release, and the opening screen" above. Not ruled by GS: whether
+  OB15 still binds the onboarding tour it was first said about (OB14, "here is
+  what the Field does, here is what Energy does").
+- "Pain and disease free," the last four words of that dictated opening, word
+  for word or cut one clause earlier. A medical outcome promised on the first
+  screen, against the harm guard in this section and `BRAND.md` section 5.
+  Both options and what each costs are written in that same section above.
 - The referral cascade needs to know who sent whom, against the funnel's
   shipped promise of "not an asset, not a list, not a segment" (FI).
 - The name and email capture screen his welcome copy assumes does not exist
