@@ -93,7 +93,32 @@ function accAccount(){
  var nm=[w.first,w.middle,w.last].filter(function(x){return x&&x.trim();}).join(' ');
  var born=[bn.date,(bn.timeUnknown?'time not known':bn.time),bn.place,bn.zone]
   .filter(function(x){return x;}).join(' · ');
- var h=accGroup('This Account',
+ /* SIGN IN, AS A SHELL THAT SAYS SO. Round IA, his words: "I need the login
+    page, I need it wired in". There is nothing to sign in to yet. The record
+    store is not chosen (TASKS.md 2.1, Cloudflare or Supabase), the repository
+    is public, and no account exists anywhere, so a working sign in is not a
+    thing this file can build around. The fields are real, Continue is real,
+    and what Continue does is say that plainly through status(), because a
+    control never claims success before it has it (CLAUDE.md).
+
+    It stood last on this section as three stubs. It goes first now: a sign
+    in is the first thing an account page is for, and it is what he asked to
+    look at. Nothing typed is kept: the password is cleared on every press and
+    neither field is written to the record, storage or the outbox. The footer
+    says so, which is a disclosure and survives the rule against footers that
+    describe their own controls. */
+ var h=accGroup('Sign In',
+   accStub('Signed in as','not signed in')
+   +'<form id="acsignin" novalidate>'
+   +'<div class="ac-row ac-edit"><label class="ac-rl" for="acmail">Email</label>'
+   +'<input type="email" id="acmail" autocomplete="email" spellcheck="false"></div>'
+   +'<div class="ac-row ac-edit"><label class="ac-rl" for="acpass">Password</label>'
+   +'<input type="password" id="acpass" autocomplete="current-password"></div>'
+   +'<div class="ac-row ac-act"><span class="ac-rl"></span>'
+   +'<button class="btn pri" id="acgo" type="submit">Continue</button></div>'
+   +'</form>',
+   'Nothing typed here is sent or kept.');
+ h+=accGroup('This Account',
    '<div class="ac-row ac-edit"><span class="ac-rl">Profile name</span>'
    +'<input type="text" id="acnm" value="'+esc((CURP&&CURP.name)||'')+'" '
    +'aria-label="Profile name"></div>'
@@ -123,10 +148,9 @@ function accAccount(){
     does, what a failed load does, that nothing is sent, that storage is
     blocked. Those are obligations to the person, not a section explaining
     itself, and CLAUDE.md names them as the ones that must be visible. */
- h+=accGroup('Sign In',
-   accStub('Signed in as','not signed in')
-   +accStub('Key','no key yet')
-   +accStub('Sign out'));
+ /* Sign In moved to the top of this section in round IA, as a form. Key and
+    Sign out went with the stubs: a sign out row under a sign in that cannot
+    succeed names a state nobody can reach. */
  return h;}
 
 /* ---------- 4.2 display ---------- */
@@ -286,6 +310,16 @@ function accWire(){
   var v=nm.value.trim();
   if(!v){status('A profile needs a name. Nothing was changed.','fail');nm.value=CURP.name;return;}
   CURP.name=v; pSave(); statusSaved(); renderAccount(); render();};
+ /* a form, so Enter in either field is the same press as Continue. Every
+    press says the same true thing and clears the password, whatever was
+    typed: checking the shape of an email first would be a second refusal
+    in front of the one that is actually true. 'fail' so it stays on screen
+    until something replaces it, which is how status() holds a refusal. */
+ var si=$('acsignin');
+ if(si)si.onsubmit=function(e){
+  e.preventDefault();
+  var pw=$('acpass'); if(pw)pw.value='';
+  status('Accounts are not live yet. Nothing was sent.','fail');};
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();

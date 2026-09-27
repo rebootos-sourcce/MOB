@@ -2263,6 +2263,43 @@ ok(cone.tilt<=0.92&&cone.tilt>=0.08,'and the tilt never passes where up stops be
  +cone.tilt.toFixed(2));
 ok(cone.shut===false&&cone.gone,'and it closes clean, taking its canvas with it');
 
+console.log('\n=== sign in says it is not live, and keeps nothing ===');
+/* Round IA, a sign in shell with no store behind it. What is held is the one
+   thing that makes a shell honest rather than a mockup that lies: pressing
+   Continue with real looking input never claims a sign in, says why through
+   the shared status writer, clears the password, and writes neither field to
+   the record or to storage. */
+{
+ const sp=await browser.newPage({viewport:{width:1600,height:1000}});
+ await sp.goto(FILE,{waitUntil:'load'}); await booted(sp);
+ const o=await sp.evaluate(async()=>{
+  const o={};
+  loadP(0); ACC_OPEN='account'; setTab(TAB.SETTINGS); render();
+  const f=document.getElementById('acsignin'), m=document.getElementById('acmail'),
+   pw=document.getElementById('acpass'), go=document.getElementById('acgo');
+  o.form=!!(f&&m&&pw&&go); if(!o.form)return o;
+  o.types=m.type+'/'+pw.type;
+  const recBefore=JSON.stringify(CURP);
+  m.value='probe@example.invalid'; pw.value='a-probe-password';
+  go.click();
+  const st=document.getElementById('status');
+  o.said=st.textContent; o.kind=st.getAttribute('data-kind');
+  o.cleared=pw.value==='';
+  o.record=JSON.stringify(CURP)===recBefore;
+  let leak=false;
+  try{for(let i=0;i<localStorage.length;i++){const v=localStorage.getItem(localStorage.key(i))||'';
+   if(v.indexOf('probe@example.invalid')>=0||v.indexOf('a-probe-password')>=0)leak=true;}}catch(e){}
+  o.leak=leak;
+  return o;});
+ await sp.close();
+ ok(o.form,'the Account section carries an email, a password and Continue');
+ ok(o.types==='email/password','the fields are an email field and a password field, got '+o.types);
+ ok(o.said==='Accounts are not live yet. Nothing was sent.',
+  'Continue says plainly that accounts are not live, got "'+o.said+'"');
+ ok(o.kind==='fail','and it holds on screen as a refusal, not a confirmation');
+ ok(o.cleared,'the password is cleared on the press');
+ ok(o.record&&!o.leak,'and nothing typed reaches the record or storage');}
+
 console.log('\n=== the plan, and the seam that has nowhere to go yet ===');
 /* Stripe is a network and this file has none. The panel reads the plan off
    the record and calls one host function, and with nothing bound it says so
