@@ -138,8 +138,9 @@ function stRender(){
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
   +'</div>'
-  /* ---- the release column. It keeps the id its rail section had. ---- */
-  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div></div>'
+  /* ---- the release column. It keeps the id its rail section had. The
+     analytics preview is last in it, closed, see stAnaHtml. ---- */
+  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div>'+stAnaHtml()+'</div>'
   +'</div>'
   /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
      rewritten on every keystroke, so a live column would read itself aloud
@@ -172,6 +173,7 @@ function stRender(){
  stPaintHL();
  stPaintAll();
  stWire();
+ stAnaWire();
  var cl=document.getElementById('stclear');
  if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;stRender();};
  var ap=document.getElementById('stapply');
@@ -234,7 +236,7 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],hot:null,view:'lanes'};
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],hot:null,view:'lanes',ana:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -384,6 +386,9 @@ function stFieldPaint(){
  if(STC.cv&&STC.lit!==S.theme){STC.lit=S.theme; stInk(); STC.dirty=true;}
  stVaultCount(); stRelPanel();
  if(STV.list==='vault')stListPaint();
+ /* a release moves what is running hot, so an open preview is repainted with
+    it. The windows are cached on the record, so this is one pass over the 112. */
+ if(STV.ana)stAnaPaint();
  /* the bank only while it is open. Closed, its rail is not drawn, and
     stBank repaints it on the way in, so nothing stale is ever on screen.
     Repainting it here on every render() was measured doubling the work a
@@ -1088,6 +1093,133 @@ function stRelPanel(){
   RUN.speed=2.2/(RUN.pace||1);
   relPick(M.sel.map(function(n){return n.i;}));
   var begin=document.getElementById('relgo'); if(begin)begin.click();};}
+
+/* ============================================================
+   THE ANALYTICS PREVIEW, CLOSED, AT THE FOOT OF THE RELEASE COLUMN.
+
+   Round JJ, his words: "add in a button for one of the analytic layers, just
+   off the imprints ... low on the right hand side in the menu, in a closed tab
+   at the very bottom. This will collect analytics from the sniffer, over the
+   last week, over the last month, what are the major patterns. It branches
+   naturally back to the analytic, main analytic page." And, in the same
+   breath: "I'm not certain how I want that shaped yet." So this is the least
+   that answers the sentence, and it is written to be thrown away when he
+   shapes it: two windows, three names each, one line off Analytics, one door.
+
+   A PATTERN HERE IS A CHARGE THE WORDS NAMED, counted by entry. The record
+   keeps each entry's text and its seat totals and nothing finer, so the only
+   way to say what a week of writing named is to run the sniffer, parseStory,
+   over each committed entry again. That is the engine's own read and not a
+   second one, and it is pure over the text: it reads the address table and
+   nothing a release or a slider moves. Two things are kept out on purpose.
+   An inferred imprint, because parseStory marks it as the seat's modal charge
+   chosen by arithmetic and a renderer must not print it as a finding; on "my
+   chest was tight and I felt scared" that is Disgust four times, which the
+   words never said. And the weight, because a count of entries is a thing a
+   person can check by reading their own journal, where a summed amount is a
+   figure with no scale beside it.
+
+   The word is charge and not pattern, because Patterns is already the field
+   beside Run in the panel above this one, where it means how many lines a
+   channel runs. One word per concept, and that one was taken first.
+
+   RUNNING HOT IS ANALYTICS' OWN LIST, CALLED AND NOT COPIED. hotList, hotDir
+   and anaHotInk are the three calls anaHot makes, so the names here are the
+   first rows the full page prints and the two cannot disagree. Analytics has
+   no windowed view of the journal for this to reuse, which is why the windows
+   above are read here and the hot line is not. Nothing on an unread field,
+   the rule anaHot already keeps.
+
+   THE DOOR GOES THROUGH TABREAL. Analytics is integer 4 and a folded surface,
+   so setTab resolves it to the tab that carries it and this never names that
+   tab. The folded host is then brought into view at its Running hot list,
+   which is the part of it this preview is a slice of.
+   ============================================================ */
+var ST_ANA_TOP=3, ST_ANA_WIN=[[7,'Last 7 days'],[30,'Last 30 days']];
+/* the windows are cached on the record and the hour, so a render that moves
+   nothing in the journal re-reads nothing. The hour lets the window slide. */
+var STA={key:null,wins:null};
+function stAnaWins(){
+ var ents=(typeof CURP!=='undefined'&&CURP&&CURP.story&&CURP.story.entries)||[];
+ var now=Date.now(), key=S.who+'|'+ents.length+'|'+(ents.length?ents[ents.length-1].t:'')+'|'+Math.floor(now/36e5);
+ if(STA.key===key)return STA.wins;
+ var far=ST_ANA_WIN[ST_ANA_WIN.length-1][0], read=[];
+ /* each entry is read once, against the widest window, then bucketed */
+ ents.forEach(function(e){var at=Date.parse(e&&e.t);
+  if(!(at>=now-far*864e5)||typeof e.text!=='string')return;
+  var got={};
+  parseStory(e.text).imprints.forEach(function(im){if(im.inferred||!im.fetter)return;
+   got[im.fetter]=(got[im.fetter]||0)+im.amt;});
+  read.push({at:at,got:got});});
+ var wins=ST_ANA_WIN.map(function(w){var from=now-w[0]*864e5,by={},n=0;
+  read.forEach(function(r){if(r.at<from)return; n++;
+   Object.keys(r.got).forEach(function(f){var o=by[f]=by[f]||{nm:f,n:0,amt:0};o.n++;o.amt+=r.got[f];});});
+  /* ties go to the heavier, so two charges named equally often keep a stable order */
+  var top=Object.keys(by).map(function(f){return by[f];})
+   .sort(function(a,b){return b.n-a.n||b.amt-a.amt||(a.nm<b.nm?-1:1);}).slice(0,ST_ANA_TOP);
+  return {say:w[1],entries:n,top:top};});
+ STA={key:key,wins:wins};
+ return wins;}
+/* inline styles only, for the reason stViewHtml gives. A details element is
+   closed by the platform, so the section costs its one line until it is
+   opened and needs no script to open. Its state is STV's, so a redraw of the
+   page does not shut it under a person reading it. */
+var ST_ANA_CHEV='M9 6l6 6-6 6';
+function stAnaHtml(){
+ return '<details class="st-pan" id="stana"'+(STV.ana?' open':'')+' style="display:block;flex:0 0 auto;padding:0">'
+  +'<summary style="display:flex;align-items:center;gap:8px;min-height:var(--tap);padding:0 16px;cursor:pointer;list-style:none">'
+  +'<svg id="stanachev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" style="flex:0 0 auto;fill:none;'
+  +'stroke:var(--dim);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform var(--t-micro) var(--ease-out);'
+  +'transform:rotate('+(STV.ana?90:0)+'deg)"><path d="'+ST_ANA_CHEV+'"/></svg>'
+  +'<span class="st-eb">Analytics</span><span class="st-tag">preview</span></summary>'
+  +'<div id="stanab" style="padding:0 16px 14px;font-size:13px;color:var(--mid)"></div></details>';}
+function stAnaWire(){
+ var d=document.getElementById('stana'); if(!d)return;
+ d.addEventListener('toggle',function(){STV.ana=d.open;
+  var c=document.getElementById('stanachev'); if(c)c.style.transform='rotate('+(d.open?90:0)+'deg)';
+  if(d.open)stAnaPaint();});
+ if(STV.ana)stAnaPaint();}
+function stAnaRow(ring,name,right,title){
+ return '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"'+(title?' title="'+esc(title)+'"':'')+'>'
+  +ring+'<span style="flex:1 1 auto;min-width:0;color:var(--ink)">'+esc(name)+'</span>'+right+'</div>';}
+function stAnaHead(t,right){
+ return '<div style="display:flex;justify-content:space-between;gap:8px;margin-top:12px;padding-bottom:3px;'
+  +'border-bottom:1px solid var(--edge)"><span class="st-eb">'+t+'</span>'
+  +'<span style="font-size:12px;color:var(--dim)">'+right+'</span></div>';}
+function stAnaPaint(){
+ var b=document.getElementById('stanab'); if(!b)return;
+ var o='';
+ stAnaWins().forEach(function(w){
+  o+=stAnaHead(w.say,w.entries+(w.entries===1?' entry':' entries'));
+  if(!w.entries)o+='<p class="st-none" style="margin-top:4px">Nothing written.</p>';
+  else if(!w.top.length)o+='<p class="st-none" style="margin-top:4px">No charge named in words.</p>';
+  else o+=w.top.map(function(t){var c=CHILD.filter(function(x){return x.nm===t.nm;})[0],col=seatCol(c?c.seat:'Heart');
+   var ic=c?'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" style="flex:0 0 auto;fill:none;stroke:'+col
+     +';stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round"><path d="'+c.ic+'"/></svg>'
+    :'<span class="st-ring" style="--c:'+col+'"></span>';
+   return stAnaRow(ic,t.nm,'<em style="font-style:normal;font-size:12px;color:var(--dim)">in '
+    +t.n+(t.n===1?' entry':' entries')+'</em>');}).join('');});
+ var r=compute();
+ if(!r.unread&&typeof hotList==='function'){
+  var L=hotList();
+  o+=stAnaHead('Running hot',L.length?L.length+(L.length===1?' address':' addresses'):'');
+  o+=L.length?L.slice(0,ST_ANA_TOP).map(function(n){var d=hotDir(n);
+    return stAnaRow('<span class="st-ring" style="--c:'+seatCol(n.b)+'"></span>',n.k,
+     '<em style="font-style:normal;font-size:12px;color:'+anaHotInk(d)+'">'+d+'</em>',ANA_DIRSAY[d]||'');}).join('')
+   :'<p class="st-none" style="margin-top:4px">No address is past five.</p>';}
+ o+='<button type="button" class="btn" id="stanago" style="margin-top:14px">Open analytics</button>';
+ b.innerHTML=o;
+ var go=document.getElementById('stanago');
+ if(go)go.onclick=function(){
+  setTab(TAB.ANALYTICS);
+  /* ON THE FRAME AFTER setTab's OWN. setTab puts the page back at its top,
+     once now and once on the next frame, and stacked it is the page that
+     scrolls. Brought into view straight away, measured at 390 by 844, the
+     list was put on screen and then sent 4993 pixels back down it. A frame
+     asked for after setTab's runs after it. */
+  var bring=function(){var a=document.getElementById('ana'), at=a&&(a.querySelector('.ana-hot')||a);
+   if(at&&at.scrollIntoView)at.scrollIntoView({block:'start'});};
+  if(typeof requestAnimationFrame==='function')requestAnimationFrame(bring); else bring();};}
 
 /* ============================================================
    WHAT THE SNIFFER IS READING, SHOWN IN THE SENTENCE IT READ IT IN.
