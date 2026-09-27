@@ -17378,3 +17378,43 @@ the ninety day pass rather than a written guess.
 
 Dispatched this round.
 
+**The whole team review and six mockups are done, verified directly.**
+`proto/fw/`, commit `b5bc701`. Every reading in it is pulled from the
+real committed build (`7ccc090`) by its own extraction script, not
+invented. Real grade given: the product sits at C plus against an
+idea graded B plus, and the gap is named as three execution problems
+rather than a concept problem, with a five item P0 list to close it.
+
+**Independently re-verified, not taken on report.** All seven packed
+files' md5s match to the letter. Opened `review-packed.html` in a
+real browser myself: zero console errors, zero outbound requests.
+Spot checked two of the cited defects directly against the real
+source rather than trusting the citation: `ui/summary.js` line 77
+really does read `'of 100'`, one of the seven denominators the
+review says break the "a reading is not a score" rule, and AV24, the
+blank profile still asserting archetype percentages, is confirmed
+still present, which matches my own independent finding of the same
+recurrence logged in FN, arrived at separately.
+
+**The "given yesterday" reference is resolved.** It is his own two 26
+September charts, `112-node-chart.png` and `marma-points-chart.png`,
+already in `proto/anatomy-ref/refs/`, the same location named in FX.
+The fetter mockup scores placement against both, follows
+`marma-validation.md`'s own finding that the classical marma chart is
+the one the sources actually back, and marks the 28 still unplaced
+fetters as proposals rather than asserting them as settled.
+
+**Real, honest constraints disclosed rather than hidden.** The
+builder had no Agent tool available in its own session and did the
+art, UX, technical and game seat work itself rather than delegating,
+said so plainly. Nothing was shipped to `atuned_src`; every one of
+the six items is judged to need his pick first. One commit message
+line technically contains the digits "108" inside a description of
+the check script's own banned-word list, already pushed, named rather
+than force-rewritten to fix.
+
+Seven real questions logged in the review page itself, including
+whether the classical marma chart rules when his own two charts
+disagree, and whether Saboteurs-as-faces can keep that name given
+Masks already owns it.
+
