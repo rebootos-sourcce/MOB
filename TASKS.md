@@ -22766,3 +22766,24 @@ its current scope.
 His "what questions have I not asked yet" is answered directly in the
 reply rather than only here, since it was a direct question to answer
 now, not a build to dispatch and wait on.
+
+## JR. The funnel and day one hundred marketing brief, verified
+
+`c273280` is in, not yet pushed by the writing agent, exactly four
+files, zero em dashes. `node marketing/tests.js` re-run here: 351
+assertions, 0 failures, matching the report. One "108" hit found by a
+raw search turned out to be the digits inside a DOI,
+`10.1086/691462`, not the count; checked and cleared rather than
+flagged as a false defect. The gating claim on his new line, "this
+tool is a counter, this gives you your attention back," is spot
+checked directly in the file: it is run through both gates and a
+cold-safe rewrite is offered beside it, exactly as reported. Egress is
+confirmed blocked in this environment for direct fetch, so every
+citation came through the search index, a known, standing limitation
+and not a shortcut the agent chose.
+
+Pushed from here. Nine open questions carried to him, full wording in
+`marketing/FUNNEL.md` section 9, the sharpest being what "a week"
+actually means (a programme, a trial, the money back week, or a
+deadline) and whether the funnel build itself is un-parked by this
+brief or stays strategy only.
