@@ -19235,3 +19235,72 @@ What I need from him: confirmation of which reading of "A for the
 structures... with the icon of the fetter" is meant, since one reading
 matches a drawn option and the other proposes a fourth this pass did
 not draw.
+
+## GW. The Knowledge base rebuilt from real research, four mockups, none of them a clean winner. 27 September
+
+Round GQ's Knowledge base dispatch, back. Verified directly: four md5s
+matched the report exactly, zero em dashes across every mockup and
+support file, and `proto/knowledge/shots/d-map-1600-Diane-open.png`
+opened directly rather than trusted from description. It shows exactly
+what the report claims: seven seat bands crown to root, addresses as
+dots sized by weight, a picked entry drawing lines to what it links,
+and its award slot honestly dashed and marked "the reward word is
+unruled, round GP" rather than inventing a badge to satisfy the ask.
+
+**Measured, not assumed, before anything was redesigned.** The shipped
+Knowledge base carries 130 interactive elements on screen at once
+against a working floor of 12, and the "bunch of drop-downs" he named
+is real: both rails are accordion stacks and an entry opens cramped
+inside them rather than in the space he asked to reclaim.
+
+**Real, cited research behind each design change**, not house
+intuition: accordions are wrong for content people need most of, per
+Nielsen Norman Group, so none of the four uses one as its main
+structure; page previews on hover raised distinct pages reached per
+session 20 to 22 percent in Wikimedia's own A/B tests, so all four
+preview links; recall beats rereading by 61 percent to 40 percent at
+one week (Roediger and Karpicke 2006), so two of the four end an entry
+on an optional recall question; and a real citation against the badge
+instinct itself, that rewarding completion can lower a person's own
+motivation across 128 studies (Deci, Koestner and Ryan), which shaped
+every award slot to reward knowing or doing rather than finishing the
+catalogue, consistent with the ladder system's own standing rule
+against "3 of 14."
+
+**No single mockup won, stated plainly rather than picking a favourite
+to look decisive.** A robustness check, the scoring re run ten
+thousand times with weights and scores randomly perturbed, put D ahead
+in 61 percent of runs and A in 39 percent, with B and C essentially
+never leading, which the report itself reads correctly as a stable
+ranking rather than proof about real people. The actual recommendation
+is a graft, not a pick: A's search-and-browse skeleton carrying D's
+body-as-index view inside it, B's daily three-card hand on top with
+its question made skippable, and C's four-quarter loop ring as the
+mark an award eventually attaches to.
+
+**A real, named tension flagged rather than smoothed over.** Two of
+the four mechanics that raise return visits, a daily card count and a
+running quarter tally, are, in the report's own words, "the exact
+grind" one reference profile's own heaviest reading describes about
+herself, and it says plainly that shipping them would raise retention
+and the very pattern the product reads in her at the same time. Left
+as his call, not decided here.
+
+**"Sigma five" answered honestly rather than pretended at.** A
+simulation cannot produce a five sigma confidence figure, since that
+number describes confidence in real observations and none exist yet;
+what the ten thousand run check actually gives is a stable ranking and
+a named list of where people stop, with real five person testing
+named as the next real step.
+
+Sent to him: the D map screenshot, since a structural knowledge base
+question is answered with the structure, not described in prose.
+
+What I need from him: whether the knowledge base ever quizzes a
+person, given one reference profile refused the question outright and
+another thrived on it; how hard the daily-hand and quarter-tally
+mechanics should push, given the retention-versus-pattern tension
+above; whether the body map (round GO, GT) replaces the "where it
+sits" shelf here rather than the two being built twice; and the same
+reward-word ruling from round GP, which this round's award slots all
+wait on rather than guess past.
