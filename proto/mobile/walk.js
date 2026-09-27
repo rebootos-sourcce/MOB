@@ -20,7 +20,12 @@
         what the first screen of each tab carries
 
    The control counter is proto/firstrun/walk.js's, unchanged, so its numbers
-   compare with that file's and with nothing else. */
+   compare with that file's and with nothing else.
+
+   It walks both sides of GF with one script: where the build has the folded
+   menu and the loader circle (e1863d3 on) it uses them, and where it does not
+   (eae5b75) it uses the tab strip and the picker, so a before and an after
+   are the same person doing the same thing. */
 const {chromium}=require('playwright');
 const path=require('path'), fs=require('fs');
 const SRC=path.resolve(process.argv[2]||'source.html'), OUT=process.argv[3]||'mobile-walk-out';
@@ -127,7 +132,9 @@ async function setView(p,v){await p.evaluate(v=>{const b=document.querySelector(
 async function loadEx(p,v){
  const pb=await p.evaluate(()=>{const e=document.getElementById('ploadbtn');if(!e)return null;const r=e.getBoundingClientRect();
   return r.height?{x:r.left+r.width/2,y:r.top+r.height/2}:null;});
- if(!pb){await p.selectOption('#psel',v);await p.waitForTimeout(1500);p.loadTaps=1;return;}
+ /* a native picker on a phone is two taps, open the list and choose, the
+    same two the loader circle costs, so both are counted as two */
+ if(!pb){await p.selectOption('#psel',v);await p.waitForTimeout(1500);p.gest+=2;p.loadTaps=2;return;}
  let taps=0;await tap(p,pb.x,pb.y);taps++;
  if(await p.evaluate(()=>document.getElementById('pload').hidden)){await tap(p,pb.x,pb.y);taps++;}
  const it=await p.evaluate(v=>{const e=document.querySelector('#pload [data-pv="'+v+'"]');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();
@@ -294,10 +301,15 @@ const poles=p=>p.evaluate(()=>{const e=document.getElementById('pol2'),s=documen
   const path_=await walks[icp.who](p);
   /* a real reading: the worked example that is them, through the picker.
      Angela's is her own committed story, and she loads nothing. */
-  if(icp.who!=='Angela'){const g0=p.gest;await loadEx(p,icp.ex);if(p.gest===g0)p.gest++;}
+  if(icp.who!=='Angela')await loadEx(p,icp.ex);
   const box=await picBox(p);
   const down=await pinch(p,box.x+box.w/2,box.y+box.h/2);const afterPinch=await st(p);
-  await resetZoom(p);
+  /* back to the whole picture the way a person gets there: the reframe
+     circle in the lower right, a real tap. On a page the pinch zoomed (the
+     baseline's Frames and Dial) the circle is not where it was, so the page
+     zoom is left as the person would find it. */
+  if(afterPinch.vv===1){const rf=await p.evaluate(()=>{const e=[...document.querySelectorAll('#fzoom button')][2];const r=e.getBoundingClientRect();
+    return {x:r.left+r.width/2,y:r.top+r.height/2};});await tap(p,rf.x,rf.y);await p.waitForTimeout(400);}
   await p.evaluate(()=>{const t=document.getElementById('tip');t&&t.classList.remove('on');});
   const m=await markAt(p);let tapRes=null;
   if(m){await tap(p,m.x,m.y);tapRes=await st(p);}
@@ -307,7 +319,7 @@ const poles=p=>p.evaluate(()=>{const e=document.getElementById('pol2'),s=documen
   log({part:'walk',who:icp.who,weight:icp.w,landing:land,path:path_,view:await p.evaluate(()=>FVIEW),
    pinch:{tipWithFingersDown:!!down.tip,tipCover:down.tip?down.tip.cover:0,tipText:down.tip?down.tip.txt:null,zoomMoved:afterPinch.zoom!==1||afterPinch.fz!==1,pageScale:afterPinch.vv},
    tapMark:m?{kind:m.k,drill:tapRes.drill,tip:tapRes.tip?tapRes.tip.txt:null}:null,
-   reading,gestures:p.gest,end,errors:p.errs});
+   reading,loadTaps:p.loadTaps||0,gestures:p.gest,end,errors:p.errs});
   await ctx.close();}
  /* ---------- 4. probes ---------- */
  /* every tooltip carrier in the first screen, tapped once: is the
