@@ -14,15 +14,30 @@ function impLive(){
    they draw as ghosts, so you can see where the text is about to land. */
 function impGhosts(){
  if(!ST_PARSED)return [];
- var out={},seen={};
+ var out={},seen={},order=[];
  ST_PARSED.imprints.forEach(function(im){
   if(seen[im.node])return; seen[im.node]=1;
   var n=BY[im.node]; if(!n)return;
   if(n.sq>=4)return;                 /* already live, not a ghost */
+  /* A STATED FETTER AT A SEAT WITH NO ADDRESS FOR IT lands on the seat's
+     first address as a carrier, and the address name is not what the words
+     said. "I am exhausted" printed Pride. It is labelled like an inferred
+     ghost, by what was read, and the title says the fetter was named. */
+  var off=!!im.stated&&n.cf!==im.fetter;
+  /* ONE PILL PER SEAT AND FETTER WHEN NOTHING NAMED THE ADDRESS, round GR.
+     An inferred ghost prints the fetter and not the address, so the fallback's
+     four addresses printed four identical pills, "Anger +1.7" four times, and
+     read as four findings. They are one reading: the seat, the fetter, and the
+     amount that lands on it, which is their sum. A named ghost keeps one pill
+     per address, because each of those carries its own name. */
+  var key=(im.inferred||off)?('f|'+n.b+'|'+im.fetter):('n|'+im.node);
+  if(out[key]){out[key].amt=Math.round((out[key].amt+im.amt)*10)/10; out[key].n++; return;}
   /* inferred carries through, because the chip is the first place a person
      reads what the instrument thinks their sentence was about. */
-  out[im.node]={node:n,amt:im.amt,inferred:!!im.inferred};});
- return Object.keys(out).map(function(k){return out[k];});}
+  out[key]={node:n,amt:im.amt,inferred:!!im.inferred||off,fet:im.fetter||null,
+   stated:off,n:1};
+  order.push(key);});
+ return order.map(function(k){return out[k];});}
 function painOf(n,bandLoad){
  return Math.min(10,Math.round((bandLoad[n.b]||0)*0.9+n.sq*0.3));}
 /* one engine pass, then one index. the original called compute() once per pill. */
@@ -78,11 +93,20 @@ function impPill(n,maxW,IX,ghost,inferred){
     imprint has not landed, so calling it a child pattern would promise
     something the field does not hold yet. */
  var kid=(!ghost&&IX.kid&&IX.kid.at[n.i])||null;
- var lbl=(ghost&&inferred)?(n.cf||n.b):n.k;
+ /* an inferred ghost arrives as its record from impGhosts, which carries the
+    fetter the reading gave, how many addresses were folded into the one pill,
+    and whether the words named a fetter this seat has no address for. */
+ var gx=(ghost&&inferred&&typeof inferred==='object')?inferred:null;
+ var fl=(gx&&gx.fet)||n.cf||n.b, seat=String(n.b).toLowerCase();
+ var lbl=(ghost&&inferred)?fl:n.k;
  var ttl=(ghost&&inferred)
-   ? (n.cf||n.b)+' at the '+String(n.b).toLowerCase()
-     +'. Your words named the seat, not the address, so this is where the '
-     +'charge lands and not what it is called.'
+   ? ((gx&&gx.stated)
+     ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()
+       +' and this seat has no address for it, so the charge lands on the seat.'
+     : fl+' at the '+seat
+       +'. Your words named the seat, not the address, so this is where the '
+       +'charge lands and not what it is called.')
+     +((gx&&gx.n>1)?' The amount is the sum across '+gx.n+' addresses.':'')
    : title;
  if(kid)ttl=kid.ax+' sits here. '+ttl;
  return '<button class="ip'+(on?' on':'')+(hot?' hot':'')+(ghost?' ghost':'')
@@ -199,7 +223,7 @@ function impRender(){
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
    /* two maps, because ghost is passed as the amount and is a number. The
       inferred flag rides beside it rather than being smuggled onto a float. */
-   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=!!x.inferred;});
+   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=x.inferred?x:false;});
    h+=cloud(seg.concat(gs.map(function(x){return x.node;})),gl,gi);});
  } else if(IMP_GROUP==='charge'){
   CHILD.forEach(function(c){

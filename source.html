@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="77a315d 2026-09-27 08:56"><head><meta charset="utf-8">
+<html lang="en" data-build="e97c6eb 2026-09-27 09:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -9094,9 +9094,24 @@ var LEX={
  restless:['sacral',12],craving:['sacral',14],numb:['sacral',16],empty:['sacral',18],
  hungry:['sacral',12],addicted:['sacral',22],distracted:['sacral',12],obsessed:['sacral',20],
  /* solar */
- angry:['solar',18],furious:['solar',24],ashamed:['solar',20],humiliated:['solar',24],
- defensive:['solar',16],blamed:['solar',18],stupid:['solar',20],worthless:['solar',26],
- embarrassed:['solar',16],guilty:['solar',18],
+ /* THE SHAME FAMILY AT THE SOLAR PLEXUS STATES ITS FETTER, round GR. Measured
+    on 27 September: "I feel ashamed that I am relieved" came back as four
+    inferred Solar Anger imprints and the Story page printed "Anger +1.7" four
+    times. ADJ2CHG already says every one of these six words is shame, but that
+    only put Shame in wanted, and the solar plexus carries one Shame address of
+    sixteen, under the quarter rule, so the seat fell back to its modal fetter,
+    Anger. The third element is the same fact ADJ2CHG holds, written where the
+    stated fetter branch honours it, exactly as the exhaustion family does.
+    lexFamilyFloor already priced these six as Shame through ADJ2CHG, so the
+    family floor does not move. The SEAT is unchanged and is the owner's open
+    ruling (QUESTIONS.md 0l); only which fetter the seat resolves to moves.
+    The other words where ADJ2CHG and the reading disagree were measured and
+    left alone for a ruling: detached, disconnected and hollow at the crown,
+    unheard, voiceless, choked, tense and tensed at the throat, nervous and
+    anxious at the root. Key order is unchanged. */
+ angry:['solar',18],furious:['solar',24],ashamed:['solar',20,'Shame'],humiliated:['solar',24,'Shame'],
+ defensive:['solar',16],blamed:['solar',18],stupid:['solar',20,'Shame'],worthless:['solar',26,'Shame'],
+ embarrassed:['solar',16,'Shame'],guilty:['solar',18,'Shame'],
  /* heart */
  sad:['heart',16],lonely:['heart',20],grieving:['heart',22],hurt:['heart',18],
  rejected:['heart',22],abandoned:['heart',26],unloved:['heart',24],heartbroken:['heart',26],
@@ -12824,8 +12839,19 @@ function parseStory(text){
  var wanted={}; Object.keys(byChg).forEach(function(c){var f=CHG2FET[c]; if(f)wanted[f]=true;});
  /* a word that names its own fetter is as named as an adjective that maps to
     one, so it counts toward wanted and stops the reading being inferred. */
- var stated={};
- hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true; stated[h.fet]=true; } });
+ /* AND A STATED FETTER IS STATED AT THE SEAT ITS WORD SITS AT, round GR. It
+    was one flag for the whole text, so a fetter stated anywhere let every seat
+    skip the quarter rule. Measured on 27 September: "I am exhausted. My father
+    died." filed the bereavement at the heart as stated Apathy, and once the
+    shame family stated Shame, "my father died and I feel ashamed" routed the
+    heart onto its one Shame address, which is the grief filed as shame the
+    quarter rule was written to stop. So each seat now asks only what was
+    stated at that seat, heaviest first. A seat nothing stated at is read by
+    the quarter rule exactly as before. */
+ var statedAt={};
+ hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true;
+  if(h.band){ var sa=statedAt[h.band]=statedAt[h.band]||{};
+   sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0); } } });
  var anyNamed=Object.keys(wanted).length>0;
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
@@ -12865,10 +12891,12 @@ function parseStory(text){
      one thing the sentence actually said and fall back to Anger. The charge
      still lands on the seat, because that is where the body holds it, and the
      reading keeps the name the word gave it. */
-  var stateHere=Object.keys(stated).filter(function(f){return wanted[f];}).length>0;
+  var here=statedAt[k]||{};
+  var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
+  var stateHere=hereF.length>0;
   if(stateHere&&!seg.length){
    imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
-    fetter:Object.keys(stated)[0], inferred:false, stated:true,
+    fetter:hereF[0], inferred:false, stated:true,
     amt:Math.round(Math.min(10,byBand[k]/3)*10)/10, from:k});
    return;}
   if(seg.length < all.length*0.25 && !stateHere){
@@ -21499,15 +21527,30 @@ function impLive(){
    they draw as ghosts, so you can see where the text is about to land. */
 function impGhosts(){
  if(!ST_PARSED)return [];
- var out={},seen={};
+ var out={},seen={},order=[];
  ST_PARSED.imprints.forEach(function(im){
   if(seen[im.node])return; seen[im.node]=1;
   var n=BY[im.node]; if(!n)return;
   if(n.sq>=4)return;                 /* already live, not a ghost */
+  /* A STATED FETTER AT A SEAT WITH NO ADDRESS FOR IT lands on the seat's
+     first address as a carrier, and the address name is not what the words
+     said. "I am exhausted" printed Pride. It is labelled like an inferred
+     ghost, by what was read, and the title says the fetter was named. */
+  var off=!!im.stated&&n.cf!==im.fetter;
+  /* ONE PILL PER SEAT AND FETTER WHEN NOTHING NAMED THE ADDRESS, round GR.
+     An inferred ghost prints the fetter and not the address, so the fallback's
+     four addresses printed four identical pills, "Anger +1.7" four times, and
+     read as four findings. They are one reading: the seat, the fetter, and the
+     amount that lands on it, which is their sum. A named ghost keeps one pill
+     per address, because each of those carries its own name. */
+  var key=(im.inferred||off)?('f|'+n.b+'|'+im.fetter):('n|'+im.node);
+  if(out[key]){out[key].amt=Math.round((out[key].amt+im.amt)*10)/10; out[key].n++; return;}
   /* inferred carries through, because the chip is the first place a person
      reads what the instrument thinks their sentence was about. */
-  out[im.node]={node:n,amt:im.amt,inferred:!!im.inferred};});
- return Object.keys(out).map(function(k){return out[k];});}
+  out[key]={node:n,amt:im.amt,inferred:!!im.inferred||off,fet:im.fetter||null,
+   stated:off,n:1};
+  order.push(key);});
+ return order.map(function(k){return out[k];});}
 function painOf(n,bandLoad){
  return Math.min(10,Math.round((bandLoad[n.b]||0)*0.9+n.sq*0.3));}
 /* one engine pass, then one index. the original called compute() once per pill. */
@@ -21563,11 +21606,20 @@ function impPill(n,maxW,IX,ghost,inferred){
     imprint has not landed, so calling it a child pattern would promise
     something the field does not hold yet. */
  var kid=(!ghost&&IX.kid&&IX.kid.at[n.i])||null;
- var lbl=(ghost&&inferred)?(n.cf||n.b):n.k;
+ /* an inferred ghost arrives as its record from impGhosts, which carries the
+    fetter the reading gave, how many addresses were folded into the one pill,
+    and whether the words named a fetter this seat has no address for. */
+ var gx=(ghost&&inferred&&typeof inferred==='object')?inferred:null;
+ var fl=(gx&&gx.fet)||n.cf||n.b, seat=String(n.b).toLowerCase();
+ var lbl=(ghost&&inferred)?fl:n.k;
  var ttl=(ghost&&inferred)
-   ? (n.cf||n.b)+' at the '+String(n.b).toLowerCase()
-     +'. Your words named the seat, not the address, so this is where the '
-     +'charge lands and not what it is called.'
+   ? ((gx&&gx.stated)
+     ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()
+       +' and this seat has no address for it, so the charge lands on the seat.'
+     : fl+' at the '+seat
+       +'. Your words named the seat, not the address, so this is where the '
+       +'charge lands and not what it is called.')
+     +((gx&&gx.n>1)?' The amount is the sum across '+gx.n+' addresses.':'')
    : title;
  if(kid)ttl=kid.ax+' sits here. '+ttl;
  return '<button class="ip'+(on?' on':'')+(hot?' hot':'')+(ghost?' ghost':'')
@@ -21684,7 +21736,7 @@ function impRender(){
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
    /* two maps, because ghost is passed as the amount and is a number. The
       inferred flag rides beside it rather than being smuggled onto a float. */
-   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=!!x.inferred;});
+   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=x.inferred?x:false;});
    h+=cloud(seg.concat(gs.map(function(x){return x.node;})),gl,gi);});
  } else if(IMP_GROUP==='charge'){
   CHILD.forEach(function(c){
@@ -32357,5 +32409,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002115784"></div>
+<div id="eof" hidden data-len="002119373"></div>
 </body></html>

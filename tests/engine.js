@@ -4893,5 +4893,35 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  ok(JSON.stringify(S.charge)===before,'and hearing moves no charge');
 }
 
+g('GR · a word that names shame reads as shame, at the seat it sits at');
+/* Reproduced on 27 September: "I feel ashamed that I am relieved" came back
+   as four inferred Solar Anger imprints and the Story page printed "Anger
+   +1.7" four times. The family is read off the tables rather than typed, so a
+   shame word added at the solar plexus later is held to the same line. */
+{
+ const {LEX,ADJ2CHG,parseStory}=E;
+ const fam=Object.keys(LEX).filter(k=>ADJ2CHG[k]==='shame'&&LEX[k][0]==='solar');
+ ok(fam.indexOf('ashamed')>=0,'the solar shame family is read off the tables and holds ashamed: '+JSON.stringify(fam));
+ ok(LEX.ashamed[0]==='solar','and the seat did not move, which is the owner\'s open ruling');
+ const lines=['I feel ashamed','I feel ashamed that I am relieved.','i am so ashamed',
+  'I was ashamed of how I spoke to him.'].concat(fam.map(w=>'I feel '+w+'.'));
+ const anger=lines.filter(t=>parseStory(t).imprints.some(i=>i.fetter==='Anger'));
+ ok(anger.length===0,'no shame line yields an Anger imprint, '+anger.length+' of '+lines.length
+  +' do: '+JSON.stringify(anger));
+ const shame=lines.filter(t=>{const im=parseStory(t).imprints;
+  return im.length&&im.every(i=>i.fetter==='Shame'&&!i.inferred);});
+ ok(shame.length===lines.length,'and every one reads as named Shame, '+shame.length+' of '+lines.length);
+ /* THE STATED FETTER STAYS AT ITS OWN SEAT. Before this round a fetter stated
+    anywhere let every seat skip the quarter rule, so the fix above would have
+    filed a bereavement at the heart as shame. */
+ const died=parseStory('My father died and I feel ashamed').imprints;
+ ok(died.some(i=>i.band==='Solar'&&i.fetter==='Shame'),'a death beside shame keeps Shame at the solar plexus');
+ ok(!died.some(i=>i.band==='Heart'&&i.fetter==='Shame'),'and does not file the heart as shame: '
+  +JSON.stringify(died.filter(i=>i.band==='Heart').map(i=>i.fetter)));
+ const ex=parseStory('I am exhausted. My father died.').imprints;
+ ok(ex.some(i=>i.band==='Solar'&&i.fetter==='Apathy'&&i.stated),'exhaustion still states Apathy at the solar plexus');
+ ok(!ex.some(i=>i.band==='Heart'&&i.stated),'and no longer states it at the heart, where no word named it');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

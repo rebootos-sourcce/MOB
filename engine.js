@@ -3052,9 +3052,24 @@ var LEX={
  restless:['sacral',12],craving:['sacral',14],numb:['sacral',16],empty:['sacral',18],
  hungry:['sacral',12],addicted:['sacral',22],distracted:['sacral',12],obsessed:['sacral',20],
  /* solar */
- angry:['solar',18],furious:['solar',24],ashamed:['solar',20],humiliated:['solar',24],
- defensive:['solar',16],blamed:['solar',18],stupid:['solar',20],worthless:['solar',26],
- embarrassed:['solar',16],guilty:['solar',18],
+ /* THE SHAME FAMILY AT THE SOLAR PLEXUS STATES ITS FETTER, round GR. Measured
+    on 27 September: "I feel ashamed that I am relieved" came back as four
+    inferred Solar Anger imprints and the Story page printed "Anger +1.7" four
+    times. ADJ2CHG already says every one of these six words is shame, but that
+    only put Shame in wanted, and the solar plexus carries one Shame address of
+    sixteen, under the quarter rule, so the seat fell back to its modal fetter,
+    Anger. The third element is the same fact ADJ2CHG holds, written where the
+    stated fetter branch honours it, exactly as the exhaustion family does.
+    lexFamilyFloor already priced these six as Shame through ADJ2CHG, so the
+    family floor does not move. The SEAT is unchanged and is the owner's open
+    ruling (QUESTIONS.md 0l); only which fetter the seat resolves to moves.
+    The other words where ADJ2CHG and the reading disagree were measured and
+    left alone for a ruling: detached, disconnected and hollow at the crown,
+    unheard, voiceless, choked, tense and tensed at the throat, nervous and
+    anxious at the root. Key order is unchanged. */
+ angry:['solar',18],furious:['solar',24],ashamed:['solar',20,'Shame'],humiliated:['solar',24,'Shame'],
+ defensive:['solar',16],blamed:['solar',18],stupid:['solar',20,'Shame'],worthless:['solar',26,'Shame'],
+ embarrassed:['solar',16,'Shame'],guilty:['solar',18,'Shame'],
  /* heart */
  sad:['heart',16],lonely:['heart',20],grieving:['heart',22],hurt:['heart',18],
  rejected:['heart',22],abandoned:['heart',26],unloved:['heart',24],heartbroken:['heart',26],
@@ -6764,8 +6779,19 @@ function parseStory(text){
  var wanted={}; Object.keys(byChg).forEach(function(c){var f=CHG2FET[c]; if(f)wanted[f]=true;});
  /* a word that names its own fetter is as named as an adjective that maps to
     one, so it counts toward wanted and stops the reading being inferred. */
- var stated={};
- hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true; stated[h.fet]=true; } });
+ /* AND A STATED FETTER IS STATED AT THE SEAT ITS WORD SITS AT, round GR. It
+    was one flag for the whole text, so a fetter stated anywhere let every seat
+    skip the quarter rule. Measured on 27 September: "I am exhausted. My father
+    died." filed the bereavement at the heart as stated Apathy, and once the
+    shame family stated Shame, "my father died and I feel ashamed" routed the
+    heart onto its one Shame address, which is the grief filed as shame the
+    quarter rule was written to stop. So each seat now asks only what was
+    stated at that seat, heaviest first. A seat nothing stated at is read by
+    the quarter rule exactly as before. */
+ var statedAt={};
+ hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true;
+  if(h.band){ var sa=statedAt[h.band]=statedAt[h.band]||{};
+   sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0); } } });
  var anyNamed=Object.keys(wanted).length>0;
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
@@ -6805,10 +6831,12 @@ function parseStory(text){
      one thing the sentence actually said and fall back to Anger. The charge
      still lands on the seat, because that is where the body holds it, and the
      reading keeps the name the word gave it. */
-  var stateHere=Object.keys(stated).filter(function(f){return wanted[f];}).length>0;
+  var here=statedAt[k]||{};
+  var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
+  var stateHere=hereF.length>0;
   if(stateHere&&!seg.length){
    imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
-    fetter:Object.keys(stated)[0], inferred:false, stated:true,
+    fetter:hereF[0], inferred:false, stated:true,
     amt:Math.round(Math.min(10,byBand[k]/3)*10)/10, from:k});
    return;}
   if(seg.length < all.length*0.25 && !stateHere){

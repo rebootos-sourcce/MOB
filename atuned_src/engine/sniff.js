@@ -335,8 +335,19 @@ function parseStory(text){
  var wanted={}; Object.keys(byChg).forEach(function(c){var f=CHG2FET[c]; if(f)wanted[f]=true;});
  /* a word that names its own fetter is as named as an adjective that maps to
     one, so it counts toward wanted and stops the reading being inferred. */
- var stated={};
- hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true; stated[h.fet]=true; } });
+ /* AND A STATED FETTER IS STATED AT THE SEAT ITS WORD SITS AT, round GR. It
+    was one flag for the whole text, so a fetter stated anywhere let every seat
+    skip the quarter rule. Measured on 27 September: "I am exhausted. My father
+    died." filed the bereavement at the heart as stated Apathy, and once the
+    shame family stated Shame, "my father died and I feel ashamed" routed the
+    heart onto its one Shame address, which is the grief filed as shame the
+    quarter rule was written to stop. So each seat now asks only what was
+    stated at that seat, heaviest first. A seat nothing stated at is read by
+    the quarter rule exactly as before. */
+ var statedAt={};
+ hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true;
+  if(h.band){ var sa=statedAt[h.band]=statedAt[h.band]||{};
+   sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0); } } });
  var anyNamed=Object.keys(wanted).length>0;
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
@@ -376,10 +387,12 @@ function parseStory(text){
      one thing the sentence actually said and fall back to Anger. The charge
      still lands on the seat, because that is where the body holds it, and the
      reading keeps the name the word gave it. */
-  var stateHere=Object.keys(stated).filter(function(f){return wanted[f];}).length>0;
+  var here=statedAt[k]||{};
+  var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
+  var stateHere=hereF.length>0;
   if(stateHere&&!seg.length){
    imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
-    fetter:Object.keys(stated)[0], inferred:false, stated:true,
+    fetter:hereF[0], inferred:false, stated:true,
     amt:Math.round(Math.min(10,byBand[k]/3)*10)/10, from:k});
    return;}
   if(seg.length < all.length*0.25 && !stateHere){
