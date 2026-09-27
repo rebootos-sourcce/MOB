@@ -17839,3 +17839,84 @@ What I need from him: nothing yet. All four are real requests with
 enough here to build against; no ruling is required before mockups
 can be produced and reviewed.
 
+## GH. Field animation: tension lines on heavy load, radius based name fade in on zoom. 27 September
+
+His words, verbatim: "And from now on, let's start off with a field.
+And you better add the fucking tension lines for the heaviest loads
+in the animation, like when it loads up. I guess we need to start
+seeing values. Anything north of a five, ascending or descending,
+right? It's either expanding or collapsing. So I guess it's always
+expanding or collapsing, but that's when it's the oscillating. It's
+like it starts to push it in one way or the other. So that's when the
+tension starts to really dominate, is what I'm thinking. It's like
+saying, hey, this is running hot. and we're showing you. And then as
+I zoom in on the names, I think I want it to be, I want the names to
+kind of fade in in a radius around the cursor. Uh, not like what
+they're doing right now. It's, right now, it seems unorganized. And
+this way, this, and then the, with a little gradient fall off on the
+edges, so it's really kind of focused in on the area that you really
+happen to be looking at. Give me four mock-ups of that."
+
+Two asks in one message, both on the Field, and he closes with the
+deliverable: four mockups of the combination.
+
+1. Tension lines drawn on the heaviest loads as the animation runs.
+   A load north of five, whichever direction it is moving, ascending
+   or descending, is either expanding or collapsing, and that motion
+   is what should read as tension, a visible "running hot" signal, not
+   a static number.
+2. The name labels that appear while zooming in read as unorganized
+   today. He wants them to fade in inside a radius around the cursor
+   instead, with a gradient falloff at the radius edge, so only the
+   area under the pointer is legible and the rest recedes.
+
+Grounded before dispatch:
+
+**The Field tab is real and already named exactly what he is pointing
+at.** `atuned_src/engine/core.js:95` lists `{k:TAB.FIELD, id:'cv',
+nm:'Field', cls:'tab-field'}`, and the app has opened on it since the
+19 September ruling. `atuned_src/ui/ui.js:1331` renders it: `if
+(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);`, so
+`draw()` and `ringsDraw()` in `atuned_src/ui/wheel.js` are the actual
+animation his message is describing.
+
+**The label behaviour he is calling unorganized is real, documented,
+and already rejected once for the same reason.** `wheel.js:164`
+already carries this exact judgment in its own comment: "Only what is
+carrying grows. A hundred and twelve labels at once is not detail, it
+is noise." The current system grows a label by charge at two zoom
+thresholds, 2.60 and 3.90 (`wheel.js:155-161`), which is a charge based
+reveal, not a cursor proximity based one. His ask is a different axis
+entirely, position under the pointer, not charge, and should sit
+alongside the existing charge based growth rather than replace it
+without a ruling, since charge based growth is exactly what stops the
+112 label noise he already had fixed once.
+
+**"Load" as a per node value already exists in the arithmetic core.**
+`atuned_src/engine/expression.js:8` computes a load bearing figure
+used elsewhere in the product (the same load value the owner's own
+"load 1.9" example at round GG references). The five threshold and the
+ascending or descending, expanding or collapsing framing is new
+language from him and is not yet named anywhere in the engine, so the
+mockups need to show the concept before any engine hookup, exactly the
+class of ask he has repeatedly wanted to see simulated first.
+
+**"Let's start off with a field" is read as a process instruction, not
+a fifth ask.** Everything in the message concerns the Field, and he is
+setting the frame for this round's mockups rather than reopening the
+opening tab ruling, which already stands.
+
+Dispatched: four mockups of the combined behaviour, tension lines on
+load past five plus cursor radius name fade in with gradient falloff,
+to `animation-vfx-director`, since both asks are motion and effect
+work owned by that seat, built as standalone files under `proto/field/`
+against the real Field canvas geometry in `wheel.js`, not touching
+`source.html` or `atuned_src/` and not colliding with the five agents
+already running this round.
+
+What I need from him: which of the four he wants carried forward, and
+whether the cursor radius fade in replaces or layers on top of the
+existing charge based label growth from the 112 label fix, since those
+are two different reasons for a label to appear and doing both at once
+needs a rule for which wins when they disagree.
+
