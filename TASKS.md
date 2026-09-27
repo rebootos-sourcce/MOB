@@ -17075,3 +17075,102 @@ downgrade path does, which needs the record store to exist first.
 This closes the most severe defect found tonight. Refreshed and sent
 the real build.
 
+## FV. A long round of real design and copy feedback, plus one open
+## question ruled outright. 27 September.
+
+**His words in full: "Where is research 90 day md? First, I know
+you're AI. I just want to let you know, even as software, I'm pretty
+proud of you. This is pretty good. Okay, so notes. When I open root
+energetics, I want a summary of that on the right hand side, also at
+the very top closed. But what I want source to do is to take a look
+at all the behavioral energetics where they overlap, because that's
+the truth. And then use that as the summary. Where they don't align
+is the kind of fuzziness of it, the other ways it can be expressed.
+The UI UX in this area, I want a slightly different treatment for
+root energetics. I want energetics capitalized. Like we're breaking
+a lot of our design rules on the left hand side, so I want these
+brought back into alignment. Everything should have meaning,
+everything should have an icon, etc. Yeah, root energetics summary
+on the right side. Where's the animation of the bands animating? Um,
+the text doesn't make any sense. This is courage most shut law 2.3
+of 10. What does that mean? Dissociation character. So I need my
+story team to figure out like these tooltips and the copy and what
+kind of messaging we're trying to show here. So I want them to go
+out to the internet, search all the tools that have the highest
+rating for things like this, find out what kind of information
+actually needs to be in this, and then give me a pitch. Like I
+clicked on the word distortion, this is held 5.0 opposite install
+0.0. Like this isn't a computer, we're talking about human behavior.
+It needs to be in a language that people can understand. It needs to
+be grounded. It needs to be direct. It needs to be simple. Um, it
+needs to be informative. It needs to provide context. And it needs
+to have a kind of a warmth to it that says I see you, in a way. But
+not condescending either. Yeah, those tension lines will make a huge
+difference. And then the feathers are missing on Dial, and I want
+the feathers a little bit bigger. Uh, they come in zoomed up medium.
+I want them to start coming in a little bit sooner. I don't have a
+word for a little bit sooner, just a little bit sooner, let's feel
+it out. All the tools, the spiritual, psycho spiritual, and psycho
+physiological, on the matrix, get rid of the architect engine weaver
+witness. And I think our menus need another treatment, I think
+we're getting pretty close. And then under flow, I want these icons
+redesigned so that they're kind of in alignment with the rest of the
+site. And then I've got Running, and I've got these numbers, but
+they don't look like pills, and I don't see their icons. And so, a
+week is considered seven days, so it's a seven day trial. I think in
+the tooltips for the overlays we know we need to link off to the
+knowledge base, and I think that any text, this is for the story
+team, I think that all text that relates to the content needs to
+have a hyperlink also to the knowledge base, so information just
+always links back to the knowledge base."**
+
+**One open question from FU ruled outright.** "A week is considered
+seven days" settles the systems seat's own question 2 exactly as
+built: rolling seven day windows, not a calendar week tied to a
+device's clock. No code change needed, already the default chosen.
+
+**Real, itemised asks, dispatched rather than left as one block:**
+- A real Root energetics summary: read where the systems (Western,
+  Eastern, Number, Design) actually agree and report that agreement
+  as the reading itself; where they diverge, present it as the
+  range of how a trait can show up rather than a contradiction. On
+  the right rail, closed at the very top by default. His own words
+  name the method: overlap is truth, divergence is the range of
+  expression, not noise to average away.
+- "Root energetics" capitalized, and a visual treatment distinct
+  from the rest of the left rail.
+- A real design consistency pass across the whole left rail: his own
+  words, "everything should have meaning, everything should have an
+  icon," against rules he says are currently broken there.
+- The reading bands should animate; not yet built.
+- A serious, separate copy and tooltip problem, not a design one:
+  strings like "courage most shut law 2.3 of 10" and "held 5.0
+  opposite install 0.0" read as arithmetic, not language. Ordered:
+  real external research into the best rated comparable tools' own
+  copy and information design, then a pitch, not a silent rewrite.
+  His own stated bar for the voice: plain, grounded, direct, simple,
+  informative, gives context, carries warmth without being
+  condescending, and never reads as a computer talking about a
+  person.
+- A missing bug: the feathers render on other pictures but not on
+  Dial. Wants them larger and appearing slightly earlier when
+  zooming in, magnitude explicitly not specified, "let's feel it
+  out."
+- On the tools matrix (spiritual, psycho spiritual, psycho
+  physiological axes), remove the Architect, Engine, Weaver, Witness
+  labeling. Which matrix this is was not named more precisely; found
+  and confirmed before touching anything, not guessed at.
+- Menu treatment called close but not finished, general direction
+  rather than a specific defect.
+- Icons under Flow redesigned for consistency with the rest of the
+  site.
+- The Running panel's numbers should read as the same pill shape used
+  elsewhere and are missing their icons.
+- Every piece of content bearing text should carry a hyperlink back
+  to the Knowledge base, per the story team, alongside the tooltip
+  overlay links already planned.
+
+Dispatched this round: one build covering the concrete UI and
+consistency items, one research and copy pass covering the tooltip
+language problem and the knowledge base linking rule.
+
