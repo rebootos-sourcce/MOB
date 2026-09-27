@@ -22379,3 +22379,25 @@ another agent (`atuned_src/ui/release.js` and `storyui.js` are both in
 flight), with a note to sweep those two once they land, and the same
 bar sent to the in-flight onboarding and tutorial storyboards before
 they finish rather than after.
+
+## JL. Both storyboards landed, the ten year old rule applied and shown
+
+`507558a` is in, pushed, exactly the two proto directories, zero em
+dashes. Screenshots viewed directly confirm the report in full: the
+onboarding storyboard's thirteen frames (S0 to S12) show the old line
+struck through beside the new plainer one everywhere the rule changed
+something, his own dictated opening kept word for word as the ruling
+requires, and the signal test drawn with no reading beneath it,
+matching the shipped rule. The tutorial's fourteen frames (U0 to U13)
+show the avatar in the ring's own centre with one full turn of
+discover, play, flow, embody drawn around it, grounded in real shipped
+mechanics named exactly (the Story page's Bank and Vault, the undo
+arrow, the glass bar, the release column), and real engine output from
+an actual run: Angela's story finds 12 patterns, and a stated good
+quality with no place in the body is correctly placed nowhere, per the
+engine's own rule, not the storyboard's invention.
+
+Both carry real, specific open questions rather than silent choices,
+the largest being whether the ten year old rule reaches his own
+dictated words, which collides with the standing rule that dictated
+words are never edited. Carried to him below.
