@@ -322,6 +322,70 @@ Each passes both gates, run 27 September. None replaces IW1.
 
 ---
 
+## 7. Round JF, 27 September. Two voices in the release
+
+Quoted from `TASKS.md` JF. The release mechanism itself is product work and
+is written out in `docs/briefs/design-mechanisms.md` 4.12, as specced and not
+yet verified built. Only the lines that bear on reach are here.
+
+| # | His line | refuse.js | Voice gate | Where it may go |
+|---|---|---|---|---|
+| JF1 | That's my voice, it's human. After that, it's AI. And AI is reading the list. | pass | pass | internal. It is the specification, not copy. The fact it states is below |
+| JF2 | you've released X number of patterns. You may not have felt them all, but the ones you did, mark to optimize for better performance. | pass | pass | in product, as the completion line. **Held from cold** until the mark control exists |
+| JF3 | Meanwhile, keep your awareness inside your body to feel, to allow the sensations to continue releasing. | pass | pass | in product, in his recording or the list voice. Not marketing copy |
+| JF4 | hello, you're releasing this pattern, sit back and relax, and now move your awareness into your body, take a deep breath and feel, keep your senses in there, and when you're ready, repeat this prompt in your mind. | pass | **fails, hard**: *sit back* | his recording only. Never synthesized, never set as type. JF confirms the round IM ruling that kept it out of machine spoken copy |
+
+### What makes the release distinct, as a fact
+
+A human opens it and a machine reads the list, and the product says which is
+which. His voice welcomes the person and hands them into their body. After the
+handover prompt the list is read by a synthetic voice, at a fixed spacing,
+four seconds a line by default. Our read of the category, said as judgement:
+a synthetic voice is usually either hidden or the whole product. Saying where the human stops is proof over
+claim: the part that needs a person has one, and the part that is a fixed list
+at a fixed pace is read by the thing that keeps a pace best.
+
+- **Segment.** Levels 8 to 10 read the split as honest engineering and want
+  the spacing as a setting. Level 7 hears a person at the door and a
+  diagnostic after it. Level 6, tired of gurus, gets one human voice at the door
+  and then a mechanism. Level 5 wants magic and hears *AI*; do not lead their page with
+  it.
+- **The objection, answered in the material.** *An AI voice for something this
+  personal is cheap.* The answer is the split itself, shown, not argued: play
+  the handover, his voice, then the list. A ten second clip of that moment is
+  the content that is the product.
+- **The condition.** The recording does not exist yet. No copy promises his
+  voice until it does. Until then the opening is round IM's plain stand in
+  line, and a page that says *a human voice opens it* would be false.
+- **JF2 is the strongest line in the round for reach.** *You may not have felt
+  them all* declines to claim that every line landed. In a category where
+  everybody claims, a completion screen that says so is rare. It goes cold
+  only once the mark control it names is on screen.
+
+### Compressions, and these are ours
+
+Each passes both gates, run 27 September. None replaces a line of his, and
+all three wait on the recording.
+
+| Ours | From his | Note |
+|---|---|---|
+| His voice opens the release. A machine voice reads the list. | JF1 | byline, page. Names both voices and hides neither |
+| A person welcomes you in. The instrument reads the list, four seconds a line. | JF1 | page. The four seconds is the specced default; re-read it off the build before it runs |
+| You may not have felt them all. Mark the ones you did. | JF2 | page, beside a screenshot of the completion line. Cold once the mark control ships |
+
+### Open with him, not answered here
+
+7. **Name the machine voice, or not.** His word is *AI*. Three ways:
+   - **Say AI.** Plain and current. Costs level 5 and anyone who hears *AI*
+     as cheap.
+   - **Say synthetic voice** or *machine voice*. Accurate and flatter. Costs
+     the search term.
+   - **Name only his voice**, and let the list be the instrument. Nothing
+     false is said. Costs the honesty point above, which only works if the
+     split is named.
+
+---
+
 ## What was run
 
     27 September. Every line in sections 1 and 4, his and ours, through
@@ -332,6 +396,11 @@ Each passes both gates, run 27 September. None replaces IW1.
     27 September, round IW. The three lines and three compressions in
     section 6, through refuse.js check() and check.py --line, one at a time.
     One hard failure on each gate, IW2, on 108. Everything else passes.
+
+    27 September, round JF. The four lines and three compressions in
+    section 7, through refuse.js check() and check.py --line, one at a
+    time. One hard failure, JF4 on the voice gate, on "sit back". It is his
+    recording and is never set as type. Everything else passes.
 
 The negation guard in `refuse.js` was fixed the same day (it read across
 sentence ends, see that file). The verdicts above were taken after the fix.

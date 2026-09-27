@@ -813,6 +813,15 @@ both scales.
 
 ## 7. The release ritual
 
+**Overtaken twice, noted 27 September.** The 2.2 second cadence below is the
+build at `eb788a2`. Round IM (`2c6e38b`) replaced it with a spoken script that
+waits for the voice. Round JF then specified a fixed default of four seconds
+between lines, an elapsed clock, a release count that ticks down, an install
+count that ticks up, a completion line and a two minute integration countdown.
+The mechanism is written out in `design-mechanisms.md` 4.12, as specced and not
+yet verified built. Read 7.1 as history; 7.2 (the discharge under the blur) was
+not re-measured and may still hold.
+
 ### 7.1 What exists
 
 **Shipped.** A release is a fixed overlay (`#rel`) that walks a plan of

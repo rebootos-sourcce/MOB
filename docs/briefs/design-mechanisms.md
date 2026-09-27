@@ -482,6 +482,46 @@ S.charge[n.cf]  -= share        (clamped 0..10)
 S.replace[n.cf] += share*0.62   (clamped 0..10)
 ```
 
+Re-read 27 September at `d1dbf32`: both constants are still at `ui/release.js:286` and `:291`. Nothing in 4.12 below changes them.
+
+### 4.12 The release protocol, round JF. As specced, not yet verified built
+
+Added 27 September. **This section describes the mechanism as the owner specified it, not as it runs.** Another seat is rebuilding the release to this specification now, and its commit is the source of truth for the screen. When it lands, this section should be checked against it line by line and the heading changed. Until then, nothing here is a description of the build.
+
+Source: his dictation, `TASKS.md` round JF, quoted where it matters. What ran before it: round IM (`2c6e38b`) made the release a spoken script, an opening, then per address four blocks (left release, right release, left reframe, right reframe), each its head statement once and then its passes, then the cooldown. The book's dose, quoted in the header of `ui/release.js`: *"50 release statements on the left channel, 50 on the right, transition through release, 50 embodied truth on the left, 50 on the right."*
+
+**The list.** *"The release protocol is a list of the parasympathetic and asympathetic nerves, left and right channels, masculine and feminine."* The transcript reads *asympathetic*; read here as sympathetic, and worth one confirming word from him. Each line is a release statement, *"I'm letting go of believing that I am"*, and the reframe is its opposite, an install statement, *"I know that I am."*
+
+**The dose, as a discrete choice.** *"Do you want to release 25 left and right, 50 left and right, or 100 left and right."* Three options, not a free number. Two facts about the current build a port or the rebuilding seat has to meet:
+
+- The build offers a number field from 1 to `LINES_PER_CH` (`ui/release.js:729`), and `LINES_PER_CH` is 50 (`engine/schema.js:1015`, commented *"the printed card, a hundred each way, split"*). So 100 a side exceeds the engine's own cap. Offering it means raising that constant or planning two passes of the card, and the meter prices through the same constant (`meterPlan`), so either choice changes what a run costs.
+- The field is labelled *Patterns*, but the walker spends it as passes per block (`RUN.dose`, `ui/release.js:196`), while the run card counts *pattern N of M* as addresses. His 25, 50 and 100 are per side. Which of the two counts they mean is not stated in JF; the book's wording above reads it as statements, which is passes.
+
+**Two voices, one handover.** The opening is his, recorded: *"hello, you're releasing this pattern, sit back and relax, and now move your awareness into your body, take a deep breath and feel, keep your senses in there, and when you're ready, repeat this prompt in your mind. I'm letting go of believing, perceiving, thinking, behaving, acting, feeling that I am. That's my voice, it's human. After that, it's AI. And AI is reading the list."* The recording does not exist yet. The voice gate refuses *sit back* in synthesized copy (checked 27 September, `check.py --line`, one hard failure on that phrase), and JF confirms that ruling rather than colliding with it: those words were never meant to be machine spoken. Until the recording exists, round IM's plain stand in line holds.
+
+**Timing.** *"The default should be four seconds between."* The build today waits for the voice to finish a line and reads at 0.40 seconds a word when silent (`2c6e38b`). JF makes the spacing a fixed default of four seconds between lines.
+
+**Three counters on the run.**
+
+    elapsed     "a running log of how long it's running"
+    release     starts at the dose and ticks down one per release line
+    install     ticks up, and shows which positive charges are being added
+
+The install counter naming its charges is the one place the person sees the coherent opposite land by name, which is the 62 percent line in 4.11 made visible.
+
+**The completion line.** *"You've released X number of patterns. You may not have felt them all, but the ones you did, mark to optimize for better performance. Meanwhile, keep your awareness inside your body to feel, to allow the sensations to continue releasing."* That implies a control the build does not have: after a run, the person marks the patterns they felt. What a mark writes is open (below).
+
+**Integration.** *"Wait for two minutes, and there should be a two minute countdown."* A fixed 120 second hold after the completion line, counted down on screen, before the reward. This is separate from the cooldown in 4.11, which is arithmetic and takes no time.
+
+**The reward, and the per run summary.** *"At the end of that, the person should get a badge or reward or whatever it is that's tied to the number of releases and the number of patterns or structures they're releasing. We should have badges for all the saboteurs, complexes, and hypercomplexes."* So a run ends on a summary of what was released, broken out by saboteur, complex and hyper complex (the saboteurs are `SAB33` in 1.5, and the named clusters there carry a hyper complex family, `hcx`), and the reward is keyed to those counts. His *"or whatever it is"* leaves the word open: it is question 20 in `design-gamification.md` section 12, and a count on the record is allowed where a score is not (that brief, 5.1).
+
+**Open, his, not answered here.**
+
+1. Does a mark change the arithmetic (weight at that address) or only the record? *"Optimize for better performance"* reads as the first. The first changes readings and needs a ruling; the second is a record and does not.
+2. 25, 50 and 100: passes per block or addresses per run.
+3. 100 a side: raise `LINES_PER_CH`, or run the 50 card twice.
+4. *Asympathetic*: sympathetic, as read here, or a term of his.
+
 ---
 
 ## 5. The seed (`engine/seed.js`)

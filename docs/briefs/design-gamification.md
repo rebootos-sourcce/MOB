@@ -1344,6 +1344,16 @@ Each item is quoted where it is asked, so it can be put to him with its source.
     Cleared, or a family of its own?
 20. **The vocabulary.** Which of badge, streak and score may appear on screen?
 
+    New material on 19 and 20, round JF, 27 September, and neither is settled
+    by it. His words: *"the person should get a badge or reward or whatever it
+    is that's tied to the number of releases and the number of patterns or
+    structures they're releasing. We should have badges for all the
+    saboteurs, complexes, and hypercomplexes."* On 19 that asks for a mark per
+    saboteur, complex and hyper complex, earned at the end of a release run,
+    which reads as a family of its own rather than Cleared; he has not said
+    so. On 20, *"or whatever it is"* keeps the word open. Where it lands in
+    the run is in `design-mechanisms.md` 4.12, as specced.
+
 ---
 
 ## 13. What the design is worth, as modelled
