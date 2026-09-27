@@ -21362,4 +21362,51 @@ AI that I did not see a design for. So bring all the HTML and JPEGs
 forward, so I can review."
 
 Answered from `BACKLOG-AUDIT.md`'s own "worth his eyes" list rather
-than rebuilt, since that list already exists and is exactly this.
+than rebuilt, since that list already exists and is exactly this. Eight
+of eleven sent as real, working files, verified to open first; three
+that only ran against a sibling engine.js were rebuilt and, on
+verifying them myself in a headless browser, still threw real errors,
+so they were held back rather than sent broken.
+
+## II. Round two of the Story journal, back and verified: a real, measured case for one layout over the other three. 27 September
+
+Commit `f7ae665`. Verified directly: correctly scoped to
+`proto/story-redesign2/` alone, zero em dashes, and
+`shots/h-1600-committed.png` opened directly, showing exactly his own
+cut: three columns, all above the fold, Bank and Vault icons live, and
+the release panel holding only address names, pace, a pattern count
+and one run button, nothing else.
+
+**A real simulation, not a preference dressed as one.** A thousand
+panel members, each writing their own real lines, run against all four
+new layouts and against round HX's Route as a control. At sixteen
+hundred wide the four cannot be told apart, sixty to sixty one per
+cent of the panel reaches the release either way, against forty five
+on Route. On a phone, they split hard: layout H alone keeps every
+control on the first screen, sixty seven per cent reaching the release
+against Route's twenty four, because Route's own run button sat one
+thousand five hundred and fifty eight pixels down. The measurement
+that decides the pick is the phone, not the desktop.
+
+**A real cost of his own cut, shown rather than hidden.** Stripping the
+release panel to selections, pace and a button also removed the room
+those controls used to breathe in: first screen controls on the new
+layouts rose from eleven to eighteen once his cut and the two icons
+landed, past the twelve the team measures against. Kept open rather
+than decided for him: tuck pace and the address picks behind one
+control to get back under the floor, at the cost of one more tap.
+
+**A real defect surfaced honestly rather than smoothed over.** Angela's
+own line about a funeral reads as "Martyrdom" to the engine, the exact
+reading `CLAUDE.md` already names as an insult when a grief line reads
+as a character judgement. Nineteen of forty one story bank lines read
+nothing at all, and Gordon's own reads nothing on any layout, matching
+what the ICP research already predicted rather than a bug in this
+round's own build.
+
+What I need from him: which of the four layouts on desktop, since the
+simulation cannot separate them there; whether the eighteen control
+count is acceptable or should be tucked behind one more tap; whether
+Source AI should ever follow up on a line that reads nothing, against
+his own standing rule that the person leads; and whether "Martyrdom"
+should ever print for a line like Angela's.
