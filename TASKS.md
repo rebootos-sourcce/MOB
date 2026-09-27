@@ -21739,3 +21739,69 @@ untouched copy of the same pin. This is the exact task the marketing
 seat's own report queued and left alone as outside its files. Done
 directly rather than dispatched, since it is small, precise, and
 touches no file any other agent in flight owns.
+
+## IT. All four held pieces landed together, and a dense new round on masks, the field panel, the avatar and priorities. 27 September
+
+The Story wire-in landed directly on the branch once the tree cleared,
+and the three held fixes, Compass, login shell and Punch, were
+rebased onto it, one clean tree, all four rounds together, verified
+again on the combined build before pushing: engine 1770 passed 0
+failed, collide 351 passed 0 failed, funnel 172 passed 0 failed, both
+the Compass and the Story tab opened and looked at directly on the
+merged build.
+
+His words, verbatim, a long dictation covering five threads at once:
+"Right, okay, a mirror is good. This is a mirror that shows you what's
+running your show. It gives you the tools to improve your mental,
+physical, spiritual performance. This is soul health for your entire
+complex. Okay, feedback on the masks. Remove the, make the outline 50
+percent less intense. I'm not impressed by the designs, but I like the
+idea. I think the designs need to be more symbolically reflective of
+what they are, and I think we need to change the shape of the face a
+little bit, it's not a pleasing shape, so I want to use more golden
+ratio to give us a shape and a little more stylization and character,
+symbolic interest to the masks themselves. Great idea, and see if you
+can show me what an animation, like a time slider, so we can see what
+one day, one week, one month, six months, one year looks like when you
+are reversing the mask. Feedback on the field information panel where
+it says reading and then it says you: first off, change you to the
+person's name. Second off, this panel is a very important panel, I
+just realized. The archetypes, the domains, that's not what's
+important. What is important is that we're tracking all the things
+that are the most intense to a person. So this should be the top
+things running, almost like the top highest three running, and then
+the highest ones running per band. Since we're showing the animation
+of the tension and everything else, it just makes sense that this
+reflects that, that would make this symbolic and informative at the
+same time, let's prioritize that. Okay, feedback on the avatar. I'm not
+sure what I'm looking at just yet. How do I set it up? How do I set up
+the things I want to become and the things I don't, that I want to
+release? I'm not seeing those connections here, and so I can't pick a
+style. It seems like there's a narrative section where I need to, you
+need to be able to record stories about your ideal person, and then
+record stories about the ideal behaviours that you're not, and the
+sniffer sets all that up and prioritizes the release of those, and
+then the ritual builder helps build the rituals to help get you into
+that flow, and I don't see that here. I do like the ring, and I think
+ideally I'd want it wired in if we've got time and tokens left. I like
+starting the left panel closed, that's good. I want to take Gaining
+off that right panel and move it to the centre column, upper right
+side, so it goes opposite Accuracy, on the top side, and then get rid
+of that text that said the field builds more than it spends, and raise
+the text that says reading up to the top. Cool, I like what you did
+with the Atuned logo, very surprising. Lock all this in. Stick to the
+priorities: release and core loop are obviously the highest, Compass
+and Energetics getting those all tidied up so that they work. If you
+can sneak in doing an art and design pass of the Energetics page,
+similar to the Field and even the Summary page, maybe some mockups, I
+think that would be very helpful, because I think we're finding a
+flavour that works."
+
+The mirror is adopted, closing one of marketing's four open questions
+outright. Two real product changes dispatched (the field information
+panel's own restructure, and the avatar layout adjustments, both
+stated as things that should work), and two design only pieces
+dispatched behind them (the masks redesign with the time slider, and
+an Energetics art pass), matching his own stated order, release and
+the core loop already done, Compass and Energetics next, the rest
+opportunistic.
