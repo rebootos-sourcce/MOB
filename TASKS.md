@@ -19766,3 +19766,43 @@ alone or the cost sentence beneath it; a read on the eighteen draft
 descriptions themselves; and the two questions still open from round
 GU, twelve archetypes or eighteen, and Rebel or Outlaw for the one that
 carries both names.
+
+## HD. The domain, and a real simplification: it does not need GitHub or a separate ISP. 27 September
+
+His words, verbatim: "It doesn't have to be GitHub, that can move
+everything to Cloudflare if that's a better place to do it. I also
+have a dot com. I just haven't set up an ISP, which I can do, and if I
+can do that then I can set you up with it. So maybe Google has a
+workflow ISP that I can just plug you into, or plug the site into. I
+think it's called a tune dot app, A-T-U-N-E-D."
+
+Answered directly, since it is a grounded factual question rather than
+a design one. What he means by "ISP" is the domain's own DNS and
+hosting, not an internet service provider in the technical sense, and
+his instinct is right: it does not have to be GitHub. `SECURITY-IP.md`
+already found GitHub Pages switched on for this repository, which is
+unrelated to the real deployment; `reboot-os`'s server already runs on
+Cloudflare Workers, and Cloudflare can also hold domain registration
+and DNS in one place. If the domain moves to Cloudflare, or is simply
+pointed at Cloudflare's nameservers, there is no separate ISP or
+hosting step to set up at all, one account holds the code's actual
+home, the database and the domain together, which is a real
+simplification over what he was describing rather than a new thing to
+build.
+
+**The domain spelling itself is confirmed, closing part of round HA's
+open question.** He spelled it directly, "A-T-U-N-E-D," which reads
+"Atuned," matching exactly what `reboot-os`'s server is already
+configured for, `atuned.app`, not a different spelling. This closes
+one of round HA's six open questions outright.
+
+Relayed to the `technical-director` already running the architecture
+research dispatched at round HB, since it bears directly on the same
+Cloudflare question that research is answering, rather than opened as
+a separate task.
+
+What I need from him: whether to actually move the domain's
+nameservers to Cloudflare now that this is confirmed simpler, and the
+remaining open items from round HA, Cloudflare versus Supabase as the
+database and compute provider (a related but separate question from
+where the domain's DNS lives) and which product goes online first.
