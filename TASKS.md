@@ -21724,4 +21724,18 @@ refusal itself.
 
 Nothing is lost. All three fixes sit safely committed at `a464530` in
 a worktree at `/tmp/land-compass`, gated and verified, waiting only
-for the shared tree to clear or for him to say to proceed anyway.
+for the shared tree to clear or for him to say to proceed anyway. He
+answered directly: wait for it to clear.
+
+## IS. The stale ritual sim pin, precisely specified and fixed. 27 September
+
+A precise, ready to act on report, logged in full rather than
+paraphrased: `proto/ritual/losssim.js --validate` fails two checks
+because the CQ audit's own rounding fix, `bb2cbe0`, moved Ana's printed
+expression band from level 3 to level 4 with nothing about her CQ or
+laws actually moving. `marketing/field.js` was already re-pinned for
+this in `6d1d569`; `proto/ritual/losssim.js` carries its own separate,
+untouched copy of the same pin. This is the exact task the marketing
+seat's own report queued and left alone as outside its files. Done
+directly rather than dispatched, since it is small, precise, and
+touches no file any other agent in flight owns.
