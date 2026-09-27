@@ -22401,3 +22401,27 @@ Both carry real, specific open questions rather than silent choices,
 the largest being whether the ten year old rule reaches his own
 dictated words, which collides with the standing rule that dictated
 words are never edited. Carried to him below.
+
+## JM. The analytics preview landed, verified and pushed
+
+`d406906` is in, `storyui.js` only, pushed. Rebuilt and gated in an
+isolated worktree: `BUILD.sh` and `BUILD-engine.sh` clean,
+`tests/engine.js` 1770/0, `tests/collide.js` 351/0, `tests/funnel.js`
+172/0, `tools/monitor.js` all surfaces render, voice objections 0,
+matching the report. Checked the code directly: `STV.view` still
+defaults to `'lanes'`, nothing removes any of the three views, so the
+toggle needed no change, only confirmation. The running hot section is
+a real call to `hotList`/`hotDir`/`anaHotInk`/`ANA_DIRSAY`, the same
+functions Analytics itself calls, not a second copy. Screenshots
+viewed directly match the report exactly: closed reads one line,
+"Analytics preview"; open reads Last 7 days and Last 30 days each with
+a real entry count and the charges named most, Running hot with real
+addresses and real direction words, and an Open analytics button.
+
+A real gap named honestly rather than hidden: the 7 and 30 day windows
+could not reuse anything from Analytics, since nothing on that page
+reads the journal by time, so the preview re-runs the sniffer over
+each saved entry's own text instead. Four real questions carried
+below, the most consequential being whether old entries should be
+re-read by today's sniffer or keep what they read when saved, since
+the second option is a record format change.
