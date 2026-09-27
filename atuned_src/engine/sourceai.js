@@ -50,8 +50,12 @@
 
    It never names an address, a fetter or a saboteur to the person, because
    those are definitions and the ruling is that it does not use them. It
-   never says why. It asks why, and the person answers, which is the line
-   reviews/SPEC-source-ai.md already drew: nothing in the flow measures cause.
+   never says why about the person. One because is allowed, ruled 27
+   September in TASKS.md round JX, and it is about the body, never the
+   person: `ui/storyui.js`'s `srcWhy` names the seat's nerve place and the
+   mechanism the product already states as its own definition of Charge.
+   Source AI still never answers the why it asks about the person; the
+   person still finds that root themselves.
    ============================================================ */
 
 /* the owner's own two numbers. asked at seven and over, the root at ten. */
