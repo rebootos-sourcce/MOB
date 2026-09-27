@@ -100,7 +100,11 @@ async function pinch(p,cx,cy){p.gest++;
 async function osPinch(p,cx,cy){
  return Promise.race([p.cdp.send('Input.synthesizePinchGesture',{x:cx,y:cy,scaleFactor:2,gestureSourceType:'touch'}).then(()=>'done'),
   new Promise(r=>setTimeout(()=>r('timeout'),5000))]);}
-async function resetZoom(p){await p.evaluate(()=>{try{if(typeof FZ!=='undefined'){FZ={s:1,x:0,y:0};fzApply();}S.zoom=1;S.panx=0;S.pany=0;render();}catch(e){}});}
+/* the hit table is rebuilt on the next frame, so wait for it: reading it at
+   once aimed a tap at the 4x frame's coordinates, off the canvas, and read
+   as a dead tap on the fixed build. The probe's bug, found and fixed. */
+async function resetZoom(p){await p.evaluate(()=>{try{if(typeof FZ!=='undefined'){FZ={s:1,x:0,y:0};fzApply();}S.zoom=1;S.panx=0;S.pany=0;render();}catch(e){}});
+ await p.waitForTimeout(400);}
 /* the picture's box, whichever of the three is up */
 const picBox=p=>p.evaluate(()=>{const e=FVIEW==='wheel'?document.getElementById('cv'):document.getElementById('frend');
  const r=e.getBoundingClientRect();return {x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height)};});
@@ -110,7 +114,7 @@ const markAt=p=>p.evaluate(()=>{
  if(FVIEW==='wheel'){const b=document.getElementById('cv').getBoundingClientRect();
   const nd=HIT.filter(h=>h.k==='node'&&h.n&&h.n.cf);
   const pt=h=>h.x!==undefined?[h.x,h.y]:[h.cx+Math.cos((h.a0+h.a1)/2)*(h.r0+h.r1)/2,h.cy+Math.sin((h.a0+h.a1)/2)*(h.r0+h.r1)/2];
-  const h=nd.find(h=>{const q=pt(h);return q[1]>20&&q[1]<b.height-20;})||HIT.find(h=>h.x!==undefined);
+  const h=nd.find(h=>{const q=pt(h);return q[1]>20&&q[1]<b.height-20&&q[0]>20&&q[0]<b.width-20;})||HIT.find(h=>h.x!==undefined);
   if(!h)return null;const q=pt(h);
   return {x:Math.round(b.left+q[0]),y:Math.round(b.top+q[1]),k:h.k+(h.n&&h.n.nm?':'+h.n.nm:'')};}
  const m=[...document.querySelectorAll('#frend [data-h]')].map(e=>({e,r:e.getBoundingClientRect()}))
@@ -118,11 +122,33 @@ const markAt=p=>p.evaluate(()=>{
  return m?{x:Math.round(m.r.left+m.r.width/2),y:Math.round(m.r.top+m.r.height/2),k:m.e.getAttribute('data-h')}:null;});
 async function setView(p,v){await p.evaluate(v=>{const b=document.querySelector('#fview [data-fview="'+v+'"]');b&&b.click();},v);
  await p.waitForTimeout(1000);await p.evaluate(()=>{const t=document.getElementById('tip');t&&t.classList.remove('on');});}
-async function loadEx(p,v){await p.selectOption('#psel',v);await p.waitForTimeout(1500);}
+/* loading a worked example the way the build offers it on a phone: the
+   loader circle and its list where it exists (GF), the picker otherwise */
+async function loadEx(p,v){
+ const pb=await p.evaluate(()=>{const e=document.getElementById('ploadbtn');if(!e)return null;const r=e.getBoundingClientRect();
+  return r.height?{x:r.left+r.width/2,y:r.top+r.height/2}:null;});
+ if(!pb){await p.selectOption('#psel',v);await p.waitForTimeout(1500);p.loadTaps=1;return;}
+ let taps=0;await tap(p,pb.x,pb.y);taps++;
+ if(await p.evaluate(()=>document.getElementById('pload').hidden)){await tap(p,pb.x,pb.y);taps++;}
+ const it=await p.evaluate(v=>{const e=document.querySelector('#pload [data-pv="'+v+'"]');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();
+  return {x:r.left+r.width/2,y:r.top+r.height/2};},v);
+ await tap(p,it.x,it.y);taps++;
+ if(await p.evaluate(v=>document.getElementById('psel').value!==v,v)){await tap(p,it.x,it.y);taps++;}
+ p.gest+=0;p.loadTaps=taps;await p.waitForTimeout(1200);}
 /* where a tab is, and whether a thumb can reach it without a swipe first */
 const tabAt=(p,nm)=>p.evaluate(nm=>{const b=[...document.querySelectorAll('#tabbar button.tabtop')].find(e=>e.textContent.trim()===nm);
  const r=b.getBoundingClientRect();return {x:Math.round(r.left+r.width/2),y:Math.round(r.top+r.height/2),inView:r.left>=0&&r.right<=innerWidth,right:Math.round(r.right),left:Math.round(r.left)};},nm);
-async function goTab(p,nm){let t=await tabAt(p,nm),swipes=0;
+async function goTab(p,nm){
+ const fold=await p.evaluate(()=>{const e=document.getElementById('navtog');if(!e)return null;const r=e.getBoundingClientRect();
+  return r.height?{x:r.left+r.width/2,y:r.top+r.height/2}:null;});
+ if(fold){let taps=0;
+  if(await p.evaluate(()=>getComputedStyle(document.getElementById('tabbar')).display==='none')){await tap(p,fold.x,fold.y);taps++;}
+  if(await p.evaluate(()=>getComputedStyle(document.getElementById('tabbar')).display==='none')){await tap(p,fold.x,fold.y);taps++;}
+  const t=await tabAt(p,nm);await tap(p,t.x,t.y);taps++;
+  const want=await p.evaluate(nm=>+[...document.querySelectorAll('#tabbar button.tabtop')].find(e=>e.textContent.trim()===nm).dataset.tabk,nm);
+  if(await p.evaluate(()=>S.tab)!==want){await tap(p,t.x,t.y);taps++;}
+  return {tab:nm,menu:'folded',swipes:0,taps,reached:(await p.evaluate(()=>S.tab))===want,scroll:(await st(p)).scroll};}
+ let t=await tabAt(p,nm),swipes=0;
  while(!t.inView&&swipes<4){if(t.right>W)await swipe(p,300,t.y,60,t.y);else await swipe(p,60,t.y,300,t.y);swipes++;t=await tabAt(p,nm);}
  if(!t.inView){await p.evaluate(nm=>[...document.querySelectorAll('#tabbar button.tabtop')].find(e=>e.textContent.trim()===nm).scrollIntoView({inline:'center'}),nm);t=await tabAt(p,nm);}
  await tap(p,t.x,t.y);
@@ -135,7 +161,13 @@ async function goTab(p,nm){let t=await tabAt(p,nm),swipes=0;
 /* the pole strip, "heaven and hell": its two ends against the picture, the
    stage and the fold */
 const poles=p=>p.evaluate(()=>{const e=document.getElementById('pol2'),s=document.getElementById('stage');
- if(!e||getComputedStyle(e).display==='none')return null;
+ if(!e||getComputedStyle(e).display==='none'){
+  /* GF moved them into the core: on the wheel they are hit records, on a
+     rendition marks carrying the pole door */
+  const pic=(FVIEW==='wheel'?document.getElementById('cv'):document.getElementById('frend')).getBoundingClientRect();
+  if(FVIEW==='wheel'){const ph=HIT.filter(h=>h.k==='pole');
+   return {strip:false,inCore:ph.map(h=>({end:h.end,y:Math.round(pic.top+h.y),diameter:Math.round(h.rad*2),insidePic:pic.top+h.y>pic.top&&pic.top+h.y<pic.bottom}))};}
+  return {strip:false,rendition:'read off the screenshot'};}
  const r=e.getBoundingClientRect(),sr=s.getBoundingClientRect(),sv=e.querySelector('svg').getBoundingClientRect();
  const pic=(FVIEW==='wheel'?document.getElementById('cv'):document.getElementById('frend')).getBoundingClientRect();
  return {top:Math.round(r.top),bottom:Math.round(r.bottom),svgBottom:Math.round(sv.bottom),stageBottom:Math.round(sr.bottom),
@@ -161,7 +193,7 @@ const poles=p=>p.evaluate(()=>{const e=document.getElementById('pol2'),s=documen
     tabRows:new Set(tabs.map(e=>Math.round(e.getBoundingClientRect().top))).size,
     tabbarScroll:tb.scrollWidth+'/'+tb.clientWidth,tabMask:getComputedStyle(tb).maskImage||getComputedStyle(tb).webkitMaskImage,
     stage:R('stage'),picture:R('cv'),fbar:R('fbar'),fview:R('fview'),fzoom:R('fzoom'),lcol:R('lcol'),fdock:R('fdock'),
-    lightbtn:R('lightbtn'),helpbtn:R('helpbtn'),profbtn:R('profbtn'),psel:R('psel'),histpair:R('histpair'),
+    lightbtn:R('lightbtn'),helpbtn:R('helpbtn'),profbtn:R('profbtn'),psel:R('psel'),histpair:R('histpair'),navtog:R('navtog'),ploadbtn:R('ploadbtn'),
     reSection:(e=>{const r=e.getBoundingClientRect();return {top:Math.round(r.top),h:Math.round(r.height)};})(document.querySelector('.lsec.re')),
     dockCircles:circ,
     optChars:opts.map(o=>o.length),optPxMax:Math.round(Math.max(...opts.map(o=>cv.measureText(o).width))),pselInner:Math.round(inner),
@@ -262,7 +294,7 @@ const poles=p=>p.evaluate(()=>{const e=document.getElementById('pol2'),s=documen
   const path_=await walks[icp.who](p);
   /* a real reading: the worked example that is them, through the picker.
      Angela's is her own committed story, and she loads nothing. */
-  if(icp.who!=='Angela'){await loadEx(p,icp.ex);p.gest++;}
+  if(icp.who!=='Angela'){const g0=p.gest;await loadEx(p,icp.ex);if(p.gest===g0)p.gest++;}
   const box=await picBox(p);
   const down=await pinch(p,box.x+box.w/2,box.y+box.h/2);const afterPinch=await st(p);
   await resetZoom(p);

@@ -18212,3 +18212,64 @@ dashes in the new files.
 This closes the second half of round GF: the mobile fixes are still running
 in the same agent that opened them, now informed by this gap analysis
 rather than guessing at what to prioritise.
+
+## GM. The mobile fixes verified, all nine gates re-run myself. 27 September
+
+Commit `e1863d3`, the eight round GF mobile items: pinch on all three
+pictures, the folded phone nav, the lighting menu moved into it, undo
+hidden on phones, a profile loader beside Help, the heaven and hell halo
+and pitchfork moved onto the pictures themselves, the CQ, DQ and Accuracy
+row made uniform, square cornered and flush left to right per the
+coordinator's relay, and a 1.5 second press and hold that raises a
+tooltip without also opening the control. Committed and pushed by the
+seat itself as a fast forward onto `e41037e`, verified in full after,
+every gate re run myself rather than taken on the report.
+
+`md5sum atuned-packed.html` matched the claimed `77f067f5` exactly.
+`BUILD.sh` and `BUILD-engine.sh` clean. `tests/engine.js` 1735 passed, 0
+failed, matching. `tests/collide.js` 336 passed, 0 failed, matching.
+`tests/design.js` alone, 158 passed, 0 failed; in a first run under this
+machine's own load it threw the same "Field still animates" 30fps floor
+this file has now seen fail and clear on a re run alone at least eight
+times this session, cleared on the second run, not treated as a
+regression. `tools/monitor.js` all surfaces render. `tests/funnel.js` 172
+passed, 0 failed, matching. The voice check exits 0, matching.
+`tools/equiv.py` against the previous shipped build shows exactly the
+named additions (`FINGERS`, `TAP`, `fieldFingers`, `fieldPinch`,
+`fieldPressDrop`, `frPoles`, `phoneW`, `poleGlyph`) and the named changed
+bodies, nothing hidden. `tests/functional.js` read 1161 passed, 1 failed
+on the first run, the exact pre-existing Frames layer fade flake the
+report itself named and said also fails on the untouched baseline; the
+second run read 1162 passed, 0 failed, matching the report exactly and
+confirming the first run's single failure was the flake and not this
+change.
+
+Read the actual code rather than the description: `fieldPinch` in
+`ui/ui.js` counts real touch points at the window in the capture phase,
+routes a two finger gesture through the same `setZoom`/`fzAt` a scroll
+already used, and leaves one finger free to scroll the page, matching the
+comment's own account of the bug (no code anywhere answered two fingers,
+so the first finger fired a press and the hover readout rode along).
+`tip.js`'s `PRESS_MS=1500` confirmed directly. The uniform pill CSS at
+`head.html:4915-4943`, inside the phone media query, confirmed directly:
+a comment quoting his "flush left to right" verbatim, a 3 column grid for
+DQ, CQ and Accuracy and a 4 column grid for the rest, one fixed height,
+the ring SVG hidden in favour of the figure alone.
+
+Took my own screenshots rather than trusting the described ones: a
+390 wide touch emulated run with a real two finger pinch dispatched
+through CDP confirms the wheel zooms, the top bar folds to a single
+button reading the current tab name with a Person, Help and Profile
+button beside it, and the DQ, CQ, Accuracy row renders as three uniform
+square tiles in one row.
+
+What I need from him, the seat's own three questions, unedited:
+1. Square tiles that fill each row, or true 1 to 1 squares, which would
+   run smaller and leave more empty room per row.
+2. This uniform square treatment exists on phones only right now. His
+   words did not say mobile. Should the same change reach the desktop
+   dock.
+3. Whether to fix next what `02e8041`'s gap analysis found: a tap on the
+   picture on a phone opens its reading 4,600 to 5,100 pixels down the
+   page with nothing changing on screen, in all six walks. It sat outside
+   this task on purpose.
