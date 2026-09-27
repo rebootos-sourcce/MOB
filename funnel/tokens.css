@@ -3,7 +3,7 @@
    app's own stylesheet. The funnel and the app have to look like one
    product, and a palette copied by hand is correct on the day it is copied
    and wrong afterwards. Change a value in head.html and run the tool.
-   44 tokens. */
+   47 tokens. */
 :root{
  /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
 
@@ -122,6 +122,14 @@
  --t-surface:320ms;
  /* a whole tab. the longest thing the product is allowed to take. */
  --t-context:420ms;
+ /* A READING ARRIVING. The wheel's own entrance numbers, ENTER_SPAN and
+    ENTER_STAGGER in ui/wheel.js, on the wheel's own curve, a cubic out, so a
+    band on either rail fills on the same beat the wheel assembles on and the
+    dock's circles sweep on. FV in TASKS.md, his words: "Where's the animation
+    of the bands animating?" Written here rather than typed into each rule, so
+    the stylesheet and the canvas cannot drift apart without one of these
+    lines changing. */
+ --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as

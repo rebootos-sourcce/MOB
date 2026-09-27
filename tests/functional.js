@@ -3917,11 +3917,78 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    states:[...document.querySelectorAll('.lsec-hd')].some(h=>h.textContent.trim()==='States'),
    nums,match:nums.every(x=>String(N[x[0]])===x[1]),
    blocks:[...document.querySelectorAll('#lpanel .rblk')].map(h=>h.textContent).join(',')};});
- ok(re.name==='Root energetics'&&re.closed&&re.above&&re.holds,'Root energetics sits above the readings, holds the birth data, and opens closed, '
+ /* capitalised on FV, his words: "I want energetics capitalized" */
+ ok(re.name==='Root Energetics'&&re.closed&&re.above&&re.holds,'Root Energetics sits above the readings, holds the birth data, and opens closed, '
   +JSON.stringify({name:re.name,closed:re.closed,above:re.above}));
  ok(/Western,Eastern,Number,Design/.test(re.heads)&&!re.states,'it is States moved, not beside it: '+re.heads);
  ok(re.nums.length>=4&&re.match,'and it carries the name\'s numerology, the same figures numerologyOf gives, '+JSON.stringify(re.nums));
  ok(re.blocks==='Energy,Psyche','the rail\'s first block is called Energy now, got '+re.blocks);
+
+ /* FV. ROOT ENERGETICS READ ACROSS, at the very top of the right rail and
+    closed; the section set apart on both rails; a mark on every section
+    header; no root names on the matrix; Running as badges; and the core's
+    feathers on Frames and Dial as well as the wheel. */
+ const fv=await fp.evaluate(async()=>{loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
+  const panel=document.getElementById('rootsum').closest('.panel');
+  const sec=document.querySelector('.lsec[data-rail=right][data-sec=overlap]');
+  const first=panel.firstElementChild;
+  const closed=!sec.classList.contains('open');
+  sec.querySelector('.lsec-hd').click();
+  await new Promise(r=>setTimeout(r,60));
+  const host=document.getElementById('rootsum');
+  const R=rootOverlap(spiritual('Tomas'),numerologyOf('Tomas',CURP));
+  const out={first:first===sec,closed,name:sec.querySelector('.lsec-hd').textContent.trim(),
+   meets:[...host.querySelectorAll('.rs-a .rs-t b')].map(b=>b.textContent),
+   want:R.shown.map(a=>a.t),
+   lit:[...host.querySelectorAll('.rs-a')].map(a=>[...a.querySelectorAll('.rs-seg')].map(x=>x.classList.contains('on')?1:0).join('')),
+   wantLit:R.shown.map(a=>['W','E','N','D'].map(k=>a.sys.indexOf(k)>=0?1:0).join('')),
+   says:[...host.querySelectorAll('.rs-say')].every(p=>p.textContent.trim().length>10),
+   range:host.querySelectorAll('.rs-r').length, wantRange:R.range.length,
+   noFigure:!/0\.\d{2}|\d%/.test(host.textContent),
+   tinted:['energetics','overlap'].every(k=>{const e=document.querySelector('.lsec[data-sec='+k+']');
+    return e.classList.contains('re')&&getComputedStyle(e).backgroundColor!=='rgba(0, 0, 0, 0)';}),
+   bare:[...document.querySelectorAll('.lsec-hd')].filter(h=>!h.querySelector('svg')).map(h=>h.textContent.trim()),
+   mx:/Architect|Engine|Weaver|Witness/.test(document.getElementById('mxk').textContent),
+   run:[...document.querySelectorAll('#fire .it[data-i]')].map(e=>!!e.querySelector('.crb .crb-v')&&!!e.querySelector('.crb-g path')),
+   heads:[...document.querySelectorAll('#spirit .sp-hd')].every(h=>!!h.querySelector('svg'))};
+  sec.querySelector('.lsec-hd').click();
+  /* a blank profile has no birth, and the summary says what unlocks it */
+  loadP(0);render();
+  out.blank=document.getElementById('rootsum').textContent.replace(/\s+/g,' ').slice(0,80);
+  out.blankGo=!!document.querySelector('#rootsum .rs-go');
+  loadP(PERSON('Tomas'));render();
+  /* the feathers: none at the whole picture, the triad in on the notch the
+     wheel brings it, and every layer on both renditions */
+  const fe={};
+  for(const v of ['frames','dial']){fviewSet(v);await new Promise(r=>setTimeout(r,120));
+   const h=document.getElementById('frend');
+   fzAt(1,h.clientWidth/2,h.clientHeight/2);
+   const at1=+getComputedStyle(h).getPropertyValue('--frf0')||0;
+   fzAt(1.12*1.12*1.12,h.clientWidth/2,h.clientHeight/2);
+   const at3=+getComputedStyle(h).getPropertyValue('--frf0')||0;
+   fe[v]={layers:[0,1,2].map(i=>h.querySelectorAll('.frf'+i+' path').length),at1,at3,
+    op:+getComputedStyle(h.querySelector('.frf0')).opacity};
+   fzAt(1,h.clientWidth/2,h.clientHeight/2);}
+  fviewSet('wheel');
+  out.fe=fe;
+  return out;});
+ ok(fv.first&&fv.closed&&fv.name==='Root Energetics','the summary is the right rail\'s first section, closed on arrival, '
+  +JSON.stringify({first:fv.first,closed:fv.closed,name:fv.name}));
+ ok(fv.meets.length&&fv.meets.join()===fv.want.join(),'it leads with the meetings the engine finds, '+fv.meets.join(', '));
+ ok(fv.lit.join()===fv.wantLit.join(),'each band lights exactly the systems that land there, '+fv.lit.join(' '));
+ ok(fv.says&&fv.range===fv.wantRange,'each meeting says what it means, and the range carries every other reading, '+fv.range);
+ ok(fv.noFigure,'and no probability or percentage is printed at the person');
+ ok(/No birth data/.test(fv.blank)&&fv.blankGo,'a blank profile is told what unlocks it, with the door, '+fv.blank);
+ ok(fv.tinted,'Root Energetics is set apart on both rails');
+ ok(!fv.bare.length,'every section header carries its mark, bare: '+fv.bare.join(', '));
+ ok(fv.heads,'and every Root Energetics heading its system\'s');
+ ok(!fv.mx,'the matrix carries no root names');
+ ok(fv.run.length&&fv.run.every(Boolean),'every Running row is a badge with its pill and its tier\'s mark, '+fv.run.length);
+ for(const v of ['frames','dial']){const x=fv.fe[v];
+  /* three paths a feather, and a reading at nought draws none, so the count
+     is a multiple of three up to the layer's size and never empty */
+  ok(x.layers.every((n,i)=>n>0&&n%3===0&&n<=[9,21,63][i]),v+': the core draws the triad, seven seats and twenty one laws as feathers, '+x.layers);
+  ok(x.at1===0&&x.at3>0,v+': none at the whole picture, and the triad arrives on the third notch, '+x.at1+' then '+x.at3.toFixed(2));}
 
  /* THE ARCHETYPE GRIDS LOSE A ROW, EZ: "shrink them the icon size down so we
     can collapse the row size down one." Twelve in each, six by two, and every

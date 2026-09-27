@@ -37,6 +37,43 @@ const CHAINGLYPH={
  hy:'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
   +'M19.6 7.6L4.4 16.4',
  sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
+/* THE FOUR SYSTEMS OF ROOT ENERGETICS, AND WHERE A BIRTH WAS, AS MARKS. FV in
+   TASKS.md, his words: "everything should have meaning, everything should
+   have an icon." The rail's Western, Eastern, Number and Design headings were
+   the one set of headers on it printing a word and nothing else, and the
+   summary on the right rail names the same four on every meeting it reads, so
+   one mark per system serves both and they cannot drift apart. Western is the
+   sky's wheel, two rings and the four angles. Eastern is the two halves of
+   one cycle. Number is the grid digits are counted on. Design is the mark the
+   Summary's own chip already gives Human Design, kept rather than redrawn,
+   because one concept has one mark. Born is the place, a pin. */
+const SYSGLYPH={
+ W:'<circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.2"/>'
+  +'<path d="M12 3.4v4.4M12 16.2v4.4M3.4 12h4.4M16.2 12h4.4"/>',
+ E:'<circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a4.3 4.3 0 010 8.6 4.3 4.3 0 000 8.6"/>'
+  +'<circle cx="12" cy="7.7" r="1"/><circle cx="12" cy="16.3" r="1"/>',
+ N:'<path d="M9.8 4.4L8.2 19.6M15.8 4.4l-1.6 15.2M5 9.2h14.4M4.6 14.8H19"/>',
+ D:'<path d="M7 4v16M17 4v16M7 9h10M7 15h10"/>',
+ born:'<path d="M12 20.6s-6.2-5.4-6.2-10a6.2 6.2 0 0112.4 0c0 4.6-6.2 10-6.2 10z"/>'
+  +'<circle cx="12" cy="10.6" r="2.2"/>'};
+const SYSNAME={W:'Western',E:'Eastern',N:'Number',D:'Design'};
+/* THE NINE PLANETS A SIGN AND A NUMBER CAN MEET ON, engine/overlap.js. Drawn
+   on the 24 grid in the house stroke, ring never fill, each the planet's own
+   astronomical mark reduced to the few lines that still read at eleven
+   pixels. A Unicode glyph would come from whatever fallback face the device
+   has, and the zodiac glyphs on this rail already show how uneven that is. */
+const PLANETGLYPH={
+ Sun:'<circle cx="12" cy="12" r="7.6"/><circle cx="12" cy="12" r="1.4"/>',
+ Moon:'<path d="M15.6 4.4a8 8 0 100 15.2 6.8 6.8 0 010-15.2z"/>',
+ Mercury:'<path d="M8.8 3.6a3.2 3.2 0 006.4 0"/><circle cx="12" cy="10.2" r="3.6"/>'
+  +'<path d="M12 13.8v7M9.2 17.6h5.6"/>',
+ Venus:'<circle cx="12" cy="8.8" r="4.8"/><path d="M12 13.6v7.2M8.8 17.4h6.4"/>',
+ Mars:'<circle cx="10" cy="14" r="5.2"/><path d="M13.7 10.3l5.7-5.7M14.6 4.6h4.8v4.8"/>',
+ Jupiter:'<path d="M6.2 6.8c2.4-2.6 6.6-1.8 5.4 2.2-.8 2.6-3.4 5.2-5.6 7.4h12M15.6 4.4v15.6"/>',
+ Saturn:'<path d="M8 3.6v12.4M5.4 6.4h5.2M8 12c1.2-2.6 6.8-3 6.8 1.2 0 3-3.4 3.6-3.4 6.2 0 1.2 1 1.8 2.2 1.2"/>',
+ Uranus:'<circle cx="12" cy="15.2" r="5"/><circle cx="12" cy="15.2" r="1.1"/><path d="M12 10.2V3.8M9.4 6.4L12 3.8l2.6 2.6"/>',
+ Neptune:'<path d="M5.8 5.2c0 4.8 2.6 7.2 6.2 7.2s6.2-2.4 6.2-7.2M12 4v16.6M8.8 17.4h6.4'
+  +'M4.6 6.6l1.2-1.4 1.2 1.4M10.8 5.4L12 4l1.2 1.4M17 6.6l1.2-1.4 1.2 1.4"/>'};
 /* A MARK IS EITHER PATH DATA OR FINISHED MARKUP, and the tables hold both.
    CHILD, SI, HCX_LIB, GATEGLYPH and the nineteen domains carry a bare d
    string. SEATGLYPH carries a finished <path> or <circle>, because a seat's
@@ -226,9 +263,19 @@ function crMoNum(t){var m=/^(-?\d+(?:\.(\d+))?)(\D*)$/.exec(t||'');
  return m?{n:+m[1],dp:m[2]?m[2].length:0,suf:m[3]}:null;}
 function crMoAt(m,now){var k=(now-m.t0)/m.dur;
  return k<=0?0:k>=1?1:1-Math.pow(1-k,3);}
+/* THE RING AND THE BADGE ARE ONE MOTION. FV in TASKS.md, his words: "Where's
+   the animation of the bands animating?" The dock's circles swept and counted
+   and every other reading on the two rails snapped: the archetype and domain
+   shares under Reading, the stack's axes and patterns, the coherence ring at
+   the rail's head and the Running badges. They are the same two objects, the
+   ring cr() draws and the badge crBadge() draws, with the same arc and the
+   same pill, so this reads both and ui.js hands it those hosts too. */
+var CRMO_SEL='.cr,.crb';
+function crMoParts(el){return {arc:el.querySelector('svg.arc circle:last-child,svg.crb-a circle:last-child'),
+ pv:el.querySelector('.v,.crb-v')};}
 function crMoPaint(m,now){
- var h=document.getElementById(m.host), el=h?h.querySelectorAll('.cr')[m.j]:null; if(!el)return;
- var e=crMoAt(m,now), arc=el.querySelector('svg.arc circle:last-child'), pv=el.querySelector('.v');
+ var h=document.getElementById(m.host), el=h?h.querySelectorAll(CRMO_SEL)[m.j]:null; if(!el)return;
+ var e=crMoAt(m,now), pt=crMoParts(el), arc=pt.arc, pv=pt.pv;
  if(arc)arc.style.strokeDashoffset=(m.a0+(m.a1-m.a0)*e).toFixed(2);
  if(pv&&m.n0!==null&&m.n1!==null)pv.textContent=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;}
 function crMoTick(now){
@@ -240,12 +287,12 @@ function crMotion(hosts){
  var now=performance.now(), fresh=[];
  hosts.forEach(function(h){
   if(!h)return;
-  h.querySelectorAll('.cr').forEach(function(el,j){
+  h.querySelectorAll(CRMO_SEL).forEach(function(el,j){
    /* visibility read off the circle and not its host: #key takes no box of
       its own in the dock, display:contents, and such an element has no
       offsetParent whether it is on screen or not */
    if(!el.offsetParent)return;
-   var arc=el.querySelector('svg.arc circle:last-child'), pv=el.querySelector('.v'); if(!arc)return;
+   var pt=crMoParts(el), arc=pt.arc, pv=pt.pv; if(!arc)return;
    var key=h.id+':'+j, m=CRMO[key], num=crMoNum(pv?pv.textContent:''),
     C=parseFloat(arc.getAttribute('stroke-dasharray'))||0,
     to=parseFloat(arc.getAttribute('stroke-dashoffset'))||0, n1=num?num.n:null;
@@ -263,7 +310,10 @@ function crMotion(hosts){
  fresh.sort(function(a,b){return Math.round(a.r.top/24)-Math.round(b.r.top/24)||a.r.left-b.r.left;});
  /* under the sheet the rings hold empty, and the sweep starts as it clears */
  function go(){var t=performance.now();
-  fresh.forEach(function(f,i){f.m.t0=t+i*ENTER_STAGGER; crMoPaint(f.m,t);});
+  /* the stagger stops growing at the eighth, because the stack can put twenty
+     rings on first sight and a sweep still starting a second and a half in is
+     a wait and not an entrance. The dock's seven are under the cap. */
+  fresh.forEach(function(f,i){f.m.t0=t+Math.min(i,8)*ENTER_STAGGER; crMoPaint(f.m,t);});
   if(!CRMO_RAF&&Object.keys(CRMO).some(function(k){return !CRMO[k].done;}))
    CRMO_RAF=requestAnimationFrame(crMoTick);}
  if(fresh.length&&!isBooted()){

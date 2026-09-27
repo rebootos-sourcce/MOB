@@ -171,6 +171,14 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
  --t-surface:320ms;
  /* a whole tab. the longest thing the product is allowed to take. */
  --t-context:420ms;
+ /* A READING ARRIVING. The wheel's own entrance numbers, ENTER_SPAN and
+    ENTER_STAGGER in ui/wheel.js, on the wheel's own curve, a cubic out, so a
+    band on either rail fills on the same beat the wheel assembles on and the
+    dock's circles sweep on. FV in TASKS.md, his words: "Where's the animation
+    of the bands animating?" Written here rather than typed into each rule, so
+    the stylesheet and the canvas cannot drift apart without one of these
+    lines changing. */
+ --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
@@ -1427,6 +1435,14 @@ body:not(.tab-field) #frend{display:none!important}
    picture and 1 from 1.75x in. At 0 the host carries notext and the words
    are taken out, not set faint. The core figure and the gate pills are not
    words and are not here. */
+/* THE CORE'S FEATHERS ON FRAMES AND DIAL, faded by the zoom, ui/rings.js
+   frFeathers. The figures give ground as the core opens, to under half their
+   size on a backing disc, the wheel's move for the same moment: at three
+   fifths, the first cut, the coherence figure still sat across the triad. */
+#frend .frf0{opacity:var(--frf0,0)}#frend .frf1{opacity:var(--frf1,0)}#frend .frf2{opacity:var(--frf2,0)}
+#frend .frfr{opacity:calc(var(--frfo,0) * .9)}
+#frend .frcq{transform-box:fill-box;transform-origin:center;transform:scale(calc(1 - .55 * var(--frfo,0)))}
+#frend .frcq-bk{opacity:calc(var(--frfo,0) * .86)}
 #frend [data-call],#frend .frnm{opacity:var(--fztx,1);transition:opacity var(--t-micro) var(--ease-out),visibility 0s linear 0s}
 #frend.notext [data-call],#frend.notext .frnm{visibility:hidden;transition:opacity var(--t-micro) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-micro)}
 /* the names a zoom brings in, set level beside their marks in page pixels, so
@@ -1901,6 +1917,81 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 .lsec.open .lsec-hd i{transform:rotate(-135deg)}
 .lsec-bd{display:none;padding-bottom:16px}
 .lsec.open .lsec-bd{display:block}
+/* EVERY SECTION HEADER CARRIES ITS MARK. FV in TASKS.md, his words: "we're
+   breaking a lot of our design rules on the left hand side ... everything
+   should have meaning, everything should have an icon." The headers were the
+   one row of the rails printing a bare word: every reading under them carried
+   a glyph and the name over them did not. Each mark says what the section
+   holds, never a decoration: three nested rings for the root, blueprint and
+   archetype levels, the dial's own track for orientation and balance, the one
+   ring the stack already uses for a child emotion, a grid for the matrix,
+   Flow's own mark, a pulse for what is running, columns for the laws. Root
+   Energetics is three rings overlapping, because it is where the systems
+   overlap. Stroked in the header's own colour, so it opens gold with it. */
+.lsec-hd>span{display:inline-flex;align-items:center;gap:9px;min-width:0}
+.lsec-ic{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* ROOT ENERGETICS IS SET APART, on both rails. FV: "I want a slightly
+   different treatment for root energetics." Everything else on the rail is a
+   reading of the field; this is the birth, the one layer nothing a person does
+   can move. So it sits on a panel of its own: the accent at six percent under
+   it and a hairline of the accent round it, the same two moves the dock's
+   cells and the selected chip already make, and its header in ink rather than
+   the rail's grey, with its mark in the accent. Nothing new is invented for
+   it: a tint and an edge, the restraint the rest of the rail keeps. */
+.lsec.re{background:color-mix(in srgb,var(--gold) 6%,transparent);
+ box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 24%,transparent);
+ border-radius:var(--r-s);border-bottom:0;padding:0 12px;margin:0 -6px 12px}
+.lsec.re .lsec-hd{color:var(--ink)}
+.lsec.re.open .lsec-hd{color:var(--gold)}
+.lsec.re .lsec-ic{color:var(--gold)}
+body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
+/* ---- ROOT ENERGETICS, READ ACROSS. ui/rootsum.js. ---- */
+.rs-lead,.rs-none{font-size:13px;line-height:1.6;color:var(--mid);margin:0 0 10px}
+.rs-go{margin:0 0 6px}
+.rs-note{font-size:12px;line-height:1.5;color:var(--dim);margin:0 0 4px}
+.rs-eye{margin:14px 0 4px}
+.rs-ic{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rs-a{padding:12px 0 10px;border-top:1px solid var(--edge)}
+.rs-eye + .rs-a{border-top:0;padding-top:6px}
+.rs-hd{display:flex;align-items:center;gap:11px}
+/* the theme's mark in the ring every named thing on the rail sits in */
+.rs-g{width:34px;height:34px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+ color:var(--gold);box-shadow:inset 0 0 0 1.6px color-mix(in srgb,var(--gold) 70%,transparent)}
+.rs-g .rs-ic{width:17px;height:17px}
+.rs-light .rs-g{color:var(--mid);box-shadow:inset 0 0 0 1.2px var(--edge-2)}
+.rs-t{display:flex;flex-direction:column;min-width:0;line-height:1.35}
+.rs-t b{font-size:15px;color:var(--ink);font-weight:600}
+.rs-t em{font-style:normal;font-size:12.5px;color:var(--mid)}
+.rs-strong .rs-t em{color:var(--gold)}
+/* THE BAND OF FOUR. One cell per system, lit where that system lands on the
+   theme, so how many agree is a shape and never a count against a total,
+   which is his objection on file. A lit cell fills from its left edge in
+   system order on the wheel's beat, and it fills again every time the section
+   opens, because an animation runs from when its element is first drawn. */
+.rs-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:10px 0 8px}
+.rs-seg{position:relative;overflow:hidden;height:22px;border-radius:var(--r-xs);
+ box-shadow:inset 0 0 0 1px var(--edge);display:grid;place-items:center;color:var(--dim)}
+.rs-seg .rs-ic{position:relative;width:13px;height:13px;opacity:.55}
+.rs-seg.on{color:var(--ink);box-shadow:none}
+.rs-seg.on .rs-ic{opacity:1}
+.rs-seg.on::before{content:'';position:absolute;inset:0;transform-origin:left center;
+ background:color-mix(in srgb,var(--gold) 40%,transparent);
+ animation:rsFill var(--t-enter) var(--ease-enter) both;animation-delay:calc(var(--i) * var(--t-stagger))}
+.rs-light .rs-seg.on::before{background:color-mix(in srgb,var(--gold) 26%,transparent)}
+@keyframes rsFill{from{transform:scaleX(0)}}
+.rs-say{font-size:13.5px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+.rs-chips{display:flex;flex-wrap:wrap;gap:5px}
+.rs-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--mid);
+ background:var(--sunk);border-radius:999px;padding:3px 9px 3px 6px;line-height:1.3}
+.rs-chip .rs-ic{width:12px;height:12px;flex:0 0 auto;color:var(--gold)}
+.rs-range{display:flex;flex-direction:column;gap:2px}
+.rs-r{display:grid;grid-template-columns:16px minmax(0,1fr);column-gap:9px;padding:6px 0;
+ border-top:1px solid var(--edge)}
+.rs-r:first-child{border-top:0}
+.rs-r .rs-ic{width:15px;height:15px;color:var(--gold);margin-top:2px;grid-row:1 / span 2}
+.rs-rn{font-size:13px;color:var(--ink);font-weight:500}
+.rs-rs{font-size:12.5px;line-height:1.5;color:var(--mid);grid-column:2}
 /* ---- THE LEFT COLUMN'S FOLD. EZ in TASKS.md: "I want to be able to close up
    that column." ui/ui.js, colFold. The control sits in the top right corner
    of the rail over Root energetics' header, which gives it the width a
@@ -1946,7 +2037,9 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
    at the head of the section picks the design for both at once. */
 .ax-pick{display:flex;align-items:center;gap:6px;margin:0 0 12px}
 .ax-pl{font-size:11px;color:var(--dim);margin-right:4px}
-.ax-pb{min-height:var(--tap);min-width:var(--tap);padding:0 14px;border-radius:999px;
+.ax-pb svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ax-pb{display:inline-flex;align-items:center;gap:6px;
+ min-height:var(--tap);min-width:var(--tap);padding:0 14px;border-radius:999px;
  border:1px solid var(--edge-2);background:none;color:var(--dim);font:inherit;font-size:12.5px;
  cursor:pointer;transition:background var(--t-micro,120ms) cubic-bezier(.22,1,.36,1),color var(--t-micro,120ms) cubic-bezier(.22,1,.36,1)}
 .ax-pb:hover{color:var(--ink)}
@@ -1975,7 +2068,7 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
 /* A. BAR. The trough, as the orientation bar shipped */
 .ax-tr{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;background:var(--sunk)}
 .ax-tr .fill{position:absolute;top:0;bottom:0;width:0;opacity:.62;
- transition:width var(--t-context) var(--ease-out),background var(--t-element) var(--ease-out)}
+ transition:width var(--t-enter) var(--ease-enter),background var(--t-element) var(--ease-out)}
 .ax-tr .fill.rt{left:50%}
 .ax-tr .fill.lt{right:50%}
 /* the break sits over the fill, so even reads as a gap and not as a seam */
@@ -1994,7 +2087,7 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
 .ax-svg{flex:0 1 120px;width:120px;height:60px;overflow:visible}
 .ax-trk{fill:none;stroke:var(--sunk);stroke-width:7;stroke-linecap:round}
 .ax-svg .fill{fill:none;stroke-width:7;stroke-dasharray:0 100;opacity:.8;
- transition:stroke-dasharray var(--t-context) var(--ease-out),stroke var(--t-element) var(--ease-out)}
+ transition:stroke-dasharray var(--t-enter) var(--ease-enter),stroke var(--t-element) var(--ease-out)}
 .ax-svg .mid{stroke:var(--bg);stroke-width:2.5}
 .ax-svg .ax-sx{stroke:var(--dim);stroke-width:2;stroke-linecap:round}
 .ax-nd{transform-origin:60px 54px;transition:transform var(--t-context) var(--ease-land)}
@@ -2131,6 +2224,9 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .nf label{flex:1 1 auto;font-size:14px;color:var(--mid);overflow:hidden;
  text-overflow:ellipsis;white-space:nowrap;font-weight:400}
 .nf i{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.nf i.nf-g{width:16px;height:16px;border-radius:0;display:grid;place-items:center}
+.nf i.nf-g svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
 .nf input{width:54px;min-height:var(--tap);flex:0 0 auto;background:var(--sunk);border:1px solid var(--edge);
  border-radius:var(--r-xs);color:var(--ink);font-family:var(--num);font-size:13px;font-weight:500;
  padding:5px 4px;text-align:center;font-variant-numeric:tabular-nums}
@@ -2163,21 +2259,28 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mx button[data-sel="1"]{box-shadow:inset 0 0 0 1px var(--gold)}
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
-.mxrow{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;font-size:12px}
-.mxrow i{width:8px;height:8px;border-radius:2px;flex:0 0 auto;margin-right:3px}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
-.sp-row{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;
+/* THE VALUE HOLDS ITS LINE AND THE NOTE TAKES WHAT IS LEFT. The value was the
+   flexible column and the note sized to its own text, so a note of any length
+   squeezed the value: with the Eastern rows saying what they do, Water Dog
+   broke over two lines under its own glyph. A value is a name and a name does
+   not wrap; a note is a phrase and can. */
+.sp-row{display:grid;grid-template-columns:62px auto minmax(0,1fr);gap:10px;align-items:center;
  min-height:var(--tap);
  font-size:13.5px;color:var(--mid);padding:6px 5px;width:100%;background:transparent;border:0;
  text-align:left;cursor:pointer;border-radius:var(--r-xs);font-family:var(--sans)}
 .sp-row:hover{background:var(--panel-2)}
 .sp-row.static{cursor:default}.sp-row.static:hover{background:transparent}
 .sp-k{font-size:11px;font-weight:600;color:var(--dim)}
-.sp-v{color:var(--ink)}
-.sp-x{color:var(--gold);font-size:12.5px}
+.sp-v{color:var(--ink);white-space:nowrap}
+.sp-x{color:var(--gold);font-size:12.5px;text-align:right}
 .sp-g{font-style:normal;font-size:16px;margin-right:7px;opacity:.95;color:var(--gold)}
+.sp-hd{display:flex;align-items:center;gap:7px}
+.sp-hi,.sp-gi{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;
+ stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sp-gi{width:16px;height:16px;margin-right:7px;vertical-align:-3px;color:var(--gold)}
 .sp-none{font-size:13.5px;color:var(--dim);line-height:1.7;padding:10px 0}
 
 /* ---------- right rail ---------- */
@@ -2708,6 +2811,9 @@ body.punch .card{border-color:transparent}
 .it:hover{color:var(--ink);background:var(--panel-2)}
 .it.pin{background:rgba(223,204,126,.2);color:var(--ink)}
 .it b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
+/* a Running row: the badge, then the name, which takes the rest and ellipses */
+.it.run-it{justify-content:flex-start;align-items:center;gap:8px}
+.it.run-it .run-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bmrow{display:grid;grid-template-columns:86px 1fr 46px;gap:10px;align-items:center;
  font-size:11px;font-weight:600;margin-bottom:7px}
 .bmk{color:var(--dim)}

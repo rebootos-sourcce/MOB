@@ -487,6 +487,53 @@ function frShadow(M,r,o){o=o||{};
    NOTHING IS PRINTED OFF THE DEFAULTS. On an unread field the ring is empty
    and the figure is a dash, which is what the key pill directly above says in
    the same state. */
+/* ============================================================
+   THE FEATHERS, ON FRAMES AND DIAL TOO. FV in TASKS.md, his words:
+   "the feathers are missing on Dial." They were missing on Frames as
+   well, measured rather than taken from the report: coreInside in
+   ui/wheel.js draws them straight onto the wheel's canvas, and the
+   two renditions are SVG built by frFrames and frDial, which never
+   called anything like it, so at any zoom their core held the two
+   figures and nothing else. This is the same three layers, the same
+   lengths, the same widths and bearings, off the same FEATH table,
+   drawn as SVG inside the core's ring.
+
+   THEY COME IN WITH THE ZOOM, as on the wheel. These pictures are
+   built once and zoomed as one transform, so the layers are drawn
+   into every build and faded by three custom properties fzApply sets
+   off the zoom through coreLayerAt, the wheel's own ramp on the
+   wheel's own thresholds. A zoom never rebuilds the picture.
+
+   NOTHING ON AN UNREAD FIELD. frCore draws a dash there and no ring,
+   and a feather is a part of a reading nobody has taken.
+   ============================================================ */
+function frFeather(cx,cy,a,len,wid,c,al){
+ if(len<=1)return '';
+ var ca=Math.cos(a),sa=Math.sin(a),nx=-sa,ny=ca,f=function(v){return v.toFixed(1);};
+ var bx=cx+ca*len*.05,by=cy+sa*len*.05,tx=cx+ca*len,ty=cy+sa*len;
+ var mx=cx+ca*len*.42,my=cy+sa*len*.42;
+ var vane='M'+f(bx)+' '+f(by)+'Q'+f(mx+nx*wid)+' '+f(my+ny*wid)+' '+f(tx)+' '+f(ty)
+  +'Q'+f(mx-nx*wid)+' '+f(my-ny*wid)+' '+f(bx)+' '+f(by)+'Z';
+ var n=Math.max(4,Math.min(11,Math.round(len/7))),barbs='';
+ for(var i=1;i<=n;i++){var t=i/(n+1),px=cx+ca*len*t,py=cy+sa*len*t,bw=wid*Math.sin(t*Math.PI);
+  barbs+='M'+f(px-nx*bw)+' '+f(py-ny*bw)+'Q'+f(px+ca*len*.05)+' '+f(py+sa*len*.05)+' '+f(px+nx*bw)+' '+f(py+ny*bw);}
+ return '<path d="'+vane+'" fill="'+rgba(c,al*.22)+'"/>'
+  +'<path d="'+barbs+'" fill="none" stroke="'+rgba(c,al*.62)+'" stroke-width="'+Math.max(.7,wid*.14).toFixed(2)+'"/>'
+  +'<path d="M'+f(bx)+' '+f(by)+'L'+f(tx)+' '+f(ty)+'" stroke="'+rgba(c,al*.98)+'" stroke-width="'
+  +Math.max(1,wid*.24).toFixed(2)+'" stroke-linecap="round"/>';}
+function frFeathers(M,r,cx,cy,rin){
+ var up=-Math.PI/2,F=FEATH,g=function(i,body){return '<g class="frf frf'+i+'">'+body+'</g>';};
+ /* the quarter rings, so a length can be read, at the faintest layer's alpha */
+ var rings='';[.25,.5,.75,1].forEach(function(q){rings+='<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
+  +'" r="'+(rin*F.reach*q).toFixed(1)+'" fill="none" stroke="'+rgba(M.ink,q===.5?.1:.055)+'" stroke-width="1"/>';});
+ var laws='',seats='',triad='';
+ SI.forEach(function(l,i){laws+=frFeather(cx,cy,i/SI.length*TAU+up+F.lawPh,rin*F.reach*clamp((+lawNow(l.nm)||0)/10,0,1),
+  rin*F.law,M.seat(l.b),.75);});
+ BANDS.forEach(function(b,i){seats+=frFeather(cx,cy,i/BANDS.length*TAU+up,rin*F.reach*clamp(bandIg(b)/10,0,1),
+  rin*F.seat,M.seat(b),.8);});
+ [[r.X,'Sacral'],[r.Y,'3rd Eye'],[r.Z,'Solar']].forEach(function(x,i){triad+=frFeather(cx,cy,i/3*TAU+up+F.triadPh,
+  rin*F.reach*clamp(+x[0]||0,0,1),rin*F.triad,M.seat(x[1]),.95);});
+ return '<g class="frf frfr">'+rings+'</g>'+g(2,laws)+g(1,seats)+g(0,triad);}
 function frCore(M,r,cx,cy,R,o){
  var w=o.w,un=!!r.unread,f=clamp(r.CQ/100,0,1),fd=clamp((+r.DQ||0)/100,0,1);
  var col=un?M.dim:hx((typeof TIERCOL!=='undefined'&&TIERCOL[r.tier])||(M.light?'#2F6E92':'#7EB8D4'));
@@ -501,6 +548,13 @@ function frCore(M,r,cx,cy,R,o){
   +fill+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'"'+(at||'')+'>'+str+'</text>';};
  if(un){var cu=o.fs*.727;
   M.L.core.push(s+t(cy+cu/2,frRgb(col),o.fs,300,'\u2013',' letter-spacing="-0.02em"')+'</g>');return;}
+ /* the feathers go in under the figures, which sit in a group of their own
+    on a backing disc so they can give ground as the layers come in, the
+    wheel's own move: the parts are what is being read by then and the number
+    is the caption, and it never goes */
+ var rin=R-w/2-2;
+ s+=frFeathers(M,r,cx,cy,rin)+'<g class="frcq"><circle class="frcq-bk" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
+  +'" r="'+(rin*.62).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>';
  var cq=String(Math.round(r.CQ)),dq=String(Math.round(+r.DQ||0)),lab=11;
  var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
  var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
@@ -539,7 +593,7 @@ function frCore(M,r,cx,cy,R,o){
     +'<text x="'+cx.toFixed(1)+'" y="'+(y0+H).toFixed(1)+'" text-anchor="middle">'
     +'<tspan fill="'+frRgb(M.dq)+'" font-size="'+f2.toFixed(1)+'" font-weight="500">'+dq+'</tspan>'
     +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">DQ</tspan></text>';
-   M.L.core.push(s+'</g>');return;}}
+   M.L.core.push(s+'</g></g>');return;}}
  for(k=1;k>=.4;k-=.05){f1=Math.max(lab+2,F1*k);f2=Math.max(lab,F2*k);
   H=fits([{h:f1*.727,w:W_(FC,f1,300)+4+W_('CQ',lab,500),g:6},{h:f2*.727,w:W_(FD,f2,500)+4+W_('DQ',lab,500)}]);
   if(H)break;}
@@ -548,7 +602,7 @@ function frCore(M,r,cx,cy,R,o){
   +'<tspan fill="'+c+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'">'+n.v+'</tspan>'
   +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">'+n.l+'</tspan></text>';};
  s+=row(y1,{v:cq,l:'CQ'},frRgb(col),f1,300)+row(y2,{v:dq,l:'DQ'},frRgb(M.dq),f2,500);
- M.L.core.push(s+'</g>');}
+ M.L.core.push(s+'</g></g>');}
 /* THE SIX GATES AS A COLLAR. Ruled 26 September, CH in TASKS.md: "for the
    six gates I like three", the third on the CE sheet and the round's own
    recommendation. They stood as two rows of three, one above the core and one
@@ -1019,7 +1073,9 @@ function frCallouts(M,r,P){
    numbers trade places under it. */
 var FR_SIG=null,FR_HIT=[],FR_ERR=false,FR_LAST='';
 function frSig(r,W_,H_){
+ /* X, Y and Z are the triad the core's first feathers are drawn from */
  var a=[FVIEW,W_,H_,S.theme,r.unread?1:0,(+r.CQ).toFixed(2),(+r.DQ).toFixed(2),r.tier,r.benign,r.darkB,
+  (+r.X||0).toFixed(3),(+r.Y||0).toFixed(3),(+r.Z||0).toFixed(3),
   r.pi,r.si,S.doms.join('.')];
  for(var i=0;i<W.length;i++)a.push((W[i].sq||0).toFixed(2));
  /* the same value the feathers are drawn from. They read lawNow now, and a
@@ -1114,6 +1170,10 @@ function fzApply(){var h=document.getElementById('frend');if(!h)return;
  h.querySelectorAll('.frsvg,.frflow,.frghost').forEach(function(sv){
   sv.style.transformOrigin='0 0'; sv.style.transform=tf;});
  h.classList.toggle('zoomed',FZ.s>1.001);
+ /* the core's three layers, off the wheel's own ramp and thresholds, and how
+    far the core has opened, which the figures give ground to */
+ var fo=0;for(var li=0;li<3;li++){var la=coreLayerAt(li,FZ.s);fo=Math.max(fo,la);h.style.setProperty('--frf'+li,la.toFixed(3));}
+ h.style.setProperty('--frfo',fo.toFixed(3));
  /* the words, off this zoom and nothing else: txtZoomA in ui/component.js */
  var ta=txtZoomA(FZ.s);
  h.style.setProperty('--fztx',ta.toFixed(3));

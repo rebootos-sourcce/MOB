@@ -225,5 +225,45 @@ var LP_RUNS={
  7:'looks at it until it makes sense', 8:'commands the structure and pays for it',
  9:'completes what others abandoned', 11:'channels more than it can hold',
  22:'makes the imagined thing physical', 33:'teaches by carrying it first'};
+/* WHAT A MEETING POINT SAYS, to the person, when two systems land on it.
+   FV in TASKS.md, his words: "take a look at all the behavioral energetics
+   where they overlap, because that's the truth." engine/overlap.js finds the
+   overlap and these are what it reads out. Second person, because this is
+   the one line in Root Energetics said to somebody rather than about a
+   placement, and his bar for it is plain, direct and warm without talking
+   down. The five elements are the ones two systems can share: Western and
+   Eastern both name fire, earth and water, and the Chinese five reach wood
+   and metal through the design gate's trigrams. Air has no counterpart in
+   either Chinese system, so it can never be a meeting point and has no line.
+   The nine planets are the ones numerology gives the digits, which are the
+   only planets a sign's ruler can meet a number on. */
+var ROOT_SAYS={
+ Fire:'You run hot. You start things, burn bright and need something to burn.',
+ Earth:'You steady things. You hold your ground and take time to be moved.',
+ Water:'You find the low route. You go around what blocks you and still arrive.',
+ Wood:'You grow toward room. You push outward and need space to do it.',
+ Metal:'You cut clean. You hold an edge and know where the line is.',
+ Sun:'You need to be the one doing it, and to be seen doing it.',
+ Moon:'You run on feeling first and check the facts after.',
+ Mercury:'You think out loud and move on fast.',
+ Venus:'You weigh things by how they sit between people.',
+ Mars:'You go at the problem head on, and early.',
+ Jupiter:'You widen the frame until the problem looks smaller.',
+ Saturn:'You build the structure first and carry its weight.',
+ Uranus:'You break the pattern to see what it was holding.',
+ Neptune:'You soften the edge between you and what you take in.'};
+/* THE PROFILE LINES, the one Human Design reading this product computes that
+   has a behaviour and no counterpart in the other three systems. Each is the
+   line's standing theme in that system, 1 the investigator through 6 the role
+   model, said as what the line does rather than by its name, which is how
+   every other table here reads. It is never a meeting point, because nothing
+   else speaks in lines, so it is always part of the range. */
+var HD_LINE_RUNS={
+ 1:'studies the ground before standing on it',
+ 2:'does its best work alone, until somebody calls it out',
+ 3:'learns by what breaks',
+ 4:'moves through the people it already knows',
+ 5:'gets handed other people’s hopes, and a practical fix',
+ 6:'tries everything first, then steps back and shows the way'};
 var LP2ARCH={1:'Warrior',2:'Lover',3:'Creator',4:'Ruler',5:'Explorer',6:'Caregiver',
  7:'Sage',8:'Ruler',9:'Magician',11:'Magician',22:'Creator',33:'Sage'};

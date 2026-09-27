@@ -1191,6 +1191,110 @@ g('19 \u00b7 energetics, the birth module');
  ok(lifePath('1988-04-12')===lifePath('1988-04-12'),'life path is pure');
 }
 
+g('19e \u00b7 where the four systems meet, Root Energetics');
+{
+ /* FV in TASKS.md: "take a look at all the behavioral energetics where they
+    overlap, because that's the truth." engine/overlap.js. What is held here
+    is the contract, never a person's reading: the bridges are the only
+    bridges, overlap is weighed against chance rather than counted, and the
+    words the rail puts on a meeting stay rare enough to mean something. */
+ const {rootOverlap,rootPlacements,rootTail,rootStrength,ROOT_KINGWEN,ROOT_HEX,ROOT_TRIGRAM,
+        ROOT_RULER,ROOT_NUMPLANET,ROOT_BRANCH_EL,ROOT_SAYS,HD_LINE_RUNS,ZSIGN,CHINESE,
+        ROOT_Q_STRONG,ROOT_Q_CLEAR,ROOT_SHOW,spiritualOf,spiritual,numerology,numerologyOf,BIRTH}=E;
+ /* the hexagram table is typed by hand, so it is held both ways: every number
+    once, and named hexagrams where the book puts them */
+ const cells=[].concat(...ROOT_KINGWEN).sort((a,b)=>a-b);
+ ok(cells.length===64&&cells.every((n,i)=>n===i+1),'the King Wen table holds 1 to 64 once each');
+ const pic=g=>ROOT_HEX[g].map(i=>ROOT_TRIGRAM[i].img).join(' under ');
+ ok(pic(1)==='heaven under heaven'&&pic(2)==='earth under earth'&&pic(11)==='heaven under earth'
+  &&pic(12)==='earth under heaven'&&pic(63)==='fire under water'&&pic(64)==='water under fire'
+  &&pic(29)==='water under water'&&pic(30)==='fire under fire',
+  'named hexagrams land where the book puts them, 11 '+pic(11)+', 63 '+pic(63));
+ /* the Later Heaven elements: two metal, two wood, two earth, one fire, one water */
+ const tel={};ROOT_TRIGRAM.forEach(t=>tel[t.el]=(tel[t.el]||0)+1);
+ ok(tel.Metal===2&&tel.Wood===2&&tel.Earth===2&&tel.Fire===1&&tel.Water===1,
+  'the trigrams carry the five elements in the Later Heaven order, '+JSON.stringify(tel));
+ ok(ZSIGN.every(z=>ROOT_RULER[z[2]])&&CHINESE.every(a=>ROOT_BRANCH_EL[a]),
+  'every sign has a ruler and every animal its branch element');
+ ok([1,2,3,4,5,6,7,8,9,11,22,33].every(d=>ROOT_NUMPLANET[d]&&ROOT_SAYS[ROOT_NUMPLANET[d]]),
+  'every digit and master has a planet, and every planet has a line to say');
+ ok(['Fire','Earth','Water','Wood','Metal'].every(e=>ROOT_SAYS[e])&&!ROOT_SAYS.Air,
+  'the five elements two systems can share have a line, and air, which none can, has none');
+ ok([1,2,3,4,5,6].every(l=>HD_LINE_RUNS[l]),'every profile line has a behaviour');
+ /* the tail is a real distribution: nothing is certain to be beaten, and
+    three sure things always land */
+ ok(Math.abs(rootTail([.25,.25,.25],0)-1)<1e-12&&Math.abs(rootTail([.25,.25,.25],3)-1/64)<1e-12
+  &&Math.abs(rootTail([1,1],2)-1)<1e-12,'the chance of k of n landing is counted exactly');
+
+ /* NOTHING IS BUILT ON A READING NOBODY TOOK. An untimed birth has no moon
+    on a day the moon changes sign and no design gate, and neither may appear */
+ const unt=spiritualOf({d:'1969-09-27',t:'',p:'Boston, MA'});
+ const up=rootPlacements(unt,null);
+ ok(!up.some(x=>x.k==='moon')&&!up.some(x=>x.sys==='D'),
+  'an untimed birth places no moon it could not settle and no design gate, got '+up.map(x=>x.k).join(','));
+ /* the personality gate is the sun, which Western already reads, so it never
+    votes; only the design gate does */
+ const ja=spiritual('James'), jp=rootPlacements(ja,null).filter(x=>x.sys==='D');
+ ok(jp.length===2&&jp.every(x=>x.v===ja.hd.design.gate),
+  'Design votes through the design gate alone, its two trigrams, got '+jp.map(x=>x.v+' '+x.part).join(','));
+
+ /* THE BRIDGES ARE THE ONLY BRIDGES. Number meets Western and nothing else,
+    Design meets on elements and nothing else, and a theme one system reaches
+    alone is never a meeting point */
+ let bridgeBad=[], lone=0, orderBad=0, rangeBad=0, n=0;
+ const tally={strong:0,clear:0,light:0,none:0};
+ const NM=['Anna Marie Lopez','John Paul Smith','Kiri Te Awa','Priya Raghunathan','Omar Ali Hassan',
+  'Mei Lin Chen','Ngozi Ada Eze','Liam Patrick Ryan','Aroha Ngata','Tom Hardy'];
+ const base=Date.UTC(1940,0,1);
+ for(let i=0;i<700;i++){
+  const date=new Date(base+i*36.7*864e5).toISOString().slice(0,10);
+  const sp=spiritualOf({d:date,t:String((i*7)%24).padStart(2,'0')+':'+String((i*13)%60).padStart(2,'0'),p:'Chicago, IL'});
+  if(!sp)continue; n++;
+  const R=rootOverlap(sp,numerology(NM[i%NM.length],date));
+  R.agree.forEach(a=>{
+   if(a.sys.length<2)lone++;
+   if(a.voc==='pl'&&a.sys.some(s=>s==='E'||s==='D'))bridgeBad.push(a.t+' '+a.sys.join(''));
+   if(a.voc==='el'&&a.sys.includes('N'))bridgeBad.push(a.t+' '+a.sys.join(''));
+   if(a.voc==='el'&&a.t==='Air')bridgeBad.push('Air');});
+  for(let j=1;j<R.agree.length;j++)if(R.agree[j].q<R.agree[j-1].q)orderBad++;
+  /* a reading is in a meeting the rail leads with or in the range, never both
+     and never neither */
+  const inShown=new Set();R.shown.forEach(a=>a.hits.forEach(h=>inShown.add(h)));
+  R.placements.forEach(x=>{const inR=R.range.indexOf(x)>=0;
+   if(x.sys==='D')return;
+   if(inShown.has(x)===inR)rangeBad++;});
+  tally[R.agree[0]?R.agree[0].strength:'none']++;}
+ ok(!bridgeBad.length,'no meeting crosses a bridge the traditions do not supply, '+bridgeBad.slice(0,4).join(', '));
+ ok(!lone,'and no theme one system reaches alone is called a meeting');
+ ok(!orderBad,'the least likely by chance always leads');
+ ok(!rangeBad,'every reading is either in a meeting the rail leads with or in the range, never both');
+ /* THE WORDS STAY RARE. Overlap of some kind is nearly universal, so the
+    contract is on the words and not on a figure: strong agreement is a small
+    minority, agreement of either strength a minority, and a light meeting is
+    what most people get. The shares are read off the run. */
+ const sh=k=>tally[k]/n;
+ ok(sh('strong')>0.02&&sh('strong')<0.2,'strong agreement is rare, '+(sh('strong')*100).toFixed(1)+' percent of '+n+' births');
+ ok(sh('strong')+sh('clear')>0.12&&sh('strong')+sh('clear')<0.45,
+  'agreement of either strength is a minority, '+((sh('strong')+sh('clear'))*100).toFixed(1)+' percent');
+ ok(sh('light')>0.5,'and most people meet lightly, '+(sh('light')*100).toFixed(1)+' percent');
+ ok(rootStrength(ROOT_Q_STRONG)==='strong'&&rootStrength(ROOT_Q_CLEAR)==='clear'&&rootStrength(0.5)==='light',
+  'the three words sit on their two cut points');
+
+ /* a name alone reads its numbers and nothing meets, because a meeting needs
+    two systems */
+ const nameOnly=rootOverlap(null,numerology('Anna Marie Lopez',null));
+ ok(!nameOnly.agree.length&&nameOnly.range.length&&nameOnly.range.every(x=>x.sys==='N'),
+  'a name with no birth date reads its numbers as range and meets nothing');
+ const nothing=rootOverlap(null,null);
+ ok(!nothing.agree.length&&!nothing.range.length&&!nothing.systems.length,'and nothing in is nothing out');
+ /* every fixture with a birth gets at most ROOT_SHOW meetings, each carrying
+    the readings it is built from, and a profile line in its range */
+ const fx=Object.keys(BIRTH).filter(k=>BIRTH[k]).map(k=>rootOverlap(spiritual(k),numerologyOf(k,null)));
+ ok(fx.every(R=>R.shown.length<=ROOT_SHOW&&R.shown.every(a=>a.hits.length>=2)),
+  'every reference case leads with at most '+ROOT_SHOW+' meetings, each built from two readings or more');
+ ok(fx.every(R=>R.range.some(x=>x.k==='profile')),'and carries its profile line as range');
+}
+
 g('19b \u00b7 the empty field says it is empty');
 /* The nine axes were seeded at charge 3, so a stranger's first load produced
    CQ 36 and the word Incoherent in the largest type on screen, beside a panel

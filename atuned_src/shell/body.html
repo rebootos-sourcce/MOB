@@ -441,9 +441,15 @@
         sections printing one life path is two places for it to disagree. It
         also carries the full numerology now, off numerologyOf in
         engine/numerology.js, the same call the Summary makes. The renderer
-        still writes #spirit, so every check on the birth data still finds it. -->
-   <div class="lsec" data-sec="energetics">
-    <button class="lsec-hd" type="button"><span>Root energetics</span><i></i></button>
+        still writes #spirit, so every check on the birth data still finds it.
+
+        CAPITALISED AND SET APART. FV, his words: "I want a slightly different
+        treatment for root energetics. I want energetics capitalized." Both
+        words take the capital, and the section wears a tinted panel of its own
+        with the accent's edge, the class re, which the summary at the head of
+        the right rail wears too, because they are one thing read two ways. -->
+   <div class="lsec re" data-sec="energetics">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
     <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
@@ -492,7 +498,7 @@
         less States, which went to the head of the rail as Root energetics. -->
    <h2 class="rblk">Energy</h2>
    <div class="lsec open" data-sec="soul">
-    <button class="lsec-hd" type="button"><span>Awareness</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Awareness</span><i></i></button>
     <div class="lsec-bd">
      <!-- The subtitles came out on the owner's ruling. Every one of them was
           a definition sitting permanently under a heading a person reads once,
@@ -513,7 +519,7 @@
    </div>
    <h2 class="rblk">Psyche</h2>
    <div class="lsec open" data-sec="lean">
-    <button class="lsec-hd" type="button"><span>Orientation and balance</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 12h16.8M12 7.2v9.6"/><circle cx="5.4" cy="12" r="1.8"/><circle cx="18.6" cy="12" r="1.8"/></svg>Orientation and balance</span><i></i></button>
     <div class="lsec-bd">
      <!-- LEAN WAS A WORD NOBODY COULD CASH.
 
@@ -558,7 +564,7 @@
     </div>
    </div>
    <div class="lsec" data-sec="fetters">
-    <button class="lsec-hd" type="button"><span>Child emotions</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5"/></svg>Child emotions</span><i></i></button>
     <div class="lsec-bd">
      <!-- THE LABEL RULE, applied. One word where one word will do, and the
      subtitle says what the control does rather than restating the schema.
@@ -582,7 +588,7 @@
     </div>
    </div>
    <div class="lsec" data-sec="matrix">
-    <button class="lsec-hd" type="button"><span>Matrix</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
      <div class="lbl plain">19 domains &times; 9 child emotions</div>
      <div class="mx" id="mx"></div>
@@ -708,12 +714,24 @@
        named section that folds, one open at a time. Selection unfolds itself
        when the wheel is clicked. -->
   <div class="col"><div class="glass panel sc">
+   <!-- ROOT ENERGETICS, READ ACROSS, AT THE VERY TOP AND CLOSED. FV in
+        TASKS.md, his words: "When I open root energetics, I want a summary
+        of that on the right hand side, also at the very top closed." It
+        mirrors the left rail's own head: Root Energetics over the dock on the
+        left, Root Energetics over the coherence line on the right, so the two
+        rails open on the same section and the same line under it. Closed
+        because OPENSEC in ui/ui.js opens only Reading on this rail.
+        ui/rootsum.js fills it, off rootOverlap in engine/overlap.js. -->
+   <div class="lsec re" data-rail="right" data-sec="overlap">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
+    <div class="lsec-bd"><div id="rootsum"></div></div>
+   </div>
    <div id="railtop" class="railtop"></div>
    <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
         the stage's upper right now, EZ. -->
 
    <div class="lsec open" data-rail="right" data-sec="you">
-    <button class="lsec-hd" type="button"><span>Reading</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Reading</span><i></i></button>
     <div class="lsec-bd">
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
@@ -728,7 +746,7 @@
    </div>
 
    <div class="lsec" data-rail="right" data-sec="sel">
-    <button class="lsec-hd" type="button"><span>Selection</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8l12 7.4-5.4 1.4 3.2 6.2-2.6 1.4-3.2-6.2L6 18z"/></svg>Selection</span><i></i></button>
     <div class="lsec-bd">
      <div id="rdrill" style="display:none"></div>
      <div id="rdrill-none" class="rel-note">Nothing selected. Click an address, a law, a saboteur or the core.</div>
@@ -736,19 +754,19 @@
    </div>
 
    <div class="lsec" data-rail="right" data-sec="flow">
-    <button class="lsec-hd" type="button"><span>Flow</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8"/></svg>Flow</span><i></i></button>
     <!-- the energy shelf. the original computed this every frame and then
          dropped it on the floor, because no element with this id existed. -->
     <div class="lsec-bd"><div id="eshelf"></div><div id="run"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="running">
-    <button class="lsec-hd" type="button"><span>Running</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.4-5.6 4.4 11.2L16.2 12H21"/></svg>Running</span><i></i></button>
     <div class="lsec-bd"><div id="fire"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="laws">
-    <button class="lsec-hd" type="button"><span>Moral integrity</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5.6 20V10M10 20V10M14 20V10M18.4 20V10M3.6 10L12 4.2l8.4 5.8z"/></svg>Moral integrity</span><i></i></button>
     <div class="lsec-bd">
      <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
      <div id="laws"></div>

@@ -6,10 +6,19 @@ const $=function(id){return document.getElementById(id);};
 /* svgI moved to component.js. It is a const, and a const reached for before
    its declaration throws at call time, which is a trap waiting for the first
    renderer that loads earlier than this file and wants an icon. */
-function numField(host,name,band,store,key){
+/* EACH ROW CARRIES ITS OWN MARK, NOT A DOT. FV in TASKS.md, his words:
+   "everything should have meaning, everything should have an icon." These
+   rows led with an eight pixel dot in the seat's colour, which says the seat
+   and nothing about which axis or which law the row is. Every child emotion
+   and every law has carried its own glyph in canon.js since the port, and the
+   stack on the right rail already draws the nine axes with them, so the
+   sliders draw the same mark for the same thing. The colour is still the
+   seat's. ic is optional, so a row with no glyph keeps the dot. */
+function numField(host,name,band,store,key,ic){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';
- d.innerHTML='<i style="background:'+col+'"></i><label>'+name+'</label>'
+ d.innerHTML=(ic?'<i class="nf-g" style="color:'+col+'"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +glyphPath(ic)+'</svg></i>':'<i style="background:'+col+'"></i>')+'<label>'+name+'</label>'
   +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+'" aria-valuemin="0" '
   +'aria-valuemax="10" aria-valuenow="'+store[key]+'"><b style="background:'+col+'"></b></span>'
   +'<input type="number" min="0" max="10" step="0.5" value="'+store[key]+'" aria-label="'+name+'">';
@@ -45,10 +54,11 @@ function numField(host,name,band,store,key){
  return {inp,tr,trk};}
 const CHF={},RPF={},LWF={};
 CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm);
- RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm);
+ CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic);
+ /* the opposite takes the same mark in Heart, as the stack draws it */
+ RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic);
  RPF[cf.nm].inp.parentElement.classList.add('oppf');});
-SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm);});
+SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic);});
 function syncCh(){CHILD.forEach(function(cf){
  const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));

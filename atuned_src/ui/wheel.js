@@ -112,11 +112,11 @@ function cqRamp(cq){
    ladder outside it. Three layers, each a real decomposition, each
    fading in over its own threshold rather than snapping:
 
-     1.45  the triad. vitality, awareness and will, the three
+     1.30  the triad. vitality, awareness and will, the three
            quantities the energy read is the mean of.
-     2.30  the seven seats, each feather as long as that seat's
+     2.00  the seven seats, each feather as long as that seat's
            share of integrity, which is bandIg over ten.
-     3.40  the twenty one laws, one filament each, at its own
+     2.95  the twenty one laws, one filament each, at its own
            value. These are literally the numerator of CQ.
 
    They are feathers because that is what they look like from the
@@ -128,8 +128,20 @@ function cqRamp(cq){
    The shell goes translucent as the layers come in, so the interior
    reads as inside rather than on top, and the number shrinks and
    keeps a backing disc so it stays legible over the detail.
+
+   ONE NOTCH SOONER, EACH LAYER. FV in TASKS.md, his words: "they come
+   in zoomed up medium. I want them to start coming in a little bit
+   sooner. I don't have a word for a little bit sooner, just a little
+   bit sooner, let's feel it out." The smallest step a person can
+   feel is one notch of the scroll wheel, a factor of 1.12, so each
+   threshold moved to start one notch earlier and nothing more:
+   1.45, 2.30 and 3.40 first showed on the fourth, eighth and
+   eleventh notch, and 1.30, 2.00 and 2.95 on the third, seventh and
+   tenth. The ramp is unchanged, so each still fades in rather than
+   snapping. Frames and Dial read the same three, coreLayerAt, so the
+   three pictures open their core on the same notch.
    ============================================================ */
-const CORE_STEP=[1.45,2.30,3.40];
+const CORE_STEP=[1.30,2.00,2.95];
 /* ============================================================
    THE FETTERS GROW AS YOU COME IN.
 
@@ -271,9 +283,10 @@ function atomGrow(n,a,hw,base,c,al){
    ============================================================ */
 
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
-function coreLayerA(i){
- var z=S.zoom||1, t=CORE_STEP[i];
- return Math.max(0,Math.min(1,(z-t)/(t*0.42)));}
+function coreLayerAt(i,z){
+ var t=CORE_STEP[i];
+ return Math.max(0,Math.min(1,((z||1)-t)/(t*0.42)));}
+function coreLayerA(i){return coreLayerAt(i,S.zoom||1);}
 /* how far the core has opened, which the drawing reads */
 function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
 /* and what it has resolved, by name. The names fed the line under the depth
@@ -287,6 +300,27 @@ function coreResolved(){
 /* ONE FEATHER. A rachis out from the centre, barbs either side thinning to
    the tip, and a vane behind them at low alpha so a dense layer still reads
    as a shape rather than as a scribble. len is the reading. */
+/* A LITTLE LARGER, AND ON ONE SCALE. FV, his words: "I want the feathers a
+   little bit bigger." A feather's length is its reading and cannot grow on
+   its own without lying, so the growth comes from two places that were
+   already wrong. All three layers now reach the same rim, 0.93 of the core:
+   the seats stopped at 0.86 and the triad at 0.80 while the quarter rings
+   behind them are drawn at 0.93, so a seat at a true 10 read as 9.25 against
+   its own gridlines, DESIGN-feathers.md defect one. And each vane is about a
+   fifth wider. ui/rings.js reads this same table for Frames and Dial, so the
+   three pictures draw one feather. */
+const FEATH={reach:0.93, law:0.045, seat:0.12, triad:0.22,
+ /* THE THREE LAYERS NEVER SHARE A BEARING. 21 is 3 times 7, so at rest law
+    3k sat on seat k and law 7i on triad i, eleven pairs drawn on top of each
+    other whenever the spin is zero, which is always under reduced motion and
+    always on Frames and Dial, whose pictures do not turn: DESIGN-feathers.md
+    defect two. The laws sit half a law step round, which puts every law 8.6
+    degrees off the nearest seat. The triad sits a quarter of a law step
+    round, a 84th of a turn, which a search over every phase in the triad's
+    third of a circle found is the widest clearance there is from both other
+    layers: 4.3 degrees. Worked, not assumed; a half seat step, the first
+    choice, put triad 0 exactly on law 1. */
+ lawPh:Math.PI*2/42, triadPh:Math.PI*2/84};
 function coreFeather(a,len,wid,col,al){
  if(len<=1||al<=0.01)return;
  var ca=Math.cos(a), sa=Math.sin(a), nx=-sa, ny=ca;
@@ -338,14 +372,14 @@ function coreInside(r,cr0){
      bare answer, so a released law's feather stayed where the answer put it
      while CQ moved, and the gap grew with every release. */
   var v=(+lawNow(l.nm)||0)/10;
-  coreFeather(i/SI.length*TAU-Math.PI/2+spin, cr0*0.93*v, cr0*0.035, bc(l.b), a2*0.75);});
+  coreFeather(i/SI.length*TAU-Math.PI/2+FEATH.lawPh+spin, cr0*FEATH.reach*v, cr0*FEATH.law, bc(l.b), a2*0.75);});
  /* 2. the seven seats */
  if(a1>0)BANDS.forEach(function(b,i){
   var v=bandIg(b)/10;
-  coreFeather(i/BANDS.length*TAU-Math.PI/2-spin*0.6, cr0*0.86*v, cr0*0.10, bc(b), a1*0.80);});
+  coreFeather(i/BANDS.length*TAU-Math.PI/2-spin*0.6, cr0*FEATH.reach*v, cr0*FEATH.seat, bc(b), a1*0.80);});
  /* 1. the triad. vitality, awareness, will: the three the energy read means. */
  if(a0>0)[[r.X,'Sacral'],[r.Y,'3rd Eye'],[r.Z,'Solar']].forEach(function(x,i){
-  coreFeather(i/3*TAU-Math.PI/2+spin*0.3, cr0*0.80*x[0], cr0*0.20, bc(x[1]), a0*0.95);});
+  coreFeather(i/3*TAU-Math.PI/2+FEATH.triadPh+spin*0.3, cr0*FEATH.reach*x[0], cr0*FEATH.triad, bc(x[1]), a0*0.95);});
  g.restore();}
 function solCore(r,base){
  const coh=r.CQ/100, breathe=REDUCED?0:Math.sin(S.t*1.4)*.05;

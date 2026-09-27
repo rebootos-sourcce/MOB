@@ -210,6 +210,14 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
+  /* overlap */   rootOverlap:rootOverlap, rootPlacements:rootPlacements, rootTail:rootTail,
+                  rootStrength:rootStrength, rootP:rootP,
+                  ROOT_BRANCH_EL:ROOT_BRANCH_EL, ROOT_TRIGRAM:ROOT_TRIGRAM,
+                  ROOT_KINGWEN:ROOT_KINGWEN, ROOT_HEX:ROOT_HEX, ROOT_RULER:ROOT_RULER,
+                  ROOT_NUMPLANET:ROOT_NUMPLANET, ROOT_Q_STRONG:ROOT_Q_STRONG,
+                  ROOT_Q_CLEAR:ROOT_Q_CLEAR, ROOT_SHOW:ROOT_SHOW,
+                  ROOT_SAYS:ROOT_SAYS, HD_LINE_RUNS:HD_LINE_RUNS, ZSIGN:ZSIGN, CELEM:CELEM,
+                  CHINESE:CHINESE, SIGN_RUNS:SIGN_RUNS, CH_RUNS:CH_RUNS, CE_RUNS:CE_RUNS, LP_RUNS:LP_RUNS,
   /* store */     storeRefused:storeRefused, storeUnread:storeUnread, pStore:pStore, pPersist:pPersist,
   /* the save and the snapshot write every surface calls, and the only route a
      history row reaches the disk by. They were browser globals and nothing

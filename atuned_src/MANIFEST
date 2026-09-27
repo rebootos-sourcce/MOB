@@ -27,6 +27,7 @@ engine/sniff.js
 engine/astro.js
 engine/birth.js
 engine/numerology.js
+engine/overlap.js
 engine/seed.js
 engine/read.js
 engine/ladder.js
@@ -55,6 +56,7 @@ ui/games.js
 ui/panels.js
 ui/account.js
 ui/personas.js
+ui/rootsum.js
 ui/onboard.js
 ui/ui.js
 shell/foot.html

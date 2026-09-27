@@ -17,11 +17,18 @@ for(let rw=0;rw<9;rw++)for(let c=0;c<19;c++){
      ?'<br><b>1.3× affinity pair</b> for '+DOMAINS[c].r:'');});
  $('mx').appendChild(b);MXC.push(b);}
 $('mx').addEventListener('mouseleave',mxKey);
+/* THE ROOT NAMES CAME OFF THE MATRIX. FV in TASKS.md, his words: "All the
+   tools, the spiritual, psycho spiritual, and psycho physiological, on the
+   matrix, get rid of the architect engine weaver witness." The tools are this
+   rail, divided by those three words on his own ruling in BF2, and the one
+   place on it where the four root names stood as labels on a matrix was this
+   key: a row of Architect, Engine, Weaver and Witness under the grid. Its
+   swatches measured 0 by 0, so what a person saw was four bare words with
+   nothing to key them to. The hover line still names a root where a cell is an
+   affinity pair, because there it is telling you something about that cell. */
 function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
  +'Brightness is the SQ held in that cell. A gold ring is a <b>1.3× affinity pair</b>. '
- +'Click any cell.<div class="mxrow">'
- +ROOTD.map(function(rd){return '<span><i style="background:'+rootPlain(rd)+'"></i>'+rd+'</span>';}).join('')
- +'</div>';}
+ +'Click any cell.';}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
@@ -73,7 +80,10 @@ function renderSpirit(){
  function row(k,glyph,v,x,dk,dv){
   return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'">'
    +'<span class="sp-k">'+k+'</span>'
-   +'<span class="sp-v">'+(glyph?'<em class="sp-g">'+glyph+'</em>':'')+esc(v)+'</span>'
+   /* a glyph that starts with a tag is a drawn mark, the element's, and a
+      character is the sign's own, which the rail has always set as text */
+   +'<span class="sp-v">'+(glyph?(glyph.charAt(0)==='<'?'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true">'
+     +glyph+'</svg>':'<em class="sp-g">'+glyph+'</em>'):'')+esc(v)+'</span>'
    +'<span class="sp-x">'+esc(x||'')+'</span></button>';}
  /* ONE SHAPE FOR EVERY READING THE RECORD CANNOT SETTLE. Rising was the only
     row that said so, and the moon, both gates and the gene key beside it were
@@ -97,7 +107,18 @@ function renderSpirit(){
  var noZone=sp.needsTime?'needs a birth time'
   :!sp.needsZone?'the clocks changed at that hour'
   :sp.birth.z?'needs a time zone the instrument can read':'needs a birth time zone';
- el.innerHTML='<div class="sp-hd">Western</div>'
+ /* EVERY HEADING CARRIES ITS SYSTEM'S MARK, FV: "everything should have an
+    icon." SYSGLYPH in ui/component.js, the same four the summary on the right
+    rail lights in its band, so a system reads as the same thing on both. */
+ function hd(k,t){return '<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
+  +SYSGLYPH[k]+'</svg>'+t+'</div>';}
+ /* THE EASTERN ROWS SAY WHAT THEY DO, as the number rows beside them always
+    have. Their third column was empty, so the only two rows on the rail with
+    nothing to say were the two whose behaviour lines, CH_RUNS and CE_RUNS,
+    were already written and opening in their drills. And the year carries the
+    element's own mark, the one the Summary's chip for the same year uses. */
+ var cic=(typeof CELEM_IC!=='undefined'&&CELEM_IC[sp.celem])||'';
+ el.innerHTML=hd('W','Western')
   +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign'):unres('Sun',noZone))
   +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign'):unres('Moon',noZone))
   /* The ascendant is the one reading that needs a place, because it is the
@@ -108,14 +129,14 @@ function renderSpirit(){
     /* a zone gives a horizon now, so a timed Rising with one that is still
        refused is the clock change and not a missing place */
     : unres('Rising',sp.needsTime?'needs a birth time':sp.needsPlace?noPlace:noZone))
-  +'<div class="sp-hd">Eastern</div>'
-  +row('Year','',sp.celem+' '+sp.chinese,'','chinese',sp.chinese)
-  +row('Element','',sp.celem,'','celem',sp.celem)
-  +'<div class="sp-hd">Number</div>'
+  +hd('E','Eastern')
+  +row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese)
+  +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem)
+  +hd('N','Number')
   +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp))
   +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master)):'')
   +spNumRows(p.nm,true)
-  +'<div class="sp-hd">Design</div>'
+  +hd('D','Design')
   /* the personality and design gates are real and computed. the type is
      not, and says so, rather than printing one that sounds right. */
   /* These three fell back to the word unresolved inside a drill button, with
@@ -131,7 +152,7 @@ function renderSpirit(){
   /* this printed null.null the moment the engine could return no gate */
   +(sp.gk.gate!=null?row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
     sp.gk.gate+'.'+sp.gk.line):unres('Gene key',noZone))
-  +'<div class="sp-hd">Born</div>'
+  +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
   +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
   +'<div class="sp-row static"><span class="sp-k">Where</span><span class="sp-v">'
@@ -164,8 +185,18 @@ function spNumRows(nm,under){
   return '<button class="sp-row" type="button" data-num="'+k+'">'
    +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
    +'<span class="sp-v">'+esc(String(N[k]))+'</span>'
-   +'<span class="sp-x">'+esc(numSays(k,N[k])||'')+'</span></button>';}).join('');
- return rows?(under?'':'<div class="sp-hd">Number</div>')+rows:'';}
+   +'<span class="sp-x">'+esc(spNumSays(k,N[k]))+'</span></button>';}).join('');
+ return rows?(under?'':'<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
+  +SYSGLYPH.N+'</svg>Number</div>')+rows:'';}
+/* ONE KIND OF NOTE IN ONE COLUMN. The path row beside these says its number
+   by the verb, moves, and so do expression, soul urge and personality by
+   theirs. Maturity printed the number's title, "The one who tends", capital
+   and all, in the column where every other row printed what it does, and the
+   birthday printed nothing. Both say their verb now, the birthday off the day
+   reduced, which is how its meaning is read. */
+function spNumSays(k,v){
+ if(k==='maturity'||k==='birthday'){var d=k==='birthday'?numReduce(v):v;return LPMEAN[d]||'';}
+ return numSays(k,v)||'';}
 function spNumWire(el){
  el.querySelectorAll('[data-num]').forEach(function(btn){
   btn.onclick=function(){runNumDrill(btn.getAttribute('data-num'));};});}

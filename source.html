@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="409bfaf 2026-09-27 00:39"><head><meta charset="utf-8">
+<html lang="en" data-build="fa1ded8 2026-09-27 02:20"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -171,6 +171,14 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
  --t-surface:320ms;
  /* a whole tab. the longest thing the product is allowed to take. */
  --t-context:420ms;
+ /* A READING ARRIVING. The wheel's own entrance numbers, ENTER_SPAN and
+    ENTER_STAGGER in ui/wheel.js, on the wheel's own curve, a cubic out, so a
+    band on either rail fills on the same beat the wheel assembles on and the
+    dock's circles sweep on. FV in TASKS.md, his words: "Where's the animation
+    of the bands animating?" Written here rather than typed into each rule, so
+    the stylesheet and the canvas cannot drift apart without one of these
+    lines changing. */
+ --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
@@ -1427,6 +1435,14 @@ body:not(.tab-field) #frend{display:none!important}
    picture and 1 from 1.75x in. At 0 the host carries notext and the words
    are taken out, not set faint. The core figure and the gate pills are not
    words and are not here. */
+/* THE CORE'S FEATHERS ON FRAMES AND DIAL, faded by the zoom, ui/rings.js
+   frFeathers. The figures give ground as the core opens, to under half their
+   size on a backing disc, the wheel's move for the same moment: at three
+   fifths, the first cut, the coherence figure still sat across the triad. */
+#frend .frf0{opacity:var(--frf0,0)}#frend .frf1{opacity:var(--frf1,0)}#frend .frf2{opacity:var(--frf2,0)}
+#frend .frfr{opacity:calc(var(--frfo,0) * .9)}
+#frend .frcq{transform-box:fill-box;transform-origin:center;transform:scale(calc(1 - .55 * var(--frfo,0)))}
+#frend .frcq-bk{opacity:calc(var(--frfo,0) * .86)}
 #frend [data-call],#frend .frnm{opacity:var(--fztx,1);transition:opacity var(--t-micro) var(--ease-out),visibility 0s linear 0s}
 #frend.notext [data-call],#frend.notext .frnm{visibility:hidden;transition:opacity var(--t-micro) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-micro)}
 /* the names a zoom brings in, set level beside their marks in page pixels, so
@@ -1901,6 +1917,81 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 .lsec.open .lsec-hd i{transform:rotate(-135deg)}
 .lsec-bd{display:none;padding-bottom:16px}
 .lsec.open .lsec-bd{display:block}
+/* EVERY SECTION HEADER CARRIES ITS MARK. FV in TASKS.md, his words: "we're
+   breaking a lot of our design rules on the left hand side ... everything
+   should have meaning, everything should have an icon." The headers were the
+   one row of the rails printing a bare word: every reading under them carried
+   a glyph and the name over them did not. Each mark says what the section
+   holds, never a decoration: three nested rings for the root, blueprint and
+   archetype levels, the dial's own track for orientation and balance, the one
+   ring the stack already uses for a child emotion, a grid for the matrix,
+   Flow's own mark, a pulse for what is running, columns for the laws. Root
+   Energetics is three rings overlapping, because it is where the systems
+   overlap. Stroked in the header's own colour, so it opens gold with it. */
+.lsec-hd>span{display:inline-flex;align-items:center;gap:9px;min-width:0}
+.lsec-ic{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* ROOT ENERGETICS IS SET APART, on both rails. FV: "I want a slightly
+   different treatment for root energetics." Everything else on the rail is a
+   reading of the field; this is the birth, the one layer nothing a person does
+   can move. So it sits on a panel of its own: the accent at six percent under
+   it and a hairline of the accent round it, the same two moves the dock's
+   cells and the selected chip already make, and its header in ink rather than
+   the rail's grey, with its mark in the accent. Nothing new is invented for
+   it: a tint and an edge, the restraint the rest of the rail keeps. */
+.lsec.re{background:color-mix(in srgb,var(--gold) 6%,transparent);
+ box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 24%,transparent);
+ border-radius:var(--r-s);border-bottom:0;padding:0 12px;margin:0 -6px 12px}
+.lsec.re .lsec-hd{color:var(--ink)}
+.lsec.re.open .lsec-hd{color:var(--gold)}
+.lsec.re .lsec-ic{color:var(--gold)}
+body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
+/* ---- ROOT ENERGETICS, READ ACROSS. ui/rootsum.js. ---- */
+.rs-lead,.rs-none{font-size:13px;line-height:1.6;color:var(--mid);margin:0 0 10px}
+.rs-go{margin:0 0 6px}
+.rs-note{font-size:12px;line-height:1.5;color:var(--dim);margin:0 0 4px}
+.rs-eye{margin:14px 0 4px}
+.rs-ic{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rs-a{padding:12px 0 10px;border-top:1px solid var(--edge)}
+.rs-eye + .rs-a{border-top:0;padding-top:6px}
+.rs-hd{display:flex;align-items:center;gap:11px}
+/* the theme's mark in the ring every named thing on the rail sits in */
+.rs-g{width:34px;height:34px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+ color:var(--gold);box-shadow:inset 0 0 0 1.6px color-mix(in srgb,var(--gold) 70%,transparent)}
+.rs-g .rs-ic{width:17px;height:17px}
+.rs-light .rs-g{color:var(--mid);box-shadow:inset 0 0 0 1.2px var(--edge-2)}
+.rs-t{display:flex;flex-direction:column;min-width:0;line-height:1.35}
+.rs-t b{font-size:15px;color:var(--ink);font-weight:600}
+.rs-t em{font-style:normal;font-size:12.5px;color:var(--mid)}
+.rs-strong .rs-t em{color:var(--gold)}
+/* THE BAND OF FOUR. One cell per system, lit where that system lands on the
+   theme, so how many agree is a shape and never a count against a total,
+   which is his objection on file. A lit cell fills from its left edge in
+   system order on the wheel's beat, and it fills again every time the section
+   opens, because an animation runs from when its element is first drawn. */
+.rs-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:10px 0 8px}
+.rs-seg{position:relative;overflow:hidden;height:22px;border-radius:var(--r-xs);
+ box-shadow:inset 0 0 0 1px var(--edge);display:grid;place-items:center;color:var(--dim)}
+.rs-seg .rs-ic{position:relative;width:13px;height:13px;opacity:.55}
+.rs-seg.on{color:var(--ink);box-shadow:none}
+.rs-seg.on .rs-ic{opacity:1}
+.rs-seg.on::before{content:'';position:absolute;inset:0;transform-origin:left center;
+ background:color-mix(in srgb,var(--gold) 40%,transparent);
+ animation:rsFill var(--t-enter) var(--ease-enter) both;animation-delay:calc(var(--i) * var(--t-stagger))}
+.rs-light .rs-seg.on::before{background:color-mix(in srgb,var(--gold) 26%,transparent)}
+@keyframes rsFill{from{transform:scaleX(0)}}
+.rs-say{font-size:13.5px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+.rs-chips{display:flex;flex-wrap:wrap;gap:5px}
+.rs-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--mid);
+ background:var(--sunk);border-radius:999px;padding:3px 9px 3px 6px;line-height:1.3}
+.rs-chip .rs-ic{width:12px;height:12px;flex:0 0 auto;color:var(--gold)}
+.rs-range{display:flex;flex-direction:column;gap:2px}
+.rs-r{display:grid;grid-template-columns:16px minmax(0,1fr);column-gap:9px;padding:6px 0;
+ border-top:1px solid var(--edge)}
+.rs-r:first-child{border-top:0}
+.rs-r .rs-ic{width:15px;height:15px;color:var(--gold);margin-top:2px;grid-row:1 / span 2}
+.rs-rn{font-size:13px;color:var(--ink);font-weight:500}
+.rs-rs{font-size:12.5px;line-height:1.5;color:var(--mid);grid-column:2}
 /* ---- THE LEFT COLUMN'S FOLD. EZ in TASKS.md: "I want to be able to close up
    that column." ui/ui.js, colFold. The control sits in the top right corner
    of the rail over Root energetics' header, which gives it the width a
@@ -1946,7 +2037,9 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
    at the head of the section picks the design for both at once. */
 .ax-pick{display:flex;align-items:center;gap:6px;margin:0 0 12px}
 .ax-pl{font-size:11px;color:var(--dim);margin-right:4px}
-.ax-pb{min-height:var(--tap);min-width:var(--tap);padding:0 14px;border-radius:999px;
+.ax-pb svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ax-pb{display:inline-flex;align-items:center;gap:6px;
+ min-height:var(--tap);min-width:var(--tap);padding:0 14px;border-radius:999px;
  border:1px solid var(--edge-2);background:none;color:var(--dim);font:inherit;font-size:12.5px;
  cursor:pointer;transition:background var(--t-micro,120ms) cubic-bezier(.22,1,.36,1),color var(--t-micro,120ms) cubic-bezier(.22,1,.36,1)}
 .ax-pb:hover{color:var(--ink)}
@@ -1975,7 +2068,7 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
 /* A. BAR. The trough, as the orientation bar shipped */
 .ax-tr{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;background:var(--sunk)}
 .ax-tr .fill{position:absolute;top:0;bottom:0;width:0;opacity:.62;
- transition:width var(--t-context) var(--ease-out),background var(--t-element) var(--ease-out)}
+ transition:width var(--t-enter) var(--ease-enter),background var(--t-element) var(--ease-out)}
 .ax-tr .fill.rt{left:50%}
 .ax-tr .fill.lt{right:50%}
 /* the break sits over the fill, so even reads as a gap and not as a seam */
@@ -1994,7 +2087,7 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
 .ax-svg{flex:0 1 120px;width:120px;height:60px;overflow:visible}
 .ax-trk{fill:none;stroke:var(--sunk);stroke-width:7;stroke-linecap:round}
 .ax-svg .fill{fill:none;stroke-width:7;stroke-dasharray:0 100;opacity:.8;
- transition:stroke-dasharray var(--t-context) var(--ease-out),stroke var(--t-element) var(--ease-out)}
+ transition:stroke-dasharray var(--t-enter) var(--ease-enter),stroke var(--t-element) var(--ease-out)}
 .ax-svg .mid{stroke:var(--bg);stroke-width:2.5}
 .ax-svg .ax-sx{stroke:var(--dim);stroke-width:2;stroke-linecap:round}
 .ax-nd{transform-origin:60px 54px;transition:transform var(--t-context) var(--ease-land)}
@@ -2131,6 +2224,9 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .nf label{flex:1 1 auto;font-size:14px;color:var(--mid);overflow:hidden;
  text-overflow:ellipsis;white-space:nowrap;font-weight:400}
 .nf i{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.nf i.nf-g{width:16px;height:16px;border-radius:0;display:grid;place-items:center}
+.nf i.nf-g svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
 .nf input{width:54px;min-height:var(--tap);flex:0 0 auto;background:var(--sunk);border:1px solid var(--edge);
  border-radius:var(--r-xs);color:var(--ink);font-family:var(--num);font-size:13px;font-weight:500;
  padding:5px 4px;text-align:center;font-variant-numeric:tabular-nums}
@@ -2163,21 +2259,28 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mx button[data-sel="1"]{box-shadow:inset 0 0 0 1px var(--gold)}
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
-.mxrow{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;font-size:12px}
-.mxrow i{width:8px;height:8px;border-radius:2px;flex:0 0 auto;margin-right:3px}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
-.sp-row{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;
+/* THE VALUE HOLDS ITS LINE AND THE NOTE TAKES WHAT IS LEFT. The value was the
+   flexible column and the note sized to its own text, so a note of any length
+   squeezed the value: with the Eastern rows saying what they do, Water Dog
+   broke over two lines under its own glyph. A value is a name and a name does
+   not wrap; a note is a phrase and can. */
+.sp-row{display:grid;grid-template-columns:62px auto minmax(0,1fr);gap:10px;align-items:center;
  min-height:var(--tap);
  font-size:13.5px;color:var(--mid);padding:6px 5px;width:100%;background:transparent;border:0;
  text-align:left;cursor:pointer;border-radius:var(--r-xs);font-family:var(--sans)}
 .sp-row:hover{background:var(--panel-2)}
 .sp-row.static{cursor:default}.sp-row.static:hover{background:transparent}
 .sp-k{font-size:11px;font-weight:600;color:var(--dim)}
-.sp-v{color:var(--ink)}
-.sp-x{color:var(--gold);font-size:12.5px}
+.sp-v{color:var(--ink);white-space:nowrap}
+.sp-x{color:var(--gold);font-size:12.5px;text-align:right}
 .sp-g{font-style:normal;font-size:16px;margin-right:7px;opacity:.95;color:var(--gold)}
+.sp-hd{display:flex;align-items:center;gap:7px}
+.sp-hi,.sp-gi{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;
+ stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sp-gi{width:16px;height:16px;margin-right:7px;vertical-align:-3px;color:var(--gold)}
 .sp-none{font-size:13.5px;color:var(--dim);line-height:1.7;padding:10px 0}
 
 /* ---------- right rail ---------- */
@@ -2708,6 +2811,9 @@ body.punch .card{border-color:transparent}
 .it:hover{color:var(--ink);background:var(--panel-2)}
 .it.pin{background:rgba(223,204,126,.2);color:var(--ink)}
 .it b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
+/* a Running row: the badge, then the name, which takes the rest and ellipses */
+.it.run-it{justify-content:flex-start;align-items:center;gap:8px}
+.it.run-it .run-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bmrow{display:grid;grid-template-columns:86px 1fr 46px;gap:10px;align-items:center;
  font-size:11px;font-weight:600;margin-bottom:7px}
 .bmk{color:var(--dim)}
@@ -5079,9 +5185,15 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         sections printing one life path is two places for it to disagree. It
         also carries the full numerology now, off numerologyOf in
         engine/numerology.js, the same call the Summary makes. The renderer
-        still writes #spirit, so every check on the birth data still finds it. -->
-   <div class="lsec" data-sec="energetics">
-    <button class="lsec-hd" type="button"><span>Root energetics</span><i></i></button>
+        still writes #spirit, so every check on the birth data still finds it.
+
+        CAPITALISED AND SET APART. FV, his words: "I want a slightly different
+        treatment for root energetics. I want energetics capitalized." Both
+        words take the capital, and the section wears a tinted panel of its own
+        with the accent's edge, the class re, which the summary at the head of
+        the right rail wears too, because they are one thing read two ways. -->
+   <div class="lsec re" data-sec="energetics">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
     <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
@@ -5130,7 +5242,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         less States, which went to the head of the rail as Root energetics. -->
    <h2 class="rblk">Energy</h2>
    <div class="lsec open" data-sec="soul">
-    <button class="lsec-hd" type="button"><span>Awareness</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Awareness</span><i></i></button>
     <div class="lsec-bd">
      <!-- The subtitles came out on the owner's ruling. Every one of them was
           a definition sitting permanently under a heading a person reads once,
@@ -5151,7 +5263,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    </div>
    <h2 class="rblk">Psyche</h2>
    <div class="lsec open" data-sec="lean">
-    <button class="lsec-hd" type="button"><span>Orientation and balance</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 12h16.8M12 7.2v9.6"/><circle cx="5.4" cy="12" r="1.8"/><circle cx="18.6" cy="12" r="1.8"/></svg>Orientation and balance</span><i></i></button>
     <div class="lsec-bd">
      <!-- LEAN WAS A WORD NOBODY COULD CASH.
 
@@ -5196,7 +5308,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     </div>
    </div>
    <div class="lsec" data-sec="fetters">
-    <button class="lsec-hd" type="button"><span>Child emotions</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5"/></svg>Child emotions</span><i></i></button>
     <div class="lsec-bd">
      <!-- THE LABEL RULE, applied. One word where one word will do, and the
      subtitle says what the control does rather than restating the schema.
@@ -5220,7 +5332,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     </div>
    </div>
    <div class="lsec" data-sec="matrix">
-    <button class="lsec-hd" type="button"><span>Matrix</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
      <div class="lbl plain">19 domains &times; 9 child emotions</div>
      <div class="mx" id="mx"></div>
@@ -5346,12 +5458,24 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        named section that folds, one open at a time. Selection unfolds itself
        when the wheel is clicked. -->
   <div class="col"><div class="glass panel sc">
+   <!-- ROOT ENERGETICS, READ ACROSS, AT THE VERY TOP AND CLOSED. FV in
+        TASKS.md, his words: "When I open root energetics, I want a summary
+        of that on the right hand side, also at the very top closed." It
+        mirrors the left rail's own head: Root Energetics over the dock on the
+        left, Root Energetics over the coherence line on the right, so the two
+        rails open on the same section and the same line under it. Closed
+        because OPENSEC in ui/ui.js opens only Reading on this rail.
+        ui/rootsum.js fills it, off rootOverlap in engine/overlap.js. -->
+   <div class="lsec re" data-rail="right" data-sec="overlap">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
+    <div class="lsec-bd"><div id="rootsum"></div></div>
+   </div>
    <div id="railtop" class="railtop"></div>
    <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
         the stage's upper right now, EZ. -->
 
    <div class="lsec open" data-rail="right" data-sec="you">
-    <button class="lsec-hd" type="button"><span>Reading</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Reading</span><i></i></button>
     <div class="lsec-bd">
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
@@ -5366,7 +5490,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    </div>
 
    <div class="lsec" data-rail="right" data-sec="sel">
-    <button class="lsec-hd" type="button"><span>Selection</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8l12 7.4-5.4 1.4 3.2 6.2-2.6 1.4-3.2-6.2L6 18z"/></svg>Selection</span><i></i></button>
     <div class="lsec-bd">
      <div id="rdrill" style="display:none"></div>
      <div id="rdrill-none" class="rel-note">Nothing selected. Click an address, a law, a saboteur or the core.</div>
@@ -5374,19 +5498,19 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    </div>
 
    <div class="lsec" data-rail="right" data-sec="flow">
-    <button class="lsec-hd" type="button"><span>Flow</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8"/></svg>Flow</span><i></i></button>
     <!-- the energy shelf. the original computed this every frame and then
          dropped it on the floor, because no element with this id existed. -->
     <div class="lsec-bd"><div id="eshelf"></div><div id="run"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="running">
-    <button class="lsec-hd" type="button"><span>Running</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.4-5.6 4.4 11.2L16.2 12H21"/></svg>Running</span><i></i></button>
     <div class="lsec-bd"><div id="fire"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="laws">
-    <button class="lsec-hd" type="button"><span>Moral integrity</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5.6 20V10M10 20V10M14 20V10M18.4 20V10M3.6 10L12 4.2l8.4 5.8z"/></svg>Moral integrity</span><i></i></button>
     <div class="lsec-bd">
      <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
      <div id="laws"></div>
@@ -7460,6 +7584,46 @@ var LP_RUNS={
  7:'looks at it until it makes sense', 8:'commands the structure and pays for it',
  9:'completes what others abandoned', 11:'channels more than it can hold',
  22:'makes the imagined thing physical', 33:'teaches by carrying it first'};
+/* WHAT A MEETING POINT SAYS, to the person, when two systems land on it.
+   FV in TASKS.md, his words: "take a look at all the behavioral energetics
+   where they overlap, because that's the truth." engine/overlap.js finds the
+   overlap and these are what it reads out. Second person, because this is
+   the one line in Root Energetics said to somebody rather than about a
+   placement, and his bar for it is plain, direct and warm without talking
+   down. The five elements are the ones two systems can share: Western and
+   Eastern both name fire, earth and water, and the Chinese five reach wood
+   and metal through the design gate's trigrams. Air has no counterpart in
+   either Chinese system, so it can never be a meeting point and has no line.
+   The nine planets are the ones numerology gives the digits, which are the
+   only planets a sign's ruler can meet a number on. */
+var ROOT_SAYS={
+ Fire:'You run hot. You start things, burn bright and need something to burn.',
+ Earth:'You steady things. You hold your ground and take time to be moved.',
+ Water:'You find the low route. You go around what blocks you and still arrive.',
+ Wood:'You grow toward room. You push outward and need space to do it.',
+ Metal:'You cut clean. You hold an edge and know where the line is.',
+ Sun:'You need to be the one doing it, and to be seen doing it.',
+ Moon:'You run on feeling first and check the facts after.',
+ Mercury:'You think out loud and move on fast.',
+ Venus:'You weigh things by how they sit between people.',
+ Mars:'You go at the problem head on, and early.',
+ Jupiter:'You widen the frame until the problem looks smaller.',
+ Saturn:'You build the structure first and carry its weight.',
+ Uranus:'You break the pattern to see what it was holding.',
+ Neptune:'You soften the edge between you and what you take in.'};
+/* THE PROFILE LINES, the one Human Design reading this product computes that
+   has a behaviour and no counterpart in the other three systems. Each is the
+   line's standing theme in that system, 1 the investigator through 6 the role
+   model, said as what the line does rather than by its name, which is how
+   every other table here reads. It is never a meeting point, because nothing
+   else speaks in lines, so it is always part of the range. */
+var HD_LINE_RUNS={
+ 1:'studies the ground before standing on it',
+ 2:'does its best work alone, until somebody calls it out',
+ 3:'learns by what breaks',
+ 4:'moves through the people it already knows',
+ 5:'gets handed other people’s hopes, and a practical fix',
+ 6:'tries everything first, then steps back and shows the way'};
 var LP2ARCH={1:'Warrior',2:'Lover',3:'Creator',4:'Ruler',5:'Explorer',6:'Caregiver',
  7:'Sage',8:'Ruler',9:'Magician',11:'Magician',22:'Creator',33:'Sage'};
 
@@ -13868,6 +14032,208 @@ function numerologyOf(name,p){
  return numerology(full,bd);}
 
 try{window.__at&&window.__at('engine/numerology.js');}catch(e){}
+/* ============================================================
+   WHERE THE FOUR SYSTEMS MEET. FV in TASKS.md, his words: "take a
+   look at all the behavioral energetics where they overlap, because
+   that's the truth. And then use that as the summary. Where they
+   don't align is the kind of fuzziness of it, the other ways it can
+   be expressed."
+
+   THE FOUR DO NOT SHARE A LANGUAGE, and that is the first thing this
+   module has to be honest about. Western reads signs, Eastern reads
+   an animal and one of five elements, numerology reads digits and
+   Human Design reads gates and lines. Nothing in any of them is
+   written in the vocabulary of another, so an overlap is only real
+   where a tradition itself supplies the bridge. Three are used, each
+   one step long, and nothing else:
+
+     ELEMENT. Western and Eastern both name fire, earth and water, so
+     a sign's element and a Chinese element with the same name are
+     the same word in two systems. Air has no Chinese counterpart and
+     wood and metal have no Western one, so those never cross.
+
+     THE DESIGN GATE'S TRIGRAMS. A Human Design gate is an I Ching
+     hexagram by number, a hexagram is two trigrams, and every trigram
+     carries one of the five Chinese elements in the Later Heaven
+     order. That is how Design reaches the element vocabulary.
+
+     PLANET. Numerology gives each digit a planet, the table printed
+     since Cheiro, and astrology gives each sign a ruling planet. That
+     is the only place a number and a sign can land on the same thing.
+
+   Everything else is range and never agreement: the numbers' own
+   meanings, the year animal's behaviour, the profile lines. A reading
+   with no counterpart elsewhere is not a disagreement, it is another
+   way the same person can show up, which is how he framed it.
+
+   ONLY THE DESIGN GATE, NOT THE PERSONALITY GATE. The personality gate
+   is the sun at birth, which Western already reads as the sun sign, so
+   counting both would be one measurement voting twice. Measured over
+   the whole circle in 0.05 degree steps against engine/astro.js's own
+   gate wheel: the personality gate's trigrams carry the sun sign's
+   element 13.6 percent of the time where an unrelated gate would 22.7,
+   so the two are tied together. The design gate, the sun 88 degrees
+   earlier, carries it 24.5 percent of the time, near enough the
+   unrelated figure to be read as a separate voice.
+
+   OVERLAP IS COMMON, SO IT IS WEIGHED, NOT COUNTED. With fourteen
+   themes and up to eleven placements, two systems share something for
+   almost everybody: on the sweep tests/engine.js runs, 700 births
+   spread over seventy years, 689 had at least one theme two systems
+   reach, measured 27 September. A summary that called every one of
+   those the truth would be saying the same thing to everybody. So
+   each meeting point carries q, the chance that the systems reaching
+   it would each reach it at least as often if every placement were
+   drawn at random from its own table, and the rail says how strong a
+   meeting it is off q. The tables are the product's own mapping
+   tables counted at load, never typed in. Numbers are taken as even
+   across the nine digits, which is an approximation this module
+   states rather than hides.
+
+   Pure. A spiritualOf reading and a numerology reading in, the
+   meeting points and the range out, and nothing read from or written
+   to shared state.
+   ============================================================ */
+
+/* the year animal's own fixed element, the earthly branch it sits on. A year
+   carries two elements, the stem's, which is the one named with the animal,
+   and this one, which the animal always has. */
+const ROOT_BRANCH_EL={Rat:'Water',Ox:'Earth',Tiger:'Wood',Rabbit:'Wood',Dragon:'Earth',
+ Snake:'Fire',Horse:'Fire',Goat:'Earth',Monkey:'Metal',Rooster:'Metal',Dog:'Earth',Pig:'Water'};
+/* the eight trigrams in the order the table below indexes them, each with the
+   picture it is named for and its element in the Later Heaven order */
+const ROOT_TRIGRAM=[
+ {nm:'Qian',img:'heaven',el:'Metal'},{nm:'Zhen',img:'thunder',el:'Wood'},
+ {nm:'Kan',img:'water',el:'Water'},{nm:'Gen',img:'mountain',el:'Earth'},
+ {nm:'Kun',img:'earth',el:'Earth'},{nm:'Xun',img:'wind',el:'Wood'},
+ {nm:'Li',img:'fire',el:'Fire'},{nm:'Dui',img:'lake',el:'Metal'}];
+/* THE KING WEN NUMBER OF EVERY PAIR, lower trigram by row and upper by
+   column, in ROOT_TRIGRAM's order. This is the standard lookup table and it
+   is checked by tests/engine.js both ways: sixty four cells holding one to
+   sixty four once each, and named hexagrams landing where the book puts them,
+   1 heaven over heaven, 2 earth over earth, 11 earth over heaven, 63 water
+   over fire. A hexagram table typed by hand is exactly the kind of thing a
+   gate has to hold. */
+const ROOT_KINGWEN=[
+ [1,34,5,26,11,9,14,43],[25,51,3,27,24,42,21,17],[6,40,29,4,7,59,64,47],
+ [33,62,39,52,15,53,56,31],[12,16,8,23,2,20,35,45],[44,32,48,18,46,57,50,28],
+ [13,55,63,22,36,37,30,49],[10,54,60,41,19,61,38,58]];
+/* gate number to its two trigrams, lower first, built off the table above */
+const ROOT_HEX=(function(){var o={};
+ ROOT_KINGWEN.forEach(function(row,lo){row.forEach(function(n,up){o[n]=[lo,up];});});
+ return o;})();
+/* THE RULERS. Traditional, with the two modern rulers numerology also names:
+   Uranus and Neptune are the planets of 4 and 7, and they rule Aquarius and
+   Pisces beside Saturn and Jupiter. Pluto has no digit, so Scorpio is Mars
+   alone here, because a ruler with no number cannot meet one. */
+const ROOT_RULER={Aries:['Mars'],Taurus:['Venus'],Gemini:['Mercury'],Cancer:['Moon'],
+ Leo:['Sun'],Virgo:['Mercury'],Libra:['Venus'],Scorpio:['Mars'],Sagittarius:['Jupiter'],
+ Capricorn:['Saturn'],Aquarius:['Saturn','Uranus'],Pisces:['Jupiter','Neptune']};
+/* each digit's planet. A master keeps the planet of the digit it reduces to,
+   11 the moon's, 22 Uranus's and 33 Venus's, because a master is that digit
+   carried at a higher charge and not a tenth planet. */
+const ROOT_NUMPLANET={1:'Sun',2:'Moon',3:'Jupiter',4:'Uranus',5:'Mercury',6:'Venus',
+ 7:'Neptune',8:'Saturn',9:'Mars',11:'Moon',22:'Uranus',33:'Venus'};
+/* HOW STRONG A MEETING IS, by q. At or under the first, the rail says the
+   systems agree strongly; at or under the second, that they agree; above it
+   the meeting is common and the rail says that, rather than calling it the
+   truth. On the same sweep, measured 27 September, 66 of 700 births reached
+   strong, 149 clear and 474 light, and 11 had no meeting at all. The shares
+   are held by tests/engine.js as a contract on the words, strong rare and
+   agreement a minority, so a table change that moves them fails there and
+   not in front of somebody. */
+const ROOT_Q_STRONG=0.005, ROOT_Q_CLEAR=0.02;
+/* how many meeting points the rail leads with. The rest of what the systems
+   say is range, which is the other half of his method and not a leftover. */
+const ROOT_SHOW=3;
+
+/* the chance a single placement lands on each theme, counted off the tables
+   above and the product's own sign, stem and trigram tables, never typed in */
+function rootOdds(list,f){var o={},n=list.length;
+ list.forEach(function(x){[].concat(f(x)).forEach(function(t){if(t)o[t]=(o[t]||0)+1/n;});});
+ return o;}
+function rootCap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+var ROOT_P=null;
+function rootP(){
+ if(ROOT_P)return ROOT_P;
+ var signs=ZSIGN.map(function(z){return z[2];});
+ ROOT_P={
+  sEl:rootOdds(ZSIGN,function(z){return rootCap(z[3]);}),
+  sPl:rootOdds(signs,function(s){return ROOT_RULER[s];}),
+  stem:rootOdds(CELEM,function(e){return e;}),
+  branch:rootOdds(Object.keys(ROOT_BRANCH_EL),function(a){return ROOT_BRANCH_EL[a];}),
+  tri:rootOdds(ROOT_TRIGRAM,function(t){return t.el;}),
+  num:rootOdds([1,2,3,4,5,6,7,8,9],function(d){return ROOT_NUMPLANET[d];})};
+ return ROOT_P;}
+
+/* THE PLACEMENTS. Every reading the four systems give that can take part,
+   each with the themes it lands on in each vocabulary and the odds table it
+   is weighed against. A reading the record could not settle, a moon on a day
+   it changed sign or a gate with no time zone, is null upstream and is not a
+   placement here: a meeting point is never built on a reading nobody took. */
+function rootPlacements(sp,N){
+ var P=rootP(), out=[];
+ if(sp){
+  [['sun',sp.sun,sp.sunEl],['moon',sp.moon,sp.moonEl],['rising',sp.rising,sp.risingEl]]
+   .forEach(function(x){if(!x[1])return;
+    out.push({sys:'W',k:x[0],v:x[1],el:[rootCap(x[2])],pl:ROOT_RULER[x[1]]||[],odds:{el:P.sEl,pl:P.sPl}});});
+  if(sp.celem)out.push({sys:'E',k:'year',v:sp.celem,el:[sp.celem],pl:[],odds:{el:P.stem}});
+  if(sp.chinese)out.push({sys:'E',k:'animal',v:sp.chinese,el:[ROOT_BRANCH_EL[sp.chinese]],pl:[],odds:{el:P.branch}});
+  var dg=sp.hd&&sp.hd.design, hx=dg&&ROOT_HEX[dg.gate];
+  if(hx)['lower','upper'].forEach(function(part,i){var T=ROOT_TRIGRAM[hx[i]];
+   out.push({sys:'D',k:'design',v:dg.gate,part:part,tri:T.nm,img:T.img,el:[T.el],pl:[],odds:{el:P.tri}});});}
+ if(N)['lifePath','expression','soul','personality'].forEach(function(k){
+  var v=N[k]; if(v===null||v===undefined||!ROOT_NUMPLANET[v])return;
+  out.push({sys:'N',k:k,v:v,el:[],pl:[ROOT_NUMPLANET[v]],odds:{pl:P.num}});});
+ return out;}
+
+/* the chance that at least k of these independent placements land, each with
+   its own chance, the distribution counted out rather than approximated */
+function rootTail(ps,k){
+ var d=[1];
+ ps.forEach(function(p){var n=new Array(d.length+1).fill(0);
+  d.forEach(function(v,i){n[i]+=v*(1-p);n[i+1]+=v*p;});d=n;});
+ var s=0; for(var i=k;i<d.length;i++)s+=d[i];
+ return s;}
+
+function rootStrength(q){return q<=ROOT_Q_STRONG?'strong':q<=ROOT_Q_CLEAR?'clear':'light';}
+
+function rootOverlap(sp,N){
+ var pl=rootPlacements(sp,N), themes={};
+ pl.forEach(function(x,i){['el','pl'].forEach(function(voc){x[voc].forEach(function(t){
+  var key=voc+':'+t, th=themes[key]||(themes[key]={voc:voc,t:t,hits:[],by:{}});
+  th.hits.push(i); (th.by[x.sys]=th.by[x.sys]||[]).push(i);});});});
+ var agree=[];
+ Object.keys(themes).forEach(function(key){var th=themes[key], ss=Object.keys(th.by);
+  /* a theme one system reaches alone is that system talking to itself */
+  if(ss.length<2)return;
+  var q=1;
+  ss.forEach(function(s){
+   var ps=pl.filter(function(x){return x.sys===s&&x.odds[th.voc];})
+    .map(function(x){return x.odds[th.voc][th.t]||0;});
+   q*=rootTail(ps,th.by[s].length);});
+  agree.push({voc:th.voc,t:th.t,sys:['W','E','N','D'].filter(function(s){return th.by[s];}),
+   hits:th.hits.map(function(i){return pl[i];}),q:q,strength:rootStrength(q)});});
+ /* the least likely by chance leads, and among equals the one more systems
+    reach, then the one reached more often */
+ agree.sort(function(a,b){return a.q-b.q||b.sys.length-a.sys.length||b.hits.length-a.hits.length;});
+ var shown=agree.slice(0,ROOT_SHOW), used={};
+ shown.forEach(function(a){a.hits.forEach(function(x){used[pl.indexOf(x)]=1;});});
+ /* THE RANGE is every reading that did not take part in a meeting the rail
+    leads with. The design gate's two trigrams are one reading, so it is one
+    row, and the profile is always range, since no other system speaks in
+    lines. */
+ var range=[], seenGate=false;
+ pl.forEach(function(x,i){if(used[i])return;
+  if(x.sys==='D'){if(seenGate||pl.some(function(y,j){return y.sys==='D'&&used[j];}))return; seenGate=true;}
+  range.push(x);});
+ if(sp&&sp.hd&&sp.hd.profile&&sp.hd.personality)
+  range.push({sys:'D',k:'profile',v:sp.hd.profile,line:sp.hd.personality.line});
+ return {placements:pl, agree:agree, shown:shown, range:range,
+  systems:['W','E','N','D'].filter(function(s){
+   return pl.some(function(x){return x.sys===s;})||(s==='D'&&sp&&sp.hd&&sp.hd.profile);})};}
+
+try{window.__at&&window.__at('engine/overlap.js');}catch(e){}
 
 /* ============================================================
    THE SEED. A four letter type is the ego's own account of
@@ -14647,6 +15013,14 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
+  /* overlap */   rootOverlap:rootOverlap, rootPlacements:rootPlacements, rootTail:rootTail,
+                  rootStrength:rootStrength, rootP:rootP,
+                  ROOT_BRANCH_EL:ROOT_BRANCH_EL, ROOT_TRIGRAM:ROOT_TRIGRAM,
+                  ROOT_KINGWEN:ROOT_KINGWEN, ROOT_HEX:ROOT_HEX, ROOT_RULER:ROOT_RULER,
+                  ROOT_NUMPLANET:ROOT_NUMPLANET, ROOT_Q_STRONG:ROOT_Q_STRONG,
+                  ROOT_Q_CLEAR:ROOT_Q_CLEAR, ROOT_SHOW:ROOT_SHOW,
+                  ROOT_SAYS:ROOT_SAYS, HD_LINE_RUNS:HD_LINE_RUNS, ZSIGN:ZSIGN, CELEM:CELEM,
+                  CHINESE:CHINESE, SIGN_RUNS:SIGN_RUNS, CH_RUNS:CH_RUNS, CE_RUNS:CE_RUNS, LP_RUNS:LP_RUNS,
   /* store */     storeRefused:storeRefused, storeUnread:storeUnread, pStore:pStore, pPersist:pPersist,
   /* the save and the snapshot write every surface calls, and the only route a
      history row reaches the disk by. They were browser globals and nothing
@@ -14717,6 +15091,43 @@ const CHAINGLYPH={
  hy:'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
   +'M19.6 7.6L4.4 16.4',
  sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
+/* THE FOUR SYSTEMS OF ROOT ENERGETICS, AND WHERE A BIRTH WAS, AS MARKS. FV in
+   TASKS.md, his words: "everything should have meaning, everything should
+   have an icon." The rail's Western, Eastern, Number and Design headings were
+   the one set of headers on it printing a word and nothing else, and the
+   summary on the right rail names the same four on every meeting it reads, so
+   one mark per system serves both and they cannot drift apart. Western is the
+   sky's wheel, two rings and the four angles. Eastern is the two halves of
+   one cycle. Number is the grid digits are counted on. Design is the mark the
+   Summary's own chip already gives Human Design, kept rather than redrawn,
+   because one concept has one mark. Born is the place, a pin. */
+const SYSGLYPH={
+ W:'<circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.2"/>'
+  +'<path d="M12 3.4v4.4M12 16.2v4.4M3.4 12h4.4M16.2 12h4.4"/>',
+ E:'<circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a4.3 4.3 0 010 8.6 4.3 4.3 0 000 8.6"/>'
+  +'<circle cx="12" cy="7.7" r="1"/><circle cx="12" cy="16.3" r="1"/>',
+ N:'<path d="M9.8 4.4L8.2 19.6M15.8 4.4l-1.6 15.2M5 9.2h14.4M4.6 14.8H19"/>',
+ D:'<path d="M7 4v16M17 4v16M7 9h10M7 15h10"/>',
+ born:'<path d="M12 20.6s-6.2-5.4-6.2-10a6.2 6.2 0 0112.4 0c0 4.6-6.2 10-6.2 10z"/>'
+  +'<circle cx="12" cy="10.6" r="2.2"/>'};
+const SYSNAME={W:'Western',E:'Eastern',N:'Number',D:'Design'};
+/* THE NINE PLANETS A SIGN AND A NUMBER CAN MEET ON, engine/overlap.js. Drawn
+   on the 24 grid in the house stroke, ring never fill, each the planet's own
+   astronomical mark reduced to the few lines that still read at eleven
+   pixels. A Unicode glyph would come from whatever fallback face the device
+   has, and the zodiac glyphs on this rail already show how uneven that is. */
+const PLANETGLYPH={
+ Sun:'<circle cx="12" cy="12" r="7.6"/><circle cx="12" cy="12" r="1.4"/>',
+ Moon:'<path d="M15.6 4.4a8 8 0 100 15.2 6.8 6.8 0 010-15.2z"/>',
+ Mercury:'<path d="M8.8 3.6a3.2 3.2 0 006.4 0"/><circle cx="12" cy="10.2" r="3.6"/>'
+  +'<path d="M12 13.8v7M9.2 17.6h5.6"/>',
+ Venus:'<circle cx="12" cy="8.8" r="4.8"/><path d="M12 13.6v7.2M8.8 17.4h6.4"/>',
+ Mars:'<circle cx="10" cy="14" r="5.2"/><path d="M13.7 10.3l5.7-5.7M14.6 4.6h4.8v4.8"/>',
+ Jupiter:'<path d="M6.2 6.8c2.4-2.6 6.6-1.8 5.4 2.2-.8 2.6-3.4 5.2-5.6 7.4h12M15.6 4.4v15.6"/>',
+ Saturn:'<path d="M8 3.6v12.4M5.4 6.4h5.2M8 12c1.2-2.6 6.8-3 6.8 1.2 0 3-3.4 3.6-3.4 6.2 0 1.2 1 1.8 2.2 1.2"/>',
+ Uranus:'<circle cx="12" cy="15.2" r="5"/><circle cx="12" cy="15.2" r="1.1"/><path d="M12 10.2V3.8M9.4 6.4L12 3.8l2.6 2.6"/>',
+ Neptune:'<path d="M5.8 5.2c0 4.8 2.6 7.2 6.2 7.2s6.2-2.4 6.2-7.2M12 4v16.6M8.8 17.4h6.4'
+  +'M4.6 6.6l1.2-1.4 1.2 1.4M10.8 5.4L12 4l1.2 1.4M17 6.6l1.2-1.4 1.2 1.4"/>'};
 /* A MARK IS EITHER PATH DATA OR FINISHED MARKUP, and the tables hold both.
    CHILD, SI, HCX_LIB, GATEGLYPH and the nineteen domains carry a bare d
    string. SEATGLYPH carries a finished <path> or <circle>, because a seat's
@@ -14906,9 +15317,19 @@ function crMoNum(t){var m=/^(-?\d+(?:\.(\d+))?)(\D*)$/.exec(t||'');
  return m?{n:+m[1],dp:m[2]?m[2].length:0,suf:m[3]}:null;}
 function crMoAt(m,now){var k=(now-m.t0)/m.dur;
  return k<=0?0:k>=1?1:1-Math.pow(1-k,3);}
+/* THE RING AND THE BADGE ARE ONE MOTION. FV in TASKS.md, his words: "Where's
+   the animation of the bands animating?" The dock's circles swept and counted
+   and every other reading on the two rails snapped: the archetype and domain
+   shares under Reading, the stack's axes and patterns, the coherence ring at
+   the rail's head and the Running badges. They are the same two objects, the
+   ring cr() draws and the badge crBadge() draws, with the same arc and the
+   same pill, so this reads both and ui.js hands it those hosts too. */
+var CRMO_SEL='.cr,.crb';
+function crMoParts(el){return {arc:el.querySelector('svg.arc circle:last-child,svg.crb-a circle:last-child'),
+ pv:el.querySelector('.v,.crb-v')};}
 function crMoPaint(m,now){
- var h=document.getElementById(m.host), el=h?h.querySelectorAll('.cr')[m.j]:null; if(!el)return;
- var e=crMoAt(m,now), arc=el.querySelector('svg.arc circle:last-child'), pv=el.querySelector('.v');
+ var h=document.getElementById(m.host), el=h?h.querySelectorAll(CRMO_SEL)[m.j]:null; if(!el)return;
+ var e=crMoAt(m,now), pt=crMoParts(el), arc=pt.arc, pv=pt.pv;
  if(arc)arc.style.strokeDashoffset=(m.a0+(m.a1-m.a0)*e).toFixed(2);
  if(pv&&m.n0!==null&&m.n1!==null)pv.textContent=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;}
 function crMoTick(now){
@@ -14920,12 +15341,12 @@ function crMotion(hosts){
  var now=performance.now(), fresh=[];
  hosts.forEach(function(h){
   if(!h)return;
-  h.querySelectorAll('.cr').forEach(function(el,j){
+  h.querySelectorAll(CRMO_SEL).forEach(function(el,j){
    /* visibility read off the circle and not its host: #key takes no box of
       its own in the dock, display:contents, and such an element has no
       offsetParent whether it is on screen or not */
    if(!el.offsetParent)return;
-   var arc=el.querySelector('svg.arc circle:last-child'), pv=el.querySelector('.v'); if(!arc)return;
+   var pt=crMoParts(el), arc=pt.arc, pv=pt.pv; if(!arc)return;
    var key=h.id+':'+j, m=CRMO[key], num=crMoNum(pv?pv.textContent:''),
     C=parseFloat(arc.getAttribute('stroke-dasharray'))||0,
     to=parseFloat(arc.getAttribute('stroke-dashoffset'))||0, n1=num?num.n:null;
@@ -14943,7 +15364,10 @@ function crMotion(hosts){
  fresh.sort(function(a,b){return Math.round(a.r.top/24)-Math.round(b.r.top/24)||a.r.left-b.r.left;});
  /* under the sheet the rings hold empty, and the sweep starts as it clears */
  function go(){var t=performance.now();
-  fresh.forEach(function(f,i){f.m.t0=t+i*ENTER_STAGGER; crMoPaint(f.m,t);});
+  /* the stagger stops growing at the eighth, because the stack can put twenty
+     rings on first sight and a sweep still starting a second and a half in is
+     a wait and not an entrance. The dock's seven are under the cap. */
+  fresh.forEach(function(f,i){f.m.t0=t+Math.min(i,8)*ENTER_STAGGER; crMoPaint(f.m,t);});
   if(!CRMO_RAF&&Object.keys(CRMO).some(function(k){return !CRMO[k].done;}))
    CRMO_RAF=requestAnimationFrame(crMoTick);}
  if(fresh.length&&!isBooted()){
@@ -16069,11 +16493,11 @@ function cqRamp(cq){
    ladder outside it. Three layers, each a real decomposition, each
    fading in over its own threshold rather than snapping:
 
-     1.45  the triad. vitality, awareness and will, the three
+     1.30  the triad. vitality, awareness and will, the three
            quantities the energy read is the mean of.
-     2.30  the seven seats, each feather as long as that seat's
+     2.00  the seven seats, each feather as long as that seat's
            share of integrity, which is bandIg over ten.
-     3.40  the twenty one laws, one filament each, at its own
+     2.95  the twenty one laws, one filament each, at its own
            value. These are literally the numerator of CQ.
 
    They are feathers because that is what they look like from the
@@ -16085,8 +16509,20 @@ function cqRamp(cq){
    The shell goes translucent as the layers come in, so the interior
    reads as inside rather than on top, and the number shrinks and
    keeps a backing disc so it stays legible over the detail.
+
+   ONE NOTCH SOONER, EACH LAYER. FV in TASKS.md, his words: "they come
+   in zoomed up medium. I want them to start coming in a little bit
+   sooner. I don't have a word for a little bit sooner, just a little
+   bit sooner, let's feel it out." The smallest step a person can
+   feel is one notch of the scroll wheel, a factor of 1.12, so each
+   threshold moved to start one notch earlier and nothing more:
+   1.45, 2.30 and 3.40 first showed on the fourth, eighth and
+   eleventh notch, and 1.30, 2.00 and 2.95 on the third, seventh and
+   tenth. The ramp is unchanged, so each still fades in rather than
+   snapping. Frames and Dial read the same three, coreLayerAt, so the
+   three pictures open their core on the same notch.
    ============================================================ */
-const CORE_STEP=[1.45,2.30,3.40];
+const CORE_STEP=[1.30,2.00,2.95];
 /* ============================================================
    THE FETTERS GROW AS YOU COME IN.
 
@@ -16228,9 +16664,10 @@ function atomGrow(n,a,hw,base,c,al){
    ============================================================ */
 
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
-function coreLayerA(i){
- var z=S.zoom||1, t=CORE_STEP[i];
- return Math.max(0,Math.min(1,(z-t)/(t*0.42)));}
+function coreLayerAt(i,z){
+ var t=CORE_STEP[i];
+ return Math.max(0,Math.min(1,((z||1)-t)/(t*0.42)));}
+function coreLayerA(i){return coreLayerAt(i,S.zoom||1);}
 /* how far the core has opened, which the drawing reads */
 function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
 /* and what it has resolved, by name. The names fed the line under the depth
@@ -16244,6 +16681,27 @@ function coreResolved(){
 /* ONE FEATHER. A rachis out from the centre, barbs either side thinning to
    the tip, and a vane behind them at low alpha so a dense layer still reads
    as a shape rather than as a scribble. len is the reading. */
+/* A LITTLE LARGER, AND ON ONE SCALE. FV, his words: "I want the feathers a
+   little bit bigger." A feather's length is its reading and cannot grow on
+   its own without lying, so the growth comes from two places that were
+   already wrong. All three layers now reach the same rim, 0.93 of the core:
+   the seats stopped at 0.86 and the triad at 0.80 while the quarter rings
+   behind them are drawn at 0.93, so a seat at a true 10 read as 9.25 against
+   its own gridlines, DESIGN-feathers.md defect one. And each vane is about a
+   fifth wider. ui/rings.js reads this same table for Frames and Dial, so the
+   three pictures draw one feather. */
+const FEATH={reach:0.93, law:0.045, seat:0.12, triad:0.22,
+ /* THE THREE LAYERS NEVER SHARE A BEARING. 21 is 3 times 7, so at rest law
+    3k sat on seat k and law 7i on triad i, eleven pairs drawn on top of each
+    other whenever the spin is zero, which is always under reduced motion and
+    always on Frames and Dial, whose pictures do not turn: DESIGN-feathers.md
+    defect two. The laws sit half a law step round, which puts every law 8.6
+    degrees off the nearest seat. The triad sits a quarter of a law step
+    round, a 84th of a turn, which a search over every phase in the triad's
+    third of a circle found is the widest clearance there is from both other
+    layers: 4.3 degrees. Worked, not assumed; a half seat step, the first
+    choice, put triad 0 exactly on law 1. */
+ lawPh:Math.PI*2/42, triadPh:Math.PI*2/84};
 function coreFeather(a,len,wid,col,al){
  if(len<=1||al<=0.01)return;
  var ca=Math.cos(a), sa=Math.sin(a), nx=-sa, ny=ca;
@@ -16295,14 +16753,14 @@ function coreInside(r,cr0){
      bare answer, so a released law's feather stayed where the answer put it
      while CQ moved, and the gap grew with every release. */
   var v=(+lawNow(l.nm)||0)/10;
-  coreFeather(i/SI.length*TAU-Math.PI/2+spin, cr0*0.93*v, cr0*0.035, bc(l.b), a2*0.75);});
+  coreFeather(i/SI.length*TAU-Math.PI/2+FEATH.lawPh+spin, cr0*FEATH.reach*v, cr0*FEATH.law, bc(l.b), a2*0.75);});
  /* 2. the seven seats */
  if(a1>0)BANDS.forEach(function(b,i){
   var v=bandIg(b)/10;
-  coreFeather(i/BANDS.length*TAU-Math.PI/2-spin*0.6, cr0*0.86*v, cr0*0.10, bc(b), a1*0.80);});
+  coreFeather(i/BANDS.length*TAU-Math.PI/2-spin*0.6, cr0*FEATH.reach*v, cr0*FEATH.seat, bc(b), a1*0.80);});
  /* 1. the triad. vitality, awareness, will: the three the energy read means. */
  if(a0>0)[[r.X,'Sacral'],[r.Y,'3rd Eye'],[r.Z,'Solar']].forEach(function(x,i){
-  coreFeather(i/3*TAU-Math.PI/2+spin*0.3, cr0*0.80*x[0], cr0*0.20, bc(x[1]), a0*0.95);});
+  coreFeather(i/3*TAU-Math.PI/2+FEATH.triadPh+spin*0.3, cr0*FEATH.reach*x[0], cr0*FEATH.triad, bc(x[1]), a0*0.95);});
  g.restore();}
 function solCore(r,base){
  const coh=r.CQ/100, breathe=REDUCED?0:Math.sin(S.t*1.4)*.05;
@@ -17848,6 +18306,53 @@ function frShadow(M,r,o){o=o||{};
    NOTHING IS PRINTED OFF THE DEFAULTS. On an unread field the ring is empty
    and the figure is a dash, which is what the key pill directly above says in
    the same state. */
+/* ============================================================
+   THE FEATHERS, ON FRAMES AND DIAL TOO. FV in TASKS.md, his words:
+   "the feathers are missing on Dial." They were missing on Frames as
+   well, measured rather than taken from the report: coreInside in
+   ui/wheel.js draws them straight onto the wheel's canvas, and the
+   two renditions are SVG built by frFrames and frDial, which never
+   called anything like it, so at any zoom their core held the two
+   figures and nothing else. This is the same three layers, the same
+   lengths, the same widths and bearings, off the same FEATH table,
+   drawn as SVG inside the core's ring.
+
+   THEY COME IN WITH THE ZOOM, as on the wheel. These pictures are
+   built once and zoomed as one transform, so the layers are drawn
+   into every build and faded by three custom properties fzApply sets
+   off the zoom through coreLayerAt, the wheel's own ramp on the
+   wheel's own thresholds. A zoom never rebuilds the picture.
+
+   NOTHING ON AN UNREAD FIELD. frCore draws a dash there and no ring,
+   and a feather is a part of a reading nobody has taken.
+   ============================================================ */
+function frFeather(cx,cy,a,len,wid,c,al){
+ if(len<=1)return '';
+ var ca=Math.cos(a),sa=Math.sin(a),nx=-sa,ny=ca,f=function(v){return v.toFixed(1);};
+ var bx=cx+ca*len*.05,by=cy+sa*len*.05,tx=cx+ca*len,ty=cy+sa*len;
+ var mx=cx+ca*len*.42,my=cy+sa*len*.42;
+ var vane='M'+f(bx)+' '+f(by)+'Q'+f(mx+nx*wid)+' '+f(my+ny*wid)+' '+f(tx)+' '+f(ty)
+  +'Q'+f(mx-nx*wid)+' '+f(my-ny*wid)+' '+f(bx)+' '+f(by)+'Z';
+ var n=Math.max(4,Math.min(11,Math.round(len/7))),barbs='';
+ for(var i=1;i<=n;i++){var t=i/(n+1),px=cx+ca*len*t,py=cy+sa*len*t,bw=wid*Math.sin(t*Math.PI);
+  barbs+='M'+f(px-nx*bw)+' '+f(py-ny*bw)+'Q'+f(px+ca*len*.05)+' '+f(py+sa*len*.05)+' '+f(px+nx*bw)+' '+f(py+ny*bw);}
+ return '<path d="'+vane+'" fill="'+rgba(c,al*.22)+'"/>'
+  +'<path d="'+barbs+'" fill="none" stroke="'+rgba(c,al*.62)+'" stroke-width="'+Math.max(.7,wid*.14).toFixed(2)+'"/>'
+  +'<path d="M'+f(bx)+' '+f(by)+'L'+f(tx)+' '+f(ty)+'" stroke="'+rgba(c,al*.98)+'" stroke-width="'
+  +Math.max(1,wid*.24).toFixed(2)+'" stroke-linecap="round"/>';}
+function frFeathers(M,r,cx,cy,rin){
+ var up=-Math.PI/2,F=FEATH,g=function(i,body){return '<g class="frf frf'+i+'">'+body+'</g>';};
+ /* the quarter rings, so a length can be read, at the faintest layer's alpha */
+ var rings='';[.25,.5,.75,1].forEach(function(q){rings+='<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
+  +'" r="'+(rin*F.reach*q).toFixed(1)+'" fill="none" stroke="'+rgba(M.ink,q===.5?.1:.055)+'" stroke-width="1"/>';});
+ var laws='',seats='',triad='';
+ SI.forEach(function(l,i){laws+=frFeather(cx,cy,i/SI.length*TAU+up+F.lawPh,rin*F.reach*clamp((+lawNow(l.nm)||0)/10,0,1),
+  rin*F.law,M.seat(l.b),.75);});
+ BANDS.forEach(function(b,i){seats+=frFeather(cx,cy,i/BANDS.length*TAU+up,rin*F.reach*clamp(bandIg(b)/10,0,1),
+  rin*F.seat,M.seat(b),.8);});
+ [[r.X,'Sacral'],[r.Y,'3rd Eye'],[r.Z,'Solar']].forEach(function(x,i){triad+=frFeather(cx,cy,i/3*TAU+up+F.triadPh,
+  rin*F.reach*clamp(+x[0]||0,0,1),rin*F.triad,M.seat(x[1]),.95);});
+ return '<g class="frf frfr">'+rings+'</g>'+g(2,laws)+g(1,seats)+g(0,triad);}
 function frCore(M,r,cx,cy,R,o){
  var w=o.w,un=!!r.unread,f=clamp(r.CQ/100,0,1),fd=clamp((+r.DQ||0)/100,0,1);
  var col=un?M.dim:hx((typeof TIERCOL!=='undefined'&&TIERCOL[r.tier])||(M.light?'#2F6E92':'#7EB8D4'));
@@ -17862,6 +18367,13 @@ function frCore(M,r,cx,cy,R,o){
   +fill+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'"'+(at||'')+'>'+str+'</text>';};
  if(un){var cu=o.fs*.727;
   M.L.core.push(s+t(cy+cu/2,frRgb(col),o.fs,300,'\u2013',' letter-spacing="-0.02em"')+'</g>');return;}
+ /* the feathers go in under the figures, which sit in a group of their own
+    on a backing disc so they can give ground as the layers come in, the
+    wheel's own move: the parts are what is being read by then and the number
+    is the caption, and it never goes */
+ var rin=R-w/2-2;
+ s+=frFeathers(M,r,cx,cy,rin)+'<g class="frcq"><circle class="frcq-bk" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
+  +'" r="'+(rin*.62).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>';
  var cq=String(Math.round(r.CQ)),dq=String(Math.round(+r.DQ||0)),lab=11;
  var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
  var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
@@ -17900,7 +18412,7 @@ function frCore(M,r,cx,cy,R,o){
     +'<text x="'+cx.toFixed(1)+'" y="'+(y0+H).toFixed(1)+'" text-anchor="middle">'
     +'<tspan fill="'+frRgb(M.dq)+'" font-size="'+f2.toFixed(1)+'" font-weight="500">'+dq+'</tspan>'
     +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">DQ</tspan></text>';
-   M.L.core.push(s+'</g>');return;}}
+   M.L.core.push(s+'</g></g>');return;}}
  for(k=1;k>=.4;k-=.05){f1=Math.max(lab+2,F1*k);f2=Math.max(lab,F2*k);
   H=fits([{h:f1*.727,w:W_(FC,f1,300)+4+W_('CQ',lab,500),g:6},{h:f2*.727,w:W_(FD,f2,500)+4+W_('DQ',lab,500)}]);
   if(H)break;}
@@ -17909,7 +18421,7 @@ function frCore(M,r,cx,cy,R,o){
   +'<tspan fill="'+c+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'">'+n.v+'</tspan>'
   +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">'+n.l+'</tspan></text>';};
  s+=row(y1,{v:cq,l:'CQ'},frRgb(col),f1,300)+row(y2,{v:dq,l:'DQ'},frRgb(M.dq),f2,500);
- M.L.core.push(s+'</g>');}
+ M.L.core.push(s+'</g></g>');}
 /* THE SIX GATES AS A COLLAR. Ruled 26 September, CH in TASKS.md: "for the
    six gates I like three", the third on the CE sheet and the round's own
    recommendation. They stood as two rows of three, one above the core and one
@@ -18380,7 +18892,9 @@ function frCallouts(M,r,P){
    numbers trade places under it. */
 var FR_SIG=null,FR_HIT=[],FR_ERR=false,FR_LAST='';
 function frSig(r,W_,H_){
+ /* X, Y and Z are the triad the core's first feathers are drawn from */
  var a=[FVIEW,W_,H_,S.theme,r.unread?1:0,(+r.CQ).toFixed(2),(+r.DQ).toFixed(2),r.tier,r.benign,r.darkB,
+  (+r.X||0).toFixed(3),(+r.Y||0).toFixed(3),(+r.Z||0).toFixed(3),
   r.pi,r.si,S.doms.join('.')];
  for(var i=0;i<W.length;i++)a.push((W[i].sq||0).toFixed(2));
  /* the same value the feathers are drawn from. They read lawNow now, and a
@@ -18475,6 +18989,10 @@ function fzApply(){var h=document.getElementById('frend');if(!h)return;
  h.querySelectorAll('.frsvg,.frflow,.frghost').forEach(function(sv){
   sv.style.transformOrigin='0 0'; sv.style.transform=tf;});
  h.classList.toggle('zoomed',FZ.s>1.001);
+ /* the core's three layers, off the wheel's own ramp and thresholds, and how
+    far the core has opened, which the figures give ground to */
+ var fo=0;for(var li=0;li<3;li++){var la=coreLayerAt(li,FZ.s);fo=Math.max(fo,la);h.style.setProperty('--frf'+li,la.toFixed(3));}
+ h.style.setProperty('--frfo',fo.toFixed(3));
  /* the words, off this zoom and nothing else: txtZoomA in ui/component.js */
  var ta=txtZoomA(FZ.s);
  h.style.setProperty('--fztx',ta.toFixed(3));
@@ -26278,10 +26796,19 @@ const $=function(id){return document.getElementById(id);};
 /* svgI moved to component.js. It is a const, and a const reached for before
    its declaration throws at call time, which is a trap waiting for the first
    renderer that loads earlier than this file and wants an icon. */
-function numField(host,name,band,store,key){
+/* EACH ROW CARRIES ITS OWN MARK, NOT A DOT. FV in TASKS.md, his words:
+   "everything should have meaning, everything should have an icon." These
+   rows led with an eight pixel dot in the seat's colour, which says the seat
+   and nothing about which axis or which law the row is. Every child emotion
+   and every law has carried its own glyph in canon.js since the port, and the
+   stack on the right rail already draws the nine axes with them, so the
+   sliders draw the same mark for the same thing. The colour is still the
+   seat's. ic is optional, so a row with no glyph keeps the dot. */
+function numField(host,name,band,store,key,ic){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';
- d.innerHTML='<i style="background:'+col+'"></i><label>'+name+'</label>'
+ d.innerHTML=(ic?'<i class="nf-g" style="color:'+col+'"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +glyphPath(ic)+'</svg></i>':'<i style="background:'+col+'"></i>')+'<label>'+name+'</label>'
   +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+'" aria-valuemin="0" '
   +'aria-valuemax="10" aria-valuenow="'+store[key]+'"><b style="background:'+col+'"></b></span>'
   +'<input type="number" min="0" max="10" step="0.5" value="'+store[key]+'" aria-label="'+name+'">';
@@ -26317,10 +26844,11 @@ function numField(host,name,band,store,key){
  return {inp,tr,trk};}
 const CHF={},RPF={},LWF={};
 CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm);
- RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm);
+ CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic);
+ /* the opposite takes the same mark in Heart, as the stack draws it */
+ RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic);
  RPF[cf.nm].inp.parentElement.classList.add('oppf');});
-SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm);});
+SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic);});
 function syncCh(){CHILD.forEach(function(cf){
  const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));
@@ -27879,11 +28407,18 @@ for(let rw=0;rw<9;rw++)for(let c=0;c<19;c++){
      ?'<br><b>1.3× affinity pair</b> for '+DOMAINS[c].r:'');});
  $('mx').appendChild(b);MXC.push(b);}
 $('mx').addEventListener('mouseleave',mxKey);
+/* THE ROOT NAMES CAME OFF THE MATRIX. FV in TASKS.md, his words: "All the
+   tools, the spiritual, psycho spiritual, and psycho physiological, on the
+   matrix, get rid of the architect engine weaver witness." The tools are this
+   rail, divided by those three words on his own ruling in BF2, and the one
+   place on it where the four root names stood as labels on a matrix was this
+   key: a row of Architect, Engine, Weaver and Witness under the grid. Its
+   swatches measured 0 by 0, so what a person saw was four bare words with
+   nothing to key them to. The hover line still names a root where a cell is an
+   affinity pair, because there it is telling you something about that cell. */
 function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
  +'Brightness is the SQ held in that cell. A gold ring is a <b>1.3× affinity pair</b>. '
- +'Click any cell.<div class="mxrow">'
- +ROOTD.map(function(rd){return '<span><i style="background:'+rootPlain(rd)+'"></i>'+rd+'</span>';}).join('')
- +'</div>';}
+ +'Click any cell.';}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
@@ -27935,7 +28470,10 @@ function renderSpirit(){
  function row(k,glyph,v,x,dk,dv){
   return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'">'
    +'<span class="sp-k">'+k+'</span>'
-   +'<span class="sp-v">'+(glyph?'<em class="sp-g">'+glyph+'</em>':'')+esc(v)+'</span>'
+   /* a glyph that starts with a tag is a drawn mark, the element's, and a
+      character is the sign's own, which the rail has always set as text */
+   +'<span class="sp-v">'+(glyph?(glyph.charAt(0)==='<'?'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true">'
+     +glyph+'</svg>':'<em class="sp-g">'+glyph+'</em>'):'')+esc(v)+'</span>'
    +'<span class="sp-x">'+esc(x||'')+'</span></button>';}
  /* ONE SHAPE FOR EVERY READING THE RECORD CANNOT SETTLE. Rising was the only
     row that said so, and the moon, both gates and the gene key beside it were
@@ -27959,7 +28497,18 @@ function renderSpirit(){
  var noZone=sp.needsTime?'needs a birth time'
   :!sp.needsZone?'the clocks changed at that hour'
   :sp.birth.z?'needs a time zone the instrument can read':'needs a birth time zone';
- el.innerHTML='<div class="sp-hd">Western</div>'
+ /* EVERY HEADING CARRIES ITS SYSTEM'S MARK, FV: "everything should have an
+    icon." SYSGLYPH in ui/component.js, the same four the summary on the right
+    rail lights in its band, so a system reads as the same thing on both. */
+ function hd(k,t){return '<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
+  +SYSGLYPH[k]+'</svg>'+t+'</div>';}
+ /* THE EASTERN ROWS SAY WHAT THEY DO, as the number rows beside them always
+    have. Their third column was empty, so the only two rows on the rail with
+    nothing to say were the two whose behaviour lines, CH_RUNS and CE_RUNS,
+    were already written and opening in their drills. And the year carries the
+    element's own mark, the one the Summary's chip for the same year uses. */
+ var cic=(typeof CELEM_IC!=='undefined'&&CELEM_IC[sp.celem])||'';
+ el.innerHTML=hd('W','Western')
   +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign'):unres('Sun',noZone))
   +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign'):unres('Moon',noZone))
   /* The ascendant is the one reading that needs a place, because it is the
@@ -27970,14 +28519,14 @@ function renderSpirit(){
     /* a zone gives a horizon now, so a timed Rising with one that is still
        refused is the clock change and not a missing place */
     : unres('Rising',sp.needsTime?'needs a birth time':sp.needsPlace?noPlace:noZone))
-  +'<div class="sp-hd">Eastern</div>'
-  +row('Year','',sp.celem+' '+sp.chinese,'','chinese',sp.chinese)
-  +row('Element','',sp.celem,'','celem',sp.celem)
-  +'<div class="sp-hd">Number</div>'
+  +hd('E','Eastern')
+  +row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese)
+  +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem)
+  +hd('N','Number')
   +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp))
   +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master)):'')
   +spNumRows(p.nm,true)
-  +'<div class="sp-hd">Design</div>'
+  +hd('D','Design')
   /* the personality and design gates are real and computed. the type is
      not, and says so, rather than printing one that sounds right. */
   /* These three fell back to the word unresolved inside a drill button, with
@@ -27993,7 +28542,7 @@ function renderSpirit(){
   /* this printed null.null the moment the engine could return no gate */
   +(sp.gk.gate!=null?row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
     sp.gk.gate+'.'+sp.gk.line):unres('Gene key',noZone))
-  +'<div class="sp-hd">Born</div>'
+  +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
   +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
   +'<div class="sp-row static"><span class="sp-k">Where</span><span class="sp-v">'
@@ -28026,8 +28575,18 @@ function spNumRows(nm,under){
   return '<button class="sp-row" type="button" data-num="'+k+'">'
    +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
    +'<span class="sp-v">'+esc(String(N[k]))+'</span>'
-   +'<span class="sp-x">'+esc(numSays(k,N[k])||'')+'</span></button>';}).join('');
- return rows?(under?'':'<div class="sp-hd">Number</div>')+rows:'';}
+   +'<span class="sp-x">'+esc(spNumSays(k,N[k]))+'</span></button>';}).join('');
+ return rows?(under?'':'<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
+  +SYSGLYPH.N+'</svg>Number</div>')+rows:'';}
+/* ONE KIND OF NOTE IN ONE COLUMN. The path row beside these says its number
+   by the verb, moves, and so do expression, soul urge and personality by
+   theirs. Maturity printed the number's title, "The one who tends", capital
+   and all, in the column where every other row printed what it does, and the
+   birthday printed nothing. Both say their verb now, the birthday off the day
+   reduced, which is how its meaning is read. */
+function spNumSays(k,v){
+ if(k==='maturity'||k==='birthday'){var d=k==='birthday'?numReduce(v):v;return LPMEAN[d]||'';}
+ return numSays(k,v)||'';}
 function spNumWire(el){
  el.querySelectorAll('[data-num]').forEach(function(btn){
   btn.onclick=function(){runNumDrill(btn.getAttribute('data-num'));};});}
@@ -28625,6 +29184,142 @@ $('bRel').addEventListener('click',function(){
    +'a charge first.','warn');});
 
 try{window.__at&&window.__at('ui/personas.js');}catch(e){}
+/* ============================================================
+   ROOT ENERGETICS, READ ACROSS. The summary at the head of the
+   right rail. FV in TASKS.md, his words: "When I open root
+   energetics, I want a summary of that on the right hand side, also
+   at the very top closed. But what I want source to do is to take a
+   look at all the behavioral energetics where they overlap, because
+   that's the truth. And then use that as the summary. Where they
+   don't align is the kind of fuzziness of it, the other ways it can
+   be expressed."
+
+   The left rail's Root Energetics lists what each system says. This
+   says what they say together, off rootOverlap in engine/overlap.js,
+   which is where the method and its honesty live: the only bridges
+   are the ones the traditions supply, and a meeting is weighed
+   against chance before it is called agreement. This file draws it.
+
+   THE MEETINGS LEAD, THE RANGE FOLLOWS, and both are the reading.
+   A meeting is a theme two or more systems reach on their own, said
+   to the person in one line, with the systems that reached it lit in
+   a band of four and the readings it is built from underneath. The
+   range is everything else each system says, in its own words, under
+   his own framing: other ways this shows up.
+
+   HOW STRONG, IN WORDS, NEVER IN FIGURES. q is a probability and a
+   probability printed at a person is a lab readout, which is his own
+   objection on file. So the strength is said: they agree strongly,
+   they agree, or a light overlap that many people have. The light
+   case is most people, and the rail says so rather than dressing a
+   common overlap up as the truth.
+
+   BUILT ONCE PER READING. The section is rewritten only when what it
+   reads changes, the person, their birth or their name, so the band's
+   entrance runs when there is something new to show and not on every
+   render. It sits closed on arrival, and the band fills as it opens,
+   because a CSS animation runs from the moment its element is first
+   drawn and a closed section's contents are not drawn.
+   ============================================================ */
+var RSUM_SIG=null;
+function rsIc(g,cls){return '<svg class="'+(cls||'rs-ic')+'" viewBox="0 0 24 24" aria-hidden="true">'+g+'</svg>';}
+/* the mark a theme is drawn with: its planet, or its element as the Summary's
+   own spiritual layer draws the five */
+function rsThemeIc(a){return a.voc==='pl'?PLANETGLYPH[a.t]:((typeof CELEM_IC!=='undefined'&&CELEM_IC[a.t])||'');}
+/* a reading, named the way a person says it */
+function rsName(x){
+ if(x.sys==='W')return x.v+' '+x.k;
+ if(x.sys==='E')return x.k==='year'?x.v+' year':'Year of the '+x.v;
+ if(x.sys==='N')return ((typeof NUM_LABEL!=='undefined'&&NUM_LABEL[x.k])||x.k)+' '+x.v;
+ if(x.k==='profile')return 'Profile '+x.v;
+ return 'Design gate '+x.v;}
+/* the chips under a meeting. The design gate's two trigrams are one reading,
+   so a meeting both of them reach names the gate once with both pictures */
+function rsChips(a){
+ var out=[], gates={};
+ a.hits.forEach(function(x){
+  if(x.sys!=='D'){out.push({sys:x.sys,t:rsName(x)});return;}
+  (gates[x.v]=gates[x.v]||[]).push(x);});
+ Object.keys(gates).forEach(function(g){var h=gates[g], up=h.filter(function(x){return x.part==='upper';})[0],
+  lo=h.filter(function(x){return x.part==='lower';})[0];
+  out.push({sys:'D',t:'Design gate '+g+', '+(up&&lo?up.img+' over '+lo.img
+   :(up||lo).img+((up||lo).part==='upper'?' above':' below'))});});
+ return out.map(function(c){
+  return '<span class="rs-chip" data-tip-t="'+esc(SYSNAME[c.sys])+'" data-tip="'+esc(c.t)+'">'
+   +rsIc(SYSGLYPH[c.sys])+'<span>'+esc(c.t)+'</span></span>';}).join('');}
+/* what a reading says, in the table that reading already has */
+function rsSays(x){
+ if(x.sys==='W')return SIGN_RUNS[x.v]||'';
+ if(x.sys==='E')return x.k==='year'?(CE_RUNS[x.v]||''):(CH_RUNS[x.v]||'');
+ if(x.sys==='N')return x.k==='lifePath'?(LP_RUNS[x.v]||''):(numSays(x.k,x.v)||'');
+ if(x.k==='profile')return HD_LINE_RUNS[x.line]||'';
+ var hx=ROOT_HEX[x.v];
+ return hx?ROOT_TRIGRAM[hx[1]].img+' over '+ROOT_TRIGRAM[hx[0]].img:'';}
+const RS_STRENGTH={strong:'They agree strongly.',clear:'They agree.',light:'A light overlap.'};
+/* how the bridge a meeting stands on works, for the tooltip, said once per
+   vocabulary so nobody has to take a meeting on trust */
+const RS_BRIDGE={
+ el:'Western and Eastern astrology both name fire, earth and water. The design gate is an I Ching '
+  +'hexagram, and each of its two trigrams carries one of the five Chinese elements.',
+ pl:'Numerology gives every digit a planet, and astrology gives every sign a ruling planet. '
+  +'This is where a number and a sign land on the same one.'};
+function renderRootSum(){
+ var el=document.getElementById('rootsum'); if(!el)return;
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
+ if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){var bn=CURP.who.born;
+  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+ /* the name's numbers only off a name that is somebody's, for the reason
+    spNumRows gives: a blank profile's roster name is the word You */
+ var real=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm]);
+ var N=real?numerologyOf(p.nm,CURP):null;
+ var R=rootOverlap(sp,N);
+ var sig=JSON.stringify([S.who,R.placements.map(function(x){return x.sys+x.k+x.v+(x.part||'');}),
+  R.range.length]);
+ if(sig===RSUM_SIG&&el.firstChild)return;
+ RSUM_SIG=sig;
+ var h='';
+ if(!sp){
+  /* the door the left rail's own empty state has, to the same field */
+  h+='<p class="rs-lead">'+(N?'A name gives the numbers. A birth date, time and place add three more '
+     +'systems to meet them.':'No birth data yet. Date, time and place let four systems read you, '
+     +'and this is where they meet.')+'</p>'
+   +'<button class="btn rs-go" type="button">Open Energetics</button>';}
+ else h+='<p class="rs-lead">Four systems read the same birth. Where two or more land on the same '
+  +'thing on their own, that is the reading. Where they part, that is the range.</p>';
+ if(R.shown.length){
+  /* WHERE THEY MEET, not where they agree, because most meetings are light
+     and a heading that promised agreement over three light overlaps would be
+     the overclaim the strength words exist to prevent. What a light meeting
+     is gets said once, under the heading, and not on every row. */
+  h+='<div class="pm-eye plain rs-eye">Where they meet</div>'
+   +(R.shown.some(function(a){return a.strength==='light';})
+     ?'<p class="rs-note">A light overlap is one many people share. A strong one is rare.</p>':'');
+  h+=R.shown.map(function(a){
+   var lit=['W','E','N','D'].map(function(s,i){var on=a.sys.indexOf(s)>=0;
+    return '<span class="rs-seg'+(on?' on':'')+'" style="--i:'+i+'" data-tip-t="'+esc(SYSNAME[s])+'" data-tip="'
+     +esc(on?SYSNAME[s]+' lands here.':SYSNAME[s]+' does not reach this one.')+'">'
+     +rsIc(SYSGLYPH[s])+'</span>';}).join('');
+   return '<div class="rs-a rs-'+a.strength+'">'
+    +'<div class="rs-hd"><span class="rs-g" data-tip-t="'+esc(a.t)+'" data-tip="'+esc(RS_BRIDGE[a.voc])+'">'
+    +rsIc(rsThemeIc(a))+'</span>'
+    +'<span class="rs-t"><b>'+esc(a.t)+'</b><em>'+esc(RS_STRENGTH[a.strength])+'</em></span></div>'
+    +'<div class="rs-band" role="img" aria-label="'+esc(a.sys.map(function(s){return SYSNAME[s];}).join(', ')
+     +' land here')+'">'+lit+'</div>'
+    +'<p class="rs-say">'+esc(ROOT_SAYS[a.t]||'')+'</p>'
+    +'<div class="rs-chips">'+rsChips(a)+'</div></div>';}).join('');}
+ else if(sp)h+='<p class="rs-none">These four do not land on the same thing. Read each one as its own view.</p>';
+ if(R.range.length){
+  h+='<div class="pm-eye plain rs-eye">Other ways this shows up</div><div class="rs-range">'
+   +R.range.map(function(x){var say=rsSays(x);
+    return '<div class="rs-r">'+rsIc(SYSGLYPH[x.sys])
+     +'<span class="rs-rn">'+esc(rsName(x))+'</span>'
+     +(say?'<span class="rs-rs">'+esc(say)+'</span>':'')+'</div>';}).join('')+'</div>';}
+ el.innerHTML=h;
+ var go=el.querySelector('.rs-go');
+ if(go)go.onclick=function(){setTab(TAB.INTAKE);
+  requestAnimationFrame(function(){var d=$('wdate'); if(d)d.focus();});};}
+
+try{window.__at&&window.__at('ui/rootsum.js');}catch(e){}
 /* ============================================================
    ONBOARDING. Humble and warm, and it has them do exactly one
    thing.
@@ -29531,15 +30226,18 @@ const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
 
    IN PLACE, NOT REWRITTEN. The dial is built once per design and state and
    then only its numbers, widths and angles are written, so a change of
-   reading moves: the fill slides out of the break in 420ms on the arrival
-   curve and the needle lands on an overshoot, instead of a new picture
+   reading moves: the fill slides out of the break in 380ms on the wheel's
+   own entrance curve and the needle lands on an overshoot, instead of a new picture
    being swapped in. Reduced motion gets the end state.
 
    UNREAD SAYS NOTHING. Both ends keep their symbols and the break stays, at
    the same height, and no figure, fill or needle is drawn, which is the
    rule the orientation dial's gate holds and balance now keeps too.
    ============================================================ */
-const AXDS=[{k:'bar',nm:'Bar'},{k:'arc',nm:'Arc'}];
+/* each design carries a drawing of itself, FV: "everything should have an
+   icon." The trough with its break at the centre, and the half ring. */
+const AXDS=[{k:'bar',nm:'Bar',g:'<rect x="3.4" y="8.6" width="17.2" height="6.8" rx="1.6"/><path d="M12 7v10"/>'},
+ {k:'arc',nm:'Arc',g:'<path d="M4 17a8 8 0 0116 0"/><path d="M12 17l3.4-5"/>'}];
 /* read on first use and not at load, because the browser's store is bound
    further down this file and at load the engine's no op store answers */
 var AXD=null;
@@ -29549,7 +30247,7 @@ function axdSet(k){AXD=k==='arc'?'arc':'bar';try{STORE.set('axdial',AXD);}catch(
  axdPaint(); render();}
 function axdPaint(){var el=document.getElementById('axpick'); if(!el)return;
  if(!el.firstChild)el.innerHTML='<span class="ax-pl">Style</span>'+AXDS.map(function(d){
-  return '<button type="button" class="ax-pb" role="radio" data-axd="'+d.k+'">'+d.nm+'</button>';}).join('');
+  return '<button type="button" class="ax-pb" role="radio" data-axd="'+d.k+'">'+axGlyph(d.g)+d.nm+'</button>';}).join('');
  el.querySelectorAll('[data-axd]').forEach(function(b){var on=b.getAttribute('data-axd')===axdNow();
   b.setAttribute('aria-checked',String(on)); b.classList.toggle('on',on);});}
 function axGlyph(g){return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg>';}
@@ -29559,7 +30257,20 @@ const AXA={cx:60,cy:54,r:40};
 function axArcD(side){var c=AXA,x=side<0?c.cx-c.r:c.cx+c.r;
  return 'M'+c.cx+' '+(c.cy-c.r)+'A'+c.r+' '+c.r+' 0 0 '+(side<0?0:1)+' '+x+' '+c.cy;}
 /* o: {read, L:{g,nm,v,c,t}, R:{same}, tick:'l'|'r'|null, title} */
+/* the pill's figure counts to its value on the wheel's beat, from wherever it
+   stood, so the number and the fill move together rather than the number
+   landing first and the fill catching up */
+function axCount(b,to){
+ var from=parseFloat(b.textContent); if(!isFinite(from))from=0;
+ if(REDUCED||from===to){b.textContent=String(to);return;}
+ var t0=performance.now();
+ b._axc=t0;
+ (function step(now){if(b._axc!==t0)return;
+  var k=Math.min(1,(now-t0)/ENTER_SPAN), e=1-Math.pow(1-k,3);
+  b.textContent=String(Math.round(from+(to-from)*e));
+  if(k<1)requestAnimationFrame(step);})(t0);}
 function axDial(host,o){
+ var built=false;
  var sig=axdNow()+'|'+(o.read?1:0)+'|'+(o.tick||'');
  var end=function(side,e){return '<div class="lb '+side+'"><span class="ax-g" title="'+esc(e.t)+'">'+axGlyph(e.g)+'</span>'
    +(o.read?'<b></b>':'')+'</div>';};
@@ -29580,7 +30291,15 @@ function axDial(host,o){
     +(tickAt!==null?'<span class="ax-sx" style="left:'+tickAt+'%"></span>':'')
     +end('l',o.L)+end('r',o.R)+'</div></div>';}
   host.innerHTML=h+'<div class="ax-nm"><span class="ax-nl"></span><span class="ax-nr"></span></div>';
-  host.setAttribute('data-axs',sig);}
+  host.setAttribute('data-axs',sig);
+  /* THE FIRST FILL IS WATCHED TOO. FV in TASKS.md: "Where's the animation of
+     the bands animating?" A change of reading already slid, on the width and
+     dash transitions below, but a dial built fresh, which is every profile
+     load and every switch of design, had its fill written in the same frame
+     it was created, and a transition needs a value to leave from. The empty
+     state is committed first, one read of the layout, so the fill grows out
+     of the break the way a change does. */
+  built=true; void host.offsetWidth;}
  host.title=o.title||'';
  var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
  var col=heavy<0?L.c:R.c;
@@ -29591,7 +30310,10 @@ function axDial(host,o){
  nl.classList.toggle('on',heavy<0); nr.classList.toggle('on',heavy>0);
  host.querySelectorAll('.lb').forEach(function(lb){var left=lb.classList.contains('l'),e=left?L:R,on=left?heavy<0:heavy>0;
   lb.classList.toggle('on',on); lb.style.setProperty('--c',e.c);
-  var b=lb.querySelector('b'); if(b)b.textContent=Math.round(e.v);});
+  /* a dial just built states its figure, so what the document says is the
+     reading from the frame it exists; one already standing counts to the new
+     value beside its sliding fill */
+  var b=lb.querySelector('b'); if(b){if(built)b.textContent=String(Math.round(e.v));else axCount(b,Math.round(e.v));}});
  if(!o.read)return;
  if(axdNow()==='arc'){
   host.querySelectorAll('.fill').forEach(function(f){var mine=f.classList.contains('lt')?heavy<0:heavy>0;
@@ -30064,19 +30786,38 @@ function render(){
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
  wireKbJump();
- renderAcc(r); renderSpirit(); renderPol2(r); syncMx();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx();
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
  crMotion([$('key'),$('acc'),$('keylo')]);
+ /* and the rails' readings on the same beat, each list sweeping in its own
+    order the first time it is seen and moving only when its values do */
+ crMotion([$('railtop'),$('person'),$('stack')]);
  $('fire').innerHTML=rows.length
   ? '<div class="pm-eye" style="color:var(--gold);margin-bottom:8px">Running now</div>'
+    /* THE WEIGHT IS A BADGE, AND THE BADGE CARRIES THE TIER. FV in TASKS.md,
+       his words: "I've got Running, and I've got these numbers, but they
+       don't look like pills, and I don't see their icons." Each row printed
+       a name and a bare bold figure, the one list on the rail still doing what
+       the badge ruling retired: "Lethargy 5.4. Disconnection 3.1." It is the
+       badge now, crBadge, the ring filled to the weight over ten and the
+       figure in its pill at the lower right. The mark inside is the tier's
+       own, CHAINGLYPH, the one the glass bar and the stack tabs give the same
+       four, because this list mixes character, hyper complexes, complexes and
+       saboteurs and a name alone does not say which. The ring is the seat the
+       pattern sits on, and an overshoot or a weight past nine goes to the
+       alarm colour, as the ring on its Flow card already does. */
     +rows.slice(0,8).map(function(o,i){
-     return '<div class="it'+(S.pin===o?' pin':'')+'" data-i="'+i+'">'
-      +'<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(o.nm)
-      +'</span><b>'+o.w.toFixed(1)+'</b></div>';}).join('')
+     var b=(leaves(o)[0]||{}).b||'Heart', hot=o.w>=9||!!o.over;
+     return '<div class="it run-it'+(S.pin===o?' pin':'')+'" data-i="'+i+'">'
+      +crBadge(b,o.w*10,{size:'sm',raw:o.w.toFixed(1),glyph:'<path d="'+CHAINGLYPH[o.kind]+'"/>',
+        color:hot?ALARM:undefined,
+        title:TIERNM[o.kind]+'. '+o.nm+', weight '+o.w.toFixed(1)+(o.over?', overshot':'')})
+      +'<span class="run-n">'+esc(o.nm)+'</span></div>';}).join('')
     +(rows.length>8?'<div class="it"><span>and '+(rows.length-8)+' more</span></div>':'')
   : '<div class="pm-eye" style="color:var(--gold)">Nothing running</div>';
+ crMotion([$('fire')]);
  $('fire').querySelectorAll('.it[data-i]').forEach(function(el){el.addEventListener('click',function(){
   var o=rows[+el.dataset.i];S.pin=(S.pin===o)?null:o;runDrill(S.pin);render();});});
  /* the glass bar's rings read the reading this render just took, not a
@@ -30277,5 +31018,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001982788"></div>
+<div id="eof" hidden data-len="002032748"></div>
 </body></html>

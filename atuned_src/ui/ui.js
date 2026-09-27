@@ -619,15 +619,18 @@ const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
 
    IN PLACE, NOT REWRITTEN. The dial is built once per design and state and
    then only its numbers, widths and angles are written, so a change of
-   reading moves: the fill slides out of the break in 420ms on the arrival
-   curve and the needle lands on an overshoot, instead of a new picture
+   reading moves: the fill slides out of the break in 380ms on the wheel's
+   own entrance curve and the needle lands on an overshoot, instead of a new picture
    being swapped in. Reduced motion gets the end state.
 
    UNREAD SAYS NOTHING. Both ends keep their symbols and the break stays, at
    the same height, and no figure, fill or needle is drawn, which is the
    rule the orientation dial's gate holds and balance now keeps too.
    ============================================================ */
-const AXDS=[{k:'bar',nm:'Bar'},{k:'arc',nm:'Arc'}];
+/* each design carries a drawing of itself, FV: "everything should have an
+   icon." The trough with its break at the centre, and the half ring. */
+const AXDS=[{k:'bar',nm:'Bar',g:'<rect x="3.4" y="8.6" width="17.2" height="6.8" rx="1.6"/><path d="M12 7v10"/>'},
+ {k:'arc',nm:'Arc',g:'<path d="M4 17a8 8 0 0116 0"/><path d="M12 17l3.4-5"/>'}];
 /* read on first use and not at load, because the browser's store is bound
    further down this file and at load the engine's no op store answers */
 var AXD=null;
@@ -637,7 +640,7 @@ function axdSet(k){AXD=k==='arc'?'arc':'bar';try{STORE.set('axdial',AXD);}catch(
  axdPaint(); render();}
 function axdPaint(){var el=document.getElementById('axpick'); if(!el)return;
  if(!el.firstChild)el.innerHTML='<span class="ax-pl">Style</span>'+AXDS.map(function(d){
-  return '<button type="button" class="ax-pb" role="radio" data-axd="'+d.k+'">'+d.nm+'</button>';}).join('');
+  return '<button type="button" class="ax-pb" role="radio" data-axd="'+d.k+'">'+axGlyph(d.g)+d.nm+'</button>';}).join('');
  el.querySelectorAll('[data-axd]').forEach(function(b){var on=b.getAttribute('data-axd')===axdNow();
   b.setAttribute('aria-checked',String(on)); b.classList.toggle('on',on);});}
 function axGlyph(g){return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg>';}
@@ -647,7 +650,20 @@ const AXA={cx:60,cy:54,r:40};
 function axArcD(side){var c=AXA,x=side<0?c.cx-c.r:c.cx+c.r;
  return 'M'+c.cx+' '+(c.cy-c.r)+'A'+c.r+' '+c.r+' 0 0 '+(side<0?0:1)+' '+x+' '+c.cy;}
 /* o: {read, L:{g,nm,v,c,t}, R:{same}, tick:'l'|'r'|null, title} */
+/* the pill's figure counts to its value on the wheel's beat, from wherever it
+   stood, so the number and the fill move together rather than the number
+   landing first and the fill catching up */
+function axCount(b,to){
+ var from=parseFloat(b.textContent); if(!isFinite(from))from=0;
+ if(REDUCED||from===to){b.textContent=String(to);return;}
+ var t0=performance.now();
+ b._axc=t0;
+ (function step(now){if(b._axc!==t0)return;
+  var k=Math.min(1,(now-t0)/ENTER_SPAN), e=1-Math.pow(1-k,3);
+  b.textContent=String(Math.round(from+(to-from)*e));
+  if(k<1)requestAnimationFrame(step);})(t0);}
 function axDial(host,o){
+ var built=false;
  var sig=axdNow()+'|'+(o.read?1:0)+'|'+(o.tick||'');
  var end=function(side,e){return '<div class="lb '+side+'"><span class="ax-g" title="'+esc(e.t)+'">'+axGlyph(e.g)+'</span>'
    +(o.read?'<b></b>':'')+'</div>';};
@@ -668,7 +684,15 @@ function axDial(host,o){
     +(tickAt!==null?'<span class="ax-sx" style="left:'+tickAt+'%"></span>':'')
     +end('l',o.L)+end('r',o.R)+'</div></div>';}
   host.innerHTML=h+'<div class="ax-nm"><span class="ax-nl"></span><span class="ax-nr"></span></div>';
-  host.setAttribute('data-axs',sig);}
+  host.setAttribute('data-axs',sig);
+  /* THE FIRST FILL IS WATCHED TOO. FV in TASKS.md: "Where's the animation of
+     the bands animating?" A change of reading already slid, on the width and
+     dash transitions below, but a dial built fresh, which is every profile
+     load and every switch of design, had its fill written in the same frame
+     it was created, and a transition needs a value to leave from. The empty
+     state is committed first, one read of the layout, so the fill grows out
+     of the break the way a change does. */
+  built=true; void host.offsetWidth;}
  host.title=o.title||'';
  var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
  var col=heavy<0?L.c:R.c;
@@ -679,7 +703,10 @@ function axDial(host,o){
  nl.classList.toggle('on',heavy<0); nr.classList.toggle('on',heavy>0);
  host.querySelectorAll('.lb').forEach(function(lb){var left=lb.classList.contains('l'),e=left?L:R,on=left?heavy<0:heavy>0;
   lb.classList.toggle('on',on); lb.style.setProperty('--c',e.c);
-  var b=lb.querySelector('b'); if(b)b.textContent=Math.round(e.v);});
+  /* a dial just built states its figure, so what the document says is the
+     reading from the frame it exists; one already standing counts to the new
+     value beside its sliding fill */
+  var b=lb.querySelector('b'); if(b){if(built)b.textContent=String(Math.round(e.v));else axCount(b,Math.round(e.v));}});
  if(!o.read)return;
  if(axdNow()==='arc'){
   host.querySelectorAll('.fill').forEach(function(f){var mine=f.classList.contains('lt')?heavy<0:heavy>0;
@@ -1152,19 +1179,38 @@ function render(){
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
  wireKbJump();
- renderAcc(r); renderSpirit(); renderPol2(r); syncMx();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx();
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
  crMotion([$('key'),$('acc'),$('keylo')]);
+ /* and the rails' readings on the same beat, each list sweeping in its own
+    order the first time it is seen and moving only when its values do */
+ crMotion([$('railtop'),$('person'),$('stack')]);
  $('fire').innerHTML=rows.length
   ? '<div class="pm-eye" style="color:var(--gold);margin-bottom:8px">Running now</div>'
+    /* THE WEIGHT IS A BADGE, AND THE BADGE CARRIES THE TIER. FV in TASKS.md,
+       his words: "I've got Running, and I've got these numbers, but they
+       don't look like pills, and I don't see their icons." Each row printed
+       a name and a bare bold figure, the one list on the rail still doing what
+       the badge ruling retired: "Lethargy 5.4. Disconnection 3.1." It is the
+       badge now, crBadge, the ring filled to the weight over ten and the
+       figure in its pill at the lower right. The mark inside is the tier's
+       own, CHAINGLYPH, the one the glass bar and the stack tabs give the same
+       four, because this list mixes character, hyper complexes, complexes and
+       saboteurs and a name alone does not say which. The ring is the seat the
+       pattern sits on, and an overshoot or a weight past nine goes to the
+       alarm colour, as the ring on its Flow card already does. */
     +rows.slice(0,8).map(function(o,i){
-     return '<div class="it'+(S.pin===o?' pin':'')+'" data-i="'+i+'">'
-      +'<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(o.nm)
-      +'</span><b>'+o.w.toFixed(1)+'</b></div>';}).join('')
+     var b=(leaves(o)[0]||{}).b||'Heart', hot=o.w>=9||!!o.over;
+     return '<div class="it run-it'+(S.pin===o?' pin':'')+'" data-i="'+i+'">'
+      +crBadge(b,o.w*10,{size:'sm',raw:o.w.toFixed(1),glyph:'<path d="'+CHAINGLYPH[o.kind]+'"/>',
+        color:hot?ALARM:undefined,
+        title:TIERNM[o.kind]+'. '+o.nm+', weight '+o.w.toFixed(1)+(o.over?', overshot':'')})
+      +'<span class="run-n">'+esc(o.nm)+'</span></div>';}).join('')
     +(rows.length>8?'<div class="it"><span>and '+(rows.length-8)+' more</span></div>':'')
   : '<div class="pm-eye" style="color:var(--gold)">Nothing running</div>';
+ crMotion([$('fire')]);
  $('fire').querySelectorAll('.it[data-i]').forEach(function(el){el.addEventListener('click',function(){
   var o=rows[+el.dataset.i];S.pin=(S.pin===o)?null:o;runDrill(S.pin);render();});});
  /* the glass bar's rings read the reading this render just took, not a
