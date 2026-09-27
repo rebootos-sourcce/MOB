@@ -18634,3 +18634,159 @@ rounds FS through GO and the ones carried since before round FO, sits
 in the agent's own report rather than copied here in full; the five
 rulings above are the ones the report itself names as unblocking the
 most work, and are what goes to him first.
+
+## GQ. Fringe wins, ship it. Knowledge base rethought from nothing. The intake screens and the archetype count. Body map feedback on something already shown him. 27 September
+
+His words, verbatim: "By the way, I didn't react to this. Fringes is
+fucking incredible. And the running hot, add that to analytics. Yeah,
+that's really, really good. And what I really like is how the field is
+distorted, which is exactly what would end up happening. So it's a
+great visualization. So nice add to, to, it's like a happy accident.
+Please add that as part of the normal field. Okay, the knowledge base.
+I want you to go up to the internet and do a deep research on the
+tools that best display this type of information, right? This is our
+knowledge base. It is uh, a sticky. We want to tie this to our badge
+and achievement system. We want this Um, I don't think the now that
+I'm looking at the knowledge base, I, design, I don't think we need
+the panels left and right. I think it allows us to have the whole
+bottom half underneath the navigation as our knowledge base, and we
+get to like redesign this and rethink this. Um, in a way that is more
+sticky to people. Um, that is more engaging to people instead of just
+a bunch of drop-downs. What is the way that people like to consume
+content in this type of fashion? And then we can create four
+mock-ups based off that. And then test that out with the ICPs and
+simulate that until we have a Sigma 5 enough to where we've got a, a,
+a truth. Okay, instead of saying shit like your name as you see it,
+just from our narrative story Bible, name, first, middle, last,
+instead of keep it, just you save, whatever's causing you to write
+lingo like that, stop that, date, Yeah, this too, like, which are
+you? I don't like this design. Of the intake. Do four new mockups.
+Right, because the symbols, which one is closer to you, warrior sage?
+Well, we've got fucking 18 more. And it's not being reflected here.
+And so I need that system. And then we have the seven chakras, but
+there's nothing I don't understand what I'm supposed to even do here.
+I think the logic of the system needs to work, that worked out a bit
+more. Okay, the nervous system, uh, front, back, that's fantastic, can
+you lock that in as our kind of starting It looks like you've got all
+the chakras too. Merge this with the hundred and eight chakras. part
+of the overlay. Use this as our new man. And then add the nervous
+system and the chakras as part of the overlay. we'll clean that up in
+a minute afterwards. But make sure it's the man front and back. And so
+we should be able to zoom in on the the different areas of the body as
+well. If we press a button and have retained the resolution. And that
+should make our heat map more accurate. So maybe we need a grid in the
+background. That you can use as a map. And then we we'll use our heat
+map. As part of that like the pain map and the. Tension lines. Then.
+That would make our heat map more accurate too. Okay, cool. So the
+paint where it hurts, like the pain map, this is a perfect example.
+that nerve chakra and this system with a heat map merge as one and the
+body being divided by head neck shoulders torso palms hips legs,
+knees, shins, ankle, feet. All right, whatever our but it's all this
+needs to be like visually um, look, those areas need to be
+selectable. I guess is what I'm saying. So a person can go, oh my
+back, and press the back. right, my trap, they're pressing their
+trap. And then some symptoms come up. You know, is your shoulders
+risen? Um, you have stories of carrying too much responsibility. You
+know, this is what's causing the tension in this area. you know,
+here's what your pain map says. The tension here is at 40%. These are
+the these are the solutions. And then the there's like a transparency
+issue with the glow. Behind the man, and we want to show the tension
+lines. We want the area of effect of the pain to be more visible. As
+well, but good good starting spot. It's definitely a C plus. Okay,
+we're doing new icon. Uh, face mask icons. We've got our chakras laid
+out. Cool. Good sweep. Good sweep."
+
+Four different threads, one message, and the last one is feedback on
+something built before this window rather than anything dispatched
+this round.
+
+**The Field's Fringe variant, round GK item D, is picked and ships as
+the real Field, not a mockup.** His words leave nothing open: "please
+add that as part of the normal field." `proto/field/tension/d-fringe.html`
+is the file, already verified this session, already the one the round
+GK log named cheapest of the four at 2.2 to 2.5ms a frame. This is a
+real port into `atuned_src/ui/wheel.js`, not a new prototype.
+
+**"Running hot" goes on Analytics.** `atuned_src/ui/analytics.js` is
+the real renderer, folded onto Summary per `TABFOLD[TAB.ANALYTICS]
+=TAB.SUMMARY` at `engine/core.js:122`. The Fringe mockup's own "running
+hot" list, the one beside the Field that flies to an address on click,
+is the piece to add there.
+
+**The Knowledge base gets rebuilt from a real question, not a guess.**
+His own framing, "what is the way that people like to consume content
+in this type of fashion," is a real research question before it is a
+design one, and he asks for it directly: "go up to the internet and do
+a deep research on the tools that best display this type of
+information." Structurally: drop the left and right panels, use the
+whole area under the navigation, tie it to the badge and achievement
+system (which round GP just found is itself unbuilt past a marks and
+streak mechanic, so this is a second, real dependency on the same open
+reward-word ruling), four mockups, simulated with the ICPs to
+confidence before anything ships.
+
+**The intake copy defect could not be reproduced in the current
+build, and that is worth saying plainly rather than guessing.**
+`atuned_src/ui/intakeui.js:199-201` already reads plain: "First name",
+"Middle", "Last", and "Date of birth" at line 206, none of it carrying
+the Bible-toned lingo he is quoting ("your name as you see it"). Two
+honest possibilities, neither assumed: he is looking at an older build
+than what is committed, or the actual line lives somewhere this pass
+did not find, in the funnel's own signup step or elsewhere in the
+intake flow. Whoever takes this needs to find the real offending
+string live, on the current build, before rewriting anything, exactly
+the reproduce-first discipline this file has needed before.
+
+**The "which are you, warrior sage" screen and the archetype count
+both need grounding before four new mockups get built blind.** The
+product's own `ARCH` table (`engine/data/canon.js:407`) carries twelve
+named archetypes, Warrior and Sage among them. His "we've got fucking
+18 more" does not match twelve archetypes, nineteen blueprint domains
+(`fieldbar.js`'s own count) or six masks by any combination this pass
+found, and needs to be grounded against whatever screen he was
+actually looking at rather than guessed at. Same for "the seven
+chakras, but there's nothing I don't understand what I'm supposed to
+even do here": a real, specific UX confusion on a screen this pass has
+not yet located.
+
+**The nervous system, chakra and body map feedback is reacting to
+material already shown him, not to anything dispatched this session.**
+"That's fantastic, lock that in as our starting point" describes a
+front and back nervous system image with chakras already laid out,
+which is not a file this window produced. This needs to reach
+whichever seat is already mid-task on the body map specification
+dispatched at round GO, since building a fresh spec that does not
+account for a direction he has already approved would be built to
+throw away. Relayed by message rather than redispatched.
+
+The concrete new requirements inside the feedback, real regardless of
+which image they land on: merge the nervous system, the hundred and
+eight chakras and the existing marma overlay into one base figure,
+front and back; a zoomable body that keeps its resolution when a
+region is pressed; a background grid to make the heat map more
+accurate; the body divided into selectable regions (head, neck,
+shoulders, torso, palms, hips, legs, knees, shins, ankle, feet); a
+press on a region surfaces symptoms, matching stories and a tension
+percentage, plus "solutions"; a transparency defect on the glow behind
+the figure; the tension lines and the pain's area of effect need to
+read more visibly. Graded C+, "a good starting spot."
+
+Dispatched:
+1. Porting Fringe into the real Field plus the running hot list on
+   Analytics, to `animation-vfx-director`, as a real `atuned_src/`
+   change through all nine gates, not a mockup.
+2. The Knowledge base's web research, structural rebuild and four
+   mockups, to `uiux-architect`, as a second, separate dispatch from
+   the one already running on the Field left panel, since that one is
+   mid-task and this is a different surface entirely.
+3. The intake copy defect (found live, not guessed at), the four new
+   archetype-selection mockups, and grounding the archetype-count and
+   chakra confusion, to `uiux-architect` working with
+   `narrative-director`.
+4. The body map feedback, relayed by message to the `technical-director`
+   already running on the round GO body map specification, rather than
+   opened as a separate task that could contradict it.
+
+What I need from him: nothing new logged as blocking; the five
+rulings from round GP still stand as the ones actually holding up
+downstream work.
