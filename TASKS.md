@@ -20840,3 +20840,49 @@ grounded against, and what is a real mistake of mine rather than a
 gap in the product, follows in the next entry rather than here, per
 this project's own rule that a finding is checked before it is acted
 on.
+
+## HT. A second dictation, arriving mid turn while HS was still being investigated, on the Story page and the release screen. 27 September
+
+His words, verbatim: "I think I've just now reviewing the journal. Um,
+this I want source AI to have its own output panel. I want the prompt
+system to have its own panel. I want it to be visually distinguishable
+different than the text and then the rest of the panels. So the
+journal has its own look underneath the journal. There will be source
+AI's summary output stuff and on the right hand side will be the
+imprints and then the release. So above the journal part will be a
+prompt engine. And I want those, I want just, I want the art director
+to give me four mockups, take a page for two of them from the our
+field design, see what kind of visuals we can pull into this look. For
+two of the designs. From the UI UX perspective, the imprints um, you
+know, this is a system. And so I want this to feel like it's a system,
+like it's sniffing, reading, watching your journal and understanding
+you. and you know, so I want to kind of visually see its thinking as
+it's listening to your story. And then the release seems simple right
+now, but I, it looks like it's anyway. Let's redesign that release area
+too. And then the information pane what are you doing with that? I see
+that you've oh, oh, oh, oh, oh. Okay, this is the same thing. Source
+needs a prompt area that looks unique. It needs a summary area that
+looks, looks unique. To the right of it, um, where it's picking up all
+the words, that area needs to look feel like it's a it's a thinking
+part of the system. Perceiving like sniffing, it's it's we want to see
+what it's sniffing. And then the right hand side would be the
+imprints, and then the release. The release area needs to look
+dramatically different, like. I don't know, like maybe the that field
+that's around it has a different call out look entirely. Um, so it
+doesn't blend into the rest of the gray. You've got some designs here
+that say field panel. Um, I can't click on that HTML file to get that
+working. And bring it back here so I can do feedback. There are a
+bunch of other screens that I did not do feedback on. Um, we're gonna I
+want you to work. We're gonna work on the release screen too. So let's
+focus on the release for a while. Um, Okay, it looks like billing. I
+didn't review. Okay. Yep. The avatar page. Okay, so just wire in all
+the things that have not been wired in. Looks like I've given a bunch
+of feedback and there's a bunch of stuff that's currently not done. So
+figure out what needs to be done. Sort it out. Wire it in. I want this
+next version of the software to be the most updated. I want you to
+show me all the HTML files and images that I have not reacted to, like
+the."
+
+Logged in full, same as round HS, before any of it is acted on. One
+concrete, checkable claim inside it is investigated first, ahead of
+any design dispatch: the fieldpanel prototype he says would not open.
