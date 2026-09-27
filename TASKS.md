@@ -22304,3 +22304,15 @@ all), and became a harness artifact only after the engine grew one
 25 minutes later in `b0eed95`. Nothing in the engine needed fixing,
 since `meterBudget` already accepted a `now`, only the harness's own
 call sites did not pass one.
+
+## JI. The backlog audit refreshed, republished as a live page
+
+`fb9f24c` is in, pushed, `BACKLOG-AUDIT.md` only, zero em dashes.
+Folder count checked directly against the filesystem: 67, matching the
+report exactly, the six new folders all present. Section 0 read
+directly: 16 unreacted deliveries, grouped by his own stated priority
+order from round IT, each carrying real quotes pulled from TASKS.md
+rather than paraphrased, and each with real questions rather than a
+bare link. Republished as a live page rather than a file, since the
+field panel and the Story mockups both failed to open for him as
+downloads before and publishing live is what worked.
