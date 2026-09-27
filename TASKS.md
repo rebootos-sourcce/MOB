@@ -22021,3 +22021,40 @@ tagline is the mechanic is a real, checkable fact and not a marketing
 invention. The band collision is written into `brief-foundations.md`
 section 1.3.6 as open, three ways it could go, none chosen, matching
 what was asked.
+
+## IZ. Mobile profiles already work, a real duplicate commit reconciled, and two flaky gates reproduced rather than trusted either way
+
+"Add the profiles to the mobile version." Checked the shipped app's
+own phone view directly before dispatching anything: `#ploadbtn`
+already opens a real menu, read live off `#psel`'s own options, groups
+and all, Custom, Sofia, Diane, Marcus, Angela, Derek, James. Sent
+screenshots proving it. His answer: "Copy that. If the profiles are
+there then ignore continue building."
+
+The gamification timeline mockup (`b1d6721`) landed, proto only, 25
+files, zero em dashes, no "108" anywhere in its source. Screenshots
+viewed directly confirm the report: Marcus day 30 reads 62, Gaining,
+matching the CQ this session already saw twice elsewhere; Gordon's
+day 90 reads "The run ended 83 days ago," the exact defect line the
+report named.
+
+The priority fold in landed twice with two different parents, one
+pushed straight to origin (208f2a9) and one committed locally on top
+of the gamification piece (16ea4b6), the same content either way.
+Rebase was blocked by the other three agents' own uncommitted work
+still sitting in the tree, a normal git safety check, not a permission
+wall. Merged instead (7829d57), which does not touch working tree
+files outside the merge itself, verified clean, no conflict markers,
+pushed.
+
+That agent also reported two gates failing on a file already gated
+clean in round IV: `functional.js` 1228/1, `design.js` 167/7, all
+timing and frame rate checks, and named the load average rather than
+calling the round undone. Reproduced it directly rather than trusting
+either report: same byte-identical file (md5 b8f58ab7) in a fresh
+isolated worktree, `design.js` read 165/9 then 166/8 on two back to
+back runs, `functional.js` read 1227/2, always the same class of
+failure, the Field's frame rate under each lighting and the boot
+sheet's fade end timing. Load average measured at 15.76 against 4
+cores. Environmental, reproduced, not a regression, matching the
+project's own rule to reproduce before trusting a failure either way.
