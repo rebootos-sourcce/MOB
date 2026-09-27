@@ -17320,3 +17320,61 @@ independently pulled `ref-marma.jpg` and `ref-112.jpg` into its own
 working folder minutes before this message arrived, so this is a
 confirmation sent to it, not a new task.
 
+## FY. A restructuring of Field and Summary proposed, explicitly a
+## mockup, and asked to be simulated against the ICPs. 27 September.
+
+**His words in full: "I want you to simulate this with the ICPs and
+the focus group and the team. I'm visualizing a way to integrate the
+Source AI into the field page with the journal. The imprints are
+shown in the imprints panel. So I just want to do a quick mockup of
+this. I want to remove the tools panel, you're going to do a mockup,
+you're not going to do this for the real site. You're going to have
+Source AI on the left hand side, so the journal will be on the left
+with the imprints, and the release and the bank of the release on the
+right. When you commit your story, they go to your bank. When you
+release, they go to your vault. And there's a subtle animation on the
+field of what's been added, and you can see the number tick up or
+tick down. Then those tools would go on your summary page, because
+they're kind of like painting the entire picture of you. So we need
+a mockup of the summary page with those tools added, and design it
+for UI UX flow, iconography, symbolism. When you use an information
+panel on the right, we won't need the panel on the left. In summary
+it should have a secondary nav for kind of all the combined
+energetics narrative, the masks and the saboteurs, like everything,
+it needs to be laid out so it's efficient and easy, organized. And
+then it needs a tab, a button in the secondary nav, for analytics.
+And then we could change the Energetics tab to Avatar, hook up the
+avatar there, and add a secondary nav of avatar for your intake, so
+it makes the avatar the entire setup loop. Capture all these notes,
+organize this, simulate this with the ICPs and the focus group. I'm
+very curious to know, this seems like it's a more interactive and
+sticky way to involve, like, putting almost everything on one
+screen."**
+
+**Read as two restructurings, kept separate since he separated
+them:**
+1. **The Field page.** Left rail becomes Source AI plus the journal
+   plus the imprints panel, replacing the current tools panel there.
+   Right rail carries release and its own holding area, renamed Bank
+   (a story committed from the journal) and Vault (an address
+   actually released), with a subtle field animation and a live
+   ticking count when either changes.
+2. **The Summary page**, gaining the tools removed from the Field's
+   left rail, since he reasons they paint the whole picture of a
+   person rather than sitting inside one moment on the Field. A
+   secondary nav combining energetics, narrative, masks and
+   saboteurs, an Analytics tab, renaming Energetics to Avatar and
+   wiring the real Seven Seats avatar work there, and a further
+   secondary nav item making the avatar itself the entry point for
+   intake, so the avatar becomes the whole setup loop.
+
+**Explicitly a mockup, said twice.** Not for the real site. The
+deliverable is a real, interactive comparison a person can react to,
+the same standard as every other prototype tonight, plus a simulated
+run against the project's own ICPs and focus group testing whether
+this genuinely reads as more engaging, "putting almost everything on
+one screen," using the same real simulation method already proven in
+the ninety day pass rather than a written guess.
+
+Dispatched this round.
+
