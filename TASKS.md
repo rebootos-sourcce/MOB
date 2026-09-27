@@ -17732,6 +17732,48 @@ a repeat of the last one.
 Dispatched: the concrete mobile fixes as one build, the ICP and focus
 group simulation of the resulting flow as a second piece.
 
+**Built, 27 September, the mobile half.** Every item is under the 720
+pixel phone width and the desktop is unchanged, checked at 1600.
+
+- The pinch. Root cause, reproduced with two real touch points at 390:
+  nothing in the product listened for two fingers, zoom was wired to the
+  mouse wheel and keys only. On the Wheel each finger was read as a
+  mouse, so the first opened the drill of the mark it landed on and the
+  second put the hover readout over the core (his "overlay dominates");
+  on Frames and Dial `#frend` had no touch-action and the browser zoomed
+  the whole page to 4.96 while the picture stayed at 1. `fieldPinch` in
+  `ui/ui.js` now takes two fingers on both hosts through the zoom each
+  already had, a finger's press fires on release and is dropped by a
+  second finger, and a finger never raises the hover readout. Held by
+  the functional gate with real touch input on all three pictures.
+- The bar folds to one tab naming the surface; pressed, it opens the
+  main menu, the nine tabs as a grid and the seven lightings under
+  them. The bar's own lighting menu, the picker and undo leave the bar
+  on a phone. Undo's stack, handlers and keys are untouched.
+- The loader is a circle beside help and the person, all three round;
+  its list is read off `#psel` and loads through it, names on one line.
+- The poles are inside the core on all three pictures, halo over CQ and
+  pitchfork under DQ, lit by the compass's own rule, doors to the same
+  two drills, and the strip under the picture is gone on a phone. On
+  Frames and Dial the figures are fitted to the band between the poles,
+  which is what makes CQ and DQ smaller (16.9 pixels on Marcus, from
+  the stack). Both halves of his sentence were acted on: the markers
+  moved, and the zoom that reveals them is the pinch, which now works.
+  The default zoom was not changed; at 1x they are small and a pinch of
+  2 to 4 brings them to reading size, which is what he described.
+- Root Energetics' seven readings are square cornered tiles, one height,
+  equal widths per row, flush to both edges, in the two rows EZ ruled
+  (GG's "uniform, square, flush left to right" folded in here).
+- A 1.5 second hold on a control raises its definition, the words it
+  already carries; a tap acts. A carrier that is only words keeps the
+  first tap. Copy still waits on `DESIGN-tooltip-copy.md`.
+
+**Open, his call.** "Square" was read as square cornered tiles filling
+the row rather than 1 to 1 squares, which at three to a row would be
+110 pixels a side, more room than the circles took. And the uniform
+square pills are built on the phone only; whether GG meant the desktop
+dock too is asked rather than assumed. Root Domains was not touched.
+
 ## GG. Avatar page redesign, the Boundary tool surfaced, 8-bit Masks, uniform pills, click for a right hand panel, and new copy rules. 27 September
 
 His words, verbatim: "For the avatar, I think we can merge the Okay,
@@ -18087,3 +18129,61 @@ of them answered by default:
 And separately, not a question, a fix worth queuing: `boundaryCross`'s
 three real defects above, since they sit in shipped engine code and were
 found rather than invented.
+
+## GK. Four Field tension mockups verified, and my own round GH citation was stale. 27 September
+
+`proto/field/tension/` (`a-strain`, `b-wire`, `c-heat`, `d-fringe`, packed
+md5s `0ae3467a`, `b42cc32f`, `23a13817`, `149c565c`), dispatched at round GH.
+Verified directly. `git status` matched the report, one untracked directory
+only. Opened the review screenshots already captured in
+`proto/field/tension/shots/` rather than re-rendering, since the report
+states they were taken at both widths with motion on and with reduced
+motion. `a-strain-1600-ring.png` confirms real strain marks angled outward
+past a load of five, values printed on each. `d-policies-1600.png` confirms
+the naming rule question directly: four panels, same cursor position, and
+rules 2 and 3 show cool addresses (Expectation, Manipulative Kindness,
+Longing, Martyrdom, Separation) that rule 1, today's charge only rule,
+does not draw at all. Zero em dashes across every file in the directory.
+The 9.2 megabyte `shots/` folder is left uncommitted, on the report's own
+flag, since it is review material already looked at rather than product.
+
+**A correction to my own citation, caught by the agent's own reading of the
+code rather than by trusting an old comment.** Round GH above cited the
+label growth thresholds as 2.60 and 3.90 from `wheel.js:155-161`. That
+comment block is itself stale: `FET_STEP` at `wheel.js:184` reads
+`[1.55,2.05]`, under a later comment headed "THE THRESHOLDS COME DOWN.
+Ruled," and names actually start at a load of six, at `wheel.js:821`. Read
+directly and confirmed. The reasoning in GH still holds, charge based
+growth is a real, deliberate, different axis from cursor position, but the
+numbers named there were wrong, caught the same way this file has caught
+eleven stale counts before it: by reading the value off the code rather
+than off an old comment sitting beside it.
+
+**A second real finding, the same shape as the GJ boundary bug: a mockup
+built honestly against the shipped code surfaced a naming collision, not a
+mockup defect.** The Field already draws something it calls tension,
+pulses running along the threads driven by `n.susc` (susceptibility, see
+the comment at `wheel.js:1144-1146`), unrelated to load. His new tension
+lines are a second, different signal. Confirmed directly at `wheel.js:941`
+and `:1098`, where `n.susc` is read and scaled. If this ships, one of the
+two needs a different name so "tension" does not mean two things in the
+same file.
+
+What I need from him:
+1. Which of the four carries forward, A strain marks, B taut wire, C heat,
+   or D fringe bending, or a combination (the report notes C's colour
+   shift plus D's bend as one workable pairing). Each added look costs
+   roughly 2 to 5ms more per frame, measured directly per variant: B and D
+   the cheapest at 1.7 to 2.5ms, A and C the costliest at 4.3 to 5.5ms.
+2. When charge based naming and cursor based naming disagree, which wins,
+   shown side by side in `d-policies-1600.png`. Cursor only reintroduces
+   the exact problem the 112 label fix solved, a heavy address off to the
+   side goes unnamed, so that option is real but carries a real cost.
+3. Whether direction of movement, expanding versus collapsing, should
+   change what the tension looks like rather than only which way it
+   points. His words, "it starts to push it in one way or the other,"
+   could mean either.
+4. Whether the cursor circle should hold a fixed screen size, as built, or
+   grow with zoom. Each mockup carries a slider so he can feel both.
+5. The name collision above, since "tension" already means the
+   susceptibility pulses in the shipped Field.
