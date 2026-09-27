@@ -22881,3 +22881,24 @@ sit on the same seat pair, the same open item PRIORITY.md already
 carries; and colour now means two different things across the
 reversal view (by seat) and the mosaic view (by family), named on the
 page itself under "How to read it."
+
+## JV. The shared disk filled to 100 percent, every browser gate blocked
+
+The avatar agent reported Chromium crashing on load, `df` reading 197M
+free at 100 percent. Investigated directly rather than guessing: the
+shared scratchpad held roughly forty leftover git worktrees from across
+this whole long session, most of them untouched for hours and named
+after feature branches long since landed (`dani/shelf-pattern`,
+`field-renditions`, `kai/field-overlay-hover` and the like). Checked
+each candidate's own `git status` before removing anything, per this
+session's standing rule against destroying uncommitted work: the two
+with any diff at all (`wt-pin`, `wt-fv`) held only a stray screenshot
+and a regenerable packed build file, and `base`/`mine` held only the
+usual self-referential build stamp drift already seen many times this
+session. Removed nineteen worktrees this way, freeing roughly 20G;
+disk now reads 6.7G free at 82 percent. Left `priya-ia` and a handful
+of unregistered plain directories alone, since they carried real
+uncommitted diffs of unclear origin and the emergency was already
+resolved without needing them. Notified every agent currently in
+flight, since a shared disk failure would have hit all of them, not
+only the one that happened to report it first.
