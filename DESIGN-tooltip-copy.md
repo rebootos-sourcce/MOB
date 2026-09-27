@@ -924,3 +924,167 @@ To re-run, from the repo root, after `./atuned_src/BUILD-engine.sh`:
     node proto/tipcopy/own.js
     ./proto/tipcopy/gate.sh
     python3 proto/tipcopy/rule.py
+
+---
+
+# 10. The panel on the right, and one summary across the numbers
+
+June Okonkwo-Lund, story. 27 September 2026, `TASKS.md` GG. Appended to this
+pitch rather than started beside it, because it is the same question asked
+again with a sharper edge.
+
+His words: "things like instruments where it says integrity, intention, pull.
+Like, I need information, dude. What do these numbers mean? I should be able to
+click on something and have it provide information on the right-hand side of
+the screen." And what he wants in it: "a summary of how my numbers actually
+play out from the behavior of energy".
+
+**Still open.** Nothing here is built. It waits on the nine questions in
+section 8 and on the three below, 10 to 12. Two things in this section move
+earlier text, and each is said where it happens.
+
+## 10.1 What he was looking at, found
+
+`ui/ui.js:1133` to `:1145` at commit `7c5282d`, the right rail's Instruments
+block, as it reads for Derek:
+
+    Instruments
+    integrity 4.9 of 10
+    intention 4.6 of 10
+    pole in 0.80 of 10
+    overshoot 0.52 of 10
+    distortion 10.0 of 10
+
+Five names that are variable names, five figures, no sentence. Each carries its
+scale, which a comment above it records as the fix for an earlier ruling. The
+scale was the right fix for the ruling it answered and it is not the answer to
+this one: he knows what 4.9 is out of and still does not know what it is.
+
+**He said "pull". The rail says "pole in".** And the engine has a third
+thing, `PULL` at `engine/compute.js:365`, which is how much of a person's
+coherence their load takes back, and which the coherence drill already prints
+as "the shadow taking 12 per cent" (`ui/drills.js:319`). So the word he heard
+belongs to a different real number. That is question 11.
+
+**The ruling is already half made.** 26 September, at the foot of
+`DESIGN-tooltip.md`: "Pressing the thing itself opens a summary of how it runs
+through this person, on the right, with its own link out to the full page." His
+ask today is that ruling applied to the instruments, plus one thing it did not
+have: the summary crosses from one number to the next.
+
+## 10.2 The panel, slot by slot
+
+The drill template in 5.2, with two slots added and one filled differently.
+
+    title          the name, and the curve word            Label, Value
+    What it is     what it measures, one sentence          Definition
+    Yours          the figure and what it means, in the    Reading
+                   same sentence, per COPY.md's load rule
+    Fed by         the numbers that move this one          links
+    Moves          the numbers this one moves              links
+    How yours      three to five sentences that follow     Reading
+      plays out    the circuit through this person's own
+                   figures, always in the same order
+    What moves it  one step                                Instruction
+    The numbers    the arithmetic, last, for Derek         Value rows
+    Read the full entry
+
+**Fed by and Moves are the cross reference.** Each is a row of names, and each
+name opens its own panel in the same place. A person who presses Integrity,
+then Will, then Load, has walked the circuit by hand.
+
+**How yours plays out is the summary he asked for.** It always runs in one
+order, so a person learns the route once:
+
+    laws  ->  how deep charge sits at each seat  ->  load at each address
+          ->  what that load takes back from coherence
+          ->  the patterns running on it  ->  what gets through
+
+That order is not a writing choice. It is the order `compute()` runs in.
+
+## 10.3 What feeds what, from the engine
+
+Every row is read off `engine/compute.js` at `7c5282d`. The plain line is a
+draft for the "What it is" slot.
+
+| Instrument | What it is, plain | Fed by | Moves | Where |
+|---|---|---|---|---|
+| A law | How often you keep it, 0 to 10 | your intake answers, and releases at its seat | coherence, integrity, intention, and how deep charge sits at its seat | `:218`, `:360` |
+| Coherence | The 21 laws summed, out of 100 | the laws and nothing else | expression, and the band word | `:360` |
+| Integrity | Your 21 laws averaged, with what is installed added and overshoot taken off | laws, pole in, overshoot | the Will orb. Not coherence, since 25 September (`:306`) | `:308` |
+| Intention | The same laws averaged seat by seat, so a seat with two laws weighs as much as a seat with four | each seat's laws, pole in, overshoot | the Awareness orb | `:309` |
+| Load | Charge at one address, 0 to 10 | what you enter, how susceptible that address is, and how shut the laws at its seat are | shadow total, pull, patterns | `:219` |
+| Pole in | How much of the opposite is installed past what is held, averaged over the body | releases and replacements | raises integrity and intention | `:225`, `:303` |
+| Overshoot | The opposite driven past 6, where it stops serving | a replacement past 6 | lowers integrity and intention, and adds overshot patterns | `:229`, `:304` |
+| Shadow total | Every address's load summed, out of 100 | load | the Vitality orb | `:326` |
+| Pull | The share of coherence your load takes back, on his bell | load at each address | expression | `:365` |
+| Expression | Coherence with the pull taken off | coherence, pull | nothing further | `:366` |
+| Distortion | How many patterns are running, the deeper ones counting more, capped at 10 | saboteurs, complexes, deep patterns, character layers | the Awareness orb | `:299` |
+| Vitality | What apathy and the shadow total leave | apathy, shadow total | nothing further | `:426` |
+| Awareness | Intention, less what the running patterns bend | intention, distortion | nothing further | `:427` |
+| Will | Integrity, less the weight of what is held | integrity, the mean load of held addresses | nothing further | `:428` |
+
+## 10.4 Worked. Derek presses Integrity.
+
+Derek, headless through `engine.js`, his stated law table. The app's figures
+can differ by the intake round trip recorded in section 1.
+
+    Integrity, working
+    What it is      Your 21 laws averaged, with what you have installed added
+                    and what you overshoot taken off. Your coherence number is
+                    the same laws summed.
+    Yours           Integrity 4.9 of 10, just inside working, the range from
+                    4 to 7.
+    Fed by          Laws   Pole in   Overshoot
+    Moves           Will
+    How yours       Three of your laws are shut: Temperance at 1.8, Non-Harm
+      plays out     at 2.9, Equanimity at 3.1. A shut law lets charge sit deeper
+                    at its seat. Your sacral, where both laws average 3.2,
+                    holds 5 addresses. Your heaviest seat is the solar plexus,
+                    with 7 held and a load of 3.8, tense. Its laws are open at
+                    7.4, so that load came in with what you entered, and no
+                    shut law is sinking it. Across your body the load takes 12
+                    per cent off your coherence, so 48.5 comes out as 42.6. And
+                    44 patterns are running on it, past the most distortion can
+                    show, so what you intend is the only thing lifting your
+                    awareness.
+    What moves it   held for question 5 in section 8
+    The numbers     Integrity 4.9   Laws averaged 4.8   Pole in 0.8
+                    Overshoot 0.5
+    Read the full entry
+
+Every figure in that paragraph is Derek's own and every causal word is a line
+of `compute()`. The one thing it says that no single number says is the solar
+line: his heaviest seat is heavy with its laws open, so closing laws will not
+move it and releasing will. That is what a summary across the numbers is for,
+and no tooltip on one number can say it.
+
+**This moves one line of 5.2.** "No new ladder for light or heavy" is
+overruled by his load ruling of today. The curve words are in `COPY.md`, taken
+from his own lever's bell at `engine/compute.js:183`.
+
+## 10.5 What the panel exposes, which is a truth finding before a copy one
+
+**Distortion reads 10.0, its ceiling, for 7 of the 14 reference profiles.**
+Derek at coherence 48.5 and Lance at 97.2 print the same figure, Lance
+through overshoot. A number that reads the same for both cannot carry a
+meaning in one sentence, which the load rule now requires. Until the scale
+moves, the panel says "at its ceiling" and gives the count of patterns running
+instead. The scale is the engine seat's or his, question 12.
+
+## 10.6 His, and open
+
+10. **The panel.** The slots in 10.2, with Fed by, Moves and How yours plays
+    out added, and the summary always following the circuit in the order of
+    `compute()`. Approve, reorder or cut. Cutting How yours plays out keeps
+    every number explained on its own and loses the solar line in 10.4, which
+    is the thing he asked for.
+11. **"Pole in", which he heard as "pull".** (a) Keep it, and let the panel
+    define it. (b) Rename it for what it is, the opposite installed, which
+    frees "pull" for the real `PULL`. (c) Print `PULL` on the rail as Pull,
+    since it is the number that says what the load costs him. (b) and (c)
+    together are one word per concept on both.
+12. **Distortion at its ceiling.** (a) Leave the scale and print "at its
+    ceiling" with the pattern count. (b) Widen the scale so it separates the
+    half of the roster it now pins. (b) is an engine change and moves every
+    surface that prints it.

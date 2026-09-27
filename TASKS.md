@@ -17920,3 +17920,63 @@ existing charge based label growth from the 112 label fix, since those
 are two different reasons for a label to appear and doing both at once
 needs a rule for which wins when they disagree.
 
+
+## GG4. Copy: the three new rulings written into COPY.md, the mask archetypes, five lines of clean editorial, and the right hand panel folded into the tooltip pitch. 27 September
+
+June, story. GG item 4. Touched `COPY.md`, `DESIGN-tooltip-copy.md` and this
+file only. Nothing in `atuned_src/`, `source.html` or `proto/` moved: other
+seats were in `ui/ui.js`, `ui/rings.js` and `proto/masks/` while this ran.
+
+**Written.** `COPY.md` gains a section, "Ruled 27 September", in four parts.
+Say what it is and never define a state by what it is not, with his quoted
+mask line as the before. A load says what it means in the same sentence: the
+curve word, the held count, the nerve, and what the nerve runs, on a ladder
+taken from his own lever's bell at `engine/compute.js:183`. Every mask names
+the archetype that powers it, from the twelve in `ARCH`, with a drafted table
+of all six. Five shipping lines rewritten before and after.
+`DESIGN-tooltip-copy.md` gains section 10: the panel's slots, a table of which
+instrument feeds which read off `compute()`, and Derek's Integrity panel
+written out in full.
+
+**For the seat that owns `ui/`, not dispatched, because those files were in
+use.** Each string is quoted with its replacement in `COPY.md`.
+
+1. `ui/drills.js:607` to `:610`, the mask's "What it is". His objection.
+2. `ui/drills.js:615`, the mask drill's load line. It needs the held count and
+   the heaviest address's nerve, both already computed on that drill as `hot`.
+3. `ui/ui.js:63` and `ui/analytics.js:332`, the two other places a mask load
+   prints bare. The same rule.
+4. `ui/ui.js:1017`, the Awareness orb title, which also names a collision:
+   two things called Awareness.
+5. `ui/drills.js:690` and `:874`, the upward cone and the governor.
+6. `MASKS` in `engine/data/canon.js:494` needs two fields for the archetype
+   and its line once he rules, so the drill, the hover and the art read one
+   table.
+
+**Found in passing.** Distortion reads 10.0, its ceiling, for 7 of the 14
+reference profiles, Derek at coherence 48.5 and Lance at 97.2 alike. A number
+that reads the same for both cannot be given a meaning, which the load rule now
+asks of every number. Section 10.5 of the pitch.
+
+**His, and open.** Each is also written where it lives.
+
+1. **"Impaired".** His template: "A load of 1.9 means the nerve is mildly
+   impaired." (a) Keep his word. It is the plainest, and it says the nerve's
+   working was measured, which it was not: the instrument read what he
+   reported, at that place. (b) Use the curve words, "a little tense" at 1.9,
+   which describe the charge and claim nothing about the nerve. `COPY.md` is
+   written to (b) and holds (a) open.
+2. **The curve words.** "A little tense" and "the range we travel" are his.
+   The drafts beside them are tense (3 to 4), heavy (6 to 8) and locked (8 and
+   up). His own word at 9 was "paralyzed". Keep the drafts, or use his.
+3. **The Adult mask.** Handles it, and files what it cost. Drafted as the
+   Warrior, which moves on the threat and counts the damage after. The
+   alternative is the Caregiver, which carries other people's load and files
+   its own. The art is being drawn from whichever he picks.
+4. **The Ideological mask.** Answers from the position instead of the moment.
+   Drafted as the Sage, which read the situation once and kept the answer.
+   The alternative is the Magician, which sits at the 3rd Eye with the mask.
+5. **The right hand panel**, questions 10 to 12 in section 10.6 of
+   `DESIGN-tooltip-copy.md`: the panel's slots, whether "pole in" is renamed
+   so "pull" means the real pull, and what to do about distortion at its
+   ceiling. These sit behind the nine still open in its section 8.
