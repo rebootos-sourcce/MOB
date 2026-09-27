@@ -21805,3 +21805,39 @@ dispatched behind them (the masks redesign with the time slider, and
 an Energetics art pass), matching his own stated order, release and
 the core loop already done, Compass and Energetics next, the rest
 opportunistic.
+
+## IU. The two design only pieces landed, and a real bug found in passing
+
+The masks redesign and the Energetics art pass are in at d4a2c35,
+proto only, nothing under atuned_src or source.html. Checked directly:
+the diff stat touches only proto/masks/golden and proto/energetics-art,
+no em dashes by byte search, the two en dashes in the Energetics page
+are the same unscored placeholder intakeui.js already prints (grep
+confirms intakeui.js:249 uses the identical pattern). Screenshots
+viewed directly: the construction view's Fibonacci table (34:21,
+13:21, 13:8 and on), all six masks with their own symbolic marks, and
+the reversal slider on both Derek (settles by day 158 at weekly pace)
+and James (still at 1.24 of 10 at six months, monthly pace) render as
+described.
+
+The real bug: intakeui.js:334 marks a scale point only on `v===n`,
+exact equality. Every reference profile's answers are decimals (4.7,
+8.1), so on the shipped app every already scored law opens onto a row
+with nothing visibly selected, the answer is there but looks unset.
+The mockups mark the nearest point and print the exact figure beside
+it. Not fixed, since it was found while verifying a design only
+dispatch and touching intakeui.js is outside this round's scope, but
+it is real and belongs on the backlog.
+
+Files for the owner, packed: proto/masks/golden/masks-golden-packed.html
+(md5 7c9bfce58ea0dd635d050ed26bb4ba6d) and
+proto/energetics-art/energetics-art-packed.html (md5 f2a7a592667065702817bc9223d7fc73).
+
+Open questions from this piece, his call: outline at half intensity
+sits under the 3:1 contrast floor on a blank mask, keep it or lift it;
+the engine's own release step clears a mask in about five months at
+weekly pace, is that the intended pace; should the shown number drop
+the instant a run ends (today's behaviour) or settle over nine days as
+the book's tau and these masks draw it; which Energetics treatment, A,
+B or C, or the agent's own suggestion of A's rows on desktop and C's
+strip plus one law at a time on a phone.
