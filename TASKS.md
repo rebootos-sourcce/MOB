@@ -16867,3 +16867,59 @@ real fixes (`marketing/field.js`, `proto/ritual/losssim.js`,
 `tools/loopsim.js` plus the three ritual extractors), every one
 independently re-run and matched rather than taken on report.
 
+## FQ. The ninety day simulation is done, verified directly, and it
+## found a real defect that would eventually lock every free tier
+## person out of the product for good. 27 September.
+
+`RESEARCH-90day.md` and `proto/ninety/`, commit `f72c3b4`. Nine
+reference people walked from the onboarding storyboard through ninety
+days, on the real engine and the already-verified `losssim.js`, not a
+new arithmetic model. The storyboard helps three of nine understand
+the tool's purpose (Angela, Marcus, Sofia, who came for how it works)
+and misses four who came for what holding the charge costs (Diane,
+Derek, James), plus Ana, who needed to know the thing has an end.
+
+**Independently re-run myself.** `node proto/ninety/arc90.js --walk
+proto/ninety/walk-11830df.jsonl` reproduces its own saved output byte
+for byte, the commit hash and timestamp aside. Zero em dashes across
+every file this round touched.
+
+**A real, severe defect, confirmed directly in the shipped engine,
+not only in the simulation.** Somewhere between day 17 and 41 of
+daily use, every free tier person's release allowance stops
+refilling and never recovers. Read the actual code: `engine/plan.js`
+computes the current period's spend as `used - base - carried`, and
+its own comment states the intent plainly, `base` should default to
+"the end of the gift" (100) for any record that has never had a
+period, so a person's lifetime usage does not get charged against a
+fresh allowance. But `engine/schema.js` (two call sites, blank
+profile creation and load) sets `plan.base` to a literal `0` rather
+than leaving it unset, and `plan.js`'s own fallback only triggers on
+`!=null`, so the 0 schema.js writes wins and the 100 `plan.js` intends
+never fires. The result: `spent` counts a person's entire lifetime
+address count against each new period from day one, the gift is
+never actually netted out, and the allowance reads exhausted
+permanently once real usage passes the gift's own size. Confirmed by
+reading both files directly, not taken on the simulation's report
+alone.
+
+**Dispatched now as an urgent fix**, not queued, since this would
+silently and permanently break the core mechanic for every real free
+tier user after a few weeks of real use, and CLAUDE.md's own standing
+instruction from FJ is to fix a blocking defect rather than ask.
+
+**Other real findings, judged versus measured, kept separate as the
+report itself does:** the engine reads nothing from one to three of
+each ICP's own story lines; the storyboard's best moment (a person's
+own words lighting up) only fires for one of nine real intake
+stories in the story bank; without the 63 intake questions CQ reads
+0 for all ninety days; `sim/harness.js verify` has been failing on
+its own CQ lines since the 25 September refit and its ninety day
+grade should not be quoted as current, confirmed directly by running
+it myself; and `losssim.js`'s own `TRACE.alive30` field counts who is
+alive at the end of the walk, not at day 30, a naming defect rather
+than a math one.
+
+**Five open questions logged in the report's own section 8**, each
+with real options and costs, left for him.
+
