@@ -340,19 +340,21 @@ function gatesBlock(focus){
    +'<span class="ad-k">'+esc(v.nm)+'</span>'
    +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
    +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
- return '<div class="pm-eye">The six gates</div><p class="ad-p">'
-  +(evid?'The share of the story that ran through each gate. ':'No story yet, so no gate has evidence. ')
-  +'Higher gates leave charge where it is. Lower gates bind it, and the multiplier is the cost on everything held.</p>'
+ /* ACTION, GO in TASKS.md, the bar's name for this layer now, and his reading
+    of it: right action and wrong action. The six keep their own names. */
+ return '<div class="pm-eye">Action</div><p class="ad-p">'
+  +(evid?'The share of the story that ran through each of the six. ':'No story yet, so none of the six has evidence. ')
+  +'The higher three leave charge where it is. The lower three bind it, and the multiplier is the cost on everything held.</p>'
   +'<div class="ad-rows">'+rows+'</div>';}
 function runGatesDrill(k){
  var v=verpRead().filter(function(x){return x.k===k;})[0];
  if(!v){runCoreDrill();return;}
- var h='<div class="pm-eye">'+(v.side==='higher'?'Higher gate':'Lower gate')+'</div>'
+ var h='<div class="pm-eye">'+(v.side==='higher'?'Higher action':'Lower action')+'</div>'
   +'<div class="ad-nm">'+esc(v.nm)+'</div>'
   +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'
-  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through this gate, '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
-  +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that passes here'
+  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
+  +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that runs this way'
   +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
   +gatesBlock(k);
  rdShell(h);}
@@ -522,8 +524,10 @@ function runBalDrill(){
 /* ---- the knowledge base drills. every drill lives in this file. ---- */
 /* the catalog entry for one seat. the counts are the clinical record, not a
    score, so they are stated as what was released and what installed. */
+/* the eyebrow follows the bar's name for the layer, GO in TASKS.md: a press on
+   Assemblage Points and then on a band of it must not answer under "Seat" */
 function runSeatDrill(c){
- var h='<div class="pm-eye">Seat</div><div class="ad-nm">'+esc(c.b)+'</div>'
+ var h='<div class="pm-eye">Assemblage point</div><div class="ad-nm">'+esc(c.b)+'</div>'
   +'<div class="ad-sub">'+esc(c.nv)+'</div>'
   +'<div class="pm-eye">What encodes here</div><p class="ad-p">'+esc(c.d)+'</p>'
   +'<div class="pm-eye">The record</div><div class="ad-rows">'

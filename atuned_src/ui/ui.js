@@ -603,8 +603,30 @@ function colFoldPaint(shut){
     first tap to explain itself, and a fold that has to be pressed twice is
     the toggle rule ui/fieldbar.js already settled for the glass bar */
  b.setAttribute('aria-label',say); fbTip(b,say);}
+/* AND IT STARTS SHUT. GO in TASKS.md, his words: "the field left panel starts
+   closed," and before that, BD1: "we keep the left panel closed." The Root
+   Energetics section was already closed on arrival and still is; what stood
+   open on landing was the column itself, with Energy and Lean unfolded under
+   it, measured at 730 and 305 pixels on a blank profile. So a person who has
+   never chosen arrives on a shut column, the stage takes the width, and the
+   bar has the room to put Close the tools at its head (ui/fieldbar.js).
+
+   Only a store with nothing in it defaults. A person who opened the column
+   keeps it open, because the press writes 'open'. A store that throws still
+   opens it, the state nobody has to find their way back from, which is the
+   reason given above and it has not changed.
+
+   AND ONLY WHERE THE COLUMN STANDS BESIDE THE STAGE. Below 1181 the columns
+   stack under the picture, so a shut column takes nothing from it: measured
+   at 390 it became an empty card holding one small mark between the picture
+   and the readings, with CQ and DQ behind it. That is a control hidden for no
+   room gained, so a phone arrives on the column open, as it always did. The
+   width is the sheet's own breakpoint for the grid rule above. */
+var LCOL_BESIDE='(min-width:1181px)';
 function colFold(){
- var shut=false; try{shut=STORE.get('lcol')==='shut';}catch(e){}
+ var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
+ var shut=beside;
+ try{var got=STORE.get('lcol'); shut=got?(got==='shut'):beside;}catch(e){shut=false;}
  colFoldPaint(shut);
  var b=$('lfold'); if(!b)return;
  b.onclick=function(){

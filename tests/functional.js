@@ -54,13 +54,27 @@ const GORDON_FN=`window.PERSON=function(nm){
  for(var i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm===nm)return i;
  throw new Error(nm+' is not in the roster any more');};
 window.GORDON=function(){return window.PERSON('Gordon');};`;
+/* THE LEFT COLUMN STARTS SHUT ON A DESKTOP NOW, GO in TASKS.md: "the field left
+   panel starts closed." Every check in this file that reads or presses the
+   column was written when it always arrived open, and against a shut column
+   they measured a dial of height 0 and a CQ that swept to NaN, which is the
+   check measuring nothing rather than the product failing. So a fresh store is
+   seeded as a person who has opened the column once, exactly what the product
+   remembers after that press, and only a store with nothing in it: a check
+   that shuts it and reloads still finds it shut. A page opened on #landing is
+   not seeded, so the landing state itself is measured on a real first visit,
+   in the GO block below. The product never reads the hash. */
+const LCOL_SEED=`try{if(!/landing/.test(location.hash)&&localStorage.getItem('lcol')===null)
+ localStorage.setItem('lcol','open');}catch(e){}`;
 browser.newPage=(orig=>async function(...a){
  const pg=await orig.apply(this,a);
  await pg.addInitScript(GORDON_FN);
+ await pg.addInitScript(LCOL_SEED);
  return pg;})(browser.newPage);
 browser.newContext=(orig=>async function(...a){
  const cx=await orig.apply(this,a);
  await cx.addInitScript(GORDON_FN);
+ await cx.addInitScript(LCOL_SEED);
  return cx;})(browser.newContext);
 const page=await browser.newPage({viewport:{width:1600,height:1000}});
 const real=[];
@@ -3572,7 +3586,10 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  fp.on('pageerror',e=>ferr.push('PAGEERROR: '+e.message));
  fp.on('console',m=>{if(m.type()==='error'){const t=m.text();
   if(!/ERR_CERT_AUTHORITY_INVALID|ERR_FILE_NOT_FOUND|fonts\.googleapis/.test(t))ferr.push(t);}});
- await fp.goto(FILE,{waitUntil:'load'}); await booted(fp);
+ /* a first visit, GO: the bar and the renditions are measured on the column
+    the Field lands with, shut, and the column is opened by a press below,
+    before the readings that live in it */
+ await fp.goto(FILE+'#landing',{waitUntil:'load'}); await booted(fp);
  const frame=pg=>pg.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
  const LAYERS=['domains','addresses','stories','masks','archetypes','patterns','chains','laws','gates','shadow'];
 
@@ -3954,6 +3971,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     the DQ anyway", accuracy kept in it, "just make sure there's just two
     rows." So DQ, CQ and accuracy on one centre line, the four under them, and
     no SQ in the dock while the bar's Addresses circle still carries it. */
+ /* the readings are in the left column, which a first visit lands on shut, GO,
+    so it is opened the way a person opens it */
+ await fp.click('#lfold'); await fp.waitForTimeout(300);
  const dock=await fp.evaluate(()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
   const q=k=>document.querySelector('#fdock .kb[data-q='+k+'] .cr');
   const bx=k=>q(k).getBoundingClientRect(), fs=k=>parseFloat(getComputedStyle(q(k).querySelector('.v')).fontSize);
@@ -4064,7 +4084,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   fviewSet('wheel');
   out.fe=fe;
   return out;});
- ok(fv.first&&fv.closed&&fv.name==='Root Energetics','the summary is the right rail\'s first section, closed on arrival, '
+ /* named Energetic Summary since GO, so the two rails no longer carry one
+    name for two sections; the left keeps Root Energetics, asserted above */
+ ok(fv.first&&fv.closed&&fv.name==='Energetic Summary','the summary is the right rail\'s first section, closed on arrival, '
   +JSON.stringify({first:fv.first,closed:fv.closed,name:fv.name}));
  ok(fv.meets.length&&fv.meets.join()===fv.want.join(),'it leads with the meetings the engine finds, '+fv.meets.join(', '));
  ok(fv.lit.join()===fv.wantLit.join(),'each band lights exactly the systems that land there, '+fv.lit.join(' '));
@@ -4363,24 +4385,29 @@ console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box
  const gp=await gx.newPage();
  const gerr=[];
  gp.on('pageerror',e=>gerr.push('PAGEERROR: '+e.message));
- await gp.goto(FILE,{waitUntil:'load'}); await booted(gp);
+ /* ON A REAL FIRST VISIT, because the bar's room is the left column's and the
+    column starts shut on one now, GO. Seeded open, the row folds at 1600. */
+ await gp.goto(FILE+'#landing',{waitUntil:'load'}); await booted(gp);
  await gp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();});
  await gp.waitForTimeout(300);
  const bar=()=>gp.evaluate(()=>{const F=document.getElementById('fbar'),T=F.querySelector('.fb-tog'),
    st=document.getElementById('stage').getBoundingClientRect(),r=T.getBoundingClientRect(),
    vis=[...F.querySelectorAll('.fb-b')].filter(b=>b.offsetParent);
   return {shut:F.classList.contains('shut'),folded:F.classList.contains('folded'),n:vis.length,
-   lead:vis[0]&&vis[0].getAttribute('aria-label'),x:r.left-st.left,y:r.top-st.top,w:r.width,h:r.height,
+   lead:vis[0]&&vis[0].getAttribute('aria-label'),next:vis[1]&&vis[1].getAttribute('aria-label'),
+   x:r.left-st.left,y:r.top-st.top,w:r.width,h:r.height,
    exp:T.getAttribute('aria-expanded'),label:T.getAttribute('aria-label'),stored:STORE.get('fbar')};});
  const open=await bar();
- ok(!open.shut&&!open.folded&&open.lead==='Addresses'&&open.exp==='true'&&open.label==='Close the tools',
-  'open at 1600, the full row stands, Addresses still leads it, and the fold says it closes, '+JSON.stringify(open));
+ /* THE FOLD LEADS THE ROW NOW, GO: "the first left, upper left icon. Expand,
+    close." Addresses is the first layer, one along. */
+ ok(!open.shut&&!open.folded&&open.lead==='Close the tools'&&open.next==='Addresses'&&open.exp==='true',
+  'open at 1600, the full row stands with the fold at its head and Addresses next, '+JSON.stringify(open));
  ok(open.w>=44&&open.h>=44,'the fold clears the 44 pixel tap floor, '+open.w+' by '+open.h);
  await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  const shut=await bar();
  ok(shut.shut&&shut.n===1&&shut.lead==='Open the tools'&&shut.exp==='false'&&shut.stored==='shut',
   'one press shuts it to the one circle, which now says it opens, and the store keeps it, '+JSON.stringify(shut));
- ok(Math.abs(shut.x-open.x)<=1&&shut.y<open.y,'shut, it is the bar\'s first circle, in the corner the tools were in, at '
+ ok(Math.abs(shut.x-open.x)<=1&&Math.abs(shut.y-open.y)<=1,'shut, it stays where it was, the upper left corner, at '
   +Math.round(shut.x)+','+Math.round(shut.y));
  await gp.reload({waitUntil:'load'}); await booted(gp);
  await gp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();});
@@ -4388,8 +4415,10 @@ console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box
  ok(kept.shut&&kept.n===1,'a reload keeps it shut, '+JSON.stringify(kept));
  await gp.click('#fbar .fb-tog'); await gp.waitForTimeout(200);
  const back=await bar();
- ok(!back.shut&&!back.folded&&back.lead==='Addresses'&&back.n===open.n&&back.stored==='open',
+ ok(!back.shut&&!back.folded&&back.lead==='Close the tools'&&back.n===open.n&&back.stored==='open',
   'and a second press brings back the whole row at 1600, measured afresh, '+JSON.stringify(back));
+ /* the accuracy checks below press the dock, which is in the column */
+ await gp.click('#lfold'); await gp.waitForTimeout(250);
  /* THE ACCURACY BOX. DQ's button is the reference: whatever DQ draws under a
     pointer, accuracy draws, and on Flat its word carries no fill at rest */
  const fill=async sel=>{await gp.hover(sel);await gp.waitForTimeout(250);
@@ -4402,6 +4431,72 @@ console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box
  ok(/rgba\(0, 0, 0, 0\)|transparent/.test(flat),'on Flat the word Accuracy sits on no box of its own, '+flat);
  ok(gerr.length===0,'GB: no errors, '+gerr.join(' | '));
  await gx.close();
+}
+
+console.log('\n=== GO: the Field lands with its column shut, two names changed, and depth reads what is drawn ===');
+/* His words, GO in TASKS.md: "the field left panel starts closed ... change
+   the title to energetic summary ... Seats needs a better name. These are
+   assemblage points ... change gates to action ... And depth. It should
+   already start at full depth." Each on a real first visit, #landing, so the
+   seed every other block gets is not here to hide the default. */
+{
+ const land=async(w,h)=>{const cx=await browser.newContext({viewport:{width:w,height:h}});
+  const pg=await cx.newPage(); const err=[]; pg.on('pageerror',e=>err.push('PAGEERROR: '+e.message));
+  await pg.goto(FILE+'#landing',{waitUntil:'load'}); await booted(pg); return {cx,pg,err};};
+ const wide=await land(1600,1000);
+ const a=await wide.pg.evaluate(()=>{const F=document.getElementById('fbar'),
+   lay=k=>F.querySelector('.fb-full [data-fb='+k+']'), dv=F.querySelector('[data-fb=depth] .val');
+  const names=[...F.querySelectorAll('.fb-full [data-fb]')].map(b=>b.getAttribute('aria-label'));
+  return {tab:S.tab===TAB.FIELD,lshut:document.body.classList.contains('lshut'),stored:STORE.get('lcol'),
+   energetics:!document.querySelector('[data-sec=energetics]').classList.contains('open'),
+   left:document.querySelector('[data-sec=energetics] .lsec-hd').textContent.trim(),
+   right:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
+   seats:lay('seats').getAttribute('aria-label'),gates:lay('gates').getAttribute('aria-label'),
+   stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
+   view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
+   togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
+ ok(a.tab&&a.lshut&&a.stored===null,'a first visit at 1600 lands on the Field with the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
+ ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
+ ok(a.right==='Energetic Summary','and the right rail\'s summary is the Energetic Summary, so no two sections share a name, '+a.right);
+ ok(a.seats==='Assemblage Points'&&a.gates==='Action'&&!a.stale.length,'the bar says Assemblage Points and Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
+ ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
+ ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
+ /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,
+    a preset or empty, and a press on Seats was what emptied it for him. */
+ await wide.pg.click('#fbar .fb-full [data-fb=seats]'); await wide.pg.waitForTimeout(250);
+ const b=await wide.pg.evaluate(()=>{const d=document.querySelector('#fbar [data-fb=depth]');
+  return {custom:!!LAYSET,ring:d.querySelector('.val').getAttribute('stroke-dasharray'),on:d.classList.contains('on'),
+   tip:d.getAttribute('data-tip')||d.getAttribute('aria-label')};});
+ ok(b.custom&&b.ring==='100.0 100'&&!b.on,'with Assemblage Points off the set is his own, and depth still reads full, '+JSON.stringify(b));
+ await wide.pg.evaluate(()=>{layPick(0);render();});
+ const c=await wide.pg.evaluate(()=>document.querySelector('#fbar [data-fb=depth] .val').getAttribute('stroke-dasharray'));
+ ok(c==='25.0 100','and at Charge it reads a quarter, one depth of four, '+c);
+ await wide.pg.evaluate(()=>{layPick(3);render();});
+ /* the drills a press on those two layers reaches answer under the same words */
+ const d=await wide.pg.evaluate(()=>{runSeatDrill(APC[0]);const s=document.querySelector('#rdrill .pm-eye').textContent;
+  runGatesDrill('aware');const g=document.querySelector('#rdrill .pm-eye').textContent;rdClose();return [s,g];});
+ ok(/^Assemblage point$/i.test(d[0])&&/^Higher action$/i.test(d[1]),'the drills they open say assemblage point and action, '+d.join(', '));
+ /* THE COLUMN OPENED IS REMEMBERED, and at 1600 the row folds to its fold,
+    Layers and Depth, rather than hanging a circle under itself */
+ await wide.pg.click('#lfold'); await wide.pg.waitForTimeout(300);
+ const e=await wide.pg.evaluate(()=>{const F=document.getElementById('fbar');
+  return {open:!document.body.classList.contains('lshut'),stored:STORE.get('lcol'),folded:F.classList.contains('folded'),
+   row:[...F.querySelectorAll('.fb-b')].filter(x=>x.offsetParent).map(x=>x.getAttribute('aria-label'))};});
+ ok(e.open&&e.stored==='open'&&e.folded&&e.row.join()==='Close the tools,Layers,Depth','opened, the column is stored open and the bar folds with its fold still first, '+JSON.stringify(e));
+ await wide.pg.reload({waitUntil:'load'}); await booted(wide.pg);
+ const f=await wide.pg.evaluate(()=>!document.body.classList.contains('lshut'));
+ ok(f,'and a reload keeps the column open, because he chose it');
+ ok(wide.err.length===0,'GO at 1600: no errors, '+wide.err.join(' | '));
+ await wide.cx.close();
+ /* A PHONE STACKS THE COLUMN UNDER THE PICTURE, so a shut one gains no room
+    and hides CQ and DQ behind an empty card. It lands open there. */
+ const narrow=await land(390,844);
+ const g=await narrow.pg.evaluate(()=>({lshut:document.body.classList.contains('lshut'),stored:STORE.get('lcol'),
+  dock:!!document.getElementById('fdock').offsetParent,
+  lead:[...document.querySelectorAll('#fbar .fb-b')].filter(x=>x.offsetParent).map(x=>x.getAttribute('aria-label'))[0]}));
+ ok(!g.lshut&&g.stored===null&&g.dock&&g.lead==='Close the tools','at 390 the column lands open with the readings in view, and the fold leads the bar, '+JSON.stringify(g));
+ ok(narrow.err.length===0,'GO at 390: no errors, '+narrow.err.join(' | '));
+ await narrow.cx.close();
 }
 
 await browser.close();

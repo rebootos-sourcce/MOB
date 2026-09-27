@@ -1512,7 +1512,15 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    tie with the first rule here on weight, so shut wins over folded. It has
    no reading, so it draws the track and no arc, the switch's rule for the
    two renditions that are not up. */
-.fbar .fb-tog{position:absolute;left:0;top:52px}
+/* AND NOW IT LEADS THE ROW, GO in TASKS.md, his words: "Where it says close
+   the tools, I want that to be the first left, upper left icon. Expand,
+   close." The second time he has asked for the corner, so the compromise
+   under the first circle is over. The room comes from the left column, which
+   starts shut now (colFold in ui/ui.js): at 1600 the row has 266 pixels spare
+   with it shut and 22 with it open, measured. Opened at 1600, the row folds
+   to this control, Layers and Depth, which is the fold this bar already has
+   for a stage too narrow for it, rather than a circle hung under the row. */
+.fbar .fb-tog{position:static;order:-1}
 .fbar.shut>*:not(.fb-tog){display:none}
 .fbar.shut .fb-tog{position:static}
 .fb-tog .fb-arc .val{opacity:0}

@@ -1,5 +1,8 @@
 /* ============================================================
-   ROOT ENERGETICS, READ ACROSS. The summary at the head of the
+   THE ENERGETIC SUMMARY, Root Energetics read across. Named Root
+   Energetics until GO in TASKS.md, when the second section of that
+   name on the other rail was the thing that confused him; the
+   left rail keeps the name. The summary at the head of the
    right rail. FV in TASKS.md, his words: "When I open root
    energetics, I want a summary of that on the right hand side, also
    at the very top closed. But what I want source to do is to take a
