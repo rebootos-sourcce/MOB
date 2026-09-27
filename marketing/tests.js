@@ -247,6 +247,58 @@ if (fs.existsSync(gatePath)) {
    repository names seven times. */
 T(panel.length === 1000, '20. the panel is ' + panel.length + ', not 1000');
 
+/* ---- 21. THE TESTIMONIAL EXERCISE STAYS SIMULATED, GROUNDED AND GATED.
+
+   testimony.js writes first person lines in the voice of the reference
+   fields. GUARD.md's testimonial rule says there are no users to quote, so
+   the first thing asserted is that nothing it writes can be mistaken for a
+   user. Then that the checks it adds can find something: the category's own
+   testimonial never lands, and Derek's first draft, which claimed the
+   coherence number did not move when the printed CQ went 48 to 49, is caught
+   by the truth check that was widened because of it. */
+const TY = require(path.resolve(__dirname, 'testimony.js'));
+T(TY.liftError() === null, '21. testimony.js: ' + TY.liftError());
+const ty = TY.run({ panel: false });
+const tyWritten = ty.drafts.filter(d => d.text);
+T(ty.voice.ran, '21. testimony.js voice gate did not run: ' + ty.voice.why);
+ty.drafts.forEach(d => {
+  T(d.simulated === true && !!F.PANEL.find(a => a.nm === d.person),
+    '21. a testimony draft is not marked simulated against a reference field: ' + d.person);
+});
+ty.people.filter(P => P.refused).forEach(P => {
+  T(!ty.drafts.some(d => d.person === P.nm), '21. ' + P.nm + ' is refused by the band gate and was written a testimonial');
+});
+tyWritten.filter(d => d.round === 'category').forEach(d => {
+  T(!d.lands, '21. the category testimonial landed for ' + d.person + ', so the checks cannot tell the shelf from the instrument');
+});
+const derekFirst = ty.drafts.find(d => d.person === 'Derek' && d.round === 'first');
+T(!!derekFirst && derekFirst.checks.true === false,
+  '21. Derek\'s first draft says the coherence number did not move and the truth check let it through');
+tyWritten.filter(d => d.lands).forEach(d => {
+  const P = ty.people.find(x => x.nm === d.person);
+  const g = TY.grounding(P);
+  const loose = TY.numbersIn(d.text).filter(x => !g.has(x));
+  T(loose.length === 0, '21. landed testimony for ' + d.person + ' carries ungrounded numbers ' + loose.join(', '));
+  T(R.check(d.text).length === 0, '21. landed testimony for ' + d.person + ' is refused by refuse.js');
+  T(P.register !== 'dosed' || d.inside, '21. ' + d.person + ' sits on a dosed key and a landed line is not held inside');
+});
+
+/* ---- 22. THE NEGATION GUARD STOPS AT A SENTENCE.
+
+   It did not. norm() strips the full stop the guard's window was written to
+   stop at, so a negator in one sentence excused a breach in the next. Both
+   lines here passed the gate before 27 September. */
+T(R.check('Nothing is hidden. Act now.').some(v => v.rule === 'urgency'),
+  '22. "Nothing is hidden. Act now." passes: the negation guard crosses a sentence end');
+T(R.check('No fluff. Only 3 spots left.').some(v => v.rule === 'scarcity'),
+  '22. "No fluff. Only 3 spots left." passes: the negation guard crosses a sentence end');
+T(R.check('It makes no claim about tissue, no diagnosis and no treatment.').length === 0,
+  '22. the guard no longer excuses the product refusing a thing, which is what it is for');
+
+/* ---- 23. THE TESTIMONIAL RULE READS THE REGISTER, NOT ONLY THE COUNT. */
+T(R.check(TY.CATEGORY.results).some(v => v.rule === 'testimonial'),
+  '23. the category testimonial passes the testimonial rule');
+
 /* ------------------------------------------------------------ */
 console.log('marketing/tests.js');
 console.log('  assertions run   ' + n);

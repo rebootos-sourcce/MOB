@@ -101,7 +101,18 @@ const RULES = [
       /\b\d[\d, ]{0,12}\+? ?(people|users|members) (have|already)\b/,
       /\b(\d+|nine|eight|seven|six|five|four|three|two) (out of|in) (ten|10|five|5) (users|people|members)\b/,
       /\b(rated|loved|trusted) by (thousands|millions|\d)/,
-      /\baverage (user|member) (sees|reports|gains)\b/
+      /\baverage (user|member) (sees|reports|gains)\b/,
+      /* THE REGISTER, AND NOT ONLY THE COUNT. Added 27 September after
+         testimony.js wrote the category's own testimonial on purpose, "I feel
+         calmer and more like myself than I have in years. My score went up
+         after the first week. Life changing, highly recommend.", and this
+         rule passed it: every pattern above catches a user statistic and
+         none catches a user voice. These four phrases are the shelf's
+         testimonial idiom. None of them is a thing an instrument says about
+         itself, so a line carrying one is a quote from somebody, and there
+         is nobody to quote. Narrow on purpose: "recommend" alone and
+         "changed" alone stay legal. */
+      /\b(life[- ]?chang\w+|changed my life|game[- ]?changer|highly recommend\w*)\b/
     ]
   },
   {
@@ -237,19 +248,41 @@ function guarded(subject, re, ruleId) {
 /* check one string. returns the violations, each naming the rule and the
    pattern that fired, because a gate that says no without saying which rule
    is a gate nobody can act on. */
+/* ONE SENTENCE AT A TIME, AND THE GUARD ABOVE WAS LEAKING ACROSS THEM.
+
+   NEGATORS stops its window at a full stop, [^.?!]{0,40}, and the subject it
+   was handed had already been through norm(), which turns every full stop
+   into a space. So the window ran straight through the end of a sentence and
+   a negator in one sentence excused a breach in the next. Found 27 September
+   by testimony.js, when "Nothing like anything I have tried. It is like it
+   really knows me. A game changer" passed the testimonial rule, and then
+   reproduced on lines nobody wrote for this file:
+
+       "Nothing is hidden. Act now."          passed, urgency missed
+       "No fluff. Only 3 spots left."          passed, scarcity missed
+
+   Each rule now runs on each sentence on its own, so the guard can only see
+   the clause it was written for. No pattern in RULES is meant to match
+   across a sentence end, and the gate's own deliberate breakages in
+   hooksim.js group 5 and every line in hooks.js were re-run on the change. */
+function sentences(text) {
+  return String(text).split(/(?<=[.?!])\s+/).filter(s => s.trim());
+}
 function check(text, opt) {
   opt = opt || {};
   const skip = opt.without ? [].concat(opt.without) : [];
-  const n = norm(text), raw = String(text);
+  const parts = sentences(text).map(s => ({ n: norm(s), raw: s }));
   const out = [];
   RULES.forEach(r => {
     if (skip.indexOf(r.id) >= 0) return;
     r.re.forEach(re => {
       const cs = r.caseSensitive && r.caseSensitive.indexOf(String(re)) >= 0;
-      const subject = cs ? raw : n;
-      if (!re.test(subject)) return;
-      if (guarded(subject, new RegExp(re.source, re.flags.replace('g', '')), r.id)) return;
-      out.push({ rule: r.id, pattern: String(re), why: r.why });
+      const hit = parts.some(p => {
+        const subject = cs ? p.raw : p.n;
+        if (!re.test(subject)) return false;
+        return !guarded(subject, new RegExp(re.source, re.flags.replace('g', '')), r.id);
+      });
+      if (hit) out.push({ rule: r.id, pattern: String(re), why: r.why });
     });
   });
   return out;
@@ -293,7 +326,7 @@ function form(h) {
   return miss;
 }
 
-module.exports = { RULES, JUDGEMENT, check, form, norm, BODYWORDS, NOBODY, NEGATORS, NOGUARD };
+module.exports = { RULES, JUDGEMENT, check, form, norm, sentences, BODYWORDS, NOBODY, NEGATORS, NOGUARD };
 
 if (require.main === module) {
   const arg = process.argv.slice(2).join(' ');

@@ -1,0 +1,251 @@
+# His lines
+
+Every positioning line the owner has dictated, in his words, in one place. His
+instruction, 27 September, `TASKS.md` IN: *"make sure all my copy that I've
+been adding, all my cool little one liners or sentences like that, are added
+to the marketing thing, our briefs."*
+
+**Rules this file keeps.**
+
+- **Verbatim.** Nothing below is paraphrased. Where a line was set with edits
+  elsewhere, the edited version lives in that file and is pointed to, so two
+  copies of one sentence cannot drift apart. `BRAND.md` section 4 holds his
+  mission as set, with every bracketed word that is not his.
+- **Sourced.** Every line names the round or the ruling it came from.
+- **Gated, and the gate is not the verdict.** Every line was run on 27
+  September through `marketing/refuse.js` and the voice gate
+  (`.claude/skills/atuned-voice/check.py`). A pass means neither gate found a
+  pattern. It does not mean the line is true, and it does not mean the line
+  may go anywhere. Where it may go is the last column, and that column is
+  judgement, said as judgement.
+- **His, not ours.** Our compressions are in section 4, marked as ours, and
+  none of them replaces a line of his.
+
+Where a line may go, four places:
+
+    byline     his newsletter, a signed note, the book. He is the one speaking
+    page       a funnel page a person chose to open, under the pain that earns it
+    cold       social, ads, anything served to somebody who has not been read
+    held       not yet: a claim or a word is open with him, named in section 5
+
+---
+
+## 1. This round. The positioning dictation, 27 September
+
+Quoted whole from `TASKS.md` IN, from where the positioning starts:
+
+> In one way, novel means I could say this is an ontological wellness app that
+> looks at the human complex from different resolutions of experience, but the
+> core philosophy is you are a field of energy. Coherence, decoherence is the
+> core of all negative mental experiences, emotional experiences, and the
+> mental and physical and spiritual disease that come with it. This holds a
+> mirror up to your being and shows you what's running at every resolution,
+> from physical to mental to architectural to celestial, on the operating
+> system of awareness that is the core of your experience. This tool helps you
+> release the patterns that block your flow, inhibit your maximum capacity, by
+> releasing the resistance of unconditioned and conditioned emotional
+> responses. That collapsed nervous system flow degrades the assemblage points
+> between them, causing mental instability and the stagnation of energy that
+> follows from the results of allostatic load or negative charge, that impairs
+> our health over time.
+
+### The lines in it
+
+| # | His line | refuse.js | Voice gate | Where it may go |
+|---|---|---|---|---|
+| IN1 | this is an ontological wellness app that looks at the human complex from different resolutions of experience | pass | **fails, soft**: *wellness* is category language | held. See section 5, question 1 |
+| IN2 | the core philosophy is you are a field of energy | pass | pass | byline, page |
+| IN3 | Coherence, decoherence is the core of all negative mental experiences, emotional experiences, and the mental and physical and spiritual disease that come with it | pass | pass | byline. **Held from page and cold**: *disease* is an outcome claim the gate does not catch. Section 5, question 2 |
+| IN4 | This holds a mirror up to your being and shows you what's running at every resolution, from physical to mental to architectural to celestial, on the operating system of awareness that is the core of your experience | pass | pass | byline, page. **The strongest line in the round**, and it is checkable: section 2 |
+| IN5 | This tool helps you release the patterns that block your flow, inhibit your maximum capacity, by releasing the resistance of unconditioned and conditioned emotional responses | pass | pass | byline, page. One word to know: *helps*. Four of eight reference people reject it (`RESEARCH-icp.md` section 4). His byline may carry it; the instrument's own voice may not |
+| IN6 | That collapsed nervous system flow degrades the assemblage points between them, causing mental instability and the stagnation of energy that follows from the results of allostatic load or negative charge, that impairs our health over time | pass | pass | byline only. *Allostatic load* is a real term with a precise meaning, and *impairs our health* is an outcome claim. Section 3 |
+
+### What is new in it, said plainly
+
+Three things in this dictation are not in anything he had said before.
+
+1. **Resolutions.** The product reads a person at four levels at once, and he
+   has named them. Section 2 checks each against the engine, and all four are
+   real.
+2. **The operating system of awareness.** It gives Source OS, the name under
+   the wordmark, a meaning for the first time. Until now it was a name.
+3. **Allostatic load.** It connects the product's own word, Load, to a
+   concept with thirty years of literature behind it. That connection is an
+   asset and a risk in the same sentence. Section 3.
+
+---
+
+## 2. His four resolutions, checked against the engine
+
+`BRAND.md` section 3 did this for his narrative and called it the strongest
+thing a positioning line can be: a description of the arithmetic that someone
+who does not trust us can check. His four resolutions pass the same test.
+Counts were read off `engine.js` on 27 September.
+
+| His word | What the engine holds there | Measured or symbolic |
+|---|---|---|
+| physical | 112 addresses, each seated at a named nerve or plexus (104 distinct names), in seven seats plus the two field points above and below the body. `NODES` in `engine/data/nodes.js` | Placed from self report and from what a person writes. A coordinate, never a measurement of a nerve (`RESEARCH-icp.md` section 5, Marcus) |
+| mental | the 21 laws of integrity the intake asks (`SI`), the 39 saboteur clusters and 33 named saboteurs they compound into, and the six masks, one per developmental era | Read from answers and from the story |
+| architectural | the six architectures a pattern compounds into: Grandiosity, Predatory, Collapse, Rigidity, Dysregulation, Dissociation (`HCX_LIB`). His kink, cluster and network, which `BRAND.md` section 3 maps rung by rung | Derived: pairs of saboteurs become complexes, families of complexes become the architecture |
+| celestial | birth material: sun, moon and rising signs, human design gates, gene keys, the Chinese year, numerology (`engine/astro.js`, `engine/numerology.js`) | **Symbolic, not measured.** `docs/briefs/design-mechanisms.md` section 6 says so, and `docs/briefs/harmonic-research.md` found no measured basis under the frequency claims. On a page, this layer is offered as a lens and never as a reading |
+
+**And the other two nouns in the round.**
+
+- **Coherence and decoherence** are the two gauges. Coherence is CQ, the 21
+  laws summed over 210. The engine's own comment calls CQ and the shadow "the
+  same coordinate system read from opposite ends". *Decoherence* is his word,
+  but the copy review (`reviews/copy.md`) retired it from the interface in
+  favour of **Load**, and the panel lost it. It is fine under his byline and
+  not on a surface.
+- **Assemblage points** is his name for the seats. He settled the rename
+  himself (`TASKS.md` GO, 27 September: *"Seats needs a better name. These
+  are assemblage points."*). About 180 strings carry "seat" and the
+  change has not been made yet, so outward copy should follow the product
+  once it moves, not before. Until then a line that says *assemblage point*
+  sends a reader to a product that says *seat*.
+
+---
+
+## 3. Allostatic load: the best word in the round, with one condition
+
+McEwen and Stellar defined allostatic load in 1993 as the cost of chronic
+exposure to a heightened neural or neuroendocrine response to challenge that
+a person experiences as stressful: the body's wear from adapting, over a long
+time. [McEwen and Stellar 1993, Archives of Internal Medicine 153(18) 2093 to
+2101](https://pubmed.ncbi.nlm.nih.gov/8379800/), reached through the search
+index, **abstract only**, since direct fetch is blocked here (`MAP.md`, egress
+note). McEwen extended it in [1998](https://pubmed.ncbi.nlm.nih.gov/9629234/).
+
+**Why it is good.** It is the only phrase he has used that a clinician, a
+protocol buyer on X and a sceptic all already respect. It says the cost is
+cumulative and physical, which is the product's argument.
+
+**The condition.** In the literature, allostatic load is measured with
+biomarkers: cortisol, blood pressure, inflammatory markers. The instrument
+reads self report and a written story. So *"the instrument reads your
+allostatic load"* is false, and *"allostatic load"* set next to the product's
+Load figure is `GUARD.md`'s first uncheckable case: a true statement arranged
+to imply a false one. It is safe as his framing of why charge costs, under his
+name. It is not safe as a description of what the reading measures.
+
+---
+
+## 4. Every line of his, earlier rounds, in one table
+
+Oldest first by source. `pass` means both gates found nothing, and the last
+column still decides.
+
+| Source | His line | refuse.js | Voice | Where it may go |
+|---|---|---|---|---|
+| `TASKS.md` 0q, 20 September, PO | Atuned is a world's first neurosomatic tool that heals the mind body connection. | pass | pass | **retired by him.** He replaced the claim with the mechanism, `BRAND.md` section 5. Kept here so nobody revives it by accident. The medical rule does not catch *heals* without a named condition |
+| `TASKS.md` 0r, 20 September, FN6 | What if you could wave it away? | pass | pass | cold. His benchmark form, `README.md` |
+| same | What if you could see yourself clearly? | pass | pass | cold. `MARKETING-social.md` 3a line 12 |
+| same | What if you could look into a mirror and see the programming running at every atom in your body? | pass | pass | page. *Every atom* is a promise of resolution the instrument does not have; it reads 112 addresses |
+| same | This is Atuned. Holistic wellness for the body mind complex. | pass | **fails, soft** | held. `MARKETING-social.md` section 10, question 5 |
+| `TASKS.md` 0x, 20 September, FN | Letting me know that mindset programming is the cause of mental, physical and spiritual disease and stagnation. | pass | pass | byline. An outcome claim on *disease* |
+| same | It's a stress response from our story that separates the mind and body. | pass | pass | page |
+| same | This is a purpose based product. | pass | pass | page |
+| same, FN1b | Human potential unlocked. | pass | pass | page, on the purpose beat. Not cold, `MARKETING-social.md` 3c |
+| same, FN2 | No one is coming to save you. Do it yourself. The software is the key and the roadmap. You are the door. | pass | pass | page, as ruled. Not cold, and it contradicts the floor direction on one result page, `MARKETING-social.md` section 10, question 1 |
+| `TASKS.md` 0g2, 20 September, NF | Our bodies are naturally expressive. Stress forces the body to contract. | pass | pass | page. The first beat of his narrative, `BRAND.md` section 3 |
+| same | There is nothing like this. It holds up a mirror to you and peers directly into your soul. | pass | pass | byline. `MARKETING-social.md` 3c: recruits grid level 5, who wants magic |
+| same | This is you. We help you become the best version of yourself. In mind, body, spirit and soul. | pass | pass | byline. *Best version* is the shelf's phrase; the product's is subtraction, BL below |
+| `TASKS.md` 0i2, 20 September, BL | The reality is that you're already the most powerful version of yourself. You're already there. It's the limiters that are inhibiting you. So we want to find the limiters and release the limiters. | pass | pass | page. `BRAND.md` section 1 compressed it into the brand's one sentence |
+| `TASKS.md` 08i, 21 September, CN1 | Our journal is a container. It is a sacred space. In this space we speak freely. | pass | **fails, soft** | held on a surface: *sacred space* is in the refused lexicon. Byline only |
+| same | And in that story, our essence is revealed. | pass | pass | page |
+| `DECISIONS.md`, "What the practice is for" | This is the practice of finding the biases that have conditioned our behaviour in ways that are against our better nature, our intentions, and the lives that we truly seek to live. | pass | pass | byline, page |
+| same | This is a path of liberation. | pass | pass | byline |
+| same | Turning decades into months, and showing your true nature, revealed. Without judgment. With the purpose of becoming better people. Regardless of our score. | pass | pass | page. `DECISIONS.md` calls *turning decades into months* a time claim and not an outcome claim. *Regardless of our score* is the ruling that coherence is not a rank |
+| `DECISIONS.md`, "The devil is ordinary" | A frozen nervous system acting adversarially against our intentions. | pass | pass | byline. The best single definition of a saboteur anywhere in the repository |
+| `DECISIONS.md`, "The ladder, ruled" | I had to release 15,000 by the time I was 50. | pass | pass | byline, as proof of origin. His own number, about himself |
+| `TASKS.md`, 26 September, DM | attuned is about reading someone's essence, and giving the tools to radiate that essence and become the person they've always wanted to become. | pass | pass | byline, page |
+| `TASKS.md`, 26 September, EN | Your story is your story, and your experience is your experience. Keep the experience, drop the stress that holds it. | pass | pass | cold. **The best cold line he has written**: no charge named, no claim, a mechanism in eleven words, and right for a reader at the floor |
+| same | This is integrative somatic healing, using a rapid release technique, created by the very person who needed it most. | pass | pass | byline. *Healing* is settled by `BRAND.md` section 5 |
+| `TASKS.md` CN, 26 September, his funnel note | the spiritual journey is not for the weak. So we made it easy. | **refused, voice**: *journey* | **fails, soft** | held. He corrected it himself in the next breath, below |
+| same | Well, the spiritual journey is deeply personal. It's also mechanical. That's this. | **refused, voice** | **fails, soft** | held on *journey*, which both gates refuse by name. The idea, personal and mechanical at once, is the position |
+| same | It's a mirror that exposes your inner world so you can see you running everywhere and know it by name, and know how to integrate it. | pass | pass | page |
+| same | This is a purpose based product. It's a results driven product. | pass | pass | page. *Results* needs the answer to `TASKS.md` CO Q2 before it goes near the guarantee |
+| `TASKS.md` FD, 26 September, the mission | This is the lie. It's the character that's not real. | pass | pass | byline. The whole mission, as set, is `BRAND.md` section 4 |
+| same | The only way to experience truth is to touch it yourself. | pass | pass | byline, page |
+| same | This book is not mystical or magic. | pass | pass | byline. The noun is *book*, and `BRAND.md` section 4 says it stays book |
+| `TASKS.md` GS, 27 September, the opening screen | This is a mirror. We hold up every story that you share, show it where you live, and give you a protocol to release the bias, release the conditioning, release the charge that causes you pain, so that you can live your highest experience of life, pain and disease free. | pass | pass | page, ruled for the opening screen. The last four words are open with him, `DECISIONS.md` |
+| same | It's find the stories, empty the body of stories, period. | pass | pass | byline. The purpose of the program, in his words |
+| `CLAUDE.md`, the loop and the centre | What is Atuned? Your avatar. | pass | pass | page |
+
+**The device that runs through all of it is the mirror.** He reaches for it in
+six separate dictations: FN6, NF, the practice framing (*"A mirror held up to
+you with the practice that aids the spiritual journey"*), the funnel note, the
+opening screen and this round. Nobody gave it to him and nobody has to argue for it.
+It is also the one image that sits comfortably on the instrument shelf,
+because a mirror is an instrument: it shows what is there and has no opinion
+about it. `BRAND.md` section 4 already makes this argument about his mission.
+**The recommendation is to treat the mirror as the brand's recurring device**,
+with the rule `AESTHETIC.md` section 9 already sets for images: the mirror
+shows, and nothing resolves in it on screen.
+
+### Compressions, and these are ours
+
+Each one was run through both gates on 27 September and passes both. None of
+them replaces a line of his. Each one exists so a page with twelve words of
+room has something that keeps his meaning.
+
+| Ours | From his | Note |
+|---|---|---|
+| Source OS. The operating system of awareness. | IN4 | The name under the wordmark, given its meaning. Cold safe: no charge, no claim |
+| An ontological instrument. It reads the human complex at four resolutions: physical, mental, architectural and celestial. | IN1, IN4 | Keeps *ontological* and *resolutions*, drops *wellness*. Section 5, question 1 |
+| It holds a mirror up to your being and shows what is running at every resolution. | IN4 | His sentence with its last clause cut, not rewritten |
+| The patterns that block the flow, found and released one address at a time. | IN5 | Drops *helps*, keeps his mechanism |
+
+One compression was tried and failed: *"Not a wellness app. An instrument for
+the field you are running."* The voice gate refuses *wellness* even when the
+sentence denies it, and that is right, because naming the shelf you are
+leaving is still standing on it.
+
+---
+
+## 5. Questions for him
+
+Each one is open. None is answered for him by default.
+
+1. **Is the category noun *wellness* or *instrument*?** His line this round:
+   *"this is an ontological wellness app."* `BRAND.md` section 2 puts the
+   product on the instrument shelf: *"The shelf is instruments, not wellness."*
+   The voice gate refuses *wellness*. Three ways:
+   - **Ontological instrument.** Keeps his new word and the shelf. Costs the
+     search term people actually type.
+   - **Ontological wellness app, as said.** It is found by anyone searching
+     for wellness. The cost is the position: it sits the product beside the
+     products `BRAND.md` says it is not, and `BUYERS.md` level 5, who wants
+     magic, arrives expecting it.
+   - **Wellness in the ad metadata only, instrument on every page.** Found by
+     the search and read correctly on arrival. Costs a small mismatch
+     between what people search for and the first line they land on.
+2. **Disease, in three of his lines.** *"the mental and physical and spiritual
+   disease that come with it"* (this round), *"mindset programming is the cause
+   of mental, physical and spiritual disease"* (FN) and *"pain and disease
+   free"* (the opening screen). Neither gate catches them, because the medical
+   rule matches a named condition. `BRAND.md` section 5 records how he settled
+   the word *heals*: he replaced the claim with the mechanism. The same move is
+   available here, and it is his to make or refuse. Keep the three under his
+   byline only, which is the team's recommendation, or rule them onto pages as
+   they are.
+3. **Allostatic load: his framing, or a product claim?** Section 3. Under his
+   byline it is the strongest bridge the product has to the literature. On a
+   surface beside the Load figure it implies a biomarker measurement the
+   instrument does not make. Byline only is the recommendation.
+4. **The mirror as the recurring device.** Adopt it across the landing, the
+   newsletter masthead and the address series, or keep it to the opening
+   screen where it is already ruled. Adopting it costs nothing to build. The
+   risk is repetition, which the address series would have to earn.
+
+---
+
+## What was run
+
+    27 September. Every line in sections 1 and 4, his and ours, through
+    marketing/refuse.js check() and through check.py in file mode, one run,
+    with the canary the directory's gate uses. Voice gate exit 1, as expected:
+    four of his lines and one of ours fail on the soft lexicon, named above.
+
+The negation guard in `refuse.js` was fixed the same day (it read across
+sentence ends, see that file). The verdicts above were taken after the fix.

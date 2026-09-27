@@ -24,6 +24,7 @@ This directory is that lookup, built and measured. Nothing in it touches
     node marketing/hooksim.js --sweep       the sensitivity tables alone
     node marketing/field.js        the panel, and its four validation groups
     node marketing/refuse.js "a line"       one line against the nine rules
+    node marketing/testimony.js    the simulated testimonial exercise
 
 Read the counts off the run. This file does not restate them.
 
@@ -38,12 +39,20 @@ Read the counts off the run. This file does not restate them.
     match.js      the lookup. A field goes in, a line comes out
     refuse.js     the guard, as a gate that returns a verdict on a string
     hooksim.js    the measurement, and what it is honestly measuring
+    testimony.js  the testimonial exercise: first person drafts in the voice
+                  of the reference fields, every number off the engine,
+                  eight checks, and nothing publishable as a testimonial
     tests.js      the gate for this directory
 
     MAP.md        what each charge responds to and what closes the page,
                   sourced row by row, with the unsourced rows said plainly
     AESTHETIC.md  the design language, stated as rules, no hex values
     GUARD.md      the line, the argument for it, and its measured price
+    LINES.md      his own lines, verbatim, sourced, gated, and where each may go
+    TESTIMONY.md  what the testimonial exercise showed, and what to do next
+
+Every brief in the repository, this directory's and the port briefs, is
+indexed with its status in `docs/briefs/README.md`.
 
 ---
 
@@ -230,8 +239,9 @@ falsifiable rather than doctrinal.
 
 Passes:
 
-    node marketing/tests.js                     26 September. 242 assertions,
-                                                0 failures
+    node marketing/tests.js                     27 September. 354 assertions,
+                                                0 failures. It was red on
+                                                arrival that day, see below
     python3 .claude/skills/atuned-voice/check.py  no hard failures on every
                                                 copy field, run from tests.js
                                                 with a canary that must fail
@@ -254,6 +264,26 @@ H06's proof, which still gave the coherence quotient as intention times
 integrity over resistance, states the fitted model. The call now reads a file
 of the shown copy in one run, names every finding by hook and field, and
 carries a canary line that has to be caught.
+
+**27 September, three repairs, each found by running something rather than
+reading it.**
+
+- **The gate was red before anything here changed.** Commit `bb2cbe0`, the
+  CQ audit, made the band word read the printed number, so Ana's expression
+  of 30.7 now prints 31 and reads level 4, not 3. Her CQ and the law sum did
+  not move, so the pin in `field.js` was re-taken with the commit named, as
+  THE KNOWN ANSWERS says to. The level 1 refusal stays 35, the same people the
+  engine's own referral reaches. `proto/ritual/losssim.js` carries its own
+  typed copy of the same pin and now fails its level check; it belongs to
+  another seat and was not touched.
+- **The negation guard in `refuse.js` read across sentence ends.** `norm()`
+  strips the full stop the guard stops at, so *"Nothing is hidden. Act now."*
+  and *"No fluff. Only 3 spots left."* both passed. The rules now run one
+  sentence at a time. Every verdict on `hooks.js` is unchanged, and
+  `tests.js` 22 holds it.
+- **The testimonial rule caught a user count and never a user voice.** The
+  shelf's own testimonial, *"Life changing, highly recommend"*, passed all
+  nine rules. Four narrow phrases now refuse it, and `tests.js` 23 holds it.
 
 Not been through, and said rather than left to be discovered:
 

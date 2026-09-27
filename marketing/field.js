@@ -92,6 +92,18 @@ const { S, CHARGES, SINAMES, PEOPLE, LAWSET, buildSoul, compute } = E;
    not wait on the owner's open question 1. match.js follows the engine. grid
    stays on CQ, because the tier word is on CQ until he rules.
 
+   AND IT MOVED AGAIN ON 27 SEPTEMBER, BY ONE LEVEL, FOR ONE ARCHETYPE.
+   Commit bb2cbe0 (TASKS.md IK, the CQ audit) made tierOf classify the number
+   the screen prints, Math.round, instead of the raw figure, because 70.6
+   printed "CQ 71, gaining" beside "Gaining 61 to 70". Ana's expression is
+   30.7 before and after; it now prints 31 and reads Incoherent, level 4,
+   where it read Corrupt, level 3. Her CQ, the law sum and every other pin
+   are unchanged, so the engine moved inside the ruling and the pin is
+   re-taken with the commit named. Measured the same day on the panel at
+   seed 20260920: the level 1 refusal stays 35 and the engine's own referral
+   stays 35, the same people; 204 read level 4 or below on expression where
+   221 did, all of the difference jittered Derek rows at a band floor.
+
    role and state are NEW here and they are the owner's own two lists from
    TASKS.md FN5, assigned by hand and labelled ASSIGNED above. */
 const PANEL = [
@@ -101,7 +113,7 @@ const PANEL = [
   { nm: 'Angela', w: 150, grid: 7,  cq: 64.4, exGrid: 7,  ex: 64.4, role: 'performer', state: 'grief stricken' },
   { nm: 'Sofia',  w: 140, grid: 8,  cq: 72.9, exGrid: 8,  ex: 72.8, role: 'performer', state: 'overwhelmed' },
   { nm: 'James',  w: 100, grid: 5,  cq: 42.3, exGrid: 4,  ex: 37.2, role: 'executive', state: 'anxious' },
-  { nm: 'Ana',    w: 50,  grid: 5,  cq: 41.1, exGrid: 3,  ex: 30.7, role: 'creative',  state: 'grief stricken' },
+  { nm: 'Ana',    w: 50,  grid: 5,  cq: 41.1, exGrid: 4,  ex: 30.7, role: 'creative',  state: 'grief stricken' },
   { nm: 'Gordon', w: 35,  grid: 2,  cq: 17.5, exGrid: 1,  ex: 7.9,  role: 'executive', state: 'anxious' },
   { nm: 'Rosa',   w: 15,  grid: 10, cq: 97.0, exGrid: 10, ex: 97.0, role: 'performer', state: 'burned out' }
 ];
