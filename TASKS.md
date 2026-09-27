@@ -22058,3 +22058,46 @@ failure, the Field's frame rate under each lighting and the boot
 sheet's fade end timing. Load average measured at 15.76 against 4
 cores. Environmental, reproduced, not a regression, matching the
 project's own rule to reproduce before trusting a failure either way.
+
+## JA. Masks and pace settled, CQ real time clarified, a status check across the board
+
+His words, verbatim: "for feedback for the masks. Yeah, we want the
+outline suggestive. It's really about the color. For the release
+pace, I don't know if I, I think it's user driven. I don't know if I
+have a an answer for number two, unless you are meaning that in a way
+that I'm not answering. I don't know what you mean by should the CQ
+style number drop. CQ, DQ, and SQ are calculated in real time. So when
+a person adds to the story, it adjusts the numbers. When they release,
+it adjusts the numbers. Oh, it looks like I already answered this.
+Okay, good. If you have all these notes, ignore. If you have
+refinement of the notes, add. Continue building. I just want to make
+sure so far. Are the energetics pages and the compass updated? Yes or
+no? Is the release protocol updated? Yes or no? Has everything been
+touched that I need touched? Yes or no? And if it has, give me a new
+build."
+
+Three open questions closed, no code follows from any of the three:
+the mask outline stays at half intensity, suggestive on purpose, the
+color carries it and contrast is not the point. The release pace is
+user driven by construction already, since a run only happens when
+the person runs one, there is no fixed timer to tune. CQ, DQ and SQ
+already recompute the instant the story or a release changes them,
+which is the live readout already being built into `release.js`, not a
+nine day settle. The nine days belongs only to the masks mockup's own
+fade animation, a cosmetic stand in for a slower visual, never the
+product's own arithmetic.
+
+Status, answered plainly rather than folded into a longer paragraph:
+Compass is updated and shipped (`abcdc12`). Energetics is not, only a
+design only mockup exists at `proto/energetics-art`, nothing wired
+into the running app. The release protocol's own rewrite, the real
+voice script, is shipped (`2c6e38b`); the live CQ, DQ, SQ readout on
+top of it is still being built. Not everything asked for this session
+is touched yet: three pieces are still in flight (the three imprint
+versions on the Story page, the live readout on the release screen,
+and the Reading card's identity line, summary and labels), and three
+more were built only as design mockups on his own instruction, not
+wired into the product (the masks, the Energetics pages, the badges
+and scoring timeline). No build sent on this round, since the honest
+answer to his third question is no, not yet, and a build now would
+just be replaced the moment the three in flight pieces land.
