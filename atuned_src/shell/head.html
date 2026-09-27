@@ -368,7 +368,7 @@ body.lumen{
    him and unchanged across both rulings. The tools draw on it, and the vibrant
    hues above were chosen to sit on this as well as on paper. */
 body.lumen .stage,body.lumen #emap,body.lumen #cone,body.lumen #cv,
-body.lumen .cone-cv,body.lumen .cone-hint,body.lumen .pm-well{background:#101010}
+body.lumen .cone-cv,body.lumen .cone-hint,body.lumen .cone-key,body.lumen .pm-well{background:#101010}
 body.lumen .stage{--ink:#F7F7F7; --mid:#B6B6BC; --dim:#8C8C94;
  --panel:#171717; --panel-2:#1F1F22; --sunk:#0A0A0A;
  --edge:rgba(255,255,255,.14); --edge-2:rgba(255,255,255,.24);
@@ -2680,6 +2680,21 @@ body:not(.tab-field) .keylo{display:none}
 .cone-hint{margin:0;padding:4px 12px 10px;font-size:11.5px;line-height:1.5;
  background:var(--sunk);border-radius:0 0 var(--r-s) var(--r-s);
  color:var(--dim);pointer-events:none}
+/* THE KEY TO REGULATION AND LAYERS, which used to be painted across the
+   figure at nine and a half pixels (ui/cone.js, coneKey). On the well, like
+   the hint, and in the name rail's own type so the two read as one surface:
+   the label is .cn-nq's quiet 11 and 500, the name is .cn-nu's 12.5 in its
+   colour. The value drops to the mid ink, because the colour already says
+   which arrow and the number is the one thing that should not shout. */
+.cone-key{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0;padding:8px 12px 4px;
+ background:var(--sunk)}
+.ck-g{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ck-h{font-size:11px;font-weight:500;letter-spacing:.02em;color:var(--dim);line-height:1.3}
+.ck-rows{display:flex;flex-wrap:wrap;gap:3px 14px}
+.ck-r{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;
+ line-height:1.35;color:var(--ax)}
+.ck-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:500;
+ color:var(--mid)}
 .cone-txt{display:flex;flex-direction:column;gap:9px}
 .cone-p{margin:0;font-size:13px;line-height:1.6;color:var(--mid);max-width:68ch}
 /* ---------- coherence over time ---------- */
@@ -3755,7 +3770,14 @@ body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
    column takes its own scrollbar, so the figure and its switches stay put
    while the column beside them moves. */
 #cone.tabmode{align-items:stretch;justify-content:stretch}
-#cone.tabmode .cone-card{height:100%;min-height:0;overflow:hidden}
+/* AND THE CARD SCROLLS NOW, because the column that scrolled is gone. The
+   information went to the rail, which left overflow:hidden guarding nothing
+   but the figure's own well, and the Regulation and Layers key made that well
+   taller than the host. Measured 27 September with both switches on: at 1280
+   by 720 the hint ended 25 pixels past the card and at 1024 by 768 it ended
+   136 past, cut off with no way to reach it. With both off the figure still
+   fits, so nothing scrolls unless the key is open. */
+#cone.tabmode .cone-card{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto}
 #cone.tabmode .cone-body{height:100%;min-height:0}
 #cone.tabmode .cone-info{max-height:100%;min-height:0;padding-right:4px}
 #eshelf{display:none}
@@ -4462,7 +4484,17 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     a number the controls then grow past. Still upper left of the figure, which
     is the ruling. */
  .cone-fig{display:flex;flex-direction:column}
- .cone-ctl{position:static;order:-1;margin:0 0 6px}}
+ .cone-ctl{position:static;order:-1;margin:0 0 6px}
+ /* AND THE NAMES GO UNDER THE FIGURE, which is what the comment above
+    .cone-fig has always said this band does and what it never did: the rails
+    come first in the markup, so in flow they printed first. Measured 27
+    September at 390 by 844 on Marcus: the eight names took the 250 pixels
+    between the switches and the canvas, and the viewport ended 220 pixels
+    into the figure. A block of small type in front of the hero graphic, and
+    the graphic cut off by the fold behind it, is the complaint in FW. Order
+    alone moves them, after the key and the hint, and the switches keep their
+    place above the figure, which is the ruling. */
+ .cn-nms{order:1}}
 .boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
  animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}

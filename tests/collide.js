@@ -151,6 +151,71 @@ console.log('\n=== compass controls clear of the axis names, every lighting ==='
   console.log('  '+w.join('x')+': '+lights.length+' lightings, '+nb+' controls against '+nr+' names, '
    +(bad.length?'overlapping on '+bad.join(' '):'none overlapping'));}
  await p.evaluate(k=>setLighting(k),was);}
+/* ============================================================
+   No words painted on the Compass figure but its two pole words, and
+   the figure whole inside its own canvas.
+
+   FW in TASKS.md, 27 September: "The Compass is completely broken. The
+   hero graphic is being truncated by a bunch of small text." Regulation
+   and Layers painted thirty words and numbers across the figure at 9.5
+   to 10.5 pixels, and at 390 the halo sat on the canvas's top edge.
+   Nothing above could see either: a painted word has no box. So the
+   canvas's own fillText is wrapped and every string it is handed is
+   read, with all three switches on and the figure turned, which is the
+   state that painted the most. The pole glyphs are measured against the
+   canvas the same way, and the key that now carries the words is held
+   to the type floor, under the figure and not on it.
+
+   Run first against the build before the fix: it failed at both widths
+   on the painted words, and at 390 on the halo.
+   ============================================================ */
+console.log('\n=== compass figure carries no painted words, and fits its canvas ===');
+for(const w of [[1680,1020],[1280,800],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ for(const turned of [false,true]){
+  const res=await p.evaluate(tn=>{
+   loadP(0);setTab(TAB.COMPASS);render();
+   CONE.reg=true;CONE.layers=true;CONE.flat=!tn;CONE.tilt=0.92;coneOpen(true);
+   const said=[];const g=CONE.g;const ft=g.fillText;
+   g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
+   /* the halo and the fork go through coneGlyph, which strokes a Path2D at a
+      translate; the pole words sit 22 inside each, so they bound the glyphs */
+   const at=[];const tx=g.translate;
+   g.translate=function(x,y){at.push(y);return tx.apply(this,arguments);};
+   coneDraw();g.fillText=ft;g.translate=tx;
+   const cv=CONE.cv,H=cv.height/CONE.dpr,bx=cv.getBoundingClientRect();
+   const key=document.querySelector('#cone .cone-key');
+   const kb=key&&key.getBoundingClientRect();
+   const small=[...document.querySelectorAll('#cone .cone-key *')].filter(e=>
+    e.childNodes.length&&[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim())
+    &&parseFloat(getComputedStyle(e).fontSize)<11).map(e=>e.textContent.trim());
+   /* on a phone the names follow the figure; at desk they flank it */
+   const nm=document.querySelector('#cone .cn-nms');
+   const nmb=nm&&nm.getBoundingClientRect();
+   const res={said:said.filter(s=>s!=='Coherent'&&s!=='Decoherent'),
+    poles:said.length-said.filter(s=>s!=='Coherent'&&s!=='Decoherent').length,
+    glyphs:at.length,top:Math.min(...at),bot:Math.max(...at)+17,H:H,
+    key:!!key,keyOn:kb?kb.top>=bx.bottom-0.5:false,small:small,
+    rows:key?key.querySelectorAll('.ck-r').length:0,
+    /* a build without the key has none of these, and is reported, not thrown */
+    want:typeof coneKey==='function'?CONE_HI.length+CONE_LO.length
+     +coneRegLaws().up.length+coneRegLaws().dn.length:-1,
+    phoneNames:nmb&&innerWidth<900?nmb.top>=bx.bottom-0.5:null};
+   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;coneOpen(true);
+   return res;},turned);
+  const tag=w.join('x')+(turned?'/turned':'/flat');
+  ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
+  ok(res.poles===2&&res.glyphs===2,tag+': the pole words and glyphs were not found ('
+   +res.poles+' words, '+res.glyphs+' glyphs), so nothing was checked');
+  ok(res.top>=0&&res.bot<=res.H,tag+': a pole glyph runs off the canvas, '
+   +Math.round(res.top)+' to '+Math.round(res.bot)+' in '+Math.round(res.H));
+  ok(res.key&&res.rows===res.want,tag+': the key under the figure carries '+res.rows+' rows, want '+res.want);
+  ok(res.keyOn,tag+': the key sits on the figure rather than under it');
+  ok(res.small.length===0,tag+': key text under the 11px floor: '+res.small.join(', '));
+  if(res.phoneNames!==null)ok(res.phoneNames,tag+': the names print in front of the figure');
+  console.log('  '+tag+': '+(res.said.length?res.said.length+' painted words':'no painted words')
+   +', glyphs '+Math.round(res.top)+' to '+Math.round(res.bot)+' of '+Math.round(res.H)
+   +', key '+res.rows+' rows');}}
 /* the wheel again, which is what every check below is measured on, and a
    stored view outlives the page */
 await p.evaluate(()=>fviewSet('wheel'));
