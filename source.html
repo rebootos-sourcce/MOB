@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="a7922af 2026-09-26 22:09"><head><meta charset="utf-8">
+<html lang="en" data-build="11830df 2026-09-27 00:11"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1404,9 +1404,61 @@ body:not(.tab-field) #frend{display:none!important}
 #frend.off-saboteurs .L-patterns,#frend.off-saboteurs .F-sab,
 #frend.off-complexes .T-cx,#frend.off-complexes .F-cx,#frend.off-hyper .T-hy,#frend.off-hyper .F-hy,
 #frend.off-character .T-sup,#frend.off-character [data-call=chains],
-#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains,#frend.off-masks .L-masks{display:none}
-/* and the wheel's wash, which is the page's own canvas and not the picture's */
-body.tab-field.noshadow #bgaura{visibility:hidden}
+#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains,#frend.off-masks .L-masks{
+ opacity:0;visibility:hidden;pointer-events:none!important;
+ transition:opacity var(--t-element) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-element)}
+/* A LAYER ARRIVES AND LEAVES, FJ in TASKS.md: "where are my animations?" It
+   was display:none, which cannot be animated, so a switch was a cut. Now the
+   layer fades out in 220ms on an ease in, a quadratic one, the canvas's own
+   curve: the steeper ease in the motion table measured as ninety
+   milliseconds of nothing after the press, and is taken out of the picture by
+   visibility once it has, so a hidden layer is still not drawn and still not
+   pressable; and it comes back on --t-context, 420ms, eased out into place,
+   the named step nearest the wheel's own ENTER_SPAN of 380, because every
+   duration in this sheet is one of the four steps and the design gate holds
+   that. Every selector here is inside :where so
+   it weighs nothing, and each off rule above wins its leaving timing over it
+   without an order to keep. The wheel does the same on its canvas, layFade in
+   ui/wheel.js, with the sweep round from twelve o'clock a canvas can clip. */
+:where(#frend) :where([class^="L-"],[class^="T-"],[class*=" F-"]){
+ transition:opacity var(--t-context) var(--ease-out),visibility 0s linear 0s}
+/* THE WORDS COME IN WITH THE ZOOM, FJ. txtZoomA in ui/component.js reads the
+   picture's zoom and rings.js writes it here as --fztx, 0 at the whole
+   picture and 1 from 1.75x in. At 0 the host carries notext and the words
+   are taken out, not set faint. The core figure and the gate pills are not
+   words and are not here. */
+#frend [data-call],#frend .frnm{opacity:var(--fztx,1);transition:opacity var(--t-micro) var(--ease-out),visibility 0s linear 0s}
+#frend.notext [data-call],#frend.notext .frnm{visibility:hidden;transition:opacity var(--t-micro) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-micro)}
+/* the names a zoom brings in, set level beside their marks in page pixels, so
+   eleven pixels is eleven pixels at any zoom and never under the floor */
+.frnm{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.frnm span{position:absolute;left:0;top:0;white-space:nowrap;font-size:11.5px;font-weight:500;
+ line-height:1;letter-spacing:.005em;color:var(--c);
+ text-shadow:0 0 3px var(--g),0 0 3px var(--g),0 0 2px var(--g)}
+.frnm span.hid{visibility:hidden}
+.frnm span.sel{font-weight:600}
+/* THE TENSION RUNS, FJ. The pulses on the renditions' threads sit in their
+   own picture over the main one, so the main picture, thousands of marks, is
+   never repainted for them: only this sheet of a few hundred paths is. */
+.frflow{position:absolute;left:0;top:0;pointer-events:none;will-change:transform}
+/* the picture a switch replaced, dissolving over the new one, ringsDraw */
+.frghost{position:absolute;left:0;top:0;pointer-events:none}
+/* A PULSE RUNS AT ONE SPEED, which is the one place this sheet has a linear
+   curve on purpose: an ease would make every pulse surge and stall once a
+   period, and a wave on a wire does neither. Its speed is the reading. */
+.frflow path{fill:none;stroke-linecap:round;animation:frflow var(--d,3s) linear infinite;
+ animation-delay:var(--ph,0s)}
+/* both ends lengths, or the two would not interpolate and the pulse would
+   jump once a period instead of running: measured, a bare number against a
+   calc of a variable reads as one fixed value all the way through */
+@keyframes frflow{from{stroke-dashoffset:0px}to{stroke-dashoffset:calc(var(--p,64) * -1px)}}
+@media (prefers-reduced-motion:reduce){.frflow{display:none}}
+/* and the wheel's wash, which is the page's own canvas and not the picture's.
+   Its fade is an opacity drawAura sets, auraK in ui/wheel.js; this takes the
+   canvas out once that fade has run, and puts it back at once on the way in,
+   so the class never cuts a fade short. */
+#bgaura{transition:visibility 0s linear 0s}
+body.tab-field.noshadow #bgaura{visibility:hidden;transition:visibility 0s linear var(--t-element)}
 /* ============================================================
    THE GLASS BAR. ui/fieldbar.js, ported from proto/glassbar, DK to ED in
    TASKS.md. It replaced the layer row that stood here and the depth row.
@@ -1692,44 +1744,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    in flow, on every tab, and it needs none of the pinning. */
 .bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
  background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
-.bal-t{display:flex;justify-content:space-between;align-items:center;gap:7px;
- font-size:11px;color:var(--dim);white-space:nowrap}
-/* the end the field leans to. the number in the middle is the amount, the
-   lit end is the direction, and neither repeats the other. */
-.bal-t .on{font-weight:600}
-.bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
-.bal-n{flex:1 1 auto;text-align:center;display:flex;justify-content:center}
-/* THE VALUE SLOT CARRIES A VALUE. The `em` rule dressed the one string this
-   slot ever held that was not a reading, "not enough held to read", set
-   between the words masculine and feminine so the line read as a sentence
-   about the feminine pole. The slot draws the pill in every state now and an
-   empty pill carries a dash, so the rule has no writer and goes with it. The
-   reason the direction could not be called keeps its full form one door away,
-   in the drill the strip opens. */
-/* the two poles, as glyphs. ring and not fill, like every other icon here.
-   masculine on the left and feminine on the right, mirrored against the body
-   on the owner's ruling, which is what facing a mirror does. */
-.bal-g{display:inline-flex;align-items:center;flex:0 0 auto;color:var(--dim)}
-.bal-g svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
- stroke-linejoin:round}
-.bal-g.on{color:var(--ink)}
-/* ONE LINE WITH A BREAK AT THE CENTRE, and the fill runs out of the break
-   toward the side the field leans. A track with a dot on it says "you are at
-   this point on a scale", which is not the reading. The reading is how far
-   off centre and which way, and that is a bar with an origin. */
-.bal-tr{position:relative;height:6px;border-radius:3px;background:var(--sunk);
- overflow:hidden}
-.bal-f{position:absolute;top:0;bottom:0;border-radius:3px;opacity:.9;
- transition:width .3s cubic-bezier(.22,1,.36,1), background var(--t-surface) var(--ease-out)}
-/* the break. It sits above the fill so even reads as a gap and not as a
-   seam, which is the whole reason it is there. */
-.bal-tr i{position:absolute;top:-1px;bottom:-1px;width:2px;left:calc(50% - 1px);
- background:var(--bg);z-index:2}
-.bal-m{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;
- transform:translate(-50%,-50%);transition: left var(--t-surface) var(--ease-out)}
-.bal-s{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
- background:var(--dim);border-radius:1px}
-.bal:hover .bal-tr{background:var(--panel-2)}
 /* the definition of the two ends of an axis, said once in the rail rather than
    only in a tooltip, because a tooltip is not reachable by a thumb. */
 .stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
@@ -1925,42 +1939,67 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
  color:var(--ink);letter-spacing:.01em;line-height:1.4}
 .lsec + .rblk{margin-top:14px;padding-top:16px}
 
-/* ---------- polarity bar ---------- */
-.polbar{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;
- background:var(--sunk);margin-bottom:4px}
-/* The fill used to start at the left edge, which drew two competing
-   quantities and left the reader to do the subtraction. It now starts at the
-   midline and grows outward, so an even field is a bar with nothing sticking
-   out and a hard lean is visible without reading a number. */
-.polbar .fill{position:absolute;top:0;bottom:0;left:50%;
- transition:width var(--t-context) var(--ease-out),left var(--t-context) var(--ease-out)}
-.polbar .fill.mal{left:auto;right:50%}
-.polbar .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--edge-2)}
-/* the two symbols on the ends, the same way the balance strip carries its
-   two. The one the field is leaning to lights. */
-.polbar .lb{display:inline-flex;align-items:center;gap:6px}
-.polbar .lb b{font-weight:500}
-.pol-g{display:inline-flex;align-items:center;color:var(--dim)}
-.pol-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
- stroke-linejoin:round}
-.pol-g.on{color:var(--c)}
-/* THE FIGURE CARRIES ITS OWN GROUND, because the fill reaches under it exactly
-   when the reading is strongest. The fill grows from the centre, so a benign
-   lean travels right into the right hand figure and a malignant lean travels
-   left into the left hand one, and each figure is only ever covered by one of
-   the two colours. Measured at a full lean each way, ink at .86 and 11 pixels:
-   12.48 to 1 over the bare trough, 5.48 over the malignant fill and 3.12 over
-   the benign one, which is the lightest colour in the palette. So the label
-   failed the 4.5 floor on exactly the leans that matter and passed everywhere
-   it did not. Both ends read 14.39 now.
-
-   The opacity is gone and the number sits on the panel colour, which is the
-   same pill grammar every other figure in this product already uses, so the
-   fill can run under it without deciding what the number is worth. */
-.polbar .lb{position:absolute;top:0;bottom:0;display:flex;align-items:center;
- font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);padding:0 10px}
-.polbar .lb b{background:var(--panel);border-radius:999px;padding:2px 7px;line-height:1}
-.polbar .l{left:0}.polbar .r{right:0}
+/* ---------- orientation and balance: one dial, two designs ----------
+   FJ in TASKS.md. axDial in ui/ui.js draws both from one spec: a symbol and
+   a share at each end, a break at the centre where even sits, and a fill out
+   of the break toward the heavier end, as long as the difference. The switch
+   at the head of the section picks the design for both at once. */
+.ax-pick{display:flex;align-items:center;gap:6px;margin:0 0 12px}
+.ax-pl{font-size:11px;color:var(--dim);margin-right:4px}
+.ax-pb{min-height:var(--tap);min-width:var(--tap);padding:0 14px;border-radius:999px;
+ border:1px solid var(--edge-2);background:none;color:var(--dim);font:inherit;font-size:12.5px;
+ cursor:pointer;transition:background var(--t-micro,120ms) cubic-bezier(.22,1,.36,1),color var(--t-micro,120ms) cubic-bezier(.22,1,.36,1)}
+.ax-pb:hover{color:var(--ink)}
+.ax-pb.on{background:var(--panel-2);color:var(--ink)}
+.polbar{margin-bottom:4px}
+.ax{position:relative;width:100%}
+/* the figure carries its own ground, the panel's pill, because the fill
+   reaches under it exactly when the reading is strongest: measured when this
+   was the orientation bar alone, ink at 11 pixels read 3.12 to 1 over the
+   benign fill bare and 14.39 on the pill. The design gate holds it. */
+.ax .lb{display:flex;align-items:center;gap:6px;font-family:var(--num);font-size:11px;
+ font-weight:500;color:var(--ink)}
+.ax .lb b{background:var(--panel);border-radius:999px;padding:2px 7px;line-height:1;font-weight:500}
+/* ring, never fill, like every icon here. The heavier end takes its colour */
+.ax-g{display:inline-flex;align-items:center;flex:0 0 auto;color:var(--dim);
+ transition:color var(--t-element) var(--ease-out)}
+.ax-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ax .lb.on .ax-g{color:var(--c)}
+/* the pole names, on both dials now. Empty on an unread dial and the row
+   keeps its height, so the layout does not move when a reading arrives */
+.ax-nm{display:flex;justify-content:space-between;height:14px;margin-top:5px;
+ font-size:11px;line-height:14px;color:var(--dim)}
+.ax-nm .on{color:var(--ink);font-weight:600}
+.ax-nm .ax-nl,.ax-nm .ax-nr{min-width:0}
+.ax-bar{display:block}
+/* A. BAR. The trough, as the orientation bar shipped */
+.ax-tr{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;background:var(--sunk)}
+.ax-tr .fill{position:absolute;top:0;bottom:0;width:0;opacity:.62;
+ transition:width var(--t-context) var(--ease-out),background var(--t-element) var(--ease-out)}
+.ax-tr .fill.rt{left:50%}
+.ax-tr .fill.lt{right:50%}
+/* the break sits over the fill, so even reads as a gap and not as a seam */
+.ax-tr .mid{position:absolute;left:calc(50% - 1px);top:0;bottom:0;width:2px;background:var(--bg);z-index:2}
+.ax-tr .lb{position:absolute;top:0;bottom:0;padding:0 10px;z-index:3}
+.ax-tr .lb.l{left:0}
+.ax-tr .lb.r{right:0}
+/* sex at birth, a reference point and not a reading, on balance only */
+.ax-tr .ax-sx{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
+ background:var(--dim);border-radius:1px;z-index:2}
+/* B. ARC. A gauge: the half ring over the top, the break at twelve, the fill
+   round the ring toward the heavier end, and a needle that lands on the lean
+   on an overshoot, because a needle arriving is a landing */
+.ax-arc{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;height:60px}
+.ax-arc .lb{flex-direction:column;gap:5px;padding-bottom:2px}
+.ax-svg{flex:0 1 120px;width:120px;height:60px;overflow:visible}
+.ax-trk{fill:none;stroke:var(--sunk);stroke-width:7;stroke-linecap:round}
+.ax-svg .fill{fill:none;stroke-width:7;stroke-dasharray:0 100;opacity:.8;
+ transition:stroke-dasharray var(--t-context) var(--ease-out),stroke var(--t-element) var(--ease-out)}
+.ax-svg .mid{stroke:var(--bg);stroke-width:2.5}
+.ax-svg .ax-sx{stroke:var(--dim);stroke-width:2;stroke-linecap:round}
+.ax-nd{transform-origin:60px 54px;transition:transform var(--t-context) var(--ease-land)}
+.ax-nd line{stroke:var(--c,var(--ink));stroke-width:2;stroke-linecap:round}
+.ax-nd circle{fill:var(--panel);stroke:var(--c,var(--ink));stroke-width:1.6}
 .polnote{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.55}
 
 /* ---------- icon grids ---------- */
@@ -5133,6 +5172,12 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
           one of them capitalised and the other not, which made them look like
           two readings rather than the two ends of one. Orientation is what is
           being read. The ends keep their names inside it. -->
+     <!-- TWO DESIGNS FOR ONE MECHANIC. FJ in TASKS.md, his words: "Orientation
+          and balance, those two elements need to be designed the same way,
+          it's the same mechanic. If I choose one, give me two different
+          designs." One switch, both dials. axDial in ui/ui.js. -->
+     <div class="ax-pick" id="axpick" role="radiogroup"
+      aria-label="Two designs for orientation and balance. The one picked draws both."></div>
      <div class="tier1">3 &middot; Orientation</div>
      <div class="polbar" id="polbar"></div>
      <!-- AND BALANCE COMES BACK INTO THE RAIL.
@@ -15141,6 +15186,36 @@ if(typeof ResizeObserver!=='undefined'){
   layout();render();}).observe(cv);}   /* the canvas, not the stage: the stage
     is a grid and the wheel's cell resizes without the stage doing so. */
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
+/* ============================================================
+   THE WORDS COME IN WITH THE ZOOM. FJ in TASKS.md, his words: "I shouldn't
+   see text when I'm zoomed all the way out. Text only fades in when I'm
+   zooming in."
+
+   One curve for all three pictures, read off the zoom each already keeps,
+   S.zoom on the wheel and FZ.s on Frames and Dial, and never off a clock:
+   hold the zoom still and the words hold still with it. At the whole
+   picture, 1x, the answer is 0 and nothing is set at all, not set faint.
+   The first notch of the scroll wheel, 1.12x, still reads 0, so a person
+   who nudges the wheel by accident gets no flash of type. From there it
+   rises on a smoothstep to full strength at 1.75x, five notches in: slow in
+   off the floor so the first letters arrive as a tint rather than a switch,
+   and slow out into full so the last notch does not snap either.
+
+   FIGURES ARE NOT WORDS. The number at the core and the percent in each
+   gate's pill stay at every zoom. The core figure is his own reversal, "what
+   happened to my CQ number at the centre of my circle? It's gone", and the
+   pill is his standard language for a value. Neither is a caption.
+
+   A WORD NOT SET IS STILL PLACED. Every run below still measures itself and
+   still records its box in LBL, marked with the strength it was set at, so
+   the gates that hold every label inside the ring and off every other label
+   keep holding the words that are about to arrive, at the zoom they arrive. */
+const TXT_Z0=1.12, TXT_Z1=1.75;
+function txtZoomA(z){var t=((+z||1)-TXT_Z0)/(TXT_Z1-TXT_Z0);
+ t=t<=0?0:t>=1?1:t; return t*t*(3-2*t);}
+/* the wheel's multiplier, set by drawWheel for its own frame and put back to
+   1 after it, so no other canvas surface inherits a zoom it does not have */
+var TXT_A=1;
 /* INWARD, ruled 26 September, CQ in TASKS.md: nothing on the Field sticks
    out past the ring. A radial run always read outward from its anchor, so
    every ring that named its members drew those names past itself: the
@@ -15152,14 +15227,15 @@ function radialTxt(s,ang,rad,size,c,a,w,inward){
  let rot=ang,left=Math.cos(ang)<0;if(left)rot+=Math.PI;
  g.textAlign=(left!==!!inward)?'right':'left';
  g.rotate(rot);g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
- g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
+ g.textBaseline='middle';
+ if(TXT_A>0.004){g.globalAlpha*=TXT_A;g.fillStyle=rgba(c,a);g.fillText(s,0,0);}
  /* the axis aligned box the rotated run actually occupies */
  var tw=g.measureText(s).width, sn=Math.abs(Math.sin(rot)), cs=Math.abs(Math.cos(rot));
  var bw=tw*cs+size*sn, bh=tw*sn+size*cs;
  var px=CX+Math.cos(ang)*rad, py=CY+Math.sin(ang)*rad;
  var off=(g.textAlign==='right'?-tw/2:tw/2);
  px+=Math.cos(rot)*off; py+=Math.sin(rot)*off;
- LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
+ LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh,set:TXT_A});
  g.restore();}
 /* A WORD WRAPPED ROUND ITS OWN ARC. Ruled 26 September, CQ in TASKS.md, on
    the seat names: "wrapped around their own domain so the Field keeps one
@@ -15187,25 +15263,28 @@ function arcTxt(s,am,rad,size,c,a,w,span,halo){
  if(span&&need>span){g.restore();return false;}
  const low=Math.sin(am)>0.25, dir=low?-1:1, rr=rad;
  g.textAlign='center';g.textBaseline='middle';
+ /* the halo fades with the word, or a word not yet set would leave its ground
+    behind as a dark smudge where it is about to be */
+ const set=TXT_A>0.004; g.globalAlpha*=TXT_A;
  let t=am-dir*need/2, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
  for(const ch of s){
   const cw=g.measureText(ch).width, th=t+dir*(cw/2)/rr;
   const x=CX+Math.cos(th)*rr, y=CY+Math.sin(th)*rr;
-  g.save();g.translate(x,y);g.rotate(th+dir*Math.PI/2);
-  if(halo){g.lineJoin='round';g.lineWidth=3;g.strokeStyle=halo;g.strokeText(ch,0,0);}
-  g.fillStyle=rgba(c,a);g.fillText(ch,0,0);g.restore();
+  if(set){g.save();g.translate(x,y);g.rotate(th+dir*Math.PI/2);
+   if(halo){g.lineJoin='round';g.lineWidth=3;g.strokeStyle=halo;g.strokeText(ch,0,0);}
+   g.fillStyle=rgba(c,a);g.fillText(ch,0,0);g.restore();}
   x0=Math.min(x0,x-size/2);y0=Math.min(y0,y-size/2);
   x1=Math.max(x1,x+size/2);y1=Math.max(y1,y+size/2);
   t+=dir*cw/rr;}
  /* ro is the run's true outer radius. The box is axis aligned round a curve,
     so its corners sit off the arc and past the ring even when every glyph is
     inside it; a gate asking how far a word reaches reads ro, not the box. */
- LBL.push({t:s,x:x0,y:y0,w:x1-x0,h:y1-y0,ro:rr+size*0.5});
+ LBL.push({t:s,x:x0,y:y0,w:x1-x0,h:y1-y0,ro:rr+size*0.5,set:TXT_A});
  g.restore();return {a0:Math.min(am-need/2,am+need/2),a1:Math.max(am-need/2,am+need/2),
   r0:rr-size*0.6,r1:rr+size*0.6};}
-function txt(s,x,y,size,c,a,w,fam){g.save();
+function txt(s,x,y,size,c,a,w,fam){if(TXT_A<=0.004)return;g.save();
  g.font=(w||400)+' '+size+'px '+(fam||'Inter, system-ui, sans-serif');
- g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}
+ g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a*TXT_A);g.fillText(s,x,y);g.restore();}
 function roundRect(x,y,w,h,r){
  if(g.roundRect){g.beginPath();g.roundRect(x,y,w,h,r);return;}
  g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);
@@ -15803,7 +15882,27 @@ try{window.__at&&window.__at('ui/tip.js');}catch(e){}
    clock is quantised to 12 steps a second and the whole paint is skipped when
    the inputs have not moved. Reduced motion pins the clock, so it paints once
    and never again. */
-var AURA_SIG=null;
+var AURA_SIG=null, AURA_OP=null, AURA_K={v:1,from:1,to:1,t0:0};
+/* THE SHADOW LAYER FADES LIKE EVERY OTHER. FJ, "where are my animations":
+   Shadow on the glass bar hid this canvas by a class between one frame and
+   the next. Its strength is multiplied in here instead, on the layers' own
+   timing, and only on the Field, where the switch is; the class still takes
+   the canvas out once the fade has run, see #bgaura in the sheet. It is an
+   opacity on a layer the compositor already holds, so a fade repaints
+   nothing: the wash is painted by its signature exactly as before. */
+function auraK(){
+ var want=(S.tab!==TAB.FIELD||layerOn('shadow'))?1:0, now=performance.now(), f=AURA_K;
+ if(f.to!==want){if(S.tab!==TAB.FIELD||!layMoving(now)){f.v=f.from=f.to=want;return f.v;}
+  f.from=f.v;f.to=want;f.t0=now;}
+ if(f.v===f.to)return f.v;
+ var e=now-f.t0;
+ if(want){var k=Math.min(1,e/ENTER_SPAN);f.v=k>=1?1:f.from+(1-f.from)*(1-Math.pow(1-k,3));}
+ else{var k2=Math.min(1,e/LAY_OUT);f.v=k2>=1?0:f.from*(1-k2*k2);}
+ return f.v;}
+/* off the Field the wash is always whole, so a person who turned Shadow off
+   on the Field does not find the Energy page's wash gone too */
+function auraWhole(){if(AURA_K.v===1||AURA_OP===null)return;
+ AURA_K={v:1,from:1,to:1,t0:0}; bg.style.opacity=AURA_OP;}
 function drawAura(r){
  const w=bg.width,h=bg.height;
  /* DQ IS OUT OF 100, SO THE WASH IS TOO. This read DQ/7, a ceiling set when DQ
@@ -15820,10 +15919,12 @@ function drawAura(r){
  const op=((LIGHT()?.16:.15)+r.radiance*.24).toFixed(2);
  const sig=[w,h,op,reach.toFixed(3),dens.toFixed(3),r.benign?1:0,r.darkB,
             r.radiance.toFixed(3),LIGHT()?1:0,t].join('|');
+ /* the layer's strength goes on the element every frame and outside the
+    signature, so the fade costs an opacity and never a repaint */
+ AURA_OP=op; bg.style.opacity=(op*auraK()).toFixed(3);
  if(sig===AURA_SIG) return;
  AURA_SIG=sig;
  bgx.clearRect(0,0,w,h);
- bg.style.opacity=op;
  /* the Root wash only on a read that says contracting. benign is null while
     CQ is still filling, and a partial CQ is not a reason to redden a field. */
  const warm=hx(r.benign===false?PAL.Root:PAL.Heart), lead=hx(PAL[r.darkB]);
@@ -16454,6 +16555,72 @@ function layToggle(k){var s={},on=layChosen(),k2;for(k2 in on)s[k2]=1;
  var i=layWhich(s); if(i>=0){S.view=i;LAYSET=null;} else LAYSET=s;}
 function layPick(i){S.view=i;LAYSET=null;}
 function effView(){return layNeeds(layVisible());}
+/* ============================================================
+   A LAYER ARRIVES AND LEAVES. FJ in TASKS.md, his words: "With my layers,
+   where are my animations?" A switch on the glass bar put its layer on or
+   took it off between one frame and the next, while the reading circles
+   beside it already swept and counted into place (crMotion, FE).
+
+   So a layer does what the Field did when it first assembled, on the same
+   numbers: ENTER_SPAN, 380ms, eased out on a cubic, so it decelerates into
+   place instead of stopping dead. It arrives as a sweep round the ring from
+   twelve o'clock, clockwise, which is Root first and Crown last, the order
+   the entrance takes the seats in, so a layer coming on reads as the body
+   filling with it rather than a picture fading up. It leaves faster, 220ms
+   on an ease in, because a thing leaving should not ask to be watched.
+
+   THE RING MAKES ROOM IN THE SAME BREATH. The shell, the pattern ring, the
+   core and the laws each sit at a radius set by how many rings are drawn,
+   and those snapped when a switch changed the count. They travel now, on
+   the same 380ms, so the domains coming on push the shell in rather than the
+   shell jumping.
+
+   A TARGET LANDS AT ONCE. A layer arriving is pressable from its first
+   frame, and a layer leaving takes its targets with it on the press, so a
+   pointer never finds a thing that is on its way out. Only the paint is in
+   motion.
+
+   A PERSON'S CHANGE MOVES, THE PROGRAM'S LANDS. A switch, the depth menu and
+   a zoom gesture stamp LAY_GEST, and only a change within a moment of one
+   animates. Loading a profile, restoring a view and every gate that sets a
+   depth directly get the end state on the next frame, the way reduced motion
+   always does: somebody who asked the machine to stop moving did not ask it
+   to move less.
+   ============================================================ */
+/* read at call time and not copied here: ENTER_SPAN is declared further down
+   this file, and a second 380 typed here would be a number that drifts */
+const LAY_OUT=220, LAY_SWEEP=420;
+var LAYF={}, LAYF_LAST=0, LAY_GEST=0, LGEO={v:null,from:0,to:0,t0:0};
+function layGesture(){LAY_GEST=performance.now();}
+function layMoving(now){return !REDUCED&&(now-LAY_GEST)<600;}
+/* one reading per layer per frame: v is how present it is, sw how far round
+   its arrival has swept, both 0 to 1 */
+function layFade(V){
+ var now=performance.now(), stale=(now-LAYF_LAST)>250; LAYF_LAST=now;
+ LAYADD.forEach(function(grp){grp.forEach(function(k){
+  var want=V[k]?1:0, f=LAYF[k];
+  if(!f||stale){f=LAYF[k]={v:want,from:want,to:want,t0:now,sw:1};return;}
+  if(f.to!==want){
+   if(!layMoving(now)){f.v=f.from=f.to=want;f.sw=1;return;}
+   /* a layer turned back on mid exit is already partly there, so it does not
+      sweep round again from twelve */
+   f.from=f.v; f.to=want; f.t0=now; f.sw=(want&&f.v<0.02)?0:1;}
+  var e=now-f.t0;
+  if(want){var k1=Math.min(1,e/ENTER_SPAN);f.v=f.from+(1-f.from)*(1-Math.pow(1-k1,3));
+   var k2=Math.min(1,e/LAY_SWEEP);if(f.sw<1)f.sw=1-Math.pow(1-k2,3);}
+  else{var k3=Math.min(1,e/LAY_OUT);f.v=f.from*(1-k3*k3);}});});
+ return LAYF;}
+/* the geometry's own travel, the effective depth as a real number between the
+   four the arrays are written for */
+function lGeo(L){var now=performance.now();
+ if(LGEO.v===null||REDUCED||(now-LAYF_LAST)>250){LGEO={v:L,from:L,to:L,t0:now};return L;}
+ if(LGEO.to!==L){if(!layMoving(now)){LGEO={v:L,from:L,to:L,t0:now};return L;}
+  LGEO.from=LGEO.v;LGEO.to=L;LGEO.t0=now;}
+ var k=Math.min(1,(now-LGEO.t0)/ENTER_SPAN);
+ LGEO.v=LGEO.from+(L-LGEO.from)*(1-Math.pow(1-k,3));
+ return LGEO.v;}
+function lAt(arr,f){var i=Math.max(0,Math.min(arr.length-1,Math.floor(f))),j=Math.min(arr.length-1,i+1),t=f-i;
+ return arr[i]+(arr[j]-arr[i])*t;}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 /* ONE GROWN ADDRESS. The glyph of the axis it sits on, then at the deeper
    threshold its name and its two ends. Held reads outward from the ring and
@@ -16576,7 +16743,60 @@ function enterSeat(b){
  var i=BANDS.indexOf(b); if(i<0)i=0;
  return enterA(i*ENTER_STAGGER,ENTER_SPAN);}
 
+/* ============================================================
+   THE TENSION RUNS. FJ in TASKS.md, his words: "Why aren't they like lines
+   animating to show me which is the tension?"
+
+   The lines were already there and already carried it, standing still. Each
+   thread from an address to the pattern it builds hangs taut or slack by the
+   person's susceptibility at that address, n.susc, the Domain Matrix, which
+   the chord notes in drawWheel below define as this product's tension; each
+   thread further in, pattern to complex to hyper complex to character,
+   hangs by the weight of the thing at its outer end. That is geometry: it
+   reads when you look for it and says nothing when you do not.
+
+   So a pulse runs down every thread, from the outer end to the inner, which
+   is the way a chain compounds, toward the core. Its speed is the tension,
+   and it is a wave on a string, so it goes as the square root: a string
+   pulled four times as hard carries a wave twice as fast. A taut thread
+   carries short pulses close together and quick, a slack one a few, slow
+   and faint. With the labels off, the busy lines are the tight ones, which
+   is the whole reading. Nothing here is decoration: every speed, spacing and
+   strength is t, the same number the sag of the line is drawn from.
+
+   FORTY VIEWINGS. A pulse is seven pixels of a period of 48 to 96, so at any
+   moment most of every line is at rest, and a slack line's pulse is set at
+   under a third of a taut one's strength, so the field reads as a few wires
+   live and not as a hundred crawling ants.
+
+   Reduced motion draws none. The sag already says it, standing still.
+   ============================================================ */
+const PULSE_LEN=7;
+var PUL=[], TIER_A=1;
+function pulses(list){
+ if(REDUCED||!list.length)return;
+ g.save(); g.lineCap='round';
+ for(var i=0;i<list.length;i++){var p=list[i],t=clamp(p.t||0,0,1);
+  if(p.a<=0.01)continue;
+  /* spacing and speed, both off t: the period from 96 slack to 48 taut, the
+     speed from 16 to 84 pixels a second on the square root */
+  var per=96-48*t, sp=16+68*Math.sqrt(t);
+  /* a phase per thread off its own end, so neighbours never march in step */
+  var ph=(((p.x0*12.9898+p.y0*78.233)%1)+1)%1*per;
+  g.setLineDash([PULSE_LEN,per-PULSE_LEN]);
+  g.lineDashOffset=-((S.t*sp+ph)%per);
+  g.beginPath(); g.moveTo(p.x0,p.y0);
+  if(p.qx!==undefined)g.quadraticCurveTo(p.qx,p.qy,p.x1,p.y1); else g.lineTo(p.x1,p.y1);
+  g.strokeStyle=rgba(mixc(p.c,[255,255,255],.42),p.a*(0.28+0.72*t));
+  g.lineWidth=Math.max(1.2,p.w*0.9);
+  g.stroke();}
+ g.setLineDash([]); g.lineDashOffset=0; g.restore();}
+/* the words' strength for this frame, off the wheel's own zoom, and put back
+   whatever happens inside, so a throw cannot leave the next surface faded */
 function drawWheel(r,L){
+ TXT_A=txtZoomA(S.zoom);
+ try{drawWheel0(r,L);}finally{TXT_A=1;}}
+function drawWheel0(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
  /* WHAT IS DRAWN, read once a frame. Every layer block below asks this and
     nothing else, so a switch on the glass bar reaches the wheel without the
@@ -16584,13 +16804,39 @@ function drawWheel(r,L){
     visible set needs room for, which is why it can gate the rings a layer
     sits on without ever disagreeing with V. */
  const V=layVisible();
- const shellR=[U*.62,U*.68,U*.74,U*.78][L];
+ /* WHAT IS PAINTED, which is what is on plus what is still on its way out.
+    D gates the paint and V gates the targets: lay() below draws a leaving
+    layer with its hit records and labels thrown away, so nothing a person
+    can press is ever mid exit. */
+ const LA=layFade(V), D={};
+ Object.keys(LA).forEach(function(k){D[k]=!!V[k]||LA[k].v>0.003;});
+ const lay=function(k,fn){
+  if(!D[k])return;
+  var f=LA[k], on=!!V[k];
+  if(on&&f.v>=0.999&&f.sw>=1){fn();return;}
+  var keepH=HIT, keepL=LBL;
+  g.save(); g.globalAlpha*=Math.max(0,Math.min(1,f.v));
+  /* the sweep. a wedge from twelve o'clock, clockwise, as far round as the
+     arrival has come */
+  if(on&&f.sw<1){g.beginPath();g.moveTo(CX,CY);
+   /* long enough to reach every corner from a centre panned anywhere */
+   g.arc(CX,CY,Math.hypot(CW,CH)+Math.abs(CX)+Math.abs(CY),-Math.PI/2,-Math.PI/2+TAU*Math.max(0.001,f.sw));
+   g.closePath();g.clip();}
+  if(!on){HIT=[];LBL=[];}
+  try{fn();}finally{if(!on){HIT=keepH;LBL=keepL;}g.restore();}};
+ /* the geometry at the depth it is travelling through, not the one it is
+    travelling to */
+ const LF=lGeo(L);
+ const shellR=lAt([U*.62,U*.68,U*.74,U*.78],LF);
  /* the shell radius, published once so the grown address can draw outside it
     without being handed four arguments it would only pass along. */
  R_SHELL=shellR;
- const R={shell:shellR,arch:U*.60,sab:[0,U*.56,U*.545,U*.50][L],cx:U*.425,hy:U*.335,
+ /* the pattern ring has no radius at Charge, where nothing is on it, so its
+    first entry is its second: patterns arriving come in at their own ring and
+    do not fly out of the core */
+ const R={shell:shellR,arch:U*.60,sab:lAt([U*.56,U*.56,U*.545,U*.50],LF),cx:U*.425,hy:U*.335,
   sup:U*.255,dom:U*.93,mask:U*.685};
- const coreBase=[U*.30,U*.26,U*.20,U*.155][L];
+ const coreBase=lAt([U*.30,U*.26,U*.20,U*.155],LF);
  /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
     The shell, or at Blueprint the domain ring outside it. Published for the
     collide gate, which holds every label inside it at every depth. */
@@ -16599,7 +16845,10 @@ function drawWheel(r,L){
  const halo=LIGHT()?'rgba(250,250,247,.88)':'rgba(16,16,16,.82)';
 
  /* --- chain chords, C and D --- */
- if(L>=2){
+ PUL.length=0;
+ /* the curved web holds while any tier that needs it is still leaving, so the
+    threads fade with their beads instead of straightening under them */
+ if(L>=2||D.complexes||D.hyper||D.character||D.archetypes){
   /* with a selection the rest of the web falls to .08 and the selected chain
      rises above rest: alpha up, width up. it saturates rather than lights. */
   const lit=o=>{if(!p)return 1;if(p===o)return 2;const has=x=>x===o||(x.parts||[]).some(has);return has(p)?2:.08;};
@@ -16658,10 +16907,14 @@ function drawWheel(r,L){
      So a taut chord is one the person is susceptible at. That is a true
      sentence about them and it is the sentence the Field could not say. */
   const ten01=n=>clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);
-  const quad=(a0,r0,a1,r1,pull,st,w,dash)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
-   g.beginPath();g.moveTo(CX+Math.cos(a0)*r0,CY+Math.sin(a0)*r0);
-   g.quadraticCurveTo(CX+Math.cos(am)*rm,CY+Math.sin(am)*rm,CX+Math.cos(a1)*r1,CY+Math.sin(a1)*r1);
-   if(dash)g.setLineDash(dash);g.strokeStyle=st;g.lineWidth=w;g.stroke();g.setLineDash([]);};
+  /* the thread, and its pulse queued: t is the same tension its sag is drawn
+     from, so how fast it runs and how straight it hangs are one reading */
+  const quad=(a0,r0,a1,r1,pull,c,a,w,dash,t)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
+   const x0=CX+Math.cos(a0)*r0,y0=CY+Math.sin(a0)*r0,qx=CX+Math.cos(am)*rm,qy=CY+Math.sin(am)*rm,
+    x1=CX+Math.cos(a1)*r1,y1=CY+Math.sin(a1)*r1;
+   g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo(qx,qy,x1,y1);
+   if(dash)g.setLineDash(dash);g.strokeStyle=rgba(c,a);g.lineWidth=w;g.stroke();g.setLineDash([]);
+   PUL.push({x0:x0,y0:y0,qx:qx,qy:qy,x1:x1,y1:y1,c:c,a:Math.min(1,a*1.6)*TIER_A,w:w,t:t});};
   /* the sag, from slack to taut. The old constants were .42 to .48 and the
      range is opened around them rather than replaced, so a chord at middling
      tension sits where every chord used to. */
@@ -16671,45 +16924,58 @@ function drawWheel(r,L){
      saboteurs that were not there, read as string cut loose. The bead is the
      layer and the thread is the relation between two layers, so a tier's
      threads need the tier and the one outside it. */
-  (V.saboteurs?r.sabs:[]).forEach(s=>{const k=w01(s);
-   (V.addresses?s.parts:[]).forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
-    rgba(bc(n.b),al(.46*(0.55+k*0.80),s)),wd(1.6*(0.45+k*1.45),s),
-    s.unnamed?[3,3]:null));});
-  (V.complexes?r.cxs:[]).forEach(c=>{const k=w01(c);
-   (V.saboteurs?c.parts:[]).forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
-    rgba(bc('Solar'),al(.62*(0.55+k*0.80),c)),wd(2.4*(0.45+k*1.45),c)));});
-  (V.hyper?r.hys:[]).forEach(h=>{const k=w01(h);
-   (V.complexes?h.parts:[]).forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
-    rgba(bc('Sacral'),al(.74*(0.60+k*0.70),h)),wd(3.2*(0.50+k*1.30),h)));});
-  (V.character?r.sups:[]).forEach(u=>{const k=w01(u);
-   (V.hyper?u.parts:[]).forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
-    rgba(bc('Root'),al(.9*(0.60+k*0.70),u)),wd(4*(0.50+k*1.30),u)));});
- }else if(L===1&&V.saboteurs){
-  r.sabs.forEach(s=>(V.addresses?s.parts:[]).forEach(n=>{
+  /* each tier's threads are as present as the less present of the two layers
+     they join, so a thread leaves with either end and arrives with the later */
+  const ga=(a,b)=>Math.min(LA[a].v,LA[b].v);
+  const tier=(a,b,fn)=>{if(!D[a]||!D[b])return;const k=ga(a,b);if(k<=0.003)return;
+   g.save();g.globalAlpha*=k;TIER_A=k;fn();g.restore();TIER_A=1;};
+  tier('saboteurs','addresses',()=>r.sabs.forEach(s=>{const k=w01(s);
+   s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
+    bc(n.b),al(.46*(0.55+k*0.80),s),wd(1.6*(0.45+k*1.45),s),
+    s.unnamed?[3,3]:null,ten01(n)));}));
+  tier('complexes','saboteurs',()=>r.cxs.forEach(c=>{const k=w01(c);
+   c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
+    bc('Solar'),al(.62*(0.55+k*0.80),c),wd(2.4*(0.45+k*1.45),c),null,w01(s)));}));
+  tier('hyper','complexes',()=>r.hys.forEach(h=>{const k=w01(h);
+   h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
+    bc('Sacral'),al(.74*(0.60+k*0.70),h),wd(3.2*(0.50+k*1.30),h),null,w01(c)));}));
+  tier('character','hyper',()=>r.sups.forEach(u=>{const k=w01(u);
+   u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
+    bc('Root'),al(.9*(0.60+k*0.70),u),wd(4*(0.50+k*1.30),u),null,w01(h)));}));
+ }else if(L===1&&D.saboteurs&&D.addresses){
+  const k0=Math.min(LA.saboteurs.v,LA.addresses.v);
+  g.save();g.globalAlpha*=k0;
+  r.sabs.forEach(s=>s.parts.forEach(n=>{
    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);
    g.lineTo(CX+Math.cos(s.ang)*R.sab,CY+Math.sin(s.ang)*R.sab);
-   g.strokeStyle=rgba(bc(n.b),.24);g.lineWidth=1;g.stroke();}));}
+   g.strokeStyle=rgba(bc(n.b),.24);g.lineWidth=1;g.stroke();
+   PUL.push({x0:CX+Math.cos(n.ang)*R.shell*.92,y0:CY+Math.sin(n.ang)*R.shell*.92,
+    x1:CX+Math.cos(s.ang)*R.sab,y1:CY+Math.sin(s.ang)*R.sab,c:bc(n.b),a:.5*k0,w:1,t:frTen(n)});}));
+  g.restore();}
+ /* the tension, running. Over every thread, after all of them, so a pulse is
+    never under the thread beside it. See pulses() above. */
+ pulses(PUL);
 
  const cr0=solCore(r,coreBase);
- if(V.gates)verpArrows(cr0);
+ lay('gates',()=>verpArrows(cr0));
 
  /* --- the 21 laws. present at every depth: they are the numerator of CQ. ---
     Every depth still carries them. The bar can take them off, and the core
     keeps the figure they sum to, because the core is not a layer. */
- if(V.laws)SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=S.law[l.nm]/10,c=bc(l.b);
-  const r0=[U*.44,U*.40,U*.33,U*.255][L],r1=r0+[U*.13,U*.12,U*.10,U*.085][L]*v;
+ const lr=lAt([U*.44,U*.40,U*.33,U*.255],LF);
+ lay('laws',()=>{SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=S.law[l.nm]/10,c=bc(l.b);
+  const r0=lr,r1=r0+lAt([U*.13,U*.12,U*.10,U*.085],LF)*v;
   g.beginPath();g.moveTo(CX+Math.cos(a)*r0,CY+Math.sin(a)*r0);
   g.lineTo(CX+Math.cos(a)*r1,CY+Math.sin(a)*r1);
-  g.strokeStyle=rgba(c,.16+v*.82);g.lineWidth=[4.6,4.2,3.6,3.2][L];
+  g.strokeStyle=rgba(c,.16+v*.82);g.lineWidth=lAt([4.6,4.2,3.6,3.2],LF);
   g.lineCap='round';g.stroke();g.lineCap='butt';
   HIT.push({k:'law',j:i,cx:CX,cy:CY,a0:a-.075,a1:a+.075,r0:r0*.88,r1:r1+U*.03});});
- const lr=[U*.44,U*.40,U*.33,U*.255][L];
- if(V.laws){g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();}
+  g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();});
  /* AND THE WORD CQ AND THE TIER WORD GO WITH IT, for the same two reasons.
     The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
- if(V.archetypes){for(let j=0;j<12;j++){
+ lay('archetypes',()=>{for(let j=0;j<12;j++){
   const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.aff[j],am=(a0+a1)/2;
   const lead=j===r.pi,sec=j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
@@ -16718,23 +16984,21 @@ function drawWheel(r,L){
      names crossed the whole shell: measured on James at 390, all twelve ran
      past the ring's edge at Chains, and five did at 1600. */
   radialTxt(ARCH[j].nm,am,R.arch-U*.024,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400,true);
-  HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}
-}
+  HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}});
 
  /* --- masks, D only --- */
- if(V.masks){r.maskRing.forEach((m,i)=>{
+ lay('masks',()=>r.maskRing.forEach((m,i)=>{
   const a0=i/6*TAU-Math.PI/2,a1=a0+TAU/6,v=clamp(m.w/10,0,1),am=(a0+a1)/2;
   arcP(R.mask-U*.019,R.mask,a0+.01,a1-.01);
   g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
   /* inward, for the archetypes' reason: outward, Professional and
      Ideological crossed the shell and the domain ring past it */
   radialTxt(m.nm,am,R.mask-U*.026,11.5,ink,.24+v*.56,400,true);
-  HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});});
-}
+  HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});}));
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
- (V.addresses?W:[]).forEach(n=>{
+ lay('addresses',()=>W.forEach(n=>{
   /* its seat's turn to arrive. Nothing is drawn before its turn, which is
      what makes the sweep visible: a band that is merely dim is a band that is
      already there. */
@@ -16765,7 +17029,7 @@ function drawWheel(r,L){
      found it, which is worse than no box at all for the second and a half it
      lasts. */
   HIT.push({k:'node',n,cx:CX,cy:CY,a0:n.ang-hw,a1:n.ang+hw,
-   r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});});
+   r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});}));
 
  /* AND PAST THE FETTERS, WHAT PUT THE CHARGE THERE.
 
@@ -16785,10 +17049,10 @@ function drawWheel(r,L){
     whole shell, which also puts the lines over the ring rather than under
     it. */
  {var aa2=atomA();
-  if(aa2>0&&V.stories)W.forEach(n=>{
+  if(aa2>0)lay('stories',()=>W.forEach(n=>{
    const a=n.ang, ld=clamp(n.disp/10,0,1), carrying=n.disp>=4;
    const hw=TAU/108*(.43+fg*.24);
-   atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);});}
+   atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);}));}
  /* THE SEVEN SEAT BANDS ARE TARGETS. Ruled: "the rainbow bands at the centre,
     say what they are and make them clickable." They were seven names drawn
     around the outside of the shell and nothing else: not a word about what
@@ -16815,7 +17079,7 @@ function drawWheel(r,L){
     target runs down to 0.85 of the shell and the word sits in the outer
     sixteen pixels of it. */
  const seatFs=12, seatR=R.shell-seatFs*0.6-2;
- if(V.seats)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
+ lay('seats',()=>BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   if(!seg.length)return;
   var am=meanAng(seg.map(n=>n.ang));
   var angs=seg.map(n=>n.ang).sort(function(x,y){return x-y;});
@@ -16824,7 +17088,7 @@ function drawWheel(r,L){
   HIT.push({k:'seat',b:b,cx:CX,cy:CY,
    a0:angs[0]-TAU/216, a1:angs[angs.length-1]+TAU/216,
    r0:R.shell-U*.02, r1:R.shell+U*.02});
-  if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});});
+  if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});}));
 
  /* --- domains, D only --- */
  /* EACH ROOT IN ITS SEAT'S COLOUR FOR THE GROUND UNDER IT, not ROOTCOL, the
@@ -16833,7 +17097,7 @@ function drawWheel(r,L){
     stage and not on LIGHT(), because on Snow the two disagree and the stage
     is right: the ring sits on #101010 there and already read 5.51, which the
     Snow palette would have taken down. Lumen draws as it shipped. */
- if(V.domains){const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
+ lay('domains',()=>{const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
  for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
   const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
@@ -16847,8 +17111,7 @@ function drawWheel(r,L){
   const dfs=sel?12.5:11;
   arcTxt(DOMAINS[d].nm,am,R.dom-U*.012-dfs*0.6-2,dfs,sel?c:ink,sel?1:.3+v*.45,sel?600:400,
    TAU/19-.02,sel?halo:null);
-  HIT.push({k:'dom',j:d,cx:CX,cy:CY,a0,a1,r0:R.dom-U*.055,r1:R.dom+4});}
-}
+  HIT.push({k:'dom',j:d,cx:CX,cy:CY,a0,a1,r0:R.dom-U*.055,r1:R.dom+4});}});
 
  /* --- beads. B shows saboteurs. C and D show the whole chain. --- */
  function bead(o,rad,size,c){const x=CX+Math.cos(o.ang)*rad,y=CY+Math.sin(o.ang)*rad;
@@ -16862,7 +17125,9 @@ function drawWheel(r,L){
   g.fillStyle=b2;g.beginPath();g.arc(x,y,s,0,TAU);g.fill();
   g.beginPath();g.arc(x-s*.32,y-s*.36,s*.24,0,TAU);g.fillStyle='rgba(255,255,255,.7)';g.fill();
   /* inward, so a hovered name stays inside the ring like the rest */
-  if(on)radialTxt(o.nm,o.ang,rad-s-10,12.5,ink,.95,600,true);
+  /* a name asked for by the pointer is set at any zoom: hover is the person
+     asking for the word, which is not the same as the picture printing it */
+  if(on){const ta=TXT_A;TXT_A=1;radialTxt(o.nm,o.ang,rad-s-10,12.5,ink,.95,600,true);TXT_A=ta;}
   HIT.push({k:o.kind,o,x,y,rad:s+10});}
  /* NAMEPLATES. Two patterns at nearly the same angle wrote over each other.
     A plate reserves an angular slot at its own radius. A newcomer gets two
@@ -16922,12 +17187,14 @@ function drawWheel(r,L){
     const box={x0:right?lx:lx-w,x1:right?lx+w:lx,y0:ly-fs*0.7,y1:ly+fs*0.7};
     if(inRing(box)&&!FLATS.some(q=>box.x0<q.x1&&q.x0<box.x1&&box.y0<q.y1&&q.y0<box.y1)){
      FLATS.push(box);
-     LBL.push({t:o.nm,x:box.x0,y:box.y0,w:box.x1-box.x0,h:box.y1-box.y0});
-     g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
-     g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
-     g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
-     g.textAlign=right?'left':'right';g.textBaseline='middle';
-     g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
+     LBL.push({t:o.nm,x:box.x0,y:box.y0,w:box.x1-box.x0,h:box.y1-box.y0,set:TXT_A});
+     /* the leader belongs to the word, so it comes in with it */
+     if(TXT_A>0.004){g.save();g.globalAlpha*=TXT_A;
+      g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
+      g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
+      g.font='600 '+fs+'px Inter, system-ui, sans-serif';
+      g.textAlign=right?'left':'right';g.textBaseline='middle';
+      g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();}
      return;}
     ly += fs*1.45;}}};
  const nameplate=(o,rad,c,size)=>{
@@ -16945,25 +17212,27 @@ function drawWheel(r,L){
   PLATES.push(plate);
   const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad, e=plate.out+ln;
   const lx=CX+Math.cos(o.ang)*e, ly=CY+Math.sin(o.ang)*e;
-  g.beginPath();g.moveTo(x-Math.cos(o.ang)*size,y-Math.sin(o.ang)*size);
-  g.lineTo(lx,ly);g.strokeStyle=rgba(c,.55);g.lineWidth=1;g.stroke();
+  if(TXT_A>0.004){g.save();g.globalAlpha*=TXT_A;
+   g.beginPath();g.moveTo(x-Math.cos(o.ang)*size,y-Math.sin(o.ang)*size);
+   g.lineTo(lx,ly);g.strokeStyle=rgba(c,.55);g.lineWidth=1;g.stroke();g.restore();}
   radialTxt(o.nm,o.ang,e-4,fs,c,.98,600,true);};
  window.__PLATES=PLATES;
- if(L>=1&&V.saboteurs){r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
+ /* no depth test on the beads: a tier is on only at a depth that has its
+    ring, which layNeeds guarantees, and a tier on its way out has to be drawn
+    at the depth it is leaving from */
+ lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
      heaviest things: the wheel is showing structure by then, and the right rail
      carries every name in full. */
-  if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,bc(s.parts[0].b),6.2));
-}
- if(L>=2){if(V.complexes)r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar')));
-  if(V.hyper)r.hys.forEach(h=>bead(h,R.hy,10,bc('Sacral')));
-  if(V.character)r.sups.forEach(u=>bead(u,R.sup,13,bc('Root')));
-  /* the inner rings hold the heaviest, longest names. Radial text has no room
-     between the hyper ring and the archetypes, so these set horizontally beside
-     the bead, where there is space. */
-  if(V.hyper)r.hys.slice(0,3).forEach(h=>flatplate(h,R.hy,bc('Sacral'),10));
-  if(V.character)r.sups.slice(0,2).forEach(u=>flatplate(u,R.sup,bc('Root'),13));
-}
+  if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,bc(s.parts[0].b),6.2));});
+ lay('complexes',()=>r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar'))));
+ /* the inner rings hold the heaviest, longest names. Radial text has no room
+    between the hyper ring and the archetypes, so these set horizontally beside
+    the bead, where there is space. */
+ lay('hyper',()=>{r.hys.forEach(h=>bead(h,R.hy,10,bc('Sacral')));
+  r.hys.slice(0,3).forEach(h=>flatplate(h,R.hy,bc('Sacral'),10));});
+ lay('character',()=>{r.sups.forEach(u=>bead(u,R.sup,13,bc('Root')));
+  r.sups.slice(0,2).forEach(u=>flatplate(u,R.sup,bc('Root'),13));});
 }
 /* Under prefers-reduced-motion the clock is frozen and disp snaps straight to
    sq, so after the first frame the wheel is provably identical until someone
@@ -17263,7 +17532,45 @@ function frSpread(list,sector){var t=[];
 /* TENSION, from the wheel. A thread from an address to its pattern runs taut
    where the person is susceptible and hangs slack where they are not: the
    base bow times 1.28 less 0.62 of the tension, the wheel's own curve. */
-function frSag(n,base){var t=clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);return base*(1.28-0.62*t);}
+function frTen(n){return clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);}
+function frSag(n,base){return base*(1.28-0.62*frTen(n));}
+/* THE TENSION RUNS, the renditions' half of pulses() in ui/wheel.js, on the
+   same numbers: a period from 96 slack to 48 taut, a speed from 16 to 84
+   pixels a second on the square root, a pulse seven long, the outer end to
+   the inner. The thread is drawn where it always was; this queues its pulse
+   for the sheet frFlowSvg sets over the picture, in the thread's own layer
+   and with the thread's own classes, so a switch takes both. The phase is off
+   the thread's own path, so neighbours never march in step and a rebuild
+   puts every pulse back where it was. */
+function frFlow(M,grp,cls,d,c,a,w,t){t=clamp(t||0,0,1);
+ var per=96-48*t, sp=16+68*Math.sqrt(t), dur=per/sp, h=0;
+ for(var i=0;i<d.length;i+=7)h=(h*31+d.charCodeAt(i))%9973;
+ var pc=M.light?mixc(c,M.ink,.28):mixc(c,[255,255,255],.42);
+ (M.flow[grp]=M.flow[grp]||[]).push('<path class="'+cls+'" d="'+d+'" stroke="'+rgba(pc,Math.min(1,a*1.6)*(0.28+0.72*t))
+  +'" stroke-width="'+Math.max(1.2,w*.9).toFixed(2)+'" stroke-dasharray="7 '+(per-7).toFixed(1)
+  +'" style="--p:'+per.toFixed(1)+';--d:'+dur.toFixed(2)+'s;--ph:-'+(h/9973*dur).toFixed(2)+'s"/>');}
+function frFlowSvg(M){var k,s='';for(k in M.flow)s+='<g class="'+k+'">'+M.flow[k].join('')+'</g>';
+ return s?'<svg class="frflow" width="'+M.W+'" height="'+M.H+'" viewBox="0 0 '+M.W+' '+M.H+'" aria-hidden="true">'+s+'</svg>':'';}
+/* THE NAMES A ZOOM BRINGS IN. FJ, his words: "Text only fades in when I'm
+   zooming in." These two pictures name nothing with a word at the whole
+   picture, by Law 8, and that holds: at 1x there is a glyph for every
+   domain, seat and archetype and no word. Brought closer, the word arrives
+   beside its glyph, on the inward side, which is the side that has room on
+   both shapes. It is set in page pixels over the picture and not inside it,
+   so it stays eleven and a half pixels at any zoom rather than growing with
+   the marks. Placed each time the zoom moves, fzApply, and a word that
+   would sit on one already placed, or off the box, is not set: seats first,
+   then archetypes, then domains, which is how much of the ring each names. */
+function frName(M,t,x,y,r,c,k,pri,sel){M.nm.push({t:t,x:x,y:y,r:r,c:c,k:k,p:pri,sel:!!sel});}
+function frNamesHtml(M){
+ if(!M.nm.length)return '';
+ var g0=frRgb(M.ground), cx=M.win.cx, cy=M.win.cy;
+ M.nm.sort(function(a,b){return a.p-b.p;});
+ return '<div class="frnm" aria-hidden="true">'+M.nm.map(function(n){
+  var w=frTextW(n.t,(n.sel?600:500)+' 11.5px Inter, system-ui, sans-serif'), dx=cx-n.x, dy=cy-n.y, m=Math.hypot(dx,dy)||1;
+  return '<span class="L-'+n.k+(n.sel?' sel':'')+'" data-x="'+n.x.toFixed(1)+'" data-y="'+n.y.toFixed(1)+'" data-r="'+n.r.toFixed(1)
+   +'" data-w="'+w.toFixed(1)+'" data-ux="'+(dx/m).toFixed(3)+'" data-uy="'+(dy/m).toFixed(3)
+   +'" style="--c:'+frRgb(mixc(n.c,M.ink,.22))+';--g:'+g0+'">'+esc(n.t)+'</span>';}).join('')+'</div>';}
 
 /* ---- the mount. the ground, the window, the loop ----
    THE GATES GO ON AFTER THE CORE, as the wheel draws them. The mockup drew
@@ -17314,7 +17621,7 @@ const FR_SHOW_OUTSIDE=false;
    circle and keeps its margin. */
 function frNS(d,w){var t=Math.min(1,d/(Math.min(w.a,w.b)*.35));return 12+388*Math.pow(1-t,3);}
 function frMount(host,W_,H_,r){
- var M={W:W_,H:H_,L:{},T:{},defs:[],hit:[]};
+ var M={W:W_,H:H_,L:{},T:{},defs:[],hit:[],flow:{},nm:[]};
  FR_L.forEach(function(k){M.L[k]=[];});
  FR_T.forEach(function(k){M.T[k]=[];});
  M.hid=function(h){M.hit.push(h);return M.hit.length-1;};
@@ -17586,7 +17893,8 @@ function frGates(){var V=verpRead(),ev=V.some(function(v){return v.pct>0;});
    named on the drawing by its glyph, which engine/data/canon.js carries for
    exactly this, and the word comes on hover in the readout */
 function frSeatGlyph(M,b,x,y,size){
- M.T.seats.push(frGlyph(SEATGLYPH[b]||SEATGLYPH._,x,y,size,frRgb(M.seat(b)),1.8,M.hid({k:'seat',b:b})));}
+ M.T.seats.push(frGlyph(SEATGLYPH[b]||SEATGLYPH._,x,y,size,frRgb(M.seat(b)),1.8,M.hid({k:'seat',b:b})));
+ frName(M,b,x,y,size/2,M.seat(b),'seats',0,false);}
 
 /* ============================================================
    NESTED FRAMES. Every ring takes the stage's own shape.
@@ -17628,7 +17936,8 @@ function frFrames(M,r){
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.5"':'')+'/>');
    var q=mid.at(th((k+.5)/19));
-   M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(12),rgba(c,sel?1:.42+v*.5),1.7,h));});})();
+   M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(12),rgba(c,sel?1:.42+v*.5),1.7,h));
+   frName(M,dm.nm,q.x,q.y,gs(12)/2,c,'domains',2,sel);});})();
 
  /* addresses. 112 places on the second frame, charge as depth */
  var tip={};
@@ -17681,7 +17990,8 @@ function frFrames(M,r){
     M.L.archetypes.push('<path data-h="'+h+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(gc,.04+aff*.16)+'"'
      +(lead?' stroke="'+rgba(gc,.55)+'" stroke-width="1.4"':sec?' stroke="'+rgba(gc,.32)+'" stroke-width="1.1"':'')+'/>');
     var q=mid.at(th(M.tArch[j]));
-    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(11),rgba(gc,lead?1:sec?.85:.35+aff*.4),1.8,h));});});})();
+    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(11),rgba(gc,lead?1:sec?.85:.35+aff*.4),1.8,h));
+    frName(M,a.nm,q.x,q.y,gs(11)/2,gc,'archetypes',1,lead);});});})();
 
  /* patterns. beads on their own frame, threaded to what built them */
  var at={sab:[],cx:[],hy:[],sup:[]};
@@ -17689,8 +17999,10 @@ function frFrames(M,r){
   P.push('<path d="'+tr.d(2)+'" fill="none" stroke="'+rgba(M.ink,.07)+'" stroke-width="1"/>');
   r.sabs.forEach(function(s,k){var p=tr.at(th(M.tSab[k])),kk=w01(s);at.sab[k]=p;
    s.parts.forEach(function(n){var sl=M.slotByI[n.i],q=sl&&tip[sl.s];if(!q)return;
-    P.push('<path class="F-addr" d="'+frBowD(q,p,cx,cy,frSag(n,.16))+'" fill="none" stroke="'+rgba(M.seat(n.b),.16+kk*.22)
-     +'" stroke-width="'+(.7+kk*1).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="3 3"':'')+'/>');});});
+    var d=frBowD(q,p,cx,cy,frSag(n,.16));
+    P.push('<path class="F-addr" d="'+d+'" fill="none" stroke="'+rgba(M.seat(n.b),.16+kk*.22)
+     +'" stroke-width="'+(.7+kk*1).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="3 3"':'')+'/>');
+    frFlow(M,'L-patterns','F-addr',d,M.seat(n.b),.16+kk*.22,.7+kk*1,frTen(n));});});
   r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rb=(2.6+w01(s)*3.4)*Math.max(sc,.6);
    P.push('<circle data-h="'+M.hid({k:'sab',o:s})+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rb.toFixed(1)+'"'
     +(s.unnamed?' fill="'+frRgb(M.ground)+'" stroke="'+frRgb(c)+'" stroke-width="1.5"':' fill="'+frRgb(c)+'"')+'/>');});})();
@@ -17736,8 +18048,12 @@ function frChains(M,r,at,tiers,th,sc,frames){
   list.forEach(function(o,k){at[key][k]=tr.at(th(ts[k]));});
   list.forEach(function(o,k){var p=at[key][k],kk=clamp((o.w-3.5)/3,0,1);
    o.parts.forEach(function(pt){var q=from[ixf.get(pt)];if(!q)return;
-    Cn.push('<path class="T-'+key+' F-'+T[7]+'" d="'+frBowD(q,p,cx,cy,pull)+'" fill="none" stroke="'+rgba(c,(frames?.18:.16)+kk*.26)
-     +'" stroke-width="'+(wd*(.45+kk*.7)).toFixed(2)+'"/>');});});
+    var d=frBowD(q,p,cx,cy,pull);
+    Cn.push('<path class="T-'+key+' F-'+T[7]+'" d="'+d+'" fill="none" stroke="'+rgba(c,(frames?.18:.16)+kk*.26)
+     +'" stroke-width="'+(wd*(.45+kk*.7)).toFixed(2)+'"/>');
+    /* a thread further in pulls by the weight of the thing at its outer end,
+       the wheel's own tension for these tiers */
+    frFlow(M,'L-chains','T-'+key+' F-'+T[7],d,c,(frames?.18:.16)+kk*.26,wd*(.45+kk*.7),clamp(((+pt.w||0)-3.5)/3,0,1));});});
   /* each bead's hit record is kept beside its position, so a callout that
      names a bead answers to the same readout the bead does */
   at.h=at.h||{};at.h[key]=[];
@@ -17783,7 +18099,8 @@ function frDial(M,r){
    var h=M.hid({k:'dom',j:k});
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.4"':'')+'/>');
-   var q=mid.at(th((k+.5)/19));M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(11),rgba(c,sel?1:.4+v*.5),1.7,h));});})();
+   var q=mid.at(th((k+.5)/19));M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(11),rgba(c,sel?1:.4+v*.5),1.7,h));
+   frName(M,dm.nm,q.x,q.y,gs(11)/2,c,'domains',2,sel);});})();
 
  /* addresses, radial bars on the chapter ring */
  var tip={},anchorOf={};
@@ -17831,7 +18148,8 @@ function frDial(M,r){
     M.L.archetypes.push('<path data-h="'+h+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(gc,.04+aff*.16)+'"'
      +(lead?' stroke="'+rgba(gc,.6)+'" stroke-width="1.4"':sec?' stroke="'+rgba(gc,.36)+'" stroke-width="1.1"':'')+'/>');
     var q=mid.at(th(M.tArch[j]));archAt[j]=q;hitOf['a'+j]=h;
-    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(10.5),rgba(gc,lead?1:sec?.8:.3+aff*.4),1.8,h));});});})();
+    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(10.5),rgba(gc,lead?1:sec?.8:.3+aff*.4),1.8,h));
+    frName(M,a.nm,q.x,q.y,gs(10.5)/2,gc,'archetypes',1,lead);});});})();
 
  /* patterns and chains */
  var at={sab:[],cx:[],hy:[],sup:[]};
@@ -17839,8 +18157,10 @@ function frDial(M,r){
   r.sabs.forEach(function(s,k){at.sab[k]=rp.at(th(M.tSab[k]));});
   r.sabs.forEach(function(s,k){var p=at.sab[k],kk=w01(s);
    s.parts.forEach(function(n){var sl=M.slotByI[n.i],q=sl&&tip[sl.s];if(!q)return;
-    P.push('<path class="F-addr" d="'+frBowD(q,p,cx,cy,frSag(n,.10))+'" fill="none" stroke="'+rgba(M.seat(n.b),.15+kk*.2)
-     +'" stroke-width="'+(.6+kk*.9).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="2 3"':'')+'/>');});});
+    var d=frBowD(q,p,cx,cy,frSag(n,.10));
+    P.push('<path class="F-addr" d="'+d+'" fill="none" stroke="'+rgba(M.seat(n.b),.15+kk*.2)
+     +'" stroke-width="'+(.6+kk*.9).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="2 3"':'')+'/>');
+    frFlow(M,'L-patterns','F-addr',d,M.seat(n.b),.15+kk*.2,.6+kk*.9,frTen(n));});});
   r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rr=(2.4+w01(s)*3.2)*Math.max(sc,.6),h=M.hid({k:'sab',o:s});
    hitOf['s'+k]=h;
    P.push('<circle data-h="'+h+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rr.toFixed(1)+'"'
@@ -17974,7 +18294,7 @@ function frCallouts(M,r,P){
    every value a mark is drawn from, charge by charge and law by law, rather
    than a sum of them, because a sum is a picture that can go stale while two
    numbers trade places under it. */
-var FR_SIG=null,FR_HIT=[],FR_ERR=false;
+var FR_SIG=null,FR_HIT=[],FR_ERR=false,FR_LAST='';
 function frSig(r,W_,H_){
  var a=[FVIEW,W_,H_,S.theme,r.unread?1:0,(+r.CQ).toFixed(2),(+r.DQ).toFixed(2),r.tier,r.benign,r.darkB,
   r.pi,r.si,S.doms.join('.')];
@@ -17998,8 +18318,13 @@ function frSig(r,W_,H_){
    frame and before the signature test, because a switch is a class and not a
    rebuild, so a frame that builds nothing still has to carry it. Thirteen
    class toggles are nothing against the build this saves. */
-function frLayers(host){var V=layVisible();
- LAYADD.forEach(function(g){g.forEach(function(k){host.classList.toggle('off-'+k,!V[k]);});});}
+function frLayers(host){var V=layVisible(),moved=false;
+ LAYADD.forEach(function(g){g.forEach(function(k){
+  if(host.classList.contains('off-'+k)===!V[k])return;
+  host.classList.toggle('off-'+k,!V[k]);moved=true;});});
+ /* a layer's names give up their room when it goes, so the names round it
+    are placed again */
+ if(moved&&!host.classList.contains('notext'))frNamesPlace(host);}
 function ringsDraw(r){
  var host=document.getElementById('frend');if(!host)return;
  var W_=host.clientWidth,H_=host.clientHeight;
@@ -18018,7 +18343,25 @@ function ringsDraw(r){
   if(FR_BOX!==box){FR_BOX=box;FR_RINGS={};}
   var M=frMount(host,W_,H_,r);
   if(FVIEW==='dial')frDial(M,r);else frFrames(M,r);
-  host.innerHTML=frSvg(M);
+  /* A PICTURE REBUILT BY A PERSON'S SWITCH DISSOLVES INTO THE NEW ONE. With
+     Domains on Frames the geometry itself moves, the frame making room, and
+     a class cannot carry that, so the old picture is kept for one leaving
+     fade over the new one arriving: 220ms out on an ease in, 380ms in on the
+     arrival curve. Only on a switch or a zoom, LAY_GEST, only on the same
+     picture in the same box, and the old one is stripped of every target
+     first, so nothing on its way out can be pressed or measured. */
+  var ghost=null, same=FR_LAST===FVIEW+'|'+W_+'x'+H_;
+  if(same&&typeof layMoving==='function'&&layMoving(performance.now())&&host.animate){
+   ghost=host.querySelector('.frsvg');
+   if(ghost){ghost.remove();ghost.setAttribute('class','frghost');
+    ghost.querySelectorAll('[data-h]').forEach(function(e){e.removeAttribute('data-h');});}}
+  FR_LAST=FVIEW+'|'+W_+'x'+H_;
+  host.innerHTML=frSvg(M)+frFlowSvg(M)+frNamesHtml(M);
+  if(ghost){host.insertBefore(ghost,host.firstChild);
+   ghost.animate([{opacity:1},{opacity:0}],{duration:220,easing:'cubic-bezier(.55,.085,.68,.53)',fill:'forwards'})
+    .onfinish=function(){ghost.remove();};
+   var nv=host.querySelector('.frsvg');
+   if(nv)nv.animate([{opacity:0},{opacity:1}],{duration:ENTER_SPAN,easing:'cubic-bezier(.22,1,.36,1)'});}
   FR_HIT=M.hit;
   /* the rebuild wrote a new picture, so the zoom goes back on the new one,
      held inside a box that may have changed under it */
@@ -18042,11 +18385,34 @@ function ringsDraw(r){
    ============================================================ */
 var FZ={s:1,x:0,y:0}, FZ_MAX=6, FZDRAG=null, FZMOVED=false;
 function fzApply(){var h=document.getElementById('frend');if(!h)return;
- var sv=h.querySelector('.frsvg');
- if(sv){sv.style.transformOrigin='0 0';
-  sv.style.transform=(FZ.s===1&&!FZ.x&&!FZ.y)?''
-   :'translate('+FZ.x.toFixed(1)+'px,'+FZ.y.toFixed(1)+'px) scale('+FZ.s.toFixed(4)+')';}
- h.classList.toggle('zoomed',FZ.s>1.001);}
+ var tf=(FZ.s===1&&!FZ.x&&!FZ.y)?'':'translate('+FZ.x.toFixed(1)+'px,'+FZ.y.toFixed(1)+'px) scale('+FZ.s.toFixed(4)+')';
+ /* the picture, the pulse sheet over it and a dissolving old picture all
+    move as one */
+ h.querySelectorAll('.frsvg,.frflow,.frghost').forEach(function(sv){
+  sv.style.transformOrigin='0 0'; sv.style.transform=tf;});
+ h.classList.toggle('zoomed',FZ.s>1.001);
+ /* the words, off this zoom and nothing else: txtZoomA in ui/component.js */
+ var ta=txtZoomA(FZ.s);
+ h.style.setProperty('--fztx',ta.toFixed(3));
+ h.classList.toggle('notext',ta<=0.004);
+ if(ta>0.004)frNamesPlace(h);}
+/* each name on the inward side of its glyph, in page pixels, and set only
+   where it clears the box, every name set before it and every callout */
+function frNamesPlace(h){
+ var box=h.querySelector('.frnm'); if(!box)return;
+ var W_=h.clientWidth,H_=h.clientHeight,taken=[],pad=3,LH=12;
+ h.querySelectorAll('[data-call] rect').forEach(function(e){var b=e.getBoundingClientRect(),hb=h.getBoundingClientRect();
+  if(b.width>0)taken.push({x0:b.left-hb.left,y0:b.top-hb.top,x1:b.right-hb.left,y1:b.bottom-hb.top});});
+ var off={};LAYADD.forEach(function(gr){gr.forEach(function(k){off[k]=h.classList.contains('off-'+k);});});
+ [].forEach.call(box.children,function(sp){
+  var d=sp.dataset,k=(sp.className.match(/L-(\w+)/)||[])[1];
+  var x=+d.x*FZ.s+FZ.x,y=+d.y*FZ.s+FZ.y,ux=+d.ux,uy=+d.uy,w=+d.w;
+  var reach=(+d.r)*FZ.s+pad+Math.abs(ux)*w/2+Math.abs(uy)*LH/2;
+  var mx=x+ux*reach,my=y+uy*reach,b={x0:mx-w/2,y0:my-LH/2,x1:mx+w/2,y1:my+LH/2};
+  var ok=!off[k]&&b.x0>=2&&b.y0>=2&&b.x1<=W_-2&&b.y1<=H_-2&&!taken.some(function(q){
+   return b.x0<q.x1+4&&q.x0<b.x1+4&&b.y0<q.y1+2&&q.y0<b.y1+2;});
+  sp.classList.toggle('hid',!ok);
+  if(ok){taken.push(b);sp.style.transform='translate('+b.x0.toFixed(1)+'px,'+b.y0.toFixed(1)+'px)';}});}
 function fzClamp(){var h=document.getElementById('frend');if(!h)return;
  var W_=h.clientWidth,H_=h.clientHeight;
  FZ.x=Math.min(0,Math.max(W_-W_*FZ.s,FZ.x)); FZ.y=Math.min(0,Math.max(H_-H_*FZ.s,FZ.y));}
@@ -18066,7 +18432,7 @@ function fieldZoomBy(k){
 function fieldReframe(){
  if(fviewOn()){FZ={s:1,x:0,y:0};fzApply();
   status('Reframed. Scroll on the picture to move in, drag to move it, F to come back.');}
- else{S.zoom=1;S.panx=0;S.pany=0;reframe();render();status(HOWTO_ZOOM_OUT);}
+ else{layGesture();S.zoom=1;S.panx=0;S.pany=0;reframe();render();status(HOWTO_ZOOM_OUT);}
  if(typeof fbPaint==='function')fbPaint();}
 (function(){
  var h=document.getElementById('frend'); if(!h)return;
@@ -18287,7 +18653,8 @@ const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stori
 function fbUnpin(){var p=S.pin;if(!p)return;
  var k=FB_PINK[p.kind]||(p.sq!==undefined&&p.b?'addresses':null);
  if(k&&!layerOn(k))S.pin=null;}
-function fbToggle(k){layToggle(k); fbUnpin(); fbSay(k); render();}
+/* a press is a person's change, so it moves: layGesture in ui/wheel.js */
+function fbToggle(k){layGesture(); layToggle(k); fbUnpin(); fbSay(k); render();}
 function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
  var wait=on&&k==='stories'&&FVIEW==='wheel'&&atomA()<=0;
  FB_SAY.innerHTML='<b>'+esc(l.nm)+(on?' on.':' off.')+'</b> '+esc(l.tip)
@@ -18359,7 +18726,7 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
   var m=document.createElement('button'); m.type='button'; m.className='fb-mi'; m.setAttribute('role','menuitemradio');
   m.setAttribute('data-preset',i);
   m.innerHTML='<span class="fb-ic">'+fbSvg(VICON[i])+'</span><span class="fb-mt"><b>'+esc(v.nm)+'</b><span>'+esc(v.tip)+'</span></span>';
-  m.addEventListener('click',function(e){e.stopPropagation();layPick(i);S.pin=null;fbOpenMenu(false);render();});
+  m.addEventListener('click',function(e){e.stopPropagation();layGesture();layPick(i);S.pin=null;fbOpenMenu(false);render();});
   FB_MENU.appendChild(m);});
 
  /* WHEEL, FRAMES, DIAL, icon only. Ruled in two steps, DR then DY: "it's
@@ -28679,6 +29046,9 @@ function setZoom(z,ax,ay){
  var lo=1, hi=WHEEL_ZOOM_MAX, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
+ /* a zoom is a person's change, so a layer it brings in arrives rather than
+    appearing: layGesture in ui/wheel.js */
+ layGesture();
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
  reframe(); render();}
@@ -29040,103 +29410,138 @@ function railStack(r){
    The centre is a hairline, the same one the compass draws down its axis. */
 const GLYPH_M='<circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M15.5 4H20v4.5"/>';
 const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
-function balG(g,on,t){
- return '<span class="bal-g'+(on?' on':'')+'" title="'+esc(t)+'">'
-  +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
+/* ============================================================
+   ORIENTATION AND BALANCE ARE ONE MECHANIC, AND NOW ONE DRAWING.
+   FJ in TASKS.md, his words: "Orientation and balance, those two elements
+   need to be designed the same way, it's the same mechanic. If I choose
+   one, give me two different designs."
+
+   He is right about the mechanic, measured rather than agreed with. Each is
+   two shares of one whole. Orientation is benign against malignant, leanRead,
+   and the two add to 100. Balance is the outward mean against the inward
+   mean, balance(), and as shares of their sum they add to 100 as well, and
+   the lean the strip always printed is exactly their difference: lean times
+   100 is the masculine share less the feminine one. So both are the same
+   four things: a symbol and a share at each end, a break at the centre where
+   even sits, and a fill running out of the break toward the heavier end, as
+   long as the difference.
+
+   And they were drawn differently in a way that said the opposite. Balance
+   ran its fill toward the end it leaned to, which is his ruling for it. The
+   orientation bar ran its fill away from it: a benign lean grew toward the
+   malignant figure. One drawing now, and the fill goes toward the heavier
+   end on both.
+
+   TWO DESIGNS, BOTH LIVE, one switch at the head of the section, and the
+   pick applies to both dials at once, which is the point of the ask.
+     Bar   the trough, as the orientation bar shipped: the figures in pills
+           at the two ends, the fill under them.
+     Arc   a gauge: a half ring over the top with the break at twelve, the
+           fill round the ring toward the heavier end and a needle that lands
+           on the lean with a small overshoot, the figures outside the ring.
+   The choice is kept the way the Field's picture is, one key in the store,
+   because it is how this person likes to look and not a reading about them.
+
+   IN PLACE, NOT REWRITTEN. The dial is built once per design and state and
+   then only its numbers, widths and angles are written, so a change of
+   reading moves: the fill slides out of the break in 420ms on the arrival
+   curve and the needle lands on an overshoot, instead of a new picture
+   being swapped in. Reduced motion gets the end state.
+
+   UNREAD SAYS NOTHING. Both ends keep their symbols and the break stays, at
+   the same height, and no figure, fill or needle is drawn, which is the
+   rule the orientation dial's gate holds and balance now keeps too.
+   ============================================================ */
+const AXDS=[{k:'bar',nm:'Bar'},{k:'arc',nm:'Arc'}];
+/* read on first use and not at load, because the browser's store is bound
+   further down this file and at load the engine's no op store answers */
+var AXD=null;
+function axdNow(){if(AXD===null){try{var v=STORE.get('axdial')||'';AXD=v==='arc'?'arc':'bar';}catch(e){AXD='bar';}}
+ return AXD;}
+function axdSet(k){AXD=k==='arc'?'arc':'bar';try{STORE.set('axdial',AXD);}catch(e){}
+ axdPaint(); render();}
+function axdPaint(){var el=document.getElementById('axpick'); if(!el)return;
+ if(!el.firstChild)el.innerHTML='<span class="ax-pl">Style</span>'+AXDS.map(function(d){
+  return '<button type="button" class="ax-pb" role="radio" data-axd="'+d.k+'">'+d.nm+'</button>';}).join('');
+ el.querySelectorAll('[data-axd]').forEach(function(b){var on=b.getAttribute('data-axd')===axdNow();
+  b.setAttribute('aria-checked',String(on)); b.classList.toggle('on',on);});}
+function axGlyph(g){return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg>';}
+/* the arc's own geometry, in its viewBox: the ring's centre, its radius, and
+   the two quarter paths the fill runs along, from twelve o'clock outward */
+const AXA={cx:60,cy:54,r:40};
+function axArcD(side){var c=AXA,x=side<0?c.cx-c.r:c.cx+c.r;
+ return 'M'+c.cx+' '+(c.cy-c.r)+'A'+c.r+' '+c.r+' 0 0 '+(side<0?0:1)+' '+x+' '+c.cy;}
+/* o: {read, L:{g,nm,v,c,t}, R:{same}, tick:'l'|'r'|null, title} */
+function axDial(host,o){
+ var sig=axdNow()+'|'+(o.read?1:0)+'|'+(o.tick||'');
+ var end=function(side,e){return '<div class="lb '+side+'"><span class="ax-g" title="'+esc(e.t)+'">'+axGlyph(e.g)+'</span>'
+   +(o.read?'<b></b>':'')+'</div>';};
+ if(host.getAttribute('data-axs')!==sig){
+  var tickAt=o.tick==='l'?25:o.tick==='r'?75:null, h;
+  if(axdNow()==='arc'){var c=AXA,ta=o.tick==='l'?-45:45;
+   h='<div class="ax ax-arc">'+end('l',o.L)
+    +'<svg class="ax-svg" viewBox="0 0 120 60" aria-hidden="true">'
+    +'<path class="ax-trk" d="M'+(c.cx-c.r)+' '+c.cy+'A'+c.r+' '+c.r+' 0 0 1 '+(c.cx+c.r)+' '+c.cy+'"/>'
+    +(o.read?'<path class="fill lt" d="'+axArcD(-1)+'" pathLength="100"/><path class="fill rt" d="'+axArcD(1)+'" pathLength="100"/>':'')
+    +(tickAt!==null?'<line class="ax-sx" x1="'+(c.cx+Math.sin(ta*Math.PI/180)*(c.r-7)).toFixed(1)+'" y1="'+(c.cy-Math.cos(ta*Math.PI/180)*(c.r-7)).toFixed(1)
+      +'" x2="'+(c.cx+Math.sin(ta*Math.PI/180)*(c.r+7)).toFixed(1)+'" y2="'+(c.cy-Math.cos(ta*Math.PI/180)*(c.r+7)).toFixed(1)+'"/>':'')
+    +'<line class="mid" x1="'+c.cx+'" y1="'+(c.cy-c.r-8)+'" x2="'+c.cx+'" y2="'+(c.cy-c.r+8)+'"/>'
+    +(o.read?'<g class="ax-nd"><line x1="'+c.cx+'" y1="'+c.cy+'" x2="'+c.cx+'" y2="'+(c.cy-c.r+11)+'"/><circle cx="'+c.cx+'" cy="'+c.cy+'" r="3.4"/></g>':'')
+    +'</svg>'+end('r',o.R)+'</div>';}
+  else{
+   h='<div class="ax ax-bar"><div class="ax-tr">'+(o.read?'<div class="fill"></div>':'')+'<div class="mid"></div>'
+    +(tickAt!==null?'<span class="ax-sx" style="left:'+tickAt+'%"></span>':'')
+    +end('l',o.L)+end('r',o.R)+'</div></div>';}
+  host.innerHTML=h+'<div class="ax-nm"><span class="ax-nl"></span><span class="ax-nr"></span></div>';
+  host.setAttribute('data-axs',sig);}
+ host.title=o.title||'';
+ var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
+ var col=heavy<0?L.c:R.c;
+ /* the pole names only once there is a reading to name, so an unread dial
+    prints nothing at all, which is what its gate asserts */
+ var nl=host.querySelector('.ax-nl'), nr=host.querySelector('.ax-nr');
+ nl.textContent=o.read?L.nm:''; nr.textContent=o.read?R.nm:'';
+ nl.classList.toggle('on',heavy<0); nr.classList.toggle('on',heavy>0);
+ host.querySelectorAll('.lb').forEach(function(lb){var left=lb.classList.contains('l'),e=left?L:R,on=left?heavy<0:heavy>0;
+  lb.classList.toggle('on',on); lb.style.setProperty('--c',e.c);
+  var b=lb.querySelector('b'); if(b)b.textContent=Math.round(e.v);});
+ if(!o.read)return;
+ if(axdNow()==='arc'){
+  host.querySelectorAll('.fill').forEach(function(f){var mine=f.classList.contains('lt')?heavy<0:heavy>0;
+   f.style.stroke=col; f.style.strokeDasharray=(mine?diff:0).toFixed(1)+' 100';});
+  var nd=host.querySelector('.ax-nd');
+  if(nd){nd.style.transform='rotate('+((heavy<0?-1:1)*diff/100*90).toFixed(1)+'deg)'; nd.style.setProperty('--c',col);}}
+ else{var f=host.querySelector('.fill');
+  f.className='fill'+(heavy<0?' lt':' rt'); f.style.width=(diff/2).toFixed(1)+'%'; f.style.background=col;}}
 function renderBal(r){
+ axdPaint();
  var e=document.getElementById('bal'); if(!e)return;
  var b=r.balance;
- /* THE STRIP, BUILT TO THE RULING AND NOT TO MY READING OF IT.
+ /* THE STRIP'S FOUR RULINGS HOLD in the one drawing: masculine on the left
+    and feminine on the right, the break at the centre, the fill from the
+    centre out toward the side the field leans, and the figures in pills.
+    Masculine on the left is the opposite handedness from the body, which is
+    what a mirror is, logged in BOOK-ERRATA. An engine refusal, read false, is
+    not a reading and is never printed as one: the dial draws its ends and
+    its break and nothing else, and the refusal keeps its full sentence one
+    door in, in runBalDrill.
 
-    Asked for five times, and four times it came back as something adjacent.
-    The ruling is four things and every one of them is specific:
-
-      the two symbols, masculine on the left and feminine on the right
-      one line, with a break at the centre
-      the fill runs FROM THE CENTRE OUT toward the side you lean
-      and the percent is a pill
-
-    What was there was a dot sliding along a plain track with the figure
-    printed beside it as bare text. A dot on a track says "you are at this
-    point on a scale". That is not the reading. The reading is "you lean this
-    far, this way, off centre", which is a quantity with a direction and an
-    origin, and the only shape that says it is a bar growing out of the
-    middle. The break at the centre is where even sits, so even is visibly
-    nothing rather than a dot that happens to be halfway.
-
-    Masculine on the left and feminine on the right is the opposite
-    handedness from the body, and that is what a mirror is: face one and your
-    right hand is on the left. Logged in BOOK-ERRATA so the codex and the
-    screen disagree in writing rather than by accident. */
- /* mirrored with the strip: lean +1 is fully outward, which is masculine,
-    and masculine is the left end. */
- var lean=b.read?Math.abs(b.lean)*100:0;
- var dir=!b.read?'':b.lean===0?'even':b.lean>0?'masculine':'feminine';
- var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
+    The two figures are the two means as shares of their sum, so they add to
+    100 like orientation's, and their difference is the lean this strip has
+    always printed: 62 against 38 is the old "24% masculine". */
+ var t=b.outMean+b.inMean, m=t?b.outMean/t*100:50;
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  /* sex at birth is a reference point and not a reading, drawn only when a
-    person has given it, and mirrored with everything else. */
- var tick=sx==='m'?'<span class="bal-s" style="left:25%"></span>'
-        :sx==='f'?'<span class="bal-s" style="left:75%"></span>':'';
- /* the bar. half the width is half the strip, so a full lean fills its own
-    side exactly and nothing crosses the break. */
- var half=(b.read?Math.min(1,Math.abs(b.lean)):0)*50;
- var fill=!b.read||half<=0 ? ''
-  : '<span class="bal-f" style="'+(b.lean>0
-     ? 'right:50%;width:'+half.toFixed(1)+'%'
-     : 'left:50%;width:'+half.toFixed(1)+'%')
-    +';background:'+c+'"></span>';
- e.innerHTML='<div class="bal-t">'
-  +balG(GLYPH_M,dir==='masculine','Masculine. Structure and direction, expressed outward. '
-    +'Not men: the codex is explicit about that.')
-  +'<span'+(dir==='masculine'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
-  /* ============================================================
-     AN ENGINE REFUSAL IS NOT A READING, AND IT WAS BEING PRINTED AS ONE.
-
-     His words: "the balance masculine feminine is broken. It says masculine,
-     not enough held to read feminine. I do not understand what that bullshit
-     means." He is reading it correctly. The slot between the two pole labels
-     is the value slot, it carried a pill on every other field, and on this
-     one it carried a sentence, so the line parsed as three words in a row:
-     masculine, then a clause, then feminine.
-
-     The cause is structural and not verbal. balance() returns read:false when
-     both means sit under one, which is the engine declining to name a
-     direction. That refusal was handed straight to the renderer and dropped
-     into the place where the reading goes. Rewording it would have produced a
-     shorter sentence in the same wrong slot.
-
-     So: the slot keeps its shape. The pill is always drawn, and when there is
-     nothing to call it draws empty with a dash, which is what railTop, the
-     accuracy ring and the compass number already do for the same state.
-
-     AND THE STRIP GETS THE DASH AND NOTHING ELSE. The first cut of this fix
-     put a prose row under the track saying why, which is the defect moved one
-     element down: it is the same refusal in the same place wearing better
-     words. The copy seat's sweep rules on it and the rule is that a value's
-     empty state is a dash and the refusal keeps its full form one door away,
-     in the drill, where there is room to say what failed and what changes it.
-     runBalDrill says it there with both means printed beside it.
-
-     The wording is the one the sweep settles on, not read yet, which is what
-     the tier in the rail has always said for the same condition. Five
-     phrasings of this one state were in the product and this slot held the
-     worst of them.
-     ============================================================ */
-  +'<span class="bal-n">'+cr('Heart',b.read?lean:0,{size:'xs',hot:false,
-      color:b.read?c:'var(--dim)',label:b.read?dir:'not read yet',
-      glyph:(b.read?(b.lean>=0?GLYPH_M:GLYPH_F):undefined),
-      raw:(!b.read?'\u2013':(b.lean===0?'even':Math.round(lean)+'%')),
-      title:b.read
-        ?'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)
-        :'Balance. Not read yet. Neither side reaches 1, so no direction is '
-         +'named. Open this for the rest.'})
-  +'</span>'
-  +'<span'+(dir==='feminine'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
-  +balG(GLYPH_F,dir==='feminine','Feminine. Energy and receptivity, held inward. '
-    +'Not women: the codex is explicit about that.')
-  +'</div>'
-  +'<div class="bal-tr">'+fill+'<i></i>'+tick+'</div>';}
+    person has given it, and mirrored with everything else */
+ axDial(e,{read:!!b.read,tick:sx==='m'?'l':sx==='f'?'r':null,
+  L:{g:GLYPH_M,nm:'masculine',v:m,c:seatCol('Solar'),
+   t:'Masculine. Structure and direction, expressed outward. Not men: the codex is explicit about that.'},
+  R:{g:GLYPH_F,nm:'feminine',v:100-m,c:seatCol('Throat'),
+   t:'Feminine. Energy and receptivity, held inward. Not women: the codex is explicit about that.'},
+  title:b.read
+   ?'Balance. '+(b.lean===0?'even':Math.round(Math.abs(b.lean)*100)+' percent '+(b.lean>0?'masculine':'feminine'))
+    +', masculine '+Math.round(m)+' against feminine '+Math.round(100-m)+'. Open this for the rest.'
+   :'Balance. Not read yet. Neither side reaches 1, so no direction is named. Open this for the rest.'});}
 /* ---- the rail's doors. one delegated set, on the rail itself ---- */
 var _KBJ=false;
 function wireKbJump(){
@@ -29268,7 +29673,7 @@ function render(){
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */
  (function(){var e=$('howto'); if(e){e.textContent=''; e.style.display='none';}})();
- /* BALANCE. It read left to right, which draws two competing quantities and
+ /* ORIENTATION. It read left to right, which draws two competing quantities and
     makes the reader do the subtraction. It now grows from the centre out, so
     the thing a person sees is the lean itself: which way, and how far. Fifty
     fifty is a bar with nothing sticking out either side.
@@ -29286,47 +29691,30 @@ function render(){
      The bar is left in the document with nothing in it rather than hidden,
      because an empty trough is the honest picture of an empty field and the
      Field's own layout is measured against its height. */
-  if(r.unread){
-   pb.innerHTML='<div class="mid"></div>';
-   pb.title='Balance. Nothing read yet, so there is no lean to show.';
-   return;}
-  var L=leanRead(r);
-  /* and on a field whose CQ is still filling with no story cue yet, which has
-     no lean to show either: leanRead says so rather than printing 100 to 0 */
-  if(L.read===false){
-   pb.innerHTML='<div class="mid"></div>';
-   pb.title='Balance. Coherence is still filling, so there is no lean to show.';
-   return;}
-  var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
-  var mal=L.mal>L.ben;
-  /* BENIGN AND MALIGNANT GET SYMBOLS, like balance. Ruled.
-
-     The bar carried two bare numbers at its ends and nothing saying which end
-     was which, so a person had to already know that the left one was the
-     benign figure. The balance strip directly above it has carried its two
-     symbols since it was rebuilt and this one had not caught up.
-
-     Benign is a closed ring with a rising stroke inside it: contained, and
-     going up. Malignant is a ring broken at its lower right with the stroke
-     falling out of the gap: the same shape, open, and going down. One form,
-     two states, which is the reading. */
+  /* one drawing with balance, axDial above. The dial is left in the document
+     with nothing in it rather than hidden, because an empty trough is the
+     honest picture of an empty field, and the Field's own layout is measured
+     against its height */
   var gB='<circle cx="12" cy="12" r="8"/><path d="M8.6 14.2l2.6-3.1 2.2 2 2-3.4"/>';
-  var gM='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/>'
-   +'<path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
-  function pIco(g,on,c,t){
-   return '<span class="pol-g'+(on?' on':'')+'" style="--c:'+c+'" title="'+esc(t)+'">'
-    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
-  pb.innerHTML='<div class="fill'+(mal?' mal':'')+'" style="width:'+(off/2).toFixed(1)+'%;'
-   +'background:'+(mal?PAL.Root:PAL.Heart)+';opacity:.62"></div><div class="mid"></div>'
-   +'<div class="lb l">'+pIco(gB,!mal,PAL.Heart,
-     'Benign. Charge that is held and is not costing you.')
-   +'<b>'+L.ben.toFixed(0)+'</b></div>'
-   +'<div class="lb r"><b>'+L.mal.toFixed(0)+'</b>'+pIco(gM,mal,PAL.Root,
-     'Malignant. Charge that is held and is taking something from you.')+'</div>';
-  pb.title=(L.cues?'Balance. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
-    :'Balance. No story yet, so this is the field alone. ')
-   +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src
-   +'. The bar grows from the centre: the further it reaches, the harder the lean.';})();
+  var gM='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/><path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
+  var L=r.unread?{read:false}:leanRead(r);
+  /* BENIGN AND MALIGNANT GET SYMBOLS, ruled. Benign is a closed ring with a
+     rising stroke inside it: contained, and going up. Malignant is the same
+     ring broken at its lower right with the stroke falling out of the gap:
+     one form, two states, which is the reading. */
+  var spec={read:L.read!==false,
+   L:{g:gB,nm:'benign',v:L.ben||0,c:PAL.Heart,t:'Benign. Charge that is held and is not costing you.'},
+   R:{g:gM,nm:'malignant',v:L.mal||0,c:PAL.Root,t:'Malignant. Charge that is held and is taking something from you.'}};
+  /* and it silences itself on an unread field, and on a field whose CQ is
+     still filling with no story cue yet, which has no lean to show either:
+     leanRead says so rather than printing 100 to 0 */
+  spec.title=r.unread?'Orientation. Nothing read yet, so there is no lean to show.'
+   :L.read===false?'Orientation. Coherence is still filling, so there is no lean to show.'
+   :(L.cues?'Orientation. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
+     :'Orientation. No story yet, so this is the field alone. ')
+    +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src
+    +'. The fill grows from the centre toward the heavier end: the further it reaches, the harder the lean.';
+  axDial(pb,spec);})();
  /* the key. three quotients, three elements. */
  /* The key sat on top of the wheel as a 288px card. It is now a strip in
     flow above the canvas, one ring and one word per element, and each is a
@@ -29621,6 +30009,7 @@ function loop(ts){
     and ringsDraw builds it only when its signature does */
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
  else if(S.tab===TAB.ENERGY){drawAura(r);}
+ else auraWhole();
  requestAnimationFrame(loop);}
 
 /* ---- init ---- */
@@ -29651,6 +30040,9 @@ document.addEventListener('click',function(e){
   if(pe)runPoleDrill(pe.getAttribute('data-polend')); else runCompassDrill();
   return;}
  if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
+ /* the two dial designs, FJ: a press picks one for both dials */
+ var axb=e.target.closest?e.target.closest('[data-axd]'):null;
+ if(axb){axdSet(axb.getAttribute('data-axd'));return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  if(!row)return;
  var n=BY[+row.getAttribute('data-addr')];
@@ -29798,5 +30190,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001950071"></div>
+<div id="eof" hidden data-len="001977033"></div>
 </body></html>

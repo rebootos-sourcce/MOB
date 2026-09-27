@@ -3616,11 +3616,24 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  const tog=await fp.evaluate(async()=>{
   const fr2=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   const b=document.querySelector('#fbar .fb-full [data-fb="saboteurs"]');
-  const vis=()=>[...document.querySelectorAll('#frend .L-patterns')].filter(e=>getComputedStyle(e).display!=='none').length;
-  const before=vis(); b.click(); await fr2(); const off=vis(), pressed=b.getAttribute('aria-pressed');
-  b.click(); await fr2(); return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed')};});
+  /* A LAYER NOW LEAVES AND ARRIVES, FJ in TASKS.md: "where are my
+     animations?" It fades out over 220ms and is then taken out by
+     visibility, where it was display:none on the same frame. So a state is
+     read once its move has run, 420ms after the press, and "gone" is what a
+     person gets: not drawn and not pressable. Read on the frame after the
+     press, the layer is still there and on its way out, which is the
+     animation and not a defect. */
+  const settle=()=>new Promise(r=>setTimeout(r,420));
+  const gone=e=>{const cs=getComputedStyle(e);return cs.display==='none'||cs.visibility==='hidden';};
+  const vis=()=>[...document.querySelectorAll('#frend .L-patterns')].filter(e=>!gone(e)).length;
+  const before=vis(); b.click(); await fr2(); await new Promise(r=>setTimeout(r,90));
+  const leaving=[...document.querySelectorAll('#frend .frsvg .L-patterns')].map(e=>+getComputedStyle(e).opacity)[0];
+  await settle(); const off=vis(), pressed=b.getAttribute('aria-pressed');
+  b.click(); await fr2(); await settle();
+  return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed'),leaving:leaving};});
  ok(tog.before>0&&tog.off===0&&tog.pressed==='false','a toggle takes its layer off, marks and words, '+tog.before+' groups to '+tog.off);
  ok(tog.back===tog.before&&tog.again==='true','and a second press puts it back');
+ ok(tog.leaving>0&&tog.leaving<1,'and it left by a fade, not a cut: about 120ms after the press its opacity read '+tog.leaving);
 
  /* THE CALLOUTS ARE INSIDE THE DIAL AND OFF EACH OTHER. The dial's reach is
     the outside of its domain band, measured off the drawing rather than
@@ -4000,6 +4013,102 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   ok(under.gates===6&&under.n===0,'390, "'+v+'": no gate pill sits under another gate, '+under.n+' of '+under.gates);}
  ok(perr.length===0,'390: no errors, '+perr.join(' | '));
  await px.close();
+}
+
+/* ============================================================
+   FJ. FOUR THINGS HE ASKED FOR ON THE FIELD, EACH HELD HERE.
+   "I shouldn't see text when I'm zoomed all the way out. Text only fades in
+   when I'm zooming in." "With my layers, where are my animations?"
+   "Orientation and balance ... designed the same way ... give me two
+   different designs." "Lines animating to show me which is the tension."
+   ============================================================ */
+console.log('\n=== FJ: words with the zoom, layers that move, one dial in two designs, the tension running ===');
+{
+ const fj=await browser.newPage({viewport:{width:1600,height:1000}});
+ const ferr=[];fj.on('pageerror',e=>ferr.push(e.message));
+ await fj.goto(FILE,{waitUntil:'load'}); await booted(fj); await fj.waitForTimeout(500);
+ const fr2=()=>fj.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ await fj.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet('wheel');});
+ /* WORDS AND THE ZOOM, on the wheel. At the whole picture no word is set, at
+    all, and every one is still placed; from 1.75x in every one is set. */
+ const wz=[];
+ for(const z of [1,1.12,1.4,1.75,2.2]){
+  await fj.evaluate(z=>{S.zoom=z;S.panx=0;S.pany=0;reframe();render();},z); await fr2();
+  wz.push(await fj.evaluate(()=>({z:S.zoom,n:LBL.length,set:LBL.filter(l=>l.set>0.004).length,
+   full:LBL.filter(l=>l.set>=0.999).length})));}
+ ok(wz[0].n>0&&wz[0].set===0,'wheel at 1x: '+wz[0].n+' words placed and none set, got '+wz[0].set+' set');
+ ok(wz[1].set===0,'wheel at the first notch, 1.12x: still none set, got '+wz[1].set);
+ ok(wz[2].set>0&&wz[2].full===0,'wheel at 1.4x: the words are coming in and none is at full strength yet, '+wz[2].set+' set, '+wz[2].full+' full');
+ ok(wz[3].n>0&&wz[3].full===wz[3].n,'wheel at 1.75x: every word at full strength, '+wz[3].full+' of '+wz[3].n);
+ console.log('  wheel words set by zoom: '+wz.map(o=>o.z+'x '+o.set+'/'+o.n).join('  '));
+ /* and the figure at the core is not a word: it prints at 1x */
+ const core=await fj.evaluate(()=>{S.zoom=1;S.panx=0;S.pany=0;reframe();render();return compute().unread;});
+ ok(core===false,'the core still has a figure to print at 1x, James is read');
+ /* on Frames and Dial the words are taken out at 1x, not set faint, and
+    come back on the same curve off FZ.s */
+ for(const v of ['frames','dial']){
+  await fj.evaluate(v=>{fviewSet(v);},v); await fr2();
+  const at=async s=>{await fj.evaluate(s=>{const h=document.getElementById('frend');FZ={s:1,x:0,y:0};
+   fzAt(s,h.clientWidth*.5,h.clientHeight*.12);},s); await fj.waitForTimeout(220);
+   return fj.evaluate(()=>{const h=document.getElementById('frend');
+    const shown=sel=>[...h.querySelectorAll(sel)].filter(e=>getComputedStyle(e).visibility!=='hidden'&&!e.classList.contains('hid')).length;
+    return {notext:h.classList.contains('notext'),tx:+h.style.getPropertyValue('--fztx'),
+     names:shown('.frnm span'),calls:shown('[data-call]'),figures:[...h.querySelectorAll('.frsvg text')].filter(t=>/^\d+$/.test(t.textContent)&&getComputedStyle(t).visibility!=='hidden').length};});};
+  const a1=await at(1), a2=await at(2);
+  ok(a1.notext&&a1.tx===0&&a1.names===0&&a1.calls===0,'"'+v+'" at 1x: no word shown, names '+a1.names+', callouts '+a1.calls);
+  ok(a1.figures===1,'"'+v+'" at 1x: the core figure still prints, '+a1.figures);
+  ok(!a2.notext&&a2.tx===1&&a2.names>0,'"'+v+'" at 2x: the words are in, '+a2.names+' names'+(v==='dial'?', '+a2.calls+' callouts':''));
+  await fj.evaluate(()=>{FZ={s:1,x:0,y:0};fzApply();});}
+ /* THE TENSION RUNS. Every thread carries a pulse whose speed is its own
+    tension, so a sheet of pulses whose speeds all agree would be decoration */
+ await fj.evaluate(()=>fviewSet('wheel')); await fr2();
+ const tw=await fj.evaluate(()=>{const ts=PUL.map(p=>p.t);
+  return {n:PUL.length,distinct:new Set(ts.map(t=>t.toFixed(3))).size,lo:Math.min(...ts),hi:Math.max(...ts)};});
+ ok(tw.n>50&&tw.distinct>4&&tw.hi>tw.lo,'wheel: '+tw.n+' threads carry a pulse, at '+tw.distinct+' distinct tensions from '
+  +tw.lo.toFixed(2)+' to '+tw.hi.toFixed(2));
+ await fj.evaluate(()=>fviewSet('dial')); await fr2();
+ const fw=await fj.evaluate(async()=>{const ps=[...document.querySelectorAll('#frend .frflow path')];
+  const d=new Set(ps.map(p=>getComputedStyle(p).animationDuration)).size, e=ps[0];
+  const o0=parseFloat(getComputedStyle(e).strokeDashoffset); await new Promise(r=>setTimeout(r,160));
+  return {n:ps.length,durs:d,moved:Math.abs(parseFloat(getComputedStyle(e).strokeDashoffset)-o0)};});
+ ok(fw.n>50&&fw.durs>4&&fw.moved>0.5,'dial: '+fw.n+' pulses at '+fw.durs+' speeds, and they run, moved '+fw.moved.toFixed(1)+'px in 160ms');
+ /* A LAYER MOVES. A press on the bar starts the sweep on the wheel: the layer
+    is mid arrival two frames later, pressable at once, and whole by 450ms */
+ await fj.evaluate(()=>{fviewSet('wheel');layPick(3);}); await fr2();
+ const lm=await fj.evaluate(async()=>{const b=document.querySelector('#fbar .fb-full [data-fb="archetypes"]');
+  const two=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  b.click(); await two(); const out={offV:LAYF.archetypes.v,offHits:HIT.filter(h=>h.k==='arch').length};
+  await new Promise(r=>setTimeout(r,400));
+  b.click(); await two(); out.inV=LAYF.archetypes.v; out.inSw=LAYF.archetypes.sw; out.inHits=HIT.filter(h=>h.k==='arch').length;
+  await new Promise(r=>setTimeout(r,450)); await two(); out.endV=LAYF.archetypes.v; return out;});
+ ok(lm.offV>0&&lm.offV<1&&lm.offHits===0,'wheel: Archetypes off fades out, '+lm.offV.toFixed(2)+' two frames in, and offers nothing to press, '+lm.offHits);
+ ok(lm.inV>0&&lm.inV<1&&lm.inSw<1&&lm.inHits===12,'wheel: Archetypes on sweeps in, '+lm.inV.toFixed(2)+' present and '
+  +lm.inSw.toFixed(2)+' of the way round, and all 12 are pressable from the first frame, '+lm.inHits);
+ ok(lm.endV===1,'and it is whole once the move has run, '+lm.endV);
+ /* and a change nobody made with their hand lands: layPick from the program */
+ const land=await fj.evaluate(async()=>{await new Promise(r=>setTimeout(r,700));layPick(1);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const v=LAYF.archetypes.v; layPick(3); return v;});
+ ok(land===0,'a depth set by the program lands on the next frame, archetypes read '+land);
+ /* ONE DIAL, TWO DESIGNS. Both dials take the pick, the fill runs toward the
+    heavier end on both, and the pick is kept */
+ for(const d of ['bar','arc']){
+  const o=await fj.evaluate(d=>{axdSet(d);const q=id=>{const h=document.getElementById(id);
+   const f=[...h.querySelectorAll('.fill')];
+   return {kind:h.querySelector('.ax').className,figs:[...h.querySelectorAll('.lb b')].map(b=>+b.textContent),
+    on:(h.querySelector('.lb.on')||{}).className||'',
+    fill:d==='bar'?(f[0]&&f[0].getAttribute('class')):f.filter(x=>parseFloat(x.style.strokeDasharray)>0).map(x=>x.getAttribute('class')).join()};};
+   return {pol:q('polbar'),bal:q('bal'),stored:STORE.get('axdial'),
+    pressed:[...document.querySelectorAll('#axpick [data-axd]')].map(b=>b.getAttribute('aria-checked')).join()};},d);
+  for(const k of ['pol','bal']){const x=o[k],sum=x.figs[0]+x.figs[1];
+   ok(x.kind.indexOf('ax-'+d)>=0,d+': '+k+' is drawn as the '+d+', '+x.kind);
+   ok(x.figs.length===2&&Math.abs(sum-100)<=1,d+': '+k+' carries two shares of one whole, '+x.figs.join(' and '));
+   const heavy=x.figs[0]>x.figs[1]?'l':'r';
+   ok((x.on.indexOf(' '+heavy)>=0||x.figs[0]===x.figs[1])&&x.fill.indexOf(heavy==='l'?'lt':'rt')>=0,
+    d+': '+k+' fills toward its heavier end, '+heavy+', fill '+x.fill);}
+  ok(o.stored===d&&o.pressed===(d==='bar'?'true,false':'false,true'),d+': the pick is kept and the switch says which, '+o.stored+' '+o.pressed);}
+ await fj.evaluate(()=>axdSet('bar'));
+ ok(ferr.length===0,'FJ: no errors, '+ferr.join(' | '));
+ await fj.close();
 }
 
 await browser.close();

@@ -221,6 +221,9 @@ function setZoom(z,ax,ay){
  var lo=1, hi=WHEEL_ZOOM_MAX, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
+ /* a zoom is a person's change, so a layer it brings in arrives rather than
+    appearing: layGesture in ui/wheel.js */
+ layGesture();
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
  reframe(); render();}
@@ -582,103 +585,138 @@ function railStack(r){
    The centre is a hairline, the same one the compass draws down its axis. */
 const GLYPH_M='<circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M15.5 4H20v4.5"/>';
 const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
-function balG(g,on,t){
- return '<span class="bal-g'+(on?' on':'')+'" title="'+esc(t)+'">'
-  +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
+/* ============================================================
+   ORIENTATION AND BALANCE ARE ONE MECHANIC, AND NOW ONE DRAWING.
+   FJ in TASKS.md, his words: "Orientation and balance, those two elements
+   need to be designed the same way, it's the same mechanic. If I choose
+   one, give me two different designs."
+
+   He is right about the mechanic, measured rather than agreed with. Each is
+   two shares of one whole. Orientation is benign against malignant, leanRead,
+   and the two add to 100. Balance is the outward mean against the inward
+   mean, balance(), and as shares of their sum they add to 100 as well, and
+   the lean the strip always printed is exactly their difference: lean times
+   100 is the masculine share less the feminine one. So both are the same
+   four things: a symbol and a share at each end, a break at the centre where
+   even sits, and a fill running out of the break toward the heavier end, as
+   long as the difference.
+
+   And they were drawn differently in a way that said the opposite. Balance
+   ran its fill toward the end it leaned to, which is his ruling for it. The
+   orientation bar ran its fill away from it: a benign lean grew toward the
+   malignant figure. One drawing now, and the fill goes toward the heavier
+   end on both.
+
+   TWO DESIGNS, BOTH LIVE, one switch at the head of the section, and the
+   pick applies to both dials at once, which is the point of the ask.
+     Bar   the trough, as the orientation bar shipped: the figures in pills
+           at the two ends, the fill under them.
+     Arc   a gauge: a half ring over the top with the break at twelve, the
+           fill round the ring toward the heavier end and a needle that lands
+           on the lean with a small overshoot, the figures outside the ring.
+   The choice is kept the way the Field's picture is, one key in the store,
+   because it is how this person likes to look and not a reading about them.
+
+   IN PLACE, NOT REWRITTEN. The dial is built once per design and state and
+   then only its numbers, widths and angles are written, so a change of
+   reading moves: the fill slides out of the break in 420ms on the arrival
+   curve and the needle lands on an overshoot, instead of a new picture
+   being swapped in. Reduced motion gets the end state.
+
+   UNREAD SAYS NOTHING. Both ends keep their symbols and the break stays, at
+   the same height, and no figure, fill or needle is drawn, which is the
+   rule the orientation dial's gate holds and balance now keeps too.
+   ============================================================ */
+const AXDS=[{k:'bar',nm:'Bar'},{k:'arc',nm:'Arc'}];
+/* read on first use and not at load, because the browser's store is bound
+   further down this file and at load the engine's no op store answers */
+var AXD=null;
+function axdNow(){if(AXD===null){try{var v=STORE.get('axdial')||'';AXD=v==='arc'?'arc':'bar';}catch(e){AXD='bar';}}
+ return AXD;}
+function axdSet(k){AXD=k==='arc'?'arc':'bar';try{STORE.set('axdial',AXD);}catch(e){}
+ axdPaint(); render();}
+function axdPaint(){var el=document.getElementById('axpick'); if(!el)return;
+ if(!el.firstChild)el.innerHTML='<span class="ax-pl">Style</span>'+AXDS.map(function(d){
+  return '<button type="button" class="ax-pb" role="radio" data-axd="'+d.k+'">'+d.nm+'</button>';}).join('');
+ el.querySelectorAll('[data-axd]').forEach(function(b){var on=b.getAttribute('data-axd')===axdNow();
+  b.setAttribute('aria-checked',String(on)); b.classList.toggle('on',on);});}
+function axGlyph(g){return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg>';}
+/* the arc's own geometry, in its viewBox: the ring's centre, its radius, and
+   the two quarter paths the fill runs along, from twelve o'clock outward */
+const AXA={cx:60,cy:54,r:40};
+function axArcD(side){var c=AXA,x=side<0?c.cx-c.r:c.cx+c.r;
+ return 'M'+c.cx+' '+(c.cy-c.r)+'A'+c.r+' '+c.r+' 0 0 '+(side<0?0:1)+' '+x+' '+c.cy;}
+/* o: {read, L:{g,nm,v,c,t}, R:{same}, tick:'l'|'r'|null, title} */
+function axDial(host,o){
+ var sig=axdNow()+'|'+(o.read?1:0)+'|'+(o.tick||'');
+ var end=function(side,e){return '<div class="lb '+side+'"><span class="ax-g" title="'+esc(e.t)+'">'+axGlyph(e.g)+'</span>'
+   +(o.read?'<b></b>':'')+'</div>';};
+ if(host.getAttribute('data-axs')!==sig){
+  var tickAt=o.tick==='l'?25:o.tick==='r'?75:null, h;
+  if(axdNow()==='arc'){var c=AXA,ta=o.tick==='l'?-45:45;
+   h='<div class="ax ax-arc">'+end('l',o.L)
+    +'<svg class="ax-svg" viewBox="0 0 120 60" aria-hidden="true">'
+    +'<path class="ax-trk" d="M'+(c.cx-c.r)+' '+c.cy+'A'+c.r+' '+c.r+' 0 0 1 '+(c.cx+c.r)+' '+c.cy+'"/>'
+    +(o.read?'<path class="fill lt" d="'+axArcD(-1)+'" pathLength="100"/><path class="fill rt" d="'+axArcD(1)+'" pathLength="100"/>':'')
+    +(tickAt!==null?'<line class="ax-sx" x1="'+(c.cx+Math.sin(ta*Math.PI/180)*(c.r-7)).toFixed(1)+'" y1="'+(c.cy-Math.cos(ta*Math.PI/180)*(c.r-7)).toFixed(1)
+      +'" x2="'+(c.cx+Math.sin(ta*Math.PI/180)*(c.r+7)).toFixed(1)+'" y2="'+(c.cy-Math.cos(ta*Math.PI/180)*(c.r+7)).toFixed(1)+'"/>':'')
+    +'<line class="mid" x1="'+c.cx+'" y1="'+(c.cy-c.r-8)+'" x2="'+c.cx+'" y2="'+(c.cy-c.r+8)+'"/>'
+    +(o.read?'<g class="ax-nd"><line x1="'+c.cx+'" y1="'+c.cy+'" x2="'+c.cx+'" y2="'+(c.cy-c.r+11)+'"/><circle cx="'+c.cx+'" cy="'+c.cy+'" r="3.4"/></g>':'')
+    +'</svg>'+end('r',o.R)+'</div>';}
+  else{
+   h='<div class="ax ax-bar"><div class="ax-tr">'+(o.read?'<div class="fill"></div>':'')+'<div class="mid"></div>'
+    +(tickAt!==null?'<span class="ax-sx" style="left:'+tickAt+'%"></span>':'')
+    +end('l',o.L)+end('r',o.R)+'</div></div>';}
+  host.innerHTML=h+'<div class="ax-nm"><span class="ax-nl"></span><span class="ax-nr"></span></div>';
+  host.setAttribute('data-axs',sig);}
+ host.title=o.title||'';
+ var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
+ var col=heavy<0?L.c:R.c;
+ /* the pole names only once there is a reading to name, so an unread dial
+    prints nothing at all, which is what its gate asserts */
+ var nl=host.querySelector('.ax-nl'), nr=host.querySelector('.ax-nr');
+ nl.textContent=o.read?L.nm:''; nr.textContent=o.read?R.nm:'';
+ nl.classList.toggle('on',heavy<0); nr.classList.toggle('on',heavy>0);
+ host.querySelectorAll('.lb').forEach(function(lb){var left=lb.classList.contains('l'),e=left?L:R,on=left?heavy<0:heavy>0;
+  lb.classList.toggle('on',on); lb.style.setProperty('--c',e.c);
+  var b=lb.querySelector('b'); if(b)b.textContent=Math.round(e.v);});
+ if(!o.read)return;
+ if(axdNow()==='arc'){
+  host.querySelectorAll('.fill').forEach(function(f){var mine=f.classList.contains('lt')?heavy<0:heavy>0;
+   f.style.stroke=col; f.style.strokeDasharray=(mine?diff:0).toFixed(1)+' 100';});
+  var nd=host.querySelector('.ax-nd');
+  if(nd){nd.style.transform='rotate('+((heavy<0?-1:1)*diff/100*90).toFixed(1)+'deg)'; nd.style.setProperty('--c',col);}}
+ else{var f=host.querySelector('.fill');
+  f.className='fill'+(heavy<0?' lt':' rt'); f.style.width=(diff/2).toFixed(1)+'%'; f.style.background=col;}}
 function renderBal(r){
+ axdPaint();
  var e=document.getElementById('bal'); if(!e)return;
  var b=r.balance;
- /* THE STRIP, BUILT TO THE RULING AND NOT TO MY READING OF IT.
+ /* THE STRIP'S FOUR RULINGS HOLD in the one drawing: masculine on the left
+    and feminine on the right, the break at the centre, the fill from the
+    centre out toward the side the field leans, and the figures in pills.
+    Masculine on the left is the opposite handedness from the body, which is
+    what a mirror is, logged in BOOK-ERRATA. An engine refusal, read false, is
+    not a reading and is never printed as one: the dial draws its ends and
+    its break and nothing else, and the refusal keeps its full sentence one
+    door in, in runBalDrill.
 
-    Asked for five times, and four times it came back as something adjacent.
-    The ruling is four things and every one of them is specific:
-
-      the two symbols, masculine on the left and feminine on the right
-      one line, with a break at the centre
-      the fill runs FROM THE CENTRE OUT toward the side you lean
-      and the percent is a pill
-
-    What was there was a dot sliding along a plain track with the figure
-    printed beside it as bare text. A dot on a track says "you are at this
-    point on a scale". That is not the reading. The reading is "you lean this
-    far, this way, off centre", which is a quantity with a direction and an
-    origin, and the only shape that says it is a bar growing out of the
-    middle. The break at the centre is where even sits, so even is visibly
-    nothing rather than a dot that happens to be halfway.
-
-    Masculine on the left and feminine on the right is the opposite
-    handedness from the body, and that is what a mirror is: face one and your
-    right hand is on the left. Logged in BOOK-ERRATA so the codex and the
-    screen disagree in writing rather than by accident. */
- /* mirrored with the strip: lean +1 is fully outward, which is masculine,
-    and masculine is the left end. */
- var lean=b.read?Math.abs(b.lean)*100:0;
- var dir=!b.read?'':b.lean===0?'even':b.lean>0?'masculine':'feminine';
- var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
+    The two figures are the two means as shares of their sum, so they add to
+    100 like orientation's, and their difference is the lean this strip has
+    always printed: 62 against 38 is the old "24% masculine". */
+ var t=b.outMean+b.inMean, m=t?b.outMean/t*100:50;
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  /* sex at birth is a reference point and not a reading, drawn only when a
-    person has given it, and mirrored with everything else. */
- var tick=sx==='m'?'<span class="bal-s" style="left:25%"></span>'
-        :sx==='f'?'<span class="bal-s" style="left:75%"></span>':'';
- /* the bar. half the width is half the strip, so a full lean fills its own
-    side exactly and nothing crosses the break. */
- var half=(b.read?Math.min(1,Math.abs(b.lean)):0)*50;
- var fill=!b.read||half<=0 ? ''
-  : '<span class="bal-f" style="'+(b.lean>0
-     ? 'right:50%;width:'+half.toFixed(1)+'%'
-     : 'left:50%;width:'+half.toFixed(1)+'%')
-    +';background:'+c+'"></span>';
- e.innerHTML='<div class="bal-t">'
-  +balG(GLYPH_M,dir==='masculine','Masculine. Structure and direction, expressed outward. '
-    +'Not men: the codex is explicit about that.')
-  +'<span'+(dir==='masculine'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
-  /* ============================================================
-     AN ENGINE REFUSAL IS NOT A READING, AND IT WAS BEING PRINTED AS ONE.
-
-     His words: "the balance masculine feminine is broken. It says masculine,
-     not enough held to read feminine. I do not understand what that bullshit
-     means." He is reading it correctly. The slot between the two pole labels
-     is the value slot, it carried a pill on every other field, and on this
-     one it carried a sentence, so the line parsed as three words in a row:
-     masculine, then a clause, then feminine.
-
-     The cause is structural and not verbal. balance() returns read:false when
-     both means sit under one, which is the engine declining to name a
-     direction. That refusal was handed straight to the renderer and dropped
-     into the place where the reading goes. Rewording it would have produced a
-     shorter sentence in the same wrong slot.
-
-     So: the slot keeps its shape. The pill is always drawn, and when there is
-     nothing to call it draws empty with a dash, which is what railTop, the
-     accuracy ring and the compass number already do for the same state.
-
-     AND THE STRIP GETS THE DASH AND NOTHING ELSE. The first cut of this fix
-     put a prose row under the track saying why, which is the defect moved one
-     element down: it is the same refusal in the same place wearing better
-     words. The copy seat's sweep rules on it and the rule is that a value's
-     empty state is a dash and the refusal keeps its full form one door away,
-     in the drill, where there is room to say what failed and what changes it.
-     runBalDrill says it there with both means printed beside it.
-
-     The wording is the one the sweep settles on, not read yet, which is what
-     the tier in the rail has always said for the same condition. Five
-     phrasings of this one state were in the product and this slot held the
-     worst of them.
-     ============================================================ */
-  +'<span class="bal-n">'+cr('Heart',b.read?lean:0,{size:'xs',hot:false,
-      color:b.read?c:'var(--dim)',label:b.read?dir:'not read yet',
-      glyph:(b.read?(b.lean>=0?GLYPH_M:GLYPH_F):undefined),
-      raw:(!b.read?'\u2013':(b.lean===0?'even':Math.round(lean)+'%')),
-      title:b.read
-        ?'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)
-        :'Balance. Not read yet. Neither side reaches 1, so no direction is '
-         +'named. Open this for the rest.'})
-  +'</span>'
-  +'<span'+(dir==='feminine'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
-  +balG(GLYPH_F,dir==='feminine','Feminine. Energy and receptivity, held inward. '
-    +'Not women: the codex is explicit about that.')
-  +'</div>'
-  +'<div class="bal-tr">'+fill+'<i></i>'+tick+'</div>';}
+    person has given it, and mirrored with everything else */
+ axDial(e,{read:!!b.read,tick:sx==='m'?'l':sx==='f'?'r':null,
+  L:{g:GLYPH_M,nm:'masculine',v:m,c:seatCol('Solar'),
+   t:'Masculine. Structure and direction, expressed outward. Not men: the codex is explicit about that.'},
+  R:{g:GLYPH_F,nm:'feminine',v:100-m,c:seatCol('Throat'),
+   t:'Feminine. Energy and receptivity, held inward. Not women: the codex is explicit about that.'},
+  title:b.read
+   ?'Balance. '+(b.lean===0?'even':Math.round(Math.abs(b.lean)*100)+' percent '+(b.lean>0?'masculine':'feminine'))
+    +', masculine '+Math.round(m)+' against feminine '+Math.round(100-m)+'. Open this for the rest.'
+   :'Balance. Not read yet. Neither side reaches 1, so no direction is named. Open this for the rest.'});}
 /* ---- the rail's doors. one delegated set, on the rail itself ---- */
 var _KBJ=false;
 function wireKbJump(){
@@ -810,7 +848,7 @@ function render(){
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */
  (function(){var e=$('howto'); if(e){e.textContent=''; e.style.display='none';}})();
- /* BALANCE. It read left to right, which draws two competing quantities and
+ /* ORIENTATION. It read left to right, which draws two competing quantities and
     makes the reader do the subtraction. It now grows from the centre out, so
     the thing a person sees is the lean itself: which way, and how far. Fifty
     fifty is a bar with nothing sticking out either side.
@@ -828,47 +866,30 @@ function render(){
      The bar is left in the document with nothing in it rather than hidden,
      because an empty trough is the honest picture of an empty field and the
      Field's own layout is measured against its height. */
-  if(r.unread){
-   pb.innerHTML='<div class="mid"></div>';
-   pb.title='Balance. Nothing read yet, so there is no lean to show.';
-   return;}
-  var L=leanRead(r);
-  /* and on a field whose CQ is still filling with no story cue yet, which has
-     no lean to show either: leanRead says so rather than printing 100 to 0 */
-  if(L.read===false){
-   pb.innerHTML='<div class="mid"></div>';
-   pb.title='Balance. Coherence is still filling, so there is no lean to show.';
-   return;}
-  var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
-  var mal=L.mal>L.ben;
-  /* BENIGN AND MALIGNANT GET SYMBOLS, like balance. Ruled.
-
-     The bar carried two bare numbers at its ends and nothing saying which end
-     was which, so a person had to already know that the left one was the
-     benign figure. The balance strip directly above it has carried its two
-     symbols since it was rebuilt and this one had not caught up.
-
-     Benign is a closed ring with a rising stroke inside it: contained, and
-     going up. Malignant is a ring broken at its lower right with the stroke
-     falling out of the gap: the same shape, open, and going down. One form,
-     two states, which is the reading. */
+  /* one drawing with balance, axDial above. The dial is left in the document
+     with nothing in it rather than hidden, because an empty trough is the
+     honest picture of an empty field, and the Field's own layout is measured
+     against its height */
   var gB='<circle cx="12" cy="12" r="8"/><path d="M8.6 14.2l2.6-3.1 2.2 2 2-3.4"/>';
-  var gM='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/>'
-   +'<path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
-  function pIco(g,on,c,t){
-   return '<span class="pol-g'+(on?' on':'')+'" style="--c:'+c+'" title="'+esc(t)+'">'
-    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
-  pb.innerHTML='<div class="fill'+(mal?' mal':'')+'" style="width:'+(off/2).toFixed(1)+'%;'
-   +'background:'+(mal?PAL.Root:PAL.Heart)+';opacity:.62"></div><div class="mid"></div>'
-   +'<div class="lb l">'+pIco(gB,!mal,PAL.Heart,
-     'Benign. Charge that is held and is not costing you.')
-   +'<b>'+L.ben.toFixed(0)+'</b></div>'
-   +'<div class="lb r"><b>'+L.mal.toFixed(0)+'</b>'+pIco(gM,mal,PAL.Root,
-     'Malignant. Charge that is held and is taking something from you.')+'</div>';
-  pb.title=(L.cues?'Balance. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
-    :'Balance. No story yet, so this is the field alone. ')
-   +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src
-   +'. The bar grows from the centre: the further it reaches, the harder the lean.';})();
+  var gM='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/><path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
+  var L=r.unread?{read:false}:leanRead(r);
+  /* BENIGN AND MALIGNANT GET SYMBOLS, ruled. Benign is a closed ring with a
+     rising stroke inside it: contained, and going up. Malignant is the same
+     ring broken at its lower right with the stroke falling out of the gap:
+     one form, two states, which is the reading. */
+  var spec={read:L.read!==false,
+   L:{g:gB,nm:'benign',v:L.ben||0,c:PAL.Heart,t:'Benign. Charge that is held and is not costing you.'},
+   R:{g:gM,nm:'malignant',v:L.mal||0,c:PAL.Root,t:'Malignant. Charge that is held and is taking something from you.'}};
+  /* and it silences itself on an unread field, and on a field whose CQ is
+     still filling with no story cue yet, which has no lean to show either:
+     leanRead says so rather than printing 100 to 0 */
+  spec.title=r.unread?'Orientation. Nothing read yet, so there is no lean to show.'
+   :L.read===false?'Orientation. Coherence is still filling, so there is no lean to show.'
+   :(L.cues?'Orientation. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
+     :'Orientation. No story yet, so this is the field alone. ')
+    +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src
+    +'. The fill grows from the centre toward the heavier end: the further it reaches, the harder the lean.';
+  axDial(pb,spec);})();
  /* the key. three quotients, three elements. */
  /* The key sat on top of the wheel as a 288px card. It is now a strip in
     flow above the canvas, one ring and one word per element, and each is a
@@ -1163,6 +1184,7 @@ function loop(ts){
     and ringsDraw builds it only when its signature does */
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
  else if(S.tab===TAB.ENERGY){drawAura(r);}
+ else auraWhole();
  requestAnimationFrame(loop);}
 
 /* ---- init ---- */
@@ -1193,6 +1215,9 @@ document.addEventListener('click',function(e){
   if(pe)runPoleDrill(pe.getAttribute('data-polend')); else runCompassDrill();
   return;}
  if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
+ /* the two dial designs, FJ: a press picks one for both dials */
+ var axb=e.target.closest?e.target.closest('[data-axd]'):null;
+ if(axb){axdSet(axb.getAttribute('data-axd'));return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  if(!row)return;
  var n=BY[+row.getAttribute('data-addr')];

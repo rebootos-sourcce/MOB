@@ -202,7 +202,8 @@ const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stori
 function fbUnpin(){var p=S.pin;if(!p)return;
  var k=FB_PINK[p.kind]||(p.sq!==undefined&&p.b?'addresses':null);
  if(k&&!layerOn(k))S.pin=null;}
-function fbToggle(k){layToggle(k); fbUnpin(); fbSay(k); render();}
+/* a press is a person's change, so it moves: layGesture in ui/wheel.js */
+function fbToggle(k){layGesture(); layToggle(k); fbUnpin(); fbSay(k); render();}
 function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
  var wait=on&&k==='stories'&&FVIEW==='wheel'&&atomA()<=0;
  FB_SAY.innerHTML='<b>'+esc(l.nm)+(on?' on.':' off.')+'</b> '+esc(l.tip)
@@ -274,7 +275,7 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
   var m=document.createElement('button'); m.type='button'; m.className='fb-mi'; m.setAttribute('role','menuitemradio');
   m.setAttribute('data-preset',i);
   m.innerHTML='<span class="fb-ic">'+fbSvg(VICON[i])+'</span><span class="fb-mt"><b>'+esc(v.nm)+'</b><span>'+esc(v.tip)+'</span></span>';
-  m.addEventListener('click',function(e){e.stopPropagation();layPick(i);S.pin=null;fbOpenMenu(false);render();});
+  m.addEventListener('click',function(e){e.stopPropagation();layGesture();layPick(i);S.pin=null;fbOpenMenu(false);render();});
   FB_MENU.appendChild(m);});
 
  /* WHEEL, FRAMES, DIAL, icon only. Ruled in two steps, DR then DY: "it's

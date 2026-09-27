@@ -1322,9 +1322,17 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
   const pb=document.getElementById('polbar');
   const dial=[];
   if(pb&&pb.querySelector('.fill')){
-   const trough=rgb(getComputedStyle(pb).backgroundColor);
-   const base=trough.a>=0.999?trough.c:painted(pb);
-   [['benign','r',PAL.Heart,''],['malignant','l',PAL.Root,' mal']].forEach(cs=>{
+   /* the trough is the dial's own .ax-tr inside its host now, one drawing
+      shared with balance, so its ground is read there */
+   const tr=pb.querySelector('.ax-tr')||pb;
+   const trough=rgb(getComputedStyle(tr).backgroundColor);
+   const base=trough.a>=0.999?trough.c:painted(tr);
+   /* THE FILL RUNS TOWARD THE HEAVIER END NOW, FJ in TASKS.md, where it ran
+      away from it: orientation and balance are one drawing, axDial in
+      ui/ui.js, and balance's ruling was the fill toward the lean. So a
+      benign lean covers the benign figure on the left and a malignant one
+      the malignant figure on the right. */
+   [['benign','l',PAL.Heart,' lt'],['malignant','r',PAL.Root,' rt']].forEach(cs=>{
     const f=pb.querySelector('.fill');
     /* THE TRANSITION IS OFF FOR THE MEASUREMENT. .fill animates its width,
        so setting 50% and reading the rect in the same tick reads wherever

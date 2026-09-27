@@ -1404,9 +1404,61 @@ body:not(.tab-field) #frend{display:none!important}
 #frend.off-saboteurs .L-patterns,#frend.off-saboteurs .F-sab,
 #frend.off-complexes .T-cx,#frend.off-complexes .F-cx,#frend.off-hyper .T-hy,#frend.off-hyper .F-hy,
 #frend.off-character .T-sup,#frend.off-character [data-call=chains],
-#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains,#frend.off-masks .L-masks{display:none}
-/* and the wheel's wash, which is the page's own canvas and not the picture's */
-body.tab-field.noshadow #bgaura{visibility:hidden}
+#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains,#frend.off-masks .L-masks{
+ opacity:0;visibility:hidden;pointer-events:none!important;
+ transition:opacity var(--t-element) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-element)}
+/* A LAYER ARRIVES AND LEAVES, FJ in TASKS.md: "where are my animations?" It
+   was display:none, which cannot be animated, so a switch was a cut. Now the
+   layer fades out in 220ms on an ease in, a quadratic one, the canvas's own
+   curve: the steeper ease in the motion table measured as ninety
+   milliseconds of nothing after the press, and is taken out of the picture by
+   visibility once it has, so a hidden layer is still not drawn and still not
+   pressable; and it comes back on --t-context, 420ms, eased out into place,
+   the named step nearest the wheel's own ENTER_SPAN of 380, because every
+   duration in this sheet is one of the four steps and the design gate holds
+   that. Every selector here is inside :where so
+   it weighs nothing, and each off rule above wins its leaving timing over it
+   without an order to keep. The wheel does the same on its canvas, layFade in
+   ui/wheel.js, with the sweep round from twelve o'clock a canvas can clip. */
+:where(#frend) :where([class^="L-"],[class^="T-"],[class*=" F-"]){
+ transition:opacity var(--t-context) var(--ease-out),visibility 0s linear 0s}
+/* THE WORDS COME IN WITH THE ZOOM, FJ. txtZoomA in ui/component.js reads the
+   picture's zoom and rings.js writes it here as --fztx, 0 at the whole
+   picture and 1 from 1.75x in. At 0 the host carries notext and the words
+   are taken out, not set faint. The core figure and the gate pills are not
+   words and are not here. */
+#frend [data-call],#frend .frnm{opacity:var(--fztx,1);transition:opacity var(--t-micro) var(--ease-out),visibility 0s linear 0s}
+#frend.notext [data-call],#frend.notext .frnm{visibility:hidden;transition:opacity var(--t-micro) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-micro)}
+/* the names a zoom brings in, set level beside their marks in page pixels, so
+   eleven pixels is eleven pixels at any zoom and never under the floor */
+.frnm{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.frnm span{position:absolute;left:0;top:0;white-space:nowrap;font-size:11.5px;font-weight:500;
+ line-height:1;letter-spacing:.005em;color:var(--c);
+ text-shadow:0 0 3px var(--g),0 0 3px var(--g),0 0 2px var(--g)}
+.frnm span.hid{visibility:hidden}
+.frnm span.sel{font-weight:600}
+/* THE TENSION RUNS, FJ. The pulses on the renditions' threads sit in their
+   own picture over the main one, so the main picture, thousands of marks, is
+   never repainted for them: only this sheet of a few hundred paths is. */
+.frflow{position:absolute;left:0;top:0;pointer-events:none;will-change:transform}
+/* the picture a switch replaced, dissolving over the new one, ringsDraw */
+.frghost{position:absolute;left:0;top:0;pointer-events:none}
+/* A PULSE RUNS AT ONE SPEED, which is the one place this sheet has a linear
+   curve on purpose: an ease would make every pulse surge and stall once a
+   period, and a wave on a wire does neither. Its speed is the reading. */
+.frflow path{fill:none;stroke-linecap:round;animation:frflow var(--d,3s) linear infinite;
+ animation-delay:var(--ph,0s)}
+/* both ends lengths, or the two would not interpolate and the pulse would
+   jump once a period instead of running: measured, a bare number against a
+   calc of a variable reads as one fixed value all the way through */
+@keyframes frflow{from{stroke-dashoffset:0px}to{stroke-dashoffset:calc(var(--p,64) * -1px)}}
+@media (prefers-reduced-motion:reduce){.frflow{display:none}}
+/* and the wheel's wash, which is the page's own canvas and not the picture's.
+   Its fade is an opacity drawAura sets, auraK in ui/wheel.js; this takes the
+   canvas out once that fade has run, and puts it back at once on the way in,
+   so the class never cuts a fade short. */
+#bgaura{transition:visibility 0s linear 0s}
+body.tab-field.noshadow #bgaura{visibility:hidden;transition:visibility 0s linear var(--t-element)}
 /* ============================================================
    THE GLASS BAR. ui/fieldbar.js, ported from proto/glassbar, DK to ED in
    TASKS.md. It replaced the layer row that stood here and the depth row.
@@ -1692,44 +1744,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    in flow, on every tab, and it needs none of the pinning. */
 .bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
  background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
-.bal-t{display:flex;justify-content:space-between;align-items:center;gap:7px;
- font-size:11px;color:var(--dim);white-space:nowrap}
-/* the end the field leans to. the number in the middle is the amount, the
-   lit end is the direction, and neither repeats the other. */
-.bal-t .on{font-weight:600}
-.bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
-.bal-n{flex:1 1 auto;text-align:center;display:flex;justify-content:center}
-/* THE VALUE SLOT CARRIES A VALUE. The `em` rule dressed the one string this
-   slot ever held that was not a reading, "not enough held to read", set
-   between the words masculine and feminine so the line read as a sentence
-   about the feminine pole. The slot draws the pill in every state now and an
-   empty pill carries a dash, so the rule has no writer and goes with it. The
-   reason the direction could not be called keeps its full form one door away,
-   in the drill the strip opens. */
-/* the two poles, as glyphs. ring and not fill, like every other icon here.
-   masculine on the left and feminine on the right, mirrored against the body
-   on the owner's ruling, which is what facing a mirror does. */
-.bal-g{display:inline-flex;align-items:center;flex:0 0 auto;color:var(--dim)}
-.bal-g svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
- stroke-linejoin:round}
-.bal-g.on{color:var(--ink)}
-/* ONE LINE WITH A BREAK AT THE CENTRE, and the fill runs out of the break
-   toward the side the field leans. A track with a dot on it says "you are at
-   this point on a scale", which is not the reading. The reading is how far
-   off centre and which way, and that is a bar with an origin. */
-.bal-tr{position:relative;height:6px;border-radius:3px;background:var(--sunk);
- overflow:hidden}
-.bal-f{position:absolute;top:0;bottom:0;border-radius:3px;opacity:.9;
- transition:width .3s cubic-bezier(.22,1,.36,1), background var(--t-surface) var(--ease-out)}
-/* the break. It sits above the fill so even reads as a gap and not as a
-   seam, which is the whole reason it is there. */
-.bal-tr i{position:absolute;top:-1px;bottom:-1px;width:2px;left:calc(50% - 1px);
- background:var(--bg);z-index:2}
-.bal-m{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;
- transform:translate(-50%,-50%);transition: left var(--t-surface) var(--ease-out)}
-.bal-s{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
- background:var(--dim);border-radius:1px}
-.bal:hover .bal-tr{background:var(--panel-2)}
 /* the definition of the two ends of an axis, said once in the rail rather than
    only in a tooltip, because a tooltip is not reachable by a thumb. */
 .stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
@@ -1925,42 +1939,67 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
  color:var(--ink);letter-spacing:.01em;line-height:1.4}
 .lsec + .rblk{margin-top:14px;padding-top:16px}
 
-/* ---------- polarity bar ---------- */
-.polbar{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;
- background:var(--sunk);margin-bottom:4px}
-/* The fill used to start at the left edge, which drew two competing
-   quantities and left the reader to do the subtraction. It now starts at the
-   midline and grows outward, so an even field is a bar with nothing sticking
-   out and a hard lean is visible without reading a number. */
-.polbar .fill{position:absolute;top:0;bottom:0;left:50%;
- transition:width var(--t-context) var(--ease-out),left var(--t-context) var(--ease-out)}
-.polbar .fill.mal{left:auto;right:50%}
-.polbar .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--edge-2)}
-/* the two symbols on the ends, the same way the balance strip carries its
-   two. The one the field is leaning to lights. */
-.polbar .lb{display:inline-flex;align-items:center;gap:6px}
-.polbar .lb b{font-weight:500}
-.pol-g{display:inline-flex;align-items:center;color:var(--dim)}
-.pol-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
- stroke-linejoin:round}
-.pol-g.on{color:var(--c)}
-/* THE FIGURE CARRIES ITS OWN GROUND, because the fill reaches under it exactly
-   when the reading is strongest. The fill grows from the centre, so a benign
-   lean travels right into the right hand figure and a malignant lean travels
-   left into the left hand one, and each figure is only ever covered by one of
-   the two colours. Measured at a full lean each way, ink at .86 and 11 pixels:
-   12.48 to 1 over the bare trough, 5.48 over the malignant fill and 3.12 over
-   the benign one, which is the lightest colour in the palette. So the label
-   failed the 4.5 floor on exactly the leans that matter and passed everywhere
-   it did not. Both ends read 14.39 now.
-
-   The opacity is gone and the number sits on the panel colour, which is the
-   same pill grammar every other figure in this product already uses, so the
-   fill can run under it without deciding what the number is worth. */
-.polbar .lb{position:absolute;top:0;bottom:0;display:flex;align-items:center;
- font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);padding:0 10px}
-.polbar .lb b{background:var(--panel);border-radius:999px;padding:2px 7px;line-height:1}
-.polbar .l{left:0}.polbar .r{right:0}
+/* ---------- orientation and balance: one dial, two designs ----------
+   FJ in TASKS.md. axDial in ui/ui.js draws both from one spec: a symbol and
+   a share at each end, a break at the centre where even sits, and a fill out
+   of the break toward the heavier end, as long as the difference. The switch
+   at the head of the section picks the design for both at once. */
+.ax-pick{display:flex;align-items:center;gap:6px;margin:0 0 12px}
+.ax-pl{font-size:11px;color:var(--dim);margin-right:4px}
+.ax-pb{min-height:var(--tap);min-width:var(--tap);padding:0 14px;border-radius:999px;
+ border:1px solid var(--edge-2);background:none;color:var(--dim);font:inherit;font-size:12.5px;
+ cursor:pointer;transition:background var(--t-micro,120ms) cubic-bezier(.22,1,.36,1),color var(--t-micro,120ms) cubic-bezier(.22,1,.36,1)}
+.ax-pb:hover{color:var(--ink)}
+.ax-pb.on{background:var(--panel-2);color:var(--ink)}
+.polbar{margin-bottom:4px}
+.ax{position:relative;width:100%}
+/* the figure carries its own ground, the panel's pill, because the fill
+   reaches under it exactly when the reading is strongest: measured when this
+   was the orientation bar alone, ink at 11 pixels read 3.12 to 1 over the
+   benign fill bare and 14.39 on the pill. The design gate holds it. */
+.ax .lb{display:flex;align-items:center;gap:6px;font-family:var(--num);font-size:11px;
+ font-weight:500;color:var(--ink)}
+.ax .lb b{background:var(--panel);border-radius:999px;padding:2px 7px;line-height:1;font-weight:500}
+/* ring, never fill, like every icon here. The heavier end takes its colour */
+.ax-g{display:inline-flex;align-items:center;flex:0 0 auto;color:var(--dim);
+ transition:color var(--t-element) var(--ease-out)}
+.ax-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ax .lb.on .ax-g{color:var(--c)}
+/* the pole names, on both dials now. Empty on an unread dial and the row
+   keeps its height, so the layout does not move when a reading arrives */
+.ax-nm{display:flex;justify-content:space-between;height:14px;margin-top:5px;
+ font-size:11px;line-height:14px;color:var(--dim)}
+.ax-nm .on{color:var(--ink);font-weight:600}
+.ax-nm .ax-nl,.ax-nm .ax-nr{min-width:0}
+.ax-bar{display:block}
+/* A. BAR. The trough, as the orientation bar shipped */
+.ax-tr{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;background:var(--sunk)}
+.ax-tr .fill{position:absolute;top:0;bottom:0;width:0;opacity:.62;
+ transition:width var(--t-context) var(--ease-out),background var(--t-element) var(--ease-out)}
+.ax-tr .fill.rt{left:50%}
+.ax-tr .fill.lt{right:50%}
+/* the break sits over the fill, so even reads as a gap and not as a seam */
+.ax-tr .mid{position:absolute;left:calc(50% - 1px);top:0;bottom:0;width:2px;background:var(--bg);z-index:2}
+.ax-tr .lb{position:absolute;top:0;bottom:0;padding:0 10px;z-index:3}
+.ax-tr .lb.l{left:0}
+.ax-tr .lb.r{right:0}
+/* sex at birth, a reference point and not a reading, on balance only */
+.ax-tr .ax-sx{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
+ background:var(--dim);border-radius:1px;z-index:2}
+/* B. ARC. A gauge: the half ring over the top, the break at twelve, the fill
+   round the ring toward the heavier end, and a needle that lands on the lean
+   on an overshoot, because a needle arriving is a landing */
+.ax-arc{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;height:60px}
+.ax-arc .lb{flex-direction:column;gap:5px;padding-bottom:2px}
+.ax-svg{flex:0 1 120px;width:120px;height:60px;overflow:visible}
+.ax-trk{fill:none;stroke:var(--sunk);stroke-width:7;stroke-linecap:round}
+.ax-svg .fill{fill:none;stroke-width:7;stroke-dasharray:0 100;opacity:.8;
+ transition:stroke-dasharray var(--t-context) var(--ease-out),stroke var(--t-element) var(--ease-out)}
+.ax-svg .mid{stroke:var(--bg);stroke-width:2.5}
+.ax-svg .ax-sx{stroke:var(--dim);stroke-width:2;stroke-linecap:round}
+.ax-nd{transform-origin:60px 54px;transition:transform var(--t-context) var(--ease-land)}
+.ax-nd line{stroke:var(--c,var(--ink));stroke-width:2;stroke-linecap:round}
+.ax-nd circle{fill:var(--panel);stroke:var(--c,var(--ink));stroke-width:1.6}
 .polnote{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.55}
 
 /* ---------- icon grids ---------- */

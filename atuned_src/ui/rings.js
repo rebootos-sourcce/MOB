@@ -255,7 +255,45 @@ function frSpread(list,sector){var t=[];
 /* TENSION, from the wheel. A thread from an address to its pattern runs taut
    where the person is susceptible and hangs slack where they are not: the
    base bow times 1.28 less 0.62 of the tension, the wheel's own curve. */
-function frSag(n,base){var t=clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);return base*(1.28-0.62*t);}
+function frTen(n){return clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);}
+function frSag(n,base){return base*(1.28-0.62*frTen(n));}
+/* THE TENSION RUNS, the renditions' half of pulses() in ui/wheel.js, on the
+   same numbers: a period from 96 slack to 48 taut, a speed from 16 to 84
+   pixels a second on the square root, a pulse seven long, the outer end to
+   the inner. The thread is drawn where it always was; this queues its pulse
+   for the sheet frFlowSvg sets over the picture, in the thread's own layer
+   and with the thread's own classes, so a switch takes both. The phase is off
+   the thread's own path, so neighbours never march in step and a rebuild
+   puts every pulse back where it was. */
+function frFlow(M,grp,cls,d,c,a,w,t){t=clamp(t||0,0,1);
+ var per=96-48*t, sp=16+68*Math.sqrt(t), dur=per/sp, h=0;
+ for(var i=0;i<d.length;i+=7)h=(h*31+d.charCodeAt(i))%9973;
+ var pc=M.light?mixc(c,M.ink,.28):mixc(c,[255,255,255],.42);
+ (M.flow[grp]=M.flow[grp]||[]).push('<path class="'+cls+'" d="'+d+'" stroke="'+rgba(pc,Math.min(1,a*1.6)*(0.28+0.72*t))
+  +'" stroke-width="'+Math.max(1.2,w*.9).toFixed(2)+'" stroke-dasharray="7 '+(per-7).toFixed(1)
+  +'" style="--p:'+per.toFixed(1)+';--d:'+dur.toFixed(2)+'s;--ph:-'+(h/9973*dur).toFixed(2)+'s"/>');}
+function frFlowSvg(M){var k,s='';for(k in M.flow)s+='<g class="'+k+'">'+M.flow[k].join('')+'</g>';
+ return s?'<svg class="frflow" width="'+M.W+'" height="'+M.H+'" viewBox="0 0 '+M.W+' '+M.H+'" aria-hidden="true">'+s+'</svg>':'';}
+/* THE NAMES A ZOOM BRINGS IN. FJ, his words: "Text only fades in when I'm
+   zooming in." These two pictures name nothing with a word at the whole
+   picture, by Law 8, and that holds: at 1x there is a glyph for every
+   domain, seat and archetype and no word. Brought closer, the word arrives
+   beside its glyph, on the inward side, which is the side that has room on
+   both shapes. It is set in page pixels over the picture and not inside it,
+   so it stays eleven and a half pixels at any zoom rather than growing with
+   the marks. Placed each time the zoom moves, fzApply, and a word that
+   would sit on one already placed, or off the box, is not set: seats first,
+   then archetypes, then domains, which is how much of the ring each names. */
+function frName(M,t,x,y,r,c,k,pri,sel){M.nm.push({t:t,x:x,y:y,r:r,c:c,k:k,p:pri,sel:!!sel});}
+function frNamesHtml(M){
+ if(!M.nm.length)return '';
+ var g0=frRgb(M.ground), cx=M.win.cx, cy=M.win.cy;
+ M.nm.sort(function(a,b){return a.p-b.p;});
+ return '<div class="frnm" aria-hidden="true">'+M.nm.map(function(n){
+  var w=frTextW(n.t,(n.sel?600:500)+' 11.5px Inter, system-ui, sans-serif'), dx=cx-n.x, dy=cy-n.y, m=Math.hypot(dx,dy)||1;
+  return '<span class="L-'+n.k+(n.sel?' sel':'')+'" data-x="'+n.x.toFixed(1)+'" data-y="'+n.y.toFixed(1)+'" data-r="'+n.r.toFixed(1)
+   +'" data-w="'+w.toFixed(1)+'" data-ux="'+(dx/m).toFixed(3)+'" data-uy="'+(dy/m).toFixed(3)
+   +'" style="--c:'+frRgb(mixc(n.c,M.ink,.22))+';--g:'+g0+'">'+esc(n.t)+'</span>';}).join('')+'</div>';}
 
 /* ---- the mount. the ground, the window, the loop ----
    THE GATES GO ON AFTER THE CORE, as the wheel draws them. The mockup drew
@@ -306,7 +344,7 @@ const FR_SHOW_OUTSIDE=false;
    circle and keeps its margin. */
 function frNS(d,w){var t=Math.min(1,d/(Math.min(w.a,w.b)*.35));return 12+388*Math.pow(1-t,3);}
 function frMount(host,W_,H_,r){
- var M={W:W_,H:H_,L:{},T:{},defs:[],hit:[]};
+ var M={W:W_,H:H_,L:{},T:{},defs:[],hit:[],flow:{},nm:[]};
  FR_L.forEach(function(k){M.L[k]=[];});
  FR_T.forEach(function(k){M.T[k]=[];});
  M.hid=function(h){M.hit.push(h);return M.hit.length-1;};
@@ -578,7 +616,8 @@ function frGates(){var V=verpRead(),ev=V.some(function(v){return v.pct>0;});
    named on the drawing by its glyph, which engine/data/canon.js carries for
    exactly this, and the word comes on hover in the readout */
 function frSeatGlyph(M,b,x,y,size){
- M.T.seats.push(frGlyph(SEATGLYPH[b]||SEATGLYPH._,x,y,size,frRgb(M.seat(b)),1.8,M.hid({k:'seat',b:b})));}
+ M.T.seats.push(frGlyph(SEATGLYPH[b]||SEATGLYPH._,x,y,size,frRgb(M.seat(b)),1.8,M.hid({k:'seat',b:b})));
+ frName(M,b,x,y,size/2,M.seat(b),'seats',0,false);}
 
 /* ============================================================
    NESTED FRAMES. Every ring takes the stage's own shape.
@@ -620,7 +659,8 @@ function frFrames(M,r){
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.5"':'')+'/>');
    var q=mid.at(th((k+.5)/19));
-   M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(12),rgba(c,sel?1:.42+v*.5),1.7,h));});})();
+   M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(12),rgba(c,sel?1:.42+v*.5),1.7,h));
+   frName(M,dm.nm,q.x,q.y,gs(12)/2,c,'domains',2,sel);});})();
 
  /* addresses. 112 places on the second frame, charge as depth */
  var tip={};
@@ -673,7 +713,8 @@ function frFrames(M,r){
     M.L.archetypes.push('<path data-h="'+h+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(gc,.04+aff*.16)+'"'
      +(lead?' stroke="'+rgba(gc,.55)+'" stroke-width="1.4"':sec?' stroke="'+rgba(gc,.32)+'" stroke-width="1.1"':'')+'/>');
     var q=mid.at(th(M.tArch[j]));
-    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(11),rgba(gc,lead?1:sec?.85:.35+aff*.4),1.8,h));});});})();
+    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(11),rgba(gc,lead?1:sec?.85:.35+aff*.4),1.8,h));
+    frName(M,a.nm,q.x,q.y,gs(11)/2,gc,'archetypes',1,lead);});});})();
 
  /* patterns. beads on their own frame, threaded to what built them */
  var at={sab:[],cx:[],hy:[],sup:[]};
@@ -681,8 +722,10 @@ function frFrames(M,r){
   P.push('<path d="'+tr.d(2)+'" fill="none" stroke="'+rgba(M.ink,.07)+'" stroke-width="1"/>');
   r.sabs.forEach(function(s,k){var p=tr.at(th(M.tSab[k])),kk=w01(s);at.sab[k]=p;
    s.parts.forEach(function(n){var sl=M.slotByI[n.i],q=sl&&tip[sl.s];if(!q)return;
-    P.push('<path class="F-addr" d="'+frBowD(q,p,cx,cy,frSag(n,.16))+'" fill="none" stroke="'+rgba(M.seat(n.b),.16+kk*.22)
-     +'" stroke-width="'+(.7+kk*1).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="3 3"':'')+'/>');});});
+    var d=frBowD(q,p,cx,cy,frSag(n,.16));
+    P.push('<path class="F-addr" d="'+d+'" fill="none" stroke="'+rgba(M.seat(n.b),.16+kk*.22)
+     +'" stroke-width="'+(.7+kk*1).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="3 3"':'')+'/>');
+    frFlow(M,'L-patterns','F-addr',d,M.seat(n.b),.16+kk*.22,.7+kk*1,frTen(n));});});
   r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rb=(2.6+w01(s)*3.4)*Math.max(sc,.6);
    P.push('<circle data-h="'+M.hid({k:'sab',o:s})+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rb.toFixed(1)+'"'
     +(s.unnamed?' fill="'+frRgb(M.ground)+'" stroke="'+frRgb(c)+'" stroke-width="1.5"':' fill="'+frRgb(c)+'"')+'/>');});})();
@@ -728,8 +771,12 @@ function frChains(M,r,at,tiers,th,sc,frames){
   list.forEach(function(o,k){at[key][k]=tr.at(th(ts[k]));});
   list.forEach(function(o,k){var p=at[key][k],kk=clamp((o.w-3.5)/3,0,1);
    o.parts.forEach(function(pt){var q=from[ixf.get(pt)];if(!q)return;
-    Cn.push('<path class="T-'+key+' F-'+T[7]+'" d="'+frBowD(q,p,cx,cy,pull)+'" fill="none" stroke="'+rgba(c,(frames?.18:.16)+kk*.26)
-     +'" stroke-width="'+(wd*(.45+kk*.7)).toFixed(2)+'"/>');});});
+    var d=frBowD(q,p,cx,cy,pull);
+    Cn.push('<path class="T-'+key+' F-'+T[7]+'" d="'+d+'" fill="none" stroke="'+rgba(c,(frames?.18:.16)+kk*.26)
+     +'" stroke-width="'+(wd*(.45+kk*.7)).toFixed(2)+'"/>');
+    /* a thread further in pulls by the weight of the thing at its outer end,
+       the wheel's own tension for these tiers */
+    frFlow(M,'L-chains','T-'+key+' F-'+T[7],d,c,(frames?.18:.16)+kk*.26,wd*(.45+kk*.7),clamp(((+pt.w||0)-3.5)/3,0,1));});});
   /* each bead's hit record is kept beside its position, so a callout that
      names a bead answers to the same readout the bead does */
   at.h=at.h||{};at.h[key]=[];
@@ -775,7 +822,8 @@ function frDial(M,r){
    var h=M.hid({k:'dom',j:k});
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.4"':'')+'/>');
-   var q=mid.at(th((k+.5)/19));M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(11),rgba(c,sel?1:.4+v*.5),1.7,h));});})();
+   var q=mid.at(th((k+.5)/19));M.T.domains.push(frGlyph(dm.ic,q.x,q.y,gs(11),rgba(c,sel?1:.4+v*.5),1.7,h));
+   frName(M,dm.nm,q.x,q.y,gs(11)/2,c,'domains',2,sel);});})();
 
  /* addresses, radial bars on the chapter ring */
  var tip={},anchorOf={};
@@ -823,7 +871,8 @@ function frDial(M,r){
     M.L.archetypes.push('<path data-h="'+h+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(gc,.04+aff*.16)+'"'
      +(lead?' stroke="'+rgba(gc,.6)+'" stroke-width="1.4"':sec?' stroke="'+rgba(gc,.36)+'" stroke-width="1.1"':'')+'/>');
     var q=mid.at(th(M.tArch[j]));archAt[j]=q;hitOf['a'+j]=h;
-    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(10.5),rgba(gc,lead?1:sec?.8:.3+aff*.4),1.8,h));});});})();
+    M.T.archetypes.push(frGlyph(a.ic,q.x,q.y,gs(10.5),rgba(gc,lead?1:sec?.8:.3+aff*.4),1.8,h));
+    frName(M,a.nm,q.x,q.y,gs(10.5)/2,gc,'archetypes',1,lead);});});})();
 
  /* patterns and chains */
  var at={sab:[],cx:[],hy:[],sup:[]};
@@ -831,8 +880,10 @@ function frDial(M,r){
   r.sabs.forEach(function(s,k){at.sab[k]=rp.at(th(M.tSab[k]));});
   r.sabs.forEach(function(s,k){var p=at.sab[k],kk=w01(s);
    s.parts.forEach(function(n){var sl=M.slotByI[n.i],q=sl&&tip[sl.s];if(!q)return;
-    P.push('<path class="F-addr" d="'+frBowD(q,p,cx,cy,frSag(n,.10))+'" fill="none" stroke="'+rgba(M.seat(n.b),.15+kk*.2)
-     +'" stroke-width="'+(.6+kk*.9).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="2 3"':'')+'/>');});});
+    var d=frBowD(q,p,cx,cy,frSag(n,.10));
+    P.push('<path class="F-addr" d="'+d+'" fill="none" stroke="'+rgba(M.seat(n.b),.15+kk*.2)
+     +'" stroke-width="'+(.6+kk*.9).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="2 3"':'')+'/>');
+    frFlow(M,'L-patterns','F-addr',d,M.seat(n.b),.15+kk*.2,.6+kk*.9,frTen(n));});});
   r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rr=(2.4+w01(s)*3.2)*Math.max(sc,.6),h=M.hid({k:'sab',o:s});
    hitOf['s'+k]=h;
    P.push('<circle data-h="'+h+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rr.toFixed(1)+'"'
@@ -966,7 +1017,7 @@ function frCallouts(M,r,P){
    every value a mark is drawn from, charge by charge and law by law, rather
    than a sum of them, because a sum is a picture that can go stale while two
    numbers trade places under it. */
-var FR_SIG=null,FR_HIT=[],FR_ERR=false;
+var FR_SIG=null,FR_HIT=[],FR_ERR=false,FR_LAST='';
 function frSig(r,W_,H_){
  var a=[FVIEW,W_,H_,S.theme,r.unread?1:0,(+r.CQ).toFixed(2),(+r.DQ).toFixed(2),r.tier,r.benign,r.darkB,
   r.pi,r.si,S.doms.join('.')];
@@ -990,8 +1041,13 @@ function frSig(r,W_,H_){
    frame and before the signature test, because a switch is a class and not a
    rebuild, so a frame that builds nothing still has to carry it. Thirteen
    class toggles are nothing against the build this saves. */
-function frLayers(host){var V=layVisible();
- LAYADD.forEach(function(g){g.forEach(function(k){host.classList.toggle('off-'+k,!V[k]);});});}
+function frLayers(host){var V=layVisible(),moved=false;
+ LAYADD.forEach(function(g){g.forEach(function(k){
+  if(host.classList.contains('off-'+k)===!V[k])return;
+  host.classList.toggle('off-'+k,!V[k]);moved=true;});});
+ /* a layer's names give up their room when it goes, so the names round it
+    are placed again */
+ if(moved&&!host.classList.contains('notext'))frNamesPlace(host);}
 function ringsDraw(r){
  var host=document.getElementById('frend');if(!host)return;
  var W_=host.clientWidth,H_=host.clientHeight;
@@ -1010,7 +1066,25 @@ function ringsDraw(r){
   if(FR_BOX!==box){FR_BOX=box;FR_RINGS={};}
   var M=frMount(host,W_,H_,r);
   if(FVIEW==='dial')frDial(M,r);else frFrames(M,r);
-  host.innerHTML=frSvg(M);
+  /* A PICTURE REBUILT BY A PERSON'S SWITCH DISSOLVES INTO THE NEW ONE. With
+     Domains on Frames the geometry itself moves, the frame making room, and
+     a class cannot carry that, so the old picture is kept for one leaving
+     fade over the new one arriving: 220ms out on an ease in, 380ms in on the
+     arrival curve. Only on a switch or a zoom, LAY_GEST, only on the same
+     picture in the same box, and the old one is stripped of every target
+     first, so nothing on its way out can be pressed or measured. */
+  var ghost=null, same=FR_LAST===FVIEW+'|'+W_+'x'+H_;
+  if(same&&typeof layMoving==='function'&&layMoving(performance.now())&&host.animate){
+   ghost=host.querySelector('.frsvg');
+   if(ghost){ghost.remove();ghost.setAttribute('class','frghost');
+    ghost.querySelectorAll('[data-h]').forEach(function(e){e.removeAttribute('data-h');});}}
+  FR_LAST=FVIEW+'|'+W_+'x'+H_;
+  host.innerHTML=frSvg(M)+frFlowSvg(M)+frNamesHtml(M);
+  if(ghost){host.insertBefore(ghost,host.firstChild);
+   ghost.animate([{opacity:1},{opacity:0}],{duration:220,easing:'cubic-bezier(.55,.085,.68,.53)',fill:'forwards'})
+    .onfinish=function(){ghost.remove();};
+   var nv=host.querySelector('.frsvg');
+   if(nv)nv.animate([{opacity:0},{opacity:1}],{duration:ENTER_SPAN,easing:'cubic-bezier(.22,1,.36,1)'});}
   FR_HIT=M.hit;
   /* the rebuild wrote a new picture, so the zoom goes back on the new one,
      held inside a box that may have changed under it */
@@ -1034,11 +1108,34 @@ function ringsDraw(r){
    ============================================================ */
 var FZ={s:1,x:0,y:0}, FZ_MAX=6, FZDRAG=null, FZMOVED=false;
 function fzApply(){var h=document.getElementById('frend');if(!h)return;
- var sv=h.querySelector('.frsvg');
- if(sv){sv.style.transformOrigin='0 0';
-  sv.style.transform=(FZ.s===1&&!FZ.x&&!FZ.y)?''
-   :'translate('+FZ.x.toFixed(1)+'px,'+FZ.y.toFixed(1)+'px) scale('+FZ.s.toFixed(4)+')';}
- h.classList.toggle('zoomed',FZ.s>1.001);}
+ var tf=(FZ.s===1&&!FZ.x&&!FZ.y)?'':'translate('+FZ.x.toFixed(1)+'px,'+FZ.y.toFixed(1)+'px) scale('+FZ.s.toFixed(4)+')';
+ /* the picture, the pulse sheet over it and a dissolving old picture all
+    move as one */
+ h.querySelectorAll('.frsvg,.frflow,.frghost').forEach(function(sv){
+  sv.style.transformOrigin='0 0'; sv.style.transform=tf;});
+ h.classList.toggle('zoomed',FZ.s>1.001);
+ /* the words, off this zoom and nothing else: txtZoomA in ui/component.js */
+ var ta=txtZoomA(FZ.s);
+ h.style.setProperty('--fztx',ta.toFixed(3));
+ h.classList.toggle('notext',ta<=0.004);
+ if(ta>0.004)frNamesPlace(h);}
+/* each name on the inward side of its glyph, in page pixels, and set only
+   where it clears the box, every name set before it and every callout */
+function frNamesPlace(h){
+ var box=h.querySelector('.frnm'); if(!box)return;
+ var W_=h.clientWidth,H_=h.clientHeight,taken=[],pad=3,LH=12;
+ h.querySelectorAll('[data-call] rect').forEach(function(e){var b=e.getBoundingClientRect(),hb=h.getBoundingClientRect();
+  if(b.width>0)taken.push({x0:b.left-hb.left,y0:b.top-hb.top,x1:b.right-hb.left,y1:b.bottom-hb.top});});
+ var off={};LAYADD.forEach(function(gr){gr.forEach(function(k){off[k]=h.classList.contains('off-'+k);});});
+ [].forEach.call(box.children,function(sp){
+  var d=sp.dataset,k=(sp.className.match(/L-(\w+)/)||[])[1];
+  var x=+d.x*FZ.s+FZ.x,y=+d.y*FZ.s+FZ.y,ux=+d.ux,uy=+d.uy,w=+d.w;
+  var reach=(+d.r)*FZ.s+pad+Math.abs(ux)*w/2+Math.abs(uy)*LH/2;
+  var mx=x+ux*reach,my=y+uy*reach,b={x0:mx-w/2,y0:my-LH/2,x1:mx+w/2,y1:my+LH/2};
+  var ok=!off[k]&&b.x0>=2&&b.y0>=2&&b.x1<=W_-2&&b.y1<=H_-2&&!taken.some(function(q){
+   return b.x0<q.x1+4&&q.x0<b.x1+4&&b.y0<q.y1+2&&q.y0<b.y1+2;});
+  sp.classList.toggle('hid',!ok);
+  if(ok){taken.push(b);sp.style.transform='translate('+b.x0.toFixed(1)+'px,'+b.y0.toFixed(1)+'px)';}});}
 function fzClamp(){var h=document.getElementById('frend');if(!h)return;
  var W_=h.clientWidth,H_=h.clientHeight;
  FZ.x=Math.min(0,Math.max(W_-W_*FZ.s,FZ.x)); FZ.y=Math.min(0,Math.max(H_-H_*FZ.s,FZ.y));}
@@ -1058,7 +1155,7 @@ function fieldZoomBy(k){
 function fieldReframe(){
  if(fviewOn()){FZ={s:1,x:0,y:0};fzApply();
   status('Reframed. Scroll on the picture to move in, drag to move it, F to come back.');}
- else{S.zoom=1;S.panx=0;S.pany=0;reframe();render();status(HOWTO_ZOOM_OUT);}
+ else{layGesture();S.zoom=1;S.panx=0;S.pany=0;reframe();render();status(HOWTO_ZOOM_OUT);}
  if(typeof fbPaint==='function')fbPaint();}
 (function(){
  var h=document.getElementById('frend'); if(!h)return;

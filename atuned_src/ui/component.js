@@ -590,6 +590,36 @@ if(typeof ResizeObserver!=='undefined'){
   layout();render();}).observe(cv);}   /* the canvas, not the stage: the stage
     is a grid and the wheel's cell resizes without the stage doing so. */
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
+/* ============================================================
+   THE WORDS COME IN WITH THE ZOOM. FJ in TASKS.md, his words: "I shouldn't
+   see text when I'm zoomed all the way out. Text only fades in when I'm
+   zooming in."
+
+   One curve for all three pictures, read off the zoom each already keeps,
+   S.zoom on the wheel and FZ.s on Frames and Dial, and never off a clock:
+   hold the zoom still and the words hold still with it. At the whole
+   picture, 1x, the answer is 0 and nothing is set at all, not set faint.
+   The first notch of the scroll wheel, 1.12x, still reads 0, so a person
+   who nudges the wheel by accident gets no flash of type. From there it
+   rises on a smoothstep to full strength at 1.75x, five notches in: slow in
+   off the floor so the first letters arrive as a tint rather than a switch,
+   and slow out into full so the last notch does not snap either.
+
+   FIGURES ARE NOT WORDS. The number at the core and the percent in each
+   gate's pill stay at every zoom. The core figure is his own reversal, "what
+   happened to my CQ number at the centre of my circle? It's gone", and the
+   pill is his standard language for a value. Neither is a caption.
+
+   A WORD NOT SET IS STILL PLACED. Every run below still measures itself and
+   still records its box in LBL, marked with the strength it was set at, so
+   the gates that hold every label inside the ring and off every other label
+   keep holding the words that are about to arrive, at the zoom they arrive. */
+const TXT_Z0=1.12, TXT_Z1=1.75;
+function txtZoomA(z){var t=((+z||1)-TXT_Z0)/(TXT_Z1-TXT_Z0);
+ t=t<=0?0:t>=1?1:t; return t*t*(3-2*t);}
+/* the wheel's multiplier, set by drawWheel for its own frame and put back to
+   1 after it, so no other canvas surface inherits a zoom it does not have */
+var TXT_A=1;
 /* INWARD, ruled 26 September, CQ in TASKS.md: nothing on the Field sticks
    out past the ring. A radial run always read outward from its anchor, so
    every ring that named its members drew those names past itself: the
@@ -601,14 +631,15 @@ function radialTxt(s,ang,rad,size,c,a,w,inward){
  let rot=ang,left=Math.cos(ang)<0;if(left)rot+=Math.PI;
  g.textAlign=(left!==!!inward)?'right':'left';
  g.rotate(rot);g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
- g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
+ g.textBaseline='middle';
+ if(TXT_A>0.004){g.globalAlpha*=TXT_A;g.fillStyle=rgba(c,a);g.fillText(s,0,0);}
  /* the axis aligned box the rotated run actually occupies */
  var tw=g.measureText(s).width, sn=Math.abs(Math.sin(rot)), cs=Math.abs(Math.cos(rot));
  var bw=tw*cs+size*sn, bh=tw*sn+size*cs;
  var px=CX+Math.cos(ang)*rad, py=CY+Math.sin(ang)*rad;
  var off=(g.textAlign==='right'?-tw/2:tw/2);
  px+=Math.cos(rot)*off; py+=Math.sin(rot)*off;
- LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
+ LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh,set:TXT_A});
  g.restore();}
 /* A WORD WRAPPED ROUND ITS OWN ARC. Ruled 26 September, CQ in TASKS.md, on
    the seat names: "wrapped around their own domain so the Field keeps one
@@ -636,25 +667,28 @@ function arcTxt(s,am,rad,size,c,a,w,span,halo){
  if(span&&need>span){g.restore();return false;}
  const low=Math.sin(am)>0.25, dir=low?-1:1, rr=rad;
  g.textAlign='center';g.textBaseline='middle';
+ /* the halo fades with the word, or a word not yet set would leave its ground
+    behind as a dark smudge where it is about to be */
+ const set=TXT_A>0.004; g.globalAlpha*=TXT_A;
  let t=am-dir*need/2, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
  for(const ch of s){
   const cw=g.measureText(ch).width, th=t+dir*(cw/2)/rr;
   const x=CX+Math.cos(th)*rr, y=CY+Math.sin(th)*rr;
-  g.save();g.translate(x,y);g.rotate(th+dir*Math.PI/2);
-  if(halo){g.lineJoin='round';g.lineWidth=3;g.strokeStyle=halo;g.strokeText(ch,0,0);}
-  g.fillStyle=rgba(c,a);g.fillText(ch,0,0);g.restore();
+  if(set){g.save();g.translate(x,y);g.rotate(th+dir*Math.PI/2);
+   if(halo){g.lineJoin='round';g.lineWidth=3;g.strokeStyle=halo;g.strokeText(ch,0,0);}
+   g.fillStyle=rgba(c,a);g.fillText(ch,0,0);g.restore();}
   x0=Math.min(x0,x-size/2);y0=Math.min(y0,y-size/2);
   x1=Math.max(x1,x+size/2);y1=Math.max(y1,y+size/2);
   t+=dir*cw/rr;}
  /* ro is the run's true outer radius. The box is axis aligned round a curve,
     so its corners sit off the arc and past the ring even when every glyph is
     inside it; a gate asking how far a word reaches reads ro, not the box. */
- LBL.push({t:s,x:x0,y:y0,w:x1-x0,h:y1-y0,ro:rr+size*0.5});
+ LBL.push({t:s,x:x0,y:y0,w:x1-x0,h:y1-y0,ro:rr+size*0.5,set:TXT_A});
  g.restore();return {a0:Math.min(am-need/2,am+need/2),a1:Math.max(am-need/2,am+need/2),
   r0:rr-size*0.6,r1:rr+size*0.6};}
-function txt(s,x,y,size,c,a,w,fam){g.save();
+function txt(s,x,y,size,c,a,w,fam){if(TXT_A<=0.004)return;g.save();
  g.font=(w||400)+' '+size+'px '+(fam||'Inter, system-ui, sans-serif');
- g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}
+ g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a*TXT_A);g.fillText(s,x,y);g.restore();}
 function roundRect(x,y,w,h,r){
  if(g.roundRect){g.beginPath();g.roundRect(x,y,w,h,r);return;}
  g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);

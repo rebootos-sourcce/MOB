@@ -9,7 +9,27 @@
    clock is quantised to 12 steps a second and the whole paint is skipped when
    the inputs have not moved. Reduced motion pins the clock, so it paints once
    and never again. */
-var AURA_SIG=null;
+var AURA_SIG=null, AURA_OP=null, AURA_K={v:1,from:1,to:1,t0:0};
+/* THE SHADOW LAYER FADES LIKE EVERY OTHER. FJ, "where are my animations":
+   Shadow on the glass bar hid this canvas by a class between one frame and
+   the next. Its strength is multiplied in here instead, on the layers' own
+   timing, and only on the Field, where the switch is; the class still takes
+   the canvas out once the fade has run, see #bgaura in the sheet. It is an
+   opacity on a layer the compositor already holds, so a fade repaints
+   nothing: the wash is painted by its signature exactly as before. */
+function auraK(){
+ var want=(S.tab!==TAB.FIELD||layerOn('shadow'))?1:0, now=performance.now(), f=AURA_K;
+ if(f.to!==want){if(S.tab!==TAB.FIELD||!layMoving(now)){f.v=f.from=f.to=want;return f.v;}
+  f.from=f.v;f.to=want;f.t0=now;}
+ if(f.v===f.to)return f.v;
+ var e=now-f.t0;
+ if(want){var k=Math.min(1,e/ENTER_SPAN);f.v=k>=1?1:f.from+(1-f.from)*(1-Math.pow(1-k,3));}
+ else{var k2=Math.min(1,e/LAY_OUT);f.v=k2>=1?0:f.from*(1-k2*k2);}
+ return f.v;}
+/* off the Field the wash is always whole, so a person who turned Shadow off
+   on the Field does not find the Energy page's wash gone too */
+function auraWhole(){if(AURA_K.v===1||AURA_OP===null)return;
+ AURA_K={v:1,from:1,to:1,t0:0}; bg.style.opacity=AURA_OP;}
 function drawAura(r){
  const w=bg.width,h=bg.height;
  /* DQ IS OUT OF 100, SO THE WASH IS TOO. This read DQ/7, a ceiling set when DQ
@@ -26,10 +46,12 @@ function drawAura(r){
  const op=((LIGHT()?.16:.15)+r.radiance*.24).toFixed(2);
  const sig=[w,h,op,reach.toFixed(3),dens.toFixed(3),r.benign?1:0,r.darkB,
             r.radiance.toFixed(3),LIGHT()?1:0,t].join('|');
+ /* the layer's strength goes on the element every frame and outside the
+    signature, so the fade costs an opacity and never a repaint */
+ AURA_OP=op; bg.style.opacity=(op*auraK()).toFixed(3);
  if(sig===AURA_SIG) return;
  AURA_SIG=sig;
  bgx.clearRect(0,0,w,h);
- bg.style.opacity=op;
  /* the Root wash only on a read that says contracting. benign is null while
     CQ is still filling, and a partial CQ is not a reason to redden a field. */
  const warm=hx(r.benign===false?PAL.Root:PAL.Heart), lead=hx(PAL[r.darkB]);
@@ -660,6 +682,72 @@ function layToggle(k){var s={},on=layChosen(),k2;for(k2 in on)s[k2]=1;
  var i=layWhich(s); if(i>=0){S.view=i;LAYSET=null;} else LAYSET=s;}
 function layPick(i){S.view=i;LAYSET=null;}
 function effView(){return layNeeds(layVisible());}
+/* ============================================================
+   A LAYER ARRIVES AND LEAVES. FJ in TASKS.md, his words: "With my layers,
+   where are my animations?" A switch on the glass bar put its layer on or
+   took it off between one frame and the next, while the reading circles
+   beside it already swept and counted into place (crMotion, FE).
+
+   So a layer does what the Field did when it first assembled, on the same
+   numbers: ENTER_SPAN, 380ms, eased out on a cubic, so it decelerates into
+   place instead of stopping dead. It arrives as a sweep round the ring from
+   twelve o'clock, clockwise, which is Root first and Crown last, the order
+   the entrance takes the seats in, so a layer coming on reads as the body
+   filling with it rather than a picture fading up. It leaves faster, 220ms
+   on an ease in, because a thing leaving should not ask to be watched.
+
+   THE RING MAKES ROOM IN THE SAME BREATH. The shell, the pattern ring, the
+   core and the laws each sit at a radius set by how many rings are drawn,
+   and those snapped when a switch changed the count. They travel now, on
+   the same 380ms, so the domains coming on push the shell in rather than the
+   shell jumping.
+
+   A TARGET LANDS AT ONCE. A layer arriving is pressable from its first
+   frame, and a layer leaving takes its targets with it on the press, so a
+   pointer never finds a thing that is on its way out. Only the paint is in
+   motion.
+
+   A PERSON'S CHANGE MOVES, THE PROGRAM'S LANDS. A switch, the depth menu and
+   a zoom gesture stamp LAY_GEST, and only a change within a moment of one
+   animates. Loading a profile, restoring a view and every gate that sets a
+   depth directly get the end state on the next frame, the way reduced motion
+   always does: somebody who asked the machine to stop moving did not ask it
+   to move less.
+   ============================================================ */
+/* read at call time and not copied here: ENTER_SPAN is declared further down
+   this file, and a second 380 typed here would be a number that drifts */
+const LAY_OUT=220, LAY_SWEEP=420;
+var LAYF={}, LAYF_LAST=0, LAY_GEST=0, LGEO={v:null,from:0,to:0,t0:0};
+function layGesture(){LAY_GEST=performance.now();}
+function layMoving(now){return !REDUCED&&(now-LAY_GEST)<600;}
+/* one reading per layer per frame: v is how present it is, sw how far round
+   its arrival has swept, both 0 to 1 */
+function layFade(V){
+ var now=performance.now(), stale=(now-LAYF_LAST)>250; LAYF_LAST=now;
+ LAYADD.forEach(function(grp){grp.forEach(function(k){
+  var want=V[k]?1:0, f=LAYF[k];
+  if(!f||stale){f=LAYF[k]={v:want,from:want,to:want,t0:now,sw:1};return;}
+  if(f.to!==want){
+   if(!layMoving(now)){f.v=f.from=f.to=want;f.sw=1;return;}
+   /* a layer turned back on mid exit is already partly there, so it does not
+      sweep round again from twelve */
+   f.from=f.v; f.to=want; f.t0=now; f.sw=(want&&f.v<0.02)?0:1;}
+  var e=now-f.t0;
+  if(want){var k1=Math.min(1,e/ENTER_SPAN);f.v=f.from+(1-f.from)*(1-Math.pow(1-k1,3));
+   var k2=Math.min(1,e/LAY_SWEEP);if(f.sw<1)f.sw=1-Math.pow(1-k2,3);}
+  else{var k3=Math.min(1,e/LAY_OUT);f.v=f.from*(1-k3*k3);}});});
+ return LAYF;}
+/* the geometry's own travel, the effective depth as a real number between the
+   four the arrays are written for */
+function lGeo(L){var now=performance.now();
+ if(LGEO.v===null||REDUCED||(now-LAYF_LAST)>250){LGEO={v:L,from:L,to:L,t0:now};return L;}
+ if(LGEO.to!==L){if(!layMoving(now)){LGEO={v:L,from:L,to:L,t0:now};return L;}
+  LGEO.from=LGEO.v;LGEO.to=L;LGEO.t0=now;}
+ var k=Math.min(1,(now-LGEO.t0)/ENTER_SPAN);
+ LGEO.v=LGEO.from+(L-LGEO.from)*(1-Math.pow(1-k,3));
+ return LGEO.v;}
+function lAt(arr,f){var i=Math.max(0,Math.min(arr.length-1,Math.floor(f))),j=Math.min(arr.length-1,i+1),t=f-i;
+ return arr[i]+(arr[j]-arr[i])*t;}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 /* ONE GROWN ADDRESS. The glyph of the axis it sits on, then at the deeper
    threshold its name and its two ends. Held reads outward from the ring and
@@ -782,7 +870,60 @@ function enterSeat(b){
  var i=BANDS.indexOf(b); if(i<0)i=0;
  return enterA(i*ENTER_STAGGER,ENTER_SPAN);}
 
+/* ============================================================
+   THE TENSION RUNS. FJ in TASKS.md, his words: "Why aren't they like lines
+   animating to show me which is the tension?"
+
+   The lines were already there and already carried it, standing still. Each
+   thread from an address to the pattern it builds hangs taut or slack by the
+   person's susceptibility at that address, n.susc, the Domain Matrix, which
+   the chord notes in drawWheel below define as this product's tension; each
+   thread further in, pattern to complex to hyper complex to character,
+   hangs by the weight of the thing at its outer end. That is geometry: it
+   reads when you look for it and says nothing when you do not.
+
+   So a pulse runs down every thread, from the outer end to the inner, which
+   is the way a chain compounds, toward the core. Its speed is the tension,
+   and it is a wave on a string, so it goes as the square root: a string
+   pulled four times as hard carries a wave twice as fast. A taut thread
+   carries short pulses close together and quick, a slack one a few, slow
+   and faint. With the labels off, the busy lines are the tight ones, which
+   is the whole reading. Nothing here is decoration: every speed, spacing and
+   strength is t, the same number the sag of the line is drawn from.
+
+   FORTY VIEWINGS. A pulse is seven pixels of a period of 48 to 96, so at any
+   moment most of every line is at rest, and a slack line's pulse is set at
+   under a third of a taut one's strength, so the field reads as a few wires
+   live and not as a hundred crawling ants.
+
+   Reduced motion draws none. The sag already says it, standing still.
+   ============================================================ */
+const PULSE_LEN=7;
+var PUL=[], TIER_A=1;
+function pulses(list){
+ if(REDUCED||!list.length)return;
+ g.save(); g.lineCap='round';
+ for(var i=0;i<list.length;i++){var p=list[i],t=clamp(p.t||0,0,1);
+  if(p.a<=0.01)continue;
+  /* spacing and speed, both off t: the period from 96 slack to 48 taut, the
+     speed from 16 to 84 pixels a second on the square root */
+  var per=96-48*t, sp=16+68*Math.sqrt(t);
+  /* a phase per thread off its own end, so neighbours never march in step */
+  var ph=(((p.x0*12.9898+p.y0*78.233)%1)+1)%1*per;
+  g.setLineDash([PULSE_LEN,per-PULSE_LEN]);
+  g.lineDashOffset=-((S.t*sp+ph)%per);
+  g.beginPath(); g.moveTo(p.x0,p.y0);
+  if(p.qx!==undefined)g.quadraticCurveTo(p.qx,p.qy,p.x1,p.y1); else g.lineTo(p.x1,p.y1);
+  g.strokeStyle=rgba(mixc(p.c,[255,255,255],.42),p.a*(0.28+0.72*t));
+  g.lineWidth=Math.max(1.2,p.w*0.9);
+  g.stroke();}
+ g.setLineDash([]); g.lineDashOffset=0; g.restore();}
+/* the words' strength for this frame, off the wheel's own zoom, and put back
+   whatever happens inside, so a throw cannot leave the next surface faded */
 function drawWheel(r,L){
+ TXT_A=txtZoomA(S.zoom);
+ try{drawWheel0(r,L);}finally{TXT_A=1;}}
+function drawWheel0(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
  /* WHAT IS DRAWN, read once a frame. Every layer block below asks this and
     nothing else, so a switch on the glass bar reaches the wheel without the
@@ -790,13 +931,39 @@ function drawWheel(r,L){
     visible set needs room for, which is why it can gate the rings a layer
     sits on without ever disagreeing with V. */
  const V=layVisible();
- const shellR=[U*.62,U*.68,U*.74,U*.78][L];
+ /* WHAT IS PAINTED, which is what is on plus what is still on its way out.
+    D gates the paint and V gates the targets: lay() below draws a leaving
+    layer with its hit records and labels thrown away, so nothing a person
+    can press is ever mid exit. */
+ const LA=layFade(V), D={};
+ Object.keys(LA).forEach(function(k){D[k]=!!V[k]||LA[k].v>0.003;});
+ const lay=function(k,fn){
+  if(!D[k])return;
+  var f=LA[k], on=!!V[k];
+  if(on&&f.v>=0.999&&f.sw>=1){fn();return;}
+  var keepH=HIT, keepL=LBL;
+  g.save(); g.globalAlpha*=Math.max(0,Math.min(1,f.v));
+  /* the sweep. a wedge from twelve o'clock, clockwise, as far round as the
+     arrival has come */
+  if(on&&f.sw<1){g.beginPath();g.moveTo(CX,CY);
+   /* long enough to reach every corner from a centre panned anywhere */
+   g.arc(CX,CY,Math.hypot(CW,CH)+Math.abs(CX)+Math.abs(CY),-Math.PI/2,-Math.PI/2+TAU*Math.max(0.001,f.sw));
+   g.closePath();g.clip();}
+  if(!on){HIT=[];LBL=[];}
+  try{fn();}finally{if(!on){HIT=keepH;LBL=keepL;}g.restore();}};
+ /* the geometry at the depth it is travelling through, not the one it is
+    travelling to */
+ const LF=lGeo(L);
+ const shellR=lAt([U*.62,U*.68,U*.74,U*.78],LF);
  /* the shell radius, published once so the grown address can draw outside it
     without being handed four arguments it would only pass along. */
  R_SHELL=shellR;
- const R={shell:shellR,arch:U*.60,sab:[0,U*.56,U*.545,U*.50][L],cx:U*.425,hy:U*.335,
+ /* the pattern ring has no radius at Charge, where nothing is on it, so its
+    first entry is its second: patterns arriving come in at their own ring and
+    do not fly out of the core */
+ const R={shell:shellR,arch:U*.60,sab:lAt([U*.56,U*.56,U*.545,U*.50],LF),cx:U*.425,hy:U*.335,
   sup:U*.255,dom:U*.93,mask:U*.685};
- const coreBase=[U*.30,U*.26,U*.20,U*.155][L];
+ const coreBase=lAt([U*.30,U*.26,U*.20,U*.155],LF);
  /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
     The shell, or at Blueprint the domain ring outside it. Published for the
     collide gate, which holds every label inside it at every depth. */
@@ -805,7 +972,10 @@ function drawWheel(r,L){
  const halo=LIGHT()?'rgba(250,250,247,.88)':'rgba(16,16,16,.82)';
 
  /* --- chain chords, C and D --- */
- if(L>=2){
+ PUL.length=0;
+ /* the curved web holds while any tier that needs it is still leaving, so the
+    threads fade with their beads instead of straightening under them */
+ if(L>=2||D.complexes||D.hyper||D.character||D.archetypes){
   /* with a selection the rest of the web falls to .08 and the selected chain
      rises above rest: alpha up, width up. it saturates rather than lights. */
   const lit=o=>{if(!p)return 1;if(p===o)return 2;const has=x=>x===o||(x.parts||[]).some(has);return has(p)?2:.08;};
@@ -864,10 +1034,14 @@ function drawWheel(r,L){
      So a taut chord is one the person is susceptible at. That is a true
      sentence about them and it is the sentence the Field could not say. */
   const ten01=n=>clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);
-  const quad=(a0,r0,a1,r1,pull,st,w,dash)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
-   g.beginPath();g.moveTo(CX+Math.cos(a0)*r0,CY+Math.sin(a0)*r0);
-   g.quadraticCurveTo(CX+Math.cos(am)*rm,CY+Math.sin(am)*rm,CX+Math.cos(a1)*r1,CY+Math.sin(a1)*r1);
-   if(dash)g.setLineDash(dash);g.strokeStyle=st;g.lineWidth=w;g.stroke();g.setLineDash([]);};
+  /* the thread, and its pulse queued: t is the same tension its sag is drawn
+     from, so how fast it runs and how straight it hangs are one reading */
+  const quad=(a0,r0,a1,r1,pull,c,a,w,dash,t)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
+   const x0=CX+Math.cos(a0)*r0,y0=CY+Math.sin(a0)*r0,qx=CX+Math.cos(am)*rm,qy=CY+Math.sin(am)*rm,
+    x1=CX+Math.cos(a1)*r1,y1=CY+Math.sin(a1)*r1;
+   g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo(qx,qy,x1,y1);
+   if(dash)g.setLineDash(dash);g.strokeStyle=rgba(c,a);g.lineWidth=w;g.stroke();g.setLineDash([]);
+   PUL.push({x0:x0,y0:y0,qx:qx,qy:qy,x1:x1,y1:y1,c:c,a:Math.min(1,a*1.6)*TIER_A,w:w,t:t});};
   /* the sag, from slack to taut. The old constants were .42 to .48 and the
      range is opened around them rather than replaced, so a chord at middling
      tension sits where every chord used to. */
@@ -877,45 +1051,58 @@ function drawWheel(r,L){
      saboteurs that were not there, read as string cut loose. The bead is the
      layer and the thread is the relation between two layers, so a tier's
      threads need the tier and the one outside it. */
-  (V.saboteurs?r.sabs:[]).forEach(s=>{const k=w01(s);
-   (V.addresses?s.parts:[]).forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
-    rgba(bc(n.b),al(.46*(0.55+k*0.80),s)),wd(1.6*(0.45+k*1.45),s),
-    s.unnamed?[3,3]:null));});
-  (V.complexes?r.cxs:[]).forEach(c=>{const k=w01(c);
-   (V.saboteurs?c.parts:[]).forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
-    rgba(bc('Solar'),al(.62*(0.55+k*0.80),c)),wd(2.4*(0.45+k*1.45),c)));});
-  (V.hyper?r.hys:[]).forEach(h=>{const k=w01(h);
-   (V.complexes?h.parts:[]).forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
-    rgba(bc('Sacral'),al(.74*(0.60+k*0.70),h)),wd(3.2*(0.50+k*1.30),h)));});
-  (V.character?r.sups:[]).forEach(u=>{const k=w01(u);
-   (V.hyper?u.parts:[]).forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
-    rgba(bc('Root'),al(.9*(0.60+k*0.70),u)),wd(4*(0.50+k*1.30),u)));});
- }else if(L===1&&V.saboteurs){
-  r.sabs.forEach(s=>(V.addresses?s.parts:[]).forEach(n=>{
+  /* each tier's threads are as present as the less present of the two layers
+     they join, so a thread leaves with either end and arrives with the later */
+  const ga=(a,b)=>Math.min(LA[a].v,LA[b].v);
+  const tier=(a,b,fn)=>{if(!D[a]||!D[b])return;const k=ga(a,b);if(k<=0.003)return;
+   g.save();g.globalAlpha*=k;TIER_A=k;fn();g.restore();TIER_A=1;};
+  tier('saboteurs','addresses',()=>r.sabs.forEach(s=>{const k=w01(s);
+   s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
+    bc(n.b),al(.46*(0.55+k*0.80),s),wd(1.6*(0.45+k*1.45),s),
+    s.unnamed?[3,3]:null,ten01(n)));}));
+  tier('complexes','saboteurs',()=>r.cxs.forEach(c=>{const k=w01(c);
+   c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
+    bc('Solar'),al(.62*(0.55+k*0.80),c),wd(2.4*(0.45+k*1.45),c),null,w01(s)));}));
+  tier('hyper','complexes',()=>r.hys.forEach(h=>{const k=w01(h);
+   h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
+    bc('Sacral'),al(.74*(0.60+k*0.70),h),wd(3.2*(0.50+k*1.30),h),null,w01(c)));}));
+  tier('character','hyper',()=>r.sups.forEach(u=>{const k=w01(u);
+   u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
+    bc('Root'),al(.9*(0.60+k*0.70),u),wd(4*(0.50+k*1.30),u),null,w01(h)));}));
+ }else if(L===1&&D.saboteurs&&D.addresses){
+  const k0=Math.min(LA.saboteurs.v,LA.addresses.v);
+  g.save();g.globalAlpha*=k0;
+  r.sabs.forEach(s=>s.parts.forEach(n=>{
    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);
    g.lineTo(CX+Math.cos(s.ang)*R.sab,CY+Math.sin(s.ang)*R.sab);
-   g.strokeStyle=rgba(bc(n.b),.24);g.lineWidth=1;g.stroke();}));}
+   g.strokeStyle=rgba(bc(n.b),.24);g.lineWidth=1;g.stroke();
+   PUL.push({x0:CX+Math.cos(n.ang)*R.shell*.92,y0:CY+Math.sin(n.ang)*R.shell*.92,
+    x1:CX+Math.cos(s.ang)*R.sab,y1:CY+Math.sin(s.ang)*R.sab,c:bc(n.b),a:.5*k0,w:1,t:frTen(n)});}));
+  g.restore();}
+ /* the tension, running. Over every thread, after all of them, so a pulse is
+    never under the thread beside it. See pulses() above. */
+ pulses(PUL);
 
  const cr0=solCore(r,coreBase);
- if(V.gates)verpArrows(cr0);
+ lay('gates',()=>verpArrows(cr0));
 
  /* --- the 21 laws. present at every depth: they are the numerator of CQ. ---
     Every depth still carries them. The bar can take them off, and the core
     keeps the figure they sum to, because the core is not a layer. */
- if(V.laws)SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=S.law[l.nm]/10,c=bc(l.b);
-  const r0=[U*.44,U*.40,U*.33,U*.255][L],r1=r0+[U*.13,U*.12,U*.10,U*.085][L]*v;
+ const lr=lAt([U*.44,U*.40,U*.33,U*.255],LF);
+ lay('laws',()=>{SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=S.law[l.nm]/10,c=bc(l.b);
+  const r0=lr,r1=r0+lAt([U*.13,U*.12,U*.10,U*.085],LF)*v;
   g.beginPath();g.moveTo(CX+Math.cos(a)*r0,CY+Math.sin(a)*r0);
   g.lineTo(CX+Math.cos(a)*r1,CY+Math.sin(a)*r1);
-  g.strokeStyle=rgba(c,.16+v*.82);g.lineWidth=[4.6,4.2,3.6,3.2][L];
+  g.strokeStyle=rgba(c,.16+v*.82);g.lineWidth=lAt([4.6,4.2,3.6,3.2],LF);
   g.lineCap='round';g.stroke();g.lineCap='butt';
   HIT.push({k:'law',j:i,cx:CX,cy:CY,a0:a-.075,a1:a+.075,r0:r0*.88,r1:r1+U*.03});});
- const lr=[U*.44,U*.40,U*.33,U*.255][L];
- if(V.laws){g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();}
+  g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();});
  /* AND THE WORD CQ AND THE TIER WORD GO WITH IT, for the same two reasons.
     The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
- if(V.archetypes){for(let j=0;j<12;j++){
+ lay('archetypes',()=>{for(let j=0;j<12;j++){
   const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.aff[j],am=(a0+a1)/2;
   const lead=j===r.pi,sec=j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
@@ -924,23 +1111,21 @@ function drawWheel(r,L){
      names crossed the whole shell: measured on James at 390, all twelve ran
      past the ring's edge at Chains, and five did at 1600. */
   radialTxt(ARCH[j].nm,am,R.arch-U*.024,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400,true);
-  HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}
-}
+  HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}});
 
  /* --- masks, D only --- */
- if(V.masks){r.maskRing.forEach((m,i)=>{
+ lay('masks',()=>r.maskRing.forEach((m,i)=>{
   const a0=i/6*TAU-Math.PI/2,a1=a0+TAU/6,v=clamp(m.w/10,0,1),am=(a0+a1)/2;
   arcP(R.mask-U*.019,R.mask,a0+.01,a1-.01);
   g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
   /* inward, for the archetypes' reason: outward, Professional and
      Ideological crossed the shell and the domain ring past it */
   radialTxt(m.nm,am,R.mask-U*.026,11.5,ink,.24+v*.56,400,true);
-  HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});});
-}
+  HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});}));
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
- (V.addresses?W:[]).forEach(n=>{
+ lay('addresses',()=>W.forEach(n=>{
   /* its seat's turn to arrive. Nothing is drawn before its turn, which is
      what makes the sweep visible: a band that is merely dim is a band that is
      already there. */
@@ -971,7 +1156,7 @@ function drawWheel(r,L){
      found it, which is worse than no box at all for the second and a half it
      lasts. */
   HIT.push({k:'node',n,cx:CX,cy:CY,a0:n.ang-hw,a1:n.ang+hw,
-   r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});});
+   r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});}));
 
  /* AND PAST THE FETTERS, WHAT PUT THE CHARGE THERE.
 
@@ -991,10 +1176,10 @@ function drawWheel(r,L){
     whole shell, which also puts the lines over the ring rather than under
     it. */
  {var aa2=atomA();
-  if(aa2>0&&V.stories)W.forEach(n=>{
+  if(aa2>0)lay('stories',()=>W.forEach(n=>{
    const a=n.ang, ld=clamp(n.disp/10,0,1), carrying=n.disp>=4;
    const hw=TAU/108*(.43+fg*.24);
-   atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);});}
+   atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);}));}
  /* THE SEVEN SEAT BANDS ARE TARGETS. Ruled: "the rainbow bands at the centre,
     say what they are and make them clickable." They were seven names drawn
     around the outside of the shell and nothing else: not a word about what
@@ -1021,7 +1206,7 @@ function drawWheel(r,L){
     target runs down to 0.85 of the shell and the word sits in the outer
     sixteen pixels of it. */
  const seatFs=12, seatR=R.shell-seatFs*0.6-2;
- if(V.seats)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
+ lay('seats',()=>BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   if(!seg.length)return;
   var am=meanAng(seg.map(n=>n.ang));
   var angs=seg.map(n=>n.ang).sort(function(x,y){return x-y;});
@@ -1030,7 +1215,7 @@ function drawWheel(r,L){
   HIT.push({k:'seat',b:b,cx:CX,cy:CY,
    a0:angs[0]-TAU/216, a1:angs[angs.length-1]+TAU/216,
    r0:R.shell-U*.02, r1:R.shell+U*.02});
-  if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});});
+  if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});}));
 
  /* --- domains, D only --- */
  /* EACH ROOT IN ITS SEAT'S COLOUR FOR THE GROUND UNDER IT, not ROOTCOL, the
@@ -1039,7 +1224,7 @@ function drawWheel(r,L){
     stage and not on LIGHT(), because on Snow the two disagree and the stage
     is right: the ring sits on #101010 there and already read 5.51, which the
     Snow palette would have taken down. Lumen draws as it shipped. */
- if(V.domains){const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
+ lay('domains',()=>{const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
  for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
   const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
@@ -1053,8 +1238,7 @@ function drawWheel(r,L){
   const dfs=sel?12.5:11;
   arcTxt(DOMAINS[d].nm,am,R.dom-U*.012-dfs*0.6-2,dfs,sel?c:ink,sel?1:.3+v*.45,sel?600:400,
    TAU/19-.02,sel?halo:null);
-  HIT.push({k:'dom',j:d,cx:CX,cy:CY,a0,a1,r0:R.dom-U*.055,r1:R.dom+4});}
-}
+  HIT.push({k:'dom',j:d,cx:CX,cy:CY,a0,a1,r0:R.dom-U*.055,r1:R.dom+4});}});
 
  /* --- beads. B shows saboteurs. C and D show the whole chain. --- */
  function bead(o,rad,size,c){const x=CX+Math.cos(o.ang)*rad,y=CY+Math.sin(o.ang)*rad;
@@ -1068,7 +1252,9 @@ function drawWheel(r,L){
   g.fillStyle=b2;g.beginPath();g.arc(x,y,s,0,TAU);g.fill();
   g.beginPath();g.arc(x-s*.32,y-s*.36,s*.24,0,TAU);g.fillStyle='rgba(255,255,255,.7)';g.fill();
   /* inward, so a hovered name stays inside the ring like the rest */
-  if(on)radialTxt(o.nm,o.ang,rad-s-10,12.5,ink,.95,600,true);
+  /* a name asked for by the pointer is set at any zoom: hover is the person
+     asking for the word, which is not the same as the picture printing it */
+  if(on){const ta=TXT_A;TXT_A=1;radialTxt(o.nm,o.ang,rad-s-10,12.5,ink,.95,600,true);TXT_A=ta;}
   HIT.push({k:o.kind,o,x,y,rad:s+10});}
  /* NAMEPLATES. Two patterns at nearly the same angle wrote over each other.
     A plate reserves an angular slot at its own radius. A newcomer gets two
@@ -1128,12 +1314,14 @@ function drawWheel(r,L){
     const box={x0:right?lx:lx-w,x1:right?lx+w:lx,y0:ly-fs*0.7,y1:ly+fs*0.7};
     if(inRing(box)&&!FLATS.some(q=>box.x0<q.x1&&q.x0<box.x1&&box.y0<q.y1&&q.y0<box.y1)){
      FLATS.push(box);
-     LBL.push({t:o.nm,x:box.x0,y:box.y0,w:box.x1-box.x0,h:box.y1-box.y0});
-     g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
-     g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
-     g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
-     g.textAlign=right?'left':'right';g.textBaseline='middle';
-     g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
+     LBL.push({t:o.nm,x:box.x0,y:box.y0,w:box.x1-box.x0,h:box.y1-box.y0,set:TXT_A});
+     /* the leader belongs to the word, so it comes in with it */
+     if(TXT_A>0.004){g.save();g.globalAlpha*=TXT_A;
+      g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
+      g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
+      g.font='600 '+fs+'px Inter, system-ui, sans-serif';
+      g.textAlign=right?'left':'right';g.textBaseline='middle';
+      g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();}
      return;}
     ly += fs*1.45;}}};
  const nameplate=(o,rad,c,size)=>{
@@ -1151,25 +1339,27 @@ function drawWheel(r,L){
   PLATES.push(plate);
   const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad, e=plate.out+ln;
   const lx=CX+Math.cos(o.ang)*e, ly=CY+Math.sin(o.ang)*e;
-  g.beginPath();g.moveTo(x-Math.cos(o.ang)*size,y-Math.sin(o.ang)*size);
-  g.lineTo(lx,ly);g.strokeStyle=rgba(c,.55);g.lineWidth=1;g.stroke();
+  if(TXT_A>0.004){g.save();g.globalAlpha*=TXT_A;
+   g.beginPath();g.moveTo(x-Math.cos(o.ang)*size,y-Math.sin(o.ang)*size);
+   g.lineTo(lx,ly);g.strokeStyle=rgba(c,.55);g.lineWidth=1;g.stroke();g.restore();}
   radialTxt(o.nm,o.ang,e-4,fs,c,.98,600,true);};
  window.__PLATES=PLATES;
- if(L>=1&&V.saboteurs){r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
+ /* no depth test on the beads: a tier is on only at a depth that has its
+    ring, which layNeeds guarantees, and a tier on its way out has to be drawn
+    at the depth it is leaving from */
+ lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
      heaviest things: the wheel is showing structure by then, and the right rail
      carries every name in full. */
-  if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,bc(s.parts[0].b),6.2));
-}
- if(L>=2){if(V.complexes)r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar')));
-  if(V.hyper)r.hys.forEach(h=>bead(h,R.hy,10,bc('Sacral')));
-  if(V.character)r.sups.forEach(u=>bead(u,R.sup,13,bc('Root')));
-  /* the inner rings hold the heaviest, longest names. Radial text has no room
-     between the hyper ring and the archetypes, so these set horizontally beside
-     the bead, where there is space. */
-  if(V.hyper)r.hys.slice(0,3).forEach(h=>flatplate(h,R.hy,bc('Sacral'),10));
-  if(V.character)r.sups.slice(0,2).forEach(u=>flatplate(u,R.sup,bc('Root'),13));
-}
+  if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,bc(s.parts[0].b),6.2));});
+ lay('complexes',()=>r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar'))));
+ /* the inner rings hold the heaviest, longest names. Radial text has no room
+    between the hyper ring and the archetypes, so these set horizontally beside
+    the bead, where there is space. */
+ lay('hyper',()=>{r.hys.forEach(h=>bead(h,R.hy,10,bc('Sacral')));
+  r.hys.slice(0,3).forEach(h=>flatplate(h,R.hy,bc('Sacral'),10));});
+ lay('character',()=>{r.sups.forEach(u=>bead(u,R.sup,13,bc('Root')));
+  r.sups.slice(0,2).forEach(u=>flatplate(u,R.sup,bc('Root'),13));});
 }
 /* Under prefers-reduced-motion the clock is frozen and disp snaps straight to
    sq, so after the first frame the wheel is provably identical until someone
