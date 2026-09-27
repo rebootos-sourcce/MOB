@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Golden masks prototype</title>
+<!--FONT-->
+<style>
+/* ============================================================
+   GOLDEN MASKS. Round IT in TASKS.md. A prototype, not the app.
+
+   Tokens are the product's own Dark values (shell/head.html, and the seat PAL
+   in engine/data/canon.js), copied rather than invented.
+   ============================================================ */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418; --au:#C2A063;
+ --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.pb{position:sticky;top:0;z-index:50;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+ padding:10px 16px;background:#2A2410;color:#F3E3B5;border-bottom:1px solid #5A4A1C;font-size:13.5px}
+.pb b{font-weight:600}
+.pb .sp{flex:1}
+.pb .who{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.chip{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--edge-2);border-radius:999px;
+ padding:5px 11px;font-size:13px;background:var(--panel);cursor:pointer;min-height:32px}
+.pb .chip{background:#3A3216;border-color:#6A5822;color:#F3E3B5}
+.pb .chip.on{background:#F3E3B5;color:#2A2410;border-color:#F3E3B5;font-weight:600}
+.wrap{max-width:1360px;margin:0 auto;padding:18px 16px 64px}
+.hd h1{font-size:26px;font-weight:600;margin:4px 0 6px;letter-spacing:-.01em}
+.eyebrow{font-size:12.5px;color:var(--dim)}
+.muted{color:var(--mid)} .dim{color:var(--dim)} .small{font-size:13px}
+.seg{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--edge-2);border-radius:999px;background:var(--sunk);flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px;color:var(--mid);font-size:14px}
+.seg button.on{background:var(--accent);color:var(--on-accent);font-weight:600}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);padding:16px}
+.wn{border-left:2px solid var(--au);padding:4px 0 4px 12px;font-size:13.5px;color:var(--mid);margin:10px 0}
+.wn .eyebrow{color:var(--au)}
+h2{font-size:19px;font-weight:600;margin:0 0 4px}
+
+/* the reversal view: the mask is the light source of the page, everything
+   else sits back from it */
+.rev{display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:16px;margin-top:14px;align-items:start}
+.stage{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r);padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.stage svg.big{width:100%;max-width:330px;height:auto}
+.stage .when{font-size:28px;font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.stage .ro{font-size:13.5px;color:var(--mid);text-align:center;font-variant-numeric:tabular-nums;min-height:44px}
+svg rect.cell{transition:transform .6s cubic-bezier(.5,0,.2,1),fill .45s,stroke .45s}
+.playing svg rect.cell{transition:none}
+.pick{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.pick button{background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:6px 4px 4px;cursor:pointer;
+ display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px;font-size:12px;color:var(--mid)}
+.pick button.on{border-color:var(--accent);color:var(--ink)}
+.pick svg{width:100%;max-width:54px;height:auto}
+.ctl{display:flex;flex-direction:column;gap:10px}
+.ctl input[type=range]{width:100%;accent-color:var(--accent);min-height:36px;margin:0}
+.stops{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.stops button{border:1px solid var(--edge-2);background:var(--panel-2);border-radius:10px;min-height:44px;cursor:pointer;font-size:13px;padding:4px}
+.stops button.on{border-color:var(--accent);color:var(--accent)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--edge-2);background:var(--panel-2);border-radius:10px;padding:10px 16px;min-height:44px;cursor:pointer;font-size:14px}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:14px}
+.strip .f{background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:8px 6px;text-align:center;font-size:12.5px;color:var(--mid);font-variant-numeric:tabular-nums}
+.strip .f b{display:block;color:var(--ink);font-weight:600;font-size:13px}
+.strip svg{width:100%;max-width:120px;height:auto}
+.chart>svg{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--mid)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+.six{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.six .m{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r);padding:14px;display:grid;grid-template-columns:118px 118px minmax(0,1fr);gap:12px;align-items:start}
+.six .m svg{width:100%;height:auto}
+.six .m .t{font-size:12px;color:var(--dim);text-align:center}
+.six .m h3{margin:0 0 2px;font-size:16px;font-weight:600}
+.six .m .v{font-size:13px;color:var(--mid);margin-bottom:8px}
+.six .m ul{margin:0;padding-left:16px;font-size:13px;color:var(--mid)}
+.six .m li{margin:2px 0}
+
+.build{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:16px;margin-top:14px;align-items:start}
+.build svg{width:100%;height:auto}
+table.ms{border-collapse:collapse;width:100%;font-size:13.5px}
+.ms th,.ms td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--edge);vertical-align:top}
+.ms th{color:var(--dim);font-weight:500;font-size:12.5px}
+.ms td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.was{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.was .f{background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:12px;text-align:center;font-size:13px;color:var(--mid)}
+.was svg{width:100%;max-width:190px;height:auto}
+@media (max-width:1100px){.rev,.build{grid-template-columns:1fr}.six{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.six{grid-template-columns:1fr}}
+@media (max-width:520px){.pb{position:static}.strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .stops{grid-template-columns:repeat(3,minmax(0,1fr))}.pick{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .six .m{grid-template-columns:1fr 1fr}.six .m>div:last-child{grid-column:span 2}.hd h1{font-size:22px}}
+</style></head><body>
+<div class="wrap">
+ <div class="hd">
+  <div class="eyebrow">Round IT. The six masks, redrawn on the golden ratio, with the reversal on a time slider.</div>
+  <h1>Golden masks</h1>
+ </div>
+ <div id="mode"></div>
+ <div id="view"></div>
+</div>
+<!--DATA-->
+<script>
+/* ============================================================
+   THE FACE, CONSTRUCTED. Every measurement is a Fibonacci number, and
+   consecutive Fibonacci numbers are the golden ratio in whole cells:
+   34/21 = 1.619, 21/13 = 1.615, 13/8 = 1.625, 8/5 = 1.6. So the ratio is
+   not a mood here, it is the grid.
+
+     grid          21 wide by 34 tall          34 : 21, height to width
+     eye line      13 down, 21 above the chin  the height cut at phi
+     mouth line    8 above the chin            chin to eye, 21, cut at phi
+     brow line     3 above the eye line
+     nose line     8 below the eye line        eye to mouth, 13, cut at phi
+     jaw           13 wide at the mouth line   21 / phi
+     chin          8 wide                      13 / phi
+     eyes          centres 8 apart, 3 wide     8 = 21 / phi^2, 3 = 8 / phi^2
+     mouth         5 wide                      8 / phi
+   ============================================================ */
+var PHI=(1+Math.sqrt(5))/2;
+var COLS=21, ROWS=34, CX=10.5, U=10;
+var G={eye:13, brow:10, nose:21, mouth:26, chin:34, jaw:13, chinW:8, eyeGap:8, eyeW:3, mouthW:5};
+function cub(p0,p1,p2,p3,n){var o=[];for(var i=1;i<=n;i++){var t=i/n,u=1-t;
+ o.push([u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]]);}return o;}
+/* the outline as a closed polygon: a half ellipse over the eye line, then the
+   cheek falling to the jaw corner, then the jaw falling to the chin */
+function facePoly(){
+ var pts=[], chx=CX+G.chinW/2;
+ for(var i=0;i<=48;i++){var a=Math.PI+Math.PI*i/48;pts.push([CX+CX*Math.cos(a),G.eye+G.eye*Math.sin(a)]);}
+ /* ONE CONVEX CURVE FROM THE CHEEK TO THE CHIN. The straight chord from full
+    width at the eye line to the chin crosses the mouth line 12.96 cells wide,
+    which is 21 over phi, so the jaw measure is carried by the chord and the
+    cheek bows just outside it. The first cut forced the curve through a jaw
+    corner at 13 and the cheek went concave under it, which read as a light
+    bulb. Measured: the pixels land 15 wide at the mouth line, 13 two rows
+    lower. */
+ pts=pts.concat(cub([21,G.eye],[21,G.eye+4],[chx+1.5,G.chin],[chx,G.chin],40));
+ var right=pts.slice(49), left=right.map(function(p){return [2*CX-p[0],p[1]];}).reverse();
+ return pts.concat(left);}
+var POLY=facePoly();
+function inPoly(x,y){var c=false;for(var i=0,j=POLY.length-1;i<POLY.length;j=i++){var a=POLY[i],b=POLY[j];
+ if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])c=!c;}return c;}
+var FACE=[];for(var r=0;r<ROWS;r++){FACE.push([]);for(var c=0;c<COLS;c++)FACE[r].push(inPoly(c+.5,r+.5));}
+function smoothPath(){return 'M'+POLY.map(function(p){return (p[0]*U).toFixed(1)+' '+(p[1]*U).toFixed(1);}).join('L')+'Z';}
+
+/* ============================================================
+   THE MARKS. One face, six masks, and every mark is cut out of the face, so
+   it is negative space and never a new colour. Each mark is read off the
+   mask's own line in engine/data/canon.js, which is quoted beside it.
+
+   The tie holes at the temples are the family trait: they are what makes a
+   face a mask, a thing that is put on and can be taken off.
+   ============================================================ */
+function mir(list){return list.concat(list.map(function(p){return [p[0],20-p[1]];}));}
+function box(r0,r1,c0,c1){var o=[];for(var r=r0;r<=r1;r++)for(var c=c0;c<=c1;c++)o.push([r,c]);return o;}
+function minus(a,b){var k={};b.forEach(function(p){k[p+'']=1;});return a.filter(function(p){return !k[p+''];});}
+var TIES=[[G.eye,1],[G.eye,19]];
+var MARKS={
+ Child:{cut:mir(minus(box(11,13,5,7),[[11,6]])).concat([[25,10],[26,10],[0,10],[1,10],[2,10]]),
+  read:['Eyes wide and turned up, the pupil at the top of each: looking up at the bigger body that decides.',
+   'A mouth one pixel wide: the voice kept small.',
+   'The crown left open, the way a skull is before it closes.']},
+ Preteen:{cut:mir(box(9,9,5,7)).concat(box(12,13,6,7),box(12,13,14,15),box(25,26,8,8),box(25,26,10,10),box(25,26,12,12)),
+  read:['Both eyes glance the same way, off to the side: checking the room.',
+   'Brows raised and watching.',
+   'The mouth stitched in three places: the thing is held until the room is safe.']},
+ Teen:{cut:mir([[9,4],[9,5],[10,6],[10,7],[11,8],[12,5],[13,6],[13,7]]).concat([[25,8],[26,9],[25,10],[26,11],[25,12]]),
+  read:['Brows cut down into a V, and the eyes narrowed under them: aimed at a person.',
+   'The mouth jagged, bared rather than open.']},
+ Adult:{cut:mir(box(13,13,5,7)).concat(box(25,25,8,12),box(16,19,3,3),box(16,19,5,5),box(16,19,7,7)),
+  read:['Eyes level and lidded: it handles it.',
+   'A flat line of a mouth.',
+   'Three tally marks on the cheek: what it cost, filed where nobody reads it.']},
+ Professional:{cut:mir(box(12,13,5,7)).concat(box(G.nose,G.nose,2,18),[[24,7],[25,8],[25,9],[25,10],[25,11],[25,12],[24,13]]),
+  read:['Eyes open and steady.',
+   'A seam across the face at the nose line: the lower half is a plate fitted over it.',
+   'The smile is on the plate, not on the face. It is worn until the feeling passes.']},
+ Ideological:{cut:mir([[12,5],[13,6],[12,7]]).concat([[7,10],[8,9],[8,11],[9,10]],box(25,25,9,11)),
+  read:['Both eyes shut: the moment in front of it is not being looked at.',
+   'One eye open in the brow, fixed: it sees from the position.',
+   'A short closed mouth: the answer was ready before the question.']}};
+Object.keys(MARKS).forEach(function(k){MARKS[k].cut=MARKS[k].cut.concat(TIES);});
+
+/* the old sprite, kept only so the construction view can show what changed */
+var OLD=['.....######.....','...##########...','..############..','.##############.','.##############.',
+ '################','################','################','################','.##############.',
+ '.##############.','..############..','..############..','...##########...','....########....',
+ '.....######.....','......####......'];
+
+var T=DATA.tables, PAL=T.PAL, NODE={};
+T.NODES.forEach(function(n){NODE[n.i]=n;});
+var WHOS=Object.keys(DATA.people), WHO=DATA.people.Derek?'Derek':WHOS[0], PICK='Child', MODE='rev';
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function hx(h){h=h.replace('#','');return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function mix(a,b,t){var A=hx(a),B=hx(b);return '#'+A.map(function(v,i){var x=Math.round(B[i]+(v-B[i])*t);return (x<16?'0':'')+x.toString(16);}).join('');}
+function hash(s){var h=2166136261>>>0;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;}
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
+function maskOf(nm){return T.MASKS.filter(function(m){return m.nm===nm;})[0];}
+function lum(h){return hx(h).map(function(x){x/=255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4);}).reduce(function(a,v,i){return a+v*[.2126,.7152,.0722][i];},0);}
+function cr(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+
+/* ============================================================
+   THE OUTLINE, FIFTY PER CENT LESS INTENSE. His words. Intensity is read as
+   the light the line adds over its ground, so the new line carries half the
+   luminance the old one added over --sunk, solved rather than eyeballed.
+   The old line was #5E6068 at 3.16 to 1. The measured result prints in the
+   construction view.
+   ============================================================ */
+var GROUND='#090A0E', OLDLINE='#5E6068';
+var LINE=(function(){var goal=lum(GROUND)+(lum(OLDLINE)-lum(GROUND))/2, lo=0, hi=1;
+ for(var k=0;k<30;k++){var m=(lo+hi)/2;if(lum(mix(OLDLINE,GROUND,m))<goal)lo=m;else hi=m;}return mix(OLDLINE,GROUND,hi);})();
+var FREE='#24262D';
+
+/* the charge ladder, carried over from round GG unchanged: step one is solved
+   to 3 to 1 against the ground for each seat, and the four steps are spaced
+   evenly from there to the full seat colour */
+var STEPS=[2,4,6,10], LADDER={};
+function ladder(seat){if(LADDER[seat])return LADDER[seat];var lo=0,hi=1;
+ for(var k=0;k<24;k++){var m=(lo+hi)/2;if(cr(mix(PAL[seat],GROUND,m),GROUND)<3)lo=m;else hi=m;}
+ return LADDER[seat]=[0,1,2,3].map(function(i){return hi+(1-hi)*i/3;});}
+function stepOf(q){for(var i=0;i<STEPS.length;i++)if(q<=STEPS[i])return i;return 3;}
+function tone(seat,q){return mix(PAL[seat],GROUND,ladder(seat)[stepOf(q)]);}
+
+function cutSet(nm){var k={};(nm?MARKS[nm].cut:[]).forEach(function(p){k[p[0]+','+p[1]]=1;});return k;}
+function on(cut,r,c){return r>=0&&r<ROWS&&c>=0&&c<COLS&&FACE[r][c]&&!cut[r+','+c];}
+function cellsOf(nm){var cut=cutSet(nm),o=[];for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++)if(on(cut,r,c))o.push([r,c]);return o;}
+function outline(nm){var cut=cutSet(nm),d='';
+ for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){if(!on(cut,r,c))continue;var x=c*U,y=r*U;
+  if(!on(cut,r-1,c))d+='M'+x+' '+y+'h'+U;if(!on(cut,r+1,c))d+='M'+x+' '+(y+U)+'h'+U;
+  if(!on(cut,r,c-1))d+='M'+x+' '+y+'v'+U;if(!on(cut,r,c+1))d+='M'+(x+U)+' '+y+'v'+U;}
+ return d;}
+
+/* ============================================================
+   THE LAYOUT, carried from round GG: every address at the mask's seats is one
+   belief and owns an equal share of the face in address order. Charge breaks
+   a belief into pieces and throws them from home, so as charge falls the
+   pieces come home on their own. That is the reversal, drawn: the slider
+   lowers the charge and the face defragments.
+   ============================================================ */
+function layout(who,nm,q,had){
+ var m=maskOf(nm), cells=cellsOf(nm);
+ var bel=T.NODES.filter(function(n){return m.b.indexOf(n.b)>=0;});
+ var n=bel.length, C=cells.length, base=Math.floor(C/n), extra=C%n, frags=[], home=0, seedBase=who+'|'+m.b.join('+');
+ bel.forEach(function(b,j){
+  var blocks=base+(j<extra?1:0), v=q[b.i]||0;
+  var st=v>0.05?'chg':had[b.i]?'rel':'free';
+  var f=st==='chg'?Math.max(1,Math.round(blocks*v/10)):1, at=home;
+  for(var k=0;k<f;k++){
+   var size=Math.floor(blocks/f)+(k<blocks%f?1:0), R=rng(hash(seedBase+'|'+b.i+'|'+k));
+   frags.push({b:b,st:st,q:v,key:at+(k===0?0:(R()*2-1)*v/10*C),k:k,size:size,from:at-home});
+   at+=size;}
+  home+=blocks;});
+ frags.sort(function(a,b){return a.key-b.key||a.b.i-b.b.i||a.k-b.k;});
+ var out=[],ci=0;
+ frags.forEach(function(fr){for(var t=0;t<fr.size;t++){var c=cells[ci++];
+  out.push({id:fr.b.i+'_'+(fr.from+t),b:fr.b,st:fr.st,q:fr.q,r:c[0],c:c[1]});}});
+ out.forEach(function(x,i){var nx=out[i+1];x.join=x.st==='chg'&&nx&&nx.b.i===x.b.i&&nx.st===x.st&&nx.r===x.r&&nx.c===x.c+1;});
+ return {m:m,cells:out,bel:bel};}
+/* a charged cell keeps a hairline gutter, half the old one, so a cut mark
+   one cell wide reads as a hole and not as one more gap between bricks */
+var INS=1.1, INS_C=.5;
+function attrs(x){
+ if(x.st==='chg')return {fill:tone(x.b.b,x.q),stroke:'none',sw:null};
+ if(x.st==='rel')return {fill:'none',stroke:mix(PAL[x.b.b],GROUND,.55),sw:1.1};
+ return {fill:'none',stroke:FREE,sw:1};}
+function svgMask(L,opt){opt=opt||{};var pad=4,s=U-INS*2;
+ var h='<svg'+(opt.cls?' class="'+opt.cls+'"':'')+' viewBox="'+(-pad)+' '+(-pad)+' '+(COLS*U+pad*2)+' '+(ROWS*U+pad*2)+'" role="img" aria-label="'+esc(L.m.nm+' mask')+'">';
+ L.cells.forEach(function(x){var a=attrs(x);
+  var ins=x.st==='chg'?INS_C:INS, sz=U-ins*2;
+  h+='<rect class="cell"'+(opt.live?' id="c'+x.id+'"':'')+' x="'+ins+'" y="'+ins+'" width="'+(x.join?U:sz)+'" height="'+sz+'" rx=".8" style="transform:translate('+x.c*U+'px,'+x.r*U+'px)" fill="'+a.fill+'" stroke="'+a.stroke+'"'+(a.sw?' stroke-width="'+a.sw+'"':'')+'/>';});
+ h+='<path d="'+outline(L.m.nm)+'" fill="none" stroke="'+LINE+'" stroke-width="1" stroke-linecap="square"/>';
+ return h+'</svg>';}
+
+/* ============================================================
+   THE REVERSAL, on the engine's own arithmetic and the book's own clock.
+   Nothing here is a new curve.
+
+   The step. A release run takes each address it covers from weight w, on the
+   engine's 0 to 100, to w minus round(0.21 w + 2). ui/release.js, the loop
+   under "freed". Heaviest first, the way the queue is picked.
+
+   The run. Capped at RUN_MAX, 25 lines (engine/plan.js), and each address
+   takes one line down each of the 4 channels (CHAN, ui/release.js), so six
+   addresses is the most one run covers in full.
+
+   The clock. The engine drops the number the moment a run ends. The book
+   says the body takes longer: "tau (Standard): 9.0 days" (DESIGN-release.md,
+   quoting the codex at 3654). So what the slider shows settles toward the
+   engine's number as e to the minus t over 9. At three tau, day 27, 95 per
+   cent has settled, which is the book's own "Completion: Day 27-33".
+
+   Not drawn: the book's rebound at days four to six, because it gives the
+   day and not the size, and a size would be invented. Not drawn either: any
+   new story written during the year. The mask only moves one way here.
+   ============================================================ */
+var TAU=9, RUN_MAX=25, CHANNELS=4, PER_RUN=Math.floor(RUN_MAX/CHANNELS);
+var CADENCE=[['month','One run a month',30],['week','One a week',7],['three','Three a week',7/3]], CAD='week';
+var STOPS=[[0,'Today'],[1,'1 day'],[7,'1 week'],[30,'1 month'],[182,'6 months'],[365,'1 year']];
+var DT=.25, NF=365/DT+1, SIM={};
+function simulate(who,nm,cad){var key=who+'|'+nm+'|'+cad;if(SIM[key])return SIM[key];
+ var m=maskOf(nm), sq={}; DATA.people[who].sq.forEach(function(x){sq[x[0]]=x[1];});
+ var bel=T.NODES.filter(function(n){return m.b.indexOf(n.b)>=0;});
+ var st=bel.map(function(b){return {i:b.i,tgt:Math.round((sq[b.i]||0)*10),res:0};});
+ var had={}; st.forEach(function(s){if(s.tgt>0)had[s.i]=1;});
+ var gap=CADENCE.filter(function(c){return c[0]===cad;})[0][2], next=0, runs=0, k=Math.exp(-DT/TAU), frames=[];
+ for(var f=0;f<NF;f++){var t=f*DT;
+  if(t>=next-1e-9){var pick=st.filter(function(s){return s.tgt>0;}).sort(function(a,b){return b.tgt-a.tgt||a.i-b.i;}).slice(0,PER_RUN);
+   if(pick.length)runs++;
+   pick.forEach(function(s){var d=Math.min(s.tgt,Math.round(s.tgt*.21+2));s.tgt-=d;s.res+=d;});next+=gap;}
+  var q={}, sum=0, eng=0, carrying=0;
+  st.forEach(function(s){var v=(s.tgt+s.res)/10;q[s.i]=v;sum+=v;eng+=s.tgt/10;if(v>0.05)carrying++;});
+  frames.push({t:t,q:q,mean:sum/st.length,eng:eng/st.length,carrying:carrying,runs:runs});
+  st.forEach(function(s){s.res*=k;});}
+ var gone=null;for(var i=0;i<frames.length;i++)if(frames[i].mean<0.05&&frames[0].mean>0){gone=frames[i].t;break;}
+ return SIM[key]={frames:frames,had:had,n:bel.length,gone:gone};}
+function frameAt(S,t){return S.frames[Math.max(0,Math.min(S.frames.length-1,Math.round(t/DT)))];}
+/* the slider is stretched so the first week is not a sliver of the year */
+function toT(s){return Math.pow(366,s/1000)-1;}
+function toS(t){return Math.log(t+1)/Math.log(366)*1000;}
+function dayWord(t){if(t<1)return t<=0?'Today':Math.round(t*24)+' hours';return 'Day '+Math.round(t);}
+var TNOW=0, PLAY=null;
+
+function vRev(){
+ var S=simulate(WHO,PICK,CAD), F=frameAt(S,TNOW), L=layout(WHO,PICK,F.q,S.had);
+ var h='<div class="rev"><div class="stage" id="stage"><div class="when" id="when">'+dayWord(TNOW)+'</div>'
+  +svgMask(L,{live:1,cls:'big'})+'<div class="ro" id="ro"></div></div><div class="ctl">';
+ h+='<div class="card"><div class="eyebrow" style="margin-bottom:8px">Mask</div><div class="pick">'
+  +T.MASKS.map(function(m){var S0=simulate(WHO,m.nm,CAD),F0=frameAt(S0,TNOW);
+   return '<button data-m="'+m.nm+'" class="'+(m.nm===PICK?'on':'')+'" aria-label="'+esc(m.nm)+'">'+svgMask(layout(WHO,m.nm,F0.q,S0.had))+esc(m.nm)+'</button>';}).join('')
+  +'</div></div>';
+ h+='<div class="card ctl"><div class="row" style="justify-content:space-between"><span class="eyebrow">Time since the first run</span>'
+  +'<button class="btn pri" id="play">Play the year</button></div>'
+  +'<input id="ts" type="range" min="0" max="1000" step="1" value="'+Math.round(toS(TNOW))+'" aria-label="Time since the first run">'
+  +'<div class="stops">'+STOPS.map(function(s){return '<button data-t="'+s[0]+'">'+s[1]+'</button>';}).join('')+'</div>'
+  +'<div class="eyebrow" style="margin-top:4px">How often a run happens</div>'
+  +'<div class="seg" id="cad">'+CADENCE.map(function(c){return '<button data-c="'+c[0]+'" class="'+(c[0]===CAD?'on':'')+'">'+c[1]+'</button>';}).join('')+'</div></div>';
+ h+='<div class="card chart" id="chart"></div>';
+ h+='</div></div>';
+ h+='<div class="strip" id="strip"></div>';
+ h+='<div class="wn"><div class="eyebrow">What it is grounded in</div>A run takes each address it covers from w to w minus round(0.21 w + 2), the engine\'s own release step. Six addresses a run, heaviest first, because a run is capped at 25 lines and an address takes one line on each of 4 channels. What is drawn settles toward the engine\'s number with the book\'s tau of 9 days. No new story is written during the year.</div>';
+ return h;}
+function refreshRev(anim){
+ var S=simulate(WHO,PICK,CAD), F=frameAt(S,TNOW), L=layout(WHO,PICK,F.q,S.had);
+ L.cells.forEach(function(x){var e=document.getElementById('c'+x.id);if(!e)return;var a=attrs(x);
+  e.style.transform='translate('+x.c*U+'px,'+x.r*U+'px)';var ins=x.st==='chg'?INS_C:INS;e.setAttribute('x',ins);e.setAttribute('y',ins);e.setAttribute('height',U-ins*2);e.setAttribute('width',x.join?U:U-ins*2);
+  e.setAttribute('fill',a.fill);e.setAttribute('stroke',a.stroke);if(a.sw)e.setAttribute('stroke-width',a.sw);else e.removeAttribute('stroke-width');});
+ document.getElementById('when').textContent=dayWord(TNOW);
+ var F0=S.frames[0];
+ document.getElementById('ro').innerHTML=(F0.mean<=0?'Nothing is written at these seats on this profile, so there is nothing to reverse.':
+  'Mean charge <b>'+F.mean.toFixed(2)+'</b> of 10 at '+esc(L.m.b.join(' and '))+', from '+F0.mean.toFixed(2)+'. '
+  +F.carrying+' of '+S.n+' addresses still carrying. '+F.runs+' run'+(F.runs===1?'':'s')+' so far.<br>'
+  +(S.gone!=null?'Settled to nothing by day '+Math.ceil(S.gone)+'.':'Not settled within the year.'));
+ var ts=document.getElementById('ts');if(ts&&!anim)ts.value=Math.round(toS(TNOW));
+ document.querySelectorAll('.stops [data-t]').forEach(function(b){b.classList.toggle('on',Math.abs(+b.dataset.t-TNOW)<.13);});
+ document.querySelectorAll('.pick [data-m]').forEach(function(b){var S0=simulate(WHO,b.dataset.m,CAD),F1=frameAt(S0,TNOW);
+  b.querySelector('svg').outerHTML=svgMask(layout(WHO,b.dataset.m,F1.q,S0.had));});
+ chart(S);}
+function chart(S){
+ var W=440,H=184,l=34,rt=22,tp=12,bt=50, mx=Math.max(.5,S.frames[0].mean);
+ function X(t){return l+(W-l-rt)*toS(t)/1000;} function Y(v){return tp+(H-tp-bt)*(1-v/mx);}
+ var dS='',dE='';S.frames.forEach(function(f,i){if(i%2)return;dS+=(dS?'L':'M')+X(f.t).toFixed(1)+' '+Y(f.mean).toFixed(1);dE+=(dE?'L':'M')+X(f.t).toFixed(1)+' '+Y(f.eng).toFixed(1);});
+ var seat=PAL[maskOf(PICK).b[0]];
+ var h='<div class="eyebrow">Mean charge at these seats, over the year</div><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Mean charge over one year">';
+ [0,mx/2,mx].forEach(function(v){h+='<line x1="'+l+'" x2="'+(W-rt)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="rgba(255,255,255,.07)"/><text x="'+(l-6)+'" y="'+(Y(v)+4)+'" fill="#94908A" font-size="13" text-anchor="end">'+v.toFixed(1)+'</text>';});
+ STOPS.forEach(function(s,i){var x=X(s[0]);h+='<line x1="'+x+'" x2="'+x+'" y1="'+tp+'" y2="'+(H-bt+(i%2?18:2))+'" stroke="rgba(255,255,255,.06)"/><text x="'+x+'" y="'+(H-bt+16+(i%2?17:0))+'" fill="#94908A" font-size="13" text-anchor="middle">'+s[1]+'</text>';});
+ h+='<path d="'+dE+'" fill="none" stroke="#94908A" stroke-width="1.2" stroke-dasharray="3 3"/>';
+ h+='<path d="'+dS+'" fill="none" stroke="'+seat+'" stroke-width="2"/>';
+ var F=frameAt(S,TNOW);h+='<line x1="'+X(TNOW)+'" x2="'+X(TNOW)+'" y1="'+tp+'" y2="'+(H-bt)+'" stroke="#7EB8D4" stroke-width="1.2"/><circle cx="'+X(TNOW)+'" cy="'+Y(F.mean)+'" r="4" fill="#7EB8D4"/>';
+ h+='</svg><div class="legend"><span><svg width="18" height="6"><line x1="0" x2="18" y1="3" y2="3" stroke="'+seat+'" stroke-width="2"/></svg>as drawn, settling with tau 9 days</span>'
+  +'<span><svg width="18" height="6"><line x1="0" x2="18" y1="3" y2="3" stroke="#94908A" stroke-dasharray="3 3"/></svg>the engine\'s number, which drops the moment a run ends</span></div>';
+ document.getElementById('chart').innerHTML=h;
+ var st='';STOPS.forEach(function(s){var f=frameAt(S,s[0]);st+='<div class="f">'+svgMask(layout(WHO,PICK,f.q,S.had))+'<b>'+s[1]+'</b>'+f.mean.toFixed(2)+'</div>';});
+ document.getElementById('strip').innerHTML=st;}
+
+function vSix(){
+ var h='<div class="six">';
+ T.MASKS.forEach(function(m){var S=simulate(WHO,m.nm,CAD);
+  h+='<div class="m"><div>'+svgMask(layout(WHO,m.nm,{},{}))+'<div class="t">bare</div></div>'
+   +'<div>'+svgMask(layout(WHO,m.nm,S.frames[0].q,S.had))+'<div class="t">'+esc(WHO)+'</div></div>'
+   +'<div><h3>'+esc(m.nm)+'</h3><div class="v">'+esc(m.v)+'. <span class="dim">'+esc(m.b.join(' and '))+'.</span></div><ul>'
+   +MARKS[m.nm].read.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>';});
+ h+='</div><div class="wn"><div class="eyebrow">Working note, art direction</div>Every mark is cut out of the face, so it is empty space and never a new colour: the only colour on a mask is still charge, in its seat\'s colour. The two tie holes at the temples are on all six. They are what makes a face a mask, a thing put on that can come off. No mask carries a name of its own, per the ruling in round GS; the stage words are the engine\'s own.</div>';
+ return h;}
+
+function vBuild(){
+ var s=U, h='<div class="build"><div class="card"><svg viewBox="-60 -14 330 372" role="img" aria-label="Golden ratio construction of the face">';
+ for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++)if(FACE[r][c])h+='<rect x="'+(c*s+1)+'" y="'+(r*s+1)+'" width="'+(s-2)+'" height="'+(s-2)+'" rx=".8" fill="none" stroke="#24262D"/>';
+ h+='<path d="'+smoothPath()+'" fill="none" stroke="#7EB8D4" stroke-width="1.2" stroke-opacity=".7"/>';
+ var lines=[[0,'top'],[G.brow,'brow'],[G.eye,'eye'],[G.nose,'nose'],[G.mouth,'mouth'],[G.chin,'chin']];
+ lines.forEach(function(L){h+='<line x1="-6" x2="'+(COLS*s+6)+'" y1="'+L[0]*s+'" y2="'+L[0]*s+'" stroke="#C2A063" stroke-width=".8" stroke-dasharray="3 3"/>'
+  +'<text x="-10" y="'+(L[0]*s+4)+'" fill="#C2A063" font-size="10" text-anchor="end">'+L[1]+' '+L[0]+'</text>';});
+ [[CX-G.eyeGap/2,'eye'],[CX+G.eyeGap/2,''],[CX-G.jaw/2,''],[CX+G.jaw/2,''],[CX-G.chinW/2,''],[CX+G.chinW/2,'']].forEach(function(v){
+  h+='<line x1="'+v[0]*s+'" x2="'+v[0]*s+'" y1="-6" y2="'+(ROWS*s+6)+'" stroke="#7D93E0" stroke-width=".6" stroke-opacity=".6" stroke-dasharray="2 4"/>';});
+ [1,-1].forEach(function(sg){var x0=CX+sg*CX, x1=CX+sg*G.chinW/2;
+  h+='<line x1="'+x0*s+'" y1="'+G.eye*s+'" x2="'+x1*s+'" y2="'+G.chin*s+'" stroke="#C2A063" stroke-width=".8" stroke-opacity=".8"/>'
+   +'<circle cx="'+(CX+sg*G.jaw/2)*s+'" cy="'+G.mouth*s+'" r="2.5" fill="#C2A063"/>';});
+ h+='</svg></div><div class="card"><h2>Where the golden ratio is</h2><div class="small muted" style="margin-bottom:8px">Every measure is a Fibonacci number of cells. Neighbouring Fibonacci numbers divide to the golden ratio, 1.618, so the face is built on it in whole pixels rather than rounded to it.</div>'
+  +'<table class="ms"><tr><th>Measure</th><th>Cells</th><th>Ratio</th><th>Why</th></tr>'
+  +[['Height to width','34 : 21',34/21,'The face is a golden rectangle.'],
+    ['Crown to eye line, eye line to chin','13 : 21',21/13,'The eye line cuts the height at the golden section, so the eyes sit a little above the middle, where a face reads as calm rather than startled.'],
+    ['Eye line to mouth, mouth to chin','13 : 8',13/8,'The lower face cut again at the same ratio.'],
+    ['Eye line to nose, nose to mouth','8 : 5',8/5,'And again. The nose line is where the Professional\'s plate seam runs.'],
+    ['Width to jaw','21 : 13',21/13,'The straight line from full width at the eye line to the chin crosses the mouth line 13 wide. The cheek bows just outside that line, so the pixels read 15 there and 13 two rows lower.'],
+    ['Jaw to chin','13 : 8',13/8,'The chin is 8 wide in the drawing. The pixels round it to 9, because a row centred on 21 columns always holds an odd count.'],
+    ['Width to eye spacing','21 : 8',21/8,'The golden ratio squared, 2.618.'],
+    ['Eye spacing to eye width','8 : 3',8/3,'Near the ratio squared. Three is the smallest eye that still takes a pupil.'],
+    ['Eye spacing to mouth','8 : 5',8/5,'The mouth is the eye spacing cut at the golden section.']]
+   .map(function(x){return '<tr><td>'+x[0]+'</td><td class="n">'+x[1]+'</td><td class="n">'+x[2].toFixed(3)+'</td><td class="small muted">'+x[3]+'</td></tr>';}).join('')
+  +'</table>';
+ h+='<h2 style="margin-top:18px">What changed</h2><div class="was">'
+  +'<div class="f">'+oldSvg()+'<div>Round GG. 16 by 17, a near square, widest low, line '+OLDLINE+' at '+cr(OLDLINE,GROUND).toFixed(2)+' to 1.</div></div>'
+  +'<div class="f">'+svgMask(layout(WHO,'Child',{},{}))+'<div>Now. 21 by 34, widest at the eye line, line '+LINE+' at '+cr(LINE,GROUND).toFixed(2)+' to 1, half the light over its ground.</div></div></div>'
+  +'<div class="wn"><div class="eyebrow">A measured cost, for the owner</div>At half intensity the line sits at '+cr(LINE,GROUND).toFixed(2)+' to 1, under the 3 to 1 floor for a graphic a person needs to read. On a blank profile the empty rings carry the silhouette with it. On a written profile the charge does. If the bare mask has to read on its own, with nothing written, that is a trade against his fifty per cent and it is his to make.</div></div></div>';
+ return h;}
+function oldSvg(){var d='',s=10;for(var r=0;r<OLD.length;r++)for(var c=0;c<16;c++){if(OLD[r][c]!=='#')continue;
+ function o(rr,cc){return rr>=0&&rr<OLD.length&&cc>=0&&cc<16&&OLD[rr][cc]==='#';}var x=c*s,y=r*s;
+ if(!o(r-1,c))d+='M'+x+' '+y+'h'+s;if(!o(r+1,c))d+='M'+x+' '+(y+s)+'h'+s;if(!o(r,c-1))d+='M'+x+' '+y+'v'+s;if(!o(r,c+1))d+='M'+(x+s)+' '+y+'v'+s;}
+ var cells='';for(var r2=0;r2<OLD.length;r2++)for(var c2=0;c2<16;c2++)if(OLD[r2][c2]==='#')cells+='<rect x="'+(c2*s+1.1)+'" y="'+(r2*s+1.1)+'" width="7.8" height="7.8" rx=".6" fill="none" stroke="#24262D"/>';
+ return '<svg viewBox="-4 -4 168 178" style="max-width:190px">'+cells+'<path d="'+d+'" fill="none" stroke="'+OLDLINE+'" stroke-width="1"/></svg>';}
+
+function draw(){var v=document.getElementById('view');stop();
+ v.innerHTML=MODE==='rev'?vRev():MODE==='six'?vSix():vBuild();wire();if(MODE==='rev')refreshRev();}
+function stop(){if(PLAY){cancelAnimationFrame(PLAY);PLAY=null;}document.body.classList.remove('playing');var p=document.getElementById('play');if(p)p.textContent='Play the year';}
+function wire(){
+ var v=document.getElementById('view');
+ v.querySelectorAll('.pick [data-m]').forEach(function(e){e.onclick=function(){PICK=e.dataset.m;draw();};});
+ var ts=document.getElementById('ts');
+ if(ts)ts.oninput=function(){stop();TNOW=toT(+ts.value);refreshRev(true);};
+ v.querySelectorAll('.stops [data-t]').forEach(function(b){b.onclick=function(){stop();TNOW=+b.dataset.t;refreshRev();};});
+ v.querySelectorAll('#cad [data-c]').forEach(function(b){b.onclick=function(){CAD=b.dataset.c;draw();};});
+ var pl=document.getElementById('play');
+ if(pl)pl.onclick=function(){if(PLAY){stop();return;}
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){var i=STOPS.findIndex(function(s){return s[0]>TNOW+.1;});TNOW=STOPS[i<0?0:i][0];refreshRev();return;}
+  var s0=TNOW>=364?0:toS(TNOW), t0=performance.now(), dur=9000*(1-s0/1000)+400;
+  document.body.classList.add('playing');pl.textContent='Pause';
+  (function step(now){var s=Math.min(1000,s0+(now-t0)/dur*(1000-s0));TNOW=toT(s);refreshRev();
+   if(s<1000)PLAY=requestAnimationFrame(step);else stop();})(t0);};}
+function setMode(){var host=document.getElementById('mode');
+ var opts=[['rev','Reversal over time'],['six','The six marks'],['build','The construction']];
+ host.innerHTML='<div class="seg">'+opts.map(function(o){return '<button data-k="'+o[0]+'" class="'+(o[0]===MODE?'on':'')+'">'+o[1]+'</button>';}).join('')+'</div>';
+ host.querySelectorAll('button').forEach(function(b){b.onclick=function(){MODE=b.dataset.k;setMode();draw();};});}
+function banner(){
+ var who='<span class="who"><span>Profile</span> '+WHOS.map(function(n){return '<button class="chip'+(n===WHO?' on':'')+'" data-who="'+n+'">'+n+'</button>';}).join('')+'</span>';
+ document.body.insertAdjacentHTML('afterbegin','<div class="pb"><b>Prototype, not the app.</b><span>Golden masks, round IT. Charges are the engine\'s own, read on commit '+DATA.stamp.commit
+  +'. The year is simulated on the engine\'s release step and the book\'s 9 day settle. Nothing here saves.</span><span class="sp"></span>'+who+'</div>');
+ document.querySelectorAll('.pb [data-who]').forEach(function(b){b.onclick=function(){WHO=b.dataset.who;
+  document.querySelectorAll('.pb [data-who]').forEach(function(x){x.classList.toggle('on',x.dataset.who===WHO);});draw();};});}
+var q=location.hash.slice(1).split('&').reduce(function(a,kv){var p=kv.split('=');if(p[0])a[p[0]]=decodeURIComponent(p[1]||'');return a;},{});
+if(q.mode)MODE=q.mode; if(q.who&&DATA.people[q.who])WHO=q.who; if(q.m&&MARKS[q.m])PICK=q.m; if(q.t)TNOW=+q.t; if(q.cad)CAD=q.cad;
+banner();setMode();draw();
+</script></body></html>
