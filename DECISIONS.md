@@ -1998,6 +1998,12 @@ carries both rulings, 20 September's and this one. What he settled, in short:
   never a description of who they are, which is the register ruling above
   ("we are not judging anybody") applied to a voice.
 - **It opens with "What are we writing about today?"** His sentence.
+  **Superseded by his own words at round JS, 27 September:** "What are we
+  writing about today? That's not quite what I want you to use... We first
+  need to welcome them with their name. Hello, Lance. What would you like to
+  write about today? Or would you like me to offer some suggestions?" See
+  "Ruled 27 September, late" below. At `18238fe` the shipped string is still
+  the old one (`SRC_OPEN` in `ui/storyui.js`).
 - **The person leads.** One question at a time. Move on is final for the
   entry, and Source AI answers it with "Cool." and asks nothing more.
 - **The Story page swap.** The column beside the journal is Source AI; the
@@ -2069,7 +2075,9 @@ HS, after two such paragraphs were quoted back to him: "Why is that text never
 being written out ever again after I keep asking for it to never be written
 out?" Both quoted paragraphs were cut at `a0d90b3` (HU). **Third tier text goes
 site wide.** HS: "get rid of all this small noodly nuanced shit across the
-entire site." The sweep is in flight, not committed at `e0b14a2`.
+entire site." The sweep is in flight, not committed at `e0b14a2`. **Landed
+since:** `8da2afb` (IF), and a second sweep to the ten year old rule at
+`287dd3e` and `16ad60f` (JK, JO).
 
 **The column law is set aside on the Story page, by his own hand.** HY: "I
 think I've painted you in a corner with this layout. I think we know what the
@@ -2083,7 +2091,10 @@ under it, a panel that shows what it is sniffing, then the imprints and the
 release, "The release area needs to look dramatically different." The
 imprints start from "the combination between Trace and Route" with a sort by
 type (HY). Mockups at `proto/story-redesign/` (`09c5149`); round two in
-flight (HZ).
+flight (HZ). **Settled since:** Trace picked at IG ("For the story page I like
+Trace"), round two approved at IJ ("This looks good for the story. Wired
+in."), wired as layout H at `ecbc0a8`. The page is being split into its own
+zones by his JX words, below.
 
 **The Compass is a circle, and radiating.** HS: "the CQ is showing where
 things are weighted and it's showing where you're either overexpressed or
@@ -2097,6 +2108,12 @@ pick. In the same breath: "I want to hide the square version and we're going
 to keep the dial. So we're going to start phasing out the square." Which
 surface "the square" names is not written down in `TASKS.md`; read it back to
 him with a picture before anything is hidden.
+**Overtaken twice since.** He picked "a combination of C and B" at IB, wired
+at `abcdc12` (IP). Then at JQ he rejected the result: "The compass is
+currently taking up a quarter of the real estate, I don't know why, and it
+doesn't look like a compass. I didn't agree to this." The circle is no longer
+the direction; the current Compass ruling is under "Ruled 27 September, late"
+below (two pyramids with a gap, the gap carrying data, coherence at the top).
 
 **Sign in is wired in now, without questions.** IA: "I need the login page, I
 need it wired in, without questions. It needs to be effective and clean,
@@ -2108,6 +2125,12 @@ product goes online first, `BACKLOG-AUDIT.md` section 2.1 items 2 and 3. The
 same message puts the Compass, a clean build and the funnel first: "It's
 important that we end up cleaning up the compass before we run out of tokens
 for the build. We need to end up with a clean build. I need the funnel."
+**The funnel half of that was reversed the next round,** IB: "Actually, you
+know what? Don't touch the funnel. That's a waste of credits." The funnel
+build stays parked; `marketing/FUNNEL.md` (JR) is strategy only and its own
+section 9 asks whether that changes. The sign in shell was built at `3dd1fe0`
+(IP). At JJ he asked for more: "Make sure there's a login page, the login page
+is tied to the database," which waits on the same server question.
 
 **The domain is spelled A-T-U-N-E-D.** HD: "I think it's called a tune dot
 app, A-T-U-N-E-D." That is `atuned.app`, the spelling `reboot-os`'s server
@@ -2127,6 +2150,173 @@ already carries.
   after a packed file and then a raw one both failed to open for him: the
   Story mockups were published as a live page, which opened. The rule is
   ours; the failure it answers is his, three times (HT, HV, HY).
+
+## Ruled 27 September, late. Rounds IB to KA
+
+Carried from `TASKS.md` on his round JX order: "make sure we're adding all
+this stuff to our documentation... make sure that everything that's been added
+recently that is of like actions or designs or whatever is in documentation."
+Each item quotes the round that holds it. State is read against git at
+`18238fe`: a commit where one exists, "in the shared tree" where the file is
+modified and uncommitted, "not built" otherwise. Where this block and an older
+paragraph above disagree, this block is the later ruling and the older
+paragraph carries a note pointing here.
+
+**The goal is to empty the bank and fill the vault.** IW: "The goal is for a
+person to empty their bank and to fill their vault." The Story page's Bank and
+Vault icons shipped with the Story wire in (`ecbc0a8`).
+
+**CQ, DQ and SQ move in real time, and the direction is fixed.** IW: "CQ
+should raise, DQ should lower, SQ should lower. You should see SQ lowering in
+real time since those are the patterns releasing." JA: "CQ, DQ, and SQ are
+calculated in real time. So when a person adds to the story, it adjusts the
+numbers. When they release, it adjusts the numbers." No arithmetic changed;
+the live DQ readout during a run is `82e7bb7`. The nine day settle belongs only
+to the masks mockup's own fade, never the product's numbers (JA).
+
+**The mask outline is suggestive, and colour carries it.** JA: "we want the
+outline suggestive. It's really about the color." **Masks are a mosaic.** JP:
+"the masks should look like a mosaic of the hypercomplexes, complexes,
+saboteurs. And the more intense, the more the pixel." Drawn at `7be7c9e`,
+design only. **Masks live on the body map.** JZ: "our masks should be on the
+body masks. So put all six masks here." This bears on `PRIORITY.md` section
+17 ruling 4, where the masks page lives, and is not yet read back to him as
+answering it.
+
+**The imprint views all stay.** JJ: "have three icons... So I can cycle through
+A, B, or C... Start off with version A." Lanes, Ring and Strip at `ff76edc`,
+default Lanes. **An analytics preview sits closed at the foot of the column.**
+JJ, built at `d406906`.
+
+**The release protocol, as he specified it.** JF: "do you want to release 25
+left and right, 50 left and right, or 100 left and right. And then the reframe
+is the opposite... The default should be four seconds between... a countdown...
+The install should tick up... Wait for two minutes, and there should be a two
+minute countdown." The opening is his own recorded voice and AI reads only
+after it: "That's my voice, it's human. After that, it's AI." That settles the
+IM collision: the voice gate's ban on "sit back and relax" in synthetic copy
+stands. Built at `1a7083c`: `REL_DOSES=[25,50,100]`, `REL_SETTLE_S=120`, the
+welcome phase structurally barred from the speech function. **Pace is user
+driven** (JA). **The list is a carousel, not a flash.** JQ: "You need to be
+able to see the list right in front of you and read it, and you need to see
+the next word coming up... cycle forward and backward and... flag the ones I
+felt were the most heavy." In the shared tree (`ui/release.js`). **The
+completion words, his draft.** JX: "Note the patterns that felt heaviest.
+That's the work. The patterns you didn't feel removed from your pool. To
+optimize your experience." Not built. **Badges for every saboteur, complex and
+hyper complex** (JF). Not designed; the gamification timeline marks it open.
+
+**The Compass is two pyramids with a gap, coherence at the top.** JQ: "this
+needs to look more like two arrows, one pointing up, one pointing down, or two
+pyramids... with a little gap of limbo in between, that's the oscillating."
+JT: "The oscillating space, I don't want it blank... There's still data in
+there," and the ascendant teachers "closer towards the source of the centre,
+maybe with Jesus and Krishna being closest to the point, and then their
+opposing behaviors on the opposite scale outside of the ring." JX: "at the top
+of the compass is the coherence, and the bottom is decoherence. As symbolized
+by the halo and pitchfork," with animation where a person's gravity sits. KA:
+it must render full screen. The Boundary overlay on it is held to the backlog
+by his own words (JQ). In the shared tree (`ui/cone.js`). Not in conflict with
+the Field dock ruling above that cut a small halo and pitchfork element beside
+CQ: that was the dock, this is the Compass.
+
+**The Field's text becomes buttons.** JQ: "turn those to buttons, maybe on the
+bottom panel of the screen. So if I press it, it just lights up that area. And
+then if I press the areas in which I'm feeling pain, it could offer a summary
+of suggestions... and give me a release protocol." In the shared tree
+(`ui/map.js`).
+
+**The Avatar is built root to crown, in three subtabs.** JP: "go from root to
+crown. So the symbol will be on the left. The symbol will have the story
+behind the symbol... a prompt that you can cycle through... submit that to
+your avatar... The sniffer then snips that out... set up rules for
+affirmations or releases," with "a tick per cycle... three cycles, three
+revolutions per cycle." JQ: a larger hero, the box around the text in the
+seat's colour, "on the left side, it's the patterns to release. And on the
+right side, it's the patterns to embody," archetypes pinned in with the
+sniffer's percent, and "the becoming on its own subtab... the archetypes...
+on its own subtab... the intake questions... on its own subtab." In the
+shared tree (`ui/avatarui.js`, `engine/schema.js`). **Law questions include
+moral dilemmas.** JQ: "You see a beggar on the street, do you walk over them or
+give them money?... We kind of want to mix it up." This is the format the
+Ultima dilemma line in `CLAUDE.md` was waiting on. Not built.
+
+**Energetics takes the art pass.** JP, quoted in "Energetics" under "Still
+open" below. In the shared tree (`ui/intakeui.js`).
+
+**The ritual page is visual first.** JQ: "I need to be able to see it as a
+calendar, see which ones are running, edit, remove, log, delete, rearrange,
+see a list, have history," with the accountability tracker attached. JX, the
+prompt it should make: "you're avatar wants to be a public speaker you're
+holding on to fear of judgments of others would you like to set up a release
+schedule for that." In the shared tree (`ui/ritual.js`, `proto/ritual-redesign/`
+untracked).
+
+**Source AI, redesigned.** JS: welcome by name ("Hello, Lance. What would you
+like to write about today? Or would you like me to offer some suggestions?"),
+"get rid of the source AI word scripted," a round red record button, the
+Story release renamed "rapid release," a button upper right to the full
+screen release protocol, sample stories preloaded on the worked examples, a
+readout look for data areas, and "give me those four different looks" under
+Story in the subnav. JP: Source AI adds a why, grounded in where the story
+landed. JX: a voice mode, "I can record voice, I can type in text, or I can
+have source ask me questions." Not built at `18238fe`; `ui/storyui.js` is in
+the shared tree. **The Story page is separate zones.** JX: "The imprint
+section, the journal section, right now they read as one, but they need to
+look at this one screen, but... three elements. Or even the source elements
+is its own element. So like four, plus the information, I guess, five," with
+the release "under the imprints... its own little zone... its own aesthetic."
+
+**The sniffer keeps the person's words.** JX: "I think we want to keep the
+record for the sniffer. To hear if a person's repeating the same patterns and
+the pattern's not clear. Plus it's their vault. So their words." This bears on
+JM's question (re-read old entries with today's sniffer, or keep what they
+read) and on `DESIGN-sniffer.md` question 12 (may Source AI read earlier
+entries). It is not yet read back to him as answering either.
+
+**Major patterns are classed by node weight in nerve state words.** JX:
+"classify the pattern or the weight of the cluster by the weight of the node.
+Is it flowing? Is it blocked? And then what are the states in between?... it's
+zero to five, but you can scale that up to zero to 10." Not built.
+
+**The ten year old rule, refined.** JK set it (voice rule V21, `CO-29`, sweep
+at `287dd3e` and `16ad60f`). JX sharpened it: "it has to be articulate and
+contextual... practitioner needs to be able to understand it. and the layman
+needs to be able to understand it... we can't say six point three weight...
+We need to say something like heavily impaired, heavily blocked... the
+iconography within the summaries." The refinement is being written as V22,
+objection `CO-30`, in `.claude/skills/atuned-voice/SKILL.md`, uncommitted in
+the shared tree at `18238fe`.
+
+**The first run: loading, sign in, then the storyboards if switched on.** JX:
+"it goes an animation to a tune, login page, login page has a developer
+option of the storyboard onboarding and storyboard tutorial, I can turn those
+both on and off... if I have them both off, it takes me to my field." The
+tutorial becomes narrated story animations of named people using the tools,
+ending "Take the quiz. Find out your coherence." This places the on and off
+switch at sign in as a developer option, where "The opening" above put it in
+the profile. Storyboards redrawn toward far less text at `0365177` (JW). **The
+signal test is his script.** JY, in full in `TASKS.md`: ten breaths, "grounded"
+without "safe", awareness at the heart then the throat, "see if they can feel
+the quality difference." Not yet in the storyboard.
+
+**Chrome and the Body page. His Mayday, round JZ.** The new lowercase logo
+with umlauts; "Powered by source OS" in `#323232`, fifteen pixels apart; an
+icon on every tab with collapse and expand; undo and redo hidden; "how to read
+this" moved under the user profile; a profile page that saves under a name and
+can be deleted or retrieved; the opposing behaviours drawn with both words,
+both icons, both weights and a tension bar. **The Body page becomes one map
+with one overlay switch,** "consistent across Fetter, Saboteurs, Complex,
+Hypercomplex, Mass, Pain," the strongest running always floating to the top,
+the six masks on it, and a Kundalini flow layer: "the snake going around the
+seven chakras rising. And your charge at each Ida and Pingala." Shell pieces
+routed to the shell seat, in the shared tree; the Body rebuild and the profile
+page have no owner at `18238fe`.
+
+**Two he answered about process.** IE: OAuth and APIs join after the
+repository is private, the server is chosen and the first product online is
+named. JX: "You, you did add the repo, yeah?" Answered no in `TASKS.md` JX:
+`reboot-os` is not in this session.
 
 ## Still open from the night, and named as open
 
@@ -2176,7 +2366,10 @@ above. His words: "the release is any story... empty the body of stories,
 period." EC's simulation had release winning 42 of 72 pairs against 14; EK's
 "Integrate Protocol" does not name the mechanic. Still open, and only this:
 "Released" against "Run complete" on a finished run's card (EC), which sits
-with `BRAND.md` section 9.
+with `BRAND.md` section 9. **His JF words bear on it and are not yet read back
+to him as an answer:** "When you complete, it needs to say, you've released X
+number of patterns." Built that way at `1a7083c`. What stays open is JO's
+question, whether that X counts statements or named patterns.
 
 **The avatar.**
 - Which layout. **Overtaken on 27 September:** he approved wiring the page at
@@ -2200,7 +2393,12 @@ and Ember's loose sparks were meant too (FC). What replaces the old gold halo
 we get into the center" did not land (EV, EX).
 
 **Energetics.** Which layout meets a stranger, Staged or the Tiles rail he
-described (DZ). Name roots, asked for in DM ("Lance means to pierce, O'Neill
+described (DZ). **Overtaken:** IT asked for a fresh art pass instead
+(`proto/energetics-art/`, `d4a2c35`), and at JP he approved it: "Energetic art
+pass. I like that for the questions. That design is really cool. Run with it,
+wire it in." Which of its three treatments is not named; the wire in keeps all
+three as a toggle, on the imprint views precedent, and is uncommitted in the
+shared tree at `18238fe`. Name roots, asked for in DM ("Lance means to pierce, O'Neill
 means champion, Powell means exalted"), sit against the standing ruling in
 "The accent is blue, and the summary is built" above, "No etymology table",
 and DZ found the references do not support his three examples as given.

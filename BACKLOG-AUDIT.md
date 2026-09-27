@@ -24,6 +24,62 @@ unconfirmed".
 **Every number on this page is computed from the rows below or read off the
 repository by the script that wrote it.** None is typed.
 
+## Since this audit was read. Checked 27 September at `18238fe`
+
+This page was read at `eba8090` (round JH). Rounds JI to KA have landed since,
+and section 0 still lists as unanswered four things he has answered. The rows
+below are left as written, because their counts come from the rows; **the
+counts in sections 0 and 1 (16 in front of him, 90 deliveries, 67 folders)
+are as of `eba8090` and need the audit re-run, not re-typed.** One fact
+measured here: `proto/` holds 69 tracked folders and 1 untracked one,
+`ritual-redesign`, in flight.
+
+**Answered since, so no longer in front of him.**
+
+- **Item 2, the imprint views.** JJ: "have three icons... So I can cycle
+  through A, B, or C... Start off with version A." All three stay, Lanes
+  first, as built at `ff76edc`.
+- **Item 3, the Energetics art pass.** JP: "Energetic art pass. I like that
+  for the questions. That design is really cool. Run with it, wire it in."
+  No treatment named; the wire in keeps all three as a toggle and is
+  uncommitted in `ui/intakeui.js`.
+- **Item 4, the Compass from above.** JQ rejected it: "it doesn't look like a
+  compass. I didn't agree to this." Its three IP questions are overtaken. The
+  redesign (two pyramids, a gap that carries data, the teachers near the
+  centre, full screen per KA) is uncommitted in `ui/cone.js`.
+- **Item 12, the signal test.** The test now lives in the onboarding
+  storyboard with his own script (JP, then JY, which rewrites it in full).
+  Whether the observer page belongs in the first run is still his.
+- **Table 1d, "Sign in shell: nothing to decide."** No longer true. JJ: "Make
+  sure there's a login page, the login page is tied to the database." JX: the
+  login page carries developer switches for the onboarding and tutorial
+  storyboards. Both wait on section 2.1 items 1 to 3.
+
+**Delivered since, and not in the tables.**
+
+| Delivery | Commit | His reaction |
+|---|---|---|
+| `onboarding-storyboard`, `tutorial-storyboard`, first pass | `507558a` (JL) | JP, "too many words. We are visual only" |
+| The same two, redone toward far less text | `0365177` (JW) | JX, the tutorial as "narrated story animations"; JY rewrites the signal test script |
+| Masks as a mosaic | `7be7c9e` (JU), in `proto/masks/golden/` | None on the mosaic. JZ moves the masks onto the body map |
+| Analytics preview on the Story page | `d406906` (JM) | None |
+| Release protocol quality shot | `1a7083c` (JO) | JQ, the list becomes a carousel he can step and flag |
+| Copy sweep to the ten year old rule | `287dd3e`, `16ad60f` (JO) | JX refines the rule: practitioner and layman both, no bare "6.3 weight" |
+| `HOSTING-SETUP.md` | `113fdd7`, `d98815c` (JN, JP) | JX, "I didn't get what you said about API or anything else." A plainer restatement is owed |
+| The funnel to day one hundred | `c273280` (JR) | None. Nine questions in `marketing/FUNNEL.md` section 9 |
+
+**Questions asked since, not in table 2.0.** JL: does the ten year old rule
+reach his own dictated words. JM: four, the largest whether old entries are
+re-read by today's sniffer (JX, "keep the record for the sniffer... it's their
+vault. So their words," bears on it and has not been read back to him). JO:
+does "You released X patterns" count statements or named patterns. JR: nine,
+in `marketing/FUNNEL.md` section 9. JU: Preteen and Professional still read
+alike, and colour means seat in one view and family in another. JW: who says
+"think yes ten times" (answered by JY's script) and whether the mirror
+paragraph shows in full or is spoken. JZ: whether the Kundalini rise reads the
+seat weights the Compass reads or needs a new measure, and whether the masks
+on the body map retire their own page.
+
 ---
 
 ## 0. Not yet responded to. Front and centre

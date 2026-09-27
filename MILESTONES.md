@@ -70,7 +70,11 @@ pure layout, depends on no other decision, and should start immediately.
 `A4` reframed, `A6` rescoped, plus the atomicity finding.
 
 The TD found A4 overstated: `pImport` is not called anywhere in the UI, so
-there is no import control and no reachable crash today. But QA found something
+there is no import control and no reachable crash today. (True when written.
+Since `a54a16b`, 20 September, the profile sheet carries an import control,
+`recordImportWire` in `ui/panels.js`, so the boundary is reachable now. The
+renamed law case is handled by `LAW_WAS` in `engine/schema.js`, `6a89e80`.
+Checked at `18238fe`.) But QA found something
 worse underneath. `pImport` on a malformed profile throws inside `loadProfile`,
 is caught, returns null, and **the field has already been overwritten by
 `buildSoul()` before the throw.** A caller trusting the null believes nothing

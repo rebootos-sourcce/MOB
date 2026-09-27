@@ -1227,6 +1227,10 @@ on him. Row 10 is visuals and waits on everything above it by his own order.
 
 # 17. 27 September. Round IW placed, and the backlog cleared against git
 
+**Status at `18238fe` is in section 18.** Rows 1, 2 and 3 below are built;
+the IX half of row 7 is built; the settle question under "Already his" is
+answered.
+
 His closing instruction for round IW, verbatim (`TASKS.md` section IW): "Stick
 with your priorities, add this to the priority list, clear the backlog."
 
@@ -1568,3 +1572,63 @@ check from here.
   is written so it can be applied without re-reading the commits.
 - **Section 12 rows 3 to 16 re-ranked against the IW work.** They keep their
   order. Rows 2 to 5 still go before any new surface.
+
+---
+
+# 18. 27 September, late. Section 17 checked against git, on his JX order
+
+His words, round JX: "make sure we're adding all this stuff to our
+documentation. We may need to go do a scan and make sure that everything
+that's been added recently that is of like actions or designs or whatever is
+in documentation." This section corrects section 17's states and does not
+re-rank anything. Read at `18238fe`. Every state below names its commit.
+
+## Section 17's rows, now
+
+| Row | Section 17 said | State at `18238fe` | Evidence |
+|---|---|---|---|
+| 1 | In progress, imprint views | **built** | `ff76edc` (JB). JJ answered which stays: all three, default Lanes |
+| 2 | In progress, live readout | **built** | `82e7bb7` (JC), DQ live to two decimals |
+| 3 | In progress, gamification mockup | **built**, design only | `b1d6721` (IZ). No reaction from him recorded yet |
+| 4 | Masks page spec | not started | The drawing moved: the mosaic view landed at `7be7c9e` (JU) inside `proto/masks/golden/`. JZ puts the six masks on the body map, which the spec has to start from |
+| 5 | Mask weights on every history row | not started | no commit |
+| 6 | Masks page built | not started | rows 4 and 5 |
+| 7 | Floor at five, IX half in flight | **IX half built**, floor open | `11a36c0` (JB): Primary, Secondary, Tertiary under "By weight" and "By assemblage point". Ruling 2 still open |
+| 8 | The band word | open | ruling 1 still open. No round since IW answers it |
+
+## The rulings in section 17, now
+
+- **Ruling 4, where the masks page lives, has new words from him and is not
+  answered by them.** JZ: "our masks should be on the body masks. So put all
+  six masks here." That is a fourth option beside the three written: the
+  masks on the rebuilt Body page. JZ's own open question is whether that
+  retires a standalone masks page or only mirrors it. Read it back to him with
+  a drawing before row 4 starts.
+- **"Already his": the settle question is answered.** JA: "CQ, DQ, and SQ are
+  calculated in real time... When they release, it adjusts the numbers." The
+  number drops when the run writes; the nine days belongs only to the masks
+  mockup's fade.
+- **"Not doing: masks as pixel art" still holds, and its last line is out of
+  date.** The current direction is the mosaic of saboteurs, complexes and
+  hyper complexes (JP), drawn over the golden ratio faces, not the golden
+  ratio faces alone.
+
+## What section 17 does not carry, said plainly
+
+**The order has not been re-placed since round IW.** Rounds JP, JQ, JS, JX, JZ
+and KA added the avatar rebuilt root to crown, the Field's buttons, the
+Compass as two pyramids, the ritual calendar, the release carousel, the pole
+display, the Energetics wire in, Source AI's redesign and voice mode, the Story
+zones, the first run with storyboard switches, the logo and tab chrome, the
+profile page, and the Body page rebuilt as one map with a Kundalini layer. Each
+is recorded as his in `DECISIONS.md`, "Ruled 27 September, late". Several are
+uncommitted in the shared tree at `18238fe` (`ui/avatarui.js`, `ui/cone.js`,
+`ui/map.js`, `ui/release.js`, `ui/ritual.js`, `ui/intakeui.js`,
+`ui/storyui.js`, the shell files). The Body rebuild and the profile page have
+no owner. Placing them is the next ordering pass, not this correction.
+
+**The ledger is still frozen.** Re-measured at `18238fe` with section 17's own
+method: open 567, his 155, specced 20, built 433, identical to section 12 and
+section 17. The last line carrying a state is 7095 of 23,179. Nothing shipped
+since 25 September reaches the count, so "37 per cent built" is still a
+number from 25 September.

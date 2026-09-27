@@ -1202,7 +1202,12 @@ each; treat them as defects, not intent).
   `proto/story-redesign/` (`09c5149`); a second round is in flight. Which
   layout wins is OPEN. A known defect, not yet fixed at `e0b14a2`: the caret
   drifts off the visible text after highlighted words (HW; section 13, item
-  26).
+  26). **Status at `18238fe`:** Trace picked (IG), layout H wired at
+  `ecbc0a8` (IJ), the caret fixed at `0ffde4b` (IL), three imprint views at
+  `ff76edc`, an analytics preview at `d406906`. His JS and JX words redesign
+  Source AI (greeting by name, which replaces "What are we writing about
+  today?", a voice mode) and split the page into its own zones; recorded in
+  `DECISIONS.md`, "Ruled 27 September, late", and not built.
 - **Field (2).** "Show me the whole of what I am carrying, in one picture I
   can move into." The hero graphic: the core sized and lit by coherence, six
   gates, the 21 law spokes, the shell of addresses, chains, archetypes, masks,
@@ -1238,7 +1243,12 @@ each; treat them as defects, not intent).
   Four proposals are at `proto/compass-redesign/` (`5172d1e`), every colour
   read from the build's tokens. Which one is his; he named the Compass first
   at IA. Nothing in `atuned_src/` has moved for it as committed at
-  `e0b14a2`.
+  `e0b14a2`. **Status at `18238fe`:** his C plus B pick (IB) was wired at
+  `abcdc12`, then rejected at JQ, "it doesn't look like a compass. I didn't
+  agree to this." The direction now is two pyramids with a gap that carries
+  data, coherence at the top and decoherence at the bottom, the teachers near
+  the centre, rendered full screen (JQ, JT, JX, KA). Uncommitted in the shared
+  tree; recorded in `DECISIONS.md`, "Ruled 27 September, late".
 - **Knowledge (6).** "Tell me what this word means, and how much of it is in
   me." The codex reads the engine's tables directly, so the knowledge base and
   the reading cannot disagree. Every row is four things: the icon, the percent,
@@ -1258,7 +1268,14 @@ each; treat them as defects, not intent).
   anybody's data. Ever."
 - **The release run.** A modal in four phases: pick (the cost is shown before
   the run), opening, run, done. It refuses on a reference case with a named
-  reason and pushes one undo step before it writes.
+  reason and pushes one undo step before it writes. **Status at `18238fe`:**
+  rebuilt to his JF specification at `2c6e38b` and `1a7083c`: a dose of 25, 50
+  or 100 a side, a welcome slot that is his recorded voice and never the
+  synthetic one, four seconds between statements, a count down for release
+  and up for reframe, a live DQ (`82e7bb7`), a two minute settle, and a
+  completion screen broken out by saboteur and complex, each with a Felt
+  toggle. JQ asks for the list as a
+  carousel he can step and flag; uncommitted in the shared tree.
 - **Onboarding.** Built and switched off ("let's turn off onboarding for
   now", 20 September). Replayable from Settings. Writes nothing to the reading.
 

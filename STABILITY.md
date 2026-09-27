@@ -4,6 +4,52 @@ Measured on this build, not remembered. Every number below came from running
 the thing. Where a measurement could not be trusted, the control experiment is
 named alongside it.
 
+## Shipped and measured, 27 September, late. Rounds IF to JO
+
+Added on his JX order to bring the documents up to what shipped. The block
+below this one stopped at `a0d90b3`; sixteen commits have touched
+`atuned_src/` since (`git log a0d90b3..18238fe -- atuned_src`). Each number is
+the one `TASKS.md` records for that round, dated to its commit, not a run
+made today. Read the count off the run.
+
+    last source commit   1a7083c (round JO), read at 18238fe
+    source.html          rebuilt at 9c02b8f, md5 prefix 420ac5ef, stamped
+                         1a7083c. 2,450,666 bytes
+    atuned-packed.html   NOT rebuilt since 30751e9: it inflates to a build
+                         stamped 020bcf8, 05:47, which predates every commit
+                         listed here
+    gates at 1a7083c     engine 1770, collide 351, funnel 172, functional
+                         1229, monitor renders every surface, voice
+                         objections 0 (JO). design 172 passed, 2 failed, the
+                         frame rate and fade timing class reproduced under
+                         load at IZ and not a regression
+
+- **The HS copy sweep.** `8da2afb` (IF). The three named bugs from HS, and the
+  class gated as the `section-explains-itself` objection.
+- **Summary's avatar line.** `766a87d` (IG), reads the pair's real shape.
+- **The Story caret.** `0ffde4b` (IL). Bold removed from the highlight so the
+  caret stops drifting; his "Bold and coloured, ruled" is reversed here and
+  his confirmation is still asked.
+- **The release as a spoken script.** `2c6e38b` (IM), 50 and 50 released, 50
+  and 50 reframed, driven by `meterPlan`.
+- **The CQ audit.** `bb2cbe0` (IO). Formula confirmed; two defects around it
+  fixed, engine 1770 with a new IK group.
+- **The Story page wired, layout H.** `ecbc0a8` (IJ, landed IT).
+- **The Compass from above, C and B.** `abcdc12` (IP). Rejected by him at JQ;
+  the redesign is uncommitted in the shared tree at `18238fe`.
+- **The sign in shell.** `3dd1fe0` (IP). Says accounts are not live.
+- **Punch focus fill.** `74acd10` (IJ).
+- **The Reading card names the person and ranks what runs hottest.**
+  `6aa063a` (IV) and `11a36c0` (IX).
+- **Three imprint views.** `ff76edc` (JB).
+- **Live DQ during a run.** `82e7bb7` (JC).
+- **Analytics preview on the Story page.** `d406906` (JM).
+- **The release protocol, as he specified it.** `1a7083c` (JO): doses 25, 50
+  or 100, four second spacing, the welcome slot barred from the synthetic
+  voice, counters down and up, a two minute settle.
+- **The ten year old copy sweep.** `287dd3e`, `16ad60f` (JO). Tooltips,
+  definitions and onboarding. About 1400 sentences named as not yet swept.
+
 ## Shipped and measured, 27 September
 
 Each item below is a commit on this branch, and each number is the one
@@ -60,6 +106,8 @@ way: its back view drew the front mirrored.
 `atuned_src/` are modified in the shared tree and not committed at
 `e0b14a2`, the site wide copy sweep ordered at round HS among them. The Story page caret drift (round HW,
 12.83 pixels after five marks on one line) is not fixed at `e0b14a2`.
+**Both landed since:** the sweep at `8da2afb`, the caret at `0ffde4b`. See
+the block above.
 
 ## Shipped and measured, 26 September
 

@@ -158,8 +158,12 @@ entered. `pImport` is atomic: nothing is pushed and `CURP` does not move until
 the profile has validated, loaded and saved, and a failure restores what was
 there and says why through `importError()`. `loadProfile` itself still trusts
 its input, which is correct only because everything a person can paste now
-goes through the boundary first. There is no import control in the UI yet, so
-the boundary's first real caller will be the record fetch at sign in.
+goes through the boundary first. This paragraph used to say there was no
+import control in the UI, and that stopped being true at `a54a16b` on 20
+September: `recordImportHtml` and `recordImportWire` in `ui/panels.js` put a
+paste box and a file picker in the profile sheet, and that is the boundary's
+first real caller. The record fetch at sign in will be the second. Checked 27
+September against HEAD `18238fe`.
 
 Every write that can fail reports through `status()`; a control must never
 claim success before it has it.
@@ -237,7 +241,12 @@ needs designing before building.
 A new tab exposes every question in the centre, taken out of the left rail. A
 third theme called Punch, where nothing is outlined and everything is solid.
 The fork goes to accounts. Situational questions modelled on the Ultima virtue
-dilemmas, pending the format ruling.
+dilemmas, pending the format ruling. He gave the shape at round JQ, 27
+September, for the laws of integrity questions: "You see a beggar on the
+street, do you walk over them or give them money? You see two kids fighting,
+do you choose sides or break it up? We kind of want to mix it up so that we can
+pin down where a person is." Recorded in `DECISIONS.md`; not built at
+`18238fe`.
 
 **Google Fonts is gone.** Settled. Inter as a variable font, latin subset,
 three hundred to seven hundred in one file, embedded as base64. Forty eight
@@ -250,14 +259,24 @@ Mine to build when asked:
 - **Undo is built, and this paragraph said otherwise for longer than it was
   true,** which is the same failure mode the Games paragraph above records.
   `engine/undo.js` is unlimited, `UNDO_MAX=0`, carries a redo stack, and
-  `ui/storyui.js:82` snapshots before the charge lands. What remains is not
-  undo, it is that the arrows are the only route to it.
+  the Story commit calls `undoPush('committing the story')` before the charge
+  lands. (This line used to cite `ui/storyui.js:82`; the call is at line 200
+  at `18238fe`, which is why it is named by function now.) What remains is
+  not undo, it is that the arrows are the only route to it, and he has ruled
+  the arrows hidden, round JZ, 27 September: "let's hide undo redo it's not
+  really necessary." Routed to the shell seat, not built at `18238fe`. Hiding
+  them leaves undo with no route at all unless something else carries it, so
+  whoever builds the hide names what does.
 - **A seed decay policy.** A stated four letter type writes charge onto the
   nine axes and `seedShare` reports how much of the field is still that seed.
   Whether it should fade on its own, or only move when the person moves it,
   is open.
-- **Cognitive load.** 57 to 71 simultaneous choices per screen against a
-  working memory of about four. Architectural, needs a decision first.
+- **Cognitive load.** Too many simultaneous choices per screen against a
+  working memory of about four. Architectural, needs a decision first. The
+  figure that stood here, 57 to 71, was undated and has been contradicted
+  since: `BIBLE.md` 5.7 records 81 to 98 on the shell at `1c021f4`, and
+  `STABILITY.md` records the Field's first desktop screen going from 103 to 47
+  at `1341796`. Re-measure on the build in hand before quoting any figure.
 - **The impure core.** `compute()` and friends read shared state. A front door
   contains it. Purifying is a signature rewrite and is deliberately deferred.
 
@@ -287,8 +306,22 @@ nothing to trim. The build is 821 kilobytes of script and 199 of style with no
 blob to remove, so it is compressed instead and carries its own decompressor.
 `tools/pack.js` gzips the whole build, base64s it, and wraps it in a few
 hundred bytes that inflate it with DecompressionStream and write it into the
-document. 417 kilobytes against 1.03 megabytes, still one file, still nothing
-fetched: the bytes are in the page.
+document. 417 kilobytes against 1.03 megabytes when it was first measured,
+still one file, still nothing fetched: the bytes are in the page. Those sizes
+are the day the packer was written and are not today's. On 27 September the
+committed `source.html` at `18238fe` measured 2,450,666 bytes, more than
+twice that, so the font's "about a tenth of the build" above is also out of
+date. Read the size off the file.
+
+**The committed `atuned-packed.html` is not the committed build.** Measured
+27 September at `18238fe`: the packed file inflates to a build stamped
+`020bcf8 2026-09-27 05:47`, while `source.html` is stamped `1a7083c
+2026-09-27 22:29` (md5 prefix `420ac5ef`). So the raw address route named in
+`DECISIONS.md`, "Every file handed to him is packed", currently serves a build
+about seventeen hours old, without the Compass wire in, the spoken release,
+the Story wire in or the copy sweeps. Repack before the next time that route
+is offered, and state the stamp inside the packed file, not only the one on
+`source.html`.
 
 It also turns the silent failure loud. A truncated gzip stream cannot inflate,
 where a truncated script parses most of the way and leaves a shell. The

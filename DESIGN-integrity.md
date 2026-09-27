@@ -373,7 +373,11 @@ Two readings lost, the boundary reports `ok: true` with an empty error list, and
 the person gets the default 6 in both slots with nothing said. This is not
 reachable from the UI today because there is no import control. `CLAUDE.md`
 states the boundary's first real caller will be the record fetch at sign in, so
-this is a defect scheduled to become live on the accounts fork.
+this is a defect scheduled to become live on the accounts fork. (Checked at
+`18238fe`: the import control exists in the profile sheet, `ui/panels.js`, so
+the route is reachable, and the renamed law case is now carried by `LAW_WAS`
+in `engine/schema.js`, landed at `6a89e80`. The other route above was not
+re-run here.)
 
 To be fair to the boundary: it is behaving exactly as ruled. "A missing field is
 an older profile and is filled from the blank." A renamed law is
