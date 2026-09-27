@@ -22220,3 +22220,49 @@ reading is true, with the run that shows it."
 
 Dispatched, scoped to `proto/ninety/` and `RESEARCH-90day.md` only, no
 other agent in flight to collide with.
+
+## JF. The release protocol against its own original schematics, a quality shot
+
+His words, verbatim: "No, please review the original schematics for
+the release protocol. Also review the mechanics of being
+documentation. The release protocol is a list of the parasympathetic
+and asympathetic nerves, left and right channels, masculine and
+feminine. The setup for the user is do you want to release 25 left and
+right, 50 left and right, or 100 left and right. And then the reframe
+is the opposite. You should have the structure for all this. You
+should have the way this, um, the logic and the framework and the
+schema for this. AI voice should be reading the that I'm letting go of
+believing that I am statements. Or the install statements, I know that
+I am. Right? The setup for the user, for me, should be to introduce
+the, you know, welcome the person to the journey. You know, hello,
+you're releasing this pattern, sit back and relax, and now move your
+awareness into your body, take a deep breath and feel, keep your
+senses in there, and when you're ready, repeat this prompt in your
+mind. I'm letting go of believing, perceiving, thinking, behaving,
+acting, feeling that I am. That's my voice, it's human. After that,
+it's AI. And AI is reading the list. The list timing is based off of
+the timing spacing. The default should be four seconds between. You
+should see a running log of how long it's running. You should have a
+countdown of how much is counting. Every time you release one, it
+should tick down. It should start with the starting number. The
+install should tick up, show you which positive charges you're adding.
+When you complete, it needs to say, you've released X number of
+patterns. You may not have felt them all, but the ones you did, mark
+to optimize for better performance. Meanwhile, keep your awareness
+inside your body to feel, to allow the sensations to continue
+releasing. Wait for two minutes, and there should be a two minute
+countdown. At the end of that, the person should get a badge or reward
+or whatever it is that's tied to the number of releases and the number
+of patterns or structures they're releasing. We should have badges for
+all the saboteurs, complexes, and hypercomplexes. Raise, elevate this
+inside your stack. This is a quality shot. And then update all the
+briefs. And then pull front and center all the HTML files that I did
+not respond to yet. Link it to a document so I can do a review off
+that document and prioritize which tasks we do."
+
+His own opening line ("sit back and relax... I'm letting go of
+believing, perceiving, thinking, behaving, acting, feeling that I am")
+is spoken in his own human voice on his account, with AI taking over
+only after it, which settles the collision named at round IM: the
+voice gate's ban on that exact phrase in synthesized copy stands, and
+this confirms why, it was never meant to be AI spoken at all.
