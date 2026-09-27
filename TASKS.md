@@ -16949,3 +16949,47 @@ profile (`p.meter.first` suggested) rather than only fixing the
 default. Sent to the agent already mid fix rather than duplicating
 it.
 
+## FS. All four FJ Field items are real now, verified against the
+## shipped build. 27 September.
+
+Text hidden at full zoom out and fading in as a person zooms;
+orientation and balance unified into one renderer with two live,
+switchable designs; layer toggles that sweep and fade instead of
+snapping; and animated pulses along the wheel's own existing tension
+threads, their speed driven by the same charge already computed, not
+decorative. Commits `e887410` and `08655b0`.
+
+**Independently re-verified in a clean worktree, not taken on
+report.** `source.html` and `atuned-packed.html` md5s both match to
+the letter. Rebuilt from scratch: build size 1,976,843 bytes matched.
+All nine gates re-run myself: engine 1687/0, functional 1121/0
+(matching exactly, including the new FJ block's own zoom word counts,
+0 of 48 at 1x and 1.12x, 48 of 48 at 1.4x and up), collide 298/0,
+monitor all render, funnel 172/0, voice objections clean. `design.js`
+read 153 passed 5 failed on the first run, all five the same load
+sensitive "Field still animates" flake logged five times tonight now
+(EE, EF, ES, EW, FE); re-run alone, 158/0. Took my own fresh
+screenshots, unprompted by the report's claims: at 1x zoom the wheel
+carries no domain or archetype text at all while the CQ number at
+centre stays, and at 2x the same labels (Crown, Warrior, Sage,
+Explorer and others) are now visible, exactly the claimed behaviour.
+
+**Two real, honest deviations from the original brief, both
+reasonable.** Frames and Dial, which previously showed no domain,
+seat or archetype names at all, now reveal them on zoom too, which
+was not asked for; flagged by the builder as his call, kept in
+pending his reaction. And a real inconsistency was found and fixed
+along the way: the orientation bar used to fill away from the side
+it leaned toward while balance filled toward it; both now agree.
+
+**Four real open questions, options given rather than picked
+silently:** which of the two dial designs (Bar or Arc) to keep,
+whether Frames and Dial should show names on zoom at all, whether the
+tension pulses should run constantly or only on a selected chain, and
+whether susceptibility is actually the "tension" he meant or whether
+he meant the gap between held and installed charge instead.
+
+**Same attribution deviation as FC, FE and FL**, named again rather
+than fixed by rewriting shared history: the commit trailer reads
+Opus 5.5.
+
