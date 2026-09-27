@@ -21652,3 +21652,44 @@ should be left to speak for itself. Also noted rather than acted on:
 his own aside that C's shell style suits "the practitioner page" is
 the first concrete visual he has pointed at for that still unbuilt
 view.
+
+## IQ. A mechanism note for the marketing team, and a direct question: when can he actually use the newest build. 27 September
+
+His words, verbatim, on the release mechanism, offered as notes to be
+locked in rather than a code change: "The something that just really
+hit me, the addresses are the limiting beliefs, harmonic register,
+that's the node that gets created. Anxious, afraid, sad, as a
+register. Shame has a register. So the I focuses on the me, the
+awareness goes programmatic wise, it points the camera at the self.
+And then it says, anxious, so the programming already begins, and
+then there's a modifier, like really, really anxious, and then a
+descriptor, what's making you anxious, my boss asking for a raise, the
+report I didn't finish, the surgery I have coming up, sexual
+performance. And so the release is to remember that you're not that,
+and to get the mind to focus on the node, the different permutations
+at which you would describe that, and that's kind of like the snowball
+style, where we're doing a word salad of increasing intensities in
+different ways to describe it. Because we don't have a historical
+record, but we can infer, and as long as we have that structure with
+the release and the reframe, we usually hit that register right on,
+because it's intention based, not exact sentence based. The awareness
+knows the right intention, so you can say the wrong sentence and the
+awareness knows it doesn't feel right. So add all this as notes, just
+lock all this in, this may be for the about story for the funnel. Have
+the marketing team craft stuck content for the funnel, and the
+storyboard where that content goes, and it gets them to the page. Then
+draft the marketing copy, then make sure the team has done a copy
+sweep from our style guide, so we can provide accurate information to
+the customer and the user."
+
+And then, separately and directly: "Where are we with the build? I see
+the background tasks, but when can I interact with the most recent and
+see the changes I've been asking for that are my priorities."
+
+Relayed to the marketing dispatch already running rather than opened
+twice. His second question answered plainly below rather than folded
+into a status list: two more pieces, the Compass and login shell, are
+being landed right now after hitting the same branch permission
+refusal the Punch fix also hit, and a real, current, packed build is
+being sent to him directly once they are on the branch, so "interact
+with it" means something real rather than another screenshot.
