@@ -16774,3 +16774,41 @@ as examples), and one copy bug read in the code but not yet run: the
 Ritual's plan sentence would print "When after I put the kettle on,
 ..." for anyone who types "after" at the start of their own example.
 
+## FO. The night's rulings ordered to graduate into the permanent
+## record, and a ninety day simulation ordered. 27 September.
+
+**His words in full: "Hey, make sure the teams go through all the
+documents in this thread and migrate everything that's been approved,
+art direction wise, design direction wise, UI UX, all of our
+successes, all the kind of user stories that we run through with the
+app. And let's set up a simulation with the ICPs and the focus group.
+Let's have them start ninety days from the app, from onboarding, all
+the way through to ninety days, and let's find all the friction
+spots. I know we don't have our tutorial in our onboarding yet, but
+let's just kind of use what we have, there's a storyboard, see if it
+helps them understand purpose of the tool. And we give like high
+level feedback, what their experience was."**
+
+**Two real, distinct orders.**
+1. A migration: everything this session has actually ruled or
+   confirmed working, art direction, design direction, UI UX, and
+   the successes measured along the way, moves out of `TASKS.md`'s
+   own running log and into the permanent record it belongs in
+   (`DECISIONS.md`, the relevant `DESIGN-*.md` files, `BRAND.md`,
+   `STABILITY.md`), rather than staying only findable by reading a
+   night's worth of lettered sections in order. `TASKS.md` itself
+   stays the log; nothing is deleted from it.
+2. A real ninety day simulation, run against the project's own ICPs
+   and its existing day 1 through day 90 modelling
+   (`tools/loopsim.js` and `proto/ritual/losssim.js` already carry
+   this exact arc), starting from onboarding, using the storyboard
+   just built even though the real tutorial is not built yet, to see
+   whether it actually helps a person understand the tool's purpose,
+   and to find friction across the whole ninety days rather than only
+   the first session. A high level report of what the simulated
+   experience was is the deliverable, not raw numbers alone.
+
+**Dispatched, both, this round:** the documentation migration to
+project management, the ninety day simulation to the seat that owns
+session shape, progression and retention across time.
+
