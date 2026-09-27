@@ -519,7 +519,11 @@ function sectionC(B){
     +'  own lines read as nothing '+e.readNothing+' of '+e.stories
     +'  first over the line '+(e.firstOver?('day '+e.firstOver):'never')
     +'  releases '+e.releases
-    +'  gift spent '+(e.giftGone?('day '+e.giftGone):'no')
+    /* two days, named apart. On an engine without the free week they are the
+       same day; with it, the first week's ten come between them, and the
+       first run printed the second under the first one's name. */
+    +'  gift spent '+(e.giftDay!==null?('day '+e.giftDay):'no')
+    +'  allowance first nought '+(e.giftGone?('day '+e.giftGone):'never')
     +'  refused with load '+e.refusedLoaded
     +'  headline '+w.firstShown.cq+' to '+w.lastShown.cq
     +'  expression '+w.firstShown.ex+' to '+w.lastShown.ex
