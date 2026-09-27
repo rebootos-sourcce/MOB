@@ -70,7 +70,7 @@ const RSRC = fs.readFileSync(path.resolve(ROOT, 'atuned_src', 'ui', 'release.js'
 const LIFTOK = {
   take: /w0\*0\.21\+2/.test(RSRC),
   install: /share\*0\.62/.test(RSRC),
-  cleared: /cleared:\(w1<=6\)/.test(RSRC),
+  cleared: /cleared:\(m\.w1<=6\)/.test(RSRC),
   work: /releaseWork\(CURP,/.test(RSRC)
 };
 const CHANM = /var CHAN=(\[[^;]*\]);/.exec(RSRC);

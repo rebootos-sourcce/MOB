@@ -22266,3 +22266,19 @@ is spoken in his own human voice on his account, with AI taking over
 only after it, which settles the collision named at round IM: the
 voice gate's ban on that exact phrase in synthesized copy stands, and
 this confirms why, it was never meant to be AI spoken at all.
+
+## JG. The briefs pass verified, and a real marketing gate crash fixed in passing
+
+`49bac12` is in, pushed, five files exactly, nothing under atuned_src,
+source.html, proto, PRIORITY.md, TASKS.md or BACKLOG-AUDIT.md. Zero em
+dashes across all five, checked directly.
+
+A real regression surfaced and was not the reporting agent's to fix:
+`node marketing/tests.js` crashed outright, not a failed assertion, a
+thrown error, because its own guard regex still read
+`cleared:(w1<=6)` against `release.js`'s current
+`cleared:(m.w1<=6)` after round JC's `relWrite` refactor renamed the
+variable. The threshold never moved, only the name. Fixed directly,
+one line, in `marketing/testimony.js`, since it was small, well
+understood, and touched no file any in-flight agent owned. Re-run
+clean: 354 assertions, 0 failures.
