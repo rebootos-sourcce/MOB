@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="7279e05 2026-09-27 08:29"><head><meta charset="utf-8">
+<html lang="en" data-build="77a315d 2026-09-27 08:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2525,12 +2525,8 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 .cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
 .cn-sp{flex:1 1 auto;min-width:6px}
 body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
-/* the story's right column, two halves that scroll on their own */
-.st-read{display:flex;flex-direction:column;gap:12px;min-height:0;padding-right:6px}
-.st-half{min-height:0;overflow-y:auto;overflow-anchor:none;
- scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
-.st-imp{flex:1 1 56%}
-.st-rel{flex:1 1 44%;border-top:1px solid var(--edge);padding-top:12px}
+/* the release settings. They sat in the story's right column as its lower
+   half until GO and live in the right rail's Release section now. */
 .st-relp{font-size:13.5px;color:var(--dim);line-height:1.55;margin:4px 0 10px}
 .st-rrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px}
 .st-rlab{font-size:11px;font-weight:600;color:var(--dim);width:62px;flex:0 0 auto}
@@ -3075,6 +3071,53 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-ta::placeholder{color:var(--dim)}
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
 .st-ct{flex:1 1 auto;font-family:var(--num);font-size:12.5px;color:var(--dim)}
+/* ---------- the Story's rail, GO in TASKS.md ----------
+   The imprints and the release live in the right rail on the Story and
+   nowhere else. The rail's other sections step aside there, except Selection,
+   which is where Detail on an imprint opens its drill. */
+body:not(.tab-story) .lsec.st-rail{display:none}
+body.tab-story .lsec[data-rail="right"]:not(.st-rail):not([data-sec="sel"]){display:none}
+body.tab-story #railtop,body.tab-story #bRel{display:none}
+/* five grouping buttons are wider than a rail, and a row that overflows with
+   no affordance reads as a missing control, so it wraps. */
+.st-rail .ip-ctl{flex-wrap:wrap}
+/* ---------- Source AI, beside the journal ----------
+   The opening question is the largest line on the page while nothing is
+   written, and steps back to a heading once the person is writing, because
+   from then on they lead and the question is theirs to answer or not. */
+.st-src{overflow-y:auto;overflow-anchor:none;padding:2px 8px 10px 4px;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+.src-hd{display:flex;align-items:center;justify-content:space-between;min-height:28px}
+.src-tag{font-size:12px;color:var(--dim)}
+.src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:500;margin:8px 0 6px;
+ transition:font-size var(--t-element) var(--ease-out),color var(--t-element) var(--ease-out)}
+.src-open.quiet{font-size:14px;color:var(--dim);font-weight:400}
+.src-jog{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.src-jog li{font-size:15px;line-height:1.5;color:var(--mid);padding-left:12px;
+ border-left:2px solid var(--edge-2)}
+.src-q{font-size:18px;line-height:1.45;color:var(--ink);margin:12px 0 6px}
+.src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
+.st-src>.btn{align-self:flex-start;margin-top:10px}
+.src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
+ white-space:nowrap;margin:0}
+.src-heard{margin-top:20px;border-top:1px solid var(--edge);padding-top:12px}
+.src-row{display:grid;grid-template-columns:76px 1fr auto;gap:10px;align-items:center;
+ padding:8px 0;border-bottom:1px solid var(--edge)}
+.src-seat{font-size:12.5px;font-weight:600;color:var(--c)}
+.src-words{font-size:13.5px;color:var(--ink);line-height:1.45;min-width:0}
+.src-words q{quotes:"\201C" "\201D"}
+/* the rung, drawn and never printed. Ten marks; the four it asks at carry
+   the seat colour on their edge, so the asking end is visible before
+   anything reaches it. */
+.src-pips{display:inline-flex;gap:2px}
+.src-pips i{width:5px;height:12px;border-radius:1px;border:1px solid var(--edge-2)}
+.src-pips i.ask{border-color:var(--c)}
+.src-pips i.on{background:var(--c);border-color:var(--c)}
+/* stacked, the Story reads journal, Source AI, imprints, release, and the
+   tools after. Without this the whole left rail sat between what a person
+   wrote and what it found whenever the column was open. The breakpoint is the
+   one that stacks the rails. */
+@media (max-width:1180px){body.tab-story #lcol{order:1}}
 
 /* ---------- imprints ---------- */
 .ip-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -3085,11 +3128,6 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  min-height:var(--tap);display:inline-flex;align-items:center}
 .ip-g:hover{color:var(--ink)}
 .ip-g.on{background:var(--gold);color:var(--on-accent);font-weight:500}
-.ip-max{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
- padding:6px 12px;font-size:15px;cursor:pointer;line-height:1;margin-left:5px;
- min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;
- justify-content:center}
-.ip-max:hover{background:var(--gold);color:var(--on-accent)}
 .ip-bh{margin:15px 0 7px;display:flex;justify-content:space-between;align-items:baseline;
  gap:10px;border-bottom:1px solid var(--edge);padding-bottom:5px;color:var(--c)}
 .ip-bh em{font-style:normal;color:var(--dim);font-weight:400;font-size:12px}
@@ -3124,8 +3162,6 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  border-top:1px solid var(--edge);line-height:1.6}
 .ip-bar{display:flex;gap:10px;align-items:center;margin-top:11px}
 .ip-sel{flex:1 1 auto;font-family:var(--num);font-size:12.5px;color:var(--gold)}
-body.impbig .st-wrap{grid-template-columns:1fr}
-body.impbig .st-write{display:none}
 /* the imprint pill. tinted fill, not full chroma. the number rides inside.
    full chroma belongs to the alarm state alone. */
 /* every one of these is a control a person is meant to press, and all of them
@@ -5727,6 +5763,24 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    <div class="lsec re" data-rail="right" data-sec="overlap">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Energetic Summary</span><i></i></button>
     <div class="lsec-bd"><div id="rootsum"></div></div>
+   </div>
+   <!-- ON THE STORY, THIS RAIL IS THE IMPRINTS AND THE RELEASE. GO in
+        TASKS.md, his words: "the information pane then becomes an imprints
+        and the protocol." The column beside the journal became Source AI and
+        these two came here, whole, with the ids every renderer and gate reads.
+        After the summary, so the rail's first section stays the summary
+        the gate holds it to; the summary is hidden on the Story anyway.
+        Shown on the Story only, and the rail's other sections are hidden
+        there except Selection, which is where an imprint's Detail opens.
+        ui/storyui.js empties both hosts on the way out, so a hidden rail
+        never holds a stale reading. -->
+   <div class="lsec st-rail" data-rail="right" data-sec="simp">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/></svg>Imprints</span><i></i></button>
+    <div class="lsec-bd"><div id="imp"></div></div>
+   </div>
+   <div class="lsec st-rail" data-rail="right" data-sec="srel">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8.6 12.6L12 16l3.4-3.4"/></svg>Release</span><i></i></button>
+    <div class="lsec-bd"><div id="strel"></div></div>
    </div>
    <div id="railtop" class="railtop"></div>
    <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
@@ -13509,6 +13563,170 @@ function sniffStory(text){
   gaps:      (typeof lawCoverage==='function')?lawCoverage():null};}
 
 try{window.__at&&window.__at('engine/sniff.js');}catch(e){}
+/* ============================================================
+   SOURCE AI, THE LISTENING HALF. Ruled 27 September, round GO in TASKS.md.
+
+   The owner, verbatim: "it doesn't use definitions, it's discerning the
+   energy behind the story. It's able to probe questions from a scale of zero
+   to 10 that are just seven, eight, nine, and 10. Looking for the root which
+   is usually a 10." And: "it's their job to lead ... if they want to move on,
+   source's job isn't to dig deeper, it's just to go cool."
+
+   The whole specification is reviews/SPEC-source-ai.md. This file is the
+   part that is arithmetic, and it is kept here, host free and pure, so the
+   same reading can run in a browser, in node under tests/engine.js, and
+   behind the sign in seam if a model is ever put there.
+
+   WHAT THE ZERO TO TEN MEASURES, AND WHY IT IS NOT THE SNIFFER'S OWN.
+
+   parseStory already puts a zero to ten on every seat an entry touches,
+   min(10, sum/3). It is the obvious scale and it cannot carry this ruling.
+   Measured on the shipped lexicon: the median single word reads 7.33 on its
+   own, and 149 of 219 words clear seven alone, so "ask only at seven and
+   over" on that number would ask about 68 percent of every story bank line
+   the sniffer reads at all. That number measures how hot a word is. It does
+   not measure a pattern, and the owner asked for pattern.
+
+   So this scale is evidence of return. A pattern is something that comes
+   back, and the rung counts how much of that the text actually shows:
+
+     0      nothing read at that seat, or every mention of it negated
+     1..6   heard once in this entry. The sniffer's own reading, capped at
+            six, so one word is heard and never questioned however hot it is
+     7      the entry comes back to the same seat a second time
+     8      a third time or more
+     9      an earlier committed entry touched this seat too
+     10     it comes back across entries and again inside this one, or in two
+            or more earlier entries. The root candidate.
+
+   Every rung is a count a person could check by reading their own words,
+   which is the explainability duty: Source AI can always say why it asked.
+
+   WHAT IT READS, AND WHAT IT MAY NOT.
+
+   The entry's text, and the seat keys earlier commits already stored on the
+   person's own record (CURP.story.entries[].bands). Not the text of earlier
+   entries and not the name. Nothing here leaves the device and nothing here
+   can, because the engine has no host. Whether Source AI may read earlier
+   entries at all is DESIGN-sniffer.md question 12 and is the owner's; with
+   no prior passed in, rungs 9 and 10 cannot occur and the rest still work.
+
+   WHAT IT NEVER DOES.
+
+   It never names an address, a fetter or a saboteur to the person, because
+   those are definitions and the ruling is that it does not use them. It
+   never says why. It asks why, and the person answers, which is the line
+   reviews/SPEC-source-ai.md already drew: nothing in the flow measures cause.
+   ============================================================ */
+
+/* the owner's own two numbers. asked at seven and over, the root at ten. */
+var SRC_ASK=7, SRC_ROOT=10;
+/* one mention is heard and never questioned, whatever the word weighs. */
+var SRC_ONCE=6;
+
+/* NEGATION, WHICH THE SNIFFER DOES NOT READ. "I was not angry" and "I was
+   angry" parse to the same seat and the same amount, measured. A reading can
+   live with that because the charge is small and the person can undo it. A
+   question cannot: asking somebody why they are angry after they wrote that
+   they are not is the false positive this seat was told costs more than a
+   miss. So a mention counts toward a question only when neither of the two
+   words before it is a negation.
+
+   The window is two words and not the three the laws use, and "did" is not in
+   the list. Measured on the owner's book: the three word window dropped
+   "could not stop" because "not choose and" sat before it, across a
+   conjunction, and "did" would mute "I did cry". Measured on the story bank:
+   this drops nothing, because the lexicon's own negative phrases, "not told
+   anyone", carry the negation inside the match. */
+var SRC_NEG=['not','no','never','nobody','none','cannot','cant','didnt','dont',
+ 'doesnt','wont','wasnt','werent','isnt','arent','havent','hasnt','couldnt','wouldnt'];
+var SRC_NEG_W=2;
+function srcNegated(src,at){
+ var before=String(src).slice(0,at).trim().split(' ');
+ var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
+ return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
+
+/* how many earlier committed entries touched each seat. Reads only the seat
+   keys a commit already stored, never the text. */
+function srcPrior(entries){
+ var out={};
+ (entries||[]).forEach(function(e){
+  Object.keys((e&&e.bands)||{}).forEach(function(k){
+   if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
+ return out;}
+
+/* the rung for one seat, from the three counts. Kept apart so the ladder is
+   one function a test can walk rung by rung. */
+function srcRung(mentions,earlier,reading){
+ if(!mentions)return 0;
+ if(earlier>=2||(earlier>=1&&mentions>=2))return 10;
+ if(earlier>=1)return 9;
+ if(mentions>=3)return 8;
+ if(mentions>=2)return 7;
+ return Math.max(1,Math.min(SRC_ONCE,Math.round(reading||0)));}
+
+/* HEAR AN ENTRY. text is what the person typed. prior is srcPrior of their
+   own earlier entries, or nothing. Returns every seat heard, heaviest rung
+   first, with the person's own words for each, which is what Source AI says
+   back instead of a definition. */
+function srcHear(text,prior){
+ var t=String(text||'');
+ var out={unread:true, seats:[], top:null, root:null, asks:false};
+ if(!t.trim())return out;
+ var p=parseStory(t), nm=normMap(t), src=nm.s, by={};
+ p.path.steps.forEach(function(s){
+  if(!s.seat||s.coherent)return;
+  var o=by[s.seat]=by[s.seat]||{seat:s.seat, band:K2BAND[s.seat],
+   reading:Math.min(10,(p.bands[s.seat]||0)/3), mentions:0, negated:0, words:[]};
+  if(srcNegated(src,s.at)){o.negated++;return;}
+  o.mentions++;
+  /* the person's own letters, through the same map marksOf uses, so what is
+     quoted back is what they typed and not the lowercased copy. */
+  var a=s.at+1, b=s.at+String(s.word).length;
+  var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
+  if(o.words.indexOf(w)<0)o.words.push(w);});
+ var P=prior||{};
+ out.seats=Object.keys(by).map(function(k){var o=by[k];
+  o.earlier=P[k]||0;
+  o.rung=srcRung(o.mentions,o.earlier,o.reading);
+  o.reading=Math.round(o.reading*10)/10;
+  return o;})
+  .filter(function(o){return o.rung>0;})
+  /* heaviest rung first, then the sniffer's own reading, then the seat key so
+     the order is a property of the text and never of object key order. */
+  .sort(function(a,b){return b.rung-a.rung||b.reading-a.reading||(a.seat<b.seat?-1:1);});
+ out.unread=!out.seats.length;
+ out.top=out.seats[0]||null;
+ out.asks=!!(out.top&&out.top.rung>=SRC_ASK);
+ out.root=(out.top&&out.top.rung>=SRC_ROOT)?out.top:null;
+ return out;}
+
+/* WHAT SOURCE AI DOES NEXT. One of four moves, and the person's own choices
+   decide it, never the depth of what was found.
+
+     open    nothing written yet. The opening question.
+     listen  something written, nothing read, or nothing at seven or over.
+             It says back what it heard, and asks nothing.
+     ask     a seat at seven or over that the person has not moved on from.
+             One question. Never two at once.
+     pass    the person pressed Move on. It says so and asks nothing more
+             in this entry, however much more it hears.
+
+   state.passed is set by the page when the person moves on. It is per entry:
+   the page clears it on commit and on clear. There is no rule anywhere in
+   here that asks again, raises the depth, or follows up, because the ruling
+   is that the person leads. */
+function srcTurn(heard,state){
+ var st=state||{};
+ if(!heard||(heard.unread&&!st.typed))return {move:'open'};
+ if(st.passed)return {move:'pass'};
+ if(!heard.asks)return {move:'listen'};
+ var s=heard.top;
+ return {move:'ask', seat:s.seat, band:s.band, rung:s.rung,
+  why:s.rung>=SRC_ROOT?'root':(s.earlier?'earlier':'again'),
+  mentions:s.mentions, earlier:s.earlier};}
+
+try{window.__at&&window.__at('engine/sourceai.js');}catch(e){}
 
 /* ============================================================
    ASTRO. The actual sky, computed here, offline, from the birth
@@ -15072,6 +15290,9 @@ if(typeof module!=='undefined'&&module.exports){
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
+  /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
+                 srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
+                 srcHear:srcHear, srcTurn:srcTurn,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -21269,7 +21490,7 @@ try{window.__at&&window.__at('ui/mapshelf.js');}catch(e){}
    commit.
    ============================================================ */
 var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false;
-var IMP_GROUP='band', IMP_BIG=false, IMP_PICK={};
+var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
 function impLive(){
@@ -21399,8 +21620,10 @@ function impRender(){
   +'<div class="ip-ctl">';
  IMP_GROUPS.forEach(function(gp){
   h+='<button class="ip-g'+(IMP_GROUP===gp[0]?' on':'')+'" data-ig="'+gp[0]+'">'+gp[1]+'</button>';});
- h+='<button class="ip-max" id="impmax" title="'+(IMP_BIG?'shrink':'full width')+'">'
-  +(IMP_BIG?'⤡':'⤢')+'</button></div></div>';
+ /* THE FULL WIDTH TOGGLE WENT WITH THE MOVE. It hid the journal and spread
+    the imprints across the stage, and the imprints are in the right rail
+    since GO, so it would have hidden the journal and widened Source AI. */
+ h+='</div></div>';
  if(!live.length&&!ghosts.length){
   /* "Nothing held. Write in the box and it gathers here." is the product
      talking to itself. A person says: I have not written anything yet. */
@@ -21508,9 +21731,6 @@ function impWire(){
   IMP_GROUP=el.dataset.ig; impRender();};});
  document.querySelectorAll('[data-imp]').forEach(function(el){el.onclick=function(){
   var id=+el.dataset.imp; IMP_PICK[id]=!IMP_PICK[id]; impRender();};});
- var mx=document.getElementById('impmax');
- if(mx)mx.onclick=function(){IMP_BIG=!IMP_BIG;
-  document.body.classList.toggle('impbig',IMP_BIG); impRender();};
  var rb=document.getElementById('imprun');
  if(rb)rb.onclick=function(){
   var ids=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];}).map(Number);
@@ -21527,7 +21747,9 @@ function stRender(){
  var h=document.getElementById('story'); if(!h) return;
  var p=ST_PARSED;
  var out='<div class="st-wrap">'
-  +'<div class="st-col st-write">'
+  /* st-write went with the full width toggle, the only rule that named it,
+     and the design gate holds that no class ships without a rule. */
+  +'<div class="st-col">'
   /* SPEAK BECAME RECORD, AND IT CARRIES ITS STATE.
 
      Speak is what you do, record is what the control does, and the ruling
@@ -21575,19 +21797,29 @@ function stRender(){
    +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
   +'</div></div>'
-  /* THE RIGHT COLUMN IS TWO HALVES THAT SCROLL ON THEIR OWN. Ruled.
+  /* THE COLUMN BESIDE THE JOURNAL IS SOURCE AI NOW. GO in TASKS.md, 27
+     September, his words: "we want to swap the imprints and protocol
+     component with the information component and the information component
+     then becomes the source kind of prompt and summary system ... so the
+     information pane then becomes an imprints and the protocol."
 
-     Imprints on top, the release and every setting it takes on the bottom, so
-     a person can see what the sniffer found and run a release against it
-     without leaving the page they wrote on. The release was reachable only
-     from a button somewhere else, which meant the two halves of one act were
-     on two surfaces. */
-  +'<div class="st-col st-read">'
-   +'<div class="st-half st-imp" id="imp"></div>'
-   +'<div class="st-half st-rel" id="strel"></div>'
-  +'</div></div>';
+     So the three are one system across the page: the journal, then Source AI
+     hearing it and asking, then the imprints and the release in the right
+     rail, which is the pane he calls information. Imprints and the release
+     are still one act on one surface, which is why they were brought onto
+     this page in the first place; they moved one column over and nothing
+     about how they work changed. The hosts keep their ids, #imp and #strel,
+     so every renderer and every gate that reads them still finds them. */
+  +'<div class="st-col st-src" id="stsrc" aria-label="Source AI"></div>'
+  /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
+     rewritten on every keystroke, so a live column would read itself aloud
+     at every letter. One hidden line carries only the question, the "Cool."
+     or the opener, and srcPaint writes it only when it changes. */
+  +'<p class="src-say" id="srcsay" aria-live="polite"></p>'
+  +'</div>';
  h.innerHTML=out;
  impRender();
+ srcPaint();
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
@@ -21598,7 +21830,7 @@ function stRender(){
  stPaintHL();
  stRelPanel();
  var cl=document.getElementById('stclear');
- if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;stRender();};
+ if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;stRender();};
  var ap=document.getElementById('stapply');
  if(ap)ap.onclick=function(){
   if(!ST_PARSED||!ST_PARSED.imprints.length)return;
@@ -21637,7 +21869,9 @@ function stRender(){
    CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
     imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
    pSave();pSnap();}
-  ST_TEXT='';ST_PARSED=null;
+  /* a new entry is a new conversation, so moving on from the last one does
+     not silence the next. */
+  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;
   toYou();syncCh();stRender();render();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;}
@@ -21684,8 +21918,9 @@ function stRelPanel(){
  var cost=(CURP&&relIds.length&&relCh.length&&relCap>0)
    ? meterPlan(CURP,relIds,relCh,relCap).length : 0;
  var secs=Math.round(cost*RUN_SPEED_S[ST_RELSPD]);
- e.innerHTML='<div class="pm-eye">Release</div>'
-  +'<p class="st-relp">'+(pool.length
+ /* the eyebrow that said Release is the rail section's own header now, so
+    saying it twice would be the heading read aloud. */
+ e.innerHTML='<p class="st-relp">'+(pool.length
     ? 'Pick how much to run. Each pattern is one thought line at one address.'
     : 'Nothing is held above the line yet, so there is nothing to release.')+'</p>'
   +'<div class="st-rrow"><span class="st-rlab">From</span>'
@@ -21736,7 +21971,109 @@ function stRefresh(){
     because stRefresh exists so typing never loses the caret. */
  stPaintHL();
  impRender();
+ srcPaint();
  if(keep){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
+/* ============================================================
+   SOURCE AI, THE SPEAKING HALF. The listening half is engine/sourceai.js
+   and the whole behaviour is written down in reviews/SPEC-source-ai.md.
+
+   Scripted, and it says so. No model is called: every line below is chosen
+   by srcTurn off a count the person can check in their own words.
+
+   Four moves, and the person decides which one it makes:
+     open    the opening question, and three simple ones to start from
+     listen  what it heard, where, in the person's own words. Nothing asked
+     ask     one why question, about one seat, at seven or over
+     pass    the person pressed Move on. "Cool." Nothing more is asked in
+             this entry, however much more it hears. His words: "it's their
+             job to lead ... if they want to move on, source's job isn't to
+             dig deeper, it's just to go cool."
+
+   What it may say is narrow on purpose. A place in the body, how often the
+   story comes back to it, and the person's own words. Never an address, a
+   fetter or a saboteur, because those are definitions and the ruling is that
+   it discerns the energy and does not define it. Never a because, since
+   nothing the instrument measures is a cause. It asks why and the person
+   answers, which is how the root gets found by the person who carries it.
+   ============================================================ */
+var SRC_PASSED=false;
+/* the opener is his own sentence, one of the two he offered. "Writing"
+   rather than "talking", because this surface is the journal. */
+var SRC_OPEN='What are we writing about today?';
+/* SIMPLE, STRAIGHTFORWARD, DEEP. His three words for what the page should
+   ask. Each is a physical event a person can answer from memory, the shape
+   funnel/questions.js already proved works in this product, and none of them
+   names a feeling for the person. Three at a time, turned by the day, so the
+   page does not become furniture. */
+var SRC_JOG=['What happened today that your body is still holding?',
+ 'Where did you feel it first?',
+ 'What did you not say?',
+ 'Who was in the room?',
+ 'What keeps coming back?',
+ 'What did you do straight after?'];
+function srcSeatSay(b){
+ return b==='Solar'?'the solar plexus':(b==='3rd Eye'?'the third eye':'the '+String(b).toLowerCase());}
+function srcTimes(n){return n===2?'twice':(n===3?'three times':n+' times');}
+/* the one question, by the evidence that raised it. Why, every time, and
+   about a place rather than a label. */
+function srcAsk(t){
+ var at=srcSeatSay(t.band);
+ if(t.why==='root')
+  return 'You keep coming back to '+at+', here and in what you wrote before. Why do you think that is?';
+ if(t.why==='earlier')
+  return at.charAt(0).toUpperCase()+at.slice(1)+' was in an earlier entry too. Why do you think it comes back?';
+ return at.charAt(0).toUpperCase()+at.slice(1)+' comes up '+srcTimes(t.mentions)
+  +' in this. Why do you think it keeps landing there?';}
+/* ten marks, filled to the rung, the last four drawn as the end it asks at.
+   Drawn and never printed, because a reading is not a score. */
+function srcPips(rung,col){
+ var s='<span class="src-pips" aria-hidden="true" style="--c:'+col+'">';
+ for(var i=1;i<=10;i++)s+='<i class="'+(i<=rung?'on':'')+(i>=SRC_ASK?' ask':'')+'"></i>';
+ return s+'</span>';}
+function srcPaint(){
+ var h=document.getElementById('stsrc'); if(!h)return;
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var heard=srcHear(ST_TEXT,srcPrior(ents));
+ var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ var o='<div class="src-hd"><span class="pm-eye">Source AI</span>'
+  +'<span class="src-tag">scripted</span></div>'
+  +'<p class="src-open'+(turn.move==='open'?'':' quiet')+'">'+esc(SRC_OPEN)+'</p>';
+ if(turn.move==='open'){
+  var d=Math.floor(Date.now()/864e5), k=d%SRC_JOG.length;
+  o+='<ul class="src-jog">'+[0,1,2].map(function(j){
+    return '<li>'+esc(SRC_JOG[(k+j)%SRC_JOG.length])+'</li>';}).join('')+'</ul>';}
+ else if(turn.move==='ask'){
+  o+='<p class="src-q">'+esc(srcAsk(turn))+'</p>'
+   +'<p class="src-note">Answer in the journal, or leave it.</p>'
+   +'<button type="button" class="btn" id="srcpass">Move on</button>';}
+ else if(turn.move==='pass'){
+  o+='<p class="src-q">Cool.</p>'
+   +'<p class="src-note">Nothing more asked in this entry.</p>';}
+ else if(heard.unread){
+  o+='<p class="src-note">Nothing read yet, so nothing is asked.</p>'
+   +'<p class="src-note">Say what your body did, and where.</p>';}
+ if(!heard.unread){
+  o+='<div class="src-heard"><span class="pm-eye">Heard</span>'
+   +heard.seats.map(function(s){
+    var col=seatCol(s.band);
+    return '<div class="src-row" style="--c:'+col+'">'
+     +'<span class="src-seat">'+esc(s.band)+'</span>'
+     +'<span class="src-words">'+s.words.map(function(w){
+       return '<q>'+esc(w)+'</q>';}).join(' ')+'</span>'
+     +srcPips(s.rung,col)+'</div>';}).join('')
+   +'</div>';}
+ h.innerHTML=o;
+ var said=turn.move==='open'?SRC_OPEN:(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
+ var sy=document.getElementById('srcsay');
+ if(sy&&sy.textContent!==said)sy.textContent=said;
+ var mv=document.getElementById('srcpass');
+ if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};}
+/* THE RAIL HOSTS ARE STATIC NOW, SO THEY ARE EMPTIED ON THE WAY OUT. A
+   hidden surface never sits in the document asserting a stale reading, the
+   rule Summary already keeps. setTab calls this on every tab but Story. */
+function stRailClear(){
+ ['imp','strel'].forEach(function(id){var e=document.getElementById(id);
+  if(e&&e.innerHTML)e.innerHTML='';});}
 /* WHAT THE SNIFFER IS READING, SHOWN IN THE SENTENCE IT READ IT IN.
 
    The parse already knows every word it matched and which seat that word
@@ -27799,6 +28136,9 @@ function setTab(i){
   WANT[TAB.ENERGY]={right:['flow','running']};
   WANT[TAB.FIELD]={left:['soul','lean'],right:['you']};
   WANT[TAB.COMPASS]={right:['you']};
+  /* the Story's rail is the imprints and the release since GO, and both
+     open, because they are one act: see what was found, then run it. */
+  WANT[TAB.STORY]={right:['simp','srel']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
@@ -27819,7 +28159,7 @@ function setTab(i){
     conditions now, because they are two surfaces. */
  if(i===TAB.KNOW)kbRender();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
- if(i===TAB.STORY)stRender();
+ if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
  /* Summary carries Analytics, and reads last. */
  if(i===TAB.SUMMARY){sumRender(); anaRender();}
  /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
@@ -32017,5 +32357,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002096462"></div>
+<div id="eof" hidden data-len="002115784"></div>
 </body></html>

@@ -1969,6 +1969,44 @@ carries the product's tab labels unless the tab works, and every prototype
 says on the page itself that it is a prototype. The rule is ours; the
 complaint it answers is his.
 
+## Source AI, how it listens and how it asks. Ruled 27 September
+
+Round GO in `TASKS.md`. The whole behaviour, with the measurements behind it,
+is `reviews/SPEC-source-ai.md`, which is the one Source AI document and now
+carries both rulings, 20 September's and this one. What he settled, in short:
+
+- **It discerns and does not define.** It listens for where a story lands in
+  the body, how often it comes back, and the person's own words. It never
+  says an address, fetter, saboteur or archetype name to a person.
+- **It asks only at seven to ten, looking for the root, which is usually a
+  ten.** The scale is Source AI's own and counts return: one mention is heard
+  and never asked about, a return inside the entry is seven, an earlier entry
+  at the same place is nine, both is ten. The sniffer's own zero to ten was
+  measured and cannot carry this: its median single word already reads 7.33.
+- **Why questions are its questions,** and it never answers one. That
+  completes the 20 September line, "it may not say why", rather than
+  reversing it: the instrument does not measure cause, the person can find it.
+- **A peer and a companion, not a clinician and not a friend,** who sees a
+  person for their authentic nature and not for the conditions that created
+  them. Core programming: a pattern is a condition that runs through a person,
+  never a description of who they are, which is the register ruling above
+  ("we are not judging anybody") applied to a voice.
+- **It opens with "What are we writing about today?"** His sentence.
+- **The person leads.** One question at a time. Move on is final for the
+  entry, and Source AI answers it with "Cool." and asks nothing more.
+- **The Story page swap.** The column beside the journal is Source AI; the
+  imprints and the release moved into the right rail, the pane he calls
+  information, so journal, Source AI and imprints read as one system.
+
+Built the same round, scripted and labelled so: `engine/sourceai.js` hears,
+`ui/storyui.js` speaks, `tests/engine.js` group SA holds the contract.
+
+**Open, and his:** whether Source AI may read a person's earlier entries at
+all (`DESIGN-sniffer.md` question 12; built to the narrowest version, the seat
+keys already stored on the device, never the text), and the pattern signal
+per archetype and domain, which is a design with a prototype and not a build
+(`DESIGN-pattern-signal.md`).
+
 ## Still open from the night, and named as open
 
 Nothing below is ruled. Each is written with the letter that holds its

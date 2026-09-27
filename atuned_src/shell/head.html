@@ -2525,12 +2525,8 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 .cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
 .cn-sp{flex:1 1 auto;min-width:6px}
 body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
-/* the story's right column, two halves that scroll on their own */
-.st-read{display:flex;flex-direction:column;gap:12px;min-height:0;padding-right:6px}
-.st-half{min-height:0;overflow-y:auto;overflow-anchor:none;
- scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
-.st-imp{flex:1 1 56%}
-.st-rel{flex:1 1 44%;border-top:1px solid var(--edge);padding-top:12px}
+/* the release settings. They sat in the story's right column as its lower
+   half until GO and live in the right rail's Release section now. */
 .st-relp{font-size:13.5px;color:var(--dim);line-height:1.55;margin:4px 0 10px}
 .st-rrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px}
 .st-rlab{font-size:11px;font-weight:600;color:var(--dim);width:62px;flex:0 0 auto}
@@ -3075,6 +3071,53 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-ta::placeholder{color:var(--dim)}
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
 .st-ct{flex:1 1 auto;font-family:var(--num);font-size:12.5px;color:var(--dim)}
+/* ---------- the Story's rail, GO in TASKS.md ----------
+   The imprints and the release live in the right rail on the Story and
+   nowhere else. The rail's other sections step aside there, except Selection,
+   which is where Detail on an imprint opens its drill. */
+body:not(.tab-story) .lsec.st-rail{display:none}
+body.tab-story .lsec[data-rail="right"]:not(.st-rail):not([data-sec="sel"]){display:none}
+body.tab-story #railtop,body.tab-story #bRel{display:none}
+/* five grouping buttons are wider than a rail, and a row that overflows with
+   no affordance reads as a missing control, so it wraps. */
+.st-rail .ip-ctl{flex-wrap:wrap}
+/* ---------- Source AI, beside the journal ----------
+   The opening question is the largest line on the page while nothing is
+   written, and steps back to a heading once the person is writing, because
+   from then on they lead and the question is theirs to answer or not. */
+.st-src{overflow-y:auto;overflow-anchor:none;padding:2px 8px 10px 4px;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+.src-hd{display:flex;align-items:center;justify-content:space-between;min-height:28px}
+.src-tag{font-size:12px;color:var(--dim)}
+.src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:500;margin:8px 0 6px;
+ transition:font-size var(--t-element) var(--ease-out),color var(--t-element) var(--ease-out)}
+.src-open.quiet{font-size:14px;color:var(--dim);font-weight:400}
+.src-jog{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.src-jog li{font-size:15px;line-height:1.5;color:var(--mid);padding-left:12px;
+ border-left:2px solid var(--edge-2)}
+.src-q{font-size:18px;line-height:1.45;color:var(--ink);margin:12px 0 6px}
+.src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
+.st-src>.btn{align-self:flex-start;margin-top:10px}
+.src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
+ white-space:nowrap;margin:0}
+.src-heard{margin-top:20px;border-top:1px solid var(--edge);padding-top:12px}
+.src-row{display:grid;grid-template-columns:76px 1fr auto;gap:10px;align-items:center;
+ padding:8px 0;border-bottom:1px solid var(--edge)}
+.src-seat{font-size:12.5px;font-weight:600;color:var(--c)}
+.src-words{font-size:13.5px;color:var(--ink);line-height:1.45;min-width:0}
+.src-words q{quotes:"\201C" "\201D"}
+/* the rung, drawn and never printed. Ten marks; the four it asks at carry
+   the seat colour on their edge, so the asking end is visible before
+   anything reaches it. */
+.src-pips{display:inline-flex;gap:2px}
+.src-pips i{width:5px;height:12px;border-radius:1px;border:1px solid var(--edge-2)}
+.src-pips i.ask{border-color:var(--c)}
+.src-pips i.on{background:var(--c);border-color:var(--c)}
+/* stacked, the Story reads journal, Source AI, imprints, release, and the
+   tools after. Without this the whole left rail sat between what a person
+   wrote and what it found whenever the column was open. The breakpoint is the
+   one that stacks the rails. */
+@media (max-width:1180px){body.tab-story #lcol{order:1}}
 
 /* ---------- imprints ---------- */
 .ip-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -3085,11 +3128,6 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  min-height:var(--tap);display:inline-flex;align-items:center}
 .ip-g:hover{color:var(--ink)}
 .ip-g.on{background:var(--gold);color:var(--on-accent);font-weight:500}
-.ip-max{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
- padding:6px 12px;font-size:15px;cursor:pointer;line-height:1;margin-left:5px;
- min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;
- justify-content:center}
-.ip-max:hover{background:var(--gold);color:var(--on-accent)}
 .ip-bh{margin:15px 0 7px;display:flex;justify-content:space-between;align-items:baseline;
  gap:10px;border-bottom:1px solid var(--edge);padding-bottom:5px;color:var(--c)}
 .ip-bh em{font-style:normal;color:var(--dim);font-weight:400;font-size:12px}
@@ -3124,8 +3162,6 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  border-top:1px solid var(--edge);line-height:1.6}
 .ip-bar{display:flex;gap:10px;align-items:center;margin-top:11px}
 .ip-sel{flex:1 1 auto;font-family:var(--num);font-size:12.5px;color:var(--gold)}
-body.impbig .st-wrap{grid-template-columns:1fr}
-body.impbig .st-write{display:none}
 /* the imprint pill. tinted fill, not full chroma. the number rides inside.
    full chroma belongs to the alarm state alone. */
 /* every one of these is a control a person is meant to press, and all of them

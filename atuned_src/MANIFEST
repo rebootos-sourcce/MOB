@@ -24,6 +24,7 @@ engine/avatar.js
 engine/schema.js
 engine/intake.js
 engine/sniff.js
+engine/sourceai.js
 engine/astro.js
 engine/birth.js
 engine/numerology.js

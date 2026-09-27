@@ -146,6 +146,13 @@ earlier entries, on their own device, is a different grant from a corpus
 leaving it, and it is the grant that would buy the most. It needs ruling before
 Source AI is designed rather than after.
 
+*27 September.* Source AI was designed in round GO and this is still not ruled,
+so it was built to the narrowest version that works and the ruling can still
+move it: the seat keys earlier commits already store on the person's own
+record, on the device, never the text of an earlier entry. Without them its
+ladder stops at eight and never reaches the root. `reviews/SPEC-source-ai.md`,
+"What This Ruling Does Not Settle".
+
 **13. `inferred:false` says the person named the axis. May the product then
 print the address names it chose?**
 

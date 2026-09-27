@@ -219,6 +219,9 @@ function setTab(i){
   WANT[TAB.ENERGY]={right:['flow','running']};
   WANT[TAB.FIELD]={left:['soul','lean'],right:['you']};
   WANT[TAB.COMPASS]={right:['you']};
+  /* the Story's rail is the imprints and the release since GO, and both
+     open, because they are one act: see what was found, then run it. */
+  WANT[TAB.STORY]={right:['simp','srel']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
@@ -239,7 +242,7 @@ function setTab(i){
     conditions now, because they are two surfaces. */
  if(i===TAB.KNOW)kbRender();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
- if(i===TAB.STORY)stRender();
+ if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
  /* Summary carries Analytics, and reads last. */
  if(i===TAB.SUMMARY){sumRender(); anaRender();}
  /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of

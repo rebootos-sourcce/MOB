@@ -5,7 +5,7 @@
    commit.
    ============================================================ */
 var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false;
-var IMP_GROUP='band', IMP_BIG=false, IMP_PICK={};
+var IMP_GROUP='band', IMP_PICK={};
 var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
 function impLive(){
@@ -135,8 +135,10 @@ function impRender(){
   +'<div class="ip-ctl">';
  IMP_GROUPS.forEach(function(gp){
   h+='<button class="ip-g'+(IMP_GROUP===gp[0]?' on':'')+'" data-ig="'+gp[0]+'">'+gp[1]+'</button>';});
- h+='<button class="ip-max" id="impmax" title="'+(IMP_BIG?'shrink':'full width')+'">'
-  +(IMP_BIG?'⤡':'⤢')+'</button></div></div>';
+ /* THE FULL WIDTH TOGGLE WENT WITH THE MOVE. It hid the journal and spread
+    the imprints across the stage, and the imprints are in the right rail
+    since GO, so it would have hidden the journal and widened Source AI. */
+ h+='</div></div>';
  if(!live.length&&!ghosts.length){
   /* "Nothing held. Write in the box and it gathers here." is the product
      talking to itself. A person says: I have not written anything yet. */
@@ -244,9 +246,6 @@ function impWire(){
   IMP_GROUP=el.dataset.ig; impRender();};});
  document.querySelectorAll('[data-imp]').forEach(function(el){el.onclick=function(){
   var id=+el.dataset.imp; IMP_PICK[id]=!IMP_PICK[id]; impRender();};});
- var mx=document.getElementById('impmax');
- if(mx)mx.onclick=function(){IMP_BIG=!IMP_BIG;
-  document.body.classList.toggle('impbig',IMP_BIG); impRender();};
  var rb=document.getElementById('imprun');
  if(rb)rb.onclick=function(){
   var ids=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];}).map(Number);

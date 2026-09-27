@@ -1061,7 +1061,10 @@ each; treat them as defects, not intent).
   instrument heard in it before anything lands." Where the content chain
   starts. Words the sniffer read are marked in seat colour on exactly the
   characters it read. Pending pills show where the text will land before
-  Commit. Typing and recording are equal paths. Graded D. Three redesigns are
+  Commit. Typing and recording are equal paths. Since GO, 27 September, Source AI
+  sits beside the journal, opening with "What are we writing about today?"
+  and asking one why question at seven and over, and the imprints and the
+  release are in the right rail (section 8.3a). Graded D. Three redesigns are
   on file (`DESIGN-story.md`, `DESIGN-story4.md`, `DESIGN-container.md`);
   which belief wins is OPEN.
 - **Field (2).** "Show me the whole of what I am carrying, in one picture I
@@ -1508,6 +1511,20 @@ a short allow list of confirmed inflections stands in. Each of these is an
 open ruling and each changes every reading (`DESIGN-sniffer.md`). Its weakness
 is recall, not method: a lexicon with a precedence rule can be audited, and a
 small model cannot.
+
+### 8.3a Source AI
+
+The voice on the Story page, and the one document for it is
+`reviews/SPEC-source-ai.md`. It discerns and does not define: it says where an
+entry lands, how often it comes back, and the person's own words, and never
+an address, fetter or archetype name. It asks one why question, only at seven
+to ten on its own scale, which counts return (one mention never, a return in
+the entry seven, an earlier entry nine, both ten, the root). It never answers
+why. A peer and a companion, not a clinician and not a friend, who sees the
+person's authentic nature and not the conditions that made them. The person
+leads: Move on is final for the entry and it says "Cool." `engine/sourceai.js`
+hears, `ui/storyui.js` speaks, and every line is scripted and labelled so.
+Ruled 27 September.
 
 ### 8.4 The compute core as it ships
 
@@ -2066,6 +2083,8 @@ product from `.claude/skills/atuned-voice/objections.json`; never edit it),
 | `DESIGN-story.md`, `DESIGN-story4.md` | The story page rebuilt, then four competing designs |
 | `DESIGN-container.md` | The journal as a container with a lid and a seam |
 | `DESIGN-sniffer.md` | What the sniffer looks for, may claim, and cannot read |
+| `reviews/SPEC-source-ai.md` | Source AI: what it reads, how it listens, how it asks, and who it is to a person |
+| `DESIGN-pattern-signal.md` | The patterns a journal carries, per archetype and domain, on the tool side. Designed, not built |
 | `DESIGN-lean.md` | Benign and malignant as two channels |
 | `DESIGN-integrity.md` | The laws of integrity and whether they need a system |
 | `DESIGN-quotients.md` | The five quotients, ruled 21 September |

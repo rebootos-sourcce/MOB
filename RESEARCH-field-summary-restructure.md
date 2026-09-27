@@ -14,6 +14,13 @@ sticky way to involve, like, putting almost everything on one screen."
 **Explicitly a mockup, as he said twice.** Nothing under `atuned_src/` moved
 and `source.html` was not touched. Everything is under `proto/restructure/`.
 
+**Source AI here is the round FY draft, and it has since been ruled.**
+The scripted panel below speaks in "where, never why". Later the same day,
+round GO, the owner ruled that Source AI asks why, only at seven to ten on its own
+scale, and never answers why; the one document for it is
+`reviews/SPEC-source-ai.md`. Nothing below was changed, because it records
+what this prototype did.
+
 **Every number carries one of three labels.** MEASURED is counted in a real
 rendered page or read off the shipped engine. MODEL is `proto/ritual/losssim.js`,
 calibrated to an earlier simulation and not an observed person. JUDGEMENT is

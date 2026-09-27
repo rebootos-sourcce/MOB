@@ -1177,12 +1177,25 @@ console.log('\n=== the child treatment holds on all seven lightings ===');
    return {c:a, a:(v.length>3?v[3]:1)};};
   const lum=c=>{const f=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};
    return 0.2126*f(c[0])+0.7152*f(c[1])+0.0722*f(c[2]);};
-  /* the ground behind an element: the first ancestor whose own background is
-     not see through. That is what the browser paints it over. */
-  const groundOf=e=>{let n=e.parentElement;
-   while(n){const p=rgb(getComputedStyle(n).backgroundColor);
-    if(p.a>=0.999)return p.c; n=n.parentElement;}
-   return [0,0,0];};
+  /* the ground behind an element: every ancestor's background laid over the
+     one beneath it, root first. That is what the browser paints it over.
+
+     IT TOOK THE FIRST OPAQUE ANCESTOR, AND THAT LIED ON GLASS. Every rail
+     panel is translucent: glasswhite paints the right rail white at 0.62 over
+     a blurred canvas. Skipping it measured the imprints' located names, which
+     moved into the right rail in round GO, against the body's grey, rgb 198,
+     and failed Crown at 1.79 to 1. Measured in real pixels on the same build
+     the ground is rgb 247 246 244 and every seat's name holds 9.89 to 10.86.
+     Checked against the known good case first: on the stage, where the
+     ground is opaque, both methods read Crown at 10.40. Compositing still
+     leaves the blurred canvas out, so it errs toward a darker ground on paper,
+     which is the conservative side for dark text. */
+  const groundOf=e=>{const chain=[];let n=e.parentElement;
+   while(n){chain.unshift(n);n=n.parentElement;}
+   let g=[0,0,0];
+   chain.forEach(x=>{const p=rgb(getComputedStyle(x).backgroundColor);
+    g=p.c.map((v,i)=>v*p.a+g[i]*(1-p.a));});
+   return g;};
   const over=(e,g)=>{const f=rgb(getComputedStyle(e).backgroundColor);
    return f.c.map((v,i)=>v*f.a+g[i]*(1-f.a));};
   const out=[];
@@ -1191,6 +1204,14 @@ console.log('\n=== the child treatment holds on all seven lightings ===');
    let gi=0; for(let i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm==='Gordon')gi=i;
    loadP(gi); setTab(TAB.STORY); stRender();
    await new Promise(r=>setTimeout(r,220));
+   /* READ ONCE THE LIGHTING HAS ARRIVED. The body's background transitions
+      between lightings, measured at 208 on its way to 232 on glasswhite 220ms
+      after the switch. Behind the opaque stage that never showed. Behind the
+      rail, which is translucent and is where the imprints live since GO, it
+      showed as a ground half way between two lightings. So the read waits for
+      the body to hold one colour across 120ms, with a ceiling. */
+   for(let i=0,was='';i<25;i++){const now=getComputedStyle(document.body).backgroundColor;
+    if(now===was)break; was=now; await new Promise(r=>setTimeout(r,120));}
    const kid=document.querySelector('#imp .ip.kid');
    if(!kid){out.push({L,err:'no child pill'});continue;}
    const seat=(kid.getAttribute('style')||'').match(/--c:([^;]+)/)[1];

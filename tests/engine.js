@@ -4851,5 +4851,47 @@ g('41 · the twenty one on every history row, and a record from before still loa
  bindStore(()=>null,()=>{});
 }
 
+g('SA · Source AI hears on the rung, asks at seven, and the person leads');
+/* reviews/SPEC-source-ai.md, the behaviour section. The contract, not the
+   copy: the rung is a count of return, one word is never questioned however
+   hot, a negated word is never questioned, and moving on is final for the
+   entry. The owner's two numbers are asserted by name so a retune that moves
+   them is a named diff. */
+{
+ const {srcHear,srcTurn,srcPrior,srcRung,srcNegated,SRC_ASK,SRC_ROOT,SRC_ONCE}=E;
+ ok(SRC_ASK===7&&SRC_ROOT===10,'asks at 7 and names the root at 10, his numbers');
+ /* the ladder, rung by rung, off the three counts alone */
+ ok(srcRung(0,5,10)===0,'nothing heard is 0, whatever came before');
+ ok(srcRung(1,0,9.3)===SRC_ONCE&&srcRung(1,0,2)===2,'one mention is the sniffer reading, capped at '+SRC_ONCE);
+ ok(srcRung(2,0,0)===7&&srcRung(3,0,0)===8&&srcRung(9,0,0)===8,'a return inside the entry is 7, three or more is 8');
+ ok(srcRung(1,1,0)===9,'an earlier entry at the same seat is 9');
+ ok(srcRung(2,1,0)===10&&srcRung(1,2,0)===10,'back across entries and again here, or two earlier, is 10');
+ /* checked against a known case: the probe that set this found the lexicon's
+    median word alone reads over 7 on the sniffer's own scale */
+ const one=srcHear('i was furious');
+ ok(!one.unread&&one.top.rung<SRC_ASK&&!one.asks,'one hot word is heard and not asked about, rung '+one.top.rung);
+ ok(srcTurn(one,{typed:true}).move==='listen','so it listens');
+ const neg=srcHear('i was not angry');
+ ok(neg.unread&&!neg.asks,'a negated word is not heard as charge to ask about');
+ ok(srcNegated(' i did cry ',6)===false,'and "did" is not a negation here, so "I did cry" still counts');
+ const twice=srcHear('I was furious at him. Still furious tonight.');
+ ok(twice.asks&&twice.top.rung===7&&twice.top.seat==='solar','twice at one seat asks, at 7');
+ ok(twice.top.words.indexOf('furious')>=0,'and carries the person\'s own words, as typed');
+ const t=srcTurn(twice,{typed:true});
+ ok(t.move==='ask'&&t.why==='again'&&t.mentions===2,'one question, about the return');
+ ok(srcTurn(twice,{typed:true,passed:true}).move==='pass','moving on is final for the entry, however much it hears');
+ const prior=srcPrior([{bands:{solar:18}},{bands:{heart:4,solar:0}}]);
+ ok(prior.solar===1&&prior.heart===1,'earlier entries are counted off the stored seat keys, a zero seat not counted');
+ const root=srcHear('I was furious at him. Still furious tonight.',{solar:1});
+ ok(root.root&&root.root.rung===SRC_ROOT&&srcTurn(root,{typed:true}).why==='root','back here and before is the root');
+ ok(srcHear('I was furious at him.',{solar:1}).top.rung===9,'one mention and one earlier entry is 9');
+ ok(srcTurn(srcHear(''),{}).move==='open','nothing written opens');
+ /* pure: the same entry twice, and the field untouched */
+ const before=JSON.stringify(S.charge);
+ ok(JSON.stringify(srcHear('my chest is tight and my chest is tight'))===JSON.stringify(srcHear('my chest is tight and my chest is tight')),
+  'the same entry hears the same twice');
+ ok(JSON.stringify(S.charge)===before,'and hearing moves no charge');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

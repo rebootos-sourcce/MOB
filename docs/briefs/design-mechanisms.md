@@ -545,7 +545,7 @@ Despite its name, it is the subscription ladder: tiers, pattern allowance (`plan
 
 ## 7. What is learnable, and what is not
 
-Nothing in the product learns today. The `ui.model` consent flag on the profile ("let a story with nothing identifying attached refine the reading") is stored and toggled in `ui/account.js`, and **nothing reads it**. Source AI is on the queue and undesigned.
+Nothing in the product learns today. The `ui.model` consent flag on the profile ("let a story with nothing identifying attached refine the reading") is stored and toggled in `ui/account.js`, and **nothing reads it**. Source AI was designed on 27 September (`reviews/SPEC-source-ai.md`) and ships scripted: it reads the entry and the seat keys earlier entries stored, on the device, and learns nothing. The consent flag still has no reader.
 
 What the privacy ruling permits (section 10): stories with no record attached. What that data can support:
 

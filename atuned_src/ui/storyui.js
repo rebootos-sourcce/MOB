@@ -3,7 +3,9 @@ function stRender(){
  var h=document.getElementById('story'); if(!h) return;
  var p=ST_PARSED;
  var out='<div class="st-wrap">'
-  +'<div class="st-col st-write">'
+  /* st-write went with the full width toggle, the only rule that named it,
+     and the design gate holds that no class ships without a rule. */
+  +'<div class="st-col">'
   /* SPEAK BECAME RECORD, AND IT CARRIES ITS STATE.
 
      Speak is what you do, record is what the control does, and the ruling
@@ -51,19 +53,29 @@ function stRender(){
    +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
   +'</div></div>'
-  /* THE RIGHT COLUMN IS TWO HALVES THAT SCROLL ON THEIR OWN. Ruled.
+  /* THE COLUMN BESIDE THE JOURNAL IS SOURCE AI NOW. GO in TASKS.md, 27
+     September, his words: "we want to swap the imprints and protocol
+     component with the information component and the information component
+     then becomes the source kind of prompt and summary system ... so the
+     information pane then becomes an imprints and the protocol."
 
-     Imprints on top, the release and every setting it takes on the bottom, so
-     a person can see what the sniffer found and run a release against it
-     without leaving the page they wrote on. The release was reachable only
-     from a button somewhere else, which meant the two halves of one act were
-     on two surfaces. */
-  +'<div class="st-col st-read">'
-   +'<div class="st-half st-imp" id="imp"></div>'
-   +'<div class="st-half st-rel" id="strel"></div>'
-  +'</div></div>';
+     So the three are one system across the page: the journal, then Source AI
+     hearing it and asking, then the imprints and the release in the right
+     rail, which is the pane he calls information. Imprints and the release
+     are still one act on one surface, which is why they were brought onto
+     this page in the first place; they moved one column over and nothing
+     about how they work changed. The hosts keep their ids, #imp and #strel,
+     so every renderer and every gate that reads them still finds them. */
+  +'<div class="st-col st-src" id="stsrc" aria-label="Source AI"></div>'
+  /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
+     rewritten on every keystroke, so a live column would read itself aloud
+     at every letter. One hidden line carries only the question, the "Cool."
+     or the opener, and srcPaint writes it only when it changes. */
+  +'<p class="src-say" id="srcsay" aria-live="polite"></p>'
+  +'</div>';
  h.innerHTML=out;
  impRender();
+ srcPaint();
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
@@ -74,7 +86,7 @@ function stRender(){
  stPaintHL();
  stRelPanel();
  var cl=document.getElementById('stclear');
- if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;stRender();};
+ if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;stRender();};
  var ap=document.getElementById('stapply');
  if(ap)ap.onclick=function(){
   if(!ST_PARSED||!ST_PARSED.imprints.length)return;
@@ -113,7 +125,9 @@ function stRender(){
    CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
     imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
    pSave();pSnap();}
-  ST_TEXT='';ST_PARSED=null;
+  /* a new entry is a new conversation, so moving on from the last one does
+     not silence the next. */
+  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;
   toYou();syncCh();stRender();render();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;}
@@ -160,8 +174,9 @@ function stRelPanel(){
  var cost=(CURP&&relIds.length&&relCh.length&&relCap>0)
    ? meterPlan(CURP,relIds,relCh,relCap).length : 0;
  var secs=Math.round(cost*RUN_SPEED_S[ST_RELSPD]);
- e.innerHTML='<div class="pm-eye">Release</div>'
-  +'<p class="st-relp">'+(pool.length
+ /* the eyebrow that said Release is the rail section's own header now, so
+    saying it twice would be the heading read aloud. */
+ e.innerHTML='<p class="st-relp">'+(pool.length
     ? 'Pick how much to run. Each pattern is one thought line at one address.'
     : 'Nothing is held above the line yet, so there is nothing to release.')+'</p>'
   +'<div class="st-rrow"><span class="st-rlab">From</span>'
@@ -212,7 +227,109 @@ function stRefresh(){
     because stRefresh exists so typing never loses the caret. */
  stPaintHL();
  impRender();
+ srcPaint();
  if(keep){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
+/* ============================================================
+   SOURCE AI, THE SPEAKING HALF. The listening half is engine/sourceai.js
+   and the whole behaviour is written down in reviews/SPEC-source-ai.md.
+
+   Scripted, and it says so. No model is called: every line below is chosen
+   by srcTurn off a count the person can check in their own words.
+
+   Four moves, and the person decides which one it makes:
+     open    the opening question, and three simple ones to start from
+     listen  what it heard, where, in the person's own words. Nothing asked
+     ask     one why question, about one seat, at seven or over
+     pass    the person pressed Move on. "Cool." Nothing more is asked in
+             this entry, however much more it hears. His words: "it's their
+             job to lead ... if they want to move on, source's job isn't to
+             dig deeper, it's just to go cool."
+
+   What it may say is narrow on purpose. A place in the body, how often the
+   story comes back to it, and the person's own words. Never an address, a
+   fetter or a saboteur, because those are definitions and the ruling is that
+   it discerns the energy and does not define it. Never a because, since
+   nothing the instrument measures is a cause. It asks why and the person
+   answers, which is how the root gets found by the person who carries it.
+   ============================================================ */
+var SRC_PASSED=false;
+/* the opener is his own sentence, one of the two he offered. "Writing"
+   rather than "talking", because this surface is the journal. */
+var SRC_OPEN='What are we writing about today?';
+/* SIMPLE, STRAIGHTFORWARD, DEEP. His three words for what the page should
+   ask. Each is a physical event a person can answer from memory, the shape
+   funnel/questions.js already proved works in this product, and none of them
+   names a feeling for the person. Three at a time, turned by the day, so the
+   page does not become furniture. */
+var SRC_JOG=['What happened today that your body is still holding?',
+ 'Where did you feel it first?',
+ 'What did you not say?',
+ 'Who was in the room?',
+ 'What keeps coming back?',
+ 'What did you do straight after?'];
+function srcSeatSay(b){
+ return b==='Solar'?'the solar plexus':(b==='3rd Eye'?'the third eye':'the '+String(b).toLowerCase());}
+function srcTimes(n){return n===2?'twice':(n===3?'three times':n+' times');}
+/* the one question, by the evidence that raised it. Why, every time, and
+   about a place rather than a label. */
+function srcAsk(t){
+ var at=srcSeatSay(t.band);
+ if(t.why==='root')
+  return 'You keep coming back to '+at+', here and in what you wrote before. Why do you think that is?';
+ if(t.why==='earlier')
+  return at.charAt(0).toUpperCase()+at.slice(1)+' was in an earlier entry too. Why do you think it comes back?';
+ return at.charAt(0).toUpperCase()+at.slice(1)+' comes up '+srcTimes(t.mentions)
+  +' in this. Why do you think it keeps landing there?';}
+/* ten marks, filled to the rung, the last four drawn as the end it asks at.
+   Drawn and never printed, because a reading is not a score. */
+function srcPips(rung,col){
+ var s='<span class="src-pips" aria-hidden="true" style="--c:'+col+'">';
+ for(var i=1;i<=10;i++)s+='<i class="'+(i<=rung?'on':'')+(i>=SRC_ASK?' ask':'')+'"></i>';
+ return s+'</span>';}
+function srcPaint(){
+ var h=document.getElementById('stsrc'); if(!h)return;
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var heard=srcHear(ST_TEXT,srcPrior(ents));
+ var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ var o='<div class="src-hd"><span class="pm-eye">Source AI</span>'
+  +'<span class="src-tag">scripted</span></div>'
+  +'<p class="src-open'+(turn.move==='open'?'':' quiet')+'">'+esc(SRC_OPEN)+'</p>';
+ if(turn.move==='open'){
+  var d=Math.floor(Date.now()/864e5), k=d%SRC_JOG.length;
+  o+='<ul class="src-jog">'+[0,1,2].map(function(j){
+    return '<li>'+esc(SRC_JOG[(k+j)%SRC_JOG.length])+'</li>';}).join('')+'</ul>';}
+ else if(turn.move==='ask'){
+  o+='<p class="src-q">'+esc(srcAsk(turn))+'</p>'
+   +'<p class="src-note">Answer in the journal, or leave it.</p>'
+   +'<button type="button" class="btn" id="srcpass">Move on</button>';}
+ else if(turn.move==='pass'){
+  o+='<p class="src-q">Cool.</p>'
+   +'<p class="src-note">Nothing more asked in this entry.</p>';}
+ else if(heard.unread){
+  o+='<p class="src-note">Nothing read yet, so nothing is asked.</p>'
+   +'<p class="src-note">Say what your body did, and where.</p>';}
+ if(!heard.unread){
+  o+='<div class="src-heard"><span class="pm-eye">Heard</span>'
+   +heard.seats.map(function(s){
+    var col=seatCol(s.band);
+    return '<div class="src-row" style="--c:'+col+'">'
+     +'<span class="src-seat">'+esc(s.band)+'</span>'
+     +'<span class="src-words">'+s.words.map(function(w){
+       return '<q>'+esc(w)+'</q>';}).join(' ')+'</span>'
+     +srcPips(s.rung,col)+'</div>';}).join('')
+   +'</div>';}
+ h.innerHTML=o;
+ var said=turn.move==='open'?SRC_OPEN:(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
+ var sy=document.getElementById('srcsay');
+ if(sy&&sy.textContent!==said)sy.textContent=said;
+ var mv=document.getElementById('srcpass');
+ if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};}
+/* THE RAIL HOSTS ARE STATIC NOW, SO THEY ARE EMPTIED ON THE WAY OUT. A
+   hidden surface never sits in the document asserting a stale reading, the
+   rule Summary already keeps. setTab calls this on every tab but Story. */
+function stRailClear(){
+ ['imp','strel'].forEach(function(id){var e=document.getElementById(id);
+  if(e&&e.innerHTML)e.innerHTML='';});}
 /* WHAT THE SNIFFER IS READING, SHOWN IN THE SENTENCE IT READ IT IN.
 
    The parse already knows every word it matched and which seat that word
