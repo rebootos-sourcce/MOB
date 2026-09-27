@@ -1076,6 +1076,36 @@ already yours to name. It now has a place it will be seen.
 
 ---
 
+## RULED SINCE, 26 SEPTEMBER
+
+Graduated from `TASKS.md` DP, DU and EE on his order of 27 September (FO).
+
+**The pages read as character sheets.** DU, ruled in direction and not yet
+designed: "for their knowledge base pages, we want to do these really well, we
+want these to be like very detailed character sheets so people can understand
+very clearly how the patterns run through them, but I want some visual
+iconography, like you've unlocked something special and deep understanding
+about yourself." For archetypes, domains, masks and saboteurs. It asks more
+of the row this file recommends, not less: the row is how a page is scanned,
+and the sheet is what a row opens onto. `DESIGN-sheet.md` holds the character
+sheet he has already specified for a person; this is the same idea turned on
+a pattern.
+
+**Every tile is a door to its page.** DP: "I want to click on it and have it
+give me information, I want to hover over it and have it give me
+information." DU names the gap precisely: a Blueprint domain tile has no route
+to its knowledge base page. The two tier model he ruled for tooltips, a
+summary on press and a full page behind it, is recorded in
+`DESIGN-tooltip.md`.
+
+**Knowledge and the Field now read one wording each.** EE, commit `0d5fb9c`.
+The archetype and mask drills lived only inline inside Knowledge, so the
+Field could not reach them; they moved into the shared drill file every other
+drill lives in, and a domain, a mask and an archetype pressed on the Field
+now open the same card Knowledge does.
+
+---
+
 ## THE FILES
 
     proto/kb/now.html     the shipping card, rebuilt from the same tables

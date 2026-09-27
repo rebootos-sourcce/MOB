@@ -14,6 +14,122 @@ Format:
     change: what moved, commit, or open
     measure: the number that moved, if one did
 
+The 26 September entries were graduated from `TASKS.md` DG to FO on his
+order of 27 September (FO). Each names the lettered round that holds the full
+record. The rulings behind them are in `DECISIONS.md`, and the measurements
+in `STABILITY.md`.
+
+## 2026-09-26 · owner · Field, the second scare, and the punch list
+
+said: I shouldn't see text when I'm zoomed all the way out; text only fades
+in when I'm zooming in. Orientation and balance, those two elements need to
+be designed the same way, it's the same mechanic. Where are my animations?
+Why aren't they like lines animating to show me which is the tension?
+read: four rulings in direction, on the build he had just found and liked
+("zoom in, zoom out, reframe, that's cool"). FJ.
+change: open. Dispatched to design and build.
+
+said: If it's in the blocks, fix it. If we haven't opened tasks, queue it up.
+change: a standing rule, `DECISIONS.md`, "Working rules from the night". FJ.
+
+## 2026-09-26 · owner · Field rail
+
+said: everything should start on. We don't need SQ in the upper left nav,
+SQ is a total sum of the DQ anyway. Keep Accuracy in that menu, just make
+sure there's just two rows. I want to be able to close up that column.
+Change the word spirit to energy. I want to see the animations on these.
+Where are my three styles, on my right hand side overlay. Root energetics,
+start closed. Shrink the Jung icons.
+read: eight items, and FA confirmed "the three styles" are Wheel, Frames and
+Dial, opposite the overlay. EZ, FA.
+change: all eight, commit 248e5d2. FE.
+measure: archetype grid 4 by 3 to 6 by 2. Functional 1074 to 1088.
+
+## 2026-09-26 · owner · boot
+
+said: very cool animation. Ease in and out to perfection that you can feel.
+The solid bars come in one at a time. Breath, the outside rings I like.
+Ember, the secondary lines, those are pretty cool. The one I like needs
+thicker bands, with better timing.
+read: the original arrival as the base, with Breath's travelling ring and
+Ember's address ticks. EV, EZ, FA.
+change: ported, commits 4c0e533 and 0736da2. FC. Two timing bugs under it
+closed, found in ET: the fade had never once played.
+measure: fade 5.00 to 5.24s and plays. Design gate 150 to 158 with eight new
+boot checks.
+
+## 2026-09-26 · owner · Field glass bar
+
+said: it's glass, like Apple glass, it floats over the design and it can turn
+everything on and off. I don't want that secondary navigation. A circle with
+the icon inside, the percent ring around it, a pill to the lower right.
+Wheel, Frames, Dial, just the icon, on the right. Frames flush, no bevel.
+Zoom in and out, hit F to reframe. CQ bigger, lined up with DQ.
+read: the depth words out, a glass toggle bar in, the reading chips as
+circles in the left rail. DK, DR, DY, ER.
+change: prototyped (DO, DV, ED), then ported, commit 8b2c3c0. EY. EV
+records that this was reported done while it was true only of the
+prototype, and that the gap was ours.
+measure: functional 1052 to 1074, 22 new checks on real wheel, drag and key.
+
+## 2026-09-26 · owner · icons and colour
+
+said: I need icons for Architect, Engine, Weaver, Witness. The icons are a
+little dull, punch them up. Option recommended, let's go with B. The glyphs
+could be smaller, they're hover over anyway.
+read: the four root marks, option B, archetypes in their seat colour, tiles
+at the tap floor. DR, DX, DY, EA.
+change: commit 3824c63 (EF), routed through every lighting at 2f563ab (EM)
+and a21e7c2 (EW).
+measure: tiles 48.4 to 44 pixels, 54 pixels of rail recovered. Snow root
+names 2.41 to 4.97 against a 4.5 floor.
+
+## 2026-09-26 · owner · ritual
+
+said: zero is flowing, one two three impaired, four five six median, seven
+eight nine heavy, ten is blocked or collapsed.
+read: BO7's threshold, on his own scale. DY.
+change: heavy at DQ 70, median at 40, commit 3824c63. EF.
+measure: reference profiles locked to entry practices, 9 of 14 to 0 of 14.
+
+## 2026-09-26 · owner · Field clicks
+
+said: I've got domains active, and I'm clicking on it, and I'm getting
+nothing in the information panel. I click on Magician, I get nothing.
+read: a domain, a mask and an archetype on the Field opened no drill. DY.
+change: commit 0d5fb9c. EE. Lines that cannot be selected and Frames and
+Dial not animating were checked and found not to be regressions; both open.
+
+## 2026-09-26 · owner · Compass and Body page
+
+said: two precise specs, the Compass switch over the axis names at 390, and
+the Body page's Glass white palette. EO, EP.
+change: Compass, commit 255cef4 (ES); Body page, commit a21e7c2 (EW).
+measure: a new collide check that failed fourteen times before the fix. Body
+page seat rings on Glass white from 1.60 against a 3 floor.
+
+## 2026-09-26 · owner · birth
+
+said: Option three, that gives us the most robust answer. I need Los
+Angeles, I don't need San Diego and San Francisco. I don't want to build
+something that weighs more than the software we're building.
+read: a named time zone with daylight saving computed, and one point per
+zone for Rising. DI, DN.
+change: commits 45f7203 (DL) and 2f60b02 (DS).
+measure: Auckland births at 08:00 over four years, moon wrong on 349 of 1460
+days before, zero printed wrong after. Packed build plus 8,840 bytes for the
+whole zone table.
+
+## 2026-09-26 · owner · foundation
+
+said: is all foundation done, all database done, all schemas done, have you
+gone through it and reviewed it a couple times.
+read: a review, not a sign off. It found two routes that lost a person's own
+data. DG.
+change: both closed, commit 9a5fe14. DH.
+measure: 7.24 units committed, 0.00 on disk after one visit, before; 7.24
+through every step and a reload, after.
+
 ## 2026-09-17 · owner · Field stage
 
 said: display information over the main feature is bad design, shrink it.

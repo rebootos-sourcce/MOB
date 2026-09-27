@@ -798,6 +798,29 @@ three file changes and it alone closes AM3.
 
 ---
 
+## RULED SINCE, 26 SEPTEMBER
+
+Graduated from `TASKS.md` DU on his order of 27 September (FO). Ruled in
+direction, not yet designed against this file.
+
+**Two tiers, never one long tooltip.** A tooltip carries two sentences that set
+the thing up, and a button reading something like "click for more" that goes
+to its knowledge base page. Pressing the thing itself opens a summary of how
+it runs through this person, on the right, with its own link out to the full
+page. A summary and a full page, named plainly, not one card trying to be
+both. It sits on top of the one tooltip above rather than replacing it: the
+tooltip is the first tier.
+
+**"The transparency, I guess, hasn't been done yet because I can't see through
+it and it's not blurred, that's a fail."** Correct as a reading of the code:
+the tooltip's background is a solid colour and carries no `backdrop-filter`.
+It is also exactly what `DESIGN.md` law 7 refuses over the Field, measured at
+12 frames a second under Glass with blur on. **Open, and his:** a blurred
+tooltip off the Field only, a blur that holds the frame floor if one is ever
+found, or moving the floor.
+
+---
+
 ## THE FILES
 
     proto/tip/tip.html                the runnable prototype, every state

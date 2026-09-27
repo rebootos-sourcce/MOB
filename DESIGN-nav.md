@@ -500,3 +500,77 @@ local counters, not a network call.
 5. **Intake below the fold on a phone.** It is the one surface the ruling
    makes harder to reach, because the rails stack under the centre stage.
    Leave it, or give it a door on the bar at phone widths only.
+
+---
+
+## 12. The Field's own controls. Ruled and shipped 26 September
+
+The top bar above is one level of navigation. The Field had a second, its own
+row of four depth words and a Wheel, Frames and Dial switch, and he ruled that
+row out of the centre. This section is what replaced it, as approved and as
+built. The rulings in full, in his words, are in `DECISIONS.md` under "The
+Field's controls"; each item below names the `TASKS.md` round that holds it.
+
+    upper left     the glass bar           every layer, each one on or off
+    upper right    Wheel, Frames, Dial     three circles, icons only
+    lower right    zoom                    in, out, and reframe
+    left rail      Root energetics         closed on arrival
+                   the dock                DQ, CQ, Accuracy, then four more
+    right rail     Reading, Flow and the other sections, unchanged here
+
+**The glass bar.** DK, against his reference of a weather map's floating pill
+of icons: glass, over the picture, every layer independently on or off, one
+press each, and the same pattern for every tool. It replaces the four depth
+words. The depth ladder still governs what is computed and available; the bar
+governs only what is drawn, so "turn everything on and off" did not reopen the
+depth arithmetic. Threads draw only when both of their ends are on (DO). The
+four depth presets live in the Depth circle's own menu, so nothing the old row
+did was lost (FE). Every layer is on at the first frame (EZ, FH). When the
+full row does not fit it folds to one Layers circle that opens the same
+clusters as a panel, rather than scrolling sideways; at 390 that is the form a
+phone sees (EY). Built: `ui/fieldbar.js`, commit `8b2c3c0`.
+
+**Each control is a circle with its icon, a ring and a pill** (DR), the shape
+now written into `DESIGN.md` law 4.
+
+**Wheel, Frames and Dial, the secondary nav.** DR took them off the centre,
+icons only. DY put them on the right: "keep those three options there and let
+people play around with it." EZ found them still reading as a mark inside the
+rail, and FA settled where: "right-hand side... opposite like secondary
+navigation opposite the overlay." So they are a floating glass overlay in the
+stage's upper right, level with the glass bar and mirrored against it, and
+zoom moved to the lower right so the bar keeps its full row at 1600 (FE,
+`248e5d2`).
+
+**Frames is flush to its box** (DY, EQ), and **all three zoom** around the
+pointer, pan on a drag, and reframe on F or on the reframe circle (DY, ER).
+He tried it and kept it, FJ: "zoom in, zoom out, reframe, that's cool."
+
+**The dock.** The reading chips that ran along the bottom became circles in
+the left rail (DY, ED). SQ left this row, his reason being that it is "a total
+sum of the DQ anyway", and it still shows on the bar's Addresses circle and
+everywhere else (EZ). DQ, CQ and Accuracy sit on one centre line with the four
+below, two rows exactly, and CQ is drawn larger (DY, EZ). The circles sweep
+and count into their values once the boot lifts and on every change after
+(EZ). The small capsule that mimicked the halo and pitchfork is cut (DY).
+
+**The left rail.** It closes to its one control and the stage takes the width,
+remembered per browser (EZ). The section once called States is Root
+energetics: above the readings, closed on arrival, carrying the full name
+numerology off `numerologyOf` and the birth readings (EZ). "Spirit" reads
+"Energy" (EZ). The archetype grids went from four by three to six by two, the
+tiles drawing smaller inside unchanged 44 pixel targets (EZ, EA).
+
+**Still to design or build, ruled in direction.** The right rail folds too
+(DU: "fold in left and fold in right"). Text hidden at full zoom out and
+fading in on the way in (FJ, `DESIGN.md` law 8). Layer toggles that animate
+rather than snap, and lines that animate to show where the tension is (FJ).
+Two designs for orientation and balance as one mechanic (FJ).
+
+**Open, and his.** Whether zoom on Wheel should keep pulling in layers beyond
+those chosen, or only bring the picture closer (EY). Where the switch sits on
+a phone, and whether Frames should fill the empty left lane at desk width
+(ED, EY). Blur on the glass, which `DESIGN.md` law 7 forbids over the Field
+(EY). Whether a Snow user's first open, now Blueprint with domain and
+archetype names near invisible on the black stage, reopens Snow's own ruling
+(FE).

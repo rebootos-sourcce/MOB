@@ -1602,3 +1602,396 @@ Two standing rules from this, not a one-off:
   everything downstream of a live database keeps being designed and built
   up to the point that database is the only missing piece, and the token
   itself is the last thing asked for, not the first thing waited on.
+
+---
+
+# Ruled 26 September, one long night. Graduated from `TASKS.md` DG to FO.
+
+Moved here on his order of 27 September, `TASKS.md` FO: "make sure the teams
+go through all the documents in this thread and migrate everything that's been
+approved." Every ruling below was made in one continuous session and each is
+recorded in full, with its context, in the lettered round it cites. The
+letter is the way back to the fuller record; `TASKS.md` itself is unchanged.
+
+Only what he actually ruled is here. What he floated, hedged, graded without
+choosing, or has not yet answered is in the last section of this block, named
+as open, and stays open until he rules. What was measured when a ruling was
+built is in `STABILITY.md`; how the approved designs look is in `DESIGN.md`,
+`DESIGN-nav.md` and `DESIGN-avatar.md`.
+
+## The birth instant. A time zone, not a city list
+
+**A birth is placed by a named time zone, and the code works out daylight
+saving.** Per `TASKS.md` DI. Shown what a bigger city list, an asked UTC
+offset and a zone name each cost, his words: "Option three, that gives us the
+most robust answer. That's good, do that." Never the person's own historical
+offset, which almost nobody knows.
+
+**Rising gets one representative point per zone, not a city per person.** Per
+`TASKS.md` DN, refining the first open question in DL rather than reopening
+DI. His words: "maybe we can optimize the city list where it's not every city,
+but they're grouped by time zone, because really what's important is the time
+zone. I need Los Angeles, I don't need San Diego and San Francisco. I need
+Portland, I don't need Newport. I don't want to build something that weighs
+more than the software we're building."
+
+Both are built: DL, commit `45f7203`, and DS, commit `2f60b02`. The points are
+the published IANA `zone.tab` table, not picked by hand. The cost of the
+ruling was measured rather than assumed, and it is real: one point per zone
+gives the same rising sign as the real city 99.9 percent of the time for
+Chicago and 48.4 percent for Mumbai, and Portland shares its point with San
+Diego and San Francisco. What that leaves open is in the last section.
+
+## Heavy load, on his own scale
+
+**Zero to ten, five named states.** Per `TASKS.md` DY, closing BO7, which had
+waited on him since DG. His words: "if everything can be measured zero to ten,
+and we go from flowing, impaired, moderately impaired, heavily impaired,
+collapsed, then heavy would be seven eight nine, four five six would be
+median, one two three would be impaired, zero is flowing, ten is blocked or
+collapsed."
+
+    0          flowing
+    1 to 3     impaired
+    4 to 6     median
+    7 to 9     heavy
+    10         blocked, collapsed
+
+The shadow score now runs zero to a hundred, so heavy starts at DQ 70 and
+median at DQ 40. Built in `ui/ritual.js` and `tools/loopsim.js` (EF, commit
+`3824c63`) and in `proto/ritual/losssim.js` (FL, commit `3004f4d`).
+
+## The Field's controls. The secondary nav goes, a glass overlay comes
+
+**The depth words go. A floating glass bar of icon toggles replaces them, and
+it is one pattern across every tool.** Per `TASKS.md` DK, marked on a
+reference screenshot of a weather app's floating pill of icons. His words:
+"it's glass, like Apple glass, it floats over the design and it has all of the
+iconography for the field and it can turn everything on and off, and this
+would be consistent across all the tools, saboteurs, complexes, hyper
+complexes, turn them all on and off." And, on the old row: "I don't want that
+secondary navigation, I already fucking told you that." The depth ladder
+still decides what is computed; the toggles decide only what is drawn (DK).
+
+**A measured value is a circle with its icon inside, a ring round the rim,
+and a small pill at the lower right carrying the number.** Per `TASKS.md` DR:
+"I'm not a fan of the pills as much as I used to be, they take up a lot of
+real estate. I want the UI UX team to redesign it with a circle and the icon
+inside of it, and the percent complete ring around it are the primary
+features, and then there's a pill to the lower right hand side with the
+percent or whatever the value is." It refines the earlier ruling in "The user
+journey pass" above, that every percentage is an icon, a ring and a pill; it
+does not replace it. Per DY the reading chips take the same shape and move to
+the left: "now that we've got the circular one up here, all the buttons on the
+bottom don't make sense, you should go on the left hand side."
+
+**Wheel, Frames and Dial stay three, as icons, in a secondary nav upper right,
+opposite the overlay.** Per DR: "I don't need the text, just make it the
+icon." Per DY: "Move that to the secondary nav on the right hand side, and
+let's just keep those three options there and let people play around with
+it," which also answers the DJ question of keeping three or narrowing to one.
+Per FA: "Those should have been in the right-hand side. Opposite like
+secondary navigation opposite the overlay."
+
+**Frames is flush.** Per DY: "I don't like the beveled edges, I want the
+entire thing flush to the rectangle of the area." Reconfirmed at EQ.
+
+**Zoom and reframe on all three pictures.** Per DY ("zoom in and out, and then
+hit the F key and have it reframe") and ER: "With Dial and Frame, I want to be
+able to use mouse wheel zoom in, and then when I frame it, it just snaps
+back." On the built version, FJ: "zoom in, zoom out, reframe, that's cool."
+
+**CQ is the biggest number on the dock, and CQ and DQ line up.** Per DY: "line
+those up so they don't look like a design element that's not quite designed
+right... and I do want the CQ number bigger, so it's in your face." The small
+element mimicking the halo and pitchfork beside it is cut, same round: "that's
+unnecessary."
+
+**The rail, item by item.** Per `TASKS.md` EZ unless another letter is named.
+- Everything starts on: "the addresses and everything should already be on.
+  Yeah, everything should start on." Reconfirmed at FH: "it's going to start
+  with everything loaded."
+- SQ leaves the upper left reading row. His reason: "SQ is a total sum of the
+  DQ anyway."
+- Accuracy stays in that menu, and the block reads as two rows.
+- The left column closes. Per DU both rails do: "I want to be able to
+  minimize them, so they fold in left and fold in right."
+- "Spirit" is renamed "Energy".
+- The reading circles animate.
+- A collapsible section named "Root energetics", closed by default, above the
+  CQ and DQ row, carrying the numerology and the birth readings.
+- The Jungian archetype icons shrink so the grid loses a row. Per EA the same
+  holds for the domain and primary glyphs: "Since they're hover over anyway to
+  get information, I don't know if they need to eat up that much real estate."
+
+Built: the glass bar, the right hand Wheel, Frames and Dial, flush Frames and
+zoom (EY, commit `8b2c3c0`); the rail list above, with the left column's
+collapse (FE, commit `248e5d2`); the glyph shrink to the 44 pixel tap floor
+(EF, commit `3824c63`). Not yet built: the right rail folding.
+
+**Ruled in direction, not yet built.** Per `TASKS.md` FJ, each dispatched:
+- "I shouldn't see text when I'm zoomed all the way out; text only fades in
+  when I'm zooming in." On Wheel, Frames and Dial.
+- Layer toggles animate rather than snap.
+- "Lines animating to show me which is the tension," which is also FH's
+  "where are my tension animations."
+- Orientation and balance "need to be designed the same way, it's the same
+  mechanic... give me two different designs." Two options are owed to him;
+  the pick is his.
+- Movement on arrival, per EQ: "When I land on this page the first thing I
+  want to see is movement, Dial looks dead." This reopens the convention that
+  Frames and Dial never animate. How they move is still with design.
+- The Field loading the person's own charge in as it opens, per FH: "When I
+  land on the field page, I want to see me load it up." Logged, and held
+  until the boot and rail passes had landed; both have.
+
+**A press on a tile gives its information.** Per `TASKS.md` DP: "I want to
+click on it and have it give me information, I want to hover over it and have
+it give me information." Built for the Field's domains, masks and archetypes
+(EE, commit `0d5fb9c`). A Blueprint domain tile still has no route to its
+knowledge base page (DU).
+
+## Icons and colour
+
+**The four roots get marks, the icons get punch, and archetypes wear their
+seat.** Per `TASKS.md` DR ("I need icons for Architect, Engine, Weaver,
+Witness, I don't know why those don't have icons"; "I think we want those
+punched up a little more, more saturated, they're just a little dull") and
+DY, choosing off the DX board: "Those icons for Architect, Engine, Weaver, I
+like, option recommended, it's cool... let's go with your recommended, let's
+go with B." That is the recommended four marks (Architect a set square, Engine
+a flame with its inner tongue, Weaver two streams meeting as one, Witness a
+viewfinder's corners), option B's saturation, and every archetype tile in its
+own seat's colour, which the 19 September ruling had asked for and never
+reached. Built (EF, commit `3824c63`) and routed through every lighting (EM,
+commit `2f563ab`; EW, commit `a21e7c2`). Lumen stays as shipped until he
+rules on it.
+
+## The celestial readings, as he reads them
+
+Per `TASKS.md` DK, his own model, recorded as the meaning the product works
+from: "your sun is how you express yourself physically, your moon is your
+internal monologue, your rising is the driving energy, the driving kind of
+motivators, and your Eastern symbol is how you navigate the world." Icons in
+place of rows, a press opening a card on the right, and the four read as one
+behavioural synthesis rather than four facts: "we want to take the behavioral
+energy behind that and the symbolic energy and translate that into behavioral
+energy, because that plays across the entire structure." The prototype built
+on it (`proto/states/`, DO) is not approved, and its nine questions are open.
+
+## The knowledge layer
+
+Per `TASKS.md` DU, ruled in direction and not yet designed:
+- **Knowledge base pages for archetypes, domains, masks and saboteurs read as
+  character sheets.** "Very detailed character sheets so people can
+  understand very clearly how the patterns run through them, but I want some
+  visual iconography, like you've unlocked something special and deep
+  understanding about yourself."
+- **Two tiers, never one long tooltip.** A tooltip carries two sentences and a
+  "click for more" that goes to the knowledge base page; pressing the thing
+  itself opens a summary of how it runs through this person, with its own
+  link out to the full page.
+- **The ritual builder and the release protocol are both named for overhaul.**
+  "The ritual builder needs a complete overhaul, and then the release
+  protocol, that needs an overhaul." The team forms the questions before
+  anything is built.
+
+## The avatar is the seven seats
+
+Per `TASKS.md` EI, closing the open question in EG: "Let's do the seven seats,
+I like that, we can even call it that." The avatar is the seven seats, not the
+body. "Seven Seats" as its name is his to finalise.
+
+The mechanic he gave with it, in his words: "I don't think the avatar's CQ
+matters here, this is about becoming, the stories we tell ourselves about what
+we're not and what we want to become, using the software to sniff that out and
+elevate the patterns keeping them from doing that." And: "The rituals is
+ultimately the tool that delivers that, and the accountability tracker is the
+progression." A persistent top three shows whenever the avatar is on. Most of
+the mechanic already exists in `engine/avatar.js`, checked in EI. It is built
+as a prototype (EL) and redone as six layouts after he graded the first "D
+minus" (EQ, FB). No layout is approved. The design record is
+`DESIGN-avatar.md`, part three.
+
+## The boot
+
+**The original arrival is the base, carrying Breath's outside rings and
+Ember's address ticks, with thicker bands landing one at a time.** Per
+`TASKS.md` EV: "I think the animation's very cool... I want the laws of
+animation obeyed. Twelfth principles. I want the center point. That's the soul
+itself to go from like collapse to expressed." Per EZ: "ease in and out to
+perfection that you can feel. The solid bars come in solid and when they can
+actually come in one at a time as well. The animation timing is good." Per FA:
+"Breath, the outside rings I like. Ori, not so much. Bloom, not so much.
+Ember, the secondary lines. Those are pretty cool... The one I like, needs the
+kind of like thicker bands. To come in with better timing and animation."
+EQ set the source: pull from "all these cool elements in our Field now"
+rather than invent a new look. Built (FC, commits `4c0e533` and `0736da2`).
+The design record is `DESIGN.md`, law 7.
+
+## The loop's words, and the opening
+
+**The four stations are named in his words.** Per `TASKS.md` FK: "It's
+discover play flow embody." On every station, directly, never translated into
+feature names such as journal, imprints, release and ritual. The ruling of 20
+September in `CLAUDE.md` stands; FK rules out the translation. He likes "the
+ring with the tune" and the check in, "that center ball, Hello Sofia's good"
+(FK). Both are kept as drawn, `DESIGN-firstrun.md` section 0.1.
+
+**The opening is one time, switchable back on from the profile, and
+storyboarded before it is built.** Per FH: a loading screen between the boot
+and the app, a one time first and last name on it, and a box so it is not
+shown again. "Our one time screen tutorial is a check on and off within the
+profile. Tutorial screens need to all be mapped out. That means they need to
+be storyboarded." Storyboarded in `DESIGN-firstrun.md`; its questions are his.
+
+**Two factor sign in is his systems engineer's to design.** Per EZ: "we need
+log in screen with two factor authentication. Oh, uh, well, my systems
+engineer to design and develop that schema. Make sure it works with our
+database." Called out here, not designed by this team.
+
+## Founding offers, the shape
+
+Per `TASKS.md` FH: the first hundred to sign up for a tier "get that tier for
+a year, get that tier for life. These are my committed guinea pigs, my
+angels." The people they send it to get their first year at half. The next
+ring out gets 25 percent off their first year only. "They don't need to know
+all that, we can do all that in the background. Wherever these people land in
+those numbers, that offer would pop up. So we need a way to offer them offers.
+That needs a system." The shape is his. The design is
+`DESIGN-founding-offers.md`, and its eight questions are open, the first being
+whether "get that tier" means the tier free or its price held.
+
+## Working rules from the night
+
+**Stop asking whether to fix it.** Per `TASKS.md` FJ: "If it's in the blocks,
+fix it. If we haven't opened tasks, queue it up. Put it in the fashion in
+which you need it, and get it done." A blocking defect is fixed; a real non
+blocking request is queued; neither is put to him as a choice first. The
+fourth heading carries genuine open rulings, never confirmation of a default
+the team should simply have taken. It sharpens "Don't wait on him" above.
+
+**A comparison is one file with an in-page switch.** Per EA, after a board
+that linked out to a second file left him with no way back: "There's no
+close, there's no back, I can't get back to where I was. So make the mockups
+interactive HTML pages."
+
+**Every file handed to him is packed, prototypes included.** Per EB, EJ and
+EU, where the build arrived cut three times: "fix this so we don't see it
+again." Everything goes through `tools/pack.js` before it is sent. The second
+route is the raw address of `atuned-packed.html`, never `source.html`, and the
+file is saved to disk before it is opened. This extends "Handing the build
+over" in `CLAUDE.md`.
+
+**A prototype never wears the real app's navigation.** The team's fix to his
+complaint in FK, after the Seven Seats file's tab bar twice made the real
+Field look broken ("It looks like you broke my program," FJ). No prototype
+carries the product's tab labels unless the tab works, and every prototype
+says on the page itself that it is a prototype. The rule is ours; the
+complaint it answers is his.
+
+## Still open from the night, and named as open
+
+Nothing below is ruled. Each is written with the letter that holds its
+options and costs.
+
+**The birth instant.**
+- Mark a zone derived Rising as approximate on the rail, given Mumbai's 48
+  percent against Chicago's 99.9 (DS).
+- Grow the zone table toward the cities he named, Portland apart from its
+  zone, at one row each (DS).
+- For an untimed birth, show the gate number without its line on the 82.5
+  percent of days it is known, or keep refusing the whole reading (DS).
+- The saved record carries `who.born.zone`, additive, with no schema version
+  move; his contract with SOURCE (DL).
+
+**The Field.**
+- Zooming Wheel still pulls in layers beyond those chosen; the prototype's
+  default was that zoom only brings the picture closer (EY, and the glass bar
+  questions in DO).
+- The glass carries no blur, because `DESIGN.md` law 7 forbids a backdrop
+  filter over the Field, measured at 12 frames a second with it. His own
+  words on the tooltip, "I can't see through it and it's not blurred, that's
+  a fail" (DU), sit against the same law. Real blur means moving that floor.
+- On a phone the Wheel, Frames and Dial switch sits below the picture; at desk
+  width Frames fills the empty left lane (ED, EY).
+- The larger CQ inside the Frames core, and the capsule beside the compass
+  marker, were not ported (EY).
+- Stacked saboteurs on one point fan out or open a list on a press; the line
+  tracing and pinning prototype ports or not, and to which picture (EE, DD).
+- Snow's Field keeps its ruled black stage, where domain and archetype names
+  now read close to invisible on the default open, or moves to paper (EM,
+  FE).
+- The Dial's "SQ" wording, and whether its "most shut law" shows the answer or
+  the lifted value (DG, DH).
+- "Why do they have information over the" profiles (FH) did not land and is
+  held for a picture.
+
+**Icons and colour.** Lumen, his own palette, still fails its contrast floor
+even after the fix that cleared Snow and Glass white (DX); he asked for more
+versions, "Lumen B and C is really talking to
+me" (DY).
+
+**The words.** Release against protocol against Integrate Protocol. EC
+simulated release against protocol and release won, 42 of 72 pairs against
+14; EK then proposed "Integrate Protocol" for a real reason, "we're just
+integrating the bias, so the mind is freeing up the charge... it's about
+giving you a choice." Whether that names the whole mechanic or replaces every
+tested string is not settled. Separately, "Released" against "Run complete" on
+a finished run's card (EC). Both sit with `BRAND.md` section 9.
+
+**The avatar.**
+- Which layout. FB measured Told first, 9.4 of 10 against the D minus
+  layout's 5.4; his only reaction to that file since was confusion at its tab
+  bar (FK), which is not a verdict on the layout.
+- Lead with the ideal he stated or the heaviest thing in the way (FB).
+- What counts as a pair cleared, with three ways measured (EL).
+- CQ, expression, or both, as the number the avatar leads with (EG).
+- What happens to the Field's own wheel beside a seven seat ring (EG).
+- Balance and orientation inside the avatar page (EQ).
+- The binaural tone and the mixed AI and human voice for a release, a later
+  production and licensing question (EI).
+
+**The boot.** Length, 5.24 seconds as built or the 7.2 once ruled (ET, FC).
+Squash and stretch, ruled out of this animation on 5 September (BT1) and
+asked back in with all twelve principles (EV, EX). Whether Breath's soft glow
+and Ember's loose sparks were meant too (FC). What replaces the old gold halo
+(ET). The Frames and Dial arrivals, not ported (FC). "It's got a globe, a time
+we get into the center" did not land (EV, EX).
+
+**Energetics.** Which layout meets a stranger, Staged or the Tiles rail he
+described (DZ). Name roots, asked for in DM ("Lance means to pierce, O'Neill
+means champion, Powell means exalted"), sit against the standing ruling in
+"The accent is blue, and the summary is built" above, "No etymology table",
+and DZ found the references do not support his three examples as given.
+Source AI's question did not land and is held for a re-ask with an example
+(DY).
+
+**The rail's cards.** The Reading card's job and which door is primary (DT).
+The Flow element, with Pinch recommended (DZ). "Signs" or "Birth" as the
+heading for the birth readings, and where the section sits (DG); Root
+energetics in EZ may have answered this, not confirmed with him.
+
+**The funnel and the guard.**
+- Level 1, the band the marketing guard protects, now reads on expression,
+  and Ana, the crisis persona, is served a hook she was refused before (FG).
+  CQ or expression for the harm model (FI, FL, and BB3 and BB5).
+- OB15, 20 September, "at no point are we talking about results or purpose,"
+  against FH, "highest purpose of the product results" (FI).
+- The referral cascade needs to know who sent whom, against the funnel's
+  shipped promise of "not an asset, not a list, not a segment" (FI).
+- The name and email capture screen his welcome copy assumes does not exist
+  in `funnel/` (FI).
+
+**Floated, and not ruled by his own words.** The mask facet grid, with the
+sniffer telling childhood from later eras (DP). The journal gamified toward
+filling in the masks, with "you get a bonus of five hundred points" said as
+"I don't know" (DQ). The Story page without its left rail, said as "maybe"
+throughout (DU). More signal test questions to prime the diagnostic, "I don't
+know, maybe we don't do that" (FK). "Always Crown to Root, top to main to
+fetter" (EA), held for a clearer re-ask.
+
+**Carried from DJ, still his.** The body map's Crown height rule, waiting on
+his muscle reference image. The funnel guarantee's wording, which three
+shipped lines contradict. The four facts about his own history the locked
+formula is anchored to (BE2 to BE4, BE8).

@@ -395,3 +395,66 @@ Each is measured above with its screenshot. None is built by this file.
    with nothing saying they are examples.
 8. Energetics opens on a five line paragraph and a birth form before the first
    question, and does not state the time the 63 take.
+
+---
+
+# 7. Earlier the same day: Energetics, four layouts, the same six people
+
+Not part of the FK order. Graduated here from `TASKS.md` DZ on his order of 27
+September (FO), because it is the same six reference people meeting the
+product's intake, the surface item 8 above opens on, and its findings outlast
+the round that produced them. The prototype is `proto/energetics/energetics.html`,
+one file with an in-page switch, and its screenshots are beside it.
+
+**The ask, DM.** On landing on Energetics he wanted the root meaning of a
+name shown as it is typed, the numerology and Myers-Briggs read as data on
+how a person moves, the left rail activating as questions are answered rather
+than sitting washed out, and Source AI on the right updating as fields fill.
+
+**Researched before it was drawn, credited to what each gave.** Co-Star's one
+question per screen; The Pattern's card, then line, then deep read; Human
+Design apps' picture appearing the moment data lands; Noom's staged feedback;
+Oura's named locks; Duolingo's one tap per step.
+
+**Walked with real keystrokes.** Each of the six typed their own name, birth
+and zone at both widths, through all four layouts.
+- **Staged wins every stranger measure**: the fewest controls on a first
+  screen, something read back at every step, the fewest words, nothing under
+  the tap floor.
+- **Tiles, the rail he described, wins for the two personas already fluent**
+  in this kind of instrument and fails a stranger outright: 51 controls on the
+  first screen, and the first field 1,682 pixels down a phone.
+- **They are not opposites.** Staged's own end state is Tiles with the locks
+  lifted, which is the finding worth keeping: the stranger and the fluent
+  reader want the same page at different moments.
+
+**Already computed and not reaching the page.** All six numerology numbers,
+and Myers-Briggs read letter by letter through the engine's seed logic, are
+real and neither reaches Energetics today, which is exactly the gap DM named.
+
+**Name roots, checked against references rather than guessed.** Only nine
+names were checked, his three and the six ICPs' first names. His own
+examples do not survive the record as given: Lance roots to "land", and "to
+pierce" comes from a later, separate link to a word for spear; O'Neill's
+Niall has no settled meaning, "champion" being one proposal of several;
+Powell's Hywel means "eminent". The product carries no root meaning for any
+name, and `DECISIONS.md`, "The accent is blue, and the summary is built", rules
+"No etymology table" for a reason this check supports: a device that makes no
+outbound request cannot look one up, and inventing one is a claim this
+instrument does not make.
+
+**Found in passing, for the backlog, not built.**
+1. The numerology cleaner turns an apostrophe into a space, so "O'Neill" reads
+   as two names and a master number inside one name can be lost, though the
+   total still agrees.
+2. A checkbox overlaps the first letter of its own label.
+3. A blank profile loaded through `loadProfile` fills a missing axis with 3
+   rather than 0, so an empty person's channels read "even" rather than
+   unread.
+4. The Reading section says "nothing has been read yet" beside a full name and
+   a real sky reading, the contradiction `TASKS.md` DT found on the same page.
+
+**His, and open.** Which layout meets a stranger. Where a name's root would
+come from at all, given the ruling above. What the product says on the names
+it has nothing on record for, which DZ estimated at about two of every three
+a real person will enter.

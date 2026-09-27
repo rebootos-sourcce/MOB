@@ -322,8 +322,17 @@ wears Sacral, Weaver wears Heart, Witness wears Crown, written down as
 with the lighting because the seat does. `ROOTCOL` is the same four seats'
 Dark values, `#7D93E0`, `#D8924E`, `#5FD5A6` and `#A77EDB`, and it stays in
 the engine's export contract and for Lumen, whose colours are still an open
-question. Nothing in `ui/` draws it on another lighting except the Body page's
-domain ring, which draws the whole page in the Dark palette.
+question. As of `2f563ab` the one exception was the Body page's domain ring,
+which drew the whole page in the Dark palette. It closed at `a21e7c2`
+(`TASKS.md` EO and EW): `ui/map.js` now reads the ground the figure sits on,
+the same test `frMount` uses, and draws a root as its seat on that ground.
+Nothing in `ui/` draws `ROOTCOL` on another lighting now, Lumen apart.
+
+**The four marks are his pick.** Per `TASKS.md` DR and DY, off the DX board:
+Architect a set square, Engine a flame with its own inner tongue, Weaver two
+streams meeting as one, Witness a viewfinder's corners, each checked against
+every glyph already in the build so none doubles one. Shipped at `3824c63`
+(EF).
 
 On a canvas the answer is the ground and not the lighting's name. The wheel
 and both ring pictures pick the root's palette off the stage, because Snow's
@@ -377,6 +386,34 @@ material is gone and colour is carrying the whole hierarchy:
     head.html:563    body.punch .vt[aria-pressed=true]  solid accent
     head.html:443    body.flat .iq-n.on                 solid accent
     head.html:391    body.lumen .vt[aria-pressed=true]  solid accent
+
+### A Reading Is A Circle, A Ring And A Pill. Ruled 26 September
+
+His shape, `TASKS.md` DR: "a circle and the icon inside of it, and the percent
+complete ring around it are the primary features, and then there's a pill to
+the lower right hand side with the percent or whatever the value is." It
+replaces a flat pill carrying icon and value side by side, which he said took
+too much room. The ring is the value's own measure and the pill says the same
+number, so ring and pill never mean two different things.
+
+Per DY the reading dock takes the same shape and moves to the left rail, and
+CQ is drawn larger than its neighbours, "so it's in your face." Built in the
+glass bar prototype (DV, 76 checks; ED, 99) and in the build (EY, `8b2c3c0`;
+FE, `248e5d2`). Open, not ruled: under Punch, whose rule fills every icon
+solid, whether this one object keeps its ring (DV).
+
+### The Tiles Rest At Full Strength. Ruled 26 September
+
+His note, DR: the Blueprint domain and Primary icons were "just a little
+dull." Measured in DX rather than graded by eye: most of the dullness was not
+the palette but a resting opacity of .78 that only reached full strength under
+a pointer, mixing every stroke a fifth of the way into its dark tile. He chose
+option B, DY: the resting dim removed and 15 percent real saturation added.
+Root is held at its shipped strength on purpose, because raising it walks it
+toward `ALARM`, measured in OKLab. Each archetype tile wears its own seat
+rather than one flat accent. And the tiles sit at the 44 pixel tap floor,
+from 48.4, on his EA note that a glyph with a hover "doesn't need to eat up
+that much real estate." Shipped at `3824c63` (EF).
 
 ---
 
@@ -677,6 +714,14 @@ This run, all seven clean:
     flat       backdrops 0   fps 60.9
     lumen      backdrops 0   fps 61.1
 
+**The glass bar obeys this, and so it is glass without blur.** `TASKS.md` EY.
+The bar he asked for in DK is "glass, like Apple glass", and the port measured
+12 frames a second under Glass with blur on, so it ships translucent and
+unblurred. His note on the tooltip, DU, "I can't see through it and it's not
+blurred, that's a fail," asks for the same thing this law refuses. **Open, and
+his:** real blur over the Field means moving this floor, and nothing above
+has found a blur that holds it.
+
 ### The Aura Is Painted Small And Scaled Up
 
 `component.js:301`. The background wash was a full viewport canvas inset 25
@@ -709,6 +754,46 @@ straight in. The reason: `pointerdown` and `keydown` have always cleared the
 boot, nothing said so, and a person met a five second sheet with no visible end
 and no visible exit while the app underneath had been usable since 198ms.
 Verified in the 1600 shot: "Press anything to go straight in".
+
+**The boot he approved, shipped 26 September.** `TASKS.md` ET, EV, EX, EZ, FA
+and FC. Written after the law above, and it changes what the sheet shows, not
+what the gates assert.
+
+What it is. The arrival ET drew in the Field's own vocabulary, as EQ asked
+("we have all these cool elements in our Field now, is there anything we can
+pull in from that"): the spine rises, the seven seats land in their opening
+pose, unfurl into the ring at their real sizes, a glass lens in the glass
+bar's material opens at the centre, and the ring fills clockwise the way the
+glass bar's rings fill. On that base, his composite from FA: "Breath, the
+outside rings I like... Ember, the secondary lines. Those are pretty cool...
+The one I like, needs the kind of like thicker bands." So the bands land
+nearly twice as thick and one at a time (EZ: "the solid bars... can actually
+come in one at a time"), Breath's colour ring travels outward, and Ember's
+addresses are thrown out as streaks that cool into their seats. Orrery and
+Bloom were not taken ("not so much").
+
+Why it had never been seen. ET found two bugs under his complaint that it
+"feels blocked in." The sheet was removed on a typed `setTimeout(clear,5450)`
+while the CSS fade began at 7.02 seconds, so the fade never once played. And
+the Wheel's own arrival ran from 263 milliseconds to about 1.2 seconds, behind
+a sheet that was still solid. Since `4c0e533` the removal reads the fade's own
+animation rather than a number, the fade runs 5.00 to 5.24 seconds and plays,
+and the Wheel's entrance starts as the sheet lifts. Gate 11's set grew by
+eight boot checks: `tests/design.js` 158, from 150.
+
+How it is drawn. The first cut repainted about a thousand SVG marks a frame
+and ran at 9.7 frames a second. It draws the finished picture once as a
+raster and reveals it on a canvas, the Wheel's own technique: 42 to 59 frames
+a second in this sandbox's software renderer.
+
+Open, his: the length, 5.24 seconds as built against the 7.2 once ruled, one
+flag away (`--hold:2s`); squash and stretch, out of this animation since BT1
+and asked back in with "twelfth principles" (EV, EX); whether Breath's soft
+glow and Ember's loose sparks were meant too (FC); what replaces the old gold
+halo (ET). The Frames and Dial arrivals in `proto/arrival/arrive.js` are a
+separate feature and are not ported. A second typed copy of the boot's length
+survives at `ui/ui.js:1313`, `setTimeout(...,5600)`, named in
+`DESIGN-firstrun.md` F0 before it breaks the seam the same way.
 
 ---
 
@@ -784,6 +869,15 @@ canvas. It is the owner's call. Found by Petra.
    with a hidden scrollbar is indistinguishable from a missing feature. Wrap
    instead." It is on the product's primary navigation. `DESIGN-mobile.md`
    should own this and this brief records it. Found by Petra.
+
+**Text follows zoom. Ruled 26 September, not yet built.** `TASKS.md` FJ, his
+words: "I shouldn't see text when I'm zoomed all the way out; text only fades
+in when I'm zooming in." On Wheel, Frames and Dial. It is this law applied to
+distance: at full zoom out the picture is the whole of what shows, and a name
+earns its place only once the person has come close enough to read it.
+Whether it also settles the nine band captions above, by fading them in with
+the rest rather than granting an exception or moving them to the strip, is
+the natural reading and has not been put to him.
 
 ---
 

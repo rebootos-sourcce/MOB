@@ -603,6 +603,27 @@ He has instructed every team to ask rather than guess, so these are asked.
    that print a reading silence themselves on `r.unread` precisely because of
    this class of problem. Worth a look by whoever owns `compute`.
 
+## HOW IT IS DRAWN, RULED SINCE 26 SEPTEMBER
+
+Graduated from `TASKS.md` DP, FJ and EQ on his order of 27 September (FO).
+This is the surface, not the arithmetic above, which is unchanged.
+
+**Orientation and balance are one mechanic and get one design.** FJ, his
+words: "Orientation and balance, those two elements need to be designed the
+same way, it's the same mechanic. If I choose one, give me two different
+designs." Ruled in direction; two options are owed to him and the pick is his.
+
+**What differs today, checked in DP rather than assumed.** Both were built to
+the same intent, a centre out fill with an icon at each end, and the code's
+comments show one chasing parity with the other across earlier rounds. The
+gap that survives: Balance (`renderBal`, masculine against feminine) prints
+"masculine" and "feminine" on the screen beside its icons, and Orientation
+(the `polbar` block, benign against malignant) prints only its two numbers,
+with "benign" and "malignant" living solely in a tooltip. Both in `ui/ui.js`.
+
+**Open, and his.** Whether a person's balance and orientation sit on the
+avatar page itself, not only in a rail they may not scroll to (EQ).
+
 ## WHERE THE CODE IS
 
 - `/home/user/MOB/atuned_src/engine/verp.js` the whole of it

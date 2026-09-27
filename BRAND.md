@@ -289,6 +289,41 @@ Compress around them, never through them.
   depression, because it names what sits over the real you and claims to
   treat none of it.
 
+### Two more pieces of his, raw, with nowhere to go yet
+
+Graduated from `TASKS.md` on his order of 27 September (FO). Both are his own
+words and both are material, not copy: neither is ruled onto any page, and
+both go through the house voice and `marketing/refuse.js` before one word of
+either ships, the same discipline as the mission above.
+
+**His origin story, 26 September, `TASKS.md` EN.** Offered for the brand and
+the funnel's own origin story:
+
+> Your story is your story, and your experience is your experience. Keep the
+> experience, drop the stress that holds it. This is integrative somatic
+> healing, using a rapid release technique, created by the very person who
+> needed it most. My background, game development. I understand systems and I
+> applied it to the spiritual experience and went deep. First I ran it on
+> myself, then I ran it on others, corroborated it with research, what I was
+> experiencing, seeing it from different ontological views and realising that
+> the definitions were blocking our ability to see it clearly. This is that
+> result.
+
+His framing with it, kept as given: "I don't know if we want to use all that,
+if there's any hubris in there, obviously it's got to come out, but keep
+going." Not yet read back for hubris the way the mission was. Two things the
+read will meet, named so they are not met cold: *healing* is section 5's word
+and is settled there, and *corroborated it with research* is a claim a hostile
+reader asks to see. Its home, when the funnel and about page copy is picked
+up, is his signed voice, for the same reasons as the mission's.
+
+**What Atüned is for, in one line, 26 September, `TASKS.md` DM.** Said while
+asking for Energetics to be reimagined, as the frame for that work: "attuned is
+about reading someone's essence, and giving the tools to radiate that essence
+and become the person they've always wanted to become." It is section 1's
+position stated as a verb, reading and then handing over the tool, and it is
+the argument `TASKS.md` DT used for what the Reading card is for.
+
 ---
 
 ## 5. The word heals, and how it was settled
@@ -441,6 +476,37 @@ goes, or integrate names the whole chain and release names one line at one
 address, in which case they are two concepts and both stay. The second is what
 the pages assume, because it is what the arithmetic supports. His ruling.
 
+**Evidence since, 26 September, and it is still his ruling.** Graduated from
+`TASKS.md` on his order of 27 September (FO).
+
+- **Release against protocol was simulated, not guessed. `TASKS.md` EC.** He
+  asked for it: "Simulate the word release or protocol with the ICPs a
+  thousand times... and then tell me why" (DY). Counted first: 92 uses of
+  release in the shipped UI against 15 of protocol, half of release's a verb
+  form protocol cannot take. Twelve real shipped strings were then read both
+  ways by all six ICPs, a thousand runs each with the scoring shaken at
+  random: release held on 42 of 72 persona and string pairs, protocol on 14,
+  mostly Derek, and 16 were too close to call. The glossary already draws the
+  line the panel found, release as what the body does and protocol as the
+  steps. Ruling release changes five lines; ruling protocol changes ninety
+  two. The team's recommendation is release. The prototype is
+  `proto/release-protocol/`.
+- **One card sits outside that answer.** A finished run's card says
+  "Released" over what cleared, and on the real screens that claim outruns
+  what the run did. "Run complete", already shipped in Games, split the panel
+  differently again. Its own question (EC).
+- **Then he proposed a third name, with a reason. `TASKS.md` EK.** "I think we
+  should call it Integrate Protocol, because that's really what's happening,
+  right, we're just integrating the bias, so the mind is freeing up the
+  charge. It's not about you becoming less of an asshole, it's about giving
+  you a choice. If you still remain an asshole, that's on you." That is the
+  second reading above, integrate naming the whole mechanic, now in his own
+  words and with its purpose: a choice made possible, not a moral
+  improvement. What it does not say is whether "Integrate Protocol" names only
+  the mechanic while each button and reading keeps the word EC's evidence
+  favours, or replaces every tested string. **Not settled.** Deciding it
+  wrongly costs rework either way, so it is put to him rather than guessed.
+
 ---
 
 ## 10. Where the product is off brand, with the surface named
@@ -493,8 +559,9 @@ typed above a list is wrong the day the list grows.
 6. **The end of the road clause in his mission.** Section 4. Dictated as *is
    by far the end of the road*, set in brackets as *far from*, or cut the
    clause. It goes on no page until he says which.
-7. **The Terminator sentence.** Section 4. Keep it as dictated, narrow it to
-   what a film can do, or drop it.
+7. **The Terminator sentence. Ruled, closed.** Section 4. Narrowed on his
+   word, `TASKS.md` FH: "Go ahead and trim it," with his golem example added.
+   Kept in this list so its number does not move under the items after it.
 8. **Where the mission sits.** Section 4. A signed note of its own on the about
    page, the book, his newsletter, or under the about page's Mission heading,
    which the page's own swap test would refuse.

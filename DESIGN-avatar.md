@@ -1524,3 +1524,125 @@ and reported a defect that was their own.
     shot at                      1600 by 1000 and 390 by 844, on Marcus,
                                  Gordon, Sofia and a first ever open, each
                                  before and after a quarter of release work
+
+---
+
+# PART THREE. THE SEVEN SEATS. 26 SEPTEMBER
+
+Graduated from `TASKS.md` EG, EI, EL, EQ, FB and FK on his order of 27
+September (FO). The rounds carry the full record; this part carries what was
+ruled, what was built to be reacted to, what was measured, and what is still
+his. **One thing is ruled here and no layout is approved.**
+
+## 27. THE RULING
+
+EG put four avatars in front of him, each drawn from James's real data at
+arrival, four releases and twelve: two on the body (the figure, and the Body
+page's nerve branches lit by conduction) and two on the seven seats (the Body
+page's channel stood on its own, and seven arcs closing round a centre).
+`proto/avatar/four/`. The team's read, argued from his own rulings rather than
+a preference, was the seven seats and among those the ring: his chain puts the
+body one rung under the avatar, he had called the body symbolic himself, "the
+more you release, the brighter you are" holds for the ring and fails for the
+figure, and the loop is a circle by his own ruling.
+
+His answer, EI: **"Let's do the seven seats, I like that, we can even call it
+that."** The avatar is the seven seats, not the body. The name "Seven Seats" is
+on the table and his to finalise.
+
+## 28. THE MECHANIC HE GAVE WITH IT, AND HOW MUCH ALREADY EXISTED
+
+In his words, EI: a person states a highest ideal, "I want to be a great
+public speaker," and puts in stories on both sides, who they are not and who
+they are becoming; the software tracks the patterns in the way and delivers
+the release against them, with a visible success rate as the rituals run.
+"The rituals is ultimately the tool that delivers that, and the accountability
+tracker is the progression." And the frame, which moves this part away from
+section 18's rise as the headline: "I don't think the avatar's CQ matters
+here, this is about becoming, the stories we tell ourselves about what we're
+not and what we want to become, using the software to sniff that out and
+elevate the patterns keeping them from doing that." A persistent top three
+shows whenever the avatar is on. The avatar page holds the masks, the summary
+and the core loop.
+
+Checked before it was called new: `engine/avatar.js`, ported from the
+original build, already holds the shape. A pair is a value and a sentence
+about a bad day, "be" and "notbe"; each "notbe" resolves to a seat; the seat's
+real charge is read against it; and clearing is read from work done, never
+declared. `avatarProgress` already computes a done, a total and a percent
+across every pair. What is new is the page itself, the top three, a direct
+line from a pair's gap to its release and ritual, and two production pieces,
+a binaural tone during a release and a mixed AI and human voice reading the
+script, which are a later licensing question.
+
+## 29. BUILT TO BE PRESSED, AND MEASURED
+
+**EL, `proto/avatar/seats/`, 114 checks passing.** The ring, the top three gaps
+ranked by real seat load, a becoming panel carrying his public speaker example
+word for word, and a real release one press away. Every path is the shipped
+mechanic: "Release these" calls the real release picker, and each gap's
+ritual comes from `ritFor` keyed to that gap's own seat. On James, the first
+gap, at the sacral, opens a card naming eight addresses and twenty five
+patterns, and one real run moves it from 5.5 to 3.9.
+
+**Graded, EQ: "It's not quite what I want, the layout design is awful, D
+minus."** What a layout has to do, in his words: how the information
+displays, what sits above the fold, how it looks, whether it tells a story,
+whether a glance tells a person what to do. "Right now it's not clear." He
+asked for several layouts simulated against the panel until one performs.
+
+**FB, `proto/avatar/seats4/`, six layouts measured the same way** for all six
+reference people at both widths: Graded (the D minus, kept as the baseline),
+Ring, Three, Story, Loop and Told. **Told measured first, 9.4 of 10 against
+Graded's 5.4, and ahead of the other four.** It is the only one that puts
+what a person said they are becoming, their own words for what is in the way,
+and the one action on the first screen, for all six people at both widths.
+Packed as `seven-seats-layouts.html`, checked by md5, no outbound request.
+
+**That is the team's measurement, not his approval.** His only reaction to that
+file since was in FK, where its own tab bar, labelled like the real app's,
+made him think his Field was broken: "I don't understand what this page is,
+dude." That was a delivery failure, since answered by the rule that a
+prototype never wears the product's navigation (`DECISIONS.md`, "Working
+rules from the night"), and it is not a verdict on Told either way.
+
+## 30. FOUND UNDERNEATH, AND ALREADY ON RECORD
+
+- No reference persona has a becoming pair, and nothing shipped can write one;
+  the drill promises two journal questions that do not exist, and Summary's
+  paragraph about what stands in the way is a guaranteed false all clear
+  today (EL). Section 1 of this file already named the same fields as
+  unwritten.
+- Two of six stated ideals resolve to no seat: Angela's rests on the word
+  "tired", and Derek's "shoulders up by my ears" does not resolve while "chest
+  is tight" and "jaw is tight" do (FB).
+- A stranger who writes only the pair, with no journal entry, sees nothing
+  held on any layout, because a seat carries no weight until an entry is read
+  (FB). It bears on M2, a first session ending in a change.
+- EG's five passing defects on the Body page's own channel, among them a seat
+  read fully clear once its addresses average four of ten, and a blank
+  profile reading brighter than James after twelve releases.
+
+## 31. HIS, AND OPEN
+
+1. **Which layout.** Told measured first; he has not chosen (FB).
+2. **Lead with the ideal he stated, or with the heaviest thing in the way.**
+   They differ for two of the six people (FB).
+3. **What counts as a pair cleared** (EL). The shipped rule, no charge left
+   at the seat, reads zero after eight straight days of one release a day
+   and twenty percent after two weeks, exactly when a person decides whether
+   to continue. Lighting a peg once its seat drops under Summary's own held
+   line reads sixty to seventy five percent on day one having done nothing.
+   Keeping the strict rule per peg and drawing the centre as the share of the
+   gap closed since it was written reads ninety one percent at day nine, and
+   needs one stored value per pair. Under all three the number is drawn,
+   never printed as a count over a total.
+4. **CQ, expression, or both** as the number the avatar leads with; over
+   twelve releases his CQ barely moves while expression climbs eleven points
+   (EG).
+5. **The Field's own wheel beside a seven seat ring**: the ring becomes the
+   wheel's centre, the avatar opens first with the wheel a press away, or the
+   two sit side by side (EG).
+6. **Balance and orientation on the avatar page itself**, not only in a rail a
+   person may not scroll to (EQ).
+7. **The name**, "Seven Seats", offered and not finalised (EI).
