@@ -416,9 +416,20 @@ function stFieldPaint(){
    What it may say is narrow on purpose. A place in the body, how often the
    story comes back to it, and the person's own words. Never an address, a
    fetter or a saboteur, because those are definitions and the ruling is that
-   it discerns the energy and does not define it. Never a because, since
-   nothing the instrument measures is a cause. It asks why and the person
-   answers, which is how the root gets found by the person who carries it.
+   it discerns the energy and does not define it. Never a because about the
+   person, since nothing the instrument measures is a cause. It asks why and
+   the person answers, which is how the root gets found by the person who
+   carries it.
+
+   ONE BECAUSE IS ALLOWED, AND IT IS ABOUT THE BODY, NOT THE PERSON. Ruled 27
+   September, his words: "Source AI also needs to add a why, right? Why you're
+   releasing this. This is the most important part ... The stress response is
+   impairing the nerve flow. While the story happened, the resistance is
+   blocking the flow. So to bring you back to stasis and the baseline, all
+   stories must go." That is a why of release, the mechanism the product
+   already states as its definition of Charge, and it says nothing about why
+   the person is the way they are. So the rule above still holds for the root:
+   Source AI never answers the why it asks. See srcWhy below.
 
    THE HEARD ROWS WENT TO THE CHART. They printed each seat, the words heard
    there and the rung, which is exactly what a lane of the instrument now
@@ -453,6 +464,45 @@ function srcAsk(t){
   return at.charAt(0).toUpperCase()+at.slice(1)+' was in an earlier entry too. Why do you think it comes back?';
  return at.charAt(0).toUpperCase()+at.slice(1)+' comes up '+srcTimes(t.mentions)
   +' in this. Why do you think it keeps landing there?';}
+/* WHY RELEASE IT. His dictation, translated to the ten year old rule (V21):
+
+     his        The stress response is impairing the nerve flow. While the
+                story happened, the resistance is blocking the flow. So to
+                bring you back to stasis and the baseline, all stories must go.
+     shipped    The stress from this story is stuck in the nerves behind your
+                stomach. They rest again once every story stuck there is
+                released.
+
+   stress response and resistance become the stress, stuck, which is the
+   shipped Charge definition's own word ("It gets stuck when a stress reaction
+   starts and never gets to finish"). Impairing the nerve flow becomes stuck in
+   the nerves at a named place. Stasis and the baseline become rest. All
+   stories must go becomes every story released. It was "gone" in the first
+   cut, and read as a bereaved person it said the father goes, where a release
+   takes the charge and leaves the memory: ruling GS, "a release empties a
+   story from the body". Released is also the word on the button.
+
+   GROUNDED IN TWO FIELDS, AND NO OTHER. The seat is heard.seats[].band, which
+   srcHear has already cleared of negated mentions, so "I was not angry" never
+   earns a why. The place is that seat's nerve bundle in APC, the pattern
+   catalog: each phrase below is taken from the APC entry's own d, which
+   describes the nv it names, so the words say where that bundle sits and not
+   what it is called. The nerve names themselves stay off this line: "celiac
+   plexus" fails the ten year old test, and a single address's nerve would be
+   read off a fallback most of the time (parseStory marks those inferred),
+   which is the precision the place cannot fake. A seat APC does not carry is
+   not spoken about. At most two seats, heaviest rung first, because one or two
+   sentences is the length and the chart beside it already shows every lane. */
+var SRC_WHY_AT={'Root':'at the base of your spine','Sacral':'low in your belly',
+ 'Solar':'behind your stomach','Heart':'around your heart','Throat':'in your throat',
+ '3rd Eye':'behind your eyes','Crown':'at the top of your head'};
+function srcWhy(heard){
+ var at=((heard&&heard.seats)||[]).filter(function(s){
+  return SRC_WHY_AT[s.band]&&APC.some(function(a){return a.b===s.band;});})
+  .slice(0,2).map(function(s){return SRC_WHY_AT[s.band];});
+ if(!at.length)return '';
+ return 'The stress from this story is stuck in the nerves '+at.join(' and ')+'.'
+  +' They rest again once every story stuck there is released.';}
 /* ten marks, filled to the rung, the last four drawn as the end it asks at.
    Drawn and never printed, because a reading is not a score. */
 function srcPips(rung,col){
@@ -481,6 +531,14 @@ function srcPaint(){
    +'<span>Next question</span>'+srcPips(heard.top.rung,seatCol(heard.top.band))
    +'<span class="src-seat">'+esc(heard.top.band)+'</span></span></div>';
   else o+='<p class="src-note">Nothing read yet, so nothing is asked. Say what your body did, and where.</p>';}
+ /* the why, under whatever move was made, on every move that has heard a
+    seat. It is not a question, so Move on does not silence it: moving on ends
+    the asking, and the reason for a release is still true. */
+ var why=turn.move==='open'?'':srcWhy(heard);
+ /* an id and no class: the shell carries no rule for it, and the design gate
+    fails a class with no rule. Found by its id, the way the house finds a host. */
+ if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why release it</span>'
+  +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  h.innerHTML=o;
  var said=turn.move==='open'?SRC_OPEN:(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
  var sy=document.getElementById('srcsay');
