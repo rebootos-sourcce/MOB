@@ -22324,3 +22324,39 @@ directly from `BACKLOG-AUDIT.md` at `fb9f24c`: the 16 front and centre
 deliveries with their real quotes and questions, the 107 item backlog
 grouped by what it blocks, the 22 row repeat table, and all 90 tracked
 deliveries with their reaction status. Opened it for him.
+
+## JJ. The imprint toggle keeps all three, an analytics preview tab, a login blocker named, and two storyboards asked for
+
+His words, verbatim: "For the imprint view, the request is have three
+icons very similar to the field view uh, on the uh, imprints menu. So
+I can cycle through A, B, or C uh, and choose the version that I like.
+Start off with version A. Keep that little window for it, for all of
+them. That will be the designated kind of visualization or the data
+visualization layer. And I'm wondering if you can like, add in a
+button for one of the analytic layers, like just off the imprints. So
+if you click on it, it takes you to a, information layer that shows
+you the analytics. I'm not certain how I want that shaped yet. But it
+would be low on the right hand side in the menu, in a closed tab at
+the very bottom. And this will collect analytics from the sniffer, you
+know, over the last week, over the last month, what are the major
+patterns? Right, it branches naturally back to the analytic, main
+analytic page. Build it, baby, then give me a brand new build. Make
+sure there's a login page, the login page is tied to the database.
+Give me the storyboards for the onboarding, and for the tutorial, in
+HTML, both of them. And then we'll keep refining."
+
+Read plainly: the "which one stays" question from round JB and JI is
+answered, all three stay, permanently, as a toggle, default view A
+(Lanes). A new collapsed analytics preview tab is asked for at the
+bottom of the imprints panel, reading the sniffer's own recent
+patterns over a week and a month, linking through to the real
+Analytics surface. Two new HTML storyboards asked for, onboarding and
+tutorial. And a real, database backed login, which is not a small ask:
+the backend itself is still item 2 in the backlog, asked nine times
+and still unruled (Cloudflare or Supabase), the repository is still
+public (item 1, asked six times), and no product has been named as
+the one that goes online first (item 3). Building a real login against
+a real database now would mean either committing a real secret into a
+public repository or building something that only looks connected,
+both against this project's own rules. Named here rather than built
+blind or faked.
