@@ -50,6 +50,10 @@ Read the counts off the run. This file does not restate them.
     GUARD.md      the line, the argument for it, and its measured price
     LINES.md      his own lines, verbatim, sourced, gated, and where each may go
     TESTIMONY.md  what the testimonial exercise showed, and what to do next
+    FUNNEL.md     the funnel to day one hundred: cited research, the flow
+                  screen by screen with every step marked built, drafted,
+                  blocked or new, the first week, the attention line gated,
+                  and nine questions for him. Round JP
 
 Every brief in the repository, this directory's and the port briefs, is
 indexed with its status in `docs/briefs/README.md`.

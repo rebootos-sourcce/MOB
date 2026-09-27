@@ -55,8 +55,9 @@ Built, gated and measured. `node marketing/tests.js` is the gate.
 | File | What it is for | Status |
 |---|---|---|
 | `README.md` | Start here. The system in one page and how to run it | **current** |
-| `LINES.md` | **Your own lines, verbatim, in one place**, each with its source, both gate verdicts and where it may go. New 27 September; section 6 adds round IW, the bank and the vault; section 7 adds round JF, his voice and the list voice in the release | **current** |
+| `LINES.md` | **Your own lines, verbatim, in one place**, each with its source, both gate verdicts and where it may go. New 27 September; section 6 adds round IW, the bank and the vault; section 7 adds round JF, his voice and the list voice in the release; section 8 adds round JP, the attention line and the signal test | **current** |
 | `TESTIMONY.md` | The testimonial exercise: what landed, what did not, what to do next. New 27 September | **current** |
+| `FUNNEL.md` | **The funnel you described in round JP, to day one hundred.** Cold stranger to quiz to sign in with the same email to a first week and a hundred day arc, screen by screen, each step marked built, drafted, blocked or new. Nineteen cited outside sources, your attention line gated, nine questions for you. New 27 September | **current**. Strategy and flow only; `funnel/` was not touched, since you parked it at IB |
 | `MAP.md` | What a person carrying each of the nine charges responds to and what closes the page, sourced row by row | **dated**, 26 September panel counts |
 | `GUARD.md` | The line this system will not cross, the argument for it and its measured price | **current**. Its figures still hold after `bb2cbe0` |
 | `AESTHETIC.md` | The design language for marketing surfaces, as rules with no hex values | **current** |

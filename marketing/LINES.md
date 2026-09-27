@@ -386,6 +386,55 @@ all three wait on the recording.
 
 ---
 
+## 8. Round JP, 27 September. Attention, the signal test, and the why
+
+Quoted from `TASKS.md` JP. The funnel brief the attention line came in is
+written out in `marketing/FUNNEL.md`; only the lines that position the
+product are here.
+
+**Is the attention line new?** Yes. The repository was searched for
+*attention back*, *your attention* and *a counter* before this was written,
+and the only hit was `TASKS.md` JP itself.
+
+| # | His line | refuse.js | Voice gate | Where it may go |
+|---|---|---|---|---|
+| JP1 | This tool is a counter, this gives you your attention back. | pass | pass | byline. Page only in the form that describes the design, with the proof beside it. **Held from cold as a promise**: the instrument does not measure attention, so *gives you your attention back* is an outcome it cannot show. `FUNNEL.md` section 4 |
+| JP2 | It's a path of free will and embodiment, and it's a path of you becoming the best version of yourself by integrating the conditioning. | pass | pass | byline. *Best version* is the shelf's phrase, as in section 4 above; the product's is subtraction, BL |
+| JP3 | If you felt that, that's the mind-body connection. You're showing that pure thought controls the body. | pass | pass | page, on the signal test, in the app and on the web. *Pure thought controls the body* is a strong claim the gates do not catch; under his voice it is his reading of the exercise, not a finding |
+| JP4 | Imagine what we think when we don't feel confident or anxious, or believe we're shy. This is what's at stake. | pass | pass | page, after the signal test, as ruled in JP. Not cold: *what's at stake* before a person has felt anything reads as a threat |
+| JP5 | The stress response is impairing the nerve flow. While the story happened, the resistance is blocking the flow. So to bring you back to stasis and the baseline, all stories must go. | pass | pass | byline, and as the *why* Source AI gives, which is where he asked for it. *Impairing the nerve flow* is a physiological claim; not a page or cold line |
+
+**The word to watch in JP1 is *counter*.** He means a counter measure. A
+stranger on the attention shelf reads a tally, which is what screen time apps
+sell, and inside the product *counter* already names the two counters on the
+release and the count beside the vault. `FUNNEL.md` question 6.
+
+### Compressions, and these are ours
+
+Each passes both gates, run 27 September, one line at a time. None replaces
+a line of his.
+
+| Ours | From his | Note |
+|---|---|---|
+| Your phone is built to take your attention. This is built to give it back. | JP1 | page, with the design proof beside it: no feed, a release with a stated dose and end, the ritual as the only thing that reaches out |
+| You reach for your phone before you notice why. Where does the why sit? | JP1 | **cold safe.** Names the moment, makes no claim, and hands straight to the test |
+| A session ends when the list ends. | JP1 | cold safe. True of the built release: a dose of 25, 50 or 100, counters, two minutes of settling |
+| Think yes ten times. Feel where it lands. Now think no. | JP3 | cold safe, as the opening three seconds of a captioned clip. The viewer does it while watching |
+| A hundred questions. One number. Where it sits in your body. | JP | page, above the test's button |
+
+**One compression passed both gates and is false**, and is kept here so
+nobody writes it again: *"It ends. Nothing in it is built to keep you here."*
+`CLAUDE.md` says the gamification exists to keep the loop turning, so part of
+the product is built to bring a person back.
+
+**And one condition from section 7 is now met.** JF2 and its compression
+*"You may not have felt them all. Mark the ones you did."* were held from cold
+until the mark control existed. Round JO verified it built: a Felt toggle per
+pattern on the completion screen. Both may go cold now, beside a screenshot of
+that screen.
+
+---
+
 ## What was run
 
     27 September. Every line in sections 1 and 4, his and ours, through
@@ -401,6 +450,10 @@ all three wait on the recording.
     section 7, through refuse.js check() and check.py --line, one at a
     time. One hard failure, JF4 on the voice gate, on "sit back". It is his
     recording and is never set as type. Everything else passes.
+
+    27 September, round JP. The five lines and five compressions in section
+    8, and the one false compression, through refuse.js and check.py --line,
+    one at a time. No refusals and no hard failures on any of them.
 
 The negation guard in `refuse.js` was fixed the same day (it read across
 sentence ends, see that file). The verdicts above were taken after the fix.
