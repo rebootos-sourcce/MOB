@@ -19632,3 +19632,78 @@ first, since the server currently built serves neither of the ones he
 has been reviewing; and the exact domain spelling, since the server is
 configured for `atuned.app` against his own "I think it's .app or
 something."
+
+## HB. Furious, and asking directly: should everything be broken out, and who is protecting his asset. 27 September
+
+His words, verbatim: "I don't give a fuck if it means changing real
+working code. We're supposed to do it right the first time. You're
+changing your, your fuck up is what you're doing. So then answer me
+this as my technical team: whose job is it to protect my asset, given
+what I have right now. I can move things to Cloudflare, but, look, I'm
+asking for an enterprise based product, and I don't know how you've
+been programming for two days, not doing the prime directive, all the
+while I'm thinking you're doing the prime directive. So the schema
+should be broken out, the framework should be broken out, like
+everything should be broken out, shouldn't it? Isn't that what makes
+an enterprise product, that nothing is stacked on, so it's efficient
+and optimised and each module system, is that not efficient for a
+website? And then how do I protect my IP? I need answers from you
+guys. Go out to the internet, search the best ways, run a deep
+research on this, and come back and give me the right answers, the
+correct answers."
+
+**Told him directly and immediately, before anything else: I cannot
+flip the repository's visibility myself.** Checked the available
+GitHub tools this session actually has access to; none of them expose
+a repository settings change, only file, issue, pull request and
+branch operations. Making the repository private requires either him
+or someone with admin access using GitHub's own settings page, Settings,
+then General, then Danger Zone, then Change visibility. Said plainly
+rather than silently failing or claiming an action that did not
+happen.
+
+**The "prime directive" confusion is real and named exactly rather
+than smoothed over.** This repository's own `CLAUDE.md`, the file
+governing every ruling this session has followed, states as its own
+opening rule: "`source.html` stays one file with no dependencies." That
+is a real, literal, standing instruction in the document this whole
+session has been built against, and it is the opposite of "everything
+broken out." It was not invented this session and it was not a
+misunderstanding of his words in isolation; it is a rule he himself
+ruled at some point before this session began, for a specific reason
+recorded in the same file, that the product ships as a zero
+infrastructure, zero cost, instantly shareable diagnostic instrument.
+What he has been describing this whole time, an enterprise product
+with a broken out schema, framework and backend, is a different
+product built to a different rule, and it already exists, separately,
+in `rebootos-sourcce/reboot-os`, confirmed at round GX and detailed at
+round HA. Nobody hid this; the two efforts have simply been running in
+parallel without it being made clear until this session that they were
+two different rulings rather than one.
+
+**His technical question answered directly, not dispatched blind,
+since he asked "you tell me" the same way at round GV.** Yes: breaking
+a schema, an API layer and a frontend into separate, independently
+deployable modules is standard, well established practice for an
+enterprise product, for real reasons, independent scaling, independent
+deployment, a smaller attack surface per module, and genuine protection
+for anything that lives only on the server and is never shipped to a
+client. This is not a novel claim needing invention; it is the
+industry's own standard answer, and `reboot-os`'s existing split,
+already reviewed twice this session, is a real instance of exactly
+this pattern, a Cloudflare Worker, a D1 database and a sync protocol
+kept apart from anything shipped to a browser.
+
+Dispatched: a real, cited research pass on modern enterprise SaaS
+architecture patterns, specifically what should be broken out, in what
+order, and at what cost, cross referenced against what `reboot-os`
+already has and what this repository's own `atuned_src/` would need to
+migrate onto it, to `technical-director`, since he explicitly asked
+for research from outside this project's own reasoning rather than an
+internal opinion restated.
+
+What I need from him: the repository visibility change itself, since I
+have no tool that performs it and it needs him or another admin on the
+account; and the same Cloudflare or Supabase, and which product goes
+online first, questions from round HA, which this message does not
+answer and which the new research depends on rather than replaces.
