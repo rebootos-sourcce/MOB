@@ -3063,10 +3063,26 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* AND THE FETTERS ARE LIT IN THEIR OWN SEAT COLOUR.
 
    Bold and coloured, ruled. The tint behind them is what makes a run of
-   three in one sentence read as a cluster rather than as three loud words. */
+   three in one sentence read as a cluster rather than as three loud words.
+
+   THE BOLD IS GONE, AND THAT REVERSES THE RULING ABOVE UNTIL HE CONFIRMS IT.
+   The mark sat at 600 on this layer while the textarea that owns the caret
+   sat at the editor's 300, which broke the rule in the block above: weight is
+   a metric that moves glyphs. Bold Inter is wider than light Inter, so every
+   character after a mark drew to the right of where the textarea placed it,
+   and the caret landed inside the words a person was reading. Measured on the
+   round HT build at 1600 with "I was angry and ashamed and tight and angry and
+   ashamed then it ended here", five marks, the end of the line sat at x 719.66
+   with the marks at 600 and x 706.83 without: 12.83px of drift on one line,
+   growing with every mark. Emphasis is carried by colour, tint, the ring and
+   an underline in the seat colour instead, none of which takes up any width.
+   Weight is the one treatment this layer cannot use while the layers are in
+   register, so do not put it back here; if the owner rules bold must stay,
+   the textarea has to carry the same marks' widths, which it cannot. */
 .st-f{background:color-mix(in srgb,var(--c) 17%,transparent);color:var(--c);
- font-weight:600;border-radius:3px;
- box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 26%,transparent)}
+ border-radius:3px;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 26%,transparent),
+  inset 0 -2px 0 var(--c)}
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
