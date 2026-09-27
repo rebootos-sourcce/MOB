@@ -18561,3 +18561,76 @@ every hand off:
 What I need from him: the Character/Masks naming collision above,
 since both cannot be named Masks; and whichever of his own open
 questions the dispatched work comes back asking, once it does.
+
+## GP. The GO backlog audit, back. Five rulings named as the ones that unblock the most. 27 September
+
+`project-manager`'s answer to his repeated "what's left" question, read
+against the full backlog rather than from memory, no files written.
+Spot verified rather than trusted whole: `engine/ladder.js` is 288
+lines with `streakRead`, `ledgerRead`, `intentionRead` and `ladderRead`
+exactly where cited; `ui/release.js` is 407 lines as claimed;
+`boundaryCross` at `engine/avatar.js:108` still carries the same three
+defects round GJ found, unfixed, confirming that fix is still real
+backlog and not accidentally already done; `ui/summary.js` still prints
+"of 100" and "of 10" at the cited lines, the count-against-a-total
+shape the product rules against.
+
+**His three items, answered directly.** Badges: half true. A marks and
+streak system is real and gated (`ladder.js`, rendered on Compass and
+Ritual, gated by `tests/functional.js` and `tests/engine.js` section
+27), but nothing pays out for a mark, there is no award shelf, and the
+word "badge" in the code already means something else (`crBadge` in
+`ui/component.js` is a reading icon, not an award), which is the likely
+root of "we never added" reading as true to him even though a mark
+system ships today. Release: the mechanic runs end to end and already
+shipped several real fixes this session (the free tier lockout,
+`b0eed95`), but the overhaul he ordered at round DU has never been
+dispatched, not even its question list, and the name itself (release,
+protocol, or Integrate Protocol) is unruled. Funnel: the four static
+pages from 21 September have not moved since; everything built after
+that is design documents carrying open questions, not new pages.
+
+**Five rulings named as blocking the most work, in his own words where
+he gave them:**
+1. Character against Masks (round GO, this session): the glass bar
+   already has a `masks` layer, so both buttons cannot carry that name.
+   Blocks the GO left panel dispatch directly.
+2. The reward word, and whether marks pay out: "marks" as shipped, or
+   badges and achievements on the surface; patterns, points or karma.
+   Paying five patterns a mark prices out to about a fifth of a
+   tier's first free month.
+3. The release's own name: release (tested and won 42 to 14 at round
+   EC), protocol, or Integrate Protocol, and if the last, whether it
+   renames the whole mechanic or only the finished card.
+4. The release threshold, `sq>=4` in `engine/compute.js:231`, the
+   charge level at which an address has anything to release at all:
+   lower it, or keep it and let awards route around it.
+5. Whether the opening screen talks about results and purpose: one
+   ruling from 20 September says no, a later one from 26 September
+   says yes, and this gates both onboarding and the welcome page.
+
+**A fix sweep named with no ruling needed**, real defects sitting in
+shipped code with nothing blocking them: `boundaryCross`'s three bugs,
+`summary.js`'s count-against-a-total lines, a false "0 to 1 averaged"
+line in `drills.js:386` where the engine actually runs 0 to 100, Sun,
+Moon and Rising all titled "Zodiac sign" at `drills.js:1211`, the six
+string replacements already written into `COPY.md` at round GG4, and
+the picture tap on a phone that opens its reading thousands of pixels
+down the page, which round GM put to him as a question but which the
+standing "stop asking, fix it" rule from round FJ actually covers.
+
+**Explicitly not this round, with the reason each time**: accounts,
+paywall, founding offers and push all wait on his own 25 September
+"don't wait on him" sequencing; karma payouts and two new award types
+wait on the reward word above; the four Energetics questions mockups
+from round GE are still held by his own "clear the backlog first"
+instruction, though rounds GG, GH and GO opened seven more design
+threads since, which the report flags rather than quietly extends
+further; a React mobile version is asked and unanswered since round GF
+and the one file rule stands until ruled otherwise.
+
+Full detail, including roughly forty smaller open questions across
+rounds FS through GO and the ones carried since before round FO, sits
+in the agent's own report rather than copied here in full; the five
+rulings above are the ones the report itself names as unblocking the
+most work, and are what goes to him first.
