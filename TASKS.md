@@ -22425,3 +22425,27 @@ each saved entry's own text instead. Four real questions carried
 below, the most consequential being whether old entries should be
 re-read by today's sniffer or keep what they read when saved, since
 the second option is a record format change.
+
+## JN. Validate the sign in shell, and a document for setting up hosting on Cloudflare
+
+His words, verbatim: "Validate login and name for assistance and
+connection to the database and calls to database ensure the user can
+log in without error. Give me my steps to setting it up on hosting and
+cloudflare and a document."
+
+Checked directly against `atuned_src/ui/account.js`, untouched since
+round IP and not in flight with any other agent: the sign in form
+already never errors (`preventDefault`, the password cleared on every
+press, `status()` reporting "Accounts are not live yet. Nothing was
+sent." rather than staying silent or throwing), and the profile name
+field already refuses an empty name through the same honest writer.
+No code change follows, since the shell already does what "validate...
+without error" asks. Nothing here can call a real database yet,
+because no database exists to call: this is still blocked on the same
+three items named at round JJ, and this round's mention of Cloudflare
+specifically, without a matching ruling on the repository's visibility
+or which product goes online first, does not settle that collision by
+itself. Named rather than assumed settled.
+
+What is genuinely new and unblocked is the document, since it is steps
+for him to take, not code. Written directly as `HOSTING-SETUP.md`.
