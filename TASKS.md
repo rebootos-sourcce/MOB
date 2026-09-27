@@ -21149,3 +21149,24 @@ given a commit of its own. Found when `git status` turned up
 committing it now, unchanged from what round HX already verified
 directly, as `09c5149`. The content itself was never at risk, only its
 record.
+
+## IA. Urgency, a real time pressure named for the first time this session. 27 September
+
+His words, verbatim: "It's important that we end up cleaning up the
+compass before we run out of tokens for the build. We need to end up
+with a clean build. I need the funnel. Reviewing the story page, I
+don't like that the release goes below the fold, that's terrible UI
+UX when we've got so much real estate. I don't like that the design
+elements look like they're completely separate. Update all of our
+documents so we've got the latest in case we run out of tokens. I
+need that compass fixed. I need the body map wired in. I need the
+login page, I need it wired in, without questions. It needs to be
+effective and clean, because the software needs to work, front to
+back, before we run out of tokens."
+
+Logged in full before anything below it is touched. Two claims in it
+checked directly rather than assumed: the body map is not owed work,
+it was wired in and pushed at round HR, commit `4c03123`, before this
+message arrived; and the Compass mockups he is asking to be finished
+from were built at round HS and verified by me but never actually sent
+to him, an oversight found here rather than repeated further.
