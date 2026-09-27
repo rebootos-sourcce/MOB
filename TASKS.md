@@ -20516,3 +20516,82 @@ This closes every one of round GO's five original dispatches: the
 Field left panel (HM), the Compass and Knowledge base check (GY), the
 body map specification (GT) and its build (HE), and now the Story page
 and Source AI.
+
+## GR. Ashamed reads as shame, not as four Anger pills. 27 September
+
+The exact bug reported at round GR: "I feel ashamed that I am relieved"
+read as four inferred Solar Anger imprints at plus 1.7 each, and the
+Story page printed "Anger +1.7" four times over. Verified directly,
+not trusted from the report: in an isolated worktree on commit
+`1d35820`, calling `parseStory('I feel ashamed that I am relieved')`
+on the built engine now returns exactly one imprint, named
+"Self-Judgment (Solar)," fetter Shame, stated rather than inferred, at
+6.7. The six solar shame words (ashamed, humiliated, stupid, worthless,
+embarrassed, guilty) now carry Shame as their own stated fetter in the
+lexicon, the same fact `ADJ2CHG` already held and never fed into the
+reading.
+
+**A regression that fixing it alone would have caused, caught before
+it shipped.** A stated fetter used to be one flag for the whole text,
+so once shame is a stated fetter, "My father died and I feel ashamed"
+would have filed the heart as Shame too, the exact grief-as-shame bug
+the quarter rule already exists to stop. Checked directly:
+`parseStory('My father died and I feel ashamed')` still reads
+Separation, Martyrdom, Longing and Closed Heart as Sad at the heart,
+and Self-Judgment as Shame at the solar plexus, on its own seat, not
+bleeding across. The fix scopes the stated-fetter rule to the seat its
+own word sits at (`statedAt` keyed per band in `sniff.js`, not one flag
+for the text), confirmed by reading the code directly rather than
+trusting the description.
+
+**The display fix, checked in the built code, not assumed from its
+name.** `impGhosts` in `imprints.js` now folds inferred ghosts that
+share a seat and fetter into one pill carrying the summed amount, so
+the four "Anger +1.7" pills become one. Separately, a fetter the words
+actually named at a seat with no address for it is now labelled by
+the fetter, not by whichever address happens to carry it: "I am
+exhausted" printed "Pride +8.7" before, and the underlying reading is
+still node Pride, fetter Apathy, since that address is only the
+carrier, but the pill and its title now read "Apathy," the thing the
+words said, confirmed by reading `impPill`'s label logic directly.
+
+**Scope, measured against the immediate parent, not assumed.**
+`tools/equiv.py` against `e97c6eb` shows the same 1251 declarations on
+both sides, none added or removed, and five changed bodies: `LEX`, the
+lexicon data itself, `impGhosts`, `impPill` and `impRender` in the
+imprints display, and `parseStory` in the engine. Nothing wider.
+
+Gates run twice: once by the agent in its own worktree, once by me in
+a fresh one on the same commit. `tests/engine.js` 1763 passed 0 failed
+with the new "GR" group present, `tests/collide.js` 336 passed 0
+failed, `tests/funnel.js` 172 passed 0 failed, the voice check clean.
+`tests/design.js` failed the same one Field frame-rate read it has
+failed on clean, unmodified HEAD every time this session has checked
+it under load, which this change does not touch.
+
+**A stale, uncommitted build found sitting in the working tree while
+checking this in, and cleared rather than committed.** `source.html`
+and `engine.js` carried an old, uncommitted build stamped from commit
+`325e923`, the round HH accidental sweep, reverting three "at a weight
+of" strings back to "of 10." Rebuilding from the current `atuned_src`
+matched the committed `1d35820` byte for byte except the expected
+build-stamp line, so it was leftover cruft from before this session's
+`git diff --cached --stat` discipline began, not new work, and was
+discarded with `git checkout` rather than committed.
+
+Open, named in the report and left for a ruling rather than guessed
+at: three more places where the lexicon's `ADJ2CHG` table and the
+seat's actual reading disagree (crown reading Anger where it says
+Apathy for detached, disconnected, hollow; throat reading Disgust
+where it says Apathy for unheard, voiceless, choked, and Anticipation
+for tense, tensed; root reading Fear where it says Anticipation for
+nervous, anxious), the worst being "I feel detached" reading as Crown
+Anger. Also open: Sofia's line, "I am angry with a client... I am
+ashamed of it," still shows only Anger on the imprint panel because a
+stated fetter is dropped when another is named at the same seat, the
+one-line change already written in `DESIGN-sniffer.md` and still
+waiting on a ruling; and an inferred reading's fallback label still
+claims more certainty than was read, since arithmetic picked it and no
+word said it.
+
+Not pushed yet with this fix. Pushing next with this log entry.
