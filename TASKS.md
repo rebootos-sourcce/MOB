@@ -20984,3 +20984,44 @@ panel sits beside the ring in the centre column, at 418 pixels wide,
 carrying ninety two words, which is the exact column law his own round
 HS ruling states and this screen breaks. His word "regressing" is
 answered directly below rather than argued with.
+
+## HW. A precise, ready to reproduce bug report on the Story page's caret drift. 27 September
+
+His words, verbatim, technical and exact rather than dictated in the
+open register of the rounds around it: "The Story page journal draws
+its highlights on a layer behind a transparent textarea.
+atuned_src/shell/head.html sets the shared editor weight to 300
+(.st-ed{...font-weight:300}), and the textarea (.st-ta) owns the caret
+at that weight. But the highlight mark .st-f sets font-weight:600 on
+the visible layer (.st-hl). Bold Inter is wider than light Inter, so
+every glyph after a mark sits to the right of where the textarea's
+invisible glyphs are, and the caret lands inside the words a person is
+reading. Measured on the shipped build, round HT, 27 September: with
+the text 'I was angry and ashamed and tight and angry and ashamed then
+it ended here' typed on the Story tab at 1600 wide, the end of the
+line on #sthl sat at x 719.66 with the marks at 600 and at x 706.83
+with the marks set to font-weight:inherit. That is 12.83 pixels of
+drift after five marks on one line. Reproduce it first: use Playwright
+on source.html, setTab(0), fill #sttext, then compare a Range rect on
+the last characters of #sthl before and after setting every mark to
+font-weight:inherit. The block comment above .st-ed in head.html
+already states the rule this breaks: every metric that affects where a
+glyph lands has to be identical on both layers. The fix: take the
+weight change off .st-f and carry the emphasis another way, the seat
+colour and tint it already has, and optionally an underline such as
+box-shadow:inset 0 -2px 0 var(--c). Do not change the textarea's
+weight. The comment on .st-f says 'Bold and coloured, ruled', so the
+bold is a ruling. Name that collision in the commit and in TASKS.md so
+the owner can rule on it. Do not quietly overturn it. Done looks like
+this: the drift measurement reads 0, within a pixel, on the same text,
+BUILD.sh passes, tests/design.js and tests/functional.js pass, and a
+screenshot of the Story tab shows the caret sitting at the end of the
+visible text after several highlighted words. Edit atuned_src/, never
+source.html, and rebuild."
+
+A real, useful independent corroboration, not asked for: the same
+round's Story redesign dispatch (round HU) found and measured the same
+defect on its own, unprompted, before this message arrived, and had
+already queued it as a suggested task. That suggestion is withdrawn
+below as superseded, since his own message already carries the exact
+fix and the exact collision to name rather than guess at.
