@@ -5,8 +5,8 @@
   "role": "creative director · ICP",
   "weight": 160,
   "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
-  "CQ": 39.2,
-  "DQ": 0,
+  "CQ": 62.1,
+  "DQ": 10.68,
   "seat": "Throat",
   "track": "Mind",
   "tier": 3,
@@ -286,22 +286,22 @@
   "role": "managing partner",
   "weight": 35,
   "says": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
-  "CQ": 0.8,
-  "DQ": 55.19,
+  "CQ": 17.5,
+  "DQ": 54.28,
   "seat": "Throat",
   "track": "Mind",
-  "tier": 1,
-  "substituted": true,
-  "actualTrack": "Somatic",
+  "tier": 2,
+  "substituted": false,
+  "actualTrack": "Mind",
   "called": {
-   "k": "sig",
-   "nm": "The Signal Test",
-   "min": 3,
-   "track": "Somatic",
-   "d": "Proof that a word with no quality of its own moves your body.",
-   "tier": 1
+   "k": "listen",
+   "nm": "Active Listening",
+   "min": 10,
+   "track": "Mind",
+   "d": "Ten minutes on sound. No labelling.",
+   "tier": 2
   },
-  "nFit": 4,
+  "nFit": 10,
   "fit": [
    {
     "k": "escan",
@@ -334,6 +334,54 @@
     "track": "Somatic",
     "tier": 1,
     "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
    }
   ],
   "releasable": 97,
@@ -380,8 +428,8 @@
   "role": "founder, second company · ICP",
   "weight": 180,
   "says": "I work until the work is done and the work is never done. Rest feels like a moral failure.",
-  "CQ": 28.1,
-  "DQ": 3.51,
+  "CQ": 59,
+  "DQ": 19.69,
   "seat": "Solar",
   "track": "Somatic",
   "tier": 3,
@@ -661,8 +709,8 @@
   "role": "seeker, six modalities · ICP",
   "weight": 150,
   "says": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
-  "CQ": 40.9,
-  "DQ": 0,
+  "CQ": 64.4,
+  "DQ": 5.37,
   "seat": "Root",
   "track": "Body",
   "tier": 3,
@@ -942,8 +990,8 @@
   "role": "somatic practitioner · ICP",
   "weight": 140,
   "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
-  "CQ": 56.6,
-  "DQ": 0,
+  "CQ": 72.9,
+  "DQ": 3.16,
   "seat": "Throat",
   "track": "Mind",
   "tier": 3,
@@ -1223,22 +1271,22 @@
   "role": "high performer, endurance · ICP",
   "weight": 170,
   "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
-  "CQ": 15,
-  "DQ": 10.09,
+  "CQ": 48.5,
+  "DQ": 26.22,
   "seat": "Solar",
   "track": "Somatic",
-  "tier": 1,
+  "tier": 3,
   "substituted": false,
   "actualTrack": "Somatic",
   "called": {
-   "k": "sig",
-   "nm": "The Signal Test",
-   "min": 3,
+   "k": "truth",
+   "nm": "The Somatic Truth Check",
+   "min": 2,
    "track": "Somatic",
-   "d": "Proof that a word with no quality of its own moves your body.",
-   "tier": 1
+   "d": "Expansion is true. Contraction is distortion.",
+   "tier": 2
   },
-  "nFit": 4,
+  "nFit": 17,
   "fit": [
    {
     "k": "escan",
@@ -1271,6 +1319,110 @@
     "track": "Somatic",
     "tier": 1,
     "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   {
+    "k": "observer",
+    "nm": "The Observer Technique",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "Memory without charge. The technique for memory-attached patterns."
+   },
+   {
+    "k": "detect",
+    "nm": "The Detection Practice",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "The pre-linguistic foundation. Building your own nervous system map."
+   },
+   {
+    "k": "hands",
+    "nm": "Healing Hands",
+    "min": 15,
+    "track": "Energy",
+    "tier": 3,
+    "d": "The palm field as a directable instrument."
+   },
+   {
+    "k": "hardtrauma",
+    "nm": "Hard Trauma Meditation",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "For the deep ones. Observer mode on a traumatic memory."
+   },
+   {
+    "k": "superego",
+    "nm": "Superego Pattern Meditation",
+    "min": 20,
+    "track": "Mind",
+    "tier": 3,
+    "d": "What you absorbed from the people who raised you."
+   },
+   {
+    "k": "chakra",
+    "nm": "Individual Chakra Meditation",
+    "min": 20,
+    "track": "Energy",
+    "tier": 3,
+    "d": "One band at a time. Five minutes of breath, ten of visualisation."
+   },
+   {
+    "k": "candle",
+    "nm": "Candle Visualisation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 3,
+    "d": "Concentration training. Hold one image."
    }
   ],
   "releasable": 20,
@@ -1400,7 +1552,7 @@
   "role": "retired midwife",
   "weight": 15,
   "says": "Nothing in particular. Things do not sit on me the way they used to.",
-  "CQ": 100,
+  "CQ": 97,
   "DQ": 0,
   "seat": "Root",
   "track": "Body",
@@ -1615,22 +1767,22 @@
   "role": "C-suite, third turnaround · ICP",
   "weight": 100,
   "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
-  "CQ": 12,
-  "DQ": 9.19,
+  "CQ": 42.3,
+  "DQ": 26.85,
   "seat": "Sacral",
   "track": "Somatic",
-  "tier": 1,
+  "tier": 3,
   "substituted": false,
   "actualTrack": "Somatic",
   "called": {
-   "k": "sig",
-   "nm": "The Signal Test",
-   "min": 3,
+   "k": "truth",
+   "nm": "The Somatic Truth Check",
+   "min": 2,
    "track": "Somatic",
-   "d": "Proof that a word with no quality of its own moves your body.",
-   "tier": 1
+   "d": "Expansion is true. Contraction is distortion.",
+   "tier": 2
   },
-  "nFit": 4,
+  "nFit": 17,
   "fit": [
    {
     "k": "escan",
@@ -1663,6 +1815,110 @@
     "track": "Somatic",
     "tier": 1,
     "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   {
+    "k": "observer",
+    "nm": "The Observer Technique",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "Memory without charge. The technique for memory-attached patterns."
+   },
+   {
+    "k": "detect",
+    "nm": "The Detection Practice",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "The pre-linguistic foundation. Building your own nervous system map."
+   },
+   {
+    "k": "hands",
+    "nm": "Healing Hands",
+    "min": 15,
+    "track": "Energy",
+    "tier": 3,
+    "d": "The palm field as a directable instrument."
+   },
+   {
+    "k": "hardtrauma",
+    "nm": "Hard Trauma Meditation",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "For the deep ones. Observer mode on a traumatic memory."
+   },
+   {
+    "k": "superego",
+    "nm": "Superego Pattern Meditation",
+    "min": 20,
+    "track": "Mind",
+    "tier": 3,
+    "d": "What you absorbed from the people who raised you."
+   },
+   {
+    "k": "chakra",
+    "nm": "Individual Chakra Meditation",
+    "min": 20,
+    "track": "Energy",
+    "tier": 3,
+    "d": "One band at a time. Five minutes of breath, ten of visualisation."
+   },
+   {
+    "k": "candle",
+    "nm": "Candle Visualisation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 3,
+    "d": "Concentration training. Hold one image."
    }
   ],
   "releasable": 18,

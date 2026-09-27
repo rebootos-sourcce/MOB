@@ -32,7 +32,8 @@
      fortnight read as a trend is a defect this file's predecessor already
      shipped once and had caught by looking at the picture.
 
-   SEVEN GATES. One to five are caldata's, unchanged. Six and seven are new.
+   THE GATES. Zero to five are caldata's, and zero to three read the one pin
+   in pin.js since 27 September. Six onward are this file's own.
    ============================================================ */
 const path=require('path'), fs=require('fs');
 const E=require(path.resolve(__dirname,'../../engine.js'));
@@ -61,7 +62,10 @@ const firstInTable=set=>set[0];
 function ritFor(r,pick){
  pick=pick||lightest;
  const band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
- const tier=r.DQ>=8?1:(r.DQ>=4?2:3);
+ /* the owner's bands, 70 and 40, ruled 26 September. This copy read 8
+    and 4 from 3824c63 until 27 September; GATE 0 now reads it against
+    ui/ritual.js. */
+ const tier=r.DQ>=70?1:(r.DQ>=40?2:3);
  const fit=PRACTICE.filter(p=>p.tier<=tier);
  const first=fit.filter(p=>p.track===track);
  const called=first.length?pick(first):pick(fit);
@@ -79,6 +83,7 @@ function forSeat(seat,tier,skip){
            substituted:!on.length,wanted:track}:null;}
 
 const SIM=require(path.resolve(__dirname,'losssim.js'));
+const PIN=require(path.resolve(__dirname,'pin.js'));
 const TODAY=Date.UTC(2026,8,20);           /* Sunday 20 September 2026 */
 /* ALL NINE OF THE PANEL, NOT EIGHT. Ana is 50 of the thousand in
    losssim.js PANEL and was not extracted, so a surface simulation against the
@@ -421,59 +426,48 @@ Object.values(out.profiles).forEach(o=>{
 let bad=0;
 const fail=m=>{bad++;console.error('  FAIL  '+m);};
 
-/* PANEL-ritual-1000.md section 3.1, transcribed. */
-const P31={
- Diane :[28.1, 3.51,'Solar' ,'Somatic',3,'The Emotional Scan',20, 8],
- Derek :[15.0,10.09,'Solar' ,'Somatic',1,'The Emotional Scan',20,20],
- Marcus:[39.2, 0   ,'Throat','Mind'   ,3,'Noting Meditation' ,15, 0],
- Angela:[40.9, 0   ,'Root'  ,'Body'   ,3,'Box Breathing'     , 5, 0],
- Sofia :[56.6, 0   ,'Throat','Mind'   ,3,'Noting Meditation' ,15, 0],
- James :[12.0, 9.19,'Sacral','Somatic',1,'The Emotional Scan',20,18],
- Ana   :[ 7.6,22.84,'Solar' ,'Somatic',1,'The Emotional Scan',20,41],
- Gordon:[ 0.8,55.19,'Throat','Somatic',1,'The Emotional Scan',20,97],
- Rosa  :[100 , 0   ,'Root'  ,'Body'   ,3,'Box Breathing'     , 5, 0]};
+/* GATE 0, 1, 2 AND 3 READ OFF pin.js, THE ONE COPY. These four used to be
+   typed here, transcribed from PANEL-ritual-1000.md 3.1 and DESIGN-ritual.md
+   1.2, and the same tables were typed into two sibling files. All three went
+   red on 25 September and stayed red: the engine had been refitted under
+   them, and their ritFor still dealt the 8 and 4 bands the product left at
+   3824c63. pin.js says which of the failures was drift and which a defect,
+   and why the values are pinned rather than read live. */
+console.error('GATE 0  the ported ritFor deals the bands ui/ritual.js deals');
+const bands=PIN.checkBands(__filename,fail);
+console.error('        port '+bands.have+', product '+bands.want);
 
-console.error('GATE 1  the reading against PANEL-ritual-1000.md 3.1');
-const stale=[];
-Object.entries(P31).forEach(([nm,e])=>{
+console.error('GATE 1  the reading against the pin, '+PIN.AT);
+const stale=[], now={};
+Object.keys(PIN.PIN).forEach(nm=>{
  const P=PEOPLE.filter(p=>p.nm===nm)[0];
  const r=loadPerson(P), c=ritFor(r), old=ritFor(r,firstInTable);
  const got=c.substituted?c.actualTrack:c.track;
- const CQ=+(+r.CQ).toFixed(1), DQ=+(+r.DQ).toFixed(2);
- const relN=r.carrying.filter(x=>x.sq>=4).length;
- if(CQ!==e[0])   fail(nm+' CQ '+CQ+' against '+e[0]);
- if(DQ!==e[1])   fail(nm+' DQ '+DQ+' against '+e[1]);
- if(r.darkB!==e[2]) fail(nm+' seat '+r.darkB+' against '+e[2]);
- if(got!==e[3])  fail(nm+' track '+got+' against '+e[3]);
- if(c.tier!==e[4])  fail(nm+' tier '+c.tier+' against '+e[4]);
- if(relN!==e[7]) fail(nm+' releasable '+relN+' against '+e[7]);
- if(c.called.nm!==e[5]||c.called.min!==e[6]){
-  if(old.called.nm===e[5]&&old.called.min===e[6])
-   stale.push(nm+': panel '+e[5]+' '+e[6]+'m, build '+c.called.nm+' '+c.called.min+'m');
-  else fail(nm+' practice '+c.called.nm+' against panel '+e[5]
-    +', and the old first in table rule gives '+old.called.nm+', so this is '
-    +'neither the current rule nor the one the panel measured');}});
-console.error('        '+(bad?bad+' failures':'nine profiles, six columns each, all agree'));
+ PIN.checkPin(nm,{CQ:r.CQ,DQ:r.DQ,seat:r.darkB,track:got,tier:c.tier,
+  practice:c.called.nm,min:c.called.min,releasable:r.carrying.filter(x=>x.sq>=4).length},fail);
+ now[nm]={seat:r.darkB,track:got,substituted:c.substituted,tier:c.tier,
+  practice:c.called.nm,min:c.called.min};
+ /* GATE 2. PANEL-ritual-1000.md 3.1's practice column, reconciled and not
+    gated: see P31_PRACTICE in pin.js. */
+ const p31=PIN.P31_PRACTICE[nm];
+ if(p31&&(c.called.nm!==p31[0]||c.called.min!==p31[1]))
+  stale.push(nm+': panel '+p31[0]+' '+p31[1]+'m, build '+c.called.nm+' '+c.called.min+'m, '
+   +(old.called.nm===p31[0]&&old.called.min===p31[1]
+     ?'and the old first in table rule reproduces the panel'
+     :'and the old rule gives '+old.called.nm+' now, because the engine under it moved'));});
+console.error('        '+(bad?bad+' failures':'nine profiles, eight columns each, all agree'));
 
-console.error('GATE 2  the practice column of 3.1, and why it differs');
-console.error('        '+stale.length+' of 9 rows differ, and the old first in table');
-console.error('        rule reproduces every one of them. ui/ritual.js:16 records the');
-console.error('        change and its reason. The panel column is stale, not wrong.');
+console.error('GATE 2  the practice column of PANEL-ritual-1000.md 3.1, reconciled, not gated');
+console.error('        '+stale.length+' of 9 rows differ from the build. ui/ritual.js records the');
+console.error('        pick rule change; 3.1 is the 20 September snapshot and says so.');
+stale.forEach(s=>console.error('          '+s));
 
-console.error('GATE 3  the practice column against DESIGN-ritual.md 1.2');
-const D12={Marcus:['Throat','Mind',3,'Active Listening',10],
- Sofia:['Throat','Mind',3,'Active Listening',10],
- Diane:['Solar','Somatic',3,'The Somatic Truth Check',2],
- Derek:['Solar','Somatic',1,'The Signal Test',3],
- Angela:['Root','Body',3,'Box Breathing',5],
- Rosa:['Root','Body',3,'Box Breathing',5],
- Gordon:['Throat','Somatic',1,'The Signal Test',3]};
-Object.entries(D12).forEach(([nm,[seat,tr,ti,pn,mn]])=>{
- const o=out.profiles[nm]; if(!o){fail(nm+' not extracted');return;}
- const got=o.substituted?o.actualTrack:o.track;
- if(!(o.seat===seat&&got===tr&&o.tier===ti&&o.called.nm===pn&&o.called.min===mn))
-  fail(nm+' against 1.2: got '+o.seat+'/'+got+'/'+o.tier+'/'+o.called.nm);});
-console.error('        seven profiles, five columns each');
+/* GATE 3. DESIGN-ritual.md section 1.2, which is the current measurement,
+   parsed out of the document rather than typed here, so the document and
+   the build cannot disagree without this file refusing to write. */
+console.error('GATE 3  the practice column against DESIGN-ritual.md 1.2, read out of the document');
+const n12=PIN.checkDoc(now,fail);
+console.error('        '+n12+' profiles, six columns each');
 
 console.error('GATE 4  every queue row names a real engine.js source');
 const RREF=loadPerson(PEOPLE.filter(p=>p.nm==='Gordon')[0]);

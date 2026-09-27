@@ -850,14 +850,23 @@ function chainReport(){
  'isolated','abandoned','shout','shouted','shouting','shouts','yelling','numb',
  'numbness','numbed','deadened','flat','tight','tightness','tightened','clenched',
  'clenching','held','holding','holds','carry','carrying','carried'];
- let h0=0,h1=0;
+ let h0=0,h1=0; const miss0=[], miss1=[];
  fam.forEach(w=>{const s='I '+w+' today';
-  if(E.scanStory(s).some(x=>x.t===w))h0++;
-  if(E.scanStory(STEM.fold(s,STEMIX,KNOWN).text).length)h1++;});
+  if(E.scanStory(s).some(x=>x.t===w))h0++; else miss0.push(w);
+  if(E.scanStory(STEM.fold(s,STEMIX,KNOWN).text).length)h1++; else miss1.push(w);});
  console.log('  '+fam.length+' ordinary inflections and near synonyms of words the table already holds:');
  console.log('  read by the sniffer today '+h0+', read with the fold '+h1+'.');
- console.log('  The three the product misses include fear, shame and anger, which are');
- console.log('  the names of three of the nine axes.');
+ /* THIS LINE USED TO BE TYPED, AND IT WENT FALSE. It read "the three the
+    product misses include fear, shame and anger, which are the names of three
+    of the nine axes", which was true on the lexicon of 25 September and was
+    still printed after the lexicon grew to read all three. Which axis names
+    are missed is now read off the same run as the counts above. */
+ const AX=CHARGES.map(c=>c.toLowerCase()).filter(w=>fam.indexOf(w)>=0);
+ const axMiss=AX.filter(w=>miss0.indexOf(w)>=0);
+ console.log('  the engine\'s own axis names in the probe ('+AX.join(', ')+'), missed by the sniffer today: '
+  +(axMiss.length?axMiss.join(', '):'none'));
+ console.log('  missed today: '+(miss0.join(', ')||'nothing'));
+ console.log('  still missed with the fold: '+(miss1.join(', ')||'nothing'));
  console.log('\n  A NOTE ON THIS MEASUREMENT AND WHAT IT CANNOT SAY. The eighteen frames');
  console.log('  were written having read all fourteen voices, so the frame figures are IN');
  console.log('  SAMPLE and are an upper bound. The held out test is the first hundred real');

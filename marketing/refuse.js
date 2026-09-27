@@ -36,9 +36,11 @@
       0y records it. Two earlier documents had priced the refusal as a three
       point sacrifice and had priced the wrong arm.
    2. Where it does buy something, it buys less as the honest design gets
-      better. DESIGN-gamification.md section 6 measures the loss framing
-      refusal at 3.0 points on a base of 19.9, against an earlier estimate of
-      half again. A sixth, not a half.
+      better. DESIGN-gamification.md section 6 measured the loss framing
+      refusal at 3.0 points on a base of 19.9 on 25 September, against an
+      earlier estimate of half again. Re-measured 27 September on the fitted
+      CQ engine by tools/loopsim.js it is 2.9 on a base of 20.7. About a
+      seventh, not a half.
 
    And the standing ruling underneath both, which is not a measurement and
    does not need to be: a person must be able to stop and be glad they used

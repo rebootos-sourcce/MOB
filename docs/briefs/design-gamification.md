@@ -90,20 +90,22 @@ the port must be too. Each one is enforceable in code, and the brief says where.
 | **Nothing expires, nothing is taken back.** | Scarcity timers, limited edition awards, battle passes, seasons that can be lost. | `DESIGN-progression.md` 1.12; `DESIGN-ladder.md` 4 item 8 |
 | **Never name an absence.** | "Welcome back", "you missed", a streak freeze announced, a notification about a gap. | `DESIGN-progression.md` 4.4; `DESIGN-ladder.md` 4 item 5. **The build breaks this once**, see 5.9 |
 | **No ranking of people.** | Leaderboards, friend groups with visible numbers, practitioner lists sortable by coherence. | `DESIGN-progression.md` 3.4; `DECISIONS.md` line 507 |
-| **Reward is paid for the record, after the fact.** | A reward announced in advance for doing the practice. | `DESIGN-gamification.md` 6.3, measured at 3.2 points of 1000 at day 30 |
+| **Reward is paid for the record, after the fact.** | A reward announced in advance for doing the practice. | `DESIGN-gamification.md` 6.3, measured at 3.4 points of 1000 at day 30, re-measured 27 September |
 | **In a crisis, the product may hide what it sells. It may never hide what it measures.** | Upsells, the store, the marker ruler in front of a person at an acute reading. The marks and the record stay visible. | `DESIGN-progression.md` 4.1; `careState` is **DESIGNED**, not built |
 
 **Refused mechanics, with their measured price.** A refusal without a price is
 a preference. These are the design's own figures, from `tools/loopsim.js`: a
 simulation on a weighted 1000 person panel, not an install cohort. They are
-benchmarks, not promises.
+benchmarks, not promises. Re-measured 27 September on `engine.js` at
+`248e5d2`, after the CQ refit (`dd0bf23`) and the ritual's load bands
+(`3824c63`) moved them; the 25 September figures are in brackets.
 
 | Refused | What it would buy (model, day 30) | Why not here |
 |---|---|---|
-| Loss framed streak or stakes | +3.0 points of 1000 | It works by making stopping feel like a loss, on a product that reads distress |
-| Streak reset to zero (instead of halving) | The halving is worth 4.4 points, so resetting costs that | Lally 2010: habit formation does not reset when the counter does |
-| Reward announced in advance for the act | minus 3.2 points | Deci, Koestner and Ryan 1999, d minus 0.40 |
-| Asserted affirmation ("I am worthy") | minus 0.2 points | Wood, Perunovic and Lee 2009: it made the people who most needed it feel worse |
+| Loss framed streak or stakes | +2.9 points of 1000 (+3.0) | It works by making stopping feel like a loss, on a product that reads distress |
+| Streak reset to zero (instead of halving) | The halving is worth 4.3 points (4.4), so resetting costs that | Lally 2010: habit formation does not reset when the counter does |
+| Reward announced in advance for the act | minus 3.4 points (minus 3.2) | Deci, Koestner and Ryan 1999, d minus 0.40 |
+| Asserted affirmation ("I am worthy") | minus 0.1 points with the harm level read on expression, 0.0 on CQ (minus 0.2, on levels typed by hand under the 20 September arithmetic). Which reading is right is the owner's open question 1 | Wood, Perunovic and Lee 2009: it made the people who most needed it feel worse |
 | Party damage (Habitica) | Not modelled separately. Loss framing with a social multiplier | It makes one person's distress another person's failure |
 | Variable ratio reward, near miss, scarcity timer, leaderboard, fear of missing out push | Not modelled, on purpose | Schull, *Addiction by Design* |
 
@@ -302,10 +304,13 @@ In the owner's words (CLAUDE.md; TASKS GM3):
 **The design finding that shaped every pass** (`DESIGN-gamification.md` 5.1):
 the loop was not short of mechanics. It was short of content. Measured through
 the real `parseStory` against the fourteen persona voices the repository wrote
-for its own target users: as built, the sniffer can cut a quotation out of
-**1 of 14** of them, and **0 of 1000** of the weighted panel. Every mechanic
-downstream of the journal starves at the source. "Tie the ritual to the
-sentence it came from" was measured at exactly zero until that was fixed.
+for its own target users: as built, the sniffer could cut a quotation out of
+**1 of 14** of them, and **0 of 1000** of the weighted panel, on 25 September.
+Every mechanic downstream of the journal starved at the source. "Tie the ritual
+to the sentence it came from" was measured at exactly zero until that was
+fixed. Re-measured 27 September the lexicon has grown to read Angela's line as
+built, so it is 2 of 14 and 150 of 1000, and that mechanic is worth +0.2; the
+other 850 of the thousand still write nothing the instrument can cut.
 Sniffer quality belongs to the charge seat. The gamification consequence
 belongs here: **a content chain mechanic is worth nothing until the content
 arrives.**
@@ -349,8 +354,9 @@ ritual, `span`, `graft` and `affirm` (`DESIGN-gamification.md` 5.4), and
 
 ### 4.4 The first session ends by showing what landed (DESIGNED, highest value)
 
-`DESIGN-gamification.md` section 7, pass 9. This is worth 3.2 points on its own
-in the model, more than any other single mechanic. Today, committing one entry
+`DESIGN-gamification.md` section 7, pass 9. This is worth 2.8 points on its own
+in the model, re-measured 27 September (3.2 on 25 September), more than any
+other designed mechanic outside the sniffer work. Today, committing one entry
 earns the **First story** mark (`told`), but the ladder renders only on Ritual
 and the Compass, not on Story. So the first thing the product gives a person is
 invisible at the moment they earn it. The design shows it on the surface where
@@ -437,7 +443,7 @@ The ruling behind it (Bible 1133): `Math.max(1, Math.ceil(s/2))` with one grace
 day. **The run halves. It never resets.** Lally 2010 found that missing one
 opportunity does not materially affect habit formation, so a miss costs a
 penalty, not a demolition. The model puts the value of halving over resetting at
-4.4 points of 1000 at day 30.
+4.3 points of 1000 at day 30, re-measured 27 September (4.4 on 25 September).
 
 **What breaks it and what does not**, verified by running the shipped engine
 for this brief:
@@ -1322,25 +1328,31 @@ Each item is quoted where it is asked, so it can be put to him with its source.
 
 ## 13. What the design is worth, as modelled
 
-These figures come from `tools/loopsim.js` at seed 20260920. It is a weighted
-1000 person panel built from the repository's own target-user profiles, and it
-runs 42 self-checks before printing anything. **It is a simulation on a panel
+These figures come from `tools/loopsim.js` at seed 20260920, re-measured 27
+September on `engine.js` at `248e5d2`. It is a weighted 1000 person panel
+built from the repository's own target-user profiles, and it runs 50
+self-checks before printing anything. **It is a simulation on a panel
 that is warm by construction. It is not an install cohort, and none of this is a
 promise.**
 
 | | D1 | D7 | D30 | D90 |
 |---|---|---|---|---|
-| Build at `0e63f4b` (baseline) | 742 | 308 | **89** | 10 |
-| Final design in `DESIGN-gamification.md` | 818 | 402 | **199** | 74 |
+| Build as re-measured 27 September (baseline) | 773 | 332 | **98** | 10 |
+| Final design in `DESIGN-gamification.md` | 841 | 414 | **207** | 74 |
+
+On 25 September, at `0e63f4b`, the two rows read 742, 308, 89, 10 and 818,
+402, 199, 74. The CQ refit (`dd0bf23`) and the ritual's load bands moving to 70
+and 40 (`3824c63`) moved them; `DESIGN-gamification.md` says how, at its top.
 
 - Across nine seeds, the delta averages +10.8 points, with a range of 9.6 to
-  12.0.
-- The single largest item is the content chain's sniffer work: 5.7 points if it
-  is removed.
-- The single largest new mechanic is "the first session shows what landed", at
-  3.2 points.
+  12.0, and 7 of the 9 clear ten.
+- The single largest item is the if then plan, which is built: 5.6 points if
+  it is removed. The content chain's sniffer work is next at 5.1. On 25
+  September the sniffer work was the largest, at 5.7.
+- The single largest new mechanic outside the sniffer work is "the first
+  session shows what landed", at 2.8 points (3.2 on 25 September).
 - Where the gain lands: the two target users who cannot run a release (Marcus
-  and Sofia) carry 6.1 of the 11.0 points between them.
+  and Sofia) carry 6.1 of the 10.9 points between them.
 
 **Benchmarks from elsewhere, not comparable on equal terms:** Finch publishes 54
 percent at D1 and 37 percent at D7 on real installs. The category runs 25 to 26
@@ -1354,7 +1366,7 @@ that would change the answer:
 1. The frame layer was written after reading the lines it was measured on, so
    its contribution is an upper bound.
 2. Four coefficients are the designer's own. With all four at zero, the delta
-   falls from +11.0 to +1.5.
+   falls from +10.9 to +1.5.
 3. The baseline is calibrated to hand-derived points, not measured on people.
 
 The first hundred real people will settle in a week what this argued about for a

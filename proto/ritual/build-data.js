@@ -4,8 +4,11 @@
    The reading half comes out of engine.js: the seat, the track, the tier, the
    practice ritFor would call for, the ledger and the marks. ritFor lives in
    ui/ritual.js and is not exported, so it is reimplemented here from the same
-   table and asserted against the measured output in PANEL-ritual-1000.md
-   section A1. A tool that lies is worse than no tool.
+   table and asserted against the pin in pin.js, and its DQ bands against the
+   line in ui/ritual.js. Until 27 September it was asserted against a typed
+   table said to be PANEL-ritual-1000.md section A1, which does not exist; the
+   table was the 20 September engine and this port still dealt the 8 and 4
+   bands the product left at 3824c63. A tool that lies is worse than no tool.
 
    The history half comes out of losssim.js, which is tools/loopsim.js with the
    owner's loss framing arm added and all forty two of its checks still green.
@@ -31,12 +34,15 @@ function loadPerson(p){
  SINAMES.forEach(l=>{S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5);});
  return compute();}
 const SIM=require(path.resolve(__dirname,'losssim.js'));
+const PIN=require(path.resolve(__dirname,'pin.js'));
 
 const TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                   Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
  const band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
- const tier=r.DQ>=8?1:(r.DQ>=4?2:3);
+ /* the owner's bands, 70 and 40, ruled 26 September, read against
+    ui/ritual.js below. */
+ const tier=r.DQ>=70?1:(r.DQ>=40?2:3);
  const fit=PRACTICE.filter(p=>p.tier<=tier);
  const first=fit.filter(p=>p.track===track);
  const lightest=set=>set.slice().sort((a,b)=>(a.min-b.min)||(a.tier-b.tier))[0];
@@ -79,21 +85,19 @@ WHO.forEach(nm=>{
      the end, so the walk above is never read as the typical one. */
   sampled:t.n||0, survived:t.alive30||0};});
 
-/* THE CHECK AGAINST THE PUBLISHED MEASUREMENT. PANEL-ritual-1000.md A1. */
-const EXPECT={Marcus:['Throat','Mind',3,'Active Listening',10],
- Gordon:['Throat','Somatic',1,'The Signal Test',3],
- Angela:['Root','Body',3,'Box Breathing',5],
- Diane:['Solar','Somatic',3,'The Somatic Truth Check',2],
- Sofia:['Throat','Mind',3,'Active Listening',10],
- Derek:['Solar','Somatic',1,'The Signal Test',3],
- Rosa:['Root','Body',3,'Box Breathing',5]};
+/* THE CHECK, against pin.js and against ui/ritual.js. The eight profiles
+   written here are all pinned; Ana is pinned and not written. */
 let bad=0;
-Object.entries(EXPECT).forEach(([nm,[seat,tr,ti,pn,mn]])=>{
- const o=out[nm], got=o.substituted?o.actualTrack:o.track;
- const ok=o.seat===seat&&got===tr&&o.tier===ti&&o.called.nm===pn&&o.called.min===mn;
- if(!ok){bad++;console.error('MISMATCH '+nm+' got '+o.seat+'/'+got+'/'+o.tier+'/'+o.called.nm);}});
-if(bad){console.error(bad+' mismatches against the published measurement. refusing to write.');process.exit(1);}
-console.error('ritFor agrees with PANEL-ritual-1000.md A1 on all '+Object.keys(EXPECT).length+' checked profiles.');
+const fail=m=>{bad++;console.error('MISMATCH '+m);};
+const bands=PIN.checkBands(__filename,fail);
+WHO.forEach(nm=>{
+ const o=out[nm];
+ PIN.checkPin(nm,{CQ:o.CQ,DQ:o.DQ,seat:o.seat,track:o.substituted?o.actualTrack:o.track,
+  tier:o.tier,practice:o.called.nm,min:o.called.min,
+  releasable:loadPerson(PEOPLE.filter(p=>p.nm===nm)[0]).carrying.filter(x=>x.sq>=4).length},fail);});
+if(bad){console.error(bad+' mismatches against the pin. refusing to write.');process.exit(1);}
+console.error('ritFor deals the bands ui/ritual.js deals ('+bands.want+'), and agrees with the pin on all '
+ +WHO.length+' profiles written: '+PIN.AT);
 
 fs.writeFileSync(path.resolve(__dirname,'data.json'),JSON.stringify(out,null,1));
 console.error('wrote data.json, '+Object.keys(out).length+' profiles.');

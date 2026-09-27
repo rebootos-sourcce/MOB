@@ -239,8 +239,14 @@ and DQ columns are not current. They are the 20 September arithmetic
 (intention times integrity over resistance), and the fitted engine reads Diane
 59.0, Derek 48.5, Marcus 62.1, Angela 64.4, Sofia 72.9, James 42.3, Ana 41.1,
 Gordon 17.5 and Rosa 97.0 on CQ. The table is left as the snapshot it was taken
-as, because `proto/ritual/caldata.js` and `ritdata.js` transcribe it and are
-already failing on exactly these two columns. That is its own task.
+as. **27 September:** `proto/ritual/caldata.js`, `ritdata.js` and
+`build-data.js` no longer gate against it. They gate against one pin in
+`proto/ritual/pin.js`, dated to the engine at `248e5d2`, and only this table's
+practice column is still reconciled there, to show the pick rule change. Two
+more columns here are stale for the same reason as CQ and DQ: on the ruled
+load bands of 70 and 40 (`3824c63`) every row but Gordon reads tier 3 and
+Gordon tier 2, and the practice called for is the lightest in the track, not
+the first. The current table is `DESIGN-ritual.md` 1.2.
 
 Three measured facts fall out of that table and they are the whole of section 4:
 

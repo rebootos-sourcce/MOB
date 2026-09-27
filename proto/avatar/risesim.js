@@ -5,7 +5,8 @@
    Brief: "Simulate it ten times, run it by the ICPs, and then integrate it."
 
    THE PANEL IS NOT NEW. It is the weighted thousand from
-   PANEL-ritual-1000.md, lifted verbatim out of proto/ritual/losssim.js:93,
+   PANEL-ritual-1000.md, its names and weights lifted out of
+   proto/ritual/losssim.js,
    nine reference profiles carrying the weights that sum to 1000. Nothing here
    reweights it, and the weights are printed in run 0 so a drift is visible.
 
@@ -25,13 +26,25 @@ var E = require(path.resolve(__dirname, '../../engine.js'));
 var R = require(path.resolve(__dirname, 'rise.js'));
 var S = E.S;
 
-/* the weighted thousand, verbatim from proto/ritual/losssim.js:93 */
+/* the weighted thousand, names and weights from proto/ritual/losssim.js.
+
+   It also carried a grid level per person, copied from that file when that
+   file typed them by hand: Diane 3, Derek 2, Marcus 4, Angela 4, Sofia 6,
+   James 2, Ana 1, Gordon 1, Rosa 10, the 20 September arithmetic. The CQ
+   refit (dd0bf23) moved every one of them and losssim.js now reads its
+   levels off the engine (3004f4d). Here the field was never read: it was
+   copied onto each simulated person in thousand() and nothing touched it
+   after. Measured 27 September by setting it to 999, to NaN, and deleting
+   it: the report was byte identical all three ways. So it is removed rather
+   than ported, because a stale level nothing reads is still a stale level
+   the next reader will believe. If this file ever needs a level, read it
+   off E.tierOf the way losssim.js does. */
 var PANEL = [
-  { nm: 'Diane', w: 180, grid: 3 }, { nm: 'Derek', w: 170, grid: 2 },
-  { nm: 'Marcus', w: 160, grid: 4 }, { nm: 'Angela', w: 150, grid: 4 },
-  { nm: 'Sofia', w: 140, grid: 6 }, { nm: 'James', w: 100, grid: 2 },
-  { nm: 'Ana', w: 50, grid: 1 }, { nm: 'Gordon', w: 35, grid: 1 },
-  { nm: 'Rosa', w: 15, grid: 10 }];
+  { nm: 'Diane', w: 180 }, { nm: 'Derek', w: 170 },
+  { nm: 'Marcus', w: 160 }, { nm: 'Angela', w: 150 },
+  { nm: 'Sofia', w: 140 }, { nm: 'James', w: 100 },
+  { nm: 'Ana', w: 50 }, { nm: 'Gordon', w: 35 },
+  { nm: 'Rosa', w: 15 }];
 var SEED = 20260920;          /* the seed PANEL-ritual-1000.md uses */
 var JIT = 1.2;                /* MINE. swept 0 to 2.0 in run 9. */
 
@@ -80,7 +93,7 @@ function release() {
 function thousand(jit, seed) {
   var rnd = mulberry32(seed || SEED), out = [];
   PANEL.forEach(function (p) {
-    for (var i = 0; i < p.w; i++) out.push({ nm: p.nm, grid: p.grid, rnd: rnd });
+    for (var i = 0; i < p.w; i++) out.push({ nm: p.nm, rnd: rnd });
   });
   return out;
 }

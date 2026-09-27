@@ -15,13 +15,14 @@ measured number rather than an opinion.
 **The tools.** `tools/loopsim.js` is new and is the instrument. It loads the
 real engine, measures what the build deals, measures the content chain against
 the repository's own persona voices, then runs 1,000 people for 90 days. It
-runs 42 checks before it prints anything and exits non zero on any failure.
+runs its checks before it prints anything and exits non zero on any failure:
+42 when this was written, 50 on 27 September, read off the run.
 `proto/game/chain.js`, `proto/game/stem.js` and `proto/game/frames.js` are the
 content chain, runnable, and the simulation calls them rather than modelling
 them. `proto/game/one.html` is the surface, one file, real engine numbers, and
 it is at `proto/game/shot-1600-1000.png` and `proto/game/shot-390-844.png`.
 
-    node tools/loopsim.js              42 checks, then the whole report
+    node tools/loopsim.js              the checks, then the whole report
     node tools/loopsim.js --validate   the checks alone
     node tools/loopsim.js --chain      the content chain measurement alone
     node tools/loopsim.js --sweep      every coefficient of mine, swept
@@ -31,6 +32,45 @@ policy on every third party host tried, same as the last two passes. Every
 figure below was obtained through the search index against the URL cited, and
 the URL is given. Anything that could not be sourced is marked **unsourced**
 and is not used as evidence.
+
+**Re-measured 27 September 2026, and what moved.** Every figure below that
+`tools/loopsim.js` prints was first measured on 25 September at commit
+`0e63f4b`. It has been re-run on `engine.js` as built at `248e5d2` (md5
+`85941fb4443bc35187c9e6dd5d2cc2c8`), with the tool's checks at 50 of 50, and
+every such figure in this document is now that run. The 25 September figures
+reproduce exactly when the tool is run at `89ef53e`, the commit that wrote this
+document, so what moved is the product and not the tool. Four things moved it.
+
+1. `dd0bf23`, 25 September, refitted CQ to the 21 laws summed over 210 and put
+   DQ on a scale of 0 to 100. The ritual's load bands still read 8 and 4, so
+   for one commit almost everybody was dealt the heaviest practice tier. On
+   that commit the tool read a baseline of 8.4 and a final of 20.0.
+2. `3824c63` moved the bands to the ruled 70 and 40, in the product and in
+   this tool. That is the current reading: baseline 9.8, final 20.7.
+3. The lexicon grew between `0e63f4b` and `dd0bf23`. The sniffer as built now
+   reads fear, anger and shame, 36 of the 63 word probe rather than 29, and
+   Angela's line, which is 150 of the thousand.
+4. The asserted affirmation's harm model read grid levels typed into the tool
+   by hand under the 20 September arithmetic. It reads them off the engine
+   now, on expression by default. See 5.4 and 6.6.
+
+| | 25 September | 27 September |
+|---|---|---|
+| Baseline, day 30 | 8.9 points | **9.8 points** |
+| Final design, day 30 | 19.9 points | **20.7 points** |
+| Delta | +11.0 | **+10.9** |
+| Seeds of nine that clear ten | 8 | **7** |
+| Loss framing, the refused arm | +3.0 | **+2.9** |
+| The halving, against a reset | 4.4 | **4.3** |
+| The asserted affirmation, refused | minus 0.2, on 845 of 1000 | **minus 0.1** on expression (185 of 1000), **0.0** on CQ (35) |
+
+Four conclusions changed, and each paragraph that carried one says so where it
+stands. The as built sniffer no longer reads zero of the thousand. The sniffer
+work is no longer the largest item in the ablation; the if then plan is. One of
+the designer's four coefficients on its own now takes the delta below eight
+points, which section 11 said none did while printing a figure that already
+did. And with the award effect at zero the design lands a tenth of a point
+under the target rather than above it.
 
 ---
 
@@ -59,21 +99,22 @@ drifts from the build is a lie with a number attached.
 | | Day 30, of 1000 | Bottom line |
 |---|---|---|
 | The build before the four fixes, reproduced for the audit trail | 69 | 6.9 points |
-| **The build as it stands at commit 0e63f4b. THE BASELINE** | **89** | **8.9 points** |
-| The final design in this document | 199 | **19.9 points** |
+| **The build as re-measured 27 September, engine at 248e5d2. THE BASELINE** | **98** | **9.8 points** |
+| The final design in this document | 207 | **20.7 points** |
 
-**Delta: +11.0 points.** Target was ten. Across nine seeds the delta averages
-10.8 points with a range of 9.6 to 12.0, and 8 of 9 seeds clear ten.
+**Delta: +10.9 points.** Target was ten. Across nine seeds the delta averages
+10.8 points with a range of 9.6 to 12.0, and 7 of 9 seeds clear ten.
 
 One thing was measured on the old baseline and is worth recording. The four
-built fixes took the bottom line from 6.9 to 8.9 points, which is +2.0 points
-for four small changes in files that already existed. That is the most
+built fixes took the bottom line from 6.9 to 9.8 points, which is +2.9 points
+(+2.0 when first measured, on the 25 September build) for four small changes
+in files that already existed. That is the most
 efficient work in this repository so far and it is the reason the method
 below is the method.
 
 **Two things are deliberately outside the headline.**
 
-- **Push is out.** It is worth +1.6 points on top of the final design and it
+- **Push is out.** It is worth +1.4 points on top of the final design and it
   needs a server. The product is one file with no network, so quoting it in
   the headline would be quoting something that cannot ship.
 - **The `sq >= 4` release threshold is out.** Lowering it is the owner's
@@ -274,8 +315,8 @@ lines you then measured them on. That is fitting to the test set."**
 He is right and it is stated in the tool's own output and again in section 11.
 The 9 of 14 figure is in sample and is an upper bound. **Tomas won.** What he
 did not win is the conclusion, because the fold is not in sample: nineteen
-suffixes, no persona line ever seen, and it moves the inflection probe from 29
-of 63 to 44 of 63 on its own.
+suffixes, no persona line ever seen, and it moves the inflection probe from 36
+of 63 to 47 of 63 on its own (29 to 44 on the 25 September lexicon).
 
 **3. Dani Sorensen, UI UX. "You are putting a person's worst sentence back in
 front of them and calling it a practice. That is rumination with a timer."**
@@ -290,12 +331,12 @@ somebody's worst sentence read over it is a different thing.
 
 **4. Camille Boucher, sales. "Habitica's party damage is a 39 percent retention
 rise and you are refusing it before anybody costs it."**
-Costed. The model's loss framed arm is worth **+3.0 points of 1000 at day
+Costed. The model's loss framed arm is worth **+2.9 points of 1000 at day
 thirty** on top of the final design. It is real, it is not enormous, and it is
 refused. **Camille lost on the standing ruling** and the price is now on the
 record rather than asserted away. Worth noting that in `PANEL-ritual-1000.md`
 the same refusal was estimated at "half again on day thirty". Measured against
-a denser design it is a sixth, not a half. **The refusal got cheaper as the
+a denser design it is about a seventh, not a half. **The refusal got cheaper as the
 honest design got better**, which is the single most useful commercial line in
 this document.
 
@@ -305,8 +346,10 @@ She brought Wood, Perunovic and Lee 2009 and she was right. **She won
 outright**, and the affirmation was rebuilt around it: nothing is asserted, the
 sentence is the person's own with one word hedged, and it enters as a thing to
 hold against the body rather than a thing to repeat. The simulation prices the
-version she killed at **minus 0.2 points** against the version that shipped,
-which is smaller than she expected and does not change the ruling, because the
+version she killed at **minus 0.1 points** against the version that shipped
+with the harm level read on expression, and 0.0 read on CQ (minus 0.2 on the
+hand typed levels it was first run on; see 6.6), which is smaller than she
+expected and does not change the ruling, because the
 harm in that paper is to mood and not to retention and this model cannot see
 mood at all.
 
@@ -346,10 +389,11 @@ all three sniffer settings, 42 runs, zero failures.
 **10. Rosa Iwasaki, project. "Nine passes of design and the first eight are
 worth five points between them. You spent the pass on the wrong end."**
 She is right and it is the finding, not a failure. Eight passes of loop work
-moved the first two days by eleven people out of a thousand. **Rosa won**, and
+moved the first two days by twelve people out of a thousand. **Rosa won**, and
 pass nine is hers: the first session ends by showing what landed, and it is
-worth **3.2 points** on its own, more than any other single mechanic in the
-design.
+worth **2.8 points** on its own, more than any other designed mechanic outside
+the sniffer work. It read 3.2 when first measured, and "more than any other
+single mechanic in the design" then; three built ones now read higher.
 
 **11. Dani Sorensen. "A sixty second floor version is a streak you cannot
 break, which is a streak that means nothing."**
@@ -400,7 +444,9 @@ won.** It is still the owner's call and it is question 1 in section 12.
 second channel. You are using one meta analysis twice."**
 Half of it twice, and it is the weakest justification in the model. **Tomas
 won a sweep and lost the mechanic.** At an award effect of zero the design
-still reaches +10.2 points, so the design does not depend on it.
+reaches +9.9 points, a tenth under the target. It read +10.2 when first
+measured and this said the design did not depend on it; re-measured, the
+design mostly does not, and the ten point target does, by that tenth.
 
 **18. Sam Oyelaran, devops. "Your ablation compares two different sets of dice."**
 He was right and it was a defect in the tool, not in the design. One random
@@ -414,8 +460,10 @@ is not worse. **Sam won, and the tool was wrong before he did.**
 **19. Ines Halldors. "You have spent a gamification pass building a lexicon.
 That is the AI seat's job and it is not gamification."**
 The closing argument of the room, and it is answered by the ablation. Remove
-the sniffer work from the final design and it loses **5.7 points**, the largest
-single item in the table. **Ines lost**, and the sentence that settled it is
+the sniffer work from the final design and it loses **5.1 points**, the largest
+designed item in the table and second only to the if then plan, which is built,
+at 5.6. It read 5.7 and was the largest item outright when first measured.
+**Ines lost**, and the sentence that settled it is
 his own: the content has to be driven enough to make the process sticky. A loop
 whose content engine reads one of the repository's own fourteen voices is not
 starved of mechanics. It is starved of content.
@@ -446,28 +494,29 @@ four words he named, in order, and each quarter has exactly one job.
 | Mechanic | Quarter | Status | Worth at day 30 |
 |---|---|---|---|
 | The journal reads a sentence for charge | Discover | built | it is the entry to everything |
-| **The stemmer fold** | Discover | designed, section 5 | inside the sniffer's 5.7 |
-| **The frame layer** | Discover | designed, section 5 | **5.0 points** |
+| **The stemmer fold** | Discover | designed, section 5 | inside the sniffer's 5.1 |
+| **The frame layer** | Discover | designed, section 5 | **5.1 points** |
 | The imprints, named on the body | Discover | built | not separable |
 | The release, dealt from the imprints | Play | built | not separable |
 | The ritual dealt by the seat carrying most | Play | built | not separable |
-| One practice on the card | Play | built | 1.5 points |
-| **The practice carries the person's own span** | Play | designed, section 5 | 0.9 points |
+| One practice on the card | Play | built | 2.3 points |
+| **The practice carries the person's own span** | Play | designed, section 5 | 1.0 points |
 | **The affirmation, hedged and tested** | Play | designed, section 5 | inside the floor's 1.8 |
 | **The floor version, sixty seconds** | Play | designed | **1.8 points** |
-| The if then plan, when and where | Flow | built | **5.2 points** |
-| The record on the surface that earns it | Flow | built | 3.2 points |
-| The run halves and never resets | Flow | built | **4.4 points** |
+| The if then plan, when and where | Flow | built | **5.6 points** |
+| The record on the surface that earns it | Flow | built | 3.4 points |
+| The run halves and never resets | Flow | built | **4.3 points** |
 | **The stake sentence** | Flow | designed | 0.2 points |
 | **The season, seven days with an end** | Flow | designed | 0.1 points, and it stays |
 | The sixteen marks | Flow | built | the ladder itself |
-| **The three award families** | Body | designed, section 6 | 0.8 points |
-| **The first session ends by showing what landed** | Body | designed | **3.2 points** |
+| **The three award families** | Body | designed, section 6 | 1.0 points |
+| **The first session ends by showing what landed** | Body | designed | **2.8 points** |
 | The avatar | Body | another seat | section 9 |
 | Karma, paid after the fact | across | designed, section 6 | it is the conversion, not the retention |
 
 Ablation values are single item removals from the final design and they do not
-sum, because removing two things is not removing one thing twice.
+sum, because removing two things is not removing one thing twice. Re-measured
+27 September.
 
 ## The session shape, because most products are built for one length
 
@@ -501,7 +550,7 @@ for, through the real `parseStory`:
 
 | Sniffer | A span for | An axis for | An affirmation for |
 |---|---|---|---|
-| **As built** | **1 of 14** | 1 of 14 | 2 of 14 |
+| **As built** | **2 of 14** | 2 of 14 | 3 of 14 |
 | With the stemmer fold | 2 of 14 | 2 of 14 | 3 of 14 |
 | With the fold and the frame layer | **9 of 14** | 9 of 14 | **10 of 14** |
 
@@ -510,22 +559,29 @@ per person rather than as a pooled rate:
 
 | Sniffer | Weight with a span | Weight with an affirmation |
 |---|---|---|
-| **As built** | **0 of 1000** | 50 of 1000 |
+| **As built** | **150 of 1000** | 200 of 1000 |
 | With the fold | 150 of 1000 | 200 of 1000 |
 | With the fold and the frames | **935 of 1000** | **985 of 1000** |
 
-**Read that top row again. Zero of the thousand.** Not one of the nine people
-this product is designed for writes a sentence the instrument can cut a
-quotation out of. Every mechanic downstream of the journal is starved at the
-source, and that is why pass one of the iteration ladder, tying the ritual to
-the sentence it came from, was worth exactly nothing.
+**Read that top row again.** On 25 September it read **zero of the
+thousand**: not one of the nine people this product is designed for wrote a
+sentence the instrument could cut a quotation out of, and that is why pass one
+of the iteration ladder, tying the ritual to the sentence it came from, was
+worth exactly nothing. Re-measured 27 September it reads 150, because the
+lexicon has since grown to read Angela's line, "Everything happens for a
+reason", as built, and pass one is worth +0.2. Eight of the nine, 850 of the
+thousand, still write nothing the instrument can cut. Every mechanic downstream
+of the journal is still starved at the source for them.
 
 ## 5.2 Why, and it is not vocabulary
 
 `LEX` holds about 192 keys and `PHRASES` 22 rows. Both match words. Measured
 against 63 ordinary inflections and near synonyms of words the table already
-holds, the sniffer reads **29 of 63**, and the misses include **fear, shame and
-anger**, which are the names of three of the nine axes.
+holds, the sniffer read **29 of 63** on 25 September, and the misses included
+**fear, shame and anger**, which are the names of three of the nine axes. The
+lexicon has grown since: re-measured 27 September it reads 36 of 63 and reads
+all three axis names. The 27 it still misses are inflections of words it
+holds, freeze, feared, shamed, angered, held and carrying among them.
 
 But widening the table is not the fix, because look at what people write:
 
@@ -547,7 +603,8 @@ never clause. An inability to ask. A cost. An onset.
 table does not hold is reduced to its stem, and if a key shares that stem the
 word is read as that key. One entry then covers its family. It carries a back
 map so the quotation stays the person's actual word. Measured on its own: the
-inflection probe goes from 29 of 63 to **44 of 63**.
+inflection probe goes from 36 of 63 to **47 of 63**, re-measured 27 September
+(29 to 44 on the 25 September lexicon).
 
 *Lands in:* `atuned_src/engine/sniff.js`, inside `scanStory`, before the LEX
 walk. Host free, no new data table, about forty lines.
@@ -629,9 +686,15 @@ its own seat, and handed over as something to look for:
 
 > Vitality, at the throat. Hold the word and read what the body does.
 
-**And this is the Wood 2009 escape hatch, stated plainly.** Eight hundred of
-the weighted thousand arrive at grid level four or below. Repeating a positive
-self statement made exactly those people feel worse in that study, and the arm
+**And this is the Wood 2009 escape hatch, stated plainly.** On the engine's
+own reading, re-measured 27 September, 185 of the weighted thousand arrive at
+level four or below on expression (James, Ana and Gordon) and 35 on CQ
+(Gordon). Which of the two readings is the right one is the owner's open
+question 1, `TASKS.md` BB3 and BB5, and it is not decided here. This sentence
+said eight hundred, a figure taken from `PANEL-flow-1000.md` prose under the 20
+September arithmetic that was 845 on the tool's own rows even then; the refit
+of 25 September moved everybody up the scale. Repeating a positive self
+statement made exactly the people at the bottom of it feel worse in that study, and the arm
 that did no harm held the statement as **both true and not true**. A poled axis
 is both true and not true by construction: a held pole and its coherent
 opposite, both present, both readable. So nobody here is asked to believe
@@ -720,18 +783,19 @@ intake can earn.
    family is readable before its label is. Ring, not fill, as everything here
    is.
 
-**In the model the awards are worth 0.8 points**, and at an award effect of
-zero the design still reaches +10.2 points. They are not carrying the number.
-They are carrying the 465, and that is a measured hole rather than a modelled
-one.
+**In the model the awards are worth 1.0 points**, and at an award effect of
+zero the design reaches +9.9 points, a tenth under the target (+10.2 when first
+measured). They carry that tenth and no more of the number. They are carrying
+the 465, and that is a measured hole rather than a modelled one.
 
 ## 6.3 The reward. Karma
 
 **Karma is paid for the record, after the fact, and is never promised in
 advance for the act.** Measured this pass: announcing it in advance and making
-it contingent on doing the practice costs **3.2 points of 1000 at day thirty**.
-Deci, Koestner and Ryan 1999, 128 studies, d minus 0.40. That is not a copy
-preference, it is the second largest single number in this document.
+it contingent on doing the practice costs **3.4 points of 1000 at day thirty**,
+re-measured 27 September (3.2 when first measured). Deci, Koestner and Ryan
+1999, 128 studies, d minus 0.40. That is not a copy preference: it is more than
+any single pass in section 7 adds.
 
 **On the word.** This design is costed on the reading that **karma is the name
 for patterns a person earned rather than a second unit that buys them.** One
@@ -785,10 +849,12 @@ allowance alone is unchanged, so nothing is taken away from anybody.
 
 Measured over the simulated ninety days, all 1000 including everybody who left:
 
-- patterns earned: median 13, 75th 64, 90th 261, max 299
+- patterns earned: median 15, 75th 69, 90th 262, max 299
 - among the 74 still active at day 90: median 276, max 296
-- **afforded the floor sized run of 4: 95.2 percent, 952 of 1000, median on day 1**
-- **afforded a run at the cap, 25: 42.3 percent, 423 of 1000, median on day 7**
+- **afforded the floor sized run of 4: 95.6 percent, 956 of 1000, median on day 1**
+- **afforded a run at the cap, 25: 43.6 percent, 436 of 1000, median on day 7**
+
+Re-measured 27 September.
 
 **And the number to look at before signing the rate.** All sixteen marks at 5
 patterns is 80 patterns, which is **20 percent of one tier one month handed to
@@ -802,21 +868,26 @@ A refusal without a price is a preference, so each one has a number.
 
 | Refused | What it would buy | Measured cost of refusing | Why not here |
 |---|---|---|---|
-| **Loss framing** | Patel 2016, 0.45 of days against 0.30 control | **3.0 points of 1000 at day 30** | it works by making stopping feel like a loss, on a product that reads distress |
+| **Loss framing** | Patel 2016, 0.45 of days against 0.30 control | **2.9 points of 1000 at day 30** | it works by making stopping feel like a loss, on a product that reads distress |
 | **Habitica's party damage** | a reported 39 percent retention rise, vendor adjacent source | not separately modelled; it is loss framing with a social multiplier | it makes a person's distress somebody else's failure |
-| **The asserted affirmation** | the standard wellness pattern | **minus 0.2 points**, so it costs nothing to refuse | Wood 2009. It harms the 800 of 1000 who most need it, and the model cannot see mood at all |
-| **Streak reset to zero** | the sharpest version of the loss lever | **4.4 points**, which is what the halving is worth | Lally 2010: the behaviour does not reset when the counter does |
+| **The asserted affirmation** | the standard wellness pattern | **minus 0.1 points** with the level read on expression, **0.0** on CQ, so it costs nothing to refuse | Wood 2009. It harms the people at the bottom of the scale who most need it, 185 of 1000 on expression and 35 on CQ, and the model cannot see mood at all |
+| **Streak reset to zero** | the sharpest version of the loss lever | **4.3 points**, which is what the halving is worth | Lally 2010: the behaviour does not reset when the counter does |
 | **Variable ratio reward** | the schedule the gambling literature is about | not modelled, deliberately | Schull, *Addiction by Design*. Not on a nervous system |
 | **A scarcity timer, including Apple's limited edition award** | real and measurable | not modelled | nothing in this product expires |
 | **A leaderboard** | real, and James said so in his own persona line | not modelled | it ranks people who handed a machine their distress |
 | **A fear of missing out push** | real | not modelled | the push model is one per ritual at the time it runs, and nothing else |
 
+The table is re-measured 27 September. The asserted affirmation's two figures
+are one open question: whether the level that decides who it harms is read on
+CQ or on expression is the owner's open question 1, and the tool prints both.
+
 **One line worth reading twice.** In `PANEL-ritual-1000.md` the loss framing
 refusal was estimated at roughly half again on day thirty and deliberately not
-run. Run against this design it is worth **3.0 points on a base of 19.9**,
-which is a sixth rather than a half. **The refusal got cheaper as the honest
-design got better.** That is the commercial argument for the hard line and it
-is the first time this repository has been able to make it with a number.
+run. Run against this design it is worth **2.9 points on a base of 20.7**,
+which is about a seventh rather than a half (3.0 on 19.9 when first
+measured). **The refusal got cheaper as the honest design got better.** That
+is the commercial argument for the hard line and it is the first time this
+repository has been able to make it with a number.
 
 ---
 
@@ -828,45 +899,51 @@ each was measured before the next was designed. Every cell is people of 1000.
 | Pass | What it added | d1 | d7 | d30 | Bottom line | Delta |
 |---|---|---|---|---|---|---|
 | | the build before the four fixes, for the audit trail | 582 | 139 | 69 | 6.9 | |
-| **base** | **the build at commit 0e63f4b** | 742 | 308 | **89** | **8.9** | **0.0** |
-| 1 | the ritual is titled with the sentence it came from | 742 | 308 | 89 | 8.9 | +0.0 |
-| 2 | and the stemmer folds a word to its family | 744 | 310 | 91 | 9.1 | +0.2 |
-| 3 | and the frame layer reads the form of a sentence | 745 | 315 | 110 | 11.0 | +2.1 |
-| 4 | and the practice carries the person's own span | 746 | 323 | 130 | 13.0 | +4.1 |
-| 5 | and the affirmation is the sixty second floor | 748 | 327 | 147 | 14.7 | +5.8 |
-| 6 | and the award family that reads the coherent side | 749 | 329 | 163 | 16.3 | +7.4 |
-| 7 | and the season, seven days with an end | 749 | 330 | 165 | 16.5 | +7.6 |
-| 8 | and the stake sentence | 749 | 330 | 167 | 16.7 | +7.8 |
-| **9** | **and the first session ends by showing what landed** | **818** | **402** | **199** | **19.9** | **+11.0** |
+| **base** | **the build re-measured 27 September, engine at 248e5d2** | 773 | 332 | **98** | **9.8** | **0.0** |
+| 1 | the ritual is titled with the sentence it came from | 775 | 334 | 100 | 10.0 | +0.2 |
+| 2 | and the stemmer folds a word to its family | 775 | 334 | 100 | 10.0 | +0.2 |
+| 3 | and the frame layer reads the form of a sentence | 776 | 339 | 119 | 11.9 | +2.1 |
+| 4 | and the practice carries the person's own span | 779 | 347 | 139 | 13.9 | +4.1 |
+| 5 | and the affirmation is the sixty second floor | 780 | 351 | 156 | 15.6 | +5.8 |
+| 6 | and the award family that reads the coherent side | 781 | 354 | 173 | 17.3 | +7.5 |
+| 7 | and the season, seven days with an end | 781 | 355 | 176 | 17.6 | +7.8 |
+| 8 | and the stake sentence | 781 | 355 | 179 | 17.9 | +8.1 |
+| **9** | **and the first session ends by showing what landed** | **841** | **414** | **207** | **20.7** | **+10.9** |
 
 ## What each pass taught, which is the part worth keeping
 
-**Pass 1 was worth exactly nothing, and it was the most useful pass.** Tying
-the ritual to the sentence it came from is the item `PANEL-ritual-1000.md` said
-moves Diane. It moved nobody, because under the build **0 of 1000 of the panel
-write a sentence the instrument can cut a quotation out of**. A mechanic that
-depends on content is worth zero until the content arrives. That is the finding
-that redirected the whole pass into section 5.
+**Pass 1 was worth exactly nothing when it was first run, and it was the most
+useful pass.** Tying the ritual to the sentence it came from is the item
+`PANEL-ritual-1000.md` said moves Diane. It moved nobody, because under the
+build of 25 September **0 of 1000 of the panel wrote a sentence the instrument
+could cut a quotation out of**. A mechanic that depends on content is worth
+zero until the content arrives. That is the finding that redirected the whole
+pass into section 5. Re-measured 27 September it is worth +0.2: the lexicon has
+since grown to read Angela's line as built, and nobody else's, so the finding
+holds for 850 of the thousand.
 
 **Passes 2 and 3 are the same mechanic at two strengths** and the difference
 between them is the difference between widening a vocabulary and changing what
-kind of thing is read. The fold is worth +0.2. The frame layer is worth +1.9
-more on top of it, and it unlocks passes 4 and 5, which is why its ablation
-value is 5.0 rather than 1.9.
+kind of thing is read. The fold was worth +0.2 when first run and is worth
+nothing on the panel now, because the lexicon's growth already took the one
+row it added; it still earns its place on the probe, 36 to 47 of 63. The frame
+layer is worth +1.9 more on top of it, and it unlocks passes 4 and 5, which is
+why its ablation value is 5.1 rather than 1.9.
 
 **Passes 4 and 5 are the content chain paying out**, +2.0 and +1.7. They could
 not have been run in any order before pass 3.
 
-**Passes 6, 7 and 8 are worth 1.6, 0.2 and 0.2.** Three mechanics, half a
-point between the last two. This is where the pass would have stopped if the
+**Passes 6, 7 and 8 are worth 1.7, 0.3 and 0.3.** Three mechanics, just over
+half a point between the last two. This is where the pass would have stopped if the
 target had been five points, and the design would have been worse for it.
 
-**Pass 9 is worth 3.2 points on its own and it came out of the exit table.**
-After eight passes the model said **416 of 1000 were still leaving in the first
-two days, against 428 before any of it.** Eight passes of loop design had moved
+**Pass 9 is worth 2.8 points on its own and it came out of the exit table.**
+After eight passes the model said **370 of 1000 were still leaving in the first
+two days, against 382 before any of it.** Eight passes of loop design had moved
 the first two days by twelve people in a thousand. Everything built so far was
 downstream of a day most people never reached twice. Pass nine moves the same
-figure to **289**.
+figure to **263**. Re-measured 27 September; on 25 September the three read
+416, 428 and 289, and the pass was worth 3.2.
 
 The mechanic is not a new reward. **The first session ends by showing what
 landed.** A journal entry committed already earns the First story mark today,
@@ -882,7 +959,8 @@ random stream. The floor draw only happens on a day the practice was not done,
 so two configurations that differ anywhere consume a different number of random
 numbers and every draw after the first divergence is a different draw. The
 symptom: the asserted affirmation arm, which applies an odds ratio below one to
-eight hundred of the thousand and can only make things worse, reported nine
+everybody it reaches (845 of the thousand on the levels the tool typed then)
+and can only make things worse, reported nine
 people **better**. Three streams now, one per purpose. Validation 6 asserts the
 refused arm is not better and the loss arm is not worse, so the defect cannot
 come back silently.
@@ -906,13 +984,14 @@ is this repository's standing rule and it earned its keep twice in one pass.
 
 | | Day 1 | Day 7 | Day 14 | Day 30 | Day 60 | Day 90 |
 |---|---|---|---|---|---|---|
-| Baseline, of 1000 | 742 | 308 | 188 | **89** | 37 | 10 |
-| Final, of 1000 | 818 | 402 | 295 | **199** | 136 | 74 |
+| Baseline, of 1000 | 773 | 332 | 202 | **98** | 41 | 10 |
+| Final, of 1000 | 841 | 414 | 304 | **207** | 141 | 74 |
 
-**Baseline 8.9 points. Final 19.9 points. Delta +11.0 points.**
+**Baseline 9.8 points. Final 20.7 points. Delta +10.9 points.** Re-measured 27
+September; 8.9, 19.9 and +11.0 on 25 September.
 
-Across nine seeds: baseline mean 9.0 points, range 7.5 to 10.3. Final mean 19.8
-points, range 18.6 to 21.5. **Delta mean 10.8 points, range 9.6 to 12.0, and 8
+Across nine seeds: baseline mean 9.5 points, range 7.8 to 11.2. Final mean 20.3
+points, range 19.1 to 21.9. **Delta mean 10.8 points, range 9.6 to 12.0, and 7
 of 9 seeds clear the ten point target.** The headline stays on the declared
 seed so the number cannot be shopped for, and the spread is printed beside it
 so nobody has to take it on trust.
@@ -925,17 +1004,17 @@ read three people of sampling noise on James as a regression, so it is averaged.
 | Who | of | d30 baseline | d30 final | People | Points of that row | Points of 1000 |
 |---|---|---|---|---|---|---|
 | Diane | 180 | 18.0 | 30.0 | +12.0 | +6.7 | +1.2 |
-| Derek | 170 | 7.7 | 17.4 | +9.8 | +5.8 | +1.0 |
+| Derek | 170 | 9.2 | 19.1 | +9.9 | +5.8 | +1.0 |
 | **Marcus** | 160 | 19.3 | **49.4** | **+30.1** | **+18.8** | **+3.0** |
 | Angela | 150 | 8.0 | 21.3 | +13.3 | +8.9 | +1.3 |
 | **Sofia** | 140 | 22.8 | **53.4** | **+30.7** | **+21.9** | **+3.1** |
-| James | 100 | 4.1 | 11.6 | +7.4 | +7.4 | +0.7 |
-| Ana | 50 | 9.7 | 14.7 | +5.0 | +10.0 | +0.5 |
+| James | 100 | 7.1 | 14.2 | +7.1 | +7.1 | +0.7 |
+| Ana | 50 | 10.8 | 15.8 | +5.0 | +10.0 | +0.5 |
 | Gordon | 35 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
 | Rosa | 15 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
 
 **Where the gain is, and it is not where the last pass put it.** Marcus and
-Sofia carry 6.1 of the 11.0 points between them, and both of them are inside
+Sofia carry 6.1 of the 10.9 points between them, and both of them are inside
 the 465 of 1000 who cannot run a release. They are the people this design was
 built for: a complete reading, nothing above the release line, four of sixteen
 marks permanently shut, and until now no way for the loop to say where their
@@ -945,7 +1024,7 @@ doubles and then some.
 
 **Where it is not.** Gordon and Rosa, zero. Correct and the product should not
 chase either. Gordon's published day 7 is 0.00 percent and the calibration will
-not let him live whatever is built. Rosa reads 100 coherence, has nothing to
+not let him live whatever is built. Rosa reads 97 coherence on the fitted CQ, has nothing to
 release, and her own persona line reads as **coherent** through the frame
 layer, which is the instrument working. A settled person is not a retention
 problem.
@@ -955,13 +1034,16 @@ problem.
 | | Baseline, of 1000 | After eight passes | Final, of 1000 |
 |---|---|---|---|
 | exits where the ritual was tied to nothing of the person's own | **458** | 15 | **15** |
-| exits in the first two days | **428** | 416 | **289** |
-| exits where a broken run contributed | 309 | 123 | 150 |
-| total exits inside ninety days | 990 | 931 | 926 |
+| exits in the first two days | **382** | 370 | **263** |
+| exits where a broken run contributed | 324 | 134 | 150 |
+| total exits inside ninety days | 990 | 929 | 926 |
+
+Re-measured 27 September. On 25 September the second row read 428, 416 and
+289, the third 309, 123 and 150, and the fourth 990, 931 and 926.
 
 **Read the middle column before the last one.** Eight passes of loop design
 closed the first row almost completely and moved the first two days by twelve
-people in a thousand. Pass nine moved it by a hundred and twenty seven. The
+people in a thousand. Pass nine moved it by a hundred and seven. The
 design closes two different holes and they needed two different kinds of work:
 a loop that had nothing of the person's own in it for 458 of 1000, and a first
 session that gave a person nothing they could see.
@@ -970,9 +1052,9 @@ session that gave a person nothing they could see.
 
 | | Baseline | Final | Finch | Category |
 |---|---|---|---|---|
-| D1 | 74.2 percent of 1000 | 81.8 percent of 1000 | 54 percent | 25 to 26 percent |
-| D7 | 30.8 percent of 1000 | 40.2 percent of 1000 | 37 percent | 11 to 13 percent |
-| D30 | 8.9 percent of 1000 | 19.9 percent of 1000 | not published | 2.78 to 7 percent |
+| D1 | 77.3 percent of 1000 | 84.1 percent of 1000 | 54 percent | 25 to 26 percent |
+| D7 | 33.2 percent of 1000 | 41.4 percent of 1000 | 37 percent | 11 to 13 percent |
+| D30 | 9.8 percent of 1000 | 20.7 percent of 1000 | not published | 2.78 to 7 percent |
 
 **And the two warnings from the last pass still apply and are not decoration.**
 The two product columns are a weighted ICP panel and not an install cohort.
@@ -1013,7 +1095,7 @@ level.
 requirement most likely to be missed, so it is stated hardest. Marcus, Angela,
 Sofia and Rosa reach a complete reading with nothing above the release
 threshold, and **an avatar driven only by releases never moves for 46.5 percent
-of the weighted panel.** They are also, per section 8.2, where 6.1 of the 11.0
+of the weighted panel.** They are also, per section 8.2, where 6.1 of the 10.9
 points in this design come from. What their avatar shows is **holding**, not
 clearing: the Held award family, an axis that stayed at its coherent pole. If
 the avatar has one state for cleared and one state for nothing, nearly half the
@@ -1034,8 +1116,9 @@ reading.
 1. **The sniffer reads sentences instead of words.** A stemmer so one lexicon
    entry covers its family, and eighteen frames that match the **form** of a
    sentence rather than its vocabulary. Measured on the repository's own
-   fourteen persona voices, the product goes from reading **1 of 14** to **9 of
-   14**, and weighted across the nine ICPs from **0 of 1000 to 935 of 1000**.
+   fourteen persona voices, the product goes from reading **2 of 14** to **9 of
+   14**, and weighted across the nine ICPs from **150 of 1000 to 935 of 1000**
+   (1 of 14 and 0 of 1000 as built on 25 September).
 2. **The practice is built out of the person's own sentence.** A frame match is
    a verbatim quotation, so the thing that reads the charge and the thing that
    cuts the quotation are one match. The practice holds their words, not ours.
@@ -1048,24 +1131,26 @@ reading.
    earned by 465 of 1000, so one family needs a reading and nothing else.
 5. **The first session ends by showing what landed.** The First story mark is
    already earned by committing one entry and is already invisible where it is
-   earned. Worth more than any other single mechanic in the design.
+   earned. Worth 2.8 points, more than any other designed mechanic outside the
+   sniffer work.
 
 **What it is worth.** Karma pays for the record after the fact, never in
 advance for the act, and it closes the free tier's arithmetic: a daily
 practitioner reaches a release run at the cap **every week and a bit** on 35
 percent of tier one's monthly volume, so it more than doubles a free person's
 rate and comes nowhere near cannibalising a subscription. Announcing the coin
-in advance instead costs **3.2 points**. Loss framing, which every free to play
-product in this category would ship, is worth **3.0 points** and is refused.
+in advance instead costs **3.4 points**. Loss framing, which every free to play
+product in this category would ship, is worth **2.9 points** and is refused.
 
 **The two numbers.**
 
-> **8.9 points of 1000 still active at day thirty today.**
-> **19.9 points with this design. Plus 11.0, against a target of ten.**
+> **9.8 points of 1000 still active at day thirty today.**
+> **20.7 points with this design. Plus 10.9, against a target of ten.**
 
-Measured by `tools/loopsim.js` at seed 20260920, 42 checks passing, on the same
-machinery that reproduces the published curve. Across nine seeds the delta
-averages 10.8 and 8 of 9 clear ten.
+Measured by `tools/loopsim.js` at seed 20260920, 50 checks passing, re-measured
+27 September on `engine.js` at `248e5d2`, on the same machinery that reproduces
+the published curve. Across nine seeds the delta averages 10.8 and 7 of 9 clear
+ten. On 25 September the two numbers read 8.9 and 19.9, plus 11.0.
 
 ---
 
@@ -1078,22 +1163,26 @@ on.** Eighteen frames, fourteen voices, and I had read all fourteen. The 9 of
 14 and the 935 of 1000 are **in sample and are an upper bound**. The held out
 test is the first hundred real entries and it has not been run, because there
 are no real entries. If the true out of sample rate is half the measured one,
-the frame layer's 5.0 points is closer to 2.5 and the delta is nearer eight
+the frame layer's 5.1 points is closer to 2.5 and the delta is nearer eight
 than eleven. **This is the single thing most likely to be wrong and it is the
-largest item in the ablation.** The fold is not in sample and is not affected:
+largest designed item in the ablation**; the if then plan, which is built, is
+larger at 5.6. The fold is not in sample and is not affected:
 nineteen suffix rules that never saw a persona line, measured on an independent
 63 word probe.
 
 **2. Four coefficients are mine and together they carry most of the number.**
 With every credit coefficient of mine at zero and the break shock left alone,
 the baseline reads 7.8 points and the final 9.3, so **the delta at that end is
-+1.5 points, not +11.0.** What survives there is only what is measured: the
++1.5 points, not +10.9.** What survives there is only what is measured: the
 content chain's throughput per ICP and the four fixes already built. Taking the
 break shock to its harshest as well takes both arms down and the delta to +1.1.
 Every one of the four is swept in `--sweep` and the single worst case for each
-is: chain effect at zero, +10.1; floor probability at zero, +9.2; first session
-at no effect, +7.7; award effect at zero, +10.2. **No single one of them takes
-the design below eight points. All four at once takes it to one and a half.**
+is: chain effect at zero, +9.9; floor probability at zero, +9.1; first session
+at no effect, +7.9; award effect at zero, +9.9. **One of them alone takes the
+delta below eight points, the first session at no effect, to +7.9. All four at
+once takes it to one and a half.** Re-measured 27 September. This paragraph
+said no single one went below eight, beside a first session figure of +7.7
+that already did.
 
 **3. The baseline is calibrated, not predicted.** The per persona hazard is
 inverted out of four published points in `reviews/simulation-quarter.md` 6.3,
@@ -1132,7 +1221,8 @@ retained person generates and therefore how often the chain refreshes.
 **8. The awards are the weakest justified mechanic in the design.** Half of
 Harkin's d, applied to a second channel of the same mechanism, for effectively
 everybody. It is the one place a meta analysis is used twice. At zero the
-design still reaches +10.2, which is the defence, and the awards' real case is
+design reaches +9.9, a tenth under the target (+10.2 when first measured),
+which is most of the defence, and the awards' real case is
 the measured one: four of sixteen marks shut to 465 of 1000.
 
 ---
@@ -1179,7 +1269,7 @@ and deserves a seat of its own.
 **5. The `sq >= 4` release threshold. His, and it is the oldest open item.**
 465 of 1000 reach a complete reading with nothing to release and four of
 sixteen marks permanently shut. This design deliberately routes around it
-rather than waiting on it, and routing around it is worth 6.1 of the 11.0
+rather than waiting on it, and routing around it is worth 6.1 of the 10.9
 points. But the hole is still there, and lowering the threshold changes what
 the product claims about a calm person, which is a product question and not a
 tuning one.
@@ -1204,7 +1294,8 @@ longer in is its own kind of cruelty, and I do not have a rule for it yet that
 is not either dishonest or unkind.
 
 **9. Whether the ten point target is the right target. Mine to raise.** The
-bottom line moved from 8.9 to 19.9 points, which is a doubling, and the
+bottom line moved from 9.8 to 20.7 points, re-measured 27 September, which is
+slightly more than a doubling, and the
 category median at day thirty is under 3 percent of installs. Reaching the
 target does not mean the product retains. It means the model says this design
 retains twice what the current build does on a panel that is warm by

@@ -1741,9 +1741,11 @@ moves for the people who cannot release.
 
 From `tools/loopsim.js`, a weighted panel that is warm by construction, not an
 install cohort. None of it is a promise. The final design roughly doubles day
-thirty retention against the baseline build in the model. The largest single
-item is the sniffer work behind the content chain. The largest new mechanic
-is the first session showing what landed. The honest claim is that the design
+thirty retention against the baseline build in the model. Re-measured 27
+September, the largest single item is the if then plan, which is already
+built; the largest designed item is the sniffer work behind the content chain,
+which was the largest outright when this was first written. The largest new
+mechanic outside the sniffer work is the first session showing what landed. The honest claim is that the design
 reaches past a published category leader's shape on a warmer sample, not that
 it beats it. The first hundred real people settle what this argued about.
 

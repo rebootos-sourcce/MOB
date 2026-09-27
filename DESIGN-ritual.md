@@ -69,18 +69,23 @@ ask a person to know what Mind means before anything else is offered.
 I verified this rather than assuming it. `ritFor` at `ui/ritual.js:9` to `:26`
 takes the heaviest seat, maps it to a track, picks a tier off `DQ`, and returns
 the lightest practice in that track. Measured against the real engine for seven
-profiles, and checked against `PANEL-ritual-1000.md` section A1, which it agrees
-with on all seven:
+profiles. Re-measured 27 September on `engine.js` at `248e5d2`, the fitted CQ
+of `dd0bf23` and the ruled load bands of 70 and 40 from `3824c63`: Derek and
+Gordon moved, the other five did not. The table is now read out of this
+document by `proto/ritual/caldata.js`, `ritdata.js` and `build-data.js`
+through `proto/ritual/pin.js`, and they refuse to write if it disagrees with
+the engine. It used to cite `PANEL-ritual-1000.md` section A1, which does not
+exist.
 
 | who | seat carrying most | track | tier | practice called for | minutes |
 |---|---|---|---|---|---|
 | Marcus | Throat | Mind | 3 | Active Listening | 10 |
 | Sofia | Throat | Mind | 3 | Active Listening | 10 |
 | Diane | Solar | Somatic | 3 | The Somatic Truth Check | 2 |
-| Derek | Solar | Somatic | 1 | The Signal Test | 3 |
+| Derek | Solar | Somatic | 3 | The Somatic Truth Check | 2 |
 | **Angela** | **Root** | **Body** | 3 | **Box Breathing** | 5 |
 | **Rosa** | **Root** | **Body** | 3 | **Box Breathing** | 5 |
-| Gordon | Throat | Somatic, substituted | 1 | The Signal Test | 3 |
+| Gordon | Throat | Mind | 2 | Active Listening | 10 |
 | **a blank profile** | **Root** | **Body** | 3 | **Box Breathing** | 5 |
 
 So Box Breathing is correct, and it is correct for the two profiles whose root
@@ -96,13 +101,19 @@ heaviest seat, and it is rendered in the **right rail** in a different column
 under a different heading. The cause and the effect are on the same screen and
 are never joined by a sentence.
 
-**Gordon gets it worse.** His tier 1 Mind track holds nothing, so `ritFor`
-substitutes, and `ui/ritual.js:65` renders an apology:
+**Whoever reaches tier 1 on a Mind or Energy seat gets it worse.** Tier 1
+holds no Mind and no Energy practice, so `ritFor` substitutes, and
+`ui/ritual.js` renders an apology:
 
     Nothing in that track sits at tier 1, so the somatic track carries it.
 
 A person who has never been told what a track or a tier is now reads a sentence
-about an empty one.
+about an empty one. This paragraph named Gordon, and on 25 September it was
+him: the bands were 8 and 4 on a DQ that had become 0 to 100, so a DQ of 55
+read as heavy. Re-measured 27 September on the ruled bands, heavy starts at 70,
+Gordon reads 54.3 and tier 2, and his Mind track is not empty there. Nobody on
+the panel reaches 70 today, so nobody on it sees the apology. The defect in the
+copy stands for the first person who does.
 
 ### 1.3 The word count on the card
 
@@ -371,10 +382,15 @@ Each page is standalone: one file, no sibling, no dependency and no network
 request of any kind, verified by watching the request log during the screenshot
 run. Every number on every page is real. The seat, the track, the tier and the
 practice come out of `engine.js` through the same `ritFor` rule the build uses,
-reimplemented in `proto/ritual/build-data.js` and **checked against
-`PANEL-ritual-1000.md` section A1 on seven profiles, refusing to write its data
-file on any mismatch**. That check caught a bug in my own extractor on the first
-run, which is what it is for.
+reimplemented in `proto/ritual/build-data.js` and **checked against a pinned
+reading on every profile it writes, refusing to write its data file on any
+mismatch**. That check caught a bug in my own extractor on the first run, which
+is what it is for. It caught a second on 25 September and was red until 27
+September: the engine had been refitted under it, and its own `ritFor` still
+dealt the load bands the product had left. The pin is in `proto/ritual/pin.js`
+now, one copy for all three extractors, dated to the engine commit, with the
+extractor's bands read against `ui/ritual.js`. It used to cite
+`PANEL-ritual-1000.md` section A1, which does not exist.
 
 The history is real too, and this matters. **A profile in `PEOPLE` carries no
 ritual history at all**, so a heat map drawn from the profiles alone is empty for
@@ -797,7 +813,8 @@ in a sentence.
 | `board.html` | design B. Standalone, 46.3 kB, no network |
 | `tape.html` | design C. Standalone, 45.7 kB, no network |
 | `losssim.js` | `tools/loopsim.js` plus the owner's loss framing arm. Validates before it reports and exits non zero on any failure; read the count off the run. `node proto/ritual/losssim.js --loss` prints section 5 |
-| `build-data.js` | pulls the real reading out of `engine.js` and the real walks out of `losssim.js`. Refuses to write on any mismatch against `PANEL-ritual-1000.md` A1 |
+| `build-data.js` | pulls the real reading out of `engine.js` and the real walks out of `losssim.js`. Refuses to write on any mismatch against the pin in `pin.js`, or if its `ritFor` bands differ from `ui/ritual.js` |
+| `pin.js` | the one pinned reading `build-data.js`, `caldata.js` and `ritdata.js` gate against, with the engine commit and the date, and why it is pinned rather than read live |
 | `data.json` | the extracted numbers, inlined into all three pages |
 | `build.js`, `shots.js`, `perf.js` | assemble, screenshot and measure |
 | `shot-*.png` | every design at 1600 by 1000 and 390 by 844, for Marcus and for Gordon |

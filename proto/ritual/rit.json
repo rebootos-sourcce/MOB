@@ -6,8 +6,8 @@
    "role": "creative director · ICP",
    "weight": 160,
    "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
-   "CQ": 39.2,
-   "DQ": 0,
+   "CQ": 62.1,
+   "DQ": 10.68,
    "seat": "Throat",
    "track": "Mind",
    "tier": 3,
@@ -519,20 +519,20 @@
    "role": "managing partner",
    "weight": 35,
    "says": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
-   "CQ": 0.8,
-   "DQ": 55.19,
+   "CQ": 17.5,
+   "DQ": 54.28,
    "seat": "Throat",
    "track": "Mind",
-   "tier": 1,
-   "substituted": true,
-   "actualTrack": "Somatic",
+   "tier": 2,
+   "substituted": false,
+   "actualTrack": "Mind",
    "called": {
-    "k": "sig",
-    "nm": "The Signal Test",
-    "min": 3,
-    "track": "Somatic",
-    "tier": 1,
-    "d": "Proof that a word with no quality of its own moves your body."
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
    },
    "fit": [
     {
@@ -562,6 +562,48 @@
      "min": 3,
      "track": "Somatic",
      "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
     }
    ],
    "seats": [
@@ -776,7 +818,7 @@
    "wdFloor": 28,
    "improved": null,
    "improveNeed": 56,
-   "minutes": 21,
+   "minutes": 70,
    "sampled": 35,
    "survived": 0,
    "queue": [
@@ -798,9 +840,9 @@
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "Controlled Breath",
-     "min": 10,
-     "track": "Body",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
      "seat": "Throat",
      "law": "Transparency",
      "unit": "a day",
@@ -899,8 +941,8 @@
      "by": "avatar",
      "src": "avatarGap",
      "weight": 101.65,
-     "nm": "The Emotional Scan",
-     "min": 20,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
      "track": "Somatic",
      "seat": "Sacral",
      "unit": "a day",
@@ -934,8 +976,8 @@
    "role": "founder, second company · ICP",
    "weight": 180,
    "says": "I work until the work is done and the work is never done. Rest feels like a moral failure.",
-   "CQ": 28.1,
-   "DQ": 3.51,
+   "CQ": 59,
+   "DQ": 19.69,
    "seat": "Solar",
    "track": "Somatic",
    "tier": 3,
@@ -1538,8 +1580,8 @@
    "role": "seeker, six modalities · ICP",
    "weight": 150,
    "says": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
-   "CQ": 40.9,
-   "DQ": 0,
+   "CQ": 64.4,
+   "DQ": 5.37,
    "seat": "Root",
    "track": "Body",
    "tier": 3,
@@ -1721,7 +1763,7 @@
    },
    "snOffer": [
     {
-     "addr": "Inferior Cardiac",
+     "addr": "Pericardial Nerve",
      "axis": "Sad",
      "replacement": "Happy / Restoration",
      "shadow": 8
@@ -1996,20 +2038,20 @@
      "by": "sniffer",
      "src": "sniffStory",
      "weight": 408,
-     "nm": "Inferior Cardiac",
+     "nm": "Pericardial Nerve",
      "via": "The Observer Technique",
      "min": 20,
      "track": "Somatic",
-     "addr": "Inferior Cardiac",
+     "addr": "Pericardial Nerve",
      "axis": "Sad",
      "replacement": "Happy / Restoration",
-     "seat": null,
+     "seat": "Heart",
      "unit": "when called",
      "shape": "count",
      "target": 1,
      "cunit": "a run",
      "period": "when called",
-     "because": "Your own words carry sad at Inferior Cardiac. The far pole there is Happy / Restoration."
+     "because": "Your own words carry sad at Pericardial Nerve. The far pole there is Happy / Restoration."
     },
     {
      "i": 3,
@@ -2079,8 +2121,8 @@
    "role": "somatic practitioner · ICP",
    "weight": 140,
    "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
-   "CQ": 56.6,
-   "DQ": 0,
+   "CQ": 72.9,
+   "DQ": 3.16,
    "seat": "Throat",
    "track": "Mind",
    "tier": 3,
@@ -2592,20 +2634,20 @@
    "role": "high performer, endurance · ICP",
    "weight": 170,
    "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
-   "CQ": 15,
-   "DQ": 10.09,
+   "CQ": 48.5,
+   "DQ": 26.22,
    "seat": "Solar",
    "track": "Somatic",
-   "tier": 1,
+   "tier": 3,
    "substituted": false,
    "actualTrack": "Somatic",
    "called": {
-    "k": "sig",
-    "nm": "The Signal Test",
-    "min": 3,
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
     "track": "Somatic",
-    "tier": 1,
-    "d": "Proof that a word with no quality of its own moves your body."
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
    },
    "fit": [
     {
@@ -2635,6 +2677,97 @@
      "min": 3,
      "track": "Somatic",
      "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
     }
    ],
    "seats": [
@@ -2937,7 +3070,7 @@
     "window": 28
    },
    "improveNeed": 56,
-   "minutes": 252,
+   "minutes": 168,
    "sampled": 170,
    "survived": 0,
    "queue": [
@@ -2959,9 +3092,9 @@
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "Controlled Breath",
+     "nm": "Feel the Resistance",
      "min": 10,
-     "track": "Body",
+     "track": "Somatic",
      "seat": "Sacral",
      "law": "Temperance",
      "unit": "a day",
@@ -3043,8 +3176,8 @@
      "by": "avatar",
      "src": "avatarGap",
      "weight": 60.34,
-     "nm": "The Emotional Scan",
-     "min": 20,
+     "nm": "The Signal Test",
+     "min": 3,
      "track": "Somatic",
      "seat": "Solar",
      "unit": "a day",
@@ -3060,9 +3193,9 @@
      "by": "avatar",
      "src": "avatarGap",
      "weight": 49.36,
-     "nm": "Box Breathing",
-     "min": 5,
-     "track": "Body",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
      "seat": "Crown",
      "unit": "a day",
      "shape": "count",
@@ -3086,11 +3219,11 @@
     },
     "flat": false,
     "practice": {
-     "k": "sig",
-     "nm": "The Signal Test",
-     "min": 3,
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
      "track": "Somatic",
-     "tier": 1,
+     "tier": 2,
      "substituted": false,
      "wanted": "Somatic"
     },
@@ -3105,7 +3238,7 @@
    "role": "retired midwife",
    "weight": 15,
    "says": "Nothing in particular. Things do not sit on me the way they used to.",
-   "CQ": 100,
+   "CQ": 97,
    "DQ": 0,
    "seat": "Root",
    "track": "Body",
@@ -3474,20 +3607,20 @@
    "role": "C-suite, third turnaround · ICP",
    "weight": 100,
    "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
-   "CQ": 12,
-   "DQ": 9.19,
+   "CQ": 42.3,
+   "DQ": 26.85,
    "seat": "Sacral",
    "track": "Somatic",
-   "tier": 1,
+   "tier": 3,
    "substituted": false,
    "actualTrack": "Somatic",
    "called": {
-    "k": "sig",
-    "nm": "The Signal Test",
-    "min": 3,
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
     "track": "Somatic",
-    "tier": 1,
-    "d": "Proof that a word with no quality of its own moves your body."
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
    },
    "fit": [
     {
@@ -3517,6 +3650,97 @@
      "min": 3,
      "track": "Somatic",
      "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
     }
    ],
    "seats": [
@@ -3819,7 +4043,7 @@
     "window": 28
    },
    "improveNeed": 56,
-   "minutes": 261,
+   "minutes": 174,
    "sampled": 100,
    "survived": 0,
    "queue": [
@@ -3940,8 +4164,8 @@
      "by": "avatar",
      "src": "avatarGap",
      "weight": 58.9,
-     "nm": "The Emotional Scan",
-     "min": 20,
+     "nm": "The Signal Test",
+     "min": 3,
      "track": "Somatic",
      "seat": "Sacral",
      "unit": "a day",
@@ -3983,11 +4207,11 @@
     },
     "flat": false,
     "practice": {
-     "k": "sig",
-     "nm": "The Signal Test",
-     "min": 3,
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
      "track": "Somatic",
-     "tier": 1,
+     "tier": 2,
      "substituted": false,
      "wanted": "Somatic"
     },
@@ -4002,20 +4226,20 @@
    "role": "teacher, one year out",
    "weight": 50,
    "says": "I am in the middle of something and I cannot see the far side of it.",
-   "CQ": 7.6,
-   "DQ": 22.84,
+   "CQ": 41.1,
+   "DQ": 36.4,
    "seat": "Solar",
    "track": "Somatic",
-   "tier": 1,
+   "tier": 3,
    "substituted": false,
    "actualTrack": "Somatic",
    "called": {
-    "k": "sig",
-    "nm": "The Signal Test",
-    "min": 3,
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
     "track": "Somatic",
-    "tier": 1,
-    "d": "Proof that a word with no quality of its own moves your body."
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
    },
    "fit": [
     {
@@ -4045,6 +4269,97 @@
      "min": 3,
      "track": "Somatic",
      "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
     }
    ],
    "seats": [
@@ -4347,7 +4662,7 @@
     "window": 28
    },
    "improveNeed": 56,
-   "minutes": 249,
+   "minutes": 166,
    "sampled": 50,
    "survived": 7,
    "queue": [
@@ -4369,9 +4684,9 @@
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "Controlled Breath",
+     "nm": "Feel the Resistance",
      "min": 10,
-     "track": "Body",
+     "track": "Somatic",
      "seat": "Sacral",
      "law": "Detachment",
      "unit": "a day",
@@ -4453,8 +4768,8 @@
      "by": "avatar",
      "src": "avatarGap",
      "weight": 93.46,
-     "nm": "The Emotional Scan",
-     "min": 20,
+     "nm": "The Signal Test",
+     "min": 3,
      "track": "Somatic",
      "seat": "Solar",
      "unit": "a day",
@@ -4496,11 +4811,11 @@
     },
     "flat": false,
     "practice": {
-     "k": "sig",
-     "nm": "The Signal Test",
-     "min": 3,
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
      "track": "Somatic",
-     "tier": 1,
+     "tier": 2,
      "substituted": false,
      "wanted": "Somatic"
     },
@@ -4770,13 +5085,13 @@
  },
  "today": 1789862400000,
  "pal": {
-  "Root": "#CF5953",
-  "Sacral": "#D19255",
-  "Solar": "#D4BC70",
-  "Heart": "#65CFA5",
-  "Throat": "#65B8D4",
-  "3rd Eye": "#8296DB",
-  "Crown": "#A883D6"
+  "Root": "#D6524C",
+  "Sacral": "#D8924E",
+  "Solar": "#DABF6A",
+  "Heart": "#5FD5A6",
+  "Throat": "#5EBBDB",
+  "3rd Eye": "#7D93E0",
+  "Crown": "#A77EDB"
  },
  "practiceN": 17,
  "lawN": 21
