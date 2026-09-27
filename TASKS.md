@@ -17537,9 +17537,9 @@ cause of the Accuracy pill checked directly in the actual CSS:
 `.acc-b:hover{background:var(--sunk)}` really was drawing a slab
 behind Accuracy that nothing else in the row had, and the fix scopes
 a `.fdock .acc-b:hover{background:transparent}` override exactly as
-described. `tests/functional.js` was re-run but had not finished
-printing a result by the time this round closed; not yet confirmed,
-picked back up next round rather than left silently assumed passing.
+described. `tests/functional.js` finished after this round closed:
+1145 passed, 0 failed, matching exactly. All nine gates now confirmed
+directly.
 
 **A real, honest, undecided question rather than a guess.** Measured
 across five widths and all seven lightings: Accuracy's own circle and
