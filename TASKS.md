@@ -18033,3 +18033,57 @@ second one:
    different seat, or is the seam meant to carry the whole difference.
 9. **Do the 33 saboteurs also become pixel faces**, or does the pixel
    treatment stay on the six developmental masks he named directly.
+
+## GJ. Avatar redesign and Boundary overlay verified. 27 September
+
+`proto/avatar/redesign-GG.html` (md5 `e361fbe1c008ee07c2ed41166e9c6030`) and
+its packed delivery file (md5 `a6861427c87342361048d74abd8b45be`), dispatched
+at round GG item 1. Verified directly. Opened both in headless Chromium at
+1600 and 390, zero console errors, zero network requests. `git status`
+before and after matched the report exactly, one seat's footprint only. The
+engine functions the overlay claims to copy verbatim, `avatarValid`,
+`PUR_SIDES`, `PUR_PER_SIDE`, `boundaryCount`, `boundaryCross`, all read
+directly at `atuned_src/engine/avatar.js:23-114` and confirmed identical.
+Clicked through both surfaces myself: the seven satellites with icon and
+percent complete, the pair flow, and the Boundaries button, which opens the
+real hexagon drawn as the overlap of two triangles labelled Higher purpose
+and Earthly purpose, six sides, up and down arrows, a Feeds your ritual
+list quoting the mock journal entries that raised each reminder.
+
+**A real bug in the shipped engine, not the mockup, made visible by
+building against it honestly.** `boundaryCross` at `avatar.js:108` matches
+"team" to community, not coworkers, returns only the first side a regex
+hits rather than every side a sentence touches, and has no pattern at all
+for "coach". Confirmed by reading the regex directly, not taken on the
+report. This is a real defect in code that ships today, surfaced by a
+mockup rather than by a targeted engine audit, and it is now visible on the
+page rather than sitting quietly in a function nothing called until today.
+
+The report also flags that this was measured on choices on screen, 11
+against a target under 12, and floors (no control under 44px, no sideways
+scroll at 390), and states plainly what it has not measured: a graded
+comparison against Told's 9.4, since Told's own scoring script reads the
+shipped app build and this is a standalone page.
+
+Sent to him as an attachment, packed, per standing rule.
+
+What I need from him, five real open questions the report raises and none
+of them answered by default:
+1. His "up arrow, down arrow, and the six sides" may mean per side arrows,
+   as built, or may mean the two Purpose Map triangles with editing at
+   their corners. Both are shown on the page so he can compare and say
+   which he meant.
+2. When a pair is filed under one area but its words land at a different
+   seat, which one should show. The mockup shows both, filed and landed,
+   rather than silently picking.
+3. Whether the seven one word area names, Ground, Pleasure, Drive, Love,
+   Voice, Clarity, Meaning, stay, since he said icon and percent, no name,
+   and icons alone measured as failing at a glance recognition.
+4. One pair per area or several. The engine allows any number.
+5. Whether the page should open on the heaviest area, the current default
+   carried from Told, or on the area he says he is becoming, an open
+   question already standing from round FB.
+
+And separately, not a question, a fix worth queuing: `boundaryCross`'s
+three real defects above, since they sit in shipped engine code and were
+found rather than invented.
