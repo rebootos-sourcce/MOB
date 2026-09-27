@@ -273,17 +273,21 @@ function sumStory(r){
   p.push('Nothing is held above the line, so nothing is reaching the body as load. '
    +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}
 
- /* THREE. momentum, and what stands between here and the avatar. */
- var av=(CURP&&CURP.avatar)||null;
- var pairs=(av&&av.pairs)?av.pairs.filter(avatarValid):[];
+ /* THREE. momentum, and what stands between here and the avatar.
+    A PAIR IS {be,notbe}, NOT {seat,becoming}. This read pair.seat and
+    pair.becoming, which round HG's own pairs never carried, so st was
+    always undefined, blocked was always empty and every avatar read as
+    passing. avRows() is the one place a pair resolves to a seat and a
+    gap, shared with the Avatar tab itself, so this asks it rather than
+    keeping a second, wrong resolver. Found by the uiux-architect dispatch,
+    round HS, measured against three held pairs before this fix shipped. */
+ var rows=(typeof avRows==='function')?avRows():[];
+ var blocked=rows.filter(function(x){return x.gap&&!x.gap.clear;});
  var gapLine='';
- if(pairs.length){
-  var blocked=pairs.map(function(pair){
-   var st=seats.filter(function(x){return x.p.n===pair.seat;})[0];
-   return {pair:pair, clear:!(st&&st.held)};}).filter(function(x){return !x.clear;});
+ if(rows.length){
   gapLine=blocked.length
    ? ' Against the avatar you stated, '+blocked.map(function(x){
-       return '<b>'+esc(x.pair.becoming||x.pair.seat)+'</b>';}).join(' and ')
+       return '<b>'+esc(x.pair.be)+'</b>';}).join(' and ')
      +' is the part still blocked, and it is blocked by the same charge named above.'
    : ' Every seat your avatar depends on is passing. What you stated you are becoming is not '
      +'being blocked by the field.';
