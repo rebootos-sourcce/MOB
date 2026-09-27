@@ -21440,3 +21440,41 @@ the AI seat, since it touches no file any of the other five in flight
 dispatches use, and it is asked to verify rather than assume the
 `cqSum` reading `BOOK-ERRATA.md` already corrected, twenty one laws
 over two hundred and ten with no SQ divisor.
+
+## IL. The Punch caret fix, back and verified in isolation. 27 September
+
+Commit `0ffde4b`, on `atuned_src/shell/head.html` alone, twenty two
+lines. Verified directly: `BUILD.sh` and `BUILD-engine.sh` clean,
+`tests/engine.js` 1763 passed 0 failed. Opened a fresh screenshot of
+the Story tab myself with his exact reproduction text typed in: every
+highlighted word now reads at its ordinary weight, tinted in its seat
+colour with an underline in the same colour, and the caret sits after
+"here" rather than inside an earlier word. `source.html` is not part
+of this commit on purpose, since the shared tree still carries other
+agents' in flight work in the same file; it is rebuilt once they land.
+
+**Round HW reverses a named prior ruling and needs his confirmation,
+in the words the seat itself asked to have logged rather than
+smoothed over.** The comment on `.st-f` said "Bold and coloured,
+ruled": the bold weight was his own ruling, not an accident. It is
+removed because a textarea cannot carry a different weight for single
+words without moving glyphs off its own caret, so bold and a caret
+that lands where a person is reading cannot both exist in this editor.
+Emphasis now rides on colour, tint, the existing ring and a new
+underline, none of which take width. The ruling comment is kept in the
+file with the reversal written beneath it, not deleted.
+
+**A careful departure from instruction, checked and correct.** Told to
+use `git commit --only`, the seat found another agent's own unfinished
+Punch lighting fix sitting uncommitted in the same file mid dispatch,
+and `--only` commits a file's whole working tree content regardless of
+what is staged, which would have swept it up exactly the way round HH
+and round HX's own mistakes did. It staged only its own hunk with `git
+apply --cached` instead and left the other agent's work untouched.
+Confirmed directly: the commit is twenty two lines, matching only the
+highlight change, and the Punch fix landed separately and cleanly
+afterward.
+
+What I need from him: confirm colour, tint and underline replace bold
+on the Story highlight, or rule that bold stays and the caret drift is
+accepted, or ask for a different editor design entirely.
