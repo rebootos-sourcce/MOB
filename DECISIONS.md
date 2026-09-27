@@ -87,10 +87,14 @@ Three things need a ruling, and the meter follows all three.
 
 1. **Is a pattern a statement or a card.** Two hundred statements per address
    against one card per address is a factor of two hundred on the price.
-2. **Six channels or nine.** The verb chain at line 1023 gives six: believing,
-   perceiving, thinking, behaving, acting, feeling. The printed card at line
-   8123 gives nine: those six plus speaking, saying and doing. A third list in
-   chapter 33 gives a different six.
+2. **Six channels or nine. RULED SIX, 26 September** (`TASKS.md` CB): "believe,
+   I'm letting go of believing, perceiving, thinking, behaving, acting,
+   feeling. Those are the channels we're using." Built at CI as `C3_VERB` in
+   `engine/data/cards.js`, all six in one statement. The question as first
+   put: the verb chain at line 1023 gives six: believing, perceiving,
+   thinking, behaving, acting, feeling. The printed card at line 8123 gives
+   nine: those six plus speaking, saying and doing. A third list in chapter 33
+   gives a different six. `BOOK-ERRATA.md` item 27 is corrected to match.
 3. **Which side first.** The printed card runs right channel before left, at
    lines 8122, 8174, 8227 and 8279. The ruling recorded here says left then
    right.
@@ -219,6 +223,8 @@ document.
 
 - Whether the release runs six channels by two sides, twelve lines per
   address, or the six sit inside the four passes that exist. Moves the meter.
+  Built the second way at `TASKS.md` CI (one line carries all six, nothing on
+  the meter moved); CI's Q1 asks him which was meant, still open.
 - Save conflict between two devices. Blocks the record store.
 - Whether the tools panel lock after intake is retroactive.
 - Whether push may add a second file, against the one file rule.
@@ -2007,6 +2013,121 @@ keys already stored on the device, never the text), and the pattern signal
 per archetype and domain, which is a design with a prototype and not a build
 (`DESIGN-pattern-signal.md`).
 
+## Ruled 27 September, the rest of the day. Rounds GQ to IA
+
+Carried from `TASKS.md` on his round IA order, "Update all of our documents so
+we've got the latest in case we run out of tokens." Each ruling is quoted from
+the round it cites, and each built item names its commit. What he asked to
+see before deciding, or has not answered, is not here; it is in
+`BACKLOG-AUDIT.md` section 2, which is the current open list.
+
+**Fringe goes into the real Field.** GQ: "Fringes is fucking incredible. And
+the running hot, add that to analytics... Please add that as part of the
+normal field." Built at `325e923` (HH). **Running hot is named in the nerve
+state words, not as a bare number.** HI: "zero through five, those are the
+nerve states, so we can always say running hot is mildly impaired to heavily
+impaired, or heavily impaired would be, I guess, hot." Where the list starts
+on that scale, 4, 5 or 7, is open (HN draws all three on real profiles), and
+the copy change waits on that pick.
+
+**The nervous system figure, front and back, is the body's starting figure,
+and the body map is wired in.** GQ: "the nervous system, uh, front, back,
+that's fantastic, can you lock that in as our kind of starting." HG: "I really
+dig the body map system, I think it's much more fine than what we had, let's
+wire it in and we'll get feedback directly there." Built at `4c03123` (HR):
+the Body tab opens on the Map layer. GV, on the three drawn questions in
+`questions.png`: "C, definitely," read at GV as C3, a deep structure shown on
+both surfaces, ghosted on the far one. Question A, "with the icon of the
+fetter", did not resolve and is open.
+
+**The archetype picker goes onto the Avatar page, on a scale of one to five.**
+HG: "instead of ringing true, change it to a line, but we want to give a scale
+from one to five. People may not see their full potential, they're a magician
+as an example, they may not understand it." Built at `1850525` (HQ), "Hardly"
+to "Fully". Twelve or eighteen, and Rebel or Outlaw, are open.
+
+**The Avatar page is about building the avatar, and the centre is its hero.**
+HG: "the centre panel is our hero element, and the avatar page is really about
+building the avatar, so it's me telling the story of who I want to become, and
+then that populating within these fields, maybe the tags, and it's using the
+sniffer to sniff those fields for my stories, and then it gives me the release
+protocols so I can become that person. And the percent complete, that's good."
+And a ritual queue on the same page. Built at `1850525` (HQ); the bar reads
+Avatar at `engine/core.js:91`. This supersedes "Which layout" under "The
+avatar" in the open block below. His verdict on the built hero, HV: "You've
+taken the central design element and you've turned it into a bunch of text
+boxes. That's not the design that I want." The redesign is open and is his
+to see.
+
+**The column law, and the icon rule.** HS, both in his words in `BIBLE.md`:
+"The center column is sacrosanct for art. Not for text. The right column is
+for text. The bottom underneath the art is for text. Or design. The left is
+for a tools" (section 5.2a); and "No text by itself if it describes something
+without an icon. Or a symbol... you can't have a fetter without a symbol.
+unless it's in body text" (section 1.4). **A section never describes itself**,
+HS, after two such paragraphs were quoted back to him: "Why is that text never
+being written out ever again after I keep asking for it to never be written
+out?" Both quoted paragraphs were cut at `a0d90b3` (HU). **Third tier text goes
+site wide.** HS: "get rid of all this small noodly nuanced shit across the
+entire site." The sweep is in flight, not committed at `e0b14a2`.
+
+**The column law is set aside on the Story page, by his own hand.** HY: "I
+think I've painted you in a corner with this layout. I think we know what the
+tools are, we know what we're asking, but I want everything above the fold, so
+feel free to break that right navigation." And: "I want story, imprints and
+release to all be above the fold." IA: "I don't like that the release goes
+below the fold, that's terrible UI UX when we've got so much real estate. I
+don't like that the design elements look like they're completely separate."
+The page's parts, HT: a prompt area above the journal, a Source AI summary
+under it, a panel that shows what it is sniffing, then the imprints and the
+release, "The release area needs to look dramatically different." The
+imprints start from "the combination between Trace and Route" with a sort by
+type (HY). Mockups at `proto/story-redesign/` (`09c5149`); round two in
+flight (HZ).
+
+**The Compass is a circle, and radiating.** HS: "the CQ is showing where
+things are weighted and it's showing where you're either overexpressed or
+underexpressed... You want that to be a circle, right? You want your CQ to be
+100. And this whole thing should be a circle. And radiating. So let's apply it
+to the wheel." And "Update the compass using the same art direction of the
+field. Give me four examples of the compass." Four are at
+`proto/compass-redesign/` (`5172d1e`), every colour checked against the
+build's own tokens after his "Double check your colors." Which one is his
+pick. In the same breath: "I want to hide the square version and we're going
+to keep the dial. So we're going to start phasing out the square." Which
+surface "the square" names is not written down in `TASKS.md`; read it back to
+him with a picture before anything is hidden.
+
+**Sign in is wired in now, without questions.** IA: "I need the login page, I
+need it wired in, without questions. It needs to be effective and clean,
+because the software needs to work, front to back, before we run out of
+tokens." This moves sign in ahead of "Don't wait on him" above, which
+sequenced anything needing him, Cloudflare first, to the end. What it does not
+settle is the server a sign in talks to: Cloudflare or Supabase, and which
+product goes online first, `BACKLOG-AUDIT.md` section 2.1 items 2 and 3. The
+same message puts the Compass, a clean build and the funnel first: "It's
+important that we end up cleaning up the compass before we run out of tokens
+for the build. We need to end up with a clean build. I need the funnel."
+
+**The domain is spelled A-T-U-N-E-D.** HD: "I think it's called a tune dot
+app, A-T-U-N-E-D." That is `atuned.app`, the spelling `reboot-os`'s server
+already carries.
+
+**Working rules, his.**
+- **The backlog is where he reviews.** HY: "the backlog if there's ever stuff
+  in here that needs my eyes, has a link to it with the most recent so I can
+  review... when you link up the HTML files also link up the questions and we
+  can use this instead of like a backlog." Every item that needs his eyes
+  carries a live link to its latest version and its questions.
+- **The UX seat simulates with the ICPs and the focus group as standard.** HY:
+  "for my UX guy, this is going to be part of your normal simulations all the
+  time, so I need to stop asking it, I need to start making it part of your
+  normal set."
+- **A file he cannot open is published as a page instead.** Ours, from HZ,
+  after a packed file and then a raw one both failed to open for him: the
+  Story mockups were published as a live page, which opened. The rule is
+  ours; the failure it answers is his, three times (HT, HV, HY).
+
 ## Still open from the night, and named as open
 
 Nothing below is ruled. Each is written with the letter that holds its
@@ -2058,9 +2179,11 @@ period." EC's simulation had release winning 42 of 72 pairs against 14; EK's
 with `BRAND.md` section 9.
 
 **The avatar.**
-- Which layout. FB measured Told first, 9.4 of 10 against the D minus
-  layout's 5.4; his only reaction to that file since was confusion at its tab
-  bar (FK), which is not a verdict on the layout.
+- Which layout. **Overtaken on 27 September:** he approved wiring the page at
+  HG and the real tab was built at `1850525` (HQ), in "Ruled 27 September, the
+  rest of the day" above. What is open now is the hero itself, which he called
+  "a bunch of text boxes" (HV). Kept for the record: FB measured Told first,
+  9.4 of 10 against the D minus layout's 5.4.
 - Lead with the ideal he stated or the heaviest thing in the way (FB).
 - What counts as a pair cleared, with three ways measured (EL).
 - CQ, expression, or both, as the number the avatar leads with (EG).

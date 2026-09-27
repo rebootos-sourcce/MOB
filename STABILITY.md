@@ -4,6 +4,63 @@ Measured on this build, not remembered. Every number below came from running
 the thing. Where a measurement could not be trusted, the control experiment is
 named alongside it.
 
+## Shipped and measured, 27 September
+
+Each item below is a commit on this branch, and each number is the one
+recorded in `TASKS.md` for that round when the commit was checked in its own
+clean worktree against its immediate parent. Numbers are dated to their
+commit and are not today's run. Read the count off the run.
+
+    last source commit   a0d90b3 (round HS); nothing under atuned_src/ has
+                         been committed since, read at e0b14a2
+    gates at 4c03123     engine 1763, collide 336, funnel 172, functional
+                         1212, all passing; monitor renders every surface;
+                         the voice objections check is clean. design fails
+                         only "the Field still animates" under load (below)
+
+**The Fringe port on the Field.** Commit `325e923` (round HH), which landed
+under the wrong commit message, a log entry's; the content is real and gated.
+The ring bends outward past a charge of five on a heavy address, settles on
+a spring, and "running hot" on Analytics lists the twelve heaviest addresses.
+Twelve new declarations and four changed bodies against the parent, 35 new
+functional checks. Frames and Dial were not ported.
+
+**The copy sweep, first pass.** Commits `7279e05` and `65201d2` (round HK).
+About fifty five defects across fourteen files, three of them false
+statements read off the data. Engine 1735, collide 336, funnel 172.
+
+**The Field left panel.** Commit `1341796` (round HM). One new declaration and
+nine changed bodies. A stranger's first desktop screen goes from 103
+simultaneous choices to 47.
+
+**The Story page and Source AI.** Commit `e97c6eb` (round HO). New host free
+`engine/sourceai.js`, engine 1755 with a new `SA` group. The right rail's
+imprints and release traded for the Source AI panel.
+
+**"Ashamed" reads as Shame.** Commit `1d35820` (round GR). `parseStory('I feel
+ashamed that I am relieved')` returns one imprint, Self-Judgment (Solar),
+fetter Shame, at 6.7, where it returned four inferred Solar Anger imprints. A
+stated fetter is now scoped to its own seat (`statedAt` in `engine/sniff.js`),
+so "My father died and I feel ashamed" still reads grief at the heart. Engine
+1763 with a new `GR` group. Same 1251 declarations both sides, five changed
+bodies.
+
+**The real Avatar tab.** Commit `1850525` (round HQ). The bar reads Avatar,
+`atuned_src/engine/core.js:91`. Sixty new `AV` or `av` declarations, two
+changed bodies (`TABDEF`, `renderIntake`). Two self describing paragraphs cut
+at `a0d90b3` (round HU).
+
+**The body map on the Body tab.** Commit `4c03123` (round HR). `PMLAYER` opens
+on `'map'` (`atuned_src/ui/map.js:26`); the seven older layers are one press
+away. Ninety six new `bm` or `BM` declarations, three changed bodies, no
+engine logic touched. A defect in the approved prototype was fixed on the
+way: its back view drew the front mirrored.
+
+**Still in flight, not measured here.** About twenty files under
+`atuned_src/` are modified in the shared tree and not committed at
+`e0b14a2`, the site wide copy sweep ordered at round HS among them. The Story page caret drift (round HW,
+12.83 pixels after five marks on one line) is not fixed at `e0b14a2`.
+
 ## Shipped and measured, 26 September
 
 Graduated from `TASKS.md` DG to FE on his order of 27 September (FO). Every
@@ -166,9 +223,10 @@ it is believed.
 
 ## The earlier snapshot
 
-Kept as it was measured, on a build far behind the one above. Several items
-under "What must be finished" have since closed, validation and undo among
-them; the numbers are the build they were read from, not today's.
+Kept as it was measured, on a build far behind the one above. The numbers are
+the build they were read from, not today's. The list under "What was open at
+that snapshot" is marked item by item with what has closed since, read off
+the code at `e0b14a2`.
 
     source.html   331.6 KB     35 modules
     engine.js     132.6 KB     1,480 lines engine, 2,539 lines ui
@@ -196,9 +254,24 @@ with arrow key handling.
 **Reproducibility.** The build is a concatenation and equiv.py proves it: 294
 declarations, nothing added, removed or silently changed.
 
-## What must be finished before this is stable
+## What was open at that snapshot, and what has closed since
 
-Ordered by what it costs to leave alone.
+Ordered, at the time, by what it costs to leave alone. This heading used to
+read "What must be finished before this is stable" and listed validation,
+undo and Google Fonts as unfinished after all three had shipped
+(`BACKLOG-AUDIT.md` section 2.16). Each item now opens with its status, read
+off the code at `e0b14a2`, and the original text is kept under it.
+
+| # | Item | Status at `e0b14a2` |
+|---|---|---|
+| 1 | Schema validation | **Closed.** `validateProfile` at `engine/schema.js:719` refuses a wrong type or out of range field by name; `pImport` at `engine/schema.js:1243` is atomic and reports through `importError()` |
+| 2 | Undo | **Closed.** `engine/undo.js`, `UNDO_MAX=0` (no ceiling) with a redo stack; `ui/storyui.js` calls `undoPush('committing the story')` before the charge lands |
+| 3 | No continuous integration | **Still open.** `.github/workflows` does not exist |
+| 4 | UI layer has no headless coverage | Not re-measured |
+| 5 | Compositing on real hardware | Not re-measured |
+| 6 | Google Fonts | **Closed.** Inter is embedded as base64 in the build; `atuned_src/shell/head.html:15` records the removal, and `tests/design.js` gate 7 fails on any outbound request |
+| 7 | Cognitive load | **Open, partly moved.** The Field's first desktop screen went from 103 simultaneous choices to 47 at `1341796` (round HM); no other surface re-measured |
+| 8 | The impure core | **Open, deliberately deferred**, as `CLAUDE.md` still records |
 
 **1. Schema validation. The only unguarded door in the product.**
 `loadProfile` throws on all four malformed profiles tested, and `pImport`
@@ -255,8 +328,11 @@ signature rewrite and the path work showed the interface has not settled.
 
 The depth ladder works, four distinct frames. All 43 pickers are reachable at
 every breakpoint. Touch targets are at 44px throughout. No duplicate keys in
-any data table. No horizontal page scroll at 1600, 1100, 390 or 320. The
-design gate's one failure is the sandbox having no font egress.
+any data table. No horizontal page scroll at 1600, 1100, 390 or 320. At this
+snapshot the design gate's one failure was the sandbox having no font egress.
+That cause is gone: the typeface is carried in the file. The one unsteady
+design check since is the Field frame rate under load, "The one gate that is
+not steady" above.
 
 ## The honest caveat
 

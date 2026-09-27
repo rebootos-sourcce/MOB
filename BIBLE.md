@@ -3,8 +3,8 @@
 Version one. Assembled 25 September 2026 against commit `f885d8f` on branch
 `claude/laughing-feynman-xhfyj3`. Kept by the project manager as a standing
 job, not a document that closes (`DECISIONS.md`, "New, logged the same round",
-One Bible; `TASKS.md` AZ2). Current version four, 27 September, read at
-`a0d90b3`. Section 14.5 says what each version changed.
+One Bible; `TASKS.md` AZ2). Current version five, 27 September, read at
+`e0b14a2`. Section 14.5 says what each version changed.
 
 His words: "I want to lock the CQ formula into the brief, and make sure all
 the stuff is combined in our brief, so that we have one Bible that has our
@@ -153,6 +153,15 @@ In scope now and still undesigned: auth, the paywall and tiers, push, a points
 and badge ladder, and a practitioner view. Each is designed before it is
 built.
 
+**Sign in moved to the front, 27 September (round IA).** "I need the login
+page, I need it wired in, without questions. It needs to be effective and
+clean, because the software needs to work, front to back." This moves sign in
+ahead of the 25 September ruling that sequenced anything needing him to the
+end. At `e0b14a2` sign in does not exist, and `ui/account.js` says so on the
+page. The server it talks to is not chosen: Cloudflare or Supabase, and which
+product goes online first (`BACKLOG-AUDIT.md` 2.1). The paywall is built and
+gated with no money behind it (10.4).
+
 ### 1.3 The loop, the centre and the content chain (RULED, 20 September)
 
 **The process is discover, play, flow, embody.** His correction: the last
@@ -169,9 +178,12 @@ the centre. A person watches their avatar improve, driven by releases and by
 going round the loop. The layers are sewn: the avatar to the ritual, the
 ritual to the psyche, the psyche to the body locations, the body to the story.
 Then, sharper: "What you're improving is the conductivity of the kundalini.
-That's our primary goal with the avatar." Status: the Avatar tab is built
-(round HG, 27 September). It writes pairs and draws the ring of seven areas
-(section 9.9).
+That's our primary goal with the avatar." Status: the Avatar tab is built,
+approved at round HG and built at round HQ, commit `1850525`, 27 September.
+It writes pairs and draws the ring of seven areas (section 9.9). His verdict
+on the built hero (HV): "You've taken the central design element and you've
+turned it into a bunch of text boxes. That's not the design that I want." The
+hero's redesign is open.
 
 **The content chain, in his words.** What a person enters in the journal is
 added to the imprints. Part of that becomes a story they have to release. Part
@@ -370,7 +382,8 @@ It has been ruled three times, so it gets its own entry.
 | 20 September | The app opens on the avatar, reversing the Field | `TASKS.md` AV1, AO2; `DESIGN-avatar.md` 16 |
 
 **As built: the Field** (`engine/core.js` `tab:TAB.FIELD`). The Avatar tab is
-built (round HG, 27 September) and is the first door in `TABDEF`, but the app
+built (approved round HG, built round HQ, `1850525`, 27 September) and is the
+first door in `TABDEF`, but the app
 still opens on the Field. `TASKS.md` D11 asks him whether the avatar replaces
 the Field or sits beside it. OPEN. `DECISIONS.md` records only the first of the three rulings
 (section 13, item 1).
@@ -1091,6 +1104,16 @@ it fails twice.**
 The zone table in 5.2 stands. This law adds the centre and the band below
 it, and names what the left column is for in one word.
 
+**Where the law is set aside, by his own hand: the Story page (round HY, 27
+September).** "I think I've painted you in a corner with this layout. I think
+we know what the tools are, we know what we're asking, but I want everything
+above the fold, so feel free to break that right navigation." And: "I want
+story, imprints and release to all be above the fold." On the Story page,
+fitting the journal, the imprints and the release on one screen with no
+scroll outranks the column law. He restated it at IA: "I don't like that the
+release goes below the fold, that's terrible UI UX when we've got so much
+real estate." No other surface is released from the law.
+
 ### 5.3 The surfaces, by identity
 
 The integers are fixed forever. Display order is `TABDEF`, as it stood at the
@@ -1135,8 +1158,8 @@ each; treat them as defects, not intent).
 
 ### 5.5 The surfaces, one paragraph each
 
-- **Avatar (5), with Energetics under it.** Built 27 September, round HG. The
-  integer is the intake's and did not move; the bar label is Avatar, and each
+- **Avatar (5), with Energetics under it.** Approved round HG, built round HQ,
+  commit `1850525`, 27 September. The integer is the intake's and did not move; the bar label is Avatar, and each
   renderer writes only its own host. His words, round HG: "it's me telling
   the story of who I want to become ... and then it gives me the release
   protocols so I can become that person." The hero is a ring of seven areas, one per seat, each filling as the pairs
@@ -1145,7 +1168,9 @@ each; treat them as defects, not intent).
   entries that land at its seat, and the release. Under the hero: the pairs
   written, Running (the saboteurs at those seats and which way each last
   moved), a ritual queue, and the archetype wheel with its one to five scale.
-  The hero fails the column law (5.2a). Energetics follows on the same tab.
+  The hero fails the column law (5.2a), and he rejected it as built (HV): "a
+  bunch of text boxes... Friction means text boxes and a lot of text. I want
+  this to be interactive and smooth." Energetics follows on the same tab.
 - **Energetics (under the Avatar).** "Measure how I actually act, and record
   the moment I was born." The only place the 21 laws are measured: 63 questions, three
   framings per law side by side, because the gap between the three answers is
@@ -1165,9 +1190,19 @@ each; treat them as defects, not intent).
   Commit. Typing and recording are equal paths. Since GO, 27 September, Source AI
   sits beside the journal, opening with "What are we writing about today?"
   and asking one why question at seven and over, and the imprints and the
-  release are in the right rail (section 8.3a). Graded D. Three redesigns are
-  on file (`DESIGN-story.md`, `DESIGN-story4.md`, `DESIGN-container.md`);
-  which belief wins is OPEN.
+  release are in the right rail (section 8.3a), commit `e97c6eb`. Graded D.
+  Three older redesigns are on file (`DESIGN-story.md`, `DESIGN-story4.md`,
+  `DESIGN-container.md`). **Being redesigned on his order, 27 September.** The
+  parts (HT): a prompt area above the journal, a Source AI summary under it, a
+  panel that shows what the sniffer is reading, then the imprints and the
+  release, "The release area needs to look dramatically different." The
+  layout (HY, IA): story, imprints and release all above the fold, and the
+  column law set aside here (5.2a). The imprints start from the Trace and
+  Route mockups combined, with a sort by type. Four mockups are at
+  `proto/story-redesign/` (`09c5149`); a second round is in flight. Which
+  layout wins is OPEN. A known defect, not yet fixed at `e0b14a2`: the caret
+  drifts off the visible text after highlighted words (HW; section 13, item
+  26).
 - **Field (2).** "Show me the whole of what I am carrying, in one picture I
   can move into." The hero graphic: the core sized and lit by coherence, six
   gates, the 21 law spokes, the shell of addresses, chains, archetypes, masks,
@@ -1176,14 +1211,34 @@ each; treat them as defects, not intent).
   strip above it; vitality, awareness, will and flow in a strip below. A tap on
   a phone reads and never writes.
 - **Body (3).** "Show me where it sits in my body and how much gets through."
-  A filled silhouette with a continuous heat field clipped to the skin, one
-  channel down the spine that narrows where a seat closes, and one label where
-  it stops. Names live in the rail: "The body shows WHERE and HOW MUCH. The
-  rail shows WHAT." The pain layer opens blank by ruling.
+  **Since 27 September it opens on the body map** (round HR, commit
+  `4c03123`; `PMLAYER='map'` at `ui/map.js:26`). The figure is the nervous
+  system, front and back, which he locked in as the starting figure (GQ).
+  Every layer's count reads off the real reading, zero on a blank profile.
+  Pressing a region answers in the rail with the real address weights at that
+  seat. Each view draws its own lines; the approved prototype drew the back
+  as the front mirrored, which was fixed on the way in. Kept open, not
+  settled by default: the limb centres draw as a dashed ring that counts as
+  no address, and "the icon of the fetter" (Question A) sits as three buttons
+  side by side, fetter mark opening first only because the prototype did.
+  Painted pain is held per profile and cleared on a switch, not saved. The
+  seven older layers stay one press away, including the filled silhouette
+  with a heat field clipped to the skin and one channel down the spine that
+  narrows where a seat closes. Names live in the rail: "The body shows WHERE
+  and HOW MUCH. The rail shows WHAT." The pain layer opens blank by ruling,
+  and Pain now shows twice on the tab, the old nine region layer and the new
+  forty eight region mode.
 - **Compass (8).** "Show me where I sit between coherent and decoherent, on
   each of eight qualities, and which way I am moving." It opens flat by ruling,
   an arrow up and an arrow down: "It is a compass." Names are off the canvas,
-  and the reading goes to the rail.
+  and the reading goes to the rail. **Being redrawn as a circle, on his order
+  (HS, 27 September):** "You want that to be a circle, right? You want your CQ
+  to be 100. And this whole thing should be a circle. And radiating," in the
+  Field's art direction, showing where a person is over and under expressed.
+  Four proposals are at `proto/compass-redesign/` (`5172d1e`), every colour
+  read from the build's tokens. Which one is his; he named the Compass first
+  at IA. Nothing in `atuned_src/` has moved for it as committed at
+  `e0b14a2`.
 - **Knowledge (6).** "Tell me what this word means, and how much of it is in
   me." The codex reads the engine's tables directly, so the knowledge base and
   the reading cannot disagree. Every row is four things: the icon, the percent,
@@ -1606,8 +1661,23 @@ turn hits into imprints at addresses; and only then, on Commit, write charge.
 returns the full contract with a `because` on every row, and `inferred`
 separates what the words named from what was placed by fallback.
 
+**A stated fetter belongs to its own seat** (round GR, commit `1d35820`, 27
+September). A fetter the words name used to be one flag for the whole text.
+It is now keyed per seat (`statedAt` in `engine/sniff.js`), so "My father
+died and I feel ashamed" reads grief at the heart and Shame at the solar
+plexus, each on its own seat. The six solar shame words (ashamed, humiliated,
+stupid, worthless, embarrassed, guilty) carry Shame as their stated fetter in
+`engine/lexicon.js`, so "I feel ashamed that I am relieved" reads one
+Self-Judgment imprint, fetter Shame, where it read four inferred Anger. On
+the Story page, inferred imprints that share a seat and fetter fold into one
+pill with the summed amount (`impGhosts`), and a named fetter at a seat with
+no address for it is labelled by the fetter (`impPill`). Three more places
+where `ADJ2CHG` and the seat's reading disagree are open (GR), the worst
+being "I feel detached" reading as Crown Anger.
+
 **What it cannot read, and must not silently start reading**: no negation
-("I am not angry" scores as angry), no subject, no tense. It refuses to stem;
+("I am not angry" scores as angry; Source AI sets a negated line aside while
+the sniffer still charges it, section 13 item 27), no subject, no tense. It refuses to stem;
 a short allow list of confirmed inflections stands in. Each of these is an
 open ruling and each changes every reading (`DESIGN-sniffer.md`). Its weakness
 is recall, not method: a lexicon with a precedence rule can be audited, and a
@@ -1835,8 +1905,8 @@ are not on a bad day, the purpose triangles, and the six sided boundary. A
 pair is a pair because "a value has no address and a sentence about a bad day
 does".
 
-**BUILT (the Avatar tab, round HG, 27 September)**: the pair writer and a
-figure. A pair is written as `{be, notbe}`; the second line goes to the same
+**BUILT (the Avatar tab, approved round HG, built round HQ, commit `1850525`,
+27 September)**: the pair writer and a figure. A pair is written as `{be, notbe}`; the second line goes to the same
 seat resolver the rest of the product asks, and the ring of seven areas fills
 as the load at each pair's seat falls. The line that stood here, "nothing in
 the app can write a pair, and no figure exists", is overtaken.
@@ -2348,7 +2418,8 @@ stale. Where neither is, it is his call.
     centre. Two readings, and nobody has ruled between them: every surface
     puts a graphic in its centre, or the law governs only where a graphic
     stands. Whether a title may sit above the art is the same question at
-    small scale. His.
+    small scale. His. **Answered for one surface:** on the Story page he set
+    the law aside himself (HY, 5.2a). The other surfaces are still open.
 24. **Two archetype inputs on the Avatar tab, and a reading that is one of
     them.** The left rail's Primary and Secondary picks (`soul.arcs`) build
     the blueprint ring that weights every address, and that ring's archetype
@@ -2365,6 +2436,27 @@ stale. Where neither is, it is his call.
     files loaded before a string is written, do not state it, and no gate
     checks it. Whether it reaches the top tabs, which are text alone, is not
     written anywhere.
+26. **"Bold and coloured, ruled" against the Story editor's own layer rule.**
+    `shell/head.html` sets the highlight mark `.st-f` to `font-weight:600`
+    under a comment reading "Bold and coloured, ruled", on the visible layer
+    behind a transparent textarea that owns the caret at weight 300. The
+    block comment above `.st-ed` says every metric that affects where a
+    glyph lands must match on both layers. Bold Inter is wider, so the caret
+    drifts: 12.83 pixels after five marks on one line, measured by him on the
+    shipped build (`TASKS.md` HW). His suggested fix drops the weight change
+    and keeps the colour and tint, which overturns the bold. Not fixed at
+    `e0b14a2`. Which gives way is his.
+27. **A negated line: Source AI sets it aside, the sniffer charges it.** "I
+    was not scared" is set aside by Source AI as negated, while `parseStory`
+    still charges four Root imprints from the same sentence (`TASKS.md` HX).
+    The Story mockups print both, labelled, rather than pick. Whether a
+    negated line should charge imprints at all is his (and 8.3).
+28. **One measurement, two sets of words.** The Avatar page reads a
+    saboteur's direction as loading and releasing; Analytics reads the same
+    measurement as expanding and collapsing (`TASKS.md` HQ). And the Field's
+    row word "collapsing", a charge that just fell, sits against his scale
+    word "collapsed", a charge of ten (HN). Against one word per concept
+    (1.4). His.
 
 ---
 
@@ -2439,3 +2531,4 @@ corrections:
 | 2 | 25 September 2026 | `21e78ca` | Section 2 updated with the fitted CQ model: the bell curve (centre 5, width 1.25), the expression formula, and the build-up, lever and outside-address rules the simulation settled. Five questions remain of the bundle's fifteen. |
 | 3 | 25 September 2026 | `26827d6` | The correction, after ship: a release does move CQ. Section 2.1 gains the release lift as built in both engines, fitted to his fifteen thousand, and the two sentences that said a release cannot move CQ are recorded as the team's error, not erased. 7.8 says undo takes the lift back. Section 13 gains item 22, the unit of his fifteen thousand. |
 | 4 | 27 September 2026 | `a0d90b3` | Round HS. The column law (5.2a), checked against the Avatar tab, which fails it twice. The icon rule's body text boundary (1.4), and a section never describes itself (1.4). The Avatar tab as built (1.3, 1.5, 5.3, 5.5, 9.9), with the Summary's avatar sentence recorded as false and reproduced. Section 13 gains items 23 to 25. |
+| 5 | 27 September 2026 | `e0b14a2` | Round IA, a currency pass. No source commit since version 4, so nothing stamped moved. Sign in moved to the front (1.2). The Avatar tab credited to its build round, HQ `1850525`, and his "text boxes" verdict on its hero (1.3, 5.5). The column law set aside on the Story page by his hand (5.2a, 13 item 23). Story, Body and Compass paragraphs brought up to date (5.5): the Story redesign under way, the Body tab opening on the body map from `4c03123`, the Compass circle proposals. The sniffer's per seat stated fetter from `1d35820` (8.3). Section 13 gains items 26 to 28. |

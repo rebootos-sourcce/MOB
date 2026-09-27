@@ -6,6 +6,22 @@ wrong that is recorded too.
 
 A milestone is a state worth stopping at, named by what becomes true.
 
+**Status, 27 September.** This page was written 21 September and is kept as
+the plan it was. It is not the current open list: `BACKLOG-AUDIT.md` (27
+September) is. Read against the code at `e0b14a2`:
+
+- **Most of M0's floor has shipped.** Validation is atomic at the boundary
+  (`validateProfile` and `pImport`, `engine/schema.js`), and the build id is
+  stamped as `data-build` and printed by the boot guard
+  (`shell/guard.html`). The guard's error listener covers only a failure
+  before boot (`if(BOOTED)return;`), so an error after boot still has no
+  surface of its own. Save reporting on the story, ritual and release paths
+  was not re-checked for this note.
+- **M3 has shipped.** Undo is unlimited with a redo stack (`engine/undo.js`),
+  and a story commit pushes an undo step before the charge lands.
+- **The fork at the end of this page has been called**, for accounts. That
+  section is corrected below.
+
 ---
 
 ## Fixed during the scrub, already shipped
@@ -179,22 +195,56 @@ That belongs in M2. It is the practice loop, and it now closes at one end.
 
 ---
 
-## The fork, still yours
+## The fork, called: accounts
 
-Branch A: the funnel stays a 0.5 KB keyed record, the app stays a single file,
-no accounts. Roughly what is priced above.
+**This section used to be headed "The fork, still yours". It is not his to
+call any more; he called it.** `CLAUDE.md`, "What this project is becoming":
+"The fork is called. This becomes an accounts product. Ruled by the owner."
+Branch B below is the branch taken. Branch A is kept as the record of what was
+weighed.
 
-Branch B: the accounts product from part one of the recording. Portal, mobile
-client, shared database, payment. Not in this backlog at any size, an order of
-magnitude larger than everything here combined, and the branch where streaks
-and pings become buildable.
+Branch A, not taken: the funnel stays a 0.5 KB keyed record, the app stays a
+single file, no accounts. Roughly what is priced above.
 
-**M5 is the last cheap moment to keep both open.** Build the record store
-narrow and resist adding a session concept to it. That seam is expensive to
-walk back.
+Branch B, taken: the accounts product from part one of the recording. Portal,
+mobile client, shared database, payment. Not in this backlog at any size when
+this page was written, an order of magnitude larger than everything here
+combined, and the branch where streaks and pings become buildable.
+
+What the ruling does not change, per `CLAUDE.md`: `source.html` stays one file
+with no dependencies and gains network at exactly one seam, fetching a record
+at sign in; the engine stays host free; a practitioner's sight needs explicit
+consent, a visible list and revocation.
+
+Where it stands on 27 September, read off `TASKS.md` and the code rather than
+off this page:
+
+- **Sign in does not exist.** `ui/account.js:125` says so on the page: "Sign
+  in does not exist yet. This record is in this browser and nowhere else"
+  (round HI, read at `e0b14a2`).
+- **The paywall is built and gated but not connected to money.**
+  `engine/plan.js` carries the gift of 100 and the tiers; pressing an upgrade
+  prints "Billing is not connected yet" (`ui/panels.js:921`,
+  `BACKLOG-AUDIT.md` section 2.2).
+- **He has asked for the login page wired in "without questions"** (round IA,
+  27 September): "I need the login page, I need it wired in, without
+  questions. It needs to be effective and clean, because the software needs to
+  work, front to back." This moves sign in ahead of the 25 September ruling
+  that sequenced accounts last (`DECISIONS.md`, "Don't wait on him").
+- **What still gates a real sign in** is the server behind it: which database
+  (Cloudflare or Supabase) and which product goes online first. Both are open
+  and are items 2 and 3 of `BACKLOG-AUDIT.md` section 2.1. `SETUP-PLAN.md`
+  (round HJ) is the staged plan and puts a paying person three to four weeks
+  after those are answered. Safari erases a site's stored data after seven
+  days unused unless it is on the home screen, so a record that lasts three
+  hundred days depends on sign in and sync, not on local storage.
+
+**M5's warning is spent.** It said to build the record store narrow so both
+branches stayed open. The branch is chosen, so the seam is now designed for
+accounts rather than kept narrow to avoid them.
 
 And the thing that should not be decided by building it first: Alexander named
 an attention capture app as the model for the hook. This repo's UX skill
-commits to intrinsic motivation and no dark patterns. If the fork goes to
-accounts, those mechanics want designing from that floor, not from the cited
-model.
+commits to intrinsic motivation and no dark patterns. The fork went to
+accounts, so those mechanics want designing from that floor, not from the
+cited model. That still holds.

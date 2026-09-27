@@ -1,5 +1,46 @@
 # QUESTIONS FOR THE OWNER
 
+**Read this first. This file is stale, and it is not the current list.** It
+was generated on 21 September and has not been regenerated since. Every round
+after 21 September asks in prose rather than with a `[?]` mark, so nothing
+asked from 22 September on is in it. **The current list of open questions is
+`BACKLOG-AUDIT.md`, written 27 September**, grouped by what each question
+blocks in its section 2, with the questions asked more than once in its
+section 3. `QUESTIONS.html` is generated from the same marks and is stale in
+the same way.
+
+Of the 155 below, **at least 31 are already answered or overtaken** by a later
+ruling, per `BACKLOG-AUDIT.md` section 2.15. They are left in place here only
+because this file is generated from the `[?]` marks in `TASKS.md`, and those
+marks have not been closed yet. Do not answer these again:
+
+| Lines | Overtaken by |
+|---|---|
+| MS24 | GG and CH: 8-bit pixel masks |
+| RV7, RV13 | 089 RF12, "use a temporary AI voice font"; BX, the live binaural tone |
+| SN5, SN6 | `DECISIONS.md`, "One CQ. Ruled 25 September": the 21 laws over 210 |
+| D11, and its twin at 0n | `CLAUDE.md`, the Field opens the app; GH, "let's start off with a field". **Weaker than the rest:** `TASKS.md` GH itself reads that line as "a process instruction, not a fifth ask... rather than reopening the opening tab ruling", and `BIBLE.md` 1.5 still carries D11 as open against the 20 September avatar ruling. Confirm before closing |
+| CB4 | 0j2 CF4 and 0f2 SA5, the saturation ruling |
+| FW10 to FW14, AH5, AH6, AH7, the feathers line at 0c | BW and CB: feathers by seat; 0o VB1, "vibrancy and vital energy are tied together" |
+| LD9 | AY1 and BE1: a release no longer lowers CQ |
+| SQ1 to SQ5 | HO and HT: the Story page rebuilt around Source AI |
+| TP10 to TP13 | FS: one renderer for orientation and balance |
+| SW6b, SW10 | 0h: Atmosphere rejected; Console never built |
+| IJ1 | FY and HG: the avatar hero story |
+| MN8 | DK and EY: the glass bar replaced the secondary nav |
+
+Of the other 124, the ones still live are carried into `BACKLOG-AUDIT.md`
+section 2 by name (the reward word, the release threshold, the ritual set,
+the sniffer canon, the legal claims, `Root_08_Unnamed`, the child pattern, the
+films, the spec files, the logo, the safety thresholds, and D1, the twelve
+onboarding questions). The rest are dormant. Closing each overtaken mark in
+`TASKS.md` with its reason, and then rerunning the generator, is owed by the
+team and needs no ruling from him. This note is typed by hand and is the only
+part of this file that is; the generator will drop it on its next run, so
+carry it forward or retire the file when that happens.
+
+---
+
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
 waiting on your ruling. 155 of them, across 43 sections.
 Read off commit c6ad316 on 2026-09-21. Nothing here is typed by hand: answer a

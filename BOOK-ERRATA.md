@@ -167,28 +167,65 @@ count of SQ. The engine still divided CQ by it. Corrected. CQ rises between
 
 ## Still open, because guessing would be worse
 
-**25. The operational CQ form.** The book names the estimator as
-`CQ = √(Intention × Integrity) × 10 / (1 + 0.6·SQ/10)`. The engine computes the
-ratio. Before this can be implemented, SQ has to be pinned to a field: the book
-calls it `node load plus integrity gaps`, and the engine has DQ as a sum and
-SQm as a mean. They are not the same number and the formula divides by one of
-them.
+Items 25 and 26 were written before the owner's CQ rulings of 25 September
+and are no longer open. Both are settled against the book, so the book is the
+one to move. The rulings are in `DECISIONS.md`, "One CQ", "The CQ ruling,
+corrected" and "The CQ ruling, third pass", and the fitted model in "The CQ
+model, fitted".
 
-**26. DQ as derived.** The book says DQ equals 100 minus CQ and is not an
-instrument. The engine returns DQ as the raw sum of held charge, and the whole
-interface reads it that way. Changing it changes what the word means on every
-screen.
+**25. The operational CQ form. OVERTAKEN, 25 September: the book moves.** The
+book names the estimator as
+`CQ = √(Intention × Integrity) × 10 / (1 + 0.6·SQ/10)`, which divides by SQ.
+His ruling puts the shadow outside CQ: "There should only be one CQ number...
+The total 21 laws should equal up one hundred percent CQ," corrected the same
+day to "we can have the sum equal to 10, and that 210 equals one hundred
+percent." The engine now computes exactly that, the 21 laws summed over 210,
+times 100, with nothing dividing it: `cqSum` at `engine/compute.js:151`. SQ is
+pinned, which was this item's blocker: "SQ is an individual fetter, there are
+112 that we track, period," one value per address. The shadow acts on CQ as a
+lever through expression, not as a divisor inside it. What the book should
+carry: CQ as the sum of the 21 laws over 210, and the estimator retired, or
+labelled as an older form.
 
-**27. The release channels. RESOLVED by the pattern catalog, and the book's
-printed card was right.**
+**26. DQ as derived. OVERTAKEN, 25 September: the book moves.** The book says
+DQ equals 100 minus CQ and is not an instrument. He made both statements and
+then settled it: "DQ is a total shadow. I don't know why you keep asking me
+that, I keep saying it, it's like the eighth time I've said it." DQ is not the
+gap. The engine computes the 112 address weights summed over 1120, times 100,
+so it sits on the same 0 to 100 as CQ (`engine/compute.js:326`). What the book
+should carry: DQ as the total shadow across the 112 addresses, and "100 minus
+CQ" removed.
+
+**27. The release channels. RULED SIX on 26 September, and the book's verb
+chain at line 1023 is the one that matches.**
+
+**Correction.** This item used to say the channels are nine and that the
+book's printed card was right. That was the team's reading of the pattern
+catalog, and the owner overruled it. `TASKS.md` round CB, his words in full:
+"believe, I'm letting go of believing, perceiving, thinking, behaving, acting,
+feeling. Those are the channels we're using." Six: believing, perceiving,
+thinking, behaving, acting, feeling, in one statement. Built at round CI. The
+engine's only list is `C3_VERB` at `engine/data/cards.js:50`, and every
+release line reads "I am letting go of believing, perceiving, thinking,
+behaving, acting, and feeling that I am ...". The 3C generator's nine (these
+six plus speaking, saying, doing) and the nine axes roster are both retired
+from the code and kept only as words in the comment above `C3_VERB`.
+
+So the book moves the other way from what this item first said. The verb
+chain at line 1023 matches the ruling. The printed card at line 8123, with its
+nine, is the one that needs correcting, and so does the different six in
+chapter 33.
+
+What follows is the item as first written, kept because its other findings
+still hold. Read "nine" in it as superseded.
 
 The catalog reached the repo after this list was written. The TULA 3C Generator
-spec settles it and the book's printed card at line 8123 is the one that
-matches: nine verbs, believing, perceiving, thinking, behaving, acting,
-feeling, speaking, saying, doing, in a single statement. The spec calls that
-syntax non negotiable and says why: it fires the cognitive, emotional,
-behavioural, identity and somatic layers at once. The verb chain at line 1023
-and the chapter 33 list are both short.
+spec and the book's printed card at line 8123 agree on nine verbs, believing,
+perceiving, thinking, behaving, acting, feeling, speaking, saying, doing, in a
+single statement. The spec calls that syntax non negotiable and says why: it
+fires the cognitive, emotional, behavioural, identity and somatic layers at
+once. The one statement carrying every channel survives the ruling; the count
+of nine does not.
 
 The two hundred statements per card at line 1483 is also correct, and the spec
 gives its construction: fifty masculine limiting beliefs, fifty feminine,
@@ -200,12 +237,11 @@ bilaterally, fifty left and fifty right at the same time, and that both must
 clear. The printed card puts right in the first column, which is layout, not
 sequence.
 
-One thing does not resolve and is the owner's call. There are two nine gate
-rosters, both his. The 3C spec's is above. The nine axes cards give a
-different nine, believing, perceiving, thinking, feeling, speaking, acting
-from, relating through, creating from, being, mapped to a chakra region each,
-crown to root. The engine speaks whichever roster the sentence it is saying was
-written for, and an engine gate fails if the two are ever quietly merged.
+This paragraph said the two nine gate rosters were unresolved and the owner's
+call. He made it on 26 September (above): both are superseded by the six. The
+nine axes cards gave believing, perceiving, thinking, feeling, speaking,
+acting from, relating through, creating from, being, mapped to a chakra region
+each, crown to root. Neither nine is spoken by the engine any more.
 
 The engine's own arithmetic still appears nowhere in either: twenty one percent
 off the held value on release, and the coherent opposite installed at sixty two
