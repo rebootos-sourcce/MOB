@@ -24673,3 +24673,24 @@ real space, real estate."
 - **Badges and awards: confirmed absent**, nothing under that name
   anywhere in the engine or the UI. Matches what he already believed.
   Backlog, per his own hedge.
+
+## LH. CQ, DQ, SQ must be one math everywhere; the nav fix confirmed; badges and schema asked about directly
+
+His words, verbatim: "Field, compass, body cq, dq, sq should always be
+the same math. They are using the same systems, logic and formulas.
+What nav fix? Smaller secondary nav text? Yes. Fix what needs to be
+fixed. And then we'll focus on the funnel next. And if we have time
+left for the badges, we'll do that. Is the badge and award system
+designed already? Is a schema present?"
+
+- **CQ, DQ, SQ must be one math across Field, Compass and Body.**
+  Ruling, not a question: whichever surface shows a number by these
+  three names, it is the same computation everywhere it appears, not
+  a per-surface reading of the same idea. Checking this against the
+  code before answering rather than asserting it holds.
+- **The nav fix confirmed wanted, after he asked what it was.** Smaller
+  secondary nav text, yes. "Fix what needs to be fixed" read as: keep
+  going on it if anything is still short of right, not a new ask.
+- **Order confirmed: funnel next, badges only if time remains after.**
+- **Direct question: is a badge and award system already designed, and
+  is a schema present.** Answered from the round LG check: no.
