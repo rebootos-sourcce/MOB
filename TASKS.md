@@ -24391,3 +24391,45 @@ a new build. the masks (shadow mask faces must be in)"
   their priority.
 - **A build, once this is done.** Sent the moment it is real and
   gated, not promised ahead of it.
+
+## The nav, the masks, the Body overlay and Knowledge landed. Full gate suite twice clean.
+
+Not his words, an operational record. The three agents dispatched at
+rounds KT, KU and KW all hit the same weekly rate limit mid task and
+never reported back or committed. Their work was recovered directly
+from the working tree, verified by hand (code read, isolated worktree
+gates, screenshots actually looked at) since no agent report existed
+to cross check against, and landed in three commits: the nav
+(`858694b`), the masks and Body overlay and Knowledge order
+(`ed0bf94`), and the tests updated to match (`7e6c0cd`).
+
+One real bug found in verification and fixed: the search circle
+stopped focusing its own field, because an earlier fix to a design
+gate finding (a "stray 0s" in the search field's own CSS transition)
+had moved the wait into the wrong place and broken the synchronous
+focus call a button press depends on. Reverted, and the actual gate
+fixed instead, to know visibility's own 0s is intentional rather than
+flag it (`858694b`).
+
+`/tmp` filled to 93 percent (2.7 GB free of 252 GB) from old scratch
+worktrees this session had not cleaned up, which crashed the full
+test suite mid run with the browser itself closing. Cleared about 20
+GB of it, confirmed the crash does not recur, and ran the full suite
+twice clean after: 1283 passed, 0 failed, both times. The seat tone
+switches and the Field's own fade timing showed as flaky failures on
+one run under that same disk pressure and read clean on the next,
+consistent with resource contention rather than a real defect.
+
+The Field's own tension line motion (his round LB "must have") was
+investigated and not changed: it already scales pulse speed and
+period continuously by each connection's susceptibility, a value
+deliberately chosen over the plain held charge because the held
+number barely varies within a saboteur (three distinct values across
+a hundred and twenty chords, measured when it was built) while
+susceptibility varies across the whole range. It is not a five point
+threshold system on any number currently shown on screen. Whether he
+means this susceptibility based motion should intensify further, or
+whether "tension five and above" names a different, more familiar
+number (SQ, shown everywhere else in the app on a ten point scale)
+that the motion should key off instead, is open and asked in the next
+report rather than guessed at.
