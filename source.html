@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v856 c43d99f 2026-09-28 17:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v867 cd53bcb 2026-09-28 18:57"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -814,7 +814,11 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
     tripped the gate that bans all caps UI copy, and that gate is right: a
     logotype is not copy, and the way to say so is to leave the string in
     sentence case and let the mark's own styling carry the case. */
- color:var(--ink);line-height:1;text-transform:uppercase;margin-top:4px}
+ /* #343434, ASKED FOR A THIRD TIME, ROUND LK. It was var(--ink), the
+    wordmark's own colour, which on Dark reads as bright white competing
+    with the mark above it for the eye. His own number, fixed rather than a
+    token, since he has given this exact hex three times running. */
+ color:#343434;line-height:1;text-transform:uppercase;margin-top:15px}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* THE UMLAUT IS PART OF THE DRAWING. Two measured corrections to CSS dots
    over a set u lived here, one for the lowercase letter and one for the
@@ -44127,5 +44131,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002884895"></div>
+<div id="eof" hidden data-len="002885181"></div>
 </body></html>
