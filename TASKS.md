@@ -24270,3 +24270,26 @@ like, what are you doing, dude?"
   `HOSTING-SETUP.md`, refusing honestly today since accounts are not
   live. Whether and where it is reachable from the navigation is
   checked directly rather than assumed, in the next report.
+
+## KY. Backlog: a generated shape and name per person's own mask, and reports are still too dense
+
+His words, verbatim, explicitly not urgent: "Just a note for future we
+want the mask to take on the stylistic shape like the essence of the
+nature of the behaviors so people can see their masks right? we want
+these to not be pretty we don't want them to be ugly either but we
+want them to be unique to each person That's really cool. So people
+can see the shape. And we want to give their masks names. That sum up
+the nature of that mask. We want to create a system for that."
+
+- **Each person's own mask gets its own generated shape**, argued from
+  the actual behaviors and saboteurs that built it, not a shared icon.
+  Not pretty, not ugly, unique to the person. Backlog, not dispatched.
+- **A naming system: each mask carries a name summing up its own
+  nature**, generated from the same data. Backlog, not dispatched.
+
+And separately, his own words on the reporting itself, repeated and
+sharper than before: "Constantly the stream of fucking data. It's like
+constant text overload. It's insane." Read against `CLAUDE.md`'s own
+standing rule on this, four headings, bullets, no shorthand, but
+applied harder: shorter, fewer words per reply from here, the file
+itself carrying the detail rather than the chat.
