@@ -3976,7 +3976,7 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    surface in the bar is a peer of the instrument. Settings is reached from
    the profile button and nothing else, so it has a host, a class and a
    renderer and no door in the navigation. */
-/* THE BAR IS THREE SECTIONS, AND EVERY TAB SITS IN ONE. Rounds KC and KM in
+/* THE BAR IS SECTIONS, AND EVERY TAB SITS IN ONE. Rounds KC and KM in
    TASKS.md, his words: "Let's organize our menus by discover, play, flow as
    the core top navigation. And the sub navigation will be discover will be
    avatar and summary. And your journal imprints. Play is all the tools. Flow
@@ -3992,32 +3992,70 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    TABDEF below is in section order and each entry names its section in .sec,
    which is the one place membership is written. The markup groups the same
    buttons under the same keys and a gate proves the two agree. */
+/* AND THEN IT WAS THE LOOP, because three was the defect. Round KT in
+   TASKS.md, flagged by him as an emergency. The loop this whole file serves is
+   discover, play, flow, embody, and CLAUDE.md has said so since 20 September,
+   but the bar built at KC stopped at flow: there was no Embody to press.
+
+   He talked the mapping through more than once in that round, correcting
+   himself as he went, and the last pass is the one built. His words: "When I
+   click on Discover, I want to start right immediately on my journal. and
+   then my next secondary navigation is my avatar then my summary then my
+   intake. Sorry, then my intake then my summary. I want to move all the tools
+   to play. And then get rid of the tools tab. Sorry, discovers opening on
+   story. That's what I meant. Flow is ritual and accountability. Embody is
+   knowledge."
+
+   So four sections, the loop's own four in its own order, and no fifth: a
+   Tools section was built on his earlier pass and taken out on this one.
+   Only .sec and the order of this array moved. No TAB integer changed, and
+   the gate holds every one to its value. */
 const SECTIONS=[
  {k:'discover', nm:'Discover'},
  {k:'play',     nm:'Play'},
- {k:'flow',     nm:'Flow'}];
+ {k:'flow',     nm:'Flow'},
+ {k:'embody',   nm:'Embody'}];
 const TABDEF=[
- {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
- /* Summary moved up beside the Avatar, in his order for Discover: "avatar
-    and summary. And your journal imprints." It used to read last, as the
-    conclusion of the instruments. */
- {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* Discover opens on the Story, "start right immediately on my journal":
+    secGo sends a first visit to a section's first entry, so being first here
+    is what makes it the opening. */
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story',   sec:'discover'},
+ /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
+    history, from when this surface was the intake; the door called Intake
+    below is a different tab, TAB.ENERGY. Two integers, one word each. */
+ {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
+ /* THE BODY IS THE INTAKE, AND IT IS IN DISCOVER. KX, his words: "I need my
+    energetics, like my intake. To measure my coherence... Please prioritize
+    that back under Discover. I just rename it Intake." Renamed and moved
+    only: same integer, host, class and renderer. KT's last pass then names
+    "Field, Body, Compass" for Play, and this is the only Body there is, so
+    it stays here once rather than being given two doors. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'discover'},
+ /* Summary last in Discover, on his own correction: "then my intake then my
+    summary". */
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* "I want to move all the tools to play. And then get rid of the tools
+    tab." The instruments are Play now, and the app still opens on the Field,
+    so Play is the section pressed at start. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
- {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
- /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
-    Knowledge to get the bar to seven. They are independent games, a place a
-    person goes for brain release, and a game folded into a reference page is
-    neither.
+ /* "Flow is ritual and accountability." The Ritual tab carries both the
+    building of a ritual and the accountability for keeping it, so the whole
+    tab moves and nothing is split. */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
+ /* "Embody is knowledge." */
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'}];
+/* GAMES IS OFF THE BAR, FOR NOW. His words, round KT: "Hide games for now."
+   It is hidden the way Settings already is, by an entry in TABEXTRA below
+   and none here, so it keeps its integer, its host and its renderer, setTab
+   still opens it, and the monitor still walks it because it reads both
+   tables. Only the door went, and the button with it, since the gate holds
+   the markup to this array. Putting it back is one line moved from TABEXTRA
+   to here with a .sec, and a button in body.html.
 
-    The count that used to sit here said eight and the table beneath it holds
-    nine. It is gone: this array is the bar, and its length is the answer. */
- {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games',   sec:'play'},
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'flow'},
- /* Ritual left its place between the Avatar and the Story for Flow, in his
-    order: "the knowledge base and ritual." */
- {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'}];
+   It was never folded this time. The earlier ruling still stands, that they
+   are independent games and a game folded into a reference page is neither,
+   which is why it is not in TABFOLD pointing at Knowledge. */
 /* the section a tab sits in, read through TABREAL so a folded surface answers
    with its carrier's section. Settings and anything else with no door answer
    null, which the bar reads as "no section pressed". */
@@ -4030,6 +4068,7 @@ const SECOF=function(k){var r=TABREAL(k);
    its own entry here without being in the bar. */
 const TABEXTRA={};
 TABEXTRA[TAB.SETTINGS]={k:TAB.SETTINGS,id:'settings',nm:'Settings',cls:'tab-settings'};
+TABEXTRA[TAB.GAMES]={k:TAB.GAMES,id:'games',nm:'Games',cls:'tab-games'};
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  if(TABEXTRA[k])return TABEXTRA[k];
  return TABDEF[0];};
