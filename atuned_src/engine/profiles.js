@@ -10,12 +10,14 @@
    the one in front of them. So this module is four verbs over the list that
    exists, and it adds no field, no key and no version.
 
-   ONE NAME PER PROFILE ON A DEVICE. Two profiles called Lance is a list a
-   person cannot choose from, so a name already taken is refused by name, and
-   the check ignores case and the spaces at either end, because "lance " and
-   "Lance" read the same on the screen. A name is never cut to fit: a name
-   longer than the limit is refused and says the limit, because a quietly cut
-   name is a name the person did not type.
+   A NAME IS A LABEL, NEVER A KEY. Round KG, his words: "you should be able
+   to use your own name, and it does not overwrite. If my name is Philip
+   Long, someone else overseas is called Philip Long, the database should be
+   able to handle both." Two profiles on this device may carry the same
+   name; open and delete both work by id (profFind), never by name, so
+   nothing about choosing between them breaks. A name is never cut to fit: a
+   name longer than the limit is refused and says the limit, because a
+   quietly cut name is a name the person did not type.
 
    EVERY OPEN GOES THROUGH THE BOUNDARY. A profile is read back from the list
    through validateProfile before it is loaded, on a copy, so a record that
@@ -34,17 +36,14 @@ function profErr(){ return PROF_ERR?PROF_ERR.slice():null; }
 function profFind(id){
  for(var i=0;i<PROFILES.length;i++)if(PROFILES[i]&&PROFILES[i].id===id)return PROFILES[i];
  return null;}
-/* null when the name can be used, otherwise why not. self is the profile
-   being renamed, which may keep its own name. */
+/* null when the name can be used, otherwise why not. self is unused now that
+   a name is never checked against the rest of the list (round KG); kept in
+   the signature so profRename's own call needs no change. */
 function profNameWhy(name,self){
  if(typeof name!=='string')return 'a name has to be typed';
  var v=name.trim();
  if(!v)return 'a profile needs a name';
  if(v.length>PROF_NAME_MAX)return 'a name holds up to '+PROF_NAME_MAX+' letters, this one has '+v.length;
- var low=v.toLowerCase();
- for(var i=0;i<PROFILES.length;i++){var p=PROFILES[i];
-  if(p&&p!==self&&String(p.name||'').trim().toLowerCase()===low)
-   return 'a profile called '+String(p.name).trim()+' is already on this device';}
  return null;}
 /* THE LIST, AS A READING. Derived on every call and stored nowhere, so it can
    never disagree with the records it describes. */

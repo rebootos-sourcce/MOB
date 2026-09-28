@@ -2412,6 +2412,16 @@ console.log('\n=== the profiles on this device, by name (JZ) ===');
   o.cur2=CURP.name; o.fear2=S.charge.Fear; o.disk2=disk();
   $q('#acpnew').value=' LANCE '; $q('#acpstart').click();
   o.dup=said(); o.dupKind=document.getElementById('status').getAttribute('data-kind'); o.disk3=disk();
+  const dupId=profList().find(x=>x.name==='LANCE'&&x.cur).id;
+  const sarahId=profList().find(x=>x.name==='Sarah').id;
+  renderAccount();
+  const dupBtn=$q('[data-pfd="'+dupId+'"]');
+  o.dupBtnFound=!!dupBtn; if(dupBtn)dupBtn.click();
+  o.disk3b=disk();
+  /* deleting the open LANCE moves CURP to whichever profile is first on the
+     list, Lance, so Sarah is reopened here to put this run back exactly
+     where it was before the repeated-name excursion above. */
+  profOpen(sarahId); renderAccount();
   const L=profList().find(x=>x.name==='Lance'), Sa=profList().find(x=>x.name==='Sarah');
   $q('[data-pfo="'+L.id+'"]').click();
   o.cur4=CURP.name; o.fear4=S.charge.Fear;
@@ -2427,8 +2437,10 @@ console.log('\n=== the profiles on this device, by name (JZ) ===');
  ok(o.said1==='Saved as Lance.','and says so, got "'+o.said1+'"');
  ok(o.cur2==='Sarah'&&o.fear2===0&&JSON.stringify(o.disk2)==='["Lance","Sarah"]',
   'a new profile opens blank and both are on the disk: '+JSON.stringify(o.disk2));
- ok(/already on this device/.test(o.dup)&&o.dupKind==='fail'&&JSON.stringify(o.disk3)==='["Lance","Sarah"]',
-  'a name already taken is refused by name and nothing is written: "'+o.dup+'"');
+ ok(/is open. It starts blank/.test(o.dup)&&JSON.stringify(o.disk3.slice().sort())===JSON.stringify(['LANCE','Lance','Sarah'].sort()),
+  'a repeated name, any case, opens a distinct third profile rather than being refused: "'+o.dup+'", got '+JSON.stringify(o.disk3));
+ ok(o.dupBtnFound&&JSON.stringify(o.disk3b.slice().sort())===JSON.stringify(['Lance','Sarah'].sort()),
+  'and it can be deleted like any other, leaving Lance and Sarah: '+JSON.stringify(o.disk3b));
  ok(o.cur4==='Lance'&&o.fear4===5,'Lance is retrieved with his own field, got '+o.cur4+' at '+o.fear4);
  ok(JSON.stringify(o.disk5)==='["Lance"]'&&o.cur5==='Lance','Sarah is deleted from the disk and Lance stays open');
  ok(o.cur6==='Lance'&&o.fear6===5,'a worked example and back returns to Lance and his field, got '+o.cur6+' at '+o.fear6);}

@@ -1711,7 +1711,10 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
   +(off.length?'  off: '+off.join(', '):''));
  /* the owner asked for Musashi by name, and the book had already answered */
  ok(MIRROR.some(m=>m.up==='Musashi'&&m.dn==='Moloch'),'power is Musashi against Moloch');
- ok(MIRROR.some(m=>m.up==='Jesus'&&m.dn==='Lucifer'),'illumination is Jesus against Lucifer');
+ ok(MIRROR.some(m=>m.up==='Jesus'&&m.dn==='Lucifer'),'light is Jesus against Lucifer');
+ /* round KE, his words: "Just change illumination to light." The key stays IL. */
+ ok(MIRROR.some(m=>m.k==='IL'&&m.q==='Light')&&!MIRROR.some(m=>/Illumination/.test(m.q)),
+  'and the Heart axis is called Light, not Illumination');
  ok(MIRROR.some(m=>m.up==='Buddha'),'and Buddha holds perception');
 
  /* ELEVEN, AND THE MISSING ONE IS A KNOWN HOLE RATHER THAN A DRIFT.
@@ -1758,6 +1761,25 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  const missing=[...upNames].filter(n=>!MASTERS.some(x=>x.nm===n)&&n!=='Jesus');
  ok(missing.length===0,'every coherent pole is one of the masters'
   +(missing.length?'  missing: '+missing.join(', '):''));
+ /* THE FIVE PATHS, MIRRORED. Round KE. Each path carries an inversion in the
+    mirror pairs' own shape, so the compass draws the five the way it draws
+    the eight. Two are codex and must be read off the mirror pairs rather than
+    drift from them; three are research and must say where they came from. */
+ {const {PATHS}=E;
+  ok(Array.isArray(PATHS)&&PATHS.length===5,'five paths, got '+(PATHS?PATHS.length:'none'));
+  const pthin=PATHS.filter(p=>!p.up||!p.dn||!p.upd||!p.dnd||!p.ic||!p.dic||!p.q||!p.src).map(p=>p.up);
+  ok(pthin.length===0,'every path carries both poles, both lines, both marks and a source'
+   +(pthin.length?'  thin: '+pthin.join(', '):''));
+  ok(['Krishna','Buddha','Jesus','Rama','Lao Tzu'].every(n=>PATHS.some(p=>p.up===n)),
+   'and they are the glossary\'s five');
+  const drift=PATHS.filter(p=>p.from==='codex')
+   .filter(p=>!MIRROR.some(m=>m.up===p.up&&m.dn===p.dn&&m.dnd===p.dnd));
+  ok(drift.length===0,'the codex inversions are the mirror pairs\' own'
+   +(drift.length?'  drift: '+drift.map(p=>p.up).join(', '):''));
+  const res=PATHS.filter(p=>p.from==='research');
+  ok(res.length===3&&res.every(p=>/[A-Za-z]/.test(p.src)),
+   'and the three researched ones are marked as research and cite a text');
+  ok(new Set(PATHS.map(p=>p.k)).size===5,'and no two share a key');}
  ok(BLUEPRINT.length===4,'four blueprint archetypes, got '+BLUEPRINT.length);
  ok(CIRCLES.length===9&&CIRCLES.every((c,i)=>c.c===i+1),'nine circles in order');
  ok(CIRCLES.every(c=>c.by&&c.p&&c.at),'each circle names its governor, its pattern and its seat');
@@ -1885,7 +1907,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(mono,'the circles only ever deepen as coherence falls');
 
  /* house voice applies to a hundred and fifty lines of quotation too */
- const all=JSON.stringify([MIRROR,MASTERS,BLUEPRINT,CIRCLES,CASCADE,DESCENT]);
+ const all=JSON.stringify([MIRROR,E.PATHS,MASTERS,BLUEPRINT,CIRCLES,CASCADE,DESCENT]);
  ok(!/[\u2014\u2013]/.test(all),'no em or en dashes anywhere in the compass');
  ok(all.indexOf('108')<0,'and it never says 108');
 }
@@ -4980,11 +5002,14 @@ g('JZ · the profiles on this device, by name');
  const long='L'.repeat(PROF_NAME_MAX+1);
  ok(profRename(long)===false&&current().name==='Lance'&&new RegExp(String(PROF_NAME_MAX)).test(profErr()),
   'a name over the limit is refused and not cut, and says the limit: '+profErr());
- /* a second profile, and the name already taken */
+ /* a second profile, and a name is a label, never a key (round KG) */
  const s=profCreate('Sarah');
  ok(!!s&&current()===s&&disk().length===2,'a new blank profile opens under its name and lands on the disk');
- ok(profCreate('sarah ')===null&&/already on this device/.test(profErr())&&profiles().length===2,
-  'a name already taken is refused whatever its case: '+profErr());
+ const s2=profCreate('sarah ');
+ ok(!!s2&&s2!==s&&s2.id!==s.id&&current()===s2&&profiles().length===3,
+  'a repeated name, any case, opens a distinct new profile rather than being refused: '+profErr());
+ profDelete(s2.id); profOpen(s.id);
+ ok(profiles().length===2&&current()===s,'cleaned back up so the rest of this run reads as before');
  ok(profNameWhy('Sarah',s)===null,'a profile may keep its own name');
  /* the retrieve keeps what was done on the one left */
  const L=profiles().find(p=>p.name==='Lance');
