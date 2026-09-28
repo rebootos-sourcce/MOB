@@ -24728,3 +24728,22 @@ been worked on."
   lateral motion of the line itself. Hum, the actual vibration, is
   still only at `proto/field-overlay/overlay.js`, `draw_hum`, never
   ported.
+
+## LJ. The funnel's shape, in his own words
+
+His words, verbatim: "For the funnel, you have to finish the quiz and
+get your results of your CQ and your the holes in your integrity. And
+it needs to sniff out some of the stories so you can see what's
+running you. And then it invites you to try the app to find more."
+
+- **Four steps, his order.** Finish the quiz. See CQ and the specific
+  laws it names as shut ("holes in your integrity"). The sniffer reads
+  whatever stories the person gave it during the quiz and names what
+  is running them. Then an invitation into the full app.
+- **Read as an answer by omission, not a decision.** He did not choose
+  between this and the vibrating Field from LI; he described the
+  funnel in the detail asked for instead. Treated as: keep going on
+  the funnel he already ordered next, Hum still open and unscheduled.
+- Checking what of these four steps already exists in `funnel/` before
+  building anything, the same discipline the point cloud and the
+  tension claim both needed.
