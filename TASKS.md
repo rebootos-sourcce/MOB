@@ -23998,3 +23998,21 @@ HTML files that I haven't responded to yet."
 - **"Bring forward all the HTML files that I haven't responded to
   yet."** Every pending build/screenshot he hasn't acknowledged, being
   gathered and resent.
+
+**The point cloud mockups, delivered.** Three static images, none of it
+touching `atuned_src/` or `source.html`, nothing committed: each states
+on its own face what it reads from the engine (CQ, DQ, per-address SQ,
+the pull curve, the seat tones, the mirror-axis positions the Compass
+already prints) against what is only laid out or typed in by hand. A
+reads real per-address collapse and is the one that actually answers
+"where does an address's collapse show up geometrically." B is the most
+literal take on his own "fractal from the highest frequency inward" but
+reads nobody's data, its collapse order is invented. C reuses the
+Compass's own existing arrow geometry and real mirror-axis numbers but
+reads least like radiance. A real, animated version is judged buildable
+in a browser, WebGL, a few hundred lines, still one file and still host
+free. Two open questions raised by the exploration itself, his to
+answer if this goes further: which reading should drive the light, CQ,
+expression, or the engine's own existing `radiance` value (they
+disagree, checked on real personas), and whether an address's place on
+its shell should mean something or stay an open layout choice.
