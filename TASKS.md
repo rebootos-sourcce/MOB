@@ -24085,3 +24085,45 @@ solve it right now."
   round KC, and treat the fuller four section plus Tools mapping as
   the correction to build next, named plainly rather than silently
   folded into a guess.
+
+## KU. Urgent: the Body page overlay, the masks he still has not seen, and the nav he does not want
+
+His words, verbatim, angry and named as such rather than softened:
+"One more urgent When it comes to the body, body map page, I do not
+have the overlay. I do have a, I do have a secondary navigation. With
+map fetter 7 tours complexes that should be an overlay with icons that
+allow me to select my fetters or saboteurs and see the list on the
+right hand side all rolled up and when I click on their section their
+section unrolls and if I click on one of the lists it shows me the
+connections in the in my map that's what I want make that happen
+prioritize that after the navigation fix I see what you did with the
+navigation but the navigation was it keeps unnesting right that's not
+what I want I wanted to open up a secondary navigation underneath
+like you've been using for the last several hours I've been asking
+for the masks for hours and I don't see them. Where the fuck are they?
+Keep building what you're building. Start prioritizing the shit that
+I keep asking you for that you're not doing. Like look will help a lot
+of things and I, I need this to be polished."
+
+- **The masks he asked about at round KR were finished and committed
+  before this message arrived, and he had not been sent a build
+  carrying them.** The gap was not the work, it was that verified,
+  committed work was never handed to him to look at. Fixed immediately
+  in the next report: a build sent the moment anything real lands, not
+  batched behind a written report.
+- **The Body page overlay, the long open item, is now explicitly
+  prioritized, after the navigation fix in flight.** Icons for fetters,
+  saboteurs and complexes; a rolled up list on the right per section;
+  a section unrolls on press; pressing one item in the list shows its
+  connections on the map itself. Matches the Field's own pattern, per
+  his long standing instruction, and matches what CLAUDE.md already
+  names as still open.
+- **"The navigation... it keeps unnesting... that's not what I want."**
+  A real complaint about behavior he is seeing in the current, already
+  shipped nav (three sections, built at round KC), read before the
+  round KT nav fix landed, so it is not a reaction to new work, it is
+  the reason the round KT fix is needed. He wants a secondary
+  navigation that unrolls underneath the pressed section and stays,
+  the way it is described for the Body overlay above, not whatever
+  "unnesting" describes today. Passed to the in flight nav fix as a
+  concrete behavior to check against, not a new separate ask.
