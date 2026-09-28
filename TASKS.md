@@ -24632,3 +24632,44 @@ real space, real estate."
   the same discipline the point cloud needed.
 - **Secondary nav: shrink its text by 2pt and its own bar height by
   10px.** Direct, concrete, not backlog.
+
+**Landed. The tension claim checked against the code, not assumed.**
+
+- **Body already matches his spec closely, and it predates this
+  round.** `map.js`'s saboteur lines (`bmSabRefresh`): below a
+  saboteur weight of 5 no line runs at all; from 5 to 10 the pulse
+  count and speed both climb with the weight; it is per saboteur, the
+  node the tension sits on, never the whole network. This is real and
+  shipped, not new work.
+- **The Field is not this, on purpose, and reverting it would undo a
+  ruling already made and written down.** Its pulses do scale speed
+  with intensity, continuously, but the intensity is `n.susc`, the
+  Domain Matrix susceptibility, not `SQ`. The comment beside it in
+  `wheel.js` records why: the first build used the SQ-like gap and it
+  produced three distinct values across a hundred and twenty chords
+  on a live profile, a picture with no variance. Susceptibility gave
+  fourteen. A hard SQ 5-to-10 gate on the Field would be reintroducing
+  the version already tried and found not to discriminate. Flagged
+  rather than built blind or silently skipped. His call whether the
+  Field should change.
+- **Secondary nav shrunk as asked**, with one honest limit. The tap
+  target floor is its own hard gate, `tests/design.js` gate 8, 44 by
+  44 on every interactive element, and the tab buttons keep it. The
+  full 10px came from the row's own gap and padding instead of the
+  button: measured before and after in a real page, `.top`'s total
+  height 115px to 105px, exactly 10px, buttons still 44px. Text 14px
+  to 12px, above the 11px type floor. Verified: `tests/engine.js`
+  1836 passed, `tests/design.js` 182 passed including the tap floor
+  section, `tests/collide.js` 351 passed, `tests/functional.js` 1292
+  passed, all zero failed.
+- **Funnel Cloudflare database lookup: checked, not started.** The
+  funnel (`funnel/`) makes no network call anywhere in it today, no
+  fetch, no Cloudflare route, nothing written against a database. This
+  is the network seam CLAUDE.md already names, "the record fetch at
+  sign in," and it needs its own design pass before code: what
+  triggers the lookup, what key identifies the record, what the
+  Worker route returns. Not dispatched blind. Open for his decision on
+  scope, under what I need from him.
+- **Badges and awards: confirmed absent**, nothing under that name
+  anywhere in the engine or the UI. Matches what he already believed.
+  Backlog, per his own hedge.
