@@ -4958,5 +4958,71 @@ g('IK · CQ is the profile\'s own laws, and the word agrees with the number prin
  ok(TIERDEF.every(t=>tierOf(t.at).nm===t.nm),'every floor still names its own band');
 }
 
+g('JZ · the profiles on this device, by name');
+/* His words: "if I enter my profile, it saves my data. Under Lance. And I can
+   delete or retrieve it." Four verbs over the list that already exists. Each
+   refusal below was made to pass on purpose once, and this group caught it. */
+{
+ const {bindStore,pNew,loadProfile,profiles,current,profList,profNameWhy,profRename,
+        profCreate,profOpen,profDelete,profErr,PKEY,PROF_NAME_MAX,pStore}=E;
+ const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ const disk=()=>JSON.parse(mem[PKEY]||'[]');
+ /* an empty store read first, so records an earlier group left refused and
+    kept beside the list are not written back into this one's disk */
+ pStore(); profiles().splice(0); pNew('You'); loadProfile(current());
+ /* save under a name */
+ ok(profRename('Lance')===true,'the open profile saves under a name: '+profErr());
+ ok(current().name==='Lance'&&disk().length===1&&disk()[0].name==='Lance',
+  'and the disk holds it under that name, got '+JSON.stringify(disk().map(p=>p.name)));
+ ok(profRename('  Lance  ')===true&&current().name==='Lance','the spaces at either end are not part of a name');
+ /* refused by name, never clamped */
+ ok(profRename('   ')===false&&/needs a name/.test(profErr()),'an empty name is refused: '+profErr());
+ const long='L'.repeat(PROF_NAME_MAX+1);
+ ok(profRename(long)===false&&current().name==='Lance'&&new RegExp(String(PROF_NAME_MAX)).test(profErr()),
+  'a name over the limit is refused and not cut, and says the limit: '+profErr());
+ /* a second profile, and the name already taken */
+ const s=profCreate('Sarah');
+ ok(!!s&&current()===s&&disk().length===2,'a new blank profile opens under its name and lands on the disk');
+ ok(profCreate('sarah ')===null&&/already on this device/.test(profErr())&&profiles().length===2,
+  'a name already taken is refused whatever its case: '+profErr());
+ ok(profNameWhy('Sarah',s)===null,'a profile may keep its own name');
+ /* the retrieve keeps what was done on the one left */
+ const L=profiles().find(p=>p.name==='Lance');
+ ok(profOpen(L.id)===L&&current()===L,'a saved profile opens by its id');
+ S.charge.Fear=4;
+ ok(profOpen(s.id)===s&&S.charge.Fear===0,'opening another loads its own field');
+ ok(L.axes.Fear.held===4,'and the one left kept the last thing done on it, got '+L.axes.Fear.held);
+ profOpen(L.id);
+ ok(S.charge.Fear===4,'and it comes back when retrieved, got '+S.charge.Fear);
+ const list=profList();
+ ok(list.length===2&&list.filter(x=>x.cur).length===1&&list.find(x=>x.cur).name==='Lance',
+  'the list names both and marks exactly one open');
+ /* the boundary: a bent record is refused and nothing moves */
+ s.axes.Fear.held=9999;
+ ok(profOpen(s.id)===null&&current()===L&&/9999/.test(profErr()),
+  'a profile that fails the boundary is refused by the field, and the open one stays: '+profErr());
+ s.axes.Fear.held=0;
+ ok(profOpen('nope')===null&&current()===L,'an id that is not on the list opens nothing');
+ /* atomic: a write that fails puts everything back */
+ bindStore(k=>mem[k]===undefined?null:mem[k],()=>{throw new Error('QuotaExceeded');});
+ ok(profDelete(s.id)===null&&profiles().length===2&&current()===L&&/could not save/.test(profErr()),
+  'a delete the store refuses leaves both profiles and says so: '+profErr());
+ ok(profCreate('Mira')===null&&profiles().length===2&&current()===L,'and so does a new profile');
+ ok(profRename('Lancelot')===false&&current().name==='Lance','and so does a new name');
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ /* delete, the one not open and then the one open */
+ const d1=profDelete(s.id);
+ ok(d1&&d1.name==='Sarah'&&d1.moved===false&&current()===L&&disk().length===1,
+  'deleting a profile that is not open leaves the open one where it is');
+ const d2=profDelete(L.id);
+ ok(d2&&d2.moved===true&&profiles().length===1&&current().name==='You'&&disk()[0].name==='You',
+  'deleting the last one leaves a blank called You, as a first visit gets');
+ ok(disk().every(p=>p.name!=='Lance'),'and Lance is gone from the disk');
+ /* round trip: what the verbs wrote reads back through the boundary */
+ profRename('Lance'); profCreate('Sarah');
+ const back=pStore();
+ ok(back.length===2&&back.map(p=>p.name).join()==='Lance,Sarah','the disk reads back through the boundary by name');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

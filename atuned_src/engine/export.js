@@ -145,6 +145,9 @@ if(typeof module!=='undefined'&&module.exports){
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
+  /* profiles */  profList:profList, profFind:profFind, profNameWhy:profNameWhy,
+                  profRename:profRename, profCreate:profCreate, profOpen:profOpen,
+                  profDelete:profDelete, profErr:profErr, PROF_NAME_MAX:PROF_NAME_MAX,
                   storeBound:function(){return STORE_BOUND;},
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* exported so the gate can assert it against SI in both directions. The

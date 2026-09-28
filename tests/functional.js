@@ -2386,6 +2386,53 @@ console.log('\n=== sign in says it is not live, and keeps nothing ===');
  ok(o.cleared,'the password is cleared on the press');
  ok(o.record&&!o.leak,'and nothing typed reaches the record or storage');}
 
+console.log('\n=== the profiles on this device, by name (JZ) ===');
+/* His words: "if I enter my profile, it saves my data. Under Lance. And I can
+   delete or retrieve it." Walked through the controls a person presses, and
+   read back off localStorage, because a list on screen that the disk does not
+   hold is the lie rule three names. The last row is the mirror: a worked
+   example and back must bring the retrieved profile's field, not the one the
+   boot filled PEOPLE[0] from. */
+{
+ const pp=await browser.newPage({viewport:{width:1600,height:1000}});
+ pp.on('dialog',d=>d.accept());
+ await pp.goto(FILE,{waitUntil:'load'}); await booted(pp);
+ const o=await pp.evaluate(async()=>{
+  const o={}, disk=()=>JSON.parse(localStorage.getItem('source.profiles')||'[]').map(p=>p.name);
+  const said=()=>(document.getElementById('status')||{}).textContent||'';
+  const $q=s=>document.querySelector(s);
+  loadP(0); S.charge.Fear=5; saveYou(); persistNow();
+  ACC_OPEN='profiles'; setTab(TAB.SETTINGS); render();
+  o.form=!!($q('#acpnm')&&$q('#acpsave')&&$q('#acpnew')&&$q('#acpstart'));
+  if(!o.form)return o;
+  const b=$q('#acpsave').getBoundingClientRect(); o.tap=Math.min(b.width,b.height);
+  $q('#acpnm').value='Lance'; $q('#acpsave').click();
+  o.saved=CURP.name; o.disk1=disk(); o.said1=said();
+  $q('#acpnew').value='Sarah'; $q('#acpstart').click();
+  o.cur2=CURP.name; o.fear2=S.charge.Fear; o.disk2=disk();
+  $q('#acpnew').value=' LANCE '; $q('#acpstart').click();
+  o.dup=said(); o.dupKind=document.getElementById('status').getAttribute('data-kind'); o.disk3=disk();
+  const L=profList().find(x=>x.name==='Lance'), Sa=profList().find(x=>x.name==='Sarah');
+  $q('[data-pfo="'+L.id+'"]').click();
+  o.cur4=CURP.name; o.fear4=S.charge.Fear;
+  $q('[data-pfd="'+Sa.id+'"]').click();
+  o.disk5=disk(); o.cur5=CURP.name;
+  loadP(PERSON('Gordon')); toYou();
+  o.cur6=CURP.name; o.fear6=S.charge.Fear;
+  return o;});
+ await pp.close();
+ ok(o.form,'the Profiles section carries a name to save and a name to start');
+ ok(o.tap>=44,'and its buttons are a finger wide, got '+o.tap);
+ ok(o.saved==='Lance'&&JSON.stringify(o.disk1)==='["Lance"]','a name saves the open profile under it, on the disk: '+JSON.stringify(o.disk1));
+ ok(o.said1==='Saved as Lance.','and says so, got "'+o.said1+'"');
+ ok(o.cur2==='Sarah'&&o.fear2===0&&JSON.stringify(o.disk2)==='["Lance","Sarah"]',
+  'a new profile opens blank and both are on the disk: '+JSON.stringify(o.disk2));
+ ok(/already on this device/.test(o.dup)&&o.dupKind==='fail'&&JSON.stringify(o.disk3)==='["Lance","Sarah"]',
+  'a name already taken is refused by name and nothing is written: "'+o.dup+'"');
+ ok(o.cur4==='Lance'&&o.fear4===5,'Lance is retrieved with his own field, got '+o.cur4+' at '+o.fear4);
+ ok(JSON.stringify(o.disk5)==='["Lance"]'&&o.cur5==='Lance','Sarah is deleted from the disk and Lance stays open');
+ ok(o.cur6==='Lance'&&o.fear6===5,'a worked example and back returns to Lance and his field, got '+o.cur6+' at '+o.fear6);}
+
 console.log('\n=== the plan, and the seam that has nowhere to go yet ===');
 /* Stripe is a network and this file has none. The panel reads the plan off
    the record and calls one host function, and with nothing bound it says so

@@ -36,6 +36,13 @@ var ACC_OPEN='account';
 var ACC_SECS=[
  {k:'account', nm:'Account',       b:'Throat',
   ic:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20a7 7 0 0114 0"/>'},
+ /* THE PROFILES ON THIS DEVICE, round JZ. Throat, the family of the section
+    above it, because both are the person and not a setting. Two heads, the
+    one in front drawn whole, because the section is about there being more
+    than one. */
+ {k:'profiles',nm:'Profiles',      b:'Throat',
+  ic:'<circle cx="10" cy="8.6" r="3.3"/><path d="M3.6 19.6a6.4 6.4 0 0112.8 0"/>'
+    +'<path d="M15.4 5.6a3.1 3.1 0 010 6M17.6 13.9a6.2 6.2 0 012.8 5.7"/>'},
  {k:'display', nm:'Display',       b:'3rd Eye',
   ic:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21'
     +'M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/>'},
@@ -118,11 +125,13 @@ function accAccount(){
    +'<button class="btn pri" id="acgo" type="submit">Continue</button></div>'
    +'</form>',
    'Nothing typed here is sent or kept.');
+ /* THE NAME IS EDITED IN ONE PLACE, and since round JZ that place is Profiles,
+    where the list it has to be unique in is on the same screen. This row said
+    "Profile name" as an input, and two editors for one field is two answers to
+    one question, so it states the name and opens the section that edits it. */
  h+=accGroup('This Account',
-   '<div class="ac-row ac-edit"><span class="ac-rl">Profile name</span>'
-   +'<input type="text" id="acnm" value="'+esc((CURP&&CURP.name)||'')+'" '
-   +'aria-label="Profile name"></div>'
-   +accRow('Profiles on this device',PROFILES.length,{num:true}));
+   accRow('Open profile',(CURP&&CURP.name)||'You')
+   +accAct('Save, open or delete a profile','acgoprof',{btn:'Open Profiles'}));
  /* A NOTE TO A TESTER, NOT TO A PERSON. "The profile picker sits in the top
     bar today. It is a demo control, and it comes out of the bar when sign in
     lands." is a roadmap line, the kind he named in GX: "screen when entry,
@@ -152,6 +161,153 @@ function accAccount(){
     Sign out went with the stubs: a sign out row under a sign in that cannot
     succeed names a state nobody can reach. */
  return h;}
+
+/* ---------- 4.1b profiles. round JZ ----------
+   His words: "build out the profile page. So if I enter my profile, it saves
+   my data. Under Lance. And I can delete or retrieve it."
+
+   Every profile was already a named record in PROFILES and already saved as
+   it changed. What this adds is the door: the name, the list, and the three
+   verbs, over engine/profiles.js, which validates, writes atomically and
+   reports. Nothing here writes the store itself except the two side keys a
+   delete has to clear (accForget, below). */
+function accOwn(){
+ return !!(typeof S!=='undefined'&&S.who===0&&CURP&&PROFILES.indexOf(CURP)>=0);}
+function accWhen(iso){
+ if(!iso)return '';
+ var d=new Date(iso); if(isNaN(d.getTime()))return '';
+ return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
+function accProfiles(){
+ var own=accOwn(), h='';
+ if(own)h+=accGroup('This Profile',
+   '<form id="acpform" class="ac-row ac-edit pf-edit" novalidate>'
+   +'<label class="ac-rl" for="acpnm">Name</label>'
+   +'<span class="pf-act"><input type="text" id="acpnm" autocomplete="off" spellcheck="false" '
+   +'value="'+esc(CURP.name||'')+'">'
+   +'<button class="btn pri" id="acpsave" type="submit">Save</button></span></form>',
+   'Every change saves as you go, under this name.');
+ else h+=accGroup('This Profile',
+   accRow('Open now',((PEOPLE[S.who]||{}).nm||'A worked example')+', example'),
+   'A worked example is not saved on this device. Open one of your own below.');
+ var L=profList();
+ h+=accGroup('Saved on This Device',
+   L.map(function(x){
+    var cur=own&&x.cur;
+    var meta=['saved '+accWhen(x.updated||x.created),
+     x.stories?(x.stories===1?'1 story':x.stories+' stories'):'']
+     .filter(function(s){return s&&s!=='saved ';}).join(' · ');
+    return '<div class="ac-row pf-row'+(cur?' on':'')+'">'
+     +'<span class="ac-rl"><b class="pf-nm">'+esc(x.name||'You')+'</b><em>'+esc(meta)+'</em></span>'
+     +'<span class="pf-act">'
+     +(cur?'<span class="pf-now">Open now</span>'
+      :'<button class="btn" type="button" data-pfo="'+esc(x.id)+'" aria-label="Open '+esc(x.name)+'">Open</button>')
+     +'<button class="btn dgr" type="button" data-pfd="'+esc(x.id)+'" aria-label="Delete '+esc(x.name)+'">Delete</button>'
+     +'</span></div>';}).join(''),
+   'Held in this browser and nowhere else. Delete cannot be undone and there is '
+   +'no copy unless you made one.');
+ h+=accGroup('Start a New Profile',
+   '<form id="acpnewf" class="ac-row ac-edit pf-edit" novalidate>'
+   +'<label class="ac-rl" for="acpnew">Name</label>'
+   +'<span class="pf-act"><input type="text" id="acpnew" autocomplete="off" spellcheck="false">'
+   +'<button class="btn" id="acpstart" type="submit">Start</button></span></form>',
+   'A new profile starts blank. The one open now stays saved under its own name.');
+ return h;}
+/* THE SURFACE'S OWN RULES, injected once, the way the intake and the ritual
+   carry theirs, because the shell stylesheet is held by another seat. */
+function accProfCss(){
+ if(document.getElementById('pf-css'))return;
+ var st=document.createElement('style'); st.id='pf-css';
+ st.textContent=[
+  '.pf-act{display:flex;align-items:center;gap:8px;flex:0 0 auto}',
+  '.pf-edit .pf-act{flex:1 1 auto;justify-content:flex-end;min-width:0}',
+  '.pf-edit .pf-act input{flex:1 1 auto;min-width:0;width:100%}',
+  '.pf-nm{font-weight:600;color:var(--ink)}',
+  '.pf-row.on{box-shadow:inset 3px 0 0 var(--c)}',
+  '.pf-now{min-width:64px;text-align:center;font-size:13px;color:var(--mid)}',
+  '.pf-act .btn{min-width:64px;min-height:var(--tap)}',
+  '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}'].join('\n');
+ document.head.appendChild(st);}
+
+/* ONTO THE PERSON'S OWN FIELD FIRST. A profile of their own is only ever
+   loaded with S.who at 0, and loadP(0) is the one writer of S.who, so a person
+   looking at a worked example is walked back onto their own before anything
+   moves. The pending slider write lands first, so leaving a profile never
+   drops the last drag on it. */
+function accToOwn(){
+ if(typeof YOU_T!=='undefined'&&YOU_T&&typeof persistNow==='function')persistNow();
+ if(S.who!==0)loadP(0);}
+/* AND THE MIRROR FOLLOWS THE PROFILE. PEOPLE[0] is what loadP(0) reads the
+   person's field back out of, so after any change of profile it is filled from
+   the one now open, the way the boot fills it. Without it a trip to a worked
+   example and back put the last profile's field onto this one. */
+function accSwitched(){
+ PROF_BY[PEOPLE[0].nm]=CURP;
+ mirrorYou();
+ var sel=$('psel'); if(sel)sel.value='0';
+ if(typeof IQ_OPEN!=='undefined')IQ_OPEN=null;
+ syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();
+ if(typeof applyUiPrefs==='function')applyUiPrefs();
+ if(typeof renderSpirit==='function')renderSpirit();
+ if(typeof renderIntake==='function')renderIntake();
+ renderAccount(); render();}
+/* the engine's reason, as the first letter of a sentence */
+function accWhy(){
+ var e=profErr()||['it was refused'];
+ var t=e.join('. '); return t.charAt(0).toUpperCase()+t.slice(1)+'.';}
+function accProfSave(){
+ var i=$('acpnm'); if(!i)return false;
+ if(!profRename(i.value)){status('Not saved. '+accWhy(),'fail'); return false;}
+ status('Saved as '+CURP.name+'.','ok');
+ accSwitched(); return true;}
+function accProfStart(){
+ var i=$('acpnew'); if(!i)return false;
+ accToOwn();
+ var p=profCreate(i.value);
+ /* the redraw is for a person walked off a worked example, and the name they
+    typed goes back in the box, because a refusal that also erases the input
+    makes them type it again to see what was wrong with it */
+ if(!p){var typed=i.value; status('Nothing was started. '+accWhy(),'fail'); renderAccount();
+  var i2=$('acpnew'); if(i2)i2.value=typed; return false;}
+ accSwitched();
+ status(p.name+' is open. It starts blank.','ok'); return true;}
+function accProfOpen(id){
+ var p=profFind(id), nm=(p&&p.name)||'That profile';
+ accToOwn();
+ if(!profOpen(id)){status(nm+' was not opened. '+accWhy(),'fail'); renderAccount(); return false;}
+ accSwitched();
+ status(CURP.name+' is open.','ok'); return true;}
+/* THE SIDE KEYS GO WITH THE PROFILE. The avatar ratings and the active
+   rituals are held beside the record under its id, so a delete that left them
+   would leave part of a deleted profile in this browser. Only that id's entry
+   is removed. False when either key would not take the write. */
+function accForget(id){
+ var ok=true;
+ [typeof AV_KEY!=='undefined'?AV_KEY:null, typeof RIT_KEY!=='undefined'?RIT_KEY:null]
+  .forEach(function(k){
+   if(!k)return;
+   try{var o=JSON.parse(STORE.get(k)||'{}');
+    if(o&&typeof o==='object'&&!Array.isArray(o)&&Object.prototype.hasOwnProperty.call(o,id)){
+     delete o[id]; STORE.set(k,JSON.stringify(o));}}
+   catch(e){ok=false;}});
+ return ok;}
+function accProfDelete(id){
+ var p=profFind(id);
+ if(!p){status('Nothing was deleted.','fail'); return false;}
+ if(!confirm('Delete '+(p.name||'this profile')+' from this browser?\n\nThe identity, the 63 answers, the '
+  +'stories, the imprints and every snapshot go. It cannot be undone and there is no '
+  +'copy unless you made one.')) return false;
+ /* onto the person's own field first, so the engine can tell whether the
+    profile going is the open one, and so the mirror is refilled whenever the
+    profile it was filled from is the one that went */
+ accToOwn();
+ var d=profDelete(id);
+ if(!d){status('Nothing was deleted. '+accWhy(),'fail'); renderAccount(); return false;}
+ var side=accForget(d.id);
+ if(d.moved||PROFILES.indexOf(PROF_BY[PEOPLE[0].nm])<0)accSwitched(); else renderAccount();
+ if(!side)status(d.name+' is deleted. Its rituals and avatar ratings could not be cleared from this browser.','fail');
+ else status(d.name+' is deleted from this browser, the only place it was held.'
+  +(d.moved?' '+CURP.name+' is open.':''),'ok');
+ return true;}
 
 /* ---------- 4.2 display ---------- */
 function accDisplay(){
@@ -272,10 +428,12 @@ function accHelp(){
 /* ---------- the surface ---------- */
 function renderAccount(){
  var host=$('settings'); if(!host)return;
+ accProfCss();
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=(CURP&&CURP.name)||'You';
  var body;
  switch(ACC_OPEN){
+  case 'profiles':body=accProfiles(); break;
   case 'display': body=accDisplay(); break;
   case 'security':body=accSecurity(); break;
   case 'privacy': body=accPrivacy(); break;
@@ -305,11 +463,15 @@ function accWire(){
  var host=$('settings'); if(!host)return;
  host.querySelectorAll('[data-acs]').forEach(function(b){
   b.onclick=function(){ACC_OPEN=b.getAttribute('data-acs'); renderAccount();};});
- var nm=$('acnm');
- if(nm)nm.onchange=function(){
-  var v=nm.value.trim();
-  if(!v){status('A profile needs a name. Nothing was changed.','fail');nm.value=CURP.name;return;}
-  CURP.name=v; pSave(); statusSaved(); renderAccount(); render();};
+ /* the profiles section. A form each, so Enter in a name is the same press as
+    its button. */
+ var gp=$('acgoprof'); if(gp)gp.onclick=function(){ACC_OPEN='profiles'; renderAccount();};
+ var pf=$('acpform'); if(pf)pf.onsubmit=function(e){e.preventDefault(); accProfSave();};
+ var pn=$('acpnewf'); if(pn)pn.onsubmit=function(e){e.preventDefault(); accProfStart();};
+ host.querySelectorAll('[data-pfo]').forEach(function(b){
+  b.onclick=function(){accProfOpen(b.getAttribute('data-pfo'));};});
+ host.querySelectorAll('[data-pfd]').forEach(function(b){
+  b.onclick=function(){accProfDelete(b.getAttribute('data-pfd'));};});
  /* a form, so Enter in either field is the same press as Continue. Every
     press says the same true thing and clears the password, whatever was
     typed: checking the shape of an email first would be a second refusal
@@ -373,31 +535,18 @@ function applyUiPrefs(){
    record from this browser. There is no store, so it does not claim to have
    deleted anything from anywhere else, because that would be a lie about the
    one thing a person most needs the truth about. */
+/* ONE DELETE, TWO DOORS. This was its own splice, and it had two faults the
+   profiles section would have copied: the list was cut before the write was
+   known to land, so a refused write reported "Could not write" over a list
+   already missing the record, and the mirror in PEOPLE[0] was never refilled,
+   so a trip to a worked example and back loaded the deleted profile's field
+   onto the one left. It goes through the same path as a delete from the list
+   now (accProfDelete), which is atomic in the engine and refills the mirror. */
 function accDelete(){
- var nm=(CURP&&CURP.name)||'this profile';
- if(!confirm('Delete '+nm+' from this browser?\n\nThe identity, the 63 answers, the '
-  +'stories, the imprints and every snapshot go. It cannot be undone and there is no '
-  +'copy unless you made one.')) return false;
- var i=PROFILES.indexOf(CURP);
- if(i<0){status('Nothing was deleted.','fail');return false;}
- PROFILES.splice(i,1);
- if(!PROFILES.length)pNew('You');
- CURP=PROFILES[0];
- /* AND THE PERSON'S OWN CACHE FOLLOWS THE RECORD. Boot already does this line
-    for the same reason: PROF_BY['You'] is what saveYou mirrors into PEOPLE[0]
-    for, and deleting the record it pointed at left it pointing at an object
-    that is no longer in the list, so every later write reported success onto
-    an array nobody reads. saveYou now keys on the record id, so a stale cache
-    stops the mirror rather than mirroring into the wrong record, which is the
-    safe failure and still the wrong one. */
- PROF_BY[PEOPLE[0].nm]=CURP;
- loadProfile(CURP);
- if(!pSave()){status('Could not write to storage. Nothing was deleted.','fail');return false;}
- ACC_OPEN='privacy';
- syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();
- renderAccount(); render();
- status('Deleted from this browser. Nothing was held anywhere else.','ok');
- return true;}
+ if(!CURP||PROFILES.indexOf(CURP)<0){status('Nothing was deleted.','fail');return false;}
+ var ok=accProfDelete(CURP.id);
+ if(ok){ACC_OPEN='privacy'; renderAccount();}
+ return ok;}
 
 /* ============================================================
    COMPOSING SOMETHING TO SEND, AND THE HONEST FAILURE.

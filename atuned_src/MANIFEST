@@ -33,6 +33,7 @@ engine/seed.js
 engine/read.js
 engine/ladder.js
 engine/outbox.js
+engine/profiles.js
 engine/export.js
 ui/component.js
 ui/sound.js
