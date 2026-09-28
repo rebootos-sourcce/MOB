@@ -996,15 +996,18 @@ function renderMap(r){
    and this change does not reach the engine's data, so the row is built from
    the map and then PML. The map carries no figure on its button, the same as
    Flow: see pmCount. */
+/* AND NOW THE ROW IS GONE. KV in TASKS.md, his words: "It means I no longer
+   need the secondary navigation of saboteurs, complexes, hypercomplexes,
+   masks", and of the rest of it, "The background images already are wrong.
+   So is the pain map. So is the flow map. But those become unnecessary
+   because those become overlays on just the map." Every button it carried
+   is a circle in the map's upper left now (bmOvPaint), so the row is emptied
+   and hidden rather than left as a second way to one thing. The seven
+   layers' renderer above is not deleted in this change: nothing reaches it
+   from the page, and taking it out with its gates is its own piece of work. */
 function pmLayerBar(r){
  var lb=document.getElementById('lbar'); if(!lb)return false;
- lb.innerHTML=[['map','Map']].concat(PML).map(function(L){
-  var cn=pmCount(r,L[0]), bare=(L[0]==='nerves'||L[0]==='map');
-  return '<button class="pm-lb'+(PMLAYER===L[0]?' on':'')+(cn?'':' empty')
-   +'" data-pml="'+L[0]+'">'+L[1]
-   +(bare?'':'<b>'+cn+'</b>')+'</button>';}).join('');
- lb.querySelectorAll('[data-pml]').forEach(function(el){el.onclick=function(){
-  PMLAYER=el.dataset.pml;PMPICK=null;render();};});
+ lb.innerHTML=''; lb.style.display='none';
  return true;}
 
 /* ============================================================
@@ -1400,13 +1403,15 @@ back:[["Back of head",[43,2,57,15.6]],
    names round KA built: "we already know this is back, just I want front and
    back ... If you have front selected, then you have head, neck, shoulders.
    If I select back, you still have head, neck, shoulders. This way we can
-   reduce the number of icons that we're using." So a part is one button, and
-   the side it addresses is the Front and Back toggle beside it. Each part
+   reduce the number of icons that we're using." So a part was one button,
+   and the side it addressed was a Front and Back toggle beside it. Round KW
+   took the toggle away and showed both sets (bmRegBar), so each button now
+   carries its own side and names its region there. Each part
    names its region on each side out of BMREG, top of the body to the bottom,
    so the regions themselves, their boxes, routes and pain lines, are
    unchanged. Two back regions and one front one have no match on the other
-   side (the back's low back and sacrum, the front's ankle): pressing one of
-   those turns the toggle to the side that has it rather than going dead. */
+   side (the back's low back and sacrum, the front's ankle), so those three
+   stand in one set and not the other. */
 var BMPART=[
  {k:'head',f:'Head',b:'Back of head'},
  {k:'neck',f:'Neck',b:'Back of neck'},
@@ -1425,8 +1430,8 @@ var BMPART=[
  {k:'ankle',f:'Ankle',b:null},
  {k:'foot',f:'Foot',b:'Heel'}];
 /* A REGION'S NAME AS A PERSON READS IT. The table keeps "Back of head" as
-   its key, because the route and pain tables are keyed on it, but the toggle
-   already says which side is showing, so on the screen it is "Head". */
+   its key, because the route and pain tables are keyed on it, but the set
+   it stands in already says which side it is, so on the screen it is "Head". */
 function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){return c.toUpperCase();});}
 /* THE 28 ADDRESSES NOBODY HAS MEASURED, WHERE STANDARD ANATOMY PUTS THEM.
    Proposed on 27 September (FW, proto/fw/pages/fetters.html, each row sourced
@@ -1585,7 +1590,13 @@ var BM={mode:'pattern',variant:'C',amode:'A4',brush:6,face:'front',
     somatic self report, which is the kind of record a person must be able to
     see and delete with the rest of their profile. So a paint lasts until the
     profile changes or the page closes, and nothing claims otherwise. */
- paint:null};
+ paint:null,
+ /* THE OVERLAYS, bmOvPaint below: which circles in the upper left are on.
+    Pain is not in here, because Pain is BM.mode and has been since the
+    prototype; its circle reads and writes that. Session only, the same as
+    the paint. The three that open on are the three the figure drew before
+    the bar existed, so the first sight of the page did not change. */
+ ov:{on:{addr:1,masks:1,sab:1,cx:0,hy:0,flow:0}},hubs:[]};
 
 /* ---------- the figure, built once, the first time the map is shown ----------
    Not at load: the page opens on the Field, and nothing here is wanted until
@@ -1758,15 +1769,34 @@ function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
    centre is inside the silhouette is a place a dot can be: a patch at the
    neck holds fewer than one across the chest, and it fills by its own share.
 
-   HOW MANY ARE LIT IS THE MASK'S WEIGHT, maskRing in engine/compute.js, the
-   same figure Knowledge and the Summary print: round(w over ten times the
-   places). The order they light in is a fixed scatter per mask, so a rising
-   weight only ever adds dots to the ones already lit and the patch reads as
-   filling in, not as a bar. A change eases in one dot at a time, which is the
-   reading moving and not a show put on for it: a first sight, a new profile
-   and reduced motion all land on the count at once. The front view only,
-   because a mask is worn on the face; on a phone turned to Back there is
-   none, which is the figure being honest about which side it shows. */
+   A LIT PIXEL IS ONE STORY, AND A CLUSTER OF THEM IS ONE SABOTEUR. KW in
+   TASKS.md, his words, rejecting what 7220610 built here: "The mask I'm ta-
+   been talking about are the ones that represent the shadow. Kind of eight
+   bit. And each pixel represents a story and each cluster represents a
+   saboteur that makes up the shadow for the child." What 7220610 lit was
+   round(w over ten times the places) off maskRing's mean SQ, in a fixed
+   hashed scatter, so a dot was a share of a weight and no single dot meant
+   anything. bmMaskRead below reads the person's own record instead: every
+   committed entry in CURP.story.entries, through atomIndex (ui/wheel.js),
+   which re-parses each entry to the addresses it landed on, the same index
+   the Field's atoms and the address drill's "Your stories here" read, so
+   the three cannot disagree about which story is where. A story is under a
+   mask when it landed on an address in the mask's seats that still carries.
+   It is grouped under the heaviest saboteur built on one of those addresses,
+   and each saboteur's stories fill whole columns together, a clear column
+   between one saboteur and the next. A story no saboteur there is built on
+   is still a pixel, set on the alternate places after the last cluster so it
+   reads loose and not as one more block.
+
+   A worked example has no stories. Its profile is a table of charges and the
+   Story page refuses a commit onto one, so on Gordon every place stays at
+   the unlit grid: that is the record being empty, not the figure broken.
+
+   A change eases in one pixel at a time, which is the reading moving and not
+   a show put on for it: a first sight, a new profile and reduced motion all
+   land on the count at once. The front view only, because a mask is worn on
+   the face; on a phone turned to Back there is none, which is the figure
+   being honest about which side it shows. */
 /* FOUR ROWS AND NOT FIVE. Adult and Child centre 6.7 units apart, and at
    five rows the gap between them rounded to one pixel on Gordon at 1600, so
    the two read as one patch across the belly: the very merge the split
@@ -1786,20 +1816,101 @@ function bmMaskGeo(G){
      even width centres on the midline exactly */
   var i0=Math.round((50-BMXA)/BMMP-tot/2), j0=Math.round((row.y-BMYA)/BMMP-BMMROW/2);
   row.list.forEach(function(m,q){
-   var h=bmHashS(m.nm), sl=[], x0=1e9, y0=1e9, x1=-1e9, y1=-1e9;
-   for(var j=0;j<BMMROW;j++)for(var i=0;i<cw;i++){
-    var x=BMXA+(i0+q*(cw+BMMGAP)+i+.5)*BMMP, y=BMYA+(j0+j+.5)*BMMP;
-    if(!bmIn(G,0,x,y))continue;
-    sl.push({x:x,y:y,o:bmHash(h+j*37+i)});
-    x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}
+   var sl=[], cols=[], x0=1e9, y0=1e9, x1=-1e9, y1=-1e9;
+   /* column by column, top to bottom, and not the hashed scatter 7220610
+      lit in: a saboteur's stories are laid down this order, so consecutive
+      places are neighbours and a cluster is a block */
+   for(var i=0;i<cw;i++){var col=[];
+    for(var j=0;j<BMMROW;j++){
+     var x=BMXA+(i0+q*(cw+BMMGAP)+i+.5)*BMMP, y=BMYA+(j0+j+.5)*BMMP;
+     if(!bmIn(G,0,x,y))continue;
+     var p={x:x,y:y,i:i,j:j,q:sl.length};sl.push(p);col.push(p);
+     x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}
+    col.byJ={};col.forEach(function(p){p.c=cols.length;col.byJ[p.j]=p;});
+    if(col.length)cols.push(col);}
    if(!sl.length)return;
-   sl.sort(function(a,b){return a.o-b.o;});
-   out.push({nm:m.nm,m:m,sl:sl,box:[x0-BMMP/2,y0-BMMP/2,x1+BMMP/2,y1+BMMP/2],shown:null});});});
+   out.push({nm:m.nm,m:m,sl:sl,cols:cols,box:[x0-BMMP/2,y0-BMMP/2,x1+BMMP/2,y1+BMMP/2],shown:null});});});
  return out;}
-/* how many of a mask's places its weight lights. Nothing read, nothing lit. */
-function bmMaskLit(k,r){var m=null;
- ((r&&r.maskRing)||[]).forEach(function(x){if(x.nm===k.nm)m=x;});
- return (!m||r.unread)?0:Math.round(clamp(m.w/10,0,1)*k.sl.length);}
+/* THE STORIES UNDER ONE MASK, AND WHERE EACH ONE IS DRAWN. Memoised on the
+   reading and on atomIndex's own object, which it rebuilds only when an
+   entry is added or the person changes, because this is asked every frame.
+
+   Still carrying is sq of one or more, the line the address drill already
+   draws for "Release this story": a story whose addresses have all been
+   released has left the shadow, and the patch loses its pixel. The story
+   itself is not touched, the Story page still holds it.
+
+   px is in draw order, clusters first, heaviest saboteur first. When a
+   patch has fewer places than stories, the ones that do not fit are counted
+   in over and said in the name, never dropped without a word. */
+function bmMaskRead(k,r){
+ var by=(typeof atomIndex==='function')?(atomIndex()||{}):{};
+ if(k.rd&&k.rd.r===r&&k.rd.by===by)return k.rd;
+ var rd=k.rd={r:r,by:by,px:[],cl:[],loose:0,n:0,over:0,at:{}};
+ if(!r||r.unread)return rd;
+ var st={}, list=[];
+ W.forEach(function(n){
+  if(k.m.b.indexOf(n.b)<0||n.sq<1)return;
+  (by[n.i]||[]).forEach(function(a){var s=st[a.ei];
+   if(!s){s=st[a.ei]={ei:a.ei,t:a.t,ids:{}};list.push(s);}
+   s.ids[n.i]=1;});});
+ list.sort(function(a,b){return a.ei-b.ei;});
+ rd.n=list.length;
+ /* r.sabs is heaviest first, so the first one a story touches is the
+    heaviest. A named saboteur and an overshot one can stand on the same
+    addresses; a story is one pixel, so it goes to one of them. */
+ var cl=[], loose=[];
+ list.forEach(function(s){var own=null;
+  (r.sabs||[]).some(function(o){
+   if((o.parts||[]).some(function(n){return n&&s.ids[n.i];})){own=o;return true;}return false;});
+  if(!own){loose.push(s);return;}
+  var c=cl.filter(function(x){return x.o===own;})[0];
+  if(!c){c={o:own,st:[]};cl.push(c);}
+  c.st.push(s);});
+ cl.sort(function(a,b){return b.o.w-a.o.w;});
+ var cols=k.cols;
+ function lay(c0){var px=[], over=0, ci=c0, end=c0;
+  /* A SABOTEUR IS A BLOCK AS NEAR SQUARE AS FOUR ROWS ALLOW, filled row by
+     row and centred on the patch's height. Laid down one column at a time,
+     four stories were a bar a place wide, which reads as a stroke and not
+     as a cluster. Where the silhouette takes a place out of the block, the
+     block carries on in the next columns rather than dropping a story. */
+  cl.forEach(function(c,q){var n=c.st.length, sl=[], at=ci,
+    w=Math.max(Math.ceil(Math.sqrt(n)),Math.ceil(n/BMMROW)), h=Math.ceil(n/w), r0=Math.floor((BMMROW-h)/2);
+   while(sl.length<n&&at<cols.length){
+    for(var j=r0;j<r0+h&&sl.length<n;j++)for(var x=0;x<w&&sl.length<n;x++){
+     var p=cols[at+x]&&cols[at+x].byJ[j];if(p)sl.push(p);}
+    at+=w;r0=0;h=BMMROW;}
+   c.st.forEach(function(s,i){if(i>=sl.length){over++;return;}
+    px.push({p:sl[i],s:s,c:q});end=Math.max(end,sl[i].c+1);});
+   c.n=Math.min(n,sl.length);
+   /* one clear column after the block, so two saboteurs never touch */
+   ci=(sl.length?Math.min(at,end):at)+1;});
+  /* loose, on the places where column and row sum even, so no two of them
+     touch side on and they cannot be mistaken for a saboteur's block */
+  var free=[];
+  for(var i=ci;i<cols.length;i++)cols[i].forEach(function(p){if((p.i+p.j)%2===0)free.push(p);});
+  loose.forEach(function(s,i){if(i>=free.length){over++;return;}
+   px.push({p:free[i],s:s,c:-1});end=Math.max(end,free[i].c+1);});
+  return {px:px,over:over,used:end-c0};}
+ /* laid once from the left edge to measure, then again centred, because a
+    mask is worn over the midline and four stories hugging one edge of the
+    patch read as a patch half built. Nothing moves when nothing overflows:
+    the second pass only shifts what the first one placed. */
+ var L=lay(0), sh=Math.floor((cols.length-L.used)/2);
+ /* the loose places alternate, so a shift by an odd column can cost one; if
+    the centred pass would drop a story the edge pass kept, the edge wins */
+ if(!L.over&&sh>0){var L2=lay(sh);L=L2.over?lay(0):L2;}
+ rd.px=L.px; rd.over=L.over; rd.loose=loose.length;
+ rd.cl=cl.map(function(c){var fam=HCX_LIB.filter(function(h){return h.nm===c.o.hcx;})[0];
+  /* the colour its line runs in on this figure, bmSabRefresh, so a block
+     and the line through the same addresses are read as one thing */
+  return {nm:c.o.nm,n:c.n,all:c.st.length,col:bmSeatC(fam?fam.b:((c.o.parts[0]||{}).b||'Root'))};});
+ rd.px.forEach(function(x,i){rd.at[x.p.q]=i;});
+ return rd;}
+/* how many pixels a mask lights: one per story drawn under it. Nothing
+   read, nothing lit. */
+function bmMaskLit(k,r){return bmMaskRead(k,r).px.length;}
 function bmHoldMask(){
  return (PMPICK&&typeof PMPICK==='object'&&!PMPICK.kind&&!PMPICK.bmReg&&PMPICK.nm)?PMPICK.nm:null;}
 /* painted in page pixels and snapped to them, because a pixel that lands
@@ -1807,7 +1918,9 @@ function bmHoldMask(){
    stay faintly on, the way an unlit matrix shows its grid, so the shape a
    mask will fill is there before any of it is filled. */
 function bmDrawMasks(g,vs,dt){
- if(vs.indexOf(0)<0||!BMG.masks||!BM.r)return;
+ /* JQ put them here with no switch; KU gives them one, his words: "I can
+    click on or off my saboteurs, complexes, hypercomplexes, or masks" */
+ if(!BM.ov.on.masks||vs.indexOf(0)<0||!BMG.masks||!BM.r)return;
  var sd=Math.max(2,Math.round(BMMP*BM.cam.z*0.7)), hold=bmHoldMask(), hov=BM.hoverMask;
  /* painting is the one job that wants the body clear, so they step back */
  var A=1-0.7*BM.pg;
@@ -1822,12 +1935,28 @@ function bmDrawMasks(g,vs,dt){
   else{var d0=want-k.shown, st=Math.max(dt*12,Math.abs(d0)*Math.min(1,dt*4));
    k.shown=Math.abs(d0)<=st?want:k.shown+(d0>0?st:-st);}
   var lit=Math.floor(k.shown), part=k.shown-lit, on=(hold===k.nm||hov===k.nm);
-  k.sl.forEach(function(p,i){var s=bmW2S(p.x,p.y);
+  var rd=bmMaskRead(k,BM.r), box={};
+  k.sl.forEach(function(p){var s=bmW2S(p.x,p.y);
    if(s[0]<-sd||s[1]<-sd||s[0]>BM.W+sd||s[1]>BM.H+sd)return;
-   var a=i<lit?.66:i===lit?.08+.58*part:.08;
-   if(on)a=i<lit?1:a*2;
+   /* i is the pixel's place in draw order, not the place's, so an empty
+      place between two blocks stays empty while the blocks fill */
+   var i=rd.at[p.q], a=(i==null)?.08:i<lit?.66:i===lit?.08+.58*part:.08;
+   if(on)a=(i!=null&&i<lit)?1:a*2;
    g.fillStyle=bmRgba(BMC.mask,a*A);
-   g.fillRect(Math.round(s[0]-sd/2),Math.round(s[1]-sd/2),sd,sd);});});
+   var x=Math.round(s[0]-sd/2), y=Math.round(s[1]-sd/2);
+   g.fillRect(x,y,sd,sd);
+   var c=(i!=null&&i<lit)?rd.px[i].c:-1;
+   if(c>=0){var b=box[c]||(box[c]=[1e9,1e9,-1e9,-1e9]);
+    b[0]=Math.min(b[0],x);b[1]=Math.min(b[1],y);b[2]=Math.max(b[2],x+sd);b[3]=Math.max(b[3],y+sd);}});
+  /* THE CLUSTER'S EDGE, a one pixel frame one pixel clear of its block, in
+     its saboteur's line colour. The gap column already parts two blocks; the
+     frame is what says a block is one thing and which line it belongs to.
+     Square and snapped, the same eight bit as the pixels inside it. */
+  Object.keys(box).forEach(function(c){var b=box[c], hv=(BM.hoverMaskSab===rd.cl[c].nm);
+   /* .42 was measured invisible against the figure at the fitted view on a
+      bone coloured family, so the frame carries most of its colour */
+   g.strokeStyle=bmRgba(rd.cl[c].col,(on||hv?1:.78)*A);g.lineWidth=1;
+   g.strokeRect(b[0]-1.5,b[1]-1.5,b[2]-b[0]+3,b[3]-b[1]+3);});});
  bmTf(g);}
 /* the press and the name, in the svg over the canvas like the seats. A
    patch is four pixels tall, under the tap floor, so its target is held to
@@ -1835,16 +1964,35 @@ function bmDrawMasks(g,vs,dt){
    it in the svg, so a seat inside a patch still takes its own press. */
 function bmMaskHits(r){
  var g=BM.sv&&BM.sv.querySelector('[data-bmmasks]'); if(!g||!BMG||!BMG.masks)return;
- var hmin=BM.z0>2?44/BM.z0:0;
- g.innerHTML=BMG.masks.map(function(k){var b=k.box,lit=bmMaskLit(k,r);
-  var m=((r&&r.maskRing)||[]).filter(function(x){return x.nm===k.nm;})[0]||{w:0};
+ /* off, a mask is not drawn, so it is not a thing that can be pressed */
+ if(!BM.ov.on.masks){g.innerHTML='';return;}
+ var hmin=BM.z0>2?44/BM.z0:0, pl=function(n,w){return n+' '+(n===1?w:w==='story'?'stories':w+'s');};
+ g.innerHTML=BMG.masks.map(function(k){var b=k.box,rd=bmMaskRead(k,r);
   var h=Math.max(b[3]-b[1],hmin), y=(b[1]+b[3])/2-h/2;
-  return '<rect class="pm-mask" data-bmmask="'+esc(k.nm)+'" x="'+b[0].toFixed(2)+'" y="'+y.toFixed(2)
+  /* a count and not a count against a total, CO-05: "31 of 48" reads as a
+     score, and a reading is not one. The total is the patch's own shape.
+     The weight 7220610 printed here is gone with the dots it sized: a pixel
+     is a story now, and the mask's weight is still in its drill. */
+  var say=!rd.n?'Nothing written has landed here yet.'
+   :pl(rd.n,'story')+' held here. '
+    +(rd.cl.length?pl(rd.n-rd.loose,'story')+' in '+pl(rd.cl.length,'saboteur')+(rd.loose?', '+rd.loose+' on '+(rd.loose===1?'its':'their')+' own':'')
+     :(rd.n===1?'It is not':'None of them is')+' part of a saboteur yet')+'.'
+    +(rd.over?' '+rd.over+' more than the patch has room to draw.':'');
+  var o='<rect class="pm-mask" data-bmmask="'+esc(k.nm)+'" x="'+b[0].toFixed(2)+'" y="'+y.toFixed(2)
    +'" width="'+(b[2]-b[0]).toFixed(2)+'" height="'+h.toFixed(2)+'" fill="transparent"><title>'
-   /* a count and not a count against a total, CO-05: "31 of 48" reads as a
-      score, and a reading is not one. The total is the patch's own shape. */
-   +esc(k.nm)+' mask. It '+esc(k.m.v)+'. '+lit+(lit===1?' dot':' dots')+' filled, at a weight of '+(+m.w||0).toFixed(1)
-   +'.</title></rect>';}).join('');}
+   +esc(k.nm)+' mask. It '+esc(k.m.v)+'. '+say+'</title></rect>';
+  /* one target per saboteur's block, after the patch's so it is on top, and
+     still a press on the mask: it names the saboteur, the mask opens */
+  rd.cl.forEach(function(c,q){var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+   rd.px.forEach(function(x){if(x.c!==q)return;
+    x0=Math.min(x0,x.p.x);y0=Math.min(y0,x.p.y);x1=Math.max(x1,x.p.x);y1=Math.max(y1,x.p.y);});
+   if(x0>x1)return;
+   o+='<rect class="pm-mask" data-bmmask="'+esc(k.nm)+'" data-bmmasksab="'+esc(c.nm)+'" x="'+(x0-BMMP/2).toFixed(2)
+    +'" y="'+(y0-BMMP/2).toFixed(2)+'" width="'+(x1-x0+BMMP).toFixed(2)+'" height="'+(y1-y0+BMMP).toFixed(2)
+    +'" fill="transparent"><title>'+esc(c.nm)+', a saboteur in the '+esc(k.nm)+' mask. '
+    +pl(c.all,'story')+' landed on the addresses it is built on.'
+    +(c.all>c.n?' The patch has room to draw '+c.n+'.':'')+'</title></rect>';});
+  return o;}).join('');}
 
 /* ---------- the lines, off the real reading ----------
    A line is a saboteur compute() found at a weight of five or more, run
@@ -1863,10 +2011,17 @@ function bmMaskHits(r){
    Each line keeps its drift, phase and pulses across renders by name, so a
    render does not restart its motion. */
 function bmSabRefresh(r){
- var seen={}, all=[];
- r.sabs.forEach(function(o){if(o.w<5||seen[o.nm]||!o.parts)return;seen[o.nm]=1;all.push(o);});
- var hold=bmHoldNm(), want=all.slice(0,BMSABMAX);
- all.forEach(function(o){if((o.nm===hold||o.nm===BM.hoverSab)&&want.indexOf(o)<0)want.push(o);});
+ var seen={}, all=[], hot=bmConnNow().sab;
+ /* A LINE ASKED FOR IS DRAWN AT ANY WEIGHT. A complex pressed on the figure
+    lights the saboteurs it is built of, and seventeen of Gordon's forty sit
+    under five, so a complex resting on two of them lit nothing: "if I click
+    on one of the lists it shows me the connections in my map". Five still
+    decides what runs at rest; a line asked for by name runs whatever it
+    weighs. */
+ r.sabs.forEach(function(o){if(seen[o.nm]||!o.parts||(o.w<5&&!hot[o.nm]&&o.nm!==BM.hoverSab))return;
+  seen[o.nm]=1;all.push(o);});
+ var want=all.filter(function(o){return o.w>=5;}).slice(0,BMSABMAX);
+ all.forEach(function(o){if((hot[o.nm]||o.nm===BM.hoverSab)&&want.indexOf(o)<0)want.push(o);});
  BM.sabAll=all;
  BM.sabs=want.map(function(o,i){
   var c=BM.cab[o.nm], k=bmHashS(o.nm);
@@ -1889,6 +2044,26 @@ function bmHoldNm(){
  var p=(PMPICK&&typeof PMPICK==='object'&&PMPICK.kind==='sab')?PMPICK
   :(S.pin&&S.pin.kind==='sab')?S.pin:null;
  return p?p.nm:null;}
+/* WHAT ONE THING IS CONNECTED TO, ON THIS FIGURE: the lines it runs on, by
+   name, and the addresses it stands on, by id. A saboteur is its own line
+   and its own parts. A complex is built of two saboteurs and a hyper complex
+   of complexes, so each is the lines of the saboteurs under it and every
+   address those stand on: the Field's chain, read down to the body. The
+   lines are drawn by name because bmSabRefresh keys every cable by name,
+   and the pick is a fresh object on every compute. */
+function bmConn(o){
+ var out={on:false,sab:{},ids:{}}; if(!o||!o.kind)return out;
+ var sabsOf=function(x){if(!x)return;if(x.kind==='sab'){out.sab[x.nm]=1;return;}
+  (x.parts||[]).forEach(function(q){if(q&&q.kind)sabsOf(q);});};
+ out.on=true;sabsOf(o);leaves(o).forEach(function(n){if(n&&n.i!=null)out.ids[n.i]=1;});
+ return out;}
+/* the held one: a pattern pressed on the figure, or pinned from the rail's
+   Running list, which only ever pins a saboteur, so that is the only kind
+   S.pin is read for here */
+function bmHeldObj(){var p=(PMPICK&&typeof PMPICK==='object')?PMPICK:null;
+ if(p&&p.kind)return p;
+ return (S.pin&&S.pin.kind==='sab')?S.pin:null;}
+function bmConnNow(){return bmConn(bmHeldObj());}
 function bmPlaceX(p,v){return v?100-p.x:p.x;}
 function bmSolidOn(p,v){if(p.view==='both')return true;if(p.view==='head'||p.view==='front')return v===0;return v===1;}
 function bmChain(s,v){
@@ -1912,7 +2087,7 @@ function bmTouchHeat(){BM.sabs.forEach(function(s){s.hot=[0,1].map(function(v){v
    wave pinned at every address, so the addresses never move */
 function bmCable(s,v,t){
  var c=s.views[v],P=c.pts,out=[],nodeQ=[0],L=0;if(P.length<2)return null;
- var slack=Math.pow(1-s.T/10,1.3), hover=(BM.hoverSab===s.nm||bmHoldNm()===s.nm);
+ var slack=Math.pow(1-s.T/10,1.3), hover=(BM.hoverSab===s.nm||!!(BM.conn&&BM.conn.sab[s.nm]));
  var amp=(REDUCED?0:0.10*Math.pow(s.T/10,1.5)*(hover?3.2:1)), w=BMTAU*(0.9+2.2*Math.sqrt(s.T/10));
  for(var i=1;i<P.length;i++){var a=P[i-1],b=P[i],dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len;
   /* an arc says link, a line on the spine says nerve, and a saboteur is not a
@@ -1933,6 +2108,125 @@ function bmCable(s,v,t){
    over the front one: the back showed no line at all and a held line showed
    twice (its shots/5-held-line-1600.png). The offset is added in bmCable
    above, so each view draws its own. */
+
+/* ---------- the networks above a line: complexes and hyper complexes ----------
+   KV in TASKS.md, his words: "Networks are what? Saboteurs, complexes,
+   hypercomplexes." A saboteur is already drawn here as the line through its
+   addresses. A complex is two saboteurs joined and a hyper complex is
+   complexes joined, so neither is one more line: each is a hub, the tier's
+   own mark (CHAINGLYPH, the one the Field's circles and the rail's stack
+   carry), with an arc out to every address it is built on. The old Complexes
+   and Hyper layers drew the same thing, a ring and its arcs, on a figure of
+   their own one press away; this is that, on the map, under a switch.
+
+   WHERE A HUB SITS. At the mean height of what it stands on, seven units off
+   the spine, alternating sides by rank, the old layer's rule at the scale of
+   this figure: on the spine it would sit on a seat, and a seat's own circle
+   takes the press first. Two hubs never share a spot; the second steps down.
+
+   EIGHT PER TIER AT REST, the heaviest, the ruling this page already carries
+   for lines ("beyond eight the arcs stop being a structure"). One held is
+   drawn whatever its rank, and whether or not its circle is on. */
+var BMHUBR=11, BMHUBP=null;
+function bmHubRefresh(r){
+ var out=[], held=bmHeldObj();
+ [['cx','cxs'],['hy','hys']].forEach(function(t){var k=t[0];
+  var list=((r&&!r.unread&&r[t[1]])||[]).slice().sort(function(a,b){return b.w-a.w;});
+  var want=BM.ov.on[k]?list.slice(0,BMSABMAX):[];
+  if(held&&held.kind===k)list.forEach(function(o){if(o.nm===held.nm&&want.indexOf(o)<0)want.push(o);});
+  want.forEach(function(o){
+   var pl=[];leaves(o).forEach(function(n){(BMG.byId[n.i]||[]).forEach(function(p){if(pl.indexOf(p)<0)pl.push(p);});});
+   if(!pl.length)return;
+   var y0=pl.reduce(function(a,p){return a+p.y;},0)/pl.length, hx=50+((out.length%2)?7:-7), hy=y0;
+   /* A HUB IS A FIXED 22 PIXELS AND A UNIT IS NOT. The first cut stepped a
+      clashing hub down three units, which at 390 is 13 pixels, so Gordon's
+      eight complexes sat half on top of each other down the torso. The step
+      is the mark's own width at the fitted view, and the free spot nearest
+      its own height wins, above or below. */
+   var d=(2*BMHUBR+4)/(BM.z0>2?BM.z0:6.5), free=function(y){
+    return !out.some(function(h){return Math.hypot(h.x-hx,h.y-y)<d;});};
+   for(var s=1;s<24&&!free(hy);s++)hy=clamp(y0+Math.ceil(s/2)*d*((s%2)?1:-1),4,92);
+   out.push({k:k,o:o,x:hx,y:hy,pl:pl,at:[{x:hx,y:hy},{x:100-hx,y:hy}]});});});
+ BM.hubs=out;}
+function bmHubSay(h){var n=leaves(h.o).length;
+ return (h.k==='cx'?'Complex':'Hyper complex')+' at a weight of '+h.o.w.toFixed(1)+', built on '+n+(n===1?' address.':' addresses.');}
+function bmDrawHubs(g,vs){
+ if(!BM.hubs||!BM.hubs.length)return;
+ if(!BMHUBP)BMHUBP={cx:new Path2D(CHAINGLYPH.cx),hy:new Path2D(CHAINGLYPH.hy)};
+ var C=BM.conn||{}, ho=bmHeldObj(), px=1/BM.cam.z;
+ vs.forEach(function(v){BM.hubs.forEach(function(h){
+  var held=!!(ho&&ho.kind===h.k&&ho.nm===h.o.nm), hov=(BM.hoverHub===h), lit=held||hov;
+  /* a held pattern of any tier puts every other hub back, as it does lines */
+  var a=(C.on&&!held)?.22:1, col=bmSeatC(h.k==='cx'?'Solar':'Sacral'), side=h.x<50?1:-1;
+  var hx=h.at[v].x+bmVX(v), hy=h.at[v].y;
+  bmTf(g);g.lineCap='round';
+  h.pl.forEach(function(p){var ghost=!bmSolidOn(p,v), x=bmPlaceX(p,v)+bmVX(v), y=p.y;
+   var dx=x-hx,dy=y-hy,len=Math.hypot(dx,dy)||1,bow=Math.min(6,len*.25)*side;
+   g.beginPath();g.moveTo(hx,hy);g.quadraticCurveTo((hx+x)/2-dy/len*bow,(hy+y)/2+dx/len*bow,x,y);
+   if(ghost)g.setLineDash([3*px,3.5*px]);
+   g.strokeStyle=bmRgba(col,(ghost?.22:(lit?.85:.4))*a);g.lineWidth=(lit?1.8:1.1)*px;g.stroke();g.setLineDash([]);});
+  /* the mark, a fixed size on the screen at any zoom, glass under a ring,
+     the house rule for a mark: ring, not fill */
+  var s=bmW2S(hx,hy);g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
+  g.beginPath();g.arc(s[0],s[1],BMHUBR,0,BMTAU);g.fillStyle=bmRgba([22,24,32],.62+.26*a);g.fill();
+  g.strokeStyle=bmRgba(col,(lit?1:.8)*a);g.lineWidth=held?2.2:1.5;g.stroke();
+  if(held){g.beginPath();g.arc(s[0],s[1],BMHUBR+4,0,BMTAU);g.strokeStyle=bmRgba(col,.5);g.lineWidth=1;g.stroke();}
+  var gs=15/24;g.save();g.translate(s[0]-7.5,s[1]-7.5);g.scale(gs,gs);
+  g.strokeStyle=bmRgba(BMC.ink,.95*Math.max(a,.4));g.lineWidth=1.5/gs;g.lineJoin='round';g.lineCap='round';
+  g.stroke(BMHUBP[h.k]);g.restore();});});
+ bmTf(g);}
+
+/* ---------- flow, as a cluster: how open each seat is ----------
+   KV in TASKS.md, his words: "The flow one shows me through my chakra
+   system, what nerves or chakras are open, impaired, heavily moderately
+   impaired, or heavily impaired. Blocked." Five steps, read off the one
+   number this page already has for it and prints on every seat's title and
+   in the shelf's gauges: pass, flSeats() above, the share of charge a seat
+   lets through. Nothing new is measured. The steps are fifths of pass, which
+   is a cut and not a finding: where each boundary falls is his to move, and
+   BMFLOW is the one place it is written.
+
+   Drawn as the old Flow layer drew it, one channel up the spine that
+   narrows where a seat closes, with each seat's ring filled to its pass
+   the way an address's arc is filled to its charge. A blocked seat carries a
+   bar across the channel. Beside a seat, in the clear lane between the two
+   figures, its step in words, where there is a lane; on a phone the step is
+   in the seat's own name and in its answer when it is pressed. */
+var BMFLOW=[[.8,'open'],[.6,'mildly impaired'],[.4,'moderately impaired'],[.2,'heavily impaired'],[0,'blocked']];
+function bmFlowStep(pass){for(var i=0;i<BMFLOW.length;i++)if(pass>=BMFLOW[i][0])return BMFLOW[i][1];return 'blocked';}
+function bmDrawFlow(g,vs){
+ if(!BM.ov.on.flow)return;
+ var col=flSeats().map(function(s){return {k:s.p.k,b:K2B[s.p.k],y:PMYP[s.p.k],pass:s.pass};})
+  .filter(function(m){return m.y!=null;}).sort(function(a,b){return a.y-b.y;});
+ if(col.length<2)return;
+ var half=function(m){return 0.35+m.pass*1.1;}, px=1/BM.cam.z;
+ vs.forEach(function(v){var o=50+bmVX(v);bmTf(g);
+  var L=col.map(function(m){return [o-half(m),m.y];}), R=col.map(function(m){return [o+half(m),m.y];});
+  L.unshift([o-half(col[0])*.5,col[0].y-1.6]);R.unshift([o+half(col[0])*.5,col[0].y-1.6]);
+  L.push([o-half(col[col.length-1])*.5,col[col.length-1].y+4.5]);R.push([o+half(col[col.length-1])*.5,col[col.length-1].y+4.5]);
+  var P=new Path2D();P.moveTo(L[0][0],L[0][1]);
+  for(var i=1;i<L.length;i++){var my=(L[i-1][1]+L[i][1])/2;P.bezierCurveTo(L[i-1][0],my,L[i][0],my,L[i][0],L[i][1]);}
+  P.lineTo(R[R.length-1][0],R[R.length-1][1]);
+  for(var j=R.length-1;j>0;j--){var my2=(R[j][1]+R[j-1][1])/2;P.bezierCurveTo(R[j][0],my2,R[j-1][0],my2,R[j-1][0],R[j-1][1]);}
+  P.closePath();
+  var gr=g.createLinearGradient(0,col[0].y,0,col[col.length-1].y);
+  col.forEach(function(m,i){var c=bmSeatC(m.b);gr.addColorStop(i/(col.length-1),bmRgba(c,.14+.2*m.pass));});
+  g.fillStyle=gr;g.fill(P);
+  var gw=g.createLinearGradient(0,col[0].y,0,col[col.length-1].y);
+  col.forEach(function(m,i){gw.addColorStop(i/(col.length-1),bmRgba(bmSeatC(m.b),.9));});
+  g.strokeStyle=gw;g.lineWidth=1.3*px;g.stroke(P);
+  col.forEach(function(m){var c=bmSeatC(m.b),r=2.4;
+   g.beginPath();g.arc(o,m.y,r,0,BMTAU);g.strokeStyle=bmRgba(c,.25);g.lineWidth=2*px;g.stroke();
+   if(m.pass>0.005){g.beginPath();g.arc(o,m.y,r,-Math.PI/2,-Math.PI/2+BMTAU*m.pass);g.strokeStyle=bmRgba(c,.95);g.lineWidth=2.6*px;g.stroke();}
+   if(bmFlowStep(m.pass)==='blocked'){g.beginPath();g.moveTo(o-r*.8,m.y);g.lineTo(o+r*.8,m.y);
+    g.strokeStyle=bmRgba(BMC.ink,.9);g.lineWidth=2.4*px;g.stroke();}});});
+ /* the words, in the lane between the two figures, only where both are
+    shown and at the whole body, where the lane is clear */
+ if(BM.phone||vs.length<2||BM.cam.z>BM.z0*1.3)return;
+ g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textAlign='center';g.textBaseline='middle';g.font='600 12px Inter,system-ui,sans-serif';
+ col.forEach(function(m){var s=bmW2S((76+BMOX+24)/2,m.y);
+  g.fillStyle=bmRgba(bmSeatC(m.b),.95);g.fillText(bmFlowStep(m.pass),s[0],s[1]);});
+ bmTf(g);}
 
 /* ---------- the camera ---------- */
 function bmWorldW(){return BM.phone?[24,76]:[24-14,BMOX+76+14];}
@@ -1956,6 +2250,8 @@ function bmSize(){
  /* the masks' targets are held to the tap floor at the fitted view, so they
     are measured again whenever the fitted view is */
  if(BM.r)bmMaskHits(BM.r);
+ /* and the hubs are spaced by their width at the fitted view, bmHubRefresh */
+ if(BM.r)bmHubRefresh(BM.r);
  if(was!==BM.phone)bmBars();}
 
 /* ---------- the dulling, as a timeline ---------- */
@@ -2033,6 +2329,8 @@ function bmFrame(now){
  BM.raf=requestAnimationFrame(bmFrame);}
 function bmDraw(dt){
  var dl=bmDull(),V=BMVAR[BM.variant],G=BMG;bmStill(dl);
+ /* read once a frame: the lines, the hubs and the addresses all ask it */
+ BM.conn=bmConnNow();
  var g=BM.ctx;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,BM.cv.width,BM.cv.height);g.drawImage(BM.still,0,0);
  var vs=bmViews(), px=1/BM.cam.z, gain=BM.ph;
  /* 2. the heat, over the nerves, as he asked, and clipped to him */
@@ -2073,6 +2371,9 @@ function bmDraw(dt){
   if(BM.mode==='pain'&&BM.hoverCell&&BM.hoverCell.v===v){var hc=BM.hoverCell;
    g.strokeStyle=bmRgba([240,210,184],.85);g.lineWidth=px*1.4;g.strokeRect(BMXA+hc.c*BMU+bmVX(v),BMYA+hc.r*BMU,BMU,BMU);}
   g.restore();});
+ /* the flow up the spine under everything a person reads off the figure,
+    because it is the channel the rest sits in */
+ bmDrawFlow(g,vs);
  /* the masks, over the light and the body and under every reading mark, so
     a line or an address is never behind a dot */
  bmDrawMasks(g,vs,dt);
@@ -2081,6 +2382,8 @@ function bmDraw(dt){
  bmLimb(g,vs,dl);
  bmDrawSabs(g,vs,dl,dt);
  bmDrawAddr(g,vs,dl,dt);
+ /* the hubs last, so a complex's mark is never under the lines it joins */
+ bmDrawHubs(g,vs);
  if(!BM.phone&&BM.cam.z<BM.z0*1.3)bmLabels(g);
  bmHint(g);}
 function bmStroke(g,P,from,to,width,style){ /* P: [x,y,L] samples, drawn between lengths from and to */
@@ -2114,19 +2417,26 @@ function bmLimb(g,vs,dl){
    g.beginPath();g.arc(s[0],s[1],1.4,0,BMTAU);g.fillStyle=bmRgba(BMC.prop,(ghost?.25:.7)*dl.addr);g.fill();});});
  bmTf(g);}
 function bmDrawSabs(g,vs,dl,dt){
- var hold=bmHoldNm(), hot=BM.hoverSab||hold, now=performance.now();
+ /* hot is a set now and not one name: a held complex lights both of its
+    saboteurs and a hyper complex all of its complexes' */
+ var C=BM.conn||{}, hs=BM.hoverSab?{}:(C.on?C.sab:null), now=performance.now();
+ if(BM.hoverSab)hs[BM.hoverSab]=1;
+ var isHot=function(nm){return !!(hs&&hs[nm]);};
  BM.sabs.forEach(function(s){
+  /* the Saboteurs circle off takes the lines at rest off the figure. One
+     asked for, held or pointed at, still draws: it is what was asked. */
+  if(!BM.ov.on.sab&&!isHot(s.nm))return;
   /* the load drifts on its own slow sine, the way the Field's does */
   var ld=Math.cos(BMTAU*BM.t/s.per+s.ph);s.dir=ld>=0?1:-1;
   vs.forEach(function(v){var c=bmCable(s,v,BM.t);if(!c)return;var P=c.samp,L=c.len;
    bmTf(g);var px=1/BM.cam.z;g.lineCap='round';g.lineJoin='round';
    var heatLift=BMVAR[BM.variant].local&&s.hot[v]>1.5?1:0;
    var a=(0.40+0.55*s.T/10)*(dl.sab+(1-dl.sab)*heatLift);
-   if(hot&&hot!==s.nm)a*=0.20;
+   if(hs&&!isHot(s.nm))a*=0.20;
    var w=(1.1+0.30*s.T)*px;
-   if(hot===s.nm){a=Math.max(a,.95);w*=1.5;}
+   if(isHot(s.nm)){a=Math.max(a,.95);w*=1.5;}
    /* the trace, his CU ruling: it draws the whole line, then holds and hums */
-   var to=L;if(hot===s.nm&&!REDUCED){var tp=bmEOut(clamp((now-BM.traceT0)/700,0,1));to=L*tp;
+   var to=L;if(isHot(s.nm)&&!REDUCED){var tp=bmEOut(clamp((now-BM.traceT0)/700,0,1));to=L*tp;
     bmStroke(g,P,0,L,w,bmRgba(s.col,a*.25));}
    /* a segment that passes to the far surface is dashed and faint */
    var solid=[],ghost=[],run=null,runG=-1,lastP=null;
@@ -2137,7 +2447,7 @@ function bmDrawSabs(g,vs,dl,dt){
     bmStroke(g,seg,-1,1e9,w+2.4*px,bmRgba(BMC.casing,.55*a));bmStroke(g,seg,-1,1e9,w,bmRgba(s.col,a));});
    ghost.forEach(function(seg){if(seg.length<2)return;g.setLineDash([3*px,3.5*px]);
     bmStroke(g,seg,-1,1e9,w*.8,bmRgba(s.col,a*.45));g.setLineDash([]);});
-   if(REDUCED||(hot&&hot!==s.nm))return;
+   if(REDUCED||(hs&&!isHot(s.nm)))return;
    var sp=(0.07+0.15*Math.sqrt(s.T/10))*s.dir;
    s.pulses.forEach(function(pu){
     if(v===vs[0]){pu.prev=pu.q;pu.q=bmFrac(pu.q+sp*dt);
@@ -2155,8 +2465,13 @@ function bmMarkR(p){return 3.2+0.55*Math.min(p.ids.length,6);}
 function bmDrawAddr(g,vs,dl,dt){
  var zI=BM.z0*1.7, ic=BM.amode==='A4'?bmSstep(zI*0.8,zI*1.25,BM.cam.z):0, onLine={};
  BM.sabs.forEach(function(s){s.nids.forEach(function(id){onLine[id]=Math.max(onLine[id]||0,s.T);});});
+ var C=BM.conn||{};
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
  BMG.places.forEach(function(p){
+  /* THE ADDRESSES CIRCLE OFF TAKES THEM OFF, except the ones a held pattern
+     stands on: those are its connections, and they are what was pressed for */
+  var mine=C.on&&p.ids.some(function(id){return C.ids[id];});
+  if(!BM.ov.on.addr&&!mine)return;
   /* the mark has mass: kicked by a pulse, it swells past and settles, on the
      Field's own spring */
   if(!REDUCED){var acc=196*(0-p.kick)-2*.42*14*p.vel;p.vel+=acc*dt;p.kick+=p.vel*dt;}else{p.kick=0;p.vel=0;}
@@ -2171,6 +2486,9 @@ function bmDrawAddr(g,vs,dl,dt){
       nothing to step back from, and dimming the whole figure would only say
       the page is faint */
    var A=(ghost?.30:1)*(dl.addr+(1-dl.addr)*heatLift)*(ln||!BM.sabs.length?1:.55), held=ch>=0.3;
+   /* a held pattern's own addresses at full, and every other one back, so
+      what it stands on is read off the figure and not hunted for */
+   if(C.on)A=mine?(ghost?.45:1):A*.3;
    var r=bmMarkR(p)*(1+0.18*p.kick)*(BM.amode==='A1'?.6:1);
    /* A3, the patch. 4 cm, a placeholder until sizes are sourced */
    if(BM.amode==='A3'){g.beginPath();g.arc(s[0],s[1],Math.max(r+2,2*BM.cam.z/BMCM),0,BMTAU);g.fillStyle=bmRgba(col,.10*A);g.fill();}
@@ -2189,7 +2507,9 @@ function bmDrawAddr(g,vs,dl,dt){
    if(held&&!ghost){g.beginPath();g.arc(s[0],s[1],r,-Math.PI/2,-Math.PI/2+BMTAU*ch/10);
     g.strokeStyle=bmRgba(col,.95*ringA);g.lineWidth=2;g.stroke();}
    if(BM.hoverPlace===p&&v===BM.hoverView){g.beginPath();g.arc(s[0],s[1],r+4,0,BMTAU);
-    g.strokeStyle=bmRgba(BMC.ink,.8);g.lineWidth=1.2;g.stroke();}});});}
+    g.strokeStyle=bmRgba(BMC.ink,.8);g.lineWidth=1.2;g.stroke();}
+   if(mine&&!ghost){g.beginPath();g.arc(s[0],s[1],r+3,0,BMTAU);
+    g.strokeStyle=bmRgba(col,.9);g.lineWidth=1.4;g.stroke();}});});}
 /* A4: each address's own fetter icon, round the place when it holds several */
 function bmRosette(g,p,s,col,A){
  var n=p.ids.length, sz=clamp(0.95*BM.cam.z,14,24), R=n>1?sz*(0.55+0.11*n):0;
@@ -2207,12 +2527,13 @@ function bmRosette(g,p,s,col,A){
    names did not exist. They are real buttons in the panel under the well now,
    bmRegBar, and a press lights the area on the figure. Only the two view
    titles stay painted, because they name a picture and are not a control.
-   Round KN: "just I want front and back, not seen from behind", so each is
-   the toggle's own word, and the side the toggle addresses reads at full
-   strength while the other one steps back. */
+   Round KN: "just I want front and back, not seen from behind". The side a
+   toggle addressed read at full strength and the other stepped back; round
+   KW took the toggle away and put both sets of parts under the well, so
+   neither side is the one being addressed and both read at full. */
 function bmLabels(g){
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textBaseline='middle';
- [0,1].forEach(function(v){var on=(BM.face==='back')===!!v;
+ [0,1].forEach(function(v){var on=true;
   g.textAlign='center';g.font='600 13px Inter,system-ui,sans-serif';g.fillStyle=bmRgba(BMC.ink,on?.9:.42);
   g.fillText(v?'Back':'Front',bmW2S(v?BMOX+50:50,0)[0],14);});}
 /* one line of instruction, in the corner, off the figure */
@@ -2263,7 +2584,7 @@ function bmSeats(seats){
  var g=BM.sv&&BM.sv.querySelector('[data-bmseats]'); if(!g)return;
  g.innerHTML=PMBANDS.map(function(b){var st=seats.filter(function(s){return s.p.k===b.k;})[0];
   return '<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="2.4" fill="transparent"><title>'
-   +b.nm+', '+st.hot+' carrying, '+Math.round(st.pass*100)+' percent through</title></circle>';}).join('');}
+   +b.nm+', '+bmFlowStep(st.pass)+'. '+st.hot+' carrying, '+Math.round(st.pass*100)+' percent through</title></circle>';}).join('');}
 
 /* ---------- what is under a point ---------- */
 /* THE PICK IS A REGION'S KEY, OR A PAIR'S. A name in the panel below stands
@@ -2283,13 +2604,21 @@ function bmPick(sx,sy){var G=BMG,w=bmS2W(sx,sy),v=null;
   if(r.v===v&&x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]){reg=r;break;}}
  var c=Math.floor((x-BMXA)/BMU),rw=Math.floor((y-BMYA)/BMU),cell=null;
  if(c>=0&&c<BMCOLS&&rw>=0&&rw<BMROWS&&G.cellIn[v][rw*BMCOLS+c])cell={v:v,c:c,r:rw,i:rw*BMCOLS+c};
- var place=null,bd=1e9;
- G.places.forEach(function(p){var s=bmW2S(bmPlaceX(p,v)+bmVX(v),p.y),d=Math.hypot(s[0]-sx,s[1]-sy);
+ var place=null,bd=1e9,C=BM.conn||{};
+ G.places.forEach(function(p){
+  /* what the Addresses circle took off the figure is not there to point at */
+  if(!BM.ov.on.addr&&!(C.on&&p.ids.some(function(id){return C.ids[id];})))return;
+  var s=bmW2S(bmPlaceX(p,v)+bmVX(v),p.y),d=Math.hypot(s[0]-sx,s[1]-sy);
   if(d<Math.max(10,bmMarkR(p)+4)&&d<bd){bd=d;place=p;}});
+ /* a hub is a target of its own, a press the width of its circle */
+ var hub=null,hd=BMHUBR+3;
+ (BM.hubs||[]).forEach(function(h){var q=h.at[v];if(!q)return;
+  var s=bmW2S(q.x+bmVX(v),q.y),d=Math.hypot(s[0]-sx,s[1]-sy);if(d<hd){hd=d;hub=h;}});
  var sab=null,sd=8;
- BM.sabs.forEach(function(s){var c2=s.views[v];if(!c2||!c2.samp)return;
+ BM.sabs.forEach(function(s){if(!BM.ov.on.sab&&!(C.on&&C.sab[s.nm]))return;
+  var c2=s.views[v];if(!c2||!c2.samp)return;
   for(var j=0;j<c2.samp.length;j+=2){var q=bmW2S(c2.samp[j][0],c2.samp[j][1]),d=Math.hypot(q[0]-sx,q[1]-sy);if(d<sd){sd=d;sab=s;}}});
- return {w:w,v:v,x:x,y:y,reg:reg,cell:cell,place:place,sab:sab};}
+ return {w:w,v:v,x:x,y:y,reg:reg,cell:cell,place:place,sab:sab,hub:hub};}
 
 /* ---------- the tooltip is the product's one, handed the canvas ----------
    Placed off the picture, as the Field's are, at the height of the mark:
@@ -2338,14 +2667,17 @@ function bmWire(){
   BM.hoverPlace=pk.place||null;BM.hoverView=pk.v;
   var mh=(BM.mode!=='pain'&&e.target.closest)?e.target.closest('[data-bmmask]'):null;
   BM.hoverMask=mh?mh.getAttribute('data-bmmask'):null;
-  var tk=pk.place?'p'+BMG.places.indexOf(pk.place)+':'+pk.v:pk.sab?'s'+pk.sab.nm:'';
+  BM.hoverMaskSab=mh?mh.getAttribute('data-bmmasksab'):null;
+  BM.hoverHub=pk.hub||null;
+  var tk=pk.hub?'h'+pk.hub.k+pk.hub.o.nm:pk.place?'p'+BMG.places.indexOf(pk.place)+':'+pk.v:pk.sab?'s'+pk.sab.nm:'';
   if(tk!==BM.tipKey){BM.tipKey=tk;
-   if(pk.place)bmTip(Object.assign(bmPlaceTip(pk.place),{x:p[0],y:p[1]}));
+   if(pk.hub)bmTip({t:pk.hub.o.nm,b:bmHubSay(pk.hub),x:p[0],y:p[1]});
+   else if(pk.place)bmTip(Object.assign(bmPlaceTip(pk.place),{x:p[0],y:p[1]}));
    else if(pk.sab)bmTip({t:pk.sab.nm,b:(pk.sab.dir>0?'Loading':'Releasing')+', at a weight of '+pk.sab.T.toFixed(1)+'.',x:p[0],y:p[1]});
    else bmTip(null);}
   BM.dirty=true;});
  sv.addEventListener('pointerleave',function(){
-  BM.hoverReg=null;BM.hoverCell=null;BM.hoverPlace=null;BM.hoverMask=null;if(BM.hoverFrom!=='rail')BM.hoverSab=null;
+  BM.hoverReg=null;BM.hoverCell=null;BM.hoverPlace=null;BM.hoverMask=null;BM.hoverMaskSab=null;BM.hoverHub=null;if(BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.tipKey='';bmTip(null);BM.dirty=true;});
  sv.addEventListener('pointercancel',function(){BM.drag=null;});
  sv.addEventListener('pointerup',function(e){
@@ -2355,6 +2687,12 @@ function bmWire(){
   if(D.moved)return;
   if(D.seat){var k=D.seat.getAttribute('data-seat');PMPICK=(PMPICK===k)?null:k;pmAnswer(PMPICK);return;}
   var pk=bmPick(p[0],p[1]);
+  /* A HUB OPENS ITS PATTERN, and holds it, so its connections light: "if I
+     click on one of the lists it shows me the connections in my map". The
+     same door a line uses, runDrill through pmAnswer, and pressed again it
+     is put down. Before the line, because the hub is drawn over its lines. */
+  if(pk.hub){var ho=pk.hub.o, hk=bmHeldObj();
+   PMPICK=(hk&&hk.kind===ho.kind&&hk.nm===ho.nm)?null:ho;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   if(pk.sab&&!pk.place){var o=pk.sab.o, same=(bmHoldNm()===o.nm);
    PMPICK=same?null:o;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   /* A MASK OPENS ITS DRILL, the fix DY made on the Field carried to where
@@ -2366,9 +2704,20 @@ function bmWire(){
    PMPICK=(!mo||bmHoldMask()===nm)?null:mo;S.pin=null;BM.dirty=true;pmAnswer(PMPICK);return;}
   if(pk.reg)bmOpenReg(pk.reg,true);});
  sv.addEventListener('dblclick',function(e){var p=at(e),pk=bmPick(p[0],p[1]);if(pk.reg)bmZoomReg(pk.reg);});
+ /* THE WHEEL STOPS AT THE FRAME, AND LANDS ON IT. KV in TASKS.md, his words:
+    "If I scroll on the body map, I can't frame it." The floor was 0.8 of the
+    fitted view, about the pointer, and three rules met there: below the fit
+    is not zoomed, so a drag did not pan, and Whole body, which only shows
+    when zoomed, was not offered. Measured on Gordon at 1600: six notches out
+    over the upper left left the figures at 0.8 and 18 units off centre, and
+    a drag moved the camera by nothing. The whole body is the least a view
+    shows, so scrolling out reaches the fit and is put back on it exactly. */
  sv.addEventListener('wheel',function(e){e.preventDefault();var p=at(e),w=bmS2W(p[0],p[1]);
-  var z=clamp(BM.cam.z*Math.pow(1.0015,-e.deltaY),BM.z0*0.8,BM.z0*8);
-  BM.camT=null;BM.cam.z=z;BM.cam.x=w[0]-(p[0]-BM.W/2)/z;BM.cam.y=w[1]-(p[1]-BM.H/2)/z;BM.dirty=true;bmBars();},{passive:false});}
+  var z=clamp(BM.cam.z*Math.pow(1.0015,-e.deltaY),BM.z0,BM.z0*8);
+  BM.camT=null;
+  if(z<=BM.z0*1.0001)BM.cam=bmFitCam();
+  else{BM.cam.z=z;BM.cam.x=w[0]-(p[0]-BM.W/2)/z;BM.cam.y=w[1]-(p[1]-BM.H/2)/z;}
+  BM.dirty=true;bmBars();},{passive:false});}
 /* one press paints at the brush, and the same press on a cell already at the
    brush clears it. No second step. */
 function bmPaintAt(pk){var c=pk.cell,D=BM.drag,key=c.v+':'+c.i;if(D.painted[key])return;D.painted[key]=1;
@@ -2394,8 +2743,8 @@ function bmOpenReg(r,toggle){bmOpenKey(r.key,toggle);}
 function bmAnswering(){return !!document.getElementById('bmzoom');}
 function bmOpenKey(k,toggle){
  if(toggle&&bmPickKey()===k&&bmAnswering()){rdClose();return;}
- /* the toggle follows the pick, so a region pressed on the back figure says
-    Back under the well and the parts address the back from then on */
+ /* the face follows the pick, so on a phone, which shows one figure, the
+    figure turns to the side that was pressed */
  bmSetFace(String(k).split(':')[0]==='back'?'back':'front');
  PMPICK={bmReg:k}; S.pin=null;
  var list=bmSelAll(); if(!list.length){rdClose();return;}
@@ -2582,7 +2931,11 @@ function bmBars(){
  /* a label and its control wrap as one. Loose, at 390 in Pain, Heat ended
     one line and its menu began the next, a label pointing at nothing */
  var grp=function(x){return '<span style="display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;max-width:100%">'+x+'</span>';};
- var h=btn('bmmode','pattern','Pattern',BM.mode==='pattern')+btn('bmmode','pain','Pain',BM.mode==='pain')
+ /* PATTERN AND PAIN ARE NOT HERE ANY MORE. Pain is a cluster in the
+    overlays, KV: "Pain, flow. I guess flow would be cluster." Its circle
+    switches BM.mode exactly as these two buttons did, and two controls for
+    one switch is the row he asked to lose. */
+ var h=''
   /* question A's three readings as three buttons side by side, so all three
      are in view at once and none is hidden behind a menu: he is choosing
      between them by looking, and Fetter mark is only where the prototype
@@ -2604,8 +2957,6 @@ function bmBars(){
     the first thing in the panel under the well, bmRegBar, on every width. */
  if(zoomed)h+=btn('bmwhole','1','Whole body',false);
  rb.innerHTML=h; rb.setAttribute('data-bmsig',sig);
- rb.querySelectorAll('[data-bmmode]').forEach(function(el){el.onclick=function(){
-  bmSetMode(el.getAttribute('data-bmmode'));BM.stillKey='';bmBars();};});
  rb.querySelectorAll('[data-bmamode]').forEach(function(el){el.onclick=function(){
   BM.amode=el.getAttribute('data-bmamode');BM.dirty=true;bmBars();};});
  var vr=document.getElementById('bmvar');
@@ -2616,7 +2967,7 @@ function bmBars(){
  if(br)br.oninput=function(){BM.brush=+br.value;var o=document.getElementById('bmbrushv');if(o)o.textContent=br.value;};
  rb.querySelectorAll('[data-bmclear]').forEach(function(el){el.onclick=function(){
   BM.paint[0].fill(0);BM.paint[1].fill(0);bmRebuild(0);bmRebuild(1);bmTouchHeat();bmMarkVals();BM.dirty=true;
-  var s=bmSelAll();if(s.length)bmRegionDrill(s);bmRegBar();};});
+  var s=bmSelAll();if(s.length)bmRegionDrill(s);bmRegBar();bmOvPaint(BM.r);};});
  rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=function(){
   var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};});
  if(foc){var back=document.getElementById(foc);if(back)back.focus();}}
@@ -2645,22 +2996,39 @@ function bmBars(){
    arm is drawn large enough to be an arm. The sided name still lights both,
    and the answer it opens carries Left and Right, as before.
 
-   Written only when something on it changed, so focus survives a render. */
+   Written only when something on it changed, so focus survives a render.
+
+   AND NOW BOTH SETS, AND NO TOGGLE. Round KW, his words: "The body
+   navigation icons the bottom row is taking up too much real estate move
+   the left ones for the front to the left move the ones to the right to, to
+   the right we should have done that to begin with And then for now, just
+   double the icon sets for the body parts. so we don't need front or back
+   icons anymore." So the front's parts stand on the left, under the front
+   figure, and the back's on the right, under the back figure, each set
+   wrapping inside its own half. The toggle is gone, and the readout with
+   it, because the readout's first line was the toggle's word and its
+   second is the answer's own heading in Selection. Each back icon is
+   cropped round its own back region, so Chest and Upper back are two
+   pictures and not one drawn twice. The buttons are held at the 44 pixel
+   tap floor rather than the 48 they had, which is what room there was to
+   give back: two sets are 29 buttons where one was 16. BM.face stays, and
+   a press sets it, because a phone shows one figure and turns it to the
+   side that was pressed. */
 function bmUnion(bx){return bx.reduce(function(a,q){
  return [Math.min(a[0],q[0]),Math.min(a[1],q[1]),Math.max(a[2],q[2]),Math.max(a[3],q[3])];},bx[0].slice());}
-function bmPartBoxes(pt){
- var vn=pt.f?'front':'back', nm=pt.f||pt.b, L=BMREG[vn].filter(function(r){return r[0]===nm;});
+function bmPartBoxes(pt,vn){
+ var nm=vn==='back'?pt.b:pt.f, L=BMREG[vn].filter(function(r){return r[0]===nm;});
  var u=bmUnion(L.map(function(r){return r[1];}));
  if(L.length>1&&u[2]-u[0]>32)L=L.filter(function(r){return r[2]===(vn==='front'?'r':'l');});
  return L.map(function(r){return r[1];});}
-/* the icon is written once per part and per state, then kept */
+/* the icon is written once per part, per side and per state, then kept */
 var _bmPI={};
-function bmPartIcon(pt,on){
- var key=pt.k+(on?'1':'0'); if(_bmPI[key])return _bmPI[key];
- var bx=bmPartBoxes(pt), u=bmUnion(bx), s=clamp(Math.max(u[2]-u[0],u[3]-u[1])*1.6,20,34);
- var x0=(u[0]+u[2])/2-s/2, y0=(u[1]+u[3])/2-s/2, O=bmOutline1(), id='bmpi'+pt.k+(on?'1':'0');
+function bmPartIcon(pt,vn,on){
+ var tag=pt.k+(vn==='back'?'b':'f')+(on?'1':'0'); if(_bmPI[tag])return _bmPI[tag];
+ var bx=bmPartBoxes(pt,vn), u=bmUnion(bx), s=clamp(Math.max(u[2]-u[0],u[3]-u[1])*1.6,20,34);
+ var x0=(u[0]+u[2])/2-s/2, y0=(u[1]+u[3])/2-s/2, O=bmOutline1(), id='bmpi'+tag;
  var lit=on?'var(--on-accent)':'var(--gold)';
- return (_bmPI[key]='<svg viewBox="'+x0.toFixed(2)+' '+y0.toFixed(2)+' '+s.toFixed(2)+' '+s.toFixed(2)+'" width="34" height="34" '
+ return (_bmPI[tag]='<svg viewBox="'+x0.toFixed(2)+' '+y0.toFixed(2)+' '+s.toFixed(2)+' '+s.toFixed(2)+'" width="32" height="32" '
   +'aria-hidden="true" focusable="false" style="display:block;overflow:hidden">'
   +'<defs><clipPath id="'+id+'r">'+bx.map(function(b){return '<rect x="'+b[0]+'" y="'+b[1]+'" width="'+(b[2]-b[0]).toFixed(2)
    +'" height="'+(b[3]-b[1]).toFixed(2)+'"/>';}).join('')+'</clipPath>'
@@ -2671,20 +3039,6 @@ function bmPartIcon(pt,on){
   +'<g clip-path="url(#'+id+'b)">'+bx.map(function(b){return '<rect x="'+b[0]+'" y="'+b[1]+'" width="'+(b[2]-b[0]).toFixed(2)
    +'" height="'+(b[3]-b[1]).toFixed(2)+'" fill="none" style="stroke:'+lit+'" stroke-opacity=".6" stroke-width="1.1" vector-effect="non-scaling-stroke"/>';}).join('')
   +'</g></svg>');}
-/* THE TWO SIDES, AS ICONS. The same figure from the head to the waist: the
-   front carries a face and the back carries the spine, which is what tells a
-   person which way a body is turned when there is nothing else to go on. */
-function bmSideIcon(s,on){
- var O=bmOutline1(), c=on?'var(--on-accent)':'currentColor';
- return '<svg viewBox="31 0 38 38" width="34" height="34" aria-hidden="true" focusable="false" style="display:block;overflow:hidden">'
-  +'<path d="'+O+'" fill="none" style="stroke:'+c+'" stroke-width="1.3" vector-effect="non-scaling-stroke"/>'
-  +(s==='front'
-   ?'<circle cx="48.2" cy="8.6" r=".95" style="fill:'+c+'"/><circle cx="51.8" cy="8.6" r=".95" style="fill:'+c+'"/>'
-    +'<path d="M48.4 12.1 Q50 13.1 51.6 12.1" fill="none" style="stroke:'+c+'" stroke-width="1" vector-effect="non-scaling-stroke"/>'
-   :'<path d="M50 15.6 V38" fill="none" style="stroke:'+c+'" stroke-width="1.3" stroke-dasharray="2 1.6" vector-effect="non-scaling-stroke"/>'
-    +'<path d="M42.5 24 Q45 27 46.2 31 M57.5 24 Q55 27 53.8 31" fill="none" style="stroke:'+c+'" stroke-opacity=".7" stroke-width="1" '
-    +'vector-effect="non-scaling-stroke"/>')
-  +'</svg>';}
 /* a part's regions on a side, its name there, and the part a pick belongs to */
 function bmPartRegs(pt,vn){var nm=vn==='back'?pt.b:pt.f; if(!nm||!BMG)return [];
  var gp=vn+':'+nm;return BMG.reg.filter(function(q){return q.grp===gp;});}
@@ -2705,65 +3059,158 @@ function bmPartOpen(pt,vn,side){
  RD_INRAIL=true;
  try{bmOpenKey(key,false);}finally{RD_INRAIL=false;}
  return true;}
-var BMICSTY='padding:0;width:48px;min-width:48px;height:48px;justify-content:center;position:relative';
+var BMICSTY='padding:0;width:44px;min-width:44px;height:44px;justify-content:center;position:relative';
 function bmRegBar(){
  var el=document.getElementById('bmregs'); if(!el||!BMG)return;
- var k=bmPickKey()||'', pain=BM.mode==='pain', vn=BM.face==='back'?'back':'front', cur=bmPartOf(k);
- var curOn=!!cur&&k.indexOf(vn+':')===0;
- var sig=[k,BM.mode,BM.phone,vn,BMG.reg.map(function(r){return r.val||0;}).join(',')].join('|');
+ var k=bmPickKey()||'', pain=BM.mode==='pain', cur=bmPartOf(k), kv=k.split(':')[0];
+ var sig=[k,BM.mode,BM.phone,BMG.reg.map(function(r){return r.val||0;}).join(',')].join('|');
  if(sig===el.getAttribute('data-sig'))return;
- var ae=document.activeElement, foc=ae&&el.contains(ae)
-  ?(ae.getAttribute('data-bmpart')?'[data-bmpart="'+ae.getAttribute('data-bmpart')+'"]'
-   :ae.getAttribute('data-bmfb')?'[data-bmfb="'+ae.getAttribute('data-bmfb')+'"]':null):null;
+ var ae=document.activeElement, foc=ae&&el.contains(ae)&&ae.getAttribute('data-bmpart')
+  ?'[data-bmpart="'+ae.getAttribute('data-bmpart')+'"][data-bmpv="'+ae.getAttribute('data-bmpv')+'"]':null;
  BM.hoverList=null;
- var fb=function(s,t){var on=vn===s;
-  return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmfb="'+s+'" aria-label="'+t+'" title="'+t+'" '
-   +'style="'+BMICSTY+'">'+bmSideIcon(s,on)+'</button>';};
- /* the readout: the side in a word, and the part that is open, by name. The
-    one place a name prints, and only for the part being held, the same rule
-    the pattern marks keep ("the name prints for the one you are holding"). */
- var nm=curOn?bmPartName(cur,vn):'';
- var sd=curOn&&/:(l|r)$/.test(k)?(k.slice(-1)==='l'?', left':', right'):'';
- el.innerHTML='<div role="group" aria-label="Side" style="flex:0 0 auto;display:flex;gap:5px;align-items:center">'
-   +fb('front','Front')+fb('back','Back')
-   +'<span style="display:inline-flex;flex-direction:column;justify-content:center;'
-   +'min-width:92px;margin-left:6px;line-height:1.25">'
-   +'<span class="pm-eye">'+(vn==='back'?'Back':'Front')+'</span>'
-   +'<span style="font-size:14px;color:var(--ink);min-height:1.25em">'+(nm?esc(nm+sd):'')+'</span></span></div>'
-  +'<div role="group" aria-label="Regions" style="flex:1 1 300px;min-width:0;display:flex;flex-wrap:wrap;gap:5px;align-items:center">'
-  +BMPART.map(function(pt){
-    var regs=bmPartRegs(pt,vn), here=regs.length>0, on=here&&curOn&&cur===pt;
+ /* one set per side. The side is said once, as the set's own small title,
+    because the two crops of a head are close enough to need it */
+ var set=function(vn){var nmS=vn==='back'?'Back':'Front';
+  return '<div role="group" aria-label="'+nmS+'" style="flex:1 1 300px;min-width:0;display:flex;flex-wrap:wrap;gap:4px;'
+   +'align-items:center;justify-content:'+(vn==='back'?'flex-end':'flex-start')+'">'
+   +'<span class="pm-eye" style="align-self:center;margin:0 4px">'+nmS+'</span>'
+   +BMPART.filter(function(pt){return vn==='back'?pt.b:pt.f;}).map(function(pt){
+    var regs=bmPartRegs(pt,vn), on=cur===pt&&kv===vn;
     var pv=regs.reduce(function(m,q){return Math.max(m,q.val||0);},0);
-    var ov=vn==='back'?'front':'back';
-    var t=here?bmPartName(pt,vn):bmPartName(pt,ov)+', '+(ov==='back'?'back':'front')+' only';
-    return '<button type="button" class="pm-lb'+(on?' on':'')+(here?'':' empty')+'" aria-pressed="'+on+'" data-bmpart="'+pt.k+'" '
-     +'aria-label="'+esc(t)+(pain&&pv?', painted '+pv:'')+'" title="'+esc(t)+'" style="'+BMICSTY+'">'+bmPartIcon(pt,on)
-     +(pain&&pv?'<b style="position:absolute;top:1px;right:3px;margin:0;font-size:10.5px">'+pv+'</b>':'')+'</button>';}).join('')
-  +'</div>';
+    var t=bmPartName(pt,vn)+(vn==='back'?', back':', front');
+    return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmpart="'+pt.k+'" data-bmpv="'+vn+'" '
+     +'aria-label="'+esc(t)+(pain&&pv?', painted '+pv:'')+'" title="'+esc(t)+'" style="'+BMICSTY+'">'+bmPartIcon(pt,vn,on)
+     +(pain&&pv?'<b style="position:absolute;top:1px;right:3px;margin:0;font-size:11px">'+pv+'</b>':'')+'</button>';}).join('')
+   +'</div>';};
+ el.innerHTML=set('front')+set('back');
  el.setAttribute('data-sig',sig);
- el.querySelectorAll('[data-bmfb]').forEach(function(b){b.onclick=function(){
-  var f=b.getAttribute('data-bmfb'); if(f===vn)return;
-  /* "If I select back, you still have head, neck, shoulders": an open part
-     stays open and turns round with the figure, on the same side of the
-     person if one side was open. A part the other side does not have, the
-     ankle turned to the back, puts its answer down. */
-  var reopen=cur&&curOn&&bmAnswering(), side=/:(l|r)$/.test(k)?k.slice(-1):'';
-  bmSetFace(f);
-  if(reopen){if(!bmPartOpen(cur,f,side))rdClose();}
-  bmRegBar();};});
  el.querySelectorAll('[data-bmpart]').forEach(function(b){
-  var pt=BMPART.filter(function(p){return p.k===b.getAttribute('data-bmpart');})[0];
+  var pt=BMPART.filter(function(p){return p.k===b.getAttribute('data-bmpart');})[0], vn=b.getAttribute('data-bmpv');
   b.onpointerenter=function(){BM.hoverList=bmPartRegs(pt,vn);BM.dirty=true;};
   b.onpointerleave=function(){BM.hoverList=null;BM.dirty=true;};
   b.onclick=function(){BM.hoverList=null;
-   /* a part this side does not have turns the toggle to the side that does */
-   if(!bmPartRegs(pt,vn).length){var ov=vn==='back'?'front':'back';bmSetFace(ov);bmPartOpen(pt,ov);bmRegBar();return;}
-   if(cur===pt&&curOn&&bmAnswering()){rdClose();return;}
+   if(cur===pt&&kv===vn&&bmAnswering()){rdClose();return;}
    bmPartOpen(pt,vn);};});
  /* preventScroll, because a plain focus() scrolls to the button and cut the
     smooth scroll to the answer short: measured at 390, the page stopped 560
     pixels down on its way to 4,563 */
  if(foc){var back=el.querySelector(foc);if(back)back.focus({preventScroll:true});}}
+
+/* ---------- the overlays, in the upper left, the Field's own bar ----------
+   KU and KV in TASKS.md. His words, KU: "I do have a secondary navigation.
+   With map fetter 7 tours complexes that should be an overlay with icons".
+   And the correction that came after, KV, which is what this builds: "I can
+   click on or off my saboteurs, complexes, hypercomplexes, or masks. It means
+   I no longer need the secondary navigation of saboteurs, complexes,
+   hypercomplexes, masks... These are icons. They're in my upper left hand
+   navigation, just like my field. Maps. I can hover over them and get
+   tooltip information. I can turn them on and off, or I can press a little
+   burger thing and it completely collapses."
+
+   SO THESE ARE THE FIELD'S CIRCLES, fbOrb in ui/fieldbar.js, the same object
+   and the same sheet: glass, the tier's mark, a ring carrying a real number
+   and that number in a pill, off when dim. Where the Field has the same
+   thing (Addresses and the three networks) the circle carries the Field's
+   own name, mark, tooltip and value through fbValues, so one concept reads
+   one way on both surfaces. Each is an independent switch.
+
+   GROUPED AS HE NAMED THEM, KV: "you would have nodes, clusters, networks.
+   Networks are what? Saboteurs, complexes, hypercomplexes. Pain, flow. I
+   guess flow would be cluster." Nodes he did not fill in. The addresses are
+   the points everything else is built on, so they are the nodes here, and
+   the masks, which are dots on the figure's own grid, sit with them: both
+   of those placements are this build's reading and are his to move.
+
+   A COLUMN, NOT THE FIELD'S ROW. The row he knows is eight circles and 412
+   pixels, and across the top of this well it runs through the front
+   figure's head and its Front title at 1600. Down the left edge it stands in
+   the fourteen units of margin the fit already keeps beside the front
+   figure, so the figure gives up nothing to it. The burger is the first
+   circle, as Close the tools is the Field's, and folds the rest away.
+
+   THE TOKENS ARE CARRIED INLINE because the sheet keys the glass inks on the
+   Field's own hosts, and the well under this bar is always the dark stage
+   (bmGround): so the inks are the sheet's dark set, to the digit. */
+var BMOVTOK='--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--edge-2:rgba(255,255,255,.14);'
+ +'--edge:rgba(255,255,255,.09);--fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);'
+ +'--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820';
+var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters',ls:['pain','flow']},
+ {k:'networks',nm:'Networks',ls:['sab','cx','hy']}];
+var BMOVL={
+ addr:{nm:FB_BYK.addresses.nm,ic:FB_BYK.addresses.ic,tip:FB_BYK.addresses.tip},
+ masks:{nm:'Masks',ic:'M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6',
+  tip:'The six masks, as dots on the figure that fill in as each one carries weight.'},
+ pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
+  tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
+ /* the rail's own Flow mark, so the section and the circle are one mark */
+ flow:{nm:'Flow',ic:'M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8',
+  tip:'How open each seat is, up the spine: open, mildly impaired, moderately impaired, heavily impaired or blocked.'},
+ sab:{nm:FB_BYK.saboteurs.nm,ic:FB_BYK.saboteurs.ic,tip:FB_BYK.saboteurs.tip},
+ cx:{nm:FB_BYK.complexes.nm,ic:FB_BYK.complexes.ic,
+  tip:'Where saboteurs join. Each complex is a mark with a line out to every address it is built on.'},
+ hy:{nm:FB_BYK.hyper.nm,ic:FB_BYK.hyper.ic,
+  tip:'Where complexes join. Each is a mark with a line out to every address under it.'}};
+function bmOvOn(k){return k==='pain'?BM.mode==='pain':!!BM.ov.on[k];}
+/* the ring and the pill. The four the Field has are the Field's numbers. */
+function bmOvVals(r){
+ var F={},V={},dash='–';try{F=fbValues(r);}catch(e){}
+ V.addr=F.addresses;V.sab=F.saboteurs;V.cx=F.complexes;V.hy=F.hyper;
+ var mr=((r&&r.maskRing)||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
+ V.masks=(mr&&!r.unread)?{p:mr.w*10,v:mr.w.toFixed(1),c:bmRgba(BMC.mask,1),
+  m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+mr.w.toFixed(1)+'.'}
+  :{p:0,v:dash,c:bmRgba(BMC.mask,1),m:'Nothing read yet.'};
+ var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
+ V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
+  m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
+ var sp=flSpeed();
+ V.flow=(r&&!r.unread)?{p:sp*100,v:Math.round(sp*100)+'%',c:'var(--accent)',
+  m:'Ring and number: flow, the share of charge that passes every seat, '+Math.round(sp*100)+'%.'}
+  :{p:0,v:dash,c:'var(--accent)',m:'Nothing read yet.'};
+ Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
+ return V;}
+/* the burger, shut and open: the Field's fbShutPaint in its own words */
+function bmOvShut(){var s=false;try{s=STORE.get('bmov')==='shut';}catch(e){}return s;}
+function bmOvShutPaint(bar,shut){
+ var tog=bar.querySelector('[data-bmov=shut]'); if(!tog)return;
+ bar.querySelectorAll('.fb-grp').forEach(function(c){c.style.display=shut?'none':'flex';});
+ var say=shut?'Open the overlays':'Close the overlays';
+ tog.setAttribute('aria-expanded',shut?'false':'true');tog.setAttribute('aria-label',say);
+ if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
+ fbTip(tog,shut?'Opens the overlays again, each one as you left it.'
+  :'Folds the overlays into this one circle. Each one stays as it was set.');}
+function bmOvBuild(bar){
+ var tog=fbOrb({nm:'Close the overlays',ic:'M4.5 7h15M4.5 12h15M4.5 17h15'});
+ tog.setAttribute('data-bmov','shut');tog.setAttribute('aria-controls','bmov');tog.style.pointerEvents='auto';
+ tog.onclick=function(){var now=bmOvShut()?false:true;
+  try{STORE.set('bmov',now?'shut':'open');}catch(e){}
+  bmOvShutPaint(bar,now);};
+ bar.appendChild(tog);
+ BMOV.forEach(function(gp){var c=document.createElement('div');c.className='fb-grp';
+  c.setAttribute('role','group');c.setAttribute('aria-label',gp.nm);c.style.flexDirection='column';
+  gp.ls.forEach(function(k){var L=BMOVL[k],b=fbOrb({nm:L.nm,ic:L.ic,tip:L.tip,val:true});
+   b.setAttribute('data-bmov',k);b.style.pointerEvents='auto';b.onclick=function(){bmOvToggle(k);};c.appendChild(b);});
+  bar.appendChild(c);});}
+/* one press, one switch. Off, a pattern held from that switch is put down,
+   the Field's fbUnpin: it would stay lit under a switch that says it is off. */
+function bmOvToggle(k){
+ if(k==='pain'){bmSetMode(BM.mode==='pain'?'pattern':'pain');BM.stillKey='';bmBars();bmOvPaint(BM.r);return;}
+ BM.ov.on[k]=!BM.ov.on[k];
+ if(!BM.ov.on[k]){var ho=bmHeldObj();
+  if((ho&&ho.kind===k)||(k==='masks'&&bmHoldMask())){rdClose();return;}}
+ if(BM.r){bmSabRefresh(BM.r);bmHubRefresh(BM.r);bmMaskHits(BM.r);}
+ BM.dirty=true;bmOvPaint(BM.r);}
+function bmOvPaint(r){
+ var bar=document.getElementById('bmov'); if(!bar)return;
+ if(!bar.firstChild){bmOvBuild(bar);bmOvShutPaint(bar,bmOvShut());}
+ var V=bmOvVals(r);
+ bar.querySelectorAll('[data-bmov]').forEach(function(b){
+  var k=b.getAttribute('data-bmov'),L=BMOVL[k],v=V[k]; if(!L)return;
+  var on=bmOvOn(k);
+  b.setAttribute('aria-pressed',String(on));b.classList.toggle('on',on);
+  if(v){b.querySelector('.fb-orb').style.setProperty('--c',v.c);
+   b.querySelector('.val').setAttribute('stroke-dasharray',v.p.toFixed(1)+' 100');
+   var pv=b.querySelector('.fb-v');if(pv)pv.textContent=v.v;}
+  fbTip(b,L.tip+(v?' '+v.m:''));});}
 
 /* THE GROUND UNDER THE FIGURE, read off the host and never off the lighting's
    name, the way pmPal reads it. Dark: the canvas leaves its stage clear and
@@ -2782,7 +3229,11 @@ function bmBuild(host){
   +'aria-label="The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them">'
   +'<g class="pm-vec"><path d="'+bmOutline()+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
   +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g>'
-  +'<g data-bmmasks=""></g><g data-bmseats=""></g></svg></div>'
+  +'<g data-bmmasks=""></g><g data-bmseats=""></g></svg>'
+  /* the overlays, over the svg so a circle takes its own press, and
+     pointer-events none on the column so its gaps still reach the figure */
+  +'<div id="bmov" role="group" aria-label="Overlays" style="position:absolute;top:10px;left:12px;z-index:3;'
+  +'display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;'+BMOVTOK+'"></div></div>'
   /* after the well, so the well's flex keeps the rest of the height and the
      figure is fitted to what is left */
   +'<div id="bmregs" role="group" aria-label="Side and region" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
@@ -2807,12 +3258,12 @@ function bmRender(r){
   BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);
   /* another person's masks are not this one's filling in */
   BMG.masks.forEach(function(k){k.shown=null;});}
- BM.r=r; bmSabRefresh(r); bmMarkVals(); bmMaskHits(r);
+ BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r);
  var seats=flSeats(),speed=flSpeed(),loadedTot=W.filter(function(n){return n.sq>=LOADED;}).length;
  var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
  var dom=seats.slice().sort(function(a,b){return b.hot-a.hot||b.load-a.load;})[0];
  bmSeats(seats);
- pmLayerBar(r); bmBars();
+ pmLayerBar(r); bmBars(); bmOvPaint(r);
  /* THE SHELF IS FLOW'S, and renderShelf names its layer out of PML, which
     does not carry the map. What it prints for Flow is the head and the seven
     seats and nothing that belongs to a layer, which is this layer's shelf

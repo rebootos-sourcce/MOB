@@ -11,7 +11,8 @@
    ranks are intensity. It deals from the person's own held
    addresses, so a card is a thing they are actually carrying.
    ============================================================ */
-var KB_Q='', KB_SEC='addr';
+/* opens on the universal laws, the first deck in KB_SECS since KT */
+var KB_Q='', KB_SEC='harm';
 
 /* every searchable thing in the instrument, built from the engine tables.
    kind decides which drill a row opens. */
@@ -273,11 +274,17 @@ function kbRows(sec){
    Integrity; he said moral, so moral wins, and the disagreement is recorded in
    BOOK-ERRATA.md rather than argued here.
 
-   The glossary is gone from this list on purpose. See kbRows. */
-const KB_SECS=[['addr','Fetters'],['fetter','Child emotions'],['sab','Saboteurs'],
- ['law','Moral integrity'],['mask','Masks'],['dom','Domains'],['arch','Archetypes'],
- ['gate','Gates'],['card','The cards'],['seat','The stack'],
- ['harm','Universal laws']];
+   The glossary is gone from this list on purpose. See kbRows.
+
+   AND THE LIST RUNS THE OTHER WAY, KT. His words: "I want you to reverse
+   the knowledge order starting with the universal laws." It read from the
+   Fetters up to the universal laws; it reads from the laws down now, the
+   same eleven decks exactly reversed, and the page opens on the first of
+   them. Order only: no key, name or deck changed. */
+const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards'],
+ ['gate','Gates'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
+ ['law','Moral integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
+ ['addr','Fetters']];
 
 /* what each deck's percent is a percent of. One line per family, and where a
    family has no honest percent for some of its rows the line says so rather

@@ -140,7 +140,10 @@ function runSeatFlowDrill(k){
  var h='<div class="pm-eye">'+sd.sk+' · '+sd.hz+' Hz · source '+sd.src+'</div>'
   +'<div class="pm-dn">'+sd.n+'</div><div class="pm-dm"><b>'+sd.nv+'</b><br>vritti '+sd.vt
   +'<br>seated at '+sd.seat+'</div>'
-  +'<div class="pm-grid"><span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
+  /* the Flow circle's step, KV, so the answer to a pressed seat says the
+     same word the figure prints beside it; a phone has no lane for the word */
+  +'<div class="pm-grid"><span>flow</span><b>'+bmFlowStep(ss.pass)+'</b>'
+  +'<span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
   +'<span>held</span><b>'+ss.hot+'</b>'
   +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
   +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
