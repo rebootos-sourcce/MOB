@@ -24433,3 +24433,52 @@ whether "tension five and above" names a different, more familiar
 number (SQ, shown everywhere else in the app on a ten point scale)
 that the motion should key off instead, is open and asked in the next
 report rather than guessed at.
+
+## LC. Backlog: teachers become an engine. Now: the Compass oscillation, clickable icons, and the Body overlay matched to the Field's own
+
+His words, verbatim, marked backlog on the first part: "This is a note
+for our backlog design. So for the compass, the value of the compass
+is exactly this. The teachers and their opposites are protocols. So
+we want to create release protocols based off of their paths. So
+their paths are the kind of idealized point Uh, the sniffer should be
+looking for all the patterns that are on the opposite and then
+reinforcing all the successfully reinforcing the patterns are on the
+positive. They make protocols out of the patterns that need to be
+released um, and can help craft rituals to kind of move us in
+alignment with these ascended teachers. So the ascended teachers
+need it's an, they, teachers are now an engine. with their paths and
+protocols and what they're looking for within the sniffer. So the
+design team, UI UX team, engineering team need to ask me questions
+about how that works. Second, the compass, the oscillating part needs
+to be more visible. And then none of the icons on the compass are
+interactive. I should be able to click on them.
+
+the attached images are for the overlay nav items - I want the body
+overlay nav similar to the field overlays. they are buttons with
+tips, they reflect the nodes, clusters, networks (saboteurs, complex,
+hyper complex, masks, pain points). i can turn them on an off and see
+them individually, or composited. make these fixes."
+
+- **Backlog, not dispatched: the five teachers become a full engine.**
+  Each teacher's path is an idealized point; the sniffer (the
+  scoring/matching engine, ai-director's own domain) reads patterns
+  toward the opposite as what to release and patterns toward the
+  teacher's own path as what to reinforce, and builds release
+  protocols and rituals from that reading. His own instruction: every
+  seat (design, UI UX, engineering) comes back with real questions
+  before this is built, not a guess at the shape.
+- **Now: the Compass's own oscillating tension line needs to read
+  more visibly.** Distinct from the open Field tension question in
+  the round above, this one names the Compass by itself.
+- **Now: none of the Compass's icons are clickable, and they need to
+  be.**
+- **Now: the Body overlay icon bar just shipped does not match what
+  he actually wants.** Two screenshots given as the reference the way
+  a drawing question is always answered with a drawing: his own
+  circle and arrow on the Body page's current bar, and a crop of the
+  Field's own layer bar (badges reading counts and percents, hover
+  tips, a full row) as the target it should look and behave like.
+  Buttons with tooltips, one per category (saboteurs, complexes,
+  hyper complexes, masks, pain points, read through his own Nodes,
+  Clusters, Networks grouping), each independently on or off,
+  viewable alone or composited together.
