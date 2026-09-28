@@ -24127,3 +24127,77 @@ of things and I, I need this to be polished."
   the way it is described for the Body overlay above, not whatever
   "unnesting" describes today. Passed to the in flight nav fix as a
   concrete behavior to check against, not a new separate ask.
+
+## KV. A correction to the Body overlay just dispatched: no rolled up list, icons that work like the Field's, and Nodes, Clusters, Networks
+
+His words, verbatim, long and self correcting, his own instruction is
+"add all this to your log" so it is kept whole rather than trimmed:
+"If I scroll on the body map, I can't frame it. Hide games for now.
+The menu items I should see in that top row are Discover, Play, Flow,
+and Body. When I click on any of them, they open up and I get the next
+set of tools. And my secondary navigation. The tools all have a third
+tier navigation. Those are the overlays. All the overlays work in
+concert. I can turn them on and off and select information on any of
+the layers. That means I can hide That means in it, I can see my with
+my overlays, I can click on or off my saboteurs, complexes,
+hypercomplexes, or masks. It means I no longer need the secondary
+navigation of saboteurs, complexes, hypercomplexes, masks. Yeah. Look,
+where am I? I'm on Discovery right now. Where are my masks? Where's my
+summary page? Like, what, what's, what happened? Where's my redesign
+of my story page? Okay, I'm almost. Oh, I see. When I click on
+Discover, I want Story Play. I want Story first. In the menu. Avatar,
+then Summary. And I'm really upset and disappointed that my fucking
+masks aren't here yet. prioritize the prioritize the repair of the
+body page as well. It's I click on so fetter saboteur's complex is
+hyper complexes. The background images already are wrong. So is the
+pain map. So is the flow map. But those become unnecessary because
+those become overlays on just the map. So the map in the third tier
+navigation you would have nodes, clusters, networks. Networks are
+what? Saboteurs, complexes, hypercomplexes. Pain, flow. I guess flow
+would be cluster. Under cluster. These are icons. They're in my upper
+left hand navigation, just like my field. Maps. I can hover over them
+and get tooltip information. I can turn them on and off, or I can
+press a little burger thing and it completely collapses. The flow one
+shows me through my chakra system, what nerves or chakras are open,
+impaired, heavily moderately impaired, or heavily impaired. Blocked.
+You have all this. Add all this to your log. Prioritize all this and
+fix it because this is priority. Do the nav fix first. Then this. If
+you've already got the point cloud stuff in, great."
+
+- **A real bug: scrolling on the Body map breaks framing it.** Named
+  plainly rather than folded into the redesign below.
+- **Games hidden for now**, from the bar entirely.
+- **"Do the nav fix first. Then this."** His own sequencing. The nav
+  fix already in flight (round KT, five sections: Discover, Play,
+  Flow, Embody, Tools) proceeds as scoped. This round's own top row,
+  "Discover, Play, Flow, and Body," is the correction to build right
+  after it lands, not a redirect of the work already running.
+- **The Body overlay just dispatched (round KU) is corrected before it
+  ships.** He does not want a rolled up list that unrolls per section.
+  He wants what he calls a third tier navigation: icons, upper left,
+  matching the Field's own layer bar exactly ("just like my field"),
+  hover tooltips, individual on and off per layer, and one collapse
+  all control. "It means I no longer need the secondary navigation of
+  saboteurs, complexes, hypercomplexes, masks," said directly against
+  his own round KU ask for a list. Sent to the agent already building
+  round KU as a correction before it commits.
+- **The Body page's separate renderings, named as wrong and as
+  unnecessary in the same breath:** the background images, the pain
+  map and the flow map are all wrong today, and folding them into
+  overlays on one map is the fix, not separate repairs to each.
+- **A taxonomy for the overlay icons, his own words:** Nodes, Clusters,
+  Networks. Networks are saboteurs, complexes, hypercomplexes. Clusters
+  are pain and flow ("I guess flow would be cluster"). Nodes is not
+  defined past the word itself; read in the next report against what
+  the engine actually has rather than guessed at.
+- **The Flow cluster overlay has its own spec:** a five step ladder per
+  seat, open, mildly impaired, moderately impaired, heavily impaired,
+  blocked.
+- **He is still looking for the masks he was sent.** Read as a delivery
+  or timing gap, not a defect in the work, and answered plainly and
+  concretely in the next reply: where the file is, what it is named,
+  and how to open it so it is not mistaken for not having arrived.
+- **A loose ordering note, not fully resolved by itself:** "Avatar,
+  then Summary" under Discover (already the built order), and "I want
+  Story first" under Play, read as Story being the first and, per
+  round KT, currently only tab in Play.
