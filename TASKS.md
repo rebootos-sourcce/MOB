@@ -23264,3 +23264,127 @@ Two separate pieces, neither dispatched yet:
   already asked to move under a user profile. His own instruction: only
   build the pieces of this that turn out to be simple wins, the rest
   stays backlog.
+
+## KD. Energetics and Source AI answered plain, the node state ladder, terminology still unsettled, Stripe not Apple or Google, the merge question put to the team, API key handling, the Kundalini graphic in full, and a third pass on the signal test
+
+His words, verbatim: "Keep all three visual treatments for now. Until
+I make a decision. No, let's keep new save export buttons. Keep them
+very simple, very tight. Just why? We want it to sound human. Yeah, we
+use that let's call it node state instead of band ladder. Node state
+would be open impaired moderately impaired heavily impaired blocked
+now we can use the language of saying and we'll use node cluster
+network assemblage point instead of chakra Node instead of fetter. So
+root assemblage point sacra. Assemblage point. Or root point. Sacral
+point. I can't quite see it, something like that. For the D1 database,
+I'm not sure what you mean. Uh, the benefits. This isn't going to be
+through Apple or Google. This is going to be through Stripe. So I need
+to do my Stripe setup. There's no reason the two need to stay
+separate. Do you think those need to be merged? The mechanics of being
+build and attuned? If I want natural voice for the reading, do I need
+to add my Eleven Labs API? And when do you need that? And should I
+just drop that on GitHub? In fact, all my API keys, I just drop those
+on GitHub. And do I just put that in a file that you read? So here's
+what we can do with the Kundalini. Have the symbol root sacral solar,
+etc., up the body. Using our new energy map body, and it will have a a
+ring around it, the ring is related to the words that are released.
+Directly related to lack of courage, fear, etc. And then we'll have
+little ticks for each of the little chakras that branch left and
+right. So this will show the fragmentation at each chakra. And then we
+need two poles at the bottom and the top, and we need our torus field.
+around the body. And we need that animated to show the circulature
+right? And so if the chakras aren't paired, then the circular flow is
+impaired. And if the chakras are fully open, then the current is fully
+open. So effectively showing you like a battery. And where you're
+blocked. And that your spiritual connection is when that connection is
+complete. So who says think yes 10 times? That's me. I'm inviting them
+to say to think yes times. Now, in the, it sounds like this. Now, I
+want you to sit back and relax. Move your awareness at your throat.
+You want to identify the sensations as you think these words. You want
+to identify its quality, its direction. See how close you can get to
+feeling it. Think yes 10 times. Feel its quality. Then think no 10
+times. And feel its quality. See if there's a difference between the
+two. That's the mind-body connection. A thought controlling your body.
+Imagine what anxiety, depression, overwhelm, and even joy do. This is
+the work. Unprocessed emotions destabilize the mind body complex this
+tool restores that natural connection so that you are attuned with the
+flow of life this is mysticism with the science lens to rapidly heal
+the mind-body connection I like this as a mirror that's kind of what
+it is it's showing you what's running you and how it's impacting you."
+
+Followed immediately by: "Just add those to the backlog. Sorry about
+that. I should have said that. Add those to the backlog. Figure out
+where they go in this flow. And then build it."
+
+Sorted by destination:
+
+- **Energetics: all three views stay, permanently for now, and New/
+  Save/Export stay.** Both open questions from the just-verified
+  intakeui.js commit are answered. No code change needed, already
+  shipped this way.
+- **Source AI's why header is "Why", not "Why release it."** His words
+  read as wanting it short and plain enough to sound human rather than
+  like a label. Simple win, `storyui.js`, free to touch.
+- **The band ladder V22 left open is ruled: "node state," five rungs,
+  open, impaired, moderately impaired, heavily impaired, blocked.**
+  This is the real ladder V22's "heavily blocked" placeholder was
+  waiting on. Routed to the voice skill as a real fix, not backlog,
+  since it unblocks the sweep V22 already named as waiting on exactly
+  this.
+- **Renaming chakra to node cluster, network or assemblage point, and
+  fetter to node, is not ruled.** His own words, "I can't quite see it,
+  something like that," after trying root assemblage point, root
+  point and sacral point out loud. Logged as his direction, not built,
+  and not folded into the node state ladder above, which is a
+  different naming question (a band word for a weight, not a name for
+  a body structure).
+- **Paywall is Stripe, not Apple or Google**, which is a correction to
+  what round KB found built in `reboot-os`: `/v1/store/apple` and
+  `/v1/store/google` verify a receipt from those stores, and nothing
+  in that server touches Stripe today. Answered directly in the next
+  report rather than guessed at or built toward, since it is his own
+  Stripe account to set up.
+- **Whether `MOB` and the "mechanics of being" build in `reboot-os`
+  should merge is a question back to the team**, not a ruling. Answered
+  with an assessment in the next report.
+- **Three practical questions about secrets and the ElevenLabs key**,
+  answered directly in the next report rather than guessed at, since a
+  wrong answer here has real cost: whether `MOB` (public) or a file he
+  hands over is a safe place for an API key (it is not, for either),
+  when the ElevenLabs key is actually needed, and where a key like it
+  actually belongs.
+- **The Kundalini graphic, in full**, folds into the Body page rebuild
+  already queued at round JZ rather than a separate piece: the seven
+  seat symbols rising root to crown on the new energy map body, a ring
+  around the figure keyed to which released words sit where, small
+  ticks branching left and right at each seat showing that seat's own
+  fragmentation, two poles above and below the figure, a torus field
+  drawn around the whole body and animated to show circulation, that
+  circulation reading as impaired where a seat's own halves are not
+  paired and fully open where they are, read together as a battery
+  with a visible charge and a visible block, and the felt sense of
+  wholeness he calls the spiritual connection is that circuit reading
+  complete.
+- **A third pass on the signal test script, replacing round JY's heart
+  then throat comparison.** This time it holds at the throat only, and
+  compares yes against no there rather than one seat against another:
+  "sit back and relax, move your awareness to your throat, identify
+  the sensations as you think these words, identify its quality, its
+  direction, see how close you can get to feeling it, think yes ten
+  times, feel its quality, then think no ten times, feel its quality,
+  see if there's a difference between the two." That is the mind body
+  connection, "a thought controlling your body." He also gave the
+  framing that follows it: unprocessed emotions destabilize the mind
+  body complex, the tool restores the natural connection so a person
+  is attuned with the flow of life, called plainly "mysticism with the
+  science lens," and he confirmed the "mirror" read of the whole
+  sequence himself: "it's showing you what's running you and how it's
+  impacting you." Also answers who speaks it, his own words: "that's
+  me, I'm inviting them." Supersedes the version shipped at `bc2d2d9`;
+  routed as new work against the same storyboard.
+
+Per his own "then build it," the simple, low risk pieces (the Source AI
+header word, and folding the ruled node state ladder into the voice
+skill) are built this round rather than only queued. The Kundalini
+graphic, the terminology question and the signal test's third pass are
+larger and queued, the terminology question explicitly as his own
+still unsettled direction rather than a ruling to build toward.
