@@ -23726,3 +23726,16 @@ this round as a packed, attached file per the standing rule, stamped
 with the commit it was built from, since several pieces are still in
 flight and the build he is holding needs to say which commit it is
 rather than claim to be finished.
+
+## KL. atuned.world confirmed, parked and untouched at GoDaddy
+
+His words, verbatim: "or two in the world. That's my domain. I'm not
+actively using it. I, I have it. It's with GoDaddy currently. It
+hasn't been touched and I'm hooking it up right now. So I need to know
+what needs to be hooked up. And I guess you're continuing your build."
+
+Settles round KK and KJ: `atuned.world` is the real domain, registered
+at GoDaddy, parked and not serving anything he relies on. `atuned.app`,
+tried and it did not work, is dropped. The concrete next step (the
+GoDaddy nameserver change, and updating this codebase's own references
+to `atuned.app`) is answered directly in the next report.
