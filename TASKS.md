@@ -24372,3 +24372,22 @@ them And if you, if you created a document for it, I don't see it."
   them. Read as: whatever lands in chat text is reaching him, a file
   attachment is not. Answered with true step by step detail, in the
   reply itself, no file this time.
+
+## LB. Three must haves: the Field's tension motion, the Body overlay, the masks, then a build
+
+His words, verbatim: "must have - for the field animation, i dont see
+the tension line anmation for the lines that are showing tension 5 and
+above having more motion. Body menu overlay menu is a must have fix.
+if the teams have questions they should ask. do all this then give me
+a new build. the masks (shadow mask faces must be in)"
+
+- **A Field bug: lines at tension 5 and above should carry more
+  motion and he does not see it.** Checked directly against the Field
+  page specifically (not the Compass, which carries its own, separate
+  tension line work from round KQ) before assuming which surface this
+  is.
+- **The Body overlay and the masks are both named must have**,
+  already in flight; this round does not change their scope, only
+  their priority.
+- **A build, once this is done.** Sent the moment it is real and
+  gated, not promised ahead of it.
