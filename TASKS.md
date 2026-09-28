@@ -23495,3 +23495,109 @@ Atuned website" refers to is not something this session can find in
 either repository and is named as a real ambiguity rather than
 guessed at, since everything found so far points at Cloudflare Pages,
 not a Google product, as the intended host.
+
+## KG. Answers across the board, Google Workspace shown, and the concrete API key steps asked for plainly
+
+His words, verbatim, sent alongside a screenshot of his Google
+Workspace dashboard (Calendar, Docs, Drive, Forms, Gmail, Chat,
+Contacts, Meet, Groups, Keep, Sheets, Sites, Slides, Vids, Workspace
+Studio, all under "Your apps"): "The question is, do I need my Google,
+Google workspace for anything? And then why are in the latest and give
+me the latest attuned? Yeah, a revolution would be root to crown. or a
+complete revolution would be a revolution around that chakra. I think
+your archetype percentages kind of show you how strong that archetype
+is running through you. Just based off of your story. If there's not
+a limiting belief, you don't need to do the reframe. The two go
+together. Although we will have an affirmation system. Yeah, that
+looks like generosity and non-harm. No, I don't think we'll need the
+practice and archetype ratings. Actually, yeah, export the archetype
+ratings as well. I don't know what you mean by number six should
+running the ritual cycle view stay behind full avatar. I don't know
+what that means. It's no context. Thank you for the copy. So that's my
+Google workspace. Do I need that at all? Since this is part of my
+attuned world, where we can push the funnel, the question, the
+database, or does the database need to live on GitHub? I guess the
+questions are, is it worth hooking it all up now so that we're ready
+to go? I just need to know what I need to do with the Anthropic and 11
+Labs keys. I don't understand the steps. So I get the key, then what?
+If I'm not pasted in the file and I don't put it on the fucking
+database, then what? Great, so GitHub is our main space. Is someone
+really does a release and it's part of the ritual that should count
+their day as done automatically? The boot screen do we need it? That's
+not the animation, that's that pop up that keeps telling me that the
+system's not working. Is that correct? Profile page, if you type in a
+name that's already been used, no, you should be able to use your own
+name. And it does not overwrite. In the database. If my name is Philip
+Long, someone else overseas is called Philip Long, the database should
+be able to handle both. Keep it at a slight turn. Yeah, gra- gravity is
+like a gravity well. So wherever the node is, it's like the geometry,
+geometry is distorted around it. I think I answered all the rest of
+that. Okay, figure out where this goes, block it. Then build it."
+
+Sorted by destination:
+
+- **"Google Spaces" from round KF is now plain: it is Google
+  Workspace**, his own account for Gmail, Docs, Calendar and the rest,
+  shown in the screenshot. Answered directly in the next report: it is
+  not part of the hosting stack and nothing here depends on it.
+- **A revolution is root to crown**, confirming the avatar rebuild's
+  own reading, with a second, narrower reading also named ("a complete
+  revolution would be a revolution around that chakra") that is not
+  fully resolved and is carried as his own further thought rather than
+  a second ruling.
+- **A real reversal on the archetype percentage**, and it collides
+  with an existing ruling: he wants it to reflect how strongly that
+  archetype is running through a person's own story, not the fixed
+  birth-domain figure the glossary currently states ("not stored in
+  the body"). Named as a real conflict for the next report rather than
+  built silently, since it reverses standing canon.
+- **The reframe-versus-affirmation split is ruled:** no limiting
+  belief held at a seat, no reframe needed there, only the embody line
+  standing in for now, with a full affirmation system still to come
+  later, not built yet.
+- **The two dilemma questions are confirmed** exactly as built,
+  generosity and non-harm.
+- **Export: practice rule notes stay on device, archetype ratings now
+  travel with an export.** His words land as two different answers to
+  two different parts of the same question, and are logged as such
+  rather than flattened into one.
+- **Question 6 (whether Running and the cycle view stay behind "Full
+  avatar") landed with no context and could not be answered.** His own
+  words, "I don't know what that means, it's no context," which is
+  exactly the rule this project already holds itself to: a drawing
+  question needs the drawing beside it. Re-asked with a screenshot in
+  the next report rather than repeated in words alone.
+- **The database does not live on GitHub**, and "is it worth hooking
+  it all up now" is a real judgement call put back to him rather than
+  decided here. Answered directly in the next report.
+- **The concrete steps for the Anthropic and ElevenLabs keys, asked
+  for plainly** after the prior answer did not land: "I get the key,
+  then what?" Answered as a literal numbered list in the next report,
+  no shorthand.
+- **GitHub as the main code space is confirmed understood.**
+- **A completed release that is part of the day's ritual should count
+  that day as done automatically.** Answers the release agent's open
+  question 1 in part (not the pool question, only this one).
+- **The boot pop up he kept seeing is confirmed as the guard's false
+  alarm, not the boot animation**, and his question of whether it is
+  needed at all is answered directly: yes, as the safety net for a
+  real stopped build, and what changed is that it no longer misfires
+  on a browser extension's own error.
+- **Profile names are not unique, and must not be:** "if my name is
+  Philip Long, someone else overseas is called Philip Long, the
+  database should be able to handle both." The local profile page's
+  current refusal of a repeated name is wrong and needs fixing; a name
+  is a label, never a key.
+- **Compass: keep the slight turn**, answering question 2 outright.
+- **Compass gravity, redefined:** not the heaviest-charge pulse already
+  built, but a literal gravity well, the figure's own geometry warping
+  around wherever a node's weight sits. A different build from what
+  shipped, not a confirmation of it.
+
+Per his own "figure out where this goes, block it, then build it,"
+the plain, buildable pieces (the profile name-reuse fix, the completed
+release counting the day, the dilemma law confirmation, the export
+split) are routed to build in this round; the ones that reverse
+standing canon (archetype percentage) or need a redrawn concept
+(gravity as warp, not pulse) are named plainly for his confirmation
+rather than guessed into code.
