@@ -24850,3 +24850,29 @@ source OS. Do those two."
   same bright colour as the wordmark itself, and `margin-top:4px`.
   Both real, both his to have asked three times. Building now, the
   only one of tonight's asks with an explicit "do this now."
+
+**The colour and the gap, landed and measured, commit `cd53bcb`,
+rebuilt `v867`.** Not trusted off the declared CSS value: measured the
+rendered page in real Chromium, `.bn` and `.bs` bounding rects, gap
+exactly 15px, computed colour `rgb(52,52,52)`. Screenshotted, looked
+at by eye. `tests/engine.js` 1836 passed, `tests/design.js` 182 passed
+(one frame rate flake on the first parallel run, gone clean alone,
+same pattern this file has hit before under load), `tests/collide.js`
+351 passed, `tests/functional.js` 1292 passed, all zero failed. Voice
+check 22 findings, 0 stopping.
+
+**The profile screen he is asking for already exists, almost to the
+word.** Checked before building anything, the same discipline the
+masks and the point cloud both needed. `atuned_src/ui/account.js`
+carries his own earlier ruling in its own header comment, round IA:
+"our profile page is non-standard... a very standard profile page...
+security settings, privacy settings, account settings, billing, your
+tier." Six sections sit behind the profile button today: Account
+(sign in, honestly stubbed "not signed in" since no accounts exist
+yet, matching "log in, log out"), Profiles (save, open, delete,
+start a new one, matching "we already know we have different
+profiles"), Display (seven lightings, three densities, a motion
+toggle, matching "rendering for the UI"), Security, Privacy, Billing,
+Help. Screenshotted all three of the sections his words named
+directly. Not rebuilt, since it already answers what he described;
+reported rather than duplicated.
