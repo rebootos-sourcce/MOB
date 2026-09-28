@@ -80,7 +80,7 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="tile"><div class="t">Findings now</div><div class="v">23</div></div>
 <div class="tile"><div class="t">Stopping a build</div><div class="v">0</div></div>
 </div>
-<p class="meta">commit <i>146533a</i>, tree dirty &nbsp; database md5 <i>11dd5e7d3002</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
+<p class="meta">commit <i>8f74efb</i>, tree dirty &nbsp; database md5 <i>7dde2abec7f7</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
 </div>
 <div class="sec"><h2>What the sweep found</h2>
 <p>One line per rule. A rule reading zero is a rule holding a class closed, which is what a gate is for.</p>
@@ -111,8 +111,8 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <h3>bare-weight, 23 found</h3>
 <div class="hit"><span class="w">atuned_src/ui/analytics.js:134</span><span class="s">carrying, at a shadow weight of &lt;b&gt;</span></div>
 <div class="hit"><span class="w">atuned_src/ui/analytics.js:360</span><span class="s">weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/avatarui.js:999</span><span class="s">&lt;p class=&quot;av-imp-r&quot;&gt;Running at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/avatarui.js:1232</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/avatarui.js:1011</span><span class="s">&lt;p class=&quot;av-imp-r&quot;&gt;Running at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/avatarui.js:1249</span><span class="s">, at a weight of</span></div>
 <div class="hit"><span class="w">atuned_src/ui/component.js:452</span><span class="s">, weight</span></div>
 <div class="hit"><span class="w">atuned_src/ui/drills.js:261</span><span class="s">Charge held here &lt;b&gt;</span></div>
 <div class="hit"><span class="w">atuned_src/ui/drills.js:458</span><span class="s">&lt;/b&gt;, shadow weight &lt;b&gt;</span></div>
@@ -121,8 +121,8 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="hit"><span class="w">atuned_src/ui/fieldbar.js:208</span><span class="s">, at a weight of</span></div>
 <div class="hit"><span class="w">atuned_src/ui/imprints.js:75</span><span class="s">Charge left</span></div>
 <div class="hit"><span class="w">atuned_src/ui/imprints.js:254</span><span class="s">weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/knowledge.js:510</span><span class="s">, weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/knowledge.js:511</span><span class="s">, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/knowledge.js:512</span><span class="s">, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/knowledge.js:513</span><span class="s">, weight</span></div>
 <div class="hit"><span class="w">atuned_src/ui/map.js:946</span><span class="s">addresses, weight</span></div>
 <div class="hit"><span class="w">atuned_src/ui/map.js:2179</span><span class="s">, at a weight of</span></div>
 <div class="hit"><span class="w">atuned_src/ui/rings.js:1056</span><span class="s">Heaviest pattern. Weight</span></div>
@@ -237,7 +237,7 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <h3>CO-30. A weight printed as a bare figure, which means nothing to the layman and too little to the practitioner, with no band word to read it by and no picture beside it.</h3>
 <div class="his">I think speak to like where a 10 year old has to do two things. it has to be articulate and contextual. It has to provide knowledge and information, practitioner needs to be able to understand it. and the layman needs to be able to understand it. and we can&#x27;t speak to them in abstract terms that our meaningless to them. So we can&#x27;t say six point three weight, when that doesn&#x27;t say anything. We need to say something like heavily impaired, heavily blocked, right? We can use iconography to show um, given example, uh, the iconography within the summaries, I think would be a fantastic kind of way to like paint the picture. Because it adds a visual to the narrative.</div>
 <p class="meta">where <i>TASKS.md, round JX</i><br>when <i>27 September, in his words</i><br>quoted <i>verbatim</i><br>rules <i>bare-weight</i></p>
-<p class="dim">A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The band ladder for a weight is his and still open, in the same round: &quot;Is it flowing? Is it blocked? And then what are the states in between? ... it&#x27;s zero to five, but you can scale that up to zero to 10.&quot; The icon model he names is Summary&#x27;s, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the ladder and on files other seats hold.</p>
+<p class="dim">A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The ladder for a weight was open in this round: &quot;Is it flowing? Is it blocked? And then what are the states in between? ... it&#x27;s zero to five, but you can scale that up to zero to 10.&quot; Round KD in TASKS.md named it, and this entry&#x27;s own placeholder is superseded: &quot;Yeah, we use that let&#x27;s call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked.&quot; The words are ruled. The figures between the rungs are not: NODESTATE_PROPOSED in engine/data/canon.js is a proposal and says so. The icon model he names is Summary&#x27;s, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the lines between the rungs, on a definition, behaviour and direction out for each rung (V9), and on files other seats hold.</p>
 </div>
 <div class="sec"><h2>The strings that have to change</h2>
 <p>Old and new. The line is found by searching the file for the string, because four of these files were edited while this was being written.</p>
@@ -320,8 +320,8 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <p class="dim">Why no pattern. Structure, not wording.</p>
 <p class="meta">from <i>CO-23</i></p>
 <h3>two-readers</h3>
-<p>One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The band word, the figure and the picture ride together. V22.</p>
-<p class="dim">Why no pattern. Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with none of his band words in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, the way tierOf in engine/data/canon.js reads CQ, and never by a writer choosing it. Read the line as Derek and as Angela, with a profile loaded, and look at the shot.</p>
+<p>One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The node state, the figure and the picture ride together. V22.</p>
+<p class="dim">Why no pattern. Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with no node state in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, nodeStateOf in engine/data/canon.js, the way tierOf reads CQ, and never by a writer choosing it. Its lines are a proposal until he rules them, round KD. Read the line as Derek and as Angela, with a profile loaded, and look at the shot.</p>
 <p class="meta">from <i>CO-30</i></p>
 </div>
 <div class="sec"><h2>What the sweep cannot check</h2>

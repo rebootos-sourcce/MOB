@@ -702,3 +702,53 @@ function tierOf(cq){
  var c=cqShown(cq);
  for(var i=0;i<TIERDEF.length;i++) if(c>=TIERDEF[i].at)return TIERDEF[i];
  return TIERDEF[TIERDEF.length-1];}
+
+/* ============================================================
+   NODE STATE. THE WORDS ARE RULED. THE LINES BETWEEN THEM ARE NOT.
+
+   V22 in the voice skill: a weight a person reads about themselves ships
+   with a word the layman reads on sight, beside the figure the practitioner
+   reads. The word is read off the figure through one table, never chosen per
+   surface. Round KD in TASKS.md, his words: "Yeah, we use that let's call it
+   node state instead of band ladder. Node state would be open impaired
+   moderately impaired heavily impaired blocked." Five rungs, lightest first.
+   Kept lower case, as he said them, because they sit mid sentence: "heavily
+   impaired at a weight of 7.4".
+
+   HE NAMED NO FIGURES. The floors below are a PROPOSAL, put to him after round
+   KD and not ruled by him, and the name of the table says so. Rename it to
+   NODESTATE when he confirms or moves the lines, and not before. Until then
+   no surface calls nodeStateOf. Three of the four lines are the engine's own
+   on the same 0 to 10 scale, and the fourth is the weakest:
+
+     0.1  above nothing. Charge under 4 is real and compute.js rules it
+          reportable (BELOW THE LINE), so it may not read open.
+     4    where an address starts to carry. Every surface counts held here.
+     6.5  the hyper gate in compute.js, one complex "already running hard",
+          which is also the midpoint of 4 and 9. Weakest of the four.
+     9    where rings.js, component.js and imprints.js already draw it hot.
+
+   The alternative on the table is five even steps of 2. It reads charge a
+   person entered as open, which is the failure BELOW THE LINE records, and
+   it puts blocked at 8, off the line the renderers already draw hot.
+
+   AND V9 IS NOT MET YET. A node state is a label on a person, so it ships
+   with its definition, the behaviour it produces and the direction out,
+   the way TIERDEF carries def, energy and toward. None is written here. A
+   word from this table printed today is a judgement, which is the second
+   reason no surface calls it.
+   ============================================================ */
+const NODESTATE_PROPOSED=[
+ {at:9,   nm:'blocked'},
+ {at:6.5, nm:'heavily impaired'},
+ {at:4,   nm:'moderately impaired'},
+ {at:0.1, nm:'impaired'},
+ {at:0,   nm:'open'}];
+/* THE WORD READS THE FIGURE THE SCREEN PRINTS, the tierOf lesson. Weights
+   print with toFixed(1), so 3.96 prints 4.0 and must read at 4, and 0.04
+   prints 0.0 and must read open. */
+function weightShown(w){return +(+w||0).toFixed(1);}
+function nodeStateOf(w){
+ var x=weightShown(w);
+ for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(x>=NODESTATE_PROPOSED[i].at)return NODESTATE_PROPOSED[i];
+ return NODESTATE_PROPOSED[NODESTATE_PROPOSED.length-1];}

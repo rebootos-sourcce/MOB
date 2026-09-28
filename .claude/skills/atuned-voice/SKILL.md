@@ -653,7 +653,8 @@ not a rule beside it. His words:
 > uh, the iconography within the summaries, I think would be a fantastic kind
 > of way to like paint the picture. Because it adds a visual to the narrative."
 
-Logged as `CO-30` in `objections.json`.
+Logged as `CO-30` in `objections.json`. The ladder his example stood in for
+was named in round KD, below, and is called node state.
 
 **V21 had one reader. This has two, on the same line.** A practitioner who
 needs real information, and a layman who needs to just get it. Neither is
@@ -666,36 +667,70 @@ against.
 So a figure a person reads about themselves ships as three things, and each
 reader takes the part built for them:
 
-    the band word   the layman reads it on sight     heavily blocked
-    the figure      the practitioner reads it        6.3
+    the node state  the layman reads it on sight     heavily impaired
+    the figure      the practitioner reads it        7.4
     the picture     both read it before any word     the icon and its ring
 
     FAIL  ui/summary.js:263  That reaches the body at the anterior heart, on
-                             the fear axis, at a weight of 6.3.
+                             the fear axis, at a weight of 7.4.
     FIX                      That reaches the body at the anterior heart, on
-                             the fear axis, heavily blocked at a weight of
-                             6.3.
+                             the fear axis, heavily impaired at a weight of
+                             7.4.
 
-    FAIL  ui/rings.js:1056   Heaviest pattern. Weight 6.3
-    FIX                      Heaviest pattern. Heavily blocked, 6.3
+    FAIL  ui/rings.js:1056   Heaviest pattern. Weight 7.4
+    FIX                      Heaviest pattern. Heavily impaired, 7.4
                              [drawn in the ring, on the pattern's own glyph]
 
-**The words in those fixes are his, and they stand in for a ladder he has not
-ruled.** In the same round: "Is it flowing? Is it blocked? And then what are
-the states in between? ... it's zero to five, but you can scale that up to
-zero to 10." Until he names the rungs, "heavily blocked" shows the shape of
-the fix and makes no claim about where 6.3 falls. Pass 1 still comes first. A
-band word that overstates the figure beside it is a lie with a picture on it.
+**The ladder is ruled, and it is called node state.** Round KD in `TASKS.md`,
+his words: "Yeah, we use that let's call it node state instead of band
+ladder. Node state would be open impaired moderately impaired heavily
+impaired blocked." Five rungs, lightest to heaviest:
+
+    open   impaired   moderately impaired   heavily impaired   blocked
+
+This retires the placeholder. V22 first shipped with "heavily blocked", his
+example from round JX, standing in for a ladder he had not named. It is not a
+rung and is not written again. The words are lower case in the table and take
+a capital only where they open a line.
+
+**The words are ruled. The lines between them are not.** He named five rungs
+and no figures. Where a weight stops being moderately impaired is his call,
+and until he makes it no surface prints a node state. Pass 1 still comes
+first. A node state that overstates the figure beside it is a lie with a
+picture on it. The examples above use 7.4 and not his 6.3 for that reason:
+7.4 reads heavily impaired under every split on the table, and 6.3 does not.
+
+**The split on the table is a proposal, and its name says so.**
+`NODESTATE_PROPOSED` in `engine/data/canon.js` puts three of the four lines
+where the engine already draws them on the same 0 to 10 scale:
+
+    open                  0.0     nothing held
+    impaired              0.1 up  charge entered, under the line at 4.
+                                  compute.js rules that charge reportable,
+                                  BELOW THE LINE, so it may not read open
+    moderately impaired   4 up    where an address starts to carry. Every
+                                  surface already counts held here
+    heavily impaired      6.5 up  the hyper gate in compute.js, one complex
+                                  already running hard, and the midpoint of
+                                  4 and 9. The weakest of the four
+    blocked               9 up    where rings.js, component.js and
+                                  imprints.js already draw an address hot
+
+The other split on the table is five even steps of 2. It reads charge a person
+entered as open, which is the failure BELOW THE LINE records, and it puts
+blocked at 8, off the line the renderers already draw hot. The table is
+renamed `NODESTATE` when he confirms or moves the lines, and not before.
 
 **The word is read off the figure, never chosen for it.** This is how two
 readers are told the same thing. One table in `engine/data` maps a figure to
-its word, and every surface asks that table. The CQ tiers already work this
-way: `tierOf` in `engine/data/canon.js` reads the word off the number the
-screen prints. The corpse is recorded above it. The word and the figure used
+its word, and every surface asks that table. `nodeStateOf` in
+`engine/data/canon.js` reads the node state off the figure the screen prints,
+`toFixed(1)`, so 3.96 prints 4.0 and reads at 4. The CQ tiers already work
+this way: `tierOf` reads the word off the number the screen prints. The corpse is recorded above it. The word and the figure used
 to disagree at the half point, "CQ 71, gaining" beside a row reading "Gaining
 61 to 70", in 35 of 625 runs on the IK audit of 27 September. That is what a
 contradiction between the practitioner and the layman looks like on a screen.
-A band word picked by a writer per surface would put it on every surface.
+A node state picked by a writer per surface would put it on every surface.
 
 **The picture is Summary's, and he named it.** The object already exists.
 `cr()` at `ui/component.js:194` draws every figure on Summary as one thing: an
@@ -707,21 +742,24 @@ the figure ships inside it. Take the glyph from `SEATGLYPH` in
 that already has an icon is a second name for it, which is V14 in a picture.
 Icons are ring, not fill.
 
-Where there is no room for a picture, in a sentence or a tooltip, the band
-word does the picture's job alone. A figure in prose never ships without its
+Where there is no room for a picture, in a sentence or a tooltip, the node
+state does the picture's job alone. A figure in prose never ships without its
 word.
 
 **How it sits with the rules it touches.**
 
-- **V8 holds.** The word does not turn a weight into a score. "Heavily blocked
-  at a weight of 6.3", never "6.3 of 10, heavily blocked".
-- **V9 holds, from the other side.** V9 says a band word never stands without
-  its definition, its behaviour and its direction out. V22 says a figure never
-  stands without its word. The three things V9 asks for live in the band's
-  table entry, the way `TIERDEF` carries `def`, `energy` and `toward`, and
-  ride one door away, in the tooltip or the drill.
-- **V17 holds.** The label stays one word. The band word rides on the value
-  the way the unit does: "Weight" over "heavily blocked, 6.3".
+- **V8 holds.** The word does not turn a weight into a score. "Heavily
+  impaired at a weight of 7.4", never "7.4 of 10, heavily impaired".
+- **V9 holds, from the other side.** V9 says a label on a person never stands
+  without its definition, its behaviour and its direction out, and a node
+  state is a label on a person. V22 says a figure never stands without its
+  node state. The three things V9 asks for belong in each rung's table entry,
+  the way `TIERDEF` carries `def`, `energy` and `toward`, and ride one door
+  away, in the tooltip or the drill. They are not written yet. The table
+  carries the word and its floor and nothing else, which is the second reason
+  no surface prints a node state today.
+- **V17 holds.** The label stays one word. The node state rides on the value
+  the way the unit does: "Weight" over "heavily impaired, 7.4".
 - **V20 decides first.** Whether a figure appears at all is still V20's call.
   V22 decides what it wears when it does.
 - **Section 5, rule 6, is not overturned.** Pass 7 and pass 8 still never
@@ -734,11 +772,16 @@ word.
 **What the gate can hold and what it cannot.** `bare-weight` in
 `objections.json`, run by `--objections`, flagged and never failed. It reports
 a literal ending on weight, weight of, charge held or charge left, where a run
-time figure lands, and the rendered "weight 6.3", when none of his band words
-is in the same string. It is a flag and not a stop for three reasons. The
-ladder is not ruled, so a stop would make every writer invent a band word per
-surface, which is the contradiction above. The sweep reads each literal apart,
-so a band word written after the value, in the next literal, is not seen and
+time figure lands, and the rendered "weight 6.3", when no node state is in
+the same string. It clears on impaired and blocked, which covers four rungs.
+It does not clear on open, which in this product is also a verb and a plan
+word, "Rerunning anything already open costs nothing", so it would clear
+lines on a word that means something else. A weight at open prints 0.0,
+which the product rarely prints, and a false flag there is one a person
+clears. It is a flag and not a stop for three reasons. The lines between the
+rungs are not ruled, so a stop would make every writer pick a node state per
+surface by eye, which is the contradiction above. The sweep reads each literal apart,
+so a node state written after the value, in the next literal, is not seen and
 the flag is false there. And the picture is not text. It reaches weight and
 charge, the two he named, and nothing else: a percent match, a pain figure and
 "Waiting to land" are outside it. Whether one line lands for both readers, and
@@ -753,7 +796,8 @@ a rank and not a band, so it does not clear a line.
 
 **The sweep that applies it is separate work.** Every bare weight the flag
 reports sits in a renderer, and most of those files are held by other seats.
-It waits on the ladder and on those files. Read the count off the run.
+The ladder is ruled now. It waits on the lines between the rungs, on the V9
+three for each rung, and on those files. Read the count off the run.
 
 ---
 
@@ -1024,7 +1068,7 @@ Rates, reported against the house rate for the same measure, per file:
     gloss                   , which is
     it-is open              a sentence opening on a demonstrative copula
     reassurance             flagged for a person to rule on, never failed
-    bare weight             V22, a weight with no band word beside it, run
+    bare weight             V22, a weight with no node state beside it, run
                             by --objections, flagged and never failed
     abstract                V21, a sentence carrying an embalmed verb:
                             -tion, -ment, -ity, -ness and the rest

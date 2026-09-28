@@ -19,7 +19,7 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 146533a, tree dirty   database md5 11dd5e7d3002
+    commit 8f74efb, tree dirty   database md5 7dde2abec7f7
     29 objections logged, 24 of them with a quotation on record
     22 rules, 11 with patterns in the database, 11 held by a gate elsewhere
     12 more objections are guidance, because no check can express them
@@ -323,7 +323,7 @@ Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rule
     quoted   verbatim
     rules    bare-weight
 
-A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The band ladder for a weight is his and still open, in the same round: "Is it flowing? Is it blocked? And then what are the states in between? ... it's zero to five, but you can scale that up to zero to 10." The icon model he names is Summary's, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the ladder and on files other seats hold.
+A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The ladder for a weight was open in this round: "Is it flowing? Is it blocked? And then what are the states in between? ... it's zero to five, but you can scale that up to zero to 10." Round KD in TASKS.md named it, and this entry's own placeholder is superseded: "Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked." The words are ruled. The figures between the rungs are not: NODESTATE_PROPOSED in engine/data/canon.js is a proposal and says so. The icon model he names is Summary's, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the lines between the rungs, on a definition, behaviour and direction out for each rung (V9), and on files other seats hold.
 
 ---
 
@@ -449,18 +449,18 @@ Measured across the whole corpus on 27 September before it was trusted, with the
 
 ### bare-weight
 
-A weight printed on its own says nothing to either reader. The layman needs a band word he reads on sight, the practitioner needs the figure, and the line carries both, with the picture beside them where the surface has one. V22.
+A weight printed on its own says nothing to either reader. The layman needs a node state he reads on sight, the practitioner needs the figure, and the line carries both, with the picture beside them where the surface has one. V22.
 
-    fails   That reaches the body at the anterior heart, on the fear axis, at a weight of 6.3.
-    fixed   That reaches the body at the anterior heart, on the fear axis, heavily blocked at a weight of 6.3.
+    fails   That reaches the body at the anterior heart, on the fear axis, at a weight of 7.4.
+    fixed   That reaches the body at the anterior heart, on the fear axis, heavily impaired at a weight of 7.4.
     found   23
     atuned_src/ui/analytics.js:134
         carrying, at a shadow weight of <b>
     atuned_src/ui/analytics.js:360
         weight
-    atuned_src/ui/avatarui.js:999
+    atuned_src/ui/avatarui.js:1011
         <p class="av-imp-r">Running at a weight of
-    atuned_src/ui/avatarui.js:1232
+    atuned_src/ui/avatarui.js:1249
         , at a weight of
     atuned_src/ui/component.js:452
         , weight
@@ -478,9 +478,9 @@ A weight printed on its own says nothing to either reader. The layman needs a ba
         Charge left
     atuned_src/ui/imprints.js:254
         weight
-    atuned_src/ui/knowledge.js:510
+    atuned_src/ui/knowledge.js:512
         , weight
-    atuned_src/ui/knowledge.js:511
+    atuned_src/ui/knowledge.js:513
         , weight
     atuned_src/ui/map.js:946
         addresses, weight
@@ -501,7 +501,7 @@ A weight printed on its own says nothing to either reader. The layman needs a ba
     atuned_src/ui/ui.js:1434
         , weight
 
-FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. First, the ladder the band word comes from is not ruled: his words in the same round are "Is it flowing? Is it blocked? And then what are the states in between?", which is a question and not a table. A stop here would make every writer pick a band word per surface, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. The words the pattern accepts are his own examples and their opposites, and they are replaced by the ladder's words when he rules it. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run.
+FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. The ladder is real now and this entry supersedes its own first cut: round KD in TASKS.md, his words, "Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked." The placeholder heavily blocked, his example from round JX, is retired, and the pattern no longer accepts it or his other examples (heavy, light, flowing, clear). It clears on impaired and on blocked when blocked is not qualified, which covers four rungs. It does not clear on open, which in this product is also a verb and a plan word, "Rerunning anything already open costs nothing", so it would clear lines on a word that means something else; a weight at open prints 0.0, which the product rarely prints. First reason: the words are ruled and the lines between them are not. He named five rungs and no figures. NODESTATE_PROPOSED in engine/data/canon.js is a proposal, named as one, and no surface calls nodeStateOf until he confirms the lines. A stop here would make every writer pick a node state per surface by eye, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run.
 
 ---
 
@@ -579,9 +579,9 @@ The knowledge base was linear and boring. A deck of identical cards is a list we
 
 **two-readers.** CO-30
 
-One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The band word, the figure and the picture ride together. V22.
+One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The node state, the figure and the picture ride together. V22.
 
-*Why no pattern.* Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with none of his band words in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, the way tierOf in engine/data/canon.js reads CQ, and never by a writer choosing it. Read the line as Derek and as Angela, with a profile loaded, and look at the shot.
+*Why no pattern.* Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with no node state in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, nodeStateOf in engine/data/canon.js, the way tierOf reads CQ, and never by a writer choosing it. Its lines are a proposal until he rules them, round KD. Read the line as Derek and as Angela, with a profile loaded, and look at the shot.
 
 ---
 

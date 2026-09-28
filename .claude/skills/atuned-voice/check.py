@@ -666,7 +666,7 @@ WHAT THIS DID NOT CHECK. Five things, and they are the five that decide it.
      of short words can still say nothing a person could point at.
      And V22: does one line serve the practitioner and the layman without
      telling them different things, and is the picture beside the figure.
-     The bare-weight flag sees a missing band word, in the string it reads.
+     The bare-weight flag sees a missing node state, in the string it reads.
 
 A green run here means nothing above this line is broken. It does not mean the
 line is good.
