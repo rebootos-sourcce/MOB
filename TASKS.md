@@ -24016,3 +24016,72 @@ answer if this goes further: which reading should drive the light, CQ,
 expression, or the engine's own existing `radiance` value (they
 disagree, checked on real personas), and whether an address's place on
 its shell should mean something or stay an open layout choice.
+
+## KS. Wire the point cloud in as a third Compass view, per seat toggles, saturation up 30 percent, and version numbers from now on
+
+His words, verbatim: "wire in these point cloud add it as a third option
+for the compass. The Rosa is fantastic, especially with the nodal shells
+collapsing from the entire center in and out. And I want to be able to
+model or select each chakra resonance. So add, create a button for each
+root sacral so I can turn them on and off. [...] there's a really nice
+designs wire those in. Um, increase the saturation by 30%. Cool, thank
+you for that hosting setup. Okay, I see the the files. I see the latest
+attuned. From now on, with each build, please give it a version number."
+
+- **The point cloud goes in for real, as a third Compass view** beside
+  Top and the current volume/needle view. His own reference is Rosa's
+  image in mockup A, "the nodal shells collapsing from the entire
+  center in and out," which reads as mockup A's real per-address shells
+  crossed with mockup B's Chladni collapse language, both his words
+  taken together rather than either mockup alone.
+- **A toggle button per seat** (root, sacral, solar, heart, throat,
+  third eye, crown), to turn that seat's shell on and off individually.
+- **Saturation raised 30 percent** against the mockup's current colours.
+  Scope not stated plainly, read in the next report as the new
+  point cloud view specifically, since that is what he was looking at
+  when he said it, and named as a read rather than assumed silently.
+- **Confirms delivery**, the hosting files and the current build both
+  arrived and open.
+- **A standing instruction: every build carries a version number from
+  now on.** Not built yet at the time of this ruling; being added to
+  the build stamp itself.
+
+## KT. Emergency: the primary navigation is wrong and tools are missing
+
+His words, verbatim, flagged by him as urgent: "No, immediate
+emergency. Please research this thread for discover play flow. Embody
+primary navigation, which needs to be fixed pronto. Under discover, we
+have the tools of discovery. It starts with your avatar, then goes to
+your summary. Then goes to your energetic intake. Play is story.
+Imprint release. Plus, ritual. And accountability. So that whole loop.
+Sorry. Flow is ritual and accountability. Nope, that's that's wrong.
+Original accountability is embody. Flow is the release. And then a
+tools tab. And then our field body and compass are in that. If I click
+an icon to the left, it collapses all the primary navigation collapses
+them all. If I open it, they unfold. If I click on one like Discover,
+the secondary navigation shows up. Of my avatar and summary and intake.
+Now I click on my compass. My third tier navigation is all my
+overlays. Same thing with my body and my field and my compass. and all
+my tools seem to be missing. So please verify, check this from now,
+solve it right now."
+
+- **He talks through the section mapping live and corrects himself
+  twice.** Read straight through the corrections rather than off any
+  one sentence in isolation, his final mapping is: **Discover** holds
+  Avatar, Summary, Intake, stated once and never revisited. **Play**
+  holds Story. **Flow** holds Release. **Embody** holds Ritual and its
+  accountability. A fifth group, **Tools**, holds Field, Body and
+  Compass. This is four sections plus Tools, not the three
+  (discover/play/flow) built at round KC, missing Embody entirely and
+  never separating Tools out. `CLAUDE.md` already names discover, play,
+  flow, embody as the spine of the whole product, so Embody's absence
+  from the built nav is a real gap against the project's own standing
+  rule, not a new idea.
+- **The concrete bug: opening Compass, Body or Field does not show
+  the tools group at all, "my tools seem to be missing."** Verified
+  directly rather than assumed, in the next report.
+- **"Solve it right now."** Read as: fix the missing tools group
+  immediately since that is a real defect against what he asked for
+  round KC, and treat the fuller four section plus Tools mapping as
+  the correction to build next, named plainly rather than silently
+  folded into a guess.
