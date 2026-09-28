@@ -2164,8 +2164,8 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   'every identity integer holds its value, '+nav.tab);
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'the first tier is discover, play, flow, embody, in his order, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"discover","compass":"play","games":null}',
-  'KT: Story, Avatar, Intake and Summary in Discover, Field and Compass in Play, Ritual in Flow, Knowledge in Embody, Games hidden, '+JSON.stringify(nav.placed));
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","games":null}',
+  'LD: Story, Avatar and Summary in Discover, Field, Intake and Compass in Play, Ritual in Flow, Knowledge in Embody, Games hidden, '+JSON.stringify(nav.placed));
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
   'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));

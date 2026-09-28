@@ -135,13 +135,6 @@ const TABDEF=[
     history, from when this surface was the intake; the door called Intake
     below is a different tab, TAB.ENERGY. Two integers, one word each. */
  {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
- /* THE BODY IS THE INTAKE, AND IT IS IN DISCOVER. KX, his words: "I need my
-    energetics, like my intake. To measure my coherence... Please prioritize
-    that back under Discover. I just rename it Intake." Renamed and moved
-    only: same integer, host, class and renderer. KT's last pass then names
-    "Field, Body, Compass" for Play, and this is the only Body there is, so
-    it stays here once rather than being given two doors. */
- {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'discover'},
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
@@ -149,6 +142,15 @@ const TABDEF=[
     tab." The instruments are Play now, and the app still opens on the Field,
     so Play is the section pressed at start. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
+ /* THE BODY KEEPS THE NAME INTAKE, AND MOVES BACK TO PLAY. KX renamed this
+    tab and moved it to Discover on his words about energetics and
+    coherence, but he had called it Body and grouped it with Field and
+    Compass in every round before and after that one, "our field body and
+    compass are in that" (KU), and round LD names the gap outright: "play
+    menu is missing Body entirely. fix, priority." Same integer, host,
+    class and renderer as always; only .sec moves, and the label he asked
+    for stays. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
