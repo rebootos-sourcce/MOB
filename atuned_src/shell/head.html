@@ -737,7 +737,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    every size. Seen only by screenshotting the mark at six times scale: at one
    to one they read as slightly light rather than as broken. 7px is the dot
    offset plus its diameter at 18px, rounded up. */
-.brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:7px 10px 0 2px;
+.brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:0 10px 0 2px;
  white-space:nowrap;color:var(--sky);background:transparent;border:0;cursor:pointer;
  font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;
  /* THE TWO LINES ARE ONE LOCKUP, so they share a centre line. Ruled: Source OS
@@ -761,8 +761,20 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    two centre on their glyphs rather than on their glyphs plus one gap. The
    subtitle already did this and the name did not, which put them a pixel
    apart on a mark that is two lines of the same word. */
-.brand .bn{display:block;line-height:1;text-transform:uppercase;letter-spacing:.11em;
- margin-right:-.11em}
+/* THE MARK IS DRAWN NOW, AND THE TWO RULES ABOVE ARE ITS HISTORY. His words,
+   27 September: "The blue attuned logo. Get that in. It's great." That is
+   candidate A from proto/logo/index.html, six lowercase letters cut as
+   strokes, and it replaces the uppercase set type here. The uppercase ruling
+   was the one real decision that study priced, section 9: the drawing is
+   lowercase by construction, and his approval of it is read as moving the
+   ruling, which the report back to him asks him to confirm.
+
+   Sized to the study's own top bar pin: 65.5 by 13.6 pixels at the bar's
+   18px, the ascender at 13, which is the cap height ATUNED set. In em so it
+   follows the button's type size rather than a second number. The drawing
+   carries its own dots, so the headroom the CSS umlaut needed is gone. */
+.brand .bn{display:block;width:3.6417em;height:.7556em;overflow:visible;flex:0 0 auto}
+.brand .bn .wm-d{fill:var(--um)}
 /* WHITE, two points smaller, four more pixels off the wordmark. Ruled.
 
    It went gold on the previous ruling and is white on this one. --au stays in
@@ -787,8 +799,13 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 /* SOURCE OS, all caps to match ATUNED above it, and half a point down. Ruled.
    The tracking is what centres it under the name and it is measured against
    the cap width, so it moves with the size rather than being re-guessed. */
-.brand .bs{display:block;font-size:8.5px;font-weight:500;letter-spacing:.467em;
- margin-right:-.467em;
+/* RE-TRACKED A FOURTH TIME, FOR THE DRAWN MARK. Its ink is 65.15px, 0 to
+   651.5 units at a tenth of a pixel each; getBBox reads 63.25 because it
+   leaves out the stroke, so the ink was taken from the drawing's own numbers.
+   SOURCE OS sets 49.45px untracked and shows eight gaps once the trailing one
+   is taken back, so (65.15 - 49.45) / 8 = 1.96px, which is .231em at 8.5px. */
+.brand .bs{display:block;font-size:8.5px;font-weight:500;letter-spacing:.231em;
+ margin-right:-.231em;
  /* UPPERCASED IN THE SHEET, NOT IN THE MARKUP. Ruled all caps, and the name
     above it has always done it this way. Writing SOURCE OS into the document
     tripped the gate that bans all caps UI copy, and that gate is right: a
@@ -796,27 +813,19 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
     sentence case and let the mark's own styling carry the case. */
  color:var(--ink);line-height:1;text-transform:uppercase;margin-top:4px}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
-/* the umlaut, drawn. two dots, white, sitting above a plain u. */
-.brand .um{position:relative;display:inline-block}
-/* and higher, because they now clear a cap line rather than an x height. */
-.brand .um::before,.brand .um::after{content:'';position:absolute;top:-.54em;
- width:.14em;height:.14em;border-radius:50%;background:var(--um)}
-/* CENTRED ON THE U, MEASURED. The pair sat at .408 of the u's box where the
-   glyph's own centre is .444, because letter-spacing of .075em is added after
-   the letter and pushes the box wider than the glyph. Four tenths of a pixel
-   at 18px, which is why it read as dots over the gap rather than dots on the
-   letter and why it needed measuring rather than looking. */
-/* PLACED AGAINST THE CAPITAL U, measured. The box is 15.38px at 18px type and
-   the tracking of .11em adds 1.98 after the letter, so the glyph itself is
-   about 13.4 and its centre sits at .436 of the box, not at .5. The dots go at
-   a quarter and three quarters of the glyph, which is where an umlaut sits on
-   a capital, and that is wider apart than the lowercase pair was because the
-   letter is wider. */
-.brand .um::before{left:.116em}
-.brand .um::after{left:.488em}
+/* THE UMLAUT IS PART OF THE DRAWING. Two measured corrections to CSS dots
+   over a set u lived here, one for the lowercase letter and one for the
+   capital, and both are retired rather than kept: the drawn mark places its
+   dots 50 units apart on the u's own centre, section 2 of the study, so there
+   is no letter spacing left to push them off it. */
 /* back and forward sit together as one object, because they are one control
-   with two directions and a gap between them reads as two unrelated buttons */
-.histpair{display:flex;gap:2px;align-items:center;flex:0 0 auto}
+   with two directions and a gap between them reads as two unrelated buttons.
+   UNDO IS HIDDEN AT EVERY WIDTH NOW, round JZ, his words: "let's hide undo
+   redo it's not really necessary." The phone already hid it on his earlier
+   words. The stack, the arrows' handlers and the keys all stay, so a change
+   can still be taken back; showing the pair again is this one display.
+   !important because the markup toggles [hidden] on the pair. */
+.histpair{display:none!important;gap:2px;align-items:center;flex:0 0 auto}
 
 
 .spacer{flex:1 1 auto;min-width:8px}
@@ -882,6 +891,30 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  padding-left:11px;padding-right:11px}
 .tabtop:hover{background:transparent;color:var(--ink)}
 .tabtop[aria-pressed=true]{font-weight:500;letter-spacing:0}
+/* THE TAB ICONS AND THE FOLD, round JZ. The icon takes the tab's own colour,
+   so the pressed tab's accent reaches it with no second rule. Folded, the
+   name leaves the eye and stays in the accessibility tree, clipped rather
+   than removed, because it is the button's name. */
+.tabtop{gap:7px}
+/* the fold: the checkbox drawn as a chevron in a full touch target. Checked
+   is names shown, and the chevron points back toward the name of the product,
+   the way the strip will fold; unchecked it turns to point open. */
+.tabnames-i{-webkit-appearance:none;appearance:none;flex:0 0 auto;margin:0;
+ width:var(--tap);height:var(--tap);border:0;border-radius:var(--r-s);background:transparent;
+ color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;
+ transition:color var(--t-micro) var(--ease-out)}
+.tabnames-i::before{content:'';width:7px;height:7px;border-left:1.6px solid currentColor;
+ border-bottom:1.6px solid currentColor;transform:translateX(1.5px) rotate(45deg);
+ transition:transform var(--t-micro) var(--ease-out)}
+.tabnames-i:not(:checked)::before{transform:translateX(-1.5px) rotate(-135deg)}
+.tabnames-i:hover{color:var(--ink)}
+.tabnames-i:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabnames-i:not(:checked)+#tabbar .tabtop .n{position:absolute;width:1px;height:1px;
+ overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* an icon alone measured 38px wide, under the 44 floor, so a folded tab
+   keeps a full touch target and centres its icon in it */
+.tabnames-i:not(:checked)+#tabbar .tabtop{padding-left:10px;padding-right:10px;
+ min-width:var(--tap);justify-content:center}
 /* THE STRIP YIELDS ITS OWN WIDTH BEFORE THE BAR WRAPS.
 
    The bar wraps rather than hiding a control, which is the right rule and
@@ -4970,6 +5003,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
 .boot-wm .bn{font-family:var(--sans);font-size:23px;font-weight:400;
  letter-spacing:.075em;color:var(--sky);line-height:1;position:relative}
+/* THE SAME DRAWN MARK AS THE BAR, at the study's boot card pin: 131.1 by 27.2
+   pixels, the ascender at 26 against the 23px type it replaces. In em of
+   that 23px, so the card's one size still decides it. */
+.boot-wm .bn .wm{display:block;width:5.7em;height:1.1826em;overflow:visible}
+.boot-wm .bn .wm-d{fill:var(--um)}
 /* THE SUBTITLE IS NOW A PAIR, so it is laid out as one. "Powered by" is
    quieter and untracked, because tracking is what makes a name read as a
    logotype and this half is a sentence. The name keeps the tracking and takes
@@ -4992,25 +5030,22 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    one block of four words. */
 .boot-wm .bs{font-family:var(--sans);font-size:9px;font-weight:500;
  line-height:1;margin-top:38px;
- display:flex;flex-direction:column;align-items:center;gap:3px}
-.boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400}
-.boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:var(--ink);
+ display:flex;flex-direction:column;align-items:center;gap:15px}
+/* EQUALLY SPACED, 323232, FIFTEEN PIXELS APART. Round JZ, his words: "Powered
+   by source OS needs to be equally spaced. But 323232 hex and space 15 pixels
+   apart." Both lines now carry the same tracking, both the same grey, and the
+   gap between them is 15px where it was 3. The trailing letter space is taken
+   back on both, so each centres on its own glyphs. Taken exactly as given:
+   on this card's black ground #323232 measures 1.66 to 1, which the report
+   back to him names. */
+.boot-wm .bs-by{letter-spacing:.19em;margin-right:-.19em;color:#323232;font-weight:400}
+.boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:#323232;
  text-transform:uppercase}
 
-.boot-wm .um{position:relative;display:inline-block}
-.boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
- width:.14em;height:.14em;border-radius:50%;background:var(--um)}
-/* THE SAME CENTRING CORRECTION THE TOP BAR GOT, WHICH THIS NEVER DID.
-   The bar's pair was moved once already, on a measurement: it sat at .408 of
-   the u's box where the glyph's own centre is .444, because the letter
-   spacing is added after the glyph. The boot card carries the same mechanism
-   and was never corrected, so the two have disagreed ever since. Measured in
-   Chromium on the built file: the boot pair's midpoint sits left of the
-   bar's by about a fortieth of the glyph, which is half a pixel at the boot
-   card's size and visible once you know.
-   The spread is unchanged, so only the centre moves. */
-.boot-wm .um::before{left:.078em}
-.boot-wm .um::after{left:.373em}
+/* THE BOOT CARD'S CSS DOTS ARE RETIRED WITH THE BAR'S. They carried their own
+   centring correction, measured to .443 of the glyph against a .444 target;
+   the drawn mark has its dots on the u by construction, which the study
+   named as closing that defect rather than carrying it forward. */
 /* THE WAY OUT, SAID QUIETLY AND LATE. It arrives at 1.5s, once the sequence
    has begun and long before the 5.2s it would otherwise run to, so a person
    who does not want the overture is never held by it without knowing. It is
@@ -5041,8 +5076,12 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 /* THE TRADEMARK. Not registered yet and it goes in anyway, ruled. Superscript
    at a third of the name, tracked off the final d rather than after the
    tracking the logotype adds, or it floats away from the word. */
-.boot-wm .btm{font-size:.34em;font-weight:500;vertical-align:.85em;
- letter-spacing:0;margin-left:-.02em;color:var(--sky);opacity:.72}
+/* AGAINST THE DRAWING, NOT A BASELINE. The mark has no text baseline to ride
+   on, so the superscript is placed: its top level with the top of the d, the
+   tallest stroke, a small step off the d's right edge. Absolute, so it no
+   longer takes width in the row and the mark centres on itself alone. */
+.boot-wm .btm{position:absolute;left:100%;top:0;font-size:.34em;font-weight:500;
+ line-height:1;letter-spacing:0;margin-left:.3em;color:var(--sky);opacity:.72}
 /* the body says the boot is over. Nothing depends on it yet and it is not
    decoration: it is the hook a later surface uses to hold its own entrance
    until the instrument is actually on screen. */
@@ -5300,12 +5339,15 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top .pload{top:calc(var(--tap) + 12px);left:8px;right:8px;min-width:0}
  /* the picker and its label leave the bar for the circle above */
  .top .toplab,.top #psel{display:none}
- /* UNDO IS HIDDEN ON A PHONE, NOT REMOVED. His words: "Undo, I've never used
-    it, and I don't see the purpose of it right now, so let's hide that in the
-    code." The stack, its arrows' handlers and the keys are all still there,
-    and the desktop keeps the arrows. The markup toggles [hidden] on the pair,
-    so this has to outweigh the display the pair takes when it is shown. */
- .top .histpair{display:none!important}
+ /* the strip is the main menu here, where the names are the point, so the
+    fold's toggle leaves and a folded strip opens with its names */
+ .top .tabnames-i{display:none}
+ .top .tabnames-i:not(:checked)+#tabbar .tabtop .n{position:static;width:auto;height:auto;
+  overflow:visible;clip:auto;clip-path:none}
+ /* UNDO WAS HIDDEN ON A PHONE FIRST, on his words: "Undo, I've never used it,
+    and I don't see the purpose of it right now, so let's hide that in the
+    code." Round JZ carried it to every width, so the one rule is on
+    .histpair itself, above, and not repeated here. */
  /* the lighting menu leaves the bar for the main menu's lighting section */
  .top #lightwrap{display:none}
  /* THE FOLDED BAR IS A TAB. The surface's name in the pressed tab's accent

@@ -235,7 +235,21 @@
       sentence case in the markup and in the rendering, and only the name
       itself is uppercased, by the sheet, the way the wordmark above it has
       always done it. -->
- <div class="boot-wm"><span class="bn">At<span class="um">u</span>ned<sup class="btm">™</sup></span>
+ <div class="boot-wm"><span class="bn"><svg class="wm" viewBox="-2 -2 655.5 136"
+  focusable="false"><g fill="none" stroke="currentColor" stroke-width="19"
+  stroke-linecap="butt" stroke-linejoin="round"><path
+  d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80"/><path
+  d="M 93.5 30 L 93.5 130"/><path d="M 24 4 L 24 130" transform="translate(123.75 0)"/><path
+  d="M 0 38.75 L 56 38.75" transform="translate(123.75 0)"/><path
+  d="M 9.5 30 L 9.5 80 A 40.5 40.5 0 0 0 90.5 80 L 90.5 30" transform="translate(189.75 0)"/><path
+  d="M 9.5 130 L 9.5 30" transform="translate(318.25 0)"/><path
+  d="M 9.5 80 A 40.5 40.5 0 0 1 90.5 80 L 90.5 130" transform="translate(318.25 0)"/><path
+  d="M 9.5 83 L 102.91 83" transform="translate(436.75 0)"/><path
+  d="M 93.39 83 A 42 42 0 1 0 82.71 108.1" transform="translate(436.75 0)"/><path
+  d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80" transform="translate(548.5 0)"/><path
+  d="M 93.5 0 L 93.5 130" transform="translate(548.5 0)"/></g><g class="wm-d"><circle
+  cx="214.75" cy="12.5" r="9.5"/><circle cx="264.75" cy="12.5" r="9.5"/></g></svg><sup
+  class="btm">™</sup></span>
   <span class="bs"><span class="bs-by">Powered by</span><span class="bs-nm">Source OS</span></span>
   <!-- THE BUILD STAMP CAME OFF THIS CARD. Ruled: "remove those numbers."
 
@@ -286,9 +300,32 @@
   <!-- the name, and what the name is. Ruled. Source OS sits under the
        wordmark in the accent, small, so the bar says what this is without
        spending a second line of the bar on it. -->
+  <!-- THE BLUE LOGO, DRAWN. His words, 27 September: "The blue attuned logo.
+       Get that in. It's great." It is candidate A, Circle, from the drawn
+       logotype at proto/logo/index.html, the one that study landed on its joint
+       measurements and the one his "I like what you did with the Atuned logo,
+       very surprising" answered. Six letters cut as strokes on one unit
+       system, so one number holds the monoline, and the two dots are the
+       umlaut. The path data is that page's section 10, unchanged. The letters
+       take currentColor, so the sky of every lighting and the hover both still
+       apply, and the dots take --um from the sheet. The boot card carries the
+       same drawing at its own size. -->
   <button class="brand" id="brand" type="button"
-   title="Home. Takes you back to the field."><span class="bn">At<span
-   class="um">u</span>ned</span><span class="bs">Source OS</span></button>
+   title="Home. Takes you back to the field."><svg class="bn" viewBox="-2 -2 655.5 136"
+   role="img" aria-label="Atuned" focusable="false"><g fill="none" stroke="currentColor"
+   stroke-width="19" stroke-linecap="butt" stroke-linejoin="round"><path
+   d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80"/><path
+   d="M 93.5 30 L 93.5 130"/><path d="M 24 4 L 24 130" transform="translate(123.75 0)"/><path
+   d="M 0 38.75 L 56 38.75" transform="translate(123.75 0)"/><path
+   d="M 9.5 30 L 9.5 80 A 40.5 40.5 0 0 0 90.5 80 L 90.5 30" transform="translate(189.75 0)"/><path
+   d="M 9.5 130 L 9.5 30" transform="translate(318.25 0)"/><path
+   d="M 9.5 80 A 40.5 40.5 0 0 1 90.5 80 L 90.5 130" transform="translate(318.25 0)"/><path
+   d="M 9.5 83 L 102.91 83" transform="translate(436.75 0)"/><path
+   d="M 93.39 83 A 42 42 0 1 0 82.71 108.1" transform="translate(436.75 0)"/><path
+   d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80" transform="translate(548.5 0)"/><path
+   d="M 93.5 0 L 93.5 130" transform="translate(548.5 0)"/></g><g class="wm-d"><circle
+   cx="214.75" cy="12.5" r="9.5"/><circle cx="264.75" cy="12.5" r="9.5"/></g></svg><span
+   class="bs">Source OS</span></button>
   <!-- ============================================================
        THE NAVIGATION IS IN THE DOCUMENT, NOT BUILT BY CODE.
 
@@ -324,16 +361,30 @@
    aria-controls="tabbar"><span class="n" id="navnow">Field</span>
    <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
     <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
+  <!-- AN ICON FOR EVERY TAB, AND THE NAMES FOLD. Round JZ, his words: "I want
+       icons for avatar ritual story feel body compass knowledge game summary
+       I want to be able to collapse those and open those back up." Rings and
+       strokes, never fills, which is the standing icon rule. Folding hides the
+       names and keeps the icons; each name stays the button's accessible name
+       and its tooltip, so a folded tab still says where it goes.
+
+       The fold is a native checkbox and a sibling selector, with no script, so
+       it works with a keyboard by default and still works on a start up that
+       lost its script. The checkbox is itself the control, drawn as a chevron
+       at the head of the strip: a hidden box behind a label was a focusable
+       control one pixel wide, which the design gate's tap floor refused. -->
+  <input type="checkbox" id="tabnames" class="tabnames-i" checked
+   aria-label="Tab names" title="Show or hide the tab names">
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
-   <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false"><span class="n">Avatar</span></button>
-   <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false"><span class="n">Ritual</span></button>
-   <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false"><span class="n">Story</span></button>
-   <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true"><span class="n">Field</span></button>
-   <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false"><span class="n">Body</span></button>
-   <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false"><span class="n">Compass</span></button>
-   <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false"><span class="n">Knowledge</span></button>
-   <button type="button" class="vt tabtop" data-tabk="7" aria-pressed="false"><span class="n">Games</span></button>
-   <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false"><span class="n">Summary</span></button>
+   <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
+   <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+   <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
+   <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
+   <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
+   <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
+   <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
+   <button type="button" class="vt tabtop" data-tabk="7" aria-pressed="false" title="Games"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.6"/><circle cx="9" cy="9" r=".9"/><circle cx="12" cy="12" r=".9"/><circle cx="15" cy="15" r=".9"/></svg><span class="n">Games</span></button>
+   <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
   </div>
   <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
        Dark, Lumen, etc, to the lighting section in the main menu." On a phone

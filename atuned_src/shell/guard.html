@@ -39,9 +39,33 @@
    So: catch the first error, show it, and say what to send back. The message
    is plain DOM built by hand, with no dependency on anything this file loads
    after it, because everything after it is what might be broken.
+
+   AND IT WAS REPORTING ERRORS THAT WERE NOT OURS OVER AN APP THAT HAD
+   STARTED. Reproduced 27 September with a real browser extension loaded
+   into Chromium, the thing his machine has and this container never did.
+   Wallets, password managers and translators put a script into every page,
+   and that script throws on pages it does not understand. The raw file is
+   read from disk in chunks and the browser runs other work between chunks,
+   so an extension's error lands after this guard is listening and before the
+   instrument has finished. The guard held it until the document was parsed,
+   by which time the instrument had started in full, and then painted "This
+   build stopped" over a working app. The tell was in its own text: "stopped
+   after ui/ui.js", which is the last module, and a filename beginning
+   chrome-extension://. It was a race, which is why it came and went, and why
+   a reload so often cleared it.
+
+   The fix rests on one fact about this file: the start up is synchronous
+   and its last statement calls __bootOk. So if __bootOk runs, nothing before
+   it stopped the app, whoever threw. The guard now records every error with
+   where it came from, will not cover an app that has started, takes back a
+   screen it painted too early, and when the build really has stopped it
+   prints our own error first and labels anything from outside the page as
+   such, so an extension's line can never be read as the cause.
    ============================================================ */
 (function(){
  var BOOTED=false, SHOWN=false, AT='nothing had loaded yet';
+ var SEEN=[];      /* every error before start up, in order, with its source */
+ var PANE=null;    /* the full screen message, so a finished start up can take it back */
  /* EVERY MODULE SAYS IT FINISHED. BUILD.sh writes one call to this after each
     file, so when the script stops the guard can name the module it stopped
     after instead of saying it stopped somewhere. */
@@ -50,12 +74,34 @@
     that failed along the way. */
  window.__bootOk=function(failed){
   BOOTED=true;
+  /* THE START UP FINISHED, SO NOTHING BEFORE THIS STOPPED IT. A screen painted
+     early, by the ceiling below while the document was still arriving, is
+     taken back. An error from our own code that did not stop the start up is
+     a broken part, and goes on the quiet line with the others. An error from
+     outside the page is not ours to report to the person and goes to the
+     console, where it can still be found. */
+  var own=[], outside=[];
+  for(var i=0;i<SEEN.length;i++)(SEEN[i].ours?own:outside).push(SEEN[i].line.replace(/\n/g,'  '));
+  if(PANE){try{PANE.parentNode.removeChild(PANE);}catch(e){} PANE=null; SHOWN=false;}
+  if(outside.length){try{console.warn('[atuned] something outside this page threw while '
+   +'it was starting, and it started anyway: '+outside.join('  |  '));}catch(e){}}
+  var all=(failed||[]).concat(own);
   /* A PARTIAL START UP IS NOT A DEAD APP AND MUST NOT BE SHOUTED AT LIKE ONE.
      The start up runs in guarded steps now, so it can lose the rail sections
      and still put a working instrument on screen. A full screen message would
      be the wrong answer to that. It goes in the console and on a quiet line
      the person can press, and the product stays usable. */
-  if(failed&&failed.length)quiet(failed);};
+  if(all.length)quiet(all);};
+ /* OURS OR NOT. Every script in this file is inline, so an error thrown by it
+    carries this document's own address as its filename, packed or raw. An
+    error carrying any other address came from something the browser put
+    into the page. "Script error." with no address is the browser hiding a
+    script from another origin, which again is never one of ours. */
+ function ours(e){
+  var f=String((e&&e.filename)||'');
+  if(!f)return !/^script error\.?$/i.test(String((e&&e.message)||''));
+  var here=String(location.href).split('#')[0];
+  return f.split('#')[0]===here;}
  /* the quiet version. one line, bottom of the screen, dismissible. */
  function quiet(failed){
   try{
@@ -67,10 +113,14 @@
     +'z-index:9998;background:#2A1F0B;color:#E8C36A;border:1px solid #5A4415;'
     +'border-radius:8px;padding:7px 13px;font:12px/1.4 system-ui,sans-serif;'
     +'cursor:pointer;max-width:92vw';
-   d.onclick=function(){show(failed.join('  |  '),'after '+AT);};
+   d.onclick=function(){SHOWN=false; show(failed.join('  |  ')+'\nafter '+AT,true);};
    (document.body||document.documentElement).appendChild(d);
   }catch(e){}}
- function show(what,where){
+ /* what is the reason line when there is no thrown error to print, which is
+    the watchdog's case and the quiet line's. force is the quiet line's press,
+    which is a person asking to see it after the start up, so it is painted
+    whether or not the start up finished. */
+ function show(what,force){
   if(SHOWN)return; SHOWN=true;
   /* WAIT FOR THE DOCUMENT BEFORE JUDGING IT. An error inside the script block
      fires while the parser is still inside that block, so everything after it,
@@ -85,12 +135,37 @@
      not also be made to wait for it. */
   if(document.readyState==='loading'){
    var fired=false;
-   var go=function(){ if(fired)return; fired=true; paint(what,where); };
+   var go=function(){ if(fired)return; fired=true; paint(what,force); };
    document.addEventListener('DOMContentLoaded',go);
    setTimeout(go,1500);
    return;}
-  paint(what,where);}
- function paint(what,where){
+  paint(what,force);}
+ function paint(what,force){
+  /* THE QUESTION IS ASKED AGAIN AT THE MOMENT OF PAINTING. The error was
+     caught while the document was still arriving, and by now the start up
+     may have finished, in which case __bootOk has already sorted what was
+     seen and there is nothing to cover. */
+  if(BOOTED&&!force){SHOWN=false; return;}
+  /* OUR OWN ERRORS FIRST. When the build really has stopped, the line that
+     says why is ours, and an extension's noise printed above it would send
+     the reader after the wrong thing. */
+  var own=[], outside=[];
+  for(var i=0;i<SEEN.length;i++)(SEEN[i].ours?own:outside).push(SEEN[i].line);
+  /* AND NOTHING FROM OUTSIDE THE PAGE PAINTS THIS ON ITS OWN. On a slow
+     arrival the ceiling above fires before the start up has had a chance, and
+     an extension's error alone would put the message up and take it down
+     again a second later. It waits instead, in SEEN, and is printed if our
+     own code throws or if the watchdog finds the start up never finished. */
+  if(!force&&!what&&!own.length){SHOWN=false; return;}
+  /* the cause goes first. A press on the quiet line already carries our own
+     errors in what, which __bootOk folded in, so they are not printed twice. */
+  var lines=force?[what]:own.concat(what?[what]:[]);
+  if(outside.length)lines.push('also seen, not the cause on its own, usually from '
+   +'a browser extension:', outside.slice(0,5).join('\n')
+   +(outside.length>5?'\nand '+(outside.length-5)+' more like these':''));
+  var where='opened from '+String(location.protocol||'?').replace(':','');
+  try{ where+=(window.top===window?', in its own tab':', inside another page, like a preview pane'); }
+  catch(e){ where+=', inside another page, like a preview pane'; }
   try{
    var d=document.createElement('div');
    d.setAttribute('role','alert');
@@ -110,8 +185,8 @@
     +'entered is lost. It is still in this browser.';
    p1.style.cssText='margin:0 0 14px;color:#C9CBD2';
    var p2=document.createElement('p');
-   p2.textContent='Send these lines back. They name the cause exactly, and the '
-    +'first one says which build this actually is.';
+   p2.textContent='Press copy and send these lines back. They name the cause '
+    +'exactly, and the first one says which build this actually is.';
    p2.style.cssText='margin:0 0 8px;color:#8A8C94;font-size:13.5px';
    var pre=document.createElement('pre');
    /* THE BUILD STAMP GOES FIRST. Two fixes went out and the same failure came
@@ -130,7 +205,8 @@
      arrived=eof?('whole file, '+eof.getAttribute('data-len')+' bytes')
                 :'THE FILE IS SHORT. The end of it never arrived.'; }catch(e){}
    pre.textContent=stamp+'\n'+arrived+'\nstopped after '+AT
-    +'\n'+what+'\n'+where+'\n'+navigator.userAgent;
+    +'\n'+(lines.length?lines.join('\n'):'no error was thrown')
+    +'\n'+where+'\n'+navigator.userAgent;
    pre.style.cssText='margin:0;padding:14px 16px;background:#141518;'
     +'border:1px solid #26282E;border-radius:10px;white-space:pre-wrap;'
     +'word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;'
@@ -149,22 +225,63 @@
    p0.style.cssText='margin:0 0 14px;color:#E6E7EA;font-weight:500';
    box.appendChild(h);box.appendChild(p0);box.appendChild(p1);
    box.appendChild(p2);box.appendChild(pre);
+   /* ONE PRESS TO COPY. Selecting a block of monospace text on a phone, or
+      knowing that it can be selected at all, is the step a person skips, and
+      then what comes back is a photo of half of it. The clipboard call needs
+      a page the browser trusts; where it is refused, the older copy command
+      is tried, and where that fails too the button says what to do by hand. */
+   var cp=document.createElement('button');
+   cp.type='button'; cp.textContent='Copy these lines';
+   cp.style.cssText='margin:12px 0 0;min-height:44px;padding:0 18px;border-radius:8px;'
+    +'background:#1D1F24;color:#E6E7EA;border:1px solid #3A3D45;cursor:pointer;'
+    +'font:500 14px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+   var said=function(ok){cp.textContent=ok?'Copied. Paste them into your reply.'
+     :'Could not copy. Select the lines above and copy them.';};
+   var byHand=function(t){
+    try{var ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly','');
+     ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+     box.appendChild(ta); ta.select(); var ok=document.execCommand('copy');
+     box.removeChild(ta); return !!ok;}catch(e){return false;}};
+   cp.onclick=function(){
+    var t=pre.textContent;
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){said(true);},
+       function(){said(byHand(t));}); return; } }catch(e){}
+    said(byHand(t));};
+   box.appendChild(cp);
    d.appendChild(box);
    (document.body||document.documentElement).appendChild(d);
+   PANE=d;
    /* the boot sheet fades on a CSS animation whether or not scripts ran, so it
       has to be taken off by hand or it uncovers this and then covers it again */
    var bt=document.getElementById('boot'); if(bt)bt.style.display='none';
   }catch(e){
    /* if even that fails, the document is beyond help and the console is all
       that is left. Saying nothing is still not an option. */
-   try{document.title='Atuned failed to start: '+what;}catch(e2){}}}
+   try{document.title='Atuned failed to start: '+(lines[0]||what||'');}catch(e2){}}}
  window.addEventListener('error',function(e){
   if(BOOTED)return;                 /* after boot, a throw is not a dead app */
-  show(String((e&&e.message)||'unknown error'),
-       String((e&&e.filename)||'')+' line '+((e&&e.lineno)||'?'));});
+  note(ours(e),String((e&&e.message)||'unknown error')+'\n'
+   +String((e&&e.filename)||'no address')+' line '+((e&&e.lineno)||'?'));
+  show('',false);});
+ /* ONE LINE PER DIFFERENT ERROR, WITH A COUNT. An extension that polls threw
+    150 times in three seconds in the reproduction, and printed 150 identical
+    lines into the block a person is asked to copy. The same line again adds
+    to its count instead, and past twenty different lines nothing more is
+    kept, because by then the first of them has said what there is to say. */
+ function note(mine,line){
+  for(var i=0;i<SEEN.length;i++)if(SEEN[i].line0===line){SEEN[i].n++;
+   SEEN[i].line=line+(SEEN[i].n>1?', seen '+SEEN[i].n+' times':'');return;}
+  if(SEEN.length<20)SEEN.push({ours:mine,line0:line,line:line,n:1});}
+ /* A rejection carries no address, so it cannot be sorted by one. What is
+    always true of it is that it cannot stop a start up that runs in one
+    synchronous pass, so it is printed with the lines that are not the cause
+    on their own, and a finished start up is still what decides. */
  window.addEventListener('unhandledrejection',function(e){
   if(BOOTED)return;
-  show('unhandled promise rejection: '+String((e&&e.reason&&e.reason.message)||e.reason||''),'');});
+  note(false,'unhandled promise rejection, source unknown: '
+   +String((e&&e.reason&&e.reason.message)||(e&&e.reason)||''));
+  show('',false);});
  /* AND A THROW IS NOT THE ONLY WAY TO FAIL. A script that is truncated, or
     that a browser refuses to parse past some point, never reaches the end and
     never throws at run time either. So the guard also checks, once, that the
@@ -173,8 +290,14 @@
  setTimeout(function(){
   if(BOOTED)return;
   var tb=document.getElementById('tabbar');
-  show('the script never reached the end of its own start up',
-       'navigation present: '+(tb&&tb.children.length?tb.children.length+' tabs':'none'));},8000);
+  /* A MESSAGE FOR OUR OWN ERROR ALREADY NAMES THE CAUSE and is left alone,
+     rather than rebuilt under a person who may be reading it or has pressed
+     copy. Only errors from outside the page never paint, so when those are
+     all there is, this is the message and it carries them. */
+  for(var i=0;i<SEEN.length;i++)if(SEEN[i].ours)return;
+  SHOWN=false;
+  show('the script never reached the end of its own start up\n'
+       +'navigation present: '+(tb&&tb.children.length?tb.children.length+' tabs':'none'),false);},8000);
 })();
 
 </script>
