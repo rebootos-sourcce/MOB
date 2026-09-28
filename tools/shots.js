@@ -18,7 +18,7 @@ const booted=async p=>{try{await p.waitForFunction(
    and settings are added; the integers are identity and are never renumbered,
    so they are written out rather than derived from a position. */
 const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4],
- ['intake',5],['knowledge',6],['compass',8],['settings',9]];
+ ['intake',5],['knowledge',6],['compass',8],['settings',9],['masks',11]];
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
  const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});

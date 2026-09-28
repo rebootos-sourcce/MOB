@@ -58,7 +58,10 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
     inside it rather than beside it. Appended for the same reason Compass was:
     the integers are identity, they are persisted and compared, and they do not
     renumber to make a list look tidy. */
- COMPASS:8,SETTINGS:9,RITUAL:10};
+ COMPASS:8,SETTINGS:9,RITUAL:10,
+ /* MASKS IS 11, APPENDED, on the same rule as Ritual and Compass: a new
+    surface takes the next free integer and nothing before it moves. */
+ MASKS:11};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -152,6 +155,15 @@ const TABDEF=[
     for stays. */
  {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
+ /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
+    LE, his words, marked urgent: "the point cloud data and the masks should
+    be under the play tab. It should go field intake compass mask
+    visualization or something like that. Why is that not there?" They were
+    there, but only as one circle among seven in the Intake's overlay column,
+    which a person has to know to look for. This is the same figure drawn by
+    the same renderer, with the masks the only thing on it (bmRender and
+    BMVIEW in ui/map.js), so the two cannot disagree about a pixel. */
+ {k:TAB.MASKS,   id:'masksview', nm:'Masks', cls:'tab-masksview', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */

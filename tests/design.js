@@ -100,12 +100,14 @@ const FOLDOF={ana:'sum'};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
 const TABN=['Story','Summary','Field','Energy','Analytics','Intake','Knowledge',
- 'Games','Compass'];
-for(const i of [0,1,2,3,4,6,7,8]){
+ 'Games','Compass','Settings','Ritual','Masks'];
+/* 11 is the Masks door, LE: the Intake's figure in a host of its own, and
+   the one surface most likely to show through the other, so both are swept */
+for(const i of [0,1,2,3,4,6,7,8,11]){
  await page.evaluate(n=>setTab(n),i);
  await page.waitForTimeout(260);
  const vis=await page.evaluate(()=>{
-  const ids=['story','sum','cv','emap','ana','know','games','cone'];
+  const ids=['story','sum','cv','emap','ana','know','games','cone','masksview'];
   return ids.filter(id=>{const e=document.getElementById(id);if(!e)return false;
    const r=e.getBoundingClientRect();
    return getComputedStyle(e).display!=='none'&&r.width>0&&r.height>0;});});

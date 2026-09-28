@@ -346,7 +346,7 @@ function renderMap(r){
  if(PMFIRST){ PMFIRST=0;
   if(!pmCount(r,PMLAYER)){ for(var pf=0;pf<PML.length;pf++){
    if(pmCount(r,PML[pf][0])){PMLAYER=PML[pf][0];break;} } } }
- if(PMLAYER==='map'){bmRender(r);return;}
+ if(PMLAYER==='map'){bmRender(r,document.getElementById('emap'));return;}
  var host=document.getElementById('emap');if(!host)return;
  /* every colour below is looked up in PC, so the figure moves as one; the
     first pass on the canvas recoloured one mark and drew dark names inside a
@@ -2229,10 +2229,17 @@ function bmDrawFlow(g,vs){
  bmTf(g);}
 
 /* ---------- the camera ---------- */
-function bmWorldW(){return BM.phone?[24,76]:[24-14,BMOX+76+14];}
-function bmViews(){return BM.phone?[BM.face==='back'?1:0]:[0,1];}
+/* ONE FIGURE OR TWO. A phone has room for one, and the Masks door wants one:
+   a mask is worn on the face, bmDrawMasks draws on the front view only, so a
+   back figure beside it there would be a whole body with nothing on it. The
+   camera, the view list, the titles, the zoom and the face all asked BM.phone
+   when they meant "is one figure up", which was the same question until that
+   door existed. BM.one is the view's (BMVIEW), BM.phone is the width's. */
+function bmOne(){return BM.phone||!!BM.one;}
+function bmWorldW(){return bmOne()?[24,76]:[24-14,BMOX+76+14];}
+function bmViews(){return bmOne()?[BM.face==='back'?1:0]:[0,1];}
 function bmFitCam(){var w=bmWorldW(),ww=w[1]-w[0],hh=102, z=Math.min(BM.W/ww,(BM.H-24)/hh);BM.z0=z;
- return {x:BM.phone?(BM.face==='back'?BMOX+50:50):(w[0]+w[1])/2,y:50.5,z:z};}
+ return {x:bmOne()?(BM.face==='back'?BMOX+50:50):(w[0]+w[1])/2,y:50.5,z:z};}
 function bmFlyTo(x,y,z){BM.camT={x:x,y:y,z:z};if(REDUCED){BM.cam={x:x,y:y,z:z};BM.camT=null;}BM.dirty=true;}
 function bmW2S(x,y){return [(x-BM.cam.x)*BM.cam.z+BM.W/2,(y-BM.cam.y)*BM.cam.z+BM.H/2];}
 function bmS2W(x,y){return [(x-BM.W/2)/BM.cam.z+BM.cam.x,(y-BM.H/2)/BM.cam.z+BM.cam.y];}
@@ -2313,7 +2320,7 @@ function bmNerves(g,v,alpha,sat,lit){var px=1/BM.cam.z;
 
 /* ---------- the frame ---------- */
 function bmFrame(now){
- if(!BM.cv||!BM.cv.isConnected||S.tab!==TAB.ENERGY||PMLAYER!=='map'){BM.raf=0;bmTip(null);return;}
+ if(!BM.cv||!BM.cv.isConnected||!bmLive()){BM.raf=0;bmTip(null);return;}
  var dt=Math.min(0.05,(now-(BM.last||now))/1000);BM.last=now;if(!REDUCED)BM.t+=dt;
  bmSize();
  var moving=false;
@@ -2384,7 +2391,7 @@ function bmDraw(dt){
  bmDrawAddr(g,vs,dl,dt);
  /* the hubs last, so a complex's mark is never under the lines it joins */
  bmDrawHubs(g,vs);
- if(!BM.phone&&BM.cam.z<BM.z0*1.3)bmLabels(g);
+ if(!bmOne()&&BM.cam.z<BM.z0*1.3)bmLabels(g);
  bmHint(g);}
 function bmStroke(g,P,from,to,width,style){ /* P: [x,y,L] samples, drawn between lengths from and to */
  g.beginPath();var started=false;
@@ -2729,7 +2736,7 @@ function bmZoomReg(r){bmZoomRegs([r]);}
 function bmZoomRegs(list){var r=list[0],b=list.reduce(function(a,x){var q=x.box;
   return [Math.min(a[0],q[0]),Math.min(a[1],q[1]),Math.max(a[2],q[2]),Math.max(a[3],q[3])];},r.box.slice());
  var w=(b[2]-b[0])+8,h=(b[3]-b[1])+8,z=Math.min(BM.W/w,BM.H/h,BM.z0*6);
- if(BM.phone)BM.face=r.v?'back':'front';
+ if(bmOne())BM.face=r.v?'back':'front';
  bmFlyTo((b[0]+b[2])/2+bmVX(r.v),(b[1]+b[3])/2,z);bmBars();}
 /* A REGION ANSWERS IN SELECTION, where every press on this product answers.
    Pressing the open one again puts it down, as a seat and a pattern do. A
@@ -2919,6 +2926,7 @@ var BMSELSTY='min-height:44px;min-width:44px;max-width:100%;background:var(--pan
  +'border:1px solid var(--edge);border-radius:var(--r-xs);padding:8px 10px;font-family:var(--sans);font-size:13.5px;cursor:pointer';
 function bmBars(){
  var rb=document.getElementById('rbar'); if(!rb||!BMG)return;
+ if(!BM.bar){bmBarsOne(rb);return;}
  bmRegBar();
  var zoomed=bmZoomed();
  var sig=[BM.mode,BM.variant,BM.amode,BM.phone,BM.face,zoomed].join('|');
@@ -2971,6 +2979,25 @@ function bmBars(){
  rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=function(){
   var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};});
  if(foc){var back=document.getElementById(foc);if(back)back.focus();}}
+/* THE MASKS DOOR HAS ONE CONTROL, and only while a region is opened: the way
+   back to the whole body. Mark changes the address marks and Heat and Brush
+   are the paint, and none of those is drawn there, so the Intake's row would
+   be controls for nothing. A region still opens there, by a double press or
+   from its answer, and without this a phone had no way back out of it.
+
+   It asks where the camera is going rather than where it is: bmZoomed reads
+   a fly still in progress as zoomed, so Whole body, read that way, would
+   stay up after it was pressed. And the sub bar shows for as long as it holds
+   the button. setTab owns hassub for the Intake and clears it on every tab
+   change; this is the only other writer and it writes only on this door. */
+function bmBarsOne(rb){
+ var c=BM.camT||BM.cam, z=c.z>BM.z0*1.05, sig='one|'+z;
+ document.body.classList.toggle('hassub',z); rb.style.display=z?'flex':'none';
+ if(sig===rb.getAttribute('data-bmsig'))return;
+ rb.setAttribute('data-bmsig',sig);
+ rb.innerHTML=z?'<button type="button" class="pm-lb" data-bmwhole="1">Whole body</button>':'';
+ rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=function(){
+  var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};});}
 
 /* ---------- the parts, as icons, under the figure ----------
    His words, round JQ: "turn those to buttons, maybe on the bottom panel of
@@ -3046,7 +3073,7 @@ function bmPartName(pt,vn){return vn==='back'?(pt.b?bmNm(pt.b):null):pt.f;}
 function bmPartOf(k){if(!k)return null;var s=String(k).split(':'), bk=s[0]==='back';
  return BMPART.filter(function(p){return (bk?p.b:p.f)===s[1];})[0]||null;}
 function bmSetFace(f){if(BM.face===f)return;BM.face=f;
- if(BM.phone&&BM.W){var c=bmFitCam();bmFlyTo(c.x,c.y,c.z);}
+ if(bmOne()&&BM.W){var c=bmFitCam();bmFlyTo(c.x,c.y,c.z);}
  BM.stillKey='';BM.dirty=true;}
 /* open a part on a side, both sides of it unless one side is named. Pressed
    from the panel, so the answer is brought to (RD_INRAIL), on a phone too:
@@ -3222,23 +3249,76 @@ function bmGround(host){
   if(c.length>3&&!(c[3]>=0.999))continue;
   return (0.2126*c[0]+0.7152*c[1]+0.0722*c[2])/255>0.5?BMC.stage:null;}
  return null;}
+/* ONE FIGURE, TWO DOORS. Round LE, his words, marked urgent: "where are the
+   masks ... the masks should be under the play tab. It should go field intake
+   compass mask". So the Masks door draws this figure, and it is this figure
+   and not a copy of it: BM is one state with one canvas and one frame loop,
+   and a second copy of three thousand lines is two places for a mask to be
+   drawn differently. The figure is built into whichever host the tab on
+   screen asks for, and each host names what it shows here.
+
+     on    which overlays are drawn. The Intake's is BM.ov.on itself, so its
+           circles keep their switches across a visit to the other door. The
+           Masks door draws the masks and nothing else, with no switch.
+     bar   the Intake's controls: the overlay column, the region buttons
+           under the well and the Mark row. The Masks door has none of them,
+           because there is nothing on it to switch.
+     one   one figure, the front. See bmOne.
+     mode  and face are the Intake's, kept while the other door is up. Pain
+           is painted on the Intake, and on the Masks door it would dull the
+           masks to thirty percent (bmDrawMasks' step back), so that door is
+           always Pattern and the Intake gets back what it had. */
+var BMVIEW={
+ emap:{on:BM.ov.on,bar:true,one:false,mode:null,face:null,
+  say:'The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them'},
+ masksview:{on:{masks:1},bar:false,one:true,mode:'pattern',face:'front',
+  say:'The front of the body, with the six masks on it'}};
+/* MOVING THE FIGURE EMPTIES THE HOST IT LEFT. bmBuild writes ids (bmcv, bmsv,
+   bmov, bmregs) that the rest of this file finds by id, and a second copy
+   left behind in the hidden host is the one getElementById answers when that
+   host comes first in the document: #emap does, so the Masks door would have
+   drawn its canvas and read the Intake's dead overlay column. The host that
+   comes back is rebuilt by bmRender, which is what a host with no canvas in
+   it already gets. Every hover is put down, because the element it was over
+   is gone and its pointerleave never fires. */
+function bmUse(host){
+ var v=BMVIEW[host.id]||BMVIEW.emap;
+ if(BM.host===host&&BM.view===v)return;
+ if(BM.view&&BM.view.bar){BM.view.mode=BM.mode;BM.view.face=BM.face;}
+ if(BM.host&&BM.host!==host)BM.host.innerHTML='';
+ BM.host=host; BM.view=v; BM.ov.on=v.on; BM.bar=v.bar; BM.one=v.one;
+ if(v.mode){BM.mode=v.mode;BM.tr=null;BM.pg=BM.ph=(v.mode==='pain')?1:0;}
+ if(v.face)BM.face=v.face;
+ BM.hoverReg=BM.hoverCell=BM.hoverPlace=BM.hoverMask=BM.hoverMaskSab=BM.hoverHub=BM.hoverList=null;
+ BM.drag=null; BM.tipKey='';}
+/* the frame runs while a door showing the figure is up. The Intake's other
+   seven layers draw through renderMap's own svg, and PMLAYER says which. */
+function bmLive(){return S.tab===TAB.MASKS||(S.tab===TAB.ENERGY&&PMLAYER==='map');}
 function bmBuild(host){
  host.innerHTML='<div class="pm-well">'
   +'<canvas id="bmcv" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>'
   +'<svg class="pm-svg" id="bmsv" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" '
-  +'aria-label="The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them">'
-  +'<g class="pm-vec"><path d="'+bmOutline()+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
+  +'aria-label="'+esc(BM.view.say)+'">'
+  /* the outline of the front alone where one figure is up by the view's own
+     choice: the fit is set by the height, so at 1600 the well is 139 units
+     wide and the back's outline stood in its right hand edge, a second body
+     with nothing drawn in it. That door never turns to the back (bmUse sets
+     the face, and only its regions answer a press). The Intake keeps both on
+     a phone too, because there the one figure turns. */
+  +'<g class="pm-vec"><path d="'+(BM.one?bmOutline1():bmOutline())+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
   +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g>'
   +'<g data-bmmasks=""></g><g data-bmseats=""></g></svg>'
   /* the overlays, over the svg so a circle takes its own press, and
      pointer-events none on the column so its gaps still reach the figure */
-  +'<div id="bmov" role="group" aria-label="Overlays" style="position:absolute;top:10px;left:12px;z-index:3;'
-  +'display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;'+BMOVTOK+'"></div></div>'
+  +(BM.bar?'<div id="bmov" role="group" aria-label="Overlays" style="position:absolute;top:10px;left:12px;z-index:3;'
+  +'display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;'+BMOVTOK+'"></div>':'')+'</div>'
   /* after the well, so the well's flex keeps the rest of the height and the
      figure is fitted to what is left */
-  +'<div id="bmregs" role="group" aria-label="Side and region" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
-  +'align-items:center;gap:8px 16px;padding:8px 12px 10px;border-top:1px solid var(--edge)"></div>';
- BM.well=host.querySelector('.pm-well'); BM.cv=document.getElementById('bmcv'); BM.sv=document.getElementById('bmsv');
+  +(BM.bar?'<div id="bmregs" role="group" aria-label="Side and region" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
+  +'align-items:center;gap:8px 16px;padding:8px 12px 10px;border-top:1px solid var(--edge)"></div>':'');
+ /* read inside the host, never off the document: with two hosts, an id is
+    only as unique as bmUse keeps it */
+ BM.well=host.querySelector('.pm-well'); BM.cv=host.querySelector('#bmcv'); BM.sv=host.querySelector('#bmsv');
  BM.ctx=BM.cv.getContext('2d');
  BM.still=document.createElement('canvas');BM.sctx=BM.still.getContext('2d');
  BM.lit=document.createElement('canvas');BM.lctx=BM.lit.getContext('2d');
@@ -3246,10 +3326,13 @@ function bmBuild(host){
  BM.W=0;BM.H=0;BM.vb='';BM.ta='';BM.stillKey='';BM.litKey='';
  bmWire();}
 
-/* ---------- the entry, from renderMap ---------- */
-function bmRender(r){
- var host=document.getElementById('emap'); if(!host)return;
+/* ---------- the entry, from renderMap and from the Masks door ----------
+   The host is handed in, the way frMount and avBind take theirs: this read
+   #emap by id, which is what kept the figure to one door. */
+function bmRender(r,host){
+ if(!host)return;
  bmInit(host);
+ bmUse(host);
  if(!BM.cv||!host.contains(BM.cv))bmBuild(host);
  /* the paint belongs to the profile it was painted on */
  var who=(typeof CURP!=='undefined')?CURP:null;
@@ -3280,3 +3363,8 @@ function bmRender(r){
  BM.stage=bmGround(host); BM.stillKey=''; BM.dirty=true;
  if(!BM.ctx)return;          /* no canvas: the outline and the seats stand alone */
  if(!BM.raf){BM.last=0;BM.raf=requestAnimationFrame(bmFrame);}}
+/* THE MASKS DOOR ALWAYS DRAWS THE MAP. It goes to bmRender and not through
+   renderMap, so PMLAYER is neither read nor written for it: the Intake's
+   seven older layers are not this door's, and setting the global here would
+   hand the Intake a layer it did not choose on the way back. */
+function renderMasks(r){bmRender(r,document.getElementById('masksview'));}

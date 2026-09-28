@@ -245,6 +245,45 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {into:into,b1:b1,shown:k.shown,ms:Math.round(performance.now()-t0)};},newT);
  ok(live.into&&live.b1===lv0+1&&live.shown===live.b1,'a story written into the pelvis is one more Child pixel, '
   +lv0+' to '+live.b1+', drawn '+live.shown+' in '+live.ms+'ms'+(live.into?'':', and the story did not land there'));
+ /* THE MASKS DOOR, round LE, his words, marked urgent: "the masks should be
+    under the play tab. It should go field intake compass mask". The same
+    figure moved into its own host with the masks the only thing on it, so it
+    is held to the same pixels as the Intake above, on the same profile, and
+    then the Intake is held to what it had before the visit. */
+ const mv=await sp.evaluate(async()=>{
+  const pressed=()=>[...document.querySelectorAll('#bmov [data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');
+  const before={on:pressed(),mode:BM.mode,n:BMG.masks.map(k=>bmMaskRead(k,compute()).px.length)};
+  document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]').click();
+  await new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+  const r=compute(), host=document.getElementById('masksview'), t0=performance.now();
+  while(BMG.masks.some(k=>k.shown!==bmMaskLit(k,r))&&performance.now()-t0<3000)await new Promise(q=>requestAnimationFrame(q));
+  const cx=BM.cv.getContext('2d');
+  const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),
+   inHost:host.contains(BM.cv)&&host.contains(BM.sv),emap:document.getElementById('emap').children.length,
+   bmov:!!document.getElementById('bmov'),regs:!!document.getElementById('bmregs'),
+   rbar:getComputedStyle(document.getElementById('rbar')).display,
+   on:Object.keys(BM.ov.on).filter(k=>BM.ov.on[k]).join(','),views:bmViews().join(','),hubs:BM.hubs.length,
+   hits:[...new Set([...host.querySelectorAll('[data-bmmask]')].map(h=>h.getAttribute('data-bmmask')))].length,
+   masks:BMG.masks.map(k=>{const rd=bmMaskRead(k,r);let bone=0;
+    rd.px.forEach(x=>{const s=bmW2S(x.p.x,x.p.y),d=cx.getImageData(Math.round(s[0]*BM.dpr),Math.round(s[1]*BM.dpr),1,1).data;
+     if(d[0]>90&&d[0]>=d[2]+12)bone++;});
+    return {nm:k.nm,n:rd.px.length,bone:bone};})};
+  setTab(TAB.ENERGY); render();
+  await new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+  out.back={on:pressed(),mode:BM.mode,views:bmViews().join(','),masksview:host.children.length,
+   orbs:document.querySelectorAll('#bmov .fb-b .fb-orb').length,regs:!!document.getElementById('bmregs')};
+  out.before=before;
+  return out;});
+ ok(mv.tab&&mv.sec==='play','the Masks door opens and sits in Play, '+mv.sec);
+ ok(mv.inHost&&mv.emap===0,'the figure is built in the Masks host and the Intake host it left is empty, '+mv.emap+' children left');
+ ok(!mv.bmov&&!mv.regs&&mv.rbar==='none','no overlay column, no region buttons and no sub bar row on the Masks door');
+ ok(mv.on==='masks'&&mv.views==='0'&&mv.hubs===0,'only the masks are on, on the front figure alone, got '+mv.on+' on views '+mv.views);
+ ok(mv.hits===6,'all six masks stand on the Masks door, '+mv.hits);
+ ok(mv.masks.every((x,i)=>x.n===mv.before.n[i])&&mv.masks.filter(x=>x.n>0).length>=3,
+  'the same stories light the same masks as on the Intake, '+mv.masks.map(x=>x.nm+' '+x.n).join(', '));
+ ok(mv.masks.every(x=>x.bone>=x.n*0.5),'and they reach the canvas there, '+mv.masks.map(x=>x.nm+' '+x.bone+'/'+x.n).join(', '));
+ ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.masksview===0,
+  'and the Intake gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
  ok(spErr.length===0,'no page errors on the story profile, '+spErr.join(' | '));
  await sp.close();
  /* the press, aimed at a lit dot with no address or line under it */
@@ -2141,9 +2180,12 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* KT by name, and not only by agreement between the engine and the markup,
      which would pass on any grouping at all: these are the placements he
      asked for, and Games off the bar with no section, like Settings */
+  /* LE, his order, in the engine and in the markup: "field intake compass mask" */
+  out.play=TABDEF.filter(t=>t.sec==='play').map(t=>t.nm).join(',')+' / '
+   +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
   out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),story:SECOF(TAB.STORY),
    know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),field:SECOF(TAB.FIELD),
-   body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),games:SECOF(TAB.GAMES)};
+   body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES)};
   setTab(TAB.SETTINGS); await wait();
   out.settings={pressed:pressedSec().length, shown:vis().length};
   /* the fold, KN: the sections roll in to the pressed one */
@@ -2160,12 +2202,14 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   out.searched={tab:S.tab===TAB.KNOW, q:KB_Q, closed:!document.getElementById('srch').classList.contains('open')};
   KB_Q=''; setTab(TAB.FIELD); await wait();
   return out;});
- ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10}',
+ ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11}',
   'every identity integer holds its value, '+nav.tab);
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'the first tier is discover, play, flow, embody, in his order, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","games":null}',
-  'LD: Story, Avatar and Summary in Discover, Field, Intake and Compass in Play, Ritual in Flow, Knowledge in Embody, Games hidden, '+JSON.stringify(nav.placed));
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null}',
+  'LD and LE: Story, Avatar and Summary in Discover, Field, Intake, Compass and Masks in Play, Ritual in Flow, Knowledge in Embody, Games hidden, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Intake,Compass,Masks / Field,Intake,Compass,Masks',
+  'Play reads in his order, Field, Intake, Compass, Masks, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
   'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));

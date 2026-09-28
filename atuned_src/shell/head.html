@@ -290,7 +290,7 @@ body.glasswhite{
  --fringe-a:rgba(47,110,146,.42);
  --fringe-b:rgba(198,132,96,.34);
 }
-body.glasswhite .stage,body.glasswhite #emap,body.glasswhite #cone{background:#F2F1EC}
+body.glasswhite .stage,body.glasswhite #emap,body.glasswhite #masksview,body.glasswhite #cone{background:#F2F1EC}
 body.glasswhite #bgaura{opacity:.55}
 body.glasswhite .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 body.glasswhite .panel,body.glasswhite .glass{
@@ -367,7 +367,7 @@ body.lumen{
 /* THE CENTRE DISPLAY AREA IS THE ONE THING THAT STAYS BLACK. Stated twice by
    him and unchanged across both rulings. The tools draw on it, and the vibrant
    hues above were chosen to sit on this as well as on paper. */
-body.lumen .stage,body.lumen #emap,body.lumen #cone,body.lumen #cv,
+body.lumen .stage,body.lumen #emap,body.lumen #masksview,body.lumen #cone,body.lumen #cv,
 body.lumen .cone-cv,body.lumen .cone-hint,body.lumen .cone-key,body.lumen .pm-well{background:#101010}
 body.lumen .stage{--ink:#F7F7F7; --mid:#B6B6BC; --dim:#8C8C94;
  --panel:#171717; --panel-2:#1F1F22; --sunk:#0A0A0A;
@@ -427,7 +427,7 @@ body.flat{
  --shadow:none;
  --r:4px; --r-s:4px; --r-xs:3px;
 }
-body.flat .stage,body.flat #emap,body.flat #cone{background:#0A0B0E}
+body.flat .stage,body.flat #emap,body.flat #masksview,body.flat #cone{background:#0A0B0E}
 body.flat *{box-shadow:none!important;backdrop-filter:none!important;
  -webkit-backdrop-filter:none!important}
 body.flat .panel,body.flat .glass,body.flat .set-sec,body.flat .kb-gloss,
@@ -1464,8 +1464,8 @@ body.punch .s-row{border-bottom-color:transparent}
 
    Scoped to the three surfaces that were ruled. A reading surface sits on
    the panel, where it can be read. */
-body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
-#emap,#cone{background:#101010}
+body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,body.tab-masksview .stage,
+#emap,#masksview,#cone{background:#101010}
 /* THREE ROWS, NOT TWO. The third is the legend's, and it is its own row
    because the alternatives both failed a gate. Under the wheel it ran through
    the lower key strip, and then through the wheel's own nameplates at depth 3,
@@ -4331,6 +4331,10 @@ body.tab-story #story{display:flex!important;z-index:5;align-items:center;justif
 body:not(.tab-story) #story{display:none!important}
 body.tab-energy #emap{display:flex!important;z-index:5}
 body:not(.tab-energy) #emap{display:none!important}
+/* the Masks door is the Intake's figure in a host of its own, shown and
+   hidden on exactly the Intake's terms */
+body.tab-masksview #masksview{display:flex!important;z-index:5}
+body:not(.tab-masksview) #masksview{display:none!important}
 /* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
    backdrop, which is right for something a drill throws up over your reading
    and wrong for a surface you navigated to. In tab mode it is the stage. */
