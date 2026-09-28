@@ -901,7 +901,23 @@ function validateProfile(o){
     return x&&typeof x==='object'
      &&typeof x.be==='string'&&x.be.length>0&&x.be.length<200
      &&typeof x.notbe==='string'&&x.notbe.length>0&&x.notbe.length<200;})
-    .map(function(x){return {be:x.be, notbe:x.notbe};});
+    /* THE SEAT A PAIR WAS WRITTEN AT, round JP, and the one field this round
+       adds to the record. He asked for the avatar to be written root to crown,
+       one story per seat, and the seat a person wrote at is a fact the sniffer
+       cannot recover: "my throat is tight at the board" written at the root is
+       the root's story that happens to land at the throat. Without it here the
+       boundary rebuilt every pair as be and notbe and the seat was gone on the
+       next load, so every tick on the wheel would have moved to wherever the
+       sniffer heard the words. Optional, because every pair written before
+       this round has none and is still placed by the sniffer as it always was.
+       A seat that is not one of the seven is refused by name rather than
+       dropped, because a story quietly moved off its seat is a story the
+       person thinks they wrote somewhere else. */
+    .map(function(x){var q={be:x.be, notbe:x.notbe};
+     if(x.seat!==undefined&&x.seat!==null){
+      if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
+      else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+     return q;});
    if(p.avatar.pairs.length!==o.avatar.pairs.length)
     errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
      +' entries that are not a written pair');}

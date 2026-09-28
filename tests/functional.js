@@ -2955,6 +2955,12 @@ console.log('\n=== the intake says how long and why it repeats ===');
    layout: an open law puts its three framings side by side, each named. */
 const iq=await page.evaluate(async()=>{
  loadP(0); IQ_OPEN=0; setTab(TAB.INTAKE);
+ /* THE QUESTIONS ARE ON THEIR OWN SUBTAB SINCE ROUND JP, his ruling: "I want
+    the becoming on its own subtab ... the archetypes ... and the intake
+    questions to be on its own subtab." Becoming opens first, so the intake
+    host is hidden until the subtab is pressed, and innerText does not read a
+    hidden host. The press is the one a person makes. */
+ const sub=document.querySelector('[data-avsub="intake"]'); if(sub)sub.click();
  await new Promise(r=>setTimeout(r,500));
  const el=document.getElementById('iq')||document.body;
  const t=(el.innerText||'').replace(/\s+/g,' ');
