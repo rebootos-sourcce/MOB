@@ -763,6 +763,15 @@ function relCoolDown(){
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
  if(CURP){pSave();pSnap();}
+ /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
+    ritual is tracking one of these addresses. Here and nowhere else: this is
+    after the worked example refusal, so a refused run marks nothing, and after
+    the write, so no day is marked for a release that did not land. Stop comes
+    through this same function with halted set, and "a stopped run does not
+    count" is the rule avWatch already keeps for a rule's day, so halted marks
+    nothing. A card closed mid run goes to relClose and never arrives here. */
+ if(!RUN.halted&&typeof ritRelDone==='function')
+  ritRelDone(RUN.queue.map(function(n){return n.i;}));
  /* THE COOLDOWN IS SPOKEN AFTER THE WRITE, never instead of it. End jumps
     here and does not skip it: an address opened and then abandoned is open
     territory, "whatever frequency the system encounters first will fill the

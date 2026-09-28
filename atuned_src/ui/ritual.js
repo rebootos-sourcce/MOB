@@ -299,8 +299,9 @@ function ritStart(c){
 /* A RELEASE SCHEDULE. The practice the pattern's own seat calls for, every day
    for the span he named, carrying the place it is for, so the Active row can
    open the release on that place any day. The record holds practices and not
-   releases, so the day marked done is the practice; whether a release run on
-   its own should count as the day is his question, asked in the report. */
+   releases, so the day marked done is the practice. A release on that place
+   that runs to its end marks the same day, ruled in round KG, and rel is what
+   ties the two: see ritRelDone. */
 function ritStartFor(bc,days){
  var r=compute(), c=ritFor({darkB:bc.seat, DQ:r.DQ}); if(!c.called)return;
  ritStartPlan({steps:[c.called.k], band:bc.seat, track:c.called.track, days:days, rel:bc.n.i},
@@ -347,10 +348,47 @@ function ritLog(id,day){
       day on the streak, which reads every entry and not only the done ones. */
    if(day===ritStart0(p))CURP.rituals[e.i].done=false;
    else CURP.rituals.splice(e.i,1);}
-  else if(e)CURP.rituals[e.i].done=new Date().toISOString();
-  else CURP.rituals.push(ritEntryOf({t:ritDayIso(day), track:p.track, band:p.band,
-   steps:p.steps, when:p.when, where:p.where, done:new Date().toISOString()}));
+  else ritMarkOn(p,day);
   return null;}, on?'Taken off.':'Done.');}
+/* THE ON HALF OF THE PRESS, AND ONLY THAT. It sat inline in ritLog, and the
+   release now marks a day too. ritLog is a toggle, so a release that called it
+   on a day the person had already pressed would have taken that day off the
+   record and the streak, the one outcome a finished release must never have.
+   This half only ever turns a day on, and on a day already done it does
+   nothing, so the press and the release cannot count a day twice. Inside a
+   ritWrite, which is what saves it and puts it back on a failure. */
+function ritMarkOn(p,day){
+ var e=ritEntryFor(p,day);
+ if(e){if(!ritIsDone(e.x))CURP.rituals[e.i].done=new Date().toISOString(); return;}
+ CURP.rituals.push(ritEntryOf({t:ritDayIso(day), track:p.track, band:p.band,
+  steps:p.steps, when:p.when, where:p.where, done:new Date().toISOString()}));}
+/* A RELEASE THAT RAN TO ITS END IS THE DAY DONE. Round KG, his words: "Is
+   someone really does a release and it's part of the ritual that should count
+   their day as done automatically?" relCoolDown calls this with the addresses
+   the run worked, and only for a run that was not stopped.
+
+   Part of the ritual is read as a ritual carrying that address in rel, which
+   is what a release schedule is (ritStartFor) and the only row that offers
+   Release now. A ritual started from the builder carries a seat and no
+   address, and a release somewhere at that seat is not the breath it asked
+   for, so it is not counted; that wider reading is his call and is asked.
+
+   Returns how many rituals it marked. Nothing to mark is not a failure and
+   says nothing: most releases are not part of any ritual. A worked example is
+   refused before this is reached, by the release itself, so it is not refused
+   a second time here. */
+function ritRelDone(ids){
+ if(!ritOwn()||!ids||!ids.length)return 0;
+ var today=ritToday0(), on={};
+ ids.forEach(function(i){on[i]=1;});
+ var hit=ritPlans().filter(function(p){
+  if(p.rel==null||!on[p.rel]||!ritActive(p,today))return false;
+  var e=ritEntryFor(p,today); return !(e&&ritIsDone(e.x));});
+ if(!hit.length)return 0;
+ var nm=hit.map(function(p){return ritName(p.steps);});
+ var ok=ritWrite(function(){hit.forEach(function(p){ritMarkOn(p,today);}); return null;},
+  'Release finished. '+(nm.length>1?nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' are':nm[0]+' is')+' done for today.');
+ return ok?hit.length:0;}
 function ritMove(id){
  ritWrite(function(plans){
   var i=-1; plans.forEach(function(p,j){if(p.id===id)i=j;});
