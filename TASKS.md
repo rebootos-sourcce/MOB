@@ -24950,3 +24950,20 @@ nav item being added when I toggle it on and a very rough framework."
   it.
 - **"Make sure your end product is a build."** Standing instruction,
   applies to this round too.
+
+**The wordmark and top bar, landed, commit `4ffb058`.** Measured live
+again rather than trusted: gap exactly 9px, slack either side of the
+block inside `.brand` still symmetric at 6.45px, `.top`'s total height
+105px to 101px. `tests/engine.js` 1836 passed, `tests/design.js` 182
+passed, `tests/collide.js` 351 passed, `tests/functional.js` 1292
+passed, all zero failed, voice check 22 findings 0 stopping.
+
+**Dispatched, concurrently, file scoped.** The four sections' icon
+size and colour to the art director, `head.html` and `body.html`'s
+`.secb` markup only. Practitioner mode, toggle plus a rough frame, to
+the full stack seat: `core.js` (a new TAB integer, appended, never
+renumbered), `panels.js` (the conditional section render), `account.js`
+(the toggle, following the existing `accTog` pattern), and `body.html`
+for the new section's own markup, which the two dispatches share and
+will be reconciled the way Registers and Masks were earlier tonight if
+they land in either order.
