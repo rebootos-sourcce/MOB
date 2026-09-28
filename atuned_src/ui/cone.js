@@ -59,6 +59,11 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
     where a seat holds charge and where the field bends off the level
     (ndlHeatField, further down). A layer like Layers, not a mockup switch. */
  heat:false,
+ /* shells: round KS's Registers, the fourth view, off by default. Seven
+    shells of light, one per seat, drawn from the person's own addresses
+    (coneRegisters, further down). A view like Top, so the two are never on
+    together: pressing either one turns the other off. */
+ shells:false,
  /* ZOOM, round KQ: "I want to be able to zoom in." z, zx and zy are what is
     drawn, the scale and the pan in canvas pixels about the canvas's centre;
     the T three are where a press, a scroll or a pinch asked it to go, and the
@@ -289,7 +294,7 @@ function coneRing(q,W,H){
  var out=[]; for(var i=0;i<=48;i++)out.push(conePtA(q,i*(Math.PI*2/48),W,H)); return out;}
 function coneDraw(){
  var c=CONE.cv, g=CONE.g; if(!c||!g)return;
- if(!CONE.side){if(CONE.top)conePlan(); else coneNeedle(); return;}
+ if(!CONE.side){if(CONE.top)conePlan(); else if(CONE.shells)coneRegisters(); else coneNeedle(); return;}
  var W=c.width/CONE.dpr, H=c.height/CONE.dpr;
  /* THE FLOOR COLOUR IGNORED THE LIGHTING. It was hx(PAL.Root), the Dark
     palette, typed in, so under Lumen and Glass white the floor rings, the
@@ -1973,6 +1978,395 @@ function coneNeedle(){
  ndlTip(ax,ay,12,'top',-1); ndlTip(ax,zy+14,14,'bot',-1);
  /* nothing outside this frame bends */
  NDL.wn=0;}
+/* ============================================================
+   THE REGISTERS. Round KS, 28 September.
+
+   His words, round KR: "the full expression of CQ would just be a ball of
+   light. but as the frequency gets pulled down the, towards darkness, the
+   colored registers would show collapse geometrically." Three still mockups
+   went back to him, none of them in the build, and round KS: "wire in these
+   point cloud add it as a third option for the compass. The Rosa is
+   fantastic, especially with the nodal shells collapsing from the entire
+   center in and out. And I want to be able to model or select each chakra
+   resonance. So add, create a button for each root sacral so I can turn
+   them on and off ... increase the saturation by 30%."
+
+   The Rosa he means is mockup A, and this is A ported, not copied. The
+   mockup drew from an offline dump of engine.js taken in node. This reads
+   compute() and the wheel's own addresses every frame, as the rest of this
+   file does, so a release made anywhere arrives here.
+
+   SEVEN SHELLS, ONE PER SEAT, and a shell's radius is its seat's
+   wavelength: the lowest tone in FLOWSEAT over this seat's own. Root at 396
+   Hz is the outer shell at one and Crown at 963 Hz sits at 0.41 of it, so
+   the highest tone is innermost, his "fractal from the highest frequency
+   inside out to the lowest". The tones are read through seatHz, so
+   FLOWSEAT stays the one place a tone is written.
+
+   EVERY ADDRESS ON THE WHEEL IS A PATCH ON ITS SEAT'S SHELL, laid on a
+   fibonacci lattice in the order the Field's wheel carries them. Its pull
+   is leverPull on its own held charge, the engine's own curve, so an
+   address at 2 barely moves and one at 7 has nearly all fallen. That share
+   of the patch's points leaves the shell: in by up to 0.22 of the radius,
+   down by up to half of it, gathered tighter as it goes, and dark. The rest
+   stays on the shell and loses up to 0.55 of its light. A share of the
+   fallen matter, 0.28 as in the mockup, is caught on the way down, which is
+   what makes a knot read as having come off the shell rather than sitting
+   beside it.
+
+   LIGHT ADDS, DARK OCCLUDES. Lit points sum, as the canvas's lighter does;
+   a fallen point is matter standing in front of the light and is painted
+   over it, so the cloud is drawn back to front.
+
+   THE BALL OF LIGHT IS CQ AND NOTHING ELSE. A core of points, CQ squared of
+   the most it holds, and the needle's own glow: the accent as the canvas
+   element's background image, repainted only when it changes, reaching and
+   burning by CQ. Rosa at 97 is the ball. Gordon, under twenty, is a few
+   embers.
+
+   A FRONT WEDGE IS CUT AWAY, 1.75 radians, so the inner shells show in
+   section, and no address is laid inside it, so the cut hides nothing. The
+   cut stands where the view opens and the figure sways about it instead of
+   turning all the way round, because turned away the cut shows the outer
+   shell's back and nothing else. A drag still turns it anywhere.
+
+   THE MOTION, "collapsing from the entire center in and out". Each shell
+   breathes at its own tone brought down onto the Field's 4.2 second
+   breath: Root on the breath and Crown 963 over 396 times faster, so the
+   inner shells ring fastest and the seven drift in and out of phase with
+   each other, which is the nodal pattern. A shell rings by how clear it
+   is, three per cent of its radius at no pull and nothing at full pull,
+   because a shell carrying charge is dead weight. And the caught share of
+   the fallen matter falls, shell to knot, over and over. Reduced motion
+   gets the still figure.
+
+   LAID OUT, NOT MEASURED, and the mockup said so on its face: where an
+   address sits round its shell and how far its matter falls. Nothing here
+   says an address is physically at that place.
+
+   ONE CANVAS CALL A FRAME. About twelve thousand points at a desk, and at
+   the two microseconds a call this file measured for the radiance, a
+   fillRect each would be twenty four milliseconds before a pixel was
+   drawn. So the points are projected into typed arrays, bucketed back to
+   front by a counting sort, written into one ImageData by hand, light
+   added and dark laid over, and put once, over the box they touched. No
+   path, no gradient, no composite switch, no readback. The ball's glow is
+   the element's background, as the needle's is.
+
+   COST, MEASURED AND DATED, 28 September, headless Chromium on a software
+   raster, --disable-gpu, load average between 1.2 and 3.6, coneDraw plus
+   a forced flush, the minimum of ninety frames, the tab's own loop
+   stopped. Before is the tree at HEAD 4b4c860 with the Masks work in it,
+   after is this view in; the needle's pulse and Top are carried as the
+   reference, and the Registers are new:
+
+                        Marcus          Rosa            Gordon
+     1600 at 1x
+       pulse            4.1 -> 5.3      3.7 -> 3.7      4.9 -> 3.8
+       top              4.8 -> 5.1      5.9 -> 4.6      3.3 -> 4.1
+       Registers        1.3             1.7             1.8
+     1600 at 2x
+       pulse            6.8 -> 8.4      6.4 -> 6.3      7.8 -> 7.6
+       top              8.2 -> 8.3      8.8 -> 8.8      6.3 -> 6.4
+       Registers        2.1             2.5             2.1
+     390 at 3x
+       pulse            6.4 -> 5.1      3.5 -> 4.6      5.1 -> 4.4
+       top              5.4 -> 4.4      3.8 -> 3.8      3.8 -> 3.8
+       Registers        0.9             1.3             0.8
+     zoomed 2.5x, 1600 at 2x: Registers 3.3, 2.7 and 2.6, where the pulse
+     is 7.8, 5.9 and 8.4 with the stepped budget.
+
+   The needle's path gained one flag read, and the moves on it are the
+   spread between runs, not a cost: Marcus's pulse at 2x read 7.4, 6.6,
+   6.8 and 8.4 across four runs of the same code. The Registers are the
+   cheapest figure the Compass draws.
+   ============================================================ */
+const RGS_CUT=1.75;     /* the wedge, radians, centred on the viewer at open */
+const RGS_PTS=3400;     /* points on the outer shell at the mockup's scale */
+const RGS_AT=270;       /* that scale: CSS pixels to the outer shell */
+const RGS_CORE=2200;    /* the ball of light at CQ 100, at the same scale */
+const RGS_DIST=4.2;     /* the camera, in outer shell radii */
+const RGS_BIN=32;       /* depth buckets for the back to front pass */
+/* HIS THIRTY PER CENT, as HSL saturation times 1.3, clamped at full, on
+   every colour the points are painted in. Measured 28 September off the
+   Dark lighting's seat tokens through this function, before and after,
+   the before being the mockup's own colour for that point:
+     Root, lit at Rosa's CQ 97        0.60 -> 0.78
+     Heart, lit at Rosa's CQ 97       0.53 -> 0.69
+     Crown, lit at Rosa's CQ 97       0.49 -> 0.63
+     Root, lit at Gordon's CQ 19.3    0.62 -> 0.81
+     Heart, lit at Gordon's CQ 19.3   0.57 -> 0.75
+     Crown, lit at Gordon's CQ 19.3   0.54 -> 0.70
+     Root, fallen                     0.53 -> 0.70
+     Heart, fallen                    0.31 -> 0.39
+     Crown, fallen                    0.26 -> 0.34
+   The fallen colours land a little short of 1.3 times because a channel
+   that dark rounds to a whole number on the way back.
+   The ball of light's points take it too. Its glow is the needle's accent,
+   the product's token, and does not: a boost on the token would be a second
+   accent that only this view paints. */
+const RGS_SAT=1.3;
+/* the backing store's budget, in pixels: the needle's own 2.4 million, and
+   held there at any zoom (coneLayout). The cloud is written a pixel at a
+   time and put in one call (coneRegisters), so its cost is the canvas's
+   area and never the zoom. The first cut held it to a million, about 1x at
+   a desk, on the guess that the pixel loop would be the cost; measured, the
+   whole frame was 1.3 to 2.0 ms at a million and 1.9 to 2.4 at the full
+   budget, 1600 at 2x, so the million bought nothing and cost the crisp
+   point the mockup was drawn with at 1.6x. */
+const RGS_PIX=2.4e6;
+var RGS={dens:0, n:0, who:'', s0:null, glowSig:'', hs:-1, img:null, bb:null,
+ /* one per seat, Root first: whether its shell is drawn. His buttons. */
+ on:[1,1,1,1,1,1,1], R:null, T:null, ad:null, cam:null};
+function rgsRng(seed){var s=seed>>>0||1;
+ return function(){s^=s<<13; s^=s>>>17; s^=s<<5; return ((s>>>0)%1e9)/1e9;};}
+function rgsGauss(r){var u=r()||1e-9, v=r(); return Math.sqrt(-2*Math.log(u))*Math.cos(6.2831853*v);}
+/* saturation times k in HSL, hue and lightness kept */
+function rgsSat(c,k){
+ var r=c[0]/255, g=c[1]/255, b=c[2]/255, mx=Math.max(r,g,b), mn=Math.min(r,g,b);
+ var l=(mx+mn)/2, d=mx-mn; if(d<1e-6)return [c[0],c[1],c[2]];
+ var s=l>.5?d/(2-mx-mn):d/(mx+mn), h;
+ if(mx===r)h=(g-b)/d+(g<b?6:0); else if(mx===g)h=(b-r)/d+2; else h=(r-g)/d+4;
+ h/=6; s=Math.min(1,s*k);
+ var q=l<.5?l*(1+s):l+s-l*s, p=2*l-q;
+ var f=function(t){t-=Math.floor(t);
+  return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p;};
+ return [Math.round(f(h+1/3)*255),Math.round(f(h)*255),Math.round(f(h-1/3)*255)];}
+/* THE CLOUD, laid out once per density. Per point it keeps two directions:
+   where it sits on the shell, and the random draw its fallen place is made
+   from, because the fallen place depends on the pull and the pull moves.
+   Seeded, so a person is the same picture every time they come back. */
+function rgsBuild(dens){
+ var A=W_ADDR(), TAU=Math.PI*2, rnd=rgsRng(1234), hz0=1e9, i, k;
+ BANDS.forEach(function(b){var h=seatHz(b); if(h&&h<hz0)hz0=h;});
+ RGS.R=BANDS.map(function(b){var h=seatHz(b); return h?hz0/h:1;});
+ /* the Field's 4.2 second breath at the lowest tone, shorter by the ratio */
+ RGS.T=RGS.R.map(function(R){return 4.2*R;});
+ var c0=Math.PI/2-RGS_CUT/2, ad=[], tot=0;
+ BANDS.forEach(function(b,si){
+  var mine=A.filter(function(n){return n.b===b;}), N=mine.length; if(!N)return;
+  var R=RGS.R[si], per=Math.max(6,Math.round(RGS_PTS*dens*R*R/N));
+  var capR=Math.sqrt(4*(1-RGS_CUT/TAU)/N)*.9;
+  mine.forEach(function(n,j){
+   /* address j of N on a fibonacci lattice laid over the sphere less the
+      wedge, so the cut shows every shell in section and hides no address */
+   var yy=1-2*(j+.5)/N, rr=Math.sqrt(1-yy*yy);
+   var fr=(j*0.618034+si*0.37)%1, th=c0+RGS_CUT+.12+fr*(TAU-RGS_CUT-.24);
+   var c=[Math.cos(th)*rr,yy,Math.sin(th)*rr];
+   var up=Math.abs(c[1])>.9?[1,0,0]:[0,1,0];
+   var t1=[c[1]*up[2]-c[2]*up[1],c[2]*up[0]-c[0]*up[2],c[0]*up[1]-c[1]*up[0]];
+   var l1=Math.hypot(t1[0],t1[1],t1[2]); t1=[t1[0]/l1,t1[1]/l1,t1[2]/l1];
+   var t2=[c[1]*t1[2]-c[2]*t1[1],c[2]*t1[0]-c[0]*t1[2],c[0]*t1[1]-c[1]*t1[0]];
+   ad.push({n:n,si:si,c:c,t1:t1,t2:t2,capR:capR,o:tot,per:per,p:0,pb:-1});
+   tot+=per;});});
+ var nc=Math.round(RGS_CORE*dens), N2=tot+nc;
+ var F=function(){return new Float32Array(N2);};
+ RGS.lx=F(); RGS.ly=F(); RGS.lz=F(); RGS.da=F(); RGS.dc=F(); RGS.ds=F();
+ RGS.jr=F(); RGS.fm=F(); RGS.rk=F(); RGS.ux=F(); RGS.uy=F(); RGS.uz=F();
+ RGS.X=F(); RGS.Y=F(); RGS.Z=F(); RGS.K=F();
+ RGS.si=new Uint8Array(N2); RGS.ai=new Uint16Array(N2); RGS.dk=new Uint8Array(N2);
+ RGS.bin=new Uint8Array(N2); RGS.ord=new Uint32Array(N2); RGS.cnt=new Uint32Array(RGS_BIN+1);
+ ad.forEach(function(a,ai){var c=a.c, t1=a.t1, t2=a.t2;
+  for(k=0;k<a.per;k++){i=a.o+k;
+   RGS.si[i]=a.si; RGS.ai[i]=ai; RGS.rk[i]=(k+.5)/a.per;
+   var aa=a.capR*Math.sqrt(rnd()), bb=rnd()*TAU, ca=Math.cos(aa), sa=Math.sin(aa);
+   var cb=Math.cos(bb), sb=Math.sin(bb), jt=1+rgsGauss(rnd)*.008;
+   RGS.lx[i]=(c[0]*ca+(t1[0]*cb+t2[0]*sb)*sa)*jt;
+   RGS.ly[i]=(c[1]*ca+(t1[1]*cb+t2[1]*sb)*sa)*jt;
+   RGS.lz[i]=(c[2]*ca+(t1[2]*cb+t2[2]*sb)*sa)*jt;
+   var b2=rnd()*TAU; RGS.da[i]=Math.sqrt(rnd()); RGS.dc[i]=Math.cos(b2); RGS.ds[i]=Math.sin(b2);
+   RGS.fm[i]=rnd()<.28?rnd():-1; RGS.jr[i]=.8+.4*rnd();}});
+ /* the core, seat index 7, never toggled: it is CQ and not a seat */
+ for(i=tot;i<N2;i++){var u,v,w;
+  do{u=rgsGauss(rnd)*.12; v=rgsGauss(rnd)*.12; w=rgsGauss(rnd)*.12;}while(Math.hypot(u,v,w)>.36);
+  RGS.lx[i]=RGS.ux[i]=u; RGS.ly[i]=RGS.uy[i]=v; RGS.lz[i]=RGS.uz[i]=w;
+  RGS.si[i]=7; RGS.ai[i]=65535; RGS.rk[i]=(i-tot+.5)/nc; RGS.fm[i]=-1;}
+ RGS.ad=ad; RGS.tot=tot; RGS.n=N2; RGS.dens=dens; RGS.who='';}
+/* one address's points set for its pull: the share under the pull falls,
+   gathered to a spread that tightens as the pull grows, and the rest stay */
+function rgsDirs(a){
+ var p=a.p, ks=a.capR*(1-.8*p)*.55, c=a.c, t1=a.t1, t2=a.t2;
+ for(var i=a.o;i<a.o+a.per;i++){
+  if(RGS.rk[i]<p){var an=ks*RGS.da[i], ca=Math.cos(an), sa=Math.sin(an), cb=RGS.dc[i], sb=RGS.ds[i];
+   RGS.ux[i]=c[0]*ca+(t1[0]*cb+t2[0]*sb)*sa; RGS.uy[i]=c[1]*ca+(t1[1]*cb+t2[1]*sb)*sa;
+   RGS.uz[i]=c[2]*ca+(t1[2]*cb+t2[2]*sb)*sa; RGS.dk[i]=1;}
+  else {RGS.ux[i]=RGS.lx[i]; RGS.uy[i]=RGS.ly[i]; RGS.uz[i]=RGS.lz[i]; RGS.dk[i]=0;}}
+ a.pb=p;}
+/* the figure's box: clear of the two name rails at a desk, as the needle's
+   is (ndlGeo), with the fallen matter's reach below the outer shell */
+/* 1.15 ACROSS, 1.38 DOWN. A shell's outline sits near the pivot's depth,
+   where perspective is close to one, so across it needs little over its
+   radius; 1.30, the nearest point's perspective, was the first cut, and at
+   390 it drew the figure two thirds of the canvas wide with a third of the
+   card empty under it. Down, the fallen matter reaches half a radius under
+   the outer shell before perspective. */
+function rgsGeo(W,H){
+ var side=(typeof innerWidth==='number'&&innerWidth>=900)?176:20;
+ var s0=Math.max(40,Math.min((W-2*side)/2/1.15,(H-24)/2/1.38));
+ return {s0:s0, sc:s0*CONE.z, cx:W/2+CONE.zx, cy:H/2-.06*s0*CONE.z+CONE.zy};}
+function coneRegisters(){
+ var c=CONE.cv, g=CONE.g, TAU=Math.PI*2, dpr=CONE.dpr, i, k, q;
+ var BW=c.width, BH=c.height, W=BW/dpr, H=BH/dpr;
+ CONE.hits=[];
+ var r=compute(), M=coneMirSync(r), read=!r.unread;
+ /* the spring the needle's level rides on, so CQ arrives and never snaps */
+ var CQ=read?clamp(M.cq.x,0,100)/100:0;
+ var G=rgsGeo(W,H);
+ /* the density follows the figure's size, in twentieths, so a person's
+    cloud is laid out again on a resize and never on a frame */
+ var dens=Math.round(clamp(Math.pow(G.s0/RGS_AT,2),.35,1.6)*20)/20;
+ if(dens!==RGS.dens||!RGS.n)rgsBuild(dens);
+ /* a new record starts steady, as coneMirSync does: moving from one person
+    to another is never drawn as a change in either */
+ var key=CURP+'|'+S.who, fresh=key!==RGS.who; RGS.who=key;
+ var sp=[0,0,0,0,0,0,0], sn=[0,0,0,0,0,0,0], ad=RGS.ad;
+ for(i=0;i<ad.length;i++){var a=ad[i], pt=leverPull(a.n.sq||0);
+  if(fresh||REDUCED)a.p=pt; else a.p+=(pt-a.p)*.08;
+  if(a.pb<0||Math.abs(a.p-a.pb)>.004)rgsDirs(a);
+  sp[a.si]+=a.p; sn[a.si]++;}
+ /* each shell's radius this frame: its tone's breath, as deep as it is clear */
+ var Rt=RGS.R.map(function(R,s){
+  if(REDUCED||!sn[s])return R;
+  return R*(1+.03*(1-sp[s]/sn[s])*Math.sin(TAU*CONE.t/RGS.T[s]));});
+ Rt.push(1);
+ /* the cut faces the viewer where the view opened, and sways about it */
+ if(RGS.s0===null)RGS.s0=CONE.spin;
+ var yaw=CONE.spin-RGS.s0+(REDUCED?0:.45*Math.sin(CONE.t*.21)), pit=CONE.nt;
+ var cy_=Math.cos(yaw), sy_=Math.sin(yaw), cp=Math.cos(pit), spn=Math.sin(pit);
+ var scB=G.sc*dpr, cxB=G.cx*dpr, cyB=G.cy*dpr;
+ RGS.cam={cy:cy_,sy:sy_,cp:cp,sp:spn,sc:G.sc,cx:G.cx,cyy:G.cy,Rt:Rt};
+ /* THE BALL OF LIGHT'S GLOW, the needle's own: the accent as the element's
+    background, painted when it changes and never on a frame where only the
+    breath moved. At the mockup's reach and strength, both CQ's. */
+ var ink=INK(), gc=GOLDC(), hot=LIGHT()?gc:mixc(ink,gc,.18);
+ var gR1=Math.round(G.sc*(.35+.9*CQ)), gR2=Math.round(G.sc*.28), ga1=.30*CQ*CQ, ga2=.55*CQ*CQ;
+ var gsig=Math.round(G.cx)+'|'+Math.round(G.cy)+'|'+gR1+'|'+gR2+'|'+ga1.toFixed(3)+'|'+gc.join()+'|'+hot.join();
+ if(RGS.glowSig!==gsig){RGS.glowSig=gsig;
+  var at=' at '+Math.round(G.cx)+'px '+Math.round(G.cy)+'px,';
+  c.style.backgroundImage=ga1<.004?'none'
+   :'radial-gradient(circle '+gR2+'px'+at+rgba(hot,ga2)+','+rgba(hot,ga2*.35)+' 35%,'+rgba(hot,0)+' 100%),'
+   +'radial-gradient(circle '+gR1+'px'+at+rgba(gc,ga1)+','+rgba(gc,ga1*.35)+' 35%,'+rgba(gc,0)+' 100%)';}
+ /* the palette this frame: each seat lit toward the ink by CQ and its
+    fallen matter a quarter of its token, then his thirty per cent. A seat
+    under the pointer, in the rail or on its button, stands forward. */
+ var hs=RGS.hs>=0?RGS.hs:(CONE.hov>=0&&MIRROR[CONE.hov]?BANDS.indexOf(MIRROR[CONE.hov].seat):-1);
+ var LC=[], DC=[], VA=[];
+ for(q=0;q<7;q++){var col=bc(BANDS[q]);
+  LC.push(rgsSat(mixc(col,ink,.06+.26*CQ),RGS_SAT));
+  DC.push(rgsSat([Math.round(col[0]*.26),Math.round(col[1]*.22),Math.round(col[2]*.22)],RGS_SAT));
+  VA.push(RGS.on[q]?(hs<0?1:(hs===q?1.35:.35)):0);}
+ LC.push(rgsSat(hot,RGS_SAT)); DC.push(LC[7]); VA.push(1);
+ var br=REDUCED?1:.86+.14*Math.sin(TAU*CONE.t/4.2);
+ var nCore=Math.round((RGS.n-RGS.tot)*CQ*CQ), tf=REDUCED?0:CONE.t/3.6;
+ /* PROJECT, and bucket by depth for the back to front pass: a counting
+    sort into RGS_BIN buckets, linear in the points and no garbage */
+ var n=RGS.n, X=RGS.X, Y=RGS.Y, Z=RGS.Z, K=RGS.K, BN=RGS.bin, CN=RGS.cnt;
+ var UX=RGS.ux, UY=RGS.uy, UZ=RGS.uz, SI=RGS.si, AI=RGS.ai, DK=RGS.dk, FM=RGS.fm, JR=RGS.jr;
+ CN.fill(0); var live=0;
+ for(i=0;i<n;i++){var s=SI[i];
+  if(!VA[s]||(s===7&&i-RGS.tot>=nCore)){BN[i]=255; continue;}
+  var R=Rt[s], x=UX[i]*R, y=UY[i]*R, z=UZ[i]*R;
+  if(DK[i]){var p=ad[AI[i]].p, f=FM[i]<0?1:(FM[i]+tf)%1;
+   var rf=1-.22*p*f; x*=rf; z*=rf; y=y*rf-.5*p*f*JR[i]*R;}
+  var x1=x*cy_+z*sy_, z1=-x*sy_+z*cy_, y2=y*cp-z1*spn, z2=y*spn+z1*cp;
+  var kk=RGS_DIST/(RGS_DIST-z2);
+  X[i]=cxB+x1*kk*scB; Y[i]=cyB-y2*kk*scB; Z[i]=z2; K[i]=kk;
+  var bq=Math.floor((z2+1.4)/2.8*RGS_BIN); bq=bq<0?0:(bq>=RGS_BIN?RGS_BIN-1:bq);
+  BN[i]=bq; CN[bq+1]++; live++;}
+ for(q=1;q<=RGS_BIN;q++)CN[q]+=CN[q-1];
+ var OR=RGS.ord;
+ for(i=0;i<n;i++){if(BN[i]!==255)OR[CN[BN[i]]++]=i;}
+ /* THE BUFFER. One ImageData the size of the backing store, written a
+    pixel at a time and put once. Only the rows last frame touched are
+    cleared and only the box this frame and last frame touched is put, so
+    a figure a third of the canvas pays for a third of it. */
+ if(!RGS.img||RGS.img.width!==BW||RGS.img.height!==BH){
+  RGS.img=g.createImageData(BW,BH); RGS.bb=null;}
+ var D=RGS.img.data, pb=RGS.bb;
+ if(pb)for(q=pb[1];q<pb[3];q++)D.fill(0,(q*BW+pb[0])*4,(q*BW+pb[2])*4);
+ var bx0=BW, by0=BH, bx1=0, by1=0, zg=(1+(CONE.z-1)*.2)*dpr;
+ var cqA=.26+.60*CQ;
+ for(q=0;q<live;q++){i=OR[q]; var s2=SI[i], dark=DK[i]===1, al, sz, cc;
+  if(s2===7){cc=LC[7]; al=(.30*CQ+.05)*br; sz=1.2;}
+  else if(dark){cc=DC[s2]; al=.72*Math.min(1,VA[s2]); sz=2.1;}
+  else {var dA=.55+.45*clamp((Z[i]+1.2)/2.4,0,1);
+   cc=LC[s2]; al=cqA*(1-.55*ad[AI[i]].p)*dA*VA[s2]; sz=1.35;}
+  sz*=(.75+.35*K[i])*zg;
+  /* a whole number of pixels, with the light kept: a point drawn wider
+     than it is carries less per pixel, and a narrower one more. ROUNDED
+     DOWN, NOT TO THE NEAREST. The first cut drew a 1.5 pixel point as two
+     by two at 0.56 of its alpha, which kept the light and lost the peak:
+     beside mockup A at one scale, Rosa's shells read as a grey speckle
+     where the mockup's read as rings in their seats' colours, because a dot
+     is seen by its brightest pixel. The second cut drew every small point
+     as one pixel, and a lit point at Rosa's CQ needs over twice one
+     pixel's alpha, so the clamp threw away more than half her light. So
+     the square is the smallest that carries the point's light unclamped:
+     as bright at its peak as it can be, and nothing lost. */
+  var w=Math.ceil(sz*Math.sqrt(al)-.001); w=w<1?1:(w>3?3:w);
+  var aa=al*sz*sz/(w*w); if(aa>1)aa=1; if(aa<.004)continue;
+  var x0=Math.round(X[i]-w/2), y0=Math.round(Y[i]-w/2), x2=x0+w, y3=y0+w;
+  if(x0<0)x0=0; if(y0<0)y0=0; if(x2>BW)x2=BW; if(y3>BH)y3=BH;
+  if(x0>=x2||y0>=y3)continue;
+  if(x0<bx0)bx0=x0; if(y0<by0)by0=y0; if(x2>bx1)bx1=x2; if(y3>by1)by1=y3;
+  var cr=cc[0], cg=cc[1], cb=cc[2], a255=aa*255;
+  for(var yy=y0;yy<y3;yy++)for(var xx=x0;xx<x2;xx++){var o=(yy*BW+xx)*4, A0=D[o+3];
+   if(A0===0){D[o]=cr; D[o+1]=cg; D[o+2]=cb; D[o+3]=a255; continue;}
+   var Af=A0/255, na, k1;
+   /* dark is laid over, light is added, both in premultiplied terms and
+      handed back straight, which is what ImageData holds */
+   if(dark){na=Af+aa-Af*aa; k1=Af*(1-aa);}
+   else {na=Af+aa; if(na>1)na=1; k1=Af;}
+   var iv=1/na;
+   D[o]=(D[o]*k1+cr*aa)*iv; D[o+1]=(D[o+1]*k1+cg*aa)*iv; D[o+2]=(D[o+2]*k1+cb*aa)*iv; D[o+3]=na*255;}}
+ var nb=bx1>bx0?[bx0,by0,bx1,by1]:null, ux0, uy0, ux1, uy1;
+ if(nb||pb){var U=nb&&pb?[Math.min(nb[0],pb[0]),Math.min(nb[1],pb[1]),Math.max(nb[2],pb[2]),Math.max(nb[3],pb[3])]:(nb||pb);
+  ux0=U[0]; uy0=U[1]; ux1=U[2]; uy1=U[3];
+  g.putImageData(RGS.img,0,0,ux0,uy0,ux1-ux0,uy1-uy0);}
+ RGS.bb=nb;}
+/* what is under the pointer, as words, for the canvas's own tooltip: the
+   address whose patch is nearest, on a shell that is drawn. The nearer of
+   two patches under one point wins. No figure is printed: whether a weight
+   is impaired or blocked is not ruled yet, and held is. */
+function rgsTipAt(x,y){
+ var C=RGS.cam, ad=RGS.ad; if(!C||!ad)return '';
+ var best=null, bs=1e9, bz=0;
+ for(var i=0;i<ad.length;i++){var a=ad[i]; if(!RGS.on[a.si])continue;
+  var R=C.Rt[a.si], wx=a.c[0]*R, wy=a.c[1]*R, wz=a.c[2]*R;
+  var x1=wx*C.cy+wz*C.sy, z1=-wx*C.sy+wz*C.cy, y2=wy*C.cp-z1*C.sp, z2=wy*C.sp+z1*C.cp;
+  var k=RGS_DIST/(RGS_DIST-z2), px=C.cx+x1*k*C.sc, py=C.cyy-y2*k*C.sc;
+  var rr=Math.max(8,a.capR*R*k*C.sc), d=Math.hypot(x-px,y-py)/rr;
+  if(d<=1&&d-z2*.5<bs){bs=d-z2*.5; best=a; bz=z2;}}
+ /* the core stands at the pivot, so it is in front of every patch on the
+    far side: at the centre of Rosa the first cut named a Sacral patch
+    behind the light instead of the light */
+ if((!best||bz<0)&&Math.hypot(x-C.cx,y-C.cyy)<C.sc*.2)
+  return 'Your coherence, as the light at the centre.';
+ if(!best)return '';
+ var n=best.n, nm=/_Unnamed$/.test(n.k)?'An address with no name yet':n.k;
+ return nm+((n.sq||0)>=4?', held at ':', at ')+n.b+'.';}
+/* one seat's button, set to what it does now */
+function rgsSeatSync(b){
+ var si=+b.getAttribute('data-cnseat'), on=!!RGS.on[si], nm=BANDS[si], col=seatCol(nm);
+ b.setAttribute('aria-pressed',on); b.classList.toggle('on',on);
+ b.title=(on?'Hide':'Show')+' the '+nm+' shell, '+seatHz(nm)+' Hz';
+ b.style.borderColor=on?col:'';
+ var ci=b.querySelector('circle'); if(ci)ci.setAttribute('stroke-dasharray',on?'none':'1.6 1.8');}
+/* THE SEVEN BUTTONS, his ask, under the figure where the key sits: "create
+   a button for each root sacral so I can turn them on and off." Root first,
+   the order he named them in. Ring, never fill, in the seat's own token,
+   and the ring breaks when the shell is off. The name alone is the label;
+   the tone is on the hover, because a row of seven figures under the drawing
+   is a legend nobody asked for. */
+function rgsSeatsHtml(){
+ return '<div class="ck-g"><span class="ck-h">Seats</span>'
+  +'<span class="ck-rows" role="group" aria-label="Seats" style="gap:6px">'
+  +BANDS.map(function(b,si){
+   return '<button type="button" class="cn-b" data-cnseat="'+si+'" style="gap:7px;--ax:'+seatCol(b)+'">'
+    +'<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex:0 0 12px">'
+    +'<circle cx="6" cy="6" r="4.6" fill="none" style="stroke:var(--ax)" stroke-width="1.6"/></svg>'
+    +esc(b)+'</button>';}).join('')
+  +'</span></div>';}
 /* THE CANVAS FILLS THE CARD. The sheet's height is a cap from when the reading
    shared this card, and it is what made the Compass a quarter of the stage
    (see THE NEEDLE above). In tab mode the canvas takes whatever the card has
@@ -2031,7 +2425,11 @@ function coneKey(){
     its switch is only offered on the side view and its rows only print
     there. A key row for arrows nobody can see is a dead control's caption. */
  var reg=CONE.reg&&CONE.side;
- if(!reg&&!CONE.layers)return '';
+ /* the Registers draw no rings, so Layers is not offered there and its rows
+    do not print; the seat buttons take the key instead */
+ var shl=CONE.shells&&!CONE.side&&!CONE.top, lay=CONE.layers&&!shl;
+ if(shl)return '<div class="cone-key">'+rgsSeatsHtml()+'</div>';
+ if(!reg&&!lay)return '';
  var grp=function(h,rows){
   return '<div class="ck-g"><span class="ck-h">'+h+'</span>'
    +'<span class="ck-rows">'+rows+'</span></div>';};
@@ -2049,12 +2447,12 @@ function coneKey(){
     return row(l,seatCol(PAL[l.b]?l.b:'Heart'),1);}).join(''));
   h+=grp('Pulling you down',rg.dn.map(function(l){
     return row(l,seatCol('Root'),-1);}).join(''));}
- if(CONE.layers){
-  var lay=function(list,col){
+ if(lay){
+  var lrow=function(list,col){
    return list.map(function(nm){
     return '<span class="ck-r" style="--ax:'+col+'">'+esc(nm)+'</span>';}).join('');};
-  h+=grp('Released, from the waist up',lay(CONE_HI,rgbcss(GOLDC())));
-  h+=grp('Compressed, from the waist down',lay(CONE_LO,seatCol('Root')));}
+  h+=grp('Released, from the waist up',lrow(CONE_HI,rgbcss(GOLDC())));
+  h+=grp('Compressed, from the waist down',lrow(CONE_LO,seatCol('Root')));}
  return '<div class="cone-key">'+h+'</div>';}
 function coneTxt(g,s,x,y,size,c,a,w,align){
  g.save(); g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
@@ -2094,8 +2492,14 @@ function coneLayout(){
     softens is the edge, and only on a canvas that was already stepped down.
     A phone's canvas is small enough that it never reaches the cap. */
  CONE.zb=coneZBud();
+ /* THE REGISTERS DO NOT STEP DOWN WITH THE ZOOM. The step exists because
+    the needle's big translucent fills cover more pixels as the figure comes
+    closer. The Registers make one canvas call a frame, a put of the box the
+    points touched, and that box can grow only to the canvas itself, which
+    the budget already allows for. So a closer look is not softened. */
+ var bud=(CONE.shells&&!CONE.side&&!CONE.top)?RGS_PIX:2.4e6*CONE.zb;
  CONE.dpr=Math.min(devicePixelRatio||1,2,
-  Math.max(1,Math.sqrt(2.4e6*CONE.zb/Math.max(1,b.width*b.height))));
+  Math.max(1,Math.sqrt(bud/Math.max(1,b.width*b.height))));
  c.width=Math.max(1,b.width*CONE.dpr); c.height=Math.max(1,b.height*CONE.dpr);}
 /* WHICH AXIS IS NEAREST THE VIEWER. The meridians sit at even eighths of a
    turn from the spin, so the front one is whichever eighth the spin has
@@ -2130,15 +2534,22 @@ function coneTick(){
     frame settles inside about a third of a second, which is quick, and it
     arrives rather than stopping. The target is released once it is close
     enough to see, and the idle drift takes over again. */
+ /* THE REGISTERS DO NOT TURN TO AN AXIS. A shell is a whole seat, so there
+    is no meridian to bring round, and a name in the rail lights its seat's
+    shell instead (coneRegisters). No idle drift either: the figure sways
+    about its cut in its own draw, and a drift would carry the cut away. */
+ var shl=CONE.shells&&!CONE.side&&!CONE.top;
+ if(shl)CONE.spinTo=null;
  if(CONE.spinTo!==null&&!CONE.drag){
   var gap=CONE.spinTo-CONE.spin;
   if(Math.abs(gap)<0.004){CONE.spin=CONE.spinTo; CONE.spinTo=null;}
   else CONE.spin+=gap*0.12;}
- else if(!REDUCED&&!CONE.drag)CONE.spin+=0.0022;
+ else if(!REDUCED&&!CONE.drag&&!shl)CONE.spin+=0.0022;
  /* from above nothing turns to the front, so the lit row is the axis a
     pointer is on, or none. Lighting the row the idle spin reached would
-    walk the rail round on its own with nothing on the figure moving. */
- {var f=CONE.top&&!CONE.side?CONE.hov:coneFront();
+    walk the rail round on its own with nothing on the figure moving. The
+    Registers turn nothing to the front either. */
+ {var f=(CONE.top||shl)&&!CONE.side?CONE.hov:coneFront();
   if(f!==CONE.front){CONE.front=f; coneNamesSync();}}
  /* the figure had a spin and no clock. Anything that has to breathe rather
     than turn needs its own time, and the band of souls at the median does. */
@@ -2151,7 +2562,7 @@ function coneTick(){
     Written only when it changes: a title set sixty times a second is a
     style recalculation sixty times a second. */
  if(!CONE.side&&!CONE.top&&CONE.ptr&&CONE.cv){
-  var tip=ndlTipAt(CONE.ptr.x,CONE.ptr.y);
+  var tip=shl?rgsTipAt(CONE.ptr.x,CONE.ptr.y):ndlTipAt(CONE.ptr.x,CONE.ptr.y);
   if(tip!==CONE.tip){CONE.tip=tip; CONE.cv.title=tip;}}
  CONE.raf=requestAnimationFrame(coneTick);}
 /* TWO WAYS IN, ONE FIGURE. As a modal it is what a drill opens, over the top
@@ -2312,7 +2723,7 @@ function coneNames(side){
    var c=seatCol(x.m.seat), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
    return '<button type="button" class="cn-nr" data-cnax="'+x.i+'" '
     +'style="--ax:'+c+';--axd:'+cd+'" '
-    +'title="'+(CONE.top&&!CONE.side?'Read ':'Turn the figure to ')
+    +'title="'+((CONE.top||CONE.shells)&&!CONE.side?'Read ':'Turn the figure to ')
     +esc(x.m.up)+', opposite '+esc(x.m.dn)+'">'
     /* EVERY NAME CARRIES ITS SYMBOL AND ITS OPPOSITE'S. Round JQ: "all the
        character names that pop up, I need their iconic symbol and their
@@ -2392,6 +2803,8 @@ function coneOpen(inTab){
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
      ?'The compass from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
+     :CONE.shells
+     ?'The registers. Seven shells of light, one per seat, Root on the outside and Crown at the centre. Each address is a patch on its seat\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
      :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
       +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a seat holds charge and where the field bends off your level.':''))
    +'"></canvas>'
@@ -2418,6 +2831,12 @@ function coneOpen(inTab){
        to top." One word, as every other switch in this row is. */
     +(CONE.side?'':'<button type="button" class="cn-b" data-cn="top" '
      +'title="Look straight down on the same eight axes">Top</button>')
+    /* REGISTERS, round KS. One word, his own from round KR, "the colored
+       registers would show collapse geometrically", and already the
+       product's word for it: the coherence reading says "It is harmonic, so
+       patterns sit at registers rather than anywhere." */
+    +(CONE.side?'':'<button type="button" class="cn-b" data-cn="shells" '
+     +'title="Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.">Registers</button>')
     +(CONE.side
      ?'<button type="button" class="cn-b" data-cn="flat" '
       +'title="Take the tilt out and look straight down on the figure">Flat</button>'
@@ -2426,7 +2845,7 @@ function coneOpen(inTab){
      :'')
     /* ROUND KI'S MOCKUP SWITCH. Two ways to draw gravity, one press apart,
        so he chooses by looking: off is the pulse, on is the well. */
-    +(CONE.side||CONE.top?'':'<button type="button" class="cn-b" data-cn="well" '
+    +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="well" '
      +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">Gravity well</button>')
     /* RADIANCE, round KR. Only on the needle, which is the only figure that
        draws it: from the top there is no volume to fill, and the switch
@@ -2434,10 +2853,11 @@ function coneOpen(inTab){
        hover and not in a key under the figure, because a legend nobody
        asked for is one of his logged objections. Whether it earns a key is
        his call. */
-    +(CONE.side||CONE.top?'':'<button type="button" class="cn-b" data-cn="heat" '
+    +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="heat" '
      +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">Radiance</button>')
-    +'<button type="button" class="cn-b" data-cn="layers" '
-     +'title="Show the rings the axes are stacked on">Layers</button>'
+    /* the Registers draw no rings, so Layers would be a dead control there */
+    +(CONE.shells&&!CONE.side&&!CONE.top?'':'<button type="button" class="cn-b" data-cn="layers" '
+     +'title="Show the rings the axes are stacked on">Layers</button>')
    +'</div>'
    /* THE TOOL SAYS WHAT IT IS, UNDER THE FIGURE. Ruled: the bottom
       information goes right unless it is about the tool. These two lines are
@@ -2497,7 +2917,7 @@ function coneOpen(inTab){
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  /* a fresh canvas has none of the needle's background light and may sit on
     a new lighting's well, so both are read again on its first frame */
- NDL.glowSig=''; NDL.wellSig=''; CONE.tip='';
+ NDL.glowSig=''; NDL.wellSig=''; CONE.tip=''; RGS.glowSig=''; RGS.hs=-1;
  /* the zoom circles, the Field's own: same marks, same glass, same words */
  var hz=document.getElementById('cnzoom');
  if(hz&&typeof fbOrb==='function'){
@@ -2530,7 +2950,21 @@ function coneOpen(inTab){
   var k=b.getAttribute('data-cn');
   b.setAttribute('aria-pressed',!!CONE[k]);
   b.classList.toggle('on',!!CONE[k]);
-  b.onclick=function(){CONE[k]=!CONE[k]; coneOpen(CONE.tab);};});
+  b.onclick=function(){CONE[k]=!CONE[k];
+   /* Top and Registers are two views of one canvas, never both. The cut
+      is set to face the viewer on the way in. */
+   if(k==='top'&&CONE.top)CONE.shells=false;
+   if(k==='shells'&&CONE.shells){CONE.top=false; RGS.s0=CONE.spin;}
+   coneOpen(CONE.tab);};});
+ /* A SEAT'S BUTTON TURNS ITS SHELL ON AND OFF, and does not rebuild the
+    card: the draw reads RGS.on every frame, so only the button changes.
+    Hovering one brings its shell forward, as a name in the rail does. */
+ h.querySelectorAll('[data-cnseat]').forEach(function(b){
+  var si=+b.getAttribute('data-cnseat');
+  rgsSeatSync(b);
+  b.onclick=function(){RGS.on[si]=RGS.on[si]?0:1; rgsSeatSync(b); coneDraw();};
+  b.onmouseenter=b.onfocus=function(){RGS.hs=si;};
+  b.onmouseleave=b.onblur=function(){RGS.hs=-1;};});
  h.querySelectorAll('[data-cnspan]').forEach(function(b){
   var k=b.getAttribute('data-cnspan');
   b.onclick=function(){CONE.span=k; coneOpen(CONE.tab);};});
