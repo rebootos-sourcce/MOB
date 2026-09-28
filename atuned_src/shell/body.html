@@ -357,8 +357,12 @@
        which is this same #tabbar laid out as a grid of tabs with the lighting
        under it. Hidden above the phone width, where the strip still fits.
        The name is written here and repainted by setTab in ui/panels.js. -->
+  <!-- The folded bar says the section as well as the surface, KC: the section
+       in the quiet colour first, then the surface a person is on. Both are
+       repainted by setTab in ui/panels.js. -->
   <button type="button" class="vt navtog" id="navtog" aria-expanded="false"
-   aria-controls="tabbar"><span class="n" id="navnow">Field</span>
+   aria-controls="tabbar"><span class="navsec"><span id="navsec">Play</span><span
+   class="n" id="navnow">Field</span></span>
    <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
     <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
   <!-- AN ICON FOR EVERY TAB, AND THE NAMES FOLD. Round JZ, his words: "I want
@@ -373,18 +377,49 @@
        lost its script. The checkbox is itself the control, drawn as a chevron
        at the head of the strip: a hidden box behind a label was a focusable
        control one pixel wide, which the design gate's tap floor refused. -->
+  <!-- THE FIRST TIER IS THREE SECTIONS. Rounds KC and KM in TASKS.md, his
+       words: "Let's organize our menus by discover, play, flow as the core top
+       navigation." Each is a group of doors and not a surface: pressing one
+       opens the tab last used in it, or its first, through setTab and the same
+       identity integers. The tabs after them are the second tier,
+       grouped under the same keys, and only the pressed section's group shows
+       once start up has said which that is. A start up that never arrives
+       leaves every group showing, so a failed boot still has all its doors.
+
+       Play is pressed here because the app opens on Field, which is in it. -->
+  <!-- AND THE SAME CHEVRON ROLLS IN THE WHOLE MENU. KN in TASKS.md, his words:
+       "for the primary navigation, I want a little icon. So if I click it,
+       everything rolls in just like the rest of the site design." It is the
+       round JZ fold above, moved to the head of the menu so it folds what
+       follows it: the sections roll in to the one that is pressed and the tabs
+       to their icons. The same checkbox, the same sibling selector, no script,
+       so a lost start up still folds and unfolds. -->
   <input type="checkbox" id="tabnames" class="tabnames-i" checked
-   aria-label="Tab names" title="Show or hide the tab names">
+   aria-label="Fold the menu" title="Fold the menu to its icons, or open it again">
+  <div class="secbar" id="secbar" role="group" aria-label="Sections">
+   <button type="button" class="secb" data-sec="discover" aria-pressed="false"
+    title="Discover. Your avatar, your summary and your story.">Discover</button>
+   <button type="button" class="secb" data-sec="play" aria-pressed="true"
+    title="Play. The tools: Field, Body, Compass and Games.">Play</button>
+   <button type="button" class="secb" data-sec="flow" aria-pressed="false"
+    title="Flow. Knowledge and your ritual.">Flow</button>
+  </div>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
-   <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
-   <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
-   <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
-   <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
-   <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
-   <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
-   <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
-   <button type="button" class="vt tabtop" data-tabk="7" aria-pressed="false" title="Games"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.6"/><circle cx="9" cy="9" r=".9"/><circle cx="12" cy="12" r=".9"/><circle cx="15" cy="15" r=".9"/></svg><span class="n">Games</span></button>
-   <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
+   <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
+    <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
+    <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
+    <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
+   </div>
+   <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
+    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
+    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
+    <button type="button" class="vt tabtop" data-tabk="7" aria-pressed="false" title="Games"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.6"/><circle cx="9" cy="9" r=".9"/><circle cx="12" cy="12" r=".9"/><circle cx="15" cy="15" r=".9"/></svg><span class="n">Games</span></button>
+   </div>
+   <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
+    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
+    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+   </div>
   </div>
   <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
        Dark, Lumen, etc, to the lighting section in the main menu." On a phone
@@ -475,10 +510,26 @@
      <path d="M15.4 5.4a3.2 3.2 0 0 1 0 6.1M17.6 14.6c1.9.6 3 2.2 3 4.8"/></svg></button>
    <div class="gmenu pload" id="pload" hidden></div>
   </div>
-  <button class="vt" id="helpbtn" type="button" title="How to read this, and what everything means">
-   <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
-    <circle cx="12" cy="12" r="9.2"/><path d="M9.4 9.2a2.7 2.7 0 1 1 3.4 2.6c-.6.2-.9.7-.9 1.3v.7"/>
-    <circle cx="12" cy="17.4" r="1"/></svg></button>
+  <!-- SEARCH TAKES HELP'S PLACE. KC in TASKS.md, his words: "a collapsible
+       search field in the upper right hand side, right next to name where the
+       help button used to be." Help went under the profile on round JZ's word,
+       "Move the how to read this icon under user profile", where it already
+       has its row, How to read this, on the profile page; the circle here was
+       the second door left behind.
+
+       What it searches is the codex, the one search the product has: every
+       address, pattern and glossary term, built from the engine tables in
+       ui/knowledge.js. Enter takes the words there, to whichever deck holds
+       the most of them. Shut, it is one circle; open, the field rolls out to
+       its left and takes the cursor. ui/panels.js wires it. -->
+  <div class="srch" id="srch">
+   <input type="search" id="srchq" class="srch-q" placeholder="Search the codex"
+    aria-label="Search the codex" autocomplete="off" enterkeyhint="search" tabindex="-1">
+   <button class="vt" id="srchbtn" type="button" aria-expanded="false" aria-controls="srchq"
+    title="Search the codex">
+    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+     <circle cx="10.6" cy="10.6" r="6.4"/><path d="M15.4 15.4l5 5"/></svg></button>
+  </div>
   <button class="vt" id="profbtn" type="button" title="Your profile and settings">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
     <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>

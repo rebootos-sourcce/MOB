@@ -937,7 +937,8 @@ console.log('\n=== GF: two fingers zoom the picture, and nothing else ===');
   ok(held.tip&&!held.drill,sel+': a hold of 1.5s opens the definition, keeps it, and opens nothing else, '+JSON.stringify(held));}
  await touchPg.evaluate(()=>{rdClose();TIP.hide();});
 
- /* the bar on a phone: collapsed to one tab, the loader, help and the person
+ /* the bar on a phone: collapsed to one tab, the loader, search (help's old
+    place, KC; help itself is on the profile page) and the person
     at the upper right, undo and the bar's lighting menu gone, the strip's
     poles inside the core. Hidden is not removed: the undo stack still takes. */
  const bar=await touchPg.evaluate(()=>{const d=id=>getComputedStyle(document.getElementById(id)).display;
@@ -945,12 +946,12 @@ console.log('\n=== GF: two fingers zoom the picture, and nothing else ===');
   const r=id=>document.getElementById(id).getBoundingClientRect();
   return {tabbar:d('tabbar'),navtog:d('navtog'),psel:d('psel'),hist:d('histpair'),light:d('lightwrap'),
    pol2:d('pol2'),depth:undoDepth(),poles:HIT.filter(h=>h.k==='pole').length,
-   together:Math.abs(r('ploadbtn').top-r('profbtn').top)<1&&r('ploadbtn').right<=r('helpbtn').left&&r('helpbtn').right<=r('profbtn').left,
-   round:['ploadbtn','helpbtn','profbtn'].every(id=>getComputedStyle(document.getElementById(id)).borderRadius==='50%'),
+   together:Math.abs(r('ploadbtn').top-r('profbtn').top)<1&&r('ploadbtn').right<=r('srchbtn').left&&r('srchbtn').right<=r('profbtn').left,
+   round:['ploadbtn','srchbtn','profbtn'].every(id=>getComputedStyle(document.getElementById(id)).borderRadius==='50%'),
    lights:document.querySelectorAll('#navthemes button').length===LIGHTINGS.length};});
  ok(bar.tabbar==='none'&&bar.navtog!=='none'&&bar.psel==='none'&&bar.light==='none',
   'on a phone the tabs fold to one, and the picker and the lighting menu leave the bar, '+JSON.stringify(bar));
- ok(bar.together&&bar.round,'the loader, help and the person sit together at the upper right, all three round');
+ ok(bar.together&&bar.round,'the loader, search and the person sit together at the upper right, all three round');
  ok(bar.lights,'and every lighting is in the main menu');
  ok(bar.hist==='none'&&bar.depth>0,'undo is hidden on a phone and still takes, depth '+bar.depth);
  ok(bar.pol2==='none'&&bar.poles===2,'the poles are inside the core and the strip under the picture is gone, '+bar.poles+' poles');
@@ -1811,6 +1812,70 @@ console.log('\n=== the navigation is in the document and cannot drift ===');
   +moved.want+' got '+moved.got);
  ok(moved.pressed==='true','and the button it pressed reads as pressed');}
 await page.evaluate(()=>setTab(TAB.FIELD));
+
+console.log('\n=== the bar is three sections over the tabs, and no integer moved ===');
+/* KC and KM in TASKS.md: Discover, Play and Flow as the first tier, the tabs
+   as the second. Membership is written once, in TABDEF's .sec, and the
+   markup groups the same buttons by hand, so the two are compared here the
+   same way the flat bar was. The identity integers are held to their values
+   outright, because a reorganisation of the bar is exactly the change that
+   tempts somebody to renumber them. */
+{const nav=await page.evaluate(async()=>{
+  const wait=()=>new Promise(r=>setTimeout(r,260));
+  const vis=()=>[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)
+    .map(b=>+b.getAttribute('data-tabk'));
+  const pressedSec=()=>[...document.querySelectorAll('#secbar .secb[aria-pressed=true]')]
+    .map(b=>b.getAttribute('data-sec'));
+  const out={tab:JSON.stringify(TAB),
+   secKeys:SECTIONS.map(s=>s.k), barKeys:[...document.querySelectorAll('#secbar .secb')].map(b=>b.getAttribute('data-sec')),
+   unsectioned:TABDEF.filter(t=>!SECTIONS.some(s=>s.k===t.sec)).map(t=>t.nm),
+   misgrouped:[...document.querySelectorAll('#tabbar [data-tabk]')].filter(b=>{
+     const t=TABDEF.filter(x=>x.k===+b.getAttribute('data-tabk'))[0];
+     return !t||b.closest('.tabgrp').getAttribute('data-sec')!==t.sec;}).map(b=>b.textContent.trim()),
+   secof:{analytics:SECOF(TAB.ANALYTICS),settings:SECOF(TAB.SETTINGS)},
+   press:{}};
+  for(const s of SECTIONS){
+   document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
+   const want=TABDEF.filter(t=>t.sec===s.k).map(t=>t.k);
+   out.press[s.k]={landed:want.indexOf(S.tab)>=0, shown:JSON.stringify(vis())===JSON.stringify(want),
+    pressed:JSON.stringify(pressedSec())===JSON.stringify([s.k])};}
+  setTab(TAB.COMPASS); await wait();
+  document.querySelector('#secbar .secb[data-sec="flow"]').click(); await wait();
+  document.querySelector('#secbar .secb[data-sec="play"]').click(); await wait();
+  out.remembers=S.tab===TAB.COMPASS;
+  setTab(TAB.SETTINGS); await wait();
+  out.settings={pressed:pressedSec().length, shown:vis().length};
+  /* the fold, KN: the sections roll in to the pressed one */
+  setTab(TAB.FIELD); await wait();
+  const cb=document.getElementById('tabnames'); cb.click(); await new Promise(r=>setTimeout(r,450));
+  out.folded=[...document.querySelectorAll('#secbar .secb')].map(b=>
+    b.getAttribute('data-sec')+':'+getComputedStyle(b).visibility);
+  cb.click(); await wait();
+  /* the search, KC: help's old place, and Enter takes the words to the codex */
+  const sb=document.getElementById('srchbtn'), q=document.getElementById('srchq');
+  sb.click(); await wait();
+  out.searchOpen=document.activeElement===q;
+  q.value='shame'; q.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true})); await wait();
+  out.searched={tab:S.tab===TAB.KNOW, q:KB_Q, closed:!document.getElementById('srch').classList.contains('open')};
+  KB_Q=''; setTab(TAB.FIELD); await wait();
+  return out;});
+ ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10}',
+  'every identity integer holds its value, '+nav.tab);
+ ok(JSON.stringify(nav.secKeys)==='["discover","play","flow"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
+  'the first tier is discover, play, flow, in his order, in the engine and the markup alike');
+ ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
+ ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
+ ok(nav.secof.analytics==='discover'&&nav.secof.settings===null,
+  'a folded surface answers with its carrier\'s section and Settings with none, '+JSON.stringify(nav.secof));
+ Object.keys(nav.press).forEach(k=>{const p=nav.press[k];
+  ok(p.landed&&p.shown&&p.pressed,k+': pressing it opens a tab in it, shows exactly its tabs and presses it alone, '+JSON.stringify(p));});
+ ok(nav.remembers,'a section goes back to the tab last used in it');
+ ok(nav.settings.pressed===0&&nav.settings.shown>0,'Settings presses no section and leaves the last section\'s tabs in sight, '+JSON.stringify(nav.settings));
+ ok(JSON.stringify(nav.folded)==='["discover:hidden","play:visible","flow:hidden"]',
+  'folded, the sections roll in to the pressed one, '+JSON.stringify(nav.folded));
+ ok(nav.searchOpen,'the search circle opens the field and puts the cursor in it');
+ ok(nav.searched.tab&&nav.searched.q==='shame'&&nav.searched.closed,
+  'and Enter takes the words to the codex and rolls the field back in, '+JSON.stringify(nav.searched));}
 
 console.log('\n=== the build says which build it is, and how much of it arrived ===');
 /* Two builds went out with a fix in them and the same failure came back both

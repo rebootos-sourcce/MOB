@@ -204,6 +204,7 @@ function setTab(i){
  var nn=$('navnow');
  if(nn){var nT=TABDEF.filter(function(T){return T.k===i;})[0];
   nn.textContent=nT?nT.nm:(i===TAB.SETTINGS?'Profile':nn.textContent);}
+ secPaint(i);
  /* THE RAIL OPENS WHAT THE SURFACE IS ABOUT.
 
     The Body page's whole reading is flow through the seven seats, and the
@@ -292,7 +293,11 @@ function tabTop(i){
     that started this. */
  var btn=document.querySelector('.tabtop[data-tabk="'+i+'"]');
  var a=document.activeElement;
- if(a&&a!==document.body&&a!==btn){
+ /* a section button keeps focus, KC: it is in the bar, so it cannot scroll
+    anything, and handing focus on to the tab opened that tab's definition
+    over the page on every press of a section */
+ var inSec=!!(a&&a.closest&&a.closest('#secbar'));
+ if(a&&a!==document.body&&a!==btn&&!inSec){
   try{ if(btn&&btn.focus)btn.focus({preventScroll:true}); else if(a.blur)a.blur(); }
   catch(e){ if(a.blur)a.blur(); }}
  var hit=function(){
@@ -316,6 +321,69 @@ function tabTop(i){
   b.setAttribute('aria-pressed',k===S.tab);
   b.addEventListener('click',function(){setTab(k);});});
 }());
+/* ---- THE FIRST TIER, KC and KM in TASKS.md ----
+   Three sections over the tabs. The section is read off the tab through
+   SECOF in engine/core.js, never stored beside it, so the two cannot disagree.
+   Written onto the bar as data-sec, which is what shows the section's group of
+   tabs in head.html; a surface with no section, Settings, leaves the last
+   section's tabs showing with none pressed, so a person can still see where
+   they came from.
+
+   A section remembers the tab last used in it for the session, so Play after
+   a visit to Knowledge goes back to the Compass a person left, not to the
+   first tool. The first visit goes to the section's first tab. */
+var SEC_LAST={};
+function secPaint(i){
+ var sec=SECOF(i), top=document.querySelector('.top');
+ if(sec){SEC_LAST[sec]=TABREAL(i); if(top)top.setAttribute('data-sec',sec);}
+ document.querySelectorAll('#secbar .secb').forEach(function(b){
+  b.setAttribute('aria-pressed',b.getAttribute('data-sec')===sec);});
+ var ns=$('navsec'); if(ns){var e=SECTIONS.filter(function(x){return x.k===sec;})[0];
+  ns.textContent=e?e.nm:'';}}
+function secGo(sec){
+ var k=SEC_LAST[sec];
+ if(k===undefined){var f=TABDEF.filter(function(T){return T.sec===sec;})[0]; if(!f)return; k=f.k;}
+ setTab(k);}
+(function(){
+ var sb=$('secbar'); if(!sb)return;
+ sb.querySelectorAll('.secb').forEach(function(b){
+  b.addEventListener('click',function(){secGo(b.getAttribute('data-sec'));});});
+ secPaint(S.tab);}());
+/* ---- THE SEARCH, KC ----
+   One circle where help was. Pressed, the field rolls out and takes the
+   cursor; pressed again, or Escape, or leaving it empty, rolls it back in.
+   Enter takes the words to the codex, which is the product's one search, and
+   opens the deck that holds the most of them when the deck on screen holds
+   none, so a search never lands on an empty page when something matched. */
+(function(){
+ var wrap=$('srch'), btn=$('srchbtn'), q=$('srchq'); if(!wrap||!btn||!q)return;
+ function set(open){
+  wrap.classList.toggle('open',open);
+  btn.setAttribute('aria-expanded',open?'true':'false');
+  q.tabIndex=open?0:-1;
+  if(open){try{q.focus({preventScroll:true});}catch(e){q.focus();}}}
+ function go(){
+  var t=q.value.trim(); if(!t)return;
+  if(typeof KB_Q==='undefined'||typeof kbRows!=='function'){setTab(TAB.KNOW);return;}
+  KB_Q=t;
+  var lq=t.toLowerCase(), hits=function(s){return kbRows(s).filter(function(x){return kbMatch(x,lq);}).length;};
+  if(!hits(KB_SEC)){var best=null,bn=0;
+   KB_SECS.forEach(function(s){var n=hits(s[0]); if(n>bn){bn=n;best=s[0];}});
+   if(best)KB_SEC=best;}
+  q.value=''; set(false);
+  setTab(TAB.KNOW);
+  /* and the cursor goes on to the codex's own field, which now holds the
+     words, so the next key refines the search rather than landing nowhere */
+  var kq=$('kbq'); if(kq){try{kq.focus({preventScroll:true});}catch(e){kq.focus();}
+   try{kq.setSelectionRange(kq.value.length,kq.value.length);}catch(e){}}}
+ btn.addEventListener('click',function(e){e.stopPropagation();
+  if(wrap.classList.contains('open')&&q.value.trim())go();
+  else set(!wrap.classList.contains('open'));});
+ q.addEventListener('keydown',function(e){
+  if(e.key==='Enter'){e.preventDefault();go();}
+  else if(e.key==='Escape'){e.stopPropagation();q.value='';set(false);btn.focus();}});
+ q.addEventListener('blur',function(){
+  setTimeout(function(){if(!q.value.trim()&&document.activeElement!==btn)set(false);},120);});}());
 /* measured once the strip exists, and again whenever the window changes */
 if(typeof paintTabEdge==='function')paintTabEdge();
 /* THE DEPTH ROW WAS BUILT HERE, four .vt buttons in #vbar, and is gone. The
@@ -978,7 +1046,8 @@ function helpSheet(){
     is the thing that was replaced and deleting it in the same pass as
     rewiring hides which of the two changed something. */
  var pb=$('profbtn'); if(pb)pb.onclick=function(){setTab(TAB.SETTINGS);};
- var hb=$('helpbtn'); if(hb)hb.onclick=helpSheet;
+ /* help's circle left the bar for the search on KC; helpSheet opens from its
+    row on the profile page, ui/account.js, which round JZ asked for */
  var sh=$('sheet');
  if(sh)sh.addEventListener('click',function(e){if(e.target===sh)sheetShut();});
  addEventListener('keydown',function(e){if(e.key==='Escape')sheetShut();});

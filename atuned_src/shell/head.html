@@ -578,6 +578,9 @@ body.punch .vt,body.punch .btn,body.punch .pm-lb,body.punch .st-mic{background:v
    marked at all. Punch removes outlines, not state. */
 body.punch .vt[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
 body.punch .vt[aria-pressed=true] svg{stroke:var(--on-accent)}
+/* the same outranking, on the Body page's own buttons: in Punch the pressed
+   layer, mode, side and part all read as unpressed (round KN) */
+body.punch .pm-lb.on{background:var(--gold);color:var(--on-accent)}
 body.punch .ib{background:var(--sunk);border-width:0}
 /* A pressed icon fills with its own seat colour, --c, which the domain and
    archetype grids already carry. Only a control with no seat takes --seat. */
@@ -909,12 +912,61 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .tabnames-i:not(:checked)::before{transform:translateX(-1.5px) rotate(-135deg)}
 .tabnames-i:hover{color:var(--ink)}
 .tabnames-i:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.tabnames-i:not(:checked)+#tabbar .tabtop .n{position:absolute;width:1px;height:1px;
+.tabnames-i:not(:checked)~#tabbar .tabtop .n{position:absolute;width:1px;height:1px;
  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 /* an icon alone measured 38px wide, under the 44 floor, so a folded tab
    keeps a full touch target and centres its icon in it */
-.tabnames-i:not(:checked)+#tabbar .tabtop{padding-left:10px;padding-right:10px;
+.tabnames-i:not(:checked)~#tabbar .tabtop{padding-left:10px;padding-right:10px;
  min-width:var(--tap);justify-content:center}
+/* THE FIRST TIER, KC and KM in TASKS.md: three sections, Discover, Play and
+   Flow, ahead of the tabs. Words alone and one step up in size, so the two
+   tiers read as two levels at a glance: a section pressed is ink and weight,
+   a tab pressed is the accent and its underline. A section is where a person
+   is in the loop, a tab is the surface they are on. The hairline at its end
+   is the seam between the two. */
+.secbar{display:flex;align-items:stretch;gap:2px;flex:0 0 auto;padding-right:8px;
+ margin-right:2px;position:relative}
+.secbar::after{content:'';position:absolute;right:0;top:10px;bottom:10px;width:1px;
+ background:var(--edge)}
+.secb{min-height:var(--tap);padding:0 12px;background:transparent;border:0;border-radius:var(--r-s);
+ font-family:var(--sans);font-size:15px;font-weight:400;letter-spacing:.01em;color:var(--dim);
+ cursor:pointer;white-space:nowrap;max-width:10em;overflow:hidden;
+ transition:color var(--t-micro) var(--ease-out),max-width var(--t-element) var(--ease-out),
+  padding var(--t-element) var(--ease-out),opacity var(--t-element) var(--ease-out)}
+.secb:hover{color:var(--ink)}
+.secb:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.secb[aria-pressed=true]{color:var(--ink);font-weight:600;letter-spacing:0}
+/* folded, KN: the sections roll in to the pressed one, and hidden is really
+   hidden once they have, so a folded section is not a stop for the keyboard */
+.tabnames-i:not(:checked)~.secbar .secb:not([aria-pressed=true]){max-width:0;padding:0;opacity:0;
+ visibility:hidden;transition:max-width var(--t-element) var(--ease-out),padding var(--t-element) var(--ease-out),
+  opacity var(--t-micro) var(--ease-out),visibility 0s linear var(--t-element)}
+/* THE SECOND TIER IS THE PRESSED SECTION'S TABS. The groups are transparent
+   to the strip's layout, so the strip is still one row of tabs, and the ones
+   outside the section leave it. Only once start up has written the section
+   onto the bar: with no script the bar has no data-sec and every tab shows.
+   Above the phone width only; on a phone the main menu shows every group
+   under its heading, one press from anywhere. */
+.tabgrp{display:contents}
+.tabgrp-hd{display:none}
+@media not all and (max-width:720px){
+ .top[data-sec="discover"] #tabbar .tabgrp:not([data-sec="discover"]),
+ .top[data-sec="play"] #tabbar .tabgrp:not([data-sec="play"]),
+ .top[data-sec="flow"] #tabbar .tabgrp:not([data-sec="flow"]){display:none}}
+/* THE SEARCH, KC: one circle where help was, and the field rolls out to its
+   left when it opens. Shut, the field has no width and no tab stop. */
+.srch{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.srch-q{width:0;min-width:0;padding:0;border:0 solid transparent;opacity:0;visibility:hidden;
+ min-height:var(--tap);border-radius:var(--r-s);background:var(--sunk);color:var(--ink);
+ font-family:var(--sans);font-size:14px;
+ transition:width var(--t-element) var(--ease-out),padding var(--t-element) var(--ease-out),
+  opacity var(--t-micro) var(--ease-out),visibility 0s linear var(--t-element)}
+.srch-q::placeholder{color:var(--dim)}
+.srch.open .srch-q{width:220px;padding:0 12px;border-width:1px;border-color:var(--edge-2);opacity:1;
+ visibility:visible;transition-delay:0s}
+.srch-q:focus{outline:none;border-color:var(--accent)}
+#srchbtn{width:var(--tap);min-width:var(--tap);padding:0;justify-content:center}
+.srch.open #srchbtn{color:var(--accent);border-color:var(--accent)}
 /* THE STRIP YIELDS ITS OWN WIDTH BEFORE THE BAR WRAPS.
 
    The bar wraps rather than hiding a control, which is the right rule and
@@ -5337,9 +5389,9 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top .brand{order:0}
  .top .spacer{order:1}
  .top #pwrap{display:block;order:2;position:static}
- .top #helpbtn{order:3}
+ .top .srch{order:3}
  .top #profbtn{order:4}
- .top #ploadbtn,.top #helpbtn,.top #profbtn{width:var(--tap);height:var(--tap);
+ .top #ploadbtn,.top #srchbtn,.top #profbtn{width:var(--tap);height:var(--tap);
   min-width:var(--tap);padding:0;border-radius:50%;justify-content:center}
  /* the loader's list hangs from the bar, under the first row, and is as wide
     as the bar, so a name has the whole width before it is cut */
@@ -5349,7 +5401,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  /* the strip is the main menu here, where the names are the point, so the
     fold's toggle leaves and a folded strip opens with its names */
  .top .tabnames-i{display:none}
- .top .tabnames-i:not(:checked)+#tabbar .tabtop .n{position:static;width:auto;height:auto;
+ .top .tabnames-i:not(:checked)~#tabbar .tabtop .n{position:static;width:auto;height:auto;
   overflow:visible;clip:auto;clip-path:none}
  /* UNDO WAS HIDDEN ON A PHONE FIRST, on his words: "Undo, I've never used it,
     and I don't see the purpose of it right now, so let's hide that in the
@@ -5373,6 +5425,20 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
   flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
  .top.navopen #tabbar .tabtop{justify-content:center}
+ /* the sections are the main menu's headings here, KC, so every tab is one
+    press from anywhere; the first tier's own row leaves the phone bar */
+ .top .secbar{display:none}
+ .top.navopen #tabbar .tabgrp-hd{display:block;grid-column:1/-1;font-family:var(--num);
+  font-size:11px;color:var(--dim);padding:8px 2px 0}
+ .top.navopen #tabbar .tabgrp:first-child .tabgrp-hd{padding-top:0}
+ /* the folded bar names the section, quietly, then the surface */
+ .top .navtog .navsec{display:flex;align-items:baseline;gap:9px}
+ .top .navtog #navsec{color:var(--dim);font-weight:400;font-size:13px}
+ /* the search opens across the bar under the first row, where it has the
+    width a phone does not have beside the circles */
+ .top .srch{position:static}
+ .top .srch.open .srch-q{position:absolute;left:10px;right:10px;top:calc(var(--tap) + 12px);
+  width:auto;z-index:5}
  .top.navopen .navlight{display:block;order:7;flex:1 1 100%;padding:6px 2px 4px}
  .top #status{order:8}
 

@@ -87,15 +87,36 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    surface in the bar is a peer of the instrument. Settings is reached from
    the profile button and nothing else, so it has a host, a class and a
    renderer and no door in the navigation. */
+/* THE BAR IS THREE SECTIONS, AND EVERY TAB SITS IN ONE. Rounds KC and KM in
+   TASKS.md, his words: "Let's organize our menus by discover, play, flow as
+   the core top navigation. And the sub navigation will be discover will be
+   avatar and summary. And your journal imprints. Play is all the tools. Flow
+   is the knowledge base and ritual."
+
+   A section is a group of doors and never a surface of its own: pressing one
+   opens a tab in it, so every route still ends in setTab with one of the
+   identity integers above, and none of them moved. Journal and imprints are
+   the Story, which already carries the journal, the imprints read off it and
+   the bank. Achievements are earned on the way through rather than visited,
+   so they have no door here. Settings has no section, as it has no tab.
+
+   TABDEF below is in section order and each entry names its section in .sec,
+   which is the one place membership is written. The markup groups the same
+   buttons under the same keys and a gate proves the two agree. */
+const SECTIONS=[
+ {k:'discover', nm:'Discover'},
+ {k:'play',     nm:'Play'},
+ {k:'flow',     nm:'Flow'}];
 const TABDEF=[
- {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake'},
- /* between the intake and the story, in his order: intake, ritual, story. */
- {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual'},
- {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
- {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
- {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
- {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
+ {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
+ /* Summary moved up beside the Avatar, in his order for Discover: "avatar
+    and summary. And your journal imprints." It used to read last, as the
+    conclusion of the instruments. */
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story',   sec:'discover'},
+ {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
+ {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
     Knowledge to get the bar to seven. They are independent games, a place a
     person goes for brain release, and a game folded into a reference page is
@@ -103,8 +124,17 @@ const TABDEF=[
 
     The count that used to sit here said eight and the table beneath it holds
     nine. It is gone: this array is the bar, and its length is the answer. */
- {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
- {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
+ {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games',   sec:'play'},
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'flow'},
+ /* Ritual left its place between the Avatar and the Story for Flow, in his
+    order: "the knowledge base and ritual." */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'}];
+/* the section a tab sits in, read through TABREAL so a folded surface answers
+   with its carrier's section. Settings and anything else with no door answer
+   null, which the bar reads as "no section pressed". */
+const SECOF=function(k){var r=TABREAL(k);
+ for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===r)return TABDEF[i].sec;
+ return null;};
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
    and put the Energetics body class on the Settings surface, which is how a
    surface with no door ends up wearing another surface's layout. It carries
