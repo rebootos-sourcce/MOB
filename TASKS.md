@@ -23411,3 +23411,67 @@ held at the time:
   name, unrelated to the new Profiles page and pre-existing.
 - `[ ]` Avatar ratings and ritual plans live beside a profile in
   browser storage, not inside it, so Export then Load loses them.
+
+## KE. The signal test needs no polish, real research on the five paths' opposites, a Compass gap refinement, Illumination renamed and Trust questioned, and he is ready to wire in a real Claude API key
+
+His words, verbatim: "For the yes, no, it doesn't need to be anything
+impressive. This is a moment for them to stop. Understand the first
+order of how they operate. And feel this tool is somatic. Meaning that
+you feel the story. So we don't need to do anything fancy here.
+Krishna Rama Lao Tzu What's the opposite of duty? Krishna's path was
+flow. Lao Tzu's path was patience. So I want you to go do research on
+their polar opposites and which entities, right, Garyon Asmodeus,
+whatever, represent that because it's the behavior complex conditions.
+that are on the polar opposite. Can we do something with that gap and
+make it a two circular planes? when it's tilted? Change illumination
+where it says illumination and trust share the same heart. Just change
+illumination to light. trust. Is trust actually truth? I don't know
+whose path trust is. But truth, I understand. Would be
+Zoroastrianism. Sure, treat a tune as a one path, so we're not
+commingling. I think I'm ready to synthesize the eleven labs and the
+Claude API key. Where do I put it? For energetics, keep the visual
+treatments with little buttons so I can toggle between them. And see
+which ones I want. Or what elements I want. I need source as brain in,
+which is why I'm asking about the Claude API key. Sort where this
+goes. Let me know what you need from me."
+
+Sorted by destination, none dispatched yet:
+
+- **The signal test is confirmed as built.** His words settle the open
+  question from the third pass: it should stay plain, a moment to stop
+  and feel rather than a polished sequence, since the tool is somatic
+  and the point is felt story, not spectacle. No further build needed
+  on this piece.
+- **Real research is ordered, not guessed at:** what the polar
+  opposite of Krishna's path (flow) and Lao Tzu's path (patience)
+  actually is, and which figure already in the codex's darker roster
+  (his own examples, Geryon, Asmodeus) represents each, so the five
+  paths can mirror the way the eight teachers already do. This answers
+  the Compass agent's open question 1, with real research rather than
+  an invented pair.
+- **A Compass refinement:** the limbo gap, when the figure is tilted,
+  drawn as two circular planes rather than its current shape.
+- **Illumination renamed to Light**, where the Compass rail currently
+  reads "Illumination."
+- **Trust versus Truth is not yet a ruling.** His own words, thinking
+  it through out loud: "I don't know whose path trust is. But truth, I
+  understand, would be Zoroastrianism," then catching himself, "treat
+  Atuned as one path, so we're not commingling." Logged as him
+  reasoning toward a decision, not a rename to build. It sits beside
+  the Compass's own open question 4 (Illumination and Trust sharing
+  the Heart seat), which this does not resolve.
+- **He is ready to wire in a real Claude API key for Source AI's
+  "brain," alongside ElevenLabs.** This is a real architecture
+  question, not a small build: the engine is host free by rule, no
+  `fetch` anywhere in `engine/`, and this repository's own network seam
+  is limited to exactly one, a record fetch at sign in. A live call to
+  Claude from Source AI is a second seam, and a key like it can never
+  sit in a single HTML file served to every visitor's browser, view
+  source shows it to anyone the moment it does. It needs a server
+  standing between the person and the key, which is the same shape
+  `reboot-os`'s Worker already gives `RECORDS_KEY`. Answered directly in
+  the next report rather than guessed at or built silently, since a
+  wrong answer here leaks a real credential.
+- **Energetics reconfirmed:** the three visual treatments stay behind
+  a toggle so he can compare them, no change from what already
+  shipped.
