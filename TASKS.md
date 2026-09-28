@@ -24694,3 +24694,14 @@ designed already? Is a schema present?"
 - **Order confirmed: funnel next, badges only if time remains after.**
 - **Direct question: is a badge and award system already designed, and
   is a schema present.** Answered from the round LG check: no.
+
+**Checked, not assumed. CQ, DQ and SQ already are one math.** Every
+renderer that names them, Field (`wheel.js`), Compass (`cone.js`),
+Body (`map.js`), Summary, Analytics, Ritual, Drills, reads `r.CQ`,
+`r.DQ` and node `.sq` off the one `compute()` result passed in as
+`r`, never its own copy. Read `engine/compute.js`: CQ is the 21 laws
+over 210, DQ is SQ summed over 1120 as a per cent, SQ is `NODES.map(n
+=> n.sq)`, in one place. Traced the one place the Compass looked
+independent, `coneMirSync`'s `M.cq.x`: it is a spring the needle's
+position eases toward, seeded from `r.CQ` on every sync, not a second
+formula. The ruling already holds structurally; nothing to build.
