@@ -24747,3 +24747,31 @@ running you. And then it invites you to try the app to find more."
 - Checking what of these four steps already exists in `funnel/` before
   building anything, the same discipline the point cloud and the
   tension claim both needed.
+
+**Checked against the real files, two of his four steps already ship,
+two do not.**
+
+- **Quiz and CQ: built.** A hundred pain-based questions scored on the
+  21 laws, the same table the app runs on, `funnel/questions.js`. The
+  results page shows CQ prominently.
+- **Holes in your integrity: built.** The same results page names the
+  five laws holding least, out of ten each.
+- **Sniff the stories: not built, but the engine for it is already
+  loaded and unused.** `quiz.html` pulls in the whole compiled
+  `engine.js` at build time, which carries `parseStory()` from
+  `engine/sniff.js`, the same story reader the shipped app uses. The
+  funnel never calls it: there is no text input anywhere in the quiz,
+  and the results page says so itself, in its own copy, "It has not
+  read a story in your own words." This is a real feature to build, a
+  text step plus wiring parseStory's findings into what the results
+  page shows, not new engine work.
+- **Invite to try the app: not built.** "The door" section at the end
+  offers saving or copying the record as a file and nothing else, no
+  link out, no mention of the app. No page in the funnel links to a
+  live instrument anywhere.
+
+**Dispatched: a story step and its sniffer wiring, plus a real
+invitation at the end of the results.** The destination the
+invitation points at is not decided, since hosting is not live yet
+per the open Cloudflare item; built to name that plainly rather than
+link to nothing.
