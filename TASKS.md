@@ -24344,3 +24344,31 @@ superseding rounds KT and KX where they conflict:
   Back toggle**, "for now... so we don't need front or back icons
   anymore." Passed to whichever piece of work is touching the Body
   page's icons right now.
+
+## LA. Atuned goes online first, its own repository asked for, and Cloudflare still not landing
+
+His words, verbatim: "for the question which probably goes online
+first attuned for housing for the demo or running our MVP is running
+it off reboot a problem or does it need to be moved to an attuned
+folder and then can you migrate all that and just do all the setup on
+the GitHub side so everything's organized and clean and then for the
+Cloudflare stuff uh, I keep repeating myself I need step by step
+instructions I see the four things I have to do I don't know how to do
+them And if you, if you created a document for it, I don't see it."
+
+- **Answers the open "which goes online first" question**: Atuned.
+- **A dedicated repository asked for**, rather than running the live
+  server out of a subdirectory of `reboot-os`, which also holds
+  several older, unrelated build snapshots. Attempted directly: repo
+  creation under the `rebootos-sourcce` organization was refused by
+  GitHub, 404, which reads as the connected GitHub App lacking
+  permission to create repositories in that organization rather than
+  anything about the request itself. Named plainly rather than
+  retried blind; the org owner creating an empty repository, or
+  granting that permission, is the one step only he can do here.
+- **The file keeps not arriving, confirmed again**: he says the
+  Cloudflare steps did reach him in some form ("I see the four
+  things") but not as a document, and he does not know how to execute
+  them. Read as: whatever lands in chat text is reaching him, a file
+  attachment is not. Answered with true step by step detail, in the
+  reply itself, no file this time.
