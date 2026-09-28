@@ -24503,3 +24503,9 @@ The masks are not their own door, they draw on the same Intake page
 that round LD above just moved, so moving Intake to Play moves them
 with it; nothing further to build for this specific ask. A build
 follows once the fix is gated.
+
+Landed and shipped: `6c6d8da` and the rebuild `e3c75d7`, version
+v844. Full suite gated clean, 1283 passed, 0 failed. Still open from
+round LC: the Compass oscillation more visible, its icons made
+clickable, and the Body overlay bar's own layout matched to the
+Field's.
