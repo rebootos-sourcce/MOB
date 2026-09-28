@@ -24705,3 +24705,26 @@ over 210, DQ is SQ summed over 1120 as a per cent, SQ is `NODES.map(n
 independent, `coneMirSync`'s `M.cq.x`: it is a spring the needle's
 position eases toward, seeded from `r.CQ` on every sync, not a second
 formula. The ruling already holds structurally; nothing to build.
+
+## LI. The vibrating Field, approved and never built
+
+His words, verbatim: "There's already a version of the field with the
+tension vibrating. It was done a while ago. I approved it. It has not
+been worked on."
+
+- **Checked, and he is right.** Round CL, 26 September, sent him three
+  live prototypes at `proto/field-overlay/`, real data on Sofia, James
+  and Gordon: Hum (the lit line itself vibrates like a plucked string,
+  pitch 4 to 10Hz off its own tension, amplitude off its load, replucked
+  every 1.6 to 3.4s), Pulse (points travel along the line), Relay
+  (one chain fires at a time). Round CQ, his words then: "the tension
+  animation, excellent. The lines running through it, excellent," read
+  at the time as approving Hum and Pulse together. Round CR built only
+  the four unrelated layout items from that same message; the
+  animation itself was never scheduled and never landed.
+- **What did ship, later and separately, is not this.** `wheel.js`
+  carries a pulse-along-a-static-line system from a different, later
+  round (FJ), which is what I checked and reported before. It has no
+  lateral motion of the line itself. Hum, the actual vibration, is
+  still only at `proto/field-overlay/overlay.js`, `draw_hum`, never
+  ported.
