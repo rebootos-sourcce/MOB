@@ -23388,3 +23388,26 @@ skill) are built this round rather than only queued. The Kundalini
 graphic, the terminology question and the signal test's third pass are
 larger and queued, the terminology question explicitly as his own
 still unsettled direction rather than a ruling to build toward.
+
+## Backlog, found in passing by the profile-page agent (round JZ build)
+
+Real defects, not built here because each sits in a file another seat
+held at the time:
+
+- `[ ]` `validateProfile` in `engine/schema.js` silently cuts a `who`
+  text field to 200 characters instead of refusing it by name, which
+  breaks this project's own rule that a bad value is refused, never
+  clamped.
+- `[ ]` Switching profile through the Intake dropdown (`ui/intakeui.js`)
+  or Load a Record (`pImport` via `ui/panels.js`) does not refresh
+  `PEOPLE[0]` or update `PROF_BY['You']` the way the new Profiles page
+  does. A visit to a worked example and back after either path returns
+  to the profile that was open before the switch, not the one now
+  open. Not data loss, since `saveYou` checks the profile id before
+  writing, but confusing. Fix is to route both through the same
+  `accSwitched()` the Profiles page already calls.
+- `[ ]` The profile picker in the top bar (`ui/personas.js`,
+  `pselName`) still reads "Custom" instead of the open profile's own
+  name, unrelated to the new Profiles page and pre-existing.
+- `[ ]` Avatar ratings and ritual plans live beside a profile in
+  browser storage, not inside it, so Export then Load loses them.
