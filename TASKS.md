@@ -23868,3 +23868,20 @@ consequential thing the screenshot surfaces is that `main` is nowhere
 near current: every real commit, including tonight's own domain fix,
 sits on an unmerged branch, so pointing Cloudflare at `main` right now
 deploys none of it.
+
+## KP. Do it yourself, as easy as possible
+
+His words, verbatim: "Yeah. Yeah. Why don't you organize it the way it
+needs to be organized? And if you can set it up, why don't you set it
+up? Uh, I don't understand why you need to do what more do I need to
+do? Make this the easiest way possible."
+
+Real authorization to act rather than keep asking: sort the `reboot-os`
+branch situation myself (investigate the failing checks before
+merging, never merge past a red check without knowing why), and set up
+the actual Cloudflare deploy myself wherever this session's own access
+allows it. The one thing that still needs him directly, an actual
+Cloudflare API token added to this session's own environment secrets,
+is named plainly in the next report rather than glossed over, since it
+is the one step that is his to give and cannot be done from this side
+regardless of authorization.
