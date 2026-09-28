@@ -954,13 +954,16 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  .top[data-sec="play"] #tabbar .tabgrp:not([data-sec="play"]),
  .top[data-sec="flow"] #tabbar .tabgrp:not([data-sec="flow"]){display:none}}
 /* THE SEARCH, KC: one circle where help was, and the field rolls out to its
-   left when it opens. Shut, the field has no width and no tab stop. */
+   left when it opens. Shut, the field has no width and no tab stop.
+   visibility carries the wait as its own duration, not a delay: visible to
+   hidden flips at the end of delay plus duration either way, so this is the
+   same close timing as before, just named rather than a stray 0s. */
 .srch{display:flex;align-items:center;gap:6px;flex:0 0 auto}
 .srch-q{width:0;min-width:0;padding:0;border:0 solid transparent;opacity:0;visibility:hidden;
  min-height:var(--tap);border-radius:var(--r-s);background:var(--sunk);color:var(--ink);
  font-family:var(--sans);font-size:14px;
  transition:width var(--t-element) var(--ease-out),padding var(--t-element) var(--ease-out),
-  opacity var(--t-micro) var(--ease-out),visibility 0s linear var(--t-element)}
+  opacity var(--t-micro) var(--ease-out),visibility var(--t-element) linear}
 .srch-q::placeholder{color:var(--dim)}
 .srch.open .srch-q{width:220px;padding:0 12px;border-width:1px;border-color:var(--edge-2);opacity:1;
  visibility:visible;transition-delay:0s}
