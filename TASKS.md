@@ -23760,3 +23760,94 @@ The navigation reorganization (round KC, discover/play/flow) was
 logged as backlog, built only where a simple win, and he is now
 pressing for it directly rather than leaving it queued. Routed to
 build.
+
+## KN. Body map to icons and an overlay, Source AI needs to look like its own system, avatar deprioritized, the boot card question dropped, everything in the backlog to build
+
+His words, verbatim: "First off, for the primary navigation, I want a
+little icon. So if I click it, everything rolls in just like the, the
+rest of the site design. Second, our menu is going to be broken down
+by Discover, Play, Flow. That's primary navigation. Secondary
+navigation will be the everything that we talked about earlier. I'm on
+the body map page right now. and the navigation front and back get rid
+of the back of head back of neck back of hand we already know this is
+back just i want front and back not seen from behind get rid of that
+text And with these bottom icons, I want them to I want something
+iconographic instead of the text. And those are all going to be on the
+bottom. And there'll be two icons to say front and back. If you have
+front selected, then you have head, neck, shoulders. If I select back,
+you still have head, neck, shoulders. This way we can reduce the
+number of icons that we're using. The padder, pattern pane the
+secondary navigation where it says map fetter saboteurs complexes
+those need to be an overlay on that center column just like our field
+upper left hand navigation and we need to see the number of patterns
+and there's iconic symbol and the charge around them, the ring around
+it. So saboteurs that have its little iconographic the charge around
+it and that little number in the pill that has a number of saboteurs
+running. And I can turn them all on and off. This avatar page okay
+we're gonna save this for last For the story design, I don't like the
+layout. The source AI area it doesn't feel like it's its own dedicated
+system. and it's trying to communicate with me. Pending imprints by
+seat, you have not written anything yet. I don't like that gray area,
+just gray. Remember, that's a input field, so it looks it needs to
+look like a display area. so as a source AI, it needs to look like a
+display area. And then the body, we need to maximize more of our
+space. So once you get rid of that secondary navigation and put it
+into an overlay navigation, that's going to help. get us some space
+back. Yeah. Paint where it hurts press a painted area. Get rid of
+that. and then once we collapse all that navigation, we're going to
+get all that real estate back in the energy map. We'll get more real
+estate. When I click on Fetter Saboteurs Complex, etc., it should show
+me all my networks. and I can zoom in or select a region to find out
+which pattern, which networks are running. Okay, figure out where this
+needs to go. Itemize it. Put in the backlog. And we will build all
+this. Everything in the backlog we need to be building and
+prioritizing. We're prioritizing functionality. UX. Look. And
+deployment. The boot card, do we need it? Otherwise, gray's fine. I
+don't, I don't give a fuck. So what are my next steps with Cloudflare?
+And GitHub, what do I have to do? Give me the steps. And continue"
+
+Sorted by destination:
+
+- **A fold icon for the primary nav**, matching the collapse pattern
+  already used elsewhere, added to the discover/play/flow rebuild
+  already in flight.
+- **The Field/Body region buttons simplified**, direct feedback on the
+  round KA work: drop "back of" and "seen from behind" text entirely,
+  replace the Front/Back choice and every region name with icons, one
+  shared set of body-part icons under a front/back toggle rather than
+  a separate icon per side. Real UI feedback on already-shipped work,
+  queued to build.
+- **Fetter, Saboteurs, Complex and Hyper-complex become one overlay on
+  the body map's centre column**, the same pattern the Field already
+  uses in its own upper left corner, each overlay showing a count in a
+  pill, an icon, and a ring for charge, all toggle-able on and off.
+  This is the round JZ Body page rebuild, now specified further: not a
+  set of tabs, an overlay switch.
+- **The Avatar rebuild is deprioritized, his own words: "we're gonna
+  save this for last."** The redesign already dispatched keeps running
+  since it is close to done, but nothing further gets added to Avatar
+  ahead of the rest of this list.
+- **Source AI needs to read as its own system, not blend into the
+  page**, and its empty state ("you have not written anything yet")
+  needs to stop looking like a flat grey input box and start looking
+  like a display, a readout. This is round JS's still queued "readout
+  visual treatment," now with a concrete complaint attached rather
+  than only a request.
+- **"Paint where it hurts," the instructional line on the pain map,
+  comes out** once the fetter/saboteur navigation folds into an
+  overlay and frees the space it was sitting in.
+- **The interaction model for the folded overlay:** press Fetter,
+  Saboteurs or Complex and it shows every network of that kind
+  running on the body, with zoom or a region select to find which
+  pattern is active where. Confirms the JZ spec rather than changing
+  it.
+- **The boot card grey question from round KM is dropped.** His exact
+  words: "The boot card, do we need it? Otherwise, gray's fine. I
+  don't, I don't give a fuck." Read as: keep the guard, the colour
+  question is closed, nothing further to build there.
+- **Cloudflare and GitHub steps asked for a third time.** Answered
+  concisely again in the next report.
+- **"Everything in the backlog we need to be building and
+  prioritizing," in his own order: functionality, UX, look, then
+  deployment.** Read as a standing instruction for how to sequence
+  what gets picked up next, not a single task.
