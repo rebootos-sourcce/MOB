@@ -24775,3 +24775,43 @@ invitation at the end of the results.** The destination the
 invitation points at is not decided, since hosting is not live yet
 per the open Cloudflare item; built to name that plainly rather than
 link to nothing.
+
+**Landed and verified myself, commit `ac7e067`.** All four of his
+steps now ship. A new story step sits between the reading and the
+door: a textarea, skippable, reading "Pick a moment from this week
+that is still sitting in you," run through `parseStory`, the same
+reader the app's own Story page uses, on nothing new scored. Its
+honesty rules, checked against `sniff.js`'s own comments: a charge the
+words only reached but did not name gets no card and no address,
+since printing one turned a bereavement into "Martyrdom"; a charge the
+words did name at a seat with no address for it gets its card with no
+address; a word after "not" is quoted with the "not" and counted, same
+as the app's Story page. The last line on each card says whether the
+hundred questions reached the same address. Nothing typed is stored,
+stated twice on the page itself. The door now also invites the app,
+"Open the app," pointing at `../source.html` in source and rewritten
+to `atuned.html` in `BUILD-single.sh`, the handover name, since no
+hosted address exists yet.
+
+Verified in an isolated worktree, independent of the build: `node
+tests/engine.js` 1836 passed 0 failed, `NODE_PATH=... node
+tests/funnel.js` 172 passed 0 failed, 0 outbound requests measured.
+Voice check 22 findings, 0 stopping, same count as HEAD without this
+change. Looked at all six new and changed screenshots myself at both
+widths before trusting the report. Fixed two things before pushing:
+the commit's attribution line named the wrong model, corrected to
+match this session's own rule, and one comment left stale by this
+same change, updated rather than left wrong.
+
+**One claim in the build report checked and not passed on.** Flagged
+as "not fixed, out of scope": a claimed profile button bug, first
+click doing nothing and the second opening Settings. Reproduced twice
+myself, immediately after boot, both widths, real Chromium: the first
+click opened Settings both times. Not passed on as a real finding,
+since it did not reproduce.
+
+**The one real open decision, his to make.** Where "Open the app"
+points once hosting is live is a one line change in two files, not
+done blind. Also open: whether the story itself should ever enter the
+saved record, left out of it for now on the builder's own read of
+"his story" versus "his answers."
