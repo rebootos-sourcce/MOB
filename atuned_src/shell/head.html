@@ -817,8 +817,13 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  /* #343434, ASKED FOR A THIRD TIME, ROUND LK. It was var(--ink), the
     wordmark's own colour, which on Dark reads as bright white competing
     with the mark above it for the eye. His own number, fixed rather than a
-    token, since he has given this exact hex three times running. */
- color:#343434;line-height:1;text-transform:uppercase;margin-top:15px}
+    token, since he has given this exact hex three times running.
+    THE GAP, TAKEN BACK BY SIX, ROUND LL. LK's 15px read as too much the
+    moment he saw it: "reduce the source pixel distance by six pixels so
+    that source OS is closer to a tune." 15 to 9, and the block still
+    centres inside .brand's own box, since .brand centres its column on
+    justify-content regardless of the content's height. */
+ color:#343434;line-height:1;text-transform:uppercase;margin-top:9px}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* THE UMLAUT IS PART OF THE DRAWING. Two measured corrections to CSS dots
    over a set u lived here, one for the lowercase letter and one for the
@@ -1007,8 +1012,12 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
     much real estate." The tab buttons themselves keep the 44px tap floor
     tests/design.js gate 8 holds every interactive control to, so the 10px
     comes from the space around the row instead: 4px off the gap between the
-    two rows, 6px off the padding under the second one. */
- .top{flex-wrap:wrap;row-gap:2px;padding-bottom:3px}
+    two rows, 6px off the padding under the second one.
+    A SECOND PASS, ROUND LL. "Close some space to the top line nav bar so we
+    can reclaim more real estate below it." The 44px rows are the tap floor
+    and do not move again; the padding above the first row is what is left
+    to give, 9px to 5px. */
+ .top{flex-wrap:wrap;row-gap:2px;padding-top:5px;padding-bottom:3px}
  .top #tabbar,.top:has(#status:not(:empty)) #tabbar{order:1;flex:1 1 100%;max-width:none;
   padding-left:var(--secx,0px)}}
 /* THE SEARCH, KC: one circle where help was, and the field rolls out to its
