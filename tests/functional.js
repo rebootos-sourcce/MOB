@@ -126,43 +126,127 @@ for(const nm of people){
    which one is associated with child, preteen, teen, etc. I don't want that
    overlay on a sub menu, I want it on an overlay in that panel." They were a
    ring band on the Field and a layer in the Body's row. Held here: no switch
-   anywhere names them, all six stand on the map's figure, each lights its
-   own weight in dots and the dots reach the pixels, the count moves when the
-   reading moves, and a press opens the mask's drill, which is the Field's DY
-   fix carried to where the masks went. */
+   anywhere names them, all six stand on the map's figure, and a press opens
+   the mask's drill, which is the Field's DY fix carried to where the masks
+   went.
+
+   CHANGED 28 SEPTEMBER, and changed rather than cut: this held "each lights
+   its own weight in dots" on Gordon, round(w/10 x places). KW in TASKS.md,
+   his words: "each pixel represents a story and each cluster represents a
+   saboteur that makes up the shadow for the child." So a lit pixel is held to
+   one committed story now and a block to one saboteur, each checked against
+   the entries re-parsed here by parseStory, not against the function that
+   draws them. Gordon is a worked example with no stories, so on Gordon the
+   right count is zero everywhere, and that is asserted rather than skipped;
+   the stories are committed through the Story tab on a person's own profile,
+   on a page of their own so no later check finds them. */
 console.log('\n=== the six masks, as pixels on the figure ===');
 {
  const was=await page.evaluate(()=>PMLAYER);
  const frames=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
  await page.evaluate(()=>{loadP(PERSON('Gordon'));setTab(TAB.ENERGY);PMLAYER='map';render();});
  await frames(); await page.waitForTimeout(300);
- const m=await page.evaluate(()=>{const r=compute(),cv=BM.cv,cx=cv.getContext('2d');
-  const lit=BMG.masks.map(k=>{const w=(r.maskRing.find(x=>x.nm===k.nm)||{w:0}).w,n=bmMaskLit(k,r);
-   /* the first lit dots, read off the canvas: bone, warm over cool */
-   let bone=0;k.sl.slice(0,n).forEach(p=>{const s=bmW2S(p.x,p.y),d=cx.getImageData(Math.round(s[0]*BM.dpr),Math.round(s[1]*BM.dpr),1,1).data;
-    if(d[0]>90&&d[0]>=d[2]+12)bone++;});
-   return {nm:k.nm,w:w,n:n,of:k.sl.length,bone:bone};});
+ const m=await page.evaluate(()=>{const r=compute();
   return {row:[...document.querySelectorAll('#lbar [data-pml]')].map(b=>b.getAttribute('data-pml')),
    bar:[...document.querySelectorAll('#fbar [data-fb]')].map(b=>b.getAttribute('data-fb')),
-   hits:[...document.querySelectorAll('#bmsv [data-bmmask]')].map(h=>h.getAttribute('data-bmmask')),
-   want:MASKS.map(x=>x.nm),lit:lit};});
- ok(m.row.length>0&&m.row.indexOf('masks')<0,'the Body row carries no Masks layer, got '+m.row.join(','));
+   hits:[...new Set([...document.querySelectorAll('#bmsv [data-bmmask]')].map(h=>h.getAttribute('data-bmmask')))],
+   want:MASKS.map(x=>x.nm),ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,
+   lit:BMG.masks.map(k=>({nm:k.nm,n:bmMaskLit(k,r),of:k.sl.length}))};});
+ /* CHANGED 28 SEPTEMBER: this held a row with no Masks in it, and now there
+    is no row. KV, his words: "I no longer need the secondary navigation of
+    saboteurs, complexes, hypercomplexes, masks". The masks are a circle in
+    the map's upper left, held in the block after this one. */
+ ok(m.row.length===0,'the Body has no layer row, so no Masks layer in one, got '+m.row.join(','));
  ok(m.bar.length>0&&m.bar.indexOf('masks')<0,'and the glass bar no Masks switch, got '+m.bar.join(','));
  ok(m.hits.slice().sort().join()===m.want.slice().sort().join(),'all six masks stand on the figure, got '+m.hits.join(','));
- ok(m.lit.every(x=>x.of>=20&&x.n===Math.round(Math.min(1,x.w/10)*x.of)),'each lights its own weight in dots, '
-  +m.lit.map(x=>x.nm+' '+x.n+'/'+x.of).join(', '));
- ok(m.lit.some(x=>x.n>0),'on Gordon the masks carry dots');
- ok(m.lit.every(x=>x.bone>=x.n*0.5),'and the dots reach the pixels, '+m.lit.map(x=>x.nm+' '+x.bone+'/'+x.n).join(', '));
- /* live: charge raised under the same person, and the count follows it */
- const live=await page.evaluate(async()=>{const k=BMG.masks.find(x=>x.nm==='Child');
-  const b0=bmMaskLit(k,compute());
-  CHARGES.forEach(c=>{S.charge[c]=10;}); render();
+ ok(m.lit.every(x=>x.of>=20),'each patch has room for twenty stories or more, '+m.lit.map(x=>x.nm+' '+x.of).join(', '));
+ ok(m.ents===0&&m.lit.every(x=>x.n===0),'Gordon is a worked example with no stories, so no mask lights a pixel, '
+  +m.ents+' entries, '+m.lit.map(x=>x.nm+' '+x.n).join(', '));
+
+ /* the person's own profile, with stories committed the way a person does */
+ const sp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const spErr=[];sp.on('pageerror',e=>spErr.push(e.message));
+ await sp.goto(FILE,{waitUntil:'load'}); await booted(sp);
+ const commit=async t=>{
+  await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
+   const ta=document.getElementById('sttext');ta.value=t;ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
+  await sp.waitForTimeout(60);
+  await sp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
+  await sp.waitForTimeout(60);};
+ for(const t of ['My chest is tight in every meeting and I have told no one.',
+  'My stomach knots when my father calls. I was always afraid of him as a kid.',
+  'I could not speak up when my boss took credit for my work. My throat closed.',
+  'I am ashamed of my body and I hide it from my partner.',
+  'I swallow my anger at work and smile, then I cannot sleep.',
+  'I am terrified of being poor and homeless, I never feel safe.',
+  'I always need to be in control and I panic when plans change.',
+  'I drink too much on weekends to forget how lonely I am.',
+  'I scream at my kids and then feel guilty all night.',
+  'I feel disgusted with myself after I eat.'])await commit(t);
+ await sp.evaluate(()=>{setTab(TAB.ENERGY);PMLAYER='map';render();});
+ await sp.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ await sp.waitForTimeout(400);
+ /* EVERYTHING EXPECTED IS WORKED OUT HERE FROM THE ENTRIES THEMSELVES:
+    which stories landed under each mask at an address still carrying, which
+    saboteurs in r.sabs each of those touches, and the heaviest of them. */
+ const own=await sp.evaluate(()=>{const r=compute(),cx=BM.cv.getContext('2d'),E=CURP.story.entries;
+  const land=E.map(e=>parseStory(e.text).imprints.map(x=>x.node));
+  return {ents:E.length,masks:BMG.masks.map(k=>{
+   const rd=bmMaskRead(k,r), under={};
+   land.forEach((ids,ei)=>{const mine=ids.filter(i=>BY[i]&&k.m.b.indexOf(BY[i].b)>=0&&BY[i].sq>=1);
+    if(mine.length)under[ei]=mine;});
+   const want=Object.keys(under).length;
+   const bad=[];
+   rd.px.forEach(x=>{const ids=under[x.s.ei];
+    if(!ids){bad.push('story '+x.s.ei+' is not under '+k.nm);return;}
+    const touch=r.sabs.filter(o=>o.parts.some(n=>ids.indexOf(n.i)>=0));
+    if(x.c<0){if(touch.length)bad.push('story '+x.s.ei+' drawn loose but '+touch[0].nm+' is built on it');return;}
+    if(!touch.length||touch[0].nm!==rd.cl[x.c].nm)
+     bad.push('story '+x.s.ei+' in '+rd.cl[x.c].nm+', heaviest touching is '+(touch[0]||{nm:'none'}).nm);});
+   /* the shape: a block's pixels touch each other side on, nothing of one
+      block touches another block or a loose pixel, and no two loose pixels
+      touch side on */
+   const at={};rd.px.forEach(x=>{at[x.p.i+','+x.p.j]=x.c;});
+   const nb=(x,d)=>at[(x.p.i+d[0])+','+(x.p.j+d[1])];
+   const side=[[1,0],[-1,0],[0,1],[0,-1]], all8=side.concat([[1,1],[1,-1],[-1,1],[-1,-1]]);
+   rd.px.forEach(x=>{
+    if(x.c>=0&&rd.cl[x.c].n>1&&!side.some(d=>nb(x,d)===x.c))bad.push(k.nm+' block '+x.c+' has a pixel on its own');
+    all8.forEach(d=>{const o=nb(x,d);if(o!==undefined&&o!==x.c&&(x.c>=0||o>=0))bad.push(k.nm+' '+x.c+' touches '+o);});
+    if(x.c<0&&side.some(d=>nb(x,d)===-1))bad.push(k.nm+' two loose pixels touch');});
+   /* the drawn pixels reach the canvas: bone, warm over cool */
+   let bone=0;rd.px.forEach(x=>{const s=bmW2S(x.p.x,x.p.y),d=cx.getImageData(Math.round(s[0]*BM.dpr),Math.round(s[1]*BM.dpr),1,1).data;
+    if(d[0]>90&&d[0]>=d[2]+12)bone++;});
+   const say=[...BM.sv.querySelectorAll('[data-bmmask="'+k.nm+'"] title')].map(t=>t.textContent);
+   return {nm:k.nm,want:want,n:rd.px.length,over:rd.over,cl:rd.cl.map(c=>c.nm+' '+c.n),loose:rd.loose,
+    bad:bad,bone:bone,blocks:say.length-1,say:say[0]||''};})};});
+ ok(own.ents>=8,'the stories committed on the person\'s own profile, '+own.ents+' entries');
+ ok(own.masks.every(x=>x.n+x.over===x.want),'each mask lights one pixel per story held under it, '
+  +own.masks.map(x=>x.nm+' '+x.n+'+'+x.over+' of '+x.want).join(', '));
+ ok(own.masks.filter(x=>x.n>0).length>=3,'and the stories reach three masks or more, '+own.masks.filter(x=>x.n>0).map(x=>x.nm).join(','));
+ ok(own.masks.some(x=>x.cl.length>0),'at least one story is part of a saboteur, '+own.masks.map(x=>x.nm+' ['+x.cl.join('; ')+']').join(' '));
+ const bad=[].concat(...own.masks.map(x=>x.bad));
+ ok(bad.length===0,'each pixel sits under the heaviest saboteur built on its addresses, blocks whole and apart, '
+  +(bad.slice(0,4).join('; ')||'none wrong'));
+ ok(own.masks.every(x=>x.bone>=x.n*0.5),'and the pixels reach the canvas, '+own.masks.map(x=>x.nm+' '+x.bone+'/'+x.n).join(', '));
+ ok(own.masks.every(x=>x.blocks===x.cl.length),'one named target per saboteur block, '+own.masks.map(x=>x.nm+' '+x.blocks).join(', '));
+ ok(own.masks.every(x=>x.want?new RegExp(x.want+' stor').test(x.say):/Nothing written/.test(x.say)),
+  'each mask says how many stories it holds, '+own.masks.map(x=>x.say.split('. ').slice(2).join('. ')).join(' | '));
+ /* live: one more story, into the pelvis, and the Child mask gains its pixel */
+ const lv0=await sp.evaluate(()=>{const k=BMG.masks.find(x=>x.nm==='Child');return bmMaskLit(k,compute());});
+ const newT='I am scared I will lose my home and I never feel safe at night.';
+ await commit(newT);
+ await sp.evaluate(()=>{setTab(TAB.ENERGY);PMLAYER='map';render();});
+ const live=await sp.evaluate(async t=>{const k=BMG.masks.find(x=>x.nm==='Child'),r=compute();
+  const into=parseStory(t).imprints.some(x=>BY[x.node]&&k.m.b.indexOf(BY[x.node].b)>=0&&BY[x.node].sq>=1);
+  const b1=bmMaskLit(k,r), t0=performance.now();
   /* waited on the drawn count reaching the reading, not on a guess at how
      long a frame takes; three seconds is the ceiling, not the expectation */
-  const b1=bmMaskLit(k,compute()), t0=performance.now();
-  while(k.shown!==b1&&performance.now()-t0<3000)await new Promise(r=>requestAnimationFrame(r));
-  return {b0:b0,b1:b1,shown:k.shown,ms:Math.round(performance.now()-t0)};});
- ok(live.b1>live.b0&&live.shown===live.b1,'the dots fill in as the reading moves, Child '+live.b0+' to '+live.b1+', drawn '+live.shown+' in '+live.ms+'ms');
+  while(k.shown!==b1&&performance.now()-t0<3000)await new Promise(q=>requestAnimationFrame(q));
+  return {into:into,b1:b1,shown:k.shown,ms:Math.round(performance.now()-t0)};},newT);
+ ok(live.into&&live.b1===lv0+1&&live.shown===live.b1,'a story written into the pelvis is one more Child pixel, '
+  +lv0+' to '+live.b1+', drawn '+live.shown+' in '+live.ms+'ms'+(live.into?'':', and the story did not land there'));
+ ok(spErr.length===0,'no page errors on the story profile, '+spErr.join(' | '));
+ await sp.close();
  /* the press, aimed at a lit dot with no address or line under it */
  await page.evaluate(()=>{loadP(PERSON('Gordon'));rdClose();render();});
  await frames(); await page.waitForTimeout(200);
@@ -180,9 +264,127 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   ok(got.shown&&got.t.indexOf(pt.nm)>=0&&got.held===pt.nm,'pressing the '+pt.nm+' mask opens its drill, '
    +(got.shown?got.t.length+' chars':'nothing in the panel'));
   await page.mouse.move(5,5);}
- console.log('  '+m.lit.map(x=>x.nm+' '+x.n+'/'+x.of).join('  ')+'  live '+live.b0+'>'+live.b1);
+ console.log('  '+own.masks.map(x=>x.nm+' '+x.n+(x.cl.length?' ['+x.cl.join('; ')+']':'')).join('  ')+'  live Child '+lv0+'>'+live.b1);
  /* put back what the loop above left: its last person and its last layer */
  await page.evaluate(w=>{rdClose();PMPICK=null;PMLAYER=w;loadP(PEOPLE.length-1);render();},was);}
+
+/* ---------------------------------------------------------------------------
+   THE BODY'S OVERLAYS ARE THE FIELD'S BAR, ON THE MAP.
+
+   KV in TASKS.md, his words: "I can click on or off my saboteurs, complexes,
+   hypercomplexes, or masks. It means I no longer need the secondary
+   navigation... These are icons. They're in my upper left hand navigation,
+   just like my field. Maps. I can hover over them and get tooltip
+   information. I can turn them on and off, or I can press a little burger
+   thing and it completely collapses." And the groups: "nodes, clusters,
+   networks. Networks are what? Saboteurs, complexes, hypercomplexes. Pain,
+   flow." And KU before it: "if I click on one of the lists it shows me the
+   connections in the in my map".
+
+   Held here: the row is gone and the circles are the Field's objects, in
+   his three groups, each carrying a tooltip; each is its own switch and
+   each switch reaches the drawing; a complex pressed on the figure holds,
+   answers in Selection and lights the lines it is built of; its circle off
+   puts it down; Pain is the map's own mode; Flow's five steps are read off
+   the pass every seat already prints; the burger folds the rest; and the
+   wheel, scrolled out, lands on the frame.
+--------------------------------------------------------------------------- */
+console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
+{
+ const frames=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ await page.evaluate(()=>{try{STORE.set('bmov','open');}catch(e){}
+  loadP(PERSON('Gordon'));rdClose();setTab(TAB.ENERGY);PMLAYER='map';render();});
+ await frames(); await page.waitForTimeout(250);
+ const bar=await page.evaluate(()=>{const b=document.getElementById('bmov');
+  return {groups:[...b.querySelectorAll('.fb-grp')].map(g=>g.getAttribute('aria-label')+':'
+    +[...g.querySelectorAll('[data-bmov]')].map(x=>x.getAttribute('data-bmov')).join('+')),
+   tips:[...b.querySelectorAll('[data-bmov]')].filter(x=>!(x.getAttribute('data-tip')||x.getAttribute('data-tip-t'))).length,
+   orbs:b.querySelectorAll('.fb-b .fb-orb').length,
+   on:[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(','),
+   row:document.querySelectorAll('#lbar button').length,
+   modeBtns:document.querySelectorAll('#rbar [data-bmmode]').length};});
+ ok(bar.groups.join('|')==='Nodes:addr+masks|Clusters:pain+flow|Networks:sab+cx+hy',
+  'three groups, as he named them, '+bar.groups.join(' | '));
+ ok(bar.orbs===8&&bar.tips===0,'eight of the Field\'s circles with the burger, every one with a tooltip, '+bar.orbs+' circles, '+bar.tips+' without');
+ ok(bar.on==='addr,masks,sab','it opens on what the figure drew before the bar, got '+bar.on);
+ ok(bar.row===0&&bar.modeBtns===0,'and there is no row and no Pattern and Pain pair left beside it');
+ /* each switch reaches the drawing: the pick, the hits, the hubs */
+ const sw=await page.evaluate(()=>{const tap=k=>document.querySelector('#bmov [data-bmov="'+k+'"]').click();
+  const out={};
+  const cab=BM.sabs.find(s=>s.views[0]&&bmCable(s,0,BM.t));
+  const cp=cab?bmW2S(cab.views[0].samp[Math.floor(cab.views[0].samp.length/2)][0],cab.views[0].samp[Math.floor(cab.views[0].samp.length/2)][1]):null;
+  BM.conn=bmConnNow(); out.sabBefore=cp?!!bmPick(cp[0],cp[1]).sab:null;
+  tap('sab'); BM.conn=bmConnNow(); out.sabAfter=cp?!!bmPick(cp[0],cp[1]).sab:null; tap('sab');
+  const pl=BMG.places.find(p=>bmSolidOn(p,0)), ps=bmW2S(bmPlaceX(pl,0),pl.y);
+  out.addrBefore=bmPick(ps[0],ps[1]).place===pl;
+  tap('addr'); out.addrAfter=bmPick(ps[0],ps[1]).place===pl; tap('addr');
+  out.masksOn=BM.sv.querySelectorAll('[data-bmmask]').length;
+  tap('masks'); out.masksOff=BM.sv.querySelectorAll('[data-bmmask]').length; tap('masks');
+  out.hubs0=BM.hubs.length; tap('cx'); out.hubsCx=BM.hubs.filter(h=>h.k==='cx').length;
+  out.cxWant=Math.min(BMSABMAX,compute().cxs.length); tap('hy'); out.hubsHy=BM.hubs.filter(h=>h.k==='hy').length;
+  out.hyWant=Math.min(BMSABMAX,compute().hys.length); tap('hy');
+  return out;});
+ ok(sw.sabBefore===true&&sw.sabAfter===false,'Saboteurs off takes the lines at rest off the figure, pointed at '+sw.sabBefore+' then '+sw.sabAfter);
+ ok(sw.addrBefore===true&&sw.addrAfter===false,'Addresses off takes the addresses off, and nothing is left to point at');
+ ok(sw.masksOn===6&&sw.masksOff===0,'Masks off takes all six off and their presses with them, '+sw.masksOn+' then '+sw.masksOff);
+ ok(sw.hubs0===0&&sw.hubsCx===sw.cxWant&&sw.hubsHy===sw.hyWant,'Complexes and Hyper complexes draw their hubs, eight at most, '
+  +JSON.stringify(sw));
+ /* a complex pressed on the figure, with the pointer, where its hub is */
+ await frames(); await page.waitForTimeout(150);
+ const hp=await page.evaluate(()=>{const sv=BM.sv.getBoundingClientRect();
+  for(const h of BM.hubs){if(h.k!=='cx')continue;const s=bmW2S(h.at[0].x,h.at[0].y),pk=bmPick(s[0],s[1]);
+   const e=document.elementFromPoint(sv.left+s[0],sv.top+s[1]);
+   if(pk.hub===h&&e&&!(e.closest&&(e.closest('[data-seat]')||e.closest('#bmov'))))return {x:sv.left+s[0],y:sv.top+s[1],nm:h.o.nm};}
+  return null;});
+ ok(!!hp,'a complex has a hub on the front figure clear of every seat to press');
+ if(hp){await page.mouse.click(hp.x,hp.y); await frames(); await page.waitForTimeout(200);
+  const held=await page.evaluate(()=>{const o=bmHeldObj(),c=bmConn(o),d=document.getElementById('rdrill');
+   const drawn=BM.sabs.map(s=>s.nm);
+   const want=Object.keys(c.sab).filter(nm=>{const s=compute().sabs.find(x=>x.nm===nm);
+    return s&&s.parts.filter(n=>BMG.byId[n.i]).length>1;});
+   return {nm:o&&o.nm,kind:o&&o.kind,shown:d.style.display!=='none',t:d.textContent||'',
+    lit:want.filter(nm=>drawn.indexOf(nm)>=0).length,want:want.length,ids:Object.keys(c.ids).length};});
+  ok(held.kind==='cx'&&held.nm===hp.nm,'pressing the hub holds that complex, '+held.nm);
+  ok(held.shown&&held.t.indexOf(hp.nm)>=0,'and it answers in Selection');
+  ok(held.want>0&&held.lit===held.want&&held.ids>0,'and the lines it is built of are drawn, whatever they weigh, '
+   +held.lit+' of '+held.want+' on '+held.ids+' addresses');
+  const down=await page.evaluate(()=>{document.querySelector('#bmov [data-bmov="cx"]').click();
+   return {pick:PMPICK,shown:document.getElementById('rdrill').style.display!=='none'};});
+  ok(down.pick===null&&!down.shown,'and switching Complexes off puts it down');
+  await page.mouse.move(5,5);}
+ /* Pain is the map's own mode, and its circle is the one switch for it */
+ const pain=await page.evaluate(()=>{const b=document.querySelector('#bmov [data-bmov="pain"]');
+  b.click(); const on=BM.mode+':'+b.getAttribute('aria-pressed')+':'+!!document.getElementById('bmbrush');
+  b.click(); return on+' '+BM.mode+':'+b.getAttribute('aria-pressed');});
+ ok(pain==='pain:true:true pattern:false','the Pain circle switches the map into painting and out, '+pain);
+ /* Flow's five steps, off the pass every seat prints */
+ const fl=await page.evaluate(()=>{const s=flSeats(),st=k=>bmFlowStep(s.find(x=>x.p.k===k).pass);
+  const t=BM.sv.querySelector('[data-seat="throat"] title');
+  return {steps:BMFLOW.map(x=>x[1]).join(','),throat:st('throat'),crown:st('crown'),
+   title:t?t.textContent:'',edge:[bmFlowStep(1),bmFlowStep(.8),bmFlowStep(.79),bmFlowStep(.2),bmFlowStep(.19),bmFlowStep(0)].join(',')};});
+ ok(fl.steps==='open,mildly impaired,moderately impaired,heavily impaired,blocked','five steps, in his words, '+fl.steps);
+ ok(fl.edge==='open,open,mildly impaired,heavily impaired,blocked,blocked','fifths of pass, '+fl.edge);
+ ok(fl.throat==='blocked'&&fl.crown==='moderately impaired'&&fl.title.indexOf('blocked')>=0,
+  'Gordon\'s throat passes 8 percent and reads blocked, on the seat\'s own name too, '+fl.title);
+ /* the burger folds the rest, and opens them as they were */
+ const bg=await page.evaluate(()=>{const b=document.getElementById('bmov'),t=b.querySelector('[data-bmov="shut"]');
+  const vis=()=>[...b.querySelectorAll('.fb-grp')].filter(g=>getComputedStyle(g).display!=='none').length;
+  t.click(); const shut=vis()+':'+t.getAttribute('aria-expanded');
+  t.click(); return shut+' '+vis()+':'+t.getAttribute('aria-expanded')+' '
+   +[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');});
+ ok(bg==='0:false 3:true addr,masks,sab','the burger folds all three groups and opens them as they were, '+bg);
+ /* KV: "If I scroll on the body map, I can't frame it." */
+ const sv=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return {x:b.left,y:b.top};});
+ await page.mouse.move(sv.x+140,sv.y+140);
+ for(let i=0;i<4;i++){await page.mouse.wheel(0,-240);await page.waitForTimeout(40);}
+ const inz=await page.evaluate(()=>bmZoomed());
+ for(let i=0;i<14;i++){await page.mouse.wheel(0,240);await page.waitForTimeout(40);}
+ await page.waitForTimeout(100);
+ const cam=await page.evaluate(()=>{const f=bmFitCam(),c=BM.cam;
+  return {d:Math.max(Math.abs(c.x-f.x),Math.abs(c.y-f.y),Math.abs(c.z-f.z)),z:c.z/f.z};});
+ ok(inz&&cam.d<1e-6,'the wheel in and then out lands on the frame, not below it and off centre, '+JSON.stringify(cam));
+ await page.mouse.move(5,5);
+ await page.evaluate(()=>{rdClose();loadP(PEOPLE.length-1);render();});}
 
 /* ---------------------------------------------------------------------------
    THE PAIN MAP OPENS BLANK AND IS PAINTED ON.
@@ -291,7 +493,11 @@ const kb=await page.evaluate(()=>{
     screenshot: twelve entries above the fold became thirty nine at 1600 and
     one became six on a phone. */
  const rows=()=>document.querySelectorAll('.kb-row').length;
- const all=rows();
+ /* the addresses deck by name, not by whichever section opens by default.
+    round KZ reversed KB_SECS to open on the universal laws, and this count
+    is asserted against the 112 addresses regardless of which deck a person
+    lands on first. */
+ KB_SEC='addr'; kbRender(); const all=rows();
  /* search narrows, and a term that is in no table finds nothing anywhere */
  KB_Q='fear'; kbRender(); const hit=rows();
  KB_Q='zzzznotathing'; kbRender();
@@ -1884,9 +2090,16 @@ console.log('\n=== the navigation is in the document and cannot drift ===');
  ok(moved.pressed==='true','and the button it pressed reads as pressed');}
 await page.evaluate(()=>setTab(TAB.FIELD));
 
-console.log('\n=== the bar is three sections over the tabs, and no integer moved ===');
+console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and no integer moved ===');
 /* KC and KM in TASKS.md: Discover, Play and Flow as the first tier, the tabs
-   as the second. Membership is written once, in TABDEF's .sec, and the
+   as the second. KT made it the loop's four, his emergency: the loop is
+   discover, play, flow, embody and the bar had no Embody. The section list
+   and every placement are held to his last pass by name here, so a fifth
+   key, a lost one or a tab in the wrong section is a named failure and not
+   a silent reshuffle. And the tabs are a row under the sections, never
+   beside them, starting under the pressed section's first letter: "I don't
+   mean the same horizontal plane as the primary navigation. Ever."
+   Membership is written once, in TABDEF's .sec, and the
    markup groups the same buttons by hand, so the two are compared here the
    same way the flat bar was. The identity integers are held to their values
    outright, because a reorganisation of the bar is exactly the change that
@@ -1909,11 +2122,28 @@ console.log('\n=== the bar is three sections over the tabs, and no integer moved
    document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
    const want=TABDEF.filter(t=>t.sec===s.k).map(t=>t.k);
    out.press[s.k]={landed:want.indexOf(S.tab)>=0, shown:JSON.stringify(vis())===JSON.stringify(want),
-    pressed:JSON.stringify(pressedSec())===JSON.stringify([s.k])};}
+    pressed:JSON.stringify(pressedSec())===JSON.stringify([s.k])};
+   /* the row and the letter, above the phone width where the bar is a row */
+   if(innerWidth>720){
+    const sn=document.querySelector('#secbar .secb[data-sec="'+s.k+'"] .sn').getBoundingClientRect();
+    const t0=[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)[0];
+    const tn=t0.querySelector('.n').getBoundingClientRect();
+    out.press[s.k].below=tn.top>=sn.bottom;
+    out.press[s.k].dx=Math.round((tn.left-sn.left)*10)/10;}}
+  out.first={};
+  for(const s of SECTIONS){SEC_LAST={}; setTab(TAB.SETTINGS);
+   document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
+   out.first[s.k]=TABOF(S.tab).nm;}
   setTab(TAB.COMPASS); await wait();
   document.querySelector('#secbar .secb[data-sec="flow"]').click(); await wait();
   document.querySelector('#secbar .secb[data-sec="play"]').click(); await wait();
   out.remembers=S.tab===TAB.COMPASS;
+  /* KT by name, and not only by agreement between the engine and the markup,
+     which would pass on any grouping at all: these are the placements he
+     asked for, and Games off the bar with no section, like Settings */
+  out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),story:SECOF(TAB.STORY),
+   know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),field:SECOF(TAB.FIELD),
+   body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),games:SECOF(TAB.GAMES)};
   setTab(TAB.SETTINGS); await wait();
   out.settings={pressed:pressedSec().length, shown:vis().length};
   /* the fold, KN: the sections roll in to the pressed one */
@@ -1932,17 +2162,23 @@ console.log('\n=== the bar is three sections over the tabs, and no integer moved
   return out;});
  ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10}',
   'every identity integer holds its value, '+nav.tab);
- ok(JSON.stringify(nav.secKeys)==='["discover","play","flow"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
-  'the first tier is discover, play, flow, in his order, in the engine and the markup alike');
+ ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
+  'the first tier is discover, play, flow, embody, in his order, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"discover","compass":"play","games":null}',
+  'KT: Story, Avatar, Intake and Summary in Discover, Field and Compass in Play, Ritual in Flow, Knowledge in Embody, Games hidden, '+JSON.stringify(nav.placed));
+ ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
+  'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
  ok(nav.secof.analytics==='discover'&&nav.secof.settings===null,
   'a folded surface answers with its carrier\'s section and Settings with none, '+JSON.stringify(nav.secof));
  Object.keys(nav.press).forEach(k=>{const p=nav.press[k];
-  ok(p.landed&&p.shown&&p.pressed,k+': pressing it opens a tab in it, shows exactly its tabs and presses it alone, '+JSON.stringify(p));});
+  ok(p.landed&&p.shown&&p.pressed,k+': pressing it opens a tab in it, shows exactly its tabs and presses it alone, '+JSON.stringify(p));
+  if(p.dx!==undefined)ok(p.below&&Math.abs(p.dx)<=1,
+   k+': its tabs are a row below it, the first tab\'s word starting under its first letter, off by '+p.dx+'px');});
  ok(nav.remembers,'a section goes back to the tab last used in it');
  ok(nav.settings.pressed===0&&nav.settings.shown>0,'Settings presses no section and leaves the last section\'s tabs in sight, '+JSON.stringify(nav.settings));
- ok(JSON.stringify(nav.folded)==='["discover:hidden","play:visible","flow:hidden"]',
+ ok(JSON.stringify(nav.folded)==='["discover:hidden","play:visible","flow:hidden","embody:hidden"]',
   'folded, the sections roll in to the pressed one, '+JSON.stringify(nav.folded));
  ok(nav.searchOpen,'the search circle opens the field and puts the cursor in it');
  ok(nav.searched.tab&&nav.searched.q==='shame'&&nav.searched.closed,
@@ -1958,8 +2194,8 @@ console.log('\n=== the build says which build it is, and how much of it arrived 
   const e=document.getElementById('eof');
   return {stamp:(document.documentElement.getAttribute('data-build')||'').trim(),
           len:e?e.getAttribute('data-len'):''};});
- ok(/^[0-9a-f]{7,}\s+\d{4}-\d{2}-\d{2}/.test(st.stamp),
-  'the document carries the commit and the build time, got '+JSON.stringify(st.stamp));
+ ok(/^v\d+\s+[0-9a-f]{7,}\s+\d{4}-\d{2}-\d{2}/.test(st.stamp),
+  'the document carries the version, the commit and the build time, got '+JSON.stringify(st.stamp));
  ok(/^\d{9}$/.test(st.len),
   'and the end of file marker carries the byte length, got '+JSON.stringify(st.len));}
 

@@ -420,48 +420,46 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
    ============================================================ */
 {
  console.log('\n=== 10 · the body paints what it counts ===');
- const p5=await browser.newPage({viewport:{width:1600,height:1000}});
+ /* CHANGED 28 SEPTEMBER, and changed rather than cut. This pressed Fetters,
+    Saboteurs and Complexes in the Body's layer row, and the row is gone: KV
+    in TASKS.md, his words, "I no longer need the secondary navigation of
+    saboteurs, complexes, hypercomplexes, masks... These are icons. They're
+    in my upper left hand navigation, just like my field." The promise is
+    the same one, held against what replaced the row: each circle's count is
+    the reading's, and switching a circle changes the pixels, or it is a
+    switch for a drawing that is not on the screen.
+
+    Reduced motion, so a frame is drawn only when something changed and two
+    shots differ because of the switch and not because a line hummed. */
+ const p5=await browser.newPage({viewport:{width:1600,height:1000},reducedMotion:'reduce'});
  await p5.goto(FILE,{waitUntil:'load'}); await booted(p5);
  await p5.waitForTimeout(900);
- await p5.selectOption('select',{index:1});
- await p5.waitForTimeout(500);
- const tt=await p5.$$eval('.tabtop',a=>a.map(x=>x.textContent.trim()));
- await p5.$$eval('.tabtop',(a,i)=>a[i].click(),tt.findIndex(t=>/Body/i.test(t)));
+ await p5.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='Gordon'));setTab(TAB.ENERGY);PMLAYER='map';render();});
  await p5.waitForTimeout(800);
-
- for(const [layer,label] of [['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes']]){
-  await p5.evaluate(k=>{const e=document.querySelector('#lbar [data-pml="'+k+'"]');if(e)e.click();},layer);
-  await p5.waitForTimeout(450);
-  const m=await p5.evaluate(()=>({
-   n:document.querySelectorAll('#emap .pm-n').length,
-   it:document.querySelectorAll('#emap .pm-it').length,
-   btn:(()=>{const b=document.querySelector('#lbar .pm-lb.on b');return b?+b.textContent:null;})()}));
-  const drawn=m.n+m.it;
-  ok(drawn>0,label+': something is drawn, got '+drawn);
-  /* the count on the button is what opens. A button that says 49 over an
-     empty figure is the defect this gate exists for. */
-  if(m.btn!==null)ok(m.btn===0||drawn>0,label+': the button count and the drawing agree, '
-   +m.btn+' counted, '+drawn+' drawn');
-  /* AND THE MARKS REACH THE PIXELS.
-
-     A first cut of this check asked whether a mark had a bounding box, which
-     every clipped element still has, so it passed against the very bug it was
-     written for. The only honest question is whether the screen changes. Two
-     shots of the same figure, one with the marks hidden and one with them
-     shown, and identical bytes means they painted nothing. */
-  const well=await p5.$('#emap .pm-well');
-  const shotOn=await well.screenshot();
-  await p5.addStyleTag({content:'#emap .pm-n,#emap .pm-it{display:none!important}'});
-  await p5.waitForTimeout(160);
-  const shotOff=await well.screenshot();
-  await p5.evaluate(()=>{const t=[...document.querySelectorAll('style')]
-   .filter(e=>/pm-n.*display:none/.test(e.textContent));t.forEach(e=>e.remove());});
-  await p5.waitForTimeout(160);
-  ok(!shotOn.equals(shotOff),
-   label+': hiding the marks changes the picture. identical means they paint nothing');
- }
+ const frame=()=>p5.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ const well=await p5.$('#emap .pm-well');
+ const row=await p5.evaluate(()=>{const lb=document.getElementById('lbar');
+  return {btns:lb?lb.querySelectorAll('button').length:0,shown:lb?getComputedStyle(lb).display!=='none':false};});
+ ok(row.btns===0&&!row.shown,'the Body has no layer row, '+JSON.stringify(row));
+ for(const [k,label,want] of [['addr','Addresses',null],['masks','Masks',null],['sab','Saboteurs','sabs'],
+   ['cx','Complexes','cxs'],['hy','Hyper complexes','hys'],['flow','Flow',null]]){
+  const m=await p5.evaluate(([k,want])=>{const r=compute(),b=document.querySelector('#bmov [data-bmov="'+k+'"]');
+   return {has:!!b,pill:b&&b.querySelector('.fb-v')?b.querySelector('.fb-v').textContent:null,
+    n:want?r[want].length:null,on:b?b.getAttribute('aria-pressed'):null};},[k,want]);
+  ok(m.has,label+': the circle is on the map');
+  if(want)ok(m.pill===String(m.n),label+': the pill is the reading\'s own count, '+m.pill+' against '+m.n);
+  /* on, shot; off, shot. The two must differ. */
+  const setOn=async v=>{await p5.evaluate(([k,v])=>{const b=document.querySelector('#bmov [data-bmov="'+k+'"]');
+   if((b.getAttribute('aria-pressed')==='true')!==v)b.click();},[k,v]);await frame();await p5.waitForTimeout(120);};
+  await setOn(true); const shotOn=await well.screenshot();
+  await setOn(false); const shotOff=await well.screenshot();
+  await setOn(m.on==='true');
+  ok(!shotOn.equals(shotOff),label+': switching it changes the picture. identical means it paints nothing');}
  /* the clip itself. This is the shape of the bug, named, so nobody puts the
-    <g> back. */
+    <g> back. It lives in the seven layers' renderer, which nothing on the
+    page reaches since the row went and which stays in ui/map.js until it is
+    taken out with its own gates, so it is asked for by name here. */
+ await p5.evaluate(()=>{PMLAYER='bands';render();});
  const clipOK=await p5.evaluate(()=>{
   const c=document.getElementById('pmClip'); if(!c)return 'no clipPath';
   const bad=[...c.children].filter(e=>!/^(path|circle|ellipse|rect|polygon|polyline|line|text|use)$/i
@@ -469,6 +467,7 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
   return bad.length?('invalid clip children: '+bad.join(',')):'ok';});
  ok(clipOK==='ok','the body clip holds only valid geometry, got '+clipOK);
  console.log('  clip:',clipOK);
+ await p5.evaluate(()=>{PMLAYER='map';render();});
  await p5.close();
 }
 
@@ -625,8 +624,18 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
    c.transitionTimingFunction.split(/,\s*(?![^(]*\))/).forEach(f=>{
     if(f.trim()==='ease'&&out.ease.length<6)
      out.ease.push(e.tagName.toLowerCase()+'.'+(e.className||'?').toString().slice(0,24));});
-   c.transitionDuration.split(',').forEach(d=>{
-    d=d.trim(); out.dur[d]=(out.dur[d]||0)+1;});});
+   /* visibility is discrete: it flips at the start or end of its own
+      transition regardless of duration, so 0s on visibility specifically is
+      not a missing step, it is the only value that keeps a synchronous
+      focus() call right after a class toggle working, since any real
+      duration defers the flip to the next frame. c.transitionProperty is
+      the one list guaranteed to be in step with transitionDuration, both
+      split the same way, so the two are read side by side rather than
+      duration read alone and guessed at. */
+   const props=c.transitionProperty.split(',').map(p=>p.trim());
+   c.transitionDuration.split(',').forEach((d,i)=>{
+    d=d.trim(); if(props[i]==='visibility')return;
+    out.dur[d]=(out.dur[d]||0)+1;});});
   return out;});
  /* the seven tokens resolve. an unresolved var() reads as empty and every
     transition using it silently falls back to 0s, which is no motion at all. */
@@ -636,8 +645,9 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  ok(m.tot>100,'there are live animated elements to check, '+m.tot);
  ok(m.ease.length===0,'no element runs on the browser default ease'
   +(m.ease.length?', found '+m.ease.join(', '):''));
- /* every duration on screen is one of the four steps. the boot keyframes are
-    animations, not transitions, so they are not in this set. */
+ /* every duration on screen is one of the four steps, visibility exempted
+    above. the boot keyframes are animations, not transitions, so they are
+    not in this set either. */
  const ALLOW=['0.12s','0.22s','0.32s','0.42s'];
  const stray=Object.keys(m.dur).filter(d=>ALLOW.indexOf(d)<0);
  ok(stray.length===0,'every duration is one of the four named steps'
