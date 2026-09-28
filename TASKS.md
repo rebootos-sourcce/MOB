@@ -24241,3 +24241,32 @@ file."
   sent once as a file; resent, and also given in the reply itself as
   plain text this time, in case the file delivery problem above is
   why he keeps asking.
+
+## KX. Energetics moves to Discover as Intake, the tutorial, and the login he still has not seen
+
+His words, verbatim: "And I need my energetics, like my intake. To
+measure my coherence, I, my that page is missing. Please prioritize
+that back under Discover. I just rename it Intake. And then update the
+tutorial with this new flow. And I haven't seen the login yet. I'm
+like, what are you doing, dude?"
+
+- **Read as: `TAB.ENERGY`, currently labelled "Body" and currently
+  headed for the new Tools section, is renamed "Intake" and placed in
+  Discover instead**, beside Avatar and Summary. This is the coherence
+  reading, not the body map's visual overlays, though today they are
+  the same tab and the same renderer. Flagged plainly rather than
+  guessed silently: `TAB.INTAKE` is already labelled "Avatar" (the
+  intake questions live inside it as a face, round KH), so this
+  reuses the word "Intake" for a second, different tab. Named clearly
+  to whoever builds it so the wrong tab is never touched.
+- **This also answers an open question from round KT's own report:**
+  whether energetic intake wanted its own visible door in Discover.
+  It does.
+- **The tutorial needs updating to the new flow.** Its current state
+  not yet checked; answered honestly in the next report rather than
+  assumed to exist in any particular form.
+- **He has still not seen a login screen.** A sign in shell already
+  exists in this repository, `atuned_src/ui/account.js` per
+  `HOSTING-SETUP.md`, refusing honestly today since accounts are not
+  live. Whether and where it is reachable from the navigation is
+  checked directly rather than assumed, in the next report.
