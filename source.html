@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="c26b3d5 2026-09-28 02:22"><head><meta charset="utf-8">
+<html lang="en" data-build="d880c09 2026-09-28 03:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -8458,6 +8458,120 @@ var PRACTICE=[
    +'This is training, not release.'}];
 var PTRACK={Mind:'#7B97E2',Body:'#68CBA4',Energy:'#AF89D6',Somatic:'#DBBF68'};
 
+/* ============================================================
+   THE RITUALS OF BECOMING. Round KQ, his words: "I'd like to be able to
+   create routines based off of these teachers. So the teachers kind of
+   give us a guide in order to create the rituals of becoming. Create a
+   system out of that. And then plug that in. We'll edit it later."
+
+   A teacher is the coherent pole of one axis on the compass (MIRROR) or
+   one of the five paths (PATHS). Each one here names the practices a
+   person does each day to move toward that teacher's quality. Nothing is
+   invented where the library already carries the quality: Buddha, Rumi
+   and Elijah are built only from practices above. Where nothing in the
+   library carries it, one short practice is written for that teacher and
+   appended to PRACTICE, which is what makes it a step the boundary
+   accepts (schema.js reads RIT_STEP off this table) with no schema change.
+
+   A TEACHER PRACTICE IS NEVER CALLED BY THE STATE. tc marks it, and
+   ritFor leaves every tc row out, so the practice the seat carrying the
+   most calls for is exactly what it was before these rows existed, and
+   the builder's library is unchanged. A teacher practice is reached
+   through its teacher and nowhere else.
+
+   A FIRST PASS, his word "later" is taken at face value. The step lists
+   and the eight new practices are the owner's to edit.
+   ============================================================ */
+var TEACHER_PRACTICE=[
+ {k:'given', tc:'IL', nm:'Given Freely', track:'Somatic', min:5, tier:1,
+  d:'Give one thing today with nothing asked back.',
+  how:'Once today, give something with no return attached: an hour, a hand, a meal, your full '
+   +'attention. Tell nobody. Afterward put a hand flat on the middle of your chest and notice '
+   +'what is there. If you caught yourself waiting to be thanked, notice where in your body the '
+   +'waiting sat. Warmth that needs no audience is the light this teacher stands for.'},
+ {k:'offered', tc:'DE', nm:'The Offered Want', track:'Somatic', min:5, tier:1,
+  d:'Name one want, and ask what it is for beyond you.',
+  how:'Sit and name one thing you want today. Find where the wanting pulls, usually low in the '
+   +'belly, below the navel. Hold it there for ten breaths without acting on it. Then ask who '
+   +'else it would serve. If it serves only the having, set it down for today. If it points '
+   +'past you, keep it, and let it be the one want you follow.'},
+ {k:'onerule', tc:'OR', nm:'One Rule Kept', track:'Mind', min:5, tier:1,
+  d:'Set one rule someone else can lean on, and keep it.',
+  how:'In the morning, write one rule for today that somebody else can lean on: I answer by noon, '
+   +'I am home when I said, I finish one thing before I start the next. Say it once out loud. '
+   +'At night, check it and write kept or broken. A rule only carries weight when it is kept on '
+   +'the day keeping it costs something.'},
+ {k:'samecut', tc:'PO', nm:'The Same Cut', track:'Body', min:10, tier:1,
+  d:'One hard thing, the same one, every day. A miss is data.',
+  how:'Pick one small hard thing and do it the same way every day: ten slow squats, one page '
+   +'written, one skill drilled. You pay the cost and nobody else does. Keep the breath low in '
+   +'the belly while you do it. On a day you miss it or do it badly, write one line on what '
+   +'happened and nothing about what it says about you.'},
+ {k:'meetit', tc:'RE', nm:'Meet It Unopposed', track:'Mind', min:5, tier:2,
+  d:'When something cuts against what you believe, hold it before you answer it.',
+  how:'Today, when something you live through cuts against what you believe, do not answer it '
+   +'yet. Put your attention on the middle of your chest and hold the thing there for one '
+   +'minute, the way you would hold something heavy you are not going to throw. Then ask what '
+   +'it would change if it were true, and write one line.'},
+ {k:'letmove', tc:'FL', nm:'Let It Move', track:'Body', min:10, tier:1,
+  d:'Find where the day is held still, and move it.',
+  how:'Stand. Find the one place in your body that is held still: a locked jaw, set shoulders, a '
+   +'clenched belly. Move it slowly for two minutes, any direction it will go, breathing out as '
+   +'it moves. Then find the one thing in the day you are holding still by force, a call not '
+   +'made or a word not said, and move it one step.'},
+ {k:'linehold', tc:'AL', nm:'The Line Held', track:'Mind', min:5, tier:1,
+  d:'Name the one line you will not cross today, and check it at night.',
+  how:'In the morning, stand straight and name one line you will hold today whatever it costs: a '
+   +'promise, a boundary, a job owed. Feel your spine carry it, from the base of the back to the '
+   +'back of the neck. At night, write held or crossed, and what pulled on it.'},
+ {k:'stopone', tc:'HO', nm:'Stop One Thing', track:'Mind', min:2, tier:1,
+  d:'Find the one activity making the noise, and stop it for today.',
+  how:'Look at today and find one activity that makes noise in you: the scrolling, the argument '
+   +'rehearsed in your head, the checking. Stop it for the day and put nothing in its place. Each '
+   +'time the pull to start it comes back, breathe out and let the pull pass. Notice what your '
+   +'body does in the space it leaves.'}];
+TEACHER_PRACTICE.forEach(function(p){PRACTICE.push(p);});
+
+/* which practices each teacher calls for, in the order they are done. The
+   key is the axis or path key, never the name, because Jesus stands at two
+   poles and each is a different quality at a different seat. Jesus on the
+   path of the body and Buddha on the path of awareness are the same entries
+   PATHS reads off MIRROR, so their rituals are those axes' rituals. */
+var BECOMING={
+ IL:['heartpt','given'],   /* Jesus, light, at the heart */
+ DE:['slow','offered'],    /* Ramakrishna, desire and will, at the sacral */
+ OR:['truth','onerule'],   /* Moses, order, at the throat */
+ PO:['box','samecut'],     /* Musashi, power, at the solar */
+ PE:['noting','listen'],   /* Buddha, perception, at the third eye */
+ TR:['truth','heartpt'],   /* Rumi, trust, at the heart */
+ CH:['slow','resist'],     /* Elijah, charge, at the root */
+ RE:['heartpt','meetit'],  /* Jesus, revelation, at the crown */
+ FL:['sysbreath','letmove'],/* Krishna, flow, a path with no seat */
+ AL:['box','linehold'],    /* Rama, alignment, a path with no seat */
+ HO:['resist','stopone']}; /* Lao Tzu, the horizontal, a path with no seat */
+var BECOMING_SAME={BO:'IL', AW:'PE'};
+/* one teacher, read off the compass data rather than copied, so a rename
+   there is a rename here. seat is null for a path, which sits at no seat. */
+function becomingOf(k){
+ k=BECOMING_SAME[k]||k;
+ if(!BECOMING[k])return null;
+ var i, m=null, p=null;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)m=MIRROR[i];
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)p=PATHS[i];
+ var x=m||p; if(!x)return null;
+ return {k:k, who:x.up, q:x.q, d:x.upd, ic:x.ic||null, seat:m?m.seat:null,
+  path:!m, steps:BECOMING[k].slice()};}
+/* the steps a person at this tier may start. tier is ritFor's: 1 is heavy
+   load, and pacing is the safety system here, so a step above the tier waits
+   rather than being handed over. held names what waits, so it can be said. */
+function becomingSteps(k,tier){
+ var b=becomingOf(k); if(!b)return {steps:[],held:[]};
+ var byK={}; PRACTICE.forEach(function(p){byK[p.k]=p;});
+ var on=[], held=[];
+ b.steps.forEach(function(s){var p=byK[s]; if(!p)return;
+  (p.tier<=tier?on:held).push(s);});
+ return {steps:on, held:held};}
+
 /* ---------- the seven seats, and where they sit on the figure ---------- */
 /* THE THIRD EYE WAS ON THE NOSE. It sat at 12.56, the middle of the drawn ear,
    and on a real head the middle of the ear is level with the nose. Its own
@@ -16443,6 +16557,7 @@ if(typeof module!=='undefined'&&module.exports){
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
+                  TEACHER_PRACTICE:TEACHER_PRACTICE, BECOMING:BECOMING, becomingOf:becomingOf, becomingSteps:becomingSteps,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
@@ -31555,7 +31670,10 @@ function ritFor(r){
     still calls the first practice rather than the lightest, and it reproduces
     the numbers that were taken with both. */
  var tier=r.DQ>=70?1:(r.DQ>=40?2:3);
- var fit=PRACTICE.filter(function(p){return p.tier<=tier;});
+ /* a teacher's own practice (tc) is reached through its teacher and is never
+    what a seat calls for, so the call and the builder's library are what they
+    were before the rituals of becoming existed. See engine/data/practice.js. */
+ var fit=PRACTICE.filter(function(p){return p.tier<=tier&&!p.tc;});
  var first=fit.filter(function(p){return p.track===track;});
  /* at tier 1 some tracks hold nothing. say so rather than naming a track and
     then calling for a practice from a different one. */
@@ -31647,7 +31765,11 @@ function ritPlanOk(p){
   &&typeof p.days==='number'&&p.days>=0&&p.days<=3660&&Math.floor(p.days)===p.days&&sd(p.from)&&(p.stop==null||sd(p.stop))
   &&st(p.when||'')&&st(p.where||'')
   &&(!p.band||BANDS.indexOf(p.band)>=0)&&(!p.track||!!RIT_TRACK[p.track])
-  &&(p.rel==null||(typeof p.rel==='number'&&!!BY[p.rel])));}
+  &&(p.rel==null||(typeof p.rel==='number'&&!!BY[p.rel]))
+  /* tc is the teacher a ritual of becoming was started toward, an axis or
+     path key. It lives here beside the record and not on it, so it is no
+     schema change. */
+  &&(p.tc==null||(typeof p.tc==='string'&&!!becomingOf(p.tc))));}
 function ritPlans(){
  if(!CURP||!CURP.id)return [];
  var a=ritSideAll()[CURP.id];
@@ -31655,7 +31777,7 @@ function ritPlans(){
  return a.filter(ritPlanOk).map(function(p){
   return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
    days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
-   rel:(p.rel==null?null:p.rel)};});}
+   rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc)};});}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false. */
 function ritPlanPut(list){
@@ -31769,9 +31891,11 @@ function ritStartPlan(q,msg){
   if(same){same.when=q.when||same.when; same.where=q.where||same.where;
    if(same.days){var need=q.days?today-ritStart0(same)+q.days:0;
     if(!need||need>same.days)same.days=need;}
-   if(q.rel!=null)same.rel=q.rel;}
+   if(q.rel!=null)same.rel=q.rel;
+   if(q.tc)same.tc=q.tc;}
   else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
-   from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel)});
+   from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
+   tc:q.tc||null});
   if(!ritEntryFor({steps:steps},today))
    CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
     when:q.when, where:q.where, done:false}));
@@ -31792,6 +31916,75 @@ function ritStartFor(bc,days){
  var r=compute(), c=ritFor({darkB:bc.seat, DQ:r.DQ}); if(!c.called)return;
  ritStartPlan({steps:[c.called.k], band:bc.seat, track:c.called.track, days:days, rel:bc.n.i},
   'Set. '+c.called.nm+' each day, for '+String(bc.n.k).toLowerCase()+'.');}
+/* ---------------- a ritual of becoming, from a teacher ----------------
+   Round KQ. The Compass carries the teachers; pressing one opens its drill,
+   and the drill offers the ritual that moves toward that teacher's quality.
+   It is a release schedule's twin: ritStartPlan does the writing, so it is
+   one ritual among the others on the page, with the same ring, the same
+   record and the same streak, and nothing about it is a second mechanism.
+
+   WHICH STEPS, AND PACING. The steps are the teacher's (BECOMING). ritFor's
+   tier is the pacing, and pacing is the safety system here: a step above the
+   tier a person's load allows waits, and says so. If every step waits, the
+   ritual starts on the practice the person's state calls for instead, and
+   says that too. Nothing is handed to a heavy field that ritFor would not
+   hand it.
+
+   WHICH SEAT. An axis teacher's ritual carries the seat the compass reads
+   that axis at. A path sits at no seat, so its ritual carries the seat
+   holding the most today, which is ritFor's own band. */
+function ritTeach(k){
+ var b=(typeof becomingOf==='function')?becomingOf(k):null; if(!b)return null;
+ var r=compute(), c=ritFor(r), s=becomingSteps(b.k,c.tier);
+ var entry=!s.steps.length;
+ return {b:b, steps:entry?(c.called?[c.called.k]:[]):s.steps, held:s.held, entry:entry,
+  seat:b.seat||(r.unread?'':c.band)};}
+function ritTeachStart(k,days){
+ var t=ritTeach(k); if(!t||!t.steps.length)return false;
+ var nm=ritSteps({steps:t.steps}).map(function(p){return p.nm;});
+ return ritStartPlan({steps:t.steps, band:t.seat, days:days, tc:t.b.k},
+  'Set. '+(nm.length>1?nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]:nm[0])
+  +' each day, toward '+String(t.b.q).toLowerCase()+'.');}
+/* the section the teacher drill carries. Only the coherent pole: nobody
+   practises toward the inversion. */
+function ritTeachHtml(k){
+ var t=ritTeach(k); if(!t)return '';
+ ritCss();
+ var today=ritToday0(), key=ritKey(t.steps);
+ var act=ritPlans().filter(function(p){
+  return ritActive(p,today)&&(p.tc===t.b.k||ritKey(p.steps)===key);})[0]||null;
+ var nm=function(ks){return ks.map(function(x){var p=ritPr(x);return p?p.nm:'';}).filter(Boolean);};
+ var h='<div class="pm-eye">A ritual toward '+esc(String(t.b.q).toLowerCase())+'</div>'
+  +'<div class="tb-rit" data-tb="'+t.b.k+'">'
+  +ritSteps({steps:t.steps}).map(function(p){
+   return '<div class="rv-step"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b><p>'+esc(p.d)+'</p></div>';}).join('');
+ /* the pacing, said once, after the steps and never instead of them */
+ var many=t.held.length>1;
+ if(t.entry)h+='<p class="ad-p">At the charge you carry now, '+esc(nm(t.held).join(' and '))
+  +(many?' wait':' waits')+'. This starts on '+esc(nm(t.steps)[0]||'')
+  +', the practice your state calls for, and the rest opens as the charge drops.</p>';
+ else if(t.held.length)h+='<p class="ad-p">'+esc(nm(t.held).join(' and '))
+  +(many?' open':' opens')+' as the charge drops.</p>';
+ h+='<p class="ad-p">'+(t.b.path
+   ?(t.seat?'The five paths sit at no one seat, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
+     :'The five paths sit at no one seat, and nothing is read yet, so this is kept without one.')
+   :'Kept at the '+esc(ritSeatNm(t.seat))+', the seat this axis is read at.')+'</p>';
+ if(act)h+='<p class="ad-p"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</p>'
+  +'<div class="rv-acts"><button type="button" class="btn" data-tbgo="1">Open the ritual</button></div>';
+ else if(!ritOwn())h+='<p class="ad-p">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';
+ else if(t.steps.length)h+='<div class="rv-acts">'
+  +'<button type="button" class="btn pri" data-tbd="7">Start for a week</button>'
+  +'<button type="button" class="btn pri" data-tbd="14">Start for two weeks</button></div>';
+ return h+'</div>';}
+/* one wire for the section, wherever a drill put it. redraw is the drill
+   that holds it, so after a start the section says Active in place. */
+function ritTeachWire(redraw){
+ var box=document.querySelector('#rdrill .tb-rit'); if(!box)return;
+ var k=box.getAttribute('data-tb');
+ box.querySelectorAll('[data-tbd]').forEach(function(b){
+  b.onclick=function(){if(ritTeachStart(k,+b.getAttribute('data-tbd'))&&redraw)redraw();};});
+ var go=box.querySelector('[data-tbgo]');
+ if(go)go.onclick=function(){if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL);};}
 function ritSaveEdit(){
  var steps=ritDraft(); if(!steps.length||!RIT.edit)return;
  var id=RIT.edit, today=ritToday0();
@@ -32113,6 +32306,7 @@ function ritActiveHtml(act,today,building){
    +'<button type="button" class="rv-open" data-act="exp" data-id="'+p.id+'" aria-expanded="'+open+'">'
    +'<span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
    +'<span class="rv-sub">'+(p.rel!=null&&BY[p.rel]?'For '+esc(String(BY[p.rel].k).toLowerCase())+', ':'')
+   +(p.tc&&becomingOf(p.tc)?'Toward '+esc(becomingOf(p.tc).who)+', ':'')
    +ritMin(p.steps)+' minutes'+(p.when?', '+esc(p.when):'')+'<i>'+ritLeft(p,today)+'</i></span>'
    +'</button></div>';
   if(open){
@@ -33703,7 +33897,7 @@ function ndlTip(x0,y0,r0,kind,i){
  t.x=x0; t.y=y0; t.r=r0; t.k=kind; t.i=i; NDL.nt++;}
 function ndlHit(x0,y0,r0,i,end){
  var h=NDL.hp[NDL.nh]||(NDL.hp[NDL.nh]={});
- h.x=x0; h.y=y0; h.r=r0; h.m=MIRROR[i]; h.i=i; h.end=end; NDL.nh++;
+ h.x=x0; h.y=y0; h.r=r0; h.m=MIRROR[i]; h.i=i; h.end=end; h.path=null; NDL.nh++;
  CONE.hits.push(h);}
 /* the faces, as glass: the Field's panels are dark with lit edges, and a face
    is lit by how squarely it faces a key light from the upper left */
@@ -33773,7 +33967,14 @@ function ndlCrown(g,x0,y0,n,up,cs,col){
  g.strokeStyle=rgba(col,(inner?.9:.6)*(up?1:.72)*ee); g.lineWidth=(inner?1.5:1.1)*cs; g.stroke();
  g.setLineDash([]);
  coneGlyph(g,up?pl.p.ic:pl.p.dic,px,py,col,(inner?.95:.72)*(up?1:.8)*ee,rb2*1.25,1.6);
- ndlTip(px,py,rb2+3,up?'path':'pathdn',n);}
+ ndlTip(px,py,rb2+3,up?'path':'pathdn',n);
+ /* A PATH IS PRESSED, round KQ: it opens the path's drill, which carries the
+    ritual toward it. Pooled with the axis hits, so a frame makes no garbage;
+    m is null and path names the entry, which is what the press reads. The
+    inversions below are named on hover and carry no ritual. */
+ if(up){var h=NDL.hp[NDL.nh]||(NDL.hp[NDL.nh]={});
+  h.x=px; h.y=py; h.r=Math.max(16,rb2+4); h.m=null; h.i=-1; h.end='path'; h.path=n; NDL.nh++;
+  CONE.hits.push(h);}}
 function coneNeedle(){
  var c=CONE.cv, g=CONE.g, TAU=Math.PI*2;
  var W=c.width/CONE.dpr, H=c.height/CONE.dpr;
@@ -34652,7 +34853,8 @@ function coneOpen(inTab){
    if(was&&!was.moved){
     var b=CONE.cv.getBoundingClientRect();
     var h=coneHit(e.clientX-b.left,e.clientY-b.top);
-    if(h)runTeacherDrill(h.m,h.end);}};
+    if(h&&h.path!=null){if(typeof runPathDrill==='function')runPathDrill(NDL_PATHS[h.path].p);}
+    else if(h)runTeacherDrill(h.m,h.end);}};
   CONE.cv.onpointercancel=function(){CONE.drag=null;};
   CONE.cv.onpointerleave=function(){if(!CONE.side)CONE.hov=-1; CONE.ptr=null;};
   }
@@ -35501,8 +35703,30 @@ function runTeacherDrill(m,end){
   +'<div class="pm-eye">The question that separates them</div>'
   +'<p class="ad-p">'+esc(m.ask||'')+'</p>'
   +'<p class="ad-p">Neither of these is a being. Both are behaviours, and they '
-  +'are the same behaviour at two settings.</p>';
- rdShell(h);}
+  +'are the same behaviour at two settings.</p>'
+  /* ROUND KQ, the rituals of becoming: the coherent pole carries the ritual
+     that moves toward it. The inversion carries none. */
+  +(up&&typeof ritTeachHtml==='function'?ritTeachHtml(m.k):'');
+ rdShell(h);
+ if(up&&typeof ritTeachWire==='function')ritTeachWire(function(){runTeacherDrill(m,end);});}
+/* ONE OF THE FIVE PATHS. Their badges on the needle had a name on hover and
+   nothing on a press. Jesus on the path of the body and Buddha on the path of
+   awareness are their mirror axes, read off MIRROR by PATHS itself, so a
+   press on either opens that axis's own drill rather than a second copy of
+   it. Krishna, Rama and Lao Tzu stand on no axis and get this one. */
+function runPathDrill(p){
+ if(!p)return;
+ for(var i=0;i<MIRROR.length;i++)
+  if(MIRROR[i].up===p.up&&MIRROR[i].upd===p.upd){runTeacherDrill(MIRROR[i],'up');return;}
+ var h='<div class="pm-eye">One of the five paths</div>'
+  +'<div class="ad-nm">'+(p.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+p.ic+'"/></svg>':'')+esc(p.up)+'</div>'
+  +'<div class="ad-sub">the path of '+esc(p.q)+'</div>'
+  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(p.upd)+'</p>'
+  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(p.dn)+'</b>. '+esc(p.dnd)+'</p>'
+  +(typeof ritTeachHtml==='function'?ritTeachHtml(p.k):'');
+ rdShell(h);
+ if(typeof ritTeachWire==='function')ritTeachWire(function(){runPathDrill(p);});}
 function runPoleDrill(end){
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'
@@ -42064,5 +42288,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002753595"></div>
+<div id="eof" hidden data-len="002768364"></div>
 </body></html>

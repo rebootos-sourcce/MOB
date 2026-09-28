@@ -101,6 +101,120 @@ var PRACTICE=[
    +'This is training, not release.'}];
 var PTRACK={Mind:'#7B97E2',Body:'#68CBA4',Energy:'#AF89D6',Somatic:'#DBBF68'};
 
+/* ============================================================
+   THE RITUALS OF BECOMING. Round KQ, his words: "I'd like to be able to
+   create routines based off of these teachers. So the teachers kind of
+   give us a guide in order to create the rituals of becoming. Create a
+   system out of that. And then plug that in. We'll edit it later."
+
+   A teacher is the coherent pole of one axis on the compass (MIRROR) or
+   one of the five paths (PATHS). Each one here names the practices a
+   person does each day to move toward that teacher's quality. Nothing is
+   invented where the library already carries the quality: Buddha, Rumi
+   and Elijah are built only from practices above. Where nothing in the
+   library carries it, one short practice is written for that teacher and
+   appended to PRACTICE, which is what makes it a step the boundary
+   accepts (schema.js reads RIT_STEP off this table) with no schema change.
+
+   A TEACHER PRACTICE IS NEVER CALLED BY THE STATE. tc marks it, and
+   ritFor leaves every tc row out, so the practice the seat carrying the
+   most calls for is exactly what it was before these rows existed, and
+   the builder's library is unchanged. A teacher practice is reached
+   through its teacher and nowhere else.
+
+   A FIRST PASS, his word "later" is taken at face value. The step lists
+   and the eight new practices are the owner's to edit.
+   ============================================================ */
+var TEACHER_PRACTICE=[
+ {k:'given', tc:'IL', nm:'Given Freely', track:'Somatic', min:5, tier:1,
+  d:'Give one thing today with nothing asked back.',
+  how:'Once today, give something with no return attached: an hour, a hand, a meal, your full '
+   +'attention. Tell nobody. Afterward put a hand flat on the middle of your chest and notice '
+   +'what is there. If you caught yourself waiting to be thanked, notice where in your body the '
+   +'waiting sat. Warmth that needs no audience is the light this teacher stands for.'},
+ {k:'offered', tc:'DE', nm:'The Offered Want', track:'Somatic', min:5, tier:1,
+  d:'Name one want, and ask what it is for beyond you.',
+  how:'Sit and name one thing you want today. Find where the wanting pulls, usually low in the '
+   +'belly, below the navel. Hold it there for ten breaths without acting on it. Then ask who '
+   +'else it would serve. If it serves only the having, set it down for today. If it points '
+   +'past you, keep it, and let it be the one want you follow.'},
+ {k:'onerule', tc:'OR', nm:'One Rule Kept', track:'Mind', min:5, tier:1,
+  d:'Set one rule someone else can lean on, and keep it.',
+  how:'In the morning, write one rule for today that somebody else can lean on: I answer by noon, '
+   +'I am home when I said, I finish one thing before I start the next. Say it once out loud. '
+   +'At night, check it and write kept or broken. A rule only carries weight when it is kept on '
+   +'the day keeping it costs something.'},
+ {k:'samecut', tc:'PO', nm:'The Same Cut', track:'Body', min:10, tier:1,
+  d:'One hard thing, the same one, every day. A miss is data.',
+  how:'Pick one small hard thing and do it the same way every day: ten slow squats, one page '
+   +'written, one skill drilled. You pay the cost and nobody else does. Keep the breath low in '
+   +'the belly while you do it. On a day you miss it or do it badly, write one line on what '
+   +'happened and nothing about what it says about you.'},
+ {k:'meetit', tc:'RE', nm:'Meet It Unopposed', track:'Mind', min:5, tier:2,
+  d:'When something cuts against what you believe, hold it before you answer it.',
+  how:'Today, when something you live through cuts against what you believe, do not answer it '
+   +'yet. Put your attention on the middle of your chest and hold the thing there for one '
+   +'minute, the way you would hold something heavy you are not going to throw. Then ask what '
+   +'it would change if it were true, and write one line.'},
+ {k:'letmove', tc:'FL', nm:'Let It Move', track:'Body', min:10, tier:1,
+  d:'Find where the day is held still, and move it.',
+  how:'Stand. Find the one place in your body that is held still: a locked jaw, set shoulders, a '
+   +'clenched belly. Move it slowly for two minutes, any direction it will go, breathing out as '
+   +'it moves. Then find the one thing in the day you are holding still by force, a call not '
+   +'made or a word not said, and move it one step.'},
+ {k:'linehold', tc:'AL', nm:'The Line Held', track:'Mind', min:5, tier:1,
+  d:'Name the one line you will not cross today, and check it at night.',
+  how:'In the morning, stand straight and name one line you will hold today whatever it costs: a '
+   +'promise, a boundary, a job owed. Feel your spine carry it, from the base of the back to the '
+   +'back of the neck. At night, write held or crossed, and what pulled on it.'},
+ {k:'stopone', tc:'HO', nm:'Stop One Thing', track:'Mind', min:2, tier:1,
+  d:'Find the one activity making the noise, and stop it for today.',
+  how:'Look at today and find one activity that makes noise in you: the scrolling, the argument '
+   +'rehearsed in your head, the checking. Stop it for the day and put nothing in its place. Each '
+   +'time the pull to start it comes back, breathe out and let the pull pass. Notice what your '
+   +'body does in the space it leaves.'}];
+TEACHER_PRACTICE.forEach(function(p){PRACTICE.push(p);});
+
+/* which practices each teacher calls for, in the order they are done. The
+   key is the axis or path key, never the name, because Jesus stands at two
+   poles and each is a different quality at a different seat. Jesus on the
+   path of the body and Buddha on the path of awareness are the same entries
+   PATHS reads off MIRROR, so their rituals are those axes' rituals. */
+var BECOMING={
+ IL:['heartpt','given'],   /* Jesus, light, at the heart */
+ DE:['slow','offered'],    /* Ramakrishna, desire and will, at the sacral */
+ OR:['truth','onerule'],   /* Moses, order, at the throat */
+ PO:['box','samecut'],     /* Musashi, power, at the solar */
+ PE:['noting','listen'],   /* Buddha, perception, at the third eye */
+ TR:['truth','heartpt'],   /* Rumi, trust, at the heart */
+ CH:['slow','resist'],     /* Elijah, charge, at the root */
+ RE:['heartpt','meetit'],  /* Jesus, revelation, at the crown */
+ FL:['sysbreath','letmove'],/* Krishna, flow, a path with no seat */
+ AL:['box','linehold'],    /* Rama, alignment, a path with no seat */
+ HO:['resist','stopone']}; /* Lao Tzu, the horizontal, a path with no seat */
+var BECOMING_SAME={BO:'IL', AW:'PE'};
+/* one teacher, read off the compass data rather than copied, so a rename
+   there is a rename here. seat is null for a path, which sits at no seat. */
+function becomingOf(k){
+ k=BECOMING_SAME[k]||k;
+ if(!BECOMING[k])return null;
+ var i, m=null, p=null;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)m=MIRROR[i];
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)p=PATHS[i];
+ var x=m||p; if(!x)return null;
+ return {k:k, who:x.up, q:x.q, d:x.upd, ic:x.ic||null, seat:m?m.seat:null,
+  path:!m, steps:BECOMING[k].slice()};}
+/* the steps a person at this tier may start. tier is ritFor's: 1 is heavy
+   load, and pacing is the safety system here, so a step above the tier waits
+   rather than being handed over. held names what waits, so it can be said. */
+function becomingSteps(k,tier){
+ var b=becomingOf(k); if(!b)return {steps:[],held:[]};
+ var byK={}; PRACTICE.forEach(function(p){byK[p.k]=p;});
+ var on=[], held=[];
+ b.steps.forEach(function(s){var p=byK[s]; if(!p)return;
+  (p.tier<=tier?on:held).push(s);});
+ return {steps:on, held:held};}
+
 /* ---------- the seven seats, and where they sit on the figure ---------- */
 /* THE THIRD EYE WAS ON THE NOSE. It sat at 12.56, the middle of the drawn ear,
    and on a real head the middle of the ear is level with the nose. Its own

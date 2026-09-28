@@ -97,7 +97,7 @@ const TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
 function ritFor(r){
  const band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
  const tier=r.DQ>=8?1:(r.DQ>=4?2:3);
- const fit=PRACTICE.filter(p=>p.tier<=tier);
+ const fit=PRACTICE.filter(p=>p.tier<=tier&&!p.tc);
  const first=fit.filter(p=>p.track===track);
  const called=first.length?first[0]:fit[0];
  return {band, track, tier, called, substituted:!first.length,

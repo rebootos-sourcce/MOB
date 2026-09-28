@@ -3135,6 +3135,60 @@ ok(rp.cap>0,'the boundary names the cap, '+rp.cap);
 ok(rp.when===rp.cap,'the when input carries the boundary\'s cap, '+rp.when+' against '+rp.cap);
 ok(rp.where===rp.cap,'and so does the where input, '+rp.where+' against '+rp.cap);
 
+console.log('\n=== a teacher on the compass starts a ritual of becoming ===');
+/* ROUND KQ. Pressing a teacher's name opens its drill, the drill offers the
+   ritual toward that teacher's quality, and a start puts it on the Active list
+   at the teacher's seat through the one writer every ritual uses. Measured on
+   the person's own blank profile, since a worked example saves nothing. The
+   inversion carries no ritual, and a path badge on the needle now opens its
+   own drill. Read off the tables at run time, so no teacher is typed here. */
+{
+ const tp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
+ await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
+ const o=await tp.evaluate(async()=>{
+  const wait=ms=>new Promise(r=>setTimeout(r,ms||250));
+  loadP(0); setTab(TAB.COMPASS); await wait(400);
+  const i=MIRROR.findIndex(m=>m.k==='PE');
+  const row=document.querySelector('#cone .cn-nr[data-cnax="'+i+'"]');
+  row.click(); await wait();
+  const box=document.querySelector('#rdrill .tb-rit');
+  const o={row:!!row, box:!!box, starts:box?box.querySelectorAll('[data-tbd]').length:0,
+   steps:box?[...box.querySelectorAll('.rv-step b')].map(b=>b.firstChild.textContent.trim()):[]};
+  o.want=becomingSteps('PE',ritFor(compute()).tier).steps.map(k=>ritPr(k).nm);
+  if(!o.want.length)o.want=[ritFor(compute()).called.nm];
+  if(box)box.querySelector('[data-tbd="7"]').click(); await wait();
+  const p=ritPlans().filter(x=>x.tc==='PE')[0]||null;
+  o.plan=p?{band:p.band,days:p.days,steps:p.steps}:null;
+  o.active=!!document.querySelector('#rdrill .tb-rit [data-tbgo]');
+  o.saved=((JSON.parse(STORE.get('atuned-ritual-active')||'{}')[CURP.id])||[]).some(x=>x.tc==='PE');
+  runTeacherDrill(MIRROR[i],'dn'); await wait(100);
+  o.inverted=!!document.querySelector('#rdrill .tb-rit');
+  /* the path badge: a hit is registered for each of the five, and a press on
+     one standing on no axis opens a drill that carries its own ritual */
+  CONE.side=false; CONE.top=false; coneOpen(true); await wait(1200);
+  o.pathHits=(CONE.hits||[]).filter(h=>h.path!=null).length; o.pathN=PATHS.length;
+  const own=PATHS.filter(p=>!MIRROR.some(m=>m.up===p.up&&m.upd===p.upd))[0];
+  runPathDrill(own); await wait(100);
+  o.pathBox=document.querySelector('#rdrill .tb-rit');
+  o.pathBox=o.pathBox?o.pathBox.getAttribute('data-tb'):null; o.pathK=own.k;
+  setTab(TAB.RITUAL); await wait(400);
+  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
+  return o;});
+ ok(o.box,'pressing Buddha on the compass opens a drill carrying a ritual toward perception');
+ ok(o.starts===2,'with a week and two weeks to start it for, '+o.starts);
+ ok(o.steps.join()===o.want.join(),'the steps shown are the ones his tier allows, '+o.steps.join(', ')+' against '+o.want.join(', '));
+ ok(o.plan&&o.plan.band==='3rd Eye'&&o.plan.days===7,'a start keeps it at the third eye for a week, '+JSON.stringify(o.plan));
+ ok(o.saved,'and it is in the store beside the record, carrying the teacher');
+ ok(o.active,'the drill then says Active and offers the ritual page');
+ ok(!o.inverted,'the inversion carries no ritual');
+ ok(o.pathHits===o.pathN,'every path badge on the needle is pressable, '+o.pathHits+' of '+o.pathN);
+ ok(o.pathBox===o.pathK,'a path on no axis opens its own drill with its own ritual, '+o.pathBox);
+ ok(o.row===1,'and the Active list names the teacher, '+o.row);
+ ok(terr.length===0,'no errors, '+terr.join(' | '));
+ await tp.close();
+}
+
 console.log('\n=== the child pattern is found, marked and located ===');
 /* THE COUNT IS READ OFF THE RUN AND NEVER TYPED HERE.
 

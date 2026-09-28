@@ -193,7 +193,7 @@ function ritFor(r){
  /* the owner's bands, ruled 26 September. This copy read 8 and 4 with the
     product, the zero to ten scale DQ left behind; see ui/ritual.js. */
  const tier=r.DQ>=70?1:(r.DQ>=40?2:3);
- const fit=PRACTICE.filter(p=>p.tier<=tier);
+ const fit=PRACTICE.filter(p=>p.tier<=tier&&!p.tc);
  const first=fit.filter(p=>p.track===track);
  const lightest=set=>set.slice().sort((a,b)=>(a.min-b.min)||(a.tier-b.tier))[0];
  const called=first.length?lightest(first):lightest(fit);

@@ -1147,7 +1147,7 @@ function ndlTip(x0,y0,r0,kind,i){
  t.x=x0; t.y=y0; t.r=r0; t.k=kind; t.i=i; NDL.nt++;}
 function ndlHit(x0,y0,r0,i,end){
  var h=NDL.hp[NDL.nh]||(NDL.hp[NDL.nh]={});
- h.x=x0; h.y=y0; h.r=r0; h.m=MIRROR[i]; h.i=i; h.end=end; NDL.nh++;
+ h.x=x0; h.y=y0; h.r=r0; h.m=MIRROR[i]; h.i=i; h.end=end; h.path=null; NDL.nh++;
  CONE.hits.push(h);}
 /* the faces, as glass: the Field's panels are dark with lit edges, and a face
    is lit by how squarely it faces a key light from the upper left */
@@ -1217,7 +1217,14 @@ function ndlCrown(g,x0,y0,n,up,cs,col){
  g.strokeStyle=rgba(col,(inner?.9:.6)*(up?1:.72)*ee); g.lineWidth=(inner?1.5:1.1)*cs; g.stroke();
  g.setLineDash([]);
  coneGlyph(g,up?pl.p.ic:pl.p.dic,px,py,col,(inner?.95:.72)*(up?1:.8)*ee,rb2*1.25,1.6);
- ndlTip(px,py,rb2+3,up?'path':'pathdn',n);}
+ ndlTip(px,py,rb2+3,up?'path':'pathdn',n);
+ /* A PATH IS PRESSED, round KQ: it opens the path's drill, which carries the
+    ritual toward it. Pooled with the axis hits, so a frame makes no garbage;
+    m is null and path names the entry, which is what the press reads. The
+    inversions below are named on hover and carry no ritual. */
+ if(up){var h=NDL.hp[NDL.nh]||(NDL.hp[NDL.nh]={});
+  h.x=px; h.y=py; h.r=Math.max(16,rb2+4); h.m=null; h.i=-1; h.end='path'; h.path=n; NDL.nh++;
+  CONE.hits.push(h);}}
 function coneNeedle(){
  var c=CONE.cv, g=CONE.g, TAU=Math.PI*2;
  var W=c.width/CONE.dpr, H=c.height/CONE.dpr;
@@ -2096,7 +2103,8 @@ function coneOpen(inTab){
    if(was&&!was.moved){
     var b=CONE.cv.getBoundingClientRect();
     var h=coneHit(e.clientX-b.left,e.clientY-b.top);
-    if(h)runTeacherDrill(h.m,h.end);}};
+    if(h&&h.path!=null){if(typeof runPathDrill==='function')runPathDrill(NDL_PATHS[h.path].p);}
+    else if(h)runTeacherDrill(h.m,h.end);}};
   CONE.cv.onpointercancel=function(){CONE.drag=null;};
   CONE.cv.onpointerleave=function(){if(!CONE.side)CONE.hov=-1; CONE.ptr=null;};
   }

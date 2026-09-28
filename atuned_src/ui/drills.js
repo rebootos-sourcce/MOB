@@ -742,8 +742,30 @@ function runTeacherDrill(m,end){
   +'<div class="pm-eye">The question that separates them</div>'
   +'<p class="ad-p">'+esc(m.ask||'')+'</p>'
   +'<p class="ad-p">Neither of these is a being. Both are behaviours, and they '
-  +'are the same behaviour at two settings.</p>';
- rdShell(h);}
+  +'are the same behaviour at two settings.</p>'
+  /* ROUND KQ, the rituals of becoming: the coherent pole carries the ritual
+     that moves toward it. The inversion carries none. */
+  +(up&&typeof ritTeachHtml==='function'?ritTeachHtml(m.k):'');
+ rdShell(h);
+ if(up&&typeof ritTeachWire==='function')ritTeachWire(function(){runTeacherDrill(m,end);});}
+/* ONE OF THE FIVE PATHS. Their badges on the needle had a name on hover and
+   nothing on a press. Jesus on the path of the body and Buddha on the path of
+   awareness are their mirror axes, read off MIRROR by PATHS itself, so a
+   press on either opens that axis's own drill rather than a second copy of
+   it. Krishna, Rama and Lao Tzu stand on no axis and get this one. */
+function runPathDrill(p){
+ if(!p)return;
+ for(var i=0;i<MIRROR.length;i++)
+  if(MIRROR[i].up===p.up&&MIRROR[i].upd===p.upd){runTeacherDrill(MIRROR[i],'up');return;}
+ var h='<div class="pm-eye">One of the five paths</div>'
+  +'<div class="ad-nm">'+(p.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+p.ic+'"/></svg>':'')+esc(p.up)+'</div>'
+  +'<div class="ad-sub">the path of '+esc(p.q)+'</div>'
+  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(p.upd)+'</p>'
+  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(p.dn)+'</b>. '+esc(p.dnd)+'</p>'
+  +(typeof ritTeachHtml==='function'?ritTeachHtml(p.k):'');
+ rdShell(h);
+ if(typeof ritTeachWire==='function')ritTeachWire(function(){runPathDrill(p);});}
 function runPoleDrill(end){
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'

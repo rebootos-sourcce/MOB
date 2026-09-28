@@ -69,7 +69,10 @@ function ritFor(r){
     still calls the first practice rather than the lightest, and it reproduces
     the numbers that were taken with both. */
  var tier=r.DQ>=70?1:(r.DQ>=40?2:3);
- var fit=PRACTICE.filter(function(p){return p.tier<=tier;});
+ /* a teacher's own practice (tc) is reached through its teacher and is never
+    what a seat calls for, so the call and the builder's library are what they
+    were before the rituals of becoming existed. See engine/data/practice.js. */
+ var fit=PRACTICE.filter(function(p){return p.tier<=tier&&!p.tc;});
  var first=fit.filter(function(p){return p.track===track;});
  /* at tier 1 some tracks hold nothing. say so rather than naming a track and
     then calling for a practice from a different one. */
@@ -161,7 +164,11 @@ function ritPlanOk(p){
   &&typeof p.days==='number'&&p.days>=0&&p.days<=3660&&Math.floor(p.days)===p.days&&sd(p.from)&&(p.stop==null||sd(p.stop))
   &&st(p.when||'')&&st(p.where||'')
   &&(!p.band||BANDS.indexOf(p.band)>=0)&&(!p.track||!!RIT_TRACK[p.track])
-  &&(p.rel==null||(typeof p.rel==='number'&&!!BY[p.rel])));}
+  &&(p.rel==null||(typeof p.rel==='number'&&!!BY[p.rel]))
+  /* tc is the teacher a ritual of becoming was started toward, an axis or
+     path key. It lives here beside the record and not on it, so it is no
+     schema change. */
+  &&(p.tc==null||(typeof p.tc==='string'&&!!becomingOf(p.tc))));}
 function ritPlans(){
  if(!CURP||!CURP.id)return [];
  var a=ritSideAll()[CURP.id];
@@ -169,7 +176,7 @@ function ritPlans(){
  return a.filter(ritPlanOk).map(function(p){
   return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
    days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
-   rel:(p.rel==null?null:p.rel)};});}
+   rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc)};});}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false. */
 function ritPlanPut(list){
@@ -283,9 +290,11 @@ function ritStartPlan(q,msg){
   if(same){same.when=q.when||same.when; same.where=q.where||same.where;
    if(same.days){var need=q.days?today-ritStart0(same)+q.days:0;
     if(!need||need>same.days)same.days=need;}
-   if(q.rel!=null)same.rel=q.rel;}
+   if(q.rel!=null)same.rel=q.rel;
+   if(q.tc)same.tc=q.tc;}
   else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
-   from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel)});
+   from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
+   tc:q.tc||null});
   if(!ritEntryFor({steps:steps},today))
    CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
     when:q.when, where:q.where, done:false}));
@@ -306,6 +315,75 @@ function ritStartFor(bc,days){
  var r=compute(), c=ritFor({darkB:bc.seat, DQ:r.DQ}); if(!c.called)return;
  ritStartPlan({steps:[c.called.k], band:bc.seat, track:c.called.track, days:days, rel:bc.n.i},
   'Set. '+c.called.nm+' each day, for '+String(bc.n.k).toLowerCase()+'.');}
+/* ---------------- a ritual of becoming, from a teacher ----------------
+   Round KQ. The Compass carries the teachers; pressing one opens its drill,
+   and the drill offers the ritual that moves toward that teacher's quality.
+   It is a release schedule's twin: ritStartPlan does the writing, so it is
+   one ritual among the others on the page, with the same ring, the same
+   record and the same streak, and nothing about it is a second mechanism.
+
+   WHICH STEPS, AND PACING. The steps are the teacher's (BECOMING). ritFor's
+   tier is the pacing, and pacing is the safety system here: a step above the
+   tier a person's load allows waits, and says so. If every step waits, the
+   ritual starts on the practice the person's state calls for instead, and
+   says that too. Nothing is handed to a heavy field that ritFor would not
+   hand it.
+
+   WHICH SEAT. An axis teacher's ritual carries the seat the compass reads
+   that axis at. A path sits at no seat, so its ritual carries the seat
+   holding the most today, which is ritFor's own band. */
+function ritTeach(k){
+ var b=(typeof becomingOf==='function')?becomingOf(k):null; if(!b)return null;
+ var r=compute(), c=ritFor(r), s=becomingSteps(b.k,c.tier);
+ var entry=!s.steps.length;
+ return {b:b, steps:entry?(c.called?[c.called.k]:[]):s.steps, held:s.held, entry:entry,
+  seat:b.seat||(r.unread?'':c.band)};}
+function ritTeachStart(k,days){
+ var t=ritTeach(k); if(!t||!t.steps.length)return false;
+ var nm=ritSteps({steps:t.steps}).map(function(p){return p.nm;});
+ return ritStartPlan({steps:t.steps, band:t.seat, days:days, tc:t.b.k},
+  'Set. '+(nm.length>1?nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]:nm[0])
+  +' each day, toward '+String(t.b.q).toLowerCase()+'.');}
+/* the section the teacher drill carries. Only the coherent pole: nobody
+   practises toward the inversion. */
+function ritTeachHtml(k){
+ var t=ritTeach(k); if(!t)return '';
+ ritCss();
+ var today=ritToday0(), key=ritKey(t.steps);
+ var act=ritPlans().filter(function(p){
+  return ritActive(p,today)&&(p.tc===t.b.k||ritKey(p.steps)===key);})[0]||null;
+ var nm=function(ks){return ks.map(function(x){var p=ritPr(x);return p?p.nm:'';}).filter(Boolean);};
+ var h='<div class="pm-eye">A ritual toward '+esc(String(t.b.q).toLowerCase())+'</div>'
+  +'<div class="tb-rit" data-tb="'+t.b.k+'">'
+  +ritSteps({steps:t.steps}).map(function(p){
+   return '<div class="rv-step"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b><p>'+esc(p.d)+'</p></div>';}).join('');
+ /* the pacing, said once, after the steps and never instead of them */
+ var many=t.held.length>1;
+ if(t.entry)h+='<p class="ad-p">At the charge you carry now, '+esc(nm(t.held).join(' and '))
+  +(many?' wait':' waits')+'. This starts on '+esc(nm(t.steps)[0]||'')
+  +', the practice your state calls for, and the rest opens as the charge drops.</p>';
+ else if(t.held.length)h+='<p class="ad-p">'+esc(nm(t.held).join(' and '))
+  +(many?' open':' opens')+' as the charge drops.</p>';
+ h+='<p class="ad-p">'+(t.b.path
+   ?(t.seat?'The five paths sit at no one seat, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
+     :'The five paths sit at no one seat, and nothing is read yet, so this is kept without one.')
+   :'Kept at the '+esc(ritSeatNm(t.seat))+', the seat this axis is read at.')+'</p>';
+ if(act)h+='<p class="ad-p"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</p>'
+  +'<div class="rv-acts"><button type="button" class="btn" data-tbgo="1">Open the ritual</button></div>';
+ else if(!ritOwn())h+='<p class="ad-p">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';
+ else if(t.steps.length)h+='<div class="rv-acts">'
+  +'<button type="button" class="btn pri" data-tbd="7">Start for a week</button>'
+  +'<button type="button" class="btn pri" data-tbd="14">Start for two weeks</button></div>';
+ return h+'</div>';}
+/* one wire for the section, wherever a drill put it. redraw is the drill
+   that holds it, so after a start the section says Active in place. */
+function ritTeachWire(redraw){
+ var box=document.querySelector('#rdrill .tb-rit'); if(!box)return;
+ var k=box.getAttribute('data-tb');
+ box.querySelectorAll('[data-tbd]').forEach(function(b){
+  b.onclick=function(){if(ritTeachStart(k,+b.getAttribute('data-tbd'))&&redraw)redraw();};});
+ var go=box.querySelector('[data-tbgo]');
+ if(go)go.onclick=function(){if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL);};}
 function ritSaveEdit(){
  var steps=ritDraft(); if(!steps.length||!RIT.edit)return;
  var id=RIT.edit, today=ritToday0();
@@ -627,6 +705,7 @@ function ritActiveHtml(act,today,building){
    +'<button type="button" class="rv-open" data-act="exp" data-id="'+p.id+'" aria-expanded="'+open+'">'
    +'<span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
    +'<span class="rv-sub">'+(p.rel!=null&&BY[p.rel]?'For '+esc(String(BY[p.rel].k).toLowerCase())+', ':'')
+   +(p.tc&&becomingOf(p.tc)?'Toward '+esc(becomingOf(p.tc).who)+', ':'')
    +ritMin(p.steps)+' minutes'+(p.when?', '+esc(p.when):'')+'<i>'+ritLeft(p,today)+'</i></span>'
    +'</button></div>';
   if(open){

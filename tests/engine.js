@@ -75,7 +75,10 @@ ok(DOMAINS.length===19,'19 domains');
 ok(ARCH.length===12,'12 archetypes');
 ok(MASKS.length===6,'6 masks');
 ok(SAB33.length===33,'33 saboteurs');
-ok(PRACTICE.length===17,'17 practices');
+/* the library a seat can call for. Round KQ appended the teachers' own
+   practices to the same table, marked tc, so the count this line guards is the
+   untagged library and the tagged rows are checked on their own below. */
+ok(PRACTICE.filter(p=>!p.tc).length===17,'17 practices a seat can call for, got '+PRACTICE.filter(p=>!p.tc).length);
 ok(EXPR.length===10,'10 expressions');
 ok(new Set(NODES.map(n=>n.i)).size===112,'node ids unique');
 ok(W.every(n=>BANDS.includes(n.b)),'every address seats at a known band');
@@ -5047,6 +5050,47 @@ g('JZ · the profiles on this device, by name');
  profRename('Lance'); profCreate('Sarah');
  const back=pStore();
  ok(back.length===2&&back.map(p=>p.name).join()==='Lance,Sarah','the disk reads back through the boundary by name');
+}
+
+/* ROUND KQ, THE RITUALS OF BECOMING. Every teacher on the compass, the eight
+   coherent poles and the five paths, resolves to a ritual whose every step is a
+   practice the boundary accepts. Counts are read off the tables, never typed. */
+g('the rituals of becoming');
+{
+ const {MIRROR,PATHS,BECOMING,TEACHER_PRACTICE,becomingOf,becomingSteps,validateProfile,blankProfile}=E;
+ const keys=MIRROR.map(m=>m.k).concat(PATHS.map(p=>p.k));
+ const miss=keys.filter(k=>!becomingOf(k));
+ ok(miss.length===0,'every axis and every path has a ritual, '+keys.length+' of them, missing '+JSON.stringify(miss));
+ const byK={}; PRACTICE.forEach(p=>{byK[p.k]=p;});
+ const bad=[]; keys.forEach(k=>becomingOf(k).steps.forEach(s=>{if(!byK[s])bad.push(k+':'+s);}));
+ ok(bad.length===0,'every step names a practice in the library, '+JSON.stringify(bad));
+ /* an axis teacher carries its axis's seat, and a path carries none */
+ const seats=MIRROR.filter(m=>becomingOf(m.k).seat!==m.seat).map(m=>m.k);
+ ok(seats.length===0,'an axis teacher is kept at the seat that axis is read at, '+JSON.stringify(seats));
+ const own=PATHS.filter(p=>!MIRROR.some(m=>m.up===p.up&&m.upd===p.upd));
+ ok(own.length>0&&own.every(p=>becomingOf(p.k).seat===null&&becomingOf(p.k).path),
+  'a path that stands on no axis carries no seat, '+own.map(p=>p.up).join(', '));
+ /* Jesus on the body and Buddha on awareness are their axes, not second copies */
+ ok(becomingOf('BO').k==='IL'&&becomingOf('AW').k==='PE','the two paths read off MIRROR are those axes\' rituals');
+ /* THE TWO JESUS POLES ARE TWO RITUALS. One figure, two qualities, two seats */
+ ok(becomingOf('IL').seat!==becomingOf('RE').seat&&becomingOf('IL').steps.join()!==becomingOf('RE').steps.join(),
+  'Jesus at the heart and Jesus at the crown are two rituals at two seats');
+ /* every teacher practice is tagged, names a teacher that exists, and is used */
+ const tp=PRACTICE.filter(p=>p.tc);
+ ok(tp.length===TEACHER_PRACTICE.length&&tp.every(p=>!!becomingOf(p.tc)),'every teacher practice names a teacher that exists');
+ const unused=tp.filter(p=>!BECOMING[p.tc]||BECOMING[p.tc].indexOf(p.k)<0).map(p=>p.k);
+ ok(unused.length===0,'and every one is a step of its own teacher, '+JSON.stringify(unused));
+ /* PACING IS THE SAFETY SYSTEM. At tier one nothing above tier one is handed over */
+ const leak=keys.filter(k=>becomingSteps(k,1).steps.some(s=>byK[s].tier>1));
+ ok(leak.length===0,'at the heaviest load no step above tier one is started, '+JSON.stringify(leak));
+ ok(keys.every(k=>{const s=becomingSteps(k,3); return s.held.length===0&&s.steps.length===becomingOf(k).steps.length;}),
+  'at the lightest load every step is started and none waits');
+ ok(becomingSteps('PE',1).steps.length===0&&becomingSteps('PE',1).held.length===2,
+  'Buddha\'s two practices both wait at the heaviest load, which the surface then says');
+ /* and the boundary takes a teacher practice as a step with no schema change */
+ const rec=Object.assign(blankProfile(),{rituals:tp.map(p=>({t:new Date().toISOString(),track:p.track,band:'Heart',steps:[p.k],min:p.min}))});
+ const v=validateProfile(rec);
+ ok(v.ok,'a record carrying every teacher practice validates, '+(v.error||''));
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

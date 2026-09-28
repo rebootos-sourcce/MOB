@@ -1046,6 +1046,8 @@ console.log('\n=== a sentence in a label class carries plain ===');
      if(typeof MIRROR!=='undefined')MIRROR.forEach(m=>{
       fire('runTeacherDrill',[m,'up']); fire('runTeacherDrill',[m,'dn']);
       fire('runMirrorDrill',[m.k]);});
+     /* round KQ: the five paths, each with its ritual toward it */
+     if(typeof PATHS!=='undefined')PATHS.forEach(p=>fire('runPathDrill',[p]));
      if(typeof CIRCLES!=='undefined')CIRCLES.forEach(c=>fire('runCircleDrill',[c.c]));
      if(typeof AGES!=='undefined')AGES.forEach(x=>fire('runAgeYear',[x.a]));
      if(typeof NUM_LABEL!=='undefined')Object.keys(NUM_LABEL)
