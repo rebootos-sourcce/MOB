@@ -24815,3 +24815,38 @@ points once hosting is live is a one line change in two files, not
 done blind. Also open: whether the story itself should ever enter the
 saved record, left out of it for now on the builder's own read of
 "his story" versus "his answers."
+
+## LK. The profile button confirmed one click, a real profile screen asked for, funnel and badges paused for it, and a colour and a gap asked for a third time
+
+His words, verbatim: "No, I said the profile should be one click. So
+there's a button in the upper right, and when I click on it, I should
+have all the kind of typical settings for a profile. Go out to the
+internet, grab the type of typical profile settings for something
+like this. We already know that we have different profiles that we
+can load. Rendering for the UI. Log in, log out. Settings and
+preferences. Okay, we're going to hold up on the funnels and badges
+until this last little bit of tidy work. For the attuned logo where it
+says source OS, I keep asking you to change that text to 343434 RGB.
+So it's the white text is not competing with the attuned logo. I also
+asked you to make sure there's a 15 pixel gap. between the attuned and
+source OS. Do those two."
+
+- **The profile button is confirmed correct at one click**, not the
+  bug I flagged. He is describing what should be behind it, not
+  disputing the click count.
+- **A fuller profile and settings screen wanted.** Typical settings for
+  something like this: the profiles this instrument already loads and
+  switches between, rendering and UI preferences, log in and log out,
+  settings and preferences generally. Researching real patterns before
+  building rather than inventing one. Log in and log out name real
+  accounts, which CLAUDE.md's own fork section already carries as open
+  and not yet designed; flagged rather than built as a fake control.
+- **Funnel and badges paused for this.** His own order, not mine.
+- **The colour and the gap, a third time.** Round KM, 26 September, and
+  once before that, asked for exactly this: `.bs`, the SOURCE OS mark
+  under the wordmark, to `#343434`, and 15 pixels between it and
+  Atuned above it. KM was never closed with a built confirmation
+  anywhere in this file; it reads today at `color:var(--ink)`, the
+  same bright colour as the wordmark itself, and `margin-top:4px`.
+  Both real, both his to have asked three times. Building now, the
+  only one of tonight's asks with an explicit "do this now."
