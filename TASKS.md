@@ -23475,3 +23475,23 @@ Sorted by destination, none dispatched yet:
 - **Energetics reconfirmed:** the three visual treatments stay behind
   a toggle so he can compare them, no change from what already
   shipped.
+
+## KF. How to automate deployment and where the API keys actually go
+
+His words, verbatim: "Okay, so the files I have Google Workspace,
+GitHub, I think Google Spaces is managing my attuned website. So how
+do I set you up to automate this? And then what are the API keys go?
+This way you're all hooked up and we can just start deploying directly
+from here."
+
+A direct continuation of round KE's Claude API key question. Answered
+directly in the next report rather than guessed at, since this is
+account and credential setup, not app code: the deploy automation he
+is asking for already exists and needs nothing from this session's own
+setup, only two actions on his own Cloudflare and GitHub accounts,
+already named in `HOSTING-SETUP.md` and confirmed built in round KB's
+investigation of `reboot-os`. What "Google Spaces is managing my
+Atuned website" refers to is not something this session can find in
+either repository and is named as a real ambiguity rather than
+guessed at, since everything found so far points at Cloudflare Pages,
+not a Google product, as the intended host.
