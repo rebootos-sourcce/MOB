@@ -31,7 +31,7 @@ if(h.indexOf('function ritLayout(')<0)throw new Error(SRC+' predates the ritual 
 h=h.replace('<head>','<head><script>\n'+shim+'\n</script>');
 h=h.replace('<div id="eof"','<script>\n'+opts+'\n</script>\n<div id="eof"');
 h=h.replace(/<title>[^<]*<\/title>/,'<title>Ritual, three ways</title>');
-if(/—|–/.test(shim+opts))throw new Error('a dash that is not a hyphen');
+if(/\u2014|\u2013/.test(shim+opts))throw new Error('a dash that is not a hyphen');
 const RAW=path.join('proto/ritual-redesign','ritual-redesign.html');
 const OUT=path.join('proto/ritual-redesign','ritual-redesign-packed.html');
 fs.writeFileSync(path.join(ROOT,RAW),h);
