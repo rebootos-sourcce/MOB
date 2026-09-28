@@ -23851,3 +23851,20 @@ Sorted by destination:
   prioritizing," in his own order: functionality, UX, look, then
   deployment.** Read as a standing instruction for how to sequence
   what gets picked up next, not a single task.
+
+## KO. Live: a Worker setup screen with no output field, and main is four months behind the real work
+
+His words, with two screenshots (Cloudflare's "Set up your application"
+Worker screen, project name defaulted to "reboot-os", deploy command
+"npx wrangler deploy", no output directory field visible; and GitHub's
+branch list for Reboot-OS, main four months old, his own branches 183
+and 294 commits ahead of it, one with a red failing check): "where do
+i add the output?"
+
+Answered directly in the next report: this is the Worker setup, not
+the Pages one, and a Worker has no output directory field at all,
+that concept belongs to the Pages/static side only. The real, more
+consequential thing the screenshot surfaces is that `main` is nowhere
+near current: every real commit, including tonight's own domain fix,
+sits on an unmerged branch, so pointing Cloudflare at `main` right now
+deploys none of it.
