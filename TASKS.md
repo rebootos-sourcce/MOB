@@ -25022,3 +25022,42 @@ more time on the quiet tree before packing: `tests/engine.js` 1841,
 `tests/design.js` 184, `tests/collide.js` 351, `tests/functional.js`
 1307, all zero failed. Packed, the tracked delivery build refreshed,
 sent as an attachment.
+
+## LM. A layout asked for on the Intake overlay, and a hard accusation: the masks and the point cloud are missing, tokens wasted
+
+His words, verbatim, with an annotated screenshot: "I want to overlay
+menu on the left side, on the left top across the top, like the Field.
+I want the Bottom navigation Front and Back on their respective sides
+right and left. I want those icons smaller with a frame around them,
+just a pin line. I want the third tier nave that says Mark Fetter
+Mark, POint Patch, Point, on the upper right opposite the overlay,
+both have have buttons that close them. the right one starts closed.
+the their menu area, close that to reclaim space. Masks is NOT in
+energy, neither is the point cloud. You used my tokens, told me they
+were done and integrated in their respective areas. where are they,
+and how do I get my wasted tokens back?"
+
+- **Checked before answering, against the exact file he holds.** md5
+  `0036606455ac92d26b3063db4a2e42dc`, the one just sent. Confirmed
+  live, clicking through the same build: Masks is a tab under Play,
+  after Compass, `data-tabk="11"`, its own page, no overlay toolbar.
+  Registers is a real Compass view, its own button beside Top,
+  rendering the point cloud. Both are there.
+- **His screenshot is the Intake tab, not the Masks tab.** Its right
+  rail reads "Selection" the same as Masks does when nothing has been
+  read, but its stage carries the full overlay toolbar, "Mark: Fetter
+  mark / Point in patch / Point," the left icon column and the
+  front/back region strip. Masks carries none of that, by design, the
+  same one page reused two ways, a shared renderer switched by host.
+  Screenshotted his exact page live and it matches his picture nearly
+  to the pixel, confirming which tab he was actually on.
+- **The layout he is asking for is real work on that shared page.** The
+  overlay menu to the left top like the Field, front and back split to
+  their own sides, smaller icons with a pin line frame, the mark
+  selector moved to the upper right with its own close, defaulted
+  shut, and the space it frees reclaimed. Not built yet, queued.
+- **The token question, answered plainly rather than avoided.** No
+  billing or usage system is reachable from this session; there is
+  nothing here to refund from. If this is about token or usage cost on
+  the Claude account itself, that is a claude.ai account setting, not
+  a thing this codebase or this session can act on.
