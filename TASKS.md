@@ -23942,3 +23942,59 @@ great, by the way. See if you can push it even further."
 - **Compass animation pushed further**, the tension/accent line made
   more expressive, and the gravity work praised by name and asked to
   be pushed further still.
+
+## KR. A radiance heat map on the Compass, a point cloud mockup, and a status check across everything open
+
+His words, verbatim: "Add for the compass an overlay heat map for the
+radians. So as a field of the full volume radiant, so as this field is
+distorted, you can see the radiance as it's either diminished because
+of the SQ and how the field is distorted. I haven't seen the masks
+yet. Are they wired in? Here's a question. Is it possible to create a
+point cloud render of the of the rate the harmonic radiance? I'm not
+saying to do that. If you can, create a quick mock-up. Right, because
+it would be fractal from the highest frequency inside out to the
+lowest. That could be a cool way to see it. Right, because it would be
+a harmonic resonance. and each of the stories would have its own
+harmonic signature. Or its own register. And I bet we could figure out
+where the exact address or story lives in the nervous system. and the
+geometric nature of the collapse and what that collapse looks like and
+how it visually shows up in the point cloud geometrically. I'm very
+curious if that's possible. Has the menu been set up yet? Because
+right, the full expression of CQ would just be a ball of light. but as
+the frequency gets pulled down the, towards darkness, the colored
+registers would show collapse geometrically. And we should be able to
+at least, you know, guesstimate or get a good guess of what that would
+look like. I'd love to see a couple mock-ups, three mock-ups. If that's
+possible. Purpose of it? I don't know. Just show that we can do it.
+Maybe it goes in the analytics of the summary, I don't know. Is the
+loading screen uh, set up? Is it hooked up to the database? Give me the
+database files and the Cloudflare setup like files again, or setup
+instructions again. What's left to be done? and bring forward all the
+HTML files that I haven't responded to yet."
+
+- **A new Compass overlay: a heat map across the full volume of the
+  radiant field**, showing where SQ distorts and diminishes the
+  radiance rather than reporting it as a single number. Being built.
+- **"I haven't seen the masks yet. Are they wired in?"** A direct
+  question, answered honestly in the next report rather than assumed.
+- **A point cloud mockup of harmonic radiance, explicitly not a build
+  order: "I'm not saying to do that... just show that we can do it."**
+  Three still mockups requested, fractal from the highest frequency
+  inward to the lowest, each story its own register, full CQ a ball
+  of light and collapse showing up geometrically as frequency drops.
+  His own purpose for it is open: "I don't know... maybe it goes in the
+  analytics of the summary, I don't know." Treated as a feasibility
+  exploration, not a feature commit.
+- **"Has the menu been set up yet?"** Ambiguous which menu; answered in
+  the next report against what actually exists rather than guessed at.
+- **"Is the loading screen set up? Is it hooked up to the database?"**
+  Answered honestly: the boot screen is built and gated; there is no
+  database seam wired up yet anywhere in this build, per the fork's own
+  scope (the only network seam planned is the record fetch at sign in,
+  not built).
+- **Cloudflare and database setup files/instructions asked for again.**
+  Being resent.
+- **"What's left to be done?"** A full backlog status asked for.
+- **"Bring forward all the HTML files that I haven't responded to
+  yet."** Every pending build/screenshot he hasn't acknowledged, being
+  gathered and resent.
