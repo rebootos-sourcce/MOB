@@ -24535,3 +24535,15 @@ up."
   so plainly rather than let him believe it already exists.
 - **Flow: ritual and accountability confirmed, already exactly what
   shipped.** No change needed there.
+
+His follow up, verbatim: "Give me the build once the mass and point
+cloud is wired in. How are we looking with our tokens? And will you
+complete before the tokens are out?"
+
+- **The point cloud is now dispatched as a real build**, not held.
+  Answered honestly on tokens: no live meter is visible from this
+  side, and background work already failed once this session on a
+  weekly usage limit, which is the one concrete data point there is.
+  No promise of finishing before any ceiling; a build ships the
+  moment each piece is real and gated rather than being held to
+  bundle everything.
