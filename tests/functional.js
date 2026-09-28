@@ -3036,8 +3036,11 @@ const iq=await page.evaluate(async()=>{
     the becoming on its own subtab ... the archetypes ... and the intake
     questions to be on its own subtab." Becoming opens first, so the intake
     host is hidden until the subtab is pressed, and innerText does not read a
-    hidden host. The press is the one a person makes. */
- const sub=document.querySelector('[data-avsub="intake"]'); if(sub)sub.click();
+    hidden host. The press is the one a person makes.
+    SINCE ROUND KH THE QUESTIONS ARE THE SECOND FACE OF THE RIGHT MENU on
+    Becoming, his words: "for the question to be on the right menu". The press
+    a person makes is that face's button now. */
+ const sub=document.querySelector('[data-avface="iq"]'); if(sub)sub.click();
  await new Promise(r=>setTimeout(r,500));
  const el=document.getElementById('iq')||document.body;
  const t=(el.innerText||'').replace(/\s+/g,' ');
@@ -3053,6 +3056,66 @@ ok(iq.three,'and an open law shows its three framings side by side, each named, 
  +JSON.stringify(iq.framings));
 ok(iq.resume,'and that it can be stopped and come back to');
 ok(iq.left,'and the progress line says what is left');
+
+console.log('\n=== the avatar is a ring, with tags from the lexicon, and archetypes carry no percent (KH) ===');
+/* ROUND KH, his words: "The hero graphic, I just wanted to take up the
+   majority of the space. There's way too much text all over the screen." And
+   the tags "are just linked to the lexicon of the app", and "let's take the
+   percentages off archetypes". A pair and its journal entry are put straight
+   on the record rather than through the commit, so the field this run reads
+   later is not moved; everything is put back at the end. */
+const kh=await page.evaluate(async()=>{
+ loadP(0); setTab(TAB.INTAKE); avSub('becoming'); render();
+ await new Promise(r=>setTimeout(r,300));
+ const o={}, keepA=CURP.avatar, keepS=CURP.story, keepSide=STORE.get(AV_KEY);
+ const line='My chest aches and I feel lonely and rejected when my partner goes quiet.';
+ CURP.avatar={built:true,at:new Date().toISOString(),pairs:[{be:'Someone who stays close when it gets hard.',notbe:line,seat:'Heart'}]};
+ CURP.story={entries:[{t:new Date().toISOString(),text:line,imprints:1,bands:{}}]};
+ AV.seat='Heart'; AV.face='story'; AV.tag=null; AV.tagOpen=false; renderAvatar();
+ const host=document.getElementById('avbody'), $=s=>host.querySelector(s);
+ o.lede=($('.avh-lede')||{}).textContent;
+ o.rings=host.querySelectorAll('.avh [data-avsat]').length;
+ o.prose=!!$('.avs-story');
+ o.hero=$('.avh').getBoundingClientRect().width; o.menu=$('.avm').getBoundingClientRect().width;
+ o.tags=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
+ o.charge=avLexOf('Heart','Charge');
+ $('[data-avtagadd]').click();
+ const q=$('[data-avtagq]'); q.value='betray'; q.dispatchEvent(new Event('input'));
+ const put=$('[data-avtagput="Betrayal"]'); if(put)put.click();
+ o.added=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
+ const off=$('[data-avtagoff="Sad"]'); if(off)off.click();
+ o.taken=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
+ const joy=$('[data-avtag="Joy"]'); if(joy)joy.click();
+ o.found=host.querySelectorAll('.avt-found .av-jr-row').length;
+ $('[data-avface="iq"]').click();
+ o.iq=!!document.querySelector('#avqslot #iqbody')&&!document.getElementById('iqbody').hidden;
+ AV.face='story'; CURP.avatar=keepA; CURP.story=keepS;
+ if(keepSide==null)STORE.set(AV_KEY,'{}'); else STORE.set(AV_KEY,keepSide);
+ loadP(PERSON('Marcus')); setTab(TAB.INTAKE); avSub('arch'); render();
+ await new Promise(r=>setTimeout(r,300));
+ const t=document.getElementById('avbody').innerText;
+ o.pct=/\d\s*%|percent/i.test(t+[...document.querySelectorAll('#avbody .av-mk')].map(x=>x.getAttribute('aria-label')+(x.title||'')).join(' '));
+ o.emb=[...document.querySelectorAll('#avbody .av-mk')].filter(x=>/, embodied/.test(x.getAttribute('aria-label'))).length;
+ o.pill=(document.querySelector('#avbody .avx-emb')||{}).textContent;
+ o.threads=document.querySelectorAll('#avbody .avx-row').length;
+ avSub('becoming'); loadP(0); render();
+ return o;});
+ok(kh.lede==='You’re setting up your avatar. We want to find out who it needs to become and who and what it needs to shed. Select each ring and tell us the story of who you’re becoming and who you’re not.',
+ 'Becoming carries his one line, word for word, got '+kh.lede);
+ok(kh.rings===7&&!kh.prose,'seven rings to select, and no seat prose, got '+kh.rings+' rings, prose '+kh.prose);
+ok(kh.hero>kh.menu,'the ring takes more of the row than the menu, '+Math.round(kh.hero)+' against '+Math.round(kh.menu));
+ok(kh.tags.includes('Sad')&&kh.tags.includes('Joy')&&kh.tags.includes('Rejection'),
+ 'the found tags are the fetter, its replacement state and the fetter the words named, got '+JSON.stringify(kh.tags));
+ok(!kh.tags.includes('Martyrdom')&&!kh.tags.includes('Separation'),
+ 'and never an address the sniffer\'s arithmetic chose, got '+JSON.stringify(kh.tags));
+ok(kh.charge===null,'a glossary word is not a tag');
+ok(kh.added.includes('Betrayal')&&!kh.taken.includes('Sad'),'a tag is added from the lexicon and a found one taken off, got '
+ +JSON.stringify(kh.added)+' then '+JSON.stringify(kh.taken));
+ok(kh.found===1,'a tag finds the story filed under it, got '+kh.found);
+ok(kh.iq,'the intake questions sit in the right menu\'s second face');
+ok(!kh.pct,'the archetypes print no percent anywhere, not even in a label');
+ok(kh.emb===3&&/^embodied$|^not embodied$/.test(kh.pill||''),'three read as embodied and the detail says which, got '+kh.emb+', '+kh.pill);
+ok(kh.threads===3,'and three threads say how it runs through the other patterns, got '+kh.threads);
 
 console.log('\n=== the ritual plan cap is one number, not two ===');
 /* THE BOUNDARY AND THE SURFACE HAVE TO AGREE ABOUT FORTY. validateProfile
