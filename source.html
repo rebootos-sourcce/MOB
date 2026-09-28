@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v838 7e6c0cd 2026-09-28 14:20"><head><meta charset="utf-8">
+<html lang="en" data-build="v844 6c6d8da 2026-09-28 14:40"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5995,11 +5995,11 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
     <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
     <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
-    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Intake"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Intake</span></button>
     <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
    </div>
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Intake"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Intake</span></button>
     <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
@@ -10914,13 +10914,6 @@ const TABDEF=[
     history, from when this surface was the intake; the door called Intake
     below is a different tab, TAB.ENERGY. Two integers, one word each. */
  {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
- /* THE BODY IS THE INTAKE, AND IT IS IN DISCOVER. KX, his words: "I need my
-    energetics, like my intake. To measure my coherence... Please prioritize
-    that back under Discover. I just rename it Intake." Renamed and moved
-    only: same integer, host, class and renderer. KT's last pass then names
-    "Field, Body, Compass" for Play, and this is the only Body there is, so
-    it stays here once rather than being given two doors. */
- {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'discover'},
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
@@ -10928,6 +10921,15 @@ const TABDEF=[
     tab." The instruments are Play now, and the app still opens on the Field,
     so Play is the section pressed at start. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
+ /* THE BODY KEEPS THE NAME INTAKE, AND MOVES BACK TO PLAY. KX renamed this
+    tab and moved it to Discover on his words about energetics and
+    coherence, but he had called it Body and grouped it with Field and
+    Compass in every round before and after that one, "our field body and
+    compass are in that" (KU), and round LD names the gap outright: "play
+    menu is missing Body entirely. fix, priority." Same integer, host,
+    class and renderer as always; only .sec moves, and the label he asked
+    for stays. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
@@ -43569,5 +43571,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002849818"></div>
+<div id="eof" hidden data-len="002849898"></div>
 </body></html>
