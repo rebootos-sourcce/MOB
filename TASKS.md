@@ -24967,3 +24967,51 @@ renumbered), `panels.js` (the conditional section render), `account.js`
 for the new section's own markup, which the two dispatches share and
 will be reconciled the way Registers and Masks were earlier tonight if
 they land in either order.
+
+**Both landed and independently verified, commits `6d0f1f4` and
+`b7ce14d`.** The two seats shared `body.html` and `panels.js` and
+handled it themselves the way Registers and Masks did earlier: the
+colour seat worked in its own isolated worktree, checked the branch
+had not moved before pushing its own commit, and touched only its own
+three files; the practitioner seat found the colour seat's commit
+already on the branch when it started, built on top of it, and its own
+`panels.js` change was one line, nothing of the other's.
+
+Verified separately, in isolated worktrees, not trusted off either
+report:
+- **Section colour and size, `6d0f1f4`.** `tests/engine.js` 1836
+  passed. `tests/design.js` failed once on a Field frame rate check,
+  180 then 181 then 182 passed clean alone, the same flake this file
+  has hit before under load, both seats working at once this time.
+  `tests/collide.js` 351 passed. `tests/functional.js` read 1280/12,
+  then 1281/11, both while the practitioner seat was still running its
+  own Chromium gates in the same checkout; clean at 1292/0 once both
+  seats were done and the system was quiet. Screenshotted the live
+  nav: Discover rose, Play green, Flow teal, Embody clay, all visibly
+  distinct, the pressed one still reads as pressed by its heavier
+  line.
+- **Practitioner mode, `b7ce14d`.** `tests/engine.js` 1841,
+  `tests/design.js` 184, `tests/collide.js` 351, `tests/functional.js`
+  1307, all zero failed, matching the report exactly. Confirmed
+  `TAB.PRACTITIONER:12` is a genuinely new, appended integer. Toggled
+  the switch myself in a real browser: off, four sections and no
+  Practitioner anywhere; on, a fifth section appears, grey and not one
+  of the loop's colours, correctly, since it is not a loop stage; its
+  one tab, Clients, opens a page that says plainly what it is, "A
+  sketch of practitioner mode. No client is listed here yet, and no
+  profile opens from this page until sign in and consent are built,"
+  dashed placeholder rows, three "not built yet" stubs, a line on
+  consent reaching the page only once a client grants it. Nothing
+  faked.
+- **Both voice checks: 22 findings, 0 stopping**, same as HEAD.
+
+Pushed. Questions from both seats, held for a single short pass to
+him rather than sent as they landed: whether the phone width should
+carry the section colours at all (today it is desktop only, the
+section bar being hidden at phone width); whether the icon drawings
+themselves, not only their size and colour, should change, which he
+has ruled is its own round asked for with the drawings; whether
+Embody's clay is meant to read as the quietest of the four or should
+be lifted to feel equally strong; the tab name Clients against his
+own word customers, kept as Clients since DECISIONS.md already rules
+it and a tab does not repeat its section's own name.
