@@ -24578,3 +24578,57 @@ His words, verbatim: "Make a build when complete."
 - **Rebuilt clean and shipped.** `v851`, commit `3acf076`, source.html
   md5 `93bc355f8560a3ec94ce869389206379`. Packed and sent as an
   attachment.
+
+## LG. Three wheels backlog, badges asked about, the funnel database named next priority, the tension/pulse system questioned, secondary nav told to shrink
+
+His words, verbatim: "This is an idea to put the back burner as a tool.
+Three interlocking wheels of the celestial, psycho-spiritual,
+psychological, and physiological layers. And how the outer driver
+influences the inner three rings. Selecting any of the rings will
+give you a summary and how those rings run through you. The celestial
+layer is always superimposed on top of this psycho-spiritual down.
+This is a, an energy system that is going to need a system and
+design. We never added the badges and awards system. I'm assuming
+that would eat up all of our tokens. And we still need to do the
+funnel Cloudflare database lookup. That'll be priority. Next
+priority. And I'm assuming you added the tension animation to what's
+running hottest. And that's already in the build, in the field. So I
+can see which, ten which field has tension lines that are more And
+then one thought on the pulses that are running on the field, the
+pulses that are running through. I like this pulse speed dynamic
+based on the intensity of the SQ. So as the SQ rises, not only do the
+pulses go animate faster, but the tension lines begin to animate.
+Starting at a five, and as it get, approaches closer to a ten or
+reaches ten, it's at maximum tension. That should be in the system
+right now. For both field, body, body meaning. What fetters and
+saboteurs are running the hottest, the tension lines in those
+saboteurs up to hyper complexes is where we want to see the tension
+animation. And ideally the tension would be weighted most not at the
+full network, unless the network is running above a five, but where
+the nodes start to run hotter than a five. That's a system and
+schema, I believe. And that should also be worked in. The secondary
+navigation, shrink down the text by two point, and that secondary
+navigation space, shrink down by 10 pixels. It's eating up too much
+real space, real estate."
+
+- **Backlog, explicitly.** The three interlocking wheels, celestial
+  over psycho-spiritual over psychological over physiological, each
+  ring selectable for its own summary, the outer layer always driving
+  the inner three. His own word for it: "a system and design," not
+  built now.
+- **Badges and awards.** Flagged, not ordered. He named it himself as
+  never added and guessed it is a large lift. Logged as open, no
+  build dispatched on his guess alone.
+- **Funnel Cloudflare database lookup: named next priority**, after
+  what just shipped.
+- **Tension animation tied to SQ, on both Field and Body: he believes
+  it is already built and is asking me to confirm, not ordering it
+  blind.** Spec as given: pulse speed already scales with SQ
+  (believed shipped); tension lines should also animate, starting at
+  SQ 5, maximum at SQ 10; on Body this means fetters and saboteurs
+  running hottest up through hypercomplexes; weighted at the node
+  level once a node passes 5, not the whole network unless the whole
+  network is above 5. Real state not yet checked against the claim,
+  the same discipline the point cloud needed.
+- **Secondary nav: shrink its text by 2pt and its own bar height by
+  10px.** Direct, concrete, not backlog.
