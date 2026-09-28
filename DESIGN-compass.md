@@ -19,7 +19,7 @@ measures the quality at:
 
 | | Quality | Coherent | Inverted | Seat |
 |---|---|---|---|---|
-| IL | Illumination | Jesus | Lucifer | Heart |
+| IL | Light | Jesus | Lucifer | Heart |
 | DE | Desire and will | Ramakrishna | Asmodeus | Sacral |
 | OR | Order | Moses | Set | Throat |
 | PO | Power | Musashi | Moloch | Solar |

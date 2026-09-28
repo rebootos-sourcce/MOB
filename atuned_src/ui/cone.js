@@ -49,7 +49,11 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
     nt: the needle's own tilt, kept apart from the arrow figure's so a drag
     on one never re-poses the other. t0: when the tab opened, which is what
     the needle's entrance is timed from, in milliseconds. */
- top:false, nt:0.30, t0:0};
+ top:false, nt:0.30, t0:0,
+ /* well: which of round KI's two gravity mockups the needle draws. Off is
+    the pulse scaled by weight, round KH; on is the gravity well, round KG.
+    A mockup switch for him to choose by looking, not a ruling. */
+ well:false};
 /* THE FLAT VERSION IS THE SAME FIGURE WITH THE TILT TAKEN OUT.
 
    A second renderer for a 2D compass would be a second thing to keep true and
@@ -903,11 +907,26 @@ function conePlan(){
                        Source", crowned round the point, with Jesus and
                        Krishna nearest it, as he named them.
 
-   NOT DRAWN, AND WHY. Krishna, Rama and Lao Tzu have no opposing behaviour in
-   the codex: the eight mirror pairs name an inversion for every coherent
-   pole and the five paths name none. An inversion drawn for them here would
-   be canon written by a renderer, which this file does not do, so the five
-   sit at the point without mirrors and the question goes to him.
+   AND THE FIVE ARE MIRRORED NOW, round KE. This said Krishna, Rama and Lao
+   Tzu had no opposing behaviour in the codex, and that an inversion drawn
+   here would be canon written by a renderer. Both still hold, which is why
+   the answer went into the data and not into this file: PATHS in
+   engine/data/compass.js carries each path's inversion in the mirror pairs'
+   own shape, two read off the codex and three researched out of each
+   teacher's own tradition, cited and marked as research. This file only
+   draws what PATHS says, the five inversions crowning the lower point the
+   way the five paths crown the upper one, broken rings as the eight are.
+
+   THE GAP AS TWO CIRCULAR PLANES, round KE: "Can we do something with that
+   gap and make it a two circular planes? when it's tilted?" Tilted is the
+   needle's own tilt, CONE.nt, which a vertical drag sets between 0.04 and
+   0.75 and which opens at 0.30. Near edge on the octagonal band stays,
+   because two circles seen edge on are two lines and say nothing. As the
+   figure tilts the band cross fades into two discs, a coherent plane at
+   sixty under the upper pyramid and a decoherent one at forty over the
+   lower, each a compass card with its eight spokes in the seats' colours,
+   and the range between them keeps its gradient and its souls, so the gap
+   is still never blank.
 
    NOT DRAWN EITHER: the Boundary overlay. His words: "let's not move that
    there yet, just put it on the backlog." The idea, for a later pass, is the
@@ -944,11 +963,19 @@ const NDL_SEC=24, NDL_N=8*NDL_SEC;
 /* THE FIVE PATHS, from the glossary's own entry: "Krishna, flow. Buddha,
    awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal."
    Christ is written Jesus, because the canon ruled one figure one name. The
-   third field is the ring: one is nearest the point, which is his ruling for
+   first field is the ring: one is nearest the point, which is his ruling for
    Jesus and Krishna, and two is everyone else, unranked, because nobody has
-   ranked them. */
-const NDL_PATHS=[['Jesus','the body',1,-130],['Krishna','flow',1,-50],
- ['Buddha','awareness',2,-152],['Rama','alignment',2,-90],['Lao Tzu','the horizontal',2,-28]];
+   ranked them. The second is the angle round the upper point; the lower
+   point takes the same angle reflected, so each inversion sits exactly under
+   its path. Who the five are and what they invert to is PATHS, in the
+   engine's data: this is only where each one is drawn. */
+const NDL_PLACE={'Jesus':[1,-130],'Krishna':[1,-50],
+ 'Buddha':[2,-152],'Rama':[2,-90],'Lao Tzu':[2,-28]};
+const NDL_PATHS=PATHS.map(function(p){var at=NDL_PLACE[p.up]||[2,-90];
+ return {p:p,ring:at[0],ang:at[1]*Math.PI/180};});
+/* the tilt at which the gap has become two circular planes, and below which
+   it is still the octagonal band */
+const NDL_DISC_LO=0.08, NDL_DISC_HI=0.22;
 var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
  cA:new Float64Array(8), sA:new Float64Array(8),
  sx:new Float32Array(NDL_N+1), sy:new Float32Array(NDL_N+1), sq:new Float32Array(NDL_N+1),
@@ -958,7 +985,11 @@ var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
  hp:[], nh:0, nt:0, cols:null, colSig:'', ay:0, zy:0, ee:1, lit:-1, gc:null, rc:null,
  grav:new Float32Array(8), gAt:-1e9, gWho:null,
  Es:null, Eb:null, sIdx:null, glowSig:'', slab:null, slabSig:'', well:null, wellSig:'', wl:null,
- sr:null, srK:'', srAt:-1e9};
+ sr:null, srK:'', srAt:-1e9,
+ /* the wells: x, y and strength per axis, and how many are live this frame.
+    Zero live wells is the switch off, and ndlWarp returns at once. */
+ wc:new Float32Array(24), wn:0, ws2:1,
+ gx:new Float32Array(NDL_N+1), gy:new Float32Array(NDL_N+1)};
 /* the figure's box. Read once per canvas size: the top keeps room for the
    crown of five and the halo, the bottom for the fork, and on a desk the
    sides keep clear of the two name rails, which are absolute over the canvas
@@ -966,7 +997,10 @@ var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
 function ndlGeo(W,H){
  var G=NDL.G, side=(typeof innerWidth==='number'&&innerWidth>=900)?176:20;
  if(G&&G.W===W&&G.H===H&&G.side===side)return G;
- var top=88, bot=46, Hs=Math.max(50,(H-top-bot)/2);
+ /* the bottom keeps the same room as the top now: the five inversions crown
+    the lower point as the five paths crown the upper one, and 46 was the
+    fork's room alone */
+ var top=88, bot=88, Hs=Math.max(50,(H-top-bot)/2);
  /* a pyramid a little taller than it is wide, so each half reads as an
     arrow head and not as a plate */
  var Rb=Math.max(36,Math.min(Hs*(1-NDL_GAP)*0.80,W/2-side));
@@ -993,6 +1027,7 @@ function ndlP(q,a,G,o){
  var h=ndlH(q)*G.Hs*NDL.vs, r=ndlR(q,G.Rb), th=a+CONE.spin, tl=CONE.nt;
  var z3=Math.sin(th)*r;
  o.x=G.cx+Math.cos(th)*r; o.y=G.cy-h*Math.cos(tl)+z3*Math.sin(tl); o.d=Math.sin(th);
+ if(NDL.wn)ndlWarp(o);
  return o;}
 /* a point on face i, u of the way from rib i to rib i+1. On the flat face
    and not on a circle through the two ribs: sampling a circle would float
@@ -1001,7 +1036,50 @@ function ndlPf(q,i,u,G,o,rr){
  var j=(i+1)%8, r=rr===undefined?ndlR(q,G.Rb):rr, h=ndlH(q)*G.Hs*NDL.vs;
  var cx3=(NDL.cA[i]*(1-u)+NDL.cA[j]*u), z3=(NDL.sA[i]*(1-u)+NDL.sA[j]*u);
  o.x=G.cx+cx3*r; o.y=G.cy-h*Math.cos(CONE.nt)+z3*r*Math.sin(CONE.nt); o.d=z3;
+ if(NDL.wn)ndlWarp(o);
  return o;}
+/* ============================================================
+   GRAVITY, TWO WAYS, AS MOCKUPS. Rounds KG, KH and KI.
+
+   KG, his words: "gravity is like a gravity well. So wherever the node is,
+   it's like the geometry, geometry is distorted around it." KH, a round
+   later: "I think the pulsing rings and the gravity. The heavier the
+   gravity, the more the pulsation." KI: "create the mockups again for the
+   gravity. Let's see." So both are drawn, one switch apart, and he picks by
+   looking. Neither is ruled.
+
+   The weight is the same in both: ndlGrav, each axis's mean charge against
+   the heaviest, cubed, so an axis at seven tenths of the heaviest pulls a
+   third as hard and the heaviest pulls hardest. Uncubed, Marcus's eight all
+   sit between 0.69 and 1 and every axis reads the same.
+
+   THE PULSE, KH, switch off. Every axis carrying weight rings, and the ring
+   count, reach, speed and strength all rise with the weight.
+
+   THE WELL, KG, switch on. Every point the needle draws is pulled toward
+   each node by the node's weight, falling off with distance, so the faces,
+   the shell, the ribbon and a set of level contours bend into the heavy
+   nodes the way a sheet bends under a mass. Screen space, after the
+   projection: cheap, and it is the look being chosen, not the physics.
+   COST, measured: see the probe figures in the round KE report. The warp is
+   eight exponentials a point and returns at once when the switch is off.
+   ============================================================ */
+/* how hard a full weight pulls, and how far the pull reaches as a share of
+   the base radius. The first cut was 0.34 and 0.24, which moved a point at
+   most about thirteen pixels at 1600 and read as nothing at all; these move
+   it up to about a tenth of the base radius. The pull stays under one, so no
+   point is ever thrown past the node it falls toward. */
+const NDL_WELL_A=0.62;
+const NDL_WELL_S=0.30;
+function ndlWarp(o){
+ var W2=NDL.wc, n=NDL.wn, s2=NDL.ws2, dx=0, dy=0;
+ for(var k=0;k<n;k++){var cx=W2[k*3], cy=W2[k*3+1], w=W2[k*3+2];
+  var ex=cx-o.x, ey=cy-o.y, d2=ex*ex+ey*ey;
+  /* past three widths the pull is under one per cent: skip the exponential */
+  if(d2>s2*4.5)continue;
+  var f=w*NDL_WELL_A*Math.exp(-d2/s2);
+  dx+=ex*f; dy+=ey*f;}
+ o.x+=dx; o.y+=dy;}
 /* one polygon, filled */
 function ndlTri(g,x0,y0,x1,y1,x2,y2,fs){
  g.beginPath(); g.moveTo(x0,y0); g.lineTo(x1,y1); g.lineTo(x2,y2); g.closePath();
@@ -1116,6 +1194,30 @@ function ndlOct(g,A){
 function ndlRing(g,G,q){
  var P=NDL.P; g.beginPath();
  for(var n=0;n<=8;n++){ndlPf(q,n%8,0,G,P); n?g.lineTo(P.x,P.y):g.moveTo(P.x,P.y);}}
+/* part of one limbo plane's rim, from angle a0 to a1, onto the current path.
+   The canvas draws the ellipse itself when nothing is bending the figure; a
+   gravity well bends it, so then it is sampled through ndlP like every
+   other line. An empty path takes the first lineTo as a moveTo. */
+function ndlDisc(g,G,yc,q,rs,ry,a0,a1){
+ if(!NDL.wn){g.ellipse(G.cx,yc,rs,ry,0,a0,a1); return;}
+ var P=NDL.P, N=48, k;
+ for(k=0;k<=N;k++){ndlP(q,a0+(a1-a0)*k/N-CONE.spin,G,P); g.lineTo(P.x,P.y);}}
+/* ONE OF THE FIVE, at the upper point as a path or at the lower as its
+   inversion. The lower is the upper reflected through the waist, and it is
+   drawn as the eight inversions are: the same badge with a broken ring, at
+   the darker strength, in the blueprint's colour. */
+function ndlCrown(g,x0,y0,n,up,cs,col){
+ var TAU=Math.PI*2, pl=NDL_PATHS[n], inner=pl.ring===1, rad=(inner?34:60)*cs;
+ var px=x0+Math.cos(pl.ang)*rad, py=up?(y0-10*cs+Math.sin(pl.ang)*rad):(y0+10*cs-Math.sin(pl.ang)*rad);
+ var rb2=(inner?10.5:9)*cs, ee=NDL.ee;
+ g.beginPath(); g.moveTo(x0,y0); g.lineTo(px,py);
+ g.strokeStyle=rgba(col,(up?.22:.16)*ee); g.lineWidth=1; g.stroke();
+ g.beginPath(); g.arc(px,py,rb2,0,TAU); g.fillStyle=rgba(NDL.wl,1); g.fill();
+ if(!up)g.setLineDash([2.2*cs,2.4*cs]);
+ g.strokeStyle=rgba(col,(inner?.9:.6)*(up?1:.72)*ee); g.lineWidth=(inner?1.5:1.1)*cs; g.stroke();
+ g.setLineDash([]);
+ coneGlyph(g,up?pl.p.ic:pl.p.dic,px,py,col,(inner?.95:.72)*(up?1:.8)*ee,rb2*1.25,1.6);
+ ndlTip(px,py,rb2+3,up?'path':'pathdn',n);}
 function coneNeedle(){
  var c=CONE.cv, g=CONE.g, TAU=Math.PI*2;
  var W=c.width/CONE.dpr, H=c.height/CONE.dpr;
@@ -1140,6 +1242,23 @@ function coneNeedle(){
   NDL.Es=MIRROR.map(function(m,j){return {t:j/8,x:50};});
   NDL.Eb=MIRROR.map(function(m,j){return {t:j/8,x:50};});}
  for(i=0;i<8;i++){NDL.cA[i]=Math.cos(i*TAU/8+CONE.spin); NDL.sA[i]=Math.sin(i*TAU/8+CONE.spin);}
+ /* THE WELLS, round KG, when the switch is on: each node, placed with the
+    warp off, and its weight cubed. Everything drawn after this line bends. */
+ NDL.wn=0;
+ if(CONE.well&&read){var gw=ndlGrav(), nw=0;
+  NDL.ws2=2*Math.pow(NDL_WELL_S*G.Rb,2);
+  for(i=0;i<8;i++){var wv=gw[i]*gw[i]*gw[i]*ee; if(wv<.02)continue;
+   ndlPf(cq+(M.ax[i].x-cq)*ee,i,0,G,P);
+   NDL.wc[nw*3]=P.x; NDL.wc[nw*3+1]=P.y; NDL.wc[nw*3+2]=wv; nw++;}
+  NDL.wn=nw;}
+ /* THE SHEET BENDS, THE READING DOES NOT. The first cut bent everything,
+    and the nodes, which are the wells, were pulled into each other by their
+    neighbours' wells: at 1600 Marcus's upper five drew in a clump a third of
+    their true spread, which moved the reading to show the effect. So the
+    warp runs on the figure (faces, ribs, rims, planes, contours) and is
+    off for the teachers' badges, the shell, the ribbon, the level, the range, the sparks
+    and the nodes, which stay exactly where the reading puts them. */
+ var wsave=NDL.wn;
  var ax=G.cx, ay=ndlY(100,G), zy=ndlY(0,G), st=Math.sin(CONE.nt), rs=G.Rb*NDL_SLAB;
  NDL.ay=ay; NDL.zy=zy;
  /* the eight corners of each base and of the limbo ring, top and bottom */
@@ -1173,7 +1292,10 @@ function coneNeedle(){
     near faces that come after them */
  ndlFaces(g,G,false);
  for(i=0;i<8;i++)ndlRib(g,G,i,false);
+ /* the teachers keep their places too: bent, they slid onto the nodes */
+ NDL.wn=0;
  for(i=0;i<8;i++){ndlBadge(g,G,i,true,false); ndlBadge(g,G,i,false,false);}
+ NDL.wn=wsave;
 
  /* ============================================================
     THE LIMBO RING. Never blank. Ruled: "The oscillating space, I don't want
@@ -1198,10 +1320,46 @@ function coneNeedle(){
   else sg.addColorStop(.5,rgba(ink,.05));
   sg.addColorStop(1,rgba(rc,.16));
   NDL.slab=sg;}
- g.globalAlpha=ee; g.fillStyle=NDL.slab;
- for(i=0;i<8;i++){var j=(i+1)%8;
-  g.beginPath(); g.moveTo(ST[i*2],ST[i*2+1]); g.lineTo(ST[j*2],ST[j*2+1]);
-  g.lineTo(SB[j*2],SB[j*2+1]); g.lineTo(SB[i*2],SB[i*2+1]); g.closePath(); g.fill();}
+ /* how far the gap has turned into two circular planes: none near edge on,
+    all of it from NDL_DISC_HI up. Smoothstepped so a drag through the
+    change reads as one motion and not a switch. */
+ var dw=clamp((CONE.nt-NDL_DISC_LO)/(NDL_DISC_HI-NDL_DISC_LO),0,1); dw=dw*dw*(3-2*dw);
+ var yc60=ndlY(60,G), yc40=ndlY(40,G), ry=rs*st;
+ g.fillStyle=NDL.slab;
+ if(dw<1){g.globalAlpha=ee*(1-dw);
+  for(i=0;i<8;i++){var j=(i+1)%8;
+   g.beginPath(); g.moveTo(ST[i*2],ST[i*2+1]); g.lineTo(ST[j*2],ST[j*2+1]);
+   g.lineTo(SB[j*2],SB[j*2+1]); g.lineTo(SB[i*2],SB[i*2+1]); g.closePath(); g.fill();}}
+ if(dw>0){
+  /* THE TWO CIRCULAR PLANES. A circle at a height projects to an ellipse
+     whose half height is its radius times the sine of the tilt, which is the
+     same arithmetic ndlP does point by point, done once by the canvas.
+     Back to front: the decoherent plane, the range between the two as the
+     silhouette of the drum they bound, then the coherent plane over it. */
+  /* the decoherent plane is the quieter of the two, by TIERCOL's law: a
+     figure that shouts loudest at the bottom tells a person standing there
+     they are an emergency. Measured on the first cut at the steepest tilt,
+     a tenth of the root colour made the lower disc the loudest thing drawn. */
+  g.globalAlpha=ee*dw;
+  g.beginPath(); ndlDisc(g,G,yc40,40,rs,ry,0,TAU);
+  g.fillStyle=rgba(rc,.05); g.fill();
+  g.beginPath(); ndlDisc(g,G,yc60,60,rs,ry,Math.PI,TAU);
+  ndlDisc(g,G,yc40,40,rs,ry,0,Math.PI); g.closePath();
+  g.fillStyle=NDL.slab; g.globalAlpha=ee*dw*.8; g.fill();
+  g.globalAlpha=ee*dw;
+  g.beginPath(); ndlDisc(g,G,yc60,60,rs,ry,0,TAU);
+  g.fillStyle=rgba(gc,.12); g.fill();
+  /* each plane is a compass card: eight spokes, one per axis, in the seat's
+     colour, from the centre to where that axis's rib crosses the rim */
+  for(i=0;i<8;i++){
+   var fr=NDL.sA[i]>=0?1:.5;
+   P.x=G.cx; P.y=yc60; if(NDL.wn)ndlWarp(P); g.beginPath(); g.moveTo(P.x,P.y);
+   ndlPf(60,i,0,G,P,rs); g.lineTo(P.x,P.y);
+   g.strokeStyle=rgba(cols[i],.46*fr); g.lineWidth=1; g.stroke();
+   P.x=G.cx; P.y=yc40; if(NDL.wn)ndlWarp(P); g.beginPath(); g.moveTo(P.x,P.y);
+   ndlPf(40,i,0,G,P,rs); g.lineTo(P.x,P.y);
+   g.strokeStyle=rgba(cols[i],.26*fr); g.stroke();}
+  g.globalAlpha=1;}
  g.globalAlpha=1;
  /* the souls, the band's own eighteen, each drifting on its own phase round
     the ring and up and down inside it */
@@ -1212,8 +1370,15 @@ function coneNeedle(){
   g.beginPath(); g.arc(G.cx+(P.x-G.cx)*.96,P.y,(near?2.1:1.5)*sk,0,TAU);
   g.fillStyle=rgba(ink,(near?.42:.2)+sw*.1); g.fill();}
  /* the ring's own edges, faint, so it reads as a volume and not a wash */
- g.strokeStyle=rgba(ink,.16*ee); g.lineWidth=1;
- ndlOct(g,ST); g.stroke(); ndlOct(g,SB); g.stroke();
+ g.lineWidth=1;
+ if(dw<1){g.strokeStyle=rgba(ink,.16*ee*(1-dw));
+  ndlOct(g,ST); g.stroke(); ndlOct(g,SB); g.stroke();}
+ /* the planes' rims, each in its own pole's colour, so which plane is which
+    is read off the colour the two points already carry */
+ if(dw>0){g.lineWidth=1.2*sk;
+  g.beginPath(); ndlDisc(g,G,yc60,60,rs,ry,0,TAU); g.strokeStyle=rgba(gc,.72*ee*dw); g.stroke();
+  g.beginPath(); ndlDisc(g,G,yc40,40,rs,ry,0,TAU); g.strokeStyle=rgba(rc,.34*ee*dw); g.stroke();
+  g.lineWidth=1;}
 
  ndlFaces(g,G,true);
 
@@ -1228,6 +1393,14 @@ function coneNeedle(){
   for(i=0;i<8;i++){
    NDL.Es[i].x=cq+(M.seat[NDL.sIdx[i]].x-cq)*ee;
    NDL.Eb[i].x=cq+(M.ax[i].x-cq)*ee;}
+  /* THE WELL'S CONTOURS, round KG. Level lines on both pyramids, the same
+     rings Layers draws, sampled finely so the bend shows: a sheet with
+     masses on it. Only when the well is on. */
+  if(NDL.wn){g.lineWidth=1;
+   for(n=0;n<10;n++){var qg=n<5?64+n*7:36-(n-5)*7;
+    ndlLoop(null,G,NDL.gx,NDL.gy,null,qg); ndlPoly(g,NDL.gx,NDL.gy);
+    g.strokeStyle=rgba(n<5?gc:rc,(n<5?.34:.2)*ee); g.stroke();}}
+  NDL.wn=0;
   ndlLoop(NDL.Es,G,NDL.sx,NDL.sy,NDL.sq);
   ndlLoop(NDL.Eb,G,NDL.bx,NDL.by,null);
   ndlLoop(null,G,NDL.qx,NDL.qy,null,cq);
@@ -1288,34 +1461,43 @@ function coneNeedle(){
 
  /* IN FRONT: the near ribs, and the two rims that close each pyramid, which
     are the lips of the limbo ring, lit in their own colours */
+ NDL.wn=wsave;
  for(i=0;i<8;i++)ndlRib(g,G,i,true);
  ndlOct(g,U); g.strokeStyle=rgba(gc,.10*br*ee); g.lineWidth=6*sk; g.stroke();
  g.strokeStyle=rgba(gc,.62*ee); g.lineWidth=1.3*sk; g.stroke();
  ndlOct(g,L); g.strokeStyle=rgba(rc,.10*br*ee); g.lineWidth=6*sk; g.stroke();
  g.strokeStyle=rgba(rc,.52*ee); g.lineWidth=1.3*sk; g.stroke();
+ NDL.wn=0;
  for(i=0;i<8;i++){ndlBadge(g,G,i,true,true); ndlBadge(g,G,i,false,true);}
  /* the node where you sit on each axis, which is the press target, as the
     view from above had it */
+ NDL.wn=0;
  if(read)for(i=0;i<8;i++){
   ndlPf(NDL.Eb[i].x,i,0,G,P);
   var on2=(i===NDL.lit), rn=(on2?5.4:4.2)*sk*(.8+.2*P.d), nx=P.x, ny=P.y, nd=P.d;
   g.beginPath(); g.arc(nx,ny,rn,0,TAU); g.fillStyle=rgba(NDL.wl,1); g.fill();
   g.strokeStyle=rgba(cols[i],nd>=0?1:.5); g.lineWidth=(on2?2.2:1.6)*sk; g.stroke();
   ndlHit(nx,ny,Math.max(16,rn+10),i,'up');
-  /* THE PULL. Rings leave the node of the heaviest axis, and of any axis
-     within a fifth of it, fading with the distance from the heaviest. It was
-     three fifths on the first cut and Marcus's eight seats all sit between
-     69 and 100 per cent of his heaviest, so all eight rang and the ring said
-     nothing. Gravity is where the weight is most, not everywhere it is.
-     Reduced motion keeps one still ring at the same strength. */
-  var gv=ndlGrav()[i];
-  if(gv>=.8){var gs=(gv-.8)/.2, ga=(.15+.6*gs*gs)*ee*(nd>=0?1:.5);
-   if(REDUCED){g.beginPath(); g.arc(nx,ny,rn+9*sk,0,TAU);
+  /* THE PULL, round KH, when the well is off: "the heavier the gravity,
+     the more the pulsation." Every axis carrying weight rings, and weight
+     cubed sets how many rings, how far they reach, how fast and how bright.
+     It was the heaviest axis alone, and any within a fifth of it, at one
+     speed; the fifth came from Marcus's eight all sitting between 69 and 100
+     per cent of his heaviest, which the cube now separates instead (a third
+     of the pull at 0.69). Reduced motion keeps one still ring per axis at
+     its strength. When the well is on, the node gets its contours instead
+     and nothing pulses, so the two mockups are each seen alone. */
+  var gv=ndlGrav()[i], gc3=gv*gv*gv;
+  if(CONE.well){if(gc3>=.02){var wa=(.2+.5*gc3)*ee*(nd>=0?1:.5);
+    for(var wk=1;wk<=3;wk++){g.beginPath(); g.arc(nx,ny,rn+(2+wk*wk*2.6*(.5+gc3))*sk,0,TAU);
+     g.strokeStyle=rgba(cols[i],wa*(1.1-wk*.28)); g.lineWidth=1; g.stroke();}}}
+  else if(gc3>=.04){var ga=(.12+.62*gc3)*ee*(nd>=0?1:.5), nr=1+Math.round(2*gc3);
+   if(REDUCED){g.beginPath(); g.arc(nx,ny,rn+(5+10*gc3)*sk,0,TAU);
     g.strokeStyle=rgba(cols[i],ga); g.lineWidth=1.4*sk; g.stroke();}
-   else for(var gk=0;gk<2;gk++){
-    var gp=now/(2600-900*gs)+gk/2; gp-=Math.floor(gp);
-    g.beginPath(); g.arc(nx,ny,rn+(3+26*gp)*sk,0,TAU);
-    g.strokeStyle=rgba(cols[i],ga*(1-gp)); g.lineWidth=(1.8-gp)*sk; g.stroke();}}}
+   else for(var gk=0;gk<nr;gk++){
+    var gp=now/(3000-1900*gc3)+gk/nr; gp-=Math.floor(gp);
+    g.beginPath(); g.arc(nx,ny,rn+(3+(10+24*gc3)*gp)*sk,0,TAU);
+    g.strokeStyle=rgba(cols[i],ga*(1-gp)); g.lineWidth=(1+gc3-gp*.9)*sk; g.stroke();}}}
 
  /* THE SPINE, and the reading on it: the two ends of the common range as
     ticks, your own range as a span, and the marker swinging through it */
@@ -1340,20 +1522,15 @@ function coneNeedle(){
 
  /* THE POINT, AND THE FIVE AT IT. Source is the halo at the apex; the five
     paths crown it, each joined to the point it ends at. The blueprint is the
-    fork at the other point. Ring, not fill, and no word painted. */
+    fork at the other point, and the five inversions crown that, each one
+    straight under the path it inverts. Ring, not fill, and no word painted. */
  var cs=Math.max(.8,sk);
- for(n=0;n<NDL_PATHS.length;n++){var pp=NDL_PATHS[n];
-  var rad=(pp[2]===1?34:60)*cs, an=pp[3]*Math.PI/180, inner=pp[2]===1;
-  var px=ax+Math.cos(an)*rad, py=ay-10*cs+Math.sin(an)*rad, rb2=(inner?10.5:9)*cs;
-  g.beginPath(); g.moveTo(ax,ay); g.lineTo(px,py);
-  g.strokeStyle=rgba(gc,.22*ee); g.lineWidth=1; g.stroke();
-  g.beginPath(); g.arc(px,py,rb2,0,TAU); g.fillStyle=rgba(NDL.wl,1); g.fill();
-  g.strokeStyle=rgba(gc,(inner?.9:.6)*ee); g.lineWidth=(inner?1.5:1.1)*cs; g.stroke();
-  coneGlyph(g,icOf(pp[0]),px,py,gc,(inner?.95:.72)*ee,rb2*1.25,1.6);
-  ndlTip(px,py,rb2+3,'path',n);}
+ for(n=0;n<NDL_PATHS.length;n++){ndlCrown(g,ax,ay,n,true,cs,gc); ndlCrown(g,ax,zy,n,false,cs,rc);}
  coneGlyph(g,GL_HALO,ax,ay-4*cs,gc,.95*br,18*cs,1.8);
  coneGlyph(g,GL_FORK,ax,zy+18*cs,rc,.85,17*cs,1.8);
- ndlTip(ax,ay,12,'top',-1); ndlTip(ax,zy+14,14,'bot',-1);}
+ ndlTip(ax,ay,12,'top',-1); ndlTip(ax,zy+14,14,'bot',-1);
+ /* nothing outside this frame bends */
+ NDL.wn=0;}
 /* THE CANVAS FILLS THE CARD. The sheet's height is a cap from when the reading
    shared this card, and it is what made the Compass a quarter of the stage
    (see THE NEEDLE above). In tab mode the canvas takes whatever the card has
@@ -1386,8 +1563,10 @@ function ndlTipAt(x,y){
  var m=MIRROR[best.i];
  if(best.k==='up')return m.up+', the coherent pole of '+m.q.toLowerCase()+'. Opposite: '+m.dn+'.';
  if(best.k==='dn')return m.dn+', the inversion of '+m.q.toLowerCase()+'. Opposite: '+m.up+'.';
- if(best.k==='path'){var pp=NDL_PATHS[best.i];
-  return pp[0]+', one of the five paths: '+pp[1]+'. All five end at the same Source.';}
+ if(best.k==='path'){var pp=NDL_PATHS[best.i].p;
+  return pp.up+', one of the five paths: '+pp.q+'. Opposite: '+pp.dn+'.';}
+ if(best.k==='pathdn'){var pd=NDL_PATHS[best.i].p;
+  return pd.dn+', the inversion of '+pd.q+'. Opposite: '+pd.up+'.';}
  if(best.k==='top')return 'Coherent. The point the upper pyramid rises to.';
  return 'Decoherent. The point the lower pyramid falls to.';}
 /* THE THREE HIGHEST LAWS AND THE THREE LOWEST, read once for the arrows on
@@ -1752,7 +1931,7 @@ function coneOpen(inTab){
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
      ?'The compass from above. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
-     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point. Your coherence cuts through the figure as a level.')
+     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.')
    +'"></canvas>'
    /* Flat and Regulation belong to the side view: from above there is no
       tilt to take out and no spine to draw arrows on, and a switch that
@@ -1771,6 +1950,10 @@ function coneOpen(inTab){
       +'<button type="button" class="cn-b" data-cn="reg" '
       +'title="Show the three laws lifting you most and the three pulling you down most">Regulation</button>'
      :'')
+    /* ROUND KI'S MOCKUP SWITCH. Two ways to draw gravity, one press apart,
+       so he chooses by looking: off is the pulse, on is the well. */
+    +(CONE.side||CONE.top?'':'<button type="button" class="cn-b" data-cn="well" '
+     +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">Gravity well</button>')
     +'<button type="button" class="cn-b" data-cn="layers" '
      +'title="Show the rings the axes are stacked on">Layers</button>'
    +'</div>'

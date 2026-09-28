@@ -30,7 +30,13 @@
    seat is where this product already measures the quality, so the
    position between the poles is read rather than asked. */
 const MIRROR=[
- {k:'IL', q:'Illumination', seat:'Heart',
+ /* LIGHT, NOT ILLUMINATION. Round KE, his words: "Just change illumination
+    to light." Renamed here, in the data, so every surface that names the
+    axis says the same word; a label changed only on the Compass would give
+    one axis two names. k stays IL, because a key is identity, not a label.
+    Trust at the Heart is untouched: whether it is Truth is still his own
+    open question, logged as thinking and not as a ruling. */
+ {k:'IL', q:'Light', seat:'Heart',
   up:'Jesus',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
   dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
@@ -66,7 +72,7 @@ const MIRROR=[
 
     SO JESUS STANDS AT TWO POLES ON THIS FIGURE, and that is the owner's
     canon rather than a mistake to route around. He is the coherent pole of
-    Illumination at the Heart, which is love generated from within and freely
+    Light at the Heart, which is love generated from within and freely
     given, and of Revelation at the Crown, which is love as the thing every
     other frequency reorganises around. The codex already carries both: the
     master list has him at the Ananda apex under the name Christ, and the
@@ -186,7 +192,7 @@ const IC_NEW={
  /* the Aten: a disc whose rays reach down and end in hands. the one image
     Akhenaten actually left, and it is light arriving rather than light held */
  'Akhenaten':'M12 3.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7M9 11.5l-2.6 5.4M12 12v6.2M15 11.5l2.6 5.4M5.4 18.4h2M11 19.6h2M16.6 18.4h2',
- /* the same radiant as illumination, because Christ and Jesus are one name
+ /* the same radiant as light, because Christ and Jesus are one name
     on two lists and this product does not give one concept two marks */
  'Christ':null,
  /* flow: two waves out of phase, which is what the field does when nothing
@@ -220,6 +226,71 @@ function icOf(nm){
 MASTERS.forEach(function(x){x.ic=icOf(x.nm);});
 BLUEPRINT.forEach(function(x){x.ic=icOf(x.nm);});
 CIRCLES.forEach(function(c){c.ic=icOf(c.by);});
+
+/* ---- THE FIVE PATHS, AND WHAT EACH ONE INVERTS TO ----
+   The glossary's five: "Krishna, flow. Buddha, awareness. Christ, the body.
+   Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source."
+   Same shape as a mirror pair, up and dn with a line each and a mark each, so
+   the compass mirrors the five exactly the way it mirrors the eight.
+
+   TWO OF THE FIVE ARE CODEX. Jesus already stands against Lucifer at the
+   Heart and Buddha against Geryon at the third eye, so their lines are read
+   off MIRROR rather than copied, and a change there is a change here.
+
+   THREE ARE RESEARCH, NOT CODEX, AND ARE MARKED SO. Round KE, his words:
+   "go do research on their polar opposites and which entities ... represent
+   that." The codex names no inversion for Krishna, Rama or Lao Tzu. Each one
+   below is a named figure out of that teacher's own tradition, cited in src,
+   and none was made up. They stand until he confirms or replaces them.
+
+     Krishna, flow   Kaliya, the naga whose poison boiled the Yamuna for miles
+                     around his pool, so the river ran and nothing could drink
+                     from it. Krishna danced on his hoods and sent him to the
+                     sea rather than killing him. Bhagavata Purana 10.16.
+     Rama, duty      Ravana. Dharma against adharma is what the Ramayana is,
+                     and Ravana is the learned king who knew the law and
+                     crossed it. Valmiki Ramayana.
+     Lao Tzu         Shu and Hu, the emperors whose names mean Brief and
+                     Sudden. They bored seven openings into Hundun, the whole
+                     one, to repay his kindness, one a day, and on the seventh
+                     day he died. Zhuangzi, chapter 7: haste that means well,
+                     which is the exact inverse of non resistance.
+
+   ONE NAME, NOT TWO. Shu and Hu act as one in the story and are drawn as one
+   inversion, the way The Furies are. */
+const PATHS=(function(){
+ function mir(up){for(var i=0;i<MIRROR.length;i++)if(MIRROR[i].up===up)return MIRROR[i];
+  return null;}
+ function mas(nm){for(var i=0;i<MASTERS.length;i++)if(MASTERS[i].nm===nm)return MASTERS[i];
+  return null;}
+ var il=mir('Jesus'), pe=mir('Buddha');
+ return [
+  {k:'FL', q:'flow', up:'Krishna', upd:mas('Krishna').d,
+   dn:'Kaliya', dnd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+   from:'research', src:'Bhagavata Purana, canto 10, chapter 16'},
+  {k:'AW', q:'awareness', up:'Buddha', upd:pe.upd, dn:pe.dn, dnd:pe.dnd,
+   from:'codex', src:'mirror pair, perception'},
+  {k:'BO', q:'the body', up:'Jesus', upd:il.upd, dn:il.dn, dnd:il.dnd,
+   from:'codex', src:'mirror pair, light'},
+  {k:'AL', q:'alignment', up:'Rama', upd:mas('Rama').d,
+   dn:'Ravana', dnd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
+   from:'research', src:'Valmiki Ramayana'},
+  {k:'HO', q:'the horizontal', up:'Lao Tzu', upd:mas('Lao Tzu').d,
+   dn:'Shu and Hu', dnd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
+   from:'research', src:'Zhuangzi, chapter 7'}];})();
+/* the three new inversions' marks, argued from what each one does, on the
+   same 24 unit grid. Ring, not fill. */
+/* Kaliya: Krishna's two waves, the one that runs into a coil and stops, over
+   the still line of the pool */
+IC_NEW['Kaliya']='M3 11c2.4-3.4 4.8 3.4 7.2 0 1.3-1.8 3-2.8 5-2.8a3.6 3.6 0 010 7.2 2.2 2.2 0 010-4.4 1 1 0 010 2M3 19h18';
+/* Ravana: Rama's one spine, with every head pulling on it. Ten in the
+   story, three here: five were drawn first and at a badge's size they
+   merged into one blot */
+IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M19 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M6.6 8L12 13.5M12 7.4v6.1M17.4 8L12 13.5M12 13.5v7M8 20.5h8';
+/* Shu and Hu: two awls driven down into something whole. Driven in level
+   they read as an eye, and on a slant as horns */
+IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
+PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for

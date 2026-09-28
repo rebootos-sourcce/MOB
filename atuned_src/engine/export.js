@@ -37,7 +37,7 @@ if(typeof module!=='undefined'&&module.exports){
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
                  ageFinding:ageFinding, AGE_WORKED:AGE_WORKED,
-  /* compass */  MIRROR:MIRROR, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
+  /* compass */  MIRROR:MIRROR, PATHS:PATHS, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
                  mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
