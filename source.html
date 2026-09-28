@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v873 3b5bca7 2026-09-28 19:12"><head><meta charset="utf-8">
+<html lang="en" data-build="v875 0cfd920 2026-09-28 19:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -954,13 +954,99 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .secb:hover{color:var(--ink)}
 .secb:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .secb[aria-pressed=true]{color:var(--ink);font-weight:600;letter-spacing:0}
-/* a symbol beside each section's word, KT, in the tab icons' own terms: the
-   same size, stroke and no fill, and the section's colour, so a pressed
-   section's ink reaches its mark with no second rule.
+/* a symbol beside each section's word, KT, in the tab icons' own terms: ring,
+   stroke and no fill. Since LL, below, larger than the tab icons and in a
+   colour of its own section rather than the word's.
    .sn wraps only the word, so secAlign can measure it apart from the icon. */
-.secb svg{width:var(--icon-nav);height:var(--icon-nav);stroke:currentColor;stroke-width:1.6;
- fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.secb svg{width:var(--icon-sec);height:var(--icon-sec);stroke:var(--sec-c,currentColor);
+ stroke-width:1.45;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;
+ transition:stroke-width var(--t-micro) var(--ease-out)}
 .secb .sn{display:inline-block}
+/* THE FOUR MARKS GROW AND TAKE A COLOUR EACH, round LL. His words: "Discover
+   Play Flow logos need more symbolic meaning. And they need to be more
+   iconographic and dominant. Not too dominant, just... At the very least, the
+   size of the text. Plus four pixels on either side. These are the core loop
+   experiences... So I want their colors to be representative of that."
+
+   THE SIZE, AND THE READING OF IT. The word is 15px. "The size of the text,
+   plus four pixels on either side" is read as the mark's own box: 15 for the
+   text, and four more on each of its sides, 15 + 4 + 4 = 23. The other
+   reading, a 15px mark with 4px of air around it, is smaller than the 16.15
+   the marks already were and cannot be what "more dominant" asks for. At 23
+   the drawn part of each mark, 18.4 of 24 units, is 17.6px, 1.6 times the
+   word's capital height of about 10.9px: a mark that leads its word rather
+   than a logo that replaces it. Its own token, not --icon-nav, because
+   --icon-nav also sizes the tab icons, the intake glyphs and the ace glyphs,
+   and nobody asked for those to move. The button's height is the 44px tap
+   floor and a 23px mark sits inside it, so the row does not grow; the word
+   moves right by the difference and secAlign measures where it lands, never
+   where it used to be.
+
+   THE STROKE COMES DOWN AS THE MARK GOES UP. 1.6 units at 23px would draw
+   1.53px, half again the tab icons' 1.08, and a family is held by its line
+   weight. 1.45 draws 1.39px: heavier than the tier below, because it is the
+   tier above, and no heavier than that.
+
+   THE COLOURS ARE THE LOOP AS ONE DAY OF LIGHT, and a day is a circle, which
+   is the ruling on how the four are shown. Each hue sits in a gap the seven
+   seats leave on the wheel, so a section never reads as a seat. Measured in
+   OKLab against every seat, the accent, the alarm, the gold and --dim: the
+   nearest any of the four comes to one of those on Dark is 0.077, where the
+   two closest seats, Third eye and Crown, sit 0.075 from each other. So a
+   section is at least as far from every seat as the seats are from their
+   neighbours. Contrast is taken against the bar's own ground, 3 to 1 being
+   the floor for a mark that is not text.
+
+   Discover, a dusty rose, hue 335. First light, before the sun: the colour
+   the sky is when things are only starting to be seen. The eye opens on it.
+   Play, a leaf green, hue 128. Full day, new growth in sun, the most kinetic
+   and the brightest of the four, set between Solar's gold and Heart's mint
+   and taken for neither.
+   Flow, a sea green, hue 182. Water that has been moving a long time. The
+   ritual kept is what wears an edge smooth, and it sits deeper than the
+   others, lightness 0.68, pulled down and toward green because at the
+   Throat's lightness it measured 0.057 from the accent, which is the colour
+   of the pressed tab directly under it.
+   Embody, a clay, hue 37. The body, and the ground it stands on. The
+   lowest of the four in light, 0.64, because what is embodied has settled.
+   Half the Root's chroma and nowhere near its value, so a clay and not a red.
+
+   Lightness runs 0.75, 0.78, 0.68, 0.64 and back to 0.75: dawn, noon, the
+   water at evening, the earth at night, and dawn again. The loop closes in
+   value as well as in order. Low to medium chroma throughout, the standing
+   autonomic ruling; a vivid version of the right hue reads less calm than a
+   washed one of almost any hue.
+
+   Four dark lightings share one set: Dark, Punch, Glass and Flat, whose bar
+   grounds all sit under 13 per cent luminance, lowest measured 4.21 to 1 for
+   the clay on Dark's raised panel. Snow and Glass white are paper and take a
+   set one step deeper than their own seat inks, lightness 0.45 against the
+   seats' 0.50 to 0.53, so there the two systems part by value as well as
+   hue: lowest 5.78 to 1, nearest seat 0.080 against the paper palette's own
+   closest pair, Sacral and Solar, at 0.041. Lumen is the named vivid
+   exception and takes full chroma at the same hues: lowest 4.03 to 1, nearest
+   seat 0.118.
+
+   A SECTION PRESSED READS BY WEIGHT, NOT BY LOSING THE OTHERS' COLOUR. The
+   first cut dimmed the three at rest and the measurement ruled it out: at 80
+   per cent the Lumen marks fell to 2.98 to 1, under the floor, and a colour
+   the owner asked to see should not be the thing that fades. So every mark
+   stays its colour, and the pressed one takes the same step its word already
+   takes: the word goes from --dim at 400 to ink at 600, and the mark's line
+   goes from 1.45 to 1.9. Ink and weight on the word, weight on the mark, and
+   the tab under it keeps the accent and its underline, so the two tiers still
+   read as two levels. */
+:root{--icon-sec:23px;
+ --sec-discover:#D398C6; --sec-play:#9FC56E; --sec-flow:#52AA9C; --sec-embody:#B87A68}
+body.snow,body.glasswhite{
+ --sec-discover:#803860; --sec-play:#475F06; --sec-flow:#00635B; --sec-embody:#83400A}
+body.lumen{
+ --sec-discover:#A5438A; --sec-play:#3B7400; --sec-flow:#0C8776; --sec-embody:#A53D00}
+.secb[data-sec="discover"]{--sec-c:var(--sec-discover)}
+.secb[data-sec="play"]{--sec-c:var(--sec-play)}
+.secb[data-sec="flow"]{--sec-c:var(--sec-flow)}
+.secb[data-sec="embody"]{--sec-c:var(--sec-embody)}
+.secb[aria-pressed=true] svg{stroke-width:1.9}
 /* folded, KN: the sections roll in to the pressed one, and hidden is really
    hidden once they have, so a folded section is not a stop for the keyboard */
 .tabnames-i:not(:checked)~.secbar .secb:not([aria-pressed=true]){max-width:0;padding:0;opacity:0;
@@ -39635,19 +39721,24 @@ function secPaint(i){
    which head.html applies above the phone width only. Measured against the
    padding already there, so a second call with nothing moved changes nothing.
    Folded, the tab names are clipped to a pixel and cannot be measured, so the
-   icons are lined up instead; icon and gap are the same size in both tiers,
-   which puts the words on the same line again the moment they come back. */
+   icons are lined up instead, and the words line up again when the fold
+   opens, since that change calls this.
+   ON THEIR CENTRES, SINCE LL. The section mark is 23px and the tab mark is
+   16.15, so lining up their left edges put the smaller one 3.4px off the
+   larger one's axis. Two marks of different sizes share an axis through
+   their middles, the way a column of different sized glyphs does. */
 function secAlign(){
  var top=document.querySelector('.top'), bar=$('tabbar');
  if(!top||!bar||!window.matchMedia||matchMedia('(max-width:720px)').matches)return;
  var sb=document.querySelector('#secbar .secb[aria-pressed="true"]');
  var tb=[].filter.call(bar.querySelectorAll('.tabtop'),function(b){return b.offsetParent;})[0];
  if(!sb||!tb)return;
- var a=sb.querySelector('.sn'), b=tb.querySelector('.n');
- if(!a||!b||b.getBoundingClientRect().width<2){a=sb.querySelector('svg'); b=tb.querySelector('svg');}
+ var a=sb.querySelector('.sn'), b=tb.querySelector('.n'), mid=0;
+ if(!a||!b||b.getBoundingClientRect().width<2){a=sb.querySelector('svg'); b=tb.querySelector('svg'); mid=1;}
  if(!a||!b)return;
  var pad=parseFloat(getComputedStyle(bar).paddingLeft)||0;
- var x=Math.max(0,Math.round(pad+a.getBoundingClientRect().left-b.getBoundingClientRect().left));
+ var ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect();
+ var x=Math.max(0,Math.round(pad+ra.left-rb.left+(mid?(ra.width-rb.width)/2:0)));
  top.style.setProperty('--secx',x+'px');}
 function secGo(sec){
  var k=SEC_LAST[sec];
@@ -44140,5 +44231,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002885793"></div>
+<div id="eof" hidden data-len="002891497"></div>
 </body></html>

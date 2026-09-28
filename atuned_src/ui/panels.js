@@ -357,19 +357,24 @@ function secPaint(i){
    which head.html applies above the phone width only. Measured against the
    padding already there, so a second call with nothing moved changes nothing.
    Folded, the tab names are clipped to a pixel and cannot be measured, so the
-   icons are lined up instead; icon and gap are the same size in both tiers,
-   which puts the words on the same line again the moment they come back. */
+   icons are lined up instead, and the words line up again when the fold
+   opens, since that change calls this.
+   ON THEIR CENTRES, SINCE LL. The section mark is 23px and the tab mark is
+   16.15, so lining up their left edges put the smaller one 3.4px off the
+   larger one's axis. Two marks of different sizes share an axis through
+   their middles, the way a column of different sized glyphs does. */
 function secAlign(){
  var top=document.querySelector('.top'), bar=$('tabbar');
  if(!top||!bar||!window.matchMedia||matchMedia('(max-width:720px)').matches)return;
  var sb=document.querySelector('#secbar .secb[aria-pressed="true"]');
  var tb=[].filter.call(bar.querySelectorAll('.tabtop'),function(b){return b.offsetParent;})[0];
  if(!sb||!tb)return;
- var a=sb.querySelector('.sn'), b=tb.querySelector('.n');
- if(!a||!b||b.getBoundingClientRect().width<2){a=sb.querySelector('svg'); b=tb.querySelector('svg');}
+ var a=sb.querySelector('.sn'), b=tb.querySelector('.n'), mid=0;
+ if(!a||!b||b.getBoundingClientRect().width<2){a=sb.querySelector('svg'); b=tb.querySelector('svg'); mid=1;}
  if(!a||!b)return;
  var pad=parseFloat(getComputedStyle(bar).paddingLeft)||0;
- var x=Math.max(0,Math.round(pad+a.getBoundingClientRect().left-b.getBoundingClientRect().left));
+ var ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect();
+ var x=Math.max(0,Math.round(pad+ra.left-rb.left+(mid?(ra.width-rb.width)/2:0)));
  top.style.setProperty('--secx',x+'px');}
 function secGo(sec){
  var k=SEC_LAST[sec];
