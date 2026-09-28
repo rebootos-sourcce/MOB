@@ -24201,3 +24201,43 @@ you've already got the point cloud stuff in, great."
   then Summary" under Discover (already the built order), and "I want
   Story first" under Play, read as Story being the first and, per
   round KT, currently only tab in Play.
+
+## KW. The masks were built to the wrong meaning, a delivery problem, and the Cloudflare steps asked for a third time
+
+His words, verbatim, angry: "and next to uh, discover play flow, I
+want symbolic icons. And then their little hamburger to open or close
+it next to it. Yeah, dude, I don't see the masks. File. Or the
+location at all. This isn't a mask I'm talking about, you
+motherfucker. The mask I'm ta- been talking about are the ones that
+represent the shadow. Kind of eight bit. And each pixel represents a
+story and each cluster represents a saboteur that makes up the shadow
+for the child you have all this. Where is my file? Bring me everything
+I need to do in, for Cloudflare including step by step in a markdown
+file."
+
+- **Each primary section (Discover, Play, Flow, and whatever the
+  fourth becomes) gets a symbolic icon beside its name, plus its own
+  small hamburger control to open or close just that section.** Passed
+  to the in flight nav fix.
+- **A real, serious problem: he says he cannot find the build file at
+  all**, a second time. Whatever `SendUserFile` reports on this side,
+  it is not reaching him usably. Treated as a delivery problem to
+  solve directly rather than repeated blindly: the next reply states
+  in plain words exactly what to look for, and puts anything that can
+  survive as plain text in the reply itself rather than depending on a
+  file attachment alone.
+- **The masks that were built (commit `7220610`) are not what he
+  meant, in his own words.** He describes a different thing: pixelated,
+  eight bit, where each individual pixel is one story and pixels
+  cluster into saboteurs, the saboteurs together making up the mask's
+  shadow for that life stage (his example, the child mask). What
+  shipped instead lights a fixed scatter of dots by weight alone, no
+  per story or per saboteur meaning in any single dot. This is a real
+  data model gap, not a rendering polish pass, and it is corrected as
+  its own dispatch against the real per story and per saboteur data
+  the engine holds, not guessed at.
+- **The Cloudflare steps, asked for a third time, now specifically as
+  a markdown file.** Already written once as `HOSTING-SETUP.md` and
+  sent once as a file; resent, and also given in the reply itself as
+  plain text this time, in case the file delivery problem above is
+  why he keeps asking.
