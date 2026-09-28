@@ -5031,15 +5031,22 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 .boot-wm .bs{font-family:var(--sans);font-size:9px;font-weight:500;
  line-height:1;margin-top:38px;
  display:flex;flex-direction:column;align-items:center;gap:15px}
-/* EQUALLY SPACED, 323232, FIFTEEN PIXELS APART. Round JZ, his words: "Powered
-   by source OS needs to be equally spaced. But 323232 hex and space 15 pixels
-   apart." Both lines now carry the same tracking, both the same grey, and the
-   gap between them is 15px where it was 3. The trailing letter space is taken
-   back on both, so each centres on its own glyphs. Taken exactly as given:
-   on this card's black ground #323232 measures 1.66 to 1, which the report
-   back to him names. */
-.boot-wm .bs-by{letter-spacing:.19em;margin-right:-.19em;color:#323232;font-weight:400}
-.boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:#323232;
+/* EQUALLY SPACED, FIFTEEN PIXELS APART. Round JZ, his words: "Powered by
+   source OS needs to be equally spaced. But 323232 hex and space 15 pixels
+   apart." Both lines carry the same tracking, and the gap between them is
+   15px where it was 3, unchanged since; the trailing letter space is taken
+   back on both, so each centres on its own glyphs.
+
+   THE GREY RE-STATED, ROUND KM. #323232 on this card's black ground measured
+   1.66 to 1, named to him as a near whisper when it shipped. He came back
+   saying the line reads too tight and too pale and gave 343434 this time,
+   a hex one shade off 323232 and still under 1.7 to 1, so this alone likely
+   will not read as fixed. Taken exactly as given regardless: if it still
+   reads pale against this ground, that is the contrast asked about at
+   shipping and not yet ruled on, not a new defect in the 15px gap, which
+   measures true above. */
+.boot-wm .bs-by{letter-spacing:.19em;margin-right:-.19em;color:#343434;font-weight:400}
+.boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:#343434;
  text-transform:uppercase}
 
 /* THE BOOT CARD'S CSS DOTS ARE RETIRED WITH THE BAR'S. They carried their own
