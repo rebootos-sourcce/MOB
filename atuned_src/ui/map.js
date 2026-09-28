@@ -1400,6 +1400,38 @@ back:[["Back of head",[43,2,57,15.6]],
  ["Calf",[40,74,50,88],"l"],
  ["Heel",[50,88,60,99],"r"],
  ["Heel",[40,88,50,99],"l"]]};
+/* ONE SET OF PARTS FOR BOTH SIDES. His words, round KN, on the panel of
+   names round KA built: "we already know this is back, just I want front and
+   back ... If you have front selected, then you have head, neck, shoulders.
+   If I select back, you still have head, neck, shoulders. This way we can
+   reduce the number of icons that we're using." So a part is one button, and
+   the side it addresses is the Front and Back toggle beside it. Each part
+   names its region on each side out of BMREG, top of the body to the bottom,
+   so the regions themselves, their boxes, routes and pain lines, are
+   unchanged. Two back regions and one front one have no match on the other
+   side (the back's low back and sacrum, the front's ankle): pressing one of
+   those turns the toggle to the side that has it rather than going dead. */
+var BMPART=[
+ {k:'head',f:'Head',b:'Back of head'},
+ {k:'neck',f:'Neck',b:'Back of neck'},
+ {k:'shoulder',f:'Shoulder',b:'Trap'},
+ {k:'chest',f:'Chest',b:'Upper back'},
+ {k:'belly',f:'Abdomen',b:'Mid back'},
+ {k:'lowback',f:null,b:'Low back'},
+ {k:'upperarm',f:'Upper arm',b:'Upper arm'},
+ {k:'forearm',f:'Forearm',b:'Forearm'},
+ {k:'hand',f:'Palm',b:'Back of hand'},
+ {k:'hip',f:'Hip',b:'Buttock'},
+ {k:'sacrum',f:null,b:'Sacrum'},
+ {k:'thigh',f:'Thigh',b:'Back of thigh'},
+ {k:'knee',f:'Knee',b:'Back of knee'},
+ {k:'shin',f:'Shin',b:'Calf'},
+ {k:'ankle',f:'Ankle',b:null},
+ {k:'foot',f:'Foot',b:'Heel'}];
+/* A REGION'S NAME AS A PERSON READS IT. The table keeps "Back of head" as
+   its key, because the route and pain tables are keyed on it, but the toggle
+   already says which side is showing, so on the screen it is "Head". */
+function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){return c.toUpperCase();});}
 /* THE 28 ADDRESSES NOBODY HAS MEASURED, WHERE STANDARD ANATOMY PUTS THEM.
    Proposed on 27 September (FW, proto/fw/pages/fetters.html, each row sourced
    there) and drawn by the prototype he approved exactly as a measured place
@@ -1640,7 +1672,7 @@ function bmRoutes(G,host){
   r.nerve=best&&best.d<9?best.s.nm:null; r.level=rt[1];});}
 function bmWithLen(P){var L=0,o=[];
  for(var i=0;i<P.length;i++){if(i)L+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);o.push([P[i][0],P[i][1],L]);}return o;}
-function bmRegName(r){return r.nm+(r.side?(r.side==='l'?', left':', right'):'');}
+function bmRegName(r){return bmNm(r.nm)+(r.side?(r.side==='l'?', left':', right'):'');}
 
 /* ---------- the paint, and the field it becomes ----------
    A painted cell reads its own value across its whole extent and falls off
@@ -1915,7 +1947,9 @@ function bmDraw(dt){
      the open region read as a thin outline on the whole body at 1600, which
      is not "it just lights up that area" in his words: the fill is lifted so
      the area reads as lit before the outline is found. */
-  [[BM.hoverReg],sel].forEach(function(list,i){list.forEach(function(r){if(!r||r.v!==v)return;var b=r.box;
+  /* hoverList is a part's button under the pointer, so a glyph can be
+     learned by pointing at it before it is pressed */
+  [(BM.hoverList||[]).concat([BM.hoverReg]),sel].forEach(function(list,i){list.forEach(function(r){if(!r||r.v!==v)return;var b=r.box;
    g.fillStyle=bmRgba(BMC.acc,i?.22:.06);g.fillRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);
    g.strokeStyle=bmRgba(BMC.acc,i?.95:.5);g.lineWidth=px*(i?1.8:1.1);g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});});
   if(BM.mode==='pain'&&BM.hoverCell&&BM.hoverCell.v===v){var hc=BM.hoverCell;
@@ -2051,13 +2085,15 @@ function bmRosette(g,p,s,col,A){
    a keyboard, and was never drawn on a phone at all, so at 390 the region
    names did not exist. They are real buttons in the panel under the well now,
    bmRegBar, and a press lights the area on the figure. Only the two view
-   titles stay painted, because they name a picture and are not a control. */
+   titles stay painted, because they name a picture and are not a control.
+   Round KN: "just I want front and back, not seen from behind", so each is
+   the toggle's own word, and the side the toggle addresses reads at full
+   strength while the other one steps back. */
 function bmLabels(g){
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textBaseline='middle';
- [0,1].forEach(function(v){
-  g.textAlign='center';g.font='600 13px Inter,system-ui,sans-serif';g.fillStyle=bmRgba(BMC.ink,.9);
-  g.fillText(v?'Back, seen from behind':'Front',bmW2S(v?BMOX+50:50,0)[0],14);
-  g.font='500 12px Inter,system-ui,sans-serif';});}
+ [0,1].forEach(function(v){var on=(BM.face==='back')===!!v;
+  g.textAlign='center';g.font='600 13px Inter,system-ui,sans-serif';g.fillStyle=bmRgba(BMC.ink,on?.9:.42);
+  g.fillText(v?'Back':'Front',bmW2S(v?BMOX+50:50,0)[0],14);});}
 /* one line of instruction, in the corner, off the figure */
 /* HS SWEEP: ONLY IN PAINT. The default hint, "Press a region to open it.
    Double press to zoom in. Point at a line to trace it.", sat in the corner
@@ -2077,15 +2113,19 @@ function bmHint(g){
    element that stays one pixel wide at any zoom. BODYPATH is absolute M, C
    and Z only, in pairs, so each pair is carried into the figure numerically
    rather than through a transform the svg would scale the stroke with. */
-var _bmOutline=null;
+var _bmOutline=null, _bmOutline1=null;
+function bmOutlineAt(ox){
+ var tok=BODYPATH.match(/[A-Za-z]|-?\d+(\.\d+)?/g), d='', k=0;
+ for(var i=0;i<tok.length;i++){var t=tok[i];
+  if(/[A-Za-z]/.test(t)){d+=t;k=0;continue;}
+  d+=(k%2?(PMTY+(+t)*PMS):(PMTX+ox+(+t)*PMS)).toFixed(2)+(k%2?' ':',');k++;}
+ return d;}
 function bmOutline(){
  if(_bmOutline)return _bmOutline;
- var tok=BODYPATH.match(/[A-Za-z]|-?\d+(\.\d+)?/g), d='';
- [0,BMOX].forEach(function(ox){var k=0;
-  for(var i=0;i<tok.length;i++){var t=tok[i];
-   if(/[A-Za-z]/.test(t)){d+=t;k=0;continue;}
-   d+=(k%2?(PMTY+(+t)*PMS):(PMTX+ox+(+t)*PMS)).toFixed(2)+(k%2?' ':',');k++;}});
- return (_bmOutline=d);}
+ return (_bmOutline=bmOutlineAt(0)+bmOutlineAt(BMOX));}
+/* one figure, for the icons under the well. The outline is the same path on
+   both sides, so one drawing serves the front and the back. */
+function bmOutline1(){return _bmOutline1||(_bmOutline1=bmOutlineAt(0));}
 /* the overlay follows the camera: its viewBox is the world the canvas shows */
 function bmOverlay(){
  if(!BM.sv)return;
@@ -2222,6 +2262,9 @@ function bmOpenReg(r,toggle){bmOpenKey(r.key,toggle);}
 function bmAnswering(){return !!document.getElementById('bmzoom');}
 function bmOpenKey(k,toggle){
  if(toggle&&bmPickKey()===k&&bmAnswering()){rdClose();return;}
+ /* the toggle follows the pick, so a region pressed on the back figure says
+    Back under the well and the parts address the back from then on */
+ bmSetFace(String(k).split(':')[0]==='back'?'back':'front');
  PMPICK={bmReg:k}; S.pin=null;
  var list=bmSelAll(); if(!list.length){rdClose();return;}
  bmRegionDrill(list); render();}
@@ -2293,8 +2336,9 @@ function bmRegionDrill(list){
  var limb=list.some(function(q){return BMLIMB.some(function(l){return v===0&&l[0]===q.nm&&l[1]===q.side;});});
  var stories=bmStories(ids);
  var rel=ids.map(function(i){return BY[i];}).filter(function(n){return n.cf&&n.sq>=1;}).slice(0,3);
- var h='<div class="pm-eye">'+(v?'Back view':'Front view')+'</div>'
-  +'<div class="pm-dn">'+esc(pair?r.nm+', both sides':bmRegName(r))+'</div>';
+ /* the side in the toggle's own word, and the name without "back of" */
+ var h='<div class="pm-eye">'+(v?'Back':'Front')+'</div>'
+  +'<div class="pm-dn">'+esc(pair?bmNm(r.nm)+', both sides':bmRegName(r))+'</div>';
  /* a sided region says which side is open and moves between them, so a
     person who pressed "Knee" can say which knee without finding it on the
     figure. Each carries its own paint. */
@@ -2423,7 +2467,9 @@ function bmBars(){
     name hidden until opened, which is recall over recognition. The panel of
     region buttons under the figure, bmRegBar, is the same job with every
     name in view, so keeping both would be two controls for one thing. */
- if(BM.phone)h+=btn('bmface','front','Front',BM.face==='front')+btn('bmface','back','Back',BM.face==='back');
+ /* THE FRONT AND BACK TOGGLE MOVED DOWN, round KN: "those are all going to
+    be on the bottom. And there'll be two icons to say front and back." It is
+    the first thing in the panel under the well, bmRegBar, on every width. */
  if(zoomed)h+=btn('bmwhole','1','Whole body',false);
  rb.innerHTML=h; rb.setAttribute('data-bmsig',sig);
  rb.querySelectorAll('[data-bmmode]').forEach(function(el){el.onclick=function(){
@@ -2439,57 +2485,153 @@ function bmBars(){
  rb.querySelectorAll('[data-bmclear]').forEach(function(el){el.onclick=function(){
   BM.paint[0].fill(0);BM.paint[1].fill(0);bmRebuild(0);bmRebuild(1);bmTouchHeat();bmMarkVals();BM.dirty=true;
   var s=bmSelAll();if(s.length)bmRegionDrill(s);bmRegBar();};});
- rb.querySelectorAll('[data-bmface]').forEach(function(el){el.onclick=function(){
-  BM.face=el.getAttribute('data-bmface');var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);BM.stillKey='';bmBars();};});
  rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=function(){
   var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};});
  if(foc){var back=document.getElementById(foc);if(back)back.focus();}}
 
-/* ---------- the region names, as buttons, under the figure ----------
+/* ---------- the parts, as icons, under the figure ----------
    His words, round JQ: "turn those to buttons, maybe on the bottom panel of
-   the screen. So if I press it, it just lights up that area." One button per
-   name per view, top of the body to the bottom, so the row reads the way the
-   figure does. A sided name is one button for both sides: "Knee" lights both
-   knees, and the answer it opens carries Left and Right. On a phone, where
-   only one face is drawn, a name on the other face turns the figure round.
-   The paint shows on the button in Pain, where the old painted label showed
-   it. Written only when something on it changed, so focus survives a render,
-   the same rule the bar above keeps. */
+   the screen. So if I press it, it just lights up that area." Round KA built
+   that as two panels of names, Front and Back, 29 buttons. Round KN: "I want
+   something iconographic instead of the text ... there'll be two icons to say
+   front and back ... This way we can reduce the number of icons that we're
+   using." So the panel is the Front and Back toggle, a readout, and one row
+   of BMPART, one button per part, each addressing whichever side the toggle is on.
+
+   THE GLYPHS ARE DRAWN OFF THE FIGURE ITSELF. There is no body part icon set
+   in the product to borrow: the only glyph families are the tab icons, the
+   pattern marks (PMIC) and the ritual's, none of which has a knee. So each
+   part is the approved figure's own outline, cropped round the part, with
+   the part's own box from BMREG lit on it. It is the same drawing as the
+   figure above it at a different zoom, which is the one visual language this
+   page already speaks, and a part moved in BMREG moves its icon with it. Ring
+   not fill, the house rule: the lit part is its outline at full strength and
+   a light tint, never a solid shape.
+
+   A paired part is cropped round both sides where both fit (shoulders, hips,
+   legs) and round the viewer's left one where they do not (the arms), so an
+   arm is drawn large enough to be an arm. The sided name still lights both,
+   and the answer it opens carries Left and Right, as before.
+
+   Written only when something on it changed, so focus survives a render. */
+function bmUnion(bx){return bx.reduce(function(a,q){
+ return [Math.min(a[0],q[0]),Math.min(a[1],q[1]),Math.max(a[2],q[2]),Math.max(a[3],q[3])];},bx[0].slice());}
+function bmPartBoxes(pt){
+ var vn=pt.f?'front':'back', nm=pt.f||pt.b, L=BMREG[vn].filter(function(r){return r[0]===nm;});
+ var u=bmUnion(L.map(function(r){return r[1];}));
+ if(L.length>1&&u[2]-u[0]>32)L=L.filter(function(r){return r[2]===(vn==='front'?'r':'l');});
+ return L.map(function(r){return r[1];});}
+/* the icon is written once per part and per state, then kept */
+var _bmPI={};
+function bmPartIcon(pt,on){
+ var key=pt.k+(on?'1':'0'); if(_bmPI[key])return _bmPI[key];
+ var bx=bmPartBoxes(pt), u=bmUnion(bx), s=clamp(Math.max(u[2]-u[0],u[3]-u[1])*1.6,20,34);
+ var x0=(u[0]+u[2])/2-s/2, y0=(u[1]+u[3])/2-s/2, O=bmOutline1(), id='bmpi'+pt.k+(on?'1':'0');
+ var lit=on?'var(--on-accent)':'var(--gold)';
+ return (_bmPI[key]='<svg viewBox="'+x0.toFixed(2)+' '+y0.toFixed(2)+' '+s.toFixed(2)+' '+s.toFixed(2)+'" width="34" height="34" '
+  +'aria-hidden="true" focusable="false" style="display:block;overflow:hidden">'
+  +'<defs><clipPath id="'+id+'r">'+bx.map(function(b){return '<rect x="'+b[0]+'" y="'+b[1]+'" width="'+(b[2]-b[0]).toFixed(2)
+   +'" height="'+(b[3]-b[1]).toFixed(2)+'"/>';}).join('')+'</clipPath>'
+  +'<clipPath id="'+id+'b"><path d="'+O+'"/></clipPath></defs>'
+  +'<path d="'+O+'" fill="none" style="stroke:currentColor" stroke-opacity=".55" stroke-width="1.1" vector-effect="non-scaling-stroke"/>'
+  +'<g clip-path="url(#'+id+'r)"><path d="'+O+'" style="fill:'+lit+';stroke:'+lit+'" fill-opacity=".34" stroke-width="1.8" '
+  +'vector-effect="non-scaling-stroke"/></g>'
+  +'<g clip-path="url(#'+id+'b)">'+bx.map(function(b){return '<rect x="'+b[0]+'" y="'+b[1]+'" width="'+(b[2]-b[0]).toFixed(2)
+   +'" height="'+(b[3]-b[1]).toFixed(2)+'" fill="none" style="stroke:'+lit+'" stroke-opacity=".6" stroke-width="1.1" vector-effect="non-scaling-stroke"/>';}).join('')
+  +'</g></svg>');}
+/* THE TWO SIDES, AS ICONS. The same figure from the head to the waist: the
+   front carries a face and the back carries the spine, which is what tells a
+   person which way a body is turned when there is nothing else to go on. */
+function bmSideIcon(s,on){
+ var O=bmOutline1(), c=on?'var(--on-accent)':'currentColor';
+ return '<svg viewBox="31 0 38 38" width="34" height="34" aria-hidden="true" focusable="false" style="display:block;overflow:hidden">'
+  +'<path d="'+O+'" fill="none" style="stroke:'+c+'" stroke-width="1.3" vector-effect="non-scaling-stroke"/>'
+  +(s==='front'
+   ?'<circle cx="48.2" cy="8.6" r=".95" style="fill:'+c+'"/><circle cx="51.8" cy="8.6" r=".95" style="fill:'+c+'"/>'
+    +'<path d="M48.4 12.1 Q50 13.1 51.6 12.1" fill="none" style="stroke:'+c+'" stroke-width="1" vector-effect="non-scaling-stroke"/>'
+   :'<path d="M50 15.6 V38" fill="none" style="stroke:'+c+'" stroke-width="1.3" stroke-dasharray="2 1.6" vector-effect="non-scaling-stroke"/>'
+    +'<path d="M42.5 24 Q45 27 46.2 31 M57.5 24 Q55 27 53.8 31" fill="none" style="stroke:'+c+'" stroke-opacity=".7" stroke-width="1" '
+    +'vector-effect="non-scaling-stroke"/>')
+  +'</svg>';}
+/* a part's regions on a side, its name there, and the part a pick belongs to */
+function bmPartRegs(pt,vn){var nm=vn==='back'?pt.b:pt.f; if(!nm||!BMG)return [];
+ var gp=vn+':'+nm;return BMG.reg.filter(function(q){return q.grp===gp;});}
+function bmPartName(pt,vn){return vn==='back'?(pt.b?bmNm(pt.b):null):pt.f;}
+function bmPartOf(k){if(!k)return null;var s=String(k).split(':'), bk=s[0]==='back';
+ return BMPART.filter(function(p){return (bk?p.b:p.f)===s[1];})[0]||null;}
+function bmSetFace(f){if(BM.face===f)return;BM.face=f;
+ if(BM.phone&&BM.W){var c=bmFitCam();bmFlyTo(c.x,c.y,c.z);}
+ BM.stillKey='';BM.dirty=true;}
+/* open a part on a side, both sides of it unless one side is named. Pressed
+   from the panel, so the answer is brought to (RD_INRAIL), on a phone too:
+   measured at 390 in round KA, the answer otherwise opened 3,817 pixels
+   under the button that asked for it. */
+function bmPartOpen(pt,vn,side){
+ var regs=bmPartRegs(pt,vn); if(!regs.length)return false;
+ var one=side?regs.filter(function(q){return q.side===side;})[0]:null;
+ var key=one?one.key:(regs.length>1?regs[0].grp+':*':regs[0].key);
+ RD_INRAIL=true;
+ try{bmOpenKey(key,false);}finally{RD_INRAIL=false;}
+ return true;}
+var BMICSTY='padding:0;width:48px;min-width:48px;height:48px;justify-content:center;position:relative';
 function bmRegBar(){
  var el=document.getElementById('bmregs'); if(!el||!BMG)return;
- var k=bmPickKey()||'', pain=BM.mode==='pain';
- var sig=[k,BM.mode,BM.phone,BM.face,BMG.reg.map(function(r){return r.val||0;}).join(',')].join('|');
+ var k=bmPickKey()||'', pain=BM.mode==='pain', vn=BM.face==='back'?'back':'front', cur=bmPartOf(k);
+ var curOn=!!cur&&k.indexOf(vn+':')===0;
+ var sig=[k,BM.mode,BM.phone,vn,BMG.reg.map(function(r){return r.val||0;}).join(',')].join('|');
  if(sig===el.getAttribute('data-sig'))return;
- var foc=document.activeElement&&el.contains(document.activeElement)?document.activeElement.getAttribute('data-bmgrp'):null;
- el.innerHTML=['front','back'].map(function(vn,v){var seen={},names=[];
-  BMG.reg.filter(function(r){return r.v===v;}).sort(function(a,c){return a.cy-c.cy||a.cx-c.cx;})
-   .forEach(function(r){if(seen[r.grp])return;seen[r.grp]=1;names.push(r);});
-  return '<div role="group" aria-label="'+(v?'Back':'Front')+'" style="flex:1 1 300px;min-width:0;display:flex;'
-   +'flex-wrap:wrap;gap:5px;align-items:center;align-content:flex-start">'
-   +'<span class="pm-eye" style="margin-right:4px">'+(v?'Back':'Front')+'</span>'
-   +names.map(function(r){
-    var pv=BMG.reg.reduce(function(m,q){return q.grp===r.grp?Math.max(m,q.val||0):m;},0), on=k.indexOf(r.grp+':')===0;
-    return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmgrp="'+esc(r.grp)+'" '
-     +'style="padding:8px 12px">'+esc(r.nm)+(pain&&pv?'<b>'+pv+'</b>':'')+'</button>';}).join('')+'</div>';}).join('');
+ var ae=document.activeElement, foc=ae&&el.contains(ae)
+  ?(ae.getAttribute('data-bmpart')?'[data-bmpart="'+ae.getAttribute('data-bmpart')+'"]'
+   :ae.getAttribute('data-bmfb')?'[data-bmfb="'+ae.getAttribute('data-bmfb')+'"]':null):null;
+ BM.hoverList=null;
+ var fb=function(s,t){var on=vn===s;
+  return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmfb="'+s+'" aria-label="'+t+'" title="'+t+'" '
+   +'style="'+BMICSTY+'">'+bmSideIcon(s,on)+'</button>';};
+ /* the readout: the side in a word, and the part that is open, by name. The
+    one place a name prints, and only for the part being held, the same rule
+    the pattern marks keep ("the name prints for the one you are holding"). */
+ var nm=curOn?bmPartName(cur,vn):'';
+ var sd=curOn&&/:(l|r)$/.test(k)?(k.slice(-1)==='l'?', left':', right'):'';
+ el.innerHTML='<div role="group" aria-label="Side" style="flex:0 0 auto;display:flex;gap:5px;align-items:center">'
+   +fb('front','Front')+fb('back','Back')
+   +'<span style="display:inline-flex;flex-direction:column;justify-content:center;'
+   +'min-width:92px;margin-left:6px;line-height:1.25">'
+   +'<span class="pm-eye">'+(vn==='back'?'Back':'Front')+'</span>'
+   +'<span style="font-size:14px;color:var(--ink);min-height:1.25em">'+(nm?esc(nm+sd):'')+'</span></span></div>'
+  +'<div role="group" aria-label="Regions" style="flex:1 1 300px;min-width:0;display:flex;flex-wrap:wrap;gap:5px;align-items:center">'
+  +BMPART.map(function(pt){
+    var regs=bmPartRegs(pt,vn), here=regs.length>0, on=here&&curOn&&cur===pt;
+    var pv=regs.reduce(function(m,q){return Math.max(m,q.val||0);},0);
+    var ov=vn==='back'?'front':'back';
+    var t=here?bmPartName(pt,vn):bmPartName(pt,ov)+', '+(ov==='back'?'back':'front')+' only';
+    return '<button type="button" class="pm-lb'+(on?' on':'')+(here?'':' empty')+'" aria-pressed="'+on+'" data-bmpart="'+pt.k+'" '
+     +'aria-label="'+esc(t)+(pain&&pv?', painted '+pv:'')+'" title="'+esc(t)+'" style="'+BMICSTY+'">'+bmPartIcon(pt,on)
+     +(pain&&pv?'<b style="position:absolute;top:1px;right:3px;margin:0;font-size:10.5px">'+pv+'</b>':'')+'</button>';}).join('')
+  +'</div>';
  el.setAttribute('data-sig',sig);
- el.querySelectorAll('[data-bmgrp]').forEach(function(b){b.onclick=function(){
-  var gp=b.getAttribute('data-bmgrp'), regs=BMG.reg.filter(function(q){return q.grp===gp;});
-  if(!regs.length)return;
-  if(k.indexOf(gp+':')===0&&bmAnswering()){rdClose();return;}
-  var vn=regs[0].v?'back':'front';
-  if(BM.phone&&BM.face!==vn){BM.face=vn;var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);BM.stillKey='';}
-  /* A NAME PRESSED HERE IS BROUGHT TO ITS ANSWER, on a phone as well. rdOpen
-     leaves the page where it is for a press on the stage, and on a phone that
-     put this answer 3,817 pixels under the button that asked for it, measured
-     at 390 with Hip pressed: the hips lit and the summary he asked for never
-     came into view. A list of names is the shelf's case, not the figure's, so
-     it says so the way the shelf's rows do, for the length of one drill. */
-  RD_INRAIL=true;
-  try{bmOpenKey(regs.length>1?gp+':*':regs[0].key,false);}finally{RD_INRAIL=false;}};});
+ el.querySelectorAll('[data-bmfb]').forEach(function(b){b.onclick=function(){
+  var f=b.getAttribute('data-bmfb'); if(f===vn)return;
+  /* "If I select back, you still have head, neck, shoulders": an open part
+     stays open and turns round with the figure, on the same side of the
+     person if one side was open. A part the other side does not have, the
+     ankle turned to the back, puts its answer down. */
+  var reopen=cur&&curOn&&bmAnswering(), side=/:(l|r)$/.test(k)?k.slice(-1):'';
+  bmSetFace(f);
+  if(reopen){if(!bmPartOpen(cur,f,side))rdClose();}
+  bmRegBar();};});
+ el.querySelectorAll('[data-bmpart]').forEach(function(b){
+  var pt=BMPART.filter(function(p){return p.k===b.getAttribute('data-bmpart');})[0];
+  b.onpointerenter=function(){BM.hoverList=bmPartRegs(pt,vn);BM.dirty=true;};
+  b.onpointerleave=function(){BM.hoverList=null;BM.dirty=true;};
+  b.onclick=function(){BM.hoverList=null;
+   /* a part this side does not have turns the toggle to the side that does */
+   if(!bmPartRegs(pt,vn).length){var ov=vn==='back'?'front':'back';bmSetFace(ov);bmPartOpen(pt,ov);bmRegBar();return;}
+   if(cur===pt&&curOn&&bmAnswering()){rdClose();return;}
+   bmPartOpen(pt,vn);};});
  /* preventScroll, because a plain focus() scrolls to the button and cut the
     smooth scroll to the answer short: measured at 390, the page stopped 560
     pixels down on its way to 4,563 */
- if(foc){var back=el.querySelector('[data-bmgrp="'+foc+'"]');if(back)back.focus({preventScroll:true});}}
+ if(foc){var back=el.querySelector(foc);if(back)back.focus({preventScroll:true});}}
 
 /* THE GROUND UNDER THE FIGURE, read off the host and never off the lighting's
    name, the way pmPal reads it. Dark: the canvas leaves its stage clear and
@@ -2511,8 +2653,8 @@ function bmBuild(host){
   +'<g data-bmseats=""></g></svg></div>'
   /* after the well, so the well's flex keeps the rest of the height and the
      figure is fitted to what is left */
-  +'<div id="bmregs" role="group" aria-label="Body regions" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
-  +'gap:8px 20px;padding:10px 12px 12px;border-top:1px solid var(--edge)"></div>';
+  +'<div id="bmregs" role="group" aria-label="Side and region" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
+  +'align-items:center;gap:8px 16px;padding:8px 12px 10px;border-top:1px solid var(--edge)"></div>';
  BM.well=host.querySelector('.pm-well'); BM.cv=document.getElementById('bmcv'); BM.sv=document.getElementById('bmsv');
  BM.ctx=BM.cv.getContext('2d');
  BM.still=document.createElement('canvas');BM.sctx=BM.still.getContext('2d');
