@@ -23686,3 +23686,16 @@ continue doing what you're building."
   this project. Dispatched as its own small piece.
 - **Everything already in flight continues** with no new instruction
   changing scope.
+
+## KJ. Live, mid setup: atuned.world instead of atuned.app, and a missed output directory field
+
+His words, verbatim, with a screenshot of Cloudflare's "Connect domain"
+dialog on a Worker, reading "atuned.world" and "No zones match
+atuned.world": "its atuned.world -- what do i do from here? i missed
+the output directory , how do i go back?"
+
+A real discrepancy, named rather than guessed past: `DECISIONS.md` and
+`HOSTING-SETUP.md` both record the domain as `atuned.app`, confirmed at
+round HD. He is setting up `atuned.world` instead. Answered directly
+in the next report rather than assumed either way, since which domain
+is real changes a live step he is mid way through.
