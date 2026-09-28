@@ -24509,3 +24509,29 @@ v844. Full suite gated clean, 1283 passed, 0 failed. Still open from
 round LC: the Compass oscillation more visible, its icons made
 clickable, and the Body overlay bar's own layout matched to the
 Field's.
+
+## LE. Masks and the point cloud asked for as their own door under Play
+
+His words, verbatim: "this may be the 20th time that I'm asking, but
+where are the masks and where are the point cloud data within this
+new build? the point cloud data and the masks should be under the
+play tab. It should go field intake compass mask visualization or
+something like that. Why is that not there? Flow should have ritual
+and accountability. Under the menu, prioritize this. Give me a new
+build. If you already have them, it should take two seconds to hook
+up."
+
+- **The masks are real and shipped**, but only as an overlay inside
+  Intake, one click into a page, not a door of their own. He is
+  asking, twice now in explicit, structural terms, for a fourth tab
+  under Play, in this order: Field, Intake, Compass, then a masks
+  visualization. Answered honestly and built rather than argued with.
+- **The point cloud is not what he thinks it is.** What exists is
+  three static mockup images from round KR, explicitly not a build at
+  the time ("I'm not saying to do that... just show that we can do
+  it"). Round KS asked for it to be wired in as a real Compass view
+  and that was queued but never actually built, only the mockups
+  exist. "Two seconds to hook up" is not true of this one and is said
+  so plainly rather than let him believe it already exists.
+- **Flow: ritual and accountability confirmed, already exactly what
+  shipped.** No change needed there.
