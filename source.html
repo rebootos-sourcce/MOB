@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v849 0bec943 2026-09-28 16:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v850 616f87f 2026-09-28 16:30"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -936,7 +936,8 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  margin-right:2px;position:relative}
 .secbar::after{content:'';position:absolute;right:0;top:10px;bottom:10px;width:1px;
  background:var(--edge)}
-.secb{min-height:var(--tap);padding:0 12px;background:transparent;border:0;border-radius:var(--r-s);
+.secb{display:inline-flex;align-items:center;gap:7px;min-height:var(--tap);padding:0 12px;
+ background:transparent;border:0;border-radius:var(--r-s);
  font-family:var(--sans);font-size:15px;font-weight:400;letter-spacing:.01em;color:var(--dim);
  cursor:pointer;white-space:nowrap;max-width:10em;overflow:hidden;
  transition:color var(--t-micro) var(--ease-out),max-width var(--t-element) var(--ease-out),
@@ -946,10 +947,11 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .secb[aria-pressed=true]{color:var(--ink);font-weight:600;letter-spacing:0}
 /* a symbol beside each section's word, KT, in the tab icons' own terms: the
    same size, stroke and no fill, and the section's colour, so a pressed
-   section's ink reaches its mark with no second rule */
-.secb{display:inline-flex;align-items:center;gap:7px}
+   section's ink reaches its mark with no second rule.
+   .sn wraps only the word, so secAlign can measure it apart from the icon. */
 .secb svg{width:var(--icon-nav);height:var(--icon-nav);stroke:currentColor;stroke-width:1.6;
  fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.secb .sn{display:inline-block}
 /* folded, KN: the sections roll in to the pressed one, and hidden is really
    hidden once they have, so a folded section is not a stop for the keyboard */
 .tabnames-i:not(:checked)~.secbar .secb:not([aria-pressed=true]){max-width:0;padding:0;opacity:0;
@@ -44119,5 +44121,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002884311"></div>
+<div id="eof" hidden data-len="002884415"></div>
 </body></html>
