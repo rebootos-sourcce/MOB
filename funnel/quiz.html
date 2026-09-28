@@ -145,10 +145,30 @@ button.lnk:hover,a.lnk:hover{color:var(--ink)}
 .door h2{margin-bottom:0}
 .doorbd{display:grid;gap:4px}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-button.act{background:var(--panel-2);color:var(--ink);border:1px solid var(--edge-2);
+/* THE DOOR TO THE APP IS A LINK, SO IT IS AN a AND NOT A BUTTON WITH A SCRIPT
+   BEHIND IT. A link can be opened in a new tab, tells a screen reader it
+   goes somewhere, and shows its address before it is pressed. It wears the
+   same object as the record buttons beside it, so the rule reaches both. */
+button.act,a.act{background:var(--panel-2);color:var(--ink);border:1px solid var(--edge-2);
  border-radius:9px;padding:14px 20px;font:inherit;font-weight:600;min-height:52px;cursor:pointer}
-button.act.go{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
-button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+a.act{display:inline-flex;align-items:center;text-decoration:none}
+.act.go{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.read>.door:first-child{margin-top:8px}
+/* ---- the story. One box, the same panel as a card, and the type at body
+   size, because a person writing about their week at 14 pixels is squinting
+   at their own sentence. ---- */
+.storyta{display:block;width:100%;min-height:168px;margin-top:18px;resize:vertical;
+ background:var(--panel);color:var(--ink);border:1px solid var(--edge-2);border-radius:10px;
+ padding:14px 16px;font:inherit;font-size:17px;line-height:1.55}
+.storyta::placeholder{color:var(--dim)}
+.storyta:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* two classes, so it outranks the wide rule below that zeroes .acts inside the
+   door, where the grid supplies the gap and here nothing does */
+.read .stacts{margin-top:16px}
+/* Read it scrolls here, and the sticky bar with the ring would sit over the
+   heading it scrolled to */
+#lit{scroll-margin-top:112px}
 .note{margin-top:12px;font-size:14px;color:var(--dim)}
 .close{margin-top:44px;padding-top:26px;border-top:1px solid var(--edge-2)}
 .close p{font-size:23px;line-height:1.38;margin:0;letter-spacing:-.01em}
@@ -165,13 +185,19 @@ button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
    own column and the parallel blocks spread. Scoped to the reading: the
    question screen keeps its measure. */
 @media(min-width:1040px){
- body[data-state="read"] .wrap{max-width:1120px}
+ body[data-state="read"] .wrap,body[data-state="story"] .wrap,
+ body[data-state="door"] .wrap{max-width:1120px}
  .read section{display:grid;grid-template-columns:250px minmax(0,1fr);
   column-gap:44px;align-items:start}
  .read .hd{position:sticky;top:60px}
  .read .bd{min-width:0}
  .cqrow{grid-template-columns:auto minmax(0,1fr);gap:34px;align-items:center}
  .cqsay p:first-child{margin-top:0}
+ /* the first line under a heading keeps the paragraph gap while the heading
+    is stacked above it, and loses it at 1040 and up, where the heading sits
+    beside it and the two tops line up. The first cut zeroed it inline at every
+    width, and at 390 the paragraph sat on the heading. */
+ .read .bd>p.lede{margin-top:0}
  .cq b{font-size:86px}
  .tierbox dl{grid-template-columns:repeat(3,1fr);gap:24px}
  .two{grid-template-columns:1fr 1fr;gap:44px}
@@ -210,7 +236,12 @@ button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 <script src="ring.js"></script>
 <script>
 /* ============================================================
-   THE TEST. Three states: the opening, one question, the reading.
+   THE TEST. Five states: the opening, one question, the reading, the
+   story, the door. The last two are his four steps, round LJ in TASKS.md:
+   "you have to finish the quiz and get your results of your CQ and your the
+   holes in your integrity. And it needs to sniff out some of the stories so
+   you can see what's running you. And then it invites you to try the app to
+   find more." The story sat nowhere and the door invited nobody anywhere.
    Nothing here computes a reading of its own. The hundred answers
    become 21 law values and 9 charge values, and the engine does the
    rest, because a second arithmetic that agrees with the first on
@@ -355,7 +386,8 @@ function viewOpen(){
  +'about things that happened rather than about the kind of person you are. '
  +'Answer them the way your week actually went.</p>'
  +'<p>At the end you get your coherence, the laws that are thinnest, the '
- +'saboteurs that are running, and where in the body the load is sitting.</p>'
+ +'saboteurs that are running, and where in the body the load is sitting. '
+ +'Then you can write one thing that happened and see what your own words light.</p>'
  +'<button class="pri" id="go">'+(done?'Carry on':'Start')+'</button>'
  +(done?'<div class="under"><button class="lnk" id="restart">Start again from the top</button></div>':'')
  +'<p class="foot">Nothing you answer leaves this browser. This page makes no '
@@ -466,24 +498,23 @@ function viewRead(){
  +'are where this kind of load sits rather than a reading of your tissue. It reads '
  +'self report. A clinician reads a person, and those are different jobs.</div>'
 
- /* ---- 4. THE DOOR ---- */
- +'<div class="door"><span class="eye">The door</span>'
- +'<h2>Take the record with you.</h2>'
+ /* ---- 4. THE STEP FORWARD. The door was here, straight after the scope,
+    so the page said it had not read a story in your own words and then
+    offered nowhere to write one. The story is his third step and the door is
+    his fourth, so this is the way to the third, and it can be skipped: he did
+    not say the story was required, and a step nobody can pass is a wall.
+    Change an answer stays on this page, because this is where a person sees
+    the answer they want to change. ---- */
+ +'<div class="door"><span class="eye">Next</span>'
+ +'<h2>Write one thing that happened.</h2>'
  +'<div class="doorbd">'
- +'<p>There is no account and no server, so nothing here can be fetched later by '
- +'anybody, including us. What you save is a profile in the instrument\'s own '
- +'format, and Atuned\'s loader takes it as it stands: the coherence above, the '
- +'21 law values, the nine charges, and every address they landed on.</p>'
+ +'<p>The hundred questions read the shape of your week. One story in your own '
+ +'words shows what is running under it, read by the same reader the app uses.</p>'
  +'<div class="acts">'
-  +'<button class="act go" id="dl">Save my record</button>'
-  +'<button class="act" id="copy">Copy it instead</button>'
+  +'<button class="act go" id="tostory">Write a story</button>'
+  +'<button class="act" id="todoor">Skip to my record</button>'
   +'<button class="act" id="again">Change an answer</button>'
- +'</div></div><p class="note" id="dlnote"></p></div>'
-
- +'<div class="close">'
- +'<p>No one is coming to save you.</p><p>Do it yourself.</p>'
- +'<p>The software is the key and the roadmap.</p>'
- +'<p class="last">You are the door.</p></div>'
+ +'</div></div></div>'
 
  +'<p class="foot">Answered: '+s.answered+' of the hundred points.</p>'
  +'</div>';
@@ -553,12 +584,6 @@ function viewRead(){
           :esc('Start at '+top.k+(top.n?', at the '+top.n:'')
                +', which is the heaviest of them.'))+'</div>';
   return h+'</div>';}
- function clause(x){ return String(x||'').split(',')[0].trim(); }
- function low(x){ x=String(x||''); return x.charAt(0).toLowerCase()+x.slice(1); }
- function cap(x){ x=String(x||''); return x.charAt(0).toUpperCase()+x.slice(1); }
- function listOf(a){
-  a=a.filter(function(x,i){return x&&a.indexOf(x)===i;});
-  return a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
  /* NO LOOKBEHIND. It is unsupported in enough shipped browsers that a
     saboteur card would throw instead of printing, and a card that throws
     takes the whole reading with it. */
@@ -568,6 +593,271 @@ function viewRead(){
    if(t.charAt(i)==='.'){ out.push(t.slice(start,i+1)); start=i+1; count++;
     while(t.charAt(start)===' ')start++; i=start-1; } }
   return (out.length?out.join(' '):t).trim();}}
+
+/* THE WORDING HELPERS SIT OUT HERE NOW, UNCHANGED. They were declared inside
+   viewRead, so the story's cards could not reach them, and a second copy for
+   the second family of cards is two copies of one rule. Moved and not
+   rewritten: every body is as it was, and none of the four names is a global
+   in engine.js, questions.js or ring.js, checked before they moved. */
+function clause(x){ return String(x||'').split(',')[0].trim(); }
+function low(x){ x=String(x||''); return x.charAt(0).toLowerCase()+x.slice(1); }
+function cap(x){ x=String(x||''); return x.charAt(0).toUpperCase()+x.slice(1); }
+function listOf(a){
+ a=a.filter(function(x,i){return x&&a.indexOf(x)===i;});
+ return a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+
+/* ============================================================
+   THE STORY. His third step: "it needs to sniff out some of the stories so
+   you can see what's running you."
+
+   NOTHING NEW IS SCORED HERE. parseStory is the reader the app's Story page
+   runs, engine/sniff.js, and it arrives with engine.js. This page asks it one
+   question and prints the answer in the same card the saboteurs on the
+   reading wear, so the two halves read as one reading and not two products.
+
+   THE TEXT IS HELD IN MEMORY AND NOWHERE ELSE. The answers are saved in this
+   browser so a person can stop and come back. A story is a different thing
+   to leave on a machine: it is somebody's week in their own words, on what
+   may be a shared computer. So it is never written to storage, the page says
+   so under the box, and closing the page loses it.
+
+   READING WAITS FOR THE BUTTON. Live, every half typed word would print a
+   reading and take it back a keystroke later, and a card that flickers
+   between Fear and nothing while somebody is still writing is a reading
+   nobody can trust.
+   ============================================================ */
+var STORY='';      /* what is in the box now */
+var STORY_AT='';   /* what was in it when Read it was pressed */
+
+/* the words, quoted as they were typed. marksOf maps the scanner's offsets
+   back onto the letters, so a quote is exactly what was scored. A word read
+   after a no is quoted with the no in front of it, so the person can see
+   what the reader did with it. */
+function storyQuote(t,m){
+ var a=m.s;
+ if(m.neg){ var pre=t.slice(0,a).match(/(?:[A-Za-z']+[^A-Za-z']+){1,2}$/); if(pre)a-=pre[0].length; }
+ return '“'+t.slice(a,m.e)+'”';}
+function storyQuotes(t,ms){
+ var seen={}, out=[];
+ ms.forEach(function(m){ var q=storyQuote(t,m), k=q.toLowerCase();
+  if(!seen[k]&&out.length<5){ seen[k]=1; out.push(q); } });
+ return out;}
+
+function storyLit(ps,t,r){
+ /* A WORD AFTER A NO IS STILL CHARGED, AND THAT IS SHOWN. "I was not scared"
+    lights Fear, measured, because parseStory does not read negation and
+    srcNegated does. The app's Story page shows the same disagreement rather
+    than picking a side, round HX, and this does it the same way: the quote
+    carries the no, and one sentence says the reader counted it anyway. */
+ var nm=normMap(t), negAt={};
+ ps.hits.forEach(function(h){ if(h.band==='coherent')return;
+  if(srcNegated(nm.s,h.at)){ var a=nm.map[h.at+1]; if(a!=null)negAt[a]=1; } });
+ var marks=marksOf(t,ps).filter(function(m){return !m.coh;});
+ marks.forEach(function(m){ m.neg=!!negAt[m.s]; });
+
+ /* NAMED AGAINST INFERRED DECIDES WHAT MAY BE PRINTED. parseStory marks an
+    imprint inferred when the words reached a seat and the address was picked
+    by a fallback. Its own comment records what printing those did: "My father
+    died last year" was told Martyrdom. So an inferred imprint earns no card
+    and no address name here. The seat it reached is still said, because the
+    seat is genuinely known.
+    A STATED imprint is the other trap. Its fetter was named by the word, and
+    its node is only the first address at that seat, which does not carry the
+    fetter at all: "I am exhausted" states Apathy on an address whose own
+    fetter is Anger. So a stated fetter gets its card and no address. */
+ var groups={}, cards=[], seatOnly={}, named={};
+ ps.imprints.forEach(function(im){
+  if(im.inferred){ seatOnly[im.from]=im.band; return; }
+  named[im.from]=1;
+  var g=groups[im.fetter];
+  if(!g){ g=groups[im.fetter]={fet:im.fetter, bands:[], from:{}, nodes:[], at:{}, amt:0}; cards.push(g); }
+  if(g.bands.indexOf(im.band)<0)g.bands.push(im.band);
+  g.from[im.from]=1; g.amt+=im.amt;
+  var n=BY[im.node];
+  if(!im.stated&&n){ if(g.nodes.indexOf(n)<0)g.nodes.push(n); g.at[n.i]=(g.at[n.i]||0)+im.amt; }});
+ cards.sort(function(a,b){return b.amt-a.amt;});
+ /* a card prints four addresses, so the four are the heaviest this story put
+    there and not the first four the seats happened to list */
+ cards.forEach(function(g){ g.nodes.sort(function(a,b){return g.at[b.i]-g.at[a.i];}); });
+
+ /* what the hundred said about the same places. The quiz reading was run
+    first in viewStory, so W, and BY with it, still holds the answers' load. */
+ var qsabs=topSabs(r,r.sabs.length), loadedAt={};
+ (r.loaded||[]).forEach(function(n){ loadedAt[n&&n.i!=null?n.i:n]=1; });
+ /* ONE NAME, AND HOW MUCH IT SHARES. The first cut named the first two
+    saboteurs touching any address on the card, and on a flat field the same
+    two touched every card: measured, both cards of a two card story read
+    "They lit Overthinker and Negotiator on the same addresses", a line that
+    tells a person nothing twice. Several saboteurs sit on one identical set of
+    addresses, so a second name adds no second fact. The one that shares the
+    most of what the card prints is named, with the share, heaviest first on a
+    tie because topSabs already hands them over in that order. */
+ function answersSay(g){
+  var ids=g.nodes.slice(0,4).map(function(n){return n.i;});
+  if(!ids.length){
+   var on=qsabs.filter(function(s){return s.parts.some(function(p){return p.cf===g.fet;});});
+   return on.length?'They lit '+on[0].nm+', which runs on '+low(g.fet)+' too.'
+    :'Nothing they lit runs on '+low(g.fet)+'. Only your words named it.';}
+  var best=null;
+  qsabs.forEach(function(s){
+   var n=s.parts.filter(function(p){return ids.indexOf(p.i)>=0;}).length;
+   if(n&&(!best||n>best.n))best={nm:s.nm,n:n};});
+  if(best)return 'They lit '+best.nm+' on '
+   +(ids.length>1?best.n+' of these '+ids.length+' addresses.':'the same address.');
+  if(ids.some(function(i){return loadedAt[i];}))
+   return 'They put load here too, above the line where it starts to cost.';
+  if(ids.some(function(i){return (BY[i].sq||0)>0;}))
+   return 'They left it under the line where it starts to cost. Your words named it.';
+  return 'They put nothing here. Only your words reached it.';}
+
+ function card(g){
+  /* a word that names a charge belongs to that charge's card only. The first
+     cut gave a card every word at its seats, and "ashamed" was quoted on the
+     Fear card because both charges sat at the solar seat. A word that only
+     reached a seat, "shouted", belongs to every card at that seat, because
+     the seat is all it said. */
+  var ws=marks.filter(function(m){
+   var names=m.fet||(m.charge&&CHG2FET[m.charge]);
+   return names?names===g.fet:!!(m.seat&&g.from[m.seat]);});
+  var seats=g.bands.map(function(b){return low(b);});
+  var h='<div class="sab"><h3>'+esc(g.fet)+'</h3>'
+   +'<div class="fam">At the '+esc(listOf(seats))+' seat'+(seats.length>1?'s':'')
+   +'. Your words named it.</div>';
+  if(ws.length)h+='<div class="sl"><b>Your words:</b> '+esc(storyQuotes(t,ws).join(', '))+'.'
+   +(ws.some(function(m){return m.neg;})?' The reader counts a word that comes after a no.':'')
+   +'</div>';
+  var parts=g.nodes.slice(0,4);
+  if(parts.length){
+   h+='<div class="sl"><b>What it does:</b> '
+    +esc('It shows up as '+listOf(parts.map(function(n){return low(n.d);}))+'.')+'</div>';
+   h+='<div class="sl"><b>It runs on:</b> '+parts.map(function(n){
+    return esc(n.k)+(n.n?' at the '+esc(n.n):'');}).join('. ')+'.</div>';
+   h+='<div class="sl"><b>What it touches:</b> '
+    +esc(cap(listOf(parts.map(function(n){return low(clause(n.a));}))))+'.</div>';}
+  else h+='<div class="sl"><b>It runs on:</b> No address at the '+esc(listOf(seats))
+   +' seat carries '+esc(low(g.fet))+', so none is named.</div>';
+  h+='<div class="sl"><b>Your answers:</b> '+esc(answersSay(g))+'</div>';
+  return h+'</div>';}
+
+ var so=Object.keys(seatOnly).filter(function(k){return !named[k];});
+ var soBands=so.map(function(k){return low(seatOnly[k]);});
+ var soWords=marks.filter(function(m){return m.seat&&so.indexOf(m.seat)>=0;});
+ var seatSay=so.length
+  ?esc(soWords.length?cap(listOf(storyQuotes(t,soWords))):'Your words')
+   +' landed at the '+esc(listOf(soBands))+' seat'+(so.length>1?'s':'')
+   +' without naming what is there. A seat alone does not say which address, '
+   +'so none is named.':'';
+
+ var head=cards.length?'What your words named.'
+  :so.length?'Your words landed at a seat and named nothing exact.'
+  /* the app's own empty state for an entry, ui/storyui.js, word for word.
+     One wording per state. */
+  :'Nothing in this entry reads as held yet.';
+ var h='<section id="lit"><div class="hd"><span class="eye">What your words lit</span>'
+  +'<h2>'+esc(head)+'</h2></div><div class="bd">';
+ if(cards.length)h+='<p class="sm lede">Each card is one charge your words '
+  +'named. A charge is survival energy stuck at one place in the body. The last line '
+  +'on each card says whether your answers reached the same place.</p>'
+  +'<div class="sabs">'+cards.map(card).join('')+'</div>'
+  +(seatSay?'<p class="sm">'+seatSay+'</p>':'');
+ else if(so.length)h+='<p class="sm lede">'+seatSay+'</p>'
+  +'<p class="sm">Write where you felt it, and what it was, and the reader can name it.</p>';
+ else h+='<p class="lede">Keep writing, or write where you felt it.</p>';
+ h+='</div></section>'
+  /* the same scope box the reading carries, saying the same kind of thing:
+     what this read and what it did not. */
+  +'<div class="scope"><b>What this is.</b> The same reader the app runs on its Story '
+  +'page. It matches your words against the instrument\'s word list and places each '
+  +'match at a seat in the body. A card appears only where your words named the '
+  +'charge. It read one story, once, and it has not changed your answers or your '
+  +'coherence.</div>';
+ return h;}
+
+function viewStory(){
+ /* THE QUIZ IS READ FIRST, EVERY TIME. parseStory orders a seat's addresses by
+    susc, and susc is set by whichever profile read() loaded last. Run the
+    other way round, the story would be read against whatever field the page
+    held before, and the last line of every card compares against the
+    answers, so it needs their field in W when it asks. */
+ var s=scored(), r=read(s.p).reading;
+ var ps=STORY_AT?parseStory(STORY_AT):null;
+ var h='<div class="read">'
+  +'<section><div class="hd"><span class="eye">Your own words</span>'
+  +'<h1>Write one thing that happened.</h1></div><div class="bd">'
+  +'<p class="lede">Pick a moment from this week that is still sitting in you. '
+  +'Say what happened and where you felt it, the way you would say it out loud. '
+  +'Three or four sentences is enough.</p>'
+  +'<textarea class="storyta" id="storytx" spellcheck="false" aria-label="What happened" '
+  +'placeholder="What happened, and where you felt it.">'+esc(STORY)+'</textarea>'
+  +'<div class="acts stacts">'
+   +'<button class="act go" id="readit">'+(ps?'Read it again':'Read it')+'</button>'
+   +(ps?'':'<button class="act" id="todoor">Skip to my record</button>'
+     +'<button class="act" id="toread">Back to the reading</button>')
+  +'</div><p class="note" id="stnote" aria-live="polite"></p>'
+  +'<p class="note">Nothing you write leaves this browser, and it is not saved. '
+  +'Close the page and it is gone.</p>'
+  +'</div></section>';
+ if(ps)h+=storyLit(ps,STORY_AT,r)
+  +'<div class="acts stacts">'
+   +'<button class="act go" id="todoor">Continue to my record</button>'
+   +'<button class="act" id="toread">Back to the reading</button>'
+  +'</div>';
+ return h+'</div>';}
+
+/* ============================================================
+   THE DOOR. His fourth step: "And then it invites you to try the app to find
+   more." It saved a file and invited nobody anywhere.
+
+   THE LINK IS TO THE BUILT APP IN THIS REPOSITORY, ../source.html, AND NOT
+   TO A WEB ADDRESS. There is no hosted instrument yet, the open hosting item
+   in TASKS.md, and a made up address is a dead link dressed as an
+   invitation. source.html is the instrument itself, one file, and it sits
+   one directory up from this page in the repository, so from the source the
+   link opens it. BUILD-single.sh rewrites it to atuned.html in dist, the
+   name the handover rule in CLAUDE.md gives the app when it is sent, so the
+   two files land in one folder and the link holds. When the instrument has
+   an address, this href is the one line that changes.
+
+   THE ROUTE IN IS NAMED, BECAUSE IT WAS CHECKED. The loader is the Load a
+   Record box under Privacy, reached from the profile button at the top right
+   of the app, measured in Chromium at 1600 and at 390 on 28 September. A
+   door that says where the file goes and is wrong about it is worse than
+   one that says nothing.
+   ============================================================ */
+function viewDoor(){
+ return '<div class="read">'
+ +'<div class="door"><span class="eye">The door</span>'
+ +'<h2>Take the record with you.</h2>'
+ +'<div class="doorbd">'
+ +'<p>There is no account and no server, so nothing here can be fetched later by '
+ +'anybody, including us. What you save is a profile in the instrument\'s own '
+ +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
+ +'21 law values, the nine charges, and every address they landed on.'
+ +(STORY_AT?' Your story is not in it.':'')+'</p>'
+ +'<div class="acts">'
+  +'<button class="act go" id="dl">Save my record</button>'
+  +'<button class="act" id="copy">Copy it instead</button>'
+  +'<button class="act" id="again">Change an answer</button>'
+ +'</div></div><p class="note" id="dlnote"></p></div>'
+
+ +'<div class="door"><span class="eye">The app</span>'
+ +'<h2>Try the app to find more.</h2>'
+ +'<div class="doorbd"><div>'
+ +'<p>This test read a hundred answers'+(STORY_AT?' and one story':'')+'. The app reads '
+ +'every story you write and shows where each one sits in the body. Then it runs a '
+ +'release on each address that is carrying, to take the load off it. It is one file '
+ +'and it runs in your browser.</p>'
+ +'<p class="sm">To bring this reading in, save the record first. In the app, press '
+ +'the profile button at the top right, choose Privacy, and load the file there.</p>'
+ +'</div>'
+ +'<div class="acts"><a class="act go" id="toapp" href="../source.html">Open the app</a></div>'
+ +'</div></div>'
+
+ +'<div class="close">'
+ +'<p>No one is coming to save you.</p><p>Do it yourself.</p>'
+ +'<p>The software is the key and the roadmap.</p>'
+ +'<p class="last">You are the door.</p></div>'
+ +'</div>';}
 
 
 /* the record a person carries out. It is a profile the app's own boundary
@@ -595,8 +885,9 @@ function render(){
  if(MISSING.length||UNKNOWN.length||SEATMISMATCH){ el.innerHTML=viewRefusal(); fill.style.width='0'; return; }
  document.body.setAttribute('data-state',STATE);
  refreshLoads();
- el.innerHTML = STATE==='open'?viewOpen() : STATE==='q'?viewQ() : viewRead();
- fill.style.width = (STATE==='read'?100:(answered()/QQ.length*100))+'%';
+ el.innerHTML = STATE==='open'?viewOpen() : STATE==='q'?viewQ()
+  : STATE==='story'?viewStory() : STATE==='door'?viewDoor() : viewRead();
+ fill.style.width = (STATE==='open'||STATE==='q'?(answered()/QQ.length*100):100)+'%';
  paintRing();
  var b;
  if((b=document.getElementById('go')))b.onclick=function(){
@@ -611,6 +902,20 @@ function render(){
   STATE='read'; render(); scrollTo(0,0);};
  if((b=document.getElementById('again')))b.onclick=function(){
   AT=0; STATE='q'; render(); scrollTo(0,0);};
+ if((b=document.getElementById('tostory')))b.onclick=function(){
+  STATE='story'; render(); scrollTo(0,0);};
+ if((b=document.getElementById('toread')))b.onclick=function(){
+  STATE='read'; render(); scrollTo(0,0);};
+ if((b=document.getElementById('todoor')))b.onclick=function(){
+  STATE='door'; render(); scrollTo(0,0);};
+ /* the box keeps its text without a redraw, so typing never loses the caret */
+ if((b=document.getElementById('storytx')))b.oninput=function(){ STORY=this.value; };
+ if((b=document.getElementById('readit')))b.onclick=function(){
+  if(!STORY.trim()){
+   document.getElementById('stnote').textContent='Nothing written yet, so there is nothing to read.';
+   return;}
+  STORY_AT=STORY; render();
+  var lit=document.getElementById('lit'); if(lit&&lit.scrollIntoView)lit.scrollIntoView({block:'start'});};
  if((b=document.getElementById('dl')))b.onclick=function(){
   var note=document.getElementById('dlnote');
   try{
@@ -618,10 +923,12 @@ function render(){
    var u=URL.createObjectURL(blob), a=document.createElement('a');
    a.href=u; a.download='atuned-record.json'; document.body.appendChild(a); a.click();
    a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},1000);
-   /* IT SAID "load it from Settings". There is no Settings in the product and the
-      sheet that does carry the loader is not reachable from anything, which is
-      measured and reported rather than papered over here. A control must never
-      claim more than it has, so the note says what happened and stops.
+   /* IT SAID "load it from Settings". There was no Settings in the product and
+      the sheet that carries the loader was not reachable from anything at the
+      time, which was measured and reported rather than papered over here. A
+      control must never claim more than it has, so the note says what
+      happened and stops. Round LJ gave the door a real route to it, the
+      profile button then Privacy, named where "Open the app" sits.
       AND IT SAID "Keep it: it is the handoff." Handoff is the team's word for
       a seam and keep it is a flourish where save is the verb. His, 27
       September, TASKS.md GQ: "instead of keep it, just you save". The note

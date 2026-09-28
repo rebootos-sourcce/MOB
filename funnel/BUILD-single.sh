@@ -48,6 +48,13 @@ ring = (here/'ring.js').read_text(encoding='utf-8')
 # one of them opens alone.
 OUT = {'index.html':'atuned-funnel.html', 'quiz.html':'atuned-quiz.html',
        'about.html':'atuned-about.html',  'buy.html':'atuned-buy.html'}
+# THE DOOR TO THE APP. quiz.html links ../source.html, the built instrument one
+# directory up in the repository, because there is no hosted address yet and a
+# made up one is a dead link. A file sent on its own has no directory above it,
+# so dist points at atuned.html, which is the name the handover rule in
+# CLAUDE.md gives source.html when it is sent. Saved into one folder, the two
+# open each other. It is a route and not an asset, so it joins the four below.
+APP = ('../source.html', 'atuned.html')
 SRC = sorted(p.name for p in here.glob('*.html'))
 missing = [s for s in SRC if s not in OUT]
 assert not missing, 'no dist name for '+repr(missing)+': add it to OUT'
@@ -68,6 +75,7 @@ for src in SRC:
                       + body + '\n</script>')
     for a, b in OUT.items():
         h = h.replace('href="'+a+'"', 'href="'+b+'"')
+    h = h.replace('href="'+APP[0]+'"', 'href="'+APP[1]+'"')
     p = here/'dist'/OUT[src]
     p.write_text(h, encoding='utf-8')
     built[OUT[src]] = h
@@ -79,7 +87,7 @@ for src in SRC:
 # allowed to remain.
 for nm, h in built.items():
     left = [u for u in re.findall(r'(?:src|href)="(?!https?:|#|data:|mailto:)([^"]+)"', h)
-            if u not in OUT.values()]
+            if u not in OUT.values() and u != APP[1]]
     assert not left, nm+' still reaches for '+repr(left)
 print('  %d pages, and none of them needs a sibling to render' % len(built))
 PY
