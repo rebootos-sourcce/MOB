@@ -154,7 +154,8 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          pass:0,cool:0,tok:0,halted:false,
          dose:LINES_PER_CH,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
-         tally:null,hits:null,settleAt:0,settled:false};
+         tally:null,hits:null,settleAt:0,settled:false,
+         heavy:{},look:false};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -193,6 +194,7 @@ function relPick(nodeIds){
  relTicker(false);
  RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
+ RUN.heavy={};RUN.look=false;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -558,7 +560,7 @@ function relAddrAt(){
    One ticker, once a second, and it writes two text nodes and the
    settle dial by id and nothing else. The card is rewritten on every
    line, and a ticker that rewrote it every second would take focus
-   off Pause under a keyboard and off a Felt mark mid press. It
+   off Pause under a keyboard and off a Heavy mark mid press. It
    redraws the card once, when the two minutes run out, because that
    is where the summary appears.
    ============================================================ */
@@ -715,9 +717,14 @@ function relCoolDown(){
   var w0=n.sq*10;                                   /* weights are 0 to 100 here */
   var m=relWrite(RUN.queue,n,w0);
   freed+=Math.abs(m.d);
+  /* a line marked heavy during the run marks its address Heavy before the
+     finished card is drawn. The person already said the body answered there,
+     and asking again on the card would be asking twice. It stays a toggle. */
+  var hv=relHeavyAt(n);
   RUN.log.push({node:n.i,name:n.k,band:n.b,fetter:n.cf,
    opp:(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'',
-   w0:Math.round(w0),d:m.d,w1:m.w1,cleared:(m.w1<=6)});});
+   w0:Math.round(w0),d:m.d,w1:m.w1,cleared:(m.w1<=6),
+   heavy:hv,felt:hv.length>0});});
  RUN.freed=freed;
  /* One pattern is one line: one channel over one address. Every line of the
     run is keyed, so a rerun of the same ground costs nothing and only new
@@ -841,11 +848,274 @@ function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
 function relSwitches(n){return relVoiceRow()+relToneRow(n)+relBuzzRow();}
-/* the line being said, which is the line being displayed */
-function relLineRow(st){
- if(!st||!st.text)return '';
- return '<div class="rel-line'+(st.truth?' tru':'')+(st.kind==='pass'?' pass':'')+'">'
-  +esc(st.text)+'</div>';}
+/* ============================================================
+   THE LIST, IN FRONT OF THE PERSON. His words, 27 September: "For
+   the letting go of believing list and the reframes, it needs to be
+   a list. You need to be able to see the list right in front of you
+   and read it, and you need to see the next word coming up. And I
+   want to be able to cycle forward and backward and be able to flag
+   the ones I felt were the most heavy. This isn't a flash image,
+   this is a carousel from north to south."
+
+   The card printed one line and replaced it whole on the next, so the
+   only line a person could read was the one being said, and the next
+   arrived unannounced four seconds later. It is a list now: every line
+   of the address the run is on, top to bottom in the order the walker
+   says them, the live line marked Now and the one after it marked Next
+   directly under it.
+
+   THE FOUR BUCKETS ARE THE PLAN'S OWN. "Bucketed from left and right
+   channels for both masculine and feminine, from release and reframe"
+   is CHAN above: left release, right release, left reframe, right
+   reframe, and the pole of each side is relPole off C3_POLE. Nothing
+   is grouped here that the plan did not already group. A bucket is one
+   plan key and its RUN.dose lines, and the map over the list is the
+   same four laid out the way the strips lay them out, left on the left.
+
+   ONE ADDRESS AT A TIME. A whole run can be eight addresses at a
+   hundred lines a block, three thousand two hundred rows, and the list
+   would carry every one of them to show the few a person reads. It
+   holds the address the run is on, and its foot is the first line of
+   what comes after it, the next address or the cooldown, so at the
+   seam the next line is still on screen.
+
+   LOOKING NEVER MOVES THE RUN. The walker's place is RUN.idx and
+   RUN.pass, and nothing in this section writes either. Scrolling, Back,
+   Forward and the map move what is shown. RUN.look says the person has
+   moved it, and while it is set the list stops following the live line,
+   so somebody reading ahead is not pulled back every four seconds. Now
+   puts it back.
+   ============================================================ */
+/* the plan entries of the address the walker is on, which are contiguous
+   because meterPlan walks the queue address by address */
+function relSpan(i){
+ var P=RUN.plan||[];
+ function a(j){return String(P[j]||'').split(':')[0];}
+ var id=a(i), a0=i, a1=i+1;
+ while(a0>0&&a(a0-1)===id)a0--;
+ while(a1<P.length&&a(a1)===id)a1++;
+ return {a0:a0,a1:a1,key:P[a0]+'/'+a1+'/'+RUN.dose};}
+/* the eyebrow's words for a bucket, so a bucket is named one way everywhere */
+function relBucket(ch){return (ch[2]==='truth'?'Reframe':'Release')+', '+ch[1].toLowerCase()+' channel';}
+/* the key of the line after the live one, which may sit past this address */
+function relNextKey(){
+ if(RUN.pass+1<RUN.dose)return RUN.idx+':'+(RUN.pass+1);
+ return RUN.idx+1<(RUN.plan||[]).length?(RUN.idx+1)+':0':'end';}
+/* HEAVY, MARKED WHILE IT IS SAID. Round JO put a Felt mark on the finished
+   card, one to an address, which comes after the fact and cannot say which
+   line it was. This mark is on the line, keyed by plan index and pass, so a
+   tap lights the row tapped and no other. "I give up fear." at pass 4 and at
+   pass 7 are the same words at two moments, and which moment landed is what
+   the person is telling us. Carried out as the distinct sentences, because
+   that is what a ritual can use. */
+function relHeavyAt(n){
+ var out=[];
+ Object.keys(RUN.heavy||{}).map(function(k){return k.split(':').map(Number);})
+  .sort(function(a,b){return a[0]-b[0]||a[1]-b[1];})
+  .forEach(function(ip){
+   var at=relAt(ip[0]); if(!at||at.n!==n)return;
+   var st=relStepAt(at,ip[1]); if(st&&out.indexOf(st.text)<0)out.push(st.text);});
+ return out;}
+function relHeavyHint(){
+ var e=document.getElementById('relhv'); if(!e)return;
+ var k=Object.keys(RUN.heavy||{}).length;
+ e.textContent=k?k+(k===1?' line':' lines')+' marked heavy.':'Tap a line that feels heavy to mark it.';}
+/* THE HEAVIEST, ON THE FINISHED CARD. "Note the patterns that felt heaviest.
+   That's the work." The lines marked while they were said, each under the
+   address it was said at, with the same double ring the list marks them with,
+   so a line flagged on the run is recognised on the card. Nothing marked is
+   nothing listed: an empty heading would read as a list that failed to load. */
+function relHeaviest(){
+ var rows='';
+ (RUN.log||[]).forEach(function(x){(x.heavy||[]).forEach(function(tx){
+  rows+='<div class="rel-row" style="grid-template-columns:auto 1fr">'
+   +'<i aria-hidden="true" style="width:12px;height:12px;border-radius:50%;border:2px solid var(--gold);'
+   +'box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--gold);margin:0 4px"></i>'
+   +'<span>'+esc(tx)+'<em style="display:block">'+esc(x.name)+'</em></span></div>';});});
+ return rows?'<div class="pm-eye" style="margin-top:6px">Heaviest</div>'
+  +'<div class="rel-log" style="max-height:none;overflow:visible">'+rows+'</div>':'';}
+/* its styles travel with it. The stylesheet in shell/head.html is not this
+   file's, and every rule names two classes so the design gate's collision
+   check, which reads a single class as a claim on that word, reads none of
+   these as a second claim on .rel-line. */
+function relCss(){
+ if(document.getElementById('rel-cr-css'))return;
+ var st=document.createElement('style'); st.id='rel-cr-css';
+ st.textContent=[
+  '.rel-cr .rel-cr-map{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:14px 0 10px}',
+  '.rel-cr .rel-cr-side{grid-row:1;font-size:12px;font-weight:600;color:var(--dim);text-align:left;padding:0 2px}',
+  '.rel-cr .rel-cr-b{grid-column:1;grid-row:2;min-height:44px;padding:6px 10px;border:1px solid var(--edge);',
+  ' border-radius:var(--r-s);background:transparent;color:var(--dim);font:inherit;font-size:14px;text-align:left;cursor:pointer}',
+  '.rel-cr .rel-cr-side[data-side="R"],.rel-cr .rel-cr-b[data-ch^="R"]{grid-column:2}',
+  '.rel-cr .rel-cr-b[data-ch$="truth"]{grid-row:3}',
+  '.rel-cr .rel-cr-b.on{border-color:var(--accent);color:var(--ink);background:color-mix(in srgb,var(--accent) 10%,transparent)}',
+  '.rel-cr .rel-cr-b.done{opacity:.6}',
+  '.rel-cr .rel-cr-hint{margin:0 0 8px;font-size:13px}',
+  /* A FIXED HEIGHT, which is the list's job and the reason .rel-line had a
+     min-height of five lines: without it Pause and End moved under a finger
+     on every line. The list holds still and the rows move inside it. */
+  '.rel-cr .rel-cr-l{position:relative;height:min(300px,40vh);overflow-y:auto;overscroll-behavior:contain;',
+  ' border:1px solid var(--edge);border-radius:var(--r-s);text-align:left}',
+  '.rel-cr .rel-cr-h{position:sticky;top:0;z-index:1;padding:7px 12px;background:var(--panel);',
+  ' border-bottom:1px solid var(--edge);font-size:12px;font-weight:600;color:var(--dim)}',
+  '.rel-cr .rel-cr-h em{font-style:normal;font-weight:400}',
+  /* NO ROW CHANGES SIZE WHEN THE MARK MOVES. The first cut set the live row
+     at 17 pixels against 15. At 390 the row it left wrapped one line fewer,
+     above where a person reading ahead was looking, and the browser moved the
+     list 21 pixels to hold their place, so the list twitched on every line
+     while they read. Now is carried by the bar, the tint and the ink, which
+     take up no room. */
+  '.rel-cr .rel-cr-i{display:grid;grid-template-columns:32px 1fr 18px;gap:8px;align-items:center;width:100%;',
+  ' min-height:44px;padding:8px 10px 8px 8px;border:0;border-left:3px solid transparent;background:transparent;',
+  ' color:var(--mid);font:inherit;font-size:16px;line-height:1.45;font-weight:400;text-align:left;cursor:pointer}',
+  '.rel-cr .rel-cr-i:hover{background:var(--sunk)}',
+  '.rel-cr .rel-cr-i.said{color:var(--dim)}',
+  '.rel-cr .rel-cr-i.next{color:var(--ink)}',
+  '.rel-cr .rel-cr-i.now{border-left-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);',
+  ' color:var(--ink)}',
+  '.rel-cr .rel-cr-n{font-family:var(--num);font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}',
+  '.rel-cr .rel-cr-i.now .rel-cr-n{color:var(--accent);font-weight:600}',
+  '.rel-cr .rel-cr-i.next .rel-cr-n{color:var(--ink)}',
+  '.rel-cr .rel-cr-end{cursor:default;color:var(--dim)}',
+  '.rel-cr .rel-cr-end:hover{background:transparent}',
+  /* ring, never fill: marked is a second ring outside the first */
+  '.rel-cr .rel-cr-f{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--edge);justify-self:center}',
+  '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-f{border:2px solid var(--gold);',
+  ' box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--gold)}',
+  '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-t{color:var(--gold)}',
+  /* the live row's sentence carries .rel-line for the gates, and not its look */
+  '.rel-cr .rel-line{margin:0;min-height:0;font-size:inherit;line-height:inherit;font-weight:inherit;color:inherit}',
+  '.rel-cr .rel-cr-nav{display:flex;justify-content:center;margin:8px 0 4px}',
+  /* A PHONE GETS ITS WIDTH BACK, not height. The head statement of a block is
+     143 to 225 characters, and at 390 in a text column of 184 pixels the
+     longest stood 248 tall in a list of 298, so at the start of every block
+     Next showed as a 16 pixel sliver. A taller list put Pause back under the
+     fold. The running card pads 44 a side for strips 30 wide, so the list
+     takes the 12 pixels of gutter between them, and the rows set a size down.
+     That left one case 5 pixels short, the last line of a block with the next
+     block's head under a heading, so the list is 12 taller here, which Pause
+     was measured to have room for, and the heading 4 shorter. */
+  '@media (max-width:520px){.rel-cr .rel-cr-l{margin:0 -12px;height:min(312px,40vh)}',
+  ' .rel-cr .rel-cr-h{padding:5px 10px}',
+  ' .rel-cr .rel-cr-i{font-size:15px;grid-template-columns:28px 1fr 14px;gap:6px;padding-right:8px}}',
+  'body.punch .rel-cr .rel-cr-l,body.punch .rel-cr .rel-cr-b{border-color:transparent;background:var(--sunk)}',
+  'body.punch .rel-cr .rel-cr-h{background:var(--sunk)}'].join('\n');
+ document.head.appendChild(st);}
+function relCar(sp){
+ var map='', rows='', i, p;
+ for(i=sp.a0;i<sp.a1;i++){
+  var at=relAt(i); if(!at||!at.n)continue;
+  var pole=relPole(at.ch[0]), nm=relBucket(at.ch), ck=at.ch[0]+at.ch[2];
+  /* the half in the cell and the whole name as what the button is called,
+     because the side is said once over its column. Four cells each saying
+     "Release, left channel, feminine" wrapped to three lines at 390. */
+  map+='<button type="button" class="rel-cr-b" data-relb="'+i+'" data-ch="'+ck+'" aria-label="'+esc(nm)+'">'
+   +(at.ch[2]==='truth'?'Reframe':'Release')+'</button>';
+  /* one line at 390, so the heading does not take a fifth of the list */
+  rows+='<div class="rel-cr-h">'+esc(nm)+(pole?' <em>· '+esc(pole.nm.toLowerCase())+'</em>':'')+'</div>';
+  for(p=0;p<RUN.dose;p++){
+   var st=relStepAt(at,p);
+   rows+='<button type="button" class="rel-cr-i" data-relh="'+i+':'+p+'" aria-pressed="'+!!RUN.heavy[i+':'+p]+'">'
+    +'<span class="rel-cr-n">'+(p+1)+'</span><span class="rel-cr-t">'+esc(st.text)+'</span>'
+    +'<i class="rel-cr-f" aria-hidden="true"></i></button>';}}
+ /* THE FOOT. The next address's first line is a row like any other and can
+    be marked; the cooldown's is shown and is not the list, so it is not. */
+ var nx=sp.a1<(RUN.plan||[]).length?relStepAt(relAt(sp.a1),0):null;
+ rows+=nx
+  ?'<div class="rel-cr-h">Next address, '+esc(nx.at.n.k)+'</div>'
+   +'<button type="button" class="rel-cr-i" data-relh="'+sp.a1+':0" aria-pressed="'+!!RUN.heavy[sp.a1+':0']+'">'
+   +'<span class="rel-cr-n">1</span><span class="rel-cr-t">'+esc(nx.text)+'</span><i class="rel-cr-f" aria-hidden="true"></i></button>'
+  :'<div class="rel-cr-h">After the list</div>'
+   +'<div class="rel-cr-i rel-cr-end" data-relh="end"><span class="rel-cr-n"></span>'
+   +'<span class="rel-cr-t">'+esc(COOLING[0])+'</span><span></span></div>';
+ /* the region is focusable so the arrow keys scroll it, and it is not
+    aria-live: it changes on every line and would talk over the voice */
+ return '<div class="rel-cr" id="relcar" data-span="'+esc(sp.key)+'">'
+  +'<div class="rel-cr-map" role="group" aria-label="Channels at this address">'
+  +['L','R'].map(function(s){var po=relPole(s);
+    return '<span class="rel-cr-side" data-side="'+s+'" aria-hidden="true">'+(s==='L'?'Left':'Right')
+     +(po?', '+esc(po.nm.toLowerCase()):'')+'</span>';}).join('')+map+'</div>'
+  +'<div class="rel-sub rel-cr-hint" id="relhv"></div>'
+  +'<div class="rel-cr-l" id="relcarl" tabindex="0" role="region" aria-label="The list">'+rows+'</div>'
+  +'<div class="rel-cr-nav"><span class="seg" role="group" aria-label="Move the list">'
+  +'<button type="button" id="relback">Back</button>'
+  +'<button type="button" id="relnow" aria-pressed="true">Now</button>'
+  +'<button type="button" id="relfwd">Forward</button></span></div></div>';}
+function relScroll(L,top,smooth){
+ top=Math.max(0,top);
+ if(smooth&&L.scrollTo&&!(typeof REDUCED!=='undefined'&&REDUCED))L.scrollTo({top:top,behavior:'smooth'});
+ else L.scrollTop=top;}
+/* the height a sticky heading takes off the top of the list, so a row
+   scrolled to is not scrolled under it */
+function relCarPad(L){var h=L.querySelector('.rel-cr-h'); return h?h.offsetHeight:0;}
+/* ONLY THE LIVE ROW CARRIES .rel-line. tests/design.js holds every line it
+   finds there to what the voice said and reads the first as the line being
+   said, and tests/functional.js reads it the same way. Two hundred rows all
+   carrying it would make the top row of the list "the line being said" for a
+   whole block. So the class moves with the live mark, and the card still has
+   exactly one line being said, which is the one the voice is saying. */
+function relCarSync(smooth){
+ var car=document.getElementById('relcar'), L=document.getElementById('relcarl'); if(!car||!L)return;
+ var now=RUN.idx+':'+RUN.pass, nx=relNextKey(), live=null;
+ car.querySelectorAll('[data-relh]').forEach(function(r){
+  var k=r.getAttribute('data-relh'), ip=k.split(':'), i=+ip[0], p=+ip[1];
+  var on=(k===now), nxt=(k===nx), t=r.querySelector('.rel-cr-t'), n=r.querySelector('.rel-cr-n');
+  r.classList.toggle('said',k!=='end'&&(i<RUN.idx||(i===RUN.idx&&p<RUN.pass)));
+  r.classList.toggle('now',on); r.classList.toggle('next',nxt);
+  if(on){r.setAttribute('aria-current','step'); live=r;} else r.removeAttribute('aria-current');
+  if(t)t.classList.toggle('rel-line',on);
+  if(n)n.textContent=on?'Now':nxt?'Next':(k==='end'?'':String(p+1));});
+ car.querySelectorAll('[data-relb]').forEach(function(b){var i=+b.getAttribute('data-relb');
+  b.classList.toggle('on',i===RUN.idx); b.classList.toggle('done',i<RUN.idx);});
+ var nb=document.getElementById('relnow'); if(nb)nb.setAttribute('aria-pressed',String(!RUN.look));
+ relHeavyHint();
+ /* THE LIVE ROW A THIRD OF THE WAY DOWN, so the line just said is still above
+    it, and the Next row under it is always whole. The first cut aimed a third
+    down and stopped, and at the seam between two addresses the next line is
+    the six channel statement, measured at 125 pixels tall at 1600 and 234 at
+    390 in a list 300 high, so it hung off the bottom of the list on exactly
+    the line where knowing what comes next matters most. The list rises until
+    Next is whole, and never so far that Now goes under the sticky heading. */
+ if(RUN.look||!live)return;
+ var H=L.clientHeight, top=live.offsetTop-Math.round(H*0.3);
+ var nr=car.querySelector('.rel-cr-i.next');
+ if(nr)top=Math.max(top,nr.offsetTop+nr.offsetHeight-H);
+ relScroll(L,Math.min(top,live.offsetTop-relCarPad(L)),smooth);}
+/* one row back or forward from the row at the top of the list */
+function relCarStep(d){
+ var L=document.getElementById('relcarl'); if(!L)return;
+ var pad=relCarPad(L), rows=[].slice.call(L.querySelectorAll('.rel-cr-i')), k=0;
+ while(k<rows.length-1&&rows[k].offsetTop+rows[k].offsetHeight/2<L.scrollTop+pad)k++;
+ var r=rows[Math.max(0,Math.min(rows.length-1,k+d))];
+ if(r)relScroll(L,r.offsetTop-pad,true);}
+function relCarLook(){
+ if(RUN.look)return; RUN.look=true;
+ var nb=document.getElementById('relnow'); if(nb)nb.setAttribute('aria-pressed','false');}
+/* bound once per list, on the list, because the list outlives the card
+   around it for as long as the run stays on one address */
+function relCarBind(){
+ var car=document.getElementById('relcar'), L=document.getElementById('relcarl'); if(!car||!L)return;
+ car.onclick=function(e){
+  var t=e.target&&e.target.closest?e.target.closest('button'):null; if(!t||!car.contains(t))return;
+  var k=t.getAttribute('data-relh');
+  if(k){ if(RUN.heavy[k])delete RUN.heavy[k]; else RUN.heavy[k]=1;
+   t.setAttribute('aria-pressed',String(!!RUN.heavy[k])); relHeavyHint(); return; }
+  var b=t.getAttribute('data-relb');
+  /* the live bucket is the live line, so pressing it is Now */
+  if(b!=null&&+b===RUN.idx){RUN.look=false; relCarSync(true); return;}
+  if(b!=null){relCarLook(); var r=L.querySelector('[data-relh="'+b+':0"]');
+   if(r)relScroll(L,r.offsetTop-relCarPad(L),true); return;}
+  if(t.id==='relnow'){RUN.look=false; relCarSync(true); return;}
+  if(t.id==='relback'||t.id==='relfwd'){relCarLook(); relCarStep(t.id==='relfwd'?1:-1);}};
+ /* what counts as the person moving the list: a wheel, a drag, a key, or a
+    press on the scrollbar. Not the scroll event, which the list's own
+    following fires too, and not a touch start, which is also how a row is
+    marked. */
+ L.addEventListener('wheel',relCarLook,{passive:true});
+ L.addEventListener('touchmove',relCarLook,{passive:true});
+ /* space on a row presses the row; it only scrolls from the list itself */
+ L.onkeydown=function(e){if(/^(Arrow|Page|Home|End)/.test(e.key)||(e.key===' '&&e.target===L))relCarLook();};
+ L.onpointerdown=function(e){if(e.target===L)relCarLook();};}
 /* THE TWO STRIPS, left and right, with the live one lit. The heading says the
    side in words as well, so the colour is never the only carrier. */
 function relStrips(side){
@@ -883,7 +1153,7 @@ function relRender(){
  if(!RUN.open){h.style.display='none';h.innerHTML='';return;}
  h.style.display='flex';
  var st=relCur();
- var out='<div class="rel-card'+(RUN.phase==='run'?' rel-running':'')+'">';
+ var out='<div class="rel-card'+(RUN.phase==='run'?' rel-running':'')+'">', kept=false;
  if(RUN.phase==='welcome'){
   /* HIS VOICE'S SLOT. The line is set at the size .rel-speak sets and does not
      carry that class, on purpose: .rel-speak and .rel-line mean "the line the
@@ -918,7 +1188,6 @@ function relRender(){
  } else if(RUN.phase==='run'){
   var at=relNow();
   var ch=at.ch, n=at.n, c=seatCol(n.b);
-  var cur=relStepAt(relAt(RUN.idx),RUN.pass)||relStepAt(at,0);
   /* THE RING ON THE PLATE IS THE ADDRESS BEING RELEASED, so it is where SQ is
      seen going down. It read n.sq, which does not move until the cooldown, so
      it printed the same percent for every one of two hundred lines. It reads
@@ -926,29 +1195,45 @@ function relRender(){
   var live=relLive(), sqNow=live?live.sqAt(n):null;
   if(sqNow==null)sqNow=n.sq;
   var pole=relPole(ch[0]), ad=relAddrAt();
-  out+=relStrips(ch[0])
+  var hd=relStrips(ch[0])
    /* THE HALF AND THE SIDE, IN WORDS. "Release, left channel" is the book's
       own order of telling it, and it is the heading so it is read first. */
-   +'<div class="pm-eye" aria-live="polite">'+(ch[2]==='truth'?'Reframe':'Release')+', '
-     +ch[1].toLowerCase()+' channel</div>'
+   +'<div class="pm-eye" aria-live="polite">'+relBucket(ch)+'</div>'
    /* and which pole and which nervous system that side is, from C3_POLE */
    +(pole?'<div class="rel-ct">'+esc(pole.nm)+', '+esc(pole.ans)+'</div>':'')
    +'<div class="rel-plate">'+crNode(Object.assign({},n,{sq:sqNow}),'xs',{raw:Math.round(sqNow*10)+'%'})
    +'<span><span class="rel-node" style="color:'+c+'">'+esc(n.k)+'</span>'
-   +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span></span></div>'
-   /* THE THOUGHT LINE ITSELF, and it is the line the voice is saying. relLine
-      reads the plan key this card is on, so the head of every block is the
-      pattern the meter charges for, and a limit line carries the six channels
-      he ruled through C3_STEM, all six in one sweep. */
-   +relLineRow(cur)
-   +'<div class="rel-ct">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · address '+(ad.at+1)+' of '+ad.of+'</div>'
+   +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span></span></div>';
+  /* PAUSE AND END DIRECTLY UNDER THE LIST. They sat under the counts and the
+     clocks, which was on screen at 390 while the line was one line. The list
+     is three hundred pixels, and it put Pause under the fold of a phone, on
+     the card whose own comment says a person on a run is reaching for Pause. */
+  var ft='<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
+   /* End does not abandon the run. It commits the plan and runs the cooldown. */
+   +'<button class="btn" id="relstop">End</button></div>'
+   +'<div class="rel-ct" style="margin-top:12px">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · address '+(ad.at+1)+' of '+ad.of+'</div>'
    +relTally(relCounts())
    +relClock()
    +(live?relShade(live.dq,live.dq0):'')
-   +'<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
-   /* End does not abandon the run. It commits the plan and runs the cooldown. */
-   +'<button class="btn" id="relstop">End</button></div>'
    +relSwitches(n);
+  /* AND THE LIST IS NEVER REDRAWN UNDER A FINGER. This function rewrote the
+     whole card on every line, which for one line cost nothing. For a list it
+     throws away where the person had scrolled to, stops a flick mid glide on
+     a phone, and drops a Heavy mark pressed as the line changed onto a row
+     that no longer exists. So while the run stays on one address the card is
+     rewritten around the list, and the list is only marked again. A new
+     address is a new list, and it follows the live line from its top.
+
+     The list sits between the plate and the counts, where the one line sat.
+     relLine reads the plan key each block is on, so the head of every block
+     is the pattern the meter charges for, and a limit line carries the six
+     channels he ruled through C3_STEM. */
+  var sp=relSpan(RUN.idx), car=document.getElementById('relcar'),
+   hdE=document.getElementById('relhd'), ftE=document.getElementById('relft');
+  relCss();
+  if(car&&hdE&&ftE&&car.getAttribute('data-span')===sp.key){
+   hdE.innerHTML=hd; ftE.innerHTML=ft; kept=true;}
+  else {RUN.look=false; out+='<div id="relhd">'+hd+'</div>'+relCar(sp)+'<div id="relft">'+ft+'</div>';}
  } else if(RUN.phase==='done'){
   var cl=RUN.log.filter(function(x){return x.cleared;}).length;
   /* A ONE ADDRESS RUN PRINTED "1 addresses". The plural was typed onto the
@@ -964,12 +1249,29 @@ function relRender(){
      "to optimize for better performance" is not in the sentence, because
      nothing in the product reads a mark yet and a sentence promising that it
      does would be the claim this file refuses to make. The mark is held for
-     this run and rides in the log to the ritual. */
+     this run and rides in the log to the ritual.
+
+     THE HEAVIEST ARE THE WORK. Refined by him at round JX: "Note the patterns
+     that felt heaviest. That's the work. The patterns you didn't feel removed
+     from your pool, to optimize your experience. And flag those that felt
+     heaviest." So the card leads with the heaviest, lists the lines marked
+     heavy while they were said, and the mark on each address is Heavy, his
+     word, where it read Felt: one concept from the list to this card, and one
+     word for it. The log keeps the key felt, so a record already carrying it
+     reads the same.
+
+     "Removed from your pool" is NOT said here, because nothing removes
+     anything. There is no pool in the engine: the addresses come from the
+     selection made in Imprints and the lines from meterPlan, and an address
+     left unmarked keeps its charge. A card saying a pattern was removed when
+     it was not is a success claimed without having it. What removal should
+     mean, and whether an unreleased charge may leave the offer, is his. */
   var t=RUN.tally||{said:0,put:0};
   out+='<div class="pm-eye">Released</div>'
    +'<div class="rel-speak rel-cool">'+esc(COOLING[Math.min(RUN.cool,COOLING.length-1)])+'</div>'
    +'<div class="rel-node" style="font-size:24px">You released '+t.said+(t.said===1?' pattern.':' patterns.')+'</div>'
-   +'<div class="rel-sub">You may not have felt them all. Mark where you felt them.</div>'
+   +'<div class="rel-sub">The heaviest ones are the work. Mark them.</div>'
+   +relHeaviest()
    /* THE TWO MINUTES, then what the run reached. The summary takes the
       clock's place when the clock runs out, which is his order: "at the end
       of that, the person should get a badge". */
@@ -994,7 +1296,7 @@ function relRender(){
     /* a segment of one, so pressed reads the way every other pressed choice
        in the product reads, and at the tap floor */
     +'<span class="seg"><button type="button" data-relfelt="'+i+'" aria-pressed="'+(!!x.felt)
-     +'" aria-label="Felt at '+esc(x.name)+'">Felt</button></span></div>';});
+     +'" aria-label="Heavy at '+esc(x.name)+'">Heavy</button></span></div>';});
   /* WHAT MOVED, AND WHAT RELEASE BARELY MOVES. The panel used to report weight
      freed and nothing else, so a person ran the loop again and again watching
      a number that was never going to answer. Release works on the shadow, and
@@ -1075,7 +1377,8 @@ function relRender(){
    /* and no switch for a run that cannot begin */
    +(spent?'':relSwitches(null));}
  out+='</div>';
- h.innerHTML=out;
+ if(!kept)h.innerHTML=out;
+ if(RUN.phase==='run'){if(!kept)relCarBind(); relCarSync(kept);}
  var b;
  /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
     a sound. The technical requirement and the ritual are the same press. */
