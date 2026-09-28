@@ -255,6 +255,8 @@ function runNodeDrill(n){
      left of the held state after the opposite is in. DESIGN-tooltip-copy.md,
      example 1. */
   +'<div class="ad-sub">'+esc(n.n||'just outside the body')+(n.a?' · '+esc(n.a):'')+'</div>'
+  /* both ends of the pole, the same bar the codex row draws. Round JQ. */
+  +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +'Charge held here <b>'+n.held.toFixed(1)+'</b>. '
   +(c.opp?esc(c.opp)+' installed <b>'+n.rep.toFixed(1)+'</b>. ':'')
@@ -270,6 +272,7 @@ function runNodeDrill(n){
   +(owners.length?owners.slice(0,8).map(function(o){
     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>';
+ h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from
     where they were standing. The release runner has always taken a list of
@@ -285,10 +288,48 @@ function runNodeDrill(n){
   h+='<p class="ad-p">Nothing is held here, so there is nothing to release. '
    +'The protocol opens once this address is carrying.</p>';
  rdShell(h);}
+/* THE STORY AT THIS ADDRESS. Round JQ, his words: "And then seeing the story,
+   the story is just the imprint associated with those, and you can run those
+   from there." atomIndex in ui/wheel.js already reads which of a person's own
+   entries landed on which address, newest parse, memoised on the entry count,
+   and the Field draws them as atoms. This reads the same index, so the drill
+   and the Field cannot disagree about which story put weight here.
+
+   Running one goes through relPick, the one release entry point, with every
+   address that story landed on that is still carrying. Nothing is invented:
+   relPick has always taken a list, and the imprints panel already hands it
+   one. On a worked example relPick refuses the way it refuses everywhere. */
+function nodeStories(n){
+ if(typeof kbpCss==='function')kbpCss();
+ var list=(typeof atomIndex==='function')?((atomIndex()||{})[n.i]||[]):[];
+ if(!list.length)
+  return '<div class="ad-stw"><div class="pm-eye">Your stories here</div><p class="ad-p">'
+   +'Nothing you have written has landed here yet.</p></div>';
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[], by=atomIndex()||{};
+ var h='<div class="ad-stw"><div class="pm-eye">Your stories here</div><div class="ad-sts">';
+ list.slice(0,3).forEach(function(x){
+  /* every address this one entry landed on, still carrying */
+  var ids=[];
+  Object.keys(by).forEach(function(k){
+   if(by[k].some(function(y){return y.ei===x.ei;})){
+    var m=BY[+k]; if(m&&m.cf&&m.sq>=1)ids.push(m.i);}});
+  var txt=x.text.length>150?x.text.slice(0,150)+'…':x.text;
+  h+='<div class="ad-st"><p class="ad-q">'+esc(txt)+'</p>'
+   +'<span class="ad-stm">'+esc(new Date(x.t).toLocaleDateString())
+   +', put <b>'+x.amt.toFixed(1)+'</b> here</span>'
+   +(ids.length?'<button type="button" class="btn" data-protl="'+ids.join(',')+'">'
+     +'Release this story</button>':'')+'</div>';});
+ if(list.length>3)h+='<div class="pm-more">and '+(list.length-3)+' more</div>';
+ return h+'</div></div>';}
 /* one listener for every protocol control, wherever it is drawn */
 addEventListener('click',function(e){
- var b=e.target&&e.target.closest?e.target.closest('[data-prot]'):null;
+ var b=e.target&&e.target.closest?e.target.closest('[data-prot],[data-protl]'):null;
  if(!b)return;
+ if(b.hasAttribute('data-protl')){
+  var ids=String(b.getAttribute('data-protl')).split(',').map(Number)
+   .filter(function(v){return isFinite(v);});
+  if(!ids.length)return;
+  rdClose(); relPick(ids); return;}
  var i=+b.getAttribute('data-prot');
  if(!isFinite(i))return;
  rdClose(); relPick([i]);});

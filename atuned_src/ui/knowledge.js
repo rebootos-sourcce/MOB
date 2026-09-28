@@ -89,12 +89,24 @@ function kbRows(sec){
     the mark inside it is the axis. Two tables that both ship, no new drawing,
     and the distinct marks go from 7 to 40 with the worst collision falling
     from 21 rows to 10. */
+ /* BOTH ENDS OF THE POLE, round JQ. His words: "I want to see both poles,
+    compulsion and the other side, and I want the percent at which we tend to
+    do both ... the number and the symbol and the percent." So an address row
+    carries what is held at it on the left and the opposite that is in on the
+    right, each out of full, which is compute()'s own held and rep and nothing
+    new. p stays the figure the deck sorts on, and it is the held end.
+
+    The four outside the body have no axis and so no opposite. They carry the
+    mean of the seat they extend, which is what they printed before, and the
+    right end says nothing rather than printing a zero it did not measure. */
  if(sec==='addr') NODES.forEach(function(n){
   var field=BANDS.indexOf(n.b)<0;
   var seat=field?(n.b==='Field-Above'?'Crown':'Root'):n.b;
   var ax=n.cf?kbFind(CHILD,n.cf):null;
-  out.push(kbRow('node', n.k, field?'field anchor':n.b, seat,
-   kbPct(n.sq), (ax&&ax.ic)||SEATGLYPH[seat]||SEATGLYPH._, n));});
+  var row=kbRow('node', n.k, field?'field anchor':n.b, seat,
+   kbPct(ax?n.held:n.sq), (ax&&ax.ic)||SEATGLYPH[seat]||SEATGLYPH._, n);
+  row.opp=(ax&&ax.opp)||''; row.q=ax?kbPct(n.rep):null;
+  out.push(row);});
  /* THE NINE ARE CHILD EMOTIONS, NOT FETTERS. His ruling, and the product's
     own glossary already agreed with him: a fetter is "a named conditional
     response pattern resident at a specific node address, one per physical
@@ -271,7 +283,7 @@ const KB_SECS=[['addr','Fetters'],['fetter','Child emotions'],['sab','Saboteurs'
    family has no honest percent for some of its rows the line says so rather
    than leaving a person to assume the blanks are zeroes. */
 const KB_OF={
- addr:'of the address at full load',
+ addr:'',
  fetter:'of the axis held',
  sab:'of the pattern at full weight',
  law:'of the law kept, where high is the law holding',
@@ -352,7 +364,8 @@ function kbRender(){
   +'<div class="kb-hdr"><div class="pm-eye">The codex</div>'
   +'<h2 class="kb-h">'+esc(kbSecName(KB_SEC))+'</h2>'
   +'<span class="kb-scale">'+rows.length+(q?' matching':' of them')
-  +(KB_OF[KB_SEC]?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
+  +(KB_SEC==='addr'?'. Each is a pattern against its opposite, with the weight of each. The bar shows which way you lean.'
+    :KB_OF[KB_SEC]?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search the codex" '
   +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
@@ -377,7 +390,7 @@ function kbRender(){
     +'<p class="kb-gd">'+esc(g.o.d)+'</p></div>';});
   h+='</div>';}
 
- h+='<div class="kb-rg">';
+ h+='<div class="kb-rg'+(KB_SEC==='addr'?' kbp-g':'')+'">';
  if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each deck says where it is.</div>';
  var lastAx='';
  rows.forEach(function(x,i){
@@ -403,6 +416,7 @@ function kbRender(){
   var cls=x.p==null?' off':(x.p?'':' z');
   /* the family comes back on a row whose section heading is not drawn */
   var fam=(x.fam&&(KB_SORT==='weight'||q))?x.fam:x.s;
+  if(x.k==='node'){h+=kbPoleRow(x,i,seat,c,fam); return;}
   h+='<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
    +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
       glyph:glyphPath(x.ic), title:x.t+(x.p==null?'':' · '+x.p+'%')})
@@ -420,6 +434,7 @@ function kbRender(){
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
 
+ kbpCss();
  host.innerHTML=h;
  var qi=document.getElementById('kbq');
  if(qi){qi.oninput=function(){KB_Q=qi.value; kbRender();
@@ -438,6 +453,148 @@ function kbRender(){
 function kbSecName(k){
  for(var i=0;i<KB_SECS.length;i++)if(KB_SECS[i][0]===k)return KB_SECS[i][1];
  return 'The codex';}
+/* ============================================================
+   THE POLE ROW. Two rounds of his words, and the second sharpens
+   the first.
+
+   JQ: "I want to see both poles, compulsion and the other side,
+   and I want the percent at which we tend to do both. Obviously
+   the goal is to become coherent ... some type of a hashed line or
+   gradient bar, and then have the number and the symbol and the
+   percent, and a person can click on that whole line there."
+
+   JZ: "I want the words in the opposing sides. I want their icons
+   of opposing sides. And I want the weight of them on their
+   opposing sides ... and a bar, a graphic visualization underneath
+   showing me the tension of both ... we want to show people that
+   there's both patterns. We see which one they're attuned toward."
+
+   So each side carries its own word, its own mark and its own
+   weight, the pattern on the left and its opposite on the right,
+   and one bar underneath is a tug of war between them. The split
+   point sits where the two weights balance: all the way right is
+   all opposite, all the way left is all pattern. The left share is
+   hatched, because held charge is the thing in the way, and the
+   right share is solid in the colour every other surface already
+   gives the opposite. The two percents at the ends are those two
+   shares and they add to a hundred, which is "the percent at which
+   we tend to do both".
+
+   The weights are compute()'s own held and rep at the address,
+   nothing new. The opposite wears its axis's mark in the
+   opposite's colour, which is how the stack rail on the Field has
+   always drawn it; nine marks of their own for the nine opposites
+   are not drawn yet and that is his to rule on.
+
+   "The number" is the weight, which JZ says outright. It is not the
+   address's serial: he struck that on 17 September, "Address 007
+   root, where in your programming are you adding that", CO-15 in
+   objections.json. The whole row is one button and opens the address drill,
+   which already says how it runs through you, what the opposite
+   is, and runs the protocol.
+   ============================================================ */
+/* the shares of the tug of war, or null when neither side carries anything,
+   because 0 against 0 is no lean at all and a 50 would claim one. */
+function poleShare(l,r){
+ var L=Math.max(0,l||0), R=Math.max(0,r||0), t=L+R;
+ if(t<=0)return null;
+ var a=Math.round(L/t*100); return {l:a, r:100-a};}
+function poleBar(sh){
+ var a=sh?sh.l:50;
+ return '<span class="kbp-bar'+(sh?'':' none')+'" aria-hidden="true">'
+  +'<i class="kbp-hl" style="width:'+(sh?a:0)+'%"></i>'
+  +'<i class="kbp-hr" style="width:'+(sh?100-a:0)+'%"></i>'
+  +'<b class="kbp-mk" style="left:'+a+'%"></b></span>';}
+function kbPoleRow(x,i,seat,c,fam){
+ var n=x.o, oc=seatCol('Heart'), pole=x.q!=null;
+ var wl=pole?n.held:n.sq, wr=pole?n.rep:null;
+ var sh=pole?poleShare(wl,wr):null;
+ var say=x.t+', '+(fam||'')+', weight '+wl.toFixed(1)+'.'
+  +(pole?' Opposite, '+x.opp+', weight '+wr.toFixed(1)+'.'
+    +(sh?' '+sh.l+' per cent toward '+x.t+', '+sh.r+' toward '+x.opp+'.':''):' No opposite.');
+ return '<button type="button" class="kb-row kbp" data-kbi="'+i+'" style="--c:'+c+';--oc:'+oc+'"'
+  +' aria-label="'+esc(say)+'">'
+   +'<span class="kbp-body"><span class="kbp-top">'
+  +'<span class="kbp-side">'
+  +crBadge(seat, x.p||0, {size:'sm', bare:true, color:c,
+     glyph:glyphPath(x.ic), title:x.t+' · '+wl.toFixed(1)})
+  +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
+  +(fam?'<span class="kb-rs">'+esc(fam)+'</span>':'')+'</span>'
+  +'<span class="kb-rv'+(wl>=0.05?'':' z')+'">'+wl.toFixed(1)+'</span></span>'
+  +(pole?'<span class="kbp-side kbp-o">'
+    +'<span class="kbp-w'+(wr>=0.05?'':' z')+'">'+wr.toFixed(1)+'</span>'
+    +'<span class="kbp-op">'+esc(x.opp)+'</span>'
+    +crBadge('Heart', x.q||0, {size:'sm', bare:true, color:oc,
+      glyph:glyphPath(x.ic), title:x.opp+' · '+wr.toFixed(1)})+'</span>'
+   :'<span class="kbp-side kbp-o"><span class="kbp-op z">no opposite</span></span>')
+  +'</span>'
+  +'<span class="kbp-line"><span class="kbp-pc">'+(sh?sh.l+'%':'–')+'</span>'
+  +poleBar(sh)
+  +'<span class="kbp-pc r">'+(sh?sh.r+'%':'–')+'</span></span>'
+  +'</span></button>';}
+/* INJECTED, because the stylesheet in the shell is held by another seat this
+   round. The precedent is iqArtCss in ui/intakeui.js. Every rule that sets
+   geometry names two classes, so none lays a second claim on one class name. */
+function kbpCss(){
+ if(document.getElementById('kbp-css'))return;
+ var st=document.createElement('style'); st.id='kbp-css';
+ st.textContent=[
+  /* two to a line and not three: a row carrying both sides needs about 480
+     pixels, and at three to a line the names were cut to "Posses..." */
+  '.kb-rg.kbp-g{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 36px}',
+  '@media (max-width:900px){.kb-rg.kbp-g{grid-template-columns:minmax(0,1fr)}}',
+  '.kb-row.kbp{min-height:72px;min-width:0;gap:8px;padding:9px 8px 9px 2px;align-items:center}',
+  '.kbp .kbp-body{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:8px}',
+  '.kbp .kbp-top,.kbp-dr .kbp-top{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}',
+  '.kbp .kbp-side,.kbp-dr .kbp-side{display:flex;align-items:center;gap:8px;min-width:0}',
+  '.kbp .kbp-o,.kbp-dr .kbp-o{flex:0 0 auto;justify-content:flex-end;text-align:right}',
+  '.kbp .kb-rv{margin-left:2px;font-size:14px}',
+  '.kbp .kbp-w,.kbp-dr .kbp-w{font-family:var(--num);font-size:14px;font-weight:500;color:var(--ink);',
+  ' font-variant-numeric:tabular-nums}',
+  '.kbp .kbp-w.z{color:var(--dim);font-weight:400}',
+  '.kbp .kbp-op,.kbp-dr .kbp-op{font-size:13.5px;color:var(--mid);line-height:1.2;white-space:nowrap}',
+  '.kbp .kbp-op.z{color:var(--dim);font-size:12px}',
+  '.kbp .kbp-line,.kbp-dr .kbp-line{display:flex;align-items:center;gap:8px;min-width:0}',
+  '.kbp .kbp-pc,.kbp-dr .kbp-pc{flex:0 0 34px;font-family:var(--num);font-size:12px;color:var(--mid);',
+  ' font-variant-numeric:tabular-nums}',
+  '.kbp .kbp-pc.r,.kbp-dr .kbp-pc.r{text-align:right}',
+  '.kbp .kbp-bar,.kbp-dr .kbp-bar{position:relative;flex:1 1 auto;display:flex;height:8px;min-width:60px;',
+  ' border-radius:4px;background:color-mix(in srgb,var(--ink) 8%,transparent)}',
+  '.kbp-bar .kbp-hl{display:block;height:100%;border-radius:4px 0 0 4px;',
+  ' background:repeating-linear-gradient(135deg,var(--c) 0 2px,transparent 2px 5px);',
+  ' box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.kbp-bar .kbp-hr{display:block;height:100%;border-radius:0 4px 4px 0;',
+  ' background:linear-gradient(90deg,color-mix(in srgb,var(--oc) 45%,transparent),var(--oc))}',
+  '.kbp-bar .kbp-mk{position:absolute;top:-4px;width:2px;height:16px;margin-left:-1px;',
+  ' border-radius:1px;background:var(--ink)}',
+  '.kbp-bar.none .kbp-mk{background:var(--dim)}',
+  '.kbp-dr{display:flex;flex-direction:column;gap:10px;margin:12px 0 16px}',
+  '.kbp-dr .kbp-nm{font-size:14px;color:var(--ink)}',
+  '.kbp-dr .kbp-rs{font-size:12px;color:var(--dim)}',
+  '.ad-st .ad-q{margin:0}',
+  '.ad-st .ad-stm{font-size:12px;color:var(--dim)}',
+  '.ad-st{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid var(--edge)}',
+  '.ad-st .btn{align-self:flex-start}',
+  '.ad-sts{display:flex;flex-direction:column;margin-bottom:6px}',
+  '.ad-stw{margin-top:14px}'
+ ].join('\n');
+ document.head.appendChild(st);}
+/* the same pair at the head of the address drill, both sides written out. */
+function poleDrillHead(n){
+ var c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
+ if(!c)return '';
+ kbpCss();
+ var sh=poleShare(n.held,n.rep), oc=seatCol('Heart'), col=seatCol(n.b);
+ return '<div class="kbp-dr" style="--c:'+col+';--oc:'+oc+'">'
+  +'<div class="kbp-top"><span class="kbp-side">'
+  +crBadge(n.b, kbPct(n.held), {size:'sm', bare:true, color:col, glyph:glyphPath(c.ic)})
+  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+n.held.toFixed(1)+'</span></span>'
+  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+n.rep.toFixed(1)+'</span>'
+  +'<span class="kbp-nm">'+esc(c.opp)+'</span>'
+  +crBadge('Heart', kbPct(n.rep), {size:'sm', bare:true, color:oc, glyph:glyphPath(c.ic)})
+  +'</span></div>'
+  +'<div class="kbp-line"><span class="kbp-pc">'+(sh?sh.l+'%':'–')+'</span>'+poleBar(sh)
+  +'<span class="kbp-pc r">'+(sh?sh.r+'%':'–')+'</span></div></div>';}
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
  if(!x)return;
