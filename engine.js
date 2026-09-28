@@ -950,6 +950,56 @@ function tierOf(cq){
  var c=cqShown(cq);
  for(var i=0;i<TIERDEF.length;i++) if(c>=TIERDEF[i].at)return TIERDEF[i];
  return TIERDEF[TIERDEF.length-1];}
+
+/* ============================================================
+   NODE STATE. THE WORDS ARE RULED. THE LINES BETWEEN THEM ARE NOT.
+
+   V22 in the voice skill: a weight a person reads about themselves ships
+   with a word the layman reads on sight, beside the figure the practitioner
+   reads. The word is read off the figure through one table, never chosen per
+   surface. Round KD in TASKS.md, his words: "Yeah, we use that let's call it
+   node state instead of band ladder. Node state would be open impaired
+   moderately impaired heavily impaired blocked." Five rungs, lightest first.
+   Kept lower case, as he said them, because they sit mid sentence: "heavily
+   impaired at a weight of 7.4".
+
+   HE NAMED NO FIGURES. The floors below are a PROPOSAL, put to him after round
+   KD and not ruled by him, and the name of the table says so. Rename it to
+   NODESTATE when he confirms or moves the lines, and not before. Until then
+   no surface calls nodeStateOf. Three of the four lines are the engine's own
+   on the same 0 to 10 scale, and the fourth is the weakest:
+
+     0.1  above nothing. Charge under 4 is real and compute.js rules it
+          reportable (BELOW THE LINE), so it may not read open.
+     4    where an address starts to carry. Every surface counts held here.
+     6.5  the hyper gate in compute.js, one complex "already running hard",
+          which is also the midpoint of 4 and 9. Weakest of the four.
+     9    where rings.js, component.js and imprints.js already draw it hot.
+
+   The alternative on the table is five even steps of 2. It reads charge a
+   person entered as open, which is the failure BELOW THE LINE records, and
+   it puts blocked at 8, off the line the renderers already draw hot.
+
+   AND V9 IS NOT MET YET. A node state is a label on a person, so it ships
+   with its definition, the behaviour it produces and the direction out,
+   the way TIERDEF carries def, energy and toward. None is written here. A
+   word from this table printed today is a judgement, which is the second
+   reason no surface calls it.
+   ============================================================ */
+const NODESTATE_PROPOSED=[
+ {at:9,   nm:'blocked'},
+ {at:6.5, nm:'heavily impaired'},
+ {at:4,   nm:'moderately impaired'},
+ {at:0.1, nm:'impaired'},
+ {at:0,   nm:'open'}];
+/* THE WORD READS THE FIGURE THE SCREEN PRINTS, the tierOf lesson. Weights
+   print with toFixed(1), so 3.96 prints 4.0 and must read at 4, and 0.04
+   prints 0.0 and must read open. */
+function weightShown(w){return +(+w||0).toFixed(1);}
+function nodeStateOf(w){
+ var x=weightShown(w);
+ for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(x>=NODESTATE_PROPOSED[i].at)return NODESTATE_PROPOSED[i];
+ return NODESTATE_PROPOSED[NODESTATE_PROPOSED.length-1];}
 /* ============================================================
    THE COMPASS. Two cones, eight axes, and a descent.
 
@@ -982,7 +1032,13 @@ function tierOf(cq){
    seat is where this product already measures the quality, so the
    position between the poles is read rather than asked. */
 const MIRROR=[
- {k:'IL', q:'Illumination', seat:'Heart',
+ /* LIGHT, NOT ILLUMINATION. Round KE, his words: "Just change illumination
+    to light." Renamed here, in the data, so every surface that names the
+    axis says the same word; a label changed only on the Compass would give
+    one axis two names. k stays IL, because a key is identity, not a label.
+    Trust at the Heart is untouched: whether it is Truth is still his own
+    open question, logged as thinking and not as a ruling. */
+ {k:'IL', q:'Light', seat:'Heart',
   up:'Jesus',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
   dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
@@ -1018,7 +1074,7 @@ const MIRROR=[
 
     SO JESUS STANDS AT TWO POLES ON THIS FIGURE, and that is the owner's
     canon rather than a mistake to route around. He is the coherent pole of
-    Illumination at the Heart, which is love generated from within and freely
+    Light at the Heart, which is love generated from within and freely
     given, and of Revelation at the Crown, which is love as the thing every
     other frequency reorganises around. The codex already carries both: the
     master list has him at the Ananda apex under the name Christ, and the
@@ -1138,7 +1194,7 @@ const IC_NEW={
  /* the Aten: a disc whose rays reach down and end in hands. the one image
     Akhenaten actually left, and it is light arriving rather than light held */
  'Akhenaten':'M12 3.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7M9 11.5l-2.6 5.4M12 12v6.2M15 11.5l2.6 5.4M5.4 18.4h2M11 19.6h2M16.6 18.4h2',
- /* the same radiant as illumination, because Christ and Jesus are one name
+ /* the same radiant as light, because Christ and Jesus are one name
     on two lists and this product does not give one concept two marks */
  'Christ':null,
  /* flow: two waves out of phase, which is what the field does when nothing
@@ -1172,6 +1228,71 @@ function icOf(nm){
 MASTERS.forEach(function(x){x.ic=icOf(x.nm);});
 BLUEPRINT.forEach(function(x){x.ic=icOf(x.nm);});
 CIRCLES.forEach(function(c){c.ic=icOf(c.by);});
+
+/* ---- THE FIVE PATHS, AND WHAT EACH ONE INVERTS TO ----
+   The glossary's five: "Krishna, flow. Buddha, awareness. Christ, the body.
+   Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source."
+   Same shape as a mirror pair, up and dn with a line each and a mark each, so
+   the compass mirrors the five exactly the way it mirrors the eight.
+
+   TWO OF THE FIVE ARE CODEX. Jesus already stands against Lucifer at the
+   Heart and Buddha against Geryon at the third eye, so their lines are read
+   off MIRROR rather than copied, and a change there is a change here.
+
+   THREE ARE RESEARCH, NOT CODEX, AND ARE MARKED SO. Round KE, his words:
+   "go do research on their polar opposites and which entities ... represent
+   that." The codex names no inversion for Krishna, Rama or Lao Tzu. Each one
+   below is a named figure out of that teacher's own tradition, cited in src,
+   and none was made up. They stand until he confirms or replaces them.
+
+     Krishna, flow   Kaliya, the naga whose poison boiled the Yamuna for miles
+                     around his pool, so the river ran and nothing could drink
+                     from it. Krishna danced on his hoods and sent him to the
+                     sea rather than killing him. Bhagavata Purana 10.16.
+     Rama, duty      Ravana. Dharma against adharma is what the Ramayana is,
+                     and Ravana is the learned king who knew the law and
+                     crossed it. Valmiki Ramayana.
+     Lao Tzu         Shu and Hu, the emperors whose names mean Brief and
+                     Sudden. They bored seven openings into Hundun, the whole
+                     one, to repay his kindness, one a day, and on the seventh
+                     day he died. Zhuangzi, chapter 7: haste that means well,
+                     which is the exact inverse of non resistance.
+
+   ONE NAME, NOT TWO. Shu and Hu act as one in the story and are drawn as one
+   inversion, the way The Furies are. */
+const PATHS=(function(){
+ function mir(up){for(var i=0;i<MIRROR.length;i++)if(MIRROR[i].up===up)return MIRROR[i];
+  return null;}
+ function mas(nm){for(var i=0;i<MASTERS.length;i++)if(MASTERS[i].nm===nm)return MASTERS[i];
+  return null;}
+ var il=mir('Jesus'), pe=mir('Buddha');
+ return [
+  {k:'FL', q:'flow', up:'Krishna', upd:mas('Krishna').d,
+   dn:'Kaliya', dnd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+   from:'research', src:'Bhagavata Purana, canto 10, chapter 16'},
+  {k:'AW', q:'awareness', up:'Buddha', upd:pe.upd, dn:pe.dn, dnd:pe.dnd,
+   from:'codex', src:'mirror pair, perception'},
+  {k:'BO', q:'the body', up:'Jesus', upd:il.upd, dn:il.dn, dnd:il.dnd,
+   from:'codex', src:'mirror pair, light'},
+  {k:'AL', q:'alignment', up:'Rama', upd:mas('Rama').d,
+   dn:'Ravana', dnd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
+   from:'research', src:'Valmiki Ramayana'},
+  {k:'HO', q:'the horizontal', up:'Lao Tzu', upd:mas('Lao Tzu').d,
+   dn:'Shu and Hu', dnd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
+   from:'research', src:'Zhuangzi, chapter 7'}];})();
+/* the three new inversions' marks, argued from what each one does, on the
+   same 24 unit grid. Ring, not fill. */
+/* Kaliya: Krishna's two waves, the one that runs into a coil and stops, over
+   the still line of the pool */
+IC_NEW['Kaliya']='M3 11c2.4-3.4 4.8 3.4 7.2 0 1.3-1.8 3-2.8 5-2.8a3.6 3.6 0 010 7.2 2.2 2.2 0 010-4.4 1 1 0 010 2M3 19h18';
+/* Ravana: Rama's one spine, with every head pulling on it. Ten in the
+   story, three here: five were drawn first and at a badge's size they
+   merged into one blot */
+IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M19 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M6.6 8L12 13.5M12 7.4v6.1M17.4 8L12 13.5M12 13.5v7M8 20.5h8';
+/* Shu and Hu: two awls driven down into something whole. Driven in level
+   they read as an eye, and on a slant as horns */
+IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
+PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for
@@ -3739,15 +3860,36 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    surface in the bar is a peer of the instrument. Settings is reached from
    the profile button and nothing else, so it has a host, a class and a
    renderer and no door in the navigation. */
+/* THE BAR IS THREE SECTIONS, AND EVERY TAB SITS IN ONE. Rounds KC and KM in
+   TASKS.md, his words: "Let's organize our menus by discover, play, flow as
+   the core top navigation. And the sub navigation will be discover will be
+   avatar and summary. And your journal imprints. Play is all the tools. Flow
+   is the knowledge base and ritual."
+
+   A section is a group of doors and never a surface of its own: pressing one
+   opens a tab in it, so every route still ends in setTab with one of the
+   identity integers above, and none of them moved. Journal and imprints are
+   the Story, which already carries the journal, the imprints read off it and
+   the bank. Achievements are earned on the way through rather than visited,
+   so they have no door here. Settings has no section, as it has no tab.
+
+   TABDEF below is in section order and each entry names its section in .sec,
+   which is the one place membership is written. The markup groups the same
+   buttons under the same keys and a gate proves the two agree. */
+const SECTIONS=[
+ {k:'discover', nm:'Discover'},
+ {k:'play',     nm:'Play'},
+ {k:'flow',     nm:'Flow'}];
 const TABDEF=[
- {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake'},
- /* between the intake and the story, in his order: intake, ritual, story. */
- {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual'},
- {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
- {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
- {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
- {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
+ {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'discover'},
+ /* Summary moved up beside the Avatar, in his order for Discover: "avatar
+    and summary. And your journal imprints." It used to read last, as the
+    conclusion of the instruments. */
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story',   sec:'discover'},
+ {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
+ {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
     Knowledge to get the bar to seven. They are independent games, a place a
     person goes for brain release, and a game folded into a reference page is
@@ -3755,8 +3897,17 @@ const TABDEF=[
 
     The count that used to sit here said eight and the table beneath it holds
     nine. It is gone: this array is the bar, and its length is the answer. */
- {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
- {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
+ {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games',   sec:'play'},
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'flow'},
+ /* Ritual left its place between the Avatar and the Story for Flow, in his
+    order: "the knowledge base and ritual." */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'}];
+/* the section a tab sits in, read through TABREAL so a folded surface answers
+   with its carrier's section. Settings and anything else with no door answer
+   null, which the bar reads as "no section pressed". */
+const SECOF=function(k){var r=TABREAL(k);
+ for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===r)return TABDEF[i].sec;
+ return null;};
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
    and put the Energetics body class on the Settings surface, which is how a
    surface with no door ends up wearing another surface's layout. It carries
@@ -6046,7 +6197,23 @@ function validateProfile(o){
     return x&&typeof x==='object'
      &&typeof x.be==='string'&&x.be.length>0&&x.be.length<200
      &&typeof x.notbe==='string'&&x.notbe.length>0&&x.notbe.length<200;})
-    .map(function(x){return {be:x.be, notbe:x.notbe};});
+    /* THE SEAT A PAIR WAS WRITTEN AT, round JP, and the one field this round
+       adds to the record. He asked for the avatar to be written root to crown,
+       one story per seat, and the seat a person wrote at is a fact the sniffer
+       cannot recover: "my throat is tight at the board" written at the root is
+       the root's story that happens to land at the throat. Without it here the
+       boundary rebuilt every pair as be and notbe and the seat was gone on the
+       next load, so every tick on the wheel would have moved to wherever the
+       sniffer heard the words. Optional, because every pair written before
+       this round has none and is still placed by the sniffer as it always was.
+       A seat that is not one of the seven is refused by name rather than
+       dropped, because a story quietly moved off its seat is a story the
+       person thinks they wrote somewhere else. */
+    .map(function(x){var q={be:x.be, notbe:x.notbe};
+     if(x.seat!==undefined&&x.seat!==null){
+      if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
+      else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+     return q;});
    if(p.avatar.pairs.length!==o.avatar.pairs.length)
     errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
      +' entries that are not a written pair');}
@@ -7616,8 +7783,12 @@ function sniffStory(text){
 
    It never names an address, a fetter or a saboteur to the person, because
    those are definitions and the ruling is that it does not use them. It
-   never says why. It asks why, and the person answers, which is the line
-   reviews/SPEC-source-ai.md already drew: nothing in the flow measures cause.
+   never says why about the person. One because is allowed, ruled 27
+   September in TASKS.md round JX, and it is about the body, never the
+   person: `ui/storyui.js`'s `srcWhy` names the seat's nerve place and the
+   mechanism the product already states as its own definition of Charge.
+   Source AI still never answers the why it asks about the person; the
+   person still finds that root themselves.
    ============================================================ */
 
 /* the owner's own two numbers. asked at seven and over, the root at ten. */
@@ -9260,6 +9431,122 @@ function obDrain(){
   return {state:'refused', n:bad.length, bad:bad};
  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};}
+/* ============================================================
+   THE PROFILES ON THIS DEVICE, BY NAME. Round JZ, his words: "build out the
+   profile page. So if I enter my profile, it saves my data. Under Lance. And I
+   can delete or retrieve it."
+
+   NOTHING NEW IS STORED. Every profile already lives in PROFILES, carries a
+   name, and is written whole to one key by pPersist (engine/schema.js). What
+   was missing was the door: a name could be changed in Settings and nowhere
+   could a person see the list, open another one or delete one that was not
+   the one in front of them. So this module is four verbs over the list that
+   exists, and it adds no field, no key and no version.
+
+   A NAME IS A LABEL, NEVER A KEY. Round KG, his words: "you should be able
+   to use your own name, and it does not overwrite. If my name is Philip
+   Long, someone else overseas is called Philip Long, the database should be
+   able to handle both." Two profiles on this device may carry the same
+   name; open and delete both work by id (profFind), never by name, so
+   nothing about choosing between them breaks. A name is never cut to fit: a
+   name longer than the limit is refused and says the limit, because a
+   quietly cut name is a name the person did not type.
+
+   EVERY OPEN GOES THROUGH THE BOUNDARY. A profile is read back from the list
+   through validateProfile before it is loaded, on a copy, so a record that
+   something in the session has bent out of shape is refused by the field that
+   failed and the profile on screen stays where it was.
+
+   EVERY WRITE IS ATOMIC, the pImport posture. The list and CURP move only once
+   the write has landed; a refused write puts both back and says why through
+   profErr(). The host decides the words.
+
+   The engine does not know what a persona is. Moving S.who onto the person's
+   own field, and the mirror in PEOPLE[0], are the host's (ui/account.js).
+   ============================================================ */
+var PROF_NAME_MAX=60, PROF_ERR=null;
+function profErr(){ return PROF_ERR?PROF_ERR.slice():null; }
+function profFind(id){
+ for(var i=0;i<PROFILES.length;i++)if(PROFILES[i]&&PROFILES[i].id===id)return PROFILES[i];
+ return null;}
+/* null when the name can be used, otherwise why not. self is unused now that
+   a name is never checked against the rest of the list (round KG); kept in
+   the signature so profRename's own call needs no change. */
+function profNameWhy(name,self){
+ if(typeof name!=='string')return 'a name has to be typed';
+ var v=name.trim();
+ if(!v)return 'a profile needs a name';
+ if(v.length>PROF_NAME_MAX)return 'a name holds up to '+PROF_NAME_MAX+' letters, this one has '+v.length;
+ return null;}
+/* THE LIST, AS A READING. Derived on every call and stored nowhere, so it can
+   never disagree with the records it describes. */
+function profList(){
+ return PROFILES.map(function(p){
+  var a=(p.intake&&p.intake.answers)||{};
+  return {id:p.id, name:p.name, cur:p===CURP,
+   created:p.created||null, updated:p.updated||null,
+   stories:((p.story&&p.story.entries)||[]).length,
+   answered:Object.keys(a).filter(function(k){return a[k]!=null;}).length};});}
+/* S belongs to CURP only when the last load said so. Written back before the
+   list moves, so leaving a profile never drops the last thing done on it. */
+function profHold(){
+ if(CURP&&PROFILES.indexOf(CURP)>=0&&S.rec&&S.rec===CURP.id)saveProfile(CURP);}
+/* THE SAVE UNDER A NAME. The profile in front of the person takes the name and
+   is written, working state and all. */
+function profRename(name){
+ PROF_ERR=null;
+ if(!CURP||PROFILES.indexOf(CURP)<0){PROF_ERR=['there is no profile of your own open'];return false;}
+ var why=profNameWhy(name,CURP); if(why){PROF_ERR=[why];return false;}
+ var was=CURP.name; CURP.name=name.trim();
+ if(!pSave()){CURP.name=was; pPersist();
+  PROF_ERR=['could not save: '+(SAVE_ERR||'error')]; return false;}
+ return true;}
+/* A NEW, BLANK PROFILE under a name, and it becomes the one in front of them. */
+function profCreate(name){
+ PROF_ERR=null;
+ var why=profNameWhy(name,null); if(why){PROF_ERR=[why];return null;}
+ profHold();
+ var keepP=PROFILES.slice(), keepC=CURP, p=blankProfile(name.trim());
+ var back=function(){PROFILES=keepP; CURP=keepC; if(keepC)loadProfile(keepC);};
+ PROFILES.push(p); CURP=p;
+ try{ loadProfile(p); }catch(e){ back(); PROF_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
+ if(!pPersist()){ back(); PROF_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
+ return p;}
+/* THE RETRIEVE. Validated on a copy first, loaded second, and CURP moves last.
+   Nothing is written: opening a profile is reading it. */
+function profOpen(id){
+ PROF_ERR=null;
+ var p=profFind(id);
+ if(!p){PROF_ERR=['no profile with that id is on this device'];return null;}
+ var v=validateProfile(JSON.parse(JSON.stringify(p)));
+ if(!v.ok){PROF_ERR=(v.errs||['it did not validate']).slice(0,3);return null;}
+ if(p===CURP&&S.rec===p.id)return p;
+ profHold();
+ var keepC=CURP;
+ try{ loadProfile(p); }
+ catch(e){ CURP=keepC; try{ if(keepC)loadProfile(keepC); }catch(e2){}
+  PROF_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
+ CURP=p;
+ return p;}
+/* THE DELETE, of any profile on the list and not only the open one. Deleting
+   the open one opens the first left, and deleting the last one leaves a blank
+   called You, which is what a first visit gets. The answer says which name
+   went and whether the open profile moved, so the host can say both. */
+function profDelete(id){
+ PROF_ERR=null;
+ var p=profFind(id);
+ if(!p){PROF_ERR=['no profile with that id is on this device'];return null;}
+ profHold();
+ var keepP=PROFILES.slice(), keepC=CURP, cur=(p===CURP);
+ var back=function(){PROFILES=keepP; CURP=keepC; if(cur&&keepC){try{loadProfile(keepC);}catch(e){}}};
+ PROFILES.splice(PROFILES.indexOf(p),1);
+ if(cur){
+  if(!PROFILES.length)PROFILES.push(blankProfile('You'));
+  CURP=PROFILES[0];
+  try{ loadProfile(CURP); }
+  catch(e){ back(); PROF_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }}
+ if(!pPersist()){ back(); PROF_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
+ return {name:p.name, id:p.id, moved:cur};}
 
 /* ============================================================
    The engine is DOM free. In a browser these are globals on the
@@ -9299,7 +9586,7 @@ if(typeof module!=='undefined'&&module.exports){
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
                  ageFinding:ageFinding, AGE_WORKED:AGE_WORKED,
-  /* compass */  MIRROR:MIRROR, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
+  /* compass */  MIRROR:MIRROR, PATHS:PATHS, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
                  mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
@@ -9407,6 +9694,9 @@ if(typeof module!=='undefined'&&module.exports){
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
+  /* profiles */  profList:profList, profFind:profFind, profNameWhy:profNameWhy,
+                  profRename:profRename, profCreate:profCreate, profOpen:profOpen,
+                  profDelete:profDelete, profErr:profErr, PROF_NAME_MAX:PROF_NAME_MAX,
                   storeBound:function(){return STORE_BOUND;},
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* exported so the gate can assert it against SI in both directions. The
