@@ -78,8 +78,6 @@ function describe(h,r,still){
  if(h.k==='dom'){var d=DOMAINS[h.j];
   return '<u>'+d.r+'</u> <b>'+d.nm+'</b><hr>'+d.d+'<br>weight <b>'+(DOMAIN[h.j]||0).toFixed(2)
    +'</b><hr><b>Click to select, shift-click to add.</b>';}
- if(h.k==='mk')return '<u>mask</u> <b>'+h.o.nm+'</b><hr>speaks from '+(h.o.bands||[]).join(' + ')
-  +'<br>load <b>'+h.o.w.toFixed(1)+'</b><hr><b>Click for detail.</b>';
  var o=h.o; if(!o)return '';
  var f=leaves(o);
  var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
@@ -210,11 +208,12 @@ function hitPress(h,e){
     to a bare render and never to a drill. The setters still run as they
     always did, and the drill opens after them so it reads the selection the
     press just made. On a worked example the setter refuses, and the drill
-    still opens, because reading a thing is not changing it. */
+    still opens, because reading a thing is not changing it. The mask left
+    the Field for the Body's figure, CH in TASKS.md, and its press went with
+    it: bmWire in ui/map.js opens the same drill. */
  var said=function(){S.pin=null;
   if(h.k==='dom')runDomDrill(DOMAINS[h.j]);
-  else if(h.k==='arch')runArchDrill(ARCH[h.j]);
-  else runMaskDrill(MASKS.filter(function(m){return m.nm===h.o.nm;})[0]||h.o);};
+  else runArchDrill(ARCH[h.j]);};
  if(h.k==='dom'){if(notYours('change the blueprint domain')){said();return;}
   undoPush('changing the blueprint domain');
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
@@ -227,7 +226,6 @@ function hitPress(h,e){
    if(k2>=0){if(S.arcs.length>1)S.arcs.splice(k2,1);}else S.arcs.push(h.j);}
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
   buildSoul();syncSoul();saveYou();said();render();return;}
- if(h.k==='mk'){said();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
  /* a seat band opens the seat. runSeatDrill takes the APC entry rather than a
     name, looked up here rather than passed a string it would have to parse,

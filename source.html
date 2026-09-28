@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="62c095f 2026-09-28 03:55"><head><meta charset="utf-8">
+<html lang="en" data-build="14c0ab2 2026-09-28 04:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1514,7 +1514,7 @@ body:not(.tab-field) #frend{display:none!important}
 #frend.off-saboteurs .L-patterns,#frend.off-saboteurs .F-sab,
 #frend.off-complexes .T-cx,#frend.off-complexes .F-cx,#frend.off-hyper .T-hy,#frend.off-hyper .F-hy,
 #frend.off-character .T-sup,#frend.off-character [data-call=chains],
-#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains,#frend.off-masks .L-masks{
+#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains{
  opacity:0;visibility:hidden;pointer-events:none!important;
  transition:opacity var(--t-element) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-element)}
 /* A LAYER ARRIVES AND LEAVES, FJ in TASKS.md: "where are my animations?" It
@@ -3052,7 +3052,7 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* the vector figure. stands in when the raster is absent, and it needs a
    resolved colour for its currentColor stroke. */
 .pm-vec{color:var(--ink)}
-.pm-seat,.pm-n,.pm-it,.pm-gr{cursor:pointer}
+.pm-seat,.pm-n,.pm-it,.pm-gr,.pm-mask{cursor:pointer}
 .pm-gr:hover{opacity:.14!important}
 .pm-lbl{font-family:var(--num);font-size:2.1px;fill:var(--ink);opacity:.92;
  paint-order:stroke;stroke:var(--bg);stroke-width:.55px;stroke-linejoin:round}
@@ -8644,8 +8644,10 @@ function seatHz(b){
   for(var j=0;j<FLOWSEAT.length;j++)
    if(FLOWSEAT[j].k===PMBANDS[i].k)return FLOWSEAT[j].hz;}
  return null;}
+/* NO MASKS HERE. They were the fifth layer, and he ruled them off every sub
+   menu and onto the figure itself, CH in TASKS.md. ui/map.js draws them. */
 var PML=[['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes'],['hyper','Hyper'],
-         ['masks','Masks'],['pain','Pain'],['nerves','Flow']];
+         ['pain','Pain'],['nerves','Flow']];
 
 /* pain regions, front view. each owns a band set, a y-span on the figure, and
    now the boxes it occupies in the figure's own 100 by 100 space.
@@ -19000,7 +19002,9 @@ function verpArrows(cr0){
      Chains      how a pattern compounds into a complex, a hyper complex and
                  a character layer. Drawn as chords, which is why the word
                  survives at all
-     Blueprint   domains, masks and laws, and this one already landed
+     Blueprint   domains and laws, and this one already landed. It named
+                 masks as well until they left the Field for the Body's
+                 figure, CH in TASKS.md
 
    Blueprint keeps its name because it is the one the owner said he
    understood, and because the rail already calls those blueprint domains.
@@ -19014,8 +19018,8 @@ const VIEWS=[
   tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
   tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.'},
- {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 6 masks, 21 laws',
-  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.'}];
+ {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 21 laws',
+  tip:'What was there before any of it. Nineteen domains, and the twenty one laws underneath the whole reading.'}];
 
 /* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
    a separate control for the same idea: how much of the construct is drawn.
@@ -19060,8 +19064,12 @@ const WHEEL_ZOOM_MAX=7;
    whether it should, with "only closer" as its default, and he has not ruled,
    so the shipped behaviour stands and the bar marks a layer zoom brought in
    rather than hiding the fact. It never takes off a layer the person chose. */
+/* MASKS ARE NOT A LAYER. They were the second switch at Blueprint, a ring
+   band on all three pictures, and he ruled them off every sub menu and onto
+   the figure, CH in TASKS.md. The Body page draws them, bmDrawMasks in
+   ui/map.js, and nothing here or on the glass bar switches them. */
 const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs'],
- ['complexes','hyper','character','archetypes'],['domains','masks']];
+ ['complexes','hyper','character','archetypes'],['domains']];
 var LAYSET=null;
 function layPreset(i){var s={};for(var j=0;j<=i&&j<LAYADD.length;j++)LAYADD[j].forEach(function(k){s[k]=1;});return s;}
 function layChosen(){return LAYSET||layPreset(S.view|0);}
@@ -19489,7 +19497,7 @@ function drawWheel0(r,L){
     first entry is its second: patterns arriving come in at their own ring and
     do not fly out of the core */
  const R={shell:shellR,arch:U*.60,sab:lAt([U*.56,U*.56,U*.545,U*.50],LF),cx:U*.425,hy:U*.335,
-  sup:U*.255,dom:U*.93,mask:U*.685};
+  sup:U*.255,dom:U*.93};
  const coreBase=lAt([U*.30,U*.26,U*.20,U*.155],LF);
  /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
     The shell, or at Blueprint the domain ring outside it. Published for the
@@ -19639,16 +19647,6 @@ function drawWheel0(r,L){
      past the ring's edge at Chains, and five did at 1600. */
   radialTxt(ARCH[j].nm,am,R.arch-U*.024,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400,true);
   HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}});
-
- /* --- masks, D only --- */
- lay('masks',()=>r.maskRing.forEach((m,i)=>{
-  const a0=i/6*TAU-Math.PI/2,a1=a0+TAU/6,v=clamp(m.w/10,0,1),am=(a0+a1)/2;
-  arcP(R.mask-U*.019,R.mask,a0+.01,a1-.01);
-  g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
-  /* inward, for the archetypes' reason: outward, Professional and
-     Ideological crossed the shell and the domain ring past it */
-  radialTxt(m.nm,am,R.mask-U*.026,11.5,ink,.24+v*.56,400,true);
-  HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});}));
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
@@ -20075,8 +20073,6 @@ const FLAYS=[
  {k:'stories',nm:'Stories',d:frCirc(12,12,2.6)+'M12 9V4.4M14.6 13.5l4 2.3M9.4 13.5l-4 2.3'
    +frCirc(12,3.4,1.1)+frCirc(19.4,16.2,1.1)+frCirc(4.6,16.2,1.1),
   tip:'One line for each story that put charge on an address.'},
- {k:'masks',nm:'Masks',d:'M4.5 8.5C4.5 6.4 8 5 12 5s7.5 1.4 7.5 3.5c0 5.6-3.4 10.5-7.5 10.5S4.5 14.1 4.5 8.5zM8.2 10.3h2.6M13.2 10.3h2.6',
-  tip:'The six masks, each at its weight.'},
  {k:'archetypes',nm:'Archetypes',d:'M12 3.8l2.5 5.1 5.6.8-4 3.9 1 5.6-5.1-2.6-5.1 2.6 1-5.6-4-3.9 5.6-.8z',
   tip:'The twelve, each set in the seat it runs through.'},
  {k:'patterns',nm:'Patterns',d:frCirc(15.6,8.4,3.2)+'M13.3 10.7L5 19',
@@ -20240,7 +20236,11 @@ function frNamesHtml(M){
    the core last, and its ground disc covered what came before it: measured
    on the dial at 1600, the upper left gate's pill hangs toward the centre
    and 11.6 pixels of it went under the core on every reference case. */
-const FR_L=['shadow','ground','domains','stories','addresses','masks','archetypes','patterns','chains','laws','core','gates'];
+/* no masks: they left both pictures for the Body's figure, CH in TASKS.md,
+   and their register in each table below went with them. The band they held
+   is left open rather than closed up, because closing it moves every ring
+   inside it, which is a redraw of both pictures and not this change. */
+const FR_L=['shadow','ground','domains','stories','addresses','archetypes','patterns','chains','laws','core','gates'];
 const FR_T=['domains','addresses','archetypes','patterns','chains','laws','seats'];
 /* a group that answers to a layer toggle takes that layer's class. The two
    that answer to none, the dial's engraving and the core, are drawn
@@ -20660,7 +20660,7 @@ function frFrames(M,r){
     by this box's short half over that. Line weights and type do not scale:
     a hairline is a hairline and eleven pixels is the floor at any size. */
  var sc=Math.min(w.a,w.b)/381,gs=function(v){return v*Math.max(sc,.7);};
- var D={dom0:0,dom1:20,story:25,base:31,barMax:48,seatNm:94,mask0:106,mask1:114,arch0:119,arch1:133,
+ var D={dom0:0,dom1:20,story:25,base:31,barMax:48,seatNm:94,arch0:119,arch1:133,
   pat:147,cx:165,hy:181,sup:197,law0:207,lawIc:214,lawBar:223,lawMax:19,inner:248};
  Object.keys(D).forEach(function(k){D[k]*=sc;});
  /* FLUSH WHEN THE OUTER BAND IS OFF, TOO. The domains are the outermost band,
@@ -20721,12 +20721,9 @@ function frFrames(M,r){
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="'+Math.max(1.6,2.1*sc).toFixed(1)+'" fill="'+frRgb(c)+'"/>'
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="7" fill="transparent"/></g>');});});})();
 
- /* masks, then archetypes, two narrow frames. A highlight is a line, not a
-    flood: every cell is filled by its own weight and the first and second
-    archetypes are drawn round, not poured in. */
- (function(){var o=ring(D.mask0),i=ring(D.mask1),warm=M.light?[110,96,64]:[224,214,186];
-  (r.maskRing||[]).forEach(function(m,k){var t0=k/6+.003,t1=(k+1)/6-.003,v=clamp(m.w/10,0,1);
-   M.L.masks.push('<path data-h="'+M.hid({k:'mk',o:m})+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(warm,.04+v*.30)+'"/>');});})();
+ /* archetypes, a narrow frame. A highlight is a line, not a flood: every
+    cell is filled by its own weight and the first and second archetypes are
+    drawn round, not poured in. */
  (function(){var o=ring(D.arch0),i=ring(D.arch1),mid=ring((D.arch0+D.arch1)/2),gc=M.accent;
   BANDS.forEach(function(b){var Sx=M.sector[b];if(!Sx)return;
    var mine=[];ARCH.forEach(function(a,j){if(a.b===b)mine.push(j);});
@@ -20826,7 +20823,7 @@ function frDial(M,r){
  var sc=R0/379,gs=function(v){return v*Math.max(sc,.7);},o=function(v){return R0-v*sc;};
  var C=function(rad){return frRingC(cx,cy,rad,rad,2);};
  var Rr={dom0:R0,dom1:o(18),story:o(24),base:o(30),barMax:46*sc,seatNm:o(92),
-  mask0:o(102),mask1:o(109),arch0:o(115),arch1:o(128),pat:o(145),cx:o(168),hy:o(190),sup:o(212),
+  arch0:o(115),arch1:o(128),pat:o(145),cx:o(168),hy:o(190),sup:o(212),
   lawIc:o(229),lawBar:o(237),lawMax:22*sc,gate:o(280),core:64*sc};
  var base=C(Rr.base),th=function(t){return base.thAt(t);};
  /* the wash sits on the dial's own rim and not in the corners, because the
@@ -20835,7 +20832,7 @@ function frDial(M,r){
  frShadow(M,r,{reach:.62,at:[-135,-45,135,45].map(function(a){var t=a*Math.PI/180;
   return [(cx+Math.cos(t)*R0*.78)/M.W,(cy+Math.sin(t)*R0*.78)/M.H];})});
  /* the registers: a hairline at every ring, the dial's own engraving */
- [Rr.dom1,Rr.base,Rr.mask0,Rr.arch1,Rr.pat,Rr.cx,Rr.hy,Rr.sup,Rr.lawBar].forEach(function(rad){
+ [Rr.dom1,Rr.base,Rr.arch1,Rr.pat,Rr.cx,Rr.hy,Rr.sup,Rr.lawBar].forEach(function(rad){
   M.L.ground.push('<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+rad.toFixed(1)+'" fill="none" stroke="'+rgba(M.ink,.06)+'" stroke-width="1"/>');});
  var hitOf={};
 
@@ -20880,10 +20877,7 @@ function frDial(M,r){
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="'+Math.max(1.5,1.9*sc).toFixed(1)+'" fill="'+frRgb(c)+'"/>'
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="7" fill="transparent"/></g>');});});})();
 
- /* masks and archetypes, two narrow registers */
- (function(){var ou=C(Rr.mask0),i=C(Rr.mask1),warm=M.light?[110,96,64]:[224,214,186];
-  (r.maskRing||[]).forEach(function(m,k){var v=clamp(m.w/10,0,1),t0=k/6+.004,t1=(k+1)/6-.004;
-   M.L.masks.push('<path data-h="'+M.hid({k:'mk',o:m})+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(warm,.04+v*.32)+'"/>');});})();
+ /* archetypes, a narrow register */
  var archAt={};
  (function(){var ou=C(Rr.arch0),i=C(Rr.arch1),mid=C((Rr.arch0+Rr.arch1)/2),gc=M.accent;
   BANDS.forEach(function(b){var Sx=M.sector[b];if(!Sx)return;
@@ -21054,7 +21048,6 @@ function frSig(r,W_,H_){
  SI.forEach(function(l){a.push((+lawNow(l.nm)||0).toFixed(2),typeof lawIn==='function'&&lawIn(l.nm)?1:0);});
  for(var d=0;d<DOMAINS.length;d++)a.push((+DOMAIN[d]||0).toFixed(3));
  (r.aff||[]).forEach(function(v){a.push((+v||0).toFixed(3));});
- (r.maskRing||[]).forEach(function(m){a.push((+m.w||0).toFixed(2));});
  [r.sabs,r.cxs,r.hys,r.sups].forEach(function(L){a.push(L.length);L.forEach(function(o){a.push(o.nm,(+o.w||0).toFixed(2));});});
  verpRead().forEach(function(v){a.push(v.pct);});
  a.push(((CURP&&CURP.story&&CURP.story.entries)||[]).length,CURP?(CURP.id||CURP.nm||''):'');
@@ -21295,8 +21288,11 @@ const VICON=[
    hundred and twenty places, and whether that sweep goes product wide is his
    call, asked in the round's report rather than done here by default.
    Laws and Character keep their names: Laws is still open between the
-   options he named, and Character to Masks would put two buttons on this bar
-   with one name, since masks below is already a layer. */
+   options he named, and Character to Masks would have put two buttons on
+   this bar with one name while masks was a layer here. It is not one now:
+   he ruled the masks off every sub menu and onto the Body's figure, CH in
+   TASKS.md, so the bar carries no Masks switch and bmDrawMasks in
+   ui/map.js draws them. */
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 112 addresses. Each mark is the charge held at one place.'},
@@ -21321,9 +21317,7 @@ const FB_LAYERS=[
  {k:'archetypes',g:'run',nm:'Archetypes',ic:fbFlay('archetypes'),
   tip:'The twelve archetypes, each set at the assemblage point it runs through.'},
  {k:'domains',g:'before',nm:'Domains',ic:fbFlay('domains'),
-  tip:'The nineteen blueprint domains: what you were born with, before any of it.'},
- {k:'masks',g:'before',nm:'Masks',ic:fbFlay('masks'),
-  tip:'The six masks, each at its weight.'}];
+  tip:'The nineteen blueprint domains: what you were born with, before any of it.'}];
 var FB_BYK={}; FB_LAYERS.forEach(function(l){FB_BYK[l.k]=l;});
 /* three clusters, kept apart by space alone. The names are for the folded
    panel and for a screen reader; the full row shows no words. */
@@ -21411,9 +21405,6 @@ function fbValues(r){
  var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];
  V.domains={p:dm,v:pc(dm),c:(d0&&rootPlain(d0.r))||'var(--gold)',
   m:'Ring and number: how far across the nineteen domains your blueprint reaches.'};
- var mk=(r.maskRing||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
- V.masks={p:mk?mk.w*10:0,v:mk?f1(mk.w):dash,c:'var(--gold)',
-  m:mk?'Ring and number: the heaviest mask, '+mk.nm+', at a weight of '+f1(mk.w)+'.':'No mask carries weight yet.'};
  /* NOTHING READ, NOTHING PRINTED. The rail's own rule: the ring draws empty
     and the pill carries a dash, because a figure beside "not read yet" is
     the contradiction the words exist to prevent. */
@@ -21435,7 +21426,7 @@ function fbCluster(g,label){
 /* A PINNED THING WHOSE LAYER HAS GONE OFF IS LET GO, or the rest of the web
    would stay dimmed around something no longer drawn */
 const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stories',sab:'saboteurs',
- cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains',mk:'masks'};
+ cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains'};
 function fbUnpin(){var p=S.pin;if(!p)return;
  var k=FB_PINK[p.kind]||(p.sq!==undefined&&p.b?'addresses':null);
  if(k&&!layerOn(k))S.pin=null;}
@@ -21916,14 +21907,11 @@ function pmHeat(r){
  if(L==='bands'||L==='nerves'||L==='pain')return null;
  var src=(L==='sab')?r.sabs
    :(L==='cx')?r.cxs
-   :(L==='hyper')?r.hys.concat(r.sups)
-   :(L==='masks')?r.maskRing:null;
+   :(L==='hyper')?r.hys.concat(r.sups):null;
  if(!src||!src.length)return null;
  var by={},any=0;
  src.forEach(function(o){
-  var lv=(L==='masks')
-   ? W.filter(function(n){return o.bands&&o.bands.indexOf(n.b)>=0&&n.sq>=LOADED;})
-   : leaves(o);
+  var lv=leaves(o);
   var w=(o.w||0)/10;
   lv.forEach(function(n){
    var k=B2K[n.b]; if(!k)return;
@@ -21974,10 +21962,11 @@ function pmMarks(r){
         "bipolar · ADHD", and ui.js keeps it off a person's screen by name:
         mapshelf.js recorded this row as the one place still printing it. */
      sub:o.over?'overshot':(o.kind==='sup'?'character layer':'hyper-complex')};});
- if(L==='masks') return r.maskRing.map(function(m){
-   var lv=W.filter(function(n){return m.bands&&m.bands.indexOf(n.b)>=0&&n.sq>=LOADED;});
-   return {o:m,kind:'bead',band:(m.bands||['Heart'])[0],v:m.w/10,nm:m.nm,links:lv,
-     sub:(m.bands||[]).join(' + ')};});
+ /* NO MASKS LAYER. The six masks were a layer here, one press away in the
+    row above the figure, drawn as rings at the end of arcs like a pattern.
+    Ruled against in CH, TASKS.md: "I don't want that overlay on a sub menu,
+    I want it on an overlay in that panel." They are pixels on the map's own
+    figure now, bmDrawMasks below, with no switch. */
  return [];}
 function pmPlace(marks){
  marks.forEach(function(m){
@@ -22034,7 +22023,6 @@ function pmCount(r,L){
  if(L==='sab')   return r.sabs.length;
  if(L==='cx')    return r.cxs.length;
  if(L==='hyper') return r.hys.length+r.sups.length;
- if(L==='masks') return r.maskRing.length;
  return 0;}
 var PMFIRST=1;
 /* THE HEAD OPENS WHEN ITS SEAT IS PICKED.
@@ -22439,7 +22427,7 @@ function renderMap(r){
     is drawn as the arcs from its own centre of mass out to the addresses it
     holds. Weight sets the width. Hovering the rail lights its arcs here. That
     is a structure you can read at a glance and a list is not. */
- var TIERC={sab:PC.Throat,cx:PC.Solar,hy:PC.Sacral,sup:PC.Root,mask:PC.Crown};
+ var TIERC={sab:PC.Throat,cx:PC.Solar,hy:PC.Sacral,sup:PC.Root};
  var chain=marks.filter(function(x){return x.kind==='bead';});
  if(PMLAYER==='pain'&&PAINPICK){
   var reg=PAINREG.filter(function(p){return p.k===PAINPICK;})[0];
@@ -22459,7 +22447,7 @@ function renderMap(r){
  var show=PMPICK?chain.filter(function(x){return x.o===PMPICK;})
    :chain.slice(0,8);
  show.forEach(function(m){
-  var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
+  var kind=m.o.kind||'sab';
   var c=TIERC[kind]||'#DFCC7E';
   var on=(PMPICK===m.o);
   /* the pattern sits at the mean height of everything it stands on, pushed
@@ -22661,11 +22649,10 @@ function renderMap(r){
   sab:'M12 4 L19 18 H5 Z',
   cx: 'M12 4 A8 8 0 1 0 12 20 A8 8 0 1 0 12 4 M12 8 A4 4 0 1 1 12 16 A4 4 0 1 1 12 8',
   hy: 'M12 3 L20 8 V16 L12 21 L4 16 V8 Z',
-  sup:'M12 3 L14.5 9.5 L21 12 L14.5 14.5 L12 21 L9.5 14.5 L3 12 L9.5 9.5 Z',
-  mask:'M4 8 H20 V13 A8 8 0 0 1 4 13 Z'};
+  sup:'M12 3 L14.5 9.5 L21 12 L14.5 14.5 L12 21 L9.5 14.5 L3 12 L9.5 9.5 Z'};
  show.forEach(function(m){
   if(m.x==null)return;
-  var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
+  var kind=m.o.kind||'sab';
   var c=TIERC[kind]||'#DFCC7E', on=(PMPICK===m.o);
   /* the glyph says what tier of thing this is. The ring says where it sits.
      Three saboteurs are three of the same glyph, which is correct and says
@@ -23272,7 +23259,10 @@ var BMAMODE=[['A4','Fetter mark'],['A3','Point in patch'],['A1','Point']];
 /* the stage and the figure. The seats are not here: they are PMC. */
 var BMC={stage:[15,16,19],man:[22,24,30],edge:[239,237,232],grid:[40,43,52],ink:[230,231,234],
  dim:[154,156,164],acc:[126,184,212],cns:[239,237,232],auto:[126,184,212],som:[194,160,99],
- prop:[180,176,168],lit:[255,238,222],casing:[12,13,16]};
+ prop:[180,176,168],lit:[255,238,222],casing:[12,13,16],
+ /* the masks' bone, the warm the three Field pictures filled the mask band
+    with while it was a band, so the concept kept its colour when it moved */
+ mask:[224,214,186]};
 /* the heat ramp. Sacral to Root and no further, lifting toward white at the
    top the way a filament does. The alarm red is never in it: that colour
    means the instrument is wrong. */
@@ -23367,6 +23357,7 @@ function bmInit(host){
  G.heat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.mask=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.fieldVer=0;
+ G.masks=bmMaskGeo(G);
  bmRoutes(G,host);
  return (BMG=G);}
 function bmIn(G,v,x,y){return G.probe.isPointInPath(G.body[v],x+bmVX(v),y);}
@@ -23467,6 +23458,121 @@ function bmRegVal(r){var b=r.box,m=0,P=BM.paint[r.v];
  for(var i=0;i<P.length;i++){var v=P[i];if(!v)continue;var x=BMXA+(i%BMCOLS+.5)*BMU,y=BMYA+(((i/BMCOLS)|0)+.5)*BMU;
   if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]&&v>m)m=v;}return m;}
 function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
+
+/* ---------- the six masks, as pixels on the figure ----------
+   CH in TASKS.md, his words: "the masks are what block the character, and
+   all our light is behind the masks. It may be as a person's telling their
+   story, little pixelated dots start to fill in of which one is associated
+   with child, preteen, teen, etc. I don't want that overlay on a sub menu, I
+   want it on an overlay in that panel." And JQ put the panel here: "Our
+   masks should be on the body masks. So put all six masks here."
+
+   They were a ring band on all three Field pictures and a layer in the row
+   above this figure, each one press away and neither on a body. Both are
+   gone, and nothing switches this on or off.
+
+   WHERE EACH SITS. A mask is worn over seats, MASKS[].b, so each one's patch
+   is centred at the mean height of its own seats, which stacks them down
+   the front figure in the data's own order: Ideological in the head, Teen at
+   the throat, Preteen and Professional across the chest, Adult at the belly,
+   Child low in the pelvis. Masks whose seats land at the same height share
+   the row, side by side with a gap down the midline, so two masks are never
+   one patch. That split is read off the data and not written in, because
+   Preteen and Professional share Solar and Throat today and would be the
+   only pair only for as long as the roster says so.
+
+   THE DOTS ARE THE FIGURE'S OWN GRID, three to a 5 cm cell, so a mask's
+   pixels line up with the cells the pain paint fills, and only a pixel whose
+   centre is inside the silhouette is a place a dot can be: a patch at the
+   neck holds fewer than one across the chest, and it fills by its own share.
+
+   HOW MANY ARE LIT IS THE MASK'S WEIGHT, maskRing in engine/compute.js, the
+   same figure Knowledge and the Summary print: round(w over ten times the
+   places). The order they light in is a fixed scatter per mask, so a rising
+   weight only ever adds dots to the ones already lit and the patch reads as
+   filling in, not as a bar. A change eases in one dot at a time, which is the
+   reading moving and not a show put on for it: a first sight, a new profile
+   and reduced motion all land on the count at once. The front view only,
+   because a mask is worn on the face; on a phone turned to Back there is
+   none, which is the figure being honest about which side it shows. */
+/* FOUR ROWS AND NOT FIVE. Adult and Child centre 6.7 units apart, and at
+   five rows the gap between them rounded to one pixel on Gordon at 1600, so
+   the two read as one patch across the belly: the very merge the split
+   above exists to prevent. */
+var BMMP=BMU/3, BMMCOL=12, BMMPAIR=9, BMMGAP=4, BMMROW=4;
+function bmMaskGeo(G){
+ var at={}, rows=[], out=[];
+ MASKS.forEach(function(m){
+  var ys=m.b.map(function(b){return PMYP[B2K[b]];}).filter(function(y){return y!=null;});
+  if(!ys.length)return;
+  var y=ys.reduce(function(a,b){return a+b;},0)/ys.length, k=y.toFixed(1);
+  if(!at[k]){at[k]=[];rows.push({y:y,list:at[k]});}
+  at[k].push(m);});
+ rows.forEach(function(row){
+  var n=row.list.length, cw=n>1?BMMPAIR:BMMCOL, tot=n*cw+(n-1)*BMMGAP;
+  /* 50 is a lattice line, BMXA sits ten cells left of it, so a patch of
+     even width centres on the midline exactly */
+  var i0=Math.round((50-BMXA)/BMMP-tot/2), j0=Math.round((row.y-BMYA)/BMMP-BMMROW/2);
+  row.list.forEach(function(m,q){
+   var h=bmHashS(m.nm), sl=[], x0=1e9, y0=1e9, x1=-1e9, y1=-1e9;
+   for(var j=0;j<BMMROW;j++)for(var i=0;i<cw;i++){
+    var x=BMXA+(i0+q*(cw+BMMGAP)+i+.5)*BMMP, y=BMYA+(j0+j+.5)*BMMP;
+    if(!bmIn(G,0,x,y))continue;
+    sl.push({x:x,y:y,o:bmHash(h+j*37+i)});
+    x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}
+   if(!sl.length)return;
+   sl.sort(function(a,b){return a.o-b.o;});
+   out.push({nm:m.nm,m:m,sl:sl,box:[x0-BMMP/2,y0-BMMP/2,x1+BMMP/2,y1+BMMP/2],shown:null});});});
+ return out;}
+/* how many of a mask's places its weight lights. Nothing read, nothing lit. */
+function bmMaskLit(k,r){var m=null;
+ ((r&&r.maskRing)||[]).forEach(function(x){if(x.nm===k.nm)m=x;});
+ return (!m||r.unread)?0:Math.round(clamp(m.w/10,0,1)*k.sl.length);}
+function bmHoldMask(){
+ return (PMPICK&&typeof PMPICK==='object'&&!PMPICK.kind&&!PMPICK.bmReg&&PMPICK.nm)?PMPICK.nm:null;}
+/* painted in page pixels and snapped to them, because a pixel that lands
+   between two device pixels is a smudge and not a pixel. The empty places
+   stay faintly on, the way an unlit matrix shows its grid, so the shape a
+   mask will fill is there before any of it is filled. */
+function bmDrawMasks(g,vs,dt){
+ if(vs.indexOf(0)<0||!BMG.masks||!BM.r)return;
+ var sd=Math.max(2,Math.round(BMMP*BM.cam.z*0.7)), hold=bmHoldMask(), hov=BM.hoverMask;
+ /* painting is the one job that wants the body clear, so they step back */
+ var A=1-0.7*BM.pg;
+ g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
+ BMG.masks.forEach(function(k){
+  var want=bmMaskLit(k,BM.r);
+  if(k.shown===null||REDUCED)k.shown=want;
+  /* at least twelve dots a second, and never a tail. An ease alone took the
+     last dot a frame count to land that a slow frame rate never reached:
+     measured in the functional gate, 35.9 of 36 still drawn 900ms after a
+     change, which is a patch reading one dot short of its own weight. */
+  else{var d0=want-k.shown, st=Math.max(dt*12,Math.abs(d0)*Math.min(1,dt*4));
+   k.shown=Math.abs(d0)<=st?want:k.shown+(d0>0?st:-st);}
+  var lit=Math.floor(k.shown), part=k.shown-lit, on=(hold===k.nm||hov===k.nm);
+  k.sl.forEach(function(p,i){var s=bmW2S(p.x,p.y);
+   if(s[0]<-sd||s[1]<-sd||s[0]>BM.W+sd||s[1]>BM.H+sd)return;
+   var a=i<lit?.66:i===lit?.08+.58*part:.08;
+   if(on)a=i<lit?1:a*2;
+   g.fillStyle=bmRgba(BMC.mask,a*A);
+   g.fillRect(Math.round(s[0]-sd/2),Math.round(s[1]-sd/2),sd,sd);});});
+ bmTf(g);}
+/* the press and the name, in the svg over the canvas like the seats. A
+   patch is four pixels tall, under the tap floor, so its target is held to
+   44 page pixels high at the fitted view, centred on it; the seats come after
+   it in the svg, so a seat inside a patch still takes its own press. */
+function bmMaskHits(r){
+ var g=BM.sv&&BM.sv.querySelector('[data-bmmasks]'); if(!g||!BMG||!BMG.masks)return;
+ var hmin=BM.z0>2?44/BM.z0:0;
+ g.innerHTML=BMG.masks.map(function(k){var b=k.box,lit=bmMaskLit(k,r);
+  var m=((r&&r.maskRing)||[]).filter(function(x){return x.nm===k.nm;})[0]||{w:0};
+  var h=Math.max(b[3]-b[1],hmin), y=(b[1]+b[3])/2-h/2;
+  return '<rect class="pm-mask" data-bmmask="'+esc(k.nm)+'" x="'+b[0].toFixed(2)+'" y="'+y.toFixed(2)
+   +'" width="'+(b[2]-b[0]).toFixed(2)+'" height="'+h.toFixed(2)+'" fill="transparent"><title>'
+   /* a count and not a count against a total, CO-05: "31 of 48" reads as a
+      score, and a reading is not one. The total is the patch's own shape. */
+   +esc(k.nm)+' mask. It '+esc(k.m.v)+'. '+lit+(lit===1?' dot':' dots')+' filled, at a weight of '+(+m.w||0).toFixed(1)
+   +'.</title></rect>';}).join('');}
 
 /* ---------- the lines, off the real reading ----------
    A line is a saboteur compute() found at a weight of five or more, run
@@ -23575,6 +23681,9 @@ function bmSize(){
  [BM.cv,BM.still,BM.lit,BM.lit2].forEach(function(c){c.width=Math.max(1,Math.round(w*BM.dpr));c.height=Math.max(1,Math.round(h*BM.dpr));});
  BM.stillKey='';BM.litKey='';
  var f=bmFitCam(); BM.cam=f; BM.camT=null; BM.dirty=true;
+ /* the masks' targets are held to the tap floor at the fitted view, so they
+    are measured again whenever the fitted view is */
+ if(BM.r)bmMaskHits(BM.r);
  if(was!==BM.phone)bmBars();}
 
 /* ---------- the dulling, as a timeline ---------- */
@@ -23692,6 +23801,9 @@ function bmDraw(dt){
   if(BM.mode==='pain'&&BM.hoverCell&&BM.hoverCell.v===v){var hc=BM.hoverCell;
    g.strokeStyle=bmRgba([240,210,184],.85);g.lineWidth=px*1.4;g.strokeRect(BMXA+hc.c*BMU+bmVX(v),BMYA+hc.r*BMU,BMU,BMU);}
   g.restore();});
+ /* the masks, over the light and the body and under every reading mark, so
+    a line or an address is never behind a dot */
+ bmDrawMasks(g,vs,dt);
  /* 4. the live layer: pain lines, limb centres, cables, addresses, names */
  if(gain>0.02)bmPainLines(g,vs,gain);
  bmLimb(g,vs,dl);
@@ -23933,7 +24045,9 @@ function bmWire(){
   var p=at(e),pk=bmPick(p[0],p[1]);
   /* a seat is pressed as a seat, except while painting, when it is body */
   var seat=(BM.mode!=='pain'&&e.target.closest)?e.target.closest('[data-seat]'):null;
-  BM.drag={x:p[0],y:p[1],cx:BM.cam.x,cy:BM.cam.y,moved:false,seat:seat,
+  /* and a mask as a mask, on the same terms */
+  var mask=(BM.mode!=='pain'&&!seat&&e.target.closest)?e.target.closest('[data-bmmask]'):null;
+  BM.drag={x:p[0],y:p[1],cx:BM.cam.x,cy:BM.cam.y,moved:false,seat:seat,mask:mask,
    paint:BM.mode==='pain'&&!!pk.cell,first:true,painted:{},lastReg:pk.reg||null};
   if(BM.drag.paint||bmZoomed()){try{sv.setPointerCapture(e.pointerId);}catch(x){}}
   if(BM.drag.paint)bmPaintAt(pk);});
@@ -23950,6 +24064,8 @@ function bmWire(){
   if(!pk.sab&&BM.hoverSab&&BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.hoverFrom='map';
   BM.hoverPlace=pk.place||null;BM.hoverView=pk.v;
+  var mh=(BM.mode!=='pain'&&e.target.closest)?e.target.closest('[data-bmmask]'):null;
+  BM.hoverMask=mh?mh.getAttribute('data-bmmask'):null;
   var tk=pk.place?'p'+BMG.places.indexOf(pk.place)+':'+pk.v:pk.sab?'s'+pk.sab.nm:'';
   if(tk!==BM.tipKey){BM.tipKey=tk;
    if(pk.place)bmTip(Object.assign(bmPlaceTip(pk.place),{x:p[0],y:p[1]}));
@@ -23957,7 +24073,7 @@ function bmWire(){
    else bmTip(null);}
   BM.dirty=true;});
  sv.addEventListener('pointerleave',function(){
-  BM.hoverReg=null;BM.hoverCell=null;BM.hoverPlace=null;if(BM.hoverFrom!=='rail')BM.hoverSab=null;
+  BM.hoverReg=null;BM.hoverCell=null;BM.hoverPlace=null;BM.hoverMask=null;if(BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.tipKey='';bmTip(null);BM.dirty=true;});
  sv.addEventListener('pointercancel',function(){BM.drag=null;});
  sv.addEventListener('pointerup',function(e){
@@ -23969,6 +24085,13 @@ function bmWire(){
   var pk=bmPick(p[0],p[1]);
   if(pk.sab&&!pk.place){var o=pk.sab.o, same=(bmHoldNm()===o.nm);
    PMPICK=same?null:o;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
+  /* A MASK OPENS ITS DRILL, the fix DY made on the Field carried to where
+     the masks went: "I click on Ideological, I get nothing." pmAnswer sends
+     a pick with no kind to the codex's mask entry, which runs runMaskDrill.
+     Pressed again, it is put down, as a line is. */
+  if(D.mask&&!pk.place){var nm=D.mask.getAttribute('data-bmmask'),
+    mo=((BM.r&&BM.r.maskRing)||[]).filter(function(x){return x.nm===nm;})[0];
+   PMPICK=(!mo||bmHoldMask()===nm)?null:mo;S.pin=null;BM.dirty=true;pmAnswer(PMPICK);return;}
   if(pk.reg)bmOpenReg(pk.reg,true);});
  sv.addEventListener('dblclick',function(e){var p=at(e),pk=bmPick(p[0],p[1]);if(pk.reg)bmZoomReg(pk.reg);});
  sv.addEventListener('wheel',function(e){e.preventDefault();var p=at(e),w=bmS2W(p[0],p[1]);
@@ -24387,7 +24510,7 @@ function bmBuild(host){
   +'aria-label="The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them">'
   +'<g class="pm-vec"><path d="'+bmOutline()+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
   +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g>'
-  +'<g data-bmseats=""></g></svg></div>'
+  +'<g data-bmmasks=""></g><g data-bmseats=""></g></svg></div>'
   /* after the well, so the well's flex keeps the rest of the height and the
      figure is fitted to what is left */
   +'<div id="bmregs" role="group" aria-label="Side and region" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
@@ -24409,8 +24532,10 @@ function bmRender(r){
  var who=(typeof CURP!=='undefined')?CURP:null;
  if(!BM.paint||BM.who!==who||BM.whoI!==S.who){
   BM.paint=[new Float32Array(BMCOLS*BMROWS),new Float32Array(BMCOLS*BMROWS)];
-  BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);}
- BM.r=r; bmSabRefresh(r); bmMarkVals();
+  BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);
+  /* another person's masks are not this one's filling in */
+  BMG.masks.forEach(function(k){k.shown=null;});}
+ BM.r=r; bmSabRefresh(r); bmMarkVals(); bmMaskHits(r);
  var seats=flSeats(),speed=flSpeed(),loadedTot=W.filter(function(n){return n.sq>=LOADED;}).length;
  var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
  var dom=seats.slice().sort(function(a,b){return b.hot-a.hot||b.load-a.load;})[0];
@@ -32834,6 +32959,11 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
     the pulse scaled by weight, round KH; on is the gravity well, round KG.
     A mockup switch for him to choose by looking, not a ruling. */
  well:false,
+ /* heat: round KR's radiance overlay on the needle, off by default. The
+    engine's radiance drawn through the whole volume of the figure, dimmed
+    where a seat holds charge and where the field bends off the level
+    (ndlHeatField, further down). A layer like Layers, not a mockup switch. */
+ heat:false,
  /* ZOOM, round KQ: "I want to be able to zoom in." z, zx and zy are what is
     drawn, the scale and the pan in canvas pixels about the canvas's centre;
     the T three are where a press, a scroll or a pinch asked it to go, and the
@@ -33845,6 +33975,27 @@ const NDL_GAP=0.13;      /* half the limbo, as a share of the half height */
 const NDL_SLAB=0.88;     /* the limbo ring's radius, as a share of a base's */
 const NDL_REF_UP=80, NDL_REF_DN=20;  /* the teachers' ring and its mirror */
 const NDL_SEC=24, NDL_N=8*NDL_SEC;
+/* THE RADIANCE MESH, round KR: six columns a face, so forty eight round the
+   turn, and a row every five points of coherence, eight up each pyramid and
+   four across limbo. HQ is the corners' heights top to bottom; the limbo
+   rows repeat 60 and 40 because the figure's radius steps there, from a
+   base's to the limbo ring's, and a cell spanning the step would lie across
+   nothing. Declared above NDL, whose arrays are sized from them. */
+/* AND TWELVE COLUMNS A FACE, NOT SIX. At six the stepped field drew as
+   wedges a face wide, which read as a rendering fault and not as heat:
+   measured on Sofia at 1600, her bent desire came out as three dark slabs
+   with the far half's slabs showing through between them. At twelve it is
+   one body with stepped edges. */
+const NDL_HC=96, NDL_HL=10;
+/* the glow at full radiance, the veil at its deepest, and the width of one
+   step as a share of the mean (ndlHeatDraw). The far half is drawn at 0.45
+   of the near, the near faces' own share of the far ones in ndlFaces. */
+/* ONE IS A STEP'S CENTRE, NOT ITS EDGE. The first cut put a boundary at
+   exactly the mean, so a field with nothing wrong in it, Rosa, whose cells
+   sit between 0.97 and 1.02 of her mean, flickered between two steps and
+   drew faint rectangles round her apex that were noise and not reading. */
+const NDL_HEAT_G=0.32, NDL_HEAT_S=0.62, NDL_HS=0.125, NDL_HR=(NDL_HL-1)*NDL_HS;
+const NDL_HQ=[100,95,90,85,80,75,70,65,60, 60,55,50,45,40, 40,35,30,25,20,15,10,5,0];
 /* THE FIVE PATHS, from the glossary's own entry: "Krishna, flow. Buddha,
    awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal."
    Christ is written Jesus, because the canon ruled one figure one name. The
@@ -33880,7 +34031,18 @@ var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
     last frame, so a beat can be told from the frame it lands on. */
  tp:new Float32Array(8), ta:new Float32Array(8), tw:new Float32Array(8), tph:new Float32Array(8),
  tt:new Float32Array(8), gph:new Float32Array(8), cur:0,
- gx:new Float32Array(NDL_N+1), gy:new Float32Array(NDL_N+1)};
+ gx:new Float32Array(NDL_N+1), gy:new Float32Array(NDL_N+1),
+ /* THE RADIANCE FIELD'S STATE, round KR. gsq is each axis's mean charge
+    out of ten, kept by ndlGrav before it normalises, so the heat reads the
+    same walk of the record the gravity does and not a second one. hx and hy
+    are the mesh's corners, hl each cell's level, hf its raw strength, hn
+    whether its column faces the viewer; hs and hc are the shell and the
+    clearance splined round the turn once per column. */
+ gsq:new Float32Array(8),
+ hx:new Float32Array(23*(NDL_HC+1)), hy:new Float32Array(23*(NDL_HC+1)),
+ hl:new Int8Array(20*NDL_HC), hf:new Float32Array(20*NDL_HC), hn:new Int8Array(NDL_HC),
+ hs:new Float32Array(NDL_HC), hc:new Float32Array(NDL_HC),
+ hEs:null, hEc:null, hCol:null, hSig:'', hR:0};
 /* the figure's box. Read once per canvas size: the top keeps room for the
    crown of five and the halo, the bottom for the fork, and on a desk the
    sides keep clear of the two name rails, which are absolute over the canvas
@@ -34054,10 +34216,170 @@ function ndlGrav(){
  var sum={}, cnt={}, A=W_ADDR(), mx=0, i;
  for(i=0;i<A.length;i++){var b=A[i].b; sum[b]=(sum[b]||0)+(A[i].sq||0); cnt[b]=(cnt[b]||0)+1;}
  for(i=0;i<8;i++){var sb=MIRROR[i].seat; NDL.grav[i]=cnt[sb]?sum[sb]/cnt[sb]:0;
+  NDL.gsq[i]=NDL.grav[i];
   if(NDL.grav[i]>mx)mx=NDL.grav[i];}
  /* nothing held anywhere is no gravity, not an even pull everywhere */
  for(i=0;i<8;i++)NDL.grav[i]=mx>0.05?NDL.grav[i]/mx:0;
  return NDL.grav;}
+/* ============================================================
+   THE RADIANCE, AS HEAT THROUGH THE WHOLE FIGURE. Round KR, 28 September.
+
+   His words: "Add for the compass an overlay heat map for the radians. So as
+   a field of the full volume radiant, so as this field is distorted, you can
+   see the radiance as it's either diminished because of the SQ and how the
+   field is distorted." Radians is radiance: compute() already returns one,
+   the length of the X, Y and Z reading over root three, which Summary prints
+   as a percent and the Field's wash fades by. It was a single number. This
+   is where in the volume it is short.
+
+   ONE NUMBER, SPREAD, NOT A SECOND NUMBER. Every cell of the mesh gets a
+   raw strength f, and what a cell carries is f over the mean f of the whole
+   mesh: one is your radiance, under one is short of it. So the average of
+   the field is the radiance the engine reports, the same way the shell's
+   mean is CQ, and the two cannot disagree. Multiplying radiance by the
+   charge again would count the charge twice, because Z is already Ig times
+   one minus SQm.
+
+   f IS HIS TWO CAUSES, AND NOTHING ELSE.
+     the SQ     how clear the axis's seat is of charge, one minus its mean SQ
+                out of ten, splined round the turn between the eight axes.
+                The same mean the gravity weighs, read off gsq.
+     the bend   where the seat's laws, the shell, stand off your level. The
+                band between the two is the part of the field that has been
+                pulled out of true, and inside it the light drops by up to
+                eight tenths, full at twenty five points of bend (the tension
+                line's own full), easing off above and below the band on a
+                width of eight points. A level field has no band.
+   So a figure with nothing held and nothing bent is lit evenly through its
+   whole volume, which is his "ball of light", and a seat pulled forty points
+   under the level, Sofia's desire, is a dark tongue from her level down to
+   where that seat's laws sit. No height gradient is added: he named two
+   causes and a third would be a reading this file made up.
+
+   OVER GLOWS, UNDER SINKS, the figure's one rule for light, and no red and
+   no green. The whole volume glows in the accent, Source's colour, as
+   bright as the engine's radiance; a cell short of your radiance has the
+   well's own colour laid over it, which is the light taken back. Ten steps,
+   each an eighth of your radiance wide. Stepped rather than smooth, because
+   a smooth field on a canvas is a fill per cell, near two thousand a frame;
+   ten steps is ten paths a side, the same one path per colour the over and
+   under bands already use, and the step edges read as contours.
+
+   THE FIRST CUT WAS ONE ABSOLUTE RAMP, well to accent by the drawn heat,
+   and it could not be read. Marcus's four ten point bends dim his radiance
+   by about three tenths, and at the overlay's strength that came out as a
+   seven per cent change on screen: an even blue grey tint over his whole
+   figure. At Gordon's radiance of 0.10 every cell fell in the bottom two of
+   ten steps, so his charge pattern, which is the reading, was one flat
+   dark. Stepping by the share of your own radiance and letting the
+   radiance set the brightness keeps both: how bright the field is, and
+   where in it the light is short.
+
+   The mesh bends with the sheet when the well is on, because it is the
+   figure, and is off for the unread profile, where there is no radiance to
+   spread. Held still under reduced motion, as it is anyway: the heat moves
+   only when the springs under it move.
+
+   COST, MEASURED AND DATED, 28 September, headless Chromium on a software
+   raster, --disable-gpu, load average between 3 and 4, Marcus, coneDraw
+   plus a forced flush, the minimum of ninety frames, the tab's own loop
+   stopped. Before is HEAD 175b6f8, after is the switch on:
+
+                        pulse           well            top
+     1600 at 1x         6.2 -> 7.7      6.8 -> 9.0      not drawn
+     1600 at 2x         9.1 -> 11.4     11.2 -> 14.0    not drawn
+     390 at 3x          6.6 -> 8.3      8.5 -> 10.8     not drawn
+     zoomed 2.5x, 1600 at 2x, pulse: 10.3 -> 13.4
+
+   Two fills a step, near and far, twenty in all, and no gradient, blur or
+   readback. The first cut cost 21.7 ms over at 1600 at 2x, and A RUN, NOT
+   A CELL in ndlHeatDraw is why it does not now. The well pays most because
+   its warp runs on every corner of the mesh. Switch off, it is one flag
+   read and nothing below runs: 8.8 against HEAD's 9.1 on the same run.
+   ============================================================ */
+function ndlHeatField(G,M,cq,R,ee){
+ var P=NDL.P, i, k, c, r;
+ if(!NDL.hEs){NDL.hEs=MIRROR.map(function(m,j){return {t:j/8,x:50};});
+  NDL.hEc=MIRROR.map(function(m,j){return {t:j/8,x:1};});}
+ /* the bend eases out of the level on the entrance, as the shell does */
+ for(i=0;i<8;i++){NDL.hEs[i].x=cq+(M.seat[NDL.sIdx[i]].x-cq)*ee;
+  NDL.hEc[i].x=1-clamp(NDL.gsq[i],0,10)/10;}
+ var cpf=NDL_HC/8, rs=G.Rb*NDL_SLAB;
+ for(c=0;c<NDL_HC;c++){var tm=(c+.5)/NDL_HC, fi=Math.floor(c/cpf), um=(c%cpf+.5)/cpf;
+  NDL.hs[c]=coneSpline(NDL.hEs,tm); NDL.hc[c]=clamp(coneSpline(NDL.hEc,tm),0,1);
+  NDL.hn[c]=(NDL.sA[fi]*(1-um)+NDL.sA[(fi+1)%8]*um)>=0?1:0;}
+ /* the corners, through ndlPf, so the mesh lies on the faces and bends with
+    them; limbo's rows, 9 to 13, sit on the limbo ring */
+ for(r=0;r<23;r++){var q=NDL_HQ[r], lim=(r>=9&&r<=13);
+  for(c=0;c<=NDL_HC;c++){
+   ndlPf(q,Math.floor(c/cpf)%8,(c%cpf)/cpf,G,P,lim?rs:undefined);
+   NDL.hx[r*(NDL_HC+1)+c]=P.x; NDL.hy[r*(NDL_HC+1)+c]=P.y;}}
+ /* each cell's raw strength, and their mean */
+ var sum=0, n=0, row=0;
+ for(r=0;r<22;r++){if(r===8||r===13)continue;
+  var qm=(NDL_HQ[r]+NDL_HQ[r+1])/2;
+  for(c=0;c<NDL_HC;c++){var s=NDL.hs[c], lo=Math.min(s,cq), hi=Math.max(s,cq);
+   var D=clamp((hi-lo)/25,0,1), dq=qm<lo?lo-qm:(qm>hi?qm-hi:0);
+   var f=NDL.hc[c]*(1-.8*D*Math.exp(-dq*dq/128));
+   NDL.hf[row*NDL_HC+c]=f; sum+=f; n++;}
+  row++;}
+ /* stepped by the cell against the mesh's own mean: one is at your
+    radiance, under one is short of it, and each step is an eighth of it
+    wide, rounded to the nearest, so the brightest step is an eighth over. */
+ var mean=sum/n, kk=mean>1e-4?1/mean:0;
+ NDL.hR=R;
+ for(k=0;k<n;k++)NDL.hl[k]=Math.min(NDL_HL-1,Math.floor(NDL.hf[k]*kk/NDL_HS+.5));}
+/* one side of the field: the far half first, veiled by the near glass drawn
+   after it, then the near half over the near glass. One path per step. */
+function ndlHeatDraw(g,front,a){
+ var W1=NDL_HC+1, R=NDL.hR, lv, r, c, row;
+ var sig=NDL.colSig+'|'+NDL.wl.join()+'|'+NDL.gc.join()+'|'+R.toFixed(2);
+ /* EACH STEP IS A GLOW AND A VEIL, folded into one colour so it is one
+    fill. The glow is the accent, as bright as the engine's radiance with a
+    floor of a quarter so a dim field is still seen to be lit, and it is the
+    cell's share of that. The veil is the well's own colour, laid over as
+    far as the cell falls short of your radiance, full at three tenths of
+    it. The two composited by hand: alpha one minus both misses, colour the
+    two weighted by what each contributes. Read once per lighting and per
+    hundredth of radiance, never per frame. */
+ if(NDL.hSig!==sig){NDL.hSig=sig; NDL.hCol=[];
+  for(lv=0;lv<NDL_HL;lv++){var p=lv*NDL_HS, w=NDL.wl, gc=NDL.gc;
+   var gl=NDL_HEAT_G*(.25+.75*R)*p/NDL_HR, vl=NDL_HEAT_S*clamp((1-p)/.7,0,1);
+   var al=1-(1-gl)*(1-vl), cw=vl/al, cg=gl*(1-vl)/al;
+   NDL.hCol.push('rgba('+Math.round(gc[0]*cg+w[0]*cw)+','+Math.round(gc[1]*cg+w[1]*cw)
+    +','+Math.round(gc[2]*cg+w[2]*cw)+','+al.toFixed(3)+')');}}
+ /* A RUN, NOT A CELL. The first cut added every cell to the path as its
+    own quad, near two thousand of them, and the frame went from 9.1 ms to
+    30.8 at 1600 at twice the density. Split by part, the field's arithmetic
+    was under a tenth of a millisecond and building the path alone was 17.5:
+    on a software raster each canvas call is about two microseconds, so the
+    cost was the count of calls and not the pixels, which is why the phone
+    paid nearly as much as the desk. A face is flat and its projection is
+    affine, so along one row of one face every corner lies on one straight
+    line: a run of cells at the same step needs a corner at its two ends and
+    at each rib it crosses, and nothing between. Under the well the sheet
+    bends between ribs, so there every third corner is kept, four a face,
+    which still lands on every rib: every corner cost 3.5 ms over the switch
+    off, and the pull falls off over a third of the base radius, wider than
+    a quarter face, so the extra corners were drawing a curve that was not
+    there to draw. */
+ var cpf=NDL_HC/8, ev=NDL.wn>0?3:cpf, X=NDL.hx, Y=NDL.hy, HL=NDL.hl, HN=NDL.hn, fr=front?1:0;
+ g.globalAlpha=a;
+ for(lv=0;lv<NDL_HL;lv++){var any=false; g.beginPath(); row=0;
+  for(r=0;r<22;r++){if(r===8||r===13)continue;
+   var o=row*NDL_HC, t0=r*W1, b0=t0+W1;
+   for(c=0;c<NDL_HC;c++){
+    if(HL[o+c]!==lv||HN[c]!==fr)continue;
+    var c1=c; while(c1+1<NDL_HC&&HL[o+c1+1]===lv&&HN[c1+1]===fr)c1++;
+    any=true; g.moveTo(X[t0+c],Y[t0+c]);
+    for(var e=c+1;e<=c1;e++)if(e%ev===0)g.lineTo(X[t0+e],Y[t0+e]);
+    g.lineTo(X[t0+c1+1],Y[t0+c1+1]); g.lineTo(X[b0+c1+1],Y[b0+c1+1]);
+    for(e=c1;e>c;e--)if(e%ev===0)g.lineTo(X[b0+e],Y[b0+e]);
+    g.lineTo(X[b0+c],Y[b0+c]); g.closePath();
+    c=c1;}
+   row++;}
+  if(any){g.fillStyle=NDL.hCol[lv]; g.fill();}}
+ g.globalAlpha=1;}
 function ndlTip(x0,y0,r0,kind,i){
  var t=NDL.tips[NDL.nt]||(NDL.tips[NDL.nt]={});
  t.x=x0; t.y=y0; t.r=r0; t.k=kind; t.i=i; NDL.nt++;}
@@ -34216,10 +34538,16 @@ function coneNeedle(){
    +rgba(gc,.30*k0)+','+rgba(gc,.09*k0)+' 35%,'+rgba(gc,0)+' 100%),'
    +'radial-gradient(circle '+R2+'px at '+Math.round(ax)+'px '+Math.round(fzy)+'px,'
    +rgba(rc,.09*k0)+','+rgba(rc,0)+' 100%)';}
+ /* THE RADIANCE FIELD, round KR, worked out once here and drawn in two
+    halves below. ndlGrav first, because its walk of the record is what
+    fills gsq and the pulse only calls it further down the frame. */
+ var heat=CONE.heat&&read;
+ if(heat){ndlGrav(); ndlHeatField(G,M,cq,clamp(r.radiance,0,1),ee);}
 
  /* BEHIND: the far faces, the far ribs, and the far badges, veiled by the
     near faces that come after them */
  ndlFaces(g,G,false);
+ if(heat)ndlHeatDraw(g,false,.45*ee);
  for(i=0;i<8;i++)ndlRib(g,G,i,false);
  /* the teachers keep their places too: bent, they slid onto the nodes */
  NDL.wn=0;
@@ -34316,6 +34644,9 @@ function coneNeedle(){
  if(CONE.layers){g.lineWidth=1;
   for(n=0;n<CONE_HI.length;n++){ndlRing(g,G,55+n*5); g.strokeStyle=rgba(gc,.16+n*0.03); g.stroke();}
   for(n=0;n<CONE_LO.length;n++){ndlRing(g,G,45-n*5); g.strokeStyle=rgba(rc,.16+n*0.03); g.stroke();}}
+ /* the near half of the radiance, over the near glass and under the
+    reading, so the shell, the level and the ribbon still read on top */
+ if(heat)ndlHeatDraw(g,true,ee);
 
  if(read){
   /* the axis values, eased out of the level on the entrance */
@@ -34966,7 +35297,8 @@ function coneOpen(inTab){
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
      ?'The compass from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
-     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.')
+     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
+      +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a seat holds charge and where the field bends off your level.':''))
    +'"></canvas>'
    /* ZOOM, round KQ: "the icon's already there. I want to be able to zoom
       in." It is: the Field's three circles in its lower right, zoom out,
@@ -35001,6 +35333,14 @@ function coneOpen(inTab){
        so he chooses by looking: off is the pulse, on is the well. */
     +(CONE.side||CONE.top?'':'<button type="button" class="cn-b" data-cn="well" '
      +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">Gravity well</button>')
+    /* RADIANCE, round KR. Only on the needle, which is the only figure that
+       draws it: from the top there is no volume to fill, and the switch
+       would be a dead control there. What the heat means rides on the
+       hover and not in a key under the figure, because a legend nobody
+       asked for is one of his logged objections. Whether it earns a key is
+       his call. */
+    +(CONE.side||CONE.top?'':'<button type="button" class="cn-b" data-cn="heat" '
+     +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">Radiance</button>')
     +'<button type="button" class="cn-b" data-cn="layers" '
      +'title="Show the rings the axes are stacked on">Layers</button>'
    +'</div>'
@@ -41055,8 +41395,6 @@ function describe(h,r,still){
  if(h.k==='dom'){var d=DOMAINS[h.j];
   return '<u>'+d.r+'</u> <b>'+d.nm+'</b><hr>'+d.d+'<br>weight <b>'+(DOMAIN[h.j]||0).toFixed(2)
    +'</b><hr><b>Click to select, shift-click to add.</b>';}
- if(h.k==='mk')return '<u>mask</u> <b>'+h.o.nm+'</b><hr>speaks from '+(h.o.bands||[]).join(' + ')
-  +'<br>load <b>'+h.o.w.toFixed(1)+'</b><hr><b>Click for detail.</b>';
  var o=h.o; if(!o)return '';
  var f=leaves(o);
  var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
@@ -41187,11 +41525,12 @@ function hitPress(h,e){
     to a bare render and never to a drill. The setters still run as they
     always did, and the drill opens after them so it reads the selection the
     press just made. On a worked example the setter refuses, and the drill
-    still opens, because reading a thing is not changing it. */
+    still opens, because reading a thing is not changing it. The mask left
+    the Field for the Body's figure, CH in TASKS.md, and its press went with
+    it: bmWire in ui/map.js opens the same drill. */
  var said=function(){S.pin=null;
   if(h.k==='dom')runDomDrill(DOMAINS[h.j]);
-  else if(h.k==='arch')runArchDrill(ARCH[h.j]);
-  else runMaskDrill(MASKS.filter(function(m){return m.nm===h.o.nm;})[0]||h.o);};
+  else runArchDrill(ARCH[h.j]);};
  if(h.k==='dom'){if(notYours('change the blueprint domain')){said();return;}
   undoPush('changing the blueprint domain');
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
@@ -41204,7 +41543,6 @@ function hitPress(h,e){
    if(k2>=0){if(S.arcs.length>1)S.arcs.splice(k2,1);}else S.arcs.push(h.j);}
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
   buildSoul();syncSoul();saveYou();said();render();return;}
- if(h.k==='mk'){said();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
  /* a seat band opens the seat. runSeatDrill takes the APC entry rather than a
     name, looked up here rather than passed a string it would have to parse,
@@ -42625,5 +42963,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002789397"></div>
+<div id="eof" hidden data-len="002809851"></div>
 </body></html>

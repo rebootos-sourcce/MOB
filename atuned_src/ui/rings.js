@@ -135,8 +135,6 @@ const FLAYS=[
  {k:'stories',nm:'Stories',d:frCirc(12,12,2.6)+'M12 9V4.4M14.6 13.5l4 2.3M9.4 13.5l-4 2.3'
    +frCirc(12,3.4,1.1)+frCirc(19.4,16.2,1.1)+frCirc(4.6,16.2,1.1),
   tip:'One line for each story that put charge on an address.'},
- {k:'masks',nm:'Masks',d:'M4.5 8.5C4.5 6.4 8 5 12 5s7.5 1.4 7.5 3.5c0 5.6-3.4 10.5-7.5 10.5S4.5 14.1 4.5 8.5zM8.2 10.3h2.6M13.2 10.3h2.6',
-  tip:'The six masks, each at its weight.'},
  {k:'archetypes',nm:'Archetypes',d:'M12 3.8l2.5 5.1 5.6.8-4 3.9 1 5.6-5.1-2.6-5.1 2.6 1-5.6-4-3.9 5.6-.8z',
   tip:'The twelve, each set in the seat it runs through.'},
  {k:'patterns',nm:'Patterns',d:frCirc(15.6,8.4,3.2)+'M13.3 10.7L5 19',
@@ -300,7 +298,11 @@ function frNamesHtml(M){
    the core last, and its ground disc covered what came before it: measured
    on the dial at 1600, the upper left gate's pill hangs toward the centre
    and 11.6 pixels of it went under the core on every reference case. */
-const FR_L=['shadow','ground','domains','stories','addresses','masks','archetypes','patterns','chains','laws','core','gates'];
+/* no masks: they left both pictures for the Body's figure, CH in TASKS.md,
+   and their register in each table below went with them. The band they held
+   is left open rather than closed up, because closing it moves every ring
+   inside it, which is a redraw of both pictures and not this change. */
+const FR_L=['shadow','ground','domains','stories','addresses','archetypes','patterns','chains','laws','core','gates'];
 const FR_T=['domains','addresses','archetypes','patterns','chains','laws','seats'];
 /* a group that answers to a layer toggle takes that layer's class. The two
    that answer to none, the dial's engraving and the core, are drawn
@@ -720,7 +722,7 @@ function frFrames(M,r){
     by this box's short half over that. Line weights and type do not scale:
     a hairline is a hairline and eleven pixels is the floor at any size. */
  var sc=Math.min(w.a,w.b)/381,gs=function(v){return v*Math.max(sc,.7);};
- var D={dom0:0,dom1:20,story:25,base:31,barMax:48,seatNm:94,mask0:106,mask1:114,arch0:119,arch1:133,
+ var D={dom0:0,dom1:20,story:25,base:31,barMax:48,seatNm:94,arch0:119,arch1:133,
   pat:147,cx:165,hy:181,sup:197,law0:207,lawIc:214,lawBar:223,lawMax:19,inner:248};
  Object.keys(D).forEach(function(k){D[k]*=sc;});
  /* FLUSH WHEN THE OUTER BAND IS OFF, TOO. The domains are the outermost band,
@@ -781,12 +783,9 @@ function frFrames(M,r){
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="'+Math.max(1.6,2.1*sc).toFixed(1)+'" fill="'+frRgb(c)+'"/>'
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="7" fill="transparent"/></g>');});});})();
 
- /* masks, then archetypes, two narrow frames. A highlight is a line, not a
-    flood: every cell is filled by its own weight and the first and second
-    archetypes are drawn round, not poured in. */
- (function(){var o=ring(D.mask0),i=ring(D.mask1),warm=M.light?[110,96,64]:[224,214,186];
-  (r.maskRing||[]).forEach(function(m,k){var t0=k/6+.003,t1=(k+1)/6-.003,v=clamp(m.w/10,0,1);
-   M.L.masks.push('<path data-h="'+M.hid({k:'mk',o:m})+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(warm,.04+v*.30)+'"/>');});})();
+ /* archetypes, a narrow frame. A highlight is a line, not a flood: every
+    cell is filled by its own weight and the first and second archetypes are
+    drawn round, not poured in. */
  (function(){var o=ring(D.arch0),i=ring(D.arch1),mid=ring((D.arch0+D.arch1)/2),gc=M.accent;
   BANDS.forEach(function(b){var Sx=M.sector[b];if(!Sx)return;
    var mine=[];ARCH.forEach(function(a,j){if(a.b===b)mine.push(j);});
@@ -886,7 +885,7 @@ function frDial(M,r){
  var sc=R0/379,gs=function(v){return v*Math.max(sc,.7);},o=function(v){return R0-v*sc;};
  var C=function(rad){return frRingC(cx,cy,rad,rad,2);};
  var Rr={dom0:R0,dom1:o(18),story:o(24),base:o(30),barMax:46*sc,seatNm:o(92),
-  mask0:o(102),mask1:o(109),arch0:o(115),arch1:o(128),pat:o(145),cx:o(168),hy:o(190),sup:o(212),
+  arch0:o(115),arch1:o(128),pat:o(145),cx:o(168),hy:o(190),sup:o(212),
   lawIc:o(229),lawBar:o(237),lawMax:22*sc,gate:o(280),core:64*sc};
  var base=C(Rr.base),th=function(t){return base.thAt(t);};
  /* the wash sits on the dial's own rim and not in the corners, because the
@@ -895,7 +894,7 @@ function frDial(M,r){
  frShadow(M,r,{reach:.62,at:[-135,-45,135,45].map(function(a){var t=a*Math.PI/180;
   return [(cx+Math.cos(t)*R0*.78)/M.W,(cy+Math.sin(t)*R0*.78)/M.H];})});
  /* the registers: a hairline at every ring, the dial's own engraving */
- [Rr.dom1,Rr.base,Rr.mask0,Rr.arch1,Rr.pat,Rr.cx,Rr.hy,Rr.sup,Rr.lawBar].forEach(function(rad){
+ [Rr.dom1,Rr.base,Rr.arch1,Rr.pat,Rr.cx,Rr.hy,Rr.sup,Rr.lawBar].forEach(function(rad){
   M.L.ground.push('<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+rad.toFixed(1)+'" fill="none" stroke="'+rgba(M.ink,.06)+'" stroke-width="1"/>');});
  var hitOf={};
 
@@ -940,10 +939,7 @@ function frDial(M,r){
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="'+Math.max(1.5,1.9*sc).toFixed(1)+'" fill="'+frRgb(c)+'"/>'
      +'<circle cx="'+ex.toFixed(1)+'" cy="'+ey.toFixed(1)+'" r="7" fill="transparent"/></g>');});});})();
 
- /* masks and archetypes, two narrow registers */
- (function(){var ou=C(Rr.mask0),i=C(Rr.mask1),warm=M.light?[110,96,64]:[224,214,186];
-  (r.maskRing||[]).forEach(function(m,k){var v=clamp(m.w/10,0,1),t0=k/6+.004,t1=(k+1)/6-.004;
-   M.L.masks.push('<path data-h="'+M.hid({k:'mk',o:m})+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(warm,.04+v*.32)+'"/>');});})();
+ /* archetypes, a narrow register */
  var archAt={};
  (function(){var ou=C(Rr.arch0),i=C(Rr.arch1),mid=C((Rr.arch0+Rr.arch1)/2),gc=M.accent;
   BANDS.forEach(function(b){var Sx=M.sector[b];if(!Sx)return;
@@ -1114,7 +1110,6 @@ function frSig(r,W_,H_){
  SI.forEach(function(l){a.push((+lawNow(l.nm)||0).toFixed(2),typeof lawIn==='function'&&lawIn(l.nm)?1:0);});
  for(var d=0;d<DOMAINS.length;d++)a.push((+DOMAIN[d]||0).toFixed(3));
  (r.aff||[]).forEach(function(v){a.push((+v||0).toFixed(3));});
- (r.maskRing||[]).forEach(function(m){a.push((+m.w||0).toFixed(2));});
  [r.sabs,r.cxs,r.hys,r.sups].forEach(function(L){a.push(L.length);L.forEach(function(o){a.push(o.nm,(+o.w||0).toFixed(2));});});
  verpRead().forEach(function(v){a.push(v.pct);});
  a.push(((CURP&&CURP.story&&CURP.story.entries)||[]).length,CURP?(CURP.id||CURP.nm||''):'');

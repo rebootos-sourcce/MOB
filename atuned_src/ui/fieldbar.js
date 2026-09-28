@@ -87,8 +87,11 @@ const VICON=[
    hundred and twenty places, and whether that sweep goes product wide is his
    call, asked in the round's report rather than done here by default.
    Laws and Character keep their names: Laws is still open between the
-   options he named, and Character to Masks would put two buttons on this bar
-   with one name, since masks below is already a layer. */
+   options he named, and Character to Masks would have put two buttons on
+   this bar with one name while masks was a layer here. It is not one now:
+   he ruled the masks off every sub menu and onto the Body's figure, CH in
+   TASKS.md, so the bar carries no Masks switch and bmDrawMasks in
+   ui/map.js draws them. */
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 112 addresses. Each mark is the charge held at one place.'},
@@ -113,9 +116,7 @@ const FB_LAYERS=[
  {k:'archetypes',g:'run',nm:'Archetypes',ic:fbFlay('archetypes'),
   tip:'The twelve archetypes, each set at the assemblage point it runs through.'},
  {k:'domains',g:'before',nm:'Domains',ic:fbFlay('domains'),
-  tip:'The nineteen blueprint domains: what you were born with, before any of it.'},
- {k:'masks',g:'before',nm:'Masks',ic:fbFlay('masks'),
-  tip:'The six masks, each at its weight.'}];
+  tip:'The nineteen blueprint domains: what you were born with, before any of it.'}];
 var FB_BYK={}; FB_LAYERS.forEach(function(l){FB_BYK[l.k]=l;});
 /* three clusters, kept apart by space alone. The names are for the folded
    panel and for a screen reader; the full row shows no words. */
@@ -203,9 +204,6 @@ function fbValues(r){
  var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];
  V.domains={p:dm,v:pc(dm),c:(d0&&rootPlain(d0.r))||'var(--gold)',
   m:'Ring and number: how far across the nineteen domains your blueprint reaches.'};
- var mk=(r.maskRing||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
- V.masks={p:mk?mk.w*10:0,v:mk?f1(mk.w):dash,c:'var(--gold)',
-  m:mk?'Ring and number: the heaviest mask, '+mk.nm+', at a weight of '+f1(mk.w)+'.':'No mask carries weight yet.'};
  /* NOTHING READ, NOTHING PRINTED. The rail's own rule: the ring draws empty
     and the pill carries a dash, because a figure beside "not read yet" is
     the contradiction the words exist to prevent. */
@@ -227,7 +225,7 @@ function fbCluster(g,label){
 /* A PINNED THING WHOSE LAYER HAS GONE OFF IS LET GO, or the rest of the web
    would stay dimmed around something no longer drawn */
 const FB_PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stories',sab:'saboteurs',
- cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains',mk:'masks'};
+ cx:'complexes',hy:'hyper',sup:'character',arch:'archetypes',dom:'domains'};
 function fbUnpin(){var p=S.pin;if(!p)return;
  var k=FB_PINK[p.kind]||(p.sq!==undefined&&p.b?'addresses':null);
  if(k&&!layerOn(k))S.pin=null;}

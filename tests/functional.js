@@ -96,8 +96,11 @@ ok(fig.vecColor!=='none'&&fig.vecColor!=='rgba(0, 0, 0, 0)','vector stroke colou
 ok(fig.seats===7,'7 seats drawn, got '+fig.seats);
 console.log(' ',JSON.stringify(fig));
 
-console.log('\n=== 7 energy layers, every persona ===');
-const layers=['bands','sab','cx','hyper','masks','pain','nerves'];
+console.log('\n=== the energy layers, every persona ===');
+/* CHANGED 28 SEPTEMBER, and changed rather than cut: masks was a layer here
+   and is not one any more. He ruled them off every sub menu and onto the
+   figure, CH in TASKS.md, so they are held below on the map, where they went. */
+const layers=['bands','sab','cx','hyper','pain','nerves'];
 const people=await page.evaluate(()=>PEOPLE.map(p=>p.nm));
 for(const nm of people){
  const i=people.indexOf(nm);
@@ -115,6 +118,71 @@ for(const nm of people){
   ok(res.shelfTxt>40,nm+'/'+L+': shelf empty ('+res.shelfTxt+' chars)');
   line.push(L+':'+res.nodes+'/'+res.shelfTxt);}
  console.log(' ',nm.padEnd(8),line.join('  '));}
+
+/* ---------------------------------------------------------------------------
+   THE SIX MASKS ARE PIXELS ON THE FIGURE, NOT A LAYER.
+
+   CH in TASKS.md, his words: "little pixelated dots start to fill in of
+   which one is associated with child, preteen, teen, etc. I don't want that
+   overlay on a sub menu, I want it on an overlay in that panel." They were a
+   ring band on the Field and a layer in the Body's row. Held here: no switch
+   anywhere names them, all six stand on the map's figure, each lights its
+   own weight in dots and the dots reach the pixels, the count moves when the
+   reading moves, and a press opens the mask's drill, which is the Field's DY
+   fix carried to where the masks went. */
+console.log('\n=== the six masks, as pixels on the figure ===');
+{
+ const was=await page.evaluate(()=>PMLAYER);
+ const frames=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ await page.evaluate(()=>{loadP(PERSON('Gordon'));setTab(TAB.ENERGY);PMLAYER='map';render();});
+ await frames(); await page.waitForTimeout(300);
+ const m=await page.evaluate(()=>{const r=compute(),cv=BM.cv,cx=cv.getContext('2d');
+  const lit=BMG.masks.map(k=>{const w=(r.maskRing.find(x=>x.nm===k.nm)||{w:0}).w,n=bmMaskLit(k,r);
+   /* the first lit dots, read off the canvas: bone, warm over cool */
+   let bone=0;k.sl.slice(0,n).forEach(p=>{const s=bmW2S(p.x,p.y),d=cx.getImageData(Math.round(s[0]*BM.dpr),Math.round(s[1]*BM.dpr),1,1).data;
+    if(d[0]>90&&d[0]>=d[2]+12)bone++;});
+   return {nm:k.nm,w:w,n:n,of:k.sl.length,bone:bone};});
+  return {row:[...document.querySelectorAll('#lbar [data-pml]')].map(b=>b.getAttribute('data-pml')),
+   bar:[...document.querySelectorAll('#fbar [data-fb]')].map(b=>b.getAttribute('data-fb')),
+   hits:[...document.querySelectorAll('#bmsv [data-bmmask]')].map(h=>h.getAttribute('data-bmmask')),
+   want:MASKS.map(x=>x.nm),lit:lit};});
+ ok(m.row.length>0&&m.row.indexOf('masks')<0,'the Body row carries no Masks layer, got '+m.row.join(','));
+ ok(m.bar.length>0&&m.bar.indexOf('masks')<0,'and the glass bar no Masks switch, got '+m.bar.join(','));
+ ok(m.hits.slice().sort().join()===m.want.slice().sort().join(),'all six masks stand on the figure, got '+m.hits.join(','));
+ ok(m.lit.every(x=>x.of>=20&&x.n===Math.round(Math.min(1,x.w/10)*x.of)),'each lights its own weight in dots, '
+  +m.lit.map(x=>x.nm+' '+x.n+'/'+x.of).join(', '));
+ ok(m.lit.some(x=>x.n>0),'on Gordon the masks carry dots');
+ ok(m.lit.every(x=>x.bone>=x.n*0.5),'and the dots reach the pixels, '+m.lit.map(x=>x.nm+' '+x.bone+'/'+x.n).join(', '));
+ /* live: charge raised under the same person, and the count follows it */
+ const live=await page.evaluate(async()=>{const k=BMG.masks.find(x=>x.nm==='Child');
+  const b0=bmMaskLit(k,compute());
+  CHARGES.forEach(c=>{S.charge[c]=10;}); render();
+  /* waited on the drawn count reaching the reading, not on a guess at how
+     long a frame takes; three seconds is the ceiling, not the expectation */
+  const b1=bmMaskLit(k,compute()), t0=performance.now();
+  while(k.shown!==b1&&performance.now()-t0<3000)await new Promise(r=>requestAnimationFrame(r));
+  return {b0:b0,b1:b1,shown:k.shown,ms:Math.round(performance.now()-t0)};});
+ ok(live.b1>live.b0&&live.shown===live.b1,'the dots fill in as the reading moves, Child '+live.b0+' to '+live.b1+', drawn '+live.shown+' in '+live.ms+'ms');
+ /* the press, aimed at a lit dot with no address or line under it */
+ await page.evaluate(()=>{loadP(PERSON('Gordon'));rdClose();render();});
+ await frames(); await page.waitForTimeout(200);
+ const pt=await page.evaluate(()=>{const sv=BM.sv.getBoundingClientRect();
+  for(const nm of ['Teen','Child','Adult','Preteen','Professional','Ideological']){const k=BMG.masks.find(x=>x.nm===nm);
+   for(const p of k.sl){const s=bmW2S(p.x,p.y),pk=bmPick(s[0],s[1]);if(pk.place||pk.sab)continue;
+    const e=document.elementFromPoint(sv.left+s[0],sv.top+s[1]);
+    if(e&&e.closest&&e.closest('[data-bmmask]')&&e.closest('[data-bmmask]').getAttribute('data-bmmask')===nm)
+     return {x:sv.left+s[0],y:sv.top+s[1],nm:nm};}}
+  return null;});
+ ok(!!pt,'a mask has a dot clear of every address and line to press');
+ if(pt){await page.mouse.click(pt.x,pt.y); await page.waitForTimeout(200);
+  const got=await page.evaluate(()=>{const d=document.getElementById('rdrill');
+   return {shown:d.style.display!=='none',t:d.textContent||'',held:bmHoldMask()};});
+  ok(got.shown&&got.t.indexOf(pt.nm)>=0&&got.held===pt.nm,'pressing the '+pt.nm+' mask opens its drill, '
+   +(got.shown?got.t.length+' chars':'nothing in the panel'));
+  await page.mouse.move(5,5);}
+ console.log('  '+m.lit.map(x=>x.nm+' '+x.n+'/'+x.of).join('  ')+'  live '+live.b0+'>'+live.b1);
+ /* put back what the loop above left: its last person and its last layer */
+ await page.evaluate(w=>{rdClose();PMPICK=null;PMLAYER=w;loadP(PEOPLE.length-1);render();},was);}
 
 /* ---------------------------------------------------------------------------
    THE PAIN MAP OPENS BLANK AND IS PAINTED ON.
@@ -716,8 +784,11 @@ ok(zsteps.map(x=>x.eff).join()==='0,1,2,3',
 ok(zsteps[0].n<zsteps[1].n&&zsteps[1].n<zsteps[2].n&&zsteps[2].n<zsteps[3].n,
  'and each layer adds real targets, got '+zsteps.map(x=>x.n).join(' '));
 ok(zsteps[1].kinds.indexOf('sab')>=0,'saboteurs resolve at the second layer');
-ok(zsteps[3].kinds.indexOf('dom')>=0&&zsteps[3].kinds.indexOf('mk')>=0,
- 'domains and masks resolve at the fourth');
+/* CHANGED 28 SEPTEMBER: this asserted domains AND masks at the fourth. The
+   masks left the wheel for the Body's figure, CH in TASKS.md, so the fourth
+   resolves the domains, and no mask target is left on the wheel at any depth. */
+ok(zsteps[3].kinds.indexOf('dom')>=0,'domains resolve at the fourth');
+ok(zsteps.every(x=>x.kinds.indexOf('mk')<0),'and no depth puts a mask on the wheel, it is on the figure');
 /* the button sets the floor: a gesture never takes away what a person chose */
 await page.evaluate(()=>{S.view=3;S.zoom=1;reframe();render();});
 await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
@@ -3996,7 +4067,8 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     before the readings that live in it */
  await fp.goto(FILE+'#landing',{waitUntil:'load'}); await booted(fp);
  const frame=pg=>pg.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
- const LAYERS=['domains','addresses','stories','masks','archetypes','patterns','chains','laws','gates','shadow'];
+ /* no masks: the six left both renditions for the Body's figure, CH */
+ const LAYERS=['domains','addresses','stories','archetypes','patterns','chains','laws','gates','shadow'];
 
  /* WHERE IT SITS, on the default. Measured against the stage and the glass
     bar, which are the two things the ruling placed it by. */
@@ -4209,7 +4281,11 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     reason that was its own. The saboteur is the control: its drill already
     opened before the fix, so a probe that cannot see an open panel fails
     there first. */
- const presses=[['dom',null],['mk','Ideological'],['arch','Magician'],['sab',null]];
+ /* CHANGED 28 SEPTEMBER: Ideological was pressed here as a mask. The masks
+    left all three pictures for the Body's figure, CH in TASKS.md, and their
+    press went with them: it is held on the figure in the energy block above,
+    so the DY fix is still gated, on the surface that now carries it. */
+ const presses=[['dom',null],['arch','Magician'],['sab',null]];
  await fp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);});
  for(const view of ['wheel','frames','dial']){
   await fp.evaluate(v=>{layPick(3);fviewSet(v);render();},view);
@@ -4886,8 +4962,17 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
  await wide.pg.click('#lfold'); await wide.pg.waitForTimeout(300);
  const e=await wide.pg.evaluate(()=>{const F=document.getElementById('fbar');
   return {open:!document.body.classList.contains('lshut'),stored:STORE.get('lcol'),folded:F.classList.contains('folded'),
-   row:[...F.querySelectorAll('.fb-b')].filter(x=>x.offsetParent).map(x=>x.getAttribute('aria-label'))};});
- ok(e.open&&e.stored==='open'&&e.folded&&e.row.join()==='Close the tools,Layers,Depth','opened, the column is stored open and the bar folds with its fold still first, '+JSON.stringify(e));
+   row:[...F.querySelectorAll('.fb-b')].filter(x=>x.offsetParent).map(x=>x.getAttribute('aria-label')),
+   tops:[...new Set([...F.querySelectorAll('.fb-b')].filter(x=>x.offsetParent).map(x=>Math.round(x.getBoundingClientRect().top)))].length};});
+ /* CHANGED 28 SEPTEMBER. This asserted the fold itself. The Masks circle left
+    the bar for the Body's figure, CH in TASKS.md, and one circle fewer is
+    what the full row needed to fit beside the open column at 1600, so it no
+    longer folds there. What the check was for is kept exactly: the row is
+    either whole on one line or folded to its fold, and never hangs a circle
+    under itself, and the fold leads it either way. */
+ const whole=!e.folded&&e.tops===1&&e.row[0]==='Close the tools'&&e.row.indexOf('Domains')>=0;
+ const folded=e.folded&&e.row.join()==='Close the tools,Layers,Depth';
+ ok(e.open&&e.stored==='open'&&(whole||folded),'opened, the column is stored open and the bar is whole on one line or folded, its fold first either way, '+JSON.stringify(e));
  await wide.pg.reload({waitUntil:'load'}); await booted(wide.pg);
  const f=await wide.pg.evaluate(()=>!document.body.classList.contains('lshut'));
  ok(f,'and a reload keeps the column open, because he chose it');

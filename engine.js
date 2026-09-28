@@ -1838,8 +1838,10 @@ function seatHz(b){
   for(var j=0;j<FLOWSEAT.length;j++)
    if(FLOWSEAT[j].k===PMBANDS[i].k)return FLOWSEAT[j].hz;}
  return null;}
+/* NO MASKS HERE. They were the fifth layer, and he ruled them off every sub
+   menu and onto the figure itself, CH in TASKS.md. ui/map.js draws them. */
 var PML=[['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes'],['hyper','Hyper'],
-         ['masks','Masks'],['pain','Pain'],['nerves','Flow']];
+         ['pain','Pain'],['nerves','Flow']];
 
 /* pain regions, front view. each owns a band set, a y-span on the figure, and
    now the boxes it occupies in the figure's own 100 by 100 space.

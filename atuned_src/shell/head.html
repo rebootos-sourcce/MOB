@@ -1514,7 +1514,7 @@ body:not(.tab-field) #frend{display:none!important}
 #frend.off-saboteurs .L-patterns,#frend.off-saboteurs .F-sab,
 #frend.off-complexes .T-cx,#frend.off-complexes .F-cx,#frend.off-hyper .T-hy,#frend.off-hyper .F-hy,
 #frend.off-character .T-sup,#frend.off-character [data-call=chains],
-#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains,#frend.off-masks .L-masks{
+#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains{
  opacity:0;visibility:hidden;pointer-events:none!important;
  transition:opacity var(--t-element) cubic-bezier(.55,.085,.68,.53),visibility 0s linear var(--t-element)}
 /* A LAYER ARRIVES AND LEAVES, FJ in TASKS.md: "where are my animations?" It
@@ -3052,7 +3052,7 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* the vector figure. stands in when the raster is absent, and it needs a
    resolved colour for its currentColor stroke. */
 .pm-vec{color:var(--ink)}
-.pm-seat,.pm-n,.pm-it,.pm-gr{cursor:pointer}
+.pm-seat,.pm-n,.pm-it,.pm-gr,.pm-mask{cursor:pointer}
 .pm-gr:hover{opacity:.14!important}
 .pm-lbl{font-family:var(--num);font-size:2.1px;fill:var(--ink);opacity:.92;
  paint-order:stroke;stroke:var(--bg);stroke-width:.55px;stroke-linejoin:round}

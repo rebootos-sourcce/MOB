@@ -179,14 +179,11 @@ function pmHeat(r){
  if(L==='bands'||L==='nerves'||L==='pain')return null;
  var src=(L==='sab')?r.sabs
    :(L==='cx')?r.cxs
-   :(L==='hyper')?r.hys.concat(r.sups)
-   :(L==='masks')?r.maskRing:null;
+   :(L==='hyper')?r.hys.concat(r.sups):null;
  if(!src||!src.length)return null;
  var by={},any=0;
  src.forEach(function(o){
-  var lv=(L==='masks')
-   ? W.filter(function(n){return o.bands&&o.bands.indexOf(n.b)>=0&&n.sq>=LOADED;})
-   : leaves(o);
+  var lv=leaves(o);
   var w=(o.w||0)/10;
   lv.forEach(function(n){
    var k=B2K[n.b]; if(!k)return;
@@ -237,10 +234,11 @@ function pmMarks(r){
         "bipolar · ADHD", and ui.js keeps it off a person's screen by name:
         mapshelf.js recorded this row as the one place still printing it. */
      sub:o.over?'overshot':(o.kind==='sup'?'character layer':'hyper-complex')};});
- if(L==='masks') return r.maskRing.map(function(m){
-   var lv=W.filter(function(n){return m.bands&&m.bands.indexOf(n.b)>=0&&n.sq>=LOADED;});
-   return {o:m,kind:'bead',band:(m.bands||['Heart'])[0],v:m.w/10,nm:m.nm,links:lv,
-     sub:(m.bands||[]).join(' + ')};});
+ /* NO MASKS LAYER. The six masks were a layer here, one press away in the
+    row above the figure, drawn as rings at the end of arcs like a pattern.
+    Ruled against in CH, TASKS.md: "I don't want that overlay on a sub menu,
+    I want it on an overlay in that panel." They are pixels on the map's own
+    figure now, bmDrawMasks below, with no switch. */
  return [];}
 function pmPlace(marks){
  marks.forEach(function(m){
@@ -297,7 +295,6 @@ function pmCount(r,L){
  if(L==='sab')   return r.sabs.length;
  if(L==='cx')    return r.cxs.length;
  if(L==='hyper') return r.hys.length+r.sups.length;
- if(L==='masks') return r.maskRing.length;
  return 0;}
 var PMFIRST=1;
 /* THE HEAD OPENS WHEN ITS SEAT IS PICKED.
@@ -702,7 +699,7 @@ function renderMap(r){
     is drawn as the arcs from its own centre of mass out to the addresses it
     holds. Weight sets the width. Hovering the rail lights its arcs here. That
     is a structure you can read at a glance and a list is not. */
- var TIERC={sab:PC.Throat,cx:PC.Solar,hy:PC.Sacral,sup:PC.Root,mask:PC.Crown};
+ var TIERC={sab:PC.Throat,cx:PC.Solar,hy:PC.Sacral,sup:PC.Root};
  var chain=marks.filter(function(x){return x.kind==='bead';});
  if(PMLAYER==='pain'&&PAINPICK){
   var reg=PAINREG.filter(function(p){return p.k===PAINPICK;})[0];
@@ -722,7 +719,7 @@ function renderMap(r){
  var show=PMPICK?chain.filter(function(x){return x.o===PMPICK;})
    :chain.slice(0,8);
  show.forEach(function(m){
-  var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
+  var kind=m.o.kind||'sab';
   var c=TIERC[kind]||'#DFCC7E';
   var on=(PMPICK===m.o);
   /* the pattern sits at the mean height of everything it stands on, pushed
@@ -924,11 +921,10 @@ function renderMap(r){
   sab:'M12 4 L19 18 H5 Z',
   cx: 'M12 4 A8 8 0 1 0 12 20 A8 8 0 1 0 12 4 M12 8 A4 4 0 1 1 12 16 A4 4 0 1 1 12 8',
   hy: 'M12 3 L20 8 V16 L12 21 L4 16 V8 Z',
-  sup:'M12 3 L14.5 9.5 L21 12 L14.5 14.5 L12 21 L9.5 14.5 L3 12 L9.5 9.5 Z',
-  mask:'M4 8 H20 V13 A8 8 0 0 1 4 13 Z'};
+  sup:'M12 3 L14.5 9.5 L21 12 L14.5 14.5 L12 21 L9.5 14.5 L3 12 L9.5 9.5 Z'};
  show.forEach(function(m){
   if(m.x==null)return;
-  var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
+  var kind=m.o.kind||'sab';
   var c=TIERC[kind]||'#DFCC7E', on=(PMPICK===m.o);
   /* the glyph says what tier of thing this is. The ring says where it sits.
      Three saboteurs are three of the same glyph, which is correct and says
@@ -1535,7 +1531,10 @@ var BMAMODE=[['A4','Fetter mark'],['A3','Point in patch'],['A1','Point']];
 /* the stage and the figure. The seats are not here: they are PMC. */
 var BMC={stage:[15,16,19],man:[22,24,30],edge:[239,237,232],grid:[40,43,52],ink:[230,231,234],
  dim:[154,156,164],acc:[126,184,212],cns:[239,237,232],auto:[126,184,212],som:[194,160,99],
- prop:[180,176,168],lit:[255,238,222],casing:[12,13,16]};
+ prop:[180,176,168],lit:[255,238,222],casing:[12,13,16],
+ /* the masks' bone, the warm the three Field pictures filled the mask band
+    with while it was a band, so the concept kept its colour when it moved */
+ mask:[224,214,186]};
 /* the heat ramp. Sacral to Root and no further, lifting toward white at the
    top the way a filament does. The alarm red is never in it: that colour
    means the instrument is wrong. */
@@ -1630,6 +1629,7 @@ function bmInit(host){
  G.heat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.mask=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.fieldVer=0;
+ G.masks=bmMaskGeo(G);
  bmRoutes(G,host);
  return (BMG=G);}
 function bmIn(G,v,x,y){return G.probe.isPointInPath(G.body[v],x+bmVX(v),y);}
@@ -1730,6 +1730,121 @@ function bmRegVal(r){var b=r.box,m=0,P=BM.paint[r.v];
  for(var i=0;i<P.length;i++){var v=P[i];if(!v)continue;var x=BMXA+(i%BMCOLS+.5)*BMU,y=BMYA+(((i/BMCOLS)|0)+.5)*BMU;
   if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]&&v>m)m=v;}return m;}
 function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
+
+/* ---------- the six masks, as pixels on the figure ----------
+   CH in TASKS.md, his words: "the masks are what block the character, and
+   all our light is behind the masks. It may be as a person's telling their
+   story, little pixelated dots start to fill in of which one is associated
+   with child, preteen, teen, etc. I don't want that overlay on a sub menu, I
+   want it on an overlay in that panel." And JQ put the panel here: "Our
+   masks should be on the body masks. So put all six masks here."
+
+   They were a ring band on all three Field pictures and a layer in the row
+   above this figure, each one press away and neither on a body. Both are
+   gone, and nothing switches this on or off.
+
+   WHERE EACH SITS. A mask is worn over seats, MASKS[].b, so each one's patch
+   is centred at the mean height of its own seats, which stacks them down
+   the front figure in the data's own order: Ideological in the head, Teen at
+   the throat, Preteen and Professional across the chest, Adult at the belly,
+   Child low in the pelvis. Masks whose seats land at the same height share
+   the row, side by side with a gap down the midline, so two masks are never
+   one patch. That split is read off the data and not written in, because
+   Preteen and Professional share Solar and Throat today and would be the
+   only pair only for as long as the roster says so.
+
+   THE DOTS ARE THE FIGURE'S OWN GRID, three to a 5 cm cell, so a mask's
+   pixels line up with the cells the pain paint fills, and only a pixel whose
+   centre is inside the silhouette is a place a dot can be: a patch at the
+   neck holds fewer than one across the chest, and it fills by its own share.
+
+   HOW MANY ARE LIT IS THE MASK'S WEIGHT, maskRing in engine/compute.js, the
+   same figure Knowledge and the Summary print: round(w over ten times the
+   places). The order they light in is a fixed scatter per mask, so a rising
+   weight only ever adds dots to the ones already lit and the patch reads as
+   filling in, not as a bar. A change eases in one dot at a time, which is the
+   reading moving and not a show put on for it: a first sight, a new profile
+   and reduced motion all land on the count at once. The front view only,
+   because a mask is worn on the face; on a phone turned to Back there is
+   none, which is the figure being honest about which side it shows. */
+/* FOUR ROWS AND NOT FIVE. Adult and Child centre 6.7 units apart, and at
+   five rows the gap between them rounded to one pixel on Gordon at 1600, so
+   the two read as one patch across the belly: the very merge the split
+   above exists to prevent. */
+var BMMP=BMU/3, BMMCOL=12, BMMPAIR=9, BMMGAP=4, BMMROW=4;
+function bmMaskGeo(G){
+ var at={}, rows=[], out=[];
+ MASKS.forEach(function(m){
+  var ys=m.b.map(function(b){return PMYP[B2K[b]];}).filter(function(y){return y!=null;});
+  if(!ys.length)return;
+  var y=ys.reduce(function(a,b){return a+b;},0)/ys.length, k=y.toFixed(1);
+  if(!at[k]){at[k]=[];rows.push({y:y,list:at[k]});}
+  at[k].push(m);});
+ rows.forEach(function(row){
+  var n=row.list.length, cw=n>1?BMMPAIR:BMMCOL, tot=n*cw+(n-1)*BMMGAP;
+  /* 50 is a lattice line, BMXA sits ten cells left of it, so a patch of
+     even width centres on the midline exactly */
+  var i0=Math.round((50-BMXA)/BMMP-tot/2), j0=Math.round((row.y-BMYA)/BMMP-BMMROW/2);
+  row.list.forEach(function(m,q){
+   var h=bmHashS(m.nm), sl=[], x0=1e9, y0=1e9, x1=-1e9, y1=-1e9;
+   for(var j=0;j<BMMROW;j++)for(var i=0;i<cw;i++){
+    var x=BMXA+(i0+q*(cw+BMMGAP)+i+.5)*BMMP, y=BMYA+(j0+j+.5)*BMMP;
+    if(!bmIn(G,0,x,y))continue;
+    sl.push({x:x,y:y,o:bmHash(h+j*37+i)});
+    x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}
+   if(!sl.length)return;
+   sl.sort(function(a,b){return a.o-b.o;});
+   out.push({nm:m.nm,m:m,sl:sl,box:[x0-BMMP/2,y0-BMMP/2,x1+BMMP/2,y1+BMMP/2],shown:null});});});
+ return out;}
+/* how many of a mask's places its weight lights. Nothing read, nothing lit. */
+function bmMaskLit(k,r){var m=null;
+ ((r&&r.maskRing)||[]).forEach(function(x){if(x.nm===k.nm)m=x;});
+ return (!m||r.unread)?0:Math.round(clamp(m.w/10,0,1)*k.sl.length);}
+function bmHoldMask(){
+ return (PMPICK&&typeof PMPICK==='object'&&!PMPICK.kind&&!PMPICK.bmReg&&PMPICK.nm)?PMPICK.nm:null;}
+/* painted in page pixels and snapped to them, because a pixel that lands
+   between two device pixels is a smudge and not a pixel. The empty places
+   stay faintly on, the way an unlit matrix shows its grid, so the shape a
+   mask will fill is there before any of it is filled. */
+function bmDrawMasks(g,vs,dt){
+ if(vs.indexOf(0)<0||!BMG.masks||!BM.r)return;
+ var sd=Math.max(2,Math.round(BMMP*BM.cam.z*0.7)), hold=bmHoldMask(), hov=BM.hoverMask;
+ /* painting is the one job that wants the body clear, so they step back */
+ var A=1-0.7*BM.pg;
+ g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
+ BMG.masks.forEach(function(k){
+  var want=bmMaskLit(k,BM.r);
+  if(k.shown===null||REDUCED)k.shown=want;
+  /* at least twelve dots a second, and never a tail. An ease alone took the
+     last dot a frame count to land that a slow frame rate never reached:
+     measured in the functional gate, 35.9 of 36 still drawn 900ms after a
+     change, which is a patch reading one dot short of its own weight. */
+  else{var d0=want-k.shown, st=Math.max(dt*12,Math.abs(d0)*Math.min(1,dt*4));
+   k.shown=Math.abs(d0)<=st?want:k.shown+(d0>0?st:-st);}
+  var lit=Math.floor(k.shown), part=k.shown-lit, on=(hold===k.nm||hov===k.nm);
+  k.sl.forEach(function(p,i){var s=bmW2S(p.x,p.y);
+   if(s[0]<-sd||s[1]<-sd||s[0]>BM.W+sd||s[1]>BM.H+sd)return;
+   var a=i<lit?.66:i===lit?.08+.58*part:.08;
+   if(on)a=i<lit?1:a*2;
+   g.fillStyle=bmRgba(BMC.mask,a*A);
+   g.fillRect(Math.round(s[0]-sd/2),Math.round(s[1]-sd/2),sd,sd);});});
+ bmTf(g);}
+/* the press and the name, in the svg over the canvas like the seats. A
+   patch is four pixels tall, under the tap floor, so its target is held to
+   44 page pixels high at the fitted view, centred on it; the seats come after
+   it in the svg, so a seat inside a patch still takes its own press. */
+function bmMaskHits(r){
+ var g=BM.sv&&BM.sv.querySelector('[data-bmmasks]'); if(!g||!BMG||!BMG.masks)return;
+ var hmin=BM.z0>2?44/BM.z0:0;
+ g.innerHTML=BMG.masks.map(function(k){var b=k.box,lit=bmMaskLit(k,r);
+  var m=((r&&r.maskRing)||[]).filter(function(x){return x.nm===k.nm;})[0]||{w:0};
+  var h=Math.max(b[3]-b[1],hmin), y=(b[1]+b[3])/2-h/2;
+  return '<rect class="pm-mask" data-bmmask="'+esc(k.nm)+'" x="'+b[0].toFixed(2)+'" y="'+y.toFixed(2)
+   +'" width="'+(b[2]-b[0]).toFixed(2)+'" height="'+h.toFixed(2)+'" fill="transparent"><title>'
+   /* a count and not a count against a total, CO-05: "31 of 48" reads as a
+      score, and a reading is not one. The total is the patch's own shape. */
+   +esc(k.nm)+' mask. It '+esc(k.m.v)+'. '+lit+(lit===1?' dot':' dots')+' filled, at a weight of '+(+m.w||0).toFixed(1)
+   +'.</title></rect>';}).join('');}
 
 /* ---------- the lines, off the real reading ----------
    A line is a saboteur compute() found at a weight of five or more, run
@@ -1838,6 +1953,9 @@ function bmSize(){
  [BM.cv,BM.still,BM.lit,BM.lit2].forEach(function(c){c.width=Math.max(1,Math.round(w*BM.dpr));c.height=Math.max(1,Math.round(h*BM.dpr));});
  BM.stillKey='';BM.litKey='';
  var f=bmFitCam(); BM.cam=f; BM.camT=null; BM.dirty=true;
+ /* the masks' targets are held to the tap floor at the fitted view, so they
+    are measured again whenever the fitted view is */
+ if(BM.r)bmMaskHits(BM.r);
  if(was!==BM.phone)bmBars();}
 
 /* ---------- the dulling, as a timeline ---------- */
@@ -1955,6 +2073,9 @@ function bmDraw(dt){
   if(BM.mode==='pain'&&BM.hoverCell&&BM.hoverCell.v===v){var hc=BM.hoverCell;
    g.strokeStyle=bmRgba([240,210,184],.85);g.lineWidth=px*1.4;g.strokeRect(BMXA+hc.c*BMU+bmVX(v),BMYA+hc.r*BMU,BMU,BMU);}
   g.restore();});
+ /* the masks, over the light and the body and under every reading mark, so
+    a line or an address is never behind a dot */
+ bmDrawMasks(g,vs,dt);
  /* 4. the live layer: pain lines, limb centres, cables, addresses, names */
  if(gain>0.02)bmPainLines(g,vs,gain);
  bmLimb(g,vs,dl);
@@ -2196,7 +2317,9 @@ function bmWire(){
   var p=at(e),pk=bmPick(p[0],p[1]);
   /* a seat is pressed as a seat, except while painting, when it is body */
   var seat=(BM.mode!=='pain'&&e.target.closest)?e.target.closest('[data-seat]'):null;
-  BM.drag={x:p[0],y:p[1],cx:BM.cam.x,cy:BM.cam.y,moved:false,seat:seat,
+  /* and a mask as a mask, on the same terms */
+  var mask=(BM.mode!=='pain'&&!seat&&e.target.closest)?e.target.closest('[data-bmmask]'):null;
+  BM.drag={x:p[0],y:p[1],cx:BM.cam.x,cy:BM.cam.y,moved:false,seat:seat,mask:mask,
    paint:BM.mode==='pain'&&!!pk.cell,first:true,painted:{},lastReg:pk.reg||null};
   if(BM.drag.paint||bmZoomed()){try{sv.setPointerCapture(e.pointerId);}catch(x){}}
   if(BM.drag.paint)bmPaintAt(pk);});
@@ -2213,6 +2336,8 @@ function bmWire(){
   if(!pk.sab&&BM.hoverSab&&BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.hoverFrom='map';
   BM.hoverPlace=pk.place||null;BM.hoverView=pk.v;
+  var mh=(BM.mode!=='pain'&&e.target.closest)?e.target.closest('[data-bmmask]'):null;
+  BM.hoverMask=mh?mh.getAttribute('data-bmmask'):null;
   var tk=pk.place?'p'+BMG.places.indexOf(pk.place)+':'+pk.v:pk.sab?'s'+pk.sab.nm:'';
   if(tk!==BM.tipKey){BM.tipKey=tk;
    if(pk.place)bmTip(Object.assign(bmPlaceTip(pk.place),{x:p[0],y:p[1]}));
@@ -2220,7 +2345,7 @@ function bmWire(){
    else bmTip(null);}
   BM.dirty=true;});
  sv.addEventListener('pointerleave',function(){
-  BM.hoverReg=null;BM.hoverCell=null;BM.hoverPlace=null;if(BM.hoverFrom!=='rail')BM.hoverSab=null;
+  BM.hoverReg=null;BM.hoverCell=null;BM.hoverPlace=null;BM.hoverMask=null;if(BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.tipKey='';bmTip(null);BM.dirty=true;});
  sv.addEventListener('pointercancel',function(){BM.drag=null;});
  sv.addEventListener('pointerup',function(e){
@@ -2232,6 +2357,13 @@ function bmWire(){
   var pk=bmPick(p[0],p[1]);
   if(pk.sab&&!pk.place){var o=pk.sab.o, same=(bmHoldNm()===o.nm);
    PMPICK=same?null:o;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
+  /* A MASK OPENS ITS DRILL, the fix DY made on the Field carried to where
+     the masks went: "I click on Ideological, I get nothing." pmAnswer sends
+     a pick with no kind to the codex's mask entry, which runs runMaskDrill.
+     Pressed again, it is put down, as a line is. */
+  if(D.mask&&!pk.place){var nm=D.mask.getAttribute('data-bmmask'),
+    mo=((BM.r&&BM.r.maskRing)||[]).filter(function(x){return x.nm===nm;})[0];
+   PMPICK=(!mo||bmHoldMask()===nm)?null:mo;S.pin=null;BM.dirty=true;pmAnswer(PMPICK);return;}
   if(pk.reg)bmOpenReg(pk.reg,true);});
  sv.addEventListener('dblclick',function(e){var p=at(e),pk=bmPick(p[0],p[1]);if(pk.reg)bmZoomReg(pk.reg);});
  sv.addEventListener('wheel',function(e){e.preventDefault();var p=at(e),w=bmS2W(p[0],p[1]);
@@ -2650,7 +2782,7 @@ function bmBuild(host){
   +'aria-label="The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them">'
   +'<g class="pm-vec"><path d="'+bmOutline()+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
   +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g>'
-  +'<g data-bmseats=""></g></svg></div>'
+  +'<g data-bmmasks=""></g><g data-bmseats=""></g></svg></div>'
   /* after the well, so the well's flex keeps the rest of the height and the
      figure is fitted to what is left */
   +'<div id="bmregs" role="group" aria-label="Side and region" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
@@ -2672,8 +2804,10 @@ function bmRender(r){
  var who=(typeof CURP!=='undefined')?CURP:null;
  if(!BM.paint||BM.who!==who||BM.whoI!==S.who){
   BM.paint=[new Float32Array(BMCOLS*BMROWS),new Float32Array(BMCOLS*BMROWS)];
-  BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);}
- BM.r=r; bmSabRefresh(r); bmMarkVals();
+  BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);
+  /* another person's masks are not this one's filling in */
+  BMG.masks.forEach(function(k){k.shown=null;});}
+ BM.r=r; bmSabRefresh(r); bmMarkVals(); bmMaskHits(r);
  var seats=flSeats(),speed=flSpeed(),loadedTot=W.filter(function(n){return n.sq>=LOADED;}).length;
  var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
  var dom=seats.slice().sort(function(a,b){return b.hot-a.hot||b.load-a.load;})[0];

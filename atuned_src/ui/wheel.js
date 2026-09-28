@@ -651,7 +651,9 @@ function verpArrows(cr0){
      Chains      how a pattern compounds into a complex, a hyper complex and
                  a character layer. Drawn as chords, which is why the word
                  survives at all
-     Blueprint   domains, masks and laws, and this one already landed
+     Blueprint   domains and laws, and this one already landed. It named
+                 masks as well until they left the Field for the Body's
+                 figure, CH in TASKS.md
 
    Blueprint keeps its name because it is the one the owner said he
    understood, and because the rail already calls those blueprint domains.
@@ -665,8 +667,8 @@ const VIEWS=[
   tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
   tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.'},
- {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 6 masks, 21 laws',
-  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.'}];
+ {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 21 laws',
+  tip:'What was there before any of it. Nineteen domains, and the twenty one laws underneath the whole reading.'}];
 
 /* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
    a separate control for the same idea: how much of the construct is drawn.
@@ -711,8 +713,12 @@ const WHEEL_ZOOM_MAX=7;
    whether it should, with "only closer" as its default, and he has not ruled,
    so the shipped behaviour stands and the bar marks a layer zoom brought in
    rather than hiding the fact. It never takes off a layer the person chose. */
+/* MASKS ARE NOT A LAYER. They were the second switch at Blueprint, a ring
+   band on all three pictures, and he ruled them off every sub menu and onto
+   the figure, CH in TASKS.md. The Body page draws them, bmDrawMasks in
+   ui/map.js, and nothing here or on the glass bar switches them. */
 const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs'],
- ['complexes','hyper','character','archetypes'],['domains','masks']];
+ ['complexes','hyper','character','archetypes'],['domains']];
 var LAYSET=null;
 function layPreset(i){var s={};for(var j=0;j<=i&&j<LAYADD.length;j++)LAYADD[j].forEach(function(k){s[k]=1;});return s;}
 function layChosen(){return LAYSET||layPreset(S.view|0);}
@@ -1140,7 +1146,7 @@ function drawWheel0(r,L){
     first entry is its second: patterns arriving come in at their own ring and
     do not fly out of the core */
  const R={shell:shellR,arch:U*.60,sab:lAt([U*.56,U*.56,U*.545,U*.50],LF),cx:U*.425,hy:U*.335,
-  sup:U*.255,dom:U*.93,mask:U*.685};
+  sup:U*.255,dom:U*.93};
  const coreBase=lAt([U*.30,U*.26,U*.20,U*.155],LF);
  /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
     The shell, or at Blueprint the domain ring outside it. Published for the
@@ -1290,16 +1296,6 @@ function drawWheel0(r,L){
      past the ring's edge at Chains, and five did at 1600. */
   radialTxt(ARCH[j].nm,am,R.arch-U*.024,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400,true);
   HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}});
-
- /* --- masks, D only --- */
- lay('masks',()=>r.maskRing.forEach((m,i)=>{
-  const a0=i/6*TAU-Math.PI/2,a1=a0+TAU/6,v=clamp(m.w/10,0,1),am=(a0+a1)/2;
-  arcP(R.mask-U*.019,R.mask,a0+.01,a1-.01);
-  g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
-  /* inward, for the archetypes' reason: outward, Professional and
-     Ideological crossed the shell and the domain ring past it */
-  radialTxt(m.nm,am,R.mask-U*.026,11.5,ink,.24+v*.56,400,true);
-  HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});}));
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
