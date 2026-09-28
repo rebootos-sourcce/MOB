@@ -23885,3 +23885,22 @@ Cloudflare API token added to this session's own environment secrets,
 is named plainly in the next report rather than glossed over, since it
 is the one step that is his to give and cannot be done from this side
 regardless of authorization.
+
+## The container restarted mid-round. The disk survived, the agents did not.
+
+Not his words, an operational note for the record. The session's
+container restarted while four dispatches were still in flight (the
+Compass five-paths research, the discover/play/flow nav rebuild, the
+avatar Becoming redesign, and the body map icon simplification), plus
+several of their own internal gate-waiting sub-tasks. Each agent
+process itself is gone, so none of their narrated reports, screenshot
+lists or self-verification tables exist any more.
+
+What was checked directly rather than assumed: the working tree's
+files were not wiped, `BUILD.sh` still builds clean (div balance 0, no
+em dashes), and `tests/engine.js` reads 1800 passed, 0 failed, up from
+1793 before this round, so the disk state looks complete rather than a
+mid-write fragment. Verifying each of the four pieces from the code
+itself, without the reports that would normally cross check them, and
+logging what is found in each case rather than assuming any of them
+finished cleanly.
