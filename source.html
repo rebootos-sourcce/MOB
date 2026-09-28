@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v851 debbabf 2026-09-28 16:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v856 c43d99f 2026-09-28 17:36"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -889,7 +889,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    The boxes come off. What is left is the word, the underline under the one
    you are on, and one hairline under the whole strip, which is the shape a
    tab strip has had since tabs were paper. */
-.tabtop{font-weight:350;letter-spacing:.012em;
+.tabtop{font-weight:350;letter-spacing:.012em;font-size:12px;
  background:transparent;border-color:transparent;border-radius:0;
  padding-left:11px;padding-right:11px}
 .tabtop:hover{background:transparent;color:var(--ink)}
@@ -998,7 +998,13 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    letter of the section that opened it. The hairline under the strip is its
    border and still runs the full width, because padding sits inside it. */
 @media not all and (max-width:720px){
- .top{flex-wrap:wrap}
+ /* THE SECONDARY ROW, TOLD TO TAKE LESS OF THE SCREEN. His words: "the
+    secondary navigation space, shrink down by 10 pixels. It's eating up too
+    much real estate." The tab buttons themselves keep the 44px tap floor
+    tests/design.js gate 8 holds every interactive control to, so the 10px
+    comes from the space around the row instead: 4px off the gap between the
+    two rows, 6px off the padding under the second one. */
+ .top{flex-wrap:wrap;row-gap:2px;padding-bottom:3px}
  .top #tabbar,.top:has(#status:not(:empty)) #tabbar{order:1;flex:1 1 100%;max-width:none;
   padding-left:var(--secx,0px)}}
 /* THE SEARCH, KC: one circle where help was, and the field rolls out to its
@@ -44121,5 +44127,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002884415"></div>
+<div id="eof" hidden data-len="002884895"></div>
 </body></html>
