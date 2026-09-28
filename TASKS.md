@@ -24496,3 +24496,10 @@ entirely. fix - priority."
   is where he keeps expecting it. TAB.ENERGY's `.sec` field moves
   from discover back to play, no integer touched, the tests and the
   markup updated with it.
+
+His follow up, verbatim: "move the masks to (the pixes masks of a
+persons life to Play. when all this is done, give me a fresh build."
+The masks are not their own door, they draw on the same Intake page
+that round LD above just moved, so moving Intake to Play moves them
+with it; nothing further to build for this specific ask. A build
+follows once the fix is gated.
