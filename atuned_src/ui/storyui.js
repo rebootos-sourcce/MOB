@@ -537,7 +537,7 @@ function srcPaint(){
  var why=turn.move==='open'?'':srcWhy(heard);
  /* an id and no class: the shell carries no rule for it, and the design gate
     fails a class with no rule. Found by its id, the way the house finds a host. */
- if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why release it</span>'
+ if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
   +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  h.innerHTML=o;
  var said=turn.move==='open'?SRC_OPEN:(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
