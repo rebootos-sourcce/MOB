@@ -24876,3 +24876,13 @@ toggle, matching "rendering for the UI"), Security, Privacy, Billing,
 Help. Screenshotted all three of the sections his words named
 directly. Not rebuilt, since it already answers what he described;
 reported rather than duplicated.
+
+**"Do those two, then give me a new build."** Both already landed
+before he asked; ran the full gate suite clean one more time before
+shipping rather than trusting the earlier runs: `tests/engine.js` 1836
+passed, `tests/design.js` 182 passed alone (the one frame rate flake
+from running three gates at once did not reproduce running by itself),
+`tests/collide.js` 351 passed, `tests/functional.js` 1292 passed, all
+zero failed, voice check 22 findings 0 stopping. `v869`, commit
+`a7144e7`, source.html md5 `43f54f9e90966e021041c79e77bb6b50`. Packed,
+the tracked delivery build refreshed to match, sent as an attachment.
