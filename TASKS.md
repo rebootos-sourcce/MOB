@@ -24547,3 +24547,34 @@ complete before the tokens are out?"
   No promise of finishing before any ceiling; a build ships the
   moment each piece is real and gated rather than being held to
   bundle everything.
+
+## LF. "Make a build when complete", and it landed
+
+His words, verbatim: "Make a build when complete."
+
+- **Both doors are in and independently verified.** Registers, the
+  point cloud as a fourth Compass view, live from `compute()`, not
+  the mockups: seven nested shells by seat tone, the 108 addresses as
+  falling point patches, seven seat toggles, saturation raised 30
+  percent. Masks, its own door under Play after Compass: the same
+  overlay that lived one click inside Intake, now a tab of its own,
+  Field, Intake, Compass, Masks, in that order.
+- **Verified independently of the two seats that built them**, in an
+  isolated worktree, gate by gate, matching their own reported
+  numbers exactly: BUILD.sh 2,884,135 bytes, BUILD-engine.sh 482
+  exports host free, `tests/engine.js` 1836 passed, `tests/collide.js`
+  351 passed, `tests/functional.js` 1292 passed, all zero failed. Both
+  screens also checked by eye: the Masks tab shows one front figure
+  with the masks overlay and no stray column; Registers shows the
+  seven-shell point cloud with its seat toggles.
+- **A pre-existing defect both seats found and neither caused, fixed.**
+  `.secb`, the section-bar button, was declared in two separate CSS
+  blocks, one setting padding and one setting display, which
+  `tests/design.js`'s own collision gate exists to catch; `.sn`, the
+  section word span the pixel-alignment code measures, had no CSS
+  rule at all. Merged into one `.secb` block, added the missing `.sn`
+  rule. `tests/design.js` now reports zero findings, where it carried
+  these same two for several rounds.
+- **Rebuilt clean and shipped.** `v851`, commit `3acf076`, source.html
+  md5 `93bc355f8560a3ec94ce869389206379`. Packed and sent as an
+  attachment.
