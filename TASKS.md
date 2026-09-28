@@ -23601,3 +23601,71 @@ split) are routed to build in this round; the ones that reverse
 standing canon (archetype percentage) or need a redrawn concept
 (gravity as warp, not pulse) are named plainly for his confirmation
 rather than guessed into code.
+
+## KH. The avatar screen rejected as too much text, tags linked to the lexicon, archetypes lose their percentage, the Cloudflare hookup asked for plainly, and gravity muddies against round KG
+
+His words, verbatim: "I think what I want with the avatar system is for
+the question to be on the right menu. Uh, I'm not liking this current
+design. The hero graphic, I just wanted to take up the majority of the
+space. There's way too much text all over the screen. We should be
+using visual systems. The text field should say you're setting up your
+avatar. We want to find out who it needs to become and who and what it
+needs to shed. Select each ring and tell us the story. of who you're
+becoming and who you're not. And then all of the limiters should be
+sniffed out. and then the opposite should be identified. And then
+there should be tags associated with those chakras so that you can
+find the stories associated with it. And from there, that person can
+add more tags or remove tags. I like that. And the tags are just
+linked to the lexicon of the app. So when I'm ready for the app, when
+I'm ready to hook up a tune to a tune.world, do I redirect it to
+GitHub? Like, how do I do that? Give me the file for Cloudflare. Give
+me the files I need for Cloudflare, and I'll post those up now and
+then share the link with you. Oh, purchase awards for the archetype.
+I, I hear what you're saying with the percentage. You either embody it
+or you don't. And how it runs through your other patterns. Okay, I
+agree. Let's take the percentages off archetypes. I think the pulsing
+rings and the gravity. The heavier the gravity, the more the
+pulsation. Cool, we're making great progress. Let's get everything
+wired in. Give me the latest attuned."
+
+Sorted by destination:
+
+- **The avatar Becoming screen just shipped (`9fa7d9e`) is rejected on
+  sight, not tweaked.** His words name a full redesign: the hero
+  graphic (the seat symbol/ring) takes the majority of the screen, the
+  intake questions move to a right hand menu rather than sitting under
+  a subtab, and the surrounding text is cut hard in favour of visual
+  systems, down to one line, his own words for it: "You're setting up
+  your avatar. We want to find out who it needs to become and who and
+  what it needs to shed. Select each ring and tell us the story of who
+  you're becoming and who you're not." What the sniffer finds
+  (limiters and their opposite) stays, but a new tagging layer sits on
+  top of it: every chakra carries tags, a person can add or remove
+  them, and the tags are drawn from the app's own lexicon rather than
+  invented per screen, so a tag always means the same thing it means
+  everywhere else in the product. This is new work, not a fix to
+  round JP's build.
+- **Archetypes lose their percentage outright.** Not the story-driven
+  percentage he floated at round KG, and not the fixed domain
+  percentage that shipped: he heard the shipped reasoning (an
+  archetype is embodied or it is not, structural rather than a dial)
+  and ruled the percentage off the page entirely, replaced by whether
+  it is embodied and how it runs through the person's other patterns.
+  This resolves the conflict named at round KG in his own favour of
+  the standing canon, not a reversal of it.
+- **Gravity is muddied against round KG, not resolved.** KG described
+  it as a gravity well, the figure's own geometry warping around a
+  heavy node. This round instead confirms the pulsing rings already
+  built, scaled by how heavy the gravity is: "the heavier the gravity,
+  the more the pulsation." Logged as a real tension between the two
+  rounds rather than picked for him, since they describe different
+  visuals.
+- **The Cloudflare hookup, asked for the concrete way he can do it
+  himself:** "Give me the files I need for Cloudflare, and I'll post
+  those up now and then share the link with you." Answered directly in
+  the next report rather than guessed at, since there is no file to
+  hand over: the connection is made inside Cloudflare's own dashboard,
+  which reaches into GitHub directly once he authorises it there.
+- **A build is asked for**, "give me the latest attuned," per the
+  standing rule: packed, attached, never rendered, with the commit and
+  its md5 stated.
