@@ -23739,3 +23739,24 @@ at GoDaddy, parked and not serving anything he relies on. `atuned.app`,
 tried and it did not work, is dropped. The concrete next step (the
 GoDaddy nameserver change, and updating this codebase's own references
 to `atuned.app`) is answered directly in the next report.
+
+## KM. The footer spacing and colour still wrong against round JZ, and the nav reorganization pressed again
+
+His words, verbatim: "the attuned logo powered by the source OS
+underneath. I said I want 15 pixels between source and attuned.
+They're too tight. The source OS is too white. I said I want the
+colors 343434 hex. I also said I want the menus put into Discover Play
+Flow. I've already given you what I want to do that. Right now, and
+then give me a"
+
+Two real discrepancies against what shipped at round JZ (`f5a5cf8`,
+which reported "#323232, 15px apart" as already built and verified):
+he now says the spacing still reads tight and the colour still reads
+too pale, and gives a slightly different hex, `343434` against the
+round JZ `323232`. Not re-guessed at: routed as a real bug against a
+claimed-done item, with his newest number taken as current.
+
+The navigation reorganization (round KC, discover/play/flow) was
+logged as backlog, built only where a simple win, and he is now
+pressing for it directly rather than leaving it queued. Routed to
+build.
