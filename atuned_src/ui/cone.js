@@ -54,6 +54,11 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
     the pulse scaled by weight, round KH; on is the gravity well, round KG.
     A mockup switch for him to choose by looking, not a ruling. */
  well:false,
+ /* heat: round KR's radiance overlay on the needle, off by default. The
+    engine's radiance drawn through the whole volume of the figure, dimmed
+    where a seat holds charge and where the field bends off the level
+    (ndlHeatField, further down). A layer like Layers, not a mockup switch. */
+ heat:false,
  /* ZOOM, round KQ: "I want to be able to zoom in." z, zx and zy are what is
     drawn, the scale and the pan in canvas pixels about the canvas's centre;
     the T three are where a press, a scroll or a pinch asked it to go, and the
@@ -1065,6 +1070,27 @@ const NDL_GAP=0.13;      /* half the limbo, as a share of the half height */
 const NDL_SLAB=0.88;     /* the limbo ring's radius, as a share of a base's */
 const NDL_REF_UP=80, NDL_REF_DN=20;  /* the teachers' ring and its mirror */
 const NDL_SEC=24, NDL_N=8*NDL_SEC;
+/* THE RADIANCE MESH, round KR: six columns a face, so forty eight round the
+   turn, and a row every five points of coherence, eight up each pyramid and
+   four across limbo. HQ is the corners' heights top to bottom; the limbo
+   rows repeat 60 and 40 because the figure's radius steps there, from a
+   base's to the limbo ring's, and a cell spanning the step would lie across
+   nothing. Declared above NDL, whose arrays are sized from them. */
+/* AND TWELVE COLUMNS A FACE, NOT SIX. At six the stepped field drew as
+   wedges a face wide, which read as a rendering fault and not as heat:
+   measured on Sofia at 1600, her bent desire came out as three dark slabs
+   with the far half's slabs showing through between them. At twelve it is
+   one body with stepped edges. */
+const NDL_HC=96, NDL_HL=10;
+/* the glow at full radiance, the veil at its deepest, and the width of one
+   step as a share of the mean (ndlHeatDraw). The far half is drawn at 0.45
+   of the near, the near faces' own share of the far ones in ndlFaces. */
+/* ONE IS A STEP'S CENTRE, NOT ITS EDGE. The first cut put a boundary at
+   exactly the mean, so a field with nothing wrong in it, Rosa, whose cells
+   sit between 0.97 and 1.02 of her mean, flickered between two steps and
+   drew faint rectangles round her apex that were noise and not reading. */
+const NDL_HEAT_G=0.32, NDL_HEAT_S=0.62, NDL_HS=0.125, NDL_HR=(NDL_HL-1)*NDL_HS;
+const NDL_HQ=[100,95,90,85,80,75,70,65,60, 60,55,50,45,40, 40,35,30,25,20,15,10,5,0];
 /* THE FIVE PATHS, from the glossary's own entry: "Krishna, flow. Buddha,
    awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal."
    Christ is written Jesus, because the canon ruled one figure one name. The
@@ -1100,7 +1126,18 @@ var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
     last frame, so a beat can be told from the frame it lands on. */
  tp:new Float32Array(8), ta:new Float32Array(8), tw:new Float32Array(8), tph:new Float32Array(8),
  tt:new Float32Array(8), gph:new Float32Array(8), cur:0,
- gx:new Float32Array(NDL_N+1), gy:new Float32Array(NDL_N+1)};
+ gx:new Float32Array(NDL_N+1), gy:new Float32Array(NDL_N+1),
+ /* THE RADIANCE FIELD'S STATE, round KR. gsq is each axis's mean charge
+    out of ten, kept by ndlGrav before it normalises, so the heat reads the
+    same walk of the record the gravity does and not a second one. hx and hy
+    are the mesh's corners, hl each cell's level, hf its raw strength, hn
+    whether its column faces the viewer; hs and hc are the shell and the
+    clearance splined round the turn once per column. */
+ gsq:new Float32Array(8),
+ hx:new Float32Array(23*(NDL_HC+1)), hy:new Float32Array(23*(NDL_HC+1)),
+ hl:new Int8Array(20*NDL_HC), hf:new Float32Array(20*NDL_HC), hn:new Int8Array(NDL_HC),
+ hs:new Float32Array(NDL_HC), hc:new Float32Array(NDL_HC),
+ hEs:null, hEc:null, hCol:null, hSig:'', hR:0};
 /* the figure's box. Read once per canvas size: the top keeps room for the
    crown of five and the halo, the bottom for the fork, and on a desk the
    sides keep clear of the two name rails, which are absolute over the canvas
@@ -1274,10 +1311,170 @@ function ndlGrav(){
  var sum={}, cnt={}, A=W_ADDR(), mx=0, i;
  for(i=0;i<A.length;i++){var b=A[i].b; sum[b]=(sum[b]||0)+(A[i].sq||0); cnt[b]=(cnt[b]||0)+1;}
  for(i=0;i<8;i++){var sb=MIRROR[i].seat; NDL.grav[i]=cnt[sb]?sum[sb]/cnt[sb]:0;
+  NDL.gsq[i]=NDL.grav[i];
   if(NDL.grav[i]>mx)mx=NDL.grav[i];}
  /* nothing held anywhere is no gravity, not an even pull everywhere */
  for(i=0;i<8;i++)NDL.grav[i]=mx>0.05?NDL.grav[i]/mx:0;
  return NDL.grav;}
+/* ============================================================
+   THE RADIANCE, AS HEAT THROUGH THE WHOLE FIGURE. Round KR, 28 September.
+
+   His words: "Add for the compass an overlay heat map for the radians. So as
+   a field of the full volume radiant, so as this field is distorted, you can
+   see the radiance as it's either diminished because of the SQ and how the
+   field is distorted." Radians is radiance: compute() already returns one,
+   the length of the X, Y and Z reading over root three, which Summary prints
+   as a percent and the Field's wash fades by. It was a single number. This
+   is where in the volume it is short.
+
+   ONE NUMBER, SPREAD, NOT A SECOND NUMBER. Every cell of the mesh gets a
+   raw strength f, and what a cell carries is f over the mean f of the whole
+   mesh: one is your radiance, under one is short of it. So the average of
+   the field is the radiance the engine reports, the same way the shell's
+   mean is CQ, and the two cannot disagree. Multiplying radiance by the
+   charge again would count the charge twice, because Z is already Ig times
+   one minus SQm.
+
+   f IS HIS TWO CAUSES, AND NOTHING ELSE.
+     the SQ     how clear the axis's seat is of charge, one minus its mean SQ
+                out of ten, splined round the turn between the eight axes.
+                The same mean the gravity weighs, read off gsq.
+     the bend   where the seat's laws, the shell, stand off your level. The
+                band between the two is the part of the field that has been
+                pulled out of true, and inside it the light drops by up to
+                eight tenths, full at twenty five points of bend (the tension
+                line's own full), easing off above and below the band on a
+                width of eight points. A level field has no band.
+   So a figure with nothing held and nothing bent is lit evenly through its
+   whole volume, which is his "ball of light", and a seat pulled forty points
+   under the level, Sofia's desire, is a dark tongue from her level down to
+   where that seat's laws sit. No height gradient is added: he named two
+   causes and a third would be a reading this file made up.
+
+   OVER GLOWS, UNDER SINKS, the figure's one rule for light, and no red and
+   no green. The whole volume glows in the accent, Source's colour, as
+   bright as the engine's radiance; a cell short of your radiance has the
+   well's own colour laid over it, which is the light taken back. Ten steps,
+   each an eighth of your radiance wide. Stepped rather than smooth, because
+   a smooth field on a canvas is a fill per cell, near two thousand a frame;
+   ten steps is ten paths a side, the same one path per colour the over and
+   under bands already use, and the step edges read as contours.
+
+   THE FIRST CUT WAS ONE ABSOLUTE RAMP, well to accent by the drawn heat,
+   and it could not be read. Marcus's four ten point bends dim his radiance
+   by about three tenths, and at the overlay's strength that came out as a
+   seven per cent change on screen: an even blue grey tint over his whole
+   figure. At Gordon's radiance of 0.10 every cell fell in the bottom two of
+   ten steps, so his charge pattern, which is the reading, was one flat
+   dark. Stepping by the share of your own radiance and letting the
+   radiance set the brightness keeps both: how bright the field is, and
+   where in it the light is short.
+
+   The mesh bends with the sheet when the well is on, because it is the
+   figure, and is off for the unread profile, where there is no radiance to
+   spread. Held still under reduced motion, as it is anyway: the heat moves
+   only when the springs under it move.
+
+   COST, MEASURED AND DATED, 28 September, headless Chromium on a software
+   raster, --disable-gpu, load average between 3 and 4, Marcus, coneDraw
+   plus a forced flush, the minimum of ninety frames, the tab's own loop
+   stopped. Before is HEAD 175b6f8, after is the switch on:
+
+                        pulse           well            top
+     1600 at 1x         6.2 -> 7.7      6.8 -> 9.0      not drawn
+     1600 at 2x         9.1 -> 11.4     11.2 -> 14.0    not drawn
+     390 at 3x          6.6 -> 8.3      8.5 -> 10.8     not drawn
+     zoomed 2.5x, 1600 at 2x, pulse: 10.3 -> 13.4
+
+   Two fills a step, near and far, twenty in all, and no gradient, blur or
+   readback. The first cut cost 21.7 ms over at 1600 at 2x, and A RUN, NOT
+   A CELL in ndlHeatDraw is why it does not now. The well pays most because
+   its warp runs on every corner of the mesh. Switch off, it is one flag
+   read and nothing below runs: 8.8 against HEAD's 9.1 on the same run.
+   ============================================================ */
+function ndlHeatField(G,M,cq,R,ee){
+ var P=NDL.P, i, k, c, r;
+ if(!NDL.hEs){NDL.hEs=MIRROR.map(function(m,j){return {t:j/8,x:50};});
+  NDL.hEc=MIRROR.map(function(m,j){return {t:j/8,x:1};});}
+ /* the bend eases out of the level on the entrance, as the shell does */
+ for(i=0;i<8;i++){NDL.hEs[i].x=cq+(M.seat[NDL.sIdx[i]].x-cq)*ee;
+  NDL.hEc[i].x=1-clamp(NDL.gsq[i],0,10)/10;}
+ var cpf=NDL_HC/8, rs=G.Rb*NDL_SLAB;
+ for(c=0;c<NDL_HC;c++){var tm=(c+.5)/NDL_HC, fi=Math.floor(c/cpf), um=(c%cpf+.5)/cpf;
+  NDL.hs[c]=coneSpline(NDL.hEs,tm); NDL.hc[c]=clamp(coneSpline(NDL.hEc,tm),0,1);
+  NDL.hn[c]=(NDL.sA[fi]*(1-um)+NDL.sA[(fi+1)%8]*um)>=0?1:0;}
+ /* the corners, through ndlPf, so the mesh lies on the faces and bends with
+    them; limbo's rows, 9 to 13, sit on the limbo ring */
+ for(r=0;r<23;r++){var q=NDL_HQ[r], lim=(r>=9&&r<=13);
+  for(c=0;c<=NDL_HC;c++){
+   ndlPf(q,Math.floor(c/cpf)%8,(c%cpf)/cpf,G,P,lim?rs:undefined);
+   NDL.hx[r*(NDL_HC+1)+c]=P.x; NDL.hy[r*(NDL_HC+1)+c]=P.y;}}
+ /* each cell's raw strength, and their mean */
+ var sum=0, n=0, row=0;
+ for(r=0;r<22;r++){if(r===8||r===13)continue;
+  var qm=(NDL_HQ[r]+NDL_HQ[r+1])/2;
+  for(c=0;c<NDL_HC;c++){var s=NDL.hs[c], lo=Math.min(s,cq), hi=Math.max(s,cq);
+   var D=clamp((hi-lo)/25,0,1), dq=qm<lo?lo-qm:(qm>hi?qm-hi:0);
+   var f=NDL.hc[c]*(1-.8*D*Math.exp(-dq*dq/128));
+   NDL.hf[row*NDL_HC+c]=f; sum+=f; n++;}
+  row++;}
+ /* stepped by the cell against the mesh's own mean: one is at your
+    radiance, under one is short of it, and each step is an eighth of it
+    wide, rounded to the nearest, so the brightest step is an eighth over. */
+ var mean=sum/n, kk=mean>1e-4?1/mean:0;
+ NDL.hR=R;
+ for(k=0;k<n;k++)NDL.hl[k]=Math.min(NDL_HL-1,Math.floor(NDL.hf[k]*kk/NDL_HS+.5));}
+/* one side of the field: the far half first, veiled by the near glass drawn
+   after it, then the near half over the near glass. One path per step. */
+function ndlHeatDraw(g,front,a){
+ var W1=NDL_HC+1, R=NDL.hR, lv, r, c, row;
+ var sig=NDL.colSig+'|'+NDL.wl.join()+'|'+NDL.gc.join()+'|'+R.toFixed(2);
+ /* EACH STEP IS A GLOW AND A VEIL, folded into one colour so it is one
+    fill. The glow is the accent, as bright as the engine's radiance with a
+    floor of a quarter so a dim field is still seen to be lit, and it is the
+    cell's share of that. The veil is the well's own colour, laid over as
+    far as the cell falls short of your radiance, full at three tenths of
+    it. The two composited by hand: alpha one minus both misses, colour the
+    two weighted by what each contributes. Read once per lighting and per
+    hundredth of radiance, never per frame. */
+ if(NDL.hSig!==sig){NDL.hSig=sig; NDL.hCol=[];
+  for(lv=0;lv<NDL_HL;lv++){var p=lv*NDL_HS, w=NDL.wl, gc=NDL.gc;
+   var gl=NDL_HEAT_G*(.25+.75*R)*p/NDL_HR, vl=NDL_HEAT_S*clamp((1-p)/.7,0,1);
+   var al=1-(1-gl)*(1-vl), cw=vl/al, cg=gl*(1-vl)/al;
+   NDL.hCol.push('rgba('+Math.round(gc[0]*cg+w[0]*cw)+','+Math.round(gc[1]*cg+w[1]*cw)
+    +','+Math.round(gc[2]*cg+w[2]*cw)+','+al.toFixed(3)+')');}}
+ /* A RUN, NOT A CELL. The first cut added every cell to the path as its
+    own quad, near two thousand of them, and the frame went from 9.1 ms to
+    30.8 at 1600 at twice the density. Split by part, the field's arithmetic
+    was under a tenth of a millisecond and building the path alone was 17.5:
+    on a software raster each canvas call is about two microseconds, so the
+    cost was the count of calls and not the pixels, which is why the phone
+    paid nearly as much as the desk. A face is flat and its projection is
+    affine, so along one row of one face every corner lies on one straight
+    line: a run of cells at the same step needs a corner at its two ends and
+    at each rib it crosses, and nothing between. Under the well the sheet
+    bends between ribs, so there every third corner is kept, four a face,
+    which still lands on every rib: every corner cost 3.5 ms over the switch
+    off, and the pull falls off over a third of the base radius, wider than
+    a quarter face, so the extra corners were drawing a curve that was not
+    there to draw. */
+ var cpf=NDL_HC/8, ev=NDL.wn>0?3:cpf, X=NDL.hx, Y=NDL.hy, HL=NDL.hl, HN=NDL.hn, fr=front?1:0;
+ g.globalAlpha=a;
+ for(lv=0;lv<NDL_HL;lv++){var any=false; g.beginPath(); row=0;
+  for(r=0;r<22;r++){if(r===8||r===13)continue;
+   var o=row*NDL_HC, t0=r*W1, b0=t0+W1;
+   for(c=0;c<NDL_HC;c++){
+    if(HL[o+c]!==lv||HN[c]!==fr)continue;
+    var c1=c; while(c1+1<NDL_HC&&HL[o+c1+1]===lv&&HN[c1+1]===fr)c1++;
+    any=true; g.moveTo(X[t0+c],Y[t0+c]);
+    for(var e=c+1;e<=c1;e++)if(e%ev===0)g.lineTo(X[t0+e],Y[t0+e]);
+    g.lineTo(X[t0+c1+1],Y[t0+c1+1]); g.lineTo(X[b0+c1+1],Y[b0+c1+1]);
+    for(e=c1;e>c;e--)if(e%ev===0)g.lineTo(X[b0+e],Y[b0+e]);
+    g.lineTo(X[b0+c],Y[b0+c]); g.closePath();
+    c=c1;}
+   row++;}
+  if(any){g.fillStyle=NDL.hCol[lv]; g.fill();}}
+ g.globalAlpha=1;}
 function ndlTip(x0,y0,r0,kind,i){
  var t=NDL.tips[NDL.nt]||(NDL.tips[NDL.nt]={});
  t.x=x0; t.y=y0; t.r=r0; t.k=kind; t.i=i; NDL.nt++;}
@@ -1436,10 +1633,16 @@ function coneNeedle(){
    +rgba(gc,.30*k0)+','+rgba(gc,.09*k0)+' 35%,'+rgba(gc,0)+' 100%),'
    +'radial-gradient(circle '+R2+'px at '+Math.round(ax)+'px '+Math.round(fzy)+'px,'
    +rgba(rc,.09*k0)+','+rgba(rc,0)+' 100%)';}
+ /* THE RADIANCE FIELD, round KR, worked out once here and drawn in two
+    halves below. ndlGrav first, because its walk of the record is what
+    fills gsq and the pulse only calls it further down the frame. */
+ var heat=CONE.heat&&read;
+ if(heat){ndlGrav(); ndlHeatField(G,M,cq,clamp(r.radiance,0,1),ee);}
 
  /* BEHIND: the far faces, the far ribs, and the far badges, veiled by the
     near faces that come after them */
  ndlFaces(g,G,false);
+ if(heat)ndlHeatDraw(g,false,.45*ee);
  for(i=0;i<8;i++)ndlRib(g,G,i,false);
  /* the teachers keep their places too: bent, they slid onto the nodes */
  NDL.wn=0;
@@ -1536,6 +1739,9 @@ function coneNeedle(){
  if(CONE.layers){g.lineWidth=1;
   for(n=0;n<CONE_HI.length;n++){ndlRing(g,G,55+n*5); g.strokeStyle=rgba(gc,.16+n*0.03); g.stroke();}
   for(n=0;n<CONE_LO.length;n++){ndlRing(g,G,45-n*5); g.strokeStyle=rgba(rc,.16+n*0.03); g.stroke();}}
+ /* the near half of the radiance, over the near glass and under the
+    reading, so the shell, the level and the ribbon still read on top */
+ if(heat)ndlHeatDraw(g,true,ee);
 
  if(read){
   /* the axis values, eased out of the level on the entrance */
@@ -2186,7 +2392,8 @@ function coneOpen(inTab){
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
      ?'The compass from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
-     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.')
+     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
+      +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a seat holds charge and where the field bends off your level.':''))
    +'"></canvas>'
    /* ZOOM, round KQ: "the icon's already there. I want to be able to zoom
       in." It is: the Field's three circles in its lower right, zoom out,
@@ -2221,6 +2428,14 @@ function coneOpen(inTab){
        so he chooses by looking: off is the pulse, on is the well. */
     +(CONE.side||CONE.top?'':'<button type="button" class="cn-b" data-cn="well" '
      +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">Gravity well</button>')
+    /* RADIANCE, round KR. Only on the needle, which is the only figure that
+       draws it: from the top there is no volume to fill, and the switch
+       would be a dead control there. What the heat means rides on the
+       hover and not in a key under the figure, because a legend nobody
+       asked for is one of his logged objections. Whether it earns a key is
+       his call. */
+    +(CONE.side||CONE.top?'':'<button type="button" class="cn-b" data-cn="heat" '
+     +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">Radiance</button>')
     +'<button type="button" class="cn-b" data-cn="layers" '
      +'title="Show the rings the axes are stacked on">Layers</button>'
    +'</div>'
