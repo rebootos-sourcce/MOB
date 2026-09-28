@@ -24293,3 +24293,54 @@ constant text overload. It's insane." Read against `CLAUDE.md`'s own
 standing rule on this, four headings, bullets, no shorthand, but
 applied harder: shorter, fewer words per reply from here, the file
 itself carrying the detail rather than the chat.
+
+## KZ. The nav corrected again: secondary navigation drops down, Tools dissolved into Play, Flow and Embody swap
+
+His words, verbatim, self correcting repeatedly, kept whole since he
+himself asked everything be logged: "Hide the games tab for now. The
+body navigation icons the bottom row is taking up too much real
+estate move the left ones for the front to the left move the ones to
+the right to, to the right we should have done that to begin with And
+then for now, just double the icon sets for the body parts. so we
+don't need front or back icons anymore. When I say secondary
+navigation, I don't mean the same horizontal plane as the primary
+navigation. Ever. That's poor UX. I want my UX team to give me a
+secondary navigation. That only drops down when I select a primary
+navigation that has it. For design, uniformity's sake, they start
+pixel for pixel, directly underneath like text-wise, font-wise,
+name-wise. Underneath the primary navigations. First letter as well.
+so they're on the same axis. Vertically. That's where they start.
+Discover play flow needs a symbolic icon. When I click on Discover, I
+want to start right immediately on my journal. and then my next
+secondary navigation is my avatar then my summary then my intake.
+Sorry, then my intake then my summary. I want to move all the tools to
+play. And then get rid of the tools tab. Sorry, discovers opening on
+story. That's what I meant. Flow is ritual and accountability. Embody
+is knowledge. and I want you to reverse the knowledge order starting
+with the universal laws. So starting with the biggest then scaling
+down to the smallest. Yeah, when I want these prioritized."
+
+Read straight through the corrections, this is the current mapping,
+superseding rounds KT and KX where they conflict:
+
+- **Discover** opens on Story (his "journal", corrected to name it
+  outright), then Avatar, then Intake, then Summary.
+- **Play** absorbs everything Tools was going to hold: Field, Body,
+  Compass. **Tools is dissolved as its own section**, in his own
+  words: "get rid of the tools tab."
+- **Flow** is Ritual and its accountability.
+- **Embody** is Knowledge, and Knowledge's own internal order is
+  reversed, biggest to smallest, starting with the universal laws.
+- **Games stays hidden**, unchanged from round KV.
+- **Secondary navigation is never on the same row as the primary
+  bar.** His words: "I don't mean the same horizontal plane as the
+  primary navigation. Ever. That's poor UX." It drops down beneath the
+  pressed primary section and stays, pixel aligned so its own text
+  starts on the same vertical axis as the primary label above it,
+  first letter to first letter.
+- **The Body page's bottom icon row is too crowded.** The left side
+  icons move further left, the right side further right.
+- **The Body page shows both icon sets at once instead of a Front and
+  Back toggle**, "for now... so we don't need front or back icons
+  anymore." Passed to whichever piece of work is touching the Body
+  page's icons right now.
