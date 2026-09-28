@@ -47,10 +47,17 @@ done
 # the file" can mean last week's. The stamp settles that in one glance, on the
 # one screen every person sees every time.
 #
-# It is written after the concatenation, so the placeholder cannot survive
-# into a shipped file, and the check below fails the build if it does.
+# THE VERSION IS A COUNT, NEVER A TYPED NUMBER. Asked for at round KS: "with
+# each build, please give it a version number." A number typed into a file and
+# then left behind is exactly the defect this project's own CLAUDE.md names
+# nine times over, so the version is read off the tree instead of stored: the
+# number of commits reachable from HEAD, which only ever goes up and needs no
+# file of its own to drift out of date. Two builds from the same commit still
+# carry the same version, which is correct, since they are the same build; the
+# date beside it is what tells them apart.
+VER="v$(git -C .. rev-list --count HEAD 2>/dev/null || echo 0)"
 STAMP="$(git -C .. rev-parse --short HEAD 2>/dev/null || echo nogit)"
-STAMP="$STAMP $(date -u +%Y-%m-%d\ %H:%M)"
+STAMP="$VER $STAMP $(date -u +%Y-%m-%d\ %H:%M)"
 python3 - "$OUT" "$STAMP" <<'PY2'
 import io,sys
 p,stamp=sys.argv[1],sys.argv[2]
