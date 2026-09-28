@@ -23669,3 +23669,20 @@ Sorted by destination:
 - **A build is asked for**, "give me the latest attuned," per the
   standing rule: packed, attached, never rendered, with the commit and
   its md5 stated.
+
+## KI. The Cloudflare steps asked for directly, and mockups ordered for gravity rather than picked blind
+
+His words, verbatim: "github / cloudflare, give me the steps. Gravity
+being uh, create the mockups again for the gravity. Let's see. And
+continue doing what you're building."
+
+- **The literal Cloudflare and GitHub steps, answered directly in the
+  next report**, since he wants them stated rather than offered as a
+  choice again.
+- **Gravity is not decided in words.** Rather than pick between round
+  KG's gravity well and this round's pulsing rings scaled by weight, he
+  wants both shown as real mockups so he can choose by looking, the
+  same way a drawing question is always answered with the drawing on
+  this project. Dispatched as its own small piece.
+- **Everything already in flight continues** with no new instruction
+  changing scope.
