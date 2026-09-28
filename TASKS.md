@@ -25015,3 +25015,10 @@ Embody's clay is meant to read as the quietest of the four or should
 be lifted to feel equally strong; the tab name Clients against his
 own word customers, kept as Clients since DECISIONS.md already rules
 it and a tab does not repeat its section's own name.
+
+**Shipped. `v878`, commit `1d0b166`, source.html md5
+`0036606455ac92d26b3063db4a2e42dc`.** Full gate suite re-run clean one
+more time on the quiet tree before packing: `tests/engine.js` 1841,
+`tests/design.js` 184, `tests/collide.js` 351, `tests/functional.js`
+1307, all zero failed. Packed, the tracked delivery build refreshed,
+sent as an attachment.
