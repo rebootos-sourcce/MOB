@@ -2149,15 +2149,22 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
     .map(b=>+b.getAttribute('data-tabk'));
   const pressedSec=()=>[...document.querySelectorAll('#secbar .secb[aria-pressed=true]')]
     .map(b=>b.getAttribute('data-sec'));
+  /* THE LOOP IS THE SECTIONS WITH NO MODE, round LL. Practitioner is a fifth
+     section that shows only while its switch is on, and it is off here, so
+     everything below that presses or measures a section walks the four a
+     person can see. The mode's own block, further down, turns it on. */
+  const LOOP=SECTIONS.filter(s=>!s.mode);
   const out={tab:JSON.stringify(TAB),
    secKeys:SECTIONS.map(s=>s.k), barKeys:[...document.querySelectorAll('#secbar .secb')].map(b=>b.getAttribute('data-sec')),
+   loopKeys:LOOP.map(s=>s.k),
+   shownKeys:[...document.querySelectorAll('#secbar .secb')].filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec')),
    unsectioned:TABDEF.filter(t=>!SECTIONS.some(s=>s.k===t.sec)).map(t=>t.nm),
    misgrouped:[...document.querySelectorAll('#tabbar [data-tabk]')].filter(b=>{
      const t=TABDEF.filter(x=>x.k===+b.getAttribute('data-tabk'))[0];
      return !t||b.closest('.tabgrp').getAttribute('data-sec')!==t.sec;}).map(b=>b.textContent.trim()),
    secof:{analytics:SECOF(TAB.ANALYTICS),settings:SECOF(TAB.SETTINGS)},
    press:{}};
-  for(const s of SECTIONS){
+  for(const s of LOOP){
    document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
    const want=TABDEF.filter(t=>t.sec===s.k).map(t=>t.k);
    out.press[s.k]={landed:want.indexOf(S.tab)>=0, shown:JSON.stringify(vis())===JSON.stringify(want),
@@ -2170,7 +2177,7 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
     out.press[s.k].below=tn.top>=sn.bottom;
     out.press[s.k].dx=Math.round((tn.left-sn.left)*10)/10;}}
   out.first={};
-  for(const s of SECTIONS){SEC_LAST={}; setTab(TAB.SETTINGS);
+  for(const s of LOOP){SEC_LAST={}; setTab(TAB.SETTINGS);
    document.querySelector('#secbar .secb[data-sec="'+s.k+'"]').click(); await wait();
    out.first[s.k]=TABOF(S.tab).nm;}
   setTab(TAB.COMPASS); await wait();
@@ -2185,13 +2192,14 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
   out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),story:SECOF(TAB.STORY),
    know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),field:SECOF(TAB.FIELD),
-   body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES)};
+   body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
+   clients:SECOF(TAB.PRACTITIONER)};
   setTab(TAB.SETTINGS); await wait();
   out.settings={pressed:pressedSec().length, shown:vis().length};
   /* the fold, KN: the sections roll in to the pressed one */
   setTab(TAB.FIELD); await wait();
   const cb=document.getElementById('tabnames'); cb.click(); await new Promise(r=>setTimeout(r,450));
-  out.folded=[...document.querySelectorAll('#secbar .secb')].map(b=>
+  out.folded=[...document.querySelectorAll('#secbar .secb')].filter(b=>b.style.display!=='none').map(b=>
     b.getAttribute('data-sec')+':'+getComputedStyle(b).visibility);
   cb.click(); await wait();
   /* the search, KC: help's old place, and Enter takes the words to the codex */
@@ -2202,12 +2210,14 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   out.searched={tab:S.tab===TAB.KNOW, q:KB_Q, closed:!document.getElementById('srch').classList.contains('open')};
   KB_Q=''; setTab(TAB.FIELD); await wait();
   return out;});
- ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11}',
+ ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12}',
   'every identity integer holds its value, '+nav.tab);
- ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
-  'the first tier is discover, play, flow, embody, in his order, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null}',
-  'LD and LE: Story, Avatar and Summary in Discover, Field, Intake, Compass and Masks in Play, Ritual in Flow, Knowledge in Embody, Games hidden, '+JSON.stringify(nav.placed));
+ ok(JSON.stringify(nav.loopKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.shownKeys)===JSON.stringify(nav.loopKeys),
+  'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
+ ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
+  'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+  'LD and LE: Story, Avatar and Summary in Discover, Field, Intake, Compass and Masks in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
  ok(nav.play==='Field,Intake,Compass,Masks / Field,Intake,Compass,Masks',
   'Play reads in his order, Field, Intake, Compass, Masks, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
@@ -2227,6 +2237,112 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
  ok(nav.searchOpen,'the search circle opens the field and puts the cursor in it');
  ok(nav.searched.tab&&nav.searched.q==='shame'&&nav.searched.closed,
   'and Enter takes the words to the codex and rolls the field back in, '+JSON.stringify(nav.searched));}
+
+console.log('\n=== practitioner mode: the switch, the fifth section and the sketch (LL) ===');
+/* His words, round LL: "what I do want is the profile toggle on and off. The
+   profile tab item being our main nav item being added when I toggle it on
+   and a very rough framework." Walked through the switch a person presses,
+   on a page of its own so the store it writes is its own, and read back after
+   a reload, because a door that comes back shut is the switch lying about its
+   state. Then off again by both routes that can shut it: the switch, and a
+   change of profile while standing on the page whose door is going. */
+{
+ const pr=await browser.newPage({viewport:{width:1600,height:1000}});
+ await pr.goto(FILE,{waitUntil:'load'}); await booted(pr);
+ const shown=()=>pr.evaluate(()=>[...document.querySelectorAll('#secbar .secb')]
+  .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec')));
+ const off0=await shown();
+ const o=await pr.evaluate(async()=>{
+  const wait=()=>new Promise(r=>setTimeout(r,260)), o={}, $q=s=>document.querySelector(s);
+  const vis=()=>[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)
+    .map(b=>+b.getAttribute('data-tabk'));
+  o.grpOff=getComputedStyle($q('#tabbar .tabgrp[data-sec="practitioner"]')).display;
+  ACC_OPEN='account'; setTab(TAB.SETTINGS); await wait();
+  const sw=$q('#acprac'); o.sw=!!sw; if(!sw)return o;
+  o.swOff=sw.getAttribute('aria-checked');
+  sw.click(); await wait();
+  o.swOn=$q('#acprac').getAttribute('aria-checked');
+  o.stored=!!(CURP.ui&&CURP.ui.practitioner);
+  o.disk=JSON.parse(localStorage.getItem('source.profiles')||'[]').map(p=>p.ui&&p.ui.practitioner);
+  o.shownOn=[...document.querySelectorAll('#secbar .secb')]
+   .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec'));
+  $q('#secbar .secb[data-sec="practitioner"]').click(); await wait();
+  o.tab=S.tab===TAB.PRACTITIONER; o.row=vis(); o.want=[TAB.PRACTITIONER];
+  o.pressed=[...document.querySelectorAll('#secbar .secb[aria-pressed=true]')].map(b=>b.getAttribute('data-sec'));
+  const sn=$q('#secbar .secb[data-sec="practitioner"] .sn').getBoundingClientRect();
+  const tn=$q('#tabbar .tabtop[data-tabk="'+TAB.PRACTITIONER+'"] .n').getBoundingClientRect();
+  o.below=tn.top>=sn.bottom; o.dx=Math.round((tn.left-sn.left)*10)/10;
+  const host=$q('#prac'), hr=host.getBoundingClientRect();
+  o.host={w:Math.round(hr.width),h:Math.round(hr.height),len:host.innerHTML.length,
+   stubs:host.querySelectorAll('.ac-stub').length,
+   /* the one control on it is the way back to the switch. A stub that took a
+      press and then refused would be the dead button account.js was written
+      against, so every other row is counted as not a button */
+   buttons:[...host.querySelectorAll('button')].map(b=>b.id),
+   honest:/not built yet/.test(host.textContent)&&/sketch/i.test(host.textContent)};
+  o.rails=[...document.querySelectorAll('.mid .col')].filter(c=>c.offsetParent).length;
+  $q('#pracacc').click(); await wait();
+  o.back=S.tab===TAB.SETTINGS&&ACC_OPEN==='account'&&!!$q('#acprac');
+  return o;});
+ ok(JSON.stringify(off0)==='["discover","play","flow","embody"]'&&o.grpOff==='none',
+  'a new profile opens with practitioner mode off: four sections and the practitioner group shut, '+JSON.stringify(off0)+' '+o.grpOff);
+ ok(o.sw&&o.swOff==='false'&&o.swOn==='true',
+  'Account carries the switch, off, and one press turns it on, '+o.swOff+' to '+o.swOn);
+ ok(o.stored&&o.disk.length>0&&o.disk.every(x=>x===true),
+  'and it is written to the profile and to the disk, '+JSON.stringify(o.disk));
+ ok(JSON.stringify(o.shownOn)==='["discover","play","flow","embody","practitioner"]',
+  'on, Practitioner joins the bar after the loop\'s four, which stay where they were, '+JSON.stringify(o.shownOn));
+ ok(o.tab&&JSON.stringify(o.row)===JSON.stringify(o.want)&&JSON.stringify(o.pressed)==='["practitioner"]',
+  'pressing it opens Clients, shows only its own tab and presses it alone, row '+JSON.stringify(o.row)+' pressed '+JSON.stringify(o.pressed));
+ ok(o.below&&Math.abs(o.dx)<=1,
+  'and Clients sits in the row below it, its word starting under Practitioner\'s first letter, off by '+o.dx+'px');
+ ok(o.host.w>300&&o.host.h>300&&o.host.len>1200&&o.host.honest&&o.host.stubs===3,
+  'the page behind it renders, says it is a sketch and names three rows as not built yet, '+JSON.stringify(o.host));
+ ok(JSON.stringify(o.host.buttons)==='["pracacc"]',
+  'and its one button is the way back to the switch, nothing that takes a press and refuses, '+JSON.stringify(o.host.buttons));
+ ok(o.rails===0,'the rails leave, as they do on Settings, '+o.rails+' showing');
+ ok(o.back,'Open Account goes back to the switch');
+ /* ACROSS A RELOAD. applyUiPrefs never ran at start up, so this is the check
+    that the door reads the stored switch on the way in. */
+ await pr.reload({waitUntil:'load'}); await booted(pr);
+ const reload=await shown();
+ ok(JSON.stringify(reload)==='["discover","play","flow","embody","practitioner"]',
+  'after a reload the switch is still on and so is the door, '+JSON.stringify(reload));
+ const o2=await pr.evaluate(async()=>{
+  const wait=()=>new Promise(r=>setTimeout(r,260)), o={}, $q=s=>document.querySelector(s);
+  const vis=()=>[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent).length;
+  /* shut by a change of profile while standing on the page: the switch lives
+     on the profile, so another profile with it off shuts the door under the
+     person, and they land on the Field rather than on a page with no door */
+  setTab(TAB.PRACTITIONER); await wait();
+  CURP.ui.practitioner=false; applyUiPrefs(); await wait();
+  o.landed=S.tab===TAB.FIELD;
+  o.secOff=document.querySelector('.top').getAttribute('data-sec');
+  CURP.ui.practitioner=true; applyUiPrefs(); await wait();
+  /* and shut by the switch, having come to Account from the page, which is
+     the route that leaves the bar pointing at the section that just went */
+  setTab(TAB.PRACTITIONER); await wait();
+  $q('#pracacc').click(); await wait();
+  $q('#acprac').click(); await wait();
+  o.swOff=$q('#acprac').getAttribute('aria-checked');
+  o.stored=CURP.ui.practitioner;
+  o.shown=[...document.querySelectorAll('#secbar .secb')]
+   .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec'));
+  o.sec=document.querySelector('.top').getAttribute('data-sec');
+  o.row=vis();
+  /* and the row sits under the section it now shows, the first cut left it
+     at Practitioner's offset, x 596 at 1600, under nothing */
+  const t0=[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent)[0];
+  const sn=$q('#secbar .secb[data-sec="'+o.sec+'"] .sn');
+  o.dx=t0&&sn?Math.round((t0.querySelector('.n').getBoundingClientRect().left-sn.getBoundingClientRect().left)*10)/10:null;
+  return o;});
+ ok(o2.landed&&o2.secOff==='play',
+  'shut while standing on Clients, the person lands on the Field and the bar on Play, '+JSON.stringify(o2));
+ ok(o2.swOff==='false'&&o2.stored===false&&JSON.stringify(o2.shown)==='["discover","play","flow","embody"]',
+  'switched off in Account, the bar is the loop\'s four again with nothing left over, '+JSON.stringify(o2.shown));
+ ok(o2.sec!=='practitioner'&&o2.row>0&&o2.dx!==null&&Math.abs(o2.dx)<=1,
+  'and the row under the bar is not left pointing at the section that went, section '+o2.sec+', '+o2.row+' tabs in sight, off its first letter by '+o2.dx+'px');
+ await pr.close();}
 
 console.log('\n=== the build says which build it is, and how much of it arrived ===');
 /* Two builds went out with a fix in them and the same failure came back both

@@ -61,7 +61,14 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
  COMPASS:8,SETTINGS:9,RITUAL:10,
  /* MASKS IS 11, APPENDED, on the same rule as Ritual and Compass: a new
     surface takes the next free integer and nothing before it moves. */
- MASKS:11};
+ MASKS:11,
+ /* PRACTITIONER IS 12, APPENDED, round LL, on the same rule again. It is the
+    one integer whose door comes and goes at run time, so it is also the one
+    most likely to be stored while its door is shut: a profile that had the
+    mode on, saved, then had it switched off. The integer still names a real
+    surface, so setTab still opens it the way it still opens Games, and the
+    only thing the switch moves is whether a person can see the door. */
+ PRACTITIONER:12};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -128,7 +135,19 @@ const SECTIONS=[
  {k:'discover', nm:'Discover'},
  {k:'play',     nm:'Play'},
  {k:'flow',     nm:'Flow'},
- {k:'embody',   nm:'Embody'}];
+ {k:'embody',   nm:'Embody'},
+ /* A FIFTH SECTION THAT IS NOT PART OF THE LOOP, round LL. His words: "Add a
+    practitioner mode to the profile. If I turn it on, it adds a new tab item
+    called practitioner." So it is a section, a peer of the four in the bar,
+    and it is not a fifth station: the loop is still the four above and the
+    circle still closes on Embody. .mode is what says so. A section carrying
+    it is shown only while that key is on in CURP.ui, and anything that means
+    the loop reads SECTIONS without the ones carrying a mode.
+
+    It goes last so that with the mode off the four keep the positions they
+    have always had, and nothing measured against the bar moves when the
+    switch is off, which is how nearly everyone will see it. */
+ {k:'practitioner', nm:'Practitioner', mode:'practitioner'}];
 const TABDEF=[
  /* Discover opens on the Story, "start right immediately on my journal":
     secGo sends a first visit to a section's first entry, so being first here
@@ -169,7 +188,14 @@ const TABDEF=[
     tab moves and nothing is split. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
  /* "Embody is knowledge." */
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'}];
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
+ /* The practitioner section's one door. Clients and not Practitioner, on the
+    menu rule above: the section says who a person is being, the tab says
+    what the surface does, and a tab carrying its section's own word is two
+    names for two different things spelt the same. Clients is the word
+    DECISIONS.md already uses, "a panel listing their clients". The surface
+    behind it is a sketch until sign in exists, ui/practitioner.js. */
+ {k:TAB.PRACTITIONER, id:'prac', nm:'Clients', cls:'tab-prac', sec:'practitioner'}];
 /* GAMES IS OFF THE BAR, FOR NOW. His words, round KT: "Hide games for now."
    It is hidden the way Settings already is, by an entry in TABEXTRA below
    and none here, so it keeps its integer, its host and its renderer, setTab

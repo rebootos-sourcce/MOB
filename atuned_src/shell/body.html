@@ -417,6 +417,17 @@
     title="Flow. Your ritual, and keeping it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
     title="Embody. Knowledge."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.2" r="2.2"/><path d="M12 8.6v5M6.4 10.8c1.9 1.8 3.8 2.7 5.6 2.7s3.7-.9 5.6-2.7M4.6 19c2.3-2 4.8-3 7.4-3s5.1 1 7.4 3"/></svg><span class="sn">Embody</span></button>
+   <!-- PRACTITIONER, round LL, and shut in the document. His words: "If I turn
+        it on, it adds a new tab item called practitioner." The switch is in
+        Account and is off on every profile until turned on, so the door is
+        written here shut, inline, where no stylesheet and no start up is
+        needed to keep it shut: a failed boot leaves every other group showing
+        on purpose, and it must not open a mode nobody chose. pracPaint in
+        ui/practitioner.js opens it. Last, after Embody, so the loop's four
+        never move when it comes and goes. A person at a desk with a list
+        beside them, rings and strokes. -->
+   <button type="button" class="secb" data-sec="practitioner" aria-pressed="false" style="display:none"
+    title="Practitioner. Your clients."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M2.6 19.2a5.4 5.4 0 0110.8 0M15.6 8h5.8M15.6 12h5.8M15.6 16h3.8"/></svg><span class="sn">Practitioner</span></button>
   </div>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
    <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
@@ -435,6 +446,12 @@
    </div>
    <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
     <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
+   </div>
+   <!-- shut inline for the reason given on its section button above; on a
+        phone the menu shows every group under its heading, so the group has
+        to be shut as well as the section -->
+   <div class="tabgrp" data-sec="practitioner" role="group" aria-label="Practitioner" style="display:none"><span class="tabgrp-hd" aria-hidden="true">Practitioner</span>
+    <button type="button" class="vt tabtop" data-tabk="12" aria-pressed="false" title="Clients"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.6" cy="6.5" r="1.9"/><circle cx="5.6" cy="12" r="1.9"/><circle cx="5.6" cy="17.5" r="1.9"/><path d="M10.2 6.5h9.6M10.2 12h9.6M10.2 17.5h9.6"/></svg><span class="n">Clients</span></button>
    </div>
   </div>
   <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
@@ -856,6 +873,10 @@
         also has to be dismissed before the instrument is visible again, so
         every setting was changed with the product hidden behind it. -->
    <div id="settings" class="iq"></div>
+   <!-- the practitioner sketch, round LL. Its own host and a sibling of
+        Settings, never inside it: renderAccount writes the whole of #settings
+        and would delete a host inside it on the way past. -->
+   <div id="prac" class="iq"></div>
    <div id="sum" class="iq">
     <div id="sumbody"></div>
     <div id="ana" class="fold"></div></div>

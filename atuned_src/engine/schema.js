@@ -36,8 +36,11 @@ function blankProfile(name){
      protocol built to be heard that opened silent was the defect recorded at
      TASKS RF10, "pressing begin played nothing". The panel names the voice
      and where it runs before it says a word, and one switch turns it off.
-     buzz is the vibration under the release's marks, off like the tone. */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false},
+     buzz is the vibration under the release's marks, off like the tone.
+     practitioner is round LL's mode, and it is off: it puts a Practitioner
+     section in the bar, and a door a person never asked for is a door they
+     have to work out how to get rid of. */
+  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -782,7 +785,9 @@ function validateProfile(o){
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
  if(o.ui&&typeof o.ui==='object'){
-  ['quiet','model','tone','voice','buzz'].forEach(function(k){
+  /* a key missing from this list is dropped on every load, so the switch
+     would read on for one session and off after a reload with nothing said */
+  ['quiet','model','tone','voice','buzz','practitioner'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){

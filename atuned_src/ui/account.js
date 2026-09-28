@@ -150,6 +150,18 @@ function accAccount(){
     running it again costs nothing and can be offered without a warning. */
  h+=accGroup('The Opening',
    accAct('Run the signal test again','acob',{btn:'Open it'}));
+ /* PRACTITIONER MODE, round LL: "Add a practitioner mode to the profile."
+    Account and not Display, because it changes what a person is in the
+    product, a practitioner with clients, and not how the screen looks; and
+    not Privacy, because Privacy is who has sight of this record, which is
+    the other direction. Account is also the section that opens first, so it
+    is where he will look. The footer is a disclosure and not a description
+    of the switch: it says the page it opens is a sketch before a person
+    turns it on expecting clients. */
+ h+=accGroup('Practitioner',
+   accTog('Practitioner mode','acprac',!!(CURP&&CURP.ui&&CURP.ui.practitioner),
+    'adds Practitioner to the menu'),
+   'Turned on, it opens a sketch with no clients on it.');
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
     cut: this one, Sign in, Lighting, Screen, Motion, the feedback pair and the
     reproducibility clause on the build. Every footer that is a disclosure
@@ -505,6 +517,8 @@ function accWire(){
  if(q)q.onclick=function(){uiSet('quiet',!(CURP.ui&&CURP.ui.quiet)); renderAccount();};
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
+ var pr=$('acprac');
+ if(pr)pr.onclick=function(){uiSet('practitioner',!(CURP.ui&&CURP.ui.practitioner)); renderAccount();};
  var ex=$('acexp');
  if(ex)ex.onclick=function(){var t=pExport();
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
@@ -530,7 +544,10 @@ function uiSet(k,v){
  applyUiPrefs(); return true;}
 function applyUiPrefs(){
  var q=!!(CURP&&CURP.ui&&CURP.ui.quiet);
- document.body.classList.toggle('quiet',q);}
+ document.body.classList.toggle('quiet',q);
+ /* the practitioner door follows its switch, and follows the profile, since
+    the switch is stored on the profile like every preference here */
+ if(typeof pracPaint==='function')pracPaint();}
 /* DELETE IS A REAL CONTROL AND IT SAYS EXACTLY WHAT IT DID. It removes this
    record from this browser. There is no store, so it does not claim to have
    deleted anything from anywhere else, because that would be a lie about the

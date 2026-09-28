@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v875 0cfd920 2026-09-28 19:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v876 6d0f1f4 2026-09-28 20:35"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6101,6 +6101,17 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     title="Flow. Your ritual, and keeping it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
     title="Embody. Knowledge."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.2" r="2.2"/><path d="M12 8.6v5M6.4 10.8c1.9 1.8 3.8 2.7 5.6 2.7s3.7-.9 5.6-2.7M4.6 19c2.3-2 4.8-3 7.4-3s5.1 1 7.4 3"/></svg><span class="sn">Embody</span></button>
+   <!-- PRACTITIONER, round LL, and shut in the document. His words: "If I turn
+        it on, it adds a new tab item called practitioner." The switch is in
+        Account and is off on every profile until turned on, so the door is
+        written here shut, inline, where no stylesheet and no start up is
+        needed to keep it shut: a failed boot leaves every other group showing
+        on purpose, and it must not open a mode nobody chose. pracPaint in
+        ui/practitioner.js opens it. Last, after Embody, so the loop's four
+        never move when it comes and goes. A person at a desk with a list
+        beside them, rings and strokes. -->
+   <button type="button" class="secb" data-sec="practitioner" aria-pressed="false" style="display:none"
+    title="Practitioner. Your clients."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M2.6 19.2a5.4 5.4 0 0110.8 0M15.6 8h5.8M15.6 12h5.8M15.6 16h3.8"/></svg><span class="sn">Practitioner</span></button>
   </div>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
    <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
@@ -6119,6 +6130,12 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    </div>
    <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
     <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
+   </div>
+   <!-- shut inline for the reason given on its section button above; on a
+        phone the menu shows every group under its heading, so the group has
+        to be shut as well as the section -->
+   <div class="tabgrp" data-sec="practitioner" role="group" aria-label="Practitioner" style="display:none"><span class="tabgrp-hd" aria-hidden="true">Practitioner</span>
+    <button type="button" class="vt tabtop" data-tabk="12" aria-pressed="false" title="Clients"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.6" cy="6.5" r="1.9"/><circle cx="5.6" cy="12" r="1.9"/><circle cx="5.6" cy="17.5" r="1.9"/><path d="M10.2 6.5h9.6M10.2 12h9.6M10.2 17.5h9.6"/></svg><span class="n">Clients</span></button>
    </div>
   </div>
   <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
@@ -6540,6 +6557,10 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         also has to be dismissed before the instrument is visible again, so
         every setting was changed with the product hidden behind it. -->
    <div id="settings" class="iq"></div>
+   <!-- the practitioner sketch, round LL. Its own host and a sibling of
+        Settings, never inside it: renderAccount writes the whole of #settings
+        and would delete a host inside it on the way past. -->
+   <div id="prac" class="iq"></div>
    <div id="sum" class="iq">
     <div id="sumbody"></div>
     <div id="ana" class="fold"></div></div>
@@ -10959,7 +10980,14 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
  COMPASS:8,SETTINGS:9,RITUAL:10,
  /* MASKS IS 11, APPENDED, on the same rule as Ritual and Compass: a new
     surface takes the next free integer and nothing before it moves. */
- MASKS:11};
+ MASKS:11,
+ /* PRACTITIONER IS 12, APPENDED, round LL, on the same rule again. It is the
+    one integer whose door comes and goes at run time, so it is also the one
+    most likely to be stored while its door is shut: a profile that had the
+    mode on, saved, then had it switched off. The integer still names a real
+    surface, so setTab still opens it the way it still opens Games, and the
+    only thing the switch moves is whether a person can see the door. */
+ PRACTITIONER:12};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -11026,7 +11054,19 @@ const SECTIONS=[
  {k:'discover', nm:'Discover'},
  {k:'play',     nm:'Play'},
  {k:'flow',     nm:'Flow'},
- {k:'embody',   nm:'Embody'}];
+ {k:'embody',   nm:'Embody'},
+ /* A FIFTH SECTION THAT IS NOT PART OF THE LOOP, round LL. His words: "Add a
+    practitioner mode to the profile. If I turn it on, it adds a new tab item
+    called practitioner." So it is a section, a peer of the four in the bar,
+    and it is not a fifth station: the loop is still the four above and the
+    circle still closes on Embody. .mode is what says so. A section carrying
+    it is shown only while that key is on in CURP.ui, and anything that means
+    the loop reads SECTIONS without the ones carrying a mode.
+
+    It goes last so that with the mode off the four keep the positions they
+    have always had, and nothing measured against the bar moves when the
+    switch is off, which is how nearly everyone will see it. */
+ {k:'practitioner', nm:'Practitioner', mode:'practitioner'}];
 const TABDEF=[
  /* Discover opens on the Story, "start right immediately on my journal":
     secGo sends a first visit to a section's first entry, so being first here
@@ -11067,7 +11107,14 @@ const TABDEF=[
     tab moves and nothing is split. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
  /* "Embody is knowledge." */
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'}];
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
+ /* The practitioner section's one door. Clients and not Practitioner, on the
+    menu rule above: the section says who a person is being, the tab says
+    what the surface does, and a tab carrying its section's own word is two
+    names for two different things spelt the same. Clients is the word
+    DECISIONS.md already uses, "a panel listing their clients". The surface
+    behind it is a sketch until sign in exists, ui/practitioner.js. */
+ {k:TAB.PRACTITIONER, id:'prac', nm:'Clients', cls:'tab-prac', sec:'practitioner'}];
 /* GAMES IS OFF THE BAR, FOR NOW. His words, round KT: "Hide games for now."
    It is hidden the way Settings already is, by an entry in TABEXTRA below
    and none here, so it keeps its integer, its host and its renderer, setTab
@@ -12522,8 +12569,11 @@ function blankProfile(name){
      protocol built to be heard that opened silent was the defect recorded at
      TASKS RF10, "pressing begin played nothing". The panel names the voice
      and where it runs before it says a word, and one switch turns it off.
-     buzz is the vibration under the release's marks, off like the tone. */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false},
+     buzz is the vibration under the release's marks, off like the tone.
+     practitioner is round LL's mode, and it is off: it puts a Practitioner
+     section in the bar, and a door a person never asked for is a door they
+     have to work out how to get rid of. */
+  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -13268,7 +13318,9 @@ function validateProfile(o){
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
  if(o.ui&&typeof o.ui==='object'){
-  ['quiet','model','tone','voice','buzz'].forEach(function(k){
+  /* a key missing from this list is dropped on every load, so the switch
+     would read on for one session and off after a reload with nothing said */
+  ['quiet','model','tone','voice','buzz','practitioner'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
@@ -39611,6 +39663,11 @@ function setTab(i){
     The result was a tab that opened a 903px host with nothing in it. Two
     conditions now, because they are two surfaces. */
  if(i===TAB.KNOW)kbRender();
+ /* the practitioner sketch, round LL. Drawn on entry and not held shut here
+    when the mode is off: its door is what the switch governs, and a surface
+    that answered setTab with nothing would be the empty 903px host Games
+    once was. */
+ if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
  if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
  /* Summary carries Analytics, and reads last. */
@@ -40781,6 +40838,18 @@ function accAccount(){
     running it again costs nothing and can be offered without a warning. */
  h+=accGroup('The Opening',
    accAct('Run the signal test again','acob',{btn:'Open it'}));
+ /* PRACTITIONER MODE, round LL: "Add a practitioner mode to the profile."
+    Account and not Display, because it changes what a person is in the
+    product, a practitioner with clients, and not how the screen looks; and
+    not Privacy, because Privacy is who has sight of this record, which is
+    the other direction. Account is also the section that opens first, so it
+    is where he will look. The footer is a disclosure and not a description
+    of the switch: it says the page it opens is a sketch before a person
+    turns it on expecting clients. */
+ h+=accGroup('Practitioner',
+   accTog('Practitioner mode','acprac',!!(CURP&&CURP.ui&&CURP.ui.practitioner),
+    'adds Practitioner to the menu'),
+   'Turned on, it opens a sketch with no clients on it.');
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
     cut: this one, Sign in, Lighting, Screen, Motion, the feedback pair and the
     reproducibility clause on the build. Every footer that is a disclosure
@@ -41136,6 +41205,8 @@ function accWire(){
  if(q)q.onclick=function(){uiSet('quiet',!(CURP.ui&&CURP.ui.quiet)); renderAccount();};
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
+ var pr=$('acprac');
+ if(pr)pr.onclick=function(){uiSet('practitioner',!(CURP.ui&&CURP.ui.practitioner)); renderAccount();};
  var ex=$('acexp');
  if(ex)ex.onclick=function(){var t=pExport();
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
@@ -41161,7 +41232,10 @@ function uiSet(k,v){
  applyUiPrefs(); return true;}
 function applyUiPrefs(){
  var q=!!(CURP&&CURP.ui&&CURP.ui.quiet);
- document.body.classList.toggle('quiet',q);}
+ document.body.classList.toggle('quiet',q);
+ /* the practitioner door follows its switch, and follows the profile, since
+    the switch is stored on the profile like every preference here */
+ if(typeof pracPaint==='function')pracPaint();}
 /* DELETE IS A REAL CONTROL AND IT SAYS EXACTLY WHAT IT DID. It removes this
    record from this browser. There is no store, so it does not claim to have
    deleted anything from anywhere else, because that would be a lie about the
@@ -41303,6 +41377,131 @@ function obSend(){
  sheetShut(); renderAccount(); return true;}
 
 try{window.__at&&window.__at('ui/account.js');}catch(e){}
+/* ============================================================
+   PRACTITIONER MODE. A switch, a door and a sketch. Round LL.
+
+   His words, and they draw the line this file stops at: "Add a practitioner
+   mode to the profile. If I turn it on, it adds a new tab item called
+   practitioner... I can see my customers, and then I can view their profile.
+   I don't want that set up now. The technology, what I do want is the
+   profile toggle on and off. The profile tab item being our main nav item
+   being added when I toggle it on and a very rough framework."
+
+   So three things and no fourth. The switch is accTog in ui/account.js,
+   stored as CURP.ui.practitioner through uiSet like every other preference.
+   The door is the fifth section in the bar, written shut into the document
+   and opened here. The sketch is the page behind it.
+
+   NOTHING HERE READS ANOTHER PERSON'S RECORD, and nothing can: there is no
+   sign in, no store and no grant. CLAUDE.md names a practitioner seeing a
+   person's self report as a consequential grant that needs consent, a
+   visible list of who has sight, and revocation, and none of the three
+   exists. The page says so in the stub pattern account.js set down: full
+   opacity, the real label, "not built yet" where a value would sit, and
+   nothing that takes a press and then refuses.
+   ============================================================ */
+function pracOn(){
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.practitioner);}
+
+/* THE SURFACE'S OWN RULES, injected once, the way accProfCss carries the
+   profiles section's, because the shell stylesheet is held by another seat.
+
+   The first line is the one head.html asks every new section for: "a section
+   key with no line here is not hidden, it shows every group at once." With
+   Practitioner pressed and no line, all five groups showed in the second
+   row. It is only ever needed once start up has written data-sec onto the
+   bar, which is after this has run, so carrying it here loses nothing a
+   stylesheet line would have had.
+
+   The rails go the way they go on Settings. A practitioner's list of other
+   people is not a reading of this person's field, and the rails beside it
+   are this person's field. The lshut form is written out because the rule
+   that narrows a shut left rail carries one class more than a plain
+   tab-prac rule and would win. */
+function pracCss(){
+ if(document.getElementById('pr-css'))return;
+ var st=document.createElement('style'); st.id='pr-css';
+ st.textContent=[
+  /* one literal and not two: split across two, the voice gate read the first
+     half as a figure's label standing over the second */
+  '@media not all and (max-width:720px){.top[data-sec="practitioner"] #tabbar .tabgrp:not([data-sec="practitioner"]){display:none}}',
+  'body.tab-prac .mid,body.lshut.tab-prac .mid{grid-template-columns:1fr}',
+  'body.tab-prac .mid .col{display:none}',
+  /* the sketch is drawn in dashes, the way a block out is drawn on paper,
+     so a person reads it as a plan and never as three empty clients */
+  '.pr-sk{justify-content:flex-start}',
+  '.pr-ring{width:30px;height:30px;flex:0 0 auto;border-radius:50%;border:1.5px dashed var(--edge)}',
+  '.pr-lines{display:flex;flex-direction:column;gap:7px;flex:1 1 auto;min-width:0}',
+  '.pr-lines i{display:block;height:7px;border-radius:4px;background:var(--edge)}',
+  '.pr-lines i:first-child{width:38%}',
+  '.pr-lines i:last-child{width:22%;opacity:.6}',
+  '.pr-pill{width:96px;height:28px;flex:0 0 auto;border-radius:14px;border:1.5px dashed var(--edge)}'
+ ].join('\n');
+ document.head.appendChild(st);}
+
+/* THE DOOR, and the one writer of it. Called by applyUiPrefs, so the switch
+   and a change of profile both reach it, and once at start up, because
+   applyUiPrefs itself does not run at start up and a door that came back
+   shut after every reload would be the switch lying about its own state.
+
+   Shut, a person cannot be left standing on the surface whose door just went,
+   so they go to the Field, where the app opens. And the bar forgets it was
+   in this section: Settings keeps the last section's tabs in sight, and with
+   this section's group shut that row would otherwise be empty.
+
+   THE ROW HAS TO MOVE WITH IT, and the first cut did not. Settings presses no
+   section, so secAlign found nothing to measure and kept the offset it last
+   had, which was Practitioner's: shot at 1600, Field, Intake, Compass and
+   Masks sat at x 596, under where Practitioner had been and nowhere near
+   Play. secAlign is the one measurement and measures only a pressed section,
+   so Play is pressed for the length of one synchronous call and let go. No
+   frame is painted between the two writes, so nothing can be seen to flash. */
+function pracPaint(){
+ var on=pracOn();
+ pracCss();
+ document.querySelectorAll('#secbar .secb[data-sec="practitioner"],#tabbar .tabgrp[data-sec="practitioner"]')
+  .forEach(function(e){e.style.display=on?'':'none';});
+ if(on)return;
+ var top=document.querySelector('.top');
+ if(top&&top.getAttribute('data-sec')==='practitioner'){
+  var k=SECOF(TAB.FIELD), pb=document.querySelector('#secbar .secb[data-sec="'+k+'"]');
+  top.setAttribute('data-sec',k);
+  if(pb&&typeof secAlign==='function'&&!document.querySelector('#secbar .secb[aria-pressed="true"]')){
+   pb.setAttribute('aria-pressed','true'); secAlign(); pb.setAttribute('aria-pressed','false');}}
+ if(typeof SEC_LAST!=='undefined')delete SEC_LAST.practitioner;
+ if(S.tab===TAB.PRACTITIONER)setTab(TAB.FIELD);}
+
+/* THE SKETCH. Three dashed rows where a list will be, and every part of what
+   he described as a stub row that says it is not built. No name is invented
+   for a row: a made up client on a page about other people's records is a
+   fabricated record, even as a picture. */
+function renderPrac(){
+ var host=$('prac'); if(!host)return;
+ pracCss();
+ var row='<div class="ac-row pr-sk" aria-hidden="true"><i class="pr-ring"></i>'
+  +'<span class="pr-lines"><i></i><i></i></span><i class="pr-pill"></i></div>';
+ host.innerHTML='<div class="ac-wrap" style="--c:'+seatCol('Throat')+'">'
+  +'<div class="ac-hd"><div class="pm-eye">Practitioner</div>'
+  +'<h2 class="kb-h">Clients</h2></div>'
+  +'<p class="ac-lead">A sketch of practitioner mode. No client is listed here yet, and no '
+  +'profile opens from this page until sign in and consent are built.</p>'
+  +accGroup('Your Clients',row+row+row,
+    'Each block marks where a client will sit. None of them is a person.')
+  +accGroup('A Client’s Profile',
+    accStub('Add a client')+accStub('View a client’s profile')+accStub('Client consent'),
+    /* the same promise the Privacy section already makes from the other
+       side, "Who Has Sight", said here as not yet true */
+    'Nothing about a client reaches this page until that client grants it. Once this '
+    +'is built, the grant shows by name on the client’s own Privacy page, and one press '
+    +'there takes it back.')
+  /* the way back to the switch, because the door to this page is the only
+     place a person who turned it on is sure to look for how to turn it off */
+  +accGroup('This Mode',accAct('Practitioner mode','pracacc',{btn:'Open Account'}))
+  +'</div>';
+ var b=$('pracacc');
+ if(b)b.onclick=function(){ACC_OPEN='account'; setTab(TAB.SETTINGS);};}
+
+try{window.__at&&window.__at('ui/practitioner.js');}catch(e){}
 
 /* ---- THE MATRIX. 19 domains across, 9 child fetters down. Cells drill. ---- */
 const MXC=[];
@@ -44186,6 +44385,11 @@ step('the stored record',function(){
    on the wheel. Its own step, so a store that throws costs the switch and
    not the start up. */
 step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
+/* THE PRACTITIONER DOOR, round LL, read off the stored record once it is
+   loaded above. applyUiPrefs is not called at start up, so without this the
+   switch read on after a reload while the door stayed shut. Its own step, so
+   a throw here costs the door and not the start up. */
+step('practitioner door',function(){pracPaint();});
 step('opening surface',function(){setTab(TAB.FIELD);});
 /* ONBOARDING, ON THE FIRST VISIT ONLY, and after the boot sheet has gone so
    the two do not stack. "Same onboarding for both arrivals", so there is no
@@ -44231,5 +44435,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002891497"></div>
+<div id="eof" hidden data-len="002904763"></div>
 </body></html>

@@ -1603,6 +1603,11 @@ step('the stored record',function(){
    on the wheel. Its own step, so a store that throws costs the switch and
    not the start up. */
 step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
+/* THE PRACTITIONER DOOR, round LL, read off the stored record once it is
+   loaded above. applyUiPrefs is not called at start up, so without this the
+   switch read on after a reload while the door stayed shut. Its own step, so
+   a throw here costs the door and not the start up. */
+step('practitioner door',function(){pracPaint();});
 step('opening surface',function(){setTab(TAB.FIELD);});
 /* ONBOARDING, ON THE FIRST VISIT ONLY, and after the boot sheet has gone so
    the two do not stack. "Same onboarding for both arrivals", so there is no

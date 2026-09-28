@@ -247,6 +247,11 @@ function setTab(i){
     The result was a tab that opened a 903px host with nothing in it. Two
     conditions now, because they are two surfaces. */
  if(i===TAB.KNOW)kbRender();
+ /* the practitioner sketch, round LL. Drawn on entry and not held shut here
+    when the mode is off: its door is what the switch governs, and a surface
+    that answered setTab with nothing would be the empty 903px host Games
+    once was. */
+ if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
  if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
  /* Summary carries Analytics, and reads last. */

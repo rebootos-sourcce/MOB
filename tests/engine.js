@@ -5093,5 +5093,34 @@ g('the rituals of becoming');
  ok(v.ok,'a record carrying every teacher practice validates, '+(v.error||''));
 }
 
+g('LL · practitioner mode, the switch and its integer');
+/* Round LL. The switch is a ui preference like the seat tone above it, so it
+   is held to the same three things: off on a new profile, kept through the
+   boundary once on, and filled from the blank on a record saved before it
+   existed. The last one is what the whitelist in validateProfile decides; a
+   key missing from it is dropped on every load, which reads as the switch
+   turning itself off after a reload. */
+{
+ const {blankProfile,validateProfile}=E;
+ const bp=blankProfile('practitioner');
+ ok(bp.ui&&bp.ui.practitioner===false,'a new profile has practitioner mode off');
+ bp.ui.practitioner=true;
+ const on=validateProfile(JSON.parse(JSON.stringify(bp)));
+ ok(on.ok&&on.profile.ui.practitioner===true,'turned on, it survives the boundary');
+ const old=JSON.parse(JSON.stringify(blankProfile('older'))); delete old.ui.practitioner;
+ const back=validateProfile(old);
+ ok(back.ok&&back.profile.ui.practitioner===false,
+  'a profile saved before the switch existed loads with it off');
+ const odd=JSON.parse(JSON.stringify(blankProfile('odd'))); odd.ui.practitioner='yes';
+ const coerced=validateProfile(odd);
+ ok(coerced.ok&&coerced.profile.ui.practitioner===true,
+  'and it is a boolean on the way in, as every preference beside it is');
+ /* THE INTEGER IS APPENDED AND NOTHING BEFORE IT MOVED. Written out in full
+    rather than counted, because this is the one table in the product where a
+    changed value is the defect and not the product growing. */
+ ok(JSON.stringify(E.TAB)==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12}',
+  'Practitioner is 12 and every integer before it holds its value, '+JSON.stringify(E.TAB));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
