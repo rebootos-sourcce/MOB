@@ -374,10 +374,10 @@
 
        The fold is a native checkbox and a sibling selector, with no script, so
        it works with a keyboard by default and still works on a start up that
-       lost its script. The checkbox is itself the control, drawn as a chevron
-       at the head of the strip: a hidden box behind a label was a focusable
+       lost its script. The checkbox is itself the control, drawn as a mark
+       at the head of the strip, three bars since KT and a chevron before: a hidden box behind a label was a focusable
        control one pixel wide, which the design gate's tap floor refused. -->
-  <!-- THE FIRST TIER IS THREE SECTIONS. Rounds KC and KM in TASKS.md, his
+  <!-- THE FIRST TIER IS THE SECTIONS. Rounds KC and KM in TASKS.md, his
        words: "Let's organize our menus by discover, play, flow as the core top
        navigation." Each is a group of doors and not a surface: pressing one
        opens the tab last used in it, or its first, through setTab and the same
@@ -386,7 +386,19 @@
        once start up has said which that is. A start up that never arrives
        leaves every group showing, so a failed boot still has all its doors.
 
-       Play is pressed here because the app opens on Field, which is in it. -->
+       Play is pressed here because the app opens on Field, which is in it.
+       At KT the bar grew from three sections to the loop's four, Discover,
+       Play, Flow and Embody, and the instruments went into Play. The groups
+       below are in TABDEF's order, which a gate holds them to button by
+       button, and the tabs are a row of their own under the sections, in
+       head.html, so a section opens its tabs beneath it and never beside it.
+
+       Each section carries a symbol beside its word, KT: "next to discover
+       play flow, I want symbolic icons." An eye to discover, a play mark,
+       two waves for flow and a seated figure to embody. Rings and strokes,
+       no fills, the standing icon rule. The word sits in .sn and not .n,
+       because .n is the figure class and paints itself ink, which would
+       press every section at once. -->
   <!-- AND THE SAME CHEVRON ROLLS IN THE WHOLE MENU. KN in TASKS.md, his words:
        "for the primary navigation, I want a little icon. So if I click it,
        everything rolls in just like the rest of the site design." It is the
@@ -398,27 +410,30 @@
    aria-label="Fold the menu" title="Fold the menu to its icons, or open it again">
   <div class="secbar" id="secbar" role="group" aria-label="Sections">
    <button type="button" class="secb" data-sec="discover" aria-pressed="false"
-    title="Discover. Your avatar, your summary and your story.">Discover</button>
+    title="Discover. Your story, your avatar, your intake and your summary."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
    <button type="button" class="secb" data-sec="play" aria-pressed="true"
-    title="Play. The tools: Field, Body, Compass and Games.">Play</button>
+    title="Play. Field and Compass."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
-    title="Flow. Knowledge and your ritual.">Flow</button>
+    title="Flow. Your ritual, and keeping it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
+   <button type="button" class="secb" data-sec="embody" aria-pressed="false"
+    title="Embody. Knowledge."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.2" r="2.2"/><path d="M12 8.6v5M6.4 10.8c1.9 1.8 3.8 2.7 5.6 2.7s3.7-.9 5.6-2.7M4.6 19c2.3-2 4.8-3 7.4-3s5.1 1 7.4 3"/></svg><span class="sn">Embody</span></button>
   </div>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
    <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
-    <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
-    <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
     <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
+    <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Intake"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Intake</span></button>
+    <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
    </div>
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
-    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
     <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
-    <button type="button" class="vt tabtop" data-tabk="7" aria-pressed="false" title="Games"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.6"/><circle cx="9" cy="9" r=".9"/><circle cx="12" cy="12" r=".9"/><circle cx="15" cy="15" r=".9"/></svg><span class="n">Games</span></button>
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
-    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
     <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+   </div>
+   <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
+    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
    </div>
   </div>
   <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like

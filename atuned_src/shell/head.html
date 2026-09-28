@@ -899,17 +899,25 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    name leaves the eye and stays in the accessibility tree, clipped rather
    than removed, because it is the button's name. */
 .tabtop{gap:7px}
-/* the fold: the checkbox drawn as a chevron in a full touch target. Checked
-   is names shown, and the chevron points back toward the name of the product,
-   the way the strip will fold; unchecked it turns to point open. */
+/* the fold: the checkbox drawn as a mark in a full touch target. Checked is
+   names shown, unchecked is folded. */
 .tabnames-i{-webkit-appearance:none;appearance:none;flex:0 0 auto;margin:0;
  width:var(--tap);height:var(--tap);border:0;border-radius:var(--r-s);background:transparent;
  color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;
  transition:color var(--t-micro) var(--ease-out)}
-.tabnames-i::before{content:'';width:7px;height:7px;border-left:1.6px solid currentColor;
- border-bottom:1.6px solid currentColor;transform:translateX(1.5px) rotate(45deg);
- transition:transform var(--t-micro) var(--ease-out)}
-.tabnames-i:not(:checked)::before{transform:translateX(-1.5px) rotate(-135deg)}
+/* AND NOW IT IS A HAMBURGER, KT. His words: "next to discover play flow, I
+   want symbolic icons. And then their little hamburger to open or close it
+   next to it." It was drawn as a chevron, which is the same control and he
+   did not read it as one; three bars is the mark people already know opens
+   and shuts a menu. Still drawn on the checkbox itself and still no fill: three strokes laid
+   by gradients on one box. Folded, the lower two bars shorten, so the state
+   shows on the mark and not only in the width of the strip beside it. */
+.tabnames-i::before{content:'';width:16px;height:12px;
+ background:linear-gradient(currentColor,currentColor) 0 0/100% 1.6px no-repeat,
+  linear-gradient(currentColor,currentColor) 0 50%/100% 1.6px no-repeat,
+  linear-gradient(currentColor,currentColor) 0 100%/100% 1.6px no-repeat;
+ transition:background-size var(--t-micro) var(--ease-out)}
+.tabnames-i:not(:checked)::before{background-size:100% 1.6px,62% 1.6px,38% 1.6px}
 .tabnames-i:hover{color:var(--ink)}
 .tabnames-i:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tabnames-i:not(:checked)~#tabbar .tabtop .n{position:absolute;width:1px;height:1px;
@@ -918,9 +926,9 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    keeps a full touch target and centres its icon in it */
 .tabnames-i:not(:checked)~#tabbar .tabtop{padding-left:10px;padding-right:10px;
  min-width:var(--tap);justify-content:center}
-/* THE FIRST TIER, KC and KM in TASKS.md: three sections, Discover, Play and
-   Flow, ahead of the tabs. Words alone and one step up in size, so the two
-   tiers read as two levels at a glance: a section pressed is ink and weight,
+/* THE FIRST TIER, KC and KM in TASKS.md: the sections, Discover, Play, Flow
+   and, since KT, Embody, ahead of the tabs. Words alone and one
+   step up in size, so the two tiers read as two levels at a glance: a section pressed is ink and weight,
    a tab pressed is the accent and its underline. A section is where a person
    is in the loop, a tab is the surface they are on. The hairline at its end
    is the seam between the two. */
@@ -936,6 +944,12 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .secb:hover{color:var(--ink)}
 .secb:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .secb[aria-pressed=true]{color:var(--ink);font-weight:600;letter-spacing:0}
+/* a symbol beside each section's word, KT, in the tab icons' own terms: the
+   same size, stroke and no fill, and the section's colour, so a pressed
+   section's ink reaches its mark with no second rule */
+.secb{display:inline-flex;align-items:center;gap:7px}
+.secb svg{width:var(--icon-nav);height:var(--icon-nav);stroke:currentColor;stroke-width:1.6;
+ fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 /* folded, KN: the sections roll in to the pressed one, and hidden is really
    hidden once they have, so a folded section is not a stop for the keyboard */
 .tabnames-i:not(:checked)~.secbar .secb:not([aria-pressed=true]){max-width:0;padding:0;opacity:0;
@@ -952,18 +966,54 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 @media not all and (max-width:720px){
  .top[data-sec="discover"] #tabbar .tabgrp:not([data-sec="discover"]),
  .top[data-sec="play"] #tabbar .tabgrp:not([data-sec="play"]),
- .top[data-sec="flow"] #tabbar .tabgrp:not([data-sec="flow"]){display:none}}
+ .top[data-sec="flow"] #tabbar .tabgrp:not([data-sec="flow"]),
+ /* KT added the line below. A section key with no line here is not hidden,
+    it shows every group at once, so a new section in SECTIONS needs its line
+    in this list; the functional gate presses every section and fails on it. */
+ .top[data-sec="embody"] #tabbar .tabgrp:not([data-sec="embody"]){display:none}}
+/* THE SECOND TIER IS A ROW OF ITS OWN, UNDER THE FIRST. KT in TASKS.md, his
+   words: "the navigation was it keeps unnesting right that's not what I want
+   I wanted to open up a secondary navigation underneath." The tabs sat on the
+   same line as the sections, straight after them, so a section's tabs read as
+   more sections, peers of Discover and Play rather than what is inside one,
+   and pressing a section looked like the bar rearranging itself sideways.
+   He said it again, harder, later in the same round: "When I say secondary
+   navigation, I don't mean the same horizontal plane as the primary
+   navigation. Ever. That's poor UX."
+
+   So the strip takes a line of its own beneath the bar, the full width, and
+   stays there on every surface: the second tier is always open and only its
+   contents change with the section. It is forced onto that line by its 100%
+   basis, which has to beat the status rule above, since that one gives the
+   strip a basis of 0 while a message shows and a zero basis fits back onto
+   the first line beside the sections. Order 1 with the status also at 1
+   keeps document order, strip first, so a message still goes last, under
+   both tiers. Above the phone width only; the phone's menu is already a
+   grid with each section's tabs under its own heading.
+
+   The left padding is the pressed section's own position, measured by
+   secAlign in ui/panels.js, so the first tab's word starts under the first
+   letter of the section that opened it. The hairline under the strip is its
+   border and still runs the full width, because padding sits inside it. */
+@media not all and (max-width:720px){
+ .top{flex-wrap:wrap}
+ .top #tabbar,.top:has(#status:not(:empty)) #tabbar{order:1;flex:1 1 100%;max-width:none;
+  padding-left:var(--secx,0px)}}
 /* THE SEARCH, KC: one circle where help was, and the field rolls out to its
    left when it opens. Shut, the field has no width and no tab stop.
-   visibility carries the wait as its own duration, not a delay: visible to
-   hidden flips at the end of delay plus duration either way, so this is the
-   same close timing as before, just named rather than a stray 0s. */
+   visibility's own duration is 0 on purpose: a button press calls
+   q.focus() in the same script tick as the class toggle, and a real
+   duration only starts animating on the next frame, so the synchronous
+   focus() call would still see a hidden, zero width field and silently
+   fail. 0s is what makes open instant. See tests/design.js section 12,
+   which knows visibility is exempt from the named duration rule for
+   exactly this reason. */
 .srch{display:flex;align-items:center;gap:6px;flex:0 0 auto}
 .srch-q{width:0;min-width:0;padding:0;border:0 solid transparent;opacity:0;visibility:hidden;
  min-height:var(--tap);border-radius:var(--r-s);background:var(--sunk);color:var(--ink);
  font-family:var(--sans);font-size:14px;
  transition:width var(--t-element) var(--ease-out),padding var(--t-element) var(--ease-out),
-  opacity var(--t-micro) var(--ease-out),visibility var(--t-element) linear}
+  opacity var(--t-micro) var(--ease-out),visibility 0s linear var(--t-element)}
 .srch-q::placeholder{color:var(--dim)}
 .srch.open .srch-q{width:220px;padding:0 12px;border-width:1px;border-color:var(--edge-2);opacity:1;
  visibility:visible;transition-delay:0s}

@@ -96,17 +96,19 @@ function setTab(i){
   var sb=$('sumbody'), ab=$('ana');
   if(sb)sb.innerHTML=''; if(ab)ab.innerHTML='';}
  S.tab=i; S.pin=null;
- TABDEF.forEach(function(T){
+ /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
+    Settings was shown and hidden by hand below, which held while Settings was
+    the only surface with no door. At KT Games came off the bar into TABEXTRA
+    ("Hide games for now") and the loop stopped reaching its host: setTab
+    answered Games and the host kept display none, measured as a 0 pixel box
+    on a phone by the functional gate. Every doorless surface is in TABEXTRA,
+    so the loop reads it too, and Settings lost its hand written copy of these
+    two lines rather than keep a second writer for one display. */
+ TABDEF.concat(Object.keys(TABEXTRA).map(function(k){return TABEXTRA[k];})).forEach(function(T){
   var e=$(T.id); if(!e||T.id==='cv')return;
   e.classList.toggle('on',T.k===i);
   e.style.display=(T.k===i)?'flex':'none';});
- /* Settings has a host and no TABDEF entry, so it is shown and hidden here by
-    hand. Everything in TABDEF is hidden by the loop above, which means going
-    to Settings already clears every other surface and coming back from it
-    already clears this one. */
  (function(){var sE=$('settings'); if(!sE)return;
-  sE.classList.toggle('on',i===TAB.SETTINGS);
-  sE.style.display=(i===TAB.SETTINGS)?'flex':'none';
   /* the account area replaced renderSettings. The old function is gone rather
      than left beside it, because two renderers for one host is how a surface
      ends up half updated. */
@@ -322,8 +324,8 @@ function tabTop(i){
   b.addEventListener('click',function(){setTab(k);});});
 }());
 /* ---- THE FIRST TIER, KC and KM in TASKS.md ----
-   Three sections over the tabs. The section is read off the tab through
-   SECOF in engine/core.js, never stored beside it, so the two cannot disagree.
+   The sections over the tabs, the loop's four since KT. The section is read
+   off the tab through SECOF in engine/core.js, never stored beside it, so the two cannot disagree.
    Written onto the bar as data-sec, which is what shows the section's group of
    tabs in head.html; a surface with no section, Settings, leaves the last
    section's tabs showing with none pressed, so a person can still see where
@@ -339,7 +341,36 @@ function secPaint(i){
  document.querySelectorAll('#secbar .secb').forEach(function(b){
   b.setAttribute('aria-pressed',b.getAttribute('data-sec')===sec);});
  var ns=$('navsec'); if(ns){var e=SECTIONS.filter(function(x){return x.k===sec;})[0];
-  ns.textContent=e?e.nm:'';}}
+  ns.textContent=e?e.nm:'';}
+ secAlign();}
+/* THE SECOND TIER STARTS UNDER THE FIRST, LETTER ON LETTER. KT, his words:
+   "they start pixel for pixel, directly underneath like text-wise, font-wise,
+   name-wise. Underneath the primary navigations. First letter as well. so
+   they're on the same axis. Vertically." The row under the bar began at the
+   bar's own left edge, under the wordmark, so what a section opened sat
+   nowhere near the section that opened it.
+
+   A section's width is its word, so where its first letter lands is only
+   known once it is laid out, and the offset is measured rather than written:
+   the pressed section's word against the first shown tab's word, and the
+   difference goes into the row's left padding through --secx on the bar,
+   which head.html applies above the phone width only. Measured against the
+   padding already there, so a second call with nothing moved changes nothing.
+   Folded, the tab names are clipped to a pixel and cannot be measured, so the
+   icons are lined up instead; icon and gap are the same size in both tiers,
+   which puts the words on the same line again the moment they come back. */
+function secAlign(){
+ var top=document.querySelector('.top'), bar=$('tabbar');
+ if(!top||!bar||!window.matchMedia||matchMedia('(max-width:720px)').matches)return;
+ var sb=document.querySelector('#secbar .secb[aria-pressed="true"]');
+ var tb=[].filter.call(bar.querySelectorAll('.tabtop'),function(b){return b.offsetParent;})[0];
+ if(!sb||!tb)return;
+ var a=sb.querySelector('.sn'), b=tb.querySelector('.n');
+ if(!a||!b||b.getBoundingClientRect().width<2){a=sb.querySelector('svg'); b=tb.querySelector('svg');}
+ if(!a||!b)return;
+ var pad=parseFloat(getComputedStyle(bar).paddingLeft)||0;
+ var x=Math.max(0,Math.round(pad+a.getBoundingClientRect().left-b.getBoundingClientRect().left));
+ top.style.setProperty('--secx',x+'px');}
 function secGo(sec){
  var k=SEC_LAST[sec];
  if(k===undefined){var f=TABDEF.filter(function(T){return T.sec===sec;})[0]; if(!f)return; k=f.k;}
@@ -348,6 +379,13 @@ function secGo(sec){
  var sb=$('secbar'); if(!sb)return;
  sb.querySelectorAll('.secb').forEach(function(b){
   b.addEventListener('click',function(){secGo(b.getAttribute('data-sec'));});});
+ /* the pressed section moves when the width moves, when the fold rolls the
+    others in, which it does over a transition, so that is waited out, and
+    when the typeface arrives, since the words are measured in it */
+ addEventListener('resize',secAlign);
+ sb.addEventListener('transitionend',function(e){if(e.propertyName==='max-width')secAlign();});
+ var fold=$('tabnames'); if(fold)fold.addEventListener('change',secAlign);
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(secAlign);
  secPaint(S.tab);}());
 /* ---- THE SEARCH, KC ----
    One circle where help was. Pressed, the field rolls out and takes the
