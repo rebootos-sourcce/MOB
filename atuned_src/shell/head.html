@@ -1630,10 +1630,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom,#railtop{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.fzoom,.cn-zoom,#railtop{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,#railtop.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,#railtop.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -2794,6 +2794,36 @@ body:not(.tab-field) .keylo{display:none}
 .cone-cv{display:block;width:100%;height:min(54vh,470px);touch-action:none;cursor:grab;
  border-radius:var(--r-s);background:var(--sunk)}
 .cone-cv:active{cursor:grabbing}
+/* ZOOM ON THE COMPASS, round KQ: "the icon's already there. I want to be able
+   to zoom in." The Field's three circles, ui/fieldbar.js fbOrb, on the
+   figure's own lower right, a column as on the Field. The canvas and the
+   circles share a holder so the corner is the canvas's and not the card's,
+   whatever the key under the figure is doing. Zoomed in, a drag moves the
+   figure, so the hand says so. */
+.cn-cvw{position:relative;min-width:0}
+/* right 20 and not the Field's 12: the reframe circle's pill rides 20
+   pixels past its circle, and at 12 it hung off the canvas's edge */
+.cn-zoom{position:absolute;right:20px;bottom:12px;z-index:3;display:flex}
+.cn-zoom .fb-grp{flex-direction:column;gap:6px}
+.cone-cv.zoomed{cursor:grab}
+/* ZOOMED IN, THE FIGURE RUNS UNDER THE NAMES AND THE SWITCHES, which sit over
+   the canvas at a desk and have no ground of their own because at the whole
+   figure there is nothing under them. So while zoomed each one takes the
+   well's own ground as a plate, the way the Field's glass circles sit on its
+   picture, and no line is ever read through a name. CSS and not a veil
+   painted on the canvas, so it costs the frame nothing. At a desk only:
+   under 900 the names and switches are in flow off the figure. */
+.cone-fig .cn-nr,.cone-fig .cn-b{transition:background-color var(--t-micro) var(--ease-out)}
+@media (min-width:900px){
+ .cone-fig.zoomed .cn-nr,.cone-fig.zoomed .cn-b{background:color-mix(in srgb,var(--sunk) 94%,transparent)}
+ body.lumen .cone-fig.zoomed .cn-nr,body.lumen .cone-fig.zoomed .cn-b{background:rgba(16,16,16,.94)}}
+/* on a phone the figure is the full width and its lower right is the crown
+   of inversions, so the circles follow the figure in a row, right aligned,
+   on the well's own ground, as the Field's do under its picture */
+@media (max-width:720px){
+ .cn-zoom{position:static;justify-content:flex-end;padding:6px 24px 2px 10px;background:var(--sunk)}
+ body.lumen .cn-zoom{background:#101010}
+ .cn-zoom .fb-grp{flex-direction:row}}
 /* THE SWITCHES SIT ON THE FIGURE, UPPER LEFT. Ruled. They were a row under the
    drawing, which cost a band of the stage and put each control further from
    the thing it changes. */

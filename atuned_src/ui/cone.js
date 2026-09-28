@@ -53,7 +53,91 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
  /* well: which of round KI's two gravity mockups the needle draws. Off is
     the pulse scaled by weight, round KH; on is the gravity well, round KG.
     A mockup switch for him to choose by looking, not a ruling. */
- well:false};
+ well:false,
+ /* ZOOM, round KQ: "I want to be able to zoom in." z, zx and zy are what is
+    drawn, the scale and the pan in canvas pixels about the canvas's centre;
+    the T three are where a press, a scroll or a pinch asked it to go, and the
+    drawn three ease toward them in coneTick, so a zoom arrives and never
+    snaps. Geometry is scaled rather than the canvas transform, so a hairline
+    stays a hairline at any zoom, the way the Field's words stay eleven
+    pixels. ptrs and pinch are the two finger zoom on a phone. */
+ z:1, zx:0, zy:0, zT:1, zxT:0, zyT:0, ptrs:null, pinch:null};
+/* how close zoom may bring the figure. Four is about where a badge fills a
+   thumb on a phone and the needle's point fills a desk canvas; past it the
+   figure is a few lines crossing an empty well. */
+const CONE_ZMAX=4;
+/* THE PAN IS HELD SO THE FIGURE CANNOT LEAVE ITS OWN BOX. At a zoom of z the
+   drawing is z times the canvas about its centre, so its edge can travel at
+   most (z-1) half widths before the far edge comes into the box. The same
+   rule as the Field's Frames, fzClamp in ui/rings.js, in centre terms. */
+function coneZClamp(W,H){
+ var mx=(CONE.zT-1)*W/2, my=(CONE.zT-1)*H/2;
+ CONE.zxT=clamp(CONE.zxT,-mx,mx); CONE.zyT=clamp(CONE.zyT,-my,my);}
+function coneWH(){var c=CONE.cv; return c?[c.width/CONE.dpr,c.height/CONE.dpr]:[1,1];}
+/* to a scale, keeping the point under px,py where it is. Worked from the
+   targets, so three quick notches of a scroll wheel compound rather than
+   each starting from wherever the ease had got to. */
+function coneZoomAt(ns,px,py){
+ var wh=coneWH(), W=wh[0], H=wh[1];
+ ns=clamp(ns,1,CONE_ZMAX);
+ var ax=px-W/2, ay=py-H/2, k=ns/CONE.zT;
+ CONE.zxT=ax-(ax-CONE.zxT)*k; CONE.zyT=ay-(ay-CONE.zyT)*k; CONE.zT=ns;
+ coneZClamp(W,H);
+ if(REDUCED){CONE.z=CONE.zT; CONE.zx=CONE.zxT; CONE.zy=CONE.zyT;}
+ coneZoomPaint();}
+/* a pointer lifted. True when it ended a pinch, so the lift is not also read
+   as a press on whatever node is under the last finger. */
+function coneUnptr(e){
+ var P2=CONE.ptrs; if(P2&&e)delete P2[e.pointerId];
+ if(!CONE.pinch)return false;
+ if(!P2||Object.keys(P2).length<2){CONE.pinch=null; CONE.drag=null;}
+ return true;}
+/* F, plus and minus, as on the Field, while the Compass is the tab that is
+   up. The Field's own handler in ui/ui.js answers only on the Field, so the
+   two never both take one key. */
+addEventListener('keydown',function(e){
+ if(!CONE.open||!CONE.tab||CONE.side||typeof TAB==='undefined'||S.tab!==TAB.COMPASS)return;
+ var t=e.target&&e.target.tagName;
+ if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT')return;
+ if(e.metaKey||e.ctrlKey||e.altKey)return;
+ var k=(e.key||'').toLowerCase();
+ if(k==='f')coneReframe();
+ else if(k==='+'||k==='=')coneZoomBy(1.25);
+ else if(k==='-'||k==='_')coneZoomBy(1/1.25);});
+function coneZoomBy(k){var wh=coneWH(); coneZoomAt(CONE.zT*k,wh[0]/2,wh[1]/2);}
+function coneReframe(){CONE.zT=1; CONE.zxT=0; CONE.zyT=0;
+ if(REDUCED){CONE.z=1; CONE.zx=0; CONE.zy=0;}
+ coneZoomPaint();}
+/* the ease, a fifth of the remaining distance a frame: about the Field's
+   quick settle, and it lands exactly once it is too close to see */
+function coneZoomStep(){
+ var dz=CONE.zT-CONE.z, dx=CONE.zxT-CONE.zx, dy=CONE.zyT-CONE.zy;
+ if(!dz&&!dx&&!dy)return;
+ if(Math.abs(dz)<1e-3&&Math.abs(dx)<.3&&Math.abs(dy)<.3){
+  CONE.z=CONE.zT; CONE.zx=CONE.zxT; CONE.zy=CONE.zyT; return;}
+ CONE.z+=dz*.2; CONE.zx+=dx*.2; CONE.zy+=dy*.2;}
+/* THE THREE CIRCLES CARRY WHERE THE ZOOM IS, as the Field's do: the reframe
+   circle's ring is how far in, of the whole reach, and its pill the scale.
+   Written on a change of target and never per frame. The glass takes the
+   tone of the well it lies on, which is light under Snow. */
+function coneZoomPaint(){
+ var hz=document.getElementById('cnzoom'); if(!hz)return;
+ var zf=hz.querySelector('[data-fb=zfit]');
+ if(zf){var zp=(CONE.zT-1)/(CONE_ZMAX-1)*100;
+  zf.querySelector('.val').setAttribute('stroke-dasharray',clamp(zp,0,100).toFixed(1)+' 100');
+  zf.querySelector('.fb-v').textContent=CONE.zT.toFixed(1)+'×';
+  zf.classList.toggle('on',CONE.zT>1.001);}
+ var wl=ndlWell();
+ hz.classList.toggle('fb-lt',(wl[0]*.299+wl[1]*.587+wl[2]*.114)>140);
+ if(CONE.cv){CONE.cv.classList.toggle('zoomed',CONE.zT>1.001);
+  var fg=CONE.cv.closest?CONE.cv.closest('.cone-fig'):null;
+  if(fg)fg.classList.toggle('zoomed',CONE.zT>1.001);}
+ /* a new step of the pixel budget resizes the store, once per step crossed
+    and never per frame of the ease (coneLayout) */
+ if(CONE.cv&&coneZBud()!==CONE.zb)coneLayout();}
+/* the share of the pixel budget at the zoom asked for, in three steps so a
+   scroll through the range resizes the store twice and not every notch */
+function coneZBud(){return CONE.zT<1.4?1:(CONE.zT<2.2?.7:.5);}
 /* THE FLAT VERSION IS THE SAME FIGURE WITH THE TILT TAKEN OUT.
 
    A second renderer for a 2D compass would be a second thing to keep true and
@@ -714,7 +798,9 @@ function conePlan(){
  g.clearRect(0,0,W,H);
  CONE.hits=[];
  var r=compute(), M=coneMirSync(r), SC=coneSec(), read=!r.unread;
- var R=Math.max(20,Math.min(W,H)/2-(W<520?24:34)), cx=W/2, cy=H/2, r0=R*.2;
+ /* zoomed, round KQ: the radius grows by the zoom and the centre moves by
+    the pan, and everything below is drawn off those three */
+ var R=Math.max(20,Math.min(W,H)/2-(W<520?24:34))*CONE.z, cx=W/2+CONE.zx, cy=H/2+CONE.zy, r0=R*.2;
  var sk=clamp(R/300,.55,1.3);
  var rad=function(v){return r0+(R-r0)*clamp(v,0,100)/100;};
  var ang=function(t){return t*TAU-Math.PI/2;};
@@ -955,6 +1041,25 @@ function conePlan(){
    no filter, no readback in the loop. The per frame garbage is the colour
    strings a canvas has to be handed, the hit list, and whatever compute()
    makes, which is the engine's and shared with every surface.
+
+   ROUND KQ, MEASURED AND DATED, 28 September, the same probe on the same
+   software raster at a load average near 3, Marcus, the minimum of ninety
+   frames. Before is HEAD d880c09, after is the tension line, the pushed
+   gravity and zoom:
+
+                        pulse           well            top
+     1600 at 1x         5.7 -> 6.2      6.1 -> 7.0      7.7 -> 8.2
+     1600 at 2x         8.1 -> 8.5      10.3 -> 11.1    12.4 -> 12.6
+     390 at 3x          6.0 -> 6.5      8.1 -> 8.6      6.7 -> 6.9
+     zoomed 2.5x, 1600 at 2x: pulse 11.0, well 13.5, top 9.8, with the
+     stepped pixel budget in coneLayout; 16.4, 19.6 and 15.7 without it.
+
+   The additions are strokes and small fills: eight glow strokes and two
+   travelling lights on the tension line, a swell at a node on its beat,
+   three closing rings and up to seven motes per well. Zoomed, the cost is
+   the big translucent fills covering more of the canvas, the limbo drum's
+   gradient first at 4.3 ms; a solid drum would save 1.8 of it and would
+   take the lit band of your reading out of limbo, so it stays.
    ============================================================ */
 const NDL_GAP=0.13;      /* half the limbo, as a share of the half height */
 const NDL_SLAB=0.88;     /* the limbo ring's radius, as a share of a base's */
@@ -989,6 +1094,12 @@ var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
  /* the wells: x, y and strength per axis, and how many are live this frame.
     Zero live wells is the switch off, and ndlWarp returns at once. */
  wc:new Float32Array(24), wn:0, ws2:1,
+ /* THE TENSION LINE'S STATE, round KQ. tp is how hard each axis has just
+    been plucked, in coherence points, and it dies away; ta and tw are each
+    span's amplitude and speed this frame; gph is each axis's pulse phase
+    last frame, so a beat can be told from the frame it lands on. */
+ tp:new Float32Array(8), ta:new Float32Array(8), tw:new Float32Array(8), tph:new Float32Array(8),
+ tt:new Float32Array(8), gph:new Float32Array(8), cur:0,
  gx:new Float32Array(NDL_N+1), gy:new Float32Array(NDL_N+1)};
 /* the figure's box. Read once per canvas size: the top keeps room for the
    crown of five and the halo, the bottom for the fork, and on a desk the
@@ -996,7 +1107,8 @@ var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
    from 900 pixels up and in flow under it below that (the sheet's break). */
 function ndlGeo(W,H){
  var G=NDL.G, side=(typeof innerWidth==='number'&&innerWidth>=900)?176:20;
- if(G&&G.W===W&&G.H===H&&G.side===side)return G;
+ var z=CONE.z, zx=CONE.zx, zy=CONE.zy;
+ if(G&&G.W===W&&G.H===H&&G.side===side&&G.z===z&&G.zx===zx&&G.zy===zy)return G;
  /* the bottom keeps the same room as the top now: the five inversions crown
     the lower point as the five paths crown the upper one, and 46 was the
     fork's room alone */
@@ -1004,8 +1116,16 @@ function ndlGeo(W,H){
  /* a pyramid a little taller than it is wide, so each half reads as an
     arrow head and not as a plate */
  var Rb=Math.max(36,Math.min(Hs*(1-NDL_GAP)*0.80,W/2-side));
- G={W:W,H:H,side:side,cx:W/2,cy:top+Hs,Hs:Hs,Rb:Rb,sk:clamp(Rb/250,.62,1.15)};
- return (NDL.G=G);}
+ /* ZOOMED, the box is scaled about the canvas's centre and moved by the pan.
+    The marks grow by a fifth of the zoom rather than all of it, so a badge
+    comes closer without swelling into its neighbour. Written into the one
+    object rather than a new one, because a zoom eases through a frame at a
+    time and a fresh box per frame is garbage in the hot loop. */
+ if(!G)G=NDL.G={};
+ G.W=W; G.H=H; G.side=side; G.z=z; G.zx=zx; G.zy=zy;
+ G.cx=W/2+zx; G.cy=H/2+(top+Hs-H/2)*z+zy; G.Hs=Hs*z; G.Rb=Rb*z;
+ G.sk=clamp(Rb/250,.62,1.15)*(1+(z-1)*.2);
+ return G;}
 /* height, as a share of the half height, upward positive: the upper pyramid
    carries sixty to a hundred, the limbo ring forty to sixty, the lower
    pyramid nought to forty */
@@ -1092,6 +1212,22 @@ function ndlLoop(E,G,X,Y,Q,flat){
   var i=Math.floor(k/NDL_SEC)%8, u=(k%NDL_SEC)/NDL_SEC;
   var q=flat===undefined?clamp(coneSpline(E,k/NDL_N),0,100):flat;
   ndlPf(q,i,u,G,P); X[k]=P.x; Y[k]=P.y; if(Q)Q[k]=q;}}
+/* THE TENSION LINE, round KQ: "the tension line, something is a bit more
+   express." The ribbon is sampled as ndlLoop samples it, and then each span
+   between two axes is a string between two pegs: it vibrates in the
+   coherence direction, fundamental plus a little of the second harmonic,
+   and both vanish at u of nought, which is the axis. So the line still
+   passes exactly through every node, which is the reading, and only the
+   stretch between two readings moves. How far it swings and how fast is
+   set per span in coneNeedle, off how far the span stands from your level
+   and whether a release has just plucked it. */
+function ndlLoopT(E,G,X,Y){
+ var P=NDL.P, A=NDL.ta, PH=NDL.tph, PI=Math.PI;
+ for(var k=0;k<=NDL_N;k++){
+  var i=Math.floor(k/NDL_SEC)%8, u=(k%NDL_SEC)/NDL_SEC;
+  var q=clamp(coneSpline(E,k/NDL_N),0,100);
+  if(A[i]>.004)q+=A[i]*(Math.sin(PI*u)*Math.sin(PH[i])+.3*Math.sin(2*PI*u)*Math.sin(1.63*PH[i]+1.1));
+  ndlPf(clamp(q,0,100),i,u,G,P); X[k]=P.x; Y[k]=P.y;}}
 function ndlPoly(g,X,Y){
  g.beginPath(); g.moveTo(X[0],Y[0]);
  for(var k=1;k<=NDL_N;k++)g.lineTo(X[k],Y[k]);}
@@ -1254,7 +1390,13 @@ function coneNeedle(){
  NDL.wn=0;
  if(CONE.well&&read){var gw=ndlGrav(), nw=0;
   NDL.ws2=2*Math.pow(NDL_WELL_S*G.Rb,2);
-  for(i=0;i<8;i++){var wv=gw[i]*gw[i]*gw[i]*ee; if(wv<.02)continue;
+  /* AND THE WELLS BREATHE, round KQ: "the gravity stuff looks great ... see
+     if you can push it even further." A still well is a dent. Each mass now
+     sags and eases on its own slow breath, deeper and slower the heavier it
+     is, so the contours round it visibly draw in and let go: a sheet with
+     weight on it, not a sheet with a crease in it. */
+  for(i=0;i<8;i++){var g3w=gw[i]*gw[i]*gw[i], wv=g3w*ee; if(wv<.02)continue;
+   if(!REDUCED)wv*=1+(.10+.16*g3w)*Math.sin(CONE.t*(1.9-.8*g3w)+i*1.3);
    ndlPf(cq+(M.ax[i].x-cq)*ee,i,0,G,P);
    NDL.wc[nw*3]=P.x; NDL.wc[nw*3+1]=P.y; NDL.wc[nw*3+2]=wv; nw++;}
   NDL.wn=nw;}
@@ -1409,7 +1551,24 @@ function coneNeedle(){
     g.strokeStyle=rgba(n<5?gc:rc,(n<5?.34:.2)*ee); g.stroke();}}
   NDL.wn=0;
   ndlLoop(NDL.Es,G,NDL.sx,NDL.sy,NDL.sq);
-  ndlLoop(NDL.Eb,G,NDL.bx,NDL.by,null);
+  /* THE TENSION, per span, round KQ. A span is taut by how far its two ends
+     stand off your level, full at twenty five points; taut spans swing a
+     little and fast, slack ones barely and slow, the way a string does. A
+     release is a pluck: the springs that carry it (coneMirStep) are moving,
+     and how fast they move sets how hard the two spans either side ring,
+     dying away over a second or two. The pulse plucks as well, below, so
+     the gravity and the tension line are one system and not two effects. */
+  var tsum=0, TP=NDL.tp;
+  for(i=0;i<8;i++){
+   TP[i]=REDUCED?0:Math.max(TP[i]*.965,Math.min(7,Math.abs(M.ax[i].v)*.14));}
+  for(i=0;i<8;i++){var j2=(i+1)%8;
+   var tau=clamp((Math.abs(NDL.Eb[i].x-cq)+Math.abs(NDL.Eb[j2].x-cq))/50,0,1);
+   NDL.tt[i]=tau; tsum+=tau;
+   NDL.ta[i]=REDUCED?0:(.14+.34*tau+(TP[i]+TP[j2])/2)*ee;
+   NDL.tw[i]=2.6+5.4*tau+(TP[i]+TP[j2])*.6;
+   NDL.tph[i]+=NDL.tw[i]/60;
+   if(NDL.tph[i]>1e4)NDL.tph[i]-=Math.PI*2*1500;}
+  ndlLoopT(NDL.Eb,G,NDL.bx,NDL.by);
   ndlLoop(null,G,NDL.qx,NDL.qy,null,cq);
   /* YOUR OWN RANGE, as a band on the figure, from the record */
   var mine=ndlRange();
@@ -1451,7 +1610,42 @@ function coneNeedle(){
   /* THE RIBBON, B, in the accent: the shape of where you sit */
   ndlPoly(g,NDL.bx,NDL.by); g.closePath();
   g.fillStyle=rgba(gc,.06*ee); g.fill();
+  /* ITS GLOW IS ITS TENSION, round KQ. Each span carries a soft under
+     stroke as wide and as bright as it is taut, and brighter again for a
+     second after a pluck, so where you run furthest from your own level is
+     the part of the line that lights. Over glows and under sinks, the
+     figure's one rule for light: a span standing above your level takes
+     the full glow and one below it takes half. One stroke per span, eight
+     in all, no blur and no gradient. */
+  g.lineCap='round'; g.lineJoin='round';
+  for(i=0;i<8;i++){var t8=NDL.tt[i], j3=(i+1)%8;
+   var up2=(NDL.Eb[i].x+NDL.Eb[j3].x)/2>=cq?1:.5;
+   var far=(NDL.sA[i]+NDL.sA[j3])<-.3?.45:1;
+   var ga2=(.05+.17*t8+Math.min(.22,(TP[i]+TP[j3])*.05))*up2*far*ee;
+   if(ga2<.015)continue;
+   g.beginPath(); g.moveTo(NDL.bx[i*NDL_SEC],NDL.by[i*NDL_SEC]);
+   for(k=i*NDL_SEC+1;k<=(i+1)*NDL_SEC;k++)g.lineTo(NDL.bx[k],NDL.by[k]);
+   g.strokeStyle=rgba(gc,ga2); g.lineWidth=(2.5+7*t8)*sk; g.stroke();}
+  ndlPoly(g,NDL.bx,NDL.by); g.closePath();
   g.strokeStyle=rgba(gc,.85*ee); g.lineWidth=1.5*sk; g.stroke();
+  /* AND A CURRENT RUNS ROUND IT. Two lights, half a turn apart, travel the
+     loop, faster the more taut the whole line is, and each brightens over a
+     taut span and dims over a slack one, so the eye is carried round the
+     shape of where you sit and slows where nothing is pulling. A tail of
+     three fading strokes and a head; no gradient is made per frame. */
+  if(!REDUCED){
+   NDL.cur+=(.035+.09*tsum/8)/60; NDL.cur-=Math.floor(NDL.cur);
+   for(var cb=0;cb<2;cb++){
+    var hk=Math.floor(((NDL.cur+cb*.5)%1)*NDL_N), sp3=Math.floor(hk/NDL_SEC)%8;
+    var lum=(.35+.65*NDL.tt[sp3])*ee;
+    for(var tl=0;tl<3;tl++){var a0=hk-(tl+1)*7, a1=hk-tl*7;
+     g.beginPath();
+     for(k=a0;k<=a1;k++){var kk=((k%NDL_N)+NDL_N)%NDL_N;
+      k===a0?g.moveTo(NDL.bx[kk],NDL.by[kk]):g.lineTo(NDL.bx[kk],NDL.by[kk]);}
+     g.strokeStyle=rgba(gc,(.8-tl*.26)*lum); g.lineWidth=(2.6-tl*.5)*sk; g.stroke();}
+    g.beginPath(); g.arc(NDL.bx[hk],NDL.by[hk],5.2*sk,0,TAU); g.fillStyle=rgba(gc,.20*lum); g.fill();
+    g.beginPath(); g.arc(NDL.bx[hk],NDL.by[hk],2.1*sk,0,TAU); g.fillStyle=rgba(gc,.95*lum); g.fill();}}
+  g.lineCap='butt'; g.lineJoin='miter';
   /* THE SPARKS. Each rib carries light from your level toward its seat's
      laws: upward where the seat runs over, downward where it runs under, and
      brighter the further apart the two are. A seat at your level carries
@@ -1482,6 +1676,17 @@ function coneNeedle(){
  if(read)for(i=0;i<8;i++){
   ndlPf(NDL.Eb[i].x,i,0,G,P);
   var on2=(i===NDL.lit), rn=(on2?5.4:4.2)*sk*(.8+.2*P.d), nx=P.x, ny=P.y, nd=P.d;
+  /* THE BEAT, round KQ, read before the node is drawn because the node
+     answers it. The pulse's first ring is the beat; the frame its phase
+     wraps is the frame it lands, and that frame plucks the tension line at
+     this axis and swells the node, harder the heavier the axis. So a heavy
+     seat is seen to pull on the line it sits on, which is what gravity is. */
+  var gv=ndlGrav()[i], gc3=gv*gv*gv, beat=0;
+  if(!CONE.well&&!REDUCED&&gc3>=.04){
+   var gp0=now/(3000-1900*gc3); gp0-=Math.floor(gp0);
+   if(gp0<NDL.gph[i])TP[i]=Math.max(TP[i],(.9+2.2*gc3)*ee);
+   NDL.gph[i]=gp0;
+   if(gp0<.3){beat=1-gp0/.3; rn*=1+.16*gc3*beat;}}
   g.beginPath(); g.arc(nx,ny,rn,0,TAU); g.fillStyle=rgba(NDL.wl,1); g.fill();
   g.strokeStyle=rgba(cols[i],nd>=0?1:.5); g.lineWidth=(on2?2.2:1.6)*sk; g.stroke();
   ndlHit(nx,ny,Math.max(16,rn+10),i,'up');
@@ -1494,11 +1699,35 @@ function coneNeedle(){
      of the pull at 0.69). Reduced motion keeps one still ring per axis at
      its strength. When the well is on, the node gets its contours instead
      and nothing pulses, so the two mockups are each seen alone. */
-  var gv=ndlGrav()[i], gc3=gv*gv*gv;
+  /* THE WELL PULLS IN, round KQ. The pulse's rings travel out; a well's
+     should travel in, so the two mockups are each other's mirror and the
+     eye reads which way the weight works. Three rings close on the node,
+     brightening as they arrive, faster for a heavier mass. Round them, dust
+     falls in: a few motes on a closing orbit, sped up as they near the
+     centre the way anything falling into a mass speeds up, more of them and
+     from further out the heavier the axis. The orbit is flattened by the
+     figure's own tilt, so it lies on the figure rather than facing the
+     glass. Reduced motion keeps the three rings where they were, still. */
   if(CONE.well){if(gc3>=.02){var wa=(.2+.5*gc3)*ee*(nd>=0?1:.5);
-    for(var wk=1;wk<=3;wk++){g.beginPath(); g.arc(nx,ny,rn+(2+wk*wk*2.6*(.5+gc3))*sk,0,TAU);
-     g.strokeStyle=rgba(cols[i],wa*(1.1-wk*.28)); g.lineWidth=1; g.stroke();}}}
+    if(REDUCED){for(var wk=1;wk<=3;wk++){g.beginPath(); g.arc(nx,ny,rn+(2+wk*wk*2.6*(.5+gc3))*sk,0,TAU);
+     g.strokeStyle=rgba(cols[i],wa*(1.1-wk*.28)); g.lineWidth=1; g.stroke();}}
+    else {
+     for(var wk2=0;wk2<3;wk2++){var wp=now/(2600-1300*gc3)+wk2/3; wp-=Math.floor(wp);
+      g.beginPath(); g.arc(nx,ny,rn+(2+(10+26*gc3)*(1-wp))*sk,0,TAU);
+      g.strokeStyle=rgba(cols[i],wa*Math.pow(wp,1.3)*Math.min(1,(1-wp)*6));
+      g.lineWidth=(.8+.9*gc3*wp)*sk; g.stroke();}
+     var nm2=2+Math.round(5*gc3), fl=.45+.55*Math.sin(CONE.nt)/Math.sin(.75);
+     g.fillStyle=rgba(cols[i],1);
+     for(var mo=0;mo<nm2;mo++){var mp=now/1000*(.16+.22*gc3)+mo/nm2+i*.13; mp-=Math.floor(mp);
+      var mr=rn+(3+(18+34*gc3)*Math.pow(1-mp,1.5))*sk, ma=i*1.7+mo*2.39996+6*mp*mp;
+      g.globalAlpha=Math.sin(Math.PI*mp)*(.35+.6*gc3)*ee*(nd>=0?1:.5);
+      g.beginPath(); g.arc(nx+Math.cos(ma)*mr,ny+Math.sin(ma)*mr*fl,(1+1.2*mp)*sk,0,TAU); g.fill();}
+     g.globalAlpha=1;}}}
   else if(gc3>=.04){var ga=(.12+.62*gc3)*ee*(nd>=0?1:.5), nr=1+Math.round(2*gc3);
+   /* and the beat swells out of the node's own edge as a soft band that
+      thins as it goes, the moment the first ring leaves */
+   if(beat>0){g.beginPath(); g.arc(nx,ny,rn+(1.5+3*gc3*(1-beat))*sk,0,TAU);
+    g.strokeStyle=rgba(cols[i],.34*gc3*beat*ee*(nd>=0?1:.5)); g.lineWidth=(2+5*gc3)*beat*sk; g.stroke();}
    if(REDUCED){g.beginPath(); g.arc(nx,ny,rn+(5+10*gc3)*sk,0,TAU);
     g.strokeStyle=rgba(cols[i],ga); g.lineWidth=1.4*sk; g.stroke();}
    else for(var gk=0;gk<nr;gk++){
@@ -1648,8 +1877,19 @@ function coneLayout(){
     backing store is held to 2.4 million pixels, a quarter over what the old
     430 pixel canvas used at twice the density, so a large canvas steps down
     to about 1.6x and a phone keeps its full 2x. Lines stay sharp at 1.6. */
+ /* AND THE BUDGET STEPS DOWN AS THE FIGURE COMES CLOSER, round KQ. Zoomed,
+    the glass faces, the limbo drum's gradient and the over and under bands
+    each cover most of the canvas instead of a third of it, and on a software
+    raster fill cost is pixels covered: measured at 1600 by 1000 at twice the
+    density, the needle went from 9.0 ms whole to 16.4 at two and a half
+    times, and the drum's gradient alone was 4.3 of that. So past 1.4 times
+    the store holds seven tenths of the pixels and past 2.2 half of them. The
+    lines are drawn from geometry, so they keep their width at any zoom; what
+    softens is the edge, and only on a canvas that was already stepped down.
+    A phone's canvas is small enough that it never reaches the cap. */
+ CONE.zb=coneZBud();
  CONE.dpr=Math.min(devicePixelRatio||1,2,
-  Math.max(1,Math.sqrt(2.4e6/Math.max(1,b.width*b.height))));
+  Math.max(1,Math.sqrt(2.4e6*CONE.zb/Math.max(1,b.width*b.height))));
  c.width=Math.max(1,b.width*CONE.dpr); c.height=Math.max(1,b.height*CONE.dpr);}
 /* WHICH AXIS IS NEAREST THE VIEWER. The meridians sit at even eighths of a
    turn from the spin, so the front one is whichever eighth the spin has
@@ -1698,6 +1938,7 @@ function coneTick(){
     than turn needs its own time, and the band of souls at the median does. */
  if(!REDUCED)CONE.t+=1/60;
  if(!CONE.side)coneMirStep(1/60);
+ if(!CONE.drag&&!CONE.pinch)coneZoomStep();
  coneDraw();
  /* the needle's hover name, kept current as the figure turns under a still
     pointer, which is the only way a spinning figure's tooltip stays true.
@@ -1918,7 +2159,10 @@ function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  /* the needle assembles once, when the surface is opened, and not on every
     press of a switch, which also comes through here */
- if(!CONE.open)CONE.t0=(typeof performance!=='undefined'?performance.now():Date.now());
+ if(!CONE.open){CONE.t0=(typeof performance!=='undefined'?performance.now():Date.now());
+  /* and it opens whole: a zoom is kept across a switch press, which comes
+     through here too, and not across leaving the surface and coming back */
+  CONE.z=CONE.zT=1; CONE.zx=CONE.zxT=0; CONE.zy=CONE.zyT=0; CONE.ptrs=null; CONE.pinch=null;}
  CONE.open=true; CONE.tab=!!inTab;
  h.classList.toggle('tabmode',!!inTab);
  h.style.display='flex';
@@ -1933,13 +2177,27 @@ function coneOpen(inTab){
      exactly what he reported: he did not know what those buttons were for. */
   +'<div class="cone-body"><div class="cone-fig">'
    +coneNames('l')+coneNames('r')
+   /* THE CANVAS AND ITS ZOOM, held together so the zoom sits on the figure's
+      own lower right at a desk and follows it on a phone, whatever the rails
+      and the key do around them. */
+   +'<div class="cn-cvw">'
    +'<canvas id="conecv" class="cone-cv" role="img" '
    +'aria-label="'+(CONE.side
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
-     ?'The compass from above. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
+     ?'The compass from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
      :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.')
    +'"></canvas>'
+   /* ZOOM, round KQ: "the icon's already there. I want to be able to zoom
+      in." It is: the Field's three circles in its lower right, zoom out,
+      zoom in and reframe, built by fbOrb in ui/fieldbar.js out of the same
+      three marks. They are reused here rather than drawn again, so zoom is
+      one control with one look everywhere it appears, and the reframe
+      circle's ring and pill carry how far in, as they do on the Field. The
+      arrow figure behind CONE.side has no zoom and gets no circles, because
+      a control that changes nothing is a dead control. */
+   +(CONE.side?'':'<div class="cn-zoom" id="cnzoom" role="group" aria-label="Zoom"></div>')
+   +'</div>'
    /* Flat and Regulation belong to the side view: from above there is no
       tilt to take out and no spine to draw arrows on, and a switch that
       changes nothing on the figure is a dead control. */
@@ -1949,8 +2207,10 @@ function coneOpen(inTab){
       same figure drawn twice. The turned arrow figure is still in this file
       behind CONE.side, which the collide gate drives directly. */
    +'<div class="cone-ctl">'
+    /* TOP, round KQ, his words: "with the compass layers, change from above
+       to top." One word, as every other switch in this row is. */
     +(CONE.side?'':'<button type="button" class="cn-b" data-cn="top" '
-     +'title="Look straight down on the same eight axes">From above</button>')
+     +'title="Look straight down on the same eight axes">Top</button>')
     +(CONE.side
      ?'<button type="button" class="cn-b" data-cn="flat" '
       +'title="Take the tilt out and look straight down on the figure">Flat</button>'
@@ -2023,6 +2283,18 @@ function coneOpen(inTab){
  /* a fresh canvas has none of the needle's background light and may sit on
     a new lighting's well, so both are read again on its first frame */
  NDL.glowSig=''; NDL.wellSig=''; CONE.tip='';
+ /* the zoom circles, the Field's own: same marks, same glass, same words */
+ var hz=document.getElementById('cnzoom');
+ if(hz&&typeof fbOrb==='function'){
+  var zg=document.createElement('div'); zg.className='fb-grp';
+  [['zout','Zoom out',FB_IC.zout,'Move out. Or press minus.',function(){coneZoomBy(1/1.25);}],
+   ['zin','Zoom in',FB_IC.zin,'Move in. Or press plus. Scrolling on the figure does the same, and zoomed in, a drag moves it.',function(){coneZoomBy(1.25);}],
+   ['zfit','Reframe',FB_IC.zfit,'Back to the whole figure. Or press F.',function(){coneReframe();}]].forEach(function(z){
+   var b=fbOrb({k:z[0],nm:z[1],ic:z[2],tip:z[3],val:z[0]==='zfit'});
+   b.addEventListener('click',function(e){e.stopPropagation();z[4]();});
+   zg.appendChild(b);});
+  hz.appendChild(zg);}
+ coneZoomPaint();
  /* ONE FRAME LOOP, NOT ONE PER PRESS. Every switch repaints through here, and
     this called coneTick with the last frame it scheduled still pending, so
     each press started a second loop beside the first: the idle spin ran
@@ -2070,8 +2342,19 @@ function coneOpen(inTab){
  if(gm)gm.onclick=function(e){e.stopPropagation();toSum();};
  if(gr)gr.onclick=toSum;
  if(CONE.cv){
-  CONE.cv.onpointerdown=function(e){CONE.drag={x:e.clientX,y:e.clientY,
-   s:CONE.spin,t:CONE.tilt,n:CONE.nt,moved:false};
+  CONE.cv.onpointerdown=function(e){
+   /* TWO FINGERS PINCH. Every pointer down is kept by id; the second one
+      turns the gesture into a zoom about the point between them, and the
+      drag it interrupted is dropped so the figure does not also turn. */
+   var P2=CONE.ptrs||(CONE.ptrs={}); P2[e.pointerId]={x:e.clientX,y:e.clientY};
+   var ids=Object.keys(P2);
+   if(ids.length>=2){var a=P2[ids[0]], c2=P2[ids[1]];
+    CONE.pinch={d:Math.max(8,Math.hypot(a.x-c2.x,a.y-c2.y)),z:CONE.zT};
+    if(CONE.drag)CONE.drag.moved=true;
+    try{CONE.cv.setPointerCapture(e.pointerId);}catch(err){}
+    return;}
+   CONE.drag={x:e.clientX,y:e.clientY,
+   s:CONE.spin,t:CONE.tilt,n:CONE.nt,moved:false,zx:CONE.zxT,zy:CONE.zyT};
    /* a pointer that has already been released cannot be captured, and the
       throw would take the handler down with it. The wheel learned this. */
    try{CONE.cv.setPointerCapture(e.pointerId);}catch(err){}};
@@ -2080,16 +2363,34 @@ function coneOpen(inTab){
    var b=CONE.cv.getBoundingClientRect();
    var x=e.clientX-b.left, y=e.clientY-b.top;
    CONE.ptr={x:x,y:y};
+   if(CONE.ptrs&&CONE.ptrs[e.pointerId]){CONE.ptrs[e.pointerId].x=e.clientX; CONE.ptrs[e.pointerId].y=e.clientY;}
+   if(CONE.pinch&&CONE.ptrs){var ids=Object.keys(CONE.ptrs);
+    if(ids.length>=2){var a=CONE.ptrs[ids[0]], c2=CONE.ptrs[ids[1]];
+     var d=Math.hypot(a.x-c2.x,a.y-c2.y);
+     /* snapped, not eased: a pinch is a hand on the figure, and a figure
+        that lags the fingers reads as slipping */
+     coneZoomAt(CONE.pinch.z*d/CONE.pinch.d,(a.x+c2.x)/2-b.left,(a.y+c2.y)/2-b.top);
+     CONE.z=CONE.zT; CONE.zx=CONE.zxT; CONE.zy=CONE.zyT;}
+    return;}
    if(!CONE.drag){
     var h=coneHit(x,y);
-    /* from above a drag turns nothing, so the hand only says press */
-    var still=CONE.top&&!CONE.side;
+    /* from above a drag turns nothing, so the hand only says press, unless
+       it is zoomed in, where a drag moves the figure */
+    var still=CONE.top&&!CONE.side&&CONE.zT<=1.001;
     CONE.cv.style.cursor=h?'pointer':(still?'default':'grab');
     if(still)CONE.hov=h?h.i:-1;
     if(h!==CONE.hover){CONE.hover=h;coneDraw();}
     return;}
    CONE.drag.moved=CONE.drag.moved
     ||Math.hypot(e.clientX-CONE.drag.x,e.clientY-CONE.drag.y)>4;
+   /* ZOOMED IN, A DRAG MOVES THE FIGURE, as it does on the Field's pictures,
+      which is what a person reaching for the far side of what they zoomed
+      into expects. Whole, it turns the figure, as it always has, and the
+      names in the rail still turn it at any zoom. */
+   if(CONE.zT>1.001&&!CONE.side){var wh=coneWH();
+    CONE.zxT=CONE.drag.zx+(e.clientX-CONE.drag.x); CONE.zyT=CONE.drag.zy+(e.clientY-CONE.drag.y);
+    coneZClamp(wh[0],wh[1]); CONE.zx=CONE.zxT; CONE.zy=CONE.zyT;
+    coneDraw(); return;}
    CONE.spin=CONE.drag.s+(e.clientX-CONE.drag.x)*0.008;
    /* the vertical never tilts past the point where up stops reading as up.
       The needle keeps its own, and a shallower limit: past about 0.75 its
@@ -2099,14 +2400,20 @@ function coneOpen(inTab){
    else CONE.tilt=clamp(CONE.drag.t+(e.clientY-CONE.drag.y)*0.004,0.08,0.92);
    coneDraw();};
   CONE.cv.onpointerup=function(e){
+   if(coneUnptr(e))return;
    var was=CONE.drag; CONE.drag=null;
    if(was&&!was.moved){
     var b=CONE.cv.getBoundingClientRect();
     var h=coneHit(e.clientX-b.left,e.clientY-b.top);
     if(h&&h.path!=null){if(typeof runPathDrill==='function')runPathDrill(NDL_PATHS[h.path].p);}
     else if(h)runTeacherDrill(h.m,h.end);}};
-  CONE.cv.onpointercancel=function(){CONE.drag=null;};
+  CONE.cv.onpointercancel=function(e){coneUnptr(e); CONE.drag=null;};
   CONE.cv.onpointerleave=function(){if(!CONE.side)CONE.hov=-1; CONE.ptr=null;};
+  /* THE SCROLL WHEEL ZOOMS ABOUT THE POINTER, the Field's gesture. Only on
+     the needle and the top view, which are the two that zoom. */
+  CONE.cv.onwheel=function(e){if(CONE.side)return; e.preventDefault();
+   var b=CONE.cv.getBoundingClientRect();
+   coneZoomAt(CONE.zT*(e.deltaY<0?1.12:1/1.12),e.clientX-b.left,e.clientY-b.top);};
   }
  addEventListener('resize',coneLayout);}
 function coneClose(){
