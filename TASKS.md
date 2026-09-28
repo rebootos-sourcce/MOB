@@ -23699,3 +23699,30 @@ A real discrepancy, named rather than guessed past: `DECISIONS.md` and
 round HD. He is setting up `atuned.world` instead. Answered directly
 in the next report rather than assumed either way, since which domain
 is real changes a live step he is mid way through.
+
+## KK. atuned.world's DNS already carries a live site and real email, and a build is asked for again
+
+His words, verbatim, sent with a screenshot of Cloudflare's DNS import
+review for atuned.world (2 A records to non Cloudflare IPs, an MX to
+Google's mail servers, a CNAME named "pay" to a commerce paylinks
+host, a CNAME "www" to the bare domain): "Either way, I'll try a tuned
+app and a tuned world. Whichever one I own should work either way. I
+tried a tuned app that didn't work either. continue building. i want
+an atuned build too."
+
+A real, live detail the screenshot itself carries: `atuned.world`
+already has working DNS, an existing site at its two A records, and
+real mail through Google Workspace's own servers. Importing these
+records into Cloudflare does not touch any of them by itself, but
+changing the root A record to point at the new Pages deploy would
+take down whatever is live there today, mail included if handled
+carelessly. Answered directly in the next report rather than let him
+click past it, since this is exactly the kind of hard to reverse step
+this project's own standing rules ask to be surfaced before it
+happens, not after.
+
+A build is asked for a second time (round KH asked once already). Sent
+this round as a packed, attached file per the standing rule, stamped
+with the commit it was built from, since several pieces are still in
+flight and the build he is holding needs to say which commit it is
+rather than claim to be finished.
