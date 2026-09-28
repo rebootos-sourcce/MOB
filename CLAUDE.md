@@ -31,6 +31,7 @@ else may.
     node tests/design.js               the look, held to its floors
     node tools/monitor.js             every surface renders, and it logs
     node tests/funnel.js               the funnel, which nothing gated before
+    node tests/boot.js                 the guard, against a real throwing extension
     python3 .claude/skills/atuned-voice/check.py --objections
                                        his own objections, as rules
 
@@ -67,6 +68,17 @@ reported zero for a surface that was drawing correctly. And a CSS animation
 runs without scripts, so the boot sheet fades on its own and uncovers a
 complete looking shell with nothing in it, which is exactly what a preview pane
 showed the owner and why the noscript assertion is in there.
+
+`boot.js` is the guard's own gate, added 27 September after the owner kept
+seeing "This build stopped while it was starting up." over an app that had
+finished booting. The cause was never our code: a real browser extension's
+content script throws on the page, the guard held that error until the
+document parsed, and by then the instrument had started in full. The gate
+reproduces it with a real unpacked extension that throws, on both the raw and
+the packed file, and asserts the guard stays quiet when boot finished, speaks
+first with our own error when it truly did not, and never lets an extension's
+line read as the cause. Checked against a known bad case first: it fails on
+the guard from before this fix and passes on the fix, twice each.
 
 And one lesson learned by this file failing. The watch took the first visible
 child of `.stage` as the surface host. The Field's two key strips are visible
