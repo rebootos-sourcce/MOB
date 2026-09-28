@@ -24482,3 +24482,17 @@ them individually, or composited. make these fixes."
   hyper complexes, masks, pain points, read through his own Nodes,
   Clusters, Networks grouping), each independently on or off,
   viewable alone or composited together.
+
+## LD. Priority fix: Body is missing from Play
+
+His words, verbatim, marked priority: "play menu is missing Body
+entirely. fix - priority."
+
+- **Read against his own repeated grouping across rounds KT and KU**,
+  "our field body and compass are in that," said before round KX's
+  "Intake" rename ever separated the same tab out to Discover. The
+  rename to Intake stands, his own instruction; the section it sits
+  in moves back to Play, so what he built the habit of calling Body
+  is where he keeps expecting it. TAB.ENERGY's `.sec` field moves
+  from discover back to play, no integer touched, the tests and the
+  markup updated with it.
