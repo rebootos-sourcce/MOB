@@ -1583,7 +1583,7 @@ function bmInit(host){
  G.reg=[];
  ['front','back'].forEach(function(vn,v){BMREG[vn].forEach(function(r){var b=r[1];
   G.reg.push({v:v,nm:r[0],side:r[2]||'',box:b,cx:(b[0]+b[2])/2,cy:(b[1]+b[3])/2,
-   area:(b[2]-b[0])*(b[3]-b[1]),key:vn+':'+r[0]+':'+(r[2]||'')});});});
+   area:(b[2]-b[0])*(b[3]-b[1]),key:vn+':'+r[0]+':'+(r[2]||''),grp:vn+':'+r[0]});});});
  /* smallest first, so where two overlap the smaller takes the press */
  G.reg.sort(function(a,b){return a.area-b.area;});
  G.cellIn=[[],[]];
@@ -1904,14 +1904,20 @@ function bmDraw(dt){
     lc.drawImage(BM.lit2,0,0);});}
   g.setTransform(1,0,0,1,0,0);g.globalAlpha=BM.pg*(V.litA||1);g.drawImage(BM.lit,0,0);g.globalAlpha=1;}
  bmTf(g);
- /* regions: the pointed one and the open one, clipped to him */
- var sel=bmSel();
+ /* regions: the pointed one and the open ones, clipped to him */
+ var sel=bmSelAll();
  vs.forEach(function(v){g.save();g.clip(G.body[v]);
   if(BM.mode==='pain')G.reg.forEach(function(r){if(r.v!==v)return;var b=r.box;
    g.strokeStyle=bmRgba(BMC.acc,.10);g.lineWidth=px;g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});
-  [BM.hoverReg,sel].forEach(function(r,i){if(!r||r.v!==v)return;var b=r.box;
-   g.fillStyle=bmRgba(BMC.acc,i?.10:.06);g.fillRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);
-   g.strokeStyle=bmRgba(BMC.acc,i?.9:.5);g.lineWidth=px*(i?1.6:1.1);g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});
+  /* THE OPEN REGION IS LIT, AND A PAIR IS LIT AS A PAIR. One region was the
+     only thing this could draw, so a name pressed in the panel below, "Knee",
+     which opens both knees, lit one of them. And at the old ten percent fill
+     the open region read as a thin outline on the whole body at 1600, which
+     is not "it just lights up that area" in his words: the fill is lifted so
+     the area reads as lit before the outline is found. */
+  [[BM.hoverReg],sel].forEach(function(list,i){list.forEach(function(r){if(!r||r.v!==v)return;var b=r.box;
+   g.fillStyle=bmRgba(BMC.acc,i?.22:.06);g.fillRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);
+   g.strokeStyle=bmRgba(BMC.acc,i?.95:.5);g.lineWidth=px*(i?1.8:1.1);g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});});
   if(BM.mode==='pain'&&BM.hoverCell&&BM.hoverCell.v===v){var hc=BM.hoverCell;
    g.strokeStyle=bmRgba([240,210,184],.85);g.lineWidth=px*1.4;g.strokeRect(BMXA+hc.c*BMU+bmVX(v),BMYA+hc.r*BMU,BMU,BMU);}
   g.restore();});
@@ -2037,25 +2043,18 @@ function bmRosette(g,p,s,col,A){
   g.save();g.translate(x-sz/2,y-sz/2);g.scale(sz/24,sz/24);
   g.strokeStyle=bmRgba(c2,A*(q>=.3?1:.5));g.lineWidth=1.5*24/sz;g.lineJoin='round';g.lineCap='round';g.stroke(ch.p);g.restore();
   if(n>1){g.beginPath();g.arc(x,y,sz*0.62,0,BMTAU);g.strokeStyle=bmRgba(c2,A*.25);g.lineWidth=1;g.stroke();}});}
-/* the region names, two columns beside the figures, relaxed so none collide.
-   Beside the body and never on it. */
+/* THE REGION NAMES ARE NOT DRAWN HERE ANY MORE. They were painted text, two
+   columns beside the figures on a leader line each, and his verdict on this
+   figure, round JQ, was "the utilization of the text is terrible ... turn those to
+   buttons, maybe on the bottom panel of the screen. So if I press it, it just
+   lights up that area." Painted text cannot be pressed, cannot be reached by
+   a keyboard, and was never drawn on a phone at all, so at 390 the region
+   names did not exist. They are real buttons in the panel under the well now,
+   bmRegBar, and a press lights the area on the figure. Only the two view
+   titles stay painted, because they name a picture and are not a control. */
 function bmLabels(g){
- var sel=bmSel();
- g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.font='500 12px Inter,system-ui,sans-serif';g.textBaseline='middle';
+ g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textBaseline='middle';
  [0,1].forEach(function(v){
-  var list=[],seen={};
-  BMG.reg.forEach(function(r){if(r.v!==v||r.side==='l'||seen[r.nm])return;seen[r.nm]=1;list.push(r);});
-  var colX=v?(BMOX+76+1.2):(24-1.2), sx=bmW2S(colX,0)[0];
-  var items=list.map(function(r){return {r:r,y:bmW2S(0,r.cy)[1]};}).sort(function(a,b){return a.y-b.y;}), i;
-  for(i=1;i<items.length;i++)if(items[i].y-items[i-1].y<15)items[i].y=items[i-1].y+15;
-  for(i=items.length-2;i>=0;i--)if(items[i+1].y-items[i].y<15)items[i].y=items[i+1].y-15;
-  items.forEach(function(it){var r=it.r,val=r.val||0;
-   var lit=(sel&&sel.nm===r.nm&&sel.v===v)||(BM.hoverReg&&BM.hoverReg.nm===r.nm&&BM.hoverReg.v===v);
-   var ex=bmW2S((v?r.box[2]:r.box[0])+bmVX(v),r.cy);
-   g.beginPath();g.moveTo(sx+(v?-4:4),it.y);g.lineTo(ex[0],ex[1]);g.strokeStyle=bmRgba(BMC.dim,lit?.5:.14);g.lineWidth=1;g.stroke();
-   g.textAlign=v?'left':'right';
-   g.fillStyle=lit?bmRgba(BMC.ink,1):val&&BM.mode==='pain'?bmRgba([227,176,143],.95):bmRgba(BMC.dim,.95);
-   g.fillText(r.nm+(val&&BM.mode==='pain'?'  '+val:''),sx+(v?-2:2),it.y);});
   g.textAlign='center';g.font='600 13px Inter,system-ui,sans-serif';g.fillStyle=bmRgba(BMC.ink,.9);
   g.fillText(v?'Back, seen from behind':'Front',bmW2S(v?BMOX+50:50,0)[0],14);
   g.font='500 12px Inter,system-ui,sans-serif';});}
@@ -2106,9 +2105,16 @@ function bmSeats(seats){
    +b.nm+', '+st.hot+' carrying, '+Math.round(st.pass*100)+' percent through</title></circle>';}).join('');}
 
 /* ---------- what is under a point ---------- */
-function bmSel(){
- if(!(PMPICK&&typeof PMPICK==='object'&&PMPICK.bmReg))return null;
- var k=PMPICK.bmReg;return BMG.reg.filter(function(r){return r.key===k;})[0]||null;}
+/* THE PICK IS A REGION'S KEY, OR A PAIR'S. A name in the panel below stands
+   for both sides of a sided region, so "Knee" opens both knees, and its key
+   is the view and the name with a star for the side: front:Knee:*. A press on
+   the figure still opens the one side it landed on, as it always did. */
+function bmPickKey(){return (PMPICK&&typeof PMPICK==='object'&&PMPICK.bmReg)?PMPICK.bmReg:null;}
+function bmSelAll(){
+ var k=bmPickKey(); if(!k||!BMG)return [];
+ if(/:\*$/.test(k)){var gp=k.slice(0,-2);return BMG.reg.filter(function(r){return r.grp===gp;})
+  .sort(function(a,b){return a.side<b.side?-1:1;});}
+ return BMG.reg.filter(function(r){return r.key===k;});}
 function bmPick(sx,sy){var G=BMG,w=bmS2W(sx,sy),v=null;
  bmViews().forEach(function(vv){if(w[0]>=24+bmVX(vv)-2&&w[0]<=76+bmVX(vv)+2)v=vv;});if(v===null)return {w:w};
  var x=w[0]-bmVX(v),y=w[1],reg=null,i;
@@ -2197,18 +2203,42 @@ function bmPaintAt(pk){var c=pk.cell,D=BM.drag,key=c.v+':'+c.i;if(D.painted[key]
  var cur=BM.paint[c.v][c.i];
  BM.paint[c.v][c.i]=(D.first&&cur===BM.brush)?0:BM.brush; D.first=false;
  bmRebuild(c.v);bmTouchHeat();bmMarkVals();BM.dirty=true;}
-function bmZoomReg(r){var b=r.box,w=(b[2]-b[0])+8,h=(b[3]-b[1])+8,z=Math.min(BM.W/w,BM.H/h,BM.z0*6);
+function bmZoomReg(r){bmZoomRegs([r]);}
+/* a pair zooms to the box round both sides, so both knees stay in view */
+function bmZoomRegs(list){var r=list[0],b=list.reduce(function(a,x){var q=x.box;
+  return [Math.min(a[0],q[0]),Math.min(a[1],q[1]),Math.max(a[2],q[2]),Math.max(a[3],q[3])];},r.box.slice());
+ var w=(b[2]-b[0])+8,h=(b[3]-b[1])+8,z=Math.min(BM.W/w,BM.H/h,BM.z0*6);
  if(BM.phone)BM.face=r.v?'back':'front';
  bmFlyTo((b[0]+b[2])/2+bmVX(r.v),(b[1]+b[3])/2,z);bmBars();}
 /* A REGION ANSWERS IN SELECTION, where every press on this product answers.
    Pressing the open one again puts it down, as a seat and a pattern do. A
    paint stroke opens the region it ended on and never closes it, because
    painting is not a second press on the same thing. */
-function bmOpenReg(r,toggle){
- var cur=bmSel();
- if(toggle&&cur&&cur.key===r.key){rdClose();return;}
- PMPICK={bmReg:r.key}; S.pin=null;
- bmRegionDrill(r); render();}
+function bmOpenReg(r,toggle){bmOpenKey(r.key,toggle);}
+/* bmzoom is on the region's own answer and nowhere else, so it says whether
+   that answer is the one in Selection. Without it a region whose story or
+   address had been opened from its answer stayed picked, and the next press
+   on its name put it down instead of bringing its answer back. */
+function bmAnswering(){return !!document.getElementById('bmzoom');}
+function bmOpenKey(k,toggle){
+ if(toggle&&bmPickKey()===k&&bmAnswering()){rdClose();return;}
+ PMPICK={bmReg:k}; S.pin=null;
+ var list=bmSelAll(); if(!list.length){rdClose();return;}
+ bmRegionDrill(list); render();}
+/* the stories that put charge on these addresses, one row per entry, heaviest
+   entry first. atomIndex is the per address index of the person's own
+   committed entries that the Field's atoms and the atom drill already read,
+   so a story listed here is the same story, with the same weight, that the
+   atom drill quotes when the row is pressed. Nothing is re-parsed here. */
+function bmStories(ids){
+ var AI=(typeof atomIndex==='function'&&atomIndex())||{}, by={}, out=[];
+ ids.forEach(function(id){(AI[id]||[]).forEach(function(x){
+  var e=by[x.ei]; if(!e){e=by[x.ei]={ei:x.ei,t:x.t,text:x.text,amt:0,top:id,tx:x};out.push(e);}
+  e.amt+=x.amt; if(x.amt>e.tx.amt){e.top=id;e.tx=x;}});});
+ return out.sort(function(a,b){return b.amt-a.amt;});}
+/* "Comparison", "Comparison and Rebellion", "Comparison, Rebellion and Envy" */
+function bmAnd(names){return names.length<2?(names[0]||'')
+ :names.slice(0,-1).join(', ')+' and '+names[names.length-1];}
 
 /* ---------- a region, read ----------
    What stands there, with its real weight, is the whole point of placing
@@ -2220,21 +2250,62 @@ function bmOpenReg(r,toggle){
    The symptom and pattern lines are PAINREG's nine, the only ones the engine
    has, reached through BMPAINMAP. Each of the 48 regions having its own, and
    practices tied to a region, are content nobody has written, so this says
-   nothing about them rather than something invented. */
-function bmRegionDrill(r){
- var G=BMG,b=r.box,v=r.v;
+   nothing about them rather than something invented.
+
+   IT TAKES A LIST NOW, because a name pressed in the panel opens both sides
+   of a sided region. Both boxes are read as one: an address stands here if it
+   stands in either, the paint is the higher of the two, and a line runs
+   through here if it crosses either. A paired place already carries every
+   address of its row on both of its points, so the union adds nothing twice.
+
+   AND A PAINTED REGION ANSWERS THE REST OF HIS SENTENCE. "If I press the
+   areas in which I'm feeling pain, it could offer a summary of suggestions,
+   to dig deeper and show me the stories that may be related, and give me a
+   release protocol that I can do." Every part of that is read off data this
+   product already holds, and none of it is written for the region:
+   - the summary is the paint, the addresses standing here and the stories
+     that landed on them, counted, in one short paragraph;
+   - the stories are atomIndex's, the person's own committed entries keyed
+     by the address they charged, and a row opens the atom drill that quotes
+     the entry whole;
+   - the protocol is relPick, the one release entry every other door uses,
+     handed the heaviest held addresses standing here. Three, the Story
+     page's own default for a run nobody has picked, because a run at more
+     than three is hundreds of lines. Held means 1 or more with a fetter,
+     the per address door's own test, so this door never offers a run the
+     address drill would refuse.
+   The stories and the protocol show whether or not the region is painted,
+   because they are facts about the addresses and not about the pain. Only
+   the summary waits for paint. */
+function bmRegionDrill(list){
+ if(!list||!list.length)return;
+ var G=BMG,r=list[0],v=r.v,pair=list.length>1;
+ var inAny=function(x,y){return list.some(function(q){var b=q.box;return x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3];});};
  var here=G.places.filter(function(p){var x=bmPlaceX(p,v);
-  return bmSolidOn(p,v)&&x>=b[0]&&x<=b[2]&&p.y>=b[1]&&p.y<=b[3]&&bmIn(G,v,x,p.y);});
+  return bmSolidOn(p,v)&&inAny(x,p.y)&&bmIn(G,v,x,p.y);});
  var ids=[];here.forEach(function(p){p.ids.forEach(function(i){if(ids.indexOf(i)<0)ids.push(i);});});
  ids.sort(function(a,c){return (BY[c].sq||0)-(BY[a].sq||0);});
  var top=ids.length?(BY[ids[0]].sq||0):null;
  var through=BM.sabs.filter(function(s){var c=bmCable(s,v,BM.t);if(!c)return false;
-  return c.samp.some(function(q){var x=q[0]-bmVX(v);return x>=b[0]&&x<=b[2]&&q[1]>=b[1]&&q[1]<=b[3];});});
+  return c.samp.some(function(q){return inAny(q[0]-bmVX(v),q[1]);});});
+ var val=list.reduce(function(m,q){return Math.max(m,q.val||0);},0);
  var pr=PAINREG.filter(function(p){return p.k===BMPAINMAP[r.nm];})[0]||null;
- var limb=BMLIMB.some(function(l){return v===0&&l[0]===r.nm&&l[1]===r.side;});
+ var limb=list.some(function(q){return BMLIMB.some(function(l){return v===0&&l[0]===q.nm&&l[1]===q.side;});});
+ var stories=bmStories(ids);
+ var rel=ids.map(function(i){return BY[i];}).filter(function(n){return n.cf&&n.sq>=1;}).slice(0,3);
  var h='<div class="pm-eye">'+(v?'Back view':'Front view')+'</div>'
-  +'<div class="pm-dn">'+esc(bmRegName(r))+'</div>'
-  +'<div class="pm-dm">'+(r.nerve
+  +'<div class="pm-dn">'+esc(pair?r.nm+', both sides':bmRegName(r))+'</div>';
+ /* a sided region says which side is open and moves between them, so a
+    person who pressed "Knee" can say which knee without finding it on the
+    figure. Each carries its own paint. */
+ if(r.side){var sides=G.reg.filter(function(q){return q.grp===r.grp;});
+  var sb=function(k,t,on,pv){return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+!!on
+   +'" data-bmside="'+k+'">'+t+(pv?'<b>'+pv+'</b>':'')+'</button>';};
+  h+='<div style="display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 8px">'
+   +sb('*','Both sides',pair,0)
+   +['l','r'].map(function(s){var q=sides.filter(function(x){return x.side===s;})[0];
+     return q?sb(q.key,s==='l'?'Left':'Right',!pair&&r.side===s,q.val||0):'';}).join('')+'</div>';}
+ h+='<div class="pm-dm">'+(r.nerve
     ?'A pain here runs along the '+esc(r.nerve.split(',')[0].toLowerCase())+' to the spine at '+r.level+'.'
     :'A pain here runs to the spine at '+(r.level||'its own level')+'.')+'</div>';
  /* the one limit this region's line has, said once */
@@ -2242,27 +2313,74 @@ function bmRegionDrill(r){
   +'so its line runs along the cervical plexus beside it.</div>';
  /* painted at the brush's own level, one to ten, and printed bare: "7 of 10"
     is a count against a total, which he struck (CO-05) */
- h+='<div class="pm-grid"><span>painted</span><b>'+(r.val?r.val:'\u2013')+'</b>'
-  +'<span>heaviest</span><b>'+(top?top.toFixed(1):'\u2013')+'</b></div>'
-  +'<div class="pm-eye" style="margin-top:12px">Standing here</div>';
+ h+='<div class="pm-grid"><span>painted</span><b>'+(val?val:'\u2013')+'</b>'
+  +'<span>heaviest</span><b>'+(top?top.toFixed(1):'\u2013')+'</b></div>';
+ var eye=function(t){return '<div class="pm-eye" style="margin-top:14px">'+t+'</div>';};
+ /* the summary, for a painted region only. Counts and names, each one
+    something the person can check by reading on. */
+ if(val){var hv=ids.length?BY[ids[0]]:null;
+  h+=eye('Dig deeper')+'<div class="pm-dm">You marked pain here at <b>'+val+'</b>. '
+   +(ids.length?'<b>'+ids.length+'</b> address'+(ids.length===1?' stands':'es stand')+' here. '
+     +(top>=0.3?'The heaviest is <b>'+esc(hv.k)+'</b>, with <b>'+top.toFixed(1)+'</b> of charge held. '
+       :'None of '+(ids.length===1?'it':'them')+' is holding charge yet. ')
+     /* "2 of your stories" failed the voice gate as a naked number, the
+        "25 of your allowance" shape, so the count carries its own noun. None
+        is said once, by the stories section below, not twice. */
+     +(stories.length?'<b>'+stories.length+'</b> '+(stories.length===1?'story':'stories')
+       +' you wrote landed on '+(ids.length===1?'it':'them')+'.':'')
+    :'No address stands here.')+'</div>';}
+ if(pr)h+=eye('Commonly presents as')
+  +'<div class="pm-dm" style="color:var(--mid)">'+esc(pr.common)+'.</div>'
+  +eye('The pattern under it')
+  +'<div class="pm-pat">'+esc(pr.pattern)+'</div>';
+ /* the person's own words, heaviest entry first, three at most. A row is the
+    entry and the address it charged most, and pressing it opens that atom. */
+ if(ids.length){
+  h+=eye('Stories that may be related');
+  if(stories.length)h+=stories.slice(0,3).map(function(e,i){
+    var d='';try{d=new Date(e.t).toLocaleDateString(undefined,{day:'numeric',month:'long'});}catch(x){d='';}
+    return '<button type="button" class="ad-q" data-bmstory="'+i+'" style="display:block;width:100%;text-align:left;'
+     +'background:none;border-top:0;border-right:0;border-bottom:0;cursor:pointer;font-family:var(--sans);min-height:var(--tap)">'
+     +esc(e.text.slice(0,130))+(e.text.length>130?'\u2026':'')
+     +'<span style="display:block;font-style:normal;font-size:12px;margin-top:3px">'
+     +(d?d+'. ':'')+'Put <b>'+e.amt.toFixed(1)+'</b> here, most on '+esc(BY[e.top].k)+'.</span></button>';}).join('')
+    +(stories.length>3?'<div class="pm-dm">And '+(stories.length-3)+' more.</div>':'');
+  else h+='<div class="pm-dm">No story you have written has landed here yet.</div>'
+   +'<button type="button" class="btn" id="bmwrite" style="margin-top:8px">Write about it</button>';
+  /* ONE CONTROL, ONE LABEL: the per address door says "Run the protocol
+     here", and so does this one, because it is the same run on more of the
+     same kind of thing. The refusal is that door's, made plural. */
+  h+=eye('Release protocol');
+  if(rel.length)h+='<div class="ad-prot" style="margin-top:6px;padding-top:0;border-top:0">'
+   +'<button type="button" class="btn pri" id="bmprot">Run the protocol here</button>'
+   +'<span class="ad-prot-n">Runs on '+esc(bmAnd(rel.map(function(n){return n.k;})))
+   +(ids.length>rel.length?', the heaviest held here':'')+'.</span></div>';
+  else h+='<p class="pm-dm">Nothing is held here, so there is nothing to release. '
+   +'The protocol opens once an address here is carrying.</p>';}
+ h+=eye('Standing here');
  if(ids.length)h+='<div class="pm-rows">'+ids.map(function(i){return addrRow(BY[i]);}).join('')+'</div>';
  else h+='<div class="pm-dm">No address stands here.'
   +(limb?' The dashed ring marks a proposed centre, and nothing in the reading stands on it.':'')+'</div>';
  if(through.length){
-  h+='<div class="pm-eye" style="margin-top:12px">Running through here</div><div class="pm-list">'
+  h+=eye('Running through here')+'<div class="pm-list">'
    +through.map(function(s,i){return '<button type="button" class="pm-li" data-bmsab="'+i+'">'
     +'<i style="background:'+bmRgba(s.col,1)+'"></i><span class="pm-ln">'+esc(s.nm)+'</span>'
     +'<span class="pm-lw">'+s.T.toFixed(1)+'</span></button>';}).join('')+'</div>';}
- if(pr)h+='<div class="pm-eye" style="margin-top:12px">Commonly presents as</div>'
-  +'<div class="pm-dm" style="color:var(--mid)">'+esc(pr.common)+'.</div>'
-  +'<div class="pm-eye" style="margin-top:12px">The pattern under it</div>'
-  +'<div class="pm-pat">'+esc(pr.pattern)+'</div>';
  h+='<button type="button" class="btn" id="bmzoom" style="margin-top:14px">Zoom into this region</button>';
  rdShell(h);
- var z=document.getElementById('bmzoom'); if(z)z.onclick=function(){bmZoomReg(r);};
+ var z=document.getElementById('bmzoom'); if(z)z.onclick=function(){bmZoomRegs(list);};
  document.querySelectorAll('#rdrill [data-bmsab]').forEach(function(el){el.onclick=function(){
   var o=through[+el.getAttribute('data-bmsab')].o;
-  PMPICK=o;S.pin=o;BM.traceT0=performance.now();pmAnswer(o);};});}
+  PMPICK=o;S.pin=o;BM.traceT0=performance.now();pmAnswer(o);};});
+ document.querySelectorAll('#rdrill [data-bmside]').forEach(function(el){el.onclick=function(){
+  var k=el.getAttribute('data-bmside');bmOpenKey(k==='*'?r.grp+':*':k,false);};});
+ document.querySelectorAll('#rdrill [data-bmstory]').forEach(function(el){el.onclick=function(){
+  var e=stories[+el.getAttribute('data-bmstory')];if(e)runAtomDrill(BY[e.top],e.tx);};});
+ var wr=document.getElementById('bmwrite'); if(wr)wr.onclick=function(){rdClose();setTab(TAB.STORY);};
+ /* the per address door's own two calls, in its order: put the answer down,
+    then hand the runner its list */
+ var pt=document.getElementById('bmprot');
+ if(pt)pt.onclick=function(){rdClose();relPick(rel.map(function(n){return n.i;}));};}
 
 /* ---------- the controls, in the sub bar beside the layer row ----------
    The mode, the two open questions and the brush. The two questions are
@@ -2276,8 +2394,9 @@ var BMSELSTY='min-height:44px;min-width:44px;max-width:100%;background:var(--pan
  +'border:1px solid var(--edge);border-radius:var(--r-xs);padding:8px 10px;font-family:var(--sans);font-size:13.5px;cursor:pointer';
 function bmBars(){
  var rb=document.getElementById('rbar'); if(!rb||!BMG)return;
- var sel=bmSel(), zoomed=bmZoomed();
- var sig=[BM.mode,BM.variant,BM.amode,sel?sel.key:'',BM.phone,BM.face,zoomed].join('|');
+ bmRegBar();
+ var zoomed=bmZoomed();
+ var sig=[BM.mode,BM.variant,BM.amode,BM.phone,BM.face,zoomed].join('|');
  rb.style.display='flex';
  if(sig===rb.getAttribute('data-bmsig'))return;
  var foc=document.activeElement&&rb.contains(document.activeElement)?document.activeElement.id:null;
@@ -2299,10 +2418,11 @@ function bmBars(){
   +'" style="align-self:center;width:112px;accent-color:'+PMC.Sacral+'">'
   +'<span class="pm-eye" id="bmbrushv" style="align-self:center;min-width:2ch">'+BM.brush+'</span>'
   +btn('bmclear','1','Clear paint',false));
- h+=grp(eye('Region','bmreg')+'<select id="bmreg" style="'+BMSELSTY+'">'+opt('','Choose',!sel)
-  +['front','back'].map(function(vn,v){return '<optgroup label="'+(v?'Back':'Front')+'">'
-   +BMG.reg.filter(function(r){return r.v===v;}).sort(function(a,c){return a.cy-c.cy||a.cx-c.cx;})
-    .map(function(r){return opt(r.key,bmRegName(r),sel&&sel.key===r.key);}).join('')+'</optgroup>';}).join('')+'</select>');
+ /* THE REGION MENU IS GONE. It was the only way to reach a region without
+    finding it on the figure, and it was a closed menu of 48 lines: every
+    name hidden until opened, which is recall over recognition. The panel of
+    region buttons under the figure, bmRegBar, is the same job with every
+    name in view, so keeping both would be two controls for one thing. */
  if(BM.phone)h+=btn('bmface','front','Front',BM.face==='front')+btn('bmface','back','Back',BM.face==='back');
  if(zoomed)h+=btn('bmwhole','1','Whole body',false);
  rb.innerHTML=h; rb.setAttribute('data-bmsig',sig);
@@ -2318,17 +2438,58 @@ function bmBars(){
  if(br)br.oninput=function(){BM.brush=+br.value;var o=document.getElementById('bmbrushv');if(o)o.textContent=br.value;};
  rb.querySelectorAll('[data-bmclear]').forEach(function(el){el.onclick=function(){
   BM.paint[0].fill(0);BM.paint[1].fill(0);bmRebuild(0);bmRebuild(1);bmTouchHeat();bmMarkVals();BM.dirty=true;
-  var s=bmSel();if(s)bmRegionDrill(s);};});
- var rg=document.getElementById('bmreg');
- if(rg)rg.onchange=function(){var r=BMG.reg.filter(function(x){return x.key===rg.value;})[0];
-  if(!r){rdClose();return;}
-  if(BM.phone&&BM.face!==(r.v?'back':'front')){BM.face=r.v?'back':'front';var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);}
-  bmOpenReg(r,false);};
+  var s=bmSelAll();if(s.length)bmRegionDrill(s);bmRegBar();};});
  rb.querySelectorAll('[data-bmface]').forEach(function(el){el.onclick=function(){
   BM.face=el.getAttribute('data-bmface');var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);BM.stillKey='';bmBars();};});
  rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=function(){
   var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};});
  if(foc){var back=document.getElementById(foc);if(back)back.focus();}}
+
+/* ---------- the region names, as buttons, under the figure ----------
+   His words, round JQ: "turn those to buttons, maybe on the bottom panel of
+   the screen. So if I press it, it just lights up that area." One button per
+   name per view, top of the body to the bottom, so the row reads the way the
+   figure does. A sided name is one button for both sides: "Knee" lights both
+   knees, and the answer it opens carries Left and Right. On a phone, where
+   only one face is drawn, a name on the other face turns the figure round.
+   The paint shows on the button in Pain, where the old painted label showed
+   it. Written only when something on it changed, so focus survives a render,
+   the same rule the bar above keeps. */
+function bmRegBar(){
+ var el=document.getElementById('bmregs'); if(!el||!BMG)return;
+ var k=bmPickKey()||'', pain=BM.mode==='pain';
+ var sig=[k,BM.mode,BM.phone,BM.face,BMG.reg.map(function(r){return r.val||0;}).join(',')].join('|');
+ if(sig===el.getAttribute('data-sig'))return;
+ var foc=document.activeElement&&el.contains(document.activeElement)?document.activeElement.getAttribute('data-bmgrp'):null;
+ el.innerHTML=['front','back'].map(function(vn,v){var seen={},names=[];
+  BMG.reg.filter(function(r){return r.v===v;}).sort(function(a,c){return a.cy-c.cy||a.cx-c.cx;})
+   .forEach(function(r){if(seen[r.grp])return;seen[r.grp]=1;names.push(r);});
+  return '<div role="group" aria-label="'+(v?'Back':'Front')+'" style="flex:1 1 300px;min-width:0;display:flex;'
+   +'flex-wrap:wrap;gap:5px;align-items:center;align-content:flex-start">'
+   +'<span class="pm-eye" style="margin-right:4px">'+(v?'Back':'Front')+'</span>'
+   +names.map(function(r){
+    var pv=BMG.reg.reduce(function(m,q){return q.grp===r.grp?Math.max(m,q.val||0):m;},0), on=k.indexOf(r.grp+':')===0;
+    return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmgrp="'+esc(r.grp)+'" '
+     +'style="padding:8px 12px">'+esc(r.nm)+(pain&&pv?'<b>'+pv+'</b>':'')+'</button>';}).join('')+'</div>';}).join('');
+ el.setAttribute('data-sig',sig);
+ el.querySelectorAll('[data-bmgrp]').forEach(function(b){b.onclick=function(){
+  var gp=b.getAttribute('data-bmgrp'), regs=BMG.reg.filter(function(q){return q.grp===gp;});
+  if(!regs.length)return;
+  if(k.indexOf(gp+':')===0&&bmAnswering()){rdClose();return;}
+  var vn=regs[0].v?'back':'front';
+  if(BM.phone&&BM.face!==vn){BM.face=vn;var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);BM.stillKey='';}
+  /* A NAME PRESSED HERE IS BROUGHT TO ITS ANSWER, on a phone as well. rdOpen
+     leaves the page where it is for a press on the stage, and on a phone that
+     put this answer 3,817 pixels under the button that asked for it, measured
+     at 390 with Hip pressed: the hips lit and the summary he asked for never
+     came into view. A list of names is the shelf's case, not the figure's, so
+     it says so the way the shelf's rows do, for the length of one drill. */
+  RD_INRAIL=true;
+  try{bmOpenKey(regs.length>1?gp+':*':regs[0].key,false);}finally{RD_INRAIL=false;}};});
+ /* preventScroll, because a plain focus() scrolls to the button and cut the
+    smooth scroll to the answer short: measured at 390, the page stopped 560
+    pixels down on its way to 4,563 */
+ if(foc){var back=el.querySelector('[data-bmgrp="'+foc+'"]');if(back)back.focus({preventScroll:true});}}
 
 /* THE GROUND UNDER THE FIGURE, read off the host and never off the lighting's
    name, the way pmPal reads it. Dark: the canvas leaves its stage clear and
@@ -2347,7 +2508,11 @@ function bmBuild(host){
   +'aria-label="The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them">'
   +'<g class="pm-vec"><path d="'+bmOutline()+'" fill="none" stroke="'+bmRgba(BMC.edge,1)+'" stroke-opacity=".2" '
   +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g>'
-  +'<g data-bmseats=""></g></svg></div>';
+  +'<g data-bmseats=""></g></svg></div>'
+  /* after the well, so the well's flex keeps the rest of the height and the
+     figure is fitted to what is left */
+  +'<div id="bmregs" role="group" aria-label="Body regions" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
+  +'gap:8px 20px;padding:10px 12px 12px;border-top:1px solid var(--edge)"></div>';
  BM.well=host.querySelector('.pm-well'); BM.cv=document.getElementById('bmcv'); BM.sv=document.getElementById('bmsv');
  BM.ctx=BM.cv.getContext('2d');
  BM.still=document.createElement('canvas');BM.sctx=BM.still.getContext('2d');
