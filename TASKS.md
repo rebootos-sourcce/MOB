@@ -26813,3 +26813,31 @@ is actually written, the specific drift the document's `test/
 smoke.py:2573` catches for the sibling app. That second one is real
 and buildable now, independent of the accounts fork, and is named as
 its own item below rather than folded into it.
+
+## Round LY, first landing
+
+Shipped `d6dc7ba`: the picker's three renamed and added dials (Run
+speed, Patterns at a default of a hundred, a new Time estimate), the
+static "Release, left channel, feminine, parasympathetic" text and the
+two column channel map removed, the kept address line given the
+seat's own colour, a top and bottom gradient narrowing the list to
+now and next, the heavy mark turned red and made to fill on press,
+Back/Now/Forward/Pause/End turned into icons, and Pause/End moved to
+the card's lower right and made sticky there after the first attempt,
+moving them later in render order, measured to put them under the
+card's own fold rather than above it. Two of this repo's own gates
+held text and numbers this round intentionally changed and are
+corrected to match, the same discipline as the Analytics unfold two
+rounds ago.
+
+Not yet done, from the same round's asks: the bank/vault layout on the
+Story page keeping the release pane on the right at all times; the
+counters, session totals and totals over history, for patterns
+released and truths installed, where the history figures need a new,
+small, additive field on the profile since nothing today keeps a
+lifetime split between the two; the setup screen and voice/text scroll
+split, which are largely already built and need verifying against his
+words rather than built fresh; and the harder "everything above the
+fold, nothing scrolls" claim for the whole card, which the Pause/End
+fix improves but does not itself resolve for every switch combination.
+Continuing in that order.
