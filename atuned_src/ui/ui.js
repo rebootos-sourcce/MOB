@@ -282,16 +282,26 @@ cv.addEventListener('wheel',function(e){
  var L=loc(e);
  setZoom(S.zoom*(e.deltaY<0?1.12:1/1.12),L[0],L[1]);},{passive:false});
 addEventListener('keydown',function(e){
- if(S.tab!==TAB.FIELD)return;
+ /* THE FIELD IS NOT THE ONLY FRAME NOW. LQ in TASKS.md: "when I hit F on the
+    body, I can't reframe." True, and silent: F only ever knew the Field, so
+    on the Body it did nothing and said nothing. The Body's own way back is a
+    mouse button, "Whole body" (bmFitCam then bmFlyTo, ui/map.js), shown only
+    once its camera has moved in. F now calls that same pair on the Body, so
+    a keyboard reaches the move a mouse already had. */
+ if(S.tab!==TAB.FIELD&&S.tab!==TAB.ENERGY)return;
  var t=e.target&&e.target.tagName;
  if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT')return;
  /* a chord is the browser's or the system's, never the Field's: Ctrl F is
     find, and it reframed the wheel on the way past */
  if(e.metaKey||e.ctrlKey||e.altKey)return;
+ var k=e.key.toLowerCase();
+ if(k==='f'&&S.tab===TAB.ENERGY){
+  if(PMLAYER==='map'&&bmZoomed()){var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();}
+  return;}
+ if(S.tab!==TAB.FIELD)return;
  /* F, plus and minus answer for the picture that is up. They only knew the
     wheel, so on Frames and Dial F reframed a wheel nobody could see and said
     so. fieldReframe and fieldZoomBy in ui/rings.js ask which picture is up. */
- var k=e.key.toLowerCase();
  if(k==='f'){fieldReframe();return;}
  if(k==='+'||k==='='){fieldZoomBy(1.25);return;}
  if(k==='-'||k==='_'){fieldZoomBy(1/1.25);return;}});
