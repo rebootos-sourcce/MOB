@@ -2772,6 +2772,31 @@ function coneNamesSync(){
  var rows=document.querySelectorAll('[data-cnax]');
  for(var i=0;i<rows.length;i++)
   rows[i].classList.toggle('front',+rows[i].getAttribute('data-cnax')===CONE.front);}
+/* A MARK BESIDE EACH SWITCH'S WORD. LO in TASKS.md, his words: "I need icons
+   for top registers, layers, and compass." The word stays and the mark goes
+   in front of it, the way the sections and the tabs already carry theirs.
+   Rings and strokes, never fills, in the button's own colour, so a pressed
+   switch turns its mark to the accent with its word.
+
+   Each one draws what the switch does and borrows where the product already
+   has a mark for the word. Layers is the Field's own Layers mark, FB_IC in
+   ui/fieldbar.js, because one word wearing two drawings is two names for it.
+   Registers is three shells resting on one point, and not three rings on one
+   centre, because three rings on one centre is the Field tab's mark. Top is
+   an arrow coming straight down onto the plane. */
+const CN_IC={
+ top:'M12 3v8.4M8.8 8.2L12 11.4l3.2-3.2M4 17.2c0-1.9 3.6-3.4 8-3.4s8 1.5 8 3.4-3.6 3.4-8 3.4-8-1.5-8-3.4z',
+ shells:'M12 3.2a8.8 8.8 0 110 17.6 8.8 8.8 0 010-17.6M12 8.6a6.1 6.1 0 110 12.2 6.1 6.1 0 010-12.2M12 14a3.4 3.4 0 110 6.8 3.4 3.4 0 010-6.8',
+ layers:FB_IC.layers,
+ /* the well's profile: a flat ground that falls into a pit and climbs out */
+ well:'M3 7.5c3.8 0 5.4 2.2 6.6 7.4.5 2.1 1.3 3.1 2.4 3.1s1.9-1 2.4-3.1c1.2-5.2 2.8-7.4 6.6-7.4',
+ /* a ring lit from inside, with its light broken into four arcs round it,
+    so it is not the lighting menu's sun */
+ heat:'M12 8.8a3.2 3.2 0 110 6.4 3.2 3.2 0 010-6.4M5.2 9.2a7.4 7.4 0 014-4M14.8 5.2a7.4 7.4 0 014 4M18.8 14.8a7.4 7.4 0 01-4 4M9.2 18.8a7.4 7.4 0 01-4-4',
+ flat:'M3.5 10.2h17v3.6h-17z',
+ /* three laws up and three down, as two arrows */
+ reg:'M8 19.5V5M4.8 8.2L8 5l3.2 3.2M16 4.5V19M12.8 15.8L16 19l3.2-3.2'};
+function cnIc(k){return '<svg class="cn-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="'+CN_IC[k]+'"/></svg>';}
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  /* the needle assembles once, when the surface is opened, and not on every
@@ -2830,23 +2855,23 @@ function coneOpen(inTab){
     /* TOP, round KQ, his words: "with the compass layers, change from above
        to top." One word, as every other switch in this row is. */
     +(CONE.side?'':'<button type="button" class="cn-b" data-cn="top" '
-     +'title="Look straight down on the same eight axes">Top</button>')
+     +'title="Look straight down on the same eight axes">'+cnIc('top')+'Top</button>')
     /* REGISTERS, round KS. One word, his own from round KR, "the colored
        registers would show collapse geometrically", and already the
        product's word for it: the coherence reading says "It is harmonic, so
        patterns sit at registers rather than anywhere." */
     +(CONE.side?'':'<button type="button" class="cn-b" data-cn="shells" '
-     +'title="Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.">Registers</button>')
+     +'title="Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.">'+cnIc('shells')+'Registers</button>')
     +(CONE.side
      ?'<button type="button" class="cn-b" data-cn="flat" '
-      +'title="Take the tilt out and look straight down on the figure">Flat</button>'
+      +'title="Take the tilt out and look straight down on the figure">'+cnIc('flat')+'Flat</button>'
       +'<button type="button" class="cn-b" data-cn="reg" '
-      +'title="Show the three laws lifting you most and the three pulling you down most">Regulation</button>'
+      +'title="Show the three laws lifting you most and the three pulling you down most">'+cnIc('reg')+'Regulation</button>'
      :'')
     /* ROUND KI'S MOCKUP SWITCH. Two ways to draw gravity, one press apart,
        so he chooses by looking: off is the pulse, on is the well. */
     +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="well" '
-     +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">Gravity well</button>')
+     +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">'+cnIc('well')+'Gravity well</button>')
     /* RADIANCE, round KR. Only on the needle, which is the only figure that
        draws it: from the top there is no volume to fill, and the switch
        would be a dead control there. What the heat means rides on the
@@ -2854,10 +2879,10 @@ function coneOpen(inTab){
        asked for is one of his logged objections. Whether it earns a key is
        his call. */
     +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="heat" '
-     +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">Radiance</button>')
+     +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">'+cnIc('heat')+'Radiance</button>')
     /* the Registers draw no rings, so Layers would be a dead control there */
     +(CONE.shells&&!CONE.side&&!CONE.top?'':'<button type="button" class="cn-b" data-cn="layers" '
-     +'title="Show the rings the axes are stacked on">Layers</button>')
+     +'title="Show the rings the axes are stacked on">'+cnIc('layers')+'Layers</button>')
    +'</div>'
    /* THE TOOL SAYS WHAT IT IS, UNDER THE FIGURE. Ruled: the bottom
       information goes right unless it is about the tool. These two lines are

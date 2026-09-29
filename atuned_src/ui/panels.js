@@ -193,8 +193,14 @@ function setTab(i){
  if(i===TAB.FIELD&&typeof fbEnter==='function')fbEnter();
  /* the Field's sub bar carried the depth row, and the glass bar floating over
     the stage replaced it. His words: "I don't want that secondary
-    navigation." So the sub bar is Body's alone. */
- document.body.classList.toggle('hassub',i===TAB.ENERGY);
+    navigation." So the sub bar is Body's alone.
+    AND NOW NOBODY'S BY DEFAULT. LM in TASKS.md: the Mark row, the last thing
+    it carried on the Body, went onto the picture's upper right with its own
+    fold, "close that to reclaim space", so the band would have been an empty
+    glass strip over the stage. Every tab change takes it down; the Masks
+    door's Whole body, bmBarsOne in ui/map.js, is the one writer that raises
+    it, and only while that door is zoomed into a region. */
+ document.body.classList.remove('hassub');
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  /* pressed state read off each button's own integer, never off its position

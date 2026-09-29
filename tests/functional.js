@@ -412,6 +412,43 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   t.click(); return shut+' '+vis()+':'+t.getAttribute('aria-expanded')+' '
    +[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');});
  ok(bg==='0:false 3:true addr,masks,sab','the burger folds all three groups and opens them as they were, '+bg);
+ /* LM, his words: "overlay menu ... on the left top across the top, like the
+    Field ... the third tier nav that says Mark ... on the upper right opposite
+    the overlay, both have buttons that close them. The right one starts
+    closed ... close that to reclaim space." And the parts: "Front and Back on
+    their respective sides ... smaller with a frame around them." */
+ const lm=await page.evaluate(async()=>{const w=()=>new Promise(r=>setTimeout(r,400));
+  const wr=BM.well.getBoundingClientRect(), ov=document.getElementById('bmov'), mk=document.getElementById('bmmk');
+  const tops=[...ov.querySelectorAll('.fb-b')].map(b=>Math.round(b.getBoundingClientRect().top));
+  const tog=mk.querySelector('[data-bmmk=tog]').getBoundingClientRect(), bur=ov.querySelector('[data-bmov=shut]').getBoundingClientRect();
+  const o={row:new Set(tops).size, left:Math.round(bur.left-wr.left), right:Math.round(wr.right-tog.right),
+   shut:mk.classList.contains('shut'), row2:!!document.getElementById('bmmkb').offsetParent,
+   sub:getComputedStyle(document.getElementById('subbar')).display, band:BM.inT, z:BM.z0, head:bmW2S(50,0)[1]};
+  ov.querySelector('[data-bmov=shut]').click(); await w(); o.bandShut=BM.inT; o.zShut=BM.z0;
+  ov.querySelector('[data-bmov=shut]').click(); await w();
+  mk.querySelector('[data-bmmk=tog]').click(); await w();
+  o.open=!!document.getElementById('bmmkb').offsetParent&&document.querySelectorAll('#bmmkb [data-bmamode]').length;
+  o.stored=STORE.get('bmmk');
+  mk.querySelector('[data-bmmk=tog]').click(); await w();
+  bmZoomReg(BMG.reg[0]); bmBars(); await w();
+  o.whole=!mk.querySelector('[data-bmwhole]').hidden&&mk.classList.contains('shut');
+  mk.querySelector('[data-bmwhole]').click(); await w();
+  const f=document.querySelector('.bm-front').getBoundingClientRect(), bk=document.querySelector('.bm-back').getBoundingClientRect(),
+   rg=document.getElementById('bmregs').getBoundingClientRect(), pt=document.querySelector('.bm-pt'), fr=pt.querySelector('i').getBoundingClientRect();
+  o.corners=[Math.round(f.left-rg.left),Math.round(rg.right-bk.right)]; o.split=f.right<bk.left;
+  o.pt=[Math.round(pt.getBoundingClientRect().width),Math.round(fr.width),getComputedStyle(pt.querySelector('i')).borderTopWidth];
+  return o;});
+ ok(lm.row===1&&lm.left<30&&lm.right<30,'the overlays are one row across the top, the burger at the upper left and the Mark circle at the upper right, '
+  +JSON.stringify({row:lm.row,left:lm.left,right:lm.right}));
+ ok(lm.shut&&!lm.row2&&lm.sub==='none','the Mark row starts shut, and the sub bar it lived in is gone from the Body, '+JSON.stringify({shut:lm.shut,sub:lm.sub}));
+ /* the scale only grows where the height is what binds the fit; at this width
+    the width binds, so it holds, and the head is what shows the band */
+ ok(lm.band>0&&lm.head>=lm.band&&lm.bandShut===0&&lm.zShut>=lm.z,'the overlays open fit the figures under them, and shut give the band back, band '
+  +lm.band+' with the head at '+Math.round(lm.head)+', then '+lm.bandShut+', scale '+lm.z.toFixed(2)+' to '+lm.zShut.toFixed(2));
+ ok(lm.open===3&&lm.stored==='open','pressed, the Mark row opens with its three readings, and the press is kept, '+JSON.stringify({open:lm.open,stored:lm.stored}));
+ ok(lm.whole,'Whole body stands beside the shut Mark circle while a region is opened, so the way back is never folded away');
+ ok(lm.split&&lm.corners[0]<20&&lm.corners[1]<20,'Front sits in the lower left corner and Back in the lower right, '+JSON.stringify(lm.corners));
+ ok(lm.pt[0]===44&&lm.pt[1]<44&&lm.pt[2]==='1px','each part is a pin line frame smaller than its 44 pixel target, '+JSON.stringify(lm.pt));
  /* KV: "If I scroll on the body map, I can't frame it." */
  const sv=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return {x:b.left,y:b.top};});
  await page.mouse.move(sv.x+140,sv.y+140);
@@ -4920,7 +4957,10 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  const fv=await fp.evaluate(async()=>{loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
   const panel=document.getElementById('rootsum').closest('.panel');
   const sec=document.querySelector('.lsec[data-rail=right][data-sec=overlap]');
-  const first=panel.firstElementChild;
+  /* the first section, and not the first child: since LO the rail's fold
+     control leads the panel, the way lfold leads the left one, and it is a
+     control and not a section */
+  const first=panel.querySelector(':scope>.lsec');
   const closed=!sec.classList.contains('open');
   sec.querySelector('.lsec-hd').click();
   await new Promise(r=>setTimeout(r,60));
@@ -5009,6 +5049,31 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   return {kept,open:!document.body.classList.contains('lshut')&&!!document.getElementById('fdock').offsetParent,
    exp:document.getElementById('lfold').getAttribute('aria-expanded'),stored:STORE.get('lcol')};});
  ok(fold2.kept&&fold2.open&&fold2.exp==='true'&&fold2.stored==='open','a reload keeps it shut, and one press opens it again, '+JSON.stringify(fold2));
+ /* AND THE RIGHT ONE, LO: "Add a widget to the right menu to collapse it."
+    The same four things held of it, and one more: a surface with no right
+    column in its row, Settings, keeps its one track with both shut rather
+    than being laid into the 58 pixel one the fold adds. */
+ const rf=await fp.evaluate(async()=>{const st=()=>document.getElementById('stage').getBoundingClientRect().width;
+  const two=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const b=document.getElementById('rfold'), open0=!document.body.classList.contains('rshut'), w0=st();
+  b.click(); await two();
+  const shut={w:st(),exp:b.getAttribute('aria-expanded'),stored:STORE.get('rcol'),
+   seen:[...document.getElementById('rpanel').children].filter(e=>e.offsetParent).map(e=>e.id),
+   tap:b.getBoundingClientRect().width>=44&&b.getBoundingClientRect().height>=44};
+  document.getElementById('lfold').click(); setTab(TAB.SETTINGS); await two();
+  const set=document.getElementById('settings').getBoundingClientRect().width;
+  setTab(TAB.FIELD); document.getElementById('lfold').click(); await two();
+  return {open0,w0,shut,set,vw:innerWidth};});
+ ok(rf.open0&&rf.shut.w>rf.w0+150&&rf.shut.exp==='false'&&rf.shut.seen.join()==='rfold'&&rf.shut.tap&&rf.shut.stored==='shut',
+  'the right column opens by default, and shuts to its one control with the stage taking the width, '
+  +Math.round(rf.w0)+' to '+Math.round(rf.shut.w)+', '+JSON.stringify(rf.shut));
+ ok(rf.set>rf.vw*0.8,'Settings with both columns shut keeps its one full track, '+Math.round(rf.set)+' of '+rf.vw);
+ await fp.reload({waitUntil:'load'}); await booted(fp); await frame(fp);
+ const rf2=await fp.evaluate(async()=>{const kept=document.body.classList.contains('rshut');
+  document.getElementById('rfold').click(); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  return {kept,open:!document.body.classList.contains('rshut')&&!!document.getElementById('rdrill-none').closest('.lsec').offsetParent,
+   exp:document.getElementById('rfold').getAttribute('aria-expanded'),stored:STORE.get('rcol')};});
+ ok(rf2.kept&&rf2.open&&rf2.exp==='true'&&rf2.stored==='open','a reload keeps the right one shut too, and one press opens it again, '+JSON.stringify(rf2));
  ok(on.view===3&&on.custom===null&&on.off.length===0&&on.n===on.want,'every layer starts on, Blueprint, nothing off on the bar: '
   +JSON.stringify(on));
  await fp.evaluate(()=>{layPick(1);render();});

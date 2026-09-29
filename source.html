@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v884 40cb639 2026-09-29 01:33"><head><meta charset="utf-8">
+<html lang="en" data-build="v888 665a178 2026-09-29 03:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2329,6 +2329,55 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
    stacked, where shut is simply the panel folded to its control. */
 @media (min-width:1181px){
  body.lshut:not(.tab-settings) .mid{grid-template-columns:58px 1fr 336px}}
+/* ---- AND THE RIGHT COLUMN'S. LO in TASKS.md: "Add a widget to the right menu
+   to collapse it." ui/ui.js, railFold. The left fold mirrored, and its own
+   class rather than lfold's, because every shut rule above is keyed on lfold
+   and a shared class would have folded this control with the other column.
+   It sits where lfold sits, the head of the rail at its right corner.
+
+   PINNED, WHERE LFOLD SCROLLS AWAY. This rail moves itself: Selection opens
+   and is brought to the top on every press of every surface, and measured on
+   the Compass at 1600 the rail stood 1,843 pixels down with the control 1,705
+   pixels above the screen. A fold that has to be scrolled back to is not
+   there. So it is sticky at the rail's top with no height of its own, and
+   every header on this rail keeps its right end free for it, so no chevron
+   and no word is ever under it. Scrolled, it takes the panel's ground, so
+   what passes beneath it does not show through the mark. ui/ui.js railFold
+   says when the rail is scrolled. Pinned sixteen pixels up, into the panel's
+   own padding, because that is where a pressed header is brought to: at top
+   nought it stood half a row under the header beside it, measured. */
+.rfold{position:sticky;top:-16px;align-self:flex-end;flex:0 0 auto;margin:0 -10px -44px 0;z-index:3;
+ width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
+ background:transparent;color:var(--mid);cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+#rpanel.scrolled .rfold{background:var(--panel);box-shadow:0 0 0 1px var(--edge)}
+.rfold:hover,#rpanel.scrolled .rfold:hover{background:var(--sunk);color:var(--ink)}
+.rfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+.lsec[data-rail=right] .lsec-hd{padding-right:52px}
+/* important, because the Run a release row at the rail's foot carries its
+   display inline and stood alone in the shut column without it, measured */
+body.rshut #rpanel>*:not(.rfold){display:none!important}
+body.rshut #rpanel{padding:6px;align-items:center}
+body.rshut #rpanel::after{display:none}
+body.rshut .rfold{position:static;margin:0;align-self:center}
+/* stacked, the rail does not scroll: the page does, and sticky there would
+   hold the control at the top of the phone's screen over whatever is under it */
+@media (max-width:1180px){.rfold{position:relative;top:0}}
+body.rshut .rfold .lf-ch{transform:rotate(180deg)}
+/* the stage takes the width. Three surfaces have no right column in the row
+   at all, and a shut one must not put a 58 pixel track back into it: Settings
+   and the practitioner's page are one track, and the Story without its bank
+   is ruled further down with a heavier selector that already wins. The both
+   shut rule outweighs body.tab-settings .mid, so without the last line here
+   Settings with both columns shut lays its one surface into the 58 pixel
+   track: measured with the line taken out at 1600, 56 pixels wide, and 1578
+   with it in. */
+@media (min-width:1181px){
+ body.rshut .mid{grid-template-columns:302px 1fr 58px}
+ body.lshut.rshut .mid{grid-template-columns:58px 1fr 58px}
+ body.rshut.tab-settings .mid,body.rshut.tab-prac .mid{grid-template-columns:1fr}}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
@@ -2787,6 +2836,11 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
  transition:background .12s cubic-bezier(.22,1,.36,1), color var(--t-micro) var(--ease-out), border-color var(--t-micro) var(--ease-out)}
 .cn-b:hover{background:var(--panel-2);color:var(--ink)}
 .cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
+/* the switch's mark before its word, LO, CN_IC in ui/cone.js. Its own class,
+   because the seat buttons in the same class carry a ring in their seat's
+   colour that a rule on every svg in .cn-b would have turned to ink */
+.cn-ic{width:15px;height:15px;flex:0 0 auto;margin:0 7px 0 -2px;fill:none;stroke:currentColor;
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .cn-sp{flex:1 1 auto;min-width:6px}
 body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
 /* the Story's segmented choices, the sort and the pace. The release settings
@@ -3203,6 +3257,64 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
 .pm-rb:hover{background:var(--panel-2);color:var(--ink)}
 .pm-rb.on{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
 .pm-well{flex:1;position:relative;min-height:0;overflow:hidden}
+/* ---- THE BODY'S TWO BARS, ACROSS THE TOP OF THE WELL. LM in TASKS.md, his
+   words: "I want to overlay menu on the left side, on the left top across the
+   top, like the Field ... the third tier nav that says Mark ... on the upper
+   right opposite the overlay, both have buttons that close them. The right
+   one starts closed." ui/map.js bmBuild writes them, bmOvBuild and bmMkBuild
+   fill them. One row holding both, so they share the width and each wraps
+   inside its share before the two can meet; its gaps take no press, so the
+   figure under them still answers. The fold circle of each is its outer
+   end: the burger first on the left, the sliders last on the right. ---- */
+/* the overlays take whatever the Mark row and its circle leave, from a basis
+   of nothing, so the circle on the right is never pushed off the line and
+   the overlays wrap inside their share instead */
+.bm-top{position:absolute;top:10px;left:12px;right:12px;z-index:3;display:flex;flex-wrap:wrap;
+ align-items:flex-start;gap:8px 12px;pointer-events:none}
+.bm-ov{display:flex;flex-wrap:wrap;align-items:center;gap:12px;min-width:0;flex:1 1 0;order:1}
+.bm-mkb{order:2}
+.bm-mk{display:flex;flex-direction:row-reverse;align-items:flex-start;gap:8px;flex:0 0 auto;order:3}
+.bm-mk>*,.bm-mkb{pointer-events:auto}
+.bm-mk.shut+.bm-mkb{display:none}
+.bm-mk .fb-arc .val{opacity:0}
+/* a phone has no room for the row beside the circles, and squeezed beside
+   them it stood as a column of three buttons with Point in patch broken over
+   two lines, measured at 390. It takes the next line, right aligned under
+   the circle that opened it, and the circle stays where it was pressed. */
+@media (max-width:720px){.bm-mkb{order:4;flex:0 0 auto;margin-left:auto}}
+/* the Mark row lies on the picture, so it sits on the bar's own glass, the
+   capsule the Field's Wheel, Frames and Dial switch sits on */
+.bm-mkb{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:5px;min-width:0;
+ padding:3px 4px;border-radius:24px;background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+.bm-mkb .pm-lb{border-radius:999px}
+.bm-whole{background:var(--fb-glass);border-radius:999px}
+.bm-whole[hidden]{display:none}
+/* ---- THE PARTS, UNDER THE WELL, EACH SET IN ITS OWN CORNER. LM: "Front and
+   Back on their respective sides right and left ... smaller with a frame
+   around them, just a pin line." ui/map.js bmRegBar and bmRegFit. The target
+   stays 44, the tap floor; the frame drawn inside it is 32 and one pixel. */
+.bm-regs{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+ padding:6px 12px 8px;border-top:1px solid var(--edge)}
+.bm-set{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bm-set.bm-back{align-items:flex-end}
+.bm-set .pm-eye{margin:0 6px}
+.bm-grid{display:flex;flex-wrap:wrap;max-width:100%;width:calc(44px * var(--bmcf,7))}
+.bm-back .bm-grid{justify-content:flex-end;width:calc(44px * var(--bmcb,8))}
+.bm-pt{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;
+ padding:0;margin:0;border:0;background:transparent;color:var(--mid);cursor:pointer;touch-action:manipulation}
+.bm-pt>i{display:flex;align-items:center;justify-content:center;width:32px;height:32px;box-sizing:border-box;
+ border:1px solid var(--edge-2);border-radius:var(--r-xs);
+ transition:border-color var(--t-micro) var(--ease-out),background-color var(--t-micro) var(--ease-out)}
+.bm-pt svg{width:24px;height:24px}
+.bm-pt:hover{color:var(--ink)}
+.bm-pt:hover>i{border-color:var(--mid)}
+.bm-pt.on>i{background:var(--gold);border-color:var(--gold)}
+.bm-pt b{position:absolute;top:0;right:1px;margin:0;font-family:var(--num);font-weight:400;font-size:11px;
+ font-variant-numeric:tabular-nums;color:var(--ink)}
+/* Punch outlines nothing: the frame is a solid tile there, as every pm-lb is */
+body.punch .bm-pt>i{border-color:transparent;background:var(--panel-2)}
+body.punch .bm-pt.on>i{background:var(--gold)}
 .pm-aura{position:absolute;inset:-18%;pointer-events:none;z-index:0;filter:blur(40px);
  transition: opacity var(--t-context) var(--ease-out), background var(--t-context) var(--ease-out)}
 .pm-svg{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
@@ -4649,7 +4761,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     child resolved to zero and the figure had no box to draw in. The well gets
     the height here, which is the one thing the phone band never replaced. */
  .emap{position:relative}
- .pm-well{flex:0 0 auto;min-height:min(122vw,470px)}
+ /* and it grows by the band the Body's bars take across its top, --bmtop,
+    written by bmSize in ui/map.js, so a row of circles that wraps to two
+    lines at 390 costs the page height and not the figure's. Nought on the
+    Masks door, which has no bars. */
+ .pm-well{flex:0 0 auto;min-height:calc(min(122vw,470px) + var(--bmtop,0px))}
  /* THE DEPTH LADDER RAN 996 PIXELS PAST THE SCREEN AND NOTHING COULD REACH IT,
     measured as body.scrollWidth 1386 against innerWidth 390 while
     documentElement stayed at 390, which hides it completely. The ladder is
@@ -6603,7 +6719,19 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        One line stays pinned and is always true. Everything with detail is a
        named section that folds, one open at a time. Selection unfolds itself
        when the wheel is clicked. -->
-  <div class="col"><div class="glass panel sc">
+  <div class="col" id="rcol"><div class="glass panel sc" id="rpanel">
+   <!-- AND THIS COLUMN CLOSES TOO. LO in TASKS.md, his words: "Add a widget to
+        the right menu to collapse it." The left column's fold, lfold, mirrored:
+        the same control in the same corner of the rail's head, the panel drawn
+        with its bar on the right, and the chevron pointing the way the column
+        goes. Shut, it is the one thing left in the column, so the way back is
+        where the way out was. Kept in the store beside the left one, ui/ui.js,
+        railFold. -->
+   <button class="rfold" id="rfold" type="button" aria-controls="rpanel"
+    aria-expanded="true" aria-label="Close the right column">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+     <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M15 4.5v15"/>
+     <path class="lf-ch" d="M8.4 9.4L11 12l-2.6 2.6"/></svg></button>
    <!-- ROOT ENERGETICS, READ ACROSS, AT THE VERY TOP AND CLOSED. FV in
         TASKS.md, his words: "When I open root energetics, I want a summary
         of that on the right hand side, also at the very top closed." It
@@ -24264,22 +24392,63 @@ function bmDrawFlow(g,vs){
 function bmOne(){return BM.phone||!!BM.one;}
 function bmWorldW(){return bmOne()?[24,76]:[24-14,BMOX+76+14];}
 function bmViews(){return bmOne()?[BM.face==='back'?1:0]:[0,1];}
-function bmFitCam(){var w=bmWorldW(),ww=w[1]-w[0],hh=102, z=Math.min(BM.W/ww,(BM.H-24)/hh);BM.z0=z;
- return {x:bmOne()?(BM.face==='back'?BMOX+50:50):(w[0]+w[1])/2,y:50.5,z:z};}
+/* THE FIT LEAVES THE TOP BAND TO THE BARS. LM moved the overlays and the
+   Mark controls to a row across the top of the well, and a row there runs
+   through the heads. So the figures are fitted into what is under it, BM.inT
+   pixels down, and centred in that: world 50.5 lands half way between the
+   band and the foot. Nought on the Masks door, which has no bars, and nought
+   with both bars shut, when each is one circle in a corner the fit's own
+   side margin already keeps clear. bmBand measures it. */
+function bmFitCam(){var w=bmWorldW(),ww=w[1]-w[0],hh=102,T=BM.inT||0, z=Math.min(BM.W/ww,(BM.H-24-T)/hh);BM.z0=z;
+ return {x:bmOne()?(BM.face==='back'?BMOX+50:50):(w[0]+w[1])/2,y:50.5-T/(2*z),z:z};}
 function bmFlyTo(x,y,z){BM.camT={x:x,y:y,z:z};if(REDUCED){BM.cam={x:x,y:y,z:z};BM.camT=null;}BM.dirty=true;}
 function bmW2S(x,y){return [(x-BM.cam.x)*BM.cam.z+BM.W/2,(y-BM.cam.y)*BM.cam.z+BM.H/2];}
 function bmS2W(x,y){return [(x-BM.W/2)/BM.cam.z+BM.cam.x,(y-BM.H/2)/BM.cam.z+BM.cam.y];}
 function bmTf(g){g.setTransform(BM.dpr*BM.cam.z,0,0,BM.dpr*BM.cam.z,BM.dpr*(BM.W/2-BM.cam.x*BM.cam.z),BM.dpr*(BM.H/2-BM.cam.y*BM.cam.z));}
 function bmZoomed(){return BM.cam.z>BM.z0*1.05||(BM.camT&&BM.camT.z>BM.z0*1.05);}
+/* the band the two bars take across the top of the well, in pixels from its
+   top. Only an open bar counts: shut, each is one circle in its corner. Read
+   when a bar opened, shut or rewrote itself (BM.bandStale), never every
+   frame, because it is a layout read. */
+function bmBand(){
+ if(!BM.bar||!BM.well)return 0;
+ var top=BM.well.getBoundingClientRect().top, b=0;
+ /* the Mark row is display none while its circle is shut, so its box reads
+    nothing then and only counts open */
+ ['#bmov','#bmmk','#bmmkb'].forEach(function(q){var e=BM.well.querySelector(q);
+  if(!e||e.classList.contains('shut')||!e.offsetParent)return;
+  b=Math.max(b,e.getBoundingClientRect().bottom-top);});
+ return b>0?Math.round(b+6):0;}
 /* the well's box, read every frame and acted on only when it moved */
 function bmSize(){
  var r=BM.well.getBoundingClientRect(), w=Math.round(r.width), h=Math.round(r.height);
- if(w===BM.W&&h===BM.H&&BM.cv.width)return;
+ var same=w===BM.W&&h===BM.H&&BM.cv.width;
+ if(same&&!BM.bandStale)return;
+ BM.bandStale=false;
+ var band=bmBand();
+ /* A PHONE GROWS THE WELL BY THE BAND rather than shrinking the figure into
+    it. There the well is a fixed height in a page that scrolls, so the row
+    of circles across the top, which wraps to two lines at 390, would
+    otherwise have cost the one figure a fifth of its height. The sheet adds
+    this to the phone's height and ignores it on a desk, shell/head.html. */
+ BM.well.style.setProperty('--bmtop',band+'px');
+ if(same){
+  if(band===BM.inT)return;
+  /* the band moved and the box did not: fitted, the figures are put straight
+     under the new band; opened into a region, only the fit's floor moves */
+  var zoomed=bmZoomed(); BM.inT=band;
+  var fc=bmFitCam(); if(!zoomed){BM.cam=fc;BM.camT=null;}
+  BM.stillKey='';BM.litKey='';BM.dirty=true;
+  if(BM.r){bmMaskHits(BM.r);bmHubRefresh(BM.r);}
+  return;}
+ BM.inT=band;
  var was=BM.phone;
  BM.phone=w<700; BM.dpr=Math.min(2,window.devicePixelRatio||1); BM.W=w; BM.H=h;
  [BM.cv,BM.still,BM.lit,BM.lit2].forEach(function(c){c.width=Math.max(1,Math.round(w*BM.dpr));c.height=Math.max(1,Math.round(h*BM.dpr));});
  BM.stillKey='';BM.litKey='';
  var f=bmFitCam(); BM.cam=f; BM.camT=null; BM.dirty=true;
+ /* the corner blocks under the well take their rows off the same width */
+ if(BM.bar)bmRegFit();
  /* the masks' targets are held to the tap floor at the fitted view, so they
     are measured again whenever the fitted view is */
  if(BM.r)bmMaskHits(BM.r);
@@ -24568,7 +24737,8 @@ function bmLabels(g){
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);g.textBaseline='middle';
  [0,1].forEach(function(v){var on=true;
   g.textAlign='center';g.font='600 13px Inter,system-ui,sans-serif';g.fillStyle=bmRgba(BMC.ink,on?.9:.42);
-  g.fillText(v?'Back':'Front',bmW2S(v?BMOX+50:50,0)[0],14);});}
+  /* under the band, when a bar is open across the top */
+  g.fillText(v?'Back':'Front',bmW2S(v?BMOX+50:50,0)[0],14+(BM.inT||0));});}
 /* one line of instruction, in the corner, off the figure */
 /* HS SWEEP: ONLY IN PAINT. The default hint, "Press a region to open it.
    Double press to zoom in. Point at a line to trace it.", sat in the corner
@@ -24940,25 +25110,75 @@ function bmRegionDrill(list){
  var pt=document.getElementById('bmprot');
  if(pt)pt.onclick=function(){rdClose();relPick(rel.map(function(n){return n.i;}));};}
 
-/* ---------- the controls, in the sub bar beside the layer row ----------
+/* ---------- the controls, in the upper right of the well ----------
    The mode, the two open questions and the brush. The two questions are
    choices and not settings: Mark is question A with all three of its
    readings in view, Heat is the four switches with Isotherm on. Heat only
    shows in Pain, because in Pattern it changes nothing a person can see, and
    it is a menu because it has a measured default and he is confirming it
    rather than choosing blind. Written only when something in it changed,
-   so a control keeps its focus under a keyboard. */
+   so a control keeps its focus under a keyboard.
+
+   OUT OF THE SUB BAR AND ONTO THE PICTURE, SHUT. LM in TASKS.md, his words:
+   "I want the third tier nav that says Mark Fetter Mark, Point in patch,
+   Point, on the upper right opposite the overlay, both have buttons that
+   close them. The right one starts closed ... close that to reclaim space."
+   It was a row of the sub bar over the stage, and the sub bar held nothing
+   else on the Body, so the whole band goes: setTab in ui/panels.js no longer
+   raises it here. What is left is one circle in the upper right, the burger's
+   mirror, and pressed it opens the row beside itself on the bar's glass.
+   Shut is the default, and only a press that opened it is kept.
+
+   Whole body stays out of the fold. It is the way back from an opened
+   region, and a way back hidden behind a shut control is no way back, so it
+   stands beside the circle whenever the view is zoomed, open or shut. */
 var BMSELSTY='min-height:44px;min-width:44px;max-width:100%;background:var(--panel-2);color:var(--ink);'
  +'border:1px solid var(--edge);border-radius:var(--r-xs);padding:8px 10px;font-family:var(--sans);font-size:13.5px;cursor:pointer';
+/* the sheet's glass inks for the one token the Mark row reads that the
+   overlays do not: a button's hover and the Heat menu are panel-2, and the
+   theme's own panel-2 is paper under Snow while this well stays dark */
+var BMMKTOK='--panel-2:rgba(40,44,58,.86);';
+function bmMkShut(){var s=true;try{s=STORE.get('bmmk')!=='open';}catch(e){}return s;}
+function bmMkShutPaint(mk,shut){
+ var tog=mk.querySelector('[data-bmmk=tog]'); if(!tog)return;
+ mk.classList.toggle('shut',shut); BM.bandStale=true;
+ var say=shut?'Open the mark controls':'Close the mark controls';
+ tog.setAttribute('aria-expanded',shut?'false':'true');tog.setAttribute('aria-label',say);
+ if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
+ fbTip(tog,shut?'Opens how the marks are drawn, and the heat and the brush while you paint.'
+  :'Folds these controls into this one circle. Each one stays as it was set.');}
+function bmMkBuild(mk){
+ /* the three sliders: the controls that set how the figure is drawn */
+ var tog=fbOrb({nm:'Open the mark controls',ic:'M4 7h9M17 7h3M4 17h3M11 17h9'
+  +'M15 5a2 2 0 110 4 2 2 0 010-4M9 15a2 2 0 110 4 2 2 0 010-4'});
+ tog.setAttribute('data-bmmk','tog');tog.setAttribute('aria-controls','bmmkb');
+ tog.onclick=function(){var now=!bmMkShut();
+  try{STORE.set('bmmk',now?'shut':'open');}catch(e){}
+  bmMkShutPaint(mk,now);};
+ /* first in the markup, so the arrow keys and a screen reader meet the fold
+    before what it folds, as the burger leads the overlays; the sheet puts it
+    at the outer end of the row */
+ mk.appendChild(tog);
+ var z=document.createElement('button'); z.type='button'; z.className='pm-lb bm-whole'; z.setAttribute('data-bmwhole','1');
+ z.textContent='Whole body'; z.onclick=function(){var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};
+ mk.appendChild(z);
+ bmMkShutPaint(mk,bmMkShut());}
 function bmBars(){
- var rb=document.getElementById('rbar'); if(!rb||!BMG)return;
- if(!BM.bar){bmBarsOne(rb);return;}
+ if(!BMG)return;
+ if(!BM.bar){var rb=document.getElementById('rbar');if(rb)bmBarsOne(rb);return;}
  bmRegBar();
- var zoomed=bmZoomed();
- var sig=[BM.mode,BM.variant,BM.amode,BM.phone,BM.face,zoomed].join('|');
- rb.style.display='flex';
- if(sig===rb.getAttribute('data-bmsig'))return;
- var foc=document.activeElement&&rb.contains(document.activeElement)?document.activeElement.id:null;
+ var mk=BM.well&&BM.well.querySelector('#bmmk'); if(!mk)return;
+ if(!mk.firstChild)bmMkBuild(mk);
+ /* where the camera is going and not where it is, bmBarsOne's reading. The
+    press on Whole body calls this while the camera is still in, so read off
+    the camera it would stay up after the press that sent the view home */
+ var zc=BM.camT||BM.cam, zoomed=zc.z>BM.z0*1.05, zb=mk.querySelector('[data-bmwhole]');
+ if(zb&&zb.hidden!==!zoomed){zb.hidden=!zoomed;BM.bandStale=true;}
+ var body=BM.well.querySelector('#bmmkb'); if(!body)return;
+ var sig=[BM.mode,BM.variant,BM.amode].join('|');
+ if(sig===body.getAttribute('data-bmsig'))return;
+ BM.bandStale=true;
+ var foc=document.activeElement&&body.contains(document.activeElement)?document.activeElement.id:null;
  var eye=function(t,f){return '<'+(f?'label for="'+f+'"':'span')+' class="pm-eye" style="align-self:center;margin:0 2px 0 8px">'+t+'</'+(f?'label':'span')+'>';};
  var btn=function(k,v,t,on){return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+!!on+'" data-'+k+'="'+v+'">'+t+'</button>';};
  var opt=function(v,t,on){return '<option value="'+v+'"'+(on?' selected':'')+'>'+esc(t)+'</option>';};
@@ -24989,21 +25209,18 @@ function bmBars(){
  /* THE FRONT AND BACK TOGGLE MOVED DOWN, round KN: "those are all going to
     be on the bottom. And there'll be two icons to say front and back." It is
     the first thing in the panel under the well, bmRegBar, on every width. */
- if(zoomed)h+=btn('bmwhole','1','Whole body',false);
- rb.innerHTML=h; rb.setAttribute('data-bmsig',sig);
- rb.querySelectorAll('[data-bmamode]').forEach(function(el){el.onclick=function(){
+ body.innerHTML=h; body.setAttribute('data-bmsig',sig);
+ body.querySelectorAll('[data-bmamode]').forEach(function(el){el.onclick=function(){
   BM.amode=el.getAttribute('data-bmamode');BM.dirty=true;bmBars();};});
- var vr=document.getElementById('bmvar');
+ var vr=body.querySelector('#bmvar');
  if(vr)vr.onchange=function(){BM.variant=vr.value;BM.stillKey='';BM.litKey='';BMG.heat[0]._k=BMG.heat[1]._k='';
   /* replay the switch, so the difference is seen and not only set */
   if(BM.mode==='pain'){BM.pg=0;BM.ph=0;BM.mode='pattern';bmSetMode('pain');}bmBars();};
- var br=document.getElementById('bmbrush');
+ var br=body.querySelector('#bmbrush');
  if(br)br.oninput=function(){BM.brush=+br.value;var o=document.getElementById('bmbrushv');if(o)o.textContent=br.value;};
- rb.querySelectorAll('[data-bmclear]').forEach(function(el){el.onclick=function(){
+ body.querySelectorAll('[data-bmclear]').forEach(function(el){el.onclick=function(){
   BM.paint[0].fill(0);BM.paint[1].fill(0);bmRebuild(0);bmRebuild(1);bmTouchHeat();bmMarkVals();BM.dirty=true;
   var s=bmSelAll();if(s.length)bmRegionDrill(s);bmRegBar();bmOvPaint(BM.r);};});
- rb.querySelectorAll('[data-bmwhole]').forEach(function(el){el.onclick=function(){
-  var f=bmFitCam();bmFlyTo(f.x,f.y,f.z);bmBars();};});
  if(foc){var back=document.getElementById(foc);if(back)back.focus();}}
 /* THE MASKS DOOR HAS ONE CONTROL, and only while a region is opened: the way
    back to the whole body. Mark changes the address marks and Heat and Brush
@@ -25014,8 +25231,9 @@ function bmBars(){
    It asks where the camera is going rather than where it is: bmZoomed reads
    a fly still in progress as zoomed, so Whole body, read that way, would
    stay up after it was pressed. And the sub bar shows for as long as it holds
-   the button. setTab owns hassub for the Intake and clears it on every tab
-   change; this is the only other writer and it writes only on this door. */
+   the button. setTab clears hassub on every tab change, and since LM put the
+   Intake's Mark row on its picture this is the only writer that raises it,
+   and it writes only on this door. */
 function bmBarsOne(rb){
  var c=BM.camT||BM.cam, z=c.z>BM.z0*1.05, sig='one|'+z;
  document.body.classList.toggle('hassub',z); rb.style.display=z?'flex':'none';
@@ -25112,7 +25330,25 @@ function bmPartOpen(pt,vn,side){
  RD_INRAIL=true;
  try{bmOpenKey(key,false);}finally{RD_INRAIL=false;}
  return true;}
-var BMICSTY='padding:0;width:44px;min-width:44px;height:44px;justify-content:center;position:relative';
+/* SMALLER, IN A PIN LINE, EACH SET IN ITS OWN CORNER. LM in TASKS.md, his
+   words: "I want the Bottom navigation Front and Back on their respective
+   sides right and left. I want those icons smaller with a frame around them,
+   just a pin line." The picture drops from 32 pixels to 24 inside a frame a
+   single pixel wide, and the button round it stays 44 by 44, because the tap
+   floor is a finger and not a picture: what gets smaller is what is drawn.
+   The gap between buttons goes, so the pitch falls from 48 to 44.
+
+   The sets were two halves of one strip, each wrapping in its half, so the
+   front's fourteen broke twelve and two at 1600 and read as one ragged
+   strip. Each is a block of even rows now, the front in the lower left and
+   the back in the lower right with the width between them left empty:
+   bmRegFit picks the fewest rows at which both blocks fit side by side. */
+function bmRegFit(){
+ var el=BM.well&&BM.well.parentNode?BM.well.parentNode.querySelector('#bmregs'):null; if(!el)return;
+ var nf=BMPART.filter(function(p){return p.f;}).length, nb=BMPART.filter(function(p){return p.b;}).length;
+ var room=el.clientWidth-24-16, r=1;
+ while(r<8&&(Math.ceil(nf/r)+Math.ceil(nb/r))*44>room)r++;
+ el.style.setProperty('--bmcf',Math.ceil(nf/r)); el.style.setProperty('--bmcb',Math.ceil(nb/r));}
 function bmRegBar(){
  var el=document.getElementById('bmregs'); if(!el||!BMG)return;
  var k=bmPickKey()||'', pain=BM.mode==='pain', cur=bmPartOf(k), kv=k.split(':')[0];
@@ -25124,19 +25360,19 @@ function bmRegBar(){
  /* one set per side. The side is said once, as the set's own small title,
     because the two crops of a head are close enough to need it */
  var set=function(vn){var nmS=vn==='back'?'Back':'Front';
-  return '<div role="group" aria-label="'+nmS+'" style="flex:1 1 300px;min-width:0;display:flex;flex-wrap:wrap;gap:4px;'
-   +'align-items:center;justify-content:'+(vn==='back'?'flex-end':'flex-start')+'">'
-   +'<span class="pm-eye" style="align-self:center;margin:0 4px">'+nmS+'</span>'
+  return '<div role="group" aria-label="'+nmS+'" class="bm-set bm-'+vn+'">'
+   +'<span class="pm-eye">'+nmS+'</span><div class="bm-grid">'
    +BMPART.filter(function(pt){return vn==='back'?pt.b:pt.f;}).map(function(pt){
     var regs=bmPartRegs(pt,vn), on=cur===pt&&kv===vn;
     var pv=regs.reduce(function(m,q){return Math.max(m,q.val||0);},0);
     var t=bmPartName(pt,vn)+(vn==='back'?', back':', front');
-    return '<button type="button" class="pm-lb'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmpart="'+pt.k+'" data-bmpv="'+vn+'" '
-     +'aria-label="'+esc(t)+(pain&&pv?', painted '+pv:'')+'" title="'+esc(t)+'" style="'+BMICSTY+'">'+bmPartIcon(pt,vn,on)
-     +(pain&&pv?'<b style="position:absolute;top:1px;right:3px;margin:0;font-size:11px">'+pv+'</b>':'')+'</button>';}).join('')
-   +'</div>';};
+    return '<button type="button" class="bm-pt'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmpart="'+pt.k+'" data-bmpv="'+vn+'" '
+     +'aria-label="'+esc(t)+(pain&&pv?', painted '+pv:'')+'" title="'+esc(t)+'"><i>'+bmPartIcon(pt,vn,on)+'</i>'
+     +(pain&&pv?'<b>'+pv+'</b>':'')+'</button>';}).join('')
+   +'</div></div>';};
  el.innerHTML=set('front')+set('back');
  el.setAttribute('data-sig',sig);
+ bmRegFit();
  el.querySelectorAll('[data-bmpart]').forEach(function(b){
   var pt=BMPART.filter(function(p){return p.k===b.getAttribute('data-bmpart');})[0], vn=b.getAttribute('data-bmpv');
   b.onpointerenter=function(){BM.hoverList=bmPartRegs(pt,vn);BM.dirty=true;};
@@ -25174,12 +25410,16 @@ function bmRegBar(){
    the masks, which are dots on the figure's own grid, sit with them: both
    of those placements are this build's reading and are his to move.
 
-   A COLUMN, NOT THE FIELD'S ROW. The row he knows is eight circles and 412
-   pixels, and across the top of this well it runs through the front
-   figure's head and its Front title at 1600. Down the left edge it stands in
-   the fourteen units of margin the fit already keeps beside the front
-   figure, so the figure gives up nothing to it. The burger is the first
-   circle, as Close the tools is the Field's, and folds the rest away.
+   A COLUMN, AND NOW THE FIELD'S ROW. It stood down the left edge, in the
+   fourteen units of margin the fit keeps beside the front figure, because a
+   row across the top ran through the front figure's head and its Front title
+   at 1600. LM in TASKS.md, his words: "I want to overlay menu on the left
+   side, on the left top across the top, like the Field." So it is the
+   Field's row, and the head is kept clear by the fit instead: while the row
+   is open the figures are fitted under it (bmBand), and shut it is one
+   circle in the corner the margin already keeps, so the band goes and the
+   figures take the height back. The burger is the first circle, as Close the
+   tools is the Field's, and folds the rest away.
 
    THE TOKENS ARE CARRIED INLINE because the sheet keys the glass inks on the
    Field's own hosts, and the well under this bar is always the dark stage
@@ -25226,6 +25466,8 @@ function bmOvShut(){var s=false;try{s=STORE.get('bmov')==='shut';}catch(e){}retu
 function bmOvShutPaint(bar,shut){
  var tog=bar.querySelector('[data-bmov=shut]'); if(!tog)return;
  bar.querySelectorAll('.fb-grp').forEach(function(c){c.style.display=shut?'none':'flex';});
+ /* the class is what bmBand reads, and the band moves the figures */
+ bar.classList.toggle('shut',shut); BM.bandStale=true;
  var say=shut?'Open the overlays':'Close the overlays';
  tog.setAttribute('aria-expanded',shut?'false':'true');tog.setAttribute('aria-label',say);
  if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
@@ -25239,7 +25481,7 @@ function bmOvBuild(bar){
   bmOvShutPaint(bar,now);};
  bar.appendChild(tog);
  BMOV.forEach(function(gp){var c=document.createElement('div');c.className='fb-grp';
-  c.setAttribute('role','group');c.setAttribute('aria-label',gp.nm);c.style.flexDirection='column';
+  c.setAttribute('role','group');c.setAttribute('aria-label',gp.nm);
   gp.ls.forEach(function(k){var L=BMOVL[k],b=fbOrb({nm:L.nm,ic:L.ic,tip:L.tip,val:true});
    b.setAttribute('data-bmov',k);b.style.pointerEvents='auto';b.onclick=function(){bmOvToggle(k);};c.appendChild(b);});
   bar.appendChild(c);});}
@@ -25286,9 +25528,10 @@ function bmGround(host){
      on    which overlays are drawn. The Intake's is BM.ov.on itself, so its
            circles keep their switches across a visit to the other door. The
            Masks door draws the masks and nothing else, with no switch.
-     bar   the Intake's controls: the overlay column, the region buttons
-           under the well and the Mark row. The Masks door has none of them,
-           because there is nothing on it to switch.
+     bar   the Intake's controls: the overlay row and the Mark controls
+           across the top of the well, and the region buttons under it. The
+           Masks door has none of them, because there is nothing on it to
+           switch.
      one   one figure, the front. See bmOne.
      mode  and face are the Intake's, kept while the other door is up. Pain
            is painted on the Intake, and on the Masks door it would dull the
@@ -25335,13 +25578,19 @@ function bmBuild(host){
   +'stroke-width="1.1" vector-effect="non-scaling-stroke" pointer-events="none"/></g>'
   +'<g data-bmmasks=""></g><g data-bmseats=""></g></svg>'
   /* the overlays, over the svg so a circle takes its own press, and
-     pointer-events none on the column so its gaps still reach the figure */
-  +(BM.bar?'<div id="bmov" role="group" aria-label="Overlays" style="position:absolute;top:10px;left:12px;z-index:3;'
-  +'display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;'+BMOVTOK+'"></div>':'')+'</div>'
+     pointer-events none on the row so its gaps still reach the figure. The
+     overlays in the upper left and the Mark controls in the upper right, one
+     row, LM: "on the upper right opposite the overlay". One flex row holds
+     both so they share the width and wrap before they ever run into each
+     other; the sheet lays it out, .bm-top in shell/head.html. The Mark
+     row is the row's own item and not inside its circle's box, so on a
+     phone it can take a line of its own under the circles while the circle
+     that opened it stays where it was pressed. */
+  +(BM.bar?'<div class="bm-top" style="'+BMOVTOK+BMMKTOK+'"><div id="bmov" class="bm-ov" role="group" aria-label="Overlays"></div>'
+  +'<div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>':'')+'</div>'
   /* after the well, so the well's flex keeps the rest of the height and the
      figure is fitted to what is left */
-  +(BM.bar?'<div id="bmregs" role="group" aria-label="Side and region" style="flex:0 0 auto;display:flex;flex-wrap:wrap;'
-  +'align-items:center;gap:8px 16px;padding:8px 12px 10px;border-top:1px solid var(--edge)"></div>':'');
+  +(BM.bar?'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region"></div>':'');
  /* read inside the host, never off the document: with two hosts, an id is
     only as unique as bmUse keeps it */
  BM.well=host.querySelector('.pm-well'); BM.cv=host.querySelector('#bmcv'); BM.sv=host.querySelector('#bmsv');
@@ -36517,6 +36766,31 @@ function coneNamesSync(){
  var rows=document.querySelectorAll('[data-cnax]');
  for(var i=0;i<rows.length;i++)
   rows[i].classList.toggle('front',+rows[i].getAttribute('data-cnax')===CONE.front);}
+/* A MARK BESIDE EACH SWITCH'S WORD. LO in TASKS.md, his words: "I need icons
+   for top registers, layers, and compass." The word stays and the mark goes
+   in front of it, the way the sections and the tabs already carry theirs.
+   Rings and strokes, never fills, in the button's own colour, so a pressed
+   switch turns its mark to the accent with its word.
+
+   Each one draws what the switch does and borrows where the product already
+   has a mark for the word. Layers is the Field's own Layers mark, FB_IC in
+   ui/fieldbar.js, because one word wearing two drawings is two names for it.
+   Registers is three shells resting on one point, and not three rings on one
+   centre, because three rings on one centre is the Field tab's mark. Top is
+   an arrow coming straight down onto the plane. */
+const CN_IC={
+ top:'M12 3v8.4M8.8 8.2L12 11.4l3.2-3.2M4 17.2c0-1.9 3.6-3.4 8-3.4s8 1.5 8 3.4-3.6 3.4-8 3.4-8-1.5-8-3.4z',
+ shells:'M12 3.2a8.8 8.8 0 110 17.6 8.8 8.8 0 010-17.6M12 8.6a6.1 6.1 0 110 12.2 6.1 6.1 0 010-12.2M12 14a3.4 3.4 0 110 6.8 3.4 3.4 0 010-6.8',
+ layers:FB_IC.layers,
+ /* the well's profile: a flat ground that falls into a pit and climbs out */
+ well:'M3 7.5c3.8 0 5.4 2.2 6.6 7.4.5 2.1 1.3 3.1 2.4 3.1s1.9-1 2.4-3.1c1.2-5.2 2.8-7.4 6.6-7.4',
+ /* a ring lit from inside, with its light broken into four arcs round it,
+    so it is not the lighting menu's sun */
+ heat:'M12 8.8a3.2 3.2 0 110 6.4 3.2 3.2 0 010-6.4M5.2 9.2a7.4 7.4 0 014-4M14.8 5.2a7.4 7.4 0 014 4M18.8 14.8a7.4 7.4 0 01-4 4M9.2 18.8a7.4 7.4 0 01-4-4',
+ flat:'M3.5 10.2h17v3.6h-17z',
+ /* three laws up and three down, as two arrows */
+ reg:'M8 19.5V5M4.8 8.2L8 5l3.2 3.2M16 4.5V19M12.8 15.8L16 19l3.2-3.2'};
+function cnIc(k){return '<svg class="cn-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="'+CN_IC[k]+'"/></svg>';}
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  /* the needle assembles once, when the surface is opened, and not on every
@@ -36575,23 +36849,23 @@ function coneOpen(inTab){
     /* TOP, round KQ, his words: "with the compass layers, change from above
        to top." One word, as every other switch in this row is. */
     +(CONE.side?'':'<button type="button" class="cn-b" data-cn="top" '
-     +'title="Look straight down on the same eight axes">Top</button>')
+     +'title="Look straight down on the same eight axes">'+cnIc('top')+'Top</button>')
     /* REGISTERS, round KS. One word, his own from round KR, "the colored
        registers would show collapse geometrically", and already the
        product's word for it: the coherence reading says "It is harmonic, so
        patterns sit at registers rather than anywhere." */
     +(CONE.side?'':'<button type="button" class="cn-b" data-cn="shells" '
-     +'title="Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.">Registers</button>')
+     +'title="Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.">'+cnIc('shells')+'Registers</button>')
     +(CONE.side
      ?'<button type="button" class="cn-b" data-cn="flat" '
-      +'title="Take the tilt out and look straight down on the figure">Flat</button>'
+      +'title="Take the tilt out and look straight down on the figure">'+cnIc('flat')+'Flat</button>'
       +'<button type="button" class="cn-b" data-cn="reg" '
-      +'title="Show the three laws lifting you most and the three pulling you down most">Regulation</button>'
+      +'title="Show the three laws lifting you most and the three pulling you down most">'+cnIc('reg')+'Regulation</button>'
      :'')
     /* ROUND KI'S MOCKUP SWITCH. Two ways to draw gravity, one press apart,
        so he chooses by looking: off is the pulse, on is the well. */
     +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="well" '
-     +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">Gravity well</button>')
+     +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">'+cnIc('well')+'Gravity well</button>')
     /* RADIANCE, round KR. Only on the needle, which is the only figure that
        draws it: from the top there is no volume to fill, and the switch
        would be a dead control there. What the heat means rides on the
@@ -36599,10 +36873,10 @@ function coneOpen(inTab){
        asked for is one of his logged objections. Whether it earns a key is
        his call. */
     +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="heat" '
-     +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">Radiance</button>')
+     +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">'+cnIc('heat')+'Radiance</button>')
     /* the Registers draw no rings, so Layers would be a dead control there */
     +(CONE.shells&&!CONE.side&&!CONE.top?'':'<button type="button" class="cn-b" data-cn="layers" '
-     +'title="Show the rings the axes are stacked on">Layers</button>')
+     +'title="Show the rings the axes are stacked on">'+cnIc('layers')+'Layers</button>')
    +'</div>'
    /* THE TOOL SAYS WHAT IT IS, UNDER THE FIGURE. Ruled: the bottom
       information goes right unless it is about the tool. These two lines are
@@ -39615,8 +39889,14 @@ function setTab(i){
  if(i===TAB.FIELD&&typeof fbEnter==='function')fbEnter();
  /* the Field's sub bar carried the depth row, and the glass bar floating over
     the stage replaced it. His words: "I don't want that secondary
-    navigation." So the sub bar is Body's alone. */
- document.body.classList.toggle('hassub',i===TAB.ENERGY);
+    navigation." So the sub bar is Body's alone.
+    AND NOW NOBODY'S BY DEFAULT. LM in TASKS.md: the Mark row, the last thing
+    it carried on the Body, went onto the picture's upper right with its own
+    fold, "close that to reclaim space", so the band would have been an empty
+    glass strip over the stage. Every tab change takes it down; the Masks
+    door's Whole body, bmBarsOne in ui/map.js, is the one writer that raises
+    it, and only while that door is zoomed into a region. */
+ document.body.classList.remove('hassub');
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  /* pressed state read off each button's own integer, never off its position
@@ -43440,6 +43720,35 @@ function colFold(){
   colFoldPaint(now);
   try{STORE.set('lcol',now?'shut':'open');}catch(e){}
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
+/* THE RIGHT COLUMN CLOSES, LO in TASKS.md: "Add a widget to the right menu to
+   collapse it." colFold's shape, and deliberately not its default. The left
+   starts shut on his ruling, GO; nobody has ruled the right shut, and it holds
+   the Reading and Selection, where every press on every surface answers. So
+   it opens unless this person shut it, on every width, and a store that
+   throws opens it too.
+   Kept in the store as lcol is and not on the profile the way Quiet is: two
+   columns folding in one browser is one person's arrangement of the screen,
+   and a fold that moved with the profile picker would open and shut the
+   column every time a worked example was loaded. */
+function railFoldPaint(shut){
+ document.body.classList.toggle('rshut',shut);
+ var b=$('rfold'); if(!b)return;
+ var say=shut?'Open the right column':'Close the right column';
+ b.setAttribute('aria-expanded',shut?'false':'true');
+ b.setAttribute('aria-label',say); fbTip(b,say);}
+function railFold(){
+ var shut=false; try{shut=STORE.get('rcol')==='shut';}catch(e){shut=false;}
+ railFoldPaint(shut);
+ var b=$('rfold'); if(!b)return;
+ /* the control is pinned over the rail's head, and once the rail has
+    scrolled it takes the panel's ground, head.html beside .rfold */
+ var p=$('rpanel');
+ if(p)p.addEventListener('scroll',function(){p.classList.toggle('scrolled',p.scrollTop>2);},{passive:true});
+ b.onclick=function(){
+  var now=!document.body.classList.contains('rshut');
+  railFoldPaint(now);
+  try{STORE.set('rcol',now?'shut':'open');}catch(e){}
+  if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
 
 /* ============================================================
    RENDER. One truth, five windows. Nothing here holds its own copy
@@ -44334,6 +44643,7 @@ step('layout',layout);
 step('matrix key',mxKey);
 step('rail sections',wireSections);
 step('left column fold',colFold);
+step('right column fold',railFold);
 step('tools bar fold',fbShutWire);
 step('first profile',function(){loadP(0);});
 /* A saved record is the person's own state, so it wins over the demo "You"
@@ -44441,5 +44751,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002905165"></div>
+<div id="eof" hidden data-len="002925431"></div>
 </body></html>

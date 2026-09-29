@@ -2329,6 +2329,55 @@ body.lshut .lfold .lf-ch{transform:rotate(180deg)}
    stacked, where shut is simply the panel folded to its control. */
 @media (min-width:1181px){
  body.lshut:not(.tab-settings) .mid{grid-template-columns:58px 1fr 336px}}
+/* ---- AND THE RIGHT COLUMN'S. LO in TASKS.md: "Add a widget to the right menu
+   to collapse it." ui/ui.js, railFold. The left fold mirrored, and its own
+   class rather than lfold's, because every shut rule above is keyed on lfold
+   and a shared class would have folded this control with the other column.
+   It sits where lfold sits, the head of the rail at its right corner.
+
+   PINNED, WHERE LFOLD SCROLLS AWAY. This rail moves itself: Selection opens
+   and is brought to the top on every press of every surface, and measured on
+   the Compass at 1600 the rail stood 1,843 pixels down with the control 1,705
+   pixels above the screen. A fold that has to be scrolled back to is not
+   there. So it is sticky at the rail's top with no height of its own, and
+   every header on this rail keeps its right end free for it, so no chevron
+   and no word is ever under it. Scrolled, it takes the panel's ground, so
+   what passes beneath it does not show through the mark. ui/ui.js railFold
+   says when the rail is scrolled. Pinned sixteen pixels up, into the panel's
+   own padding, because that is where a pressed header is brought to: at top
+   nought it stood half a row under the header beside it, measured. */
+.rfold{position:sticky;top:-16px;align-self:flex-end;flex:0 0 auto;margin:0 -10px -44px 0;z-index:3;
+ width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
+ background:transparent;color:var(--mid);cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+#rpanel.scrolled .rfold{background:var(--panel);box-shadow:0 0 0 1px var(--edge)}
+.rfold:hover,#rpanel.scrolled .rfold:hover{background:var(--sunk);color:var(--ink)}
+.rfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+.lsec[data-rail=right] .lsec-hd{padding-right:52px}
+/* important, because the Run a release row at the rail's foot carries its
+   display inline and stood alone in the shut column without it, measured */
+body.rshut #rpanel>*:not(.rfold){display:none!important}
+body.rshut #rpanel{padding:6px;align-items:center}
+body.rshut #rpanel::after{display:none}
+body.rshut .rfold{position:static;margin:0;align-self:center}
+/* stacked, the rail does not scroll: the page does, and sticky there would
+   hold the control at the top of the phone's screen over whatever is under it */
+@media (max-width:1180px){.rfold{position:relative;top:0}}
+body.rshut .rfold .lf-ch{transform:rotate(180deg)}
+/* the stage takes the width. Three surfaces have no right column in the row
+   at all, and a shut one must not put a 58 pixel track back into it: Settings
+   and the practitioner's page are one track, and the Story without its bank
+   is ruled further down with a heavier selector that already wins. The both
+   shut rule outweighs body.tab-settings .mid, so without the last line here
+   Settings with both columns shut lays its one surface into the 58 pixel
+   track: measured with the line taken out at 1600, 56 pixels wide, and 1578
+   with it in. */
+@media (min-width:1181px){
+ body.rshut .mid{grid-template-columns:302px 1fr 58px}
+ body.lshut.rshut .mid{grid-template-columns:58px 1fr 58px}
+ body.rshut.tab-settings .mid,body.rshut.tab-prac .mid{grid-template-columns:1fr}}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
@@ -2787,6 +2836,11 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
  transition:background .12s cubic-bezier(.22,1,.36,1), color var(--t-micro) var(--ease-out), border-color var(--t-micro) var(--ease-out)}
 .cn-b:hover{background:var(--panel-2);color:var(--ink)}
 .cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
+/* the switch's mark before its word, LO, CN_IC in ui/cone.js. Its own class,
+   because the seat buttons in the same class carry a ring in their seat's
+   colour that a rule on every svg in .cn-b would have turned to ink */
+.cn-ic{width:15px;height:15px;flex:0 0 auto;margin:0 7px 0 -2px;fill:none;stroke:currentColor;
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .cn-sp{flex:1 1 auto;min-width:6px}
 body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
 /* the Story's segmented choices, the sort and the pace. The release settings
@@ -3203,6 +3257,64 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
 .pm-rb:hover{background:var(--panel-2);color:var(--ink)}
 .pm-rb.on{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
 .pm-well{flex:1;position:relative;min-height:0;overflow:hidden}
+/* ---- THE BODY'S TWO BARS, ACROSS THE TOP OF THE WELL. LM in TASKS.md, his
+   words: "I want to overlay menu on the left side, on the left top across the
+   top, like the Field ... the third tier nav that says Mark ... on the upper
+   right opposite the overlay, both have buttons that close them. The right
+   one starts closed." ui/map.js bmBuild writes them, bmOvBuild and bmMkBuild
+   fill them. One row holding both, so they share the width and each wraps
+   inside its share before the two can meet; its gaps take no press, so the
+   figure under them still answers. The fold circle of each is its outer
+   end: the burger first on the left, the sliders last on the right. ---- */
+/* the overlays take whatever the Mark row and its circle leave, from a basis
+   of nothing, so the circle on the right is never pushed off the line and
+   the overlays wrap inside their share instead */
+.bm-top{position:absolute;top:10px;left:12px;right:12px;z-index:3;display:flex;flex-wrap:wrap;
+ align-items:flex-start;gap:8px 12px;pointer-events:none}
+.bm-ov{display:flex;flex-wrap:wrap;align-items:center;gap:12px;min-width:0;flex:1 1 0;order:1}
+.bm-mkb{order:2}
+.bm-mk{display:flex;flex-direction:row-reverse;align-items:flex-start;gap:8px;flex:0 0 auto;order:3}
+.bm-mk>*,.bm-mkb{pointer-events:auto}
+.bm-mk.shut+.bm-mkb{display:none}
+.bm-mk .fb-arc .val{opacity:0}
+/* a phone has no room for the row beside the circles, and squeezed beside
+   them it stood as a column of three buttons with Point in patch broken over
+   two lines, measured at 390. It takes the next line, right aligned under
+   the circle that opened it, and the circle stays where it was pressed. */
+@media (max-width:720px){.bm-mkb{order:4;flex:0 0 auto;margin-left:auto}}
+/* the Mark row lies on the picture, so it sits on the bar's own glass, the
+   capsule the Field's Wheel, Frames and Dial switch sits on */
+.bm-mkb{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:5px;min-width:0;
+ padding:3px 4px;border-radius:24px;background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+.bm-mkb .pm-lb{border-radius:999px}
+.bm-whole{background:var(--fb-glass);border-radius:999px}
+.bm-whole[hidden]{display:none}
+/* ---- THE PARTS, UNDER THE WELL, EACH SET IN ITS OWN CORNER. LM: "Front and
+   Back on their respective sides right and left ... smaller with a frame
+   around them, just a pin line." ui/map.js bmRegBar and bmRegFit. The target
+   stays 44, the tap floor; the frame drawn inside it is 32 and one pixel. */
+.bm-regs{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+ padding:6px 12px 8px;border-top:1px solid var(--edge)}
+.bm-set{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bm-set.bm-back{align-items:flex-end}
+.bm-set .pm-eye{margin:0 6px}
+.bm-grid{display:flex;flex-wrap:wrap;max-width:100%;width:calc(44px * var(--bmcf,7))}
+.bm-back .bm-grid{justify-content:flex-end;width:calc(44px * var(--bmcb,8))}
+.bm-pt{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;
+ padding:0;margin:0;border:0;background:transparent;color:var(--mid);cursor:pointer;touch-action:manipulation}
+.bm-pt>i{display:flex;align-items:center;justify-content:center;width:32px;height:32px;box-sizing:border-box;
+ border:1px solid var(--edge-2);border-radius:var(--r-xs);
+ transition:border-color var(--t-micro) var(--ease-out),background-color var(--t-micro) var(--ease-out)}
+.bm-pt svg{width:24px;height:24px}
+.bm-pt:hover{color:var(--ink)}
+.bm-pt:hover>i{border-color:var(--mid)}
+.bm-pt.on>i{background:var(--gold);border-color:var(--gold)}
+.bm-pt b{position:absolute;top:0;right:1px;margin:0;font-family:var(--num);font-weight:400;font-size:11px;
+ font-variant-numeric:tabular-nums;color:var(--ink)}
+/* Punch outlines nothing: the frame is a solid tile there, as every pm-lb is */
+body.punch .bm-pt>i{border-color:transparent;background:var(--panel-2)}
+body.punch .bm-pt.on>i{background:var(--gold)}
 .pm-aura{position:absolute;inset:-18%;pointer-events:none;z-index:0;filter:blur(40px);
  transition: opacity var(--t-context) var(--ease-out), background var(--t-context) var(--ease-out)}
 .pm-svg{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
@@ -4649,7 +4761,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     child resolved to zero and the figure had no box to draw in. The well gets
     the height here, which is the one thing the phone band never replaced. */
  .emap{position:relative}
- .pm-well{flex:0 0 auto;min-height:min(122vw,470px)}
+ /* and it grows by the band the Body's bars take across its top, --bmtop,
+    written by bmSize in ui/map.js, so a row of circles that wraps to two
+    lines at 390 costs the page height and not the figure's. Nought on the
+    Masks door, which has no bars. */
+ .pm-well{flex:0 0 auto;min-height:calc(min(122vw,470px) + var(--bmtop,0px))}
  /* THE DEPTH LADDER RAN 996 PIXELS PAST THE SCREEN AND NOTHING COULD REACH IT,
     measured as body.scrollWidth 1386 against innerWidth 390 while
     documentElement stayed at 390, which hides it completely. The ladder is

@@ -652,6 +652,35 @@ function colFold(){
   colFoldPaint(now);
   try{STORE.set('lcol',now?'shut':'open');}catch(e){}
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
+/* THE RIGHT COLUMN CLOSES, LO in TASKS.md: "Add a widget to the right menu to
+   collapse it." colFold's shape, and deliberately not its default. The left
+   starts shut on his ruling, GO; nobody has ruled the right shut, and it holds
+   the Reading and Selection, where every press on every surface answers. So
+   it opens unless this person shut it, on every width, and a store that
+   throws opens it too.
+   Kept in the store as lcol is and not on the profile the way Quiet is: two
+   columns folding in one browser is one person's arrangement of the screen,
+   and a fold that moved with the profile picker would open and shut the
+   column every time a worked example was loaded. */
+function railFoldPaint(shut){
+ document.body.classList.toggle('rshut',shut);
+ var b=$('rfold'); if(!b)return;
+ var say=shut?'Open the right column':'Close the right column';
+ b.setAttribute('aria-expanded',shut?'false':'true');
+ b.setAttribute('aria-label',say); fbTip(b,say);}
+function railFold(){
+ var shut=false; try{shut=STORE.get('rcol')==='shut';}catch(e){shut=false;}
+ railFoldPaint(shut);
+ var b=$('rfold'); if(!b)return;
+ /* the control is pinned over the rail's head, and once the rail has
+    scrolled it takes the panel's ground, head.html beside .rfold */
+ var p=$('rpanel');
+ if(p)p.addEventListener('scroll',function(){p.classList.toggle('scrolled',p.scrollTop>2);},{passive:true});
+ b.onclick=function(){
+  var now=!document.body.classList.contains('rshut');
+  railFoldPaint(now);
+  try{STORE.set('rcol',now?'shut':'open');}catch(e){}
+  if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
 
 /* ============================================================
    RENDER. One truth, five windows. Nothing here holds its own copy
@@ -1546,6 +1575,7 @@ step('layout',layout);
 step('matrix key',mxKey);
 step('rail sections',wireSections);
 step('left column fold',colFold);
+step('right column fold',railFold);
 step('tools bar fold',fbShutWire);
 step('first profile',function(){loadP(0);});
 /* A saved record is the person's own state, so it wins over the demo "You"
