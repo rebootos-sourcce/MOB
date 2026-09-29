@@ -1,11 +1,87 @@
 # Hosting setup, steps for him
 
 **Done, his own words, round LV: "steps 3 and 4 complete. git and cloud
-setup."** All four things in this document are now done: the Cloudflare
-account, the D1 database, the two GitHub secrets, and the Worker's own
-`RECORDS_KEY`. The next push to `main` on `reboot-os` migrates and
-deploys the Worker automatically. Kept below as a record of how it was
-done and what each piece is, not as a live checklist any more.
+setup."** All four things in the section below are now done: the
+Cloudflare account, the D1 database, the two GitHub secrets, and the
+Worker's own `RECORDS_KEY`. The next push to `main` on `reboot-os`
+migrates and deploys the Worker automatically. Kept below as a record
+of how it was done and what each piece is, not as a live checklist any
+more.
+
+## Going live: atuned.world, round LW
+
+His ruling: "the engine needs to be online, the engine is the focus...
+the landing page is the funnel, Atuned is a destination, the user has
+to go through their funnel in order to get to Atuned... the most
+important part is to get everything up on atuned.world so that we're
+live." This is `MOB`'s own deploy, a different repository and a
+different Cloudflare product (Pages, not the Worker `reboot-os` uses),
+and it is new: nothing about it existed before this round.
+
+**What's built and waiting.** `.github/workflows/deploy.yml`, in this
+repository, builds the engine and the funnel on every push and deploys
+both to one Cloudflare Pages project. The address each page lands at is
+not invented for this: `funnel/BUILD-single.sh` already names the door
+from the quiz to the app `atuned.html`, the same name the handover rule
+elsewhere in this document already gives `source.html` when it is sent
+to him, so a build sent as one file and a build served as one file
+share a name. `atuned-funnel.html` is also copied to `index.html`, so
+`atuned.world` itself opens on the funnel. Until the two secrets below
+exist, the workflow builds and stops, the same shape the server
+workflow already uses.
+
+**Three things left, only he can do them.**
+
+1. **Create the Cloudflare Pages project.** In the Cloudflare dashboard
+   (`dash.cloudflare.com`, the same account as everything else here),
+   click **Workers & Pages** in the left sidebar, then **Create**, then
+   the **Pages** tab, then **Upload assets** (sometimes labelled
+   **Direct Upload**). Name the project exactly `atuned`, lower case,
+   since the workflow's own `--project-name` flag is written to match
+   that name exactly. It will ask for a first upload to create the
+   project: any single small file works as a placeholder, the real
+   site arrives on the next push once the secrets below exist.
+   (Cloudflare's own screens move; if "Upload assets" is not there,
+   the dashboard's own search box, typed with "Pages", finds the
+   create flow.)
+2. **Add two secrets to `MOB`'s own GitHub repository.** These are a
+   second copy of the same idea as `reboot-os`'s two secrets, in a
+   different repository, since GitHub keeps a repository's secrets to
+   itself.
+   - `CLOUDFLARE_ACCOUNT_ID`: the same value already used for
+     `reboot-os`, copied from the Cloudflare dashboard's own overview
+     page (right side, a box labelled "Account ID", a copy icon beside
+     it).
+   - `CLOUDFLARE_API_TOKEN`: this one needs a different permission than
+     the `reboot-os` token carries, **Cloudflare Pages: Edit**, so it
+     is a new token rather than a reused one. Same path as before:
+     profile icon, top right, **My Profile**, **API Tokens** tab,
+     **Create Token**, **Create Custom Token**, one permission row,
+     `Account`, `Cloudflare Pages`, `Edit`, **Continue to summary**,
+     **Create Token**, copy it, it shows once.
+   Then, in `github.com/rebootos-sourcce/MOB` (not `reboot-os`, the
+   other one this time): **Settings**, **Secrets and variables**,
+   **Actions**, **New repository secret**, once for each name above,
+   pasting the matching value.
+3. **Point `atuned.world` at Cloudflare.** The domain is registered at
+   GoDaddy and parked, confirmed round KJ/KK, which means Cloudflare
+   does not yet control its DNS. In the Cloudflare dashboard, **Add a
+   domain** (or **Add site**), type `atuned.world`, and Cloudflare
+   assigns it two nameservers, a pair of addresses ending in
+   `.ns.cloudflare.com`. At GoDaddy, in the domain's own DNS or
+   Nameservers settings, replace GoDaddy's nameservers with those two.
+   This can take up to a day to take effect, sometimes minutes. Once
+   Cloudflare shows the domain as active, open the `atuned` Pages
+   project's own **Custom domains** tab and add `atuned.world` there;
+   Cloudflare wires the rest.
+
+**How to know it worked.** Push anything to this repository's working
+branch, or wait for the next push, then open the **Actions** tab on
+`github.com/rebootos-sourcce/MOB` and click the newest `deploy` run.
+Before the two secrets exist, it builds and stops. With both in place,
+it also deploys, and the run's own log names the Pages URL it shipped
+to. Once step 3 is also done, that same build answers at
+`atuned.world`.
 
 Written at round JN, rewritten at round KR once `reboot-os` was actually
 read rather than guessed at, checked again round LR against the real
