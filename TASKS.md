@@ -26589,3 +26589,36 @@ Read as:
    context on the other codebase, or as a second, competing spec for
    MOB's own Source AI, is asked back in the chat reply rather than
    guessed at, since building the wrong one costs the whole round.
+
+## Round MB
+
+His words, verbatim: "I generated this document with ChatGPT. and
+walk through the schema of the sniffer. Well, I'm unfamiliar with our
+engine. And I want something robust. So the question is, is what I'm
+handing you more robust than what you currently have. Because a new
+one is modeling about 93% plus. It's about 96%. Can we merge both
+engine styles? Like the impression impression excavation plus what I
+just handed you, it makes it, it should make it more robust and it
+should not conflict. But what are your reviews? And I need my steps
+for eleven labs and four Claude API. Eleven labs API and Claude API.
+How do I get them? Where do I go? Give me the step-by-step
+instructions as if I'm a 10-year-old."
+
+Read as:
+
+1. **This answers round MA's own question.** The document is
+   ChatGPT's, not a description of any existing codebase, and it is
+   meant to sit alongside the Impression Excavation Engine, not
+   replace it: "can we merge both engine styles." His own numbers, 93
+   and 96 percent, are not sourced to anything measurable in either
+   document and are read as his sense of it rather than a figure to
+   build against.
+2. **"Is what I'm handing you more robust... what are your reviews."**
+   A real review, answered in the chat reply: what the two documents
+   actually are relative to each other, whether they conflict, and
+   what merging them would mean for MOB's own Source AI.
+3. **The API steps, plain, for both Eleven Labs and the Claude API.**
+   Answered in the chat reply in full; this is the fourth time the
+   API question has been asked this session and the first time both
+   services' account and key steps are given start to finish rather
+   than referenced back to an earlier answer.
