@@ -26478,3 +26478,44 @@ finish the Ritual merge verification already in flight, triage the two
 remaining worktrees, then start this round's build directly, by hand,
 in the order he raised it, beginning with the layout and dial changes
 that need no new mechanism before the audio and voice wiring that do.
+
+## Round LZ
+
+His words, verbatim: "This is our source AI question engine. Schema
+and framework. Swap this out with the system that we currently have.
+Integrate and wire it in. As part of this recent build, period. Also
+where are we with the most recent build?" followed by a pasted
+specification headed "Impression Excavation Engine, Foundation
+Specification, v0.1," then: "as part of this recent build period. Also,
+where are we with the most recent build? continue building. do this
+after you are complete with the latest build."
+
+Read as:
+
+1. **Replace Source AI's current question engine with the pasted
+   spec, in full.** The document is 47 sections and is not reproduced
+   here; it is in this conversation's own history, headed "Impression
+   Excavation Engine, Foundation Specification, v0.1," and the build
+   works from that copy. In outline: four access channels (feel,
+   think, believe, body), a question-intent taxonomy, eight
+   developmental layers (child through ancestral), a state machine
+   that decides whether to deepen, redirect to the body, or stop, an
+   "impression map" as the machine readable output of one excavation,
+   and a long list of named rules and laws governing how a question
+   is chosen from the person's last answer rather than from a fixed
+   script. It replaces whatever `Source AI`'s current prompt engine
+   is doing on the Story page now, `ui/storyui.js`'s `#stsrc` panel
+   and whatever generates the line it shows.
+2. **"Where are we with the most recent build."** A status question,
+   answered in the chat reply where he is reading, not owed a
+   TASKS.md entry of its own.
+3. **"Continue building. Do this after you are complete with the
+   latest build."** His own ordering: round LY's release page
+   redesign, already queued and not yet started, comes first; this
+   engine swap is queued behind it, not ahead of it or instead of it.
+
+This is a second large build item stacked behind round LY's, on top of
+the Summary/Analytics unfold already in flight when this arrived. No
+dispatch is possible until the account's weekly limit resets Oct 1,
+8am UTC; both rounds are hand built in sequence once the Summary and
+Analytics gates now in flight are clean and shipped.
