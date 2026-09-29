@@ -1,9 +1,11 @@
 # Hosting setup, steps for him
 
 Written at round JN, rewritten at round KR once `reboot-os` was actually
-read rather than guessed at. These are the steps he takes himself, in a
-Cloudflare account only he can create, and the two things in that
-repository still open.
+read rather than guessed at, checked again round LR against the real
+`origin/main` rather than the stale local checkout this session had been
+reading: the D1 database step below is done, the ones after it are not
+confirmed. These are the steps he takes himself, in a Cloudflare account
+only he can create, and the things in that repository still open.
 
 **Where this splits.** This repository (`MOB`) is the engine and the one
 file build. It calls no network and needs none of the steps below. The
@@ -38,34 +40,31 @@ Until those two secrets exist in the `reboot-os` repository's own GitHub
 settings (Settings, Secrets and variables, Actions), the workflow tests
 the code and stops there. Nothing deploys, nothing breaks.
 
-**The database is scaffolded but not created.** `wrangler.toml` has a
-placeholder, `REPLACE_AFTER_wrangler_d1_create`, where a real database id
-goes. Eight migration files already exist (`atuned/server/migrations/0001`
-through `0008`) and apply automatically once the id is real. The workflow
-itself checks for the placeholder and skips the deploy step cleanly if it
-finds it, rather than failing.
+**The database is created.** Checked directly against `origin/main`
+round LR, not assumed from an old copy: `wrangler.toml` line 10 carries
+a real id, `70031c42-615b-465b-92a5-9d3340847ec5`, not the placeholder.
+Commit `ee73363`, "Update wrangler.toml", 27 September. Step 2 below is
+done. Eight migration files already exist (`atuned/server/migrations/0001`
+through `0008`) and apply automatically now that the id is real.
 
-## The four things only he can do
+## The three things left, only he can do them
 
 1. **Create or confirm the Cloudflare account.** Same one already used for
    the Worker setup screens he's been sending screenshots of.
-2. **Create the D1 database, once, and paste its id into `wrangler.toml`.**
-   From a terminal with `wrangler` installed and logged in:
-
-       npx wrangler d1 create atuned --location wnam
-
-   `wnam` is Cloudflare's label for the US West data center region.
-   That command prints a `database_id`. It replaces
-   `REPLACE_AFTER_wrangler_d1_create` in `atuned/server/wrangler.toml`,
-   line 8. This is the one edit to that file itself; everything else in
-   this document is account settings, not code.
+2. ~~Create the D1 database and paste its id into `wrangler.toml`.~~ Done,
+   see above.
 3. **Add the two GitHub secrets named above**, `CLOUDFLARE_API_TOKEN` and
    `CLOUDFLARE_ACCOUNT_ID`, to the `reboot-os` repository (not `MOB`).
    The token is created in the Cloudflare dashboard under My Profile, API
    Tokens, with exactly the two permissions named above. The account id
-   is on the Cloudflare dashboard's own overview page.
+   is on the Cloudflare dashboard's own overview page. Not checkable from
+   here, since a real secret never shows in a repository's files even to
+   someone reading them; confirm this one by watching the Actions tab on
+   the next push to `main` migrate and deploy rather than stop at the
+   test step.
 4. **Set the Worker's own secrets**, which never live in any repository.
-   From the same terminal, inside `atuned/server`:
+   From a terminal with `wrangler` installed and logged in, inside
+   `atuned/server`:
 
        npx wrangler secret put RECORDS_KEY
 
@@ -78,9 +77,9 @@ finds it, rather than failing.
    (push notifications, password reset, the support console, store
    purchases) and can wait until those are actually being turned on.
 
-Once the database id is real and the two GitHub secrets exist, the next
-push to `main` migrates and deploys the Worker automatically. Nothing
-else in this list needs a code change from this side.
+Once the two GitHub secrets exist, the next push to `main` migrates and
+deploys the Worker automatically, since the database id is already real.
+Nothing in this list needs a code change from this side any more.
 
 ## What is still open, and why it is not skipped
 
@@ -109,3 +108,5 @@ is automatically taken and deployed. Nothing else crosses between them.
 
 `atuned/server/wrangler.toml` and `atuned/server/README.md` in
 `reboot-os`, on `main`, are the actual files this document is describing.
+Sent alongside this one, pulled fresh off `origin/main` round LR rather
+than any local copy, so what he opens matches what is really there.
