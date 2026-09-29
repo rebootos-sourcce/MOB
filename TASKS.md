@@ -25542,3 +25542,27 @@ a few lines in `ui.js`, calling the same two functions F already calls
 on Field, and is not built yet because the keydown listener's file is
 mid-edit under the Character dispatch this round. Landing it right
 after that commits, so it does not collide.
+
+## Round LS
+
+His words, with a screenshot of the Cloudflare Worker's own Version
+History (`atuned-api`, versions `95d4fda1` "Update wrangler.toml added
+CloudFlare ID Key for D1 - Database (SupaBase) for Atuned", `ae7ce07e`,
+`870a7b42`, `4cda3b54`, `a3b0e8c7`, all by Lance Powell / lance.o.powell,
+one day old): "This is to confirm one and two. I need step-by-step
+instructions for three and four. As if I'm a writer, as if I'm a
+10-year-old. Don't let this stop what you're building. I see you're
+done, you're almost done with the masks. When you're done with the
+mask, give me a build. And then we'll do the instructions."
+
+Read as: the screenshot itself confirms items 1 and 2 of
+`HOSTING-SETUP.md`'s three things left, the Cloudflare account exists
+under his own name and the D1 database's id is already in a deployed
+version, so nothing to write there. He wants items 3 and 4, the two
+GitHub secrets and the Worker's own `RECORDS_KEY`, written out as a
+literal walkthrough rather than the summary that document already
+carries, and he does not want it to interrupt the Character build. Not
+blocking, a documentation change only, no file the Character dispatch
+touches. Expanding `HOSTING-SETUP.md`'s steps 3 and 4 now, in parallel,
+and holding the build itself for when the masks land, per his own
+instruction.
