@@ -25324,3 +25324,68 @@ ground to black), imprints' "not read yet" text removed unless load
 bearing, Bank and Vault to icons only with no swap, Release stopped
 defaulting to red, the boot animation's main size scaled down 15
 percent. The Character rebuild still waits for this one.
+
+## A defect ticket, structured rather than dictated: the phantom scroll tail on a phone
+
+Filed in ticket form rather than dictated, quoting the exact CSS and a
+"done when" checklist. `.panel.sc::after{content:"";display:block;
+height:88vh;flex:0 0 auto}` in `atuned_src/shell/head.html` exists so a
+pressed section header has room to scroll to the top of a rail that
+scrolls itself, which only happens at 1181px and up. Below that the
+columns stack and the page scrolls instead, `.panel.sc{max-height:none;
+overflow:visible}` already says so, but the tail rendered anyway: at
+390x844 it measured 742.7px of empty glass under each rail's own
+content, on both `#lpanel` and `#rpanel`.
+
+**Fixed.** `.panel.sc::after{display:none}` added inside the same
+`@media (max-width:1180px)` block that already holds the visible-
+overflow override, right beside it. Verified rather than assumed: the
+computed `display` on the pseudo-element reads `none` at 390 wide, and
+scrolling a loaded Summary page to its true bottom at that width now
+shows real reading text, not blank space. At 1600, unaffected by a
+media query it never enters, pressing "Moral integrity" on the right
+rail still brings it to the exact top of its panel, delta 1978.9px
+before the press to -0.14px after.
+
+## LQ. "Where the fuck is it," the masks status demanded directly, a Body layout change, and two more asks
+
+His words, verbatim, sent mid-turn with an annotated screenshot: "for
+the body I want the zone controls on the left and right sides of the
+center display area. I want them to be on a shelf that pops out and I
+want that shelf to be have a minimize button and I want them to both
+start minimized. Do that first and then scale the bodies up because
+those buttons on the bottom are eating up too much valuable real
+estate. Give me a build for that first. Where's my mask screen? I
+think I'm now officially asked you this now, over 20 times, and I
+still don't have it. I know you've been building stuff for it. Where
+the fuck is it? Why have you not given this to me yet? Why do I keep
+asking you about it? Why is this not wired in yet? Why is this not
+built? Why are you wasting my tokens? And then what can we pull over
+visually from the field onto the energy page to make the background
+more interesting. There are elements that are like excellent. And when
+I hit F on the body, I can't reframe. Or I can't frame. That image."
+
+- **The masks status, answered directly rather than around.** It is
+  not built yet, and that is his own sequencing, round LP, his own
+  words then: "Fix and have menu first, then give me a build, then
+  everything cosmetic... do that first, then give me a build. Before
+  you do the heavier stuff." The menu build shipped. The cosmetic
+  build is in flight right now, dispatched before this message
+  arrived. The Character page, the real masks, is the heavier work
+  those two builds were named to come before. Nothing has been
+  hidden or wasted; it is third of three, in the order he set.
+- **A new Body layout change, asked to jump the queue: "give me a
+  build for that first."** His annotated screenshot marks the front
+  and back zone icons, just moved to the bottom corners this same
+  session, and draws them instead as two vertical shelves on the left
+  and right of the centre figure, each a pop out panel with its own
+  minimize control, both starting minimized, freeing the bottom
+  entirely so the two figures can scale up into the reclaimed space.
+- **Borrow something from the Field for the Body's own background.**
+  No control named; his own words, "there are elements that are like
+  excellent," left open rather than guessed at which ones.
+  Screenshotted the Field before proposing anything so an answer to
+  this has something concrete to point at.
+- **A real bug report: pressing F on the Body does not reframe or
+  frame the image.** Not reproduced yet; checked directly before
+  anything is said about it.
