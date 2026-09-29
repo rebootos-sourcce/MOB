@@ -25439,3 +25439,19 @@ now, and it's coming along."
   shelf work already running there.
 - **The build he already has is landing well**, his own word, on v890,
   the menu pass.
+
+**Dispatched: the Field's Accuracy relocated back to the stage**, lower
+left, opposite the zoom controls, scoped to Field specific files, and
+carrying its own readout back into `OVERLAY` in `component.js` so the
+wheel reserves radius from it again, the same reasoning that comment
+already records for why it left that list once.
+
+**Dispatched: the real Character page**, greenlit now rather than
+last. Six pixel grids, shaped by each person's own fetters, saboteurs,
+complexes and hypercomplexes and not only filled by volume, light and
+dark readings per mask, a click opening a full summary in the right
+rail, dynamic resolution past a real threshold. Scoped to a brand new
+file, `atuned_src/ui/character.js`, specifically so it does not touch
+`map.js` while the Body shelf dispatch is still working there. Four
+dispatches now running in the same tree at once; each briefed on the
+others and told to isolate its own hunk in any file it shares.
