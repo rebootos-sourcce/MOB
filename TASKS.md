@@ -26204,3 +26204,25 @@ workflow myself, since it is a file in this repository and needs no
 agent. The feedback system and the funnel/onboarding review are real
 work, queued behind the six in flight rather than piled on top of
 them.
+
+**The deploy workflow is built and pushed, `b4e1347`.**
+`.github/workflows/deploy.yml`: builds the engine and the funnel on
+every push, stages them under the funnel's own existing naming (it
+already called the app `atuned.html`, matching the handover rule's own
+name for `source.html`, so nothing here is a new address, only a
+finished one), and deploys to a Cloudflare Pages project named
+`atuned` once its two secrets exist. Runs the engine gate, which is
+pure Node; found and wrote down plainly that every browser gate in
+this repository, `collide.js`, `design.js`, `functional.js`,
+`funnel.js`, hardcodes this sandbox's own Playwright path and cannot
+run on a GitHub Actions runner as written, so CI checks the funnel's
+own build output landed rather than pretending to run gates that would
+only fail on a path that does not exist there. Nothing here touches
+Cloudflare or DNS.
+
+**`HOSTING-SETUP.md` carries the three steps to go live, and the
+Claude Docs page he already has open was updated the same way, live.**
+Creating the `atuned` Pages project, the two repository secrets `MOB`
+needs of its own (a new token, `Cloudflare Pages: Edit`, not the
+`reboot-os` one), and moving `atuned.world`'s nameservers from GoDaddy
+to Cloudflare. All three are his; none touched from here.
