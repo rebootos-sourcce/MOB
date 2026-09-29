@@ -26882,3 +26882,54 @@ Read as:
    reply which he means.
 3. **"What tasks are you on now, what's left."** Answered in the chat
    reply.
+
+## Round MH
+
+His words: "do onboarding and tutorial uh, first. Hook that up. To the
+main screen and I don't understand how to translate your weeks in the
+how long it takes you to actually do things so I see two to three
+weeks as an engineer time but I don't know how to translate that and
+your development time so the first question is the architecture
+document I shared with you earlier Was that valuable? If it was, a
+tuned dev already has a code developed you can use that. To shorten
+your time. Otherwise, what are the blocks Anything's in our priority
+first. I need to be able to create a login So the login would be on
+the main tuned animation screen. And when I hit enter, it completes
+the zoom animation. And then takes me to onboarding. But I also want
+to have a switch for that loading screen to turn onboarding tutorial
+off. so I can just bypass straight to the dashboard. just put it as a
+developer button. on the upper right-hand corner. And if it's pressed,
+it's just skips. And if it's not pressed, then it goes to the
+sequence. So does that mean that the attuned .html needs to become
+index.html and it attuned.world will work? I'm not sure what you mean
+by architecture file. Let me go back and see if I can find anything.
+Yeah, I just read it. I don't know what you mean by the architecture
+from a tuned dev. Or from where?"
+
+Read as, and this answers round MG's own open question:
+
+1. **Onboarding and the login screen, first**, ahead of round LZ and
+   the mask tiers. Round LY, the release page, still finishes first
+   since it was already in flight and nothing here says stop it.
+2. **The calendar time question**, real confusion and answered
+   plainly in the chat reply: a week estimate is calendar time for
+   work with real dependencies, his own decisions, sign ups, a real
+   backend, not a measure of how long typing the code takes.
+3. **Whether round MA/MB's document (the sibling `atuned/` codebase in
+   `reboot-os`) has real code worth reusing.** He lost the thread of
+   which document this was mid message, "I don't know what you mean
+   by the architecture from a tuned dev, or from where," and asked
+   directly rather than guessing on, so the chat reply restates
+   plainly what that document is and is not, and whether reuse is
+   real.
+4. **A concrete build, clear despite the confusion around it**: a
+   login on the entry animation screen; pressing enter finishes the
+   zoom and moves to onboarding; a developer only skip switch, upper
+   right, on the same screen, that bypasses straight to the dashboard
+   when pressed and runs the sequence when it is not. Queued as the
+   next build after round LY finishes.
+5. **"Does atuned.html need to become index.html for atuned.world to
+   work."** A real, answerable technical question, answered in the
+   chat reply: no, the deploy workflow already names index.html
+   itself at build time; nothing in the source file's own name has to
+   change.
