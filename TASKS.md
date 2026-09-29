@@ -25455,3 +25455,15 @@ file, `atuned_src/ui/character.js`, specifically so it does not touch
 `map.js` while the Body shelf dispatch is still working there. Four
 dispatches now running in the same tree at once; each briefed on the
 others and told to isolate its own hunk in any file it shares.
+
+**Backlog, his own words, explicitly queued rather than built now:**
+"Add this to the queue. Some of the people in the dropdown are
+practitioners. So add like a practitioner section. So that when I
+select them, I can see the practitioners tab. I know it hasn't been
+built yet, but I just want to show the functionality. And any kind of
+frame that we can set up in there. That shows like a list of clients.
+As one of their tools. And the analytics of their clients." Read as: a
+persona in the profile dropdown can itself be marked a practitioner,
+which would make the Practitioner tab relevant for that persona
+specifically, a client list and client analytics as two of the tools
+inside its own rough frame. Not dispatched.
