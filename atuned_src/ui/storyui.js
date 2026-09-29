@@ -190,7 +190,7 @@ function stRender(){
  stWire();
  stAnaWire();
  var cl=document.getElementById('stclear');
- if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;stRender();};
+ if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();stRender();};
  var ap=document.getElementById('stapply');
  if(ap)ap.onclick=function(){
   if(!ST_PARSED||!ST_PARSED.imprints.length)return;
@@ -236,7 +236,7 @@ function stRender(){
    pSave();pSnap();}
   /* a new entry is a new conversation, so moving on from the last one does
      not silence the next. */
-  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;STV.lastFound=kept;
+  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();STV.lastFound=kept;
   /* the release takes the room on a desktop. On a phone it stays the bar
      with Run on it: widening it there would push Run off the first screen,
      which is the one thing layout H exists to stop. */
@@ -455,9 +455,30 @@ function stFieldPaint(){
    Printing both would be the same reading in two places to disagree.
    ============================================================ */
 var SRC_PASSED=false;
-/* the opener is his own sentence, one of the two he offered. "Writing"
-   rather than "talking", because this surface is the journal. */
-var SRC_OPEN='What are we writing about today?';
+/* THE OPENER IS HIS SECOND WORDING, AND IT USES THE NAME. It was "What are
+   we writing about today?", one of the two he offered at round GO. Round JS
+   replaced it in his own words: "That's not quite what I want you to use. We
+   need to invite them to writing. We first need to welcome them with their
+   name. Hello, Lance. What would you like to write about today? Or would you
+   like me to offer some suggestions?" Recorded in DECISIONS.md as ruled and
+   not built. Built at round LT, where he asked for the questions to read like
+   "a friend who knows me very well".
+
+   The name is the first name the person entered on the intake, who.first,
+   and nothing else: a profile called Custom is not greeted as Custom, and a
+   worked example is not greeted by a case name. No name, no greeting, and the
+   question stands alone.
+
+   HIS LAST SENTENCE IS NOT PRINTED, AND THAT IS A CHOICE FOR HIM TO OVERRULE.
+   "Or would you like me to offer some suggestions?" is a yes or no with no
+   yes and no on the screen. The two buttons beside the question are the
+   offer: one turns to another question, one builds one from what the person
+   wrote. The sentence would describe the buttons next to the buttons. */
+var SRC_OPEN='What would you like to write about today?';
+function srcOpen(){
+ var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
+ var f=String(w.first||'').trim().split(/\s+/)[0];
+ return (f?'Hello, '+f+'. ':'')+SRC_OPEN;}
 /* SIMPLE, STRAIGHTFORWARD, DEEP. His three words for what the page should
    ask. Each is a physical event a person can answer from memory, the shape
    funnel/questions.js already proved works in this product, and none of them
@@ -475,31 +496,127 @@ var SRC_OPEN='What are we writing about today?';
    and each press after it is the next one round. SRC_QI is where the walk
    is, and below nought means the opener. It is not reset by Clear or by a
    new entry, because the question a person chose is theirs until they press
-   again. */
+   again.
+
+   REWRITTEN AT ROUND LT, his words: "these are horrible questions, they're
+   not deep personal questions, they make it feel like a person, a friend who
+   knows me very well is asking me a personal question." The six they replace:
+
+     What happened today that your body is still holding?
+     Where did you feel it first?
+     What did you not say?
+     Who was in the room?
+     What keeps coming back?
+     What did you do straight after?
+
+   Each of those was a physical event, which was right, and each was asked
+   from outside the room, which was the defect: a form asks "who was in the
+   room", a friend asks who got under your skin. The rule kept from the old
+   list is that no question names a feeling for the person. What changed is
+   that each one now assumes the thing a close friend already knows about
+   you: that you swallow things, that your shoulders go up, that you replay
+   the conversation, that you reach for something after. Warmth here is the
+   specific question, never a soft word. Eight rather than six, so the walk
+   takes longer to come round. */
 var SRC_QI=-1;
-function srcQuestion(){return SRC_QI<0?SRC_OPEN:SRC_JOG[SRC_QI%SRC_JOG.length];}
+function srcQuestion(){
+ if(SRC_DQ)return SRC_DQ;
+ return SRC_QI<0?srcOpen():SRC_JOG[SRC_QI%SRC_JOG.length];}
 function srcNextQ(){
+ SRC_DQ='';
  SRC_QI=SRC_QI<0?Math.floor(Date.now()/864e5)%SRC_JOG.length:(SRC_QI+1)%SRC_JOG.length;
  return srcQuestion();}
-var SRC_JOG=['What happened today that your body is still holding?',
- 'Where did you feel it first?',
- 'What did you not say?',
- 'Who was in the room?',
- 'What keeps coming back?',
- 'What did you do straight after?'];
+var SRC_JOG=['Who got under your skin today?',
+ 'When did your shoulders go up today?',
+ 'What did you swallow instead of saying?',
+ 'What did your stomach know before you did?',
+ 'What conversation are you still having in your head?',
+ 'Who did you make yourself small for?',
+ 'What did you reach for today to take the edge off?',
+ 'What have you not told anyone yet?'];
 function srcSeatSay(b){
  return b==='Solar'?'the solar plexus':(b==='3rd Eye'?'the third eye':'the '+String(b).toLowerCase());}
-function srcTimes(n){return n===2?'twice':(n===3?'three times':n+' times');}
-/* the one question, by the evidence that raised it. Why, every time, and
-   about a place rather than a label. */
-function srcAsk(t){
- var at=srcSeatSay(t.band);
+function srcTimes(n){return n===1?'once':(n===2?'twice':(n===3?'three times':n+' times'));}
+/* the one question, by the evidence that raised it, and about a place rather
+   than a label.
+
+   REWRITTEN AT ROUND LT, with the same three cases and the same evidence.
+   They read, with the heart as the seat:
+
+     root     You keep coming back to the heart, here and in what you wrote
+              before. Why do you think that is?
+     earlier  The heart was in an earlier entry too. Why do you think it
+              comes back?
+     again    The heart comes up three times in this. Why do you think it
+              keeps landing there?
+
+   Two things moved. The person's own words come back to them in quotes,
+   heard.top.words, which srcHear has already cleared of negated mentions:
+   a friend who knows you says "you wrote tight", and a form says "the throat
+   comes up". And the seat is said as the place it is, the same phrase the Why
+   line under it uses, SRC_WHY_AT, "in your throat" and not "the throat".
+   "Why do you think" went, because it is a hedge on a question: the question
+   is still a why, and the person still answers it. Nothing here says a cause.
+   The root case asks what is at the bottom of it, which is the root in a
+   physical picture, and it is only asked when the rung is ten. */
+function srcPlace(b){return SRC_WHY_AT[b]||('at '+srcSeatSay(b));}
+function srcQuote(ws){
+ return (ws||[]).slice(0,2).map(function(w){return '“'+w+'”';}).join(' and ');}
+function srcAsk(t,words){
+ var at=srcPlace(t.band), ws=(words||[]).slice(0,2), q=srcQuote(ws);
+ var said=q?'You wrote '+q+'. ':'';
  if(t.why==='root')
-  return 'You keep coming back to '+at+', here and in what you wrote before. Why do you think that is?';
+  return said+'Here and in what you wrote before, it lands '+at+'. What sits at the bottom of it?';
  if(t.why==='earlier')
-  return at.charAt(0).toUpperCase()+at.slice(1)+' was in an earlier entry too. Why do you think it comes back?';
- return at.charAt(0).toUpperCase()+at.slice(1)+' comes up '+srcTimes(t.mentions)
-  +' in this. Why do you think it keeps landing there?';}
+  return said+'It lands '+at+', and an earlier entry did too. What takes you back there?';
+ if(ws.length>1)return said+'Both land '+at+'. Why there?';
+ return (q?'You wrote '+q+' '+srcTimes(t.mentions)+'. ':'')+'It lands '+at+(q?' each time':' '+srcTimes(t.mentions))+'. Why there?';}
+
+/* A QUESTION FROM WHAT YOU WROTE. Round LT, his words: "Then you need to be
+   another button next to it that makes it dynamic." He did not say what
+   dynamic does, so this is one reading of it, and the report that shipped it
+   says so. The other button walks a fixed list. This one reads the person:
+
+     1  what they are writing now. Every seat srcHear heard in this entry,
+        with the person's own words for it, one seat per press, heaviest rung
+        first, and one of four questions about the moment it happened.
+     2  nothing heard yet, so what they wrote before. The seat keys their
+        committed entries stored, srcPrior, the only thing Source AI may read
+        from an earlier entry. Never the text.
+     3  nothing on either. It says so, and asks nothing.
+
+   WHAT IT IS NOT, SAID PLAINLY. It is not a model and it generates nothing.
+   It picks a seat and a word the engine already read and puts them into one
+   of a handful of written questions. What makes it personal is that the words
+   are the person's and the place is where their own story landed, which is
+   every claim the instrument can make and no more. */
+var SRC_DQ='', SRC_DN=0, SRC_DW='';
+/* a new entry is a new conversation: the built question quoted the last one */
+function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;}
+var SRC_DYN=[
+ function(w,at){return 'You wrote '+w+'. It lands '+at+'. What happened in the minute before?';},
+ function(w){return 'You wrote '+w+'. Who was there when it started?';},
+ function(w){return 'You wrote '+w+'. What did your body want to do right then?';},
+ function(w){return 'You wrote '+w+'. What did you do straight after?';}];
+function srcDyn(heard,entries){
+ var n=SRC_DN++, seats=((heard&&heard.seats)||[]).filter(function(s){return s.words&&s.words.length;});
+ if(seats.length){
+  var s=seats[n%seats.length], lap=Math.floor(n/seats.length);
+  SRC_DW=s.words[lap%s.words.length];
+  return SRC_DYN[lap%SRC_DYN.length]('“'+SRC_DW+'”',srcPlace(s.band));}
+ SRC_DW='';
+ var ents=entries||[], pr=srcPrior(ents);
+ var ks=Object.keys(pr).sort(function(a,b){return pr[b]-pr[a]||(a<b?-1:1);});
+ if(!ks.length)return '';
+ /* the last entry's heaviest seat, then the seats most often landed on */
+ var last=(ents[ents.length-1]||{}).bands||{};
+ var lk=Object.keys(last).filter(function(k){return K2BAND[k]&&last[k]>0;})
+  .sort(function(a,b){return last[b]-last[a]||(a<b?-1:1);})[0];
+ var turn=[];
+ if(lk)turn.push(function(){return 'Last time, what you wrote landed '+srcPlace(K2BAND[lk])+'. What has moved since?';});
+ ks.forEach(function(k){if(pr[k]<2&&turn.length)return;
+  turn.push(function(){return 'What you write has landed '+srcPlace(K2BAND[k])+' '+srcTimes(pr[k])+(pr[k]>1?' now':'')+'. Is it back today?';});});
+ return turn[n%turn.length]();}
 /* WHY RELEASE IT. His dictation, translated to the ten year old rule (V21):
 
      his        The stress response is impairing the nerve flow. While the
@@ -548,29 +665,64 @@ function srcPips(rung,col){
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=STR.heard||srcHear(ST_TEXT,null);
+ /* a built question that quotes a word the person has since deleted is no
+    longer true, so it goes and the walk's own question comes back */
+ if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
  var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
- var o='<div class="src-hd"><span class="pm-eye">Source AI</span></div>';
- /* the question and its button share a line, the way the Avatar's question
-    and its turn arrow do, and the button carries the same name, Another
-    question. A press rewrites the question in place and nothing else, so the
-    focus stays on the button for the next press. */
- if(turn.move==='open')
-  o+='<div class="src-ask"><p class="src-open" id="srcq">'+esc(srcQuestion())+'</p>'
+ /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
+    idle and holds lit while it is reading, see srcHearing. It is drawn and
+    carries no word, because "thinking" printed on a scripted reader would be
+    a claim, and the dot only says what is true: it reads on every key. */
+ var o='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
+ var ask=turn.move==='ask'?srcAsk(turn,heard.top&&heard.top.words):'';
+ /* THE QUESTION, AND THE TWO PRESSES THAT CHANGE IT, ON THE RIGHT. Round LT,
+    his words: "The cycle a new question needs to go on the right hand side.
+    Then you need to be another button next to it that makes it dynamic."
+    The turn arrow sat straight after the question's own measure, 44
+    characters, so on a panel wider than that it stood in the middle of the
+    line: measured on the build before this one at 1920 by 1080, the panel ran
+    114 to 962 and the button stood at 754. The pair is its own group now and
+    the group takes the right edge at every width.
+
+    The question and its buttons share a line, the way the Avatar's question
+    and its turn arrow do. They are here on the opener and while Source AI is
+    listening, which is every move where the person leads the asking. Not on
+    an ask, which has its own question and Move on, and not after Move on,
+    which is final for the entry. A press repaints and puts the focus back on
+    the button pressed, so the next press is one key away. */
+ var acts='<div class="src-acts">'
    +'<button type="button" class="src-new" id="srcnew" aria-label="Another question" title="Another question">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/></svg>'
+   +'</button>'
+   +'<button type="button" class="src-new" id="srcdyn" aria-label="A question from what you wrote" title="A question from what you wrote">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
    +'</button></div>';
+ var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
+ if(turn.move==='open')
+  o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
  else if(turn.move==='ask'){
-  o+='<p class="src-q" style="--c:'+seatCol(turn.band)+'">'+esc(srcAsk(turn))+'</p>'
+  o+=srcLand('src-q',ask,'--c:'+seatCol(turn.band))
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
    +'<span class="src-note">Answer in the journal, or leave it.</span></div>';}
  else if(turn.move==='pass'){
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';}
  else{
-  o+='<p class="src-open quiet">'+esc(srcQuestion())+'</p>';
+  /* listening, the question steps back, unless the person asked for this
+     one: a question built from their words is the one thing on this move
+     they pressed for, so it stands at full size. */
+  o+='<div class="src-ask">'+srcLand('src-open'+(SRC_DQ?'':' quiet'),q)+acts+'</div>';
   if(heard.top)o+='<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(heard.top.band)+'">'
    +'<span>Next question</span>'+srcPips(heard.top.rung,seatCol(heard.top.band))
    +'<span class="src-seat">'+esc(heard.top.band)+'</span></span></div>';
-  else o+='<p class="src-note">Nothing read yet, so nothing is asked. Say what your body did, and where.</p>';}
+  else o+='<p class="src-note">Nothing read yet, so '+(SRC_DNONE?'there is nothing of yours to ask from':'nothing is asked')
+   +'. Say what your body did, and where.</p>';}
+ /* THE REFUSAL FOR A PRESS WITH NOTHING TO READ. Nothing heard in this entry
+    and nothing on the record, so the button has nothing of the person's to
+    build from, and it says so rather than handing back a question from the
+    walk dressed as a personal one. While listening it takes the listening
+    note's place above, so the column never says nothing read twice. */
+ if(SRC_DNONE&&turn.move==='open')
+  o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';
  /* the why, under whatever move was made, on every move that has heard a
     seat. It is not a question, so Move on does not silence it: moving on ends
     the asking, and the reason for a release is still true. */
@@ -580,14 +732,61 @@ function srcPaint(){
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
   +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  h.innerHTML=o;
- var said=turn.move==='open'?srcQuestion():(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
+ SRC_SHOWN=turn.move==='pass'?'':q;
+ srcHearing(h);
+ /* a screen reader hears the opener, an ask, "Cool.", and while listening
+    only a question the person pressed for. */
+ var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
+  :((SRC_DQ||SRC_QI>=0)?q:'')));
  var sy=document.getElementById('srcsay');
  if(sy&&sy.textContent!==said)sy.textContent=said;
  var mv=document.getElementById('srcpass');
  if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};
- var nq=document.getElementById('srcnew');
- if(nq)nq.onclick=function(){var q=srcNextQ(), e=document.getElementById('srcq');
-  if(e)e.textContent=q; if(sy)sy.textContent=q;};}
+ var press=function(id,fn){var b=document.getElementById(id); if(!b)return;
+  b.onclick=function(){fn(); srcPaint(); var a=document.getElementById(id); if(a)a.focus();};};
+ press('srcnew',function(){SRC_DNONE=false; srcNextQ();});
+ press('srcdyn',function(){
+  var d=srcDyn(STR.heard||heard,(CURP&&CURP.story&&CURP.story.entries)||[]);
+  SRC_DNONE=!d; if(d)SRC_DQ=d;});}
+/* WHAT WAS LAST ON SCREEN, so a repaint that changes nothing moves nothing.
+   The column is rewritten on every key, and a question that faded in on
+   every key would be motion saying something new landed when nothing had. */
+var SRC_SHOWN='', SRC_DNONE=false, SRC_HT=0, SRC_HX=null;
+/* A QUESTION LANDS WORD BY WORD, round LT, his words: "I want Source AI to
+   feel like it's a thinking system ... makes that text look like it's
+   alive." And from round GQ, the same ask the first time: "I want it to feel
+   dynamic and alive when the text gets typed ... like there's a little brain
+   behind it. And I want it to feel a little digital."
+
+   Only a question that is new to the screen lands. Each word arrives in the
+   accent and settles to ink, one after the other at the product's stagger,
+   and a block caret blinks twice at the end of it and goes. The words are
+   real text the whole time, in order, with their spaces, so a copy, a find
+   and a screen reader all read the sentence and never the pieces. There is
+   no pause before it: a delay dressed as thought, on a reader that answers
+   in a millisecond, would be the product pretending. */
+function srcLand(cls,q,style){
+ var id=cls.indexOf('src-open')===0?' id="srcq"':'';
+ var st=style?' style="'+style+'"':'';
+ if(!q||q===SRC_SHOWN)return '<p class="'+cls+'"'+id+st+'>'+esc(q)+'</p>';
+ var ws=String(q).split(' ');
+ return '<p class="'+cls+' src-land"'+id+' style="--n:'+ws.length+(style?';'+style:'')+'">'
+  +ws.map(function(w,i){return '<span class="src-w" style="--i:'+i+'">'+esc(w)+'</span>';}).join(' ')+'</p>';}
+/* AND IT HEARS AS THE PERSON TYPES. srcHear reads the whole entry again on
+   every key, which is true, and until now nothing on the screen said so. The
+   light on the accent bar runs quick and bright while keys are coming and
+   settles back to a slow pass about a second after the last one. It is on the
+   host, which outlives the repaint, so the run is not restarted by the key
+   that keeps it running. */
+function srcHearing(h){
+ var t=ST_TEXT;
+ if(SRC_HX===null){SRC_HX=t;return;}
+ if(t===SRC_HX)return;
+ SRC_HX=t;
+ if(!t.trim()){h.classList.remove('hear');return;}
+ h.classList.add('hear');
+ clearTimeout(SRC_HT);
+ SRC_HT=setTimeout(function(){var e=document.getElementById('stsrc'); if(e)e.classList.remove('hear');},1100);}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
    never sits in the document asserting a stale reading, the rule Summary
    already keeps. setTab calls this on every tab but Story. The bank closes
