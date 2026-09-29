@@ -26660,3 +26660,69 @@ Read as:
 2. **"Continue building for now."** Round LY continues; this document
    is filed rather than built against.
 3. **The Eleven Labs settings question**, answered in the chat reply.
+
+**A standing rule on how I write to him, ruled again and to be kept.**
+"the steps like im 10. commit that to longterm memory, it works." Every
+step by step instruction given to him, for any API, account or
+external setup, is written as if he is ten: plain words, one step a
+line, no term left unexplained, matching the reporting rules already
+in `CLAUDE.md`'s own section on reporting to him. Kept here as the
+record of the ruling; the practice itself is what `CLAUDE.md` already
+asks for and this makes it explicit for API and account steps by name.
+
+## Round MD
+
+His words, verbatim: "keep building what you're building. This is a
+note for the masks page. that I want to be able, I want to have a be
+able to toggle between masks saboteur masks complex masks and hyper
+complex masks and they're all in the all the shapes of the masks are
+the symbolic personification of that word okay so the negotiator will
+look like the negotiator the victim will look like the victim it's
+still in the same pixel style and it's still going to have the
+limiting beliefs associated with them fill in those pictures i think
+it's a more symbolic way of showing what's going on and since you
+already have the architecture for the masks and the logic for the
+saboteurs it should be easy for you to build all those and if you add
+in some flair to the masks these new masks plus the old masks from the
+field page to give it some innovation, to give it some life, to give
+it some animation, to give it some dynamics, to give it some interest
+when I land there. Right? Show me what it what the data means to me.
+Right? The field does. The compass does. The body does. But this but
+the mask don't yet. Period. Before you create the TDD mask system, put
+this in the queue with what you're building. Speaking of which, what
+are you building and what are your next three tasks? And then what do
+I do with these API keys? I'd like to get all of my tasks off my plate
+now."
+
+Read as:
+
+1. **A new mask tier, on Character.** The six masks on that page today
+   (Child through Ideological, from the earlier pixel grid rebuild) are
+   the developmental layer. He is asking for three more tiers, toggled
+   between: Saboteur masks, Complex masks and Hyper complex masks, each
+   mask drawn as the symbolic personification of what it names, his
+   own examples, "the negotiator will look like the negotiator, the
+   victim will look like the victim." Same pixel style, same limiting
+   belief text carried under each. He is right that the architecture
+   exists for this: the saboteur, complex and hyper complex library
+   (`SAB_LIB` and the complex and hyper complex tables in
+   `engine/data/nodes.js`) already names each one, its behaviour and
+   its addresses, and Character's mask renderer already draws a pixel
+   grid per name from a seat's own colour and glow. What does not
+   exist is a picture for each of the roughly fifty names across the
+   three new tiers, which is the actual size of this ask: not one
+   mask, three tiers of them.
+2. **"Give it some flair... animation, dynamics, interest... the
+   field does, the compass does, the body does, but the masks don't
+   yet."** A second, named gap, distinct from the toggle: whatever
+   ships on Character should carry the same "alive" treatment those
+   three surfaces already carry, not only the toggle between tiers.
+3. **"Before you create the TDD mask system, put this in the queue
+   with what you're building."** Queued, not built now, his own
+   instruction. Filed behind round LY, which is still in progress.
+4. **"What are you building and what are your next three tasks."**
+   Answered in the chat reply.
+5. **"What do I do with these API keys."** Answered again in the chat
+   reply, plainly, since he asked the same question moments before
+   this message arrived and it is worth being unambiguous about
+   rather than referring back.
