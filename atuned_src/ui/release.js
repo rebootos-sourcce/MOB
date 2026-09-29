@@ -531,16 +531,38 @@ function relCounts(){
   else {c.of+=RUN.dose; c.said+=said;}});
  c.left=c.of-c.said;
  return c;}
+/* FOUR MORE FIGURES, round LY. His words: "I get to have a total number of
+   patterns I'm releasing this session, how many total number of reframes
+   I'm adding the session, total number of patterns released, total number
+   of patterns installed, over the history." Remaining and Installed already
+   answered "how many left... I'm releasing and how many I'm adding"; these
+   four are new. Session is c.of and c.putOf, the plan's own full size, read
+   the same way Remaining and Installed already are, never kept by hand.
+   History is CURP.meter.relLines and .truthLines, added to in relCoolDown,
+   the same place Remaining and Installed's own numbers are earned. A worked
+   example has a plan but no meter worth reading as a lifetime, so history
+   is shown only on the person's own record. */
 function relTally(c){
  if(!c||!c.of)return '';
  /* the number large and the unit beside it at body size, so two of them fit
     across a phone's card with the strips on it */
  function fig(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b style="font-size:30px;line-height:1.1">'
   +n+'<small style="font-size:13px;font-weight:400;color:var(--dim)"> '+u+'</small></b></div>';}
+ function sm(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b>'+n
+  +'<small style="font-size:12px;font-weight:400;color:var(--dim)"> '+u+'</small></b></div>';}
+ /* the person's own record only, the same guard relProject and relCoolDown
+    already read S.who by, not a worked example's */
+ var hist=(typeof S!=='undefined'&&S.who===0&&typeof CURP!=='undefined'&&CURP&&CURP.meter)?CURP.meter:null;
  return '<div class="rel-clock" style="flex-wrap:wrap;margin-bottom:6px">'
   +fig('Remaining',c.left,c.left===1?'pattern':'patterns')
   +fig('Installed',c.put,c.put===1?'truth':'truths')+'</div>'
-  +(c.toward.length?'<div class="rel-ct">Toward '+esc(c.toward.join(', ').toLowerCase())+'</div>':'');}
+  +(c.toward.length?'<div class="rel-ct">Toward '+esc(c.toward.join(', ').toLowerCase())+'</div>':'')
+  +'<div class="rel-clock" style="flex-wrap:wrap;margin-bottom:6px">'
+  +sm('This session',c.of,c.of===1?'pattern':'patterns')
+  +sm('Reframes added',c.putOf,c.putOf===1?'truth':'truths')+'</div>'
+  +(hist?'<div class="rel-clock" style="flex-wrap:wrap;margin-bottom:6px">'
+   +sm('Released, all time',hist.relLines||0,(hist.relLines||0)===1?'pattern':'patterns')
+   +sm('Installed, all time',hist.truthLines||0,(hist.truthLines||0)===1?'truth':'truths')+'</div>':'');}
 /* which address of the run the card is on, counted in the order the plan
    speaks them. "pattern 1 of 4" stood here and counted plan blocks, four to an
    address, under the same word the two counts above now use for lines. */
@@ -743,6 +765,16 @@ function relCoolDown(){
      that changes between being shown and being charged is a bill a person did
      not agree to. */
   RUN.meter=meterRun(CURP,RUN.plan||[]);
+  /* THE LIFETIME SPLIT, round LY: "total number of patterns released, total
+     number of patterns installed, over the history." tally is read at the
+     top of this function, before the write, off where the list actually
+     stopped, so a run ended early adds only the lines actually said and not
+     the whole plan it was shown; a rerun of ground already open still adds
+     here, unlike meter.lines' own unique count, because a line spoken twice
+     was spoken twice, the same reasoning lines itself already carries. */
+  if(!CURP.meter)CURP.meter={lines:0,unique:[],first:null,last:null,giftAt:null,relLines:0,truthLines:0};
+  CURP.meter.relLines=(CURP.meter.relLines||0)+tally.said;
+  CURP.meter.truthLines=(CURP.meter.truthLines||0)+tally.put;
   /* AND THE WORK REACHES THE LAWS. Ruled 25 September, after ship: "Those 15k
      releases raised my CQ." Every pattern of new ground this run opened lifts
      the answered laws at its address's seat by LIFT_R of what is left. Only
