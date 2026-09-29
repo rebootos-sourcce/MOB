@@ -632,20 +632,32 @@ function ritChainHtml(c,r,act){
  out+='<button type="button" class="rv-node" data-act="go-story">'
   +'<span class="rv-lb">You wrote</span>'
   +'<span class="rv-nv">'+ritIc('pen','rv-nic')+'<b>'+n+'</b><em>'+(n===1?'story':'stories')+'</em></span>'
-  +(n?'':'<span class="rv-ns">Write the first one</span>')+'</button>';
+  +'</button>';
  out+='<span class="rv-arr" aria-hidden="true">'+ritIc('arrow')+'</span>';
+ /* ROUND LT, HIS WORDS: "get rid of the text 'your words', just put
+    'Imprints'." This node already opens the Imprints bank (data-act="go-bank",
+    impLive, the same list the Imprints page draws), so the label now names
+    the surface it opens rather than describing what sits there. That same
+    edit removes "held in your body", which he named as its own line: it was
+    the phrase this label used to carry. */
  out+='<button type="button" class="rv-node" data-act="go-bank">'
-  +'<span class="rv-lb">Held in your body</span>'
+  +'<span class="rv-lb">Imprints</span>'
   +(held.length
     ?'<span class="rv-nv">'+ritIc('body','rv-nic')+'<b>'+held.length+'</b><em>'+(held.length===1?'place':'places')+'</em></span>'
      +'<span class="rv-bar">'+bar+'</span>'
-     +'<span class="rv-ns">Most at the '+esc(c.band==='3rd Eye'?'third eye':c.band.toLowerCase())
-     +(fromN?', '+fromN+' released just now':'')+'</span>'
+     /* "GET RID OF THE TEXT SAYS 'MOST AT THE THROAT'." The seat name was a
+        second reading of the same bar the coloured segments already draw, and
+        it was the seat holding the most on every profile, worded to sound like
+        news. The "released just now" note is kept: it is not the phrase he
+        named and it is the one piece of information here a bar cannot draw. */
+     +(fromN?'<span class="rv-ns">'+fromN+' released just now</span>':'')
     :'<span class="rv-nv">'+ritIc('body','rv-nic')+'<em>Nothing held</em></span>')
   +'</button>';
  out+='<span class="rv-arr" aria-hidden="true">'+ritIc('arrow')+'</span>';
  out+='<div class="rv-node rv-do" style="--c:'+col+'">'
-  +'<span class="rv-lb">'+(r.unread?'Start here':'Do this')+'</span>'
+  /* "CHANGE 'DO THIS' TO 'GOAL'." Do this named the action; Goal names what
+     the action is for, which is the word he asked for in its place. */
+  +'<span class="rv-lb">'+(r.unread?'Start here':'Goal')+'</span>'
   +'<span class="rv-nv"><svg viewBox="0 0 24 24" class="rv-nic" aria-hidden="true"><circle cx="12" cy="12" r="8" style="stroke:'+col+'"/></svg>'
   +'<b class="rv-pn">'+esc(p?p.nm:'')+'</b></span>'
   +'<span class="rv-ns">'+(p?p.min+' minutes':'')+'</span>'
