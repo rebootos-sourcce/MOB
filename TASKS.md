@@ -26340,3 +26340,141 @@ This is the third piece salvaged from the second rate limit, after
 `brief-technical.md` and the Field weight-vibration and the Ritual data
 model. The Story worktree and the Summary/Analytics worktree are still
 untriaged.
+
+## The dead Ritual worktree from round LT, found and merged
+
+While triaging the two named-untriaged worktrees, two more turned up
+that were never accounted for: `a61ea4a88d4fb0e22`, a full committed
+Ritual rewrite from round LT never merged, and `ae99c92f957ff6b4a`, an
+old Character piece superseded by what already shipped. Also found
+`a964b29b50301b9c8`, a duplicate of the pill removal and the Embody
+icon already shipped, and three worktrees with nothing in them.
+Discarded the duplicates and the empties.
+
+`a61ea4a88d4fb0e22`'s single commit, `491ee93`, is real and large: the
+three column layout at 1600 with no scroll, colour by part, his five
+copy cuts, and the full builder UI for tags, a timer and how often,
+answering round LT's "I should be able to add tags to create the
+ritual, put a timer for it, how often I want to do it" in complete
+form. It predates the container restart and was never dispatched
+against; it simply sat there.
+
+It conflicted with my own `957ede9` data model commit, and reading both
+side by side found a real defect in mine: I built tags as free text,
+capped and deduplicated, when `TG4` already ruled the shape, "no to
+free text tags on measured grounds, and yes to a closed field validated
+against a table. Tags set for each major chakra is a closed set of
+seven." `491ee93`'s tags are exactly that closed set, read off `BANDS`,
+and its timer and weekday picker are fully wired to the builder where
+mine were data with no UI at all, the limitation my own commit named
+honestly. Resolved every conflict toward `491ee93` and deleted my own
+now dead functions, the free text `ritTagAdd`/`ritTagDel` and the
+unused `RIT_FREQS`/`RIT_TAG_MAX`, rather than leave two mechanisms
+answering the same ask. Rebuilt and gated clean: engine 1841/0, collide
+351/0, design 184/0, functional 1335/0. Committed and pushed.
+
+The Story worktree and the Summary/Analytics worktree are still
+untriaged, next.
+
+## Round LY
+
+His words, verbatim: "Review and our project folders source OS
+protocol. We're now going to work on the release and build this out.
+When I come to the story page and I click on bank or vault, it loads
+up between the imprints and release. Keeping the release pane on the
+right-hand side. At all times. On the release tab. I have dials that
+say time, run speed instead of pace, number of patterns a session,
+defaults at One hundred. I want a button for binaural audio if I want
+it on or off, it's dynamically going to switch its tone based on the
+hertz of the patterns that we're releasing. When I hit run release, it
+brings me to a screen, voices on. If you turn voice off, I get text
+scroll and I can just read. The setup needs to be in my voice. And
+before we start there needs to be a start session button, or start
+button. And when I come to the release screen, the release clean
+screen is clean, very visual, it takes a lot of cues from the field
+page, its UI UX is organized in a very tight fashion. I like the text
+scroller that we have right now. I want to add an overlay on the top
+and bottom, so that the focus on the text is only on now and next. I
+want a red box on each one of those, or a red outline, that show heavy
+or not. If I press it, it fills in red. There's a counter of how many
+patterns left, right, I'm releasing and how many I'm adding. I get to
+have a total number of patterns I'm releasing this session, how many
+total number of reframes I'm adding the session, total number of
+patterns released, total number of patterns installed, over the
+history. Get rid of left feminine, right masculine, those two columns,
+release and reframe, those are unnecessary. Get rid of the text saying
+release left channel, feminine, parasympathetic. You already have
+disconnection, root, sacral root, ganglia, that's great, that needs a
+different color text treatment, so it stands out. Turn the back, now,
+forward, pause buttons into graphic symbols. Pause and end need to go
+on the lower right, everything is above the fold, nothing scrolls.
+When I hit the start button to run my release, it runs through my
+voice before it gets to the AI portion, which is the AI portion is the
+prompt and the release script and the reframe script. The setup,
+relax, sit back, these next 10 minutes before you and for your
+healing. You should have all that text. I may need to record that
+audio, just let me know if I do. Maybe that can be all AI, Eleven
+Labs. So let me know what I need to do with the API, and give me the
+step-by-steps that I need to do for those APIs, in a markdown
+document. Give me the instructions as if I'm 10. And put that in a
+markdown document. And continue building what you're building. And
+give me an attuned build when you're complete. And then what's the
+next steps to push things out to attuned world so I can see the site
+live?"
+
+Read as, in the order raised, and this is a full redesign spec for the
+release surface, not a set of small edits:
+
+1. **The bank opens between Imprints and Release on the Story page,
+   and the release pane stays on the right at all times, on the
+   release tab.** A layout rule for `stbank`/the release column.
+2. **Three dials: time, "run speed" (renamed from pace), and patterns
+   a session, defaulting to a hundred.**
+3. **A binaural audio on/off control that retunes dynamically to the
+   hertz of whatever pattern is releasing.** The seat tone binaural
+   work already in the engine (`tests/functional.js`'s "the seat tone
+   is binaural" check) is the likely base to extend, not a new
+   mechanism.
+4. **Run release opens a screen with voice on by default; voice off
+   is the text scroll instead, to read rather than hear.**
+5. **The setup line is spoken in his own voice; the release and
+   reframe scripts are the AI's.** He may need to record the setup
+   himself, or it could run through Eleven Labs like the rest; asked
+   which, and what the API needs.
+6. **A start session / start button before any of it begins.**
+7. **The release screen itself: clean, very visual, takes its cues
+   from the Field page, tightly organised, and keeps the text
+   scroller already there.**
+8. **An overlay top and bottom so only "now" and "next" are in
+   focus.**
+9. **A red box or outline per pattern marking it heavy or not, filled
+   in red on press.**
+10. **Counters: patterns left to release this session, patterns being
+    added (reframes) this session, and running totals over history,
+    of patterns released and patterns installed.**
+11. **Cut the left-feminine, right-masculine two column layout for
+    release and reframe.** Named unnecessary.
+12. **Cut the text "release left channel, feminine, parasympathetic."**
+    The seat and address names underneath it, "disconnection, root,
+    sacral root ganglia," stay and are named as already good, but earn
+    a distinct colour treatment so they stand out once the line above
+    them is gone.
+13. **Back, now, forward and pause become icons, not words.**
+14. **Pause and end move to the lower right.**
+15. **Everything above the fold. Nothing on this screen scrolls.**
+16. **The API question, and a markdown document for it,** written as
+    plain steps, explained as if to a ten year old.
+17. **"Continue building what you're building"** — the Ritual and
+    Character salvage in flight when this arrived, finished first.
+18. **A build, sent when this is done**, and then, only then, the
+    atuned.world push question answered again.
+
+This is the largest single build ask of the session: a full release
+surface redesign, audio wiring, and a voice/AI script split, on top of
+everything already queued (Story and Summary/Analytics worktrees still
+untriaged). No dispatch is possible yet; the account's weekly limit
+resets Oct 1, 8am UTC, named in round LX, and has not passed. Sequence:
+finish the Ritual merge verification already in flight, triage the two
+remaining worktrees, then start this round's build directly, by hand,
+in the order he raised it, beginning with the layout and dial changes
+that need no new mechanism before the audio and voice wiring that do.
