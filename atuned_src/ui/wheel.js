@@ -1245,17 +1245,21 @@ function drawWheel0(r,L){
      a bundle does not vibrate in lockstep.
 
      RESTRAINT. Nothing shakes at w01 0.5 and the amplitude is a ring
-     relative 0.03 by w01 1, at most a couple of pixels on the wheel at
-     rest, so it reads as a taut string under real load and not as a
-     broken frame.
+     relative 0.021 by w01 1, dampened thirty percent from the first cut's
+     0.03 round MI, at most a couple of pixels on the wheel at rest, so it
+     reads as a taut string under real load and not as a broken frame.
 
      Reduced motion gets the still, sagged line at every weight, the same
      rule the pulse and the fringes both already take.
      ============================================================ */
   const JIT_AT=0.5;
+  /* DAMPENED 30 PERCENT, round MI: "one note on the vibration animation of
+     the field, dampen it by thirty percent." 0.03 was the ring relative
+     amplitude named above; 0.021 is seven tenths of it, the shape and the
+     two frequencies untouched. */
   const jitOff=(x0,y0,k)=>{
    if(REDUCED||!k||k<=JIT_AT)return null;
-   var s=(k-JIT_AT)/(1-JIT_AT), amp=U*0.03*s;
+   var s=(k-JIT_AT)/(1-JIT_AT), amp=U*0.021*s;
    var ph=(((x0*12.9898+y0*78.233)%1)+1)%1*TAU;
    return [Math.sin(S.t*TAU*9+ph)*amp,Math.sin(S.t*TAU*11+ph*1.7)*amp];};
   /* the thread, and its pulse queued: t is the same tension its sag is drawn
