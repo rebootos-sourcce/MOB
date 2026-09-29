@@ -4624,6 +4624,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .col{min-height:auto}
  .stage{min-height:62vh}
  .panel.sc{max-height:none;overflow:visible}
+ /* THE TAIL IS FOR A RAIL THAT SCROLLS ITSELF. Below 1181 the rail does not,
+    the page does, so the 88vh tail above that gives a pressed header room to
+    reach the top has nothing to do here and only sits as empty glass under
+    the reading. Measured on a phone: 742.7px of it, on both rails. */
+ .panel.sc::after{display:none}
  /* THE STORY STACKED IS LAYOUT H ON A PHONE: the two columns a person is not
     in sit compact, so all three are on the first screen. Round II measured it
     as the only one of five layouts that kept Run there, where the old page
