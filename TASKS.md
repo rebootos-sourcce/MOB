@@ -25891,3 +25891,62 @@ risk with the other three agents in flight.
 
 Sending the Cloudflare walkthrough now, item 8's first half, already
 written this session and held until the build shipped.
+
+## The container restarted mid round
+
+All four dispatched agents (Character, Ritual, Field pass, briefs
+refresh) were lost with it, none had committed anything yet. Story's
+piece, `41feeb7`, was already pushed before the restart and survived.
+
+His words on top of it, a Windows PowerShell screenshot attached,
+`git clone` failing with "git is not recognized": "I'm blocked on step
+four, number three, three, three. The git command does not seem to
+work. However, the API keys are in. And since this is a git thing, can
+you not automate this part? I can only download the markdown file, I
+cannot open it and view it in the viewer. Give me the latest version of
+Atuned. Review my command input. I couldn't get past step four. I need
+solutions and step-by-steps. I also want the latest build, and what's
+in our backlog?"
+
+Read as: steps 1 through 3 of the Cloudflare walkthrough are done, his
+own words, "the API keys are in." Step 4's own sub-step 3 asked him to
+clone the whole `reboot-os` repository just to get a directory
+`wrangler` would run from, and `git` is not on his machine. Fixed
+rather than routed around: `wrangler secret put` takes the Worker's
+name on the command line, `--name atuned-api`, checked against the
+installed CLI's own `--help` before writing it down, so the clone was
+never necessary. `HOSTING-SETUP.md` rewritten and pushed.
+
+The markdown complaint is the file format, not the content: a `.md`
+file downloads instead of rendering, so there is nothing to look at
+until it is opened elsewhere. Published as a Claude Docs page instead,
+the same walkthrough, viewable directly.
+
+Rebuilt `source.html` fresh off the current HEAD (`022d338` at build
+time, restamped and committed as `43c6f52`), which also folded in the
+Story piece for the first time, since nobody had rebuilt after it
+landed. `engine.js` unchanged. `tests/engine.js` 1841, `collide.js`
+351, `functional.js` 1335, all 0 failed, on the exact tree being sent.
+Sent as the latest build.
+
+All four lost agents re-dispatched with the same briefs, told this
+time to commit and push after each real piece of progress rather than
+holding everything for one commit at the end, so a second restart
+costs less.
+
+Backlog, read off this file rather than recalled, standing and open:
+the five ascended teachers becoming a release-protocol engine (LC,
+their paths as idealised points, the sniffer reading toward the
+opposite as release and toward the path as reinforcement); a generated
+shape and name per person's own mask (KY); the three interlocking
+wheels concept tool (LG); Knowledge base redesign, too vague to build
+blind (LO); the practitioner-persona-in-dropdown with a client list and
+analytics (LR); a seed decay policy, whether charge fades on its own;
+cognitive load, needing a fresh measurement before any figure is
+quoted again; the impure core, `compute()` reading shared state,
+deliberately deferred; Schema v2, his call; the situational "laws of
+integrity" questions, pending a format ruling; Preteen and Professional
+reading the same fill on Character, his call on the data; when a
+reward is earned, a pattern forming or released or both. And still
+unanswered across many rounds: which product goes online first, this
+engine or the app already built in `reboot-os`.
