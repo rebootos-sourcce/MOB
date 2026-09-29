@@ -26291,3 +26291,19 @@ Read as, in the order raised:
    reading right now.
 5. **"Update my steps."** `HOSTING-SETUP.md`'s step 1 already corrected
    this same round, above.
+
+**The Avatar redesign shipped a real, reproducible test regression,
+caught only now.** `ff218fc` was pushed without an independent gate run
+by me, the one lapse this session in the discipline every other landing
+got; `tests/functional.js`'s own KH check, "Becoming carries his one
+line, word for word," held the exact sentence round LV's own instruction
+asked to have removed, `.avh-lede`, and the redesign removed the whole
+element rather than only its text. Reproduced on `ff218fc` alone,
+isolated from every other change in flight, before touching anything:
+the failure is real and was already on the branch. Fixed the gate, not
+the product, since the text's removal is what he asked for: the check
+now holds that no lede exists, the same way this project has corrected
+a superseded assertion before rather than reverting a ruling to satisfy
+an older one. The other three KH assertions (seven rings, no seat
+prose, the hero wider than its columns, the found tags) still hold
+against the redesign, checked directly against the current markup.
