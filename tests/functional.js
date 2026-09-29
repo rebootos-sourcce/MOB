@@ -3686,8 +3686,14 @@ const kh=await page.evaluate(async()=>{
  o.threads=document.querySelectorAll('#avbody .avx-row').length;
  avSub('becoming'); loadP(0); render();
  return o;});
-ok(kh.lede==='You’re setting up your avatar. We want to find out who it needs to become and who and what it needs to shed. Select each ring and tell us the story of who you’re becoming and who you’re not.',
- 'Becoming carries his one line, word for word, got '+kh.lede);
+/* THE LEDE IS GONE, ROUND LV, REVERSING KH. His own words then: "you're
+   setting up your avatar, we want to find out who it needs to become..."
+   was the line this check held word for word. His words now: "get rid of
+   that text that says 'you're setting up your avatar, we want to find out
+   who needs to be' etc." `.avh-lede` no longer exists in avatarui.js at
+   all, not merely emptied, so the check now holds the opposite: the host
+   carries no lede element rather than one line held constant. */
+ok(kh.lede===undefined,'Becoming carries no lede any more, round LV, got '+kh.lede);
 ok(kh.rings===7&&!kh.prose,'seven rings to select, and no seat prose, got '+kh.rings+' rings, prose '+kh.prose);
 ok(kh.hero>kh.menu,'the ring takes more of the row than either column beside it, '+Math.round(kh.hero)+' against '+Math.round(kh.menu));
 ok(kh.tags.includes('Sad')&&kh.tags.includes('Joy')&&kh.tags.includes('Rejection'),
