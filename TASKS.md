@@ -26544,3 +26544,48 @@ removal and the Embody icon, already shipped and discarded here.
 
 Every worktree under `.claude/worktrees/` has now been read, and
 nothing salvageable remains in any of them.
+
+## Round MA
+
+His words: "continue your current tasks. give me a fresh build, then
+review this:" followed by an eight-part document headed "Atuned,
+Schema Foundation and the Source AI Algorithm," compiled 2026-09-29
+and dated as read from `reboot-os`'s `atuned/` tree: `atuned/docs/tdd/
+TDD-01` through `TDD-03`, `atuned/data/user_schema.json`,
+`atuned/src/35_source-ai.js` in full, `atuned/docs/VOICE.md`,
+`atuned/docs/ATUNED_PRODUCT_BIBLE_v1.md`. Parts one and two describe
+that codebase's schema (canon, user record, server) and its Source AI
+implementation as they stand today, sourced and cited. Parts three
+through eight are new work, not a description of anything built: a
+"Source AI Discernment Architecture" (evidence weighting, convergence,
+contradiction detection, causal reasoning, a state machine, a novel
+pattern registry, an attachment sniffer, a jouissance detector), a
+numbered engineering task list SRC-001 through SRC-030, and two
+handshake protocols instructing whichever system implements it to
+audit before building and re-audit before claiming done. The document
+is not reproduced here in full; it is in this conversation's own
+history.
+
+Read as:
+
+1. **"Continue your current tasks."** Round LY's release page redesign,
+   queued and not yet started when this arrived, continues.
+2. **"Give me a fresh build."** Sent: `atuned.html`, packed, build
+   v950, commit `2cc0f90`, stamped 2026-09-29 19:41.
+3. **"Review this."** The document's own file paths are all under
+   `atuned/` in `reboot-os`, which this session does not have access
+   to; `rebootos-sourcce/mob` is the only repository in scope here.
+   Nothing in it has been independently verified against that source,
+   and MOB's own Source AI (`atuned_src/ui/` here) is a separate,
+   already-built implementation with no relation to the one this
+   document describes. The architecture in parts three through eight
+   (evidence weighting, convergence, contradiction detection) is also
+   a materially different design from round LZ's Impression
+   Excavation Engine, asked for two rounds ago as the replacement for
+   MOB's own Source AI question flow: that one follows feeling, body
+   and belief to a candidate root through a fixed question grammar;
+   this one scores hypotheses against weighted, converging evidence
+   with a verification loop. Whether this document is meant as
+   context on the other codebase, or as a second, competing spec for
+   MOB's own Source AI, is asked back in the chat reply rather than
+   guessed at, since building the wrong one costs the whole round.
