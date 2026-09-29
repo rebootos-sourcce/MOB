@@ -26049,3 +26049,11 @@ four new pieces. Messaging the two agents already in flight rather
 than starting new ones over the same files: the Ritual agent gets 5,
 the Field agent gets 8's threshold detail before it finishes and
 reports something that misses the real ask a second time.
+
+Done. First attempt at reaching the two in flight agents used the wrong
+tool and spawned a duplicate on the Ritual builder instead of
+messaging the running one; caught before it touched anything and
+stopped. The real message went to both after. Seven agents now
+running at once: Character, Ritual, the Field pass, the briefs
+refresh, the Story follow up, the Avatar redesign, and Summary paired
+with the Analytics unfold since they share the same code today.
