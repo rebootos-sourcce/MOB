@@ -26057,3 +26057,61 @@ stopped. The real message went to both after. Seven agents now
 running at once: Character, Ritual, the Field pass, the briefs
 refresh, the Story follow up, the Avatar redesign, and Summary paired
 with the Analytics unfold since they share the same code today.
+
+## All seven failed, the account's own weekly limit, not this session's work
+
+Every one of them stopped on the same cause, quoted in full because it
+names when it lifts: "You've hit your weekly limit, resets Oct 1, 8am
+UTC." Nothing had reached the branch from any of them.
+
+Checked each agent's own worktree before writing any of them off, on
+the rule this file already carries against trusting a report over the
+real state: two of the seven had left real, complete, gated work
+uncommitted, not fragments. Read in full, built, gated fresh and
+screenshotted myself before either landed:
+
+- **The pill, `626cad4`.** The Field agent's second attempt (its first,
+  from before the container restart, was a different and incompatible
+  cut of the same fix and was discarded). Found the pill's real home:
+  not the Compass at all, `#pol2` in `ui/personas.js`, the small
+  reading that rides the Field's own stage, not the Compass door his
+  screenshot's tab bar only looked like it might be. `.pol2-sw` and
+  `.pol2-sm` removed, the range still drawn as the marker's own drift.
+  Screenshotted the exact spot his screenshot circled: the pill is
+  gone, the marker and the arrow are not.
+- **The Embody icon, `095126a`.** From the very first Field dispatch,
+  before the restart, most of a day old and still sitting uncommitted
+  in its own worktree. A standing figure with its arms up in one arc,
+  replacing the seated stick. Five candidates measured in the bar at
+  real size, this is the one that still reads as a person at twenty
+  three pixels. Screenshotted at real size in the nav bar.
+
+Both rebuilt fresh rather than trusting the agent's own build, both
+gated clean: `engine.js` 1841, `collide.js` 351, `design.js` 184,
+`functional.js` 1335, all 0 failed. The rest of each of those two
+agents' work, and everything from the other five, was either nothing
+(clean worktree) or genuinely unfinished (new variables declared and
+never wired into anything that draws, the Character agent's start on
+the face shapes) and not safe to ship; discarded rather than guessed
+into a finished state. Every worktree removed after.
+
+**Cloudflare is done, his own words: "steps 3 and 4 complete, git and
+cloud setup."** `HOSTING-SETUP.md` marked done at the top rather than
+rewritten as a checklist with nothing left to check, and the Claude
+Docs walkthrough he was reading updated the same way, live, while he
+had it open.
+
+He also forwarded a Cloudflare owned URL, asking whether it was
+needed: `developers.cloudflare.com/agent-setup/prompt.md`, an
+agent-setup page Cloudflare publishes for AI tools. Tried to read it
+before answering rather than guessing at what it says; this
+environment's own network policy blocks that domain, so it could not
+be fetched from here. Told him plainly rather than pretending to have
+read it, and that it is moot regardless, since he has already
+confirmed the two steps it might have helped with are done.
+
+Re-dispatching what the rate limit actually cost: Character, Ritual,
+the Field's remaining two asks (the vibration threshold, the pulse
+verification), the briefs, the Story follow up, the Avatar redesign
+and the Summary/Analytics split, this time on a model this account's
+weekly limit has not reached.
