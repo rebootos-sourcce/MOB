@@ -26777,3 +26777,39 @@ Read as:
 6. **The atuned.world push, asked again, "what are the steps if I'm
    involved."** Answered plainly and finally in the chat reply.
 7. **"Keep building what you're building."** Round LY continues.
+
+## Round MF
+
+The architecture file promised in round ME arrived: `29b298d2-atuned-
+schema-and-source-ai.md`. It is the same document round MA already
+logged, Parts One and Two of it, now as an attached file rather than
+pasted text; round MA's Parts Three through Eight, the Discernment
+Architecture, are not in this file. His words on it: "this is from the
+programming session that I did before I started you with this
+session. It's the original intention of the architecture. And I want
+to see where we are, what the gap is, and what how long it would take
+to build that out."
+
+This reframes round MA's open question. It is not a description of
+MOB read against itself; it names what the sibling `atuned/` codebase
+in `reboot-os` was built to, before this session started, and asks for
+MOB measured against the same intention: the three way split between
+canon, the user's own record and a server, and Source AI's rule of
+honest fallback over invention. That is answerable without the other
+repository, since the intention is architectural and MOB is what is in
+front of this session. A real comparison, done by reading MOB's own
+files rather than assuming, is in the chat reply: canon and the user
+record both exist here on the same split named in the document,
+`engine/data/` and `blankProfile`/`validateProfile` in
+`engine/schema.js`; MOB's own version is arguably stricter, since
+`validateProfile` builds a fresh blank and copies over only named,
+checked fields rather than trusting the input's shape at all, where
+the copy quotes no equivalent. What is a real, named gap: MOB has no
+server schema of its own, the document's third layer, which
+`CLAUDE.md`'s own accounting of the fork already says is future work;
+and MOB's own schema has no automated gate proving every field the
+running app actually writes has a schema entry and every schema entry
+is actually written, the specific drift the document's `test/
+smoke.py:2573` catches for the sibling app. That second one is real
+and buildable now, independent of the accounts fork, and is named as
+its own item below rather than folded into it.
