@@ -25276,3 +25276,12 @@ at about the same scale as the actual landing screen."
   page among it, comes after both.
 - **The intro animation's main size, scaled down 15 percent**, so its
   zoom lands at the same scale the landing screen actually sits at.
+
+**Dispatched: the menu pass, first of his three, file scoped.** The
+right rail collapse widget, icons for the Compass's Top, Registers and
+Layers, and the Body and Masks shared toolbar's layout redesign, left
+overlay menu moved top left like the Field, front and back split to
+their own bottom corners with a pin line frame, the mark selector to
+the upper right with its own close, starting shut. The cosmetic pass
+and the intro animation scale wait for this one to land and ship
+first, his own order.
