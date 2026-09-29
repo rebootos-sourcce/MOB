@@ -75,16 +75,24 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    end for exactly that reason. Anything that needs the entry for a tab looks
    it up by .k, never by position.
 
-   TWO SURFACES CAME OFF THE BAR on the owner's ruling. Analytics folded into
-   Summary and Games folded into Knowledge, so neither has a top level door
-   any more. They are still surfaces with their own integers and their own
-   renderers: what changed is where the host element sits in the document.
-   #ana now lives inside #sum and #games inside #know, so the parent tab
-   showing itself shows the folded surface with it.
+   ANALYTICS IS UNFOLDED, round LV, on his words: "I want you to break out
+   the analytics from summary and give it its own summary page, sorry, its
+   own analytics page after summary, so it'll go story, avatar, summary,
+   analytics." Games carries the template, TWICE: folded into Knowledge and
+   then unfolded again, on the ruling that a game folded into a reference
+   page is neither. Same integer, TAB.ANALYTICS, never renumbered. Same
+   renderer, anaRender in ui/analytics.js, never rewritten. What moved is
+   where the door sits and where the host lives: it has an entry here again,
+   right after Summary as he named the order, and body.html gives #ana its
+   own place on the stage, a sibling of #sum and not a child inside it,
+   which is the #know and #games lesson this file already carries below.
+   TABFOLD no longer answers TAB.ANALYTICS with Summary, the same line Games
+   came out of when it was unfolded the first time.
 
-   Summary reads last. It is the conclusion and the owner ruled it opens
-   there, so the bar reads left to right as the instruments and then the
-   thing they add up to, and the app lands on the right hand end of it. */
+   Summary still reads last of the three Discover doors, on the ruling that
+   put it there: "then my intake then my summary." Analytics reads after it,
+   his own order, so Discover is Story, Avatar, Summary, Analytics and the
+   bar still closes the loop on Embody. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -160,6 +168,11 @@ const TABDEF=[
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
+    story, avatar, summary, analytics." Integer 4, unfolded: see the note
+    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
+    inside it, and anaRender in ui/analytics.js is unchanged. */
+ {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
  /* "I want to move all the tools to play. And then get rid of the tools
     tab." The instruments are Play now, and the app still opens on the Field,
     so Play is the section pressed at start. */
@@ -238,14 +251,19 @@ TABEXTRA[TAB.GAMES]={k:TAB.GAMES,id:'games',nm:'Games',cls:'tab-games'};
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  if(TABEXTRA[k])return TABEXTRA[k];
  return TABDEF[0];};
-/* A FOLDED SURFACE IS STILL A SURFACE. Analytics and Games kept their
-   integers, so a stored tab from a session before the fold still resolves to
-   something. It resolves to the tab that now carries it rather than silently
-   to the first entry in the bar, which is what TABOF would have done. */
+/* A FOLDED SURFACE IS STILL A SURFACE. TABFOLD is the map from an integer
+   with no door to the tab that carries it, so a stored tab from a session
+   before a fold still resolves to something rather than silently to the
+   first entry in the bar, which is what TABOF would have done.
+
+   IT IS EMPTY NOW. Both surfaces this file has ever folded have been
+   unfolded: Games first, back at KT and unfolded before this comment was
+   last true, and Analytics at round LV, in the same round this comment is
+   being corrected in. TABFOLD stays declared, empty, rather than removed,
+   because TABREAL still has to check it and a fold is exactly the kind of
+   ruling that gets made again. Adding one back is a single line here and a
+   TABDEF entry taken out, not a rewrite of the function below. */
 const TABFOLD={};
-TABFOLD[TAB.ANALYTICS]=TAB.SUMMARY;
-/* GAMES IS UNFOLDED. It has its own tab again on the owner's ruling, so it
-   must not resolve to Knowledge. */
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;

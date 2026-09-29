@@ -1694,8 +1694,6 @@ const sum=await page.evaluate(()=>{
   numRows:q('#sumbody .s-nrow'),
   numParts:q('#sumbody .s-npart'),
   rings:rings.length, badRing:badRing.length, emptyPill:emptyPill.length,
-  /* the folded analytics is still there, underneath */
-  ana:(document.getElementById('ana').textContent||'').trim().length,
   /* nothing may run wider than its own column */
   over:[...body.querySelectorAll('*')].filter(e=>e.scrollWidth>e.clientWidth+2
    &&getComputedStyle(e).overflowX==='visible').length,
@@ -1759,7 +1757,16 @@ console.log('\n=== the ladder, and no score ===');
  ok(!ld.pct,'and no mark carries a percentage');
  ok(!ld.total,'and the number of marks that exist is never stated');
  console.log('  marks',ld.marks,' streak',ld.streak);}
-ok(sum.ana>200,'the folded analytics renders underneath, got '+sum.ana+' chars');
+/* ANALYTICS HAS ITS OWN DOOR NOW, round LV, unfolded from Summary on the
+   Games precedent: an integer never renumbers, so it kept TAB.ANALYTICS and
+   this render is a tab of its own rather than a child that rode in on
+   Summary's arrival. This used to read #ana's text while still on the
+   Summary tab, where the fold left it visible; it is emptied on the way out
+   now, the same as every other tab, so the check follows it to its own
+   door. */
+const anaTab=await page.evaluate(()=>{loadP(PERSON('James')); setTab(TAB.ANALYTICS);
+ return (document.getElementById('ana').textContent||'').trim().length;});
+ok(anaTab>200,'Analytics renders on its own tab, got '+anaTab+' chars');
 ok(sum.over===0,'nothing on the surface overflows its own box, got '+sum.over);
 /* the prose is a reading, not a template: it names what was measured */
 ok(/blueprint you were born on|no birth data/.test(sum.text),
@@ -5397,12 +5404,13 @@ for(const rm of ['no-preference','reduce']){
  const sw=await gq.evaluate(()=>{loadP(PERSON('Tomas'));render();
   return hotList().every(n=>hotDir(n)==='steady');});
  ok(sw,rm+': a switch of record starts every address steady');
- /* the list on Analytics */
+ /* the list on Analytics, its own tab since round LV, no longer a fold
+    reached by opening Summary */
  await gq.evaluate(()=>{loadP(PERSON('Ana'));setTab(TAB.FIELD);render();});
  await settle();
  await gq.evaluate(()=>{S.charge.Anticipation=10;render();});
  await settle();
- const ana=await gq.evaluate(()=>{setTab(TAB.SUMMARY);render();
+ const ana=await gq.evaluate(()=>{setTab(TAB.ANALYTICS);render();
   const box=document.querySelector('#ana .ana-hot'), rows=box?[...box.querySelectorAll('.ad-r[data-addr]')]:[];
   const L=hotList();
   return {box:!!box,rows:rows.length,want:Math.min(ANA_HOT_ROWS,L.length),

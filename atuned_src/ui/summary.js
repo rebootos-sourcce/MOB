@@ -722,13 +722,23 @@ function sumFull(r){
       coherence, shadow weight, carried depth, pole, energy and identification
       are as energetic as anything on this page, and they were sitting under
       the reading in the centre. The centre is the story and the actions it
-      calls for. Everything measured is on the right. */
+      calls for. Everything measured is on the right.
+
+      TWO GROUPS, NOT FIVE SECTIONS IN ONE COLUMN. Round LV, his words on the
+      redesign: "organised, symmetrical and clean," and "the data organised
+      in a fashion that allows me to read this easily." Measured on James at
+      1600 with both rails shut: this column ran 2649px stacked five deep
+      while the reading beside it ran 971, which is neither organised nor
+      easy to read, it is a long scroll. What is read off the field groups
+      first, the glance and the structures; what is read off the birth date
+      groups second, the lenses, the spiritual layer and the numerology.
+      head.html lays the two groups side by side once there is real width
+      beside the centre lane, which brings the same column to 1954px, and
+      stacks them in this same order on anything narrower, so a phone and a
+      medium desktop read exactly as they did before this round. */
    +'<aside class="s-side">'
-    +sumGlance(r)
-    +sumStruct(r)
-    +sumLens(r)
-    +sumSpirit(r)
-    +sumNum(r)
+    +'<div class="s-side-a">'+sumGlance(r)+sumStruct(r)+'</div>'
+    +'<div class="s-side-b">'+sumLens(r)+sumSpirit(r)+sumNum(r)+'</div>'
    +'</aside>'
   +'</div>'
   /* INTEGRITY OVER TIME, FULL WIDTH, DAY TO FIVE YEARS. Ruled, and it is the

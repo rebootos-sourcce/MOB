@@ -1426,7 +1426,26 @@ body.punch .tp{font-weight:600}
    the document order is already the phone order so the stack costs
    one media query and no second markup.
    ============================================================ */
-.sum-wrap{width:100%;max-width:1180px;margin:0 auto}
+/* THE CAP WAS FIXED AT 1180 AND THE RAILS LEARNED TO COLLAPSE AFTER IT WAS
+   WRITTEN. Round LV, his words: "now that we've got the left and right
+   collapsible, we have all this empty space on the left and right of our
+   centre column." Measured with both rails shut at 1600: the stage grows to
+   about 1441px and the reading sat centred inside it at 1180, wasting about
+   130px of ground on each side, symmetrical and empty rather than
+   symmetrical and used. Measured on James at 1600 with both rails shut: the
+   stage itself already runs to 1444px, and the wrap sat capped at 1180,
+   wasting 264px split evenly either side of the reading. Raised, the wrap
+   fills to 1406 of that same 1444, the six pixels either side its own
+   padding. The cap is raised rather than removed, because the prose inside
+   still holds its own reading measure (.s-p, .s-src, .s-told-e p, .s-ptoward
+   all cap themselves in ch, not here), so a wider wrap does not make a
+   sentence unreadable; it gives the grids and the side column room to lay
+   out properly instead of a hard edge nothing on the page asked for. 1880 is
+   a ceiling for a genuinely ultra wide monitor, not a target: at every width
+   this build is actually tested on, the stage itself is narrower than this
+   and the cap never engages. Read the width off the run rather than this
+   comment, the way the project already asks of a count. */
+.sum-wrap{width:100%;max-width:1880px;margin:0 auto}
 
 /* the glance strip. every reading the product makes, in one row. */
 .s-glance{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:20px;
@@ -2832,6 +2851,23 @@ body.punch .set-sec{background:var(--panel-2);border-color:transparent}
  gap:22px;align-items:start}
 .s-main{min-width:0}
 .s-side{min-width:0;display:flex;flex-direction:column;gap:18px}
+/* THE SIDE COLUMN WAS FIVE SECTIONS IN ONE SCROLL. Glance, structures,
+   lenses, spiritual, numerology, stacked, and it ran far taller than the
+   reading beside it: measured on James at 1600 with both rails shut, the
+   side column ran 2649px against the reading's 971. "Organised, symmetrical,
+   clean" and "read this easily" both point at the same fix once there is
+   width to spend on it: split the five into two columns that stand at
+   closer to the same height, rather than one column that keeps going. Split
+   the same way, the side column measures 1954px against the same 971,
+   nearer the reading's own height and considerably less scrolling to reach
+   the numerology at the foot of it. Below the point where there is real
+   width to give it, it stays one column and reads top to bottom exactly as
+   it always did; nothing about the narrow or phone reading changes. */
+.s-side-a,.s-side-b{display:flex;flex-direction:column;gap:18px;min-width:0}
+@media (min-width:1500px){
+ .s-cols{grid-template-columns:minmax(0,1.15fr) minmax(460px,1fr);gap:28px}
+ .s-side{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;align-items:start}
+}
 /* the output row. Three cards, the block this page never had. */
 .s-outrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
  gap:12px;margin-bottom:18px}
@@ -4547,15 +4583,12 @@ body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
 body.tab-know #know{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-know) #know{display:none!important}
-/* A FOLDED SURFACE. Games inside Knowledge, Analytics inside Summary. It is in
-   flow rather than absolute, it does not scroll on its own because its parent
-   already does, and it has no visibility rule of its own: it is shown exactly
-   when the tab carrying it is shown. Two ids that used to be tabs, so the old
-   per tab rules for them are gone rather than left to fight this one. */
-.fold{display:block;width:100%;min-width:0;margin-top:26px;padding-top:22px;
- border-top:1px solid var(--edge)}
-.fold:empty{display:none;margin:0;padding:0;border:0}
-.fold>*{min-width:0}
+/* A FOLDED SURFACE HAD NO VISIBILITY RULE OF ITS OWN, .fold, IN FLOW RATHER
+   THAN ABSOLUTE, SHOWN EXACTLY WHEN ITS PARENT WAS. Games first, then
+   Analytics: both have been unfolded now, round LV finished what KT started,
+   and neither id sits inside another surface's host any more. .fold has no
+   caller left; it is not reused for the next fold, because the next surface
+   to lose its door is not decided by keeping a rule warm for it. */
 /* ============================================================
    THE AVATAR, round HG. The hero of the tab the intake used to own.
    Two bodies in one host: #avbody above, #iqbody under it. Everything here is

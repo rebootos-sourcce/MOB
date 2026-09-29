@@ -88,13 +88,17 @@ function anaRender(){
     because cr() appends one. A number with no scale is not a reading, it is a
     digit, and six of them sat here on six different scales. */
  var acc=accuracy(r);
- /* THIS SURFACE IS NO LONGER SOMEWHERE A PERSON NAVIGATES TO. It is folded
-    into Summary, and Summary is where the app opens, so it now renders to a
-    stranger who has entered nothing. The eyebrow already knew how to say
-    "not read yet" and the ring beside it printed 36 percent anyway, which is
-    the exact failure the ruling about the opening screen exposed. The ring
-    holds a dash and the arc holds nothing. Same rule as everywhere else: a
-    percentage is never printed off a default. */
+ /* THIS SURFACE IS A DOOR OF ITS OWN AGAIN, round LV, unfolded from Summary
+    on the same rule that put Games back on the bar: an integer never
+    renumbers, so Analytics kept TAB.ANALYTICS and this renderer the whole
+    time it had no door, and TABREAL no longer answers it with Summary. A
+    tab in the bar is one click from a stranger who has entered nothing, the
+    same reach it had while it rendered folded under Summary's own opening
+    screen, so the guard below still has to hold. The eyebrow already knew
+    how to say "not read yet" and the ring beside it printed 36 percent
+    anyway once, which is the exact failure the ruling about the opening
+    screen exposed. The ring holds a dash and the arc holds nothing. Same
+    rule as everywhere else: a percentage is never printed off a default. */
  out+='<div class="ab-hero">'
   +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'coherence',
     /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens

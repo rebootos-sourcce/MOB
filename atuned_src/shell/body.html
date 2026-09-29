@@ -446,6 +446,10 @@
     <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
     <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
     <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
+    <!-- ANALYTICS, RIGHT AFTER SUMMARY, round LV: "story, avatar, summary,
+         analytics." Integer 4, TAB.ANALYTICS, unfolded from Summary on the
+         Games template. engine/core.js has the ruling in full. -->
+    <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
    </div>
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
@@ -875,17 +879,16 @@
         own host, the #know and #knowbody lesson: a renderer that writes the
         whole of a shared host deletes its sibling on the way past. -->
    <div id="iq" class="iq"><div id="avbody"></div><div id="iqbody"></div></div>
-   <!-- Knowledge carries Games, and Summary carries Analytics. The owner ruled
-        both folds, so the host element moved inside its parent rather than the
-        tab being hidden while the surface stayed where it was. A folded host is
-        in flow, not an absolute overlay, which is what .fold says. -->
-   <!-- A TAB HOST THAT CARRIES TWO SURFACES CANNOT ALSO BE ONE OF THEM. The
-        first cut at the fold put #games straight inside #know, and kbRender
-        writes the whole innerHTML of its host, so rendering Knowledge deleted
-        the Games host on the way past and the fold rendered nothing. Caught by
-        the functional gate on the record, which is the same shape: sumRender
-        ate #ana. Each host now holds its own body and the folded surface
-        beside it, and each renderer owns only its own body. -->
+   <!-- KNOWLEDGE ONCE CARRIED GAMES, AND SUMMARY ONCE CARRIED ANALYTICS. Both
+        folds are undone now, Games at KT and Analytics at round LV, and this
+        note stays for the lesson rather than the state: A TAB HOST THAT
+        CARRIES A SECOND SURFACE CANNOT ALSO BE ONE OF THEM. The first cut at
+        the Games fold put #games straight inside #know, and kbRender writes
+        the whole innerHTML of its host, so rendering Knowledge deleted the
+        Games host on the way past and the fold rendered nothing. Caught by
+        the functional gate on the record. #knowbody exists for the same
+        reason #sumbody does: a renderer writes its own body and never the
+        shared host, whether or not that host is carrying anything else. -->
    <div id="know" class="iq"><div id="knowbody"></div></div>
    <!-- GAMES IS ITS OWN SURFACE AGAIN. Ruled. It was folded into Knowledge to
         get the bar to seven; they are independent games and a game folded
@@ -905,9 +908,18 @@
         Settings, never inside it: renderAccount writes the whole of #settings
         and would delete a host inside it on the way past. -->
    <div id="prac" class="iq"></div>
-   <div id="sum" class="iq">
-    <div id="sumbody"></div>
-    <div id="ana" class="fold"></div></div>
+   <div id="sum" class="iq"><div id="sumbody"></div></div>
+   <!-- ANALYTICS IS ITS OWN SURFACE AGAIN, round LV: "story, avatar,
+        summary, analytics." #ana was a child of #sum, in .fold, shown only
+        because #sum was. It has a door of its own now, so it has to be
+        able to show while #sum does not: setTab hides every host whose key
+        is not the current tab by id, and a child inside a hidden #sum would
+        be hidden with it no matter what its own display said. A sibling of
+        #sum, never inside it, on the same #know and #games rule this file
+        already names: a tab host that carries a folded surface cannot also
+        be one, and the reverse holds too, a surface with its own door
+        cannot be carried inside another host's. -->
+   <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
    <!-- the compass with volume. its own canvas, its own context, and an

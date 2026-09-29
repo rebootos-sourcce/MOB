@@ -1483,10 +1483,14 @@ function stRelPanel(){
    above are read here and the hot line is not. Nothing on an unread field,
    the rule anaHot already keeps.
 
-   THE DOOR GOES THROUGH TABREAL. Analytics is integer 4 and a folded surface,
-   so setTab resolves it to the tab that carries it and this never names that
-   tab. The folded host is then brought into view at its Running hot list,
-   which is the part of it this preview is a slice of.
+   THE DOOR IS ANALYTICS ITSELF, since round LV. Analytics is integer 4 and
+   had no door of its own for a while, folded into Summary and reached only
+   through TABREAL, which is why this used to call setTab(TAB.ANALYTICS) and
+   let the redirect find Summary rather than naming a tab that did not
+   exist. It has its own door again, TABREAL no longer answers it with
+   Summary, and the call below needs no change: it always meant Analytics
+   and now it also lands there. #ana is brought into view at its Running hot
+   list on arrival, which is the part of it this preview is a slice of.
    ============================================================ */
 var ST_ANA_TOP=3, ST_ANA_WIN=[[7,'Last 7 days'],[30,'Last 30 days']];
 /* the windows are cached on the record and the hour, so a render that moves

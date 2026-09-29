@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v946 7a58c1a 2026-09-29 18:34"><head><meta charset="utf-8">
+<html lang="en" data-build="v947 2df9cbc 2026-09-29 18:44"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1426,7 +1426,26 @@ body.punch .tp{font-weight:600}
    the document order is already the phone order so the stack costs
    one media query and no second markup.
    ============================================================ */
-.sum-wrap{width:100%;max-width:1180px;margin:0 auto}
+/* THE CAP WAS FIXED AT 1180 AND THE RAILS LEARNED TO COLLAPSE AFTER IT WAS
+   WRITTEN. Round LV, his words: "now that we've got the left and right
+   collapsible, we have all this empty space on the left and right of our
+   centre column." Measured with both rails shut at 1600: the stage grows to
+   about 1441px and the reading sat centred inside it at 1180, wasting about
+   130px of ground on each side, symmetrical and empty rather than
+   symmetrical and used. Measured on James at 1600 with both rails shut: the
+   stage itself already runs to 1444px, and the wrap sat capped at 1180,
+   wasting 264px split evenly either side of the reading. Raised, the wrap
+   fills to 1406 of that same 1444, the six pixels either side its own
+   padding. The cap is raised rather than removed, because the prose inside
+   still holds its own reading measure (.s-p, .s-src, .s-told-e p, .s-ptoward
+   all cap themselves in ch, not here), so a wider wrap does not make a
+   sentence unreadable; it gives the grids and the side column room to lay
+   out properly instead of a hard edge nothing on the page asked for. 1880 is
+   a ceiling for a genuinely ultra wide monitor, not a target: at every width
+   this build is actually tested on, the stage itself is narrower than this
+   and the cap never engages. Read the width off the run rather than this
+   comment, the way the project already asks of a count. */
+.sum-wrap{width:100%;max-width:1880px;margin:0 auto}
 
 /* the glance strip. every reading the product makes, in one row. */
 .s-glance{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:20px;
@@ -2832,6 +2851,23 @@ body.punch .set-sec{background:var(--panel-2);border-color:transparent}
  gap:22px;align-items:start}
 .s-main{min-width:0}
 .s-side{min-width:0;display:flex;flex-direction:column;gap:18px}
+/* THE SIDE COLUMN WAS FIVE SECTIONS IN ONE SCROLL. Glance, structures,
+   lenses, spiritual, numerology, stacked, and it ran far taller than the
+   reading beside it: measured on James at 1600 with both rails shut, the
+   side column ran 2649px against the reading's 971. "Organised, symmetrical,
+   clean" and "read this easily" both point at the same fix once there is
+   width to spend on it: split the five into two columns that stand at
+   closer to the same height, rather than one column that keeps going. Split
+   the same way, the side column measures 1954px against the same 971,
+   nearer the reading's own height and considerably less scrolling to reach
+   the numerology at the foot of it. Below the point where there is real
+   width to give it, it stays one column and reads top to bottom exactly as
+   it always did; nothing about the narrow or phone reading changes. */
+.s-side-a,.s-side-b{display:flex;flex-direction:column;gap:18px;min-width:0}
+@media (min-width:1500px){
+ .s-cols{grid-template-columns:minmax(0,1.15fr) minmax(460px,1fr);gap:28px}
+ .s-side{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;align-items:start}
+}
 /* the output row. Three cards, the block this page never had. */
 .s-outrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
  gap:12px;margin-bottom:18px}
@@ -4547,15 +4583,12 @@ body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
 body.tab-know #know{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-know) #know{display:none!important}
-/* A FOLDED SURFACE. Games inside Knowledge, Analytics inside Summary. It is in
-   flow rather than absolute, it does not scroll on its own because its parent
-   already does, and it has no visibility rule of its own: it is shown exactly
-   when the tab carrying it is shown. Two ids that used to be tabs, so the old
-   per tab rules for them are gone rather than left to fight this one. */
-.fold{display:block;width:100%;min-width:0;margin-top:26px;padding-top:22px;
- border-top:1px solid var(--edge)}
-.fold:empty{display:none;margin:0;padding:0;border:0}
-.fold>*{min-width:0}
+/* A FOLDED SURFACE HAD NO VISIBILITY RULE OF ITS OWN, .fold, IN FLOW RATHER
+   THAN ABSOLUTE, SHOWN EXACTLY WHEN ITS PARENT WAS. Games first, then
+   Analytics: both have been unfolded now, round LV finished what KT started,
+   and neither id sits inside another surface's host any more. .fold has no
+   caller left; it is not reused for the next fold, because the next surface
+   to lose its door is not decided by keeping a rule warm for it. */
 /* ============================================================
    THE AVATAR, round HG. The hero of the tab the intake used to own.
    Two bodies in one host: #avbody above, #iqbody under it. Everything here is
@@ -6503,6 +6536,10 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
     <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
     <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
+    <!-- ANALYTICS, RIGHT AFTER SUMMARY, round LV: "story, avatar, summary,
+         analytics." Integer 4, TAB.ANALYTICS, unfolded from Summary on the
+         Games template. engine/core.js has the ruling in full. -->
+    <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
    </div>
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
@@ -6932,17 +6969,16 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         own host, the #know and #knowbody lesson: a renderer that writes the
         whole of a shared host deletes its sibling on the way past. -->
    <div id="iq" class="iq"><div id="avbody"></div><div id="iqbody"></div></div>
-   <!-- Knowledge carries Games, and Summary carries Analytics. The owner ruled
-        both folds, so the host element moved inside its parent rather than the
-        tab being hidden while the surface stayed where it was. A folded host is
-        in flow, not an absolute overlay, which is what .fold says. -->
-   <!-- A TAB HOST THAT CARRIES TWO SURFACES CANNOT ALSO BE ONE OF THEM. The
-        first cut at the fold put #games straight inside #know, and kbRender
-        writes the whole innerHTML of its host, so rendering Knowledge deleted
-        the Games host on the way past and the fold rendered nothing. Caught by
-        the functional gate on the record, which is the same shape: sumRender
-        ate #ana. Each host now holds its own body and the folded surface
-        beside it, and each renderer owns only its own body. -->
+   <!-- KNOWLEDGE ONCE CARRIED GAMES, AND SUMMARY ONCE CARRIED ANALYTICS. Both
+        folds are undone now, Games at KT and Analytics at round LV, and this
+        note stays for the lesson rather than the state: A TAB HOST THAT
+        CARRIES A SECOND SURFACE CANNOT ALSO BE ONE OF THEM. The first cut at
+        the Games fold put #games straight inside #know, and kbRender writes
+        the whole innerHTML of its host, so rendering Knowledge deleted the
+        Games host on the way past and the fold rendered nothing. Caught by
+        the functional gate on the record. #knowbody exists for the same
+        reason #sumbody does: a renderer writes its own body and never the
+        shared host, whether or not that host is carrying anything else. -->
    <div id="know" class="iq"><div id="knowbody"></div></div>
    <!-- GAMES IS ITS OWN SURFACE AGAIN. Ruled. It was folded into Knowledge to
         get the bar to seven; they are independent games and a game folded
@@ -6962,9 +6998,18 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         Settings, never inside it: renderAccount writes the whole of #settings
         and would delete a host inside it on the way past. -->
    <div id="prac" class="iq"></div>
-   <div id="sum" class="iq">
-    <div id="sumbody"></div>
-    <div id="ana" class="fold"></div></div>
+   <div id="sum" class="iq"><div id="sumbody"></div></div>
+   <!-- ANALYTICS IS ITS OWN SURFACE AGAIN, round LV: "story, avatar,
+        summary, analytics." #ana was a child of #sum, in .fold, shown only
+        because #sum was. It has a door of its own now, so it has to be
+        able to show while #sum does not: setTab hides every host whose key
+        is not the current tab by id, and a child inside a hidden #sum would
+        be hidden with it no matter what its own display said. A sibling of
+        #sum, never inside it, on the same #know and #games rule this file
+        already names: a tab host that carries a folded surface cannot also
+        be one, and the reverse holds too, a surface with its own door
+        cannot be carried inside another host's. -->
+   <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
    <!-- the compass with volume. its own canvas, its own context, and an
@@ -11407,16 +11452,24 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    end for exactly that reason. Anything that needs the entry for a tab looks
    it up by .k, never by position.
 
-   TWO SURFACES CAME OFF THE BAR on the owner's ruling. Analytics folded into
-   Summary and Games folded into Knowledge, so neither has a top level door
-   any more. They are still surfaces with their own integers and their own
-   renderers: what changed is where the host element sits in the document.
-   #ana now lives inside #sum and #games inside #know, so the parent tab
-   showing itself shows the folded surface with it.
+   ANALYTICS IS UNFOLDED, round LV, on his words: "I want you to break out
+   the analytics from summary and give it its own summary page, sorry, its
+   own analytics page after summary, so it'll go story, avatar, summary,
+   analytics." Games carries the template, TWICE: folded into Knowledge and
+   then unfolded again, on the ruling that a game folded into a reference
+   page is neither. Same integer, TAB.ANALYTICS, never renumbered. Same
+   renderer, anaRender in ui/analytics.js, never rewritten. What moved is
+   where the door sits and where the host lives: it has an entry here again,
+   right after Summary as he named the order, and body.html gives #ana its
+   own place on the stage, a sibling of #sum and not a child inside it,
+   which is the #know and #games lesson this file already carries below.
+   TABFOLD no longer answers TAB.ANALYTICS with Summary, the same line Games
+   came out of when it was unfolded the first time.
 
-   Summary reads last. It is the conclusion and the owner ruled it opens
-   there, so the bar reads left to right as the instruments and then the
-   thing they add up to, and the app lands on the right hand end of it. */
+   Summary still reads last of the three Discover doors, on the ruling that
+   put it there: "then my intake then my summary." Analytics reads after it,
+   his own order, so Discover is Story, Avatar, Summary, Analytics and the
+   bar still closes the loop on Embody. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -11492,6 +11545,11 @@ const TABDEF=[
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
+    story, avatar, summary, analytics." Integer 4, unfolded: see the note
+    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
+    inside it, and anaRender in ui/analytics.js is unchanged. */
+ {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
  /* "I want to move all the tools to play. And then get rid of the tools
     tab." The instruments are Play now, and the app still opens on the Field,
     so Play is the section pressed at start. */
@@ -11570,14 +11628,19 @@ TABEXTRA[TAB.GAMES]={k:TAB.GAMES,id:'games',nm:'Games',cls:'tab-games'};
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  if(TABEXTRA[k])return TABEXTRA[k];
  return TABDEF[0];};
-/* A FOLDED SURFACE IS STILL A SURFACE. Analytics and Games kept their
-   integers, so a stored tab from a session before the fold still resolves to
-   something. It resolves to the tab that now carries it rather than silently
-   to the first entry in the bar, which is what TABOF would have done. */
+/* A FOLDED SURFACE IS STILL A SURFACE. TABFOLD is the map from an integer
+   with no door to the tab that carries it, so a stored tab from a session
+   before a fold still resolves to something rather than silently to the
+   first entry in the bar, which is what TABOF would have done.
+
+   IT IS EMPTY NOW. Both surfaces this file has ever folded have been
+   unfolded: Games first, back at KT and unfolded before this comment was
+   last true, and Analytics at round LV, in the same round this comment is
+   being corrected in. TABFOLD stays declared, empty, rather than removed,
+   because TABREAL still has to check it and a fold is exactly the kind of
+   ruling that gets made again. Adding one back is a single line here and a
+   TABDEF entry taken out, not a rewrite of the function below. */
 const TABFOLD={};
-TABFOLD[TAB.ANALYTICS]=TAB.SUMMARY;
-/* GAMES IS UNFOLDED. It has its own tab again on the owner's ruling, so it
-   must not resolve to Knowledge. */
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
@@ -28512,10 +28575,14 @@ function stRelPanel(){
    above are read here and the hot line is not. Nothing on an unread field,
    the rule anaHot already keeps.
 
-   THE DOOR GOES THROUGH TABREAL. Analytics is integer 4 and a folded surface,
-   so setTab resolves it to the tab that carries it and this never names that
-   tab. The folded host is then brought into view at its Running hot list,
-   which is the part of it this preview is a slice of.
+   THE DOOR IS ANALYTICS ITSELF, since round LV. Analytics is integer 4 and
+   had no door of its own for a while, folded into Summary and reached only
+   through TABREAL, which is why this used to call setTab(TAB.ANALYTICS) and
+   let the redirect find Summary rather than naming a tab that did not
+   exist. It has its own door again, TABREAL no longer answers it with
+   Summary, and the call below needs no change: it always meant Analytics
+   and now it also lands there. #ana is brought into view at its Running hot
+   list on arrival, which is the part of it this preview is a slice of.
    ============================================================ */
 var ST_ANA_TOP=3, ST_ANA_WIN=[[7,'Last 7 days'],[30,'Last 30 days']];
 /* the windows are cached on the record and the hour, so a render that moves
@@ -29474,13 +29541,23 @@ function sumFull(r){
       coherence, shadow weight, carried depth, pole, energy and identification
       are as energetic as anything on this page, and they were sitting under
       the reading in the centre. The centre is the story and the actions it
-      calls for. Everything measured is on the right. */
+      calls for. Everything measured is on the right.
+
+      TWO GROUPS, NOT FIVE SECTIONS IN ONE COLUMN. Round LV, his words on the
+      redesign: "organised, symmetrical and clean," and "the data organised
+      in a fashion that allows me to read this easily." Measured on James at
+      1600 with both rails shut: this column ran 2649px stacked five deep
+      while the reading beside it ran 971, which is neither organised nor
+      easy to read, it is a long scroll. What is read off the field groups
+      first, the glance and the structures; what is read off the birth date
+      groups second, the lenses, the spiritual layer and the numerology.
+      head.html lays the two groups side by side once there is real width
+      beside the centre lane, which brings the same column to 1954px, and
+      stacks them in this same order on anything narrower, so a phone and a
+      medium desktop read exactly as they did before this round. */
    +'<aside class="s-side">'
-    +sumGlance(r)
-    +sumStruct(r)
-    +sumLens(r)
-    +sumSpirit(r)
-    +sumNum(r)
+    +'<div class="s-side-a">'+sumGlance(r)+sumStruct(r)+'</div>'
+    +'<div class="s-side-b">'+sumLens(r)+sumSpirit(r)+sumNum(r)+'</div>'
    +'</aside>'
   +'</div>'
   /* INTEGRITY OVER TIME, FULL WIDTH, DAY TO FIVE YEARS. Ruled, and it is the
@@ -29786,13 +29863,17 @@ function anaRender(){
     because cr() appends one. A number with no scale is not a reading, it is a
     digit, and six of them sat here on six different scales. */
  var acc=accuracy(r);
- /* THIS SURFACE IS NO LONGER SOMEWHERE A PERSON NAVIGATES TO. It is folded
-    into Summary, and Summary is where the app opens, so it now renders to a
-    stranger who has entered nothing. The eyebrow already knew how to say
-    "not read yet" and the ring beside it printed 36 percent anyway, which is
-    the exact failure the ruling about the opening screen exposed. The ring
-    holds a dash and the arc holds nothing. Same rule as everywhere else: a
-    percentage is never printed off a default. */
+ /* THIS SURFACE IS A DOOR OF ITS OWN AGAIN, round LV, unfolded from Summary
+    on the same rule that put Games back on the bar: an integer never
+    renumbers, so Analytics kept TAB.ANALYTICS and this renderer the whole
+    time it had no door, and TABREAL no longer answers it with Summary. A
+    tab in the bar is one click from a stranger who has entered nothing, the
+    same reach it had while it rendered folded under Summary's own opening
+    screen, so the guard below still has to hold. The eyebrow already knew
+    how to say "not read yet" and the ring beside it printed 36 percent
+    anyway once, which is the exact failure the ruling about the opening
+    screen exposed. The ring holds a dash and the arc holds nothing. Same
+    rule as everywhere else: a percentage is never printed off a default. */
  out+='<div class="ab-hero">'
   +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'coherence',
     /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens
@@ -41507,16 +41588,21 @@ function setTab(i){
     value keep working instead of landing on whatever happens to be first. */
  i=TABREAL(i);
  /* A HIDDEN SURFACE THAT KEEPS ITS LAST RENDER IS STILL ASSERTING IT. Summary
-    and the analytics folded into it are the two surfaces that print a reading,
-    and both are rebuilt on entry, so what they hold while hidden is whatever
-    was true for whoever was loaded last. Leaving it there means the document
+    and Analytics are the two surfaces on this bar that print a reading, and
+    both are rebuilt on entry, so what they hold while hidden is whatever was
+    true for whoever was loaded last. Leaving it there means the document
     carries a coherence figure for a profile that is no longer selected, which
     anything reading the page finds, and the functional gate did: it swept the
     body on a cleared field and found two percentages nobody could see. They
-    are emptied on the way out rather than left to go stale. */
+    are emptied on the way out rather than left to go stale.
+
+    TWO SURFACES, TWO CONDITIONS, since round LV: Analytics unfolded from
+    Summary and #ana stopped being a child of #sum, so leaving one no longer
+    has anything to say about the other. Each empties only its own host. */
  if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
-  var sb=$('sumbody'), ab=$('ana');
-  if(sb)sb.innerHTML=''; if(ab)ab.innerHTML='';}
+  var sb=$('sumbody'); if(sb)sb.innerHTML='';}
+ if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
+  var ab=$('ana'); if(ab)ab.innerHTML='';}
  S.tab=i; S.pin=null;
  /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
     Settings was shown and hidden by hand below, which held while Settings was
@@ -41682,8 +41768,12 @@ function setTab(i){
  if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
  if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
- /* Summary carries Analytics, and reads last. */
- if(i===TAB.SUMMARY){sumRender(); anaRender();}
+ /* SUMMARY AND ANALYTICS EACH RENDER TO THEIR OWN DOOR, since round LV. This
+    called both on entry to Summary, back when Analytics had no door of its
+    own and rode in on Summary's arrival; now each tab renders only itself,
+    the same shape as every other entry below. */
+ if(i===TAB.SUMMARY)sumRender();
+ else if(i===TAB.ANALYTICS)anaRender();
  /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
     the cone marker on the Field stage, then a button inside the drill that
     opened. The owner looked for it and could not find it, which is the whole
@@ -46491,5 +46581,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003040814"></div>
+<div id="eof" hidden data-len="003047705"></div>
 </body></html>

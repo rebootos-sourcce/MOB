@@ -87,16 +87,18 @@ ok(depthsOn.some(d=>d.nm==='Depth')&&depthsOn.every(d=>d.on),
  +(depthsOn.filter(d=>!d.on).map(d=>d.nm).join(', ')||'none'));
 
 console.log('\n=== 2 · one tab surface visible, plus whatever it carries ===');
-/* THE INVARIANT MOVED, because the information architecture did. It used to be
-   one visible surface per tab and nothing else, which is what caught three
-   stacking bugs. Two surfaces are now folded inside others: #ana lives in #sum
-   and #games lives in #know, so the parent being visible makes the child
-   visible with it and that is the point. The invariant is that exactly one TAB
-   surface is visible, and anything else visible must be a descendant of it. A
-   sibling surface showing through is still the bug it always was. */
-/* Analytics is the one fold left. Games came back out on the owner's ruling
-   and has its own tab and its own host again. */
-const FOLDOF={ana:'sum'};
+/* THE INVARIANT MOVED, when the information architecture did, and moved back
+   when the fold did. It used to be one visible surface per tab and nothing
+   else, which is what caught three stacking bugs; folding Games into
+   Knowledge and Analytics into Summary made a second surface visible on
+   purpose, so the rule became that exactly one TAB surface is visible and
+   anything else visible must be a fold's own descendant. Both folds are
+   undone now, Games at KT and Analytics at round LV, so FOLDOF is empty:
+   every tab this sweeps shows exactly its own surface and nothing riding
+   in with it. Left declared rather than removed, since a fold is exactly
+   the kind of ruling that gets made again, the same reasoning TABFOLD in
+   engine/core.js already carries for the same empty state. */
+const FOLDOF={};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
 const TABN=['Story','Summary','Field','Energy','Analytics','Intake','Knowledge',

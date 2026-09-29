@@ -85,16 +85,21 @@ function setTab(i){
     value keep working instead of landing on whatever happens to be first. */
  i=TABREAL(i);
  /* A HIDDEN SURFACE THAT KEEPS ITS LAST RENDER IS STILL ASSERTING IT. Summary
-    and the analytics folded into it are the two surfaces that print a reading,
-    and both are rebuilt on entry, so what they hold while hidden is whatever
-    was true for whoever was loaded last. Leaving it there means the document
+    and Analytics are the two surfaces on this bar that print a reading, and
+    both are rebuilt on entry, so what they hold while hidden is whatever was
+    true for whoever was loaded last. Leaving it there means the document
     carries a coherence figure for a profile that is no longer selected, which
     anything reading the page finds, and the functional gate did: it swept the
     body on a cleared field and found two percentages nobody could see. They
-    are emptied on the way out rather than left to go stale. */
+    are emptied on the way out rather than left to go stale.
+
+    TWO SURFACES, TWO CONDITIONS, since round LV: Analytics unfolded from
+    Summary and #ana stopped being a child of #sum, so leaving one no longer
+    has anything to say about the other. Each empties only its own host. */
  if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
-  var sb=$('sumbody'), ab=$('ana');
-  if(sb)sb.innerHTML=''; if(ab)ab.innerHTML='';}
+  var sb=$('sumbody'); if(sb)sb.innerHTML='';}
+ if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
+  var ab=$('ana'); if(ab)ab.innerHTML='';}
  S.tab=i; S.pin=null;
  /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
     Settings was shown and hidden by hand below, which held while Settings was
@@ -260,8 +265,12 @@ function setTab(i){
  if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
  if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
- /* Summary carries Analytics, and reads last. */
- if(i===TAB.SUMMARY){sumRender(); anaRender();}
+ /* SUMMARY AND ANALYTICS EACH RENDER TO THEIR OWN DOOR, since round LV. This
+    called both on entry to Summary, back when Analytics had no door of its
+    own and rode in on Summary's arrival; now each tab renders only itself,
+    the same shape as every other entry below. */
+ if(i===TAB.SUMMARY)sumRender();
+ else if(i===TAB.ANALYTICS)anaRender();
  /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
     the cone marker on the Field stage, then a button inside the drill that
     opened. The owner looked for it and could not find it, which is the whole
