@@ -48,7 +48,32 @@
                   export, and that is named as a cost in the report.
    ============================================================ */
 var RIT={open:false, sel:{}, order:[], from:null, all:false, when:'', where:'',
- days:7, add:false, edit:null, exp:null, view:'month', mo:0, day:null, gone:null, hn:40};
+ days:7, add:false, edit:null, exp:null, view:'month', mo:0, day:null, gone:null, hn:40,
+ /* ROUND LT, HIS WORDS: "I should be able to add tags to create the ritual,
+    put a timer for it, how often I want to do it." Draft state for the three,
+    the same posture as when/where above: held here while the builder is open
+    and written onto the plan by ritStart/ritSaveEdit. freq is sessions a week
+    and defaults to 7, every day, which is what a ritual with no frequency
+    chosen has always meant here; nothing that reads an existing plan without
+    it changes behaviour. */
+ tags:[], tagIn:'', freq:7, timerMin:null};
+/* THE LIVE TIMER IS VIEW STATE, LIKE HOVER AND PIN, AND NEVER PERSISTED. One
+   at a time, named by the plan id it is running against, so switching rituals
+   or leaving the tab cannot leave two intervals ticking against the same
+   render. RIT_TIV is the interval handle and is never put in RIT: RIT is
+   rebuilt wholesale in places (ritOpen) and an interval handle dropped that
+   way would still be running with nothing left to clear it. */
+var RIT_TIMER={id:null,left:0}, RIT_TIV=null;
+function ritTimerStop(){ if(RIT_TIV){clearInterval(RIT_TIV); RIT_TIV=null;} }
+function ritTimerStart(id,mins){
+ if(RIT_TIMER.id!==id||RIT_TIMER.left<=0)RIT_TIMER={id:id,left:Math.max(1,Math.round(mins*60))};
+ ritTimerStop();
+ RIT_TIV=setInterval(function(){
+  RIT_TIMER.left=Math.max(0,RIT_TIMER.left-1);
+  if(RIT_TIMER.left<=0)ritTimerStop();
+  ritRender();},1000);}
+function ritTimerReset(id,mins){ ritTimerStop(); RIT_TIMER={id:id,left:Math.round(mins*60)};}
+function ritTimerMMSS(s){var m=Math.floor(s/60), ss=Math.floor(s%60); return m+':'+(ss<10?'0':'')+ss;}
 var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                 Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
@@ -101,6 +126,7 @@ function ritFor(r){
 function ritOpen(fromLog){
  RIT.open=true; RIT.from=fromLog||null; RIT.sel={}; RIT.order=[]; RIT.all=false;
  RIT.when=''; RIT.where=''; RIT.edit=null; RIT.exp=null; RIT.days=7;
+ RIT.tags=[]; RIT.tagIn=''; RIT.freq=7; RIT.timerMin=null;
  RIT.add=!!(fromLog&&fromLog.length);
  ritRender();}
 /* THE ONE ALREADY SAVED, newest first. A ritual is a plan and a plan a person
@@ -146,6 +172,21 @@ var RIT_KEY='atuned-ritual-active';
    week project. 0 is no end. */
 var RIT_SPANS=[{d:1,nm:'A day'},{d:7,nm:'A week'},{d:14,nm:'Two weeks'},{d:0,nm:'No end'}];
 var RIT_SPAN_D=RIT_SPANS.map(function(s){return s.d;});
+/* HOW OFTEN. Round LT, his words: "how often I want to do it." The record
+   and ritActive/ritCovers read a ritual's window in days and say nothing
+   about which days inside it, so a person has always been asked to practise
+   daily for the span they chose. freq does not change that: it is a stated
+   target, shown back to the person and never read by the streak or the
+   record, because building the schedule that would make three days a week
+   actually skip four is a different feature with its own ruling to ask for.
+   That limit is named in the report and not hidden in the choice of word. 7
+   is every day, the number a plan with no freq chosen has always meant. */
+var RIT_FREQS=[{n:7,nm:'Every day'},{n:5,nm:'5 days a week'},{n:3,nm:'3 days a week'},{n:1,nm:'Once a week'}];
+/* A TAG IS A SHORT WORD, NOT A SENTENCE. RIT_PLAN_MAX (schema.js) is the
+   boundary's own cap for a free text field on this record and is reused
+   rather than typed again; RIT_TAG_MAX is this list's own length, since
+   nothing else caps how many a person can pile onto one ritual. */
+var RIT_TAG_MAX=6;
 function ritSideAll(){
  if(typeof STORE==='undefined')return {};
  try{var o=JSON.parse(STORE.get(RIT_KEY)||'{}');
@@ -168,7 +209,16 @@ function ritPlanOk(p){
   /* tc is the teacher a ritual of becoming was started toward, an axis or
      path key. It lives here beside the record and not on it, so it is no
      schema change. */
-  &&(p.tc==null||(typeof p.tc==='string'&&!!becomingOf(p.tc))));}
+  &&(p.tc==null||(typeof p.tc==='string'&&!!becomingOf(p.tc)))
+  /* TAGS, FREQUENCY AND A TIMER, ROUND LT. All three sit beside the record
+     exactly where days, when and where already do, refused by shape rather
+     than clamped: a tag list past RIT_TAG_MAX or a freq outside one to seven
+     is not silently trimmed, it fails ritPlanOk and the plan is read as
+     carrying none of the three, the same posture the rest of this function
+     already takes with an out of range span. */
+  &&(p.tags==null||(Array.isArray(p.tags)&&p.tags.length<=RIT_TAG_MAX&&p.tags.every(st)))
+  &&(p.freq==null||(typeof p.freq==='number'&&p.freq>=1&&p.freq<=7&&Math.floor(p.freq)===p.freq))
+  &&(p.timerMin==null||(typeof p.timerMin==='number'&&p.timerMin>0&&p.timerMin<=180)));}
 function ritPlans(){
  if(!CURP||!CURP.id)return [];
  var a=ritSideAll()[CURP.id];
@@ -176,7 +226,8 @@ function ritPlans(){
  return a.filter(ritPlanOk).map(function(p){
   return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
    days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
-   rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc)};});}
+   rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc),
+   tags:(p.tags||[]).slice(), freq:(p.freq==null?7:p.freq), timerMin:(p.timerMin==null?null:p.timerMin)};});}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false. */
 function ritPlanPut(list){
@@ -268,6 +319,15 @@ function ritPick(k){
  RIT.sel[k]=!RIT.sel[k];
  if(RIT.sel[k]){RIT.order=RIT.order.filter(function(x){return x!==k;}); RIT.order.push(k);}
  else RIT.order=RIT.order.filter(function(x){return x!==k;});}
+/* TAGS ON THE DRAFT. A tag typed twice, by case, is one tag: "Morning" and
+   "morning" read as the same word to a person skimming a list of rituals. */
+function ritTagAdd(t){
+ t=String(t||'').trim(); if(!t||t.length>RIT_PLAN_MAX)return;
+ var low=t.toLowerCase();
+ if(RIT.tags.some(function(x){return x.toLowerCase()===low;}))return;
+ if(RIT.tags.length>=RIT_TAG_MAX)return;
+ RIT.tags.push(t); RIT.tagIn='';}
+function ritTagDel(i){ RIT.tags.splice(i,1); }
 
 /* START. The plan is written beside the record and today goes on the record as
    set and not done, which is exactly what Save ritual wrote before: said is
@@ -291,10 +351,13 @@ function ritStartPlan(q,msg){
    if(same.days){var need=q.days?today-ritStart0(same)+q.days:0;
     if(!need||need>same.days)same.days=need;}
    if(q.rel!=null)same.rel=q.rel;
-   if(q.tc)same.tc=q.tc;}
+   if(q.tc)same.tc=q.tc;
+   if(q.tags&&q.tags.length)same.tags=q.tags;
+   if(q.freq)same.freq=q.freq;
+   if(q.timerMin)same.timerMin=q.timerMin;}
   else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
    from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
-   tc:q.tc||null});
+   tc:q.tc||null, tags:q.tags||[], freq:q.freq||7, timerMin:(q.timerMin||null)});
   if(!ritEntryFor({steps:steps},today))
    CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
     when:q.when, where:q.where, done:false}));
@@ -302,9 +365,10 @@ function ritStartPlan(q,msg){
 function ritStart(c){
  var steps=ritDraft(); if(!steps.length)return;
  var ok=ritStartPlan({steps:steps, band:compute().unread?'':c.band, track:c.track,
-  days:RIT.days, when:RIT.when, where:RIT.where});
+  days:RIT.days, when:RIT.when, where:RIT.where,
+  tags:RIT.tags.slice(), freq:RIT.freq, timerMin:RIT.timerMin});
  if(ok){RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.add=false; RIT.all=false;
-  RIT.from=null; ritRender();}}
+  RIT.from=null; RIT.tags=[]; RIT.tagIn=''; RIT.freq=7; RIT.timerMin=null; ritRender();}}
 /* A RELEASE SCHEDULE. The practice the pattern's own seat calls for, every day
    for the span he named, carrying the place it is for, so the Active row can
    open the release on that place any day. The record holds practices and not
@@ -394,12 +458,14 @@ function ritSaveEdit(){
      is history and is not rewritten. */
   var e=ritEntryFor(p,today);
   p.steps=steps; p.when=RIT.when||''; p.where=RIT.where||'';
+  p.tags=RIT.tags.slice(); p.freq=RIT.freq; p.timerMin=RIT.timerMin;
   /* a span chosen while editing runs from today, not from the day the ritual
      began, or a week chosen on a ritual five weeks old would end it */
   if(RIT.days>=0)p.days=RIT.days?today-ritStart0(p)+RIT.days:0;
   if(e&&!ritIsDone(e.x)){e.x.steps=steps; e.x.min=ritMin(steps); e.x.when=p.when; e.x.where=p.where;}
   return plans;},'Saved.');
- if(ok){RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.all=false;}}
+ if(ok){RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where='';
+  RIT.tags=[]; RIT.tagIn=''; RIT.freq=7; RIT.timerMin=null; RIT.all=false;}}
 function ritEditOpen(id){
  var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
  RIT.edit=id; RIT.add=false; RIT.sel={}; RIT.order=p.steps.slice();
@@ -407,7 +473,9 @@ function ritEditOpen(id){
  /* no span is chosen on the way in. A chip reading A week on a ritual with two
     days left would be a claim, so the chips start empty with what is left
     beside them, and a span chosen here runs from today. */
- RIT.when=p.when; RIT.where=p.where; RIT.days=-1; RIT.all=false; ritRender();
+ RIT.when=p.when; RIT.where=p.where; RIT.days=-1; RIT.all=false;
+ RIT.tags=p.tags.slice(); RIT.tagIn=''; RIT.freq=p.freq||7; RIT.timerMin=p.timerMin||null;
+ ritRender();
  var f=document.querySelector('.rv-build'); if(f&&f.scrollIntoView)f.scrollIntoView({block:'nearest'});}
 /* MARK DONE, AND UNDO IT WITH THE SAME PRESS. Today, and yesterday, because
    the streak already forgives a day (streakRead) and a person who practised
@@ -484,6 +552,7 @@ function ritAgain(id){
  var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
  RIT.sel={}; RIT.order=p.steps.slice(); p.steps.forEach(function(k){RIT.sel[k]=true;});
  RIT.when=p.when; RIT.where=p.where; RIT.days=RIT_SPAN_D.indexOf(p.days)>=0?p.days:7; RIT.add=true; RIT.edit=null;
+ RIT.tags=p.tags.slice(); RIT.tagIn=''; RIT.freq=p.freq||7; RIT.timerMin=p.timerMin||null;
  ritRender();}
 /* DELETE, AND PUT IT BACK. Undo beats confirm, rule 5. The engine's undo
    holds the field and not this list, so the one thing deleted last is held
