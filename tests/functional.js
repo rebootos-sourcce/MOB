@@ -245,45 +245,98 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {into:into,b1:b1,shown:k.shown,ms:Math.round(performance.now()-t0)};},newT);
  ok(live.into&&live.b1===lv0+1&&live.shown===live.b1,'a story written into the pelvis is one more Child pixel, '
   +lv0+' to '+live.b1+', drawn '+live.shown+' in '+live.ms+'ms'+(live.into?'':', and the story did not land there'));
- /* THE MASKS DOOR, round LE, his words, marked urgent: "the masks should be
-    under the play tab. It should go field intake compass mask". The same
-    figure moved into its own host with the masks the only thing on it, so it
-    is held to the same pixels as the Intake above, on the same profile, and
-    then the Intake is held to what it had before the visit. */
+ /* THE CHARACTER PAGE, round LP, which replaced the Masks door in full on his
+    words: "if what you're asking in the current mask page is the human body
+    with all the chakra points, then yes, it definitely replaces all that."
+    The door keeps integer 11 and host #masksview and draws six pixel grids
+    (ui/character.js), so the Body's figure is held to never arriving there,
+    and the Body is held to what it had before the visit.
+
+    What is asserted about the grids is worked out here from compute(), not
+    from the function that draws them: every lit pixel belongs to an address
+    under that mask's own seats and carrying at least 1 in the reading shown,
+    the resolution follows the rule read straight off r.sabs and r.cxs, the
+    Light switch changes the pixels and never the grid, and two people with
+    different saboteurs get a different Child. */
  const mv=await sp.evaluate(async()=>{
   const pressed=()=>[...document.querySelectorAll('#bmov [data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');
-  const before={on:pressed(),mode:BM.mode,n:BMG.masks.map(k=>bmMaskRead(k,compute()).px.length)};
-  document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]').click();
-  await new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
-  const r=compute(), host=document.getElementById('masksview'), t0=performance.now();
-  while(BMG.masks.some(k=>k.shown!==bmMaskLit(k,r))&&performance.now()-t0<3000)await new Promise(q=>requestAnimationFrame(q));
-  const cx=BM.cv.getContext('2d');
-  const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),
-   inHost:host.contains(BM.cv)&&host.contains(BM.sv),emap:document.getElementById('emap').children.length,
-   bmov:!!document.getElementById('bmov'),regs:!!document.getElementById('bmregs'),
-   rbar:getComputedStyle(document.getElementById('rbar')).display,
-   on:Object.keys(BM.ov.on).filter(k=>BM.ov.on[k]).join(','),views:bmViews().join(','),hubs:BM.hubs.length,
-   hits:[...new Set([...host.querySelectorAll('[data-bmmask]')].map(h=>h.getAttribute('data-bmmask')))].length,
-   masks:BMG.masks.map(k=>{const rd=bmMaskRead(k,r);let bone=0;
-    rd.px.forEach(x=>{const s=bmW2S(x.p.x,x.p.y),d=cx.getImageData(Math.round(s[0]*BM.dpr),Math.round(s[1]*BM.dpr),1,1).data;
-     if(d[0]>90&&d[0]>=d[2]+12)bone++;});
-    return {nm:k.nm,n:rd.px.length,bone:bone};})};
-  setTab(TAB.ENERGY); render();
-  await new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
-  out.back={on:pressed(),mode:BM.mode,views:bmViews().join(','),masksview:host.children.length,
-   orbs:document.querySelectorAll('#bmov .fb-b .fb-orb').length,regs:!!document.getElementById('bmregs')};
+  const before={on:pressed(),mode:BM.mode};
+  const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+  const btn=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]');
+  btn.click(); await fr();
+  const r=compute(), host=document.getElementById('masksview');
+  const val=(n,f)=>f==='light'?Math.max(n.pole||0,n.jq||0):(n.sq||0);
+  const wantG=m=>{const u=r.sabs.filter(s=>s.parts.some(n=>n&&m.b.indexOf(n.b)>=0));
+   return !u.length?16:r.cxs.some(c=>c.parts.some(s=>u.indexOf(s)>=0))?32:24;};
+  const read=f=>MASKS.map(m=>{const rd=chRead(m,r,f);
+   return {nm:m.nm,G:rd.G,want:wantG(m),lit:rd.px.length,
+    stray:rd.px.filter(x=>m.b.indexOf(x.n.b)<0||val(x.n,f)<1).length,
+    left:rd.px.every(x=>x.p[0]<rd.G/2),
+    pos:rd.px.map(x=>x.p.join(':')).join(' ')};});
+  const cards=()=>[...host.querySelectorAll('.chv-m')].map(c=>({nm:c.getAttribute('data-chmask'),
+   txt:(c.querySelector('.chv-nm')||{}).textContent,G:+(c.querySelector('svg')||{getAttribute:()=>0}).getAttribute('data-chres'),
+   svg:(c.querySelector('svg')||{}).outerHTML||''}));
+  const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),label:(btn.querySelector('.n')||{}).textContent,
+   figure:!!(BM.cv&&host.contains(BM.cv)),emapFig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),
+   dark:read('dark'),cards:cards(),empty:!!host.querySelector('.chv-empty'),roster:MASKS.map(m=>m.nm).join()};
+  /* the switch */
+  host.querySelector('[data-chface="light"]').click(); await fr();
+  out.light=read('light'); out.lcards=cards();
+  out.lpressed=host.querySelector('[data-chface="light"]').getAttribute('aria-pressed');
+  host.querySelector('[data-chface="dark"]').click(); await fr();
+  /* a press on a whole mask answers in Selection, both readings */
+  host.querySelector('[data-chmask="Child"]').click(); await fr();
+  const d=document.getElementById('rdrill');
+  out.drill={shown:d.style.display!=='none',t:d.textContent,svgs:d.querySelectorAll('.chv-pair svg').length,
+   on:(host.querySelector('[data-chmask="Child"]')||{}).getAttribute('aria-pressed')};
+  host.querySelector('[data-chmask="Child"]').click(); await fr();
+  out.drill.after=d.style.display==='none'&&host.querySelector('[data-chmask="Child"]').getAttribute('aria-pressed')==='false';
+  setTab(TAB.ENERGY); render(); await fr();
+  out.back={on:pressed(),mode:BM.mode,views:bmViews().join(','),
+   orbs:document.querySelectorAll('#bmov .fb-b .fb-orb').length,regs:!!document.getElementById('bmregs'),
+   fig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),chv:!!host.querySelector('.chv')};
   out.before=before;
+  /* the shape is the person's: two reference people, one mask */
+  const child=nm=>{loadP(PEOPLE.findIndex(p=>p.nm===nm));const rr=compute();
+   return chRead(MASKS[0],rr,'dark').px.map(x=>x.p.join(':')+x.n.b).join(' ');};
+  out.james=child('James'); out.derek=child('Derek');
   return out;});
- ok(mv.tab&&mv.sec==='play','the Masks door opens and sits in Play, '+mv.sec);
- ok(mv.inHost&&mv.emap===0,'the figure is built in the Masks host and the Intake host it left is empty, '+mv.emap+' children left');
- ok(!mv.bmov&&!mv.regs&&mv.rbar==='none','no overlay column, no region buttons and no sub bar row on the Masks door');
- ok(mv.on==='masks'&&mv.views==='0'&&mv.hubs===0,'only the masks are on, on the front figure alone, got '+mv.on+' on views '+mv.views);
- ok(mv.hits===6,'all six masks stand on the Masks door, '+mv.hits);
- ok(mv.masks.every((x,i)=>x.n===mv.before.n[i])&&mv.masks.filter(x=>x.n>0).length>=3,
-  'the same stories light the same masks as on the Intake, '+mv.masks.map(x=>x.nm+' '+x.n).join(', '));
- ok(mv.masks.every(x=>x.bone>=x.n*0.5),'and they reach the canvas there, '+mv.masks.map(x=>x.nm+' '+x.bone+'/'+x.n).join(', '));
- ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.masksview===0,
-  'and the Intake gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
+ ok(mv.tab&&mv.sec==='play'&&mv.label==='Character','the door is Character, in Play, integer 11, got '+mv.label+' in '+mv.sec);
+ ok(!mv.figure&&mv.emapFig,'the Body\'s figure never comes to the Character page and stays in the Body\'s host');
+ ok(mv.cards.map(c=>c.nm).join()===mv.roster&&mv.cards.every(c=>c.txt===c.nm&&c.svg.indexOf('<svg')===0),
+  'six grids in the roster\'s order, each under its own name, '+mv.cards.map(c=>c.txt).join(','));
+ ok(!mv.empty,'a profile with stories in says nothing about being empty');
+ ok(mv.dark.every(x=>x.stray===0)&&mv.light.every(x=>x.stray===0),'every lit pixel is an address under that mask\'s own seats, held at 1 or more, '
+  +mv.dark.concat(mv.light).filter(x=>x.stray).map(x=>x.nm+' '+x.stray).join(', '));
+ ok(mv.dark.every(x=>x.left),'the half face is laid down and the other half is its mirror');
+ ok(mv.dark.every(x=>x.G===x.want)&&mv.cards.every((c,i)=>c.G===mv.dark[i].want),
+  'each grid is 16, 24 or 32 across by what has formed under it, '+mv.dark.map(x=>x.nm+' '+x.G+'/'+x.want).join(', '));
+ ok(mv.dark.filter(x=>x.lit>0).length>=3,'the stories light three masks or more, '+mv.dark.map(x=>x.nm+' '+x.lit).join(', '));
+ ok(mv.lpressed==='true'&&mv.lcards.every((c,i)=>c.G===mv.cards[i].G),'Light is pressed and the grid under each mask does not move');
+ ok(mv.light.some((x,i)=>x.pos!==mv.dark[i].pos)||mv.light.every(x=>!x.lit),'and Light lights its own reading, not the dark one again');
+ ok(mv.drill.shown&&/Child/.test(mv.drill.t)&&/The dark mask/i.test(mv.drill.t)&&/The light mask/i.test(mv.drill.t)&&mv.drill.svgs===2&&mv.drill.on==='true',
+  'pressing the Child opens its summary in Selection, both readings and both grids, '+mv.drill.svgs+' grids');
+ ok(mv.drill.after,'a second press puts it down');
+ ok(mv.james&&mv.derek&&mv.james!==mv.derek,'James and Derek, different saboteurs, light a different Child');
+ console.log('  Character, dark: '+mv.dark.map(x=>x.nm+' '+x.G+' across '+x.lit+' lit').join(', '));
+ ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chv,
+  'and the Body gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
+ /* and a stranger, on a fresh page: the empty state reads honestly, nothing
+    lit anywhere, and the six faces are still six different masks, which is
+    the mark doing its job before any data arrives */
+ {const bp=await browser.newPage({viewport:{width:1600,height:1000}});
+  const bpErr=[];bp.on('pageerror',e=>bpErr.push(e.message));
+  await bp.goto(FILE,{waitUntil:'load'}); await booted(bp);
+  const bl=await bp.evaluate(()=>{setTab(TAB.MASKS);render();const host=document.getElementById('masksview');
+   const sv=[...host.querySelectorAll('.chv-m svg')];
+   return {unread:compute().unread,empty:(host.querySelector('.chv-empty')||{}).textContent||'',
+    lit:sv.map(x=>+x.getAttribute('data-chlit')),res:sv.map(x=>+x.getAttribute('data-chres')),
+    faces:new Set(sv.map(x=>x.innerHTML)).size};});
+  ok(bl.unread&&/^Nothing read yet, so the masks are empty\./.test(bl.empty),'a stranger reads that nothing is read yet, got '+bl.empty);
+  ok(bl.lit.every(n=>n===0)&&bl.res.every(g=>g===16),'nothing lit and every grid at its first size, '+bl.lit.join(',')+' / '+bl.res.join(','));
+  ok(bl.faces===6,'and the six empty faces are six different masks, '+bl.faces+' distinct');
+  ok(bpErr.length===0,'no page errors on a fresh page, '+bpErr.join(' | '));
+  await bp.close();}
  ok(spErr.length===0,'no page errors on the story profile, '+spErr.join(' | '));
  await sp.close();
  /* the press, aimed at a lit dot with no address or line under it */
@@ -2280,9 +2333,9 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
  ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
-  'LD and LE: Story, Avatar and Summary in Discover, Field, Body, Compass and Masks in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Body,Compass,Masks / Field,Body,Compass,Masks',
-  'Play reads in his order, Field, Body, Compass, Masks, in the engine and the bar alike, '+nav.play);
+  'LD and LE: Story, Avatar and Summary in Discover, Field, Body, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Body,Compass,Character / Field,Body,Compass,Character',
+  'Play reads in his order, Field, Body, Compass, Character, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
   'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));

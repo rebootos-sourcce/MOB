@@ -100,9 +100,10 @@ const FOLDOF={ana:'sum'};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
 const TABN=['Story','Summary','Field','Energy','Analytics','Intake','Knowledge',
- 'Games','Compass','Settings','Ritual','Masks','Practitioner'];
-/* 11 is the Masks door, LE: the Intake's figure in a host of its own, and
-   the one surface most likely to show through the other, so both are swept */
+ 'Games','Compass','Settings','Ritual','Character','Practitioner'];
+/* 11 is the Character page, LP, in the host the Masks door had (LE). It sits
+   over the same stage as the Body, so the two are the pair most likely to
+   show through each other, and both are swept */
 /* 12 is the practitioner sketch, LL, swept with its door shut, because setTab
    still opens it and a surface whose door is shut is still a surface */
 for(const i of [0,1,2,3,4,6,7,8,11,12]){

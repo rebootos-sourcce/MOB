@@ -188,7 +188,16 @@ const TABDEF=[
     which a person has to know to look for. This is the same figure drawn by
     the same renderer, with the masks the only thing on it (bmRender and
     BMVIEW in ui/map.js), so the two cannot disagree about a pixel. */
- {k:TAB.MASKS,   id:'masksview', nm:'Masks', cls:'tab-masksview', sec:'play'},
+ /* THE DOOR IS CHARACTER NOW, round LP, his words: "and all of those form
+    the character. So that's the character page. Let's rename masks there to
+    character. And then all the masks will just be the masks." The six grids
+    on it are the masks; the page they make is the character, which is also
+    the word the chain already uses for its top tier. Integer 11, the id
+    masksview and the class tab-masksview stay, on the rule the Body rename
+    above follows: they are identity, never the name a person reads. What is
+    drawn inside the host is new too (ui/character.js); the figure the
+    comment above describes is gone from this door. */
+ {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */

@@ -1469,7 +1469,10 @@ function render(){
     second one, and only where the bar is */
  if(S.tab===TAB.FIELD)fbRead(r);
  else if(S.tab===TAB.ENERGY)renderMap(r);
- else if(S.tab===TAB.MASKS)renderMasks(r);
+ /* THE CHARACTER PAGE, round LP, the six masks as pixel grids of their own
+    (ui/character.js). It was renderMasks, the Body's figure with the masks
+    alone on it, which he ruled replaced in full. */
+ else if(S.tab===TAB.MASKS)renderCharacter(r);
  else if(S.tab===TAB.SUMMARY)sumRender();
  else if(S.tab===TAB.ANALYTICS)anaRender();
  /* a release, an undo and a profile change all move what the Story's
@@ -1487,8 +1490,10 @@ function loop(ts){
  /* the wheel breathes, so it is drawn every frame. A rendition does not move,
     and ringsDraw builds it only when its signature does */
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
- /* the Masks door is the Intake's figure, so it stands on the Intake's wash */
- else if(S.tab===TAB.ENERGY||S.tab===TAB.MASKS){drawAura(r);}
+ /* only the Body stands on the wash now. The Masks door did because it was
+    the Body's figure; the Character page draws its own grids on an opaque
+    stage, so it takes the still wash every other page takes */
+ else if(S.tab===TAB.ENERGY){drawAura(r);}
  /* the Story's instrument draws on this frame and no other, so leaving the
     tab stops it without a second loop to remember to cancel. It paints only
     while something on it is moving, ui/storyui.js. */

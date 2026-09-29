@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v890 8c86086 2026-09-29 04:21"><head><meta charset="utf-8">
+<html lang="en" data-build="v909 7fc8415 2026-09-29 07:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1790,10 +1790,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom,.cn-zoom,#railtop{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.fzoom,.cn-zoom,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,#railtop.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -1945,36 +1945,18 @@ body:not(.tab-field) .fdock{display:none}
    CQ's pill, which rides its ring's lower right, reached 0.7 into the word's
    line box, so the word sits 3 higher than its circle's centre line and the
    two clear by 2.3. */
-.fdock .fdrow{display:flex;align-items:center;justify-content:space-between;min-width:0}
+/* AND ACCURACY LEFT THE ROW FOR THE STAGE'S LOWER LEFT, round LR in TASKS.md,
+   so the row is DQ and CQ. Spread to the rail's edges, two circles read as
+   two ends of nothing, so they sit centred on the four's own gap. */
+.fdock .fdrow{display:flex;align-items:center;justify-content:center;gap:20px;min-width:0}
 .fdock .fdrow .key{display:contents}
 .fdock .key .kb[data-q=dq]{order:1}
 .fdock .key .kb[data-q=cq]{order:2;min-width:72px;min-height:72px}
-.fdock .fdrow .acc{order:3}
 .fdock .keylo{justify-content:center;gap:20px}
 .fdock .kb{min-width:var(--tap);min-height:var(--tap);padding:0;border:0;background:transparent;
  justify-content:center;border-radius:50%}
 .fdock .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-/* accuracy keeps its word, to the left of its circle, ruled */
-.fdock .acc{margin:0;padding:0;text-align:center;display:flex;justify-content:center}
-.fdock .acc-b{gap:8px;padding:0;border:0}
-.fdock .acc-l{transform:translateY(-3px)}
-/* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
-   words: "The accuracy pill is bigger than everything else. Make all of
-   those uniform." Its ring and value pill were already the orb size, DQ's to
-   the pixel, measured on every lighting at five widths. What was bigger was
-   the box round it. DQ and CQ are .kb and the dock cleared .kb's hover fill
-   and gave its focus a round outline; accuracy is .acc-b, the button it was
-   when it sat boxed in the stage's corner, and it kept that button's hover:
-   a rounded slab 112 by 44 behind the word and the circle together, twice
-   the width of anything on the row, run into the rail's edge. Flat went one
-   further and filled the word's own box at rest, from its list of boxed
-   controls. So the slab goes, the word loses its fill, and keyboard focus
-   rings the circle as it rings DQ's, 3 out. */
-.fdock .acc-b:hover{background:transparent}
-body.flat .fdock .acc-l{background:transparent}
-.fdock .acc-b:focus-visible{outline:none}
-.fdock .acc-b:focus-visible .cr{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
@@ -2106,11 +2088,45 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    was absolute in the stage's lower right with a large ring, 66 high against
    44 for every other readout, which is the size difference he named. It keeps
    its word, which is ruled, and takes the same box and ring as the rest. */
-.acc{margin-left:auto;text-align:right}
-.acc-b{display:flex;align-items:center;gap:6px;background:transparent;
- border:1px solid var(--edge);padding:2px 4px 2px 8px;
- border-radius:var(--r-xs);color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
-.acc-b:hover{background:var(--sunk)}
+/* BACK ON THE STAGE, IN THE LOWER LEFT, round LR in TASKS.md: "lower
+   left-hand corner, opposite of like the zoom keys on the horizontal line."
+   The dock in the left rail is where it went at ED, and a first visit lands
+   on that column shut, so he could not find it. It is the band word's
+   capsule, the same glass on the same ground, #railtop above, and it is
+   placed by zoom and not by the stage: the capsule is 50 high where a zoom
+   circle is 44, so 9 from the foot puts its centre line on the centre line
+   of the lowest zoom circle, 12 from the foot. On a phone zoom is a row in
+   flow under the picture and the same 9 holds, because zoom keeps the same
+   12 of foot there, below. */
+.acc{position:absolute;left:12px;bottom:9px;z-index:6;display:flex;align-items:center;
+ padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+.acc-b{display:flex;align-items:center;gap:8px;background:transparent;border:0;
+ padding:0 0 0 14px;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
+/* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
+   words: "The accuracy pill is bigger than everything else. Make all of
+   those uniform." Its ring and value pill were already the orb size, DQ's to
+   the pixel, measured on every lighting at five widths. What was bigger was
+   the box round it. DQ and CQ are .kb and the dock cleared .kb's hover fill
+   and gave its focus a round outline; accuracy is .acc-b, the button it was
+   when it sat boxed in the stage's corner, and it kept that button's hover:
+   a rounded slab 112 by 44 behind the word and the circle together, twice
+   the width of anything on the row, run into the rail's edge. Flat went one
+   further and filled the word's own box at rest, from its list of boxed
+   controls. So the slab goes, the word loses its fill, and keyboard focus
+   rings the circle as it rings DQ's, 3 out. It came back to the stage with
+   the readout, round LR, and the capsule is its one edge there. */
+.acc-b:hover{background:transparent}
+body.flat .acc .acc-l{background:transparent}
+.acc-b:focus-visible{outline:none}
+.acc-b:focus-visible .cr{outline:2px solid var(--accent);outline-offset:3px}
+/* AND ITS VALUE PILL IS MADE OF THE GROUND, as the bar's are. The orb's pill
+   mixes into var(--panel), which is the lighting's panel and not the stage's:
+   under Snow the panel is paper and the stage stays the ruled #101010, so the
+   pill came out pale lilac carrying the glass's pale ink, measured on the
+   first cut of round LR. The bar's own pill, .fb-v, mixes into --fb-pillbg,
+   which follows the ground, and so does this. Punch keeps its solid fill. */
+body:not(.punch) #acc .cr .v{background:color-mix(in srgb,var(--c) 30%,var(--fb-pillbg))}
 body:not(.tab-field) .acc{display:none}
 .acc-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;color:var(--gold)}
 .acc-n small{font-size:16px;opacity:.6;margin-left:2px}
@@ -3290,17 +3306,29 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
 .bm-mkb .pm-lb{border-radius:999px}
 .bm-whole{background:var(--fb-glass);border-radius:999px}
 .bm-whole[hidden]{display:none}
-/* ---- THE PARTS, UNDER THE WELL, EACH SET IN ITS OWN CORNER. LM: "Front and
-   Back on their respective sides right and left ... smaller with a frame
-   around them, just a pin line." ui/map.js bmRegBar and bmRegFit. The target
-   stays 44, the tap floor; the frame drawn inside it is 32 and one pixel. */
-.bm-regs{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
- padding:6px 12px 8px;border-top:1px solid var(--edge)}
-.bm-set{display:flex;flex-direction:column;gap:2px;min-width:0}
-.bm-set.bm-back{align-items:flex-end}
-.bm-set .pm-eye{margin:0 6px}
-.bm-grid{display:flex;flex-wrap:wrap;max-width:100%;width:calc(44px * var(--bmcf,7))}
-.bm-back .bm-grid{justify-content:flex-end;width:calc(44px * var(--bmcb,8))}
+/* ---- THE PARTS, ON TWO SHELVES DOWN THE SIDES OF THE WELL. LQ, his words:
+   "I want the zone controls on the left and right sides of the center
+   display area ... on a shelf that pops out ... a minimize button ... both
+   start minimized." ui/map.js bmShBuild, bmRegBar and bmRegFit. Front on the
+   left edge beside the front figure, Back on the right beside the back one,
+   each one circle until pressed, and pressed the panel drops under it on
+   the bar's glass, the way the Mark row opens beside its circle. The layer
+   covers the well and takes no press, so the figure between the shelves
+   still answers. The shelves start under the band the top bars take, and
+   never higher than the burger's own circle, 58 pixels down with the band
+   shut. The target stays 44, the tap floor; the frame drawn inside it is 32
+   and one pixel. ---- */
+.bm-regs{position:absolute;inset:0;z-index:3;pointer-events:none}
+.bm-sh{position:absolute;top:calc(max(var(--bmtop,0px),58px) + 4px);display:flex;flex-direction:column;
+ align-items:flex-start;gap:6px}
+.bm-sh.bm-front{left:12px}
+.bm-sh.bm-back{right:12px;align-items:flex-end}
+.bm-sh>*{pointer-events:auto}
+.bm-sh .fb-arc .val{opacity:0}
+.bm-sh.shut .bm-shp{display:none}
+.bm-shp{display:grid;grid-template-columns:repeat(var(--bmc,2),44px);padding:4px;border-radius:14px;
+ background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 .bm-pt{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;
  padding:0;margin:0;border:0;background:transparent;color:var(--mid);cursor:pointer;touch-action:manipulation}
 .bm-pt>i{display:flex;align-items:center;justify-content:center;width:32px;height:32px;box-sizing:border-box;
@@ -3444,7 +3472,9 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  border:1.6px solid var(--c,var(--accent))}
 /* the column itself does not scroll: the list and the release queue do, each
    on its own, so a long entry never pushes Run off the screen. */
-.st-hd{display:flex;align-items:center;justify-content:space-between;gap:6px 10px;
+/* Record alone since round LO took the eyebrow off its left, so the row ends
+   on it where space-between used to push it */
+.st-hd{display:flex;align-items:center;justify-content:flex-end;gap:6px 10px;
  flex-wrap:wrap;margin-bottom:9px}
 /* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
 .st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
@@ -3457,7 +3487,14 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-ico:hover{color:var(--ink)}
 .st-ico[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
 .st-ico b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
-.st-lb{white-space:nowrap}
+/* THE BANK AND THE VAULT ARE ICONS ONLY, round LO: "I just want their icons
+   only, not the text." The word is clipped rather than removed, the same
+   rule a folded tab's name gets (.tabnames-i:not(:checked) above), so it
+   stays the button's name to a screen reader. It was display:none on a phone
+   only, which took the name away from the reader there too and left the
+   title to carry it; that rule is gone, this one covers every width. */
+.st-lb{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+ clip-path:inset(50%);white-space:nowrap}
 /* the list door exists for the phone, where the list folds away */
 .st-open{display:none}
 .st-sort{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px}
@@ -3625,14 +3662,32 @@ body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
    another place to type. The opening question is the largest line on the
    page while nothing is written, and steps back once the person is writing,
    because from then on they lead and the question is theirs to answer or not. */
-.st-pe{flex:0 0 auto;border-left:3px solid var(--accent);padding:2px 0 2px 16px;min-width:0}
+/* A DISPLAY, ON ITS OWN BLACK, round LO: "Right now the source scripted
+   area is on gray ... I want it to look like a display area. So I want it to
+   have its own black background." It sits inside the journal's panel now, over
+   the box, so its ground is the box's own, --sunk, the ground the chart and
+   every other display in the product reads from. That is black in the dark
+   lightings and follows the light ones, where a hard black slab would be the
+   one thing on the page that did not. The accent bar stays: it is what says
+   the system is speaking. */
+.st-pe{flex:0 0 auto;border-left:3px solid var(--accent);border-radius:var(--r-s);
+ background:var(--sunk);padding:12px 12px 14px 16px;margin-bottom:10px;min-width:0}
 .src-hd{display:flex;align-items:center;gap:10px;min-height:20px}
-.src-tag{font-size:12px;color:var(--dim)}
+/* the question and the press that turns it, the Avatar's .avs-ask shape */
+.src-ask{display:flex;align-items:flex-start;gap:10px}
+.src-ask .src-open{flex:1 1 auto;min-width:0}
+.src-new{flex:0 0 auto;width:var(--tap);height:var(--tap);border-radius:50%;padding:0;
+ border:1px solid var(--edge-2);background:transparent;color:var(--accent);cursor:pointer;
+ display:flex;align-items:center;justify-content:center;
+ transition:border-color var(--t-micro) var(--ease-out)}
+.src-new svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round}
+.src-new:hover{border-color:var(--accent)}
+.src-new:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:400;margin:4px 0 2px;max-width:44ch;
  transition:font-size var(--t-element) var(--ease-out),color var(--t-element) var(--ease-out)}
 .src-open.quiet{font-size:15px;color:var(--mid)}
-.src-jog{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--dim)}
-.src-jog q{color:var(--mid);quotes:"\201C" "\201D"}
 .src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
@@ -4550,10 +4605,50 @@ body.tab-story #story{display:flex!important;z-index:5;align-items:center;justif
 body:not(.tab-story) #story{display:none!important}
 body.tab-energy #emap{display:flex!important;z-index:5}
 body:not(.tab-energy) #emap{display:none!important}
-/* the Masks door is the Intake's figure in a host of its own, shown and
-   hidden on exactly the Intake's terms */
+/* the Character page keeps the Masks door's host and its terms: shown and
+   hidden exactly the way the Body is */
 body.tab-masksview #masksview{display:flex!important;z-index:5}
 body:not(.tab-masksview) #masksview{display:none!important}
+/* THE CHARACTER PAGE, round LP: six pixel grids, each under its name
+   "in very small, simple font", and one switch for the reading. ui/character.js
+   writes it. The grids sit on the render ground like the Field, MK2's "almost
+   like a UI display", and the page scrolls inside its host at a desktop
+   width, because six faces and a switch are taller than a short window. */
+.chv{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;
+ padding:18px 22px 24px;color:var(--ink)}
+.chv-top{display:flex;justify-content:flex-end}
+.chv-empty{margin:0 auto;max-width:880px;width:100%;font-size:13px;line-height:1.5;color:var(--mid)}
+.chv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px;
+ width:100%;max-width:880px;margin:0 auto;align-content:start}
+.chv-m{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:8px 6px 10px;
+ background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
+ font:inherit;cursor:pointer}
+.chv-m:hover{border-color:var(--edge)}
+.chv-m[aria-pressed=true]{border-color:var(--gold)}
+.chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
+.chv-svg{display:block;width:100%;max-width:260px;aspect-ratio:1;height:auto}
+/* the same two grids in Selection, side by side, dark then light, on the
+   rail's own sunk ground so the theme's ink and seat colours hold there */
+.chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
+ padding:10px;border-radius:var(--r-s);background:var(--sunk)}
+.chv-pair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chv-pair figcaption{font-size:12px;color:var(--mid)}
+.chv-rows{display:flex;flex-direction:column;margin:2px 0 8px}
+.chv-row{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:4px 0;
+ background:transparent;border:0;border-top:1px solid var(--edge);color:var(--ink);font:inherit;
+ font-size:13px;text-align:left;cursor:pointer}
+.chv-row:hover{color:var(--gold)}
+/* SNOW KEEPS ITS PAPER HERE, the way Glass white does. The render ground was
+   ruled black for the field, body and compass, and it reached this host with
+   the Masks door; Snow's ink and its seat colours are drawn for paper, so on
+   black the names measured dark on dark and every pixel was a muddy step of
+   the same brown. Lumen needs nothing: it lightens the stage's ink itself. */
+body.snow.tab-masksview .stage,body.snow #masksview{background:#F2F1EC}
+@media (max-width:700px){
+ .chv{padding:14px 16px 20px}
+ .chv-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
+}
 /* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
    backdrop, which is right for something a drill throws up over your reading
    and wrong for a surface you navigated to. In tab mode it is the stage. */
@@ -4624,6 +4719,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .col{min-height:auto}
  .stage{min-height:62vh}
  .panel.sc{max-height:none;overflow:visible}
+ /* THE TAIL IS FOR A RAIL THAT SCROLLS ITSELF. Below 1181 the rail does not,
+    the page does, so the 88vh tail above that gives a pressed header room to
+    reach the top has nothing to do here and only sits as empty glass under
+    the reading. Measured on a phone: 742.7px of it, on both rails. */
+ .panel.sc::after{display:none}
  /* THE STORY STACKED IS LAYOUT H ON A PHONE: the two columns a person is not
     in sit compact, so all three are on the first screen. Round II measured it
     as the only one of five layouts that kept Run there, where the old page
@@ -4654,7 +4754,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-flow:not([data-focus="read"]) .st-ls{display:none}
  .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
  .st-lsb{overflow:visible}
- .st-lb{display:none}
  .st-flow:not([data-focus="release"]) .st-rl{display:grid;grid-template-columns:minmax(0,1fr) auto;
   align-items:center;gap:10px;padding:10px 12px}
  .st-flow:not([data-focus="release"]) .st-rlhd,.st-flow:not([data-focus="release"]) .st-fields{display:none}
@@ -4703,7 +4802,9 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     is one row of two circles here and leaves the right of that row empty.
     Zoom follows the picture, right aligned, in a row: under it there is no
     compass lane to keep clear. */
- .fzoom{position:static;order:1;align-self:flex-end;margin:8px 22px 0 12px}
+ /* and it keeps 12 of foot under it, the desktop's own, because accuracy
+    lies level with it in the lower left, round LR, placed by that 12 */
+ .fzoom{position:static;order:1;align-self:flex-end;margin:8px 22px 12px 12px}
  .fzoom .fb-grp{flex-direction:row}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
@@ -4766,6 +4867,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     lines at 390 costs the page height and not the figure's. Nought on the
     Masks door, which has no bars. */
  .pm-well{flex:0 0 auto;min-height:calc(min(122vw,470px) + var(--bmtop,0px))}
+ /* AND THE BODY'S WELL TAKES BACK WHAT THE PARTS STRIP HAD, round LQ: "scale
+    the bodies up because those buttons on the bottom are eating up too much
+    valuable real estate." The strip under the well measured 253 pixels at
+    390 and is gone to the two shelves inside it. The well grows by 115 of
+    them, 470 to 585, which puts the one figure up by a quarter, a fit of
+    4.37 to 5.50, and is as far as it goes with the whole well still on a
+    390 by 844 screen with the overlays open, measured. The page is 138
+    pixels shorter besides. The Masks door keeps its own height. */
+ #emap .pm-well{min-height:calc(min(150vw,600px) + var(--bmtop,0px))}
  /* THE DEPTH LADDER RAN 996 PIXELS PAST THE SCREEN AND NOTHING COULD REACH IT,
     measured as body.scrollWidth 1386 against innerWidth 390 while
     documentElement stayed at 390, which hides it completely. The ladder is
@@ -4785,11 +4895,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-mic{flex-wrap:wrap;height:auto;padding-top:6px;padding-bottom:6px}
  /* and the lighting switch is a segmented row of six that cannot fit on one */
  #setthemes{flex-wrap:wrap}
- .tl,.acc,.howto{position:static;transform:none;text-align:left;max-width:none;
+ .tl,.howto{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}
  .tl{order:2;margin-top:10px}
  .tl b{font-size:15px}
- .acc{order:4;margin-top:12px}
+ /* ACCURACY STAYS OUT OF THIS COLUMN, round LR. It is not one of the five
+    blocks that landed on each other: it lies level with zoom, which is the
+    last thing in the column, so it keeps its absolute corner and takes only
+    zoom's own inset from the side. */
+ .acc{left:22px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
  .pol2 svg{height:190px}
@@ -4949,7 +5063,20 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
                                starts gently and settles long, which is the
                                same fill slowed to a size where it is watched.
    ============================================================ */
-.boot.bx{--beat:.09s;--S:min(86vw,58vh,600px);overflow:hidden;gap:22px}
+/* THE FIGURE IS 85 PER CENT OF WHAT IT WAS, round LP, his words: "for the
+   intro animation, the main size, can you scale it down? Fifteen percent. So
+   that when it zooms in, it comes in at about the same scale as the actual
+   landing screen." It was min(86vw,58vh,600px), and every term is taken down
+   by the same fifteenth so the three limits still hand over at the same
+   window shapes. Only the figure moves: the wordmark under it is ruled to the
+   pixel and keeps its size, and the wash is sized off --S, so it follows.
+   Measured in Chromium at 1600 by 1000 with the animations held: the seat
+   ring stood 360px across and the push carried it to 521, and now stands 306
+   and is carried to 443; the gold halo round it now stands 434 and is carried
+   to 629. The Field it lands on draws its three rings at about 745, 610 and
+   450, read off the screenshot. At 390 by 844 the stage is 285 against 335,
+   and the halo is carried to 364 on a Field canvas 335 high. */
+.boot.bx{--beat:.09s;--S:min(73.1vw,49.3vh,510px);overflow:hidden;gap:22px}
 .bx-stage{position:relative;width:var(--S);height:var(--S);flex:0 0 auto}
 /* THE PUSH, WITH ITS BACKSWING. ET went straight out on the ease in. A push
    with no draw back first starts from rest at full speed, which is the one
@@ -5508,9 +5635,6 @@ body.booted{--boot-done:1}
 .ld-off{color:var(--ink)}
 .ld-next{margin:14px 0 0;font-size:13px;line-height:1.6;color:var(--mid);max-width:62ch}
 .ld-next b{color:var(--ink);font-weight:500}
-/* the microphone's one line. Quiet, always there, never a dialog. */
-.st-mnote{display:block;flex:1 1 100%;font-family:var(--sans);font-size:11.5px;
- line-height:1.5;color:var(--dim);margin-top:5px}
 /* an inferred chip. The seat was read, the address was not named by the
    person's words, so the chip is quieter and its label is the child emotion. */
 .ip.infer{border-style:dashed}
@@ -5772,13 +5896,14 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     button in a row is the same width, the rows run from the rail's left edge
     to its right, and all seven are one height, one edge and one radius. The
     ring goes, because the figure beside it says the same thing in a quarter
-    of the room; the letters or the mark stay as the button's name, and
-    accuracy keeps its word, ruled, in place of its mark. */
+    of the room; the letters or the mark stay as the button's name.
+    ACCURACY LEFT THE FIRST ROW FOR THE STAGE, round LR in TASKS.md, so that
+    row is two columns, DQ and CQ, still flush left to right. On the stage it
+    keeps its ring, as zoom beside it keeps its circles. */
  .fdock{gap:6px}
- .fdock .fdrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .fdock .fdrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
  .fdock .keylo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
- .fdock .acc{display:block;min-width:0}
- .fdock .kb,.fdock .acc-b{width:100%;min-width:0;height:48px;min-height:var(--tap);
+ .fdock .kb{width:100%;min-width:0;height:48px;min-height:var(--tap);
   padding:0 6px;display:flex;align-items:center;justify-content:center;gap:6px;
   border:1px solid var(--edge);border-radius:var(--r-xs);background:transparent}
  .fdock .key .kb[data-q=cq]{min-width:0;min-height:var(--tap)}
@@ -5789,13 +5914,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .fdock .cr.orb .ring .gl svg{width:17px;height:17px}
  .fdock .cr.orb .v,.fdock .cr.hero .v{position:static;height:auto;min-width:0;padding:0;
   background:none;border:0;color:var(--ink);font-size:14px;line-height:1;font-weight:500}
- .fdock .acc-b .cr .ring{display:none}
- .fdock .acc-l{transform:none}
- .fdock .acc-l b{font-size:12px;color:var(--mid)}
- .fdock .kb:focus-visible,.fdock .acc-b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
- /* Punch fills a .kb and never had to fill accuracy, which was a circle; as
-    a tile beside DQ it takes the same fill or the row is not uniform */
- body.punch .fdock .acc-b{border-color:transparent;background:var(--panel-2)}
+ .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 }
 
 </style></head><body>
@@ -6212,7 +6331,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    <button type="button" class="secb" data-sec="discover" aria-pressed="false"
     title="Discover. Your story, your avatar, your intake and your summary."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
    <button type="button" class="secb" data-sec="play" aria-pressed="true"
-    title="Play. Field, Body, Compass and Masks."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
+    title="Play. Field, Body, Compass and Character."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
     title="Flow. Your ritual, and keeping it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
@@ -6239,7 +6358,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
     <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
     <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
-    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Masks"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Masks</span></button>
+    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
     <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
@@ -6439,11 +6558,18 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         two rows." It was three: DQ, CQ and SQ, the four under them, and
         accuracy alone on a line of its own. SQ left and accuracy took its
         place, so the first row is the instrument reading and how far to trust
-        it, and the second is what moves through the person. -->
+        it, and the second is what moves through the person.
+
+        AND ACCURACY LEFT IT AGAIN, round LR in TASKS.md, his words: "move it
+        back to the center render area, but lower left-hand corner, opposite
+        of like the zoom keys on the horizontal line." The first visit lands
+        on this column shut, GO, so the one reading that says how far to trust
+        the picture was behind a door he did not know to open: "Actually, I
+        don't even see it." It lies on the stage now, beside #fzoom. Still two
+        rows: DQ and CQ, then the four. -->
    <div class="fdock" id="fdock" role="group" aria-label="Readings">
     <div class="fdrow">
      <div class="key" id="key" aria-label="What the instrument reads"></div>
-     <div class="acc" id="acc"></div>
     </div>
     <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    </div>
@@ -6634,13 +6760,22 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         where a map keeps its zoom, and after the picture on a phone. The
         bar's own glass; ui/fieldbar.js builds them. -->
    <div class="fzoom" id="fzoom" role="group" aria-label="Zoom"></div>
+   <!-- ACCURACY, IN THE LOWER LEFT, ZOOM'S MIRROR. Round LR in TASKS.md: "lower
+        left-hand corner, opposite of like the zoom keys on the horizontal
+        line." It comes back from the left rail's dock, where it went at ED,
+        and it lies on the picture the way the band word in the upper right
+        does, in that corner's glass, so it is back in OVERLAY in
+        ui/component.js and the wheel measures its radius against it.
+        renderAcc in ui/personas.js still writes it, by id. -->
+   <div class="acc" id="acc"></div>
    <div id="emap" class="emap"></div>
-   <!-- THE MASKS' OWN DOOR, round LE. The Intake's figure with the masks the
-        only thing drawn on it. It wears .emap because it is the same well laid
-        out the same way, and it is a sibling of #emap and never inside it: the
-        figure moves between the two hosts (bmRender in ui/map.js), and a host
-        inside the other would be deleted by the other's render on the way
-        past, the #know and #games lesson. -->
+   <!-- THE CHARACTER PAGE, round LP, in the host the Masks door had (round
+        LE). Six pixel grids, one per mask, written by ui/character.js; the
+        Body's figure no longer comes here. It still wears .emap, because that
+        is what lays a host over the stage at a desktop width and releases it
+        into the page on a phone, and it is still a sibling of #emap and never
+        inside it, the #know and #games lesson: a renderer that writes a whole
+        host deletes a child host on the way past. -->
    <div id="masksview" class="emap"></div>
    <!-- THE AVATAR TAB CARRIES TWO BODIES, round HG. The avatar is the hero and
         the Energetics intake sits under it, and each renderer writes only its
@@ -11235,7 +11370,16 @@ const TABDEF=[
     which a person has to know to look for. This is the same figure drawn by
     the same renderer, with the masks the only thing on it (bmRender and
     BMVIEW in ui/map.js), so the two cannot disagree about a pixel. */
- {k:TAB.MASKS,   id:'masksview', nm:'Masks', cls:'tab-masksview', sec:'play'},
+ /* THE DOOR IS CHARACTER NOW, round LP, his words: "and all of those form
+    the character. So that's the character page. Let's rename masks there to
+    character. And then all the masks will just be the masks." The six grids
+    on it are the masks; the page they make is the character, which is also
+    the word the chain already uses for its top tier. Integer 11, the id
+    masksview and the class tab-masksview stay, on the rule the Body rename
+    above follows: they are identity, never the name a person reads. What is
+    drawn inside the host is new too (ui/character.js); the figure the
+    comment above describes is gone from this door. */
+ {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
@@ -17685,8 +17829,11 @@ const LBL_R=0.95, LBL_M=10;
 /* what sits over the canvas and therefore bounds the wheel. Accuracy left
    this list when it left the stage's foot for the left rail, ED in TASKS.md,
    because a readout that no longer sits over the canvas has no business
-   taking radius from it. */
-const OVERLAY=['tl','bal','howto'];
+   taking radius from it. It is back, round LR, because it is back on the
+   stage in the lower left, and reframe() below measures it by id like the
+   rest: the nearest corner of its box to the canvas centre caps the radius,
+   and a box the circle cannot reach costs nothing, which is the wide stage. */
+const OVERLAY=['tl','bal','howto','acc'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
@@ -20698,7 +20845,11 @@ const FR_SHOW_OUTSIDE=false;
    window back from the strip along the stage's foot where the lower pills
    and accuracy sat over this cell. Those readings moved to the left rail with
    the glass bar, ED in TASKS.md, so nothing sits over the cell and the window
-   is the host's own box. */
+   is the host's own box.
+   Accuracy came back to the stage at round LR, but to its lower left corner
+   and not the foot's strip: it lies over the flush frame's outer corner the
+   way the band word lies over the upper right one, and the window is still
+   not cut back for either. */
 /* THE FRAME RUNS FLUSH, ruled. His words: "I like the frame, but I don't like
    the beveled edges because I want the entire thing flush to the rectangle of
    the area." It was drawn eight pixels in from its box and every ring was a
@@ -22108,8 +22259,10 @@ function fbPaint(){
     that ground, the one the wheel's domain ring and the renditions use. */
  var lt=stageLight();
  /* and the coherence corner, which lies on the same ground under the switch
-    since round IT and is made of the same glass */
- [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW,document.getElementById('railtop')]
+    since round IT and is made of the same glass, and accuracy in the corner
+    opposite zoom since round LR, for the same reason */
+ [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW,document.getElementById('railtop'),
+  document.getElementById('acc')]
   .forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
  document.body.classList.toggle('noshadow',!layerOn('shadow'));
  [FB,FB_PANEL].forEach(function(host){if(!host)return;
@@ -24440,6 +24593,8 @@ function bmSize(){
   var fc=bmFitCam(); if(!zoomed){BM.cam=fc;BM.camT=null;}
   BM.stillKey='';BM.litKey='';BM.dirty=true;
   if(BM.r){bmMaskHits(BM.r);bmHubRefresh(BM.r);}
+  /* the shelves stand under the band, so their room moved with it */
+  if(BM.bar)bmRegFit();
   return;}
  BM.inT=band;
  var was=BM.phone;
@@ -24447,7 +24602,7 @@ function bmSize(){
  [BM.cv,BM.still,BM.lit,BM.lit2].forEach(function(c){c.width=Math.max(1,Math.round(w*BM.dpr));c.height=Math.max(1,Math.round(h*BM.dpr));});
  BM.stillKey='';BM.litKey='';
  var f=bmFitCam(); BM.cam=f; BM.camT=null; BM.dirty=true;
- /* the corner blocks under the well take their rows off the same width */
+ /* the shelves down its sides take their columns off the new height */
  if(BM.bar)bmRegFit();
  /* the masks' targets are held to the tap floor at the fitted view, so they
     are measured again whenever the fitted view is */
@@ -25203,12 +25358,14 @@ function bmBars(){
   +btn('bmclear','1','Clear paint',false));
  /* THE REGION MENU IS GONE. It was the only way to reach a region without
     finding it on the figure, and it was a closed menu of 48 lines: every
-    name hidden until opened, which is recall over recognition. The panel of
-    region buttons under the figure, bmRegBar, is the same job with every
-    name in view, so keeping both would be two controls for one thing. */
+    name hidden until opened, which is recall over recognition. The region
+    buttons, bmRegBar, are the same job with every part in view, so keeping
+    both would be two controls for one thing. */
  /* THE FRONT AND BACK TOGGLE MOVED DOWN, round KN: "those are all going to
     be on the bottom. And there'll be two icons to say front and back." It is
-    the first thing in the panel under the well, bmRegBar, on every width. */
+    the first thing in the panel under the well, bmRegBar, on every width.
+    Round LQ took that panel off the bottom and put each side on its own
+    shelf beside its figure. */
  body.innerHTML=h; body.setAttribute('data-bmsig',sig);
  body.querySelectorAll('[data-bmamode]').forEach(function(el){el.onclick=function(){
   BM.amode=el.getAttribute('data-bmamode');BM.dirty=true;bmBars();};});
@@ -25330,49 +25487,87 @@ function bmPartOpen(pt,vn,side){
  RD_INRAIL=true;
  try{bmOpenKey(key,false);}finally{RD_INRAIL=false;}
  return true;}
-/* SMALLER, IN A PIN LINE, EACH SET IN ITS OWN CORNER. LM in TASKS.md, his
-   words: "I want the Bottom navigation Front and Back on their respective
-   sides right and left. I want those icons smaller with a frame around them,
-   just a pin line." The picture drops from 32 pixels to 24 inside a frame a
-   single pixel wide, and the button round it stays 44 by 44, because the tap
-   floor is a finger and not a picture: what gets smaller is what is drawn.
-   The gap between buttons goes, so the pitch falls from 48 to 44.
+/* SMALLER, IN A PIN LINE. LM in TASKS.md, his words: "I want those icons
+   smaller with a frame around them, just a pin line." The picture is 24
+   pixels inside a frame a single pixel wide, and the button round it stays
+   44 by 44, because the tap floor is a finger and not a picture: what gets
+   smaller is what is drawn.
 
-   The sets were two halves of one strip, each wrapping in its half, so the
-   front's fourteen broke twelve and two at 1600 and read as one ragged
-   strip. Each is a block of even rows now, the front in the lower left and
-   the back in the lower right with the width between them left empty:
-   bmRegFit picks the fewest rows at which both blocks fit side by side. */
+   AND OFF THE BOTTOM, ONTO TWO SHELVES DOWN THE SIDES, SHUT. Round LQ, his
+   words: "for the body I want the zone controls on the left and right sides
+   of the center display area. I want them to be on a shelf that pops out and
+   I want that shelf to be have a minimize button and I want them to both
+   start minimized. Do that first and then scale the bodies up because
+   those buttons on the bottom are eating up too much valuable real
+   estate." The strip under the well was
+   measured at 121 pixels of a 746 pixel stage at 1600 and 253 at 390, and it
+   stood there whether or not a part was wanted. So the Front set is a shelf
+   on the well's left edge, beside the front figure, and the Back set one on
+   its right edge, beside the back figure, each folded to one circle with the
+   side's word under it. The circle is the Mark controls' circle in every
+   respect: shut is the default, only a press that opened it is kept, and
+   pressed again it is the shelf's minimize. Each shelf is its own store key,
+   so opening one never opens the other.
+
+   Two columns, as he drew them, and more only when the well is too short for
+   the rows: overflow is hidden on the well, so a shelf taller than its room
+   would put the last parts where no press can reach them. bmRegFit takes the
+   column count off the height left under each circle. */
+function bmShShut(vn){var s=true;try{s=STORE.get('bmsh'+vn.charAt(0))!=='open';}catch(e){}return s;}
+function bmShShutPaint(sh,vn,shut){
+ var tog=sh.querySelector('[data-bmsh=tog]'); if(!tog)return;
+ sh.classList.toggle('shut',shut);
+ var side=vn==='back'?'back':'front';
+ var say=(shut?'Open':'Close')+' the '+side+' parts';
+ tog.setAttribute('aria-expanded',shut?'false':'true');tog.setAttribute('aria-label',say);
+ if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
+ fbTip(tog,shut?'Opens the parts of the '+side+' of the body. Press one to light that area and open it.'
+  :'Folds the '+side+' parts into this one circle.');}
+function bmShBuild(el){
+ ['front','back'].forEach(function(vn){var nmS=vn==='back'?'Back':'Front';
+  var sh=document.createElement('div'); sh.className='bm-sh bm-'+vn; sh.setAttribute('data-bmsh',vn);
+  /* the Body tab's own figure, and the side's word under it, because on a
+     phone one figure stands between two circles that would otherwise match */
+  var tog=fbOrb({nm:nmS,label:true,ic:'<circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/>'});
+  tog.setAttribute('data-bmsh','tog');tog.setAttribute('aria-controls','bmsh'+vn.charAt(0));
+  tog.onclick=function(){var now=!bmShShut(vn);
+   try{STORE.set('bmsh'+vn.charAt(0),now?'shut':'open');}catch(e){}
+   bmShShutPaint(sh,vn,now);};
+  sh.appendChild(tog);
+  var pn=document.createElement('div'); pn.className='bm-shp'; pn.id='bmsh'+vn.charAt(0);
+  pn.setAttribute('role','group'); pn.setAttribute('aria-label',nmS);
+  sh.appendChild(pn); el.appendChild(sh);
+  bmShShutPaint(sh,vn,bmShShut(vn));});}
 function bmRegFit(){
- var el=BM.well&&BM.well.parentNode?BM.well.parentNode.querySelector('#bmregs'):null; if(!el)return;
- var nf=BMPART.filter(function(p){return p.f;}).length, nb=BMPART.filter(function(p){return p.b;}).length;
- var room=el.clientWidth-24-16, r=1;
- while(r<8&&(Math.ceil(nf/r)+Math.ceil(nb/r))*44>room)r++;
- el.style.setProperty('--bmcf',Math.ceil(nf/r)); el.style.setProperty('--bmcb',Math.ceil(nb/r));}
+ var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!el.firstChild)return;
+ var wb=BM.well.getBoundingClientRect().bottom;
+ el.querySelectorAll('.bm-sh').forEach(function(sh){
+  var vn=sh.getAttribute('data-bmsh'), n=BMPART.filter(function(p){return vn==='back'?p.b:p.f;}).length;
+  var tb=sh.querySelector('[data-bmsh=tog]').getBoundingClientRect().bottom;
+  /* the gap, the panel's own padding and a margin off the well's foot */
+  var rows=Math.max(1,Math.floor((wb-tb-6-10-12)/44));
+  sh.style.setProperty('--bmc',Math.max(2,Math.ceil(n/rows)));});}
 function bmRegBar(){
- var el=document.getElementById('bmregs'); if(!el||!BMG)return;
+ var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!BMG)return;
+ if(!el.firstChild){bmShBuild(el);bmRegFit();}
  var k=bmPickKey()||'', pain=BM.mode==='pain', cur=bmPartOf(k), kv=k.split(':')[0];
  var sig=[k,BM.mode,BM.phone,BMG.reg.map(function(r){return r.val||0;}).join(',')].join('|');
  if(sig===el.getAttribute('data-sig'))return;
  var ae=document.activeElement, foc=ae&&el.contains(ae)&&ae.getAttribute('data-bmpart')
   ?'[data-bmpart="'+ae.getAttribute('data-bmpart')+'"][data-bmpv="'+ae.getAttribute('data-bmpv')+'"]':null;
  BM.hoverList=null;
- /* one set per side. The side is said once, as the set's own small title,
-    because the two crops of a head are close enough to need it */
- var set=function(vn){var nmS=vn==='back'?'Back':'Front';
-  return '<div role="group" aria-label="'+nmS+'" class="bm-set bm-'+vn+'">'
-   +'<span class="pm-eye">'+nmS+'</span><div class="bm-grid">'
-   +BMPART.filter(function(pt){return vn==='back'?pt.b:pt.f;}).map(function(pt){
+ /* one shelf per side. Only the panel is written, so the circle keeps its
+    focus and its state across a render */
+ ['front','back'].forEach(function(vn){
+  var pn=el.querySelector('#bmsh'+vn.charAt(0)); if(!pn)return;
+  pn.innerHTML=BMPART.filter(function(pt){return vn==='back'?pt.b:pt.f;}).map(function(pt){
     var regs=bmPartRegs(pt,vn), on=cur===pt&&kv===vn;
     var pv=regs.reduce(function(m,q){return Math.max(m,q.val||0);},0);
     var t=bmPartName(pt,vn)+(vn==='back'?', back':', front');
     return '<button type="button" class="bm-pt'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmpart="'+pt.k+'" data-bmpv="'+vn+'" '
      +'aria-label="'+esc(t)+(pain&&pv?', painted '+pv:'')+'" title="'+esc(t)+'"><i>'+bmPartIcon(pt,vn,on)+'</i>'
-     +(pain&&pv?'<b>'+pv+'</b>':'')+'</button>';}).join('')
-   +'</div></div>';};
- el.innerHTML=set('front')+set('back');
+     +(pain&&pv?'<b>'+pv+'</b>':'')+'</button>';}).join('');});
  el.setAttribute('data-sig',sig);
- bmRegFit();
  el.querySelectorAll('[data-bmpart]').forEach(function(b){
   var pt=BMPART.filter(function(p){return p.k===b.getAttribute('data-bmpart');})[0], vn=b.getAttribute('data-bmpv');
   b.onpointerenter=function(){BM.hoverList=bmPartRegs(pt,vn);BM.dirty=true;};
@@ -25529,7 +25724,8 @@ function bmGround(host){
            circles keep their switches across a visit to the other door. The
            Masks door draws the masks and nothing else, with no switch.
      bar   the Intake's controls: the overlay row and the Mark controls
-           across the top of the well, and the region buttons under it. The
+           across the top of the well, and the two shelves of region
+           buttons down its sides. The
            Masks door has none of them, because there is nothing on it to
            switch.
      one   one figure, the front. See bmOne.
@@ -25561,8 +25757,12 @@ function bmUse(host){
  BM.hoverReg=BM.hoverCell=BM.hoverPlace=BM.hoverMask=BM.hoverMaskSab=BM.hoverHub=BM.hoverList=null;
  BM.drag=null; BM.tipKey='';}
 /* the frame runs while a door showing the figure is up. The Intake's other
-   seven layers draw through renderMap's own svg, and PMLAYER says which. */
-function bmLive(){return S.tab===TAB.MASKS||(S.tab===TAB.ENERGY&&PMLAYER==='map');}
+   seven layers draw through renderMap's own svg, and PMLAYER says which.
+   The Masks door is not one any more: it became the Character page, round
+   LP, which draws no figure. Left in, the Body's frame went on drawing into
+   its hidden host every frame a person sat on Character, measured at 30
+   draws in 30 frames after a visit to the Body. */
+function bmLive(){return S.tab===TAB.ENERGY&&PMLAYER==='map';}
 function bmBuild(host){
  host.innerHTML='<div class="pm-well">'
   +'<canvas id="bmcv" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>'
@@ -25587,10 +25787,13 @@ function bmBuild(host){
      phone it can take a line of its own under the circles while the circle
      that opened it stays where it was pressed. */
   +(BM.bar?'<div class="bm-top" style="'+BMOVTOK+BMMKTOK+'"><div id="bmov" class="bm-ov" role="group" aria-label="Overlays"></div>'
-  +'<div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>':'')+'</div>'
-  /* after the well, so the well's flex keeps the rest of the height and the
-     figure is fitted to what is left */
-  +(BM.bar?'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region"></div>':'');
+  +'<div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>'
+  /* the two shelves of parts, down the well's left and right edges, on the
+     same glass inks as the bars because they lie on the same dark picture.
+     They were a strip after the well, which took its height out of the
+     well's flex; inside it they take none, so the fit gets the whole stage.
+     Round LQ, bmShBuild. */
+  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>':'')+'</div>';
  /* read inside the host, never off the document: with two hosts, an id is
     only as unique as bmUse keeps it */
  BM.well=host.querySelector('.pm-well'); BM.cv=host.querySelector('#bmcv'); BM.sv=host.querySelector('#bmsv');
@@ -25824,6 +26027,429 @@ function runPainDrill(k){
  rdShell(h);}
 
 try{window.__at&&window.__at('ui/mapshelf.js');}catch(e){}
+
+/* ============================================================
+   CHARACTER. The six masks as pixel art, one grid each.
+
+   Round LP in TASKS.md, his words, the creative in full: "When I come to this
+   mask page, I see six grids. Above it is the name of the mask. In very
+   small, simple font ... the spiritual energetics drives the shape ... It's
+   pixel art. And it needs to take account of the fetters saboteurs clusters
+   hyper clusters that form it ... The dark mask and the light mask. and all
+   of those form the character. So that's the character page ... if I click
+   on an entire mask, on my right hand information side, it gives me a full
+   summary of what that mask is doing ... So if a person goes over a certain
+   amount, the grid will dynamically scale." And the line that settles what
+   this replaces: "if what you're asking in the current mask page is the
+   human body with all the chakra points, then yes, it definitely replaces
+   all that."
+
+   THIS IS THE FOURTH BUILD OF THIS PAGE AND THE FIRST ONE NOT ON A BODY. The
+   three before it drew the masks onto the Body's figure (7220610, then the
+   story pixels of KW, then the Masks door of LE, bmRender with the masks
+   alone). He rejected the container every time, never the data: MK2, LO and
+   LP all ask for six small faces. So nothing here reads ui/map.js. The door
+   keeps integer 11 and host #masksview, because the integers are identity,
+   and everything drawn inside the host is new.
+
+   WHAT DRIVES THE SHAPE, layer by layer, in the order he gave it.
+
+   1. The face. MASK_FACE and each mask's own mark (engine/data/canon.js), the
+      same outline the six icons already wear, rasterised onto the grid. The
+      mark is cut out of the face rather than drawn on it, one eye open for
+      the Child, the split for the Teen, the seam for the Adult, so each grid
+      is a different mask before anything is lit.
+   2. "Someone has a sage. Or someone has a rebel." The foundation is the
+      archetype seated under the mask that this person's blueprint leans on
+      hardest, r.aff off the domain wheel, drawn faintly in its own icon's
+      shape (ARCH[j].ic) on the unlit face. The Teen sits on the Throat and
+      the Throat carries the Rebel and the Jester, which is his own GG
+      example, "the teen, for example, like the rebel", read off ARCH.b
+      rather than typed into a table he has not ruled (GG4 holds that table
+      open). It is the essence, so it shows only where nothing is lit yet.
+   3. The fetters. Every address under the mask's seats has a home on the
+      face, and lights a share of it equal to its charge over ten: "the more
+      intense, the more the pixel" (JP). A pixel is a share of one address's
+      charge, and the address is the unit the engine carries charge in.
+   4. The saboteurs, complexes and hyper complexes. An address that a running
+      saboteur is built on is laid down next to that saboteur's other
+      addresses, heaviest saboteur first, so a saboteur is one block and two
+      saboteurs are two blocks with a dark pixel between them. The tone is
+      the tier: a loose fetter is dim, a saboteur brighter, a saboteur joined
+      into a complex brighter again, and one whose family has built up into a
+      hyper complex is the hottest pixel on the face. That is a palette ramp,
+      which is how eight bit art shows depth with four colours. And when the
+      chain reaches the top, r.sups, which ui.js already calls Character, the
+      rim of the mask lights: the character is what the page is named for.
+
+   So an Overthinker and a Perfectionist light different pixels on the same
+   Child mask, because they are built on different addresses at different
+   seats, and the block each makes is sized by its own charge.
+
+   WHAT A PIXEL IS NOT. KW asked for "each pixel represents a story", and the
+   Body's own mask overlay still draws exactly that (bmMaskRead). It is not
+   the unit here, and on purpose: every worked example is a table of charges
+   with no stories in it, so a story pixel reads empty on all fourteen
+   reference profiles, and LP names the chain, not the entries, as what forms
+   the face. A story still fills this page, because a story is what moves the
+   charge that lights it.
+
+   PRETEEN AND PROFESSIONAL SIT ON THE SAME TWO SEATS, Solar and Throat, in
+   MASKS today, so the engine cannot tell their charge apart and their fill is
+   the same fill. What differs is the face, two eyes against a fitted jaw.
+   That is the canon's call and not this file's, and it is asked rather than
+   papered over with an invented difference.
+   ============================================================ */
+
+/* the reading on screen, and the mask whose summary is in Selection. CHV and
+   not CH: CH is the Field canvas's height, a let in ui/component.js, and the
+   first cut declaring it a second time threw at parse and took every module
+   after this one with it, loadP included, so the app booted to nothing. */
+var CHV={face:'dark', pick:null, html:''};
+/* the face's box inside the icons' 24 unit viewBox. MASK_FACE runs 4 to 20
+   across and 3 to 19 down, so the grid is laid over exactly that square. */
+var CH_X0=4, CH_Y0=3, CH_S=16;
+/* A MARK IS A PHYSICAL WIDTH, in the icon's own units, and not a pixel
+   count. The first cut stroked it one cell wide, so the Child's eye was a
+   quarter of the size at 32 across that it was at 16, and a finer grid drew
+   a different face. A finer grid draws the same face in more pixels. */
+var CH_MARKW=1.25;
+/* the archetype's icon, shrunk into the middle of the face. At .45 an icon
+   that fills its 24 box spans about nine units, inside the face at every
+   height it reaches, and a two unit stroke lands under one unit wide. */
+var CH_GLYPH_K=.45, CH_GLYPH_Y=11;
+/* THE GRID SCALES WITH WHAT HAS FORMED UNDER THE MASK. His words: "So if a
+   person goes over a certain amount, the grid will dynamically scale." The
+   amount is the engine's own: a saboteur forms when the mean charge on its
+   addresses reaches 3.7, and a complex when two saboteurs of one family are
+   both running (engine/compute.js). So a mask is 16 pixels across while
+   only loose fetters sit under it, 24 once a saboteur runs there, and 32
+   once one of those saboteurs has joined a complex.
+
+   Why those three steps and not a count of entries. A saboteur is four
+   addresses drawn as one block, and at 16 across a two seat mask gives an
+   address about three pixels of the half face, so a block of four is a
+   dozen pixels with a spacer taken out of it and its weight rounded to
+   thirds of a place. At 24 the same block is about twenty five, and at 32 a
+   complex's two blocks have room to read as two things joined. The finer
+   grid arrives when there is structure that needs it, and it arrives at the
+   two moments he tied to a reward: "if you create a saboteur if you create
+   a Complex it gets you your reward for it."
+
+   Either reading counts, light or dark, so pressing Light never changes the
+   grid under it: the grid belongs to the mask, and the reading is what
+   lights it. */
+var CH_RES=[16,24,32];
+var _CHGEO={}, _CHCTX=null;
+function chCtx(){
+ if(!_CHCTX)_CHCTX=document.createElement('canvas').getContext('2d');
+ _CHCTX.setTransform(1,0,0,1,0,0);
+ _CHCTX.lineCap='round';_CHCTX.lineJoin='round';
+ return _CHCTX;}
+function chCell(c,G){return CH_X0+(c+.5)*CH_S/G;}
+function chRow(r,G){return CH_Y0+(r+.5)*CH_S/G;}
+/* the Hilbert curve's own walk, d to x and y. A run of consecutive places
+   along it is a compact blob and never a stripe, which is what makes a
+   saboteur a block. At order n the first half of the walk covers exactly the
+   left half of the square, so the half face is laid down in one pass. */
+function chHilbert(n,d){
+ var x=0,y=0,t=d,s,rx,ry,q;
+ for(s=1;s<n;s*=2){rx=1&(t/2);ry=1&(t^rx);
+  if(ry===0){if(rx===1){x=s-1-x;y=s-1-y;}q=x;x=y;y=q;}
+  x+=s*rx;y+=s*ry;t=Math.floor(t/4);}
+ return [x,y];}
+/* ONE MASK'S FACE AT ONE RESOLUTION, memoised, because it never changes for
+   a person: which cells are face, which are rim, which the mark cuts out,
+   and the half face's cells in the order the fetters are laid down.
+
+   THE LEFT HALF IS MEASURED AND THE RIGHT IS ITS MIRROR, rather than both
+   measured. The outline and all six marks are symmetric about x 12, and
+   isPointInPath on a cell centre that sits on the curve can answer one side
+   and not the other, which put a single stray pixel on one cheek. */
+function chGeo(m,G){
+ var key=m.nm+':'+G; if(_CHGEO[key])return _CHGEO[key];
+ var g=chCtx(), face=new Path2D(MASK_FACE);
+ var md=m.ic.indexOf(MASK_FACE)===0?m.ic.slice(MASK_FACE.length):'';
+ var mark=md.trim()?new Path2D(md):null;
+ var h=G/2, inF=[], cut=[], c, r;
+ for(r=0;r<G;r++){inF[r]=[];cut[r]=[];
+  for(c=0;c<h;c++){var x=chCell(c,G), y=chRow(r,G);
+   inF[r][c]=g.isPointInPath(face,x,y);
+   g.lineWidth=CH_MARKW; cut[r][c]=!!mark&&g.isPointInStroke(mark,x,y);}
+  for(c=h;c<G;c++){inF[r][c]=inF[r][G-1-c];cut[r][c]=cut[r][G-1-c];}}
+ var at=function(c,r){return r>=0&&r<G&&c>=0&&c<G&&inF[r][c];};
+ var rim=[], half=[], grid=[], mk=[];
+ for(r=0;r<G;r++)for(c=0;c<G;c++){if(!inF[r][c])continue;
+  var edge=!at(c-1,r)||!at(c+1,r)||!at(c,r-1)||!at(c,r+1);
+  /* the rim holds whatever the mark does: the Teen's split is "held
+     together from outside", so it cuts the face and never the rim */
+  if(edge)rim.push([c,r]); else if(cut[r][c])mk.push([c,r]); else grid.push([c,r]);}
+ var n=1;while(n<G)n*=2;
+ var inner=function(c,r){return inF[r][c]&&!cut[r][c]&&at(c-1,r)&&at(c+1,r)&&at(c,r-1)&&at(c,r+1);};
+ for(var d=0;d<n*n;d++){var p=chHilbert(n,d);
+  if(p[0]<h&&p[1]<G&&inner(p[0],p[1]))half.push(p);}
+ return (_CHGEO[key]={G:G,rim:rim,half:half,grid:grid,mk:mk,inner:inner});}
+/* the archetype's icon as cells, per archetype and resolution */
+function chGlyph(a,G){
+ var key='a:'+a.nm+':'+G; if(_CHGEO[key])return _CHGEO[key];
+ var g=chCtx(), p=new Path2D(a.ic), k=CH_GLYPH_K, on={};
+ g.setTransform(k,0,0,k,12-12*k,CH_GLYPH_Y-12*k); g.lineWidth=2;
+ for(var r=0;r<G;r++)for(var c=0;c<G;c++)
+  if(g.isPointInStroke(p,chCell(c,G),chRow(r,G)))on[c+','+r]=1;
+ g.setTransform(1,0,0,1,0,0);
+ return (_CHGEO[key]=on);}
+
+/* THE CHAIN ABOVE ONE SABOTEUR, read off compute() and nowhere else: the
+   complex it is part of, the hyper complex that complex is part of, and the
+   character above that. Light reads the overshot chain and dark the other,
+   the same split compute() already makes with .over. */
+function chChain(r){
+ var up={};
+ (r.cxs||[]).forEach(function(c){(c.parts||[]).forEach(function(s){if(!up[s.nm])up[s.nm]={cx:c};});});
+ (r.hys||[]).forEach(function(h){(h.parts||[]).forEach(function(c){
+  (c.parts||[]).forEach(function(s){if(up[s.nm]&&!up[s.nm].hy)up[s.nm].hy=h;});});});
+ (r.sups||[]).forEach(function(sp){(sp.parts||[]).forEach(function(h){
+  Object.keys(up).forEach(function(k){if(up[k].hy===h&&!up[k].sup)up[k].sup=sp;});});});
+ return up;}
+/* what each reading lights an address by. Dark is the charge left after the
+   opposite, sq. Light is the opposite installed past what is held, pole, or
+   where the cure is overdone, jq, whichever is more: "there's a jouissance,
+   the part where we overly lean into it", and compute() names that exact
+   thing JOUISSANCE, the opposite overshot past 6. */
+function chVal(n,face){return face==='light'?Math.max(n.pole||0,n.jq||0):(n.sq||0);}
+function chOwn(s,face){return face==='light'?!!s.over:!s.over;}
+/* the grid a mask is drawn at, off both readings: see CH_RES */
+function chRes(m,r){
+ if(!r||r.unread)return CH_RES[0];
+ var under=function(s){return (s.parts||[]).some(function(n){return n&&m.b.indexOf(n.b)>=0;});};
+ var sabs=(r.sabs||[]).filter(under);
+ if(!sabs.length)return CH_RES[0];
+ var up=chChain(r);
+ return sabs.some(function(s){return up[s.nm]&&up[s.nm].cx;})?CH_RES[2]:CH_RES[1];}
+
+/* ONE MASK, ONE READING. Returns the pixels and everything the summary
+   says, so the grid and the words are read off one pass and cannot
+   disagree. */
+function chRead(m,r,face,G){
+ G=G||chRes(m,r);
+ var geo=chGeo(m,G), H=geo.half.length;
+ var seg=W.filter(function(n){return m.b.indexOf(n.b)>=0;});
+ var out={m:m,face:face,G:G,N:seg.length,px:[],groups:[],held:0,sabs:[],cxs:[],hys:[],sup:null,arch:null,aff:0,lit:0,
+  unread:!r||!!r.unread};
+ /* the archetype under this mask the blueprint leans on hardest */
+ ARCH.forEach(function(a,j){
+  if(m.b.indexOf(a.b)<0)return;
+  var v=(r&&r.aff)?(r.aff[j]||0):0;
+  if(!out.arch||v>out.aff){out.arch=a;out.aff=v;}});
+ if(!r||r.unread)return out;
+ var up=chChain(r), own={}, groups=[];
+ (r.sabs||[]).filter(function(s){return chOwn(s,face);}).forEach(function(s){
+  var mine=(s.parts||[]).filter(function(n){return n&&m.b.indexOf(n.b)>=0&&!own[n.i];});
+  if(!mine.length)return;
+  var u=up[s.nm]||{}, gp={o:s,ns:mine,tier:u.hy?3:u.cx?2:1,cx:u.cx||null,hy:u.hy||null,sup:u.sup||null};
+  mine.forEach(function(n){own[n.i]=gp;});
+  groups.push(gp);});
+ seg.filter(function(n){return !own[n.i]&&chVal(n,face)>=1;})
+  .sort(function(a,b){return chVal(b,face)-chVal(a,face);})
+  .forEach(function(n){groups.push({o:null,ns:[n],tier:0});});
+ var rest=seg.filter(function(n){return !own[n.i]&&chVal(n,face)<1;});
+ if(rest.length)groups.push({o:null,ns:rest,tier:-1});
+ out.groups=groups;
+ out.held=seg.filter(function(n){return chVal(n,face)>=1;}).length;
+ /* every address has a home, in this order, and a home is the same size for
+    every address under the mask: cumulative, so the whole half face is
+    handed out and none is left over at the chin */
+ var k=0, N=seg.length;
+ groups.forEach(function(gp){
+  var a0=Math.floor(k*H/N), cells=[];
+  gp.ns.slice().sort(function(a,b){return chVal(b,face)-chVal(a,face);}).forEach(function(n){
+   var len=Math.floor((k+1)*H/N)-Math.floor(k*H/N); k++;
+   /* under 1 is not held, the line every surface already draws, so it
+      lights nothing even where a share of a long run would round to one */
+   var v=chVal(n,face), lit=v>=1?Math.round(len*Math.min(10,v)/10):0;
+   for(var i=0;i<lit;i++)cells.push(n);});
+  var run=Math.floor(k*H/N)-a0;
+  /* a block keeps one dark place at its end, so two saboteurs laid down
+     side by side along the walk are two blocks and not one */
+  if(run>1&&cells.length>=run)cells.length=run-1;
+  cells.forEach(function(n,i){out.px.push({p:geo.half[a0+i],n:n,tier:gp.tier});});});
+ out.lit=out.px.length;
+ var seen=function(list,o){if(o&&list.indexOf(o)<0)list.push(o);};
+ groups.forEach(function(gp){if(!gp.o)return;
+  seen(out.sabs,gp.o);seen(out.cxs,gp.cx);seen(out.hys,gp.hy);if(gp.sup&&!out.sup)out.sup=gp.sup;});
+ return out;}
+
+/* THE PALETTE RAMP. The seat colour is the mask's colour, MK2: "made up of
+   the chakra colours of our masks", and each lit pixel wears the seat of the
+   address it belongs to, so a two seat mask shows both. Dark is the seat
+   colour at depth, dimmest for a loose fetter and full once a complex has
+   formed, with the hyper complex mixed toward the ink as the hottest step.
+   Light is the same ramp mixed half way to the ink, so a light mask reads
+   pale where the dark one reads deep. Mixed toward --ink and not toward
+   white: on the paper themes the ink is dark, and a tint toward white on a
+   near white stage was a pixel nobody could see. */
+var CH_OP={dark:[.34,.64,1,1],
+ /* the light ramp starts higher: a pale tint at a third opacity on the black
+    ground measured as a grey brown, so Derek's light mask, all loose
+    opposites and nothing overshot, read as a darker mask than his dark one */
+ light:[.55,.8,1,1]};
+function chTone(b,tier,face){
+ var C=seatCol(b);
+ if(face==='light')return tier>=3?'color-mix(in srgb,'+C+' 22%,var(--ink))':'color-mix(in srgb,'+C+' 52%,var(--ink))';
+ return tier>=3?'color-mix(in srgb,'+C+' 64%,var(--ink))':C;}
+/* ONE GRID AS SVG. A document, so the Selection panel can carry the same
+   drawing, and so the render watch reads its markup: a canvas has no
+   innerHTML, which is the lesson monitor.js already records about the Field.
+   One path per colour and opacity, so a 32 across face is a handful of
+   elements and not a thousand rects. */
+function chSvg(rd,cls,label){
+ var G=rd.G, geo=chGeo(rd.m,G), paths={}, on={};
+ var add=function(fill,op,c,r,inset){
+  var key=fill+'|'+op+'|'+inset, s=(1-2*inset);
+  (paths[key]=paths[key]||[]).push('M'+(+(c+inset).toFixed(2))+' '+(+(r+inset).toFixed(2))+'h'+s+'v'+s+'h-'+s+'z');};
+ rd.px.forEach(function(x){
+  var f=chTone(x.n.b,x.tier,rd.face), op=CH_OP[rd.face==='light'?'light':'dark'][Math.max(0,x.tier)];
+  [[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]].forEach(function(q){on[q[0]+','+q[1]]=1;add(f,op,q[0],q[1],.06);});});
+ /* the foundation shows only where the chain has not built over it yet */
+ var gl=(rd.arch&&!rd.unread)?chGlyph(rd.arch,G):{};
+ var fop=(.16+.26*Math.max(0,Math.min(1,rd.aff))).toFixed(2);
+ geo.grid.forEach(function(q){var k=q[0]+','+q[1];if(on[k])return;
+  if(gl[k])add(seatCol(rd.arch.b),fop,q[0],q[1],.06);
+  else add('var(--ink)','.08',q[0],q[1],.33);});
+ /* the rim is the mask's own seats, first seat on the left and last on the
+    right, faint until the chain reaches the character, then lit */
+ var lit=!!rd.sup;
+ geo.rim.forEach(function(q){var b=q[0]<G/2?rd.m.b[0]:rd.m.b[rd.m.b.length-1];
+  add(lit?chTone(b,2,rd.face):seatCol(b),lit?'1':'.3',q[0],q[1],.06);});
+ /* THE MARK IS DRAWN IN THE RIM'S INK, not left as a hole. Cut out and
+    left dark, it was a gap in a grid of dots that were already dark: on
+    an empty profile the six faces measured as the same face six times,
+    and the one thing that tells a Child from a Teen was the thing nobody
+    could see. The icons draw their mark as a stroke, and so does this. */
+ geo.mk.forEach(function(q){var b=q[0]<G/2?rd.m.b[0]:rd.m.b[rd.m.b.length-1];
+  add(lit?chTone(b,2,rd.face):seatCol(b),lit?'1':'.55',q[0],q[1],.06);});
+ return '<svg class="'+cls+'" viewBox="0 0 '+G+' '+G+'" data-chres="'+G+'" data-chlit="'+rd.lit+'"'
+  +(label?' role="img" aria-label="'+esc(label)+'"':' aria-hidden="true"')+'>'
+  +Object.keys(paths).map(function(k){var p=k.split('|');
+   return '<path style="fill:'+p[0]+'" fill-opacity="'+p[1]+'" d="'+paths[k].join('')+'"/>';}).join('')
+  +'</svg>';}
+
+function chSentence(v){v=String(v||'');return v.charAt(0).toUpperCase()+v.slice(1)+'.';}
+function chSeats(m){return m.b.map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();}).join(' and ');}
+function chPl(n,one,many){return n+' '+(n===1?one:many);}
+function chAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+/* HOW FAR UP THE CHAIN ONE READING HAS BUILT, as two sentences at most. A
+   complex pairs two saboteurs of one family and the other may run under a
+   different mask, so the count is of the saboteurs here that are part of
+   one, never "pairs of them": the first cut said six complexes were pairs
+   of seven saboteurs, which is arithmetic the page could not have meant. */
+function chUp(rd){
+ var n=rd.sabs.length, k=rd.groups.filter(function(g){return g.o&&g.cx;}).length, o='';
+ if(k)o+=' '+(k===n&&n>1?'All of them are':k+' of them '+(k===1?'is':'are'))+' part of a complex.';
+ if(rd.hys.length)o+=' The '+esc(chAnd(rd.hys.map(function(y){return y.nm;})))
+  +(rd.hys.length===1?' family has built up into a hyper complex.':' families have built up into hyper complexes.');
+ return o;}
+
+/* THE PAGE. Six grids, each under its name, and one switch for the reading.
+
+   ONE SWITCH FOR ALL SIX, NOT TWO BUTTONS ON EACH. He said "maybe this two
+   buttons for their masks", and then "all of those form the character",
+   which is the six read together in one reading. Two buttons a card is
+   twelve controls on a page he asked to be six grids, three times the four
+   choices a person holds at once, and it lets the six sit in two readings
+   at the same moment, which is a character nobody has. The summary in
+   Selection carries both readings of the mask pressed, side by side, so
+   the per mask comparison is one press away and not lost. */
+function renderCharacter(r){
+ var host=$('masksview'); if(!host)return;
+ /* the pick goes down with the panel, the way every surface's does. rdClose
+    puts down PMPICK and S.pin by name and does not know this one, so it is
+    read off the panel itself rather than added to drills.js */
+ var rd0=$('rdrill');
+ if(CHV.pick&&(!rd0||rd0.style.display==='none'||!rd0.innerHTML))CHV.pick=null;
+ var unread=!r||r.unread;
+ var cards=MASKS.map(function(m){
+  var rd=chRead(m,r,CHV.face), on=CHV.pick===m.nm;
+  var say=m.nm+' mask, '+CHV.face+' reading. It '+m.v+'.';
+  return '<button type="button" class="chv-m" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
+   +'<span class="chv-nm">'+esc(m.nm)+'</span>'+chSvg(rd,'chv-svg')+'</button>';}).join('');
+ var html='<div class="chv">'
+  +'<div class="chv-top"><div class="seg" role="group" aria-label="Reading">'
+  +['dark','light'].map(function(f){return '<button type="button" data-chface="'+f+'" aria-pressed="'+(CHV.face===f)+'">'
+   +(f==='dark'?'Dark':'Light')+'</button>';}).join('')+'</div></div>'
+  +(unread?'<p class="chv-empty">Nothing read yet, so the masks are empty. Write what happened on the Story page and they start to fill.</p>':'')
+  +'<div class="chv-grid">'+cards+'</div></div>';
+ /* written only when it changed. render() runs on every press anywhere in
+    the app, and rewriting the host each time would drop the focus off the
+    card a keyboard is sitting on */
+ if(html===CHV.html&&host.firstChild)return;
+ CHV.html=html; host.innerHTML=html;
+ host.querySelectorAll('[data-chface]').forEach(function(b){b.onclick=function(){
+  CHV.face=b.getAttribute('data-chface'); render();};});
+ host.querySelectorAll('[data-chmask]').forEach(function(b){b.onclick=function(){
+  var m=MASKS.filter(function(x){return x.nm===b.getAttribute('data-chmask');})[0];
+  if(!m)return;
+  if(CHV.pick===m.nm){CHV.pick=null;rdClose();return;}
+  CHV.pick=m.nm; chDrill(m); render();};});}
+
+/* THE SUMMARY IN SELECTION. "It gives me a full summary of what that mask
+   is doing. How it operates through me. Both light and dark." Both grids
+   first, because a question about a drawing is asked with the drawing, then
+   what the mask does, what it is built on, and each reading in words read
+   off the same pass that drew it. */
+function chDrill(m){
+ var r=compute(), G=chRes(m,r), dk=chRead(m,r,'dark',G), lt=chRead(m,r,'light',G), rows=[];
+ var row=function(o){rows.push(o);var lv=leaves(o), b=(lv[0]||{}).b||m.b[0];
+  return '<button type="button" class="chv-row" data-chrow="'+(rows.length-1)+'">'
+   +crBadge(b,o.w*10,{size:'sm',raw:o.w.toFixed(1),glyph:'<path d="'+CHAINGLYPH[o.kind]+'"/>',
+     title:o.nm+(o.over?', overshot':'')})
+   +'<span>'+esc(o.nm)+'</span></button>';};
+ var h='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div>'
+  +'<div class="ad-sub">worn over the '+esc(chSeats(m))+'</div>'
+  +'<div class="chv-pair">'
+  +'<figure>'+chSvg(dk,'chv-svg',m.nm+' mask, the dark reading')+'<figcaption>Dark</figcaption></figure>'
+  +'<figure>'+chSvg(lt,'chv-svg',m.nm+' mask, the light reading')+'<figcaption>Light</figcaption></figure></div>'
+  +'<div class="pm-eye">What it does</div><p class="ad-p">'+esc(chSentence('It '+m.v))+'</p>';
+ if(r.unread){
+  h+='<p class="ad-p">Nothing read yet, so this mask is empty. Write what happened on the Story page and it starts to fill.</p>';
+  rdShell(h);return;}
+ if(dk.arch)h+='<div class="pm-eye">Built on</div><p class="ad-p">The '+esc(dk.arch.nm)+', which '
+  +esc(dk.arch.v)+'. Of the archetypes seated under this mask, it is the one your blueprint leans on most. Its shape sits faint under the pixels.</p>';
+ /* THE DARK MASK. What is held, what has clustered, and how far up the
+    chain it has built, in that order, the way the chain itself is built. */
+ h+='<div class="pm-eye">The dark mask</div><p class="ad-p">';
+ if(!dk.held&&!dk.sabs.length)h+='Nothing held under this mask.';
+ else{
+  /* the count under it and the count carrying, each with its own unit, so
+     neither is a bare "26 of the 32" a person has to parse as a score */
+  h+='It covers '+dk.N+' addresses. Charge sits at '+chPl(dk.held,'address','addresses')+'.';
+  if(dk.sabs.length)h+=' '+chPl(dk.sabs.length,'saboteur runs','saboteurs run')+' here.';
+  h+=chUp(dk);
+  if(dk.sup)h+=' It reaches your character, the top of the chain, so the rim of the mask is lit.';}
+ h+='</p>';
+ if(dk.hys.length||dk.sabs.length)h+='<div class="chv-rows">'+dk.hys.map(row).join('')+dk.sabs.slice(0,6).map(row).join('')+'</div>';
+ /* THE LIGHT MASK. The opposite that is in, named by the state it installs
+    (CHILD.opp, Trust for Fear), and then the part leaned on too hard. */
+ var opps=[];
+ W.filter(function(n){return m.b.indexOf(n.b)>=0&&(n.pole||0)>=1&&n.cf;}).forEach(function(n){
+  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]; if(c&&opps.indexOf(c.opp)<0)opps.push(c.opp);});
+ h+='<div class="pm-eye">The light mask</div><p class="ad-p">';
+ if(!lt.held&&!lt.sabs.length)h+='No opposite is in yet under this mask.';
+ else{
+  var inst=W.filter(function(n){return m.b.indexOf(n.b)>=0&&(n.pole||0)>=1;}).length;
+  if(inst)h+='The opposite is in at '+chPl(inst,'address','addresses')+(opps.length?': '+esc(opps.join(', ')):'')+'.';
+  if(lt.sabs.length)h+=(inst?' ':'')+chPl(lt.sabs.length,'pattern runs','patterns run')+' past the point where it helps. That is the part you lean on too hard.';
+  h+=chUp(lt);
+  if(lt.sup)h+=' It reaches your character, so the rim of the mask is lit.';}
+ h+='</p>';
+ if(lt.hys.length||lt.sabs.length)h+='<div class="chv-rows">'+lt.hys.map(row).join('')+lt.sabs.slice(0,6).map(row).join('')+'</div>';
+ rdShell(h);
+ /* a row opens that pattern's own drill, the same one the Field's list opens */
+ var b=$('rdrill');
+ if(b)b.querySelectorAll('[data-chrow]').forEach(function(el){el.onclick=function(){
+  var o=rows[+el.getAttribute('data-chrow')]; if(o)runDrill(o);};});}
+
+try{window.__at&&window.__at('ui/character.js');}catch(e){}
 
 /* ============================================================
    STORY. Type or speak. Every keystroke runs the sniffer. Imprints
@@ -26162,43 +26788,51 @@ function stRender(){
  var h=document.getElementById('story'); if(!h) return;
  var p=ST_PARSED;
  var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
-  /* ---- the write column: Source AI over the journal ---- */
+  /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
-  /* THE COLUMN BESIDE THE JOURNAL WAS SOURCE AI, AND IT IS ABOVE IT NOW. HT in
-     TASKS.md, his words: "above the journal part will be a prompt engine." It
-     keeps its id, #stsrc, and its one speaking line, so a screen reader still
-     hears only what it says. */
-  +'<div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
   +'<div class="st-pan st-jr" id="stjr">'
   /* SPEAK BECAME RECORD, AND IT CARRIES ITS STATE.
 
      Speak is what you do, record is what the control does, and the ruling
      everywhere else in this product is that a menu word describes exactly
      what the thing does. The dot says which mode you are in without reading
-     the label: green while it is recording, red while you are typing. */
-  +'<div class="st-hd"><span class="pm-eye">The day</span>'
+     the label: green while it is recording, red while you are typing.
+
+     THE EYEBROW AND THE LINE UNDER IT ARE GONE, round LO, his words: "I want
+     to remove the text saying the day and re remove the recording sends the
+     audio to browser. Just get rid of that text." The eyebrow read "The day";
+     the box keeps it as its accessible name, which nobody sees and a screen
+     reader needs. The line read "Recording sends the audio to your browser's
+     speech service. Typing does not leave this device." It was put there
+     because that is true and was nowhere else, and it is still true: browser
+     speech recognition is a network service and the audio reaches the
+     browser vendor. So the fact moved rather than went. It is in the
+     button's own tooltip, on the one control that sends the audio anywhere,
+     and it is off the page. */
+  +'<div class="st-hd">'
    +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
-     :'Record what happened out loud instead of typing it.')+'">'
+     :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button>'
-   /* WHERE THE AUDIO GOES, SAID BEFORE IT GOES THERE.
+   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button></div>'
+  /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
+     want you to swap the main journal menu with the source AI question." The
+     column read Source AI, then the journal's own top line with Record on it,
+     then the box. It reads Record, then Source AI, then the box now, so the
+     question sits straight over the place it is answered. Source AI came
+     inside the journal's panel to do that, and it wears its own ground, the
+     same sunk ground as the box and the chart, because he asked for it to
+     read as a display: "right now the source scripted area is on gray ... I
+     want it to have its own black background."
 
-      The owner keeps the microphone and promises the data is never sold, and
-      both of those are true. A third fact is also true and was nowhere on
-      screen: browser speech recognition is a network service, so the audio
-      reaches the browser vendor. We do not sell it and we do not control it
-      either, which is exactly why it has to be said rather than assumed.
-
-      One line, always visible, not a dialog. A dialog asks for a decision the
-      person cannot yet make anything of, and it would sit between somebody and
-      the thing they came to do. Typing stays the equal path and is named here
-      so the alternative is in the same sentence as the cost. */
-   +'<span class="st-mnote">Recording sends the audio to your browser\'s '
-   +'speech service. Typing does not leave this device.</span></div>'
+     It keeps its id, #stsrc, and its one speaking line, so a screen reader
+     still hears only what it says. HT in TASKS.md put it above the journal,
+     "above the journal part will be a prompt engine", and it is still above
+     the part a person writes in. */
+  +'<div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -26231,8 +26865,15 @@ function stRender(){
    +'<div class="st-chd"><span class="st-eb">Imprints</span><span class="st-tag" id="stpend"></span>'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
-      vault, which is what's been released." Both are icons with their word
-      beside them at 1600 and the icon alone on a phone. */
+      vault, which is what's been released." Both were icons with their word
+      beside them at 1600 and the icon alone on a phone. Round LO took the
+      word off at every width, his words: "for the bank and the vault, I just
+      want their icons only, not the text." The word is still in the button,
+      clipped the way a folded tab's name is, so a screen reader still hears
+      Bank and Vault; .st-lb in the shell does it. The vault keeps its count,
+      which is a figure and not a label, as it always has on a phone. He also
+      asked for the two to swap places and withdrew it in the same breath,
+      "actually, never mind", so they stand where they stood. */
    +'<button type="button" class="st-ico" id="stbank" aria-pressed="'+STV.bank+'" '
     +'title="The bank: every imprint you hold, on the Imprints page">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 4l9 5.5M5 10v8M9.7 10v8M14.3 10v8M19 10v8M3 20.5h18"/></svg>'
@@ -26528,11 +27169,14 @@ function stFieldPaint(){
    SOURCE AI, THE SPEAKING HALF. The listening half is engine/sourceai.js
    and the whole behaviour is written down in reviews/SPEC-source-ai.md.
 
-   Scripted, and it says so. No model is called: every line below is chosen
-   by srcTurn off a count the person can check in their own words.
+   Scripted. No model is called: every line below is chosen by srcTurn off a
+   count the person can check in their own words. It said so on screen, a
+   small "scripted" beside its name, until round LO, his words: "Remove the
+   text that says scripted." The fact is unchanged and is still written down
+   in the spec above; only the label is off the page.
 
    Four moves, and the person decides which one it makes:
-     open    the opening question, and one simple one to start from
+     open    the opening question, which a press turns to another one
      listen  it has heard something and asks nothing. The seat nearest a
              question and its rung show as a gauge; the words it heard are
              on the chart beside it, in the lanes they landed in.
@@ -26573,7 +27217,25 @@ var SRC_OPEN='What are we writing about today?';
    ask. Each is a physical event a person can answer from memory, the shape
    funnel/questions.js already proved works in this product, and none of them
    names a feeling for the person. One at a time, turned by the day, so the
-   page does not become furniture. */
+   page does not become furniture.
+
+   THEY WERE A SECOND LINE UNDER THE OPENER, AND THEY ARE THE OPENER'S NEXT
+   QUESTIONS NOW. Round LO, his words: "have source AI question have a button
+   to generate new questions ... Remove the text that says or start from
+   where did you feel it first." That line was "Or start from" and one of
+   these, picked by the day, and on the day he read it the day picked "Where
+   did you feel it first?". The line is gone and the list is what the button
+   walks. The opener is still his own sentence and still comes first; the
+   first press lands on the day's question, which keeps the turn by the day,
+   and each press after it is the next one round. SRC_QI is where the walk
+   is, and below nought means the opener. It is not reset by Clear or by a
+   new entry, because the question a person chose is theirs until they press
+   again. */
+var SRC_QI=-1;
+function srcQuestion(){return SRC_QI<0?SRC_OPEN:SRC_JOG[SRC_QI%SRC_JOG.length];}
+function srcNextQ(){
+ SRC_QI=SRC_QI<0?Math.floor(Date.now()/864e5)%SRC_JOG.length:(SRC_QI+1)%SRC_JOG.length;
+ return srcQuestion();}
 var SRC_JOG=['What happened today that your body is still holding?',
  'Where did you feel it first?',
  'What did you not say?',
@@ -26642,12 +27304,16 @@ function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=STR.heard||srcHear(ST_TEXT,null);
  var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
- var o='<div class="src-hd"><span class="pm-eye">Source AI</span>'
-  +'<span class="src-tag">scripted</span></div>';
- if(turn.move==='open'){
-  var d=Math.floor(Date.now()/864e5), k=d%SRC_JOG.length;
-  o+='<p class="src-open">'+esc(SRC_OPEN)+'</p>'
-   +'<p class="src-jog">Or start from <q>'+esc(SRC_JOG[k])+'</q></p>';}
+ var o='<div class="src-hd"><span class="pm-eye">Source AI</span></div>';
+ /* the question and its button share a line, the way the Avatar's question
+    and its turn arrow do, and the button carries the same name, Another
+    question. A press rewrites the question in place and nothing else, so the
+    focus stays on the button for the next press. */
+ if(turn.move==='open')
+  o+='<div class="src-ask"><p class="src-open" id="srcq">'+esc(srcQuestion())+'</p>'
+   +'<button type="button" class="src-new" id="srcnew" aria-label="Another question" title="Another question">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/></svg>'
+   +'</button></div>';
  else if(turn.move==='ask'){
   o+='<p class="src-q" style="--c:'+seatCol(turn.band)+'">'+esc(srcAsk(turn))+'</p>'
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
@@ -26655,7 +27321,7 @@ function srcPaint(){
  else if(turn.move==='pass'){
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';}
  else{
-  o+='<p class="src-open quiet">'+esc(SRC_OPEN)+'</p>';
+  o+='<p class="src-open quiet">'+esc(srcQuestion())+'</p>';
   if(heard.top)o+='<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(heard.top.band)+'">'
    +'<span>Next question</span>'+srcPips(heard.top.rung,seatCol(heard.top.band))
    +'<span class="src-seat">'+esc(heard.top.band)+'</span></span></div>';
@@ -26669,11 +27335,14 @@ function srcPaint(){
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
   +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  h.innerHTML=o;
- var said=turn.move==='open'?SRC_OPEN:(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
+ var said=turn.move==='open'?srcQuestion():(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
  var sy=document.getElementById('srcsay');
  if(sy&&sy.textContent!==said)sy.textContent=said;
  var mv=document.getElementById('srcpass');
- if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};}
+ if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};
+ var nq=document.getElementById('srcnew');
+ if(nq)nq.onclick=function(){var q=srcNextQ(), e=document.getElementById('srcq');
+  if(e)e.textContent=q; if(sy)sy.textContent=q;};}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
    never sits in the document asserting a stale reading, the rule Summary
    already keeps. setTab calls this on every tab but Story. The bank closes
@@ -27109,11 +27778,26 @@ function stDrawStrip(){
  g.restore();
  g.fillStyle=rgba(dim,.9);g.font='12px Inter,system-ui,sans-serif';g.textAlign='right';g.textBaseline='middle';g.fillText('read',q.x0-10,CH-15);}
 
-/* ---- the words under the chart and the tag beside its name ---- */
+/* ---- the words under the chart and the tag beside its name ----
+   THE TAG IS EMPTY UNTIL THERE IS SOMETHING TO SAY. Round LO, his words:
+   "For the imprints, I remove the text saying imprints not read yet, unless
+   that does something specific." Checked before it was cut: it was the tag's
+   fourth state, shown only with the box empty and nothing committed since
+   the page opened, and it did nothing. It was not a control, nothing reads
+   it, and it said the same thing as the list directly under it, "You have
+   not written anything yet. Whatever you write gets pulled apart and
+   collected here", and as the empty chart beside it. On a phone that list
+   is folded away behind List, and there the empty chart and the empty box
+   with its placeholder still say it, the chart on the same line of sight
+   the tag sat on. The other three states
+   each say something only the tag says and they stay: how many are pending,
+   that the words kept nothing, and that the last entry was committed. The
+   span stays in place empty, because it is the spacer that holds the Bank
+   and the Vault at the row's right edge. */
 function stPendPaint(){
  var e=document.getElementById('stpend'); if(!e)return;
  var n=ST_PARSED?ST_PARSED.imprints.length:0;
- e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':'not read yet'));
+ e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
 function stCtrPaint(){
  /* its own span, because the line also carries the view toggle and writing
@@ -27238,7 +27922,8 @@ function stRelModel(){
  if(picked.length)take=picked.sort(bySq);
  else if(found.length)take=found.slice().sort(bySq).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
- return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length};}
+ return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
+  added:!!(picked.length||found.length)};}
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
  var M=stRelModel(), o='';
@@ -27261,9 +27946,22 @@ function stRelPanel(){
   +'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Run release</button></div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
-    that address is heavy. Round HX, B, which he did not strike. */
- e.style.setProperty('--glow',M.sel.length?seatCol(M.sel[0].b):'var(--accent)');
- e.style.setProperty('--lux',M.sel.length?(0.15+0.2*Math.min(10,M.sel[0].sq)/10).toFixed(2):'.1');
+    that address is heavy. Round HX, B, which he did not strike.
+
+    AND ONLY ONCE SOMETHING HAS BEEN ADDED TO IT. Round LO, his words:
+    "release should not start red. It should only become red once you add
+    things to it." It started lit because of the third source above: with
+    nothing picked in the bank and nothing found in the journal, the panel
+    offers the three heaviest addresses the field already holds, and it lit
+    in the first one's colour on arrival. Root is the heaviest seat on many
+    fields and Root is red, so the panel opened red on a person who had done
+    nothing. The offer stays, because Run on the heaviest three is a real
+    route, but it is drawn in the accent like an empty panel. The seat's
+    colour arrives the moment a word the journal read or a pick from the bank
+    puts something in, which is what added means here. */
+ var lit=M.added&&M.sel.length;
+ e.style.setProperty('--glow',lit?seatCol(M.sel[0].b):'var(--accent)');
+ e.style.setProperty('--lux',lit?(0.15+0.2*Math.min(10,M.sel[0].sq)/10).toFixed(2):'.1');
  e.querySelectorAll('[data-rq]').forEach(function(b){b.onclick=function(){
   var i=+b.getAttribute('data-rq'); ST_OFF[i]=ST_OFF[i]!==true; stRelPanel();};});
  /* the card's own clamps, so a value typed here cannot be one the card
@@ -29791,26 +30489,59 @@ function avBox(b,k,text){
   +esc(text)+'</textarea></div>'
   +'<div class="av-live" data-avlive="'+k+'" role="status" aria-live="polite">'
   +(rel?avLive(avHeard(text),{notbe:text}):avLiveBe(avDraft(b).notbe))+'</div></div>';}
-/* THE QUESTION HEADS THE MENU, his words: "the question to be on the right
-   menu". It turns in place by one press on the arrow beside it, and the two
-   boxes stack under it, release first because the embody box reads it. */
-function avSeatForm(b,idx){
+/* THE TWO BOXES LEFT THE MENU FOR EITHER SIDE OF THE RING. Round LO, his
+   words: "For the Becoming, our main graphic, I want centered, and I want two
+   columns. One left side for the person, the story of the story you no longer
+   wish to become, the thing holding the person back, and the right one is the
+   person you wish to become, to embody." The menu already carried exactly
+   that split, To release stacked over To embody beside the ring, so nothing
+   here is new copy: the two boxes move out to the ring's two sides. The
+   question heads the left, because what it asks for is the release line, and
+   the button that keeps the pair closes the right, because it reads both and
+   the embody box is the second one filled. What stays in the menu, the two
+   faces, the seat, the tags and the rule, sits centred under the ring.
+
+   So this returns the question, the left column and the right column, and
+   avHero lays them out. The question has its own cell over the left column
+   rather than a place inside it, so the two boxes stand level with each other
+   beside the ring's middle; measured the other way at 1600, the question
+   pushed the release box 70 pixels below the embody box.
+   The form was one wrapper with data-avform round both boxes and the button,
+   and the box's own input handler finds the button and the two live lines
+   through that wrapper. The wrapper cannot sit inside one column any more, so
+   avHero puts data-avform on the whole row while a pair is being written. */
+function avSides(st){
+ var b=st.seat, x=st.bySeat[b], idx=(x&&AV.edit===x.i)?x.i:null;
+ /* a written story: the two lines, lit. The tags carry what the sniffer found
+    in them and stay in the menu under the ring. The chips that sat under each
+    line said the same thing a second time and are folded into the tags. */
+ if(x&&idx==null)return ['',
+  '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p></div>',
+  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>'];
  var d=avDraft(b), ask=AV_ASK[b], i=(AV.ask[b]||0)%ask.ask.length;
- return '<div data-avform="'+b+'">'
-  +'<div class="avs-ask"><p class="avs-q" data-avq="'+b+'">'+esc(ask.ask[i])+'</p>'
+ /* the question turns in place by one press on the arrow beside it */
+ return [
+  '<div class="avs-ask"><p class="avs-q" data-avq="'+b+'">'+esc(ask.ask[i])+'</p>'
   +'<button type="button" class="avs-cyc" data-avcyc="'+b+'" aria-label="Another question" title="Another question">'
-  +avSvg(AV_CYC)+'</button></div>'
-  +'<div class="avs-two">'+avBox(b,'notbe',d.notbe)+avBox(b,'be',d.be)+'</div>'
+  +avSvg(AV_CYC)+'</button></div>',
+  avBox(b,'notbe',d.notbe),
+  avBox(b,'be',d.be)
   +'<div class="av-act"><button type="button" class="btn pri" data-avadd="'+b+'"'
   +(d.be.trim()&&d.notbe.trim()?'':' disabled')+'>'+(idx!=null?'Save the change':'Add to your avatar')+'</button>'
-  +(idx!=null?'<button type="button" class="btn" data-avcancel="'+b+'">Cancel</button>':'')+'</div></div>';}
-/* a written story: the two lines, lit, and then the tags, which carry what
-   the sniffer found in them. The chips that sat under each line said the
-   same thing a second time and are folded into the tags. */
+  +(idx!=null?'<button type="button" class="btn" data-avcancel="'+b+'">Cancel</button>':'')+'</div>'];}
+/* the row: the question and the left column, the ring centred, the right
+   column. The source order is the reading order on a wide screen; stacked,
+   the ring is moved first by the stylesheet, so a phone still opens on the
+   figure. */
+function avHero(st){
+ var b=st.seat, x=st.bySeat[b], form=!x||AV.edit===x.i, S2=avSides(st);
+ return '<div class="av-hero avh-row avh-three" style="--c:'+seatCol(b)+'"'+(form?' data-avform="'+b+'"':'')+'>'
+  +(S2[0]?'<div class="avh-q">'+S2[0]+'</div>':'')
+  +'<div class="avh-side avh-l">'+S2[1]+'</div>'+avRing(st)+'<div class="avh-side avh-r">'+S2[2]+'</div></div>';}
+/* what a written story keeps in the menu under the ring: the tags, the rule,
+   and the two presses that change it */
 function avSeatWritten(st,b,x){
- return '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p>'
-  +'<div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>'
-  +avTagHTML(st,b)
+ return avTagHTML(st,b)
   +avRuleHTML(st,b,x)
   +'<div class="av-act"><button type="button" class="btn" data-avedit="'+x.i+'">Edit</button>'
   +'<button type="button" class="btn" data-avtake="'+x.i+'">Take it off</button></div>';}
@@ -29848,11 +30579,14 @@ function avRuleHTML(st,b,x){
  return out+'</div>';}
 /* one seat, root to crown. The symbol on the left and what it represents, and
    open, the story behind it on the left of the two boxes. */
-/* ---------------- the right menu, round KH ----------------
+/* ---------------- the menu, round KH, under the ring since LO ----------------
    Two faces, and both are his: the selected ring's story, and the intake
    questions, which left their own subtab for this menu. The second face
    holds the situations this file draws and an empty slot that #iqbody is
-   moved into after the paint; intakeui.js still owns and writes that host. */
+   moved into after the paint; intakeui.js still owns and writes that host.
+   It sat to the right of the ring until round LO gave the ring's two sides to
+   the two boxes, see avSides; the story face keeps the seat, the tags and the
+   rule, and the boxes stay beside the ring whichever face is pressed. */
 var AV_FACES=[['story','Your story'],['iq','Intake questions']];
 function avMenu(st){
  var b=st.seat, A=AV_OF[b], x=st.bySeat[b];
@@ -29865,7 +30599,7 @@ function avMenu(st){
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
   +(x&&x.c!=null?'<span class="av-pp">'+avPct(x.c)+'<small>Complete</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
-  +(x&&!editing?avSeatWritten(st,b,x):avSeatForm(b,editing?x.i:null))+'</aside>';}
+  +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
    the person's own words that placed it, and any fetter it named, as chips.
    The sentence that said "Lands at" is gone; the seat chip carries it. */
@@ -30166,7 +30900,8 @@ function avDoors(){
    follow-up, and nothing here depends on where they sit.
 
    THE HERO TAKES THE MAJORITY, round KH: "The hero graphic, I just wanted to
-   take up the majority of the space." Three fifths of the row, and the ring
+   take up the majority of the space." Three fifths of the row until round
+   LO put a column either side of it, and half of it since, and the ring
    is sized by the height left under the one line as well as by the column,
    so at 1600 by 1000 all seven rings and the core sit in the first screen
    without a scroll. Under 980 wide the menu drops beneath the ring. */
@@ -30174,6 +30909,32 @@ var AV_CSS=[
  '#avbody .av{border-bottom:0;margin-bottom:0;padding-bottom:8px}',
  '#avbody .av-hero{grid-template-columns:minmax(0,3fr) minmax(300px,2fr);gap:24px}',
  '#avbody .avh-row{align-items:start}',
+ /* THE RING CENTRED, WITH A COLUMN EITHER SIDE, round LO. The ring keeps the
+    widest track, twice either side, so it is still most of the row, and the
+    two columns sit level with its middle. Read against the page's own width
+    and not the window's, because the rails beside it fold and open: at 1600
+    with both rails open the page is about 1120 wide, and under 980 the three
+    tracks would leave the ring smaller than the boxes, so the ring takes the
+    top of the row and the two columns share the line under it. Under 560 they
+    stack, the release column first. */
+ '#avbody .av{container-type:inline-size}',
+ '#avbody .av-hero.avh-three{grid-template-columns:minmax(220px,1fr) minmax(0,2fr) minmax(220px,1fr);'
+  +'grid-template-rows:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"q ring ." "l ring r" ". ring .";'
+  +'align-items:start;row-gap:12px}',
+ '.avh-three .avh-q{grid-area:q;align-self:end}',
+ '.avh-three .avh-l{grid-area:l}',
+ '.avh-three .avh-r{grid-area:r}',
+ '.avh-three .av-ring.avh{grid-area:ring}',
+ '.avh-side{min-width:0;display:flex;flex-direction:column;gap:12px}',
+ '.avh-q .avs-ask{margin:0}',
+ '.avh-side .avm-said .avs-said{margin:0}',
+ '.avh-under{display:flex;justify-content:center}',
+ '.avh-under .avm{width:100%;max-width:560px}',
+ '@container (max-width:980px){',
+ ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:none;'
+  +'grid-template-areas:"ring ring" "q q" "l r"}}',
+ '@container (max-width:560px){',
+ ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr);grid-template-areas:"ring" "q" "l" "r"}}',
  '#avbody .av-ring,#avbody .av-wheel{max-width:620px}',
  '#avbody .av-ring.avh{max-width:none;width:min(100%,max(340px,calc(100vh - 230px)))}',
  '#avbody .av-archg{grid-template-columns:minmax(0,3fr) minmax(280px,2fr)}',
@@ -30213,7 +30974,6 @@ var AV_CSS=[
  '.avm-tabs{align-self:stretch}',
  '.avm-tabs .avs-sb{flex:1 1 0;padding:0 12px}',
  '.avm-hd{margin:0}',
- '.avm .avs-two{grid-template-columns:1fr}',
  '.avm-said .avs-lab{margin:0 0 6px}',
  '.avm-said .avs-said{margin:0 0 12px}',
  '.avm-iq #iqbody{margin-top:4px}',
@@ -30222,7 +30982,6 @@ var AV_CSS=[
  '.avs-cyc{flex:0 0 auto;width:var(--tap);height:var(--tap);border-radius:50%;border:1px solid var(--edge-2);background:var(--panel);color:var(--c);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}',
  '.avs-cyc svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}',
  '.avs-cyc:hover{border-color:var(--c)}',
- '.avs-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}',
  '.avs-col{min-width:0;display:flex;flex-direction:column}',
  '.avs-lab{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0 0 6px}',
  '.avs-lab b{font-size:15px;font-weight:600;color:var(--ink)}',
@@ -30325,7 +31084,7 @@ var AV_CSS=[
  '.avd-law{font-size:12px;color:var(--dim);margin:10px 0 0}',
  '@media (max-width:980px){#avbody .av-hero,#avbody .av-archg{grid-template-columns:minmax(0,1fr)}',
  ' #avbody .av-ring.avh{width:100%;max-width:560px}}',
- '@media (max-width:600px){.avs-two{grid-template-columns:1fr}',
+ '@media (max-width:600px){',
  ' .avs-sb{padding:0 12px;font-size:14px}.avs-subs{width:100%;justify-content:space-between}',
  ' .avh .av-slab{font-size:11px}.avs-q{font-size:16px}}'].join('\n');
 function avCss(){
@@ -30355,7 +31114,7 @@ function renderAvatar(){
  if(!AV.sub)AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
-  h+='<div class="av-hero avh-row">'+avRing(st)+avMenu(st)+'</div>';
+  h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
   h+=avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
  else{
   var W2=avWheel(st);
@@ -42196,7 +42955,9 @@ function renderAcc(r){
   /* ONE SIZE WITH EVERY READOUT BESIDE IT, ruled 26 September. It was the
      one large ring on the Field. The dock is in the left rail now as circles,
      ED in TASKS.md, so the size they share is the circle, and CQ alone is
-     larger, on his ruling. */
+     larger, on his ruling.
+     It lies on the stage again, round LR, level with zoom in the lower left,
+     and keeps the orb: zoom's circles beside it are 44, the orb's size. */
   +cr('Crown',un?0:a.pct,{size:'orb',raw:un?'\u2013':a.pct.toFixed(0),
     label:'accuracy',hot:false})
   +'</button>';
@@ -44537,7 +45298,10 @@ function render(){
     second one, and only where the bar is */
  if(S.tab===TAB.FIELD)fbRead(r);
  else if(S.tab===TAB.ENERGY)renderMap(r);
- else if(S.tab===TAB.MASKS)renderMasks(r);
+ /* THE CHARACTER PAGE, round LP, the six masks as pixel grids of their own
+    (ui/character.js). It was renderMasks, the Body's figure with the masks
+    alone on it, which he ruled replaced in full. */
+ else if(S.tab===TAB.MASKS)renderCharacter(r);
  else if(S.tab===TAB.SUMMARY)sumRender();
  else if(S.tab===TAB.ANALYTICS)anaRender();
  /* a release, an undo and a profile change all move what the Story's
@@ -44555,8 +45319,10 @@ function loop(ts){
  /* the wheel breathes, so it is drawn every frame. A rendition does not move,
     and ringsDraw builds it only when its signature does */
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
- /* the Masks door is the Intake's figure, so it stands on the Intake's wash */
- else if(S.tab===TAB.ENERGY||S.tab===TAB.MASKS){drawAura(r);}
+ /* only the Body stands on the wash now. The Masks door did because it was
+    the Body's figure; the Character page draws its own grids on an opaque
+    stage, so it takes the still wash every other page takes */
+ else if(S.tab===TAB.ENERGY){drawAura(r);}
  /* the Story's instrument draws on this frame and no other, so leaving the
     tab stops it without a second loop to remember to cancel. It paints only
     while something on it is moving, ui/storyui.js. */
@@ -44751,5 +45517,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002925431"></div>
+<div id="eof" hidden data-len="002975030"></div>
 </body></html>

@@ -3450,8 +3450,12 @@ function bmUse(host){
  BM.hoverReg=BM.hoverCell=BM.hoverPlace=BM.hoverMask=BM.hoverMaskSab=BM.hoverHub=BM.hoverList=null;
  BM.drag=null; BM.tipKey='';}
 /* the frame runs while a door showing the figure is up. The Intake's other
-   seven layers draw through renderMap's own svg, and PMLAYER says which. */
-function bmLive(){return S.tab===TAB.MASKS||(S.tab===TAB.ENERGY&&PMLAYER==='map');}
+   seven layers draw through renderMap's own svg, and PMLAYER says which.
+   The Masks door is not one any more: it became the Character page, round
+   LP, which draws no figure. Left in, the Body's frame went on drawing into
+   its hidden host every frame a person sat on Character, measured at 30
+   draws in 30 frames after a visit to the Body. */
+function bmLive(){return S.tab===TAB.ENERGY&&PMLAYER==='map';}
 function bmBuild(host){
  host.innerHTML='<div class="pm-well">'
   +'<canvas id="bmcv" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>'

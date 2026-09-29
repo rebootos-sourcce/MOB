@@ -43,6 +43,7 @@ ui/rings.js
 ui/fieldbar.js
 ui/map.js
 ui/mapshelf.js
+ui/character.js
 ui/imprints.js
 ui/storyui.js
 ui/summary.js

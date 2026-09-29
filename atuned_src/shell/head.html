@@ -4605,10 +4605,50 @@ body.tab-story #story{display:flex!important;z-index:5;align-items:center;justif
 body:not(.tab-story) #story{display:none!important}
 body.tab-energy #emap{display:flex!important;z-index:5}
 body:not(.tab-energy) #emap{display:none!important}
-/* the Masks door is the Intake's figure in a host of its own, shown and
-   hidden on exactly the Intake's terms */
+/* the Character page keeps the Masks door's host and its terms: shown and
+   hidden exactly the way the Body is */
 body.tab-masksview #masksview{display:flex!important;z-index:5}
 body:not(.tab-masksview) #masksview{display:none!important}
+/* THE CHARACTER PAGE, round LP: six pixel grids, each under its name
+   "in very small, simple font", and one switch for the reading. ui/character.js
+   writes it. The grids sit on the render ground like the Field, MK2's "almost
+   like a UI display", and the page scrolls inside its host at a desktop
+   width, because six faces and a switch are taller than a short window. */
+.chv{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;
+ padding:18px 22px 24px;color:var(--ink)}
+.chv-top{display:flex;justify-content:flex-end}
+.chv-empty{margin:0 auto;max-width:880px;width:100%;font-size:13px;line-height:1.5;color:var(--mid)}
+.chv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px;
+ width:100%;max-width:880px;margin:0 auto;align-content:start}
+.chv-m{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:8px 6px 10px;
+ background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
+ font:inherit;cursor:pointer}
+.chv-m:hover{border-color:var(--edge)}
+.chv-m[aria-pressed=true]{border-color:var(--gold)}
+.chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
+.chv-svg{display:block;width:100%;max-width:260px;aspect-ratio:1;height:auto}
+/* the same two grids in Selection, side by side, dark then light, on the
+   rail's own sunk ground so the theme's ink and seat colours hold there */
+.chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
+ padding:10px;border-radius:var(--r-s);background:var(--sunk)}
+.chv-pair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chv-pair figcaption{font-size:12px;color:var(--mid)}
+.chv-rows{display:flex;flex-direction:column;margin:2px 0 8px}
+.chv-row{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:4px 0;
+ background:transparent;border:0;border-top:1px solid var(--edge);color:var(--ink);font:inherit;
+ font-size:13px;text-align:left;cursor:pointer}
+.chv-row:hover{color:var(--gold)}
+/* SNOW KEEPS ITS PAPER HERE, the way Glass white does. The render ground was
+   ruled black for the field, body and compass, and it reached this host with
+   the Masks door; Snow's ink and its seat colours are drawn for paper, so on
+   black the names measured dark on dark and every pixel was a muddy step of
+   the same brown. Lumen needs nothing: it lightens the stage's ink itself. */
+body.snow.tab-masksview .stage,body.snow #masksview{background:#F2F1EC}
+@media (max-width:700px){
+ .chv{padding:14px 16px 20px}
+ .chv-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
+}
 /* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
    backdrop, which is right for something a drill throws up over your reading
    and wrong for a surface you navigated to. In tab mode it is the stage. */
