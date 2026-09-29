@@ -25530,3 +25530,15 @@ it the same way it already does for the other three.
 
 One seat still working: the Character/masks rebuild, in `character.js`
 alone, not yet reported.
+
+**Reproduced and root caused, the F key on Body he reported.** Confirmed
+true, not the probe's own bug: `ui/ui.js`'s keydown listener returns
+immediately unless `S.tab===TAB.FIELD`, so F on the Body page is not a
+broken reframe, it is a key that was never wired there at all, silently.
+The Body already has the same move under a different door: a "Whole
+body" button, `ui/map.js`, that calls `bmFitCam()` then `bmFlyTo()`, and
+shows itself only once the Body's own camera is zoomed in. The fix is
+a few lines in `ui.js`, calling the same two functions F already calls
+on Field, and is not built yet because the keydown listener's file is
+mid-edit under the Character dispatch this round. Landing it right
+after that commits, so it does not collide.
