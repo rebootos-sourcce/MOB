@@ -25314,3 +25314,13 @@ suite re-run clean one more time on the quiet tree before packing:
 source.html md5 `8cac77fe64984b32b4f0bc60887961ed`. Packed, the tracked
 delivery build refreshed, sent as an attachment. The cosmetic pass
 starts next.
+
+**Dispatched: the cosmetic pass, second of his three.** Avatar's
+Becoming centred into two columns, the Story page shuffle (day text
+and the audio disclaimer removed, journal menu and Source AI's
+question swapped, a new-question button added, "scripted" and "or
+start from where did you feel it first" removed, the scripted area's
+ground to black), imprints' "not read yet" text removed unless load
+bearing, Bank and Vault to icons only with no swap, Release stopped
+defaulting to red, the boot animation's main size scaled down 15
+percent. The Character rebuild still waits for this one.
