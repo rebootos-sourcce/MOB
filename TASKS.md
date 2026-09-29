@@ -26726,3 +26726,54 @@ Read as:
    reply, plainly, since he asked the same question moments before
    this message arrived and it is worth being unambiguous about
    rather than referring back.
+
+## Round ME
+
+His words, verbatim: "then with the API keys, you don't know what I
+mean. I don't want the AI voice when I do my demo. That comes from
+you. I want something that's smoother and cleaner. Now, unless you
+have superhuman speech, that you can utilize, then the 11 Labs API
+keys for that. and Claude, AI, when it doesn't have my parameters, for
+energy reading, it needs to go to the net for deep research. Before it
+articulates the overlapping spiritual behaviors that it's perceiving.
+That's part of the summary. That influences copy downstream. So while
+you may not see a need for it now, I do. What's an LY counter? And
+what's an LZ Cool, that seems like a really good list. then we get
+back to the funnel. My question to you right now is, actually, I'm
+going to drop in an architecture file. I want you to review. I want
+you, this is from the programming session that I did before I started
+you with this session. It's the original intention of the
+architecture. And I want to see where we are, what the gap is, and
+what how long it would take to build that out. I also want to push
+stuff out to Attuned World so how do we do that when do we do that
+let's do that and what are the steps if I have, if I'm involved review
+this keep building what you're building."
+
+Read as:
+
+1. **The Eleven Labs clarification.** His own recorded welcome is his
+   voice regardless; what Eleven Labs replaces is the browser's own
+   synthesiser reading the release and reframe script, which is what
+   he means by not wanting "the AI voice" to sound the way it does
+   today, "smoother and cleaner." No question left open here; this is
+   confirmation of what the build already intends.
+2. **A new ask: Claude, when a reading is missing his own parameters,
+   should search before it names "overlapping spiritual behaviors,"
+   and that language reaches the Summary page's copy.** Real and not
+   yet designed. It is a third thing asking for a network call
+   alongside Eleven Labs and the Excavation Engine's own model call,
+   and it is scoped separately here because it is a different job:
+   research feeding copy, not a voice and not a question engine. Not
+   built blind; queued behind what is already queued.
+3. **"What's an LY counter, what's an LZ."** My own shorthand, used
+   without explaining it, the exact failure `CLAUDE.md`'s own rule
+   against shorthand names. Answered plainly in the chat reply: they
+   are this file's own round letters, nothing more, LY the release
+   redesign and LZ the Source engine swap.
+4. **"We get back to the funnel."** Still queued from round LW,
+   unstarted.
+5. **An architecture file, named but not yet attached: "I'm going to
+   drop in."** Waiting for it; nothing to review until it arrives.
+6. **The atuned.world push, asked again, "what are the steps if I'm
+   involved."** Answered plainly and finally in the chat reply.
+7. **"Keep building what you're building."** Round LY continues.
