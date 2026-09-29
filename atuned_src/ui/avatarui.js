@@ -223,11 +223,18 @@ var AV_ASK={
 /* THE STORY BEHIND THE SYMBOL, APC's two sentences a seat, is cut, round KH:
    "way too much text all over the screen". The symbol carries the seat, and
    the Knowledge page still carries the prose for anyone who goes looking. */
-/* THE ONE LINE, his words at round KH, as he dictated them. It is the only
-   sentence on the Becoming screen that is not a label, a question or what the
-   person wrote. */
-var AV_LEDE='You’re setting up your avatar. We want to find out who it needs to become and who and what it needs to shed. '
- +'Select each ring and tell us the story of who you’re becoming and who you’re not.';
+/* THE ONE LINE IS CUT, round LV. His words: "get rid of that text that says
+   'you're setting up your avatar, we want to find out who needs to be' etc."
+   It was the only sentence on the Becoming screen that was not a label, a
+   question or what the person wrote, kept from round KH; the ring, the
+   question and the two boxes already say what this line was saying, and V1
+   in the voice skill is exactly this: a line whose job is to say a thing is
+   starting is a line the person does not need. The dead text is kept here so
+   the repair can be read off it, the way ui/imprints.js:87 keeps its own:
+     'You’re setting up your avatar. We want to find out who it needs to
+     become and who and what it needs to shed. Select each ring and tell us
+     the story of who you’re becoming and who you’re not.'
+   Nothing reads AV_LEDE any more; avHead no longer prints it. */
 /* how long a rule runs, in his three words: "a week or two weeks or a day" */
 var AV_SPANS=[{d:1,nm:'A day'},{d:7,nm:'A week'},{d:14,nm:'Two weeks'}];
 var AV_SPAN_D=AV_SPANS.map(function(s){return s.d;});
@@ -692,6 +699,34 @@ function avTags(h){
   +h.words.slice(0,4).map(function(w){return '<span class="av-tag av-tw">'+esc(w)+'</span>';}).join('')
   +h.named.map(function(f){return '<span class="av-tag av-tf">'+esc(String(f).toLowerCase())+'</span>';}).join('')
   +'</div>';}
+/* ---------------- the tags across the whole avatar, round LV ----------------
+   His words: "we should see the tags associated with this." The Menu already
+   shows one seat's tags, avTagHTML below, but that is one seat at a time and
+   sat under a ring tall enough to push it off the first screen. This reads
+   the same avTagsOf every seat's Menu already calls, nothing new computed,
+   and puts one row a seat with a story in it at the top of the page, above
+   the ring: a press opens that seat's own ring and tags exactly the way a
+   press on an archetype's story row already does, data-avgo.
+
+   A seat with no story has nothing to tag, so it carries no row here, the
+   same posture avPairs and the empty Running card already take. Nothing
+   prints when no seat has a tag yet, which is the honest state for a page
+   nobody has written on. */
+function avTagSummary(st){
+ var groups=AV_AREAS.map(function(A){
+  var x=st.bySeat[A.b]; if(!x)return null;
+  var T=avTagsOf(st,A.b); if(!T.length)return null;
+  return {A:A, T:T};}).filter(Boolean);
+ if(!groups.length)return '';
+ return '<div class="avh-tagsum" role="group" aria-label="Tags across your avatar">'
+  +groups.map(function(g){
+   var n=g.T.length;
+   return '<button type="button" class="avh-tsg" data-avgo="'+g.A.b+'" style="--c:'+seatCol(g.A.b)+'" aria-label="'
+    +g.A.nm+', '+AV_THE[g.A.b]+', '+n+(n===1?' tag':' tags')+'">'+avSvg(AV_IC[g.A.k])
+    +'<span class="avh-tsg-nm">'+g.A.nm+'</span>'
+    +g.T.slice(0,3).map(function(t){return '<i class="avh-tsg-t">'+esc(avTagNm(t.t))+'</i>';}).join('')
+    +(n>3?'<i class="avh-tsg-t avh-tsg-more">+'+(n-3)+'</i>':'')+'</button>';}).join('')
+  +'</div>';}
 /* WHAT REPLACES IT, the embody side of his left and right: "on the left side,
    it's the patterns to release. And on the right side, it's the patterns to
    embody." A pattern to embody is the coherent pole CHILD already names for
@@ -921,27 +956,34 @@ function avSides(st){
     line said the same thing a second time and are folded into the tags. */
  if(x&&idx==null)return ['',
   '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p></div>',
-  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>'];
+  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>', ''];
  var d=avDraft(b), ask=AV_ASK[b], i=(AV.ask[b]||0)%ask.ask.length;
- /* the question turns in place by one press on the arrow beside it */
+ /* the question turns in place by one press on the arrow beside it. THE
+    BUTTON IS ITS OWN FOURTH SLOT, round LV. It used to close the embody
+    column, which put one box on the left and a box plus a button on the
+    right: the two sides read as a different weight, part of "everything
+    seems like it's all over the place". avHero now centres it under the
+    ring instead, one action for the whole row rather than a stray one
+    hanging off a single side. */
  return [
   '<div class="avs-ask"><p class="avs-q" data-avq="'+b+'">'+esc(ask.ask[i])+'</p>'
   +'<button type="button" class="avs-cyc" data-avcyc="'+b+'" aria-label="Another question" title="Another question">'
   +avSvg(AV_CYC)+'</button></div>',
   avBox(b,'notbe',d.notbe),
-  avBox(b,'be',d.be)
-  +'<div class="av-act"><button type="button" class="btn pri" data-avadd="'+b+'"'
+  avBox(b,'be',d.be),
+  '<div class="av-act"><button type="button" class="btn pri" data-avadd="'+b+'"'
   +(d.be.trim()&&d.notbe.trim()?'':' disabled')+'>'+(idx!=null?'Save the change':'Add to your avatar')+'</button>'
   +(idx!=null?'<button type="button" class="btn" data-avcancel="'+b+'">Cancel</button>':'')+'</div>'];}
 /* the row: the question and the left column, the ring centred, the right
-   column. The source order is the reading order on a wide screen; stacked,
-   the ring is moved first by the stylesheet, so a phone still opens on the
-   figure. */
+   column, and one action centred under all three. The source order is the
+   reading order on a wide screen; stacked, the ring is moved first by the
+   stylesheet, so a phone still opens on the figure. */
 function avHero(st){
  var b=st.seat, x=st.bySeat[b], form=!x||AV.edit===x.i, S2=avSides(st);
  return '<div class="av-hero avh-row avh-three" style="--c:'+seatCol(b)+'"'+(form?' data-avform="'+b+'"':'')+'>'
   +(S2[0]?'<div class="avh-q">'+S2[0]+'</div>':'')
-  +'<div class="avh-side avh-l">'+S2[1]+'</div>'+avRing(st)+'<div class="avh-side avh-r">'+S2[2]+'</div></div>';}
+  +'<div class="avh-side avh-l">'+S2[1]+'</div>'+avRing(st)+'<div class="avh-side avh-r">'+S2[2]+'</div>'
+  +(S2[3]?'<div class="avh-act">'+S2[3]+'</div>':'')+'</div>';}
 /* what a written story keeps in the menu under the ring: the tags, the rule,
    and the two presses that change it */
 function avSeatWritten(st,b,x){
@@ -1322,13 +1364,30 @@ var AV_CSS=[
     top of the row and the two columns share the line under it. Under 560 they
     stack, the release column first. */
  '#avbody .av{container-type:inline-size}',
- '#avbody .av-hero.avh-three{grid-template-columns:minmax(220px,1fr) minmax(0,2fr) minmax(220px,1fr);'
-  +'grid-template-rows:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"q ring ." "l ring r" ". ring .";'
+ /* THE RING GIVES BACK A THIRD OF ITS COLUMN, round LV. His words: "that main
+    graphic can be smaller by about 30 percent to save space." Round LO's
+    ratio was 1:2:1, the ring column twice either side; it now runs 1:1.08:1,
+    measured on the built page at 30 percent smaller, while the release and
+    embody columns gain the width back, wider text columns rather than empty
+    gutter either side of a smaller circle. This is
+    the desktop, three across row only: the two container queries below keep
+    their own ratios, because a ring shrunk the same fraction on a phone would
+    take the satellite buttons that select a seat under the 44 by 44 touch
+    floor the UX skill holds every control to. */
+ '#avbody .av-hero.avh-three{grid-template-columns:minmax(240px,1fr) minmax(0,1.08fr) minmax(240px,1fr);'
+  +'grid-template-rows:minmax(0,1fr) auto minmax(0,1fr) auto;'
+  +'grid-template-areas:"q ring ." "l ring r" ". ring ." "act act act";'
   +'align-items:start;row-gap:12px}',
  '.avh-three .avh-q{grid-area:q;align-self:end}',
  '.avh-three .avh-l{grid-area:l}',
  '.avh-three .avh-r{grid-area:r}',
  '.avh-three .av-ring.avh{grid-area:ring}',
+ /* THE ACTION IS ITS OWN ROW, CENTRED UNDER THE RING, round LV: one button
+    for the whole hero instead of one hanging off the embody column alone,
+    which was the taller of the two sides purely because it carried the
+    button too. */
+ '.avh-act{grid-area:act;display:flex;justify-content:center}',
+ '.avh-act .av-act{display:flex;gap:10px}',
  '.avh-side{min-width:0;display:flex;flex-direction:column;gap:12px}',
  '.avh-q .avs-ask{margin:0}',
  '.avh-side .avm-said .avs-said{margin:0}',
@@ -1336,9 +1395,9 @@ var AV_CSS=[
  '.avh-under .avm{width:100%;max-width:560px}',
  '@container (max-width:980px){',
  ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:none;'
-  +'grid-template-areas:"ring ring" "q q" "l r"}}',
+  +'grid-template-areas:"ring ring" "q q" "l r" "act act"}}',
  '@container (max-width:560px){',
- ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr);grid-template-areas:"ring" "q" "l" "r"}}',
+ ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr);grid-template-areas:"ring" "q" "l" "r" "act"}}',
  '#avbody .av-ring,#avbody .av-wheel{max-width:620px}',
  '#avbody .av-ring.avh{max-width:none;width:min(100%,max(340px,calc(100vh - 230px)))}',
  '#avbody .av-archg{grid-template-columns:minmax(0,3fr) minmax(280px,2fr)}',
@@ -1349,8 +1408,18 @@ var AV_CSS=[
  '.avs-sb:hover{color:var(--ink)}',
  '.avs-sb.av-on{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}',
  'body.punch .avs-subs,body.punch .avs-sb.av-on{border-color:transparent}',
- /* the one line: a reading measure, one step down from the ink */
- '.avh-lede{font-size:16px;line-height:1.55;color:var(--mid);margin:-4px 0 0;max-width:75ch}',
+ /* the tags across the whole avatar, round LV, where the one line sat.
+    Compact rows, one a seat, each a door back to that ring. */
+ '.avh-tagsum{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 0}',
+ '.avh-tsg{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:6px 12px 6px 10px;'
+  +'border-radius:999px;border:1px solid var(--edge-2);background:var(--sunk);color:var(--ink);font:inherit;'
+  +'font-size:13px;cursor:pointer}',
+ '.avh-tsg:hover{border-color:var(--c)}',
+ '.avh-tsg svg{width:15px;height:15px;fill:none;stroke:var(--c);stroke-width:1.8;flex:0 0 auto}',
+ '.avh-tsg-nm{font-weight:600;color:var(--c)}',
+ '.avh-tsg-t{font-style:normal;color:var(--mid);padding:2px 8px;border-radius:999px;background:var(--panel-2)}',
+ '.avh-tsg-more{color:var(--dim)}',
+ 'body.punch .avh-tsg{border-color:transparent}',
  /* the hero */
  '.avh-orbit{fill:none;stroke:var(--edge-2);stroke-width:.3;stroke-dasharray:.5 1.5}',
  '.avh-halo{fill:none;stroke-width:.4;opacity:.7}',
@@ -1502,8 +1571,9 @@ function avHead(st){
   +AV_SUBS.map(function(s){var on=AV.sub===s[0];
    return '<button type="button" class="avs-sb'+(on?' av-on':'')+'" aria-pressed="'+on+'" data-avsub="'+s[0]+'">'+s[1]+'</button>';}).join('')
   +'</div></header>';
- /* the one line, and nothing over it: the pressed subtab says Becoming */
- if(AV.sub==='becoming')h+='<p class="avh-lede">'+esc(AV_LEDE)+'</p>';
+ /* THE LINE IS GONE, round LV. What used to sit here in its place: the tag
+    summary, above the ring rather than a paragraph explaining the ring. */
+ if(AV.sub==='becoming')h+=avTagSummary(st);
  return h;}
 function renderAvatar(){
  var host=document.getElementById('avbody'); if(!host)return;
