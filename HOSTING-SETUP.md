@@ -32,18 +32,25 @@ workflow already uses.
 
 **Three things left, only he can do them.**
 
-1. **Create the Cloudflare Pages project.** In the Cloudflare dashboard
-   (`dash.cloudflare.com`, the same account as everything else here),
-   click **Workers & Pages** in the left sidebar, then **Create**, then
-   the **Pages** tab, then **Upload assets** (sometimes labelled
-   **Direct Upload**). Name the project exactly `atuned`, lower case,
-   since the workflow's own `--project-name` flag is written to match
-   that name exactly. It will ask for a first upload to create the
-   project: any single small file works as a placeholder, the real
-   site arrives on the next push once the secrets below exist.
-   (Cloudflare's own screens move; if "Upload assets" is not there,
-   the dashboard's own search box, typed with "Pages", finds the
-   create flow.)
+1. **Create the Cloudflare Pages project.** Corrected round LW against
+   his own screenshots, since the labels below had moved since they
+   were last checked: in the Cloudflare dashboard, click **Workers &
+   Pages** in the left sidebar (under **Compute**), then the blue
+   **Create application** button, top right. That opens a **Get
+   started** screen with two cards: **Import an existing Git
+   repository** and **Drag and drop your files**. Click **Get started**
+   under **Drag and drop your files**, not the Git one: the deploy
+   workflow already built in this repository pushes with its own tool,
+   `wrangler`, and a Git-connected Pages project would try to build the
+   site a second, different way and the two would fight. It will ask
+   for a project name at some point in this flow: name it exactly
+   `atuned`, lower case, since the workflow's own `--project-name` flag
+   is written to match that name exactly, and it will ask for a first
+   upload to create the project: any single small file works as a
+   placeholder, the real site arrives on the next push once the
+   secrets below exist. If a screen along the way does not match this,
+   screenshot it and send it rather than guessing at the next click,
+   the way this correction itself was found.
 2. **Add two secrets to `MOB`'s own GitHub repository.** These are a
    second copy of the same idea as `reboot-os`'s two secrets, in a
    different repository, since GitHub keeps a repository's secrets to
