@@ -1,11 +1,18 @@
 # Hosting setup, steps for him
 
+**Done, his own words, round LV: "steps 3 and 4 complete. git and cloud
+setup."** All four things in this document are now done: the Cloudflare
+account, the D1 database, the two GitHub secrets, and the Worker's own
+`RECORDS_KEY`. The next push to `main` on `reboot-os` migrates and
+deploys the Worker automatically. Kept below as a record of how it was
+done and what each piece is, not as a live checklist any more.
+
 Written at round JN, rewritten at round KR once `reboot-os` was actually
 read rather than guessed at, checked again round LR against the real
 `origin/main` rather than the stale local checkout this session had been
-reading: the D1 database step below is done, the ones after it are not
-confirmed. These are the steps he takes himself, in a Cloudflare account
-only he can create, and the things in that repository still open.
+reading. These were the steps he took himself, in a Cloudflare account
+only he could create, and the things in that repository that were still
+open.
 
 **Where this splits.** This repository (`MOB`) is the engine and the one
 file build. It calls no network and needs none of the steps below. The
