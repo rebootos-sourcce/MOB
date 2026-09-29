@@ -26307,3 +26307,36 @@ a superseded assertion before rather than reverting a ruling to satisfy
 an older one. The other three KH assertions (seven rings, no seat
 prose, the hero wider than its columns, the found tags) still hold
 against the redesign, checked directly against the current markup.
+
+## The Character worktree, finished and shipped
+
+The visual pass extracted from `ad820bd754f7bc29d` before the second
+rate limit killed it: the opacity ramp on loose fetters lowered so only
+saboteur tier and up carries real weight, the mark per mask moved from
+the seat color to ink for contrast, the illegible archetype glyph scan
+replaced with a soft glow in the archetype's own seat color, the rim
+split into its own group for animation.
+
+Its own comment claimed two things were built that were not, caught by
+grepping the actual diff rather than trusting the prose beside it: no
+pointermove handler existed anywhere for the claimed hover, and
+`.chv-rim-on` had no CSS rule at all for the claimed breathing
+animation. Corrected the comment to say hover is not built, with a
+technical note on what it would take (a pointermove handler, a
+viewBox-unit conversion, a cell lookup, one shared tooltip). Built the
+breathing animation for real rather than only removing the false claim:
+`.chv-rim{transition:opacity .3s ease}`, `.chv-rim-on{animation:chvBreath
+6s ease-in-out infinite}`, the keyframes, in `head.html`. That also
+fixed a `design.js` gate 3 failure the missing rule caused, "classes
+with no CSS rule: chv-rim."
+
+Rebuilt and gated clean after the fix: engine 1841/0, collide 351/0,
+design 184/0, functional 1335/0, the voice check's own objections sweep
+clean (22 findings logged, 0 that stop a build, none in this file).
+Screenshotted on a blank profile; the six masks render correctly with
+no crash and no visual defect. Committed `68ac83e`, pushed.
+
+This is the third piece salvaged from the second rate limit, after
+`brief-technical.md` and the Field weight-vibration and the Ritual data
+model. The Story worktree and the Summary/Analytics worktree are still
+untriaged.
