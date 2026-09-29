@@ -72,6 +72,55 @@
    papered over with an invented difference.
    ============================================================ */
 
+/* ============================================================
+   ROUND LT, HIS AESTHETIC PASS ON THIS PAGE. Four findings, each with an
+   owner, read off the rendered screen and not off this file.
+
+   SOL: the loose fetter tier sat at .34 of full seat colour, and a worked
+   ICP holds most of its addresses (26 of 32 on James's Child), so the
+   interior read as a near solid wash with almost no quiet ground. The ramp
+   is now .20 to .62 to 1 dark, .38 to .78 to 1 light, so only a saboteur and
+   above carries real weight and a loose fetter recedes to a texture.
+
+   BJORN: the mark, the one thing that tells a Child from a Teen, was drawn
+   in the mask's own seat colour, the same family as every fetter pixel
+   around it, so it read as more noise and not as structure. It is drawn in
+   var(--ink) now, fixed against the stage regardless of what is lit, and
+   the rim's own inset is pulled in from .06 to .025 so the silhouette reads
+   as one line and not a row of dots.
+
+   PETRA: "star looks like a crown, left right arrow, another crown, another
+   crown." Measured, not guessed: on a light reading with nothing else lit,
+   the archetype's icon is the only shape on the face, scanned onto a grid a
+   handful of cells wide. The Warrior's five point star and the Ruler's
+   crown both alias into the same jagged blob at that size, and Ruler sits
+   under two of the six masks (Solar), so "another crown" was heard twice
+   for the reason it looked that way. No icon this size reads honestly, so
+   the icon is gone. What sits there now is a soft glow in the archetype's
+   own seat colour, the same technique the Field's own shadow wash uses
+   (frShadow in ui/rings.js), which does not claim to be a legible symbol
+   because it is not one. The name goes on hover instead, next finding.
+
+   THE HOVER ITSELF IS NOT BUILT YET. This paragraph described a plan and
+   this file shipped without it, caught in review rather than left to read
+   as done: nothing below calls chGeo() from a pointer position and nothing
+   answers a hover with the address, seat, charge or chain chDrill already
+   prints. What it would need, honestly stated so the next pass does not
+   re-derive it: a pointermove handler on the card's own svg, the pointer
+   converted to the viewBox's own units, the nearest cell solved and
+   mirrored past G/2 the way chGeo() already lays the half face out, then
+   a lookup against rd.px (cached per card at render time, since chSvg only
+   returns markup today and throws the read away) for the node at that
+   cell. One shared tooltip element, not one per pixel, the same reasoning
+   that already keeps chSvg to a handful of paths. Open.
+
+   THE ANIMATION. One, on purpose, "the hardest art direction is refusing
+   the fourth thing": the rim breathes, gently, exactly when a mask's chain
+   has reached the character, rd.sup, the same moment it lights at all.
+   Nothing animates before that, because a mask nobody has built past a
+   loose fetter has nothing to celebrate yet.
+   ============================================================ */
+
 /* the reading on screen, and the mask whose summary is in Selection. CHV and
    not CH: CH is the Field canvas's height, a let in ui/component.js, and the
    first cut declaring it a second time threw at parse and took every module
@@ -85,10 +134,19 @@ var CH_X0=4, CH_Y0=3, CH_S=16;
    quarter of the size at 32 across that it was at 16, and a finer grid drew
    a different face. A finer grid draws the same face in more pixels. */
 var CH_MARKW=1.25;
-/* the archetype's icon, shrunk into the middle of the face. At .45 an icon
-   that fills its 24 box spans about nine units, inside the face at every
-   height it reaches, and a two unit stroke lands under one unit wide. */
-var CH_GLYPH_K=.45, CH_GLYPH_Y=11;
+/* THREE INSETS, THREE JOBS, round LT. Held pixels widened from .06 so the
+   fill has visible gaps between cells rather than reading as a solid wash.
+   The rim pulled in to near solid, a silhouette rather than a dotted line.
+   The mark stays close to its old .06, a confident line rather than a
+   field of small squares. The background stipple keeps its own .33, the
+   fine dot texture that was never the complaint. */
+var CH_FILL_INS=.10, CH_RIM_INS=.025, CH_MARK_INS=.05, CH_BG_INS=.33;
+/* the archetype's glow, dead centre of the face (see the geometry note in
+   chSvg for why G/2 is also the icon anchor in grid units), replacing the
+   icon scan round LT retired. Radius as a share of the grid, so it scales
+   with G the way everything else here does. */
+var CH_GLOW_R=.30;
+var CH_UID=0; /* one glow per card can share the page with its own drill pair, so the gradient id is never reused twice at once */
 /* THE GRID SCALES WITH WHAT HAS FORMED UNDER THE MASK. His words: "So if a
    person goes over a certain amount, the grid will dynamically scale." The
    amount is the engine's own: a saboteur forms when the mean charge on its
@@ -160,15 +218,13 @@ function chGeo(m,G){
  for(var d=0;d<n*n;d++){var p=chHilbert(n,d);
   if(p[0]<h&&p[1]<G&&inner(p[0],p[1]))half.push(p);}
  return (_CHGEO[key]={G:G,rim:rim,half:half,grid:grid,mk:mk,inner:inner});}
-/* the archetype's icon as cells, per archetype and resolution */
-function chGlyph(a,G){
- var key='a:'+a.nm+':'+G; if(_CHGEO[key])return _CHGEO[key];
- var g=chCtx(), p=new Path2D(a.ic), k=CH_GLYPH_K, on={};
- g.setTransform(k,0,0,k,12-12*k,CH_GLYPH_Y-12*k); g.lineWidth=2;
- for(var r=0;r<G;r++)for(var c=0;c<G;c++)
-  if(g.isPointInStroke(p,chCell(c,G),chRow(r,G)))on[c+','+r]=1;
- g.setTransform(1,0,0,1,0,0);
- return (_CHGEO[key]=on);}
+/* THE ARCHETYPE'S GLOW. Round LT retired the icon scan (chGlyph, the
+   removed twin of this function): dead centre of the grid in both axes,
+   which is also where the icon anchor always sat (12,11 in the face's own
+   24 unit space maps to G/2,G/2 in cell space, chCell/chRow solved for c
+   given CH_X0 4, CH_S 16). One point and a radius, not a shape, because the
+   finding above is that no shape reads honestly this small. */
+function chGlowAt(G){return {cx:G/2,cy:G/2,r:G*CH_GLOW_R};}
 
 /* THE CHAIN ABOVE ONE SABOTEUR, read off compute() and nowhere else: the
    complex it is part of, the hyper complex that complex is part of, and the
@@ -259,11 +315,17 @@ function chRead(m,r,face,G){
    pale where the dark one reads deep. Mixed toward --ink and not toward
    white: on the paper themes the ink is dark, and a tint toward white on a
    near white stage was a pixel nobody could see. */
-var CH_OP={dark:[.34,.64,1,1],
+/* ROUND LT, SOL'S READING. The loose step sat at .34 of full colour, and a
+   worked ICP holds most of what a two seat mask covers (26 of 32 on James's
+   Child), so almost the whole interior sat at or near that one step and the
+   card read as a wash rather than a ramp. Pulled down to .20, with the
+   saboteur and complex steps left where they were, so the climb from loose
+   to built is the thing that now carries the eye. */
+var CH_OP={dark:[.20,.62,1,1],
  /* the light ramp starts higher: a pale tint at a third opacity on the black
     ground measured as a grey brown, so Derek's light mask, all loose
     opposites and nothing overshot, read as a darker mask than his dark one */
- light:[.55,.8,1,1]};
+ light:[.38,.78,1,1]};
 function chTone(b,tier,face){
  var C=seatCol(b);
  if(face==='light')return tier>=3?'color-mix(in srgb,'+C+' 22%,var(--ink))':'color-mix(in srgb,'+C+' 52%,var(--ink))';
@@ -272,37 +334,54 @@ function chTone(b,tier,face){
    drawing, and so the render watch reads its markup: a canvas has no
    innerHTML, which is the lesson monitor.js already records about the Field.
    One path per colour and opacity, so a 32 across face is a handful of
-   elements and not a thousand rects. */
+   elements and not a thousand rects. The rim's own paths sit in their own
+   group now, round LT, so a CSS animation can address the rim alone: see
+   the breathing note where lit is set below. */
 function chSvg(rd,cls,label){
- var G=rd.G, geo=chGeo(rd.m,G), paths={}, on={};
- var add=function(fill,op,c,r,inset){
+ var G=rd.G, geo=chGeo(rd.m,G), paths={}, rimPaths={}, on={};
+ var addTo=function(dict,fill,op,c,r,inset){
   var key=fill+'|'+op+'|'+inset, s=(1-2*inset);
-  (paths[key]=paths[key]||[]).push('M'+(+(c+inset).toFixed(2))+' '+(+(r+inset).toFixed(2))+'h'+s+'v'+s+'h-'+s+'z');};
+  (dict[key]=dict[key]||[]).push('M'+(+(c+inset).toFixed(2))+' '+(+(r+inset).toFixed(2))+'h'+s+'v'+s+'h-'+s+'z');};
+ var render=function(dict){return Object.keys(dict).map(function(k){var p=k.split('|');
+  return '<path style="fill:'+p[0]+'" fill-opacity="'+p[1]+'" d="'+dict[k].join('')+'"/>';}).join('');};
+ var add=function(fill,op,c,r,inset){addTo(paths,fill,op,c,r,inset);};
  rd.px.forEach(function(x){
   var f=chTone(x.n.b,x.tier,rd.face), op=CH_OP[rd.face==='light'?'light':'dark'][Math.max(0,x.tier)];
-  [[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]].forEach(function(q){on[q[0]+','+q[1]]=1;add(f,op,q[0],q[1],.06);});});
- /* the foundation shows only where the chain has not built over it yet */
- var gl=(rd.arch&&!rd.unread)?chGlyph(rd.arch,G):{};
- var fop=(.16+.26*Math.max(0,Math.min(1,rd.aff))).toFixed(2);
+  [[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]].forEach(function(q){on[q[0]+','+q[1]]=1;add(f,op,q[0],q[1],CH_FILL_INS);});});
  geo.grid.forEach(function(q){var k=q[0]+','+q[1];if(on[k])return;
-  if(gl[k])add(seatCol(rd.arch.b),fop,q[0],q[1],.06);
-  else add('var(--ink)','.08',q[0],q[1],.33);});
+  add('var(--ink)','.08',q[0],q[1],CH_BG_INS);});
+ /* THE ARCHETYPE'S GLOW, round LT, replacing the icon scan. A radial
+    gradient behind everything else, so an opaque held pixel drawn after it
+    covers it exactly where the chain has built over the foundation, the
+    same "shows only where nothing is lit yet" rule the icon kept, now for
+    free from paint order instead of a per cell check. */
+ var glow='';
+ if(rd.arch&&!rd.unread){
+  var gp=chGlowAt(G), gid='chvglow'+(CH_UID++);
+  var fop=(.10+.16*Math.max(0,Math.min(1,rd.aff))).toFixed(2);
+  glow='<defs><radialGradient id="'+gid+'" cx="'+gp.cx+'" cy="'+gp.cy+'" r="'+gp.r.toFixed(2)
+   +'" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="'+seatCol(rd.arch.b)+'" stop-opacity="'+fop+'"/>'
+   +'<stop offset="1" stop-color="'+seatCol(rd.arch.b)+'" stop-opacity="0"/></radialGradient></defs>'
+   +'<circle cx="'+gp.cx+'" cy="'+gp.cy+'" r="'+gp.r.toFixed(2)+'" fill="url(#'+gid+')"/>';}
  /* the rim is the mask's own seats, first seat on the left and last on the
-    right, faint until the chain reaches the character, then lit */
+    right, faint until the chain reaches the character, then lit, and
+    breathing while it is: see .chv-rim-on in head.html */
  var lit=!!rd.sup;
  geo.rim.forEach(function(q){var b=q[0]<G/2?rd.m.b[0]:rd.m.b[rd.m.b.length-1];
-  add(lit?chTone(b,2,rd.face):seatCol(b),lit?'1':'.3',q[0],q[1],.06);});
- /* THE MARK IS DRAWN IN THE RIM'S INK, not left as a hole. Cut out and
-    left dark, it was a gap in a grid of dots that were already dark: on
-    an empty profile the six faces measured as the same face six times,
-    and the one thing that tells a Child from a Teen was the thing nobody
-    could see. The icons draw their mark as a stroke, and so does this. */
- geo.mk.forEach(function(q){var b=q[0]<G/2?rd.m.b[0]:rd.m.b[rd.m.b.length-1];
-  add(lit?chTone(b,2,rd.face):seatCol(b),lit?'1':'.55',q[0],q[1],.06);});
+  addTo(rimPaths,lit?chTone(b,2,rd.face):seatCol(b),lit?'1':'.3',q[0],q[1],CH_RIM_INS);});
+ /* THE MARK IS DRAWN IN var(--ink) NOW, round LT, not the mask's own seat
+    colour. It always sat in the same colour family as the fetter pixels
+    around it, seat colour on seat colour, so the one thing that tells a
+    Child from a Teen was camouflaged by the thing it needed to stand out
+    against. Ink is fixed against the stage in every reading and every
+    theme, and it steps up when the chain reaches the character, same as
+    the rim, so the two light together. */
+ geo.mk.forEach(function(q){
+  add('var(--ink)',lit?'.95':'.68',q[0],q[1],CH_MARK_INS);});
  return '<svg class="'+cls+'" viewBox="0 0 '+G+' '+G+'" data-chres="'+G+'" data-chlit="'+rd.lit+'"'
   +(label?' role="img" aria-label="'+esc(label)+'"':' aria-hidden="true"')+'>'
-  +Object.keys(paths).map(function(k){var p=k.split('|');
-   return '<path style="fill:'+p[0]+'" fill-opacity="'+p[1]+'" d="'+paths[k].join('')+'"/>';}).join('')
+  +glow+render(paths)+'<g class="chv-rim'+(lit?' chv-rim-on':'')+'">'+render(rimPaths)+'</g>'
   +'</svg>';}
 
 function chSentence(v){v=String(v||'');return v.charAt(0).toUpperCase()+v.slice(1)+'.';}

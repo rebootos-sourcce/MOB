@@ -4681,6 +4681,17 @@ body:not(.tab-masksview) #masksview{display:none!important}
 .chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
 .chv-svg{display:block;width:100%;max-width:260px;aspect-ratio:1;height:auto}
+/* THE RIM BREATHES ONCE A MASK'S CHAIN REACHES THE CHARACTER, round LT.
+   character.js puts the class on the rim's own <g> only when rd.sup is
+   true, so a mask nobody has built past a loose fetter never animates.
+   Opacity only, not scale: the rim is a ring of many small rects and not
+   one shape with a centre a transform can scale against cleanly, which is
+   why this is its own keyframe and not a reuse of srcBreath above, whose
+   scale would pull the rim's rects toward the svg's own corner. Same 6s
+   period, the app's own slow beat. */
+.chv-rim{transition:opacity .3s ease}
+.chv-rim-on{animation:chvBreath 6s ease-in-out infinite}
+@keyframes chvBreath{0%,100%{opacity:.55}50%{opacity:1}}
 /* the same two grids in Selection, side by side, dark then light, on the
    rail's own sunk ground so the theme's ink and seat colours hold there */
 .chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
