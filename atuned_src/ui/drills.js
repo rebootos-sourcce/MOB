@@ -1238,8 +1238,11 @@ function runCompassDrill(){
      than as two strings: "do a sweep of text like that, 100 plus minus 12,
      swing 11, that shit has to all go." The quantity survives, as the pill
      renderPol2 now draws beside the marker, so this sentence points at a
-     shape on the screen instead of restating it as a figure. */
-  +'The marker is where coherence sits now, and the pill beside it is the range it moves in. Tight alignment leaves little room. A decohering field ranges wide.</p>'
+     shape on the screen instead of restating it as a figure. And the pill
+     went too, round LU, 29 September: "there's a little pill to the right of
+     the arrow that got introduced, I want that removed." The range is the
+     marker's own drift now, so the sentence points at the drift. */
+  +'The marker is where coherence sits now, and how far it drifts is the range it moves in. Tight alignment leaves little room. A decohering field ranges wide.</p>'
   /* THE RULING. A label this product puts on a person carries a definition,
     the behaviour it produces, and the direction out of it. A word like Severe
     with nothing attached is a judgement. The same word with those three is a

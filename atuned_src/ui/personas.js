@@ -237,8 +237,7 @@ function renderPol2(r){
  /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
     the box is wide enough to hold what it draws. */
  var H=360,Wd=104,top=30,bot=H-30,x=34;
- var rg=cqRange(r.CQ), cq=rg.cq, bandPts=rg.band, lo=rg.lo, hi=rg.hi;
- var yLo=bot-(lo/100)*(bot-top), yHi=bot-(hi/100)*(bot-top);
+ var rg=cqRange(r.CQ), cq=rg.cq, bandPts=rg.band;
  var t=REDUCED?0:S.t;
  var drift=REDUCED?0:(Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38);
  var live=cq+drift*(bandPts/2);
@@ -317,19 +316,17 @@ function renderPol2(r){
     the reading dropped under ten would be a frame that moves, and a frame
     that moves cannot be read against. So it sits at the tightest column that
     clears the widest number this axis can print, and it stays there. */
- var pcx=x+46, pw=9;
- if(!r.unread) s+='<rect class="pol2-sw" x="'+(pcx-pw/2)+'" y="'+yHi.toFixed(1)
-  +'" width="'+pw+'" height="'+Math.max(0,yLo-yHi).toFixed(1)+'" rx="'+(pw/2)+'" fill="'+mc
-  +'" fill-opacity=".16" stroke="'+mc+'" stroke-opacity=".7" stroke-width="1"/>';
+ /* AND THE PILL IS GONE, round LU, 29 September, reversing the ruling quoted
+    above. His words, with a screenshot of Gordon at 19 and a circle drawn
+    round it: "on the heaven and hell item on the field page, the halo and
+    pitchfork, there's a little pill to the right of the arrow that got
+    introduced, I want that removed." The capsule went and so did the crossbar
+    that rode inside it, because a tick with no capsule round it is a mark
+    pointing at nothing. The range is still drawn: the marker's own drift below
+    moves through it, bandPts wide, so how far it wanders is the range. */
  /* the marker and its number ride in one group so the frame to frame move is a
     single compositor transform rather than four geometry writes */
  s+='<g class="pol2-mv">';
- /* the crossbar is what oscillates inside the pill. It is wider than the pill
-    on purpose: a mark contained by the capsule reads as part of the capsule,
-    and the reading has to read as the thing moving through it. It rides in
-    the marker group, so the drift costs no extra geometry write. */
- if(!r.unread) s+='<path class="pol2-sm" d="M'+(pcx-6.5)+' '+yB.toFixed(1)
-  +' L'+(pcx+6.5)+' '+yB.toFixed(1)+'" stroke="'+mc+'" stroke-width="1.8" stroke-linecap="round"/>';
  s+='<path class="pol2-mk" d="M'+(x+9)+' '+yB.toFixed(1)+' L'+(x+17)+' '+(yB-4.5).toFixed(1)+' L'+(x+17)+' '+(yB+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
  s+='<circle class="pol2-dot" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
  s+='<circle class="pol2-ring" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';

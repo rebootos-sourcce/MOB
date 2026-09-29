@@ -487,8 +487,9 @@ function frShadow(M,r,o){o=o||{};
    THE SWING CAME OFF. "Let's take that highlight off the circle, because it's
    adding noise." A thinner, paler arc rode the ring's outside edge over the
    median range, cqRange, and on A it lay across the two arcs as a third mark
-   on one ring. The range is not lost: the compass draws it as the pill beside
-   its own needle, off the same arithmetic.
+   on one ring. The range is not lost: the compass draws it as its own
+   needle's drift, off the same arithmetic. (It was a pill beside the needle
+   until round LU took that off too.)
 
    NOTHING IS PRINTED OFF THE DEFAULTS. On an unread field the ring is empty
    and the figure is a dash, which is what the key pill directly above says in
