@@ -25950,3 +25950,102 @@ reading the same fill on Character, his call on the data; when a
 reward is earned, a pattern forming or released or both. And still
 unanswered across many rounds: which product goes online first, this
 engine or the app already built in `reboot-os`.
+
+## Round LV
+
+His words, verbatim, sent from the Cloudflare doc's own viewer, mid
+edit on the Cloudflare walkthrough: "Good job on the story source
+element. A couple tweaks to this page. The record button I want as a
+red record button. When I press it, there's an animation showing me
+that it's being recorded, and I want the time showing how long my
+recording is. For the Source AI visualisation, the text, very cool, I
+want that location to feel like it's alive and innovative, like it's a
+part of the screen that has a different nature to it, and I want us to
+pull elements from the field, style, not those techniques per se, but
+aspects of it, to give this a more animated, alive feel. The avatar
+page, the layout is horrible, I want the UI UX team to redesign it so
+that the visual design of this is above the fold, I just want this
+layout cleaned up, it's unorganised and everything seems like it's all
+over the place, get rid of that text that says 'you're setting up your
+avatar, we want to find out who needs to be' etc, yeah, the your story
+and intake questions definitely need to be above the fold, that main
+graphic can be smaller by about 30 percent to save space, we should
+see the tags associated with this, so redesign this page. And redesign
+the summary page. Now that we've got the left and right collapsible,
+we have all this empty space on the left and right of our centre
+column, and our UI UX, I want it organised, symmetrical and clean, and
+I want the data organised in a fashion that allows me to read this
+easily. You already know all the psychographics and you also know the
+UI UX best practices, apply them here. And I also asked for colour
+treatments on the ritual page, and this is another UI UX design fail
+where we've got this left and right space, but that's not being used,
+and I've got content below the fold, so redesign this page so it
+maximises that space and pulls everything above the fold. And I want
+you to break out the analytics from summary and give it its own
+summary page, sorry, its own analytics page after summary, so it'll go
+story, avatar, summary, analytics. You're also supposed to give me a
+new Embody symbolic icon. For the field, impulse pulse animations, I
+asked for this to be dynamic and have the velocity based off the
+weight, and as the weight goes above five, where saboteurs, complexes,
+hyper complexes are concerned, the strength from five up shows them
+vibrating, so I don't see any vibration, so it looks like you're
+missing a bunch of stuff. So get all this in while I work on
+Cloudflare."
+
+Read as, in the order raised:
+
+1. **Record button on Story: red, an animation while recording, and a
+   visible timer of the recording's length.** New, not yet built.
+2. **Source AI's own "alive" treatment, deepened, not replaced**: he
+   likes what landed, wants the location to read as a different kind
+   of surface on the page, and asks again for Field aesthetic pulled
+   over, style and not technique, the same ask LT already made and a
+   pass already answered once; he is asking for more of it.
+3. **The Avatar page, a full redesign**, his word "horrible": above
+   the fold, a named line of text cut ("you're setting up your avatar,
+   we want to find out who needs to be"), the Story and intake
+   questions moved above the fold, the main graphic shrunk about 30
+   percent, tags shown that are not shown today. Routed to UI UX.
+4. **The Summary page, a full redesign**: the collapsible rails leave
+   real space unused on both sides of the centre column now, wants it
+   organised, symmetrical, clean, read easily, "you already know the
+   psychographics and the UI UX best practices, apply them."
+5. **The Ritual page, the same complaint restated with more force**:
+   unused space left and right, content pushed below the fold,
+   redesign to use the width and bring everything above the fold. This
+   is already inside the scope of the Ritual agent already dispatched
+   this round; read as reinforcement, not a second ask, and passed to
+   that agent rather than a new one.
+6. **Analytics becomes its own tab again**, unfolded from Summary,
+   ordered Story, Avatar, Summary, Analytics. A real navigation change:
+   Analytics (integer 4) is a folded surface today, `TABREAL` maps it
+   onto Summary, the same shape Games (7) was in before it was
+   unfolded back onto its own door. The rule that unfolded Games
+   applies again: the integer is identity and does not move, the
+   renderer already exists (`anaRender`), what changes is whether it
+   has a door of its own and where that door sits in the bar.
+7. **The Embody icon**, already inside the Field pass dispatched this
+   round, not a new ask, a reminder read as confirming it is still
+   wanted.
+8. **The Field's pulse, pressed a third time, with a number attached
+   for the first time.** "The velocity based off the weight... as the
+   weight goes above five, where saboteurs, complexes, hyper complexes
+   are concerned, the strength from five up shows them vibrating."
+   This names a threshold the shipped `pulses()` does not have:
+   `pulses()` runs a travelling dash whose speed is a continuous
+   function of tension, `sp=16+68*Math.sqrt(t)`, with no step at a
+   weight of five and no jitter in the line's own position, only in
+   the dash's motion along it. A weight above five making the line
+   itself vibrate, not just carry a moving dash, is not built. Read
+   together with LU's item 1 and 2: what shipped answers "the impulses
+   are dynamic and their speed is off tension" and does not answer
+   "above five they vibrate." Sent as a correction to the Field agent
+   already in flight rather than waiting for its report, since it
+   changes what that agent is checking for.
+
+Dispatching: a Story follow up (1 and 2, one agent), the Avatar
+redesign (3), the Summary redesign (4), and the Analytics unfold (6),
+four new pieces. Messaging the two agents already in flight rather
+than starting new ones over the same files: the Ritual agent gets 5,
+the Field agent gets 8's threshold detail before it finishes and
+reports something that misses the real ask a second time.
