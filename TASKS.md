@@ -26622,3 +26622,41 @@ Read as:
    API question has been asked this session and the first time both
    services' account and key steps are given start to finish rather
    than referenced back to an earlier answer.
+
+## Round MC
+
+His words: "cookie TDD needs vetting, scoping, planning and
+development steps:" followed by a forty section document headed
+"SOURCE, browser state, cookie and session architecture," another
+ChatGPT document in the shape of round MA's and MB's, this one a
+cookie/session security design: five browser state domains
+(authentication, consent, preferences, anonymous continuity,
+analytics), a cookie registry schema, session and device models, an
+anonymous to authenticated conversion flow, OWASP-sourced security
+rules (Secure, HttpOnly, SameSite, the `__Host-` prefix, CSRF as
+distinct from SameSite, no auth tokens in Web Storage, session
+rotation on every security-sensitive transition), a numbered task list
+COOKIE-001 through COOKIE-029, and the same audit-before-build and
+re-audit-before-done handshake his last two documents carried. Not
+reproduced here; it is in this conversation's own history. Then:
+"continue building for now," and a second question, "what settings to
+I set for eleven labs, all active is what im thinking."
+
+Read as:
+
+1. **"Needs vetting, scoping, planning and development steps."** Not
+   a build request this round; answered in the chat reply as a review
+   rather than a build. The design itself is sound, standard practice,
+   correctly cited against OWASP: nothing in it needs correcting. What
+   needs saying is where it actually fits. It is a spec for the
+   accounts and sessions layer, and this project has no accounts layer
+   yet: `source.html` has no login, no server session and no cookie of
+   its own today, per `CLAUDE.md`'s own accounting of the fork, "auth,
+   paywall and tiers... each still needs designing before building."
+   Vetted against the actual codebase, every one of its forty sections
+   reads MISSING, which is correct and not a finding: there is nothing
+   here to hold it against yet. Scoped correctly, it belongs to the
+   accounts fork the owner ruled and not to this round's build.
+2. **"Continue building for now."** Round LY continues; this document
+   is filed rather than built against.
+3. **The Eleven Labs settings question**, answered in the chat reply.
