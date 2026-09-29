@@ -25061,3 +25061,30 @@ and how do I get my wasted tokens back?"
   nothing here to refund from. If this is about token or usage cost on
   the Claude account itself, that is a claude.ai account setting, not
   a thing this codebase or this session can act on.
+
+**"I open the latest build and it wasn't there, period. Give me the
+latest build and I'll check it again."** Re-verified the exact packed
+file already sent rather than assuming it was fine: opened it fresh
+from disk the way he would, let it decompress, no page errors, the
+stamp read `v878 1d0b166`, Masks in the Play tabs. Re-sent the same
+file, unchanged, since nothing in the repository had moved since it
+was built, with the exact path to it named plainly, Play then the
+second row then Masks, and the stamp to check against so a stale
+download on his own end is visible to him too.
+
+## LN. "Show me the pixel mask html," and Intake's name challenged as an unwanted change
+
+His words, verbatim: "show me the pixel mask html, and rename intake
+under Play back to its original name. i didnt want that changed."
+
+- **The Masks page, shown directly** rather than described again.
+- **Checked before touching anything: "Intake" is not an unwanted
+  change, it is his own name for it, asked for twice.** `TAB.ENERGY`
+  read "Energetics" once, then round KX, his own words in this file:
+  "I need my energetics, like my intake... Please prioritize that
+  back under Discover. I just rename it Intake." That is where
+  "Intake" comes from. It has carried that name since, through round
+  LD moving it back to Play. Not silently reverted on the strength of
+  "I didn't want that changed": told him plainly what the record shows
+  and asked which name he actually wants, rather than guessing between
+  reverting to Energetics or leaving it.
