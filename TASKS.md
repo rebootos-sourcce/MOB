@@ -27041,3 +27041,28 @@ Read as:
    a new ask.
 5. **"Continue building."** The onboarding flow, local and faked,
    continues.
+
+## Round MK
+
+His words: "I just saw your note on CQ. Go ahead and make the
+adjustment so it's effective. What would it take for you to hook up
+all the reference code? Is that a short win? Keep building what
+you're building. Just curious to know how long it would take to wire
+all this in. If we go with what we already have."
+
+Read as:
+
+1. **"Make the adjustment so it's effective."** Read as: whatever the
+   local onboarding now being built produces should really become the
+   starting CQ it feeds into, functionally, not only described as a
+   plan. Kept to the local, faked flow he already ruled this round;
+   nothing here asks for the real server.
+2. **How long to wire the real reference code in, if MOB goes with
+   what already exists**, answered in the chat reply: short for the
+   client side, since `cloudFetch`/`cloudSignup`/`cloudSignin` in the
+   sibling app's `42b_cloud.js` are real and portable; the actual
+   ceiling is the same as before, the account and consent decisions
+   only he can make, not engineering time.
+3. **"Keep building."** Continues, and found more of MOB's own already
+   built onboarding and account UI along the way (`ui/onboard.js`,
+   `ui/account.js`), reported in the chat reply.
