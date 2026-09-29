@@ -26841,3 +26841,44 @@ words rather than built fresh; and the harder "everything above the
 fold, nothing scrolls" claim for the whole card, which the Pause/End
 fix improves but does not itself resolve for every switch combination.
 Continuing in that order.
+
+## Round MG
+
+His words: "review give me steps and time blocks for the tech and
+then update the onboarding and storyboard and what tasks are you on
+now what's left," attaching `8f690547-ATUNED_TDD_MVP_Architecture_
+Updated1.docx`, a technical design document graded directly against
+this repo's own build, "v950, commit 2cc0f90, 2026-09-29" named by
+build id in the document's own text. Not reproduced here in full; it
+is in this conversation's own history. In outline: a C+ overall True
+MVP grade, three product layers named Instrument, Transformation and
+Commercial MVP, a spine of ten required systems from identity through
+retention, a 22 item gap audit (9 P0, 10 P1, 3 P2) that is almost
+entirely the accounts fork this file already names as his to design,
+an eight step build priority order, a 90 day, 13 stage state machine
+mapped onto the loop's own four doors (Discover, Play, Flow, Embody),
+a synthetic 1,000 person stress cohort, and a full "mirror first"
+onboarding redesign: invitation, assessment, reflection, recognition,
+explanation, first experience, verification, offer, with a first week
+day by day arc.
+
+Read as:
+
+1. **"Review... give me steps and time blocks for the tech."**
+   Answered in the chat reply, working from the document's own eight
+   step build priority order and grounded against what is actually
+   built here rather than against the document's own estimates, which
+   it does not give.
+2. **"Update the onboarding and storyboard."** Two different sized
+   asks live inside this depending on which he means, and only one of
+   them is safe to do without asking: updating this repository's own
+   planning record (`TASKS.md`, and `MILESTONES.md`'s successor
+   `BACKLOG-AUDIT.md`) to carry this document's gaps and its build
+   order is safe and done below. Rebuilding the onboarding flow itself
+   to the "mirror first" sequence the document specifies is a real
+   product redesign, the same size as the Release page round and
+   bigger, and touches the funnel review already queued since round
+   LW and never started. Not started blind; asked back in the chat
+   reply which he means.
+3. **"What tasks are you on now, what's left."** Answered in the chat
+   reply.
