@@ -27006,3 +27006,38 @@ fetch calls to these four routes, and the funnel to account handoff he
 described. That is client work, days rather than weeks, once the flow
 itself and the funnel's own quiz to CQ handoff are designed. Corrected
 in the chat reply.
+
+## Round MJ
+
+His words: "Good question. Let's keep it locally. To keep the build
+simple, we'll design that system out. Unless we've already got it
+designed out. And it simply needs to be wired back in. Because you
+look at the Attune dev folder and was that code? Any of any value?"
+then, in a second message: "Uh, while you're doing your development,
+while you're in there, one note on the vibration animation of the
+field. Dampen it by thirty percent. give me a build. when the new
+masks are in. Ritual and story has been updated. And then continue
+building."
+
+Read as:
+
+1. **Keep the login local, no real accounts yet**, confirmed; the
+   networking layer is designed in the sibling app's own
+   `cloud Signup/Signin/Signout/Forgot/Reset` (`atuned/src/
+   42b_cloud.js`), correct and worth reusing when the real wiring
+   happens, but the onboarding experience itself is not designed
+   anywhere, in either codebase: what exists there is a plain email
+   and password box on a settings page, not the animated entry
+   sequence he described. Answered in full in the chat reply; the
+   local build proceeds designed fresh.
+2. **The Field's weight vibration, dampened thirty percent.** Its
+   amplitude was `U*0.03*s`; seven tenths of that is `U*0.021*s`, the
+   shape and the two frequencies untouched.
+3. **"Give me a build when the new masks are in."** Not now; the next
+   build waits for round MD's mask tiers, which are queued behind
+   round LZ, which is queued behind the onboarding work now in
+   progress.
+4. **"Ritual and story has been updated"** is his own confirmation, not
+   a new ask.
+5. **"Continue building."** The onboarding flow, local and faked,
+   continues.
