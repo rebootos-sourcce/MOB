@@ -172,7 +172,13 @@ const TABDEF=[
     menu is missing Body entirely. fix, priority." Same integer, host,
     class and renderer as always; only .sec moves, and the label he asked
     for stays. */
- {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'play'},
+ /* THIRD NAME THIS SURFACE HAS CARRIED, round LO. Energetics, then Intake
+    at his own word round KX ("I need my energetics, like my intake... I
+    just rename it Intake"), now Body. The id and class stay tab-energy,
+    energy.emap: those are never the name a person reads, and renaming them
+    on a label change is exactly what the TAB integer rule exists to stop
+    happening to the wrong thing. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should

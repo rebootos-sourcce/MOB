@@ -2217,9 +2217,9 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
  ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
-  'LD and LE: Story, Avatar and Summary in Discover, Field, Intake, Compass and Masks in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Intake,Compass,Masks / Field,Intake,Compass,Masks',
-  'Play reads in his order, Field, Intake, Compass, Masks, in the engine and the bar alike, '+nav.play);
+  'LD and LE: Story, Avatar and Summary in Discover, Field, Body, Compass and Masks in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Body,Compass,Masks / Field,Body,Compass,Masks',
+  'Play reads in his order, Field, Body, Compass, Masks, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
   'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));

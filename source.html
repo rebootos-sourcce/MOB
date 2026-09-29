@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v878 1d0b166 2026-09-28 21:11"><head><meta charset="utf-8">
+<html lang="en" data-build="v884 40cb639 2026-09-29 01:33"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6096,7 +6096,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    <button type="button" class="secb" data-sec="discover" aria-pressed="false"
     title="Discover. Your story, your avatar, your intake and your summary."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
    <button type="button" class="secb" data-sec="play" aria-pressed="true"
-    title="Play. Field, Intake, Compass and Masks."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
+    title="Play. Field, Body, Compass and Masks."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
     title="Flow. Your ritual, and keeping it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
@@ -6121,7 +6121,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    </div>
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
-    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Intake"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Intake</span></button>
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
     <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
     <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Masks"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Masks</span></button>
    </div>
@@ -11091,7 +11091,13 @@ const TABDEF=[
     menu is missing Body entirely. fix, priority." Same integer, host,
     class and renderer as always; only .sec moves, and the label he asked
     for stays. */
- {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'play'},
+ /* THIRD NAME THIS SURFACE HAS CARRIED, round LO. Energetics, then Intake
+    at his own word round KX ("I need my energetics, like my intake... I
+    just rename it Intake"), now Body. The id and class stay tab-energy,
+    energy.emap: those are never the name a person reads, and renaming them
+    on a label change is exactly what the TAB integer rule exists to stop
+    happening to the wrong thing. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
@@ -44435,5 +44441,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="002904763"></div>
+<div id="eof" hidden data-len="002905165"></div>
 </body></html>
