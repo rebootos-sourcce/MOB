@@ -50,32 +50,147 @@ through `0008`) and apply automatically now that the id is real.
 ## The three things left, only he can do them
 
 1. **Create or confirm the Cloudflare account.** Same one already used for
-   the Worker setup screens he's been sending screenshots of.
+   the Worker setup screens he's been sending screenshots of. Confirmed
+   round LS from his own Version History screenshot, `atuned-api`, five
+   deployments in the last day, all his own name. Done.
 2. ~~Create the D1 database and paste its id into `wrangler.toml`.~~ Done,
-   see above.
+   see above, and confirmed a second time round LS: the same screenshot's
+   top row is that exact change, "Update wrangler.toml added CloudFlare
+   ID Key for D1 - Database (SupaBase) for Atuned," committed by him.
 3. **Add the two GitHub secrets named above**, `CLOUDFLARE_API_TOKEN` and
    `CLOUDFLARE_ACCOUNT_ID`, to the `reboot-os` repository (not `MOB`).
-   The token is created in the Cloudflare dashboard under My Profile, API
-   Tokens, with exactly the two permissions named above. The account id
-   is on the Cloudflare dashboard's own overview page. Not checkable from
-   here, since a real secret never shows in a repository's files even to
-   someone reading them; confirm this one by watching the Actions tab on
-   the next push to `main` migrate and deploy rather than stop at the
-   test step.
-4. **Set the Worker's own secrets**, which never live in any repository.
-   From a terminal with `wrangler` installed and logged in, inside
-   `atuned/server`:
+4. **Set the Worker's own secrets**, which never live in any repository,
+   starting with `RECORDS_KEY`, the one that matters first.
+
+Walked through step by step below, round LS, since the summary above was
+not enough to act on by itself.
+
+## Step 3, done in full, click by click
+
+This step has two halves: getting two values out of Cloudflare, then
+pasting them into GitHub. Fifteen minutes, no coding.
+
+**Half one. Get the two values from Cloudflare.**
+
+1. Go to `dash.cloudflare.com` and log in. Same account as the
+   screenshot in round LS.
+2. Look at the main screen. Cloudflare shows an "Account ID" somewhere
+   on this page, usually on the right side of the Workers & Pages
+   overview, next to a small copy icon. Click the copy icon. That copied
+   text is the value for `CLOUDFLARE_ACCOUNT_ID`. Paste it somewhere safe
+   for a minute, a notes app is fine, nothing permanent.
+   (Cloudflare moves this box from time to time. If it is not on the
+   right side of the overview page, the search box at the top of the
+   dashboard, typing "Account ID," finds it.)
+3. Click your profile icon, top right corner of the page.
+4. Click "My Profile."
+5. Click the "API Tokens" tab.
+6. Click "Create Token."
+7. Scroll down and click "Create Custom Token" (not one of the
+   ready-made ones above it).
+8. Give it a name, anything recognisable, for example
+   `reboot-os deploy`.
+9. Under "Permissions," add two rows. Each row is three dropdowns:
+   - Row one: `Account`, `Workers Scripts`, `Edit`.
+   - Row two: `Account`, `D1`, `Edit`.
+   Click "+ Add more" to get the second row.
+10. Under "Account Resources," leave it on "Include" and choose the one
+    Cloudflare account in the next dropdown.
+11. Click "Continue to summary," then click "Create Token."
+12. Cloudflare shows the token exactly once, on this screen only. Copy
+    it now. That is the value for `CLOUDFLARE_API_TOKEN`. If the page is
+    closed before it is copied, the token cannot be recovered and a new
+    one has to be made; nothing is broken, just repeat steps 6 through
+    12.
+
+**Half two. Put the two values into GitHub.**
+
+1. Go to `github.com/rebootos-sourcce/reboot-os`. Not `MOB`, the other
+   one, `reboot-os`.
+2. Click "Settings," in the row of tabs near the top of the repository
+   (Code, Issues, Pull requests, Actions, ... Settings). This needs
+   admin access on the repository; if that tab is missing, the signed
+   in account is not an admin on `reboot-os` and someone who is has to
+   do this part, or add admin access first.
+3. In the left sidebar, click "Secrets and variables," then click
+   "Actions" underneath it.
+4. Click the green "New repository secret" button.
+5. Name field: type `CLOUDFLARE_API_TOKEN`, exactly that, capital
+   letters and underscores included. Value field: paste the token from
+   half one, step 12. Click "Add secret."
+6. Click "New repository secret" again.
+7. Name field: type `CLOUDFLARE_ACCOUNT_ID`, exactly that. Value field:
+   paste the account id from half one, step 2. Click "Add secret."
+
+**How to know it worked.** A secret's value never shows again once
+saved, on purpose, so there is nothing to read back and check. Instead:
+push anything to `main` on `reboot-os`, or wait for the next push, then
+open the "Actions" tab and click the newest run. Before these two
+secrets existed, every run stopped after its tests. With both secrets
+in place, the same run continues past tests into a migrate step and a
+deploy step, and finishes green. That is the confirmation.
+
+## Step 4, done in full, click by click
+
+This step needs a terminal, a plain text window that runs commands
+instead of clicking buttons. It only has to be done once, ever, for
+`RECORDS_KEY`, because it is never allowed to change once real records
+exist under it.
+
+1. Open a terminal.
+   - On a Mac: press Cmd and Space together, type `Terminal`, press
+     Enter.
+   - On Windows: press the Windows key, type `PowerShell`, press Enter.
+2. Check Node.js is installed. Type `node -v` and press Enter. A
+   version number like `v20.11.0` means it is installed; an error means
+   it is not, and it has to be installed first from `nodejs.org` (the
+   big green button, the LTS version).
+3. Get a copy of the `reboot-os` repository on this computer, if there
+   is not one already. Type:
+
+       git clone https://github.com/rebootos-sourcce/reboot-os.git
+
+   then:
+
+       cd reboot-os/atuned/server
+
+4. Log the deploy tool into the Cloudflare account. Type:
+
+       npx wrangler login
+
+   A browser window opens asking to approve access. Click "Allow."
+
+5. Generate the secret's value. This is the exact line the server's own
+   files carry for it, `atuned/server/wrangler.toml`, quoted rather than
+   invented: thirty two random bytes, so nobody, including him, has to
+   remember or type a password for it. Type:
+
+       node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+
+   It prints one line of random looking letters and numbers. That is
+   the value.
+
+6. Before anything else, save that value somewhere outside Cloudflare, a
+   password manager or a note kept safe. This is the one piece that
+   cannot be recovered: it is never shown again, Cloudflare only stores
+   it encrypted, and every record saved under it is unreadable forever
+   if it is lost.
+
+7. Set the secret. Type:
 
        npx wrangler secret put RECORDS_KEY
 
-   This is the one that matters first: it encrypts every stored record,
-   is generated once, and is never regenerated (losing it loses every
-   record encrypted with it, permanently). The README gives the exact
-   one line to generate 32 random bytes for it. Everything else
-   (`VAPID_PUBLIC`, `VAPID_PRIVATE`, `RESEND_KEY`, `ADMIN_KEY`, the Apple
-   and Google store keys) is only needed for the features that use them
-   (push notifications, password reset, the support console, store
-   purchases) and can wait until those are actually being turned on.
+   It asks for a value. Paste the line from step 5 and press Enter.
+
+8. Done. The Worker now has the key it needs to seal every stored
+   record. Nothing else has to happen for sync to start working once
+   the two GitHub secrets from step 3 are also in place.
+
+Everything else the README lists as a secret (`VAPID_PUBLIC`,
+`VAPID_PRIVATE`, `RESEND_KEY`, `ADMIN_KEY`, the Apple and Google store
+keys) is only read by features not turned on yet, push notifications,
+password reset by email, the support console, store purchases, and can
+wait until those are actually being built and switched on.
 
 Once the two GitHub secrets exist, the next push to `main` migrates and
 deploys the Worker automatically, since the database id is already real.
