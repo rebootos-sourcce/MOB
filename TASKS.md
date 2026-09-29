@@ -26519,3 +26519,28 @@ the Summary/Analytics unfold already in flight when this arrived. No
 dispatch is possible until the account's weekly limit resets Oct 1,
 8am UTC; both rounds are hand built in sequence once the Summary and
 Analytics gates now in flight are clean and shipped.
+
+## Every dead worktree from the second rate limit is now triaged
+
+The Summary/Analytics unfold shipped at `0fcee17`, gated clean after
+fixing two of this repo's own test gates that still assumed the old
+fold; logged in full above it. That closes out the last of the six
+worktrees the second rate limit killed. The full account of the six,
+for the record:
+
+    brief-technical.md     shipped, `d980e22`
+    Field weight jitter     shipped, `a2fcff4`
+    Ritual data model       shipped, `957ede9`, later found to violate
+                            TG4 and superseded, see below
+    Character visual pass   shipped, `68ac83e`
+    Story record clock      shipped, `2df9cbc`
+    Summary/Analytics       shipped, `0fcee17`
+
+Triaging those six also turned up work from an earlier round, LT, that
+had never been dispatched against at all and had sat in its own
+worktree since before the container restart: the Ritual builder's full
+three column rewrite, merged at `7a58c1a`, and a duplicate of the pill
+removal and the Embody icon, already shipped and discarded here.
+
+Every worktree under `.claude/worktrees/` has now been read, and
+nothing salvageable remains in any of them.
