@@ -25725,9 +25725,11 @@ Read as, in the order raised:
     a UI problem: they should read like a close friend's question, not
     a form's.
 
-Dispatching across four scoped pieces, each briefed on the other three
-to keep a shared file like `head.html` collision free: the Character
-aesthetic and hover pass (2 through 6), the Ritual builder's layout,
-colour and copy (7 through 11), the Story page's button and Source AI
-treatment (12 and 13), and the Source AI question rewrite (14), which
-is a words only change and goes to the narrative seat alone.
+Dispatching across three scoped pieces, each in its own worktree and
+each briefed on the other two so a shared file like `head.html` stays
+collision free: the Character aesthetic, symbol and hover pass (2
+through 6, art direction), the Ritual builder's layout, colour, copy
+and its new ritual flow (7 through 11, full stack), and the Story page
+together with the Source AI question rewrite (12 through 14, narrative,
+since the button and the question bank share one file and the rewrite
+needs the voice gate run over it regardless).
