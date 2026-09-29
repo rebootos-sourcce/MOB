@@ -25516,3 +25516,17 @@ embody" on the right, matching his words exactly.
 
 Voice check on both: 22 findings, 0 stopping, same as before either
 landed.
+
+**The Field's Accuracy relocation landed and independently verified,
+commit `f183244`, pushed.** Rebuilt and gated in a clean isolated
+worktree: `tests/engine.js` 1841 passed 0 failed, `collide.js` 351
+passed 0 failed, `design.js` 184 passed 0 failed, `tests/functional.js`
+1325 passed 0 failed, clean, no flakes this run. Voice check 0 stopping.
+Screenshotted the Field myself at 1600 loaded: the Accuracy pill sits
+lower left on the stage in its own glass pill, level with the zoom
+controls in the lower right, matching his words exactly. `OVERLAY` in
+`component.js` carries `'acc'` again, so the wheel reserves radius from
+it the same way it already does for the other three.
+
+One seat still working: the Character/masks rebuild, in `character.js`
+alone, not yet reported.
