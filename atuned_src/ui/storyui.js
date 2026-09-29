@@ -33,43 +33,51 @@ function stRender(){
  var h=document.getElementById('story'); if(!h) return;
  var p=ST_PARSED;
  var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
-  /* ---- the write column: Source AI over the journal ---- */
+  /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
-  /* THE COLUMN BESIDE THE JOURNAL WAS SOURCE AI, AND IT IS ABOVE IT NOW. HT in
-     TASKS.md, his words: "above the journal part will be a prompt engine." It
-     keeps its id, #stsrc, and its one speaking line, so a screen reader still
-     hears only what it says. */
-  +'<div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
   +'<div class="st-pan st-jr" id="stjr">'
   /* SPEAK BECAME RECORD, AND IT CARRIES ITS STATE.
 
      Speak is what you do, record is what the control does, and the ruling
      everywhere else in this product is that a menu word describes exactly
      what the thing does. The dot says which mode you are in without reading
-     the label: green while it is recording, red while you are typing. */
-  +'<div class="st-hd"><span class="pm-eye">The day</span>'
+     the label: green while it is recording, red while you are typing.
+
+     THE EYEBROW AND THE LINE UNDER IT ARE GONE, round LO, his words: "I want
+     to remove the text saying the day and re remove the recording sends the
+     audio to browser. Just get rid of that text." The eyebrow read "The day";
+     the box keeps it as its accessible name, which nobody sees and a screen
+     reader needs. The line read "Recording sends the audio to your browser's
+     speech service. Typing does not leave this device." It was put there
+     because that is true and was nowhere else, and it is still true: browser
+     speech recognition is a network service and the audio reaches the
+     browser vendor. So the fact moved rather than went. It is in the
+     button's own tooltip, on the one control that sends the audio anywhere,
+     and it is off the page. */
+  +'<div class="st-hd">'
    +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
-     :'Record what happened out loud instead of typing it.')+'">'
+     :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button>'
-   /* WHERE THE AUDIO GOES, SAID BEFORE IT GOES THERE.
+   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button></div>'
+  /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
+     want you to swap the main journal menu with the source AI question." The
+     column read Source AI, then the journal's own top line with Record on it,
+     then the box. It reads Record, then Source AI, then the box now, so the
+     question sits straight over the place it is answered. Source AI came
+     inside the journal's panel to do that, and it wears its own ground, the
+     same sunk ground as the box and the chart, because he asked for it to
+     read as a display: "right now the source scripted area is on gray ... I
+     want it to have its own black background."
 
-      The owner keeps the microphone and promises the data is never sold, and
-      both of those are true. A third fact is also true and was nowhere on
-      screen: browser speech recognition is a network service, so the audio
-      reaches the browser vendor. We do not sell it and we do not control it
-      either, which is exactly why it has to be said rather than assumed.
-
-      One line, always visible, not a dialog. A dialog asks for a decision the
-      person cannot yet make anything of, and it would sit between somebody and
-      the thing they came to do. Typing stays the equal path and is named here
-      so the alternative is in the same sentence as the cost. */
-   +'<span class="st-mnote">Recording sends the audio to your browser\'s '
-   +'speech service. Typing does not leave this device.</span></div>'
+     It keeps its id, #stsrc, and its one speaking line, so a screen reader
+     still hears only what it says. HT in TASKS.md put it above the journal,
+     "above the journal part will be a prompt engine", and it is still above
+     the part a person writes in. */
+  +'<div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -102,8 +110,15 @@ function stRender(){
    +'<div class="st-chd"><span class="st-eb">Imprints</span><span class="st-tag" id="stpend"></span>'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
-      vault, which is what's been released." Both are icons with their word
-      beside them at 1600 and the icon alone on a phone. */
+      vault, which is what's been released." Both were icons with their word
+      beside them at 1600 and the icon alone on a phone. Round LO took the
+      word off at every width, his words: "for the bank and the vault, I just
+      want their icons only, not the text." The word is still in the button,
+      clipped the way a folded tab's name is, so a screen reader still hears
+      Bank and Vault; .st-lb in the shell does it. The vault keeps its count,
+      which is a figure and not a label, as it always has on a phone. He also
+      asked for the two to swap places and withdrew it in the same breath,
+      "actually, never mind", so they stand where they stood. */
    +'<button type="button" class="st-ico" id="stbank" aria-pressed="'+STV.bank+'" '
     +'title="The bank: every imprint you hold, on the Imprints page">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 4l9 5.5M5 10v8M9.7 10v8M14.3 10v8M19 10v8M3 20.5h18"/></svg>'
@@ -399,11 +414,14 @@ function stFieldPaint(){
    SOURCE AI, THE SPEAKING HALF. The listening half is engine/sourceai.js
    and the whole behaviour is written down in reviews/SPEC-source-ai.md.
 
-   Scripted, and it says so. No model is called: every line below is chosen
-   by srcTurn off a count the person can check in their own words.
+   Scripted. No model is called: every line below is chosen by srcTurn off a
+   count the person can check in their own words. It said so on screen, a
+   small "scripted" beside its name, until round LO, his words: "Remove the
+   text that says scripted." The fact is unchanged and is still written down
+   in the spec above; only the label is off the page.
 
    Four moves, and the person decides which one it makes:
-     open    the opening question, and one simple one to start from
+     open    the opening question, which a press turns to another one
      listen  it has heard something and asks nothing. The seat nearest a
              question and its rung show as a gauge; the words it heard are
              on the chart beside it, in the lanes they landed in.
@@ -444,7 +462,25 @@ var SRC_OPEN='What are we writing about today?';
    ask. Each is a physical event a person can answer from memory, the shape
    funnel/questions.js already proved works in this product, and none of them
    names a feeling for the person. One at a time, turned by the day, so the
-   page does not become furniture. */
+   page does not become furniture.
+
+   THEY WERE A SECOND LINE UNDER THE OPENER, AND THEY ARE THE OPENER'S NEXT
+   QUESTIONS NOW. Round LO, his words: "have source AI question have a button
+   to generate new questions ... Remove the text that says or start from
+   where did you feel it first." That line was "Or start from" and one of
+   these, picked by the day, and on the day he read it the day picked "Where
+   did you feel it first?". The line is gone and the list is what the button
+   walks. The opener is still his own sentence and still comes first; the
+   first press lands on the day's question, which keeps the turn by the day,
+   and each press after it is the next one round. SRC_QI is where the walk
+   is, and below nought means the opener. It is not reset by Clear or by a
+   new entry, because the question a person chose is theirs until they press
+   again. */
+var SRC_QI=-1;
+function srcQuestion(){return SRC_QI<0?SRC_OPEN:SRC_JOG[SRC_QI%SRC_JOG.length];}
+function srcNextQ(){
+ SRC_QI=SRC_QI<0?Math.floor(Date.now()/864e5)%SRC_JOG.length:(SRC_QI+1)%SRC_JOG.length;
+ return srcQuestion();}
 var SRC_JOG=['What happened today that your body is still holding?',
  'Where did you feel it first?',
  'What did you not say?',
@@ -513,12 +549,16 @@ function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=STR.heard||srcHear(ST_TEXT,null);
  var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
- var o='<div class="src-hd"><span class="pm-eye">Source AI</span>'
-  +'<span class="src-tag">scripted</span></div>';
- if(turn.move==='open'){
-  var d=Math.floor(Date.now()/864e5), k=d%SRC_JOG.length;
-  o+='<p class="src-open">'+esc(SRC_OPEN)+'</p>'
-   +'<p class="src-jog">Or start from <q>'+esc(SRC_JOG[k])+'</q></p>';}
+ var o='<div class="src-hd"><span class="pm-eye">Source AI</span></div>';
+ /* the question and its button share a line, the way the Avatar's question
+    and its turn arrow do, and the button carries the same name, Another
+    question. A press rewrites the question in place and nothing else, so the
+    focus stays on the button for the next press. */
+ if(turn.move==='open')
+  o+='<div class="src-ask"><p class="src-open" id="srcq">'+esc(srcQuestion())+'</p>'
+   +'<button type="button" class="src-new" id="srcnew" aria-label="Another question" title="Another question">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/></svg>'
+   +'</button></div>';
  else if(turn.move==='ask'){
   o+='<p class="src-q" style="--c:'+seatCol(turn.band)+'">'+esc(srcAsk(turn))+'</p>'
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
@@ -526,7 +566,7 @@ function srcPaint(){
  else if(turn.move==='pass'){
   o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';}
  else{
-  o+='<p class="src-open quiet">'+esc(SRC_OPEN)+'</p>';
+  o+='<p class="src-open quiet">'+esc(srcQuestion())+'</p>';
   if(heard.top)o+='<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(heard.top.band)+'">'
    +'<span>Next question</span>'+srcPips(heard.top.rung,seatCol(heard.top.band))
    +'<span class="src-seat">'+esc(heard.top.band)+'</span></span></div>';
@@ -540,11 +580,14 @@ function srcPaint(){
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
   +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  h.innerHTML=o;
- var said=turn.move==='open'?SRC_OPEN:(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
+ var said=turn.move==='open'?srcQuestion():(turn.move==='ask'?srcAsk(turn):(turn.move==='pass'?'Cool.':''));
  var sy=document.getElementById('srcsay');
  if(sy&&sy.textContent!==said)sy.textContent=said;
  var mv=document.getElementById('srcpass');
- if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};}
+ if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};
+ var nq=document.getElementById('srcnew');
+ if(nq)nq.onclick=function(){var q=srcNextQ(), e=document.getElementById('srcq');
+  if(e)e.textContent=q; if(sy)sy.textContent=q;};}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
    never sits in the document asserting a stale reading, the rule Summary
    already keeps. setTab calls this on every tab but Story. The bank closes
@@ -980,11 +1023,26 @@ function stDrawStrip(){
  g.restore();
  g.fillStyle=rgba(dim,.9);g.font='12px Inter,system-ui,sans-serif';g.textAlign='right';g.textBaseline='middle';g.fillText('read',q.x0-10,CH-15);}
 
-/* ---- the words under the chart and the tag beside its name ---- */
+/* ---- the words under the chart and the tag beside its name ----
+   THE TAG IS EMPTY UNTIL THERE IS SOMETHING TO SAY. Round LO, his words:
+   "For the imprints, I remove the text saying imprints not read yet, unless
+   that does something specific." Checked before it was cut: it was the tag's
+   fourth state, shown only with the box empty and nothing committed since
+   the page opened, and it did nothing. It was not a control, nothing reads
+   it, and it said the same thing as the list directly under it, "You have
+   not written anything yet. Whatever you write gets pulled apart and
+   collected here", and as the empty chart beside it. On a phone that list
+   is folded away behind List, and there the empty chart and the empty box
+   with its placeholder still say it, the chart on the same line of sight
+   the tag sat on. The other three states
+   each say something only the tag says and they stay: how many are pending,
+   that the words kept nothing, and that the last entry was committed. The
+   span stays in place empty, because it is the spacer that holds the Bank
+   and the Vault at the row's right edge. */
 function stPendPaint(){
  var e=document.getElementById('stpend'); if(!e)return;
  var n=ST_PARSED?ST_PARSED.imprints.length:0;
- e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':'not read yet'));
+ e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
 function stCtrPaint(){
  /* its own span, because the line also carries the view toggle and writing
@@ -1109,7 +1167,8 @@ function stRelModel(){
  if(picked.length)take=picked.sort(bySq);
  else if(found.length)take=found.slice().sort(bySq).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
- return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length};}
+ return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
+  added:!!(picked.length||found.length)};}
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
  var M=stRelModel(), o='';
@@ -1132,9 +1191,22 @@ function stRelPanel(){
   +'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Run release</button></div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
-    that address is heavy. Round HX, B, which he did not strike. */
- e.style.setProperty('--glow',M.sel.length?seatCol(M.sel[0].b):'var(--accent)');
- e.style.setProperty('--lux',M.sel.length?(0.15+0.2*Math.min(10,M.sel[0].sq)/10).toFixed(2):'.1');
+    that address is heavy. Round HX, B, which he did not strike.
+
+    AND ONLY ONCE SOMETHING HAS BEEN ADDED TO IT. Round LO, his words:
+    "release should not start red. It should only become red once you add
+    things to it." It started lit because of the third source above: with
+    nothing picked in the bank and nothing found in the journal, the panel
+    offers the three heaviest addresses the field already holds, and it lit
+    in the first one's colour on arrival. Root is the heaviest seat on many
+    fields and Root is red, so the panel opened red on a person who had done
+    nothing. The offer stays, because Run on the heaviest three is a real
+    route, but it is drawn in the accent like an empty panel. The seat's
+    colour arrives the moment a word the journal read or a pick from the bank
+    puts something in, which is what added means here. */
+ var lit=M.added&&M.sel.length;
+ e.style.setProperty('--glow',lit?seatCol(M.sel[0].b):'var(--accent)');
+ e.style.setProperty('--lux',lit?(0.15+0.2*Math.min(10,M.sel[0].sq)/10).toFixed(2):'.1');
  e.querySelectorAll('[data-rq]').forEach(function(b){b.onclick=function(){
   var i=+b.getAttribute('data-rq'); ST_OFF[i]=ST_OFF[i]!==true; stRelPanel();};});
  /* the card's own clamps, so a value typed here cannot be one the card

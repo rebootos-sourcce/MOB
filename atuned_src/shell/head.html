@@ -3456,7 +3456,9 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  border:1.6px solid var(--c,var(--accent))}
 /* the column itself does not scroll: the list and the release queue do, each
    on its own, so a long entry never pushes Run off the screen. */
-.st-hd{display:flex;align-items:center;justify-content:space-between;gap:6px 10px;
+/* Record alone since round LO took the eyebrow off its left, so the row ends
+   on it where space-between used to push it */
+.st-hd{display:flex;align-items:center;justify-content:flex-end;gap:6px 10px;
  flex-wrap:wrap;margin-bottom:9px}
 /* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
 .st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
@@ -3469,7 +3471,14 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-ico:hover{color:var(--ink)}
 .st-ico[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
 .st-ico b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
-.st-lb{white-space:nowrap}
+/* THE BANK AND THE VAULT ARE ICONS ONLY, round LO: "I just want their icons
+   only, not the text." The word is clipped rather than removed, the same
+   rule a folded tab's name gets (.tabnames-i:not(:checked) above), so it
+   stays the button's name to a screen reader. It was display:none on a phone
+   only, which took the name away from the reader there too and left the
+   title to carry it; that rule is gone, this one covers every width. */
+.st-lb{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+ clip-path:inset(50%);white-space:nowrap}
 /* the list door exists for the phone, where the list folds away */
 .st-open{display:none}
 .st-sort{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px}
@@ -3637,14 +3646,32 @@ body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
    another place to type. The opening question is the largest line on the
    page while nothing is written, and steps back once the person is writing,
    because from then on they lead and the question is theirs to answer or not. */
-.st-pe{flex:0 0 auto;border-left:3px solid var(--accent);padding:2px 0 2px 16px;min-width:0}
+/* A DISPLAY, ON ITS OWN BLACK, round LO: "Right now the source scripted
+   area is on gray ... I want it to look like a display area. So I want it to
+   have its own black background." It sits inside the journal's panel now, over
+   the box, so its ground is the box's own, --sunk, the ground the chart and
+   every other display in the product reads from. That is black in the dark
+   lightings and follows the light ones, where a hard black slab would be the
+   one thing on the page that did not. The accent bar stays: it is what says
+   the system is speaking. */
+.st-pe{flex:0 0 auto;border-left:3px solid var(--accent);border-radius:var(--r-s);
+ background:var(--sunk);padding:12px 12px 14px 16px;margin-bottom:10px;min-width:0}
 .src-hd{display:flex;align-items:center;gap:10px;min-height:20px}
-.src-tag{font-size:12px;color:var(--dim)}
+/* the question and the press that turns it, the Avatar's .avs-ask shape */
+.src-ask{display:flex;align-items:flex-start;gap:10px}
+.src-ask .src-open{flex:1 1 auto;min-width:0}
+.src-new{flex:0 0 auto;width:var(--tap);height:var(--tap);border-radius:50%;padding:0;
+ border:1px solid var(--edge-2);background:transparent;color:var(--accent);cursor:pointer;
+ display:flex;align-items:center;justify-content:center;
+ transition:border-color var(--t-micro) var(--ease-out)}
+.src-new svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round}
+.src-new:hover{border-color:var(--accent)}
+.src-new:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-open{font-size:22px;line-height:1.3;color:var(--ink);font-weight:400;margin:4px 0 2px;max-width:44ch;
  transition:font-size var(--t-element) var(--ease-out),color var(--t-element) var(--ease-out)}
 .src-open.quiet{font-size:15px;color:var(--mid)}
-.src-jog{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--dim)}
-.src-jog q{color:var(--mid);quotes:"\201C" "\201D"}
 .src-q{font-size:20px;line-height:1.35;color:var(--ink);margin:4px 0 2px;max-width:48ch}
 .src-note{font-size:13px;color:var(--dim);line-height:1.55;margin:3px 0}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
@@ -4671,7 +4698,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-flow:not([data-focus="read"]) .st-ls{display:none}
  .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
  .st-lsb{overflow:visible}
- .st-lb{display:none}
  .st-flow:not([data-focus="release"]) .st-rl{display:grid;grid-template-columns:minmax(0,1fr) auto;
   align-items:center;gap:10px;padding:10px 12px}
  .st-flow:not([data-focus="release"]) .st-rlhd,.st-flow:not([data-focus="release"]) .st-fields{display:none}
@@ -4975,7 +5001,20 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
                                starts gently and settles long, which is the
                                same fill slowed to a size where it is watched.
    ============================================================ */
-.boot.bx{--beat:.09s;--S:min(86vw,58vh,600px);overflow:hidden;gap:22px}
+/* THE FIGURE IS 85 PER CENT OF WHAT IT WAS, round LP, his words: "for the
+   intro animation, the main size, can you scale it down? Fifteen percent. So
+   that when it zooms in, it comes in at about the same scale as the actual
+   landing screen." It was min(86vw,58vh,600px), and every term is taken down
+   by the same fifteenth so the three limits still hand over at the same
+   window shapes. Only the figure moves: the wordmark under it is ruled to the
+   pixel and keeps its size, and the wash is sized off --S, so it follows.
+   Measured in Chromium at 1600 by 1000 with the animations held: the seat
+   ring stood 360px across and the push carried it to 521, and now stands 306
+   and is carried to 443; the gold halo round it now stands 434 and is carried
+   to 629. The Field it lands on draws its three rings at about 745, 610 and
+   450, read off the screenshot. At 390 by 844 the stage is 285 against 335,
+   and the halo is carried to 364 on a Field canvas 335 high. */
+.boot.bx{--beat:.09s;--S:min(73.1vw,49.3vh,510px);overflow:hidden;gap:22px}
 .bx-stage{position:relative;width:var(--S);height:var(--S);flex:0 0 auto}
 /* THE PUSH, WITH ITS BACKSWING. ET went straight out on the ease in. A push
    with no draw back first starts from rest at full speed, which is the one
@@ -5534,9 +5573,6 @@ body.booted{--boot-done:1}
 .ld-off{color:var(--ink)}
 .ld-next{margin:14px 0 0;font-size:13px;line-height:1.6;color:var(--mid);max-width:62ch}
 .ld-next b{color:var(--ink);font-weight:500}
-/* the microphone's one line. Quiet, always there, never a dialog. */
-.st-mnote{display:block;flex:1 1 100%;font-family:var(--sans);font-size:11.5px;
- line-height:1.5;color:var(--dim);margin-top:5px}
 /* an inferred chip. The seat was read, the address was not named by the
    person's words, so the chip is quieter and its label is the child emotion. */
 .ip.infer{border-style:dashed}

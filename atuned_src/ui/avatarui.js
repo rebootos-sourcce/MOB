@@ -893,26 +893,59 @@ function avBox(b,k,text){
   +esc(text)+'</textarea></div>'
   +'<div class="av-live" data-avlive="'+k+'" role="status" aria-live="polite">'
   +(rel?avLive(avHeard(text),{notbe:text}):avLiveBe(avDraft(b).notbe))+'</div></div>';}
-/* THE QUESTION HEADS THE MENU, his words: "the question to be on the right
-   menu". It turns in place by one press on the arrow beside it, and the two
-   boxes stack under it, release first because the embody box reads it. */
-function avSeatForm(b,idx){
+/* THE TWO BOXES LEFT THE MENU FOR EITHER SIDE OF THE RING. Round LO, his
+   words: "For the Becoming, our main graphic, I want centered, and I want two
+   columns. One left side for the person, the story of the story you no longer
+   wish to become, the thing holding the person back, and the right one is the
+   person you wish to become, to embody." The menu already carried exactly
+   that split, To release stacked over To embody beside the ring, so nothing
+   here is new copy: the two boxes move out to the ring's two sides. The
+   question heads the left, because what it asks for is the release line, and
+   the button that keeps the pair closes the right, because it reads both and
+   the embody box is the second one filled. What stays in the menu, the two
+   faces, the seat, the tags and the rule, sits centred under the ring.
+
+   So this returns the question, the left column and the right column, and
+   avHero lays them out. The question has its own cell over the left column
+   rather than a place inside it, so the two boxes stand level with each other
+   beside the ring's middle; measured the other way at 1600, the question
+   pushed the release box 70 pixels below the embody box.
+   The form was one wrapper with data-avform round both boxes and the button,
+   and the box's own input handler finds the button and the two live lines
+   through that wrapper. The wrapper cannot sit inside one column any more, so
+   avHero puts data-avform on the whole row while a pair is being written. */
+function avSides(st){
+ var b=st.seat, x=st.bySeat[b], idx=(x&&AV.edit===x.i)?x.i:null;
+ /* a written story: the two lines, lit. The tags carry what the sniffer found
+    in them and stay in the menu under the ring. The chips that sat under each
+    line said the same thing a second time and are folded into the tags. */
+ if(x&&idx==null)return ['',
+  '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p></div>',
+  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>'];
  var d=avDraft(b), ask=AV_ASK[b], i=(AV.ask[b]||0)%ask.ask.length;
- return '<div data-avform="'+b+'">'
-  +'<div class="avs-ask"><p class="avs-q" data-avq="'+b+'">'+esc(ask.ask[i])+'</p>'
+ /* the question turns in place by one press on the arrow beside it */
+ return [
+  '<div class="avs-ask"><p class="avs-q" data-avq="'+b+'">'+esc(ask.ask[i])+'</p>'
   +'<button type="button" class="avs-cyc" data-avcyc="'+b+'" aria-label="Another question" title="Another question">'
-  +avSvg(AV_CYC)+'</button></div>'
-  +'<div class="avs-two">'+avBox(b,'notbe',d.notbe)+avBox(b,'be',d.be)+'</div>'
+  +avSvg(AV_CYC)+'</button></div>',
+  avBox(b,'notbe',d.notbe),
+  avBox(b,'be',d.be)
   +'<div class="av-act"><button type="button" class="btn pri" data-avadd="'+b+'"'
   +(d.be.trim()&&d.notbe.trim()?'':' disabled')+'>'+(idx!=null?'Save the change':'Add to your avatar')+'</button>'
-  +(idx!=null?'<button type="button" class="btn" data-avcancel="'+b+'">Cancel</button>':'')+'</div></div>';}
-/* a written story: the two lines, lit, and then the tags, which carry what
-   the sniffer found in them. The chips that sat under each line said the
-   same thing a second time and are folded into the tags. */
+  +(idx!=null?'<button type="button" class="btn" data-avcancel="'+b+'">Cancel</button>':'')+'</div>'];}
+/* the row: the question and the left column, the ring centred, the right
+   column. The source order is the reading order on a wide screen; stacked,
+   the ring is moved first by the stylesheet, so a phone still opens on the
+   figure. */
+function avHero(st){
+ var b=st.seat, x=st.bySeat[b], form=!x||AV.edit===x.i, S2=avSides(st);
+ return '<div class="av-hero avh-row avh-three" style="--c:'+seatCol(b)+'"'+(form?' data-avform="'+b+'"':'')+'>'
+  +(S2[0]?'<div class="avh-q">'+S2[0]+'</div>':'')
+  +'<div class="avh-side avh-l">'+S2[1]+'</div>'+avRing(st)+'<div class="avh-side avh-r">'+S2[2]+'</div></div>';}
+/* what a written story keeps in the menu under the ring: the tags, the rule,
+   and the two presses that change it */
 function avSeatWritten(st,b,x){
- return '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p>'
-  +'<div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>'
-  +avTagHTML(st,b)
+ return avTagHTML(st,b)
   +avRuleHTML(st,b,x)
   +'<div class="av-act"><button type="button" class="btn" data-avedit="'+x.i+'">Edit</button>'
   +'<button type="button" class="btn" data-avtake="'+x.i+'">Take it off</button></div>';}
@@ -950,11 +983,14 @@ function avRuleHTML(st,b,x){
  return out+'</div>';}
 /* one seat, root to crown. The symbol on the left and what it represents, and
    open, the story behind it on the left of the two boxes. */
-/* ---------------- the right menu, round KH ----------------
+/* ---------------- the menu, round KH, under the ring since LO ----------------
    Two faces, and both are his: the selected ring's story, and the intake
    questions, which left their own subtab for this menu. The second face
    holds the situations this file draws and an empty slot that #iqbody is
-   moved into after the paint; intakeui.js still owns and writes that host. */
+   moved into after the paint; intakeui.js still owns and writes that host.
+   It sat to the right of the ring until round LO gave the ring's two sides to
+   the two boxes, see avSides; the story face keeps the seat, the tags and the
+   rule, and the boxes stay beside the ring whichever face is pressed. */
 var AV_FACES=[['story','Your story'],['iq','Intake questions']];
 function avMenu(st){
  var b=st.seat, A=AV_OF[b], x=st.bySeat[b];
@@ -967,7 +1003,7 @@ function avMenu(st){
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
   +(x&&x.c!=null?'<span class="av-pp">'+avPct(x.c)+'<small>Complete</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
-  +(x&&!editing?avSeatWritten(st,b,x):avSeatForm(b,editing?x.i:null))+'</aside>';}
+  +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
    the person's own words that placed it, and any fetter it named, as chips.
    The sentence that said "Lands at" is gone; the seat chip carries it. */
@@ -1268,7 +1304,8 @@ function avDoors(){
    follow-up, and nothing here depends on where they sit.
 
    THE HERO TAKES THE MAJORITY, round KH: "The hero graphic, I just wanted to
-   take up the majority of the space." Three fifths of the row, and the ring
+   take up the majority of the space." Three fifths of the row until round
+   LO put a column either side of it, and half of it since, and the ring
    is sized by the height left under the one line as well as by the column,
    so at 1600 by 1000 all seven rings and the core sit in the first screen
    without a scroll. Under 980 wide the menu drops beneath the ring. */
@@ -1276,6 +1313,32 @@ var AV_CSS=[
  '#avbody .av{border-bottom:0;margin-bottom:0;padding-bottom:8px}',
  '#avbody .av-hero{grid-template-columns:minmax(0,3fr) minmax(300px,2fr);gap:24px}',
  '#avbody .avh-row{align-items:start}',
+ /* THE RING CENTRED, WITH A COLUMN EITHER SIDE, round LO. The ring keeps the
+    widest track, twice either side, so it is still most of the row, and the
+    two columns sit level with its middle. Read against the page's own width
+    and not the window's, because the rails beside it fold and open: at 1600
+    with both rails open the page is about 1120 wide, and under 980 the three
+    tracks would leave the ring smaller than the boxes, so the ring takes the
+    top of the row and the two columns share the line under it. Under 560 they
+    stack, the release column first. */
+ '#avbody .av{container-type:inline-size}',
+ '#avbody .av-hero.avh-three{grid-template-columns:minmax(220px,1fr) minmax(0,2fr) minmax(220px,1fr);'
+  +'grid-template-rows:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"q ring ." "l ring r" ". ring .";'
+  +'align-items:start;row-gap:12px}',
+ '.avh-three .avh-q{grid-area:q;align-self:end}',
+ '.avh-three .avh-l{grid-area:l}',
+ '.avh-three .avh-r{grid-area:r}',
+ '.avh-three .av-ring.avh{grid-area:ring}',
+ '.avh-side{min-width:0;display:flex;flex-direction:column;gap:12px}',
+ '.avh-q .avs-ask{margin:0}',
+ '.avh-side .avm-said .avs-said{margin:0}',
+ '.avh-under{display:flex;justify-content:center}',
+ '.avh-under .avm{width:100%;max-width:560px}',
+ '@container (max-width:980px){',
+ ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:none;'
+  +'grid-template-areas:"ring ring" "q q" "l r"}}',
+ '@container (max-width:560px){',
+ ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr);grid-template-areas:"ring" "q" "l" "r"}}',
  '#avbody .av-ring,#avbody .av-wheel{max-width:620px}',
  '#avbody .av-ring.avh{max-width:none;width:min(100%,max(340px,calc(100vh - 230px)))}',
  '#avbody .av-archg{grid-template-columns:minmax(0,3fr) minmax(280px,2fr)}',
@@ -1315,7 +1378,6 @@ var AV_CSS=[
  '.avm-tabs{align-self:stretch}',
  '.avm-tabs .avs-sb{flex:1 1 0;padding:0 12px}',
  '.avm-hd{margin:0}',
- '.avm .avs-two{grid-template-columns:1fr}',
  '.avm-said .avs-lab{margin:0 0 6px}',
  '.avm-said .avs-said{margin:0 0 12px}',
  '.avm-iq #iqbody{margin-top:4px}',
@@ -1324,7 +1386,6 @@ var AV_CSS=[
  '.avs-cyc{flex:0 0 auto;width:var(--tap);height:var(--tap);border-radius:50%;border:1px solid var(--edge-2);background:var(--panel);color:var(--c);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}',
  '.avs-cyc svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}',
  '.avs-cyc:hover{border-color:var(--c)}',
- '.avs-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}',
  '.avs-col{min-width:0;display:flex;flex-direction:column}',
  '.avs-lab{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0 0 6px}',
  '.avs-lab b{font-size:15px;font-weight:600;color:var(--ink)}',
@@ -1427,7 +1488,7 @@ var AV_CSS=[
  '.avd-law{font-size:12px;color:var(--dim);margin:10px 0 0}',
  '@media (max-width:980px){#avbody .av-hero,#avbody .av-archg{grid-template-columns:minmax(0,1fr)}',
  ' #avbody .av-ring.avh{width:100%;max-width:560px}}',
- '@media (max-width:600px){.avs-two{grid-template-columns:1fr}',
+ '@media (max-width:600px){',
  ' .avs-sb{padding:0 12px;font-size:14px}.avs-subs{width:100%;justify-content:space-between}',
  ' .avh .av-slab{font-size:11px}.avs-q{font-size:16px}}'].join('\n');
 function avCss(){
@@ -1457,7 +1518,7 @@ function renderAvatar(){
  if(!AV.sub)AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
-  h+='<div class="av-hero avh-row">'+avRing(st)+avMenu(st)+'</div>';
+  h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
   h+=avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
  else{
   var W2=avWheel(st);

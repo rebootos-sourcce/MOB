@@ -3606,7 +3606,10 @@ const kh=await page.evaluate(async()=>{
  o.lede=($('.avh-lede')||{}).textContent;
  o.rings=host.querySelectorAll('.avh [data-avsat]').length;
  o.prose=!!$('.avs-story');
- o.hero=$('.avh').getBoundingClientRect().width; o.menu=$('.avm').getBoundingClientRect().width;
+ /* since round LO the menu sits under the ring and the two boxes take the
+    ring's two sides, so what the ring must out measure is either column */
+ o.hero=$('.avh').getBoundingClientRect().width;
+ o.menu=Math.max(...[...host.querySelectorAll('.avh-side')].map(x=>x.getBoundingClientRect().width));
  o.tags=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
  o.charge=avLexOf('Heart','Charge');
  $('[data-avtagadd]').click();
@@ -3633,7 +3636,7 @@ const kh=await page.evaluate(async()=>{
 ok(kh.lede==='You’re setting up your avatar. We want to find out who it needs to become and who and what it needs to shed. Select each ring and tell us the story of who you’re becoming and who you’re not.',
  'Becoming carries his one line, word for word, got '+kh.lede);
 ok(kh.rings===7&&!kh.prose,'seven rings to select, and no seat prose, got '+kh.rings+' rings, prose '+kh.prose);
-ok(kh.hero>kh.menu,'the ring takes more of the row than the menu, '+Math.round(kh.hero)+' against '+Math.round(kh.menu));
+ok(kh.hero>kh.menu,'the ring takes more of the row than either column beside it, '+Math.round(kh.hero)+' against '+Math.round(kh.menu));
 ok(kh.tags.includes('Sad')&&kh.tags.includes('Joy')&&kh.tags.includes('Rejection'),
  'the found tags are the fetter, its replacement state and the fetter the words named, got '+JSON.stringify(kh.tags));
 ok(!kh.tags.includes('Martyrdom')&&!kh.tags.includes('Separation'),
