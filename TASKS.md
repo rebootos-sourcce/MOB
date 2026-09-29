@@ -25347,6 +25347,14 @@ media query it never enters, pressing "Moral integrity" on the right
 rail still brings it to the exact top of its panel, delta 1978.9px
 before the press to -0.14px after.
 
+Committed alone, `5da9fff`, isolated out of a working tree that also
+carried an unrelated agent's in-progress, uncommitted edits to the
+same file: built a patch of only this hunk and staged it with `git
+apply --cached` rather than committing the whole file, so nothing of
+theirs moved. `node tests/engine.js` 1841, `design.js` 184, `collide.js`
+351, `functional.js` 1317, all zero failed. Voice check 22, 0 stopping.
+Not yet folded into a shipped build; rides the next one.
+
 ## LQ. "Where the fuck is it," the masks status demanded directly, a Body layout change, and two more asks
 
 His words, verbatim, sent mid-turn with an annotated screenshot: "for
@@ -25389,3 +25397,20 @@ I hit F on the body, I can't reframe. Or I can't frame. That image."
 - **A real bug report: pressing F on the Body does not reframe or
   frame the image.** Not reproduced yet; checked directly before
   anything is said about it.
+
+**Mid turn, his follow up:** "Keep building what you're building. I
+also asked for changes to the story engine. With source on the bottom,
+and some of these text elements taken out. Go find my requests. And do
+them." Already inside the cosmetic pass dispatched before this arrived:
+Source AI's question swapped with the journal menu, the day text, the
+audio disclaimer, "scripted" and "or start from where did you felt it
+first" all named for removal. Nothing new to add; confirmed rather than
+re-dispatched.
+
+**Dispatched: the Body's left and right shelves, ahead of the queue on
+his own "give me a build for that first."** Front and back region
+icons off the bottom entirely and onto two collapsible shelves either
+side of the centre figures, both starting minimized, the freed space
+used to scale the two figures up. File scoped to `map.js` and the
+Body specific parts of `head.html`, run alongside the cosmetic pass
+already in flight in the same tree.
