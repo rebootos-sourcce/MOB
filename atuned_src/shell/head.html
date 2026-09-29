@@ -3560,23 +3560,48 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* the negated word, struck, with the negator inside the mark. See stMarks. */
 .st-f.neg{background:none;box-shadow:none;color:var(--dim);text-decoration:line-through;
  text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
-/* RECORD, AND THE DOT SAYS WHICH MODE YOU ARE IN.
+/* RECORD IS RED, UNAMBIGUOUSLY, WHILE IT IS RECORDING. Round LV, his words:
+   "The record button I want as a red record button. When I press it,
+   there's an animation showing me that it's being recorded, and I want the
+   time showing how long my recording is."
 
-   Green while it is recording, red while you are typing, ruled. The dot is
-   read before the label is, which is the point of having it: a person
-   glancing at this control should not have to read a word to know whether
-   the microphone is on. */
+   The dot already carried the universal record colour at rest, so a person
+   sees before they press that this is the control that goes red. It did
+   not carry that through to the recording state itself, where the button
+   read green against a red dot, the one moment it most needed to be plain:
+   .st-mic.on already had a second, later rule turning the whole control
+   red, and the dot's own green never gave way to it. Now the two agree: the
+   button is solid alarm red the instant it is on, the dot turns white so it
+   still reads against its own ground, a ring breathes out from it once a
+   beat, and the elapsed time sits inside the same pill. Transform and
+   opacity only, so quiet and reduced motion hold the dot and the ring lit
+   and still rather than run either faster. */
 .st-mic{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
  background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
- border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer}
+ border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
+  color var(--t-element) var(--ease-out)}
 .st-mic svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
-.st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;
- background:var(--alarm);transition: background var(--t-element) var(--ease-out)}
-.st-mic.on{border-color:#3FBF7F;color:var(--ink)}
-.st-mic.on .st-dot{background:#3FBF7F;animation:micPulse 1.6s ease-in-out infinite}
-@keyframes micPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.82)}}
+.st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;position:relative;
+ background:var(--alarm);transition:background var(--t-element) var(--ease-out)}
 .st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
+.st-mic.on .st-dot{background:#fff;animation:micPulse 1.15s ease-in-out infinite}
+/* the ring is the dot's own ::after, not a third element, so it travels
+   with it and needs nothing wired */
+.st-mic.on .st-dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;
+ border:1.5px solid #fff;opacity:0;pointer-events:none;
+ animation:micRing 1.15s ease-out infinite}
+@keyframes micPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.78)}}
+@keyframes micRing{0%{opacity:.55;transform:scale(.35)}100%{opacity:0;transform:scale(2)}}
+/* mm:ss, ROUND LV. The same numeric family the chart's own figures use, so
+   it reads as a measurement and not as more label. */
+.st-mictime{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:13px;opacity:.92}
+body.quiet .st-mic.on .st-dot,body.rm .st-mic.on .st-dot{animation:none;opacity:1}
+body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation:none;opacity:0}
+@media (prefers-reduced-motion:reduce){
+ .st-mic.on .st-dot{animation:none;opacity:1}
+ .st-mic.on .st-dot::after{animation:none;opacity:0}}
 /* ============================================================
    THE EDITOR IS TWO LAYERS IN REGISTER.
 
@@ -3670,8 +3695,12 @@ body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
    lightings and follows the light ones, where a hard black slab would be the
    one thing on the page that did not. The accent bar stays: it is what says
    the system is speaking. */
-.st-pe{flex:0 0 auto;border-left:3px solid var(--accent);border-radius:var(--r-s);
- background:var(--sunk);padding:12px 12px 14px 16px;margin-bottom:10px;min-width:0;position:relative}
+/* .st-glow wraps .st-pe, round LV, see below; the sizing and the spacing
+   that used to sit on .st-pe itself now sit on the wrapper, since it is the
+   wrapper that is the flex item of the journal's column now. */
+.st-glow{flex:0 0 auto;margin-bottom:10px;position:relative}
+.st-pe{border-left:3px solid var(--accent);border-radius:var(--r-s);
+ background:var(--sunk);padding:12px 12px 14px 16px;min-width:0;position:relative}
 /* ---------- Source AI, alive. Round LT ----------
    His words: "I want Source AI to feel like it's a thinking system ... makes
    that text look like it's alive." Three moves, all on this panel and all on
@@ -3722,6 +3751,51 @@ body.quiet .src-land .src-w,body.rm .src-land .src-w,
 body.quiet .src-land::after,body.rm .src-land::after{animation:none}
 @media (prefers-reduced-motion:reduce){.st-pe::before,.st-pe::after{display:none}
  .src-live{animation:none;opacity:1}}
+/* ---------- Source AI, deeper still. Round LV ----------
+   His words: "I want that location to feel like it's alive and innovative,
+   like it's a part of the screen that has a different nature to it, and I
+   want us to pull elements from the field style, not those techniques per
+   se, but aspects of it, to give this a more animated, alive feel." Not the
+   Field's canvas, its threads or its wheel, which have no business on a
+   page a person is writing in: its aesthetic, in three borrowings, named.
+
+     the breath   the Field's own nodes breathe on a 4.2 second wave, see
+                  wheel.js. The same wave now runs under this panel: a soft
+                  halo at its edge opens out and draws back on that exact
+                  beat, the way a node's own glow does.
+     the halo     a node's glow is earned in three stops, never a flat
+                  tint: a white cast core, the colour itself, a darker ring
+                  at the edge. This halo is the same three stops, in
+                  miniature, so the panel reads as lit from inside rather
+                  than painted on.
+     the register the halo runs brighter and a half beat quicker while
+                  Source AI is hearing, :has() reading the class the bar
+                  and the dot already carry, so the whole panel answers
+                  together rather than three things moving near each other
+                  on their own clocks. :has() is already load bearing
+                  elsewhere in this file, e.g. html:has(body.snow) above.
+
+   A WRAPPER CARRIES IT BECAUSE .st-pe HAS NO PSEUDO ELEMENT LEFT TO SPEND.
+   It already gave both of its own, ::before and ::after, to the passing
+   light and the scan above. .st-glow is a plain box around it that bleeds
+   a few pixels past .st-pe's own edge, where nothing else is drawn, and
+   sits outside what srcPaint rewrites: only innerHTML(#stsrc) changes on
+   every key, never its parent, which is the same reason the bar and the
+   dot already survive one. Transform and opacity only, so quiet and
+   reduced motion hold it lit and still, never a faster version of the same
+   wave, and nothing here costs more than a radial-gradient the compositor
+   already had to paint once. */
+.st-glow::before{content:"";position:absolute;inset:-13px;z-index:-1;pointer-events:none;
+ border-radius:calc(var(--r-s) + 13px);
+ background:
+  radial-gradient(55% 50% at 4% 20%,color-mix(in srgb,#fff 32%,var(--accent)) 0%,transparent 46%),
+  radial-gradient(85% 78% at 4% 24%,var(--accent) 0%,transparent 62%),
+  radial-gradient(100% 92% at 4% 28%,color-mix(in srgb,var(--accent) 55%,#000) 0%,transparent 78%);
+ opacity:.14;animation:srcHalo 4.2s ease-in-out infinite}
+@keyframes srcHalo{0%,100%{opacity:.09;transform:scale(.94)}50%{opacity:.22;transform:scale(1)}}
+.st-glow:has(#stsrc.hear)::before{animation-duration:2.8s}
+body.quiet .st-glow::before,body.rm .st-glow::before{animation:none;opacity:.16;transform:none}
+@media (prefers-reduced-motion:reduce){.st-glow::before{animation:none;opacity:.16;transform:none}}
 /* the question, and the two presses that change it, the Avatar's .avs-ask
    shape. The presses are one group and the group takes the right edge,
    margin-left auto, so it stands at the panel's edge at every width and not

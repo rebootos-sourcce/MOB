@@ -62,7 +62,17 @@ function stRender(){
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button></div>'
+   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span>'
+   /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
+      recording is." mm:ss, in the button itself so it reads as one control
+      rather than two things to track, and gone the moment recording is,
+      never left standing at a number that stopped being true. stFrame ticks
+      it every frame it is on screen, see below; this is only its first
+      paint, at whatever stmicElapsed() already reads the instant the render
+      that shows it runs. */
+   +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
+     +stMicFmt(stMicElapsed())+'</span>':'')
+   +'</button></div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -76,8 +86,19 @@ function stRender(){
      It keeps its id, #stsrc, and its one speaking line, so a screen reader
      still hears only what it says. HT in TASKS.md put it above the journal,
      "above the journal part will be a prompt engine", and it is still above
-     the part a person writes in. */
-  +'<div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
+     the part a person writes in.
+
+     ROUND LV WRAPS IT IN ITS OWN HALO. His words: "I want that location to
+     feel like it's alive and innovative... a different nature to it... pull
+     elements from the field style... to give this a more animated, alive
+     feel." Not the field's canvas, which has no business on a page a person
+     is writing in: its aesthetic, see the CSS at .st-glow. The wrapper is
+     the only change here; #stsrc keeps its id, its aria-label and its one
+     spoken line exactly as they were, so nothing that already reads it has
+     to change. It has to be a real element and not a third pseudo on .st-pe,
+     because that panel already spends both of its own, ::before and
+     ::after, on the passing light and the scan; see the same CSS. */
+  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Source AI"></div></div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -992,6 +1013,9 @@ function stStep(dt){
    at the middle of their swing, which is where reduced motion puts them. */
 var ST_STRESS_MS=2600;
 function stFrame(ts){
+ /* the clock, ahead of the canvas guard below, so a recording still ticks
+    on a frame where the chart itself has nothing to draw. */
+ stMicTick();
  if(!STC.cv||!STC.cv.isConnected){if(document.getElementById('stcv'))stSize();else return;}
  var dt=Math.min(.05,(ts-(STC.last||ts))/1000); STC.last=ts;
  var live=!REDUCED&&STC.lm.dwell&&performance.now()<(STC.stressTo||0);
@@ -1641,6 +1665,24 @@ function stPaintHL(){
    was being discarded. Both are reported in the words that fit them: a
    refused permission is a different problem from no microphone, and a
    person can act on the difference. */
+/* THE CLOCK, ROUND LV: "I want the time showing how long my recording is."
+   ST_LISTEN_T0 is stamped the instant start() actually succeeds, not the
+   instant the button is pressed, so a start that throws or a browser that
+   refuses never shows a clock ticking over a recording that is not
+   running. stFrame reads it every frame the Story tab is up, the same frame
+   the chart already draws on, so this costs no second loop; it only ever
+   writes the one span's textContent, and only when the second it shows has
+   actually changed. */
+var ST_LISTEN_T0=null;
+function stMicFmt(ms){
+ var s=Math.max(0,Math.floor(ms/1000)), m=Math.floor(s/60); s=s%60;
+ return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function stMicElapsed(){return ST_LISTEN_T0?performance.now()-ST_LISTEN_T0:0;}
+function stMicTick(){
+ if(!ST_LISTEN||!ST_LISTEN_T0)return;
+ var e=document.getElementById('stmictime'); if(!e)return;
+ var v=stMicFmt(stMicElapsed());
+ if(e.textContent!==v)e.textContent=v;}
 function stMicSay(code){
  var M={'not-allowed':'Recording needs microphone permission. Allow it in the browser and press Record again.',
   'service-not-allowed':'The browser blocked speech recognition for this page.',
@@ -1654,26 +1696,26 @@ function stMic(){
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  /* alert() blocks the page and is not the status region, which is the app's
     one writer for anything that can fail. */
- if(!SR){ ST_LISTEN=false; stRender();
+ if(!SR){ ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('This browser has no speech recognition. Typing works.','fail'); return; }
  /* named before it is attempted, because this is the common case and the
     failure it produces otherwise is indistinguishable from a broken button. */
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
-  ST_LISTEN=false; stRender();
+  ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording needs a secure page. Opened from a file, the browser will '
    +'not turn the microphone on. Typing works.','fail'); return; }
- if(ST_REC&&ST_LISTEN){ ST_REC.stop(); ST_LISTEN=false; stRender(); return; }
+ if(ST_REC&&ST_LISTEN){ ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
  ST_REC=new SR(); ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
  var base=ST_TEXT;
  ST_REC.onresult=function(e){var s='';
   for(var i=e.resultIndex;i<e.results.length;i++) s+=e.results[i][0].transcript;
   ST_TEXT=(base+' '+s).trim();
   ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stRender();};
- ST_REC.onend=function(){ST_LISTEN=false;stRender();};
- ST_REC.onerror=function(e){ST_LISTEN=false;stRender();
+ ST_REC.onend=function(){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();};
+ ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();
   stMicSay((e&&e.error)||'unknown');};
- try{ ST_REC.start(); ST_LISTEN=true; stRender();
+ try{ ST_REC.start(); ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
   status('Recording. Press again to stop.','ok'); }
- catch(err){ ST_LISTEN=false; stRender();
+ catch(err){ ST_LISTEN=false; ST_LISTEN_T0=null; stRender();
   status('Recording could not start. '+(err&&err.message?err.message:'')+
    ' Typing works.','fail'); }}
