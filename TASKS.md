@@ -27066,3 +27066,31 @@ Read as:
 3. **"Keep building."** Continues, and found more of MOB's own already
    built onboarding and account UI along the way (`ui/onboard.js`,
    `ui/account.js`), reported in the chat reply.
+
+## Round ML
+
+His words: "there's new content for marketing and onboarding. Review,"
+attaching `b4766664-ATUNED_TDD_MVP_Architecture_Updated_v2.docx`.
+Diffed directly against round MG's own document rather than reread
+whole: one new section, "24, Perceived Value and First-Experience
+Funnel," the rest unchanged. Not reproduced here; it is in this
+conversation's own history.
+
+Read as: an extension of the "mirror first" sequence round MG already
+logged, spelling out eight steps, Recognize, Story, Reflect, Identify,
+Explain impact, Work with pattern, Observe, Confirm, a "perceived value
+chain" the ICP is meant to feel, and a design constraint, "do not
+expose the full intelligence architecture before the user experiences
+value."
+
+Checked directly against `ui/onboard.js`, the onboarding already built
+here: it covers this document's Recognize, Story (the signal test
+stands in for a full story at this stage) and Reflect, and stops
+there, handing off to the instrument rather than continuing into
+Identify, Explain impact, Work with pattern, Observe and Confirm,
+which would mean onboarding carries a person all the way through a
+first real pattern and a first release before it ends. That is a real
+extension of what exists, not a correction of it: the four steps
+already built match this document's own first three closely, and
+nothing here contradicts them. Queued behind the login step now being
+built, since the document itself says review, not build.
