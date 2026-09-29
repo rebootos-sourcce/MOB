@@ -25860,3 +25860,34 @@ line is "Atüned, powered by SOURCE engine, is a tool of neuroharmonics."
 Queued for onboarding, the tutorial and the funnel, not dispatched this
 round on its own; the next copy pass through any of those three carries
 it.
+
+**Checked the blank profile claim against the code before dispatching
+anything, LU item 6.** `blankProfile()` in `engine/schema.js` sets
+every child fetter to `{held:0,opp:0}` and leaves `seed:null`, and a
+fresh browser context with nothing in it, no build of his to blame,
+read that profile back as `unread:true, seed:null`, which is the
+honest empty state the rest of the app already keys off. Not a bug in
+the default. What he is most likely reading is his own browser's
+stored data under that profile name from earlier testing, since a
+profile a person has entered anything into stays entered until it is
+deleted, by design. `ui/account.js` already carries both tools, "Save,
+open or delete a profile" and a delete confirmation naming what it
+throws away. Not dispatching a fix for a default that already reads
+blank; reporting this back to him to ask whether Delete and a fresh
+New profile clears it, or whether he can point at exactly which screen
+still shows Compulsion at 4.5 so the real bug, if one remains, can be
+found rather than guessed at.
+
+**Dispatched: the Field pass**, items 1 through 5, one agent, its own
+worktree. Verify the tension pulse animation is actually reaching the
+screen before touching it (it reads correct in the source, `pulses()`
+in `wheel.js`, commit `e887410`, speed and spacing both off tension),
+find and remove the pill beside the halo to pitchfork gauge's arrow,
+and a new Embody icon.
+
+**Dispatched: the briefs refresh**, item 7, one agent, its own
+worktree, `docs/briefs/*.md` only, no product code, so no collision
+risk with the other three agents in flight.
+
+Sending the Cloudflare walkthrough now, item 8's first half, already
+written this session and held until the build shipped.
