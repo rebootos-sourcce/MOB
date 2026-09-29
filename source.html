@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v950 2cc0f90 2026-09-29 19:41"><head><meta charset="utf-8">
+<html lang="en" data-build="v957 a69a3bc 2026-09-29 21:05"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -4282,6 +4282,24 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rel-row b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
 .rel-note{font-size:13.5px;color:var(--dim);line-height:1.7;margin:13px 0 19px;text-align:left;font-weight:300}
 .rel-act{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* PAUSE AND END, LOWER RIGHT, AND STUCK THERE, round LY: "pause and end need
+   to go on the lower right." The first cut moved them later in the card's
+   own order, after the counts, the clock and the switches, which put them
+   lower in the reading but not lower on the screen: measured, the card
+   itself scrolls (.rel-card's own max-height:88vh), and a run with the
+   switches showing pushed Pause forty pixels under the card's own visible
+   bottom edge, the opposite of reachable. ritual.js's own action row
+   already answers the same problem the same way (body.tab-ritual #rit
+   .rel-act{position:sticky;bottom:0}), so this follows it: sticky to the
+   card's own scrolling bottom, right aligned, its own backdrop so the
+   counts do not show through it while it holds there, and the card's own
+   side padding pulled back in by negative margin so the backdrop reaches
+   the card's true edge rather than leaving a gap either side of it. */
+/* -44 not -32: .rel-card.rel-running overrides the side padding to 44px, for
+   the strips, and a bar pulled back only to the base 32 left a eleven pixel
+   sliver of strip showing under its own left edge, measured. */
+.rel-act-lr{justify-content:flex-end;margin:18px -44px 0 -44px;padding:12px 44px 30px;
+ position:sticky;bottom:-30px;background:var(--panel);z-index:1}
 /* THE RELEASE, HEARD (DESIGN-release.md section 6). The card while a run is
    under way carries a strip on each side, the live one lit and carrying its
    word, so the side is never told by colour alone. The strips sit inside the
@@ -4313,6 +4331,11 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rel-field input,.rel-field select{min-height:44px;min-width:96px;padding:9px 12px;
  background:var(--panel-2);color:var(--ink);border:1px solid var(--edge);border-radius:var(--r-xs);
  font-family:var(--num);font-size:16px;text-align:center}
+/* Time, round LY: a read out and not an input, so it is not boxed like the
+   two fields beside it, but it holds their own height so the row of three
+   does not jump when it lands. */
+.rel-field .rel-time{display:flex;align-items:center;justify-content:center;min-height:44px;min-width:96px;
+ font-family:var(--num);font-variant-numeric:tabular-nums;font-size:16px;color:var(--ink)}
 .rel-card .ac-tog+.ac-tog{margin-top:0;border-top:0}
 /* THE SEAT TONE'S SWITCH, IN THE RELEASE. The account page's own row, taken
    out to the card's edges so its label starts on the line the text above it
@@ -32935,11 +32958,13 @@ var REL_SETTLE_S=120;
    and right, or 100 left and right." Three quick picks beside the number
    field, which stays: the field is what round IG ruled ("how many patterns"),
    the picks are what he reaches for, and both set the same RUN.dose. 50 is the
-   book's and LINES_PER_CH's and is still the default. 100 runs past the fifty
-   lines a printed card carries a side, which is safe because a pass past the
-   head is a spoken repetition and the meter never sees it: the plan, and so
-   the price, is the same at 25 as at 100. The numbers are his words and are
-   typed as his words. */
+   book's and LINES_PER_CH's own number, but round LY moved the default to
+   100, his own words, "defaults at one hundred": RUN.dose below opens there
+   now, LINES_PER_CH is untouched since it is the printed card's own count and
+   not a default. 100 runs past the fifty lines a printed card carries a side,
+   which is safe because a pass past the head is a spoken repetition and the
+   meter never sees it: the plan, and so the price, is the same at 25 as at
+   100. The numbers are his words and are typed as his words. */
 var REL_DOSES=[25,50,100];
 /* the welcome's first line, which is his "you're releasing this pattern", read
    off the queue. Three names and then a count, because eight names read out
@@ -32976,7 +33001,7 @@ function relBudget(){
 var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0,
          pass:0,cool:0,tok:0,halted:false,
-         dose:LINES_PER_CH,pace:1,spokeMs:0,spokeW:0,
+         dose:100,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
          heavy:{},look:false};
@@ -33759,14 +33784,33 @@ function relHeavyHint(){
    so a line flagged on the run is recognised on the card. Nothing marked is
    nothing listed: an empty heading would read as a list that failed to load. */
 function relHeaviest(){
+ /* red, the same mark the carousel made it with, round LY */
  var rows='';
  (RUN.log||[]).forEach(function(x){(x.heavy||[]).forEach(function(tx){
   rows+='<div class="rel-row" style="grid-template-columns:auto 1fr">'
-   +'<i aria-hidden="true" style="width:12px;height:12px;border-radius:50%;border:2px solid var(--gold);'
-   +'box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--gold);margin:0 4px"></i>'
+   +'<i aria-hidden="true" style="width:12px;height:12px;border-radius:50%;border:2px solid var(--alarm);'
+   +'background:var(--alarm);box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--alarm);margin:0 4px"></i>'
    +'<span>'+esc(tx)+'<em style="display:block">'+esc(x.name)+'</em></span></div>';});});
  return rows?'<div class="pm-eye" style="margin-top:6px">Heaviest</div>'
   +'<div class="rel-log" style="max-height:none;overflow:visible">'+rows+'</div>':'';}
+/* GRAPHIC SYMBOLS, round LY. His words: "turn the back now forward pause
+   buttons into graphic symbols." Back and Forward are the arrows every other
+   surface in this product already draws with (ritual.js's own ritIc carries
+   the same two paths); Now is a ring around a filled centre, the shape a
+   map already uses for where you are; Pause is two bars and End a filled
+   square inside a ring, ritual.js's own stop mark, because a run that is
+   over is a stop and not a pause held longer. Every button still carries an
+   aria-label, so what changed is what is drawn and never what is announced. */
+var REL_IC={
+ back:'<path d="M15 5l-7 7 7 7"/>', fwd:'<path d="M9 5l7 7-7 7"/>',
+ now:'<circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/>',
+ pause:'<path d="M9 5v14 M15 5v14"/>',
+ /* Resume is not Pause struck through: a run held still asks to be moved,
+    which is a play mark, the same triangle every other surface uses for it */
+ play:'<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/>',
+ stop:'<circle cx="12" cy="12" r="8.5"/><path d="M9 9h6v6H9z" fill="currentColor" stroke="none"/>'};
+function relIc(k){
+ return '<svg viewBox="0 0 24 24" class="rel-ic" aria-hidden="true">'+REL_IC[k]+'</svg>';}
 /* its styles travel with it. The stylesheet in shell/head.html is not this
    file's, and every rule names two classes so the design gate's collision
    check, which reads a single class as a claim on that word, reads none of
@@ -33775,20 +33819,25 @@ function relCss(){
  if(document.getElementById('rel-cr-css'))return;
  var st=document.createElement('style'); st.id='rel-cr-css';
  st.textContent=[
-  '.rel-cr .rel-cr-map{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:14px 0 10px}',
-  '.rel-cr .rel-cr-side{grid-row:1;font-size:12px;font-weight:600;color:var(--dim);text-align:left;padding:0 2px}',
-  '.rel-cr .rel-cr-b{grid-column:1;grid-row:2;min-height:44px;padding:6px 10px;border:1px solid var(--edge);',
-  ' border-radius:var(--r-s);background:transparent;color:var(--dim);font:inherit;font-size:14px;text-align:left;cursor:pointer}',
-  '.rel-cr .rel-cr-side[data-side="R"],.rel-cr .rel-cr-b[data-ch^="R"]{grid-column:2}',
-  '.rel-cr .rel-cr-b[data-ch$="truth"]{grid-row:3}',
-  '.rel-cr .rel-cr-b.on{border-color:var(--accent);color:var(--ink);background:color-mix(in srgb,var(--accent) 10%,transparent)}',
-  '.rel-cr .rel-cr-b.done{opacity:.6}',
   '.rel-cr .rel-cr-hint{margin:0 0 8px;font-size:13px}',
   /* A FIXED HEIGHT, which is the list's job and the reason .rel-line had a
      min-height of five lines: without it Pause and End moved under a finger
-     on every line. The list holds still and the rows move inside it. */
+     on every line. The list holds still and the rows move inside it.
+
+     THE OVERLAY, TOP AND BOTTOM, round LY. His words: "I want to add an
+     overlay on the top and bottom so that the focus on the text is only on
+     now and next." relCarSync already scrolls so Now sits about three tenths
+     down and Next is always whole under it, which puts the two rows he means
+     in the same middle band on every redraw. A mask on the scroller itself
+     fades what sits above and below that band to the panel's own colour,
+     rather than an element laid over the rows, which would have to track
+     their height on every line change the list already redraws without a
+     reflow. Masked, not clipped: a row scrolled to under Back or Forward
+     still receives the click, the fade is paint only. */
   '.rel-cr .rel-cr-l{position:relative;height:min(300px,40vh);overflow-y:auto;overscroll-behavior:contain;',
-  ' border:1px solid var(--edge);border-radius:var(--r-s);text-align:left}',
+  ' border:1px solid var(--edge);border-radius:var(--r-s);text-align:left;',
+  ' -webkit-mask-image:linear-gradient(to bottom,transparent,#000 20%,#000 80%,transparent);',
+  ' mask-image:linear-gradient(to bottom,transparent,#000 20%,#000 80%,transparent)}',
   '.rel-cr .rel-cr-h{position:sticky;top:0;z-index:1;padding:7px 12px;background:var(--panel);',
   ' border-bottom:1px solid var(--edge);font-size:12px;font-weight:600;color:var(--dim)}',
   '.rel-cr .rel-cr-h em{font-style:normal;font-weight:400}',
@@ -33811,14 +33860,22 @@ function relCss(){
   '.rel-cr .rel-cr-i.next .rel-cr-n{color:var(--ink)}',
   '.rel-cr .rel-cr-end{cursor:default;color:var(--dim)}',
   '.rel-cr .rel-cr-end:hover{background:transparent}',
-  /* ring, never fill: marked is a second ring outside the first */
-  '.rel-cr .rel-cr-f{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--edge);justify-self:center}',
-  '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-f{border:2px solid var(--gold);',
-  ' box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--gold)}',
-  '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-t{color:var(--gold)}',
+  /* RED, AND IT FILLS, round LY. His words: "I want a red box on each one of
+     those, or a red outline, that show heavy or not. If I press it, it fills
+     in red." It read a neutral ring at rest and gold at rest, a second ring
+     outside the first, no fill. Now the mark itself is red at rest, an
+     outline and not yet a claim, and pressing it fills the circle solid, the
+     one fill in the product's ring-only icon language, because this is a
+     mark a person makes and not a state the app is asserting on its own. */
+  '.rel-cr .rel-cr-f{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--alarm);justify-self:center}',
+  '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-f{border-color:var(--alarm);background:var(--alarm);',
+  ' box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--alarm)}',
+  '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-t{color:var(--alarm)}',
   /* the live row's sentence carries .rel-line for the gates, and not its look */
   '.rel-cr .rel-line{margin:0;min-height:0;font-size:inherit;line-height:inherit;font-weight:inherit;color:inherit}',
   '.rel-cr .rel-cr-nav{display:flex;justify-content:center;margin:8px 0 4px}',
+  '.rel-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;',
+  ' stroke-linejoin:round;flex:0 0 auto}',
   /* A PHONE GETS ITS WIDTH BACK, not height. The head statement of a block is
      143 to 225 characters, and at 390 in a text column of 184 pixels the
      longest stood 248 tall in a list of 298, so at the start of every block
@@ -33831,19 +33888,14 @@ function relCss(){
   '@media (max-width:520px){.rel-cr .rel-cr-l{margin:0 -12px;height:min(312px,40vh)}',
   ' .rel-cr .rel-cr-h{padding:5px 10px}',
   ' .rel-cr .rel-cr-i{font-size:15px;grid-template-columns:28px 1fr 14px;gap:6px;padding-right:8px}}',
-  'body.punch .rel-cr .rel-cr-l,body.punch .rel-cr .rel-cr-b{border-color:transparent;background:var(--sunk)}',
+  'body.punch .rel-cr .rel-cr-l{border-color:transparent;background:var(--sunk)}',
   'body.punch .rel-cr .rel-cr-h{background:var(--sunk)}'].join('\n');
  document.head.appendChild(st);}
 function relCar(sp){
- var map='', rows='', i, p;
+ var rows='', i, p;
  for(i=sp.a0;i<sp.a1;i++){
   var at=relAt(i); if(!at||!at.n)continue;
-  var pole=relPole(at.ch[0]), nm=relBucket(at.ch), ck=at.ch[0]+at.ch[2];
-  /* the half in the cell and the whole name as what the button is called,
-     because the side is said once over its column. Four cells each saying
-     "Release, left channel, feminine" wrapped to three lines at 390. */
-  map+='<button type="button" class="rel-cr-b" data-relb="'+i+'" data-ch="'+ck+'" aria-label="'+esc(nm)+'">'
-   +(at.ch[2]==='truth'?'Reframe':'Release')+'</button>';
+  var pole=relPole(at.ch[0]), nm=relBucket(at.ch);
   /* one line at 390, so the heading does not take a fifth of the list */
   rows+='<div class="rel-cr-h">'+esc(nm)+(pole?' <em>· '+esc(pole.nm.toLowerCase())+'</em>':'')+'</div>';
   for(p=0;p<RUN.dose;p++){
@@ -33863,17 +33915,20 @@ function relCar(sp){
    +'<span class="rel-cr-t">'+esc(COOLING[0])+'</span><span></span></div>';
  /* the region is focusable so the arrow keys scroll it, and it is not
     aria-live: it changes on every line and would talk over the voice */
+ /* THE MAP, THE TWO COLUMNS, IS GONE. Round LY, his words: "get rid of left
+    feminine, right masculine, those two columns, release and reframe, those
+    are unnecessary." It was Left and Right as headers over four buttons,
+    Release and Reframe repeated under each. The strips already carry the
+    side, in colour and in the words on them; jumping to a bucket, what
+    pressing a map cell did, still works from the row heading a scroll
+    reaches, so nothing the map did is lost, only said a second time. */
  return '<div class="rel-cr" id="relcar" data-span="'+esc(sp.key)+'">'
-  +'<div class="rel-cr-map" role="group" aria-label="Channels at this address">'
-  +['L','R'].map(function(s){var po=relPole(s);
-    return '<span class="rel-cr-side" data-side="'+s+'" aria-hidden="true">'+(s==='L'?'Left':'Right')
-     +(po?', '+esc(po.nm.toLowerCase()):'')+'</span>';}).join('')+map+'</div>'
   +'<div class="rel-sub rel-cr-hint" id="relhv"></div>'
   +'<div class="rel-cr-l" id="relcarl" tabindex="0" role="region" aria-label="The list">'+rows+'</div>'
   +'<div class="rel-cr-nav"><span class="seg" role="group" aria-label="Move the list">'
-  +'<button type="button" id="relback">Back</button>'
-  +'<button type="button" id="relnow" aria-pressed="true">Now</button>'
-  +'<button type="button" id="relfwd">Forward</button></span></div></div>';}
+  +'<button type="button" id="relback" aria-label="Back">'+relIc('back')+'</button>'
+  +'<button type="button" id="relnow" aria-pressed="true" aria-label="Now">'+relIc('now')+'</button>'
+  +'<button type="button" id="relfwd" aria-label="Forward">'+relIc('fwd')+'</button></span></div></div>';}
 function relScroll(L,top,smooth){
  top=Math.max(0,top);
  if(smooth&&L.scrollTo&&!(typeof REDUCED!=='undefined'&&REDUCED))L.scrollTo({top:top,behavior:'smooth'});
@@ -33898,8 +33953,6 @@ function relCarSync(smooth){
   if(on){r.setAttribute('aria-current','step'); live=r;} else r.removeAttribute('aria-current');
   if(t)t.classList.toggle('rel-line',on);
   if(n)n.textContent=on?'Now':nxt?'Next':(k==='end'?'':String(p+1));});
- car.querySelectorAll('[data-relb]').forEach(function(b){var i=+b.getAttribute('data-relb');
-  b.classList.toggle('on',i===RUN.idx); b.classList.toggle('done',i<RUN.idx);});
  var nb=document.getElementById('relnow'); if(nb)nb.setAttribute('aria-pressed',String(!RUN.look));
  relHeavyHint();
  /* THE LIVE ROW A THIRD OF THE WAY DOWN, so the line just said is still above
@@ -33933,11 +33986,6 @@ function relCarBind(){
   var k=t.getAttribute('data-relh');
   if(k){ if(RUN.heavy[k])delete RUN.heavy[k]; else RUN.heavy[k]=1;
    t.setAttribute('aria-pressed',String(!!RUN.heavy[k])); relHeavyHint(); return; }
-  var b=t.getAttribute('data-relb');
-  /* the live bucket is the live line, so pressing it is Now */
-  if(b!=null&&+b===RUN.idx){RUN.look=false; relCarSync(true); return;}
-  if(b!=null){relCarLook(); var r=L.querySelector('[data-relh="'+b+':0"]');
-   if(r)relScroll(L,r.offsetTop-relCarPad(L),true); return;}
   if(t.id==='relnow'){RUN.look=false; relCarSync(true); return;}
   if(t.id==='relback'||t.id==='relfwd'){relCarLook(); relCarStep(t.id==='relfwd'?1:-1);}};
  /* what counts as the person moving the list: a wheel, a drag, a key, or a
@@ -34006,7 +34054,8 @@ function relRender(){
      +'read it to yourself.'+(relVoiceOn()?' The app voice starts with the list.':'')+'</div>':'')
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
-   +'<button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button></div>'
+   +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
+   +relIc(RUN.paused?'play':'pause')+'</button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -34016,7 +34065,8 @@ function relRender(){
    +'<div class="rel-speak">'+esc(st.text)+'</div>'
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
-   +'<button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button></div>'
+   +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
+   +relIc(RUN.paused?'play':'pause')+'</button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='run'){
   var at=relNow();
@@ -34027,28 +34077,37 @@ function relRender(){
      the count down now, and n.sq still when there is none. */
   var live=relLive(), sqNow=live?live.sqAt(n):null;
   if(sqNow==null)sqNow=n.sq;
-  var pole=relPole(ch[0]), ad=relAddrAt();
+  var ad=relAddrAt();
+  /* "RELEASE, LEFT CHANNEL" AND "FEMININE, PARASYMPATHETIC" ARE GONE, round
+     LY. His words, with the strips he named that carry the same half and
+     side still on screen: "get rid of the text saying release left channel,
+     feminine, parasympathetic." The pole and the channel are still read, by
+     the strips (relStrips) and by which of the four buckets the carousel is
+     on, drawn rather than said a third time. What he named to keep, in the
+     same breath, is the address itself: "you already have disconnection,
+     root, sacral root ganglia, that's great." That line now carries the
+     colour treatment he asked for it, below. */
   var hd=relStrips(ch[0])
-   /* THE HALF AND THE SIDE, IN WORDS. "Release, left channel" is the book's
-      own order of telling it, and it is the heading so it is read first. */
-   +'<div class="pm-eye" aria-live="polite">'+relBucket(ch)+'</div>'
-   /* and which pole and which nervous system that side is, from C3_POLE */
-   +(pole?'<div class="rel-ct">'+esc(pole.nm)+', '+esc(pole.ans)+'</div>':'')
-   +'<div class="rel-plate">'+crNode(Object.assign({},n,{sq:sqNow}),'xs',{raw:Math.round(sqNow*10)+'%'})
+   +'<div class="rel-plate" style="--c:'+c+'">'+crNode(Object.assign({},n,{sq:sqNow}),'xs',{raw:Math.round(sqNow*10)+'%'})
    +'<span><span class="rel-node" style="color:'+c+'">'+esc(n.k)+'</span>'
    +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span></span></div>';
-  /* PAUSE AND END DIRECTLY UNDER THE LIST. They sat under the counts and the
-     clocks, which was on screen at 390 while the line was one line. The list
-     is three hundred pixels, and it put Pause under the fold of a phone, on
-     the card whose own comment says a person on a run is reaching for Pause. */
-  var ft='<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
-   /* End does not abandon the run. It commits the plan and runs the cooldown. */
-   +'<button class="btn" id="relstop">End</button></div>'
-   +'<div class="rel-ct" style="margin-top:12px">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · address '+(ad.at+1)+' of '+ad.of+'</div>'
+  /* PAUSE AND END, LOWER RIGHT, round LY. His words: "pause and end need to
+     go on the lower right." They stood first, directly under the list; they
+     are last now, after the counts, the clock and the switches, and the row
+     they sit in is pushed to the card's right edge, which puts them at the
+     lower right corner of everything else on the card rather than at its
+     top. Graphic symbols, the same round: Resume is a play mark, not Pause
+     struck through, because a run held still is asking to be moved and not
+     asking to be paused again. */
+  var ft='<div class="rel-ct" style="margin-top:12px">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · address '+(ad.at+1)+' of '+ad.of+'</div>'
    +relTally(relCounts())
    +relClock()
    +(live?relShade(live.dq,live.dq0):'')
-   +relSwitches(n);
+   +relSwitches(n)
+   +'<div class="rel-act rel-act-lr"><button class="btn" id="relpause" aria-label="'
+   +(RUN.paused?'Resume':'Pause')+'">'+relIc(RUN.paused?'play':'pause')+'</button>'
+   /* End does not abandon the run. It commits the plan and runs the cooldown. */
+   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>';
   /* AND THE LIST IS NEVER REDRAWN UNDER A FINGER. This function rewrote the
      whole card on every line, which for one line cost nothing. For a list it
      throws away where the person had scrolled to, stops a flick mid glide on
@@ -34185,15 +34244,25 @@ function relRender(){
    +'<div class="rel-note">Your allowance pays for addresses you have not released before, and this '
    +'period\'s is spent. Rerunning an address costs nothing and is in the '
    +'ritual. A wider allowance is on the plan in settings.</div>';
-  /* HOW MANY PATTERNS is the dose a channel, fifty by default, which is the
-     book's and what he described hearing (open question 5). Pace is 1 at
-     speaking pace, which is four seconds between statements (relSpace). Both
-     answer to the clock the run shows once it starts. */
+  /* HOW MANY PATTERNS is the dose a channel, a hundred by default since round
+     LY, which is what he described hearing (open question 5) with the
+     default moved to what he later named. Run speed is 1 at speaking pace,
+     which is four seconds between statements (relSpace); it read Pace until
+     round LY, his own words, "run speed instead of pace", and the field name
+     moves with it, id and RUN.pace untouched since a stored preference reads
+     the same either way. Time is new the same round, "dials that say time,
+     run speed... number of patterns": the length this exact plan, at this
+     speed and this dose, will actually run, read off relSecFrom the same
+     clock the run itself shows once it starts, so the number in the picker
+     and the number on the card never disagree. It has no input of its own;
+     it moves when speed or patterns do, on the same relRender both already
+     call. */
   else out+='<div class="rel-fields">'
-    +'<label class="rel-field"><span>Pace</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
+    +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
     +'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
      +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>'
+    +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
     /* his three, as quick picks on the same number. "Left and right" is his
        own framing of it and is true: every pick is that many on each side. */
     +'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Patterns, left and right">'
@@ -46581,5 +46650,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003047705"></div>
+<div id="eof" hidden data-len="003052595"></div>
 </body></html>

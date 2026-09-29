@@ -917,9 +917,13 @@ const relsix=await page.evaluate(()=>{
  document.getElementById('relgo').click();
  document.getElementById('relskip').click();
  clearInterval(RUN.timer);
+ /* the half and the side moved from the static eyebrow to the carousel's own
+    sticky row heading, round LY: the eyebrow read "Release, left channel"
+    outside the list and the heading inside it read the same words, and his
+    own instruction cut the first and kept the second. */
  const rd=()=>{const el=document.querySelector('#rel .rel-line');
   return {key:RUN.plan[RUN.idx], text:el?el.textContent:null,
-   eye:(document.querySelector('#rel .pm-eye')||{}).textContent||''};};
+   eye:(document.querySelector('#rel .rel-cr-h')||{}).textContent||''};};
  o.first=rd();
  for(let i=0;i<RUN.plan.length;i++){RUN.idx=i; relRender(); o.lines.push(rd());}
  o.unique=(CURP.meter.unique||[]).length;
@@ -936,10 +940,13 @@ ok(relsix.first.text&&relsix.first.text.indexOf(SIXSTEM)===0,
   +lim.length+' checked'+(bad.length?'  '+bad.map(l=>l.key+' '+l.text).join(' | '):''));
  ok(tru.length>0&&tru.every(l=>l.text&&l.text.indexOf('letting go')<0),
   'and every reframe line installs rather than releasing again, '+tru.length+' checked');
- /* the side and the phase are still named above the line. The six sit inside
+ /* the side and the phase are still named above the line, in the carousel's
+    own sticky heading now rather than a second, static line outside the
+    list: round LY cut the duplicate and kept this one. The six sit inside
     the four blocks, they do not replace them. The heading is the book's
-    order of telling it, the half and then the side, "Release, left channel". */
- ok(relsix.lines.every(l=>/^(Release|Reframe), (left|right) channel$/.test(l.eye)),
+    order of telling it, the half and then the side, "Release, left channel",
+    with the pole named after it where one exists. */
+ ok(relsix.lines.every(l=>/^(Release|Reframe), (left|right) channel/.test(l.eye)),
   'every line still names its half and side: '+relsix.lines.map(l=>l.eye).slice(0,4).join(' | '));
  /* LEFT FIRST, the book's order at 2401: left release, right release, left
     reframe, right reframe, at every address. */
@@ -2572,9 +2579,11 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    settings and its one button and quotes no cost, while the run below still
    charges exactly the plan it was shown, which is the rule the price sentence
    was there to keep. */
-ok(/Release your selections/.test(relrun.setup)&&/Pace/.test(relrun.setup)
+/* "Pace" read "Run speed" from round LY, his own words, "run speed instead
+   of pace"; the field's id and RUN.pace are untouched, only the label moved. */
+ok(/Release your selections/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
  &&/Patterns/.test(relrun.setup)&&/Run release/.test(relrun.setup),
- 'the setup is the selection, pace, how many patterns and one button: '+relrun.setup.slice(0,120));
+ 'the setup is the selection, run speed, how many patterns and one button: '+relrun.setup.slice(0,120));
 ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
  'and it quotes no cost and no framing, '+relrun.setup.slice(0,160));
 ok(relrun.beforeWho===0&&relrun.afterWho===0,

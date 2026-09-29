@@ -1500,7 +1500,10 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   const cool=q.seen.filter(s=>s.ph==='done'&&s.cool<q.cooling.length).map(s=>s.text);
   ok(JSON.stringify(op)===JSON.stringify(q.opening),'with the sound off the opening shows every line, in order: '
    +op.join(' / '));
-  ok(q.dose===q.lpc,'the dose opens at the engine\'s own fifty a channel, LINES_PER_CH, got '+q.dose);
+  /* round LY moved the default from LINES_PER_CH's fifty to a hundred, his
+     own words, "defaults at one hundred"; LINES_PER_CH is untouched, since it
+     is still the printed card's own count and never was the default's name. */
+  ok(q.dose===100,'the dose opens at his own default of a hundred, got '+q.dose);
   /* every block of the plan, each walked through every pass */
   const blocks=q.plan.map((k,i)=>({k:k,passes:new Set(run.filter(s=>s.idx===i).map(s=>s.pass)).size}));
   ok(blocks.length===4&&blocks.every(b=>b.passes===q.dose),
@@ -1509,9 +1512,15 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   ok(ord==='Llimit Rlimit Ltruth Rtruth','left release, right release, left reframe, right reframe, got '+ord);
   ok(run.length===q.plan.length*q.dose,'and the run shows every line of it, '+run.length+' of '
    +(q.plan.length*q.dose));
+  /* THE EYEBROW READING "RELEASE, LEFT CHANNEL" IS GONE, round LY: "get rid
+     of the text saying release left channel, feminine, parasympathetic."
+     Which channel opens the plan is still checked, by the plan's own key
+     order just above (Llimit first), so nothing this line verified is
+     unverified now; it is verified by the plan instead of by a sentence the
+     product no longer prints. */
   const head=run.find(s=>s.idx===0&&s.pass===0);
-  ok(head&&head.text.indexOf(q.stem)===0&&head.eye==='Release, left channel',
-   'the first statement opens on the six channels, left: '+(head?head.eye+' | '+head.text:'none'));
+  ok(head&&head.text.indexOf(q.stem)===0,
+   'the first statement opens on the six channels: '+(head?head.text:'none'));
   ok(JSON.stringify(cool)===JSON.stringify(q.cooling),'and the cooldown shows every line: '+cool.join(' / '));
   ok(q.phase==='done'&&/Released/.test(q.eye),'the run completes to Released, '+q.phase+' '+q.eye);
   ok(q.spent===q.plan.length,'and charges exactly the plan it was shown, '+q.spent+' of '+q.plan.length);
