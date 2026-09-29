@@ -25088,3 +25088,103 @@ under Play back to its original name. i didnt want that changed."
   "I didn't want that changed": told him plainly what the record shows
   and asked which name he actually wants, rather than guessing between
   reverting to Energetics or leaving it.
+
+## LO. A dense round: right rail collapse, the Becoming layout, a Story page shuffle, Bank and Vault, Release's default colour, Intake renamed Body, Knowledge's design, Compass navigation and icons, and the masks named wrong for the third time, this time traced to its root
+
+His words, verbatim: "Add a widget to the right menu to collapse it.
+On the Discover Avatar page, the Becoming and Archetypes. For the
+Becoming, our main graphic, I want centered, and I want two columns.
+One left side for the person, the story of the story you no longer
+wish to become, the thing holding the person back, and the right one
+is the person you wish to become, to embody. For the story page, I
+want to do some shuffling of the UI. I want to remove the text saying
+the day and re remove the recording sends the audio to browser. Just
+get rid of that text. I want you to swap the main journal menu with
+the source AI question. And I want you to have source AI question have
+a button to generate new questions. Remove the text that says
+scripted. Remove the text that says or start from where did you feel
+it first. Right now the source scripted area is on gray. I don't, I
+want it to look like a display area. So I want it to have its own
+black background. For the imprints, I remove the text saying imprints
+not read yet, unless that does something specific. And then for the
+bank and the vault, I just want their icons only, not the text. In
+fact, swap the bank and vault. Actually, never mind. And then release
+should not start red. It should only become red once you add things to
+it. And under play for masks, yeah, this should be our pixelated
+images, not this body map. And my navigation changes for body. Want me
+to change intake under play to back to body. My what I want done to
+the menu is not changed, and I need that changed. For the knowledge
+base, this is our education area, so I need this design just a little
+bit more intentionally. Not just as boring information. Anyway, do all
+the navigation and menu items first. I need my overlays. I have top
+registers, but I can't get back to the compass. And I need icons for
+top registers, layers, and compass. Do the masks in the menu first,
+but I need to see the pixelated masks first. Make sure you're doing
+the right thing, because so far you keep giving me the wrong thing.
+This should not be the body. This should be the face mask. You should
+have this in your files saved somewhere. not the masks showing the
+chakra points. On the full physical body, I mean the one the mask they
+child preteen teen adult professional that render in and create you
+know all this search the thread for this"
+
+**The masks, traced to the root rather than guessed at a fourth time.**
+He is right, and the file already said so, twice, before this session
+ever touched it.
+
+- **`MK2` in this same file, his own original words, never built:** "A
+  side graphic in pixel mode, pixel art, made up of the chakra colours
+  of our masks. Almost like a UI display, maybe 300 pixels. As people
+  enter their story the masks begin to fill in. Child mask, preteen
+  mask, teen mask, adult mask, professional mask." Six small pixel art
+  face masks, one per developmental stage, each in its own seat's
+  colour, filling in as the person writes. `MK10` in the same entry:
+  "the six masks already exist in the engine and already carry a seat
+  each," meaning `MASKS` in `engine/data/canon.js`, real data, never
+  the gap.
+- **A round before this session already caught the same wrong build
+  once.** Commit `7220610`, an earlier pass: "The masks that were
+  built are not what he meant, in his own words. He describes a
+  different thing: pixelated, eight bit, where each individual pixel
+  is one story and pixels cluster into saboteurs, the saboteurs
+  together making up the mask's shadow for that life stage." The data
+  model, pixel is story, cluster is saboteur, was right and did get
+  built. What never got built, in that round or this one, is the
+  container it was always meant to fill: six small face mask icons,
+  not the whole body.
+- **What shipped this session under the name Masks is the same
+  category of miss a third time**, a full body figure with chakra
+  point rings, ported from the same pixel and cluster data but drawn
+  onto the wrong shape. Not a rendering polish pass either time it was
+  flagged; a real container gap, now named precisely rather than
+  patched again.
+- **He wants proof before another build**, in his own words: "I need
+  to see the pixelated masks first. Make sure you're doing the right
+  thing, because so far you keep giving me the wrong thing." A mockup
+  first, the same discipline the point cloud used at round KR, not a
+  fourth live build on a guess.
+
+**Everything else in this round, logged and sequenced by his own
+order, "do all the navigation and menu items first."**
+- Right rail: a collapse widget.
+- Avatar's Becoming: centred, two columns, who is being left behind on
+  the left, who is being become on the right.
+- The Story page: remove the day text and the "recording sends the
+  audio to browser" text; swap the main journal menu with Source AI's
+  question; a button on Source AI to generate new questions; remove
+  the words "scripted" and "or start from where did you feel it
+  first"; the scripted area's ground from grey to its own black,
+  reading as a display rather than a panel.
+- Imprints: remove "imprints not read yet" unless it carries real
+  function, his own hedge, not a flat order.
+- Bank and Vault: icons only, no text. The swap he asked for in the
+  same breath he withdrew, "actually, never mind," not built.
+- Release: must not default to red. Red only once something is added
+  to it.
+- Intake, under Play, renamed Body. Third name this surface has
+  carried, Energetics then Intake then now Body; recorded so the next
+  round does not relitigate it from a guess.
+- Knowledge: "our education area," wants a more intentional design,
+  not itself specified enough to build blind, backlog.
+- Compass: he cannot find his way from Registers back to Top; a real
+  navigation complaint, checked directly rather than assumed. Icons
+  wanted for Top, Registers and Layers, text labels alone today.
