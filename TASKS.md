@@ -25306,3 +25306,11 @@ One open question surfaced rather than guessed at: whether "I can't
 get back to the compass" meant a dedicated Compass reset button rather
 than the Top/Registers toggle already there. Not built, since it was
 outside the dispatch's scope; his call whether it is wanted.
+
+**Build 1 shipped, per his order, menu before cosmetic.** Full gate
+suite re-run clean one more time on the quiet tree before packing:
+`tests/engine.js` 1841, `tests/design.js` 184, `tests/collide.js` 351,
+`tests/functional.js` 1317, all zero failed. `v890`, commit `8c86086`,
+source.html md5 `8cac77fe64984b32b4f0bc60887961ed`. Packed, the tracked
+delivery build refreshed, sent as an attachment. The cosmetic pass
+starts next.
