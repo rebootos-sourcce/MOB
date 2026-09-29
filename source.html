@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v942 957ede9 2026-09-29 18:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v944 3cdee16 2026-09-29 18:24"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -34120,33 +34120,36 @@ try{window.__at&&window.__at('ui/release.js');}catch(e){}
                   load. It survives a reload and does not travel with an
                   export, and that is named as a cost in the report.
    ============================================================ */
+/* ROUND LT, his words, and they are the specification for tags, on and tm:
+   "I should be able to add tags to create the ritual, put a timer for it, how
+   often I want to do it, I should see a list of my active running tasks for
+   the day." All three live on the plan beside the record, where ritPlanOk
+   already decides what is kept, so none of them is a schema change.
+
+     tags   the seats a ritual is for, a closed set of seven read against
+            BANDS. TG4 ruled the shape before this round: "tags set for each
+            major chakra", a closed field and never free text, because free
+            text is a field the practitioner model would later have to hide.
+            A tag creates the ritual by drafting the practice that seat calls
+            for, ritFor's own answer, so a tag carries no second library.
+     on     the weekdays it is due, Monday 0 to Sunday 6, the week starting
+            Monday as RU2 ruled. Missing is every day, which is what every plan
+            written before this round meant, so an older plan reads unchanged.
+            One day is weekly and any set is custom: one shape for all three.
+     tm     the timer, whole minutes. Missing is the minutes its steps add up
+            to, so a plan with no timer set still has an honest one.
+   run is the timer counting now, and rang is the one that reached zero and is
+   waiting to be marked. Neither is kept: a timer is a moment, not a record. */
 var RIT={open:false, sel:{}, order:[], from:null, all:false, when:'', where:'',
  days:7, add:false, edit:null, exp:null, view:'month', mo:0, day:null, gone:null, hn:40,
  /* ROUND LT, HIS WORDS: "I should be able to add tags to create the ritual,
-    put a timer for it, how often I want to do it." Draft state for the three,
-    the same posture as when/where above: held here while the builder is open
-    and written onto the plan by ritStart/ritSaveEdit. freq is sessions a week
-    and defaults to 7, every day, which is what a ritual with no frequency
-    chosen has always meant here; nothing that reads an existing plan without
-    it changes behaviour. */
- tags:[], tagIn:'', freq:7, timerMin:null};
-/* THE LIVE TIMER IS VIEW STATE, LIKE HOVER AND PIN, AND NEVER PERSISTED. One
-   at a time, named by the plan id it is running against, so switching rituals
-   or leaving the tab cannot leave two intervals ticking against the same
-   render. RIT_TIV is the interval handle and is never put in RIT: RIT is
-   rebuilt wholesale in places (ritOpen) and an interval handle dropped that
-   way would still be running with nothing left to clear it. */
-var RIT_TIMER={id:null,left:0}, RIT_TIV=null;
-function ritTimerStop(){ if(RIT_TIV){clearInterval(RIT_TIV); RIT_TIV=null;} }
-function ritTimerStart(id,mins){
- if(RIT_TIMER.id!==id||RIT_TIMER.left<=0)RIT_TIMER={id:id,left:Math.max(1,Math.round(mins*60))};
- ritTimerStop();
- RIT_TIV=setInterval(function(){
-  RIT_TIMER.left=Math.max(0,RIT_TIMER.left-1);
-  if(RIT_TIMER.left<=0)ritTimerStop();
-  ritRender();},1000);}
-function ritTimerReset(id,mins){ ritTimerStop(); RIT_TIMER={id:id,left:Math.round(mins*60)};}
-function ritTimerMMSS(s){var m=Math.floor(s/60), ss=Math.floor(s%60); return m+':'+(ss<10?'0':'')+ss;}
+    put a timer for it, how often I want to do it." tags is a closed set of
+    seats, TG4's own shape, "no to free text tags... yes to a closed field
+    validated against a table"; on is the weekdays it is due, Monday first;
+    run and rang are the live timer's own state, named by the plan id it
+    counts against so switching rituals cannot leave two ticking against one
+    render, and never persisted, the same posture as hover and pin. */
+ tags:[], on:null, tm:null, run:null, rang:null};
 var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                 Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
@@ -34199,7 +34202,7 @@ function ritFor(r){
 function ritOpen(fromLog){
  RIT.open=true; RIT.from=fromLog||null; RIT.sel={}; RIT.order=[]; RIT.all=false;
  RIT.when=''; RIT.where=''; RIT.edit=null; RIT.exp=null; RIT.days=7;
- RIT.tags=[]; RIT.tagIn=''; RIT.freq=7; RIT.timerMin=null;
+ RIT.tags=[]; RIT.on=null; RIT.tm=null;
  RIT.add=!!(fromLog&&fromLog.length);
  ritRender();}
 /* THE ONE ALREADY SAVED, newest first. A ritual is a plan and a plan a person
@@ -34245,21 +34248,6 @@ var RIT_KEY='atuned-ritual-active';
    week project. 0 is no end. */
 var RIT_SPANS=[{d:1,nm:'A day'},{d:7,nm:'A week'},{d:14,nm:'Two weeks'},{d:0,nm:'No end'}];
 var RIT_SPAN_D=RIT_SPANS.map(function(s){return s.d;});
-/* HOW OFTEN. Round LT, his words: "how often I want to do it." The record
-   and ritActive/ritCovers read a ritual's window in days and say nothing
-   about which days inside it, so a person has always been asked to practise
-   daily for the span they chose. freq does not change that: it is a stated
-   target, shown back to the person and never read by the streak or the
-   record, because building the schedule that would make three days a week
-   actually skip four is a different feature with its own ruling to ask for.
-   That limit is named in the report and not hidden in the choice of word. 7
-   is every day, the number a plan with no freq chosen has always meant. */
-var RIT_FREQS=[{n:7,nm:'Every day'},{n:5,nm:'5 days a week'},{n:3,nm:'3 days a week'},{n:1,nm:'Once a week'}];
-/* A TAG IS A SHORT WORD, NOT A SENTENCE. RIT_PLAN_MAX (schema.js) is the
-   boundary's own cap for a free text field on this record and is reused
-   rather than typed again; RIT_TAG_MAX is this list's own length, since
-   nothing else caps how many a person can pile onto one ritual. */
-var RIT_TAG_MAX=6;
 function ritSideAll(){
  if(typeof STORE==='undefined')return {};
  try{var o=JSON.parse(STORE.get(RIT_KEY)||'{}');
@@ -34283,15 +34271,22 @@ function ritPlanOk(p){
      path key. It lives here beside the record and not on it, so it is no
      schema change. */
   &&(p.tc==null||(typeof p.tc==='string'&&!!becomingOf(p.tc)))
-  /* TAGS, FREQUENCY AND A TIMER, ROUND LT. All three sit beside the record
-     exactly where days, when and where already do, refused by shape rather
-     than clamped: a tag list past RIT_TAG_MAX or a freq outside one to seven
-     is not silently trimmed, it fails ritPlanOk and the plan is read as
-     carrying none of the three, the same posture the rest of this function
-     already takes with an out of range span. */
-  &&(p.tags==null||(Array.isArray(p.tags)&&p.tags.length<=RIT_TAG_MAX&&p.tags.every(st)))
-  &&(p.freq==null||(typeof p.freq==='number'&&p.freq>=1&&p.freq<=7&&Math.floor(p.freq)===p.freq))
-  &&(p.timerMin==null||(typeof p.timerMin==='number'&&p.timerMin>0&&p.timerMin<=180)));}
+  /* round LT's three, and TAGS ARE A CLOSED SET, TG4: "no to free text tags
+     on measured grounds, and yes to a closed field validated against a
+     table. Tags set for each major chakra is a closed set of seven." Each of
+     the three is checked by name and by range and a plan carrying any of
+     them out of shape is left out whole, the same posture as every field
+     above: a seat that is not a seat, a weekday eight, or a timer of a
+     thousand minutes is a store somebody else wrote. */
+  &&(p.tags==null||(Array.isArray(p.tags)&&p.tags.length<=BANDS.length
+   &&p.tags.every(function(b,i){return BANDS.indexOf(b)>=0&&p.tags.indexOf(b)===i;})))
+  &&(p.on==null||(Array.isArray(p.on)&&p.on.length>=1&&p.on.length<=7
+   &&p.on.every(function(d,i){return typeof d==='number'&&d>=0&&d<=6&&Math.floor(d)===d&&p.on.indexOf(d)===i;})))
+  &&(p.tm==null||(typeof p.tm==='number'&&p.tm>=1&&p.tm<=RIT_TM_MAX&&Math.floor(p.tm)===p.tm)));}
+/* the longest timer the builder offers is the boundary's own ceiling on a
+   ritual's minutes, every practice in the library once, so the two cannot
+   disagree and no number is typed here */
+var RIT_TM_MAX=RIT_MIN_MAX;
 function ritPlans(){
  if(!CURP||!CURP.id)return [];
  var a=ritSideAll()[CURP.id];
@@ -34300,7 +34295,7 @@ function ritPlans(){
   return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
    days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
    rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc),
-   tags:(p.tags||[]).slice(), freq:(p.freq==null?7:p.freq), timerMin:(p.timerMin==null?null:p.timerMin)};});}
+   tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm)};});}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false. */
 function ritPlanPut(list){
@@ -34315,9 +34310,28 @@ function ritActive(p,today){
  return p.days===0||today<ritStart0(p)+p.days;}
 /* a day is on a ritual from the day it started, for as long as it runs, and
    not on or after the day it was stopped. */
+/* the weekday of a day key, Monday 0. Day 0 of pracDay is 1 January 1970, a
+   Thursday, which is why the three. */
+function ritWd(day){return ((day%7)+7+3)%7;}
+var RIT_WDN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var RIT_WDF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+/* DUE IS NOT ACTIVE. Active is whether a ritual is still running at all;
+   due is whether today is one of its days. A ritual kept on Mondays is active
+   all week and due on one day of it, and a Tuesday is not a missed Monday. */
+function ritDue(p,day){return !p.on||p.on.indexOf(ritWd(day))>=0;}
+function ritOften(on){
+ if(!on||on.length===7)return 'Every day';
+ if(on.join()==='0,1,2,3,4')return 'Weekdays';
+ if(on.join()==='5,6')return 'Weekends';
+ /* six of seven is said by the one it leaves out, not by listing six */
+ if(on.length===6)return 'Every day but '+RIT_WDN.filter(function(n,d){return on.indexOf(d)<0;})[0];
+ return on.map(function(d){return RIT_WDN[d];}).join(', ');}
+/* the timer a ritual runs for, its own when one was set */
+function ritTm(p){return (p&&p.tm)||ritMin(p&&p.steps)||1;}
 function ritCovers(p,day){
  var s=ritStart0(p);
  if(day<s)return false;
+ if(!ritDue(p,day))return false;
  if(p.days&&day>=s+p.days)return false;
  if(p.stop&&day>=pracDay(p.stop))return false;
  return true;}
@@ -34392,16 +34406,17 @@ function ritPick(k){
  RIT.sel[k]=!RIT.sel[k];
  if(RIT.sel[k]){RIT.order=RIT.order.filter(function(x){return x!==k;}); RIT.order.push(k);}
  else RIT.order=RIT.order.filter(function(x){return x!==k;});}
-/* TAGS ON THE DRAFT. A tag typed twice, by case, is one tag: "Morning" and
-   "morning" read as the same word to a person skimming a list of rituals. */
-function ritTagAdd(t){
- t=String(t||'').trim(); if(!t||t.length>RIT_PLAN_MAX)return;
- var low=t.toLowerCase();
- if(RIT.tags.some(function(x){return x.toLowerCase()===low;}))return;
- if(RIT.tags.length>=RIT_TAG_MAX)return;
- RIT.tags.push(t); RIT.tagIn='';}
-function ritTagDel(i){ RIT.tags.splice(i,1); }
-
+/* A TAG CREATES THE RITUAL. His words, round LT: "add tags that create new
+   rituals". Pressing a seat's tag puts on the draft the practice ritFor calls
+   for at that seat, at the tier the person's load allows today, so a tag
+   hands a heavy field nothing ritFor would not. Taking the tag off leaves the
+   step where it is: a person who kept it has already said so by keeping it,
+   and the step's own cross is the one way a step comes off. */
+function ritTagOn(b){
+ if(BANDS.indexOf(b)<0||RIT.tags.indexOf(b)>=0)return;
+ RIT.tags.push(b);
+ var q=ritFor({darkB:b, DQ:compute().DQ}).called;
+ if(q&&!RIT.sel[q.k])ritPick(q.k);}
 /* START. The plan is written beside the record and today goes on the record as
    set and not done, which is exactly what Save ritual wrote before: said is
    what intentionRead counts, and ritToday is what the avatar reads back. */
@@ -34425,23 +34440,27 @@ function ritStartPlan(q,msg){
     if(!need||need>same.days)same.days=need;}
    if(q.rel!=null)same.rel=q.rel;
    if(q.tc)same.tc=q.tc;
-   if(q.tags&&q.tags.length)same.tags=q.tags;
-   if(q.freq)same.freq=q.freq;
-   if(q.timerMin)same.timerMin=q.timerMin;}
+   /* a wake carries what the builder set and keeps what it did not: a
+      release schedule that sets none of the three leaves them as they were */
+   if(q.tags&&q.tags.length)same.tags=q.tags.slice();
+   if(q.on)same.on=q.on.slice();
+   if(q.tm)same.tm=q.tm;}
   else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
    from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
-   tc:q.tc||null, tags:q.tags||[], freq:q.freq||7, timerMin:(q.timerMin||null)});
+   tc:q.tc||null, tags:(q.tags&&q.tags.length?q.tags.slice():null),
+   on:(q.on?q.on.slice():null), tm:(q.tm||null)});
   if(!ritEntryFor({steps:steps},today))
    CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
     when:q.when, where:q.where, done:false}));
   return plans;},msg||'Started.');}
 function ritStart(c){
  var steps=ritDraft(); if(!steps.length)return;
- var ok=ritStartPlan({steps:steps, band:compute().unread?'':c.band, track:c.track,
-  days:RIT.days, when:RIT.when, where:RIT.where,
-  tags:RIT.tags.slice(), freq:RIT.freq, timerMin:RIT.timerMin});
+ /* a tagged ritual is kept at the first seat it was tagged for, so its ring
+    carries the colour of the seat the person named and not the heaviest one */
+ var ok=ritStartPlan({steps:steps, band:RIT.tags.length?RIT.tags[0]:(compute().unread?'':c.band), track:c.track,
+  days:RIT.days, when:RIT.when, where:RIT.where, tags:RIT.tags, on:RIT.on, tm:RIT.tm});
  if(ok){RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.add=false; RIT.all=false;
-  RIT.from=null; RIT.tags=[]; RIT.tagIn=''; RIT.freq=7; RIT.timerMin=null; ritRender();}}
+  RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.from=null; ritRender();}}
 /* A RELEASE SCHEDULE. The practice the pattern's own seat calls for, every day
    for the span he named, carrying the place it is for, so the Active row can
    open the release on that place any day. The record holds practices and not
@@ -34531,14 +34550,18 @@ function ritSaveEdit(){
      is history and is not rewritten. */
   var e=ritEntryFor(p,today);
   p.steps=steps; p.when=RIT.when||''; p.where=RIT.where||'';
-  p.tags=RIT.tags.slice(); p.freq=RIT.freq; p.timerMin=RIT.timerMin;
+  /* the seat follows the tags only when there are tags. A teacher's ritual
+     carries the seat its axis is read at, and an edit that sets no tag must
+     not move it to wherever the heaviest charge sits today. */
+  p.tags=RIT.tags.length?RIT.tags.slice():null; if(RIT.tags.length)p.band=RIT.tags[0];
+  p.on=RIT.on?RIT.on.slice():null; p.tm=RIT.tm||null;
   /* a span chosen while editing runs from today, not from the day the ritual
      began, or a week chosen on a ritual five weeks old would end it */
   if(RIT.days>=0)p.days=RIT.days?today-ritStart0(p)+RIT.days:0;
   if(e&&!ritIsDone(e.x)){e.x.steps=steps; e.x.min=ritMin(steps); e.x.when=p.when; e.x.where=p.where;}
   return plans;},'Saved.');
- if(ok){RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where='';
-  RIT.tags=[]; RIT.tagIn=''; RIT.freq=7; RIT.timerMin=null; RIT.all=false;}}
+ if(ok){RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.all=false;
+  RIT.tags=[]; RIT.on=null; RIT.tm=null;}}
 function ritEditOpen(id){
  var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
  RIT.edit=id; RIT.add=false; RIT.sel={}; RIT.order=p.steps.slice();
@@ -34547,8 +34570,7 @@ function ritEditOpen(id){
     days left would be a claim, so the chips start empty with what is left
     beside them, and a span chosen here runs from today. */
  RIT.when=p.when; RIT.where=p.where; RIT.days=-1; RIT.all=false;
- RIT.tags=p.tags.slice(); RIT.tagIn=''; RIT.freq=p.freq||7; RIT.timerMin=p.timerMin||null;
- ritRender();
+ RIT.tags=p.tags.slice(); RIT.on=p.on?p.on.slice():null; RIT.tm=p.tm; ritRender();
  var f=document.querySelector('.rv-build'); if(f&&f.scrollIntoView)f.scrollIntoView({block:'nearest'});}
 /* MARK DONE, AND UNDO IT WITH THE SAME PRESS. Today, and yesterday, because
    the streak already forgives a day (streakRead) and a person who practised
@@ -34625,7 +34647,7 @@ function ritAgain(id){
  var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
  RIT.sel={}; RIT.order=p.steps.slice(); p.steps.forEach(function(k){RIT.sel[k]=true;});
  RIT.when=p.when; RIT.where=p.where; RIT.days=RIT_SPAN_D.indexOf(p.days)>=0?p.days:7; RIT.add=true; RIT.edit=null;
- RIT.tags=p.tags.slice(); RIT.tagIn=''; RIT.freq=p.freq||7; RIT.timerMin=p.timerMin||null;
+ RIT.tags=p.tags.slice(); RIT.on=p.on?p.on.slice():null; RIT.tm=p.tm;
  ritRender();}
 /* DELETE, AND PUT IT BACK. Undo beats confirm, rule 5. The engine's undo
    holds the field and not this list, so the one thing deleted last is held
@@ -34744,7 +34766,10 @@ var RIT_IC={
  up:'<path d="M12 19V5 M6 11l6-6 6 6"/>',
  x:'<path d="M6 6l12 12 M18 6L6 18"/>',
  back:'<path d="M15 5l-7 7 7 7"/>', fwd:'<path d="M9 5l7 7-7 7"/>',
- plus:'<path d="M12 5v14 M5 12h14"/>', check:'<path d="M5 12l5 5 9-10"/>'};
+ plus:'<path d="M12 5v14 M5 12h14"/>', check:'<path d="M5 12l5 5 9-10"/>',
+ clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>',
+ stop:'<circle cx="12" cy="12" r="8"/><path d="M9.5 9.5h5v5h-5z"/>',
+ minus:'<path d="M5 12h14"/>'};
 function ritIc(k,cls){
  return '<svg viewBox="0 0 24 24" class="'+(cls||'rv-ic')+'" aria-hidden="true">'+RIT_IC[k]+'</svg>';}
 
@@ -34770,9 +34795,21 @@ function ritChainHtml(c,r,act){
     here is the same choice offered twice */
  var drafted=!!(p&&RIT.sel[p.k]);
  var fromN=(RIT.from&&RIT.from.length)||0;
+ /* ROUND LT, five cuts on this chain, his words and in his reading order:
+    "Get rid of the text 'your words', just put 'Imprints'. Get rid of the
+    text says 'write the first one'. Get rid of the text says 'held in your
+    body'. Get rid of the text says 'most at the throat'. ... change 'do
+    this' to 'goal'." The first stop's label was You wrote, which is the one he
+    read as your words, and it is Imprints now, the Story page's own word for
+    what a story leaves. Write the first one and Held in your body are gone.
+    Most at the throat was a pattern and not one line, Most at the plus
+    whichever seat carries the most, so the pattern is gone on every seat; the
+    bar under it still marks that seat by its outline. What rode on the same
+    line, how many were released just now, is a figure of its own and keeps
+    its own line. The unread label, Start here, is not his to cut and stays. */
  var out='<div class="rv-chain" role="group" aria-label="From your story to your ritual">';
- out+='<button type="button" class="rv-node" data-act="go-story">'
-  +'<span class="rv-lb">You wrote</span>'
+ out+='<button type="button" class="rv-node rv-n-imp" data-act="go-story">'
+  +'<span class="rv-lb">Imprints</span>'
   +'<span class="rv-nv">'+ritIc('pen','rv-nic')+'<b>'+n+'</b><em>'+(n===1?'story':'stories')+'</em></span>'
   +'</button>';
  out+='<span class="rv-arr" aria-hidden="true">'+ritIc('arrow')+'</span>';
@@ -34781,8 +34818,10 @@ function ritChainHtml(c,r,act){
     impLive, the same list the Imprints page draws), so the label now names
     the surface it opens rather than describing what sits there. That same
     edit removes "held in your body", which he named as its own line: it was
-    the phrase this label used to carry. */
- out+='<button type="button" class="rv-node" data-act="go-bank">'
+    the phrase this label used to carry. rv-n-held and --c carry the round LT
+    colour by part rule onto this node too: the seat colour on the held
+    place, ritCss's own words. */
+ out+='<button type="button" class="rv-node rv-n-held" data-act="go-bank" style="--c:'+col+'">'
   +'<span class="rv-lb">Imprints</span>'
   +(held.length
     ?'<span class="rv-nv">'+ritIc('body','rv-nic')+'<b>'+held.length+'</b><em>'+(held.length===1?'place':'places')+'</em></span>'
@@ -34843,11 +34882,58 @@ function ritLeft(p,today){
  if(!p.days)return 'No end';
  var left=ritStart0(p)+p.days-today;
  return left<=1?'Last day':left+' days left';}
-function ritActiveHtml(act,today,building){
- var out='<div class="rv-sec"><div class="rv-hd"><span class="rv-h">Active</span>'
-  +(building?'':'<button type="button" class="btn rv-add" data-act="add">'+ritIc('plus')+'New</button>')+'</div>';
- out+=act.length?'<ol class="rv-list">':'<p class="rv-empty">Nothing active yet.</p><ol class="rv-list">';
- act.forEach(function(p,ix){
+/* THE TIMER ON A ROW. Round LT: "put a timer for it". One runs at a time, the
+   way a person does one thing at a time, and pressing it again stops it. It
+   counts down on the row and nowhere else, and reaching zero does not mark
+   the day done: a timer that ran out is a phone left on a table as often as
+   it is a practice finished, and ritLog's rule is that a person says so. It
+   says Time is up on the row, and the ring beside it is the press. */
+function ritClock(s){s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+function ritTimerHtml(p){
+ var run=RIT.run&&RIT.run.id===p.id, rang=RIT.rang===p.id, m=ritTm(p);
+ var lab=run?'Stop the timer':'Start a '+m+' minute timer for '+ritName(p.steps);
+ /* at rest it is the clock alone, and the minutes it will run are on the
+    line under the name. Counting, it prints what is left; at zero, that the
+    time is up. Only then does it take the width a figure needs. */
+ return '<button type="button" class="rv-tmr'+(run?' rv-run':'')+(rang?' rv-rang':'')+'" data-act="timer" data-id="'+p.id+'" aria-label="'+esc(lab)+'" title="'+esc(lab)+'">'
+  +ritIc(run?'stop':'clock')
+  +'<span data-tmr="'+p.id+'">'+(run?ritClock((RIT.run.end-Date.now())/1000):(rang?'Time is up':''))+'</span></button>';}
+function ritTimer(id){
+ var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
+ var was=RIT.run&&RIT.run.id; RIT.rang=null;
+ if(RIT.run){clearInterval(RIT.run.iv); RIT.run=null;}
+ if(was===id){ritRender();return;}
+ var end=Date.now()+ritTm(p)*60000;
+ RIT.run={id:id, end:end, iv:setInterval(function(){
+  var left=(end-Date.now())/1000, el=document.querySelector('#rit [data-tmr="'+id+'"]');
+  if(left<=0){clearInterval(RIT.run.iv); RIT.run=null; RIT.rang=id;
+   status(ritName(p.steps)+', time is up.'); ritRender(); return;}
+  /* only the figure is written each second. A render every second would take
+     the focus out of the When field while a person typed in it. */
+  if(el)el.textContent=ritClock(left);},1000)};
+ ritRender();}
+/* ACTIVE TODAY, AND THE REST. Round LT: "I should see a list of my active
+   running tasks for the day." Running is a saboteur's word here, so the list
+   is the Active one it always was, split by due: what is due today first,
+   in the person's own order, and what is active but kept on other days under
+   it, named by its days so nobody reads it as missed. */
+/* COMPACT WHILE THE BUILDER IS OPEN. The list sits in the narrow column then,
+   and at full height three rituals put the page past the screen again,
+   measured at 1123 pixels of content in 867. So each row is its ring and its
+   name: the ring still marks the day done, and how often, the timer and the
+   rest come back the moment the builder closes. */
+function ritActiveHtml(act,today,compact){
+ var due=act.filter(function(p){return ritDue(p,today);}), rest=act.filter(function(p){return !ritDue(p,today);});
+ var out='<div class="rv-sec rv-act'+(compact?' rv-cpt':'')+'"><div class="rv-hd"><span class="rv-h">Active today</span>'
+  +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>';
+ out+=due.length?'':'<p class="rv-empty">'+(act.length?'Nothing due today.':'Nothing active yet.')+'</p>';
+ out+=ritRowsHtml(due,today,act);
+ if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
+ return out+'</div>';}
+function ritRowsHtml(list,today,act){
+ var out='<ol class="rv-list">';
+ list.forEach(function(p){
+  var ix=act.indexOf(p);
   var e=ritEntryFor(p,today), d=e&&ritIsDone(e.x), col=ritCol(p), open=RIT.exp===p.id;
   var ring='<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
    +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)
@@ -34860,8 +34946,15 @@ function ritActiveHtml(act,today,building){
    +'<span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
    +'<span class="rv-sub">'+(p.rel!=null&&BY[p.rel]?'For '+esc(String(BY[p.rel].k).toLowerCase())+', ':'')
    +(p.tc&&becomingOf(p.tc)?'Toward '+esc(becomingOf(p.tc).who)+', ':'')
-   +ritMin(p.steps)+' minutes'+(p.when?', '+esc(p.when):'')+'<i>'+ritLeft(p,today)+'</i></span>'
-   +'</button></div>';
+   /* the minutes are the timer's, so a timer set longer than the steps reads
+      here as what it is set to. How often is said only when it is not every
+      day, because every day is what a ritual is unless it says otherwise,
+      and a line that wraps to three rows is what put the page past the
+      screen with both rails open. Mid line it is a value and a value is
+      never titled, V13: it read "20 minutes, Every day but Thu". */
+   +ritTm(p)+' minutes'+(p.on?', '+esc(ritOften(p.on).replace(/^(Every|Week)/,function(m){return m.toLowerCase();})):'')+(p.when?', '+esc(p.when):'')+'<i>'+ritLeft(p,today)+'</i>'
+   +p.tags.map(function(b){return '<em class="rv-tg" style="--t:'+seatCol(b)+'">'+esc(ritTagNm(b))+'</em>';}).join('')
+   +'</span></button>'+ritTimerHtml(p)+'</div>';
   if(open){
    out+='<div class="rv-more">'
     +ritSteps(p).map(function(s,i){
@@ -34874,18 +34967,45 @@ function ritActiveHtml(act,today,building){
     +'<button type="button" class="btn" data-act="stop" data-id="'+p.id+'">Stop</button>'
     +'</div></div>';}
   out+='</li>';});
- return out+'</ol></div>';}
+ return out+'</ol>';}
+/* a seat's name as a tag carries it: sentence case, and the third eye spelled
+   out, the way ritSeatNm spells it inside a sentence */
+function ritTagNm(b){return b==='3rd Eye'?'Third eye':String(b||'');}
 
 /* THE BUILDER. New and edit are one card. The steps a person picked sit at
    the top in their order, the practice the state calls for is the first tile,
    and the rest of the library is one press away rather than nineteen rows. */
+/* THE SEVEN TAGS, one per seat, each in its seat's colour. The same row sits
+   on the closed panel, where a press starts a new ritual from that seat, and
+   in the builder, where a press adds or takes off the tag. */
+function ritTagsHtml(act,on){
+ return '<div class="rv-tags" role="group" aria-label="Tags">'+BANDS.map(function(b){
+  var p=on.indexOf(b)>=0;
+  return '<button type="button" class="rv-tag2'+(p?' rv-on':'')+'" data-act="'+act+'" data-b="'+esc(b)+'" aria-pressed="'+p
+   +'" style="--t:'+seatCol(b)+'"><i></i>'+esc(ritTagNm(b))+'</button>';}).join('')+'</div>';}
+/* THE NEW RITUAL, CLOSED. Round LT: "the new ritual needs to be on the upper
+   right hand side so it's front and center". It was a small New button in the
+   Active heading, which is where he looked and did not see it. It is the
+   first panel in the right column now, and it is the builder's own slot, so
+   pressing it opens the builder in the same place rather than somewhere else
+   on the page. */
+function ritNewHtml(){
+ /* no heading: the press is the heading, and a heading reading New ritual
+    over a button reading New ritual said it twice */
+ return '<div class="rv-sec rv-new rv-shut">'
+  +'<button type="button" class="btn pri rv-add" data-act="add">'+ritIc('plus')+'New ritual</button>'
+  +'<span class="rv-fl">Start from a tag</span>'+ritTagsHtml('newtag',[])+'</div>';}
 function ritBuildHtml(c,nAct){
  var draft=ritDraft(), editing=!!RIT.edit, mins=ritMin(draft);
- var out='<div class="rv-sec rv-build"><div class="rv-hd"><span class="rv-h">'+(editing?'Edit':'New ritual')+'</span>'
-  +(mins?'<span class="rv-min">'+mins+' minutes</span>':'')+'</div>';
+ /* the minutes the steps add up to used to sit in this heading. The timer
+    below starts at that figure and prints it, so it is said once, there. */
+ var out='<div class="rv-sec rv-build rv-new"><div class="rv-hd"><span class="rv-h">'+(editing?'Edit':'New ritual')+'</span></div>';
  if(RIT.from&&RIT.from.length)
   out+='<p class="rit-from">After releasing '+esc(RIT.from.slice(0,3).map(function(x){return x.name;}).join(', '))
    +(RIT.from.length>3?' and '+(RIT.from.length-3)+' more':'')+'</p>';
+ /* tags first, because a tag is what creates the ritual: his order, "add
+    tags to create the ritual, put a timer for it, how often" */
+ out+='<span class="rv-fl">Tags</span>'+ritTagsHtml('tag',RIT.tags);
  if(draft.length){
   out+='<ol class="rv-steps">';
   draft.forEach(function(k,i){var p=ritPr(k);
@@ -34909,6 +35029,25 @@ function ritBuildHtml(c,nAct){
    out+='<div class="rv-trk" style="--c:'+(PTRACK[tr]||'var(--accent)')+'">'+tr+'</div><div class="rv-tiles">'
     +set.map(function(p){return tile(p,false);}).join('')+'</div>';});}
  out+='<button type="button" class="rit-more" id="ritall" data-act="all">'+(RIT.all?'Fewer practices':'More practices')+'</button>';
+ /* THE TIMER AND HOW OFTEN. The timer starts at the minutes the steps add
+    up to and a press moves it a minute at a time under ten and five at a
+    time above, which is the size of the difference at each end. How often is
+    a week of seven presses, Monday first, with the two sets a person picks
+    most as one press each: every day, and weekdays. One day is weekly. */
+ var tm=RIT.tm||mins||1, on=RIT.on||[0,1,2,3,4,5,6], wk=on.join()==='0,1,2,3,4';
+ out+='<div class="rv-row2">'
+  +'<div class="rv-fld"><span class="rv-fl">Timer</span><div class="rv-stp">'
+  +'<button type="button" class="rv-ib" data-act="tm" data-d="-1" aria-label="Shorter"'+(tm<=1?' disabled':'')+'>'+ritIc('minus')+'</button>'
+  +'<b>'+tm+' min</b>'
+  +'<button type="button" class="rv-ib" data-act="tm" data-d="1" aria-label="Longer"'+(tm>=RIT_TM_MAX?' disabled':'')+'>'+ritIc('plus')+'</button></div></div>'
+  +'<div class="rv-fld"><span class="rv-fl">How often</span><div class="rv-span rv-oft">'
+  +'<button type="button" class="rv-sp'+(!RIT.on?' rv-on':'')+'" data-act="often" data-v="all" aria-pressed="'+!RIT.on+'">Every day</button>'
+  +'<button type="button" class="rv-sp'+(wk?' rv-on':'')+'" data-act="often" data-v="wk" aria-pressed="'+wk+'">Weekdays</button>'
+  +'</div></div></div>'
+  +'<div class="rv-wk" role="group" aria-label="Days">'
+  +RIT_WD.map(function(w,i){var p=on.indexOf(i)>=0;
+   return '<button type="button" class="rv-wkd'+(p?' rv-on':'')+'" data-act="wd" data-d="'+i+'" aria-pressed="'+p+'" aria-label="'+RIT_WDF[i]+'">'+w+'</button>';}).join('')
+  +'</div>';
  /* THE IF THEN PLAN. Two fields, and they are the largest single item in the
     whole loop: 72 of 1000 at day thirty, measured. Gollwitzer and Sheeran
     2006, ninety four studies, d 0.65: a plan that names a time and a place is
@@ -34921,7 +35060,7 @@ function ritBuildHtml(c,nAct){
   +'" placeholder="the chair by the window" value="'+esc(RIT.where||'')+'"></label>'
   +(RIT.days<0&&RIT.edit?(function(){var q=ritPlans().filter(function(x){return x.id===RIT.edit;})[0];
     return q?'<p class="rv-left">'+ritLeft(q,ritToday0())+'</p>':'';})():'')
-  +'<div class="rv-span" role="radiogroup" aria-label="How long">'
+  +'<span class="rv-fl">How long</span><div class="rv-span" role="radiogroup" aria-label="How long">'
   +RIT_SPANS.map(function(s){var on=RIT.days===s.d;
    return '<button type="button" role="radio" aria-checked="'+on+'" class="rv-sp'+(on?' rv-on':'')+'" data-act="span" data-d="'+s.d+'">'+s.nm+'</button>';}).join('')
   +'</div>'
@@ -35045,9 +35184,30 @@ function ritRecordHtml(plans,today){
 /* THE LAYOUT, one function so the design options in proto/ritual-redesign can
    put the same parts in a different order without a second copy of any of
    them. */
+/* ROUND LT, his words: "this is a scroll up and down in that center column
+   for the ritual even though there's about an inch and a half on the left and
+   right of the screen, this should not have a scroll". Measured at 1600 by
+   1000 before the change: the card was held to 1180 pixels and scrolled 969
+   pixels of content inside 867, two columns stacked five parts deep on the
+   left while the width beside them went unused. So it is three columns now
+   and the card takes the stage's whole width: the chain, today and the
+   record share the left two, and the new ritual takes the right one from the
+   top, which is where he asked for it. Below 1080 pixels of card the right
+   column folds in under the chain, still ahead of everything else, and
+   below 880 today and the record stack as they always did.
+
+   THE LIST OF WHAT IS ACTIVE TODAY SITS UNDER THE NEW RITUAL, and moves
+   under the rings while the builder is open. His two asks sit side by side:
+   the new ritual front and centre, and "a list of my active running tasks for
+   the day". Closed, the new ritual is short and the list under it is the
+   second thing seen. Open, the builder needs the whole column to stay inside
+   the screen, measured, so the list goes to the column under today's rings,
+   the one place it was before this round, until the builder closes. */
 function ritLayout(P){
- return P.note+P.why+P.chain+'<div class="rv-cols"><div class="rv-col">'+P.today+P.active+P.build+P.marks
-  +'</div><div class="rv-col">'+P.record+'</div></div>';}
+ return P.note+P.why+'<div class="rv-cols"><div class="rv-main">'+P.chain
+  +'<div class="rv-pair"><div class="rv-col">'+P.today+(P.building?P.active:'')+P.marks
+  +'</div><div class="rv-col">'+P.record+'</div></div></div>'
+  +'<div class="rv-side">'+P.build+(P.building?'':P.active)+'</div></div>';}
 
 function ritRender(){
  var h=document.getElementById('rit'); if(!h)return;
@@ -35065,9 +35225,12 @@ function ritRender(){
  var P={
   note:ritOwn()?'':'<p class="rv-note">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>',
   why:ritBecomingHtml(ritBecoming(),act),
-  chain:ritChainHtml(c,r,act), today:ritTodayHtml(act,today,L),
-  active:ritActiveHtml(act,today,building), build:building?ritBuildHtml(c,act.length):'',
-  marks:ritMarksHtml(L), record:ritRecordHtml(plans,today)};
+  /* the rings are what is due today and nothing else. A ring is closed by
+     marking today done, so a ritual kept on other days would draw a ring
+     that today cannot close. */
+  chain:ritChainHtml(c,r,act), today:ritTodayHtml(act.filter(function(p){return ritDue(p,today);}),today,L),
+  active:ritActiveHtml(act,today,building), build:building?ritBuildHtml(c,act.length):ritNewHtml(),
+  marks:ritMarksHtml(L), record:ritRecordHtml(plans,today), building:building};
  h.innerHTML='<div class="rel-card rit-card rv">'+ritLayout(P)+'</div>';
  ritWire(h,c);}
 
@@ -35085,7 +35248,25 @@ function ritWire(h,c){
    case 'go-bank': if(typeof setTab==='function')setTab(TAB.STORY);
     if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
    case 'start-called': RIT.sel={}; RIT.order=[]; if(c.called)ritPick(c.called.k); RIT.add=true; RIT.edit=null; break;
-   case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; if(c.called)ritPick(c.called.k); break;
+   case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null;
+    if(c.called)ritPick(c.called.k); break;
+   /* a tag on the closed panel is a new ritual from that seat: the builder
+      opens holding the tag and the practice that seat calls for */
+   case 'newtag': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.on=null; RIT.tm=null; RIT.tags=[];
+    ritTagOn(b.getAttribute('data-b')); break;
+   case 'tag': {var tb=b.getAttribute('data-b');
+    if(RIT.tags.indexOf(tb)>=0)RIT.tags=RIT.tags.filter(function(x){return x!==tb;}); else ritTagOn(tb); break;}
+   case 'tm': {var t0=RIT.tm||ritMin(ritDraft())||1, st=+b.getAttribute('data-d');
+    var t1=st<0?(t0<=10?t0-1:t0-5):(t0<10?t0+1:t0+5);
+    RIT.tm=Math.max(1,Math.min(RIT_TM_MAX,t1)); break;}
+   case 'often': RIT.on=b.getAttribute('data-v')==='wk'?[0,1,2,3,4]:null; break;
+   /* a day pressed off the week. The last day cannot be pressed off: a
+      ritual due on no day is not a ritual, and the button says so by staying
+      on rather than by an error. All seven on is every day, stored as none. */
+   case 'wd': {var wd=+b.getAttribute('data-d'), cur=(RIT.on||[0,1,2,3,4,5,6]).slice(), at=cur.indexOf(wd);
+    if(at>=0){if(cur.length>1)cur.splice(at,1);} else cur.push(wd);
+    cur.sort(); RIT.on=cur.length===7?null:cur; break;}
+   case 'timer': ritTimer(id); return;
    case 'pick': ritPick(b.getAttribute('data-k')); break;
    case 'step-up': {var k=b.getAttribute('data-k'), d=ritDraft(), i=d.indexOf(k);
     if(i>0){d.splice(i,1); d.splice(i-1,0,k); RIT.order=d;} break;}
@@ -35094,6 +35275,7 @@ function ritWire(h,c){
    /* cancel empties the builder. Opened over another tab by the release, it
       is the close as well, because there is a tab behind it to go back to. */
    case 'cancel': RIT.add=false; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.all=false; RIT.from=null;
+    RIT.tags=[]; RIT.on=null; RIT.tm=null;
     if(!ritTab()){ritClose();return;} break;
    case 'save': if(RIT.edit)ritSaveEdit(); else ritStart(c); return;
    case 'why': {var bc=ritBecoming(); if(bc)ritStartFor(bc,+b.getAttribute('data-d')); return;}
@@ -35135,8 +35317,11 @@ function ritCss(){
  if(document.getElementById('rit-css'))return;
  var st=document.createElement('style'); st.id='rit-css';
  st.textContent=[
-  'body.tab-ritual #rit .rit-card.rv{max-width:1180px}',
-  '.rv{container-type:inline-size;text-align:left}',
+  /* 1180 was the cap that left the width unused at 1600, round LT. The stage
+     is the limit now; 1760 only stops three columns spreading past reading
+     distance on a very wide screen with both rails shut. */
+  'body.tab-ritual #rit .rit-card.rv{max-width:1760px}',
+  '.rv{container-type:inline-size;container-name:rv;text-align:left}',
   '.rv-note{margin:0 0 12px;font-size:14px;color:var(--mid)}',
   '.rv-lb{display:block;font-size:12.5px;color:var(--dim);font-weight:500}',
   '.rv-h{font-size:15px;font-weight:600;color:var(--ink)}',
@@ -35182,10 +35367,75 @@ function ritCss(){
   ' .rv .rv-nv{gap:5px;flex-wrap:wrap} .rv .rv-nv b{font-size:20px} .rv .rv-nv em{font-size:12.5px}',
   ' .rv .rv-nv .rv-pn{font-size:14px} .rv .rv-nic{width:18px;height:18px} .rv .rv-lb{font-size:12px}',
   ' .rv .rv-ns{font-size:12px} .rv .rv-go{padding:0 14px}}',
-  /* columns */
-  '.rv-cols{display:grid;grid-template-columns:1fr;gap:0 18px}',
-  '.rv-col{min-width:0}',
-  '@container (min-width:880px){.rv .rv-cols{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}}',
+  /* columns, see ritLayout. At three columns a column is its own container,
+     so the rules written for a narrow card (the hero at 136, the figures as
+     rows) apply to a narrow column too: the left one is a phone's width, and
+     it reads as one. */
+  '.rv-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0 18px;align-items:start}',
+  '.rv-main,.rv-side,.rv-col{min-width:0}',
+  '.rv-col,.rv-side{container-type:inline-size}',
+  '.rv-pair{display:grid;grid-template-columns:minmax(0,1fr);gap:0 18px}',
+  /* at three columns the record keeps the wider share of the left two,
+     because seven days of 44 pixel presses is the floor it cannot go under,
+     and the new ritual gets enough width that its tags, its timer and how
+     often each take one row, which is what keeps it inside the screen */
+  '@container (min-width:1080px){.rv .rv-cols{grid-template-columns:minmax(0,2fr) minmax(0,1.2fr)}',
+  ' .rv .rv-pair{grid-template-columns:minmax(0,4fr) minmax(0,5fr)}}',
+  /* UNDER 1080 THE COLUMNS DISSOLVE AND EVERY PART IS PLACED BY NAME. The
+     first cut folded the whole right column in under the chain, and with both
+     rails open at 1600 the card is 920 wide and that stacked the new ritual
+     panel and the list on top of the two columns that fit before: 1265
+     pixels of content in 867, measured, where the build before this round
+     fit. So the parts are placed one by one: the new ritual is one press at
+     the top of the left column, and the list of what is active sits under
+     today's rings where it always sat at this width. The press is not in the
+     right column over the record: tried, the record's height then spread
+     into the rows beside it and opened a 150 pixel hole under the rings.
+     The marks go under the record, where the right column had room to
+     spare, and the list runs on into the last row, the one flexible row, so
+     neither column is pushed apart by the other's height. On a phone it is
+     one column in the order the areas name. */
+  /* and a dissolved column stops being a container. Measured: left as one,
+     every part inside it asked a box that no longer existed for its width,
+     no query of its own matched, and the parts fell into the grid in source
+     order, the record under today's rings and the marks beside them. The
+     query names the card, rv, because a part inside a column asks its
+     column otherwise: at 1920 the right column is 536 wide, under 1079,
+     and the new ritual's tags were hidden on the widest screen there is. */
+  '@container rv (max-width:1079px){.rv .rv-main,.rv .rv-pair,.rv .rv-col,.rv .rv-side{display:contents;container-type:normal}',
+  ' .rv .rv-cols{grid-template-areas:"chain" "new" "today" "act" "marks" "rec"}',
+  ' .rv .rv-chain{grid-area:chain} .rv .rv-new{grid-area:new} .rv .rv-today{grid-area:today}',
+  ' .rv .rv-act{grid-area:act} .rv .rv-marks{grid-area:marks} .rv .rv-rec{grid-area:rec}',
+  ' .rv .rv-new.rv-shut{padding:0;border:0;background:none}',
+  ' .rv .rv-shut .rv-hd,.rv .rv-shut .rv-fl,.rv .rv-shut .rv-tags{display:none}}',
+  '@container rv (min-width:880px) and (max-width:1079px){.rv .rv-cols{grid-template-columns:minmax(0,5fr) minmax(0,6fr);',
+  ' grid-template-rows:auto auto auto auto 1fr;grid-template-areas:"chain chain" "new rec" "today rec" "act rec" "act marks"}}',
+  /* ---- colour, round LT: "I want color on this page to separate things,
+     everything is gray." Each part takes one hue from tokens the product
+     already carries and themes, as a ring before its heading, a wash behind
+     it and an edge around it, never as a fill. The loop colours are the
+     stations': Imprints is Discover's, because the Story page is there; the
+     list of what is active today is Flow's, because Ritual is there; the
+     record is Embody's, time kept in the body; the accountability figures
+     take Play's green, the one loop colour no part above already holds; and
+     the new ritual takes the accent, the colour of every primary press. The
+     seat colours stay what they were, the seat's, on the held place, the
+     goal and every ring. ---- */
+  '.rv-sec{--k:var(--edge-2)}',
+  '.rv-act{--k:var(--sec-flow)} .rv-rec{--k:var(--sec-embody)} .rv-new{--k:var(--accent)}',
+  '.rv-act,.rv-rec,.rv-new{border-color:color-mix(in srgb,var(--k) 38%,transparent);',
+  ' background:color-mix(in srgb,var(--k) 6%,var(--panel))}',
+  '.rv-sec>.rv-hd .rv-h::before{content:"";display:inline-block;width:8px;height:8px;margin:0 9px 1px 0;',
+  ' border:2px solid var(--k);border-radius:50%}',
+  /* Record and its month, the field he named: the heading and the month in
+     Embody's colour on a band of it, so the date reads as the record's own */
+  '.rv-rec>.rv-hd .rv-h{color:var(--k)}',
+  '.rv-calh{padding:2px 6px;border-radius:10px;background:color-mix(in srgb,var(--k) 13%,transparent)}',
+  '.rv-mon{color:var(--k)}',
+  '.rv-n-imp{--c:var(--sec-discover)}',
+  '.rv-n-imp,.rv-n-held{border-color:color-mix(in srgb,var(--c) 32%,var(--edge));background:color-mix(in srgb,var(--c) 5%,var(--panel))}',
+  '.rv-n-imp .rv-nic,.rv-n-held .rv-nic{color:var(--c)}',
+  'button.rv-n-imp:hover,button.rv-n-held:hover{border-color:var(--c)}',
   /* today */
   '.rv-today{display:flex;align-items:center;gap:18px;margin:0 0 18px;flex-wrap:wrap}',
   '.rv-hero{position:relative;width:180px;height:180px;flex:0 0 auto}',
@@ -35204,6 +35454,12 @@ function ritCss(){
   '.rv-fig b{display:block;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
   '.rv-fig small{font-size:13px;font-weight:400;color:var(--mid)}',
   '.rv-fig span{font-size:13px;color:var(--dim)}',
+  /* the accountability figures, the line he read as "days best kept
+     practiced": their own colour, on the figure and its edge, round LT */
+  '.rv-today{--k:var(--sec-play)}',
+  '.rv-fig{border-color:color-mix(in srgb,var(--k) 40%,transparent);background:color-mix(in srgb,var(--k) 8%,var(--panel))}',
+  '.rv-fig b{color:var(--k)}',
+  '.rv-fig span{color:var(--mid)}',
   /* active */
   '.rv-add{display:inline-flex;align-items:center;gap:6px}',
   '.rv-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
@@ -35245,6 +35501,12 @@ function ritCss(){
   '.rv-tile svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}',
   '.rv-tile.rv-on{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--panel-2))}',
   '.rv-tile.rv-big{grid-column:1/-1;padding:14px}',
+  /* the called tile keeps its ring beside its name and not above it: a row
+     of its own for a 22 pixel ring was what put a tagged new ritual 42
+     pixels past the screen at 1600, measured, round LT */
+  '.rv-tile.rv-big{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;row-gap:3px;align-items:center}',
+  '.rv-tile.rv-big svg{grid-row:1/span 2}',
+  '.rv-tile.rv-big .rv-td{grid-column:1/-1}',
   '.rv-tn{font-size:15px;font-weight:500}',
   '.rv-tm{font-size:13px;color:var(--mid)}',
   '.rv-td{font-size:14px;color:var(--mid);line-height:1.5}',
@@ -35256,6 +35518,42 @@ function ritCss(){
   ' color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
   '.rv-sp.rv-on,.rv-sg.rv-on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}',
   '.rv-seg{margin-top:0}',
+  /* the new ritual: the closed panel, its tags, the timer, and the week */
+  '.rv-new .rv-add{width:100%;justify-content:center;min-height:48px;font-size:15px}',
+  /* the last part in a column ends the column; its gap was 18 pixels of
+     scroll with nothing under it */
+  '.rv-col>:last-child,.rv-side>:last-child{margin-bottom:0}',
+  '.rv-fl{display:block;margin:10px 0 5px;font-size:12.5px;font-weight:500;color:var(--dim)}',
+  '.rv .rit-f{margin:7px 0}',
+  '.rv-tags{display:flex;flex-wrap:wrap;gap:6px}',
+  '.rv-tag2{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border-radius:999px;',
+  ' border:1px solid color-mix(in srgb,var(--t) 45%,transparent);background:none;color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
+  '.rv-tag2 i{width:9px;height:9px;border-radius:50%;border:2px solid var(--t);flex:0 0 auto}',
+  '.rv-tag2:hover{border-color:var(--t);color:var(--ink)}',
+  '.rv-tag2.rv-on{border-color:var(--t);background:color-mix(in srgb,var(--t) 18%,transparent);color:var(--ink)}',
+  '.rv-tag2.rv-on i{background:var(--t)}',
+  '.rv-row2{display:flex;flex-wrap:wrap;gap:0 16px}',
+  '.rv-fld{flex:0 0 auto}',
+  '.rv-stp{display:flex;align-items:center;gap:2px;border:1px solid var(--edge-2);border-radius:999px}',
+  '.rv-stp b{min-width:58px;text-align:center;font-size:14px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-stp .rv-ib{border-radius:999px}',
+  '.rv-oft{margin-top:0}',
+  '.rv-wk{display:grid;grid-template-columns:repeat(7,minmax(44px,1fr));gap:4px;margin-top:8px}',
+  '.rv-wkd{min-height:44px;padding:0;border-radius:10px;border:1px solid var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
+  '.rv-wkd.rv-on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--ink);font-weight:600}',
+  /* the timer on a row, and its three states: set, counting, time is up */
+  '.rv-tmr{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;min-height:44px;min-width:44px;margin-right:6px;padding:0 12px;',
+  ' border:1px solid var(--edge-2);border-radius:999px;background:none;color:var(--mid);font:inherit;font-size:13.5px;',
+  ' font-variant-numeric:tabular-nums;cursor:pointer;white-space:nowrap}',
+  '.rv-tmr span:empty{display:none}',
+  '.rv-tmr:hover{color:var(--ink);border-color:var(--c)}',
+  '.rv-tmr.rv-run{border-color:var(--c);color:var(--ink);background:color-mix(in srgb,var(--c) 14%,transparent)}',
+  '.rv-tmr.rv-rang{border-color:var(--c);color:var(--ink);font-weight:600}',
+  '.rv-tg{display:inline-flex;align-items:center;padding:0 8px;border-radius:999px;font-style:normal;font-size:12.5px;',
+  ' color:var(--mid);border:1px solid color-mix(in srgb,var(--t) 50%,transparent)}',
+  '.rv-item{box-shadow:inset 3px 0 0 var(--c)}',
+  '.rv-cpt .rv-sub,.rv-cpt .rv-tmr,.rv-cpt .rv-more{display:none}',
+  '.rv-other{margin:14px 0 8px;font-size:13px;color:var(--dim)}',
   /* the record */
   '.rv-calh{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px}',
   '.rv-mon{font-size:15px;font-weight:600;color:var(--ink)}',
@@ -46077,5 +46375,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003010786"></div>
+<div id="eof" hidden data-len="003033044"></div>
 </body></html>
