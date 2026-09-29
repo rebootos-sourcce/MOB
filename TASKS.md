@@ -25733,3 +25733,130 @@ and its new ritual flow (7 through 11, full stack), and the Story page
 together with the Source AI question rewrite (12 through 14, narrative,
 since the button and the question bank share one file and the rewrite
 needs the voice gate run over it regardless).
+
+**The Story piece landed, commit `41feeb7`, pushed, not yet
+independently verified by me.** The cycle button moved to the right, a second button built
+beside it that asks a question built from what the person actually
+wrote or, failing that, their own recorded pattern of where things land
+in the body, never inventing a reading the engine has not earned; the
+question bank itself rewritten (his own JS ruling on the opener, both
+line items quoted in full in the agent's own report below); an "alive"
+treatment on the Source AI panel, a passing light, a breathing dot, a
+question that lands word by word. `engine.js` 1841, `collide.js` 351,
+`design.js` 184, `functional.js` 1335 passed 0 failed with no known
+flake firing, `funnel.js` 172, `boot.js` 13, voice check 0 stopping,
+all clean on its own first run, no rerun needed. Not yet screenshotted
+or spot read by me; queued next.
+
+Four questions back from that agent, his to answer:
+1. Is "a question built from what you wrote" what he meant by dynamic,
+   or something else, a question for the moment in the day, or a real
+   model call once the network seam exists.
+2. Should the new button carry a word, given he could not read the
+   unlabelled symbols on Character either.
+3. Keep his line "Or would you like me to offer some suggestions?" on
+   the opener, or do the two buttons already answer it.
+4. Keep the word "Why" on every version of the repeat question, or is
+   "what takes you back there" a fair substitute for two of the three.
+
+## Round LU
+
+His words, verbatim, sent with a screenshot of the halo to pitchfork
+gauge, a yellow circle drawn around a small pill beside the arrow at
+19: "Yesterday, I made a suggestion on the field page that the impulses
+are dynamic and their speed is based off of the tension. That's the
+first thing. The second thing is I keep asking for animation on the
+tension lines, right, where connections in the field that are, the
+higher they are, the more there's more vibration and jitter within
+that line, to call your attention to it. And I also asked for a
+hamburger on the upper, I'm sorry, on the right menu so I can, oh,
+never mind, there it is, I got it. And then on the heaven and hell item
+on the field page, the halo and pitchfork, there's a little pill to the
+right of the arrow that got introduced, I want that removed. And then
+for Discover, Play, Flow, Embody, the Embody logo is terrible, let's
+find something a bit more representative. And then for our profiles, I
+need a blank one for new customers. Right now, when I go to Custom, and
+I would assume that is our default one, it starts off with compulsion
+at a 4.5, so I know this is incorrect, and it starts off with innocent
+and everyman. So I need a default starting profile that I can then
+save. Write out everything that needs to be written out for our
+briefs, so they're all updated, design, art direction, innovation, UI,
+UX, tech. And then give me all of my steps for Cloudflare and my APIs.
+I need them in step by steps written as if I'm a ten year old."
+
+Read as, in the order raised:
+
+1. **Impulse speed off tension, checked against the code before
+   answering, not assumed.** This is already built, `atuned_src/ui/wheel.js`,
+   commit `e887410`, 27 September, round FJ, his own words quoted in
+   that commit: "Why aren't they like lines animating to show me which
+   is the tension?" `pulses()` runs a dash down every thread from
+   saboteur through complex, hyper complex and character, its period
+   96 to 48 and its speed 16 to 84 pixels a second on the square root
+   of tension, `t`, the same number the thread's own sag is drawn
+   from. Wired into the draw at line 1268, called after every tier.
+   Screenshot before telling him rather than repeat the LM mistake.
+2. **Jitter or vibration scaling with tension, same system as 1** on
+   this reading, not a second thing: the pulse's speed and spacing
+   already are the tension. If he means literal jitter, a line's own
+   position shaking rather than a pulse running along it, that is not
+   built and is a real ask; screenshot first to see which he is
+   actually missing.
+3. **The hamburger**, found mid sentence, no action.
+4. **A pill beside the arrow on the halo to pitchfork gauge, wants it
+   gone.** Not yet located in the code by search alone; needs a real
+   screenshot walkthrough of the Compass's register detail view (the
+   gauge only appears once a register, Light or another, is opened)
+   to find and remove it.
+5. **The Embody icon is bad**, no specifics beyond that, "something a
+   bit more representative."
+6. **The default Custom profile is not blank.** He read it starting at
+   compulsion 4.5 with the Innocent and Everyman archetypes already
+   installed, which he says is wrong for a new customer's opening
+   profile. Needs the seed data checked against what a truly blank
+   profile should read, likely `engine/core.js`'s blank profile
+   constructor or `canon.js`'s seed table, and a genuinely neutral
+   starting point built and saved as the default.
+7. **The four briefs need a refresh pass.** `docs/briefs/brief-foundations.md`,
+   `brief-screens.md`, `brief-motion.md`, `brief-technical.md` are all
+   dated 25 September, commit `1c021f4` / build `da6cca6`, and read
+   the code as it stood four days and dozens of commits ago: none of
+   the Character page, the Body shelves, the Accuracy relocation, the
+   cosmetic pass, practitioner mode, or anything from this round is in
+   them. "Design, art direction, innovation, UI, UX, tech" maps
+   directly onto the four existing files by their own stated
+   ownership. Each already carries its own discipline, re-read the
+   code, do not trust the old document: applying that discipline to
+   itself.
+8. **Cloudflare and API steps, ten year old level, again.** The
+   Cloudflare walkthrough for steps 3 and 4 was already written this
+   session and never sent, since he asked to see the build first.
+   Sending it now. "My APIs" beyond Cloudflare's two secrets and
+   `RECORDS_KEY`: the server's README also names `APPLE_ISSUER_ID`,
+   `APPLE_KEY_ID`, `APPLE_KEY_P8`, `GOOGLE_SA`, `GOOGLE_PUSH_KEY`,
+   `VAPID_PUBLIC`, `VAPID_PRIVATE`, `RESEND_KEY`, `ADMIN_KEY`, each
+   read by a feature not built yet, store purchases, push, password
+   reset by email, the support console. `HOSTING-SETUP.md` already
+   says these can wait; naming them now rather than walking each one
+   blind, since walking a step for a feature that does not exist yet
+   is a script for nothing.
+
+Dispatching the Field pass (1 through 5, verify what already exists
+before building anything, find and remove the pill, a new Embody icon)
+and the blank profile fix (6) as two agents, each in its own worktree.
+The briefs refresh (7) is a documentation pass, separate work, going
+out after. Sending the Cloudflare walkthrough now, item 8's first half;
+the API keys are named above rather than walked, since none of the
+features that read them exist yet.
+
+## Mid round, his words
+
+"I just want to add a note for what the software is and what it does.
+The term that we're using now is neuroharmonics. So Atüned, powered by
+SOURCE engine, is a tool of neuroharmonics. That's going to go into the
+onboarding. That's going to go into the tutorial. We're going to use
+this in the funnel." A naming decision, not yet built anywhere: the
+line is "Atüned, powered by SOURCE engine, is a tool of neuroharmonics."
+Queued for onboarding, the tutorial and the funnel, not dispatched this
+round on its own; the next copy pass through any of those three carries
+it.
