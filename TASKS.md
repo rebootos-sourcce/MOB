@@ -25414,3 +25414,28 @@ side of the centre figures, both starting minimized, the freed space
 used to scale the two figures up. File scoped to `map.js` and the
 Body specific parts of `head.html`, run alongside the cosmetic pass
 already in flight in the same tree.
+
+## LR. The Field's accuracy moved back to the render area, and the go ahead on the masks
+
+His words, verbatim: "On the field page on the lower left, I want the
+accuracy moved there. So it'll be moved down from where it currently
+is. Actually, I don't even see it. Oh, right, it's been moved to the
+menu. Yeah, yeah, okay, so move it back to the center render area, but
+lower left-hand corner, opposite of like the zoom keys on the
+horizontal line. Yeah, that should tell me something. Get all of it.
+hey, dude, please build the masks now. Plus, these cosmetic elements.
+Otherwise, you're doing a great job. I'm looking at the build right
+now, and it's coming along."
+
+- **Accuracy, back onto the Field's own stage**, lower left corner,
+  the same horizontal line as the zoom controls, which sit lower
+  right. It was moved into the bottom dock round CR, his own order at
+  the time; now asked back onto the render area itself.
+- **The real masks, greenlit now rather than held for last.** His own
+  words, direct: "please build the masks now." Answers the open
+  question from this same round: dispatched now, in parallel with the
+  cosmetic pass and the Body shelves already in flight, scoped to a
+  new file rather than `map.js` so it does not collide with the Body
+  shelf work already running there.
+- **The build he already has is landing well**, his own word, on v890,
+  the menu pass.
