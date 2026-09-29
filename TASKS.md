@@ -25211,3 +25211,68 @@ them.**
   Top stays visible and in reach the whole time, and pressing it
   returns cleanly. Not passed on as a confirmed bug; the icon request
   for Top, Registers and Layers stands regardless, queued.
+
+## LP. The real creative behind the masks, given in full, and a sequence: menu, then a build; cosmetic; then a build; the heavier work after
+
+His words, verbatim: "the markup is not correct. This is the creative
+behind the masks. When I come to this mask page, I see six grids.
+Above it is the name of the mask. In very small, simple font. As a
+person enters their gets all their spiritual energetics that lays down
+the foundation of the first shapes. So someone has a worry or someone
+has a sage. Or someone has a rebel. The mass begin to take shape. So
+the spiritual energetics drives the shape. Right, that's the essence.
+That's great. That's the essence of the face. It's pixel art. And it
+needs to take account of the fetters saboteurs clusters hyper, uh,
+hyper clusters that form it so the people enter their journal the
+masks fill in obviously badges and awards are a tie to what gets
+filled in and how what they link up so if you create a saboteur if you
+create a Complex it gets you get your reward for it. That should go
+into the notes for the badges and rewards. And I want it to be
+reflective of their positives and negatives. So maybe this two buttons
+for their masks. You know, there's a jouissance the part where we
+overly lean into it, and then the negative traits. The dark mask and
+the light mask. and all of those form the character. So that's the
+character page. Let's rename masks there to character. And then all
+the masks will just be the masks. And if I click on an entire mask, on
+my right hand information side, it gives me a full summary of what
+that mask is doing. How it operates through me. Both light and dark.
+So I picture the mass higher resolution. More pixels. It will, be, it
+will be dynamic. So if a person goes over a certain amount, the grid
+will dynamically scale. If what you're asking in the current mass page
+is the human body with all the chakra points, then yes, it definitely,
+then yes, it definitely replaces all that. You should have developed
+and designed the system already. Fix and have menu first. then give me
+a build, then Everything cosmetic that I may have called out that's
+priority, do that first, then give me a build. Before you do the
+heavier stuff. And for the intro animation, the main size, can you
+scale it down? Fifteen percent. So that when it zooms in, it comes in
+at about the same scale as the actual landing screen."
+
+- **The creative, in full, for the real build.** Six grids, the mask's
+  name above each in a small simple font. The person's own charge, read
+  through fetters, saboteurs, clusters and hypercomplexes, drives the
+  shape each grid takes, not only how full it is; a worry, a sage, a
+  rebel, each shapes its mask differently. Higher resolution than the
+  mockup, and the grid itself scales up once a person's data passes
+  some volume. Two readings per mask, light and dark, "jouissance"
+  where a trait is overleaned against its negative, and both readings
+  together are what the page calls the character. Clicking a whole
+  mask opens a full summary in the right rail, how it runs through him,
+  both readings.
+- **A rename that reorders the words rather than the surfaces.** The
+  page is Character. The six grids are the masks, same word, now one
+  level down.
+- **Confirmed explicitly: this replaces the current Masks page
+  entirely,** body diagram and chakra points included, on his own
+  words: "if what you're asking in the current mask page is the human
+  body with all the chakra points, then yes, it definitely replaces
+  all that."
+- **A backlog note, his own instruction to record it as one:** badges
+  and awards, not built, should tie to forming a saboteur or a complex,
+  a reward at the moment one closes.
+- **The sequence, his own order, three passes not one.** Menu items
+  first, a build. Then everything cosmetic he has already called out
+  as priority, a second build. The heavier work, the real Character
+  page among it, comes after both.
+- **The intro animation's main size, scaled down 15 percent**, so its
+  zoom lands at the same scale the landing screen actually sits at.
