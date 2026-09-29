@@ -26933,3 +26933,43 @@ Read as, and this answers round MG's own open question:
    chat reply: no, the deploy workflow already names index.html
    itself at build time; nothing in the source file's own name has to
    change.
+
+## Round MI
+
+His words: "on second thought, have the attuned loading screen, the
+loading screen, when it loads in, it takes us to the login you punch
+in the login then it takes you to the onboarding we'll figure out the
+proper flow when we start refining the product a bit more Oh, I'm
+sorry, my mistake. So the landing page needs to be the funnel. where
+they create their account. The experience that we give them passes
+data to the database. and then when they log in, they're starting CQ
+is whatever their value is. and they have to go through their first
+day tutorial. Okay, I get I get what you're saying. And then the
+cookies are once you've logged in once, you no longer have to see the
+funnel because you're in."
+
+Read as, a self correction landing on a real flow: the funnel is the
+account and the login, the quiz's own answers pass to a database and
+become the person's starting CQ, login carries them into the
+instrument, the instrument opens on the first day tutorial, and a
+cookie marks a returning person so the funnel is skipped and they land
+straight in. This is real, and it is also the exact P0 spine the
+TDD document round MG logged already names: identity, a database, and
+the handoff between two separately deployed surfaces.
+
+**What this needs that this repository does not have.** `HOSTING-
+SETUP.md` already states it plainly: "the server, the database and the
+deploy workflow live in `reboot-os`, a [different repository]." The D1
+database confirmed live in round LV is not code in this repo; it is a
+Worker (`atuned-api`) that lives in `reboot-os`, which this session
+does not have attached. Building the login and the funnel-to-database
+handoff for real means reading and very likely writing that server,
+not only MOB's own client. Round MA and MB's document already
+described real, existing code in that same repository's `atuned/`
+folder, schema and a Source AI design; whether any of it is the same
+worker `atuned-api` or a separate build is unconfirmed and worth
+finding out before assuming either way.
+
+Added `reboot-os` to this session to find out, rather than guessing at
+a repository's contents from a document about it. Findings follow once
+read.
