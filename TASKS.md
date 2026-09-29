@@ -24674,6 +24674,27 @@ real space, real estate."
   anywhere in the engine or the UI. Matches what he already believed.
   Backlog, per his own hedge.
 
+## Badges and rewards: notes for the system, not built
+
+Round LP, his words, and his own instruction that they go here: "badges
+and awards are a tie to what gets filled in and how what they link up so
+if you create a saboteur if you create a Complex it gets you get your
+reward for it. That should go into the notes for the badges and
+rewards." A reward is earned at the moment a pattern forms, a saboteur,
+a complex, and by the same logic a hyper complex and a character, and
+what earns it is what fills in the masks and how the pieces link up, so
+the ladder is the chain `compute()` already builds (`r.sabs`, `r.cxs`,
+`r.hys`, `r.sups`) and not a count invented beside it. Nothing is built:
+no badge or reward system exists in the engine or the UI. The Character
+page (`ui/character.js`) already marks two of those moments without
+calling them rewards: a mask's grid goes from 16 to 24 pixels across when
+a saboteur forms under it, to 32 when one joins a complex, and its rim
+lights when the chain reaches the character. Whoever designs the badges
+reads those two thresholds from there rather than setting new ones. Open
+and his: whether a reward is earned when a pattern forms, when it is
+released, or both, since forming one is the product reading more of a
+burden, and a prize for that is a question and not a detail.
+
 ## LH. CQ, DQ, SQ must be one math everywhere; the nav fix confirmed; badges and schema asked about directly
 
 His words, verbatim: "Field, compass, body cq, dq, sq should always be
@@ -25467,3 +25488,31 @@ persona in the profile dropdown can itself be marked a practitioner,
 which would make the Practitioner tab relevant for that persona
 specifically, a client list and client analytics as two of the tools
 inside its own rough frame. Not dispatched.
+
+**Both the Body shelves and the cosmetic pass landed and independently
+verified, commits `974704b` and `29525dd`, both pushed.**
+
+Body shelves: rebuilt and gated in an isolated worktree, matching the
+report exactly, `tests/engine.js` 1841, `design.js` 184, `collide.js`
+351. `functional.js` read 1321 passed 1 failed twice running, the
+Field fade-timing check the agent itself had already isolated and
+confirmed as load, not its change (same failure reproduced on
+unmodified HEAD under the same concurrent load). Screenshotted the
+Body page myself: two small circles, Front and Back, both shut, the
+bottom row gone, the figures visibly larger.
+
+Cosmetic pass: same gate numbers, `engine.js` 1841, `design.js` 184
+clean on a rerun after one flaked run, `collide.js` 351,
+`functional.js` 1321 passed 1 failed three times running, the same
+Field fade check, the same load explanation, with two more agents
+still active in the same tree the whole time this was checked.
+Screenshotted the Story page and the Avatar's Becoming myself: Record
+now sits above Source AI, which has its own black ground and a new
+question button; no "scripted", no "the day", no "or start from where
+did you feel it first"; Imprints carries no "not read yet"; Release
+reads "Nothing is held above the line yet" in a neutral colour, not
+red. Becoming's ring sits centred, "To release" on the left, "To
+embody" on the right, matching his words exactly.
+
+Voice check on both: 22 findings, 0 stopping, same as before either
+landed.
