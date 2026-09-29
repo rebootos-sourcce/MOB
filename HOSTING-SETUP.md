@@ -137,6 +137,15 @@ instead of clicking buttons. It only has to be done once, ever, for
 `RECORDS_KEY`, because it is never allowed to change once real records
 exist under it.
 
+**No `git` needed for this step.** The first version of this document
+said to clone the whole `reboot-os` repository first. That was more
+than this step actually needs, and it broke on a computer with no
+`git` installed, a Windows PowerShell window reading "git is not
+recognized." Fixed here, checked against the tool's own instructions:
+`wrangler secret put` takes the Worker's name directly on the command
+line, `--name atuned-api`, so nothing has to be downloaded or cloned
+first.
+
 1. Open a terminal.
    - On a Mac: press Cmd and Space together, type `Terminal`, press
      Enter.
@@ -145,22 +154,15 @@ exist under it.
    version number like `v20.11.0` means it is installed; an error means
    it is not, and it has to be installed first from `nodejs.org` (the
    big green button, the LTS version).
-3. Get a copy of the `reboot-os` repository on this computer, if there
-   is not one already. Type:
-
-       git clone https://github.com/rebootos-sourcce/reboot-os.git
-
-   then:
-
-       cd reboot-os/atuned/server
-
-4. Log the deploy tool into the Cloudflare account. Type:
+3. Log the deploy tool into the Cloudflare account. Type:
 
        npx wrangler login
 
-   A browser window opens asking to approve access. Click "Allow."
+   The first run downloads the tool itself, which takes a moment, then
+   a browser window opens asking to approve access. Click "Allow." This
+   is the same Cloudflare account confirmed in round LS.
 
-5. Generate the secret's value. This is the exact line the server's own
+4. Generate the secret's value. This is the exact line the server's own
    files carry for it, `atuned/server/wrangler.toml`, quoted rather than
    invented: thirty two random bytes, so nobody, including him, has to
    remember or type a password for it. Type:
@@ -170,21 +172,25 @@ exist under it.
    It prints one line of random looking letters and numbers. That is
    the value.
 
-6. Before anything else, save that value somewhere outside Cloudflare, a
+5. Before anything else, save that value somewhere outside Cloudflare, a
    password manager or a note kept safe. This is the one piece that
    cannot be recovered: it is never shown again, Cloudflare only stores
    it encrypted, and every record saved under it is unreadable forever
    if it is lost.
 
-7. Set the secret. Type:
+6. Set the secret. Type:
 
-       npx wrangler secret put RECORDS_KEY
+       npx wrangler secret put RECORDS_KEY --name atuned-api
 
-   It asks for a value. Paste the line from step 5 and press Enter.
+   It asks for a value. Paste the line from step 4 and press Enter.
+   `atuned-api` is the Worker's own name, written in `wrangler.toml`;
+   passing it this way is what makes step 3 in the old version of this
+   document, cloning the whole repository, unnecessary.
 
-8. Done. The Worker now has the key it needs to seal every stored
+7. Done. The Worker now has the key it needs to seal every stored
    record. Nothing else has to happen for sync to start working once
-   the two GitHub secrets from step 3 are also in place.
+   the two GitHub secrets from the "Step 3" section above are also in
+   place.
 
 Everything else the README lists as a secret (`VAPID_PUBLIC`,
 `VAPID_PRIVATE`, `RESEND_KEY`, `ADMIN_KEY`, the Apple and Google store
