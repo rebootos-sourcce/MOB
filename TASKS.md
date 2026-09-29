@@ -25285,3 +25285,24 @@ their own bottom corners with a pin line frame, the mark selector to
 the upper right with its own close, starting shut. The cosmetic pass
 and the intro animation scale wait for this one to land and ship
 first, his own order.
+
+**Landed and independently verified, commit `99971ab`.** Not trusted
+off the report: rebuilt in an isolated worktree, re-ran every gate
+myself. `tests/engine.js` 1841 passed, `tests/design.js` 184 passed,
+`tests/collide.js` 351 passed, matching exactly. `tests/functional.js`
+read 1306 passed 11 failed on the first run, the same seat tone audio
+flake this file keeps hitting under load, clean at 1317 passed 0
+failed on a rerun, matching exactly. Voice check 22 findings, 0
+stopping, same as before. Screenshotted the Body page, the Compass and
+the right rail folded myself: the overlay row sits top left like the
+Field, Front and Back split to their own bottom corners each in a
+pin line frame, the mark selector collapsed to a small circle at the
+picture's own upper right, Top/Registers/Gravity well/Radiance/Layers
+all carry their own icon now, and the right rail folds to a thin strip
+with the stage taking the width back. Matches the report on every
+point checked.
+
+One open question surfaced rather than guessed at: whether "I can't
+get back to the compass" meant a dedicated Compass reset button rather
+than the Top/Registers toggle already there. Not built, since it was
+outside the dispatch's scope; his call whether it is wanted.
