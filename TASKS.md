@@ -26115,3 +26115,9 @@ the Field's remaining two asks (the vibration threshold, the pulse
 verification), the briefs, the Story follow up, the Avatar redesign
 and the Summary/Analytics split, this time on a model this account's
 weekly limit has not reached.
+
+Done. Six agents running now, all on that model, the Field piece
+narrowed to what is actually still open since the pill and the Embody
+icon already shipped: build a weight above five line vibration that
+does not exist yet, and verify the tension pulse actually reaches the
+screen.
