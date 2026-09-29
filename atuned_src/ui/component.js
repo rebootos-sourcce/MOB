@@ -476,8 +476,11 @@ const LBL_R=0.95, LBL_M=10;
 /* what sits over the canvas and therefore bounds the wheel. Accuracy left
    this list when it left the stage's foot for the left rail, ED in TASKS.md,
    because a readout that no longer sits over the canvas has no business
-   taking radius from it. */
-const OVERLAY=['tl','bal','howto'];
+   taking radius from it. It is back, round LR, because it is back on the
+   stage in the lower left, and reframe() below measures it by id like the
+   rest: the nearest corner of its box to the canvas centre caps the radius,
+   and a box the circle cannot reach costs nothing, which is the wide stage. */
+const OVERLAY=['tl','bal','howto','acc'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));

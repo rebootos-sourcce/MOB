@@ -481,8 +481,10 @@ function fbPaint(){
     that ground, the one the wheel's domain ring and the renditions use. */
  var lt=stageLight();
  /* and the coherence corner, which lies on the same ground under the switch
-    since round IT and is made of the same glass */
- [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW,document.getElementById('railtop')]
+    since round IT and is made of the same glass, and accuracy in the corner
+    opposite zoom since round LR, for the same reason */
+ [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW,document.getElementById('railtop'),
+  document.getElementById('acc')]
   .forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
  document.body.classList.toggle('noshadow',!layerOn('shadow'));
  [FB,FB_PANEL].forEach(function(host){if(!host)return;

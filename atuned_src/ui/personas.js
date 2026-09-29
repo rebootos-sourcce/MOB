@@ -406,7 +406,9 @@ function renderAcc(r){
   /* ONE SIZE WITH EVERY READOUT BESIDE IT, ruled 26 September. It was the
      one large ring on the Field. The dock is in the left rail now as circles,
      ED in TASKS.md, so the size they share is the circle, and CQ alone is
-     larger, on his ruling. */
+     larger, on his ruling.
+     It lies on the stage again, round LR, level with zoom in the lower left,
+     and keeps the orb: zoom's circles beside it are 44, the orb's size. */
   +cr('Crown',un?0:a.pct,{size:'orb',raw:un?'\u2013':a.pct.toFixed(0),
     label:'accuracy',hot:false})
   +'</button>';

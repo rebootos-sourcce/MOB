@@ -1790,10 +1790,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom,.cn-zoom,#railtop{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.fzoom,.cn-zoom,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,#railtop.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -1945,36 +1945,18 @@ body:not(.tab-field) .fdock{display:none}
    CQ's pill, which rides its ring's lower right, reached 0.7 into the word's
    line box, so the word sits 3 higher than its circle's centre line and the
    two clear by 2.3. */
-.fdock .fdrow{display:flex;align-items:center;justify-content:space-between;min-width:0}
+/* AND ACCURACY LEFT THE ROW FOR THE STAGE'S LOWER LEFT, round LR in TASKS.md,
+   so the row is DQ and CQ. Spread to the rail's edges, two circles read as
+   two ends of nothing, so they sit centred on the four's own gap. */
+.fdock .fdrow{display:flex;align-items:center;justify-content:center;gap:20px;min-width:0}
 .fdock .fdrow .key{display:contents}
 .fdock .key .kb[data-q=dq]{order:1}
 .fdock .key .kb[data-q=cq]{order:2;min-width:72px;min-height:72px}
-.fdock .fdrow .acc{order:3}
 .fdock .keylo{justify-content:center;gap:20px}
 .fdock .kb{min-width:var(--tap);min-height:var(--tap);padding:0;border:0;background:transparent;
  justify-content:center;border-radius:50%}
 .fdock .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-/* accuracy keeps its word, to the left of its circle, ruled */
-.fdock .acc{margin:0;padding:0;text-align:center;display:flex;justify-content:center}
-.fdock .acc-b{gap:8px;padding:0;border:0}
-.fdock .acc-l{transform:translateY(-3px)}
-/* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
-   words: "The accuracy pill is bigger than everything else. Make all of
-   those uniform." Its ring and value pill were already the orb size, DQ's to
-   the pixel, measured on every lighting at five widths. What was bigger was
-   the box round it. DQ and CQ are .kb and the dock cleared .kb's hover fill
-   and gave its focus a round outline; accuracy is .acc-b, the button it was
-   when it sat boxed in the stage's corner, and it kept that button's hover:
-   a rounded slab 112 by 44 behind the word and the circle together, twice
-   the width of anything on the row, run into the rail's edge. Flat went one
-   further and filled the word's own box at rest, from its list of boxed
-   controls. So the slab goes, the word loses its fill, and keyboard focus
-   rings the circle as it rings DQ's, 3 out. */
-.fdock .acc-b:hover{background:transparent}
-body.flat .fdock .acc-l{background:transparent}
-.fdock .acc-b:focus-visible{outline:none}
-.fdock .acc-b:focus-visible .cr{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
@@ -2106,11 +2088,45 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    was absolute in the stage's lower right with a large ring, 66 high against
    44 for every other readout, which is the size difference he named. It keeps
    its word, which is ruled, and takes the same box and ring as the rest. */
-.acc{margin-left:auto;text-align:right}
-.acc-b{display:flex;align-items:center;gap:6px;background:transparent;
- border:1px solid var(--edge);padding:2px 4px 2px 8px;
- border-radius:var(--r-xs);color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
-.acc-b:hover{background:var(--sunk)}
+/* BACK ON THE STAGE, IN THE LOWER LEFT, round LR in TASKS.md: "lower
+   left-hand corner, opposite of like the zoom keys on the horizontal line."
+   The dock in the left rail is where it went at ED, and a first visit lands
+   on that column shut, so he could not find it. It is the band word's
+   capsule, the same glass on the same ground, #railtop above, and it is
+   placed by zoom and not by the stage: the capsule is 50 high where a zoom
+   circle is 44, so 9 from the foot puts its centre line on the centre line
+   of the lowest zoom circle, 12 from the foot. On a phone zoom is a row in
+   flow under the picture and the same 9 holds, because zoom keeps the same
+   12 of foot there, below. */
+.acc{position:absolute;left:12px;bottom:9px;z-index:6;display:flex;align-items:center;
+ padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+.acc-b{display:flex;align-items:center;gap:8px;background:transparent;border:0;
+ padding:0 0 0 14px;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
+/* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
+   words: "The accuracy pill is bigger than everything else. Make all of
+   those uniform." Its ring and value pill were already the orb size, DQ's to
+   the pixel, measured on every lighting at five widths. What was bigger was
+   the box round it. DQ and CQ are .kb and the dock cleared .kb's hover fill
+   and gave its focus a round outline; accuracy is .acc-b, the button it was
+   when it sat boxed in the stage's corner, and it kept that button's hover:
+   a rounded slab 112 by 44 behind the word and the circle together, twice
+   the width of anything on the row, run into the rail's edge. Flat went one
+   further and filled the word's own box at rest, from its list of boxed
+   controls. So the slab goes, the word loses its fill, and keyboard focus
+   rings the circle as it rings DQ's, 3 out. It came back to the stage with
+   the readout, round LR, and the capsule is its one edge there. */
+.acc-b:hover{background:transparent}
+body.flat .acc .acc-l{background:transparent}
+.acc-b:focus-visible{outline:none}
+.acc-b:focus-visible .cr{outline:2px solid var(--accent);outline-offset:3px}
+/* AND ITS VALUE PILL IS MADE OF THE GROUND, as the bar's are. The orb's pill
+   mixes into var(--panel), which is the lighting's panel and not the stage's:
+   under Snow the panel is paper and the stage stays the ruled #101010, so the
+   pill came out pale lilac carrying the glass's pale ink, measured on the
+   first cut of round LR. The bar's own pill, .fb-v, mixes into --fb-pillbg,
+   which follows the ground, and so does this. Punch keeps its solid fill. */
+body:not(.punch) #acc .cr .v{background:color-mix(in srgb,var(--c) 30%,var(--fb-pillbg))}
 body:not(.tab-field) .acc{display:none}
 .acc-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;color:var(--gold)}
 .acc-n small{font-size:16px;opacity:.6;margin-left:2px}
@@ -4746,7 +4762,9 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     is one row of two circles here and leaves the right of that row empty.
     Zoom follows the picture, right aligned, in a row: under it there is no
     compass lane to keep clear. */
- .fzoom{position:static;order:1;align-self:flex-end;margin:8px 22px 0 12px}
+ /* and it keeps 12 of foot under it, the desktop's own, because accuracy
+    lies level with it in the lower left, round LR, placed by that 12 */
+ .fzoom{position:static;order:1;align-self:flex-end;margin:8px 22px 12px 12px}
  .fzoom .fb-grp{flex-direction:row}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
@@ -4837,11 +4855,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-mic{flex-wrap:wrap;height:auto;padding-top:6px;padding-bottom:6px}
  /* and the lighting switch is a segmented row of six that cannot fit on one */
  #setthemes{flex-wrap:wrap}
- .tl,.acc,.howto{position:static;transform:none;text-align:left;max-width:none;
+ .tl,.howto{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}
  .tl{order:2;margin-top:10px}
  .tl b{font-size:15px}
- .acc{order:4;margin-top:12px}
+ /* ACCURACY STAYS OUT OF THIS COLUMN, round LR. It is not one of the five
+    blocks that landed on each other: it lies level with zoom, which is the
+    last thing in the column, so it keeps its absolute corner and takes only
+    zoom's own inset from the side. */
+ .acc{left:22px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
  .pol2 svg{height:190px}
@@ -5834,13 +5856,14 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     button in a row is the same width, the rows run from the rail's left edge
     to its right, and all seven are one height, one edge and one radius. The
     ring goes, because the figure beside it says the same thing in a quarter
-    of the room; the letters or the mark stay as the button's name, and
-    accuracy keeps its word, ruled, in place of its mark. */
+    of the room; the letters or the mark stay as the button's name.
+    ACCURACY LEFT THE FIRST ROW FOR THE STAGE, round LR in TASKS.md, so that
+    row is two columns, DQ and CQ, still flush left to right. On the stage it
+    keeps its ring, as zoom beside it keeps its circles. */
  .fdock{gap:6px}
- .fdock .fdrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .fdock .fdrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
  .fdock .keylo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
- .fdock .acc{display:block;min-width:0}
- .fdock .kb,.fdock .acc-b{width:100%;min-width:0;height:48px;min-height:var(--tap);
+ .fdock .kb{width:100%;min-width:0;height:48px;min-height:var(--tap);
   padding:0 6px;display:flex;align-items:center;justify-content:center;gap:6px;
   border:1px solid var(--edge);border-radius:var(--r-xs);background:transparent}
  .fdock .key .kb[data-q=cq]{min-width:0;min-height:var(--tap)}
@@ -5851,13 +5874,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .fdock .cr.orb .ring .gl svg{width:17px;height:17px}
  .fdock .cr.orb .v,.fdock .cr.hero .v{position:static;height:auto;min-width:0;padding:0;
   background:none;border:0;color:var(--ink);font-size:14px;line-height:1;font-weight:500}
- .fdock .acc-b .cr .ring{display:none}
- .fdock .acc-l{transform:none}
- .fdock .acc-l b{font-size:12px;color:var(--mid)}
- .fdock .kb:focus-visible,.fdock .acc-b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
- /* Punch fills a .kb and never had to fill accuracy, which was a circle; as
-    a tile beside DQ it takes the same fill or the row is not uniform */
- body.punch .fdock .acc-b{border-color:transparent;background:var(--panel-2)}
+ .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 }
 
 </style></head>

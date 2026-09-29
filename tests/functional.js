@@ -4912,30 +4912,50 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     on the left hand side" and "I do want the CQ number bigger, so it's in
     your face." And EZ in TASKS.md: SQ out of this row, "SQ is a total sum of
     the DQ anyway", accuracy kept in it, "just make sure there's just two
-    rows." So DQ, CQ and accuracy on one centre line, the four under them, and
-    no SQ in the dock while the bar's Addresses circle still carries it. */
+    rows." So DQ and CQ on one centre line, the four under them, and no SQ in
+    the dock while the bar's Addresses circle still carries it.
+    AND ACCURACY IS NOT IN IT. Round LR in TASKS.md, his words: "move it back
+    to the center render area, but lower left-hand corner, opposite of like
+    the zoom keys on the horizontal line." So it is held to zoom: on the
+    stage, in the lower left, its circle on the centre line of the lowest
+    zoom circle, and as far in from the left edge as zoom is from the right.
+    Measured with the column open, which is the narrower stage. */
  /* the readings are in the left column, which a first visit lands on shut, GO,
     so it is opened the way a person opens it */
  await fp.click('#lfold'); await fp.waitForTimeout(300);
  const dock=await fp.evaluate(()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
   const q=k=>document.querySelector('#fdock .kb[data-q='+k+'] .cr');
   const bx=k=>q(k).getBoundingClientRect(), fs=k=>parseFloat(getComputedStyle(q(k).querySelector('.v')).fontSize);
-  const ac=document.querySelector('#accbtn .cr').getBoundingClientRect(), mid=r=>r.top+r.height/2;
+  const mid=r=>r.top+r.height/2;
   const items=[...d.querySelectorAll('.kb, #accbtn')].map(e=>e.getBoundingClientRect());
   const rows=[...new Set(items.map(r=>Math.round(mid(r))))].sort((a,b)=>a-b);
-  return {inLeft:left.contains(d),inStage:document.getElementById('stage').contains(d),
+  const st=document.getElementById('stage'),s=st.getBoundingClientRect(),acc=document.getElementById('acc');
+  const ac=document.querySelector('#accbtn .cr').getBoundingClientRect(),ab=acc.getBoundingClientRect();
+  const zs=[...document.querySelectorAll('#fzoom .fb-b')].filter(x=>x.offsetParent).map(x=>x.getBoundingClientRect());
+  const low=zs.sort((a,b)=>b.bottom-a.bottom)[0];
+  return {inLeft:left.contains(d),inStage:st.contains(d),
    cq:bx('cq').width,dq:bx('dq').width,cqFig:fs('cq'),dqFig:fs('dq'),
-   line:Math.max(Math.abs(mid(bx('dq'))-mid(bx('cq'))),Math.abs(mid(ac)-mid(bx('cq')))),
-   order:bx('dq').right<=bx('cq').left&&bx('cq').right<=ac.left,
+   line:Math.abs(mid(bx('dq'))-mid(bx('cq'))),
+   order:bx('dq').right<=bx('cq').left,
    sq:!!document.querySelector('#fdock [data-q=sq]'),rows:rows.length,
    sqElsewhere:/SQ/.test((document.querySelector('#fbar [data-fb=addresses]')||{}).getAttribute('data-tip')||''),
-   acc:left.contains(document.getElementById('acc'))&&left.contains(document.getElementById('keylo'))};});
- ok(dock.inLeft&&!dock.inStage&&dock.acc,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
+   keylo:left.contains(document.getElementById('keylo')),
+   acc:{inStage:st.contains(acc),inLeft:left.contains(acc),
+    lowerLeft:ab.left-s.left<s.width/4&&s.bottom-ab.bottom<s.height/8,
+    level:+Math.abs(mid(ac)-mid(low)).toFixed(2),
+    mirror:+Math.abs((ab.left-s.left)-(s.right-Math.max(...zs.map(r=>r.right)))).toFixed(2),
+    overlay:typeof OVERLAY!=='undefined'&&OVERLAY.indexOf('acc')>=0}};});
+ ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
  ok(dock.cq>dock.dq&&dock.cqFig>dock.dqFig,'CQ is the larger circle and the larger figure, '
   +Math.round(dock.cq)+' against '+Math.round(dock.dq)+', figure '+dock.cqFig+' against '+dock.dqFig);
  ok(!dock.sq&&dock.sqElsewhere,'SQ is off the dock and only off the dock: the bar\'s Addresses circle still says SQ');
  ok(dock.rows===2,'the dock reads as exactly two rows, got '+dock.rows);
- ok(dock.order&&dock.line<1,'DQ, CQ and accuracy in that order on one centre line, off by '+dock.line.toFixed(2));
+ ok(dock.order&&dock.line<1,'DQ and CQ in that order on one centre line, off by '+dock.line.toFixed(2));
+ ok(dock.acc.inStage&&!dock.acc.inLeft&&dock.acc.lowerLeft,
+  'LR: accuracy lies on the stage in its lower left and not in the rail, '+JSON.stringify(dock.acc));
+ ok(dock.acc.level<1&&dock.acc.mirror<1,
+  'LR: accuracy\'s circle is level with the lowest zoom circle and as far in from the left as zoom is from the right, '+JSON.stringify(dock.acc));
+ ok(dock.acc.overlay,'LR: and it is in OVERLAY, so the wheel measures its radius against it');
 
  /* THE CIRCLES MOVE INTO A CHANGED VALUE rather than snapping, EZ: "I want to
     be able to see the animations on these." Sampled a frame after a load that
@@ -5388,7 +5408,8 @@ console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box
  const back=await bar();
  ok(!back.shut&&!back.folded&&back.lead==='Close the tools'&&back.n===open.n&&back.stored==='open',
   'and a second press brings back the whole row at 1600, measured afresh, '+JSON.stringify(back));
- /* the accuracy checks below press the dock, which is in the column */
+ /* the checks below press DQ, which is in the column. Accuracy is on the
+    stage since round LR and is pressed where it lies. */
  await gp.click('#lfold'); await gp.waitForTimeout(250);
  /* THE ACCURACY BOX. DQ's button is the reference: whatever DQ draws under a
     pointer, accuracy draws, and on Flat its word carries no fill at rest */

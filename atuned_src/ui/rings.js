@@ -334,7 +334,11 @@ const FR_SHOW_OUTSIDE=false;
    window back from the strip along the stage's foot where the lower pills
    and accuracy sat over this cell. Those readings moved to the left rail with
    the glass bar, ED in TASKS.md, so nothing sits over the cell and the window
-   is the host's own box. */
+   is the host's own box.
+   Accuracy came back to the stage at round LR, but to its lower left corner
+   and not the foot's strip: it lies over the flush frame's outer corner the
+   way the band word lies over the upper right one, and the window is still
+   not cut back for either. */
 /* THE FRAME RUNS FLUSH, ruled. His words: "I like the frame, but I don't like
    the beveled edges because I want the entire thing flush to the rectangle of
    the area." It was drawn eight pixels in from its box and every ring was a
