@@ -25618,3 +25618,116 @@ Story, Becoming and Release, the Field's Accuracy back on the stage,
 the real Character page, and the F key fix. Building the combined
 build next, per his own words: "when you're done with the mask, give
 me a build."**
+
+Sent as `atuned.html`, build v912 commit `198300c` 2026-09-29 08:02,
+source.html md5 `06e9a854815268b8d513a8f74778fc48`.
+
+## Round LT
+
+His words, verbatim, from the build he just opened: "Keep the body's
+mask overlay there. Now, um, yeah, you took out the masks. Oh wait,
+there they are. Now let's keep them on the body map. With the
+character, these designs, of the face, these are dynamic, and then
+what are these symbols you have in there, star looks like a crown,
+left right arrow, another crown, another crown. The shapes of the
+faces aren't pleasing. There's something in the aesthetic that I don't
+like. And then the, I should be able to hover over each pixel and have
+it tell me what that story is. I don't feel this page is fully useful
+yet. And then what innovation, art direction, animation can we pull
+from the field as an aesthetic on top of this? Either way, really good
+job. With the ritual builder, just the design aesthetic and the
+layout, this is a scroll up and down in that center column for the
+ritual even though there's about an inch and a half on the left and
+right of the screen, this should not have a scroll, that's one, number
+two, I want color on this page to separate things, everything is gray.
+Get rid of the text 'your words', just put 'Imprints'. Get rid of the
+text says 'write the first one'. Get rid of the text says 'held in
+your body'. Get rid of the text says 'most at the throat'. Get rid of
+the text, do this, oh, change 'do this' to 'goal'. Where it says
+Record, and then September, I want that field to have a different
+color treatment. Including the accountability tracker, Days, where it
+says 'days best kept practiced', we want different colour treatment
+for that too. And then I don't see a way to edit or add, so I should
+be able to add tags that create new rituals, allow me to set up a new
+ritual, so there's like an intake, new ritual, okay I see it, the new
+ritual needs to be on the upper right hand side so it's front and
+center, and I should be able to add tags to create the ritual, put a
+timer for it, how often I want to do it, I should see a list of my
+active running tasks for the day. I'm on the Discover Story page right
+now. The cycle a new question needs to go on the right hand side. Then
+you need to be another button next to it that makes it dynamic, and
+then is there a visual way that we can treat this so that it looks
+more aesthetic, again, the Source AI field is our input field, is
+there anything that we, any treatment we can do from our field, or
+our, like, just colour treatment, animation treatment, like, well, I
+want Source AI to feel like it's a thinking system, so is there
+anything that we can do from the animation or innovation side that
+makes that text look like it's alive. And then the questions are all
+like, these are horrible questions, they're not deep personal
+questions, they make it feel like a person, a friend who knows me very
+well is asking me a personal question."
+
+Read as, in the order raised:
+
+1. **The Body's own mask overlay stays.** He momentarily thought it was
+   gone, found it, confirmed keep. No change: it was never touched.
+2. **Character's face shapes need an aesthetic pass**, his word, "not
+   pleasing", unspecified further than that: the geometry itself, not
+   the data driving it.
+3. **The archetype foundation glyphs read as unlabelled symbols**, "a
+   crown", "left right arrow", read twice as "another crown": these are
+   `ARCH[j].ic`, the faint icon under the unlit pixels (`chGlyph` in
+   `ui/character.js`), and he cannot tell what they are without a
+   label or a tell. Needs either a name on hover, a legend, or icons
+   chosen so they read at this size without one.
+4. **Hover a pixel, learn what it is.** He calls it "the story", but
+   `character.js`'s own build note already ruled a pixel is not one
+   story (every worked example has zero stories, so that unit reads
+   empty everywhere): what he can be told honestly is the address,
+   its seat, its charge, and the saboteur or complex it belongs to,
+   the same words the click summary already carries, read pixel by
+   pixel instead of mask by mask.
+5. **"I don't feel this page is fully useful yet."** Open, not a
+   specific ask; read together with 2 through 4, it is asking for
+   another pass rather than a rebuild.
+6. **Pull the Field's own aesthetic onto Character**, innovation, art
+   direction and animation named together, his own question and not
+   yet answered.
+7. **The Ritual builder scrolls vertically it should not.** The centre
+   column scrolls up and down while roughly an inch and a half sits
+   unused on both sides at 1600: a width problem being paid for in
+   height.
+8. **Colour, to separate sections on the Ritual page.** "Everything is
+   gray."
+9. **Six copy cuts and one word change on Ritual**, literal: remove
+   "your words" and leave "Imprints" alone; remove "write the first
+   one"; remove "held in your body"; remove "most at the throat";
+   rename "do this" to "goal".
+10. **Two colour treatments on Ritual**, the Record/date field (he
+    named "September", read as whatever date is currently showing) and
+    the accountability tracker's "days" line ("days best kept
+    practiced").
+11. **A route to add or edit a ritual**, which he found mid sentence
+    ("okay I see it") but still wants moved: to the upper right,
+    "front and center". Building it needs tags on the new ritual, a
+    timer, a frequency ("how often"), and a list of today's active
+    rituals visible somewhere on the page.
+12. **Story page: the "another question" cycle button moves to the
+    right**, and gets a second button beside it that "makes it
+    dynamic", his words, not yet specified further: read as open,
+    since a second button next to a question cycler could mean several
+    different things and he did not say which.
+13. **Source AI's own field wants a visual treatment that reads as
+    thinking, alive**: colour or animation, his call left to whoever
+    builds it, the ask is the feeling and not a spec.
+14. **The Source AI questions themselves are wrong.** "Horrible", not
+    deep or personal, read as a copy problem in the question bank, not
+    a UI problem: they should read like a close friend's question, not
+    a form's.
+
+Dispatching across four scoped pieces, each briefed on the other three
+to keep a shared file like `head.html` collision free: the Character
+aesthetic and hover pass (2 through 6), the Ritual builder's layout,
+colour and copy (7 through 11), the Story page's button and Source AI
+treatment (12 and 13), and the Source AI question rewrite (14), which
+is a words only change and goes to the narrative seat alone.
