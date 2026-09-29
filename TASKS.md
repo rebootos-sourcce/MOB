@@ -26973,3 +26973,36 @@ finding out before assuming either way.
 Added `reboot-os` to this session to find out, rather than guessing at
 a repository's contents from a document about it. Findings follow once
 read.
+
+**Findings, read directly at `e8b67a38`.** `atuned/server/wrangler.toml`
+names the Worker `atuned-api` and `APP_URL = "https://atuned.world"`:
+confirmed by its own name, not inferred, this is the same server
+`HOSTING-SETUP.md` already names, the one MOB's own deploy already
+points its secrets at. It is real, built, and running: a signup and a
+signin route (`POST /v1/auth/signup`, `/signin`), password hashing
+with a timing safe dummy salt against account enumeration, a ten
+attempt rate limit, a session token good for ninety days
+(`SESSION_DAYS`), a generic sync endpoint (`/v1/sync`) that stores any
+of eleven record kinds under an account, a canon endpoint, Apple and
+Google store receipt routes, and a forgot and reset password pair.
+None of round MA's document was wrong about this; it undersold it, if
+anything, since round MB and MC's documents assumed a design not yet
+built and this one already exists.
+
+**What is not there**: no route computes or stores anything called CQ,
+which is correct and expected, since compute() has always been client
+side in both codebases. His "starting CQ is whatever their value is"
+therefore means the client, likely the funnel, computing the quiz's
+own reading locally after signup and pushing it through the same
+generic sync route as any other reading, not new server logic.
+
+**What this means for the estimate given in round MG.** That estimate
+priced identity and entitlements as two to three weeks of new backend
+work. It should not have: the backend is already built, tested (21
+passing server tests, confirmed in round MA's own document and not yet
+re-run here) and deployed under the same account MOB already has
+credentials for. What is left is MOB's own client: a login screen, the
+fetch calls to these four routes, and the funnel to account handoff he
+described. That is client work, days rather than weeks, once the flow
+itself and the funnel's own quiz to CQ handoff are designed. Corrected
+in the chat reply.
