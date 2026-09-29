@@ -25188,3 +25188,26 @@ order, "do all the navigation and menu items first."**
 - Compass: he cannot find his way from Registers back to Top; a real
   navigation complaint, checked directly rather than assumed. Icons
   wanted for Top, Registers and Layers, text labels alone today.
+
+**Landed this round, the two items with no open question against
+them.**
+
+- **A mockup of the real masks, built before any live code, his own
+  explicit ask.** Six pixel art face masks, Child, Preteen, Teen,
+  Adult, Professional, Ideological, each the seat colours `MASKS`
+  already carries in `engine/data/canon.js`, each with its own
+  distinguishing mark off the same file's own comments (one eye open,
+  a split down the middle, a seam across, a squared jaw, a ring above),
+  a fill level standing in for how much of that stage's story has
+  landed. Not wired to real data yet, a mockup only, sent for his read
+  before committing to the real build a third time.
+- **Body, landed and verified, commit `9d86118`.** `tests/engine.js`
+  1841, `tests/design.js` 184, `tests/collide.js` 351,
+  `tests/functional.js` 1307, all zero failed on the clean run; one run
+  read 11 failed, all seat tone audio checks, the same flake this file
+  has hit before, gone on a clean rerun.
+- **Compass back navigation, checked and not reproduced.** Clicked
+  Registers then Top myself, real Chromium, both 1600 and 390 wide:
+  Top stays visible and in reach the whole time, and pressing it
+  returns cleanly. Not passed on as a confirmed bug; the icon request
+  for Top, Registers and Layers stands regardless, queued.
