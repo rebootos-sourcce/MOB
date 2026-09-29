@@ -25566,3 +25566,55 @@ blocking, a documentation change only, no file the Character dispatch
 touches. Expanding `HOSTING-SETUP.md`'s steps 3 and 4 now, in parallel,
 and holding the build itself for when the masks land, per his own
 instruction.
+
+**The Character page landed and independently verified, commit
+`ba015ec`, pushed.** The real build, greenlit round LR: six pixel grids,
+one per mask, shape driven by fetters, saboteurs, complexes and hyper
+complexes and not by volume alone, a faint archetype foundation under
+what has not lit yet, dark and light readings, one switch for both, a
+click opening a full summary in the right rail, the grid itself scaling
+16 to 24 to 32 as a saboteur forms and joins a complex. Rebuilt and
+gated in an isolated worktree, matching the report: `engine.js` 1841
+passed 0 failed, `collide.js` 351 passed 0 failed, `design.js` 184
+passed 0 failed clean on a rerun after one flaked run, `functional.js`
+1335 passed 0 failed clean on a rerun after the same Field fade flake
+this file has already named a dozen times, `monitor.js` all surfaces
+render including Character at 301046 markup on a phone, voice check 0
+stopping. Read the file itself, not only the report: the geometry, the
+palette ramp and the summary panel all match what he asked for line by
+line. Screenshotted James, a loaded persona, both readings, both
+widths, and the click-to-summary panel: "Mask, Child, worn over the
+root and sacral, What it does, Built on the Warrior, The dark mask, 7
+saboteurs, 6 of them part of a complex, four families into hyper
+complexes, the rim lit; The light mask, the opposite in at 5 addresses,
+one pattern overshot." Matches the engine's own numbers exactly.
+
+Three things open, his call and not built blind:
+- **Preteen and Professional read the same fill.** `MASKS` in
+  `canon.js` seats both on Solar and Throat, so the engine cannot tell
+  their charge apart, only their face differs. Move one to a different
+  seat, or leave them reading the same weight with two different faces.
+- **When a reward is earned**, a pattern forming, a pattern released, or
+  both, already logged above under badges and rewards.
+- **Does "it replaces all that" reach the Body's own mask overlay too**,
+  the one pixel per story still drawn on the Body figure, or only the
+  page this page.
+
+**The F key on Body landed and independently verified, commit
+`f75f83d`, pushed.** Reproduced and root caused two rounds ago: F never
+knew any tab but the Field. It now calls the same pair the Body's own
+"Whole body" button calls, `bmFitCam` then `bmFlyTo`, while the Body's
+figure is up and its camera has moved in. Verified directly rather than
+by reading the diff: drove the Body's own camera to z 25.07 by wheel,
+pressed F, it landed back at 7.63, next to the rest z of 7.56. The
+Field's F is unchanged, checked separately. `engine.js` 1841,
+`collide.js` 351, `design.js` 184, `functional.js` 1335 passed 0 failed
+clean on a rerun after the one Field fade flake, voice check 0
+stopping.
+
+**Every piece he asked for is now on the branch: the menu pass, the
+scroll tail fix, the Body's two shelves, the cosmetic pass across
+Story, Becoming and Release, the Field's Accuracy back on the stage,
+the real Character page, and the F key fix. Building the combined
+build next, per his own words: "when you're done with the mask, give
+me a build."**
