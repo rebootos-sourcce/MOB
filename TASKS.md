@@ -26226,3 +26226,68 @@ Creating the `atuned` Pages project, the two repository secrets `MOB`
 needs of its own (a new token, `Cloudflare Pages: Edit`, not the
 `reboot-os` one), and moving `atuned.world`'s nameservers from GoDaddy
 to Cloudflare. All three are his; none touched from here.
+
+**Step 1's buttons corrected against his own screenshots, round LW
+continued.** He got stuck: no "Upload assets" button, a "Create
+application" button instead of "Create", and a "Get started" screen
+offering "Import an existing Git repository" or "Drag and drop your
+files". Cloudflare's own screens had moved since this document
+described them; his screenshots are the real state and the document
+now matches them, with the Git import option explicitly ruled out
+since the deploy workflow already pushes with `wrangler` and a
+Git-connected project would build the site a second, fighting way.
+
+## Round LX
+
+His words, verbatim: "Okay, here's what I'm seeing for the feedback
+form. We are going to need a developer interface. I think we've got a
+spec for that. Within that developer interface, we will have all of
+our analytics and ability to manage user information, and how the
+system's running. But part of the developer feedback is a customer
+support or quality assurance tab. It's user story and user experience
+for our alpha, and the developer option for this feedback aggregates
+all that data and then summarises it in the tasks. And then review
+this document, this is where the steps four are foundation, I want to
+know what was done, what was not, and what the gap is. For now, finish
+up everything that you can, give me the information on the APIs, and
+update my steps."
+
+Read as, in the order raised:
+
+1. **A developer interface, elaborated, not new: the feedback page
+   from round LW now has a home.** A spec exists already, his own
+   word, not yet located; needs finding before anything is designed
+   against a guess of it. Inside that interface: analytics, the
+   ability to manage user information, system health, and a
+   customer-support-or-QA tab specifically, carrying user story and
+   user experience feedback for the alpha, which aggregates and
+   summarises into the task list. Still a design task before a build
+   task, LW's own reasoning unchanged: this is a second network seam
+   and a second database, decisions this file has not made blind
+   before.
+2. **"Review this document... what was done, what was not, what the
+   gap is."** Which document is not named plainly enough to act on
+   without guessing; the words that follow, "the steps four are
+   foundation", read as a possible mishearing of "the steps for our
+   foundation" (one of the four briefs, `brief-foundations.md`) or as
+   `HOSTING-SETUP.md`'s own step 4. Answered both ways below rather
+   than guessed at once, since a wrong guess here costs a whole
+   report aimed at the wrong target.
+3. **"Finish up everything that you can."** All six agents dispatched
+   this round were killed a second time, this time by the account's
+   own weekly limit on the model they were moved to as well, "You've
+   hit your weekly limit, resets Oct 1, 8am UTC," the same wall the
+   first six hit on the model before that. No more dispatches possible
+   until then. Triaging each one's worktree the same way as the first
+   round: real, complete, gated work salvaged and shipped myself;
+   anything unfinished left alone rather than guessed into a finished
+   state.
+4. **The API information**, restated: already answered in full this
+   session, no new API is needed for Cloudflare, ElevenLabs or any
+   astrology, human design or numerology service, and the reasoning is
+   already in this file and in `FEEDBACK-log.md`'s own dated entry
+   from 20 September. Not repeating the full answer a third time in
+   this entry; the chat reply carries it once more for where he is
+   reading right now.
+5. **"Update my steps."** `HOSTING-SETUP.md`'s step 1 already corrected
+   this same round, above.
