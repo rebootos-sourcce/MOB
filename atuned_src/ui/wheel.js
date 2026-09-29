@@ -1218,11 +1218,55 @@ function drawWheel0(r,L){
      So a taut chord is one the person is susceptible at. That is a true
      sentence about them and it is the sentence the Field could not say. */
   const ten01=n=>clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);
+  /* ============================================================
+     PAST WEIGHT FIVE THE LINE ITSELF SHAKES. His words, round LV: "as the
+     weight goes above five, where saboteurs, complexes, hyper complexes are
+     concerned, the strength from five up shows them vibrating." w01 above
+     already normalises a pattern's own weight to a band centred so that a
+     raw weight of five lands on its own midpoint, 0.5, so "above five" and
+     "w01 over half" are the same line, not a new number invented here.
+
+     THIS IS A DIFFERENT READING FROM THE PULSE. pulses() below already
+     answers "how fast does the charge run down this wire", off tension.
+     This answers "how hard is the wire itself shaking", off weight, and the
+     two are meant to be read together and not collapsed into one: a heavy,
+     taut thread both pulses fast and shakes, a light, slack one does
+     neither. Only saboteurs, complexes and hyper complexes carry it, the
+     three tiers he named; character threads keep the old still geometry.
+
+     THE SHAPE. The control point is the one place a shake reads as the
+     whole thread's own tension moving, where jitter added at the beads
+     would only read as noise where the pattern sits. Two sines out of
+     phase, on the x and y of that point, close but not equal in
+     frequency, 9 and 11Hz, so the point traces a small ellipse rather than
+     ticking back and forth on a straight line, which is closer to how a
+     plucked string actually shakes. Each thread's own start point seeds
+     its phase, the same hash pulses() already uses for its own offset, so
+     a bundle does not vibrate in lockstep.
+
+     RESTRAINT. Nothing shakes at w01 0.5 and the amplitude is a ring
+     relative 0.03 by w01 1, at most a couple of pixels on the wheel at
+     rest, so it reads as a taut string under real load and not as a
+     broken frame.
+
+     Reduced motion gets the still, sagged line at every weight, the same
+     rule the pulse and the fringes both already take.
+     ============================================================ */
+  const JIT_AT=0.5;
+  const jitOff=(x0,y0,k)=>{
+   if(REDUCED||!k||k<=JIT_AT)return null;
+   var s=(k-JIT_AT)/(1-JIT_AT), amp=U*0.03*s;
+   var ph=(((x0*12.9898+y0*78.233)%1)+1)%1*TAU;
+   return [Math.sin(S.t*TAU*9+ph)*amp,Math.sin(S.t*TAU*11+ph*1.7)*amp];};
   /* the thread, and its pulse queued: t is the same tension its sag is drawn
-     from, so how fast it runs and how straight it hangs are one reading */
-  const quad=(a0,r0,a1,r1,pull,c,a,w,dash,t)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
-   const x0=CX+Math.cos(a0)*r0,y0=CY+Math.sin(a0)*r0,qx=CX+Math.cos(am)*rm,qy=CY+Math.sin(am)*rm,
-    x1=CX+Math.cos(a1)*r1,y1=CY+Math.sin(a1)*r1;
+     from, so how fast it runs and how straight it hangs are one reading.
+     jk, when given, is the owning pattern's own w01: past 0.5 the control
+     point shakes, see jitOff above. */
+  const quad=(a0,r0,a1,r1,pull,c,a,w,dash,t,jk)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
+   const x0=CX+Math.cos(a0)*r0,y0=CY+Math.sin(a0)*r0;
+   var qx=CX+Math.cos(am)*rm,qy=CY+Math.sin(am)*rm;
+   const x1=CX+Math.cos(a1)*r1,y1=CY+Math.sin(a1)*r1;
+   const j=jitOff(x0,y0,jk); if(j){qx+=j[0];qy+=j[1];}
    g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo(qx,qy,x1,y1);
    if(dash)g.setLineDash(dash);g.strokeStyle=rgba(c,a);g.lineWidth=w;g.stroke();g.setLineDash([]);
    PUL.push({x0:x0,y0:y0,qx:qx,qy:qy,x1:x1,y1:y1,c:c,a:Math.min(1,a*1.6)*TIER_A,w:w,t:t});};
@@ -1243,13 +1287,13 @@ function drawWheel0(r,L){
   tier('saboteurs','addresses',()=>r.sabs.forEach(s=>{const k=w01(s);
    s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
     bc(n.b),al(.46*(0.55+k*0.80),s),wd(1.6*(0.45+k*1.45),s),
-    s.unnamed?[3,3]:null,ten01(n)));}));
+    s.unnamed?[3,3]:null,ten01(n),k));}));
   tier('complexes','saboteurs',()=>r.cxs.forEach(c=>{const k=w01(c);
    c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
-    bc('Solar'),al(.62*(0.55+k*0.80),c),wd(2.4*(0.45+k*1.45),c),null,w01(s)));}));
+    bc('Solar'),al(.62*(0.55+k*0.80),c),wd(2.4*(0.45+k*1.45),c),null,w01(s),k));}));
   tier('hyper','complexes',()=>r.hys.forEach(h=>{const k=w01(h);
    h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
-    bc('Sacral'),al(.74*(0.60+k*0.70),h),wd(3.2*(0.50+k*1.30),h),null,w01(c)));}));
+    bc('Sacral'),al(.74*(0.60+k*0.70),h),wd(3.2*(0.50+k*1.30),h),null,w01(c),k));}));
   tier('character','hyper',()=>r.sups.forEach(u=>{const k=w01(u);
    u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
     bc('Root'),al(.9*(0.60+k*0.70),u),wd(4*(0.50+k*1.30),u),null,w01(h)));}));
