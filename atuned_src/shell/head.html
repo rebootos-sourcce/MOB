@@ -3290,17 +3290,29 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
 .bm-mkb .pm-lb{border-radius:999px}
 .bm-whole{background:var(--fb-glass);border-radius:999px}
 .bm-whole[hidden]{display:none}
-/* ---- THE PARTS, UNDER THE WELL, EACH SET IN ITS OWN CORNER. LM: "Front and
-   Back on their respective sides right and left ... smaller with a frame
-   around them, just a pin line." ui/map.js bmRegBar and bmRegFit. The target
-   stays 44, the tap floor; the frame drawn inside it is 32 and one pixel. */
-.bm-regs{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
- padding:6px 12px 8px;border-top:1px solid var(--edge)}
-.bm-set{display:flex;flex-direction:column;gap:2px;min-width:0}
-.bm-set.bm-back{align-items:flex-end}
-.bm-set .pm-eye{margin:0 6px}
-.bm-grid{display:flex;flex-wrap:wrap;max-width:100%;width:calc(44px * var(--bmcf,7))}
-.bm-back .bm-grid{justify-content:flex-end;width:calc(44px * var(--bmcb,8))}
+/* ---- THE PARTS, ON TWO SHELVES DOWN THE SIDES OF THE WELL. LQ, his words:
+   "I want the zone controls on the left and right sides of the center
+   display area ... on a shelf that pops out ... a minimize button ... both
+   start minimized." ui/map.js bmShBuild, bmRegBar and bmRegFit. Front on the
+   left edge beside the front figure, Back on the right beside the back one,
+   each one circle until pressed, and pressed the panel drops under it on
+   the bar's glass, the way the Mark row opens beside its circle. The layer
+   covers the well and takes no press, so the figure between the shelves
+   still answers. The shelves start under the band the top bars take, and
+   never higher than the burger's own circle, 58 pixels down with the band
+   shut. The target stays 44, the tap floor; the frame drawn inside it is 32
+   and one pixel. ---- */
+.bm-regs{position:absolute;inset:0;z-index:3;pointer-events:none}
+.bm-sh{position:absolute;top:calc(max(var(--bmtop,0px),58px) + 4px);display:flex;flex-direction:column;
+ align-items:flex-start;gap:6px}
+.bm-sh.bm-front{left:12px}
+.bm-sh.bm-back{right:12px;align-items:flex-end}
+.bm-sh>*{pointer-events:auto}
+.bm-sh .fb-arc .val{opacity:0}
+.bm-sh.shut .bm-shp{display:none}
+.bm-shp{display:grid;grid-template-columns:repeat(var(--bmc,2),44px);padding:4px;border-radius:14px;
+ background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 .bm-pt{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;
  padding:0;margin:0;border:0;background:transparent;color:var(--mid);cursor:pointer;touch-action:manipulation}
 .bm-pt>i{display:flex;align-items:center;justify-content:center;width:32px;height:32px;box-sizing:border-box;
@@ -4771,6 +4783,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     lines at 390 costs the page height and not the figure's. Nought on the
     Masks door, which has no bars. */
  .pm-well{flex:0 0 auto;min-height:calc(min(122vw,470px) + var(--bmtop,0px))}
+ /* AND THE BODY'S WELL TAKES BACK WHAT THE PARTS STRIP HAD, round LQ: "scale
+    the bodies up because those buttons on the bottom are eating up too much
+    valuable real estate." The strip under the well measured 253 pixels at
+    390 and is gone to the two shelves inside it. The well grows by 115 of
+    them, 470 to 585, which puts the one figure up by a quarter, a fit of
+    4.37 to 5.50, and is as far as it goes with the whole well still on a
+    390 by 844 screen with the overlays open, measured. The page is 138
+    pixels shorter besides. The Masks door keeps its own height. */
+ #emap .pm-well{min-height:calc(min(150vw,600px) + var(--bmtop,0px))}
  /* THE DEPTH LADDER RAN 996 PIXELS PAST THE SCREEN AND NOTHING COULD REACH IT,
     measured as body.scrollWidth 1386 against innerWidth 390 while
     documentElement stayed at 390, which hides it completely. The ladder is

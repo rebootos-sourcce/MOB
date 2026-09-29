@@ -433,10 +433,28 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   bmZoomReg(BMG.reg[0]); bmBars(); await w();
   o.whole=!mk.querySelector('[data-bmwhole]').hidden&&mk.classList.contains('shut');
   mk.querySelector('[data-bmwhole]').click(); await w();
-  const f=document.querySelector('.bm-front').getBoundingClientRect(), bk=document.querySelector('.bm-back').getBoundingClientRect(),
-   rg=document.getElementById('bmregs').getBoundingClientRect(), pt=document.querySelector('.bm-pt'), fr=pt.querySelector('i').getBoundingClientRect();
-  o.corners=[Math.round(f.left-rg.left),Math.round(rg.right-bk.right)]; o.split=f.right<bk.left;
+  /* LQ, his words: "the zone controls on the left and right sides of the
+     center display area ... on a shelf that pops out ... a minimize button
+     ... both start minimized ... then scale the bodies up because those
+     buttons on the bottom are eating up too much valuable real estate." */
+  const wb=BM.well.getBoundingClientRect(), host=BM.well.parentNode.getBoundingClientRect();
+  const shf=document.querySelector('.bm-sh.bm-front'), shb=document.querySelector('.bm-sh.bm-back');
+  const tf=shf.querySelector('[data-bmsh=tog]'), tb=shb.querySelector('[data-bmsh=tog]');
+  const shown=sh=>[...sh.querySelectorAll('.bm-pt')].filter(x=>x.offsetParent).length;
+  o.inWell=BM.well.contains(document.getElementById('bmregs')); o.fill=Math.round(host.bottom-wb.bottom);
+  o.start=[shf.classList.contains('shut'),shb.classList.contains('shut'),tf.getAttribute('aria-expanded'),tb.getAttribute('aria-expanded'),shown(shf),shown(shb)];
+  o.sides=[Math.round(tf.getBoundingClientRect().left-wb.left),Math.round(wb.right-tb.getBoundingClientRect().right)];
+  o.under=Math.round(Math.min(tf.getBoundingClientRect().top,tb.getBoundingClientRect().top)-wb.top)>=BM.inT;
+  tf.click(); await w();
+  o.oneOpen=[shown(shf),shown(shb),STORE.get('bmshf'),STORE.get('bmshb')||''];
+  tb.click(); await w();
+  o.nf=BMPART.filter(p=>p.f).length; o.nb=BMPART.filter(p=>p.b).length; o.both=[shown(shf),shown(shb)];
+  /* every part inside the well, where overflow hidden would take the rest */
+  o.reach=[...document.querySelectorAll('#bmregs .bm-pt')].every(x=>x.getBoundingClientRect().bottom<=wb.bottom);
+  const pt=shf.querySelector('.bm-pt'), fr=pt.querySelector('i').getBoundingClientRect();
   o.pt=[Math.round(pt.getBoundingClientRect().width),Math.round(fr.width),getComputedStyle(pt.querySelector('i')).borderTopWidth];
+  tf.click(); tb.click(); await w();
+  o.min=[shown(shf),shown(shb),STORE.get('bmshf'),STORE.get('bmshb')];
   return o;});
  ok(lm.row===1&&lm.left<30&&lm.right<30,'the overlays are one row across the top, the burger at the upper left and the Mark circle at the upper right, '
   +JSON.stringify({row:lm.row,left:lm.left,right:lm.right}));
@@ -447,7 +465,15 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   +lm.band+' with the head at '+Math.round(lm.head)+', then '+lm.bandShut+', scale '+lm.z.toFixed(2)+' to '+lm.zShut.toFixed(2));
  ok(lm.open===3&&lm.stored==='open','pressed, the Mark row opens with its three readings, and the press is kept, '+JSON.stringify({open:lm.open,stored:lm.stored}));
  ok(lm.whole,'Whole body stands beside the shut Mark circle while a region is opened, so the way back is never folded away');
- ok(lm.split&&lm.corners[0]<20&&lm.corners[1]<20,'Front sits in the lower left corner and Back in the lower right, '+JSON.stringify(lm.corners));
+ ok(lm.inWell&&lm.fill<2,'no strip under the figure: the parts are inside the well and the well takes the stage to its foot, '
+  +JSON.stringify({inWell:lm.inWell,left:lm.fill}));
+ ok(lm.start.join()==='true,true,false,false,0,0','both shelves start minimized, no part showing on either, '+JSON.stringify(lm.start));
+ ok(lm.sides[0]<30&&lm.sides[1]<30&&lm.under,'Front\'s shelf on the left edge and Back\'s on the right, under the top band, '+JSON.stringify(lm.sides));
+ ok(lm.oneOpen[0]===lm.nf&&lm.oneOpen[1]===0&&lm.oneOpen[2]==='open'&&lm.oneOpen[3]!=='open',
+  'pressed, the front shelf pops out with all its parts and the back one stays shut, and the press is kept, '+JSON.stringify(lm.oneOpen));
+ ok(lm.both[0]===lm.nf&&lm.both[1]===lm.nb&&lm.reach,'both open, every part stands inside the well where it can be pressed, '
+  +JSON.stringify({both:lm.both,reach:lm.reach}));
+ ok(lm.min.join()==='0,0,shut,shut','the same circle minimizes each shelf again, and that is kept too, '+JSON.stringify(lm.min));
  ok(lm.pt[0]===44&&lm.pt[1]<44&&lm.pt[2]==='1px','each part is a pin line frame smaller than its 44 pixel target, '+JSON.stringify(lm.pt));
  /* KV: "If I scroll on the body map, I can't frame it." */
  const sv=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return {x:b.left,y:b.top};});

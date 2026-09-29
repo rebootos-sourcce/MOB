@@ -2286,6 +2286,8 @@ function bmSize(){
   var fc=bmFitCam(); if(!zoomed){BM.cam=fc;BM.camT=null;}
   BM.stillKey='';BM.litKey='';BM.dirty=true;
   if(BM.r){bmMaskHits(BM.r);bmHubRefresh(BM.r);}
+  /* the shelves stand under the band, so their room moved with it */
+  if(BM.bar)bmRegFit();
   return;}
  BM.inT=band;
  var was=BM.phone;
@@ -2293,7 +2295,7 @@ function bmSize(){
  [BM.cv,BM.still,BM.lit,BM.lit2].forEach(function(c){c.width=Math.max(1,Math.round(w*BM.dpr));c.height=Math.max(1,Math.round(h*BM.dpr));});
  BM.stillKey='';BM.litKey='';
  var f=bmFitCam(); BM.cam=f; BM.camT=null; BM.dirty=true;
- /* the corner blocks under the well take their rows off the same width */
+ /* the shelves down its sides take their columns off the new height */
  if(BM.bar)bmRegFit();
  /* the masks' targets are held to the tap floor at the fitted view, so they
     are measured again whenever the fitted view is */
@@ -3049,12 +3051,14 @@ function bmBars(){
   +btn('bmclear','1','Clear paint',false));
  /* THE REGION MENU IS GONE. It was the only way to reach a region without
     finding it on the figure, and it was a closed menu of 48 lines: every
-    name hidden until opened, which is recall over recognition. The panel of
-    region buttons under the figure, bmRegBar, is the same job with every
-    name in view, so keeping both would be two controls for one thing. */
+    name hidden until opened, which is recall over recognition. The region
+    buttons, bmRegBar, are the same job with every part in view, so keeping
+    both would be two controls for one thing. */
  /* THE FRONT AND BACK TOGGLE MOVED DOWN, round KN: "those are all going to
     be on the bottom. And there'll be two icons to say front and back." It is
-    the first thing in the panel under the well, bmRegBar, on every width. */
+    the first thing in the panel under the well, bmRegBar, on every width.
+    Round LQ took that panel off the bottom and put each side on its own
+    shelf beside its figure. */
  body.innerHTML=h; body.setAttribute('data-bmsig',sig);
  body.querySelectorAll('[data-bmamode]').forEach(function(el){el.onclick=function(){
   BM.amode=el.getAttribute('data-bmamode');BM.dirty=true;bmBars();};});
@@ -3176,49 +3180,87 @@ function bmPartOpen(pt,vn,side){
  RD_INRAIL=true;
  try{bmOpenKey(key,false);}finally{RD_INRAIL=false;}
  return true;}
-/* SMALLER, IN A PIN LINE, EACH SET IN ITS OWN CORNER. LM in TASKS.md, his
-   words: "I want the Bottom navigation Front and Back on their respective
-   sides right and left. I want those icons smaller with a frame around them,
-   just a pin line." The picture drops from 32 pixels to 24 inside a frame a
-   single pixel wide, and the button round it stays 44 by 44, because the tap
-   floor is a finger and not a picture: what gets smaller is what is drawn.
-   The gap between buttons goes, so the pitch falls from 48 to 44.
+/* SMALLER, IN A PIN LINE. LM in TASKS.md, his words: "I want those icons
+   smaller with a frame around them, just a pin line." The picture is 24
+   pixels inside a frame a single pixel wide, and the button round it stays
+   44 by 44, because the tap floor is a finger and not a picture: what gets
+   smaller is what is drawn.
 
-   The sets were two halves of one strip, each wrapping in its half, so the
-   front's fourteen broke twelve and two at 1600 and read as one ragged
-   strip. Each is a block of even rows now, the front in the lower left and
-   the back in the lower right with the width between them left empty:
-   bmRegFit picks the fewest rows at which both blocks fit side by side. */
+   AND OFF THE BOTTOM, ONTO TWO SHELVES DOWN THE SIDES, SHUT. Round LQ, his
+   words: "for the body I want the zone controls on the left and right sides
+   of the center display area. I want them to be on a shelf that pops out and
+   I want that shelf to be have a minimize button and I want them to both
+   start minimized. Do that first and then scale the bodies up because
+   those buttons on the bottom are eating up too much valuable real
+   estate." The strip under the well was
+   measured at 121 pixels of a 746 pixel stage at 1600 and 253 at 390, and it
+   stood there whether or not a part was wanted. So the Front set is a shelf
+   on the well's left edge, beside the front figure, and the Back set one on
+   its right edge, beside the back figure, each folded to one circle with the
+   side's word under it. The circle is the Mark controls' circle in every
+   respect: shut is the default, only a press that opened it is kept, and
+   pressed again it is the shelf's minimize. Each shelf is its own store key,
+   so opening one never opens the other.
+
+   Two columns, as he drew them, and more only when the well is too short for
+   the rows: overflow is hidden on the well, so a shelf taller than its room
+   would put the last parts where no press can reach them. bmRegFit takes the
+   column count off the height left under each circle. */
+function bmShShut(vn){var s=true;try{s=STORE.get('bmsh'+vn.charAt(0))!=='open';}catch(e){}return s;}
+function bmShShutPaint(sh,vn,shut){
+ var tog=sh.querySelector('[data-bmsh=tog]'); if(!tog)return;
+ sh.classList.toggle('shut',shut);
+ var side=vn==='back'?'back':'front';
+ var say=(shut?'Open':'Close')+' the '+side+' parts';
+ tog.setAttribute('aria-expanded',shut?'false':'true');tog.setAttribute('aria-label',say);
+ if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
+ fbTip(tog,shut?'Opens the parts of the '+side+' of the body. Press one to light that area and open it.'
+  :'Folds the '+side+' parts into this one circle.');}
+function bmShBuild(el){
+ ['front','back'].forEach(function(vn){var nmS=vn==='back'?'Back':'Front';
+  var sh=document.createElement('div'); sh.className='bm-sh bm-'+vn; sh.setAttribute('data-bmsh',vn);
+  /* the Body tab's own figure, and the side's word under it, because on a
+     phone one figure stands between two circles that would otherwise match */
+  var tog=fbOrb({nm:nmS,label:true,ic:'<circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/>'});
+  tog.setAttribute('data-bmsh','tog');tog.setAttribute('aria-controls','bmsh'+vn.charAt(0));
+  tog.onclick=function(){var now=!bmShShut(vn);
+   try{STORE.set('bmsh'+vn.charAt(0),now?'shut':'open');}catch(e){}
+   bmShShutPaint(sh,vn,now);};
+  sh.appendChild(tog);
+  var pn=document.createElement('div'); pn.className='bm-shp'; pn.id='bmsh'+vn.charAt(0);
+  pn.setAttribute('role','group'); pn.setAttribute('aria-label',nmS);
+  sh.appendChild(pn); el.appendChild(sh);
+  bmShShutPaint(sh,vn,bmShShut(vn));});}
 function bmRegFit(){
- var el=BM.well&&BM.well.parentNode?BM.well.parentNode.querySelector('#bmregs'):null; if(!el)return;
- var nf=BMPART.filter(function(p){return p.f;}).length, nb=BMPART.filter(function(p){return p.b;}).length;
- var room=el.clientWidth-24-16, r=1;
- while(r<8&&(Math.ceil(nf/r)+Math.ceil(nb/r))*44>room)r++;
- el.style.setProperty('--bmcf',Math.ceil(nf/r)); el.style.setProperty('--bmcb',Math.ceil(nb/r));}
+ var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!el.firstChild)return;
+ var wb=BM.well.getBoundingClientRect().bottom;
+ el.querySelectorAll('.bm-sh').forEach(function(sh){
+  var vn=sh.getAttribute('data-bmsh'), n=BMPART.filter(function(p){return vn==='back'?p.b:p.f;}).length;
+  var tb=sh.querySelector('[data-bmsh=tog]').getBoundingClientRect().bottom;
+  /* the gap, the panel's own padding and a margin off the well's foot */
+  var rows=Math.max(1,Math.floor((wb-tb-6-10-12)/44));
+  sh.style.setProperty('--bmc',Math.max(2,Math.ceil(n/rows)));});}
 function bmRegBar(){
- var el=document.getElementById('bmregs'); if(!el||!BMG)return;
+ var el=BM.well?BM.well.querySelector('#bmregs'):null; if(!el||!BMG)return;
+ if(!el.firstChild){bmShBuild(el);bmRegFit();}
  var k=bmPickKey()||'', pain=BM.mode==='pain', cur=bmPartOf(k), kv=k.split(':')[0];
  var sig=[k,BM.mode,BM.phone,BMG.reg.map(function(r){return r.val||0;}).join(',')].join('|');
  if(sig===el.getAttribute('data-sig'))return;
  var ae=document.activeElement, foc=ae&&el.contains(ae)&&ae.getAttribute('data-bmpart')
   ?'[data-bmpart="'+ae.getAttribute('data-bmpart')+'"][data-bmpv="'+ae.getAttribute('data-bmpv')+'"]':null;
  BM.hoverList=null;
- /* one set per side. The side is said once, as the set's own small title,
-    because the two crops of a head are close enough to need it */
- var set=function(vn){var nmS=vn==='back'?'Back':'Front';
-  return '<div role="group" aria-label="'+nmS+'" class="bm-set bm-'+vn+'">'
-   +'<span class="pm-eye">'+nmS+'</span><div class="bm-grid">'
-   +BMPART.filter(function(pt){return vn==='back'?pt.b:pt.f;}).map(function(pt){
+ /* one shelf per side. Only the panel is written, so the circle keeps its
+    focus and its state across a render */
+ ['front','back'].forEach(function(vn){
+  var pn=el.querySelector('#bmsh'+vn.charAt(0)); if(!pn)return;
+  pn.innerHTML=BMPART.filter(function(pt){return vn==='back'?pt.b:pt.f;}).map(function(pt){
     var regs=bmPartRegs(pt,vn), on=cur===pt&&kv===vn;
     var pv=regs.reduce(function(m,q){return Math.max(m,q.val||0);},0);
     var t=bmPartName(pt,vn)+(vn==='back'?', back':', front');
     return '<button type="button" class="bm-pt'+(on?' on':'')+'" aria-pressed="'+on+'" data-bmpart="'+pt.k+'" data-bmpv="'+vn+'" '
      +'aria-label="'+esc(t)+(pain&&pv?', painted '+pv:'')+'" title="'+esc(t)+'"><i>'+bmPartIcon(pt,vn,on)+'</i>'
-     +(pain&&pv?'<b>'+pv+'</b>':'')+'</button>';}).join('')
-   +'</div></div>';};
- el.innerHTML=set('front')+set('back');
+     +(pain&&pv?'<b>'+pv+'</b>':'')+'</button>';}).join('');});
  el.setAttribute('data-sig',sig);
- bmRegFit();
  el.querySelectorAll('[data-bmpart]').forEach(function(b){
   var pt=BMPART.filter(function(p){return p.k===b.getAttribute('data-bmpart');})[0], vn=b.getAttribute('data-bmpv');
   b.onpointerenter=function(){BM.hoverList=bmPartRegs(pt,vn);BM.dirty=true;};
@@ -3375,7 +3417,8 @@ function bmGround(host){
            circles keep their switches across a visit to the other door. The
            Masks door draws the masks and nothing else, with no switch.
      bar   the Intake's controls: the overlay row and the Mark controls
-           across the top of the well, and the region buttons under it. The
+           across the top of the well, and the two shelves of region
+           buttons down its sides. The
            Masks door has none of them, because there is nothing on it to
            switch.
      one   one figure, the front. See bmOne.
@@ -3433,10 +3476,13 @@ function bmBuild(host){
      phone it can take a line of its own under the circles while the circle
      that opened it stays where it was pressed. */
   +(BM.bar?'<div class="bm-top" style="'+BMOVTOK+BMMKTOK+'"><div id="bmov" class="bm-ov" role="group" aria-label="Overlays"></div>'
-  +'<div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>':'')+'</div>'
-  /* after the well, so the well's flex keeps the rest of the height and the
-     figure is fitted to what is left */
-  +(BM.bar?'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region"></div>':'');
+  +'<div id="bmmk" class="bm-mk"></div><div id="bmmkb" class="bm-mkb" role="group" aria-label="Mark"></div></div>'
+  /* the two shelves of parts, down the well's left and right edges, on the
+     same glass inks as the bars because they lie on the same dark picture.
+     They were a strip after the well, which took its height out of the
+     well's flex; inside it they take none, so the fit gets the whole stage.
+     Round LQ, bmShBuild. */
+  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>':'')+'</div>';
  /* read inside the host, never off the document: with two hosts, an id is
     only as unique as bmUse keeps it */
  BM.well=host.querySelector('.pm-well'); BM.cv=host.querySelector('#bmcv'); BM.sv=host.querySelector('#bmsv');
