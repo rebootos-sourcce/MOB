@@ -26121,3 +26121,86 @@ narrowed to what is actually still open since the pill and the Embody
 icon already shipped: build a weight above five line vibration that
 does not exist yet, and verify the tension pulse actually reaches the
 screen.
+
+## Round LW. The launch order ruled, and a feedback system asked for
+
+His words, verbatim, answering the question this file has carried open
+across many rounds, which product goes online first: "So the sequence
+that we're going to put online first, the engine needs to be online,
+the engine is the focus, SOURCE engine. Um, the landing page is the
+funnel. Atuned is a destination. The user has to go through their
+funnel in order to get to Atuned. And then earlier, yesterday, I asked
+for a feedback page to be included, um, it would live in the profile,
+but it is where we go to capture user feedback, effectively treating
+them as QA, quality assurance. So we need to design this out. It
+specifically needs to be wired in a way that allows us to aggregate
+feedback, react to that feedback. So there may be a database
+associated with it that we need to design. And then all the databases
+need to go up online. And then I want you to review the marketing
+funnel, the user story, the user flow, the tutorial, and the
+onboarding. Those are the elements we're going to have to work on
+next. But the most important part is to get everything up on
+atuned.world so that we're live."
+
+Read as, in the order raised:
+
+1. **The launch order, ruled, ending a question open since round LR at
+   least.** SOURCE engine (this repository, `MOB`) is the focus and
+   goes online first, not the app already built in `reboot-os`. The
+   funnel is the landing page and the front door: a person goes through
+   it to reach Atuned, which is a destination and not the first thing
+   they see. This matches what already exists rather than asking for
+   something new: `MOB`'s own funnel (`tools/funnel.js` builds it,
+   `atuned-funnel.html`, `atuned-quiz.html` etc, gated separately from
+   the app) already ends by inviting a person into the instrument, and
+   `HOSTING-SETUP.md`'s "still open" section named this exact question
+   as the one thing deciding which database serves which product first.
+   It is answered now: this one.
+2. **A feedback page, living in the profile, treating a person's
+   feedback as QA.** Yesterday's ask, restated for the record. Needs
+   design, his own word, before it is built: it has to aggregate what
+   people say and let the team react to it, which means it is read by
+   someone other than the person who wrote it, which means it leaves
+   the device. `MOB`'s own rule, CLAUDE.md's own words, is exactly one
+   network seam today, fetching a record at sign in; a feedback
+   submission is a second one, and that is a scope decision, not a
+   detail, the same weight the sign-in seam itself was given before it
+   was opened. Read as: design the shape (what a feedback record holds,
+   how it is aggregated, how the team reads and acts on it, what
+   database it lives in) before wiring a second seam that CLAUDE.md's
+   own engineering posture has not yet opened.
+3. **"All the databases need to go up online."** Checked rather than
+   assumed still open: `reboot-os`'s own D1 database is already live,
+   confirmed round LV, "steps 3 and 4 complete." Read as either already
+   satisfied for the one database that exists today, or naming a second
+   database this feedback system will need, which item 2 already
+   covers as an open design question.
+4. **A review pass: the marketing funnel, the user story, the user
+   flow, the tutorial, the onboarding.** Named as what comes after the
+   feedback design, not immediate.
+5. **The most important part: everything live at atuned.world.** A
+   real production launch, his words, "so that we're live." This is
+   the consequential item in this round: `atuned.world` is a parked
+   domain at GoDaddy with nothing pointed at it yet, `MOB` has no
+   deploy pipeline to any public address today (only `reboot-os`'s
+   server does), and `MOB` is a public repository, so nothing that
+   commits a secret here is safe, a rule this file already carries.
+   What is mine to build without his account actions: a GitHub Actions
+   workflow in this repository that packs and deploys the funnel and
+   the engine to Cloudflare Pages on push, the same shape
+   `reboot-os/.github/workflows/server.yml` already uses for the
+   server, ready the moment the Cloudflare side exists. What is his:
+   creating the Cloudflare Pages project itself, pointing `atuned.world`'s
+   DNS at Cloudflare (a GoDaddy nameserver or CNAME change, his
+   domain), and adding whatever token that project needs as a GitHub
+   secret, the same shape the two secrets in `HOSTING-SETUP.md` already
+   took. Not started blind: building the workflow now, and writing the
+   walkthrough for his three steps the same way the Cloudflare one was
+   written, rather than touching DNS or creating cloud resources myself.
+
+Not adding more dispatches on top of the six already running, given the
+rate limit already cost this round once today. Building the deploy
+workflow myself, since it is a file in this repository and needs no
+agent. The feedback system and the funnel/onboarding review are real
+work, queued behind the six in flight rather than piled on top of
+them.
