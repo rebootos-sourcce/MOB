@@ -27522,3 +27522,103 @@ Read as:
    closer than it was and still not live. Reported to him directly rather
    than built against; MOB's own side of this, this session's to touch, is
    read-only against `reboot-os` today.
+
+## Round MS
+
+His words, verbatim: "I think we're close to being done with our ability
+to do a full user flow. Um, is everything in, including the paywall? We
+need Stripe. In there, put just we need to prioritize those at some point
+in time. Put that in the plan. So, I guess the question is for an MVP,
+what's left to be done? So, that a user journey is funnel software beating
+on the software. paying for the software, and being able to use the
+software. As an actual paid subscriber. that whole flow. Needs to be
+designed out. if it's not already. Uh, anything is stopping us from being
+productive. Like if you need to review reboots, deploy, then do it. Let's
+go for the low hanging fruit that's going to help make huge success. And
+that means wiring in the login, making sure the databases are posted,
+making sure our tuned world is working, making sure the user flow is
+there, and making sure the onboarding and tutorial is there. I may have
+small aesthetic stuff along the way, which I will feed you. One question
+about the masks. I'm not a fan of the base shape. Can you filter those
+through a golden ratio so we can find a shape that's more appealing? And
+then I want the masks to feel like each one is its own is its own
+element. Right now, they're all, all six feel like they're one element.
+when you're going through and doing the animation, each mask should have
+its own nature that reflects its description, child, preteen, teen, etc.
+In the animation, I want to see which Charges are heaviest in the mask.
+This is an opportunity to make these masks really cool. And pull in
+elements from the field. design. Aesthetic. And animation in an
+innovation. To translate the data in a way that is visually satisfying.
+And informative, right? So I should be able to hover over each pixel. and
+Click on it and get that pattern. I should be able to select the cluster
+of saboteurs within it. Or the hypercomplexes. Or the complexes. And see
+how they weave through from child to ideological."
+
+Read as:
+
+1. **Stripe and the paywall, "put that in the plan."** Not new: the
+   architecture is already written, `DECISIONS.md`'s own Billing section
+   and `DESIGN-billing.md` in full, and round GX in this file already
+   found the paywall half built rather than missing. What is actually
+   missing is the one thing that section itself names, Stripe never
+   appearing in the app because a server holds it: `sk_`, `pk_`, a
+   customer id and a card field are gated out of this build by design,
+   the record store reads Stripe and writes the plan onto the record, and
+   that record store is `AS2`, unwritten. Restated here as an explicit
+   backlog line rather than assumed remembered.
+2. **The MVP question, funnel to paid use, answered directly in the chat
+   reply rather than guessed at.** Every piece of that journey checked
+   against what this session can see: the funnel and the instrument
+   itself are built and gated; sign up and login exist as an honest local
+   UI (round MP) with nothing behind them yet; the paywall's shape is
+   designed and partly built per round GX but has no Stripe to read;
+   nothing survives past one browser because the record store that would
+   carry a person from device to device is the same unwritten `AS2`. One
+   piece blocks the whole back half of the journey, not many: a live
+   server. Full answer in the chat reply, not repeated here.
+3. **"If you need to review reboot's deploy, then do it."** Explicit
+   authorization, answering the question this session asked him last
+   round. Reviewed rather than fixed blind: `reboot-os` is read only to
+   this session today, so what comes back is a diagnosis and, where
+   possible, an exact fix he or a writable session can apply, not a push.
+4. **The low hanging fruit, in his own order.** Wiring the login, the
+   databases posted, atuned.world working, the user flow present, and
+   onboarding and tutorial present. atuned.world is confirmed working
+   this round, checked directly against the deploy run rather than
+   assumed; login and the databases both sit behind the same `AS2`
+   blocker as item 2; the user flow and onboarding are built; the
+   tutorial is not, honestly labelled as not wired in the developer
+   toggle round MP itself added.
+5. **Small aesthetic feedback, to be fed in as it comes.** Nothing to
+   build from this line itself.
+6. **The masks, six findings on one page, real creative direction and
+   not yet built.**
+   - **The base shape, filtered through a golden ratio.** A proportion
+     study, not a guess; queued to the art and technical directors for a
+     measured proposal before anything is redrawn, the same discipline
+     that shaped the Field-to-Masks pass round MQ shipped.
+   - **Each mask should read as its own element, not one of six
+     identical panels.** Real and named precisely: the six cards share
+     one geometry, one palette ramp and one animation today by design,
+     round LP's own "the mark is cut out of the face" logic. What
+     differs between them is the mark and the addresses, and apparently
+     not enough to read as six different things.
+   - **Each mask's own animation should carry its age's nature,** child
+     through ideological, rather than the one shared breathing rim every
+     mask now uses.
+   - **The animation should show which charges are heaviest,** not only
+     which pixels are lit.
+   - **Pull in the Field's own design, aesthetic and animation language,
+     as innovation and not decoration:** "translate the data in a way
+     that is visually satisfying and informative."
+   - **Click a pixel and get that pattern's own drill,** past the hover
+     this round already shipped, and a cross-mask selection: pick a
+     saboteur, a complex or a hyper complex and see it "weave through
+     from child to ideological," which no view on this page draws today,
+     since chRead only ever answers for one mask at a time.
+   Six real, sized asks and not one small tweak. Queued to the creative
+   team for a measured spec before anything is built, `CLAUDE.md`'s own
+   "not built blind" already governing exactly this; the per pixel click
+   is the one piece of this small enough to build once the shape
+   question above is answered, since redrawing the base shape would move
+   the pixel geometry the click depends on.
