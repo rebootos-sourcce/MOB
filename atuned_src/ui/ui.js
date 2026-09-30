@@ -1502,7 +1502,10 @@ function loop(ts){
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
  /* only the Body stands on the wash now. The Masks door did because it was
     the Body's figure; the Character page draws its own grids on an opaque
-    stage, so it takes the still wash every other page takes */
+    stage, so it takes the still wash every other page takes. Round MQ gave
+    the Masks page its own breath, but on a CSS animation over its own
+    inline SVG (see .chv-glow, .chv-rim-on in head.html), never in this loop
+    and never touching bgaura, so this line stays true of the canvas wash. */
  else if(S.tab===TAB.ENERGY){drawAura(r);}
  /* the Story's instrument draws on this frame and no other, so leaving the
     tab stops it without a second loop to remember to cancel. It paints only

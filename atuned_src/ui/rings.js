@@ -437,11 +437,17 @@ function frSvg(M){
 /* THE SHADOW WASH, drawAura in ui/wheel.js redrawn inside the picture. Four
    soft pools, the darkest seat and the root, at a density read off DQ over
    its own 100. */
+/* PREFIXED, ROUND MQ: character.js's own masks wash calls this same function
+   for the Field's own technique rather than a copy of it, and two callers on
+   one document cannot share one id. o.pre defaults to 'fr', so every existing
+   caller's output is byte for byte what it was; tools/equiv.py will still
+   name this function as changed and that is expected, not a regression. */
 function frShadow(M,r,o){o=o||{};
+ var P=o.pre||'fr';
  var dens=clamp((+r.DQ||0)/100,0,1);
  var lead=M.seat(r.darkB||'Sacral'),warm=r.benign===false?M.seat('Root'):M.seat('Heart');
  var at=o.at||[[.13,.24],[.92,.25],[.09,.83],[.91,.84]],reach=o.reach||1,col=[lead,warm,warm,lead],pools='';
- at.forEach(function(p,i){var id='frsh'+i,c=frRgb(col[i%4]);
+ at.forEach(function(p,i){var id=P+'sh'+i,c=frRgb(col[i%4]);
   M.defs.push('<radialGradient id="'+id+'" cx="'+(p[0]*M.W).toFixed(1)+'" cy="'+(p[1]*M.H).toFixed(1)
    +'" r="'+(Math.max(M.W,M.H)*(.30+dens*.30)*reach).toFixed(1)+'" gradientUnits="userSpaceOnUse">'
    +'<stop offset="0" stop-color="'+c+'" stop-opacity="'+(.03+.20*dens).toFixed(3)+'"/>'
@@ -460,8 +466,8 @@ function frShadow(M,r,o){o=o||{};
    +'<stop offset="'+(1-f).toFixed(3)+'" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>'
    +'<mask id="'+id+'" maskUnits="userSpaceOnUse" x="0" y="0" width="'+M.W+'" height="'+M.H+'">'
    +'<rect x="0" y="0" width="'+M.W+'" height="'+M.H+'" fill="url(#'+id+'g)"/></mask>';};
- M.defs.push(fade('frfx',M.W,M.W,0),fade('frfy',M.H,0,M.H));
- M.L.shadow.push('<g mask="url(#frfx)"><g mask="url(#frfy)">'+pools+'</g></g>');}
+ M.defs.push(fade(P+'fx',M.W,M.W,0),fade(P+'fy',M.H,0,M.H));
+ M.L.shadow.push('<g mask="url(#'+P+'fx)"><g mask="url(#'+P+'fy)">'+pools+'</g></g>');}
 /* THE CORE. The product's own ring grammar at hero size, carrying both
    quotients on the one ring. Ruled 26 September, CH in TASKS.md, picking A
    off the CE sheet: "for coherence, for CQ and DQ, A looks great."

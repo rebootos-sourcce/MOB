@@ -179,6 +179,14 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     the stylesheet and the canvas cannot drift apart without one of these
     lines changing. */
  --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
+ /* A READING BREATHING, ROUND MQ. The Field's own wave, 0.82+0.18 sin(2 pi
+    t/4.2) in ui/wheel.js, so opacity .64 to 1 over 4.2s. A loop is not an
+    arrival, a departure or a landing, so none of the three curves above
+    fits: this is the sine's own cubic, still at both ends the way
+    Math.sin is. Named here rather than typed into the rule, gate 12 in
+    tests/design.js reads transitions and not keyframes, so a loop typed
+    straight into a rule goes unchecked by it. */
+ --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
@@ -4811,17 +4819,35 @@ body:not(.tab-masksview) #masksview{display:none!important}
 .chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
 .chv-svg{display:block;width:100%;max-width:260px;aspect-ratio:1;height:auto}
+/* THE FIELD'S OWN SHADOW, UNDER THE SIX, ROUND MQ. ui/character.js's chWash
+   calls the Field's own frShadow, prefixed so its ids never collide with
+   the Field's when both sit in the document at once. Behind the grid, never
+   in front of a card a person is reading. */
+.chv-wash{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#masksview>.chv{position:relative;z-index:1}
+/* Punch already tints the whole shell toward the heaviest seat, one plane
+   of colour; a second wash under it would be two answers to one question. */
+body.punch .chv-wash{display:none}
 /* THE RIM BREATHES ONCE A MASK'S CHAIN REACHES THE CHARACTER, round LT.
    character.js puts the class on the rim's own <g> only when rd.sup is
    true, so a mask nobody has built past a loose fetter never animates.
    Opacity only, not scale: the rim is a ring of many small rects and not
    one shape with a centre a transform can scale against cleanly, which is
    why this is its own keyframe and not a reuse of srcBreath above, whose
-   scale would pull the rim's rects toward the svg's own corner. Same 6s
-   period, the app's own slow beat. */
-.chv-rim{transition:opacity .3s ease}
-.chv-rim-on{animation:chvBreath 6s ease-in-out infinite}
-@keyframes chvBreath{0%,100%{opacity:.55}50%{opacity:1}}
+   scale would pull the rim's rects toward the svg's own corner.
+
+   ROUND MQ MOVED THE BEAT FROM EARNED TO ALIVE. The rim used to be the only
+   thing that ever moved on this page, on its own 6s, and 9 of the 14
+   reference profiles never reach rd.sup in the default Dark reading, so
+   the page stood still for most of them. The archetype's glow now breathes
+   for every read mask regardless, on the Field's own 4.2 second wave
+   (0.82+0.18 sin(2 pi t/4.2), ui/wheel.js), and the rim joins that same
+   beat, same token, once it lights, so six faces read as one character on
+   one clock and the reward stays legible as the rim lighting at all. */
+.chv-grid .chv-glow,.chv-grid .chv-rim-on{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+@keyframes chvBreath{0%,100%{opacity:.64}50%{opacity:1}}
+body.rm .chv-glow,body.rm .chv-rim,body.quiet .chv-glow,body.quiet .chv-rim{animation:none;opacity:1}
+@media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim{animation:none;opacity:1}}
 /* the same two grids in Selection, side by side, dark then light, on the
    rail's own sunk ground so the theme's ink and seat colours hold there */
 .chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
@@ -5611,7 +5637,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
   radial-gradient(circle at 22% 92%,rgba(94,187,219,.18) 0,transparent 40%),
   radial-gradient(circle at 6% 58%,rgba(125,147,224,.18) 0,transparent 40%),
   radial-gradient(circle at 48% 46%,rgba(167,126,219,.15) 0,transparent 46%);
- animation:obWashDrift 30s ease-in-out infinite alternate}
+ animation:obWashDrift 30s var(--ease-breath) infinite alternate}
 @keyframes obWashDrift{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.1) rotate(3deg)}}
 /* THE STANDING FIGURE, FAINT, BEHIND EVERY CARD rather than shown once at
    full strength on the welcome screen alone: the same continuity the

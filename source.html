@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v975 94193b3 2026-09-30 01:55"><head><meta charset="utf-8">
+<html lang="en" data-build="v977 a9c2e28 2026-09-30 02:31"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -179,6 +179,14 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     the stylesheet and the canvas cannot drift apart without one of these
     lines changing. */
  --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
+ /* A READING BREATHING, ROUND MQ. The Field's own wave, 0.82+0.18 sin(2 pi
+    t/4.2) in ui/wheel.js, so opacity .64 to 1 over 4.2s. A loop is not an
+    arrival, a departure or a landing, so none of the three curves above
+    fits: this is the sine's own cubic, still at both ends the way
+    Math.sin is. Named here rather than typed into the rule, gate 12 in
+    tests/design.js reads transitions and not keyframes, so a loop typed
+    straight into a rule goes unchecked by it. */
+ --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
@@ -4811,17 +4819,35 @@ body:not(.tab-masksview) #masksview{display:none!important}
 .chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
 .chv-svg{display:block;width:100%;max-width:260px;aspect-ratio:1;height:auto}
+/* THE FIELD'S OWN SHADOW, UNDER THE SIX, ROUND MQ. ui/character.js's chWash
+   calls the Field's own frShadow, prefixed so its ids never collide with
+   the Field's when both sit in the document at once. Behind the grid, never
+   in front of a card a person is reading. */
+.chv-wash{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#masksview>.chv{position:relative;z-index:1}
+/* Punch already tints the whole shell toward the heaviest seat, one plane
+   of colour; a second wash under it would be two answers to one question. */
+body.punch .chv-wash{display:none}
 /* THE RIM BREATHES ONCE A MASK'S CHAIN REACHES THE CHARACTER, round LT.
    character.js puts the class on the rim's own <g> only when rd.sup is
    true, so a mask nobody has built past a loose fetter never animates.
    Opacity only, not scale: the rim is a ring of many small rects and not
    one shape with a centre a transform can scale against cleanly, which is
    why this is its own keyframe and not a reuse of srcBreath above, whose
-   scale would pull the rim's rects toward the svg's own corner. Same 6s
-   period, the app's own slow beat. */
-.chv-rim{transition:opacity .3s ease}
-.chv-rim-on{animation:chvBreath 6s ease-in-out infinite}
-@keyframes chvBreath{0%,100%{opacity:.55}50%{opacity:1}}
+   scale would pull the rim's rects toward the svg's own corner.
+
+   ROUND MQ MOVED THE BEAT FROM EARNED TO ALIVE. The rim used to be the only
+   thing that ever moved on this page, on its own 6s, and 9 of the 14
+   reference profiles never reach rd.sup in the default Dark reading, so
+   the page stood still for most of them. The archetype's glow now breathes
+   for every read mask regardless, on the Field's own 4.2 second wave
+   (0.82+0.18 sin(2 pi t/4.2), ui/wheel.js), and the rim joins that same
+   beat, same token, once it lights, so six faces read as one character on
+   one clock and the reward stays legible as the rim lighting at all. */
+.chv-grid .chv-glow,.chv-grid .chv-rim-on{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+@keyframes chvBreath{0%,100%{opacity:.64}50%{opacity:1}}
+body.rm .chv-glow,body.rm .chv-rim,body.quiet .chv-glow,body.quiet .chv-rim{animation:none;opacity:1}
+@media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim{animation:none;opacity:1}}
 /* the same two grids in Selection, side by side, dark then light, on the
    rail's own sunk ground so the theme's ink and seat colours hold there */
 .chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
@@ -5611,7 +5637,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
   radial-gradient(circle at 22% 92%,rgba(94,187,219,.18) 0,transparent 40%),
   radial-gradient(circle at 6% 58%,rgba(125,147,224,.18) 0,transparent 40%),
   radial-gradient(circle at 48% 46%,rgba(167,126,219,.15) 0,transparent 46%);
- animation:obWashDrift 30s ease-in-out infinite alternate}
+ animation:obWashDrift 30s var(--ease-breath) infinite alternate}
 @keyframes obWashDrift{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.1) rotate(3deg)}}
 /* THE STANDING FIGURE, FAINT, BEHIND EVERY CARD rather than shown once at
    full strength on the welcome screen alone: the same continuity the
@@ -21361,11 +21387,17 @@ function frSvg(M){
 /* THE SHADOW WASH, drawAura in ui/wheel.js redrawn inside the picture. Four
    soft pools, the darkest seat and the root, at a density read off DQ over
    its own 100. */
+/* PREFIXED, ROUND MQ: character.js's own masks wash calls this same function
+   for the Field's own technique rather than a copy of it, and two callers on
+   one document cannot share one id. o.pre defaults to 'fr', so every existing
+   caller's output is byte for byte what it was; tools/equiv.py will still
+   name this function as changed and that is expected, not a regression. */
 function frShadow(M,r,o){o=o||{};
+ var P=o.pre||'fr';
  var dens=clamp((+r.DQ||0)/100,0,1);
  var lead=M.seat(r.darkB||'Sacral'),warm=r.benign===false?M.seat('Root'):M.seat('Heart');
  var at=o.at||[[.13,.24],[.92,.25],[.09,.83],[.91,.84]],reach=o.reach||1,col=[lead,warm,warm,lead],pools='';
- at.forEach(function(p,i){var id='frsh'+i,c=frRgb(col[i%4]);
+ at.forEach(function(p,i){var id=P+'sh'+i,c=frRgb(col[i%4]);
   M.defs.push('<radialGradient id="'+id+'" cx="'+(p[0]*M.W).toFixed(1)+'" cy="'+(p[1]*M.H).toFixed(1)
    +'" r="'+(Math.max(M.W,M.H)*(.30+dens*.30)*reach).toFixed(1)+'" gradientUnits="userSpaceOnUse">'
    +'<stop offset="0" stop-color="'+c+'" stop-opacity="'+(.03+.20*dens).toFixed(3)+'"/>'
@@ -21384,8 +21416,8 @@ function frShadow(M,r,o){o=o||{};
    +'<stop offset="'+(1-f).toFixed(3)+'" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>'
    +'<mask id="'+id+'" maskUnits="userSpaceOnUse" x="0" y="0" width="'+M.W+'" height="'+M.H+'">'
    +'<rect x="0" y="0" width="'+M.W+'" height="'+M.H+'" fill="url(#'+id+'g)"/></mask>';};
- M.defs.push(fade('frfx',M.W,M.W,0),fade('frfy',M.H,0,M.H));
- M.L.shadow.push('<g mask="url(#frfx)"><g mask="url(#frfy)">'+pools+'</g></g>');}
+ M.defs.push(fade(P+'fx',M.W,M.W,0),fade(P+'fy',M.H,0,M.H));
+ M.L.shadow.push('<g mask="url(#'+P+'fx)"><g mask="url(#'+P+'fy)">'+pools+'</g></g>');}
 /* THE CORE. The product's own ring grammar at hero size, carrying both
    quotients on the one ring. Ruled 26 September, CH in TASKS.md, picking A
    off the CE sheet: "for coherence, for CQ and DQ, A looks great."
@@ -26557,11 +26589,18 @@ try{window.__at&&window.__at('ui/mapshelf.js');}catch(e){}
    cell. One shared tooltip element, not one per pixel, the same reasoning
    that already keeps chSvg to a handful of paths. Open.
 
-   THE ANIMATION. One, on purpose, "the hardest art direction is refusing
-   the fourth thing": the rim breathes, gently, exactly when a mask's chain
-   has reached the character, rd.sup, the same moment it lights at all.
-   Nothing animates before that, because a mask nobody has built past a
-   loose fetter has nothing to celebrate yet.
+   THE ANIMATION, ROUND MQ: taken from "earned" to "alive," on the Field's
+   own clock. Measured before the change: 9 of the 14 reference profiles
+   light no rim at all in the default Dark reading, so a page that only
+   animates the rim reads as a still printout for most people who open it,
+   next to a Field that breathes every frame for everyone. Now every read
+   mask's archetype glow breathes on the Field's own 4.2 second wave
+   (wheel.js's fringe wave, 0.82+0.18 sin(2 pi t/4.2)), whether or not its
+   chain has reached the character; the rim joins that same breath, on the
+   same beat, only once it has, so the reward is still legible as the rim
+   lighting at all, and what changed is that six faces now read as one
+   character breathing on one clock rather than nothing moving until an
+   arrival few profiles ever reach.
    ============================================================ */
 
 /* the reading on screen, and the mask whose summary is in Selection. CHV and
@@ -26806,7 +26845,7 @@ function chSvg(rd,cls,label){
    +'" gradientUnits="userSpaceOnUse">'
    +'<stop offset="0" stop-color="'+seatCol(rd.arch.b)+'" stop-opacity="'+fop+'"/>'
    +'<stop offset="1" stop-color="'+seatCol(rd.arch.b)+'" stop-opacity="0"/></radialGradient></defs>'
-   +'<circle cx="'+gp.cx+'" cy="'+gp.cy+'" r="'+gp.r.toFixed(2)+'" fill="url(#'+gid+')"/>';}
+   +'<circle class="chv-glow" cx="'+gp.cx+'" cy="'+gp.cy+'" r="'+gp.r.toFixed(2)+'" fill="url(#'+gid+')"/>';}
  /* the rim is the mask's own seats, first seat on the left and last on the
     right, faint until the chain reaches the character, then lit, and
     breathing while it is: see .chv-rim-on in head.html */
@@ -26820,8 +26859,12 @@ function chSvg(rd,cls,label){
     against. Ink is fixed against the stage in every reading and every
     theme, and it steps up when the chain reaches the character, same as
     the rim, so the two light together. */
+ /* .52, NOT .68, ROUND MQ: measured against the ground this mark has to
+    read against now that a shadow sits under it. .52 holds 5.02:1 in Dark
+    and 3.51:1 in Snow, the 3:1 floor for a graphic; .44 reads sharper on
+    Dark but fails Snow at 2.78:1, so .52 is the floor and not a taste. */
  geo.mk.forEach(function(q){
-  add('var(--ink)',lit?'.95':'.68',q[0],q[1],CH_MARK_INS);});
+  add('var(--ink)',lit?'.95':'.52',q[0],q[1],CH_MARK_INS);});
  return '<svg class="'+cls+'" viewBox="0 0 '+G+' '+G+'" data-chres="'+G+'" data-chlit="'+rd.lit+'"'
   +(label?' role="img" aria-label="'+esc(label)+'"':' aria-hidden="true"')+'>'
   +glow+render(paths)+'<g class="chv-rim'+(lit?' chv-rim-on':'')+'">'+render(rimPaths)+'</g>'
@@ -26853,6 +26896,26 @@ function chUp(rd){
    at the same moment, which is a character nobody has. The summary in
    Selection carries both readings of the mask pressed, side by side, so
    the per mask comparison is one press away and not lost. */
+/* THE FIELD'S OWN SHADOW, UNDER THE SIX, ROUND MQ. His words: "add look dev
+   from the field to masks." Measured first rather than guessed at: the host
+   painted flat #101010 at every sample point, and the Field's own Dial view
+   pools the person's own shadow at its four diagonals, frShadow in
+   ui/rings.js. This calls that same function, prefixed so its ids never
+   collide with the Field's own when both are ever in the document together,
+   rather than copying its gradients by hand.
+
+   Silent on an unread profile, the same rule frShadow's own caller already
+   keeps for the Field. The viewBox is fixed at 1000x1000 rather than read
+   off the live host: measuring the host would put a pixel size into the
+   cached CHV.html string below, so a window resize would rewrite the host
+   and drop the focus a keyboard is sitting on, the exact failure that
+   caching exists to prevent. */
+function chWash(r){
+ if(!r||r.unread)return '';
+ var M={W:1000,H:1000,defs:[],L:{shadow:[]},seat:function(b){return hx(seatCol(b));}};
+ frShadow(M,r,{pre:'chw'});
+ return '<svg class="chv-wash" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">'
+  +'<defs>'+M.defs.join('')+'</defs>'+M.L.shadow.join('')+'</svg>';}
 function renderCharacter(r){
  var host=$('masksview'); if(!host)return;
  /* the pick goes down with the panel, the way every surface's does. rdClose
@@ -26866,7 +26929,7 @@ function renderCharacter(r){
   var say=m.nm+' mask, '+CHV.face+' reading. It '+m.v+'.';
   return '<button type="button" class="chv-m" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
    +'<span class="chv-nm">'+esc(m.nm)+'</span>'+chSvg(rd,'chv-svg')+'</button>';}).join('');
- var html='<div class="chv">'
+ var html=chWash(r)+'<div class="chv">'
   +'<div class="chv-top"><div class="seg" role="group" aria-label="Reading">'
   +['dark','light'].map(function(f){return '<button type="button" data-chface="'+f+'" aria-pressed="'+(CHV.face===f)+'">'
    +(f==='dark'?'Dark':'Light')+'</button>';}).join('')+'</div></div>'
@@ -46809,7 +46872,10 @@ function loop(ts){
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
  /* only the Body stands on the wash now. The Masks door did because it was
     the Body's figure; the Character page draws its own grids on an opaque
-    stage, so it takes the still wash every other page takes */
+    stage, so it takes the still wash every other page takes. Round MQ gave
+    the Masks page its own breath, but on a CSS animation over its own
+    inline SVG (see .chv-glow, .chv-rim-on in head.html), never in this loop
+    and never touching bgaura, so this line stays true of the canvas wash. */
  else if(S.tab===TAB.ENERGY){drawAura(r);}
  /* the Story's instrument draws on this frame and no other, so leaving the
     tab stops it without a second loop to remember to cancel. It paints only
@@ -47011,5 +47077,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003074780"></div>
+<div id="eof" hidden data-len="003079378"></div>
 </body></html>
