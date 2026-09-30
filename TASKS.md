@@ -27877,3 +27877,97 @@ order (a "triptych"), measured against a plain three-over-two grid and
 found to win on every number checked (pixel size, stage coverage) while
 adding no new controls. Five open questions of its own, listed in the
 chat reply.
+
+## Round MX
+
+His ruling on the twelve open questions from rounds MV's layout and
+MW's audit, verbatim: "Okay, here's what I like. I like C. If But here's
+I think what we do. Is we have all five masks as small not smallish
+icons on the left hand side of the screen. It always starts off on the
+user's last open. Um, first time users start off on child. but then it
+gives us we can maximize the rest of that space. So it allows us to do
+really cool effects and see what the mask is doing. As it's operating.
+I think the product should find new patterns across people's data.
+Ultimately, we want the AI to do on the database side is aggregate
+everyone's data, everywhere, so I don't know if that's a new database
+schema. That needs to be designed in the future. With the purpose of
+improving the AI's accuracy. It allows us to be a bit fuzzier and
+include a broader range of the way people describe the stories. Fetter
+does mean 112 addresses. And they are the outputs of the underlying
+drivers. JSON is not a word that we should use in this product, I don't
+know what the right word is to describe it in English. but it should be
+one word. Maybe you can help me with that. I don't know what you mean
+by number four. I need more context. I don't know why we have two
+saboteur lists. There should only be one. What's the 14? Yeah. Give
+source a credit. Clicking move on should count but we want to revisit
+that when the product launches and see what the data is looking like
+and analyze it. And we want to do a prediction analysis of what it
+would look like if we did it the other way. I think on the phone, yeah,
+maybe it's just a small icons when you press one, it shows it in the
+large hero area. I guess across mass, if you press, if you select it on
+one mask, then you see how it shows up in all the others. That's cool.
+And it seems like the pixel resolution between child and say
+ideological. The ideological connecting more systems. While the child
+is not. so it seems like the pixel density gets more complicated. As
+length as the language we learn and identify with more complex words
+like that's the splintering. Right? We start to include more
+descriptive words to describe the intensity. It's still open question.
+Let's keep it open for now."
+
+Read as, against the twelve questions:
+
+1. **The layout: not C exactly, a real variant of it.** All five masks
+   as small icons in a rail on the left, the rest of the stage a hero
+   area for whichever is selected, so the hero grows past what the
+   triptych's centre cell measured. Child first open, then the last one
+   pressed, same as the triptych's own answer. Sent back to the UI/UX
+   team to measure this specific arrangement rather than assumed close
+   enough to C.
+2. **The cross-person question: yes, widen it,** for a stated purpose,
+   "improving the AI's accuracy" and a "fuzzier" match on how people
+   describe a story, and stated as not designed yet, his own words, "I
+   don't know if that's a new database schema, that needs to be
+   designed in the future." Read narrowly rather than assumed wide: this
+   authorises the direction, aggregate word patterns across people to
+   sharpen matching, which is close to what `DECISIONS.md` already
+   licenses; it does not by itself authorise the TDD's own broader ask,
+   raw text, timestamps and context kept per person and shared across
+   people, which is the part that conflicts with the privacy ruling.
+   That still needs its own schema and its own ruling once designed.
+3. **Fetter means the 112 addresses, ruled**, and the nine are named as
+   what produces them, "the outputs of the underlying drivers." His own
+   next line asked for a word for the drivers and named "JSON" as wrong
+   for it, which does not parse against anything in this codebase and is
+   flagged rather than guessed at in the chat reply, with real
+   candidates offered instead of picked unilaterally.
+4. **Question 4 (a label like weak, possible, probable, strong,
+   verified) was asked with no context, the exact failure `CLAUDE.md`'s
+   own rule forbids.** Re-asked properly in the chat reply, with what it
+   would mean concretely and what "created a false cliff" actually
+   measured.
+5. **One saboteur list, not two, ruled.** He asked what the 14 is;
+   answered in the chat reply. Real engine work, not done this round:
+   `compute.js` reads both `SAB33` (33, by charge range) and `SAB_LIB`
+   (14, by address), and the Masks page's own pixel rendering is built
+   on the address-based one, so merging touches the masks work already
+   in flight and is sequenced behind it rather than done blind into a
+   moving target.
+6. **"Give source a credit"** read as: yes, credit the twelve
+   archetypes' own source, Jung-derived per the TDD's own caution rather
+   than attributed to Jung directly, the same way the Positive
+   Intelligence saboteurs are already credited. Small, buildable, queued
+   next.
+7. **"Move on" should count, contrary to this session's own
+   recommendation, but revisited once the product has launched and has
+   real data, plus a prediction of what the other way would have
+   looked like.** Needs usage data that does not exist yet; logged as
+   backlog and not built blind against zero data.
+8. **Phone: the same rail and hero pattern as desktop**, not a separate
+   design.
+9. **The weave, approved on the idea, "that's cool," no routing
+   preference stated.** Still needs the technical answer, how the lines
+   draw once one mask can be large and the others a rail rather than a
+   row.
+10. **The Teen's thin data, and pixel density by developmental
+    complexity generally: still explicitly open, his own words, "let's
+    keep it open for now."** Not answered, not built past.
