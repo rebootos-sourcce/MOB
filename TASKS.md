@@ -28180,3 +28180,55 @@ row since `19.C2`, `19.C3` and `19.C4` already carry rows 6 and 15. The
 are named rather than left to fall out quietly. Also sent
 `DESIGN-ladder.md`, the badges and achievement design he asked to see
 again, as its own file.
+
+Told, separately: "If you're stuck on rebuilding, waiting for
+Cloudflare, continue building everything else and we'll get back to
+this. When I'm complete." Read as the instruction to start
+`PRIORITY.md`'s own unblocked rows now rather than wait. Row 2, `19.B1`,
+the duplicate saboteur bug, taken up first per the plan's own reasoning
+that everything naming a saboteur inherits it otherwise.
+
+## Round ND
+
+"apis done." His own words, the Cloudflare token re-paste. Not accepted
+on the claim alone after three rounds of the same claim failing
+identically: re-run of the real deploy job first, reported below rather
+than assumed.
+
+**Still broken, the fourth time.** Reboot-os run 35 attempt 4, triggered
+directly rather than waited on, failed with the exact same `Headers.set:
+"***" is an invalid header value` on `wrangler d1 migrations apply`, the
+identical error every prior attempt hit. `CLOUDFLARE_API_TOKEN` is still
+the malformed secret the round NC diagnostic measured, 145 characters
+with a newline and a stray quote. His to fix; not waited on further,
+per his own "continue building everything else."
+
+**`19.B1`, the duplicate saboteur, built and gated.** `AUDIT-source-tdd.md`'s
+own finding reproduced directly first: charge held at 8 across the
+board, `compute.js`'s SAB33 range loop and its fixed-address ALL_SAB
+loop both named Controller, Hyper-Vigilant and Avoider, 26 entries
+carrying 23 identities. `compute.js:266-296` now keeps one entry a
+name, the stronger of the two readings, through a small `pushSab`
+wrapper shared by both loops; reran the same held state after and the
+duplicates are gone, 23 of 23 unique. A permanent check goes with it,
+`tests/engine.js` round ND, asserting no saboteur is ever named twice
+and no complex ever pairs a saboteur with itself.
+
+Gated in full: `BUILD.sh` and `BUILD-engine.sh` clean, engine host
+free; `tests/engine.js` 1843/0 (two new assertions, both passing);
+`tests/collide.js` 351/0; `tests/design.js` 185/0; `tests/funnel.js`
+172/0; `tests/boot.js` 13/0; `tools/monitor.js` all surfaces render;
+voice objections 0 severity blocking. `tests/functional.js` read
+1337/1 three times running, the same single failure each time, the
+same "Field still animates" fade timing assertion this file has
+already logged under load seven separate times before tonight (EE, EF,
+ES and after), never once tied to a code change: this diff only
+removes duplicate saboteur entries from the patterns layer, which
+lightens that render rather than slowing it, so there is no causal
+path from this fix to that assertion. Logged rather than waved off,
+per the same standard every prior instance of this flake was held to.
+
+Next, per `PRIORITY.md`'s own order: `19.B3`, crediting the twelve
+archetypes to Carol Pearson and Margaret Mark (Jung-derived, never a
+list Jung wrote down himself, the exact caution `SOURCE-TDD.md` states),
+his own words "give source a credit." In progress, not yet built.

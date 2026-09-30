@@ -4710,6 +4710,17 @@ function compute(){
  const SQm=loaded.length?sum/loaded.length:0;
 
  const sabs=[];
+ /* ONE SABOTEUR, ONE ENTRY. SAB33's range match and the library's own fixed
+    address groups can name the same saboteur from two different tests, eg
+    Controller matches both a fear/anger RANGE and its own three addresses.
+    Named twice, it pairs with itself into "Controller + Controller" below.
+    The stronger of the two readings wins; the weaker is dropped, not kept
+    as a second voice. */
+ const sabByNm={};
+ const pushSab=function(s){
+  const ex=sabByNm[s.nm];
+  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[s.nm]=s;return;}
+  sabByNm[s.nm]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
  sab33Detect().forEach(function(d){
   const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
@@ -4717,16 +4728,16 @@ function compute(){
   const key=d.charges[0]==='anxiety'?'Anticipation':
    ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
      shock:'Shock',sadness:'Sad',surprise:'Surprise'})[d.charges[0]];
-  sabs.push({kind:'sab',nm:d.nm,hcx:FAM_OF[key]||'Collapse',named:true,
+  pushSab({kind:'sab',nm:d.nm,hcx:FAM_OF[key]||'Collapse',named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,
    parts,w:d.w,ang:meanAng(parts.map(n=>n.ang))});});
  ALL_SAB.forEach(s=>{const parts=s.nids.map(i=>BY[i]).filter(Boolean);
   const w=parts.reduce((a,n)=>a+n.sq,0)/parts.length;
-  if(w>=3.7)sabs.push({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
+  if(w>=3.7)pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
    auth:SABAUTH[s.nm]||null,ang:meanAng(parts.map(n=>n.ang))});
   /* the same cluster, overshot. a voice that will not stop rather than one that shuts. */
   const j=parts.reduce((a,n)=>a+n.jq,0)/parts.length;
-  if(j>=3.7)sabs.push({kind:'sab',nm:s.nm+' overshot',hcx:FAM_POLE[s.hcx]||s.hcx,
+  if(j>=3.7)pushSab({kind:'sab',nm:s.nm+' overshot',hcx:FAM_POLE[s.hcx]||s.hcx,
    over:true,unnamed:!!s.unnamed,parts,w:j,ang:meanAng(parts.map(n=>n.ang))});});
  sabs.sort((a,b)=>b.w-a.w);
 

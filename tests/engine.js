@@ -5122,5 +5122,24 @@ g('LL · practitioner mode, the switch and its integer');
   'Practitioner is 12 and every integer before it holds its value, '+JSON.stringify(E.TAB));
 }
 
+g('ND · one saboteur, one entry, however many tests name it');
+/* AUDIT-source-tdd.md's own finding. SAB33's range match (compute.js's
+   sab33Detect loop) and the fixed-address library (the ALL_SAB loop) can
+   both name the same saboteur, eg Controller, from two different tests.
+   Held heavy and uniform this produced 26 entries carrying 23 identities,
+   Controller, Hyper-Vigilant and Avoider each twice, and one pairing away
+   from a self-paired complex, "X + X", which is not a second voice, it is
+   the same one counted twice. */
+{
+ reset(8,0,6);
+ const r=compute();
+ const names=r.sabs.map(s=>s.nm);
+ const counts={};names.forEach(n=>counts[n]=(counts[n]||0)+1);
+ const dupes=Object.keys(counts).filter(n=>counts[n]>1);
+ ok(dupes.length===0,'no saboteur is named twice in one reading, got '+JSON.stringify(dupes));
+ const selfCx=r.cxs.filter(c=>c.parts[0].nm===c.parts[1].nm);
+ ok(selfCx.length===0,'no complex pairs a saboteur with itself, got '+JSON.stringify(selfCx.map(c=>c.nm)));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
