@@ -27162,3 +27162,73 @@ Read as:
    MH through MK, still finishing its own gate suite as this was read.
 5. **What I am doing right now and what is next**, answered in the
    chat reply rather than here, per the four heading rule.
+
+## Round MN
+
+His words: "the question is, not from what you need right for me right
+now, from the rigorous architecture file, is there anything there
+that requires itself to be in this product before an MVP? That's what
+we're looking for right now, things that will stand up an MVP.
+Identify those things first. It also sounds like you got a new a lot
+of new stuff in, give me the latest build. So I guess the answer to
+your question for P0 security is, is it required for an MVP? Anything
+that's a yes needs to get prioritized. But before we do that, we have
+to complete the build, any fine tuning of the engine, and then get
+everything posted online so that I can start working with the funnel
+and then working on that flow, because that's critical."
+
+Read as:
+
+1. **Triaged the review's own list against "does an MVP need this to
+   stand up," not against "would this make the system more rigorous."**
+   Required:
+   - **The deploy pipeline actually working.** Not named in the
+     document at all, found while answering this question: every one
+     of this repository's fourteen deploy runs, back to the first,
+     has failed at the same line, `atuned_src/BUILD.sh`'s call into
+     `tools/slim.py`'s `npx --no-install tsc`, which had nothing to
+     find on a clean runner and refused, by design, to fetch anything
+     in its place. `atuned.world` has never once deployed through this
+     pipeline. Fixed this round (`.github/workflows/deploy.yml`,
+     installing the real `typescript` package before the build step
+     runs), verified by reproducing the exact failure in isolation
+     first and confirming the fix clears it, and this round's own push
+     is the first to test it. Nothing about "get everything posted
+     online" is possible while this stays broken, so it outranks
+     everything else in the document.
+   - Content already stands: 112 nodes, 33 saboteurs, 21 laws, verified
+     present and correct this window (round MM). No action needed.
+   Not required to stand an MVP up, held for later:
+   - The formal end to end security threat model, the backup/restore
+     drill, the content parity hashing pipeline, the canon release
+     manifest, reconciling the four open canon node conflicts, and the
+     formal retention and deletion policy across backups, logs and
+     research are all real and all eventually necessary, but none of
+     them are what a stranger meets when the funnel opens, and none
+     block a real signup and a real session existing. They are the
+     work of hardening a live product, not standing one up.
+   - Every P1 item (the Source State Graph, evidence provenance,
+     independence groups, an executable CQ100 validator, causal
+     intervention testing, longitudinal state transition tests,
+     novel signal lifecycle tests) is rigor on Source AI's own
+     reasoning, and Source AI is not live yet, confirmed again this
+     window: `srcContext()` and `srcSend()` build the prompt and
+     context and a real data fallback answers, not a live model. None
+     of it can matter to an MVP before that changes.
+   - Every P2 item is tooling and coverage measurement, plainly not a
+     gate on standing anything up.
+2. **"Is it required for an MVP" answers the question he put back to
+   me about P0 security.** Only the deploy pipeline was, and it is
+   fixed. The rest of P0 (the threat model, the backup drill, the
+   retention policy) stays exactly where round MM already put it,
+   real work, not this round's, and not what an MVP needs to exist.
+3. **"Give me the latest build."** Sent per the handoff rule in
+   `CLAUDE.md`, packed, as an attachment, with the commit and md5
+   stated.
+4. **"Complete the build, any fine tuning of the engine, then get
+   everything posted online."** Read as the sequence: finish the
+   login and onboarding work already in flight this round, take any
+   engine fine tuning he still wants, then let the now fixed pipeline
+   carry it to `atuned.world` on push, which is what unblocks him
+   working the funnel and the flow next. No engine fine tuning has
+   been asked for by name yet; when it is, it is next in this order.
