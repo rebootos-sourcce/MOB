@@ -28091,3 +28091,58 @@ Read as:
    findings rather than a second full audit from nothing, since much of
    its vocabulary (Evidence, Trace Graph, SourceOS) names the same
    ground that audit already covered under the engine's own names.
+
+**The V3 review came back, `AUDIT-source-tdd-v3.md`.** Confirms most of
+V3 restates the first TDD's own evidence layer under new names; the
+engine holds no generic graph, its relationships are fixed canon tables
+recomputed each time, the same for everyone. Two things are genuinely
+new: the 90 day longitudinal engine, which needs the first audit's own
+gap D5 closed first and D5 is wider than logged (no structure can be
+followed by identity over time today, only laws, ritual days and
+release dates), and release verification, which the first audit already
+flagged as circular and V3 does not fix as written, only where its own
+intensity number comes from is never specified. One real defect found
+in passing: the product's own finished release card already says "N
+cleared entirely," a threshold on a formula stated as a fact, which
+V3's own rule against overclaiming would itself forbid. Eight open
+questions, in the chat reply.
+
+## Round NB
+
+His words, verbatim: "By the way, I don't see on the plan any of the
+systems that I've been integrating and dropping in here over the last
+several sessions. Yeah, I already answered that. The halo shape, I said
+line. I mean, I don't know what you mean by professional room. Keep the
+professional. Preteen moving to heart. I'm not sure what you mean. I'll
+review. All the stuff that I've been dropping in those TDDs. Block
+prioritize. And I want to see it in this plan. Review all those
+documents because we've got funnel onboarding tutorial. Changes to
+story imprints. ritual schema, the AI source AI that like all of it. So
+review all that stuff. I want to see that in plan. I'll go work on
+Cloudflare. In case I don't have the steps given to me exactly step by
+step as if I'm 10."
+
+Read as:
+
+1. **A real, fair gap.** The three TDDs and their audits, the creative
+   brief, and the masks design work are all logged in this file and
+   saved as their own documents, but none of that has been carried into
+   `MILESTONES.md`, `PRIORITY.md` or `BACKLOG-AUDIT.md`, the files that
+   are actually named "the plan." Sent to the project manager seat to
+   do properly rather than folded in by hand here.
+2. **The halo: a flat line, restated rather than changed.** Matches
+   round MZ's own "you could change it to a flat bar."
+3. **"Professional room" parses as this session's own round MT summary
+   asking him to confirm Professional's removal**, without carrying the
+   context the question needed, the same shorthand failure caught once
+   already this session. Ruled now, plainly: keep Professional, all six
+   masks stay.
+4. **"Preteen moving to heart, I'm not sure what you mean" is the same
+   failure a second time.** That move was proposed only as part of the
+   five-mask plan that removed Professional to make room for all seven
+   seats; with Professional kept, that specific seat change no longer
+   has the reason it was proposed for. The seven-seat question is open
+   again under six masks rather than five, and needs its own answer
+   before the masks build proceeds.
+5. **Cloudflare steps, asked again as if he is ten**, the standing rule
+   this file already carries. Given in full in the chat reply.
