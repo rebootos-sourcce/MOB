@@ -27464,6 +27464,23 @@ Read as:
    asks for exactly that hover, plus removing whatever static words sit on
    the lighting look now in favour of it. Queued next, behind shipping
    this round's own onboarding and login work and its gate suite.
+
+   **Built, round MR.** A pointermove on a card's own svg is converted to
+   the viewBox's own units, the nearest cell solved and mirrored past G/2
+   the way chGeo() already lays the half face out, then looked up against
+   a per card cache of rd.px built on the same render pass that reads the
+   mask, since chSvg only ever returns markup and a merged path per fill
+   colour carries no single pixel's own identity in the document. One
+   shared tooltip (`#chprobe`, `.chv`'s own probe), reusing describe()'s
+   existing node wording rather than a second one, with the saboteur,
+   complex and hyper complex chain layered on top of it, the thing that
+   wording does not carry and the owner's own ask named: "my limiting
+   belief (fetter), saboteur cluster, etc." Checked directly rather than
+   assumed: no static word sat on the lighting look already, on this
+   session's own read of every round from LY through MQ, so nothing
+   needed removing there. `tests/functional.js` gained its own assertion,
+   a real pointermove aimed at a lit pixel's own cell centre rather than a
+   claim about the code, and the full gate suite is clean under it.
 5. **"Add push all to atuned.world to final in your plan."** Already the
    last step of this round's own plan; restated here so it is not read as
    dropped.

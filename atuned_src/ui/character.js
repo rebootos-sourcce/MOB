@@ -133,6 +133,29 @@
    first cut declaring it a second time threw at parse and took every module
    after this one with it, loadP included, so the app booted to nothing. */
 var CHV={face:'dark', pick:null, html:''};
+/* THE HOVER, ROUND MQ, built to the plan round LT wrote and left open: "As I
+   hover over the pixels, the overlay tells my limiting belief (fetter),
+   saboteur cluster, etc." One entry per rendered card, keyed by mask name,
+   holding its grid size, the compute() this render read, and a lookup from
+   left-half cell to the pixel at it, since chSvg only ever returns markup
+   and a merged path per fill colour carries no single pixel's identity in
+   the document: the nearest cell is solved from the pointer instead of
+   found by data-h, chGeo's own note. */
+var CH_HOVER={};
+/* ONE PIXEL, IN WORDS. Reuses describe()'s own node case rather than a
+   second wording of the same address: the name, the seat, what it shows up
+   as, the charge held, all of it already right there in ui/ui.js. What this
+   adds is the chain the Field's own readout does not carry, because a
+   mask's pixel is asking a different question of the same address, how far
+   it has built here rather than what it is. */
+function chHoverHtml(x,r){
+ var t=describe({k:'node',n:x.n},r,true); if(!t)return '';
+ var extra='';
+ if(x.tier>=1){
+  extra='<hr>'+(x.o?'Part of the <b>'+esc(x.o.nm)+'</b> saboteur.':'A saboteur on its own.')
+   +(x.cx?' Joined into a complex.':'')+(x.hy?' Inside a hyper complex.':'')
+   +(x.sup?' It reaches your character.':'');}
+ return t.replace('<hr><b>Click for detail.</b>',extra+'<hr><b>Click the mask for the full reading.</b>');}
 /* the face's box inside the icons' 24 unit viewBox. MASK_FACE runs 4 to 20
    across and 3 to 19 down, so the grid is laid over exactly that square. */
 var CH_X0=4, CH_Y0=3, CH_S=16;
@@ -306,7 +329,7 @@ function chRead(m,r,face,G){
   /* a block keeps one dark place at its end, so two saboteurs laid down
      side by side along the walk are two blocks and not one */
   if(run>1&&cells.length>=run)cells.length=run-1;
-  cells.forEach(function(n,i){out.px.push({p:geo.half[a0+i],n:n,tier:gp.tier});});});
+  cells.forEach(function(n,i){out.px.push({p:geo.half[a0+i],n:n,tier:gp.tier,o:gp.o,cx:gp.cx,hy:gp.hy,sup:gp.sup});});});
  out.lit=out.px.length;
  var seen=function(list,o){if(o&&list.indexOf(o)<0)list.push(o);};
  groups.forEach(function(gp){if(!gp.o)return;
@@ -451,6 +474,13 @@ function renderCharacter(r){
  var unread=!r||r.unread;
  var cards=MASKS.map(function(m){
   var rd=chRead(m,r,CHV.face), on=CHV.pick===m.nm;
+  /* the hover's own lookup, left-half cell to the pixel drawn there, built
+     on the same pass that reads the mask so the overlay never disagrees
+     with what is on screen. Keyed by mask name because six cards render at
+     once and a pointer is only ever over one of them. */
+  var byCell={};
+  rd.px.forEach(function(x){byCell[x.p[0]+','+x.p[1]]=x;});
+  CH_HOVER[m.nm]={G:rd.G,byCell:byCell,r:r};
   var say=m.nm+' mask, '+CHV.face+' reading. It '+m.v+'.';
   return '<button type="button" class="chv-m" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
    +'<span class="chv-nm">'+esc(m.nm)+'</span>'+chSvg(rd,'chv-svg')+'</button>';}).join('');
@@ -459,12 +489,48 @@ function renderCharacter(r){
   +['dark','light'].map(function(f){return '<button type="button" data-chface="'+f+'" aria-pressed="'+(CHV.face===f)+'">'
    +(f==='dark'?'Dark':'Light')+'</button>';}).join('')+'</div></div>'
   +(unread?'<p class="chv-empty">Nothing read yet, so the masks are empty. Write what happened on the Story page and they start to fill.</p>':'')
-  +'<div class="chv-grid">'+cards+'</div></div>';
+  +'<div class="chv-grid">'+cards+'</div><div class="probe" id="chprobe"></div></div>';
  /* written only when it changed. render() runs on every press anywhere in
     the app, and rewriting the host each time would drop the focus off the
     card a keyboard is sitting on */
  if(html===CHV.html&&host.firstChild)return;
  CHV.html=html; host.innerHTML=html;
+ /* THE HOVER'S OWN LISTENERS, WIRED ONCE. host is the tab's fixed door and
+    outlives every render, where the buttons above do not: html is only
+    rewritten when it changes, so a listener attached here on every call
+    would pile up one more copy of itself on every face toggle. A flag on
+    the host is cheaper than a teardown. */
+ if(!host._chHover){host._chHover=true;
+  host.addEventListener('pointermove',function(e){
+   /* a finger has no hover, the Field's own reason, ui/ui.js */
+   if(e.pointerType==='touch')return;
+   var svg=e.target&&e.target.closest&&e.target.closest('svg.chv-svg');
+   var pr=$('chprobe'), grid=host.querySelector('.chv-grid');
+   var btn=svg&&svg.closest('[data-chmask]');
+   var ch=btn&&CH_HOVER[btn.getAttribute('data-chmask')];
+   if(!pr||!grid)return;
+   if(!svg||!ch){pr.classList.remove('on');return;}
+   /* THE NEAREST CELL, SOLVED FROM THE POINTER. chGeo's own reason: the
+      grid is drawn as a handful of merged paths, one per fill colour, so
+      no single pixel carries its own element to read a hit off. Mirrored
+      past G/2 because rd.px only ever names the left half, chSvg's own
+      mirror for the right. */
+   var rect=svg.getBoundingClientRect(), G=ch.G;
+   if(!rect.width||!rect.height){pr.classList.remove('on');return;}
+   var c=Math.max(0,Math.min(G-1,Math.floor((e.clientX-rect.left)/rect.width*G)));
+   var rr=Math.max(0,Math.min(G-1,Math.floor((e.clientY-rect.top)/rect.height*G)));
+   var x=ch.byCell[(c<G/2?c:G-1-c)+','+rr];
+   var t=x?chHoverHtml(x,ch.r):'';
+   if(!t){pr.classList.remove('on');return;}
+   pr.innerHTML=t;
+   /* probeAt adds el.offsetLeft to the local x it is given to place pr
+      against pr.offsetParent, so el has to be a plain, unpositioned child
+      of that same box (.chv, set position:relative above) for the two
+      offsets to land in one coordinate space. .chv-grid is that child;
+      host itself sits one level further out and does not share it. */
+   var gb=grid.getBoundingClientRect();
+   probeAt(pr,grid,e.clientX-gb.left,e.clientY-gb.top);});
+  host.addEventListener('pointerleave',function(){var pr=$('chprobe'); if(pr)pr.classList.remove('on');});}
  host.querySelectorAll('[data-chface]').forEach(function(b){b.onclick=function(){
   CHV.face=b.getAttribute('data-chface'); render();};});
  host.querySelectorAll('[data-chmask]').forEach(function(b){b.onclick=function(){

@@ -324,6 +324,37 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  console.log('  Character, dark: '+mv.dark.map(x=>x.nm+' '+x.G+' across '+x.lit+' lit').join(', '));
  ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chv,
   'and the Body gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
+ /* THE HOVER, ROUND MQ: "as I hover over the pixels, the overlay tells my
+    limiting belief, saboteur cluster, etc." A real pointermove, aimed at a
+    lit pixel's own cell centre in the svg's own rendered box, the same
+    conversion character.js's own handler runs, so this fails if that
+    handler's math and the assertion's ever disagree rather than agreeing
+    by construction. */
+ const hv=await sp.evaluate(async()=>{
+  const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+  document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]').click(); await fr();
+  const r=compute();
+  /* whichever mask this profile's own stories lit the most, rather than a
+     name typed here: the reference case this file builds is stories and
+     addresses, not which of the six they happen to land on */
+  const reads=MASKS.map(m=>({m:m,rd:chRead(m,r,'dark')}));
+  const best=reads.slice().sort((a,b)=>b.rd.px.length-a.rd.px.length)[0];
+  const card=document.querySelector('[data-chmask="'+best.m.nm+'"]'), svg=card.querySelector('svg');
+  const rd=best.rd, px=rd.px.find(x=>x.tier>=1)||rd.px[0], rect=svg.getBoundingClientRect(), G=rd.G;
+  const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
+  svg.dispatchEvent(new PointerEvent('pointermove',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
+  await fr();
+  const pr=document.getElementById('chprobe');
+  const on1={on:pr.classList.contains('on'),t:pr.textContent,name:px.n.k,tier:px.tier};
+  /* off the mask entirely: the readout puts itself down rather than keep
+     naming the last pixel it was ever aimed at */
+  document.getElementById('masksview').dispatchEvent(new PointerEvent('pointermove',
+   {clientX:rect.left-40,clientY:rect.top-40,pointerType:'mouse',bubbles:true}));
+  await fr();
+  return {on1:on1,offAfter:!pr.classList.contains('on')};});
+ ok(hv.on1.on&&hv.on1.t.indexOf(hv.on1.name)>=0,'a hovered pixel names its own address, '+JSON.stringify(hv.on1));
+ ok(hv.on1.tier<1||/saboteur/.test(hv.on1.t),'and says the chain it sits in once it is part of one, '+hv.on1.t);
+ ok(hv.offAfter,'and moving off the grid puts the readout down');
  /* and a stranger, on a fresh page: the empty state reads honestly, nothing
     lit anywhere, and the six faces are still six different masks, which is
     the mark doing its job before any data arrives */
