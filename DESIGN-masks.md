@@ -260,3 +260,62 @@ Findings 3 through 6 from the first pass still stand; checked against
 this one and none conflict, including the click and the hover, verified
 live rather than assumed (a hover on James's Adult correctly named the
 address Pride under the new shape).
+
+## Addendum, round MV. The layout: a centre mask and four beside it
+
+Sent separately to the UI/UX team once he ruled E2 and flagged the
+layout itself as unfinished, "fill the center space well/symmetrically,
+and I can see them in detail... animation, motion, and interest."
+
+**Recommendation: a triptych**, one mask large in the centre with the
+other four in developmental order beside it (two per side on desktop, a
+row of four underneath on phone), against a plain three-over-two grid of
+five equal masks. Measured on James's Dark reading at 1600x1000: the
+triptych's centre mask draws its pixels at 20px against 9px for either
+alternative, covers 62% of the stage against 35%, and is the only
+arrangement where a tier's own gap between pixels (findings 4's own
+ramp) actually shows as more than one screen pixel. The equal-five grid
+loses on every number checked; its only advantage is that no mask is
+singled out, which the triptych answers a different way, by making the
+centre mask whichever one a press brings there.
+
+**Which mask opens in the centre is not chosen by charge.** Measured
+across all 14 profiles, both readings: the heaviest mask leads the next
+by less than 0.3 on a 0 to 10 scale in most readings that carry any
+charge, two reasonable ways of measuring "heaviest" pick different
+masks, and the winner changes on the Dark/Light toggle for every profile
+checked with both readings filled in. Choosing by charge would reshuffle
+the page on every toggle and present a near-tie as a verdict, against
+the product's own rule that a reading is not a score. Recommendation:
+Child on first open, then whichever mask was last pressed, remembered in
+this browser the same way the right column's own fold state already is.
+
+**The right column does not need to close for this.** Checked directly
+rather than assumed: closing it changes the centre mask's size by zero
+percent at four of six desktop sizes tested and ten percent at the
+narrowest, and the column is where a press already answers, so closing
+it by default would cost something for almost no room gained.
+
+**Alive on open, not only on press.** The centre mask lights first, the
+four side masks rise after it in developmental order 90ms apart, the
+whole entrance lands under one second, runs once per visit rather than
+on every `render()`, and drops out entirely under reduced motion.
+
+**Real conflicts with the standing spec, flagged rather than resolved:**
+finding 6's weave draws lines in developmental order, which crosses the
+centre mask in a triptych rather than running in a line; finding 1's
+"one shared grid" needs to hold across the unread and read states too,
+since an unread profile renders coarser today and would visibly change
+resolution at centre-mask size the moment a first story lands; the
+hover's own cell math needs the viewBox offset added once faces are
+cropped into their cards; a single pixel is under the touch floor at
+every size tested, so a touch press has to target the saboteur's block
+rather than the cell.
+
+**Open, his to rule, five questions:** one centre mask with four beside
+it, or all five equal and larger; which mask opens the page; whether
+pressing a side mask swaps it into the centre or something else shows
+the detail without moving anything; how the weave's lines route around a
+centre mask; and, on a phone, a centre mask over four small ones on one
+screen, or all five stacked at full size across roughly three screens of
+scrolling.

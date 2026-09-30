@@ -27852,3 +27852,28 @@ Read as:
    run: `gate.yml`'s own last run is still the one from before the
    billing fix, `server.yml`'s is the one re-run this session, both
    failure, neither has a newer run to report.
+
+**The TDD audit came back, real and measured, `AUDIT-source-tdd.md`.**
+Two of its most consequential claims were re-verified directly against
+`compute.js` before being trusted rather than relayed on the audit's own
+word: a saboteur genuinely can be named twice in one reading (two
+separate, undeduplicated loops push into the same list,
+`compute.js:268-284`), and a complex genuinely can pair a saboteur with
+itself as a direct knock-on of the first bug. Much of what the TDD names
+as missing already exists under another name, most notably the Positive
+Intelligence attribution it asks for, already built and already credited
+on screen (`SAB_PI`, `canon.js:316-317`). The Emergent Pattern Engine as
+specified was checked against the actual math rather than assumed
+buildable: an address's charge is not an independent signal (addresses
+sharing a parent axis move together by construction), and text reaches
+only about 16 distinct targets, so most of that engine cannot be built
+honestly from what this product collects today, before any question of
+whether it should be. Seven real questions are his to rule, listed in
+full in the audit's own last section and in the chat reply.
+
+**The masks layout pass also came back, `DESIGN-masks.md`'s own third
+addendum**, a centre mask flanked by four smaller ones in developmental
+order (a "triptych"), measured against a plain three-over-two grid and
+found to win on every number checked (pixel size, stage coverage) while
+adding no new controls. Five open questions of its own, listed in the
+chat reply.
