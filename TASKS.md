@@ -27232,3 +27232,45 @@ Read as:
    carry it to `atuned.world` on push, which is what unblocks him
    working the funnel and the flow next. No engine fine tuning has
    been asked for by name yet; when it is, it is next in this order.
+
+## Round MO
+
+His words, attaching `57acbdc8-ATUNED_Mechanics_of_Being_Creative_
+Direction_TDD_Addendum_and_Innovation_Brief.md`: "review this while I
+review the software. What we're looking for now are small wins.
+Before you do anything, give me step by step instructions on what I
+need to do with Eleven Labs and the Claude API, step by step, as if
+I'm 10. Then with all of the stuff I've input earlier today that has
+not been done, stuff that's in the backlog, let's take a look at our
+highest, like it's the smallest development but biggest wins. Let's
+start prioritizing our after ship. And today we're wrapping. So the
+funnel database for it, what we're doing with the funnel, onboarding,
+tutorial."
+
+Read as:
+
+1. **This is creative direction, not a code claim, so it is not
+   validated the way round MM's document was.** It cannot be measured
+   against `NODES.length` the way a count can. What it is, plainly: a
+   proposal to build a formal ATUNED symbol grammar (a registry, an
+   iconography guide, a motion grammar, a state grammar, a pattern
+   map) and to reframe Release, Verification and Contradiction as
+   visible state changes rather than buttons and messages. All ten of
+   its "design system deliverables" are real, multi week creative
+   system work, `art-director` and `narrative-director` territory, and
+   none of it is a small win by itself. Read in full in the chat
+   reply for what pieces of it, if any, are small and worth taking now.
+2. **"Give me the Eleven Labs and Claude API steps first."** Answered
+   in the chat reply, plain and in order, before anything else in this
+   round, per his own instruction that it comes before I do anything.
+3. **"What's in the backlog, biggest win for the smallest build."**
+   This round's own queue, LZ through MO, is read against effort and
+   payoff in the chat reply rather than here, since it is a ranking
+   and not a ruling.
+4. **"Today we're wrapping... the funnel database, the funnel,
+   onboarding, tutorial."** Read as the shape of tomorrow's actual
+   priority, not a build ask tonight: the real account/session wiring
+   from round MK (the reboot-os server already exists) is what turns
+   the funnel from a mockup into the front door he described in round
+   MI, and onboarding's own extension from round ML sits behind it.
+   Answered as a plan in the chat reply, not started tonight.
