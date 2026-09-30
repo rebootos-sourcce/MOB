@@ -28320,3 +28320,30 @@ curl command itself was broken by cmd.exe not supporting bash's `\`
 line continuation, corrected steps given, and he was told plainly that
 a token pasted into a chat should be rotated once confirmed working
 rather than kept.
+
+**"try again", three more times, all six through eight.** Each
+re-triggered directly, each the identical `Headers.set: invalid header
+value` on the identical step. Between the seventh and eighth he sent
+two screenshots: the corrected curl command now returning
+`"success":true, "This API Token is valid and active"` against
+Cloudflare directly, and GitHub's own secrets page showing
+`CLOUDFLARE_API_TOKEN` updated three minutes prior. Real evidence of a
+real change, so the eighth re-run was not a repeat of the same blind
+claim. It failed identically anyway, which is the first time in this
+whole saga that a confirmed-valid token still produced the confirmed-bad
+result, so the diagnostic was rebuilt a third time with more resolution
+than before, character codes and an internal-space check added.
+
+**The precise defect, finally.** `CLOUDFLARE_API_TOKEN` is 145 characters,
+one newline, and its first five characters are literally `curl ` (the
+word, a space, char codes 99 117 114 108 32), ending on a stray quote.
+The secret is not a mistyped or truncated token, it is a whole `curl`
+command pasted in as the value, consistent with a terminal-window
+selection that swept up the command line along with the token rather
+than the token alone. Every prior "updated" claim was real, each time
+reproducing the exact same mistake: copying from the Command Prompt
+window itself re-captures the `curl "..." -H "..."` text surrounding
+the token, not the token in isolation. Told him plainly to copy the
+token only from Cloudflare's own token page, using its own copy icon,
+never from a terminal window, and never to type or paste it anywhere
+else first.
