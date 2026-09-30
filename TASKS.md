@@ -28054,3 +28054,40 @@ Read as:
 Not answered this round and still open: whether a rail press should
 update only the hero or also the right column, the fourth question of
 the rail addendum.
+
+## Round NA
+
+A third document, his words: "Hero plus rail together. The six-axis
+already associated with the field. That should be added to analytics.
+I said a while ago, Cloudflare has already been updated with the GitHub
+stuff. Cloudflare secrets are already done. Just double check it. and
+then review this document. These are going to be added to our plan.
+the design, having the designs done should give you a leg up. Review."
+
+Read as:
+
+1. **The rail addendum's own last open question, answered: a rail
+   press updates the hero and the right column together.**
+2. **The six axes belong on Analytics, not a new tooltip invented from
+   nothing.** He reads them as "already associated with the Field,"
+   which is consistent with what this session found: `VERP` is read
+   from a person's own story text the same way everything else on the
+   Field is, it simply has no surface today. Answers last round's own
+   open placement question with a real page rather than asking this
+   session to invent one.
+3. **"Cloudflare secrets are already done, just double check it."**
+   Checked by the one test that actually proves it rather than by
+   reading a secret's name (which GitHub never exposes the value of
+   anyway): re-ran the same job directly. Result in the chat reply.
+4. **A third document, saved whole: `SOURCE-TDD-V3-intelligence.md`.**
+   "ATUNED Intelligence System, Canonical Technical Design Document V3,"
+   Trace Graph, Sniffer algorithms, a 90 day longitudinal engine,
+   analytics and an AI handshake contract. His own framing, "these are
+   going to be added to our plan... having the designs done should give
+   you a leg up," read as the same pace as round MY's creative brief:
+   review and connect to what is already known, not an urgent audit
+   before code the way the first TDD's own section 42 demanded. Sent
+   for a focused comparison against `AUDIT-source-tdd.md`'s own
+   findings rather than a second full audit from nothing, since much of
+   its vocabulary (Evidence, Trace Graph, SourceOS) names the same
+   ground that audit already covered under the engine's own names.
