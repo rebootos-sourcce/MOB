@@ -27668,3 +27668,86 @@ brightness and tier fix, mark snapping, one shared grid, the pixel
 click) and are queued next; six real questions need his own ruling
 first, listed in full in `DESIGN-masks.md`'s own last section and in the
 chat reply, not built blind past that line.
+
+## Round MT
+
+His ruling on the six open questions, verbatim: "For the base shapes, I
+finding none of these appealing. I want the art director and their team
+to redesign these to be aesthetically pleasing. Find the shapes that are
+frictionless that people find aesthetically pleasing. Right, oval is
+always good. Egg shape is always good. But I think we want the overall
+symbolism of the shape and the pattern to be present. And right now
+they're not. Yeah, six were one face can still be I want them to all six
+to be on the same page. but maybe have some frame around them. So that
+they look separate. and maybe they're visual treatment. Looks different
+so that they're they stand out. Well, the professional would be data
+around how we relate to our careers. That's not preteen. The careers
+would be limiters. I guess preteen would be part of that. If you continue
+that to find that that is a true statement, then we can reduce the
+professional and get rid of it. Heart and crown, are part of the chakra
+system, all the chakras should be in the masks, I don't even understand
+why you're asking that question. For number four. The face is a small
+body map, that's correct. For the mass, we want their outline. So for
+number six, we want to be, we don't want blank. We want to see the
+outline. Of the mass potential."
+
+Read as, against the six questions `DESIGN-masks.md` asked:
+
+1. **None of A, B or D. Rejected outright, not picked between.** A new
+   brief, not a narrower one: shapes people already find pleasing, his
+   own examples oval and egg, but carrying the pattern's own symbolism
+   rather than only a proportion. Sent back to the art director for a
+   second, differently briefed pass rather than built from the rejected
+   set.
+2. **"Six were one face" still holds, and each should still stand out.**
+   Not the ladder's answer, a different one: all six stay on one page,
+   built from what reads as one family, but each framed and treated so
+   it reads as its own thing, his words, "have some frame around them...
+   maybe their visual treatment looks different." Folded into the same
+   second pass as question 1, since a frame and a treatment are exactly
+   what a redesigned shape has to carry.
+3. **Checked directly rather than assumed, before any shape work
+   touches it, on his own instruction ("if you continue that to find
+   that is a true statement").** His premise: Professional should carry
+   career data that Preteen does not. `engine/data/nodes.js` holds all
+   112 addresses in full, `i`, `k` the name, `b` the seat, `n` the nerve,
+   `a` what it affects, `d` how it shows up, `c` the emotion. No field
+   anywhere ties any address to career, or to any life area at all; the
+   only thing that already separates Preteen from Professional is that
+   they carry the same two seats, Solar and Throat, which is the finding
+   that started this question in the first place. **The premise is not
+   true today.** Nothing in the data currently makes Professional about
+   careers and Preteen about something else. His own conditional
+   therefore reaches its other branch: reduce Professional and remove
+   it, unless he instead wants a real new field on all 112 addresses
+   tagging which life area each belongs to, career among them, which is
+   an engine schema change and not a mask-page change, sized and named
+   here rather than started blind. His call, with the true finding in
+   hand rather than the assumption.
+4. **Heart and Crown must both appear.** Ruled, not asked again: they
+   are two of the seven seats the rest of the product already carries
+   everywhere, `SEATS`/`BODY7` and every reading, drill and dial on this
+   product's own seven, and a page that omits two of them is the gap,
+   not a question to keep open. Folded into the same redesign pass: six
+   masks covering seven seats needs a real mapping, and removing
+   Professional per item 3 would free exactly the seat pairing Heart and
+   Crown need room in.
+5. **The face as a small body map: confirmed**, the higher seat sitting
+   higher on the face. Buildable once the shape and seat mapping above
+   are settled, since it is a layout rule and not a proportion.
+6. **Never blank. Show the mask's own outline even where nothing is
+   held.** His words, "we don't want blank, we want to see the outline
+   of the mask's potential." Real and separate from the shape questions:
+   today a reading with nothing held under a mask (his own Dark reading,
+   all 39 saboteurs living in Light) still computes `chRead` correctly
+   but draws only the faint background stipple, no rim step, nothing
+   that reads as a face waiting to fill. The fix is the rim and the full
+   outline always drawn at a legible weight, filled pixels on top of
+   that rather than instead of it, independent of the shape question and
+   buildable now.
+
+Sent back to the art director for a second pass on questions 1, 2 and 4
+together, since a shape redesign, a framing treatment and a seven seat
+mapping are one piece of work and not three; question 3's true finding
+reported to him directly rather than built past; question 6 queued as
+its own small, immediate fix.
