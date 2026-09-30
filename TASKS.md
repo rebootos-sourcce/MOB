@@ -27818,3 +27818,37 @@ Read as:
    row, and, restated a second time in his own words for weight,
    animation, motion and interest he can actually see when the page
    opens, not only on a press or a hover.
+
+## Round MW
+
+His words, verbatim, attaching a 1604 line document: "Review. This is
+for our psycho-spiritual to physiological engine. What's taking so long
+with wiring in the login? And the rebuilt gate deploy. What's happening?"
+
+Read as:
+
+1. **The document, saved whole rather than left in an upload folder
+   that does not survive a session: `SOURCE-TDD.md`.** Its own title,
+   "SOURCE Technical Design Document, Master Architecture and AI Handoff
+   Specification," and its own opening contract name what it is: a
+   specification for a much larger evidence, hypothesis and discovery
+   architecture (an Evidence Model, a Convergence and Contradiction
+   engine, a Verification engine, an Emergent Pattern Engine that
+   discovers structures the product does not yet have names for) than
+   what is built today, extending rather than replacing it, by its own
+   words. Its own section 42 rules an audit before any code: exists,
+   partial, missing, conflict or unverified, checked against the real
+   implementation and not assumed either way. Dispatched for that audit
+   rather than implemented blind; reported separately once it returns.
+2. **"What's taking so long with wiring in the login."** Checked fresh
+   rather than answered from memory: nothing has changed since last
+   reported. `reboot-os`'s own `server.yml` run was re-run directly
+   after his billing fix and failed at the real deploy step on an
+   invalid Cloudflare secret value, and no push or re-paste has reached
+   it since. The wait is exactly where it was left, on the two secrets
+   he was asked to re-paste on `reboot-os`, not idle time on this
+   session's own side.
+3. **"The rebuilt gate deploy. What's happening."** Same answer, same
+   run: `gate.yml`'s own last run is still the one from before the
+   billing fix, `server.yml`'s is the one re-run this session, both
+   failure, neither has a newer run to report.
