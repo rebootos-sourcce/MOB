@@ -40,6 +40,19 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
+      # tools/slim.py shells out to `npx --no-install tsc` to strip comments
+      # from the delivery build, deliberately refusing to let npx reach the
+      # network for it: a package literally named "tsc" exists on the
+      # registry, an unrelated, ancient shim, and --no-install is what stops
+      # npx from silently fetching that instead of the real compiler. On a
+      # fresh runner nothing is installed at all, so this failed on every one
+      # of this workflow's runs since it was written, round LW, and
+      # atuned.world has never once deployed through it. The fix is to give
+      # --no-install something real to find rather than loosen the guard:
+      # the actual `typescript` package, installed here by its real name so
+      # node_modules/.bin/tsc exists before slim.py ever asks for it.
+      - name: install typescript for the delivery build's comment stripper
+        run: npm install --no-audit --no-fund --no-save typescript
       - name: build the engine
         run: ./atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh
       - name: engine gate
