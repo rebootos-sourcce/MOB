@@ -27647,3 +27647,24 @@ Verified rather than assumed: `node --test test/*.test.mjs` in
 run a job again, `server.yml`'s own deploy is expected to go green on the
 first try, and it already reads the Cloudflare secrets by name rather
 than failing without them.
+
+**Round MS's masks brief, item 6's own spec back.** Measured against the
+real build on the full roster before anything was proposed, not
+described from taste; full spec in `DESIGN-masks.md`, this entry is its
+summary. Graded the current page C (intent C, truth C minus, craft B
+minus) with seven measured truth defects, the two sharpest checked
+directly rather than trusted: Preteen and Professional carry the exact
+same seats in canon, `['Solar','Throat']` both, so their fill is
+identical data and not a rendering accident, and Heart and Crown sit
+under no mask at all, a third of every address including James's own
+heaviest charge. Golden ratio filtering answered with three real
+candidates plus a construction, screenshotted rather than described,
+`golden-ladder.png` sent to him alongside this round's reply. A wrong
+line in this file's own MS entry was caught and corrected: redrawing the
+outline does not move the click's own geometry, since the hover and
+click solve a cell from the pointer at render time rather than reading
+the outline. Six things build without a ruling (motion per mask, the
+brightness and tier fix, mark snapping, one shared grid, the pixel
+click) and are queued next; six real questions need his own ruling
+first, listed in full in `DESIGN-masks.md`'s own last section and in the
+chat reply, not built blind past that line.
