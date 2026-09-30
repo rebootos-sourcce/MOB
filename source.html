@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v968 8cf639b 2026-09-30 00:53"><head><meta charset="utf-8">
+<html lang="en" data-build="v975 94193b3 2026-09-30 01:55"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5576,10 +5576,51 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    blur was a nicety. An opaque ground reads as a sheet on its own, and it also
    stops the wheel showing through a card a person is meant to be reading. */
 .ob{position:fixed;inset:0;z-index:95;display:none;align-items:center;
- justify-content:center;background:rgba(6,6,8,.94);padding:24px}
-.ob-card{width:min(560px,100%);max-height:88vh;overflow:auto;
+ justify-content:center;background:rgba(6,6,8,.94);padding:24px;
+ transition:opacity var(--t-element) var(--ease-in)}
+/* THE HANDOFF FADE, ROUND MP: "there needs to be a transition between the
+   last onboarding screen and the field." ui/onboard.js's obClose() adds
+   this class, waits OB_LEAVE_MS, then removes the sheet; the fade plays in
+   that window. The card itself eases down and out with it, so the sheet
+   does not just go transparent in place, it visibly leaves. */
+.ob.ob-leaving{opacity:0}
+.ob.ob-leaving .ob-card{transform:translateY(6px) scale(.98)}
+.ob-card{position:relative;overflow:hidden;width:min(560px,100%);max-height:88vh;
  background:var(--panel);border:1px solid var(--edge);border-radius:14px;
- padding:26px 28px 20px}
+ padding:26px 28px 20px;transition:transform var(--t-element) var(--ease-in)}
+/* THE CARD SCROLLS ON ITS OWN INNER LAYER, not the card element itself, so
+   .ob-wash's own transform/animation is not fighting a scrollable ancestor
+   the way it would if overflow:auto sat on .ob-card directly. */
+.ob-card>.ob-scroll{max-height:calc(88vh - 46px);overflow:auto}
+/* PULLED FROM THE FIELD PAGE, ROUND MP: "redesign this so it's visually
+   appealing, see what you can pull from the field page." The boot sheet's
+   own .bx-wash draws these same seven colours as a radial wash behind the
+   standing figure; this is that same idea, softer and animated slowly,
+   behind a card instead of a full screen figure. filter:blur, not
+   backdrop-filter: gate 7 in tests/design.js measured a real frame rate
+   cost from sampling the Field live through a blur and the fix was to stop
+   doing that, not to blur less; this blurs its own painted gradient only
+   and never samples anything behind the sheet, so that cost does not
+   apply here. */
+.ob-wash{position:absolute;inset:-15%;z-index:0;pointer-events:none;
+ opacity:.55;filter:blur(30px);
+ background:radial-gradient(circle at 12% 18%,rgba(214,82,76,.20) 0,transparent 38%),
+  radial-gradient(circle at 88% 12%,rgba(216,146,78,.18) 0,transparent 40%),
+  radial-gradient(circle at 92% 58%,rgba(218,191,106,.16) 0,transparent 40%),
+  radial-gradient(circle at 72% 94%,rgba(95,213,166,.18) 0,transparent 40%),
+  radial-gradient(circle at 22% 92%,rgba(94,187,219,.18) 0,transparent 40%),
+  radial-gradient(circle at 6% 58%,rgba(125,147,224,.18) 0,transparent 40%),
+  radial-gradient(circle at 48% 46%,rgba(167,126,219,.15) 0,transparent 46%);
+ animation:obWashDrift 30s ease-in-out infinite alternate}
+@keyframes obWashDrift{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.1) rotate(3deg)}}
+/* THE STANDING FIGURE, FAINT, BEHIND EVERY CARD rather than shown once at
+   full strength on the welcome screen alone: the same continuity the
+   Field gives every tab, one figure the whole product is read against. */
+.ob-fig-wm{position:absolute;inset:0;z-index:0;display:flex;align-items:center;
+ justify-content:center;opacity:.07;pointer-events:none}
+.ob-fig-wm .ob-fig{width:64%;height:auto}
+.ob-card>:not(.ob-wash):not(.ob-fig-wm){position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.ob-wash{animation:none}}
 .ob-h{font-size:24px;line-height:1.2;margin:6px 0 14px;font-weight:600;
  letter-spacing:-.012em;color:var(--ink)}
 .ob-p{margin:0 0 13px;font-size:15px;line-height:1.62;color:var(--mid);
@@ -5596,6 +5637,37 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
  min-height:var(--tap);width:100%}
 .login-row input:focus{border-color:var(--accent)}
+/* THE STRONG PASSWORD SUGGESTION AND FORGOT PASSWORD LINK, ROUND MP: "the
+   login needs the typical login stuff... I also want us to be able to
+   suggest a strong password." .login-pw turns the password row into an
+   input plus a button sharing one line; loginSuggestPassword() in
+   ui/login.js fills the field and reveals the suggestion as plain text
+   underneath, since a hidden suggestion is not one a person can copy. */
+.login-pw{display:flex;gap:7px}
+.login-pw input{flex:1 1 auto;min-width:0}
+.login-pwsug{flex:0 0 auto;background:var(--sunk);border:1px solid var(--edge);
+ color:var(--ink);border-radius:var(--r-xs);padding:0 12px;font-family:var(--sans);
+ font-size:13px;min-height:var(--tap);cursor:pointer}
+.login-pwsug:hover{border-color:var(--accent)}
+.login-hint{display:block;margin-top:6px;font-size:12.5px;color:var(--dim);
+ font-family:var(--num);word-break:break-all}
+.login-forgot{display:block;background:none;border:none;color:var(--dim);
+ font-size:13px;font-family:var(--sans);text-decoration:underline;cursor:pointer;
+ padding:2px 0;margin:-6px 0 4px}
+.login-forgot:hover{color:var(--ink)}
+/* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
+   a stranger meeting the funnel for the first time, round MP: "the login
+   screen should give me the options, onboarding and tutorial." */
+.login-dev{margin-top:16px;border-top:1px solid var(--edge);padding-top:12px}
+.login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
+ list-style:none}
+.login-dev summary::-webkit-details-marker{display:none}
+.login-dev summary::before{content:'▸ ';font-size:10px}
+.login-dev[open] summary::before{content:'▾ '}
+.login-sw{display:flex;align-items:center;gap:8px;font-size:13.5px;
+ color:var(--ink);margin-top:10px;cursor:pointer}
+.login-sw-off{color:var(--dim);cursor:default}
+.login-dim{color:var(--dim);font-size:11.5px;margin-left:4px}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
 .ob-dot.on{background:var(--accent)}
 /* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the
@@ -44786,12 +44858,15 @@ try{window.__at&&window.__at('ui/rootsum.js');}catch(e){}
    writes to the nine axes, nothing here is a reading, and it can
    be run again from the account area any time.
 
-   WHAT IT CAPTURES, and why that is not a form. One answer: where
-   they felt the second word. That is a seat, it is the first real
-   parameter the instrument has about them, and it is obtained by
-   having them feel something rather than by asking them to
-   describe themselves. Everything else a form would ask for is
-   somewhere else in the product already.
+   WHAT IT CAPTURES, and why that is not a form. Round MP replaced the
+   original neutral/charged word draw with his own breath and
+   awareness script: think yes ten times, think no ten times, compare
+   the two at the throat. What is captured is only whether the two
+   felt different, yes, no or nothing, never a seat name: "remove all
+   the solar plex, sacral, I don't want any of that there in this
+   onboarding." The point stands the same as it always did, obtained
+   by having them feel something rather than by asking them to
+   describe themselves.
    ============================================================ */
 /* THE AUTOMATIC OPEN IS OFF. Ruled 20 September: "let's turn off onboarding
    for now." Off means a stranger is not met by a sheet, not that the flow is
@@ -44800,26 +44875,16 @@ try{window.__at&&window.__at('ui/rootsum.js');}catch(e){}
    in one place, so turning it back on is a single word and not an archaeology
    exercise. */
 var OB_AUTO=false;
-var OB={open:false, step:0, felt:null, neutral:null, charged:null, replay:false};
+var OB={open:false, step:0, felt:null, replay:false};
 
-/* THE TWO WORDS. The first has no quality of its own and the second does, and
-   the contrast between them is the whole proof. They are drawn from his own
-   nine rather than invented, so the charged word is a word this instrument
-   actually measures, and a person who goes looking for it later finds it.
-
-   The neutral word is deliberately dull and concrete. A neutral word that is
-   secretly evocative proves nothing. */
-const OB_NEUTRAL=['table','pavement','envelope','stairwell','doorframe'];
-function obPick(){
- /* the charged word is the axis this person is most likely to feel, which on
-    a blank profile is the commonest one rather than a claim about them. A
-    person who has entered something gets their own heaviest. */
- var live=null;
- try{ live=CHILD.map(function(c){return {c:c,v:+(S.charge[c.nm]||0)};})
-   .sort(function(a,b){return b.v-a.v;})[0]; }catch(e){}
- var c=(live&&live.v>0)?live.c:(CHILD.filter(function(x){return x.nm==='Fear';})[0]||CHILD[0]);
- OB.neutral=OB_NEUTRAL[Math.floor(Math.random()*OB_NEUTRAL.length)];
- OB.charged=c;}
+/* THE SIGNAL TEST IS A BREATH EXERCISE NOW, ROUND MP. His own script,
+   replacing the neutral/charged word draw entirely: "the signal test is
+   simple, yes, no, say it to yourself... think yes ten times, see where
+   it feels, see what the quality is, note its nature, think no ten times,
+   feel its quality, note its nature, compare the difference between the
+   two." Nothing here reads S.charge or CHILD any more, and OB.felt now
+   holds 'yes', 'no' or 'none' rather than a seat name: there is no seat
+   in this exercise to hold. */
 
 /* THE FIGURE, AT REST. Ruled: "show, not tell, Japanese Zen, we do not have to
    go super text heavy," and separately, "when I come to this page off the
@@ -44847,14 +44912,23 @@ function obFigure(){
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=true; OB.step=0; OB.felt=null; OB.replay=!!replay;
- obPick(); obRender();
+ h.classList.remove('ob-leaving');
+ obRender();
  h.style.display='flex';
  /* the sheet takes focus, because a person arriving here has nothing else to
     do and a keyboard user should not have to find it */
  var f=h.querySelector('button'); if(f)f.focus();}
+/* THE HANDOFF TO THE FIELD IS A FADE, NOT A CUT, ROUND MP: "there needs to
+   be a transition between the last onboarding screen and the field." The
+   sheet's own CSS transition (see .ob-leaving in head.html) plays first,
+   then the sheet is actually removed once it has had time to finish; a
+   person who somehow skips ahead before it ends is still left with a sheet
+   that is at least invisible and non-interactive, never a stuck one. */
+var OB_LEAVE_MS=520;
 function obClose(){
  var h=document.getElementById('ob'); if(!h)return;
- OB.open=false; h.style.display='none'; h.innerHTML='';
+ OB.open=false; h.classList.add('ob-leaving');
+ setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },OB_LEAVE_MS);
  /* EVERY WRITE THAT CAN FAIL REPORTS, and this one did not.
 
     It ignored what pSave returned and swallowed any throw into an empty
@@ -44878,15 +44952,26 @@ function obClose(){
  if(typeof render==='function')render();}
 
 /* ---- the steps ---- */
+/* THE CARD NOW CARRIES THE SAME GROUND THE FIELD DOES, ROUND MP: "redesign
+   this so it's visually appealing, see what you can pull from the field
+   page." .ob-wash is the boot sheet's own seven seat colours (bx-wash in
+   body.html, same hex values) at a fraction of its strength, so the door
+   and the instrument behind it read as one world rather than a plain
+   sheet dropped over it. .ob-fig-wm is the same standing figure obFigure
+   draws, held very faint behind every card rather than shown once at full
+   strength on the welcome screen alone. */
 function obCard(eye,title,body,acts){
  return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-fig-wm" aria-hidden="true">'+obFigure()+'</div>'
+  +'<div class="ob-scroll">'
   +'<span class="pm-eye">'+esc(eye)+'</span>'
   +'<h2 class="ob-h">'+esc(title)+'</h2>'
   +body
   +'<div class="ob-acts">'+acts+'</div>'
   +'<div class="ob-dots">'+[0,1,2,3].map(function(i){
     return '<span class="ob-dot'+(i===OB.step?' on':'')+'"></span>';}).join('')+'</div>'
-  +'</div>';}
+  +'</div></div>';}
 
 function obRender(){
  var h=document.getElementById('ob'); if(!h)return;
@@ -44961,78 +45046,62 @@ function obRender(){
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===2){
-  /* THE SIGNAL TEST. The one interactive thing, and it is the somatic opener
-     he named. Two words, read slowly, and the body answers before the mind
-     does. The instruction is the whole practice: there is nothing to get
-     right, which is said out loud because a person who thinks they are being
-     tested will perform rather than feel. */
-  out=obCard('The signal test','Say these to yourself, slowly.',
-   '<p class="ob-p">Read the first word. Let it land. Notice if anything in '
-   +'your body changes. Do not go looking for it.</p>'
-   +'<div class="ob-word ob-word-n">'+esc(OB.neutral)+'</div>'
-   /* "Most people get nothing from that one" is a claim about a population
-      this instrument has never measured. What is true is why the word is
-      there, so that is what it says. */
-   +'<p class="ob-p ob-dim">That was a plain word. Feeling nothing is the '
-   +'point of it. Now the second.</p>'
-   +'<div class="ob-word ob-word-c">'+esc(OB.charged.nm.toLowerCase())+'</div>'
-   +'<p class="ob-p">Where did that one land? There is no right answer, and '
-   +'nothing at all is an answer.</p>'
-   +'<div class="ob-seats">'
-   +BANDS.map(function(b){
-     return '<button type="button" class="ob-seat'+(OB.felt===b?' on':'')
-      +'" data-obseat="'+esc(b)+'" style="--c:'+seatCol(b)+'">'+esc(b)+'</button>';}).join('')
-   +'<button type="button" class="ob-seat'+(OB.felt==='none'?' on':'')
-   +'" data-obseat="none">Nothing</button></div>',
-   /* A SLOT KEEPS ITS LABEL AND THE VALUE CARRIES THE STATE. This read
-      "Choose one to go on" until a seat was picked and then became "Next",
-      so the control changed identity under the pointer. The rule is already
-      written down in this product, next to the shelf that swapped its own
-      heading with its own value. The word stays Next; disabled is what says
-      it is not ready, and the accessible name says why. */
-   '<button type="button" class="btn pri" data-ob="next"'
+  /* THE SIGNAL TEST, ROUND MP, HIS OWN SCRIPT, REPLACING THE WORD DRAW
+     ENTIRELY. "The signal test is simple, yes, no, say it to yourself...
+     this is a neurosomatic product, meaning the story you create
+     conditions a body, one impacts the other and vice versa." No seat
+     names anywhere in this screen, his own ruling: "remove all the solar
+     plex, sacral, I don't want any of that there." The capture is
+     Yes / No / Nothing, never a disabled Next with no other way through,
+     the exact trap he hit: "I can't click next to go, I can only click
+     solar." Nothing is disabled here; Nothing is itself a real answer, on
+     the same honest-empty rule the reflection screen already keeps. */
+  out=obCard('The signal test','Say yes. Say no.',
+   '<p class="ob-p">This product works with the body and the mind '
+   +'together. A thought changes what your body does, and what your body '
+   +'does changes the thought back.</p>'
+   +'<p class="ob-p">Sit down. Take ten slow breaths. Relax.</p>'
+   +'<p class="ob-p">When you are ready, bring your attention to your '
+   +'throat.</p>'
+   +'<p class="ob-p">Think <b>yes</b>, ten times. Notice what that feels '
+   +'like there.</p>'
+   +'<p class="ob-p">Now think <b>no</b>, ten times. Notice what that '
+   +'feels like.</p>'
+   +'<p class="ob-p">Compare the two. Did they feel different?</p>',
+   '<div class="ob-seats">'
+   +[['yes','Yes'],['no','No'],['none','Nothing']].map(function(x){
+     return '<button type="button" class="ob-seat'+(OB.felt===x[0]?' on':'')
+      +'" data-obseat="'+x[0]+'">'+esc(x[1])+'</button>';}).join('')
+   +'</div>'
+   +'<button type="button" class="btn pri" data-ob="next"'
    +(OB.felt?'':' disabled aria-describedby="ob-need"')+'>Next</button>'
-   +(OB.felt?'':'<span id="ob-need" class="ob-need">Choose one to go on.</span>')
+   +(OB.felt?'':'<span id="ob-need" class="ob-need">Pick one to go on.</span>')
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else {
-  /* WHAT IT READ, AND WHAT IT DOES NOT CLAIM. One signal is one signal. The
-     product's whole claim is that it does not invent a reading, and the first
-     screen a person meets is the worst possible place to break that. */
+  /* WHAT IT SAYS, SHARPENED, ROUND MP: "you felt anticipation, actually
+     that doesn't even apply, it's just yes, no." There is no seat and no
+     word left to name, only whether the two felt different. */
   var said;
   if(OB.felt==='none'){
-   said='<p class="ob-p">Nothing, and that is a real answer. Sometimes the '
-    +'word is not yours. Sometimes your body has been quiet for so long that it '
-    +'stays quiet. This instrument reads both, and neither is a failure.</p>';
+   said='<p class="ob-p">Nothing stood out, and that is a real answer. '
+    +'Sometimes it takes stillness to notice. This works with quiet as '
+    +'well as loud.</p>';
   }else{
-   var same=(OB.charged.seat===OB.felt);
-   said='<p class="ob-p">You felt <b>'+esc(OB.charged.nm.toLowerCase())+'</b> at '
-    +'the <b>'+esc(String(OB.felt).toLowerCase())+'</b>. '
-    +(same?'This instrument puts that word there too. Your body and the '
-        +'instrument agree, and you have not typed anything yet.'
-       :'This instrument usually puts that one at the '
-        +esc(String(OB.charged.seat).toLowerCase())+', and yours went somewhere '
-        +'else. Yours is the one that counts. The instrument follows what you '
-        +'feel, not the other way round.')
-    +'</p>';}
-  /* PASS 1 BEFORE ANY OTHER. The heading said "A word with no power over you
-     moved your body" to a person who had just pressed Nothing, which tells
-     them something happened that they said did not. Each answer gets a
-     heading that is true of it. */
+   said='<p class="ob-p">You noticed a difference between yes and no. '
+    +'Neither one is a word with any power of its own. What moved was '
+    +'your body.</p>';}
   out=obCard('What just happened',
-   OB.felt==='none'?'Nothing moved this time.':'Just a word, and it moved your body.',
+   OB.felt==='none'?'Nothing moved this time.':'A thought moved your body.',
    said
-   /* and "you just watched it happen" is only true of the felt path */
-   +'<p class="ob-p">'+(OB.felt==='none'?'':'That is how the whole thing works, and '
-   +'you just watched it happen. ')+'A pattern is a word, a picture or a moment '
-   +'that still has a grip somewhere in your body. This finds where, and gives '
-   +'you a way to put it down.</p>'
-   +'<p class="ob-p ob-dim">Nothing has been written to your record. You can run '
-   +'this again any time from your profile.</p>',
+   +'<p class="ob-p">'+(OB.felt==='none'?'':'That is the whole idea. ')
+   +'Words like anxious, overwhelmed, burned out or depressed do the same '
+   +'thing somewhere in you. This finds where, and gives you a way to '
+   +'work with it.</p>',
    '<button type="button" class="btn pri" data-ob="done">Go in</button>');
  }
  h.innerHTML=out;
- var f=h.querySelector('.ob-card'); if(f)f.scrollTop=0;}
+ var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
 
 /* ---- one listener for the whole sheet ---- */
 addEventListener('click',function(e){
@@ -45061,12 +45130,29 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
    the funnel is. And then, keeping it simple while the real flow is
    designed: "let's keep it locally."
 
-   So this is local and it is honest about being local: the fields are
-   real, nothing typed is sent anywhere or checked against anything,
-   and pressing the one button is what a signed in state would look
-   like once there is a real one. account.js already carries this same
-   honesty for its own sign in shell, "nothing typed here is sent or
-   kept," and this is the same rule at the door instead of in Settings.
+   ROUND MP REDESIGNED THE FIELDS AND KEPT THE HONESTY. Username,
+   email, password, a suggested strong password and a forgot
+   password link are all real controls now, "the login needs the
+   typical login stuff." Two factor and OAuth are named in the same
+   round and are not here: each needs a real provider and a decision
+   only he can make about which ones, so they are queued rather than
+   guessed at, not built silently under cover of "typical login
+   stuff." Checked directly against the real server this round,
+   `reboot-os`'s own `atuned-api` Worker: its wrangler.toml still
+   carries a placeholder database id and its own deploy has never
+   once succeeded, so there is no live, reachable server to sign
+   into yet. This stays local for that reason as much as for his
+   own "let's keep it locally," and pressing Log in is still what a
+   signed in state will look like once a real one exists, the same
+   honesty account.js already carries for its own sign in shell.
+
+   THE ONE SENTENCE THAT SAID SO OUT LOUD IS GONE, his own ruling:
+   "get rid of the text that says this is a local build, nothing
+   typed here is sent anywhere or checked against anything." The
+   honesty moves into the forgot password panel instead, the one
+   place here that would otherwise look broken rather than unbuilt,
+   and into this comment, where a person reading the code still
+   finds it.
 
    THE SEQUENCE IS THE DEFAULT NOW, reversing OB_AUTO's own September
    ruling, "let's turn off onboarding for now," for this one path
@@ -45075,7 +45161,7 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
    step below no longer reads it. What reads it now is DEV_SKIP, and
    the default is to show the door, his own words this round: "if
    it's not pressed, then it goes to the sequence." */
-var LOGIN={open:false};
+var LOGIN={open:false,reset:false};
 /* THE DEVELOPER SKIP. His words: "have a switch for that loading
    screen to turn onboarding tutorial off, so I can just bypass
    straight to the dashboard, just put it as a developer button, on
@@ -45088,32 +45174,107 @@ var LOGIN={open:false};
    first, the same way a developer's own press would. Read once, at
    load, because the boot sheet the button lives on is gone within a
    second of the page settling and nothing after that should still be
-   asking the URL. */
+   asking the URL. This flag alone still means "skip the door and the
+   sequence entirely," unchanged, and every browser gate still reaches
+   the instrument through it. */
 var DEV_SKIP=false;
 (function(){
  try{ DEV_SKIP=/(?:^|[?&])dev=1(?:&|$)/.test(location.search||''); }catch(e){}
 })();
+/* THE TWO SWITCHES BEHIND THE DOOR, ROUND MP. His words: "the login
+   screen should give me the options, I want onboarding and tutorial,
+   if they're both off then it skips straight to dashboard, if one is
+   on it plays one versus the other." These only matter once DEV_SKIP
+   above has already let the login screen show; DEV_SKIP itself still
+   bypasses both of these along with the door. The tutorial has no
+   flow behind it yet, "the tutorial's not even wired in," so its own
+   switch is disabled rather than pretending to work: a control that
+   takes a press and does nothing is the exact dead button account.js
+   was already written against. */
+var DEV_PLAY_ONBOARDING=true;
+var DEV_PLAY_TUTORIAL=false;
+/* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
+   each of four sets, the rest filled from all four combined and
+   shuffled, so every suggestion actually contains a lower case letter,
+   an upper case letter, a digit and a symbol rather than relying on
+   chance to include one. crypto.getRandomValues, not Math.random: a
+   suggested password is exactly the kind of value worth a real source
+   of randomness. */
+function loginSuggestPassword(){
+ var sets=['abcdefghijkmnpqrstuvwxyz','ABCDEFGHJKLMNPQRSTUVWXYZ','23456789','!@#$%^&*-_?'];
+ var all=sets.join(''), n=16, out=[];
+ var rnd=function(max){
+  try{ var a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%max; }
+  catch(e){ return Math.floor(Math.random()*max); } };
+ sets.forEach(function(s){ out.push(s[rnd(s.length)]); });
+ while(out.length<n) out.push(all[rnd(all.length)]);
+ for(var i=out.length-1;i>0;i--){ var j=rnd(i+1); var t=out[i]; out[i]=out[j]; out[j]=t; }
+ return out.join('');}
 function loginCard(){
- return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="Log in">'
-  +'<span class="pm-eye">Welcome back</span>'
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Log in">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Welcome</span>'
   +'<h2 class="ob-h">Log in</h2>'
-  +'<p class="ob-p">This is a local build. Nothing typed here is sent anywhere '
-  +'or checked against anything.</p>'
   +'<form id="loginform" novalidate>'
+  +'<div class="login-row"><label class="login-l" for="loginuser">Username</label>'
+  +'<input type="text" id="loginuser" autocomplete="username" spellcheck="false"></div>'
   +'<div class="login-row"><label class="login-l" for="loginmail">Email</label>'
   +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false"></div>'
   +'<div class="login-row"><label class="login-l" for="loginpass">Password</label>'
-  +'<input type="password" id="loginpass" autocomplete="current-password"></div>'
+  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="new-password">'
+  +'<button type="button" class="login-pwsug" id="loginsug">Suggest</button></div>'
+  +'<span class="login-hint" id="loginpwhint" hidden></span></div>'
+  +'<button type="button" class="login-forgot" id="loginforgot">Forgot your password?</button>'
   +'</form>'
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button></div>'
-  +'</div>';}
+  +loginDevOptions()
+  +'</div></div>';}
+function loginResetCard(){
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Reset your password">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Password reset</span>'
+  +'<h2 class="ob-h">Reset your password</h2>'
+  +'<p class="ob-p">This is a local build. There is no account behind it yet, '
+  +'so there is nothing to send a reset link to. This will work once a real '
+  +'sign in does.</p>'
+  +'<div class="ob-acts"><button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
+  +'</div></div>';}
+/* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
+   testing control, not a thing a stranger meeting the funnel needs to
+   see open by default. */
+function loginDevOptions(){
+ return '<details class="login-dev">'
+  +'<summary>Developer options</summary>'
+  +'<label class="login-sw"><input type="checkbox" id="devob"'
+  +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
+  +'<label class="login-sw login-sw-off"><input type="checkbox" id="devtut" disabled>'
+  +' Tutorial <span class="login-dim">not built yet</span></label>'
+  +'</details>';}
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
- LOGIN.open=true; h.style.display='flex'; h.innerHTML=loginCard();
+ LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
+ loginWire(h);}
+function loginWire(h){
  var f=h.querySelector('input'); if(f)f.focus();
  var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
  var form=document.getElementById('loginform');
- if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};}
+ if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
+ var sug=document.getElementById('loginsug');
+ if(sug)sug.onclick=function(){
+  var p=document.getElementById('loginpass'), hint=document.getElementById('loginpwhint');
+  if(!p)return; var pw=loginSuggestPassword();
+  p.value=pw; p.type='text';
+  if(hint){ hint.hidden=false; hint.textContent='Suggested: '+pw; } };
+ var forgot=document.getElementById('loginforgot');
+ if(forgot)forgot.onclick=function(){
+  LOGIN.reset=true; h.innerHTML=loginResetCard();
+  var back=document.getElementById('loginb-back');
+  if(back)back.onclick=function(){ LOGIN.reset=false; h.innerHTML=loginCard(); loginWire(h); };
+  var f2=h.querySelector('button'); if(f2)f2.focus(); };
+ var devob=document.getElementById('devob');
+ if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
@@ -45122,6 +45283,11 @@ function loginClose(){
    field here would be enforcing a rule this build does not keep. */
 function loginGo(){
  loginClose();
+ /* the tutorial has no flow behind it yet; its own switch is disabled in
+    the UI, so this branch only ever runs once something real wires
+    tutorialOpen in. */
+ if(DEV_PLAY_TUTORIAL&&typeof tutorialOpen==='function'){ tutorialOpen(); return; }
+ if(!DEV_PLAY_ONBOARDING)return;
  if(typeof obOpen!=='function')return;
  /* onboarding is still met once, never on a return visit: the login
     above is the door met every time, this is the tutorial behind it. */
@@ -46845,5 +47011,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003064778"></div>
+<div id="eof" hidden data-len="003074780"></div>
 </body></html>

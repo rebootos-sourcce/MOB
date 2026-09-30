@@ -5576,10 +5576,51 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    blur was a nicety. An opaque ground reads as a sheet on its own, and it also
    stops the wheel showing through a card a person is meant to be reading. */
 .ob{position:fixed;inset:0;z-index:95;display:none;align-items:center;
- justify-content:center;background:rgba(6,6,8,.94);padding:24px}
-.ob-card{width:min(560px,100%);max-height:88vh;overflow:auto;
+ justify-content:center;background:rgba(6,6,8,.94);padding:24px;
+ transition:opacity var(--t-element) var(--ease-in)}
+/* THE HANDOFF FADE, ROUND MP: "there needs to be a transition between the
+   last onboarding screen and the field." ui/onboard.js's obClose() adds
+   this class, waits OB_LEAVE_MS, then removes the sheet; the fade plays in
+   that window. The card itself eases down and out with it, so the sheet
+   does not just go transparent in place, it visibly leaves. */
+.ob.ob-leaving{opacity:0}
+.ob.ob-leaving .ob-card{transform:translateY(6px) scale(.98)}
+.ob-card{position:relative;overflow:hidden;width:min(560px,100%);max-height:88vh;
  background:var(--panel);border:1px solid var(--edge);border-radius:14px;
- padding:26px 28px 20px}
+ padding:26px 28px 20px;transition:transform var(--t-element) var(--ease-in)}
+/* THE CARD SCROLLS ON ITS OWN INNER LAYER, not the card element itself, so
+   .ob-wash's own transform/animation is not fighting a scrollable ancestor
+   the way it would if overflow:auto sat on .ob-card directly. */
+.ob-card>.ob-scroll{max-height:calc(88vh - 46px);overflow:auto}
+/* PULLED FROM THE FIELD PAGE, ROUND MP: "redesign this so it's visually
+   appealing, see what you can pull from the field page." The boot sheet's
+   own .bx-wash draws these same seven colours as a radial wash behind the
+   standing figure; this is that same idea, softer and animated slowly,
+   behind a card instead of a full screen figure. filter:blur, not
+   backdrop-filter: gate 7 in tests/design.js measured a real frame rate
+   cost from sampling the Field live through a blur and the fix was to stop
+   doing that, not to blur less; this blurs its own painted gradient only
+   and never samples anything behind the sheet, so that cost does not
+   apply here. */
+.ob-wash{position:absolute;inset:-15%;z-index:0;pointer-events:none;
+ opacity:.55;filter:blur(30px);
+ background:radial-gradient(circle at 12% 18%,rgba(214,82,76,.20) 0,transparent 38%),
+  radial-gradient(circle at 88% 12%,rgba(216,146,78,.18) 0,transparent 40%),
+  radial-gradient(circle at 92% 58%,rgba(218,191,106,.16) 0,transparent 40%),
+  radial-gradient(circle at 72% 94%,rgba(95,213,166,.18) 0,transparent 40%),
+  radial-gradient(circle at 22% 92%,rgba(94,187,219,.18) 0,transparent 40%),
+  radial-gradient(circle at 6% 58%,rgba(125,147,224,.18) 0,transparent 40%),
+  radial-gradient(circle at 48% 46%,rgba(167,126,219,.15) 0,transparent 46%);
+ animation:obWashDrift 30s ease-in-out infinite alternate}
+@keyframes obWashDrift{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.1) rotate(3deg)}}
+/* THE STANDING FIGURE, FAINT, BEHIND EVERY CARD rather than shown once at
+   full strength on the welcome screen alone: the same continuity the
+   Field gives every tab, one figure the whole product is read against. */
+.ob-fig-wm{position:absolute;inset:0;z-index:0;display:flex;align-items:center;
+ justify-content:center;opacity:.07;pointer-events:none}
+.ob-fig-wm .ob-fig{width:64%;height:auto}
+.ob-card>:not(.ob-wash):not(.ob-fig-wm){position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.ob-wash{animation:none}}
 .ob-h{font-size:24px;line-height:1.2;margin:6px 0 14px;font-weight:600;
  letter-spacing:-.012em;color:var(--ink)}
 .ob-p{margin:0 0 13px;font-size:15px;line-height:1.62;color:var(--mid);
@@ -5596,6 +5637,37 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
  min-height:var(--tap);width:100%}
 .login-row input:focus{border-color:var(--accent)}
+/* THE STRONG PASSWORD SUGGESTION AND FORGOT PASSWORD LINK, ROUND MP: "the
+   login needs the typical login stuff... I also want us to be able to
+   suggest a strong password." .login-pw turns the password row into an
+   input plus a button sharing one line; loginSuggestPassword() in
+   ui/login.js fills the field and reveals the suggestion as plain text
+   underneath, since a hidden suggestion is not one a person can copy. */
+.login-pw{display:flex;gap:7px}
+.login-pw input{flex:1 1 auto;min-width:0}
+.login-pwsug{flex:0 0 auto;background:var(--sunk);border:1px solid var(--edge);
+ color:var(--ink);border-radius:var(--r-xs);padding:0 12px;font-family:var(--sans);
+ font-size:13px;min-height:var(--tap);cursor:pointer}
+.login-pwsug:hover{border-color:var(--accent)}
+.login-hint{display:block;margin-top:6px;font-size:12.5px;color:var(--dim);
+ font-family:var(--num);word-break:break-all}
+.login-forgot{display:block;background:none;border:none;color:var(--dim);
+ font-size:13px;font-family:var(--sans);text-decoration:underline;cursor:pointer;
+ padding:2px 0;margin:-6px 0 4px}
+.login-forgot:hover{color:var(--ink)}
+/* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
+   a stranger meeting the funnel for the first time, round MP: "the login
+   screen should give me the options, onboarding and tutorial." */
+.login-dev{margin-top:16px;border-top:1px solid var(--edge);padding-top:12px}
+.login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
+ list-style:none}
+.login-dev summary::-webkit-details-marker{display:none}
+.login-dev summary::before{content:'▸ ';font-size:10px}
+.login-dev[open] summary::before{content:'▾ '}
+.login-sw{display:flex;align-items:center;gap:8px;font-size:13.5px;
+ color:var(--ink);margin-top:10px;cursor:pointer}
+.login-sw-off{color:var(--dim);cursor:default}
+.login-dim{color:var(--dim);font-size:11.5px;margin-left:4px}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
 .ob-dot.on{background:var(--accent)}
 /* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the

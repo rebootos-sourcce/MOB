@@ -2158,7 +2158,7 @@ console.log('\n=== the opening, which is the one thing it asks a stranger to do 
   o.seats=document.querySelectorAll('[data-obseat]').length;
   /* it will not advance until the one question is answered */
   o.blocked=document.querySelector('[data-ob=next]').disabled;
-  document.querySelector('[data-obseat=Heart]').click();
+  document.querySelector('[data-obseat=yes]').click();
   await new Promise(r=>setTimeout(r,60));
   o.freed=!document.querySelector('[data-ob=next]').disabled;
   o.captured=OB.felt;
@@ -2175,9 +2175,13 @@ console.log('\n=== the opening, which is the one thing it asks a stranger to do 
   return o;});
  ok(ob.opened,'the opening opens');
  ok(ob.steps.length===4,'four steps, got '+ob.steps.length);
- ok(ob.seats===8,'the signal test offers seven seats and nothing, got '+ob.seats);
+ /* ROUND MP replaced the seven seat picker with a plain yes, no and
+    nothing, his own script: "the signal test is simple, yes, no, say it
+    to yourself." Three buttons, never a seat name, "remove all the solar
+    plex, sacral, I don't want any of that there." */
+ ok(ob.seats===3,'the signal test offers yes, no and nothing, got '+ob.seats);
  ok(ob.blocked,'it will not go on until the one question is answered');
- ok(ob.freed&&ob.captured==='Heart','and answering it frees the way on, captured '+ob.captured);
+ ok(ob.freed&&ob.captured==='yes','and answering it frees the way on, captured '+ob.captured);
  ok(/moved your body/i.test(ob.said),'the last card names what just happened');
  ok(ob.closed,'and it closes');
  /* THE ONE THAT MATTERS. Ruled: it does not spend real charge. */

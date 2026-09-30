@@ -27,12 +27,15 @@
    writes to the nine axes, nothing here is a reading, and it can
    be run again from the account area any time.
 
-   WHAT IT CAPTURES, and why that is not a form. One answer: where
-   they felt the second word. That is a seat, it is the first real
-   parameter the instrument has about them, and it is obtained by
-   having them feel something rather than by asking them to
-   describe themselves. Everything else a form would ask for is
-   somewhere else in the product already.
+   WHAT IT CAPTURES, and why that is not a form. Round MP replaced the
+   original neutral/charged word draw with his own breath and
+   awareness script: think yes ten times, think no ten times, compare
+   the two at the throat. What is captured is only whether the two
+   felt different, yes, no or nothing, never a seat name: "remove all
+   the solar plex, sacral, I don't want any of that there in this
+   onboarding." The point stands the same as it always did, obtained
+   by having them feel something rather than by asking them to
+   describe themselves.
    ============================================================ */
 /* THE AUTOMATIC OPEN IS OFF. Ruled 20 September: "let's turn off onboarding
    for now." Off means a stranger is not met by a sheet, not that the flow is
@@ -41,26 +44,16 @@
    in one place, so turning it back on is a single word and not an archaeology
    exercise. */
 var OB_AUTO=false;
-var OB={open:false, step:0, felt:null, neutral:null, charged:null, replay:false};
+var OB={open:false, step:0, felt:null, replay:false};
 
-/* THE TWO WORDS. The first has no quality of its own and the second does, and
-   the contrast between them is the whole proof. They are drawn from his own
-   nine rather than invented, so the charged word is a word this instrument
-   actually measures, and a person who goes looking for it later finds it.
-
-   The neutral word is deliberately dull and concrete. A neutral word that is
-   secretly evocative proves nothing. */
-const OB_NEUTRAL=['table','pavement','envelope','stairwell','doorframe'];
-function obPick(){
- /* the charged word is the axis this person is most likely to feel, which on
-    a blank profile is the commonest one rather than a claim about them. A
-    person who has entered something gets their own heaviest. */
- var live=null;
- try{ live=CHILD.map(function(c){return {c:c,v:+(S.charge[c.nm]||0)};})
-   .sort(function(a,b){return b.v-a.v;})[0]; }catch(e){}
- var c=(live&&live.v>0)?live.c:(CHILD.filter(function(x){return x.nm==='Fear';})[0]||CHILD[0]);
- OB.neutral=OB_NEUTRAL[Math.floor(Math.random()*OB_NEUTRAL.length)];
- OB.charged=c;}
+/* THE SIGNAL TEST IS A BREATH EXERCISE NOW, ROUND MP. His own script,
+   replacing the neutral/charged word draw entirely: "the signal test is
+   simple, yes, no, say it to yourself... think yes ten times, see where
+   it feels, see what the quality is, note its nature, think no ten times,
+   feel its quality, note its nature, compare the difference between the
+   two." Nothing here reads S.charge or CHILD any more, and OB.felt now
+   holds 'yes', 'no' or 'none' rather than a seat name: there is no seat
+   in this exercise to hold. */
 
 /* THE FIGURE, AT REST. Ruled: "show, not tell, Japanese Zen, we do not have to
    go super text heavy," and separately, "when I come to this page off the
@@ -88,14 +81,23 @@ function obFigure(){
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=true; OB.step=0; OB.felt=null; OB.replay=!!replay;
- obPick(); obRender();
+ h.classList.remove('ob-leaving');
+ obRender();
  h.style.display='flex';
  /* the sheet takes focus, because a person arriving here has nothing else to
     do and a keyboard user should not have to find it */
  var f=h.querySelector('button'); if(f)f.focus();}
+/* THE HANDOFF TO THE FIELD IS A FADE, NOT A CUT, ROUND MP: "there needs to
+   be a transition between the last onboarding screen and the field." The
+   sheet's own CSS transition (see .ob-leaving in head.html) plays first,
+   then the sheet is actually removed once it has had time to finish; a
+   person who somehow skips ahead before it ends is still left with a sheet
+   that is at least invisible and non-interactive, never a stuck one. */
+var OB_LEAVE_MS=520;
 function obClose(){
  var h=document.getElementById('ob'); if(!h)return;
- OB.open=false; h.style.display='none'; h.innerHTML='';
+ OB.open=false; h.classList.add('ob-leaving');
+ setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },OB_LEAVE_MS);
  /* EVERY WRITE THAT CAN FAIL REPORTS, and this one did not.
 
     It ignored what pSave returned and swallowed any throw into an empty
@@ -119,15 +121,26 @@ function obClose(){
  if(typeof render==='function')render();}
 
 /* ---- the steps ---- */
+/* THE CARD NOW CARRIES THE SAME GROUND THE FIELD DOES, ROUND MP: "redesign
+   this so it's visually appealing, see what you can pull from the field
+   page." .ob-wash is the boot sheet's own seven seat colours (bx-wash in
+   body.html, same hex values) at a fraction of its strength, so the door
+   and the instrument behind it read as one world rather than a plain
+   sheet dropped over it. .ob-fig-wm is the same standing figure obFigure
+   draws, held very faint behind every card rather than shown once at full
+   strength on the welcome screen alone. */
 function obCard(eye,title,body,acts){
  return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-fig-wm" aria-hidden="true">'+obFigure()+'</div>'
+  +'<div class="ob-scroll">'
   +'<span class="pm-eye">'+esc(eye)+'</span>'
   +'<h2 class="ob-h">'+esc(title)+'</h2>'
   +body
   +'<div class="ob-acts">'+acts+'</div>'
   +'<div class="ob-dots">'+[0,1,2,3].map(function(i){
     return '<span class="ob-dot'+(i===OB.step?' on':'')+'"></span>';}).join('')+'</div>'
-  +'</div>';}
+  +'</div></div>';}
 
 function obRender(){
  var h=document.getElementById('ob'); if(!h)return;
@@ -202,78 +215,62 @@ function obRender(){
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===2){
-  /* THE SIGNAL TEST. The one interactive thing, and it is the somatic opener
-     he named. Two words, read slowly, and the body answers before the mind
-     does. The instruction is the whole practice: there is nothing to get
-     right, which is said out loud because a person who thinks they are being
-     tested will perform rather than feel. */
-  out=obCard('The signal test','Say these to yourself, slowly.',
-   '<p class="ob-p">Read the first word. Let it land. Notice if anything in '
-   +'your body changes. Do not go looking for it.</p>'
-   +'<div class="ob-word ob-word-n">'+esc(OB.neutral)+'</div>'
-   /* "Most people get nothing from that one" is a claim about a population
-      this instrument has never measured. What is true is why the word is
-      there, so that is what it says. */
-   +'<p class="ob-p ob-dim">That was a plain word. Feeling nothing is the '
-   +'point of it. Now the second.</p>'
-   +'<div class="ob-word ob-word-c">'+esc(OB.charged.nm.toLowerCase())+'</div>'
-   +'<p class="ob-p">Where did that one land? There is no right answer, and '
-   +'nothing at all is an answer.</p>'
-   +'<div class="ob-seats">'
-   +BANDS.map(function(b){
-     return '<button type="button" class="ob-seat'+(OB.felt===b?' on':'')
-      +'" data-obseat="'+esc(b)+'" style="--c:'+seatCol(b)+'">'+esc(b)+'</button>';}).join('')
-   +'<button type="button" class="ob-seat'+(OB.felt==='none'?' on':'')
-   +'" data-obseat="none">Nothing</button></div>',
-   /* A SLOT KEEPS ITS LABEL AND THE VALUE CARRIES THE STATE. This read
-      "Choose one to go on" until a seat was picked and then became "Next",
-      so the control changed identity under the pointer. The rule is already
-      written down in this product, next to the shelf that swapped its own
-      heading with its own value. The word stays Next; disabled is what says
-      it is not ready, and the accessible name says why. */
-   '<button type="button" class="btn pri" data-ob="next"'
+  /* THE SIGNAL TEST, ROUND MP, HIS OWN SCRIPT, REPLACING THE WORD DRAW
+     ENTIRELY. "The signal test is simple, yes, no, say it to yourself...
+     this is a neurosomatic product, meaning the story you create
+     conditions a body, one impacts the other and vice versa." No seat
+     names anywhere in this screen, his own ruling: "remove all the solar
+     plex, sacral, I don't want any of that there." The capture is
+     Yes / No / Nothing, never a disabled Next with no other way through,
+     the exact trap he hit: "I can't click next to go, I can only click
+     solar." Nothing is disabled here; Nothing is itself a real answer, on
+     the same honest-empty rule the reflection screen already keeps. */
+  out=obCard('The signal test','Say yes. Say no.',
+   '<p class="ob-p">This product works with the body and the mind '
+   +'together. A thought changes what your body does, and what your body '
+   +'does changes the thought back.</p>'
+   +'<p class="ob-p">Sit down. Take ten slow breaths. Relax.</p>'
+   +'<p class="ob-p">When you are ready, bring your attention to your '
+   +'throat.</p>'
+   +'<p class="ob-p">Think <b>yes</b>, ten times. Notice what that feels '
+   +'like there.</p>'
+   +'<p class="ob-p">Now think <b>no</b>, ten times. Notice what that '
+   +'feels like.</p>'
+   +'<p class="ob-p">Compare the two. Did they feel different?</p>',
+   '<div class="ob-seats">'
+   +[['yes','Yes'],['no','No'],['none','Nothing']].map(function(x){
+     return '<button type="button" class="ob-seat'+(OB.felt===x[0]?' on':'')
+      +'" data-obseat="'+x[0]+'">'+esc(x[1])+'</button>';}).join('')
+   +'</div>'
+   +'<button type="button" class="btn pri" data-ob="next"'
    +(OB.felt?'':' disabled aria-describedby="ob-need"')+'>Next</button>'
-   +(OB.felt?'':'<span id="ob-need" class="ob-need">Choose one to go on.</span>')
+   +(OB.felt?'':'<span id="ob-need" class="ob-need">Pick one to go on.</span>')
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else {
-  /* WHAT IT READ, AND WHAT IT DOES NOT CLAIM. One signal is one signal. The
-     product's whole claim is that it does not invent a reading, and the first
-     screen a person meets is the worst possible place to break that. */
+  /* WHAT IT SAYS, SHARPENED, ROUND MP: "you felt anticipation, actually
+     that doesn't even apply, it's just yes, no." There is no seat and no
+     word left to name, only whether the two felt different. */
   var said;
   if(OB.felt==='none'){
-   said='<p class="ob-p">Nothing, and that is a real answer. Sometimes the '
-    +'word is not yours. Sometimes your body has been quiet for so long that it '
-    +'stays quiet. This instrument reads both, and neither is a failure.</p>';
+   said='<p class="ob-p">Nothing stood out, and that is a real answer. '
+    +'Sometimes it takes stillness to notice. This works with quiet as '
+    +'well as loud.</p>';
   }else{
-   var same=(OB.charged.seat===OB.felt);
-   said='<p class="ob-p">You felt <b>'+esc(OB.charged.nm.toLowerCase())+'</b> at '
-    +'the <b>'+esc(String(OB.felt).toLowerCase())+'</b>. '
-    +(same?'This instrument puts that word there too. Your body and the '
-        +'instrument agree, and you have not typed anything yet.'
-       :'This instrument usually puts that one at the '
-        +esc(String(OB.charged.seat).toLowerCase())+', and yours went somewhere '
-        +'else. Yours is the one that counts. The instrument follows what you '
-        +'feel, not the other way round.')
-    +'</p>';}
-  /* PASS 1 BEFORE ANY OTHER. The heading said "A word with no power over you
-     moved your body" to a person who had just pressed Nothing, which tells
-     them something happened that they said did not. Each answer gets a
-     heading that is true of it. */
+   said='<p class="ob-p">You noticed a difference between yes and no. '
+    +'Neither one is a word with any power of its own. What moved was '
+    +'your body.</p>';}
   out=obCard('What just happened',
-   OB.felt==='none'?'Nothing moved this time.':'Just a word, and it moved your body.',
+   OB.felt==='none'?'Nothing moved this time.':'A thought moved your body.',
    said
-   /* and "you just watched it happen" is only true of the felt path */
-   +'<p class="ob-p">'+(OB.felt==='none'?'':'That is how the whole thing works, and '
-   +'you just watched it happen. ')+'A pattern is a word, a picture or a moment '
-   +'that still has a grip somewhere in your body. This finds where, and gives '
-   +'you a way to put it down.</p>'
-   +'<p class="ob-p ob-dim">Nothing has been written to your record. You can run '
-   +'this again any time from your profile.</p>',
+   +'<p class="ob-p">'+(OB.felt==='none'?'':'That is the whole idea. ')
+   +'Words like anxious, overwhelmed, burned out or depressed do the same '
+   +'thing somewhere in you. This finds where, and gives you a way to '
+   +'work with it.</p>',
    '<button type="button" class="btn pri" data-ob="done">Go in</button>');
  }
  h.innerHTML=out;
- var f=h.querySelector('.ob-card'); if(f)f.scrollTop=0;}
+ var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
 
 /* ---- one listener for the whole sheet ---- */
 addEventListener('click',function(e){
