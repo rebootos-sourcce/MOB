@@ -27622,3 +27622,28 @@ Read as:
    is the one piece of this small enough to build once the shape
    question above is answered, since redrawing the base shape would move
    the pixel geometry the click depends on.
+
+**Item 3's own answer, `reboot-os`'s deploy reviewed as authorized.** Not
+the same defect as MOB's own `npx --no-install tsc` bug, checked fresh
+rather than assumed alike. Every run of all five workflows, gate, server,
+web, shell and retention, from run 114 on has completed in three to five
+seconds with no runner ever assigned (`runner_id:0`, no job log to fetch),
+against run 113 the same day carrying a real runner and real logs: the
+exact shape of GitHub refusing to start a job at all, an account level
+Actions spending limit or exhausted included minutes, not a script. Five
+unrelated runner configurations, Ubuntu four ways and a macOS job, failing
+identically at the same moment is the account, not any one workflow.
+`shell.yml`'s own `ios` job runs on `macos-latest`, billed at roughly ten
+times a Linux runner's rate, on every push touching the shell or the
+built page, and is the likely reason the account's included minutes ran
+out as fast as they did. No commit fixes this; it is a setting on the
+account itself, github.com's own Billing and licensing page, his to open.
+A second, older bug was found and is already fixed on `main`: a hardcoded
+path in `test/tools/undeclared.py` that only existed on one machine,
+failing gate.yml's own gate step for 81 pushes from `cc0b043`; current
+`main` computes it from `__file__` instead, so nothing to do there.
+Verified rather than assumed: `node --test test/*.test.mjs` in
+`atuned/server` on a fresh clone passes 30 of 30, so once the account can
+run a job again, `server.yml`'s own deploy is expected to go green on the
+first try, and it already reads the Cloudflare secrets by name rather
+than failing without them.
