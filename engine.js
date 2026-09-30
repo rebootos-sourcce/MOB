@@ -5582,7 +5582,16 @@ function blankProfile(name){
       meterRun. It is a fact about the work, like first and last, and it is
       what the free tier's weeks are counted from (planWeeks, engine/plan.js),
       because nothing in a one file build is there to start a week. */
-   giftAt:null},
+   giftAt:null,
+   /* RELLINES AND TRUTHLINES, round LY. His words: "total number of
+      patterns released, total number of patterns installed, over the
+      history." lines already counts every line ever spoken, release and
+      reframe together; these two split it by channel, the same split
+      relCounts already reads for one session. Neither is derived from
+      lines at read time, the same reasoning lines itself gives for not
+      being derived: a rule that moved would move a number that already
+      told somebody what they did. */
+   relLines:0, truthLines:0},
   /* THE PLAN. Written by the record store from the processor's own state and
      never by the app, because a record a person can edit must not be able to
      grant itself a tier. Everything here is either the processor's word for
@@ -5648,6 +5657,10 @@ function loadProfile(p){
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  if(p.meter.giftAt===undefined)p.meter.giftAt=null;
+ /* an older record has no split, which is not a record round LY started
+    counting for yet, so it opens at nought rather than at undefined */
+ if(typeof p.meter.relLines!=='number')p.meter.relLines=0;
+ if(typeof p.meter.truthLines!=='number')p.meter.truthLines=0;
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
  /* a missing baseline is filled as missing. A 0 already on disk is left as
@@ -6332,6 +6345,12 @@ function validateProfile(o){
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
   if(mp!==null)p.meter.lines=Math.floor(mp);
+  /* the split, round LY. Missing is an older record and reads as the blank's
+     own nought, already on p from blankProfile, not an error. */
+  var mrl=vRange(errs,'meter.relLines',o.meter.relLines,0,1e9);
+  if(mrl!==null)p.meter.relLines=Math.floor(mrl);
+  var mtl=vRange(errs,'meter.truthLines',o.meter.truthLines,0,1e9);
+  if(mtl!==null)p.meter.truthLines=Math.floor(mtl);
   if(Array.isArray(o.meter.unique))
    p.meter.unique=o.meter.unique.filter(function(k){return typeof k==='string'&&k.length<64;});
   else if(o.meter.unique!==undefined)errs.push('meter.unique is not a list');
@@ -6640,6 +6659,8 @@ function meterRun(p,keys){
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  if(p.meter.giftAt===undefined)p.meter.giftAt=null;
+ if(typeof p.meter.relLines!=='number')p.meter.relLines=0;
+ if(typeof p.meter.truthLines!=='number')p.meter.truthLines=0;
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
  if(p.plan.base===undefined)p.plan.base=null;
