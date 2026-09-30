@@ -28004,3 +28004,53 @@ tall screens, and found a real bug while designing the cross-mask
 weave: 47 of 270 saboteurs currently own no pixel on any mask, a
 knock-on of the duplicate-naming bug the TDD audit already recorded.
 Six open questions of its own, in the chat reply.
+
+## Round MZ
+
+His ruling on the rail layout's own open questions, verbatim: "the
+mask, do James64, and then for the face, just make sure it's centered.
+Child on top. I don't see what rail you're talking about. Any context?
+Yeah, I like that the resolution in increases. So the more you add, the
+resolution increases. That's great. Oh, I see what you mean by number
+two. Put it on the bottom. Above the navigation. You could change it to
+a flat bar. I like that clarification on the six axes. That's really
+fantastic. That should go in the tooltips and the knowledge base.
+What's the taking the rebuild on a tuned world so long? It's just a
+migration, isn't it?"
+
+Read as:
+
+1. **James at 64px, the face centred.** Picks the largest legible rail
+   icon size measured and confirms the hero face itself should sit
+   centred in its own area.
+2. **Rail order: Child at the top.** Question 1 of the rail addendum
+   answered.
+3. **"I don't see what rail you're talking about" is a real miss on
+   this session's own part, not his.** "Rail" was used as if it needed
+   no explaining, the exact failure `CLAUDE.md`'s own no-shorthand rule
+   forbids, even though the word was attached to a real screenshot.
+   Answered plainly in the chat reply, pointing at the exact image
+   already sent.
+4. **The blank grid's coarser resolution, kept as a reward for filling
+   in.** Question 3 answered: keep it.
+5. **Phone rail position: below the hero, above the bottom
+   navigation.** Question 2 answered.
+6. **The Ideological halo becomes a flat bar, not a ring.** Answers the
+   halo question standing open since round MT.
+7. **The six axes explanation asked to reach the product itself,
+   tooltips and the knowledge base.** Checked before promising it
+   rather than assumed simple: no UI file anywhere references `VERP` by
+   name. The six axes have no user facing surface at all today, so this
+   is not a copy edit to an existing tooltip, it is a first decision
+   about where in the product they would even appear, named honestly
+   rather than quietly started as a quick pass.
+8. **"What's taking the rebuild on atuned.world so long, it's just a
+   migration, isn't it."** Checked fresh again rather than answered from
+   memory: nothing has changed on `reboot-os` since the last report. Not
+   a migration question at all; the real blocker, reported twice
+   already, is an invalid Cloudflare secret value failing the deploy
+   step before any migration runs. Restated plainly in the chat reply.
+
+Not answered this round and still open: whether a rail press should
+update only the hero or also the right column, the fourth question of
+the rail addendum.
