@@ -27792,3 +27792,29 @@ gaining Crown: seat coverage 5 of 7 to 7 of 7, saboteurs under no mask 46
 of 270 to zero. Five questions still need his own ruling, in
 `DESIGN-masks.md`'s own addendum and in the chat reply; nothing here
 built past that line either.
+
+## Round MV
+
+His words, verbatim: "e2. the layout isnt good yet, i want the ui/ux
+team to layout out the masks so they look like hero elements, fillm in
+the center space well/symmetrically, and i can see them in detail. make
+sure these are innovative and alive. when i ssee them, i want to see
+animation, motion, and interest."
+
+Read as:
+
+1. **The shape is ruled: E2, the egg broad at the brow.** Question 1 of
+   the addendum's five is closed; the other four (Professional's
+   removal, the Preteen's move to Heart, the halo, the Teen's thin data)
+   are still open and not answered by this message.
+2. **The layout itself, separate from the shape, is not good yet.**
+   Checked against the second pass's own screenshot rather than assumed:
+   five cards sit in a row in the upper left of the stage with a large
+   unused field below them, which is exactly "doesn't fill the centre
+   space symmetrically." Not a shape defect, a layout one.
+3. **Sent to the UI/UX team**, his own word for it, rather than folded
+   into the art director's own pass: hero treatment, the centre filled
+   and symmetric, each mask legible in detail rather than small in a
+   row, and, restated a second time in his own words for weight,
+   animation, motion and interest he can actually see when the page
+   opens, not only on a press or a hover.
