@@ -28301,3 +28301,22 @@ Gated in full: `BUILD.sh` and `BUILD-engine.sh` clean, 483 exports;
 351/0; `tests/design.js` 185/0; `tests/funnel.js` 172/0; `tests/boot.js`
 13/0; `tools/monitor.js` all surfaces render; voice objections 0
 blocking; `tests/functional.js` 1338/0 clean.
+
+"test the server now. updated." The fifth claim, and the fifth
+identical failure: run 35 attempt 5, re-triggered directly, same
+`Headers.set: invalid header value` on the same `wrangler d1
+migrations apply` step. Rather than repeat round NC's diagnosis from
+memory, the diagnostic workflow was rebuilt and run again fresh (never
+printing either secret's value, only its shape, the same discipline as
+the first time). The reading: `CLOUDFLARE_API_TOKEN` is bit for bit
+the same malformed value round NC already measured, 145 characters,
+carries a newline, starts "cur", ends on a stray quote.
+`CLOUDFLARE_ACCOUNT_ID` is unchanged and clean. Whatever he updated
+did not reach this secret. Deleted the diagnostic again after the
+reading. Separately, a screenshot he sent of a Windows Command Prompt
+session showed a live, valid-looking token pasted directly into chat
+while testing it against Cloudflare's own token verify endpoint; the
+curl command itself was broken by cmd.exe not supporting bash's `\`
+line continuation, corrected steps given, and he was told plainly that
+a token pasted into a chat should be rotated once confirmed working
+rather than kept.
