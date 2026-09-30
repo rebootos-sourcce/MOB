@@ -187,3 +187,76 @@ why trace weight carries the share.
    of his 39 saboteurs is overshot and lives in Light. Keep Dark default,
    true but blank for him, or open on whichever reading has built
    further?
+
+## Addendum, round MT. The shape redone, the frames, and five masks
+
+His rejection of A/B/C/D sent this back to the art director for a second
+pass, differently briefed: proven-pleasing forms (his own examples, oval
+and egg), carrying the pattern's own symbolism rather than a proportion
+study, plus a framing system so the six (now five) still read as one
+family while each stands apart. Evidence under
+`/tmp/.../scratchpad/mt/` this session; the two load-bearing screenshots,
+`1-shapes-sheet.png` and `2-page-James-dark-1600.png`, were sent to him
+directly rather than described.
+
+**Why A through D failed, read cold.** Helmets and pots, not faces: a
+round crown, a flat shoulder, a straight taper. The marks read as
+hardware, ink bars rather than things that happened to a shape. The
+Hilbert-walk fill carried no meaning a person could read as "body." His
+word "symbolism" was about the last two, not the ratio; no proportion
+tweak could have fixed it.
+
+**The shape: an egg, broad at the brow.** Three candidates rendered on
+real profiles including Lance's own blank Dark reading (E1 oval, E2 egg
+broad at the brow, E3 egg broad at the base); E3 read as an Easter egg
+and a vase, E1 is the fallback, E2 is the recommendation. The six canon
+marks are redrawn as events in the life of one shell, apertures cut from
+the face rather than ink bars drawn on it, each with a one-cell moat so a
+mark never gets swallowed by same-colour fill on a heavy profile, the
+exact LT-era defect this session already fixed once.
+
+**Never blank, folded in here as asked and re-measured properly.**
+Today's rim at 0.3 opacity was measured at 1.43 to 1.99:1 against its own
+card in Dark, under the 3:1 floor for a graphic, the real reason Lance's
+Dark reading reads empty. Move: every unlit home draws as a faint tile in
+its own band's own seat colour, and the rim and marks solve for 3:1 per
+seat rather than one flat value, so a quiet profile shows its whole body
+map waiting to fill and no seat's outline reads louder than another's by
+accident.
+
+**Frames.** One shared card treatment, a border drawn as a gradient from
+the mask's highest seat to its lowest, so the border is data and no
+colour is invented; it steps to full and joins the breath once the chain
+reaches the character. What varies per mask is its light, not its
+colour, argued from each mask's own motion at rest (a close low source
+for the Child, a band at eye height for the Preteen that checks the
+room, backlit for the Ideological so its halo is lit and the face sits
+in shadow).
+
+**Seven seats, recommendation M1: five masks, not six.** Measured against
+all 14 profiles both readings: Preteen moves from Solar/Throat to
+Solar/Heart, Ideological gains Crown alongside 3rd Eye, Professional is
+removed. Seat coverage goes from 5 of 7 to 7 of 7, saboteurs under no
+mask from 46 of 270 to zero, and every pair of masks that used to light
+identically on some profile (5 pairs) now the highest overlap measured
+is 0.82. The remaining four masks climb the body without a gap: Root
+Sacral, then Solar Heart, then Throat, then 3rd Eye Crown, with the
+Adult's own seam landing exactly on the data join between the Child's
+seats and the Preteen's, which is its own canon mark, "the join shows."
+
+**Open, his to rule, five questions:**
+1. The shape: E2 the egg broad at the brow (recommended) or E1 the oval.
+2. Professional's removal, confirmed. If he wants real career data
+   instead, that is a new field on all 112 addresses, an engine schema
+   change and not a page change, named here rather than assumed.
+3. M1 moves the Preteen from Throat to Heart, canon, his call.
+4. The halo: kept, knowing some will read it as religious, or replaced
+   with a flat bar held over the head.
+5. The Teen holds one seat, 12 addresses, the least data and the
+   largest pixels on the page. Accept it, or give it Heart too and break
+   the clean climb.
+
+Findings 3 through 6 from the first pass still stand; checked against
+this one and none conflict, including the click and the hover, verified
+live rather than assumed (a hover on James's Adult correctly named the
+address Pride under the new shape).

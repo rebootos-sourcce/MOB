@@ -27774,3 +27774,21 @@ visual design should take its cues from the Field and Masks aesthetic the
 same way login and onboarding already do (round MP), queued and not
 built this round. "Keep building what you're building" read as
 confirmation to continue the in-flight work rather than a new interrupt.
+
+**The second masks pass came back, real and measured, addendum in
+`DESIGN-masks.md`.** Read cold against A through D and found the same
+failure his own eye found, helmets and pots and ink-bar marks with a fill
+that carried no meaning; an egg broad at the brow redraws the six canon
+marks as apertures rather than ink, with a one cell moat so a mark is
+never swallowed on a heavy profile, the LT defect this session already
+fixed once elsewhere. The never-blank ask, sent into this same pass
+rather than built alone, is now measured properly rather than eyeballed:
+today's rim fails its own 3:1 floor at 1.43 to 1.99:1, and the fix solves
+per seat rather than one flat value. Frames carry each mask's own seats
+as a gradient border, no invented colour. The seven seat question is
+answered with a measured recommendation, five masks and not six,
+Professional removed, Preteen moved from Throat to Heart, Ideological
+gaining Crown: seat coverage 5 of 7 to 7 of 7, saboteurs under no mask 46
+of 270 to zero. Five questions still need his own ruling, in
+`DESIGN-masks.md`'s own addendum and in the chat reply; nothing here
+built past that line either.
