@@ -28146,3 +28146,23 @@ Read as:
    before the masks build proceeds.
 5. **Cloudflare steps, asked again as if he is ten**, the standing rule
    this file already carries. Given in full in the chat reply.
+
+## Round NC
+
+A fourth document, his words: "The plan is being updated. So all these
+systems that you're being dropped into are going to help get us to MVP.
+So I need these blocked. Figured out where they go in the plan.
+Prioritized. And then in the meantime, I'll take care of Cloudflare."
+
+Saved whole, `SOURCE-TDD-release-intelligence.md`: "Atuned Release
+Intelligence, Implementation Handoff for Next AI," a ten layer
+architecture for the release carousel specifically, a state machine,
+eight named algorithms (selection, queue construction, channel
+activation, adaptive release, reframe generation, immediate
+verification, replacement detection, negative evidence), and its own
+Trace Graph and AI Handshake, both already checked once against the
+real build in `AUDIT-source-tdd-v3.md`. Read as the same ask as round
+NB, continued rather than restarted: block it, place it in
+`PRIORITY.md` section 19, prioritise it against everything already
+there. He is handling Cloudflare himself this round rather than asking
+for steps again.
