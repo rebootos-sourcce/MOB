@@ -27994,3 +27994,13 @@ Power. Everything else in it reads compatible with the house voice
 already in `CLAUDE.md` and the `atuned-voice` skill on a first pass; a
 line by line check against that skill's own checkable rules is real
 work for when he says to prioritise it, not assumed clean now.
+
+**The rail layout pass came back, `DESIGN-masks.md`'s own third
+addendum.** Built to his own direction rather than re-arguing the
+triptych: measured a real, concrete build blocker in passing
+(`.chv-svg{max-width:260px}`, `head.html:4821`, confirmed directly),
+found the rail beats the triptych on every viewport and sharply on
+tall screens, and found a real bug while designing the cross-mask
+weave: 47 of 270 saboteurs currently own no pixel on any mask, a
+knock-on of the duplicate-naming bug the TDD audit already recorded.
+Six open questions of its own, in the chat reply.

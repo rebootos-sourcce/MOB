@@ -319,3 +319,58 @@ the detail without moving anything; how the weave's lines route around a
 centre mask; and, on a phone, a centre mask over four small ones on one
 screen, or all five stacked at full size across roughly three screens of
 scrolling.
+
+## Addendum, round MX/MY. The rail and one large mask, measured
+
+His own direction, built and measured rather than re-argued for the
+triptych he didn't pick: all five masks as small icons in a rail down
+the left side, the rest of the stage one large hero for whichever is
+selected. On every number checked it beats the triptych, sharply on
+tall screens (1600x1600: 39.9px a cell against 21.3px) and by 15 to
+24% on wide ones, since the triptych's height was never capped by its
+side masks' width.
+
+**Six structural findings, each measured rather than guessed:**
+1. **Rail icon size has a floor, not a fixed number.** 40px is where all
+   five marks stay legible (verified visually, `ladder.png`); 48 to 56px
+   is recommended when the stage has room. Solved from stage height
+   (`clamp(40, (stage height - 154) / 7.5, 56)`), not set once.
+2. **The hero's own build blocker, found rather than assumed clear:**
+   `.chv-svg{max-width:260px}` in `head.html:4821` caps the hero at
+   10.8px a cell today regardless of layout; confirmed directly, this
+   rule has to be overridden for the rail to reach its measured sizes.
+3. **The rail becomes a row at 720px, the shell's own existing
+   breakpoint**, not a new number; the column wins above it, the row
+   wins by 35 to 42% below it.
+4. **The switch re-lights in place rather than travels.** Unlike the
+   triptych, nothing changes position here, so a flying copy would say
+   the mask moved when it didn't; the charge drains toward the spine
+   and the new mask's charge lights back outward on the same walk order
+   its pixels were handed out on, about 420ms.
+5. **The weave found and designs around a real bug**: 47 of 270 running
+   saboteurs currently own no pixel on any mask because a heavier
+   saboteur drawn first claims the same addresses, 14 of those also
+   carrying the duplicate-naming bug the TDD audit already found in
+   `compute.js`. Fix: select by address, not by which group happened to
+   draw the pixel; after that fix nothing is empty. The trace itself
+   runs down the rail's own gutter with a spur to each member mask,
+   rather than through the icons, which was found to visually cross
+   through non-members.
+6. **Never-blank holds at hero size**, and the per-seat contrast solve
+   from the shape addendum is confirmed required rather than optional,
+   since at this size the outline is the whole picture on an empty
+   reading.
+
+**Open, his to rule, six questions:** rail order (Child at top, reading
+order, or Child at the bottom climbing the body map); phone rail above
+the hero (reads as tabs) or below it (in thumb reach); the blank
+profile's coarser grid, kept as the existing reward for filling in or
+drawn at full resolution always; whether a rail press alone updates the
+hero or also the right column; the halo at hero size, a bar or a
+bracket rather than a ring; and real device frame rate for the re-light
+and per-mask motion, which this environment cannot measure.
+
+Grade: structure moves from C to A minus; craft stays B minus until the
+per-seat rim contrast and the re-light are actually built; truth is
+unchanged, the data defects found along the way are not this pass's to
+fix.
