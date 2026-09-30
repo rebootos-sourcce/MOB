@@ -27971,3 +27971,26 @@ Read as, against the twelve questions:
 10. **The Teen's thin data, and pixel density by developmental
     complexity generally: still explicitly open, his own words, "let's
     keep it open for now."** Not answered, not built past.
+
+## Round MY
+
+A second document, his words: "review this this will be our next steps
+to clean up once the attuned website is posted we'll figure out what
+the priorities are." Saved whole, `CREATIVE-BRIEF-voice.md`, a full
+voice and product writing system: a name/explain/reflect/explore
+progression mapped onto the product's own discover/play/flow/embody
+loop, an evidence/interpretation ladder for AI copy (reported fact,
+pattern observation, interpretation, hypothesis) that echoes the same
+discipline the TDD's own evidence model asks for at the engine level,
+and a full worked example library.
+
+Read lightly rather than fully audited, matching his own stated pace,
+"we'll figure out priorities" after the site is live: one real,
+checkable conflict found and worth carrying into that pass rather than
+losing. Its own example under "Energy Model: Power" names a seat
+"Power"; the product's own seven seats are Root, Sacral, Solar, Heart,
+Throat, 3rd Eye and Crown (`BANDS`, `canon.js:249`), none of them named
+Power. Everything else in it reads compatible with the house voice
+already in `CLAUDE.md` and the `atuned-voice` skill on a first pass; a
+line by line check against that skill's own checkable rules is real
+work for when he says to prioritise it, not assumed clean now.
