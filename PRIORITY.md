@@ -12,8 +12,11 @@ held except the items already named as blocked.
 
 ## The stamp on this measurement
 
-**Superseded. The current stamp is section 17, 27 September.** This block is
-kept as the record of what was true on 21 September.
+**Superseded. The current stamp is section 19, 30 September,** which places
+the systems he brought in during rounds MS to NB: the two TDDs and their
+audits, the creative brief, the onboarding storyboard and the masks design.
+Sections 17 and 18 carry the 27 September state. This block is kept as the
+record of what was true on 21 September.
 
 Every count below was read off the file and off the run, not out of a document.
 Where a document disagrees with the run, section 7 names the document.
@@ -571,6 +574,10 @@ stood down and wrote what it measured to `DESIGN-onboard.md`. `TN1` restates it
 in his own words this round: "If we don't have onboarding, no sweat." **It is
 the single largest stoppable pile on the list and he has now stopped it twice.**
 
+**Overtaken, 30 September.** He restarted it: round MH, "do onboarding and
+tutorial, first", the redesign at MP, built at `a9c2e28`, and his own
+storyboard at MU. Its current lines are section 19, cluster E.
+
 **Two exceptions, keep them.** `OB22` is a real defect:
 `proto/signal/signal.html` prints 62 out of 100 and 74 degrees out of 180 on a
 reading. And `OB24`, the one progress object where the ring is the indicator
@@ -852,7 +859,8 @@ Named, so nothing disappears quietly.
 - **The chakra band, the universal law films, the nerve state icons, the three
   sniffer files.** Blocked on rulings or on assets that are not in this
   repository.
-- **Onboarding.** Stopped by his ruling, twice, not deferred.
+- **Onboarding.** Stopped by his ruling, twice, not deferred. **Overtaken 30
+  September:** restarted by him at MH, MP and MU. Section 19, cluster E.
 - **The schema items, including `CP5`.** Deliberately held until the server
   question is answered, then done immediately, in the gap before the service is
   built. That gap is the last cheap moment.
@@ -1229,7 +1237,9 @@ on him. Row 10 is visuals and waits on everything above it by his own order.
 
 **Status at `18238fe` is in section 18.** Rows 1, 2 and 3 below are built;
 the IX half of row 7 is built; the settle question under "Already his" is
-answered.
+answered. **The masks rows 4 to 6 and rulings 3 and 4, at 30 September, are
+in section 19:** row 4 is done as `DESIGN-masks.md`, and ruling 3 is
+reopened there as R1.
 
 His closing instruction for round IW, verbatim (`TASKS.md` section IW): "Stick
 with your priorities, add this to the priority list, clear the backlog."
@@ -1632,3 +1642,531 @@ method: open 567, his 155, specced 20, built 433, identical to section 12 and
 section 17. The last line carrying a state is 7095 of 23,179. Nothing shipped
 since 25 September reaches the count, so "37 per cent built" is still a
 number from 25 September.
+
+---
+
+# 19. 30 September. Round NB: the systems he dropped in, placed in the order
+
+His words, round NB in `TASKS.md`: "I don't see on the plan any of the
+systems that I've been integrating and dropping in here over the last
+several sessions... All the stuff that I've been dropping in those TDDs.
+Block prioritize. And I want to see it in this plan. Review all those
+documents because we've got funnel onboarding tutorial. Changes to story
+imprints. ritual schema, the AI source AI that like all of it."
+
+**He is right, and the gap is this page's.** Rounds MS to NA brought in five
+documents. Each was saved whole and logged in `TASKS.md`, and not one line of
+them reached this page, `MILESTONES.md` or `BACKLOG-AUDIT.md`. This section
+turns every substantive item in them into a backlog line, places every line
+in one order across all of them, and puts the rulings that gate any of it
+first. "Block" is read the way sections 1 and 12 read it: group and
+sequence, not hold back. Sections 1 to 18 are the record and are not
+re-ranked; where a line here is already an item there, it says so.
+
+A TDD is a technical design document: a specification of how a system
+should work, written before it is built. An audit here is the team reading
+one of his TDDs against the real code and marking each requirement EXISTS,
+PARTIAL, MISSING or CONFLICT, with the file and line.
+
+## The stamp on this measurement
+
+    commit                a5404f0, tree clean at the start of the read
+    source.html           md5 b95ad397
+    measured              30 September
+    node tests/engine.js  1841 passed, 0 failed
+    browser gates         not run. This pass changes no source, and a
+                          rebuild would dirty the tree to prove nothing
+
+**Read in full:** `SOURCE-TDD.md` and its audit `AUDIT-source-tdd.md`;
+`SOURCE-TDD-V3-intelligence.md` and its audit `AUDIT-source-tdd-v3.md`;
+`CREATIVE-BRIEF-voice.md`; `DESIGN-onboarding-narrative.md`; `DESIGN-masks.md`
+with its three addenda; `TASKS.md` rounds LV to NB; `DECISIONS.md` from
+"The stack" to the end; `MILESTONES.md`; `BACKLOG-AUDIT.md` section 2.
+**Checked against the code, not taken from the documents:** the two
+saboteur loops at `engine/compute.js` lines 268 to 284 and the pairing at
+294 to 297; the history row at `engine/schema.js` line 241; the release
+card at `ui/release.js` line 1359 and the heavy mark at line 748; the
+ritual plan store at `ui/ritual.js` line 171; the hero cap at
+`shell/head.html` line 4821 and the shared breath at line 4847; the
+Preteen and Professional seats at `engine/data/canon.js` lines 499 and 508;
+the tutorial switch at `ui/login.js` line 131; the funnel's story step in
+`funnel/quiz.html`. Every status below that names a file was read there
+today.
+
+**Item labels.** Lines are labelled by cluster letter and number, `19.A1`,
+the way section 13 lettered its groups. "Row" means a row of the order
+table further down, which is the priority. The label is the item.
+
+---
+
+## Read this first. What needs him before the build can go on
+
+Only questions whose answer changes what gets built. Each goes to him with
+its snapshot, per the 21 and 25 September rulings: what it is, what is at
+stake, each way it could go and what that costs, and the drawing where
+there is one. **None goes as it stands here.** Row 1 of the order is
+preparing them.
+
+### Gating work that is otherwise ready
+
+**R1. Six masks, seven seats.** Freshly reopened.
+- *What he said.* Round MT: "Heart and crown, are part of the chakra
+  system, all the chakras should be in the masks." Round NB: "Keep the
+  professional."
+- *What that collides with.* Today Preteen and Professional both sit on
+  Solar and Throat (`engine/data/canon.js` lines 499 and 508), so their fill
+  is identical on every profile, and Heart and Crown sit under no mask. The
+  team's answer to both, M1 in `DESIGN-masks.md`, was five masks with
+  Professional removed. Keeping Professional retires M1, including the
+  Preteen's move to Heart, which existed only to make room once
+  Professional was gone. That is why "Preteen moving to heart" did not
+  parse for him at NB.
+- *The question.* With six masks, which seats does each carry, so that all
+  seven are covered and no two masks light the same?
+- *The ways it could go.* A new six mask mapping the team measures on the
+  roster, as M1 was, where Professional gets a seat pair of its own. Or
+  Professional gets real career data, a new life area field on all 112
+  addresses, which round MT sized as an engine schema change, large. Or
+  Heart and Crown drawn as the ground all six sit on, which is cheaper and
+  may not meet "all the chakras should be in the masks".
+- *What it holds.* `19.A7` the frames, `19.A9` the face as a body map,
+  `19.A10` the weave, and what the stored mask weights in `19.A12` mean.
+- *Owed by us first.* Two or three measured mappings, drawn at 1600 and
+  390, before this is asked. Row 1.
+
+**R2. Which engine picks Source AI's next question.** Three live answers
+for one component, the pattern section 6 names "two seats solving the same
+thing from different ends".
+- *Built, and ruled 27 September (round GO):* a count of how often a story
+  returns to the same seat. It asks at seven or over, never twice, and
+  "Move on" ends it. `engine/sourceai.js`.
+- *Ruled 29 September (round LZ), never built:* "This is our source AI
+  question engine... Swap this out with the system that we currently have."
+  The Impression Excavation Engine, which follows feeling, body and belief
+  toward a root through a fixed question grammar. Round MB then asked
+  whether it could merge with the discernment document of round MA.
+- *Proposed 30 September (V3, section 18):* pick whichever question most
+  reduces the system's own uncertainty.
+- *The ways it could go.* Keep the built count and treat the other two as
+  later. Build LZ's engine as ruled, with V3's scoring as its internal
+  ranking. Or V3 governs. Each has to answer his standing "the person
+  leads" (round GO), which a system choosing questions for its own
+  certainty can cut against.
+- *What it holds.* Every change to how Source AI asks, and the contradiction
+  engine `19.D5`, whose whole output is a question.
+- *Also needs from him:* LZ's specification is not in this repository. See
+  "Documents he dropped in that are not here" below.
+
+**R3. May the product ask a person how strong something feels?**
+- *Why it matters.* Today "released" is calculated, not measured: the
+  before is the held charge, the after is that number minus a fixed
+  formula (`AUDIT-source-tdd-v3.md` section 2b). A person's own rating
+  before a release and again days later is the only honest fix, and the
+  audit adds the control it needs: a later rating at an equally heavy
+  address that was not released, so a real change can be told from the
+  number drifting back toward normal on its own.
+- *What it collides with.* His rule of round MP, "no 7.9, no numbers that
+  don't tell the user anything", refined at JX into nerve state words. A
+  zero to ten slider is a bare number.
+- *The ways it could go.* A rating in his state words, flowing through
+  blocked, stored as a number underneath. A zero to ten scale, as an
+  exception he rules. Or no rating, and release stays calculated and is
+  labelled so.
+- *Rides with it:* V3's question 8, a prompted check in later, which is how
+  "the old trigger came and the old response did not" ever gets recorded.
+  His ritual reminder ruling (`DECISIONS.md`, "New, logged the same round")
+  is the one channel he has allowed to speak to a person outside push, so
+  a check in could ride it.
+- *What it holds.* `19.C3`, `19.C4`'s recurrence, and whether the 90 day
+  engine `19.D6` can ever say anything true.
+
+**R4. What the Day One tutorial works with when a person has written
+nothing yet.**
+- *Round JX, 27 September:* "narrated story animations of named people
+  using the tools, ending 'Take the quiz. Find out your coherence.'"
+  (`DECISIONS.md`, "Ruled 27 September, late").
+- *His storyboard, round MU, 30 September:* "The tutorial begins with
+  something the user has already expressed... ATUNED is not giving them a
+  generic example of avoidance. It is working with their life."
+- *The dependency nobody wrote down.* On day one the only thing a person
+  has written is the funnel's story, and the funnel holds it in memory and
+  never stores it (`funnel/quiz.html`, "THE TEXT IS HELD IN MEMORY AND
+  NOWHERE ELSE"). Carrying it in needs real sign in, which is blocked below.
+- *The ways it could go.* The tutorial asks for one sentence first and works
+  on that. The funnel's story follows the person in at sign up, once sign
+  in exists. Or JX's named people for anyone with nothing written, MU's own
+  words for anyone with something. The later document is usually the
+  ruling, and this one reverses the earlier one's substance, so it is
+  confirmed rather than assumed.
+- *What it holds.* `19.E1`, the tutorial itself.
+
+### His, real, and holding nothing this round
+
+Written down so none of them is lost. Each is asked when the work reaches
+it, not now.
+
+- **What may leave the device.** V3 audit question 3: beyond word and
+  phrase combinations, may dated sequences of a person's own readings and
+  releases leave the device, even with no name? Round MX widened the
+  direction, "aggregate everyone's data... with the purpose of improving
+  the AI's accuracy", and said the design comes later. The standing ruling
+  (`DECISIONS.md`, "Sight by tier, ruled") is word and phrase combinations
+  only. Holds `19.D8` beyond words, and the whole of `19.D10`.
+- **When a released pattern comes back.** V3 audit question 4: does it
+  return to the Bank, and does releasing it again spend allowance? The
+  Vault is the billed set and only grows. A billing question as much as a
+  model one. Holds `19.C4`.
+- **Whether a person ever sees a label like weak, possible, probable,
+  strong or verified.** TDD audit question 4. At MX he asked for context:
+  "I don't know what you mean by number four." The context: a confidence
+  cut line on the output was measured once and removed, because it made
+  two nearly equal readings look like different verdicts
+  (`engine/sniff.js` lines 808 to 831). Holds only display; the evidence
+  index `19.B7` is internal either way.
+- **"Pattern" has three meanings.** V3 audit question 6: one release line,
+  a recurring mechanism, a saboteur family. Holds the 90 day report
+  `19.D6`, which is not this round.
+- **Six expression channels or seven.** V3 audit question 7, V3 adding
+  "somatic". Holds the channel half of `19.B8`.
+- **Is "jouissance" one word or two.** TDD audit question 3. Holds the
+  jouissance detector, TDD task SRC-018, not this round.
+- **A word for the nine drivers.** MX: "Fetter does mean 112 addresses.
+  And they are the outputs of the underlying drivers... it should be one
+  word. Maybe you can help me with that." Owed by us: candidates. Holds a
+  copy sweep, nothing structural.
+- **"Power" in the brief.** `CREATIVE-BRIEF-voice.md` section 8 names a
+  body area "Power"; V3 section 4.3 says "a Power register". The seven
+  seats are Root, Sacral, Solar, Heart, Throat, 3rd Eye and Crown (`BANDS`,
+  `engine/data/canon.js`). A loose word for Solar, or a new naming for the
+  seats? The second is the product wide rename `BACKLOG-AUDIT.md` 2.4 item
+  35 already carries.
+- **Where the masks page lives against the Body map.** Section 17 ruling 4.
+  The page exists as the Character tab (`TAB.MASKS`, `engine/core.js` line
+  213) and the rail layout was ruled for it. JZ's "put all six masks here",
+  on the Body page, is still not read back to him as either replacing or
+  mirroring it.
+- **Not asked, by his own word:** the Teen's thin data and pixel density by
+  age. MX: "It's still open question. Let's keep it open for now."
+
+### Answered since the audits asked them, so not asked again
+
+Every one of these is recorded only in `TASKS.md`. **`DECISIONS.md` was last
+written 27 September (`b15a68b`)** and carries none of them, which is the
+defect his JX order was about. A "Ruled 28 to 30 September" block there is
+owed; this page does not own that file.
+
+- Fetter means the 112 addresses (MX).
+- One saboteur list, not two (MX). `19.B2`.
+- Give the archetypes a source credit (MX). `19.B3`.
+- "Move on" counts, revisited after launch with real data and a prediction
+  of the other way (MX). `19.D2`.
+- Cross person learning is wanted, designed later (MX). Read narrowly, as
+  above.
+- The shape is E2, the egg broad at the brow (MV).
+- A rail of small masks and one large hero (MX). Child first on first open,
+  then the last pressed. Child at the top of the rail, the face centred,
+  the rail below the hero and above the navigation on a phone, the blank
+  profile's coarser grid kept as the reward for filling in (MZ). A rail
+  press updates the hero and the right column together (NA).
+- The halo is a flat line (MZ, restated at NB).
+- Keep Professional (NB).
+- The six lean axes belong on Analytics (NA), and in the tooltips and the
+  knowledge base (MZ). `19.D7`.
+
+### Taken off his list, and why
+
+- **The finished release card's "N cleared entirely"** (V3 audit question
+  2). `ui/release.js` line 1359 prints it as fact, and it is a threshold on
+  the formula, `cleared:(m.w1<=6)` at line 751. The standing rule is that a
+  control never claims what it does not have, and his own drafted
+  completion words at JX do not use "cleared". Rewording it to say what was
+  measured is the team's job, not a ruling. `19.C1`. He is told, not asked.
+
+### Blocked on infrastructure, not on him or on us
+
+**The server deploy in `reboot-os`.** Round MW: the server workflow was
+re-run after his billing fix and failed at the deploy step on an invalid
+Cloudflare secret value. MZ: unchanged. NA's re-run is recorded only in
+the chat reply, and this session's own report is that it still fails. At
+NB he is "going to work on Cloudflare". The server itself is built: sign
+up, sign in, sync and password reset routes, found at round MI.
+
+**What waits on it:** real sign in, `19.E8`; the funnel's quiz becoming a
+person's starting coherence and their story following them in, `19.E7`;
+the Eleven Labs voice, `19.D4`; the Claude research that feeds the
+energetics copy, `19.D3`; aggregate word learning, `19.D8`; Stripe; the
+feedback page. And by his own sequencing at MY, the creative brief pass,
+`19.F1`: "this will be our next steps to clean up once the attuned website
+is posted."
+
+### Documents he dropped in that are not in this repository
+
+`TASKS.md` records each of these as "in this conversation's own history".
+A conversation does not survive, so these exist nowhere this project can
+read again. **The ask is the paste, not a rewrite**, the same as
+`docs/RITUAL-ACCOUNTABILITY-source.md`, whose body never arrived either.
+
+- Round LZ, the Impression Excavation Engine, "Foundation Specification,
+  v0.1", 47 sections. **R2 cannot be built from without it.**
+- Round MC, the browser state, cookie and session architecture, tasks
+  COOKIE-001 to COOKIE-029.
+- Rounds MG and ML, the two "ATUNED TDD MVP Architecture" documents,
+  including the "mirror first" onboarding sequence `19.E1` should be
+  checked against.
+- Round MM, the "Rigorous Architecture Security Content Review".
+- Round MO, the creative direction addendum and innovation brief.
+- Round MA's parts three to eight, the discernment architecture. Its task
+  list ran SRC-001 to SRC-030, the same numbering `SOURCE-TDD.md` section 40
+  carries, so it may be superseded by that saved file. Not confirmed, since
+  the original is not here to compare.
+
+---
+
+## The lines, by cluster
+
+### A. The masks
+
+Sources: `DESIGN-masks.md` and its three addenda; rounds MS to NB; section
+17 rows 4 to 6. The page exists: the Character tab, `ui/character.js`, six
+masks drawn as pixel grids, with the hover built at `cde720e`.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 19.A1 | Each mask moves on its own clock, a period in a golden ratio relation to the Field's 4.2 second breath, so no two ever fall back into step. Finding 3 | MISSING. All six share one animation, `shell/head.html` line 4847 | Now. Needs `chSvg`'s merged paths split into groups first |
+| 19.A2 | Brightness means how much charge; tier means how fused the cells are, not a brightness step, so the hottest tier stays saturated. Finding 4 | MISSING | Now |
+| 19.A3 | Marks snapped to the cell size, and one grid across all six so sibling pixels match. Finding 1's craft notes | MISSING | Now. MZ settles the conflict the layout addendum raised: one grid across siblings, and the unread grid stays coarser as the reward |
+| 19.A4 | Clicking a lit pixel opens that pixel's saboteur, or its address. On touch the press targets the saboteur's block, because one pixel is under the touch floor. Finding 6 | MISSING. `chCellAt` is not factored out yet | Now. The outline does not move the click's geometry, checked in the first pass |
+| 19.A5 | Never blank. Every mask's full outline always drawn, the rim and marks solved to 3:1 contrast per seat. Ruled MT | MISSING. The rim measured 1.43 to 1.99:1 in Dark | Now |
+| 19.A6 | The egg broad at the brow, E2, the six canon marks cut as apertures with a one cell moat. Ruled MV | MISSING in the build. **The E2 drawings live in a session scratchpad, not the repository** | Now. Changes `MASK_FACE` in canon and the Knowledge page icons with it, so `tools/equiv.py` names the diff |
+| 19.A8 | The rail and hero layout. Ruled MX, detailed MZ and NA | MISSING. `.chv-svg{max-width:260px}`, `shell/head.html` line 4821, caps the hero and must be overridden | Now, **with one re-measure nobody has asked for**: the rail's sizes were solved for five icons, and with Professional kept there are six |
+| 19.A11 | The Ideological halo as a flat line. Ruled MZ and NB | MISSING | Now, with the shape |
+| 19.A12 | Six mask weights on every history row. Section 17 row 5 | Not started. A row carries counts only, `engine/schema.js` line 241 | Now, with a mapping version on the row, so a row written before R1's remap is not read as the person changing |
+| 19.A7 | Each card's frame, a gradient from the mask's highest seat to its lowest | MISSING | **R1** |
+| 19.A9 | The face as a small body map, the higher seat higher on the face. Confirmed MT | MISSING | **R1** |
+| 19.A10 | The weave: pick a saboteur, complex or hyper complex and see it run down the rail's gutter to every mask it touches. Approved MX | MISSING | **R1**, and `19.B1`. The addendum found 47 of 270 running saboteurs own no pixel, because the drawing picks by group and not by address; fix that first |
+| 19.A13 | Saboteur, complex and hyper complex masks, each drawn as the thing it names, toggled beside the six. Round MD | MISSING, no design | Not this round. About fifty new pictures and no brief yet |
+
+### B. Story, imprints and the evidence under them
+
+Sources: both TDDs and both audits. What the engine reads out of a story,
+and what it keeps.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 19.B1 | A saboteur can be named twice in one reading, and a complex can then pair a saboteur with itself, "Aggressor + Aggressor" | A real defect. Two loops push into one list unchecked, `engine/compute.js` lines 268 to 284; the pairing at 294 to 297 | Now. Readings move, so the roster diff is named in the commit |
+| 19.B2 | One saboteur list, not two. Ruled MX | CONFLICT. `SAB33`, 33 names by charge range, and `SAB_LIB`, 14 by address, both run | After a proposal of ours, and after the masks rows, because the masks draw from the address list. MX sequenced it so |
+| 19.B3 | A source credit for the twelve archetypes, Jung derived and not attributed to Jung, the way the Positive Intelligence saboteurs are already credited. Ruled MX | MISSING | Now |
+| 19.B4 | One shared handler for "not", "never" and the rest. Three exist with different look back windows (`engine/sniff.js` 698, `engine/sourceai.js` 80, `engine/verp.js` 367), and the core charge path reads none | PARTIAL | Now, **split in two**. Unifying the three changes no reading and needs no ruling, as both audits say. Letting the core charge path use it is his, section 13 group A, and `BACKLOG-AUDIT.md` 2.6 item 56. The audits and section 13 disagreed on this; the split is the resolution |
+| 19.B5 | History rows carry which saboteurs, complexes and hyper complexes ran, and the nine axes, not only how many. The first audit's gap D5 | MISSING. `snapshot()` writes counts, and the boundary rebuilds each row from a list of allowed keys | Now, after `19.B1`, or the duplicates are written into history |
+| 19.B6 | Every story entry stamped with the lexicon version that read it, so reading it again later is reproducible | MISSING | Now. Needed whichever way JM's question goes, and JX, "keep the record for the sniffer... their words", leans toward keeping |
+| 19.B7 | The evidence index moved into the engine: which words in which entry put which charge where, keyed by entry and not by position in a list | PARTIAL. `atomIndex`, `ui/wheel.js` lines 230 to 244, lives in the interface and re-reads everything under today's lexicon | After `19.B6`. This is the port the audits recommend in place of V3's full trace graph, which conflicts with how the engine is built |
+| 19.B8 | Limiters and desired outcomes: "I want to X, but Y" read as a wanted thing and what stands in the way. V3 sections 10 and 11 | MISSING | After `19.B4`. The channel half waits on six or seven channels. Nothing reads it yet, so it waits for a consumer, see "Not doing" |
+| 19.B9 | A status on every structure: canonical, inferred, emergent or provisional | PARTIAL. Saboteurs and imprints carry one; complexes and hypers carry none | Now, and low value until something displays it |
+
+### C. The release and the ritual schema
+
+Sources: V3 sections 24 to 28, the V3 audit, and rounds JF, JX, LT and LY.
+"Ritual schema", his words at NB, is read as what a ritual and a release
+store, and whether the record holds it.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 19.C1 | The finished card stops printing a formula's threshold as fact | A real defect, `ui/release.js` line 1359 | Now, under the standing rule. Taken off his list above |
+| 19.C2 | The heavy mark a person presses during a release is kept on the record | MISSING. It lives in the run's memory, `RUN.log`, `ui/release.js` line 748, and `engine/schema.js` stores nothing of it | Now. His completion words at JX, "Note the patterns that felt heaviest... to optimize your experience", promise a use nothing stored can serve today |
+| 19.C5 | **Ritual plans move onto the record.** The schedule, the weekdays, the seats, the timer and the release it came from | **Found this pass.** They live in browser storage beside the record, one key holding every profile's plans by profile id, `atuned-ritual-active`, `ui/ritual.js` line 171, chosen so "it is no schema change". So the boundary never checks them, no export path reads that key, and a sync of the record would not carry them. The avatar's ratings sit the same way under `atuned-avatar-side`, `ui/avatarui.js` line 149 | Now. Additive, with a one time read of the old keys. It belongs in the same pass as `19.B5`, before records live on a server |
+| 19.C6 | Whether a ritual was actually done against how often it was set: V3's "intervention fidelity" | PARTIAL. The days done are on the record; the plan they are measured against is off it until `19.C5` | After `19.C5` |
+| 19.C3 | Release measured, not calculated: a person's own rating before and after, a later one, and the unreleased address as a control | MISSING | **R3** |
+| 19.C4 | A released pattern that comes back, recorded as returning rather than as new | MISSING | Ruling "when a released pattern comes back", and **R3** |
+| 19.C7 | One ritual serving several patterns that share a mechanism, rather than one ritual each. V3 section 26 | MISSING | After `19.B7`; "share a mechanism" needs evidence first |
+
+### D. Source AI and the intelligence layer
+
+Sources: both TDDs and both audits; rounds MA, MB, ME, MR, MX.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 19.D1 | Which engine picks Source AI's question | Built one, ruled a second, a third proposed | **R2**, and the LZ paste |
+| 19.D2 | "Move on" counted, then re-analysed after launch with a prediction of the other way. Ruled MX | MISSING, and needs real usage | After launch |
+| 19.D3 | Claude researching before the energetics reading names "overlapping spiritual behaviors", feeding the Summary copy. Rounds ME and MR | MISSING, not designed | The server. A key in `source.html` is readable by every visitor |
+| 19.D4 | The spoken release on Eleven Labs instead of the browser's own voice. Round MR | MISSING | The server, same reason |
+| 19.D5 | Contradiction held as a question, not an error: "I don't care what people think" beside "I'm terrified they'll judge me" | MISSING | After `19.B4` and `19.B7`, and **R2**, because its output is a question |
+| 19.D6 | The 90 day engine: how a person is changing as a system, at 30, 60 and 90 days | MISSING. **The audit's decisive finding:** on today's state, ninety days of perfect use moves the middle case from 25.00 to 25.54, so it would label nearly everyone unchanged and be describing the release formula, not the person | After `19.B5`, `19.B6`, `19.C2`, **R3**, and the "pattern" word |
+| 19.D7 | Individual analytics from what is already stored: the six lean axes on Analytics as ruled at NA, laws over time, ritual follow through | PARTIAL. The Analytics tab exists (`0fcee17`); `leanSeries()` has had no caller since section 4 said so | Now. The follow through half after `19.C5` |
+| 19.D8 | Learning across people: word and phrase combinations feeding the lexicon | MISSING. The lexicon already has a place for a fifth source with its own provenance | The server and a consent line saying exactly this. Anything beyond words: the "what may leave the device" ruling |
+| 19.D9 | The AI handshake: what an AI must establish before it acts | MISSING, and nothing to guard: there is no model (`ui/storyui.js` line 438, "No model is called") | When a model is wired. Then as checks the code enforces, not a form the model fills in about itself, which the V3 audit rejected |
+| 19.D10 | The emergent pattern engine: finding structures the canon has no name for | MISSING, and **largely not learnable from what the product collects**. An address's charge moves with its parent axis by construction (`engine/compute.js` line 236), and text reaches about 37 of 112 addresses | Not this round. See "Not doing" |
+
+### E. The funnel, onboarding and the Day One tutorial
+
+Sources: `DESIGN-onboarding-narrative.md`, his storyboard; rounds LW, MH,
+MI, MP, MU.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 19.E2 | The funnel's pages carry his storyboard's copy: "There is more running you than you can see", the six places people feel friction, and Mission, Vision and About in the navigation | PARTIAL. `funnel/about.html` carries mission and vision; the opening line appears nowhere in `funnel/` | Now. **Clear one line first:** the quiz's reading says low coherence "is what promotes mental, physical and spiritual disease" (`funnel/quiz.html`), the claim class `BRAND.md` section 5 and PO2 are about |
+| 19.E3 | "How coherent are you right now?" as the assessment's own step | EXISTS in substance: the quiz and its seven band ring, `ec94db6` | A copy check against his words, riding `19.E2` |
+| 19.E4 | A pattern glimpse before the account: one sentence of the person's, read into Story, Imprint, Pattern, Impact | **PARTIAL, and the storyboard's reconciliation says not built.** The quiz already reads one story through the app's own reader and prints what it found, `ac7e067`, 28 September. His Impact step is not something the reader produces | The Impact step needs a design of ours. "The user's work should follow them" is `19.E7` |
+| 19.E6 | The funnel's look takes its cues from the Field and the masks. Round MU | MISSING on the funnel; login and onboarding already carry it (`a9c2e28`) | After `19.E2` |
+| 19.E1 | The Day One tutorial, his storyboard sections 7 to 13: Discover, Play, Understand, Release, Flow, Embody, on the person's own words | MISSING. The switch exists and says so, `ui/login.js` line 131, "not built yet" | **R4**. And it is a new surface, so it waits behind section 12 rows 2 to 5 |
+| 19.E5 | The continuing journey as one page: journal, story bank, pattern bank, the four stations, progress | MISSING as one page; every piece exists on its own surface | Not this round. No drawing exists, and "progress over time" needs `19.B5` |
+| 19.E7 | The quiz's answers become the person's starting coherence, their story follows them in, and a returning person skips the funnel. Round MI | MISSING | The server |
+| 19.E8 | Real sign in against the server's existing routes. Round MP, "Wire the real login" | PARTIAL. The login screen is local and honest about it | The server |
+
+### F. The voice and the creative brief
+
+Source: `CREATIVE-BRIEF-voice.md`, read lightly at MY and read in full for
+this pass. Most of it agrees with the house voice. What does not, found on
+this read, so it is ported correctly rather than copied:
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 19.F1 | The brief checked line by line against `.claude/skills/atuned-voice/SKILL.md` and its runnable check | Not started | His own sequencing, MY: after atuned.world is live |
+| 19.F2 | Porting rules for its examples, written into the voice skill before any example ships. Four of its screen examples are all capitals ("SEE THE PATTERN.", "AVOIDING THE NEXT STEP", "WHAT CHANGED", "YOUR WEEK"), against sentence case. Five lines carry an em dash, against the rule that there are none anywhere. "Coherence 72, Resistance 28" is a bare number, against his MP and JX rules, and the engine computes no resistance. The loop is drawn as a line, DISCOVER to EMBODY, against "a circle, never a list" | Found this pass | With `19.F1`. None of this edits his document; it governs what is copied out of it |
+| 19.F3 | "Integrate" now means three things: the brief's verb after release ("Integrate the charge"), the TDDs' pattern state (RELEASED is not INTEGRATED), and the phrase "Integrate Protocol", which round GS removed from naming the mechanic. One word per concept | Found this pass | A copy decision of ours with `19.F1`. It reaches him only if the brief's verb is to reach the product |
+| 19.F4 | V3's user loop, "Talk, Explore, Discover, Release, Practice, Live", stays inside working documents. The stations a person reads are ruled: discover, play, flow, embody, never translated (`DECISIONS.md`, "The loop's words") | Found this pass | Nothing to build. Recorded so no seat ships it |
+| 19.F5 | The brief's evidence ladder on screen: what you said, what repeated, what it may mean, what is being tested, kept visibly apart | The rule matches the engine's own; the surfaces have nothing to draw it from | After `19.B7` |
+| 19.F6 | A daily and weekly summary in the brief's shape, "Three patterns showed up repeatedly this week" | MISSING | After `19.B5`. "Repeatedly" needs identity over time, which no row carries today |
+
+---
+
+## The order, across all six
+
+**This sits beside section 12, not above it.** Section 12's rows 2 to 5,
+state corruption, the boundary, and writes that claim success, still go
+before any new surface. Section 17 found them open at `6a2cfb3` and did not
+re-measure them one by one, and neither did this pass. The only new surface
+below is row 14, the tutorial, and it waits behind them.
+
+| # | What | Who | Size | Depends on | Moves grade |
+|---|---|---|---|---|---|
+| 1 | R1 to R4 prepared and sent, each with its snapshot. For R1 that is two or three six mask mappings measured on the roster and drawn at 1600 and 390; for R2, the LZ paste asked for beside it | project manager, art direction for R1 | small for R2 to R4, medium for R1's drawings | nothing | no, and it releases rows 13, 14 and 15, and every change to how Source AI asks |
+| 2 | `19.B1`, a saboteur named twice and a complex paired with itself | engineering | small | nothing | yes, a reading stops naming one thing twice. Everything below that follows a saboteur by name inherits it otherwise |
+| 3 | `19.C1`, the finished release card stops calling a threshold a fact | copy, engineering | small | nothing | yes, a claim the product cannot back comes off the screen |
+| 4 | `19.B3`, the archetypes credited to their source | copy, engineering | small | nothing | yes, it matches the credit Positive Intelligence already has |
+| 5 | **The record keeps what it throws away, first half.** `19.B5` and `19.A12`: history rows carry which structures ran, the nine axes, and the six mask weights with a mapping version. Section 17 row 5 is inside this | engineering | medium: the row, the boundary's list of allowed keys, a series reader, a gate | row 2 | no on its own. Every longitudinal line on this page stands on it, and every day it waits is history not written |
+| 6 | **Second half.** `19.B6` a lexicon version on every entry, `19.C2` heavy marks kept, `19.C5` ritual plans moved onto the record | engineering | medium | row 5, same file and same seat | yes for the heavy marks, which his completion words already promise |
+| 7 | Masks, the structure. `19.A8` rail and hero, re-measured for six icons; `19.A6` the egg; `19.A5` never blank; `19.A11` the flat line | UX architect, art direction, engineering | large | nothing | yes. The page grades C, and the layout addendum measured structure from C to A minus |
+| 8 | Masks, the data drawn. `19.A1` motion per mask, `19.A2` brightness and tier, `19.A3` snapping and one grid, `19.A4` the click | art direction, animation, engineering | large, two medium halves | row 7, same file | yes. The design's own estimate is C to B minus from these alone |
+| 9 | `19.B4`, one handler for "not" and "never", replacing three, with no reading moved | AI director, engineering | medium | nothing | no. It is what limiters and contradiction both stand on |
+| 10 | `19.B7`, the evidence index in the engine | engineering | medium | row 6 for the version stamp | no. It is what `19.F5` and `19.D5` stand on |
+| 11 | `19.D7`, individual analytics from what is stored: the six axes on Analytics, and ritual follow through | engineering, UX architect | medium | row 6 for follow through | yes, a surface he ruled at NA |
+| 12 | `19.E2` then `19.E6`, the funnel's copy to his storyboard, the disease line cleared first, then its look from the Field and the masks | copy, art direction, engineering | medium, then large | nothing | yes. It is the front door, ruled at LW, "The landing page is the funnel" |
+| 13 | `19.A7`, `19.A9`, `19.A10`: the frames, the face as a body map, the weave, with the weave's "pick by address" fix | art direction, engineering | large | R1, rows 2, 7 and 8 | yes |
+| 14 | `19.E1`, the Day One tutorial | UX architect, copy, engineering | large | R4, and section 12 rows 2 to 5 | yes. His storyboard is the copy, so copy before code is already met |
+| 15 | `19.C3` with the check in, release measured rather than calculated | engineering, UX architect, game director | large | R3, row 6 | yes, "released" becomes something the person said |
+| 16 | `19.B2`, one saboteur list: a proposal of ours, then the merge | AI director, engineering | large | rows 2, 8 and 13 | yes, one name for one thing |
+| 17 | `19.F1` to `19.F3`, the brief against the voice skill, and the porting rules | copy | medium | atuned.world live, his sequencing | yes, but only once copy is written from it |
+
+### Why this order, one line each
+
+**Row 1 first because it is the cheapest thing on the page that releases
+the most.** Four questions hold rows 13, 14 and 15 and the whole of
+Source AI's question work. R1 cannot go without drawings, and the drawings
+are ours.
+
+**Rows 2 to 4 because they are small and they are truth.** Two are defects a
+person can see today and one is a credit he asked for. None needs anyone.
+
+**Rows 5 and 6 are the dependency under everything, and this is the last
+cheap moment for them.** Section 4 said schema items get dearer with every
+day of real records, and section 10 held them "until the server question
+is answered, then done immediately". That question is answered: Cloudflare,
+ruled 25 September ("The stack"), and the database created by round MR. The
+deploy that would put records on it is stuck on one secret. That is exactly
+the gap section 4 described, and it closes the day the secret is fixed.
+
+**Rows 7 and 8 because every masks ruling but R1 is already in,** given
+across rounds MT, MV, MX, MZ, NA and NB and listed above. The page he has
+spent the most rounds on is the one with the most buildable, ruled work
+sitting unbuilt.
+
+**Rows 9 to 11 are the engine work the audits named as safe**, placed after
+the masks because nothing a person sees moves until something draws them,
+and row 11 is where the first of them is drawn.
+
+**Row 12 runs in parallel from the start** and sits at 12 only because the
+funnel is not reachable by a stranger until the deploy works. Its seat and
+files touch nothing above.
+
+**Rows 13 to 16 each wait on something named.** R1, R4, R3, and the masks
+work that one saboteur list would otherwise land underneath.
+
+**Row 17 last by his own words.**
+
+### Where the order is arbitrary, said plainly
+
+- **Rows 2, 3, 4, 7, 9 and 12 are parallel.** Different seats, no shared
+  file. Ranking them against each other would be theatre.
+- **5 then 6, and 7 then 8, are real sequences:** the same file and the same
+  seat each time.
+- **Rows 9, 10 and 11 can take any order after row 6**, except that 10 reads
+  the version row 6 stamps.
+
+## Section 17 and 18's masks rows, now
+
+- **Row 4, the masks page specified: done.** `DESIGN-masks.md`, `6231bf0`,
+  and three addenda.
+- **Row 5, mask weights on history rows: not started.** Now inside row 5
+  here.
+- **Row 6, the masks page built: not started.** Now rows 7, 8 and 13 here.
+- **Ruling 3, two masks that can never differ:** reopened as R1, in a new
+  form, by NB.
+- **Ruling 4, where the page lives:** answered in practice by the Character
+  tab and the rail layout ruled for it. JZ's Body map question stays, under
+  "holding nothing this round".
+
+## Not doing this round
+
+Named, so nothing disappears quietly.
+
+- **The emergent pattern engine, TDD tasks EPE-001 to EPE-018.** The audit
+  measured that most of it cannot be built honestly from what the product
+  collects, independent of whether it should be. What would move it: a
+  population under a designed consent and schema, on a server, and the
+  "what may leave the device" ruling.
+- **V3's trace graph as specified.** It conflicts with how the engine is
+  built, canon tables recomputed on every reading. Row 10 ports the closest
+  real thing instead, which is this project's rule: port, do not rebuild.
+- **The behavioural ontology of 22 primitives, and the celestial engine's
+  Kabbalah, name energetics and versioned mappings.** No surface asks for
+  them. Name roots also sit against the standing "No etymology table".
+- **The 90 day engine and its 30, 60 and 90 day reports, `19.D6`.** It
+  would report the formula's constants until rows 5, 6 and 15 exist.
+- **Limiter and channel detection, `19.B8`.** Buildable after row 9 and
+  read by nothing. `leanSeries()` sat written and unread for the whole of
+  section 4's life, and a second one is not wanted. What would move it: the
+  ritual prompt he drafted at JX, "you're avatar wants to be a public
+  speaker you're holding on to fear of judgments of others would you like
+  to set up a release schedule for that", which is exactly a wanted thing
+  and a limiter, designed as its reader.
+- **The contradiction engine, `19.D5`.** After rows 9 and 10, and R2.
+- **The AI handshake, `19.D9`.** No model exists to hold to it.
+- **The mask tiers of round MD, `19.A13`.** No design, and about fifty
+  pictures. After the rail.
+- **The continuing journey page, `19.E5`.** No drawing, and it needs row 5.
+- **Everything behind the server:** `19.E7`, `19.E8`, `19.D3`, `19.D4`,
+  `19.D8`, Stripe, and the feedback page of rounds LW and LX.
+- **"Move on" re-analysed, `19.D2`.** After launch, on real data, by his
+  own word.
+- **Ritual consolidation, `19.C7`, and a recurring pattern's return,
+  `19.C4`.** Each waits on something named above.
+- **Editing any of his documents.** Where the brief or a TDD disagrees with
+  a ruling, the port follows the ruling and the document stays as he wrote
+  it.
+
+## Found while doing this, and recorded where it lives
+
+- **Section 6 and section 10 of this page said onboarding was stopped by
+  his ruling twice.** Overtaken: round MH, "do onboarding and tutorial,
+  first", round MP's redesign, built at `a9c2e28`, and his storyboard at
+  MU. Both carry a pointer here now.
+- **`BACKLOG-AUDIT.md` 2.13 listed the funnel as parked, "Do not ask."**
+  Overtaken by LJ, which built its story step, by LW, "the landing page is
+  the funnel", and by MU. A dated note is added there; nothing else in that
+  file is changed.
+- **`DESIGN-onboarding-narrative.md` says the pattern glimpse before the
+  account is not built.** The quiz's story step shipped two days before
+  that document, at `ac7e067`. A dated note is added under that bullet.
+- **`DECISIONS.md` carries no ruling after 27 September.** Listed above,
+  and owed.
+- **Five of his documents are not in the repository.** Listed above.

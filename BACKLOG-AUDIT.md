@@ -777,6 +777,11 @@ These change how something looks or feels and block nothing.
   touch the funnel. That's a waste of credits." (IB) IQ asked marketing for
   funnel content from his release mechanism notes; that is marketing's
   file, not a funnel build.
+  **No longer parked, checked 30 September.** He restarted it: round LJ
+  built the quiz's story step and door (`ac7e067`), round LW ruled "the
+  landing page is the funnel", and round MU gave its storyboard with "Add
+  this to the plan." The founding offers are not restarted by any of those.
+  The funnel's open lines are `PRIORITY.md` section 19, cluster E.
 - **Clinicians.** "So don't ask me until fucking then." (BU)
 - **The admin interface**, future development. (BF1)
 - **The Link game.** (BV)

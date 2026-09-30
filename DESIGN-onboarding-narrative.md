@@ -53,6 +53,11 @@ differ on, checked line by line rather than assumed:
   Imprint to Pattern to Impact, offered on one typed sentence before
   signing up) is not built; the Story Engine's own breakdown exists once
   a person is inside (`parseStory`, `avatarui.js`), not as a funnel step.
+  **Corrected 30 September: partly built.** The funnel quiz already has
+  this step: one story read by `parseStory` before any account, with what
+  it found printed as cards (`funnel/quiz.html`, `ac7e067`, 28 September,
+  round LJ). What is missing is his Impact step, and the story following
+  the person in, since the page never stores it. `PRIORITY.md` 19.E4.
 - The continued journey view (his section 14) as one held page: the
   individual pieces it names, the journal, the pattern bank, Discover,
   Play, Flow, Embody, progress, all already exist as built surfaces
