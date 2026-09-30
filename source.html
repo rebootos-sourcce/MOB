@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1009 5273d09 2026-09-30 21:23"><head><meta charset="utf-8">
+<html lang="en" data-build="v1011 d76bd74 2026-09-30 21:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -34509,8 +34509,14 @@ function relRender(){
    +(RUN.settleAt&&!RUN.settled
      ?relSettle()+'<div class="rel-sub">The release keeps moving after the lines stop.</div>'
      :relHitRows(RUN.hits))
+   /* "CLEARED ENTIRELY" WAS A THRESHOLD WEARING A FACT'S CLOTHES. cl counts
+      w1<=6, a formula's own cutoff on the weight left after the write, never
+      a thing the person confirmed. "Cleared" claims completion a threshold
+      cannot back, the same overclaim relHits above already refuses the word
+      for. Read low says what is actually true: the post write weight came
+      back under the line the formula draws, nothing more. */
    +'<div class="rel-sub">'+RUN.log.length+(RUN.log.length===1?' address, ':' addresses, ')
-     +t.put+(t.put===1?' truth':' truths')+' installed, '+cl+' cleared entirely, '+RUN.freed+' weight freed</div>'
+     +t.put+(t.put===1?' truth':' truths')+' installed, '+cl+' read low, '+RUN.freed+' weight freed</div>'
    /* the row the run counted down on, landed. Read off compute() after the
       write and against the reading taken before it, never off the projection,
       so if the two ever part it is this number that is true. */
@@ -47191,5 +47197,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003086365"></div>
+<div id="eof" hidden data-len="003086802"></div>
 </body></html>

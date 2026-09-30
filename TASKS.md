@@ -28489,3 +28489,37 @@ the six fixes, 1332/6 before them, each one read and traced to its
 real cause rather than assumed. Screenshotted the Character page at
 1600: five tiles, Child through Ideological, no gap where Professional
 was.
+
+**`19.C1` built and gated.** "N cleared entirely" (`ui/release.js:1359`)
+stopped calling `w1<=6`, a formula's own threshold, a fact. Reworded to
+"N read low," checked against the file's own standing precedent
+(`ui/release.js:614-622`, `relHits` already refuses the word "cleared"
+for the identical reason) and against every other "line" already in
+use elsewhere in this codebase (`avatarui.js`'s own release line, a
+typed sentence; `ui.js`'s own under-the-line, a different threshold)
+so a fourth meaning was not stacked onto an already overloaded word.
+Gated in full: `BUILD.sh` clean; `tests/engine.js` 1846/0 (untouched,
+no engine file moved); `tests/collide.js` 351/0; `tests/design.js`
+185/0; `tests/funnel.js` 172/0; `tests/boot.js` 13/0; `tools/monitor.js`
+all surfaces render; voice objections unchanged, 0 new findings from
+this line specifically. `tests/functional.js` read 1337/1 on the first
+run, a practitioner-mode reload persistence check with no code path
+through anything this commit touches. Re-run clean, 1338/0, no code
+changed between the two runs: this session's next load-sensitive
+flake, not a regression.
+
+A fifth document, "ATUNED Impression Excavation Engine, Technical
+Design Specification v1.0," saved whole as
+`SOURCE-TDD-impression-excavation.md`. His own words, correcting the
+read of R2: "I didn't say build from scratch. It builds on top of what
+you created." Read as: extend `sourceai.js`'s own question mechanism
+with this engine's uncertainty-scoring question selection, not replace
+it. Also: "audit the celestial engine as well," matching the
+`birth.js` finding reported this round. And a sequencing instruction,
+his own order: finish the login first, do the onboarding copy and the
+tutorial, then queue up every algorithm, tool and technique from all
+five documents, plus modifications to the Story Engine and the
+sniffer, "there's a lot of stuff so let's get it all in." Login is
+task 7, still open and now genuinely unblocked: reboot-os deployed
+live this round at `https://atuned-api.lance-o-powell.workers.dev`.
+Moving there next, per his own order.

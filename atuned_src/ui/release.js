@@ -1355,8 +1355,14 @@ function relRender(){
    +(RUN.settleAt&&!RUN.settled
      ?relSettle()+'<div class="rel-sub">The release keeps moving after the lines stop.</div>'
      :relHitRows(RUN.hits))
+   /* "CLEARED ENTIRELY" WAS A THRESHOLD WEARING A FACT'S CLOTHES. cl counts
+      w1<=6, a formula's own cutoff on the weight left after the write, never
+      a thing the person confirmed. "Cleared" claims completion a threshold
+      cannot back, the same overclaim relHits above already refuses the word
+      for. Read low says what is actually true: the post write weight came
+      back under the line the formula draws, nothing more. */
    +'<div class="rel-sub">'+RUN.log.length+(RUN.log.length===1?' address, ':' addresses, ')
-     +t.put+(t.put===1?' truth':' truths')+' installed, '+cl+' cleared entirely, '+RUN.freed+' weight freed</div>'
+     +t.put+(t.put===1?' truth':' truths')+' installed, '+cl+' read low, '+RUN.freed+' weight freed</div>'
    /* the row the run counted down on, landed. Read off compute() after the
       write and against the reading taken before it, never off the projection,
       so if the two ever part it is this number that is true. */
