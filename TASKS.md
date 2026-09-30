@@ -27467,3 +27467,41 @@ Read as:
 5. **"Add push all to atuned.world to final in your plan."** Already the
    last step of this round's own plan; restated here so it is not read as
    dropped.
+
+## Round MR
+
+His words, verbatim: "While you're in there, I want to make sure you swap
+out the Claude voice API with the Eleven Labs API. And now Claude API can
+also use the API for the energetics readings."
+
+Read as:
+
+1. **Swap the spoken voice for Eleven Labs.** Round ME's own clarification
+   holds: what "the Claude voice" names is the browser's own
+   `speechSynthesis` reading the release and reframe script
+   (`ui/sound.js`), not anything from Anthropic. Confirmed intention since
+   ME, not built, for the same reason ME already gave and that
+   `CLAUDE.md` states as a rule and not a preference: a key pasted into
+   `source.html` is a key every visitor's browser can read and spend, so
+   the swap needs a server to hold the Eleven Labs key and answer a
+   request for audio, and this file has no server of its own.
+2. **Claude API for the energetics readings.** The same ask round ME
+   logged as item 2, "not yet designed... queued behind what is already
+   queued": research feeding what a reading says before it names
+   "overlapping spiritual behaviors," reaching the Summary page's copy.
+   Still not designed, and now checked directly rather than assumed:
+   `reboot-os` carries no Eleven Labs or Anthropic integration code of any
+   kind yet, by a code search across the whole repository, so there is no
+   partial wiring here to finish, only the two seams to build from nothing
+   once there is a server to build them on.
+3. **The blocker, checked fresh rather than repeated from memory.**
+   `reboot-os`'s own `atuned/server/wrangler.toml` no longer carries the
+   placeholder database id this file logged before: it now reads a real
+   UUID, `70031c42-615b-465b-92a5-9d3340847ec5`, so the D1 database itself
+   has been created since this was last checked. But `reboot-os`'s own
+   deploy workflows still show failure on every one of the ten most recent
+   runs across gate, server, web, shell and retention, through its latest
+   push, so the server this session would need to hold both keys is
+   closer than it was and still not live. Reported to him directly rather
+   than built against; MOB's own side of this, this session's to touch, is
+   read-only against `reboot-os` today.
