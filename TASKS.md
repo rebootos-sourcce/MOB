@@ -28358,3 +28358,19 @@ through `0008_indexes.sql`, and the Worker deployed to
 `https://atuned-api.lance-o-powell.workers.dev` with a real version id,
 `9ac30b3d-4804-4afb-b96e-9f65fe9ee7e8`. Nine attempts, four failed
 diagnoses of "fixed" rejected on the evidence before this one held.
+
+**"Get that build up onto atuned.world" surfaced a second, separate
+gap, this repository's own.** `.github/workflows/deploy.yml` (`MOB`,
+not `reboot-os`) has run green on every one of this session's four
+pushes tonight, but read the steps rather than the checkmark: its own
+"deploy to Cloudflare Pages" step has been `skipped` every single
+time, tonight and before, because `CLOUDFLARE_API_TOKEN` and
+`CLOUDFLARE_ACCOUNT_ID` do not exist in `MOB`'s own repository
+secrets, a separate store from `reboot-os`'s, per `HOSTING-SETUP.md`'s
+own "three things left, only he can do them." Fixing `reboot-os`
+tonight did not touch this: different repository, different
+Cloudflare product, Pages rather than the Worker, and the Pages token
+needs a different permission, `Cloudflare Pages: Edit`, not `Workers
+Scripts: Edit` and `D1: Edit`. `atuned.world` has never deployed
+through this pipeline at all. Told him plainly rather than letting
+the green checkmark stand for something it did not do.
