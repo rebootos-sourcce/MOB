@@ -27274,3 +27274,149 @@ Read as:
    the funnel from a mockup into the front door he described in round
    MI, and onboarding's own extension from round ML sits behind it.
    Answered as a plan in the chat reply, not started tonight.
+
+## Round MP
+
+His words, dense, given after seeing the login screen and the
+onboarding sheet rendered for the first time:
+
+"Get rid of the text that says change welcome back to just welcome.
+Get rid of the text that says this is a local build, nothing typed
+here is sent anywhere or checked against anything. Redesign this so
+it's visually appealing, see what you can pull from the field page,
+but also with the onboarding, tutorial and funnel, they should also
+pull from the field, the field page aesthetically. The login needs
+the typical login stuff, login settings, if you forgot your password,
+click this to recover your pass, to reset your password. We need two
+factor, OAuth. I'm wondering if the paywall has been added. And let's
+do username, email, password. I also want us to be able to suggest a
+strong password. Welcome, this is you and it's okay. Horrible. Give
+me all the copy that you're using for the onboarding and tutorial in
+a markdown document. Give me your idea behind the storyboards too.
+Okay, the design of the onboarding entirely needs to be redesigned.
+This looks like a flat, dull, 1996 design, it doesn't talk to me, it
+doesn't feel personal, it doesn't seem to respect the notes that I
+gave you, it's not visually appealing. The signal test is a simple
+yes, no, say it to yourself, and the flow for it, you have in your
+backlog, but the flow for the signal test is simply this: this is a
+neurosomatic software, meaning the story you create conditions a
+body, one impacts the other and vice versa. And the signal test, sit
+down, take ten deep breaths, relax, when you're ready move your
+awareness inside your body around your throat, think yes ten times,
+see where it feels, see what the quality is, note its nature, think
+no ten times, feel its quality, note its nature, compare the
+difference between the two. You're having a non-physical thought
+that has a physical reaction on the body. Imagine what words like
+anxiety or anxious, overwhelmed, burned out, depressed is doing. This
+is the purpose of this product. And then I can't go forward. So this
+onboarding not only has to be incredibly smooth, it seems to violate
+all onboarding rules, and I can't click next to go, I can only click,
+I have to click solar and shit like that. Remove all the solar plex,
+sacral, I don't want any of that there in this onboarding. It's a
+visual language that we're doing, it's symbolic, we want people to
+feel what they're doing, so simplify the language, don't use crazy
+words. Nothing has been written on your record, you can, none of
+that shit is necessary, remove that text, you can now run this again
+anytime, I kill that. And then sharpen the text, you felt
+anticipation, actually that doesn't even apply, it's just yes, no.
+There needs to be a transition between the last onboarding screen and
+the field. And when I get to the login screen, the login screen
+should give me the options, I didn't see the tutorial, so the
+options, the tutorial's not even wired in, so for now my developer
+options, I want onboarding and tutorial, if they're both off then it
+skips straight to dashboard, if one is on it plays one versus the
+other. Please deploy all the files online so I can see that
+everything actually works, I'll review the funnel there, wire the
+real login. One note about the copy, we want to speak to people as
+if they're ten, we don't want to talk down to them, we just want to
+provide simple language that's contextual and direct with a little
+bit of warmth, no symbolic language, no 7.9, no numbers that don't
+tell the user anything, if we do describe things, talk about the
+nerve or chakra in its state, flowing, impaired, heavily impaired,
+moderately impaired, blocked. For Eleven Labs and Claude I already
+have the API keys, I just need to know what to do with them."
+
+Followed immediately by, re-attaching the same creative brief already
+logged in round MO, byte for byte identical, confirmed by diff: "while
+you're building the main stuff, let's take care of the last tasks,
+but review this as well. Tonight's wrap. Once everything is on, once
+I can load up atuned.world, we win. If I can see the funnel, get to
+the software, that's the win."
+
+Read as, in the order taken up:
+
+1. **The win condition for tonight, stated plainly and it changes the
+   priority of everything above it: atuned.world loads, the funnel is
+   visible, and the software is reachable from it.** Everything below
+   is worked toward that, and the deploy pipeline fixed in round MN is
+   what makes it possible at all.
+2. **The onboarding bug, "I can't click next to go, I can only click
+   solar,"** is the signal test step: it currently requires pressing a
+   seat button to advance rather than offering a clear way forward,
+   which is a real defect and fixed first, ahead of any redesign,
+   since a person cannot reach the win condition through a screen that
+   traps them.
+3. **The signal test's whole flow is replaced with his own script**,
+   verbatim: the framing sentence on neurosomatic software, the
+   breath and awareness instruction, thinking yes and no ten times
+   each at the throat, comparing their quality, and the closing line
+   on what words like anxiety and burned out are doing to the body.
+   No seat names, no charged/neutral word draw from `S.charge`: a
+   plain yes and no.
+4. **Login copy**: "Welcome back" becomes "Welcome"; the local build
+   disclosure sentence is removed entirely, the same honesty moved
+   into a plainer, shorter line or dropped, decided in the build.
+5. **Login fields and features**: username, email, password; a
+   suggested strong password; forgot password / reset. Two factor and
+   OAuth are named but are their own scoped build, not folded in
+   silently tonight: a real second factor and a real OAuth provider
+   each need an account with that provider and a decision on which
+   ones, his to make, so they are queued rather than guessed at.
+   Whether the paywall is added, answered plainly in the chat reply:
+   it is gated and visible, not connected to money, unchanged since
+   `MILESTONES.md` already said so.
+6. **Visual redesign, login and onboarding both, pulling from the
+   Field page's own aesthetic**, and the funnel and tutorial named as
+   needing the same treatment eventually. "Flat, dull, 1996 design"
+   is the verdict on what exists; this is the largest single piece of
+   this round and is worked directly against the Field's own tokens
+   rather than invented fresh.
+7. **No chakra or seat names anywhere in onboarding.** "Remove all
+   the solar plex, sacral, I don't want any of that there." Combined
+   with the signal test rewrite above, this removes the seat picker
+   from onboarding entirely.
+8. **Specific reassurance text removed**: "Nothing has been written
+   to your record. You can run this again anytime." **And the felt
+   word reflection, "You felt anticipation," is wrong for a yes or no
+   answer and is sharpened to actually say yes or no.**
+9. **A transition between the last onboarding screen and the Field**,
+   so the handoff is not a hard cut.
+10. **The developer options become two switches, not one**: onboarding
+    and tutorial, independently. Both off skips straight to dashboard;
+    one on plays that one. Tutorial is named as not wired in yet, so
+    its switch is honest about that rather than pretending to work.
+11. **"Wire the real login."** Round MK's own estimate, cashed in: the
+    real signup and signin already live in `reboot-os`'s server are
+    wired into this build's login screen in place of the local stub.
+12. **A markdown document of the onboarding and tutorial copy, and the
+    storyboard reasoning behind it.** Delivered once the copy itself
+    is settled by the rest of this round, not before, since handing
+    over copy that is about to be rewritten under it would be the same
+    defect `CLAUDE.md` already names about a stale build.
+13. **A standing voice rule, new and separate from the house voice
+    this project already carries**: speak at a level a ten year old
+    follows without being spoken down to, plain, contextual, direct,
+    warm. No symbolic language and no bare number a person cannot
+    read a scale off, "no 7.9." Where a nerve or chakra state is
+    described at all, it is named by its state in words, flowing,
+    impaired, moderately impaired, heavily impaired, blocked, never
+    by a number alone. Applied throughout this round's own onboarding
+    and login work; applying it to every other numbered surface in
+    the product (Summary, Analytics, the release counters) is its own
+    pass and not done tonight.
+14. **"I already have the API keys, what do I do with them."**
+    Answered directly in the chat reply: neither key can go into this
+    repository's own client file, `source.html`, without handing it to
+    every visitor's browser, so both are added to the real server's
+    own environment, `reboot-os`'s Cloudflare Worker, not pasted into
+    this chat.
