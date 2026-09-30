@@ -392,6 +392,16 @@ snippet of that earlier thing with it, the way a question about a drawing
 carries the drawing. He should never have to go find what a question is
 about.
 
+**Steps as if he is ten. Ruled 30 September**, after a set of Cloudflare
+steps skipped the one thing he actually needed, which website to open and
+where to log in, and he had to ask "change where?" His words: "always give
+me steps like I'm 10 with context for your output." Any walkthrough outside
+this codebase, a dashboard, a registrar, a setting on someone else's
+website, names the site to open, that logging in there is a separate
+account from this one if it might be, and where on the page the next
+button or field actually sits. Never assume he is already looking at the
+right screen.
+
 ## Records
 
 `MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it
