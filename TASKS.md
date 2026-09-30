@@ -27751,3 +27751,26 @@ together, since a shape redesign, a framing treatment and a seven seat
 mapping are one piece of work and not three; question 3's true finding
 reported to him directly rather than built past; question 6 queued as
 its own small, immediate fix.
+
+## Round MU
+
+His own document, attached whole, a full narrative and a matching visual
+storyboard for the funnel, onboarding and Day One tutorial, this round's
+own answer to task #10. His words closing it: "storyboard and story flow
+for onboarding and tutorial. And the funnel visual design elements seem
+to take cues from the field energetics and masks visual elements. Keep
+building what you're building. Add this to the plan."
+
+Preserved whole in `DESIGN-onboarding-narrative.md` rather than
+paraphrased, with a reconciliation section checked directly against the
+actual build rather than assumed either way: the signal test, the four
+outcomes (SEE, UNDERSTAND, RELEASE, ATTUNE) and the loop (Discover, Play,
+Flow, Embody) all already match what is built and what `CLAUDE.md`
+already rules; the Day One tutorial in full, the funnel's own mission and
+vision pages against this exact copy, the pre-account pattern glimpse,
+and the continued-journey dashboard as one held page are named honestly
+as not yet built rather than claimed. His closing note, that the funnel's
+visual design should take its cues from the Field and Masks aesthetic the
+same way login and onboarding already do (round MP), queued and not
+built this round. "Keep building what you're building" read as
+confirmation to continue the in-flight work rather than a new interrupt.
