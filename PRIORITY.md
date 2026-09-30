@@ -1727,7 +1727,13 @@ preparing them.
 
 ### Gating work that is otherwise ready
 
-**R1. Six masks, seven seats.** Freshly reopened.
+**R1. Six masks, seven seats.** Partly answered, round NE. He reversed
+himself mid sentence: "Keep professional as well... Oh, I see what
+you're saying. Go ahead. Let's get rid of the uh, professional. Just
+hide it for now. Don't calculate it." Built: `MASKS_READ` in
+`canon.js`, Professional out of every live reading, Preteen kept. The
+seven-seat mapping below is still open; this is a stopgap, not an
+answer to it.
 - *What he said.* Round MT: "Heart and crown, are part of the chakra
   system, all the chakras should be in the masks." Round NB: "Keep the
   professional."
@@ -1752,9 +1758,13 @@ preparing them.
 - *Owed by us first.* Two or three measured mappings, drawn at 1600 and
   390, before this is asked. Row 1.
 
-**R2. Which engine picks Source AI's next question.** Three live answers
-for one component, the pattern section 6 names "two seats solving the same
-thing from different ends".
+**R2. Which engine picks Source AI's next question.** Answered, round
+NE, but not buildably yet: "The impression excavation engine is it's
+the new one... we're changing the rule for number two for now... in
+all the features, algorithms, tools, schemas, and systems." Governs,
+wider than this question alone. Still blocked: the document itself,
+round LZ's "Foundation Specification v0.1," 47 sections, was not
+attached again this round either. Asked for a second time.
 - *Built, and ruled 27 September (round GO):* a count of how often a story
   returns to the same seat. It asks at seven or over, never twice, and
   "Move on" ends it. `engine/sourceai.js`.
@@ -1776,6 +1786,14 @@ thing from different ends".
   "Documents he dropped in that are not here" below.
 
 **R3. May the product ask a person how strong something feels?**
+Answered, round NE: no. "No, the release is rapid. Maybe if a person
+wants to vocalize note, if they say note, the software detects that
+word, it'll automatically detect it. Or the word dense." No numeric
+rating; a spoken word during a voice run, heard and marked
+automatically. Real precedent checked directly, `ui/storyui.js`'s own
+`stMic`, already shipped. Not yet scoped: what the mark actually
+writes, and the release carousel has no swipe gesture built yet to
+carry it on.
 - *Why it matters.* Today "released" is calculated, not measured: the
   before is the held charge, the after is that number minus a fixed
   formula (`AUDIT-source-tdd-v3.md` section 2b). A person's own rating
@@ -1799,7 +1817,14 @@ thing from different ends".
   engine `19.D6` can ever say anything true.
 
 **R4. What the Day One tutorial works with when a person has written
-nothing yet.**
+nothing yet.** Answered, round NE: "the day one tutorial has to start
+with the journal... journal is the beginning of the journey." The
+tutorial opens by having the person write live, rather than needing a
+prior entry, which answers the gap below. A second thing rides with
+it, not part of this question but decided the same turn: the 21 law
+intake, CQ, becomes an ongoing ritual task rather than a one sitting
+requirement, "that needs to be added to the ritual until it's
+completed."
 - *Round JX, 27 September:* "narrated story animations of named people
   using the tools, ending 'Take the quiz. Find out your coherence.'"
   (`DECISIONS.md`, "Ruled 27 September, late").
@@ -1818,8 +1843,13 @@ nothing yet.**
   confirmed rather than assumed.
 - *What it holds.* `19.E1`, the tutorial itself.
 
-**R5. What happens to a pattern a person sets aside during a release.** New
-at round NC, and it absorbs V3 audit question 4, which sat in the list
+**R5. What happens to a pattern a person sets aside during a release.**
+Answered, round NE: "When a person swipes past, it goes into their
+history. If they leave it alone, it gets recycled." Swipe is discard
+with history kept, untouched is recycle. Kept for when the carousel
+itself is built, since no swipe gesture exists yet to wire it to.
+
+New at round NC, and it absorbs V3 audit question 4, which sat in the list
 below until the release document made it gate a build.
 - *What the release document asks for* (`SOURCE-TDD-release-intelligence.md`
   section 11): four operations. Swipe one way to recycle a pattern, "return
