@@ -691,6 +691,16 @@ var LEXCOMPRUN=lexComposite();
    previous sentence. Without it "i did not lie to them" fires Truth, which is
    the instrument accusing a person of the thing they just denied.
 
+   THE SENTENCE BOUNDARY WAS NOT PORTED WITH IT, and a width limit alone does
+   not stand in for one: "I was not around. I hid it from everyone" strips its
+   period to a plain space and reads as "not around i hid it", three words
+   exactly, so "not" from the first sentence voided an admission in the
+   second. Measured directly: lawNegated returned true on that pair before
+   this fix. lawNorm now turns sentence-ending punctuation into a literal
+   '|' the way verp.js's leanNorm already does, and lawNegated stops its
+   look back at one, the one piece of leanNegated that was not ported the
+   first time.
+
    This is the single biggest known weakness of the law table and it is handled
    here rather than left. It is still not subject handling: "she lied to me"
    fires Truth on the writer, and that is guard 2's problem, named in
@@ -699,12 +709,17 @@ var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
  'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
 var LAW_NEG_W=3;
 function lawNorm(text){
- return ' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ')
-  .replace(/'/g,'').replace(/\s+/g,' ')+' ';}
+ return ' '+String(text||'').toLowerCase()
+  .replace(/[.!?;:\n\r]+/g,' | ')
+  .replace(/[^a-z'| ]+/g,' ').replace(/'/g,'').replace(/\s+/g,' ')+' ';}
 function lawNegated(src,at){
- var before=src.slice(0,at).trim().split(' ');
- var run=before.slice(Math.max(0,before.length-LAW_NEG_W));
- return run.some(function(w){return LAW_NEG.indexOf(w)>=0;});}
+ var pre=src.slice(0,at).split(' ');
+ for(var i=pre.length-1,n=0;i>=0&&n<LAW_NEG_W;i--){
+  if(!pre[i])continue;
+  if(pre[i]==='|')return false;
+  if(LAW_NEG.indexOf(pre[i])>=0)return true;
+  n++;}
+ return false;}
 /* every cue from every row, longest first, bounded by spaces, a longer match
    blocking the shorter ones inside it. returns one entry per surviving hit. */
 function lawMatch(src,rows,cueAt){

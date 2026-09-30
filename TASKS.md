@@ -28251,3 +28251,53 @@ exports; `tests/engine.js` 1843/0; `tests/collide.js` 351/0;
 13/0; `tools/monitor.js` all surfaces render; voice objections 0
 blocking; `tests/functional.js` 1338/0 clean, the fade flake absent
 this run.
+
+**`19.B4` turned out narrower and more concrete than planned, and the
+narrower version is built and gated.** The plan named three separate
+negation handlers, `sniff.js`, `sourceai.js` and `verp.js`, as one
+thing to unify. Read closely before touching anything: `sourceai.js`'s
+own comment (lines 70-79) says its two word window and missing `did`
+are a measured, deliberate choice, "the three word window dropped
+'could not stop'... and 'did' would mute 'I did cry'," reproduced on
+the owner's own book. Collapsing all three into one shared width and
+word list would have regressed that fix rather than cleaned anything
+up, so that was ruled out.
+
+What the three actually differ on, checked line by line: `verp.js`'s
+`leanNorm` turns sentence-ending punctuation into a literal `|` before
+its own `leanNegated` looks back, explicitly so a negation in one
+sentence cannot void a match in the next. `sniff.js`'s `lawNorm` never
+got that boundary; it only limits its look back to three words, which
+narrows the risk without closing it. Reproduced directly before
+touching the code: "I was not around. I hid it from everyone." strips
+its period to a space and reads as "not around i hid it", three words
+exactly, so a negation in the first sentence voided a real Transparency
+admission in the second. Confirmed with a standalone script against
+the exact `lawNorm`/`lawNegated` pair before any file was edited.
+
+The fix ports `verp.js`'s own boundary marker into `lawNorm` and
+`lawNegated`, `sniff.js:685-719`, nothing else touched. Checked that
+nothing outside `sniff.js` reads `lawNorm`'s character offsets (three
+callers, all local, none forward `.at` past their own function), so
+changing where the pipe lands could not silently break something
+else. Reproduced the fix the same way as the bug: the cross sentence
+case now reads false, the same sentence case the standing comment
+already names, "i did not lie to them", still reads true. A permanent
+test goes with it in `tests/engine.js`, both directions, negation
+still works inside its own sentence and no longer leaks into the one
+before it.
+
+`sourceai.js`'s own `normMap`/`srcNegated` carries the identical gap,
+narrower only because its window is two words instead of three, not
+because it is immune. Not touched this round: `normMap` is the shared
+parsing spine under `scanStory`, `parseStory` and most of the engine's
+own character offsets, and changing its output changes every one of
+them, a different order of risk than `lawNorm`'s three contained
+callers. Named rather than folded in quietly: `PRIORITY.md` 19.B4
+should stay open for that half, scoped on its own.
+
+Gated in full: `BUILD.sh` and `BUILD-engine.sh` clean, 483 exports;
+`tests/engine.js` 1845/0 (two new assertions); `tests/collide.js`
+351/0; `tests/design.js` 185/0; `tests/funnel.js` 172/0; `tests/boot.js`
+13/0; `tools/monitor.js` all surfaces render; voice objections 0
+blocking; `tests/functional.js` 1338/0 clean.

@@ -3646,6 +3646,16 @@ g('33 · the sniffer contract, and the four guards that are testable');
   'and its denial does not');
  ok(!sniffLaws('i did not put it off').some(l=>l.law==='Courage'),
   'and a denied avoidance does not fire Courage');
+ /* THE SENTENCE BOUNDARY, ND. lawNorm stripped a period to a plain space and
+    lawNegated then counted three words back across it, so a negation in one
+    sentence voided an admission in the next: "I was not around. I hid it
+    from everyone" read as a denial of Transparency, not a confession of it.
+    verp.js already stops its own look back at a sentence end; lawNorm and
+    lawNegated now do the same. */
+ ok(sniffLaws('I was not around. I hid it from everyone.').some(l=>l.law==='Transparency'),
+  'a negation in the sentence before an admission does not void it');
+ ok(!sniffLaws('I was not around. I did not hide it.').some(l=>l.law==='Transparency'),
+  'and a denial inside its own sentence still voids, negation is not disabled');
  /* PRECEDENCE. The longer phrase wins, which is what stops a denial reading as
     an admission when both strings are in the table. */
  {
