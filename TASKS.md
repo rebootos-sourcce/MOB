@@ -28166,3 +28166,17 @@ NB, continued rather than restarted: block it, place it in
 `PRIORITY.md` section 19, prioritise it against everything already
 there. He is handling Cloudflare himself this round rather than asking
 for steps again.
+
+The project manager seat hit its own weekly limit mid pass, after
+adding the round NC stamp, R5 and reworking one open question, before
+writing cluster C's own new lines. Finished here rather than
+re-dispatched, on the same evidence the seat had already gathered and
+cited (`ui/release.js` lines 36, 109, 121, 155, 194 and its own phase
+values, spot checked directly before building on them): `19.C8` through
+`19.C16` added, nine lines, most already answered as not buildable this
+round and pointing at what would change that, none needing a new order
+row since `19.C2`, `19.C3` and `19.C4` already carry rows 6 and 15. The
+"not doing this round" list gained three lines so the new not-yet items
+are named rather than left to fall out quietly. Also sent
+`DESIGN-ladder.md`, the badges and achievement design he asked to see
+again, as its own file.

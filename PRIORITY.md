@@ -1663,6 +1663,15 @@ first. "Block" is read the way sections 1 and 12 read it: group and
 sequence, not hold back. Sections 1 to 18 are the record and are not
 re-ranked; where a line here is already an item there, it says so.
 
+**Round NC added a sixth document, folded in here rather than placed in a
+section of its own.** His words: "all these systems that you're being
+dropped into are going to help get us to MVP. So I need these blocked.
+Figured out where they go in the plan. Prioritized."
+`SOURCE-TDD-release-intelligence.md` is an architecture for the release
+run in `ui/release.js`, and most of what it asks for is the gap this
+section had already found there, so its lines are `19.C8` to `19.C16` in
+cluster C, a new ruling R5, and one new row in the order.
+
 A TDD is a technical design document: a specification of how a system
 should work, written before it is built. An audit here is the team reading
 one of his TDDs against the real code and marking each requirement EXISTS,
@@ -1692,6 +1701,15 @@ Preteen and Professional seats at `engine/data/canon.js` lines 499 and 508;
 the tutorial switch at `ui/login.js` line 131; the funnel's story step in
 `funnel/quiz.html`. Every status below that names a file was read there
 today.
+
+**Round NC, read at `fd00aab`, engine gate unchanged since no source
+moved:** `SOURCE-TDD-release-intelligence.md` in full, 22 sections, and
+against it `ui/release.js`: the run object at line 155 and its reset at
+194, the phases from line 194 to 822, the dose, bucket and cooldown
+constants at lines 121, 36 and 109, the carousel from line 894 and its
+Back and Forward at 1156, the reframe's source at 189 and 214, and the
+places a run is started from, `relPick`'s callers in `ui/imprints.js`,
+`ui/drills.js`, `ui/map.js` and `ui/avatarui.js`.
 
 **Item labels.** Lines are labelled by cluster letter and number, `19.A1`,
 the way section 13 lettered its groups. "Row" means a row of the order
@@ -1800,6 +1818,37 @@ nothing yet.**
   confirmed rather than assumed.
 - *What it holds.* `19.E1`, the tutorial itself.
 
+**R5. What happens to a pattern a person sets aside during a release.** New
+at round NC, and it absorbs V3 audit question 4, which sat in the list
+below until the release document made it gate a build.
+- *What the release document asks for* (`SOURCE-TDD-release-intelligence.md`
+  section 11): four operations. Swipe one way to recycle a pattern, "return
+  to active rotation later"; swipe the other to discard it, "remove from the
+  current active experience" while keeping its history; the Bank as what is
+  still to process; the Vault as "historical record retained for
+  intelligence".
+- *What that collides with.* In the product the Vault already means what has
+  been released, and it is the billed set: `meter.unique`, which only grows
+  (`AUDIT-source-tdd-v3.md`, and his IW goal, "empty their bank and fill
+  their vault"). A discarded pattern in that Vault would read as released
+  and as paid for. And he has already said something about the patterns a
+  person does not mark, at JX: "The patterns you didn't feel removed from
+  your pool." That is a rule about the heavy mark, the one gesture the
+  carousel has today.
+- *The question.* Is "removed from your pool" a discard, gone from future
+  runs with its history kept, or a recycle, offered again later? Does a
+  swipe join the heavy mark or replace it? And when a released pattern
+  comes back, does it return to the Bank, and does releasing it again spend
+  allowance?
+- *The ways it could go.* The heavy mark stays the only gesture, and
+  unmarked lines leave the pool as he said at JX, kept in history. Or
+  recycle and discard are added beside the heavy mark, and the Vault keeps
+  meaning released and paid. Or the document's four operations as written,
+  which moves the Vault's meaning and so moves billing.
+- *Rides with it:* the document itself says the direction a swipe goes
+  must not be fixed to its meaning, so which side is which is ours.
+- *What it holds.* `19.C12`, and `19.C4`.
+
 ### His, real, and holding nothing this round
 
 Written down so none of them is lost. Each is asked when the work reaches
@@ -1812,10 +1861,6 @@ it, not now.
   the AI's accuracy", and said the design comes later. The standing ruling
   (`DECISIONS.md`, "Sight by tier, ruled") is word and phrase combinations
   only. Holds `19.D8` beyond words, and the whole of `19.D10`.
-- **When a released pattern comes back.** V3 audit question 4: does it
-  return to the Bank, and does releasing it again spend allowance? The
-  Vault is the billed set and only grows. A billing question as much as a
-  model one. Holds `19.C4`.
 - **Whether a person ever sees a label like weak, possible, probable,
   strong or verified.** TDD audit question 4. At MX he asked for context:
   "I don't know what you mean by number four." The context: a confidence
@@ -1826,8 +1871,14 @@ it, not now.
 - **"Pattern" has three meanings.** V3 audit question 6: one release line,
   a recurring mechanism, a saboteur family. Holds the 90 day report
   `19.D6`, which is not this round.
-- **Six expression channels or seven.** V3 audit question 7, V3 adding
-  "somatic". Holds the channel half of `19.B8`.
+- **Which channels, and which meaning keeps the word.** V3 audit question
+  7 asked six or seven, V3 adding "somatic". The release document adds a
+  third list, eight, with "speaking" (its algorithm C). And the release
+  already uses "channel" for something else, the left and right sides
+  (`CHAN`, `ui/release.js` line 36, printed as "Release, left channel"),
+  which `BACKLOG-AUDIT.md` 2.7 item 67 already asks about. One word, two
+  meanings, three lists. Holds the channel half of `19.B8`, and the
+  release document's channel activation, which is not this round.
 - **Is "jouissance" one word or two.** TDD audit question 3. Holds the
   jouissance detector, TDD task SRC-018, not this round.
 - **A word for the nine drivers.** MX: "Fetter does mean 112 addresses.
@@ -1872,6 +1923,20 @@ owed; this page does not own that file.
 - Keep Professional (NB).
 - The six lean axes belong on Analytics (NA), and in the tooltips and the
   knowledge base (MZ). `19.D7`.
+
+**And three things the release document proposes that earlier rulings
+already settle,** so they are not asked:
+- **A release that slows, pauses or repeats itself** (its algorithm D).
+  JA: "Pace is user driven" (`DECISIONS.md`, "Ruled 27 September, late").
+  The person's pace stands; the run may suggest and never decide.
+- **Reframes generated as "I know..." lines** (its algorithm E). Every
+  reframe today is the canon's own coherent opposite of the pattern
+  (`relOpp`, `ui/release.js` line 189, used at 214), so it is traceable by
+  construction, which is what the document asks of a reframe. Generating
+  them needs a model, and the no invention rule governs what one may say.
+- **The AI never going outside the protocol** (its principle 8). True in
+  practice: the voice speaks only the run's own lines, and his recorded
+  welcome is barred from the synthetic voice (`1a7083c`).
 
 ### Taken off his list, and why
 
@@ -1978,6 +2043,15 @@ store, and whether the record holds it.
 | 19.C3 | Release measured, not calculated: a person's own rating before and after, a later one, and the unreleased address as a control | MISSING | **R3** |
 | 19.C4 | A released pattern that comes back, recorded as returning rather than as new | MISSING | Ruling "when a released pattern comes back", and **R3** |
 | 19.C7 | One ritual serving several patterns that share a mechanism, rather than one ritual each. V3 section 26 | MISSING | After `19.B7`; "share a mechanism" needs evidence first |
+| 19.C8 | A release's own dose, cooldown and side names read from one place rather than typed twice. The release document's "Protocol Registry" | PARTIAL. `REL_DOSES` is already one array, `[25,50,100]`, `ui/release.js` line 121; the cooldown is one constant, `REL_SETTLE_S`, line 109; the four sides are one array, `CHAN`, line 36. So the registry's own goal, nothing hard coded twice, already holds; what is missing is letting a second set of numbers exist and be chosen between, which nothing today asks for | Not this round. No second configuration is asked for yet |
+| 19.C9 | The run's own phases, named and ordered | PARTIAL, and thinner than the document's own fifteen. The real run moves `welcome` to `opening` to `pick` to `run` to `done`, one field, `RUN.phase`, set at `ui/release.js` lines 1473, 378, 704, 382 and 668, reset to `idle` at 194. The document's own fifteen states split `run` into observer, presentation, channel, release, somatic and reframe, none of which the record can tell apart today | Splitting the phase needs a reason to read them apart, which is `19.C3`'s own rating question |
+| 19.C10 | A handshake before a release starts, checked rather than assumed: the record has what a release needs, the pattern is a real one, nothing is missing | MISSING. No check runs before `RUN.phase` leaves `idle`; a release starts on whatever `relPick` was last given by its callers in `ui/imprints.js`, `ui/drills.js`, `ui/map.js` and `ui/avatarui.js` | After `19.C3`; a handshake with nothing to verify is a form, not a guard |
+| 19.C11 | Why a pattern was offered, kept rather than only felt | PARTIAL. `sniffOffer` already ranks by shadow, the heaviest first (`engine/sniff.js` lines 1047 to 1050), which is a real, explainable rule; what the document adds, recurrence, prior attempts and replacement risk, is not read because nothing tracks a pattern's own identity across runs, `19.C4`'s own gap | After `19.C4` |
+| 19.C12 | Recycle, discard, Bank and Vault as four distinct things, rather than the one heavy mark the run has today | **R5** |
+| 19.C13 | A trigger that used to bring a response and no longer does, recorded as that rather than left unremarked. The document's "negative evidence" | MISSING, and the V3 audit already found why: a person writes about what charged them, so an absence is never written down unless the product asks. Needs a prompted check-in, V3 audit question 8 | After that ruling, not this round |
+| 19.C14 | One address weakening while another strengthens, read as one pattern replacing another | MISSING, and the V3 audit already measured the honest read: addresses derive from nine axes and release is aimed at the heaviest one, so this is mostly what releasing at one seat while writing about another looks like from outside, not a finding about the person | Not recommended as specified; `19.D6`'s own caution applies here too |
+| 19.C15 | The three states the document asks never to conflate, what is on screen, what the engine is doing, and what is actually known to have happened, checked against the real run | Already mostly true by construction: `RUN.phase` is the engine's own state and the card's own text is written from it rather than kept separately, so screen and engine do not disagree today. What the document adds, a third, independent evidence state that can outlive the screen, is `19.C2` through `19.C4` together | Not its own line; tracked through `19.C2` to `19.C4` |
+| 19.C16 | Every meaningful action in a run as one named event, a real history rather than only the current phase | MISSING. `RUN.log` exists (`ui/release.js` line 155) but holds the release lines themselves, not named actions; there is no `PATTERN_PRESENTED` or `RELEASE_STARTED` to read back later | After `19.C2`, since a heavy mark is itself the first event worth keeping |
 
 ### D. Source AI and the intelligence layer
 
@@ -2150,6 +2224,15 @@ Named, so nothing disappears quietly.
   own word.
 - **Ritual consolidation, `19.C7`, and a recurring pattern's return,
   `19.C4`.** Each waits on something named above.
+- **The release document's own handshake, negative evidence and pattern
+  replacement, `19.C10`, `19.C13`, `19.C14`.** The general handshake above
+  has no model to hold to either; negative evidence needs the check-in
+  ruling; pattern replacement is not recommended as specified, the V3
+  audit's own reading applies here too, addresses derive from the nine
+  axes and release is aimed at the heaviest one, so an apparent
+  replacement is mostly a record of where someone released.
+- **A named event log of a release run, `19.C16`.** After the heavy mark
+  itself is kept, `19.C2`, which is the first event worth logging.
 - **Editing any of his documents.** Where the brief or a TDD disagrees with
   a ruling, the port follows the ruling and the document stays as he wrote
   it.
