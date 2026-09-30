@@ -28347,3 +28347,14 @@ the token, not the token in isolation. Told him plainly to copy the
 token only from Cloudflare's own token page, using its own copy icon,
 never from a terminal window, and never to type or paste it anywhere
 else first.
+
+**Fixed. The ninth re-run, and the first real one.** New token created
+on Cloudflare's own token creation screen (the only place a token's
+full value is ever shown), copied with its own copy button, pasted
+into GitHub's `CLOUDFLARE_API_TOKEN`. Re-run 36385561644 attempt 9:
+`migrate and deploy` succeeded. Read the actual log, not the green
+check alone: all eight D1 migrations applied clean, `0001_canon.sql`
+through `0008_indexes.sql`, and the Worker deployed to
+`https://atuned-api.lance-o-powell.workers.dev` with a real version id,
+`9ac30b3d-4804-4afb-b96e-9f65fe9ee7e8`. Nine attempts, four failed
+diagnoses of "fixed" rejected on the evidence before this one held.
