@@ -63,5 +63,6 @@ ui/practitioner.js
 ui/personas.js
 ui/rootsum.js
 ui/onboard.js
+ui/login.js
 ui/ui.js
 shell/foot.html

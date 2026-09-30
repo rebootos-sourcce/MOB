@@ -5270,6 +5270,22 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    to 629. The Field it lands on draws its three rings at about 745, 610 and
    450, read off the screenshot. At 390 by 844 the stage is 285 against 335,
    and the halo is carried to 364 on a Field canvas 335 high. */
+/* THE DEVELOPER SKIP BUTTON. Its own class, not .boot-skip: that name
+   belongs to tests/design.js gate 11, which still watches for it to stay
+   at zero as the proof that the instruction line ruled out 21 September,
+   "get rid of that," has not come back under a different label. This is a
+   different control, a developer button and not a sentence to a stranger,
+   and it earns its own name rather than borrowing that gate's.
+
+   The ground here is pure black, not a token, same reasoning as the
+   sheet's own comment above: a bookend that reads off --bg would drift
+   with it. Hardcoded white at low opacity for the same reason .boot-wm's
+   own subtitle is hardcoded rather than themed. */
+.dev-skip{position:absolute;top:16px;right:16px;pointer-events:auto;z-index:2;
+ background:transparent;border:1px solid rgba(255,255,255,.22);
+ color:rgba(255,255,255,.55);border-radius:var(--r-xs);padding:6px 12px;
+ font-family:var(--sans);font-size:12px;min-height:var(--tap);cursor:pointer}
+.dev-skip:hover{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.85)}
 .boot.bx{--beat:.09s;--S:min(73.1vw,49.3vh,510px);overflow:hidden;gap:22px}
 .bx-stage{position:relative;width:var(--S);height:var(--S);flex:0 0 auto}
 /* THE PUSH, WITH ITS BACKSWING. ET went straight out on the ease in. A push
@@ -5571,6 +5587,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 .ob-dim{color:var(--dim);font-size:13.5px}
 .ob-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
 .ob-dots{display:flex;gap:6px;justify-content:center;margin-top:18px}
+/* LOGIN. Same card as onboarding, .ob-card/.pm-eye/.ob-h/.ob-p/.ob-acts, a
+   row per field is all that is new. Its own class rather than the account
+   sheet's .avin, which carries no rule of its own anywhere in this file. */
+.login-row{display:flex;flex-direction:column;gap:5px;margin:0 0 13px}
+.login-l{font-size:13px;color:var(--dim)}
+.login-row input{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
+ min-height:var(--tap);width:100%}
+.login-row input:focus{border-color:var(--accent)}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
 .ob-dot.on{background:var(--accent)}
 /* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the

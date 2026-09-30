@@ -31,6 +31,10 @@ const {chromium}=require('playwright');
 const path=require('path'), fs=require('fs'), cp=require('child_process');
 
 const FILE=path.resolve(process.argv[2]||'source.html');
+/* ?dev=1, appended at each call site below rather than folded into FILE
+   itself: FILE is also read as a plain path (fs.readFileSync et al) and a
+   query string on it would not resolve as one. */
+const FILE_URL='file://'+FILE+'?dev=1';
 const LOG=path.resolve(__dirname,'..','MONITOR.log');
 const sh=c=>{try{return cp.execSync(c,{encoding:'utf8'}).trim();}catch(e){return '?';}};
 
@@ -78,7 +82,7 @@ const FLOOR_CANVAS=60;
     deviceScaleFactor:wn==='phone'?2:1, isMobile:wn==='phone', hasTouch:wn==='phone'});
   const p=await c.newPage();
   const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,140)));
-  await p.goto('file://'+FILE); await p.waitForTimeout(7000);
+  await p.goto(FILE_URL); await p.waitForTimeout(7000);
   const L=await p.evaluate(()=>PEOPLE.findIndex(x=>x.nm==='Lance'));
   const TABS=await p.evaluate(TABS_JS);
   for(const who of ['blank','loaded']){

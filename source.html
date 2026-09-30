@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v965 d931951 2026-09-29 21:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v968 8cf639b 2026-09-30 00:53"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5270,6 +5270,22 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    to 629. The Field it lands on draws its three rings at about 745, 610 and
    450, read off the screenshot. At 390 by 844 the stage is 285 against 335,
    and the halo is carried to 364 on a Field canvas 335 high. */
+/* THE DEVELOPER SKIP BUTTON. Its own class, not .boot-skip: that name
+   belongs to tests/design.js gate 11, which still watches for it to stay
+   at zero as the proof that the instruction line ruled out 21 September,
+   "get rid of that," has not come back under a different label. This is a
+   different control, a developer button and not a sentence to a stranger,
+   and it earns its own name rather than borrowing that gate's.
+
+   The ground here is pure black, not a token, same reasoning as the
+   sheet's own comment above: a bookend that reads off --bg would drift
+   with it. Hardcoded white at low opacity for the same reason .boot-wm's
+   own subtitle is hardcoded rather than themed. */
+.dev-skip{position:absolute;top:16px;right:16px;pointer-events:auto;z-index:2;
+ background:transparent;border:1px solid rgba(255,255,255,.22);
+ color:rgba(255,255,255,.55);border-radius:var(--r-xs);padding:6px 12px;
+ font-family:var(--sans);font-size:12px;min-height:var(--tap);cursor:pointer}
+.dev-skip:hover{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.85)}
 .boot.bx{--beat:.09s;--S:min(73.1vw,49.3vh,510px);overflow:hidden;gap:22px}
 .bx-stage{position:relative;width:var(--S);height:var(--S);flex:0 0 auto}
 /* THE PUSH, WITH ITS BACKSWING. ET went straight out on the ease in. A push
@@ -5571,6 +5587,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 .ob-dim{color:var(--dim);font-size:13.5px}
 .ob-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
 .ob-dots{display:flex;gap:6px;justify-content:center;margin-top:18px}
+/* LOGIN. Same card as onboarding, .ob-card/.pm-eye/.ob-h/.ob-p/.ob-acts, a
+   row per field is all that is new. Its own class rather than the account
+   sheet's .avin, which carries no rule of its own anywhere in this file. */
+.login-row{display:flex;flex-direction:column;gap:5px;margin:0 0 13px}
+.login-l{font-size:13px;color:var(--dim)}
+.login-row input{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
+ min-height:var(--tap);width:100%}
+.login-row input:focus{border-color:var(--accent)}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
 .ob-dot.on{background:var(--accent)}
 /* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the
@@ -6148,6 +6173,10 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 <!-- ONBOARDING. A sheet, not a tab: it is met once and replayed on request,
      and a surface in the bar is a peer of the instrument, which this is not. -->
 <div id="ob" class="ob" style="display:none"></div>
+<!-- LOGIN. Round MH and MI: the return door, not the front door, so it is
+     met on every boot rather than once. Local and honest about being
+     local, ui/login.js. -->
+<div id="login" class="ob" style="display:none"></div>
 <!-- ============================================================
      THE BOOT. THE BODY BECOMES THE FIELD, AND THE CAMERA GOES IN.
 
@@ -6196,6 +6225,13 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
      the sheet is never shown and ui/panels.js removes it at once.
      ============================================================ -->
 <div id="boot" class="boot bx" aria-hidden="true">
+ <!-- THE DEVELOPER SKIP. His words: "just put it as a developer button, on
+      the upper right hand corner. And if it's pressed, it's just skips."
+      .boot itself is pointer-events:none so a press anywhere else still
+      falls through to the skip gesture already wired in ui/panels.js; this
+      one control opts itself back in to be pressable, and ui/login.js reads
+      the flag it sets. -->
+ <button type="button" id="devskip" class="dev-skip">Skip</button>
  <!-- BOOT FIGURE BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->
  <div class="bx-stage">
   <div class="bx-wash" style="background:radial-gradient(circle at 57.6% 34.9%, rgba(214,82,76,.20) 0, rgba(214,82,76,.07) 9%, rgba(214,82,76,0) 19%),radial-gradient(circle at 66.7% 47.1%, rgba(216,146,78,.20) 0, rgba(216,146,78,.07) 9%, rgba(216,146,78,0) 19%),radial-gradient(circle at 62.3% 61.6%, rgba(218,191,106,.20) 0, rgba(218,191,106,.07) 9%, rgba(218,191,106,0) 19%),radial-gradient(circle at 48.5% 66.9%, rgba(95,213,166,.20) 0, rgba(95,213,166,.07) 9%, rgba(95,213,166,0) 19%),radial-gradient(circle at 37.0% 60.9%, rgba(94,187,219,.20) 0, rgba(94,187,219,.07) 9%, rgba(94,187,219,0) 19%),radial-gradient(circle at 33.1% 50.0%, rgba(125,147,224,.20) 0, rgba(125,147,224,.07) 9%, rgba(125,147,224,0) 19%),radial-gradient(circle at 40.3% 36.1%, rgba(167,126,219,.20) 0, rgba(167,126,219,.07) 9%, rgba(167,126,219,0) 19%),radial-gradient(circle at 50% 50%, rgba(126,184,212,.16) 0, rgba(126,184,212,0) 12%)"></div>
@@ -42833,6 +42869,14 @@ var BOOT_FLOOR_AT=0;
     one. */
  var eat=function(ev){ ev.stopPropagation(); if(ev.cancelable)ev.preventDefault(); };
  var skip=function(e){ if(gone)return;
+  /* THE DEVELOPER BUTTON IS THE ONE PRESS IN THIS SHEET THAT MEANS SOMETHING
+     OF ITS OWN, round MH and MI, ui/login.js. Read here rather than left to
+     its own listener on the button: the capture below stops every pointerdown
+     from reaching anything past this handler, on purpose, so a skip-press can
+     never also act on the tab strip underneath the sheet, and a listener on
+     the button itself would never see the same press. Set before that stop,
+     so it is set whichever of pointerdown or keydown got it here. */
+  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined')DEV_SKIP=true;
   if(e&&e.type==='pointerdown'){
    e.stopPropagation();
    addEventListener('click',eat,{once:true,capture:true});
@@ -45007,6 +45051,94 @@ addEventListener('keydown',function(e){
  if(OB.open&&e.key==='Escape')obClose();});
 
 try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
+/* ============================================================
+   LOGIN. Round MH and MI. His words: "I need to be able to create a
+   login. So the login would be on the main tuned animation screen.
+   And when I hit enter, it completes the zoom animation. And then
+   takes me to onboarding." Corrected the same round: "the landing
+   page needs to be the funnel, where they create their account,"
+   which makes this screen the return door and not the front door;
+   the funnel is. And then, keeping it simple while the real flow is
+   designed: "let's keep it locally."
+
+   So this is local and it is honest about being local: the fields are
+   real, nothing typed is sent anywhere or checked against anything,
+   and pressing the one button is what a signed in state would look
+   like once there is a real one. account.js already carries this same
+   honesty for its own sign in shell, "nothing typed here is sent or
+   kept," and this is the same rule at the door instead of in Settings.
+
+   THE SEQUENCE IS THE DEFAULT NOW, reversing OB_AUTO's own September
+   ruling, "let's turn off onboarding for now," for this one path
+   only: onboard.js's own automatic-open check stays exactly as
+   written, in case anything else ever reaches it, but the boot's own
+   step below no longer reads it. What reads it now is DEV_SKIP, and
+   the default is to show the door, his own words this round: "if
+   it's not pressed, then it goes to the sequence." */
+var LOGIN={open:false};
+/* THE DEVELOPER SKIP. His words: "have a switch for that loading
+   screen to turn onboarding tutorial off, so I can just bypass
+   straight to the dashboard, just put it as a developer button, on
+   the upper right hand corner. And if it's pressed, it's just skips."
+
+   Two doors to the same flag, so a person testing this by hand and a
+   gate testing it by script use the one switch: the button in the
+   boot sheet's own corner, and ?dev=1 on the file's own URL, which is
+   how the gate suite reaches the instrument without meeting the door
+   first, the same way a developer's own press would. Read once, at
+   load, because the boot sheet the button lives on is gone within a
+   second of the page settling and nothing after that should still be
+   asking the URL. */
+var DEV_SKIP=false;
+(function(){
+ try{ DEV_SKIP=/(?:^|[?&])dev=1(?:&|$)/.test(location.search||''); }catch(e){}
+})();
+function loginCard(){
+ return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="Log in">'
+  +'<span class="pm-eye">Welcome back</span>'
+  +'<h2 class="ob-h">Log in</h2>'
+  +'<p class="ob-p">This is a local build. Nothing typed here is sent anywhere '
+  +'or checked against anything.</p>'
+  +'<form id="loginform" novalidate>'
+  +'<div class="login-row"><label class="login-l" for="loginmail">Email</label>'
+  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false"></div>'
+  +'<div class="login-row"><label class="login-l" for="loginpass">Password</label>'
+  +'<input type="password" id="loginpass" autocomplete="current-password"></div>'
+  +'</form>'
+  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button></div>'
+  +'</div>';}
+function loginOpen(){
+ var h=document.getElementById('login'); if(!h)return;
+ LOGIN.open=true; h.style.display='flex'; h.innerHTML=loginCard();
+ var f=h.querySelector('input'); if(f)f.focus();
+ var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
+ var form=document.getElementById('loginform');
+ if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};}
+function loginClose(){
+ var h=document.getElementById('login'); if(!h)return;
+ LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
+/* THE FAKE SIGN IN. Anything counts, including nothing: there is no
+   account to fail against yet, and a control that refused an empty
+   field here would be enforcing a rule this build does not keep. */
+function loginGo(){
+ loginClose();
+ if(typeof obOpen!=='function')return;
+ /* onboarding is still met once, never on a return visit: the login
+    above is the door met every time, this is the tutorial behind it. */
+ var seen=false;
+ try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
+ if(seen)return;
+ obOpen(false);}
+/* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
+   sits on document with {capture:true} and stops every pointerdown from
+   ever reaching a listener registered on the button, on purpose, so a
+   press that skips the sheet can never also act on the tab strip under
+   it; a pointerdown handler wired here would never fire. What sets the
+   flag is that same listener in panels.js, reading e.target.id==='devskip'
+   for both a pointer press and a keyboard one, since it is the one place
+   already answering both. */
+
+try{window.__at&&window.__at('ui/login.js');}catch(e){}
 
 /* ============================================================
    POINTER. Drag a segment to load or clear it, click to drill.
@@ -46663,21 +46795,27 @@ step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
    a throw here costs the door and not the start up. */
 step('practitioner door',function(){pracPaint();});
 step('opening surface',function(){setTab(TAB.FIELD);});
-/* ONBOARDING, ON THE FIRST VISIT ONLY, and after the boot sheet has gone so
-   the two do not stack. "Same onboarding for both arrivals", so there is no
-   branch on where the person came from: the only question asked is whether
-   they have met it before, which is a flag on their own record.
+/* LOGIN, AFTER THE BOOT SHEET HAS GONE so the two do not stack. Round MH
+   and MI, ui/login.js: the login screen is the return door, met on every
+   boot, and onboarding behind it is still met once, gated on its own flag
+   inside loginGo(). OB_AUTO's own September ruling, "let's turn off
+   onboarding for now," is read by onboard.js's own automatic-open call and
+   is left exactly as written for that; this step never called it, so
+   nothing here reads OB_AUTO. What this step reads is DEV_SKIP, and it is
+   read once the timer below fires rather than now, because the developer
+   button DEV_SKIP answers for lives on the boot sheet itself and has not
+   necessarily been pressed yet at the moment this line first runs.
 
-   It is a step like the others, so an onboarding that fails to open costs the
-   onboarding and not the instrument behind it. */
-step('onboarding',function(){
- if(typeof obOpen!=='function')return;
- /* and the ruling that it does not open by itself is read here, once. */
- if(typeof OB_AUTO!=='undefined'&&!OB_AUTO)return;
- var seen=false;
- try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
- if(seen)return;
- setTimeout(function(){ try{ obOpen(false); }catch(e){} },5600);});
+   It is a step like the others, so a login that fails to open costs the
+   login and not the instrument behind it. */
+step('login',function(){
+ if(typeof loginOpen!=='function')return;
+ setTimeout(function(){
+  try{
+   if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return;
+   loginOpen();
+  }catch(e){}
+ },5600);});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather
@@ -46707,5 +46845,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003056685"></div>
+<div id="eof" hidden data-len="003064778"></div>
 </body></html>

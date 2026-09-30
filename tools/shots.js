@@ -25,7 +25,7 @@ const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4],
  const p=await b.newPage({viewport:{width:W,height:H}});
  const errs=[];
  p.on('pageerror',e=>errs.push(String(e.message)));
- await p.goto('file://'+path.resolve('source.html'));
+ await p.goto('file://'+path.resolve('source.html')+'?dev=1');
  await booted(p);
  await p.waitForTimeout(300);
  for(const [nm,i] of TABS){

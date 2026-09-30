@@ -23,7 +23,7 @@
    ============================================================ */
 const {chromium}=require('playwright');
 const path=require('path');
-const FILE='file://'+path.resolve(__dirname,'..','source.html');
+const FILE='file://'+path.resolve(__dirname,'..','source.html')+'?dev=1';
 const ONLY=process.argv[2]!==undefined?+process.argv[2]:null;
 
 /* a number is excused when one of these sits within the span either side of

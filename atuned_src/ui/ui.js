@@ -1654,21 +1654,27 @@ step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
    a throw here costs the door and not the start up. */
 step('practitioner door',function(){pracPaint();});
 step('opening surface',function(){setTab(TAB.FIELD);});
-/* ONBOARDING, ON THE FIRST VISIT ONLY, and after the boot sheet has gone so
-   the two do not stack. "Same onboarding for both arrivals", so there is no
-   branch on where the person came from: the only question asked is whether
-   they have met it before, which is a flag on their own record.
+/* LOGIN, AFTER THE BOOT SHEET HAS GONE so the two do not stack. Round MH
+   and MI, ui/login.js: the login screen is the return door, met on every
+   boot, and onboarding behind it is still met once, gated on its own flag
+   inside loginGo(). OB_AUTO's own September ruling, "let's turn off
+   onboarding for now," is read by onboard.js's own automatic-open call and
+   is left exactly as written for that; this step never called it, so
+   nothing here reads OB_AUTO. What this step reads is DEV_SKIP, and it is
+   read once the timer below fires rather than now, because the developer
+   button DEV_SKIP answers for lives on the boot sheet itself and has not
+   necessarily been pressed yet at the moment this line first runs.
 
-   It is a step like the others, so an onboarding that fails to open costs the
-   onboarding and not the instrument behind it. */
-step('onboarding',function(){
- if(typeof obOpen!=='function')return;
- /* and the ruling that it does not open by itself is read here, once. */
- if(typeof OB_AUTO!=='undefined'&&!OB_AUTO)return;
- var seen=false;
- try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
- if(seen)return;
- setTimeout(function(){ try{ obOpen(false); }catch(e){} },5600);});
+   It is a step like the others, so a login that fails to open costs the
+   login and not the instrument behind it. */
+step('login',function(){
+ if(typeof loginOpen!=='function')return;
+ setTimeout(function(){
+  try{
+   if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return;
+   loginOpen();
+  }catch(e){}
+ },5600);});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather

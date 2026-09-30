@@ -35,6 +35,10 @@
 <!-- ONBOARDING. A sheet, not a tab: it is met once and replayed on request,
      and a surface in the bar is a peer of the instrument, which this is not. -->
 <div id="ob" class="ob" style="display:none"></div>
+<!-- LOGIN. Round MH and MI: the return door, not the front door, so it is
+     met on every boot rather than once. Local and honest about being
+     local, ui/login.js. -->
+<div id="login" class="ob" style="display:none"></div>
 <!-- ============================================================
      THE BOOT. THE BODY BECOMES THE FIELD, AND THE CAMERA GOES IN.
 
@@ -83,6 +87,13 @@
      the sheet is never shown and ui/panels.js removes it at once.
      ============================================================ -->
 <div id="boot" class="boot bx" aria-hidden="true">
+ <!-- THE DEVELOPER SKIP. His words: "just put it as a developer button, on
+      the upper right hand corner. And if it's pressed, it's just skips."
+      .boot itself is pointer-events:none so a press anywhere else still
+      falls through to the skip gesture already wired in ui/panels.js; this
+      one control opts itself back in to be pressable, and ui/login.js reads
+      the flag it sets. -->
+ <button type="button" id="devskip" class="dev-skip">Skip</button>
  <!-- BOOT FIGURE BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->
  <div class="bx-stage">
   <div class="bx-wash" style="background:radial-gradient(circle at 57.6% 34.9%, rgba(214,82,76,.20) 0, rgba(214,82,76,.07) 9%, rgba(214,82,76,0) 19%),radial-gradient(circle at 66.7% 47.1%, rgba(216,146,78,.20) 0, rgba(216,146,78,.07) 9%, rgba(216,146,78,0) 19%),radial-gradient(circle at 62.3% 61.6%, rgba(218,191,106,.20) 0, rgba(218,191,106,.07) 9%, rgba(218,191,106,0) 19%),radial-gradient(circle at 48.5% 66.9%, rgba(95,213,166,.20) 0, rgba(95,213,166,.07) 9%, rgba(95,213,166,0) 19%),radial-gradient(circle at 37.0% 60.9%, rgba(94,187,219,.20) 0, rgba(94,187,219,.07) 9%, rgba(94,187,219,0) 19%),radial-gradient(circle at 33.1% 50.0%, rgba(125,147,224,.20) 0, rgba(125,147,224,.07) 9%, rgba(125,147,224,0) 19%),radial-gradient(circle at 40.3% 36.1%, rgba(167,126,219,.20) 0, rgba(167,126,219,.07) 9%, rgba(167,126,219,0) 19%),radial-gradient(circle at 50% 50%, rgba(126,184,212,.16) 0, rgba(126,184,212,0) 12%)"></div>

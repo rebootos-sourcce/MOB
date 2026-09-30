@@ -2,7 +2,10 @@ const {chromium}=require('playwright');
 const path=require('path');
 /* the target is overridable, so the delivery build can be put through the
    same gates as the source build rather than being trusted. */
-const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
+/* ?dev=1: the same flag the boot sheet's own developer button sets, so this
+   gate meets the instrument at once rather than meeting the new login
+   screen ui/login.js puts in front of it on every boot. */
+const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
 let PASS=0,FAIL=0;
 /* THE BOOT IS A THREE SECOND SHEET, so every page these gates open has to be
    allowed to finish booting before anything is measured or clicked. Without

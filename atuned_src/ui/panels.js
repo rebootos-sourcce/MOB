@@ -1204,6 +1204,14 @@ var BOOT_FLOOR_AT=0;
     one. */
  var eat=function(ev){ ev.stopPropagation(); if(ev.cancelable)ev.preventDefault(); };
  var skip=function(e){ if(gone)return;
+  /* THE DEVELOPER BUTTON IS THE ONE PRESS IN THIS SHEET THAT MEANS SOMETHING
+     OF ITS OWN, round MH and MI, ui/login.js. Read here rather than left to
+     its own listener on the button: the capture below stops every pointerdown
+     from reaching anything past this handler, on purpose, so a skip-press can
+     never also act on the tab strip underneath the sheet, and a listener on
+     the button itself would never see the same press. Set before that stop,
+     so it is set whichever of pointerdown or keydown got it here. */
+  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined')DEV_SKIP=true;
   if(e&&e.type==='pointerdown'){
    e.stopPropagation();
    addEventListener('click',eat,{once:true,capture:true});
