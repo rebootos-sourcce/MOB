@@ -1223,7 +1223,8 @@ function avDetail(st,a){
   /* the one word, where the percent was. A slot keeps its label: the pill is
      always here, and only its value moves. */
   +'<span class="avx-emb'+(e?' avx-y':'')+'">'+(e?avSvg(AV_PIN):'')+(st.r.unread?'not read yet':e?'embodied':'not embodied')+'</span></div>'
-  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>';
+  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>'
+  +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
    +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+AV_THE[a.sabB]+'</span></p>'

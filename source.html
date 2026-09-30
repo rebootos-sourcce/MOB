@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1002 f8ed279 2026-09-30 19:27"><head><meta charset="utf-8">
+<html lang="en" data-build="v1003 51d4e22 2026-09-30 19:59"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -8288,6 +8288,15 @@ const ARCH=[
  {nm:'Jester',   v:'breaks the tension',    b:'Throat', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
  {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
  {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
+/* Give source a credit, his own words. All twelve, Warrior through Innocent,
+   are Carol Pearson and Margaret Mark's brand archetype set, built on Jung's
+   own archetype theory but never a canonical list Jung himself wrote down,
+   the exact caution SOURCE-TDD.md states: "the modern standardized twelve
+   archetypes list must be treated as Jung-derived and later popularized
+   rather than attributed directly to Jung." Unlike SAB_PI, which marks ten
+   of 33 saboteurs as Chamine's, every one of these twelve carries the same
+   credit, so ARCH_CREDIT is one sentence rather than a lookup by name. */
+const ARCH_CREDIT="Jung-derived, after Carol Pearson and Margaret Mark";
 
 /* the 21 Laws of Moral Integrity, each seated at the band it governs. The
    book calls this set the Laws of Spiritual Integrity; the owner ruled moral,
@@ -17558,7 +17567,7 @@ if(typeof module!=='undefined'&&module.exports){
                   cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
                   HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
-                  DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
+                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   TEACHER_PRACTICE:TEACHER_PRACTICE, BECOMING:BECOMING, becomingOf:becomingOf, becomingSteps:becomingSteps,
@@ -31711,7 +31720,8 @@ function avDetail(st,a){
   /* the one word, where the percent was. A slot keeps its label: the pill is
      always here, and only its value moves. */
   +'<span class="avx-emb'+(e?' avx-y':'')+'">'+(e?avSvg(AV_PIN):'')+(st.r.unread?'not read yet':e?'embodied':'not embodied')+'</span></div>'
-  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>';
+  +'<p class="av-def">'+esc(AV_DEF[a.nm]||'')+'</p>'
+  +'<div class="ad-sub">'+esc(ARCH_CREDIT)+'</div>';
  if(a.sab)
   out+='<div class="av-imp" style="--s:'+seatCol(a.sabB)+'"><div class="pm-eye">Impact</div>'
    +'<p class="av-imp-v"><b>'+esc(a.sab)+'</b><span>primary saboteur, at '+AV_THE[a.sabB]+'</span></p>'
@@ -47154,5 +47164,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003084056"></div>
+<div id="eof" hidden data-len="003084813"></div>
 </body></html>

@@ -417,6 +417,15 @@ const ARCH=[
  {nm:'Jester',   v:'breaks the tension',    b:'Throat', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
  {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
  {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
+/* Give source a credit, his own words. All twelve, Warrior through Innocent,
+   are Carol Pearson and Margaret Mark's brand archetype set, built on Jung's
+   own archetype theory but never a canonical list Jung himself wrote down,
+   the exact caution SOURCE-TDD.md states: "the modern standardized twelve
+   archetypes list must be treated as Jung-derived and later popularized
+   rather than attributed directly to Jung." Unlike SAB_PI, which marks ten
+   of 33 saboteurs as Chamine's, every one of these twelve carries the same
+   credit, so ARCH_CREDIT is one sentence rather than a lookup by name. */
+const ARCH_CREDIT="Jung-derived, after Carol Pearson and Margaret Mark";
 
 /* the 21 Laws of Moral Integrity, each seated at the band it governs. The
    book calls this set the Laws of Spiritual Integrity; the owner ruled moral,

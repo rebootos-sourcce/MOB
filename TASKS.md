@@ -28228,7 +28228,26 @@ lightens that render rather than slowing it, so there is no causal
 path from this fix to that assertion. Logged rather than waved off,
 per the same standard every prior instance of this flake was held to.
 
-Next, per `PRIORITY.md`'s own order: `19.B3`, crediting the twelve
-archetypes to Carol Pearson and Margaret Mark (Jung-derived, never a
-list Jung wrote down himself, the exact caution `SOURCE-TDD.md` states),
-his own words "give source a credit." In progress, not yet built.
+**`19.B3`, the twelve archetypes credited, built and gated.** His own
+words, "give source a credit." Warrior through Innocent, `canon.js`'s
+ARCH array, is Carol Pearson and Margaret Mark's brand archetype set,
+built on Jung's own theory but never a list Jung himself wrote down,
+the exact caution `SOURCE-TDD.md` states: "the modern standardized
+twelve archetypes list must be treated as Jung-derived and later
+popularized rather than attributed directly to Jung." Unlike SAB_PI,
+which marks ten of 33 saboteurs as Chamine's by name, all twelve of
+these carry the same credit, so `ARCH_CREDIT` is one sentence rather
+than a lookup table: "Jung-derived, after Carol Pearson and Margaret
+Mark," rendered on every archetype's own detail card the way SAB_PI's
+"Positive Intelligence" sub-line already renders on a saboteur's.
+
+Checked rendering directly against the real build rather than assumed
+from the code: the credit line reads correctly on Warrior's detail
+card (`AV.sub='arch'`, the wheel view under Intake, not the Becoming
+view, which carries no per-archetype card). Gated in full on top of
+the saboteur fix above: `BUILD.sh` and `BUILD-engine.sh` clean, 483
+exports; `tests/engine.js` 1843/0; `tests/collide.js` 351/0;
+`tests/design.js` 185/0; `tests/funnel.js` 172/0; `tests/boot.js`
+13/0; `tools/monitor.js` all surfaces render; voice objections 0
+blocking; `tests/functional.js` 1338/0 clean, the fade flake absent
+this run.
