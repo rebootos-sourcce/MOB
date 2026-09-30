@@ -27420,3 +27420,50 @@ Read as, in the order taken up:
     every visitor's browser, so both are added to the real server's
     own environment, `reboot-os`'s Cloudflare Worker, not pasted into
     this chat.
+
+## Round MQ
+
+His words, attaching a Cloudflare email addressed to atuned.world: "should
+we do this? see attached. I asked you to add look dev from the Field to
+Masks, did you do that? And where are the Saboteur masks? For the lighting
+look, remove the words, just leave the icon and overlay info. As I hover
+over the pixels, the overlay tells my limiting belief, fetter, saboteur
+cluster, etc, this is in your design. Add push all to atuned.world to
+final in your plan."
+
+Read as:
+
+1. **The Cloudflare email is real and his to act on.** It is Cloudflare's
+   own notice that atuned.world is added to a Cloudflare account but its
+   registrar still points at different nameservers, so Cloudflare is not
+   serving it yet. Yes, this is the same step `HOSTING-SETUP.md` already
+   names as his: change atuned.world's nameservers at its registrar
+   (GoDaddy, per that file) to the two Cloudflare ones the email gives.
+   Nothing here needs code; it needs a login only he holds.
+2. **"Did you do that," Field look-dev on Masks.** Checked directly rather
+   than assumed: no round in this window's own `TASKS.md`, LY through MQ,
+   asked for it, and `ui/character.js` carries no such change. What that
+   file does already carry, from round LT, before this window: a shared
+   technique with the Field, the archetype's glow using the same wash
+   `ui/rings.js`'s `frShadow` draws for the Field. If a Field look-dev pass
+   for Masks was asked for, it was not asked of this session and is not
+   done; flagged honestly rather than claimed.
+3. **"Where are the Saboteur masks."** There are no separate saboteur mask
+   objects: `ui/character.js` renders six masks, Child through Ideological,
+   and a saboteur, a complex and a hyper complex are tiers of brightness on
+   those same six, not masks of their own, "the tone is the tier" in the
+   file's own words. Round MD queued a toggle between those tiers, "toggle
+   between masks saboteur masks complex masks and hyper complex masks,"
+   and it is still queued, not built this window.
+4. **The hover ask is already designed, in the file itself, and simply not
+   built.** `ui/character.js`'s own round LT comment says so in full: "THE
+   HOVER ITSELF IS NOT BUILT YET... nothing below calls chGeo() from a
+   pointer position... Open," and it names the exact shape the work takes,
+   a pointermove handler, the nearest cell solved from the pointer, a
+   lookup against the cached per card read, one shared tooltip. This round
+   asks for exactly that hover, plus removing whatever static words sit on
+   the lighting look now in favour of it. Queued next, behind shipping
+   this round's own onboarding and login work and its gate suite.
+5. **"Add push all to atuned.world to final in your plan."** Already the
+   last step of this round's own plan; restated here so it is not read as
+   dropped.
