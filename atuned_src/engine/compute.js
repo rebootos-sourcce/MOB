@@ -318,8 +318,8 @@ function compute(){
  for(let i=0;i+1<hys.length;i+=2){const parts=hys.slice(i,i+2),w=(parts[0].w+parts[1].w)/2;
   if(w>=5.6)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
    ang:meanAng(parts.map(p=>p.ang))});}
- /* the six masks, one per developmental era, lit by what sits under it. */
- const maskRing=MASKS.map(m=>{
+ /* the five masks a reading is taken on. Professional is hidden, round NE. */
+ const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
   return {nm:m.nm,bands:m.b,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
    ang:meanAng(seg.map(n=>n.ang))};});

@@ -1804,7 +1804,8 @@ function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
 var BMMP=BMU/3, BMMCOL=12, BMMPAIR=9, BMMGAP=4, BMMROW=4;
 function bmMaskGeo(G){
  var at={}, rows=[], out=[];
- MASKS.forEach(function(m){
+ /* the five read masks, round NE. Professional hidden, not calculated. */
+ MASKS_READ.forEach(function(m){
   var ys=m.b.map(function(b){return PMYP[B2K[b]];}).filter(function(y){return y!=null;});
   if(!ys.length)return;
   var y=ys.reduce(function(a,b){return a+b;},0)/ys.length, k=y.toFixed(1);
@@ -3320,7 +3321,7 @@ var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters'
 var BMOVL={
  addr:{nm:FB_BYK.addresses.nm,ic:FB_BYK.addresses.ic,tip:FB_BYK.addresses.tip},
  masks:{nm:'Masks',ic:'M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6',
-  tip:'The six masks, as dots on the figure that fill in as each one carries weight.'},
+  tip:'The masks, as dots on the figure that fill in as each one carries weight.'},
  pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
@@ -3430,7 +3431,7 @@ var BMVIEW={
  emap:{on:BM.ov.on,bar:true,one:false,mode:null,face:null,
   say:'The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them'},
  masksview:{on:{masks:1},bar:false,one:true,mode:'pattern',face:'front',
-  say:'The front of the body, with the six masks on it'}};
+  say:'The front of the body, with the masks on it'}};
 /* MOVING THE FIGURE EMPTIES THE HOST IT LEFT. bmBuild writes ids (bmcv, bmsv,
    bmov, bmregs) that the rest of this file finds by id, and a second copy
    left behind in the hidden host is the one getElementById answers when that

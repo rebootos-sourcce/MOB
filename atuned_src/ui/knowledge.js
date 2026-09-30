@@ -140,8 +140,11 @@ function kbRows(sec){
   var l=kbFind(SI,e.t); if(!l)return;
   out.push(kbRow('law', l.nm, l.b, l.b, kbPct(S.law[l.nm]), l.ic, l));});
  /* a mask is worn over the seats it covers and takes the first for its
-    colour. maskRing carries a weight for all six, so all six have a percent. */
- if(sec==='mask') MASKS.forEach(function(m){
+    colour. maskRing carries a weight for the five read masks, round NE,
+    Professional hidden and not calculated; a percent here would be false
+    for the one it is never computed for, so the row list matches maskRing
+    rather than the full six. */
+ if(sec==='mask') MASKS_READ.forEach(function(m){
   var live=kbFind(r.maskRing||[],m.nm);
   out.push(kbRow('mask', m.nm, (m.b||[]).join(' and '), (m.b&&m.b[0])||'Heart',
    kbPct(live?live.w:0), m.ic, m));});

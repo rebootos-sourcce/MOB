@@ -4,7 +4,7 @@
 /* run from the repo root, like the browser gates do. BUILD-engine.sh writes
    engine.js there. an absolute path would only ever be right on one machine. */
 const E=require(require('path').resolve(process.env.ENGINE||'engine.js'));
-const {S,CHILD,CHARGES,SI,SINAMES,BANDS,W,NODES,DOMAINS,ARCH,MASKS,SAB33,
+const {S,CHILD,CHARGES,SI,SINAMES,BANDS,W,NODES,DOMAINS,ARCH,MASKS,MASKS_READ,SAB33,
        PEOPLE,LAWSET,PRACTICE,EXPR,compute,buildSoul,accuracy,meterFirst,
        julianDay,sunLon,moonLon,designJD,GATE_WHEEL,chineseYear,usDST}=E;
 let P=0,F=0,GRP='';
@@ -300,7 +300,13 @@ ok(r.hys.every(h=>h.parts.length>=1),'a hyper-complex draws on complexes');
 ok(r.sups.every(u=>u.parts.length===2),'a character layer is two hyper');
 ok(r.cxs.every(c=>c.parts.every(p=>r.sabs.includes(p))),'complexes only cite live saboteurs');
 ok(r.hys.every(h=>h.parts.every(p=>r.cxs.includes(p))),'hyper only cite live complexes');
-ok(r.maskRing.length===6,'six masks always present');
+/* Professional hidden and not calculated, round NE, his own correction:
+   "let's get rid of the uh, professional. Just hide it for now. Don't
+   calculate it." maskRing now carries MASKS_READ, not MASKS, so the count
+   is read off MASKS_READ rather than typed here as a number that would
+   go stale the day the six come back. */
+ok(r.maskRing.length===MASKS_READ.length,'every read mask always present, '+r.maskRing.length);
+ok(!r.maskRing.some(m=>m.nm==='Professional'),'Professional is hidden and not calculated');
 ok(r.maskRing.every(m=>m.w>=0),'mask load is never negative');
 
 g('15 · every persona computes');

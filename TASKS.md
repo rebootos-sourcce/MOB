@@ -28374,3 +28374,118 @@ needs a different permission, `Cloudflare Pages: Edit`, not `Workers
 Scripts: Edit` and `D1: Edit`. `atuned.world` has never deployed
 through this pipeline at all. Told him plainly rather than letting
 the green checkmark stand for something it did not do.
+
+## Round NE
+
+"Review all these thoroughly. You should have earlier." Four documents
+re-attached: `SOURCE_TDD_AI_HANDOFF_MASTER_REBUILT.md`,
+`Atuned_Release_Intelligence_Implementation_Handoff_V1.md`,
+`ATUNED_Intelligence_System_TDD_V3.md`,
+`ATUNED_Creative_Brief_Product_Writing_System.md`. Diffed byte for
+byte against `SOURCE-TDD.md`, `SOURCE-TDD-release-intelligence.md`,
+`SOURCE-TDD-V3-intelligence.md` and `CREATIVE-BRIEF-voice.md` before
+answering rather than assumed identical: all four are the exact same
+files, zero lines different. Told him plainly rather than silently
+redoing work already done: the audit already happened
+(`AUDIT-source-tdd.md`, `AUDIT-source-tdd-v3.md`), already turned into
+`PRIORITY.md` section 19's 17 row order, and three of tonight's own
+fixes came off that order. Pointed him instead at what was actually
+still missing, named in that same section: round LZ's Impression
+Excavation Engine, "Foundation Specification v0.1," 47 sections, never
+saved to this repository, "R2 cannot be built from without it," and
+his own words then, "swap this out with the system that we currently
+have."
+
+His answer, verbatim, each point kept separate rather than folded
+together:
+
+**R1, six masks, reversed mid sentence, kept as said.** "Keep preteen.
+Keep professional as well. Professional is a career stuff that we
+identify with. These things become our limiters. Preteen is very
+similar because they usually start" then, without finishing that
+sentence, "Oh, I see what you're saying. Go ahead. Let's get rid of
+the uh, professional. Just hide it for now. Don't calculate it." The
+correction is what stands: Professional hidden from the page and
+excluded from computation, Preteen kept, nothing else about the seven
+seat question decided yet.
+
+**R2, answered, but not buildably.** "The impression excavation engine
+is it's the new one. That's your, what you're building. We're
+changing the rule for number two for now. You're going to integrate
+that impression excavation engine. In all the features, algorithms,
+tools, schemas, and systems, just basically the entire design. All the
+things we're talking about, the designs are going in." Governs,
+his words, and wider than R2's own question, every feature rather than
+only Source AI's next question. Still not buildable: the document
+itself, the 47 sections, was not attached this round either. Asked
+again, plainly, for the paste.
+
+**R3, answered as a no, with a real alternative in its place.** "No,
+the release is rapid. Maybe if a person wants to vocalize note, if
+they say note, the software detects that word, it'll automatically
+detect it. Or the word dense." No numeric rating: the release stays
+fast, and a person speaking a word aloud, "note" or "dense," during a
+voice run is heard and marked automatically, checked directly against
+the real precedent for this, `ui/storyui.js`'s own `stMic`, already
+shipped, real `SpeechRecognition` with an honest fallback for no
+microphone, no permission and no secure context. Not yet scoped:
+whether the mark this writes is the existing Heavy toggle
+(`data-relfelt`, `RUN.log[].felt`) or a new one, and the release
+carousel itself has no swipe gesture today, checked directly,
+`ui/release.js` has no `swipe` handler at all, a voice driven line by
+line list rather than the card deck the release document describes.
+
+**R4, answered, and it changes what the tutorial opens on.** "Will the
+day one tutorial has to start with the journal? right. journal is the
+beginning of the journey. The ingest part is what kind of pins all the
+CQs. So they, they need to go do CQ questions as well. And that's kind
+of an ongoing process. That needs to be added to the ritual until it's
+completed." Two things, kept separate: the tutorial itself opens by
+having the person write in the journal live, rather than needing a
+prior entry or the funnel's own story, which answers R4's own named
+gap (sign in blocked, nothing else written on day one). And the 21 law
+intake, CQ, becomes a ritual task that stays on the list until the
+person has answered all of it, not a one sitting requirement.
+
+**R5, answered plainly.** "When a person swipes past, it goes into
+their history. If they leave it alone, it gets recycled." Swipe is
+discard with history kept; untouched is recycle. Kept for when the
+carousel itself is built, `19.A8`/section 19 rows 7 and 8, since no
+swipe gesture exists to wire it to yet.
+
+**R1's correction, built and gated.** `MASKS_READ`, `canon.js`, the
+five masks a reading is ever taken on or shown for: Child, Preteen,
+Teen, Adult, Ideological. Professional stays in `MASKS` itself, since
+the body map's own seat patches and the glossary's word lookup still
+name it, but nowhere a live reading is taken: `compute.js`'s
+`maskRing`, the Character page's own cards (`character.js`), the
+knowledge base's mask row, which would otherwise have printed a false
+0 percent rather than nothing, and the body map's own mask overlay
+(`bmMaskGeo`), which drew live lit pixels for it until this. Two
+user-facing strings that said "the six masks" corrected to say nothing
+about a count, the same reason gate counts came out of this file.
+
+Six existing gate assertions expected six and are not a sign of
+anything broken, checked one by one before changing any of them: five
+in `tests/functional.js` reading the body map's hit set, the Character
+page's own card roster, the empty-state face count and the Masks
+switch's press count, all against `MASKS` where the real render now
+reads `MASKS_READ`; one in `tests/engine.js` counting `maskRing`
+itself. A sixth, more serious one found in passing rather than by a
+failure: `tests/functional.js`'s own hover test picked "whichever mask
+this profile's stories lit the most" from all six, which could have
+silently picked Professional and thrown looking for a card that no
+longer renders, a latent crash this file's own next run might have hit
+on a different profile. Fixed the same way as the rest, read off
+`MASKS_READ`.
+
+Gated in full: `BUILD.sh` and `BUILD-engine.sh` clean, 484 exports;
+`tests/engine.js` 1846/0; `tests/collide.js` 351/0; `tests/design.js`
+185/0 (one earlier run read 184/1, a re-run clean, the same
+load-sensitive pattern this file already tracks); `tests/funnel.js`
+172/0; `tests/boot.js` 13/0; `tools/monitor.js` all surfaces render;
+voice objections 0 blocking; `tests/functional.js` 1338/0 clean after
+the six fixes, 1332/6 before them, each one read and traced to its
+real cause rather than assumed. Screenshotted the Character page at
+1600: five tiles, Child through Ideological, no gap where Professional
+was.

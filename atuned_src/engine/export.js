@@ -61,7 +61,7 @@ if(typeof module!=='undefined'&&module.exports){
                   cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
                   HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
-                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
+                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS, MASKS_READ:MASKS_READ,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   TEACHER_PRACTICE:TEACHER_PRACTICE, BECOMING:BECOMING, becomingOf:becomingOf, becomingSteps:becomingSteps,

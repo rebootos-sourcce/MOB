@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1004 c72143a 2026-09-30 20:21"><head><meta charset="utf-8">
+<html lang="en" data-build="v1009 5273d09 2026-09-30 21:23"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -8390,6 +8390,14 @@ const MASKS=[
  /* a ring above the face, worn where a thought is kept. */
  {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0',
   v:'answers from the position instead of the moment'}];
+/* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
+   rid of the uh, professional. Just hide it for now. Don't calculate it."
+   Preteen and Professional both sit at Solar and Throat, so their fill has
+   always been identical, and this is the stopgap while the real seven seat
+   mapping, R1, stays open. MASKS itself keeps all six, since the body map's
+   own seat patches and the glossary still name Professional; MASKS_READ is
+   the five a reading is ever taken on or shown for. */
+const MASKS_READ=MASKS.filter(m=>m.nm!=='Professional');
 
 /* ============================================================
    WHAT A LABEL OWES THE PERSON IT IS PUT ON.
@@ -12424,8 +12432,8 @@ function compute(){
  for(let i=0;i+1<hys.length;i+=2){const parts=hys.slice(i,i+2),w=(parts[0].w+parts[1].w)/2;
   if(w>=5.6)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
    ang:meanAng(parts.map(p=>p.ang))});}
- /* the six masks, one per developmental era, lit by what sits under it. */
- const maskRing=MASKS.map(m=>{
+ /* the five masks a reading is taken on. Professional is hidden, round NE. */
+ const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
   return {nm:m.nm,bands:m.b,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
    ang:meanAng(seg.map(n=>n.ang))};});
@@ -17582,7 +17590,7 @@ if(typeof module!=='undefined'&&module.exports){
                   cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
                   HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
-                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
+                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS, MASKS_READ:MASKS_READ,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   TEACHER_PRACTICE:TEACHER_PRACTICE, BECOMING:BECOMING, becomingOf:becomingOf, becomingSteps:becomingSteps,
@@ -24592,7 +24600,8 @@ function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
 var BMMP=BMU/3, BMMCOL=12, BMMPAIR=9, BMMGAP=4, BMMROW=4;
 function bmMaskGeo(G){
  var at={}, rows=[], out=[];
- MASKS.forEach(function(m){
+ /* the five read masks, round NE. Professional hidden, not calculated. */
+ MASKS_READ.forEach(function(m){
   var ys=m.b.map(function(b){return PMYP[B2K[b]];}).filter(function(y){return y!=null;});
   if(!ys.length)return;
   var y=ys.reduce(function(a,b){return a+b;},0)/ys.length, k=y.toFixed(1);
@@ -26108,7 +26117,7 @@ var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters'
 var BMOVL={
  addr:{nm:FB_BYK.addresses.nm,ic:FB_BYK.addresses.ic,tip:FB_BYK.addresses.tip},
  masks:{nm:'Masks',ic:'M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6',
-  tip:'The six masks, as dots on the figure that fill in as each one carries weight.'},
+  tip:'The masks, as dots on the figure that fill in as each one carries weight.'},
  pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
@@ -26218,7 +26227,7 @@ var BMVIEW={
  emap:{on:BM.ov.on,bar:true,one:false,mode:null,face:null,
   say:'The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them'},
  masksview:{on:{masks:1},bar:false,one:true,mode:'pattern',face:'front',
-  say:'The front of the body, with the six masks on it'}};
+  say:'The front of the body, with the masks on it'}};
 /* MOVING THE FIGURE EMPTIES THE HOST IT LEFT. bmBuild writes ids (bmcv, bmsv,
    bmov, bmregs) that the rest of this file finds by id, and a second copy
    left behind in the hidden host is the one getElementById answers when that
@@ -26982,7 +26991,7 @@ function renderCharacter(r){
  var rd0=$('rdrill');
  if(CHV.pick&&(!rd0||rd0.style.display==='none'||!rd0.innerHTML))CHV.pick=null;
  var unread=!r||r.unread;
- var cards=MASKS.map(function(m){
+ var cards=MASKS_READ.map(function(m){
   var rd=chRead(m,r,CHV.face), on=CHV.pick===m.nm;
   /* the hover's own lookup, left-half cell to the pixel drawn there, built
      on the same pass that reads the mask so the overlay never disagrees
@@ -40912,8 +40921,11 @@ function kbRows(sec){
   var l=kbFind(SI,e.t); if(!l)return;
   out.push(kbRow('law', l.nm, l.b, l.b, kbPct(S.law[l.nm]), l.ic, l));});
  /* a mask is worn over the seats it covers and takes the first for its
-    colour. maskRing carries a weight for all six, so all six have a percent. */
- if(sec==='mask') MASKS.forEach(function(m){
+    colour. maskRing carries a weight for the five read masks, round NE,
+    Professional hidden and not calculated; a percent here would be false
+    for the one it is never computed for, so the row list matches maskRing
+    rather than the full six. */
+ if(sec==='mask') MASKS_READ.forEach(function(m){
   var live=kbFind(r.maskRing||[],m.nm);
   out.push(kbRow('mask', m.nm, (m.b||[]).join(' and '), (m.b&&m.b[0])||'Heart',
    kbPct(live?live.w:0), m.ic, m));});
@@ -47179,5 +47191,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003085507"></div>
+<div id="eof" hidden data-len="003086365"></div>
 </body></html>

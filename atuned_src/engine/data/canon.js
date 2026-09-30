@@ -519,6 +519,14 @@ const MASKS=[
  /* a ring above the face, worn where a thought is kept. */
  {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0',
   v:'answers from the position instead of the moment'}];
+/* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
+   rid of the uh, professional. Just hide it for now. Don't calculate it."
+   Preteen and Professional both sit at Solar and Throat, so their fill has
+   always been identical, and this is the stopgap while the real seven seat
+   mapping, R1, stays open. MASKS itself keeps all six, since the body map's
+   own seat patches and the glossary still name Professional; MASKS_READ is
+   the five a reading is ever taken on or shown for. */
+const MASKS_READ=MASKS.filter(m=>m.nm!=='Professional');
 
 /* ============================================================
    WHAT A LABEL OWES THE PERSON IT IS PUT ON.

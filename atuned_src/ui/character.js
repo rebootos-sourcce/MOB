@@ -472,7 +472,7 @@ function renderCharacter(r){
  var rd0=$('rdrill');
  if(CHV.pick&&(!rd0||rd0.style.display==='none'||!rd0.innerHTML))CHV.pick=null;
  var unread=!r||r.unread;
- var cards=MASKS.map(function(m){
+ var cards=MASKS_READ.map(function(m){
   var rd=chRead(m,r,CHV.face), on=CHV.pick===m.nm;
   /* the hover's own lookup, left-half cell to the pixel drawn there, built
      on the same pass that reads the mask so the overlay never disagrees

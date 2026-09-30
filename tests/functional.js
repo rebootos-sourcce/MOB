@@ -153,7 +153,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {row:[...document.querySelectorAll('#lbar [data-pml]')].map(b=>b.getAttribute('data-pml')),
    bar:[...document.querySelectorAll('#fbar [data-fb]')].map(b=>b.getAttribute('data-fb')),
    hits:[...new Set([...document.querySelectorAll('#bmsv [data-bmmask]')].map(h=>h.getAttribute('data-bmmask')))],
-   want:MASKS.map(x=>x.nm),ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,
+   want:MASKS_READ.map(x=>x.nm),ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,
    lit:BMG.masks.map(k=>({nm:k.nm,n:bmMaskLit(k,r),of:k.sl.length}))};});
  /* CHANGED 28 SEPTEMBER: this held a row with no Masks in it, and now there
     is no row. KV, his words: "I no longer need the secondary navigation of
@@ -161,7 +161,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
     the map's upper left, held in the block after this one. */
  ok(m.row.length===0,'the Body has no layer row, so no Masks layer in one, got '+m.row.join(','));
  ok(m.bar.length>0&&m.bar.indexOf('masks')<0,'and the glass bar no Masks switch, got '+m.bar.join(','));
- ok(m.hits.slice().sort().join()===m.want.slice().sort().join(),'all six masks stand on the figure, got '+m.hits.join(','));
+ ok(m.hits.slice().sort().join()===m.want.slice().sort().join(),'every read mask stands on the figure, got '+m.hits.join(','));
  ok(m.lit.every(x=>x.of>=20),'each patch has room for twenty stories or more, '+m.lit.map(x=>x.nm+' '+x.of).join(', '));
  ok(m.ents===0&&m.lit.every(x=>x.n===0),'Gordon is a worked example with no stories, so no mask lights a pixel, '
   +m.ents+' entries, '+m.lit.map(x=>x.nm+' '+x.n).join(', '));
@@ -271,7 +271,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   const val=(n,f)=>f==='light'?Math.max(n.pole||0,n.jq||0):(n.sq||0);
   const wantG=m=>{const u=r.sabs.filter(s=>s.parts.some(n=>n&&m.b.indexOf(n.b)>=0));
    return !u.length?16:r.cxs.some(c=>c.parts.some(s=>u.indexOf(s)>=0))?32:24;};
-  const read=f=>MASKS.map(m=>{const rd=chRead(m,r,f);
+  const read=f=>MASKS_READ.map(m=>{const rd=chRead(m,r,f);
    return {nm:m.nm,G:rd.G,want:wantG(m),lit:rd.px.length,
     stray:rd.px.filter(x=>m.b.indexOf(x.n.b)<0||val(x.n,f)<1).length,
     left:rd.px.every(x=>x.p[0]<rd.G/2),
@@ -281,7 +281,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
    svg:(c.querySelector('svg')||{}).outerHTML||''}));
   const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),label:(btn.querySelector('.n')||{}).textContent,
    figure:!!(BM.cv&&host.contains(BM.cv)),emapFig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),
-   dark:read('dark'),cards:cards(),empty:!!host.querySelector('.chv-empty'),roster:MASKS.map(m=>m.nm).join()};
+   dark:read('dark'),cards:cards(),empty:!!host.querySelector('.chv-empty'),roster:MASKS_READ.map(m=>m.nm).join()};
   /* the switch */
   host.querySelector('[data-chface="light"]').click(); await fr();
   out.light=read('light'); out.lcards=cards();
@@ -307,7 +307,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  ok(mv.tab&&mv.sec==='play'&&mv.label==='Character','the door is Character, in Play, integer 11, got '+mv.label+' in '+mv.sec);
  ok(!mv.figure&&mv.emapFig,'the Body\'s figure never comes to the Character page and stays in the Body\'s host');
  ok(mv.cards.map(c=>c.nm).join()===mv.roster&&mv.cards.every(c=>c.txt===c.nm&&c.svg.indexOf('<svg')===0),
-  'six grids in the roster\'s order, each under its own name, '+mv.cards.map(c=>c.txt).join(','));
+  'every read mask is a grid in the roster\'s order, each under its own name, '+mv.cards.map(c=>c.txt).join(','));
  ok(!mv.empty,'a profile with stories in says nothing about being empty');
  ok(mv.dark.every(x=>x.stray===0)&&mv.light.every(x=>x.stray===0),'every lit pixel is an address under that mask\'s own seats, held at 1 or more, '
   +mv.dark.concat(mv.light).filter(x=>x.stray).map(x=>x.nm+' '+x.stray).join(', '));
@@ -336,8 +336,9 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   const r=compute();
   /* whichever mask this profile's own stories lit the most, rather than a
      name typed here: the reference case this file builds is stories and
-     addresses, not which of the six they happen to land on */
-  const reads=MASKS.map(m=>({m:m,rd:chRead(m,r,'dark')}));
+     addresses, not which of the read masks they happen to land on. MASKS_READ,
+     not MASKS: Professional is hidden, round NE, and has no card to find. */
+  const reads=MASKS_READ.map(m=>({m:m,rd:chRead(m,r,'dark')}));
   const best=reads.slice().sort((a,b)=>b.rd.px.length-a.rd.px.length)[0];
   const card=document.querySelector('[data-chmask="'+best.m.nm+'"]'), svg=card.querySelector('svg');
   const rd=best.rd, px=rd.px.find(x=>x.tier>=1)||rd.px[0], rect=svg.getBoundingClientRect(), G=rd.G;
@@ -365,10 +366,10 @@ console.log('\n=== the six masks, as pixels on the figure ===');
    const sv=[...host.querySelectorAll('.chv-m svg')];
    return {unread:compute().unread,empty:(host.querySelector('.chv-empty')||{}).textContent||'',
     lit:sv.map(x=>+x.getAttribute('data-chlit')),res:sv.map(x=>+x.getAttribute('data-chres')),
-    faces:new Set(sv.map(x=>x.innerHTML)).size};});
+    faces:new Set(sv.map(x=>x.innerHTML)).size,want:MASKS_READ.length};});
   ok(bl.unread&&/^Nothing read yet, so the masks are empty\./.test(bl.empty),'a stranger reads that nothing is read yet, got '+bl.empty);
   ok(bl.lit.every(n=>n===0)&&bl.res.every(g=>g===16),'nothing lit and every grid at its first size, '+bl.lit.join(',')+' / '+bl.res.join(','));
-  ok(bl.faces===6,'and the six empty faces are six different masks, '+bl.faces+' distinct');
+  ok(bl.faces===bl.want,'and the empty faces are all different masks, '+bl.faces+' of '+bl.want);
   ok(bpErr.length===0,'no page errors on a fresh page, '+bpErr.join(' | '));
   await bp.close();}
  ok(spErr.length===0,'no page errors on the story profile, '+spErr.join(' | '));
@@ -452,7 +453,7 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   return out;});
  ok(sw.sabBefore===true&&sw.sabAfter===false,'Saboteurs off takes the lines at rest off the figure, pointed at '+sw.sabBefore+' then '+sw.sabAfter);
  ok(sw.addrBefore===true&&sw.addrAfter===false,'Addresses off takes the addresses off, and nothing is left to point at');
- ok(sw.masksOn===6&&sw.masksOff===0,'Masks off takes all six off and their presses with them, '+sw.masksOn+' then '+sw.masksOff);
+ ok(sw.masksOn===5&&sw.masksOff===0,'Masks off takes every read mask off and their presses with them, '+sw.masksOn+' then '+sw.masksOff);
  ok(sw.hubs0===0&&sw.hubsCx===sw.cxWant&&sw.hubsHy===sw.hyWant,'Complexes and Hyper complexes draw their hubs, eight at most, '
   +JSON.stringify(sw));
  /* a complex pressed on the figure, with the pointer, where its hub is */
@@ -828,7 +829,9 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
    Measured on the running deck: the pair takes the distinct marks from 7 to
    40 and the worst collision from 21 rows to 10. Asserted as a floor, because
    a new axis is a reason to have more marks and never a reason to fail. */
-{const want={law:21, mask:6, sab:6, harm:27, fetter:9};
+{const want={law:21, mask:5, sab:6, harm:27, fetter:9};
+ /* mask was 6, round NE: Professional hidden and not calculated, so the
+    deck reads five distinct mask marks now, not a regression. */
  const floor={addr:30};
  Object.keys(floor).forEach(k=>{const m=kb.marks[k];
   ok(m&&m.pair>=floor[k],'the '+k+' deck composes its mark, '

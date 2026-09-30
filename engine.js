@@ -767,6 +767,14 @@ const MASKS=[
  /* a ring above the face, worn where a thought is kept. */
  {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0',
   v:'answers from the position instead of the moment'}];
+/* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
+   rid of the uh, professional. Just hide it for now. Don't calculate it."
+   Preteen and Professional both sit at Solar and Throat, so their fill has
+   always been identical, and this is the stopgap while the real seven seat
+   mapping, R1, stays open. MASKS itself keeps all six, since the body map's
+   own seat patches and the glossary still name Professional; MASKS_READ is
+   the five a reading is ever taken on or shown for. */
+const MASKS_READ=MASKS.filter(m=>m.nm!=='Professional');
 
 /* ============================================================
    WHAT A LABEL OWES THE PERSON IT IS PUT ON.
@@ -4773,8 +4781,8 @@ function compute(){
  for(let i=0;i+1<hys.length;i+=2){const parts=hys.slice(i,i+2),w=(parts[0].w+parts[1].w)/2;
   if(w>=5.6)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
    ang:meanAng(parts.map(p=>p.ang))});}
- /* the six masks, one per developmental era, lit by what sits under it. */
- const maskRing=MASKS.map(m=>{
+ /* the five masks a reading is taken on. Professional is hidden, round NE. */
+ const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
   return {nm:m.nm,bands:m.b,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
    ang:meanAng(seg.map(n=>n.ang))};});
@@ -9899,7 +9907,7 @@ if(typeof module!=='undefined'&&module.exports){
                   cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
                   HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
-                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
+                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS, MASKS_READ:MASKS_READ,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   TEACHER_PRACTICE:TEACHER_PRACTICE, BECOMING:BECOMING, becomingOf:becomingOf, becomingSteps:becomingSteps,
