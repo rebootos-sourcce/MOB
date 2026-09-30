@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1011 d76bd74 2026-09-30 21:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v1012 d8bb259 2026-09-30 22:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5681,6 +5681,14 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  font-size:13px;font-family:var(--sans);text-decoration:underline;cursor:pointer;
  padding:2px 0;margin:-6px 0 4px}
 .login-forgot:hover{color:var(--ink)}
+/* THE CARD'S OWN RESULT LINE, 30 September, when Log in started asking a real
+   server. The status line sits in the top bar under this full screen card, so
+   a refusal written only there could not be seen. Same size and same refusal
+   colour as #status, so the two read as one message in two places. Empty, it
+   takes no room, the way #status:empty does. */
+.login-msg{margin:4px 0 0;font-size:13px;line-height:1.5;color:var(--mid)}
+.login-msg:empty{display:none}
+.login-msg[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */
@@ -6272,8 +6280,9 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
      and a surface in the bar is a peer of the instrument, which this is not. -->
 <div id="ob" class="ob" style="display:none"></div>
 <!-- LOGIN. Round MH and MI: the return door, not the front door, so it is
-     met on every boot rather than once. Local and honest about being
-     local, ui/login.js. -->
+     met on every boot rather than once, unless a sign in is already held.
+     It signs in against the account server through ui/auth.js, and it
+     always offers a way through without an account, ui/login.js. -->
 <div id="login" class="ob" style="display:none"></div>
 <!-- ============================================================
      THE BOOT. THE BODY BECOMES THE FIELD, AND THE CAMERA GOES IN.
@@ -14234,6 +14243,19 @@ function validateProfile(o){
      if(v!==null)lw[nm]=v;});
     q.lawNow=lw;}}
   return q;}).filter(Boolean);
+ /* A SIGN IN IS THE BROWSER'S AND NEVER THE RECORD'S. The brief that wired
+    sign in, 30 September, asked for the bearer token to be added here as a
+    profile field, and it would have leaked on the first press of Export: that
+    control copies this whole record to the clipboard, and a record is a file
+    a person hands to somebody else. One browser also holds several profiles
+    and one session, so a token stored on one of them signs in whichever
+    profile happens to be open. ui/auth.js holds it under its own key, beside
+    the profiles and never inside one. This refuses it by name at the top
+    level the way plan refuses it one level down, so a pasted record carrying
+    somebody's session says so rather than being dropped with nothing said,
+    and nothing that writes a profile can put one back without this failing. */
+ ['token','session','password','email'].forEach(function(f){
+  if(o[f]!==undefined)errs.push(f+' is not held by this product');});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -43214,6 +43236,221 @@ function paintUndo(){
 
 try{window.__at&&window.__at('ui/panels.js');}catch(e){}
 /* ============================================================
+   SIGN IN, AGAINST THE REAL SERVER. Round IA, "I need the login page, I need
+   it wired in", round JJ, "the login page is tied to the database", and the
+   order that put it first, 30 September: "finish the login first."
+
+   THE ONE SEAM. This is the only file in the product that calls fetch, and it
+   stays that way so "the app gains network at exactly one seam" (CLAUDE.md) is
+   one grep and not an audit. It lives under ui/ because hostfree.py refuses
+   fetch anywhere in engine/, and it should: the engine is pure, and a request
+   is a thing the host does. ui/login.js and ui/account.js are its two callers
+   and neither of them holds a request of its own.
+
+   WHAT IT DOES AND DOES NOT CARRY. Sign up, sign in, the forgotten password
+   request and sign out, against the four routes the reboot-os Worker serves.
+   It does not sync. Every story, reading and imprint stays in this browser
+   exactly as before, and nothing here reads or writes a profile. The session
+   is held under its own key beside the profiles and never inside one: Export
+   copies a profile to the clipboard, so a token written onto one would leave
+   with the first export, and validateProfile now refuses one by name.
+
+   AND EVERY CALL RESOLVES. A promise that rejects is a failure somebody has to
+   remember to catch, and a caller that forgets it is a button that stays
+   disabled for ever. authCall never rejects: a dropped connection, a refused
+   CORS preflight, a blocked host and a server that never answers all come back
+   as status 0, and the timer below turns "never answers" into an answer. The
+   file runs with no network at all, which is its ordinary state for most
+   people who download it, and nothing here may hang or throw because of that.
+   ============================================================ */
+/* THE ADDRESS IS PUBLIC AND IS NOT A SECRET. It is the Worker's own
+   workers.dev name, printed in HOSTING-SETUP.md, and a browser shows it to
+   anybody who opens the network tab. What must never be committed is a key,
+   and there is none on this side: the only credential is the person's own
+   session token, which the server hands back and this file keeps in their own
+   browser. A var so a gate can point it at a stub. */
+var AUTH_API='https://atuned-api.lance-o-powell.workers.dev';
+var AUTH_KEY='source.session';
+/* HOW LONG A REQUEST MAY TAKE BEFORE IT IS A FAILURE. A sign in runs a
+   deliberately slow hash on the server, so this is generous, and it is still
+   a ceiling: a request with none sits on "Checking with the server" for as
+   long as a dead connection takes to give up, which in a browser can be
+   minutes. */
+var AUTH_WAIT_MS=15000;
+/* THE SERVER'S OWN BOUNDS, mirrored so a password it will refuse is refused
+   here before anything is sent. Read off atuned/server/src/index.js on main,
+   30 September: signup requires 8 to MAX_PASSWORD, which is 200, and signin
+   refuses over 200. The email shape is the server's validEmail, character for
+   character, so this never passes an address the server refuses or refuses
+   one it would take. If the server moves either, the server's own refusal
+   still arrives and is shown; this only saves a round trip. */
+var AUTH_PW_MIN=8, AUTH_PW_MAX=200;
+var AUTH_MAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/* The session in memory, and whether the store has been read into it yet.
+   Held in memory as well as in the store because a browser that blocks
+   storage still deserves a sign in that lasts the visit, and says so. */
+var AUTH_S=null, AUTH_READ=false;
+/* READ ONCE THE STORE IS BOUND AND NOT BEFORE. ui/ui.js binds localStorage
+   near the end of the build, and a read before that meets the engine's no-op
+   store, which answers null. Caching that null would sign a person out for the
+   whole visit, so the store is only read, and the read only remembered, once
+   STORE_BOUND says there is a real one. Only the two fields a sign in needs
+   come back out: the token, and the email to print beside "Signed in as". */
+function authSession(){
+ if(!AUTH_READ&&typeof STORE_BOUND!=='undefined'&&STORE_BOUND){
+  AUTH_READ=true;
+  try{ var o=JSON.parse(STORE.get(AUTH_KEY)||'null');
+   if(o&&typeof o.token==='string'&&o.token&&typeof o.email==='string')
+    AUTH_S={token:o.token, email:o.email}; }
+  catch(e){ AUTH_S=null; } }
+ return AUTH_S;}
+/* True when the write landed, read back to prove it, the way storeSetAside in
+   engine/schema.js proves its own. A set that did not throw is not a set that
+   landed. */
+function authKeep(s){
+ AUTH_S=s; AUTH_READ=true;
+ if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ var txt=s?JSON.stringify(s):'';
+ try{ STORE.set(AUTH_KEY,txt); return STORE.get(AUTH_KEY)===txt; }catch(e){ return false; }}
+function authForget(){ return authKeep(null); }
+/* One request. Resolves to {ok, status, body, late}, and never rejects. */
+function authCall(method,path,body,token){
+ return new Promise(function(done){
+  var ctl=null, timer=null, over=false;
+  var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
+  if(typeof fetch!=='function'){ end({ok:false, status:0, body:null}); return; }
+  try{ ctl=new AbortController(); }catch(e){ ctl=null; }
+  timer=setTimeout(function(){
+   if(ctl)try{ ctl.abort(); }catch(e){}
+   end({ok:false, status:0, body:null, late:true}); },AUTH_WAIT_MS);
+  var h={};
+  if(body)h['Content-Type']='application/json';
+  if(token)h.Authorization='Bearer '+token;
+  var req;
+  /* credentials omit: the session is the bearer header and nothing else, so no
+     cookie of any host's is ever sent along with it. */
+  try{ req=fetch(AUTH_API+path,{method:method, headers:h,
+   body:body?JSON.stringify(body):undefined, signal:ctl?ctl.signal:undefined,
+   cache:'no-store', credentials:'omit'}); }
+  catch(e){ end({ok:false, status:0, body:null}); return; }
+  /* the body is read as text and parsed here, because a Cloudflare error page
+     in front of the Worker is HTML with a real status, and res.json() on it
+     would throw away the status along with the page. */
+  req.then(function(res){
+    return res.text().then(function(t){
+     var b=null; try{ b=JSON.parse(t); }catch(e){ b=null; }
+     return {ok:res.ok, status:res.status, body:b}; },
+    function(){ return {ok:res.ok, status:res.status, body:null}; }); },
+   function(){ return {ok:false, status:0, body:null}; })
+  .then(end,function(){ end({ok:false, status:0, body:null}); });});}
+/* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
+   ("too many attempts. wait fifteen minutes"), and they are the true reason,
+   so they are shown rather than rewritten. Rewriting them would also mean
+   typing the server's numbers into this file, the fifteen minutes and the
+   eight characters, which is the defect CLAUDE.md records a dozen times. */
+function authSay(s){
+ s=String(s||'').trim(); if(!s)return '';
+ s=s.replace(/(^|[.?]\s+)([a-z])/g,function(m,a,b){return a+b.toUpperCase();});
+ return /[.?]$/.test(s)?s:s+'.';}
+/* What went wrong, as one sentence. Three answers are this file's because
+   the server's word for them would mislead here: no connection has no server
+   words at all, a refused sign in must not say which of the two fields was
+   wrong, and a taken email has a route the server cannot name. */
+function authWhy(r,route){
+ if(r.late)return 'The server did not answer in time. Try again.';
+ if(!r.status)return 'Could not reach the server. Check the connection and try again.';
+ if(route==='signin'&&r.status===401)return 'No account matches that email and password.';
+ if(route==='signup'&&r.status===409)return 'An account already uses that email. Log in instead.';
+ var said=(r.body&&typeof r.body.error==='string')?authSay(r.body.error):'';
+ return said||('The server refused that, with code '+r.status+'.');}
+/* Refused here, before a request, when the server would refuse it anyway. A
+   new account is held to the length; an existing one is not, because an
+   account made under an older rule must still be able to sign in. */
+function authFieldsWhy(mail,pw,isNew){
+ if(!mail)return 'Enter an email address.';
+ if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';
+ if(pw===undefined)return '';
+ if(!pw)return 'Enter a password.';
+ if(pw.length>AUTH_PW_MAX)return 'A password can be at most '+AUTH_PW_MAX+' characters.';
+ if(isNew&&pw.length<AUTH_PW_MIN)return 'A password needs at least '+AUTH_PW_MIN+' characters.';
+ return '';}
+/* SIGN IN OR SIGN UP. Both routes answer the same shape, a token and the
+   account, so one function carries both. Resolves {ok, kept, say}: say is the
+   sentence to show, and kept is false when the browser would not hold the
+   session, which is still a sign in and is said as one that ends on reload. */
+function authEnter(route,mail,pw){
+ var bad=authFieldsWhy(mail,pw,route==='signup');
+ if(bad)return Promise.resolve({ok:false, say:bad});
+ return authCall('POST','/v1/auth/'+route,{email:mail, password:pw}).then(function(r){
+  var b=r.body||{}, acc=b.account||{};
+  if(!r.ok)return {ok:false, say:authWhy(r,route)};
+  if(typeof b.token!=='string'||!b.token)
+   return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
+  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase()};
+  var kept=authKeep(s);
+  return {ok:true, kept:kept,
+   say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
+    +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
+/* THE FORGOTTEN PASSWORD SAYS WHAT THE SERVER SAYS, AND NO MORE. The server
+   answers the same whether or not the address has an account, on purpose, so
+   that this form cannot be used to find out who has one. The sentence here is
+   one sentence for both cases for the same reason. It names the condition
+   rather than promising an email, because for an address with no account no
+   email is coming, and a line that promised one would be a lie to exactly the
+   person who typed the wrong address. */
+function authForgot(mail){
+ var bad=authFieldsWhy(mail);
+ if(bad)return Promise.resolve({ok:false, say:bad});
+ return authCall('POST','/v1/auth/forgot',{email:mail}).then(function(r){
+  if(r.ok)return {ok:true,
+   say:'If an account uses that email, a link to set a new password is on its way.'};
+  return {ok:false, say:authWhy(r,'forgot')};});}
+/* SIGN OUT ENDS IT HERE WHATEVER THE SERVER SAYS. A person who pressed Sign
+   out on a train has asked for this browser to stop being signed in, and
+   refusing that because the server is out of reach would keep a session they
+   asked to end. What the sentence then says is where it ended: here always,
+   and on the server only when the server confirmed it. A 401 is the server
+   saying the session had already ended, which is the same result. */
+function authSignOut(){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:true, say:'Not signed in.'});
+ return authCall('POST','/v1/auth/signout',null,s.token).then(function(r){
+  var gone=authForget();
+  if(!gone)return {ok:false,
+   say:'Signed out for this visit only. Storage would not take the change, so the sign in comes back on reload.'};
+  if(r.ok||r.status===401)return {ok:true, say:'Signed out.'};
+  return {ok:true, say:'Signed out on this browser. The server could not be reached, '
+   +'so its copy of the session runs until it expires.'};});}
+/* THE BOOT CHECK. A stored session is asked about once per boot, and only
+   when there is one: a person who never signed in makes no request at all,
+   which is what tests/design.js gate 7 watches. The answer decides one thing.
+   A 401 means the server no longer knows this session, from expiry or a
+   password reset elsewhere, and the browser stops claiming it. Anything else
+   that is not a yes, including no network, changes nothing and says the check
+   did not happen, because being offline is not being signed out. */
+function authCheck(){
+ var s=authSession();
+ if(!s)return Promise.resolve(null);
+ return authCall('GET','/v1/me',null,s.token).then(function(r){
+  var acc=r.body&&r.body.account;
+  var redraw=function(){
+   if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
+    &&typeof renderAccount==='function')renderAccount(); };
+  if(r.ok&&acc&&typeof acc.email==='string'){
+   if(acc.email!==s.email){ authKeep({token:s.token, email:acc.email}); redraw(); }
+   return 'ok';}
+  if(r.status===401){
+   authForget(); redraw();
+   status('Signed out. The server has ended the sign in on this browser. Log in again from Account.','fail');
+   return 'ended';}
+  /* two sentences, because a server that answered with an error was reached,
+     and saying it was not would send somebody to check a connection that works */
+  status(r.status?'The server could not check this sign in. It stays on this browser.'
+   :'The server could not be reached, so this sign in was not checked. It stays on this browser.');
+  return 'unchecked';});}
+
+try{window.__at&&window.__at('ui/auth.js');}catch(e){}
+/* ============================================================
    THE ACCOUNT AREA. Six sections, one column, no rails.
 
    Ruled by the owner: "our profile page is non-standard, I want for now go out
@@ -43315,21 +43552,32 @@ function accAccount(){
  var nm=[w.first,w.middle,w.last].filter(function(x){return x&&x.trim();}).join(' ');
  var born=[bn.date,(bn.timeUnknown?'time not known':bn.time),bn.place,bn.zone]
   .filter(function(x){return x;}).join(' · ');
- /* SIGN IN, AS A SHELL THAT SAYS SO. Round IA, his words: "I need the login
-    page, I need it wired in". There is nothing to sign in to yet. The record
-    store is not chosen (TASKS.md 2.1, Cloudflare or Supabase), the repository
-    is public, and no account exists anywhere, so a working sign in is not a
-    thing this file can build around. The fields are real, Continue is real,
-    and what Continue does is say that plainly through status(), because a
-    control never claims success before it has it (CLAUDE.md).
+ /* SIGN IN. Round IA, his words: "I need the login page, I need it wired in".
+    This was a shell that said so, because there was nothing to sign in to:
+    Continue said "Accounts are not live yet" and cleared the password. The
+    reboot-os Worker deployed on 30 September and this goes to it now, through
+    ui/auth.js, the one file that makes a request.
 
-    It stood last on this section as three stubs. It goes first now: a sign
-    in is the first thing an account page is for, and it is what he asked to
-    look at. Nothing typed is kept: the password is cleared on every press and
-    neither field is written to the record, storage or the outbox. The footer
-    says so, which is a disclosure and survives the rule against footers that
-    describe their own controls. */
- var h=accGroup('Sign In',
+    It goes first on this section: a sign in is the first thing an account
+    page is for, and it is what he asked to look at. Signed out, it is the
+    form, and Create account is a row of its own under it rather than a second
+    button beside Continue, because an action is one of the six row types and
+    a row carrying two actions would be a seventh. Signed in, it is the email
+    and Sign out, which returns the row the stubs took away while nothing
+    could reach it.
+
+    THE FOOTER IS THE DISCLOSURE AND IT CHANGED BECAUSE THE FACT DID. "Nothing
+    typed here is sent or kept" was true of the shell and is false now: the
+    email and password go to the server. What stays true is the part a person
+    most needs, that a sign in does not copy their record anywhere, so both
+    footers say that. Neither field is written to the record or the outbox;
+    the session is kept by ui/auth.js under its own key in this browser. */
+ var ses=(typeof authSession==='function')?authSession():null;
+ var h=ses?accGroup('Sign In',
+   accRow('Signed in as',ses.email)
+   +accAct('Sign out of this browser','acout',{btn:'Sign out'}),
+   'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
+  :accGroup('Sign In',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
    +'<div class="ac-row ac-edit"><label class="ac-rl" for="acmail">Email</label>'
@@ -43338,8 +43586,9 @@ function accAccount(){
    +'<input type="password" id="acpass" autocomplete="current-password"></div>'
    +'<div class="ac-row ac-act"><span class="ac-rl"></span>'
    +'<button class="btn pri" id="acgo" type="submit">Continue</button></div>'
-   +'</form>',
-   'Nothing typed here is sent or kept.');
+   +'</form>'
+   +accAct('No account yet','acnew',{btn:'Create account'}),
+   'Your email and password go to the account server. Your stories and readings stay on this device.');
  /* THE NAME IS EDITED IN ONE PLACE, and since round JZ that place is Profiles,
     where the list it has to be unique in is on the same screen. This row said
     "Profile name" as an input, and two editors for one field is two answers to
@@ -43386,7 +43635,9 @@ function accAccount(){
     itself, and CLAUDE.md names them as the ones that must be visible. */
  /* Sign In moved to the top of this section in round IA, as a form. Key and
     Sign out went with the stubs: a sign out row under a sign in that cannot
-    succeed names a state nobody can reach. */
+    succeed names a state nobody can reach. Sign out is back, in the Sign In
+    group, since 30 September, when the state became reachable. Key is not:
+    nothing on this side holds one. */
  return h;}
 
 /* ---------- 4.1b profiles. round JZ ----------
@@ -43547,19 +43798,29 @@ function accDisplay(){
  return h;}
 
 /* ---------- 4.3 security ---------- */
+/* SIGNED IN, FOUR ROWS STOP BEING TRUE AND ONE DOES NOT. The method and the
+   password are real once a person has signed in. Sessions and devices said
+   "this browser only", which is false for an account any browser can sign in
+   to, and the activity row said "nothing to show" while the server keeps a
+   log of every sign in: neither has a route to read it yet, so both say not
+   built. Two factor stays not set whatever happens here, round EZ: it is his
+   systems engineer's to design. The lead stays exactly as it is in both
+   states, because it is still true: a sign in names an account and does not
+   lock the record, which is held in this browser either way. */
 function accSecurity(){
+ var ses=(typeof authSession==='function')?authSession():null;
  return '<p class="ac-lead">Nothing about this record is protected by a password '
   +'today. It is held in this browser, so anybody with this browser has it.</p>'
   +accGroup('How This Is Protected',
-   accRow('Sign in method','none, this browser only')
-   +accStub('Password','not set')
+   accRow('Sign in method',ses?'email and password':'none, this browser only')
+   +(ses?accRow('Password','set'):accStub('Password','not set'))
    +accStub('Two factor','not set')
-   +accStub('Sessions and devices','this browser only')
-   +accStub('Recent account activity','nothing to show'),
+   +accStub('Sessions and devices',ses?'not built yet':'this browser only')
+   +accStub('Recent account activity',ses?'not built yet':'nothing to show'),
    /* the design of a sign in that does not exist, and "address" meaning an
       email in a product where an address is a place in the body. One word
       per concept. The design lives in DECISIONS.md, not on this screen. */
-   'Every row here waits on sign in.');}
+   ses?'':'Every row here waits on sign in.');}
 
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
@@ -43699,16 +43960,14 @@ function accWire(){
   b.onclick=function(){accProfOpen(b.getAttribute('data-pfo'));};});
  host.querySelectorAll('[data-pfd]').forEach(function(b){
   b.onclick=function(){accProfDelete(b.getAttribute('data-pfd'));};});
- /* a form, so Enter in either field is the same press as Continue. Every
-    press says the same true thing and clears the password, whatever was
-    typed: checking the shape of an email first would be a second refusal
-    in front of the one that is actually true. 'fail' so it stays on screen
-    until something replaces it, which is how status() holds a refusal. */
+ /* a form, so Enter in either field is the same press as Continue. This said
+    "Accounts are not live yet" on every press and cleared the password,
+    because there was nothing to send it to. There is now, so the press asks,
+    and the answer is what gets said: accEnter, below. */
  var si=$('acsignin');
- if(si)si.onsubmit=function(e){
-  e.preventDefault();
-  var pw=$('acpass'); if(pw)pw.value='';
-  status('Accounts are not live yet. Nothing was sent.','fail');};
+ if(si)si.onsubmit=function(e){ e.preventDefault(); accEnter('signin'); };
+ var an=$('acnew'); if(an)an.onclick=function(){ accEnter('signup'); };
+ var ao=$('acout'); if(ao)ao.onclick=function(){ accSignOut(); };
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
@@ -43749,6 +44008,34 @@ function accWire(){
  var ar=$('acrate');  if(ar)ar.onclick=function(){obCompose('rating');};
  var as=$('acsurv');  if(as)as.onclick=function(){obCompose('feedback');};
  planWire();}
+/* THE SIGN IN PRESSES. The request and every sentence it can end in are
+   ui/auth.js's; what is here is the waiting and the redraw. A signed in
+   section is a different set of rows, so a yes redraws the section and a no
+   leaves the form exactly as it was, typed values included, so the fix is one
+   field. The redraw comes before the status line, because renderAccount does
+   not touch the status line and the order makes the sentence the last thing
+   written. Both controls wait while a request is out, so a second press
+   cannot send a second request under the first one's answer. */
+var ACC_BUSY=false;
+function accBusy(on){
+ ['acgo','acnew','acout'].forEach(function(id){ var b=$(id); if(b)b.disabled=!!on; });}
+function accEnter(route){
+ if(ACC_BUSY||typeof authEnter!=='function')return false;
+ var m=$('acmail'), pw=$('acpass');
+ ACC_BUSY=true; accBusy(true);
+ status(route==='signup'?'Creating the account.':'Checking with the server.');
+ authEnter(route,m?m.value.trim():'',pw?pw.value:'').then(function(r){
+  ACC_BUSY=false;
+  if(r.ok){ renderAccount(); status(r.say,r.kept?'ok':'fail'); return; }
+  accBusy(false); status(r.say,'fail'); });
+ return true;}
+function accSignOut(){
+ if(ACC_BUSY||typeof authSignOut!=='function')return false;
+ ACC_BUSY=true; accBusy(true);
+ status('Signing out.');
+ authSignOut().then(function(r){
+  ACC_BUSY=false; renderAccount(); status(r.say,r.ok?'ok':'fail'); });
+ return true;}
 /* ONE WRITER FOR THE UI PREFERENCES ON THE PROFILE, so a missing ui object on
    an older profile is filled here rather than at nine call sites. */
 function uiSet(k,v){
@@ -45313,29 +45600,46 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
    the funnel is. And then, keeping it simple while the real flow is
    designed: "let's keep it locally."
 
-   ROUND MP REDESIGNED THE FIELDS AND KEPT THE HONESTY. Username,
-   email, password, a suggested strong password and a forgot
-   password link are all real controls now, "the login needs the
-   typical login stuff." Two factor and OAuth are named in the same
-   round and are not here: each needs a real provider and a decision
-   only he can make about which ones, so they are queued rather than
-   guessed at, not built silently under cover of "typical login
-   stuff." Checked directly against the real server this round,
-   `reboot-os`'s own `atuned-api` Worker: its wrangler.toml still
-   carries a placeholder database id and its own deploy has never
-   once succeeded, so there is no live, reachable server to sign
-   into yet. This stays local for that reason as much as for his
-   own "let's keep it locally," and pressing Log in is still what a
-   signed in state will look like once a real one exists, the same
-   honesty account.js already carries for its own sign in shell.
+   ROUND MP REDESIGNED THE FIELDS AND KEPT THE HONESTY. Email,
+   password, a suggested strong password and a forgot password link
+   are real controls, "the login needs the typical login stuff." Two
+   factor and OAuth are named in the same round and are not here:
+   each needs a real provider and a decision only he can make about
+   which ones, and two factor is his systems engineer's by round EZ,
+   so they are queued rather than built silently under cover of
+   "typical login stuff."
+
+   AND ON 30 SEPTEMBER IT SIGNS IN FOR REAL. This paragraph used to
+   say the reboot-os Worker had never deployed and so there was
+   nothing to sign in to. It deployed that night, and he ordered this
+   finished first: "finish the login first." Log in, Create account
+   and the forgotten password now go to it through ui/auth.js, the
+   one file that makes a request. Three things moved with that.
+
+   The username field is gone. The server keys an account on the
+   email and takes no username anywhere, so a field it ignores was a
+   question asked for nothing and an answer thrown away in silence.
+
+   Log in no longer lets anything through. A door that now checks
+   needs a way past it that does not, or a person with no network or
+   no account is locked out of an instrument that runs entirely on
+   their own device: Continue without an account is that way, and it
+   is exactly what pressing Log in used to do.
+
+   And a session that is already held skips the door, loginBoot
+   below. A login screen shown to somebody who is signed in asks for
+   a password the browser is already holding.
+
+   Nothing here syncs. A sign in names an account; every story and
+   reading stays in this browser, as before.
 
    THE ONE SENTENCE THAT SAID SO OUT LOUD IS GONE, his own ruling:
    "get rid of the text that says this is a local build, nothing
    typed here is sent anywhere or checked against anything." The
-   honesty moves into the forgot password panel instead, the one
-   place here that would otherwise look broken rather than unbuilt,
-   and into this comment, where a person reading the code still
-   finds it.
+   honesty moved into the forgot password panel, which said there was
+   no account behind it yet, and that panel is real now as well. What
+   is left to be honest about is said by the result of each press, in
+   the card and on the status line, never before it.
 
    THE SEQUENCE IS THE DEFAULT NOW, reversing OB_AUTO's own September
    ruling, "let's turn off onboarding for now," for this one path
@@ -45344,7 +45648,7 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
    step below no longer reads it. What reads it now is DEV_SKIP, and
    the default is to show the door, his own words this round: "if
    it's not pressed, then it goes to the sequence." */
-var LOGIN={open:false,reset:false};
+var LOGIN={open:false,reset:false,busy:false};
 /* THE DEVELOPER SKIP. His words: "have a switch for that loading
    screen to turn onboarding tutorial off, so I can just bypass
    straight to the dashboard, just put it as a developer button, on
@@ -45393,37 +45697,65 @@ function loginSuggestPassword(){
  while(out.length<n) out.push(all[rnd(all.length)]);
  for(var i=out.length-1;i>0;i--){ var j=rnd(i+1); var t=out[i]; out[i]=out[j]; out[j]=t; }
  return out.join('');}
-function loginCard(){
+/* The email a person typed is carried between the two cards, so going to the
+   forgotten password and back does not make them type it a second time. */
+function loginCard(mail){
  return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Log in">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
   +'<div class="ob-scroll">'
   +'<span class="pm-eye">Welcome</span>'
   +'<h2 class="ob-h">Log in</h2>'
   +'<form id="loginform" novalidate>'
-  +'<div class="login-row"><label class="login-l" for="loginuser">Username</label>'
-  +'<input type="text" id="loginuser" autocomplete="username" spellcheck="false"></div>'
   +'<div class="login-row"><label class="login-l" for="loginmail">Email</label>'
-  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false"></div>'
+  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
+  /* current-password, because the person pressing Log in has one: new-password
+     told a password manager to offer a fresh one instead of filling the saved
+     one, which was right for a card nothing checked and wrong for one that does.
+     Suggest still fills the field for somebody about to press Create account. */
   +'<div class="login-row"><label class="login-l" for="loginpass">Password</label>'
-  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="new-password">'
+  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="current-password">'
   +'<button type="button" class="login-pwsug" id="loginsug">Suggest</button></div>'
   +'<span class="login-hint" id="loginpwhint" hidden></span></div>'
   +'<button type="button" class="login-forgot" id="loginforgot">Forgot your password?</button>'
   +'</form>'
-  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button></div>'
+  +'<p class="login-msg" id="loginmsg"></p>'
+  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
+  +'<button type="button" class="btn" id="loginb-new">Create account</button>'
+  +'<button type="button" class="btn" id="loginb-skip">Continue without an account</button></div>'
   +loginDevOptions()
   +'</div></div>';}
-function loginResetCard(){
+function loginResetCard(mail){
  return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Reset your password">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
   +'<div class="ob-scroll">'
   +'<span class="pm-eye">Password reset</span>'
   +'<h2 class="ob-h">Reset your password</h2>'
-  +'<p class="ob-p">This is a local build. There is no account behind it yet, '
-  +'so there is nothing to send a reset link to. This will work once a real '
-  +'sign in does.</p>'
-  +'<div class="ob-acts"><button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
+  +'<p class="ob-p">Enter the email the account uses. A link to set a new password goes there.</p>'
+  +'<form id="loginresetf" novalidate>'
+  +'<div class="login-row"><label class="login-l" for="loginrmail">Email</label>'
+  +'<input type="email" id="loginrmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
+  +'</form>'
+  +'<p class="login-msg" id="loginmsg"></p>'
+  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-send">Send the link</button>'
+  +'<button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
   +'</div></div>';}
+/* THE CARD SAYS IT, AND SO DOES STATUS. status() is the one writer every
+   result goes through, and it is the live region a screen reader hears; but
+   the status line sits in the top bar, under this card, which covers the
+   whole screen. A refusal written only there is a refusal nobody sighted can
+   see. So the card carries the same sentence on its own line, and the status
+   line is told too, which is also what is still on screen when the card
+   closes. A line that is only progress is the card's alone: nothing was
+   written, so there is nothing for the status line to report. */
+function loginSay(msg,kind,own){
+ var m=document.getElementById('loginmsg');
+ if(m){ m.textContent=msg||''; if(kind)m.setAttribute('data-kind',kind); else m.removeAttribute('data-kind'); }
+ if(!own&&typeof status==='function')status(msg,kind);}
+/* Every press in the card waits while a request is out, so a second press
+   never sends a second request under the first one's answer. */
+function loginBusy(on){
+ var h=document.getElementById('login'); if(!h)return;
+ h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
 /* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
    testing control, not a thing a stranger meeting the funnel needs to
    see open by default. */
@@ -45442,6 +45774,9 @@ function loginOpen(){
 function loginWire(h){
  var f=h.querySelector('input'); if(f)f.focus();
  var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
+ var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
+ var sk=document.getElementById('loginb-skip');
+ if(sk)sk.onclick=function(){ loginClose(); loginEnter(); };
  var form=document.getElementById('loginform');
  if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
  var sug=document.getElementById('loginsug');
@@ -45452,20 +45787,62 @@ function loginWire(h){
   if(hint){ hint.hidden=false; hint.textContent='Suggested: '+pw; } };
  var forgot=document.getElementById('loginforgot');
  if(forgot)forgot.onclick=function(){
-  LOGIN.reset=true; h.innerHTML=loginResetCard();
+  var m=document.getElementById('loginmail');
+  LOGIN.reset=true; h.innerHTML=loginResetCard(m?m.value.trim():'');
+  var rm=document.getElementById('loginrmail');
   var back=document.getElementById('loginb-back');
-  if(back)back.onclick=function(){ LOGIN.reset=false; h.innerHTML=loginCard(); loginWire(h); };
-  var f2=h.querySelector('button'); if(f2)f2.focus(); };
+  if(back)back.onclick=function(){ LOGIN.reset=false;
+   h.innerHTML=loginCard(rm?rm.value.trim():''); loginWire(h); };
+  var send=document.getElementById('loginb-send');
+  if(send)send.onclick=function(){ loginForgot(); };
+  var rf=document.getElementById('loginresetf');
+  if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
+  if(rm)rm.focus(); };
  var devob=document.getElementById('devob');
  if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
-/* THE FAKE SIGN IN. Anything counts, including nothing: there is no
-   account to fail against yet, and a control that refused an empty
-   field here would be enforcing a rule this build does not keep. */
-function loginGo(){
- loginClose();
+/* THE REAL SIGN IN. This was the fake one, "anything counts, including
+   nothing: there is no account to fail against yet," and there is one now.
+   The card stays open until the server has answered, and closes only on a
+   yes: a card that closed first and then reported a refusal would have
+   claimed a sign in it did not have, which is the one thing CLAUDE.md says a
+   control may never do. On a no, the card keeps what was typed, so the fix is
+   one field and not two. */
+function loginGo(){ loginSubmit('signin'); }
+function loginSubmit(route){
+ if(LOGIN.busy)return;
+ var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
+ LOGIN.busy=true; loginBusy(true);
+ loginSay(route==='signup'?'Creating the account.':'Checking with the server.','',true);
+ authEnter(route,m?m.value.trim():'',p?p.value:'').then(function(r){
+  LOGIN.busy=false; loginBusy(false);
+  if(!r.ok){ loginSay(r.say,'fail'); return; }
+  loginClose(); status(r.say,r.kept?'ok':'fail'); loginEnter(); });}
+/* The forgotten password, with the one sentence authForgot returns for an
+   address with an account and for one without. 'ok', not 'fail', on the
+   status line: the request landed, which is all this press can know. */
+function loginForgot(){
+ if(LOGIN.busy)return;
+ var m=document.getElementById('loginrmail');
+ LOGIN.busy=true; loginBusy(true);
+ loginSay('Sending the request.','',true);
+ authForgot(m?m.value.trim():'').then(function(r){
+  LOGIN.busy=false; loginBusy(false);
+  loginSay(r.say,r.ok?'ok':'fail'); });}
+/* A HELD SESSION SKIPS THE DOOR, and the boot asks the server whether it is
+   still good (authCheck, ui/auth.js) whatever DEV_SKIP says, because the
+   check is about the account and not about the door. It makes no request
+   when nothing is held, so the gates, which never sign in, make none. */
+function loginBoot(){
+ if(typeof authCheck==='function')authCheck();
+ if(DEV_SKIP)return;
+ if(typeof authSession==='function'&&authSession()){ loginEnter(); return; }
+ loginOpen();}
+/* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
+   a sign in, a new account, or continuing without one. */
+function loginEnter(){
  /* the tutorial has no flow behind it yet; its own switch is disabled in
     the UI, so this branch only ever runs once something real wires
     tutorialOpen in. */
@@ -47159,14 +47536,15 @@ step('opening surface',function(){setTab(TAB.FIELD);});
    necessarily been pressed yet at the moment this line first runs.
 
    It is a step like the others, so a login that fails to open costs the
-   login and not the instrument behind it. */
+   login and not the instrument behind it.
+
+   loginBoot reads DEV_SKIP now, at the same moment this did, and adds the
+   one decision this step could not make on its own since sign in went live
+   on 30 September: a person already signed in is not shown the door. */
 step('login',function(){
- if(typeof loginOpen!=='function')return;
+ if(typeof loginBoot!=='function')return;
  setTimeout(function(){
-  try{
-   if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return;
-   loginOpen();
-  }catch(e){}
+  try{ loginBoot(); }catch(e){}
  },5600);});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
@@ -47197,5 +47575,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003086802"></div>
+<div id="eof" hidden data-len="003110072"></div>
 </body></html>

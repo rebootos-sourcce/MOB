@@ -100,21 +100,32 @@ function accAccount(){
  var nm=[w.first,w.middle,w.last].filter(function(x){return x&&x.trim();}).join(' ');
  var born=[bn.date,(bn.timeUnknown?'time not known':bn.time),bn.place,bn.zone]
   .filter(function(x){return x;}).join(' · ');
- /* SIGN IN, AS A SHELL THAT SAYS SO. Round IA, his words: "I need the login
-    page, I need it wired in". There is nothing to sign in to yet. The record
-    store is not chosen (TASKS.md 2.1, Cloudflare or Supabase), the repository
-    is public, and no account exists anywhere, so a working sign in is not a
-    thing this file can build around. The fields are real, Continue is real,
-    and what Continue does is say that plainly through status(), because a
-    control never claims success before it has it (CLAUDE.md).
+ /* SIGN IN. Round IA, his words: "I need the login page, I need it wired in".
+    This was a shell that said so, because there was nothing to sign in to:
+    Continue said "Accounts are not live yet" and cleared the password. The
+    reboot-os Worker deployed on 30 September and this goes to it now, through
+    ui/auth.js, the one file that makes a request.
 
-    It stood last on this section as three stubs. It goes first now: a sign
-    in is the first thing an account page is for, and it is what he asked to
-    look at. Nothing typed is kept: the password is cleared on every press and
-    neither field is written to the record, storage or the outbox. The footer
-    says so, which is a disclosure and survives the rule against footers that
-    describe their own controls. */
- var h=accGroup('Sign In',
+    It goes first on this section: a sign in is the first thing an account
+    page is for, and it is what he asked to look at. Signed out, it is the
+    form, and Create account is a row of its own under it rather than a second
+    button beside Continue, because an action is one of the six row types and
+    a row carrying two actions would be a seventh. Signed in, it is the email
+    and Sign out, which returns the row the stubs took away while nothing
+    could reach it.
+
+    THE FOOTER IS THE DISCLOSURE AND IT CHANGED BECAUSE THE FACT DID. "Nothing
+    typed here is sent or kept" was true of the shell and is false now: the
+    email and password go to the server. What stays true is the part a person
+    most needs, that a sign in does not copy their record anywhere, so both
+    footers say that. Neither field is written to the record or the outbox;
+    the session is kept by ui/auth.js under its own key in this browser. */
+ var ses=(typeof authSession==='function')?authSession():null;
+ var h=ses?accGroup('Sign In',
+   accRow('Signed in as',ses.email)
+   +accAct('Sign out of this browser','acout',{btn:'Sign out'}),
+   'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
+  :accGroup('Sign In',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
    +'<div class="ac-row ac-edit"><label class="ac-rl" for="acmail">Email</label>'
@@ -123,8 +134,9 @@ function accAccount(){
    +'<input type="password" id="acpass" autocomplete="current-password"></div>'
    +'<div class="ac-row ac-act"><span class="ac-rl"></span>'
    +'<button class="btn pri" id="acgo" type="submit">Continue</button></div>'
-   +'</form>',
-   'Nothing typed here is sent or kept.');
+   +'</form>'
+   +accAct('No account yet','acnew',{btn:'Create account'}),
+   'Your email and password go to the account server. Your stories and readings stay on this device.');
  /* THE NAME IS EDITED IN ONE PLACE, and since round JZ that place is Profiles,
     where the list it has to be unique in is on the same screen. This row said
     "Profile name" as an input, and two editors for one field is two answers to
@@ -171,7 +183,9 @@ function accAccount(){
     itself, and CLAUDE.md names them as the ones that must be visible. */
  /* Sign In moved to the top of this section in round IA, as a form. Key and
     Sign out went with the stubs: a sign out row under a sign in that cannot
-    succeed names a state nobody can reach. */
+    succeed names a state nobody can reach. Sign out is back, in the Sign In
+    group, since 30 September, when the state became reachable. Key is not:
+    nothing on this side holds one. */
  return h;}
 
 /* ---------- 4.1b profiles. round JZ ----------
@@ -332,19 +346,29 @@ function accDisplay(){
  return h;}
 
 /* ---------- 4.3 security ---------- */
+/* SIGNED IN, FOUR ROWS STOP BEING TRUE AND ONE DOES NOT. The method and the
+   password are real once a person has signed in. Sessions and devices said
+   "this browser only", which is false for an account any browser can sign in
+   to, and the activity row said "nothing to show" while the server keeps a
+   log of every sign in: neither has a route to read it yet, so both say not
+   built. Two factor stays not set whatever happens here, round EZ: it is his
+   systems engineer's to design. The lead stays exactly as it is in both
+   states, because it is still true: a sign in names an account and does not
+   lock the record, which is held in this browser either way. */
 function accSecurity(){
+ var ses=(typeof authSession==='function')?authSession():null;
  return '<p class="ac-lead">Nothing about this record is protected by a password '
   +'today. It is held in this browser, so anybody with this browser has it.</p>'
   +accGroup('How This Is Protected',
-   accRow('Sign in method','none, this browser only')
-   +accStub('Password','not set')
+   accRow('Sign in method',ses?'email and password':'none, this browser only')
+   +(ses?accRow('Password','set'):accStub('Password','not set'))
    +accStub('Two factor','not set')
-   +accStub('Sessions and devices','this browser only')
-   +accStub('Recent account activity','nothing to show'),
+   +accStub('Sessions and devices',ses?'not built yet':'this browser only')
+   +accStub('Recent account activity',ses?'not built yet':'nothing to show'),
    /* the design of a sign in that does not exist, and "address" meaning an
       email in a product where an address is a place in the body. One word
       per concept. The design lives in DECISIONS.md, not on this screen. */
-   'Every row here waits on sign in.');}
+   ses?'':'Every row here waits on sign in.');}
 
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
@@ -484,16 +508,14 @@ function accWire(){
   b.onclick=function(){accProfOpen(b.getAttribute('data-pfo'));};});
  host.querySelectorAll('[data-pfd]').forEach(function(b){
   b.onclick=function(){accProfDelete(b.getAttribute('data-pfd'));};});
- /* a form, so Enter in either field is the same press as Continue. Every
-    press says the same true thing and clears the password, whatever was
-    typed: checking the shape of an email first would be a second refusal
-    in front of the one that is actually true. 'fail' so it stays on screen
-    until something replaces it, which is how status() holds a refusal. */
+ /* a form, so Enter in either field is the same press as Continue. This said
+    "Accounts are not live yet" on every press and cleared the password,
+    because there was nothing to send it to. There is now, so the press asks,
+    and the answer is what gets said: accEnter, below. */
  var si=$('acsignin');
- if(si)si.onsubmit=function(e){
-  e.preventDefault();
-  var pw=$('acpass'); if(pw)pw.value='';
-  status('Accounts are not live yet. Nothing was sent.','fail');};
+ if(si)si.onsubmit=function(e){ e.preventDefault(); accEnter('signin'); };
+ var an=$('acnew'); if(an)an.onclick=function(){ accEnter('signup'); };
+ var ao=$('acout'); if(ao)ao.onclick=function(){ accSignOut(); };
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
@@ -534,6 +556,34 @@ function accWire(){
  var ar=$('acrate');  if(ar)ar.onclick=function(){obCompose('rating');};
  var as=$('acsurv');  if(as)as.onclick=function(){obCompose('feedback');};
  planWire();}
+/* THE SIGN IN PRESSES. The request and every sentence it can end in are
+   ui/auth.js's; what is here is the waiting and the redraw. A signed in
+   section is a different set of rows, so a yes redraws the section and a no
+   leaves the form exactly as it was, typed values included, so the fix is one
+   field. The redraw comes before the status line, because renderAccount does
+   not touch the status line and the order makes the sentence the last thing
+   written. Both controls wait while a request is out, so a second press
+   cannot send a second request under the first one's answer. */
+var ACC_BUSY=false;
+function accBusy(on){
+ ['acgo','acnew','acout'].forEach(function(id){ var b=$(id); if(b)b.disabled=!!on; });}
+function accEnter(route){
+ if(ACC_BUSY||typeof authEnter!=='function')return false;
+ var m=$('acmail'), pw=$('acpass');
+ ACC_BUSY=true; accBusy(true);
+ status(route==='signup'?'Creating the account.':'Checking with the server.');
+ authEnter(route,m?m.value.trim():'',pw?pw.value:'').then(function(r){
+  ACC_BUSY=false;
+  if(r.ok){ renderAccount(); status(r.say,r.kept?'ok':'fail'); return; }
+  accBusy(false); status(r.say,'fail'); });
+ return true;}
+function accSignOut(){
+ if(ACC_BUSY||typeof authSignOut!=='function')return false;
+ ACC_BUSY=true; accBusy(true);
+ status('Signing out.');
+ authSignOut().then(function(r){
+  ACC_BUSY=false; renderAccount(); status(r.say,r.ok?'ok':'fail'); });
+ return true;}
 /* ONE WRITER FOR THE UI PREFERENCES ON THE PROFILE, so a missing ui object on
    an older profile is filled here rather than at nine call sites. */
 function uiSet(k,v){

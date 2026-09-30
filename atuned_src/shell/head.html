@@ -5681,6 +5681,14 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  font-size:13px;font-family:var(--sans);text-decoration:underline;cursor:pointer;
  padding:2px 0;margin:-6px 0 4px}
 .login-forgot:hover{color:var(--ink)}
+/* THE CARD'S OWN RESULT LINE, 30 September, when Log in started asking a real
+   server. The status line sits in the top bar under this full screen card, so
+   a refusal written only there could not be seen. Same size and same refusal
+   colour as #status, so the two read as one message in two places. Empty, it
+   takes no room, the way #status:empty does. */
+.login-msg{margin:4px 0 0;font-size:13px;line-height:1.5;color:var(--mid)}
+.login-msg:empty{display:none}
+.login-msg[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */

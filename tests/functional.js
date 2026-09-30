@@ -3054,42 +3054,194 @@ console.log('\n=== the compass from above, and a release moves it ===');
  ok(o.axdOk,'the inverted pole is the seat token at an opacity: '+o.axd);
  ok(o.dull==='undefined','the mixed grey is gone');}
 
-console.log('\n=== sign in says it is not live, and keeps nothing ===');
-/* Round IA, a sign in shell with no store behind it. What is held is the one
-   thing that makes a shell honest rather than a mockup that lies: pressing
-   Continue with real looking input never claims a sign in, says why through
-   the shared status writer, clears the password, and writes neither field to
-   the record or to storage. */
+console.log('\n=== sign in, against a stub of the real server, and keeps nothing on the record ===');
+/* Round IA was a shell that said accounts were not live. On 30 September the
+   reboot-os Worker went live and sign in goes to it, through ui/auth.js. This
+   gate never touches that server: it holds real account data and a sign in
+   limit per address, and a gate that ran against it would lock out whoever
+   shares the address. It stands up a stub instead, on this machine, that
+   answers the Worker's own routes with the Worker's own CORS headers, read off
+   atuned/server/src/index.js on main. So what runs is the real fetch, the real
+   preflight a downloaded file sends, from origin null with an Authorization
+   header, and the real timer. The stub only replaces the database.
+
+   What is held: every failure says what failed on the status line and holds
+   there, and in the login card as well, since that card covers the status
+   line; a refusal the server would give is given before anything is sent; a
+   sign in lands the session under its own key and never on the profile, so an
+   export cannot carry it; the boot check signs a person out on a 401 and not
+   on a dropped connection; and sign out ends it here even when the server is
+   out of reach. */
 {
+ const http=require('http');
+ const CORS={'access-control-allow-origin':'*','access-control-allow-headers':'authorization, content-type',
+  'access-control-allow-methods':'GET, POST, PUT, DELETE, OPTIONS'};
+ const seen=[];
+ const ACC={id:'acc_probe',research_id:'rsh_probe',plan:1,email:'probe@example.invalid'};
+ const stub=http.createServer((req,res)=>{
+  let raw=''; req.on('data',d=>raw+=d); req.on('end',()=>{
+   const send=(st,b)=>{res.writeHead(st,Object.assign({'content-type':'application/json'},CORS)); res.end(JSON.stringify(b));};
+   if(req.method==='OPTIONS'){res.writeHead(204,CORS); res.end(); return;}
+   let b={}; try{b=JSON.parse(raw||'{}');}catch(e){}
+   const auth=req.headers.authorization||'';
+   seen.push({m:req.method,u:req.url,email:b.email||'',auth:auth,origin:req.headers.origin||''});
+   const k=req.method+' '+req.url;
+   if(k==='POST /v1/auth/signin'){
+    if(b.email==='slow@example.invalid')return;                 /* never answers */
+    if(b.email==='many@example.invalid')return send(429,{error:'too many attempts. wait fifteen minutes'});
+    if(b.email===ACC.email&&b.password==='right-password-1')return send(200,{token:'t-probe',account:ACC});
+    return send(401,{error:'no account matches'});}
+   if(k==='POST /v1/auth/signup'){
+    if(b.email==='taken@example.invalid')return send(409,{error:'an account with this email exists'});
+    return send(201,{token:'t-new',account:Object.assign({},ACC,{email:b.email})});}
+   if(k==='POST /v1/auth/forgot')return send(200,{ok:true});
+   if(k==='POST /v1/auth/signout')return auth==='Bearer t-probe'?send(200,{ok:true}):send(401,{error:'sign in'});
+   if(k==='GET /v1/me')return auth==='Bearer t-probe'?send(200,{account:ACC,consent:{share:false,at:null,v:1},records:0,entitlement:null})
+    :send(401,{error:'sign in'});
+   send(404,{error:'no such route'});});});
+ await new Promise(r=>stub.listen(0,'127.0.0.1',r));
+ const API='http://127.0.0.1:'+stub.address().port;
  const sp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const spErr=[]; sp.on('pageerror',e=>spErr.push(e.message));
  await sp.goto(FILE,{waitUntil:'load'}); await booted(sp);
- const o=await sp.evaluate(async()=>{
-  const o={};
-  loadP(0); ACC_OPEN='account'; setTab(TAB.SETTINGS); render();
-  const f=document.getElementById('acsignin'), m=document.getElementById('acmail'),
-   pw=document.getElementById('acpass'), go=document.getElementById('acgo');
-  o.form=!!(f&&m&&pw&&go); if(!o.form)return o;
-  o.types=m.type+'/'+pw.type;
+ const o=await sp.evaluate(async(API)=>{
+  const o={}, wait=ms=>new Promise(r=>setTimeout(r,ms));
+  /* the boot's own login step fires at 5.6 seconds and runs the session check,
+     so everything below starts after it, or it would race a stored session */
+  while(performance.now()<6200)await wait(50);
+  const said=()=>{const s=document.getElementById('status');return [s.textContent,s.getAttribute('data-kind')];};
+  const idle=async()=>{for(let i=0;i<400&&(ACC_BUSY||LOGIN.busy);i++)await wait(25);};
+  const held=()=>{try{return localStorage.getItem('source.session')||'';}catch(e){return 'unreadable';}};
+  const openAcc=()=>{ACC_OPEN='account'; setTab(TAB.SETTINGS); render();};
+  const press=async(mail,pw,id)=>{openAcc();
+   document.getElementById('acmail').value=mail; document.getElementById('acpass').value=pw;
+   if(id)document.getElementById(id).click(); else document.getElementById('acgo').click();
+   await idle(); return said();};
+  loadP(0);
   const recBefore=JSON.stringify(CURP);
-  m.value='probe@example.invalid'; pw.value='a-probe-password';
-  go.click();
-  const st=document.getElementById('status');
-  o.said=st.textContent; o.kind=st.getAttribute('data-kind');
-  o.cleared=pw.value==='';
-  o.record=JSON.stringify(CURP)===recBefore;
+  openAcc();
+  o.form=!!(document.getElementById('acsignin')&&document.getElementById('acnew'));
+  o.noUser=!document.getElementById('loginuser');
+  /* no network at all: a port nothing listens on refuses the connection */
+  AUTH_API='http://127.0.0.1:1';
+  o.off=await press('probe@example.invalid','right-password-1');
+  o.offAgain=!document.getElementById('acgo').disabled;
+  o.offTyped=document.getElementById('acmail').value==='probe@example.invalid';
+  AUTH_API=API;
+  o.wrong=await press('probe@example.invalid','wrong-password');
+  o.many=await press('many@example.invalid','whatever-1');
+  const waitWas=AUTH_WAIT_MS; AUTH_WAIT_MS=400;
+  o.slow=await press('slow@example.invalid','whatever-1');
+  AUTH_WAIT_MS=waitWas;
+  o.badMail=await press('probe@example','right-password-1');
+  o.shortNew=await press('new@example.invalid','short','acnew');
+  o.taken=await press('taken@example.invalid','long-enough-1','acnew');
+  o.noSessionYet=held()==='';
+  o.good=await press('probe@example.invalid','right-password-1');
+  o.heldAfter=held();
+  o.recordSame=JSON.stringify(CURP)===recBefore;
+  o.exportClean=pExport().indexOf('t-probe')<0;
+  o.diskClean=(localStorage.getItem('source.profiles')||'').indexOf('t-probe')<0;
   let leak=false;
-  try{for(let i=0;i<localStorage.length;i++){const v=localStorage.getItem(localStorage.key(i))||'';
-   if(v.indexOf('probe@example.invalid')>=0||v.indexOf('a-probe-password')>=0)leak=true;}}catch(e){}
-  o.leak=leak;
-  return o;});
+  for(let i=0;i<localStorage.length;i++){const v=localStorage.getItem(localStorage.key(i))||'';
+   if(v.indexOf('right-password-1')>=0||v.indexOf('wrong-password')>=0)leak=true;}
+  o.pwLeak=leak;
+  openAcc();
+  o.signedRow=document.getElementById('settings').innerText.indexOf('probe@example.invalid')>=0
+   &&!!document.getElementById('acout');
+  ACC_OPEN='security'; render(); renderAccount();
+  o.secMethod=document.getElementById('settings').innerText.indexOf('email and password')>=0;
+  o.check=await authCheck();
+  /* sign out while the server is out of reach still ends it here */
+  AUTH_API='http://127.0.0.1:1';
+  openAcc(); document.getElementById('acout').click(); await idle();
+  o.outOff=said(); o.outOffHeld=held();
+  AUTH_API=API;
+  /* and signed in again, a sign out the server confirms */
+  await press('probe@example.invalid','right-password-1');
+  openAcc(); document.getElementById('acout').click(); await idle();
+  o.out=said(); o.outHeld=held();
+  /* the boot check: a session the server does not know is ended; a dropped
+     connection leaves a session held */
+  authKeep({token:'t-stale',email:'probe@example.invalid'});
+  o.stale=await authCheck(); o.staleSaid=said(); o.staleHeld=held();
+  authKeep({token:'t-probe',email:'probe@example.invalid'});
+  AUTH_API='http://127.0.0.1:1';
+  o.offCheck=await authCheck(); o.offCheckHeld=held().indexOf('t-probe')>=0;
+  AUTH_API=API; authForget();
+  /* THE LOGIN CARD. Same routes, and the card carries every result itself. */
+  const card=()=>document.getElementById('login');
+  const msg=()=>{const m=document.getElementById('loginmsg');return m?[m.textContent,m.getAttribute('data-kind')]:null;};
+  loginOpen();
+  o.cardFields=!!(document.getElementById('loginmail')&&document.getElementById('loginpass')
+   &&document.getElementById('loginb-go')&&document.getElementById('loginb-new')
+   &&document.getElementById('loginb-skip'))&&!document.getElementById('loginuser');
+  AUTH_API='http://127.0.0.1:1';
+  document.getElementById('loginmail').value='probe@example.invalid';
+  document.getElementById('loginpass').value='right-password-1';
+  document.getElementById('loginb-go').click(); await idle();
+  o.cardOff=msg(); o.cardStillOpen=LOGIN.open&&card().style.display!=='none';
+  AUTH_API=API;
+  document.getElementById('loginforgot').click();
+  o.resetCarried=(document.getElementById('loginrmail')||{}).value;
+  document.getElementById('loginb-send').click(); await idle();
+  o.forgot=msg();
+  document.getElementById('loginb-back').click();
+  o.backCarried=(document.getElementById('loginmail')||{}).value;
+  document.getElementById('loginpass').value='wrong-password';
+  document.getElementById('loginb-go').click(); await idle();
+  o.cardWrong=msg();
+  document.getElementById('loginpass').value='right-password-1';
+  document.getElementById('loginb-go').click(); await idle();
+  o.cardIn=!LOGIN.open&&card().style.display==='none'; o.cardInSaid=said(); o.cardHeld=held();
+  /* held, the boot does not show the door */
+  DEV_SKIP=false; loginBoot(); o.bootSkipped=!LOGIN.open; DEV_SKIP=true;
+  await idle(); await wait(200);
+  authForget();
+  loginOpen(); document.getElementById('loginb-skip').click();
+  o.skip=!LOGIN.open&&held()==='';
+  return o;},API);
  await sp.close();
- ok(o.form,'the Account section carries an email, a password and Continue');
- ok(o.types==='email/password','the fields are an email field and a password field, got '+o.types);
- ok(o.said==='Accounts are not live yet. Nothing was sent.',
-  'Continue says plainly that accounts are not live, got "'+o.said+'"');
- ok(o.kind==='fail','and it holds on screen as a refusal, not a confirmation');
- ok(o.cleared,'the password is cleared on the press');
- ok(o.record&&!o.leak,'and nothing typed reaches the record or storage');}
+ await new Promise(r=>stub.close(r));
+ const reach='Could not reach the server. Check the connection and try again.';
+ ok(o.form&&o.noUser,'the Account section carries the sign in form and Create account, and there is no username field');
+ ok(o.off[0]===reach&&o.off[1]==='fail','no network says so and holds, got '+JSON.stringify(o.off));
+ ok(o.offAgain&&o.offTyped,'and the form comes back usable, with what was typed still in it');
+ ok(o.wrong[0]==='No account matches that email and password.'&&o.wrong[1]==='fail',
+  'a wrong password is refused without saying which field was wrong, got '+JSON.stringify(o.wrong));
+ ok(o.many[0]==='Too many attempts. Wait fifteen minutes.','the rate limit says the server\'s own words, got '+JSON.stringify(o.many));
+ ok(o.slow[0]==='The server did not answer in time. Try again.','a server that never answers is a failure and not a hang, got '+JSON.stringify(o.slow));
+ ok(o.badMail[0]==='The email address is not complete.','an address the server would refuse is refused first, got '+JSON.stringify(o.badMail));
+ ok(o.shortNew[0]==='A password needs at least 8 characters.','a new password under the server\'s floor is refused first, got '+JSON.stringify(o.shortNew));
+ ok(!seen.some(s=>s.email==='probe@example'||s.email==='new@example.invalid'),'and neither of those two was sent');
+ ok(o.taken[0]==='An account already uses that email. Log in instead.','a taken email names the way out, got '+JSON.stringify(o.taken));
+ ok(o.noSessionYet,'nothing is held after seven refusals');
+ ok(o.good[0]==='Signed in as probe@example.invalid.'&&o.good[1]==='ok','a sign in says who, got '+JSON.stringify(o.good));
+ ok(/"token":"t-probe"/.test(o.heldAfter)&&/probe@example.invalid/.test(o.heldAfter),'the session is held under its own key, got '+o.heldAfter);
+ ok(o.recordSame&&o.exportClean&&o.diskClean,'and never on the record: the profile, its export and the profile store carry no token');
+ ok(!o.pwLeak,'no password typed in any attempt reaches storage');
+ ok(o.signedRow&&o.secMethod,'signed in, Account shows the email and Sign out, and Security names the method');
+ ok(o.check==='ok','the boot check accepts a session the server knows');
+ const bearer=seen.filter(s=>s.u==='/v1/me'&&s.auth==='Bearer t-probe');
+ ok(bearer.length>0&&bearer[0].origin==='null','the check carries the bearer header, from the origin a downloaded file sends, and the preflight let it through');
+ ok(/^Signed out on this browser\./.test(o.outOff[0])&&o.outOffHeld==='','sign out with no network still ends it here, and says the server did not hear, got '+JSON.stringify(o.outOff));
+ ok(o.out[0]==='Signed out.'&&o.out[1]==='ok'&&o.outHeld==='','sign out the server confirms, got '+JSON.stringify(o.out));
+ ok(seen.some(s=>s.u==='/v1/auth/signout'&&s.auth==='Bearer t-probe'),'and it told the server, with the session');
+ ok(o.stale==='ended'&&o.staleHeld===''&&/^Signed out\./.test(o.staleSaid[0])&&o.staleSaid[1]==='fail',
+  'a session the server does not know is ended at boot and says so, got '+JSON.stringify(o.staleSaid));
+ ok(o.offCheck==='unchecked'&&o.offCheckHeld,'a boot with no network keeps the session, because offline is not signed out');
+ ok(o.cardFields,'the login card carries email, password, Log in, Create account and a way through without one, and no username');
+ ok(o.cardOff&&o.cardOff[0]===reach&&o.cardOff[1]==='fail'&&o.cardStillOpen,
+  'the card shows the failure itself, since it covers the status line, and stays open, got '+JSON.stringify(o.cardOff));
+ ok(o.resetCarried==='probe@example.invalid'&&o.backCarried==='probe@example.invalid','the email is carried to the reset card and back');
+ ok(o.forgot&&o.forgot[0]==='If an account uses that email, a link to set a new password is on its way.',
+  'the forgotten password says the server\'s one answer for both cases, got '+JSON.stringify(o.forgot));
+ ok(seen.some(x=>x.u==='/v1/auth/forgot'&&x.email==='probe@example.invalid'),'and the request reached the server');
+ ok(o.cardWrong&&o.cardWrong[0]==='No account matches that email and password.','the card shows a refusal, got '+JSON.stringify(o.cardWrong));
+ ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
+ ok(o.bootSkipped,'a person already signed in is not shown the door');
+ ok(o.skip,'Continue without an account goes through and holds nothing');
+ ok(spErr.length===0,'no page errors across the whole walk: '+spErr.join(' | '));}
 
 console.log('\n=== the profiles on this device, by name (JZ) ===');
 /* His words: "if I enter my profile, it saves my data. Under Lance. And I can

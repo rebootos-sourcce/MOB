@@ -28523,3 +28523,59 @@ sniffer, "there's a lot of stuff so let's get it all in." Login is
 task 7, still open and now genuinely unblocked: reboot-os deployed
 live this round at `https://atuned-api.lance-o-powell.workers.dev`.
 Moving there next, per his own order.
+
+**Task 7, login, built and gated. The container restarted mid build and
+the work survived on disk; what follows was read from the real diff,
+not from a report, since the agent's own completion notice was lost
+with it.** `ui/auth.js`, new, the one file in the product that calls
+fetch, is the seam CLAUDE.md names: "the app gains network at exactly
+one seam, fetching a record at sign in." It never rejects a promise, a
+dropped connection and a server that never answers both resolve as a
+plain failure on a fifteen second ceiling, and it holds the session
+under its own key beside the profiles, never inside one, because the
+brief itself asked for the bearer token as a profile field and that
+would have left with the first Export. `validateProfile` now refuses
+`token`, `session`, `password` and `email` at the top level by name, so
+a pasted record carrying one says so rather than being silently
+dropped. `ui/login.js`'s boot door and `ui/account.js`'s own sign in
+shell both go through it: the username field is gone, the server keys
+on email alone; a held session skips the door; a stranger or somebody
+offline still has a way past it, Continue without an account, the
+same thing Log in used to do for free. Every failure the server can
+give, wrong password, a taken email, the fifteen minute rate limit, a
+server that never answers, no network at all, is shown on the card
+itself and on the status line both, since the card sits over the
+status line and a refusal shown only under it would not be seen.
+
+Checked myself rather than trusted: read the full diff end to end
+before running anything. The gate suite's own test stands up a local
+stub of the real server's own routes and CORS headers rather than
+touching reboot-os, which holds real account data and a real rate
+limit per address; a gate that signed in against it for real would
+eventually lock out whoever else shares this sandbox's address. Full
+suite run fresh after the restart: `BUILD.sh` and `BUILD-engine.sh`
+clean (auth.js's fetch call is in `ui/`, confirmed still outside
+`engine/`'s own ban), 484 exports; `tests/engine.js` 1853/0, a new
+assertion that a fresh profile carries none of the four refused names
+and that a record carrying one is refused by name; `tests/collide.js`
+351/0; `tests/design.js` 185/0, gate 7's own network watch included;
+`tests/funnel.js` 172/0, still zero outbound requests; `tests/boot.js`
+13/0; `tools/monitor.js` all surfaces render; voice objections
+unchanged, 0 new findings. `tests/functional.js` 1365/0, the new
+block covering: no network, a wrong password, the rate limit, a
+server that never answers, a malformed email, a short new password,
+a taken email, a real sign in, the session held under its own key and
+absent from the record, its export and its own disk store, sign out
+with and without the server reachable, the boot check ending a
+session the server no longer knows while leaving one held through a
+dropped connection, and the login card's own version of all of it,
+including that the cross origin preflight a downloaded file sends,
+origin `null`, actually gets through. Screenshotted the login card at
+1600: email, password, Log in, Create account, Continue without an
+account, no username field.
+
+Not built this round, named rather than left to fall out quietly:
+sync (`PUT`/`GET /v1/sync`), the consent toggle (`PUT /v1/consent`),
+and account deletion. Each needs its own data model work, reconciling
+this product's own profile shape against the server's record kinds,
+and none of the four auth routes wired in needed them.

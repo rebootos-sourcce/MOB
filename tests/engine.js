@@ -5138,6 +5138,33 @@ g('LL · practitioner mode, the switch and its integer');
   'Practitioner is 12 and every integer before it holds its value, '+JSON.stringify(E.TAB));
 }
 
+g('Sign in · the session is the browser\'s and never rides on a profile');
+/* 30 September, when sign in went live. The brief asked for the bearer token
+   as a profile field, and Export copies a whole profile to the clipboard, so
+   the first export would have carried a live session out of the browser. It is
+   held by ui/auth.js under its own key instead, and the boundary refuses the
+   four names by name at the top level, the way plan already refuses them one
+   level down. Held to the same three things as the switch above: a new profile
+   carries none of them, a record saved before sign in existed still loads,
+   and a record carrying any one of them is refused, with the name said. */
+{
+ const {blankProfile,validateProfile,PKEY}=E;
+ const bp=blankProfile('signed');
+ const names=['token','session','password','email'];
+ ok(names.every(f=>bp[f]===undefined),'a new profile carries no token, session, password or email');
+ const plain=validateProfile(JSON.parse(JSON.stringify(bp)));
+ ok(plain.ok,'a record saved before sign in existed loads as it did');
+ names.forEach(f=>{
+  const rec=JSON.parse(JSON.stringify(blankProfile('carrying')));
+  rec[f]=f==='session'?{token:'t-probe',email:'probe@example.invalid'}:'t-probe';
+  const v=validateProfile(rec);
+  ok(!v.ok&&(v.errs||[]).some(e=>e==='f is not held by this product'.replace('f',f)),
+   'a record carrying '+f+' at the top is refused by name, got '+JSON.stringify(v.errs||v.ok));});
+ /* and the session key is not the profile key, so a store read of one can
+    never be handed to the boundary as the other */
+ ok(PKEY==='source.profiles','the profile store is still source.profiles, which ui/auth.js keeps its session beside');
+}
+
 g('ND · one saboteur, one entry, however many tests name it');
 /* AUDIT-source-tdd.md's own finding. SAB33's range match (compute.js's
    sab33Detect loop) and the fixed-address library (the ALL_SAB loop) can

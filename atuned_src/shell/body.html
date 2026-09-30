@@ -36,8 +36,9 @@
      and a surface in the bar is a peer of the instrument, which this is not. -->
 <div id="ob" class="ob" style="display:none"></div>
 <!-- LOGIN. Round MH and MI: the return door, not the front door, so it is
-     met on every boot rather than once. Local and honest about being
-     local, ui/login.js. -->
+     met on every boot rather than once, unless a sign in is already held.
+     It signs in against the account server through ui/auth.js, and it
+     always offers a way through without an account, ui/login.js. -->
 <div id="login" class="ob" style="display:none"></div>
 <!-- ============================================================
      THE BOOT. THE BODY BECOMES THE FIELD, AND THE CAMERA GOES IN.

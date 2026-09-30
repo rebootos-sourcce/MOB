@@ -6577,6 +6577,19 @@ function validateProfile(o){
      if(v!==null)lw[nm]=v;});
     q.lawNow=lw;}}
   return q;}).filter(Boolean);
+ /* A SIGN IN IS THE BROWSER'S AND NEVER THE RECORD'S. The brief that wired
+    sign in, 30 September, asked for the bearer token to be added here as a
+    profile field, and it would have leaked on the first press of Export: that
+    control copies this whole record to the clipboard, and a record is a file
+    a person hands to somebody else. One browser also holds several profiles
+    and one session, so a token stored on one of them signs in whichever
+    profile happens to be open. ui/auth.js holds it under its own key, beside
+    the profiles and never inside one. This refuses it by name at the top
+    level the way plan refuses it one level down, so a pasted record carrying
+    somebody's session says so rather than being dropped with nothing said,
+    and nothing that writes a profile can put one back without this failing. */
+ ['token','session','password','email'].forEach(function(f){
+  if(o[f]!==undefined)errs.push(f+' is not held by this product');});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has

@@ -1669,14 +1669,15 @@ step('opening surface',function(){setTab(TAB.FIELD);});
    necessarily been pressed yet at the moment this line first runs.
 
    It is a step like the others, so a login that fails to open costs the
-   login and not the instrument behind it. */
+   login and not the instrument behind it.
+
+   loginBoot reads DEV_SKIP now, at the same moment this did, and adds the
+   one decision this step could not make on its own since sign in went live
+   on 30 September: a person already signed in is not shown the door. */
 step('login',function(){
- if(typeof loginOpen!=='function')return;
+ if(typeof loginBoot!=='function')return;
  setTimeout(function(){
-  try{
-   if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return;
-   loginOpen();
-  }catch(e){}
+  try{ loginBoot(); }catch(e){}
  },5600);});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that

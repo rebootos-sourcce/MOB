@@ -58,6 +58,7 @@ ui/knowledge.js
 ui/record.js
 ui/games.js
 ui/panels.js
+ui/auth.js
 ui/account.js
 ui/practitioner.js
 ui/personas.js
