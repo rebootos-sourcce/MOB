@@ -1523,6 +1523,26 @@ function loop(ts){
 try{ localStorage.getItem(PKEY);
  bindStore(function(k){return localStorage.getItem(k);},
            function(k,v){localStorage.setItem(k,v);}); }catch(e){}
+/* THE PAYWALL SEAM, round NW, bound the same way bindStore is just above: the host hands the
+   UI one function and the UI stays ignorant of what is on the other side of it. planOpen in
+   ui/panels.js already calls PLAN_HOST(what,tier) and already says "Billing is not connected
+   yet." when nothing answers; this is the real answer, and it is still the only thing this
+   file does on top of what ui/auth.js hands back, because ui/auth.js stays the one file that
+   calls fetch. 'portal' (Manage billing) is not built, said here rather than opened as a dead
+   page, because only the Checkout half of this exists on the server at /v1/billing/checkout;
+   a billing portal session is a real Stripe endpoint and a real route, not yet written, since
+   /v1/billing/checkout is the one the owner asked for first. */
+bindPlan(function(what,tier){
+ if(what!=='checkout'){
+  status('Managing billing from here is not built yet. Email support to change or cancel a plan.','fail');
+  return;}
+ authPlanCheckout(tier).then(function(r){
+  if(!r.ok){ status(r.say,'fail'); return; }
+  /* the redirect itself is the one step nothing here can rehearse: a browser that refuses to
+     navigate (a locked down kiosk mode, an extension) must say so rather than sit on a button
+     that looks pressed and did nothing. */
+  try{ location.href=r.url; }
+  catch(e){ status('Could not open the checkout page. Nothing has changed.','fail'); }});});
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){

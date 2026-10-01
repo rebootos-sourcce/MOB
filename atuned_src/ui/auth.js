@@ -211,3 +211,28 @@ function authCheck(){
   status(r.status?'The server could not check this sign in. It stays on this browser.'
    :'The server could not be reached, so this sign in was not checked. It stays on this browser.');
   return 'unchecked';});}
+/* THE PAYWALL'S HALF OF THE ONE SEAM, round NW: "build the paywall infrastructure." PLAN_HOST
+   in ui/panels.js is bound, in ui/ui.js, to a host function that calls this and never fetch
+   itself, so the rule this file's own header already states, that it is the only file in the
+   product that calls fetch, stays true of a real checkout and not only of sign in.
+
+   This asks for one thing: a Checkout Session Stripe will host, for one of engine/plan.js's
+   own ladder keys ('one', 'two', 'three', 'four'), and hands back the URL to send the browser
+   to. Nothing about a card ever reaches this file, because nothing about a card ever reaches
+   the server either: the server asks Stripe for a page, and Stripe is the one who asks for the
+   card, on a page this product never renders and never even links to directly, only through
+   the URL Stripe's own answer carries.
+
+   Signed out answers locally, the same reason authSignOut answers locally when there is
+   nothing to sign out of: a request the server would refuse anyway, for lack of a session to
+   open one for, is a request this file does not need to send to get the same answer. */
+function authPlanCheckout(tier){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false,
+  say:'Sign in first. The plan is read from your record, and billing lives behind sign in.'});
+ return authCall('POST','/v1/billing/checkout',{tier:tier},s.token).then(function(r){
+  if(!r.ok)return {ok:false, say:authWhy(r,'checkout')};
+  var url=r.body&&r.body.url;
+  if(typeof url!=='string'||!url)
+   return {ok:false, say:'The server answered without a checkout page. Nothing has changed.'};
+  return {ok:true, url:url};});}

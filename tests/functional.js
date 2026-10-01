@@ -3485,14 +3485,21 @@ console.log('\n=== the profiles on this device, by name (JZ) ===');
  ok(JSON.stringify(o.disk5)==='["Lance"]'&&o.cur5==='Lance','Sarah is deleted from the disk and Lance stays open');
  ok(o.cur6==='Lance'&&o.fear6===5,'a worked example and back returns to Lance and his field, got '+o.cur6+' at '+o.fear6);}
 
-console.log('\n=== the plan, and the seam that has nowhere to go yet ===');
+console.log('\n=== the plan, and the seam that now goes somewhere ===');
 /* Stripe is a network and this file has none. The panel reads the plan off
-   the record and calls one host function, and with nothing bound it says so
-   rather than opening a dead page, which is rule three. */
+   the record and calls one host function. Round NW ("build the paywall
+   infrastructure") bound that function for real, in ui/ui.js next to
+   bindStore, so a booted build now carries a PLAN_HOST that is not null,
+   and o.boundAtBoot is the assertion that proves it rather than claiming it.
+   The null-host path, rule three's "says so rather than opening a dead
+   page", still has to work for a function this file cannot make the real
+   server throw on demand, so it is tested here by unbinding on purpose
+   first, not by trusting the build never binds anything. */
 const plan=await page.evaluate(()=>{
  const o={}, txt=()=>(document.getElementById('sheet').textContent||'').replace(/\s+/g,' ');
  const kept=CURP.plan?JSON.parse(JSON.stringify(CURP.plan)):null;
  const keptU=CURP.meter.unique.slice();
+ o.boundAtBoot=(typeof PLAN_HOST==='function');
  profileSheet(); o.free=txt();
  CURP.plan={tier:'two',status:'active',granted:800,carried:0,base:100,
   since:'2026-09-01T00:00:00Z',until:'2026-10-01T00:00:00Z'};
@@ -3501,7 +3508,9 @@ const plan=await page.evaluate(()=>{
  /* a cancelled record must not read as the tier written on it */
  CURP.plan.status='canceled'; profileSheet(); o.dead=txt();
  CURP.plan.status='active';
- /* the control with nothing bound reports rather than pretending */
+ /* unbound on purpose: the control still reports rather than pretending
+    when there is truly nothing on the other end of the seam */
+ bindPlan(null);
  document.getElementById('planman').click();
  o.status=(document.getElementById('status').textContent||'').trim();
  o.kind=document.getElementById('status').getAttribute('data-kind');
@@ -3515,6 +3524,7 @@ const plan=await page.evaluate(()=>{
  CURP.plan=kept; CURP.meter.unique=keptU;
  sheetShut();
  return o;});
+ok(plan.boundAtBoot,'a booted build binds PLAN_HOST for real rather than leaving it null (round NW)');
 ok(/On\s*Free/.test(plan.free),'a record with no plan reads free');
 ok(/100 patterns left of the 100 you were given/.test(plan.free),
  'and is inside the gift, with both halves of the number said');

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1038 c22bb55 2026-10-01 10:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v1042 bc74f36 2026-10-01 11:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -44621,6 +44621,31 @@ function authCheck(){
   status(r.status?'The server could not check this sign in. It stays on this browser.'
    :'The server could not be reached, so this sign in was not checked. It stays on this browser.');
   return 'unchecked';});}
+/* THE PAYWALL'S HALF OF THE ONE SEAM, round NW: "build the paywall infrastructure." PLAN_HOST
+   in ui/panels.js is bound, in ui/ui.js, to a host function that calls this and never fetch
+   itself, so the rule this file's own header already states, that it is the only file in the
+   product that calls fetch, stays true of a real checkout and not only of sign in.
+
+   This asks for one thing: a Checkout Session Stripe will host, for one of engine/plan.js's
+   own ladder keys ('one', 'two', 'three', 'four'), and hands back the URL to send the browser
+   to. Nothing about a card ever reaches this file, because nothing about a card ever reaches
+   the server either: the server asks Stripe for a page, and Stripe is the one who asks for the
+   card, on a page this product never renders and never even links to directly, only through
+   the URL Stripe's own answer carries.
+
+   Signed out answers locally, the same reason authSignOut answers locally when there is
+   nothing to sign out of: a request the server would refuse anyway, for lack of a session to
+   open one for, is a request this file does not need to send to get the same answer. */
+function authPlanCheckout(tier){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false,
+  say:'Sign in first. The plan is read from your record, and billing lives behind sign in.'});
+ return authCall('POST','/v1/billing/checkout',{tier:tier},s.token).then(function(r){
+  if(!r.ok)return {ok:false, say:authWhy(r,'checkout')};
+  var url=r.body&&r.body.url;
+  if(typeof url!=='string'||!url)
+   return {ok:false, say:'The server answered without a checkout page. Nothing has changed.'};
+  return {ok:true, url:url};});}
 
 try{window.__at&&window.__at('ui/auth.js');}catch(e){}
 /* ============================================================
@@ -48582,6 +48607,26 @@ function loop(ts){
 try{ localStorage.getItem(PKEY);
  bindStore(function(k){return localStorage.getItem(k);},
            function(k,v){localStorage.setItem(k,v);}); }catch(e){}
+/* THE PAYWALL SEAM, round NW, bound the same way bindStore is just above: the host hands the
+   UI one function and the UI stays ignorant of what is on the other side of it. planOpen in
+   ui/panels.js already calls PLAN_HOST(what,tier) and already says "Billing is not connected
+   yet." when nothing answers; this is the real answer, and it is still the only thing this
+   file does on top of what ui/auth.js hands back, because ui/auth.js stays the one file that
+   calls fetch. 'portal' (Manage billing) is not built, said here rather than opened as a dead
+   page, because only the Checkout half of this exists on the server at /v1/billing/checkout;
+   a billing portal session is a real Stripe endpoint and a real route, not yet written, since
+   /v1/billing/checkout is the one the owner asked for first. */
+bindPlan(function(what,tier){
+ if(what!=='checkout'){
+  status('Managing billing from here is not built yet. Email support to change or cancel a plan.','fail');
+  return;}
+ authPlanCheckout(tier).then(function(r){
+  if(!r.ok){ status(r.say,'fail'); return; }
+  /* the redirect itself is the one step nothing here can rehearse: a browser that refuses to
+     navigate (a locked down kiosk mode, an extension) must say so rather than sit on a button
+     that looks pressed and did nothing. */
+  try{ location.href=r.url; }
+  catch(e){ status('Could not open the checkout page. Nothing has changed.','fail'); }});});
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
@@ -48767,5 +48812,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003186546"></div>
+<div id="eof" hidden data-len="003189654"></div>
 </body></html>
