@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1054 5651a17 2026-10-01 15:33"><head><meta charset="utf-8">
+<html lang="en" data-build="v1055 85a370c 2026-10-01 15:36"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -832,6 +832,19 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
     centres inside .brand's own box, since .brand centres its column on
     justify-content regardless of the content's height. */
  color:#343434;line-height:1;text-transform:uppercase;margin-top:9px}
+/* THE WORDMARK ON THE BAR'S CENTRE LINE, round OD. His words, on a screenshot
+   of the bar: "I want the center point of the atuned logo lined up with the
+   center point of the hamburger. And the text Discover, Play, Flow and Embody."
+   Measured at 1600, 1280 and 390: the button, the hamburger and every section
+   label share one centre line, and the wordmark sat 8.7px above it, because
+   the lockup centres the wordmark and the Source OS line together as one block
+   and the line under it pulls the block's centre down. The lockup is untouched
+   (ruled: Source OS evenly spaced and centred under the wordmark, nine pixels
+   off it). It moves as a whole by half of what hangs below the wordmark, the
+   nine pixel gap plus the line's own 8.5px, so the wordmark's centre is the
+   centre line and the tag hangs under it. A relative offset, so the button
+   keeps its 44px box and moves nothing else. */
+.brand .bn,.brand .bs{position:relative;top:calc((9px + 8.5px)/2)}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* THE UMLAUT IS PART OF THE DRAWING. Two measured corrections to CSS dots
    over a set u lived here, one for the lowercase letter and one for the
@@ -49720,5 +49733,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003244747"></div>
+<div id="eof" hidden data-len="003245726"></div>
 </body></html>
