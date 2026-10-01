@@ -182,8 +182,13 @@ function relPlan(){
 function relRerunPlan(q){
  var ids=(q||[]).map(function(n){return n.i;});
  var chans=CHAN.map(function(c){return c[0]+c[2];});
- return (typeof CURP!=='undefined'&&CURP&&typeof meterRerunPlan==='function')
-  ?meterRerunPlan(CURP,ids,chans,RUN_MAX):[];}
+ /* ROUND OG: THE HEAVY LINES GO BACK IN. meterRerunOrder is meterRerunPlan, the
+    opened line rule, with every line this record holds as heavy at those
+    addresses put back at its place on the fifty, least tense first, inside the
+    run's own order. It is still only lines already open, so the price above
+    holds: the allowance is not read and nothing here is new ground. */
+ return (typeof CURP!=='undefined'&&CURP&&typeof meterRerunOrder==='function')
+  ?meterRerunOrder(CURP,ids,chans,RUN_MAX):[];}
 /* NEW OR RERUN, picked on the panel and never by the panel. relPick always
    opens on new, because DECISIONS.md rules a rerun "a deliberate act rather
    than something that happens while somebody thinks they are opening
@@ -208,7 +213,21 @@ function relMode(rr){
 function relRerunSay(){
  var pick=RUN.pick||[], none=pick.filter(function(n){return !relRerunPlan([n]).length;}).length;
  var cut=pick.length-none-RUN.queue.length;
+ /* THE HEAVY LINES, said only when there are some, and counted off the same
+    plan the rerun will run. hv is every line this record holds as heavy at the
+    addresses picked, on the four channels; back is how many of those the plan
+    carries, and the rest were cut by the run's ceiling. Without this the
+    sentence above says a rerun is the last line on each channel, which stops
+    being the whole of it the first time a line has been marked. */
+ var ids={}, held=(typeof CURP!=='undefined'&&CURP&&CURP.meter&&CURP.meter.heavy)||[], inPlan={};
+ pick.forEach(function(n){ids[n.i]=1;});
+ (RUN.plan||[]).forEach(function(k){inPlan[k]=1;});
+ var hv=held.filter(function(k){return ids[String(k).split(':')[0]];});
+ var back=hv.filter(function(k){return inPlan[k];}).length, left=hv.length-back;
  return 'A rerun says the last line you opened on each channel again. It costs nothing and opens nothing new.'
+  +(back?' '+back+(back===1?' line you marked heavy goes back in its place, least tense first.'
+    :' lines you marked heavy go back in their places, least tense first.'):'')
+  +(back&&left>0?' A run is full, so '+left+(left===1?' heavy line waits':' heavy lines wait')+' for the next one.':'')
   +(none?' '+none+(none===1?' address you picked has nothing open yet, so it is'
     :' addresses you picked have nothing open yet, so they are')+' left out.':'')
   +(cut>0?' A run is full, so '+cut+(cut===1?' more address waits':' more addresses wait')+' for the next one.':'');}
@@ -811,6 +830,18 @@ function relCoolDown(){
      a rerun plan gone stale opens nothing. fresh comes back empty, so
      releaseWork below lifts nothing, as it never has for ground already open. */
   RUN.meter=RUN.rerun?meterRerun(CURP,RUN.plan||[]):meterRun(CURP,RUN.plan||[]);
+  /* THE LINES MARKED HEAVY ARE KEPT ON THE RECORD, round OG. RUN.heavy is keyed
+     by plan index and pass and is gone when the card closes, so a mark made
+     while a line was said reached the finished card and nothing after it. This
+     is the one place that knows the run's keys have just been written, so the
+     marks are folded to the line they were made on and handed to meterHeavy,
+     which refuses any key the record has not opened and writes nothing else:
+     a mark never costs, and never opens a line. A refusal is said, because a
+     mark the person made that was not kept is a write that failed. */
+  RUN.kept=(typeof meterHeavy==='function')?meterHeavy(CURP,relHeavyKeys()):null;
+  if(RUN.kept&&RUN.kept.refused.length&&typeof status==='function')
+   status(RUN.kept.refused.length+(RUN.kept.refused.length===1?' heavy mark was':' heavy marks were')
+    +' not kept, because the line is not open.','fail');
   /* THE LIFETIME SPLIT, round LY: "total number of patterns released, total
      number of patterns installed, over the history." tally is read at the
      top of this function, before the write, off where the list actually
@@ -1004,6 +1035,15 @@ function relHeavyAt(n){
   .forEach(function(ip){
    var at=relAt(ip[0]); if(!at||at.n!==n)return;
    var st=relStepAt(at,ip[1]); if(st&&out.indexOf(st.text)<0)out.push(st.text);});
+ return out;}
+/* THE LINE KEYS BEHIND THE MARKS. A mark is plan index and pass, and a pass is
+   one more saying of the same line, so the record keeps the line and not the
+   saying: the plan's key at that index, once each, in plan order. */
+function relHeavyKeys(){
+ var out=[], P=RUN.plan||[];
+ Object.keys(RUN.heavy||{}).map(function(k){return +String(k).split(':')[0];})
+  .sort(function(a,b){return a-b;})
+  .forEach(function(i){var k=P[i]; if(k&&out.indexOf(k)<0)out.push(k);});
  return out;}
 function relHeavyHint(){
  var e=document.getElementById('relhv'); if(!e)return;

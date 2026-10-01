@@ -150,6 +150,8 @@ if(typeof module!=='undefined'&&module.exports){
                   meterGiftAt:meterGiftAt,
                   meterNext:meterNext, meterPlan:meterPlan,
                   meterLast:meterLast, meterRerunPlan:meterRerunPlan, meterRerun:meterRerun,
+                  meterRerunOrder:meterRerunOrder, meterHeavy:meterHeavy, meterHeavyClear:meterHeavyClear,
+                  meterHeavyWhy:meterHeavyWhy,
                   LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,

@@ -5763,5 +5763,188 @@ require('./practice.js')(E,ok,g,console.log);
  ok(again.added===0&&again.held===it.length,'and replaying them on every save is safe: nothing added, all held, '+JSON.stringify({added:again.added,held:again.held}));
 })();
 
+g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
+/* HIS WORDS, round OG and again the day after. "A rerun should always, it adds
+   the ones that are heavy, but remember, there's a structural flow to the
+   release. We start with the least tense words, the most tense words, and then
+   the decompression words, from the least intense to the most intense." And:
+   "rerunning is a line you marked heavy. And it would go back into that kind
+   of where it would sit in that bell curve."
+
+   WHAT IS MEASURED HERE. The only rank of tension a line carries is its number
+   on the fifty, so "where it sits" is that number, ascending, inside the
+   release's own order: address by address, release channels before reframe
+   channels, left before right. The heavy mark is stored on the record, is a
+   fact about a key already opened, and never touches what a run costs. Every
+   check below is written against the previous engine too: it has no
+   meterHeavy, no meterRerunOrder and no meter.heavy, and fails there. */
+{
+ const {blankProfile,meterRun,meterRerun,meterRerunPlan,meterRerunOrder,meterHeavy,meterHeavyClear,
+        meterHeavyWhy,meterKey,meterBudget,validateProfile,pImport,pExport,profiles,bindStore,
+        RUN_MAX,LINES_PER_CH,GIFT_N}=E;
+ const CH=['Llimit','Rlimit','Ltruth','Rtruth'];
+ ok(typeof meterHeavy==='function'&&typeof meterRerunOrder==='function'&&typeof meterHeavyWhy==='function',
+  'the heavy mark and the ordered rerun are reachable from the contract');
+ /* on the previous engine the three are undefined, the line above has already failed, and
+    the rest would throw, so each group below runs under T and fails by name instead */
+ const T=(n,f)=>{try{f();}catch(e){ok(false,'the '+n+' group threw on this engine: '+((e&&e.message)||e));}};
+ /* the fixture: address 7 opened five lines deep down every channel, address 9
+    three deep. So the opened-line rule alone says line 4 at 7 and line 2 at 9. */
+ const fixture=()=>{const p=blankProfile('og1'), keys=[];
+  CH.forEach(c=>{for(let i=0;i<5;i++)keys.push(meterKey(7,c,i)); for(let i=0;i<3;i++)keys.push(meterKey(9,c,i));});
+  meterRun(p,keys); return p;};
+ const K=(a,c,l)=>meterKey(a,c,l);
+
+
+ /* NOTHING MARKED IS THE RERUN THAT ALWAYS WAS */
+ T('plain rerun',()=>{const p=fixture();
+  ok(Array.isArray(p.meter.heavy)&&p.meter.heavy.length===0,'a blank record carries an empty heavy list');
+  ok(meterRerunOrder(p,[9,7],CH,RUN_MAX).join()===meterRerunPlan(p,[9,7],CH,RUN_MAX).join(),
+   'with nothing marked the order is exactly the opened line rule, one line a channel');});
+
+ /* ORDER ON THE FIXTURE */
+ T('order',()=>{const p=fixture();
+  const m=meterHeavy(p,[K(7,'Llimit',3),K(7,'Llimit',1),K(7,'Ltruth',0),K(9,'Rlimit',1)]);
+  ok(m.marked.length===4&&m.refused.length===0,'four heavy lines are marked, none refused');
+  ok(p.meter.heavy.join()===[K(7,'Llimit',1),K(7,'Llimit',3),K(7,'Ltruth',0),K(9,'Rlimit',1)].join(),
+   'and stored sorted by address, channel and line number, got '+p.meter.heavy.join(' '));
+  const o=meterRerunOrder(p,[9,7],CH,RUN_MAX);
+  const want=[K(9,'Llimit',2),K(9,'Rlimit',1),K(9,'Rlimit',2),K(9,'Ltruth',2),K(9,'Rtruth',2),
+   K(7,'Llimit',1),K(7,'Llimit',3),K(7,'Llimit',4),K(7,'Rlimit',4),K(7,'Ltruth',0),K(7,'Ltruth',4),K(7,'Rtruth',4)];
+  ok(o.join()===want.join(),'the heavy lines sit among the opened one, least tense first, address major in the order picked, release before reframe:\n   '+o.join(' ')+'\n   '+want.join(' '));
+  ok(o.length===new Set(o).size,'and no line is said twice');
+  let asc=true; for(let i=1;i<o.length;i++){
+   const a=o[i-1].split(':'), b=o[i].split(':');
+   if(a[0]===b[0]&&a[1]===b[1]&&+a[2]>=+b[2])asc=false;}
+  ok(asc,'inside a channel every line is higher than the one before it');
+  const at7=o.filter(k=>k.split(':')[0]==='7'), lastLimit=at7.map(k=>/limit/.test(k)).lastIndexOf(true),
+   firstTruth=at7.findIndex(k=>/truth/.test(k));
+  ok(lastLimit>=0&&firstTruth>lastLimit,'at one address every release line comes before every reframe line');
+  /* a heavy line on a channel the person did not pick is not dragged in */
+  const only=meterRerunOrder(p,[7],['Llimit'],RUN_MAX);
+  ok(only.join()===[K(7,'Llimit',1),K(7,'Llimit',3),K(7,'Llimit',4)].join(),
+   'only the channels asked for, got '+only.join(' '));
+  /* and an address that was not picked is not either */
+  ok(meterRerunOrder(p,[9],CH,RUN_MAX).every(k=>k.split(':')[0]==='9'),'only the addresses asked for');});
+
+ /* NEVER NEW GROUND */
+ T('never new ground',()=>{const p=fixture();
+  const r=meterHeavy(p,[K(7,'Llimit',9),K(40,'Llimit',0),K(7,'Llimit',50),'7:Llimit','nonsense',42,null]);
+  ok(r.marked.length===0&&r.refused.length===7,'a mark on a line never opened is refused, and so is every malformed key, got '+r.refused.length);
+  ok(r.refused.every(x=>typeof x.why==='string'&&x.why.length>0),'each refusal says why');
+  ok(/not a line this record has opened/.test(r.refused[0].why)&&/not a line key/.test(r.refused[2].why),
+   'by name: '+r.refused[0].why+' | '+r.refused[2].why);
+  ok(p.meter.heavy.length===0,'and nothing was written');
+  /* a stale heavy key a hand edited store could hold is skipped by the plan, not opened by it */
+  p.meter.heavy=[K(7,'Llimit',9)];
+  const o=meterRerunOrder(p,[7],CH,RUN_MAX);
+  ok(o.join()===meterRerunPlan(p,[7],CH,RUN_MAX).join(),'the plan never offers a heavy key that is not open');
+  const q=fixture(); meterHeavy(q,[K(7,'Rlimit',0),K(9,'Ltruth',1)]);
+  const openQ=new Set(q.meter.unique);
+  ok(meterRerunOrder(q,[7,9,11],CH,RUN_MAX).every(k=>openQ.has(k)),
+   'every line in a rerun is a line already in meter.unique');
+  ok(meterRerunOrder(q,[11],CH,RUN_MAX).length===0,'an address with nothing open reruns nothing, however it is picked');});
+
+ /* THE CAP IS RUN_MAX, AND THE OPENED LINES COME FIRST UNDER IT */
+ T('cap',()=>{const w=blankProfile('wide'), ids=[1,2,3,4,5,6,7,8,9], keys=[];
+  ids.forEach(a=>CH.forEach(c=>{for(let i=0;i<6;i++)keys.push(meterKey(a,c,i));}));
+  meterRun(w,keys);
+  const base=meterRerunPlan(w,ids,CH,RUN_MAX);
+  ids.forEach(a=>meterHeavy(w,CH.map(c=>meterKey(a,c,0))));
+  const o=meterRerunOrder(w,ids,CH,RUN_MAX);
+  ok(o.length===RUN_MAX,'a wide rerun is cut at the run ceiling, got '+o.length);
+  ok(base.every(k=>o.indexOf(k)>=0),'every opened line the plain rerun said is still in it');
+  ok(new Set(o.map(k=>k.split(':')[0])).size===new Set(base.map(k=>k.split(':')[0])).size,
+   'and the heavy lines pull no address in that the cap had cut off');
+  /* room under the cap is spent on heavy lines, lowest first, at the addresses reached */
+  const s=blankProfile('room'), k2=[];
+  CH.forEach(c=>{for(let i=0;i<6;i++){k2.push(meterKey(1,c,i));k2.push(meterKey(2,c,i));}});
+  meterRun(s,k2);
+  meterHeavy(s,CH.map(c=>meterKey(1,c,0)).concat(CH.map(c=>meterKey(2,c,0))));
+  const small=meterRerunOrder(s,[1,2],CH,10);
+  ok(small.length===10&&meterRerunPlan(s,[1,2],CH,10).every(k=>small.indexOf(k)>=0),
+   'a small cap keeps the opened lines first and spends the rest on heavy ones, '+small.length+' lines');
+  ok(meterRerunOrder(s,[1,2],CH,8).join()===meterRerunPlan(s,[1,2],CH,8).join(),
+   'and when the opened lines alone fill the cap it is exactly the plain rerun');});
+
+ /* COST UNCHANGED. A heavy mark and a rerun that carries it move nothing the allowance reads. */
+ T('cost',()=>{const p=fixture();
+  p.plan={tier:'free',status:'',granted:0,carried:0,base:GIFT_N,since:null,until:null};
+  const b0=meterBudget(p), u0=p.meter.unique.join(), n0=p.meter.unique.length;
+  const first0=p.meter.first, gift0=p.meter.giftAt;
+  meterHeavy(p,[K(7,'Llimit',2),K(9,'Rtruth',0)]);
+  ok(p.meter.unique.join()===u0&&p.meter.unique.length===n0,'marking a line heavy opens and spends nothing');
+  ok(meterBudget(p).left===b0.left&&meterBudget(p).cap===b0.cap,'the allowance reads the same after the mark, '+b0.left+' and '+meterBudget(p).left);
+  const o=meterRerunOrder(p,[7,9],CH,RUN_MAX), m=meterRerun(p,o);
+  ok(m.added===0&&m.fresh.length===0&&m.refused.length===0&&m.repeated===o.length,
+   'a rerun carrying heavy lines opens nothing new and refuses nothing, repeated '+m.repeated+' of '+o.length);
+  ok(p.meter.unique.join()===u0&&meterBudget(p).left===b0.left,'and the allowance is the same after it');
+  ok(p.meter.first===first0&&p.meter.giftAt===gift0,'the first run and the gift stamp do not move');
+  /* the mark has no reach into what a run costs even when the allowance is spent */
+  const sp=blankProfile('spent'), keys=[];
+  for(let a=1;keys.length<GIFT_N+10;a++)CH.forEach(c=>keys.push(meterKey(a,c,0)));
+  meterRun(sp,keys.slice(0,GIFT_N+10));
+  sp.plan={tier:'free',status:'',granted:0,carried:0,base:GIFT_N,since:null,until:null};
+  meterHeavy(sp,[keys[0]]);
+  ok(meterBudget(sp).left===0&&meterRerunOrder(sp,[1],CH,RUN_MAX).length===CH.length,
+   'a spent allowance still reruns what is open, heavy or not');});
+
+ /* MARKING TWICE, AND TAKING A MARK OFF */
+ T('marking twice',()=>{const p=fixture(), k=K(7,'Rtruth',2);
+  ok(meterHeavy(p,[k]).marked.length===1&&meterHeavy(p,[k]).already.length===1&&p.meter.heavy.length===1,
+   'marking a line twice marks it once and says so');
+  const c=meterHeavyClear(p,[k,K(7,'Rtruth',3)]);
+  ok(c.cleared.length===1&&c.absent.length===1&&p.meter.heavy.length===0,'a mark comes off by key, and a key never marked is reported absent');
+  /* no record at all, and no cap given: refused and ceilinged, never thrown */
+  const none=meterHeavy(null,[k]);
+  ok(none.marked.length===0&&none.refused.length===1&&/no record/.test(none.refused[0].why),'a mark with no record to land on is refused by name');
+  const wide=blankProfile('nocap'), keys=[];
+  for(let a=1;a<=9;a++)CH.forEach(c=>keys.push(meterKey(a,c,0)));
+  meterRun(wide,keys);
+  ok(meterRerunOrder(wide,[1,2,3,4,5,6,7,8,9],CH).length===RUN_MAX,'a rerun asked for with no cap is cut at the run ceiling');});
+
+ /* THE BOUNDARY, BY NAME, NEVER CLAMPED */
+ T('boundary',()=>{const base=fixture(); meterHeavy(base,[K(7,'Llimit',1),K(9,'Ltruth',0)]);
+  const wire=()=>JSON.parse(JSON.stringify(base));
+  const why=(mut,frag,what)=>{const o=wire(); mut(o); const r=validateProfile(o);
+   ok(!r.ok&&(r.errs||[]).join(' | ').indexOf(frag)>=0,what+' is refused by name: '+(r.errs||[]).join(' | ').slice(0,110));};
+  ok(validateProfile(wire()).ok&&validateProfile(wire()).profile.meter.heavy.join()===base.meter.heavy.join(),
+   'a record carrying heavy marks validates and keeps them');
+  why(o=>{o.meter.heavy='7:Llimit:1';},'meter.heavy is not a list','a heavy field that is not a list');
+  why(o=>{o.meter.heavy=null;},'meter.heavy is not a list','a null heavy field');
+  why(o=>{o.meter.heavy=[7];},'meter.heavy[0] is not a string','a heavy key that is not a string');
+  why(o=>{o.meter.heavy=['banana'];},'is not a line key','a heavy key that is not a line key');
+  why(o=>{o.meter.heavy=['7:Llimit'];},'is not a line key','a key from before keys carried a line');
+  why(o=>{o.meter.heavy=[K(7,'Llimit',LINES_PER_CH)];},'is not a line key','a line past the end of the fifty');
+  why(o=>{o.meter.heavy=[K(7,'Llimit',9)];},'is not a line this record has opened','a line this record never opened');
+  why(o=>{o.meter.heavy=[K(7,'Llimit',1),K(7,'Llimit',1)];},'twice','a key listed twice');
+  /* an older record carries no field at all, and reads as the blank's empty list */
+  {const o=wire(); delete o.meter.heavy; const r=validateProfile(o);
+   ok(r.ok&&Array.isArray(r.profile.meter.heavy)&&r.profile.meter.heavy.length===0,
+    'an older record with no heavy field fills the blank and is not refused');
+   const o2=wire(); o2.meter={lines:0,unique:[]}; const r2=validateProfile(o2);
+   ok(r2.ok&&r2.profile.meter.heavy.length===0,'and so does a meter that carries nothing but its older fields');}
+  /* order is not meaning, so a list in another order loads sorted, never refused */
+  {const o=wire(); o.meter.heavy=base.meter.heavy.slice().reverse(); const r=validateProfile(o);
+   ok(r.ok&&r.profile.meter.heavy.join()===base.meter.heavy.join(),'a list in another order loads sorted');}});
+
+ /* EXPORT AND IMPORT, THE ROUND TRIP, THROUGH THE BOUND STORE */
+ T('round trip',()=>{const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+  const p=fixture(); meterHeavy(p,[K(7,'Llimit',2),K(7,'Rtruth',1),K(9,'Ltruth',2)]);
+  const got=pImport(JSON.stringify(p));
+  ok(got!==null&&got.meter.heavy.join()===p.meter.heavy.join(),'an import keeps the heavy marks, '+(got&&got.meter.heavy.length));
+  const out=JSON.parse(pExport());
+  ok(out.meter.heavy.join()===p.meter.heavy.join(),'and an export carries them');
+  const again=pImport(JSON.stringify(out));
+  ok(again!==null&&again.meter.heavy.join()===p.meter.heavy.join(),'and a second import of that export is the same list');
+  ok(meterRerunOrder(again,[7,9],CH,RUN_MAX).join()===meterRerunOrder(p,[7,9],CH,RUN_MAX).join(),
+   'so the rerun the imported record says is the rerun the original said');
+  const bad=JSON.parse(JSON.stringify(out)); bad.meter.heavy.push(K(7,'Llimit',44));
+  const before=profiles().length;
+  ok(pImport(JSON.stringify(bad))===null&&profiles().length===before,'a heavy mark on a line never opened refuses the whole import and pushes nothing');
+  bindStore(()=>null,()=>{});});
+
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

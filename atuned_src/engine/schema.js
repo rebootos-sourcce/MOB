@@ -68,7 +68,15 @@ function blankProfile(name){
       lines at read time, the same reasoning lines itself gives for not
       being derived: a rule that moved would move a number that already
       told somebody what they did. */
-   relLines:0, truthLines:0},
+   relLines:0, truthLines:0,
+   /* HEAVY, round OG. The line keys a person marked heavy while they were
+      said, a sorted list with no repeats, and every key in it is also a key
+      in unique, because a line that was never opened cannot have been heavy.
+      A fact about a line and not about a run, so it is stored here and not
+      in RUN.heavy, which is keyed by plan index and pass and is gone when the
+      card closes. The rerun reads it (meterRerunOrder). Nothing that prices a
+      run reads it: the allowance counts unique and never this. */
+   heavy:[]},
   /* THE PLAN. Written by the record store from the processor's own state and
      never by the app, because a record a person can edit must not be able to
      grant itself a tier. Everything here is either the processor's word for
@@ -146,6 +154,9 @@ function loadProfile(p){
     counting for yet, so it opens at nought rather than at undefined */
  if(typeof p.meter.relLines!=='number')p.meter.relLines=0;
  if(typeof p.meter.truthLines!=='number')p.meter.truthLines=0;
+ /* an older record has no heavy marks, which is a record that never marked
+    one and not a broken one, so it opens with an empty list */
+ if(!Array.isArray(p.meter.heavy))p.meter.heavy=[];
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
  /* a missing baseline is filled as missing. A 0 already on disk is left as
@@ -906,7 +917,26 @@ function validateProfile(o){
    if(p.meter.firsts.length!==o.meter.firsts.length)
     errs.push('meter.firsts held '+(o.meter.firsts.length-p.meter.firsts.length)
      +' entries that are not a dated first');}
-  else if(o.meter.firsts!==undefined)errs.push('meter.firsts is not a list');}
+  else if(o.meter.firsts!==undefined)errs.push('meter.firsts is not a list');
+  /* THE HEAVY MARKS, round OG, refused by name and never filtered. unique just
+     above drops a stray entry without a word, which is the wrong shape for a
+     mark that changes what a rerun says: a heavy key dropped here would be a
+     line the person marked that the next rerun quietly leaves out. Each key
+     must be a line key that this record has opened (meterHeavyWhy), and a key
+     listed twice is refused, since the list is a set and a doubled entry is
+     a file that was edited by hand or written by something else. Order is not
+     meaning, so a list in any order loads sorted. Absent is an older record
+     and keeps the blank's empty list. */
+  if(o.meter.heavy!==undefined){
+   if(!Array.isArray(o.meter.heavy))errs.push('meter.heavy is not a list');
+   else {
+    var hvSeen={}, hvKeep=[];
+    o.meter.heavy.forEach(function(k,i){
+     var why=meterHeavyWhy(p,k);
+     if(why){errs.push('meter.heavy['+i+'] '+why+(typeof k==='string'?': '+k.slice(0,40):''));return;}
+     if(hvSeen[k]){errs.push('meter.heavy lists '+k+' twice');return;}
+     hvSeen[k]=1; hvKeep.push(k);});
+    p.meter.heavy=meterHeavySort(hvKeep);}}}
  /* THE RELEASES SINCE EACH LAW WAS ANSWERED. Read after the meter, because the
     meter is what bounds them: a count is patterns of new ground at the law's
     seat, every one of them is a key in meter.unique, and a new answer only ever
@@ -1308,6 +1338,122 @@ function meterRun(p,keys){
  /* fresh is the new ground by key, which is what the release lift counts:
     the address in each key names the seat whose laws it lifts. */
  return {added:added, repeated:repeated, fresh:fresh};}
+
+/* ============================================================
+   RERUN V2, round OG. His words: "rerunning is a line you marked heavy. And
+   it would go back into that kind of where it would sit in that bell curve."
+   And of the release itself: "there's a structural flow to the release. We
+   start with the least tense words, the most tense words, and then the
+   decompression words, from the least intense to the most intense."
+
+   WHAT THE CODE CAN SAY ABOUT WHERE A LINE SITS, AND ONLY THAT. The one rank
+   of tension a line carries is its number on the fifty. The card is an
+   escalation, "five bands of ten" (C3_BAND in engine/data/cards.js), meterNext
+   opens the lowest unopened number first, and a key is address, channel and
+   that number. So a line's place on the curve is its line number, ascending,
+   and nothing is invented here: no rating per line exists and none is added.
+   What is NOT in the code is the curve as a shape. relLine says the printed
+   card's five lines round and round (cardLine reads i modulo the card's depth)
+   and says one sentence for every number at an address with no card, so the
+   words at line 7 are the words at line 2. The number orders the rerun and
+   does not yet change a sentence. The hertz per seat (FLOWSEAT) is a tone and
+   the lever's bell (compute.js) is over an address's weight, and neither is
+   an intensity per line, so neither is read here. The questions this leaves
+   are in DECISIONS.md under round OG.
+
+   THE ORDER, so a heavy line goes back and nothing is appended. Address by
+   address in the order the addresses were picked, which keeps the release's
+   address major run and relSpan's one block per address. Inside an address,
+   the channels in the order the caller names them, which is left release,
+   right release, left reframe, right reframe: release first and reframe
+   after, the book's order. Inside a channel the lines ascend, least tense
+   first. With nothing marked heavy that is exactly what meterRerunPlan
+   returned, one line a channel, so a record that never marked a line reruns
+   as it always has.
+
+   NEVER NEW GROUND AND NEVER A PRICE. A heavy mark is a fact about a key
+   already in unique, so the plan can only hold lines that are open, and
+   meterRerun still refuses any key that is not. Nothing here writes unique,
+   lines, first or last, so the allowance does not move.
+   ============================================================ */
+var HEAVY_KEY=/^(\d+):([LR](?:limit|truth)):(\d+)$/;
+/* WHY A KEY CANNOT BE HEAVY, or null when it can. The one test, read by the
+   writer and by the boundary, so a mark the app would refuse is a mark an
+   import refuses in the same words. */
+function meterHeavyWhy(p,k){
+ if(typeof k!=='string')return 'is not a string';
+ var m=HEAVY_KEY.exec(k);
+ if(!m||+m[3]>=LINES_PER_CH)
+  return 'is not a line key, address:channel:line with the line under '+LINES_PER_CH;
+ var open=(p&&p.meter&&Array.isArray(p.meter.unique))?p.meter.unique:[];
+ if(open.indexOf(k)<0)return 'is not a line this record has opened';
+ return null;}
+/* the stored order: address, then channel, then line as a number. Called on
+   keys that already passed meterHeavyWhy, because it parses them. */
+function meterHeavySort(list){
+ function part(k){var m=HEAVY_KEY.exec(k); return [+m[1],m[2],+m[3]];}
+ return list.slice().sort(function(a,b){
+  var x=part(a), y=part(b);
+  return x[0]-y[0]||(x[1]<y[1]?-1:x[1]>y[1]?1:0)||x[2]-y[2];});}
+/* MARK LINES HEAVY ON THE RECORD. Refuses by name any key that is not a line
+   this record has opened and reports every refusal with its reason, so the
+   caller can say so. It touches meter.heavy and nothing else, so it can never
+   cost anything. Marking a line that is already heavy is not an error and is
+   reported as already. */
+function meterHeavy(p,keys){
+ var out={marked:[], already:[], refused:[]}, m=(p&&p.meter)||null;
+ var held=(m&&Array.isArray(m.heavy))?m.heavy:[], have={};
+ held.forEach(function(k){have[k]=1;});
+ (keys||[]).forEach(function(k){
+  var why=m?meterHeavyWhy(p,k):'has no record to be marked on';
+  if(why){out.refused.push({key:k, why:why}); return;}
+  if(have[k]){out.already.push(k); return;}
+  have[k]=1; out.marked.push(k);});
+ if(out.marked.length)m.heavy=meterHeavySort(held.concat(out.marked));
+ return out;}
+/* TAKE A MARK OFF. Nothing in the app calls it yet: a mark is made while a line
+   is said and there is no ruling on how one is withdrawn. It is here so that
+   when there is, the record has a writer that keeps the list sorted and unique
+   rather than a screen splicing the array by hand. */
+function meterHeavyClear(p,keys){
+ var out={cleared:[], absent:[]}, m=(p&&p.meter)||null;
+ var held=(m&&Array.isArray(m.heavy))?m.heavy:[], drop={};
+ (keys||[]).forEach(function(k){
+  if(held.indexOf(k)>=0&&!drop[k]){drop[k]=1; out.cleared.push(k);} else out.absent.push(k);});
+ if(out.cleared.length)m.heavy=held.filter(function(k){return !drop[k];});
+ return out;}
+/* THE RERUN, WITH THE HEAVY LINES PUT BACK. meterRerunPlan is the opened line
+   rule and is called unchanged for the base, so the cap and the addresses it
+   reaches are exactly what they were: an address the cap cut off stays cut off
+   and a heavy line never pulls one in. The heavy lines of the addresses it did
+   reach are then added in the room under the cap, address by address and
+   channel by channel, lowest line first, so what the cap drops is the most
+   tense heavy line of the last address and never a channel's own last line,
+   which would leave a release with no reframe. The whole is then put in order.
+   A heavy key no longer open, which a hand edited store could hold, is
+   skipped here as meterRerun would refuse it. */
+function meterRerunOrder(p,nodeIds,chans,cap){
+ var lim=cap>0?cap:RUN_MAX;
+ var take={}, base=meterRerunPlan(p,nodeIds,chans,lim), reached={};
+ base.forEach(function(k){take[k]=1; reached[k.split(':')[0]]=1;});
+ var heavy={}, open={}, room=lim-base.length;
+ ((p&&p.meter&&p.meter.unique)||[]).forEach(function(k){open[k]=1;});
+ ((p&&p.meter&&Array.isArray(p.meter.heavy)&&p.meter.heavy)||[]).forEach(function(k){
+  if(open[k]&&HEAVY_KEY.test(k))heavy[k]=1;});
+ var ids=[], seenId={};
+ (nodeIds||[]).forEach(function(id){id=String(id); if(!seenId[id]){seenId[id]=1; ids.push(id);}});
+ ids.forEach(function(id){ if(!reached[id])return;
+  (chans||[]).forEach(function(ch){
+   for(var i=0;i<LINES_PER_CH&&room>0;i++){
+    var k=meterKey(id,ch,i);
+    if(heavy[k]&&!take[k]){take[k]=1; room--;}}});});
+ var out=[];
+ ids.forEach(function(id){ if(!reached[id])return;
+  (chans||[]).forEach(function(ch){
+   for(var i=0;i<LINES_PER_CH;i++){
+    var k=meterKey(id,ch,i);
+    if(take[k])out.push(k);}});});
+ return out;}
 
 /* ============================================================
    THE HORIZON, AND WHY THE LADDER IS NOT A FIXED COUNT.

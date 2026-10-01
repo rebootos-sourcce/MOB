@@ -2471,6 +2471,26 @@ heavy, in the release's own order: least tense, then most tense, then the
 decompression lines. The wording about the decompression order was unclear and
 is asked again, with the order drawn, before it is built.
 
+**Rerun v2, built the day after, on his clarification.** His words: "rerunning
+is a line you marked heavy. And it would go back into that kind of where it
+would sit in that bell curve. The bell curve, by the way, is the harmonic
+register of that address." What shipped: a line marked heavy while it was said
+is kept on the record as `meter.heavy`, a sorted list of line keys that must
+all be keys already in `meter.unique`, refused by name at the import boundary
+and exported with the record. A rerun (`meterRerunOrder`) is the opened line
+rule plus those lines, put back at their number on the fifty, least tense
+first, inside the run's own order: address by address, release channels then
+reframe channels, left then right. It is capped at the run ceiling, opens
+nothing, and the allowance does not read the marks. What is not built, because
+the code has nothing honest to build it on: the curve as a shape. The only rank
+of tension a line carries is its number on the fifty (`C3_BAND`, five bands of
+ten), and the sentences do not follow it, since the printed cards repeat their
+five lines and every address with no card says one sentence for every number.
+The hertz per seat is a tone and the lever's bell is over an address's weight;
+neither is an intensity per line. Open, and asked in the round OG report: what
+"the bell curve is the harmonic register of that address" means as a rule, the
+direction of the reframe lines, and how a heavy mark is taken off.
+
 **The body map is Body, in Play, between Field and Compass.** Round OD moved
 it to Discover and called it Intake on a misreading. His words: "Body is
 missing from this current build. So play, field, compass, character. Body
