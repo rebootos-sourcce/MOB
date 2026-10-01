@@ -12,11 +12,8 @@ Moved to `PLAN-HISTORY.md`, so this file carries only what is open.
 
 | Work | Seat | Delivers |
 |---|---|---|
-| Aura point cloud, three more renders: the cloud as mask and biofield, coherence lights it, five masks, new symbol icons | art | `mockups/character-aura/` |
-| Left menu, four options: CQ and DQ on one gradient bar, element colours, the 112 node shadow, Flow against SQ and CQ, halo and pitchfork, domains collapsible, Summary above Reading | UI/UX | `mockups/rail-options/` |
 | Login, onboarding and tutorial mockups, username first, visually exciting | art | `mockups/onboarding/` |
 | The Matrix redesigned in the flow treatment; fetters and the celestial shown as gears or rings | animation | `mockups/matrix-gears/` |
-| Ascended teachers: 12 plus their opposites, the click panel, the protocol alignment engine | systems | `DESIGN-teachers.md`, `mockups/teachers/` |
 | Torus field around Orbit: bottom to top flow, Bezier geometry, seats distort it, trace for leaks | art | `mockups/character-torus/` |
 | Sniffer: day quality, acts, irritation, masked profanity restored, the framework questions (sins, Inferno, ages, others), distress detection | AI | engine build, `SNIFFER-RECOMMENDATION.md` |
 | Subtle atmospheric sound for everything, hover included | sound | build, `SOUND-MAP.md` |
