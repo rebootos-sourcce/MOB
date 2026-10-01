@@ -3424,7 +3424,57 @@ var LEX={
  dismissed:['throat',18],ignored:['throat',18],
  /* coherent. these subtract. */
  grateful:['coherent',-14],content:['coherent',-12],calm:['coherent',-12],
- steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12]};
+ steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12],
+ /* THE SNIFFER FINDS THE LIMITER, round SB, his own job description for the
+    mechanic: "if a person is describing their lack of value or self worth
+    or confidence or self respect, they're downgrading their solar plexus.
+    So the sniffer should find that." SB14 named the measurement before the
+    build: self worth, confidence, self respect and follow through, run
+    through the real sniffer first. Measured, round NO: all four returned
+    nothing. "I have no self worth. I feel like I have no confidence at
+    all" scored zero axes. "I just do not have any self respect anymore"
+    scored zero. Only the word worthless, already in this table, reached
+    anything, and it reached Shame at solar by itself. This is the coverage
+    hole SB13 named: "the lexicon already maps words to axes and seats, so
+    this is a coverage question rather than a new mechanism." Not a new
+    table, not a new scanner, an addition to this one, at the seat his own
+    words name and the fetter the family already seated here carries:
+    ashamed, humiliated, stupid, worthless, embarrassed and guilty are all
+    Shame at solar, round GR's own ruling, and a person naming no worth, no
+    confidence or no self respect is naming the same family in its own
+    words rather than its adjectives. */
+ 'no self worth':['solar',24,'Shame'],'lost my self worth':['solar',24,'Shame'],
+ 'no sense of self worth':['solar',24,'Shame'],'have no self worth':['solar',24,'Shame'],
+ 'feel no self worth':['solar',24,'Shame'],'not worth anything':['solar',22,'Shame'],
+ 'do not know my own worth':['solar',20,'Shame'],'dont know my own worth':['solar',20,'Shame'],
+ 'do not have any self worth':['solar',22,'Shame'],'dont have any self worth':['solar',22,'Shame'],
+ 'do not have self worth':['solar',22,'Shame'],'dont have self worth':['solar',22,'Shame'],
+ 'no confidence':['solar',22,'Shame'],'zero confidence':['solar',24,'Shame'],
+ 'no confidence in myself':['solar',24,'Shame'],'not confident in myself':['solar',22,'Shame'],
+ 'no self confidence':['solar',22,'Shame'],'lack the confidence':['solar',20,'Shame'],
+ 'lack confidence':['solar',20,'Shame'],'do not have any confidence':['solar',22,'Shame'],
+ 'dont have any confidence':['solar',22,'Shame'],'do not have the confidence':['solar',22,'Shame'],
+ 'dont have the confidence':['solar',22,'Shame'],
+ 'no self respect':['solar',22,'Shame'],'lost my self respect':['solar',22,'Shame'],
+ 'do not respect myself':['solar',20,'Shame'],'dont respect myself':['solar',20,'Shame'],
+ 'cannot respect myself':['solar',20,'Shame'],'cant respect myself':['solar',20,'Shame'],
+ 'do not have any self respect':['solar',22,'Shame'],'dont have any self respect':['solar',22,'Shame'],
+ 'do not have self respect':['solar',22,'Shame'],'dont have self respect':['solar',22,'Shame'],
+ /* FOLLOW THROUGH AND DISCIPLINE, the fourth term SB14 named, carries no
+    stated fetter. The quote seats discipline and follow through at the
+    solar plexus as POWER, the coherent direction: "if you're setting
+    rituals for discipline to follow through on the things you say you're
+    going to do, that's power, that's solar plexus." A person reporting the
+    absence of that is evidence the seat is known and not evidence of which
+    of the nine axes it is, so this is seated and left to the quarter rule
+    rather than guessing a fetter nothing here authors, the same posture the
+    exhaustion and overwhelm words above already take. */
+ 'no discipline':['solar',18],'no self discipline':['solar',18],
+ 'lack the discipline':['solar',18],'lack discipline':['solar',18],
+ 'never follow through':['solar',18],'do not follow through':['solar',18],
+ 'dont follow through':['solar',18],'cannot follow through':['solar',18],
+ 'cant follow through':['solar',18],'break my promises to myself':['solar',20],
+ 'let myself down again':['solar',18],'quit on myself':['solar',18]};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
