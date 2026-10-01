@@ -379,6 +379,37 @@ function authBillingBack(){
    history.replaceState(history.state,'',location.pathname+(rest?'?'+rest:'')+location.hash); } }
  catch(e){}
  return (v==='done'||v==='managed'||v==='cancelled')?v:null;}
+/* THE WELCOME AFTER PAYING, round OX, his words: "after a person's done paying,
+   there should be a pop-up screen welcoming them to the software. It should
+   tell them to do the loop, go to the journal, input stories, and get used to
+   using the software ten minutes a day until you no longer need it." Shown
+   once per profile, only when the plan is live after a checkout return, and
+   never for a managed or cancelled return. It rides the tutorial's own sheet
+   host, which is idle at that moment. The flag is a ui fact, so it survives a
+   load. */
+function paidWelcomeOpen(){
+ var h=document.getElementById('tutorial'); if(!h)return false;
+ if(CURP&&CURP.ui&&CURP.ui.paidWelcomed)return false;
+ if(typeof TUT!=='undefined'&&TUT.open)return false;
+ h.classList.remove('ob-leaving');
+ h.innerHTML='<div class="ob-card" role="dialog" aria-modal="true" aria-label="You are in">'
+  +'<div class="ob-wash" aria-hidden="true"></div><div class="ob-scroll">'
+  +'<span class="pm-eye">Paid</span>'
+  +'<h2 class="ob-h">You are in.</h2>'
+  +'<p class="ob-p">Do the loop: discover, play, flow, embody. Then do it again.</p>'
+  +'<p class="ob-p">Go to the journal. Put your stories in.</p>'
+  +'<p class="ob-p">Use it ten minutes a day, until you no longer need it.</p>'
+  +'<div class="ob-acts"><button type="button" class="btn pri" id="pwgo">Go to the journal</button>'
+  +'<button type="button" class="btn" id="pwlater">Later</button></div>'
+  +'</div></div>';
+ h.style.display='flex';
+ var shut=function(){ h.classList.add('ob-leaving');
+  setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },520); };
+ document.getElementById('pwgo').onclick=function(){ shut(); if(typeof setTab==='function')setTab(TAB.STORY); };
+ document.getElementById('pwlater').onclick=shut;
+ var g=document.getElementById('pwgo'); if(g)g.focus();
+ if(typeof uiSet==='function')uiSet('paidWelcomed',true);
+ return true;}
 /* THE RETURN FROM STRIPE. Stripe sends the browser back the moment the card
    is taken, and its webhook to the server can land a few seconds later, so
    "done" with no live plan yet is waited on, a few reads apart, rather than
@@ -391,6 +422,7 @@ function authPlanBack(back,b){
   status('Payment finished. Open your own profile to see the plan on it.','fail'); return took;}
  if(authPlanLive()){
   if(took==='same')status(PLAN_BY[planOf(CURP.plan).k].nm+' is on this record.');
+  paidWelcomeOpen();
   return took;}
  status('Payment finished. Waiting for Stripe to confirm it.');
  authPlanWait(AUTH_PLAN_TRIES);
@@ -398,7 +430,7 @@ function authPlanBack(back,b){
 function authPlanWait(n){
  setTimeout(function(){
   authPlanRead().then(function(){
-   if(authPlanLive())return;
+   if(authPlanLive()){ paidWelcomeOpen(); return; }
    if(n>1){ authPlanWait(n-1); return; }
    status('Stripe has not confirmed the payment yet. The plan shows here once it does, '
     +'so reload this page in a minute.','fail');});},AUTH_PLAN_WAIT_MS);}

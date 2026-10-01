@@ -17,9 +17,15 @@ Moved to `PLAN-HISTORY.md`, so this file carries only what is open.
 | Login, onboarding and tutorial mockups, username first, visually exciting | art | `mockups/onboarding/` |
 | The Matrix redesigned in the flow treatment; fetters and the celestial shown as gears or rings | animation | `mockups/matrix-gears/` |
 | Ascended teachers: 12 plus their opposites, the click panel, the protocol alignment engine | systems | `DESIGN-teachers.md`, `mockups/teachers/` |
-| Onboarding TDD review 3 (narrative, screens in the TDD's schema, safety) | narrative | `ATUNED-onboarding-REVIEW-3-narrative.md` |
+| Torus field around Orbit: bottom to top flow, Bezier geometry, seats distort it, trace for leaks | art | `mockups/character-torus/` |
+| Sniffer: day quality, acts, irritation, masked profanity restored, the framework questions (sins, Inferno, ages, others), distress detection | AI | engine build, `SNIFFER-RECOMMENDATION.md` |
+| Subtle atmospheric sound for everything, hover included | sound | build, `SOUND-MAP.md` |
+| Teachers v2: imprints, affirmations, ritual tie, unlocks, cohort share | systems | `DESIGN-teachers.md` v2, mockup |
+| Left menu round 3: simple, symbolic, gradient with the oscillation range as the boundary | art | `mockups/rail-simple/` |
+| Privacy policy, terms, and where they live in the information architecture | narrative | `LEGAL-IA.md`, `PRIVACY-POLICY.md`, `TERMS.md`, `funnel/privacy.html`, `funnel/terms.html` |
 
-Reviews 1 and 2 of the Onboarding TDD are in the repository.
+All three Onboarding TDD reviews, the OAuth and Stripe steps, the left menu
+round 2 and the teachers v1 design are merged.
 
 ## C. What is left, in order
 
@@ -143,23 +149,30 @@ responses, O9 disclosure and the achievement gate, O10 the local event log ·
 O7 the ten integrity questions and O8 the archetype check wait on rulings ·
 O11 the server seams wait on accounts.
 
-**Rulings that unblock slices** (full text with quoted sources in the reviews;
-my recommendation is marked, none is settled)
-1. When the account is asked for: before the first release (the TDD), or after
-   it with the gift shown first (recommended, reviews 1 and 2).
-2. Whether a new person sees their whole reading while the gift lasts
-   (recommended) or sight by tier from the first minute.
-3. Whether the gift is a counter of 100 or a list of 100 per starting point
-   (recommended: a counter, the starting point steering the first draw).
-4. Where the Mirror's cause sentence comes from: the table only with the
-   person's own answer as the cause (recommended), or a model step.
-5. Whether the integrity and archetype questions are in the first session, and
-   whether their answers write to the laws or are evidence only (recommended).
-6. One permanent safety line under the story box and a stop route in the
-   somatic setup (recommended).
-7. What the first release does when the first story puts nothing above the
-   line: a labelled practice run that writes nothing (recommended).
-8. The release sentence: the TDD's, or the shipped stem "I am letting go of
-   believing, perceiving, thinking, behaving, acting, and feeling that I am".
-9. What counts as "repeated use" for revealing achievements, and the word
-   (marks or achievements); referral 25: who gets it.
+**Ruled by him, round OX (1 October)**
+1. The account is created after the first release, never before; on sign up all
+   the data from the person's input is passed over (a device-local handoff,
+   claimed at sign up).
+2. A new person sees the whole reading while the gift lasts.
+3. The gift is a counter of 100, and the counter space can carry other things.
+4. The Mirror's cause is the person's own second answer, quoted back.
+5. The integrity and archetype questions are part of the starting session
+   (whether answers write to the laws is not ruled: evidence only until it is).
+6. No permanent safety line. The sniffer must detect distress in a story and
+   answer it (built into the sniffer round: detection, then a short message and
+   the drafted support lines, shown only on detection, no release offered).
+8. The first release says "I am releasing believing, thinking, feeling,
+   behaving and acting that I am ..." (five channels; differs from the shipped
+   six-channel "letting go" stem, which stays elsewhere until he says
+   otherwise).
+
+**Still open**
+7. What the first release does when the first story puts nothing above the line
+   (recommended: a labelled practice run that writes nothing).
+9. What counts as repeated use for revealing achievements, the word (marks or
+   achievements), and who gets the referral 25.
+10. Whether the five-channel sentence replaces the six-channel stem everywhere.
+
+**Slices unblocked:** O1 (the journey record), O2 (the Story Signal, after the
+sniffer round lands), O3, O4 (the first-run sheet). O5 uses the counter. O7 and
+O8 are in the starting session.
