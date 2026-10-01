@@ -28619,4 +28619,33 @@ workflow file for a secret-name mismatch first, since that is a defect
 on this side rather than his: `deploy.yml` reads `CLOUDFLARE_API_TOKEN`
 and `CLOUDFLARE_ACCOUNT_ID` by the same names in both the gate step and
 the deploy step, so the workflow itself is not the cause. Not yet
-resolved; the next ask is listed below.
+resolved at that point; the next ask was listed in the reply.
+
+He sent a screenshot of his own API Tokens list rather than answer in
+words, "sumpthin's fishy." Read the Permissions column rather than
+guess: the token actually plugged into GitHub, `atuned pages deploy`,
+carried `Account.Account Custom Pages`, a different Cloudflare
+permission that only governs a domain's custom error pages, not the
+one named `Cloudflare Pages` that lets Wrangler manage a Pages
+project at all. Two similarly worded options in the same dropdown,
+picked the wrong one. That alone explained both errors in the prior
+log. Named it plainly rather than send him back through the whole
+nine step ritual again, and gave the one row that mattered: open the
+permission dropdown, type "pages," pick the one actually named
+`Cloudflare Pages`, not `Account Custom Pages`.
+
+"give that a spin": re-ran the same workflow run a second time rather
+than invent a commit. `deploy to Cloudflare Pages` succeeded in full
+this attempt: `npx wrangler pages deploy` uploaded six files and
+printed "Deployment complete!" pointing at
+`https://85290a7a.atuned.pages.dev`, with a second, stable alias at
+`https://claude-laughing-feynman-xhfy.atuned.pages.dev`. Could not
+browse either from this sandbox, its own network egress proxy blocks
+arbitrary outbound domains by policy, so this is read off Cloudflare's
+own tool's own success output in the job log, not off a screenshot or
+a guess. `atuned.world` itself is still not live: step 3 of
+`HOSTING-SETUP.md`, pointing the domain's DNS at Cloudflare from
+GoDaddy, is still undone and only he can do it. Task 9 in TASKS.md
+("Rebuild, gate, deploy, and verify atuned.world") is complete as far
+as this repository's own pipeline goes; the domain step is its own
+open item.
