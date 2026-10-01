@@ -173,6 +173,41 @@ function normMap(t){
     was always the real one. */
  if(!prev){s+=' '; map.push(t.length);}
  return {s:s,map:map};}
+/* ============================================================
+   THE CLAUSE FLOOR. One shared primitive, built so srcNegated below and
+   anything built on 20.G6 or 20.G7 later can all stop a backward read at a
+   sentence boundary without a second normalised copy of the text.
+
+   lawNegated and leanNegated already solve their own version of this, by
+   building their own copy of the text with a literal '|' inserted at every
+   sentence end (lawNorm, leanNorm) and scanning THAT. That works for them
+   because they also do their own matching on that same copy, so the
+   offsets never have to agree with anyone else's.
+
+   srcHear cannot do that. It reads scanStory's own hits off p.path.steps,
+   so its offsets are normMap's own, and a second copy with '|' tokens
+   inserted would be a different length from the first boundary on, which
+   desyncs every offset after it. Measured directly rather than assumed:
+   "I am not afraid. Afraid now." reads nm.s as
+   " i am not afraid afraid now ", one single space standing for the
+   period, and srcNegated(nm.s, at of the second afraid) read true before
+   this fix, the second sentence voided by the first one's own negation.
+
+   So this asks the question a different way, on the one copy that
+   already exists. nm.map carries the raw index behind every character of
+   nm.s, and the single space a run of punctuation collapsed to is mapped
+   to the FIRST character of that run, because normMap keeps only the
+   first space of a run and nothing after it. So where nm.s holds a space
+   AND the raw character behind it is one that ends a clause, that space
+   is a boundary, found without moving a single offset scanStory itself
+   produced. A comma is left out on purpose, the same ruling leanNorm
+   already made: it is too weak a break to end a negation. */
+var SENT_END=/[.!?;:\n\r]/;
+function clauseFloor(t,nm,at){
+ t=String(t||'');
+ for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
+  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
+ return -1;}
 function scanStory(text){
  var src=normMap(text).s;
  var hits=[];

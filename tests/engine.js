@@ -4936,6 +4936,36 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
  ok(JSON.stringify(srcHear('my chest is tight and my chest is tight'))===JSON.stringify(srcHear('my chest is tight and my chest is tight')),
   'the same entry hears the same twice');
  ok(JSON.stringify(S.charge)===before,'and hearing moves no charge');
+ /* ROUND NQ, THE SENTENCE BOUNDARY. AUDIT-source-tdd-v3.md's own finding,
+    "the core parse path itself reads no negation at all," and this is the
+    one piece of it srcHear does read. Measured before this fix: "I am not
+    afraid. Afraid now." read both occurrences negated, the second
+    sentence voided by the first one's own "not", because srcNegated's two
+    word window reached straight across the collapsed period with nothing
+    to stop it. clauseFloor is sniff.js's own shared primitive for this,
+    built so this and any later pass reusing scanStory's own offsets (20.G6
+    and 20.G7 in PRIORITY.md) can share one answer rather than each
+    building a second copy of the text the way lawNorm and leanNorm do. */
+ const bound=srcHear('I am not afraid. Afraid now.');
+ ok(bound.top&&bound.top.mentions===1&&bound.top.negated===1,
+  'the first sentence voids its own "not afraid"; the second, a clean sentence, still counts, got '+JSON.stringify(bound.top));
+ /* and the width that was measured against the owner's own book is
+    untouched: this is not a wider window, only a floor on how far back it
+    may ever reach. */
+ const still=srcHear('I am not afraid but I could be afraid.');
+ ok(still.top&&still.top.mentions===1&&still.top.negated===1,
+  'one clause, one real mention past its own negation, unchanged by the floor, got '+JSON.stringify(still.top));
+ ok(E.srcNegated(' i did cry ',6)===false,
+  'the gate\'s own direct call, with no floor passed, reads exactly as it did before this fix');
+ const nmB=E.normMap('I am not afraid. Afraid now.');
+ ok(E.clauseFloor('I am not afraid. Afraid now.',nmB,nmB.s.indexOf('now'))===nmB.s.indexOf('afraid now')-1,
+  'clauseFloor finds the period, not the two words it collapsed from, as the nearest boundary before "now"');
+ /* no trailing period here on purpose: one would itself be a real boundary
+    at the very end and the point is the comma before it is not one, the
+    same ruling leanNorm already made. */
+ const nmC='I am not afraid, still shaking';
+ ok(E.clauseFloor(nmC,E.normMap(nmC),E.normMap(nmC).s.indexOf('shaking'))===-1,
+  'a comma is not a boundary, so this finds none before "shaking" in a text with no sentence end at all');
 }
 
 g('GR · a word that names shame reads as shame, at the seat it sits at');

@@ -7245,6 +7245,41 @@ function normMap(t){
     was always the real one. */
  if(!prev){s+=' '; map.push(t.length);}
  return {s:s,map:map};}
+/* ============================================================
+   THE CLAUSE FLOOR. One shared primitive, built so srcNegated below and
+   anything built on 20.G6 or 20.G7 later can all stop a backward read at a
+   sentence boundary without a second normalised copy of the text.
+
+   lawNegated and leanNegated already solve their own version of this, by
+   building their own copy of the text with a literal '|' inserted at every
+   sentence end (lawNorm, leanNorm) and scanning THAT. That works for them
+   because they also do their own matching on that same copy, so the
+   offsets never have to agree with anyone else's.
+
+   srcHear cannot do that. It reads scanStory's own hits off p.path.steps,
+   so its offsets are normMap's own, and a second copy with '|' tokens
+   inserted would be a different length from the first boundary on, which
+   desyncs every offset after it. Measured directly rather than assumed:
+   "I am not afraid. Afraid now." reads nm.s as
+   " i am not afraid afraid now ", one single space standing for the
+   period, and srcNegated(nm.s, at of the second afraid) read true before
+   this fix, the second sentence voided by the first one's own negation.
+
+   So this asks the question a different way, on the one copy that
+   already exists. nm.map carries the raw index behind every character of
+   nm.s, and the single space a run of punctuation collapsed to is mapped
+   to the FIRST character of that run, because normMap keeps only the
+   first space of a run and nothing after it. So where nm.s holds a space
+   AND the raw character behind it is one that ends a clause, that space
+   is a boundary, found without moving a single offset scanStory itself
+   produced. A comma is left out on purpose, the same ruling leanNorm
+   already made: it is too weak a break to end a negation. */
+var SENT_END=/[.!?;:\n\r]/;
+function clauseFloor(t,nm,at){
+ t=String(t||'');
+ for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
+  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
+ return -1;}
 function scanStory(text){
  var src=normMap(text).s;
  var hits=[];
@@ -8254,8 +8289,20 @@ var SRC_ONCE=6;
 var SRC_NEG=['not','no','never','nobody','none','cannot','cant','didnt','dont',
  'doesnt','wont','wasnt','werent','isnt','arent','havent','hasnt','couldnt','wouldnt'];
 var SRC_NEG_W=2;
-function srcNegated(src,at){
- var before=String(src).slice(0,at).trim().split(' ');
+/* THE SENTENCE BOUNDARY, round NQ, AUDIT-source-tdd-v3.md's own finding:
+   "the core parse path itself reads no negation at all," and this is the
+   one piece of it srcHear does read. Measured before this fix: "I am not
+   afraid. Afraid now." read both mentions negated, the second sentence
+   voided by the first one's own "not". floor is sniff.js's own
+   clauseFloor, the normalised offset of the nearest sentence end before
+   at, or -1 when there is none to find; srcHear passes it, and nothing
+   else does, so every existing caller and the gate's own direct call,
+   srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
+   boundary, the exact width and word list this was measured against
+   stand exactly as they were. */
+function srcNegated(src,at,floor){
+ var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
+ var before=String(src).slice(f,at).trim().split(' ');
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
  return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
 
@@ -8291,7 +8338,7 @@ function srcHear(text,prior){
   if(!s.seat||s.coherent)return;
   var o=by[s.seat]=by[s.seat]||{seat:s.seat, band:K2BAND[s.seat],
    reading:Math.min(10,(p.bands[s.seat]||0)/3), mentions:0, negated:0, words:[]};
-  if(srcNegated(src,s.at)){o.negated++;return;}
+  if(srcNegated(src,s.at,clauseFloor(t,nm,s.at))){o.negated++;return;}
   o.mentions++;
   /* the person's own letters, through the same map marksOf uses, so what is
      quoted back is what they typed and not the lowercased copy. */
@@ -10145,7 +10192,7 @@ if(typeof module!=='undefined'&&module.exports){
      rename that missed this table shipped six broken questions, and a table
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
      because the gate asserts each part on its own and a part no test can reach

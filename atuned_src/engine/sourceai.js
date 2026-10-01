@@ -80,8 +80,20 @@ var SRC_ONCE=6;
 var SRC_NEG=['not','no','never','nobody','none','cannot','cant','didnt','dont',
  'doesnt','wont','wasnt','werent','isnt','arent','havent','hasnt','couldnt','wouldnt'];
 var SRC_NEG_W=2;
-function srcNegated(src,at){
- var before=String(src).slice(0,at).trim().split(' ');
+/* THE SENTENCE BOUNDARY, round NQ, AUDIT-source-tdd-v3.md's own finding:
+   "the core parse path itself reads no negation at all," and this is the
+   one piece of it srcHear does read. Measured before this fix: "I am not
+   afraid. Afraid now." read both mentions negated, the second sentence
+   voided by the first one's own "not". floor is sniff.js's own
+   clauseFloor, the normalised offset of the nearest sentence end before
+   at, or -1 when there is none to find; srcHear passes it, and nothing
+   else does, so every existing caller and the gate's own direct call,
+   srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
+   boundary, the exact width and word list this was measured against
+   stand exactly as they were. */
+function srcNegated(src,at,floor){
+ var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
+ var before=String(src).slice(f,at).trim().split(' ');
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
  return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
 
@@ -117,7 +129,7 @@ function srcHear(text,prior){
   if(!s.seat||s.coherent)return;
   var o=by[s.seat]=by[s.seat]||{seat:s.seat, band:K2BAND[s.seat],
    reading:Math.min(10,(p.bands[s.seat]||0)/3), mentions:0, negated:0, words:[]};
-  if(srcNegated(src,s.at)){o.negated++;return;}
+  if(srcNegated(src,s.at,clauseFloor(t,nm,s.at))){o.negated++;return;}
   o.mentions++;
   /* the person's own letters, through the same map marksOf uses, so what is
      quoted back is what they typed and not the lowercased copy. */

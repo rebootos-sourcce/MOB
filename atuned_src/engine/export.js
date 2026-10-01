@@ -155,7 +155,7 @@ if(typeof module!=='undefined'&&module.exports){
      rename that missed this table shipped six broken questions, and a table
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
      because the gate asserts each part on its own and a part no test can reach
