@@ -375,6 +375,8 @@ profile, both widths.
 
 **OVERRIDDEN, round PD, 1 October: the seats decide and ask at most one question, only when blocked** (his words: "super brain fatigue from all your questions"; see DECISIONS.md). What follows is the earlier ruling, kept for the record.
 
+**OVERRIDDEN, round PH, 1 October: no fixed headings, plain words as if he is ten.** His words: "you don't need to say the order as if I was 10, just give me the output as if I was 10." Read as: drop the four-heading template and the ceremony around it. Write the reply itself in plain, short words a ten year old could follow, in bullets, with any term of art explained in the same sentence. Say what was done, what it changes for him, what is next, and ask only if blocked (round PD still holds). Recorded in `DECISIONS.md`.
+
 **The team is always asking. Ruled 25 September.** He is the executive
 producer who holds the vision; the seats are his eyes and ears technically.
 So every round ends with questions under the fourth heading, framed for the

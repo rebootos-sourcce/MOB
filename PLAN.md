@@ -23,6 +23,7 @@ Moved to `PLAN-HISTORY.md`, so this file carries only what is open.
 | Teachers v2: imprints, affirmations, ritual tie, unlocks, cohort share | systems | `DESIGN-teachers.md` v2, mockup |
 | Left menu round 3: simple, symbolic, gradient with the oscillation range as the boundary | art | `mockups/rail-simple/` |
 | Privacy policy, terms, and where they live in the information architecture | narrative | `LEGAL-IA.md`, `PRIVACY-POLICY.md`, `TERMS.md`, `funnel/privacy.html`, `funnel/terms.html` |
+| Skin review, three passes (round PH): every discipline grades the product, finds the soul, builds a symbol map and a coherence measure, pitches a reskin to the ICPs; tally and ranked recommendations | all directors | `REVIEW-skin/` |
 
 All three Onboarding TDD reviews, the OAuth and Stripe steps, the left menu
 round 2 and the teachers v1 design are merged.

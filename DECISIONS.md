@@ -2719,3 +2719,10 @@ the legal agent's report; the lawyer reviews all of them.
 - Integrity: the eleven laws not in his ten are asked later in the product,
   after the first session, never in it. Starting points are twelve with Pain in
   and Fatigue out (Burnout already names the long tired kind).
+
+
+## Round PH, 1 October. Reply style, and the three-pass design review
+
+**Reply style.** Owner: "you don't need to say the order as if I was 10, just give me the output as if I was 10. and add that to memory." Ruled: no fixed four headings any more. Plain short words, as if he is ten, in bullets. A term of art gets its meaning in the same sentence. Questions only when blocked (round PD). Where a walkthrough outside this codebase is needed, the steps rule of 30 September still holds. Reading, stated so he can correct it: "the order" is taken to mean the four-heading template.
+
+**Review.** He asked the whole team to review the product three times as visionaries: visual systems and friction, psychographics, interface, visual language, type, brand, copy, design systems, measured coherence, and the soul of the product. The aim is a skin: a reskin first, a redesign only where the gain in consistency and uniformity is dramatic. Everything has symbolic meaning (colour, symbol, shape, information, how it links, what is upstream and downstream, and what data drives it). Each discipline grades individually, a tally is kept, and recommendations cover art direction, UI and UX, animation, innovation, mechanics, stickiness and the user journey. Ideas are pitched to the ICPs (ideal customer profiles, the kinds of person we build for) and measured against the highest unified quality. Results live in `REVIEW-skin/`.

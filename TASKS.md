@@ -31348,3 +31348,33 @@ none in the centre panel.
   Five values, each set with `npx wrangler secret put ... --name atuned-api`.
 - Work: compress the clip to Opus, write the timing file, hand both to the release
   build, and give him the draft transcript so he can correct any word.
+
+
+## Round PH, 1 October
+
+> "I want you and the team to review a tuned three times I want you to collaborate
+> amongst each other as visionaries knowing how visual systems influence friction
+> psychographics interface design visual language typography branding copy design
+> systems unified systems measurement of coherence Look for the soul of this product.
+> From all those angles, I want to do UI/UX redesign like a new skin. Taking all that
+> into consideration. I want them to pitch the ideas to the ICPs, and measure against
+> their overall highest unified quality. Knowing that that directly translates to human
+> psychographics and modern day stickiness. And I want them to recommend art direction
+> suggestions UI UX suggestions as a reskin not a redesign you can redesign if you can
+> find dramatic if you're going to make a dramatic improvements in UI UX for consistency
+> and uniformity. right? Everything has symbolic meaning, color, symbol, shape,
+> information, how it's linked, what the upstream and downstream relationships are. and
+> the information that drives them. We have all this. So analyze the product from that
+> view three times. Come back and give it a grade. from each each discipline
+> individually. Create a tally. Of the score. Get recommendations. Even on the animation
+> and innovation. And mechanics side. Stickiness side. User journey side. Right, deeply
+> examine this. From now on, you don't need to say the order as if I was 10, just give
+> me the output as if I was 10. and add that to memory. Update the plan."
+
+**Read as.**
+- Three review passes by the directors, each grading their own discipline, with a tally.
+  Pass 1 independent, pass 2 cross reading each other, pass 3 pitch to the ICPs and final grade.
+- Output is a skin first. A redesign only where the consistency gain is dramatic.
+- Symbol map: every colour, symbol and shape traced to its meaning, its upstream data and
+  its downstream use. Gaps and clashes counted.
+- Reply style change recorded (DECISIONS.md, CLAUDE.md).
