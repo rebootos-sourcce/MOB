@@ -30191,3 +30191,22 @@ the intake page." (with `ATUNED_Points_Achievements_Unlocks_TDD_v2.md`, saved as
   stomach seat, gut, heart, shoulders, `abdomen`; the Becoming audit's twelve
   questions (BECOMING-AUDIT.md section 12); the practice audit's conflicts
   (PRACTICE-AUDIT.md); the copy sweep's twelve questions (COPY-SWEEP-FINDINGS.md).
+
+## Round OH. The Daily Summary / Personal Mirror TDD, for today's build
+
+His words, verbatim, with `ATUNED_Daily_Summary_Personal_Mirror_TDD_Expanded.md`
+and the short version attached: "review, this is for todays build. understand
+it how it wires in, what needs to be built, and where it goes in development".
+
+- The expanded file is the short one plus sections 28 to 34 (relationship-first
+  summaries, inspectable evidence, contradictions, novelty, correlation versus
+  causation, user as final authority, summary quality scoring, the generation
+  pseudocode, an end to end scenario, the architecture and the final design
+  rule). Saved as `ATUNED-daily-summary-personal-mirror-TDD.md`.
+- What the Summary already has: `snapshot`/`pSnap`/`p.history` in
+  `engine/schema.js` is an append-only record of readings with the 21 laws on
+  every row, which is the longitudinal base. What it does not have: an
+  intention object, integrity events, evidence with a hierarchy, a composer, a
+  grounding pass, or corrections as events.
+- Audit running: `SUMMARY-AUDIT.md`, with one dependency graph across the five
+  TDD builds (Practice, Trace graph, Becoming, Points, Summary).
