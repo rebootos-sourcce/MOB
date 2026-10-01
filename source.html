@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1113 2c9a89c 2026-10-01 21:23"><head><meta charset="utf-8">
+<html lang="en" data-build="v1115 63d9800 2026-10-01 21:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -25519,6 +25519,7 @@ try{window.__at&&window.__at('ui/tip.js');}catch(e){}
 var SIGHT_PLAN=(typeof window!=='undefined'&&window.SIGHT_PLAN)||null;
 function lockPlan(){
  if(SIGHT_PLAN)return SIGHT_PLAN;
+ if(typeof devSight==='function'&&devSight())return {tier:'four',status:'active'};
  return (typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;}
 /* Whether this person may see a thing right now. Read at every call and never
    cached, because a plan can change under an open surface: a payment lands, a
@@ -55127,6 +55128,19 @@ function loginSay(msg,kind,own){
 function loginBusy(on){
  var h=document.getElementById('login'); if(!h)return;
  h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
+/* UNLOCK ALL SIGHT, A TESTING SWITCH, round OT, his words: "unlock all these
+   for me." It reads the top tier for the lock (ui/lock.js lockPlan) and is kept
+   in the browser's own store, so it holds across a reload and never travels on
+   the profile or to a server. It is a product boundary, as the lock is, and
+   not an entitlement: nothing about billing changes. */
+var DEV_SIGHT=null;
+function devSight(){
+ if(DEV_SIGHT===null){ try{ DEV_SIGHT=STORE.get('devsight')==='on'; }catch(e){ DEV_SIGHT=false; } }
+ return DEV_SIGHT;}
+function devSightSet(on){
+ DEV_SIGHT=!!on;
+ try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
+ if(typeof render==='function')render();}
 /* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
    testing control, not a thing a stranger meeting the funnel needs to
    see open by default. */
@@ -55137,6 +55151,8 @@ function loginDevOptions(){
   +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
   +'<label class="login-sw"><input type="checkbox" id="devtut"'
   +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
+  +'<label class="login-sw"><input type="checkbox" id="devsight"'
+  +(devSight()?' checked':'')+'> Unlock all sight</label>'
   +'</details>';}
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
@@ -55172,7 +55188,9 @@ function loginWire(h){
  var devob=document.getElementById('devob');
  if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
  var devtut=document.getElementById('devtut');
- if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };}
+ if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };
+ var devs=document.getElementById('devsight');
+ if(devs)devs.onchange=function(){ devSightSet(!!devs.checked); };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
@@ -56977,5 +56995,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003706492"></div>
+<div id="eof" hidden data-len="003707488"></div>
 </body></html>

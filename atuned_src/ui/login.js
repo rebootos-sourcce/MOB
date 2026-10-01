@@ -170,6 +170,19 @@ function loginSay(msg,kind,own){
 function loginBusy(on){
  var h=document.getElementById('login'); if(!h)return;
  h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
+/* UNLOCK ALL SIGHT, A TESTING SWITCH, round OT, his words: "unlock all these
+   for me." It reads the top tier for the lock (ui/lock.js lockPlan) and is kept
+   in the browser's own store, so it holds across a reload and never travels on
+   the profile or to a server. It is a product boundary, as the lock is, and
+   not an entitlement: nothing about billing changes. */
+var DEV_SIGHT=null;
+function devSight(){
+ if(DEV_SIGHT===null){ try{ DEV_SIGHT=STORE.get('devsight')==='on'; }catch(e){ DEV_SIGHT=false; } }
+ return DEV_SIGHT;}
+function devSightSet(on){
+ DEV_SIGHT=!!on;
+ try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
+ if(typeof render==='function')render();}
 /* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
    testing control, not a thing a stranger meeting the funnel needs to
    see open by default. */
@@ -180,6 +193,8 @@ function loginDevOptions(){
   +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
   +'<label class="login-sw"><input type="checkbox" id="devtut"'
   +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
+  +'<label class="login-sw"><input type="checkbox" id="devsight"'
+  +(devSight()?' checked':'')+'> Unlock all sight</label>'
   +'</details>';}
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
@@ -215,7 +230,9 @@ function loginWire(h){
  var devob=document.getElementById('devob');
  if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
  var devtut=document.getElementById('devtut');
- if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };}
+ if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };
+ var devs=document.getElementById('devsight');
+ if(devs)devs.onchange=function(){ devSightSet(!!devs.checked); };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
