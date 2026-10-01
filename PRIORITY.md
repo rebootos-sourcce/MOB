@@ -2284,3 +2284,297 @@ Named, so nothing disappears quietly.
 - **`DECISIONS.md` carries no ruling after 27 September.** Listed above,
   and owed.
 - **Five of his documents are not in the repository.** Listed above.
+
+---
+
+# 20. 1 October. The three remaining documents, queued
+
+His order, round NE in `TASKS.md`, recorded there as: "And a sequencing
+instruction, his own order: finish the login first, do the onboarding copy
+and the tutorial, then queue up every algorithm, tool and technique from all
+five documents, plus modifications to the Story Engine and the sniffer,
+"there's a lot of stuff so let's get it all in."" Login is built (round NE),
+the tutorial is built (round NG, `19.E1`). Section 19 queued four of the
+documents. This section queues what was left.
+
+And his correction on the same round, which decides how the second document
+here is read: "I didn't say build from scratch. It builds on top of what you
+created." So the Impression Excavation Engine is read as an extension of
+`engine/sourceai.js`, and every line in cluster H below names what it extends.
+
+## The stamp on this measurement
+
+    commit                b012b1e880bb872f363aa57b8d681ed7fc27490b
+    tree                  NOT clean. Three files modified and uncommitted
+                          by another seat, round NN's Field effects
+                          dispatch: shell/head.html, ui/character.js,
+                          ui/drills.js. None was read for this or touched.
+                          engine/ and engine.js are clean.
+    measured              1 October
+    node tests/engine.js  1853 passed, 0 failed, on the committed engine.js
+                          and again on the engine modules concatenated in
+                          MANIFEST order into a scratch file, because the
+                          committed engine.js predates b012b1e (see "Found
+                          while doing this")
+    browser gates         not run. This pass changes no source, and a
+                          rebuild would dirty the tree to prove nothing
+
+**Read in full:** `TDD-sniffer.md`; `DESIGN-sniffer.md`, which the TDD names
+as carrying the questions for the owner (it carries thirteen, not the twelve
+the TDD's line 5 says); `SOURCE-TDD-impression-excavation.md`; `TASKS.md`
+rounds NE to NO; `AUDIT-source-tdd.md`; `AUDIT-source-tdd-v3.md`; this
+page's section 19. **Checked against the code, not taken from the
+documents:** `engine/sniff.js` 140 to 480 and 482 to 1101; `engine/sourceai.js`
+whole; `ui/storyui.js` 383 to 398 and 440 to 779 and 1305 to 1318;
+`engine/core.js` 367 and 378 to 399; `engine/compute.js` 243 to 300 and 355
+to 466; `engine/lexicon.js` 80 to 110, 239 to 242 and 505 to 518;
+`engine/verp.js` 1 to 23; `engine/data/canon.js` 393 to 420;
+`engine/export.js` 14 to 16 and 159 to 181; `ui/imprints.js` 20 to 40.
+
+**And the real engine, run rather than read.** Every "measured" below is one
+call of `parseStory`, `sniffStory` or `srcHear` on the current engine source,
+from a probe in this session's scratchpad. The probe was checked against a
+known good case first: "I am afraid" must read root 16 and an empty string
+must read nothing, and both did.
+
+## The third document is the first one again
+
+**`SOURCE-TDD-handoff-master.md` is byte for byte `SOURCE-TDD.md`.** Both
+files hash to md5 `1bdd2ce41fa0e2250055262743873c61` and `cmp` finds no
+difference, checked this pass rather than taken from the report that raised
+it. `SOURCE-TDD.md` is already audited in `AUDIT-source-tdd.md` and queued in
+section 19, so nothing new is queued from it. The two names are one document,
+the way round NE found four re-attached files identical to saved ones.
+
+## Read this first. What this adds to his list
+
+Each goes with its snapshot, per the 21 and 25 September rulings. None goes as
+it stands here. Row 1 of section 19's order is where they are prepared.
+
+**S1. Three of the sniffer's open questions now hold real work.** Section 2
+of this page filed `Q3` to `Q13` (the sniffer's thirteen, `TASKS.md` from
+line 5805) under "blocks nothing and can wait for ever". His R2 answer at
+round NE, that the Impression Excavation Engine goes into "all the features,
+algorithms, tools, schemas, and systems", changes that for three of them:
+- `Q4`, who acted. The engine's CONTACT step asks who was there, and its
+  first rule is never to score another person. Measured: "I shouted at him"
+  and "he shouted at me" both read solar 24. Holds `20.G6`.
+- `Q5`, a charge described as past. Measured: "I used to panic and I do not
+  any more" reads root 28, the same as "I panic every day". That sentence is
+  the one piece of negative evidence a person ever volunteers, the thing
+  `19.C13` says is never written down unless asked, and the reader charges it.
+  Holds `20.G7`.
+- `Q1`, event or stance. The engine follows BELIEF and MEANING, and a belief
+  is a stance. Measured: "Rest feels like a moral failure" reads nothing.
+  Holds `20.G10` and the belief half of `20.H1`.
+
+**S2. Whether the document has already answered `Q13`.** `Q13` asks whether a
+person may be shown an address name the text did not name. Measured: "I was
+furious" returns Pride, Arrogance, Competition and Anger with `inferred`
+false, and the Story page prints each as a named pill (`ui/storyui.js` line
+1318). The document's first rule is "Never invent ... addresses", and his R2
+answer puts the document into every feature. Read together that answers
+`Q13` toward the narrower product: show the seat and the axis, never an
+address off a sort order. **Confirmed with him rather than assumed**, the
+same way section 19 treated R4. Holds `20.G3`.
+
+**S3. "Registration is not causation", against his own why line.** The
+document's rules 5 and 6: a body sensation is an observation and not proof of
+cause, and "Registration is not causation." The shipped why line, ruled by him
+at JX, says "The stress from this story is stuck in the nerves behind your
+stomach" (`srcWhy`, `ui/storyui.js` lines 685 to 691), and the place it names
+is the lexicon's seat for the word, which is a registration. The question: does
+the why line stay as ruled, or move to the document's rule? The ways it could
+go: keep it, as the product's own stated definition of Charge; reword it as
+the mechanism without asserting it of this story; or remove it. Holds nothing
+built, and decides what Source AI may say about a body.
+
+**S4. Does a verified pattern gate the release, and what is an imprint?** The
+document hands Release only a "RELEASE CANDIDATE" that has passed
+VERIFICATION, and calls an imprint a pattern that "has earned a persistent
+place" on the record. Today a commit queues its addresses into the release
+straight away (`ui/storyui.js` line 1308, "its addresses are queued in the
+release") and every commit makes imprints, which is his own content chain in
+`CLAUDE.md`: "What a person enters in the journal is added to the imprints."
+And at NE: "the release is rapid." The ways it could go: verification marks
+evidence and gates nothing, which keeps every ruling; verification gates what
+Source AI asks about but not the release; or it gates the release, which
+reverses NE. Holds `20.H13`.
+
+**S5. A question that offers two meanings.** The document asks, when language
+is ambiguous: "Did you mean angry as in 'I needed to protect something
+important' or angry as in 'I wanted to hurt someone because I felt hurt'?"
+Round GO ruled that Source AI "doesn't use definitions", and
+`engine/sourceai.js` lines 51 to 53 hold it to never naming one. Two offered
+meanings are two definitions. Holds `20.H15`.
+
+**S6. "Partly true".** The document's verification question has three
+answers: true, partly true, not true. At NK he asked for presence only, "they
+just need to feel it... just selecting the fact that it's even present."
+Two answers fit that; the third is his. Holds the third state of `20.H4`.
+
+---
+
+## The lines, by cluster
+
+Section 19 lettered A to F. This continues at G.
+
+### G. The sniffer's own contract, `TDD-sniffer.md` and `DESIGN-sniffer.md`
+
+**Most of this document describes the sniffer as built, and four of its
+failure rows have moved since it was written.** Recorded first, so nobody
+queues them:
+- The stated fetter taken globally, `Object.keys(stated)[0]`. Fixed at round
+  GR: `statedAt` is per seat, `engine/sniff.js` lines 347 to 350 and 390 to
+  397. EXISTS.
+- Offsets that do not address the person's text, question 11. Built at
+  `fbe941c` as `ST1`: `normMap` and `marksOf`, `engine/sniff.js` lines 148 and
+  444. EXISTS.
+- Intensity modifiers not read. `LEXMOD`, `engine/lexicon.js` line 239,
+  applied at `engine/sniff.js` lines 224 to 230. PARTIAL, see `20.G8`.
+- Resistance dividing CQ, the "CQ contradiction" section. Settled by his 25
+  September ruling: CQ is the 21 laws summed over 210, and Resistance "divides
+  nothing any more" (`engine/compute.js` lines 358 to 388). EXISTS.
+- An entry that reads as nothing reading as "you are clear", question 10. The
+  Story page says "Nothing in this entry reads as held yet. Keep writing, or
+  write where you felt it." (`ui/storyui.js` line 1307), and Source AI says
+  nothing was read (line 750). EXISTS.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 20.G1 | **Two saboteur readings of one story disagree.** `sniffStory` scores saboteurs on the ruled ramp and geometric mean (`sabMember`, `sabConfidence`, `engine/data/canon.js` lines 133 and 188). `compute()`, which is what every surface shows, still calls `sab33Detect` (`engine/compute.js` line 279), which rounds every level to an integer (`engine/core.js` line 381), scores a half point only at exactly one integer outside the band (line 392), averages arithmetically and cuts at 60 (lines 394 and 395). The TDD named this "the legacy path is half moved" and nothing queued it | CONFLICT. Also a dead branch with it: `L.anxiety` (`core.js` line 382) and the `'anxiety'` key at `compute.js` line 282, where measured 0 of 33 `SAB33` rows key on anxiety | Now as a measurement and a proposal of ours, then a build. `compute()` needs a set, and `DESIGN-sniffer.md` measured that a floor on a ramp recreates the cliff, so how the set is chosen is the decision. Readings move on the roster, named in the commit. **Rides with `19.B2`**, since one saboteur list has to say which rule it fires on |
+| 20.G2 | A stated fetter at a seat another axis also holds is dropped by `parseStory`. Measured: "I am angry and exhausted" gives four Anger imprints and no Apathy; `sniffAxes` recovers Apathy 8.7, but `applyStory` and the Story page read the imprints | PARTIAL. The branch runs only when nothing else claimed the seat, `engine/sniff.js` line 393; repaired only in `sniffAxes`, lines 783 to 789 | **His, and already asked in shape.** Section 13 group A item 2 asks whether the field moves with the sniffer's contract for resentment; this is the same question for stated fetters, recorded open at round NE ("Sofia's line ... still waiting on a ruling"). Asked once, with one roster diff |
+| 20.G3 | No address name printed off a sort order | CONFLICT on screen, `ui/storyui.js` line 1318 prints `im.name` whenever `inferred` is false | **S2.** Once confirmed, small and in the renderer: a named axis prints the axis and the seat, the way the inferred fold at line 1316 already does |
+| 20.G4 | Disgust and Shock have words beyond their own names | PARTIAL. Measured: of the lexicon's entries that state a fetter, exactly one states Disgust, one Shock and one Surprise, which are the axis nouns the canon pass added. "I am disgusted" and "I was surprised" read nothing; "I was in shock" reads | **Now for Disgust and Shock**, as a coverage addition through `lexAdd` with provenance, the way round NO added self worth. `DESIGN-sniffer.md` counts both words in his book. Readings move. **Surprise is his**, question 7 |
+| 20.G5 | Charge words seated where the seat's own addresses disagree. Measured: "I feel detached" reads crown Anger, inferred, naming Doubt Of God and Hubris. Round NE recorded three such cases and they reached no list | Open, and on no page: `ADJ2CHG` and "detached" both return nothing on this page before this section | **His**, question 6, `CHG2SEAT` against the addresses. Listed here so the round NE cases travel with it |
+| 20.G6 | Who acted: "she lied to me" scored on the writer | MISSING. Measured: `sniffLaws` fires Truth, and `parseStory` places throat Disgust with Deceit and Lying under it. No subject model anywhere, `engine/sniff.js` lines 503 to 505 and 705 to 707 | **S1**, question 4, and `19.B4`'s clause reader underneath it |
+| 20.G7 | A charge described as past | MISSING, measured as above | **S1**, question 5, and `19.B4`. The same look back machinery reads "used to" |
+| 20.G8 | The degree words a person actually writes | PARTIAL. Measured: "a bit sad" and "unbearably sad" both read heart 16, because neither "a bit" nor "unbearably" is in `LEXMOD` | Now, small. Coverage, no new mechanism. Readings move only on stories carrying those words |
+| 20.G9 | A shorter idiom eating a longer entry. Measured: "I cannot stop thinking about it" reads sacral, Addiction and Lust under Apathy, where the lexicon's own "cannot stop thinking" is rumination at the third eye | Open, held at exactly two rows by `LEX_DEAD`, `engine/lexicon.js` lines 516 to 518 | **His**, question 9. The document does not settle it |
+| 20.G10 | The frame layer: sentences that carry charge with no feeling word | MISSING, specified in `DESIGN-sniffer.md` "The frame layer" | **S1**, question 1, then question 3. Port of `LEANFRAME` (`engine/verp.js` line 251), as specified |
+| 20.G11 | Honest evaluation: a held set of about sixty lines, the count of what entries contain and the instrument reads as nothing, and a labelled set | MISSING, all three | The held set: now, written by a seat that did not write the tables, and kept out of `engine/`. The unread count: rides `19.D8`. The labelled set: his consent ruling, the same one as "What may leave the device" in section 19 |
+| 20.G12 | `EXPRCUE` duplicating `EXPR` with different shadow words | A recorded debt, `engine/lexicon.js` line 670 | Not this round. Nothing reads it, see the finding under this table |
+
+**The finding under this table.** Of the whole `sniffStory` contract, the
+product reads one field: `ui/tutorial.js` line 183 takes `offer`. Saboteurs,
+laws, flow, gates and depth are computed, exported (`engine/export.js` lines
+163 to 181) and read only by `tests/engine.js`. So `20.G1`'s disagreement is
+invisible today, which is why nobody saw it, and anything in cluster H that
+wants evidence reads `sniffStory` rather than growing a third reader.
+
+### H. The Impression Excavation Engine, `SOURCE-TDD-impression-excavation.md`
+
+What Source AI is, read off the code: a count of how often a story comes back
+to one seat, `srcRung`, which asks at seven and over (`engine/sourceai.js`
+lines 99 to 105), four moves, `srcTurn` (lines 158 to 166), one why question
+about a place (`srcAsk`, `ui/storyui.js` lines 598 to 606), and a second
+button whose four questions already ask about the minute before, who was
+there, what the body wanted and what came after (`SRC_DYN`, lines 629 to
+633). The document's own ten core rules mostly hold already: the person's
+words are kept (the entry stores its text, `ui/storyui.js` line 390) and
+quoted back in the letters they typed (`engine/sourceai.js` lines 122 to
+125); unknown is a valid result (the listen move; gates and depth return null,
+`engine/sniff.js` lines 973 to 976 and 1038); one question, and Move on is
+final (lines 158 to 166). What it adds is below.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 20.H1 | **The question engine on top of `srcTurn`.** Read which of the document's dimensions an entry already answers (trigger, feeling, body, behaviour, prediction, belief, meaning, contact, goal) and ask the smallest question about one it has not | PARTIAL. `SRC_DYN` asks four of them and walks them by how many times the button was pressed (`lap`, `ui/storyui.js` line 637), not by what the entry left unanswered. Nothing identifies an unknown | **After `19.B4`**, so the cue tables do not become a fourth negation handler. Keeps `SRC_ASK` and Move on exactly as ruled at GO; only which question is chosen. The document names eight scoring factors and gives no values, and there is no labelled set to fit them, so the honest form is a stated order of precedence, not a weighted sum. New question wordings are taken from the document's own examples and pass the voice check first. AI director, engineering, copy. Medium |
+| 20.H2 | **The body word the person used is where the body is.** The document's own failure test, run: "I felt tight in my chest when my boss called" reads throat 16, Disgust, with Deceit and Lying under it | PARTIAL. Body places are read only as fixed phrases, "chest tight", "jaw clenched" (`engine/lexicon.js` lines 84 to 89); split up by other words, "tight" falls back to its own seat, throat (line 101) | Now as a measurement, then a build: a place word in the same clause as a sensation word decides the seat. Needs the clause boundary `19.B4` builds. Readings move. The document's other body fields, side, temperature, texture, colour, size, are not this round: nothing reads them, and "side" already means the release's left and right (`CHAN`, `ui/release.js` line 36) |
+| 20.H3 | The document's failure tests as a gate | PARTIAL. `tests/engine.js` already asserts no diagnosis and null over a guess | Now, small, the half that passes today: on the worked example Source AI listens and asks nothing (measured: rung 1, move listen). The seat half lands with `20.H2` |
+| 20.H4 | **A verification move:** "Does that feel true, partly true, or not true?", and reject, refine and pause beside Move on | MISSING. Move on is the only answer a person can give (`ui/storyui.js` lines 738 and 777), and it is page memory cleared at commit (line 396) | After `20.H1`, since there has to be something to verify. Two states now under NK; **S6** for the third. This is the first answer a person gives that is about the reading itself, and nothing stores it, see `20.H5` |
+| 20.H5 | **What Source AI asked, kept with the entry.** Which question, about which seat, and whether it was answered, refused or moved on from | MISSING. An entry stores time, text, an imprint count and seat totals (`ui/storyui.js` lines 390 and 391); every Source AI state is page memory (`SRC_PASSED` line 490, `SRC_DQ` line 626) | **Rides `19.B6`**, section 19 row 6: same field on the same entry, same pass through `validateProfile`. Privacy checked first: it stays on the device and stores a question kind and a seat, not text, so it sits inside the narrow version of `DESIGN-sniffer.md` question 12 that round GO built |
+| 20.H6 | **What read as nothing, reported.** The document's matching order ends at NOVEL: a signal with no canon match is kept, not dropped | PARTIAL. Exact match is `scanStory`; fuzzy is the corpus confirmed fold (`LEX_FOLD_OK`, `engine/lexicon.js` line 467); semantic and related do not exist. Nothing reports the stretches of an entry that produced no hit | Now, small, engine only: the complement of `marksOf` (`engine/sniff.js` line 444). No reading moves. `20.H1` reads it to follow signal before label, and `19.D8`'s count is built from it once there is a server |
+| 20.H7 | The excavation's states, UNSEEN to VERIFIED with five exits | PARTIAL. Four moves: open, listen, ask, pass, where pass is the document's ABANDONED_BY_USER | Not its own build. `20.H1` and `20.H5` carry what is needed; a separate state machine with nothing to read it is the `leanSeries()` lesson again |
+| 20.H8 | The impression object, sixteen fields, the behaviour vector and protection | MISSING as structures. The real counterparts: `parseStory`'s hits carry word, seat, amount, fetter and degree (`engine/sniff.js` lines 420 to 422), and approach, avoidance and attachment cues already exist as `VERPCUE` (`engine/verp.js` lines 17 to 23) | **Not as specified.** Port, do not rebuild: `20.H1`'s reading of which dimensions an entry answers is the impression. The same call section 19 made on the trace graph |
+| 20.H9 | Causal reasoning, relationship types and the trace graph | Conflicts with how the engine is built, as section 19 already found for V3's graph | Not doing, same reason. **S3** is the one place the document's causation rule bites shipped copy |
+| 20.H10 | Candidate root: the smallest belief that organises several signals | Two meanings of one word. The built root is rung ten, a seat the story keeps coming back to (`engine/sourceai.js` lines 34 and 101), ruled at GO; the document's root is a sentence, "I have to avoid disappointing people to remain connected" | The sentence form needs belief read from text, which is `20.G10`, which is **S1**. Not this round |
+| 20.H11 | Archetypes always present, and their expression moving with a story | PARTIAL. All twelve carry a value on every reading (`affinity`, `engine/core.js` line 367, read at `engine/compute.js` line 460); a story does not move it | Expression from a story: not this round, no surface asks. The ambiguity question: **S5** |
+| 20.H12 | Post-release evidence returning to Source AI | MISSING. `srcPrior` reads only the seat totals earlier entries stored (`engine/sourceai.js` lines 90 to 95), nothing about releases | After `19.C2` and `19.C4`. Reading the person's own release record on the device is a wider grant than question 12's narrow version, so it is checked against that before it is built |
+| 20.H13 | The handoff to Release carrying evidence, context and a verification state | PARTIAL. Release receives address ids, `relPick` (`ui/release.js` line 190) | **S4**, then `19.C10` and `19.C11` |
+| 20.H14 | Attachment history as a low weight signal, and jouissance as three states, constriction, equilibrium, jouissance, cross checked by Temperance | CONFLICT on both words. Jouissance already means the opposite overshot, `n.jq` (`engine/compute.js` line 246); attachment is already a gate, `attach` (`engine/verp.js` lines 13 and 22) | Not this round. Added to the standing "one word or two" question in section 19's "His, real" list |
+
+### Added to existing lines, not new lines
+
+- **`19.B4`, the shared negation handler.** Two additions. First, the three
+  handlers differ in more than width: `lawNegated` stops at a sentence end
+  (`engine/sniff.js` lines 694 to 722) and `srcNegated` does not
+  (`engine/sourceai.js` lines 83 to 86), so unifying them chooses a
+  behaviour, and that choice moves Source AI. Second, `20.G6`, `20.G7` and
+  `20.H2` each need the same clause boundary, so it is built as a clause
+  reader the four can share, not only a yes or no on negation. The measured
+  case for it stands: "I am not afraid but I could be afraid" reads root 32,
+  double "I am afraid".
+- **`19.B8`, limiters and desired outcomes.** Section 19 parked it because
+  nothing reads it. `20.H1` is a reader: the document's GOAL dimension and
+  its GOAL against BEHAVIOUR contradiction are this line's wanted thing and
+  what stands in the way. It still waits on `19.B4`.
+- **`19.B6`, a lexicon version on every entry.** `20.H5` writes to the same
+  entry in the same pass.
+- **`19.B7`, the evidence index.** The document's confidence bands, WEAK to
+  VERIFIED, are written as "engineering thresholds, not claims about
+  psychological truth", which agrees with keeping them inside the engine.
+  Whether a person ever sees one is still his, in section 19's list.
+- **`19.D5`, the contradiction engine.** R2 is answered: this document is the
+  engine, and it gives eight contradiction types and six states. From text
+  alone, word against word is reachable after `19.B4`; word against
+  behaviour needs `VERPCUE`; goal and value against behaviour need `19.B8`.
+  Its output is still a question, so it goes through `20.H1`.
+- **`19.D8`, learning across people.** `20.G11`'s count of what reads as
+  nothing, built from `20.H6`, is the word level version his ruling already
+  allows.
+- **`19.C13`, negative evidence.** `20.G7` is the one case a person writes
+  down unprompted.
+
+## What a seat could pick up without him
+
+**Not placed in the live order, and said plainly why.** The live order is
+section 19's table. Section 1's table says at its own head that it is
+superseded, and the stamp at the top of this file still points at section 19.
+This pass was told to add one section and touch nothing else, so it does not
+renumber section 19's rows. These are flagged for the project manager to
+place:
+
+| Line | What | Size | Depends on |
+|---|---|---|---|
+| 20.H6 | What read as nothing, reported | small | nothing |
+| 20.H3 | The failure test half that passes today, as a gate | small | nothing |
+| 20.G8 | "a bit", "unbearably" and the rest as degree words | small | nothing; readings move |
+| 20.G4 | Disgust and Shock coverage, Surprise left for him | small | nothing; readings move |
+| 20.G1 | The two saboteur readings, measured and a proposal written | medium | proposal with `19.B2` |
+| 20.H5 | Source AI's question kept with the entry | small inside row 6 | `19.B6`, section 19 row 6 |
+| 20.H1, 20.H2 | The question engine, and the body word deciding the seat | medium each | `19.B4`, section 19 row 9 |
+
+## Not doing this round
+
+- **The impression object, the trace graph, the relationship types and the
+  state machine as specified**, `20.H7` to `20.H9`. Port, do not rebuild.
+- **The frame layer and the sentence form of a root**, `20.G10` and
+  `20.H10`, until question 1.
+- **The document's longitudinal set**, context transfer, pattern replacement,
+  behavioural and outcome change. Section 19 already found pattern
+  replacement not recommended as specified (`19.C14`) and negative evidence
+  waiting on a check in (`19.C13`); context transfer needs context read from
+  text, which nothing does.
+- **Archetype expression from a story, attachment history and the three
+  state jouissance**, `20.H11` and `20.H14`.
+- **A labelled set**, `20.G11`, until his consent ruling.
+- **Editing either sniffer document.** `TDD-sniffer.md` is out of date where
+  listed in cluster G, including its gate count of 1083 against 1853 today.
+  It is recorded here, not corrected there.
+
+## Found while doing this, and recorded where it lives
+
+- **The committed `engine.js` does not carry round NO's lexicon addition.**
+  `grep -c 'no self worth'` reads 0 in `engine.js` and 4 in
+  `atuned_src/engine/lexicon.js`; `engine.js` was last committed at `96e8e70`,
+  the lexicon at `b012b1e`. Round NO said the build products wait for round
+  NN's dispatch. Recorded so nobody measures the sniffer off `engine.js` and
+  reads the old lexicon.
+- **`19.B1` and `19.C1` are built and their rows do not say so.** `19.B1` at
+  `engine/compute.js` lines 267 to 276, one saboteur one entry, with its gate
+  group in `tests/engine.js`; `19.C1` at round NE. Not edited here.
+- **The head of this file still names section 19 as the current stamp.** Not
+  moved, for the same reason.
+- **`DESIGN-sniffer.md` carries thirteen questions** and `TDD-sniffer.md`
+  line 5 says twelve.
