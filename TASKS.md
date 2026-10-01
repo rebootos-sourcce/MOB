@@ -29643,3 +29643,64 @@ its own drawn motion and the rest orbiting at weight, but to depart on
 shape: at least one of the three asked to take his own example literally,
 a real theatrical or ritual mask silhouette rather than the oval every
 version has used so far.
+
+**Three variations delivered.** Half mask, a real half mask worn at the
+eyes with the leading icon as a crest at the brow; Long mask, the tall
+carved ritual face with the icon on the brow and the motion run down
+its length; Iris, no face at all, nine blades closing and opening
+around the leading icon. All three keep Seal's mechanic. `index.html`
+reordered to put Seal and its three variations first, the three earlier
+unchosen directions below. Verified by viewing the delivered 4x4 sheet,
+all sixteen states (four mask families by four leading patterns), before
+committing. Reviewed the one open recommendation named by the build
+itself: Half mask leads it, called the most literal reading of "a real
+character mask" and the first version where the face itself, not only
+the drawn motion, carries the expression. Not yet decided by him.
+`mockups/character/` only, nothing in `atuned_src` touched, committed
+and pushed as `bc74f36`.
+
+**The paywall infrastructure is built and landed, both repositories.**
+Verified independently rather than trusted: read every file in both
+diffs before committing either, re-ran the reboot-os test suite myself
+(37/37, six of them new) rather than accept the agent's own count, and
+found the MOB-side worktree was based on a commit several rounds behind
+this branch's own HEAD. Rather than commit from the stale worktree
+directly, exported its three-file diff as a patch and applied it onto
+current HEAD, where it applied cleanly with no conflict against the
+free-rerun fix from earlier this same round.
+
+`reboot-os`: `POST /v1/billing/checkout` opens a Stripe Checkout
+Session for one of `plan.js`'s own ladder tiers; `POST /v1/billing/webhook`
+verifies Stripe's signature on the raw body and, on
+`checkout.session.completed`, re-reads the subscription fresh from
+Stripe rather than trusting the webhook payload, then calls the same
+`setPlan` the Apple and Google purchase routes already use. Raw `fetch`
+against Stripe's REST API, matching `store.js`'s existing pattern
+rather than adding the `stripe` package as this server's first
+dependency. Committed `f1c0913` on `claude/app-migration-decision-yx56cj`.
+
+`MOB`: `ui.js` binds `PLAN_HOST`, next to `bindStore`, to a function
+that asks `auth.js` for a Checkout Session and sends the browser to
+Stripe's hosted page. `auth.js` gains `authPlanCheckout`, the only new
+caller of `fetch` in the product, keeping its own header's rule that it
+is the one file that calls it. `tests/functional.js` renamed the
+plan-seam test group from "the seam that has nowhere to go yet" to
+"the seam that now goes somewhere" and now tests the null-host path by
+unbinding on purpose, since a booted build no longer leaves it null.
+Full gate suite run clean after integration: `tests/engine.js` 1858/0,
+`tests/functional.js` 1386/1 (the pre-existing Field-fade flake, not
+this change, re-run solo to rule out the contention this session has
+hit before), `collide.js` 351/0, `design.js` 185/0, `boot.js` 13/0,
+`funnel.js` 172/0, `monitor.js` all surfaces render, voice check clean.
+Committed `9bb10cf` on `claude/laughing-feynman-xhfyj3`.
+
+**His, before billing actually works:** three Stripe products, one per
+paid tier, created in the Stripe dashboard with their price ids pasted
+into `wrangler.toml` in place of the `REPLACE_WITH_...` placeholders;
+`wrangler secret put STRIPE_SECRET_KEY`; a webhook endpoint created in
+the Stripe dashboard pointing at this Worker's own `/v1/billing/webhook`
+address, then `wrangler secret put STRIPE_WEBHOOK_SECRET` with the
+signing secret that endpoint hands back. Until all three are done,
+checkout answers 503 honestly rather than opening a dead page, and the
+webhook refuses every event by name rather than trusting one it cannot
+verify.
