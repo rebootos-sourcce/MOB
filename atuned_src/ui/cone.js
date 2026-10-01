@@ -45,6 +45,9 @@ var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
     mir: the springs the view from above draws from, kept across coneOpen so
     a release made on another surface is seen arriving, not already there. */
  side:false, hov:-1, mir:null,
+ /* rows: the panels' eight rows with their rings, ro: the pane's own size
+    watch, lt: whether the glass is the light one (coneTone), round OJ */
+ rows:null, ro:null, roq:0, lt:null, th:'',
  /* top: the view from above, round IA's B and C, behind its own switch now.
     nt: the needle's own tilt, kept apart from the arrow figure's so a drag
     on one never re-poses the other. t0: when the tab opened, which is what
@@ -137,8 +140,7 @@ function coneZoomPaint(){
   zf.querySelector('.val').setAttribute('stroke-dasharray',clamp(zp,0,100).toFixed(1)+' 100');
   zf.querySelector('.fb-v').textContent=CONE.zT.toFixed(1)+'×';
   zf.classList.toggle('on',CONE.zT>1.001);}
- var wl=ndlWell();
- hz.classList.toggle('fb-lt',(wl[0]*.299+wl[1]*.587+wl[2]*.114)>140);
+ hz.classList.toggle('fb-lt',coneLt());
  if(CONE.cv){CONE.cv.classList.toggle('zoomed',CONE.zT>1.001);
   var fg=CONE.cv.closest?CONE.cv.closest('.cone-fig'):null;
   if(fg)fg.classList.toggle('zoomed',CONE.zT>1.001);}
@@ -782,6 +784,9 @@ function coneMirSync(r){
  MIRROR.forEach(function(m,i){set(M.ax,i,coneMirPos(m));});
  BANDS.forEach(function(b,i){set(M.seat,i,coneSeatLaw(b));});
  M.cq.tgt=cq; if(REDUCED)M.cq.x=cq;
+ /* whether anything has been read, so the panels print a dash and not a
+    figure the person never earned, as the Field's circles do */
+ M.un=!!r.unread;
  return M;}
 function coneMirStep(dt){
  var M=CONE.mir; if(!M||REDUCED)return;
@@ -1147,8 +1152,12 @@ var NDL={G:null, vs:1, P:{x:0,y:0,d:0}, tips:[],
    crown of five and the halo, the bottom for the fork, and on a desk the
    sides keep clear of the two name rails, which are absolute over the canvas
    from 900 pixels up and in flow under it below that (the sheet's break). */
+/* THE NAMES ARE PANELS BESIDE THE CANVAS NOW, round OJ, so the figure keeps
+   a gutter of its own and not a lane for them: the 176 that stood here was
+   the room the names took out of the canvas, and with the names outside it
+   the figure would have been narrowed twice. */
 function ndlGeo(W,H){
- var G=NDL.G, side=(typeof innerWidth==='number'&&innerWidth>=900)?176:20;
+ var G=NDL.G, side=20;
  var z=CONE.z, zx=CONE.zx, zy=CONE.zy;
  if(G&&G.W===W&&G.H===H&&G.side===side&&G.z===z&&G.zx===zx&&G.zy===zy)return G;
  /* the bottom keeps the same room as the top now: the five inversions crown
@@ -2201,7 +2210,7 @@ function rgsDirs(a){
    card empty under it. Down, the fallen matter reaches half a radius under
    the outer shell before perspective. */
 function rgsGeo(W,H){
- var side=(typeof innerWidth==='number'&&innerWidth>=900)?176:20;
+ var side=20;
  var s0=Math.max(40,Math.min((W-2*side)/2/1.15,(H-24)/2/1.38));
  return {s0:s0, sc:s0*CONE.z, cx:W/2+CONE.zx, cy:H/2-.06*s0*CONE.z+CONE.zy};}
 function coneRegisters(){
@@ -2345,28 +2354,43 @@ function rgsTipAt(x,y){
  if(!best)return '';
  var n=best.n, nm=/_Unnamed$/.test(n.k)?'An address with no name yet':n.k;
  return nm+((n.sq||0)>=4?', held at ':', at ')+n.b+'.';}
-/* one seat's button, set to what it does now */
+/* one seat's circle, set to what it does now. The ring is the seat's own
+   token and breaks when the shell is off, the Field's off state: the circle
+   keeps its length and loses its colour, because an off shell is hidden from
+   the picture and not unread. */
 function rgsSeatSync(b){
- var si=+b.getAttribute('data-cnseat'), on=!!RGS.on[si], nm=BANDS[si], col=seatCol(nm);
+ var si=+b.getAttribute('data-cnseat'), on=!!RGS.on[si], nm=BANDS[si];
  b.setAttribute('aria-pressed',on); b.classList.toggle('on',on);
- b.title=(on?'Hide':'Show')+' the '+nm+' shell, '+seatHz(nm)+' Hz';
- b.style.borderColor=on?col:'';
- var ci=b.querySelector('circle'); if(ci)ci.setAttribute('stroke-dasharray',on?'none':'1.6 1.8');}
-/* THE SEVEN BUTTONS, his ask, under the figure where the key sits: "create
-   a button for each root sacral so I can turn them on and off." Root first,
-   the order he named them in. Ring, never fill, in the seat's own token,
-   and the ring breaks when the shell is off. The name alone is the label;
-   the tone is on the hover, because a row of seven figures under the drawing
-   is a legend nobody asked for. */
-function rgsSeatsHtml(){
- return '<div class="ck-g"><span class="ck-h">Seats</span>'
-  +'<span class="ck-rows" role="group" aria-label="Seats" style="gap:6px">'
-  +BANDS.map(function(b,si){
-   return '<button type="button" class="cn-b" data-cnseat="'+si+'" style="gap:7px;--ax:'+seatCol(b)+'">'
-    +'<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex:0 0 12px">'
-    +'<circle cx="6" cy="6" r="4.6" fill="none" style="stroke:var(--ax)" stroke-width="1.6"/></svg>'
-    +esc(b)+'</button>';}).join('')
-  +'</span></div>';}
+ var say=(on?'Hide':'Show')+' the '+nm+' shell, '+seatHz(nm)+' Hz';
+ /* the name stays put and aria-pressed carries the state: a label that flips
+    to Hide on a button that already says it is pressed says it twice */
+ b.setAttribute('aria-label',nm+' shell, '+seatHz(nm)+' Hz');
+ if(typeof fbTip==='function'){fbTip(b,say+'. Ring: the laws held at '+nm+', as coherence reads them.');
+  if(!FB_COARSE)b.setAttribute('data-tip-t',nm+' shell');}}
+/* THE SEVEN SEAT SWITCHES, his ask, "create a button for each root sacral so
+   I can turn them on and off", Root first, the order he named them in. They
+   stood under the figure as seven text pills in the key. They are the
+   overlay bar's own circles now, in the bar's own place, because in the
+   Registers the three switches that were there draw nothing and the seven
+   are what is left to switch. The mark is the seat's own shell: one ring,
+   sized by where its shell sits, Root on the outside and Crown at the
+   centre, which is the order the figure nests them in. The ring round the
+   circle is the seat's reading, its laws as CQ reads them, so a shell that
+   is clear is a long ring. No pill: seven numbers beside the eight on the
+   panels would be a column of figures nobody asked for, and the tone is on
+   the hover. */
+function cnSeatMark(si){
+ var r=[9.4,8,6.6,5.2,3.9,2.7,1.5][si]||5;
+ return '<circle cx="12" cy="12" r="'+r+'"/>';}
+function cnSeatOrbs(){
+ var out=[];
+ BANDS.forEach(function(nm,si){
+  var b=fbOrb({nm:nm,ic:cnSeatMark(si),tip:''});
+  b.setAttribute('data-cnseat',si); b.classList.add('cn-sb2');
+  b.querySelector('.fb-orb').style.setProperty('--c',seatCol(nm));
+  b.querySelector('.val').setAttribute('stroke-dasharray',clamp(coneSeatLaw(nm),0,100).toFixed(1)+' 100');
+  out.push(b);});
+ return out;}
 /* THE CANVAS FILLS THE CARD. The sheet's height is a cap from when the reading
    shared this card, and it is what made the Compass a quarter of the stage
    (see THE NEEDLE above). In tab mode the canvas takes whatever the card has
@@ -2375,10 +2399,20 @@ function rgsSeatsHtml(){
    figure. As a sheet over another surface it keeps the sheet's own size. */
 function coneFit(){
  var c=CONE.cv; if(!c)return;
+ var card=c.closest?c.closest('.cone-card'):null;
+ /* STACKED OR THREE ACROSS, round OJ. The panels need their share of the
+    stage: with a left column opened at 1280 the stage is about 600 and the
+    pane would have been a sliver between two panels, so under 760 the
+    panels go under the figure as they do on a phone. Read here, off the
+    card's own width, and written to the sheet as a class, because the
+    layout is the sheet's and the canvas's height is this function's. */
+ var fig=c.closest?c.closest('.cone-fig'):null;
+ var stk=innerWidth<900||(card?card.clientWidth<760:false);
+ if(fig)fig.classList.toggle('stk',stk);
  if(!CONE.tab){c.style.height=''; return;}
- var card=c.closest?c.closest('.cone-card'):null; if(!card)return;
+ if(!card)return;
  var h;
- if(innerWidth<900){
+ if(stk){
   h=Math.max(380,Math.min(innerHeight-140,c.clientWidth*1.5));}
  else {
   var cb=card.getBoundingClientRect(), cs=getComputedStyle(card);
@@ -2426,9 +2460,10 @@ function coneKey(){
     there. A key row for arrows nobody can see is a dead control's caption. */
  var reg=CONE.reg&&CONE.side;
  /* the Registers draw no rings, so Layers is not offered there and its rows
-    do not print; the seat buttons take the key instead */
+    do not print. The seat switches that used to take the key are circles in
+    the overlay bar now, so the Registers carry no key at all. */
  var shl=CONE.shells&&!CONE.side&&!CONE.top, lay=CONE.layers&&!shl;
- if(shl)return '<div class="cone-key">'+rgsSeatsHtml()+'</div>';
+ if(shl)return '';
  if(!reg&&!lay)return '';
  var grp=function(h,rows){
   return '<div class="ck-g"><span class="ck-h">'+h+'</span>'
@@ -2557,6 +2592,10 @@ function coneTick(){
  if(!CONE.side)coneMirStep(1/60);
  if(!CONE.drag&&!CONE.pinch)coneZoomStep();
  coneDraw();
+ /* the panels' rings are the springs just stepped, and the glass takes the
+    tone of the ground the canvas has just read */
+ coneAxPaint();
+ if(coneLt()!==CONE.lt||S.theme!==CONE.th)coneTone();
  /* the needle's hover name, kept current as the figure turns under a still
     pointer, which is the only way a spinning figure's tooltip stays true.
     Written only when it changes: a title set sixty times a second is a
@@ -2713,7 +2752,16 @@ function coneGraph(){
 function coneNames(side){
  var half=MIRROR.map(function(m,i){return {m:m,i:i};})
   .filter(function(x){return side==='l'?(x.i<4):(x.i>=4);});
- return '<div class="cn-nms cn-nms-'+side+'">'
+ /* A PANEL BESIDE THE CANVAS, round OJ, his words: "the panels on the left
+    and right of the compass. I want the centre, left, right of that render
+    pane." The names stood over the canvas's own edges, so the figure and its
+    labels shared one box and the figure gave up 176 pixels a side to them.
+    They are two glass panels flanking the pane now, four axes each, in the
+    stage's own glass (.cn-pan in the sheet), and the pane is the figure and
+    its overlays and nothing else. Still .cn-nms and still .cn-nr, so every
+    gate that finds a row by those names finds it where it was. */
+ return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Characters, '
+  +(side==='l'?'the first four axes':'the last four axes')+'">'
   +half.map(function(x){
    /* the inverted pole is the seat token at an opacity, which is the brand's
       darker version of a token over the ground. coneDull's grey mix was a new
@@ -2723,48 +2771,40 @@ function coneNames(side){
    var c=seatCol(x.m.seat), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
    return '<button type="button" class="cn-nr" data-cnax="'+x.i+'" '
     +'style="--ax:'+c+';--axd:'+cd+'" '
+    +'aria-label="'+esc(x.m.q)+': '+esc(x.m.up)+', opposite '+esc(x.m.dn)+'" '
     +'title="'+((CONE.top||CONE.shells)&&!CONE.side?'Read ':'Turn the figure to ')
     +esc(x.m.up)+', opposite '+esc(x.m.dn)+'">'
     /* EVERY NAME CARRIES ITS SYMBOL AND ITS OPPOSITE'S. Round JQ: "all the
        character names that pop up, I need their iconic symbol and their
-       opposing nature's opposing character symbol." These are the names that
-       light up as the figure turns, and each carried a 13 pixel glyph beside
-       it at a resting opacity of .55, which is why he never saw them. Now
-       each row leads with its pair as the figure draws it, a small needle:
-       the coherent pole's badge above, the inversion's broken ring below, a
-       gap of limbo between. Sized and inline so the row and the figure are
-       visibly the same object. */
-    +'<span style="display:flex;align-items:center;gap:9px;'
-     +(side==='r'?'flex-direction:row-reverse;':'')+'">'
-    +cnPair(x.m)
-    +'<span style="display:flex;flex-direction:column;gap:1px;min-width:0;align-items:'
-     +(side==='r'?'flex-end':'flex-start')+'">'
+       opposing nature's opposing character symbol." Round OC: "the character
+       icons place where the overlay icons are". So the pair is two of the
+       overlay bar's own circles, stacked: the coherent pole's with a ring
+       that is where this person sits on the axis, and the inversion's with
+       the broken ring the figure draws it in and no reading, because one
+       number per axis is the reading and its opposite is not a second one. */
+    +'<span class="cn-pr">'+cnOrb(x.m.ic,false)+cnOrb(x.m.dic,true)+'</span>'
+    +'<span class="cn-tx">'
     +'<span class="cn-nq">'+esc(x.m.q)+'</span>'
     +'<span class="cn-nu">'+esc(x.m.up)+'</span>'
     +'<span class="cn-nd">'+esc(x.m.dn)+'</span>'
-    +'</span></span>'
+    +'</span>'
     +'</button>';}).join('')
   +'</div>';}
 /* one rgb triple as a css colour, so a canvas colour can be handed to the
    sheet the same way a seat colour is */
 function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
-/* ONE AXIS AS A PAIR: its coherent pole's badge over its inversion's, with a
-   gap between, which is the figure in miniature. Ring, never fill; the
-   inversion's ring is broken and at the row's darker token, as on the
-   figure. Styled on the element, so the pair needs nothing new in the sheet. */
-function cnPair(m){
- var g=function(d,y,col){
-  return '<path d="'+d+'" transform="translate(4.4 '+(y-7.6)+') scale(.633)" fill="none" '
-   +'style="stroke:'+col+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';};
- return '<svg viewBox="0 0 24 56" width="24" height="56" aria-hidden="true" '
-  +'style="flex:0 0 24px;display:block;overflow:visible">'
-  +'<circle cx="12" cy="12" r="11" style="fill:none;stroke:var(--ax)" stroke-width="1.5"/>'
-  +g(m.ic,12,'var(--ax)')
-  +'<path d="M12 25.5v5" style="stroke:var(--axd)" stroke-width="1.2" stroke-dasharray="1.4 1.8"/>'
-  +'<circle cx="12" cy="44" r="11" style="fill:none;stroke:var(--axd)" stroke-width="1.4" '
-  +'stroke-dasharray="2.4 2.2"/>'
-  +g(m.dic,44,'var(--axd)')
-  +'</svg>';}
+/* ONE POLE AS THE BAR'S OWN CIRCLE: the same disc, ring track and pill that
+   fbOrb in ui/fieldbar.js builds, written as spans because a row is already
+   a button and a button cannot hold one. Ring, never fill. The coherent
+   pole's ring and pill are written by coneAxPaint off the axis's spring; the
+   inversion's draws the track alone, broken, at the row's darker token. */
+function cnOrb(ic,inv){
+ return '<span class="fb-orb cn-or'+(inv?' inv':'')+'">'
+  +'<svg class="fb-arc" viewBox="0 0 40 40" aria-hidden="true">'
+  +'<circle class="trk" cx="20" cy="20" r="18"/>'
+  +(inv?'':'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/>')
+  +'</svg><span class="fb-gl">'+fbSvg(ic)+'</span>'
+  +(inv?'':'<span class="fb-v" aria-hidden="true">\u2013</span>')+'</span>';}
 /* WHICH ROW IS LIT, updated from the tick rather than from a repaint. Redrawing
    the rail every frame would rebuild sixteen buttons sixty times a second and
    throw away the hover the person is currently on. */
@@ -2772,6 +2812,27 @@ function coneNamesSync(){
  var rows=document.querySelectorAll('[data-cnax]');
  for(var i=0;i<rows.length;i++)
   rows[i].classList.toggle('front',+rows[i].getAttribute('data-cnax')===CONE.front);}
+/* THE RING AND THE PILL ARE THE AXIS'S READING AND MOVE WITH IT. This is the
+   one motion the panels carry and a reading drives it: the spring that draws
+   the axis on the figure, coneMirStep, is read here, so a release made on
+   another surface moves the figure's rib and the row's ring together and by
+   the same arithmetic, and neither can disagree with the other. Written only
+   when the whole number changes, so a settled axis costs a comparison a
+   frame and nothing else. The ring takes no CSS transition: the spring is
+   the easing. Reduced motion has no spring, so it simply lands. */
+function coneAxPaint(){
+ var M=CONE.mir, rows=CONE.rows; if(!M||!rows)return;
+ for(var i=0;i<rows.length;i++){var o=rows[i], a=M.ax[o.i]; if(!a)continue;
+  var v=M.un?-1:Math.round(clamp(a.x,0,100));
+  if(v===o.v)continue; o.v=v;
+  o.val.setAttribute('stroke-dasharray',(v<0?0:v)+' 100');
+  o.pv.textContent=v<0?'\u2013':String(v);
+  o.el.setAttribute('aria-label',o.nm+(v<0?'. Nothing read yet.':'. You sit at '+v+' on this axis.'));}}
+function coneRowsFind(){
+ var rows=[].slice.call(document.querySelectorAll('#cone .cn-nr[data-cnax]'));
+ CONE.rows=rows.map(function(el){
+  return {el:el,i:+el.getAttribute('data-cnax'),val:el.querySelector('.val'),
+   pv:el.querySelector('.fb-v'),v:-2,nm:el.getAttribute('aria-label')};});}
 /* A MARK BESIDE EACH SWITCH'S WORD. LO in TASKS.md, his words: "I need icons
    for top registers, layers, and compass." The word stays and the mark goes
    in front of it, the way the sections and the tabs already carry theirs.
@@ -2797,8 +2858,146 @@ const CN_IC={
  /* three laws up and three down, as two arrows */
  reg:'M8 19.5V5M4.8 8.2L8 5l3.2 3.2M16 4.5V19M12.8 15.8L16 19l3.2-3.2'};
 function cnIc(k){return '<svg class="cn-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="'+CN_IC[k]+'"/></svg>';}
+/* ============================================================
+   THE OVERLAYS, IN THE FIELD'S AND THE BODY'S LANGUAGE. Round OJ, his words:
+   "I want the UI UX team to have the compass overlays in the same design
+   aesthetic as body and field", and before it, round OC: "the overlay icons
+   should look like the field overlay icons and the body overlay icons."
+
+   They were text pills at the head of the figure. They are the glass bar's
+   own circles now, fbOrb in ui/fieldbar.js, forty inside a forty four target,
+   the same disc, ring track, lift when on and pill, so a control on the
+   Compass is the same object as a control on the Field.
+
+   TWO PLACES, AS THE FIELD HAS TWO. Upper left are the overlays, which are
+   independent: the well, the radiance and the layers, each drawn on or off
+   over the same figure. Upper right is how the figure is drawn, which is
+   one of two or neither: Top and the Registers, in the capsule the Field's
+   Wheel, Frames and Dial sit in, and the two still exclude each other as they
+   did. "Opposite of the overlay items that you have on the upper left" was
+   his own phrase for it on the Field, round EZ.
+
+   ONLY A READING CARRIES A NUMBER. The Gravity well is the heaviest charge
+   the figure bends to, so its ring and pill are that weight, the number the
+   Field's own Assemblage Points circle prints for the same thing. Top, the
+   Registers, the Radiance and the Layers are ways of drawing, with no figure
+   to give: each is a whole ring while it is on and no ring while it is off,
+   the rule the Field gives a rendition, and none of them wears a pill.
+
+   The mark on each is the one the word already had, CN_IC above, drawn on
+   the 24 grid in the bar's stroke, 1.6 round. The bar closes into its first
+   circle as the Field's and the Body's do, and keeps that in the store.
+   ============================================================ */
+const CN_OV={
+ top:{nm:'Top',tip:'Look straight down on the same eight axes.',st:1},
+ shells:{nm:'Registers',st:1,
+  tip:'Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.'},
+ flat:{nm:'Flat',tip:'Take the tilt out and look straight down on the figure.',st:1},
+ reg:{nm:'Regulation',tip:'Show the three laws lifting you most and the three pulling you down most.',st:1},
+ well:{nm:'Gravity well',
+  tip:'Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse.'},
+ heat:{nm:'Radiance',st:1,
+  tip:'Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.'},
+ layers:{nm:'Layers',tip:'Show the rings the axes are stacked on.',st:1}};
+/* what is offered, and where, for the figure that is up. The same conditions
+   the pills carried: a switch that changes nothing on this figure is a dead
+   control, so it is not drawn. */
+function cnOvList(){
+ var side=CONE.side, top=CONE.top, shl=CONE.shells&&!side&&!top, lay=[], vw=[];
+ if(!side)vw=['top','shells'];
+ if(side)lay=['flat','reg'];
+ else if(!top&&!shl)lay=['well','heat'];
+ if(!shl)lay.push('layers');
+ return {views:vw,layers:lay,seats:shl};}
+/* the well's reading, off the one number the Field prints for the same
+   thing, so one concept keeps one figure. Nothing read, nothing printed. */
+function cnOvVals(){
+ var r=compute(), V={};
+ if(r.unread){V.well={p:0,v:'\u2013',c:seatCol(r.darkB||'Root'),m:'Nothing read yet.'};return V;}
+ V.well={p:clamp((r.darkV||0)*10,0,100),v:(+r.darkV||0).toFixed(1),c:seatCol(r.darkB),
+  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+(+r.darkV||0).toFixed(1)+'.'};
+ return V;}
+function cnOvOrb(k,V){
+ var o=CN_OV[k], v=V[k];
+ var b=fbOrb({nm:o.nm,ic:CN_IC[k],tip:o.tip,val:!!v});
+ b.setAttribute('data-cn',k); b.classList.add('cn-b');
+ if(o.st)b.classList.add('cn-st');
+ if(v){b.querySelector('.fb-orb').style.setProperty('--c',v.c);
+  b.querySelector('.val').setAttribute('stroke-dasharray',v.p.toFixed(1)+' 100');
+  b.querySelector('.fb-v').textContent=v.v;
+  fbTip(b,o.tip+' '+v.m);}
+ return b;}
+function cnOvShut(){var s=false;try{s=STORE.get('cnov')==='shut';}catch(e){}return s;}
+function cnOvShutPaint(bar,shut){
+ var tog=bar.querySelector('.fb-tog'); if(!tog)return;
+ bar.classList.toggle('shut',shut);
+ var say=shut?'Open the overlays':'Close the overlays';
+ tog.setAttribute('aria-expanded',shut?'false':'true'); tog.setAttribute('aria-label',say);
+ if(!FB_COARSE)tog.setAttribute('data-tip-t',say);
+ fbTip(tog,shut?'Opens the overlays again, each one as you left it.'
+  :'Folds the overlays into this one circle. Each one stays as it was set.');}
+function coneOvBuild(){
+ var bar=document.getElementById('cnbar'), vw=document.getElementById('cnview');
+ if(!bar||!vw||typeof fbOrb!=='function')return;
+ var L=cnOvList(), V=cnOvVals(), g;
+ /* the bar's own fold, first in the row and first in the markup, so the
+    arrow keys and a screen reader meet it where the eye does */
+ var tog=fbOrb({nm:'Close the overlays',ic:FB_IC.shut,tip:''});
+ tog.classList.add('fb-tog'); tog.setAttribute('aria-controls','cnbar');
+ tog.onclick=function(e){e.stopPropagation();
+  var now=!bar.classList.contains('shut');
+  try{STORE.set('cnov',now?'shut':'open');}catch(e2){}
+  cnOvShutPaint(bar,now);};
+ bar.appendChild(tog);
+ var grp=function(host,name,list,cls){
+  if(!list.length)return;
+  var c=document.createElement('div'); c.className='fb-grp'+(cls?' '+cls:''); c.setAttribute('role','group');
+  c.setAttribute('aria-label',name);
+  list.forEach(function(x){c.appendChild(x);}); host.appendChild(c);};
+ grp(bar,'Overlays',L.layers.map(function(k){return cnOvOrb(k,V);}));
+ if(L.seats)grp(bar,'Seat shells',cnSeatOrbs(),'cn-seatgrp');
+ grp(vw,'How the compass is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
+ if(!L.views.length)vw.style.display='none';
+ cnOvShutPaint(bar,cnOvShut());
+ /* a toolbar's arrow keys walk it, as the Field's do */
+ var top=document.getElementById('cntop');
+ if(top)top.onkeydown=function(e){
+  if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+  var all=[].slice.call(top.querySelectorAll('.fb-b')).filter(function(b){return b.offsetParent;});
+  var i=all.indexOf(document.activeElement); if(i<0)return;
+  all[(i+(e.key==='ArrowRight'?1:all.length-1))%all.length].focus(); e.preventDefault();};}
+/* THE GLASS TAKES THE TONE OF THE WELL IT LIES ON, as the zoom circles do:
+   a light well gets the light glass. Read off the same ground the canvas
+   paints, so the bar, the panels and the figure never disagree about it. */
+function coneLt(){var wl=ndlWell(); return (wl[0]*.299+wl[1]*.587+wl[2]*.114)>140;}
+/* AND THE PANELS TAKE THE TONE OF THE STAGE, NOT OF THE CANVAS. Under Snow the
+   stage keeps the ruled dark ground and the canvas is painted light on it, so
+   the circles on the canvas want the light glass and the panels beside it, which
+   lie on the stage, want the dark one: made light they were a grey slab on a
+   black field and Jesus in his seat green could not be read on it, measured on
+   the first cut. The first opaque ground up the tree, as bmGround reads it. */
+function coneGroundLt(el){
+ for(var n=el;n&&n.nodeType===1;n=n.parentElement){
+  var m=/rgba?\(([^)]+)\)/.exec(getComputedStyle(n).backgroundColor||''); if(!m)continue;
+  var c=m[1].split(',').map(parseFloat);
+  if(c.length>3&&!(c[3]>=0.999))continue;
+  return (c[0]*.299+c[1]*.587+c[2]*.114)>140;}
+ return false;}
+function coneTone(){
+ var lt=coneLt(); CONE.lt=lt; CONE.th=S.theme;
+ ['cnzoom','cnbar','cnview'].forEach(function(id){var e=document.getElementById(id);
+  if(e)e.classList.toggle('fb-lt',lt);});
+ var host=document.getElementById('cone'), pl=host?coneGroundLt(host):false;
+ [].forEach.call(document.querySelectorAll('#cone .cn-pan'),function(e){e.classList.toggle('fb-lt',pl);});}
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
+ /* A PRESS REBUILDS THE CARD, so the press would drop a keyboard person's
+    place: the circle they were on is gone with the markup. Which overlay had
+    focus is kept and given back to its successor below, the one thing the
+    Field's bar never has to do because it never rebuilds. */
+ var keepFocus=null;
+ try{var ae=document.activeElement;
+  if(ae&&h.contains(ae)&&ae.getAttribute)keepFocus=ae.getAttribute('data-cn');}catch(e){}
  /* the needle assembles once, when the surface is opened, and not on every
     press of a switch, which also comes through here */
  if(!CONE.open){CONE.t0=(typeof performance!=='undefined'?performance.now():Date.now());
@@ -2818,10 +3017,19 @@ function coneOpen(inTab){
      Each one says what it does now. "Flat" told a person nothing, which is
      exactly what he reported: he did not know what those buttons were for. */
   +'<div class="cone-body"><div class="cone-fig">'
-   +coneNames('l')+coneNames('r')
-   /* THE CANVAS AND ITS ZOOM, held together so the zoom sits on the figure's
-      own lower right at a desk and follows it on a phone, whatever the rails
-      and the key do around them. */
+   /* THREE PARTS, ROUND OJ: a panel, the render pane, a panel. The Field is
+      composed the same way, the picture in the middle with a rail either
+      side, and his words for this page were "the centre, left, right of that
+      render pane". The two panels are the eight characters, four axes each;
+      the pane is the figure and the overlays on it and nothing else, which
+      is also his standing rule, that the centre column is for hero art.
+      Under 900 pixels, or when the stage is too narrow to share, the panels
+      go under the figure in two columns (the sheet decides, .cone-fig). */
+   +coneNames('l')
+   /* THE CANVAS, THE OVERLAYS AND THE ZOOM, held together so the corners are
+      the canvas's and not the card's, whatever the key under the figure does.
+      The overlays take the upper left and how it is drawn the upper right,
+      the Field's two corners (coneOvBuild, above). */
    +'<div class="cn-cvw">'
    +'<canvas id="conecv" class="cone-cv" role="img" '
    +'aria-label="'+(CONE.side
@@ -2833,6 +3041,13 @@ function coneOpen(inTab){
      :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
       +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a seat holds charge and where the field bends off your level.':''))
    +'"></canvas>'
+   /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
+      document. .cone-ctl is kept as the name of the row so the gate that
+      finds the switches by it still does. */
+   +'<div class="cn-top" id="cntop" role="toolbar" aria-label="Compass overlays">'
+   +'<div class="cone-ctl cnbar" id="cnbar"></div>'
+   +'<div class="cnview" id="cnview" role="group" aria-label="How the compass is drawn"></div>'
+   +'</div>'
    /* ZOOM, round KQ: "the icon's already there. I want to be able to zoom
       in." It is: the Field's three circles in its lower right, zoom out,
       zoom in and reframe, built by fbOrb in ui/fieldbar.js out of the same
@@ -2843,61 +3058,15 @@ function coneOpen(inTab){
       a control that changes nothing is a dead control. */
    +(CONE.side?'':'<div class="cn-zoom" id="cnzoom" role="group" aria-label="Zoom"></div>')
    +'</div>'
-   /* Flat and Regulation belong to the side view: from above there is no
-      tilt to take out and no spine to draw arrows on, and a switch that
-      changes nothing on the figure is a dead control. */
-   /* THE NEEDLE IS THE DEFAULT, AND FROM ABOVE IS ONE SWITCH. Round JQ. The
-      old Side view switch went with it: the needle is the side view, rebuilt
-      as the two pyramids he asked for, so a second side view would be the
-      same figure drawn twice. The turned arrow figure is still in this file
-      behind CONE.side, which the collide gate drives directly. */
-   +'<div class="cone-ctl">'
-    /* TOP, round KQ, his words: "with the compass layers, change from above
-       to top." One word, as every other switch in this row is. */
-    +(CONE.side?'':'<button type="button" class="cn-b" data-cn="top" '
-     +'title="Look straight down on the same eight axes">'+cnIc('top')+'Top</button>')
-    /* REGISTERS, round KS. One word, his own from round KR, "the colored
-       registers would show collapse geometrically", and already the
-       product's word for it: the coherence reading says "It is harmonic, so
-       patterns sit at registers rather than anywhere." */
-    +(CONE.side?'':'<button type="button" class="cn-b" data-cn="shells" '
-     +'title="Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.">'+cnIc('shells')+'Registers</button>')
-    +(CONE.side
-     ?'<button type="button" class="cn-b" data-cn="flat" '
-      +'title="Take the tilt out and look straight down on the figure">'+cnIc('flat')+'Flat</button>'
-      +'<button type="button" class="cn-b" data-cn="reg" '
-      +'title="Show the three laws lifting you most and the three pulling you down most">'+cnIc('reg')+'Regulation</button>'
-     :'')
-    /* ROUND KI'S MOCKUP SWITCH. Two ways to draw gravity, one press apart,
-       so he chooses by looking: off is the pulse, on is the well. */
-    +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="well" '
-     +'title="Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse">'+cnIc('well')+'Gravity well</button>')
-    /* RADIANCE, round KR. Only on the needle, which is the only figure that
-       draws it: from the top there is no volume to fill, and the switch
-       would be a dead control there. What the heat means rides on the
-       hover and not in a key under the figure, because a legend nobody
-       asked for is one of his logged objections. Whether it earns a key is
-       his call. */
-    +(CONE.side||CONE.top||CONE.shells?'':'<button type="button" class="cn-b" data-cn="heat" '
-     +'title="Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.">'+cnIc('heat')+'Radiance</button>')
-    /* the Registers draw no rings, so Layers would be a dead control there */
-    +(CONE.shells&&!CONE.side&&!CONE.top?'':'<button type="button" class="cn-b" data-cn="layers" '
-     +'title="Show the rings the axes are stacked on">'+cnIc('layers')+'Layers</button>')
-   +'</div>'
+   +coneNames('r')
    /* THE TOOL SAYS WHAT IT IS, UNDER THE FIGURE. Ruled: the bottom
-      information goes right unless it is about the tool. These two lines are
-      about the tool, so they may stay under it. The reading does not, and
-      does not. */
-   /* PLAIN WORDS, OR NOTHING. Ruled: "there is some weird text that says the
+      information goes right unless it is about the tool. The key is about
+      the tool, so it may stay under it. The reading does not, and does not.
+      PLAIN WORDS, OR NOTHING. Ruled: "there is some weird text that says the
       waist is 40 to 60 out of 100. I told you never to write text like that
-      any more. If you cannot use regular words to describe it, do not describe
-      it. And 40 to 60 out of 100 does not give a lot of specific detail."
-
-      He is right and the sentence was defending itself with a scale instead of
-      saying a thing. What it was trying to convey is that the narrow middle of
-      the figure is where most people sit, and that is one clause in English.
-      The numbers went and nothing was lost, because a person looking at a
-      waisted figure can see where the waist is. */
+      any more." The clause under the figure that explained how to drag and
+      press went in round HS, and the Registers' seat key went with the seat
+      switches into the bar, round OJ. */
    +coneKey()
    /* AND THEN THE CLAUSE ITSELF WENT, round HS. "The narrow middle is where
       most people sit. Drag to turn the figure. Press any name to read that
@@ -2943,6 +3112,9 @@ function coneOpen(inTab){
  /* a fresh canvas has none of the needle's background light and may sit on
     a new lighting's well, so both are read again on its first frame */
  NDL.glowSig=''; NDL.wellSig=''; CONE.tip=''; RGS.glowSig=''; RGS.hs=-1;
+ /* the overlays and the two panels' readings, now that there is a canvas to
+    take the glass's tone from */
+ coneOvBuild(); coneRowsFind();
  /* the zoom circles, the Field's own: same marks, same glass, same words */
  var hz=document.getElementById('cnzoom');
  if(hz&&typeof fbOrb==='function'){
@@ -2954,7 +3126,19 @@ function coneOpen(inTab){
    b.addEventListener('click',function(e){e.stopPropagation();z[4]();});
    zg.appendChild(b);});
   hz.appendChild(zg);}
- coneZoomPaint();
+ coneZoomPaint(); coneTone(); coneAxPaint();
+ if(keepFocus){var kb=h.querySelector('[data-cn="'+keepFocus+'"]'); if(kb)kb.focus();}
+ /* THE PANES SHARE THE STAGE WITH THE COLUMNS, and a column that opens or
+    shuts changes the pane's width with no window resize to say so. The pane
+    is watched itself, so the canvas is laid out again whenever its own box
+    moves and not only when the window does. */
+ if(CONE.ro){try{CONE.ro.disconnect();}catch(e){}}
+ var cw=h.querySelector('.cn-cvw');
+ if(cw&&typeof ResizeObserver==='function'){
+  if(!CONE.ro)CONE.ro=new ResizeObserver(function(){
+   if(CONE.roq)return;
+   CONE.roq=requestAnimationFrame(function(){CONE.roq=0; if(CONE.open)coneLayout();});});
+  CONE.ro.observe(cw);}
  /* ONE FRAME LOOP, NOT ONE PER PRESS. Every switch repaints through here, and
     this called coneTick with the last frame it scheduled still pending, so
     each press started a second loop beside the first: the idle spin ran
@@ -3093,6 +3277,8 @@ function coneOpen(inTab){
 function coneClose(){
  CONE.open=false; CONE.tab=false; CONE.drag=null;
  if(CONE.raf)cancelAnimationFrame(CONE.raf);
+ if(CONE.ro){try{CONE.ro.disconnect();}catch(e){}}
+ CONE.rows=null;
  var h=document.getElementById('cone');
  if(h){h.style.display='none';h.innerHTML='';h.classList.remove('tabmode');}
  removeEventListener('resize',coneLayout);}

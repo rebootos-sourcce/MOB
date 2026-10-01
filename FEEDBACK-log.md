@@ -289,6 +289,19 @@ change: CHECKLIST.md and OUTSTANDING.md folded into TASKS.md. One list, with
 checkboxes, read at the top of every round. It paid on the first use: Ritual
 was on it as open and was already built.
 
+## 2026-10-01 · owner · the Compass in the Field's language
+
+said: I want the UI UX team to have the compass overlays in the same design
+aesthetic as body and field. And then the panels on the left and right of the
+compass. Um, I want the center left, right of that render pane.
+read: the overlays are text pills where the Field and the Body draw glass
+circles, and the eight character names stand over the canvas's own edges. The
+second sentence has more than one reading, so the page is built on one and the
+other two are drawn for him to choose between.
+change: the overlays are the glass bar's circles, the characters are two glass
+panels beside the render pane, and the figure keeps the pane to itself. See
+TASKS.md round OJ and mockups/compass-overlays/.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

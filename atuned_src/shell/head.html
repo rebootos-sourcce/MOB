@@ -413,7 +413,7 @@ body.lumen .ib[aria-pressed=true] svg,body.lumen .ib[data-r="2"] svg{
 body.lumen .vt[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
 body.lumen .vt[aria-pressed=true] svg{stroke:var(--on-accent)}
 body.lumen .seg button[aria-pressed=true],body.lumen .cn-sb.on,
-body.lumen .ob-a.on,body.lumen .iq-n.on,body.lumen .cn-b.on{
+body.lumen .ob-a.on,body.lumen .iq-n.on{
  background:var(--accent);color:var(--on-accent);border-color:transparent}
 body.lumen .ac-ixb.on{background:var(--c);color:var(--panel)}
 body.lumen .ac-ixb.on .ac-gl{color:var(--panel)}
@@ -1831,10 +1831,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float,.fview,.fzoom,.cn-zoom,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.fzoom,.cn-zoom,.cnbar,.cnview,.cn-pan,#railtop,#acc{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt,.cn-zoom.fb-lt,.cnbar.fb-lt,.cnview.fb-lt,.cn-pan.fb-lt,#railtop.fb-lt,#acc.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -2964,23 +2964,11 @@ body.punch .set-sec{background:var(--panel-2);border-color:transparent}
 .s-oact{margin-top:6px;align-self:flex-start}
 body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:transparent}
 @media (max-width:1100px){.s-cols{grid-template-columns:1fr}}
-/* the compass controls. Four switches on the card, each one a reading the
-   figure can carry rather than a decoration it can wear. */
-/* the row version of .cone-ctl is gone with the row. The controls sit on the
-   figure now, declared once, further down with the rest of the compass. */
-.cn-b{background:transparent;border:1px solid var(--edge);color:var(--mid);
- border-radius:var(--r-xs);padding:7px 13px;font-family:var(--sans);font-size:12.5px;
- cursor:pointer;min-height:var(--tap);display:inline-flex;align-items:center;
- transition:background .12s cubic-bezier(.22,1,.36,1), color var(--t-micro) var(--ease-out), border-color var(--t-micro) var(--ease-out)}
-.cn-b:hover{background:var(--panel-2);color:var(--ink)}
-.cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
-/* the switch's mark before its word, LO, CN_IC in ui/cone.js. Its own class,
-   because the seat buttons in the same class carry a ring in their seat's
-   colour that a rule on every svg in .cn-b would have turned to ink */
-.cn-ic{width:15px;height:15px;flex:0 0 auto;margin:0 7px 0 -2px;fill:none;stroke:currentColor;
- stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.cn-sp{flex:1 1 auto;min-width:6px}
-body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
+/* THE COMPASS CONTROLS ARE THE GLASS BAR'S CIRCLES NOW, round OJ, and the text
+   pills that stood here, .cn-b and its mark .cn-ic, are gone with the words
+   they carried. The switches keep the name .cn-b on the circle for the gates
+   that find them by it, and the look is .fb-b's, in the glass bar's sheet,
+   with the compass's own rules beside the compass further down. */
 /* the Story's segmented choices, the sort and the pace. The release settings
    they were first written for went into the Story's third column, round IJ,
    and the rows, the list and the foot that held them went with it.
@@ -3158,17 +3146,10 @@ body:not(.tab-field) .keylo{display:none}
 .cn-zoom{position:absolute;right:20px;bottom:12px;z-index:3;display:flex}
 .cn-zoom .fb-grp{flex-direction:row;gap:6px}
 .cone-cv.zoomed{cursor:grab}
-/* ZOOMED IN, THE FIGURE RUNS UNDER THE NAMES AND THE SWITCHES, which sit over
-   the canvas at a desk and have no ground of their own because at the whole
-   figure there is nothing under them. So while zoomed each one takes the
-   well's own ground as a plate, the way the Field's glass circles sit on its
-   picture, and no line is ever read through a name. CSS and not a veil
-   painted on the canvas, so it costs the frame nothing. At a desk only:
-   under 900 the names and switches are in flow off the figure. */
-.cone-fig .cn-nr,.cone-fig .cn-b{transition:background-color var(--t-micro) var(--ease-out)}
-@media (min-width:900px){
- .cone-fig.zoomed .cn-nr,.cone-fig.zoomed .cn-b{background:color-mix(in srgb,var(--sunk) 94%,transparent)}
- body.lumen .cone-fig.zoomed .cn-nr,body.lumen .cone-fig.zoomed .cn-b{background:rgba(16,16,16,.94)}}
+/* THE NAMES AND THE SWITCHES NO LONGER SIT OVER THE FIGURE'S WELL, round OJ.
+   The names are panels beside the pane and the switches are glass circles
+   with a ground of their own, so the plate this rule laid under each one while
+   the figure was zoomed in has nothing left to do. */
 /* on a phone the figure is the full width and its lower right is the crown
    of inversions, so the circles follow the figure in a row, right aligned,
    on the well's own ground, as the Field's do under its picture */
@@ -3176,11 +3157,31 @@ body:not(.tab-field) .keylo{display:none}
  .cn-zoom{position:static;justify-content:flex-end;padding:6px 24px 2px 10px;background:var(--sunk)}
  body.lumen .cn-zoom{background:#101010}
  .cn-zoom .fb-grp{flex-direction:row}}
-/* THE SWITCHES SIT ON THE FIGURE, UPPER LEFT. Ruled. They were a row under the
-   drawing, which cost a band of the stage and put each control further from
-   the thing it changes. */
-.cone-ctl{position:absolute;top:10px;left:10px;display:flex;gap:5px;flex-wrap:wrap;
- z-index:2;margin:0}
+/* THE OVERLAYS SIT ON THE FIGURE, UPPER LEFT, AND HOW IT IS DRAWN UPPER RIGHT.
+   Ruled, and now the Field's own two corners, round OJ: the glass bar's
+   position, top 10 and left 12, and the switch capsule's mirror of it. The
+   row is the pane's and not the card's, so the corner is the canvas's. */
+.cn-top{position:absolute;top:10px;left:12px;right:12px;z-index:3;display:flex;
+ align-items:flex-start;justify-content:space-between;gap:8px 12px;pointer-events:none}
+.cn-top>*{pointer-events:auto}
+.cnbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0;margin:0}
+.cnbar .fb-tog{order:-1}
+.cnbar.shut>*:not(.fb-tog){display:none}
+.cnbar.shut .fb-tog .lf-ch{transform:rotate(180deg)}
+/* HOW IT IS DRAWN is one of two, so it is the Field's capsule: the circles sit
+   on a lozenge of the glass because they are one control choosing, where the
+   bar's circles are separate switches. The same three rules .fview has. */
+.cnview{display:flex;align-items:center;flex:0 0 auto;padding:2px;border-radius:999px;
+ background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+.cnview .fb-grp{gap:4px}
+/* A WAY OF DRAWING HAS NO READING, so it carries no pill and its ring is
+   whole while it is on and absent while it is off, the rule .fview gives a
+   rendition. A dash of nought with a round cap is a dot, and a dot at twelve
+   o'clock reads as a reading of one. */
+.cn-st .fb-arc .val{stroke:var(--accent);stroke-dasharray:100 100}
+.cn-st:not(.on) .fb-arc .val{opacity:0}
+.cn-st .fb-arc .val,.cn-b .fb-arc .val,.cn-sb2 .fb-arc .val{transition:opacity var(--t-micro) var(--ease-out)}
 .cone-info{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:14px;min-width:0}
 .cone-mid{min-height:0;overflow-y:auto;scrollbar-width:thin}
 /* UNDER THE FIGURE MEANS UNDER IT, NOT ON IT. The hint was absolute at bottom
@@ -5873,17 +5874,59 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    what "lights up as you wheel round" has to mean on a rail that is always
    present.
    ============================================================ */
-.cn-nms{position:absolute;top:8%;display:flex;flex-direction:column;gap:10px;
- z-index:2;pointer-events:auto;max-width:158px}
-.cn-nms-l{left:0;align-items:flex-start;text-align:left}
-.cn-nms-r{right:0;align-items:flex-end;text-align:right}
-.cn-nr{display:flex;flex-direction:column;gap:1px;background:none;border:0;
- border-left:2px solid transparent;padding:3px 8px;cursor:pointer;
- font:inherit;color:inherit;transition:border-color .18s,opacity .18s;
- opacity:.55}
-.cn-nms-r .cn-nr{border-left:0;border-right:2px solid transparent;align-items:flex-end}
-.cn-nr:hover,.cn-nr:focus-visible{opacity:1}
-.cn-nr.front{opacity:1;border-color:var(--ax)}
+/* THE PANEL. The stage's own glass, because it lies on the stage's ground
+   and takes its tone from it (coneTone), with the rails' metrics: their
+   radius, a hairline edge, a lift. Four rows, spread down the pane's height
+   so each stands at its own stretch of the figure. */
+.cn-pan{position:static;display:flex;flex-direction:column;justify-content:space-between;gap:6px;
+ min-width:0;padding:12px 8px;border-radius:var(--r);
+ background:var(--fb-glass);border:1px solid var(--edge-2);color:var(--mid);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+/* a row is a button: the pair of circles, then three lines of type. 44 is the
+   tap floor and the two circles make it ninety. The plate that says which
+   row faces the viewer is a pseudo element lit by opacity, so what moves as
+   the figure turns is an opacity and nothing else. */
+.cn-nr{position:relative;isolation:isolate;display:flex;align-items:center;gap:9px;
+ width:100%;min-width:0;padding:6px;border:0;border-radius:calc(var(--r) - 6px);
+ background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.cn-nr::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;
+ background:color-mix(in srgb,var(--ink) 8%,transparent);opacity:0;
+ transition:opacity var(--t-micro) var(--ease-out)}
+.cn-nr.front::before,.cn-nr:hover::before,.cn-nr:focus-visible::before{opacity:1}
+.cn-nr:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.cn-pr{display:flex;flex-direction:column;gap:6px;flex:0 0 auto}
+.cn-tx{display:flex;flex-direction:column;gap:1px;min-width:0}
+/* THE POLE'S CIRCLE: the bar's disc, ringed in the axis's own seat token, its
+   ring the reading. Its mark is ink when its row faces the viewer and mid
+   when it does not, the bar's on and off. */
+.cn-or{--c:var(--ax);color:var(--mid)}
+.cn-or.inv{--c:var(--axd);color:var(--dim)}
+.cn-or .val{opacity:1;transition:none}
+.cn-or.inv .trk{stroke:var(--axd);stroke-dasharray:3 3}
+.cn-nr.front .cn-or,.cn-nr:hover .cn-or{color:var(--ink)}
+.cn-nr.front .fb-orb,.cn-nr:hover .fb-orb{background:var(--fb-glass-on)}
+body.punch .cn-nr.front .fb-orb{background:var(--c)}
+body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
+/* the pill rides the lower right of the pair, away from the type, so on the
+   right panel, whose circles are on the far side, it rides the lower left */
+/* THE TYPE IS THE SEAT'S TOKEN LEANED TOWARD THE INK, ON EVERY GROUND. Measured
+   on the first cut against each panel's own glass: Root's name read 4.45 and
+   its inversion at the brand's seventy two per cent 2.86, under the 4.5 the
+   type needs, and on Glass white the names read 1.72 and 1.47, because the
+   seat tokens are made for a dark ground. --ink turns with the glass, so one
+   mix does both: 85 per cent token on the dark glass, 50 on the light, which
+   measures 5.3 and 5.2 at the worst of the seven seats. The inversion's type
+   is the same colour in a lighter weight, since a darker one could not be read;
+   what says it is the other pole is its broken ring, its place and its weight. */
+.cn-pan{--tm:85%}
+.cn-pan.fb-lt{--tm:50%}
+.cn-pan .cn-nu{color:color-mix(in srgb,var(--ax) var(--tm),var(--ink))}
+.cn-pan .cn-nd{color:color-mix(in srgb,var(--ax) var(--tm),var(--ink));font-weight:500}
+.cn-pan.fb-lt .cn-or{--c:color-mix(in srgb,var(--ax) 60%,var(--ink))}
+.cn-pan.fb-lt .cn-or.inv{--c:var(--axd)}
+.cn-nms-r .cn-nr{flex-direction:row-reverse;text-align:right;gap:12px}
+.cn-nms-r .cn-tx{align-items:flex-end}
+.cn-nms-r .cn-or .fb-v{left:auto;right:24px}
 /* THE QUALITY, IN SENTENCE CASE AT THE TYPE FLOOR. It was 9px and uppercased,
    which broke two gates at once and both were right. Nine is under the floor
    and this is a string a person reads to use the thing, not a wordmark read
@@ -6084,48 +6127,45 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  color:var(--dim);letter-spacing:.01em;margin-top:1px}
 .ad-gl{width:14px;height:14px;flex:0 0 14px;display:inline-block;
  vertical-align:-2px;margin-right:6px;opacity:.82}
-.cn-nms-r .cn-nu,.cn-nms-r .cn-nd{flex-direction:row-reverse}
-/* THE FIGURE KEEPS ITS OWN WIDTH. The rails are absolute so the canvas is not
-   squeezed by them, and the canvas gets side padding so the drawing does not
-   run under the names. Below this width the rails go under the figure in one
-   row each, because two 158px columns and a readable figure do not fit on a
-   phone. */
-.cone-fig{position:relative}
-/* THE RAIL CLEARS THE CONTROLS. Flat, Regulation and Layers sit in the upper
-   left of the figure, so the left rail starts below them. Measured against
-   that cluster, not guessed: it sets 44 tall with 12 of gap above it. */
-@media(min-width:900px){.cn-nms{top:74px}}
-@media(max-width:899px){
- .cn-nms{position:static;flex-direction:row;flex-wrap:wrap;max-width:none;
-  gap:6px 14px;justify-content:center;margin:6px 0}
- .cn-nms-l,.cn-nms-r{align-items:center;text-align:center}
- .cn-nr,.cn-nms-r .cn-nr{border-left:0;border-right:0;border-bottom:2px solid transparent;
-  align-items:center;padding:2px 4px}
- /* THE CONTROLS PRINTED OVER THE FIRST ROW OF NAMES. Measured at 390x844 on
-    Abraham, every lighting: .cone-ctl at y 319, the first rail row at y 315,
-    four button and name boxes intersecting, "Flat" standing on Jesus and
-    "Regulation" on Ramakrishna. .cone-ctl is absolute at top 10 of .cone-fig,
-    which is the top of the canvas only while the rails are absolute too. This
-    band puts the rails in flow above the canvas, so the top of .cone-fig
-    became the top of the rails and the controls stayed pinned to it. Desk
-    width was never affected because it clears the rails with top 74 above.
-
-    In flow and first, rather than a padding sized to the cluster: the three
-    buttons wrap on a narrower phone, and a padding typed from their height is
-    a number the controls then grow past. Still upper left of the figure, which
-    is the ruling. */
- .cone-fig{display:flex;flex-direction:column}
- .cone-ctl{position:static;order:-1;margin:0 0 6px}
- /* AND THE NAMES GO UNDER THE FIGURE, which is what the comment above
-    .cone-fig has always said this band does and what it never did: the rails
-    come first in the markup, so in flow they printed first. Measured 27
-    September at 390 by 844 on Marcus: the eight names took the 250 pixels
-    between the switches and the canvas, and the viewport ended 220 pixels
-    into the figure. A block of small type in front of the hero graphic, and
-    the graphic cut off by the fold behind it, is the complaint in FW. Order
-    alone moves them, after the key and the hint, and the switches keep their
-    place above the figure, which is the ruling. */
- .cn-nms{order:1}}
+/* THE PANE IS THE CENTRE OF THREE, round OJ. A panel, the pane, a panel, as
+   the Field is composed: the picture in the middle and a rail each side. The
+   figure keeps the pane to itself, so the canvas gets no lane for the names
+   and no padding to keep the drawing out from under them. */
+.cone-fig{position:relative;display:grid;
+ grid-template-columns:minmax(156px,188px) minmax(0,1fr) minmax(156px,188px);
+ column-gap:10px;align-items:stretch}
+.cone-fig>.cn-nms-l{grid-column:1;grid-row:1 / span 2}
+.cone-fig>.cn-cvw{grid-column:2;grid-row:1}
+.cone-fig>.cn-nms-r{grid-column:3;grid-row:1 / span 2}
+.cone-fig>.cone-key{grid-column:2;grid-row:2}
+/* A TALL FIGURE IN A NARROW PLACE: stacked. ui/cone.js coneFit puts .stk on
+   the figure when the window is under 900 or the pane would be under 760
+   once the panels had their share, which is a left column opened at 1280 as
+   much as it is a phone. The overlays leave the canvas for the row above it,
+   in flow and first, so they can never print over the figure or a name, the
+   defect EP in TASKS.md was; the key follows the figure; and the panels go
+   under both, in two columns each, the right one read the left's way. */
+.cone-fig.stk{display:flex;flex-direction:column}
+.cone-fig.stk .cn-cvw{display:flex;flex-direction:column;order:0}
+.cone-fig.stk .cn-top{position:static;order:-1;margin:0 0 8px;flex-wrap:wrap}
+/* the bar's groups and the capsule share one row where they fit: the fold,
+   then the overlays, then the capsule at the far end; the seven seat circles
+   are three hundred and forty four across and take the row under them */
+.cone-fig.stk .cnbar{display:contents}
+.cone-fig.stk .cnbar .fb-tog{order:0}
+.cone-fig.stk .cnbar>.fb-grp{order:1}
+.cone-fig.stk .cnview{order:2;margin-left:auto}
+.cone-fig.stk .cnbar>.cn-seatgrp{order:3;flex:1 0 100%;justify-content:space-between}
+.cone-fig.stk .cone-key{order:1}
+.cone-fig.stk .cn-nms-l{order:2;margin-top:10px}
+.cone-fig.stk .cn-nms-r{order:3;margin-top:10px}
+.cone-fig.stk .cn-pan{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cone-fig.stk .cn-nms-r .cn-nr{flex-direction:row;text-align:left}
+.cone-fig.stk .cn-nms-r .cn-tx{align-items:flex-start}
+.cone-fig.stk .cn-nms-r .cn-or .fb-v{left:24px;right:auto}
+/* the card's own title is the tab's name over again, and the Field and the
+   Body carry none: the pane is the figure and what changes it */
+#cone.tabmode .cone-hd{display:none}
 .boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
  animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}

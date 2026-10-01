@@ -30449,3 +30449,33 @@ progress, so far. Keep crushing it."
    level names reuse Practitioner, now the tier-four role. Its marketing line
    says not to lead with tier comparisons, which is a marketing rule and does not
    touch the in-app upgrade page.
+## Round OJ. The Compass overlays and panels in the Field's and the Body's language
+
+His words, verbatim, today: "Then I want the UI UX team to have the compass
+overlays in the same design aesthetic as body and field. And then the panels on
+the left and right of the compass. Um, I want the center left, right of that
+render pane." And earlier in the same round: "Compass overlay icons to match
+the Field and Body overlay icons; Character icons go where the overlay icons
+are."
+
+- **Built, in `ui/cone.js` and `shell/head.html`.** The five text pills are the
+  glass bar's own circles (`fbOrb`): the overlays (Gravity well, Radiance,
+  Layers) upper left with the bar's fold, and how it is drawn (Top, Registers)
+  upper right in the Field's capsule. The Gravity well carries the heaviest
+  charge as ring and pill, the number the Field's Assemblage Points circle
+  prints; the other four are ways of drawing, so a whole ring while on and no
+  pill. The Registers' seven seat switches left the key under the figure and are
+  circles in the bar. The eight characters left the canvas's edges for two glass
+  panels flanking the pane, four axes each, each pole a circle of the same
+  family, the coherent one ringed by where the person sits on that axis.
+- **The page is read as left panel, pane, right panel.** Picture and the two
+  other readings in `mockups/compass-overlays/layout-readings.html`. Put to him
+  as a question in the round's report, not settled.
+- **Measured and changed:** the panels' names read 4.45 (Root) and 2.86 (its
+  inversion) on the dark glass and 1.72 and 1.47 on Glass white, under the 4.5
+  the type needs. The type is now the seat token leaned toward the ink, 5.3 and
+  5.2 at the worst of the seven. The inversion's text is the same colour in a
+  lighter weight; the brand's seventy two per cent is kept on its ring.
+- **Found, not mine to decide:** Light and Revelation both name Jesus as their
+  coherent pole in `engine/data/compass.js`, while `DESIGN-compass.md` lists
+  Meister Eckhart for Revelation.
