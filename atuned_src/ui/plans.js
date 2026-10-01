@@ -27,13 +27,16 @@
    by default, which is the one screen in the product that says
    nothing about a plan.
 
-   WHAT IT MAY SHOW. Sight is not for sale, ruled, so nothing a person
-   can see differs between rows and no row lists a thing it unlocks.
-   What every tier gets is said once, across the top, the whole width
-   of the group, and the rows under it differ in one quantity: how
-   much new ground opens. The bar on each row is that quantity drawn,
-   so "the only thing that moves is volume" is a shape before it is a
-   sentence.
+   WHAT IT MAY SHOW. Two things move between rows, and the owner ruled
+   the second on 1 October ("The upgrades page ... shows them which tier
+   they currently have, and then shows you the benefits of going to the
+   other tiers"): how much new ground opens, and how far up the chain a
+   person can see. What every tier gets is said once, across the top, the
+   whole width of the group. Above it sits the tier the person is on and
+   what that shows them and what it does not. Each row then says what it
+   unlocks, read off SIGHT in engine/plan.js through planAdds, so this file
+   types no tier and no rung. The bar on each row is the ground drawn, so
+   volume is a shape before it is a sentence.
 
    WHAT IT MAY NOT. No badge naming a tier as popular, no struck
    price, no count of anything running down, no tier pre-selected.
@@ -43,6 +46,9 @@
    do exactly the same thing.
    ============================================================ */
 
+/* NOTHING ELSE CHANGES CAME OFF TWO ROWS on 1 October: it was true while sight
+   was not for sale and is false now that a tier changes what a person sees.
+   The row says what it unlocks on its own line, ptSees below. */
 /* the per-month figure a bar is drawn against. Free is a week of ten, so a
    month of it is forty, by the same four-week month plan.js reads. */
 function ptMonthly(r){ return r.per==='week'?r.grant*4:r.grant; }
@@ -64,8 +70,8 @@ function ptLine(r){
   +'build rituals and build accountability for the people you lead. You see part of a person\'s '
   +'reading only after they say yes, and they can take that back at any time.';
  var x=r.grant/one;
- if(x===2)return 'Twice the ground of tier one. Nothing else changes.';
- if(x===3)return 'Three times the ground of tier one. Nothing else changes.';
+ if(x===2)return 'Twice the ground of tier one.';
+ if(x===3)return 'Three times the ground of tier one.';
  return planWorth(r.grant);}
 
 /* EVERY RUNG CARRIES ITS PRICE NOW. The owner stated 12, 29, 59 and 99 on 1
@@ -80,6 +86,21 @@ function ptPrice(r){
 /* 1,200 and not 1200, the way the funnel's own ladder prints it */
 function ptN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 
+/* WHAT A ROW UNLOCKS TO SEE, off SIGHT. Free is the floor and says what stays
+   locked; a tier that adds rungs names them; a tier that adds none says it
+   shows what the one below shows, which is tier four's whole sight claim and
+   is true by construction, so it is not typed. Returned as markup because it
+   carries the padlock. */
+function ptSees(r){
+ var say;
+ /* the floor says what it leaves out, as the chain's own four names: the full
+    clause, with the tier beside each, is the person's own block above, and
+    said again on this row it was three lines of the same sentence */
+ if(r.k==='free')say='Does not show '+planList(SIGHT.filter(function(g){return g.layer;}).map(function(g){return g.nm;}))+'.';
+ else if(r.adds.length)say='Unlocks '+planList(r.adds.map(function(g){return g.nm;}))+'.';
+ else say='Shows everything the tier below shows.';
+ return '<span>'+esc(say)+'</span>';}
+
 function planTiersHtml(){
  var pl=(typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;
  var rows=planLadder(pl);
@@ -87,21 +108,33 @@ function planTiersHtml(){
  var bud=(typeof CURP!=='undefined'&&CURP&&typeof meterBudget==='function')?meterBudget(CURP):null;
  var al=bud&&bud.allow;
  var signed=(typeof authSession==='function')&&!!authSession();
+ var seeNow=planSight(pl), nowT=planOf(pl);
+ /* WHICH TIER THE PERSON HAS, FIRST, and what it does and does not show them.
+    The row marked "You are on this" is further down, and a person deciding
+    whether to pay should not have to scroll to learn where they stand. The
+    locked clause is the same sentence a lock's description says. */
  var h='<div class="ac-grp pt-grp" id="plantiers">'
   +'<div class="ac-gh">The tiers</div>'
+  +'<div class="pt-you" id="ptyou"><div class="pt-sh">Your tier</div>'
+  +'<p class="pt-yn"><b>'+esc(nowT.nm)+'</b></p>'
+  +'<p>You see '+esc(planSightSay(pl))+'.</p>'
+  +(seeNow.locked.length?'<p class="pt-lk">'+lockMarkHtml()+'<span>Locked: '
+    +esc(planLockedSay(seeNow.locked.map(function(g){return g.k;})))+'.</span></p>':'')
+  +'</div>'
   /* the same on every row, said once and the full width, because it is the
      part a comparison would otherwise repeat five times or leave out */
   +'<div class="pt-same"><div class="pt-sh">On every tier, free included</div>'
   +'<p>'+esc(PLAN_ALWAYS.join(', ').replace(/^./,function(c){return c.toUpperCase();}))+'.</p>'
   /* patterns and not "new ground", the team's word for them, said in the unit
      the rows below are counted in */
-  +'<p class="pt-so">A tier changes one thing: how many new patterns you can open.</p></div>'
+  +'<p class="pt-so">A tier changes two things: how many new patterns you can open, and how far up the chain you can see.</p></div>'
   +'<div class="pt-list" role="list">';
  rows.forEach(function(r){
   var w=Math.max(2,Math.round(ptMonthly(r)/top*100));
   h+='<div class="pt-row'+(r.now?' on':'')+'" role="listitem"'+(r.now?' aria-current="true"':'')+'>'
    +'<div class="pt-who"><div class="pt-nm">'+esc(r.nm)+'</div>'
-   +'<p class="pt-d">'+esc(ptLine(r))+'</p></div>'
+   +'<p class="pt-d">'+esc(ptLine(r))+'</p>'
+   +'<p class="pt-sees">'+ptSees(r)+'</p></div>'
    +'<div class="pt-fig"><div class="pt-n"><b class="num">'+ptN(r.grant)+'</b> patterns a '+esc(r.per)+'</div>'
    +(r.per==='week'?'':'<div class="pt-w">'+ptN(r.week)+' a week</div>')
    +'<div class="pt-bar" aria-hidden="true"><i style="width:'+w+'%"></i></div>'
@@ -171,6 +204,12 @@ function planTiersCss(){
   '.pt-sh{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.06em;margin-bottom:6px}',
   '.pt-same p{margin:0;font-size:14px;line-height:1.65;color:var(--ink);max-width:70ch}',
   '.pt-same p.pt-so{margin-top:8px;color:var(--mid)}',
+  '.pt-you{padding:13px 15px 14px;border-bottom:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--c)}',
+  '.pt-you p{margin:0;font-size:14px;line-height:1.65;color:var(--ink);max-width:70ch}',
+  '.pt-yn{font-size:18px!important;margin-bottom:2px!important}',
+  '.pt-lk{display:flex;gap:6px;align-items:flex-start;color:var(--mid)!important;margin-top:4px!important}',
+  '.pt-lk .lk-mk,.pt-sees .lk-mk{margin:3px 0 0;flex:none}',
+  '.pt-sees{display:flex;gap:6px;align-items:flex-start;margin:6px 0 0;font-size:13px;line-height:1.55;color:var(--ink)}',
   '.pt-row{display:grid;grid-template-columns:minmax(0,1fr) 228px 168px;gap:20px;align-items:center;',
   ' padding:14px 15px;border-bottom:1px solid var(--edge)}',
   'body.punch .pt-row{border-bottom-color:var(--panel)}',

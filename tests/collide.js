@@ -18,6 +18,9 @@ let PASS=0,FAIL=0;const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '
 (async()=>{
 const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 const p=await b.newPage({viewport:{width:1680,height:1020}});
+/* the wheel is measured with every layer on, tests/seed.js: the tier ruling
+   of 1 October takes the chain off the wheel below tier one */
+await p.addInitScript(require('./seed.js').FULL_SIGHT);
 await p.goto(FILE,{waitUntil:'load'}); await booted(p);await p.waitForTimeout(800);
 const people=await p.evaluate(()=>PEOPLE.map(x=>x.nm));
 console.log('=== wheel nameplate overlaps, every persona x every depth ===');

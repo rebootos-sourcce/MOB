@@ -20,6 +20,12 @@ const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 
 (async()=>{
 const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+/* every page measures the full reading, tests/seed.js: the tier ruling of 1
+   October put the chain behind a plan and every persona is a free record */
+browser.newPage=(orig=>async function(...a){
+ const pg=await orig.apply(this,a);
+ await pg.addInitScript(require('./seed.js').FULL_SIGHT);
+ return pg;})(browser.newPage);
 const page=await browser.newPage({viewport:{width:1600,height:1000}});
 const errs=[];
 page.on('console',m=>{if(m.type()==='error')errs.push(m.text());});

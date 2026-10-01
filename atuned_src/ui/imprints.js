@@ -42,7 +42,9 @@ function painOf(n,bandLoad){
  return Math.min(10,Math.round((bandLoad[n.b]||0)*0.9+n.sq*0.3));}
 /* one engine pass, then one index. the original called compute() once per pill. */
 function impIndex(){
- var r=compute(), feeds={}, bandLoad={};
+ /* the reading a person on this plan may see (ui/lock.js): feeds below counts
+    saboteurs, and a count of them is a reading of them */
+ var r=computeSeen(), feeds={}, bandLoad={};
  BANDS.forEach(function(b){var seg=W.filter(function(n){return n.b===b;});
   bandLoad[b]=seg.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length);});
  r.sabs.forEach(function(s){leaves(s).forEach(function(n){feeds[n.i]=(feeds[n.i]||0)+1;});});
@@ -72,8 +74,11 @@ function impPill(n,maxW,IX,ghost,inferred){
  var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' seat. '
   +(ghost?'Waiting to land: '+ghost.toFixed(1)+'.'
     :(installed?opp+' installed at '+n.pole.toFixed(1)+'.'
-      :'Charge left '+n.sq.toFixed(1)+', pain '+painOf(n,IX.bandLoad)+', part of '
-       +fed+' saboteur'+(fed===1?'':'s')+'.'));
+      :'Charge left '+n.sq.toFixed(1)+', pain '+painOf(n,IX.bandLoad)
+       /* the saboteur count is a reading of saboteurs, which a plan below
+          tier one cannot see: "part of 0 saboteurs" would be a false statement
+          about somebody who is part of several */
+       +(lockSees('sab')?', part of '+fed+' saboteur'+(fed===1?'':'s'):'')+'.'));
  /* WHAT THE SENTENCE NAMED, OR WHAT THE SEAT IS. Never the address name on an
     inferred hit. The scan reads a seat and an intensity out of a sentence, and
     when the words name no child emotion the address is chosen by a fallback:
@@ -246,7 +251,8 @@ function impRender(){
     +'<em class="plain">held '+(S.charge[c.nm]||0).toFixed(1)+', opposite '+(S.replace[c.nm]||0).toFixed(1)
     +'</em></div>'+cloud(seg);});
  } else if(IMP_GROUP==='sab'){
-  if(!IX.r.sabs.length) h+='<div class="ip-none">Nothing is compounding yet.</div>';
+  if(!lockSees('sab')) h+=lockPanelHtml('sab');
+  else if(!IX.r.sabs.length) h+='<div class="ip-none">Nothing is compounding yet.</div>';
   IX.r.sabs.slice(0,10).forEach(function(s){
    var lv=leaves(s).filter(function(n){return n.sq>=4;});
    if(!lv.length)return;
@@ -280,7 +286,9 @@ function impRender(){
   +'<button class="btn" id="impinfo"'+(picked.length===1?'':' disabled')+'>Detail</button>'
   +'<button class="btn pri" id="imprun"'+(picked.length?'':' disabled')+'>Release '
   +(picked.length>1?picked.length:'')+'</button></div>';
- host.innerHTML=h; impWire();}
+ host.innerHTML=h; impWire();
+ /* the Saboteur grouping is the chain's first rung, so its button is the plan's */
+ lockApply(host.querySelector('[data-ig="sab"]'),'sab');}
 function impWire(){
  document.querySelectorAll('[data-ig]').forEach(function(el){el.onclick=function(){
   IMP_GROUP=el.dataset.ig; impRender();};});

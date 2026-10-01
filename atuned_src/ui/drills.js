@@ -273,7 +273,7 @@ function runLawDrill(l){
 function runNodeDrill(n){
  if(!n)return;
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
- var r=compute();
+ var r=computeSeen();
  var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});
  /* The header read "Address 007, root". The index is a storage key and a
     person's Scarcity is not 007 to them. The seat is what carries meaning. */
@@ -299,10 +299,15 @@ function runNodeDrill(n){
     +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp.toLowerCase()+' partly installed.'
       :c.opp+' is what fills this address once it is emptied.')
    :'A field address, with no poled axis under it. This one is an open ruling.')+'</p>'
-  +'<div class="pm-eye">Feeds '+owners.length+'</div><div class="pm-chips">'
-  +(owners.length?owners.slice(0,8).map(function(o){
-    return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
-   :'<span class="pm-chip">nothing compounds from here</span>')+'</div>';
+  /* WHAT AN ADDRESS FEEDS IS WHAT IS RUNNING ON IT, so below tier one it is the
+     lock's own panel: "nothing compounds from here" would be a false statement
+     about an address that feeds a saboteur */
+  +(lockSees('sab')
+   ?'<div class="pm-eye">Feeds '+owners.length+'</div><div class="pm-chips">'
+    +(owners.length?owners.slice(0,8).map(function(o){
+     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
+    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>'
+   :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from

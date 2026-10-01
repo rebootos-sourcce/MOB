@@ -565,7 +565,10 @@ function avArchThreads(st,a){
 
 /* ---------------- the state the page draws ---------------- */
 function avState(){
- var r=compute(), side=avSide();
+ /* the reading this plan may see (ui/lock.js): the Running card, the tension
+    lines across the rings and the thread rows are saboteurs, which a plan
+    below tier one cannot see */
+ var r=computeSeen(), side=avSide();
  var rows=(typeof avRows==='function')?avRows():[];
  rows.forEach(function(x,i){x.i=i; x.c=avClosure(x,side.load0[avKey(x.pair)]);});
  /* A STORY SITS AT THE SEAT IT WAS WRITTEN AT, round JP, which is where its
@@ -1073,6 +1076,10 @@ function avPairs(st){
 /* ---------------- running, as rows ---------------- */
 function avRunHTML(st){
  var R=st.run, out='<section class="av-card av-run"><div class="pm-eye">Running</div>';
+ /* "No saboteur is running" about somebody whose plan cannot see saboteurs is
+    a claim about their field the product has no grounds to make, so the card
+    says it is locked and what unlocks it */
+ if(!lockSees('sab'))return out+lockPanelHtml('sab')+'</section>';
  if(!R.rows.length)
   return out+'<p class="av-p">'+(st.r.unread?'Nothing read yet, so no saboteur is running.'
    :'No saboteur is running.')+'</p></section>';
@@ -1208,7 +1215,7 @@ function avThreadHTML(st,a){
    :'<div'+cls+'>'+inner+'</div>';};
  out+=row(avSvg(AV_IC[A.k]),seatCol(a.b),A.nm+', '+AV_THE[a.b],
   st.r.unread?'not read yet':T.held?'held':'clear', T.held>0);
- if(a.sab){var fam=T.sab&&T.sab.hcx?HCX_LIB.filter(function(h){return h.nm===T.sab.hcx;})[0]:null;
+ if(a.sab&&lockSees('sab')){var fam=T.sab&&T.sab.hcx?HCX_LIB.filter(function(h){return h.nm===T.sab.hcx;})[0]:null;
   out+=row('<svg viewBox="0 0 24 24" aria-hidden="true">'+glyphPath(fam?fam.ic:'')+'</svg>',seatCol(a.sabB),esc(a.sab),
    T.sab?'running'+(st.run.written&&T.dir!=='steady'?', '+T.dir:''):'not running', !!T.sab);}
  out+=row(avSvg(AV_OK),seatCol(a.b),'Your story at '+AV_THE[a.b],

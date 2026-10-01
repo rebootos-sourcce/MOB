@@ -872,6 +872,22 @@ function chCellAt(ch,svg,clientX,clientY){
    64 pixel square ever would. */
 function renderCharacter(r){
  var host=$('masksview'); if(!host)return;
+ /* THE MASKS ARE THE TIER'S, ruled 1 October: "they can't see ... the child
+    masks". Each grid is lit by the chain (saboteur, complex, hyper complex,
+    and the rim by the character layer), so the page is the picture of what is
+    running a person, and below the tier that carries it the host holds the
+    lock's own panel and nothing drawn. The door to this page is greyed too
+    (lockTabs), so this is the page a person lands on by any other route: a
+    stored tab, a drill that names a mask, a plan that lapsed with it open.
+    CHV.opened is put back so the overview reopens when the plan covers it,
+    and the hover table is emptied so a pointer cannot find a cell of a
+    picture that is not there. */
+ if(!lockSees('mask')){
+  CHV.opened=false; CHV.html=""; Object.keys(CH_HOVER).forEach(function(hk){delete CH_HOVER[hk];});
+  var lh='<div class="lk-page">'+lockPanelHtml('mask')+'</div>';
+  if(host._lk!==lh){host._lk=lh; host.innerHTML=lh;}
+  return;}
+ host._lk=null;
  if(!CHV.pick)CHV.pick=chLast();
  var unread=!r||r.unread, heroM=null, heroRd=null;
  var cards=MASKS_READ.map(function(m){

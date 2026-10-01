@@ -41,6 +41,7 @@ engine/export.js
 ui/component.js
 ui/sound.js
 ui/tip.js
+ui/lock.js
 ui/wheel.js
 ui/rings.js
 ui/fieldbar.js

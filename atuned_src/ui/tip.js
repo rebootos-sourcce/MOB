@@ -83,6 +83,13 @@ var TIP=(function(){
     h+='<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+' <i>of '+esc(r[2])+'</i></dd>';});
    h+='</dl>';}
   if(d.a)h+='<p class="tip-a">'+esc(d.a)+'</p>';
+  /* A DOOR INSIDE A DEFINITION. A locked control's definition has to say where
+     to go to unlock it, and a sentence naming a place is not a way there, so
+     the panel can carry one button. It is one and only one: this is still a
+     definition and not a dialog. What it does is not this file's to know. The
+     click is delegated in ui/lock.js, which owns the lock, so the tooltip has
+     no reason to reach for the billing page. */
+  if(d.go)h+='<p class="tip-g"><button type="button" class="tip-go">'+esc(d.go)+'</button></p>';
   return '<div class="tip-s">'+h+'</div>'
    +'<button type="button" class="tip-x" aria-label="Close">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';}
@@ -98,6 +105,7 @@ var TIP=(function(){
   return {t:e.getAttribute('data-tip-t')||'',
           k:e.getAttribute('data-tip-k')||'',
           a:e.getAttribute('data-tip-a')||'',
+          go:e.getAttribute('data-tip-go')||'',
           b:b, n:n,
           c:(getComputedStyle(e).getPropertyValue('--c')||'').trim()};}
 

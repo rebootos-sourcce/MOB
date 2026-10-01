@@ -348,7 +348,7 @@ cv.addEventListener('pointermove',function(e){
  var h=hitTest(x,y),pr=$('probe');
  S.hover=h?(h.n||h.o||null):null;
  if(!h){pr.classList.remove('on');cv.style.cursor='crosshair';return;}
- var t=describe(h,compute());
+ var t=describe(h,computeSeen());
  if(!t){pr.classList.remove('on');return;}
  cv.style.cursor=(h.k==='node')?'ns-resize':'pointer';
  pr.innerHTML=t;
@@ -421,7 +421,7 @@ function frDescribe(h,r){
   /* a finger has no hover, the wheel's own reason above */
   if(e.pointerType==='touch')return;
   var h=hitOf(e),pr=$('probe'); if(!pr)return;
-  var t=h?frDescribe(h,compute()):'';
+  var t=h?frDescribe(h,computeSeen()):'';
   if(!t){pr.classList.remove('on');return;}
   pr.innerHTML=t;
   var b=fr.getBoundingClientRect();
@@ -767,8 +767,15 @@ function railStack(r){
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
     +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
       title:'Opposite installed '+p.toFixed(1)})+'</span></button>';}).join('')
-   :'<div class="rnone">Nothing at this layer.</div>';}
- e.innerHTML=h;}
+   :(lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB));}
+ e.innerHTML=h;
+ /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
+    plan is greyed and padlocked with its description, and its count is not
+    printed: a "3" on a locked tab says how many saboteurs somebody has. The tab
+    that was open when a plan lapsed is left open, on the lock's own panel, so
+    the list never reads "nothing at this layer" about a layer it cannot see. */
+ TABS.forEach(function(t){if(t[0]==='fet')return;
+  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
 
    The two poles are masculine and feminine. cards.js states the codex
@@ -1040,7 +1047,11 @@ function railTop(r){
   :r.unread?'Nothing has been read yet. Write a story or set a charge.':tierBuilding();}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
- const r=compute(), p=PEOPLE[S.who];
+ /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
+    down, the rails, the glass bar, the wheel and the Body, draws and lists
+    only the rungs of the chain this plan can see: sightR in ui/lock.js. */
+ const r=computeSeen(), p=PEOPLE[S.who];
+ lockTabs();
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the
     direction. Hover gives all three, the compass drill gives them in full. */
@@ -1379,7 +1390,14 @@ function render(){
         :esc(o.auth||o.d||NOTE[o.kind]))+'</p>'
       +'<div class="w">'+crPat(o,'md')+'</div></div>';}).join('')
     +(rows.length>4?'<div class="rnone">and '+(rows.length-4)+' more below</div>':'')
-  : '<div class="rnone">Nothing is running.</div>';
+  : (r.locked&&r.locked.length?'':'<div class="rnone">Nothing is running.</div>');
+ /* WHAT THE PLAN CANNOT SEE IS SAID, NOT LEFT AS AN EMPTY LIST. A person on
+    free has saboteurs running like anybody else, and "Nothing is running"
+    under their own reading would be a false statement about them, which is the
+    worse thing a lock can do. So the section says it is locked and what
+    unlocks it, and a person who sees some of the chain gets one line for the
+    first rung they do not. */
+ if(r.locked&&r.locked.length)$('run').innerHTML+=lockPanelHtml(lockKind(r.locked[0]),{brief:true});
  $('run').querySelectorAll('.rcard').forEach(function(el){el.addEventListener('click',function(){
   var o=rows[+el.dataset.i];
   var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
@@ -1422,7 +1440,9 @@ function render(){
         title:TIERNM[o.kind]+'. '+o.nm+', weight '+o.w.toFixed(1)+(o.over?', overshot':'')})
       +'<span class="run-n">'+esc(o.nm)+'</span></div>';}).join('')
     +(rows.length>8?'<div class="it"><span>and '+(rows.length-8)+' more</span></div>':'')
-  : '<div class="pm-eye" style="color:var(--gold)">Nothing running</div>';
+  : (r.locked&&r.locked.length===SEE_ORDER.length
+    ? '<div class="pm-eye" style="color:var(--gold);margin-bottom:8px">Running now</div>'+lockPanelHtml('sab',{brief:true})
+    : '<div class="pm-eye" style="color:var(--gold)">Nothing running</div>');
  crMotion([$('fire')]);
  $('fire').querySelectorAll('.it[data-i]').forEach(function(el){el.addEventListener('click',function(){
   var o=rows[+el.dataset.i];S.pin=(S.pin===o)?null:o;runDrill(S.pin);render();});});
@@ -1446,8 +1466,8 @@ function render(){
 let last=0;
 function loop(ts){
  if(!REDUCED)S.t+=(last?Math.min(.05,(ts-last)/1e3):0);
- last=ts;
- var r=compute();
+ last=ts; 
+ var r=computeSeen();
  /* the wheel breathes, so it is drawn every frame. A rendition does not move,
     and ringsDraw builds it only when its signature does */
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
@@ -1501,11 +1521,11 @@ bindPlan(function(what,tier){
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
  var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
- if(st){STACK_TAB=st.getAttribute('data-st');railStack(compute());return;}
+ if(st){STACK_TAB=st.getAttribute('data-st');railStack(computeSeen());return;}
  var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
  if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
  var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
- if(sr){var rr=compute(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
+ if(sr){var rr=computeSeen(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
   if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin); render();} return;}
  var kb=e.target.closest?e.target.closest('.kb[data-q]'):null;
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}

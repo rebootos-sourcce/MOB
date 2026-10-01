@@ -77,7 +77,9 @@ function anaField(title,sub,items,w,h){
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
- var r=compute(),H=anaHist(),prev=H.length>1?H[H.length-2]:null;
+ /* the reading this plan may see, ui/lock.js: the biggest thing compounding,
+    the What is running chart and the masks chart are the tier's */
+ var r=computeSeen(),H=anaHist(),prev=H.length>1?H[H.length-2]:null;
  var TIER={sup:PAL.Root,hy:PAL.Sacral,cx:PAL.Solar,sab:PAL.Throat};
  var seats=flSeats();
  var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
@@ -131,7 +133,10 @@ function anaRender(){
       what is left rather than naming a band off laws nobody answered */
    :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
-   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
+   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
+     /* "Nothing is compounding" is a claim about somebody's chain, and a plan
+        that cannot see the chain has no grounds to make it */
+     :(r.locked&&r.locked.length===SEE_ORDER.length?'':'Nothing is compounding. '))
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
@@ -179,9 +184,10 @@ function anaRender(){
     caption kept is the colour key on What is running, because four kinds
     share one chart and colour is the only thing telling them apart. Its tail,
     the bigger the mark, goes with the rest. */
- out+=anaField('Masks','',
+ out+=(lockSees('mask')?anaField('Masks','',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
-   c:seatCol((m.bands||['Heart'])[0])};}),300,210);
+   c:seatCol((m.bands||['Heart'])[0])};}),300,210)
+  :'<div class="ab-f"><div class="pm-eye">Masks</div>'+lockPanelHtml('mask',{brief:true})+'</div>');
  out+=anaField('Domains','',
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
@@ -189,9 +195,13 @@ function anaRender(){
  out+=anaField('Archetypes','',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
- out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
+ out+=(r.locked&&r.locked.length===SEE_ORDER.length
+  /* nothing of the chain is visible on this plan: the chart's place says so
+     rather than printing "nothing here" over a chain somebody has */
+  ?'<div class="ab-f"><div class="pm-eye">What is running</div>'+lockPanelHtml('sab',{brief:true})+'</div>'
+  :anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
   [].concat(r.sups,r.hys,r.cxs,r.sabs).slice(0,16).map(function(o){
-   return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210);
+   return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210));
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
@@ -332,7 +342,7 @@ function anaDrill(){
     inside a collapsed accordion section and the click produced no visible
     change at all. rdOpen unfolds the section and scrolls it into view. */
  rdOpen();
- var r=compute(),P=ANA_PICK,h='';
+ var r=computeSeen(),P=ANA_PICK,h='';
  var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
  function head(t,nm,sub){return '<div class="pm-eye">'+t+'</div><div class="ad-nm">'+esc(nm)+'</div>'
   +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'');}

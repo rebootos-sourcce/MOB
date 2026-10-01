@@ -380,6 +380,10 @@ function sumArch(r){
 function sumMasks(r,from,to){
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
  if(!(r.maskRing&&r.maskRing.length))return '';
+ /* THE MASKS ARE THE TIER'S, ruled 1 October. The list is replaced by the
+    lock's own line and not left empty or shortened, so the section never
+    reads as if a person had no masks. Said once, on the first slice. */
+ if(!lockSees('mask'))return from?'':lockPanelHtml('mask',{brief:true});
  return r.maskRing.slice(from,to).map(function(m){
    /* the mask's behaviour, not its two seats. the seats are the ring colour
       and the drill, and a person cannot do anything with "Root and Sacral". */
@@ -407,10 +411,15 @@ function sumSeats(){
     ' data-seat="'+esc(x.p.n)+'"');}).join('');}
 function sumChain(r){
  /* the chain. counts, never against a total. */
+ /* ONLY THE RUNGS THE PLAN CAN SEE ARE COUNTED, and the first one it cannot is
+    said to be locked: a "0" under saboteurs on a person who has some would be
+    a false count, and a row of four zeros says the chain is empty. */
  return '<div class="pm-eye">The chain</div><div class="s-chain">'
-  +[['saboteurs',r.sabs.length],['complexes',r.cxs.length],
-    ['hyper',r.hys.length],['character',r.sups.length]].map(function(x){
-   return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>';}
+  +[['saboteurs',r.sabs.length,'sab'],['complexes',r.cxs.length,'cx'],
+    ['hyper',r.hys.length,'hy'],['character',r.sups.length,'sup']].filter(function(x){
+   return lockSees(x[2]);}).map(function(x){
+   return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>'
+  +(r.locked&&r.locked.length?lockPanelHtml(r.locked[0],{brief:true}):'');}
 
 /* ---- the spiritual layer. glyphs, no boxes. ----
    The owner ruled the little boxes out and icons in: a sign, an animal with
@@ -537,7 +546,9 @@ function sumRender(){
  /* #sumbody, not #sum. #sum is the tab host and it also carries the folded
     analytics surface, which this function would otherwise overwrite. */
  var h=document.getElementById('sumbody'); if(!h)return;
- var r=compute();
+ /* the reading this plan may see: the chain below and the story's biggest
+    compounding pattern are only what a plan can see (ui/lock.js) */
+ var r=computeSeen();
  h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
  sumWire();}
 

@@ -502,7 +502,16 @@ function fbPaint(){
    var wait=isOn&&k==='stories'&&wheel&&atomsOut;
    b.classList.toggle('wait',wait);
    fbTip(b,l.tip+(V?' '+V.m:'')+(wait?' On. They draw once you scroll in on the ring.':'')
-    +(z?' Brought in by zoom. Zoom out and it goes again.':''));});});
+    +(z?' Brought in by zoom. Zoom out and it goes again.':''));
+   /* THE FOUR RUNGS OF THE CHAIN ARE THE TIER'S, ruled 1 October. A layer
+      above the plan is greyed, padlocked and aria-disabled, and its ring and
+      pill go blank (ui/lock.js carries the rule for both), so the bar never
+      reads a number for a thing the person cannot see. After fbTip and not
+      before, because fbTip writes data-tip and a phone's bar removes it, and
+      the lock's description has to be the last word on both. lockFor answers
+      null for every layer that is not a rung, which unlocks any orb that was
+      locked a paint ago. */
+   var lg=lockFor(k); if(lg)lockApply(b,lg,{at:'.fb-orb',corner:true}); else lockClear(b);});});
  var zf=(FB_ZOOM||FB).querySelector('[data-fb=zfit]');
  if(zf){var zn=fieldZoom(),zp=(zn.s-1)/(zn.max-1)*100;
   zf.querySelector('.val').setAttribute('stroke-dasharray',Math.max(0,Math.min(100,zp)).toFixed(1)+' 100');
@@ -510,7 +519,22 @@ function fbPaint(){
   zf.classList.toggle('on',zn.s>1.001);}
  var cur=LAYSET?-1:(S.view|0);
  if(FB_MENU)FB_MENU.querySelectorAll('[data-preset]').forEach(function(m){
-  m.setAttribute('aria-checked',String(+m.getAttribute('data-preset')===cur));});
+  m.setAttribute('aria-checked',String(+m.getAttribute('data-preset')===cur));
+  /* A PRESET THAT INCLUDES A LOCKED RUNG IS PARTLY LOCKED, and still works: it
+     draws what the plan can see. It carries the padlock and a description of
+     what it leaves out and where to unlock it, and it is not aria-disabled,
+     because pressing it does something. layVisible is what keeps the locked
+     rung off the picture. */
+  var pi=+m.getAttribute('data-preset'), hid=Object.keys(layPreset(pi)).map(lockFor)
+   .filter(function(g){return g&&!lockSees(g);}), sayP=lockPartSay(hid);
+  m.classList.toggle('lk-part',!!sayP);
+  var bt=m.querySelector('.fb-mt b'), mk=bt&&bt.querySelector('.lk-mk');
+  if(sayP){
+   if(bt&&!mk)bt.insertAdjacentHTML('beforeend',lockMarkHtml());
+   m.setAttribute('data-tip',sayP); m.setAttribute('data-tip-go',LOCK_GO);
+   m.setAttribute('data-tip-t',VIEWS[pi].nm);}
+  else{if(mk)mk.parentNode.removeChild(mk);
+   m.removeAttribute('data-tip'); m.removeAttribute('data-tip-go'); m.removeAttribute('data-tip-t');}});
  /* THE RING IS HOW DEEP THE PICTURE GOES, NOT WHETHER IT IS A PRESET. GO in
     TASKS.md, his words: "And depth. It should already start at full depth."
     It did, and does: S.view opens on 3, Blueprint, every layer on, measured on

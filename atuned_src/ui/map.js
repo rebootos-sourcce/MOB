@@ -1921,7 +1921,11 @@ function bmHoldMask(){
 function bmDrawMasks(g,vs,dt){
  /* JQ put them here with no switch; KU gives them one, his words: "I can
     click on or off my saboteurs, complexes, hypercomplexes, or masks" */
- if(!BM.ov.on.masks||vs.indexOf(0)<0||!BMG.masks||!BM.r)return;
+ /* THE MASKS ARE THE TIER'S, ruled 1 October ("or the child masks"). The
+    overlay's own switch is greyed by bmOvPaint, and this is the other half: a
+    switch that was left on, in a store or a state restored from before the
+    plan lapsed, must not draw what the plan cannot see. */
+ if(!BM.ov.on.masks||!lockSees('mask')||vs.indexOf(0)<0||!BMG.masks||!BM.r)return;
  var sd=Math.max(2,Math.round(BMMP*BM.cam.z*0.7)), hold=bmHoldMask(), hov=BM.hoverMask;
  /* painting is the one job that wants the body clear, so they step back */
  var A=1-0.7*BM.pg;
@@ -1966,7 +1970,7 @@ function bmDrawMasks(g,vs,dt){
 function bmMaskHits(r){
  var g=BM.sv&&BM.sv.querySelector('[data-bmmasks]'); if(!g||!BMG||!BMG.masks)return;
  /* off, a mask is not drawn, so it is not a thing that can be pressed */
- if(!BM.ov.on.masks){g.innerHTML='';return;}
+ if(!BM.ov.on.masks||!lockSees('mask')){g.innerHTML='';return;}
  var hmin=BM.z0>2?44/BM.z0:0, pl=function(n,w){return n+' '+(n===1?w:w==='story'?'stories':w+'s');};
  g.innerHTML=BMG.masks.map(function(k){var b=k.box,rd=bmMaskRead(k,r);
   var h=Math.max(b[3]-b[1],hmin), y=(b[1]+b[3])/2-h/2;
@@ -3394,7 +3398,13 @@ function bmOvPaint(r){
   if(v){b.querySelector('.fb-orb').style.setProperty('--c',v.c);
    b.querySelector('.val').setAttribute('stroke-dasharray',v.p.toFixed(1)+' 100');
    var pv=b.querySelector('.fb-v');if(pv)pv.textContent=v.v;}
-  fbTip(b,L.tip+(v?' '+v.m:''));});}
+  fbTip(b,L.tip+(v?' '+v.m:''));
+  /* THE BODY'S NETWORKS AND ITS MASKS ARE THE TIER'S, ruled 1 October:
+     saboteurs, complexes and hyper complexes, and the masks, are what is
+     running a person. Greyed and padlocked here, never drawn behind the
+     lock (the reading handed to bmRender is already sightR's, and the masks'
+     own draw checks the plan again). lockFor answers null for the rest. */
+  var lg=lockFor(k); if(lg)lockApply(b,lg,{at:'.fb-orb',corner:true}); else lockClear(b);});}
 
 /* THE GROUND UNDER THE FIGURE, read off the host and never off the lighting's
    name, the way pmPal reads it. Dark: the canvas leaves its stage clear and

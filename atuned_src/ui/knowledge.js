@@ -69,7 +69,9 @@ function kbPct100(v){return Math.max(0,Math.min(100,Math.round((v||0)*100)));}
 function kbFind(a,nm){for(var i=0;i<a.length;i++)if(a[i].nm===nm)return a[i];return null;}
 
 function kbRows(sec){
- var r=compute(), out=[];
+ /* computeSeen, not compute(): the live weight beside each saboteur here is
+    which of them are running, which is the tier's (ui/lock.js) */
+ var r=computeSeen(), out=[];
  /* THE DECK CARRIES ALL 112, NOT THE 108 IT USED TO.
 
     W is the 108 somatic addresses, built in core.js by filtering NODES down
@@ -614,7 +616,7 @@ function kbOpen(x){
  if(x.k==='gate'){runGatesDrill(x.o.k); render(); return;}
  if(x.k==='fetter'){runFetterDrill(x.o); return;}
  if(x.k==='sab'){
-  var r=compute(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
+  var r=computeSeen(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
  if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.ch); return;}

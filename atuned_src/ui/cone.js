@@ -296,7 +296,12 @@ function coneRing(q,W,H){
  var out=[]; for(var i=0;i<=48;i++)out.push(conePtA(q,i*(Math.PI*2/48),W,H)); return out;}
 function coneDraw(){
  var c=CONE.cv, g=CONE.g; if(!c||!g)return;
- if(!CONE.side){if(CONE.top)conePlan(); else if(CONE.shells)coneRegisters(); else coneNeedle(); return;}
+ /* THE REGISTERS ARE THE TIER'S, ruled 1 October ("how the point cloud is
+    expressed"). The view's own switch is greyed in coneOpen, and this is the
+    other half: CONE.shells left on from before a plan lapsed must not draw
+    what the plan cannot see, so it falls back to the needle, which every tier
+    has. coneOpen clears the flag itself on the next press or entry. */
+ if(!CONE.side){if(CONE.top)conePlan(); else if(CONE.shells&&lockSees('reg'))coneRegisters(); else coneNeedle(); return;}
  var W=c.width/CONE.dpr, H=c.height/CONE.dpr;
  /* THE FLOOR COLOUR IGNORED THE LIGHTING. It was hx(PAL.Root), the Dark
     palette, typed in, so under Lumen and Glass white the floor rings, the
@@ -3004,6 +3009,8 @@ function coneOpen(inTab){
   /* and it opens whole: a zoom is kept across a switch press, which comes
      through here too, and not across leaving the surface and coming back */
   CONE.z=CONE.zT=1; CONE.zx=CONE.zxT=0; CONE.zy=CONE.zyT=0; CONE.ptrs=null; CONE.pinch=null;}
+ /* a view the plan cannot see is never the one that opens */
+ if(CONE.shells&&!lockSees('reg'))CONE.shells=false;
  CONE.open=true; CONE.tab=!!inTab;
  h.classList.toggle('tabmode',!!inTab);
  h.style.display='flex';
@@ -3164,7 +3171,11 @@ function coneOpen(inTab){
       is set to face the viewer on the way in. */
    if(k==='top'&&CONE.top)CONE.shells=false;
    if(k==='shells'&&CONE.shells){CONE.top=false; RGS.s0=CONE.spin;}
-   coneOpen(CONE.tab);};});
+   coneOpen(CONE.tab);};
+  /* REGISTERS NEEDS A TIER. Greyed, padlocked and aria-disabled with its
+     description and the way to unlock it: ui/lock.js. The press is stopped
+     there, ahead of the handler above, so the flag cannot be set. */
+  if(k==='shells')lockApply(b,'reg');});
  /* A SEAT'S BUTTON TURNS ITS SHELL ON AND OFF, and does not rebuild the
     card: the draw reads RGS.on every frame, so only the button changes.
     Hovering one brings its shell forward, as a name in the rail does. */

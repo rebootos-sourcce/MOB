@@ -212,6 +212,8 @@ function setTab(i){
     in a list that could be a different length than TABDEF. */
  document.querySelectorAll('.tabtop').forEach(function(x){
   x.setAttribute('aria-pressed',+x.getAttribute('data-tabk')===i);});
+ /* a door above the plan is greyed again after the loop wrote its pressed state */
+ lockTabs();
  /* the folded bar on a phone names the surface, GF. Settings has no tab of
     its own, so the folded bar says the button that opened it. */
  var nn=$('navnow');
@@ -1043,7 +1045,9 @@ function planSection(m,o){
     ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
     : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>':''))
   +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
-  +'<div class="sh-row"><span>You can see</span><b>everything</b></div>'
+  /* WHAT THE PLAN SHOWS, off SIGHT (engine/plan.js). It said everything while
+     sight was not for sale, ruled back on 1 October. */
+  +'<div class="sh-row"><span>You can see</span><b>'+esc(planSightSay(pl))+'</b></div>'
   /* "RERUNNING ANYTHING ALREADY OPEN COSTS NOTHING, ALWAYS" CAME OFF, round
      NW, 22.K17. This is the plan sheet, read while deciding what a tier
      buys, and the claim was false: measured, a release at an address
@@ -1053,8 +1057,7 @@ function planSection(m,o){
      sheet already says it once in PLAN_ALWAYS below, "rerunning anything
      already open", so the second wording is not put back. */
   +'<p class="sh-p">'+esc(t.d)+'</p>'
-  /* SIGHT IS NOT FOR SALE, ruled, so the panel says what is on every tier
-     rather than what the next one would unlock. */
+  /* what is on every tier, and the next rung's sight is in up.say below */
   +(o.brief?'':'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>');
  if(o.brief)up=null;
  if(yr)h+='<p class="sh-p">'+esc(yr.say)+'</p>';

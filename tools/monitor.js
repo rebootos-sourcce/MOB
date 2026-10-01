@@ -81,6 +81,10 @@ const FLOOR_CANVAS=60;
   const c=await b.newContext({viewport:{width:w,height:h},
     deviceScaleFactor:wn==='phone'?2:1, isMobile:wn==='phone', hasTouch:wn==='phone'});
   const p=await c.newPage();
+  /* every surface is walked at full sight, tests/seed.js: a Character page
+     that is the lock's own panel would pass on markup size and measure
+     nothing of the page the watch exists to watch */
+  await p.addInitScript(require('../tests/seed.js').FULL_SIGHT);
   const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,140)));
   await p.goto(FILE_URL); await p.waitForTimeout(7000);
   const L=await p.evaluate(()=>PEOPLE.findIndex(x=>x.nm==='Lance'));

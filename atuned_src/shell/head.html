@@ -1925,8 +1925,22 @@ body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
 .fb-mi[aria-checked=true] b{color:var(--accent)}
 .fb-done{display:none;min-height:var(--tap);min-width:88px;margin:4px 0 0 auto;padding:0 16px;border-radius:12px;
  border:1px solid var(--edge-2);background:transparent;color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+/* THIS PANEL WEARS THE CLASS .sheet AND SO IT WAS ALSO THE PROFILE SHEET.
+   The modal's own rule, .sheet at "A sheet, for the profile and the help"
+   further down this file, sets display:flex with flex-end justification and
+   its own backdrop colour, and it loses to nothing here because it comes
+   later. Measured on a phone, 390 wide, on the unchanged build: the panel was
+   a single flex row, its three clusters 300 pixels each with the first two
+   centred off the left edge of the window (x of minus 418 and minus 118), the
+   readout squeezed to 42 pixels and every layer on the first two rows out of
+   reach of a finger, which is the whole layer set on the one width this panel
+   exists for. It is a column of rows, so it says so, and it keeps its own
+   glass and not the modal's dark backdrop. Found while putting the tier locks
+   on this panel, where a locked layer has to be reachable by a tap. */
 #fbpanel.sheet{left:8px!important;right:8px;bottom:8px;top:auto!important;max-width:none!important;
+ display:block;background:var(--fb-glass-on);
  padding:8px 8px 10px;border-radius:18px}
+#fbpanel.sheet[hidden]{display:none}
 #fbpanel.sheet .fb-ph{display:none}
 #fbpanel.sheet .fb-grp{flex-wrap:nowrap;justify-content:flex-start;gap:0;margin-bottom:4px;
  padding-bottom:4px;border-bottom:1px solid var(--edge)}

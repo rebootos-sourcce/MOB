@@ -738,8 +738,21 @@ function layReached(){var out={},on=layChosen(),z=S.zoom||1,extra=0;
  var from=layNeeds(on), top=Math.min(LAYADD.length-1,from+extra);
  for(var j=from+1;j<=top;j++)LAYADD[j].forEach(function(k){if(!on[k])out[k]=1;});
  return out;}
+/* WHAT IS DRAWN IS WHAT IS CHOSEN, AND WHAT THE PLAN MAY SEE. The tier ruling of
+   1 October: a person below tier one cannot see what is running them, and the
+   saboteur, complex, hyper and character layers are the Field's picture of
+   exactly that. Taken out here, after the person's own set and after what zoom
+   brings in, so there is one place a locked layer stops being drawn and the
+   wheel, Frames and Dial all inherit it, because all three ask layVisible and
+   nothing else. layChosen is left alone on purpose: the set a person chose is
+   theirs, so a layer they had on comes back the moment the plan covers it, and
+   effView, which sizes the rings off this set, stops making room for a ring
+   that is not there. lockFor answers null for a layer that is not a rung, so
+   addresses, laws and the rest are never touched. */
 function layVisible(){var s={},on=layChosen(),rc=layReached(),k;
- for(k in on)s[k]=1; for(k in rc)s[k]=1; return s;}
+ for(k in on)s[k]=1; for(k in rc)s[k]=1;
+ for(k in s){var g=lockFor(k); if(g&&!lockSees(g))delete s[k];}
+ return s;}
 function layerOn(k){return !!layVisible()[k];}
 function layToggle(k){var s={},on=layChosen(),k2;for(k2 in on)s[k2]=1;
  if(s[k])delete s[k]; else s[k]=1;

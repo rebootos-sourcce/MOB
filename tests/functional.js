@@ -67,17 +67,27 @@ window.GORDON=function(){return window.PERSON('Gordon');};`;
    that shuts it and reloads still finds it shut. A page opened on #landing is
    not seeded, so the landing state itself is measured on a real first visit,
    in the GO block below. The product never reads the hash. */
+/* THE TIER RULING OF 1 OCTOBER put the chain, the Registers and the Character
+   masks behind a plan, and every persona this file loads is a free record. The
+   checks below were written against the full reading, so each page and context
+   is seeded as a person who can see all of it (tests/seed.js), and the lock's
+   own group near the foot of this file sets it back to nothing to measure the
+   lock. Sight alone reads the seed: Billing and the tiers page still read the
+   record, so those checks are unchanged. */
+const {FULL_SIGHT}=require('./seed.js');
 const LCOL_SEED=`try{if(!/landing/.test(location.hash)&&localStorage.getItem('lcol')===null)
  localStorage.setItem('lcol','open');}catch(e){}`;
 browser.newPage=(orig=>async function(...a){
  const pg=await orig.apply(this,a);
  await pg.addInitScript(GORDON_FN);
  await pg.addInitScript(LCOL_SEED);
+ await pg.addInitScript(FULL_SIGHT);
  return pg;})(browser.newPage);
 browser.newContext=(orig=>async function(...a){
  const cx=await orig.apply(this,a);
  await cx.addInitScript(GORDON_FN);
  await cx.addInitScript(LCOL_SEED);
+ await cx.addInitScript(FULL_SIGHT);
  return cx;})(browser.newContext);
 const page=await browser.newPage({viewport:{width:1600,height:1000}});
 const real=[];
@@ -3712,10 +3722,17 @@ ok(/400 of new ground a month/.test(plan.free),
  'the step up states its own figure rather than subtracting a week from a month');
 ok(/On\s*Tier two/.test(plan.two)&&/580 of 800 left this month/.test(plan.two),
  'a live tier reads its own grant and what is left of it');
-ok(/You can see\s*everything/.test(plan.two),
- 'sight is not for sale, so every tier sees everything');
+/* SIGHT BY TIER, ruled 1 October, reversing "sight is not for sale". The
+   sheet says what this plan shows, off SIGHT, and so it is the table's own
+   sentence for tier two: saboteurs and complexes. */
+ok(/You can see\s*your own reading, with saboteurs and complexes/.test(plan.two),
+ 'a tier two sheet says what tier two shows: your own reading, with saboteurs and complexes');
+ok(!/You can see\s*everything/.test(plan.two)&&!/You can see\s*everything/.test(plan.free),
+ 'and nothing says everything, which was true only while sight was not for sale');
+ok(/You can see\s*your own reading, without what is running it/.test(plan.free),
+ 'a free sheet says it shows the reading without what is running it');
 ok(/On every tier including free/.test(plan.two),
- 'and the panel names what is on every tier rather than what the next one unlocks');
+ 'and the panel names what is on every tier');
 /* TWO MONTHS FREE IS OUT, on the owner's ruling, and this assertion is the
    reason it survived: it pinned the sentence "twelve months for the price of
    10" to the screen, so a ruling made in the design records could not reach
@@ -3786,6 +3803,10 @@ const tiers=await page.evaluate(async()=>{
  o.presses=g?[...g.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier')):[];
  o.text=g?g.textContent.replace(/\s+/g,' '):'';
  o.same=g?(g.querySelector('.pt-same')||{}).textContent||'':'';
+ o.rowSees={}; if(g)[...g.querySelectorAll('.pt-row')].forEach(r=>{
+  const k=(r.querySelector('[data-ptier]')||{getAttribute:()=>null}).getAttribute('data-ptier')
+   ||(r.classList.contains('on')?'free':null);
+  o.rowSees[k]=(r.querySelector('.pt-sees')||{}).textContent||'';});
  /* "Your plan" above keeps its state and Manage billing, and drops what the
     tiers below now carry, so nothing is said twice on one pane */
  const pane=document.querySelector('#settings .ac-pane');
@@ -3822,8 +3843,10 @@ ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only
 ok(tiers.presses.join()==='one,two,three,four','from free every paid tier has a press: '+tiers.presses.join());
 ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
  'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));
-ok(/On every tier, free included/.test(tiers.same)&&/the whole reading/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
+ok(/On every tier, free included/.test(tiers.same)&&/your 112 addresses/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
  'what every tier gets is said once, across the top, from PLAN_ALWAYS');
+ok(!/the whole reading/i.test(tiers.same+tiers.text),
+ 'and the whole reading is not on every tier any more, so no row says it');
 ok(/400 patterns a month/.test(tiers.text)&&/1,200 patterns a month/.test(tiers.text)&&/100 a week/.test(tiers.text)&&/10 patterns a week/.test(tiers.text),
  'each row states its own grant in its own period');
 /* THE LADDER IS 12, 29, 59, 99, stated by the owner on 1 October and
@@ -3841,12 +3864,30 @@ ok(!/\b(24|36) dollars/.test(tiers.text)&&!/shown at checkout/.test(tiers.text),
 ok(!/(dollars?|cents?)\s+(a|per|each)\s+pattern/i.test(tiers.text),
  'no price is put against a single pattern');
 ok(tiers.bar3&&tiers.bar3===tiers.bar4,'tier four draws the same ground as tier three, '+tiers.bar3+' and '+tiers.bar4);
-/* NO SALES TROPES. Sight is not for sale, and nothing counts down. And the
-   phrase itself is not printed: the owner did not know what it meant, so a
-   customer would not. */
-ok(!/\bsight\b/i.test(tiers.text),'the tiers say what every tier sees in plain words, never "sight"');
-ok(!/most popular|recommended|best value|unlock|limited|only \d+ left|save \d+|ends in/i.test(tiers.text),
- 'no badge, no unlock, no countdown, no struck saving');
+/* NO SALES TROPES, and nothing counts down. The word sight is not printed: the
+   owner did not know what it meant, so a customer would not. "Unlock" came
+   off this list on 1 October: the ruling is his own, "where to go to unlock
+   it", and the lock's description and the tiers page both say what a tier
+   unlocks. What stays out is the pressure: no badge, no countdown, no struck
+   saving, and nothing that says a locked tier is a lower person. */
+ok(!/\bsight\b/i.test(tiers.text),'the tiers say what each tier shows in plain words, never "sight"');
+ok(!/most popular|recommended|best value|limited|only \d+ left|save \d+|ends in/i.test(tiers.text),
+ 'no badge, no countdown, no struck saving');
+ok(!/\b(level|rank|better|worse|behind|lower|beginner|advanced|mastery)\b/i.test(tiers.text),
+ 'and no tier is a level of the person: the view is part of a tier, the payment is not mastery');
+/* WHICH TIER THE PERSON HAS, AND WHAT EVERY OTHER TIER UNLOCKS TO SEE, the two
+   things the owner asked the upgrades page for on 1 October. */
+ok(/Your tier\s*Free/.test(tiers.text)&&/You see your own reading, without what is running it/.test(tiers.text),
+ 'the page says first which tier the person has and what it shows: '+tiers.text.slice(0,260));
+ok(/Unlocks saboteurs/.test(tiers.rowSees.one||'')&&/Unlocks complexes/.test(tiers.rowSees.two||'')
+ &&/Unlocks hyper complexes, character, the registers and the masks/.test(tiers.rowSees.three||'')
+ &&/Shows everything the tier below shows/.test(tiers.rowSees.four||''),
+ 'every other tier says what it unlocks to see, off the table: '+JSON.stringify(tiers.rowSees));
+ok(/Does not show saboteurs, complexes, hyper complexes and character/.test(tiers.rowSees.free||''),
+ 'and free says what it leaves out');
+ok(!/kundalini/i.test(tiers.text),'the Kundalini has no surface yet, so no tier is sold on it');
+ok(/Locked: saboteurs, unlocked on tier one and above/.test(tiers.text),
+ 'a free person is told what is locked and which tier opens each, in the lock\'s own words');
 ok(/Manage billing/.test(tiers.paneText)&&tiers.planman,'Your plan keeps Manage billing above the tiers');
 ok(!tiers.planup,'and drops its own Move to, because the tiers below carry every press');
 ok((tiers.paneText.match(/On every tier/g)||[]).length===1,
@@ -6400,6 +6441,14 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
 --------------------------------------------------------------------------- */
 console.log('\n=== the fittings: the interface\'s own sounds ===');
 await require('./sound.js').soundGate(browser,FILE,ok,booted);
+
+/* THE LOCKS, tests/locks.js, the tier ruling of 1 October. It lives in a file of
+   its own, as the fittings do, so it can be run alone, and it is called here so
+   a full run holds it through the same code. It sets sight back to the record's
+   own plan on its own pages, because everything above ran as a person on the
+   top tier (tests/seed.js). */
+console.log('\n=== the locks: what a tier cannot see is greyed, padlocked, described and not drawn ===');
+await require('./locks.js').lockGate(browser,FILE,ok,booted);
 
 await browser.close();
 
