@@ -30692,3 +30692,25 @@ protocols."
   heights): they are re-asked with pictures.
 - "For aura, I thought the person was animated": he thought the figure was
   animated; it is a point cloud. Confirms Aura.
+
+## Round OS, 1 October. The Onboarding and First Experience TDD, the achievements question, the completed list, a build to review
+
+> "[the file] Review three times. And design this out and let's get it into
+> plan. Is the achievements system in? All the tasks that you've completed,
+> let's put that into our completed list. And let's see what we have left. And
+> give me a latest build. I want to go through the release and give detailed
+> notes."
+
+**Read as.**
+- `ATUNED-onboarding-first-experience-TDD.md` (his upload, copied into the
+  repository unchanged): reviewed three times by three seats (product and ICP,
+  systems and data, narrative and safety), then designed into slices in the
+  plan.
+- Achievements: asked as a question. Answer from the code, not memory: no
+  achievements engine exists; `engine/ladder.js` carries the rule that the
+  reading is not an achievement; the Points, Achievements and Unlocks TDD
+  (v2) is audited in `POINTS-AUDIT.md` and slice 0 is not built.
+- The plan gets a completed list (everything finished and pushed) and a list
+  of what is left.
+- A build for him to download, attached, with commit and md5, so he can go
+  through the release and give notes.
