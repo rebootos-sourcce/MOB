@@ -29627,3 +29627,19 @@ open questions named by the build itself rather than guessed past: the
 nine pattern to movement mappings are invented, not canon, and his
 pending open question about Heart and Crown carrying no mask surfaces
 again here, since those two seats still have nowhere to land.
+
+## Round NX. Seal wins, three more versions off it, the shape set free
+
+His words, verbatim: "Version two of the masks wins, but I want the art
+director and their team to build off of version two with three more
+versions. And feel free to change the shape. I think we just want
+something aesthetically interesting. The mask doesn't have to be a face
+shape. It could actually be like a mask, like a character mask."
+
+Resumed the same agent rather than a fresh one, since it already holds
+the full context of what Seal is and why. Told explicitly to keep
+Seal's own mechanic, the leading pattern's icon taking the centre with
+its own drawn motion and the rest orbiting at weight, but to depart on
+shape: at least one of the three asked to take his own example literally,
+a real theatrical or ritual mask silhouette rather than the oval every
+version has used so far.
