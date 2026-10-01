@@ -253,6 +253,69 @@ const PROBE = () => {
     await ctx.close();
   }
 
+  /* ---------- what the tiers page promises about sight ----------
+     The owner ruled sight by tier on 1 October, reversing "sight is not for
+     sale". The buy page is static and the table that decides is code
+     (engine/plan.js SIGHT), so the page is read against the table here and not
+     against a sentence typed into this gate: a tier moved in the table that
+     leaves a customer a wrong promise on this page fails here. It reads the
+     built engine, engine.js, which BUILD-engine.sh writes at the repository
+     root. The page is read from the source html and not from dist, because dist
+     is a build product and is only as fresh as its last build. */
+  console.log('\n--- the buy page, against SIGHT ---');
+  {
+    const ENG = path.resolve(DIR, '..', 'engine.js');
+    if (!fs.existsSync(ENG)) {
+      console.log('  no engine.js, not checked: run atuned_src/BUILD-engine.sh first');
+      ok(false, 'engine.js is missing, so the buy page cannot be read against SIGHT');
+    } else {
+      const E = require(ENG);
+      const ctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+      const page = await ctx.newPage();
+      await page.goto('file://' + path.join(DIR, 'buy.html'), { waitUntil: 'load' });
+      const buy = await page.evaluate(() => ({
+        meta: (document.querySelector('meta[name=description]') || {}).content || '',
+        text: document.body.innerText,
+        lead: (document.querySelector('.lead') || {}).innerText || '',
+        rungs: Object.fromEntries([...document.querySelectorAll('#sees li[data-rung]')]
+          .map(li => [li.getAttribute('data-rung'), li.innerText.toLowerCase()]))
+      }));
+      /* the reversed ruling is not on the page in any wording */
+      ok(!/whole reading/i.test(buy.meta + ' ' + buy.text),
+        'buy: still says the whole reading, which is not on every tier any more');
+      ok(!/sight is not for sale|every rung sees|only thing that moves is volume|with everything visible/i
+          .test(buy.meta + ' ' + buy.text),
+        'buy: still carries a line from the ruling that was reversed');
+      ok(/your own reading/i.test(buy.lead) && /how far up the chain/i.test(buy.lead),
+        'buy: the lead does not say your own reading is on every tier and a tier changes how far you see');
+      const keys = Object.keys(buy.rungs);
+      ok(keys.join() === 'free,one,two,three,four',
+        'buy: the sight list has the rungs ' + keys.join() + ', not free, one, two, three, four');
+      const TIERS = ['free', 'one', 'two', 'three', 'four'];
+      /* a row of SIGHT with no surface is not promised, so it must not be on the
+         page: the Kundalini is ruled and unbuilt, and selling it is the lie */
+      for (const g of E.SIGHT) {
+        const nm = g.nm.replace(/^the /, '').toLowerCase();
+        if (g.built === false) {
+          ok(!new RegExp('\\b' + nm.replace(/^the /, '') + '\\b', 'i').test(buy.text),
+            'buy: names ' + g.nm + ', which has no surface in the product yet');
+          continue;
+        }
+        const at = TIERS.indexOf(g.need);
+        ok(buy.rungs[g.need] && buy.rungs[g.need].indexOf(nm) >= 0,
+          'buy: the ' + g.need + ' rung does not name ' + nm + ', which SIGHT says it unlocks');
+        for (const lower of TIERS.slice(0, at))
+          ok(buy.rungs[lower] && buy.rungs[lower].indexOf(nm) < 0,
+            'buy: the ' + lower + ' rung names ' + nm + ', which SIGHT says needs ' + g.need);
+      }
+      ok(/what tier three shows/.test(buy.rungs.four || ''),
+        'buy: tier four does not say it shows what tier three shows');
+      ok(E.planAdds('four').length === 0,
+        'SIGHT now adds something at tier four, and the buy page says tier four adds only the lead suite');
+      await ctx.close();
+    }
+  }
+
   /* ---------- the sendable build, if it has been made ---------- */
   console.log('\n--- dist ---');
   const DIST = path.join(DIR, 'dist');
