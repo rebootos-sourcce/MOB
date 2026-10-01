@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Character, three versions of Aura</title>
+<style>
+:root{--bg:#0C0D12;--panel:#14161D;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--line:rgba(239,237,232,.09);--line2:rgba(239,237,232,.2);--acc:#7EB8D4}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 Inter,'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1560px;margin:0 auto;padding:28px 24px 80px}
+.ey{font-size:12px;color:var(--dim)}
+h1{font-size:28px;margin:4px 0 8px;font-weight:600;letter-spacing:-.01em}
+h2{font-size:19px;margin:44px 0 6px;font-weight:600;letter-spacing:-.005em}
+h3{font-size:15px;margin:0 0 4px;font-weight:600}
+p{margin:0 0 10px;color:var(--mid);max-width:900px}
+.lead{font-size:16px;color:var(--ink);max-width:880px}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.row1{display:grid;grid-template-columns:1fr;gap:16px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.row4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card a.im{display:block;background:#090A0E;line-height:0}
+.card img{width:100%;height:auto;display:block}
+.card .tx{padding:12px 14px 14px}
+.card .tx b{color:var(--ink);font-weight:600}
+.card .tx p{font-size:13.5px;margin:4px 0 0}
+.lab{font-size:12px;color:var(--dim);margin:0 0 6px}
+.pl{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line2);border-radius:22px;color:var(--mid);text-decoration:none;font-size:13px;margin:4px 8px 4px 0}
+.pl:hover{color:var(--ink);border-color:rgba(239,237,232,.4)}
+.pl:focus-visible,.card a:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 0}
+.tbl th,.tbl td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--line);color:var(--mid)}
+.tbl th{color:var(--ink);font-weight:600}
+.tbl td b{color:var(--ink);font-weight:600}
+.phones{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.phones a{display:block;background:#090A0E;border:1px solid var(--line);border-radius:12px;overflow:hidden;line-height:0}
+.phones img{width:100%;height:auto}
+.cap{font-size:12px;color:var(--dim);margin:6px 2px 0}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:10px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mid)}
+.legend i{width:10px;height:10px;border-radius:50%;border:2px solid var(--c)}
+.axes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0 0}
+.axes div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.axes b{display:block;font-size:15px;margin-bottom:2px}
+@media (max-width:980px){.row,.row2,.row4,.axes{grid-template-columns:1fr}.phones{grid-template-columns:repeat(2,minmax(0,1fr))}.tbl{display:block;overflow-x:auto}}
+</style></head><body><div class="wrap">
+<div class="ey">Character, round OR, mockups only. Nothing here is built into the product.</div>
+<h1>Aura, three more versions, with the light on</h1>
+<p class="lead">You picked Aura, the point cloud person, because the cloud can be the mask and the light round it can be the radiance. These are three ways of doing that. In all three there are five masks (Child, Preteen, Teen, Adult, Ideological), two things move independently, and nothing is tied to a row of the left menu.</p>
+<div class="axes">
+ <div><b>Load bends the shape</b><p style="margin:0">The weights decide how far each mask bends the body from a plain calm person. Low load is the plain person in every mask. The leading patterns decide which way it bends.</p></div>
+ <div><b>Coherence lights it</b><p style="margin:0">Compressed, at 0 percent, is no light: a tight dark cloud. At 100 percent it is full spectrum: the seven seat colours, red to violet, in the product's own palette. The middle is in between. The shape does not change with it.</p></div>
+</div>
+<div class="legend" aria-label="The seven seat colours, the spectrum">
+<span style="--c:#D6524C"><i></i>Root</span><span style="--c:#D8924E"><i></i>Sacral</span><span style="--c:#DABF6A"><i></i>Solar</span><span style="--c:#5FD5A6"><i></i>Heart</span><span style="--c:#5EBBDB"><i></i>Throat</span><span style="--c:#7D93E0"><i></i>3rd Eye</span><span style="--c:#A77EDB"><i></i>Crown</span></div>
+<p class="cap">The alarm colour is not used anywhere in these. Low coherence is dark, not wrong.</p>
+
+<h2>The three, and the old Aura, side by side</h2>
+<p>The same state in each: anger leading, Preteen mask, high load, coherence 100 percent. Each page opens already in motion.</p>
+<div class="row4">
+ <div class="card"><a class="im" href="../character-cloud/a-aura.html?profile=anger"><img loading="lazy" src="../character-cloud/shots/a-aura-anger-1600.png" alt="The existing Aura, no coherence"></a><div class="tx"><h3>Old Aura</h3><p>Pattern colour by place, brightness is load. No coherence. Shown for comparison.</p></div></div>
+ <div class="card"><a class="im" href="aura-1.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/aura-1-beside-full-1600.png" alt="Aura 1, Prism, coherence 100"></a><div class="tx"><h3>Aura 1, Prism</h3><p>Light in the points only. Fills the figure root to crown. A prism of hues in every point.</p></div></div>
+ <div class="card"><a class="im" href="aura-2.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/aura-2-beside-full-1600.png" alt="Aura 2, Corona, coherence 100"></a><div class="tx"><h3>Aura 2, Corona</h3><p>A neutral mask cloud inside a field of drifting points and iridescent light that wraps the bent body.</p></div></div>
+ <div class="card"><a class="im" href="aura-3.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/aura-3-beside-full-1600.png" alt="Aura 3, Orbit, coherence 100"></a><div class="tx"><h3>Aura 3, Orbit</h3><p>A dense mask layer, and a sparse layer of seven rings, one per seat, on their own clock.</p></div></div>
+</div>
+<table class="tbl">
+<tr><th></th><th>Aura 1, Prism</th><th>Aura 2, Corona</th><th>Aura 3, Orbit</th></tr>
+<tr><th>Where the light lives</th><td>In the colour and brightness of the body's own points. Nothing else is added.</td><td>In a second cloud round the body, seven shells of drifting points over a soft spectral glow. The body is neutral.</td><td>In a sparse layer of seven orbiting rings, with their own motion, over a dense mask layer.</td></tr>
+<tr><th>What coherence does</th><td><b>Fills.</b> Light climbs the seats from root to crown. At 55 percent the head is still dark.</td><td><b>Opens.</b> The field widens outward and more of the spectrum is let in. At 55 percent the warm half and green show, the blues and violet do not.</td><td><b>Aligns.</b> Rings go from small, dim and tilted every way to wide, level and turning in step, comets lined up.</td></tr>
+<tr><th>At 10 percent</th><td>A tight, dim grey cloud with a few red sparks at the feet.</td><td>A tight dim cloud with a faint rim against the skin.</td><td>A tight dim cloud with small crumpled rings that hug the body.</td></tr>
+<tr><th>Read at a glance</th><td>A figure that is lit from the ground up. Simplest. Closest to the old Aura.</td><td>An aura photograph. The most luminous. Loudest.</td><td>A stack of seven coloured halos. The most symbolic: the seats are countable.</td></tr>
+</table>
+
+<h2>Beside the left menu</h2>
+<p>The page at 1600 by 1000 with the built app's own left menu at the left, a screenshot of the real rail on the Tomas example profile. The rail is not redrawn and not changed, and nothing is drawn between it and the page. Tomas reads 31 percent coherence in the rail, so the first picture of each version is lit to 31 percent, which is the honest pairing. The second is the same page at 100 percent.</p>
+<div class="row">
+ <div class="card"><a class="im" href="aura-1.html?profile=anger&mask=Preteen&coh=31"><img loading="lazy" src="shots/aura-1-beside-1600.png" alt="Aura 1 beside the left menu, coherence 31"></a><div class="tx"><h3>Aura 1, Prism, 31 percent</h3></div></div>
+ <div class="card"><a class="im" href="aura-2.html?profile=anger&mask=Preteen&coh=31"><img loading="lazy" src="shots/aura-2-beside-1600.png" alt="Aura 2 beside the left menu, coherence 31"></a><div class="tx"><h3>Aura 2, Corona, 31 percent</h3></div></div>
+ <div class="card"><a class="im" href="aura-3.html?profile=anger&mask=Preteen&coh=31"><img loading="lazy" src="shots/aura-3-beside-1600.png" alt="Aura 3 beside the left menu, coherence 31"></a><div class="tx"><h3>Aura 3, Orbit, 31 percent</h3></div></div>
+</div>
+<div class="row" style="margin-top:16px">
+ <div class="card"><a class="im" href="aura-1.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/aura-1-beside-full-1600.png" alt="Aura 1 beside the left menu, coherence 100"></a><div class="tx"><h3>Aura 1, Prism, 100 percent</h3></div></div>
+ <div class="card"><a class="im" href="aura-2.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/aura-2-beside-full-1600.png" alt="Aura 2 beside the left menu, coherence 100"></a><div class="tx"><h3>Aura 2, Corona, 100 percent</h3></div></div>
+ <div class="card"><a class="im" href="aura-3.html?profile=anger&mask=Preteen&coh=100"><img loading="lazy" src="shots/aura-3-beside-full-1600.png" alt="Aura 3 beside the left menu, coherence 100"></a><div class="tx"><h3>Aura 3, Orbit, 100 percent</h3></div></div>
+</div>
+<p class="cap">The pictures link to the live pages. Add ?rail=0 to the address to hide the rail strip.</p>
+
+<h2>The coherence ladder, and both axes</h2>
+<p>One mask (Preteen). Across: coherence 10, 55 and 100 percent. Down: load high, then low. Read across a row and only the light changes. Read down a column and only the shape changes.</p>
+<div class="row">
+ <div class="card"><a class="im" href="states-aura-1.html?view=ladder&mask=Preteen"><img loading="lazy" src="shots/aura-1-ladder.png" alt="Aura 1, coherence 10, 55, 100 at high and low load"></a><div class="tx"><h3>Aura 1, Prism</h3></div></div>
+ <div class="card"><a class="im" href="states-aura-2.html?view=ladder&mask=Preteen"><img loading="lazy" src="shots/aura-2-ladder.png" alt="Aura 2, coherence 10, 55, 100 at high and low load"></a><div class="tx"><h3>Aura 2, Corona</h3></div></div>
+ <div class="card"><a class="im" href="states-aura-3.html?view=ladder&mask=Preteen"><img loading="lazy" src="shots/aura-3-ladder.png" alt="Aura 3, coherence 10, 55, 100 at high and low load"></a><div class="tx"><h3>Aura 3, Orbit</h3></div></div>
+</div>
+<p class="cap">The coherence 10 percent pictures are meant to be nearly dark. They are dim on purpose, and the shape is still there if you look for it.</p>
+
+<h2>All five masks</h2>
+<p>Each sheet has two blocks. First, coherence 10, 55 and 100 percent for every mask at high load. Second, load high, mid and low for every mask at full coherence. Adult is new: the upper half of the body slides off the lower one at the waist so the join shows, a line of points marks the seam and pulses on its 4.2 second beat, one forearm is across the belly, and a file of ledger lines rises beside it. It is the mask that handles it and files what it cost.</p>
+<div class="row">
+ <div class="card"><a class="im" href="states-aura-1.html?view=masks"><img loading="lazy" src="shots/aura-1-states.png" alt="Aura 1, all five masks"></a><div class="tx"><h3>Aura 1, Prism</h3></div></div>
+ <div class="card"><a class="im" href="states-aura-2.html?view=masks"><img loading="lazy" src="shots/aura-2-states.png" alt="Aura 2, all five masks"></a><div class="tx"><h3>Aura 2, Corona</h3></div></div>
+ <div class="card"><a class="im" href="states-aura-3.html?view=masks"><img loading="lazy" src="shots/aura-3-states.png" alt="Aura 3, all five masks"></a><div class="tx"><h3>Aura 3, Orbit</h3></div></div>
+</div>
+<div class="row" style="margin-top:16px">
+ <div class="card"><a class="im" href="aura-1.html?profile=anger&mask=Adult&rail=0"><img loading="lazy" src="shots/aura-1-adult-1600.png" alt="Aura 1, Adult mask"></a><div class="tx"><h3>Adult, Prism</h3></div></div>
+ <div class="card"><a class="im" href="aura-2.html?profile=anger&mask=Adult&rail=0"><img loading="lazy" src="shots/aura-2-adult-1600.png" alt="Aura 2, Adult mask"></a><div class="tx"><h3>Adult, Corona</h3></div></div>
+ <div class="card"><a class="im" href="aura-3.html?profile=anger&mask=Adult&rail=0"><img loading="lazy" src="shots/aura-3-adult-1600.png" alt="Aura 3, Adult mask"></a><div class="tx"><h3>Adult, Orbit</h3></div></div>
+</div>
+
+<h2>The icon row, upper left</h2>
+<p>Five real buttons, 60 pixels on a desktop and 52 on a phone. Each has one new sign drawn in the cloud's own language, a ring for a body and dots for the points round it: Child small under a dotted mass, Preteen a head and a sweep of dotted arcs, Teen a small ring thrusting at a big dotted one, Adult a ring cut across and joined with a file under it, Ideological a tall rigid ring inside a dotted lattice. The colours are the mask's own seat colours from the design tokens, one gradient from its first seat to its last. Corona puts a ring of the seven seat colours round each sign and Orbit puts one tilted orbit through it. The arc is how loaded the mask is. None of them is linked to a row of the left menu.</p>
+<div class="row">
+ <div class="card"><a class="im" href="aura-1.html?profile=apathy&mask=Child&tip=Child"><img loading="lazy" src="shots/aura-1-icons-1600.png" alt="Aura 1 icon row"></a></div>
+ <div class="card"><a class="im" href="aura-2.html?profile=apathy&mask=Child&tip=Child"><img loading="lazy" src="shots/aura-2-icons-1600.png" alt="Aura 2 icon row"></a></div>
+ <div class="card"><a class="im" href="aura-3.html?profile=apathy&mask=Child&tip=Child"><img loading="lazy" src="shots/aura-3-icons-1600.png" alt="Aura 3 icon row"></a></div>
+</div>
+
+<h2>Trace</h2>
+<p>Kept as it was. Press a region of the figure, or the Trace button, and every other pattern dims, a thread of points runs from that region to a card, and the card shows the chain the engine already holds: a story, supports, the pattern, worn under, the mask. Supports, not causes.</p>
+<div class="row">
+ <div class="card"><a class="im" href="aura-1.html?profile=anger&mask=Preteen&trace=Anger"><img loading="lazy" src="shots/aura-1-trace-1600.png" alt="Aura 1 with a trace open"></a><div class="tx"><h3>Aura 1, Prism</h3></div></div>
+ <div class="card"><a class="im" href="aura-2.html?profile=anger&mask=Preteen&trace=Anger"><img loading="lazy" src="shots/aura-2-trace-1600.png" alt="Aura 2 with a trace open"></a><div class="tx"><h3>Aura 2, Corona</h3></div></div>
+ <div class="card"><a class="im" href="aura-3.html?profile=anger&mask=Preteen&trace=Anger"><img loading="lazy" src="shots/aura-3-trace-1600.png" alt="Aura 3 with a trace open"></a><div class="tx"><h3>Aura 3, Orbit</h3></div></div>
+</div>
+
+<h2>Motion, the first two seconds</h2>
+<p>Frames at 0, 0.5, 1 and 2 seconds from the moment the page opens, stage only. The cloud is already there at zero, a dim scatter gathering into the person while it bends into the mask, and the light comes up a beat after the shape. The light opens from compressed up to whatever the coherence is.</p>
+<div class="row1">
+ <div class="card"><a class="im" href="aura-1.html"><img loading="lazy" src="shots/aura-1-strip-1600.png" alt="Aura 1, frames at 0, 0.5, 1 and 2 seconds"></a><div class="tx"><h3>Aura 1, Prism</h3></div></div>
+ <div class="card"><a class="im" href="aura-2.html"><img loading="lazy" src="shots/aura-2-strip-1600.png" alt="Aura 2, frames at 0, 0.5, 1 and 2 seconds"></a><div class="tx"><h3>Aura 2, Corona</h3></div></div>
+ <div class="card"><a class="im" href="aura-3.html"><img loading="lazy" src="shots/aura-3-strip-1600.png" alt="Aura 3, frames at 0, 0.5, 1 and 2 seconds"></a><div class="tx"><h3>Aura 3, Orbit</h3></div></div>
+</div>
+<p class="cap">The same on a phone layout: <a href="shots/aura-1-strip-390.png">Aura 1</a>, <a href="shots/aura-2-strip-390.png">Aura 2</a>, <a href="shots/aura-3-strip-390.png">Aura 3</a>. After the opening the page keeps moving: points breathe, the mask keeps its own tempo, Corona's shells flow up the limbs, Orbit's rings turn, Prism's white band climbs the figure every five seconds.</p>
+
+<h2>On a phone, 390 wide</h2>
+<div class="phones">
+ <a href="aura-1.html?profile=anger&mask=Preteen"><img loading="lazy" src="shots/aura-1-390.png" alt="Aura 1, phone"></a>
+ <a href="aura-1.html?profile=apathy&mask=Teen&trace=Apathy"><img loading="lazy" src="shots/aura-1-trace-390.png" alt="Aura 1, phone, trace open"></a>
+ <a href="aura-2.html?profile=anger&mask=Preteen"><img loading="lazy" src="shots/aura-2-390.png" alt="Aura 2, phone"></a>
+ <a href="aura-2.html?profile=apathy&mask=Teen&trace=Apathy"><img loading="lazy" src="shots/aura-2-trace-390.png" alt="Aura 2, phone, trace open"></a>
+ <a href="aura-3.html?profile=anger&mask=Preteen"><img loading="lazy" src="shots/aura-3-390.png" alt="Aura 3, phone"></a>
+ <a href="aura-3.html?profile=apathy&mask=Teen&trace=Apathy"><img loading="lazy" src="shots/aura-3-trace-390.png" alt="Aura 3, phone, trace open"></a>
+</div>
+<p class="cap">More phone pictures at 55 percent coherence: <a href="shots/aura-1-390-teen.png">Aura 1</a>, <a href="shots/aura-2-390-teen.png">Aura 2</a>, <a href="shots/aura-3-390-teen.png">Aura 3</a>.</p>
+
+<h2>What it costs per frame, in plain words</h2>
+<p>Every frame the page works out where each point is, which colour it takes and how bright it is, draws them, and then blurs the picture twice and lays it back over itself to make the glow. Measured here, on a Chromium that draws on the processor with no graphics card, so it is a harsh test: a laptop with a graphics card will do better. The honest result is that none of the three held 60 frames a second in this test. They are written for a card that does the drawing, which was not available to measure.</p>
+<table class="tbl">
+<tr><th></th><th>What is drawn each frame</th><th>The point and colour work</th><th>Whole frame, this machine</th><th>Where the time goes</th></tr>
+<tr><th>Aura 1, Prism</th><td>11,000 points on a desktop and 5,600 on a phone, counted into a few hundred colour batches. The world round the mask is a few hundred more marks.</td><td>about 4 ms</td><td>7 to 15 ms on a desktop, about 6 ms on a phone</td><td>Mostly the glow.</td></tr>
+<tr><th>Aura 2, Corona</th><td>7,000 mask points, 8,400 field points, and a small map of how far every place is from the body (about 90 by 90 cells) turned into a soft coloured picture. The map is what lets the shells follow a bent body.</td><td>about 6 ms</td><td>20 to 28 ms on a desktop, 17 ms on a phone</td><td>The glow and the soft picture. The heaviest of the three, and the first to thin out if a cheaper version is needed: drop the soft picture or halve the field points.</td></tr>
+<tr><th>Aura 3, Orbit</th><td>9,000 mask points, seven rings of 140 beads, 320 dust points and 14 comets with trails, plus seven thin ellipses under the beads.</td><td>about 4 ms</td><td>8 to 19 ms on a desktop, 10 ms on a phone</td><td>Mostly the glow.</td></tr>
+</table>
+<p class="cap" style="margin-top:10px">The glow is refreshed every other frame in the live pages, because it is a blur and a one frame lag cannot be seen. The numbers move a lot from run to run on this machine, so read them as ranges. A person who has asked their system for less motion gets the settled picture, held still.</p>
+
+<p style="margin-top:28px"><a class="pl" href="aura-1.html">Open Aura 1</a><a class="pl" href="aura-2.html">Open Aura 2</a><a class="pl" href="aura-3.html">Open Aura 3</a><a class="pl" href="states-aura-1.html">Sheet, Aura 1</a><a class="pl" href="states-aura-2.html">Sheet, Aura 2</a><a class="pl" href="states-aura-3.html">Sheet, Aura 3</a><a class="pl" href="../character-cloud/index.html">The earlier three systems</a></p>
+</div></body></html>
