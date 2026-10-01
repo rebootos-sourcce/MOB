@@ -408,7 +408,12 @@ function paidWelcomeOpen(){
  document.getElementById('pwgo').onclick=function(){ shut(); if(typeof setTab==='function')setTab(TAB.STORY); };
  document.getElementById('pwlater').onclick=shut;
  var g=document.getElementById('pwgo'); if(g)g.focus();
- if(typeof uiSet==='function')uiSet('paidWelcomed',true);
+ /* written straight to the record and not through uiSet, whose "Saved." would
+    replace the line the return from Stripe has just printed */
+ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
+ CURP.ui.paidWelcomed=true;
+ if(!pSave()&&typeof status==='function')
+  status('This browser would not save. The welcome will show again.','fail');
  return true;}
 /* THE RETURN FROM STRIPE. Stripe sends the browser back the moment the card
    is taken, and its webhook to the server can land a few seconds later, so

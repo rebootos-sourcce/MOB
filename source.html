@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1137 7b2941b 2026-10-01 22:09"><head><meta charset="utf-8">
+<html lang="en" data-build="v1141 f1682e4 2026-10-01 22:19"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -51969,7 +51969,12 @@ function paidWelcomeOpen(){
  document.getElementById('pwgo').onclick=function(){ shut(); if(typeof setTab==='function')setTab(TAB.STORY); };
  document.getElementById('pwlater').onclick=shut;
  var g=document.getElementById('pwgo'); if(g)g.focus();
- if(typeof uiSet==='function')uiSet('paidWelcomed',true);
+ /* written straight to the record and not through uiSet, whose "Saved." would
+    replace the line the return from Stripe has just printed */
+ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
+ CURP.ui.paidWelcomed=true;
+ if(!pSave()&&typeof status==='function')
+  status('This browser would not save. The welcome will show again.','fail');
  return true;}
 /* THE RETURN FROM STRIPE. Stripe sends the browser back the moment the card
    is taken, and its webhook to the server can land a few seconds later, so
@@ -57063,5 +57068,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003711961"></div>
+<div id="eof" hidden data-len="003712246"></div>
 </body></html>

@@ -2692,3 +2692,30 @@ the seat decided and why, in the four headings, and "What I need from you" is
 empty unless something is genuinely blocked, in which case it carries one
 question with its context. A choice that has a sensible default is taken and
 recorded as taken, so he can overrule it later.
+
+## Defaults taken for the legal documents, round PD (he can overrule any)
+
+Taken by the seat so the documents are consistent. Each is the recommendation in
+the legal agent's report; the lawyer reviews all of them.
+- The account copy includes the story text, and later entries keep syncing to
+  the account while it is signed in (a recovered account has its sources).
+- Dormant accounts: the server copy is deleted after 24 months with no sign in,
+  with a warning to the recovery email 30 days before; the device record stays.
+- The key to stored records: one named holder (the owner), the key in the
+  host's secret store, a sealed offline second copy with one trusted person.
+- Open to the EU and UK from launch, as he ruled ("it's the internet"); launch
+  waits on the section 9.1 checklist in LEGAL-IA.md being done, a lawyer being
+  the first item.
+- Refund: seven days, as he ruled; the EU and UK 14 day cancellation right is a
+  lawyer item and may become a second box on the paid step.
+- Restore proof: a Stripe receipt in the account's name plus the account's
+  date; a free account with no recovery email cannot be restored. A restore
+  takes up to five working days. The account event log is kept 12 months. A
+  breach notice goes to a person without delay and within 30 days.
+- Research sharing: off, not offered at launch.
+- Age floor 18, with a ticked confirmation at sign up.
+- Disputes venue: Los Angeles County, California (PROPOSED for the lawyer). The
+  public address is as he gave it.
+- Integrity: the eleven laws not in his ten are asked later in the product,
+  after the first session, never in it. Starting points are twelve with Pain in
+  and Fatigue out (Burnout already names the long tired kind).
