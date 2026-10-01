@@ -224,3 +224,16 @@ O8 are in the starting session.
 - Character page: Orbit with the torus, built after the torus mockup lands.
 - The observatory: pulls Field elements and is held to an A against the Field's
   C.
+
+**Decisions taken by the seat, round PD (continued)**
+- The layer observatory becomes a fourth way of drawing the Field (beside the
+  Field's three renditions), so it pulls the Field's own elements. Take the
+  mockup as designed: Follow a thread as the interaction, the four views (by
+  fetters, saboteurs, complexes, hyper complexes) as the lens, Scrub deferred
+  until the product keeps a per-entry history. The pop rule (an address beats at
+  7.2 s minus 0.62 s per SQ point, flaring for 12 percent of the beat) stands.
+  The connections stay in the chain beside the rings. The address tile ring
+  stays. The families keep the codex seat colours.
+- Build queue after the current builds land: the observatory, the release screen,
+  the sniffer merge, the sound merge, the Character page, the left menu, onboarding
+  O2 and O4, the Compass layout B and the Summary overhaul.
