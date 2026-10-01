@@ -3,11 +3,13 @@
    function of soul, axes and laws, so they cannot drift from what the
    instrument already knows.
    ============================================================ */
+/* what each of the four roots is, said once. The Western lens reads it and so
+   does the person header, so the two cannot say it two ways. */
+const ROOT_ELSAYS={Architect:'Earth, fixed. Builds and holds.',Engine:'Fire, cardinal. Initiates and burns.',
+ Weaver:'Water, mutable. Joins and dissolves.',Witness:'Air. Observes and names.'};
 function lensWestern(r){
  var d=DOMAINS[S.doms[0]]||{nm:'',r:''};
- var EL={Architect:'Earth, fixed. Builds and holds.',Engine:'Fire, cardinal. Initiates and burns.',
-  Weaver:'Water, mutable. Joins and dissolves.',Witness:'Air. Observes and names.'};
- return {t:'Western',a:d.r,b:EL[d.r]||'',c:'root domain as element'};}
+ return {t:'Western',a:d.r,b:ROOT_ELSAYS[d.r]||'',c:'root domain as element'};}
 function lensEastern(r){
  var b=r.darkB||'Root';
  var E={Root:'Muladhara, earth, LAM',Sacral:'Svadhisthana, water, VAM',Solar:'Manipura, fire, RAM',
@@ -68,7 +70,7 @@ var SUM_SPAN='quarter';
 const SUM_WORDS=['no','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'];
 function SUM_WORD(n){return SUM_WORDS[n]||String(n);}
 /* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
-function sumGlance(r){
+function sumGlance(r,noCQ){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
  var e=(r.X+r.Y+r.Z)/3;
  var row=[
@@ -130,7 +132,7 @@ function sumGlance(r){
     definitions in this product live only in a title and a person on a phone
     can reach none of them. The scale is now a third line in the button, where
     everybody can see it, and the title keeps the longer sentence. */
- return '<div class="s-glance">'+row.map(function(x){
+ return '<div class="s-glance">'+row.filter(function(x){return !(noCQ&&x[0]==='coherence');}).map(function(x){
   return '<button type="button" class="s-gl" data-gl="'+esc(x[0])+'" title="'+esc(x[4])+'">'
    +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3],color:x[6]||undefined,
      /* A READING WHERE HIGH IS THE GOOD END NEVER PRINTS RED. Ruled: "96 per
@@ -336,18 +338,22 @@ function sumStructRow(nm,sub,band,pct,raw,glyph,data,hot){
  return '<button type="button" class="s-row"'+(data||'')+'>'
   +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm,hot:hot})
   +'<span class="s-row-t"><b>'+esc(nm)+'</b>'+(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>';}
-function sumStruct(r){
- var out='<div class="s-struct">';
+/* THE STRUCTURES, IN PIECES. sumStruct was one block of five headings in one
+   column, and the page now places them by what they mean, so each piece is its
+   own function. The markup of every row is the markup it always had, so the
+   drills, the gates and the delegated listener read them exactly as before. */
+function sumBlueprint(){
  /* the blueprint. a selection, drawn as a selection: icons and names, and no
     ring on any of them, because a ring is a measurement and this is a choice. */
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- out+='<div class="pm-eye">Blueprint</div><div class="s-sel">'
+ return '<div class="pm-eye">Blueprint</div><div class="s-sel">'
   +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
   +esc(rootNow)+'</span>'
   +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
    return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'" '
     +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
-    +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';
+    +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';}
+function sumArch(r){
  /* the archetypes. these ARE measured: aff is a real proportion. */
  /* EVERY ARCHETYPE IN ITS OWN SEAT'S COLOUR. Ruled. Twelve named things were
     passed the literal 'Heart' here, so a primary Warrior and a primary Sage
@@ -366,45 +372,45 @@ function sumStruct(r){
    ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', d:(ARCH[i]||{}).v||'', v:v};})
   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
  var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
- out+='<div class="pm-eye" style="margin-top:18px">Primary and secondary</div>';
- out+=aff.slice(0,4).map(function(x,i){
+ return '<div class="pm-eye">Primary and secondary</div>'
+  +aff.slice(0,4).map(function(x){
   return sumStructRow(x.nm, x.d, x.b,
    x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
-   ' data-arch="'+x.i+'"', false);}).join('');
+   ' data-arch="'+x.i+'"', false);}).join('');}
+function sumMasks(r,from,to){
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
- if(r.maskRing&&r.maskRing.length){
-  out+='<div class="pm-eye" style="margin-top:18px">Masks</div>';
-  out+=r.maskRing.slice(0,6).map(function(m){
+ if(!(r.maskRing&&r.maskRing.length))return '';
+ return r.maskRing.slice(from,to).map(function(m){
    /* the mask's behaviour, not its two seats. the seats are the ring colour
       and the drill, and a person cannot do anything with "Root and Sacral". */
    var md=(MASKS.filter(function(x){return x.nm===m.nm;})[0]||{}).v
      ||(m.bands||[]).join(' and ');
    return sumStructRow(m.nm, md, (m.bands||['Heart'])[0],
     m.w*10, m.w.toFixed(1), null, ' data-mask="'+esc(m.nm)+'"');}).join('');}
+function sumSeats(){
  /* the seats. load is measured and the ring is the load. */
  var seats=flSeats().filter(function(x){return x.load>0;})
   .sort(function(a,b){return b.load-a.load;}).slice(0,4);
- if(seats.length){
-  /* "Where it sits" labelled a list of body places with a pronoun that has
-     nothing to point back to. His words, GX: "'where it sits, crown, third
-     eye, throat,' and then the patterns underneath, I don't understand the
-     screen." A label names the slot, and this slot is the four seats carrying
-     the most, sorted by load. "In the body" is already the axes' eyebrow on
-     this page, and ui/mapshelf.js already calls the top one "Heaviest seat". */
-  out+='<div class="pm-eye" style="margin-top:18px">Heaviest seats</div>';
-  out+=seats.map(function(x){
+ if(!seats.length)return '';
+ /* "Where it sits" labelled a list of body places with a pronoun that has
+    nothing to point back to. His words, GX: "'where it sits, crown, third
+    eye, throat,' and then the patterns underneath, I don't understand the
+    screen." A label names the slot, and this slot is the four seats carrying
+    the most, sorted by load. "In the body" is already the axes' eyebrow on
+    this page, and ui/mapshelf.js already calls the top one "Heaviest seat". */
+ return '<div class="pm-eye">Heaviest seats</div>'+seats.map(function(x){
    /* and a seat says what a closed one does rather than the word closed */
    return sumStructRow(x.p.n,
     x.held?'shut, so charge sits under it':'open, so charge passes through',
     x.p.n,
     Math.min(100,x.load*100), Math.round(x.load*100)+'%', null,
     ' data-seat="'+esc(x.p.n)+'"');}).join('');}
+function sumChain(r){
  /* the chain. counts, never against a total. */
- out+='<div class="pm-eye" style="margin-top:18px">The chain</div><div class="s-chain">'
+ return '<div class="pm-eye">The chain</div><div class="s-chain">'
   +[['saboteurs',r.sabs.length],['complexes',r.cxs.length],
     ['hyper',r.hys.length],['character',r.sups.length]].map(function(x){
-   return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>';
- return out+'</div>';}
+   return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>';}
 
 /* ---- the spiritual layer. glyphs, no boxes. ----
    The owner ruled the little boxes out and icons in: a sign, an animal with
@@ -416,13 +422,11 @@ const CELEM_IC={
  Wood:'<path d="M12 21V7M12 7L7 3M12 7l5-4M12 13l-5-3M12 13l5-3"/>',
  Fire:'<path d="M12 21c4 0 6-2.6 6-6 0-4-4-5-4-9 0 0-3 2-3 5 0-1-1.6-2-1.6-2C9.4 11 6 12 6 15c0 3.4 2 6 6 6z"/>',
  Earth:'<path d="M3 17h18M6 13h12M9 9h6"/>'};
-function sumSpirit(r){
- var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r);
- if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
-  /* HS sweep: the refusal keeps what is missing and what would put it in.
-     The tail on what is stored and why explained the section. */
-  +'<p class="s-p">No birth data on file. Date, time and place would let this run.</p></div>';
+/* THE BIRTH MARKS, AS ONE STRIP, and the comparison under them as its own
+   piece. The strip is evidence for the person's root energetics and sits with
+   them; the comparison is working, and folds. sumSpirit is both together, kept
+   for the page that has no reading yet. */
+function sumChips(C){
  var e=C.e;
  function chip(k,v,glyph,lab,val,t){
   return '<button type="button" class="s-chip" data-sp="'+k+'" data-spv="'+esc(String(v))+'" '
@@ -430,16 +434,7 @@ function sumSpirit(r){
    +'<span class="s-chip-l">'+esc(lab)+'</span>'
    +(val?'<span class="s-chip-v">'+esc(val)+'</span>':'')+'</button>';}
  function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
- var out='<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
-  +'<p class="s-p">Five systems, read independently off one birth date. '
-  /* This was a fraction with a sentence after it explaining that it was not a
-     score, which is an admission that it read as one. Two facts in sequence
-     need no defending and say the same thing. */
-  +'<b>'+C.of+'</b> comparison'+(C.of===1?'':'s')+' could be made between them and the '
-  +'field. <b>'+C.agree.length+'</b> point the same way. That is what the convergence is.'
-  +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
-    +esc(C.open.join('; '))+'. Those count for neither side.':'')+'</p>'
-  +'<div class="s-chips">';
+ var out='<div class="s-chips">';
  out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
   'Sun sign. '+(SIGN_RUNS[e.sun]||''));
  if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
@@ -457,7 +452,16 @@ function sumSpirit(r){
    :'Design profile.');
  out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
   'Gene key',e.gk.gate+'.'+e.gk.line,'Gate and line. Shadow to gift to siddhi.');
- out+='</div>';
+ return out+'</div>';}
+function sumConverge(C){
+ var out='<p class="s-p">Five systems, read independently off one birth date. '
+  /* This was a fraction with a sentence after it explaining that it was not a
+     score, which is an admission that it read as one. Two facts in sequence
+     need no defending and say the same thing. */
+  +'<b>'+C.of+'</b> comparison'+(C.of===1?'':'s')+' could be made between them and the '
+  +'field. <b>'+C.agree.length+'</b> point the same way. That is what the convergence is.'
+  +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
+    +esc(C.open.join('; '))+'. Those count for neither side.':'')+'</p>';
  if(C.agree.length||C.differ.length){
   out+='<div class="s-agree">';
   out+=C.agree.map(function(a){return '<div class="s-ag">'+esc(a)+'</div>';}).join('');
@@ -467,10 +471,21 @@ function sumSpirit(r){
      a disagreement in it. The Reading paragraph at the top of this page
      already says what a split between blueprint and field means, in this
      person's own names, which is the useful half of the same sentence. */}
- return out+'</div>';}
+ return out;}
+function sumSpirit(r){
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var C=converge(nm2,r);
+ if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  /* HS sweep: the refusal keeps what is missing and what would put it in.
+     The tail on what is stored and why explained the section. */
+  +'<p class="s-p">No birth data on file. Date, time and place would let this run.</p></div>';
+ return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  +(function(){var cv=sumConverge(C), i=cv.indexOf('class="s-agree"');
+   if(i>=0)i=cv.lastIndexOf('<',i);
+   return i<0?cv+sumChips(C):cv.slice(0,i)+sumChips(C)+cv.slice(i);}())+'</div>';}
 
 /* ---- full numerology. six numbers, and every name part on its own. ---- */
-function sumNum(r){
+function sumNum(r,bare){
  /* NOTHING ENTERED MEANS NOTHING READ, AND THIS SURFACE SAID BOTH.
     sumUnread prints "a number off a default is a number about the default and
     not about you" and then called this, which fell back to the name "You" and
@@ -489,7 +504,7 @@ function sumNum(r){
  if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'the birth date']);
  if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
  if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
- var out='<div class="s-numer"><div class="pm-eye plain">Numerology, in full</div>'
+ var out='<div class="s-numer">'+(bare?'':'<div class="pm-eye plain">Numerology, in full</div>')
   /* HS sweep: the name it was read off stays, because a person checks the
      spelling. The method sentence after it explained the arithmetic. */
   +'<p class="s-p">Read off <b>'+esc(N.parts.map(function(p){
@@ -535,7 +550,8 @@ function sumRender(){
    page is the way in instead. The spiritual layer stays: it is derived from a
    birth date a person entered, not from a default, so it is real or absent. */
 function sumUnread(r){
- return '<div class="sum-hero">'
+ var B=sumBirth(), rc=sumDrivers(B,r);
+ var hero='<div class="sum-hero">'
   +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'–',hot:false,color:'var(--dim)'})
   /* ONE SLOT, ONE LABEL, the same correction as the analytics hero. The
      label said "Coherence, not read yet" and the line directly under it says
@@ -549,8 +565,16 @@ function sumUnread(r){
      who did not ask, and then reassured them they would not need a term. The
      doors underneath are the route. */
   +'<div class="sum-line">Nothing has been read yet.</div></div></div>'
-  +'<div class="sum-start">'+startHTML('Four ways in.')+'</div>'
-  +sumSpirit(r)+sumNum(r);}
+  +'<div class="sum-start">'+startHTML('Four ways in.')+'</div>';
+ /* A NAME OR A BIRTH WAS ENTERED. Then what it says stands on the right, the
+    first drivers, and the four doors stand on the left, so the way in is on the
+    first screen beside it and the page is two equal halves, not one half and a
+    hole. Nothing here is read off the field, so nothing here is a reading. */
+ if(rc)return sumWho(r,B,false)
+  +'<div class="sg-two sg-lead"><section class="sg-card sg-start" data-grp="start">'+hero+'</section>'+rc+'</div>'
+  +sumMarks(B,r)
+  +(B.N?'<div class="sg-folds sg-one">'+sgFold('num','Numerology, in full',sumNum(r,true))+'</div>':'');
+ return sumWho(r,B,false)+hero+sumSpirit(r)+sumNum(r);}
 
 /* ============================================================
    THE SUMMARY, REBUILT. Named wrong four times and this is the correction.
@@ -587,15 +611,165 @@ function sumUnread(r){
    for, what to release, and how far to the next marker. A summary with no
    next action is a diagnosis with no prescription.
    ============================================================ */
-function sumPlate(r){
- var who=(CURP&&CURP.name)||'You';
- var first=String(who).trim().split(/\s+/)[0]||'You';
+/* ============================================================
+   WHO THIS IS. Ruled, his words today: "for a summary, we want to add their
+   name, root meaning, energetics as well, as if it's the person, written in
+   grounded language, whatever our documentation says."
+
+   Read as: the name, then what their root energetics mean, said as the person
+   and not as a table. EVERY SENTENCE HERE COMES OUT OF A TABLE THE PRODUCT
+   ALREADY HOLDS and names it in data-src, so nothing on this block is
+   written for the occasion:
+
+     the born root and the running root   ROOT_ELSAYS, DOMAINS d
+     a meeting of the four systems        ROOT_SAYS, off rootOverlap
+     any other way it shows up            SIGN_RUNS, CH_RUNS, CE_RUNS,
+                                          LP_RUNS, HD_LINE_RUNS
+     the name's number                    NUM_CORE ex, so and pe
+
+   A name's etymology is not here and is not coming from here: DECISIONS.md
+   rules it out, because a meaning for an arbitrary name cannot be looked up on
+   a device that makes no request, and inventing one is a claim this
+   instrument does not make. What a name carries is its number.
+
+   Nothing prints off a default. The block reads only what the person entered,
+   a name and a birth, so it is the same on a profile that has been read and on
+   one that has not, and it is empty on one that has neither.
+   ============================================================ */
+/* one profile's birth reading and name numbers, read once per render and
+   handed to every piece that needs them */
+function sumBirth(){
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
+ if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){var bn=CURP.who.born;
+  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+ /* the name's numbers only off a name that is somebody's, for the reason
+    spNumRows gives: a blank profile's roster name is the word You */
+ var full=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm])||'';
+ var N=full?numerologyOf(p.nm,CURP):null;
+ return {p:p,sp:sp,N:N,full:full,R:rootOverlap(sp,N)};}
+const SUM_IC={
+ who:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6"/>',
+ run:'<path d="M19.5 12a7.5 7.5 0 11-2.2-5.3"/><path d="M19.5 4.5v4h-4"/>',
+ cost:'<path d="M8.4 10a3.6 3.6 0 117.2 0"/><path d="M6 10h12l2 10H4z"/>',
+ todo:'<circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7M12.6 8.4L16.2 12l-3.6 3.6"/>',
+ src:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8v4.4l2.8 1.8"/>',
+ drive:'<path d="M4 6h6v6h6v6h4"/>',
+ down:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8v8M8.6 12.8L12 16.2l3.4-3.4"/>',
+ chev:'<path d="M6 9.5l6 6 6-6"/>'};
+function sumIc(k,cls){return '<svg class="'+(cls||'sg-ic')+'" viewBox="0 0 24 24" aria-hidden="true">'+SUM_IC[k]+'</svg>';}
+function sgSvg(inner){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+inner+'</svg>';}
+function sgCap(t){t=String(t||'');return t.charAt(0).toUpperCase()+t.slice(1);}
+/* a mark in a ring, never a fill */
+function sgRing(inner,col,tipT,tip){
+ return '<span class="sg-c-g" style="--rc:'+(col||'var(--accent)')+'"'
+  +(tip?' data-tip-t="'+esc(tipT)+'" data-tip="'+esc(tip)+'"':'')+'>'+inner+'</span>';}
+/* ============================================================
+   THE FIRST DRIVERS, ON THE RIGHT. Round OJ, his words: "for the summary, on
+   the right side, because this is information that won't change, we want the
+   root energetic meanings of their name... After you get your first root
+   energetics, after you are severed from your mother's umbilical cord, the
+   very next thing is your name... this is really kind of like a cascade of
+   drivers."
+
+   So the right hand card is the part of the person that does not move, in the
+   order it arrived: one, where they were born, the root energetics the four
+   systems give; two, what they were named, a meaning for each part of the
+   name; then everything else on the page, which is what those drivers are
+   running. A numbered ring on a line is the cascade, and nothing explains it.
+
+   THE ROOT OF A NAME HAS NO TABLE IN THIS PRODUCT, and this file does not
+   write one. NAME_MEANINGS below is the slot for it, read by name part, and it
+   holds the owner's three worked examples marked as his and nothing else. A
+   part with no entry says so and never shows a guess. DECISIONS.md, "No
+   etymology table", is the standing ruling this sits against, and DM and DZ in
+   TASKS.md found the references give other roots for the same three names,
+   which is held in each entry's note and not printed.
+   ============================================================ */
+const NAME_MEANINGS={
+ lance:{part:'Lance',says:'to pierce',
+  src:'The owner, in his own words, round OJ, 1 October 2026',
+  note:'DM and DZ: the references root Lance to land, and to pierce comes from a later link to a word for spear.'},
+ oneill:{part:"O'Neill",says:'champion',
+  src:'The owner, in his own words, round OJ, 1 October 2026',
+  note:'DM and DZ: the references give Niall no settled meaning, and champion is one proposal of several.'},
+ powell:{part:'Powell',says:'exalted',
+  src:'The owner, in his own words, round OJ, 1 October 2026',
+  note:'DM and DZ: the references give Hywel, which means eminent.'}};
+function nameKey(s){return String(s||'').toLowerCase().replace(/[^a-z]/g,'');}
+/* the parts of a name as the person entered them, first, middle and last. A
+   reference case has only a full name, so it is split the way numerology
+   splits it. An apostrophe stays inside its part. */
+function sumNameParts(B){
+ var w=CURP&&CURP.who||{}, f=String(w.first||'').trim(), m=String(w.middle||'').trim(), l=String(w.last||'').trim();
+ if(!(f||m||l)&&B.full){var ws=String(B.full).trim().split(/\s+/);
+  f=ws[0]||''; l=ws.length>1?ws[ws.length-1]:''; m=ws.slice(1,-1).join(' ');}
+ var out=[]; if(f)out.push({role:'First',text:f}); if(m)out.push({role:'Middle',text:m}); if(l)out.push({role:'Last',text:l});
+ return out;}
+function nameMeaning(text){
+ var hit=NAME_MEANINGS[nameKey(text)]; if(hit)return hit;
+ var ws=String(text).split(/\s+/);
+ for(var i=0;i<ws.length;i++){if(NAME_MEANINGS[nameKey(ws[i])])return NAME_MEANINGS[nameKey(ws[i])];}
+ return null;}
+/* one row of what a table says about a person, a mark in a ring, a label, a
+   title and the one line the table gives it */
+function sgMeet(src,glyph,k,t,say,tip,col){
+ return '<div class="sg-m" data-src="'+esc(src)+'">'+sgRing(glyph,col,t,tip)
+  +'<div class="sg-m-t"><span class="sg-c-k">'+esc(k)+'</span><b>'+esc(t)+'</b>'
+  +'<p>'+esc(say)+'</p></div></div>';}
+function sgStage(n,title,body){
+ return '<div class="sg-st" data-stage="'+n+'"><div class="sg-st-h"><span class="sg-st-n">'+n+'</span>'
+  +'<b>'+esc(title)+'</b></div><div class="sg-st-b">'+body+'</div></div>';}
+/* the systems that met, in words, and how strongly only when it is more than
+   light, because most meetings are light and say so once under the stage */
+function sgMeetRow(a){
+ return sgMeet('ROOT_SAYS',sgSvg(rsThemeIc(a)),
+  a.sys.map(function(x){return SYSNAME[x];}).join(', ')
+   +(a.strength==='light'?'':'. '+RS_STRENGTH[a.strength].replace(/\.$/,'')),
+  a.t,ROOT_SAYS[a.t]||'',RS_BRIDGE[a.voc]);}
+/* STAGE ONE. Where they were born: the root the sun sign gives, then where the
+   four systems meet, led by the meeting least likely by chance, which is how
+   rootOverlap orders them. FV: "where they overlap, because that's the truth." */
+function sumBorn(B){
+ var sp=B.sp, R=B.R, rows='', more=[];
+ if(!sp)return sgStage(1,'Born',
+  '<p class="sg-note">No birth data on file. Date, time and place would put it in.</p>'
+  +'<button type="button" class="btn s-oact" data-sout="iq">Open Energetics</button>');
+ rows+=sgMeet('ROOT_ELSAYS',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
+  'Root',sp.root,ROOT_ELSAYS[sp.root]||'','',rootPlain(sp.root));
+ var sh=R.shown||[], anyLight=sh.some(function(a){return a.strength==='light';});
+ if(sh.length)rows+=(anyLight?'<p class="sg-note">A light overlap is one many people share. A strong one is rare.</p>':'');
+ sh.slice(0,2).forEach(function(a){rows+=sgMeetRow(a);});
+ if(!sh.length)rows+='<p class="sg-note">These four do not land on the same thing.</p>';
+ more=sh.slice(2).map(sgMeetRow).concat((R.range||[]).map(function(x){var say=rsSays(x); if(!say)return '';
+  return sgMeet('range',sgSvg(SYSGLYPH[x.sys]),SYSNAME[x.sys],rsName(x),sgCap(say)+'.','');}));
+ return {stage:sgStage(1,'Born',rows),more:more.join('')};}
+/* STAGE TWO. What they were named: a root meaning for each part of the name,
+   from NAME_MEANINGS and from nowhere else, then the number the whole name
+   adds to. A part with no entry is said to have none. */
+function sumNamed(B){
+ var parts=sumNameParts(B); if(!parts.length)return '';
+ var any=false, rows='', N=B.N, c=N?NUM_CORE[N.expression]:null;
+ parts.forEach(function(p){p.mn=nameMeaning(p.text); if(p.mn)any=true;});
+ if(any)parts.forEach(function(p){
+  rows+=sgMeet('NAME_MEANINGS','<span class="s-num-g">'+esc(p.text.charAt(0).toUpperCase())+'</span>',
+   p.role,p.text,p.mn?sgCap(p.mn.says):'No meaning on file.',p.mn?'Source. '+p.mn.src+'.':'');});
+ else rows+='<p class="sg-note">No root meaning on file for '
+  +parts.map(function(p){return esc(p.text);}).join(', ').replace(/, ([^,]*)$/,' or $1')+'.</p>';
+ if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
+  String(N.expression),sgCap(c.ex)+'.','');
+ return sgStage(2,'Named',rows);}
+function sumRealName(){
+ var nm=String((CURP&&CURP.name)||'').trim();
+ return (nm&&nm!=='You')?nm:'';}
+function sumNameBlock(B,fallback){
+ var nm=sumRealName(), first=nm.split(/\s+/)[0]||(fallback?'You':'');
+ var line=(CURP&&CURP.who&&CURP.who.line)?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'';
+ var full=(B.full&&B.full!==first)?'<div class="s-pwho">'+esc(B.full)+'</div>':'';
+ return first?'<div class="s-pname">'+esc(first)+'</div>'+full+line:'';}
+function sumPlate(r,B){
  var t=TIER_BY[r.tier]||null;
  return '<div class="s-plate">'
-  +'<div class="s-pl-l">'
-   +'<div class="s-pname">'+esc(first)+'</div>'
-   +(CURP&&CURP.who&&CURP.who.line?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'')
-  +'</div>'
+  +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
   +'<div class="s-pl-r">'
    /* THE TIER'S OWN COLOUR, not the heaviest seat's. Ruled. The plate is the
       one place on this page that names the band, so its ring has to mean the
@@ -615,6 +789,63 @@ function sumPlate(r){
   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
     +esc(t.toward)+'</div>':'')
   +'</div>';}
+/* the head of the page: the plate. On a read profile it is the name, the band
+   and where it goes. On an unread one it is what was entered and nothing else,
+   so a name and a birth date still read and a default never does. */
+function sumWho(r,B,full){
+ /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
+    You, which is a default and not somebody, so it never counts. */
+ if(!full&&!(B.sp||B.N||sumRealName()))return '';
+ return sgZone('who','Who this is',
+  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+/* the first drivers card. Unread or read, it is only what a birth and a name
+   say, so it is real or it is absent. */
+function sumDrivers(B,r){
+ var parts=sumNameParts(B);
+ if(!(B.sp||B.N||parts.length))return '';
+ var born=sumBorn(B), isObj=typeof born==='object';
+ return '<section class="sg-card sg-drive" data-grp="drive">'+sgHead('drive','What drives it')
+  +(isObj?born.stage:born)+sumNamed(B)
+  +'<span class="sg-down" aria-hidden="true">'+sumIc('down','sg-ic')+'</span>'
+  +(isObj?sgFold('range','Other ways this shows up',born.more):'')+'</section>';}
+/* the birth marks, one strip across the page under the story and the roots, so
+   neither card has to make room for them and a five or a seven stands level */
+function sumMarks(B,r){
+ var C=B.sp?converge(B.p.nm,r):null;
+ return C?'<div class="sg-marks" data-grp="marks">'+sumChips(C)+'</div>':'';}
+/* a zone is a heading with a mark and one body. The heading names the slot and
+   the slot keeps its name whatever the data says. */
+function sgHead(k,title){
+ return '<h2 class="sg-zh" id="sg-h-'+k+'">'+sumIc(SUM_IC[k]?k:'src')+'<span>'+esc(title)+'</span></h2>';}
+function sgZone(k,title,body,cls){
+ return '<section class="sg-z sg-'+k+(cls?' '+cls:'')+'" data-grp="'+k+'" aria-labelledby="sg-h-'+k+'">'
+  +sgHead(k,title)+body+'</section>';}
+var SUM_OPEN={};
+function sgFold(k,title,body){
+ if(!body)return '';
+ return '<details class="sg-fold" data-fold="'+k+'" data-grp="fold"'+(SUM_OPEN[k]?' open':'')+'>'
+  +'<summary><span>'+esc(title)+'</span>'+sumIc('chev','sg-chev')+'</summary>'
+  +'<div class="sg-fold-b">'+body+'</div></details>';}
+/* THE NINE, AS THE PERSON'S OWN SET. Nine cells in a fixed order, three by
+   three, each with its mark, the place in the body it is felt and the weight.
+   A fixed order because a slot keeps its place and the value carries the
+   state: a person finds Fear where Fear was. */
+function sumNine(){
+ var C=(typeof CHILD!=='undefined')?CHILD:[]; if(!C.length)return '';
+ var top=C.map(function(c){return +(S.charge[c.nm]||0);});
+ var mx=Math.max.apply(null,top);
+ return '<div class="sg-nine">'+C.map(function(c,i){var sq=top[i];
+  return '<div class="sg-n'+(sq>0&&sq===mx?' top':'')+'" data-nine="'+esc(c.nm)+'">'
+   +cr(c.seat,sq*10,{size:'sm',raw:sq.toFixed(1),glyph:'<path d="'+c.ic+'"/>',label:c.nm})
+   +'<span class="sg-n-t"><b>'+esc(c.nm)+'</b><em>'+esc(c.loc)+'</em></span></div>';}).join('')+'</div>';}
+/* THE DAY SLOT. Another seat builds the Daily Summary, engine/daily.js, and
+   this is where its block goes: under the story, above the output row, full
+   width. It renders nothing until sumDayHtml returns something, and an empty
+   slot takes no room. Whoever fills it returns the markup from sumDayHtml and
+   touches nothing else on this page. */
+function sumDayHtml(r){return '';}
+function sumDaySlot(r){
+ return '<div id="sumday" class="sg-day" data-slot="daily" data-grp="day">'+sumDayHtml(r)+'</div>';}
 
 /* WHAT THIS STATE CALLS FOR. ritFor is a pure function of the reading and has
    only ever been called from inside the ritual overlay, which opens after a
@@ -701,53 +932,46 @@ function sumOutput(r){
   +'</div>';}
 
 function sumFull(r){
- return sumPlate(r)
-  +'<div class="s-cols">'
-   +'<div class="s-main">'
-    /* THE CENTRE IS THE STORY. Ruled. Their own words first, coloured where
-       they landed, then the reading built from them. The order matters: the
-       reading is a claim about the person and the story is the evidence for
-       it, and evidence goes first. */
-    +sumToldHtml()
-    +'<div class="s-readbox">'+sumStory(r)+'</div>'
-    +sumOutput(r)
-    +sumAxes(r)
-   +'</div>'
-   /* THE INFORMATION PANEL. Everything structural, in one column, in the
-      order a person asks for it: what is running, then the blueprint it runs
-      on, then the spiritual layer, then the numbers.
-
-      AND THE GLANCE ROW COMES WITH IT. Ruled: "the centre column becomes text
-      about you, and everything energetic moves right." Six rings reading
-      coherence, shadow weight, carried depth, pole, energy and identification
-      are as energetic as anything on this page, and they were sitting under
-      the reading in the centre. The centre is the story and the actions it
-      calls for. Everything measured is on the right.
-
-      TWO GROUPS, NOT FIVE SECTIONS IN ONE COLUMN. Round LV, his words on the
-      redesign: "organised, symmetrical and clean," and "the data organised
-      in a fashion that allows me to read this easily." Measured on James at
-      1600 with both rails shut: this column ran 2649px stacked five deep
-      while the reading beside it ran 971, which is neither organised nor
-      easy to read, it is a long scroll. What is read off the field groups
-      first, the glance and the structures; what is read off the birth date
-      groups second, the lenses, the spiritual layer and the numerology.
-      head.html lays the two groups side by side once there is real width
-      beside the centre lane, which brings the same column to 1954px, and
-      stacks them in this same order on anything narrower, so a phone and a
-      medium desktop read exactly as they did before this round. */
-   +'<aside class="s-side">'
-    +'<div class="s-side-a">'+sumGlance(r)+sumStruct(r)+'</div>'
-    +'<div class="s-side-b">'+sumLens(r)+sumSpirit(r)+sumNum(r)+'</div>'
-   +'</aside>'
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
+ /* THE ORDER IS THE ORDER A PERSON ASKS IN, and every group is one question.
+    Who is this. What did they say, and what do their roots say beside it. What
+    is running, and what does it cost. What do they do about it. Then, folded
+    away, where each of those comes from. Every row is two equal halves or
+    three equal thirds. */
+ return sumWho(r,B,true)
+  /* THE CENTRE IS THE STORY. Ruled. Their own words first, coloured where
+     they landed, then the reading built from them. The order matters: the
+     reading is a claim about the person and the story is the evidence for
+     it, and evidence goes first. It stands on the first screen, left of the
+     roots, and the phone reads it before them. */
+  +'<div class="sg-two sg-lead">'
+   +'<section class="sg-card sg-story" data-grp="story">'+sumToldHtml()
+    +'<div class="s-readbox sg-flat">'+sumStory(r)+'</div></section>'
+   +sumDrivers(B,r)
   +'</div>'
-  /* INTEGRITY OVER TIME, FULL WIDTH, DAY TO FIVE YEARS. Ruled, and it is the
-     one thing this page had no version of. Coherence over time lives on the
-     compass; integrity is the other half and it is the half a person can
-     actually move, because integrity is the twenty one laws and a law closes
-     by being kept. Full width under both columns, because a line five years
-     long inside a column is a scribble. */
-  +sumIg(r);}
+  +sumMarks(B,r)
+  +'<div class="sg-two">'
+   +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
+    +sumBlueprint()
+    +'<div class="sg-gap">'+sumArch(r)+'</div>'
+    +'<div class="sg-gap"><div class="pm-eye">Masks</div>'+sumMasks(r,0,3)+'</div>'
+    +'<div class="sg-gap">'+sumChain(r)+'</div>'
+    +sgFold('masks','All masks',sumMasks(r,3,99)||'')
+   +'</section>'
+   +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
+    +sumGlance(r,true)
+    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+sumAxes(r,true)+'</div>'
+    +sgFold('seats','Heaviest seats',sumSeats())
+    +sgFold('ig','Integrity over time',sumIg(r))
+   +'</section>'
+  +'</div>'
+  +sumDaySlot(r)
+  +sgZone('todo','What to do',sumOutput(r))
+  +'<div class="sg-folds">'
+   +sgFold('lens','Four lenses',sumLens(r,true))
+   +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
+   +sgFold('num','Numerology, in full',sumNum(r,true))
+  +'</div>';}
 
 /* ============================================================
    WHAT YOU ARE CARRYING, IN SENTENCES, IN THE BODY.
@@ -767,7 +991,7 @@ function sumFull(r){
    Three sentences at most, because a paragraph naming nine things is a list
    with full stops in it.
    ============================================================ */
-function sumAxes(r){
+function sumAxes(r,bare){
  var C=(typeof CHILD!=='undefined')?CHILD:[];
  if(!C.length)return '';
  /* THE AXIS VALUE, NOT THE MEAN OF ITS NODES. The first cut meaned n.sq over
@@ -816,7 +1040,7 @@ function sumAxes(r){
    +(standing.length>1?', and '+(standing.length-1)+' other'
      +(standing.length>2?'s':'')+' installed':'')
    +'. An address with the opposite installed conducts.');}
- return '<div class="s-axes"><div class="pm-eye">In the body</div>'
+ return '<div class="s-axes">'+(bare?'':'<div class="pm-eye">In the body</div>')
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')+'</div>';}
 
 /* ============================================================
@@ -837,11 +1061,11 @@ function sumAxes(r){
    is the third thing a label owes the person it is put on. Nothing here is
    stored, so none of it can drift from the instrument.
    ============================================================ */
-function sumLens(r){
+function sumLens(r,bare){
  var L=[lensWestern(r),lensEastern(r),lensDesign(r),lensGene(r)]
   .filter(function(x){return x&&x.a;});
  if(!L.length)return '';
- return '<div class="pm-eye" style="margin-top:18px">Four lenses</div>'
+ return (bare?'':'<div class="pm-eye" style="margin-top:18px">Four lenses</div>')
   +'<div class="s-lens">'+L.map(function(x){
    /* WHAT IT WAS READ OFF MOVES TO THE ROW'S TITLE, round HS. It was a
       fourth line in small italics under every lens, "read off root domain as
@@ -910,6 +1134,11 @@ function sumIg(r){
 function sumWire(){
  var h=document.getElementById('sumbody'); if(!h||h.dataset.wired)return;
  h.dataset.wired='1';
+ /* a fold remembers that it was opened through the next repaint, because
+    the surface is rewritten whole whenever a reading changes. toggle does not
+    bubble, so it is caught on the way down. */
+ h.addEventListener('toggle',function(ev){var d=ev.target;
+  if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
  h.addEventListener('click',function(ev){
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;

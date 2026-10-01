@@ -1,0 +1,196 @@
+{
+ "blank-1600": {
+  "controls": 4,
+  "controlsWholeScreen": 37,
+  "groups": 2,
+  "textBlocks": 5,
+  "words": 27,
+  "rings": 1,
+  "surfaceHeight": 466,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 1000
+ },
+ "loaded-1600": {
+  "controls": 1,
+  "controlsWholeScreen": 30,
+  "groups": 9,
+  "textBlocks": 20,
+  "words": 276,
+  "rings": 1,
+  "surfaceHeight": 2119,
+  "balance": {
+   "rows": 3,
+   "worst": {
+    "cls": "s-outrow",
+    "n": 3,
+    "min": 200,
+    "max": 200,
+    "level": 0.43
+   },
+   "mean": 0.84
+  },
+  "where": {
+   "storyTop": 388,
+   "toldTop": 232,
+   "actionTop": 1915,
+   "nineTop": 1164,
+   "slotTop": null
+  },
+  "fullHeight": 2155
+ },
+ "owner-1600": {
+  "controls": 0,
+  "controlsWholeScreen": 30,
+  "groups": 9,
+  "textBlocks": 17,
+  "words": 286,
+  "rings": 1,
+  "surfaceHeight": 2422,
+  "balance": {
+   "rows": 3,
+   "worst": {
+    "cls": "s-outrow",
+    "n": 3,
+    "min": 181,
+    "max": 181,
+    "level": 0.48
+   },
+   "mean": 0.82
+  },
+  "where": {
+   "storyTop": 388,
+   "toldTop": 232,
+   "actionTop": 2238,
+   "nineTop": 1423,
+   "slotTop": null
+  },
+  "fullHeight": 2458
+ },
+ "entered-1600": {
+  "controls": 5,
+  "controlsWholeScreen": 38,
+  "groups": 10,
+  "textBlocks": 10,
+  "words": 47,
+  "rings": 1,
+  "surfaceHeight": 935,
+  "balance": {
+   "rows": 1,
+   "worst": {
+    "cls": "sg-two sg-lead",
+    "n": 2,
+    "min": 765,
+    "max": 765,
+    "level": 0.7
+   },
+   "mean": 0.7
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 1000
+ },
+ "blank-390": {
+  "controls": 4,
+  "controlsWholeScreen": 11,
+  "groups": 2,
+  "textBlocks": 5,
+  "words": 27,
+  "rings": 1,
+  "surfaceHeight": 587,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 3334
+ },
+ "loaded-390": {
+  "controls": 0,
+  "controlsWholeScreen": 5,
+  "groups": 2,
+  "textBlocks": 6,
+  "words": 99,
+  "rings": 1,
+  "surfaceHeight": 4658,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": 473,
+   "toldTop": 292,
+   "actionTop": 2318,
+   "nineTop": 3754,
+   "slotTop": null
+  },
+  "fullHeight": 8192
+ },
+ "owner-390": {
+  "controls": 0,
+  "controlsWholeScreen": 5,
+  "groups": 2,
+  "textBlocks": 6,
+  "words": 111,
+  "rings": 1,
+  "surfaceHeight": 5101,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": 448,
+   "toldTop": 292,
+   "actionTop": 2717,
+   "nineTop": 4133,
+   "slotTop": null
+  },
+  "fullHeight": 8588
+ },
+ "entered-390": {
+  "controls": 4,
+  "controlsWholeScreen": 9,
+  "groups": 2,
+  "textBlocks": 4,
+  "words": 14,
+  "rings": 1,
+  "surfaceHeight": 1625,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 4372
+ }
+}
