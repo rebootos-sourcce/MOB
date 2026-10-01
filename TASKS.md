@@ -29311,3 +29311,79 @@ way the two GitHub secrets were, never pasted into a chat message; and
 the client side swap in `ui/sound.js` with a fallback to
 `speechSynthesis` on any failure, the same "every call resolves" rule
 `ui/auth.js` already keeps. `reboot-os` is not in this session yet.
+
+## Round NT. The Character page graded D plus, a shelf, a console, the summary page and sound asked for, a status check
+
+His words, verbatim, with a screenshot of the Character page: "Do I
+leave it as text or change it to secret in the variables and secret
+type dropdown? Scrub this thread for requests of improvement, and what
+you did. I need to see the gap of what's missing. I'm on the character
+screen. The layout is terrible. The word ideological is taking up all
+the real estate. The icons can be color. Icons on the left, the menu
+icons can be color. Twice as big. And more dynamic. And I want them to
+look like they're centered and on a shelf that can be opened and
+closed. And then the mask. The mask is not nearly as interesting as I'd
+like for it to be. I'm going to give it a D plus. So the team needs to
+fix the layout, and make the masks way more interesting. And then
+there's this red text, like output text in the upper left hand corner
+that says nothing saved on a worked example. I don't want any printed
+text right there. If you're going to do console type text, put it on,
+create a location on the very bottom of the navigation for console
+output that can be hidden. I want you to review your summary page. The
+layout is not organized well. It's not symmetrical. It's not on a grid.
+Everything's broken up. I want it organized in a fashion that is
+readable, so I want you to reorganize it. The sound effects engine lets
+design that, and if it's low cost to get it in, let's do it. There's a
+lot of notes to improve the quality experience of the story engine, the
+ritual builder, that stuff get in. And all the algorithm schemas,
+logic, frameworks is in from all these TDDs. And then where's the
+onboarding? Sorry, did you push the funnel update?"
+
+**The Cloudflare secret: Secret, not Text.** Answered directly, before
+anything else, since he is mid flow on the dashboard. Text is a plain
+variable, readable by anyone with dashboard access and visible in a
+config dump; Secret encrypts it at rest and the dashboard never shows
+it again once saved, the same handling `RECORDS_KEY` and every other
+key `reboot-os` already holds get, named in its own `wrangler.toml`.
+
+**The funnel: already pushed, confirmed off a real run and not
+assumed.** Round LW's own deploy workflow lists this exact branch as a
+trigger, `claude/laughing-feynman-xhfyj3`, beside `main`, and every
+commit this session touching `atuned_src/` has run it: checked the
+GitHub Actions history directly, the most recent run against commit
+`c2999cf` reads `conclusion: success`. `atuned.world` already carries
+tonight's work; nothing was owed here that had not already shipped.
+
+**The thread scrubbed for requests against what shipped, his own ask,
+answered in the reply rather than a new document: a gap table of
+everything asked this session against what is actually built, open, or
+queued.**
+
+**Dispatched: the Character page, graded D plus.** Rail icons full
+colour and roughly double size, a collapsible shelf for the rail, the
+mask itself built out further past today's bar, "Ideological" taken off
+fighting the face for space, and the global `#status` notice (not
+Character's own, it fires from `avatarui.js` more than anywhere, a
+shell wide element) moved to a new, hideable console at the bottom of
+the navigation. Told explicitly, per his own standing instruction on
+this exact page, not to ask him more questions and to build with the
+same judgment already shown on Body and Compass.
+
+**Queued, not yet dispatched, so the Character build is not competing
+with it for the same file:** the Summary page's own reorganisation
+onto a real grid, and sound effects wired in if the existing engine in
+`ui/sound.js` makes it cheap. Both come next once the Character build
+lands and is independently verified, the same sequencing every build
+this session has followed.
+
+**"The story engine, the ritual builder... that stuff get in. All the
+algorithm schemas, logic, frameworks... from all these TDDs."** Read as
+confirming the standing backlog rather than asking for something new:
+section 21's own Story and Ritual lines are exactly that stuff, T1
+through T5 already open there, three now ruled this round in NS. Not a
+new scrub; the one just run stands.
+
+**Onboarding: built, round NG, task 12. The scrub this same round
+found a real bug in it, `21.I1`**: the tutorial shares the Story page's
+own commit gate, so a first entry that reads as nothing is silently
+refused there too, on day one.
