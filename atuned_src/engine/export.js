@@ -21,6 +21,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the story frame, engine/frame.js, round OU, and the masked swear map */
                  storyFrame:storyFrame, storyFrameDay:storyFrameDay, frameQuestion:frameQuestion,
                  FRAME_SLOTS:FRAME_SLOTS, frameDay:frameDay,
+                 subjectCheck:subjectCheck, SUBJECT_UNCLEAR:SUBJECT_UNCLEAR, mirrorCause:mirrorCause,
                  hitSubjects:hitSubjects, subjectLine:subjectLine, frameTarget:frameTarget,
                  SUBJ_KINDS:SUBJ_KINDS, SUBJ_FROM:SUBJ_FROM, SUBJ_PREP:SUBJ_PREP,
                  DAYQ_NOUN:DAYQ_NOUN, DAYQ_ADJ:DAYQ_ADJ, DAYQ_AMT:DAYQ_AMT, DAYQ_IDIOM:DAYQ_IDIOM, DAYQ_NOUNQ:DAYQ_NOUNQ,
@@ -29,6 +30,12 @@ if(typeof module!=='undefined'&&module.exports){
                  PAST_IRR:PAST_IRR, PAST_LIGHT:PAST_LIGHT, CHAN_CUE:CHAN_CUE, FRAME_NEG:FRAME_NEG,
                  LEXMOD:LEXMOD, SWEAR_INT:SWEAR_INT, SWEAR_WORDS:SWEAR_WORDS,
                  swearCands:swearCands, swearFind:swearFind, swearRestore:swearRestore,
+  /* the feelings wheel, engine/wheel.js, round PA */
+                 WHEEL:WHEEL, WHEEL_TREE:WHEEL_TREE, WHEEL_FAM:WHEEL_FAM, WHEEL_SEC:WHEEL_SEC,
+                 WHEEL_WORD:WHEEL_WORD, WHEEL_DUAL:WHEEL_DUAL, WHEEL_PLAIN:WHEEL_PLAIN, WHEEL_LEAD:WHEEL_LEAD,
+                 WHEEL_BY:WHEEL_BY, wheelRead:wheelRead, wheelCharges:wheelCharges, wheelAddresses:wheelAddresses,
+                 wheelSeatOf:wheelSeatOf, wheelAmount:wheelAmount, wheelDual:wheelDual, WHEELPLAIN:WHEELPLAIN,
+                 LEXWHEELRUN:LEXWHEELRUN,
   /* distress, engine/distress.js, round OX */
                  distressRead:distressRead, distressMessage:distressMessage, mirrorGuard:mirrorGuard,
                  DISTRESS_LINES:DISTRESS_LINES, DISTRESS_LEAD:DISTRESS_LEAD, DISTRESS_KEEP:DISTRESS_KEEP,
@@ -79,7 +86,7 @@ if(typeof module!=='undefined'&&module.exports){
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
                   GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
-  /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
+  /* catalog */   C3_VERB:C3_VERB, C3_FIRSTRUN_VERB:C3_FIRSTRUN_VERB, C3_FIRSTRUN_STEM:C3_FIRSTRUN_STEM, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
                   C3_CHAIN:C3_CHAIN, C3_DIR:C3_DIR, C3_PART:C3_PART, C3_HEAD:C3_HEAD,
                   C3_THEME:C3_THEME, C3_KIND:C3_KIND, C3_TRUTHRULE:C3_TRUTHRULE, C3_FAIL:C3_FAIL,

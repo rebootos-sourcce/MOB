@@ -25,6 +25,7 @@ engine/trace.js
 engine/schema.js
 engine/practice.js
 engine/intake.js
+engine/wheel.js
 engine/sniff.js
 engine/sourceai.js
 engine/frame.js

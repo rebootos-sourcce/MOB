@@ -338,7 +338,25 @@ function stRead(){
      it, and which of what happened, what was done, how it felt, where and
      what was under it the entry has not said. The slots already asked in this
      entry are passed so the chain never repeats one. */
-  frame:storyFrame(t,{asked:srcFrameAsked()})};}
+  frame:storyFrame(t,{asked:srcFrameAsked()}),
+  dist:distressRead(t)};
+ /* DISTRESS, round OX. At concern or urgent the release is not offered and the
+    page shows a short plain message and the drafted support lines, see
+    stSupportHtml. It holds after a commit, until the person writes something
+    that does not read as distress, because the entry is cleared by the commit
+    and a message that vanished with it would have been shown for one frame.
+    Under no detection nothing is shown and nothing is held. */
+ if(t.trim()){STV.distKeep=null; STV.dist=STR.dist.level!=='none'?STR.dist:null;}
+ else STV.dist=STV.distKeep||null;}
+/* the card that stands in the release column, and the one line in Source AI's.
+   The words are the engine's, distressMessage, so the Story page and the first
+   run Mirror print the same ones. */
+function stSupportHtml(){
+ var m=distressMessage(STV.dist&&STV.dist.level); if(!m)return '';
+ return '<div id="stsupport" role="region" aria-label="Support">'
+  +'<p class="st-none">'+esc(m.lead)+'</p>'
+  +m.lines.map(function(l){return '<p class="st-none">'+esc(l)+'</p>';}).join('')
+  +'<button type="button" class="btn" id="stkeep">'+esc(m.keep)+'</button></div>';}
 /* the addresses this entry reaches, or the last committed entry's */
 function stFound(){
  var found=[];
@@ -423,6 +441,7 @@ function stCommit(){
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
  var text=ST_TEXT;
+ STV.distKeep=(STR.dist&&STR.dist.level!=='none')?STR.dist:null;
  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;
  /* the release takes the room on a desktop. On a phone it stays the bar
     with Run on it: widening it there would push Run off the first screen,
@@ -820,6 +839,10 @@ function srcPaint(){
     carries no word, because "thinking" printed on a scripted reader would be
     a claim, and the dot only says what is true: it reads on every key. */
  var o='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
+ /* under a detection of distress Source AI asks nothing and says nothing: no
+    question, no gauge, no why. Round OX. */
+ if(STV.dist){h.innerHTML='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
+  SRC_SHOWN=''; var sy0=document.getElementById('srcsay'); if(sy0&&sy0.textContent)sy0.textContent=''; return;}
  var ask=turn.move==='ask'?(turn.q||srcAsk(turn,heard.top&&heard.top.words)):'';
  /* an ask on screen is a question asked, 20.H5: its why and its seat */
  if(turn.move==='ask')srcLog(turn.why,turn.seat);
@@ -1527,6 +1550,13 @@ function stRelModel(){
   added:!!(picked.length||found.length)};}
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
+ /* a detection of distress withdraws the release, and offers to keep writing */
+ if(STV.dist){
+  e.innerHTML=stSupportHtml();
+  e.style.setProperty('--glow','var(--accent)'); e.style.setProperty('--lux','.1');
+  var kp=document.getElementById('stkeep');
+  if(kp)kp.onclick=function(){var ta=document.getElementById('sttext'); if(ta)ta.focus();};
+  return;}
  var M=stRelModel(), o='';
  o+='<div class="st-rlhd"><span class="st-ring"></span><h3>Release</h3></div>'
   +'<div class="st-rlmid">';

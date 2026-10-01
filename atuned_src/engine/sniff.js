@@ -119,6 +119,10 @@ function lexCanon(){
    and the gate would then be asserting the absence of a bug it had itself
    introduced. Both run before scanStory can be called. */
 var LEXCANONRUN=lexCanon();
+/* the wheel, round PA, after the canon and before the fold, so a fold can take an
+   inflection of a wheel word, and before the version stamp reads the table */
+var LEXWHEELRUN=lexWheel();
+var WHEELPLAIN=wheelPlain();
 var LEXFOLDRUN=lexFold();
 /* ============================================================
    THE PLACE WORD, 20.H2. "The body word the person used is where the body
@@ -427,6 +431,25 @@ function scanStory(text){
   var at=src.indexOf(' '+w+' ');
   while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
+ /* THE WHEEL'S PLAIN WORDS, round PA. A word that is also an ordinary word, a
+    busy road, a free afternoon, is read as a feeling only after a word that
+    says a person is feeling it, see WHEEL_LEAD. Nothing else reads it. */
+ Object.keys(WHEELPLAIN).forEach(function(w){
+  var at=src.indexOf(' '+w+' ');
+  while(at>=0){
+   var pre=src.slice(0,at+1), mm=Object.keys(LEXMOD).sort(function(a,b){return b.length-a.length;}), cut=true;
+   while(cut){cut=false;
+    for(var q=0;q<mm.length;q++)if(pre.slice(-(mm[q].length+2))===' '+mm[q]+' '){pre=pre.slice(0,pre.length-mm[q].length-1);cut=true;break;}}
+   var lead=WHEEL_LEAD.some(function(l){return pre.slice(-(l.length+2))===' '+l+' ';});
+   if(lead&&!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
+    hits.push({t:w,kind:'word',band:WHEELPLAIN[w].band,amt:WHEELPLAIN[w].amt,fet:WHEELPLAIN[w].fet,at:at});
+   at=src.indexOf(' '+w+' ',at+1);}});
+ /* THE TWO FAMILY WORDS, round PA: a second hit at the same word, at the
+    second charge. The path already records one word reaching two places. */
+ hits.slice().forEach(function(h){
+  if(h.kind!=='word'||!WHEEL_DUAL[h.t])return;
+  var d=wheelDual(h.t);
+  if(d)hits.push({t:h.t,kind:'word',band:d.band,amt:d.amt,fet:d.fet,at:h.at,dual:true});});
  /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
     phrase hit scales its amount, and the hit keeps both so the path and any
     reader can see what was scaled and by what. Only the nearest degree word
@@ -1081,7 +1104,7 @@ function lexCanonJSON(v){
  return JSON.stringify(v===undefined?null:v);}
 function lexVersion(){
  var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS,
-  DAYQ_NOUN,DAYQ_ADJ,DAYQ_AMT,DAYQ_IDIOM,DAYQ_NOUNQ,DAYQ_VERB,DAYQ_PHRASE,DAYQ_SUBJ,ROLES,PRON_OTHER,
+  WHEEL_TREE,WHEEL_FAM,WHEEL_SEC,WHEEL_WORD,WHEEL_DUAL,WHEEL_PLAIN,WHEEL_LEAD,DAYQ_NOUN,DAYQ_ADJ,DAYQ_AMT,DAYQ_IDIOM,DAYQ_NOUNQ,DAYQ_VERB,DAYQ_PHRASE,DAYQ_SUBJ,ROLES,PRON_OTHER,
   ACTS,PAST_IRR,PAST_LIGHT,CHAN_CUE,SWEAR_WORDS]
   .map(lexCanonJSON).join('|');
  var h=0x811c9dc5;

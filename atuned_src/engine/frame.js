@@ -542,6 +542,7 @@ function hitSubjects(t,hits){
   var rec={t:h.t, at:h.at, seat:h.band, amt:Math.abs(h.amt||0), subject:null, kind:null,
    role:null, ref:null, from:null, why:null};
   if(tg.who){
+   rec.pron=!!(tg.who.pron&&!tg.who.role);
    rec.subject=tg.who.text; rec.kind='other'; rec.role=tg.who.role||null;
    rec.ref=tg.who.ref||(tg.who.role&&tg.who.text!==tg.who.role?tg.who.text:null)||null;
    rec.from='clause'; rec.why='the clause is about '+tg.who.text;
@@ -603,3 +604,53 @@ function subjectLine(im){
  else out.prep=SUBJ_PREP[name]||'with';
  out.subject=who; out.tail=out.prep+' '+who; out.line=name+' '+out.tail; out.certain=im.subjectFrom==='clause';
  return out;}
+
+/* ============================================================
+   IS THE SUBJECT CLEAR, round PA. The owner wants the Mirror's "Not quite" to be
+   able to say that the subject is not clear. This is the check it asks: for
+   every word the sniffer read, was who or what it is about said in the
+   person's own clause, and said as somebody, and not as a pronoun with
+   nobody behind it. It reports each word that fails and why, in the person's
+   own letters, and it is a reading of the writing and never of the person.
+
+   A word is unclear when
+     the clause names nobody and does not say I, and the subject was taken from
+       the rest of the entry (from entry), or from nothing at all (from none)
+     the clause names somebody only as he, she, they, him, her or them, and the
+       entry has not named exactly one role for it to be (a pronoun with
+       nobody behind it)
+   A stated I is clear. A role named in the clause is clear. An act in the
+   clause is clear.
+
+   `clear` is true when no word is unclear and at least one was read. An entry
+   the sniffer read nothing in has no subject to be unclear about, so it is
+   neither clear nor unclear: `read` is false and the Mirror has nothing to say.
+   ============================================================ */
+var SUBJECT_UNCLEAR='The subject is not clear.';
+function subjectCheck(text){
+ var p=parseStory(text), items=[];
+ (p.subjects||[]).forEach(function(r){
+  var why=null;
+  if(r.from==='none')why='nothing in the entry says who or what this is about';
+  else if(r.from==='entry')why='the clause names nobody, so the subject was taken from the rest of the entry';
+  else if(r.pron&&!r.role)why='the clause says '+r.subject+' and the entry does not say who that is';
+  items.push({word:r.t,subject:r.subject,kind:r.kind,from:r.from,unclear:!!why,why:why});});
+ var unclear=items.filter(function(x){return x.unclear;});
+ return {read:items.length>0, clear:items.length>0&&!unclear.length, unclear:unclear, items:items,
+  say:(items.length&&unclear.length)?SUBJECT_UNCLEAR:null};}
+
+/* ============================================================
+   THE MIRROR'S CAUSE LINE, round OX, his words: "Four, let's try it": the
+   Mirror's cause line is the person's OWN second answer quoted back, with no
+   language step. The question the chain asked is what made it rough, or what
+   he did, and what the person wrote in answer is the cause line. Nothing is
+   composed: the answer comes back as typed, trimmed of the space around it and
+   of nothing else, and it carries the question it answered so the Mirror can
+   say what it is quoting. A first answer with no frame, or no second answer,
+   gives no cause line, and the Mirror shows none rather than writing one.
+   ============================================================ */
+function mirrorCause(first,second){
+ var a=String(second==null?'':second).trim();
+ if(!a)return null;
+ var f=storyFrame(String(first||'')), q=f.questions&&f.questions.what?f.questions.what:null;
+ return {cause:a, asked:q?q.q:null, slot:'what', verbatim:true};}

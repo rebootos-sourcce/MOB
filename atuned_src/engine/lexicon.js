@@ -656,7 +656,12 @@ var LEX_SEATS=['root','sacral','solar','heart','throat','eye','crown','coherent'
    family of them. The validator refused every composite entry until this line
    existed, which is the validator working: a new provenance is declared here or
    it does not reach the table. */
-var LEX_SRC=['authored','canon','fold','composite'];
+/* A FIFTH, round PA: `wheel`, a word added by lexWheel in engine/wheel.js off
+   the owner's feelings wheel, its charge from the family and its seat from
+   CHG2SEAT and its amount from the ring, each derived and none typed. It is
+   its own source because its derivation is its own, and a reviewer asking where
+   an entry came from gets one answer. */
+var LEX_SRC=['authored','canon','fold','composite','wheel'];
 var LEX_AMT_MAX=30;
 /* key -> {src, from, rule, cite}. Covers LEX exactly, in both directions, and
    the gate asserts that, because a provenance table with holes in it is worse

@@ -52,6 +52,24 @@ const C3_STEM='I am letting go of '+C3_VERB.join(', ').replace(/, ([^,]*)$/,', a
  +' that I am ';
 const C3_TRUTH='I now embody the truth that I am ';
 
+/* ---- THE FIRST RUN RELEASE SENTENCE. Round OX, his words: "I am releasing
+   believing, thinking, feeling, behaving and acting that I am ...". It is the
+   wording of the first run mini release only, exposed here as a constant so
+   the surface that builds it reads it and does not retype it. NOTHING ELSE
+   READS IT: the shipped stem above, C3_STEM, and every line built on it, the
+   release, the games and the knowledge cards, are untouched.
+
+   WHERE THE SHIPPED STEM DIFFERS, so nobody has to find out:
+     the verb     shipped "I am letting go of", first run "I am releasing"
+     the channels shipped six, first run five: perceiving is not in it
+     the order    shipped believing, perceiving, thinking, behaving, acting,
+                  feeling; first run believing, thinking, feeling, behaving,
+                  acting, which puts feeling third and not last
+     the list     shipped joins its last two with ", and", first run with "and"
+   The five are five of C3_VERB's six names, and the gate holds them to it. ---- */
+const C3_FIRSTRUN_VERB=['believing','thinking','feeling','behaving','acting'];
+const C3_FIRSTRUN_STEM='I am releasing believing, thinking, feeling, behaving and acting that I am ';
+
 /* ---- the escalation curve ----
    fifty statements per channel, five bands of ten. the band is not
    decoration: it is nervous system pacing, and the purpose column is why

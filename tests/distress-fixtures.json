@@ -1,0 +1,275 @@
+{
+ "note": "Distress fixtures. A is the set written first and the table was tuned against it. B was written after, measured cold (5 of 18 caught) and then the table was widened with B in view, so B is also fitted now. Neither is a held out set. Each positive is [text, level]; each negative is a text that must read none unless listed in knownFalse.",
+ "A": {
+  "pos": [
+   [
+    "I want to end my life.",
+    "urgent"
+   ],
+   [
+    "I want to end my life. I feel hopeless and numb.",
+    "urgent"
+   ],
+   [
+    "I am going to kill myself.",
+    "urgent"
+   ],
+   [
+    "I keep thinking about suicide.",
+    "urgent"
+   ],
+   [
+    "I took a lot of pills and I want it to be over.",
+    "urgent"
+   ],
+   [
+    "I have been cutting myself again.",
+    "urgent"
+   ],
+   [
+    "I want to hurt myself.",
+    "urgent"
+   ],
+   [
+    "I do not want to be here anymore.",
+    "concern"
+   ],
+   [
+    "I don't want to be here anymore.",
+    "concern"
+   ],
+   [
+    "Everyone would be better off without me.",
+    "urgent"
+   ],
+   [
+    "I wish I was dead.",
+    "urgent"
+   ],
+   [
+    "I just want to go to sleep and not wake up.",
+    "urgent"
+   ],
+   [
+    "I don't want to live like this.",
+    "urgent"
+   ],
+   [
+    "No one would miss me if I disappeared.",
+    "urgent"
+   ],
+   [
+    "I'm so tired of being alive.",
+    "urgent"
+   ],
+   [
+    "I wish I could disappear.",
+    "concern"
+   ],
+   [
+    "I can't do this anymore.",
+    "concern"
+   ],
+   [
+    "I can't go on like this.",
+    "concern"
+   ],
+   [
+    "What is the point.",
+    "concern"
+   ],
+   [
+    "What's the point of any of it.",
+    "concern"
+   ],
+   [
+    "I feel hopeless and numb.",
+    "concern"
+   ],
+   [
+    "I feel completely hopeless.",
+    "concern"
+   ],
+   [
+    "There is no way out of this.",
+    "concern"
+   ],
+   [
+    "I can't take it anymore and I have nothing to live for.",
+    "urgent"
+   ],
+   [
+    "I don't see the point in anything any more.",
+    "concern"
+   ],
+   [
+    "I feel like I'm a burden to everyone.",
+    "concern"
+   ],
+   [
+    "I just want it all to stop.",
+    "concern"
+   ],
+   [
+    "I'm exhausted by life and I don't know how much longer I can do it.",
+    "concern"
+   ],
+   [
+    "I think about dying a lot.",
+    "urgent"
+   ],
+   [
+    "Sometimes I wonder if anyone would notice if I just vanished.",
+    "concern"
+   ],
+   [
+    "I can't stop crying and I feel numb and empty.",
+    "concern"
+   ],
+   [
+    "I am so tired of fighting every single day and nothing is going to change.",
+    "concern"
+   ],
+   [
+    "Everything feels pointless and I just want to sleep forever.",
+    "concern"
+   ]
+  ],
+  "neg": [
+   "I had a really rough day.",
+   "I had a confrontation with my boss and I was really irritated by him.",
+   "My boss yelled at me in front of everyone and I wanted to disappear.",
+   "I was so embarrassed I wanted to die.",
+   "I could kill my brother for leaving the dishes again.",
+   "The deadline is hopeless and my manager knows it.",
+   "I'm hopeless at cooking.",
+   "I can't do this job anymore, the meetings are endless.",
+   "What is the point of this meeting?",
+   "I hurt myself at the gym today and my back is sore.",
+   "I was so tired and exhausted after back to back meetings.",
+   "I'm done with this project.",
+   "I don't want to be here, this party is dull.",
+   "I don't want to wake up at five tomorrow.",
+   "I wish I could disappear into a book this weekend.",
+   "I feel numb after that call with my boss.",
+   "My feet are numb from standing all day.",
+   "The traffic was brutal and I was furious.",
+   "I'm so angry at my sister, she never listens.",
+   "I killed it in the presentation today.",
+   "I want to kill whoever scheduled the 7am meeting.",
+   "It never gets better with that landlord, he ignores every email.",
+   "I felt hopeless about the project until Tuesday.",
+   "I'm tired of living in this apartment, the neighbours are loud.",
+   "My friend told me he wants to die and I don't know what to do.",
+   "I took my life back in my own hands this year.",
+   "I don't want to die, I just want a day off.",
+   "I would never kill myself, but I am so tired.",
+   "I want to die of embarrassment.",
+   "I had a bad day, I was irritated, frustrated and mad, and I snapped at my kids.",
+   "I felt low and sad all afternoon after the argument with my wife.",
+   "I can't take it anymore, this noise is driving me mad.",
+   "Honestly I'm fed up with everything at work and I could kill myself for saying yes.",
+   "I was depressed all week after the break up but I am talking to a friend."
+  ],
+  "knownFalse": [
+   "I can't take it anymore, this noise is driving me mad.",
+   "Honestly I'm fed up with everything at work and I could kill myself for saying yes."
+  ]
+ },
+ "B": {
+  "pos": [
+   [
+    "Lately I've been thinking everyone around me would have an easier life if I wasn't around.",
+    "any"
+   ],
+   [
+    "I don't think I can keep going.",
+    "any"
+   ],
+   [
+    "I've got a plan to end it.",
+    "any"
+   ],
+   [
+    "I wish I'd never been born.",
+    "any"
+   ],
+   [
+    "I'm going to kill myself tonight.",
+    "any"
+   ],
+   [
+    "I don't want to be alive anymore.",
+    "any"
+   ],
+   [
+    "I hate myself so much I want to die.",
+    "any"
+   ],
+   [
+    "Nothing will ever get better for me.",
+    "any"
+   ],
+   [
+    "I feel so alone and hopeless.",
+    "any"
+   ],
+   [
+    "I can't see any way out.",
+    "any"
+   ],
+   [
+    "I just can't do it anymore.",
+    "any"
+   ],
+   [
+    "I wish I could just go to sleep and never wake up.",
+    "any"
+   ],
+   [
+    "I've been having thoughts of hurting myself.",
+    "any"
+   ],
+   [
+    "I don't deserve to live.",
+    "any"
+   ],
+   [
+    "My family would be happier if I was gone.",
+    "any"
+   ],
+   [
+    "I am a burden and I hate it.",
+    "any"
+   ],
+   [
+    "I want out of this life.",
+    "any"
+   ],
+   [
+    "I feel completely empty and there's no point anymore.",
+    "any"
+   ]
+  ],
+  "neg": [
+   "I'm exhausted and I need a holiday.",
+   "Work is killing me this week.",
+   "I felt invisible in the meeting.",
+   "I'm so stressed I can't sleep.",
+   "He ignored me all day and I felt small.",
+   "I'm sick of the rain.",
+   "I cried in the car after the argument.",
+   "This traffic is going to be the death of me.",
+   "I just want this week to be over.",
+   "I feel like I'm failing at everything lately.",
+   "I couldn't face going to work today.",
+   "What's the point of ironing when it just gets creased.",
+   "I wanted to scream at my manager.",
+   "I felt empty after the project ended.",
+   "It's pointless arguing with him.",
+   "I can't do this much longer with this commute.",
+   "I don't want to go to work anymore.",
+   "Honestly I could just disappear for a week and nobody would care at the office."
+  ]
+ }
+}

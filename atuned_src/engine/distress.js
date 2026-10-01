@@ -242,7 +242,7 @@ function distressRead(text){
     if(ok&&r.opt.notBy&&pre.length&&r.opt.notBy.indexOf(pre[pre.length-1])>=0)ok=false;
     if(ok){
      taken.push({at:at,hi:hi});
-     var before=pre.slice(Math.max(0,pre.length-5));
+     var before=pre.slice(Math.max(0,pre.length-8));
      /* the clause floor for the look back: nothing before a bar counts */
      var bi=before.lastIndexOf('|'); if(bi>=0)before=before.slice(bi+1);
      var ctx=' '+before.join(' ')+' ';

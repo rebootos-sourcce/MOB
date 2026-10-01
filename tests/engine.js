@@ -6548,5 +6548,165 @@ g('OZ2 · the subject is validated at the boundary and kept with the entry');
  ok(!validateProfile(mk([{seat:'solar',kind:'other',subject:'him',from:'clause',x:1}])).ok,'and a bad row refuses the whole entry and is never dropped quietly');
 }
 
+g('OX1 · distress: the fixtures, the drafted lines, and what is shown');
+{
+ const fs=require('fs'), path=require('path');
+ const {distressRead,distressMessage,mirrorGuard,DISTRESS_LINES,DISTRESS_LEAD,DISTRESS_KEEP,DISTRESS_LEVELS}=E;
+ const F=JSON.parse(fs.readFileSync(path.resolve('tests/distress-fixtures.json'),'utf8'));
+ /* the fixtures live in a data file, and are measured, not tuned to pass. Indexes
+    below are the documented exceptions, each stated once. */
+ const A_MISS=[30,31], A_LEVEL=[29], A_FALSE=[31,32], B_MISS=[7];
+ let caught=0, missed=0, wrong=0, fp=0;
+ F.A.pos.forEach((x,i)=>{const d=distressRead(x[0]);
+  if(d.level==='none'){missed++; ok(A_MISS.indexOf(i)>=0,'set A positive '+i+' is read, or is a documented miss');}
+  else{caught++; if(d.level!==x[1]){wrong++; ok(A_LEVEL.indexOf(i)>=0,'set A positive '+i+' reads at its level, or is a documented level difference');}}});
+ F.A.neg.forEach((x,i)=>{const d=distressRead(x);
+  if(d.level!=='none'){fp++; ok(A_FALSE.indexOf(i)>=0,'set A ordinary sentence '+i+' reads none, or is a documented false positive');}});
+ let bmiss=0, bfp=0;
+ F.B.pos.forEach((x,i)=>{if(distressRead(x[0]).level==='none'){bmiss++; ok(B_MISS.indexOf(i)>=0,'set B positive '+i+' is read, or is a documented miss');}});
+ F.B.neg.forEach((x,i)=>{if(distressRead(x).level!=='none'){bfp++; ok(false,'set B ordinary sentence '+i+' reads none');}});
+ ok(F.A.pos.length>=20&&F.A.neg.length>=20,'at least twenty of each, '+F.A.pos.length+' and '+F.A.neg.length);
+ console.log('  distress, set A: '+caught+' of '+F.A.pos.length+' caught, '+missed+' missed, '+wrong+' at another level; '+fp+' of '+F.A.neg.length+' ordinary sentences flagged. set B: '+(F.B.pos.length-bmiss)+' of '+F.B.pos.length+' caught, '+bfp+' of '+F.B.neg.length+' flagged. both sets were written by the author of the table: neither is held out.');
+ ok(F.A.neg.length-fp>=F.A.neg.length-2&&bfp===0,'false positives on the ordinary sentences are the two documented');
+ /* the owner's two review cases, by their own sentences in the data */
+ ok(distressRead(F.A.pos[1][0]).level==='urgent'&&distressRead(F.A.pos[8][0]).level==='concern','the two cases the review found are read');
+ ok(distressRead('').level==='none'&&distressRead(null).level==='none'&&distressRead('   ').offerRelease===true,'nothing in, nothing out, and a release stays offered');
+ const u=distressRead(F.A.pos[0][0]);
+ ok(u.level==='urgent'&&u.offerRelease===false&&u.reasons.length>0&&u.reasons.every(r=>r.text&&r.why),'a detection carries a level and a reason for every phrase it found');
+ ok(DISTRESS_LEVELS.join()==='none,concern,urgent','the levels are none, concern, urgent');
+ /* the pure rules, as terse fixtures */
+ const lv=s=>distressRead(s).level;
+ ok(lv('I do not want to die')==='none'&&lv('I would never kill myself')==='none','a negated cue is nothing');
+ ok(lv('he wants to die')==='none'&&lv('they want to die')==='none','somebody else wanting it is not the person');
+ ok(lv('back then I wish I was dead')==='concern'&&lv('back then I feel hopeless')==='none','the past steps a cue down, urgent to concern, and concern out');
+ ok(lv('I want to die')==='urgent'&&lv('I want to die of shame')==='none','a figure of speech is not read');
+ ok(lv('I feel numb')==='none'&&lv('I feel empty inside')==='none','numb and empty alone are recorded and change no level');
+ ok(distressRead('I feel hopeless and numb').support.length===1,'but they are kept as a reason');
+ /* the drafted lines are the file's, word for word */
+ const md=fs.readFileSync(path.resolve('reviews/LEGAL-floor.md'),'utf8').replace(/^>\s?/gm,'').replace(/\s+/g,' ');
+ Object.keys(DISTRESS_LINES).forEach(k=>ok(md.indexOf(DISTRESS_LINES[k])>=0,'the drafted line "'+k+'" is in reviews/LEGAL-floor.md exactly'));
+ ok(!/[—–]/.test(JSON.stringify([DISTRESS_LINES,DISTRESS_LEAD,DISTRESS_KEEP])),'no dash in what is shown');
+ ok(distressMessage('none')===null&&distressMessage(undefined)===null,'under no detection nothing is shown');
+ ['concern','urgent'].forEach(l=>{const m=distressMessage(l);
+  ok(m&&m.offerRelease===false&&m.lead===DISTRESS_LEAD&&m.keep===DISTRESS_KEEP&&m.lines.length===3,l+' shows a short message, the drafted lines and a way to keep writing, and offers no release');});
+ const mg=mirrorGuard(F.A.pos[0][0]);
+ ok(mg.offerRelease===false&&mg.message&&mirrorGuard('I had a rough day').offerRelease===true&&mirrorGuard('I had a rough day').message===null,'the first run Mirror takes the same guard, and shows nothing on an ordinary day');
+ /* it is a reader and nothing else: no field moves */
+ const before=JSON.stringify(E.S.charge); distressRead(F.A.pos[0][0]); ok(JSON.stringify(E.S.charge)===before,'reading distress moves no charge');
+ /* the sniffer's own reading of the first review case is unchanged: this is a
+    separate reader, and the page is what acts on it */
+ ok(E.parseStory(F.A.pos[1][0]).imprints.length>0,'the sniffer still reads the sentence as charge, which is why the page, and not the sniffer, withholds the release');
+}
+
+g('PA1 · the feelings wheel: every word is on the table, grouped to its family, and mapped to the engine');
+{
+ const fs=require('fs'), path=require('path');
+ const {WHEEL,WHEEL_TREE,WHEEL_BY,WHEEL_PLAIN,WHEEL_LEAD,WHEEL_DUAL,WHEELPLAIN,LEX,LEXMETA,LEX_SRC,wheelRead,wheelCharges,wheelSeatOf,wheelAddresses,wheelAmount,parseStory,CHARGES,CHG2SEAT,NODES,B2K,K2BAND,LEXWHEELRUN}=E;
+ /* the file is the source: every word in its table is in the data, and nothing else is */
+ const md=fs.readFileSync(path.resolve('FEELINGS-WHEEL.md'),'utf8');
+ const rows=md.split('\n').filter(l=>/^\|/.test(l)&&!/^\|---/.test(l)&&!/Primary/.test(l));
+ let prim='', fileWords={};
+ rows.forEach(l=>{const c=l.split('|').slice(1,-1).map(x=>x.trim());
+  if(c[0])prim=c[0]; fileWords[prim.toLowerCase()]=1; fileWords[c[1].toLowerCase()]=1;
+  c[2].split(',').forEach(t=>{fileWords[t.trim().toLowerCase()]=1;});});
+ const dataWords={}; WHEEL.forEach(r=>{dataWords[r.w]=1;});
+ ok(Object.keys(fileWords).filter(w=>!dataWords[w]).length===0,'every word in the owner\'s wheel is in the table, missing: '+JSON.stringify(Object.keys(fileWords).filter(w=>!dataWords[w])));
+ ok(Object.keys(dataWords).filter(w=>!fileWords[w]).length===0,'and the table holds no word the wheel does not');
+ ok(Object.keys(WHEEL_TREE).length===7,'seven primary families');
+ /* the four that sit under two families carry both */
+ ['overwhelmed','inferior','disappointed','embarrassed'].forEach(w=>ok(WHEEL_BY[w].fams.length===2,w+' is grouped to both of its families: '+WHEEL_BY[w].fams.join(' and ')));
+ ok(WHEEL_BY.overwhelmed.fams.join()==='Bad,Fearful'&&WHEEL_BY.inferior.fams.join()==='Fearful,Sad','and they are the right two');
+ /* every word is reachable: read as a hit, or read after a lead, never lost */
+ const lost=WHEEL.filter(r=>!LEX[r.w]&&!WHEELPLAIN[r.w]).map(r=>r.w);
+ ok(lost.length===0,'every wheel word is either in the lexicon or a plain word read after a lead, lost: '+JSON.stringify(lost));
+ ok(LEXWHEELRUN.unseated.length===0,'and the wheel pass left none unseated');
+ const wheelAdded=Object.keys(LEXMETA).filter(k=>LEXMETA[k].src==='wheel');
+ ok(wheelAdded.length===LEXWHEELRUN.added&&LEX_SRC.indexOf('wheel')>=0&&wheelAdded.length>30,'the wheel declares its own source and added '+wheelAdded.length+' words');
+ ok(wheelAdded.every(k=>LEXMETA[k].from&&LEXMETA[k].rule),'each says where it came from and the rule that gave its amount');
+ /* the wheel never overwrites a ruling */
+ ok(LEX.ashamed[0]==='solar'&&LEX.ashamed[2]==='Shame'&&LEX.mad[1]===18&&LEX.numb[0]==='sacral','authored entries are untouched: ashamed, mad and numb keep their own seat and amount');
+ /* the seat is CHG2SEAT's, never typed */
+ const wrongSeat=wheelAdded.filter(k=>{const f=LEX[k][2]; return f&&LEX[k][0]!==wheelSeatOf(f);});
+ ok(wrongSeat.length===0,'every word the wheel added is seated where CHG2SEAT holds its charge');
+ ok(CHARGES.every(c=>wheelSeatOf(c)===B2K[CHG2SEAT[{Sad:'sadness'}[c]||c.toLowerCase()]]),'and the nine charges each resolve to their seat');
+ /* the weight by ring: tertiary is at least secondary is at least the family word */
+ ['Anger','Sad','Fear','Apathy'].forEach(f=>ok(wheelAmount(f,1)<=wheelAmount(f,2)&&wheelAmount(f,2)<=wheelAmount(f,3),f+': ring 1 <= ring 2 <= ring 3, '+[1,2,3].map(r=>wheelAmount(f,r)).join(' <= ')));
+ ok(wheelAmount('Anger',3)>wheelAmount('Anger',1),'a tertiary anger word weighs more than the family word, which is the point of the rings');
+ /* the addresses a charge is carried at */
+ const ad=wheelAddresses('Anger');
+ ok(ad.length>0&&ad.every(i=>E.W.find(n=>n.i===i).cf==='Anger'&&E.W.find(n=>n.i===i).b==='Solar'),'Anger maps to the Anger addresses at the solar plexus: '+ad.length);
+ ok(wheelAddresses('Sad').length>0&&wheelAddresses('Fear').length>0,'and Sad and Fear to theirs');
+ /* grouped reading */
+ const wr=wheelRead('I felt mad and jealous, then numb. I was overwhelmed.');
+ const by=w=>wr.find(x=>x.w===w);
+ ok(by('mad').families[0]==='Angry'&&by('mad').secondary[0]==='Mad'&&by('mad').ring===2&&by('mad').read,'mad is Angry, secondary Mad, ring two, and read');
+ ok(by('jealous').families[0]==='Angry'&&by('jealous').ring===3&&by('jealous').charges[0]==='Anger','jealous is Angry, ring three, Anger');
+ ok(by('numb').families[0]==='Angry'&&by('numb').charges[0]==='Apathy','numb is under Angry, Distant, and reads at Apathy');
+ ok(by('overwhelmed').families.length===2&&by('overwhelmed').charges.length===2,'overwhelmed carries both families and both charges');
+ ok(wheelRead('It was a busy day.').find(x=>x.w==='busy').read===false&&wheelRead('It was a busy day.').find(x=>x.w==='busy').plain===true,'a plain word with no lead is grouped and not read');
+ ok(wheelRead('I felt busy.').find(x=>x.w==='busy').read===true,'and is read after felt');
+ /* the two family words read at both charges */
+ const ov=parseStory('I was overwhelmed'), dc=parseStory('I was disappointed'), inf=parseStory('I felt inferior');
+ ok(ov.hits.filter(h=>h.t==='overwhelmed').length===2&&dc.hits.filter(h=>h.t==='disappointed').length===2&&inf.hits.filter(h=>h.t==='inferior').length===2,'overwhelmed, disappointed and inferior each read at two charges');
+ ok(parseStory('I felt embarrassed').imprints.every(i=>i.fetter==='Shame'),'embarrassed stays Shame, the earlier ruling, though the wheel groups it to two families');
+ ok(ov.path.steps[0].seats.length===2,'and the path records one word reaching two places');
+ /* the plain words are read only after a lead */
+ ['It was a busy road','A free afternoon','The bad news came on Tuesday','a tired old sofa','a critical error','the weak link'].forEach(s=>ok(parseStory(s).hits.length===0,'"'+s+'" is not read as a feeling'));
+ ['I felt free','I felt bad','I felt weak','I felt exposed','It made me tired','I am feeling so critical'].forEach(s=>ok(parseStory(s).hits.length>0,'"'+s+'" is'));
+ ok(WHEEL_LEAD.length>=8&&WHEEL_LEAD.indexOf('felt')>=0,'the lead words are named');
+ /* ten wheel word sentences, read at the right family */
+ const T=[['I was furious at the driver','Anger'],['I felt isolated all week','Sad'],['I was so jealous of her','Anger'],['I felt worthless','Shame'],
+  ['I was horrified by the news','Disgust'],['I felt out of control','Anticipation'],['I was shocked','Shock'],['I felt helpless','Fear'],
+  ['I felt like a victim, victimized','Sad'],['I was resentful and withdrawn','Anger']];
+ T.forEach(x=>{const im=parseStory(x[0]).imprints; ok(im.length>0&&im.some(i=>i.fetter===x[1]),'"'+x[0]+'" reads at '+x[1]+': '+[...new Set(im.map(i=>i.fetter))].join(','));});
+ /* happy words subtract, as calm already does */
+ ok(parseStory('I felt joyful').hits.every(h=>h.band==='coherent'&&h.amt<0),'a happy word is coherent and subtracts');
+}
+
+g('PA2 · the subject check: the Mirror can say the subject is not clear');
+{
+ const {subjectCheck,SUBJECT_UNCLEAR}=E;
+ const c=s=>subjectCheck(s);
+ ok(c('I had a confrontation with my boss. I was irritated by him.').clear===true&&c('I had a confrontation with my boss. I was irritated by him.').say===null,'a role in the clause and a pronoun that resolved to it is clear');
+ ok(c('I felt hopeless.').clear===true,'a stated I is clear');
+ const a=c('I was irritated by him.');
+ ok(a.read&&!a.clear&&a.say===SUBJECT_UNCLEAR&&/who that is/.test(a.unclear[0].why),'a pronoun with nobody behind it is not clear, and says why: '+a.unclear[0].why);
+ const b=c('It made me mad.');
+ ok(!b.clear&&b.unclear[0].from==='none','a clause that names nobody, in an entry that names nobody, is not clear');
+ const d=c('My boss yelled. It made me mad.');
+ ok(!d.clear&&d.unclear.some(x=>x.from==='entry'),'a subject taken from the rest of the entry is reported as taken from it');
+ ok(c('I had a rough day').read===false&&c('I had a rough day').say===null&&c('').read===false,'an entry the sniffer read nothing in has nothing to be unclear about, and says nothing');
+ ok(c('My boss and my wife called. I was irritated by him.').clear===false,'two roles and a him is not clear: the instrument does not choose');
+ ok(SUBJECT_UNCLEAR==='The subject is not clear.'&&!/[—–]/.test(SUBJECT_UNCLEAR),'one sentence, no dash');
+ /* the fixture entry, whole: the clause subjects the owner asked about */
+ const F="I had a really fucking rough day today. I had a confrontation with my boss. I was really irritated by him. He showed no remorse. Towards how I felt. I didn't know what to do. It made me depressed. Umm, it made me irritable. It made me frustrated. And. It made me mad.";
+ const fx=subjectCheck(F);
+ ok(fx.read&&fx.items.find(x=>x.word==='irritated').unclear===false&&fx.items.find(x=>x.word==='confrontation').unclear===false,'in the owner\'s entry the irritated clause and the confrontation clause are clear');
+ ok(fx.unclear.map(x=>x.word).join()==='depressed,irritable,frustrated,mad','and the four that say "it made me" are the ones that are not: '+fx.unclear.map(x=>x.word).join());
+}
+
+g('OX2 · the Mirror\'s cause line is the person\'s own second answer, and nothing else');
+{
+ const {mirrorCause}=E;
+ const ans='  My car broke down, and I was late!! \n';
+ const m=mirrorCause('I had a really rough day',ans);
+ ok(m&&m.cause===ans.trim()&&m.verbatim===true,'the cause is the answer as typed, trimmed of the space around it and of nothing else');
+ ok(m.asked==='You wrote “rough day”. What made it rough?'&&m.slot==='what','and it carries the question it answers');
+ ok(mirrorCause('I had a rough day','')===null&&mirrorCause('I had a rough day','   ')===null&&mirrorCause('x',undefined)===null,'no second answer, no cause line: the Mirror shows none rather than writing one');
+ ok(mirrorCause('hello','Because of the traffic').asked===null||mirrorCause('hello','Because of the traffic').asked==='What happened?','a first answer the frame has no reading of still quotes the answer');
+ const odd='it was f***ing awful <b>and</b> 100% “quoted”';
+ ok(mirrorCause('I had a bad day',odd).cause===odd,'it is not escaped, restored, shortened or changed in any way: the Mirror\'s own renderer owns escaping');
+}
+
+g('OX3 · the first run release sentence is exposed, and the shipped stem is untouched');
+{
+ const {C3_FIRSTRUN_STEM,C3_FIRSTRUN_VERB,C3_VERB,C3_STEM}=E;
+ ok(C3_FIRSTRUN_STEM==='I am releasing believing, thinking, feeling, behaving and acting that I am ','the first run stem is his words exactly');
+ ok(C3_FIRSTRUN_VERB.join()==='believing,thinking,feeling,behaving,acting'&&C3_FIRSTRUN_VERB.every(c=>C3_VERB.indexOf(c)>=0),'five channels, in his order, every one of the six\'s own names');
+ ok(C3_FIRSTRUN_VERB.indexOf('perceiving')<0&&C3_VERB.length===6,'perceiving is the one the first run leaves out, and the six are still six');
+ ok(C3_STEM==='I am letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am ','the shipped stem is unchanged');
+ ok(C3_FIRSTRUN_STEM.indexOf(C3_FIRSTRUN_VERB.slice(0,-1).join(', ')+' and '+C3_FIRSTRUN_VERB[4])>0,'and the stem is built of the five');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
