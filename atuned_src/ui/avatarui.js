@@ -1316,6 +1316,13 @@ function avSub(k){
  if(!AV_SUBS.some(function(s){return s[0]===k;}))return;
  AV.sub=k; renderAvatar();}
 function avIqHome(){
+ /* THE INTAKE PAGE HOLDS THE HOST WHILE IT IS OPEN, AND THIS TOOK IT ANYWAY.
+    The first paint of the Avatar on a profile with nothing in it runs this
+    unconditionally, ahead of avShowIntake's own guard, and sent the host to
+    #iq, which is hidden on the Intake tab. A stranger who went straight to
+    Intake saw an empty page: hostHeight 0 at 1600, measured on a fresh load.
+    The host is not inside #avbody on that tab, so a paint cannot take it. */
+ if(typeof S!=='undefined'&&S.tab===TAB.QUESTIONS)return;
  var iq=document.getElementById('iqbody'), home=document.getElementById('iq');
  if(iq&&home&&iq.parentNode!==home)home.appendChild(iq);}
 function avShowIntake(){

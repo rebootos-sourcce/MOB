@@ -4,6 +4,74 @@
    required. Every finished law is a finding on its own.
    ============================================================ */
 var IQ_OPEN=null;
+/* ROUND OP, THE INTAKE REDESIGN. His words: "pull some elements, UI, UX ...
+   more of the layout above the fold. Use iconography. And maybe even nesting
+   techniques. So it doesn't look so overwhelming. And then the visual design
+   is very bland. It looks like the design was stubbed in."
+
+   Five pieces of state, each only a view of what is open and none of it data:
+     IQ_SEAT  the seat whose laws are showing under the map. null means the seat
+              of the next law to answer, and with nothing left to answer the
+              first seat. '' means the person closed them all.
+     IQ_WHO   the birth moment form, nested behind its one row summary.
+     IQ_MORE  the profile actions, nested behind one icon.
+     IQ_ANIM  what the last press opened, so only that thing arrives. The page
+              rewrites its whole host on every press, so an arrival class left
+              on the markup would replay on every answer.
+     IQ_PULSE the law the last answer landed on, so its ring can show the
+              reading arriving. IQ_ANIM and IQ_PULSE are read once and cleared. */
+var IQ_SEAT=null, IQ_WHO=false, IQ_MORE=false, IQ_ANIM=null, IQ_PULSE=null, IQ_DOORS=false;
+/* THE ICONS THIS PAGE ADDS, drawn on the product's own 24 grid and stroked, not
+   filled. The law and seat glyphs come from the product's tables, SI[].ic and
+   SEATGLYPH, and nothing here redraws them. */
+var IQ_IC={
+ person:'M12 4.5a3.6 3.6 0 1 1 0 7.2a3.6 3.6 0 0 1 0-7.2M5 20c0-3.7 3-6 7-6s7 2.3 7 6',
+ date:'M5 6.5h14v13H5zM5 10.5h14M9 4v4M15 4v4',
+ time:'M12 4a8 8 0 1 1 0 16a8 8 0 0 1 0-16M12 8v4.5l3 1.5',
+ place:'M12 21s6-5.3 6-10a6 6 0 1 0-12 0c0 4.7 6 10 6 10zM12 8.8a2.2 2.2 0 1 1 0 4.4a2.2 2.2 0 0 1 0-4.4',
+ zone:'M12 4a8 8 0 1 1 0 16a8 8 0 0 1 0-16M4 12h16M12 4c2.3 2.2 3.4 4.9 3.4 8s-1.1 5.8-3.4 8c-2.3-2.2-3.4-4.9-3.4-8s1.1-5.8 3.4-8',
+ type:'M5 5h5.5v5.5H5zM13.5 5H19v5.5h-5.5zM5 13.5h5.5V19H5zM13.5 13.5H19V19h-5.5z',
+ more:'M5.7 12a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M10.8 12a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0M15.9 12a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0',
+ chev:'M7 10l5 5 5-5',
+ cost:'M7.5 9h9l1.5 10H6zM9.5 9a2.5 2.5 0 1 1 5 0',
+ unseen:'M4 4l16 16M9.9 5.3A9.6 9.6 0 0 1 12 5c5.5 0 9 7 9 7a15.6 15.6 0 0 1-2.9 3.7M6.3 7.6C4.3 9.3 3 12 3 12s3.5 7 9 7c1.5 0 2.8-.4 4-1M10 10.3a2.5 2.5 0 0 0 3.7 3.4',
+ day:'M12 8.2a3.8 3.8 0 1 1 0 7.6a3.8 3.8 0 0 1 0-7.6M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6L18 18M18 6l-1.4 1.4M7.4 16.6L6 18'};
+/* the three framings keep their icon beside their name, in every view */
+var IQ_SIDEIC={left:'cost',right:'unseen',neutral:'day'};
+function iqSvg(path,cls){
+ return '<svg class="'+(cls||'iqa-ic')+'" viewBox="0 0 24 24" aria-hidden="true"><path d="'+path+'"/></svg>';}
+/* an arc on a circle, in degrees, 0 at the top and clockwise */
+function iqArc(cx,cy,r,d0,d1){
+ var a=(d0-90)*Math.PI/180, b=(d1-90)*Math.PI/180;
+ return 'M'+(cx+r*Math.cos(a)).toFixed(2)+' '+(cy+r*Math.sin(a)).toFixed(2)
+  +'A'+r+' '+r+' 0 '+(d1-d0>180?1:0)+' 1 '+(cx+r*Math.cos(b)).toFixed(2)+' '+(cy+r*Math.sin(b)).toFixed(2);}
+/* THE RING GRAMMAR, ONE RULE FOR EVERYTHING ON THIS PAGE. Segments are what
+   has been answered and an unbroken arc is what it reads. A law is three
+   segments, one per framing, and each lights as its answer lands. Once all
+   three are in the segments close into one arc whose length is the score. A
+   seat is a segment per law. The page's own ring is a segment per law, all
+   twenty one, in the seat colours. So the same figure means the same thing at
+   every size, and nothing on it is a count against a total.
+     vals  one number per segment: 1 held, .5 started, 0 untouched
+     col   the colour of segment i
+   Butt ends, because a round end eats the gap that makes it a segment. */
+function iqSegs(vals,col,cx,cy,r,w,gap,tag){
+ var n=vals.length, span=360/n, s='';
+ vals.forEach(function(v,i){
+  var d0=i*span+gap/2, d1=(i+1)*span-gap/2, d=iqArc(cx,cy,r,d0,d1);
+  s+='<path d="'+d+'" fill="none" stroke-width="'+w+'" style="stroke:var(--dim);stroke-opacity:.26"/>';
+  if(v>0)s+='<path class="iqa-sg" data-i="'+(tag==null?i:tag+i)+'" d="'+d+'" fill="none" stroke="'+col(i)
+   +'" stroke-width="'+w+'" stroke-opacity="'+(v>=1?1:.5)+'"/>';});
+ return s;}
+/* the unbroken arc, for a reading. A full turn is a circle, because an arc
+   from a point to itself draws nothing. */
+function iqScoreArc(col,frac,cx,cy,r,w){
+ var f=Math.max(0,Math.min(1,frac)), s='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke-width="'+w
+  +'" style="stroke:var(--dim);stroke-opacity:.26"/>';
+ if(f<=0)return s;
+ return s+(f>=.999
+  ?'<circle class="iqa-sg" data-i="s" cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+w+'"/>'
+  :'<path class="iqa-sg" data-i="s" d="'+iqArc(cx,cy,r,0,360*f)+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" stroke-linecap="round"/>');}
 /* THE SEED. A four letter type is what a person says about themselves, so
    it is never presented as a reading. It puts charge on the nine axes so a
    new field is not empty, and the line underneath says how much of the
@@ -83,10 +151,19 @@ function iqAccuracy(){
     not a description of the section. The three ways are shown by layout: an
     open law sets its three framings side by side, each with its own name,
     Under cost, Unseen and Ordinary day. */
- return '<div class="iq-acc">'
-  +'<p class="iq-sc-key"><b>0</b> never <span>·</span> <b>5</b> about half the time '
-  +'<span>·</span> <b>10</b> every time <span>·</span> '
-  +'about fifteen minutes. Stop whenever and come back.</p>'
+ /* ROUND OP, THE INTAKE REDESIGN: the same words, drawn as the thing they
+    describe. The scale is a ruler with its three calibration points on it, so
+    the line is read as a position on a scale and not as a sentence, and the
+    duration sits beside a clock. The words are unchanged and so is the gate
+    that reads them: never, about half the time, every time, about fifteen
+    minutes, stop whenever and come back. */
+ return '<div class="iqa-sc iqa-card">'
+  +'<div class="iqa-sct" aria-hidden="true"><i class="iqa-sctk"></i>'
+  +'<i class="iqa-scd iqa-sc0"></i><i class="iqa-scd iqa-sc5"></i><i class="iqa-scd iqa-sc10"></i></div>'
+  +'<p class="iqa-scl"><span class="iqa-sl0"><b>0</b> never</span>'
+  +'<span class="iqa-sl5"><b>5</b> about half the time</span>'
+  +'<span class="iqa-sl10"><b>10</b> every time</span></p>'
+  +'<p class="iqa-scn">'+iqSvg(IQ_IC.time)+'<span>about fifteen minutes. Stop whenever and come back.</span></p>'
   +'</div>';}
 
 /* THE SEVEN SEATS, CROWN DOWN TO ROOT, and one plain line saying what each
@@ -120,38 +197,92 @@ function iqNamed(w){
 function iqSealable(w){
  var bn=w.born||{};
  return !!(iqNamed(w)||bn.date||bn.place);}
-function iqSealedCard(p){
- var w=p.who||{}, bn=w.born||{}, nm=iqNamed(w);
- var bits=[];
- if(bn.date) bits.push(bn.date);
- if(bn.timeUnknown) bits.push('time not known');
- else if(bn.time) bits.push(bn.time);
- if(bn.place) bits.push(bn.place);
- if(bn.zone) bits.push(bn.zone);
- if(w.sex) bits.push({f:'female',m:'male',o:'other'}[w.sex]||w.sex);
- /* WHAT IS MISSING IS SAID OUT LOUD. A rolled up card that hides a blank date
-    reads as complete, and the birth chart is then quietly running on nothing.
-    The card names the gap and the edit control is right beside it. */
- var gaps=[];
- if(!nm) gaps.push('no name');
+/* THE BIRTH MOMENT, NESTED. It was nine fields standing open above the first
+   question, and on a blank profile that form was the first screen at 1600 and
+   at 390, which is the opposite of what a stranger came for. It is one row now:
+   a ring for the person, five rings for the five things the birth chart reads,
+   lit when held and dashed when missing, and a chevron that opens the form in
+   place. What is missing is still said out loud, once a profile has been
+   saved, because a closed row that hides a blank date reads as complete and
+   the chart is then quietly running on nothing.
+
+   The form is always in the document and only hidden while it is closed, so
+   the fields keep their ids and a door that focuses #wdate finds it. The rule
+   that a profile with nothing in it never rolls up is kept in its own way: a
+   stranger sees the empty rings, which say what is missing, and not a blank
+   card to open. */
+function iqWhoGaps(p){
+ var w=p.who||{}, bn=w.born||{}, gaps=[];
+ if(!iqNamed(w)) gaps.push('no name');
  if(!bn.date) gaps.push('no date of birth');
  if(!bn.place) gaps.push('no place of birth');
  if(bn.date&&!bn.time&&!bn.timeUnknown) gaps.push('no time of birth');
  /* only when it changes the reading: a place the table locates carries its
     own offset, and an untimed birth has no instant for an offset to move */
  if(bn.time&&!bn.timeUnknown&&!bn.zone&&!PLACE[bn.place]) gaps.push('no time zone of birth');
- var sd=p.seed;
- return '<div class="iq-sealed">'
-  +'<div class="iq-sl-l">'
-   /* the same label as the form under it, written the same way. It read
-      "Who This Is" here and "Who this is" there, in one file. */
-   +'<div class="pm-eye">Who this is</div>'
-   +'<div class="iq-sl-nm">'+esc(nm||'Unnamed')+'</div>'
-   +(bits.length?'<div class="iq-sl-bt">'+esc(bits.join(' · '))+'</div>':'')
-   +(sd?'<div class="iq-sl-bt">seeded from '+esc(sd.type)+'</div>':'')
-   +(gaps.length?'<div class="iq-sl-gap">'+esc(gaps.join(', '))+'</div>':'')
-  +'</div>'
-  +'<button class="btn" id="iqedit">Edit</button></div>';}
+ return gaps;}
+function iqWhoHtml(p){
+ var w=p.who||{}, bn=w.born||{}, nm=iqNamed(w), open=IQ_WHO, sd=p.seed;
+ var held=[
+  ['date','Date of birth',bn.date,!!bn.date],
+  ['time','Time of birth',bn.timeUnknown?'not known':bn.time,!!(bn.time||bn.timeUnknown)],
+  ['place','Place of birth',bn.place,!!bn.place],
+  ['zone','Time zone of birth',bn.zone,!!(bn.zone||(bn.place&&PLACE[bn.place]))],
+  ['type','Myers-Briggs',sd&&sd.type,!!sd]];
+ var chips=held.map(function(x){
+  return '<span class="iqa-wc" data-on="'+(x[3]?1:0)+'" title="'+esc(x[1]+': '+(x[2]||'missing'))+'">'+iqSvg(IQ_IC[x[0]])+'</span>';}).join('');
+ var say=held.map(function(x){return x[1].toLowerCase()+(x[3]?' held':' missing');}).join(', ');
+ var gaps=w.sealed?iqWhoGaps(p):[];
+ return '<section class="iqa-who iqa-card" data-open="'+(open?1:0)+'">'
+  +'<button type="button" class="iqa-whob" id="iqwho" aria-expanded="'+open+'" aria-controls="iqwhop">'
+  +'<span class="iqa-wi" data-on="'+(nm?1:0)+'">'+iqSvg(IQ_IC.person)+'</span>'
+  +'<span class="iqa-wt"><span class="iqa-eye">Who this is</span>'
+  +'<span class="iqa-wn" data-empty="'+(nm?0:1)+'">'+esc(nm||'Unnamed')+'</span></span>'
+  +'<span class="iqa-wcs" role="img" aria-label="'+esc(say)+'">'+chips+'</span>'
+  +'<span class="iqa-chev">'+iqSvg(IQ_IC.chev)+'</span></button>'
+  +(gaps.length&&!open?'<p class="iqa-gapn">'+esc(gaps.join(', '))+'</p>':'')
+  +'<div class="iqa-whop" id="iqwhop"'+(open?'':' hidden')+'>'+iqWhoForm(p)+'</div></section>';}
+function iqWhoForm(p){
+ var w=p.who||{}, bn=w.born||{};
+ return '<div class="iqa-fg"><span class="iqa-fgi">'+iqSvg(IQ_IC.person)+'</span><div class="iq-fields">'
+  +iqField('First name','first',w.first)
+  +iqField('Middle','middle',w.middle)
+  +iqField('Last','last',w.last)
+  +'<div class="iq-f"><label for="wsex">Sex at birth</label><select id="wsex" data-who="sex">'
+   +[['','not said'],['f','Female'],['m','Male'],['o','Other']].map(function(o){
+     return '<option value="'+o[0]+'"'+(w.sex===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')
+   +'</select></div>'
+  +'</div></div>'
+  +'<div class="iqa-fg"><span class="iqa-fgi">'+iqSvg(IQ_IC.date)+'</span><div class="iq-fields">'
+  +'<div class="iq-f"><label for="wdate">Date of birth</label>'
+   +'<input type="date" id="wdate" data-born="date" value="'+esc(bn.date||'')+'"></div>'
+  /* the checkbox belongs to the time field and sat in its own grid column,
+     where it crowded the place of birth and read as a fourth input. */
+  +'<div class="iq-f"><label for="wtime">Time of birth</label>'
+   +'<input type="time" id="wtime" data-born="time" value="'+esc(bn.time||'')+'"'
+   +(bn.timeUnknown?' disabled':'')+'>'
+   +'<label class="iq-ck"><input type="checkbox" id="wtu"'
+   +(bn.timeUnknown?' checked':'')+'> I do not know it</label></div>'
+  +'<div class="iq-f"><label for="wplace">Place of birth</label>'
+   +'<input type="text" id="wplace" data-born="place" placeholder="City, region" value="'+esc(bn.place||'')+'"></div>'
+  /* THE TIME ZONE, RULED 26 SEPTEMBER. A place was matched against nine cities
+     by exact string and anything else was read as Greenwich, so a person born
+     in Auckland had their moon and gene key read thirteen hours out. The
+     owner chose a named zone over a bigger city list or an asked offset: it is
+     something a person already knows, and the rules for its year are computed
+     rather than looked up by them. The list is the browser's own, offered as
+     suggestions, so typing Auckland finds Pacific/Auckland. */
+  +'<div class="iq-f"><label for="wzone">Time zone of birth</label>'
+   +'<input type="text" id="wzone" data-born="zone" list="wzones" placeholder="Region/City" '
+   +'autocomplete="off" spellcheck="false" value="'+esc(bn.zone||'')+'"></div>'
+  +'</div></div>'
+  +'<div class="iqa-fg"><span class="iqa-fgi">'+iqSvg(IQ_IC.type)+'</span>'+iqSeedBlock(p)+'</div>'
+  /* SEAL IS A SAVE THAT ALSO PUTS THE FORM AWAY. It is only offered once there
+     is something to state, and it says so rather than sitting there dead. */
+  +'<div class="iq-seal-r">'
+   +'<button class="btn pri" id="iqseal"'+(iqSealable(w)?'':' disabled')+'>Save and close</button>'
+   +(iqSealable(w)?'':'<span class="iq-seal-n">Enter a name or a date of birth first.</span>')
+  +'</div>';}
 function iqField(label,key,v){
  var id='w'+key;
  return '<div class="iq-f"><label for="'+id+'">'+label+'</label>'
@@ -212,69 +343,181 @@ function iqViewHtml(){
    return '<button type="button" class="st-ico" data-iqv="'+v[0]+'" aria-pressed="'+(IQ_VIEW===v[0])+'" '
     +'aria-label="'+esc(v[1])+'" title="'+esc(v[2])+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+v[3]+'"/></svg></button>';}).join('')+'</span>';}
-/* THE RULES TRAVEL WITH THE RENDERER, for now. The page's stylesheet is in
-   shell/head.html and another seat has that file open this round, so the art
-   pass carries its own sheet, added once, the first time the section draws.
-   Every selector is prefixed iqa so nothing here can reach another surface.
-   Two things about it are load bearing.
+/* THE RULES TRAVEL WITH THE RENDERER. The page's stylesheet is in
+   shell/head.html and other seats have that file open, so this page carries
+   its own sheet, added once, the first time the section draws. Every selector
+   is prefixed iqa so nothing here can reach another surface.
+
+   Three things about it are load bearing.
 
    The breakpoints are container queries on .iqa, not media queries on the
-   window. The section sits under the avatar in a centre column whose width is
-   not the window's, and the prototype's 1100 and 760 were measured on a page
-   that was the whole window.
+   window. The same renderer draws into the Intake page's centre column, into
+   the Avatar's right menu and into a phone, and none of those widths is the
+   window's.
 
    Every rule inside a container query names two classes. The design gate
    walks into a container rule, where it does not walk into a media rule, and
-   reads a single class that sets geometry twice as a collision. */
+   reads a single class that sets geometry twice as a collision.
+
+   Motion is opacity and transform and nothing else. A ring that filled by
+   animating its dash offset would repaint the page on every frame. The
+   segments fade in as each answer lands and the ring pops once when a law
+   closes, and both are held still by reduced motion, by the quiet and rm
+   switches the rest of the product answers to. */
 function iqArtCss(){
  if(document.getElementById('iqa-css'))return;
  var st=document.createElement('style'); st.id='iqa-css';
  st.textContent=[
-  '.iqa{container-type:inline-size;min-width:0;margin-top:14px}',
-  '.iqa-hd{display:flex;justify-content:space-between;align-items:center;gap:14px 18px;flex-wrap:wrap}',
-  '.iqa-cq{display:flex;align-items:center;gap:12px;min-width:0}',
-  '.iqa-cqp{display:inline-flex;align-items:center;gap:10px;padding:6px 16px 6px 6px;border-radius:999px;',
-  ' background:var(--sunk);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}',
-  '.iqa-cqp b{font-family:var(--num);font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
-  '.iqa-cqw{display:flex;flex-direction:column;line-height:1.25}',
-  '.iqa-cqt{color:var(--accent);font-size:19px;font-weight:600}',
-  '.iqa-cqs{color:var(--dim);font-size:13px}',
-  '.iqa-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}',
-  '.iqa-views{display:inline-flex;gap:4px}',
-  /* the framings keep the classes the functional gate reads an open law by,
-     and the accordion's card treatment is taken off them here. The id is
-     what outranks body.punch and body.lumen, which paint .iq-qc as a box. */
-  '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
-  '#iqbody .iqa .iq-qc{border:0;background:none;border-radius:0;padding:0}',
-  '.iqa-fr{display:grid;gap:8px;min-width:0}',
-  '.iqa-flr{display:flex;align-items:baseline;gap:8px}',
-  '.iqa-fl{font-style:normal;font-size:12.5px;font-weight:500;color:var(--c)}',
-  '.iqa-ex{font-family:var(--num);font-size:12.5px;color:var(--dim)}',
-  '.iqa-qt{font-size:15.5px;line-height:1.45;color:var(--ink)}',
-  '.iqa-gap{display:block;width:100%;height:auto}',
-  '.iqa-sub{font-size:13px;color:var(--dim)}',
-  '.iqa-sub b{font-weight:500;color:var(--c)}',
-  /* A, the reading list */
-  '.iqa-list{margin-top:22px}',
-  '.iqa-seat{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;padding:18px 0;border-top:1px solid var(--edge)}',
-  '.iqa-seat:first-child{border-top:0}',
-  '.iqa-sh{display:flex;gap:12px;align-items:flex-start}',
-  '.iqa-shn{font-size:17px;font-weight:600;color:var(--c)}',
-  '.iqa-shl{font-size:13px;color:var(--dim)}',
-  '.iqa-laws{display:flex;flex-direction:column;min-width:0}',
-  '.iqa-lawr{display:grid;grid-template-columns:auto minmax(0,1fr) 200px;gap:14px;align-items:center;width:100%;',
-  ' min-height:56px;padding:6px 8px;border-radius:12px;border:1px solid transparent;background:none;',
-  ' color:var(--ink);font-family:var(--sans);text-align:left;cursor:pointer}',
-  '.iqa-lawr:hover{background:var(--sunk)}',
-  '.iqa-lawr[aria-expanded="true"]{border-color:color-mix(in srgb,var(--c) 40%,transparent)}',
+  '.iqa{container-type:inline-size;min-width:0;display:grid;gap:var(--g3);align-content:start}',
+  /* ---- the surface. one raised plane, lit from the top, and nothing outlined
+     where the lighting says nothing is ---- */
+  '.iqa-card{background:var(--panel-2);border:1px solid var(--edge);border-radius:var(--r);',
+  ' box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 12px 26px -16px rgba(0,0,0,.6)}',
+  'body.snow .iqa-card,body.glasswhite .iqa-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 10px 22px -16px rgba(20,22,28,.35)}',
+  'body.punch .iqa-card,body.lumen .iqa-card{border-color:transparent;box-shadow:none}',
+  '.iqa-eye{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--dim)}',
+  '.iqa-ic{flex:0 0 auto;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}',
+  '.iqa-chev{display:grid;place-items:center;color:var(--dim);transition:transform var(--t-element) var(--ease-out)}',
+  /* ---- the header. where I am, how far, and the three views ---- */
+  '.iqa-hero{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px 18px;padding:16px 20px;',
+  ' background:radial-gradient(80% 170% at 0% 0%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 62%),var(--panel-2)}',
+  '.iqa-hr{position:relative;display:grid;place-items:center}',
+  '.iqa-hr svg{display:block;width:88px;height:88px}',
+  '.iqa-hn{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;line-height:1}',
+  '.iqa-hn b{font-family:var(--num);font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}',
+  '.iqa-hn i{font-style:normal;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--dim);margin-top:3px}',
+  '.iqa-ht{display:flex;flex-direction:column;gap:3px;min-width:0}',
+  '.iqa-hh{font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.01em;color:var(--accent)}',
+  '.iqa-hs{font-size:14px;color:var(--dim)}',
+  '.iqa-tools{display:flex;align-items:center;gap:var(--g2)}',
+  '.iqa-views{display:inline-flex;gap:4px;padding:3px;border-radius:999px;background:var(--sunk);border:1px solid var(--edge)}',
+  '#iqbody .iqa-views .st-ico{border-color:transparent}',
+  '#iqbody .iqa-views .st-ico[aria-pressed="true"]{background:var(--panel-2);border-color:var(--accent);color:var(--ink)}',
+  '.iqa-mb{display:grid;place-items:center;width:var(--tap);height:var(--tap);padding:0;border-radius:999px;',
+  ' border:1px solid var(--edge-2);background:transparent;color:var(--mid);cursor:pointer;',
+  ' transition:border-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}',
+  '.iqa-mb:hover{color:var(--ink)}',
+  '.iqa-mb[aria-expanded="true"]{border-color:var(--accent);color:var(--ink)}',
+  '.iqa-more{display:flex;flex-wrap:wrap;align-items:center;gap:var(--g2);padding:12px 16px}',
+  '.iqa-more[hidden],.iqa-whop[hidden],.iqa-pn[hidden]{display:none}',
+  /* ---- the identity row, and the ruler beside it ---- */
+  '.iqa-mid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:var(--g3);align-items:stretch}',
+  '.iqa-who{display:flex;flex-direction:column}',
+  '.iqa-who[data-open="1"]{grid-column:1/-1}',
+  '.iqa-mid[data-who="1"] .iqa-sc{grid-column:1/-1}',
+  '.iqa-whob{flex:1 1 auto;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-areas:"i t c v";',
+  ' align-items:center;gap:12px;width:100%;min-height:72px;padding:10px 16px;border:0;border-radius:var(--r);',
+  ' background:none;color:var(--ink);font-family:var(--sans);text-align:left;cursor:pointer}',
+  '.iqa-whob:hover{background:color-mix(in srgb,var(--ink) 4%,transparent)}',
+  '.iqa-wi{grid-area:i;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;',
+  ' border:1.5px dashed var(--edge-2);color:var(--dim)}',
+  '.iqa-wt{grid-area:t;display:flex;flex-direction:column;gap:2px;min-width:0}',
+  '.iqa-wn{font-size:17px;font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+  '.iqa-wn[data-empty="1"]{color:var(--dim);font-weight:400}',
+  '.iqa-wcs{grid-area:c;display:inline-flex;gap:6px}',
+  '.iqa-wc{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;',
+  ' border:1.5px dashed var(--edge-2);color:var(--dim)}',
+  '.iqa-wc .iqa-ic{width:16px;height:16px}',
+  '.iqa-wi[data-on="1"],.iqa-wc[data-on="1"]{border-style:solid;border-color:color-mix(in srgb,var(--accent) 62%,transparent);color:var(--accent)}',
+  '.iqa-who .iqa-chev{grid-area:v}',
+  '.iqa-who[data-open="1"] .iqa-chev{transform:rotate(180deg)}',
+  '.iqa-gapn{margin:-4px 16px 12px 72px;font-size:13px;color:var(--sacral)}',
+  '.iqa-whop{display:grid;gap:14px;padding:14px 16px 16px;border-top:1px solid var(--edge)}',
+  '.iqa-fg{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}',
+  '.iqa-fgi{display:grid;place-items:center;width:32px;height:44px;color:var(--dim)}',
+  '.iqa-fg .iq-seed{margin:0;padding:0;border:0}',
+  '.iqa-sc{display:grid;gap:10px;align-content:center;padding:16px 18px}',
+  '.iqa-sct{position:relative;height:12px}',
+  '.iqa-sctk{position:absolute;left:0;right:0;top:4px;height:4px;border-radius:2px;',
+  ' background:linear-gradient(90deg,var(--sunk),color-mix(in srgb,var(--accent) 72%,var(--sunk)));box-shadow:inset 0 0 0 1px var(--edge)}',
+  '.iqa-scd{position:absolute;top:0;width:12px;height:12px;border-radius:50%;background:var(--panel-2);box-shadow:inset 0 0 0 2px var(--accent)}',
+  '.iqa-sc0{left:0}',
+  '.iqa-sc5{left:calc(50% - 6px)}',
+  '.iqa-sc10{right:0}',
+  '.iqa-scl{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;margin:0;font-size:14px;color:var(--mid)}',
+  '.iqa-scl b{font-family:var(--num);font-weight:600;color:var(--accent);margin-right:2px}',
+  '.iqa-sl0{text-align:left}',
+  '.iqa-sl5{text-align:center}',
+  '.iqa-sl10{text-align:right}',
+  '.iqa-scn{display:flex;align-items:center;gap:8px;margin:0;font-size:13.5px;color:var(--dim)}',
+  /* ---- the ring ---- */
+  '.iqa-rg{position:relative;display:inline-grid;place-items:center;flex:0 0 auto}',
+  '.iqa-rg svg{display:block}',
+  /* ---- the map: seven seats, crown to root. a tile is a seat and a press ---- */
+  '.iqa-list{display:grid;gap:var(--g2)}',
+  '.iqa-map{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--g2)}',
+  '.iqa-tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;',
+  ' min-height:var(--tap);padding:14px 4px 12px;border-radius:var(--r-s);border:1px solid var(--edge);',
+  ' background:var(--panel-2);color:var(--ink);font-family:var(--sans);cursor:pointer;',
+  ' transition:border-color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out),transform var(--t-element) var(--ease-out)}',
+  '.iqa-tile:hover{transform:translateY(-2px)}',
+  '.iqa-tile .iqa-rg svg{width:56px;height:56px}',
+  '.iqa-tn{font-size:15px;font-weight:500;color:var(--mid);white-space:nowrap}',
+  '.iqa-tm{display:flex;gap:4px;align-items:center;min-height:10px}',
+  '.iqa-pip{display:block;width:8px;height:8px;border-radius:50%;box-sizing:border-box;',
+  ' border:1.4px solid color-mix(in srgb,var(--c) 55%,var(--dim))}',
+  '.iqa-pip[data-st="1"]{background:color-mix(in srgb,var(--c) 50%,transparent)}',
+  '.iqa-pip[data-st="2"]{background:var(--c);border-color:var(--c)}',
+  '.iqa-ts{font-family:var(--num);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
+  '.iqa-nd{position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--accent);',
+  ' box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 24%,transparent)}',
+  '.iqa-tile[data-st="1"]{border-color:color-mix(in srgb,var(--c) 38%,var(--edge))}',
+  '.iqa-tile[data-st="2"]{background:color-mix(in srgb,var(--c) 13%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 48%,var(--edge))}',
+  '.iqa-tile[data-st="1"] .iqa-tn,.iqa-tile[data-st="2"] .iqa-tn{color:var(--ink)}',
+  '.iqa-tile[aria-expanded="true"]{background:color-mix(in srgb,var(--c) 20%,var(--panel-2));box-shadow:inset 0 0 0 1.5px var(--c)}',
+  'body.punch .iqa-tile{border-color:transparent}',
+  'body.punch .iqa-tile[aria-expanded="true"]{box-shadow:none;background:color-mix(in srgb,var(--c) 30%,var(--panel-2))}',
+  /* ---- the open seat: its laws, nested under the map ---- */
+  '.iqa-pn{padding:8px;border-radius:var(--r);border:1px solid color-mix(in srgb,var(--c) 32%,var(--edge));',
+  ' background:linear-gradient(180deg,color-mix(in srgb,var(--c) 9%,var(--panel-2)),var(--panel-2) 180px)}',
+  'body.punch .iqa-pn{border-color:transparent}',
+  '.iqa-ph{display:flex;align-items:baseline;gap:10px;padding:8px 10px 10px}',
+  '.iqa-shn{font-size:19px;font-weight:600;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
+  '.iqa-shl{font-size:14px;color:var(--dim)}',
+  '.iqa-laws{display:flex;flex-direction:column;gap:2px;min-width:0}',
+  '.iqa-lawr{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,220px) 44px 20px;gap:14px;align-items:center;',
+  ' width:100%;min-height:64px;padding:8px 12px;border-radius:var(--r-s);border:1px solid transparent;background:none;',
+  ' color:var(--ink);font-family:var(--sans);text-align:left;cursor:pointer;',
+  ' transition:background var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}',
+  '.iqa-lawr:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}',
+  '.iqa-lawr[data-st="2"]{background:color-mix(in srgb,var(--c) 8%,transparent)}',
+  '.iqa-lawr[data-next="1"]{border-color:color-mix(in srgb,var(--accent) 52%,transparent)}',
+  '.iqa-lawr[aria-expanded="true"]{background:color-mix(in srgb,var(--c) 14%,transparent);border-color:color-mix(in srgb,var(--c) 44%,transparent)}',
+  '.iqa-lawr[aria-expanded="true"] .iqa-chev{transform:rotate(180deg)}',
+  'body.punch .iqa-lawr[data-next="1"]{border-color:transparent;background:color-mix(in srgb,var(--accent) 14%,transparent)}',
   'body.punch .iqa-lawr[aria-expanded="true"]{border-color:transparent;background:var(--sunk)}',
-  '.iqa-lt{display:block;font-size:16px;font-weight:500}',
-  '.iqa-lv{display:block;font-size:13px;color:var(--dim)}',
+  '.iqa-lx{display:flex;flex-direction:column;gap:2px;min-width:0}',
+  '.iqa-lt{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:500}',
+  '.iqa-lv{font-size:13.5px;color:var(--dim)}',
+  '.iqa-lawr[data-st="0"] .iqa-lt{color:var(--mid)}',
+  '.iqa-nx{font-size:12px;font-weight:600;color:var(--accent);padding:2px 9px;border-radius:999px;',
+  ' background:color-mix(in srgb,var(--accent) 16%,transparent)}',
   '.iqa-gw{min-width:0}',
-  '.iqa-open{display:grid;gap:18px;padding:8px 8px 16px 64px}',
+  '.iqa-sv{font-family:var(--num);font-size:18px;font-weight:600;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--c) 62%,var(--ink));text-align:right}',
+  '.iqa-open{display:grid;gap:10px;padding:8px 6px 14px 62px}',
+  /* ---- one law: its three framings, each a card with its own icon ---- */
+  '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
+  '#iqbody .iqa .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
+  ' background:color-mix(in srgb,var(--c) 6%,var(--sunk))}',
+  'body.punch #iqbody .iqa .iq-qc,body.lumen #iqbody .iqa .iq-qc{border-color:transparent}',
+  '.iqa-fr{display:grid;gap:12px;min-width:0}',
   '.iqa-open .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
-  /* B, the wheel */
-  '.iqa-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,560px);margin-top:18px;overflow:hidden;',
+  '.iqa-flr{display:flex;align-items:center;gap:8px;margin-bottom:4px}',
+  '.iqa-fi{display:grid;place-items:center;color:var(--c)}',
+  '.iqa-fl{font-style:normal;font-size:13px;font-weight:600;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
+  '.iqa-ex{font-family:var(--num);font-size:13px;color:var(--dim)}',
+  '.iqa-qt{font-size:16px;line-height:1.5;color:var(--ink)}',
+  /* the scale ramps from the sunk ground toward the seat, so the ends read as
+     ends before a number is read. Pressed is the seat solid. */
+  '#iqbody .iqa .iq-sl{border-radius:var(--r-xs)}',
+  '#iqbody .iqa .iq-n{min-height:48px;background:color-mix(in srgb,var(--c) calc(var(--v) * 1.6%),var(--sunk))}',
+  '#iqbody .iqa .iq-n:hover{background:color-mix(in srgb,var(--c) 34%,var(--sunk));color:var(--ink)}',
+  '#iqbody .iqa .iq-n.on{background:var(--c);color:var(--on-accent)}',
+  '.iqa-gap{display:block;width:100%;height:auto}',
+  '.iqa-sub{font-size:13.5px;color:var(--dim)}',
+  '.iqa-sub b{font-weight:500;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
+  /* ---- the wheel ---- */
+  '.iqa-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,560px);overflow:hidden;',
   ' border-radius:var(--r);background:var(--sunk);border:1px solid var(--edge)}',
   '.iqa-wheel{display:flex;justify-content:center;align-items:flex-start;padding:14px;min-width:0}',
   '.iqa-wheel svg{width:100%;max-width:640px;height:auto}',
@@ -283,9 +526,9 @@ function iqArtCss(){
   '.iqa-side{display:flex;flex-direction:column;gap:18px;padding:22px;min-width:0;border-left:1px solid var(--edge)}',
   '.iqa-sidehd{display:flex;gap:12px;align-items:center}',
   '.iqa-h3{margin:0;font-size:22px;font-weight:600;color:var(--ink)}',
-  '.iqa-inhand{display:grid;gap:22px}',
-  /* C, one law at a time */
-  '.iqa-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 14px;margin-top:18px;padding:8px 12px;',
+  '.iqa-inhand{display:grid;gap:12px}',
+  /* ---- one law at a time ---- */
+  '.iqa-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 14px;padding:8px 12px;',
   ' border-radius:28px;background:var(--sunk);border:1px solid var(--edge)}',
   '.iqa-grp{display:flex;gap:2px}',
   '.iqa-sb{display:grid;place-items:center;min-width:var(--tap);min-height:var(--tap);padding:0;border:0;',
@@ -293,26 +536,62 @@ function iqArtCss(){
   '.iqa-sb[aria-current="true"]{box-shadow:inset 0 0 0 1.5px var(--accent)}',
   'body.punch .iqa-sb[aria-current="true"]{box-shadow:none;background:var(--panel-2)}',
   '.iqa-bstrip{display:none}',
-  '.iqa-focus{display:grid;grid-template-columns:260px minmax(0,1fr);gap:40px;align-items:start;margin-top:26px}',
-  '.iqa-hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;min-width:0}',
+  '.iqa-focus{display:grid;grid-template-columns:260px minmax(0,1fr);gap:40px;align-items:start}',
+  '.iqa-hero1{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;min-width:0}',
   '.iqa-ring{width:220px;height:220px;max-width:100%}',
   '.iqa-ln{font-size:30px;font-weight:600;line-height:1.15;letter-spacing:-.01em;color:var(--ink)}',
   '.iqa-hgap{width:100%;max-width:240px}',
-  '.iqa-qs{display:flex;flex-direction:column;gap:26px;max-width:720px;min-width:0}',
+  '.iqa-qs{display:flex;flex-direction:column;gap:20px;max-width:720px;min-width:0}',
   '.iqa-nav{display:flex;justify-content:space-between;gap:10px}',
-  /* Punch outlines nothing and Lumen draws no edge, and both already say so
-     for every other panel in the product */
-  'body.punch .iqa-cqp,body.punch .iqa-stage,body.punch .iqa-strip,body.punch .iqa-side,',
-  'body.lumen .iqa-cqp,body.lumen .iqa-stage,body.lumen .iqa-strip{border-color:transparent}',
+  'body.punch .iqa-stage,body.punch .iqa-strip,body.punch .iqa-side,body.punch .iqa-views,',
+  'body.lumen .iqa-stage,body.lumen .iqa-strip{border-color:transparent}',
+  /* ---- arrival. opacity and transform, once, and held still on request ---- */
+  '@keyframes iqa-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}',
+  '@keyframes iqa-pop{0%{transform:scale(1)}38%{transform:scale(1.14)}100%{transform:scale(1)}}',
+  '@keyframes iqa-fade{from{opacity:0}to{opacity:1}}',
+  '.iqa-in{animation:iqa-in var(--t-surface) var(--ease-out) both}',
+  '.iqa-rg.iqa-pop,.iqa-hr.iqa-pop,.iq-n.iqa-pop{animation:iqa-pop var(--t-surface) var(--ease-land)}',
+  '.iqa-sg.iqa-new{animation:iqa-fade var(--t-context) var(--ease-enter) both}',
+  '@media (prefers-reduced-motion:reduce){',
+  ' .iqa-in,.iqa-rg.iqa-pop,.iqa-hr.iqa-pop,.iq-n.iqa-pop,.iqa-sg.iqa-new{animation:none}',
+  ' .iqa-tile,.iqa-tile:hover{transform:none;transition:none}}',
+  'body.quiet .iqa-in,body.rm .iqa-in,body.quiet .iqa-rg.iqa-pop,body.rm .iqa-rg.iqa-pop,',
+  'body.quiet .iqa-hr.iqa-pop,body.rm .iqa-hr.iqa-pop,body.quiet .iq-n.iqa-pop,body.rm .iq-n.iqa-pop,',
+  'body.quiet .iqa-sg.iqa-new,body.rm .iqa-sg.iqa-new{animation:none}',
+  'body.quiet .iqa-tile:hover,body.rm .iqa-tile:hover{transform:none}',
+  /* ---- the middle width, a menu or a narrow column ---- */
   '@container (max-width:1040px){',
   ' .iqa .iqa-stage{grid-template-columns:1fr}',
   ' .iqa .iqa-side{border-left:0;border-top:1px solid var(--edge)}',
-  ' .iqa .iqa-open .iqa-fr{grid-template-columns:1fr;gap:8px}',
-  ' .iqa .iqa-open{padding-left:8px}}',
+  ' .iqa .iqa-open .iqa-fr{grid-template-columns:1fr;gap:10px}',
+  ' .iqa .iqa-open{padding-left:6px}}',
+  '@container (max-width:900px){',
+  ' .iqa .iqa-whob{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"i t v" "c c c";row-gap:10px}',
+  ' .iqa .iqa-wcs{justify-content:space-between;width:100%}',
+  ' .iqa .iqa-focus{grid-template-columns:1fr;gap:18px}',
+  ' .iqa .iqa-ring{width:150px;height:150px}}',
   '@container (max-width:700px){',
-  ' .iqa .iqa-seat{grid-template-columns:1fr;gap:10px}',
-  ' .iqa .iqa-lawr{grid-template-columns:auto minmax(0,1fr)}',
-  ' .iqa .iqa-gw{grid-column:1/-1}',
+  ' .iqa .iqa-hero{grid-template-columns:auto minmax(0,1fr);padding:12px 14px;gap:10px 14px}',
+  ' .iqa .iqa-sc{padding:12px 14px;gap:8px}',
+  ' .iqa .iqa-whob{min-height:56px;padding:8px 14px}',
+  ' .iqa .iqa-tools{grid-column:1/-1;justify-content:space-between}',
+  ' .iqa .iqa-views{flex:1 1 auto}',
+  ' .iqa .iqa-views .st-ico{flex:1 1 0}',
+  ' .iqa .iqa-hr svg{width:68px;height:68px}',
+  ' .iqa .iqa-hn b{font-size:22px}',
+  ' .iqa .iqa-hh{font-size:22px}',
+  ' .iqa .iqa-mid{grid-template-columns:1fr}',
+  ' .iqa .iqa-gapn{display:none}',
+  ' .iqa .iqa-map{gap:4px}',
+  ' .iqa .iqa-tile{padding:10px 2px 9px;gap:5px}',
+  ' .iqa .iqa-tile .iqa-rg svg{width:44px;height:44px}',
+  ' .iqa .iqa-tn{font-size:12px}',
+  ' .iqa .iqa-ts{font-size:12.5px}',
+  ' .iqa .iqa-nd{top:5px;right:5px}',
+  ' .iqa .iqa-lawr{grid-template-columns:auto minmax(0,1fr) 40px 20px;gap:12px}',
+  ' .iqa .iqa-lawr .iqa-gw{display:none}',
+  ' .iqa .iqa-lawr[aria-expanded="true"] .iqa-gw{display:block;grid-column:1/-1;grid-row:2}',
+  ' .iqa .iqa-lt{font-size:16px}',
   ' .iqa .iqa-focus{grid-template-columns:1fr;gap:18px}',
   /* the wheel's cost, measured in the prototype: at phone width a law on it
      is about 27 pixels to press, under the 44 floor. So on a phone the wheel
@@ -324,7 +603,12 @@ function iqArtCss(){
      so on a phone it is the law's mark and not the page's figure */
   ' .iqa .iqa-ring{width:140px;height:140px}',
   ' .iqa .iqa-side{padding:16px 10px}',
-  ' .iqa .iqa-wheel{padding:6px}}'
+  ' .iqa .iqa-wheel{padding:6px}',
+
+  '@container (max-width:460px){',
+  ' .iqa .iqa-pn{padding:6px 4px}',
+  ' .iqa .iqa-lawr{padding:8px 6px;gap:10px}',
+  ' #iqbody .iqa .iq-qc{padding:12px 12px}}'
  ].join('\n');
  document.head.appendChild(st);}
 
@@ -345,11 +629,48 @@ function iqInHand(p){
  return o[0];}
 /* the accordion's own words for a law, kept word for word */
 function iqLine(s,g){return s?'spread '+s.spread+', '+s.lean:g?(3-g)+' left':'unanswered';}
-/* a law as Summary draws a thing: its own glyph in a ring whose arc is the
-   score once all three are in, and the share answered until then */
-function iqLawBadge(l,s,g,size,bare){
- return crBadge(l.b,s?s.score*10:g/3*100,{size:size,glyph:'<path d="'+l.ic+'"/>',
-  raw:s?s.score.toFixed(1):null,bare:!!bare||!s});}
+/* a law as Summary draws a thing: its own glyph in a ring. The ring is the
+   page's grammar, written above at iqSegs: segments while it is being
+   answered, one arc once it reads. Untouched is the track and a dim glyph,
+   started is some segments in the seat colour, read is the arc and the figure
+   beside it. The size is a name, and the ring is a span, so a press on the row
+   that holds it is the row's. */
+var IQ_PX={sm:34,md:44,lg:56};
+function iqLawBadge(l,s,g,size){
+ var px=IQ_PX[size]||IQ_PX.sm, c=seatCol(l.b), st=s?2:g?1:0;
+ var body=s?iqScoreArc(c,s.score/10,24,24,20,3.6)
+  :iqSegs([g>0?1:0,g>1?1:0,g>2?1:0],function(){return c;},24,24,20,3.6,16);
+ return '<span class="iqa-rg" data-st="'+st+'" style="--c:'+c+'"><svg width="'+px+'" height="'+px+'" viewBox="0 0 48 48" aria-hidden="true">'
+  +body
+  +'<g transform="translate(15 15) scale(.75)" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+  +(st?'stroke="'+c+'"':'style="stroke:var(--dim)"')+'><path d="'+l.ic+'"/></g></svg></span>';}
+/* A SEAT IS A SEGMENT PER LAW, and an arc once every law under it reads. */
+function iqSeatStat(b,p,sc){
+ var L=iqLawsOf(b), ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean), got=0;
+ L.forEach(function(x){got+=iqGot(p,x.li);});
+ var mean=ms.length?ms.reduce(function(a,s){return a+s.score;},0)/ms.length:0;
+ var done=L.length>0&&ms.length===L.length;
+ return {L:L,mean:mean,got:got,done:done,st:done?2:got?1:0};}
+function iqSeatRing(b,t,p,sc,px){
+ var c=seatCol(b), body=t.done?iqScoreArc(c,t.mean/10,24,24,20,3.6)
+  :iqSegs(t.L.map(function(x){var g=iqGot(p,x.li); return sc[x.l.nm]?1:g?.5:0;}),function(){return c;},24,24,20,3.6,14);
+ return '<span class="iqa-rg" data-st="'+t.st+'" style="--c:'+c+'"><svg width="'+px+'" height="'+px+'" viewBox="0 0 48 48" aria-hidden="true">'
+  +body+'<g transform="translate(15 15) scale(.75)" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+  +(t.st?'stroke="'+c+'"':'style="stroke:var(--dim)"')+'>'+(SEATGLYPH[b]||SEATGLYPH._)+'</g></svg></span>';}
+/* THE FIRST LAW STILL MISSING AN ANSWER, in body order. It is the next thing
+   to do, and the page says so on the seat and on the row. */
+function iqNext(p){
+ var o=iqBodyOrder();
+ for(var i=0;i<o.length;i++)if(iqGot(p,o[i])<3)return o[i];
+ return null;}
+/* THE SEAT WHOSE LAWS ARE SHOWING. A law that is open always shows its seat,
+   so a gate or a door that opens a law by number is never looking at a closed
+   panel. Otherwise the person's own choice, and failing that the seat the next
+   law is in, so arrival lands on the next thing to answer. */
+function iqSeatOpen(p){
+ if(IQ_OPEN!=null)return SI[IQ_OPEN].b;
+ if(IQ_SEAT!=null)return IQ_SEAT;
+ var n=iqNext(p); return n!=null?SI[n].b:IQ_SEATS[0];}
 /* THE GAP, DRAWN. The measurement is the distance between three readings of
    one law, so it is three marks on one line from 0 to 10: hollow for the two
    framings, solid for the ordinary day, and the seat colour spanning the
@@ -376,60 +697,100 @@ function iqGap(p,li,w){
    law he had scored opened onto a scale with nothing selected. The prototype
    found it; the port fixes it. The nearest point is marked and the exact
    figure is printed beside the framing's name, so the scale never claims an
-   answer more round than the one on file. */
+   answer more round than the one on file. Each framing now carries its own
+   icon beside its name: under cost, unseen, ordinary day. The scale keeps its
+   eleven even cells and each cell knows its own number, so it can ramp. */
 function iqFramings(p,Q,li){
  var c=seatCol(SI[li].b), h='';
  [0,1,2].forEach(function(t){
   var idx=li*3+t, qq=Q[idx], v=p.intake.answers[idx];
   var near=(v==null)?null:Math.round(v);
   h+='<div class="iq-qc iqa-fr" style="--c:'+c+'"><div>'
-   +'<div class="iqa-flr"><em class="iqa-fl">'+esc(IQ_SIDE[qq.side]||qq.side)+'</em>'
+   +'<div class="iqa-flr"><span class="iqa-fi">'+iqSvg(IQ_IC[IQ_SIDEIC[qq.side]||'day'])+'</span>'
+   +'<em class="iqa-fl">'+esc(IQ_SIDE[qq.side]||qq.side)+'</em>'
    +(v!=null&&v!==near?'<span class="iqa-ex">'+esc(v)+'</span>':'')+'</div>'
    +'<div class="iqa-qt">'+esc(qq.q)+'</div></div>'
    /* the scale is the accordion's own, one row of eleven even cells, which is
       ruled, and the prototype's two row wrap is not taken */
    +'<div class="iq-sl">';
   for(var n=0;n<=10;n++)
-   h+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-a="'+idx+'" data-v="'+n+'" '
+   h+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-a="'+idx+'" data-v="'+n+'" style="--v:'+n+'" '
     +'aria-pressed="'+(near===n)+'">'+n+'</button>';
   h+='</div></div>';});
  return h;}
-/* THE HEADER. CQ in a ring, the way Summary carries it, and one line: the
-   tier word once all twenty one are in, and until then what is left. Never a
-   count against a total, which the accordion's own note ruled out: "1 of 3"
-   is a fraction and a fraction is a score. The prototype read "3 of 21 laws
-   measured" there, so that one line was not taken across as drawn. */
-function iqArtHead(r,scored,answered){
- var cq=scored?r.CQ:null;
- var glyph='<text x="12" y="16" text-anchor="middle" font-size="9" font-weight="600" '
-  +'fill="currentColor" stroke="none">CQ</text>';
- return '<div class="iqa-cq"><span class="iqa-cqp">'
-  +crBadge('Throat',cq||0,{size:'md',bare:true,glyph:glyph})
-  +'<b>'+(cq==null?'–':Math.round(cq))+'</b></span>'
-  +'<span class="iqa-cqw"><span class="iqa-cqt">'
-  +(r.tier?esc(r.tier):(63-answered)+' questions left')+'</span>'
-  +'<span class="iqa-cqs">'+scored+' law'+(scored===1?'':'s')+' measured</span></span></div>';}
+/* THE HEADER. Where I am, how far, and how to look. The ring is the page's
+   figure: one segment per law, all twenty one, in the seat colours crown to
+   root, lit as each reads. CQ sits in the middle of it once a law is measured.
+   One line under the title: the tier word once a law is read, and until then
+   what is left. Never a count against a total, which the accordion's own note
+   ruled out: "1 of 3" is a fraction and a fraction is a score. */
+function iqHeroRing(p,sc,cq){
+ var o=iqBodyOrder(), vals=o.map(function(li){var g=iqGot(p,li); return sc[SI[li].nm]?1:g?.5:0;});
+ var seg=iqSegs(vals,function(i){return seatCol(SI[o[i]].b);},48,48,40,6.5,5);
+ return '<span class="iqa-hr"><svg viewBox="0 0 96 96" aria-hidden="true">'+seg+'</svg>'
+  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i>CQ</i></span></span>';}
+function iqHeroHtml(p,sc,r,scored,answered,total){
+ var left=total-answered;
+ /* THE FIGURE WAITS FOR THE BAND. The summary beside this page says it in
+    its own words, "The band is named once all 21 are in", and a CQ of 3 printed
+    after one law is a stranger being told they are incoherent on the strength
+    of a twenty first of the data. The ring still fills as each law lands. */
+ return '<header class="iqa-hero iqa-card">'+iqHeroRing(p,sc,(scored&&r.tier)?r.CQ:null)
+  +'<div class="iqa-ht"><span class="iqa-eye">Energetics</span>'
+  +'<span class="iqa-hh">'+(r.tier?esc(r.tier):left+' questions left')+'</span>'
+  +'<span class="iqa-hs">'+scored+' law'+(scored===1?'':'s')+' measured'
+  +(r.tier&&left>0?', '+left+' question'+(left===1?'':'s')+' left':'')+'</span></div>'
+  +'<div class="iqa-tools">'+iqViewHtml()
+  +'<button type="button" class="iqa-mb" id="iqmore" aria-expanded="'+IQ_MORE+'" aria-controls="iqmorep" '
+  +'aria-label="Profile" title="Profile">'+iqSvg(IQ_IC.more)+'</button></div></header>';}
+/* AND THE SWITCHER NAMES WHAT IS ACTUALLY LOADED. It listed PROFILES only,
+   and a reference case is not in that list any more, so with one loaded no
+   option matched and the control showed the person's own name above
+   somebody else's sixty three answers. It carries the loaded example as an
+   entry of its own, marked as what it is, and the handler refuses to switch
+   to it, because there is nothing to switch to: it is already up. The four
+   profile controls are nested behind the header's one icon, which is the
+   same four controls with one decision in front of them. */
+function iqMoreHtml(p){
+ return '<div class="iqa-more iqa-card iq-act" id="iqmorep"'+(IQ_MORE?'':' hidden')+'>'
+  +'<select id="iqprof" aria-label="Profile">'
+  +(PROFILES.indexOf(p)<0
+    ?'<option value="-1" selected>'+esc(p.name)+', a worked example</option>':'')
+  +PROFILES.map(function(x,i){
+     return '<option value="'+i+'"'+(x===CURP?' selected':'')+'>'+esc(x.name)+'</option>';}).join('')+'</select>'
+  +'<button class="btn" id="iqnew">New</button>'
+  +'<button class="btn pri" id="iqsave">Save</button>'
+  +'<button class="btn" id="iqexp">Export</button></div>';}
 
-/* ---------- A. The reading list ---------- */
+/* ---------- A. The map, and the seat that is open ---------- */
 function iqViewList(p,Q,sc){
- var h='<div class="iqa-list">';
- IQ_SEATS.forEach(function(b){
-  var L=iqLawsOf(b), c=seatCol(b); if(!L.length)return;
-  var ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean);
-  var mean=ms.length?ms.reduce(function(a,s){return a+s.score;},0)/ms.length:0;
-  h+='<section class="iqa-seat" style="--c:'+c+'"><div class="iqa-sh">'
-   +crBadge(b,mean*10,{size:'md',raw:ms.length?mean.toFixed(1):null,bare:!ms.length})
-   +'<div><div class="iqa-shn">'+esc(b)+'</div><div class="iqa-shl">'+esc(IQ_SEATLINE[b])+'</div></div></div>'
-   +'<div class="iqa-laws">';
-  L.forEach(function(x){
-   var s=sc[x.l.nm], g=iqGot(p,x.li), on=(IQ_OPEN===x.li);
-   h+='<button type="button" class="iqa-lawr" data-law="'+x.li+'" aria-expanded="'+on+'">'
-    +iqLawBadge(x.l,s,g,'sm')
-    +'<span><span class="iqa-lt">'+esc(x.l.nm)+'</span><span class="iqa-lv">'+esc(iqLine(s,g))+'</span></span>'
-    +'<span class="iqa-gw">'+iqGap(p,x.li,200)+'</span></button>';
-   if(on)h+='<div class="iq-law open iqa-open">'+iqFramings(p,Q,x.li)+'</div>';});
-  h+='</div></section>';});
- return h+'</div>';}
+ var open=iqSeatOpen(p), nx=iqNext(p), tiles='', panels='';
+ IQ_SEATS.forEach(function(b,bi){
+  var t=iqSeatStat(b,p,sc), c=seatCol(b), on=(open===b); if(!t.L.length)return;
+  var isNext=(nx!=null&&SI[nx].b===b);
+  tiles+='<button type="button" class="iqa-tile" data-seat="'+esc(b)+'" data-st="'+t.st+'" aria-expanded="'+on+'" '
+   +'aria-controls="iqa-p'+bi+'" aria-label="'+esc(b)+', '+['not started','started','read'][t.st]+'" style="--c:'+c+'">'+iqSeatRing(b,t,p,sc,56)
+   +'<span class="iqa-tn">'+esc(b)+'</span>'
+   +'<span class="iqa-tm" aria-hidden="true">'+t.L.map(function(x){
+      var g=iqGot(p,x.li); return '<i class="iqa-pip" data-st="'+(sc[x.l.nm]?2:g?1:0)+'"></i>';}).join('')+'</span>'
+   +(t.done?'<b class="iqa-ts">'+t.mean.toFixed(1)+'</b>':'')
+   +(isNext?'<i class="iqa-nd" aria-hidden="true"></i>':'')+'</button>';
+  panels+='<section class="iqa-pn" id="iqa-p'+bi+'" style="--c:'+c+'"'+(on?'':' hidden')+'>'
+   +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b)+'</span><span class="iqa-shl">'+esc(IQ_SEATLINE[b])+'</span></div>'
+   +'<div class="iqa-laws" role="group" aria-label="The laws in '+esc(b)+'">';
+  t.L.forEach(function(x){
+   var s=sc[x.l.nm], g=iqGot(p,x.li), lo=(IQ_OPEN===x.li), st=s?2:g?1:0;
+   panels+='<button type="button" class="iqa-lawr" data-law="'+x.li+'" data-st="'+st+'" data-next="'+(nx===x.li?1:0)+'" '
+    +'aria-expanded="'+lo+'" style="--c:'+c+'">'
+    +iqLawBadge(x.l,s,g,'md')
+    +'<span class="iqa-lx"><span class="iqa-lt">'+esc(x.l.nm)+(nx===x.li?'<span class="iqa-nx">Next</span>':'')+'</span>'
+    +'<span class="iqa-lv">'+esc(iqLine(s,g))+'</span></span>'
+    +'<span class="iqa-gw">'+iqGap(p,x.li,200)+'</span>'
+    +'<span class="iqa-sv">'+(s?s.score.toFixed(1):'')+'</span>'
+    +'<span class="iqa-chev">'+iqSvg(IQ_IC.chev)+'</span></button>';
+   if(lo)panels+='<div class="iq-law open iqa-open" style="--c:'+c+'">'+iqFramings(p,Q,x.li)+'</div>';});
+  panels+='</div></section>';});
+ return '<div class="iqa-list"><div class="iqa-map" role="group" aria-label="The seven seats">'+tiles+'</div>'+panels+'</div>';}
 
 /* the twenty one as a row of rings grouped by seat: the map and the progress
    at once. C's picker, and B's on a phone. */
@@ -518,7 +879,7 @@ function iqViewOne(p,Q,sc){
   +(q?'<text x="100" y="150" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">'
    +q.score.toFixed(1)+'</text>':'')+'</svg>';
  return iqStrip(p,sc,ih,'')
-  +'<div class="iqa-focus" style="--c:'+c+'"><div class="iqa-hero">'+ring
+  +'<div class="iqa-focus" style="--c:'+c+'"><div class="iqa-hero1">'+ring
   +'<div class="iqa-ln">'+esc(l.nm)+'</div>'
   +'<div class="iqa-sub"><b>'+esc(l.b)+'</b>, '+esc(IQ_SEATLINE[l.b])+'</div>'
   +'<div class="iqa-hgap">'+iqGap(p,ih,240)+'</div><div class="iqa-sub">'+esc(iqLine(q,g))+'</div></div>'
@@ -538,109 +899,27 @@ function renderIntake(){
  iqApply(p);
  var r=compute();
  /* no measured law means no result. a defaulted CQ reads as a finding and is not one. */
- var w=p.who||{}, bn=w.born||{};
- /* Why this is asked, said once, in the place it is asked. The intake was an
-    unlabelled accordion in the left rail and nothing said what it was for. */
- /* sealed, so the form is not the first thing on the surface. */
- /* THE SECTION KEEPS THE TAB'S OLD NAME, because it is still what this half
-    reads: the birth moment and the 63 questions. Energetics was the tab until
-    the owner's Avatar ruling, and three buttons elsewhere still open it by that
-    name, so the word lands on the thing it names. */
+ /* what the last press opened and what it landed on, each read once */
+ var an=IQ_ANIM, pu=IQ_PULSE; IQ_ANIM=null; IQ_PULSE=null;
  /* THE PROSE THAT EXPLAINED THIS SECTION IS GONE. His own standing rule,
     violated twice in this one screen: no text that describes what something
     is or how to use it, ever, where an icon, a symbol or the layout itself
-    already says it. "Your birth moment and the 63 questions" and the
-    paragraph on how a birth moment is triangulated were exactly that, and
-    stayed only because nobody swept this file after the rule was first
-    given. Round HS, his own words: "why is that text never being written
-    out ever again after I keep asking for it to never be written out." */
- var hd='<div class="iq-sec"><div class="pm-eye">Energetics</div></div>';
- if(w.sealed) var h=iqSealedCard(p);
- else var h='<div class="iq-who">'
-  +'<div class="pm-eye">Who this is</div>'
-  +'<div class="iq-fields">'
-  +iqField('First name','first',w.first)
-  +iqField('Middle','middle',w.middle)
-  +iqField('Last','last',w.last)
-  +'<div class="iq-f"><label for="wsex">Sex at birth</label><select id="wsex" data-who="sex">'
-   +[['','not said'],['f','Female'],['m','Male'],['o','Other']].map(function(o){
-     return '<option value="'+o[0]+'"'+(w.sex===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')
-   +'</select></div>'
-  +'<div class="iq-f"><label for="wdate">Date of birth</label>'
-   +'<input type="date" id="wdate" data-born="date" value="'+esc(bn.date||'')+'"></div>'
-  /* the checkbox belongs to the time field and sat in its own grid column,
-     where it crowded the place of birth and read as a fourth input. */
-  +'<div class="iq-f"><label for="wtime">Time of birth</label>'
-   +'<input type="time" id="wtime" data-born="time" value="'+esc(bn.time||'')+'"'
-   +(bn.timeUnknown?' disabled':'')+'>'
-   +'<label class="iq-ck"><input type="checkbox" id="wtu"'
-   +(bn.timeUnknown?' checked':'')+'> I do not know it</label></div>'
-  +'<div class="iq-f"><label for="wplace">Place of birth</label>'
-   +'<input type="text" id="wplace" data-born="place" placeholder="City, region" value="'+esc(bn.place||'')+'"></div>'
-  /* THE TIME ZONE, RULED 26 SEPTEMBER. A place was matched against nine cities
-     by exact string and anything else was read as Greenwich, so a person born
-     in Auckland had their moon and gene key read thirteen hours out. The
-     owner chose a named zone over a bigger city list or an asked offset: it is
-     something a person already knows, and the rules for its year are computed
-     rather than looked up by them. The list is the browser's own, offered as
-     suggestions, so typing Auckland finds Pacific/Auckland. */
-  +'<div class="iq-f"><label for="wzone">Time zone of birth</label>'
-   +'<input type="text" id="wzone" data-born="zone" list="wzones" placeholder="Region/City" '
-   +'autocomplete="off" spellcheck="false" value="'+esc(bn.zone||'')+'"></div>'
-  +'</div>'
-  +iqSeedBlock(p)
-  /* SEAL IS A SAVE THAT ALSO PUTS THE FORM AWAY. It is only offered once there
-     is something to state, and it says so rather than sitting there dead. */
-  +'<div class="iq-seal-r">'
-   +'<button class="btn pri" id="iqseal"'+(iqSealable(w)?'':' disabled')+'>Save and close</button>'
-   /* HS sweep: "This rolls up to one line. Edit reopens it" described what
-      the button does, which pressing it shows. The refusal beside a disabled
-      button stays, because nothing else says why it will not press. */
-   +(iqSealable(w)?'':'<span class="iq-seal-n">Enter a name or a date of birth first.</span>')
-  +'</div>'
-  +'</div>';
- /* THE BAR AND THE PROGRESS LINE ARE GONE, round IT. The header is the art
-    pass's: CQ as the ring Summary draws it with, and one line under it. The
-    rings on the laws are the progress now, each filling as its three land,
-    so a bar above them said the same thing a second time. */
- h+='<div class="iqa">'
-  +'<div class="iqa-hd">'+iqArtHead(r,scored,answered)
-  +'<div class="iqa-tools">'+iqViewHtml()
-  +'<div class="iq-act">'
-   /* AND THE SWITCHER NAMES WHAT IS ACTUALLY LOADED. It listed PROFILES only,
-      and a reference case is not in that list any more, so with one loaded no
-      option matched and the control showed the person's own name above
-      somebody else's sixty three answers. It carries the loaded example as an
-      entry of its own, marked as what it is, and the handler refuses to switch
-      to it, because there is nothing to switch to: it is already up. */
-   +'<select id="iqprof" aria-label="Profile">'
-   +(PROFILES.indexOf(p)<0
-     ?'<option value="-1" selected>'+esc(p.name)+', a worked example</option>':'')
-   +PROFILES.map(function(x,i){
-      return '<option value="'+i+'"'+(x===CURP?' selected':'')+'>'+esc(x.name)+'</option>';}).join('')+'</select>'
-   +'<button class="btn" id="iqnew">New</button>'
-   +'<button class="btn pri" id="iqsave">Save</button>'
-   +'<button class="btn" id="iqexp">Export</button>'
-  +'</div></div></div>';
- /* THE FRAME, AND THE DURATION. Neither was anywhere on this surface.
-
-    Two findings, both from the panel and both measured. Without a stated
-    duration and a visible remainder, 63 questions loses about half its
-    finishers; with both, plus one line naming the three way design, completion
-    runs 29 points higher. And the person who notices around question 40 that
-    the same twenty one things are cycling feels handled, unless it was said at
-    the top, in which case the same fact reads as rigour. It costs one
-    sentence, so it is one sentence.
-
-    Nothing here promises a result or flatters anybody. It says how long, what
-    is being done, and why the repetition is the measurement. */
- h+=iqAccuracy();
- /* THE ACCORDION IS GONE, and what replaces it is the view the toggle names.
-    It went because everything it said is said again by the art pass and said
-    better: the seat group became a row between two hairlines, the law card a
-    ring whose arc is the score, and the spread, which was a sentence, is now
-    three marks on one line. The framings and the scale kept their markup, so
-    a press lands in the same handler with the same arithmetic behind it. */
+    already says it. Round HS, his own words: "why is that text never being
+    written out ever again after I keep asking for it to never be written
+    out." The page is four bands now and none of them describes itself: the
+    header says where you are and how far, the row under it holds who this is
+    and the scale, the map holds the seven seats, and the open seat holds its
+    laws. The birth moment is nested behind its row and the profile controls
+    behind one icon. */
+ /* THE FRAME, AND THE DURATION. The panel's two findings, both measured:
+    without a stated duration and a visible remainder, 63 questions loses about
+    half its finishers; with both, plus one line naming the three way design,
+    completion runs 29 points higher. The ruler band carries the duration and
+    the header carries the remainder, and the three ways are shown by layout:
+    an open law sets its three framings side by side, each with its own name
+    and icon. */
+ var h='<div class="iqa">'+iqHeroHtml(p,sc,r,scored,answered,Q.length)+iqMoreHtml(p)
+  +'<div class="iqa-mid" data-who="'+(IQ_WHO?1:0)+'">'+iqWhoHtml(p)+iqAccuracy()+'</div>';
  /* THE LAW IN HAND IS PINNED ON ARRIVAL. Left unpinned it was worked out
     fresh on every draw as the first law still missing an answer, so the third
     press on a law finished it and the view jumped to the next one before the
@@ -649,29 +928,52 @@ function renderIntake(){
  if(IQ_VIEW!=='list'&&IQ_OPEN==null)IQ_OPEN=iqInHand(p);
  h+=(IQ_VIEW==='wheel'?iqViewWheel(p,Q,sc,r,scored):IQ_VIEW==='one'?iqViewOne(p,Q,sc):iqViewList(p,Q,sc));
  h+='</div>';
- iqArtCss();
- host.innerHTML=hd+h;
+ iqArtCss(); iqDoors();
+ host.innerHTML=h;
  /* the avatar repaints only when something it reads has moved, so a press on
     a law never throws away a half typed pair above it */
  if(typeof avRefresh==='function')avRefresh();
+ /* ARRIVAL. Only the thing the last press opened takes the entrance, and a
+    ring that just changed shows it: the segment that landed fades in, a law
+    that closed pops once, and so does the cell that was pressed. */
+ if(an){
+  var at=an.who?host.querySelector('.iqa-whop:not([hidden])'):an.more?host.querySelector('.iqa-more:not([hidden])')
+   :an.seat?host.querySelector('.iqa-pn:not([hidden])'):an.law!=null?host.querySelector('.iqa-open'):null;
+  if(at)at.classList.add('iqa-in');}
+ if(pu){
+  var pg=iqGot(p,pu.li), seg=pu.fresh?(pg>=3?'s':String(pg-1)):null;
+  host.querySelectorAll('[data-law="'+pu.li+'"] .iqa-rg').forEach(function(e){
+   e.classList.add('iqa-pop');
+   var sg=seg!=null&&e.querySelector('.iqa-sg[data-i="'+seg+'"]'); if(sg)sg.classList.add('iqa-new');});
+  var hr=host.querySelector('.iqa-hr'); if(hr)hr.classList.add('iqa-pop');
+  var tl=host.querySelector('.iqa-tile[data-seat="'+SI[pu.li].b+'"] .iqa-rg'); if(tl)tl.classList.add('iqa-pop');
+  var on=host.querySelector('.iq-n.on[data-a="'+pu.a+'"]'); if(on)on.classList.add('iqa-pop');}
  host.querySelectorAll('[data-law]').forEach(function(el){
   /* the list opens and closes a law in place, as the accordion did. The wheel
      and one at a time always have a law in hand, so a press there moves it
      and never empties the panel. getAttribute and not dataset, because on the
-     wheel the control is an svg g. */
+     wheel the control is an svg g. A law pressed also holds its seat open. */
   var go=function(){var li=+el.getAttribute('data-law');
    IQ_OPEN=(IQ_VIEW==='list'&&IQ_OPEN===li)?null:li;
+   IQ_SEAT=SI[li].b; IQ_ANIM=(IQ_VIEW==='list'&&IQ_OPEN!=null)?{law:li}:null;
    IQ_FOCUS='[data-law="'+li+'"]'; renderIntake();};
   el.onclick=go;
   /* a g is not a button, so Enter and Space are wired by hand */
   if(el.tagName.toLowerCase()==='g')el.onkeydown=function(k){
    if(k.key==='Enter'||k.key===' '){k.preventDefault();go();}};});
+ /* a seat tile opens its laws under the map, and pressing the open one puts
+    them away. Opening one seat closes the law that was open in another. */
+ host.querySelectorAll('[data-seat]').forEach(function(el){el.onclick=function(){
+  var b=el.getAttribute('data-seat'), was=iqSeatOpen(CURP);
+  if(was===b){IQ_SEAT=''; IQ_OPEN=null; IQ_ANIM=null;}
+  else{IQ_SEAT=b; IQ_OPEN=null; IQ_ANIM={seat:b};}
+  IQ_FOCUS='[data-seat="'+b+'"]'; renderIntake();};});
  host.querySelectorAll('[data-iqv]').forEach(function(el){el.onclick=function(){
   IQ_VIEW=el.getAttribute('data-iqv'); IQ_FOCUS='[data-iqv="'+IQ_VIEW+'"]'; renderIntake();};});
  /* walks the body order the strip shows, crown to root, not the table order */
  host.querySelectorAll('[data-step]').forEach(function(el){el.onclick=function(){
   var o=iqBodyOrder(), i=o.indexOf(iqInHand(CURP)), d=+el.getAttribute('data-step');
-  IQ_OPEN=o[(i+d+o.length)%o.length];
+  IQ_OPEN=o[(i+d+o.length)%o.length]; IQ_SEAT=SI[IQ_OPEN].b;
   IQ_FOCUS='[data-step="'+d+'"]'; renderIntake();};});
  /* THE PRESS KEEPS ITS PLACE. This renderer writes the whole host, so the
     control a person just pressed is a new element afterwards and focus fell
@@ -690,11 +992,19 @@ function renderIntake(){
      against the old one stop counting (engine/compute.js, lawAnswered). Even
      when the mean of the three lands on the same number: the person has just
      told us where the law is, and that wins over the model's estimate. */
+  var li=Math.floor(+el.dataset.a/3), was=iqGot(CURP,li);
   if(CURP.intake.answers[+el.dataset.a]!==+el.dataset.v)
-   lawAnswered(CURP,SI[Math.floor(+el.dataset.a/3)].nm);
+   lawAnswered(CURP,SI[li].nm);
   CURP.intake.answers[+el.dataset.a]=+el.dataset.v;
   if(!CURP.intake.startedAt)CURP.intake.startedAt=new Date().toISOString();
+  IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
   iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
+ /* THE NESTED ROWS. Both write the whole host like every other press, and
+    both keep their place by the focus rule above. */
+ var wb=document.getElementById('iqwho');
+ if(wb)wb.onclick=function(){IQ_WHO=!IQ_WHO; IQ_ANIM=IQ_WHO?{who:1}:null; IQ_FOCUS='#iqwho'; renderIntake();};
+ var mb=document.getElementById('iqmore');
+ if(mb)mb.onclick=function(){IQ_MORE=!IQ_MORE; IQ_ANIM=IQ_MORE?{more:1}:null; IQ_FOCUS='#iqmore'; renderIntake();};
  /* identity writes on change, not on every keystroke, and reports through
     the status region like every other write that can fail. */
  host.querySelectorAll('[data-who]').forEach(function(el){el.onchange=function(){
@@ -703,7 +1013,7 @@ function renderIntake(){
      Summary. Nothing repainted after a name change, so a cleared surname left
      the master number standing on a name that is no longer there. */
   CURP.who[el.dataset.who]=el.value; pSave(); statusSaved();
-  renderSpirit&&renderSpirit(); render();};});
+  renderSpirit&&renderSpirit(); render(); iqWhoRefresh(host);};});
  iqZones();
  host.querySelectorAll('[data-born]').forEach(function(el){el.onchange=function(){
   var k=el.dataset.born, v=(k==='zone')?el.value.trim():el.value;
@@ -714,18 +1024,16 @@ function renderIntake(){
      save that worked: a failed save already has its own sentence. */
   if(statusSaved()&&k==='zone'&&v&&!zoneOffsets(v,2000,1,1,12))
    status('Saved. '+v+' is not a time zone this browser can read.');
-  renderSpirit&&renderSpirit();};});
- /* SEAL AND EDIT. Both write, so both report through the status region, and
-    neither claims anything it did not get. */
+  renderSpirit&&renderSpirit(); iqWhoRefresh(host);};});
+ /* SEAL. It writes, so it reports through the status region, and claims
+    nothing it did not get. It stamps the profile and puts the form away. */
  var sl=document.getElementById('iqseal');
  if(sl)sl.onclick=function(){
   if(!iqSealable(CURP.who)){status('Enter a name or a date of birth first.');return;}
   CURP.who.sealed=new Date().toISOString();
   pSave();
-  if(statusSaved())renderIntake();
+  if(statusSaved()){IQ_WHO=false; IQ_FOCUS='#iqwho'; renderIntake();}
   else{CURP.who.sealed='';}};
- var ed=document.getElementById('iqedit');
- if(ed)ed.onclick=function(){CURP.who.sealed=''; pSave(); statusSaved(); renderIntake();};
  var ty=document.getElementById('wtype');
  if(ty)ty.onchange=function(){
   if(ty.value)seedApply(CURP,ty.value); else seedClear(CURP);
@@ -737,11 +1045,11 @@ function renderIntake(){
  var ps=document.getElementById('iqprof');
  if(ps)ps.onchange=function(){
   var pi=+ps.value; if(pi<0||!PROFILES[pi]){renderIntake();return;}
-  CURP=PROFILES[pi];loadProfile(CURP);IQ_OPEN=null;
+  CURP=PROFILES[pi];loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
-  if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
+  if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
  var sb=document.getElementById('iqsave');
  /* The button used to read "Saved" whether or not anything was written. It
     reports what happened now, and the status region carries the detail. */
@@ -754,4 +1062,30 @@ function renderIntake(){
   try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
   catch(e){eb.textContent=t.length+' bytes';}
   setTimeout(function(){eb.textContent='Export';},1200);};}
-
+/* THE ROW AND THE SEAL FOLLOW WHAT IS TYPED, in place. The form is open while
+   it is being filled, and rewriting the host on every change would take focus
+   from the next field, so the row's rings and the seal button are brought up
+   to date without touching the fields. It matters most for the seal: it was
+   drawn disabled on a blank profile and stayed disabled after a name was
+   typed, because nothing redrew it until some other press did. */
+function iqWhoRefresh(host){
+ var tmp=document.createElement('div'); tmp.innerHTML=iqWhoHtml(CURP);
+ var nb=tmp.querySelector('.iqa-whob'), ob=host.querySelector('.iqa-whob');
+ if(nb&&ob)ob.innerHTML=nb.innerHTML;
+ var os=host.querySelector('#iqseal'), ns=tmp.querySelector('#iqseal');
+ if(!os||!ns)return;
+ os.disabled=ns.disabled;
+ var sp=host.querySelector('.iq-seal-n');
+ if(!ns.disabled&&sp)sp.remove();
+ if(ns.disabled&&!sp){sp=document.createElement('span'); sp.className='iq-seal-n';
+  sp.textContent='Enter a name or a date of birth first.'; os.parentNode.appendChild(sp);}}
+/* TWO DOORS FOCUS THE BIRTH DATE ON THE NEXT FRAME: the worked example's #spgo
+   and the root summary's .rs-go. A browser refuses focus on a hidden field
+   without a word, and the form is nested now, so the press is caught on the
+   way down, before their own handler runs, and the form is opened first. The
+   same capture the Avatar keeps for its own doors, and for the same reason. */
+function iqDoors(){
+ if(IQ_DOORS)return; IQ_DOORS=true;
+ document.addEventListener('click',function(e){
+  var t=e.target&&e.target.closest&&e.target.closest('#spgo,.rs-go');
+  if(t)IQ_WHO=true;},true);}
