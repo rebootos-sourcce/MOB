@@ -2648,15 +2648,18 @@ going to do, that's power, that's solar plexus. So if a person is describing
 their lack of value or self worth or confidence or self respect, they're
 downgrading their solar plexus. So the sniffer should find that."
 
-- [ ] **SB13. This is the sniffer's job description in one sentence,** and it
+- [x] **SB13. This is the sniffer's job description in one sentence,** and it
       is a better one than the spec has: a person's words about themselves
       name the seat they are holding down. The lexicon already maps words to
       axes and seats, so this is a coverage question rather than a new
-      mechanism.
-- [ ] **SB14. Measure the named case before anything else.** Take self worth,
+      mechanism. Confirmed round NO: built as fourteen new entries in
+      `lexicon.js`, not a new table.
+- [x] **SB14. Measure the named case before anything else.** Take self worth,
       confidence, self respect and follow through, and measure what the
       sniffer currently returns for each. If it does not reach the solar
       plexus, that is the first hole to fill and it is his own example.
+      Measured round NO: three of four returned nothing. Filled, and
+      re-measured after: all four now reach the solar plexus. See round NO.
 - [ ] **SB15. He stopped himself mid sentence on the slots for eyes, ears,
       nose and mouth,** so it is recorded as raised and not specified. What
       was underneath it is real: improve communication, improve perception,
@@ -29040,3 +29043,70 @@ Gated in full before this round's own commit: `BUILD.sh` and
 172/0, `tests/boot.js` 13/0, `tools/monitor.js` all surfaces render,
 voice objections unchanged, `tests/functional.js` 1369/0, clean on the
 first run this time.
+
+## Round NO
+
+His own instruction, verbatim, the one still standing after round NN's
+Character page ruling: "get to that sniffer. And these algorithms I
+think we're getting pretty close to an MVP, so I just want us to wire
+everything in before the night ends."
+
+Read `SOURCE-TDD-V3-intelligence.md` section 10, Limiter Detection,
+against what this engine already has before writing anything, on this
+file's own standing rule against a second mechanism for a concept
+already covered. `verp.js` carries two: the six gates and the lean's
+two channels. Neither is the TDD's limiter. Then read `TASKS.md`
+itself and found the owner had already ruled this, round SB, in his
+own words closer to the product than the TDD's: "if a person is
+describing their lack of value or self worth or confidence or self
+respect, they're downgrading their solar plexus. So the sniffer should
+find that." And the measurement he asked for before any build, SB14:
+"measure what the sniffer currently returns" for self worth,
+confidence, self respect and follow through.
+
+**Measured first, round NO, against the real engine and not a guess.**
+`sniffStory("I have no self worth. I feel like I have no confidence at
+all.")` returned zero axes. `sniffStory("I just do not have any self
+respect anymore.")` returned zero. The lack of discipline and follow
+through case the same. Only the word worthless, already in the table,
+reached anything, and it reached Shame at the solar plexus on its own.
+Four named cases, three of four returning nothing at all: the hole
+SB13 named exactly, "the lexicon already maps words to axes and seats,
+so this is a coverage question rather than a new mechanism."
+
+**Built as a coverage addition to `atuned_src/engine/lexicon.js`, not
+a new table.** Self worth, confidence and self respect, in the phrasings
+a person actually writes them in ("no self worth", "no confidence in
+myself", "do not have any self respect", and the dont/cant contractions
+of each), seated at the solar plexus with the stated fetter Shame,
+because that family is already seated there by round GR's own ruling:
+ashamed, humiliated, stupid, worthless, embarrassed and guilty are all
+Shame at solar in this same table, and a person naming no worth, no
+confidence or no self respect is naming that family in its own words
+rather than its adjectives. Follow through and discipline carry no
+stated fetter: the seat is what the words actually say, which of the
+nine axes it is is not, and this table's own posture elsewhere is to
+leave that to the quarter rule rather than guess one.
+
+Re-measured after, against the same four named cases and `chGeo`'s own
+sibling discipline of checking the real function rather than trusting
+the table: all four now reach the solar plexus. "I have no self
+worth... no confidence at all" reads Shame. "I just do not have any
+self respect anymore" reads Shame. "I lack the discipline to follow
+through" reads Anger, the solar plexus's own modal fetter taking the
+seat the words named and nothing further claimed.
+
+Gated in full: `BUILD.sh` and `BUILD-engine.sh` clean, 484 exports,
+`tests/engine.js` 1853/0, `tests/collide.js` 351/0, `tests/design.js`
+185/0, `tests/funnel.js` 172/0, `tests/boot.js` 13/0, `tools/monitor.js`
+all surfaces render, voice objections 0 found, `tests/functional.js`
+1368/1, the one already catalogued Field fade flake and nothing else.
+
+Committed as a source only change. `engine.js` and `source.html` are
+not committed this round: the background build on the Character
+page's Field effects, round NN's own dispatch, is still running and
+has already written into `head.html`, `character.js` and `drills.js`
+in this same working tree, unreviewed. Rebuilding and committing the
+build products now would ship that unfinished, unverified work inside
+this round's commit. They rebuild and commit together once that
+agent's work is read and gated on its own.
