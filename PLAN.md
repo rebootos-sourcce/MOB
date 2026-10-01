@@ -106,3 +106,60 @@ Open with him: whether the reading stays visible across tiers (his tier ruling
 says no for saboteurs and above); what the six maturity levels are called;
 who writes the six ladder lines; whether the experience metrics may ever leave
 the device.
+
+## H. Onboarding and First Experience (round OS, three reviews merged)
+
+Source: `ATUNED-onboarding-first-experience-TDD.md` (his), reviewed in
+`ATUNED-onboarding-REVIEW-1-product.md` (state map, eleven contradictions, the
+persona drop-offs), `-REVIEW-2-systems.md` (objects, persistence, events,
+slices O0 to O11) and `-REVIEW-3-narrative.md` (every screen in the TDD's
+schema, ten integrity questions, six archetype questions, safety and claims,
+the visual grammar table). Mockups of the screens: `mockups/onboarding/`
+(in flight).
+
+**What the reviews found that changes the plan**
+- Neither the onboarding nor the Day One tutorial reaches a first release
+  today. A stranger gets to one only by finding the Story tab alone.
+- The first run flags were dropped at every load, so the onboarding replayed on
+  every launch. Fixed this round (O0, first half).
+- The TDD's own example, "I keep taking care of everybody else.", read as
+  nothing. Round OU rebuilds the sniffer (day quality, acts, irritation, the
+  story frame and the framework questions) and the Mirror waits on it.
+- There is no safety path: a sentence about ending one's life reads as Sad 8.8
+  and is offered a release. The two safety lines drafted in
+  `reviews/LEGAL-floor.md` are not built.
+- The funnel promises "nothing you write leaves this browser"; the TDD wants
+  the story moved into the account. One has to change.
+- The TDD names the loop Mirror, Test, Change and says "the reading is visible
+  across tiers"; both collide with his rulings (discover, play, flow, embody,
+  a circle; sight by tier).
+
+**Slices, in order** (sizes from review 2; each has its gate there)
+O0 stop the silent drops (flags done; failed saves must report) S ·
+O1 the journey record M · O2 the Story Signal, offline M · O3 the mini release
+and the run record M · **O4 the first-run sheet, which makes the first release
+reachable** L · then in any order: O5 ground and the gift, O6 the post-release
+responses, O9 disclosure and the achievement gate, O10 the local event log ·
+O7 the ten integrity questions and O8 the archetype check wait on rulings ·
+O11 the server seams wait on accounts.
+
+**Rulings that unblock slices** (full text with quoted sources in the reviews;
+my recommendation is marked, none is settled)
+1. When the account is asked for: before the first release (the TDD), or after
+   it with the gift shown first (recommended, reviews 1 and 2).
+2. Whether a new person sees their whole reading while the gift lasts
+   (recommended) or sight by tier from the first minute.
+3. Whether the gift is a counter of 100 or a list of 100 per starting point
+   (recommended: a counter, the starting point steering the first draw).
+4. Where the Mirror's cause sentence comes from: the table only with the
+   person's own answer as the cause (recommended), or a model step.
+5. Whether the integrity and archetype questions are in the first session, and
+   whether their answers write to the laws or are evidence only (recommended).
+6. One permanent safety line under the story box and a stop route in the
+   somatic setup (recommended).
+7. What the first release does when the first story puts nothing above the
+   line: a labelled practice run that writes nothing (recommended).
+8. The release sentence: the TDD's, or the shipped stem "I am letting go of
+   believing, perceiving, thinking, behaving, acting, and feeling that I am".
+9. What counts as "repeated use" for revealing achievements, and the word
+   (marks or achievements); referral 25: who gets it.
