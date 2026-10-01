@@ -2110,14 +2110,20 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     a pace and that was never about the discount. */
  const planYear=E.planYear, PLAN_YEAR_FREE=E.PLAN_YEAR_FREE;
  ok(PLAN_YEAR_FREE===0,'no annual discount is ruled, got '+PLAN_YEAR_FREE);
- ok(planYear('one').pay===12-PLAN_YEAR_FREE&&planYear('one').grant===400,
-  'a year of tier one is '+(12-PLAN_YEAR_FREE)+' payments at four hundred a month');
+ /* A MONTHLY RECORD HEARS NOTHING ABOUT A YEAR. planYear read the tier alone
+    and the plan sheet printed "Paid for the year." to every monthly payer.
+    Monthly only is ruled; annual is open. */
+ const monthly={tier:'one',status:'active'}, yearly={tier:'one',status:'active',per:'year'};
+ ok(planYear('one',monthly)===null&&planYear('one')===null&&planYear('one',null)===null,
+  'a monthly record, or no record, gets no annual line at all');
+ ok(planYear('one',yearly).pay===12-PLAN_YEAR_FREE&&planYear('one',yearly).grant===400,
+  'a record paid by the year is '+(12-PLAN_YEAR_FREE)+' payments at four hundred a month');
  /* and it does not offer months it is not giving away */
- ok(!/price of/.test(planYear('one').say)||PLAN_YEAR_FREE>0,
+ ok(!/price of/.test(planYear('one',yearly).say)||PLAN_YEAR_FREE>0,
   'and it does not say months free while none are');
- ok(/arrives monthly/.test(planYear('one').say),
+ ok(/arrives monthly/.test(planYear('one',yearly).say),
   'and the allowance is still monthly rather than a year in one lump');
- ok(planYear('free')===null&&planYear('gift')===null,
+ ok(planYear('free',yearly)===null&&planYear('gift',yearly)===null,
   'there is no annual on a plan that is not monthly');
 
  /* ALLOWANCE. The gift is spent first and spent once, and spend is never
@@ -5351,6 +5357,57 @@ g('NZ · the tiers side by side, read off the ladder and nothing else');
  ok(planPrice('one')===12&&planPrice('two')===29&&planPrice('three')===59&&planPrice('four')===99,
   'the four paid tiers are 12, 29, 59 and 99 a month, his own figures, got '+JSON.stringify(PLAN_PRICE));
  ok(planPrice('gift')===null&&planPrice('nonsense')===null,'an unknown key has no price rather than a wrong one');
+}
+
+g('NZ2 · the plan the server holds, laid onto a record');
+/* planFromServer is the pure half of the read back in ui/auth.js. Nothing
+   wrote CURP.plan from the server, so a person who paid read Free. Every
+   decision the writer makes about what to write is asserted here; the host
+   only validates, saves and speaks. */
+{
+ const {planFromServer,planOf,planState,validateProfile,SCHEMA_V,GIFT_N,planAllowance}=E;
+ const free={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ const S1='2026-10-01T00:00:00.000Z', U1='2026-11-01T00:00:00.000Z', S2='2026-11-01T00:00:00.000Z', U2='2026-12-01T00:00:00.000Z';
+ const many=n=>new Array(n).fill(0).map((_,i)=>'k'+i);
+ /* never paid, on a free record: nothing a person can see moves */
+ const a=planFromServer(free,null,[]);
+ ok(a.same&&a.now==='free'&&!a.nowLive,'null on a free record is the same record');
+ /* paying lands the tier, Stripe's word, and the period */
+ const b=planFromServer(free,{tier:'one',status:'active',since:S1,until:U1},many(140));
+ ok(!b.same&&b.now==='one'&&b.nowLive&&!b.wasLive,'a live tier one lands on a free record, got '+JSON.stringify(b.plan));
+ ok(b.plan.since===S1&&b.plan.until===U1&&b.plan.status==='active','with Stripe\'s word and both ends of the period');
+ ok(b.plan.base===140,'a new period opens at the unique count now, so it is charged only for what opens from here');
+ ok(planFromServer(free,{tier:'one',status:'active',since:S1,until:U1},many(40)).plan.base===GIFT_N,
+  'and never below the end of the gift, the floor planAllowance holds');
+ ok(planAllowance(b.plan,140).left===400,'so the first paid month reads its whole four hundred, got '+planAllowance(b.plan,140).left);
+ /* read again with nothing moved: same, and base is kept, not reset */
+ const b2=planFromServer(b.plan,{tier:'one',status:'active',since:S1,until:U1},many(180));
+ ok(b2.same&&b2.plan.base===140,'the same period read twice keeps its base, so a read does not refill an allowance');
+ /* a renewal opens a new allowance and changes nothing a person reads */
+ const c=planFromServer(b.plan,{tier:'one',status:'active',since:S2,until:U2},many(500));
+ ok(!c.same&&c.now==='one'&&c.wasLive&&c.nowLive&&c.plan.base===500,'a renewal moves the period and the base, tier unchanged');
+ /* an upgrade opens a full allowance of the new tier */
+ const d=planFromServer(b.plan,{tier:'three',status:'active',since:S1,until:U1},many(300));
+ ok(d.now==='three'&&d.was==='one'&&d.plan.base===300,'an upgrade is a new tier and a new allowance');
+ /* past due keeps access */
+ const e=planFromServer(b.plan,{tier:'one',status:'past_due',since:S1,until:U1},many(150));
+ ok(e.nowLive&&e.now==='one'&&e.status==='past_due'&&e.wasStatus==='active','past_due keeps the tier, with the change of word visible to the host');
+ /* cancelled: the tier is kept with its word, and reads free */
+ const f=planFromServer(b.plan,{tier:'one',status:'canceled',since:S1,until:U1},many(150));
+ ok(!f.nowLive&&f.wasLive&&f.now==='free'&&f.plan.tier==='one'&&planState(f.plan)==='ended',
+  'a cancelled plan keeps which tier ended and reads free');
+ /* the account has no paid plan, on a record that says it has one */
+ const h=planFromServer(b.plan,null,many(150));
+ ok(!h.same&&h.wasLive&&!h.nowLive&&h.plan.tier==='free'&&h.plan.base===null,'null over a paid record is a change to free, which the host must say');
+ /* a tier this build does not know moves nothing */
+ const u=planFromServer(b.plan,{tier:'five',status:'active',since:S1,until:U1},many(150));
+ ok(u.refused==='five'&&u.same&&u.plan===b.plan,'an unknown tier is refused by name, never rounded down to free');
+ /* everything it writes goes through the boundary a pasted record goes through */
+ const outs=[a,b,b2,c,d,e,f,h].map(x=>validateProfile({v:SCHEMA_V, plan:x.plan}));
+ ok(outs.every(v=>v.ok),'every plan it builds passes validateProfile, got '+JSON.stringify(outs.filter(v=>!v.ok).map(v=>v.errs)));
+ /* field by field: the first cut compared JSON strings and failed on key
+    order alone, which is the probe's defect and not the plan's */
+ ok(Object.keys(b.plan).every(k=>outs[1].profile.plan[k]===b.plan[k]),'and comes out of it unchanged, field by field');
 }
 
 g('OB1 · 19.B6, every entry carries the lexicon that read it');

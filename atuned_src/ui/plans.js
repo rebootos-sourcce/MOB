@@ -123,13 +123,13 @@ function planTiersHtml(){
  /* the price is on every row now, so the foot says when it is charged rather
     than promising to show it. Monthly and nothing more: no annual price is
     ruled (PLAN_YEAR_FREE), so nothing here implies a year.
-    "MOVING DOWN OR STOPPING" became stopping alone when Manage billing was
-    built. The server hears a finished checkout and nothing else, so a tier
-    lowered on Stripe's page would not lower the plan here; panels.js
-    planSection carries the full reason beside its own line. */
+    "MOVING DOWN OR STOPPING" was stopping alone for one round, while the
+    server heard a finished checkout and nothing else. It hears a tier changed
+    on Stripe's page now, so moving down is true again; panels.js planSection
+    carries the reason beside its own line. */
  foot.push('Each price is charged once a month until you stop. You pay on a separate payment page, '
   +'and nothing is charged until you confirm there. '
-  +'Stopping goes through Manage billing above, and stopping deletes nothing.');
+  +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
  h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
   +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to Account</button></div>')
   +'</div></div>';

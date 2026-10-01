@@ -166,10 +166,10 @@ terminal command below.
 6. It asks for a value. Paste the key and press Enter. Nothing shows while you
    paste; that is normal. It says "Success" when done.
 
-### Step 7. Tell Stripe where to send "payment finished"
+### Step 7. Tell Stripe where to send news about payments
 
-When somebody finishes paying, Stripe tells our server. This step sets that
-up.
+When somebody pays, renews each month, changes tier, has a card refused, or
+stops, Stripe tells our server. This step sets that up.
 
 1. On **dashboard.stripe.com**, in test mode, click **"Developers"** again,
    then the **"Webhooks"** tab.
@@ -181,8 +181,19 @@ up.
        https://atuned-api.lance-o-powell.workers.dev/v1/billing/webhook
 
 4. Click **"+ Select events"**. A list opens with a search box at the top.
-   Type `checkout.session.completed`, tick the box next to it, and click
-   **"Add events"**.
+   Tick these **five**, one at a time: type each name into the search box,
+   then tick the box next to it.
+
+       checkout.session.completed
+       customer.subscription.updated
+       customer.subscription.deleted
+       invoice.paid
+       invoice.payment_failed
+
+   Then click **"Add events"**. The list under "Listening to" should show all
+   five. If you already made this endpoint with only the first one, open it,
+   click **"..."** or **"Update details"** at the **top right**, and add the
+   other four.
 5. Click **"Add endpoint"** (or "Create destination") at the bottom.
 
 ### Step 8. Give the server the webhook's signing secret
@@ -202,9 +213,9 @@ real secret too.** Terminal only.
 
 ### Step 9. Turn on the billing page (the Customer portal)
 
-"Manage billing" in the app opens a Stripe page where a person replaces their
-card or stops paying. Stripe will not open that page until you switch it on
-once.
+"Manage billing" in the app opens a Stripe page where a person changes tier,
+replaces their card or stops paying. Stripe will not open that page until you
+switch it on once.
 
 1. On **dashboard.stripe.com**, in test mode, click the **gear icon** at the
    **top right**. That is **Settings**.
@@ -213,59 +224,60 @@ once.
    - **Customers can update payment methods**: on.
    - **Customers can cancel subscriptions**: on. If it asks when, choose
      **"At the end of the billing period"**.
-   - **Customers can switch plans**: **leave it off for now.** Our server
-     does not yet hear when a plan is changed on Stripe's page, so a switch
-     there would charge the new price while the app kept the old tier. We
-     will tell you when to turn it on.
+   - **Customers can switch plans**: on. Below that switch is a box for
+     **products**. Add all four: Tier one, Tier two, Tier three and Tier
+     four. That is the list a person picks from when they change tier.
 4. Click **"Save"** (top right or bottom of the page; in test mode it may say
    **"Save and activate"**).
 
 ### Step 10. Test it, in five lines
 
-Use a test account in the app, signed in. Ask us first whether the "Manage
-billing" change is live on the server; line 4 needs it, and it goes live when
-we merge it.
+Use a test account in the app, signed in. Ask us first whether the server
+changes are live; they go live when we merge them.
 
 1. In the app, open **Settings**, then **Billing**, and press **"Move to tier
    one"**.
 2. Stripe's page opens. Pay with card `4242 4242 4242 4242`, any future date
    such as `12/34`, any three digits such as `123`, and any postcode.
-3. On **dashboard.stripe.com** (test mode), **Developers**, **Webhooks**,
-   click your endpoint: the newest line says `checkout.session.completed`
-   with **200** beside it.
-4. Back in the app, press **"Manage billing"**: Stripe's billing page opens
-   and shows Tier one at $12.00 a month.
-5. On that page, press **"Cancel plan"**, so the test stops.
+3. You land back in the app. Within a few seconds a short line of text in the
+   **top bar**, under the menu, says **"Tier one is on this record now."**
+   (it fades after two seconds). Then in **Settings**,
+   **Billing**, the Tier one row says **"You are on this"**.
+4. On **dashboard.stripe.com** (test mode), **Developers**, **Webhooks**,
+   click your endpoint: the newest lines say `checkout.session.completed` and
+   `invoice.paid`, each with **200** beside it.
+5. Back in the app, press **"Manage billing"**, then **"Cancel plan"** on
+   Stripe's page, so the test stops.
 
-If line 3 shows a number other than 200, or line 4 shows an error in the app's
-status line, copy the exact words and send them to us.
+**The one-line check after paying:** in the app, Settings, Billing shows "You
+are on this" beside Tier one, and Stripe's Webhooks page shows 200 beside each
+event.
 
-**One thing will look wrong and is ours, not yours.** After line 2, the app's
-own Billing section still says "Free". The server has recorded Tier one (line
-4 proves it), but the app does not yet read the tier back from the server.
-That is on our list.
+If the app instead says "Stripe has not confirmed the payment yet", or a line
+in step 4 shows a number other than 200, copy the exact words and send them to
+us.
+
+After step 5, the plan stays on until the paid month ends, then the app reads
+Free. That is cancelling working as designed: a person keeps what they paid
+for.
 
 ---
 
 ## Part B. Real money
 
-**Wait for us before this part.** Two things on our side need fixing first,
-and both are about money, so they come before any real card:
+Do this part once the five line test in Part A passes. The two fixes this
+part used to wait for are built: the server now hears the monthly renewal,
+tier changes and stops, and the app now shows the tier the server holds.
 
-- The server only hears "payment finished". It does not yet hear Stripe's
-  monthly renewal, so a paying person's tier would drop to free about three
-  days after their first month, while Stripe kept charging them.
-- The app does not yet show the tier the server holds (the "Free" above).
-
-When we say go, Part B is steps 2 to 9 again with **test mode switched off**.
-Everything made in test mode stays in test mode, so in live mode:
+Part B is steps 2 to 9 again with **test mode switched off**. Everything made
+in test mode stays in test mode, so in live mode:
 
 - The four products are made again, and they get **new** price ids. Those go
   into `wrangler.toml` in place of the test ones (step 5).
 - The Secret key starts with `sk_live_` instead of `sk_test_`. Run step 6
   again with it; it replaces the test key.
-- The webhook is added again, and its signing secret is new. Run step 8 again
-  with it.
+- The webhook is added again, with the same five events, and its signing
+  secret is new. Run step 8 again with it.
 - The Customer portal is switched on again, the same way (step 9).
 
 Then run the five line test once more with a real card of your own, on Tier

@@ -3282,6 +3282,17 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
     return send(201,{token:'t-new',account:Object.assign({},ACC,{email:b.email})});}
    if(k==='POST /v1/auth/forgot')return send(200,{ok:true});
    if(k==='POST /v1/auth/signout')return auth==='Bearer t-probe'?send(200,{ok:true}):send(401,{error:'sign in'});
+   /* the plan read back: each of these sessions is an account whose billing
+      says one thing, in the shape reboot-os store.js billingOf sends. t-probe
+      sends no billing key at all, which is a server from before that field */
+   const SPAN={since:'2026-10-01T00:00:00.000Z',until:'2026-11-01T00:00:00.000Z'};
+   const BILL={'Bearer t-paid':Object.assign({tier:'one',status:'active'},SPAN),
+    'Bearer t-late':Object.assign({tier:'one',status:'past_due'},SPAN),
+    'Bearer t-ended':Object.assign({tier:'one',status:'canceled'},SPAN),
+    'Bearer t-odd':Object.assign({tier:'five',status:'active'},SPAN),
+    'Bearer t-none':null};
+   if(k==='GET /v1/me'&&Object.prototype.hasOwnProperty.call(BILL,auth))
+    return send(200,{account:ACC,consent:{share:false,at:null,v:1},records:0,entitlement:null,billing:BILL[auth]});
    if(k==='GET /v1/me')return auth==='Bearer t-probe'?send(200,{account:ACC,consent:{share:false,at:null,v:1},records:0,entitlement:null})
     :send(401,{error:'sign in'});
    /* Manage billing, in the Worker's own words: t-probe has never finished a
@@ -3409,6 +3420,41 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   AUTH_API='http://127.0.0.1:1';
   o.manOff=await authPlanPortal();
   AUTH_API=API; authForget();
+  /* THE PLAN READ BACK. Nothing wrote CURP.plan from the server, so a person
+     who paid read Free. Each session below is an account whose billing says
+     one thing; authPlanRead lays it onto the open record. */
+  const pl=()=>JSON.parse(JSON.stringify(CURP.plan||null));
+  const onDisk=()=>{const r=JSON.parse(localStorage.getItem('source.profiles')||'[]').find(p=>p.id===CURP.id);return r?r.plan:null;};
+  const keptPlan=pl();
+  o.own=PROFILES.indexOf(CURP)>=0;
+  CURP.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null}; pSave();
+  const as=async tok=>{authKeep({token:tok,email:'probe@example.invalid'}); status('probe, before the plan read');
+   const x=await authPlanRead(); return {took:x.took, said:said(), plan:pl(), free:planOf(CURP.plan).k};};
+  o.rbPaid=await as('t-paid'); o.rbDisk=onDisk();
+  o.rbAgain=await as('t-paid');
+  o.rbLate=await as('t-late');
+  o.rbEnded=await as('t-ended');
+  await as('t-paid'); o.rbNone=await as('t-none');
+  await as('t-paid'); o.rbOdd=await as('t-odd');
+  o.rbOld=await as('t-probe');
+  const real=CURP; CURP=Object.assign({},real); o.rbExample=(await as('t-ended')).took; CURP=real;
+  /* the return from Stripe: read once off the address, taken off it, and
+     every other parameter kept */
+  const back=async(q,tok)=>{CURP.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+   if(tok)authKeep({token:tok,email:'probe@example.invalid'}); else authForget();
+   history.replaceState(null,'',location.pathname+q); status('probe, before the return');
+   await authCheck(); return {said:said(), search:location.search, tier:planOf(CURP.plan).k};};
+  o.backDone=await back('?dev=1&billing=done','t-paid');
+  o.backOut=await back('?billing=done&dev=1',null);
+  o.backCancel=await back('?dev=1&billing=cancelled','t-probe');
+  /* planWaitWas, not waitWas: this block already holds a waitWas for AUTH_WAIT_MS */
+  const triesWas=AUTH_PLAN_TRIES, planWaitWas=AUTH_PLAN_WAIT_MS; AUTH_PLAN_TRIES=1; AUTH_PLAN_WAIT_MS=40;
+  o.backWait=await back('?dev=1&billing=done','t-none');
+  await wait(400); o.backWaitEnd=said();
+  AUTH_PLAN_TRIES=triesWas; AUTH_PLAN_WAIT_MS=planWaitWas;
+  history.replaceState(null,'',location.pathname+'?dev=1');
+  CURP.plan=keptPlan||{tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null}; pSave();
+  authForget();
   return o;},API);
  await sp.close();
  await new Promise(r=>stub.close(r));
@@ -3463,6 +3509,32 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.manPaid&&o.manPaid.ok&&o.manPaid.url==='https://billing.stripe.test/1',
   'with a customer on the account it hands back Stripe\'s page to go to, got '+JSON.stringify(o.manPaid));
  ok(o.manOff&&!o.manOff.ok&&o.manOff.say===reach,'and with no network it says so rather than hanging, got '+JSON.stringify(o.manOff));
+ /* the plan read back off the account, through ui/auth.js authPlanTake */
+ ok(o.own,'the plan walk runs on a real record, one PROFILES holds');
+ ok(o.rbPaid.took==='live'&&o.rbPaid.free==='one'&&o.rbPaid.plan.status==='active'&&o.rbPaid.plan.until==='2026-11-01T00:00:00.000Z'
+  &&o.rbPaid.said[0]==='Tier one is on this record now.',
+  'a paid account lands its tier on the open record and says so after, got '+JSON.stringify(o.rbPaid));
+ ok(o.rbDisk&&o.rbDisk.tier==='one'&&o.rbDisk.status==='active','and the record on the disk carries it, got '+JSON.stringify(o.rbDisk));
+ ok(o.rbAgain.took==='same'&&o.rbAgain.said[0]==='probe, before the plan read','read again, nothing moves and nothing is said');
+ ok(o.rbLate.took==='live'&&o.rbLate.free==='one'&&/did not go through/.test(o.rbLate.said[0])&&o.rbLate.said[1]==='fail',
+  'past due keeps the tier and holds a line about the card, got '+JSON.stringify(o.rbLate.said));
+ ok(o.rbEnded.free==='free'&&o.rbEnded.plan.tier==='one'&&o.rbEnded.plan.status==='canceled'
+  &&o.rbEnded.said[0]==='Tier one has ended, so this record reads Free now.'&&o.rbEnded.said[1]==='fail',
+  'a cancelled plan reads free, keeps which tier ended, and says so on a held line, got '+JSON.stringify(o.rbEnded.said));
+ ok(o.rbNone.free==='free'&&o.rbNone.said[0]==='The account signed in has no paid plan, so this record reads Free now.',
+  'an account with no paid plan never overwrites a paid record without saying so, got '+JSON.stringify(o.rbNone.said));
+ ok(o.rbOdd.took==='refused'&&o.rbOdd.free==='one'&&/does not know, five/.test(o.rbOdd.said[0]),
+  'a tier this build does not know is refused and nothing moves, got '+JSON.stringify(o.rbOdd));
+ ok(o.rbOld.took==='silent'&&o.rbOld.free==='one','a server that sends no billing at all changes nothing');
+ ok(o.rbExample==='not a record','a worked example is never written');
+ ok(o.backDone.tier==='one'&&o.backDone.said[0]==='Tier one is on this record now.'&&o.backDone.search==='?dev=1',
+  'back from Stripe the plan lands and ?billing= comes off the address, keeping ?dev=1, got '+JSON.stringify(o.backDone));
+ ok(/^Payment finished\. Log in from Account/.test(o.backOut.said[0])&&o.backOut.search==='?dev=1',
+  'back from Stripe with no session held says where the plan is, got '+JSON.stringify(o.backOut));
+ ok(o.backCancel.said[0]==='Checkout was closed before paying, so nothing was charged.','a closed checkout says nothing was charged');
+ ok(o.backWait.said[0]==='Payment finished. Waiting for Stripe to confirm it.'
+  &&/^Stripe has not confirmed the payment yet\./.test(o.backWaitEnd[0])&&o.backWaitEnd[1]==='fail',
+  'a payment Stripe has not confirmed yet is waited on, and the end of the wait is said, got '+JSON.stringify([o.backWait.said,o.backWaitEnd]));
  ok(spErr.length===0,'no page errors across the whole walk: '+spErr.join(' | '));}
 
 console.log('\n=== the profiles on this device, by name (JZ) ===');
@@ -3585,8 +3657,11 @@ ok(/On every tier including free/.test(plan.two),
    monthly, which is true at any price. */
 ok(!/price of/.test(plan.two),
  'the annual line does not offer free months while none are ruled');
-ok(/allowance still arrives monthly/.test(plan.two),
- 'and the allowance is monthly whatever the year costs');
+/* and a monthly record hears nothing about a year at all. This line pinned
+   "allowance still arrives monthly" on tier two, which was the tail of "Paid
+   for the year.", printed to a monthly payer. Monthly only is ruled. */
+ok(!/Paid for the year|for the year|allowance still arrives monthly/.test(plan.two),
+ 'a monthly subscriber is not told they paid for the year');
 ok(/On\s*Free/.test(plan.dead),
  'a cancelled record reads free however high the tier written on it');
 /* "RERUNNING ANYTHING ALREADY OPEN COSTS NOTHING, ALWAYS" CAME OFF, round NW,

@@ -13,7 +13,9 @@
    WHAT IT DOES AND DOES NOT CARRY. Sign up, sign in, the forgotten password
    request and sign out, against the four routes the reboot-os Worker serves.
    It does not sync. Every story, reading and imprint stays in this browser
-   exactly as before, and nothing here reads or writes a profile. The session
+   exactly as before. One field of a profile is written from here and nothing
+   else is: the plan, read back off the account by authPlanTake at the foot of
+   this file, because only the server knows what was paid for. The session
    is held under its own key beside the profiles and never inside one: Export
    copies a profile to the clipboard, so a token written onto one would leave
    with the first export, and validateProfile now refuses one by name.
@@ -151,6 +153,10 @@ function authEnter(route,mail,pw){
    return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
   var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase()};
   var kept=authKeep(s);
+  /* the plan is read after the sign in is held, and not waited on: the
+     caller says "Signed in as" now, and the plan speaks after it only if the
+     record changed. A second device is exactly this path. */
+  authPlanRead();
   return {ok:true, kept:kept,
    say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
     +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
@@ -192,8 +198,15 @@ function authSignOut(){
    that is not a yes, including no network, changes nothing and says the check
    did not happen, because being offline is not being signed out. */
 function authCheck(){
+ /* the return from Stripe is read and taken off the address first, whatever
+    else happens, so a reload never replays it */
+ var back=authBillingBack();
  var s=authSession();
- if(!s)return Promise.resolve(null);
+ if(!s){
+  /* a browser that would not hold the session has lost it across the trip to
+     Stripe, and the payment still happened, so it says where the plan is */
+  if(back==='done')status('Payment finished. Log in from Account to bring the plan onto this record.','fail');
+  return Promise.resolve(null);}
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   var acc=r.body&&r.body.account;
   var redraw=function(){
@@ -201,6 +214,9 @@ function authCheck(){
     &&typeof renderAccount==='function')renderAccount(); };
   if(r.ok&&acc&&typeof acc.email==='string'){
    if(acc.email!==s.email){ authKeep({token:s.token, email:acc.email}); redraw(); }
+   /* the same answer carries the plan, so the boot check reads it without a
+      second request */
+   authPlanBack(back,r.body.billing);
    return 'ok';}
   if(r.status===401){
    authForget(); redraw();
@@ -259,3 +275,130 @@ function authPlanPortal(){
   if(typeof url!=='string'||!url)
    return {ok:false, say:'The server answered without a billing page. Nothing has changed.'};
   return {ok:true, url:url};});}
+/* ============================================================
+   THE PLAN, READ BACK FROM THE SERVER. Nothing wrote CURP.plan
+   from the server, so a person who paid came back to a Billing
+   section reading Free. This is the one writer: it reads the
+   account's billing off /v1/me, lays it onto the open record
+   with planFromServer (engine/plan.js, pure, gated headless),
+   puts the result through validateProfile, the same boundary a
+   pasted record goes through, saves, and only then says what
+   changed.
+
+   WHEN IT READS. After a sign in, which is also the second device
+   case. At the boot check, off the same /v1/me answer, so it costs
+   no extra request. And on the way back from Stripe, where
+   ?billing=done, managed or cancelled is read once and taken off
+   the address so a reload does not replay it.
+
+   WHAT IT DECIDED, written down because each one could go another
+   way:
+
+   A server too old to send billing has said nothing, and nothing
+   is written. undefined is not null: null is an account that never
+   paid, and it reads free.
+
+   Free from the server overwrites a paid record, and says so on a
+   held line. The server is the one that knows: Stripe ended it, or
+   the account signed in is not the one that paid. Either way the
+   person is told, by name of the tier, and signing in to the right
+   account puts it back. A quiet overwrite is what the ruling
+   forbids, and keeping a tier the server says has ended would
+   charge nobody for a plan.
+
+   A cancelled plan arrives as its tier with Stripe's word for it,
+   so the record keeps which tier ended and planOf reads it free.
+
+   Sign out leaves the record as it is. Signing out says nothing
+   about billing, and a person signing out on a train has not
+   stopped paying. The next sign in or boot check corrects it.
+
+   It writes the open record only, and only a real one. A worked
+   example is not the person's record, so nothing is written while
+   one is open. Other profiles on this device take the plan the
+   next time they are open at a sign in or a boot.
+
+   Only a change a person can see is said. A renewal moves the
+   period and is written, and is not announced.
+   ============================================================ */
+var AUTH_PLAN_TRIES=5, AUTH_PLAN_WAIT_MS=2500;
+function authPlanLive(){
+ return typeof CURP!=='undefined'&&!!CURP&&typeof planState==='function'&&planState(CURP.plan)==='live';}
+/* Lays b onto the open record. Answers what happened, as one word, for the
+   callers below and for the gate. */
+function authPlanTake(b){
+ if(b===undefined)return 'silent';
+ if(typeof CURP==='undefined'||!CURP||typeof PROFILES==='undefined'||PROFILES.indexOf(CURP)<0)
+  return 'not a record';
+ var r=planFromServer(CURP.plan,b,(CURP.meter&&CURP.meter.unique)||[]);
+ if(r.refused){
+  status('The server named a plan this build does not know, '+r.refused
+   +', so this record was not changed.','fail');
+  return 'refused';}
+ if(r.same)return 'same';
+ var v=validateProfile({v:SCHEMA_V, plan:r.plan});
+ if(!v.ok){
+  status('The plan the server sent could not be read, so this record was not changed. '
+   +authSay(v.errs[0]),'fail');
+  return 'refused';}
+ CURP.plan=v.profile.plan;
+ var saved=pSave();
+ if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
+  &&typeof renderAccount==='function')renderAccount();
+ var nm=PLAN_BY[r.now].nm, wasNm=PLAN_BY[r.was].nm, say='', kind='ok';
+ if(r.nowLive&&(r.now!==r.was||!r.wasLive))say=nm+' is on this record now.';
+ else if(r.nowLive&&r.status==='past_due'&&r.wasStatus!=='past_due'){
+  say='The last card payment for '+nm+' did not go through. The plan stays on while Stripe '
+   +'tries the card again, and Manage billing replaces the card.'; kind='fail';}
+ /* held, because it takes something away, and a line that clears in two
+    seconds is a change nobody was told about */
+ else if(!r.nowLive&&r.wasLive){
+  say=(b?wasNm+' has ended':'The account signed in has no paid plan')
+   +', so this record reads Free now.'; kind='fail';}
+ if(!saved){
+  say=(say?say+' ':'')+'Storage would not take the change, so it holds for this visit '
+   +'and is read again at the next sign in.'; kind='fail';}
+ if(say)status(say,kind);
+ return r.nowLive?'live':'free';}
+/* One read of /v1/me and one take. Resolves, never rejects, like everything
+   that goes through authCall. */
+function authPlanRead(){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false, took:'signed out'});
+ return authCall('GET','/v1/me',null,s.token).then(function(r){
+  if(!r.ok||!r.body)return {ok:false, took:'unread', status:r.status};
+  return {ok:true, took:authPlanTake(r.body.billing)};});}
+/* ?billing= is what the server sends Stripe back to (createCheckout and
+   createPortal in reboot-os). Read once and removed, keeping every other
+   parameter, so ?dev=1 and a hash survive. */
+function authBillingBack(){
+ var v=null;
+ try{
+  var q=new URLSearchParams(location.search||''); v=q.get('billing');
+  if(v!==null){ q.delete('billing'); var rest=q.toString();
+   history.replaceState(history.state,'',location.pathname+(rest?'?'+rest:'')+location.hash); } }
+ catch(e){}
+ return (v==='done'||v==='managed'||v==='cancelled')?v:null;}
+/* THE RETURN FROM STRIPE. Stripe sends the browser back the moment the card
+   is taken, and its webhook to the server can land a few seconds later, so
+   "done" with no live plan yet is waited on, a few reads apart, rather than
+   read once as no plan. The wait is said, and so is its end. */
+function authPlanBack(back,b){
+ var took=authPlanTake(b);
+ if(back==='cancelled'){ status('Checkout was closed before paying, so nothing was charged.'); return took; }
+ if(back!=='done')return took;
+ if(took==='not a record'){
+  status('Payment finished. Open your own profile to see the plan on it.','fail'); return took;}
+ if(authPlanLive()){
+  if(took==='same')status(PLAN_BY[planOf(CURP.plan).k].nm+' is on this record.');
+  return took;}
+ status('Payment finished. Waiting for Stripe to confirm it.');
+ authPlanWait(AUTH_PLAN_TRIES);
+ return took;}
+function authPlanWait(n){
+ setTimeout(function(){
+  authPlanRead().then(function(){
+   if(authPlanLive())return;
+   if(n>1){ authPlanWait(n-1); return; }
+   status('Stripe has not confirmed the payment yet. The plan shows here once it does, '
+    +'so reload this page in a minute.','fail');});},AUTH_PLAN_WAIT_MS);}

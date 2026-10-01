@@ -441,9 +441,14 @@ open.</span></p>
   product is taken away for a day off. A person has to be able to stop and be glad
   they used it, which is the line this whole thing is built behind, and a ladder
   that made leaving expensive would be a different product.</p>
-  <p class="m">A card or a plan is changed from one button, on a page held by the
-  processor. No card detail is ever typed into the instrument, because the
-  instrument has no network in it to carry one.</p>
+  <!-- "BECAUSE THE INSTRUMENT HAS NO NETWORK IN IT" stopped being true when sign
+       in and checkout landed: ui/auth.js reaches the server for both. What is
+       still true is the promise itself, and the reason now is where the card
+       goes: only to Stripe's own page, which the instrument links to and never
+       draws. -->
+  <p class="m">A card or a plan is changed from one button, Manage billing, on a
+  page Stripe runs. No card detail is ever typed into the instrument. The card
+  goes only to that page, and the instrument never sees it.</p>
  </div>
 </section>
 

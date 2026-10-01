@@ -119,9 +119,20 @@ const PLAN_ALWAYS=['the whole reading','saboteurs, complexes, hyper complexes an
    The allowance still arrives monthly rather than as a year in one lump,
    whatever the price, because the allowance is a pace and a year of patterns
    handed over at once is not a practice. That part was never about the
-   discount. */
+   discount.
+
+   AND IT SPEAKS ONLY TO A RECORD THAT IS PAID BY THE YEAR. It took a tier key
+   and nothing else, so the plan sheet printed "Paid for the year." to every
+   monthly subscriber, which is a claim about their bill that is false.
+   DECISIONS.md rules monthly only and leaves annual open, and every price
+   Stripe is set up with is monthly. It reads the record now and answers null
+   unless the record says per:'year'. No record says that today: the boundary
+   in schema.js does not admit a per field and the server does not send one,
+   so this is silent for everybody until an annual plan is ruled and both
+   ends carry it. */
 const PLAN_YEAR_FREE=0;
-function planYear(k){
+function planYear(k,pl){
+ if(!pl||pl.per!=='year')return null;
  var t=PLAN_BY[k]; if(!t||t.per!=='month')return null;
  var pay=12-PLAN_YEAR_FREE;
  return {pay:pay, grant:t.grant,
@@ -192,6 +203,60 @@ function planOf(pl){
  var st=planState(pl);
  if(st==='live'&&PLAN_BY[pl.tier])return PLAN_BY[pl.tier];
  return PLAN_BY.free;}
+/* THE PLAN THE SERVER HOLDS, LAID ONTO A RECORD. Nothing wrote CURP.plan from
+   the server, so a person who paid came back to a Billing section reading
+   Free. ui/auth.js reads the account's billing off /v1/me and hands it here;
+   this decides the record, and the host validates and saves it. Pure, so the
+   arithmetic is gated headless and the host only does the writing.
+
+   b is the server's {tier, status, since, until}: the tier as this file's own
+   key, the status as Stripe's own word, which PLAN_LIVE and PLAN_DEAD already
+   read, and the paid period as two dates. null is an account that has never
+   paid, and it reads as free. The host never calls this with undefined: a
+   server too old to send billing at all has said nothing, and nothing is
+   written on nothing.
+
+   A NEW PERIOD OPENS A NEW ALLOWANCE. When the tier or the period start moves,
+   base is set to the unique count now, so planAllowance charges this period
+   only for what is opened from here, granted goes back to the tier's own grant
+   and nothing is carried. Floored at the end of the gift, the same floor
+   planAllowance holds, so a period cannot open on ground the gift paid for. It
+   is the count when the server was read and not when the period began, which
+   charges anything opened in between to the period before: the record knows
+   no unique count at an earlier time, and erring that way never takes
+   patterns from somebody. An upgrade or a downgrade mid month is a new tier,
+   so it opens a full allowance of the new tier.
+
+   same says whether anything a person can see moved, which is what the host
+   speaks on. A renewal moves since and until and is not same, but it keeps
+   the tier and stays live, so the host says nothing about it. */
+/* A TIER THIS BUILD DOES NOT KNOW IS REFUSED, NOT ROUNDED TO FREE, the rule
+   validateProfile already holds: a server one tier ahead of this file would
+   otherwise downgrade everybody on it. refused names it and nothing moves. */
+function planFromServer(prev,b,unique){
+ var pv=(prev&&typeof prev==='object')?prev:{};
+ if(b&&typeof b==='object'&&!PLAN_BY[b.tier]){
+  var k=planOf(prev).k, lv=planState(prev)==='live';
+  return {plan:pv, same:true, refused:String(b.tier), was:k, now:k, wasLive:lv, nowLive:lv,
+   status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
+ var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
+ var next;
+ if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ else {
+  var since=(typeof b.since==='string')?b.since:null, until=(typeof b.until==='string')?b.until:null;
+  var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
+  var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+  /* in the blank's own key order (schema.js), so a record written here and
+     the same record after the boundary serialise the same */
+  next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
+   granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
+   base:fresh?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
+   since:since, until:until};}
+ var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
+ var was=planOf(prev), now=planOf(next);
+ return {plan:next, same:['tier','status','since','until'].every(eq),
+  was:was.k, now:now.k, wasLive:planState(prev)==='live', nowLive:planState(next)==='live',
+  status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:''};}
 /* SIGHT. Whether a rung of the chain is visible on this plan. */
 function planSees(pl,kind){
  /* everybody, on every plan, including free. ruled. */

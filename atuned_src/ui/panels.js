@@ -1025,7 +1025,10 @@ function planSection(m,o){
     second read here quoted a different number from the panel that charges it. */
  var al=(CURP&&meterBudget(CURP).allow)||planAllowance(pl,(m&&m.unique)||0);
  var up=planUpgrade(pl);
- var yr=planYear(t.k);
+ /* the record goes in with the tier: planYear says nothing unless the record
+    is paid by the year, and printed "Paid for the year." to monthly payers
+    while it read the tier alone */
+ var yr=planYear(t.k,pl);
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
   +'<div class="sh-row"><span>On</span><b>'+esc(t.nm)+'</b></div>'
   +(st==='pending'
@@ -1062,17 +1065,17 @@ function planSection(m,o){
      and a person deciding whether to press it is told what is on the other
      side.
 
-     NOT "CHANGE TIER", although Stripe's page can offer it. The server's
-     webhook acts on checkout.session.completed and nothing else, so a tier
-     changed on that page would bill the new price while the plan here stayed
-     where it was. A new card needs nothing from the server, and a stop lands
-     through the server's hourly sweep, which ends the plan three days after
-     the paid month runs out. So those two are named, and the third waits for
-     the webhook to hear subscription changes. STRIPE-SETUP.md leaves plan
-     switching off in the portal for the same reason. */
-  +'<p class="sh-p dim">Manage billing opens the payment page, where you can replace a card '
-  +'or stop. Nothing about a card is ever held on this device, and the record carries no '
-  +'customer number.</p>'
+     "CHANGE TIER" WAS LEFT OFF FOR ONE ROUND, while the server's webhook
+     heard checkout.session.completed and nothing else, so a tier changed on
+     Stripe's page would have billed the new price while the plan here stayed
+     put. The webhook hears customer.subscription.updated now and reads the
+     tier back off the price (reboot-os stripe.js syncSubscription), and
+     ui/auth.js reads the plan back onto this record, so all three are named.
+     STRIPE-SETUP.md switches plan changes on in the portal for the same
+     reason. */
+  +'<p class="sh-p dim">Manage billing opens the payment page, where you can change tier, '
+  +'replace a card or stop. Nothing about a card is ever held on this device, and the record '
+  +'carries no customer number.</p>'
   +'</div>';
  return h;}
 /* THE SEAM. Two host functions and nothing else. A build with no store bound
