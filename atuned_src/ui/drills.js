@@ -200,10 +200,41 @@ function runDrill(o){
        :'None of it is installed yet. Release empties the address, the opposite is what fills it.')
    : 'No poled axis sits underneath this one.')+'</p>'
   +(o.kind==='sab'?kbSabBlock(o.nm):'')
+  /* "RUNS UNDER," SECTION 5, DESIGN-character-effects.md 5. Every read mask
+     this pattern's own addresses sit under, each with how many of them
+     land there, so a saboteur picked off the weave answers the question MX
+     asked it to: "if you select it on one mask, then you see how it shows
+     up in all the others." Honest when the answer is none, the design's
+     own example: "it runs at the heart, where no mask is worn yet." The
+     uncovered seats are read off MASKS_READ's own .b arrays rather than
+     Heart and Crown typed here, so this keeps answering correctly if a
+     sixth mask is ever built before either seat gets one. */
+  +(function(){
+   var under=MASKS_READ.map(function(m){
+    var n=lv.filter(function(x){return m.b.indexOf(x.b)>=0;}).length;
+    return n?{m:m,n:n}:null;}).filter(Boolean);
+   var h2='<div class="pm-eye">Runs under</div>';
+   if(under.length)return h2+'<div class="chv-rows">'+under.map(function(u){
+     return '<button type="button" class="chv-row" data-rununder="'+esc(u.m.nm)+'">'
+      +'<span>'+esc(u.m.nm)+'</span><span class="chv-ru-n">'+chPl(u.n,'address','addresses')+'</span></button>';}).join('')
+    +'</div>';
+   var covered=MASKS_READ.reduce(function(a,m){return a.concat(m.b);},[]);
+   var uncov=bs.filter(function(b){return covered.indexOf(b)<0;})
+    .map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();});
+   return h2+'<p class="ad-p">It runs at the '+esc(chAnd(uncov))+', where no mask is worn yet.</p>';})()
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
   +lv.slice(0,8).map(addrRow).join('')
   +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
- rdShell(h);}
+ rdShell(h);
+ /* a "Runs under" row opens that mask's own drill, the same rail press
+    chDrill is already opened by, so "does this show up here" (MX) can be
+    followed straight through from the saboteur it was asked about. */
+ var ru=$('rdrill');
+ if(ru)ru.querySelectorAll('[data-rununder]').forEach(function(el){el.onclick=function(){
+  var m=MASKS.filter(function(x){return x.nm===el.getAttribute('data-rununder');})[0]; if(!m)return;
+  if(typeof CHV!=='object'||!CHV)return;
+  CHV.pick=m.nm; if(typeof uiSet==='function')uiSet('chmask',m.nm);
+  chDrill(m); render();};});}
 
 function runLawDrill(l){
  if(!l)return;

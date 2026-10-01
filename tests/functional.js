@@ -465,6 +465,120 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  await page.evaluate(w=>{rdClose();PMPICK=null;PMLAYER=w;loadP(PEOPLE.length-1);render();},was);}
 
 /* ---------------------------------------------------------------------------
+   CHARACTER'S OWN EFFECTS, DESIGN-character-effects.md 3 to 5: running hot
+   outside the rim, overexpressed holding still while the mask breathes, and
+   the weave's own fall and walk, plus the three depths the right column now
+   opens at. Each checked against a reference person known to carry the
+   state in question, found off compute() itself rather than typed as a
+   count or a name that drifts the day the roster changes: James for a dark
+   reading's own hot address, Sofia for a light reading's own saboteur that
+   only ever shows up overshot.
+--------------------------------------------------------------------------- */
+console.log('\n=== Character\'s own effects: running hot, overexpressed, the weave alone ===');
+{
+ const frames=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ /* RUNNING HOT, DARK READING, HERO ONLY. The hottest read mask under James
+    is found rather than named, so this keeps answering correctly if his
+    own worked numbers ever move. */
+ await page.evaluate(()=>{rdClose();CHV.weave=null;CHV.face='dark';loadP(PERSON('James'));setTab(TAB.MASKS);render();});
+ await frames(); await page.waitForTimeout(150);
+ const hot=await page.evaluate(()=>{
+  const host=document.getElementById('masksview');
+  const cand=MASKS_READ.map(m=>({m:m,n:W.filter(n=>m.b.indexOf(n.b)>=0&&(n.sq||0)>RUNHOT_AT).length}))
+   .filter(x=>x.n>0).sort((a,b)=>b.n-a.n)[0];
+  if(!cand)return {found:false};
+  host.querySelector('[data-chmask="'+cand.m.nm+'"]').click();
+  const hotCells=host.querySelector('.chv-hero svg.chv-hero-svg').querySelectorAll('.chv-hotcell').length;
+  const railHot=!!host.querySelector('.chv-rail [data-chmask="'+cand.m.nm+'"] .chv-hotcell');
+  CHV.face='light'; render();
+  const lightCells=document.querySelector('.chv-hero svg.chv-hero-svg').querySelectorAll('.chv-hotcell').length;
+  CHV.face='dark'; render();
+  return {found:true,mask:cand.m.nm,n:cand.n,hotCells:hotCells,railHot:railHot,lightCells:lightCells};});
+ ok(hot.found,'James runs hot under some read mask, found off compute(), '+JSON.stringify(hot));
+ ok(hot.hotCells>0,'and the hero draws running hot dashes outside its rim, '+JSON.stringify(hot));
+ ok(!hot.railHot,'a rail icon, 48 pixels, never draws them, hero only, got '+hot.railHot);
+ ok(hot.lightCells===0,'and the light reading never draws them either, dark reading only, got '+hot.lightCells);
+
+ /* OVEREXPRESSED, LIGHT READING ONLY. Sofia, found the same way: whichever
+    read mask her own light reading shows an overshot saboteur under,
+    since the roster of who overshoots is the engine's. */
+ await page.evaluate(()=>{rdClose();loadP(PERSON('Sofia'));CHV.weave=null;CHV.face='light';setTab(TAB.MASKS);render();});
+ await frames(); await page.waitForTimeout(150);
+ const over=await page.evaluate(()=>{
+  const r=compute(), host=document.getElementById('masksview');
+  for(const m of MASKS_READ){
+   const lt=chRead(m,r,'light'), px=lt.px.find(x=>x.o&&x.o.over);
+   if(!px)continue;
+   host.querySelector('[data-chmask="'+m.nm+'"]').click();
+   const hs=host.querySelector('.chv-hero svg.chv-hero-svg'), rect=hs.getBoundingClientRect(), G=lt.G;
+   const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
+   hs.dispatchEvent(new PointerEvent('click',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
+   const still=!!host.querySelector('.chv-weaveband-still');
+   const spill=hs.querySelectorAll('path[fill-opacity=".30"]').length;
+   return {found:true,mask:m.nm,sab:px.o.nm,still:still,spill:spill};}
+  return {found:false};});
+ ok(over.found,'Sofia runs an overshot saboteur under some read mask, found off compute(), '+JSON.stringify(over));
+ ok(over.still,'picking it holds the woven block visibly still, chv-weaveband-still, got '+JSON.stringify(over));
+ ok(over.spill>0,'and a one cell spill lights the ground cells touching it at .30, '+over.spill+' spilled');
+
+ /* THE WEAVE ALONE, STILL ON SOFIA'S OWN WEAVE FROM ABOVE: every hero cell
+    outside the woven block falls to .08, the glow goes out, a rail icon
+    that does not carry the weave desaturates, and the woven block itself
+    walks a highlight through its own cells. */
+ const wv=await page.evaluate(()=>{
+  const host=document.getElementById('masksview');
+  const rest=host.querySelector('.chv-hero .chv-rest'), glow=host.querySelector('.chv-hero .chv-glow');
+  const offRail=[...host.querySelectorAll('.chv-rail .chv-m')].find(b=>!b.classList.contains('chv-weave-on'));
+  const band=host.querySelector('.chv-weaveband');
+  return {weaving:host.querySelector('.chv').classList.contains('chv-weaving'),
+   restOp:rest?getComputedStyle(rest).opacity:null,glowOp:glow?getComputedStyle(glow).opacity:null,
+   railFilter:offRail?getComputedStyle(offRail.querySelector('.chv-svg')).filter:null,
+   cells:band?band.querySelectorAll('.chv-weavecell').length:0,
+   idxs:band?[...band.querySelectorAll('.chv-weavecell')].map(g=>g.style.getPropertyValue('--i')):[]};});
+ ok(wv.weaving,'the page knows a saboteur is picked, chv-weaving on .chv');
+ ok(wv.restOp!==null&&Math.abs(parseFloat(wv.restOp)-0.08)<0.01,
+  'the rest of the hero falls to .08, the Field\'s own Fall number, got '+wv.restOp);
+ ok(wv.glowOp!==null&&parseFloat(wv.glowOp)===0,'the hero\'s own glow goes out, got '+wv.glowOp);
+ ok(/saturate\(0\)/.test(wv.railFilter||''),'a rail icon that does not carry the weave desaturates, got '+wv.railFilter);
+ ok(wv.cells>0&&wv.idxs.length===wv.cells&&new Set(wv.idxs).size===wv.idxs.length,
+  'the woven block walks, one cell stepped at a time, each its own --i, got '+JSON.stringify(wv.idxs));
+
+ /* DEPTH 1, THE OPENING OVERVIEW, A FRESH ARRIVAL. */
+ await page.evaluate(()=>{rdClose();CHV.weave=null;CHV.face='dark';CHV.opened=false;
+  loadP(PERSON('Gordon'));setTab(TAB.MASKS);render();});
+ await frames(); await page.waitForTimeout(150);
+ const ov=await page.evaluate(()=>{
+  const d=document.getElementById('rdrill');
+  return {shown:d.style.display!=='none',t:d.textContent,rows:d.querySelectorAll('.chv-ov-row').length,
+   heroRow:d.querySelectorAll('.chv-ov-row.chv-ov-hero').length,want:MASKS_READ.length};});
+ ok(ov.shown&&/Your character/.test(ov.t),'a fresh arrival opens Selection on the overview, got '+ov.t.slice(0,30));
+ ok(ov.rows===ov.want&&ov.heroRow===1,
+  'one row a mask, canon order, the hero\'s own row told apart, '+ov.rows+' of '+ov.want+', '+ov.heroRow+' marked hero');
+
+ /* DEPTH 2, THE THREE COUNTS, ON A REAL PRESS. */
+ const d2=await page.evaluate(()=>{
+  document.querySelector('[data-chmask="Child"]').click();
+  const d=document.getElementById('rdrill');
+  return {tiles:d.querySelectorAll('.chv-ct').length,samples:d.querySelectorAll('.chv-samp').length};});
+ ok(d2.tiles===3&&d2.samples===3,'a mask\'s own drill leads with three counts, each with its own sample, got '+JSON.stringify(d2));
+
+ /* DEPTH 3, "RUNS UNDER," ON A SABOTEUR PICKED OFF THE WEAVE. */
+ const d3=await page.evaluate(()=>{
+  const r=compute();
+  for(const m of MASKS_READ){const rd=chRead(m,r,'dark'), px=rd.px.find(x=>x.tier>=1&&x.o);
+   if(!px)continue;
+   document.querySelector('[data-chmask="'+m.nm+'"]').click();
+   const hs=document.querySelector('.chv-hero svg.chv-hero-svg'), rect=hs.getBoundingClientRect(), G=rd.G;
+   const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
+   hs.dispatchEvent(new PointerEvent('click',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
+   const d=document.getElementById('rdrill');
+   return {found:true,mask:m.nm,sab:px.o.nm,runsUnder:/Runs under/.test(d.textContent)};}
+  return {found:false};});
+ ok(d3.found&&d3.runsUnder,'a saboteur picked off the weave leads with Runs under, '+JSON.stringify(d3));
+ await page.evaluate(()=>{rdClose();CHV.weave=null;loadP(PEOPLE.length-1);render();});
+}
+
+/* ---------------------------------------------------------------------------
    THE BODY'S OVERLAYS ARE THE FIELD'S BAR, ON THE MAP.
 
    KV in TASKS.md, his words: "I can click on or off my saboteurs, complexes,

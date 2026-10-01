@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1022 47b101d 2026-10-01 05:53"><head><meta charset="utf-8">
+<html lang="en" data-build="v1027 337fdfe 2026-10-01 07:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -4967,6 +4967,98 @@ body.quiet .chv-glow,body.quiet .chv-rim,body.quiet .chv-m[aria-pressed=true]::b
  animation:none;opacity:1}
 @media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim,.chv-m[aria-pressed=true]::before,.chv-hero-wrap::before{
  animation:none;opacity:1}}
+/* THE WEAVE-ALONE MOTION, SECTION 5, DESIGN-character-effects.md 5.
+   ui/character.js puts chv-weaving on .chv itself whenever CHV.weave is
+   truthy, so every surface this round touches reads off the one fact
+   rather than each one being told separately: the wash drops to .35, the
+   hero's own rest (ui/character.js's chv-rest, every fill that is not the
+   woven block and not a mark) falls to .08, the Field's own Fall number
+   from section 3, and the hero's glow goes dark. A rail icon that does not
+   carry the weave desaturates to a silhouette, "the rest go saturate(0)",
+   leaving its rim and mark exactly where chv-weave-on already rings the
+   ones that do. Rim and marks are never inside chv-rest to begin with
+   (ui/character.js keeps them in their own paths), so "rim and marks hold"
+   needs no rule here: it is already true by construction. */
+.chv-weaving .chv-wash{opacity:.35;transition:opacity var(--t-surface) var(--ease-out)}
+.chv-weaving .chv-hero .chv-rest{opacity:.08;transition:opacity var(--t-surface) var(--ease-out)}
+/* ANIMATION:NONE HAS TO SIT BESIDE OPACITY:0 HERE, not opacity alone. The
+   glow and the pool both breathe on chvBreath unconditionally (.chv-stage
+   .chv-glow above, .chv-hero-wrap::before in its own rule), and a running
+   CSS animation's own keyframe value for a property beats any ordinary
+   rule's static value for that same property, specificity or no, short of
+   !important. Measured first: opacity:0 alone left the glow breathing
+   through .64 to 1 exactly as before, because chvBreath was still the
+   thing deciding its opacity every frame. */
+.chv-weaving .chv-hero .chv-glow{animation:none;opacity:0;transition:opacity var(--t-surface) var(--ease-out)}
+.chv-weaving .chv-hero .chv-hero-wrap::before{animation:none;opacity:0;transition:opacity var(--t-surface) var(--ease-out)}
+.chv-weaving .chv-rail .chv-m:not(.chv-weave-on) .chv-svg{
+ filter:saturate(0);transition:filter var(--t-surface) var(--ease-out)}
+/* THE WALK, PULSE FROM SECTION 3, BUILT FOR REAL HERE. One cell of the
+   woven block brightened at a time in the order ui/character.js already
+   laid the block down (the Hilbert walk chRead builds it on, --i), a step
+   at --step (180ms slack to 90ms taut, wheel.js's own tension carried
+   over rather than a second clock) then a rest before the pass repeats.
+   filter and not opacity: the fill already carries the tier's own tone
+   and its own opacity, and brightening it is a smaller claim than
+   replacing it. chv-weaveband-still freezes the cell in place for an
+   overexpressed group, "it holds visually still while the mask breathes,"
+   DESIGN-character-effects.md 4, which a light reading's own weave always
+   is: chOwn only ever shows an over group there. */
+.chv-weavecell{animation:chvWalk calc(var(--n,1) * var(--step,180ms) + 600ms) linear infinite;
+ animation-delay:calc(var(--i,0) * var(--step,180ms))}
+@keyframes chvWalk{0%,100%{filter:brightness(1)}6%{filter:brightness(1.55)}14%{filter:brightness(1)}}
+.chv-weaveband-still .chv-weavecell{animation:none}
+/* RUNNING HOT, SECTION 4. The alpha of every dash is set inline in
+   ui/character.js off frStress itself (zero at RUNHOT_AT, wheel.js, a
+   visible step on crossing), so a reduced motion profile that turns this
+   animation off still shows the correct picture rather than a blank one:
+   the animation only ever adds a travelling brightness on top of an alpha
+   that was already right. chv-hot-exp and chv-hot-col travel out and in
+   over 1.1s, each of the three echoes staggered a little further by --k
+   (one echo born at the rim before the next, the Field's own fringes
+   "born at the ring and travel out" read for a static grid rather than a
+   per frame position), and chv-hot-steady breathes on the page's own 4.2s
+   clock instead, "holding and breathing when steady." */
+.chv-hotcell{transform-box:fill-box;transform-origin:center}
+.chv-hotcell.chv-hot-exp{animation:chvHotWave 1.1s ease-in-out infinite;animation-delay:calc(var(--k,0) * .18s)}
+.chv-hotcell.chv-hot-col{animation:chvHotWave 1.1s ease-in-out infinite reverse;animation-delay:calc(var(--k,0) * .18s)}
+.chv-hotcell.chv-hot-steady{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+@keyframes chvHotWave{0%,100%{opacity:.55}30%{opacity:1}}
+body.rm .chv-weavecell,body.rm .chv-hotcell,body.quiet .chv-weavecell,body.quiet .chv-hotcell{animation:none}
+body.rm .chv-hotcell,body.quiet .chv-hotcell{opacity:1}
+@media (prefers-reduced-motion:reduce){.chv-weavecell,.chv-hotcell{animation:none}.chv-hotcell{opacity:1}}
+/* DEPTH 1, SECTION 5: THE OPENING OVERVIEW, "Your character." The same
+   chv-row tap target every other list in this panel already uses, with a
+   small icon in front rather than a second badge, since a mask already
+   has a face (section 1) and a ring drawn round it here would answer a
+   question that page already answered. */
+.chv-ov-rows{display:flex;flex-direction:column;margin:4px 0 8px}
+.chv-ov-row{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:6px 4px;
+ background:transparent;border:0;border-top:1px solid var(--edge);color:var(--ink);font:inherit;
+ font-size:13px;text-align:left;cursor:pointer;position:relative}
+.chv-ov-row:hover{color:var(--gold)}
+.chv-ov-ic{width:28px;height:28px;flex:0 0 auto;filter:saturate(.6)}
+.chv-ov-row.chv-ov-hero .chv-ov-ic{filter:none}
+/* THE HERO'S OWN ROW, "visually distinguished," the same pool token every
+   selected mask already lights (--mk-top, section 2) at a third size. */
+.chv-ov-row.chv-ov-hero::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:var(--r-s);
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
+.chv-ov-nm{flex:0 0 auto;font-weight:500}
+.chv-ov-word{flex:1 1 auto;color:var(--mid);text-transform:lowercase}
+.chv-ov-hot{flex:0 0 auto;font-size:11px;color:var(--alarm)}
+/* DEPTH 2'S OWN LEAD, SECTION 5: three counts, each with a 3 by 3 crop of
+   the real grid (ui/character.js's chSampleSvg) rather than a bare figure.
+   The sunk ground chv-pair already uses, so the three sit as one unit
+   under the two grids above them rather than three strays. */
+.chv-counts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:2px 0 10px}
+.chv-ct{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;
+ border-radius:var(--r-s);background:var(--sunk);text-align:center}
+.chv-samp{width:24px;height:24px}
+.chv-ct-v{font-size:15px;font-weight:600}
+.chv-ct-lb{font-size:11px;color:var(--mid)}
+/* DEPTH 3'S OWN "RUNS UNDER," ui/drills.js. The address count sits where
+   every other chv-row already right aligns its own figure. */
+.chv-ru-n{margin-left:auto;font-size:12px;color:var(--mid)}
 /* the same two grids in Selection, side by side, dark then light, on the
    rail's own sunk ground so the theme's ink and seat colours hold there */
 .chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
@@ -11222,7 +11314,57 @@ var LEX={
  dismissed:['throat',18],ignored:['throat',18],
  /* coherent. these subtract. */
  grateful:['coherent',-14],content:['coherent',-12],calm:['coherent',-12],
- steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12]};
+ steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12],
+ /* THE SNIFFER FINDS THE LIMITER, round SB, his own job description for the
+    mechanic: "if a person is describing their lack of value or self worth
+    or confidence or self respect, they're downgrading their solar plexus.
+    So the sniffer should find that." SB14 named the measurement before the
+    build: self worth, confidence, self respect and follow through, run
+    through the real sniffer first. Measured, round NO: all four returned
+    nothing. "I have no self worth. I feel like I have no confidence at
+    all" scored zero axes. "I just do not have any self respect anymore"
+    scored zero. Only the word worthless, already in this table, reached
+    anything, and it reached Shame at solar by itself. This is the coverage
+    hole SB13 named: "the lexicon already maps words to axes and seats, so
+    this is a coverage question rather than a new mechanism." Not a new
+    table, not a new scanner, an addition to this one, at the seat his own
+    words name and the fetter the family already seated here carries:
+    ashamed, humiliated, stupid, worthless, embarrassed and guilty are all
+    Shame at solar, round GR's own ruling, and a person naming no worth, no
+    confidence or no self respect is naming the same family in its own
+    words rather than its adjectives. */
+ 'no self worth':['solar',24,'Shame'],'lost my self worth':['solar',24,'Shame'],
+ 'no sense of self worth':['solar',24,'Shame'],'have no self worth':['solar',24,'Shame'],
+ 'feel no self worth':['solar',24,'Shame'],'not worth anything':['solar',22,'Shame'],
+ 'do not know my own worth':['solar',20,'Shame'],'dont know my own worth':['solar',20,'Shame'],
+ 'do not have any self worth':['solar',22,'Shame'],'dont have any self worth':['solar',22,'Shame'],
+ 'do not have self worth':['solar',22,'Shame'],'dont have self worth':['solar',22,'Shame'],
+ 'no confidence':['solar',22,'Shame'],'zero confidence':['solar',24,'Shame'],
+ 'no confidence in myself':['solar',24,'Shame'],'not confident in myself':['solar',22,'Shame'],
+ 'no self confidence':['solar',22,'Shame'],'lack the confidence':['solar',20,'Shame'],
+ 'lack confidence':['solar',20,'Shame'],'do not have any confidence':['solar',22,'Shame'],
+ 'dont have any confidence':['solar',22,'Shame'],'do not have the confidence':['solar',22,'Shame'],
+ 'dont have the confidence':['solar',22,'Shame'],
+ 'no self respect':['solar',22,'Shame'],'lost my self respect':['solar',22,'Shame'],
+ 'do not respect myself':['solar',20,'Shame'],'dont respect myself':['solar',20,'Shame'],
+ 'cannot respect myself':['solar',20,'Shame'],'cant respect myself':['solar',20,'Shame'],
+ 'do not have any self respect':['solar',22,'Shame'],'dont have any self respect':['solar',22,'Shame'],
+ 'do not have self respect':['solar',22,'Shame'],'dont have self respect':['solar',22,'Shame'],
+ /* FOLLOW THROUGH AND DISCIPLINE, the fourth term SB14 named, carries no
+    stated fetter. The quote seats discipline and follow through at the
+    solar plexus as POWER, the coherent direction: "if you're setting
+    rituals for discipline to follow through on the things you say you're
+    going to do, that's power, that's solar plexus." A person reporting the
+    absence of that is evidence the seat is known and not evidence of which
+    of the nine axes it is, so this is seated and left to the quarter rule
+    rather than guessing a fetter nothing here authors, the same posture the
+    exhaustion and overwhelm words above already take. */
+ 'no discipline':['solar',18],'no self discipline':['solar',18],
+ 'lack the discipline':['solar',18],'lack discipline':['solar',18],
+ 'never follow through':['solar',18],'do not follow through':['solar',18],
+ 'dont follow through':['solar',18],'cannot follow through':['solar',18],
+ 'cant follow through':['solar',18],'break my promises to myself':['solar',20],
+ 'let myself down again':['solar',18],'quit on myself':['solar',18]};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
@@ -27035,7 +27177,16 @@ function chGeo(m,G){
  var inner=function(c,r){return inF[r][c]&&!cut[r][c]&&at(c-1,r)&&at(c+1,r)&&at(c,r-1)&&at(c,r+1);};
  for(var d=0;d<n*n;d++){var p=chHilbert(n,d);
   if(p[0]<h&&p[1]<G&&inner(p[0],p[1]))half.push(p);}
- return (_CHGEO[key]={G:G,rim:rim,half:half,grid:grid,mk:mk,inner:inner});}
+ /* GRIDSET, FOR THE SPILL, SECTION 4. The overexpressed mark's one cell
+    spill lights every GROUND cell its block touches, never a rim cell and
+    never a mark cell, both of which already carry a meaning of their own
+    (the membrane and the thing that tells one mask from another). A plain
+    object keyed 'c,r' rather than a second pass over grid with indexOf,
+    since the spill is computed once a render for every pixel in an over
+    group and a linear search there would be the one pass through chSvg
+    that quietly goes quadratic on a 36 across face. */
+ var gridSet={}; grid.forEach(function(q){gridSet[q[0]+','+q[1]]=1;});
+ return (_CHGEO[key]={G:G,rim:rim,half:half,grid:grid,mk:mk,inner:inner,at:at,gridSet:gridSet});}
 /* THE ARCHETYPE'S GLOW. Round LT retired the icon scan (chGlyph, the
    removed twin of this function): dead centre of the grid in both axes,
    which is also where the icon anchor always sat (12,11 in the face's own
@@ -27043,6 +27194,74 @@ function chGeo(m,G){
    given CH_X0 4, CH_S 16). One point and a radius, not a shape, because the
    finding above is that no shape reads honestly this small. */
 function chGlowAt(G){return {cx:G/2,cy:G/2,r:G*CH_GLOW_R};}
+
+/* ============================================================
+   SECTION 4, DESIGN-character-effects.md. RUNNING HOT, OUTSIDE THE RIM.
+
+   "Running hot" already means an address past five, RUNHOT_AT in wheel.js,
+   and the Field already answers who is running hot and which way they are
+   moving (hotTrack, hotDir, frStress, all ui/wheel.js, loaded before this
+   file in MANIFEST). Nothing here invents a second notion of hot: it reads
+   the same W, the same threshold and the same direction the Field's own
+   fringes read, restricted to one mask's own seat rather than the whole
+   ring, so a mask and the Field can never disagree about who is loaded.
+   ============================================================ */
+/* ONE SEAT'S OWN LOAD. Dark reading only, hero only (the caller's job, not
+   this function's): the heaviest address at this seat, past RUNHOT_AT, its
+   stress on wheel.js's own curve, and the direction wheel.js's own hotTrack
+   already keeps per address since the record was opened. null where nothing
+   at this seat is hot, which the caller reads as "draw nothing here". */
+function chSeatHot(b){
+ hotTrack();
+ var seg=W.filter(function(n){return n.b===b&&(+n.sq||0)>RUNHOT_AT;});
+ if(!seg.length)return null;
+ var hot=seg.slice().sort(function(a,b2){return (b2.sq||0)-(a.sq||0);})[0];
+ /* exp/col/steady, not hotDir's own full words: chSvg below only ever
+    compares against these three short codes, and the first cut called
+    hotDir and compared its answer against 'exp', which never matched
+    'expanding' and left every seat reading steady regardless of which
+    way it was actually moving. */
+ return {max:hot.sq,stress:frStress(hot.sq),dir:hot.frDir>0?'exp':(hot.frDir<0?'col':'steady')};}
+/* THE SEAT LIFTED TOWARD WHITE OR BLACK, fringeDraw's own "lift" colour in
+   ui/wheel.js (mixc(c,[0,0,0],.3) on paper, mixc(c,[255,255,255],.55) on a
+   dark stage), ported to a CSS colour string rather than a canvas rgb array
+   because every other tone on this page already is one (chTone, chMkTop).
+   Same two ratios, .3 toward black and .55 toward white, so the two surfaces
+   read as the same load in two rendering systems rather than two readings
+   of it. */
+function chLift(b){var c=seatCol(b);
+ return LIGHT()?'color-mix(in srgb,'+c+' 70%,#000)':'color-mix(in srgb,'+c+' 45%,#fff)';}
+/* THREE DOTTED ECHOES OF THE OUTLINE, standing off whichever half of the
+   rim belongs to a hot seat (chSvg's own split, first seat on the left and
+   last on the right). Each rim cell steps outward along its own direction
+   from the grid's centre, which draws a parallel contour rather than a
+   patch of noise, and six steps are kept rather than three because the gap
+   between echoes tightens from two cells at low stress to one at full, so
+   the furthest of three can sit as far out as cell six.
+
+   MEMOISED LIKE chGeo, BY MASK AND RESOLUTION, because the geometry never
+   changes for a person: what moves from render to render is which seat is
+   hot and how hard, read separately by chSeatHot above and applied at
+   draw time in chSvg. */
+function chHotGeo(m,G){
+ var key=m.nm+':hot:'+G; if(_CHGEO[key])return _CHGEO[key];
+ var geo=chGeo(m,G), h=G/2, mid=G/2;
+ var step=function(side){
+  var out=[], k;
+  for(k=1;k<=6;k++)out[k]=[];
+  side.forEach(function(q){
+   /* the outward direction is the rim cell's own position against the
+      grid's centre, rounded to the nearest of eight compass points: a cell
+      dead level with the centre on one axis steps straight out on the
+      other rather than drifting diagonally, which kept a stray dash
+      drifting into the neighbouring seat's own half at the chin and brow */
+   var dx=Math.sign(Math.round(q[0]+.5-mid)), dy=Math.sign(Math.round(q[1]+.5-mid));
+   if(!dx&&!dy)dy=(q[1]+.5<mid)?-1:1;
+   for(k=1;k<=6;k++){var c=q[0]+k*dx, r=q[1]+k*dy;
+    if(c>=0&&c<G&&r>=0&&r<G)out[k].push([c,r]);}});
+  return out;};
+ return (_CHGEO[key]={L:step(geo.rim.filter(function(q){return q[0]<h;})),
+  R:step(geo.rim.filter(function(q){return q[0]>=h;}))});}
 
 /* THE CHAIN ABOVE ONE SABOTEUR, read off compute() and nowhere else: the
    complex it is part of, the hyper complex that complex is part of, and the
@@ -27115,8 +27334,18 @@ function chRead(m,r,face,G){
    for(var i=0;i<lit;i++)cells.push(n);});
   var run=Math.floor(k*H/N)-a0;
   /* a block keeps one dark place at its end, so two saboteurs laid down
-     side by side along the walk are two blocks and not one */
-  if(run>1&&cells.length>=run)cells.length=run-1;
+     side by side along the walk are two blocks and not one.
+
+     OVERSHOT IS THE ONE EXCEPTION, DESIGN-character-effects.md 4. Every real
+     saboteur group a light reading ever shows is already over (chOwn above
+     filters light to !!s.over, so gp.o.over is never false here), and the
+     engine's own words for what that state is are "will not shut, rather
+     than will not open." The one cell this block would otherwise give back
+     dark is the shutting: skipped for an over group, so its own block runs
+     to the full width the walk allotted it and never closes against its
+     neighbour. Dark groups, and the loose and rest groups with no gp.o,
+     keep the gap exactly as before. */
+  if(run>1&&cells.length>=run&&!(gp.o&&gp.o.over))cells.length=run-1;
   cells.forEach(function(n,i){out.px.push({p:geo.half[a0+i],n:n,tier:gp.tier,o:gp.o,cx:gp.cx,hy:gp.hy,sup:gp.sup});});});
  out.lit=out.px.length;
  var seen=function(list,o){if(o&&list.indexOf(o)<0)list.push(o);};
@@ -27169,20 +27398,82 @@ function chMkTop(m){return seatCol(m.b[m.b.length-1]);}
    all the others" (MX). A saboteur's own addresses can sit under more than
    one mask's seats, so the same name can match a pixel here even on a card
    this call was never asked to treat as the hero: the ring below is drawn
-   on whichever of this mask's own held pixels belong to it, nothing more. */
-function chSvg(rd,cls,label,weaveName){
- var G=rd.G, geo=chGeo(rd.m,G), paths={}, rimPaths={}, on={};
+   on whichever of this mask's own held pixels belong to it, nothing more.
+
+   HERO, THE FIFTH ARGUMENT, DESIGN-character-effects.md 4, round NK's own
+   effects pass. Running hot is drawn outside the rim only on the hero: a
+   rail icon is 48 pixels and the dashes the design calls for would be noise
+   at that size, and the design's own words say so, "hero only". Every
+   caller that is not renderCharacter's own hero figure leaves this false. */
+function chSvg(rd,cls,label,weaveName,hero){
+ var G=rd.G, geo=chGeo(rd.m,G), paths={}, rimPaths={}, markPaths={}, on={};
  var addTo=function(dict,fill,op,c,r,inset){
   var key=fill+'|'+op+'|'+inset, s=(1-2*inset);
   (dict[key]=dict[key]||[]).push('M'+(+(c+inset).toFixed(2))+' '+(+(r+inset).toFixed(2))+'h'+s+'v'+s+'h-'+s+'z');};
  var render=function(dict){return Object.keys(dict).map(function(k){var p=k.split('|');
   return '<path style="fill:'+p[0]+'" fill-opacity="'+p[1]+'" d="'+dict[k].join('')+'"/>';}).join('');};
  var add=function(fill,op,c,r,inset){addTo(paths,fill,op,c,r,inset);};
+ var sq=function(c,r,inset){var s=1-2*inset;
+  return 'M'+(+(c+inset).toFixed(2))+' '+(+(r+inset).toFixed(2))+'h'+s+'v'+s+'h-'+s+'z';};
+ /* THE WEAVE'S OWN CELLS, SECTION 5, DRAWN APART FROM EVERY OTHER FILL.
+    A saboteur's own block always used to merge into the one dict every
+    other fill shares, which is right until a saboteur is the thing picked:
+    the weave-alone motion then needs to dim everything else behind one
+    group (chv-rest, below) and to walk a highlight through its own cells
+    one at a time, and neither reads off a single merged <path d="..."> with
+    every cell of every colour flattened into it. So a cell that belongs to
+    the woven saboteur is drawn on its own, in the walk's own order (the
+    order rd.px already carries it in, chRead's own Hilbert walk), and
+    everything else still merges exactly as it always did. */
+ var weaveOn=!!weaveName&&rd.px.some(function(x){return x.o&&x.o.nm===weaveName;});
+ var waveN=0, waveCells=[], waveOver=false, waveSusc=0;
  rd.px.forEach(function(x){
   var f=chTone(x.n.b,x.tier,rd.face), op=CH_OP[rd.face==='light'?'light':'dark'][Math.max(0,x.tier)];
-  [[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]].forEach(function(q){on[q[0]+','+q[1]]=1;add(f,op,q[0],q[1],CH_FILL_INS);});});
+  var qs=[[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]];
+  if(weaveOn&&x.o&&x.o.nm===weaveName){
+   /* STILL IF OVEREXPRESSED, SECTION 4's OWN RULE CARRIED INTO SECTION 5.
+      "It holds visually still while the mask breathes." A saboteur any
+      light reading ever shows is already over (chOwn), so a weave set
+      while CHV.face is light is always this case: the walk below never
+      runs on it, waveOver instead, which head.html reads as a fixed
+      highlight rather than one that marches. */
+   if(x.o.over)waveOver=true;
+   waveSusc+=((x.n&&x.n.susc)||1); waveN++;
+   waveCells.push('<g class="chv-weavecell" style="--i:'+(waveN-1)+'">'
+    +qs.map(function(q){on[q[0]+','+q[1]]=1;
+     return '<path style="fill:'+f+'" fill-opacity="'+op+'" d="'+sq(q[0],q[1],CH_FILL_INS)+'"/>';}).join('')
+    +'</g>');
+  } else qs.forEach(function(q){on[q[0]+','+q[1]]=1;add(f,op,q[0],q[1],CH_FILL_INS);});});
+ /* THE WALK'S OWN SPEED, wheel.js's own tension (ten01 near its pulses(),
+    "a taut chord is one the person is susceptible at"), ported rather than
+    re-derived: a step runs 180ms slack to 90ms taut, so a saboteur built on
+    addresses this person is more susceptible at marches faster through its
+    own block, the same reason a taut thread carries a faster pulse there. */
+ var waveStep=waveN?(180-90*Math.max(0,Math.min(1,((waveSusc/waveN)-0.45)/0.85))):180;
  geo.grid.forEach(function(q){var k=q[0]+','+q[1];if(on[k])return;
   add('var(--ink)','.08',q[0],q[1],CH_BG_INS);});
+ /* THE SPILL, SECTION 4'S OVEREXPRESSED. The engine's own words for o.over
+    are "will not shut, rather than will not open," and chRead above already
+    keeps the block's own end cell lit rather than dark for exactly this
+    reason. What follows is the other half of that sentence: a one cell
+    spill at a flat .30, on every GROUND cell (geo.gridSet, never a rim cell
+    and never a mark, both of which already answer a different question)
+    that touches one of the group's own cells, the address getting out
+    rather than a second reading of how built the group is. Light reading
+    only, since chOwn above never shows an over group on dark, and computed
+    once a render in its own pass rather than inside the loop above, because
+    it needs `on` fully settled first: a spill is only ever onto a cell
+    nothing else has already lit. A Set keeps two cells that share a
+    neighbour from drawing it twice. */
+ var spill={};
+ if(rd.face==='light'&&!rd.unread){
+  var seenG={}, nb=[[1,0],[-1,0],[0,1],[0,-1]];
+  rd.px.forEach(function(x){
+   if(!(x.o&&x.o.over))return;
+   var tone=chTone(x.n.b,x.tier,rd.face);
+   [[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]].forEach(function(q){
+    nb.forEach(function(d){var c=q[0]+d[0], r=q[1]+d[1], key=c+','+r;
+     if(geo.gridSet[key]&&!on[key]&&!seenG[key]){seenG[key]=1; addTo(spill,tone,'.30',c,r,CH_FILL_INS);}});});});}
  /* THE ARCHETYPE'S GLOW, round LT, replacing the icon scan. A radial
     gradient behind everything else, so an opaque held pixel drawn after it
     covers it exactly where the chain has built over the foundation, the
@@ -27197,6 +27488,36 @@ function chSvg(rd,cls,label,weaveName){
    +'<stop offset="0" stop-color="'+seatCol(rd.arch.b)+'" stop-opacity="'+fop+'"/>'
    +'<stop offset="1" stop-color="'+seatCol(rd.arch.b)+'" stop-opacity="0"/></radialGradient></defs>'
    +'<circle class="chv-glow" cx="'+gp.cx+'" cy="'+gp.cy+'" r="'+gp.r.toFixed(2)+'" fill="url(#'+gid+')"/>';}
+ /* RUNNING HOT, SECTION 4, OUTSIDE THE RIM. Dark reading, hero only (the
+    caller says so with the fifth argument), and silent where chSeatHot
+    answers null: a mask nobody has loaded past RUNHOT_AT never draws a
+    dash. Three echoes a side, at the radius the stress itself sets (tight
+    at high load, two cells apart at low), alternating the seat's own
+    colour and the same seat lifted toward white or black, and the nearest
+    echo turns into a solid continuation of the rim once any address here
+    has crossed 6.5, the design's own "the rim itself pushing out one
+    cell" read as the rim's first echo losing its dots rather than the
+    rim's own geometry moving, which this grid has no room to do once it
+    is laid out. The direction class (chv-hot-exp, -col, -steady) is what
+    head.html's own keyframe reads to decide whether the dashes travel
+    out, in, or simply breathe; reduced motion freezes that travel and
+    this alpha, set here and not by the animation, is what is left
+    standing when it does. */
+ var hotBand='';
+ if(hero&&rd.face==='dark'&&!rd.unread){
+  var hg=chHotGeo(rd.m,G), groups=[];
+  [['L',rd.m.b[0]],['R',rd.m.b[rd.m.b.length-1]]].forEach(function(sv){
+   var side=sv[0], b=sv[1], info=chSeatHot(b); if(!info)return;
+   var gap=Math.max(1,Math.min(2,2-info.stress)), alpha=Math.pow(info.stress,1.3).toFixed(2);
+   var pushed=info.max>=6.5, dirCls=info.dir==='exp'?'chv-hot-exp':(info.dir==='col'?'chv-hot-col':'chv-hot-steady');
+   for(var e=0;e<3;e++){
+    var k=Math.max(1,Math.min(6,Math.round((e+1)*gap))), cells=(hg[side]||[])[k]||[];
+    if(!cells.length)continue;
+    var solid=(e===0&&pushed), tone=solid?chTone(b,2,rd.face):(e%2?chLift(b):seatCol(b));
+    var op=solid?(rd.sup?'1':'.85'):alpha, dict={};
+    cells.forEach(function(q){addTo(dict,tone,op,q[0],q[1],CH_BG_INS);});
+    groups.push('<g class="chv-hotcell '+dirCls+'" style="--k:'+e+'">'+render(dict)+'</g>');}});
+  if(groups.length)hotBand='<g class="chv-hotband">'+groups.join('')+'</g>';}
  /* the rim is the mask's own seats, first seat on the left and last on the
     right, faint until the chain reaches the character, then lit, and
     breathing while it is: see .chv-rim-on in head.html */
@@ -27209,13 +27530,19 @@ function chSvg(rd,cls,label,weaveName){
     Child from a Teen was camouflaged by the thing it needed to stand out
     against. Ink is fixed against the stage in every reading and every
     theme, and it steps up when the chain reaches the character, same as
-    the rim, so the two light together. */
+    the rim, so the two light together.
+
+    ITS OWN DICT NOW, SECTION 5: the weave-alone motion holds the mark
+    still while the rest of the hero falls to .08 ("rim and marks hold"),
+    which only reads true if the mark is never inside the group that
+    falls. It used to share `paths` with every fetter fill and would have
+    dimmed with them. */
  /* .52, NOT .68, ROUND MQ: measured against the ground this mark has to
     read against now that a shadow sits under it. .52 holds 5.02:1 in Dark
     and 3.51:1 in Snow, the 3:1 floor for a graphic; .44 reads sharper on
     Dark but fails Snow at 2.78:1, so .52 is the floor and not a taste. */
  geo.mk.forEach(function(q){
-  add('var(--ink)',lit?'.95':'.52',q[0],q[1],CH_MARK_INS);});
+  addTo(markPaths,'var(--ink)',lit?'.95':'.52',q[0],q[1],CH_MARK_INS);});
  /* THE WEAVE'S OWN RING, ROUND NH. A stroke and never a fill, because the
     cell underneath already carries the tier's own tone (chTone) and a
     second fill would answer a different question, how hot this pixel runs,
@@ -27229,9 +27556,31 @@ function chSvg(rd,cls,label,weaveName){
    var i=CH_FILL_INS, s=1-2*i;
    wp.push('M'+(+(q[0]+i).toFixed(2))+' '+(+(q[1]+i).toFixed(2))+'h'+s+'v'+s+'h-'+s+'z');});});
   if(wp.length)weave='<path class="chv-weavepx" fill="none" stroke="var(--accent)" stroke-width=".12" d="'+wp.join('')+'"/>';}
+ /* THE REST, IN ITS OWN GROUP, SECTION 5. Everything that is not the weave
+    and not a mark: every fetter and saboteur fill, the ground stipple and
+    the spill. Named chv-rest because that is the question it answers for
+    head.html's own CSS, "is this outside the woven block," and it is the
+    group that falls to .08 while a saboteur is picked, the Field's own
+    Fall number (DESIGN-character-effects.md 3), the same .08 the ground
+    stipple already sat at, which is why a ground cell dimming further is
+    not visible: it was already there. Not grouped when nothing is woven,
+    since an extra <g> around a hero that never weaves would be markup
+    with no job. */
+ var rest=render(paths)+render(spill);
+ /* THE WALK ITSELF, SECTION 5, built on PULSE from section 3: one cell of
+    the woven block brightened at a time, in the order it was laid down,
+    which is already "hand out of pocket order" since that order is the
+    Hilbert walk a block is built from. --n and --step are read by
+    head.html's own keyframe; chv-weaveband-still freezes it for an
+    overexpressed group rather than animating a block the design calls
+    for holding visibly still. */
+ var waveBand=waveCells.length
+  ?'<g class="chv-weaveband'+(waveOver?' chv-weaveband-still':'')+'" style="--n:'+waveN+';--step:'+Math.round(waveStep)+'ms">'
+   +waveCells.join('')+'</g>':'';
  return '<svg class="'+cls+'" viewBox="0 0 '+G+' '+G+'" data-chres="'+G+'" data-chlit="'+rd.lit+'"'
   +(label?' role="img" aria-label="'+esc(label)+'"':' aria-hidden="true"')+'>'
-  +glow+render(paths)+weave+'<g class="chv-rim'+(lit?' chv-rim-on':'')+'">'+render(rimPaths)+'</g>'
+  +glow+'<g class="chv-rest">'+rest+'</g>'+render(markPaths)+waveBand+weave+hotBand
+  +'<g class="chv-rim'+(lit?' chv-rim-on':'')+'">'+render(rimPaths)+'</g>'
   +'</svg>';}
 
 function chSentence(v){v=String(v||'');return v.charAt(0).toUpperCase()+v.slice(1)+'.';}
@@ -27249,6 +27598,103 @@ function chUp(rd){
  if(rd.hys.length)o+=' The '+esc(chAnd(rd.hys.map(function(y){return y.nm;})))
   +(rd.hys.length===1?' family has built up into a hyper complex.':' families have built up into hyper complexes.');
  return o;}
+
+/* ============================================================
+   SECTION 5, DESIGN-character-effects.md. THE INFORMATION LAYER.
+
+   Three depths for the right column: the page on open with nothing pressed
+   yet (chOverview), one mask pressed (chDrill, already built, extended
+   below with chCounts) and a saboteur picked off the weave (runDrill, in
+   ui/drills.js, extended there with "Runs under").
+   ============================================================ */
+/* THE HIGHEST THING BUILT, in one word, canon's own vocabulary for the
+   chain (chSvg's own tiers, CHAINGLYPH's own kinds) rather than a second
+   name invented for this row. Checked top down because each one implies
+   every name below it: a character layer cannot exist without a hyper
+   complex under it, nor that without a complex, nor that without a
+   saboteur running. */
+function chBuiltWord(dk){
+ if(dk.sup)return 'character';
+ if(dk.hys.length)return 'hyper complex';
+ if(dk.cxs.length)return 'complex';
+ if(dk.sabs.length)return 'saboteur';
+ if(dk.held)return 'fetter';
+ return 'clear';}
+/* HOW MANY OF A MASK'S OWN ADDRESSES ARE RUNNING HOT, wheel.js's own
+   RUNHOT_AT and nothing invented beside it, the same count chSvg's own
+   running hot fringes are reading when they decide whether to draw at
+   all. Reading dependent on nothing: hot is a fact about sq, not about
+   which face is on screen. */
+function chHotCount(m){
+ hotTrack();
+ return W.filter(function(n){return m.b.indexOf(n.b)>=0&&(+n.sq||0)>RUNHOT_AT;}).length;}
+/* A THREE BY THREE CROP OF THE REAL GRID, centred on one real cell, so a
+   count in Selection carries a sample of the actual pixels it is counting
+   rather than a bare number next to a claim about them. Built off the same
+   rd this count was read from, cell by cell: a fill the reading lit, the
+   ground stipple where geo says there is face and nothing lit it, or
+   nothing at all past the egg's own edge, which is why a corner of the
+   crop can come back empty, a face is round and a crop is square. */
+function chSampleSvg(rd,c0,r0){
+ var G=rd.G, geo=chGeo(rd.m,G), tones={};
+ rd.px.forEach(function(x){var f=chTone(x.n.b,x.tier,rd.face);
+  [[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]].forEach(function(q){tones[q[0]+','+q[1]]=f;});});
+ var cells=[];
+ for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){
+  var c=c0+dc, r=r0+dr, key=c+','+r, f=tones[key];
+  if(!f&&!geo.gridSet[key])continue;
+  cells.push('<rect x="'+(dc+1)+'" y="'+(dr+1)+'" width="1" height="1" fill="'+(f||'var(--ink)')+'" fill-opacity="'+(f?1:.08)+'"/>');}
+ return '<svg class="chv-samp" viewBox="0 0 3 3" aria-hidden="true">'+cells.join('')+'</svg>';}
+/* THE THREE COUNTS THAT LEAD A MASK'S OWN DRILL. Running hot off the dark
+   reading, how built off the dark reading's own chain, overshot off the
+   light reading, each paired with a real px entry to crop a sample from:
+   the heaviest hot address, the highest tiered pixel, the first overshot
+   one. null where there is nothing to show, which chSampleSvg's caller
+   below reads as an empty crop rather than guessing at one. */
+function chCounts(m,dk,lt){
+ var hotN=chHotCount(m);
+ var hotPx=dk.px.filter(function(x){return (+x.n.sq||0)>RUNHOT_AT;}).sort(function(a,b){return (b.n.sq||0)-(a.n.sq||0);})[0]||null;
+ var hiPx=dk.px.reduce(function(a,x){return (!a||x.tier>a.tier)?x:a;},null);
+ var overN=lt.sabs.length;
+ var overPx=lt.px.filter(function(x){return x.o&&x.o.over;})[0]||null;
+ var tile=function(val,label,px,rd){
+  return '<div class="chv-ct">'
+   +(px?chSampleSvg(rd,px.p[0],px.p[1]):'<svg class="chv-samp" viewBox="0 0 3 3" aria-hidden="true"></svg>')
+   +'<div class="chv-ct-v">'+esc(String(val))+'</div><div class="chv-ct-lb">'+esc(label)+'</div></div>';};
+ return '<div class="chv-counts">'
+  +tile(hotN,'running hot',hotPx,dk)+tile(chBuiltWord(dk),'how built',hiPx,dk)+tile(overN,'overshot',overPx,lt)
+  +'</div>';}
+/* DEPTH 1: THE PAGE ON OPEN, BEFORE ANY PRESS. "Your character", a row a
+   mask in canon order (MASKS_READ, never resorted, the rule this whole
+   file already keeps), a small icon in the mask's own current grid, its
+   name, the highest thing built there in one word and how many of its own
+   addresses are running hot. The hero's own row carries the same pool
+   token (--mk-top) the selected rail icon already lights, Petra's "same
+   light at two sizes" carried a third size. A row is a rail press with
+   extra words on it: pressing it sets the hero and opens chDrill exactly
+   the way the rail icon under the same name already does. */
+function chOverview(r,heroNm){
+ var rows=MASKS_READ.map(function(m){
+  var dk=chRead(m,r,'dark'), unread=!r||r.unread;
+  var word=unread?'clear':chBuiltWord(dk), hot=unread?0:chHotCount(m), isHero=m.nm===heroNm;
+  return '<button type="button" class="chv-ov-row'+(isHero?' chv-ov-hero':'')+'" data-chovrow="'+esc(m.nm)+'"'
+   +(isHero?' style="--mk-top:'+chMkTop(m)+'"':'')+'>'
+   +chSvg(dk,'chv-svg chv-ov-ic',null)
+   +'<span class="chv-ov-nm">'+esc(m.nm)+'</span>'
+   +'<span class="chv-ov-word">'+esc(word)+'</span>'
+   +(hot?'<span class="chv-ov-hot">'+hot+' running hot</span>':'')
+   +'</button>';});
+ var unread=!r||r.unread;
+ var h='<div class="pm-eye">Your character</div>'
+  +(unread?'<p class="ad-p">Nothing read yet, so there is nothing under any mask. Write what happened on the Story page and they start to fill.</p>'
+    :'<p class="ad-p">Five masks, each as far as its own story has built it. Press one for the full reading.</p>')
+  +'<div class="chv-ov-rows">'+rows.join('')+'</div>';
+ rdShell(h);
+ var b=$('rdrill');
+ if(b)b.querySelectorAll('[data-chovrow]').forEach(function(el){el.onclick=function(){
+  var m=MASKS.filter(function(x){return x.nm===el.getAttribute('data-chovrow');})[0]; if(!m)return;
+  CHV.pick=m.nm; if(typeof uiSet==='function')uiSet('chmask',m.nm);
+  chDrill(m); render();};});}
 
 /* THE PAGE. Six grids, each under its name, and one switch for the reading.
 
@@ -27373,10 +27819,20 @@ function renderCharacter(r){
     together," was built for a press and read as only a press: the hero is
     never blank, chLast() sees to that, but the column it should have
     opened beside stayed silent until the first click. Once, not on every
-    render: render() runs on every press anywhere in the app, and chDrill
-    writing over whatever else Selection is showing on every one of those
-    would fight a person reading something unrelated elsewhere. */
- if(!CHV.opened){CHV.opened=true; chDrill(heroM);}
+    render: render() runs on every press anywhere in the app, and writing
+    over whatever else Selection is showing on every one of those would
+    fight a person reading something unrelated elsewhere.
+
+    WHAT OPENS THERE CHANGED, SECTION 5, DESIGN-character-effects.md 5.
+    Petra's own defect: "the page opens with Child as hero and Selection
+    silent... chDrill runs only on a press," and the first fix, round NK,
+    answered it with chDrill(heroM), the one mask's full summary, on a
+    first arrival that had not asked about one mask yet. The design calls
+    for a shallower first answer, "Your character," a row per mask and
+    nothing pressed: chOverview now opens there instead, and chDrill still
+    opens on every real press exactly as it always did, a rail icon's own
+    onclick below and an overview row's own, chOverview's own. */
+ if(!CHV.opened){CHV.opened=true; chOverview(r,heroM.nm);}
  var heroSay=heroM.nm+' mask, '+CHV.face+' reading, enlarged. It '+heroM.v+'.';
  /* THE HERO'S OWN WRAP, head.html's .chv-hero-wrap, holds the svg alone and
     not the name above it, so the pool's ::before can sit exactly over the
@@ -27385,8 +27841,13 @@ function renderCharacter(r){
  var hero='<div class="chv-hero" data-chhero="'+esc(heroM.nm)+'">'
   +'<div class="chv-hero-nm">'+esc(heroM.nm)+'</div>'
   +'<div class="chv-hero-wrap" style="--mk-top:'+chMkTop(heroM)+'">'
-  +chSvg(heroRd,'chv-svg chv-hero-svg',heroSay,CHV.weave)+'</div></div>';
- var html=chWash(r)+'<div class="chv">'
+  +chSvg(heroRd,'chv-svg chv-hero-svg',heroSay,CHV.weave,true)+'</div></div>';
+ /* THE WEAVE-ALONE MOTION, SECTION 5. One class on the page's own wrapper,
+    read by head.html: the wash drops, the hero's rest falls and its glow
+    goes out, and a rail icon that does not carry the weave desaturates,
+    all off the one fact a saboteur is picked, rather than this file
+    threading a flag through chWash, every card and the rail separately. */
+ var html=chWash(r)+'<div class="chv'+(CHV.weave?' chv-weaving':'')+'">'
   +'<div class="chv-top"><div class="seg" role="group" aria-label="Reading">'
   +['dark','light'].map(function(f){return '<button type="button" data-chface="'+f+'" aria-pressed="'+(CHV.face===f)+'">'
    +(f==='dark'?'Dark':'Light')+'</button>';}).join('')+'</div></div>'
@@ -27480,6 +27941,11 @@ function chDrill(m){
  if(r.unread){
   h+='<p class="ad-p">Nothing read yet, so this mask is empty. Write what happened on the Story page and it starts to fill.</p>';
   rdShell(h);return;}
+ /* THE THREE COUNTS, SECTION 5, DESIGN-character-effects.md 5: "led by
+    three counts, each keyed by a 3 by 3 crop of the person's own cells."
+    Running hot, how built and overshot, in that order, each with a real
+    crop of the grid behind it rather than a bare figure, chCounts below. */
+ h+=chCounts(m,dk,lt);
  if(dk.arch)h+='<div class="pm-eye">Built on</div><p class="ad-p">The '+esc(dk.arch.nm)+', which '
   +esc(dk.arch.v)+'. Of the archetypes seated under this mask, it is the one your blueprint leans on most. Its shape sits faint under the pixels.</p>';
  /* THE DARK MASK. What is held, what has clustered, and how far up the
@@ -40217,10 +40683,41 @@ function runDrill(o){
        :'None of it is installed yet. Release empties the address, the opposite is what fills it.')
    : 'No poled axis sits underneath this one.')+'</p>'
   +(o.kind==='sab'?kbSabBlock(o.nm):'')
+  /* "RUNS UNDER," SECTION 5, DESIGN-character-effects.md 5. Every read mask
+     this pattern's own addresses sit under, each with how many of them
+     land there, so a saboteur picked off the weave answers the question MX
+     asked it to: "if you select it on one mask, then you see how it shows
+     up in all the others." Honest when the answer is none, the design's
+     own example: "it runs at the heart, where no mask is worn yet." The
+     uncovered seats are read off MASKS_READ's own .b arrays rather than
+     Heart and Crown typed here, so this keeps answering correctly if a
+     sixth mask is ever built before either seat gets one. */
+  +(function(){
+   var under=MASKS_READ.map(function(m){
+    var n=lv.filter(function(x){return m.b.indexOf(x.b)>=0;}).length;
+    return n?{m:m,n:n}:null;}).filter(Boolean);
+   var h2='<div class="pm-eye">Runs under</div>';
+   if(under.length)return h2+'<div class="chv-rows">'+under.map(function(u){
+     return '<button type="button" class="chv-row" data-rununder="'+esc(u.m.nm)+'">'
+      +'<span>'+esc(u.m.nm)+'</span><span class="chv-ru-n">'+chPl(u.n,'address','addresses')+'</span></button>';}).join('')
+    +'</div>';
+   var covered=MASKS_READ.reduce(function(a,m){return a.concat(m.b);},[]);
+   var uncov=bs.filter(function(b){return covered.indexOf(b)<0;})
+    .map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();});
+   return h2+'<p class="ad-p">It runs at the '+esc(chAnd(uncov))+', where no mask is worn yet.</p>';})()
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
   +lv.slice(0,8).map(addrRow).join('')
   +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
- rdShell(h);}
+ rdShell(h);
+ /* a "Runs under" row opens that mask's own drill, the same rail press
+    chDrill is already opened by, so "does this show up here" (MX) can be
+    followed straight through from the saboteur it was asked about. */
+ var ru=$('rdrill');
+ if(ru)ru.querySelectorAll('[data-rununder]').forEach(function(el){el.onclick=function(){
+  var m=MASKS.filter(function(x){return x.nm===el.getAttribute('data-rununder');})[0]; if(!m)return;
+  if(typeof CHV!=='object'||!CHV)return;
+  CHV.pick=m.nm; if(typeof uiSet==='function')uiSet('chmask',m.nm);
+  chDrill(m); render();};});}
 
 function runLawDrill(l){
  if(!l)return;
@@ -48185,5 +48682,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003147955"></div>
+<div id="eof" hidden data-len="003181076"></div>
 </body></html>

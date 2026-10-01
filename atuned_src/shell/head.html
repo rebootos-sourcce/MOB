@@ -4967,6 +4967,98 @@ body.quiet .chv-glow,body.quiet .chv-rim,body.quiet .chv-m[aria-pressed=true]::b
  animation:none;opacity:1}
 @media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim,.chv-m[aria-pressed=true]::before,.chv-hero-wrap::before{
  animation:none;opacity:1}}
+/* THE WEAVE-ALONE MOTION, SECTION 5, DESIGN-character-effects.md 5.
+   ui/character.js puts chv-weaving on .chv itself whenever CHV.weave is
+   truthy, so every surface this round touches reads off the one fact
+   rather than each one being told separately: the wash drops to .35, the
+   hero's own rest (ui/character.js's chv-rest, every fill that is not the
+   woven block and not a mark) falls to .08, the Field's own Fall number
+   from section 3, and the hero's glow goes dark. A rail icon that does not
+   carry the weave desaturates to a silhouette, "the rest go saturate(0)",
+   leaving its rim and mark exactly where chv-weave-on already rings the
+   ones that do. Rim and marks are never inside chv-rest to begin with
+   (ui/character.js keeps them in their own paths), so "rim and marks hold"
+   needs no rule here: it is already true by construction. */
+.chv-weaving .chv-wash{opacity:.35;transition:opacity var(--t-surface) var(--ease-out)}
+.chv-weaving .chv-hero .chv-rest{opacity:.08;transition:opacity var(--t-surface) var(--ease-out)}
+/* ANIMATION:NONE HAS TO SIT BESIDE OPACITY:0 HERE, not opacity alone. The
+   glow and the pool both breathe on chvBreath unconditionally (.chv-stage
+   .chv-glow above, .chv-hero-wrap::before in its own rule), and a running
+   CSS animation's own keyframe value for a property beats any ordinary
+   rule's static value for that same property, specificity or no, short of
+   !important. Measured first: opacity:0 alone left the glow breathing
+   through .64 to 1 exactly as before, because chvBreath was still the
+   thing deciding its opacity every frame. */
+.chv-weaving .chv-hero .chv-glow{animation:none;opacity:0;transition:opacity var(--t-surface) var(--ease-out)}
+.chv-weaving .chv-hero .chv-hero-wrap::before{animation:none;opacity:0;transition:opacity var(--t-surface) var(--ease-out)}
+.chv-weaving .chv-rail .chv-m:not(.chv-weave-on) .chv-svg{
+ filter:saturate(0);transition:filter var(--t-surface) var(--ease-out)}
+/* THE WALK, PULSE FROM SECTION 3, BUILT FOR REAL HERE. One cell of the
+   woven block brightened at a time in the order ui/character.js already
+   laid the block down (the Hilbert walk chRead builds it on, --i), a step
+   at --step (180ms slack to 90ms taut, wheel.js's own tension carried
+   over rather than a second clock) then a rest before the pass repeats.
+   filter and not opacity: the fill already carries the tier's own tone
+   and its own opacity, and brightening it is a smaller claim than
+   replacing it. chv-weaveband-still freezes the cell in place for an
+   overexpressed group, "it holds visually still while the mask breathes,"
+   DESIGN-character-effects.md 4, which a light reading's own weave always
+   is: chOwn only ever shows an over group there. */
+.chv-weavecell{animation:chvWalk calc(var(--n,1) * var(--step,180ms) + 600ms) linear infinite;
+ animation-delay:calc(var(--i,0) * var(--step,180ms))}
+@keyframes chvWalk{0%,100%{filter:brightness(1)}6%{filter:brightness(1.55)}14%{filter:brightness(1)}}
+.chv-weaveband-still .chv-weavecell{animation:none}
+/* RUNNING HOT, SECTION 4. The alpha of every dash is set inline in
+   ui/character.js off frStress itself (zero at RUNHOT_AT, wheel.js, a
+   visible step on crossing), so a reduced motion profile that turns this
+   animation off still shows the correct picture rather than a blank one:
+   the animation only ever adds a travelling brightness on top of an alpha
+   that was already right. chv-hot-exp and chv-hot-col travel out and in
+   over 1.1s, each of the three echoes staggered a little further by --k
+   (one echo born at the rim before the next, the Field's own fringes
+   "born at the ring and travel out" read for a static grid rather than a
+   per frame position), and chv-hot-steady breathes on the page's own 4.2s
+   clock instead, "holding and breathing when steady." */
+.chv-hotcell{transform-box:fill-box;transform-origin:center}
+.chv-hotcell.chv-hot-exp{animation:chvHotWave 1.1s ease-in-out infinite;animation-delay:calc(var(--k,0) * .18s)}
+.chv-hotcell.chv-hot-col{animation:chvHotWave 1.1s ease-in-out infinite reverse;animation-delay:calc(var(--k,0) * .18s)}
+.chv-hotcell.chv-hot-steady{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+@keyframes chvHotWave{0%,100%{opacity:.55}30%{opacity:1}}
+body.rm .chv-weavecell,body.rm .chv-hotcell,body.quiet .chv-weavecell,body.quiet .chv-hotcell{animation:none}
+body.rm .chv-hotcell,body.quiet .chv-hotcell{opacity:1}
+@media (prefers-reduced-motion:reduce){.chv-weavecell,.chv-hotcell{animation:none}.chv-hotcell{opacity:1}}
+/* DEPTH 1, SECTION 5: THE OPENING OVERVIEW, "Your character." The same
+   chv-row tap target every other list in this panel already uses, with a
+   small icon in front rather than a second badge, since a mask already
+   has a face (section 1) and a ring drawn round it here would answer a
+   question that page already answered. */
+.chv-ov-rows{display:flex;flex-direction:column;margin:4px 0 8px}
+.chv-ov-row{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:6px 4px;
+ background:transparent;border:0;border-top:1px solid var(--edge);color:var(--ink);font:inherit;
+ font-size:13px;text-align:left;cursor:pointer;position:relative}
+.chv-ov-row:hover{color:var(--gold)}
+.chv-ov-ic{width:28px;height:28px;flex:0 0 auto;filter:saturate(.6)}
+.chv-ov-row.chv-ov-hero .chv-ov-ic{filter:none}
+/* THE HERO'S OWN ROW, "visually distinguished," the same pool token every
+   selected mask already lights (--mk-top, section 2) at a third size. */
+.chv-ov-row.chv-ov-hero::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:var(--r-s);
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
+.chv-ov-nm{flex:0 0 auto;font-weight:500}
+.chv-ov-word{flex:1 1 auto;color:var(--mid);text-transform:lowercase}
+.chv-ov-hot{flex:0 0 auto;font-size:11px;color:var(--alarm)}
+/* DEPTH 2'S OWN LEAD, SECTION 5: three counts, each with a 3 by 3 crop of
+   the real grid (ui/character.js's chSampleSvg) rather than a bare figure.
+   The sunk ground chv-pair already uses, so the three sit as one unit
+   under the two grids above them rather than three strays. */
+.chv-counts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:2px 0 10px}
+.chv-ct{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;
+ border-radius:var(--r-s);background:var(--sunk);text-align:center}
+.chv-samp{width:24px;height:24px}
+.chv-ct-v{font-size:15px;font-weight:600}
+.chv-ct-lb{font-size:11px;color:var(--mid)}
+/* DEPTH 3'S OWN "RUNS UNDER," ui/drills.js. The address count sits where
+   every other chv-row already right aligns its own figure. */
+.chv-ru-n{margin-left:auto;font-size:12px;color:var(--mid)}
 /* the same two grids in Selection, side by side, dark then light, on the
    rail's own sunk ground so the theme's ink and seat colours hold there */
 .chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
