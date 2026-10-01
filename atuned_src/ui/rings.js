@@ -147,8 +147,8 @@ const FLAYS=[
  {k:'gates',nm:'Gates',d:frCirc(12,12,3.1)+'M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3',
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
- {k:'shadow',nm:'Shadow',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
-  tip:'The weight on all 112 addresses, as a wash behind everything.'}];
+ {k:'shadow',nm:'Decoherence',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
+  tip:'Decoherence. The weight on all 112 addresses, as a wash behind everything.'}];
 /* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
    the glass bar now, and the switch, #fview, moved to the right rail as three
    circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the

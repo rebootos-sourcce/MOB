@@ -235,7 +235,9 @@ function setTab(i){
  (function(){
   var WANT={};
   WANT[TAB.ENERGY]={right:['flow','running']};
-  WANT[TAB.FIELD]={left:['soul','lean'],right:['you']};
+  /* the Awareness grids fold to two lines of what was chosen, round OM, so
+     nothing on the left opens by itself on the Field any more */
+  WANT[TAB.FIELD]={left:[],right:['you']};
   WANT[TAB.COMPASS]={right:['you']};
   /* the Story's rail is the imprints since GO, opened by the bank now. The
      release went into the Story's own third column, round IJ, so it has no
@@ -598,9 +600,9 @@ DOMAINS.forEach(function(d,i){
   +((AFFIN[d.r]||[]).length?'Running it makes '+panAnd(AFFIN[d.r]).toLowerCase()
     +' land 1.3 times as heavy.\n\n':'')
   +'Click to make this your blueprint. Shift-click to add it to the ones you '
-  +'already picked.';
+  +'already picked. The ring is how far the blueprint you picked reaches it.';
  b.setAttribute('aria-label',d.nm+', '+d.r+' cluster');
- b.innerHTML=svgI('<path d="'+d.ic+'"/>')
+ b.innerHTML=svgI('<path d="'+d.ic+'"/>')+ibArc()
   +'<span class="rt" style="background:var(--c)"></span>';
  b.addEventListener('mouseenter',function(){
   $('capD').innerHTML='<b style="color:'+rootCol(d.r)+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
@@ -611,7 +613,8 @@ DOMAINS.forEach(function(d,i){
   if(e.shiftKey||!S.doms.length){var k=S.doms.indexOf(i);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(i);}
   else S.doms=[i];
-  buildSoul();S.pin=null;syncSoul();saveYou();render();});
+  buildSoul();S.pin=null;syncSoul();saveYou();render();
+  railPick(b,'dom');});
  $('doms').appendChild(b);});
 /* WHICH ROOT IS LIT. A blueprint domain belongs to exactly one root, so a
    selection already implies a root whether or not anybody clicked one. The row
@@ -644,7 +647,8 @@ ROOTD.forEach(function(rn){
  b.addEventListener('click',function(){if(notYours('change the root domain'))return;
   var k=S.roots.indexOf(rn);
   if(k>=0)S.roots.splice(k,1);else S.roots.push(rn);
-  buildSoul();S.pin=null;syncSoul();saveYou();render();});
+  buildSoul();S.pin=null;syncSoul();saveYou();render();
+  railPick(b,'root');});
  $('roots').appendChild(b);});
 /* What the two states mean, in the rail, once. A legend is cheaper than a
    person guessing, and there is nowhere else on this row to put it. */
@@ -665,8 +669,8 @@ function capD(){
      one colour and Primary read flat on every option the board tried.
      Carried here on the 26 September ruling of the same board. */
   b.style.setProperty('--c',icCol(a.b));
-  b.title=a.nm+', '+a.v+'. Shift-click to add.';b.setAttribute('aria-label',a.nm);
-  b.innerHTML=svgI('<path d="'+a.ic+'"/>');
+  b.title=a.nm+', '+a.v+'. Shift-click to add. The ring is its share of what your blueprint expresses, against the strongest.';b.setAttribute('aria-label',a.nm);
+  b.innerHTML=svgI('<path d="'+a.ic+'"/>')+ibArc();
   b.addEventListener('mouseenter',function(){$('capA').innerHTML='<b>'+a.nm+'</b>, '+a.v;});
   b.addEventListener('mouseleave',capA);
   b.addEventListener('click',function(e){if(notYours('change the archetype'))return;
@@ -674,7 +678,8 @@ function capD(){
    if(e.shiftKey){if(k>=0){if(S.arcs.length>1)S.arcs.splice(k,1);}else S.arcs.push(i);}
    else if(pair[1]==='a1'){S.arcs=[i].concat(S.arcs.filter(function(x){return x!==i;}).slice(0,3));}
    else {S.arcs=[S.arcs[0]].concat([i]).concat(S.arcs.slice(1).filter(function(x){return x!==i;}).slice(0,2));}
-   buildSoul();S.pin=null;syncSoul();saveYou();render();});
+   buildSoul();S.pin=null;syncSoul();saveYou();render();
+   railPick(b,'arch');});
   $(pair[0]).appendChild(b);});});
 function capA(){$('capA').innerHTML=S.arcs.map(function(i){
  return '<b>'+ARCH[i].nm+'</b>';}).join(' + ');}
@@ -795,7 +800,7 @@ function syncSoul(){
  /* HS sweep: with nothing added and nothing pale this printed "click a root
     to add every domain under it", a how to line under a row of buttons. The
     legend now speaks only when there is a state on the row to key. */
- capD();capA();}
+ capD();capA();awSum();}
 function rebuildSwatches(){
  /* every colour the rail's grids wear is per lighting now, so all three move
     here. The domains alone did before, and they moved to the same value. */
@@ -810,7 +815,7 @@ function rebuildSwatches(){
  /* the matrix's own key is written once at boot and again only when the
     pointer leaves the matrix, so its four root swatches kept the lighting
     the page opened on until somebody happened to hover it. */
- syncMx();mxKey();}
+ awSum();syncMx();mxKey();}
 
 /* ============================================================
    DENSITY, PROFILE AND HELP. Three controls the product has

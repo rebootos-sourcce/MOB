@@ -123,7 +123,8 @@ function renderSpirit(){
     were already written and opening in their drills. And the year carries the
     element's own mark, the one the Summary's chip for the same year uses. */
  var cic=(typeof CELEM_IC!=='undefined'&&CELEM_IC[sp.celem])||'';
- el.innerHTML=hd('W','Western')
+ el.innerHTML=rlMeetHtml(sp,p.nm)
+  +hd('W','Western')
   +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign'):unres('Sun',noZone))
   +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign'):unres('Moon',noZone))
   /* The ascendant is the one reading that needs a place, because it is the

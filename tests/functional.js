@@ -5907,6 +5907,61 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   'a changed CQ sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));
  ok(Math.abs(mo.end-mo.goal2)<0.05,'and lands exactly on its value, '+mo.end.toFixed(2)+' against '+mo.goal2.toFixed(2));
 
+ /* ROUND OM AND OO, THE LEFT MENU RE-CUT. His words: "For coherence and
+    decoherence, the percent is fine. For shadow, have hashes for each of the
+    shadow chakra colors. And have those bars moving. Vertically. Flow. Let's
+    use an actual sine wave. When a person's sine wave is healthy, it ranges
+    full spectrum zero to one. Otherwise, we get to show how choppy it is. By
+    the weights of the chakra. Let's move masculine and feminine and benign
+    and malignant here." And OO: the animation in the left menu does not reach
+    into the centre pane. Held here: the six rows are still six rows; the
+    shadow row is seven hashes, one a seat in the seat's colour, each as high
+    as the charge on that seat's addresses; the flow row is a wave of seven
+    stretches whose range is the full zero to one when every seat passes
+    everything and is rougher and smaller when they do not; the two dials sit
+    in the block; the Awareness grids are folded to two lines on a first
+    visit; the word is Decoherence on the bar and on its circle; and nothing
+    of the menu is drawn on the stage. */
+ const om=await fp.evaluate(async()=>{
+  loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
+  await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+7*70+300));
+  const dq=document.querySelector('#fdock .rbar[data-q=dq]'), fl=document.querySelector('#fdock .rbar[data-q=flow]');
+  const hs=[...dq.querySelectorAll('.rb-hash b')].map(b=>parseFloat((b.style.transform.match(/scaleY\(([\d.]+)\)/)||[])[1]));
+  const want=rbSeatShadow().map(v=>Math.min(1,v*RB_GAIN));
+  const cols=[...dq.querySelectorAll('.rb-hash s')].map(e=>e.style.getPropertyValue('--k'));
+  const seatCols=BANDS.map(b=>seatCol(b));
+  const ys=pass=>rbWavePts(pass).pts.map(p=>p[1]);
+  const full=ys([1,1,1,1,1,1,1]), tom=ys(rbSeatPass());
+  const span=a=>Math.max(...a)-Math.min(...a), rough=a=>a.slice(1).reduce((t,v,i)=>t+Math.abs(v-a[i]),0);
+  const dock=document.getElementById('fdock');
+  return {rows:dock.querySelectorAll('.rbar').length,
+   hashes:hs.length,hashOk:hs.every((v,i)=>Math.abs(v-want[i])<0.02),hashCols:cols.join()===seatCols.join(),
+   hashMoves:getComputedStyle(dq.querySelector('.rb-hash u')).animationName,
+   dqName:dq.querySelector('.rb-n').textContent,dqTall:dq.getBoundingClientRect().height,dqFill:!!dq.querySelector('.rb-t i'),
+   segs:fl.querySelectorAll('path.wv').length,flTall:fl.getBoundingClientRect().height,
+   healthySpan:+span(full).toFixed(1),healthyRough:+rough(full).toFixed(0),tomSpan:+span(tom).toFixed(1),tomRough:+rough(tom).toFixed(0),
+   range:RB_WV.H-6,
+   dials:dock.contains(document.getElementById('polbar'))&&dock.contains(document.getElementById('bal'))&&dock.contains(document.getElementById('axpick')),
+   oldSection:!!document.querySelector('.lsec[data-sec=lean]'),
+   soulOpen:document.querySelector('.lsec[data-sec=soul]').classList.contains('open'),
+   fold:[...document.querySelectorAll('#awsum .aw-r')].map(b=>{const r=b.getBoundingClientRect();return [b.getAttribute('data-aw'),Math.round(r.height),Math.round(r.width)];}),
+   foldCircles:document.querySelectorAll('#awsum .aw-c').length,
+   shadowCircle:(document.querySelector('#fbar [data-fb=shadow]')||{getAttribute:()=>''}).getAttribute('aria-label'),
+   overlay:!!document.getElementById('rlink'),
+   rail2:document.body.classList.contains('rail2')};});
+ ok(om.rows===6&&om.dqName==='Decoherence'&&om.dqFill,'OM: still six rows, and the shadow row is called Decoherence and still carries its fill element, '+JSON.stringify([om.rows,om.dqName,om.dqFill]));
+ ok(om.hashes===7&&om.hashOk&&om.hashCols,'OM: Decoherence is seven hashes in the seven seat colours, each as high as its seat\'s charge, '+om.hashes);
+ ok(om.hashMoves!=='none'&&om.dqTall>=44,'OM: and they move, '+om.hashMoves+', in a row of '+om.dqTall+'px');
+ ok(om.segs===7&&om.flTall>=44,'OM: Flow is a wave of seven stretches, one a seat, in a row of '+om.flTall+'px');
+ ok(Math.abs(om.healthySpan-om.range)<1.5&&om.healthyRough<om.tomRough&&om.tomSpan<om.healthySpan,
+  'OM: a healthy wave spans the whole range, '+om.healthySpan+' of '+om.range+', and a heavy person\'s is smaller, '+om.tomSpan+', and rougher, '+om.tomRough+' against '+om.healthyRough);
+ ok(om.dials&&!om.oldSection,'OM: orientation and balance sit in the block with the readings, and their old section is gone');
+ ok(!om.soulOpen&&om.fold.length===2&&om.fold.every(f=>f[1]>=44)&&om.foldCircles>=2,'OM: the Awareness grids fold to a domain line and an archetype line, each 44 or more, '+JSON.stringify(om.fold));
+ ok(/^Decoherence/.test(om.shadowCircle||''),'OM: the circle it pairs with says Decoherence, '+om.shadowCircle);
+ ok(!om.overlay&&!om.rail2,'OO: nothing of the left menu is drawn on the stage, and option two is not on by default');
+ await fp.evaluate(()=>{const s=document.querySelector('#lpanel .lsec[data-sec=soul]');if(s&&!s.classList.contains('open'))s.querySelector('.lsec-hd').click();});
+ await fp.waitForTimeout(300);
+
  /* EVERY LAYER STARTS ON, EZ: "everything should start on." A fresh page on
     the Field is Blueprint, every switch on the bar is pressed, and so Frames
     and Dial, which follow the same switches, open with every layer too. */

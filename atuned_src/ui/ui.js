@@ -347,6 +347,7 @@ cv.addEventListener('pointermove',function(e){
  if(e.pointerType==='touch')return;
  var h=hitTest(x,y),pr=$('probe');
  S.hover=h?(h.n||h.o||null):null;
+ rlEcho(h);
  if(!h){pr.classList.remove('on');cv.style.cursor='crosshair';return;}
  var t=describe(h,computeSeen());
  if(!t){pr.classList.remove('on');return;}
@@ -390,7 +391,7 @@ function probeAt(pr,el,x,y){
  pr.style.left=side(sx,pw,box.clientWidth)+'px';
  pr.style.top=side(sy,ph,box.clientHeight)+'px';
  pr.classList.add('on');}
-cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').classList.remove('on');});
+cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;rlEcho(null);$('probe').classList.remove('on');});
 /* ============================================================
    THE RENDITIONS ANSWER THE WAY THE WHEEL DOES. BP8.
 
@@ -554,7 +555,7 @@ fieldPinch($('frend'),false);
    its own name, where States sat fifth under a word nobody read as birth
    data. Its key is energetics, not spirit, so nothing that remembered the
    old section opens the new one by accident. */
-var OPENSEC={left:{soul:1,lean:1}, right:{you:1}};
+var OPENSEC={left:{}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};
@@ -581,6 +582,8 @@ function wireSections(){
    var opening=!set[k];
    if(set[k])delete set[k]; else set[k]=1;
    paintSections();
+   railSection(sec,opening);
+   if(opening&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);
    if(!sc)return;
    /* PRESSING A HEADER PUTS THAT SECTION AT THE TOP. ALWAYS.
 
@@ -661,7 +664,14 @@ function colFold(){
   var now=!document.body.classList.contains('lshut');
   colFoldPaint(now);
   try{STORE.set('lcol',now?'shut':'open');}catch(e){}
-  if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
+  if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);
+  /* the column's first opening is the rail's first sight, ui/railmotion.js */
+  if(!now)requestAnimationFrame(railOpened);};}
+/* OPTION TWO OF THE READINGS, round OM, behind the address and nowhere else:
+   ?rail=2 draws the six readings as fields of colour with a ring each. The page
+   opens on option one, the bars, and a person who never types the address
+   never meets this. The sheet that draws it is the last in head.html. */
+try{if(/[?&]rail=2(&|$)/.test(location.search))document.body.classList.add('rail2');}catch(e){}
 /* THE RIGHT COLUMN CLOSES, LO in TASKS.md: "Add a widget to the right menu to
    collapse it." colFold's shape, and deliberately not its default. The left
    starts shut on his ruling, GO; nobody has ruled the right shut, and it holds
@@ -1160,11 +1170,14 @@ function render(){
     out of one. The bar fills to the same figure either way. */
  $('key').innerHTML=
    rbRow('cq','Coherence',r.unread?0:r.CQ,r.unread?'\u2013':Math.round(r.CQ)+'%',
-    {unread:r.unread,title:'Coherence. '+(r.unread?'Not read yet.'
-      :r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')})
-  +rbRow('dq','Decoherence',r.DQ,Math.round(r.DQ)+'%',
-    {unread:r.unread,bad:true,title:'Shadow weight. All the charge on all 112 addresses, against the most '
-       +'they could hold.'});
+    {unread:r.unread,fk:'laws',ic:'cq',pull:r.PULL,title:'Coherence. '+(r.unread?'Not read yet.'
+      :(r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')
+       +(r.PULL>0.003?' Decoherence is holding '+(r.CQ-r.EX).toFixed(0)+' points of it back, the hatched foot of the bar, '
+        +'so what gets out is '+Math.round(r.EX)+'.':''))})
+  +rbRow('dq','Decoherence',r.DQ,r.unread?'\u2013':Math.round(r.DQ)+'%',
+    {unread:r.unread,bad:true,fk:'shadow',ic:'dq',hash:rbSeatShadow(),title:'Decoherence. All the charge on all 112 addresses, '
+       +'against the most they could hold. The seven marks are the seats, root to crown, each as high as the charge on its '
+       +'own addresses, and a seat holding half of what it could stands full height.'});
  /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
     one kind of reading. Vitality, awareness, will and flow are another, and
     they go lower left.
@@ -1183,17 +1196,22 @@ function render(){
      and a name without its scale is the thing the copy editor rule stops. */
   lo.innerHTML=
    rbRow('xyz','Vitality',r.X*100,r.unread?'\u2013':r.X.toFixed(2),
-    {unread:r.unread,title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
-       +'. How much energy is left once apathy and the shadow weight are taken off.'})
+    {unread:r.unread,fk:'core',ic:'vitality',title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
+       +'. How much energy is left once apathy and the decoherence are taken off. Seventy percent of it is what '
+       +'decoherence leaves, and decoherence is at '+Math.round(r.DQ)+'.'})
   +rbRow('xyz','Awareness',r.Y*100,r.unread?'\u2013':r.Y.toFixed(2),
-    {unread:r.unread,title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
+    {unread:r.unread,fk:'core',ic:'awareness',title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
        +'. How strong what you mean is, and how little of it gets bent on the way out.'})
   +rbRow('xyz','Will',r.Z*100,r.unread?'\u2013':r.Z.toFixed(2),
-    {unread:r.unread,title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
+    {unread:r.unread,fk:'core',ic:'will',title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
        +'. How much of your integrity gets through the charge you are carrying.'})
+  +rwRadRow(r)
   +rbRow('flow','Flow',f*100,r.unread?'\u2013':f.toFixed(2),
-    {unread:r.unread,title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
-       +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.'});})();
+    {unread:r.unread,fk:'seats',ic:'flow',wave:rbSeatPass(),rate:lerp(PUL_LO,PUL_HI,clamp((+r.DQ||0)/100,0,1)),
+     title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
+       +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets. '
+       +'The wave runs root to crown. A clean wave that spans the whole range is every seat passing everything; a seat '
+       +'that holds charge back roughens the wave where it sits and shrinks it from there on.'});})();
  /* who, and what is running hottest in them. */
  (function(){
   function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
@@ -1414,7 +1432,10 @@ function render(){
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
- crMotion([$('acc')]); rbMotion([$('key'),$('keylo')]);
+ crMotion([$('acc')]); rbMotion([$('key'),$('keylo')]); rbRate(r); rlArcs(r);
+ /* the six rows hang on one wire, ui/railwire.js, dressed after the rows have
+    been written and have taken their motion */
+ rwDress(r); railFirstSight();
  /* and the rails' readings on the same beat, each list sweeping in its own
     order the first time it is seen and moving only when its values do */
  crMotion([$('railtop'),$('person'),$('stack')]);
@@ -1467,10 +1488,16 @@ let last=0;
 function loop(ts){
  if(!REDUCED)S.t+=(last?Math.min(.05,(ts-last)/1e3):0);
  last=ts; 
+ /* the bars' own motion runs here and nowhere else: nothing is written when
+    none of them is moving. ui/component.js, rbTick */
+ if(RB_LIVE)rbTick(ts);
  var r=computeSeen();
  /* the wheel breathes, so it is drawn every frame. A rendition does not move,
     and ringsDraw builds it only when its signature does */
- if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
+ if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);
+  /* the rail's wire runs on the Field's rate, ui/railwire.js, and nothing it
+     does is drawn on the stage */
+  rwFrame(r);}
  /* only the Body stands on the wash now. The Masks door did because it was
     the Body's figure; the Character page draws its own grids on an opaque
     stage, so it takes the still wash every other page takes. Round MQ gave

@@ -1979,8 +1979,8 @@ body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
    bottom don't make sense, you should go on the left hand side." Each reading
    is still a button that opens its reading on the right; only where it sits
    and the shape it is drawn in changed. */
-.fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-width:0;
- padding:4px 0 16px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
+.fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-width:0;position:relative;
+ padding:4px 0 16px 20px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
 body:not(.tab-field) .fdock{display:none}
 /* CQ AND DQ, A PAIR. "Line those up so they don't look like a design element
    that's not quite designed right, but has a symmetry, and I do want the CQ
@@ -2023,26 +2023,126 @@ body:not(.tab-field) .fdock{display:none}
    bar reads as live and not as a printed rectangle; reduced motion holds it */
 .rb-t{position:absolute;inset:0;display:block;border-radius:inherit;overflow:hidden}
 .rb-t i{display:block;height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 78%,#000),var(--c));
- position:relative}
+ position:relative;overflow:hidden}
 .rb-t i::after{content:"";position:absolute;top:0;bottom:0;right:0;width:26px;
- background:linear-gradient(90deg,transparent,rgba(255,255,255,.34));opacity:.8;
- animation:rbedge 3.4s ease-in-out infinite}
-@keyframes rbedge{0%,100%{opacity:.35}50%{opacity:.9}}
-body.rm .rb-t i::after,body.quiet .rb-t i::after{animation:none}
-@media (prefers-reduced-motion:reduce){.rb-t i::after{animation:none}}
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.34));opacity:.7}
+/* ROUND OJ. A reading is live, so the light in it travels: a soft band runs
+   along the fill from the empty end to the edge and starts again, at the
+   rate the Field's own threads run on (--rate, written by rbRate from the
+   Shadow layer's DQ), and the six rows take it up in reading order, a beat
+   apart, the way the Field takes up its seven seats. Transform and opacity
+   only. An unread row has no fill and so no light: idle looks idle. */
+.rb-t i::before{content:"";position:absolute;inset:0;transform:translateX(-100%);
+ background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.2) 50%,transparent 70%);
+ animation:rbsweep calc(var(--t-breath) * 1.5 / var(--rate,1)) var(--ease-breath) infinite;
+ animation-delay:calc(var(--k,0) * var(--t-stagger) * 7)}
+@keyframes rbsweep{0%{transform:translateX(-100%)}62%,100%{transform:translateX(100%)}}
+#key .rbar:nth-child(1){--k:0}
+#key .rbar:nth-child(2){--k:1}
+#keylo .rbar:nth-child(1){--k:2}
+#keylo .rbar:nth-child(2){--k:3}
+#keylo .rbar:nth-child(3){--k:4}
+#keylo .rbar:nth-child(4){--k:5}
+.rbar.off .rb-t i::before,.rbar.off .rb-t i::after{display:none}
+/* THE SHADOW LEANS. Its whole fill breathes on the shadow wave, the period
+   the wheel's pulses breathe on (1 / PUL_WAVE_HZ) and the swing the wheel
+   gives them (PUL_WAVE times DQ, widened so the eye can find it): a record
+   with no shadow holds still, a heavy one surges and eases. */
+.rbar[data-q=dq] .rb-t i{animation:rbwave var(--wave,9.09s) var(--ease-breath) infinite}
+@keyframes rbwave{0%,100%{opacity:calc(1 - var(--amp,0))}50%{opacity:1}}
+/* WHAT CHANGED. A hairline where the fill stood, fading over 2.4 seconds. */
+.rbar.rb-gh .rb-t::after{content:"";position:absolute;top:7px;bottom:7px;left:var(--gw,0%);width:2px;
+ margin-left:-1px;border-radius:1px;background:var(--ink);opacity:0;
+ animation:rbghost 2.4s var(--ease-out) var(--gd,0ms) 1 both}
+@keyframes rbghost{0%{opacity:.9}65%{opacity:.5}100%{opacity:0}}
+/* THE ROW'S OTHER PARTS, round OJ, and the one motion language they share
+   (ui/component.js, rbFx). The mark is drawn in the word's own ink, inside
+   .rb-n, so the clipped second copy carries it across the fill's edge with
+   the word. */
+.rb-ic{flex:0 0 auto;width:16px;height:16px;margin-right:8px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+/* the leading edge of the fill, which only ever shows while a reading moves */
+.rb-h{position:absolute;left:0;top:0;bottom:0;width:4px;margin-left:-4px;opacity:0;pointer-events:none;
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.85));will-change:transform,opacity}
+/* the share of the fill the shadow is holding, along the fill's foot where no
+   word sits */
+.rb-pull{position:absolute;right:0;bottom:0;height:5px;
+ background:repeating-linear-gradient(135deg,rgba(0,0,0,.55) 0 2px,rgba(0,0,0,.12) 2px 4px)}
+/* DECOHERENCE AS SEVEN HASHES, round OM. One mark a seat, root to crown, in
+   the seat's own colour. Each stands from the foot of the row as high as the
+   charge on that seat's addresses against what they could hold, and a seat
+   with nothing is still a hash, two pixels of its colour, so the seven are
+   always there to be read. They are moved twice. The height is a transform
+   the row's tween writes (scaleY, from the root up on the bars' own stagger),
+   and inside it each mark breathes on the shadow wave with a phase of its own,
+   by the amplitude the wheel's pulses take (--amp, written by rbRate), so a
+   heavy record shivers and a clear one stands still. */
+.rb-hash{position:absolute;right:58px;top:7px;bottom:7px;display:flex;align-items:flex-end;gap:3px;pointer-events:none}
+.rb-hash s{position:relative;display:block;width:5px;height:100%;border-radius:2px;text-decoration:none;
+ background:color-mix(in srgb,var(--k) 16%,transparent)}
+.rb-hash s::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:1px;background:var(--k)}
+.rb-hash b{position:absolute;inset:0;display:block;transform-origin:50% 100%}
+.rb-hash u{position:absolute;inset:0;display:block;border-radius:2px;background:var(--k);transform-origin:50% 100%;
+ animation:rbhash var(--wave,9.09s) var(--ease-breath) infinite;animation-delay:calc(var(--q) * -.6s)}
+@keyframes rbhash{0%,100%{transform:scaleY(1)}50%{transform:scaleY(calc(1 - var(--amp,0) * .5))}}
+body.quiet .rb-hash u,body.rm .rb-hash u{animation:none}
+@media (prefers-reduced-motion:reduce){.rb-hash u{animation:none}}
+/* FLOW AS A SINE WAVE, round OM. The row is taller, its name on the first
+   line and the wave under it, seven stretches root to crown, each in its
+   seat's colour over a faint band of the same, with the full range marked by
+   a dashed centre line. A bead rides it at the Field's rate and loses light
+   at each seat by the share that seat holds back. */
+.fdock .kb.rbar.rb-waverow{height:68px;min-height:68px}
+.rb-waverow .rb-row{bottom:auto;height:30px}
+.rb-wave{position:absolute;left:12px;right:12px;top:30px;bottom:4px;display:block;pointer-events:none}
+.rb-wave svg{display:block;width:100%;height:100%;overflow:visible}
+.rb-wave .wb rect{opacity:.11}
+.rb-wave .wm{fill:none;stroke:var(--edge-2);stroke-width:1;stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
+.rb-wave .wv{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.rb-bead{fill:var(--ink)}
+body.quiet .rb-bead,body.rm .rb-bead{display:none}
+@media (prefers-reduced-motion:reduce){.rb-bead{display:none}}
+/* the percent fill is not drawn on these two rows, and the words are not
+   clipped, because nothing is under them but the track */
+.rbar.rb-hashrow .rb-t i,.rbar.rb-waverow .rb-t i{opacity:0;animation:none}
+.rbar.rb-hashrow .rb-over,.rbar.rb-waverow .rb-over,.rbar.rb-hashrow .rb-h,.rbar.rb-waverow .rb-h{display:none}
+/* the chip on the shadow row rides the corner above its figure, because the hashes
+   and the name take the middle of the row */
+.rbar.rb-hashrow .rb-d{right:8px;top:1px;margin-top:0;height:14px;line-height:14px;font-size:11px;padding:0 5px}
+.rbar.rb-waverow .rb-d{right:60px;top:15px;margin-top:-9px}
+.rbar.off .rb-hash,.rbar.off .rb-h,.rbar.off .rb-pull{display:none}
+/* the chip, with a ground of its own, because it lies across the fill's edge
+   and has to read on either side of it. In over 90ms and a 4px rise to rest,
+   held, out by 2.2s; set by a negative delay so a rewrite continues it. */
+.rb-d{position:absolute;right:60px;top:50%;margin-top:-9px;height:18px;padding:0 6px;border-radius:9px;
+ background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--edge-2);font-family:var(--num);font-size:11px;
+ font-weight:600;line-height:18px;font-variant-numeric:tabular-nums;color:var(--ink);opacity:0;pointer-events:none}
+.rb-d.bad{color:var(--alarm)}
+.rb-d.on{animation:rbchip 2.4s var(--ease-out) var(--cd,0ms) 1 both}
+@keyframes rbchip{0%{opacity:0;transform:translateY(4px)}4%{opacity:1;transform:none}82%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+/* still: it prints and clears at 2.4s with no slide, the way a status does. A
+   timer clears it (rbChip), because a reduced motion profile has every CSS
+   animation off at the root and a chip cleared by one would never print. */
+.rb-d.on.st{opacity:1;animation:none;transform:none}
 .rb-row{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;
  gap:10px;padding:0 12px;pointer-events:none}
-.rb-n{font-size:13.5px;font-weight:500;line-height:1.2;color:var(--ink);letter-spacing:.01em}
+.rb-n{display:flex;align-items:center;font-size:13.5px;font-weight:500;line-height:1.2;color:var(--ink);letter-spacing:.01em}
 .rb-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:16px;font-weight:600;
  line-height:1;color:var(--ink);text-align:right}
 /* the same words again, dark, and shown only over the fill: the clip is the
    filled width, so a letter turns at the edge of the bar */
 .rb-over .rb-n,.rb-over .rb-v{color:var(--on,#0B0D10)}
 .rb-over{clip-path:inset(0 calc(100% - var(--w,0%)) 0 0)}
-.fdock .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
+/* PAIRED. A row lights the glass bar's circle for the same reading, and the
+   circle lights the row, one ring in the row's own colour. */
+.fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot{box-shadow:inset 0 0 0 1px var(--c)}
 .fdock .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
 .rbar.off .rb-v,.rbar.off .rb-n{color:var(--dim)}
 .rbar.off .rb-over{display:none}
+body.quiet .rb-t i::before,body.rm .rb-t i::before,body.quiet .rb-t i::after,body.rm .rb-t i::after,
+body.quiet .rbar[data-q=dq] .rb-t i,body.rm .rbar[data-q=dq] .rb-t i{animation:none}
+@media (prefers-reduced-motion:reduce){
+ .rb-t i::before,.rb-t i::after,.rbar[data-q=dq] .rb-t i{animation:none}}
 .fdock .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
@@ -2516,7 +2616,7 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
    closes, which is why it carries no chevron and takes no pointer. */
-.rblk{margin:2px 2px 0;padding:6px 0 2px;font-family:var(--sans);font-size:13px;font-weight:600;
+.rblk{display:flex;align-items:center;gap:10px;margin:2px 2px 0;padding:6px 0 2px;font-family:var(--sans);font-size:13px;font-weight:600;
  color:var(--ink);letter-spacing:.01em;line-height:1.4}
 .lsec + .rblk{margin-top:14px;padding-top:16px}
 
@@ -2556,9 +2656,17 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
 .ax-nm .ax-nl,.ax-nm .ax-nr{min-width:0}
 .ax-bar{display:block}
 /* A. BAR. The trough, as the orientation bar shipped */
-.ax-tr{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;background:var(--sunk)}
-.ax-tr .fill{position:absolute;top:0;bottom:0;width:0;opacity:.62;
+.ax-tr{height:var(--tap);border-radius:var(--r-xs);position:relative;overflow:hidden;background:rgba(128,128,128,.14);box-shadow:inset 0 0 0 1px var(--edge)}
+.ax-tr .fill{position:absolute;top:0;bottom:0;width:0;opacity:.68;
  transition:width var(--t-enter) var(--ease-enter),background var(--t-element) var(--ease-out)}
+.ax-tr .fill{overflow:hidden}
+/* the dials take the bars' light, on the bars' clock (--rate, written on the
+   dock by rbRate), so the six readings and the two dials are one instrument */
+.ax-tr .fill::before{content:"";position:absolute;inset:0;transform:translateX(-100%);
+ background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.2) 50%,transparent 70%);
+ animation:rbsweep calc(var(--t-breath) * 1.5 / var(--rate,1)) var(--ease-breath) infinite;animation-delay:calc(var(--t-stagger) * 8)}
+body.quiet .ax-tr .fill::before,body.rm .ax-tr .fill::before{animation:none}
+@media (prefers-reduced-motion:reduce){.ax-tr .fill::before{animation:none}}
 .ax-tr .fill.rt{left:50%}
 .ax-tr .fill.lt{right:50%}
 /* the break sits over the fill, so even reads as a gap and not as a seam */
@@ -2659,7 +2767,7 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
 .ib[aria-pressed=true] svg{opacity:1;stroke-width:2}
 .ib[data-r="2"]{border-color:color-mix(in srgb,var(--gold) 52%,transparent)}
 .ib[data-r="2"] svg{opacity:1}
-.ib .rt{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%}
+.ib .rt{position:absolute;top:calc(50% - 21px);right:calc(50% - 21px);z-index:2;width:5px;height:5px;border-radius:50%}
 /* THE ROOT BUTTON, and the three things it has to say. A root is off, or it is
    lit because the blueprint domain you have selected lives in it, or it is
    added because you clicked it. The old control only had off and added, and it
@@ -2717,14 +2825,14 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .nf i.nf-g{width:16px;height:16px;border-radius:0;display:grid;place-items:center}
 .nf i.nf-g svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
  stroke-linecap:round;stroke-linejoin:round}
-.nf input{width:54px;min-height:var(--tap);flex:0 0 auto;background:var(--sunk);border:1px solid var(--edge);
+.nf input{width:54px;min-height:var(--tap);flex:0 0 auto;background:rgba(128,128,128,.14);border:0;box-shadow:inset 0 0 0 1px var(--edge);
  border-radius:var(--r-xs);color:var(--ink);font-family:var(--num);font-size:13px;font-weight:500;
  padding:5px 4px;text-align:center;font-variant-numeric:tabular-nums}
 /* The drag track reads as a 6px bar and was a 6px target. The bar stays 6px;
    the box grows to the tap minimum and paints only its content box, so the
    finger gets 44px and the eye still gets the thin line. */
 .nf .tr{flex:0 0 58px;height:6px;padding:calc((var(--tap) - 6px) / 2) 0;
- background:var(--sunk);background-clip:content-box;border-radius:3px;
+ background:rgba(128,128,128,.22);background-clip:content-box;border-radius:3px;
  cursor:ew-resize;position:relative;box-sizing:content-box}
 .nf .tr:hover{outline:1px solid var(--gold);outline-offset:2px;border-radius:3px}
 .nf .tr b{display:block;height:100%;border-radius:3px;transition: width var(--t-surface) var(--ease-out)}
@@ -2734,12 +2842,12 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .bulk label{font-size:13.5px;color:var(--mid);flex:0 0 58px}
 .bulk input[type=range]{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:var(--tap);
  background:transparent;cursor:grab}
-.bulk input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--sunk);border-radius:3px}
-.bulk input[type=range]::-moz-range-track{height:6px;background:var(--sunk);border-radius:3px}
+.bulk input[type=range]::-webkit-slider-runnable-track{height:6px;background:rgba(128,128,128,.22);border-radius:3px}
+.bulk input[type=range]::-moz-range-track{height:6px;background:rgba(128,128,128,.22);border-radius:3px}
 .bulk input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;
- border-radius:50%;background:var(--gold);margin-top:-5px;border:none}
+ border-radius:50%;background:var(--panel);margin-top:-8px;border:2px solid var(--gold);box-sizing:border-box}
 .bulk input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
- background:var(--gold);border:none}
+ background:var(--panel);border:2px solid var(--gold);box-sizing:border-box}
 
 /* ---------- the matrix ---------- */
 .mx{display:grid;grid-template-columns:repeat(19,1fr);gap:1.5px;margin-top:4px}
@@ -2765,7 +2873,7 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .sp-row.static{cursor:default}.sp-row.static:hover{background:transparent}
 .sp-k{font-size:11px;font-weight:600;color:var(--dim)}
 .sp-v{color:var(--ink);white-space:nowrap}
-.sp-x{color:var(--gold);font-size:12.5px;text-align:right}
+.sp-x{color:var(--mid);font-size:12.5px;text-align:right}
 .sp-g{font-style:normal;font-size:16px;margin-right:7px;opacity:.95;color:var(--gold)}
 .sp-hd{display:flex;align-items:center;gap:7px}
 .sp-hi,.sp-gi{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;
@@ -6749,5 +6857,256 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .fdock{gap:6px}
  .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 }
+
+/* ============================================================
+   THE LIVE RAIL, round OJ. ui/railtiles.js says what is wired to what; this
+   sheet says how it looks. One grammar, taken from the Field and not from
+   the rail: a thing that is acting wears its seat's colour as a ring that
+   breathes on the Field's own 4.2 second wave (--t-breath), a thing that is
+   idle wears nothing, and the connection between them is a thread with a
+   pulse on it, which is what every connection on the wheel already is.
+   Ring, never fill, the rule the icons keep. Opacity and transform only: a
+   still Field costs the page nothing it did not cost before.
+   ============================================================ */
+@keyframes rlring{0%,100%{opacity:.04}50%{opacity:1}}
+@keyframes rlring2{0%,100%{opacity:0}50%{opacity:.62}}
+/* THE TILES ARE THE FIELD'S CIRCLES. A disc, a ring round the rim carrying a
+   real number (ui/railtiles.js, rlArcs), and the mark inside, which is what
+   every orb on the glass bar is. The disc is 38 across inside the 44 target,
+   so the floor holds and the circle does not touch its neighbour. What is
+   chosen closes its ring in its own seat colour and breathes a second ring
+   round it on the Field's wave; what is not chosen is the disc and the part
+   of the ring the chosen one reaches into it, and nothing else. The primary
+   breathes further than the rest of what is chosen. */
+.gdom>.ib,.g6>.ib{border:0;border-radius:50%;background:transparent;box-shadow:none}
+#ar1>.ib,#ar2>.ib{padding:0;border-width:0;background-clip:border-box}
+.gdom>.ib::before,.g6>.ib::before{content:"";position:absolute;left:50%;top:50%;width:38px;height:38px;
+ margin:-19px 0 0 -19px;border-radius:50%;background:var(--sunk);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+ transition:background-color var(--t-micro) var(--ease-out)}
+.gdom>.ib:hover::before,.g6>.ib:hover::before{background:var(--panel-2)}
+.gdom>.ib:hover,.g6>.ib:hover,.gdom>.ib[aria-pressed=true],.g6>.ib[aria-pressed=true]{background:transparent;
+ border-color:transparent;box-shadow:none}
+.ib svg:not(.ib-arc){position:relative;z-index:1;width:18px;height:18px}
+.ib .ib-arc{position:absolute;left:50%;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;
+ transform:rotate(-90deg);overflow:visible;stroke:none;transition:none}
+.ib-arc circle{fill:none;stroke-width:2.4}
+.ib-arc .trk{stroke:color-mix(in srgb,var(--ink) 13%,transparent)}
+.ib-arc .val{stroke:var(--c);stroke-linecap:round;opacity:.5;stroke-dasharray:calc(var(--v,0) * 1) 100;
+ transition:stroke-dasharray var(--t-surface) var(--ease-out),opacity var(--t-micro) var(--ease-out)}
+.ib[aria-pressed=true]::before{background:color-mix(in srgb,var(--c) 12%,var(--panel-2))}
+.ib[aria-pressed=true] .ib-arc .val{opacity:1}
+.ib[aria-pressed=true] .ib-arc circle{stroke-width:3}
+.ib[data-r="2"] .ib-arc .val{opacity:.88}
+.ib[data-r="2"]::before{background:color-mix(in srgb,var(--c) 6%,var(--sunk))}
+.ib[aria-pressed=true]::after,.ib[data-r="2"]::after{content:"";position:absolute;left:50%;top:50%;
+ width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:1.5px solid var(--c);
+ pointer-events:none;animation:rlring var(--t-breath) var(--ease-breath) infinite;animation-delay:var(--bd,0s)}
+.ib[data-r="2"]::after{animation-name:rlring2}
+.ib:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;border-radius:50%}
+/* ALIVE FROM THE MOMENT IT IS OPEN. A circle whose ring carries real weight,
+   .18 and over, breathes its whole ring on the Field's wave at the phase of
+   its seat, so a rail with a person in it moves on its own and a rail with
+   nobody in it is still. The set is small and each is one opacity on one
+   element, and it is set by rlArcs when a figure moves and never per frame. */
+.ib.rl-hot .ib-arc,.aw-c.rl-hot .ib-arc{animation:rlarcb var(--t-breath) var(--ease-breath) infinite;animation-delay:var(--bd,0s)}
+@keyframes rlarcb{0%,100%{opacity:.6}50%{opacity:1}}
+body.quiet .ib.rl-hot .ib-arc,body.rm .ib.rl-hot .ib-arc,body.quiet .aw-c.rl-hot .ib-arc,body.rm .aw-c.rl-hot .ib-arc{animation:none}
+@media (prefers-reduced-motion:reduce){.ib.rl-hot .ib-arc,.aw-c.rl-hot .ib-arc{animation:none}}
+/* THE DISC IS ITS OWN GROUND IN EVERY LIGHTING. Glass, Punch and Lumen each
+   paint the square cell (a pane, a solid, a solid) and each fills a chosen
+   one with its seat colour. The cell is transparent in all three and the same
+   three moves are made on the disc: Glass a pane, Punch and Lumen a solid
+   that fills with the seat colour when chosen. Punch draws nothing as an
+   outline, so it has no ring round the rim: the reach of the blueprint is
+   the strength of the tint instead, which is the same number in its own
+   material. */
+body.glass .gdom>.ib,body.glass .g6>.ib,body.punch .gdom>.ib,body.punch .g6>.ib,
+body.lumen .gdom>.ib,body.lumen .g6>.ib{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+body.glass .gdom>.ib:hover,body.glass .g6>.ib:hover,body.punch .ib[aria-pressed=true],body.punch .ib[data-r="2"],
+body.lumen .ib[aria-pressed=true],body.lumen .ib[data-r="2"]{background:transparent}
+body.glass .ib::before{background:rgba(255,255,255,.055)}
+body.glass .ib:hover::before{background:rgba(255,255,255,.10)}
+body.punch .ib::before,body.lumen .ib::before{background:var(--sunk)}
+body.punch .ib[aria-pressed=true]::before,body.punch .ib[data-r="2"]::before,
+body.lumen .ib[aria-pressed=true]::before,body.lumen .ib[data-r="2"]::before{background:var(--c,var(--accent))}
+body.punch .ib:not([aria-pressed=true]):not([data-r="2"])::before{
+ background:color-mix(in srgb,var(--c,var(--accent)) calc(var(--v,0) * .32%),var(--sunk))}
+body.punch .ib .ib-arc,body.punch .ib::after{display:none}
+.rootb{position:relative}
+.rootb[data-lit="1"]::after,.rootb[aria-pressed=true]::after{content:"";position:absolute;inset:-3px;
+ border-radius:calc(var(--r-xs) + 3px);border:1.5px solid var(--rc);pointer-events:none;
+ animation:rlring2 var(--t-breath) var(--ease-breath) infinite;animation-delay:var(--bd,0s)}
+body.quiet .ib[aria-pressed=true]::after,body.rm .ib[aria-pressed=true]::after,
+body.quiet .ib[data-r="2"]::after,body.rm .ib[data-r="2"]::after,
+body.quiet .rootb::after,body.rm .rootb::after{animation:none;opacity:.7}
+@media (prefers-reduced-motion:reduce){
+ .ib[aria-pressed=true]::after,.ib[data-r="2"]::after,.rootb::after{animation:none;opacity:.7}}
+/* the captions under the grids read as the right rail reads: ink for the name,
+   the second ink for what it does, set from the left like every other line */
+.cap{color:var(--mid);text-align:left}
+.cap b{color:var(--ink)}
+/* THE BLOCK HEADINGS CARRY A RULE, so Energy and Psyche read as two parts of
+   one instrument and not as loose words between sections */
+.rblk::after{content:"";flex:1;height:1px;background:var(--edge)}
+.lsec .tier1{color:var(--dim)}
+
+/* Nothing here is drawn on the stage. The first cut of this sheet carried a
+   fixed layer of brackets and lines from the rail to the wheel, and it was
+   ruled out twice, rounds OM and OO: whatever the left menu does, it does in
+   the left menu. What is left is the circles, the map and the fold, and they
+   are all in the rail. */
+/* THE RAIL ANSWERS THE FIELD: what a pointer is over on the wheel is lit on
+   the rail, in the colour of the thing, and let go when the pointer leaves */
+.ib.rl-echo::before{box-shadow:0 0 0 2px var(--c),inset 0 1px 0 rgba(255,255,255,.06)}
+.ib.rl-echo .ib-arc .val{opacity:1}
+.rootb.rl-echo{border-color:var(--rc);color:var(--rc)}
+/* THE FOUR SYSTEMS AND WHAT MEETS WHAT, ui/railtiles.js rlMeetHtml. Ink for the
+   name, the accent for what is connected, the dim ink for what is idle: the
+   same three tones the right rail reads in. */
+.sp-map{margin:4px 0 8px}
+.sp-mapsvg{display:block;width:100%;height:auto;overflow:visible}
+.sp-na{fill:none;stroke:var(--accent);stroke-linecap:round}
+.sp-nr{fill:var(--panel);stroke:var(--edge-2);stroke-width:1.5}
+.sp-sn{color:var(--dim)}
+.sp-sn g{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sp-sn text{fill:var(--dim);stroke:none;font-family:var(--sans);font-size:11.5px}
+.sp-sn.on{color:var(--accent)}
+.sp-sn.on .sp-nr{stroke:var(--accent)}
+.sp-sn.on text{fill:var(--ink)}
+.sp-sn.off{opacity:.45}
+.sp-nc circle{fill:var(--panel);stroke:var(--accent);stroke-width:1.5}
+.sp-nc g{fill:none;stroke:var(--accent);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.sp-pulse{fill:color-mix(in srgb,var(--accent) 58%,var(--ink))}
+body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
+@media (prefers-reduced-motion:reduce){.sp-pulse{display:none}}
+
+
+/* ============================================================
+   THE SIX READINGS ON ONE WIRE, ui/railwire.js. Layout and paint only; every
+   number that moves is written by the script from a reading. The gutter
+   belongs to the column that stands beside the stage: a stacked rail on a
+   phone gives the bars the width back. The gutter itself is the left padding
+   of the one .fdock rule above, 20px, because a class is declared once.
+   ============================================================ */
+.rw-bus{position:absolute;left:0;top:0;bottom:0;width:20px;pointer-events:none;opacity:0;
+ transition:opacity var(--t-enter) var(--ease-enter) 200ms}
+.rw-bus.in{opacity:1}
+.rw-bus svg{position:absolute;left:0;top:0;overflow:visible}
+.rw-w{fill:none;stroke:var(--edge-2);stroke-width:1.4}
+.rw-ws{fill:none;stroke:var(--accent);stroke-linecap:round}
+.rw-tap{fill:none;stroke:var(--edge-2);stroke-width:1}
+.rw-n{fill:var(--panel);stroke-width:1.7}
+.rw-halo{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:rwhalo var(--t-breath) var(--ease-breath) infinite}
+@keyframes rwhalo{0%,100%{transform:scale(.88)}50%{transform:scale(1.14)}}
+body.quiet .rw-halo,body.rm .rw-halo{animation:none}
+@media (prefers-reduced-motion:reduce){.rw-halo{animation:none}}
+.rw-rn{fill:var(--panel);stroke:var(--accent);stroke-width:1.5}
+.rw-rc{fill:var(--accent)}
+/* a pulse is a dash eight pixels long, the Field's own scale, in the accent
+   whitened so it reads on every lighting, and it only ever has a transform
+   and an opacity written */
+.rw-p{position:absolute;left:0;top:0;width:2px;height:8px;margin:-4px 0 0 -1px;border-radius:2px;
+ background:color-mix(in srgb,var(--accent) 55%,#fff);opacity:0;will-change:transform,opacity;pointer-events:none;
+ box-shadow:0 0 6px color-mix(in srgb,var(--accent) 70%,transparent)}
+body.quiet .rw-p,body.rm .rw-p{display:none}
+body.quiet .rw-bus,body.rm .rw-bus{transition:none}
+@media (prefers-reduced-motion:reduce){.rw-p{display:none}.rw-bus{transition:none}}
+/* RADIANCE, the junction the three vitals run into. Not a control: nothing
+   here is pressed, so it takes no tap target. */
+.rw-rad{display:flex;justify-content:space-between;align-items:center;height:24px;padding:0 12px;
+ font-size:11.5px;color:var(--mid);letter-spacing:.01em}
+.rw-rad b{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;color:var(--mid);font-size:12px}
+@media (max-width:1180px){.fdock{padding-left:0}.rw-bus,.rw-rad{display:none}}
+
+
+/* ORIENTATION AND BALANCE, UNDER THE READINGS, round OM. One instrument: the
+   same left edge, the same width, the same 44px track on the same ground and
+   the same hairline between the groups as the six rows above. The two
+   headings are the quiet kind, a mark and a word, because the track under
+   each already says what it is. */
+.fdial{margin-top:6px;padding-top:6px;border-top:1px solid var(--edge)}
+.fdl{display:flex;align-items:center;gap:8px;height:24px;font-size:12px;font-weight:500;color:var(--mid);letter-spacing:.01em}
+.fdl-ic{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* the dials' fills sit as quiet as the bars' own, so the green and the gold of a
+   dial do not out shout the readings above it */
+.fdial .ax-tr .fill{opacity:.52}
+.fdial .polbar{margin-bottom:6px}
+.fdial .fdl + .polbar + .fdl{margin-top:10px}
+.fdial .bal{padding:0 0 2px;min-height:0;margin-bottom:2px}
+.fdial .ax-pick{margin:8px 0 0}
+@media (max-width:1180px){.fdial{margin-top:10px}}
+
+
+/* THE AWARENESS FOLD, round OM, ui/railtiles.js awSum. Two lines of what was
+   chosen, shown only while the grids above them are shut. Each line is one
+   44px button and the circles in it are marks, drawn as the grid draws them:
+   a disc, a ring carrying the reading, the glyph in the seat's colour, and
+   the breath of the chosen. */
+.aw-sum{display:flex;flex-direction:column;gap:2px;padding-bottom:12px}
+.lsec.open .aw-sum{display:none}
+.aw-r{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:0 2px;background:transparent;
+ border:0;border-radius:var(--r-xs);cursor:pointer;color:var(--ink);font:inherit;text-align:left}
+.aw-r:hover{background:var(--sunk)}
+.aw-r:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.aw-k{flex:0 0 62px;font-size:12px;color:var(--dim)}
+.aw-cs{display:flex;gap:8px;flex:0 0 auto}
+.aw-c{position:relative;display:block;width:38px;height:38px;flex:0 0 auto}
+.aw-c::before{content:"";position:absolute;inset:0;border-radius:50%;background:color-mix(in srgb,var(--c) 12%,var(--panel-2));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.aw-c svg:not(.ib-arc){position:absolute;left:10px;top:10px;width:18px;height:18px;fill:none;stroke:var(--c);
+ stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.aw-c .ib-arc{position:absolute;left:0;top:0;width:38px;height:38px;transform:rotate(-90deg);overflow:visible}
+.aw-c .ib-arc .val{opacity:1}
+.aw-c.on::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;
+ border:1.5px solid var(--c);pointer-events:none;animation:rlring var(--t-breath) var(--ease-breath) infinite;
+ animation-delay:var(--bd,0s)}
+body.quiet .aw-c.on::after,body.rm .aw-c.on::after{animation:none;opacity:.7}
+@media (prefers-reduced-motion:reduce){.aw-c.on::after{animation:none;opacity:.7}}
+.aw-t{flex:1 1 auto;min-width:0;font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+
+/* ============================================================
+   OPTION TWO, BEHIND ?rail=2, round OM. His words: "Have the colors represent
+   them. And then mock up both options." Option one is the rows as they stand,
+   a bar a reading with the colour doing the work. This is the other: the same
+   six readings, the same markup, the same data, drawn as fields of colour.
+   Each reading is a tile tinted by its own ramp colour with a ring carrying
+   the figure, the mark in the middle and the name under it, and the number
+   goes to the tooltip: the colour says how it is and the ring says how much.
+   Coherence, vitality, awareness and will are the four rings. Decoherence is
+   the seven seat marks in a tile of their own, and flow is the wave across
+   the foot. Nothing here changes a gate: the page opens on option one and this
+   sheet applies only under body.rail2, set from the address.
+   ============================================================ */
+body.rail2 .fdock{padding-left:0}
+body.rail2 .rw-bus,body.rail2 .rw-rad{display:none}
+body.rail2 .fdock .key{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+body.rail2 .fdock .keylo{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-top:0;margin-top:6px;padding-top:0}
+body.rail2 .fdock .keylo .rb-waverow{grid-column:1/-1}
+body.rail2 .fdock .kb.rbar{height:96px;min-height:96px;border-radius:var(--r-s,8px);
+ background:color-mix(in srgb,var(--c) 11%,rgba(128,128,128,.10))}
+body.rail2 .fdock .kb.rbar.rb-waverow{height:68px;min-height:68px}
+body.rail2 .rb-t,body.rail2 .rbar .rb-over{display:none}
+body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow)::before{content:"";position:absolute;left:50%;top:9px;width:58px;height:58px;
+ margin-left:-29px;border-radius:50%;
+ background:conic-gradient(var(--c) var(--w),rgba(128,128,128,.26) 0);
+ -webkit-mask:radial-gradient(circle,transparent 20px,#000 21px);mask:radial-gradient(circle,transparent 20px,#000 21px)}
+body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row{flex-direction:column;justify-content:flex-start;align-items:center;
+ padding:27px 4px 0;gap:0}
+body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-n{flex-direction:column;font-size:12px;font-weight:500;color:var(--ink)}
+body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-ic{width:22px;height:22px;margin:0 0 29px;color:var(--c)}
+body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-v{display:none}
+body.rail2 .rbar.off::before{background:rgba(128,128,128,.26)}
+/* decoherence: the seat marks in a tile of their own, the name over them */
+body.rail2 .rb-hashrow .rb-row{align-items:flex-start;padding:9px 10px 0}
+body.rail2 .rb-hashrow .rb-v{display:none}
+body.rail2 .rb-hashrow .rb-hash{left:12px;right:12px;top:38px;bottom:10px;justify-content:space-between}
+body.rail2 .rb-hashrow .rb-hash s{width:10px}
+body.rail2 .rb-d{right:6px;top:6px;margin-top:0}
+body.rail2 .rb-waverow .rb-row{padding:0 10px}
+body.rail2 .rb-waverow .rb-wave{left:10px;right:10px}
+body.rail2 .fdock .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
+body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::before{pointer-events:none}
 
 </style></head>
