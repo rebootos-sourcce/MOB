@@ -68,7 +68,8 @@ function ptLine(r){
  if(x===3)return 'Three times the ground of tier one. Nothing else changes.';
  return planWorth(r.grant);}
 
-/* EVERY RUNG CARRIES ITS PRICE NOW. DECISIONS.md rules 12, 24, 36 and 99, and
+/* EVERY RUNG CARRIES ITS PRICE NOW. The owner stated 12, 29, 59 and 99 on 1
+   October (quoted at PLAN_PRICE in engine/plan.js), and
    PLAN_PRICE holds all four, so the "shown at checkout" this printed for tiers
    one to three is gone from the screen. The branch stays for a rung added
    later without a ruled price, which must still never print a guessed one. */

@@ -34,12 +34,13 @@ you doing it wrong. It is Stripe renaming something.
 | Name in Stripe | Price | How often |
 |---|---|---|
 | Tier one | 12 US dollars | every month |
-| Tier two | 24 US dollars | every month |
-| Tier three | 36 US dollars | every month |
+| Tier two | 29 US dollars | every month |
+| Tier three | 59 US dollars | every month |
 | Tier four | 99 US dollars | every month |
 
-These are your own ruling: "The ladder is 12, 24, 36, 99." Monthly only. Do
-not add a yearly price; no yearly price has been decided.
+These are your own prices, from 1 October: "Tier 1: $12/month. Tier 2:
+$29/month. Tier 3: $59/month. Tier 4: $99/month." Monthly only. Do not add a
+yearly price; no yearly price has been decided.
 
 ---
 

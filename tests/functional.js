@@ -3682,15 +3682,16 @@ ok(/On every tier, free included/.test(tiers.same)&&/the whole reading/i.test(ti
  'what every tier gets is said once, across the top, from PLAN_ALWAYS');
 ok(/400 patterns a month/.test(tiers.text)&&/1,200 patterns a month/.test(tiers.text)&&/100 a week/.test(tiers.text)&&/10 patterns a week/.test(tiers.text),
  'each row states its own grant in its own period');
-/* THE LADDER IS 12, 24, 36, 99, ruled in DECISIONS.md over 12/29/59. These
-   two lines held tiers one to three at "shown at checkout" while that ruling
-   sat unread, which is why they now assert the four figures and the absence
-   of the superseded two, not the absence of a price. */
-ok(/12 dollars a month/.test(tiers.text)&&/24 dollars a month/.test(tiers.text)
- &&/36 dollars a month/.test(tiers.text)&&/99 dollars a month/.test(tiers.text),
- 'every paid tier carries its ruled price, 12, 24, 36 and 99');
-ok(!/\b(29|59) dollars/.test(tiers.text)&&!/shown at checkout/.test(tiers.text),
- 'the superseded 29 and 59 are nowhere, and no row is left unpriced');
+/* THE LADDER IS 12, 29, 59, 99, stated by the owner on 1 October and
+   superseding DECISIONS.md line 1095 (12, 24, 36, 99). These lines held
+   tiers one to three at "shown at checkout", then for one round asserted 24
+   and 36, so they assert his four figures and the absence of the superseded
+   two, not the absence of a price. */
+ok(/12 dollars a month/.test(tiers.text)&&/29 dollars a month/.test(tiers.text)
+ &&/59 dollars a month/.test(tiers.text)&&/99 dollars a month/.test(tiers.text),
+ 'every paid tier carries its stated price, 12, 29, 59 and 99');
+ok(!/\b(24|36) dollars/.test(tiers.text)&&!/shown at checkout/.test(tiers.text),
+ 'the superseded 24 and 36 are nowhere, and no row is left unpriced');
 /* one dollar a pattern is the internal unit and is never published, and the
    flat rate the ladder was chosen for is not printed either */
 ok(!/(dollars?|cents?)\s+(a|per|each)\s+pattern/i.test(tiers.text),

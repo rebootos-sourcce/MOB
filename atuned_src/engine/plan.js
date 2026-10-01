@@ -132,26 +132,26 @@ function planYear(k){
       +'a pace.')};}
 
 /* THE PRICE, NAMED ONCE, in dollars a month. Only what is ruled carries a
-   number, and all four rungs are ruled now. DECISIONS.md, the operational
-   round of 19 September: "The ladder is 12, 24, 36, 99. The sales seat's flat
-   three cents a pattern at every rung, taken over 12/29/59/99." Tiers one to
-   three sat at null here for longer than that was true, because this comment
-   read the earlier passage, which calls twelve, twenty nine and fifty nine a
-   recommendation, and not the later one that replaced it. So the tiers page
-   said "shown at checkout" for three prices that had been ruled.
+   number, and all four rungs are ruled. The owner stated them himself on 1
+   October, after checking the documentation: "Free: $0. Tier 1: $12/month.
+   Tier 2: $29/month. Tier 3: $59/month. Tier 4: $99/month. Tier 4 includes
+   the same 1,200 pattern allowance as Tier 3, plus cohort lead capability."
 
-   Twelve, twenty four and thirty six are one, two and three times tier one,
-   which is what the tiers page already says about the ground in words, so the
-   price and the patterns move together and the rate is the same on every
-   rung. A number printed in this file that the processor then charges
-   differently is a bill nobody agreed to, so the four Stripe prices are
-   created at exactly these figures (STRIPE-SETUP.md) and null stays the
-   answer for anything unruled.
+   That supersedes DECISIONS.md line 1095, "The ladder is 12, 24, 36, 99",
+   which this table carried for one round. Before that, tiers one to three
+   sat at null because this comment read the 12/29/59 passage as an unruled
+   recommendation, so the tiers page said "shown at checkout" for prices the
+   owner had in mind. Three figures moved twice in two rounds, which is the
+   reason the ruling is quoted here with its date rather than summarised.
+
+   A number printed in this file that the processor then charges differently
+   is a bill nobody agreed to, so the four Stripe prices are created at
+   exactly these figures (STRIPE-SETUP.md) and null stays the answer for
+   anything unruled.
 
    And never a dollar figure against a pattern. One pattern is valued at one
-   dollar internally and DECISIONS.md rules that it is never published. The
-   flat rate is why the ladder was chosen, and it is still not printed. */
-const PLAN_PRICE={free:0, one:12, two:24, three:36, four:99};
+   dollar internally and DECISIONS.md rules that it is never published. */
+const PLAN_PRICE={free:0, one:12, two:29, three:59, four:99};
 function planPrice(k){ var v=PLAN_PRICE[k]; return (typeof v==='number'&&isFinite(v))?v:null; }
 /* THE LADDER, READ FOR A COMPARISON. One row per tier a person can be on, the
    gift left out because it is given once and never chosen. Each row says what
