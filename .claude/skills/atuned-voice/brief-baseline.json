@@ -10,9 +10,6 @@
   "avoid-list|funnel/about.html|62e702850602": 1,
   "avoid-list|funnel/about.html|f18f606f0635": 1,
   "avoid-list|funnel/buy.html|62e702850602": 1,
-  "button-verb|atuned_src/ui/drills.js|fd8b70a754af": 1,
-  "diagnosis|atuned_src/engine/compute.js|74ff02de74de": 1,
-  "diagnosis|atuned_src/engine/data/kb.js|22a1f0e49ac7": 1,
   "diagnosis|atuned_src/engine/data/kb.js|2deca7bd63cf": 1,
   "diagnosis|atuned_src/engine/plan.js|242be969cbd9": 1,
   "diagnosis|atuned_src/engine/plan.js|ed2ade19b3f6": 1,
@@ -22,27 +19,9 @@
   "diagnosis|funnel/index.html|8b4b3495559f": 1,
   "diagnosis|funnel/index.html|dd6511cbd242": 1,
   "diagnosis|funnel/quiz.html|44f18b26d4da": 1,
-  "evidence|atuned_src/engine/data/kb.js|fd5acd37b784": 1,
-  "house:caps|atuned_src/engine/sniff.js|0819f749f224": 1,
-  "house:caps|atuned_src/shell/guard.html|9070dadd36c7": 3,
-  "house:filler|atuned_src/engine/data/kb.js|4d2a1e369457": 1,
-  "house:naked number|atuned_src/ui/drills.js|90ff3e880ae0": 1,
-  "house:soft|atuned_src/ui/onboard.js|6e1995684a02": 1,
   "mirror-identity|funnel/index.html|e5e49e3538a8": 1,
-  "objection:abstract-word|atuned_src/engine/ladder.js|2a619df3b0ea": 1,
-  "readability|atuned_src/engine/data/compass.js|4c5171d50ed0": 1,
-  "readability|atuned_src/engine/data/compass.js|557dce66f06f": 1,
   "readability|atuned_src/engine/data/compass.js|60f3a88b1302": 1,
-  "readability|atuned_src/engine/data/compass.js|8dc6ffd99d8d": 1,
-  "readability|atuned_src/engine/data/compass.js|a841b7ea84c7": 1,
-  "readability|atuned_src/engine/data/compass.js|f644f83a6348": 1,
   "readability|atuned_src/engine/data/figure.js|88c430c4931e": 1,
-  "readability|atuned_src/engine/data/kb.js|2c00458545e5": 1,
-  "readability|atuned_src/engine/data/kb.js|60665bf70d9c": 1,
-  "readability|atuned_src/engine/data/kb.js|a14225cf9454": 1,
-  "readability|atuned_src/engine/sniff.js|0b24537e539f": 1,
-  "readability|atuned_src/engine/sniff.js|43ab4ea8a07e": 1,
-  "readability|atuned_src/engine/sniff.js|7b6b09941e01": 1,
   "readability|funnel/about.html|f7565b98b8e0": 1,
   "release-language|atuned_src/engine/data/cards.js|18f4406227df": 1,
   "release-language|atuned_src/engine/data/cards.js|372f17e1a28e": 1,
@@ -61,8 +40,7 @@
   "release-language|atuned_src/ui/games.js|379ae3633bfb": 1,
   "release-language|atuned_src/ui/knowledge.js|5b3275b3c34b": 1,
   "release-language|atuned_src/ui/knowledge.js|fab6426b174f": 1,
-  "release-language|atuned_src/ui/release.js|11512140d150": 1,
-  "tooltip-one-idea|atuned_src/ui/fieldbar.js|b9630471b5e9": 1
+  "release-language|atuned_src/ui/release.js|11512140d150": 1
  },
  "note": "stop and flag findings present when this was written. Keyed by rule, file and the string, never by line.",
  "paths": [
@@ -76,7 +54,7 @@
   "funnel/questions.js"
  ],
  "stamp": {
-  "commit": "521ede8",
+  "commit": "27d79d1",
   "date": "2026-10-01",
   "dirty": false
  }
