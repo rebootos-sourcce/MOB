@@ -30872,3 +30872,45 @@ protocols."
 - OAuth for security: how to add it. Stripe still to wire. Steps for both,
   as for a nine year old (his standing rule: name the site, where to log in,
   where on the page).
+
+## Round OV, 1 October. Source AI question frameworks, the asterisks, hover sound, Google OAuth, Orbit with a torus
+
+> "Source AI when I land on my journal page. Should have frameworks for the
+> questions that it's asking now. Right? Isn't it using the layers of Dante's
+> Inferno or, or the seven deadly sins or the years of age? And a bunch of
+> other frameworks like that in order to find out when have I been greedy? When
+> have I have I backstabbed? What do I love doing more than anything else?
+> Right? Looking for the jouissance and the bias. No, I just want to get rid of
+> those asterisks. Yeah, hover should make sound. Let's use Google's OAuth. Um,
+> the orbit is cool, but you know what? Could you make a torus field? Make the
+> glow pixels the color of the air, of their sampled area. What do the points
+> around the body? Represent. I'm liking orbit if we can get a torus field
+> around that. Because that's based off the health of your body. At zero
+> percent coherence, a person should be near black, not totally black. They're
+> giving off very little light. Yeah, let's have it start dim and then grow
+> lit. The decoherence bars in the upper left-hand menu can you have those go
+> all the way across the color? And we're just going to use CQ'd and DQ. Yeah,
+> sure. Left menu drives the light. and that's driven by the person's CQDQ
+> score anyway."
+
+**Read as, and where each goes.**
+- Source AI questions: on landing at the journal the questions come from named
+  frameworks (the layers of Dante's Inferno, the seven deadly sins, the ages of
+  life, and others of that kind) so it can ask "when have I been greedy, when
+  have I backstabbed, what do I love doing more than anything else": looking
+  for the jouissance (the excess enjoyment a person returns to) and the bias.
+  Sent to the sniffer build, which owns the question chain.
+- Asterisks: "I just want to get rid of those asterisks": a masked word is
+  restored to the word the person said. Sent to the sniffer build.
+- Hover makes sound: ruled yes. Sent to the sound build.
+- OAuth: Google's. Apple is not first. Sent to the OAuth steps.
+- Character: Orbit is the pick, with a torus field around it, which he ties to
+  the health of the body. The glow pixels take the colour of the air they sit
+  in (the colour sampled from the area under them). He asks what the points
+  around the body represent: answered honestly in the report (in the mockup they
+  represent nothing yet) with a proposal.
+- Coherence at 0 percent: near black and not fully black, giving off very
+  little light. The page opens dim and grows lit. The left menu drives the
+  light, from the person's CQ and DQ.
+- Left menu: the decoherence hashes run all the way across the bar in colour,
+  and the two are named CQ and DQ only. Sent to the left menu build.
