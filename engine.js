@@ -3474,7 +3474,20 @@ var LEX={
  'never follow through':['solar',18],'do not follow through':['solar',18],
  'dont follow through':['solar',18],'cannot follow through':['solar',18],
  'cant follow through':['solar',18],'break my promises to myself':['solar',20],
- 'let myself down again':['solar',18],'quit on myself':['solar',18]};
+ 'let myself down again':['solar',18],'quit on myself':['solar',18],
+ /* ROUND NU, HIS OWN REPORT: "I was recording a voice session and I said
+    the word insecure and it didn't pick that up. It should have." Measured
+    before this: "I was insecure" and "I felt insecure about it" both read
+    nothing at all. The word was not missing a seat, it was missing
+    entirely: not in this table under any spelling, and "Insecurity" exists
+    only as one of Deflector's own three cue words in SAB33
+    (engine/data/canon.js), which the canon pass never reads into this
+    table, the same gap the ordinary-sentence block at the top of this file
+    exists to close for other common words. Seated with the family round NO
+    already built for exactly this register, low self worth and self doubt,
+    solar plexus, Shame: ashamed, humiliated, stupid, worthless,
+    embarrassed and guilty are already there. */
+ insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame']};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',

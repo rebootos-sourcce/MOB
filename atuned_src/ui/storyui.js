@@ -1722,10 +1722,23 @@ function stMic(){
    +'not turn the microphone on. Typing works.','fail'); return; }
  if(ST_REC&&ST_LISTEN){ ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
  ST_REC=new SR(); ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
- var base=ST_TEXT;
- ST_REC.onresult=function(e){var s='';
-  for(var i=e.resultIndex;i<e.results.length;i++) s+=e.results[i][0].transcript;
-  ST_TEXT=(base+' '+s).trim();
+ /* HIS OWN REPORT: "every sentence I stop and pause at seems like it
+    disappears." Reproduced. The first cut kept one frozen `base`, set once
+    at Record, and rebuilt ST_TEXT from it plus whatever `e.resultIndex`
+    pointed at on every event. A pause is exactly when the browser finalises
+    the sentence just spoken and the NEXT event's resultIndex moves past it,
+    so the text this rebuilt from `base` onward never carried that sentence
+    forward: it was read once, into a result this handler then threw away.
+    `heard` now accumulates every FINAL result as it finalises, so a
+    sentence survives a pause. `live` is only ever the current interim
+    phrase, shown but never kept until the browser itself marks it final. */
+ var heard=ST_TEXT;
+ ST_REC.onresult=function(e){var fin='',live='';
+  for(var i=e.resultIndex;i<e.results.length;i++){
+   var t=e.results[i][0].transcript;
+   if(e.results[i].isFinal) fin+=t; else live+=t;}
+  if(fin) heard=(heard+' '+fin).trim();
+  ST_TEXT=(heard+' '+live).trim();
   ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stRender();};
  ST_REC.onend=function(){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();};
  ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();
