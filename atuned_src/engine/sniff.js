@@ -169,14 +169,52 @@ var SOMA_SENSE=['tight','tightness','tense','tensed','tension','clenched','clenc
 var SOMA_PLACE_WORDS=['chest','jaw','throat','stomach','neck','shoulder','shoulders','gut',
  'belly','heart','head','back','rib','ribs','spine','hip','hips','arm','arms','hand',
  'hands','leg','legs','foot','feet','face','eyes','forehead','temples','muscles','body',
- 'navel','diaphragm','abdomen','sternum','skin'];
-/* THE OWNER'S RULINGS, round OG: "The belly button is the sacral. The
-   diaphragm is a solar plexus." Belly button and lower belly are read through
-   the word belly, which is the only place word in them. The seat keys are the
-   engine's own, B2K's values, and the gate asserts that. */
-var SOMA_PLACE_RULED={belly:'sacral',navel:'sacral',diaphragm:'solar'};
+ 'navel','diaphragm','abdomen','sternum','skin','celiac','hypogastric','pudendal','plexus'];
+/* THE OWNER'S RULINGS. Round OG: "The belly button is the sacral. The
+   diaphragm is a solar plexus." Round OI: "Oh, heart should go at where the
+   heart goes." Belly button is read through the word belly, which is the only
+   place word in it. The seat keys are the engine's own, B2K's values, and the
+   gate asserts that. Spine is NOT here and is not seated anywhere: round OI,
+   "Spine would be for the Kundalini health. But this also looks like it's
+   part of the pain map." It stays a place word, so it can stop a move, and
+   it moves nothing. */
+var SOMA_PLACE_RULED={belly:'sacral',navel:'sacral',diaphragm:'solar',heart:'heart'};
+/* THE HALVES, round OI: "No, upper and lower could be solar and sacral." A
+   half in front of belly or abdomen is a two word place and outranks the word
+   inside it. Abdomen alone stays refused, because CHILD splits it: the upper
+   abdomen is Anger at the solar seat and the lower abdomen is Disgust at the
+   sacral. The gate holds the abdomen pair against CHILD's loc column. */
+var SOMA_PLACE_HALVES={upper:'solar',lower:'sacral'};
+var SOMA_PLACE_HALVED=['belly','abdomen'];
+/* THE PLEXUS NAMES, round OI: "sacral is just below the belly button and the
+   plexus at the back of the spine. The solar is the diaphragm and the plexus
+   at the back of the spine." What the engine can carry of that is the names
+   the codex gives those plexuses, read off CHILD's addr column and the nv
+   column of APC, never a seat typed here. A person does not write "the plexus
+   at the back of the spine", so no such phrase is read; the back of the spine
+   is a position and spine is not seated. Phrases tried, each seated where the
+   rows that name every word of it agree. */
+var SOMA_PLACE_PLEX=['solar plexus','celiac plexus','sacral plexus','hypogastric plexus'];
+var SOMA_PLACE_PLEXWORDS=['celiac','hypogastric','pudendal','plexus'];
+/* the codex rows that name every word of a place, by seat key. Plain, that is
+   CHILD's loc column alone, where the book says each axis is held in the
+   body. Wide, it also reads CHILD's addr column and APC's nv column, which
+   name the plexus that carries each axis. Wide is for the plexus names only:
+   the addr column also says "Shoulder girdle and throat" for Apathy, and the
+   owner has not ruled on shoulders, so a body word is never read wide. The
+   prose column d is not read. */
+function codexRows(ws,wide){
+ var out={};
+ function has(text,w){return (' '+String(text||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ').indexOf(' '+w+' ')>=0;}
+ function all(text){return ws.every(function(w){return has(text,w);});}
+ CHILD.forEach(function(c){
+  if(B2K[c.seat]&&(all(c.loc)||(wide&&all(c.addr))))out[B2K[c.seat]]=c.nm+' at the '+(all(c.loc)?c.loc:c.addr);});
+ if(wide)APC.forEach(function(r){
+  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' seat, '+r.nv;});
+ return out;}
 function somaPlaces(){
- var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{}};
+ var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{},
+  phrase:{}, phraseRefused:{}, phraseWhy:{}};
  SOMA_SENSE.forEach(function(w){(LEX[w]?out.sense:out.missing).push(w);});
  SOMA_PLACE_WORDS.forEach(function(w){
   var seats={};
@@ -191,13 +229,10 @@ function somaPlaces(){
   if(!sk.length){
    /* no phrase seats it. CHILD's loc column may, if it names the word at one
       seat and one only */
-   var cs={}; CHILD.forEach(function(c){
-    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
-    if(loc.indexOf(' '+w+' ')>=0&&B2K[c.seat])cs[B2K[c.seat]]=c;});
-   var ck=Object.keys(cs);
+   var cs=codexRows([w],SOMA_PLACE_PLEXWORDS.indexOf(w)>=0), ck=Object.keys(cs);
    if(ck.length===1){out.seat[w]=ck[0]; out.codex.push(w);}
-   else if(ck.length>1)out.refused[w]='CHILD holds it at '+ck.sort().join(' and ')
-    +' ('+ck.map(function(k){return cs[k].nm+' at the '+cs[k].loc;}).join('; ')+')';
+   else if(ck.length>1)out.refused[w]='the codex holds it at '+ck.sort().join(' and ')
+    +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
    else out.unseated.push(w);
    return;}
   if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
@@ -207,6 +242,19 @@ function somaPlaces(){
   if(veto.length){out.refused[w]='CHILD holds '+veto[0].nm+' at the '+veto[0].loc
    +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
   out.seat[w]=sk[0];});
+ /* the two word places. A half and a place: the owner's ruling, checked
+    against the codex wherever the codex says the same words. */
+ Object.keys(SOMA_PLACE_HALVES).forEach(function(h){SOMA_PLACE_HALVED.forEach(function(pw){
+  var ph=h+' '+pw, seat=SOMA_PLACE_HALVES[h], cs=codexRows([h,pw]), ck=Object.keys(cs);
+  if(ck.length&&(ck.length>1||ck[0]!==seat)){out.dispute[ph]=ck.join(' and ');return;}
+  out.phrase[ph]=seat; out.phraseWhy[ph]=ck.length?'ruled, and the codex agrees: '+cs[ck[0]]:'ruled';});});
+ /* the plexus names, derived. A name the codex gives two seats is refused. */
+ SOMA_PLACE_PLEX.forEach(function(ph){
+  var cs=codexRows(ph.split(' '),true), ck=Object.keys(cs);
+  if(ck.length===1){out.phrase[ph]=ck[0]; out.phraseWhy[ph]=cs[ck[0]];}
+  else if(ck.length>1)out.phraseRefused[ph]='the codex holds it at '+ck.sort().join(' and ')
+   +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
+  else out.phraseRefused[ph]='the codex does not name it';});
  return out;}
 var SOMA_PLACE=somaPlaces();
 /* ============================================================
@@ -396,14 +444,28 @@ function scanStory(text){
      would carry the tightness eight words back to the stomach, which is a
      place the person did not say was tight. So the nearest place decides,
      and a nearest place with no seat moves nothing. */
-  var pl=[]; ws.forEach(function(w,i){if(SOMA_PLACE_WORDS.indexOf(w.w)>=0)pl.push(i);});
+  /* A TWO WORD PLACE OUTRANKS THE WORD INSIDE IT, the way a phrase outranks
+     its words everywhere else in this scanner: "upper belly" is one place,
+     read at the solar seat, and not the belly at the sacral. It sits at its
+     last word. A phrase the codex refused is still a place, seatless, so it
+     still stops a move. */
+  var pl=[], used={}, phr=Object.keys(SOMA_PLACE.phrase).concat(Object.keys(SOMA_PLACE.phraseRefused));
+  ws.forEach(function(w0,i){
+   phr.forEach(function(ph){
+    var pw=ph.split(' '), n=pw.length, k;
+    if(i+n>ws.length||used[i])return;
+    for(k=0;k<n;k++)if(ws[i+k].w!==pw[k]||ws[i+k].g!==ws[i].g||used[i+k])return;
+    for(k=0;k<n;k++)used[i+k]=1;
+    pl.push({j:i+n-1,w:ph,at:ws[i].at,seat:SOMA_PLACE.phrase[ph]||null});});});
+  ws.forEach(function(w,i){if(!used[i]&&SOMA_PLACE_WORDS.indexOf(w.w)>=0)pl.push({j:i,w:w.w,at:w.at,seat:SOMA_PLACE.seat[w.w]||null});});
   sense.forEach(function(h){
    var i=byAt[h.at]; if(i===undefined)return;
    var best=null, tie=false;
-   pl.forEach(function(j){
+   pl.forEach(function(q){
+    var j=q.j;
     if(ws[j].g!==ws[i].g)return;
-    var d=Math.abs(j-i), seat=SOMA_PLACE.seat[ws[j].w]||null;
-    if(!best||d<best.d){best={d:d,seat:seat,w:ws[j].w,at:ws[j].at};tie=false;}
+    var d=Math.abs(j-i), seat=q.seat;
+    if(!best||d<best.d){best={d:d,seat:seat,w:q.w,at:q.at};tie=false;}
     else if(d===best.d&&seat!==best.seat)tie=true;});
    if(!best||tie||!best.seat)return;
    h.place=best.w; h.placeAt=best.at;
