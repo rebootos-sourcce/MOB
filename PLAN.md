@@ -173,3 +173,29 @@ O11 the server seams wait on accounts.
 **Slices unblocked:** O1 (the journey record), O2 (the Story Signal, after the
 sniffer round lands), O3, O4 (the first-run sheet). O5 uses the counter. O7 and
 O8 are in the starting session.
+
+**Ruled by him, round PA (1 October)**
+- Login A, the ring, is the login. One Log in, with Create account and Guest
+  beside it; subtle animation on the ring; the blue Atüned logo; username and
+  passphrase with an optional recovery email at sign up and a recovery route.
+- Starting points ("What brought you here?"): add Pain; twelve.
+- The Mirror carries a description of what the pattern feels like running
+  through the person and what it links to when saboteurs form. Not quite asks
+  which part is unclear: the adjective, the descriptive subject, or the subject
+  itself. The empty Mirror asks "Where does it land in your body?".
+- The somatic line stays and is neurosomatic: "Welcome to a neurosomatic
+  experience. Awareness and intuition is a tool we use to turn your senses
+  inward."
+- The mini release is 12 lines. The ten integrity laws: he picks from the full
+  list of 21 (given back to him in round PA's report).
+- The sniffer follows the feelings wheel (`FEELINGS-WHEEL.md`): every wheel
+  word, grouped by family, mapped to the assemblage points the family relates
+  to; and it sniffs for the subject of each clause.
+- The release opens on his recorded voice (to be recorded by him: a recorder
+  page and the embedding are part of the release redesign).
+- Legal facts: Tula Unified LLC, 1634 West 39th Place, Los Angeles, California
+  90062; California law; hello@atuned.world; no refund after seven days; open to
+  the EU and UK; deleted accounts are kept in backup for 90 days with a recovery
+  process; birth data does not travel and the analytic data does; a ticked
+  agreement box. Open: age floor, dormant accounts, who holds the key to stored
+  records.

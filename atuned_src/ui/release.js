@@ -1326,7 +1326,13 @@ function relRender(){
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
    +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
-   +relIc(RUN.paused?'play':'pause')+'</button></div>'
+   +relIc(RUN.paused?'play':'pause')+'</button>'
+   /* END IS ON THE OPENING TOO, round OZ, his words: "I can't even end the
+      screen now. Priority." The opening and the welcome carried Skip and Pause
+      and nothing that left, so a person who did not want a release could only
+      skip it into the list. Nothing has been released at this point, so End
+      here closes without committing anything. */
+   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -1337,7 +1343,13 @@ function relRender(){
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
    +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
-   +relIc(RUN.paused?'play':'pause')+'</button></div>'
+   +relIc(RUN.paused?'play':'pause')+'</button>'
+   /* END IS ON THE OPENING TOO, round OZ, his words: "I can't even end the
+      screen now. Priority." The opening and the welcome carried Skip and Pause
+      and nothing that left, so a person who did not want a release could only
+      skip it into the list. Nothing has been released at this point, so End
+      here closes without committing anything. */
+   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='run'){
   var at=relNow();
@@ -1598,7 +1610,9 @@ function relRender(){
   if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
- if((b=document.getElementById('relstop')))b.onclick=function(){RUN.halted=true;relCoolDown();};
+ if((b=document.getElementById('relstop')))b.onclick=function(){
+  if(RUN.phase==='welcome'||RUN.phase==='opening'){ relClose(); return; }
+  RUN.halted=true;relCoolDown();};
  /* Pause stops the voice mid word. Resume says the line again from its start,
     because half a statement is not one. */
  if((b=document.getElementById('relpause')))b.onclick=function(){

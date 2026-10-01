@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1134 f6162b3 2026-10-01 22:02"><head><meta charset="utf-8">
+<html lang="en" data-build="v1137 7b2941b 2026-10-01 22:09"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -42401,7 +42401,13 @@ function relRender(){
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
    +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
-   +relIc(RUN.paused?'play':'pause')+'</button></div>'
+   +relIc(RUN.paused?'play':'pause')+'</button>'
+   /* END IS ON THE OPENING TOO, round OZ, his words: "I can't even end the
+      screen now. Priority." The opening and the welcome carried Skip and Pause
+      and nothing that left, so a person who did not want a release could only
+      skip it into the list. Nothing has been released at this point, so End
+      here closes without committing anything. */
+   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -42412,7 +42418,13 @@ function relRender(){
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
    +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
-   +relIc(RUN.paused?'play':'pause')+'</button></div>'
+   +relIc(RUN.paused?'play':'pause')+'</button>'
+   /* END IS ON THE OPENING TOO, round OZ, his words: "I can't even end the
+      screen now. Priority." The opening and the welcome carried Skip and Pause
+      and nothing that left, so a person who did not want a release could only
+      skip it into the list. Nothing has been released at this point, so End
+      here closes without committing anything. */
+   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='run'){
   var at=relNow();
@@ -42673,7 +42685,9 @@ function relRender(){
   if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
- if((b=document.getElementById('relstop')))b.onclick=function(){RUN.halted=true;relCoolDown();};
+ if((b=document.getElementById('relstop')))b.onclick=function(){
+  if(RUN.phase==='welcome'||RUN.phase==='opening'){ relClose(); return; }
+  RUN.halted=true;relCoolDown();};
  /* Pause stops the voice mid word. Resume says the line again from its start,
     because half a statement is not one. */
  if((b=document.getElementById('relpause')))b.onclick=function(){
@@ -57049,5 +57063,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003710994"></div>
+<div id="eof" hidden data-len="003711961"></div>
 </body></html>

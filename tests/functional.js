@@ -4507,6 +4507,49 @@ console.log('\n=== a teacher on the compass starts a ritual of becoming ===');
  await tp.close();
 }
 
+console.log('\n=== a release can be ended from its opening ===');
+/* Round OZ, his words: "I can't even end the screen now. Priority." The
+   opening and the welcome carried Skip and Pause and nothing that left. */
+{
+ const tp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
+ await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
+ const o=await tp.evaluate(async()=>{
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  loadP(PEOPLE.findIndex(x=>x.nm==='Gordon'));
+  var q=['Root','3rd Eye','Heart'].map(function(s){return NODES.filter(function(n){return n.cf&&n.b===s;})[0].i;});
+  relPick(q); document.getElementById('relgo').click(); await wait(300);
+  const o={phase:RUN.phase, has:!!document.getElementById('relstop'), before:RUN.log.length};
+  document.getElementById('relstop').click(); await wait(300);
+  o.open=RUN.open; o.after=RUN.phase; o.hidden=getComputedStyle(document.getElementById('rel')).display;
+  o.wrote=RUN.log.length; return o;});
+ ok(o.phase==='welcome'&&o.has,'the opening offers an End control, '+JSON.stringify(o));
+ ok(o.open===false&&o.hidden==='none'&&o.after==='idle','and pressing it closes the release, '+JSON.stringify(o));
+ ok(o.wrote===o.before,'having committed nothing');
+ ok(terr.length===0,'no errors, '+terr.join(' | '));
+ await tp.close();
+}
+
+console.log('\n=== the welcome after paying shows once and says the loop ===');
+{
+ const tp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
+ await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
+ const o=await tp.evaluate(async()=>{
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  loadP(0);
+  const first=paidWelcomeOpen(), h=document.getElementById('tutorial');
+  const txt=h.textContent, shown=getComputedStyle(h).display;
+  document.getElementById('pwgo').click(); await wait(700);
+  return {first,txt,shown,hidden:getComputedStyle(h).display,tab:S.tab,again:paidWelcomeOpen(),flag:!!(CURP.ui&&CURP.ui.paidWelcomed)};});
+ ok(o.first&&o.shown==='flex','it opens when a payment has landed');
+ ok(/loop/i.test(o.txt)&&/journal/i.test(o.txt)&&/ten minutes a day/i.test(o.txt),'and tells them the loop, the journal and ten minutes a day, '+o.txt);
+ ok(o.hidden==='none'&&o.tab===TAB.STORY,'Go to the journal closes it and lands on the journal');
+ ok(o.flag&&o.again===false,'and it never opens twice on the same record');
+ ok(terr.length===0,'no errors, '+terr.join(' | '));
+ await tp.close();
+}
+
 console.log('\n=== the teacher drill and the Compass panel read one axis position ===');
 /* Found by the teachers design review: the drill handed mirrorAt a fraction
    where it takes the mean charge out of ten, so 95 of 120 persona by axis
