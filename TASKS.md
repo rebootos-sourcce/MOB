@@ -30577,3 +30577,31 @@ protocols."
 - Trace is reachable from this page.
 - The face gets designed: more than the egg with a line for eyes and a mouth.
 - Pictures first, no build. Mockups only until he points at one.
+
+## Round OO, 1 October. Answer on the masks: the faces, the left menu alive, the icons upper left
+
+> "the for which faces look like stick figures the masks the masks look the face
+> designs are terrible they look like stick figures and with the animations in
+> the left hand side it doesn't need to interact with the center pane I want it
+> to interact on the left hand side like I want that that left menu to feel like
+> it's also alive I think that's what I really want right that the entire thing
+> is dynamically wired in Now the child preteen teen ideological have that as
+> their overlay icons on the upper left hand side. Full color. Add the
+> professional mask back. Actually don't. Yeah, do the trace according to your
+> plans. Take a look. Remember, when I land on this page, it needs to already be
+> in motion. And at a glance, it needs to be symbolic, so at a glance, I need to
+> understand what's happening."
+
+**Read as.**
+- The faces in question are the masks on the Character page. The current face
+  designs are rejected as stick figures. They need real design.
+- The left menu animation does not reach into the centre pane. It stays on the
+  left and the left menu itself is alive: the whole product reads as one wired
+  thing, and the rail is part of that. (This also settles the connection lines
+  from round OM: nothing draws from the rail across to the centre.)
+- Child, Preteen, Teen, Ideological are overlay icons in the upper left of the
+  Character page, in full colour. Professional is NOT added back (he withdrew it
+  in the same breath).
+- Trace goes on the page as planned.
+- On landing the page is already in motion, and at a glance it is symbolic: a
+  person sees what is happening without reading.
