@@ -29846,3 +29846,115 @@ repository has already been bitten by once this session: a blanket
 stage sweeping one piece of unfinished, unverified work into another's
 commit. Queued to start the moment both finish and their diffs are
 separately verified and committed.
+
+## Round OB. Priority reordered: the Impression Excavation Engine first, then release, onboarding, tutorial
+
+His words, verbatim: "Yes, [prioritize] the excavation engine ahead of
+the copy. I thought it was already done. Prioritize excavation engine,
+release, onboarding, then tutorial. Finish the excavation engine first.
+I'll research the paywall."
+
+New order, his: Impression Excavation Engine, release, onboarding,
+tutorial. Copy sweep moves behind all four. He takes the paywall
+research himself, so nothing new is started on that pillar beyond the
+pay journey build already in flight from this same round; it finishes
+and gets verified rather than being pulled back mid build, but nothing
+further is queued on it.
+
+Task #15 has carried "in progress" since early this session and never
+actually moved: every round had something that displaced it. Said so
+plainly rather than letting the status line imply otherwise.
+
+## Round OC. The header, the Field, the Compass and two navigation questions
+
+His words, verbatim, with a screenshot of the top header nav: "I want
+the center point of the attuned logo lined up with the center point of
+the hamburger. And the text discover play flow and body. For the zoom
+icons, have those horizontal instead of vertical. For the field, you're
+going to remove the option frames, on the field itself. I ask you to
+dampen the animation, the vibration, by 30%. It's vibrating way too
+much. I also want the pulses to be dynamic and have their speed based
+off of the Shadow wave. On the left hand menu under root energetics,
+we've got a bunch of icons all varying size. So for the root
+energetics, instead of the circles, have those horizontal bars stacked
+on top of each other with the text, with their name, and the color of
+the bar based off of the percent. This should tighten up that root
+energetics area. For the compass, the overlay icons should look like
+the field overlay icons and the body overlay icons. And then the
+character icons place where the overlay icons are. And then how do I
+get to the practitioner menu item? Where did intake get moved to? I see
+story, I see avatar, I see summary, I see analytics, I don't see
+intake. These need to make it into the plan. These are part of this
+milestone."
+
+**His two questions, answered directly, read only, no build needed.**
+"Intake" is not missing, it is the Body tab. The surface has carried
+three names in sequence, each his own word, per `engine/core.js`'s own
+history comment: Energetics, then Intake (round KX, "I need my
+energetics, like my intake... I just rename it Intake"), now Body
+(round LO). Same integer, `TAB.ENERGY`, same renderer, under Play, not
+Discover. A different, confusingly named integer, `TAB.INTAKE`, exists
+in the same file, but it has always displayed as Avatar and never as
+Intake; the comment beside it exists specifically to stop that
+confusion and evidently did not reach him. Practitioner does not show
+by default: it is a fifth section, a peer of Discover/Play/Flow/Embody
+and not a member of the loop, shown only when "Practitioner mode" is
+switched on. Reached from the profile button, Settings, the Account
+section (opens first), a toggle named "Practitioner mode." Turning it
+on adds a door named Clients (the section is named for who you are,
+Practitioner; the door is named for what it does, Clients, the same
+menu rule every other tab already follows).
+
+**One finding worth flagging before it is queued as new work: the
+vibration dampening may already be built.** `ui/wheel.js`'s `jitOff`
+carries this comment verbatim: "DAMPENED 30 PERCENT, round MI: 'one
+note on the vibration animation of the field, dampen it by thirty
+percent.' 0.03 was the ring relative amplitude named above; 0.021 is
+seven tenths of it." This is the same instruction, word for word, as
+the one just given. Either this is the same vibration and something is
+wrong, a regression, a stale build, or a second source of jitter this
+earlier fix did not reach (the `breathe` sine at `wheel.js` line 385,
+amplitude .05, and the Compass's own shell breath in `coneRegisters`
+are both separate, undampened animations); or this is a genuinely
+different motion he is seeing now that only looks the same in words.
+Not guessed past: put to him directly, below, rather than either
+reapplying a 30% cut on top of a 30% cut or doing nothing.
+
+**The rest, queued with what was found, not yet built.** Three agents
+are active in this same working tree right now (the excavation engine,
+the release rerun mechanism, the paywall pay journey), per his own
+explicit sequencing a few minutes before this message, "finish the
+excavation engine first." This batch sits behind all of it by his own
+order; he said "these need to make it into the plan," not "fix these
+now."
+
+- Header: the atüned logotype and the hamburger icon's centre points
+  are not aligned (confirmed by eye against the screenshot). Shell
+  markup, likely `shell/head.html` or wherever the top bar is built.
+- Zoom icons: wherever a vertical stack of zoom controls appears
+  (confirmed one such stack exists, `ui/fieldbar.js`'s zin/zout/zfit
+  trio; the Compass carries its own separate stack, not yet checked
+  against the same file), lay the three horizontally instead.
+- Field: "the option frames" is his own term, not a term this codebase
+  uses anywhere found by search. Needs a screenshot of the Field itself
+  before this is built, the same rule this file already carries for a
+  question about a drawing: it travels with the drawing.
+- Field: pulses' speed should follow the Shadow wave rather than only
+  each thread's own tension. `wheel.js`'s `pulses()` currently derives
+  speed from `t`, the thread's own tension (`sp=16+68*Math.sqrt(t)`).
+  "Shadow" is DQ, the wash canvas's own driving value (`drawAura`,
+  same file). A second input to the same formula, not a replacement:
+  his own words say dynamic, not that tension stops mattering.
+- Left rail, Root Energetics (the birth systems list, `ui/rootsum.js`'s
+  own left-rail half, States moved to its head per round EZ): circular
+  icons at varying sizes become stacked horizontal bars, one per
+  system, name on the bar, colour read off its own percent. Exact
+  render call not yet located by name; the rail's existence and its
+  move to Root Energetics is confirmed, the specific icon markup is
+  not, so this needs one more pass before building rather than a guess
+  at the selector.
+- Compass: its own overlay icon set should match the Field's and the
+  Body's overlay icon styling, not its own separate one, and the
+  Character icons move into where the Compass's overlay icons
+  currently sit. Not yet compared side by side; needs that comparison
+  before a build, same reasoning as the option frames line above.
