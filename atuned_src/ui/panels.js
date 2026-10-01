@@ -151,6 +151,7 @@ function setTab(i){
  Object.keys(TABEXTRA).forEach(function(k){
   var T=TABEXTRA[k]; if(T&&T.cls)document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
+ if(typeof colTab==='function')colTab();   /* the left column's own fold per surface */
  /* THE TAB ARRIVES RATHER THAN APPEARING. Switching surfaces was a single
     frame cut: one host went to display:none and the next to flex, which gives
     the eye no direction to follow and no sense that anything moved rather than

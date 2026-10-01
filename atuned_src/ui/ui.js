@@ -654,16 +654,27 @@ function colFoldPaint(shut){
    room gained, so a phone arrives on the column open, as it always did. The
    width is the sheet's own breakpoint for the grid rule above. */
 var LCOL_BESIDE='(min-width:1181px)';
-function colFold(){
+/* THE COMPASS HAS ITS OWN FOLD, round OU, his words: "I want the compass left
+   panel to start closed. Yeah, the root energetics panel." One shared fold
+   meant a column opened on the Field stayed open on the Compass, which is the
+   surface that wants the width. Its state is kept under its own key, and the
+   column is repainted from the right key on every arrival (colTab, from
+   setTab), so a person who opens it on the Compass keeps it open there and the
+   Field's choice is untouched. */
+function colKey(){ return (typeof TAB!=='undefined'&&S&&S.tab===TAB.COMPASS)?'lcolc':'lcol'; }
+function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
  var shut=beside;
- try{var got=STORE.get('lcol'); shut=got?(got==='shut'):beside;}catch(e){shut=false;}
- colFoldPaint(shut);
+ try{var got=STORE.get(colKey()); shut=got?(got==='shut'):beside;}catch(e){shut=false;}
+ return shut;}
+function colTab(){ colFoldPaint(colShut()); }
+function colFold(){
+ colFoldPaint(colShut());
  var b=$('lfold'); if(!b)return;
  b.onclick=function(){
   var now=!document.body.classList.contains('lshut');
   colFoldPaint(now);
-  try{STORE.set('lcol',now?'shut':'open');}catch(e){}
+  try{STORE.set(colKey(),now?'shut':'open');}catch(e){}
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);
   /* the column's first opening is the rail's first sight, ui/railmotion.js */
   if(!now)requestAnimationFrame(railOpened);};}
