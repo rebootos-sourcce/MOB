@@ -1027,7 +1027,14 @@ function planSection(m){
     : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>':''))
   +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
   +'<div class="sh-row"><span>You can see</span><b>everything</b></div>'
-  +'<p class="sh-p">'+esc(t.d)+' Rerunning anything already open costs nothing, always.</p>'
+  /* "RERUNNING ANYTHING ALREADY OPEN COSTS NOTHING, ALWAYS" CAME OFF, round
+     NW, 22.K17. This is the plan sheet, read while deciding what a tier
+     buys, and the claim was false: measured, a release at an address
+     already open spends the same allowance as new ground, or plans nothing
+     at all once every line is open. DECISIONS.md promises this for real
+     and nothing in the product does it yet. Stays off until a real rerun
+     route makes it true. */
+  +'<p class="sh-p">'+esc(t.d)+'</p>'
   /* SIGHT IS NOT FOR SALE, ruled, so the panel says what is on every tier
      rather than what the next one would unlock. */
   +'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>';

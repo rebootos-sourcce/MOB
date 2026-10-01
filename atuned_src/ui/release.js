@@ -1432,9 +1432,14 @@ function relRender(){
   if(spent)out+='<div class="rel-node">Nothing left to open</div>'
    /* "New ground is what an allowance buys" is the lexicon read aloud, which
       is his GX complaint about "find an address". Said as what it pays for. */
+   /* "RERUNNING AN ADDRESS COSTS NOTHING" CAME OFF, round NW, 22.K17. Measured:
+      it does not. meterNext only ever returns an unopened line, so a release
+      at an address already fully open plans nothing at all, and one still
+      partly open spends the same allowance as new ground. DECISIONS.md rules
+      a free rerun four times over and nothing in the product does it. The
+      sentence stays off until a real rerun route exists to make it true. */
    +'<div class="rel-note">Your allowance pays for addresses you have not released before, and this '
-   +'period\'s is spent. Rerunning an address costs nothing and is in the '
-   +'ritual. A wider allowance is on the plan in settings.</div>';
+   +'period\'s is spent. A wider allowance is on the plan in settings.</div>';
   /* HOW MANY PATTERNS is the dose a channel, a hundred by default since round
      LY, which is what he described hearing (open question 5) with the
      default moved to what he later named. Run speed is 1 at speaking pace,

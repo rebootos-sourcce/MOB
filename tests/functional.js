@@ -579,119 +579,6 @@ console.log('\n=== Character\'s own effects: running hot, overexpressed, the wea
 }
 
 /* ---------------------------------------------------------------------------
-   ROUND NT, THE CHARACTER PAGE GRADED D PLUS, AND THE CONSOLE.
-
-   His words: "the menu icons can be color. Twice as big. And more dynamic.
-   And I want them to look like they're centered and on a shelf that can be
-   opened and closed." And of the red line: "I don't want any printed text
-   right there ... create a location on the very bottom of the navigation for
-   console output that can be hidden."
-
-   ROUND NK'S SELECTED STATE IS CHANGED HERE ON PURPOSE AND HELD AGAIN. NK
-   held the rail at .45 saturation so a pressed mask read by colour, and no
-   gate ever asserted it: the comparison was a screenshot. The rail is in
-   colour at rest now, so the pressed icon is asserted to be told apart by
-   things that are not colour: its pool lit, its ledge in its own seat, and
-   the icon standing forward. Read off computed style, not off the class.
---------------------------------------------------------------------------- */
-console.log('\n=== round NT: the shelf, the rail at rest, the face, the console ===');
-{
- const frames=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
- await page.evaluate(()=>{rdClose();CHV.weave=null;CHV.face='dark';CHV.pick='Child';
-  loadP(PEOPLE.findIndex(p=>p.nm==='James'));setTab(TAB.MASKS);render();});
- await frames(); await page.waitForTimeout(400);
- const rail=await page.evaluate(()=>{
-  const host=document.getElementById('masksview');
-  const bs=[...host.querySelectorAll('.chv-rail .chv-m')];
-  const on=bs.find(b=>b.getAttribute('aria-pressed')==='true'), off=bs.find(b=>b.getAttribute('aria-pressed')!=='true');
-  const st=(b,pe)=>getComputedStyle(b,pe);
-  const shelf=host.querySelector('.chv-shelf'), stage=host.querySelector('.chv-stage').getBoundingClientRect(), sr=shelf.getBoundingClientRect();
-  const hero=host.querySelector('.chv-hero-svg').getBoundingClientRect(), nm=host.querySelector('.chv-hero-nm').getBoundingClientRect();
-  const heroCol=host.querySelector('.chv-hero').getBoundingClientRect();
-  return {n:bs.length,want:MASKS_READ.length,
-   icon:Math.round(on.querySelector('.chv-svg').getBoundingClientRect().width),
-   restFilter:st(off.querySelector('.chv-svg')).filter, onFilter:st(on.querySelector('.chv-svg')).filter,
-   onPool:st(on,'::before').opacity, offPool:st(off,'::before').opacity,
-   onLedge:st(on,'::after').borderBottomColor, offLedge:st(off,'::after').borderBottomColor,
-   onLift:st(on.querySelector('.chv-svg')).transform, offLift:st(off.querySelector('.chv-svg')).transform,
-   shelfMid:Math.abs((sr.top+sr.bottom)/2-(stage.top+stage.bottom)/2),
-   heroMid:Math.abs((hero.left+hero.right)/2-(heroCol.left+heroCol.right)/2),
-   nameMid:Math.abs((nm.left+nm.right)/2-(hero.left+hero.right)/2), nameInside:nm.top>=hero.top-1&&nm.bottom<=hero.top+hero.height*.16,
-   plate:!!host.querySelector('.chv-hero-svg .chv-plate'), railPlate:host.querySelectorAll('.chv-rail .chv-plate').length,
-   eye:!!host.querySelector('.chv-hero-svg .chv-eye'), railEye:!!host.querySelector('.chv-rail .chv-eye')};});
- ok(rail.n===rail.want,'the shelf carries every read mask, '+rail.n+' of '+rail.want);
- ok(rail.icon>=90,'a rail icon at 1600 by 1000 is twice round NK\'s 48 or near it, '+rail.icon+' pixels');
- ok(rail.restFilter==='none'&&rail.onFilter==='none','every rail icon is in colour at rest, round NK\'s .45 retired, got '+rail.restFilter+' / '+rail.onFilter);
- ok(+rail.onPool===1&&+rail.offPool===0,'the pressed icon is told apart without colour: its pool is lit and the others are not, '+rail.onPool+' / '+rail.offPool);
- ok(rail.onLedge!==rail.offLedge,'and its ledge is lit in its own seat, '+rail.onLedge+' against '+rail.offLedge);
- ok(rail.onLift!=='none'&&rail.onLift!==rail.offLift,'and it stands forward off the ledge, '+rail.onLift);
- ok(rail.shelfMid<=2,'the shelf is centred on the stage\'s height, off by '+rail.shelfMid.toFixed(1)+' pixels');
- ok(rail.heroMid<=2&&rail.nameMid<=2,'the face is centred in its column and the name is centred on the face, '+rail.heroMid.toFixed(1)+' and '+rail.nameMid.toFixed(1));
- ok(rail.nameInside,'and the name takes no row: it sits over the clear band above the brow, inside the face\'s own box');
- ok(rail.plate&&rail.railPlate===rail.want,'the face has its plate on the hero and on every rail icon, '+rail.railPlate);
- ok(rail.eye&&!rail.railEye,'the light behind the eyes is on the hero only, '+JSON.stringify([rail.eye,rail.railEye]));
-
- /* THE SHELF FOLDS, KEEPS THE FIVE, AND REMEMBERS. */
- const fold=await page.evaluate(async()=>{
-  const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
-  const host=document.getElementById('masksview');
-  const w0=host.querySelector('.chv-hero-svg').getBoundingClientRect().width;
-  host.querySelector('[data-chshelf]').click(); await fr();
-  const t=host.querySelector('[data-chshelf]');
-  const o={exp:t.getAttribute('aria-expanded'),shut:host.querySelector('.chv-stage').classList.contains('chv-shelf-shut'),
-   n:host.querySelectorAll('.chv-rail .chv-m').length,ic:Math.round(host.querySelector('.chv-rail .chv-svg').getBoundingClientRect().width),
-   kept:STORE.get('chshelf'),w1:host.querySelector('.chv-hero-svg').getBoundingClientRect().width,w0:w0};
-  t.click(); await fr();
-  o.back=host.querySelector('[data-chshelf]').getAttribute('aria-expanded'); o.kept2=STORE.get('chshelf');
-  return o;});
- ok(fold.exp==='false'&&fold.shut&&fold.kept==='shut','the fold shuts the shelf and keeps it in the store, '+JSON.stringify(fold));
- ok(fold.n===rail.want&&fold.ic>=36&&fold.ic<rail.icon,'shut, the five stay on it, smaller, '+fold.n+' at '+fold.ic+' pixels');
- ok(fold.w1>=fold.w0,'and the face takes the room, '+Math.round(fold.w0)+' to '+Math.round(fold.w1));
- ok(fold.back==='true'&&fold.kept2==='open','and it opens again, '+fold.back);
-
- /* A MASK PRESSED ON A WORKED EXAMPLE PRINTS NOTHING. This was the red line
-    in his screenshot: uiSet('chmask') saving onto a worked example. */
- const quiet=await page.evaluate(()=>{status('');
-  document.querySelector('.chv-rail [data-chmask="Teen"]').click();
-  return {said:document.getElementById('status').textContent,hero:CHV.pick,kept:CURP.ui&&CURP.ui.chmask};});
- ok(!quiet.said&&quiet.hero==='Teen'&&quiet.kept==='Teen','a mask pressed on a worked example opens and prints nothing, said '+JSON.stringify(quiet.said));
-
- /* THE CONSOLE. #status keeps its contract and leaves the bar; the log is
-    the drawn copy; hidden lights the pip and holds a failure there. */
- const con=await page.evaluate(async()=>{
-  const wait=ms=>new Promise(q=>setTimeout(q,ms));
-  const st=document.getElementById('status'), c=document.getElementById('con'), tog=document.getElementById('contog');
-  const vis=el=>!!el&&getComputedStyle(el).display!=='none'&&el.getBoundingClientRect().height>0;
-  const o={inBar:!!st.closest('.top'),barText:(document.querySelector('.top').innerText||'').indexOf('Nothing saved')>=0};
-  conPaint('auto');
-  status('Saved.');
-  o.live=st.textContent; o.tray=vis(document.getElementById('contray'));
-  o.line=(document.querySelector('#conlog li:last-child span')||{}).textContent;
-  o.foot=c.getBoundingClientRect().bottom>window.innerHeight-40&&c.getBoundingClientRect().left<80;
-  await wait(2600);
-  o.cleared=st.textContent; o.trayAfter=vis(document.getElementById('contray'));
-  status('Nothing saved on a worked example.','fail');
-  o.failTray=vis(document.getElementById('contray'));
-  tog.click(); o.mode=conMode(); o.hidTray=vis(document.getElementById('contray'));
-  status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
-  o.pip=c.getAttribute('data-pip'); o.held=st.textContent;
-  status('Saved.'); o.pipKept=c.getAttribute('data-pip');
-  tog.click(); o.shown=conMode(); o.pipGone=c.getAttribute('data-pip'); o.pinTray=vis(document.getElementById('contray'));
-  o.lines=document.querySelectorAll('#conlog li').length;
-  o.kept=STORE.get('con');
-  conPaint('auto'); try{STORE.set('con','');}catch(e){}
-  return o;});
- ok(!con.inBar&&!con.barText,'the status line is out of the navigation bar, and the bar prints no message');
- ok(con.live==='Saved.'&&con.line==='Saved.'&&con.tray&&con.foot,'a line said shows in the console at the foot of the window and #status still carries it, '+JSON.stringify([con.live,con.line,con.tray,con.foot]));
- ok(con.cleared===''&&!con.trayAfter,'a confirmation clears at 2.4s and the console falls away with it, '+JSON.stringify([con.cleared,con.trayAfter]));
- ok(con.failTray,'a failure holds the console up');
- ok(con.mode==='shut'&&!con.hidTray,'the handle hides it');
- ok(con.pip==='fail'&&con.pipKept==='fail'&&/Not saved/.test(con.held),'hidden is never silent: a failure lights the pip in the alarm colour and a passing confirmation does not take it, '+JSON.stringify([con.pip,con.pipKept]));
- ok(con.shown==='open'&&!con.pipGone&&con.pinTray&&con.lines===3&&con.kept==='open','shown again, it stays open on the last three lines and the pip lets go, '+JSON.stringify(con));
- await page.evaluate(()=>{rdClose();loadP(PEOPLE.length-1);render();});
-}
-
-/* ---------------------------------------------------------------------------
    THE BODY'S OVERLAYS ARE THE FIELD'S BAR, ON THE MAP.
 
    KV in TASKS.md, his words: "I can click on or off my saboteurs, complexes,
@@ -3653,8 +3540,18 @@ ok(/allowance still arrives monthly/.test(plan.two),
  'and the allowance is monthly whatever the year costs');
 ok(/On\s*Free/.test(plan.dead),
  'a cancelled record reads free however high the tier written on it');
-ok(/Rerunning anything already open costs nothing/.test(plan.two),
- 'the one thing that is always true is always said');
+/* "RERUNNING ANYTHING ALREADY OPEN COSTS NOTHING, ALWAYS" CAME OFF, round NW,
+   22.K17 in PRIORITY.md. This gate used to pin that sentence to the screen
+   with the comment "the one thing that is always true is always said",
+   which was itself the thing not checked: meterNext only ever returns an
+   unopened line, so a rerun spends the same allowance as new ground, or
+   plans nothing once an address is fully open. Measured directly against
+   meterPlan before this line changed. DECISIONS.md promises a free rerun
+   and nothing in the product does it yet, so the plan sheet no longer
+   claims it does. The gate now asserts the claim is gone rather than
+   present, the same way CO-25 asserts "two months free" stays off. */
+ok(!/Rerunning anything already open costs nothing/.test(plan.two),
+ 'the plan sheet no longer claims a free rerun the product does not do');
 ok(/no customer number/.test(plan.two),'and the record says what it does not hold');
 ok(/not connected yet/.test(plan.status)&&plan.kind==='fail',
  'with nothing bound the control says so rather than opening a dead page');
