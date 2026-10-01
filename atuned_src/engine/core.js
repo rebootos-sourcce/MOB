@@ -68,7 +68,12 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
     mode on, saved, then had it switched off. The integer still names a real
     surface, so setTab still opens it the way it still opens Games, and the
     only thing the switch moves is whether a person can see the door. */
- PRACTITIONER:12};
+ PRACTITIONER:12,
+ /* QUESTIONS IS 13, APPENDED, round OG, on the same rule again. It is the Intake
+    page: the diagnostic's 21 blocks of questions on a page of their own, in
+    Discover. The integer's name says what it holds so it is never confused
+    with TAB.INTAKE, which is the Avatar and keeps that name as history. */
+ QUESTIONS:13};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -170,6 +175,14 @@ const TABDEF=[
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
+    at the very end for now, just restore the intake page." It is the
+    questions, on a page of their own, after Summary and before Analytics, the
+    place round OD named for it. The body map is Body, in Play: this is not
+    that surface and never was. Integer 13, appended, host #iqp, which
+    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
+    asks, and how, is the redesign he put last. */
+ {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'discover'},
  /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
     story, avatar, summary, analytics." Integer 4, unfolded: see the note
     above TABDEF. #ana is body.html's own sibling of #sum now, never nested

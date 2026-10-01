@@ -2544,7 +2544,7 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* LE, his order, in the engine and in the markup: "field intake compass mask" */
   out.play=TABDEF.filter(t=>t.sec==='play').map(t=>t.nm).join(',')+' / '
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
-  out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),story:SECOF(TAB.STORY),
+  out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),intake:SECOF(TAB.QUESTIONS),story:SECOF(TAB.STORY),
    know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),field:SECOF(TAB.FIELD),
    body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
    clients:SECOF(TAB.PRACTITIONER)};
@@ -2564,17 +2564,17 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   out.searched={tab:S.tab===TAB.KNOW, q:KB_Q, closed:!document.getElementById('srch').classList.contains('open')};
   KB_Q=''; setTab(TAB.FIELD); await wait();
   return out;});
- ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12}',
+ ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13}',
   'every identity integer holds its value, '+nav.tab);
  ok(JSON.stringify(nav.loopKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.shownKeys)===JSON.stringify(nav.loopKeys),
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","intake":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
   /* round OG reverses round OD: the body map is Body, in Play, between Field
      and Compass. His words: "Body should be between field and compass...
      the intake that you call intake is body." engine/core.js has it. */
-  'OG: Story, Avatar and Summary in Discover, Field, Body, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+  'OG: Story, Avatar, Summary and Intake in Discover, Field, Body, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
  ok(nav.play==='Field,Body,Compass,Character / Field,Body,Compass,Character',
   'Play reads in his order, Field, Body, Compass, Character, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
@@ -3059,6 +3059,32 @@ console.log('\n=== the record file has a door, and it opens on the record contro
   +' against '+dr.wantCQ+'   records '+dr.records0+' to '+dr.records1);
  await door.close();
 }
+
+console.log('\n=== the Intake page is back, and the questions are on it (round OG) ===');
+/* His words: "just restore the intake page." A Discover door of its own after
+   Summary, hosting the diagnostic's questions. Opened, the questions are in
+   #iqp and in view; the Avatar still draws them in its own menu and takes the
+   host back. */
+const ipg=await page.evaluate(async()=>{
+ const wait=()=>new Promise(r=>setTimeout(r,250)), o={};
+ loadP(GORDON()); setTab(TAB.QUESTIONS); render(); await wait();
+ const h=document.getElementById('iqp'), q=document.getElementById('iqbody');
+ const r=h.getBoundingClientRect();
+ o.shown=getComputedStyle(h).display!=='none'&&r.width>300&&r.height>300;
+ o.inside=!!q&&q.parentNode===h&&!q.hidden;
+ o.laws=h.querySelectorAll('[data-law]').length;
+ o.btn=[...document.querySelectorAll('.tabgrp[data-sec="discover"] .tabtop .n')].map(n=>n.textContent).join(',');
+ o.pressed=document.querySelector('.tabtop[data-tabk="13"]').getAttribute('aria-pressed');
+ o.avatarHidden=getComputedStyle(document.getElementById('iq')).display==='none';
+ setTab(TAB.INTAKE); render(); await wait();
+ o.avatarOwns=document.getElementById('iq').getBoundingClientRect().width>300&&document.getElementById('iqp').getBoundingClientRect().width===0;
+ setTab(TAB.QUESTIONS); render(); await wait();
+ o.again=document.getElementById('iqbody').parentNode===document.getElementById('iqp')&&document.getElementById('iqp').querySelectorAll('[data-law]').length;
+ setTab(TAB.FIELD); render();
+ return o;});
+ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own page with the questions on it, '+JSON.stringify(ipg));
+ok(ipg.btn==='Story,Avatar,Summary,Intake,Analytics'&&ipg.pressed==='true','Discover reads Story, Avatar, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
+ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
 console.log('\n=== the avatar, and what it aims the work at ===');
 /* The becoming half. The right hand sentence resolves to a seat and the seat
@@ -5463,14 +5489,26 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const settle=()=>new Promise(r=>setTimeout(r,420));
   const gone=e=>{const cs=getComputedStyle(e);return cs.display==='none'||cs.visibility==='hidden';};
   const vis=()=>[...document.querySelectorAll('#frend .L-patterns')].filter(e=>!gone(e)).length;
-  const before=vis(); b.click(); await fr2(); await new Promise(r=>setTimeout(r,90));
-  const leaving=[...document.querySelectorAll('#frend .frsvg .L-patterns')].map(e=>+getComputedStyle(e).opacity)[0];
+  /* A FADE IS READ AS ANY FRAME BETWEEN WHOLE AND GONE, NOT AS ONE FRAME AT 120ms.
+     The single read at 120ms had a margin of a few hundredths: measured on the
+     build before this round and on this one alike, opacity read 0.90 to 0.96
+     there when the fade had started on time and 1 when the frame loop was a
+     frame late, so the gate failed three runs in four on a CPU that was
+     otherwise idle. Sampling every frame for the 420ms the move takes asks the
+     question that was meant, whether it ever stood part way, and a cut still
+     fails it, because a cut has no frame between one and nothing. */
+  const before=vis(); b.click(); await fr2();
+  let leaving=1, lo=1; const tEnd=performance.now()+400;
+  while(performance.now()<tEnd){
+   const o=[...document.querySelectorAll('#frend .frsvg .L-patterns')].map(e=>+getComputedStyle(e).opacity)[0];
+   if(o>0&&o<1){leaving=o;break;} if(o===0){lo=0;break;}
+   await new Promise(r=>requestAnimationFrame(r));}
   await settle(); const off=vis(), pressed=b.getAttribute('aria-pressed');
   b.click(); await fr2(); await settle();
   return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed'),leaving:leaving};});
  ok(tog.before>0&&tog.off===0&&tog.pressed==='false','a toggle takes its layer off, marks and words, '+tog.before+' groups to '+tog.off);
  ok(tog.back===tog.before&&tog.again==='true','and a second press puts it back');
- ok(tog.leaving>0&&tog.leaving<1,'and it left by a fade, not a cut: about 120ms after the press its opacity read '+tog.leaving);
+ ok(tog.leaving>0&&tog.leaving<1,'and it left by a fade, not a cut: some frame after the press read a part way opacity, '+tog.leaving);
 
  /* THE CALLOUTS ARE INSIDE THE DIAL AND OFF EACH OTHER. The dial's reach is
     the outside of its domain band, measured off the drawing rather than

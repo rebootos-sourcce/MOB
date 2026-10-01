@@ -30165,3 +30165,29 @@ make that happen next"
 the left rail restyle and the celestial and archetype sections redrawn live
 (mockups first, to him as pictures); body place seats; the rerun that keeps
 the release's order; the Becoming build; merge the six worktree builds.
+
+**Round OG, later the same day. His words:** "review at this to the plan or the
+queue. Um, we'll do the intake questions at the very end for now, just restore
+the intake page." (with `ATUNED_Points_Achievements_Unlocks_TDD_v2.md`, saved as
+`ATUNED-points-achievements-unlocks-TDD-v2.md`).
+
+- **The Intake page is back** as its own Discover door after Summary, integer
+  13 (`TAB.QUESTIONS`, appended, nothing renumbered), host `#iqp`, which
+  borrows the diagnostic's `#iqbody` from `ui/intakeui.js` and gives it back to
+  the Avatar's menu. What it asks, and how, is the redesign he put last.
+- **The Points, Achievements and Unlocks TDD** is in the queue. Audit agent
+  running (`POINTS-AUDIT.md`). Its core rule matches the standing one: it
+  celebrates what a person did and what the system can verify changed, and does
+  not score the person's worth. Expected conflicts to put to him: the streak
+  counting days set and not done (21.J2), "the accountability tracker is the
+  progression", and the ladder already built.
+- **Merged and gated this round** (engine gate 3039/0 on the merged tree):
+  trace graph (266 checks), practice domain (775), Stripe billing at
+  12/29/59/99 with the webhook lifecycle and plan read-back, the sound engine
+  (off by default), the copy brief as `check.py --brief`, belly and diaphragm
+  seats, and the Becoming audit. The practice build's intents are gated against
+  the trace graph's `traceApply` (the `addr:N` alias holds).
+- **Findings for him, not decided:** see the four-heading reports for the
+  stomach seat, gut, heart, shoulders, `abdomen`; the Becoming audit's twelve
+  questions (BECOMING-AUDIT.md section 12); the practice audit's conflicts
+  (PRACTICE-AUDIT.md); the copy sweep's twelve questions (COPY-SWEEP-FINDINGS.md).

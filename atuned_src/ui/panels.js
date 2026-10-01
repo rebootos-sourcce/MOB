@@ -246,6 +246,14 @@ function setTab(i){
    w[rail].forEach(function(k){ if(OPENSEC[rail])OPENSEC[rail][k]=1; });});
   if(typeof paintSections==='function')paintSections();})();
  if(i===TAB.INTAKE)renderIntake();
+ /* THE INTAKE PAGE BORROWS THE QUESTIONS' HOST, round OG. intakeui.js draws
+    into #iqbody by id and the Avatar's menu already lends that host out and
+    takes it back, so this does the same: the host goes into #iqp, shown, and
+    is drawn. avShowIntake puts it home again the next time the Avatar paints. */
+ if(i===TAB.QUESTIONS){
+  var iqh=$('iqbody'), iqp=$('iqp');
+  if(iqh&&iqp){if(iqh.parentNode!==iqp)iqp.appendChild(iqh); iqh.hidden=false;}
+  if(typeof renderIntake==='function')renderIntake();}
  /* GAMES IS ITS OWN TAB AGAIN AND THIS DISPATCH DID NOT KNOW.
 
     Knowledge used to carry Games as a folded surface, and this rendered both

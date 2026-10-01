@@ -463,6 +463,7 @@
     <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
     <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
     <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
+    <button type="button" class="vt tabtop" data-tabk="13" aria-pressed="false" title="Intake"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8.5 9h7M8.5 12h7M8.5 15h4"/><circle cx="6.6" cy="9" r=".5"/><circle cx="6.6" cy="12" r=".5"/><circle cx="6.6" cy="15" r=".5"/></svg><span class="n">Intake</span></button>
     <!-- ANALYTICS, RIGHT AFTER SUMMARY, round LV: "story, avatar, summary,
          analytics." Integer 4, TAB.ANALYTICS, unfolded from Summary on the
          Games template. engine/core.js has the ruling in full. -->
@@ -896,6 +897,8 @@
         own host, the #know and #knowbody lesson: a renderer that writes the
         whole of a shared host deletes its sibling on the way past. -->
    <div id="iq" class="iq"><div id="avbody"></div><div id="iqbody"></div></div>
+   <!-- THE INTAKE PAGE, round OG. Empty until it is opened: setTab moves intakeui.js's #iqbody in, and avatarui.js moves it back under #iq. -->
+   <div id="iqp" class="iq"></div>
    <!-- KNOWLEDGE ONCE CARRIED GAMES, AND SUMMARY ONCE CARRIED ANALYTICS. Both
         folds are undone now, Games at KT and Analytics at round LV, and this
         note stays for the lesson rather than the state: A TAB HOST THAT

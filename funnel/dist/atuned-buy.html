@@ -4,7 +4,7 @@
      See the note in about.html: funnel/index.html carries the mechanism and
      writes the plain spelling into its own title, and a title has no CSS. -->
 <title>Atüned, tiers</title>
-<meta name="description" content="Sight is not for sale. Every tier sees the whole reading, free included. What a tier buys is new ground. Atüned, Source OS.">
+<meta name="description" content="You see your whole reading on every tier, free included. A tier changes one thing: how many new patterns you can open. Atüned, Source OS.">
 <style>
 /* FALLBACK TOKENS ONLY, AND tokens.css OVERRIDES EVERY ONE OF THEM. The link
    sits after this block so the generated palette wins whenever it is present.
@@ -372,9 +372,13 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
  <a href="atuned-about.html">About</a>
  <a href="atuned-quiz.html">The test</a></nav>
 
-<p class="lead"><b>Sight is not for sale.</b>
-<span>Every tier sees the whole reading, free included. What a tier buys is new
-ground.</span></p>
+<!-- THIS LEAD READ "Sight is not for sale." That is the team's name for the
+     ruling, and the owner said he did not know what it meant, so a customer
+     would not either. The ruling is unchanged and is said as the two facts it
+     stands for. -->
+<p class="lead"><b>You see your whole reading on every tier.</b>
+<span>Free included. A tier changes one thing: how many new patterns you can
+open.</span></p>
 
 <!-- ============================================================
      THE FIRST SURFACE IN THIS PRODUCT THAT ASKS FOR MONEY.
@@ -382,23 +386,27 @@ ground.</span></p>
      The ladder is read off DECISIONS.md and not invented. What is ruled there,
      and is on this page as ruled: the gift of a hundred with everything
      visible; free at ten a week, banking; the grants at 400, 800, 1200 and
-     1200 plus the cohort suite; ninety nine on tier four, which is his own
-     number; every tier seeing the whole reading; the referral at fifty, capped
-     at four a month; a cancellation destroying nothing; and the cohort lead
-     seeing the outputs and never the story cloud.
+     1200 plus the cohort suite; the price column at twelve, twenty nine,
+     fifty nine and ninety nine; every tier seeing the whole reading; the
+     referral at fifty, capped at four a month; a cancellation destroying
+     nothing; and the cohort lead seeing the outputs and never the story cloud.
 
-     THREE THINGS ARE ON THIS PAGE THAT ARE NOT RULED, AND THEY ARE MARKED
-     RATHER THAN BLENDED IN.
+     THE PRICES ARE RULED, BY HIM, 1 OCTOBER. His words, after checking the
+     documentation: "Free: $0. Tier 1: $12/month. Tier 2: $29/month. Tier 3:
+     $59/month. Tier 4: $99/month. Tier 4 includes the same 1,200 pattern
+     allowance as Tier 3, plus cohort lead capability." This block used to
+     call twelve, twenty nine and fifty nine the unruled recommendation, and
+     for one round the table carried 24 and 36 off DECISIONS.md line 1095
+     (12, 24, 36, 99), which his statement supersedes. engine/plan.js
+     PLAN_PRICE carries the same four figures.
 
-     1. Twelve, twenty nine and fifty nine. DECISIONS.md prints them as the
-        recommendation the pricing work reached and prints the price column as
-        open for tiers one to three. They are on the page because a price list
-        with no prices is not one, and they are named in the report as the
-        first thing needing his ruling.
-     2. Monthly only. Whether an annual plan exists at all, and whether it
+     TWO THINGS ON THIS PAGE ARE STILL OPEN, AND THEY ARE MARKED RATHER THAN
+     BLENDED IN.
+
+     1. Monthly only. Whether an annual plan exists at all, and whether it
         carries a discount, is open and is his. Two months free was ruled in
         and then ruled back out, so nothing on this page implies a year.
-     3. Free at ten a week. Ruled, in his own words. The open item beside it is
+     2. Free at ten a week. Ruled, in his own words. The open item beside it is
         whether it should be twenty five, which is exactly one run. The page
         states ten and says the grant banks, which is the ruling.
 
@@ -534,10 +542,13 @@ ground.</span></p>
   material, and not the story cloud: the story is the person's own words, and the
   record and the story are never held joined.</p>
   <div class="box">
-   <h3>How sight is granted</h3>
-   <p>The person grants it by name. The list of who has sight sits on their
-   record where they can read it, and one move takes it back. There is no silent
-   default and no grant that arrives with a subscription.</p>
+   <!-- was "How sight is granted", the team's word, and a customer reading
+        this box is deciding whether to trust a lead with someone's reading -->
+   <h3>Who can see a person's reading</h3>
+   <p>Only a lead that person has said yes to, by name. The list of who can see
+   it sits on their own record, where they can read it, and one press takes the
+   yes back. Nobody is added without being asked, and paying for tier four adds
+   nobody.</p>
   </div>
  </div>
 </section>
@@ -579,9 +590,14 @@ ground.</span></p>
   product is taken away for a day off. A person has to be able to stop and be glad
   they used it, which is the line this whole thing is built behind, and a ladder
   that made leaving expensive would be a different product.</p>
-  <p class="m">A card or a plan is changed from one button, on a page held by the
-  processor. No card detail is ever typed into the instrument, because the
-  instrument has no network in it to carry one.</p>
+  <!-- "BECAUSE THE INSTRUMENT HAS NO NETWORK IN IT" stopped being true when sign
+       in and checkout landed: ui/auth.js reaches the server for both. What is
+       still true is the promise itself, and the reason now is where the card
+       goes: only to Stripe's own page, which the instrument links to and never
+       draws. -->
+  <p class="m">A card or a plan is changed from one button, Manage billing, on a
+  page Stripe runs. No card detail is ever typed into the instrument. The card
+  goes only to that page, and the instrument never sees it.</p>
  </div>
 </section>
 

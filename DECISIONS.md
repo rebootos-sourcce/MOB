@@ -2481,3 +2481,8 @@ door of their own in Discover is open, asked in round OG.
 
 **Mockup pick: Ink for the Field's trace style.** "Let's do ink trace for
 style."
+
+**The Intake page is restored, and its questions come last.** His words: "we'll
+do the intake questions at the very end for now, just restore the intake page."
+A Discover door of its own after Summary, integer 13, showing the diagnostic as
+it was. Redesigning the questions is the last item in the queue, not the next.

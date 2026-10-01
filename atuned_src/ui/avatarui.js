@@ -1320,6 +1320,9 @@ function avIqHome(){
  if(iq&&home&&iq.parentNode!==home)home.appendChild(iq);}
 function avShowIntake(){
  var iq=document.getElementById('iqbody'); if(!iq)return;
+ /* THE INTAKE PAGE HAS THE HOST WHILE IT IS OPEN, round OG. avRefresh runs on
+    every render and would otherwise take it home and hide it. */
+ if(typeof S!=='undefined'&&S.tab===TAB.QUESTIONS)return;
  var slot=document.getElementById('avqslot');
  var show=AV.sub==='becoming'&&AV.face==='iq'&&!!slot;
  if(show&&iq.parentNode!==slot)slot.appendChild(iq);

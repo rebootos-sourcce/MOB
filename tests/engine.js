@@ -5268,7 +5268,7 @@ g('LL · practitioner mode, the switch and its integer');
  /* THE INTEGER IS APPENDED AND NOTHING BEFORE IT MOVED. Written out in full
     rather than counted, because this is the one table in the product where a
     changed value is the defect and not the product growing. */
- ok(JSON.stringify(E.TAB)==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12}',
+ ok(JSON.stringify(E.TAB)==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13}',
   'Practitioner is 12 and every integer before it holds its value, '+JSON.stringify(E.TAB));
 }
 

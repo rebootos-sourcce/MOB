@@ -4118,7 +4118,12 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
     mode on, saved, then had it switched off. The integer still names a real
     surface, so setTab still opens it the way it still opens Games, and the
     only thing the switch moves is whether a person can see the door. */
- PRACTITIONER:12};
+ PRACTITIONER:12,
+ /* QUESTIONS IS 13, APPENDED, round OG, on the same rule again. It is the Intake
+    page: the diagnostic's 21 blocks of questions on a page of their own, in
+    Discover. The integer's name says what it holds so it is never confused
+    with TAB.INTAKE, which is the Avatar and keeps that name as history. */
+ QUESTIONS:13};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -4220,6 +4225,14 @@ const TABDEF=[
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
+    at the very end for now, just restore the intake page." It is the
+    questions, on a page of their own, after Summary and before Analytics, the
+    place round OD named for it. The body map is Body, in Play: this is not
+    that surface and never was. Integer 13, appended, host #iqp, which
+    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
+    asks, and how, is the redesign he put last. */
+ {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'discover'},
  /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
     story, avatar, summary, analytics." Integer 4, unfolded: see the note
     above TABDEF. #ana is body.html's own sibling of #sum now, never nested
@@ -5361,9 +5374,20 @@ const PLAN_ALWAYS=['the whole reading','saboteurs, complexes, hyper complexes an
    The allowance still arrives monthly rather than as a year in one lump,
    whatever the price, because the allowance is a pace and a year of patterns
    handed over at once is not a practice. That part was never about the
-   discount. */
+   discount.
+
+   AND IT SPEAKS ONLY TO A RECORD THAT IS PAID BY THE YEAR. It took a tier key
+   and nothing else, so the plan sheet printed "Paid for the year." to every
+   monthly subscriber, which is a claim about their bill that is false.
+   DECISIONS.md rules monthly only and leaves annual open, and every price
+   Stripe is set up with is monthly. It reads the record now and answers null
+   unless the record says per:'year'. No record says that today: the boundary
+   in schema.js does not admit a per field and the server does not send one,
+   so this is silent for everybody until an annual plan is ruled and both
+   ends carry it. */
 const PLAN_YEAR_FREE=0;
-function planYear(k){
+function planYear(k,pl){
+ if(!pl||pl.per!=='year')return null;
  var t=PLAN_BY[k]; if(!t||t.per!=='month')return null;
  var pay=12-PLAN_YEAR_FREE;
  return {pay:pay, grant:t.grant,
@@ -5374,17 +5398,26 @@ function planYear(k){
       +'a pace.')};}
 
 /* THE PRICE, NAMED ONCE, in dollars a month. Only what is ruled carries a
-   number. DECISIONS.md rules tier four at ninety nine and leaves tiers one to
-   three open, recommended at twelve, twenty nine and fifty nine but never
-   ruled, so they are null here and the comparison says the price is shown on
-   the payment page before any charge. A number printed in this file that the
-   processor then charges differently is a bill nobody agreed to, which is the
-   one thing a price list must never be. When the owner rules, setting the
-   three numbers is the whole change, the same way PLAN_YEAR_FREE works above.
+   number, and all four rungs are ruled. The owner stated them himself on 1
+   October, after checking the documentation: "Free: $0. Tier 1: $12/month.
+   Tier 2: $29/month. Tier 3: $59/month. Tier 4: $99/month. Tier 4 includes
+   the same 1,200 pattern allowance as Tier 3, plus cohort lead capability."
+
+   That supersedes DECISIONS.md line 1095, "The ladder is 12, 24, 36, 99",
+   which this table carried for one round. Before that, tiers one to three
+   sat at null because this comment read the 12/29/59 passage as an unruled
+   recommendation, so the tiers page said "shown at checkout" for prices the
+   owner had in mind. Three figures moved twice in two rounds, which is the
+   reason the ruling is quoted here with its date rather than summarised.
+
+   A number printed in this file that the processor then charges differently
+   is a bill nobody agreed to, so the four Stripe prices are created at
+   exactly these figures (STRIPE-SETUP.md) and null stays the answer for
+   anything unruled.
 
    And never a dollar figure against a pattern. One pattern is valued at one
    dollar internally and DECISIONS.md rules that it is never published. */
-const PLAN_PRICE={free:0, one:null, two:null, three:null, four:99};
+const PLAN_PRICE={free:0, one:12, two:29, three:59, four:99};
 function planPrice(k){ var v=PLAN_PRICE[k]; return (typeof v==='number'&&isFinite(v))?v:null; }
 /* THE LADDER, READ FOR A COMPARISON. One row per tier a person can be on, the
    gift left out because it is given once and never chosen. Each row says what
@@ -5425,6 +5458,60 @@ function planOf(pl){
  var st=planState(pl);
  if(st==='live'&&PLAN_BY[pl.tier])return PLAN_BY[pl.tier];
  return PLAN_BY.free;}
+/* THE PLAN THE SERVER HOLDS, LAID ONTO A RECORD. Nothing wrote CURP.plan from
+   the server, so a person who paid came back to a Billing section reading
+   Free. ui/auth.js reads the account's billing off /v1/me and hands it here;
+   this decides the record, and the host validates and saves it. Pure, so the
+   arithmetic is gated headless and the host only does the writing.
+
+   b is the server's {tier, status, since, until}: the tier as this file's own
+   key, the status as Stripe's own word, which PLAN_LIVE and PLAN_DEAD already
+   read, and the paid period as two dates. null is an account that has never
+   paid, and it reads as free. The host never calls this with undefined: a
+   server too old to send billing at all has said nothing, and nothing is
+   written on nothing.
+
+   A NEW PERIOD OPENS A NEW ALLOWANCE. When the tier or the period start moves,
+   base is set to the unique count now, so planAllowance charges this period
+   only for what is opened from here, granted goes back to the tier's own grant
+   and nothing is carried. Floored at the end of the gift, the same floor
+   planAllowance holds, so a period cannot open on ground the gift paid for. It
+   is the count when the server was read and not when the period began, which
+   charges anything opened in between to the period before: the record knows
+   no unique count at an earlier time, and erring that way never takes
+   patterns from somebody. An upgrade or a downgrade mid month is a new tier,
+   so it opens a full allowance of the new tier.
+
+   same says whether anything a person can see moved, which is what the host
+   speaks on. A renewal moves since and until and is not same, but it keeps
+   the tier and stays live, so the host says nothing about it. */
+/* A TIER THIS BUILD DOES NOT KNOW IS REFUSED, NOT ROUNDED TO FREE, the rule
+   validateProfile already holds: a server one tier ahead of this file would
+   otherwise downgrade everybody on it. refused names it and nothing moves. */
+function planFromServer(prev,b,unique){
+ var pv=(prev&&typeof prev==='object')?prev:{};
+ if(b&&typeof b==='object'&&!PLAN_BY[b.tier]){
+  var k=planOf(prev).k, lv=planState(prev)==='live';
+  return {plan:pv, same:true, refused:String(b.tier), was:k, now:k, wasLive:lv, nowLive:lv,
+   status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
+ var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
+ var next;
+ if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ else {
+  var since=(typeof b.since==='string')?b.since:null, until=(typeof b.until==='string')?b.until:null;
+  var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
+  var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+  /* in the blank's own key order (schema.js), so a record written here and
+     the same record after the boundary serialise the same */
+  next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
+   granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
+   base:fresh?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
+   since:since, until:until};}
+ var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
+ var was=planOf(prev), now=planOf(next);
+ return {plan:next, same:['tier','status','since','until'].every(eq),
+  was:was.k, now:now.k, wasLive:planState(prev)==='live', nowLive:planState(next)==='live',
+  status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:''};}
 /* SIGHT. Whether a rung of the chain is visible on this plan. */
 function planSees(pl,kind){
  /* everybody, on every plan, including free. ruled. */
@@ -5724,6 +5811,891 @@ function boundaryCross(text){
  for(var i=0;i<PUR_SIDES.length;i++)
   if(MAP[PUR_SIDES[i]].test(t))return PUR_SIDES[i];
  return null;}
+/* ============================================================
+   THE TRACE GRAPH. Typed relationships between the objects this
+   product already holds, and the few it cannot derive.
+
+   WHY IT EXISTS NOW. PRIORITY.md rows 20.H8 and 20.H9 and section 19
+   recorded that the engine had no graph and chose not to build one,
+   because V3's graph as specified was a second model beside the real
+   engine. The owner reversed that call on 1 October: the graph "should
+   have been part of our documentation". What did not change is the
+   reason the first call was made, so this is not V3's graph. It holds
+   no reading of its own. It READS the objects that exist, story entries,
+   the 112 address table, the meter's opened lines and the saved
+   rituals, and adds only the relationships nothing else holds.
+
+   DERIVE, DON'T STORE. meterNext in engine/schema.js says it plainly: a
+   stored cursor and a stored list are two answers to one question and
+   they drift. So the graph is a pure function of the record plus one
+   small stored set, p.trace, and the split is decided per item:
+
+     story          derived   one node per story entry, keyed by its date
+     pattern        derived   one node per address any story, line or
+                              stored edge touches, read off NODES
+     story supports pattern   derived, inferred. parseStory's imprints,
+                              re-read under the record's own soul (below)
+     release, reframe         derived, observed. meter.unique grouped by
+                              address and channel, the key meterKey makes
+                              with no line. A truth channel is a reframe,
+                              the split relCounts already makes.
+     release addresses pattern  derived, observed
+     ritual         derived   one node per saved ritual
+     practice_event derived   one per ritual marked done, observed; one
+                              per ritual saved before done existed,
+                              inferred, because ledgerRead counts those as
+                              practised and nothing ever recorded it
+     everything else          STORED in p.trace: the practice objects'
+                              stubs and every edge a person confirmed, a
+                              proposal they have not yet answered, and a
+                              link somebody observed. None of those can be
+                              re-derived from anything on the record.
+
+   PROVENANCE IS NEVER COLLAPSED (TDD section 26). Every node and every
+   edge carries exactly one of known, inferred, proposed, user_confirmed,
+   observed. A reading the sniffer made is inferred whether or not the
+   words named the fetter, because a lexicon match is still an inference
+   about a person; whether they named it is carried beside it as named.
+   An inferred or proposed edge becomes user_confirmed only by being
+   confirmed, and when it does the edge keeps what it was in was.
+
+   REGISTRATION IS NOT CAUSATION (PRIORITY.md S3). A story placing charge
+   at an address is a registration, so the derived edge is supports and
+   never causes, and causes may only be held as proposed or as the
+   person's own user_confirmed claim. Nothing in this engine observes a
+   cause.
+
+   THE ENGINE MAY NOT TOUCH THE HOST, and this file does not. The graph is
+   plain data: arrays of plain objects, safe to JSON round trip. Functions
+   that add to a graph mutate the graph they are handed and nothing else,
+   and never throw on bad input: they return {ok, why}.
+   ============================================================ */
+var TRACE_V=1;
+/* WHICH DERIVATION MADE A DERIVED GRAPH, TDD section 27's algorithm
+   version. A graph read under one rule compared with one read under
+   another is a change of rule, not a change in the person. */
+var TRACE_ALG=1;
+
+/* TDD section 16, exactly. */
+var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
+ 'ritual','practice_event','observation','evidence','outcome','context',
+ 'somatic_state','reframe','release'];
+/* TDD section 17, exactly. There is no related_to. */
+var TRACE_EDGE_TYPES=['causes','associated_with','supports','contradicts','obstructs',
+ 'reinforces','targets','addresses','requires','implements','executes','produces',
+ 'measures','occurs_in','replaces','precedes','follows','generalizes_to','transfers_to'];
+/* TDD section 26, exactly, and in that order. */
+var TRACE_SRC=['known','inferred','proposed','user_confirmed','observed'];
+
+/* ============================================================
+   THE RULE TABLE. (from type, edge, to type, and where it comes from.)
+   An edge outside it is refused by name.
+
+   SECTION 15 IS WRITTEN IN TWO VOICES AND THE VOCABULARY IN ONE. Section
+   15 names eight relationships that are not in section 17's vocabulary:
+   desired_outcome, obstructed_by, affected_by, supported_by,
+   addressed_by, executed_by, informs and, in section 18, measured_by. Six
+   of them are a section 17 edge read backwards, and holding both readings
+   of one fact is two answers to one question again. So each is held once,
+   in the active direction, and the passive name is what a reader says
+   walking it the other way:
+
+     GOAL obstructed_by PATTERN      pattern obstructs goal
+     PATTERN supported_by EVIDENCE   evidence supports pattern
+     PATTERN addressed_by PROTOCOL   protocol addresses pattern
+     PROTOCOL executed_by RITUAL     ritual executes protocol
+     GOAL measured_by OUTCOME        outcome measures goal
+
+   The other three are not a reversal and are mapped by meaning:
+
+     GOAL desired_outcome OUTCOME    goal targets outcome. The goal aims
+                                     at it; measures is the other half.
+     BEHAVIOR affected_by PATTERN    pattern obstructs, reinforces or is
+                                     associated_with behavior. Affected
+                                     names no sign, and associated_with is
+                                     the honest edge when the sign is not
+                                     known, which is what it is for.
+     EVIDENCE informs BEHAVIOR       evidence supports or contradicts
+                                     behavior. Negative evidence is a
+                                     type of its own in section 12.
+
+   TARGETS AND ADDRESSES ARE TOLD APART. Section 15 lists both for one
+   pair, protocol to pattern. Here targets is the aim and addresses is the
+   act: a release key with lines opened under it addresses its pattern,
+   observed; one nothing has run yet only targets it.
+   ============================================================ */
+var TRACE_RULES=[
+ /* section 15, read as above */
+ ['goal','targets','outcome','15, desired_outcome'],
+ ['goal','requires','behavior','15'],
+ ['pattern','obstructs','goal','15, obstructed_by'],
+ ['pattern','obstructs','behavior','15, affected_by, the sign that hinders'],
+ ['pattern','reinforces','behavior','15, affected_by, the sign that holds a behaviour in place'],
+ ['pattern','associated_with','behavior','15, affected_by, sign not known'],
+ ['behavior','produces','outcome','15'],
+ ['evidence','supports','pattern','15, supported_by'],
+ ['evidence','contradicts','pattern','12, negative evidence'],
+ ['protocol','addresses','pattern','15, addressed_by'],
+ ['protocol','targets','pattern','15'],
+ ['pattern','occurs_in','context','15'],
+ ['protocol','implements','behavior','15'],
+ ['ritual','executes','protocol','15, executed_by'],
+ ['ritual','produces','practice_event','15'],
+ ['practice_event','produces','evidence','15'],
+ ['practice_event','produces','outcome','15'],
+ ['evidence','supports','behavior','15, informs'],
+ ['evidence','contradicts','behavior','15, informs, negative'],
+ ['evidence','supports','outcome','15'],
+ ['evidence','contradicts','outcome','12, negative evidence'],
+ ['outcome','measures','goal','15 and 18, measured_by'],
+ /* section 18: the protocol carries a release and a reframe */
+ ['protocol','requires','release','18, and 8: a release step calls the release engine'],
+ ['protocol','requires','reframe','18'],
+ /* section 8 and the meter: a line run at an address */
+ ['release','addresses','pattern','8, lines opened at that address, the meter'],
+ ['release','targets','pattern','8, the address a release key names'],
+ ['reframe','addresses','pattern','8, truth lines installed at that address'],
+ ['reframe','targets','pattern','8, the address a reframe key names'],
+ ['reframe','replaces','pattern','8, pattern replacement'],
+ /* the story system, the one relationship the engine already computes */
+ ['story','supports','pattern','2, the story system: parseStory imprints'],
+ ['story','produces','impression','16, and PRIORITY 20.H8: the reading of an entry'],
+ ['impression','supports','pattern','16, and PRIORITY 20.H8'],
+ ['story','occurs_in','context','36'],
+ /* section 12 and 13: observation and the somatic state */
+ ['practice_event','produces','observation','12, source observation'],
+ ['observation','supports','evidence','12, source observation'],
+ ['observation','measures','somatic_state','13, affect'],
+ ['observation','occurs_in','context','36'],
+ ['somatic_state','associated_with','pattern','PRIORITY S3: registration, not causation'],
+ /* section 36, context transfer */
+ ['behavior','occurs_in','context','36'],
+ ['behavior','transfers_to','context','36'],
+ ['evidence','occurs_in','context','12, evidence.context'],
+ ['practice_event','occurs_in','context','36'],
+ ['behavior','generalizes_to','behavior','36: works beyond its first context'],
+ ['pattern','generalizes_to','pattern','17'],
+ /* feedback. These are the only edges allowed to close a loop. */
+ ['pattern','reinforces','pattern','17 and 1: the loop'],
+ ['behavior','reinforces','pattern','17 and 1: avoidance feeding the thing avoided'],
+ ['pattern','associated_with','pattern','17'],
+ ['pattern','causes','pattern','17, a claim, never derived (S3)'],
+ ['pattern','causes','behavior','17, a claim, never derived (S3)'],
+ ['context','causes','pattern','4, conditions and triggers, a claim (S3)'],
+ /* succession and order, section 27 and 23 */
+ ['protocol','replaces','protocol','27: v2 replaces v1, and v1 is never mutated'],
+ ['behavior','replaces','behavior','23'],
+ ['protocol','precedes','protocol','23, progression'],
+ ['ritual','precedes','ritual','23'],
+ ['practice_event','precedes','practice_event','10'],
+ ['story','precedes','story','2'],
+ ['outcome','precedes','outcome','35, 30 60 90']];
+/* follows is precedes read backwards (TRACE_INVERSE), so every precedes
+   rule is a follows rule with the ends swapped. Generated rather than typed,
+   so the two can never disagree. */
+var TRACE_INVERSE={follows:'precedes'};
+TRACE_RULES.filter(function(r){return r[1]==='precedes';}).forEach(function(r){
+ TRACE_RULES.push([r[2],'follows',r[0],r[3]+', read backwards']);});
+var TRACE_RULE={};
+TRACE_RULES.forEach(function(r){TRACE_RULE[r[0]+' '+r[1]+' '+r[2]]=r[3];});
+function traceRuleOf(ft,e,tt){ return TRACE_RULE[ft+' '+e+' '+tt]||null; }
+
+/* THE ONLY EDGES THAT MAY CLOSE A LOOP ON THEMSELVES. A pattern that
+   reinforces a pattern that reinforces the first is the feedback the
+   document's own loop draws, and a person describing one is describing
+   something real. Every other edge type is held acyclic WITHIN ITS OWN
+   KIND: time does not loop (precedes, and follows as its reverse), a
+   succession does not (replaces), a hierarchy does not (generalizes_to),
+   and a requirement that requires itself is a deadlock. A cycle through
+   several kinds, an outcome that measures a goal that targets that
+   outcome, is the document's section 1 loop and is not a contradiction,
+   so it is neither refused nor reported. */
+var TRACE_LOOP=['reinforces','causes','associated_with'];
+/* associated_with has no direction between two things of one type, so
+   A with B and B with A are one fact and the second is a repeat. */
+var TRACE_SYMMETRIC=['associated_with'];
+/* S3. A cause is a claim somebody makes, never a reading the engine
+   makes, so it is held only as a proposal or as the person's own. */
+var TRACE_CAUSE_SRC=['proposed','user_confirmed'];
+/* WHAT A PROVENANCE MAY BECOME. A proposal or an inference can be
+   confirmed by the person, or borne out by something observed. Nothing
+   moves the other way, and nothing becomes known after the fact: known is
+   what the record or a table holds from the start. */
+var TRACE_PROMOTE={proposed:['user_confirmed','observed'], inferred:['user_confirmed','observed']};
+/* THE TYPES WHOSE IDS RESOLVE AGAINST A FIXED TABLE, the 112 addresses.
+   Their existence is a fact about the table and never a claim about a
+   person, so such a node is always known; what is claimed of it is
+   carried on its edges. */
+var TRACE_TABLE=['pattern','release','reframe'];
+/* THE TYPES THE RECORD CAN ANSWER FOR. Anything else stored in p.trace
+   belongs to the practice objects, whose schema is not this file's, and
+   is counted as unchecked rather than claimed to resolve. */
+var TRACE_RESOLVED=['story','pattern','release','reframe'];
+/* A truth channel is a reframe. The same test relCounts makes in
+   ui/release.js over the channel part of a meter key. */
+var TRACE_TRUTH=/truth$/;
+/* the ceilings at the boundary. An id is somebody's key, never prose, and
+   120 characters is twice the longest key the meter can write. The stored
+   layer holds only what cannot be derived, so a hundred thousand relations
+   is far past any record a person writes by hand and exists to stop a
+   pasted file, not to shape one. Refused above it, never truncated. */
+var TRACE_ID_MAX=120, TRACE_MAX=100000;
+
+/* WHAT A GAP IS. A node of these types that lacks one of these links is
+   missing something the document says it must have, and traceOrphans
+   names it. Required, not merely expected: a ritual that has never been
+   done is not a gap, a ritual that executes nothing is. */
+var TRACE_NEEDS={
+ ritual:[{dir:'out',edges:['executes'],types:['protocol'],
+  why:'a ritual is the scheduled execution of a protocol (TDD 1), and this one executes none'}],
+ protocol:[{dir:'out',edges:['targets','addresses'],types:['pattern'],
+  why:'a protocol targets a pattern (TDD 15), and this one names none'}],
+ practice_event:[{dir:'in',edges:['produces'],types:['ritual'],
+  why:'a practice event is produced by a ritual (TDD 15), and nothing produced this one'}],
+ evidence:[{dir:'out',edges:['supports','contradicts'],types:['pattern','behavior','outcome'],
+  why:'evidence is about something (TDD 12), and this bears on nothing'}],
+ outcome:[{dir:'out',edges:['measures'],types:['goal'],
+  why:'an outcome measures progress against a goal (TDD 14), and this measures none'}],
+ goal:[{dir:'out',edges:['requires'],types:['behavior'],
+  why:'a goal decomposes into observable behaviour (TDD 19), and this one has none'}],
+ impression:[{dir:'in',edges:['produces'],types:['story'],
+  why:'an impression is the reading of a story (PRIORITY 20.H8), and no story produced this one'}],
+ release:[{dir:'out',edges:['targets','addresses'],types:['pattern'],
+  why:'a release works at an address'}],
+ reframe:[{dir:'out',edges:['targets','addresses'],types:['pattern'],
+  why:'a reframe works at an address'}]};
+
+/* ---------- keys ---------- */
+/* A key is type and id. A type never holds a colon, so the first colon
+   splits it, and an id may hold as many as it likes: a release id is a
+   meter key and a story id is a time. */
+function traceKey(type,id){ return String(type)+':'+String(id); }
+function traceSplit(key){
+ var s=String(key), i=s.indexOf(':');
+ return i<0?{type:s,id:''}:{type:s.slice(0,i),id:s.slice(i+1)};}
+function traceNew(){ return {v:TRACE_V, nodes:[], edges:[]}; }
+
+/* an id is a string, or a whole number, which is read as its string. The
+   address table keys by number and the practice build should not have to
+   know which. Anything else is refused. */
+function traceId(id){
+ if(typeof id==='number'&&isFinite(id)&&id>=0&&id%1===0)return String(id);
+ if(typeof id==='string')return id;
+ return null;}
+/* AN ADDRESS HAS ONE ID. The record already writes an address as addr:12
+   (meter.firsts, through meterFirst in ui/release.js), and the practice
+   build names patterns that way, so on the way IN an id of that form is
+   read as the address it names. Two spellings of one address would be two
+   nodes for one place in the body. What is stored is only ever the bare
+   number, and the boundary refuses the other spelling rather than quietly
+   rewriting a stored record. */
+var TRACE_ADDR_ALIAS=/^addr:([0-9]+)$/;
+function traceInId(type,id){
+ var s=traceId(id);
+ if(s!==null&&type==='pattern'){var m=TRACE_ADDR_ALIAS.exec(s); if(m)return m[1];}
+ return s;}
+function traceAddrWhy(id){
+ if(TRACE_ADDR_ALIAS.test(id))return id+' is the spoken form; an address is stored as its number';
+ if(!/^[0-9]+$/.test(id))return id+' is not an address number';
+ return BY[+id]?null:id+' is not one of the 112 addresses';}
+/* why an id cannot be one of this type, or null */
+function traceIdWhy(type,id){
+ if(id===null)return 'id is not a string or a whole number';
+ if(!id.length)return 'id is empty';
+ if(id.length>TRACE_ID_MAX)return 'id is '+id.length+' characters and the cap is '+TRACE_ID_MAX;
+ if(/[\u0000-\u001f]/.test(id))return 'id carries a control character';
+ if(type==='pattern')return traceAddrWhy(id);
+ if(type==='release'||type==='reframe'){
+  var parts=id.split(':');
+  if(parts.length!==2||!parts[1])return id+' is not an address and a channel';
+  var aw=traceAddrWhy(parts[0]); if(aw)return aw;
+  var truth=TRACE_TRUTH.test(parts[1]);
+  if(type==='release'&&truth)return parts[1]+' is a truth channel, so this is a reframe';
+  if(type==='reframe'&&!truth)return parts[1]+' is not a truth channel, so this is a release';}
+ return null;}
+function traceNodeWhy(type,id,src){
+ if(TRACE_NODE_TYPES.indexOf(type)<0)return 'is not a node type: '+type;
+ if(TRACE_SRC.indexOf(src)<0)return 'carries no provenance this graph knows: '+src;
+ var w=traceIdWhy(type,id); if(w)return w;
+ if(TRACE_TABLE.indexOf(type)>=0&&src!=='known')
+  return traceKey(type,id)+' is a row of the address table, so it is known, not '+src;
+ return null;}
+
+/* ---------- the index ----------
+   Never stored on the graph. A cache on the object is one more copy that
+   can disagree with the arrays, so the public functions build one per
+   call, and the bulk builders build one and keep it in step themselves. */
+/* an edge read as an arc: follows is precedes reversed, so both land in
+   one family and a cycle through either is one cycle in time */
+function traceArc(e){
+ var inv=TRACE_INVERSE[e.edge];
+ return inv?{a:e.to,b:e.from,t:inv,e:e}:{a:e.from,b:e.to,t:e.edge,e:e};}
+function traceCanon(arc){
+ var a=arc.a, b=arc.b;
+ if(TRACE_SYMMETRIC.indexOf(arc.t)>=0&&traceSplit(a).type===traceSplit(b).type&&b<a){var x=a;a=b;b=x;}
+ return a+'|'+arc.t+'|'+b;}
+/* the entries of a list that are objects at all. A graph assembled by
+   hand, or read past the boundary, can hold anything, and reading it must
+   not throw; traceOrphans counts what was passed over. */
+function traceLive(list){
+ return (Array.isArray(list)?list:[]).filter(function(x){return x&&typeof x==='object'&&!Array.isArray(x);});}
+function traceIx(g){
+ var ix={node:{}, edge:{}, out:{}, inn:{}};
+ traceLive(g.nodes).forEach(function(n){ix.node[traceKey(n.type,n.id)]=n;});
+ traceLive(g.edges).forEach(function(e){traceIxEdge(ix,e);});
+ return ix;}
+function traceIxEdge(ix,e){
+ var arc=traceArc(e);
+ ix.edge[traceCanon(arc)]=e;
+ (ix.out[arc.a]=ix.out[arc.a]||[]).push(arc);
+ (ix.inn[arc.b]=ix.inn[arc.b]||[]).push(arc);}
+function traceIsGraph(g){
+ return !!(g&&typeof g==='object'&&Array.isArray(g.nodes)&&Array.isArray(g.edges));}
+/* a node named as 'type:id' or as {type,id} */
+function traceRef(r){
+ if(typeof r==='string'){var s=traceSplit(r), a=traceInId(s.type,s.id); return traceKey(s.type,a);}
+ if(r&&typeof r==='object'){var id=traceInId(r.type,r.id); if(id!==null)return traceKey(r.type,id);}
+ return null;}
+
+/* ---------- adding ---------- */
+function traceNodeAdd(g,ix,type,id,src,attrs,was){
+ var sid=traceId(id), why=traceNodeWhy(type,sid,src);
+ if(why)return {ok:false, why:why};
+ var key=traceKey(type,sid), have=ix.node[key];
+ if(have){
+  if(have.src===src)return {ok:true, key:key, held:true};
+  if((TRACE_PROMOTE[have.src]||[]).indexOf(src)>=0){
+   have.was=have.src; have.src=src; return {ok:true, key:key, promoted:true};}
+  return {ok:false, why:key+' is held as '+have.src+' and may not become '+src};}
+ var n={type:type, id:sid, src:src};
+ if(was!==undefined){
+  if((TRACE_PROMOTE[was]||[]).indexOf(src)<0)
+   return {ok:false, why:'was '+was+' cannot have become '+src};
+  n.was=was;}
+ if(attrs)Object.keys(attrs).forEach(function(k){if(n[k]===undefined)n[k]=attrs[k];});
+ g.nodes.push(n); ix.node[key]=n;
+ return {ok:true, key:key, added:true};}
+
+/* does b reach a inside one family, over arcs of type t only */
+function traceReach(ix,from,to,t){
+ var seen={}, q=[from]; seen[from]=1;
+ while(q.length){var k=q.shift(); if(k===to)return true;
+  (ix.out[k]||[]).forEach(function(arc){
+   if(arc.t===t&&!seen[arc.b]){seen[arc.b]=1; q.push(arc.b);}});}
+ return false;}
+
+/* o: {at, was, attrs, strict, nocycle}. strict refuses a repeat even when
+   it could promote, which is the boundary's reading: a stored layer holding
+   one relation twice is corruption, not a confirmation. */
+function traceEdgeAdd(g,ix,from,edge,to,src,o){
+ o=o||{};
+ if(TRACE_EDGE_TYPES.indexOf(edge)<0)return {ok:false, why:'is not an edge type: '+edge};
+ if(TRACE_SRC.indexOf(src)<0)return {ok:false, why:'carries no provenance this graph knows: '+src};
+ if(typeof from!=='string'||!ix.node[from])return {ok:false, why:'from names no node in the graph: '+from};
+ if(typeof to!=='string'||!ix.node[to])return {ok:false, why:'to names no node in the graph: '+to};
+ if(from===to)return {ok:false, why:from+' '+edge+' itself: a relationship of a thing to itself says nothing the node does not'};
+ var ft=ix.node[from].type, tt=ix.node[to].type;
+ if(!TRACE_RULE[ft+' '+edge+' '+tt])
+  return {ok:false, why:'no rule lets a '+ft+' '+edge+' a '+tt};
+ if(edge==='causes'&&TRACE_CAUSE_SRC.indexOf(src)<0)
+  return {ok:false, why:'a cause is a claim and is held only as '+TRACE_CAUSE_SRC.join(' or ')
+   +', never as '+src+': registration is not causation'};
+ var e={from:from, to:to, edge:edge, src:src};
+ if(o.at!==undefined){
+  if(typeof o.at!=='string'||isNaN(new Date(o.at).getTime()))return {ok:false, why:'at is not a date'};
+  e.at=o.at;}
+ if(o.was!==undefined){
+  if((TRACE_PROMOTE[o.was]||[]).indexOf(src)<0)return {ok:false, why:'was '+o.was+' cannot have become '+src};
+  e.was=o.was;}
+ var arc=traceArc(e), have=ix.edge[traceCanon(arc)];
+ if(have){
+  var said=have.from+' '+have.edge+' '+have.to;
+  if(o.strict)return {ok:false, why:'repeats '+said};
+  if(have.src===src)return {ok:true, held:true, edge:have};
+  if((TRACE_PROMOTE[have.src]||[]).indexOf(src)>=0){
+   have.was=have.src; have.src=src; if(e.at)have.at=e.at;
+   return {ok:true, promoted:true, edge:have};}
+  return {ok:false, why:said+' is held as '+have.src+' and may not become '+src};}
+ /* a cycle within an acyclic kind. The new arc closes one exactly when its
+    head already reaches its tail through arcs of its own kind. */
+ if(!o.nocycle&&TRACE_LOOP.indexOf(arc.t)<0&&traceReach(ix,arc.b,arc.a,arc.t))
+  return {ok:false, why:from+' '+edge+' '+to+' would close a loop of '+arc.t
+   +', and '+arc.t+' does not loop'};
+ if(o.attrs)Object.keys(o.attrs).forEach(function(k){if(e[k]===undefined)e[k]=o.attrs[k];});
+ g.edges.push(e); traceIxEdge(ix,e);
+ return {ok:true, added:true, edge:e};}
+
+/* THE PUBLIC FOUR. Each builds its own index, so a graph is only ever its
+   two arrays. */
+function traceAddNode(g,type,id,src){
+ if(!traceIsGraph(g))return {ok:false, why:'there is no graph to add to'};
+ return traceNodeAdd(g,traceIx(g),type,traceInId(type,id),src);}
+function traceAddEdge(g,from,edge,to,src,opt){
+ if(!traceIsGraph(g))return {ok:false, why:'there is no graph to add to'};
+ var o=opt&&typeof opt==='object'?{at:opt.at, was:opt.was}:{};
+ if(o.at===undefined)delete o.at; if(o.was===undefined)delete o.was;
+ return traceEdgeAdd(g,traceIx(g),traceRef(from),edge,traceRef(to),src,o);}
+function traceRemoveEdge(g,from,edge,to){
+ if(!traceIsGraph(g))return {ok:false, why:'there is no graph to remove from'};
+ var f=traceRef(from), t=traceRef(to);
+ if(TRACE_EDGE_TYPES.indexOf(edge)<0)return {ok:false, why:'is not an edge type: '+edge};
+ var ix=traceIx(g), have=ix.edge[traceCanon(traceArc({from:f,to:t,edge:edge}))];
+ if(!have)return {ok:false, why:'no such edge: '+f+' '+edge+' '+t};
+ g.edges.splice(g.edges.indexOf(have),1);
+ return {ok:true, removed:have};}
+
+/* ---------- reading ---------- */
+/* every edge touching a node, both ways, each carrying its own provenance.
+   A proposed edge comes back proposed. */
+function traceNeighbors(g,node,edgeType){
+ if(!traceIsGraph(g))return [];
+ var k=traceRef(node), out=[];
+ if(k===null)return [];
+ traceLive(g.edges).forEach(function(e){
+  if(edgeType&&e.edge!==edgeType)return;
+  if(e.from===k)out.push({key:e.to, edge:e.edge, dir:'out', src:e.src, e:e});
+  else if(e.to===k)out.push({key:e.from, edge:e.edge, dir:'in', src:e.src, e:e});});
+ return out.sort(function(a,b){
+  return a.key<b.key?-1:a.key>b.key?1:(a.edge<b.edge?-1:a.edge>b.edge?1:(a.dir<b.dir?-1:a.dir>b.dir?1:0));});}
+
+/* THE SHORTEST CHAIN from one node to another, as the edges walked, or
+   null. o.undirected walks edges either way, which the document's own
+   example needs: a goal requires a behaviour that a protocol implements.
+   o.src keeps only the provenances named, so "is there a confirmed chain"
+   is asked by naming the confirmed ones and a proposal never answers it.
+   o.edges keeps only the edge types named. */
+function tracePath(g,from,to,o){
+ if(!traceIsGraph(g))return null;
+ o=o||{};
+ var a=traceRef(from), b=traceRef(to);
+ if(a===null||b===null)return null;
+ var ix=traceIx(g); if(!ix.node[a]||!ix.node[b])return null;
+ if(a===b)return [];
+ var okE=function(e){
+  return (!o.src||o.src.indexOf(e.src)>=0)&&(!o.edges||o.edges.indexOf(e.edge)>=0);};
+ var adj={};
+ traceLive(g.edges).forEach(function(e){if(!okE(e))return;
+  (adj[e.from]=adj[e.from]||[]).push({k:e.to, e:e, dir:'out'});
+  if(o.undirected)(adj[e.to]=adj[e.to]||[]).push({k:e.from, e:e, dir:'in'});});
+ Object.keys(adj).forEach(function(k){adj[k].sort(function(x,y){return x.k<y.k?-1:x.k>y.k?1:0;});});
+ var prev={}, q=[a]; prev[a]=null;
+ while(q.length){var k=q.shift(); if(k===b)break;
+  (adj[k]||[]).forEach(function(s){if(prev[s.k]===undefined){prev[s.k]={k:k,s:s}; q.push(s.k);}});}
+ if(prev[b]===undefined)return null;
+ var path=[], c=b;
+ while(prev[c]){var p=prev[c];
+  path.unshift({from:p.s.e.from, edge:p.s.e.edge, to:p.s.e.to, src:p.s.e.src, dir:p.s.dir}); c=p.k;}
+ return path;}
+
+/* ============================================================
+   CYCLES. Strongly connected components, one kind of edge at a time.
+
+   Every arc inside a component of its own kind lies on a cycle of that
+   kind, so a component in an acyclic kind is a contradiction and every
+   arc in it is named, with one cycle through it as the witness. A
+   component in a loop kind is a feedback loop and is reported as one.
+   Iterative, so a long chain of practice events cannot run out of stack.
+   ============================================================ */
+function traceScc(keys,adj){
+ var idx=0, index={}, low={}, on={}, stack=[], out=[];
+ keys.forEach(function(root){
+  if(index[root]!==undefined)return;
+  var work=[{k:root,i:0}]; index[root]=low[root]=idx++; stack.push(root); on[root]=1;
+  while(work.length){
+   var f=work[work.length-1], nb=adj[f.k]||[];
+   if(f.i<nb.length){var w=nb[f.i++];
+    if(index[w]===undefined){index[w]=low[w]=idx++; stack.push(w); on[w]=1; work.push({k:w,i:0});}
+    else if(on[w])low[f.k]=Math.min(low[f.k],index[w]);}
+   else{
+    work.pop();
+    if(work.length){var up=work[work.length-1].k; low[up]=Math.min(low[up],low[f.k]);}
+    if(low[f.k]===index[f.k]){var comp=[],x;
+     do{x=stack.pop(); on[x]=0; comp.push(x);}while(x!==f.k);
+     if(comp.length>1)out.push(comp.sort());}}}});
+ return out;}
+function traceCycles(g){
+ var res={illegal:[], loops:[]};
+ if(!traceIsGraph(g))return res;
+ var by={};
+ traceLive(g.edges).forEach(function(e){var arc=traceArc(e); (by[arc.t]=by[arc.t]||[]).push(arc);});
+ Object.keys(by).sort().forEach(function(t){
+  var arcs=by[t], adj={}, keys={};
+  arcs.forEach(function(a){(adj[a.a]=adj[a.a]||[]).push(a.b); keys[a.a]=1; keys[a.b]=1;});
+  Object.keys(adj).forEach(function(k){adj[k].sort();});
+  traceScc(Object.keys(keys).sort(),adj).forEach(function(comp){
+   if(TRACE_LOOP.indexOf(t)>=0){res.loops.push({edge:t, nodes:comp}); return;}
+   var inC={}; comp.forEach(function(k){inC[k]=1;});
+   arcs.forEach(function(a){
+    if(!inC[a.a]||!inC[a.b])return;
+    /* the witness: the way back from the head to the tail, in kind */
+    var prev={}, q=[a.b]; prev[a.b]=null;
+    while(q.length){var k=q.shift(); if(k===a.a)break;
+     (adj[k]||[]).forEach(function(w){if(inC[w]&&prev[w]===undefined){prev[w]=k; q.push(w);}});}
+    var cyc=[a.a], c=a.a;
+    while(c!==null&&c!==a.b){c=prev[c]; if(c===undefined)break; cyc.unshift(c);}
+    cyc.unshift(a.a);
+    res.illegal.push({edge:a.e, kind:t, cycle:cyc});});});});
+ return res;}
+
+/* ============================================================
+   THE GAPS. Never papered over.
+
+   isolated  a node with no edge at all
+   missing   a node without a link TRACE_NEEDS says its type must have
+   dangling  a stored node naming a record object that is not there, a
+             story entry deleted after something linked to it
+   gaps      what the derivation could not place, carried on a derived
+             graph: an imprint the sniffer seated at no address, a meter
+             key that names no address, an entry with no date to key by
+   unchecked the stored nodes of types this record cannot answer for,
+             counted by type, so nobody reads a clean report as proof
+             that a goal or a protocol named here exists
+   ============================================================ */
+function traceOrphans(g){
+ var res={isolated:[], missing:[], dangling:[], gaps:[], unchecked:{}};
+ if(!traceIsGraph(g))return res;
+ var ix=traceIx(g), live=traceLive(g.edges), nodes=traceLive(g.nodes), by={out:{},in:{}};
+ live.forEach(function(e){
+  (by.out[e.from]=by.out[e.from]||[]).push({e:e,other:e.to});
+  (by['in'][e.to]=by['in'][e.to]||[]).push({e:e,other:e.from});});
+ nodes.slice().sort(function(a,b){
+  var x=traceKey(a.type,a.id), y=traceKey(b.type,b.id); return x<y?-1:x>y?1:0;})
+ .forEach(function(n){
+  var k=traceKey(n.type,n.id);
+  if(!by.out[k]&&!by['in'][k])res.isolated.push(k);
+  if(n.dangling)res.dangling.push({key:k, why:n.why||'names nothing on the record'});
+  (TRACE_NEEDS[n.type]||[]).forEach(function(need){
+   var met=(by[need.dir][k]||[]).some(function(x){
+    return need.edges.indexOf(x.e.edge)>=0&&ix.node[x.other]&&need.types.indexOf(ix.node[x.other].type)>=0;});
+   if(!met)res.missing.push({key:k, type:n.type, dir:need.dir, edges:need.edges.slice(),
+    types:need.types.slice(), why:need.why});});});
+ var junk=(g.nodes.length-nodes.length)+(g.edges.length-live.length);
+ if(junk)res.gaps.push({kind:'malformed', why:junk+' entr'+(junk===1?'y is':'ies are')+' not an object and could not be read'});
+ if(Array.isArray(g.gaps))res.gaps=res.gaps.concat(g.gaps);
+ if(g.unchecked&&typeof g.unchecked==='object')Object.keys(g.unchecked).forEach(function(t){res.unchecked[t]=g.unchecked[t];});
+ return res;}
+
+/* ============================================================
+   THE BOUNDARY. validateProfile hands p.trace here.
+
+   Missing is an older profile and reads as an empty stored layer. A
+   wrong type, a key nobody declared, a node or edge the rules refuse, a
+   reference to a node that is not in the layer, a repeat, or a loop in an
+   acyclic kind is refused by name and never dropped, because a relation
+   quietly removed is one a person thinks they confirmed. Every check is
+   the same function the live graph uses, so there is one rule table and
+   not a second copy of it here.
+   ============================================================ */
+var TRACE_KEYS=['v','nodes','edges'], TRACE_NODE_KEYS=['type','id','src','was'],
+    TRACE_EDGE_KEYS=['from','to','edge','src','at','was'];
+function validateTrace(o){
+ if(o===undefined||o===null)return {ok:true, errs:[], trace:traceNew()};
+ if(typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['is not an object']};
+ var errs=[], g=traceNew(), ix=traceIx(g);
+ Object.keys(o).forEach(function(k){if(TRACE_KEYS.indexOf(k)<0)errs.push('may not carry '+k);});
+ if(o.v!==undefined&&!(typeof o.v==='number'&&o.v%1===0&&o.v>=1&&o.v<=TRACE_V))
+  errs.push('v is '+o.v+', not 1 to '+TRACE_V);
+ var list=function(f){
+  if(o[f]===undefined)return [];
+  if(!Array.isArray(o[f])){errs.push(f+' is not a list'); return [];}
+  if(o[f].length>TRACE_MAX){errs.push(f+' holds '+o[f].length+' and the cap is '+TRACE_MAX); return [];}
+  return o[f];};
+ list('nodes').forEach(function(n,i){
+  var path='nodes['+i+']';
+  if(!n||typeof n!=='object'||Array.isArray(n)){errs.push(path+' is not an object'); return;}
+  var bad=0;
+  Object.keys(n).forEach(function(k){if(TRACE_NODE_KEYS.indexOf(k)<0){errs.push(path+' may not carry '+k); bad++;}});
+  if(bad)return;
+  var sid=traceId(n.id);
+  if(sid!==null&&ix.node[traceKey(n.type,sid)]){errs.push(path+' repeats '+traceKey(n.type,sid)); return;}
+  var r=traceNodeAdd(g,ix,n.type,n.id,n.src,null,n.was);
+  if(!r.ok)errs.push(path+' '+r.why);});
+ list('edges').forEach(function(e,i){
+  var path='edges['+i+']';
+  if(!e||typeof e!=='object'||Array.isArray(e)){errs.push(path+' is not an object'); return;}
+  var bad=0;
+  Object.keys(e).forEach(function(k){if(TRACE_EDGE_KEYS.indexOf(k)<0){errs.push(path+' may not carry '+k); bad++;}});
+  if(bad)return;
+  var r=traceEdgeAdd(g,ix,e.from,e.edge,e.to,e.src,{at:e.at, was:e.was, strict:true, nocycle:true});
+  if(!r.ok)errs.push(path+' '+r.why);});
+ /* the loops, once, over the whole layer rather than per edge */
+ traceCycles(g).illegal.forEach(function(c){
+  errs.push('edges close a loop of '+c.kind+', which does not loop: '+c.cycle.join(' then '));});
+ return errs.length?{ok:false, errs:errs}:{ok:true, errs:[], trace:g};}
+
+/* ============================================================
+   THE CONTRACT WITH THE PRACTICE BUILD. Fixed; they code against it
+   without this file present.
+
+     intent = {from:{type,id}, to:{type,id}, edge, src}
+
+   Nodes are made on demand. A node made for an intent takes the intent's
+   provenance, except a row of the address table, which is known whoever
+   names it, because an AI proposing a protocol for address 12 has not
+   made address 12 a proposal. A node already present is left exactly as
+   it is: confirming an edge confirms the edge, not the things at its ends.
+
+   Each intent is all or nothing. One refused leaves no node behind that
+   was made for it. Every refusal is returned with its reason and the
+   intent it refused; nothing is dropped. An intent already held is
+   counted as held and is not a refusal, so a build that replays its
+   intents on every save is not told it failed. now stamps the edges, and
+   is the only clock this file reads: pass it and the call is pure.
+   ============================================================ */
+var TRACE_INTENT_KEYS=['from','to','edge','src'], TRACE_END_KEYS=['type','id'];
+function traceIntentWhy(it){
+ if(!it||typeof it!=='object'||Array.isArray(it))return 'an intent is not an object';
+ var ks=Object.keys(it).filter(function(k){return TRACE_INTENT_KEYS.indexOf(k)<0;});
+ if(ks.length)return 'an intent may not carry '+ks.join(', ');
+ var ends=['from','to'];
+ for(var i=0;i<2;i++){var x=it[ends[i]];
+  if(!x||typeof x!=='object'||Array.isArray(x))return ends[i]+' is not {type, id}';
+  var ek=Object.keys(x).filter(function(k){return TRACE_END_KEYS.indexOf(k)<0;});
+  if(ek.length)return ends[i]+' may not carry '+ek.join(', ');}
+ return null;}
+function traceApplyIx(g,ix,intents,at,res){
+ intents.forEach(function(it){
+  var why=traceIntentWhy(it);
+  if(why){res.refused.push({intent:it, why:why}); return;}
+  var made=[], keys=[];
+  for(var i=0;i<2;i++){var end=i?it.to:it.from;
+   var src=TRACE_TABLE.indexOf(end.type)>=0?'known':it.src;
+   var sid=traceInId(end.type,end.id), k=sid===null?null:traceKey(end.type,sid);
+   if(k!==null&&ix.node[k]){keys.push(k); continue;}
+   var r=traceNodeAdd(g,ix,end.type,sid===null?end.id:sid,src);
+   if(!r.ok){
+    made.forEach(function(m){g.nodes.splice(g.nodes.indexOf(ix.node[m]),1); delete ix.node[m];});
+    res.refused.push({intent:it, why:(i?'to ':'from ')+r.why}); return;}
+   made.push(r.key); keys.push(r.key);}
+  var e=traceEdgeAdd(g,ix,keys[0],it.edge,keys[1],it.src,at===undefined?{}:{at:at});
+  if(!e.ok){
+   made.forEach(function(m){g.nodes.splice(g.nodes.indexOf(ix.node[m]),1); delete ix.node[m];});
+   res.refused.push({intent:it, why:e.why}); return;}
+  if(e.promoted)res.promoted++; else if(e.held)res.held++; else res.added++;});
+ return res;}
+function traceApply(g,intents,now){
+ var res={added:0, promoted:0, held:0, refused:[]};
+ var all=Array.isArray(intents)?intents:[intents];
+ if(!traceIsGraph(g)){
+  all.forEach(function(it){res.refused.push({intent:it, why:'there is no graph to apply to'});});
+  return res;}
+ if(!Array.isArray(intents)){res.refused.push({intent:intents, why:'intents is not a list'}); return res;}
+ var at=now===undefined?new Date().toISOString():now;
+ if(typeof at!=='string'||isNaN(new Date(at).getTime())){
+  all.forEach(function(it){res.refused.push({intent:it, why:'now is not a date'});});
+  return res;}
+ return traceApplyIx(g,traceIx(g),intents,at,res);}
+
+/* ============================================================
+   WHAT THE RECORD ALREADY SAYS.
+   ============================================================ */
+/* AN ENTRY IS KEYED BY ITS TIME, not by its place in the list (19.B7).
+   Two entries stamped the same instant are told apart by order among
+   themselves only, as #1, #2. An entry with no readable time has no
+   identity of its own, is keyed by position as entry#i, and is reported
+   as a gap, because a position key moves when anything before it is
+   deleted. */
+function traceTimeIds(list){
+ var seen={};
+ return (list||[]).map(function(x,i){
+  var t=x&&x.t;
+  if(typeof t!=='string'||isNaN(new Date(t).getTime()))return 'entry#'+i;
+  seen[t]=(seen[t]||0)+1;
+  return seen[t]>1?t+'#'+(seen[t]-1):t;});}
+function traceStoryIds(p){ return traceTimeIds(p&&p.story&&p.story.entries); }
+function traceRitualIds(p){ return traceTimeIds(p&&p.rituals); }
+
+/* ============================================================
+   THE READING BELONGS TO THE RECORD IT IS A READING OF.
+
+   parseStory chooses which addresses a fallback reading lands on by
+   susceptibility, and susceptibility is set from whichever soul S holds.
+   compute.js already records what that cost once: 944 of 1560 profile
+   pairs read differently by order. Measured here before this was written,
+   over the fourteen roster stories: 2 of 14 land on different addresses
+   depending on which roster soul is loaded. Angela's own sentence lands
+   on 53, 54, 55 and 56 under her soul and on 61, 62, 53 and 54 under
+   Sofia's.
+
+   So the read is made under the record's own soul, and everything it
+   moved is put back after, including when the read throws. Nothing here
+   moves a charge or a law; S is borrowed for the length of one parse and
+   returned as it was. The soul is read the way the boundary fills it: an
+   empty list of domains is the first domain, never whichever domain the
+   last profile left in S.dom.
+   ============================================================ */
+function traceWithSoul(p,fn){
+ var soul=(p&&p.soul&&typeof p.soul==='object')?p.soul:{};
+ var keep={doms:S.doms, arcs:S.arcs, roots:S.roots, dom:S.dom, a1:S.a1, a2:S.a2,
+  D:DOMAIN, susc:W.map(function(n){return n.susc;})};
+ try{
+  S.doms=(Array.isArray(soul.doms)&&soul.doms.length?soul.doms:[0]).slice();
+  S.arcs=(Array.isArray(soul.arcs)&&soul.arcs.length?soul.arcs:[0,1]).slice();
+  S.roots=(Array.isArray(soul.roots)?soul.roots:[]).slice();
+  buildSoul(); suscAll();
+  return fn();}
+ finally{
+  S.doms=keep.doms; S.arcs=keep.arcs; S.roots=keep.roots;
+  S.dom=keep.dom; S.a1=keep.a1; S.a2=keep.a2; DOMAIN=keep.D;
+  W.forEach(function(n,i){n.susc=keep.susc[i];});}}
+
+function tracePatternAttrs(i){
+ var n=BY[+i]; return n?{name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null}:{};}
+
+/* ============================================================
+   traceFromRecord(p, intents)
+
+   The whole graph for one record: what the record says, then the stored
+   layer p.trace over it, then any intents handed in at read time. Same
+   record, same graph, byte for byte, whatever profile the engine happens
+   to have loaded.
+
+   intents here are for relationships a practice object's own fields
+   already state, a protocol's own list of patterns, say. Those should be
+   handed in on every read and never stored, for the same reason nothing
+   else derivable is stored. Only what has no other home goes into
+   p.trace through traceApply.
+
+   Every derived node and edge goes through the same rule table as a
+   stored one. A derived edge the table refused would be a defect in this
+   file, so it is reported in refused rather than kept, and the gate holds
+   refused empty on the worked record.
+   ============================================================ */
+function traceFromRecord(p,intents){
+ var g=traceNew(); g.alg=TRACE_ALG; g.lex=LEX_VERSION;
+ g.gaps=[]; g.refused=[]; g.restated=[]; g.unchecked={};
+ var ix=traceIx(g);
+ if(!p||typeof p!=='object'){g.gaps.push({kind:'no_record', why:'there is no record to read'}); return g;}
+ var node=function(type,id,src,attrs){
+  var r=traceNodeAdd(g,ix,type,id,src,attrs);
+  if(!r.ok)g.refused.push({derived:true, node:traceKey(type,id), why:r.why});
+  return r.ok?r.key:null;};
+ var edge=function(from,e,to,src,attrs){
+  var r=traceEdgeAdd(g,ix,from,e,to,src,{attrs:attrs, nocycle:true});
+  if(!r.ok)g.refused.push({derived:true, edge:from+' '+e+' '+to, why:r.why});};
+
+ /* THE STORIES, read under the record's own soul */
+ var ents=(p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
+ var sids=traceStoryIds(p);
+ var reads=traceWithSoul(p,function(){
+  return ents.map(function(e){
+   if(!e||typeof e.text!=='string')return null;
+   try{return parseStory(e.text).imprints;}catch(err){return {err:(err&&err.message)||'error'};}});});
+ ents.forEach(function(e,i){
+  var id=sids[i];
+  if(/^entry#/.test(id))g.gaps.push({kind:'undated', story:traceKey('story',id),
+   why:'entry '+i+' has no readable time, so it is keyed by its position, which moves'});
+  var sk=node('story',id,'known',{t:(e&&e.t)||null, lex:(e&&e.lex)||null,
+   imprints:(e&&typeof e.imprints==='number')?e.imprints:null});
+  if(!sk)return;
+  /* THE READING IS TODAY'S. An entry read under another lexicon, or before
+     the stamp existed, is re-read under this one, so its edges are what
+     the sniffer says now and not what the person was shown then. Named,
+     never hidden. */
+  if(!e||e.lex!==LEX_VERSION)g.restated.push({story:sk, lex:(e&&e.lex)||null, now:LEX_VERSION});
+  var im=reads[i];
+  if(im===null){g.gaps.push({kind:'no_text', story:sk, why:'the entry carries no text to read'}); return;}
+  if(im.err){g.gaps.push({kind:'unread', story:sk, why:'the sniffer could not read it: '+im.err}); return;}
+  var by={}, order=[];
+  im.forEach(function(x){
+   if(x.node===null||x.node===undefined||!BY[x.node]){
+    g.gaps.push({kind:'unplaced', story:sk, seat:x.band||null, fetter:x.fetter||null,
+     why:'the reading seated charge at the '+(x.band||'unknown seat')+' and named no address'});
+    return;}
+   var k=String(x.node);
+   if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
+   by[k].amt+=x.amt||0; if(!x.inferred)by[k].named=true;
+   by[k].fetter=x.fetter||null;});
+  order.forEach(function(k){
+   var pk=node('pattern',k,'known',tracePatternAttrs(k));
+   if(!pk)return;
+   var b=by[k];
+   edge(sk,'supports',pk,'inferred',{derived:true, w:Math.round(b.amt*10)/10, named:b.named,
+    why:b.named?'the words named '+b.fetter+' and the sniffer placed it here'
+     :'the seat was read and the address was chosen by the fallback, not by the words'});});});
+
+ /* THE LINES OPENED. One node per address and channel, which is
+    meterKey's own form with no line. */
+ var groups={}, gorder=[];
+ ((p.meter&&Array.isArray(p.meter.unique))?p.meter.unique:[]).forEach(function(mk){
+  var parts=String(mk).split(':');
+  if(parts.length<2||!/^[0-9]+$/.test(parts[0])||!BY[+parts[0]]||!parts[1]){
+   g.gaps.push({kind:'unreadable_key', key:String(mk), why:'the key names no address and channel'}); return;}
+  var gk=meterKey(+parts[0],parts[1]);
+  if(!groups[gk]){groups[gk]={node:parts[0], chan:parts[1], lines:0}; gorder.push(gk);}
+  groups[gk].lines++;});
+ gorder.forEach(function(gk){
+  var gr=groups[gk], type=TRACE_TRUTH.test(gr.chan)?'reframe':'release';
+  var rk=node(type,gk,'known',{address:+gr.node, chan:gr.chan, lines:gr.lines});
+  var pk=node('pattern',gr.node,'known',tracePatternAttrs(gr.node));
+  if(rk&&pk)edge(rk,'addresses',pk,'observed',{derived:true, w:gr.lines,
+   why:gr.lines+' line'+(gr.lines===1?'':'s')+' opened at this address down this channel'});});
+
+ /* THE SAVED RITUALS. Planned is not done, and done is not change. */
+ var rits=Array.isArray(p.rituals)?p.rituals:[];
+ var rids=traceRitualIds(p);
+ rits.forEach(function(x,i){
+  if(!x||typeof x!=='object')return;
+  var id=rids[i];
+  if(/^entry#/.test(id))g.gaps.push({kind:'undated', ritual:traceKey('ritual',id),
+   why:'ritual '+i+' has no readable time, so it is keyed by its position, which moves'});
+  var rk=node('ritual',id,'known',{t:x.t||null, band:x.band||'', track:x.track||'',
+   steps:Array.isArray(x.steps)?x.steps.slice():[], min:typeof x.min==='number'?x.min:0});
+  if(!rk||x.done===false)return;
+  var older=x.done===undefined;
+  var src=older?'inferred':'observed';
+  var ek=node('practice_event',id,src,{at:typeof x.done==='string'?x.done:null});
+  if(ek)edge(rk,'produces',ek,src,{derived:true,
+   why:older?'saved before planned and practised were split; ledgerRead counts it practised and nothing recorded it'
+    :'marked done'});});
+ /* every derived node so far is the record's own */
+ g.nodes.forEach(function(n){n.derived=true;});
+
+ /* THE STORED LAYER over it. A stored node the record already derived
+    keeps the derived one. A stored story the record no longer holds is
+    kept and marked dangling. A stored release nothing has run yet targets
+    its address, known from its own key, and does not address it. */
+ var s=p.trace;
+ if(s!==undefined&&s!==null){
+  if(!traceIsGraph(s))g.refused.push({stored:true, why:'p.trace is not a graph'});
+  else{
+   s.nodes.forEach(function(n){
+    if(!n||typeof n!=='object'){g.refused.push({stored:true, why:'a stored node is not an object'}); return;}
+    var sid=traceId(n.id), k=sid===null?null:traceKey(n.type,sid);
+    if(k!==null&&ix.node[k])return;
+    var attrs=n.type==='pattern'?tracePatternAttrs(sid):{};
+    if(n.type==='story')attrs={dangling:true, why:'no entry on this record is keyed '+sid};
+    if(n.type==='release'||n.type==='reframe')attrs={lines:0};
+    var r=traceNodeAdd(g,ix,n.type,n.id,n.src,attrs,n.was);
+    if(!r.ok){g.refused.push({stored:true, node:k, why:r.why}); return;}
+    if(n.type==='release'||n.type==='reframe'){
+     var ak=traceKey('pattern',sid.split(':')[0]);
+     if(!ix.node[ak])traceNodeAdd(g,ix,'pattern',sid.split(':')[0],'known',tracePatternAttrs(sid.split(':')[0]));
+     edge(r.key,'targets',ak,'known',{derived:true, why:'the key names this address; no line has run here'});}});
+   s.edges.forEach(function(e){
+    if(!e||typeof e!=='object'){g.refused.push({stored:true, why:'a stored edge is not an object'}); return;}
+    var r=traceEdgeAdd(g,ix,e.from,e.edge,e.to,e.src,{at:e.at, was:e.was});
+    if(!r.ok)g.refused.push({stored:true, edge:e.from+' '+e.edge+' '+e.to, why:r.why});});}}
+
+ /* THE READ TIME INTENTS */
+ if(intents!==undefined&&intents!==null){
+  var res={added:0, promoted:0, held:0, refused:[]};
+  if(!Array.isArray(intents))g.refused.push({intent:intents, why:'intents is not a list'});
+  else traceApplyIx(g,ix,intents,undefined,res);
+  res.refused.forEach(function(r){g.refused.push(r);});}
+
+ /* WHAT THE RECORD CANNOT ANSWER FOR, counted */
+ g.nodes.forEach(function(n){
+  if(n.derived||TRACE_RESOLVED.indexOf(n.type)>=0)return;
+  g.unchecked[n.type]=(g.unchecked[n.type]||0)+1;});
+
+ /* one order, so one record is one graph */
+ g.nodes.sort(function(a,b){
+  var x=traceKey(a.type,a.id), y=traceKey(b.type,b.id); return x<y?-1:x>y?1:0;});
+ g.edges.sort(function(a,b){
+  var x=a.from+'|'+a.edge+'|'+a.to+'|'+a.src, y=b.from+'|'+b.edge+'|'+b.to+'|'+b.src;
+  return x<y?-1:x>y?1:0;});
+ return g;}
 
 /* ============================================================
    SOURCE PROFILE SCHEMA v1 · the cross-compatibility contract.
@@ -5765,8 +6737,9 @@ function blankProfile(name){
      buzz is the vibration under the release's marks, off like the tone.
      practitioner is round LL's mode, and it is off: it puts a Practitioner
      section in the bar, and a door a person never asked for is a door they
-     have to work out how to get rid of. */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false},
+     have to work out how to get rid of. sfx is the interface's own sounds,
+     ui/sound.js, off like the tone and for the same reason. */
+  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -5823,13 +6796,21 @@ function blankProfile(name){
   work:{},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
-  story:{entries:[]}, rituals:[], history:[]};
+  story:{entries:[]}, rituals:[], history:[],
+  /* THE PRACTICE OBJECTS, engine/practice.js. Additive: an older record has
+     none and is filled from this blank, and no SCHEMA_V bump, which is the
+     owner's call. p.rituals above is the Ritual tab's day log and is a
+     different thing; see PRACTICE-AUDIT.md for why both exist for now. */
+  practice:practiceBlank()};
  /* held was 3 on every axis, and this is the profile a new person gets. The
     laws beside it are correctly null, meaning not yet measured, and the charge
     was not given the same honesty. Nobody entered a 3. Zero is the only value
     that is true of a person who has said nothing. */
  CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
+ /* the trace graph's stored half, engine/trace.js. Only what cannot be
+    derived from the record lives here; everything else is read off it. */
+ p.trace=traceNew();
  return p;}
 /* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
    LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
@@ -5874,6 +6855,9 @@ function loadProfile(p){
  /* a record from before the release lift has done no work since its answers,
     which is exactly what an empty map says */
  if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
+ /* a record from before the practice objects has none, which is a record
+    nobody has built a practice on yet */
+ if(!p.practice||typeof p.practice!=='object'||Array.isArray(p.practice))p.practice=practiceBlank();
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -6565,7 +7549,7 @@ function validateProfile(o){
  if(o.ui&&typeof o.ui==='object'){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
-  ['quiet','model','tone','voice','buzz','practitioner'].forEach(function(k){
+  ['quiet','model','tone','voice','buzz','practitioner','sfx'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
@@ -6745,6 +7729,11 @@ function validateProfile(o){
  if(Array.isArray(o.rituals))p.rituals=o.rituals
   .map(function(x,i){return vRitual(errs,i,x);}).filter(Boolean);
  else if(o.rituals!==undefined&&o.rituals!==null)errs.push('rituals is not a list');
+ /* THE PRACTICE OBJECTS, through their own boundary (practiceValidate,
+    engine/practice.js), into the same errs, so one bad practice refuses the
+    whole record and pImport stays atomic. Missing or null is an older
+    record and keeps the blank. */
+ if(o.practice!==undefined&&o.practice!==null)p.practice=practiceValidate(errs,o.practice,'practice');
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
     crashed the record view on the first render after an import. */
@@ -6803,6 +7792,14 @@ function validateProfile(o){
     and nothing that writes a profile can put one back without this failing. */
  ['token','session','password','email'].forEach(function(f){
   if(o[f]!==undefined)errs.push(f+' is not held by this product');});
+ /* THE TRACE GRAPH'S STORED HALF, engine/trace.js. Missing or null is an
+    older record and reads as the blank's empty layer. Anything else goes
+    through validateTrace, which uses the live graph's own rule table, and
+    each refusal is named under trace. rather than dropped. */
+ if(o.trace!==undefined&&o.trace!==null){
+  var tv=validateTrace(o.trace);
+  if(tv.ok)p.trace=tv.trace;
+  else tv.errs.forEach(function(e){errs.push('trace.'+e);});}
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -7150,6 +8147,1141 @@ function pImport(txt){
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
 
+
+/* ============================================================
+   PRACTICE. The P0 domain of the Practice TDD
+   (ATUNED-practice-ritual-accountability-trace-graph-TDD.md, section
+   41): Goal, BehaviorObjective, Protocol, ProtocolStep, Ritual,
+   PracticeEvent, Evidence and Outcome, their state machines, the event
+   log that is their audit trail, versioning, provenance, and the
+   persistence of all of it on the record the boundary already guards.
+
+   HOST FREE. Nothing here touches a document, a store or a network. The
+   host binds storage and the host draws. Every write goes through one
+   pure door, practiceDo, which takes a practice object and returns a new
+   one, so a refused write leaves the old object exactly as it was and the
+   caller has nothing to put back.
+
+   WHAT IS STORED AND WHAT IS DERIVED, said once. Stored: the eight kinds
+   of object and the log. Derived and never stored: whether a protocol
+   version is superseded (a higher version exists), the stage after a
+   practice event's status (verified, evidence, outcome), the miss run and
+   whether it has reached the threshold, the effect and affect reads, and
+   the trace intents. A stored derived value is how two truths appear.
+
+   WHAT IS NOT HERE. No UI. No server. No graph: practiceTraceIntents
+   returns plain intents and the graph consumes them. No goal
+   decomposition and no other P1 intelligence. And no copy of the release
+   engine: a release protocol plans through meterPlan and meterRerunPlan
+   and verifies against meter.unique, which stay authoritative (TDD
+   section 8, rule 8).
+
+   THE OLD RITUAL RECORD IS NOT TOUCHED. p.rituals is the day log the
+   Ritual tab, the ladder and the avatar's cycles all read, and the plans
+   live beside the record under atuned-ritual-active. practiceFromLegacy
+   below states and tests how both map into these objects, and it is NOT
+   run on load: running it now would write a second copy of every day
+   while the Ritual tab keeps writing the first, which is two truths. The
+   cutover is the UI build's, when one writer replaces the other. See
+   PRACTICE-AUDIT.md.
+   ============================================================ */
+var PRACTICE_SCHEMA_V=1;
+
+/* ---------------- the enums, exactly as the TDD writes them ---------------- */
+/* section 26. Never collapsed: a value moves only by a named action. */
+var PR_SRC=['known','inferred','proposed','user_confirmed','observed'];
+/* sections 4 and 5. One list for both, because the TDD writes the same
+   four for both and two copies of one list are two lists that drift. */
+var PR_LIFE=['active','paused','completed','abandoned'];
+var PR_CLASS=['release','behavior','integrity','communication','body','attention',
+ 'relationship','goal','presence','custom'];
+var PR_STEP=['release','reframe','affirmation','behavior','timer','observation',
+ 'real_world_action','verification'];
+var PR_EV_ST=['scheduled','available','started','partial','completed','skipped','missed','interrupted'];
+var PR_EVID_SOURCE=['user','system','observation','behavioral_event','outcome'];
+var PR_EVID_TYPE=['internal','behavioral','contextual','outcome','negative'];
+var PR_OUT_ST=['improved','unchanged','worsened','unclear'];
+/* section 24 */
+var PR_MISS=['wrong_time','too_long','too_difficult','unclear_purpose','low_relevance',
+ 'environment','forgot','resistance','goal_changed','protocol_mismatch','unknown'];
+var PR_ADAPT=['shorten','reschedule','change_condition','change_protocol','reduce_difficulty',
+ 'increase_difficulty','pause','replace','investigate_pattern'];
+/* section 30, the whole vocabulary, in its order */
+var PR_EVENTS=['GOAL_CREATED','GOAL_UPDATED','GOAL_PAUSED','GOAL_COMPLETED','GOAL_ABANDONED',
+ 'BEHAVIOR_DEFINED','BEHAVIOR_UPDATED',
+ 'PROTOCOL_GENERATED','PROTOCOL_ACCEPTED','PROTOCOL_REJECTED','PROTOCOL_MODIFIED',
+ 'PROTOCOL_VERSIONED','PROTOCOL_ADAPTED','PROTOCOL_ADVANCED','PROTOCOL_DEESCALATED',
+ 'RITUAL_CREATED','RITUAL_STARTED','RITUAL_PAUSED','RITUAL_COMPLETED','RITUAL_SKIPPED',
+ 'RITUAL_MISSED','RITUAL_RESCHEDULED',
+ 'PRACTICE_STARTED','PRACTICE_PARTIAL','PRACTICE_COMPLETED','PRACTICE_INTERRUPTED',
+ 'EVIDENCE_RECORDED','OUTCOME_RECORDED','PATTERN_LINKED','PATTERN_UNLINKED','CONTEXT_TRANSFERRED'];
+/* sections 16 and 17, the graph's vocabulary, for the intents */
+var PR_NODE=['story','impression','pattern','goal','behavior','protocol','ritual','practice_event',
+ 'observation','evidence','outcome','context','somatic_state','reframe','release'];
+var PR_EDGE=['causes','associated_with','supports','contradicts','obstructs','reinforces','targets',
+ 'addresses','requires','implements','executes','produces','measures','occurs_in','replaces',
+ 'precedes','follows','generalizes_to','transfers_to'];
+
+/* ---------------- what the TDD left open, decided here and named ----------------
+   PR_PROTO_ST. The TDD gives a protocol GENERATED, ACCEPTED and REJECTED
+   events and no status field. A version's status is one of three and is
+   set once, from proposed. Superseded is not on the list because it is
+   derived: a version is superseded when a higher one exists.
+   PR_DIM. Section 13 asks for effect and affect measured separately and
+   gives Evidence no field to say which. Every piece of evidence says.
+   PR_CADENCE and PR_DAYS. Section 9 writes cadence as a bare string. A
+   closed set is the boundary's posture, so it is the shapes the Ritual
+   builder can already say plus the two section 25 of the V3 document and
+   section 33 here name. */
+var PR_PROTO_ST=['proposed','accepted','rejected'];
+var PR_DIM=['effect','affect'];
+var PR_CADENCE=['daily','selected_days','every_other_day','trigger'];
+var PR_DAYS=['mon','tue','wed','thu','fri','sat','sun'];
+/* "Practice missed 3 times", section 24's own example. A threshold and not
+   a verdict: reaching it opens an investigation, nothing else. */
+var PR_MISS_AT=3;
+/* WHAT A PRACTICE OBJECT MAY NEVER CARRY, refused by name on every one of
+   the eight. user_id is the TDD's own field and it is refused: a practice
+   object belongs to the record that holds it, and an account id written on
+   it would join the record to the account, which the privacy ruling
+   forbids. The rest are the plan's refusals and the top level's, because a
+   payment field or a session has no business in a practice. */
+var PR_NEVER=['user_id','customer','customer_id','subscription','subscription_id','email',
+ 'key','secret','token','session','password','card','payment','stripe'];
+
+/* ---------------- the state machines ----------------
+   THE PRACTICE EVENT, section 25, as a table and nothing else. available
+   is the clock opening a scheduled practice. interrupted goes back to
+   started, which is section 37's Continue and Restart, or closes as
+   partial. The four end states go nowhere: a record a person can rewrite
+   at will is not a record.
+   VERIFIED, EVIDENCE, OUTCOME and ADAPTATION are in the diagram and not in
+   the status enum, so they are stages read off what is linked to the event
+   (practiceStage), never stored as a status. */
+var PR_FLOW={scheduled:['available','skipped','missed'],
+ available:['started','skipped','missed'],
+ started:['interrupted','partial','completed'],
+ interrupted:['started','partial'],
+ partial:[], completed:[], skipped:[], missed:[]};
+/* the event each move emits. Section 30 has no entry for a practice made
+   available, so that move emits nothing: it is the clock and not a person
+   or the system deciding anything. */
+var PR_EV_EMIT={available:null, started:'PRACTICE_STARTED', partial:'PRACTICE_PARTIAL',
+ completed:'PRACTICE_COMPLETED', interrupted:'PRACTICE_INTERRUPTED',
+ skipped:'RITUAL_SKIPPED', missed:'RITUAL_MISSED'};
+/* a goal and a behavior objective. Paused comes back to active; completed
+   and abandoned are where it ends. Nothing is deleted: abandoned is the
+   TDD's own way out, and a person's history is not ours to remove. */
+var PR_LIFE_FLOW={active:['paused','completed','abandoned'],
+ paused:['active','completed','abandoned'], completed:[], abandoned:[]};
+/* resuming has no event of its own in section 30, so it is an update */
+var PR_GOAL_EMIT={active:'GOAL_UPDATED', paused:'GOAL_PAUSED',
+ completed:'GOAL_COMPLETED', abandoned:'GOAL_ABANDONED'};
+var PR_REVISE_EMIT={modify:'PROTOCOL_MODIFIED', adapt:'PROTOCOL_ADAPTED',
+ advance:'PROTOCOL_ADVANCED', deescalate:'PROTOCOL_DEESCALATED'};
+/* what each classification of a miss proposes. Every proposal is proposed
+   and the person decides (section 24). None of the eleven reads the miss as
+   a lack of motivation, and no classification can say so (rule 12). */
+var PR_MISS_PROPOSE={
+ wrong_time:['reschedule'], too_long:['shorten','reduce_difficulty'],
+ too_difficult:['reduce_difficulty','shorten'], unclear_purpose:['investigate_pattern','change_protocol'],
+ low_relevance:['change_protocol','replace','investigate_pattern'],
+ environment:['change_condition','reschedule'], forgot:['reschedule','change_condition'],
+ resistance:['investigate_pattern','reduce_difficulty'], goal_changed:['pause','replace'],
+ protocol_mismatch:['change_protocol','replace'], unknown:['investigate_pattern']};
+var PR_MOTIVE=['motivation','lazy','laziness','discipline','willpower','weak','weakness','unmotivated'];
+/* the metric a system writes when it records only that a practice ran.
+   It is evidence the practice happened and never evidence of change. */
+var PR_COMPLETION='completion';
+
+/* ---------------- caps, refused above and never truncated ---------------- */
+var PR_CAP={goals:200, behavior_objectives:1000, protocols:2000, protocol_steps:10000,
+ rituals:500, practice_events:20000, evidence:20000, outcomes:5000, log:100000};
+var PR_STRS_MAX=50, PR_STR_SHORT=120;
+
+/* ============================================================
+   THE SHAPES. A small field language so the eight specs read as tables:
+   t is the kind, req refuses a missing field, nul allows null, max bounds a
+   string or a list. A missing field that is not required is filled from
+   its blank. Everything else is refused by name with the path to it.
+   ============================================================ */
+var PR_ID_RE=/^[A-Za-z0-9_.:-]{1,64}$/;
+var PR_S={str:function(max){return {t:'str',max:max};},
+ nstr:function(max){return {t:'str',max:max,nul:1};},
+ strs:{t:'list',max:PR_STRS_MAX,of:{t:'str',max:PR_STR_SHORT}},
+ ndate:{t:'date',nul:1}, date:{t:'date',req:1},
+ nnum:function(lo,hi){return {t:'num',lo:lo,hi:hi,nul:1};}};
+var PR_QV={t:'obj',keys:{value:PR_S.nnum(-1e9,1e9),unit:PR_S.nstr(40)}};
+var PR_COND3={t:'obj',keys:{when:PR_S.strs,where:PR_S.strs,with_whom:PR_S.strs}};
+var PR_SN={t:'sn',nul:1};
+var PR_META={
+ id:{t:'id',req:1},
+ src:{t:'enum',of:PR_SRC,req:1},
+ schema_version:{t:'num',int:1,lo:1,hi:PRACTICE_SCHEMA_V,req:1},
+ generated_by:{t:'obj',keys:{system:PR_S.nstr(80),model_version:PR_S.nstr(80),timestamp:PR_S.ndate}},
+ approved_by:{t:'obj',keys:{user:{t:'bool'},at:PR_S.ndate}},
+ contract_version:PR_S.nstr(40), algorithm_version:PR_S.nstr(40)};
+function prSpec(own){var o={}; Object.keys(PR_META).forEach(function(k){o[k]=PR_META[k];});
+ Object.keys(own).forEach(function(k){o[k]=own[k];}); return o;}
+var PR_SPEC={
+ goals:prSpec({
+  title:{t:'str',max:200,min:1,req:1}, description:PR_S.str(2000),
+  status:{t:'enum',of:PR_LIFE,req:1},
+  desired_outcome:{t:'obj',keys:{description:PR_S.str(2000),measurable:{t:'bool'},
+   target_value:PR_S.nnum(-1e9,1e9),target_unit:PR_S.nstr(40)}},
+  conditions:{t:'obj',keys:{contexts:PR_S.strs,environments:PR_S.strs,people:PR_S.strs,
+   triggers:PR_S.strs,time_windows:PR_S.strs}},
+  start_at:PR_S.date, target_at:PR_S.ndate, created_at:PR_S.date, updated_at:PR_S.date}),
+ behavior_objectives:prSpec({
+  goal_id:{t:'id',req:1}, behavior:{t:'str',max:200,min:1,req:1}, description:PR_S.str(2000),
+  frequency:PR_QV, duration:PR_QV, quantity:PR_QV, conditions:PR_COND3,
+  quality_dimensions:{t:'obj',keys:{awareness:{t:'bool'},presence:{t:'bool'},
+   integrity:{t:'bool'},consistency:{t:'bool'}}},
+  priority:{t:'num',lo:0,hi:1e6,req:1}, status:{t:'enum',of:PR_LIFE,req:1},
+  created_at:PR_S.date, updated_at:PR_S.date}),
+ protocols:prSpec({
+  version:{t:'num',int:1,lo:1,hi:10000,req:1}, class:{t:'enum',of:PR_CLASS,req:1},
+  status:{t:'enum',of:PR_PROTO_ST,req:1}, objective_id:{t:'id',nul:1},
+  target_patterns:{t:'obj',keys:{pattern_ids:{t:'list',max:PR_STRS_MAX,of:{t:'pat'}}}},
+  steps:{t:'obj',keys:{step_ids:{t:'list',max:PR_STRS_MAX,of:{t:'id'}}}},
+  conditions:PR_COND3,
+  schedule:{t:'obj',keys:{cadence:PR_S.nstr(40),duration:PR_S.nstr(40)}},
+  progression:{t:'obj',keys:{enabled:{t:'bool'},progression_id:{t:'id',nul:1}}},
+  verification:{t:'obj',keys:{required:{t:'bool'},verification_type:PR_S.str(60)}},
+  evidence_requirements:{t:'obj',keys:{evidence_types:{t:'list',max:PR_EVID_TYPE.length,uniq:1,
+   of:{t:'enum',of:PR_EVID_TYPE}}}},
+  adaptation_rules:{t:'obj',keys:{rule_ids:{t:'list',max:PR_STRS_MAX,of:{t:'id'}}}},
+  created_at:PR_S.date, updated_at:PR_S.date}),
+ /* practice is the one field added to a step: the key of a row in the
+    practice library a behavior step asks for, so Box Breathing is the
+    library's and is not written out again here. */
+ protocol_steps:prSpec({
+  protocol_id:{t:'id',req:1}, sequence:{t:'num',int:1,lo:1,hi:1000,req:1},
+  type:{t:'enum',of:PR_STEP,req:1}, instruction:PR_S.str(500),
+  duration:PR_QV, quantity:PR_QV, condition:PR_S.nstr(500),
+  completion_rule:PR_S.nstr(500), evidence_rule:PR_S.nstr(500),
+  practice:{t:'prac',nul:1}}),
+ /* tags are the seven seats and nothing else: TG4 ruled a closed field
+    validated against a table, never free text, and the Ritual tab already
+    keeps them that way. The TDD writes string[]; the ruling wins. */
+ rituals:prSpec({
+  protocol_id:{t:'id',req:1}, title:{t:'str',max:200,min:1,req:1},
+  cadence:{t:'obj',keys:{type:{t:'enum',of:PR_CADENCE,req:1}}},
+  days:{t:'list',max:7,uniq:1,of:{t:'enum',of:PR_DAYS}},
+  start_at:PR_S.ndate, end_at:PR_S.ndate,
+  timer:{t:'obj',keys:{enabled:{t:'bool'},duration_seconds:PR_S.nnum(1,86400)}},
+  active:{t:'bool',req:1}, order:{t:'num',int:1,lo:0,hi:100000},
+  tags:{t:'list',max:7,uniq:1,of:{t:'seat'}},
+  created_at:PR_S.date, updated_at:PR_S.date}),
+ /* protocol_version is section 27's: the version that ran, kept for ever. */
+ practice_events:prSpec({
+  ritual_id:{t:'id',req:1}, protocol_id:{t:'id',req:1},
+  protocol_version:{t:'num',int:1,lo:1,hi:10000,req:1},
+  scheduled_at:PR_S.date, started_at:PR_S.ndate, completed_at:PR_S.ndate,
+  status:{t:'enum',of:PR_EV_ST,req:1},
+  execution:{t:'obj',keys:{duration_seconds:PR_S.nnum(0,604800),
+   steps_completed:{t:'num',int:1,lo:0,hi:1000},steps_expected:{t:'num',int:1,lo:0,hi:1000}}},
+  quality:{t:'obj',keys:{awareness:PR_S.nnum(0,10),presence:PR_S.nnum(0,10),
+   integrity:PR_S.nnum(0,10),effort:PR_S.nnum(0,10),self_reported_quality:PR_S.nnum(0,10)}},
+  evidence_ids:{t:'list',max:500,of:{t:'id'}}, outcome_id:{t:'id',nul:1},
+  created_at:PR_S.date, updated_at:PR_S.date}),
+ evidence:prSpec({
+  source:{t:'enum',of:PR_EVID_SOURCE,req:1}, type:{t:'enum',of:PR_EVID_TYPE,req:1},
+  dimension:{t:'enum',of:PR_DIM,req:1}, timestamp:PR_S.date,
+  context:PR_S.nstr(500), pattern_id:{t:'pat',nul:1},
+  protocol_id:{t:'id',nul:1}, ritual_id:{t:'id',nul:1}, goal_id:{t:'id',nul:1},
+  metric:PR_S.nstr(80), value:PR_SN, unit:PR_S.nstr(40),
+  before:PR_SN, after:PR_SN, later:PR_SN,
+  confidence:PR_S.nnum(0,1), notes:PR_S.nstr(2000)}),
+ outcomes:prSpec({
+  goal_id:{t:'id',req:1}, timestamp:PR_S.date, metric:{t:'str',max:80,min:1,req:1},
+  before:PR_SN, current:PR_SN, target:PR_SN, status:{t:'enum',of:PR_OUT_ST,req:1},
+  evidence_ids:{t:'list',max:500,of:{t:'id'}}, notes:PR_S.nstr(2000)})};
+/* the kinds a log entry and an intent may point at. behavior is the
+   graph's own word for a BehaviorObjective (section 16). */
+var PR_KIND={goal:'goals', behavior:'behavior_objectives', protocol:'protocols',
+ ritual:'rituals', practice_event:'practice_events', evidence:'evidence', outcome:'outcomes'};
+var PR_LOG_SPEC={seq:{t:'num',int:1,lo:1,hi:1e9,req:1}, type:{t:'enum',of:PR_EVENTS,req:1},
+ at:PR_S.date,
+ ref:{t:'obj',req:1,keys:{type:{t:'enum',of:Object.keys(PR_KIND).concat(['pattern']),req:1},
+  id:{t:'str',max:64,min:1,req:1},version:{t:'num',int:1,lo:1,hi:10000,nul:1}}},
+ src:{t:'enum',of:PR_SRC,req:1},
+ /* no free text in the log. It feeds the graph, and what a person wrote
+    stays in the object it was written on. */
+ data:{t:'obj',nul:1,keys:{from:PR_S.nstr(64),to:PR_S.nstr(64),
+  classification:{t:'enum',of:PR_MISS,nul:1},adaptation:{t:'enum',of:PR_ADAPT,nul:1},
+  version:{t:'num',int:1,lo:1,hi:10000,nul:1}}}};
+
+function practiceBlank(){
+ return {v:PRACTICE_SCHEMA_V, goals:[], behavior_objectives:[], protocols:[], protocol_steps:[],
+  rituals:[], practice_events:[], evidence:[], outcomes:[], log:[]};}
+var PR_LISTS=['goals','behavior_objectives','protocols','protocol_steps','rituals',
+ 'practice_events','evidence','outcomes'];
+
+/* ---------------- one field ---------------- */
+function prBlank(f){
+ if(f.nul)return null;
+ if(f.t==='str')return '';
+ if(f.t==='bool')return false;
+ if(f.t==='list')return [];
+ if(f.t==='num')return 0;
+ if(f.t==='obj'){var o={}; Object.keys(f.keys).forEach(function(k){o[k]=prBlank(f.keys[k]);}); return o;}
+ return null;}
+/* a pattern is an address in the node table or one of the nine fetters,
+   and it is keyed the way meterFirst already keys an address, addr:N */
+function practicePatternOk(id){
+ if(typeof id!=='string')return false;
+ var m=/^addr:(\d{1,4})$/.exec(id);
+ if(m)return !!BY[+m[1]];
+ m=/^fetter:(.+)$/.exec(id);
+ return !!(m&&CHARGES.indexOf(m[1])>=0);}
+function prField(errs,path,v,f){
+ if(v===undefined){
+  if(f.req){errs.push(path+' is missing'); return prBlank(f);}
+  return prBlank(f);}
+ if(v===null&&f.nul)return null;
+ switch(f.t){
+  case 'str':{var s=vStr(errs,path,v,f.max); if(s===null)return prBlank(f);
+   if(f.min&&s.trim().length<f.min){errs.push(path+' is empty'); return prBlank(f);}
+   return s;}
+  case 'id':
+   if(typeof v!=='string'||!PR_ID_RE.test(v)){errs.push(path+' is not an id: '+JSON.stringify(v)); return null;}
+   return v;
+  case 'date':{var d=vDate(errs,path,v); return d===null?null:d;}
+  case 'num':{
+   if(!NUM(v)){errs.push(path+' is not a number'); return prBlank(f);}
+   if(v<f.lo||v>f.hi){errs.push(path+' is '+v+', outside '+f.lo+' to '+f.hi); return prBlank(f);}
+   if(f.int&&v%1!==0){errs.push(path+' is '+v+', not a whole number'); return prBlank(f);}
+   return v;}
+  case 'bool':
+   if(typeof v!=='boolean'){errs.push(path+' is not true or false'); return false;}
+   return v;
+  case 'enum':
+   if(f.of.indexOf(v)<0){errs.push(path+' is not one of '+f.of.join(', ')+': '+JSON.stringify(v)); return null;}
+   return v;
+  case 'sn':
+   if(typeof v==='string'){var q=vStr(errs,path,v,200); return q===null?null:q;}
+   if(!NUM(v)){errs.push(path+' is not a number, a short string or null'); return null;}
+   return v;
+  case 'pat':
+   if(!practicePatternOk(v)){errs.push(path+' names no pattern: '+JSON.stringify(v)); return null;}
+   return v;
+  case 'prac':
+   if(typeof v!=='string'||!RIT_STEP[v]){errs.push(path+' names no practice in the library: '+JSON.stringify(v)); return null;}
+   return v;
+  case 'seat':
+   if(BANDS.indexOf(v)<0){errs.push(path+' is not a seat: '+JSON.stringify(v)); return null;}
+   return v;
+  case 'list':{
+   if(!Array.isArray(v)){errs.push(path+' is not a list'); return [];}
+   if(v.length>f.max){errs.push(path+' holds '+v.length+', more than '+f.max); return [];}
+   var out=[];
+   v.forEach(function(x,i){
+    var y=prField(errs,path+'['+i+']',x,f.of);
+    if(f.uniq&&out.indexOf(y)>=0){errs.push(path+' names '+JSON.stringify(y)+' twice'); return;}
+    out.push(y);});
+   return out;}
+  case 'obj':
+   if(!v||typeof v!=='object'||Array.isArray(v)){errs.push(path+' is not an object'); return prBlank(f);}
+   return prObj(errs,path,v,f.keys);}
+ errs.push(path+' has no kind'); return null;}
+/* a closed key set, with the never list refused by its own name first so
+   the reason is the real one */
+function prObj(errs,path,x,keys){
+ Object.keys(x).forEach(function(k){
+  if(PR_NEVER.indexOf(k)>=0)errs.push(path+' may not carry '+k
+   +': a practice object belongs to the record that holds it and carries no account, payment or session field');
+  else if(!keys.hasOwnProperty(k))errs.push(path+' may not carry '+k);});
+ var o={};
+ Object.keys(keys).forEach(function(k){o[k]=prField(errs,path+'.'+k,x[k],keys[k]);});
+ return o;}
+
+/* ============================================================
+   THE BOUNDARY FOR THE PRACTICE OBJECT. Called by validateProfile, so an
+   import is atomic with everything else on the record: one error here
+   refuses the whole record and nothing moves. Every error is named by its
+   path from practice down.
+   ============================================================ */
+function practiceValidate(errs,o,base){
+ var path=base||'practice', P=practiceBlank();
+ if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return P;}
+ Object.keys(o).forEach(function(k){
+  if(k!=='v'&&k!=='log'&&PR_LISTS.indexOf(k)<0)errs.push(path+' may not carry '+k);});
+ /* a newer practice schema than this build knows is refused rather than
+    read with a guess. A missing one is the only version there has been. */
+ if(o.v!==undefined&&(!NUM(o.v)||o.v<1||o.v>PRACTICE_SCHEMA_V||o.v%1!==0))
+  errs.push(path+'.v is '+JSON.stringify(o.v)+', not a practice schema this build reads (1 to '+PRACTICE_SCHEMA_V+')');
+ PR_LISTS.forEach(function(L){
+  if(o[L]===undefined||o[L]===null)return;
+  if(!Array.isArray(o[L])){errs.push(path+'.'+L+' is not a list'); return;}
+  if(o[L].length>PR_CAP[L]){errs.push(path+'.'+L+' holds '+o[L].length+', more than '+PR_CAP[L]); return;}
+  P[L]=o[L].map(function(x,i){
+   var p2=path+'.'+L+'['+i+']';
+   if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(p2+' is not an object'); return null;}
+   return prObj(errs,p2,x,PR_SPEC[L]);}).filter(Boolean);});
+ if(o.log!==undefined&&o.log!==null){
+  if(!Array.isArray(o.log))errs.push(path+'.log is not a list');
+  else if(o.log.length>PR_CAP.log)errs.push(path+'.log holds '+o.log.length+', more than '+PR_CAP.log);
+  else P.log=o.log.map(function(x,i){
+   var p2=path+'.log['+i+']';
+   if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(p2+' is not an object'); return null;}
+   return prObj(errs,p2,x,PR_LOG_SPEC);}).filter(Boolean);}
+ prCross(errs,P,path);
+ return P;}
+
+/* the indexes the cross checks and the actions both read */
+function prIndex(P){
+ var ix={}; PR_LISTS.forEach(function(L){ix[L]={};});
+ PR_LISTS.forEach(function(L){if(L==='protocols')return;
+  P[L].forEach(function(x){if(x&&x.id)ix[L][x.id]=x;});});
+ P.protocols.forEach(function(x){
+  var e=ix.protocols[x.id]||(ix.protocols[x.id]={v:{},latest:null,accepted:null});
+  e.v[x.version]=x;
+  if(!e.latest||x.version>e.latest.version)e.latest=x;
+  if(x.status==='accepted'&&(!e.accepted||x.version>e.accepted.version))e.accepted=x;});
+ return ix;}
+/* AN OUTCOME THAT CLAIMS A CHANGE NAMES THE EVIDENCE OF IT. Rule 4 and rule
+   5, and section 13: the evidence has to be of effect, not of affect, not a
+   record that the practice ran, and not evidence against. Unclear is the one
+   status that claims nothing and so needs nothing. Returns the reason it
+   fails, or null. */
+function prClaimErr(o,ix){
+ if(o.status==='unclear')return null;
+ var good=(o.evidence_ids||[]).filter(function(id){
+  var e=ix.evidence[id];
+  return !!(e&&e.dimension==='effect'&&e.metric!==PR_COMPLETION&&e.type!=='negative');});
+ if(good.length)return null;
+ return 'is '+o.status+' and names no evidence of effect: a practice that ran, '
+  +'or felt good, is not evidence of change';}
+function prCross(errs,P,path){
+ var ix=prIndex(P), seen;
+ /* ids unique within each kind, and a protocol is its id and its version */
+ PR_LISTS.forEach(function(L){
+  seen={};
+  P[L].forEach(function(x,i){
+   var k=L==='protocols'?x.id+'@'+x.version:x.id;
+   if(seen[k])errs.push(path+'.'+L+'['+i+'] repeats the id '+k);
+   seen[k]=1;});});
+ /* provenance, never collapsed. user_confirmed is a person's yes and must
+    say so. A goal is the person's own (rule 10): it is stored only once
+    they have said it or confirmed it. Something a system generated is not
+    known or observed until a person says yes (rule 9). */
+ PR_LISTS.forEach(function(L){
+  P[L].forEach(function(x,i){
+   var p2=path+'.'+L+'['+i+']';
+   if(x.src==='user_confirmed'&&!(x.approved_by&&x.approved_by.user))
+    errs.push(p2+'.src is user_confirmed and approved_by.user is not true');
+   if(x.generated_by&&x.generated_by.system&&!(x.approved_by&&x.approved_by.user)
+    &&(x.src==='known'||x.src==='observed'))
+    errs.push(p2+'.src is '+x.src+' on something a system generated and nobody approved');});});
+ P.goals.forEach(function(g,i){
+  if(g.src!=='known'&&g.src!=='user_confirmed')
+   errs.push(path+'.goals['+i+'].src is '+g.src+': a goal is the person\'s own, and is kept only once they have said it or confirmed it');});
+ P.behavior_objectives.forEach(function(b,i){
+  if(!ix.goals[b.goal_id])errs.push(path+'.behavior_objectives['+i+'].goal_id names no goal: '+b.goal_id);});
+ /* protocols: versions run 1 to n with no gap, references resolve, and a
+    release protocol has something for the release engine to do */
+ Object.keys(ix.protocols).forEach(function(id){
+  var e=ix.protocols[id];
+  for(var n=1;n<=e.latest.version;n++)
+   if(!e.v[n])errs.push(path+'.protocols '+id+' has version '+e.latest.version+' and no version '+n);});
+ P.protocols.forEach(function(x,i){
+  var p2=path+'.protocols['+i+']';
+  if(x.objective_id&&!ix.behavior_objectives[x.objective_id])
+   errs.push(p2+'.objective_id names no behavior objective: '+x.objective_id);
+  x.steps.step_ids.forEach(function(sid,j){
+   var s=ix.protocol_steps[sid];
+   if(!s)errs.push(p2+'.steps.step_ids['+j+'] names no step: '+sid);
+   else if(s.protocol_id!==x.id)errs.push(p2+'.steps.step_ids['+j+'] is a step of '+s.protocol_id+', not of '+x.id);});
+  if(x.status==='accepted'&&!(x.approved_by&&x.approved_by.user))
+   errs.push(p2+'.status is accepted and approved_by.user is not true');
+  if(x.class==='release'){
+   var addr=x.target_patterns.pattern_ids.filter(function(pp){return /^addr:/.test(pp);});
+   var rel=x.steps.step_ids.filter(function(sid){var s=ix.protocol_steps[sid]; return s&&s.type==='release';});
+   if(!addr.length)errs.push(p2+' is a release protocol and targets no address for the release engine');
+   if(!rel.length)errs.push(p2+' is a release protocol and has no release step');}});
+ P.protocol_steps.forEach(function(s,i){
+  if(!ix.protocols[s.protocol_id])errs.push(path+'.protocol_steps['+i+'].protocol_id names no protocol: '+s.protocol_id);});
+ P.rituals.forEach(function(r,i){
+  var e=ix.protocols[r.protocol_id], p2=path+'.rituals['+i+']';
+  if(!e)errs.push(p2+'.protocol_id names no protocol: '+r.protocol_id);
+  else if(!e.accepted)errs.push(p2+' schedules protocol '+r.protocol_id+', which has no accepted version');
+  if(r.cadence.type==='selected_days'&&!r.days.length)errs.push(p2+'.days is empty and the cadence is selected days');});
+ /* practice events: the version that ran exists, and the status agrees
+    with the timestamps and the step counts */
+ P.practice_events.forEach(function(x,i){
+  var p2=path+'.practice_events['+i+']', r=ix.rituals[x.ritual_id], e=ix.protocols[x.protocol_id];
+  if(!r)errs.push(p2+'.ritual_id names no ritual: '+x.ritual_id);
+  else if(r.protocol_id!==x.protocol_id)errs.push(p2+'.protocol_id is '+x.protocol_id+' and its ritual runs '+r.protocol_id);
+  if(!e||!e.v[x.protocol_version])errs.push(p2+' names protocol '+x.protocol_id+' version '+x.protocol_version+', which does not exist');
+  var ex=x.execution, st=x.status;
+  if(ex.steps_completed>ex.steps_expected)
+   errs.push(p2+'.execution has '+ex.steps_completed+' steps completed of '+ex.steps_expected+' expected');
+  if(st==='completed'){
+   if(!x.completed_at)errs.push(p2+' is completed with no completed_at');
+   if(ex.steps_completed!==ex.steps_expected)
+    errs.push(p2+' is completed with '+ex.steps_completed+' of '+ex.steps_expected+' steps, which is partial');}
+  else if(x.completed_at)errs.push(p2+' is '+st+' and carries a completed_at');
+  if(st==='partial'&&!(ex.steps_completed>0&&ex.steps_completed<ex.steps_expected))
+   errs.push(p2+' is partial with '+ex.steps_completed+' of '+ex.steps_expected+' steps');
+  if((st==='started'||st==='interrupted'||st==='partial')&&!x.started_at)
+   errs.push(p2+' is '+st+' with no started_at');
+  if((st==='scheduled'||st==='available'||st==='skipped'||st==='missed')&&x.started_at)
+   errs.push(p2+' is '+st+' and carries a started_at');
+  x.evidence_ids.forEach(function(id,j){
+   if(!ix.evidence[id])errs.push(p2+'.evidence_ids['+j+'] names no evidence: '+id);});
+  if(x.outcome_id&&!ix.outcomes[x.outcome_id])errs.push(p2+'.outcome_id names no outcome: '+x.outcome_id);});
+ P.evidence.forEach(function(x,i){
+  var p2=path+'.evidence['+i+']';
+  if(x.protocol_id&&!ix.protocols[x.protocol_id])errs.push(p2+'.protocol_id names no protocol: '+x.protocol_id);
+  if(x.ritual_id&&!ix.rituals[x.ritual_id])errs.push(p2+'.ritual_id names no ritual: '+x.ritual_id);
+  if(x.goal_id&&!ix.goals[x.goal_id])errs.push(p2+'.goal_id names no goal: '+x.goal_id);});
+ P.outcomes.forEach(function(x,i){
+  var p2=path+'.outcomes['+i+']';
+  if(!ix.goals[x.goal_id])errs.push(p2+'.goal_id names no goal: '+x.goal_id);
+  x.evidence_ids.forEach(function(id,j){
+   if(!ix.evidence[id])errs.push(p2+'.evidence_ids['+j+'] names no evidence: '+id);});
+  var c=prClaimErr(x,ix); if(c)errs.push(p2+'.status '+c);});
+ /* the log is append only: numbered from one with no gap, and every entry
+    points at something that is on the record */
+ P.log.forEach(function(x,i){
+  var p2=path+'.log['+i+']';
+  if(x.seq!==i+1)errs.push(p2+'.seq is '+x.seq+', and the log is numbered from 1 with no gap');
+  var r=x.ref;
+  if(!r||!r.type)return;
+  if(r.type==='pattern'){if(!practicePatternOk(r.id))errs.push(p2+'.ref names no pattern: '+r.id); return;}
+  if(r.type==='protocol'){var e=ix.protocols[r.id];
+   if(!e||(r.version&&!e.v[r.version]))errs.push(p2+'.ref names no protocol '+r.id+(r.version?' version '+r.version:''));
+   return;}
+  if(!ix[PR_KIND[r.type]][r.id])errs.push(p2+'.ref names no '+r.type+': '+r.id);});}
+
+/* ============================================================
+   THE ONE DOOR FOR A WRITE. practiceDo(P, act, args, now) is pure: it
+   copies P, applies the action to the copy, appends the events the action
+   emits to the copy's log, validates the copy with the same boundary an
+   import goes through, and returns it. A refusal returns the reasons by
+   name and the P it was given, untouched. So nothing can be written that
+   the boundary would refuse on the way back in.
+   ============================================================ */
+function practiceId(pre){
+ return pre+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+function prMeta(src,t,a){
+ var g=(a&&a.generated_by)||null;
+ return {schema_version:PRACTICE_SCHEMA_V, src:src,
+  generated_by:{system:g&&g.system||null, model_version:g&&g.model_version||null,
+   timestamp:g?(g.timestamp||t):null},
+  approved_by:{user:false, at:null},
+  contract_version:(a&&a.contract_version)||null, algorithm_version:(a&&a.algorithm_version)||null};}
+function prMerge(base,over){
+ if(over===undefined)return base;
+ if(!over||typeof over!=='object'||Array.isArray(over)||!base||typeof base!=='object'||Array.isArray(base))return over;
+ var o={}; Object.keys(base).forEach(function(k){o[k]=base[k];});
+ Object.keys(over).forEach(function(k){o[k]=prMerge(base[k],over[k]);});
+ return o;}
+function prNew(L,fields,src,t,a){
+ var o=prMeta(src,t,a); o.id=(a&&a.id)||practiceId({goals:'g',behavior_objectives:'b',protocols:'pr',
+  protocol_steps:'ps',rituals:'r',practice_events:'pe',evidence:'ev',outcomes:'oc'}[L]);
+ var spec=PR_SPEC[L];
+ Object.keys(spec).forEach(function(k){if(PR_META[k])return;
+  o[k]=prMerge(prBlank(spec[k]),fields[k]);});
+ return o;}
+function prEmit(ev,type,ref,src,t,data){
+ ev.push({seq:0, type:type, at:t, ref:ref, src:src, data:data||null});}
+function prFind(P,L,id){
+ for(var i=0;i<P[L].length;i++)if(P[L][i].id===id)return P[L][i];
+ return null;}
+function prProto(P,id){return prIndex(P).protocols[id]||null;}
+function prDay(t){return (typeof pracDay==='function')?pracDay(t):Math.floor(new Date(t).getTime()/86400000);}
+function prSrcOf(a,dflt){return (a&&a.src)||dflt;}
+/* a generated object is proposed until a person says yes. A person's own is
+   known. A caller may say inferred; it may not say user_confirmed on a
+   create, because the yes is its own action and leaves its own mark. */
+function prCreateSrc(a,errs,what){
+ var gen=!!(a&&a.generated_by&&a.generated_by.system);
+ var s=(a&&a.src)||(gen?'proposed':'known');
+ if(s==='user_confirmed'){errs.push(what+' is not created confirmed: a person confirms it with its own action'); return s;}
+ if(gen&&(s==='known'||s==='observed'))errs.push(what+' was generated by '+a.generated_by.system+' and cannot be created as '+s);
+ return s;}
+/* the steps a protocol is given, made into step objects. Each is new and
+   immutable, so a step shared by two versions can be shared safely. */
+function prSteps(P,pid,specs,t,src,errs){
+ var ids=[];
+ (specs||[]).forEach(function(s,i){
+  if(!s||typeof s!=='object'){errs.push('steps['+i+'] is not an object'); return;}
+  var f={}; Object.keys(s).forEach(function(k){f[k]=s[k];});
+  f.protocol_id=pid; f.sequence=i+1;
+  var o=prNew('protocol_steps',f,src,t,{id:s.id});
+  P.protocol_steps.push(o); ids.push(o.id);});
+ return ids;}
+function prPatDiff(ev,a0,a1,ref,src,t){
+ (a1||[]).forEach(function(p){if((a0||[]).indexOf(p)<0)prEmit(ev,'PATTERN_LINKED',{type:'pattern',id:p,version:null},src,t,{from:null,to:ref.id,classification:null,adaptation:null,version:ref.version});});
+ (a0||[]).forEach(function(p){if((a1||[]).indexOf(p)<0)prEmit(ev,'PATTERN_UNLINKED',{type:'pattern',id:p,version:null},src,t,{from:ref.id,to:null,classification:null,adaptation:null,version:ref.version});});}
+var PR_GOAL_EDIT=['title','description','desired_outcome','conditions','target_at'];
+var PR_BEH_EDIT=['behavior','description','frequency','duration','quantity','conditions','quality_dimensions','priority'];
+var PR_RIT_EDIT=['cadence','days','start_at','end_at','timer'];
+function prData(from,to,more){
+ var d={from:from==null?null:String(from), to:to==null?null:String(to), classification:null, adaptation:null, version:null};
+ if(more)Object.keys(more).forEach(function(k){d[k]=more[k];});
+ return d;}
+var PR_ACT={
+ goal_create:function(P,a,t,ev,errs){
+  var src=prCreateSrc(a,errs,'a goal');
+  if(src!=='known')errs.push('a goal is created as known, the person\'s own words, and not as '+src);
+  var g=prNew('goals',{title:a.title, description:a.description, status:'active',
+   desired_outcome:a.desired_outcome, conditions:a.conditions,
+   start_at:a.start_at||t, target_at:a.target_at==null?null:a.target_at, created_at:t, updated_at:t},src,t,a);
+  P.goals.push(g); prEmit(ev,'GOAL_CREATED',{type:'goal',id:g.id,version:null},src,t);
+  return g.id;},
+ goal_update:function(P,a,t,ev,errs){
+  var g=prFind(P,'goals',a.id); if(!g){errs.push('no goal is '+a.id); return null;}
+  Object.keys(a.set||{}).forEach(function(k){
+   if(PR_GOAL_EDIT.indexOf(k)<0){errs.push('a goal\'s '+k+' is not edited here'); return;}
+   g[k]=prMerge(g[k],a.set[k]);});
+  g.updated_at=t; prEmit(ev,'GOAL_UPDATED',{type:'goal',id:g.id,version:null},'known',t);
+  return g.id;},
+ goal_status:function(P,a,t,ev,errs){
+  var g=prFind(P,'goals',a.id); if(!g){errs.push('no goal is '+a.id); return null;}
+  if((PR_LIFE_FLOW[g.status]||[]).indexOf(a.to)<0){
+   errs.push('a goal cannot go from '+g.status+' to '+a.to); return null;}
+  var from=g.status; g.status=a.to; g.updated_at=t;
+  prEmit(ev,PR_GOAL_EMIT[a.to],{type:'goal',id:g.id,version:null},'known',t,prData(from,a.to));
+  return g.id;},
+ behavior_define:function(P,a,t,ev,errs){
+  if(!prFind(P,'goals',a.goal_id)){errs.push('no goal is '+a.goal_id); return null;}
+  var src=prCreateSrc(a,errs,'a behavior objective');
+  var f={status:'active', created_at:t, updated_at:t, priority:a.priority==null?0:a.priority};
+  ['goal_id','behavior','description','frequency','duration','quantity','conditions','quality_dimensions']
+   .forEach(function(k){if(a[k]!==undefined)f[k]=a[k];});
+  var b=prNew('behavior_objectives',f,src,t,a);
+  P.behavior_objectives.push(b); prEmit(ev,'BEHAVIOR_DEFINED',{type:'behavior',id:b.id,version:null},src,t);
+  return b.id;},
+ behavior_update:function(P,a,t,ev,errs){
+  var b=prFind(P,'behavior_objectives',a.id); if(!b){errs.push('no behavior objective is '+a.id); return null;}
+  Object.keys(a.set||{}).forEach(function(k){
+   if(PR_BEH_EDIT.indexOf(k)<0){errs.push('a behavior objective\'s '+k+' is not edited here'); return;}
+   b[k]=prMerge(b[k],a.set[k]);});
+  var from=b.status;
+  if(a.to!==undefined){
+   if((PR_LIFE_FLOW[b.status]||[]).indexOf(a.to)<0){errs.push('a behavior objective cannot go from '+b.status+' to '+a.to); return null;}
+   b.status=a.to;}
+  b.updated_at=t;
+  prEmit(ev,'BEHAVIOR_UPDATED',{type:'behavior',id:b.id,version:null},'known',t,a.to!==undefined?prData(from,a.to):null);
+  return b.id;},
+ /* a person's yes on something proposed or inferred. The one way src
+    becomes user_confirmed. */
+ confirm:function(P,a,t,ev,errs){
+  var L=PR_KIND[a.kind];
+  if(['behavior_objectives','evidence','outcomes'].indexOf(L)<0){
+   errs.push('confirm takes a behavior, a piece of evidence or an outcome; a protocol is accepted'); return null;}
+  var x=prFind(P,L,a.id); if(!x){errs.push('no '+a.kind+' is '+a.id); return null;}
+  if(x.src!=='proposed'&&x.src!=='inferred'){errs.push('a '+a.kind+' that is '+x.src+' has nothing to confirm'); return null;}
+  var from=x.src; x.src='user_confirmed'; x.approved_by={user:true, at:t};
+  if(x.updated_at!==undefined)x.updated_at=t;
+  prEmit(ev,{behavior_objectives:'BEHAVIOR_UPDATED',evidence:'EVIDENCE_RECORDED',outcomes:'OUTCOME_RECORDED'}[L],
+   {type:a.kind,id:x.id,version:null},'user_confirmed',t,prData(from,'user_confirmed'));
+  return x.id;},
+ /* a protocol, generated (proposed, and waits for a yes) or built by the
+    person (known, and accepted as they built it) */
+ protocol_add:function(P,a,t,ev,errs){
+  var gen=!!(a.generated_by&&a.generated_by.system);
+  var src=prCreateSrc(a,errs,'a protocol');
+  var id=a.id||practiceId('pr');
+  if(prProto(P,id)){errs.push('a protocol '+id+' already exists; a change is a revision'); return null;}
+  var stepIds=prSteps(P,id,a.steps,t,src,errs);
+  var o=prNew('protocols',{version:1, class:a.class, status:gen?'proposed':'accepted',
+   objective_id:a.objective_id==null?null:a.objective_id,
+   target_patterns:{pattern_ids:a.target_patterns||[]}, steps:{step_ids:stepIds},
+   conditions:a.conditions, schedule:a.schedule, progression:a.progression,
+   verification:a.verification, evidence_requirements:a.evidence_requirements,
+   adaptation_rules:a.adaptation_rules, created_at:t, updated_at:t},src,t,{id:id,generated_by:a.generated_by,
+   contract_version:a.contract_version, algorithm_version:a.algorithm_version});
+  if(!gen)o.approved_by={user:true, at:t};
+  P.protocols.push(o);
+  var ref={type:'protocol',id:id,version:1};
+  prEmit(ev,gen?'PROTOCOL_GENERATED':'PROTOCOL_ACCEPTED',ref,src,t);
+  prPatDiff(ev,[],o.target_patterns.pattern_ids,ref,src,t);
+  return id;},
+ protocol_accept:function(P,a,t,ev,errs){
+  var e=prProto(P,a.id); if(!e){errs.push('no protocol is '+a.id); return null;}
+  var x=e.latest;
+  if(x.status!=='proposed'){errs.push('protocol '+a.id+' version '+x.version+' is '+x.status+', not proposed'); return null;}
+  x.status='accepted'; x.src='user_confirmed'; x.approved_by={user:true, at:t}; x.updated_at=t;
+  prEmit(ev,'PROTOCOL_ACCEPTED',{type:'protocol',id:x.id,version:x.version},'user_confirmed',t,prData('proposed','accepted'));
+  return x.id;},
+ protocol_reject:function(P,a,t,ev,errs){
+  var e=prProto(P,a.id); if(!e){errs.push('no protocol is '+a.id); return null;}
+  var x=e.latest;
+  if(x.status!=='proposed'){errs.push('protocol '+a.id+' version '+x.version+' is '+x.status+', not proposed'); return null;}
+  x.status='rejected'; x.updated_at=t;
+  prEmit(ev,'PROTOCOL_REJECTED',{type:'protocol',id:x.id,version:x.version},'known',t,prData('proposed','rejected'));
+  return x.id;},
+ /* A REVISION IS A NEW VERSION, and the old one is never written to again
+    (rule 11, section 27). The new version starts from a copy of the latest
+    and takes the changes; steps given are new step objects. Events that ran
+    under the old version keep its number. Who revised it decides where it
+    stands: the person's revision is accepted as they wrote it, a system's
+    is proposed and waits. */
+ protocol_revise:function(P,a,t,ev,errs){
+  var e=prProto(P,a.id); if(!e){errs.push('no protocol is '+a.id); return null;}
+  var why=a.reason||'modify';
+  if(!PR_REVISE_EMIT[why]){errs.push('a revision is for '+Object.keys(PR_REVISE_EMIT).join(', ')+', not '+why); return null;}
+  var old=e.latest, gen=!!(a.generated_by&&a.generated_by.system);
+  var src=prCreateSrc(a,errs,'a revision');
+  var nv=JSON.parse(JSON.stringify(old));
+  nv.version=old.version+1; nv.created_at=t; nv.updated_at=t;
+  var m=prMeta(src,t,a); Object.keys(m).forEach(function(k){nv[k]=m[k];});
+  nv.status=gen?'proposed':'accepted'; nv.approved_by=gen?{user:false,at:null}:{user:true,at:t};
+  var ch=a.set||{};
+  ['class','objective_id','conditions','schedule','progression','verification','evidence_requirements','adaptation_rules']
+   .forEach(function(k){if(ch[k]!==undefined)nv[k]=prMerge(nv[k],ch[k]);});
+  if(ch.target_patterns!==undefined)nv.target_patterns={pattern_ids:ch.target_patterns};
+  if(ch.steps!==undefined)nv.steps={step_ids:prSteps(P,old.id,ch.steps,t,src,errs)};
+  P.protocols.push(nv);
+  var ref={type:'protocol',id:nv.id,version:nv.version};
+  prEmit(ev,'PROTOCOL_VERSIONED',ref,src,t,prData(old.version,nv.version,{version:nv.version}));
+  prEmit(ev,PR_REVISE_EMIT[why],ref,src,t,a.adaptation?prData(null,null,{adaptation:a.adaptation,classification:a.classification||null}):null);
+  prPatDiff(ev,old.target_patterns.pattern_ids,nv.target_patterns.pattern_ids,ref,src,t);
+  return nv.id;},
+ ritual_create:function(P,a,t,ev,errs){
+  var e=prProto(P,a.protocol_id);
+  if(!e){errs.push('no protocol is '+a.protocol_id); return null;}
+  if(!e.accepted){errs.push('protocol '+a.protocol_id+' has no accepted version, so there is nothing to schedule'); return null;}
+  var src=prCreateSrc(a,errs,'a ritual');
+  var r=prNew('rituals',{protocol_id:a.protocol_id, title:a.title, cadence:a.cadence||{type:'daily'},
+   days:a.days, start_at:a.start_at==null?t:a.start_at, end_at:a.end_at==null?null:a.end_at,
+   timer:a.timer, active:true, order:a.order==null?P.rituals.length:a.order, tags:a.tags,
+   created_at:t, updated_at:t},src,t,a);
+  P.rituals.push(r); prEmit(ev,'RITUAL_CREATED',{type:'ritual',id:r.id,version:null},src,t);
+  return r.id;},
+ ritual_pause:function(P,a,t,ev,errs){
+  var r=prFind(P,'rituals',a.id); if(!r){errs.push('no ritual is '+a.id); return null;}
+  if(!r.active){errs.push('ritual '+a.id+' is already paused'); return null;}
+  r.active=false; r.updated_at=t;
+  prEmit(ev,'RITUAL_PAUSED',{type:'ritual',id:r.id,version:null},'known',t,prData('active','paused'));
+  return r.id;},
+ /* section 30 has no resumed event. A paused ritual taking up again is the
+    ritual starting, so it is RITUAL_STARTED, said here once. */
+ ritual_resume:function(P,a,t,ev,errs){
+  var r=prFind(P,'rituals',a.id); if(!r){errs.push('no ritual is '+a.id); return null;}
+  if(r.active){errs.push('ritual '+a.id+' is already active'); return null;}
+  if(r.end_at&&prDay(r.end_at)<prDay(t)&&!(a.set&&a.set.end_at!==undefined)){
+   errs.push('ritual '+a.id+' ended; resuming it needs a new end'); return null;}
+  if(a.set&&a.set.end_at!==undefined)r.end_at=a.set.end_at;
+  r.active=true; r.updated_at=t;
+  prEmit(ev,'RITUAL_STARTED',{type:'ritual',id:r.id,version:null},'known',t,prData('paused','active'));
+  return r.id;},
+ ritual_reschedule:function(P,a,t,ev,errs){
+  var r=prFind(P,'rituals',a.id); if(!r){errs.push('no ritual is '+a.id); return null;}
+  Object.keys(a.set||{}).forEach(function(k){
+   if(PR_RIT_EDIT.indexOf(k)<0){errs.push('rescheduling does not change a ritual\'s '+k); return;}
+   r[k]=prMerge(r[k],a.set[k]);});
+  r.updated_at=t; prEmit(ev,'RITUAL_RESCHEDULED',{type:'ritual',id:r.id,version:null},'known',t);
+  return r.id;},
+ ritual_end:function(P,a,t,ev,errs){
+  var r=prFind(P,'rituals',a.id); if(!r){errs.push('no ritual is '+a.id); return null;}
+  r.active=false; r.end_at=t; r.updated_at=t;
+  prEmit(ev,'RITUAL_COMPLETED',{type:'ritual',id:r.id,version:null},'known',t);
+  return r.id;},
+ /* one practice, scheduled. It runs the latest accepted version of its
+    ritual's protocol, and that number is kept on it for ever. Section 30
+    has no event for a practice scheduled; the ritual's creation is the
+    decision, and this is its consequence. */
+ event_schedule:function(P,a,t,ev,errs){
+  var r=prFind(P,'rituals',a.ritual_id); if(!r){errs.push('no ritual is '+a.ritual_id); return null;}
+  if(!r.active){errs.push('ritual '+a.ritual_id+' is paused, so nothing is scheduled on it'); return null;}
+  var e=prProto(P,r.protocol_id); if(!e||!e.accepted){errs.push('ritual '+r.id+' has no accepted protocol to run'); return null;}
+  var x=prNew('practice_events',{ritual_id:r.id, protocol_id:r.protocol_id, protocol_version:e.accepted.version,
+   scheduled_at:a.scheduled_at||t, status:'scheduled',
+   execution:{duration_seconds:null, steps_completed:0, steps_expected:e.accepted.steps.step_ids.length},
+   created_at:t, updated_at:t},prSrcOf(a,'known'),t,a);
+  P.practice_events.push(x);
+  return x.id;},
+ /* THE TRANSITION. The table decides; this applies what it allows and
+    refuses what it does not, by name. */
+ event_move:function(P,a,t,ev,errs){
+  var x=prFind(P,'practice_events',a.id); if(!x){errs.push('no practice event is '+a.id); return null;}
+  var tr=practiceTransition(x.status,a.to);
+  if(!tr.ok){errs.push(tr.err); return null;}
+  /* A MISS IS NOT WRITTEN WHILE THE DAY CAN STILL BE MARKED. The Ritual tab
+     lets a person mark today or yesterday done (ritLog), so a practice
+     scheduled yesterday is not missed until the day after. */
+  if(a.to==='missed'&&prDay(t)-prDay(x.scheduled_at)<2){
+   errs.push('a practice scheduled '+x.scheduled_at.slice(0,10)+' can still be marked until the end of the next day, so it is not missed yet'); return null;}
+  var ex=x.execution, from=x.status;
+  if(a.to==='started'&&!x.started_at)x.started_at=t;
+  if(a.steps_completed!==undefined)ex.steps_completed=a.steps_completed;
+  if(a.duration_seconds!==undefined)ex.duration_seconds=a.duration_seconds;
+  if(a.to==='completed'){
+   if(a.steps_completed===undefined)ex.steps_completed=ex.steps_expected;
+   x.completed_at=t;}
+  if(a.quality)x.quality=prMerge(x.quality,a.quality);
+  x.status=a.to; x.updated_at=t;
+  if(PR_EV_EMIT[a.to])prEmit(ev,PR_EV_EMIT[a.to],{type:'practice_event',id:x.id,version:null},prSrcOf(a,'known'),t,prData(from,a.to));
+  return x.id;},
+ evidence_record:function(P,a,t,ev,errs){
+  var dflt=a.source==='user'?'known':'observed';
+  var src=prCreateSrc({src:a.src||dflt, generated_by:a.generated_by},errs,'evidence');
+  var f={timestamp:a.timestamp||t};
+  ['source','type','dimension','context','pattern_id','protocol_id','ritual_id','goal_id','metric',
+   'value','unit','before','after','later','confidence','notes'].forEach(function(k){if(a[k]!==undefined)f[k]=a[k];});
+  var x=prNew('evidence',f,src,t,a);
+  P.evidence.push(x);
+  if(a.practice_event_id){
+   var pe=prFind(P,'practice_events',a.practice_event_id);
+   if(!pe){errs.push('no practice event is '+a.practice_event_id); return null;}
+   pe.evidence_ids.push(x.id); pe.updated_at=t;}
+  prEmit(ev,'EVIDENCE_RECORDED',{type:'evidence',id:x.id,version:null},src,t);
+  return x.id;},
+ outcome_record:function(P,a,t,ev,errs){
+  var src=prCreateSrc({src:a.src||'known', generated_by:a.generated_by},errs,'an outcome');
+  var x=prNew('outcomes',{goal_id:a.goal_id, timestamp:a.timestamp||t, metric:a.metric,
+   before:a.before, current:a.current, target:a.target, status:a.status,
+   evidence_ids:a.evidence_ids||[], notes:a.notes},src,t,a);
+  P.outcomes.push(x);
+  if(a.practice_event_id){
+   var pe=prFind(P,'practice_events',a.practice_event_id);
+   if(!pe){errs.push('no practice event is '+a.practice_event_id); return null;}
+   if(pe.outcome_id){errs.push('practice event '+pe.id+' is already measured by outcome '+pe.outcome_id); return null;}
+   pe.outcome_id=x.id; pe.updated_at=t;}
+  prEmit(ev,'OUTCOME_RECORDED',{type:'outcome',id:x.id,version:null},src,t);
+  return x.id;},
+ /* THE PERSON'S DECISION ON AN ADAPTATION, section 24's last line. Pause
+    is applied here because it is the ritual's own switch. Every other
+    adaptation changes the protocol and is a revision, with this decision
+    on the log ahead of it. */
+ adapt:function(P,a,t,ev,errs){
+  var inv=practiceInvestigate(a.classification);
+  if(!inv.ok){errs.push(inv.err); return null;}
+  if(PR_ADAPT.indexOf(a.adaptation)<0){errs.push('an adaptation is one of '+PR_ADAPT.join(', ')+', not '+a.adaptation); return null;}
+  var r=prFind(P,'rituals',a.ritual_id); if(!r){errs.push('no ritual is '+a.ritual_id); return null;}
+  var e=prProto(P,r.protocol_id);
+  prEmit(ev,'PROTOCOL_ADAPTED',{type:'protocol',id:r.protocol_id,version:e&&e.accepted?e.accepted.version:null},'known',t,
+   prData(null,null,{classification:a.classification, adaptation:a.adaptation}));
+  if(a.adaptation==='pause'&&r.active){
+   r.active=false; r.updated_at=t;
+   prEmit(ev,'RITUAL_PAUSED',{type:'ritual',id:r.id,version:null},'known',t,prData('active','paused',{adaptation:'pause'}));}
+  return r.id;}};
+/* WHAT EACH ACTION TAKES. An argument it does not take is refused by name
+   rather than ignored, because an ignored typo on an optional field is a
+   write that silently did less than it was asked to. */
+var PR_GEN_ARGS=['src','generated_by','contract_version','algorithm_version'];
+var PR_ARGS={
+ goal_create:['id','title','description','desired_outcome','conditions','start_at','target_at'].concat(PR_GEN_ARGS),
+ goal_update:['id','set'], goal_status:['id','to'],
+ behavior_define:['id','goal_id','behavior','description','frequency','duration','quantity','conditions',
+  'quality_dimensions','priority'].concat(PR_GEN_ARGS),
+ behavior_update:['id','set','to'], confirm:['kind','id'],
+ protocol_add:['id','class','objective_id','target_patterns','steps','conditions','schedule','progression',
+  'verification','evidence_requirements','adaptation_rules'].concat(PR_GEN_ARGS),
+ protocol_accept:['id'], protocol_reject:['id'],
+ protocol_revise:['id','reason','set','adaptation','classification'].concat(PR_GEN_ARGS),
+ ritual_create:['id','protocol_id','title','cadence','days','start_at','end_at','timer','order','tags','src'],
+ ritual_pause:['id'], ritual_resume:['id','set'], ritual_reschedule:['id','set'], ritual_end:['id'],
+ event_schedule:['id','ritual_id','scheduled_at','src'],
+ event_move:['id','to','steps_completed','duration_seconds','quality','src'],
+ evidence_record:['id','source','type','dimension','timestamp','context','pattern_id','protocol_id','ritual_id',
+  'goal_id','metric','value','unit','before','after','later','confidence','notes','practice_event_id','src','generated_by'],
+ outcome_record:['id','goal_id','timestamp','metric','before','current','target','status','evidence_ids','notes',
+  'practice_event_id','src','generated_by'],
+ adapt:['ritual_id','classification','adaptation']};
+/* and what a step given to a protocol may say. Its protocol and its place
+   in the order are the protocol's to set. */
+var PR_STEP_ARGS=['id','type','instruction','duration','quantity','condition','completion_rule','evidence_rule','practice'];
+function practiceDo(P,act,a,now){
+ var t=now||new Date().toISOString(), errs=[], ev=[];
+ var base=P||practiceBlank();
+ if(!PR_ACT[act])return {ok:false, errs:['no practice action is named '+act], P:base};
+ Object.keys(a||{}).forEach(function(k){
+  if(PR_ARGS[act].indexOf(k)<0)errs.push(act+' does not take '+k);});
+ if(act==='protocol_add'||act==='protocol_revise'){
+  var ss=act==='protocol_add'?(a&&a.steps):(a&&a.set&&a.set.steps);
+  (Array.isArray(ss)?ss:[]).forEach(function(s,i){
+   if(s&&typeof s==='object')Object.keys(s).forEach(function(k){
+    if(PR_STEP_ARGS.indexOf(k)<0)errs.push('steps['+i+'] does not take '+k);});});}
+ if(errs.length)return {ok:false, errs:errs, P:base};
+ var Q=JSON.parse(JSON.stringify(base)), id=null;
+ try{ id=PR_ACT[act](Q,a||{},t,ev,errs); }
+ catch(e){ errs.push(act+' failed: '+((e&&e.message)||'error')); }
+ if(errs.length)return {ok:false, errs:errs, P:base};
+ ev.forEach(function(x){x.seq=Q.log.length+1; Q.log.push(x);});
+ var V=practiceValidate(errs,Q,'practice');
+ if(errs.length)return {ok:false, errs:errs, P:base};
+ return {ok:true, P:V, id:id, events:ev.map(function(x){return JSON.parse(JSON.stringify(x));})};}
+
+/* the practice event table, asked directly, refusing by name */
+function practiceTransition(from,to){
+ if(PR_EV_ST.indexOf(from)<0)return {ok:false, err:'no practice status is '+from};
+ if(PR_EV_ST.indexOf(to)<0)return {ok:false, err:'no practice status is '+to};
+ if(PR_FLOW[from].indexOf(to)<0)
+  return {ok:false, err:'a practice that is '+from+' cannot become '+to
+   +(PR_FLOW[from].length?', only '+PR_FLOW[from].join(', '):', it is where that practice ended')};
+ return {ok:true, err:null};}
+
+/* ============================================================
+   READS. Pure functions of the practice object. Nothing here is stored.
+   ============================================================ */
+/* THE MISS PATH, section 25. Missed runs back from the newest practice of a
+   ritual; a skip is a choice and neither counts nor breaks the run; a
+   practice that happened at all, completed or partial, ends it. At the
+   threshold the stage is investigate, and after the person has decided an
+   adaptation on this ritual's protocol it is adapt. Nothing here reads a
+   reason into the run: that is the person's to give. */
+function practiceMissRead(P,ritualId){
+ var r=prFind(P,'rituals',ritualId); if(!r)return null;
+ var evs=P.practice_events.filter(function(x){return x.ritual_id===ritualId;})
+  .sort(function(a,b){return Date.parse(b.scheduled_at)-Date.parse(a.scheduled_at);});
+ var run=0, last=null;
+ for(var i=0;i<evs.length;i++){
+  var s=evs[i].status;
+  if(s==='missed'){run++; if(!last)last=evs[i].scheduled_at; continue;}
+  if(s==='skipped'||s==='scheduled'||s==='available')continue;
+  break;}
+ var adapted=last&&P.log.some(function(x){return x.type==='PROTOCOL_ADAPTED'&&x.ref.id===r.protocol_id&&Date.parse(x.at)>=Date.parse(last);});
+ return {ritual_id:ritualId, run:run, at:PR_MISS_AT,
+  stage:!run?null:(adapted?'adapt':(run>=PR_MISS_AT?'investigate':'missed')),
+  /* stated so no caller can put it any other way */
+  motivation:false};}
+/* the person's classification of a miss, and what it proposes */
+function practiceInvestigate(cls){
+ if(typeof cls==='string'&&PR_MOTIVE.indexOf(cls.toLowerCase())>=0)
+  return {ok:false, err:'a miss is not read as a failure of motivation, so '+cls
+   +' is not a classification (rule 12); the eleven are '+PR_MISS.join(', ')};
+ if(PR_MISS.indexOf(cls)<0)return {ok:false, err:'a miss is classified as one of '+PR_MISS.join(', ')+', not '+cls};
+ return {ok:true, classification:cls, decided_by:'user',
+  proposals:PR_MISS_PROPOSE[cls].map(function(k){return {adaptation:k, src:'proposed'};})};}
+/* EFFECT AND AFFECT, side by side and never summed (section 13, rule 15).
+   Affect is also what a practice event's quality carries, which is the
+   person's report of how it felt. f filters by goal, protocol, ritual or
+   one practice event. */
+function practiceEffectAffect(P,f){
+ f=f||{};
+ var ix=prIndex(P), pick=null;
+ if(f.practice_event_id){var pe=ix.practice_events[f.practice_event_id]; pick={}; (pe?pe.evidence_ids:[]).forEach(function(id){pick[id]=1;});}
+ var out={effect:{n:0, ids:[]}, affect:{n:0, ids:[], quality:[]}};
+ P.evidence.forEach(function(e){
+  if(pick&&!pick[e.id])return;
+  if(f.goal_id&&e.goal_id!==f.goal_id)return;
+  if(f.protocol_id&&e.protocol_id!==f.protocol_id)return;
+  if(f.ritual_id&&e.ritual_id!==f.ritual_id)return;
+  var b=out[e.dimension]; b.n++; b.ids.push(e.id);});
+ P.practice_events.forEach(function(x){
+  if(f.practice_event_id&&x.id!==f.practice_event_id)return;
+  if(f.ritual_id&&x.ritual_id!==f.ritual_id)return;
+  if(f.protocol_id&&x.protocol_id!==f.protocol_id)return;
+  if(f.goal_id)return;
+  var q=x.quality, any=Object.keys(q).some(function(k){return q[k]!==null;});
+  if(any)out.affect.quality.push({practice_event_id:x.id, quality:JSON.parse(JSON.stringify(q))});});
+ return out;}
+/* WHAT AN OUTCOME COULD HONESTLY SAY OF ONE PRACTICE. Unclear, unless
+   there is effect evidence linked to it, and even then this does not say
+   improved: the direction of a metric is the person's to read, so the
+   answer is that it is theirs. A completed practice with nothing linked to
+   it is unclear, which is rule 4 as a function. */
+function practiceOutcomeRead(P,peId){
+ var ix=prIndex(P), x=ix.practice_events[peId]; if(!x)return null;
+ var eff=x.evidence_ids.filter(function(id){var e=ix.evidence[id];
+  return e&&e.dimension==='effect'&&e.metric!==PR_COMPLETION;});
+ if(!eff.length)return {status:'unclear', evidence:[],
+  because:x.status==='completed'?'it was completed and nothing records what changed':'nothing records what changed'};
+ return {status:null, evidence:eff, because:'there is evidence of effect, and whether it improved is read by the person'};}
+/* the stage after a status, read off what is linked, never stored */
+function practiceStage(P,peId){
+ var ix=prIndex(P), x=ix.practice_events[peId]; if(!x)return null;
+ if(x.outcome_id)return 'outcome';
+ if(x.evidence_ids.length){
+  var obs=x.evidence_ids.some(function(id){var e=ix.evidence[id]; return e&&e.source!=='user';});
+  var real=x.evidence_ids.some(function(id){var e=ix.evidence[id]; return e&&e.metric!==PR_COMPLETION;});
+  /* a person's own note that it ran verifies nothing; only an observation
+     does, and only evidence that is not a completion is evidence */
+  if(real)return 'evidence';
+  if(obs)return 'verified';}
+ return x.status;}
+
+/* ============================================================
+   THE RELEASE PROTOCOL CALLS THE RELEASE ENGINE (section 8, rule 8).
+   Nothing about a release is decided here. The plan is meterPlan's, at the
+   cap meterBudget allows, or meterRerunPlan's for a rerun, which is free;
+   the run is the release card's (relPick and relCoolDown in
+   ui/release.js); whether a line was opened is meter.unique's to say. The
+   channels are the release card's own list (CHAN in ui/release.js), passed
+   in by the host, so that table stays in the one place it lives.
+   ============================================================ */
+function practiceReleaseAddrs(P,protocolId){
+ var e=prProto(P,protocolId); if(!e||!e.accepted)return null;
+ if(e.accepted.class!=='release')return null;
+ return e.accepted.target_patterns.pattern_ids.filter(function(x){return /^addr:/.test(x);})
+  .map(function(x){return +x.slice(5);});}
+function practiceReleasePlan(p,protocolId,chans,mode){
+ var P=(p&&p.practice)||practiceBlank();
+ var ids=practiceReleaseAddrs(P,protocolId);
+ if(!ids)return {ok:false, err:'protocol '+protocolId+' is not an accepted release protocol', keys:[]};
+ if(mode==='rerun')
+  return {ok:true, mode:'rerun', addrs:ids, cap:RUN_MAX, keys:meterRerunPlan(p,ids,chans,RUN_MAX)};
+ var cap=meterBudget(p).cap;
+ if(cap<=0)return {ok:true, mode:'new', addrs:ids, cap:0, keys:[], because:'nothing is left to open on this plan'};
+ return {ok:true, mode:'new', addrs:ids, cap:cap, keys:meterPlan(p,ids,chans,cap)};}
+/* which of a plan's lines the meter holds as opened. The verification a
+   release step gets is this, observed, and never a person's say so. */
+function practiceReleaseVerify(p,keys){
+ var have={}; ((p&&p.meter&&p.meter.unique)||[]).forEach(function(k){have[k]=1;});
+ var open=[], not=[];
+ (keys||[]).forEach(function(k){(have[k]?open:not).push(k);});
+ return {open:open, not:not, all:(keys||[]).length>0&&!not.length};}
+
+/* ============================================================
+   THE TRACE INTENTS. Every practice object connects to the graph (rule 6)
+   and nothing here calls the graph. Each intent is
+   {from:{type,id}, to:{type,id}, edge, src}, typed from section 16, edged
+   from section 17, sourced from section 26. The graph's traceApply takes
+   the list.
+
+   Section 15 names its edges both ways (targets and addressed_by, measures
+   and measured_by); section 17 names one direction, so each fact is one
+   intent in the direction section 17 has a word for: a ritual executes a
+   protocol, a pattern obstructs a goal. One fact, one edge.
+
+   src is the provenance of the object that states the link. A link nobody
+   stated, a pattern standing in the way of a goal because a protocol for
+   that goal targets it, is inferred, and says so.
+   ============================================================ */
+function practiceTraceIntents(P){
+ P=(P&&P.goals)?P:((P&&P.practice)||practiceBlank());
+ var ix=prIndex(P), out=[], seen={};
+ var put=function(ft,fi,tt,ti,edge,src){
+  var k=ft+':'+fi+'>'+tt+':'+ti+'>'+edge+'>'+src; if(seen[k])return; seen[k]=1;
+  out.push({from:{type:ft,id:fi}, to:{type:tt,id:ti}, edge:edge, src:src});};
+ P.behavior_objectives.forEach(function(b){put('goal',b.goal_id,'behavior',b.id,'requires',b.src);});
+ P.protocols.forEach(function(x){
+  if(x.status==='rejected')return;
+  x.target_patterns.pattern_ids.forEach(function(pp){put('protocol',x.id,'pattern',pp,'targets',x.src);});
+  if(x.objective_id){
+   put('protocol',x.id,'behavior',x.objective_id,'implements',x.src);
+   var b=ix.behavior_objectives[x.objective_id];
+   if(b)x.target_patterns.pattern_ids.forEach(function(pp){put('pattern',pp,'goal',b.goal_id,'obstructs','inferred');});}});
+ P.rituals.forEach(function(r){put('ritual',r.id,'protocol',r.protocol_id,'executes',r.src);});
+ P.practice_events.forEach(function(x){
+  put('ritual',x.ritual_id,'practice_event',x.id,'produces',x.src);
+  x.evidence_ids.forEach(function(id){var e=ix.evidence[id];
+   if(e)put('practice_event',x.id,'evidence',id,'produces',e.src);});
+  if(x.outcome_id&&ix.outcomes[x.outcome_id])put('practice_event',x.id,'outcome',x.outcome_id,'produces',ix.outcomes[x.outcome_id].src);});
+ P.evidence.forEach(function(e){
+  if(e.pattern_id)put('evidence',e.id,'pattern',e.pattern_id,e.type==='negative'?'contradicts':'supports',e.src);});
+ P.outcomes.forEach(function(o){
+  o.evidence_ids.forEach(function(id){var e=ix.evidence[id];
+   if(e)put('evidence',id,'outcome',o.id,e.type==='negative'?'contradicts':'supports',e.src);});
+  put('outcome',o.id,'goal',o.goal_id,'measures',o.src);});
+ return out;}
+function practiceIntentOk(i){
+ return !!(i&&i.from&&i.to&&PR_NODE.indexOf(i.from.type)>=0&&PR_NODE.indexOf(i.to.type)>=0
+  &&typeof i.from.id==='string'&&i.from.id&&typeof i.to.id==='string'&&i.to.id
+  &&PR_EDGE.indexOf(i.edge)>=0&&PR_SRC.indexOf(i.src)>=0);}
+
+/* ============================================================
+   THE MIGRATION, STATED AND NOT RUN. What the Ritual tab keeps today maps
+   into these objects like this, and the gate holds it to it:
+
+     a plan (the side store, ritPlans)   one Protocol v1 and one Ritual.
+                                         A plan with rel is a release
+                                         protocol on addr:rel, a release
+                                         step first; any other is custom,
+                                         because no track maps to a class
+                                         without a diagnosis nothing made.
+                                         Its practices are behavior steps
+                                         naming the library row. Both are
+                                         user_confirmed: a person pressed
+                                         Start on each.
+     a day entry (p.rituals)             one PracticeEvent on the plan with
+                                         the same steps covering that day.
+                                         done stamped or true: completed,
+                                         known. done false and the late mark
+                                         window shut: missed, observed. done
+                                         false and still markable:
+                                         scheduled. no done key, written
+                                         before done existed: completed,
+                                         inferred, which is ledgerRead's
+                                         reading and says it is a reading.
+     an entry no plan covers             grouped by its steps under a
+                                         protocol and ritual of its own,
+                                         inferred, inactive. Nothing is
+                                         dropped.
+
+   What is lost and said so: a done stamp does not say whether a press or a
+   finished release wrote it (ritMarkOn writes both), so a release that
+   marked a day reads as known and not as observed. The log starts empty:
+   writing events dated in the past would be inventing a history.
+
+   p is never written. The plans are the host's to read and pass in.
+   ============================================================ */
+function practiceFromLegacy(p,plans,now){
+ var t=now||new Date().toISOString(), today=prDay(t), P=practiceBlank(), notes=[];
+ /* a plan, and an entry no plan covers, were each started by a press, so
+    the protocol and ritual made from them carry the person's yes. A
+    practice event carries none: it is what happened, not a thing agreed. */
+ var meta=function(src,at,yes){return {schema_version:PRACTICE_SCHEMA_V, src:src,
+  generated_by:{system:null,model_version:null,timestamp:null},
+  approved_by:{user:!!yes, at:yes?at:null},
+  contract_version:null, algorithm_version:null};};
+ var put=function(L,o,m){Object.keys(m).forEach(function(k){o[k]=m[k];}); P[L].push(o); return o;};
+ var key=function(steps){return (steps||[]).join('+');};
+ var prac=function(k){for(var i=0;i<PRACTICE.length;i++)if(PRACTICE[i].k===k)return PRACTICE[i]; return null;};
+ var made=function(pid,steps,rel,at,src,title,on,tm,from,end,active,tags,order,cls){
+  var sids=[], seq=0;
+  if(rel!=null){seq++; sids.push(put('protocol_steps',{id:pid+'_s'+seq, protocol_id:pid, sequence:seq, type:'release',
+   instruction:BY[rel]?String(BY[rel].k):'', duration:{value:null,unit:null}, quantity:{value:null,unit:null},
+   condition:null, completion_rule:null, evidence_rule:null, practice:null},meta(src,at,true)).id);}
+  steps.forEach(function(k){var pr=prac(k); seq++;
+   sids.push(put('protocol_steps',{id:pid+'_s'+seq, protocol_id:pid, sequence:seq, type:'behavior',
+    instruction:pr?pr.nm:'', duration:{value:pr?pr.min:null,unit:pr?'min':null}, quantity:{value:null,unit:null},
+    condition:null, completion_rule:null, evidence_rule:null, practice:pr?k:null},meta(src,at,true)).id);});
+  put('protocols',{id:pid, version:1, class:cls, status:'accepted', objective_id:null,
+   target_patterns:{pattern_ids:rel!=null&&BY[rel]?['addr:'+rel]:[]}, steps:{step_ids:sids},
+   conditions:{when:[],where:[],with_whom:[]}, schedule:{cadence:null,duration:null},
+   progression:{enabled:false,progression_id:null}, verification:{required:false,verification_type:''},
+   evidence_requirements:{evidence_types:[]}, adaptation_rules:{rule_ids:[]},
+   created_at:at, updated_at:at},meta(src,at,true));
+  return put('rituals',{id:'r_'+pid, protocol_id:pid, title:title||'A ritual',
+   cadence:{type:on?'selected_days':'daily'}, days:on?on.map(function(d){return PR_DAYS[d];}):[],
+   start_at:from, end_at:end, timer:{enabled:!!tm, duration_seconds:tm?tm*60:null},
+   active:active, order:order, tags:tags||[], created_at:at, updated_at:at},meta(src,at,true));};
+ var name=function(steps){return steps.map(function(k){var pr=prac(k); return pr?pr.nm:'';}).filter(Boolean).join(', ');};
+ var byPlan=[];
+ (plans||[]).forEach(function(pl,i){
+  var pid='pr_mig_'+String(pl.id).replace(/[^A-Za-z0-9_.:-]/g,'');
+  var s0=prDay(pl.from);
+  var end=pl.stop||(pl.days?new Date(Date.parse(pl.from)+pl.days*86400000).toISOString():null);
+  var active=!pl.stop&&(pl.days===0||today<s0+pl.days);
+  var rel=(pl.rel!=null&&BY[pl.rel])?pl.rel:null;
+  if(pl.rel!=null&&rel===null)notes.push('plan '+pl.id+' names address '+pl.rel+', which is not in the node table, so it is custom');
+  var r=made(pid,pl.steps,rel,pl.from,'user_confirmed',name(pl.steps),pl.on,pl.tm,pl.from,end,active,
+   (pl.tags||[]).filter(function(b){return BANDS.indexOf(b)>=0;}),i,rel!==null?'release':'custom');
+  byPlan.push({pl:pl, r:r, k:key(pl.steps), s0:s0, stop:pl.stop?prDay(pl.stop):null});});
+ var orphan={}, entryMap=[];
+ ((p&&p.rituals)||[]).forEach(function(x,i){
+  if(!x||typeof x!=='object'){entryMap.push(null); notes.push('rituals['+i+'] is not an entry and is left'); return;}
+  var d=prDay(x.t), k=key(x.steps), hit=null;
+  for(var j=0;j<byPlan.length;j++){var b=byPlan[j];
+   if(b.k===k&&d>=b.s0&&(b.stop===null||d<b.stop)){hit=b.r; break;}}
+  if(!hit)for(var j2=0;j2<byPlan.length;j2++)if(byPlan[j2].k===k){hit=byPlan[j2].r; break;}
+  if(!hit){
+   if(!orphan[k]){var opid='pr_mig_x'+Object.keys(orphan).length;
+    orphan[k]=made(opid,x.steps||[],null,x.t,'inferred',name(x.steps||[]),null,null,x.t,null,false,
+     (x.band&&BANDS.indexOf(x.band)>=0)?[x.band]:[],byPlan.length+Object.keys(orphan).length,'custom');}
+   hit=orphan[k];}
+  var st, src, n=(x.steps||[]).length, at=null;
+  if(x.done===undefined){st='completed'; src='inferred'; at=x.t;}
+  else if(x.done){st='completed'; src='known'; at=typeof x.done==='string'?x.done:x.t;}
+  else if(today-d>=2){st='missed'; src='observed';}
+  else {st='scheduled'; src='known';}
+  var o=put('practice_events',{id:'pe_mig_'+i, ritual_id:hit.id, protocol_id:hit.protocol_id, protocol_version:1,
+   scheduled_at:x.t, started_at:null, completed_at:st==='completed'?at:null, status:st,
+   execution:{duration_seconds:null, steps_completed:st==='completed'?n:0, steps_expected:n},
+   quality:{awareness:null,presence:null,integrity:null,effort:null,self_reported_quality:null},
+   evidence_ids:[], outcome_id:null, created_at:x.t, updated_at:x.t},meta(src,x.t,false));
+  entryMap.push(o.id);});
+ var errs=[], V=practiceValidate(errs,P,'practice');
+ return {ok:!errs.length, errs:errs, P:V, entries:entryMap,
+  plans:byPlan.map(function(b){return {plan:b.pl.id, ritual:b.r.id, protocol:b.r.protocol_id};}),
+  orphans:Object.keys(orphan).length, notes:notes};}
 /* ============================================================
    INTAKE · 21 laws x 3, triangulated left / right / neutral.
    Blocked into 21 units of three. Resumable. Live partial CQ.
@@ -10605,6 +12737,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
+                 planFromServer:planFromServer,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
@@ -10820,6 +12953,20 @@ if(typeof module!=='undefined'&&module.exports){
      tables and returns a target only for the one that is a count, so a
      generator has somewhere to read it from instead of typing a one. */
                   ritTarget:ritTarget, RIT_SHAPES:RIT_SHAPES, C3_BAND_N:C3_BAND_N,
+  /* the trace graph, engine/trace.js. The vocabularies and the rule table
+     are exported so the gate asserts them against the document rather than
+     against a copy typed into the test. */
+                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES,
+                  TRACE_EDGE_TYPES:TRACE_EDGE_TYPES, TRACE_SRC:TRACE_SRC, TRACE_RULES:TRACE_RULES,
+                  TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
+                  TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
+                  TRACE_RESOLVED:TRACE_RESOLVED, TRACE_NEEDS:TRACE_NEEDS, TRACE_MAX:TRACE_MAX,
+                  TRACE_ID_MAX:TRACE_ID_MAX,
+                  traceKey:traceKey, traceSplit:traceSplit, traceNew:traceNew, traceRuleOf:traceRuleOf,
+                  traceAddNode:traceAddNode, traceAddEdge:traceAddEdge, traceRemoveEdge:traceRemoveEdge,
+                  traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
+                  traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
+                  traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
@@ -10828,6 +12975,22 @@ if(typeof module!=='undefined'&&module.exports){
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
                   OB_KINDS:OB_KINDS,
   /* storage */   bindStore:bindStore,
+  /* practice, engine/practice.js. The tables are exported as the live
+     objects so the gate can hold them to the TDD's own lists and mutate a
+     copy of the engine to prove the gate bites. */
+                  PRACTICE_SCHEMA_V:PRACTICE_SCHEMA_V, practiceBlank:practiceBlank,
+                  practiceValidate:practiceValidate, practiceDo:practiceDo,
+                  practiceTransition:practiceTransition, practiceMissRead:practiceMissRead,
+                  practiceInvestigate:practiceInvestigate, practiceEffectAffect:practiceEffectAffect,
+                  practiceOutcomeRead:practiceOutcomeRead, practiceStage:practiceStage,
+                  practiceReleasePlan:practiceReleasePlan, practiceReleaseVerify:practiceReleaseVerify,
+                  practiceTraceIntents:practiceTraceIntents, practiceIntentOk:practiceIntentOk,
+                  practiceFromLegacy:practiceFromLegacy, practicePatternOk:practicePatternOk,
+                  PR_SRC:PR_SRC, PR_LIFE:PR_LIFE, PR_CLASS:PR_CLASS, PR_STEP:PR_STEP, PR_EV_ST:PR_EV_ST,
+                  PR_EVID_SOURCE:PR_EVID_SOURCE, PR_EVID_TYPE:PR_EVID_TYPE, PR_OUT_ST:PR_OUT_ST,
+                  PR_MISS:PR_MISS, PR_ADAPT:PR_ADAPT, PR_EVENTS:PR_EVENTS, PR_NODE:PR_NODE, PR_EDGE:PR_EDGE,
+                  PR_PROTO_ST:PR_PROTO_ST, PR_DIM:PR_DIM, PR_FLOW:PR_FLOW, PR_NEVER:PR_NEVER,
+                  PR_MISS_AT:PR_MISS_AT, PR_SPEC:PR_SPEC, PR_ARGS:PR_ARGS, PR_CAP:PR_CAP,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
