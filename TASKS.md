@@ -30823,3 +30823,52 @@ protocols."
 - "I don't hear sound effects they're on": a defect to reproduce and fix.
 - The plan moves completed work to a history, so what is done and what is left
   are separate. Done in PLAN.md and the task list this round.
+
+## Round OU, 1 October. The sniffer misses a rough day, a confrontation, being irritated; sound everywhere; the greeting engine; OAuth; Stripe steps
+
+> "We're going to update the sniffer's logic. I just talked into it and said I
+> had a really fucking rough day. First, it changed fucking into asterisks.
+> Second, it didn't detect that I had a rough day or a bad day or a horrible day
+> or a miserable day. So we want the sniffer to look for these. And connect the
+> story to find out why the day was miserable and ask questions to get in there.
+> I just added, I had a confrontation with my boss and it didn't snip that out
+> either. So it sounds like acts of aggression, like acts. Which is why we
+> released the acting part. I just added, I was really irritated by him. It
+> didn't find that either. So the journal needs to be more robust. What do you
+> recommend? And then when you're done, update the TDD scheme of the designs of
+> frameworks of foundations, information architecture, the algorithms, etc.
+> Yeah, I want the compass left panel to start closed. Yeah, the root energetics
+> panel. So sound effects. I want everything to have a very subtle atmospheric
+> sound. Overlays, clicks, if I click on the field, if I zoom in, this field
+> sounds a little bit louder. You know, very subtle sci-fi. Sounds nothing
+> overwhelming. Well, the greeting we have a a greeting engine now, so the
+> greeting engine should be hooked up and should be asking the right questions.
+> We need to add an OAuth for security. How do we do that? I still need to we
+> still need to wire and stripe. So I need the steps for those like I'm nine."
+
+**Read as.**
+- Sniffer, three misses on one dictated entry, plus an asterisk defect:
+  - "fucking" came out as asterisks: either the browser's speech recogniser
+    masking profanity or our own text path; to be traced and reported.
+  - "a really rough day" (and bad, horrible, miserable day) is not read as a
+    state. To be read.
+  - "I had a confrontation with my boss" is not snipped: it is an act (the
+    behaviour channel, which is the acting half of a release) against
+    authority.
+  - "I was really irritated by him" is not read: the anger family, aimed at a
+    person.
+  - Asked for: connect the story to find out why the day was miserable and ask
+    questions to get in. He asks what I recommend, so a recommendation, then
+    the build.
+- After that, the TDD set (the designs of the frameworks, foundations,
+  information architecture and algorithms) is updated to match.
+- Compass: the left panel, Root Energetics, starts closed. (Answers the
+  question of round OT.)
+- Sound: everything gets a very subtle atmospheric sound, quiet sci-fi:
+  overlays, clicks, a click on the Field, zoom in making the Field sound a
+  little louder. Nothing overwhelming. This widens the seven-moment design.
+- Greeting engine: it exists now, and should be hooked up to the journal and
+  ask the right questions.
+- OAuth for security: how to add it. Stripe still to wire. Steps for both,
+  as for a nine year old (his standing rule: name the site, where to log in,
+  where on the page).
