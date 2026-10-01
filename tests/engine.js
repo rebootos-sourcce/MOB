@@ -5627,6 +5627,27 @@ g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a se
 require('./trace.js')(E,ok,g);
 /* the practice objects, engine/practice.js, with this file's own ok and g */
 require('./practice.js')(E,ok,g,console.log);
+/* THE TWO NEW DOMAINS MEET. practiceTraceIntents is what the practice build says
+   about itself and traceApply is what the graph takes in, built apart by two
+   hands. A practice built through the one door, its intents applied to a fresh
+   graph: nothing refused, one node per fact, and the pattern named addr:N lands
+   as address N, the form ui/release.js already writes. */
+(function(){
+ var T='2026-10-01T09:00:00.000Z', P=E.practiceBlank(), A='addr:'+E.NODES.find(function(n){return n.cf;}).i, bad=null;
+ function go(act,a){var r=E.practiceDo(P,act,a,T); if(!r.ok){bad=act+': '+(r.errs||[]).join('|');} else P=r.P;}
+ go('goal_create',{id:'g1',title:'Communicate more consciously',desired_outcome:{description:'Say what I mean',measurable:false}});
+ go('behavior_define',{id:'b1',goal_id:'g1',behavior:'Speak less, listen more',priority:1,quality_dimensions:{awareness:true,presence:true,integrity:false,consistency:true}});
+ go('protocol_add',{id:'p1',class:'release',objective_id:'b1',target_patterns:[A],steps:[{type:'release',instruction:'Release the need to fill silence'},{type:'reframe',instruction:'I can speak clearly.'},{type:'behavior',instruction:'Speak less.',duration:{value:2,unit:'hours'}}],generated_by:{system:'t',model_version:'0'}});
+ go('protocol_accept',{id:'p1'});
+ go('ritual_create',{id:'r1',protocol_id:'p1',title:'Conscious communication',tags:['Throat']});
+ ok(bad===null,'the bridge: a practice is built through its one door'+(bad?', refused at '+bad:''));
+ var it=E.practiceTraceIntents(P), r=E.traceApply(E.traceNew(),it,T);
+ ok(it.length>0&&r.refused.length===0&&r.added===it.length,
+  'the bridge: every intent the practice build states is taken by the graph, '+it.length+' stated, '+r.added+' added, '+r.refused.length+' refused'+(r.refused.length?' '+JSON.stringify(r.refused[0]):''));
+ var g=E.traceNew(); E.traceApply(g,it,T);
+ var again=E.traceApply(g,it,T);
+ ok(again.added===0&&again.held===it.length,'and replaying them on every save is safe: nothing added, all held, '+JSON.stringify({added:again.added,held:again.held}));
+})();
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
