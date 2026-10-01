@@ -24,9 +24,9 @@ Total 43 of 90, scaled to 48.
 
 The first act that matters is Commit. After it the person gets one line of status and a sound (`sfx('kept')`). The First story mark is earned and drawn nowhere they are looking. `ladderHtml` renders only on Compass and Ritual. My own pass nine measured this exact gap at 2.8 points of a thousand on day 30. It is still open.
 
-**Day 2.** A person comes back only on their own memory. There is no notification (needs a server, ruled in scope, not built), no daily page on open, and the streak is the only hook, quiet and forgiving. Streak, Record and Marks sit at the bottom of the Compass rail ("0 days, last run", `1600-compass-loaded.png`), a page a day-2 person has no reason to visit.
+**Day 2.** A person comes back on memory alone. No notification (needs a server, not built), no daily page on open. Streak, Record and Marks sit in the Compass rail ("0 days, last run", `1600-compass-loaded.png`), a page a day-2 person has no reason to visit.
 
-**Day 7.** If they built a ritual, it works: rings per ritual, a month calendar, the Seven days mark. If they did not, nothing pulls them to build one. The Story's release panel on the Marcus example reads "Nothing is held above the line yet, so there is nothing to release" (`1600-story-loaded.png`). By my own measure 465 of 1000 people in the panel read like this. Marcus is 160 of them. The main Play action is shut to the largest group.
+**Day 7.** If they built a ritual, it works: rings per ritual, a month calendar, the Seven days mark. If they did not, nothing pulls them to build one. The Story's release panel on the Marcus example reads "Nothing is held above the line yet, so there is nothing to release" (`1600-story-loaded.png`). By my own measure 465 of 1000 panel people read like this. The main Play action is shut to the largest group.
 
 **Day 30.** The Thirty days mark needs thirty consecutive days. The coherence graph needs ten snapshots for its mark. Nothing says "your Heart held for a week". The designed Held and Moved awards (`DESIGN-gamification.md` section 6.2) are not in source: a grep of `atuned_src` for award, season, karma, stake and frame layer finds none.
 
@@ -42,13 +42,13 @@ The first act that matters is Commit. After it the person gets one line of statu
 
 Not yet. This is the biggest gap against the owner's own line that the avatar is the centrepiece.
 
-- The Avatar tab (`1600-intake-loaded.png`) is a form: type who you release, type who you embody, press "Add to your avatar". Its cycle rings (First, Second, Third) and "Nothing to queue yet" sit empty on first view. It is an authoring page. It is not a character that changes.
+- The Avatar tab (`1600-intake-loaded.png`) is a form: type who you release, who you embody, press "Add to your avatar". Its cycle rings sit empty. It is an authoring page, not a character that changes.
 - The Character tab is locked for the Marcus example: "Unlocked on tier three and above" (`1600-character-loaded.png`). The centrepiece is behind a paywall. Free people never see the thing the product says it is.
 - The mockup that does what the owner means exists: `mockups/character-aura/shots/aura-1-states.png`. Load bends the figure, coherence lights it. That is a body that visibly gets better when something is released. It is the single best retention asset in the repository and it is not in the build.
 
 ## Stickiness grade
 
-48 of 100. High on honesty (9), low on pull (2 to 4). Retention numbers, from my 27 September model on 1000 simulated people: day 30 baseline 9.8 percent, with the full designed set 20.7 percent. Today `node tools/loopsim.js --validate` passes 44 checks and fails 6, three because the ritual surface was rebuilt since the baseline and three because level pins drifted. Treat those figures as order of magnitude. Benchmarks from elsewhere: Finch day 1 is 54 percent, the category 25 to 26. Refusing loss framing cost 2.9 points of 1000 in that model. That is the price of the hard line, and it shrank as the honest design got better.
+48 of 100. High on honesty (9), low on pull (2 to 4). Retention, from my 27 September model of 1000 simulated people: day 30 baseline 9.8 percent, full designed set 20.7. Today `node tools/loopsim.js --validate` passes 44 checks and fails 6 (the ritual surface was rebuilt since the baseline, and level pins drifted), so read those as order of magnitude. Benchmarks from elsewhere: Finch day 1 54 percent, category 25 to 26. Refusing loss framing costs 2.9 points of 1000 in that model. That is the price of the hard line.
 
 ## The soul
 
@@ -78,14 +78,14 @@ A slow instrument, not a game. A person says a true sentence and a body responds
 
 Near the line, and why they pass: (a) the figure must never go dark. The mockup's coherence 10 state is nearly invisible. That reads as punishment. Floor it at a warm, dim, present figure and never dim it on a missed day, or it becomes a loss frame. (b) The return page must be in the file, shown on open. A push is allowed only at the time the person set for their own ritual, one a day, never a streak warning.
 
-Mechanics that are not skin and need building: the sixty second floor version of the ritual (worth 1.8 points in my model), the Held and Moved awards (1.0), the stake sentence, and a daily page on open.
+Not skin, needs building: the sixty second floor ritual (1.8 points in my model), Held and Moved awards (1.0), a daily page on open.
 
 ## Redesign candidates
 
-- **The loop bar as a ring, with the figure at its centre.** A skin cannot do it because Flow and Embody are one tab each and the figure sits behind a tier gate. It is a placement change and a gating change. Gain: the owner's "core game loop mechanic" shown, not stated. This is the one redesign I would argue for.
+- **The loop bar as a ring, with the figure at its centre.** A skin cannot do it because Flow and Embody are one tab each and the figure sits behind a tier gate. It is a placement change and a gating change. Gain: the owner's "core game loop mechanic" shown, not stated.
 
 ## Risks
 
 - The figure becomes a score. A person watches their light and judges themselves. Mitigation: no number on it, no comparison, light is relief and not rank.
-- Showing the real figure to free people may weaken the tier-three sell. Test one sealed silhouette against none.
+- A small free figure may weaken the tier three sell. Test it.
 - The loop sim is stale. Re-baseline before quoting any retention figure to the owner.
