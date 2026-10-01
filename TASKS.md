@@ -31116,3 +31116,97 @@ Onboarding rulings (answers to the nine in PLAN.md section H)
   masculine, feminine, release and install.
 - Buttons: pause, voice on and off, end session.
 - Defect, priority: he cannot end the screen.
+
+## Round PA, 1 October. Answers on the login, the onboarding frames, the integrity laws, the legal facts; the feelings wheel
+
+> [An image: a feelings wheel. Seven primary families (Happy, Surprised, Bad,
+> Fearful, Angry, Disgusted, Sad), with a ring of secondary words and a ring of
+> tertiary words. Written out as data in `FEELINGS-WHEEL.md`.]
+>
+> "Okay, I don't know which screen this is, but it's there's more running you
+> than you can see. It's this circle. There's two login buttons, so get rid of
+> one. Move get rid of yeah. Okay, move create account next to login. And move
+> guests next to login. I want some subtle animation on that ring in the back. I
+> want the blue attuned logo. What brought you here? That's cool. Let's add
+> pain. We want to summary what the pattern feels like running through you. So
+> over responsibility there needs to be a description here. I keep taking care of
+> everybody else. It needs to be a bit more than that. But showing what it's
+> linked to when saboteurs get created, I think is very effective. The release
+> needs work. Uh, it needs to match what we're doing in software. Open the field
+> is kind of meaningless. Play next is I don't know, interesting. Okay, so we
+> need a recovery email. That's cool. If they tap not quite, maybe the
+> adjectives or the descriptive subject. or the subject itself isn't clear
+> enough. So the sniffer needs to really sniff for subject. Instead of where do
+> you feel it, where do you, where does it land in your body? Integrity laws, I
+> need to see the list. The ones I know are truth, duty, compassion,
+> transparency, courage, aesthetic beauty, or order, accountability. Or whatever
+> are combined accountability is. Gratitude. I need to see the rest. Just leave
+> welcome to a somatic experience. Neurosomatic experience. Awareness and
+> intuition is a tool we use to turn your senses inward. Starting points, I
+> don't have context. Many release, let's do 12. Review the emotions wheel it
+> would need to be something like this right the sniffer needs to find the
+> family of words group it to the assemblage points they relate to and it's just
+> sniff for those as well. I don't know what you mean by for the observatory.
+> Yes, by voice it should open on my recorded voice. Because I'm transmitting
+> exactly what I want directly to them. I don't know what you mean. I don't know
+> what you mean by intro text. The company's legal name is Tula Unified LLC.
+> That's T-U-L-A. Our address is 1634 West 39th Place, Los Angeles, California,
+> 90062. The email address, you have it. Hello, at we are in California, United
+> States. We do no refund after seven days. um, yes, people from EU, UK, it's
+> internet, so it'll be everywhere. Yeah, deleted accounts back up after ninety
+> days. And we'll need a recovery process. In case they come back and want their
+> data. Um, birth data doesn't need to travel with them. Just their analytic
+> data. kind of like the summary data. I don't know what you mean by resource
+> sharing. Do a ticked box."
+
+**Read as, and where each goes.**
+
+Login (the ring, Login A is the pick)
+- Two login buttons: remove one. Create account and Guest sit beside Log in.
+  Subtle animation on the ring behind. The blue Atüned logo.
+
+Onboarding frames (mockup revision, then build)
+- Starting points ("What brought you here?"): cool. Add Pain.
+- The Mirror: a description of what the pattern feels like running through the
+  person, more than the one quoted sentence; show what the pattern is linked to
+  when saboteurs get created ("very effective").
+- Release screens (the onboarding's): match what the software does. "Open the
+  field" is meaningless; "Play next" is interesting but unclear.
+- Recovery email: yes, at sign up (answers the lost passphrase question).
+- Not quite: ask whether the adjectives, the descriptive subject, or the subject
+  itself is not clear enough; the sniffer must sniff for the subject.
+- The empty Mirror asks "where does it land in your body?" in place of "where
+  do you feel it?".
+- Integrity laws: he wants the list. He names truth, duty, compassion,
+  transparency, courage, aesthetic beauty, accountability, "order", and
+  gratitude (order and gratitude are not among the 21 laws; the list is given
+  back to him in the report). He picks after seeing all 21.
+- Somatic line: keep "Welcome to a somatic experience." and make it
+  "neurosomatic": "Awareness and intuition is a tool we use to turn your senses
+  inward." Ruled: his line outranks the voice rule against announcing a start.
+- Starting points: he did not understand the question (twelve versus six
+  symbols); asked again with the pictures.
+- Mini release: 12 lines.
+
+Sniffer
+- The emotions wheel is the model: the sniffer finds the family of words, groups
+  each word to the assemblage points the family relates to, and sniffs for the
+  wheel's words as well. Sent to the sniffer build with `FEELINGS-WHEEL.md`.
+
+Release voice
+- It opens on his recorded voice, "because I'm transmitting exactly what I want
+  directly to them." Needs a way for him to record it and for the build to carry
+  it: sent to the release redesign.
+- He did not understand "the observatory" question or "intro text" (the lines
+  before "I am releasing"): explained in the report.
+
+Legal facts (for the policy and terms)
+- Company: Tula Unified LLC. Address: 1634 West 39th Place, Los Angeles,
+  California 90062. Email: the one already on the server (hello@atuned.world).
+  California and the United States govern. No refund after seven days. People
+  everywhere, EU and UK included ("it's the internet"). Deleted accounts are
+  backed up for 90 days, with a recovery process for someone who returns and
+  wants their data. Birth data does not travel; the analytic data, like the
+  summary data, does. He did not understand "research sharing". The paid step
+  uses a ticked box. Not answered: the age floor, dormant accounts, who holds
+  the key to stored records.
