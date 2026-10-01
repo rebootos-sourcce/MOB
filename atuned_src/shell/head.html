@@ -4810,9 +4810,9 @@ body:not(.tab-masksview) #masksview{display:none!important}
 .chv-top{display:flex;justify-content:flex-end}
 .chv-empty{margin:0 auto;max-width:880px;width:100%;font-size:13px;line-height:1.5;color:var(--mid)}
 /* THE RAIL AND THE HERO, ROUNDS MX, MZ AND NA, replacing the three column
-   grid this host used to draw (.chv-m, .chv-nm and .chv-svg below are the
-   same classes that grid used, kept rather than renamed, since the rail's
-   own icons and the pair in Selection, .chv-pair, still need exactly what
+   grid this host used to draw (.chv-m and .chv-svg below are the same
+   classes that grid used, kept rather than renamed, since the rail's own
+   icons and the pair in Selection, .chv-pair, still need exactly what
    they always did). His words at MX: "we have all five masks as small
    icons on the left hand side of the screen... but then it gives us, we
    can maximize the rest of that space." The grid gave every mask the same
@@ -4828,7 +4828,15 @@ body:not(.tab-masksview) #masksview{display:none!important}
 .chv-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
  flex:1 1 auto;min-height:0;min-width:0;text-align:center}
 .chv-hero-nm{font-size:14px;letter-spacing:.02em;color:var(--mid)}
-.chv-m{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:8px 6px 10px;
+/* THE NAME COMES OFF THE RAIL, ROUND NK: "I don't want the buttons that
+   tall. Shrink the icons down. Remove the name above it so you get more
+   space of the icons. And then keep the name above the major symbol,"
+   his own word for the hero, which is why .chv-hero-nm above is untouched
+   and only this button's own padding and the icon size below move. The
+   name is still read aloud: ui/character.js keeps it on title and
+   aria-label both, so nothing a screen reader says changed, only what a
+   sighted person sees printed under five small icons in a row. */
+.chv-m{display:flex;align-items:center;justify-content:center;min-width:0;padding:4px;
  background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
  font:inherit;cursor:pointer}
 .chv-m:hover{border-color:var(--edge)}
@@ -4843,12 +4851,15 @@ body:not(.tab-masksview) #masksview{display:none!important}
    glow too, so "does this show up here" answers at a glance before a
    reader has found the one lit cell inside a 64 pixel square. */
 .chv-m.chv-weave-on{box-shadow:0 0 0 2px var(--accent)}
-.chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
-/* JAMES AT 64PX, ROUND MZ: his own pick of the rail icon's own size, off a
-   set of sizes shown to him named for who measured each one. The hero
-   overrides this with its own rule below rather than getting a second
-   class, since chSvg already writes chv-hero-svg beside chv-svg on it. */
-.chv-svg{display:block;width:64px;height:64px;aspect-ratio:1}
+/* JAMES AT 64PX, ROUND MZ, WAS THE RAIL ICON'S OWN SIZE WHILE THE NAME
+   SAT ABOVE IT. Round NK, his own words, "I don't want the buttons that
+   tall, shrink the icons down": with the label gone the button's own
+   height is the icon's alone, so the icon itself comes down to 48px here,
+   the same figure the phone width below already measured against the
+   44px tap floor. The hero overrides this with its own rule below rather
+   than getting a second class, since chSvg already writes chv-hero-svg
+   beside chv-svg on it. */
+.chv-svg{display:block;width:48px;height:48px;aspect-ratio:1}
 .chv-hero-svg{width:100%;max-width:560px;height:auto}
 /* a plain outline, never a fill: the fill already carries the tier's own
    tone (chTone in ui/character.js) and painting over it would answer a
@@ -4917,14 +4928,15 @@ body.snow.tab-masksview .stage,body.snow #masksview{background:#F2F1EC}
  .chv-rail{order:2;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;
   width:100%;justify-content:center;gap:8px;padding:4px 2px}
  .chv-hero-svg{max-width:300px}
- /* the icon shrinks from James's own 64px so the roster of five fits a 390
-    wide phone without the flat bar ever needing to scroll to find
-    Ideological: five at 48px and four 8px gaps measure 332, inside even the
-    narrowest phone this product is held to. Still comfortably past the
-    44px tap floor, since the icon alone clears it before the button's own
-    padding and label are added on top. */
- .chv-rail .chv-svg{width:48px;height:48px}
- .chv-rail .chv-m{padding:6px 4px 8px}
+ /* ROUND NK DROPPED THE RAIL ICON TO 48PX ON EVERY WIDTH, not only here,
+    once the name came off the button and stopped driving its height; this
+    media query no longer needs its own override to match. Five icons at
+    48px, each with 4px of padding on every side so the button itself is
+    56px, and four 8px gaps between them, measure 312 at a 390 wide phone,
+    inside the narrowest width this product is held to without the flat
+    bar ever needing to scroll to find Ideological. Comfortably past the
+    44px tap floor on the icon alone, before the button's own padding is
+    added on top. */
 }
 /* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
    backdrop, which is right for something a drill throws up over your reading

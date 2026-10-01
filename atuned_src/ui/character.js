@@ -135,7 +135,7 @@
 /* pick is never null once a reading has rendered once, round MX/MZ/NA: see
    chLast() below for why, and the big comment above renderCharacter for
    what pick and weave each now answer. */
-var CHV={face:'dark', pick:null, weave:null, html:''};
+var CHV={face:'dark', pick:null, weave:null, opened:false, html:''};
 /* THE HOVER, ROUND MQ, built to the plan round LT wrote and left open: "As I
    hover over the pixels, the overlay tells my limiting belief (fetter),
    saboteur cluster, etc." One entry per rendered card, keyed by mask name,
@@ -560,13 +560,30 @@ function renderCharacter(r){
   CH_HOVER[m.nm]={G:rd.G,byCell:byCell,r:r};
   var weaveOn=!!CHV.weave&&rd.px.some(function(x){return x.o&&x.o.nm===CHV.weave;});
   var say=m.nm+' mask, '+CHV.face+' reading. It '+m.v+'.';
+  /* THE NAME COMES OFF THE RAIL, ROUND NK: "I don't want the buttons that
+     tall. Shrink the icons down. Remove the name above it so you get more
+     space of the icons. And then keep the name above the major symbol,"
+     his own word for the hero. The label is not lost, only moved: it is
+     still read aloud, title and aria-label both already carry it, so a
+     screen reader and a long-press tooltip still say which mask this is.
+     Only the sighted, always-visible copy comes off, freeing the height
+     his own complaint was about. */
   return '<button type="button" class="chv-m'+(weaveOn?' chv-weave-on':'')
    +'" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
-   +'<span class="chv-nm">'+esc(m.nm)+'</span>'+chSvg(rd,'chv-svg',null,CHV.weave)+'</button>';}).join('');
+   +chSvg(rd,'chv-svg',null,CHV.weave)+'</button>';}).join('');
  /* heroM is always set: CHV.pick is read off chLast() above the first time
     and off a real press every time after, and both only ever hand back a
     name MASKS_READ actually carries, so exactly one card's own on is true
     and heroRd is that card's own rd, never computed twice. */
+ /* THE HERO AND SELECTION OPEN TOGETHER, EVEN ON A FIRST ARRIVAL, ROUND NK.
+    NA's own ruling, "a rail press updates the hero and the right column
+    together," was built for a press and read as only a press: the hero is
+    never blank, chLast() sees to that, but the column it should have
+    opened beside stayed silent until the first click. Once, not on every
+    render: render() runs on every press anywhere in the app, and chDrill
+    writing over whatever else Selection is showing on every one of those
+    would fight a person reading something unrelated elsewhere. */
+ if(!CHV.opened){CHV.opened=true; chDrill(heroM);}
  var heroSay=heroM.nm+' mask, '+CHV.face+' reading, enlarged. It '+heroM.v+'.';
  var hero='<div class="chv-hero" data-chhero="'+esc(heroM.nm)+'">'
   +'<div class="chv-hero-nm">'+esc(heroM.nm)+'</div>'

@@ -28822,3 +28822,111 @@ click. Not touched, named rather than silently left out: 19.A1 motion,
 rim, 19.A6 the egg face, 19.A7 the gradient frame, 19.A9 the face as a
 body map, 19.A12 mask weights on history rows, 19.A13 the toggled
 saboteur masks.
+
+## Round NK
+
+His ruling on the rail build, verbatim: "This isn't the shape we
+selected either. The shape we selected was the oval. I think it was
+like E2 or something like that. I think if we ask him to rate the
+something, one to five, that would give us a better feel. But they
+don't need to rate it one to five, they just need to feel it. So just
+selecting the fact that it's even present. I want the oval shape for
+the face. I don't want the buttons that tall. Shrink the icons down.
+Remove the name above it so you get more space. From, of the icons.
+And then keep the name. Above the. Major symbol. Then when I select
+the clusters, I can see what saboteurs are running. That's cool. Uh,
+go with design. Selected, it looks like a button. And just make sure
+it's not our design aesthetics. Most curious about is how the effects
+are going to look. From the field, what are you integrating over?
+What language gets created? From the selections, what does it look
+like when things are running hot? What does it look like when things
+are overexpressed? What does the information layer on the total thing
+look like? What does it look like when I select just the saboteur
+cluster?"
+
+Read as:
+
+1. **The face shape is an oval (E2), not the hexagon this round shipped.**
+   Already logged, `PRIORITY.md` 19.A6, and already found in the last
+   audit that its own artwork "lives in a session scratchpad, not the
+   repository." Real design work, not a resize: queued to the design
+   pass below rather than guessed at in code a third time.
+2. **The rating question, read as answering last round's own open Release
+   question** ("may the product ask a person to rate how strong
+   something feels, 0 to 10"): no number. Presence or absence only,
+   "they just need to feel it... just selecting the fact that it's even
+   present." Narrower than a 1-5 scale and consistent with his own
+   earlier pattern, round NE R3, rejecting a numeric rating there too in
+   favour of a simpler signal.
+3. **The weave itself is approved, in his own words, "that's cool."**
+   What needs work is the visual language around it, not the mechanic.
+4. **Three concrete corrections, fixed this round, below:** the rail
+   icons are too tall because the name sits above each one; remove it
+   from the rail, keep it only above the hero ("the major symbol"); and
+   shrink the icons themselves now that the label is gone.
+5. **"Selected... looks like a button... make sure it's not our design
+   aesthetic."** The gold border this round gave the pressed rail icon
+   and the hero reads as a generic UI control. Needs a real answer from
+   the art director rather than a second guess in code.
+6. **Five visual questions, his own words, sent to the art and animation
+   directors rather than answered blind:** what gets pulled in from the
+   Field and what it is integrating over, what new visual language that
+   creates, what running hot looks like, what overexpressed looks like
+   (the engine already carries this as `o.over` on a saboteur, `drills.js`,
+   with no visual language of its own yet), what the information layer
+   reads as on the whole page, and what the weave looks like in
+   isolation.
+
+## Round NL
+
+Three concrete corrections from round NK, built and gated.
+
+1. **The name comes off the rail.** `ui/character.js`'s rail card no
+   longer prints a `<span class="chv-nm">`, only `title` and
+   `aria-label`, so a screen reader still says which mask it is and a
+   sighted person no longer sees it duplicated under five small icons.
+   The dead `.chv-nm` CSS rule is gone with it.
+2. **The icons shrink.** With the label gone driving the button's own
+   height, `.chv-svg` drops from James's own 64px to 48px, on every
+   width, not only the phone media query that already used 48px; that
+   query's own override is now redundant and removed rather than left
+   to silently agree with the base by accident.
+3. **The hero and Selection open together, even on a first arrival.**
+   Found by the design review below, not guessed at: `chDrill` ran
+   only from a press, so a fresh visit showed Child as the hero with
+   Selection silent, against round NA's own ruling that the two move
+   together. `renderCharacter` now calls `chDrill(heroM)` once, on
+   `CHV.opened`, the first time this session a hero is established,
+   never on every render, since `render()` fires on every press
+   anywhere in the app and a press elsewhere should not keep stealing
+   Selection back to Character.
+
+**The design review landed, `DESIGN-character-effects.md`,** his own
+five questions from round NK answered in full rather than guessed at
+in code a third time: the recovered oval geometry (E2's drawing
+survived in this session's own scratchpad, not the repository, and is
+now a fitted path and grid any build can use), a selected state built
+on saturation and a soft pool rather than a border, which five Field
+effects actually belong on a mask face and the three-zone language
+they make, distinct visual treatments for running hot and for
+overexpressed since the engine already tells them apart and the page
+did not, and three depths for the Selection column plus a full motion
+description of the weave alone. `PRIORITY.md` 19.A6 carries the
+recovered geometry now rather than only naming it missing.
+
+Gated in full: `BUILD.sh` and `BUILD-engine.sh` clean, 484 exports,
+`tests/engine.js` 1853/0, `tests/collide.js` 351/0, `tests/design.js`
+185/0, `tests/funnel.js` 172/0, `tests/boot.js` 13/0, `tools/monitor.js`
+all surfaces render, voice objections unchanged. `tests/functional.js`
+needed two clean, uncontended runs to trust rather than one: the first
+solo run after these three fixes came back 2 failures, an already
+flagged Field fade timing assertion and a CQ sweep timing one; a
+second run with zero changes between them reproduced only the fade
+one, confirming the CQ sweep failure was itself a flake and not
+something this round's own changes touched, the same discipline the
+masks build itself needed two rounds earlier the same night.
+
+Next, per the design review's own order: the oval face (ruled twice
+now, round MV and again this round, and the geometry every other
+effect depends on) and the selected state, the two items his review
+calls buildable now without a further ruling.

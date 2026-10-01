@@ -279,8 +279,13 @@ console.log('\n=== the six masks, as pixels on the figure ===');
     stray:rd.px.filter(x=>m.b.indexOf(x.n.b)<0||val(x.n,f)<1).length,
     left:rd.px.every(x=>x.p[0]<rd.G/2),
     pos:rd.px.map(x=>x.p.join(':')).join(' ')};});
+  /* THE NAME COMES OFF THE RAIL'S OWN VISIBLE TEXT, ROUND NK, so this reads
+     it off aria-label instead of a .chv-nm span that no longer exists:
+     still "under its own name" exactly as the assertion below says, just
+     read where a screen reader would find it rather than where a sighted
+     person used to see it printed. */
   const cards=()=>[...host.querySelectorAll('.chv-m')].map(c=>({nm:c.getAttribute('data-chmask'),
-   txt:(c.querySelector('.chv-nm')||{}).textContent,G:+(c.querySelector('svg')||{getAttribute:()=>0}).getAttribute('data-chres'),
+   txt:(c.getAttribute('aria-label')||'').split(' mask,')[0],G:+(c.querySelector('svg')||{getAttribute:()=>0}).getAttribute('data-chres'),
    svg:(c.querySelector('svg')||{}).outerHTML||'',on:c.getAttribute('aria-pressed')==='true',
    weave:c.classList.contains('chv-weave-on')}));
   const hero=()=>{const h=host.querySelector('.chv-hero');

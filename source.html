@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1019 bd10571 2026-10-01 01:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v1020 6f7ba7e 2026-10-01 03:42"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -4810,9 +4810,9 @@ body:not(.tab-masksview) #masksview{display:none!important}
 .chv-top{display:flex;justify-content:flex-end}
 .chv-empty{margin:0 auto;max-width:880px;width:100%;font-size:13px;line-height:1.5;color:var(--mid)}
 /* THE RAIL AND THE HERO, ROUNDS MX, MZ AND NA, replacing the three column
-   grid this host used to draw (.chv-m, .chv-nm and .chv-svg below are the
-   same classes that grid used, kept rather than renamed, since the rail's
-   own icons and the pair in Selection, .chv-pair, still need exactly what
+   grid this host used to draw (.chv-m and .chv-svg below are the same
+   classes that grid used, kept rather than renamed, since the rail's own
+   icons and the pair in Selection, .chv-pair, still need exactly what
    they always did). His words at MX: "we have all five masks as small
    icons on the left hand side of the screen... but then it gives us, we
    can maximize the rest of that space." The grid gave every mask the same
@@ -4828,7 +4828,15 @@ body:not(.tab-masksview) #masksview{display:none!important}
 .chv-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
  flex:1 1 auto;min-height:0;min-width:0;text-align:center}
 .chv-hero-nm{font-size:14px;letter-spacing:.02em;color:var(--mid)}
-.chv-m{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:8px 6px 10px;
+/* THE NAME COMES OFF THE RAIL, ROUND NK: "I don't want the buttons that
+   tall. Shrink the icons down. Remove the name above it so you get more
+   space of the icons. And then keep the name above the major symbol,"
+   his own word for the hero, which is why .chv-hero-nm above is untouched
+   and only this button's own padding and the icon size below move. The
+   name is still read aloud: ui/character.js keeps it on title and
+   aria-label both, so nothing a screen reader says changed, only what a
+   sighted person sees printed under five small icons in a row. */
+.chv-m{display:flex;align-items:center;justify-content:center;min-width:0;padding:4px;
  background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
  font:inherit;cursor:pointer}
 .chv-m:hover{border-color:var(--edge)}
@@ -4843,12 +4851,15 @@ body:not(.tab-masksview) #masksview{display:none!important}
    glow too, so "does this show up here" answers at a glance before a
    reader has found the one lit cell inside a 64 pixel square. */
 .chv-m.chv-weave-on{box-shadow:0 0 0 2px var(--accent)}
-.chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
-/* JAMES AT 64PX, ROUND MZ: his own pick of the rail icon's own size, off a
-   set of sizes shown to him named for who measured each one. The hero
-   overrides this with its own rule below rather than getting a second
-   class, since chSvg already writes chv-hero-svg beside chv-svg on it. */
-.chv-svg{display:block;width:64px;height:64px;aspect-ratio:1}
+/* JAMES AT 64PX, ROUND MZ, WAS THE RAIL ICON'S OWN SIZE WHILE THE NAME
+   SAT ABOVE IT. Round NK, his own words, "I don't want the buttons that
+   tall, shrink the icons down": with the label gone the button's own
+   height is the icon's alone, so the icon itself comes down to 48px here,
+   the same figure the phone width below already measured against the
+   44px tap floor. The hero overrides this with its own rule below rather
+   than getting a second class, since chSvg already writes chv-hero-svg
+   beside chv-svg on it. */
+.chv-svg{display:block;width:48px;height:48px;aspect-ratio:1}
 .chv-hero-svg{width:100%;max-width:560px;height:auto}
 /* a plain outline, never a fill: the fill already carries the tier's own
    tone (chTone in ui/character.js) and painting over it would answer a
@@ -4917,14 +4928,15 @@ body.snow.tab-masksview .stage,body.snow #masksview{background:#F2F1EC}
  .chv-rail{order:2;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;
   width:100%;justify-content:center;gap:8px;padding:4px 2px}
  .chv-hero-svg{max-width:300px}
- /* the icon shrinks from James's own 64px so the roster of five fits a 390
-    wide phone without the flat bar ever needing to scroll to find
-    Ideological: five at 48px and four 8px gaps measure 332, inside even the
-    narrowest phone this product is held to. Still comfortably past the
-    44px tap floor, since the icon alone clears it before the button's own
-    padding and label are added on top. */
- .chv-rail .chv-svg{width:48px;height:48px}
- .chv-rail .chv-m{padding:6px 4px 8px}
+ /* ROUND NK DROPPED THE RAIL ICON TO 48PX ON EVERY WIDTH, not only here,
+    once the name came off the button and stopped driving its height; this
+    media query no longer needs its own override to match. Five icons at
+    48px, each with 4px of padding on every side so the button itself is
+    56px, and four 8px gaps between them, measure 312 at a 390 wide phone,
+    inside the narrowest width this product is held to without the flat
+    bar ever needing to scroll to find Ideological. Comfortably past the
+    44px tap floor on the icon alone, before the button's own padding is
+    added on top. */
 }
 /* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
    backdrop, which is right for something a drill throws up over your reading
@@ -26749,7 +26761,7 @@ try{window.__at&&window.__at('ui/mapshelf.js');}catch(e){}
 /* pick is never null once a reading has rendered once, round MX/MZ/NA: see
    chLast() below for why, and the big comment above renderCharacter for
    what pick and weave each now answer. */
-var CHV={face:'dark', pick:null, weave:null, html:''};
+var CHV={face:'dark', pick:null, weave:null, opened:false, html:''};
 /* THE HOVER, ROUND MQ, built to the plan round LT wrote and left open: "As I
    hover over the pixels, the overlay tells my limiting belief (fetter),
    saboteur cluster, etc." One entry per rendered card, keyed by mask name,
@@ -27174,13 +27186,30 @@ function renderCharacter(r){
   CH_HOVER[m.nm]={G:rd.G,byCell:byCell,r:r};
   var weaveOn=!!CHV.weave&&rd.px.some(function(x){return x.o&&x.o.nm===CHV.weave;});
   var say=m.nm+' mask, '+CHV.face+' reading. It '+m.v+'.';
+  /* THE NAME COMES OFF THE RAIL, ROUND NK: "I don't want the buttons that
+     tall. Shrink the icons down. Remove the name above it so you get more
+     space of the icons. And then keep the name above the major symbol,"
+     his own word for the hero. The label is not lost, only moved: it is
+     still read aloud, title and aria-label both already carry it, so a
+     screen reader and a long-press tooltip still say which mask this is.
+     Only the sighted, always-visible copy comes off, freeing the height
+     his own complaint was about. */
   return '<button type="button" class="chv-m'+(weaveOn?' chv-weave-on':'')
    +'" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
-   +'<span class="chv-nm">'+esc(m.nm)+'</span>'+chSvg(rd,'chv-svg',null,CHV.weave)+'</button>';}).join('');
+   +chSvg(rd,'chv-svg',null,CHV.weave)+'</button>';}).join('');
  /* heroM is always set: CHV.pick is read off chLast() above the first time
     and off a real press every time after, and both only ever hand back a
     name MASKS_READ actually carries, so exactly one card's own on is true
     and heroRd is that card's own rd, never computed twice. */
+ /* THE HERO AND SELECTION OPEN TOGETHER, EVEN ON A FIRST ARRIVAL, ROUND NK.
+    NA's own ruling, "a rail press updates the hero and the right column
+    together," was built for a press and read as only a press: the hero is
+    never blank, chLast() sees to that, but the column it should have
+    opened beside stayed silent until the first click. Once, not on every
+    render: render() runs on every press anywhere in the app, and chDrill
+    writing over whatever else Selection is showing on every one of those
+    would fight a person reading something unrelated elsewhere. */
+ if(!CHV.opened){CHV.opened=true; chDrill(heroM);}
  var heroSay=heroM.nm+' mask, '+CHV.face+' reading, enlarged. It '+heroM.v+'.';
  var hero='<div class="chv-hero" data-chhero="'+esc(heroM.nm)+'">'
   +'<div class="chv-hero-nm">'+esc(heroM.nm)+'</div>'
@@ -47984,5 +48013,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003133774"></div>
+<div id="eof" hidden data-len="003135756"></div>
 </body></html>
