@@ -1989,13 +1989,30 @@ body:not(.tab-field) .fdock{display:none}
 /* AND ACCURACY LEFT THE ROW FOR THE STAGE'S LOWER LEFT, round LR in TASKS.md,
    so the row is DQ and CQ. Spread to the rail's edges, two circles read as
    two ends of nothing, so they sit centred on the four's own gap. */
-.fdock .fdrow{display:flex;align-items:center;justify-content:center;gap:20px;min-width:0}
-.fdock .fdrow .key{display:contents}
-.fdock .key .kb[data-q=dq]{order:1}
-.fdock .key .kb[data-q=cq]{order:2;min-width:72px;min-height:72px}
-.fdock .keylo{justify-content:center;gap:20px}
-.fdock .kb{min-width:var(--tap);min-height:var(--tap);padding:0;border:0;background:transparent;
- justify-content:center;border-radius:50%}
+/* THE READINGS ARE BARS, round OG. His words: "instead of the circles, have
+   those horizontal bars stacked on top of each other with the text, with their
+   name, and the color of the bar based off of the percent. This should tighten
+   up that root energetics area." Six rows, a name on the left and the figure
+   on the right with a bar under both, each row still a button to its reading
+   and each at the 44px floor, because the whole row is the target. CQ and DQ
+   are the first group, the four that move through a person the second, a
+   hairline between them. The fill and its colour are written inline by
+   rbRow (ui/component.js); this sheet only lays them out. */
+.fdock{gap:2px}
+.fdock .fdrow{display:block;min-width:0}
+.fdock .fdrow .key,.fdock .keylo{display:flex;flex-direction:column;align-items:stretch;gap:2px;flex-wrap:nowrap}
+.fdock .keylo{margin-top:6px;padding-top:6px;border-top:1px solid var(--edge)}
+.fdock .kb.rbar{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 6px;
+ column-gap:10px;row-gap:6px;align-items:baseline;align-content:center;width:100%;min-width:0;
+ min-height:var(--tap);padding:4px 2px;border:0;border-radius:0;background:transparent;
+ white-space:normal;text-align:left}
+.rb-n{font-size:12.5px;line-height:1.2;color:var(--mid)}
+.rb-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:13px;line-height:1.2;
+ color:var(--ink);text-align:right}
+.rb-t{grid-column:1/-1;display:block;height:6px;border-radius:3px;background:rgba(128,128,128,.22);overflow:hidden}
+.rb-t i{display:block;height:100%;border-radius:3px;background:var(--c)}
+.fdock .kb.rbar:hover .rb-n{color:var(--ink)}
+.rbar.off .rb-v{color:var(--dim)}
 .fdock .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
@@ -2221,7 +2238,13 @@ body:not(.tab-field) .pol2{display:none}
    and 64 is the switch's own top of 8 plus its 50 of height plus the 6 the
    bar keeps between circles. The rail's rule and bottom edge went with the
    rail: over a canvas they drew a line across the wheel. */
-.railtop{position:absolute;top:64px;right:12px;z-index:6;display:flex;align-items:center;
+/* ROUND OG: THE BAND PILL MOVES TO THE LOWER LEFT, RIGHT NEXT TO ACCURACY. His
+   words: "Where it says compounding, I want the lower left hand side right
+   next to accuracy." It was the upper right under the three way switch. It
+   keeps accuracy's own bottom of 9 so their centre lines are one line, and
+   sits 8 clear of accuracy's right edge: accuracy is left 12 and 132 across,
+   so left 152. The wheel measures its free radius against it, OVERLAY. */
+.railtop{position:absolute;bottom:9px;left:152px;z-index:6;display:flex;align-items:center;
  padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 body:not(.tab-field) #railtop{display:none}
@@ -5371,6 +5394,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     last thing in the column, so it keeps its absolute corner and takes only
     zoom's own inset from the side. */
  .acc{left:22px}
+ .railtop{left:162px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
  .pol2 svg{height:190px}
@@ -6473,19 +6497,6 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     row is two columns, DQ and CQ, still flush left to right. On the stage it
     keeps its ring, as zoom beside it keeps its circles. */
  .fdock{gap:6px}
- .fdock .fdrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
- .fdock .keylo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
- .fdock .kb{width:100%;min-width:0;height:48px;min-height:var(--tap);
-  padding:0 6px;display:flex;align-items:center;justify-content:center;gap:6px;
-  border:1px solid var(--edge);border-radius:var(--r-xs);background:transparent}
- .fdock .key .kb[data-q=cq]{min-width:0;min-height:var(--tap)}
- .fdock .cr.orb,.fdock .cr.hero{display:flex;align-items:center;gap:6px;border-radius:0}
- .fdock .cr .ring svg.arc{display:none}
- .fdock .cr .ring .gl{position:static}
- .fdock .cr .gl-t,.fdock .cr.hero .gl-t{font-size:12px;letter-spacing:-.03em}
- .fdock .cr.orb .ring .gl svg{width:17px;height:17px}
- .fdock .cr.orb .v,.fdock .cr.hero .v{position:static;height:auto;min-width:0;padding:0;
-  background:none;border:0;color:var(--ink);font-size:14px;line-height:1;font-weight:500}
  .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 }
 

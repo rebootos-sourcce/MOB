@@ -30096,3 +30096,70 @@ working tree cost hours of waiting and a hand merge. From here every build
 agent works in its own isolated copy of the repository, runs the fast
 engine gate itself, and leaves the slow browser gates to one run on the
 merged result.
+
+## Round OG. Bars for the six readings, the nav corrected, prices, and a round of Field asks
+
+His words, verbatim, in the order they arrived this round.
+
+"You can't see the circles here. It's on the left-hand menu. uh, I believe
+it's just below root energetics. But now that I'm looking at root energetics,
+that entire menu needs to be redesigned to look like the rest of the site. The
+icons are different. Font coloring is different. When I land on the field
+page, I want everything active and the menu closed. Where it says compounding,
+I want the lower left hand side right next to accuracy. The prices are I
+checked the documentation. I think it's twelve. 24. Actually, let me double
+check. Free: $0 / Tier 1: $12/month / Tier 2: $29/month / Tier 3: $59/month /
+Tier 4: $99/month / Tier 4 includes the same 1,200 pattern allowance as Tier 3,
+plus cohort lead capability. Root energetic circles. I don't know what you
+mean. I need context. Uh, let's do 25 free patterns. Change that in the
+documentation. I don't think I've seen the latest attuned file, so maybe
+that's it. Also, I want the art director team innovation team animation team
+to make the left hand menu the spiritual the celestial section and the
+archetype section I want that visual language improved using elements from
+either the field the compass it's kind of a dynamic area even though we don't
+really use it and so it's not really showing the connections and so I want I
+want those elements to be more visible showing that they're active. What
+mock-up pics I have? There's no mock-up pics here. The belly button is the
+sacral. The diaphragm is a solar plex. Um, For rerun, I don't uh, for body
+places should neck, shoulders, gut, I don't know what the context is. But if
+it gets if you mean like detail, then yeah. A rerun should always uh It adds
+the ones that are heavy, but remember, there's a structural flow to the
+release. Right? We start with the least tense words, the most tense words,
+and then the decompression words. Um, from the most intense, um, from the
+least intense to the most intense."
+
+"review this for the avatar page. It's going to need updating. This is what we
+want to update it with. You can see there's new tools and technology. Systems
+architecture schema. Algorithms, etc. And then uh, redesign. We're doing this
+today. Why are you using Opus 5.5 when I've got it currently on Sonnet? Five
+five. Go ahead and uh, absorb all this and get it in plan."
+(`ATUNED-becoming-system-TDD.md` saved at the repo root.)
+
+"Let's do ink trace for style. the jitter animation on the field is still too
+strong. By about fifty percent. Frames for the sorry for the field page frames
+and dial have this very subtle coloring in the background. Um, it's very
+faint. A glow. that looks like something we should add to all the backgrounds.
+For field compass and character. Body is missing from this current build. So
+play field compass character. Body should be between field and compass. Bring
+that back. oh, I see. So intake that you call intake is body. So discover
+intake is actual body. The actual intake should be all of the all of the
+questions so you broke something and lost something that needs to come back
+make that happen next"
+
+**Done this round, gated:**
+- The six readings under Root Energetics are stacked bars with the name and a
+  colour read off the percent (`rbRow`, `rbMotion` in `ui/component.js`).
+- Body is back in Play between Field and Compass, and Discover no longer
+  carries a door called Intake. The questions are the diagnostic under the
+  Avatar; a door of their own for them is open.
+- The Field's thread jitter is halved again: 0.021 to 0.0105.
+- The faint shadow glow of the frames and dial is now behind the wheel and the
+  Compass too (`glowApply` in `ui/rings.js`). Character already had it.
+- `vRitual` now reads back its own empty track and seat. Reproduced first: a
+  ritual with neither passed once and was refused on the second pass, which
+  made `pStore` load no profile.
+
+**Still to do from this round:** move the Compounding pill beside Accuracy;
+the left rail restyle and the celestial and archetype sections redrawn live
+(mockups first, to him as pictures); body place seats; the rerun that keeps
+the release's order; the Becoming build; merge the six worktree builds.

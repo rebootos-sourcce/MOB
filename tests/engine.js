@@ -610,6 +610,12 @@ g('15e \u00b7 the two nested bags');
  const bv=validateProfile(withRit(bare));
  ok(bv.ok&&bv.profile.rituals[0].track===''&&bv.profile.rituals[0].band==='',
   'a ritual that recorded no track and no seat is given neither');
+ /* ROUND OG: THE BOUNDARY MUST ACCEPT ITS OWN OUTPUT. The empty track and seat
+    it writes were refused on the next pass, so pStore loaded no profile and the
+    person's profile vanished at boot. Pass two over pass one's output holds. */
+ const bv2=validateProfile(JSON.parse(JSON.stringify(bv.profile)));
+ ok(bv2.ok&&bv2.profile.rituals[0].track===''&&bv2.profile.rituals[0].band==='',
+  'and what it wrote reads back through the same boundary, empty track and seat included'+(bv2.ok?'':': '+JSON.stringify(bv2.errors||bv2.errs)));
  ok(validateProfile({...base,rituals:[]}).ok&&validateProfile(base).ok,
   'no rituals at all still loads');
  /* THE TABLES ARE THE ENGINE'S OWN, NOT A LIST TYPED IN THE VALIDATOR. Every

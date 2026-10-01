@@ -2442,3 +2442,42 @@ fetter" (EA), held for a clearer re-ask.
 his muscle reference image. The funnel guarantee's wording, which three
 shipped lines contradict. The four facts about his own history the locked
 formula is anchored to (BE2 to BE4, BE8).
+
+## Round OG, 1 October. Prices, referral, body places, the rerun, and the nav
+
+**The ladder is 12, 29, 59, 99. This supersedes the "12, 24, 36, 99" ruling
+above.** His own statement, after checking the documentation: "Free: $0 /
+Tier 1: $12/month / Tier 2: $29/month / Tier 3: $59/month / Tier 4: $99/month
+/ Tier 4 includes the same 1,200 pattern allowance as Tier 3, plus cohort lead
+capability." Four products in Stripe, not three. The earlier ruling stands as
+history and is not edited out.
+
+**The referral grant is twenty five patterns, not fifty.** His words: "let's
+do 25 free patterns. Change that in the documentation." This supersedes "The
+referral is fifty" and "The referral should be fifty" above. The cap of four
+referrals a month was not discussed and is left as written until he says.
+
+**Body places.** "The belly button is the sacral. The diaphragm is a solar
+plexus." Added to the body place words the engine reads. On adding detail for
+neck, shoulders and gut: "if you mean like detail, then yeah." So yes, more
+places, taken from the codex's own location column and never invented.
+
+**A rerun adds the heavy lines, and keeps the release's structure.** His
+words: "A rerun should always, it adds the ones that are heavy, but remember,
+there's a structural flow to the release. We start with the least tense
+words, the most tense words, and then the decompression words, from the least
+intense to the most intense." The rerun replays the lines the person marked
+heavy, in the release's own order: least tense, then most tense, then the
+decompression lines. The wording about the decompression order was unclear and
+is asked again, with the order drawn, before it is built.
+
+**The body map is Body, in Play, between Field and Compass.** Round OD moved
+it to Discover and called it Intake on a misreading. His words: "Body is
+missing from this current build. So play, field, compass, character. Body
+should be between field and compass... the intake that you call intake is
+body... The actual intake should be all of the questions." Reversed. The
+questions are the diagnostic that lives under the Avatar. Whether they get a
+door of their own in Discover is open, asked in round OG.
+
+**Mockup pick: Ink for the Field's trace style.** "Let's do ink trace for
+style."

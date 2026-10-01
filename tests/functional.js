@@ -2546,7 +2546,7 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
   out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),story:SECOF(TAB.STORY),
    know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),field:SECOF(TAB.FIELD),
-   intake:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
+   body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
    clients:SECOF(TAB.PRACTITIONER)};
   setTab(TAB.SETTINGS); await wait();
   out.settings={pressed:pressedSec().length, shown:vis().length};
@@ -2570,14 +2570,13 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","intake":"discover","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
-  /* round OD: Intake (TAB.ENERGY) moved back from Play to Discover, reversing
-     round LO's move to Body. His words: "Intake is not body. It never has
-     been... change it back to intake, move it back to discover, after
-     summary." engine/core.js has the ruling in full. */
-  'OD: Story, Avatar, Summary and Intake in Discover, Field, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Compass,Character / Field,Compass,Character',
-  'Play reads in his order, Field, Compass, Character, in the engine and the bar alike, '+nav.play);
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+  /* round OG reverses round OD: the body map is Body, in Play, between Field
+     and Compass. His words: "Body should be between field and compass...
+     the intake that you call intake is body." engine/core.js has it. */
+  'OG: Story, Avatar and Summary in Discover, Field, Body, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Body,Compass,Character / Field,Body,Compass,Character',
+  'Play reads in his order, Field, Body, Compass, Character, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
   'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
@@ -5587,20 +5586,32 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  /* the readings are in the left column, which a first visit lands on shut, GO,
     so it is opened the way a person opens it */
  await fp.click('#lfold'); await fp.waitForTimeout(300);
- const dock=await fp.evaluate(()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
-  const q=k=>document.querySelector('#fdock .kb[data-q='+k+'] .cr');
-  const bx=k=>q(k).getBoundingClientRect(), fs=k=>parseFloat(getComputedStyle(q(k).querySelector('.v')).fontSize);
+ /* ROUND OG: THE READINGS ARE BARS NOW. His words: "instead of the circles,
+    have those horizontal bars stacked on top of each other with the text,
+    with their name, and the color of the bar based off of the percent." The
+    geometry below is the bars': six rows in one column, in reading order,
+    each filled to its own figure and coloured from the wheel's ramp. Measured
+    after the first sight's sweep has finished, so the fill is the value and
+    not a frame on the way to it. */
+ const dock=await fp.evaluate(async()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
+  await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
   const mid=r=>r.top+r.height/2;
+  const bars=[...d.querySelectorAll('.rbar')], rc=bars.map(e=>e.getBoundingClientRect());
+  const R=compute(), f=flSpeed();
+  const want=[['Coherence',R.CQ,false],['Shadow',R.DQ,true],['Vitality',R.X*100,false],['Awareness',R.Y*100,false],['Will',R.Z*100,false],['Flow',f*100,false]];
+  const bar={names:bars.map(e=>e.querySelector('.rb-n').textContent),
+   stacked:rc.every((r,i)=>i===0||r.top>=rc[i-1].bottom-0.5),
+   oneColumn:new Set(rc.map(r=>Math.round(r.left))).size===1&&new Set(rc.map(r=>Math.round(r.width))).size===1,
+   fills:bars.map((e,i)=>Math.abs(parseFloat(e.querySelector('.rb-t i').style.width)-Math.max(0,Math.min(100,want[i][1])))<0.1),
+   colours:bars.map((e,i)=>e.style.getPropertyValue('--c')===rbCol(Math.max(0,Math.min(100,want[i][1])),want[i][2])),
+   tall:Math.min(...rc.map(r=>r.height))};
   const items=[...d.querySelectorAll('.kb, #accbtn')].map(e=>e.getBoundingClientRect());
   const rows=[...new Set(items.map(r=>Math.round(mid(r))))].sort((a,b)=>a-b);
   const st=document.getElementById('stage'),s=st.getBoundingClientRect(),acc=document.getElementById('acc');
   const ac=document.querySelector('#accbtn .cr').getBoundingClientRect(),ab=acc.getBoundingClientRect();
   const zs=[...document.querySelectorAll('#fzoom .fb-b')].filter(x=>x.offsetParent).map(x=>x.getBoundingClientRect());
   const low=zs.sort((a,b)=>b.bottom-a.bottom)[0];
-  return {inLeft:left.contains(d),inStage:st.contains(d),
-   cq:bx('cq').width,dq:bx('dq').width,cqFig:fs('cq'),dqFig:fs('dq'),
-   line:Math.abs(mid(bx('dq'))-mid(bx('cq'))),
-   order:bx('dq').right<=bx('cq').left,
+  return {inLeft:left.contains(d),inStage:st.contains(d),bar,
    sq:!!document.querySelector('#fdock [data-q=sq]'),rows:rows.length,
    sqElsewhere:/SQ/.test((document.querySelector('#fbar [data-fb=addresses]')||{}).getAttribute('data-tip')||''),
    keylo:left.contains(document.getElementById('keylo')),
@@ -5610,11 +5621,13 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     mirror:+Math.abs((ab.left-s.left)-(s.right-Math.max(...zs.map(r=>r.right)))).toFixed(2),
     overlay:typeof OVERLAY!=='undefined'&&OVERLAY.indexOf('acc')>=0}};});
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
- ok(dock.cq>dock.dq&&dock.cqFig>dock.dqFig,'CQ is the larger circle and the larger figure, '
-  +Math.round(dock.cq)+' against '+Math.round(dock.dq)+', figure '+dock.cqFig+' against '+dock.dqFig);
+ ok(JSON.stringify(dock.bar.names)==='["Coherence","Shadow","Vitality","Awareness","Will","Flow"]',
+  'OG: six readings, CQ first, in reading order, as bars, '+JSON.stringify(dock.bar.names));
+ ok(dock.bar.stacked&&dock.bar.oneColumn,'OG: stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
+ ok(dock.bar.fills.every(Boolean),'OG: every bar is filled to its own figure, '+JSON.stringify(dock.bar.fills));
+ ok(dock.bar.colours.every(Boolean),'OG: and coloured from the wheel\'s ramp by that figure, the shadow from its inverse, '+JSON.stringify(dock.bar.colours));
+ ok(dock.bar.tall>=44,'OG: every row is a button at the 44px floor, shortest '+dock.bar.tall);
  ok(!dock.sq&&dock.sqElsewhere,'SQ is off the dock and only off the dock: the bar\'s Addresses circle still says SQ');
- ok(dock.rows===2,'the dock reads as exactly two rows, got '+dock.rows);
- ok(dock.order&&dock.line<1,'DQ and CQ in that order on one centre line, off by '+dock.line.toFixed(2));
  ok(dock.acc.inStage&&!dock.acc.inLeft&&dock.acc.lowerLeft,
   'LR: accuracy lies on the stage in its lower left and not in the rail, '+JSON.stringify(dock.acc));
  ok(dock.acc.level<1&&dock.acc.mirror<1,
@@ -5625,14 +5638,14 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     be able to see the animations on these." Sampled a frame after a load that
     moves CQ: the ring is on its way and not yet at the end. */
  const mo=await fp.evaluate(async()=>{loadP(PERSON('Marcus'));render();
-  const arc=()=>document.querySelector('#fdock .kb[data-q=cq] svg.arc circle:last-child');
+  const bar=()=>document.querySelector('#fdock .rbar[data-q=cq] .rb-t i');
+  await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
+  const was=parseFloat(bar().style.width); loadP(PERSON('James'));render();
+  const goal2=parseFloat(document.querySelector('#fdock .rbar[data-q=cq]').getAttribute('data-w'));
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  const a=arc(), goal=parseFloat(a.getAttribute('stroke-dashoffset')), now=parseFloat(a.style.strokeDashoffset);
-  const was=goal; loadP(PERSON('James'));render();
-  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  const b=arc(), goal2=parseFloat(b.getAttribute('stroke-dashoffset')), mid2=parseFloat(b.style.strokeDashoffset);
+  const mid2=parseFloat(bar().style.width);
   await new Promise(r=>setTimeout(r,ENTER_SPAN+120));
-  const end=parseFloat(arc().style.strokeDashoffset);
+  const end=parseFloat(bar().style.width);
   return {was,goal2,mid2,end};});
  ok(Math.abs(mo.goal2-mo.was)>1&&Math.abs(mo.mid2-mo.goal2)>0.5&&Math.abs(mo.mid2-mo.was)>0.01,
   'a changed CQ sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));

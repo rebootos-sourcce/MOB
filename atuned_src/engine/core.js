@@ -92,10 +92,9 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Summary still reads last of the three Discover doors, on the ruling that
    put it there: "then my intake then my summary." Analytics reads after it,
    his own order, so Discover was Story, Avatar, Summary, Analytics and the
-   bar still closes the loop on Embody. Round OD moved Intake (TAB.ENERGY)
-   back into Discover, directly after Summary and ahead of Analytics, so
-   Discover now reads Story, Avatar, Summary, Intake, Analytics; see the
-   note above TAB.ENERGY's own entry in TABDEF. */
+   bar still closes the loop on Embody. Round OD moved the body map
+   into Discover as Intake and round OG moved it back to Play as Body; see
+   the note above TAB.ENERGY's own entry in TABDEF. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -171,28 +170,25 @@ const TABDEF=[
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
- /* FOURTH NAME THIS SURFACE HAS CARRIED, round OD, reversing round LO.
-    Energetics, then Intake at his own word round KX, then Body at round LO
-    on the reasoning that he had called it Body and grouped it with Field
-    and Compass in every other round. Round OD overrides that reasoning
-    directly: "Intake is not body. It never has been. It's either been
-    called energetics or intake. Change it back to intake, move it back to
-    discover, after summary." Moved here, directly after Summary and ahead
-    of Analytics, and back to Discover's own section. Same integer, id and
-    class as always, tab-energy, energy.emap: those are never the name a
-    person reads. */
- {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'discover'},
  /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
     story, avatar, summary, analytics." Integer 4, unfolded: see the note
     above TABDEF. #ana is body.html's own sibling of #sum now, never nested
-    inside it, and anaRender in ui/analytics.js is unchanged. Intake (TAB.ENERGY)
-    now sits between Summary and Analytics, round OD, so Discover reads
-    Story, Avatar, Summary, Intake, Analytics. */
+    inside it, and anaRender in ui/analytics.js is unchanged. */
  {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
  /* "I want to move all the tools to play. And then get rid of the tools
     tab." The instruments are Play now, and the app still opens on the Field,
     so Play is the section pressed at start. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
+ /* BODY, BETWEEN FIELD AND COMPASS, round OG, reversing round OD. OD moved
+    this surface to Discover and called it Intake on a misreading of his
+    word. Round OG, his words: "Body is missing from this current build. So
+    play, field, compass, character. Body should be between field and
+    compass... the intake that you call intake is body. So discover intake is
+    actual body. The actual intake should be all of the questions." The
+    surface is the body map and its name is Body. Same integer, id and class
+    as always (TAB.ENERGY, emap, tab-energy). The questions are a different
+    surface: they are the diagnostic under the Avatar, intakeui.js. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should

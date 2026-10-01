@@ -651,12 +651,16 @@ function vRitual(errs,i,x){
     diagnosis nothing measured. Nothing reads either one back off a saved
     ritual yet, so empty costs nothing here and a default would cost the
     truth. */
+ /* '' IS THE EMPTY THIS FUNCTION ITSELF WRITES, so it must read back. Found
+    round OG: a ritual with no track or seat passed once, came out as '' and
+    the next pass refused its own output, so pStore loaded no profile and the
+    person's profile vanished at boot. Empty is read as nobody recorded it. */
  q.track='';
- if(x.track!==undefined){
+ if(x.track!==undefined&&x.track!==''){
   if(RIT_TRACK[x.track])q.track=x.track;
   else errs.push(path+'.track is not a track in the practice library: '+x.track);}
  q.band='';
- if(x.band!==undefined){
+ if(x.band!==undefined&&x.band!==''){
   if(BANDS.indexOf(x.band)>=0)q.band=x.band;
   else errs.push(path+'.band is not a seat: '+x.band);}
  /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it

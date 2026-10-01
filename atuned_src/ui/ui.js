@@ -1051,6 +1051,7 @@ function render(){
  document.body.style.setProperty('--seat',seatCol(r.darkB));
  document.body.style.setProperty('--seat-w',Math.max(0,Math.min(1,(r.darkV||0)/10)).toFixed(2));
  railTop(r);
+ if(typeof glowApply==='function')glowApply(r);
  /* benign against malignant, as percentages of one field */
  (function(){
   var mal=Math.max(0,Math.min(100,r.malig||0)), ben=100-mal;
@@ -1126,74 +1127,33 @@ function render(){
  /* The key sat on top of the wheel as a 288px card. It is now a strip in
     flow above the canvas, one ring and one word per element, and each is a
     door to the reading on the right. Nothing on the stage covers the wheel. */
+ /* THE READINGS ARE BARS, round OG. His words, on the circles under Root
+    Energetics: "we've got a bunch of icons all varying size. So for the root
+    energetics, instead of the circles, have those horizontal bars stacked on
+    top of each other with the text, with their name, and the color of the bar
+    based off of the percent. This should tighten up that root energetics
+    area." Six rows, one reading each, still buttons that open the reading on
+    the right and still carrying the sentence that says what each one is.
+
+    What the circles had learned stays true here. CQ leads, DQ is the shadow
+    and is read the other way up (a high figure is the wrong end, so its bar is
+    coloured from its own inverse), the other four are what moves through a
+    person and high is the good end, so none of them reddens past a threshold
+    the way a shadow figure does. The colour is the wheel's own ramp, cqRamp,
+    alarm at the floor, slate at the median, the accent at the crown, so the
+    bar and the core above it agree about what a figure means. SQ stays off
+    this strip (EZ: "SQ is a total sum of the DQ anyway") and on the glass
+    bar. Accuracy keeps its circle on the stage (round LR). An unread field
+    draws an empty bar and a dash, never a number nobody entered.
+    The scale is kept as it was printed: CQ and DQ in percent, the other four
+    out of one. The bar fills to the same figure either way. */
  $('key').innerHTML=
-   /* The trailing word on each of these was a gloss: core, shadow, depth,
-      installed, three axes. A gloss that never goes away is furniture. The
-      letter is the name, the tooltip says what it is, and the click opens
-      the whole reading. */
-   /* the same rule as the core: nothing is printed off the defaults. the ring
-      still draws, because an empty ring is the honest picture of an empty
-      field, and the tail carries a dash rather than a number nobody entered. */
-   '<button class="kb" data-q="cq">'
-    /* HOT IS FOR A READING WHERE HIGH IS WRONG.
-
-       cr() reddens anything past the hot threshold, which is right for shadow
-       weight and depth and exactly backwards for every reading on this row
-       where high is the good end. Coherence at 100, vitality at 1.0 and flow
-       at 1.0 all printed in the colour this product reserves for something
-       being wrong. The domain pill had the same defect and was fixed the same
-       way: the pills that climb toward health say so. */
-    /* THE LETTERS GO IN THE RING AND THE WORDS GO TO THE TOOLTIP. Ruled: the
-       three letters are essentially an icon, so they sit where an icon sits,
-       and the strip loses three labels' worth of width. */
-    /* AND CQ IS THE HERO, the one larger circle in the rail. DY in TASKS.md,
-       his words: "I do want the CQ number bigger, so it's in your face." The
-       dock left the stage's foot for the left rail as circles, ED, and every
-       other reading in it is the orb size, so the difference is his and not
-       an accident of which figure is wider. */
-    +cr('Crown',r.unread?0:r.CQ,{size:'hero',text:'CQ',hot:false,
-      raw:r.unread?'\u2013':Math.round(r.CQ)+'%',
-      /* THE PILL ALREADY PRINTS A PERCENT, so the tooltip saying "29 out of
-         100" beside it is the number twice and the scale once too often. The
-         sentence says what the reading means and the pill says the figure. */
-      /* CQ is the 21 laws summed since 25 September, not a ledger of build
-         against cost, so the sentence says what it now reads */
-      title:'Coherence. '+(r.unread?'Not read yet.'
-        :r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')})+'</button>'
-  +'<button class="kb" data-q="dq">'
-    /* DQ IS OUT OF 100 NOW. It was an uncapped sum, so the ring was scaled by
-       a guessed 14 and the tooltip had to say "no ceiling". It is the total
-       shadow on all 112 addresses over the most they can hold, the same
-       scale as CQ, so the ring is the figure and the tail is a percent. */
-    +cr('Root',r.DQ,{size:'orb',text:'DQ',raw:Math.round(r.DQ)+'%',
-      title:'Shadow weight. All the charge on all 112 addresses, against the most '
-       +'they could hold.'})+'</button>'
-  /* SQ LEFT THIS ROW, AND ONLY THIS ROW. EZ in TASKS.md, his words and his
-     reason: "we don't need SQ in the upper left nav. And the reason why is
-     because SQ is a total sum of the DQ anyway." Its circle stood beside DQ
-     saying the same weight a second way, and its slot is what lets the dock
-     read as two rows with accuracy kept in it. SQ itself is not retired: the
-     glass bar's Addresses circle carries the same figure, and the rail, the
-     drills and the summary still print it. */
-  /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
-
-     One pill said Energy and behind it sat vitality, awareness and will,
-     three independent lines meaned into a single figure. The drill behind
-     that pill already says, in its own words, that they do not average into
-     a score: they say which of the three is carrying and which is short. An
-     average is exactly the thing that cannot say that. Every one of the three
-     has been computed on every reading since the rebuild and the console
-     printed their mean.
-
-     They are their own pills now. Nothing new is measured and nothing is
-     renamed: will is will, which the codex defines as available directed
-     force, and it is not the same quantity as flow.
-
-     Flow is. It is the throughput of the seven seats, one times the next, the
-     share of signal that reaches the crown from the root, and it is what the
-     Body page draws as a channel. It was computed and drawn there and read
-     nowhere else. It reads here. */
-  ;   /* vitality, awareness, will and flow are the lower strip now */
+   rbRow('cq','Coherence',r.unread?0:r.CQ,r.unread?'\u2013':Math.round(r.CQ)+'%',
+    {unread:r.unread,title:'Coherence. '+(r.unread?'Not read yet.'
+      :r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')})
+  +rbRow('dq','Shadow',r.DQ,Math.round(r.DQ)+'%',
+    {unread:r.unread,bad:true,title:'Shadow weight. All the charge on all 112 addresses, against the most '
+       +'they could hold.'});
  /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
     one kind of reading. Vitality, awareness, will and flow are another, and
     they go lower left.
@@ -1211,27 +1171,18 @@ function render(){
      as well as the name, because the tooltip is the only place the name lives
      and a name without its scale is the thing the copy editor rule stops. */
   lo.innerHTML=
-   '<button class="kb" data-q="xyz">'
-    +cr('Solar',r.unread?0:r.X*100,{size:'orb',hot:false,glyph:QICON.vitality,
-      raw:r.unread?'\u2013':r.X.toFixed(2),
-      title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
-       +'. How much energy is left once apathy and the shadow weight are taken off.'})+'</button>'
-  +'<button class="kb" data-q="xyz">'
-    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'orb',hot:false,glyph:QICON.awareness,
-      raw:r.unread?'\u2013':r.Y.toFixed(2),
-      title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
-       +'. How strong what you mean is, and how little of it gets bent on the way out.'})+'</button>'
-  +'<button class="kb" data-q="xyz">'
-    +cr('Root',r.unread?0:r.Z*100,{size:'orb',hot:false,glyph:QICON.will,
-      raw:r.unread?'\u2013':r.Z.toFixed(2),
-      title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
-       +'. How much of your integrity gets through the charge you are carrying.'})+'</button>'
-  +'<button class="kb" data-q="flow">'
-    +cr('Heart',r.unread?0:f*100,{size:'orb',hot:false,glyph:QICON.flow,
-      raw:r.unread?'\u2013':f.toFixed(2),
-      title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
-       +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.'})
-    +'</button>';})();
+   rbRow('xyz','Vitality',r.X*100,r.unread?'\u2013':r.X.toFixed(2),
+    {unread:r.unread,title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
+       +'. How much energy is left once apathy and the shadow weight are taken off.'})
+  +rbRow('xyz','Awareness',r.Y*100,r.unread?'\u2013':r.Y.toFixed(2),
+    {unread:r.unread,title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
+       +'. How strong what you mean is, and how little of it gets bent on the way out.'})
+  +rbRow('xyz','Will',r.Z*100,r.unread?'\u2013':r.Z.toFixed(2),
+    {unread:r.unread,title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
+       +'. How much of your integrity gets through the charge you are carrying.'})
+  +rbRow('flow','Flow',f*100,r.unread?'\u2013':f.toFixed(2),
+    {unread:r.unread,title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
+       +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.'});})();
  /* who, and what is running hottest in them. */
  (function(){
   function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
@@ -1445,7 +1396,7 @@ function render(){
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
- crMotion([$('key'),$('acc'),$('keylo')]);
+ crMotion([$('acc')]); rbMotion([$('key'),$('keylo')]);
  /* and the rails' readings on the same beat, each list sweeping in its own
     order the first time it is seen and moving only when its values do */
  crMotion([$('railtop'),$('person'),$('stack')]);

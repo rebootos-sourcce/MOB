@@ -330,6 +330,74 @@ function crMotion(hosts){
   afterBoot(go);}
  else go();}
 /* ============================================================
+   THE DOCK'S READINGS AS BARS, round OG. One row per reading, the name on the
+   left, the figure on the right, and a bar under both that fills to the
+   figure. The colour is cqRamp's (ui/wheel.js), alarm at the floor, slate at
+   the median, the accent at the crown, so a bar and the core agree. A reading
+   where high is the wrong end (the shadow) passes bad and is coloured from its
+   own inverse. An unread reading draws an empty bar in the dim ink.
+
+   THEY STILL MOVE INTO THEIR VALUES, which is the standing ruling the circles
+   carried (EZ: "I want to be able to see the animations on these"). The
+   markup is rewritten on every render, so this is a tween kept by host and
+   position, the same way crMotion keeps the rings': it writes into whichever
+   element is there on each frame, a change mid sweep turns from where the
+   bar had got to, the first sight sweeps from empty after the boot sheet
+   lifts, one row after the next in reading order, and reduced motion gets the
+   value in the frame it is written. It is a second small function and not a
+   branch in crMotion because a bar has no arc to read, and crMotion's
+   reading of an arc is the thing that would have to be bent.
+   ============================================================ */
+function rbCol(p,bad){var c=cqRamp(bad?100-p:p);return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
+function rbRow(q,nm,pct,raw,o){
+ o=o||{};
+ var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread;
+ return '<button type="button" class="kb rbar'+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
+  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+'"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +'<span class="rb-n">'+esc(nm)+'</span><span class="rb-v">'+esc(raw)+'</span>'
+  +'<span class="rb-t" aria-hidden="true"><i style="width:'+(read?p.toFixed(2):'0')+'%"></i></span></button>';}
+var RBMO={}, RBMO_RAF=0;
+function rbPaint(m,now){
+ var h=document.getElementById(m.host), el=h?h.querySelectorAll('.rbar')[m.j]:null; if(!el)return;
+ var e=crMoAt(m,now), i=el.querySelector('.rb-t i'), pv=el.querySelector('.rb-v');
+ if(i)i.style.width=(m.w0+(m.w1-m.w0)*e).toFixed(2)+'%';
+ if(pv&&m.n0!==null&&m.n1!==null)pv.textContent=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;}
+function rbTick(now){
+ RBMO_RAF=0; var live=false;
+ Object.keys(RBMO).forEach(function(k){var m=RBMO[k]; if(m.done)return;
+  rbPaint(m,now); if(now<m.t0+m.dur)live=true; else m.done=true;});
+ if(live)RBMO_RAF=requestAnimationFrame(rbTick);}
+function rbMotion(hosts){
+ var now=performance.now(), fresh=[];
+ hosts.forEach(function(h){
+  if(!h)return;
+  h.querySelectorAll('.rbar').forEach(function(el,j){
+   /* read off the row and not its host, as crMotion does: #key takes no box
+      of its own in the dock */
+   if(!el.offsetParent)return;
+   var key=h.id+':'+j, m=RBMO[key], off=el.classList.contains('off'),
+    to=off?0:(parseFloat(el.getAttribute('data-w'))||0),
+    pv=el.querySelector('.rb-v'), num=crMoNum(pv?pv.textContent:''), n1=num?num.n:null;
+   if(m&&Math.abs(m.w1-to)<.05&&m.n1===n1){if(!m.done)rbPaint(m,now);return;}
+   var nm={host:h.id,j:j,w1:to,n1:n1,dp:num?num.dp:0,suf:num?num.suf:'',dur:ENTER_SPAN,t0:now,done:false};
+   if(REDUCED){nm.w0=to;nm.n0=n1;nm.done=true;}
+   /* from wherever the last one had got to, so a second change mid sweep
+      turns rather than jumping back to where the first began */
+   else if(m){var e=crMoAt(m,now);nm.w0=m.w0+(m.w1-m.w0)*e;
+    nm.n0=(m.n0!==null&&m.n1!==null&&n1!==null&&m.suf===nm.suf)?m.n0+(m.n1-m.n0)*e:null;}
+   else{nm.w0=0;nm.n0=n1===null?null:0;fresh.push({m:nm,r:el.getBoundingClientRect()});}
+   RBMO[key]=nm; rbPaint(nm,now);});});
+ fresh.sort(function(a,b){return a.r.top-b.r.top;});
+ function go(){var t=performance.now();
+  fresh.forEach(function(f,i){f.m.t0=t+Math.min(i,8)*ENTER_STAGGER; rbPaint(f.m,t);});
+  if(!RBMO_RAF&&Object.keys(RBMO).some(function(k){return !RBMO[k].done;}))
+   RBMO_RAF=requestAnimationFrame(rbTick);}
+ /* under the sheet the bars hold empty, and the sweep starts as it clears */
+ if(fresh.length&&!isBooted()){
+  fresh.forEach(function(f){f.m.t0=Infinity; rbPaint(f.m,now);});
+  afterBoot(go);}
+ else go();}
+/* ============================================================
    THE FOUR THAT MOVE THROUGH A PERSON, DRAWN.
 
    Ruled: the strip becomes a ring with the icon in the centre and a pill
@@ -480,7 +548,7 @@ const LBL_R=0.95, LBL_M=10;
    stage in the lower left, and reframe() below measures it by id like the
    rest: the nearest corner of its box to the canvas centre caps the radius,
    and a box the circle cannot reach costs nothing, which is the wide stage. */
-const OVERLAY=['tl','bal','howto','acc'];
+const OVERLAY=['tl','bal','howto','acc','railtop'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));

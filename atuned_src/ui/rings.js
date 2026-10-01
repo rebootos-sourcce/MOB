@@ -83,6 +83,7 @@ function fviewSet(k){
  FVIEW=k;
  try{STORE.set('fview',k);}catch(e){}
  S.pin=null; FR_SIG=null;
+ if(typeof glowApply==='function')glowApply(compute());
  /* a rendition switch starts that picture whole */
  FZ={s:1,x:0,y:0};
  fviewPaint(S.tab);
@@ -468,6 +469,29 @@ function frShadow(M,r,o){o=o||{};
    +'<rect x="0" y="0" width="'+M.W+'" height="'+M.H+'" fill="url(#'+id+'g)"/></mask>';};
  M.defs.push(fade(P+'fx',M.W,M.W,0),fade(P+'fy',M.H,0,M.H));
  M.L.shadow.push('<g mask="url(#'+P+'fx)"><g mask="url(#'+P+'fy)">'+pools+'</g></g>');}
+/* THE SAME FAINT GLOW BEHIND THE WHEEL AND THE COMPASS, round OG. His words,
+   on the frames and the dial: "this very subtle coloring in the background.
+   Very faint. A glow. That looks like something we should add to all the
+   backgrounds. For field, compass and character." frShadow draws it inside
+   the two renditions and chWash draws it under Character. This is the
+   same four pools, the same seats and the same density off DQ, laid as CSS
+   on the two surfaces that had none: the wheel's stage and the compass.
+   Silent on an unread field, the rule frShadow's callers already keep, and
+   off under Punch and Flat, where the whole shell is one plane of colour. */
+function glowCss(r){
+ if(!r||r.unread)return '';
+ var dens=clamp((+r.DQ||0)/100,0,1);
+ var lead=hx(PAL[r.darkB||'Sacral']||PAL.Sacral), warm=hx(r.benign===false?PAL.Root:PAL.Heart);
+ var at=[[13,24],[92,25],[9,83],[91,84]], col=[lead,warm,warm,lead], a=(.03+.20*dens)*(LIGHT()?.7:1);
+ return at.map(function(q,i){var c=col[i];
+  return 'radial-gradient(circle at '+q[0]+'% '+q[1]+'%,rgba('+c[0]+','+c[1]+','+c[2]+','+a.toFixed(3)
+   +') 0,rgba('+c[0]+','+c[1]+','+c[2]+',0) '+Math.round(46+dens*20)+'%)';}).join(',');}
+function glowApply(r){
+ var b=document.body, off=b.classList.contains('punch')||b.classList.contains('flat');
+ var css=off?'':glowCss(r);
+ var stage=document.querySelector('.stage'), cone=document.getElementById('cone');
+ if(stage)stage.style.backgroundImage=(css&&S.tab===TAB.FIELD&&FVIEW==='wheel')?css:'';
+ if(cone)cone.style.backgroundImage=css;}
 /* THE CORE. The product's own ring grammar at hero size, carrying both
    quotients on the one ring. Ruled 26 September, CH in TASKS.md, picking A
    off the CE sheet: "for coherence, for CQ and DQ, A looks great."
