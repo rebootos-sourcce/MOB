@@ -955,7 +955,7 @@ function recordImportWire(p,after){
   rd.readAsText(f);};}
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
- var who=(CURP&&CURP.name)||'You';
+ var who=capName((CURP&&CURP.name)||'You');
  var h='<div class="pm-eye">Profile</div><p class="sh-h plain">'+esc(who)+'</p>'
   +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
   /* "of 100" made the headline reading a score, which is the one thing a
@@ -1261,7 +1261,8 @@ var BOOT_FLOOR_AT=0;
      never also act on the tab strip underneath the sheet, and a listener on
      the button itself would never see the same press. Set before that stop,
      so it is set whichever of pointerdown or keydown got it here. */
-  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined')DEV_SKIP=true;
+  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
+   if(typeof loginClose==='function'&&typeof LOGIN!=='undefined'&&LOGIN.open)loginClose(); }
   if(e&&e.type==='pointerdown'){
    e.stopPropagation();
    addEventListener('click',eat,{once:true,capture:true});

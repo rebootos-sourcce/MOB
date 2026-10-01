@@ -112,7 +112,7 @@ function obClose(){
     sheet still closes either way, because trapping somebody inside it to
     punish a storage failure helps nobody. */
  try{
-  if(CURP){ CURP.onboarded=true;
+  if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.onboarded=true;
    if(!pSave()&&typeof status==='function')
     status('This browser would not save. The first run will open again.','fail'); }
  }catch(e){

@@ -42,7 +42,7 @@ function tutClose(){
     obClose carries: a flag that silently fails to save reopens the sheet
     on every launch with no explanation a person can act on. */
  try{
-  if(CURP){ CURP.tutorialSeen=true;
+  if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.tutorialSeen=true;
    if(!pSave()&&typeof status==='function')
     status('This browser would not save. The tutorial will open again.','fail'); }
  }catch(e){

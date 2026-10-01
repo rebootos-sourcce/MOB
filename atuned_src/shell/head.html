@@ -6324,7 +6324,12 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */
-.login-dev{margin-top:16px;border-top:1px solid var(--edge);padding-top:12px}
+/* round OT: developer options sit in the lower right of the screen, not in
+   the card. The switches open upward from the summary. */
+.login-dev{position:fixed;right:18px;bottom:14px;z-index:96;margin:0;border:0;
+ padding:0;display:flex;flex-direction:column-reverse;align-items:flex-end;opacity:.7}
+.login-dev[open]{opacity:1}
+#login{background:#06060a}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}

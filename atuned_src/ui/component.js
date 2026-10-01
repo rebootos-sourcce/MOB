@@ -101,6 +101,11 @@ function tierSay(r){
 function tierBuilding(){
  return 'Coherence fills as each law is answered. The band is named once all '
   +SI.length+' are in.';}
+/* A NAME IS ALWAYS PRINTED CAPITALISED, round OT: "the names always have to be
+   capitalized", after a greeting began with a lower case first name. Display
+   only: the record keeps what the person typed. Each word gets its first
+   letter raised and the rest is left as typed, so McKay and O'Neill survive. */
+function capName(s){return String(s==null?'':s).replace(/(^|[\s\-'’])(\p{Ll})/gu,function(m,a,b){return a+b.toUpperCase();});}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 /* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
    about one light ground out of two. Lumen arrived with paper rails and the

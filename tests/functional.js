@@ -3574,7 +3574,7 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.cardWrong&&o.cardWrong[0]==='No account matches that email and password.','the card shows a refusal, got '+JSON.stringify(o.cardWrong));
  ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
  ok(o.bootSkipped,'a person already signed in is not shown the door');
- ok(o.skip,'Continue without an account goes through and holds nothing');
+ ok(o.skip,'Guest goes through and holds nothing');
  /* Manage billing used to answer "not built yet. Email support" on every
     press. It goes to /v1/billing/portal now, through ui/auth.js. */
  ok(/^Sign in first\./.test(o.manOut[0])&&o.manOut[1]==='fail'

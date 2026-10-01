@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1106 65af38d 2026-10-01 20:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v1113 2c9a89c 2026-10-01 21:23"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6324,7 +6324,12 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */
-.login-dev{margin-top:16px;border-top:1px solid var(--edge);padding-top:12px}
+/* round OT: developer options sit in the lower right of the screen, not in
+   the card. The switches open upward from the summary. */
+.login-dev{position:fixed;right:18px;bottom:14px;z-index:96;margin:0;border:0;
+ padding:0;display:flex;flex-direction:column-reverse;align-items:flex-end;opacity:.7}
+.login-dev[open]{opacity:1}
+#login{background:#06060a}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}
@@ -15421,7 +15426,7 @@ function blankProfile(name){
      profile written before the ruling cannot have set by accident (the old
      sfx:false was the blank's own default and not a choice, so it is
      ignored and kept only so an older record still validates). */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false},
+  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -16250,7 +16255,7 @@ function validateProfile(o){
  if(o.ui&&typeof o.ui==='object'){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
-  ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff'].forEach(function(k){
+  ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
@@ -23282,6 +23287,11 @@ function tierSay(r){
 function tierBuilding(){
  return 'Coherence fills as each law is answered. The band is named once all '
   +SI.length+' are in.';}
+/* A NAME IS ALWAYS PRINTED CAPITALISED, round OT: "the names always have to be
+   capitalized", after a greeting began with a lower case first name. Display
+   only: the record keeps what the person typed. Each word gets its first
+   letter raised and the rest is left as typed, so McKay and O'Neill survive. */
+function capName(s){return String(s==null?'':s).replace(/(^|[\s\-'’])(\p{Ll})/gu,function(m,a,b){return a+b.toUpperCase();});}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 /* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
    about one light ground out of two. Lumen arrived with paper rails and the
@@ -34926,10 +34936,14 @@ var SRC_PASSED=false;
    yes and no on the screen. The two buttons beside the question are the
    offer: one turns to another question, one builds one from what the person
    wrote. The sentence would describe the buttons next to the buttons. */
-var SRC_OPEN='What would you like to write about today?';
+/* ROUND OT, his words: "I want the output to be a little bit more casual. So I
+   was saying, what would you like to write about today? Say, what are we
+   writing about today?" The round JS wording above is replaced by the one he
+   first offered at round GO, at his own request. */
+var SRC_OPEN='What are we writing about today?';
 function srcOpen(){
  var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
- var f=String(w.first||'').trim().split(/\s+/)[0];
+ var f=capName(String(w.first||'').trim().split(/\s+/)[0]);
  return (f?'Hello, '+f+'. ':'')+SRC_OPEN;}
 /* SIMPLE, STRAIGHTFORWARD, DEEP. His three words for what the page should
    ask. Each is a physical event a person can answer from memory, the shape
@@ -36265,7 +36279,7 @@ function tutClose(){
     obClose carries: a flag that silently fails to save reopens the sheet
     on every launch with no explanation a person can act on. */
  try{
-  if(CURP){ CURP.tutorialSeen=true;
+  if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.tutorialSeen=true;
    if(!pSave()&&typeof status==='function')
     status('This browser would not save. The tutorial will open again.','fail'); }
  }catch(e){
@@ -37208,7 +37222,7 @@ function sumNamed(B){
   String(N.expression),sgCap(c.ex)+'.','');
  return sgStage(2,'Named',rows);}
 function sumRealName(){
- var nm=String((CURP&&CURP.name)||'').trim();
+ var nm=capName(String((CURP&&CURP.name)||'').trim());
  return (nm&&nm!=='You')?nm:'';}
 function sumNameBlock(B,fallback){
  var nm=sumRealName(), first=nm.split(/\s+/)[0]||(fallback?'You':'');
@@ -51130,7 +51144,7 @@ function recordImportWire(p,after){
   rd.readAsText(f);};}
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
- var who=(CURP&&CURP.name)||'You';
+ var who=capName((CURP&&CURP.name)||'You');
  var h='<div class="pm-eye">Profile</div><p class="sh-h plain">'+esc(who)+'</p>'
   +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
   /* "of 100" made the headline reading a score, which is the one thing a
@@ -51436,7 +51450,8 @@ var BOOT_FLOOR_AT=0;
      never also act on the tab strip underneath the sheet, and a listener on
      the button itself would never see the same press. Set before that stop,
      so it is set whichever of pointerdown or keydown got it here. */
-  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined')DEV_SKIP=true;
+  if(e&&e.target&&e.target.id==='devskip'&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
+   if(typeof loginClose==='function'&&typeof LOGIN!=='undefined'&&LOGIN.open)loginClose(); }
   if(e&&e.type==='pointerdown'){
    e.stopPropagation();
    addEventListener('click',eat,{once:true,capture:true});
@@ -52312,7 +52327,7 @@ function accAccount(){
     "Profile name" as an input, and two editors for one field is two answers to
     one question, so it states the name and opens the section that edits it. */
  h+=accGroup('This Account',
-   accRow('Open profile',(CURP&&CURP.name)||'You')
+   accRow('Open profile',capName((CURP&&CURP.name)||'You'))
    +accAct('Save, open or delete a profile','acgoprof',{btn:'Open Profiles'}));
  /* A NOTE TO A TESTER, NOT TO A PERSON. "The profile picker sits in the top
     bar today. It is a demo control, and it comes out of the bar when sign in
@@ -52663,7 +52678,7 @@ function renderAccount(){
  var host=$('settings'); if(!host)return;
  accProfCss();
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
- var who=(CURP&&CURP.name)||'You';
+ var who=capName((CURP&&CURP.name)||'You');
  var body;
  switch(ACC_OPEN){
   case 'profiles':body=accProfiles(); break;
@@ -52815,7 +52830,7 @@ function profMenu(){
     var it=[].slice.call(x.querySelectorAll('[role^=menuitem]')), i=it.indexOf(document.activeElement);
     i=e.key==='ArrowDown'?(i+1)%it.length:(i-1+it.length)%it.length; it[i].focus(); e.preventDefault();}});}
  if(!m.hidden){profMenuShut(); return;}
- var who=(typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile';
+ var who=capName((typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile');
  var ses=(typeof authSession==='function')?authSession():null;
  var sfxOn=!(CURP&&CURP.ui&&CURP.ui.sfxoff);
  m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'
@@ -54763,7 +54778,7 @@ function obClose(){
     sheet still closes either way, because trapping somebody inside it to
     punish a storage failure helps nobody. */
  try{
-  if(CURP){ CURP.onboarded=true;
+  if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.onboarded=true;
    if(!pSave()&&typeof status==='function')
     status('This browser would not save. The first run will open again.','fail'); }
  }catch(e){
@@ -55077,7 +55092,7 @@ function loginCard(mail){
   +'<p class="login-msg" id="loginmsg"></p>'
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
   +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-  +'<button type="button" class="btn" id="loginb-skip">Continue without an account</button></div>'
+  +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){
@@ -55212,7 +55227,10 @@ function loginEnter(){
  /* onboarding is still met once, never on a return visit: the login
     above is the door met every time, this is the tutorial behind it. */
  var seen=false;
- try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
+ /* the flag lives with the other ui facts: a field outside them was dropped
+    at the profile boundary on the next load, so the first run replayed on
+    every launch */
+ try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
  if(seen)return;
  obOpen(false);}
 /* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
@@ -56531,7 +56549,7 @@ function render(){
      it, the way sumPlate on the Summary prints the same name over the same
      reading, so the two surfaces call a person one thing. A record nobody has
      named is still called You, because that is the name pNew gave it. */
-  var who=p.you?(String((CURP&&CURP.name)||'').trim().split(/\s+/)[0]||'You'):p.nm;
+  var who=capName(p.you?(String((CURP&&CURP.name)||'').trim().split(/\s+/)[0]||'You'):p.nm);
   /* THE AGE AND ROLE LINE IS GONE, ON HIS RULING. Round IX, his words: "get
      rid of that 44 creative director. That's nonsense junk." It was the worked
      example's own casting note, p.age and p.role, and it read nothing: a
@@ -56924,9 +56942,12 @@ step('opening surface',function(){setTab(TAB.FIELD);});
    on 30 September: a person already signed in is not shown the door. */
 step('login',function(){
  if(typeof loginBoot!=='function')return;
- setTimeout(function(){
-  try{ loginBoot(); }catch(e){}
- },5600);});
+ /* OPENED AT ONCE, UNDER THE BOOT SHEET. It used to open at 5.6 seconds,
+    which left the sheet's fade finishing first and one frame of the Field
+    or the dashboard showing before the door arrived. The sheet is above the
+    login (z-index 9999), so the door is already standing when it lifts. The
+    developer button on the sheet closes it again: see panels.js. */
+ try{ loginBoot(); }catch(e){}});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather
@@ -56956,5 +56977,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003704667"></div>
+<div id="eof" hidden data-len="003706492"></div>
 </body></html>

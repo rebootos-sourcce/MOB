@@ -430,6 +430,12 @@ g('15d \u00b7 the meter');
  p.who.born.date='1986-04-02';
  const round=validateProfile(JSON.parse(JSON.stringify(saveProfile(p))));
  ok(round.ok&&round.profile.meter.unique.length===6,'the keys survive a round trip');
+ /* the first run flags live with the ui facts: a field outside them was
+    dropped on the next load and the onboarding replayed on every launch */
+ {const fl=JSON.parse(JSON.stringify(saveProfile(p))); fl.ui=Object.assign({},fl.ui,{onboarded:true,tutorialSeen:true});
+  const back=validateProfile(fl);
+  ok(back.ok&&back.profile.ui.onboarded===true&&back.profile.ui.tutorialSeen===true,'the first run flags survive a load');
+  ok(validateProfile(JSON.parse(JSON.stringify(saveProfile(p)))).profile.ui.onboarded===false,'and read as not seen on a profile that never set them');}
  const neg=JSON.parse(JSON.stringify(saveProfile(p))); neg.meter.lines=-5;
  ok(!validateProfile(neg).ok,'a negative line count is refused at the boundary');
  const notlist=JSON.parse(JSON.stringify(saveProfile(p))); notlist.meter.unique='lots';

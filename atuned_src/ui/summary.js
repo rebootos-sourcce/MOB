@@ -781,7 +781,7 @@ function sumNamed(B){
   String(N.expression),sgCap(c.ex)+'.','');
  return sgStage(2,'Named',rows);}
 function sumRealName(){
- var nm=String((CURP&&CURP.name)||'').trim();
+ var nm=capName(String((CURP&&CURP.name)||'').trim());
  return (nm&&nm!=='You')?nm:'';}
 function sumNameBlock(B,fallback){
  var nm=sumRealName(), first=nm.split(/\s+/)[0]||(fallback?'You':'');

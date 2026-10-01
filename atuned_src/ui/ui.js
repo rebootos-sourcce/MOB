@@ -1304,7 +1304,7 @@ function render(){
      it, the way sumPlate on the Summary prints the same name over the same
      reading, so the two surfaces call a person one thing. A record nobody has
      named is still called You, because that is the name pNew gave it. */
-  var who=p.you?(String((CURP&&CURP.name)||'').trim().split(/\s+/)[0]||'You'):p.nm;
+  var who=capName(p.you?(String((CURP&&CURP.name)||'').trim().split(/\s+/)[0]||'You'):p.nm);
   /* THE AGE AND ROLE LINE IS GONE, ON HIS RULING. Round IX, his words: "get
      rid of that 44 creative director. That's nonsense junk." It was the worked
      example's own casting note, p.age and p.role, and it read nothing: a
@@ -1697,9 +1697,12 @@ step('opening surface',function(){setTab(TAB.FIELD);});
    on 30 September: a person already signed in is not shown the door. */
 step('login',function(){
  if(typeof loginBoot!=='function')return;
- setTimeout(function(){
-  try{ loginBoot(); }catch(e){}
- },5600);});
+ /* OPENED AT ONCE, UNDER THE BOOT SHEET. It used to open at 5.6 seconds,
+    which left the sheet's fade finishing first and one frame of the Field
+    or the dashboard showing before the door arrived. The sheet is above the
+    login (z-index 9999), so the door is already standing when it lifts. The
+    developer button on the sheet closes it again: see panels.js. */
+ try{ loginBoot(); }catch(e){}});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather

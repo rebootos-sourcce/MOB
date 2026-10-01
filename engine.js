@@ -6898,7 +6898,7 @@ function blankProfile(name){
      profile written before the ruling cannot have set by accident (the old
      sfx:false was the blank's own default and not a choice, so it is
      ignored and kept only so an older record still validates). */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false},
+  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -7727,7 +7727,7 @@ function validateProfile(o){
  if(o.ui&&typeof o.ui==='object'){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
-  ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff'].forEach(function(k){
+  ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){

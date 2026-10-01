@@ -142,7 +142,7 @@ function accAccount(){
     "Profile name" as an input, and two editors for one field is two answers to
     one question, so it states the name and opens the section that edits it. */
  h+=accGroup('This Account',
-   accRow('Open profile',(CURP&&CURP.name)||'You')
+   accRow('Open profile',capName((CURP&&CURP.name)||'You'))
    +accAct('Save, open or delete a profile','acgoprof',{btn:'Open Profiles'}));
  /* A NOTE TO A TESTER, NOT TO A PERSON. "The profile picker sits in the top
     bar today. It is a demo control, and it comes out of the bar when sign in
@@ -493,7 +493,7 @@ function renderAccount(){
  var host=$('settings'); if(!host)return;
  accProfCss();
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
- var who=(CURP&&CURP.name)||'You';
+ var who=capName((CURP&&CURP.name)||'You');
  var body;
  switch(ACC_OPEN){
   case 'profiles':body=accProfiles(); break;
@@ -645,7 +645,7 @@ function profMenu(){
     var it=[].slice.call(x.querySelectorAll('[role^=menuitem]')), i=it.indexOf(document.activeElement);
     i=e.key==='ArrowDown'?(i+1)%it.length:(i-1+it.length)%it.length; it[i].focus(); e.preventDefault();}});}
  if(!m.hidden){profMenuShut(); return;}
- var who=(typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile';
+ var who=capName((typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile');
  var ses=(typeof authSession==='function')?authSession():null;
  var sfxOn=!(CURP&&CURP.ui&&CURP.ui.sfxoff);
  m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'

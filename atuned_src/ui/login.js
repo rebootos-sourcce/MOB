@@ -135,7 +135,7 @@ function loginCard(mail){
   +'<p class="login-msg" id="loginmsg"></p>'
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
   +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-  +'<button type="button" class="btn" id="loginb-skip">Continue without an account</button></div>'
+  +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){
@@ -270,7 +270,10 @@ function loginEnter(){
  /* onboarding is still met once, never on a return visit: the login
     above is the door met every time, this is the tutorial behind it. */
  var seen=false;
- try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
+ /* the flag lives with the other ui facts: a field outside them was dropped
+    at the profile boundary on the next load, so the first run replayed on
+    every launch */
+ try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
  if(seen)return;
  obOpen(false);}
 /* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener

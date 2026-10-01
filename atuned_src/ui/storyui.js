@@ -529,10 +529,14 @@ var SRC_PASSED=false;
    yes and no on the screen. The two buttons beside the question are the
    offer: one turns to another question, one builds one from what the person
    wrote. The sentence would describe the buttons next to the buttons. */
-var SRC_OPEN='What would you like to write about today?';
+/* ROUND OT, his words: "I want the output to be a little bit more casual. So I
+   was saying, what would you like to write about today? Say, what are we
+   writing about today?" The round JS wording above is replaced by the one he
+   first offered at round GO, at his own request. */
+var SRC_OPEN='What are we writing about today?';
 function srcOpen(){
  var w=(typeof CURP!=='undefined'&&CURP&&CURP.who)||{};
- var f=String(w.first||'').trim().split(/\s+/)[0];
+ var f=capName(String(w.first||'').trim().split(/\s+/)[0]);
  return (f?'Hello, '+f+'. ':'')+SRC_OPEN;}
 /* SIMPLE, STRAIGHTFORWARD, DEEP. His three words for what the page should
    ask. Each is a physical event a person can answer from memory, the shape
