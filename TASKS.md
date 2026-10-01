@@ -30558,3 +30558,22 @@ protocols."
 - Compass: layout reading B (the characters become circles in the overlay row,
   names on hover, no side panels), and the circles look like buttons because they
   will become protocols.
+
+## Round ON, 1 October. Character: the charge cloud, no ring, mask icons, trace, better faces
+
+> "Let's go with the charge cloud. We don't need the ring around it. The point
+> cloud. Coloring should cover that. And then we should have our icons. Child,
+> preteen, teen, ideological. And we should be able to do our trace here as
+> well. Can we put more style into the faces? Right now it looks like stick
+> figures. Something more aesthetically interesting designed."
+
+**Read as.**
+- "The charge cloud" is Direction 1 on the Character mockup page (the particle
+  face, `mockups/character/concept-1.html`). It replaces the Seal.
+- The outer ring is dropped. The colour of the points carries the nine patterns
+  the ring carried.
+- The mask icons are Child, Preteen, Teen, Ideological (and Adult, Professional
+  where the data names them), as a row of icons that pick the mask.
+- Trace is reachable from this page.
+- The face gets designed: more than the egg with a line for eyes and a mouth.
+- Pictures first, no build. Mockups only until he points at one.
