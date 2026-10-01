@@ -31,57 +31,51 @@ The soul of this product, to my eye, is a thing that breathes when it is read an
 
 ## WHAT BREAKS COHERENCE (ranked)
 
-1. **Five meanings, one gesture.** `rlring` breathes a selected tile. `chvBreath` breathes a read mask. The fringe breathes a steady load. `srcHalo` breathes "hearing". The wheel breathes everything. A person cannot tell "chosen" from "charged". Cost: the motion cannot be read with the labels off, which is the test I hold it to.
-2. **The release screen is silent.** `release.js` has no loop. The dial changes by `setAttribute` once a second with no transition. DQ falls as a number (`relShade`) while the Field's collapse language, built for exactly this, never plays. This is the moment the whole loop exists for.
-3. **Selection rings vanish.** `rlring` runs opacity .04 to 1. A selected state is lost for a fifth of every cycle, and ten rings on one clock is the most tiring thing on the rail. The wheel's own wave swings only .64 to 1.
-4. **The Compass is tied to the frame rate.** `coneTick` adds a fixed `0.0022` radians per frame and eases at `gap*0.12` per frame. At 60Hz it turns once in 47.6s. At 120Hz, 23.8s, and the hover settle takes half the time. The wheel was fixed to elapsed time (`draw()`); the Compass and its `CONE.t += 1/60` were not.
-5. **Three clocks and a drifting breath.** The core breathes at 4.49s, everything else at 4.2s, the DQ wave at 9.09s. The core drifts against the fringes every 65 seconds. In a product that says "harmonic", the periods should be whole ratios.
-6. **Weightless release.** A charge dropping from 8 to 2 slides home in about half a second, the same as a charge rising. The rail bars already follow the better rule ("a gain has energy and a loss has weight", `component.js`). The wheel does not.
-7. **Boot length.** 5.24s against my range of 400 to 600ms for a full context change. It has a reason (it is the overture) and a way out (press anything), but the way out is not discoverable: the only visible control is the developer Skip.
-8. **Reduced motion has three doors.** `REDUCED` is read once at load, so changing the OS setting mid session stops the CSS but not the canvases. `body.quiet`, `body.rm` and the media query are three selector lists. In Punch, `.ib::after{display:none}` drops the selection breath entirely and nothing replaces it.
-9. **Direction lost when still.** Under reduced motion the Character page's hot cells go to opacity 1, so expanding and collapsing look identical. The Field keeps the dent; that page does not.
+1. **Five meanings, one gesture.** Breathing marks a chosen tile (`rlring`), a read mask (`chvBreath`), a steady load (fringe), "hearing" (`srcHalo`) and everything on the wheel. A person cannot tell "chosen" from "charged". It fails my test: read the motion with the labels off.
+2. **The release screen is silent.** `release.js` has no loop. The dial changes by `setAttribute` once a second with no transition. DQ falls as a number while the collapse language built for exactly this never plays. It is the moment the whole loop exists for.
+3. **Selection rings vanish.** `rlring` runs opacity .04 to 1, so a selected state disappears for a fifth of each cycle. The wheel's own wave swings only .64 to 1.
+4. **The Compass is tied to the frame rate.** `coneTick` adds a fixed 0.0022 radians a frame and eases at `gap*0.12` a frame. One turn takes 47.6s at 60Hz and 23.8s at 120Hz. `CONE.t += 1/60` too. The wheel was fixed to elapsed time; the Compass was not.
+5. **Drifting breath.** The core breathes at 4.49s, everything else at 4.2s, the DQ wave at 9.09s. The core slips against the fringes every 65 seconds. A "harmonic" product should use whole ratios.
+6. **Weightless release.** A charge falling from 8 to 2 slides home as fast as one rising. The rail bars already follow the better rule (a gain has energy, a loss has weight); the wheel does not.
+7. **Boot length.** 5.24s against my 400 to 600ms for a context change. It has a reason (the overture) and a way out (press anything), but the way out is not discoverable. The only visible control is the developer Skip.
+8. **Three reduced motion doors.** `REDUCED` is read once at load, so a mid session OS change stops the CSS and not the canvases. `quiet`, `rm` and the media query are three selector lists. Punch drops the selection breath entirely (`.ib::after{display:none}`). The Character page's hot cells go to opacity 1, so expanding and collapsing look the same.
 
 ## SKIN RECOMMENDATIONS: THE MOTION SKIN
 
-Three verbs, one stillness, two springs, one clock. Nothing else moves.
+Three verbs, one stillness, two springs, one clock.
 
-**Stillness = unread.** Nothing in the product moves until there is a reading.
-
-**Verb 1, breathe (means: this is read and live).** One period, `B = 4.2s`, opacity .64 to 1, on `--ease-breath`. Used only for the Field's own things and the avatar. Not for selection.
-
-**Verb 2, travel (means: charge in motion, with direction).** Dashes, fringes and light move along a path. Speed is tension (DQ, as now). Outward is expanding, inward is collapsing. Used on the release screen.
-
-**Verb 3, land (means: you changed something).** One overshoot, then rest. 260 to 340ms, `--ease-land`. Replaces the selection breath: a chosen tile lands once, then holds a steady ring at a fixed .8 opacity. A state must be legible at every moment.
-
-**Two springs only.** Land: w 16, damping .55 (about 12% over). Settle: w 13, damping .86 (no ring). Today there are four unrelated pairs (fringe, bend, story stroke, story lane).
-
-**One clock.** Everything runs on elapsed time, `dt` clamped at 100ms as in `wheel.js`. Harmonics of B: B/2 for fast states, 2B = 8.4s for the DQ wave.
+- **Stillness means unread.** Nothing moves until there is a reading.
+- **Breathe means read and live.** One period, 4.2s, opacity .64 to 1. Field and avatar only. Never selection.
+- **Travel means charge in motion.** Dashes, fringes and light along a path. Speed is tension (DQ). Outward is expanding, inward is collapsing.
+- **Land means you changed something.** One overshoot then rest, 260 to 340ms, `--ease-land`. A chosen tile lands once, then holds a steady ring at .8 opacity. A state must be legible at every moment.
+- **Two springs.** Land: w 16, damping .55 (about 12% over). Settle: w 13, damping .86. Today there are four unrelated pairs.
+- **One clock.** Elapsed time with `dt` clamped at 100ms, as `wheel.js` does. Harmonics of 4.2s only: 2.1s, 4.2s, 8.4s.
 
 ### Data mapped to motion
 
 | Data | Motion | New cost |
 |---|---|---|
-| CQ (coherence) | Breath purity. At 70 and over, a clean sine. Below, add `0.5*(1-CQ/70)*sin(2.7wt+phase)` and renormalise. Low coherence breathes ragged, high breathes clean. | One extra `sin` a frame |
-| Vitality (radiance) | Breath depth: .78 to 1 when low, .55 to 1 when high. A flat person breathes shallow. | None |
-| DQ | Travel speed (already built) | None |
-| Charge change | Attack and release: rise at 9.05 per second, fall at 4.5 per second (tau 220ms, 90% in 510ms). Weight on the way down. | None |
-| Gaining or losing | Core halo travels out or in, like the fringes | One gradient scale |
+| CQ | Breath purity. Clean sine at 70 and over. Below that add `0.5*(1-CQ/70)*sin(2.7wt+phase)` and renormalise, so low coherence breathes ragged | one `sin` a frame |
+| Vitality | Breath depth: .78 to 1 when low, .55 to 1 when high | none |
+| DQ | Travel speed (built) | none |
+| Charge change | Rise 9.05 a second, fall 4.5 (90% in 510ms). Weight on the way down | none |
+| Gaining or losing | Core halo travels out or in, as the fringes do | one gradient scale |
 
 ### Changes (effort, ICPs moved)
 
-- **Release as a field, not a card (M).** Behind the card, one quiet ring. Each sealed address: land on the counters, 280ms. "Released" plays the collapse language (fringes sink in). "Installed" plays expand (born at the ring, travel out). Pulse rate follows live DQ, so the Field visibly calms as the number drops. Keep the dial, but give it `transition: stroke-dashoffset 1000ms linear` (linear is right where the value is real time, and nowhere else). Moves S1, S6, S7, S8, S10.
-- **Fix Compass timing (S).** `spin += 0.132*dt`, ease `1-exp(-7.7*dt)` (matches .12 at 60Hz), `CONE.t += dt`. Moves everyone on a 120Hz phone or Mac, S1 and S5 most.
-- **Selection from breath to land (S).** Floor `rlring` at .45, or replace as above. In Punch, breathe `fill-opacity` .8 to 1 instead of drawing nothing. S6, S7, S9.
-- **Core period to 4.2s (S).** `sin(1.4t)` becomes `sin(1.496t)`. DQ wave 9.09s to 8.4s (`PUL_WAVE_HZ` .11 to .119). No visible change except that everything locks.
-- **Asymmetric bead ease (S).** `k = 1-exp(-rate*dt)`, `rate = target>disp ? 9.05 : 4.5`.
-- **Boot (S to M).** Keep the ruling that it plays in full. Trim the stand from 3.2s to 4.4s by 0.5s (ends 4.7s). Add a quiet "press to skip" line at 1.5s. Optional, and it needs his word: a six line inline script reads the last CQ from `localStorage` and fills the lens ring to that figure, not to 100. The boot then shows your own coherence, and nobody sees the same overture twice. S1, S5, S13.
-- **Tab indicator travels (S).** One element, transform only, 280ms, `--ease-land`, across Discover, Play, Flow, Embody, and on wrap it exits right and enters left. The loop closes. S6, S7.
-- **Hover rules (S).** Replace the 23 `transition:all` with named properties. Replace width, flex, font-size and max-width tweens where a transform will do.
-- **One stillness switch (S).** One function sets `body.still` from the OS setting, `quiet` and `rm`, and listens for the media query changing mid session.
+- **Release as a field (M).** One quiet ring behind the card. Each sealed address lands on the counters (280ms). Released plays collapse, installed plays expand. Pulse rate follows live DQ, so the Field calms as the number drops. Dial gets `transition: stroke-dashoffset 1000ms linear` (linear is right only where the value is real time). S1, S6, S7, S8, S10.
+- **Compass on elapsed time (S).** `spin += 0.132*dt`, ease `1-exp(-7.7*dt)`, `CONE.t += dt`. Anyone on a 120Hz screen.
+- **Selection from breath to land (S).** Floor `rlring` at .45. In Punch, breathe `fill-opacity` .8 to 1. S6, S7, S9.
+- **Lock the periods (S).** Core `sin(1.4t)` to `sin(1.496t)`. DQ wave 9.09s to 8.4s (`PUL_WAVE_HZ` .11 to .119).
+- **Asymmetric bead ease (S).** `rate = target>disp ? 9.05 : 4.5`.
+- **Boot (S to M).** Keep the ruling that it plays in full. Trim the 1.2s stand by 0.5s (ends 4.7s). Add a quiet "press to skip" line at 1.5s. Optional and his call: a short inline script fills the lens ring to the person's last CQ instead of 100, so the overture shows their own coherence. S1, S5, S13.
+- **Tab indicator travels (S).** One element, transform only, 280ms, `--ease-land`, across Discover, Play, Flow, Embody. On wrap it exits right and enters left, so the loop closes. S6, S7.
+- **Hover rules (S).** Replace 23 `transition:all` with named properties. Swap width, flex and font-size tweens for transforms.
+- **One stillness switch (S).** One function sets `body.still` from the OS setting, `quiet` and `rm`, and listens for the media query changing.
 
-**Frame cost.** No new rAF loop; everything runs inside `loop()`. Added main thread work is under 0.1ms a frame. Every new CSS motion is opacity or transform, compositor only. My ceiling for the skin on the Field is 4ms of script a frame.
+**Frame cost.** No new rAF loop; all inside `loop()`. Added script under 0.1ms a frame. New CSS is opacity or transform, compositor only. Ceiling for the skin on the Field: 4ms of script a frame (`draw()` measured 1.5ms on a software renderer).
 
-**Reduced motion for every item above.** End state, not slower. Release: ring held at mid breath, counters change with no land, dial steps once a second. Breath purity: a static ring thickness (ragged edge) says low CQ without moving. Direction: a static arrow glyph on the hot cell replaces travel on the Character page.
+**Reduced motion.** End state, never slower. Release: ring held at mid breath, counters change without landing, dial steps each second. Low CQ shows as a static ragged ring edge. Direction on the Character page shows as a static arrow glyph.
 
 ## REDESIGN CANDIDATES
 
