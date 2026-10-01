@@ -421,6 +421,7 @@ function stCommit(){
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  status(k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
   :'Kept. Nothing here read as charge, so nothing moved.');
+ if(typeof sfx==='function')sfx('kept');
  return {ok:true,k:k,kept:kept,bands:bands,text:text};}
 
 /* refresh only what the text moves, so typing never loses the caret */

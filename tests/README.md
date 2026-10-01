@@ -58,6 +58,12 @@ binds `localStorage`.
                                drills, figure fallback, zero JS errors
     node tests/collide.js      40 checks · zero overlapping wheel nameplates,
                                every persona x every depth
+    node tests/sound.js        the fittings, ui/sound.js: every sound rendered
+                               offline under its ceiling and its cap, silent
+                               off, under Quiet, before a press and inside a
+                               release, each proven against a broken engine.
+                               Also called at the end of functional.js.
+                               Read the count off the run.
 
 All three resolve `source.html` from the working directory, so run them from the
 repo root.

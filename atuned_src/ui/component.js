@@ -600,6 +600,9 @@ function status(msg,kind){
  var e=document.getElementById('status'); if(!e)return;
  clearTimeout(_stT);
  e.textContent=msg||'';
+ /* every refusal the product writes is heard here, once, and not at each of
+    its call sites. ui/sound.js: off until turned on */
+ if(kind==='fail'&&typeof sfx==='function')sfx('refuse');
  if(kind)e.setAttribute('data-kind',kind); else e.removeAttribute('data-kind');
  if(msg&&kind!=='fail')_stT=setTimeout(function(){
   e.textContent='';e.removeAttribute('data-kind');},2400);}

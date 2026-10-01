@@ -1307,12 +1307,12 @@ function paintUndo(){
  if(b)b.onclick=function(){
   var u=undoPop();
   if(!u){paintUndo();return;}
-  settle('Took back '+u.nm+'.');};
+  settle('Took back '+u.nm+'.'); if(typeof sfx==='function')sfx('undo');};
  var f=$('redobtn');
  if(f)f.onclick=function(){
   var u=(typeof redoPop==='function')?redoPop():null;
   if(!u){paintUndo();return;}
-  settle('Put back '+u.nm+'.');};
+  settle('Put back '+u.nm+'.'); if(typeof sfx==='function')sfx('kept');};
  /* the usual chords, because a person who wants either one reaches for them */
  addEventListener('keydown',function(e){
   if(!(e.metaKey||e.ctrlKey))return;

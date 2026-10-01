@@ -6304,6 +6304,16 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
  await narrow.cx.close();
 }
 
+/* ---------------------------------------------------------------------------
+   THE FITTINGS, the interface's own sounds in ui/sound.js. The gate lives in
+   tests/sound.js, on a context of its own, because it counts audio nodes by
+   wrapping the context before the page loads, and it runs alone as
+   node tests/sound.js. It is called from here so a full functional run holds
+   it too, through the same code, so the two can never disagree.
+--------------------------------------------------------------------------- */
+console.log('\n=== the fittings: the interface\'s own sounds ===');
+await require('./sound.js').soundGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

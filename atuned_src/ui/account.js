@@ -349,6 +349,18 @@ function accDisplay(){
  h+=accGroup('Motion',
    accTog('Quiet','acquiet',!!(CURP&&CURP.ui&&CURP.ui.quiet),
     'no background wash, no breathing, no motion on arrival'));
+ /* SOUND, beside Motion, because it is the same kind of question: how much of
+    the product reaches the person besides the words. Off on every profile.
+    The footer is a disclosure and not a description: two things silence the
+    switch without moving it, and a person who turned it on and hears nothing
+    is owed the reason before they go looking. A browser with no Web Audio
+    gets no switch, because a control that cannot act is not offered. */
+ h+=accGroup('Sound',
+   (typeof bedCan==='function'&&bedCan())
+    ? accTog('Sound effects','acsfx',!!(CURP&&CURP.ui&&CURP.ui.sfx),
+       'a short sound when something is kept, done or refused, and when a timer ends')
+    : accStub('Sound effects','this browser has no audio'),
+   'Quiet turns them off too. A release has its own sound switches.');
  return h;}
 
 /* ---------- 4.3 security ---------- */
@@ -555,6 +567,11 @@ function accWire(){
    b.onclick=function(){setLighting(b.getAttribute('data-act')); renderAccount();};});}
  var q=$('acquiet');
  if(q)q.onclick=function(){uiSet('quiet',!(CURP.ui&&CURP.ui.quiet)); renderAccount();};
+ /* turned on, it plays the commonest one at once, so the person hears what
+    they turned on and can set the volume by it. Only once the save landed. */
+ var sx=$('acsfx');
+ if(sx)sx.onclick=function(){var on=!(CURP.ui&&CURP.ui.sfx);
+  if(uiSet('sfx',on)&&on&&typeof sfx==='function')sfx('kept'); renderAccount();};
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');

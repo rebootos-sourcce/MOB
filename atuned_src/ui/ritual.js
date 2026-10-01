@@ -508,7 +508,7 @@ function ritLog(id,day){
  if(day!==today&&day!==today-1)return;
  var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
  var e=ritEntryFor(p,day), on=e&&ritIsDone(e.x);
- ritWrite(function(plans){
+ if(ritWrite(function(plans){
   if(e&&on){
    /* the day it was started keeps its entry, as set, because that is what
       the person said that day. Any other day's entry was made by the press
@@ -517,7 +517,7 @@ function ritLog(id,day){
    if(day===ritStart0(p))CURP.rituals[e.i].done=false;
    else CURP.rituals.splice(e.i,1);}
   else ritMarkOn(p,day);
-  return null;}, on?'Taken off.':'Done.');}
+  return null;}, on?'Taken off.':'Done.')&&!on&&typeof sfx==='function')sfx('done');}
 /* THE ON HALF OF THE PRESS, AND ONLY THAT. It sat inline in ritLog, and the
    release now marks a day too. ritLog is a toggle, so a release that called it
    on a day the person had already pressed would have taken that day off the
@@ -834,7 +834,7 @@ function ritTimer(id){
  RIT.run={id:id, end:end, iv:setInterval(function(){
   var left=(end-Date.now())/1000, el=document.querySelector('#rit [data-tmr="'+id+'"]');
   if(left<=0){clearInterval(RIT.run.iv); RIT.run=null; RIT.rang=id;
-   status(ritName(p.steps)+', time is up.'); ritRender(); return;}
+   status(ritName(p.steps)+', time is up.'); if(typeof sfx==='function')sfx('time'); ritRender(); return;}
   /* only the figure is written each second. A render every second would take
      the focus out of the When field while a person typed in it. */
   if(el)el.textContent=ritClock(left);},1000)};
