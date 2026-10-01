@@ -104,6 +104,9 @@ function blankProfile(name){
     that is true of a person who has said nothing. */
  CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
+ /* the trace graph's stored half, engine/trace.js. Only what cannot be
+    derived from the record lives here; everything else is read off it. */
+ p.trace=traceNew();
  return p;}
 /* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
    LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
@@ -1077,6 +1080,14 @@ function validateProfile(o){
     and nothing that writes a profile can put one back without this failing. */
  ['token','session','password','email'].forEach(function(f){
   if(o[f]!==undefined)errs.push(f+' is not held by this product');});
+ /* THE TRACE GRAPH'S STORED HALF, engine/trace.js. Missing or null is an
+    older record and reads as the blank's empty layer. Anything else goes
+    through validateTrace, which uses the live graph's own rule table, and
+    each refusal is named under trace. rather than dropped. */
+ if(o.trace!==undefined&&o.trace!==null){
+  var tv=validateTrace(o.trace);
+  if(tv.ok)p.trace=tv.trace;
+  else tv.errs.forEach(function(e){errs.push('trace.'+e);});}
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
