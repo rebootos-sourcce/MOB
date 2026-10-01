@@ -86,7 +86,11 @@ function tutRender(){
  else if(s===1){
   var c=TUT.commit, kept=(c&&c.kept)||[];
   var body;
-  if(!c||!c.ok){
+  /* 21.I1, round NZ: stCommit now keeps an entry that read as nothing
+     instead of refusing it, so c.ok is true here even with nothing caught.
+     The honest empty copy below still needs c.k, the count it actually
+     found, not just that the entry was kept. */
+  if(!c||!c.ok||!c.k){
    /* HONEST EMPTY, the same rule the signal test already keeps: nothing
       caught is a real answer, not a failure to paper over. */
    body='<p class="ob-p">Nothing in that one lit anything the engine could '
@@ -109,7 +113,7 @@ function tutRender(){
  else if(s===2){
   var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
   var body;
-  if(!c||!c.ok){
+  if(!c||!c.ok||!c.k){
    body='<p class="ob-p">With nothing named yet, there is no chain to draw '
     +'from this one. The next entry that lands somewhere will have one.</p>';
   }else{

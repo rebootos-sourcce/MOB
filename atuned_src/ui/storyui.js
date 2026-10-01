@@ -122,7 +122,7 @@ function stRender(){
   +'<div class="st-bar">'
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
-   +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
+   +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
   +'</div></div></div>'
   /* ---- the read column: the instrument over the list ---- */
@@ -349,7 +349,18 @@ function stFound(){
    so a caller that is not the button itself (the tutorial) can act on a real
    result instead of re-deriving it. */
 function stCommit(){
- if(!ST_PARSED||!ST_PARSED.imprints.length)return {ok:false,why:'empty'};
+ /* AN ENTRY THAT READS AS NOTHING IS STILL THE PERSON'S OWN WORDS, round NZ,
+    21.I1. This used to refuse the whole commit whenever the sniffer found no
+    imprint, which is a UI gate and not the boundary: validateProfile already
+    accepts an entry with imprints:0 and empty bands (engine/schema.js). Four
+    of his own example sentences measured nothing here, "I keep putting off
+    the conversation" among them, and the Day One tutorial runs this same
+    path, so a first entry exactly like one of his own examples was dropped
+    on day one while the card beside it said "it is not a problem with what
+    you wrote." The TDDs this product is built from rule it directly: "the
+    user's original words are evidence" and "unknown is a valid result." Kept
+    now, with no charge written and no reading moved, and said so below. */
+ if(!ST_PARSED||!ST_TEXT||!ST_TEXT.trim())return {ok:false,why:'empty'};
  /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
     the release cannot be run on one: the words are the person's and the field
     is not. This wrote the charge onto the case's field, pushed the entry onto
@@ -367,28 +378,37 @@ function stCommit(){
  if(typeof S!=='undefined'&&S.who!==0){
   status('Nothing committed on a worked example.','fail');
   return {ok:false,why:'example'};}
- /* the field is about to change and until now there was no way back */
- undoPush('committing the story');
- /* WHAT THIS ENTRY FOUND IS KEPT FOR THE RELEASE, because the chain he ruled
-    is journal, imprint, release. The box empties on commit, so without this
-    the release would fall back to the heaviest held the moment the entry it
-    was offering left the page. Read before applyStory moves the field. */
  var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
- applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
- /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
-    applyStory writes S and pSave writes the record, and neither writes
-    PEOPLE[0], which is the table loadP(0) reads the person's field back out
-    of. This was the one write of charge in the product that skipped saveYou.
-    Measured: 7.24 units committed and on disk, a visit to James and back
-    through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
-    on the record, and the next ordinary save wrote 0.00 over the disk. The
-    entry text survived and the charge it wrote did not. S.who is 0 here, the
-    guard above sees to it, so this mirrors and writes the way every slider
-    does. */
- saveYou();
+ /* NO READING MOVES ON AN ENTRY THAT FOUND NOTHING, 21.I1. applyStory also
+    pulls every charge down on coherent language even when k is 0, so calling
+    it here would still move the field on words the sniffer read as nothing
+    in particular. The entry is kept; the field is not touched at all, and
+    undoPush only runs for the branch that can actually be undone. */
+ if(k){
+  /* the field is about to change and until now there was no way back */
+  undoPush('committing the story');
+  applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
+     applyStory writes S and pSave writes the record, and neither writes
+     PEOPLE[0], which is the table loadP(0) reads the person's field back out
+     of. This was the one write of charge in the product that skipped saveYou.
+     Measured: 7.24 units committed and on disk, a visit to James and back
+     through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
+     on the record, and the next ordinary save wrote 0.00 over the disk. The
+     entry text survived and the charge it wrote did not. S.who is 0 here, the
+     guard above sees to it, so this mirrors and writes the way every slider
+     does. */
+  saveYou();}
  if(CURP){CURP.story=CURP.story||{entries:[]};
-  CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
-   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
+  /* lex, the lexicon that read it, 19.B6, so a later reading can say whether
+     it is reading these words the way they were read at the time. asked,
+     what Source AI asked while it was written, 20.H5: a kind and a seat for
+     each, and what the person did next. Never the words of a question. */
+  var ent={t:new Date().toISOString(),text:ST_TEXT,
+   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands,lex:LEX_VERSION};
+  var asked=srcAsked(SRC_LOG,ST_TEXT.length);
+  if(asked.length)ent.asked=asked;
+  CURP.story.entries.push(ent);
   pSave();pSnap();}
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
@@ -399,7 +419,8 @@ function stCommit(){
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
- status('Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.');
+ status(k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
+  :'Kept. Nothing here read as charge, so nothing moved.');
  return {ok:true,k:k,kept:kept,bands:bands,text:text};}
 
 /* refresh only what the text moves, so typing never loses the caret */
@@ -407,7 +428,7 @@ function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
- if(ap){ap.disabled=!(ST_PARSED&&ST_PARSED.imprints.length);
+ if(ap){ap.disabled=!ST_PARSED;
   ap.textContent='Commit '+(ST_PARSED?ST_PARSED.imprints.length:0);}
  stRead();
  stFocus('write');
@@ -612,11 +633,14 @@ function srcAsk(t,words){
 
      1  what they are writing now. Every seat srcHear heard in this entry,
         with the person's own words for it, one seat per press, heaviest rung
-        first, and one of four questions about the moment it happened.
-     2  nothing heard yet, so what they wrote before. The seat keys their
+        first, and the question about a dimension the entry has not
+        answered yet, 20.H1, srcDims and srcNext in engine/sourceai.js.
+     2  written, and heard at no seat. The same choice of question, with no
+        quote and no place, because the words are still the person's.
+     3  nothing written yet, so what they wrote before. The seat keys their
         committed entries stored, srcPrior, the only thing Source AI may read
         from an earlier entry. Never the text.
-     3  nothing on either. It says so, and asks nothing.
+     4  nothing on either. It says so, and asks nothing.
 
    WHAT IT IS NOT, SAID PLAINLY. It is not a model and it generates nothing.
    It picks a seat and a word the engine already read and puts them into one
@@ -624,20 +648,63 @@ function srcAsk(t,words){
    are the person's and the place is where their own story landed, which is
    every claim the instrument can make and no more. */
 var SRC_DQ='', SRC_DN=0, SRC_DW='';
+/* WHAT WAS ASKED IN THIS ENTRY, 20.H5. One row per question shown, a kind
+   and a seat key and the text's length when it first showed, and whether the
+   person moved on from it. srcAsked in engine/sourceai.js turns it into what
+   the entry keeps at commit. SRC_DK is the dimensions the button has asked,
+   in order, which is what srcNext reads for novelty. */
+var SRC_LOG=[], SRC_DK=[];
+function srcLog(k,seat){
+ if(SRC_LOG.some(function(r){return r.k===k&&r.seat===seat;}))return;
+ SRC_LOG.push({k:k, seat:seat||null, at:ST_TEXT.length, moved:false});}
 /* a new entry is a new conversation: the built question quoted the last one */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;}
-var SRC_DYN=[
- function(w,at){return 'You wrote '+w+'. It lands '+at+'. What happened in the minute before?';},
- function(w){return 'You wrote '+w+'. Who was there when it started?';},
- function(w){return 'You wrote '+w+'. What did your body want to do right then?';},
- function(w){return 'You wrote '+w+'. What did you do straight after?';}];
-function srcDyn(heard,entries){
+function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];}
+/* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
+   by how many times it was pressed; srcNext now picks the dimension the
+   entry has not answered, in the order written in engine/sourceai.js. Each
+   takes the person's own word in quotes, or nothing when this entry was
+   heard at no seat.
+     kept      trigger, contact and behaviour are the three this button
+               already asked, word for word.
+     from the  feeling, prediction and meaning are the document's own
+     document  "correct progression" for "I felt tight in my chest when my
+               boss called", "How did you feel?", "What did you expect would
+               happen?", "What does that mean to you?". Body is its somatic
+               following, "When you say 'freeze,' what happens in your
+               body?", and with no word to quote its somatic example,
+               "Where do you feel that?".
+     retired   "What did your body want to do right then?" It asked the
+               body and the behaviour at once, and one useful question is
+               the document's tenth rule. It is the one line this removes.
+   Belief and goal are read and never asked: the document gives no question
+   for either, and a wording made up here would be a wording nobody ruled. */
+var SRC_DIMQ={
+ trigger:function(w,at){return w?'You wrote '+w+'. It lands '+at+'. What happened in the minute before?'
+  :'What happened in the minute before?';},
+ contact:function(w){return (w?'You wrote '+w+'. ':'')+'Who was there when it started?';},
+ feeling:function(w){return (w?'You wrote '+w+'. ':'')+'How did you feel?';},
+ body:function(w){return w?'When you say '+w+', what happens in your body?':'Where do you feel that?';},
+ prediction:function(w){return (w?'You wrote '+w+'. ':'')+'What did you expect would happen?';},
+ behaviour:function(w){return (w?'You wrote '+w+'. ':'')+'What did you do straight after?';},
+ meaning:function(w){return (w?'You wrote '+w+'. ':'')+'What does that mean to you?';}};
+function srcDyn(heard,entries,text){
  var n=SRC_DN++, seats=((heard&&heard.seats)||[]).filter(function(s){return s.words&&s.words.length;});
- if(seats.length){
+ var t=String(text||''), dims=t.trim()?srcDims(t):null;
+ var k=dims?srcNext(dims,SRC_DK,Object.keys(SRC_DIMQ)):null;
+ if(seats.length&&k){
   var s=seats[n%seats.length], lap=Math.floor(n/seats.length);
   SRC_DW=s.words[lap%s.words.length];
-  return SRC_DYN[lap%SRC_DYN.length]('“'+SRC_DW+'”',srcPlace(s.band));}
+  SRC_DK.push(k); srcLog(k,s.seat);
+  return SRC_DIMQ[k]('“'+SRC_DW+'”',srcPlace(s.band));}
  SRC_DW='';
+ /* HEARD AT NO SEAT, AND STILL WRITTEN. 20.H6 says what the instrument read
+    nothing in; an entry it read nothing in is still the person's own words,
+    and the document's third rule is to follow the signal before the label.
+    So it asks about this entry, without a quote and without a place, before
+    it reaches back to earlier ones. */
+ if(k&&unmarkedOf(t,parseStory(t)).unmarked>0){
+  SRC_DK.push(k); srcLog(k,null);
+  return SRC_DIMQ[k]('',null);}
  var ents=entries||[], pr=srcPrior(ents);
  var ks=Object.keys(pr).sort(function(a,b){return pr[b]-pr[a]||(a<b?-1:1);});
  if(!ks.length)return '';
@@ -646,10 +713,12 @@ function srcDyn(heard,entries){
  var lk=Object.keys(last).filter(function(k){return K2BAND[k]&&last[k]>0;})
   .sort(function(a,b){return last[b]-last[a]||(a<b?-1:1);})[0];
  var turn=[];
- if(lk)turn.push(function(){return 'Last time, what you wrote landed '+srcPlace(K2BAND[lk])+'. What has moved since?';});
- ks.forEach(function(k){if(pr[k]<2&&turn.length)return;
-  turn.push(function(){return 'What you write has landed '+srcPlace(K2BAND[k])+' '+srcTimes(pr[k])+(pr[k]>1?' now':'')+'. Is it back today?';});});
- return turn[n%turn.length]();}
+ if(lk)turn.push({k:'since',seat:lk,q:function(){return 'Last time, what you wrote landed '+srcPlace(K2BAND[lk])+'. What has moved since?';}});
+ ks.forEach(function(sk){if(pr[sk]<2&&turn.length)return;
+  turn.push({k:'back',seat:sk,q:function(){return 'What you write has landed '+srcPlace(K2BAND[sk])+' '+srcTimes(pr[sk])+(pr[sk]>1?' now':'')+'. Is it back today?';}});});
+ var pick=turn[n%turn.length];
+ srcLog(pick.k,pick.seat);
+ return pick.q();}
 /* WHY RELEASE IT. His dictation, translated to the ten year old rule (V21):
 
      his        The stress response is impairing the nerve flow. While the
@@ -708,6 +777,8 @@ function srcPaint(){
     a claim, and the dot only says what is true: it reads on every key. */
  var o='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
  var ask=turn.move==='ask'?srcAsk(turn,heard.top&&heard.top.words):'';
+ /* an ask on screen is a question asked, 20.H5: its why and its seat */
+ if(turn.move==='ask')srcLog(turn.why,turn.seat);
  /* THE QUESTION, AND THE TWO PRESSES THAT CHANGE IT, ON THE RIGHT. Round LT,
     his words: "The cycle a new question needs to go on the right hand side.
     Then you need to be another button next to it that makes it dynamic."
@@ -774,12 +845,14 @@ function srcPaint(){
  var sy=document.getElementById('srcsay');
  if(sy&&sy.textContent!==said)sy.textContent=said;
  var mv=document.getElementById('srcpass');
- if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};
+ if(mv)mv.onclick=function(){SRC_PASSED=true;
+  SRC_LOG.forEach(function(r){if(r.k===turn.why&&r.seat===turn.seat)r.moved=true;});
+  srcPaint();};
  var press=function(id,fn){var b=document.getElementById(id); if(!b)return;
   b.onclick=function(){fn(); srcPaint(); var a=document.getElementById(id); if(a)a.focus();};};
  press('srcnew',function(){SRC_DNONE=false; srcNextQ();});
  press('srcdyn',function(){
-  var d=srcDyn(STR.heard||heard,(CURP&&CURP.story&&CURP.story.entries)||[]);
+  var d=srcDyn(STR.heard||heard,(CURP&&CURP.story&&CURP.story.entries)||[],ST_TEXT);
   SRC_DNONE=!d; if(d)SRC_DQ=d;});}
 /* WHAT WAS LAST ON SCREEN, so a repaint that changes nothing moves nothing.
    The column is rewritten on every key, and a question that faded in on
