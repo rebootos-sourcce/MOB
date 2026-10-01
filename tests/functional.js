@@ -2398,7 +2398,7 @@ console.log('\n=== the opening, which is the one thing it asks a stranger to do 
   o.closed=!OB.open;
   const after=CHARGES.map(c=>+(S.charge[c]||0));
   o.wrote=before.some((v,i)=>Math.abs(v-after[i])>1e-9);
-  o.flagged=!!(CURP&&CURP.onboarded);
+  o.flagged=!!(CURP&&CURP.ui&&CURP.ui.onboarded);
   return o;});
  ok(ob.opened,'the opening opens');
  ok(ob.steps.length===4,'four steps, got '+ob.steps.length);
