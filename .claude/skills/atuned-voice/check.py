@@ -8,6 +8,11 @@ Run from the repo root.
     python3 .claude/skills/atuned-voice/check.py --line "Sit back and relax."
     python3 .claude/skills/atuned-voice/check.py --objections
     python3 .claude/skills/atuned-voice/check.py --all
+    python3 .claude/skills/atuned-voice/check.py --brief atuned_src/ui ...
+
+--brief is CREATIVE-BRIEF-voice.md made checkable, in brief.py beside this
+file: every string gets a layer and a mode, then this file's own gates, his
+objections and the brief's rules run over it. See brief.py for its flags.
 
 --objections sweeps the owner's own objections, read out of objections.json,
 which is the database built off COPY-OBJECTIONS.md. Every other mode enforces
@@ -747,6 +752,14 @@ def main():
     rt = root()
     os.chdir(rt)
     args = sys.argv[1:]
+    # THE BRIEF IS A MODE OF THIS GATE, NOT A THIRD SYSTEM. brief.py imports
+    # this file, runs its scan() and his objections over every string it
+    # classifies, and adds the layer, the mode and the brief's own rules. It
+    # dispatches before the house distribution is measured because it reads
+    # its own corpus, and every mode below is untouched.
+    if args and args[0] == '--brief':
+        import brief
+        return brief.main(args[1:])
     base, allstr = baseline(rt)
 
     if not args or args[0] == '--baseline':
