@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1073 2dd3823 2026-10-01 16:32"><head><meta charset="utf-8">
+<html lang="en" data-build="v1081 a14000d 2026-10-01 17:50"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2002,17 +2002,34 @@ body:not(.tab-field) .fdock{display:none}
 .fdock .fdrow{display:block;min-width:0}
 .fdock .fdrow .key,.fdock .keylo{display:flex;flex-direction:column;align-items:stretch;gap:2px;flex-wrap:nowrap}
 .fdock .keylo{margin-top:6px;padding-top:6px;border-top:1px solid var(--edge)}
-.fdock .kb.rbar{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 6px;
- column-gap:10px;row-gap:6px;align-items:baseline;align-content:center;width:100%;min-width:0;
- min-height:var(--tap);padding:4px 2px;border:0;border-radius:0;background:transparent;
- white-space:normal;text-align:left}
-.rb-n{font-size:12.5px;line-height:1.2;color:var(--mid)}
-.rb-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:13px;line-height:1.2;
- color:var(--ink);text-align:right}
-.rb-t{grid-column:1/-1;display:block;height:6px;border-radius:3px;background:rgba(128,128,128,.22);overflow:hidden}
-.rb-t i{display:block;height:100%;border-radius:3px;background:var(--c)}
-.fdock .kb.rbar:hover .rb-n{color:var(--ink)}
-.rbar.off .rb-v{color:var(--dim)}
+.fdock .kb.rbar{position:relative;display:block;width:100%;min-width:0;height:var(--tap);
+ min-height:var(--tap);padding:0;border:0;border-radius:var(--r-xs);overflow:hidden;
+ background:rgba(128,128,128,.14);box-shadow:inset 0 0 0 1px var(--edge);text-align:left;
+ white-space:nowrap;cursor:pointer}
+/* the fill is the row itself, and a soft light travels along its edge so a
+   bar reads as live and not as a printed rectangle; reduced motion holds it */
+.rb-t{position:absolute;inset:0;display:block;border-radius:inherit;overflow:hidden}
+.rb-t i{display:block;height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 78%,#000),var(--c));
+ position:relative}
+.rb-t i::after{content:"";position:absolute;top:0;bottom:0;right:0;width:26px;
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.34));opacity:.8;
+ animation:rbedge 3.4s ease-in-out infinite}
+@keyframes rbedge{0%,100%{opacity:.35}50%{opacity:.9}}
+body.rm .rb-t i::after,body.quiet .rb-t i::after{animation:none}
+@media (prefers-reduced-motion:reduce){.rb-t i::after{animation:none}}
+.rb-row{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;
+ gap:10px;padding:0 12px;pointer-events:none}
+.rb-n{font-size:13.5px;font-weight:500;line-height:1.2;color:var(--ink);letter-spacing:.01em}
+.rb-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:16px;font-weight:600;
+ line-height:1;color:var(--ink);text-align:right}
+/* the same words again, dark, and shown only over the fill: the clip is the
+   filled width, so a letter turns at the edge of the bar */
+.rb-over .rb-n,.rb-over .rb-v{color:var(--on,#0B0D10)}
+.rb-over{clip-path:inset(0 calc(100% - var(--w,0%)) 0 0)}
+.fdock .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
+.fdock .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
+.rbar.off .rb-v,.rbar.off .rb-n{color:var(--dim)}
+.rbar.off .rb-over{display:none}
 .fdock .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
@@ -2238,6 +2255,21 @@ body:not(.tab-field) .pol2{display:none}
    and 64 is the switch's own top of 8 plus its 50 of height plus the 6 the
    bar keeps between circles. The rail's rule and bottom edge went with the
    rail: over a canvas they drew a line across the wheel. */
+/* THE PROFILE MENU, round OI. Glass like the Field's floats, rows at the 44px
+   floor, the section's own seat colour on its icon, nothing else. */
+.pmenu{position:fixed;z-index:60;min-width:224px;padding:6px;border-radius:14px;color:var(--ink);
+ background:var(--fb-glass-on,var(--panel));border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 36px rgba(0,0,0,.32)}
+.pmenu[hidden]{display:none}
+.pm-who{padding:8px 10px 6px;font-size:14px;font-weight:600}
+.pm-who span{display:block;margin-top:2px;font-size:12px;font-weight:400;color:var(--dim);overflow:hidden;text-overflow:ellipsis}
+.pm-it{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:0 10px;border:0;
+ border-radius:10px;background:transparent;color:var(--ink);font:inherit;font-size:13.5px;text-align:left;cursor:pointer}
+.pm-it:hover,.pm-it:focus-visible{background:color-mix(in srgb,var(--c,var(--accent)) 14%,transparent);outline:none}
+.pm-it .ac-gl{display:inline-flex;width:22px;height:22px;color:var(--c,var(--accent))}
+.pm-it .ac-gl svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pm-sep{height:1px;margin:4px 6px;background:var(--edge)}
+.pm-all{font-weight:600}
 /* ROUND OG: THE BAND PILL MOVES TO THE LOWER LEFT, RIGHT NEXT TO ACCURACY. His
    words: "Where it says compounding, I want the lower left hand side right
    next to accuracy." It was the upper right under the three way switch. It
@@ -17426,7 +17458,8 @@ var LEXFOLDRUN=lexFold();
    The person said chest.
 
    So a sensation word takes the seat of a place word written in the same
-   clause. Two tables, and neither carries a seat typed here.
+   clause. Three sources seat a place, and each is named on the table so a
+   reader can say which one moved a word.
 
    THE SENSATIONS are the words in this lexicon that report what a muscle or
    a pulse is doing, which is a thing that happens somewhere. A feeling word
@@ -17434,14 +17467,24 @@ var LEXFOLDRUN=lexFold();
    root wherever the hands are. Every one of these must already be a key, so
    this never makes a hit, it only moves where one lands.
 
-   THE PLACES are read off the lexicon's own body phrases. A place word is
-   seated where every phrase containing it is seated: chest where chest is
-   tight, heavy in my chest and chest tight already sit. CHILD's loc column,
-   the plain words the product uses for where each axis is held, can veto a
-   seat and never add one. A place no phrase seats is not guessed at, it is
-   listed, and a place two phrases seat differently is refused by name. The
-   gate asserts the derived table exactly, so a phrase added at a new seat
-   moves this and says so.
+   THE PLACES, in the order they are tried.
+   1. The lexicon's own body phrases. A place word is seated where every
+      phrase containing it is seated: chest where chest is tight, heavy in my
+      chest and chest tight already sit. CHILD's loc column, the plain words
+      the product uses for where each axis is held, can veto that seat.
+   2. The owner's rulings, SOMA_PLACE_RULED below, which are typed because a
+      ruling is a decision and not a derivation. Each names its round. A
+      ruled word that a phrase seats the other way is listed in `dispute`
+      and the gate asserts that list is empty.
+   3. CHILD's loc column, added round OG, on the owner's word that detail may be
+      added from what the codex already says. A word the phrases do not seat
+      and that CHILD names at exactly one seat takes that seat. A word CHILD
+      names at two seats is refused by name, never split. This reverses the
+      earlier rule that CHILD could only veto: the gate asserts the derived
+      table, so the reversal is visible and not silent.
+   A place none of these seat is not guessed at, it is listed in `unseated`,
+   which is the list of words the codex is silent on. A place two sources
+   seat differently is refused by name.
    ============================================================ */
 var SOMA_SENSE=['tight','tightness','tense','tensed','tension','clenched','clenching',
  'throbbing','throb','pounding'];
@@ -17454,9 +17497,53 @@ var SOMA_SENSE=['tight','tightness','tense','tensed','tension','clenched','clenc
    nothing. Adding a word here can only ever stop a move. */
 var SOMA_PLACE_WORDS=['chest','jaw','throat','stomach','neck','shoulder','shoulders','gut',
  'belly','heart','head','back','rib','ribs','spine','hip','hips','arm','arms','hand',
- 'hands','leg','legs','foot','feet','face','eyes','forehead','temples','muscles','body'];
+ 'hands','leg','legs','foot','feet','face','eyes','forehead','temples','muscles','body',
+ 'navel','diaphragm','abdomen','sternum','skin','celiac','hypogastric','pudendal','plexus'];
+/* THE OWNER'S RULINGS. Round OG: "The belly button is the sacral. The
+   diaphragm is a solar plexus." Round OI: "Oh, heart should go at where the
+   heart goes." Belly button is read through the word belly, which is the only
+   place word in it. The seat keys are the engine's own, B2K's values, and the
+   gate asserts that. Spine is NOT here and is not seated anywhere: round OI,
+   "Spine would be for the Kundalini health. But this also looks like it's
+   part of the pain map." It stays a place word, so it can stop a move, and
+   it moves nothing. */
+var SOMA_PLACE_RULED={belly:'sacral',navel:'sacral',diaphragm:'solar',heart:'heart'};
+/* THE HALVES, round OI: "No, upper and lower could be solar and sacral." A
+   half in front of belly or abdomen is a two word place and outranks the word
+   inside it. Abdomen alone stays refused, because CHILD splits it: the upper
+   abdomen is Anger at the solar seat and the lower abdomen is Disgust at the
+   sacral. The gate holds the abdomen pair against CHILD's loc column. */
+var SOMA_PLACE_HALVES={upper:'solar',lower:'sacral'};
+var SOMA_PLACE_HALVED=['belly','abdomen'];
+/* THE PLEXUS NAMES, round OI: "sacral is just below the belly button and the
+   plexus at the back of the spine. The solar is the diaphragm and the plexus
+   at the back of the spine." What the engine can carry of that is the names
+   the codex gives those plexuses, read off CHILD's addr column and the nv
+   column of APC, never a seat typed here. A person does not write "the plexus
+   at the back of the spine", so no such phrase is read; the back of the spine
+   is a position and spine is not seated. Phrases tried, each seated where the
+   rows that name every word of it agree. */
+var SOMA_PLACE_PLEX=['solar plexus','celiac plexus','sacral plexus','hypogastric plexus'];
+var SOMA_PLACE_PLEXWORDS=['celiac','hypogastric','pudendal','plexus'];
+/* the codex rows that name every word of a place, by seat key. Plain, that is
+   CHILD's loc column alone, where the book says each axis is held in the
+   body. Wide, it also reads CHILD's addr column and APC's nv column, which
+   name the plexus that carries each axis. Wide is for the plexus names only:
+   the addr column also says "Shoulder girdle and throat" for Apathy, and the
+   owner has not ruled on shoulders, so a body word is never read wide. The
+   prose column d is not read. */
+function codexRows(ws,wide){
+ var out={};
+ function has(text,w){return (' '+String(text||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ').indexOf(' '+w+' ')>=0;}
+ function all(text){return ws.every(function(w){return has(text,w);});}
+ CHILD.forEach(function(c){
+  if(B2K[c.seat]&&(all(c.loc)||(wide&&all(c.addr))))out[B2K[c.seat]]=c.nm+' at the '+(all(c.loc)?c.loc:c.addr);});
+ if(wide)APC.forEach(function(r){
+  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' seat, '+r.nv;});
+ return out;}
 function somaPlaces(){
- var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[]};
+ var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{},
+  phrase:{}, phraseRefused:{}, phraseWhy:{}};
  SOMA_SENSE.forEach(function(w){(LEX[w]?out.sense:out.missing).push(w);});
  SOMA_PLACE_WORDS.forEach(function(w){
   var seats={};
@@ -17465,7 +17552,18 @@ function somaPlaces(){
    if(k.indexOf(' ')<0||(' '+k+' ').indexOf(' '+w+' ')<0)return;
    var s=LEX[k][LEX_SEAT]; if(s!=='coherent')seats[s]=1;});
   var sk=Object.keys(seats);
-  if(!sk.length){out.unseated.push(w);return;}
+  if(SOMA_PLACE_RULED[w]){
+   if(sk.length&&(sk.length>1||sk[0]!==SOMA_PLACE_RULED[w]))out.dispute[w]=sk.sort().join(' and ');
+   out.seat[w]=SOMA_PLACE_RULED[w]; out.ruled.push(w); return;}
+  if(!sk.length){
+   /* no phrase seats it. CHILD's loc column may, if it names the word at one
+      seat and one only */
+   var cs=codexRows([w],SOMA_PLACE_PLEXWORDS.indexOf(w)>=0), ck=Object.keys(cs);
+   if(ck.length===1){out.seat[w]=ck[0]; out.codex.push(w);}
+   else if(ck.length>1)out.refused[w]='the codex holds it at '+ck.sort().join(' and ')
+    +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
+   else out.unseated.push(w);
+   return;}
   if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
   var veto=CHILD.filter(function(c){
    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
@@ -17473,6 +17571,19 @@ function somaPlaces(){
   if(veto.length){out.refused[w]='CHILD holds '+veto[0].nm+' at the '+veto[0].loc
    +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
   out.seat[w]=sk[0];});
+ /* the two word places. A half and a place: the owner's ruling, checked
+    against the codex wherever the codex says the same words. */
+ Object.keys(SOMA_PLACE_HALVES).forEach(function(h){SOMA_PLACE_HALVED.forEach(function(pw){
+  var ph=h+' '+pw, seat=SOMA_PLACE_HALVES[h], cs=codexRows([h,pw]), ck=Object.keys(cs);
+  if(ck.length&&(ck.length>1||ck[0]!==seat)){out.dispute[ph]=ck.join(' and ');return;}
+  out.phrase[ph]=seat; out.phraseWhy[ph]=ck.length?'ruled, and the codex agrees: '+cs[ck[0]]:'ruled';});});
+ /* the plexus names, derived. A name the codex gives two seats is refused. */
+ SOMA_PLACE_PLEX.forEach(function(ph){
+  var cs=codexRows(ph.split(' '),true), ck=Object.keys(cs);
+  if(ck.length===1){out.phrase[ph]=ck[0]; out.phraseWhy[ph]=cs[ck[0]];}
+  else if(ck.length>1)out.phraseRefused[ph]='the codex holds it at '+ck.sort().join(' and ')
+   +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
+  else out.phraseRefused[ph]='the codex does not name it';});
  return out;}
 var SOMA_PLACE=somaPlaces();
 /* ============================================================
@@ -17662,14 +17773,28 @@ function scanStory(text){
      would carry the tightness eight words back to the stomach, which is a
      place the person did not say was tight. So the nearest place decides,
      and a nearest place with no seat moves nothing. */
-  var pl=[]; ws.forEach(function(w,i){if(SOMA_PLACE_WORDS.indexOf(w.w)>=0)pl.push(i);});
+  /* A TWO WORD PLACE OUTRANKS THE WORD INSIDE IT, the way a phrase outranks
+     its words everywhere else in this scanner: "upper belly" is one place,
+     read at the solar seat, and not the belly at the sacral. It sits at its
+     last word. A phrase the codex refused is still a place, seatless, so it
+     still stops a move. */
+  var pl=[], used={}, phr=Object.keys(SOMA_PLACE.phrase).concat(Object.keys(SOMA_PLACE.phraseRefused));
+  ws.forEach(function(w0,i){
+   phr.forEach(function(ph){
+    var pw=ph.split(' '), n=pw.length, k;
+    if(i+n>ws.length||used[i])return;
+    for(k=0;k<n;k++)if(ws[i+k].w!==pw[k]||ws[i+k].g!==ws[i].g||used[i+k])return;
+    for(k=0;k<n;k++)used[i+k]=1;
+    pl.push({j:i+n-1,w:ph,at:ws[i].at,seat:SOMA_PLACE.phrase[ph]||null});});});
+  ws.forEach(function(w,i){if(!used[i]&&SOMA_PLACE_WORDS.indexOf(w.w)>=0)pl.push({j:i,w:w.w,at:w.at,seat:SOMA_PLACE.seat[w.w]||null});});
   sense.forEach(function(h){
    var i=byAt[h.at]; if(i===undefined)return;
    var best=null, tie=false;
-   pl.forEach(function(j){
+   pl.forEach(function(q){
+    var j=q.j;
     if(ws[j].g!==ws[i].g)return;
-    var d=Math.abs(j-i), seat=SOMA_PLACE.seat[ws[j].w]||null;
-    if(!best||d<best.d){best={d:d,seat:seat,w:ws[j].w,at:ws[j].at};tie=false;}
+    var d=Math.abs(j-i), seat=q.seat;
+    if(!best||d<best.d){best={d:d,seat:seat,w:q.w,at:q.at};tie=false;}
     else if(d===best.d&&seat!==best.seat)tie=true;});
    if(!best||tie||!best.seat)return;
    h.place=best.w; h.placeAt=best.at;
@@ -20828,7 +20953,7 @@ if(typeof module!=='undefined'&&module.exports){
                   IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
-                  SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
+                  SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
                   LEX_VERSION:LEX_VERSION, LEXV_RE:LEXV_RE, lexVersion:lexVersion,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
@@ -21311,19 +21436,39 @@ function crMotion(hosts){
    reading of an arc is the thing that would have to be bent.
    ============================================================ */
 function rbCol(p,bad){var c=cqRamp(bad?100-p:p);return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
+/* THE INK OVER A FILL IS CHOSEN FOR THE FILL. A fixed dark ink read well on
+   the green end of the ramp and badly on the dark red end, where Vitality sat
+   at 0.42 in a muted red. Relative luminance of the ramp's own colour decides
+   between the two inks, so the words stay legible at every figure. */
+function rbOn(p,bad){var c=cqRamp(bad?100-p:p),f=function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);};
+ var L=.2126*f(c[0])+.7152*f(c[1])+.0722*f(c[2]);return L>.32?'#0B0D10':'#F6F4EF';}
+/* THE BAR IS THE ROW, round OG. His words: "I want for the color bar to be
+   taller than the font and I want the font inside the color bar so as the
+   color bar grows you see the word underneath... treat the color differently
+   when it's over it than when it's not. And then put the percent, it needs a
+   better visual treatment." So the fill is the whole 44 pixel row, the name
+   and the number sit inside it, and the words are drawn twice: once in the
+   panel's ink on the empty track, and once in the dark ink clipped to exactly
+   the filled width, so a letter changes colour at the edge of the fill the
+   way a gauge does. --w carries the width to the clip, and rbPaint moves
+   both together. The second copy is aria-hidden: one reading, said once. */
 function rbRow(q,nm,pct,raw,o){
  o=o||{};
- var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread;
+ var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread, w=read?p.toFixed(2):'0';
+ var cells='<span class="rb-n">'+esc(nm)+'</span><span class="rb-v">'+esc(raw)+'</span>';
  return '<button type="button" class="kb rbar'+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
-  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+'"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
-  +'<span class="rb-n">'+esc(nm)+'</span><span class="rb-v">'+esc(raw)+'</span>'
-  +'<span class="rb-t" aria-hidden="true"><i style="width:'+(read?p.toFixed(2):'0')+'%"></i></span></button>';}
+  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +'<span class="rb-t" aria-hidden="true"><i style="width:'+w+'%"></i></span>'
+  +'<span class="rb-row">'+cells+'</span>'
+  +'<span class="rb-row rb-over" aria-hidden="true">'+cells+'</span></button>';}
 var RBMO={}, RBMO_RAF=0;
 function rbPaint(m,now){
  var h=document.getElementById(m.host), el=h?h.querySelectorAll('.rbar')[m.j]:null; if(!el)return;
- var e=crMoAt(m,now), i=el.querySelector('.rb-t i'), pv=el.querySelector('.rb-v');
- if(i)i.style.width=(m.w0+(m.w1-m.w0)*e).toFixed(2)+'%';
- if(pv&&m.n0!==null&&m.n1!==null)pv.textContent=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;}
+ var e=crMoAt(m,now), i=el.querySelector('.rb-t i'), w=(m.w0+(m.w1-m.w0)*e).toFixed(2)+'%';
+ if(i)i.style.width=w;
+ el.style.setProperty('--w',w);
+ if(m.n0!==null&&m.n1!==null){var txt=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;
+  el.querySelectorAll('.rb-v').forEach(function(pv){pv.textContent=txt;});}}
 function rbTick(now){
  RBMO_RAF=0; var live=false;
  Object.keys(RBMO).forEach(function(k){var m=RBMO[k]; if(m.done)return;
@@ -25115,9 +25260,14 @@ function glowCss(r){
 function glowApply(r){
  var b=document.body, off=b.classList.contains('punch')||b.classList.contains('flat');
  var css=off?'':glowCss(r);
- var stage=document.querySelector('.stage'), cone=document.getElementById('cone');
+ var stage=document.querySelector('.stage'), cone=document.getElementById('cone'), emap=document.getElementById('emap');
  if(stage)stage.style.backgroundImage=(css&&S.tab===TAB.FIELD&&FVIEW==='wheel')?css:'';
- if(cone)cone.style.backgroundImage=css;}
+ if(cone)cone.style.backgroundImage=css;
+ /* THE BODY TOO, round OI. His words: "I want that in the background of
+    field, body, compass and character... and have it fill the frame." The
+    pools are sized off the farthest corner, so they fill the whole host and
+    not a patch of it; Character carries the same wash as its own SVG, chWash. */
+ if(emap)emap.style.backgroundImage=css;}
 /* THE CORE. The product's own ring grammar at hero size, carrying both
    quotients on the one ring. Ruled 26 September, CH in TASKS.md, picking A
    off the CE sheet: "for coherence, for CQ and DQ, A looks great."
@@ -47612,11 +47762,12 @@ function helpSheet(){
 
 /* wiring, once the shell exists */
 (function(){
- /* the profile button opens the Settings surface in the centre. The sheet
+ /* the profile button opens a menu of the account sections, round OI, and its
+    Settings row opens the Settings surface in the centre. The sheet
     version is kept as a function and no longer wired to anything, because it
     is the thing that was replaced and deleting it in the same pass as
     rewiring hides which of the two changed something. */
- var pb=$('profbtn'); if(pb)pb.onclick=function(){setTab(TAB.SETTINGS);};
+ var pb=$('profbtn'); if(pb)pb.onclick=function(){if(typeof profMenu==='function')profMenu(); else setTab(TAB.SETTINGS);};
  /* help's circle left the bar for the search on KC; helpSheet opens from its
     row on the profile page, ui/account.js, which round JZ asked for */
  var sh=$('sheet');
@@ -49027,6 +49178,60 @@ function accEnter(route){
   if(r.ok){ renderAccount(); status(r.say,r.kept?'ok':'fail'); return; }
   accBusy(false); status(r.say,'fail'); });
  return true;}
+/* THE PROFILE MENU, round OI. His words: "for the profile, I want a drop down
+   that has the left menu settings there. And if I click settings, then it
+   takes me to this single page." and "for my profile, it gave me a logout".
+   The profile button used to go straight to the Settings page. It opens a menu
+   now: the page's own left index (ACC_SECS) as quick doors, each opening the
+   page on that section, then Settings, which opens the single page where it
+   was left, and Sign out only while signed in. The rows are read off ACC_SECS
+   and not typed, so a new section appears here the moment it exists. */
+function profMenuShut(){
+ var m=document.getElementById('profmenu'), b=document.getElementById('profbtn');
+ if(m)m.hidden=true; if(b)b.setAttribute('aria-expanded','false');}
+function profMenuGo(k){
+ profMenuShut();
+ if(k)ACC_OPEN=k;
+ setTab(TAB.SETTINGS);}
+function profMenu(){
+ var b=document.getElementById('profbtn'); if(!b)return;
+ var m=document.getElementById('profmenu');
+ if(!m){
+  m=document.createElement('div'); m.id='profmenu'; m.className='pmenu'; m.setAttribute('role','menu');
+  m.setAttribute('aria-label','Profile'); m.hidden=true; document.body.appendChild(m);
+  document.addEventListener('click',function(e){
+   var x=document.getElementById('profmenu'); if(!x||x.hidden)return;
+   if(e.target.closest&&(e.target.closest('#profmenu')||e.target.closest('#profbtn')))return;
+   profMenuShut();});
+  document.addEventListener('keydown',function(e){
+   var x=document.getElementById('profmenu'); if(!x||x.hidden)return;
+   if(e.key==='Escape'){profMenuShut(); var pb=document.getElementById('profbtn'); if(pb)pb.focus(); return;}
+   if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    var it=[].slice.call(x.querySelectorAll('[role=menuitem]')), i=it.indexOf(document.activeElement);
+    i=e.key==='ArrowDown'?(i+1)%it.length:(i-1+it.length)%it.length; it[i].focus(); e.preventDefault();}});}
+ if(!m.hidden){profMenuShut(); return;}
+ var who=(typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile';
+ var ses=(typeof authSession==='function')?authSession():null;
+ m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'
+  +ACC_SECS.map(function(s){
+   return '<button type="button" role="menuitem" class="pm-it" data-pms="'+s.k+'" style="--c:'+seatCol(s.b)+'">'
+    +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+s.ic+'</svg></span>'
+    +'<span>'+esc(s.nm)+'</span></button>';}).join('')
+  +'<div class="pm-sep" role="separator"></div>'
+  +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
+  +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
+  +'<span>Settings</span></button>'
+  +(ses?'<button type="button" role="menuitem" class="pm-it" data-pmout="1"><span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +'<path d="M9 4.5H6.5A1.5 1.5 0 005 6v12a1.5 1.5 0 001.5 1.5H9M14 8l4 4-4 4M18 12H9"/></svg></span><span>Sign out</span></button>':'');
+ m.querySelectorAll('[data-pms]').forEach(function(x){
+  x.onclick=function(){profMenuGo(x.getAttribute('data-pms'));};});
+ var o=m.querySelector('[data-pmout]');
+ if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
+ var r=b.getBoundingClientRect();
+ m.style.top=(r.bottom+8)+'px'; m.style.right=Math.max(8,window.innerWidth-r.right)+'px';
+ m.hidden=false; b.setAttribute('aria-expanded','true'); b.setAttribute('aria-haspopup','menu');
+ var f=m.querySelector('[role=menuitem]'); if(f)f.focus();}
 function accSignOut(){
  if(ACC_BUSY||typeof authSignOut!=='function')return false;
  ACC_BUSY=true; accBusy(true);
@@ -52027,7 +52232,7 @@ function render(){
    rbRow('cq','Coherence',r.unread?0:r.CQ,r.unread?'\u2013':Math.round(r.CQ)+'%',
     {unread:r.unread,title:'Coherence. '+(r.unread?'Not read yet.'
       :r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')})
-  +rbRow('dq','Shadow',r.DQ,Math.round(r.DQ)+'%',
+  +rbRow('dq','Decoherence',r.DQ,Math.round(r.DQ)+'%',
     {unread:r.unread,bad:true,title:'Shadow weight. All the charge on all 112 addresses, against the most '
        +'they could hold.'});
  /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
@@ -52558,5 +52763,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003414604"></div>
+<div id="eof" hidden data-len="003428964"></div>
 </body></html>
