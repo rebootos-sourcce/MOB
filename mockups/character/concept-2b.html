@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Character, long mask</title>
+<style>:root{--bg:#0C0D12;--panel:#14161D;--panel2:#1A1D26;--sunk:#090A0E;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;
+ --line:rgba(239,237,232,.09);--acc:#7EB8D4;--lead:#7EB8D4}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 Inter,'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ -webkit-font-smoothing:antialiased;overflow:hidden}
+.app{display:grid;grid-template-columns:minmax(0,1fr) 360px;grid-template-rows:auto minmax(0,1fr);height:100vh}
+.hd{grid-column:1/-1;display:flex;gap:24px;align-items:flex-start;justify-content:space-between;
+ padding:18px 24px 14px;border-bottom:1px solid var(--line)}
+.hd .ey{font-size:12px;color:var(--dim);letter-spacing:.02em}
+.hd h1{margin:2px 0 4px;font-size:22px;font-weight:600;letter-spacing:-.01em}
+.hd p{margin:0;max-width:760px;color:var(--mid);font-size:14px}
+.hd .mock{margin-top:6px;font-size:12px;color:var(--dim)}
+.nav{display:flex;gap:8px;flex-shrink:0}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:22px;
+ color:var(--mid);text-decoration:none;font-size:13px}
+.nav a:hover{color:var(--ink);border-color:rgba(239,237,232,.22)}
+.stage{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 46%,#12141B 0%,#0C0D12 62%,#090A0E 100%)}
+.stage canvas,.stage svg.full{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-size:13px;color:var(--mid);pointer-events:none}
+.cap b{color:var(--ink);font-weight:500}
+.rail{background:var(--panel);border-left:1px solid var(--line);overflow:auto;padding:20px 20px 28px}
+.lab{font-size:12px;color:var(--dim);margin-bottom:6px}
+.read{padding-bottom:18px;border-bottom:1px solid var(--line)}
+.lead{display:flex;align-items:center;gap:12px}
+.lead svg{width:40px;height:40px;flex-shrink:0}
+.lead b{font-size:28px;font-weight:600;letter-spacing:-.01em;color:var(--lead);transition:color .6s}
+.lead .fig{margin-left:auto;font-size:20px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.where{color:var(--mid);font-size:13px;margin:2px 0 16px 52px}
+.blk{margin-top:14px}
+.val{font-size:17px;font-weight:500}
+.sub{color:var(--mid);font-size:13px;margin-top:2px}
+.sec{padding:18px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:transparent;color:var(--mid);
+ font:inherit;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.chip:hover{color:var(--ink);border-color:rgba(239,237,232,.25)}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--c,var(--acc));box-shadow:inset 0 0 0 1px var(--c,var(--acc))}
+.chip i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c,var(--acc))}
+.axes{display:flex;flex-direction:column;gap:2px}
+.ax{display:grid;grid-template-columns:24px 92px minmax(0,1fr) 34px;align-items:center;gap:10px;min-height:44px;
+ cursor:ew-resize;touch-action:none;user-select:none;border-radius:8px;padding:0 6px;margin:0 -6px}
+.ax:hover{background:rgba(239,237,232,.03)}
+.ax svg{width:20px;height:20px}
+.ax .n{font-size:13px;color:var(--mid)}
+.ax.on .n{color:var(--ink);font-weight:500}
+.ax .tr{position:relative;height:4px;border-radius:2px;background:rgba(239,237,232,.07)}
+.ax .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;opacity:.55}
+.ax.on .tr i{opacity:1}
+.ax .tr u{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:2px solid;background:var(--panel)}
+.ax .f{font-size:13px;text-align:right;font-variant-numeric:tabular-nums;color:var(--mid)}
+.ax.on .f{color:var(--ink)}
+.hint{color:var(--dim);font-size:12px;margin:10px 0 0}
+kbd{font:inherit;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 4px;color:var(--mid)}
+@media (max-width:860px){
+ body{overflow:auto}
+ .app{grid-template-columns:1fr;grid-template-rows:auto auto auto;height:auto}
+ .hd{flex-direction:column;gap:10px;padding:14px 16px}
+ .hd h1{font-size:20px}
+ .stage{height:min(112vw,560px)}
+ .rail{border-left:0;border-top:1px solid var(--line);padding:16px}
+}
+</style></head><body>
+<div class="app">
+<header class="hd"><div><div class="ey">Character, Seal variation B</div><h1>Long mask</h1><p>Seal as the tall carved mask of ritual theatre: a domed brow, a heart shaped face plane, one long nose ridge, slit eyes and a small mouth. The leading icon is worn on the brow, and its motion runs the length of the mask.</p><div class="mock">Mockup on toy numbers. Nothing here reads a profile.</div></div>
+<nav class="nav" aria-label="Directions"><a href="index.html">All directions</a><a href="concept-2a.html">Previous</a><a href="concept-2c.html">Next</a></nav></header>
+<main class="stage" id="stage" aria-label="Long mask mask"><div class="cap" id="cap"></div></main>
+<aside class="rail" id="rail"></aside>
+</div>
+<script>
+"use strict";
+/* Shared scaffold for the four character mockups. The tables below are copied
+   out of the shipping engine (engine.js at the repo root) on the day the
+   mockups were made: the seat palette, the nine axes and their icons, the five
+   masks a reading is taken on, the saboteur ranges and their definitions. The
+   four example states are toy numbers. Nothing here reads a profile. */
+const D={"SAB33":[["Negotiator",[["fear",4,6],["apathy",3,5]]],["Controller",[["fear",7,10],["anger",5,8]]],["Victim",[["sadness",6,8],["anger",5,7],["apathy",2,5]]],["Perfectionist",[["disgust",5,7],["anger",4,6]]],["Pleaser",[["apathy",3,5],["fear",3,8]]],["Hyper-Achiever",[["apathy",5,7],["fear",4,8]]],["Hyper-Rational",[["shock",2,4],["disgust",3,6]]],["Hyper-Vigilant",[["fear",7,9],["anger",5,7]]],["Restless",[["apathy",5,7],["fear",2,4]]],["Stickler",[["disgust",4,6],["anger",4,6]]],["Judge",[["disgust",6,8],["anger",5,7],["apathy",3,6]]],["Deflector",[["shame",4,6],["anger",4,6]]],["Dramatizer",[["shock",6,8],["sadness",4,6]]],["Worrywart",[["fear",6,8],["sadness",3,5]]],["Loner",[["sadness",6,8],["fear",5,7]]],["People-Pleaser",[["apathy",4,6],["shame",3,5]]],["Skeptic",[["disgust",5,7],["shock",3,5]]],["Dreamer",[["apathy",3,5],["sadness",2,4]]],["Procrastinator",[["fear",4,6],["sadness",3,5]]],["Imposter",[["shame",5,7],["fear",4,6]]],["Aggressor",[["anger",6,9],["apathy",4,7]]],["Martyr",[["sadness",6,8],["shame",5,7],["apathy",3,5]]],["Cynic",[["disgust",6,8],["sadness",4,6]]],["Manipulator",[["anger",5,8],["apathy",4,7]]],["Overthinker",[["fear",5,7],["shame",4,6]]],["Escapist",[["apathy",4,6],["fear",6,8]]],["Nihilist",[["disgust",7,9],["sadness",5,7]]],["Innocent",[["fear",2,4]]],["Pessimist",[["sadness",5,7],["fear",4,6]]],["Catastrophizer",[["fear",8,10],["sadness",6,8]]],["Enabler",[["apathy",3,5],["shame",4,6]]],["Control Freak",[["fear",7,9],["anger",5,7],["anticipation",5,7]]],["Avoider",[["apathy",6,8],["fear",5,7]]]],"SABDEF":{"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The need to control loses what it was standing on.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Simply not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Name the best thing that could really happen. Act from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Projects the worst possible outcome onto every uncertainty. Distinguishable from Worrywart by magnitude, Catastrophizer reaches existential threat from ordinary uncertainty.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Supports others' destructive patterns to maintain relationship or avoid conflict. Distinct from Pleaser: the Enabler supports behavior they recognize as harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The drill shows the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}},"MASKS":[{"nm":"Child","b":["Root","Sacral"],"ic":"M12 5C14.31 5 16.57 7.02 16.57 11.02C16.57 14.72 14.39 19.8 12 19.8C9.61 19.8 7.43 14.72 7.43 11.02C7.43 7.02 9.69 5 12 5Z M11.5 11.6h1","v":"gets small so somebody else decides"},{"nm":"Preteen","b":["Solar","Throat"],"ic":"M12 5C14.31 5 16.57 7.02 16.57 11.02C16.57 14.72 14.39 19.8 12 19.8C9.61 19.8 7.43 14.72 7.43 11.02C7.43 7.02 9.69 5 12 5Z M8.8 11.6h1 M14.2 11.6h1","v":"checks the room before it says the thing"},{"nm":"Teen","b":["Throat"],"ic":"M12 5C14.31 5 16.57 7.02 16.57 11.02C16.57 14.72 14.39 19.8 12 19.8C9.61 19.8 7.43 14.72 7.43 11.02C7.43 7.02 9.69 5 12 5Z M12 5v11.1","v":"pushes back on the person, not the problem"},{"nm":"Adult","b":["Sacral","Solar"],"ic":"M12 5C14.31 5 16.57 7.02 16.57 11.02C16.57 14.72 14.39 19.8 12 19.8C9.61 19.8 7.43 14.72 7.43 11.02C7.43 7.02 9.69 5 12 5Z M5 11.65h14","v":"handles it, and files what it cost"},{"nm":"Ideological","b":["3rd Eye"],"ic":"M12 5C14.31 5 16.57 7.02 16.57 11.02C16.57 14.72 14.39 19.8 12 19.8C9.61 19.8 7.43 14.72 7.43 11.02C7.43 7.02 9.69 5 12 5Z M9 7h6","v":"answers from the position instead of the moment"}],"CHILD":[{"nm":"Fear","opp":"Trust","seat":"Root","ic":"M12 3l8 14H4z","loc":"lower back, gut"},{"nm":"Anger","opp":"Equanimity","seat":"Solar","ic":"M13 2L4 14h6l-1 8 9-12h-6z","loc":"upper abdomen"},{"nm":"Shame","opp":"Worth","seat":"Sacral","ic":"M5 20V9a7 7 0 0114 0v11M9 20v-6h6v6","loc":"pelvic floor"},{"nm":"Disgust","opp":"Acceptance","seat":"Sacral","ic":"M4 8c4 4 12 4 16 0M6 16c3-3 9-3 12 0","loc":"lower abdomen, skin"},{"nm":"Apathy","opp":"Vitality","seat":"Throat","ic":"M4 12h16M4 7h16M4 17h16","loc":"base of neck"},{"nm":"Shock","opp":"Groundedness","seat":"3rd Eye","ic":"M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0","loc":"forehead, skin"},{"nm":"Sad","opp":"Joy","seat":"Heart","ic":"M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z","loc":"centre chest"},{"nm":"Surprise","opp":"Readiness","seat":"Heart","ic":"M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11","loc":"upper torso"},{"nm":"Anticipation","opp":"Presence","seat":"Solar","ic":"M12 4v11M8 11l4 4 4-4M6 20h12","loc":"lower sternum"}],"PAL":{"Root":"#D6524C","Sacral":"#D8924E","Solar":"#DABF6A","Heart":"#5FD5A6","Throat":"#5EBBDB","3rd Eye":"#7D93E0","Crown":"#A77EDB"},"FACE":"M12 5C14.31 5 16.57 7.02 16.57 11.02C16.57 14.72 14.39 19.8 12 19.8C9.61 19.8 7.43 14.72 7.43 11.02C7.43 7.02 9.69 5 12 5Z"};
+const PAL=D.PAL, AX=D.CHILD, MASKS=D.MASKS, FACE=D.FACE;
+const KEY={Fear:'fear',Anger:'anger',Shame:'shame',Disgust:'disgust',Apathy:'apathy',
+ Shock:'shock',Sad:'sadness',Surprise:'surprise',Anticipation:'anticipation'};
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* four toy states. each was checked against the engine's own sab33Detect and
+   the mask that carries the most charge by its seats, so the saboteur and the
+   mask named for each are the ones the engine would name on these numbers. */
+const PRESETS=[
+ {nm:'Fear',w:{Fear:7.4,Anticipation:6.2,Shame:4.8,Anger:3,Sad:2,Disgust:1.2,Apathy:1.4,Shock:1.1,Surprise:1.6}},
+ {nm:'Anger',w:{Anger:7.8,Shame:5.5,Apathy:5.2,Disgust:4,Fear:2.5,Sad:1.6,Shock:1.2,Surprise:1.4,Anticipation:2.2}},
+ {nm:'Apathy',w:{Apathy:6.4,Shame:4.6,Fear:1,Sad:3,Anticipation:2,Anger:1.8,Disgust:1.5,Shock:1.2,Surprise:.8}},
+ {nm:'Shock',w:{Shock:7.1,Sad:4.6,Disgust:3,Anticipation:2.8,Fear:1.5,Apathy:1.5,Anger:1.6,Shame:1.9,Surprise:3.4}}];
+
+/* the symbolic vocabulary. one force per pattern, so every direction draws
+   the same meaning in its own material. */
+const EP={Fear:{contract:1,tremor:1},Anger:{heat:1,sharp:1,tremor:.3},Shame:{sink:1},
+ Disgust:{recoil:1},Apathy:{flat:1},Shock:{burst:1},Sad:{drip:1},Surprise:{widen:1},Anticipation:{lean:1}};
+const PK=['contract','heat','sink','recoil','flat','burst','drip','widen','lean','tremor','sharp'];
+/* a face rig in the egg's own units: y runs -1 at the brow to 1 at the chin. */
+const RIG0={eRx:.12,eRy:.045,eDx:.31,eDy:-.11,bLift:0,bAng:0,mW:.19,mOpen:0,mCurve:0,curl:0};
+const RIGS={
+ Fear:{eRx:.11,eRy:.085,eDx:.27,bLift:.06,bAng:-.6,mW:.25,mOpen:.03,mCurve:-.25},
+ Anger:{eRy:.026,bLift:-.05,bAng:1,mW:.17,mCurve:-.35},
+ Shame:{eRy:.028,eDy:-.05,bAng:-.35,mW:.15,mCurve:-.45},
+ Disgust:{eRy:.04,bAng:.45,mW:.2,mCurve:-.2,curl:1},
+ Apathy:{eRy:.02,bLift:-.03,mW:.2},
+ Shock:{eRx:.14,eRy:.115,bLift:.13,mW:.11,mOpen:.15},
+ Sad:{eRy:.038,eDy:-.09,bAng:-1,mW:.18,mCurve:-.85},
+ Surprise:{eRx:.13,eRy:.095,bLift:.11,mW:.1,mOpen:.1},
+ Anticipation:{eRx:.12,eRy:.05,bAng:.25,bLift:.04,mW:.17,mCurve:.1}};
+/* each mask's own mark, from MASKS[].ic in the canon, in the egg's units */
+const N=(x,y)=>[(x-12)/7.4,(y-12.4)/7.4];
+const MARKS={Child:[[11.5,11.6,12.5,11.6]],Preteen:[[8.8,11.6,9.8,11.6],[14.2,11.6,15.2,11.6]],
+ Teen:[[12,5,12,16.1]],Adult:[[5,11.65,19,11.65]],Ideological:[[9,7,15,7]]};
+function markSegs(nm){return (MARKS[nm]||[]).map(s=>{const a=N(s[0],s[1]),b=N(s[2],s[3]);
+ if(a[1]===b[1]){const h=halfW(a[1])*.96;return [Math.max(a[0],-h),a[1],Math.min(b[0],h),b[1]];}
+ return [a[0],a[1],b[0],b[1]];});}
+
+/* the golden ratio egg, MASK_FACE's own curve: broad at the brow */
+function halfW(y){y=Math.max(-1,Math.min(1,y));return .6068*Math.sqrt(1-y*y)*(1-.2*y);}
+function eggPt(t){return [.6068*Math.sin(t)*(1+.2*Math.cos(t)),-Math.cos(t)];}
+
+function hx(c){const n=parseInt(c.slice(1),16);return [n>>16&255,n>>8&255,n&255];}
+function mix(a,b,k){return [a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k,a[2]+(b[2]-a[2])*k];}
+function rgba(c,a){return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+Math.max(0,Math.min(1,a)).toFixed(3)+')';}
+function lerp(a,b,k){return a+(b-a)*k;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+const SEATC={};Object.keys(PAL).forEach(k=>SEATC[k]=hx(PAL[k]));
+const AXC=AX.map(a=>SEATC[a.seat]);
+const INK=[239,237,232], BG=[12,13,18];
+/* a seeded random, so a mesh or a cloud is the same every load */
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);
+ t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+/* ---- the state. W is drawn, T is where W is going. ---- */
+const W={},T={};AX.forEach(a=>{W[a.nm]=0;T[a.nm]=0;});
+let preset=0, cycling=false, cycT=null;
+function setPreset(i,instant){preset=i;AX.forEach(a=>{T[a.nm]=PRESETS[i].w[a.nm]||0;if(instant)W[a.nm]=T[a.nm];});
+ document.querySelectorAll('.chip[data-p]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.p===i?'true':'false'));}
+
+function leadOf(w){let b=null;AX.forEach((a,i)=>{if(!b||w[a.nm]>b.w)b={nm:a.nm,w:w[a.nm],i,ax:a};});return b;}
+function seatW(w,seat){let m=0;AX.forEach(a=>{if(a.seat===seat)m=Math.max(m,w[a.nm]);});return m;}
+function maskOf(w){let best=null;MASKS.forEach(m=>{const s=m.b.reduce((a,b)=>a+seatW(w,b),0)/m.b.length;
+ if(!best||s>best.s+1e-9)best={m,s};});return best.m;}
+/* the engine's own fit rule: inside the range 1, one step outside it a half,
+   kept at 60 or better. here it is asked only of saboteurs built on the lead. */
+function sabOf(w,leadNm){const L={};AX.forEach(a=>L[KEY[a.nm]]=Math.round(w[a.nm]));L.anxiety=L.anticipation;
+ let best=null;D.SAB33.forEach(row=>{const parts=row[1];if(!parts.some(p=>p[0]===KEY[leadNm]))return;
+  let fit=0;parts.forEach(p=>{const v=L[p[0]]||0;if(v>=p[1]&&v<=p[2])fit+=1;else if(v===p[1]-1||v===p[2]+1)fit+=.5;});
+  const sc=Math.round(fit/parts.length*100);if(sc<60)return;
+  const sum=parts.reduce((a,p)=>a+(L[p[0]]||0),0);
+  if(!best||sc>best.sc||(sc===best.sc&&sum>best.sum))best={nm:row[0],sc,sum};});return best;}
+function sabLine(nm){const d=D.SABDEF[nm.toLowerCase().replace(/-/g,' ')];return d&&d.d?d.d:'';}
+function cap1(s){return s.charAt(0).toUpperCase()+s.slice(1)+'.';}
+
+/* blend the vocabulary by weight cubed, so the lead dominates and the second
+   still shows through. intensity is the lead's weight over ten. */
+function reading(){
+ const ld=leadOf(W), tot=AX.reduce((a,x)=>a+Math.pow(W[x.nm],3),0)||1;
+ const P={};PK.forEach(k=>P[k]=0);
+ const rig=Object.assign({},RIG0), share={};
+ AX.forEach(a=>{const n=Math.pow(W[a.nm],3)/tot;share[a.nm]=n;
+  const e=EP[a.nm];for(const k in e)P[k]+=e[k]*n;
+  const r=RIGS[a.nm];for(const k in RIG0)rig[k]+=((r[k]!==undefined?r[k]:RIG0[k])-RIG0[k])*n;});
+ const inten=clamp(ld.w/10,0,1), g=clamp(ld.w/6,0,1);
+ for(const k in RIG0)rig[k]=RIG0[k]+(rig[k]-RIG0[k])*g;
+ PK.forEach(k=>P[k]*=g);
+ return {ld,P,rig,inten,share,mask:maskOf(W),col:SEATC[ld.ax.seat],empty:ld.w<.05};}
+
+/* cumulative shares, for anything that assigns a colour by weight */
+function cumShares(sh,pow){const c=[];let s=0;AX.forEach(a=>{s+=Math.pow(W[a.nm],pow);c.push(s);});
+ return c.map(v=>v/(s||1));}
+function pickAx(cum,r){for(let i=0;i<cum.length;i++)if(r<=cum[i])return i;return cum.length-1;}
+
+/* ---- the rail ---- */
+function ico(d,c,w){return '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="'+(w||1.6)+'" stroke-linecap="round" stroke-linejoin="round"><path d="'+d+'"/></svg>';}
+function buildRail(){
+ const r=document.getElementById('rail');
+ r.innerHTML='<section class="read" aria-live="polite">'
+  +'<div class="lab">Leading</div><div class="lead"><span id="ldI"></span><b id="ldN"></b><span class="fig" id="ldW"></span></div>'
+  +'<div class="where" id="ldL"></div>'
+  +'<div class="blk"><div class="lab">Mask</div><div class="val" id="mkN"></div><div class="sub" id="mkV"></div></div>'
+  +'<div class="blk"><div class="lab">Running</div><div class="val" id="sbN"></div><div class="sub" id="sbD"></div></div></section>'
+  +'<section class="sec"><div class="lab">Examples</div><div class="chips">'
+  +PRESETS.map((p,i)=>{const a=AX.find(x=>x.nm===p.nm);return '<button class="chip" data-p="'+i+'" style="--c:'+PAL[a.seat]+'"><i></i>'+p.nm+' leads</button>';}).join('')
+  +'<button class="chip" id="cyc" aria-pressed="false">Cycle</button></div>'
+  +'<p class="hint">Keys <kbd>1</kbd> to <kbd>4</kbd> pick an example. <kbd>C</kbd> cycles them every six seconds.</p></section>'
+  +'<section class="sec"><div class="lab">Weight</div><div class="axes" id="axes">'
+  +AX.map((a,i)=>'<div class="ax" data-i="'+i+'" role="slider" tabindex="0" aria-label="'+a.nm+'" aria-valuemin="0" aria-valuemax="10">'
+   +ico(a.ic,PAL[a.seat])+'<span class="n">'+a.nm+'</span><span class="tr"><i style="background:'+PAL[a.seat]+'"></i><u style="border-color:'+PAL[a.seat]+'"></u></span><span class="f"></span></div>').join('')
+  +'</div><p class="hint">Drag a row to change its weight. The heaviest row drives the mask.</p></section>';
+ r.querySelectorAll('.chip[data-p]').forEach(b=>b.onclick=()=>{stopCycle();setPreset(+b.dataset.p);});
+ document.getElementById('cyc').onclick=()=>cycling?stopCycle():startCycle();
+ r.querySelectorAll('.ax').forEach(row=>{
+  const i=+row.dataset.i, tr=row.querySelector('.tr');
+  const set=e=>{const b=tr.getBoundingClientRect();T[AX[i].nm]=Math.round(clamp((e.clientX-b.left)/b.width,0,1)*100)/10;
+   document.querySelectorAll('.chip[data-p]').forEach(c=>c.setAttribute('aria-pressed','false'));};
+  row.addEventListener('pointerdown',e=>{stopCycle();row.setPointerCapture(e.pointerId);set(e);row._d=1;});
+  row.addEventListener('pointermove',e=>{if(row._d)set(e);});
+  row.addEventListener('pointerup',()=>row._d=0);
+  row.addEventListener('keydown',e=>{const s=e.key==='ArrowRight'||e.key==='ArrowUp'?.5:e.key==='ArrowLeft'||e.key==='ArrowDown'?-.5:0;
+   if(s){e.preventDefault();stopCycle();T[AX[i].nm]=clamp(T[AX[i].nm]+s,0,10);}});});
+ document.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('.ax'))return;
+  if(e.key>='1'&&e.key<='4'){stopCycle();setPreset(+e.key-1);}
+  else if(e.key==='c'||e.key==='C')cycling?stopCycle():startCycle();});}
+function startCycle(){cycling=true;document.getElementById('cyc').setAttribute('aria-pressed','true');
+ setPreset((preset+1)%PRESETS.length);cycT=setInterval(()=>setPreset((preset+1)%PRESETS.length),6000);}
+function stopCycle(){cycling=false;clearInterval(cycT);const c=document.getElementById('cyc');if(c)c.setAttribute('aria-pressed','false');}
+
+let RAILSIG='';
+function syncRail(R){
+ const rows=document.querySelectorAll('.ax');
+ rows.forEach((row,i)=>{const v=W[AX[i].nm];row.querySelector('.tr i').style.width=(v*10)+'%';
+  row.querySelector('.tr u').style.left=(v*10)+'%';row.querySelector('.f').textContent=v.toFixed(1);
+  row.setAttribute('aria-valuenow',v.toFixed(1));row.classList.toggle('on',i===R.ld.i&&!R.empty);});
+ const sab=R.empty?null:sabOf(W,R.ld.nm);
+ const sig=[R.ld.nm,R.mask.nm,sab?sab.nm:'',R.empty].join('|');
+ document.getElementById('ldW').textContent=R.empty?'–':R.ld.w.toFixed(1);
+ if(sig===RAILSIG)return;RAILSIG=sig;
+ const a=R.ld.ax;
+ document.documentElement.style.setProperty('--lead',PAL[a.seat]);
+ document.getElementById('ldI').innerHTML=ico(a.ic,PAL[a.seat],1.4);
+ document.getElementById('ldN').textContent=R.empty?'Not read yet':a.nm;
+ document.getElementById('ldL').textContent=R.empty?'':cap1(a.loc).replace(/\.$/,'');
+ document.getElementById('mkN').textContent=R.mask.nm;
+ document.getElementById('mkV').textContent=cap1(R.mask.v);
+ document.getElementById('sbN').textContent=sab?sab.nm:'Nothing running';
+ document.getElementById('sbD').textContent=sab?sabLine(sab.nm):'No saboteur built on '+a.nm.toLowerCase()+' fits these weights.';
+ const cap=document.getElementById('cap');if(cap)cap.innerHTML='<b>'+R.mask.nm+'</b> mask';}
+
+/* ---- the loop ---- */
+function boot(C){
+ buildRail();setPreset(0,true);
+ const st=document.getElementById('stage');C.init(st);
+ let last=performance.now(), t0=last;
+ window.__setPreset=i=>{stopCycle();setPreset(i,true);};
+ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  const k=REDUCED?1:1-Math.exp(-dt/.32);
+  AX.forEach(a=>{W[a.nm]+=(T[a.nm]-W[a.nm])*k;if(Math.abs(T[a.nm]-W[a.nm])<.002)W[a.nm]=T[a.nm];});
+  const R=reading();syncRail(R);C.draw(REDUCED?0:(now-t0)/1000,dt,R);requestAnimationFrame(frame);}
+ requestAnimationFrame(frame);}
+function fitCanvas(cv){const r=cv.parentNode.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);
+ const w=Math.round(r.width*d),h=Math.round(r.height*d);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}return {w,h,d};}
+
+/* SEAL, THE FAMILY. The winning mechanic kept whole: the leading pattern's own
+   icon takes the centre piece and a drawn motion says what that pattern does,
+   the other eight wait in orbit at their weight, the nine arcs of the outer
+   ring carry every weight. What each variation changes is the centre piece:
+   its silhouette, where the icon sits on it and how the motion is held. */
+const SVGNS='http://www.w3.org/2000/svg';
+function el(n,a,p){const e=document.createElementNS(SVGNS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+/* the drawn motion of each pattern, inside a region the variation names */
+function motionX(nm,t,v,G){const {x0,x1,y0,y1,cx,cy}=G,W=x1-x0,H=y1-y0,M=Math.max(W,H),out=[],n=Math.round;
+ const L=(a,b,c,d)=>out.push('M'+a.toFixed(1)+' '+b.toFixed(1)+'L'+c.toFixed(1)+' '+d.toFixed(1));
+ const ring=(x,y,r)=>out.push('M'+(x+r).toFixed(1)+' '+y.toFixed(1)+'A'+r+' '+r+' 0 1 0 '+(x-r).toFixed(1)+' '+y.toFixed(1)+'A'+r+' '+r+' 0 1 0 '+(x+r).toFixed(1)+' '+y.toFixed(1));
+ if(nm==='Fear'){const m=n(4+v*7),ph=(t*.18)%1,j=Math.sin(t*43)*1.4*v;
+  for(let i=0;i<m;i++){const f=(i+ph)/m,s=M*.62*(1-f)+5,x=cx+j,y=cy;
+   out.push('M'+x+' '+(y-s)+'L'+(x+s*.87)+' '+(y+s*.5)+'L'+(x-s*.87)+' '+(y+s*.5)+'Z');}}
+ else if(nm==='Anger'){const cols=Math.max(5,n((9+v*9)*W/240));for(let i=0;i<cols;i++){const x=x0+8+i*(W-16)/(cols-1);
+  for(let j=0;j<4;j++){const y=y1+20-((t*70*(1+(i%3)*.25)+j*(H+40)/4+i*37)%(H+40));L(x,y,x+Math.sin(t*3+i)*3,y-10-16*v);}}}
+ else if(nm==='Shame'){const m=n(5+v*9);for(let i=0;i<m;i++){const f=Math.pow(((i/m)+t*.05)%1,.6);const y=y0+f*(G.ey-y0+18);L(x0,y,x1,y);}}
+ else if(nm==='Disgust'){const m=n(6+v*8);for(let i=0;i<m;i++){const y=y0+i*H/m;const off=Math.sin(i*1.7+t*.8)*10*v;L(cx-10+off,y,x1+off,y+18);}}
+ else if(nm==='Apathy'){const m=n(8+v*10);for(let i=0;i<m;i++){const y=y0+(i+.5)*H/m;L(x0,y,x1,y);}}
+ else if(nm==='Shock'){const m=n(4+v*5);for(let i=0;i<m;i++)ring(G.cx,G.by,((t*42+i*M*1.1/m)%(M*1.1))+4);}
+ else if(nm==='Sad'){G.eyes.forEach(ex=>{for(let s=-1;s<=1;s++)for(let j=0;j<n(3+v*4);j++){const y=G.ey+12+((t*28*(1+.2*s)+j*44)%Math.max(60,y1-G.ey));L(ex+s*7,y,ex+s*7,y+10+8*v);}});}
+ else if(nm==='Surprise'){const m=n(3+v*4);for(let i=0;i<m;i++)ring(cx,cy,((t*30+i*M*.7/m)%(M*.7))+10);
+  for(let i=0;i<16;i++){const a=i/16*Math.PI*2,r=M*.42;L(cx+Math.cos(a)*r,cy+Math.sin(a)*r,cx+Math.cos(a)*(r+14+14*v),cy+Math.sin(a)*(r+14+14*v));}}
+ else if(nm==='Anticipation'){const m=n(5+v*6);for(let i=0;i<m;i++){const y=y1-((t*36+i*H/m)%H),w=Math.min(W*.4,30+10*v);
+  out.push('M'+(cx-w)+' '+(y+w*.6)+'L'+cx+' '+y+'L'+(cx+w)+' '+(y+w*.6));}}
+ return out.join('');}
+/* an almond eye opening, set by the shared face rig: height from how open the
+   eye is, tilt from the brow, so anger narrows and drops the inner corner */
+function almond(x,y,w,hgt,rot){const h=Math.max(1.5,hgt);return 'M'+(x-w/2)+' '+y+'Q'+x+' '+(y-h*1.15)+' '+(x+w/2)+' '+y+'Q'+x+' '+(y+h*.85)+' '+(x-w/2)+' '+y+'Z';}
+function eyeD(R,cx,cy,w,base,sx){const r=R.rig;let h=base*r.eRy/.045;if(sx>0)h*=1-.55*r.curl;
+ const a=r.bAng*13*(sx<0?1:-1);return {d:almond(cx,cy+(r.eDy+.11)*120,w,h),t:'rotate('+a.toFixed(2)+' '+cx+' '+cy+')'};}
+function SEALX(V){return {
+init(st){const s=el('svg',{viewBox:'0 0 600 600',class:'full',preserveAspectRatio:'xMidYMid meet','aria-hidden':'true'});
+ st.insertBefore(s,st.firstChild);this.svg=s;
+ const defs=el('defs',{},s),cp=el('clipPath',{id:'fc'},defs);this.clip=el('path',{d:V.clipD||V.outline},cp);
+ const gl=el('radialGradient',{id:'gl'},defs);this.gs0=el('stop',{offset:'0','stop-color':'#fff','stop-opacity':.16},gl);
+ el('stop',{offset:'1','stop-color':'#fff','stop-opacity':0},gl);
+ el('circle',{cx:300,cy:292,r:190,fill:'url(#gl)'},s);
+ el('circle',{cx:300,cy:292,r:268,fill:'none',stroke:'rgba(239,237,232,.07)'},s);
+ el('circle',{cx:300,cy:292,r:208,fill:'none',stroke:'rgba(239,237,232,.06)','stroke-dasharray':'1 6'},s);
+ this.arcs=AX.map(()=>el('path',{fill:'none','stroke-linecap':'round'},s));
+ this.echo=[1,2,3].map(()=>el('path',{fill:'none','stroke-width':1},s));
+ const cg=el('g',{'clip-path':'url(#fc)'},s);
+ this.cons2=el('path',{fill:'none','stroke-width':1,'stroke-linecap':'round'},cg);
+ this.cons=el('path',{fill:'none','stroke-width':1.3,'stroke-linecap':'round','stroke-linejoin':'round'},cg);
+ this.mg=el('g',{},s);this.parts=V.build(this.mg,el);
+ this.markG=el('g',{},V.markClip===false?s:el('g',{'clip-path':'url(#fc)'},s));
+ this.mark=el('path',{fill:'none','stroke-width':2.4,'stroke-linecap':'round'},this.markG);
+ this.g=AX.map((a,i)=>{const g=el('g',{},s);
+  const ring=el('circle',{r:15,fill:'none','stroke-width':1.2,'vector-effect':'non-scaling-stroke'},g);
+  const p=el('path',{d:a.ic,transform:'translate(-12,-12)',fill:'none','stroke-width':1.6,'stroke-linecap':'round','stroke-linejoin':'round','vector-effect':'non-scaling-stroke'},g);
+  const ang=-Math.PI/2+i*Math.PI*2/9;return {g,ring,p,ang,x:300+Math.cos(ang)*208,y:292+Math.sin(ang)*208,s:1,ra:.4};});},
+draw(t,dt,R){const k=REDUCED?1:1-Math.exp(-dt/.22),lc=R.col,LC=PAL[R.ld.ax.seat],P=R.P,v=R.inten;
+ this.gs0.setAttribute('stop-color',LC);this.gs0.setAttribute('stop-opacity',(.05+.16*v).toFixed(3));
+ /* the posture moves the whole piece: shame drops it, disgust turns it away,
+    fear and apathy shrink and flatten it, anticipation lifts it */
+ const c=V.c,br=1+.02*Math.sin(t*Math.PI*2/4.2)*(1-P.burst);
+ const bs=V.s||1,fx=bs*(1+.12*P.flat-.14*P.contract+.06*P.widen)*br,fy=bs*(1-.12*P.flat-.14*P.contract+.06*P.widen+.05*P.lean)*br;
+ const tx=c[0]-P.recoil*10,ty=c[1]+P.sink*16-P.lean*10,rot=-7*P.recoil;
+ const tf='translate('+tx.toFixed(2)+','+ty.toFixed(2)+') rotate('+rot.toFixed(2)+') scale('+fx.toFixed(4)+','+fy.toFixed(4)+') translate('+(-c[0])+','+(-c[1])+')';
+ const pt=(x,y)=>{const a=rot*Math.PI/180,X=(x-c[0])*fx,Y=(y-c[1])*fy;return [tx+X*Math.cos(a)-Y*Math.sin(a),ty+X*Math.sin(a)+Y*Math.cos(a)];};
+ const geo=V.update(this.parts,R,t,el)||{};
+ if(geo.clipD)this.clip.setAttribute('d',geo.clipD);
+ [this.mg,this.clip,this.markG].forEach(e=>e.setAttribute('transform',tf));
+ const ic=geo.icon||V.icon, ip=pt(ic[0],ic[1]);
+ AX.forEach((a,i)=>{const w=W[a.nm]/10,on=i===R.ld.i&&!R.empty,a0=-Math.PI/2+(i-.5)*Math.PI*2/9+.07,a1=a0+Math.PI*2/9-.14,r=262;
+  this.arcs[i].setAttribute('d','M'+(300+Math.cos(a0)*r)+' '+(292+Math.sin(a0)*r)+'A'+r+' '+r+' 0 0 1 '+(300+Math.cos(a1)*r)+' '+(292+Math.sin(a1)*r));
+  this.arcs[i].setAttribute('stroke',PAL[a.seat]);this.arcs[i].setAttribute('stroke-width',(1+w*6).toFixed(2));
+  this.arcs[i].setAttribute('stroke-opacity',(.14+.5*w+(on?.36:0)).toFixed(2));
+  const G=this.g[i],ox=on?ip[0]:300+Math.cos(G.ang)*208,oy=on?ip[1]:292+Math.sin(G.ang)*208;
+  const ts=on?ic[2]*fx/bs:.85+w*.55,ta=on?1:.32+.6*w;
+  G.x+=(ox-G.x)*k;G.y+=(oy-G.y)*k;G.s+=(ts-G.s)*k;G.ra+=(ta-G.ra)*k;
+  G.g.setAttribute('transform','translate('+G.x.toFixed(2)+','+G.y.toFixed(2)+') scale('+G.s.toFixed(3)+')');
+  G.p.setAttribute('stroke',PAL[a.seat]);G.p.setAttribute('stroke-opacity',G.ra.toFixed(2));
+  G.ring.setAttribute('stroke',PAL[a.seat]);G.ring.setAttribute('stroke-opacity',(G.ra*(on?.45:.6)).toFixed(2));});
+ this.mark.setAttribute('d',(geo.marks||V.marks)[R.mask.nm]||'');this.mark.setAttribute('stroke',rgba(mix(lc,INK,.35),1));
+ const reg=geo.region||V.region;
+ this.cons.setAttribute('d',R.empty?'':motionX(R.ld.nm,t,v,reg));this.cons.setAttribute('stroke',LC);this.cons.setAttribute('stroke-opacity',(.35+.4*v).toFixed(2));
+ let sec=null;AX.forEach((a,i)=>{if(i!==R.ld.i&&(!sec||W[a.nm]>W[sec.nm]))sec=a;});
+ const sv=W[sec.nm]/Math.max(.01,R.ld.w);
+ this.cons2.setAttribute('d',sv>.55?motionX(sec.nm,t*.8+3,W[sec.nm]/10,reg):'');this.cons2.setAttribute('stroke',PAL[sec.seat]);this.cons2.setAttribute('stroke-opacity',(.28*sv).toFixed(2));
+ /* disgust leaves the outline behind as it turns away */
+ this.echo.forEach((e,j)=>{if(P.recoil>.15){e.setAttribute('d',geo.clipD||V.outline);e.setAttribute('transform','translate('+((j+1)*14*P.recoil)+','+((j+1)*3)+') '+tf);
+  e.setAttribute('stroke',LC);e.setAttribute('stroke-opacity',(.22*P.recoil/(j+1)).toFixed(2));}else e.setAttribute('d','');});}};}
+
+/* SEAL B. LONG MASK. The tall carved mask of ritual theatre: a domed brow, a
+   heart shaped face plane cut into it, one long nose ridge, slit eyes and a
+   small mouth near the chin. Long masks are worn to be somebody else, which
+   is the job a mask does in this product. The leading icon is worn on the
+   brow, the motion runs the length of the mask, the mouth takes the set. */
+const C2B=SEALX({c:[300,290],icon:[300,166,1.7],
+ outline:'M300 110C350 110 378 150 378 200C378 260 362 330 346 400C336 444 320 470 300 470C280 470 264 444 254 400C238 330 222 260 222 200C222 150 250 110 300 110Z',
+ region:{x0:222,x1:378,y0:110,y1:470,cx:300,cy:310,ey:282,by:236,eyes:[268,332]},
+ marks:{Child:'M294 266h12',Preteen:'M258 302h20M322 302h20',Teen:'M300 110V380',Adult:'M222 282H378',Ideological:'M272 206h56'},
+ build(g,el){const o={};
+  o.out=el('path',{d:this.outline,fill:'none',stroke:'rgba(239,237,232,.7)','stroke-width':1.6},g);
+  el('path',{d:'M300 120C340 120 366 154 368 200',fill:'none',stroke:'rgba(239,237,232,.12)'},g);
+  /* the face plane, and the ridge that runs down it */
+  o.plane=el('path',{d:'M300 232C276 206 232 214 234 262C236 320 268 392 300 438C332 392 364 320 366 262C368 214 324 206 300 232Z',fill:'none',stroke:'rgba(239,237,232,.32)'},g);
+  el('path',{d:'M300 236V368M292 368h16',fill:'none',stroke:'rgba(239,237,232,.28)','stroke-linecap':'round'},g);
+  o.eL=el('path',{fill:'#090A0E','stroke-width':1.4},g);o.eR=el('path',{fill:'#090A0E','stroke-width':1.4},g);
+  o.mouth=el('path',{fill:'#090A0E','stroke-width':1.3,'stroke-linejoin':'round'},g);
+  return o;},
+ update(o,R){const r=R.rig,s=rgba(mix(R.col,INK,.3),.85);
+  const L=eyeD(R,268,282,40,9,-1),Rr=eyeD(R,332,282,40,9,1);
+  o.eL.setAttribute('d',L.d);o.eL.setAttribute('transform',L.t);o.eR.setAttribute('d',Rr.d);o.eR.setAttribute('transform',Rr.t);
+  const rx=13*r.mW/.19,yc=410-r.mCurve*12,op=2+r.mOpen*90,cu=r.curl*8;
+  o.mouth.setAttribute('d','M'+(300-rx)+' '+yc+'Q300 '+(410-op*.5)+' '+(300+rx)+' '+(yc-cu)+'Q300 '+(410+op)+' '+(300-rx)+' '+yc+'Z');
+  [o.eL,o.eR,o.mouth].forEach(e=>e.setAttribute('stroke',s));}});
+
+boot(C2B);
+</script>
+</body></html>
