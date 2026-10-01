@@ -435,7 +435,8 @@ g('15d \u00b7 the meter');
  {const fl=JSON.parse(JSON.stringify(saveProfile(p))); fl.ui=Object.assign({},fl.ui,{onboarded:true,tutorialSeen:true});
   const back=validateProfile(fl);
   ok(back.ok&&back.profile.ui.onboarded===true&&back.profile.ui.tutorialSeen===true,'the first run flags survive a load');
-  ok(validateProfile(JSON.parse(JSON.stringify(saveProfile(p)))).profile.ui.onboarded===false,'and read as not seen on a profile that never set them');}
+  ok(validateProfile(JSON.parse(JSON.stringify(saveProfile(p)))).profile.ui.onboarded===false,'and read as not seen on a profile that never set them');
+  fl.ui.paidWelcomed=true; ok(validateProfile(fl).profile.ui.paidWelcomed===true,'the welcome after paying is remembered across a load');}
  const neg=JSON.parse(JSON.stringify(saveProfile(p))); neg.meter.lines=-5;
  ok(!validateProfile(neg).ok,'a negative line count is refused at the boundary');
  const notlist=JSON.parse(JSON.stringify(saveProfile(p))); notlist.meter.unique='lots';
