@@ -10,7 +10,7 @@
    app's own stylesheet. The funnel and the app have to look like one
    product, and a palette copied by hand is correct on the day it is copied
    and wrong afterwards. Change a value in head.html and run the tool.
-   47 tokens. */
+   49 tokens. */
 :root{
  /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
 
@@ -137,6 +137,14 @@
     the stylesheet and the canvas cannot drift apart without one of these
     lines changing. */
  --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
+ /* A READING BREATHING, ROUND MQ. The Field's own wave, 0.82+0.18 sin(2 pi
+    t/4.2) in ui/wheel.js, so opacity .64 to 1 over 4.2s. A loop is not an
+    arrival, a departure or a landing, so none of the three curves above
+    fits: this is the sine's own cubic, still at both ends the way
+    Math.sin is. Named here rather than typed into the rule, gate 12 in
+    tests/design.js reads transitions and not keyframes, so a loop typed
+    straight into a rule goes unchecked by it. */
+ --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
@@ -1041,6 +1049,15 @@ const ARCH=[
  {nm:'Jester',   v:'breaks the tension',    b:'Throat', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
  {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
  {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
+/* Give source a credit, his own words. All twelve, Warrior through Innocent,
+   are Carol Pearson and Margaret Mark's brand archetype set, built on Jung's
+   own archetype theory but never a canonical list Jung himself wrote down,
+   the exact caution SOURCE-TDD.md states: "the modern standardized twelve
+   archetypes list must be treated as Jung-derived and later popularized
+   rather than attributed directly to Jung." Unlike SAB_PI, which marks ten
+   of 33 saboteurs as Chamine's, every one of these twelve carries the same
+   credit, so ARCH_CREDIT is one sentence rather than a lookup by name. */
+const ARCH_CREDIT="Jung-derived, after Carol Pearson and Margaret Mark";
 
 /* the 21 Laws of Moral Integrity, each seated at the band it governs. The
    book calls this set the Laws of Spiritual Integrity; the owner ruled moral,
@@ -1134,6 +1151,14 @@ const MASKS=[
  /* a ring above the face, worn where a thought is kept. */
  {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0',
   v:'answers from the position instead of the moment'}];
+/* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
+   rid of the uh, professional. Just hide it for now. Don't calculate it."
+   Preteen and Professional both sit at Solar and Throat, so their fill has
+   always been identical, and this is the stopgap while the real seven seat
+   mapping, R1, stays open. MASKS itself keeps all six, since the body map's
+   own seat patches and the glossary still name Professional; MASKS_READ is
+   the five a reading is ever taken on or shown for. */
+const MASKS_READ=MASKS.filter(m=>m.nm!=='Professional');
 
 /* ============================================================
    WHAT A LABEL OWES THE PERSON IT IS PUT ON.
@@ -4326,23 +4351,38 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
  COMPASS:8,SETTINGS:9,RITUAL:10,
  /* MASKS IS 11, APPENDED, on the same rule as Ritual and Compass: a new
     surface takes the next free integer and nothing before it moves. */
- MASKS:11};
+ MASKS:11,
+ /* PRACTITIONER IS 12, APPENDED, round LL, on the same rule again. It is the
+    one integer whose door comes and goes at run time, so it is also the one
+    most likely to be stored while its door is shut: a profile that had the
+    mode on, saved, then had it switched off. The integer still names a real
+    surface, so setTab still opens it the way it still opens Games, and the
+    only thing the switch moves is whether a person can see the door. */
+ PRACTITIONER:12};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
    end for exactly that reason. Anything that needs the entry for a tab looks
    it up by .k, never by position.
 
-   TWO SURFACES CAME OFF THE BAR on the owner's ruling. Analytics folded into
-   Summary and Games folded into Knowledge, so neither has a top level door
-   any more. They are still surfaces with their own integers and their own
-   renderers: what changed is where the host element sits in the document.
-   #ana now lives inside #sum and #games inside #know, so the parent tab
-   showing itself shows the folded surface with it.
+   ANALYTICS IS UNFOLDED, round LV, on his words: "I want you to break out
+   the analytics from summary and give it its own summary page, sorry, its
+   own analytics page after summary, so it'll go story, avatar, summary,
+   analytics." Games carries the template, TWICE: folded into Knowledge and
+   then unfolded again, on the ruling that a game folded into a reference
+   page is neither. Same integer, TAB.ANALYTICS, never renumbered. Same
+   renderer, anaRender in ui/analytics.js, never rewritten. What moved is
+   where the door sits and where the host lives: it has an entry here again,
+   right after Summary as he named the order, and body.html gives #ana its
+   own place on the stage, a sibling of #sum and not a child inside it,
+   which is the #know and #games lesson this file already carries below.
+   TABFOLD no longer answers TAB.ANALYTICS with Summary, the same line Games
+   came out of when it was unfolded the first time.
 
-   Summary reads last. It is the conclusion and the owner ruled it opens
-   there, so the bar reads left to right as the instruments and then the
-   thing they add up to, and the app lands on the right hand end of it. */
+   Summary still reads last of the three Discover doors, on the ruling that
+   put it there: "then my intake then my summary." Analytics reads after it,
+   his own order, so Discover is Story, Avatar, Summary, Analytics and the
+   bar still closes the loop on Embody. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -4393,7 +4433,19 @@ const SECTIONS=[
  {k:'discover', nm:'Discover'},
  {k:'play',     nm:'Play'},
  {k:'flow',     nm:'Flow'},
- {k:'embody',   nm:'Embody'}];
+ {k:'embody',   nm:'Embody'},
+ /* A FIFTH SECTION THAT IS NOT PART OF THE LOOP, round LL. His words: "Add a
+    practitioner mode to the profile. If I turn it on, it adds a new tab item
+    called practitioner." So it is a section, a peer of the four in the bar,
+    and it is not a fifth station: the loop is still the four above and the
+    circle still closes on Embody. .mode is what says so. A section carrying
+    it is shown only while that key is on in CURP.ui, and anything that means
+    the loop reads SECTIONS without the ones carrying a mode.
+
+    It goes last so that with the mode off the four keep the positions they
+    have always had, and nothing measured against the bar moves when the
+    switch is off, which is how nearly everyone will see it. */
+ {k:'practitioner', nm:'Practitioner', mode:'practitioner'}];
 const TABDEF=[
  /* Discover opens on the Story, "start right immediately on my journal":
     secGo sends a first visit to a section's first entry, so being first here
@@ -4406,6 +4458,11 @@ const TABDEF=[
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
+    story, avatar, summary, analytics." Integer 4, unfolded: see the note
+    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
+    inside it, and anaRender in ui/analytics.js is unchanged. */
+ {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
  /* "I want to move all the tools to play. And then get rid of the tools
     tab." The instruments are Play now, and the app still opens on the Field,
     so Play is the section pressed at start. */
@@ -4418,7 +4475,13 @@ const TABDEF=[
     menu is missing Body entirely. fix, priority." Same integer, host,
     class and renderer as always; only .sec moves, and the label he asked
     for stays. */
- {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'play'},
+ /* THIRD NAME THIS SURFACE HAS CARRIED, round LO. Energetics, then Intake
+    at his own word round KX ("I need my energetics, like my intake... I
+    just rename it Intake"), now Body. The id and class stay tab-energy,
+    energy.emap: those are never the name a person reads, and renaming them
+    on a label change is exactly what the TAB integer rule exists to stop
+    happening to the wrong thing. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
@@ -4428,13 +4491,29 @@ const TABDEF=[
     which a person has to know to look for. This is the same figure drawn by
     the same renderer, with the masks the only thing on it (bmRender and
     BMVIEW in ui/map.js), so the two cannot disagree about a pixel. */
- {k:TAB.MASKS,   id:'masksview', nm:'Masks', cls:'tab-masksview', sec:'play'},
+ /* THE DOOR IS CHARACTER NOW, round LP, his words: "and all of those form
+    the character. So that's the character page. Let's rename masks there to
+    character. And then all the masks will just be the masks." The six grids
+    on it are the masks; the page they make is the character, which is also
+    the word the chain already uses for its top tier. Integer 11, the id
+    masksview and the class tab-masksview stay, on the rule the Body rename
+    above follows: they are identity, never the name a person reads. What is
+    drawn inside the host is new too (ui/character.js); the figure the
+    comment above describes is gone from this door. */
+ {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
  /* "Embody is knowledge." */
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'}];
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
+ /* The practitioner section's one door. Clients and not Practitioner, on the
+    menu rule above: the section says who a person is being, the tab says
+    what the surface does, and a tab carrying its section's own word is two
+    names for two different things spelt the same. Clients is the word
+    DECISIONS.md already uses, "a panel listing their clients". The surface
+    behind it is a sketch until sign in exists, ui/practitioner.js. */
+ {k:TAB.PRACTITIONER, id:'prac', nm:'Clients', cls:'tab-prac', sec:'practitioner'}];
 /* GAMES IS OFF THE BAR, FOR NOW. His words, round KT: "Hide games for now."
    It is hidden the way Settings already is, by an entry in TABEXTRA below
    and none here, so it keeps its integer, its host and its renderer, setTab
@@ -4462,14 +4541,19 @@ TABEXTRA[TAB.GAMES]={k:TAB.GAMES,id:'games',nm:'Games',cls:'tab-games'};
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  if(TABEXTRA[k])return TABEXTRA[k];
  return TABDEF[0];};
-/* A FOLDED SURFACE IS STILL A SURFACE. Analytics and Games kept their
-   integers, so a stored tab from a session before the fold still resolves to
-   something. It resolves to the tab that now carries it rather than silently
-   to the first entry in the bar, which is what TABOF would have done. */
+/* A FOLDED SURFACE IS STILL A SURFACE. TABFOLD is the map from an integer
+   with no door to the tab that carries it, so a stored tab from a session
+   before a fold still resolves to something rather than silently to the
+   first entry in the bar, which is what TABOF would have done.
+
+   IT IS EMPTY NOW. Both surfaces this file has ever folded have been
+   unfolded: Games first, back at KT and unfolded before this comment was
+   last true, and Analytics at round LV, in the same round this comment is
+   being corrected in. TABFOLD stays declared, empty, rather than removed,
+   because TABREAL still has to check it and a fold is exactly the kind of
+   ruling that gets made again. Adding one back is a single line here and a
+   TABDEF entry taken out, not a rewrite of the function below. */
 const TABFOLD={};
-TABFOLD[TAB.ANALYTICS]=TAB.SUMMARY;
-/* GAMES IS UNFOLDED. It has its own tab again on the owner's ruling, so it
-   must not resolve to Knowledge. */
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
@@ -5027,6 +5111,17 @@ function compute(){
  const SQm=loaded.length?sum/loaded.length:0;
 
  const sabs=[];
+ /* ONE SABOTEUR, ONE ENTRY. SAB33's range match and the library's own fixed
+    address groups can name the same saboteur from two different tests, eg
+    Controller matches both a fear/anger RANGE and its own three addresses.
+    Named twice, it pairs with itself into "Controller + Controller" below.
+    The stronger of the two readings wins; the weaker is dropped, not kept
+    as a second voice. */
+ const sabByNm={};
+ const pushSab=function(s){
+  const ex=sabByNm[s.nm];
+  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[s.nm]=s;return;}
+  sabByNm[s.nm]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
  sab33Detect().forEach(function(d){
   const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
@@ -5034,16 +5129,16 @@ function compute(){
   const key=d.charges[0]==='anxiety'?'Anticipation':
    ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
      shock:'Shock',sadness:'Sad',surprise:'Surprise'})[d.charges[0]];
-  sabs.push({kind:'sab',nm:d.nm,hcx:FAM_OF[key]||'Collapse',named:true,
+  pushSab({kind:'sab',nm:d.nm,hcx:FAM_OF[key]||'Collapse',named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,
    parts,w:d.w,ang:meanAng(parts.map(n=>n.ang))});});
  ALL_SAB.forEach(s=>{const parts=s.nids.map(i=>BY[i]).filter(Boolean);
   const w=parts.reduce((a,n)=>a+n.sq,0)/parts.length;
-  if(w>=3.7)sabs.push({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
+  if(w>=3.7)pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
    auth:SABAUTH[s.nm]||null,ang:meanAng(parts.map(n=>n.ang))});
   /* the same cluster, overshot. a voice that will not stop rather than one that shuts. */
   const j=parts.reduce((a,n)=>a+n.jq,0)/parts.length;
-  if(j>=3.7)sabs.push({kind:'sab',nm:s.nm+' overshot',hcx:FAM_POLE[s.hcx]||s.hcx,
+  if(j>=3.7)pushSab({kind:'sab',nm:s.nm+' overshot',hcx:FAM_POLE[s.hcx]||s.hcx,
    over:true,unnamed:!!s.unnamed,parts,w:j,ang:meanAng(parts.map(n=>n.ang))});});
  sabs.sort((a,b)=>b.w-a.w);
 
@@ -5070,8 +5165,8 @@ function compute(){
  for(let i=0;i+1<hys.length;i+=2){const parts=hys.slice(i,i+2),w=(parts[0].w+parts[1].w)/2;
   if(w>=5.6)sups.push({kind:'sup',nm:parts[0].nm+' / '+parts[1].nm,parts,w,
    ang:meanAng(parts.map(p=>p.ang))});}
- /* the six masks, one per developmental era, lit by what sits under it. */
- const maskRing=MASKS.map(m=>{
+ /* the five masks a reading is taken on. Professional is hidden, round NE. */
+ const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
   return {nm:m.nm,bands:m.b,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
    ang:meanAng(seg.map(n=>n.ang))};});
@@ -5877,8 +5972,11 @@ function blankProfile(name){
      protocol built to be heard that opened silent was the defect recorded at
      TASKS RF10, "pressing begin played nothing". The panel names the voice
      and where it runs before it says a word, and one switch turns it off.
-     buzz is the vibration under the release's marks, off like the tone. */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false},
+     buzz is the vibration under the release's marks, off like the tone.
+     practitioner is round LL's mode, and it is off: it puts a Practitioner
+     section in the bar, and a door a person never asked for is a door they
+     have to work out how to get rid of. */
+  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -5896,7 +5994,16 @@ function blankProfile(name){
       meterRun. It is a fact about the work, like first and last, and it is
       what the free tier's weeks are counted from (planWeeks, engine/plan.js),
       because nothing in a one file build is there to start a week. */
-   giftAt:null},
+   giftAt:null,
+   /* RELLINES AND TRUTHLINES, round LY. His words: "total number of
+      patterns released, total number of patterns installed, over the
+      history." lines already counts every line ever spoken, release and
+      reframe together; these two split it by channel, the same split
+      relCounts already reads for one session. Neither is derived from
+      lines at read time, the same reasoning lines itself gives for not
+      being derived: a rule that moved would move a number that already
+      told somebody what they did. */
+   relLines:0, truthLines:0},
   /* THE PLAN. Written by the record store from the processor's own state and
      never by the app, because a record a person can edit must not be able to
      grant itself a tier. Everything here is either the processor's word for
@@ -5962,6 +6069,10 @@ function loadProfile(p){
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  if(p.meter.giftAt===undefined)p.meter.giftAt=null;
+ /* an older record has no split, which is not a record round LY started
+    counting for yet, so it opens at nought rather than at undefined */
+ if(typeof p.meter.relLines!=='number')p.meter.relLines=0;
+ if(typeof p.meter.truthLines!=='number')p.meter.truthLines=0;
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
  /* a missing baseline is filled as missing. A 0 already on disk is left as
@@ -6623,7 +6734,9 @@ function validateProfile(o){
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
  if(o.ui&&typeof o.ui==='object'){
-  ['quiet','model','tone','voice','buzz'].forEach(function(k){
+  /* a key missing from this list is dropped on every load, so the switch
+     would read on for one session and off after a reload with nothing said */
+  ['quiet','model','tone','voice','buzz','practitioner'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
@@ -6644,6 +6757,12 @@ function validateProfile(o){
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
   if(mp!==null)p.meter.lines=Math.floor(mp);
+  /* the split, round LY. Missing is an older record and reads as the blank's
+     own nought, already on p from blankProfile, not an error. */
+  var mrl=vRange(errs,'meter.relLines',o.meter.relLines,0,1e9);
+  if(mrl!==null)p.meter.relLines=Math.floor(mrl);
+  var mtl=vRange(errs,'meter.truthLines',o.meter.truthLines,0,1e9);
+  if(mtl!==null)p.meter.truthLines=Math.floor(mtl);
   if(Array.isArray(o.meter.unique))
    p.meter.unique=o.meter.unique.filter(function(k){return typeof k==='string'&&k.length<64;});
   else if(o.meter.unique!==undefined)errs.push('meter.unique is not a list');
@@ -6842,6 +6961,19 @@ function validateProfile(o){
      if(v!==null)lw[nm]=v;});
     q.lawNow=lw;}}
   return q;}).filter(Boolean);
+ /* A SIGN IN IS THE BROWSER'S AND NEVER THE RECORD'S. The brief that wired
+    sign in, 30 September, asked for the bearer token to be added here as a
+    profile field, and it would have leaked on the first press of Export: that
+    control copies this whole record to the clipboard, and a record is a file
+    a person hands to somebody else. One browser also holds several profiles
+    and one session, so a token stored on one of them signs in whichever
+    profile happens to be open. ui/auth.js holds it under its own key, beside
+    the profiles and never inside one. This refuses it by name at the top
+    level the way plan refuses it one level down, so a pasted record carrying
+    somebody's session says so rather than being dropped with nothing said,
+    and nothing that writes a profile can put one back without this failing. */
+ ['token','session','password','email'].forEach(function(f){
+  if(o[f]!==undefined)errs.push(f+' is not held by this product');});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -6952,6 +7084,8 @@ function meterRun(p,keys){
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  if(p.meter.giftAt===undefined)p.meter.giftAt=null;
+ if(typeof p.meter.relLines!=='number')p.meter.relLines=0;
+ if(typeof p.meter.truthLines!=='number')p.meter.truthLines=0;
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
  if(p.plan.base===undefined)p.plan.base=null;
@@ -7882,6 +8016,16 @@ var LEXCOMPRUN=lexComposite();
    previous sentence. Without it "i did not lie to them" fires Truth, which is
    the instrument accusing a person of the thing they just denied.
 
+   THE SENTENCE BOUNDARY WAS NOT PORTED WITH IT, and a width limit alone does
+   not stand in for one: "I was not around. I hid it from everyone" strips its
+   period to a plain space and reads as "not around i hid it", three words
+   exactly, so "not" from the first sentence voided an admission in the
+   second. Measured directly: lawNegated returned true on that pair before
+   this fix. lawNorm now turns sentence-ending punctuation into a literal
+   '|' the way verp.js's leanNorm already does, and lawNegated stops its
+   look back at one, the one piece of leanNegated that was not ported the
+   first time.
+
    This is the single biggest known weakness of the law table and it is handled
    here rather than left. It is still not subject handling: "she lied to me"
    fires Truth on the writer, and that is guard 2's problem, named in
@@ -7890,12 +8034,17 @@ var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
  'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
 var LAW_NEG_W=3;
 function lawNorm(text){
- return ' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ')
-  .replace(/'/g,'').replace(/\s+/g,' ')+' ';}
+ return ' '+String(text||'').toLowerCase()
+  .replace(/[.!?;:\n\r]+/g,' | ')
+  .replace(/[^a-z'| ]+/g,' ').replace(/'/g,'').replace(/\s+/g,' ')+' ';}
 function lawNegated(src,at){
- var before=src.slice(0,at).trim().split(' ');
- var run=before.slice(Math.max(0,before.length-LAW_NEG_W));
- return run.some(function(w){return LAW_NEG.indexOf(w)>=0;});}
+ var pre=src.slice(0,at).split(' ');
+ for(var i=pre.length-1,n=0;i>=0&&n<LAW_NEG_W;i--){
+  if(!pre[i])continue;
+  if(pre[i]==='|')return false;
+  if(LAW_NEG.indexOf(pre[i])>=0)return true;
+  n++;}
+ return false;}
 /* every cue from every row, longest first, bounded by spaces, a longer match
    blocking the shorter ones inside it. returns one entry per surviving hit. */
 function lawMatch(src,rows,cueAt){
@@ -10155,7 +10304,7 @@ if(typeof module!=='undefined'&&module.exports){
                   cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
                   HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
-                  DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
+                  DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS, MASKS_READ:MASKS_READ,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   TEACHER_PRACTICE:TEACHER_PRACTICE, BECOMING:BECOMING, becomingOf:becomingOf, becomingSteps:becomingSteps,

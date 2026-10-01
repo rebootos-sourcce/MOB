@@ -81,11 +81,17 @@ var DEV_SKIP=false;
    if they're both off then it skips straight to dashboard, if one is
    on it plays one versus the other." These only matter once DEV_SKIP
    above has already let the login screen show; DEV_SKIP itself still
-   bypasses both of these along with the door. The tutorial has no
-   flow behind it yet, "the tutorial's not even wired in," so its own
-   switch is disabled rather than pretending to work: a control that
-   takes a press and does nothing is the exact dead button account.js
-   was already written against. */
+   bypasses both of these along with the door.
+
+   THE TUTORIAL IS REAL NOW, ROUND NF. ui/tutorial.js wires tutorialOpen
+   in, so the switch is enabled rather than disabled and pretending to
+   work. Its own default stays off: onboarding is still the established
+   first-run flow and nothing this round changes which of the two meets
+   a stranger by default, only that the switch to see the other one for
+   testing is no longer a dead control. Which of the two a real person
+   meets on a genuine first run, and whether the tutorial should follow
+   onboarding rather than only substitute for it, is still open and is
+   named as open rather than decided here. */
 var DEV_PLAY_ONBOARDING=true;
 var DEV_PLAY_TUTORIAL=false;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
@@ -172,8 +178,8 @@ function loginDevOptions(){
   +'<summary>Developer options</summary>'
   +'<label class="login-sw"><input type="checkbox" id="devob"'
   +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
-  +'<label class="login-sw login-sw-off"><input type="checkbox" id="devtut" disabled>'
-  +' Tutorial <span class="login-dim">not built yet</span></label>'
+  +'<label class="login-sw"><input type="checkbox" id="devtut"'
+  +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
   +'</details>';}
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
@@ -207,7 +213,9 @@ function loginWire(h){
   if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
   if(rm)rm.focus(); };
  var devob=document.getElementById('devob');
- if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };}
+ if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
+ var devtut=document.getElementById('devtut');
+ if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
@@ -251,9 +259,11 @@ function loginBoot(){
 /* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
    a sign in, a new account, or continuing without one. */
 function loginEnter(){
- /* the tutorial has no flow behind it yet; its own switch is disabled in
-    the UI, so this branch only ever runs once something real wires
-    tutorialOpen in. */
+ /* ROUND NF: ui/tutorial.js wires tutorialOpen in for real, so this branch
+    now runs. The switch defaults off, so a genuine first run still meets
+    onboarding unless the developer option is turned on to test the other
+    one; this is a testing fork, not yet the sequencing a real person
+    gets by default. */
  if(DEV_PLAY_TUTORIAL&&typeof tutorialOpen==='function'){ tutorialOpen(); return; }
  if(!DEV_PLAY_ONBOARDING)return;
  if(typeof obOpen!=='function')return;

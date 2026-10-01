@@ -28649,3 +28649,68 @@ GoDaddy, is still undone and only he can do it. Task 9 in TASKS.md
 ("Rebuild, gate, deploy, and verify atuned.world") is complete as far
 as this repository's own pipeline goes; the domain step is its own
 open item.
+
+## Round NG
+
+"Huzzah. All right, let's keep that build going... clear off the old
+shit. Add on the new. And we'll prioritize it. The goal by the end of
+the night is to have the MVP stood up." Deleted the eleven completed
+housekeeping tasks from the tracked task list and queued the real
+next five: the Day One tutorial, the Celestial Engine audit, queuing
+the five TDD documents, the Impression Excavation Engine integration,
+and the atuned.world DNS step.
+
+He walked GoDaddy and Cloudflare himself, steps given as asked, and
+atuned.world is now Active on Cloudflare and has the atuned Pages
+project added as its custom domain. Could not confirm the live result
+myself, this sandbox's own network egress proxy blocks reaching
+arbitrary outside domains, named honestly rather than guessed at.
+
+**The Day One tutorial, built, round NF's own sequencing continued.**
+`ui/tutorial.js`, new, five screens: the journal entry, Discover,
+Understand, Release, Flow. Nothing on these screens is invented. The
+entry is committed through the exact path the Story tab's own Apply
+button uses: `ui/storyui.js`'s inline handler was factored out into a
+named `stCommit()`, called from both places, so there is one commit
+and not two copies of it drifting apart. Discover and Understand read
+the real imprints and seats `stCommit` found; Release quotes
+`sniffStory`'s own `offer` and its own stated reasoning rather than a
+written claim. An entry too quiet to find anything says so, the same
+honest-empty rule the signal test already keeps, rather than
+fabricating a reading. Replayable from the account area,
+"Replay the Day One tutorial," same promise as the signal test above
+it: the sheet costs nothing to re-open, the entry it commits is real
+every time. The login screen's developer switch is enabled now,
+`ui/login.js`, its "not built yet" label gone; the default stays off,
+so a genuine first run still meets onboarding unless the switch is
+turned on, a question named open rather than decided silently: whether
+the tutorial should replace onboarding, follow it, or stay a testing
+fork is his call.
+
+Gated in full before commit: `BUILD.sh` and `BUILD-engine.sh` clean
+(engine untouched, 484 exports, tutorial.js is `ui/`, confirmed outside
+the host-free ban), `tests/engine.js` 1853/0, `tests/collide.js` 351/0,
+`tests/design.js` 185/0, `tests/funnel.js` 172/0, `tests/boot.js` 13/0,
+`tools/monitor.js` all surfaces render, the voice objections check 0
+new findings.
+
+**"I don't see the masks update... what's been missed?"** Checked
+rather than assumed either way. A background audit confirmed the
+Masks content changes ARE in the build he was sent (Professional
+hidden, the hover-to-address wiring), reachable in three taps from a
+fresh profile, Character tab, integer 11, nothing in `setTab` gates it.
+What he is not seeing is real and was never claimed done: `PRIORITY.md`
+19.A8, the rail and hero layout, and the rest of that cluster, A1
+through A6 and A11, motion, brightness, snapping, the never-blank rim,
+the egg face, were already logged MISSING there before tonight, ruled
+by him at rounds MX, MZ and NA and not yet built. Also confirmed: a
+brand new profile's masks read empty because nothing has been written
+yet, which is correct, not broken, "Lance, example" and Rosa are 0 on
+Dark for the same honest reason. Added to the plan as task #18's
+output rather than re-discovered twice: `19.A8` and its cluster are
+the next visible, owner-visible gap after the tutorial.
+
+Sent the owner the funnel's four pages fresh off this branch
+(`atuned-funnel.html`, `atuned-quiz.html`, `atuned-about.html`,
+`atuned-buy.html`), rebuilt from `funnel/BUILD-single.sh` rather than
+the stale ones sitting in `funnel/dist/` from two days prior.

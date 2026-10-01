@@ -161,7 +161,13 @@ function accAccount(){
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
  h+=accGroup('The Opening',
-   accAct('Run the signal test again','acob',{btn:'Open it'}));
+   accAct('Run the signal test again','acob',{btn:'Open it'})
+   /* THE TUTORIAL IS THE SAME RULE. Round NF: built on the same promise as
+      the signal test above, replayable and no charge of its own; what it
+      walks through is the real commit of whatever is typed into it, same as
+      the Story tab's own Apply, so running it again is a real entry each
+      time rather than a rehearsal. */
+   +accAct('Replay the Day One tutorial','actut',{btn:'Open it'}));
  /* PRACTITIONER MODE, round LL: "Add a practitioner mode to the profile."
     Account and not Display, because it changes what a person is in the
     product, a practitioner with clients, and not how the screen looks; and
@@ -520,6 +526,9 @@ function accWire(){
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
   if(typeof obOpen==='function')obOpen(true);};
+ var tu=$('actut'); if(tu)tu.onclick=function(){
+  if(typeof sheetShut==='function')sheetShut();
+  if(typeof tutorialOpen==='function')tutorialOpen(true);};
  /* the same three steps and the same setter as the bar menu. Two doors onto
     one setter is not a duplicate: one is for changing it while looking at the
     instrument, the other for finding it when you do not know where it is. */

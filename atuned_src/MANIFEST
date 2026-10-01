@@ -46,6 +46,7 @@ ui/mapshelf.js
 ui/character.js
 ui/imprints.js
 ui/storyui.js
+ui/tutorial.js
 ui/summary.js
 ui/analytics.js
 ui/avatarui.js

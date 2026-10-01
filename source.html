@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1012 d8bb259 2026-09-30 22:39"><head><meta charset="utf-8">
+<html lang="en" data-build="v1016 7b4e580 2026-10-01 00:57"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6284,6 +6284,11 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
      It signs in against the account server through ui/auth.js, and it
      always offers a way through without an account, ui/login.js. -->
 <div id="login" class="ob" style="display:none"></div>
+<!-- THE DAY ONE TUTORIAL. A sheet, the same family as onboarding: met once
+     behind the door, replayable from the account area, round NF. It writes
+     the person's first entry through the Story tab's own real commit
+     (ui/storyui.js's stCommit), never a simulated reading. -->
+<div id="tutorial" class="ob" style="display:none"></div>
 <!-- ============================================================
      THE BOOT. THE BODY BECOMES THE FIELD, AND THE CAMERA GOES IN.
 
@@ -27656,57 +27661,7 @@ function stRender(){
  var cl=document.getElementById('stclear');
  if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();stRender();};
  var ap=document.getElementById('stapply');
- if(ap)ap.onclick=function(){
-  if(!ST_PARSED||!ST_PARSED.imprints.length)return;
-  /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
-     the release cannot be run on one: the words are the person's and the field
-     is not. This wrote the charge onto the case's field, pushed the entry onto
-     the case's record, and then called toYou() on the last line, which moves
-     the pointer to the person's own record. So the entry landed in a record the
-     person does not own, the charge landed on a field they were about to leave,
-     and the undo for it stayed with the example. While the persona loader was
-     pushing its scratch profiles onto PROFILES that entry was then written into
-     the person's own store, which is the leak ui/personas.js now refuses; with
-     that closed the same press would keep nothing at all and say nothing about
-     it. Refusing is the version that is true, and it is the wording the release
-     already uses for the same crossing. That wording is one line since BA9, 25
-     September: he struck the long form above the Field, and the state it
-     carried is on the profile picker now. */
-  if(typeof S!=='undefined'&&S.who!==0){
-   status('Nothing committed on a worked example.','fail');
-   return;}
-  /* the field is about to change and until now there was no way back */
-  undoPush('committing the story');
-  /* WHAT THIS ENTRY FOUND IS KEPT FOR THE RELEASE, because the chain he ruled
-     is journal, imprint, release. The box empties on commit, so without this
-     the release would fall back to the heaviest held the moment the entry it
-     was offering left the page. Read before applyStory moves the field. */
-  var kept=stFound(), k=ST_PARSED.imprints.length;
-  applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
-  /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
-     applyStory writes S and pSave writes the record, and neither writes
-     PEOPLE[0], which is the table loadP(0) reads the person's field back out
-     of. This was the one write of charge in the product that skipped saveYou.
-     Measured: 7.24 units committed and on disk, a visit to James and back
-     through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
-     on the record, and the next ordinary save wrote 0.00 over the disk. The
-     entry text survived and the charge it wrote did not. S.who is 0 here, the
-     guard above sees to it, so this mirrors and writes the way every slider
-     does. */
-  saveYou();
-  if(CURP){CURP.story=CURP.story||{entries:[]};
-   CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
-    imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
-   pSave();pSnap();}
-  /* a new entry is a new conversation, so moving on from the last one does
-     not silence the next. */
-  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();STV.lastFound=kept;
-  /* the release takes the room on a desktop. On a phone it stays the bar
-     with Run on it: widening it there would push Run off the first screen,
-     which is the one thing layout H exists to stop. */
-  STV.focus=stPhone()?'write':'release';
-  toYou();syncCh();stRender();render();
-  status('Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.');};
+ if(ap)ap.onclick=stCommit;
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;}
 
@@ -27832,6 +27787,68 @@ function stFound(){
  var found=[];
  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];if(n&&n.cf&&found.indexOf(n)<0)found.push(n);});
  return found.length?found:STV.lastFound;}
+
+/* THE REAL COMMIT, FACTORED OUT OF THE APPLY BUTTON'S OWN ONCLICK, round NF,
+   so the Day One Tutorial can write a person's first entry through the exact
+   same path the Story tab's own button uses rather than a second copy of it.
+   Two writers for one commit is the same mistake setTab's own history
+   warns against, a thing read in one table and written from two; this is one
+   function, called from both. Returns what happened rather than only acting,
+   so a caller that is not the button itself (the tutorial) can act on a real
+   result instead of re-deriving it. */
+function stCommit(){
+ if(!ST_PARSED||!ST_PARSED.imprints.length)return {ok:false,why:'empty'};
+ /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
+    the release cannot be run on one: the words are the person's and the field
+    is not. This wrote the charge onto the case's field, pushed the entry onto
+    the case's record, and then called toYou() on the last line, which moves
+    the pointer to the person's own record. So the entry landed in a record the
+    person does not own, the charge landed on a field they were about to leave,
+    and the undo for it stayed with the example. While the persona loader was
+    pushing its scratch profiles onto PROFILES that entry was then written into
+    the person's own store, which is the leak ui/personas.js now refuses; with
+    that closed the same press would keep nothing at all and say nothing about
+    it. Refusing is the version that is true, and it is the wording the release
+    already uses for the same crossing. That wording is one line since BA9, 25
+    September: he struck the long form above the Field, and the state it
+    carried is on the profile picker now. */
+ if(typeof S!=='undefined'&&S.who!==0){
+  status('Nothing committed on a worked example.','fail');
+  return {ok:false,why:'example'};}
+ /* the field is about to change and until now there was no way back */
+ undoPush('committing the story');
+ /* WHAT THIS ENTRY FOUND IS KEPT FOR THE RELEASE, because the chain he ruled
+    is journal, imprint, release. The box empties on commit, so without this
+    the release would fall back to the heaviest held the moment the entry it
+    was offering left the page. Read before applyStory moves the field. */
+ var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
+ applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+ /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
+    applyStory writes S and pSave writes the record, and neither writes
+    PEOPLE[0], which is the table loadP(0) reads the person's field back out
+    of. This was the one write of charge in the product that skipped saveYou.
+    Measured: 7.24 units committed and on disk, a visit to James and back
+    through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
+    on the record, and the next ordinary save wrote 0.00 over the disk. The
+    entry text survived and the charge it wrote did not. S.who is 0 here, the
+    guard above sees to it, so this mirrors and writes the way every slider
+    does. */
+ saveYou();
+ if(CURP){CURP.story=CURP.story||{entries:[]};
+  CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
+   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
+  pSave();pSnap();}
+ /* a new entry is a new conversation, so moving on from the last one does
+    not silence the next. */
+ var text=ST_TEXT;
+ ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;
+ /* the release takes the room on a desktop. On a phone it stays the bar
+    with Run on it: widening it there would push Run off the first screen,
+    which is the one thing layout H exists to stop. */
+ STV.focus=stPhone()?'write':'release';
+ toYou();syncCh();if(typeof stRender==='function')stRender();render();
+ status('Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.');
+ return {ok:true,k:k,kept:kept,bands:bands,text:text};}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
@@ -29168,6 +29185,206 @@ function stMic(){
    ' Typing works.','fail'); }}
 
 try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
+/* ============================================================
+   THE DAY ONE TUTORIAL. Round NF, his own ruling at round NE: "the day
+   one tutorial has to start with the journal, right, journal is the
+   beginning of the journey." DESIGN-onboarding-narrative.md section 7
+   through 13 is the storyboard this walks: Discover, Play folded into
+   Discover's own framing since the tutorial is one entry and not a
+   session, Understand, Release, Flow.
+
+   WHAT THIS IS NOT: a simulated reading built from invented categories.
+   Every number and name on these screens comes from the real engine,
+   read off the exact same commit the Story tab's own Apply button
+   makes (ui/storyui.js's stCommit, factored out for this). A person's
+   first entry is a real entry, not a rehearsal, so it is written to
+   their field once, for real, the moment they continue past it.
+
+   THE TUTORIAL LIVES IN THE PROFILE, TOGGLEABLE AND REPLAYABLE, same
+   rule as onboarding, ui/account.js's own line: "and it does not spend
+   real charge." That line is true of the sheet itself, never of the
+   entry typed into it: the entry is real and costs whatever any entry
+   costs. What is free to repeat is walking someone through what an
+   entry does, not the entry's own effect.
+   ============================================================ */
+var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false};
+
+function tutOpen(replay){
+ var h=document.getElementById('tutorial'); if(!h)return;
+ TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay;
+ h.classList.remove('ob-leaving');
+ tutRender();
+ h.style.display='flex';
+ var f=h.querySelector('button'); if(f)f.focus();}
+/* the login.js hook already calls tutorialOpen(); this is the real name,
+   kept short for the five screens below that call it on themselves. */
+function tutorialOpen(replay){ tutOpen(replay); }
+
+var TUT_LEAVE_MS=520;
+function tutClose(){
+ var h=document.getElementById('tutorial'); if(!h)return;
+ TUT.open=false; h.classList.add('ob-leaving');
+ setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },TUT_LEAVE_MS);
+ /* EVERY WRITE THAT CAN FAIL REPORTS, the same lesson onboard.js's own
+    obClose carries: a flag that silently fails to save reopens the sheet
+    on every launch with no explanation a person can act on. */
+ try{
+  if(CURP){ CURP.tutorialSeen=true;
+   if(!pSave()&&typeof status==='function')
+    status('This browser would not save. The tutorial will open again.','fail'); }
+ }catch(e){
+  if(typeof status==='function')
+   status('This browser would not save. The tutorial will open again.','fail'); }
+ if(typeof render==='function')render();}
+
+function tutCard(title,body,acts,nsteps){
+ var n=nsteps||5;
+ return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Day one</span>'
+  +'<h2 class="ob-h">'+esc(title)+'</h2>'
+  +body
+  +'<div class="ob-acts">'+acts+'</div>'
+  +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
+    return '<span class="ob-dot'+(i===TUT.step?' on':'')+'"></span>';}).join('')+'</div>'
+  +'</div></div>';}
+
+/* a node's own fields, read exactly as the engine stores them: .b is the
+   seat the word lit (a band name, "Heart"), .k is the word itself, .cf is
+   the fetter family the word resolved to. Nothing here is invented. */
+function tutSeatLine(n){
+ if(!n)return '';
+ return 'at your <b>'+esc(n.b||'')+'</b>, around the word &ldquo;'+esc(n.k||'')
+  +'&rdquo;, named <b>'+esc(n.cf||'')+'</b>';}
+
+function tutRender(){
+ var h=document.getElementById('tutorial'); if(!h)return;
+ var s=TUT.step, out='';
+ if(s===0){
+  out=tutCard('Let’s look at something from your journal.',
+   '<p class="ob-p">Write one thing. A sentence or two is enough. Not a '
+   +'summary of your life, just something real from today or recently, the '
+   +'kind of thing you would actually write in here.</p>'
+   +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
+   '<button type="button" class="btn pri" data-tut="commit">Continue</button>'
+   +'<button type="button" class="btn" data-tut="skip">Skip the tutorial</button>');
+ }
+ else if(s===1){
+  var c=TUT.commit, kept=(c&&c.kept)||[];
+  var body;
+  if(!c||!c.ok){
+   /* HONEST EMPTY, the same rule the signal test already keeps: nothing
+      caught is a real answer, not a failure to paper over. */
+   body='<p class="ob-p">Nothing in that one lit anything the engine could '
+    +'name. That happens, and it is not a problem with what you wrote. Some '
+    +'entries are quiet.</p>'
+    +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
+    +'them, usually give it more to find. You can always write another in '
+    +'the Story tab later.</p>';
+  }else{
+   body='<p class="ob-p">You wrote:</p>'
+    +'<p class="ob-p ob-dim">&ldquo;'+esc(c.text.length>220?c.text.slice(0,220)+'…':c.text)+'&rdquo;</p>'
+    +'<p class="ob-p">This separates into its own components. What stood out '
+    +(kept[0]?tutSeatLine(kept[0]):'landed')+'.</p>'
+    +(kept[1]?'<p class="ob-p">And a second place, '+tutSeatLine(kept[1])+'.</p>':'')
+    +'<p class="ob-p ob-dim">That is Discover: not labelling you, revealing '
+    +'what is actually there.</p>';}
+  out=tutCard('What this found',body,
+   '<button type="button" class="btn pri" data-tut="next">Next</button>');
+ }
+ else if(s===2){
+  var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
+  var body;
+  if(!c||!c.ok){
+   body='<p class="ob-p">With nothing named yet, there is no chain to draw '
+    +'from this one. The next entry that lands somewhere will have one.</p>';
+  }else{
+   body='<p class="ob-p">A situation can trigger a story. The story can move '
+    +'the body. The body can shape behaviour. The behaviour can repeat the '
+    +'situation.</p>'
+    +'<div class="ob-grid">'
+    +[['Situation', c.text.length>60?c.text.slice(0,60)+'…':c.text],
+      ['Story', kept[0]?kept[0].cf:'not named'],
+      ['Body response', kept[0]?kept[0].b:'not named'],
+      ['What it costs', off?off.because[0]:'not enough here yet to say']]
+     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
+       +'<span>'+esc(x[1])+'</span></div>';}).join('')
+    +'</div>'
+    +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
+    +'through it, and this is what the Field and the Story tab track over '
+    +'time.</p>';}
+  out=tutCard('How it runs through you',body,
+   '<button type="button" class="btn pri" data-tut="next">Next</button>');
+ }
+ else if(s===3){
+  var d=TUT.deep, off=(d&&d.offer&&d.offer[0])||null;
+  var body;
+  if(off){
+   body='<p class="ob-p">This entry is heavy enough to show up in your Field '
+    +'as something to work with: at the <b>'+esc(off.region||off.address||'')
+    +'</b>, named <b>'+esc(off.axis)+'</b>'
+    +(off.replacement?', with <b>'+esc(off.replacement)+'</b> waiting as its replacement':'')
+    +'.</p>'
+    +'<p class="ob-p ob-dim">'+esc(off.because[0])+'</p>'
+    +'<p class="ob-p">The release protocol does not tell you to let it go. '
+    +'It knows the story, the pattern and where it sits, and it picks a way '
+    +'to work with exactly that.</p>';
+  }else{
+   body='<p class="ob-p">This particular entry did not carry enough charge '
+    +'to name a release yet. That is fine, most days will have one that '
+    +'does, and nothing is lost by writing a quiet one.</p>';}
+  out=tutCard('Release',body,
+   '<button type="button" class="btn pri" data-tut="next">Next</button>'
+   +(off?'<button type="button" class="btn" data-tut="field">See it in your Field</button>':''));
+ }
+ else {
+  out=tutCard('Flow',
+   '<p class="ob-p">Insight and release are not the end of it. Flow turns '
+   +'what just happened into something repeatable: a practice tied to this '
+   +'exact pattern, not a generic habit.</p>'
+   +'<p class="ob-p ob-dim">Noticing the moment a pattern starts, returning '
+   +'attention to the body, working the same release again. The ritual '
+   +'builder holds what is yours to practice.</p>',
+   '<button type="button" class="btn pri" data-tut="ritual">Go to Ritual</button>'
+   +'<button type="button" class="btn" data-tut="done">Done</button>');
+ }
+ h.innerHTML=out;
+ var ta=document.getElementById('tuttext');
+ if(ta){ta.oninput=function(){
+   var go=h.querySelector('[data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
+  ta.value=TUT.text; ta.focus();}
+ var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
+
+/* ---- the one commit this sheet makes, through the real path ---- */
+function tutCommit(){
+ var ta=document.getElementById('tuttext'); if(!ta)return;
+ var v=ta.value; TUT.text=v;
+ if(!v.trim())return;
+ /* the exact two lines the Story tab's own textarea runs on every
+    keystroke, run once here instead of on each one. */
+ ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
+ var r=stCommit();
+ TUT.commit=r;
+ if(r.ok){
+  TUT.deep=(typeof sniffStory==='function')?sniffStory(r.text):null;
+ }
+ TUT.step=1; tutRender();}
+
+addEventListener('click',function(e){
+ if(!TUT.open)return;
+ var t=e.target&&e.target.closest?e.target:null; if(!t)return;
+ var b=t.closest?t.closest('[data-tut]'):null; if(!b)return;
+ var k=b.getAttribute('data-tut');
+ if(k==='commit'){ tutCommit(); return; }
+ if(k==='next'){ TUT.step++; tutRender(); return; }
+ if(k==='field'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.FIELD); return; }
+ if(k==='ritual'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return; }
+ if(k==='skip'||k==='done'){ tutClose(); return; }});
+addEventListener('keydown',function(e){
+ if(TUT.open&&e.key==='Escape')tutClose();});
+
+try{window.__at&&window.__at('ui/tutorial.js');}catch(e){}
 /* ============================================================
    SUMMARY. Five lenses. None of them store anything; each is a pure
    function of soul, axes and laws, so they cannot drift from what the
@@ -43613,7 +43830,13 @@ function accAccount(){
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
  h+=accGroup('The Opening',
-   accAct('Run the signal test again','acob',{btn:'Open it'}));
+   accAct('Run the signal test again','acob',{btn:'Open it'})
+   /* THE TUTORIAL IS THE SAME RULE. Round NF: built on the same promise as
+      the signal test above, replayable and no charge of its own; what it
+      walks through is the real commit of whatever is typed into it, same as
+      the Story tab's own Apply, so running it again is a real entry each
+      time rather than a rehearsal. */
+   +accAct('Replay the Day One tutorial','actut',{btn:'Open it'}));
  /* PRACTITIONER MODE, round LL: "Add a practitioner mode to the profile."
     Account and not Display, because it changes what a person is in the
     product, a practitioner with clients, and not how the screen looks; and
@@ -43972,6 +44195,9 @@ function accWire(){
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
   if(typeof obOpen==='function')obOpen(true);};
+ var tu=$('actut'); if(tu)tu.onclick=function(){
+  if(typeof sheetShut==='function')sheetShut();
+  if(typeof tutorialOpen==='function')tutorialOpen(true);};
  /* the same three steps and the same setter as the bar menu. Two doors onto
     one setter is not a duplicate: one is for changing it while looking at the
     instrument, the other for finding it when you do not know where it is. */
@@ -45673,11 +45899,17 @@ var DEV_SKIP=false;
    if they're both off then it skips straight to dashboard, if one is
    on it plays one versus the other." These only matter once DEV_SKIP
    above has already let the login screen show; DEV_SKIP itself still
-   bypasses both of these along with the door. The tutorial has no
-   flow behind it yet, "the tutorial's not even wired in," so its own
-   switch is disabled rather than pretending to work: a control that
-   takes a press and does nothing is the exact dead button account.js
-   was already written against. */
+   bypasses both of these along with the door.
+
+   THE TUTORIAL IS REAL NOW, ROUND NF. ui/tutorial.js wires tutorialOpen
+   in, so the switch is enabled rather than disabled and pretending to
+   work. Its own default stays off: onboarding is still the established
+   first-run flow and nothing this round changes which of the two meets
+   a stranger by default, only that the switch to see the other one for
+   testing is no longer a dead control. Which of the two a real person
+   meets on a genuine first run, and whether the tutorial should follow
+   onboarding rather than only substitute for it, is still open and is
+   named as open rather than decided here. */
 var DEV_PLAY_ONBOARDING=true;
 var DEV_PLAY_TUTORIAL=false;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
@@ -45764,8 +45996,8 @@ function loginDevOptions(){
   +'<summary>Developer options</summary>'
   +'<label class="login-sw"><input type="checkbox" id="devob"'
   +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
-  +'<label class="login-sw login-sw-off"><input type="checkbox" id="devtut" disabled>'
-  +' Tutorial <span class="login-dim">not built yet</span></label>'
+  +'<label class="login-sw"><input type="checkbox" id="devtut"'
+  +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
   +'</details>';}
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
@@ -45799,7 +46031,9 @@ function loginWire(h){
   if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
   if(rm)rm.focus(); };
  var devob=document.getElementById('devob');
- if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };}
+ if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
+ var devtut=document.getElementById('devtut');
+ if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
@@ -45843,9 +46077,11 @@ function loginBoot(){
 /* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
    a sign in, a new account, or continuing without one. */
 function loginEnter(){
- /* the tutorial has no flow behind it yet; its own switch is disabled in
-    the UI, so this branch only ever runs once something real wires
-    tutorialOpen in. */
+ /* ROUND NF: ui/tutorial.js wires tutorialOpen in for real, so this branch
+    now runs. The switch defaults off, so a genuine first run still meets
+    onboarding unless the developer option is turned on to test the other
+    one; this is a testing fork, not yet the sequencing a real person
+    gets by default. */
  if(DEV_PLAY_TUTORIAL&&typeof tutorialOpen==='function'){ tutorialOpen(); return; }
  if(!DEV_PLAY_ONBOARDING)return;
  if(typeof obOpen!=='function')return;
@@ -47575,5 +47811,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003110072"></div>
+<div id="eof" hidden data-len="003122289"></div>
 </body></html>

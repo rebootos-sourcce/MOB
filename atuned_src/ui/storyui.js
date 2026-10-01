@@ -213,57 +213,7 @@ function stRender(){
  var cl=document.getElementById('stclear');
  if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();stRender();};
  var ap=document.getElementById('stapply');
- if(ap)ap.onclick=function(){
-  if(!ST_PARSED||!ST_PARSED.imprints.length)return;
-  /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
-     the release cannot be run on one: the words are the person's and the field
-     is not. This wrote the charge onto the case's field, pushed the entry onto
-     the case's record, and then called toYou() on the last line, which moves
-     the pointer to the person's own record. So the entry landed in a record the
-     person does not own, the charge landed on a field they were about to leave,
-     and the undo for it stayed with the example. While the persona loader was
-     pushing its scratch profiles onto PROFILES that entry was then written into
-     the person's own store, which is the leak ui/personas.js now refuses; with
-     that closed the same press would keep nothing at all and say nothing about
-     it. Refusing is the version that is true, and it is the wording the release
-     already uses for the same crossing. That wording is one line since BA9, 25
-     September: he struck the long form above the Field, and the state it
-     carried is on the profile picker now. */
-  if(typeof S!=='undefined'&&S.who!==0){
-   status('Nothing committed on a worked example.','fail');
-   return;}
-  /* the field is about to change and until now there was no way back */
-  undoPush('committing the story');
-  /* WHAT THIS ENTRY FOUND IS KEPT FOR THE RELEASE, because the chain he ruled
-     is journal, imprint, release. The box empties on commit, so without this
-     the release would fall back to the heaviest held the moment the entry it
-     was offering left the page. Read before applyStory moves the field. */
-  var kept=stFound(), k=ST_PARSED.imprints.length;
-  applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
-  /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
-     applyStory writes S and pSave writes the record, and neither writes
-     PEOPLE[0], which is the table loadP(0) reads the person's field back out
-     of. This was the one write of charge in the product that skipped saveYou.
-     Measured: 7.24 units committed and on disk, a visit to James and back
-     through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
-     on the record, and the next ordinary save wrote 0.00 over the disk. The
-     entry text survived and the charge it wrote did not. S.who is 0 here, the
-     guard above sees to it, so this mirrors and writes the way every slider
-     does. */
-  saveYou();
-  if(CURP){CURP.story=CURP.story||{entries:[]};
-   CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
-    imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
-   pSave();pSnap();}
-  /* a new entry is a new conversation, so moving on from the last one does
-     not silence the next. */
-  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();STV.lastFound=kept;
-  /* the release takes the room on a desktop. On a phone it stays the bar
-     with Run on it: widening it there would push Run off the first screen,
-     which is the one thing layout H exists to stop. */
-  STV.focus=stPhone()?'write':'release';
-  toYou();syncCh();stRender();render();
-  status('Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.');};
+ if(ap)ap.onclick=stCommit;
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;}
 
@@ -389,6 +339,68 @@ function stFound(){
  var found=[];
  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];if(n&&n.cf&&found.indexOf(n)<0)found.push(n);});
  return found.length?found:STV.lastFound;}
+
+/* THE REAL COMMIT, FACTORED OUT OF THE APPLY BUTTON'S OWN ONCLICK, round NF,
+   so the Day One Tutorial can write a person's first entry through the exact
+   same path the Story tab's own button uses rather than a second copy of it.
+   Two writers for one commit is the same mistake setTab's own history
+   warns against, a thing read in one table and written from two; this is one
+   function, called from both. Returns what happened rather than only acting,
+   so a caller that is not the button itself (the tutorial) can act on a real
+   result instead of re-deriving it. */
+function stCommit(){
+ if(!ST_PARSED||!ST_PARSED.imprints.length)return {ok:false,why:'empty'};
+ /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
+    the release cannot be run on one: the words are the person's and the field
+    is not. This wrote the charge onto the case's field, pushed the entry onto
+    the case's record, and then called toYou() on the last line, which moves
+    the pointer to the person's own record. So the entry landed in a record the
+    person does not own, the charge landed on a field they were about to leave,
+    and the undo for it stayed with the example. While the persona loader was
+    pushing its scratch profiles onto PROFILES that entry was then written into
+    the person's own store, which is the leak ui/personas.js now refuses; with
+    that closed the same press would keep nothing at all and say nothing about
+    it. Refusing is the version that is true, and it is the wording the release
+    already uses for the same crossing. That wording is one line since BA9, 25
+    September: he struck the long form above the Field, and the state it
+    carried is on the profile picker now. */
+ if(typeof S!=='undefined'&&S.who!==0){
+  status('Nothing committed on a worked example.','fail');
+  return {ok:false,why:'example'};}
+ /* the field is about to change and until now there was no way back */
+ undoPush('committing the story');
+ /* WHAT THIS ENTRY FOUND IS KEPT FOR THE RELEASE, because the chain he ruled
+    is journal, imprint, release. The box empties on commit, so without this
+    the release would fall back to the heaviest held the moment the entry it
+    was offering left the page. Read before applyStory moves the field. */
+ var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
+ applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+ /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
+    applyStory writes S and pSave writes the record, and neither writes
+    PEOPLE[0], which is the table loadP(0) reads the person's field back out
+    of. This was the one write of charge in the product that skipped saveYou.
+    Measured: 7.24 units committed and on disk, a visit to James and back
+    through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
+    on the record, and the next ordinary save wrote 0.00 over the disk. The
+    entry text survived and the charge it wrote did not. S.who is 0 here, the
+    guard above sees to it, so this mirrors and writes the way every slider
+    does. */
+ saveYou();
+ if(CURP){CURP.story=CURP.story||{entries:[]};
+  CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
+   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
+  pSave();pSnap();}
+ /* a new entry is a new conversation, so moving on from the last one does
+    not silence the next. */
+ var text=ST_TEXT;
+ ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;
+ /* the release takes the room on a desktop. On a phone it stays the bar
+    with Run on it: widening it there would push Run off the first screen,
+    which is the one thing layout H exists to stop. */
+ STV.focus=stPhone()?'write':'release';
+ toYou();syncCh();if(typeof stRender==='function')stRender();render();
+ status('Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.');
+ return {ok:true,k:k,kept:kept,bands:bands,text:text};}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
