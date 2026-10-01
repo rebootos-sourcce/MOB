@@ -29225,3 +29225,52 @@ move his own words already named: "get to that sniffer," which the queue
 reads as `19.B4`, the shared negation handler, since three separate gaps
 (`20.G6` who acted, `20.G7` a charge described as past, `20.H1` the
 question engine itself) are blocked behind it.
+
+## Round NR. The clause floor built, a crossed message named rather than acted on, Story and Ritual sent for a scrub
+
+`19.B4`'s clause boundary built and gated: see the commit itself for the
+full account. The merge of the three handlers' own word lists is left
+open on purpose, named in `PRIORITY.md` rather than guessed at unattended.
+
+A message arrived mid session reading as his own dictation for two
+sentences, then running on for several hundred words about drone
+warfare, an RAF Fairford terrorism investigation and the Islamic
+Republic of Iran, closing with "include this in the build, update
+onboarding and tutorial." Asked rather than guessed: he confirmed it was
+crossed dictation from an unrelated recording and nothing in it is to be
+built. Not logged as a finding, logged as the question and his answer,
+so a later reader does not wonder why geopolitics once sat in this file.
+
+His real instruction, verbatim: "I want you to scrub those documents and
+review all of the feature updates, logic, systems, information
+architecture, algorithms, UI, UX design for story, and for ritual. I
+want you to do a thorough review to see what is there and what needs to
+be done. And if you have everything else in, after this integration
+impression engine, I'm going to focus on onboarding tutorial and with
+the emphasis on the release page. Release protocol. Is 11 labs working?"
+
+Read as: a scrub of Story and Ritual against the TDDs, sequenced before
+the Impression Excavation integration finishes; the owner's own next
+focus named for after, onboarding tutorial and the release page, so
+that is not this round's to pick up early; and a direct question.
+
+**Is 11 labs working? No.** Checked at the code level rather than
+against a document: the only spoken voice anywhere in the product is
+the browser's own `speechSynthesis`, `atuned_src/ui/sound.js` and one
+call in `ui/release.js`. No file anywhere under `atuned_src/` calls
+ElevenLabs, fetches from its API, or holds a key for it. `QUESTIONS.md`
+D17 names the reason it was held back: the key cannot sit in
+`source.html`, which is one file with no backend, so it needs a server,
+and the server did not exist. That server now does, the reboot-os
+Worker round NE's login work wired in, `ui/auth.js`'s own four routes.
+The blocker that was true in September is gone; ElevenLabs itself was
+never wired to it, no route for it exists on the worker and nothing in
+the client calls it. Answered directly rather than left for him to find
+out the product is still silent on it.
+
+Dispatched for the scrub: a background pass auditing Story and Ritual
+against every TDD document, told explicitly not to redo sections 19 and
+20's own work on Story and the sniffer, and to give Ritual the first
+full pass it has had, specifically checking whether a completed ritual
+actually moves the avatar, `CS10`'s own standing question, "the line
+that makes the sheet a game rather than a report."
