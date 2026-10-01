@@ -2578,3 +2578,272 @@ place:
   moved, for the same reason.
 - **`DESIGN-sniffer.md` carries thirteen questions** and `TDD-sniffer.md`
   line 5 says twelve.
+
+---
+
+# 21. 1 October. Story and Ritual, scrubbed against the documents
+
+His words, this round: "I want you to scrub those documents and review all of
+the feature updates, logic, systems, information architecture, algorithms, UI,
+UX design for story, and for ritual. I want you to do a thorough review to see
+what is there and what needs to be done."
+
+Read unevenly on purpose. Story and the sniffer under it already had two deep
+passes, section 19 clusters B to D and section 20 clusters G and H, so for
+Story this section carries only what those passes missed: what the documents
+ask of the Story page's own screen, flow and layout, not its parsing. Ritual had
+three bare mentions on this page and gets its first full pass here.
+
+## The stamp on this measurement
+
+    commit                28e375607bd0af0d631afbd3ddb2cdba915f3acc at the start
+                          of the read. HEAD moved to 23defd5 during it, another
+                          seat's commit, and git diff between the two names one
+                          file, TASKS.md. No source moved.
+    tree                  clean at the start and at the end, except this
+                          section. Nothing else was touched.
+    source.html           md5 708cbf19
+    engine.js             byte for byte the engine modules concatenated in
+                          MANIFEST order (cmp, checked), so it is current
+    measured              1 October
+    node tests/engine.js  1858 passed, 0 failed, run twice, before and after
+                          HEAD moved
+    browser gates         not run. This pass changes no source
+
+**Read in full:** `SOURCE-TDD.md`, `SOURCE-TDD-V3-intelligence.md`,
+`SOURCE-TDD-release-intelligence.md`, `SOURCE-TDD-impression-excavation.md`,
+`DESIGN-onboarding-narrative.md`, `ATUNED-funnel-storyboard.md`, and every
+ritual, practice, protocol, cadence and accountability line in `TDD-sniffer.md`
+and `DESIGN-sniffer.md` (there are none that name Ritual). Not read:
+`SOURCE-TDD-handoff-master.md`, the same file as `SOURCE-TDD.md` (section 20).
+**Checked against the code, not taken from the documents:** `ui/ritual.js`
+whole; `engine/ladder.js` whole; `engine/avatar.js` 1 to 72; `ui/avatarui.js`
+1 to 160, 243, 310 to 471, 600 to 640, 1095 to 1160, 1560 to 1640 and 1820
+to 1871; `engine/data/practice.js` 1 to 40 and every row through the engine;
+`engine/core.js` 100 to 140 and 205 to 222; `ui/storyui.js` 1 to 420, 490 to
+560, 893 to 912 and 1277 to 1411; `ui/tutorial.js` 80 to 200;
+`ui/summary.js` 188 to 205; `ui/imprints.js` 250 to 275; `engine/schema.js`
+700 to 735; `engine/data/canon.js` 825 to 870; `tests/engine.js` 2577 to
+2611; `DECISIONS.md` 176 to 220, 1405 to 1425, 1795 to 1825 and 2240 to 2300;
+`TASKS.md` CS2 (CS6 to CS11), AZ1, JS and JX, and round NE's R4.
+
+**And the real engine, run rather than read.** Each probe loads `engine.js`
+from this session's scratchpad. Where a probe needed a UI function (`ritFor`,
+`avCycles`), it evaluated those exact lines out of the source file rather than
+a copy. Every probe was checked against a known good case first, named beside
+each result below: a story must move the field, seven days marked done must
+read seven, and "I am afraid" must be committable.
+
+---
+
+## Read this first. The avatar and the ritual are not connected the way CS10 says
+
+`CS10` in `TASKS.md`: "Completing a ritual moves the avatar. The loop closes
+here and this is the line that makes the sheet a game rather than a report."
+And his own ruling in `DECISIONS.md`, "The avatar is the seven seats": "The
+rituals is ultimately the tool that delivers that, and the accountability
+tracker is the progression."
+
+**What a completed ritual actually moves, traced through the code.** Pressing a
+ritual's ring writes one entry on the record with a done stamp (`ritLog` and
+`ritMarkOn`, `ui/ritual.js` lines 506 to 532). Exactly one thing on the Avatar
+tab reads that: the Cycles card, `avCycles` (`ui/avatarui.js` lines 332 to
+344), which counts distinct days with a ritual marked done, seven to a turn,
+three turns to a cycle, drawn by `avCycHTML` (line 1141) in the row under the
+hero (line 1593). So a counter on the Avatar page moves.
+
+**The avatar itself does not.** The hero ring's percent complete is
+`avClosure` (lines 350 to 354), one minus the seat's load now over its load
+when the pair was written, and the load comes from `compute()`. `compute()`
+never reads the ritual record: the only engine files that read
+`CURP.rituals` are `engine/ladder.js`, `engine/schema.js` and
+`engine/export.js` (searched). **Measured:** a blank profile, then "I am
+afraid and ashamed every day" through `applyStory` (the known good case: DQ
+moved from 0 to 3.05), then thirty consecutive days of rituals marked done.
+`compute()` returned the same CQ, DQ, heaviest seat and carrying list, to the
+last digit, before and after the thirty days. No seat load, no percent
+complete, no mask, no coherence moved. The ladder meanwhile earned First run,
+Seven days, Thirty days and Sixty minutes.
+
+**The one real route from a ritual into the avatar's state** is a release
+schedule whose release is actually run: the release moves the charge, and
+`ritRelDone` (`ui/ritual.js` line 548) then marks the ritual done as a
+consequence. Thirty days of Box Breathing moves nothing but the count.
+
+**Why this is not a missing wire, and why it is his.** The practice library has
+no field saying what a practice does to the field: a row is a key, a name, a
+track, minutes, a tier and its text (`engine/data/practice.js`, fields read off
+the engine: k, nm, track, min, tier, d, how, tc). Nothing in what the product
+collects can measure that a breath practice lowered fear at the root. So
+"moves the avatar" can be built three ways, and they are not equally honest:
+- **A. Practice moves a practice measure on the avatar, labelled as practice.**
+  The Cycles count, or the streak, drawn on the hero ring itself rather than in
+  a card under it. Honest, small to medium, and exactly his EI sentence, "the
+  accountability tracker is the progression". Costs: the seats' percent still
+  moves only by release, so the two read as two kinds of progress side by side.
+- **B. A done ritual lowers charge at its seat by a fixed rule.** The avatar
+  visibly improves with practice. Costs: it is a formula presented as a change
+  in the person, the class of number every one of the documents forbids
+  ("claim release success without measurement", V3 section 53; "never invent
+  numbers", `SOURCE-TDD.md` section 37), and the same defect section 19 found in
+  "released" being calculated (`19.C3`). It also bears on the seed decay
+  policy `CLAUDE.md` still lists as open.
+- **C. A ritual moves the avatar only through what the person reports.** A
+  check in at the seat after a run of days, riding R3's answer (a spoken or
+  pressed word, never a number). Honest and the most work; needs R3 widened
+  from release to ritual.
+
+That is **T1** below, asked first.
+
+## Read this first. What this adds to his list
+
+Each goes with its snapshot, per the 21 and 25 September rulings. None goes as
+it stands here. Section 19 row 1 is where they are prepared.
+
+**T1. What a completed ritual moves on the avatar.** A, B or C above. Holds
+`21.J1`, and decides whether `CS10` closes.
+
+**T2. Deleting a journal entry.** No surface can delete or edit a committed
+entry (`21.I3`). V3 section 47 says "Never delete raw evidence"; `CLAUDE.md`
+says records off the device carry deletion obligations. The ways it could go:
+delete the text only and keep the charge it wrote; delete the text and take its
+charge back out, which the engine can do only for the last commit today
+(`undoPush`, `ui/storyui.js` line 371); or no deletion until records live on the
+server. Holds `21.I3`.
+
+**T3. Which station a ritual is.** His two documents of round MU disagree. The
+narrative: "Flow is what happens after insight and release... ATUNED turns the
+work into rituals and daily practices" (`DESIGN-onboarding-narrative.md`
+section 12). The storyboard: "Play... A short interactive practice begins" and
+"Flow: Release and observe" (`ATUNED-funnel-storyboard.md` sections 08 and 11).
+The product follows round KT, "Flow is ritual and accountability"
+(`engine/core.js` line 214). Reopens section 13 group D. Holds nothing built;
+KT stands until he says.
+
+**T4. Should the practice a state calls for step up as the charge drops?**
+Today it never does (`21.J5`): the lightest practice in the seat's track is
+always called and the tier is only a ceiling. A teacher's ritual already opens
+its later steps "as the charge drops" (`ui/ritual.js` lines 445 to 449), so a
+stepped ladder is a port, not a new mechanism. The ways it could go: keep the
+lightest, as measured for a first practice (835 of 1000 arrivals were asked for
+fifteen minutes or more before it, line 107); step up at each tier; or step up
+after a number of days kept. Holds `21.J5`.
+
+**T5. Affirmation inside the ritual, confirmed.** His content chain in
+`CLAUDE.md` already rules it: "Sometimes it becomes an affirmation, also in the
+ritual." Today the affirmation lives only on the Avatar page as the "Say it"
+rule, with its own record of days (`21.J3`). Merging it moves controls off a
+page he designed, so it is confirmed rather than assumed. Holds `21.J3`.
+
+---
+
+## The lines, by cluster
+
+Section 20 ended at H. This continues at I and J.
+
+### I. Story's own screen, flow and layout, what sections 19 and 20 did not reach
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 21.I1 | **An entry that reads as nothing cannot be kept.** The documents: "Preserve the person's original language" and "Unknown is a valid result" (`SOURCE-TDD-impression-excavation.md` core rules 2 and 8); "The user's original words are evidence" (V3 section 4.2); "The journal fills the bank" (narrative section 11). His JX: "it's their vault. So their words." | **CONFLICT.** Commit is disabled whenever the read finds no imprint (`ui/storyui.js` lines 125, 352 and 410), so the words are never written to the record. **Measured:** four of his own example sentences read nothing and cannot be committed: "I keep putting off the conversation" (narrative section 3), "My boss asked me to present the work and I immediately wanted to avoid it" (storyboard section 03), "I want to become a better public speaker, but I don't know where to begin" (V3 section 10), and "Rest feels like a moral failure". Known good, "I am afraid", reads four and commits. The Day One tutorial goes through the same `stCommit` (`ui/tutorial.js` line 180), so a first entry like these is dropped on day one while the card says "it is not a problem with what you wrote" (lines 90 to 96). The boundary already accepts such an entry: `validateProfile` passed one with `imprints:0` and empty `bands` (measured; `engine/schema.js` line 725 allows 0) | **Now, small, UI only.** Commit keeps the text with no charge written and says so. No reading moves. First confirm every reader of `story.entries` takes an empty `bands`: `ui/summary.js` 196, `ui/imprints.js` 257, `ui/analytics.js` 336, `ui/drills.js` 339, `ui/avatarui.js` 877, `ui/wheel.js` 231, and `srcPrior`. Engineering, copy for the two lines that change |
+| 21.I2 | **The story bank as something a person can read back.** Narrative section 14: "Journal (express what is happening), **Story Bank** (build a body of lived experience)". Discover is Story, his KT | PARTIAL. The Story tab shows no past entry. The only places a committed entry is read back are Summary's last three (`ui/summary.js` lines 194 to 197) and the Imprints page's "by story" grouping, the last six cut at 130 characters (`ui/imprints.js` lines 257 to 263). Section 19's `19.E5` says every piece of the continuing journey "exists on its own surface"; this one does not | After `21.I1`, so the bank holds every entry and not only the ones the reader caught. UX architect for where it sits on a page already three columns; engineering. Medium |
+| 21.I3 | Deleting or correcting a committed entry | MISSING. No writer removes or edits an entry anywhere in `atuned_src/` (searched for every splice, pop, filter or reset of `story.entries`) | **T2** |
+| 21.I4 | **Discover's four parts on the Story page.** Narrative section 8: the system "separates the story into its components: Situation, Internal response, Pattern, Impact", and section 10's chain, Situation to Story to Body response to Behavior to Outcome | PARTIAL. Built once, in the tutorial only: a four cell grid from real engine output, Situation, Story, Body response and What it costs (`ui/tutorial.js` lines 119 to 126), with the cost taken from `sniffStory`'s own `offer`. The Story page after a commit shows seat lanes and address pills and nothing of this shape | Now, as a port of the tutorial's grid into the Story page's post commit state, not a second copy. Behaviour and Outcome have no reader (`20.H1`), so the port carries the three the engine can honestly fill and says so for the rest. Medium |
+| 21.I5 | **A bare decimal on every Story pill.** Source: his rulings, not the documents. MP: "no 7.9, no numbers that don't tell the user anything"; JX: "we can't say six point three weight" | CONFLICT. Each pill prints its amount, `+(Math.round(q.amt*10)/10)` (`ui/storyui.js` line 1334). Measured: "I am afraid" prints Fear +1.3, Control +1.3, Insecurity +1.3, Scarcity +1.3 | Now, small, if the figure is dropped. Replacing it with a word waits on the node state words, which exist as `NODESTATE_PROPOSED` and are not approved for any surface (`engine/data/canon.js` lines 832 to 843) |
+| 21.I6 | **"Rapid release".** Source: his ruling, round JS: "they can select the ones to release, so change that release to rapid release" | MISSING. The Story panel's heading still reads Release (`ui/storyui.js` line 1410); no file under `atuned_src/ui/` contains "rapid". `DECISIONS.md` records it "Not built" | Now, small. Copy, through the voice check, so the Story panel and the full release card stay two named things and not two names for one |
+
+### J. Ritual, first full pass
+
+What the Ritual page is, read off the code: a chain from stories to held places
+to the one practice the seat holding the most calls for (`ritChainHtml`, lines
+705 to 775); rings for what is due today with the streak in the middle
+(`ritTodayHtml`, 778 to 805); the Active list with its timer, edit, move, stop
+and Release now (852 to 897); a builder with tags, timer, weekdays, a when and
+where plan and a span (925 to 1005); a month and a list of the record with
+delete and put back (1014 to 1109); the marks (1082). Plans live beside the
+record under `atuned-ritual-active` (line 171), already `19.C5`.
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 21.J1 | **A done ritual moves the avatar.** `CS10`; V3 section 3, "RELEASE / RITUAL, ACCOUNTABILITY, RESULT, TRACE GRAPH UPDATE"; `SOURCE-TDD.md` section 20, "INTERVENTION, MEASURE RESULT, COMPARE BEFORE / AFTER", and section 21, "connect interventions to outcomes"; narrative section 6, ATTUNE, "rituals and practices that keep you aligned with who you are choosing to be" | **PARTIAL, and the lead finding.** A count of practised days moves on the Avatar tab (`avCycles`, `ui/avatarui.js` 332 to 344). The avatar's state does not: `compute()` never reads the ritual record, measured unchanged across thirty done days. A ritual has no result anywhere in the product beyond its own done stamp | **T1.** Option A is buildable the day he answers |
+| 21.J2 | **The streak and the marks count rituals that were set and never done.** Release document section 19, Gamification: "Achievements derive from actual session events and evidence rather than self-reported completion alone", and principle 14; V3 section 27, "Record whether an intervention was actually performed" | **CONFLICT, measured.** `pracDays` collects every entry's day whether or not it was done (`engine/ladder.js` lines 32 to 36), and `streakRead` and the Seven, Thirty and Ninety day marks read it; First run tests `l.rituals>=1`, every entry (line 165). Starting a ritual writes today's entry as not done (`ui/ritual.js` lines 379 to 381). Measured: seven days set and none done reads Streak 7, Best 7, and earns First run and Seven days, while Practised reads 0 minutes and the same page's Kept reads 0 (`ui/ritual.js` lines 796 to 803 compute Kept from done entries only). The Avatar's Cycles reads the same record as 0 days. Known good: seven days done reads Streak 7 and Cycles 7. The code knew a version of it: `ritLog` deletes a taken back entry because "it would count as a practised day on the streak, which reads every entry and not only the done ones" (lines 513 to 518). No gate catches it, because the ladder gate's fixture writes entries with no done key (`tests/engine.js` lines 2580 and 2581) | **Now, small.** `pracDays` skips an entry whose done is present and false; an entry with no done key still counts, ledgerRead's posture for older records. First run reads done entries. A gate with a set and not done fixture. Readings move on the ladder only, for records carrying set and not done days, named in the commit. Engineering |
+| 21.J3 | **Affirmation, and one accountability mechanism.** V3 section 25, the builder's chain: "PATTERN, RELEASE PROTOCOL, AFFIRMATION, PRACTICE, SCHEDULE, ACCOUNTABILITY CONDITION"; `CLAUDE.md`'s content chain, "an affirmation, also in the ritual". And `ui/ritual.js`'s own header: "none of them is a second mechanism" | **CONFLICT.** The affirmation exists only as the Avatar's "Say it, once a day" rule (`ui/avatarui.js` lines 1013 to 1017 and 1828), and its sibling "Release, once a day" duplicates the Ritual page's release schedule (`ritStartFor`, `ui/ritual.js` line 397). Both avatar rules keep their own days in `rule.done` under `atuned-avatar-side` (`avRuleTick`, lines 1841 to 1848), never in `CURP.rituals`, so neither appears on the Ritual page, its month, its streak or the Cycles count. Two writers of a daily practice, two records of whether it happened | **T5**, then after `19.C5`, since both stores move onto the record in that pass: the two rule kinds become step kinds on a ritual plan, and the Avatar page writes through the ritual writer. Engineering, UX architect. Medium |
+| 21.J4 | Cadence "daily, every other day, or selected days" (V3 section 25) | PARTIAL. Daily and selected weekdays exist (`on`, Monday 0 to Sunday 6, `ui/ritual.js` lines 62 to 65; `ritDue` line 248). Every other day cannot be said: a weekday set repeats weekly | Now, small. One optional interval field on the plan beside the record, read by `ritDue`, checked by `ritPlanOk`; no schema change |
+| 21.J5 | **Which practice a state calls for.** V3 sections 22 and 23, actionability and prioritization; narrative section 12, "identifies behaviors appropriate to the user's current patterns and goals" | PARTIAL. `ritFor` maps the heaviest seat to one of four tracks and calls the lightest practice in it under a tier ceiling set by DQ (`ui/ritual.js` lines 82 to 117). **Measured,** running `ritFor` out of the source over seven seats and three loads: it can ever call 5 of the 17 builder practices. Root and Heart always call Box Breathing; Throat and 3rd Eye always call the same one; no tier three practice is ever called, because the lightest always wins. So the called practice never advances. And `substituted`, which the comment at lines 105 and 106 says the page will "say so" about, is computed and read by nothing (searched) | **T4.** The unread `substituted` is small and now, either surfaced or the comment corrected |
+| 21.J6 | **Intervention fidelity, where a person can see it.** V3 section 27 and its failure test 5, "Missed ritual: LOW_INTERVENTION_FIDELITY... No false causal attribution"; V3 section 44 | PARTIAL. `intentionRead` computes said against done over seven days and returns each broken commitment with its seat (`engine/ladder.js` lines 135 to 149). No surface calls it; its own header says why: "It is not yet on any surface", because the product's "intention" is already the law mean, and whether awareness scales it is "his open question 4" | His open question 4, already asked; one word for it, under the one word per concept rule. Rides `19.D7`'s follow through half |
+| 21.J7 | **The 21 law intake as a ritual task until it is complete.** His ruling, round NE, R4's second half: "they need to go do CQ questions as well... That needs to be added to the ritual until it's completed." Narrative section 12 also lists "expressing the story" as a ritual behaviour | MISSING. `ui/ritual.js` carries no reference to the intake. Section 19 recorded the ruling inside R4 and gave it no line | Now, medium, and not waiting on him: he ruled it. A row on the Active list that is not a practice, closed when `intake.completedAt` is set, the same test the Laws measured mark already uses (`engine/ladder.js`). Its look is ours: UX architect, engineering |
+| 21.J8 | A ritual reminder as a pop up, outside push. His ruling (`DECISIONS.md`, "New, logged the same round"; `TASKS.md` AZ1) | MISSING. No reminder or notification code in `ui/` (searched). On no row of this page | A design of ours first. Said plainly with it: a page with no service worker can only remind while it is open, so "outside push" means inside the open app. UX architect, then his look |
+| 21.J9 | Which station a ritual belongs to | CONFLICT between his two round MU documents, see **T3** | **T3** |
+| 21.J10 | Embody's in life plan: "notice the moment you want to avoid the conversation, pause... use your assigned practice" (narrative section 13) | PARTIAL. The when and where plan exists, with its evidence cited in the code, Gollwitzer and Sheeran 2006 (`ui/ritual.js` lines 978 to 997). The When is free text; nothing offers the pattern's own trigger, because nothing reads a trigger out of a story | After `20.H1`, whose TRIGGER dimension is the reader. Not this round |
+| 21.J11 | The half and quarter communication practices: "use half the communication. Half is context only... Use a quarter. A quarter is meaning only." Source: `DECISIONS.md`, "The ritual builder, when it is reached" | MISSING from `PRACTICE` (every row listed through the engine) | Small as rows, once he gives the wording of each step. Copy through the voice check |
+
+### Added to existing lines, not new lines
+
+- **`19.C5`, ritual plans onto the record.** Confirmed still true at
+  `ui/ritual.js` line 171. Add the Avatar's rules: their done days sit in the
+  same side store (`ui/avatarui.js` lines 1844 and 1845), so the boundary never
+  checks them and no export carries them. `21.J3` lands in the same pass.
+- **`19.C6`, whether a ritual was done against how often it was set.** The
+  arithmetic already exists, `intentionRead`; `21.J6` is its surface. And
+  `21.J2` has to land first, or the streak beside it counts days nobody did.
+- **`19.D7`, individual analytics.** Its follow through half reads
+  `intentionRead` rather than a new function.
+- **`19.F6`, a daily and weekly summary.** `CS11` asks the same of the Ritual
+  page: "how I am doing, what I could do better, where I am slipping, what it
+  recommends next. Daily, weekly, monthly, which is the same summary the ritual
+  page is getting." One summary, not two.
+- **`19.C7`, ritual consolidation.** Unchanged; `21.J5`'s measurement adds that
+  seven seats already collapse onto five practices, so consolidation today is
+  an accident of `ritFor`, not a decision.
+- **Section 20 cluster G, coverage.** "avoid", "putting off" and "I want to...
+  but I don't know where to begin" read nothing (measured under `21.I1`). Each
+  is one of his own example sentences. Coverage additions through `lexAdd`, the
+  way round NO added self worth, and they ride with `20.G4`. `19.B8`, limiters
+  and desired outcomes, is the structural reader for the third.
+- **Section 13 group D, which surface is each station.** `21.J9` reopens it
+  with his own two MU documents.
+
+## What a seat could pick up without him
+
+Not placed in the live order, for the reason section 20 gave: this pass was
+told to add one section and renumber nothing. Flagged for the project manager.
+
+| Line | What | Size | Depends on |
+|---|---|---|---|
+| 21.J2 | The streak and marks count done days only, with a gate | small | nothing; ladder readings move |
+| 21.I1 | Commit keeps an entry that reads as nothing, the tutorial with it | small | the reader check named in the row |
+| 21.I5 | The bare figure off the Story pills | small | nothing, if dropped rather than worded |
+| 21.I6 | "Rapid release" on the Story panel | small | the voice check |
+| 21.J4 | Every other day as a cadence | small | nothing |
+| 21.J5 | `substituted` surfaced or its comment corrected | small | nothing |
+| 21.J7 | The intake as a ritual row until complete | medium | nothing; ruled at NE |
+| 21.I4 | Discover's parts on the Story page, ported from the tutorial | medium | nothing |
+| 21.I2 | The story bank, read back on Story | medium | `21.I1` |
+
+## Not doing this round
+
+- **Ritual and practice as trace graph node types, and the ten layer release
+  architecture's game events** (V3 section 6; release document section 12).
+  The trace graph is already not doing (section 19); the marks are fixed at
+  `21.J2` rather than rebuilt as an event system.
+- **"Where does that land?" and "Is that what you meant?"** (storyboard
+  sections 03 and 04). Specified for the funnel, not for the Story page, so
+  not queued here; the second is `20.H4` already.
+- **The 90 day reading of which rituals to keep in rotation** (V3 section 41).
+  `19.D6`'s caution applies.
+- **Editing any of his documents.** Where two of them disagree, `21.J9`, it is
+  asked, not resolved.
+
+## Found while doing this, and recorded where it lives
+
+- **`19.E5` says every piece of the continuing journey exists on its own
+  surface.** The story bank does not, `21.I2`. Not edited there.
+- **The ladder gate cannot see `21.J2`.** Its fixture writes entries with no
+  done key (`tests/engine.js` lines 2580 and 2581), which the ladder reads as
+  practised, so a set and not done day has never been through a gate.
+- **`AZ1`, the ritual reminder, is in `TASKS.md` and on no row of this page.**
+  Now `21.J8`.
+- **R4's second half was recorded in section 19 and given no line.** Now
+  `21.J7`.
+- **HEAD moved during this read,** `28e3756` to `23defd5`, `TASKS.md` only, by
+  another seat. Nothing read here changed.
