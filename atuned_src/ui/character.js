@@ -159,9 +159,17 @@ function chHoverHtml(x,r){
    +(x.cx?' Joined into a complex.':'')+(x.hy?' Inside a hyper complex.':'')
    +(x.sup?' It reaches your character.':'');}
  return t.replace('<hr><b>Click for detail.</b>',extra+'<hr><b>Click the mask for the full reading.</b>');}
-/* the face's box inside the icons' 24 unit viewBox. MASK_FACE runs 4 to 20
-   across and 3 to 19 down, so the grid is laid over exactly that square. */
-var CH_X0=4, CH_Y0=3, CH_S=16;
+/* THE GRID'S BOX, ROUND NK, moved with the egg. The old arc face ran 4 to
+   20 across and 3 to 19 down, a 16 unit square it filled edge to edge. The
+   egg is narrower and taller, 6.27 to 17.73 across and 5 to 19.8 down, and
+   does not fill a 16 unit square the same honest way, so the box is not the
+   face's own bounding box any more: it is the one 18 unit square Bjorn
+   measured against the drawing in DESIGN-character-effects.md 1, chosen so
+   chRow(3,20) through chRow(19,20) land on the egg's own brow to chin and
+   rows 0 to 2 sit clear above it, which a tighter box would have put inside
+   the face instead of above it. He measured 16 first and it dropped the
+   Teen's own crack to zero cells. */
+var CH_X0=3, CH_Y0=2.2, CH_S=18;
 /* A MARK IS A PHYSICAL WIDTH, in the icon's own units, and not a pixel
    count. The first cut stroked it one cell wide, so the Child's eye was a
    quarter of the size at 32 across that it was at 16, and a finer grid drew
@@ -184,24 +192,33 @@ var CH_UID=0; /* one glow per card can share the page with its own drill pair, s
    person goes over a certain amount, the grid will dynamically scale." The
    amount is the engine's own: a saboteur forms when the mean charge on its
    addresses reaches 3.7, and a complex when two saboteurs of one family are
-   both running (engine/compute.js). So a mask is 16 pixels across while
-   only loose fetters sit under it, 24 once a saboteur runs there, and 32
-   once one of those saboteurs has joined a complex.
+   both running (engine/compute.js). So a mask is 20 pixels across while
+   only loose fetters sit under it, 28 once a saboteur runs there, and 36
+   once one of those saboteurs has joined a complex. THESE THREE MOVED WITH
+   THE EGG, ROUND NK, from 16, 24 and 32: the old arc face filled its own 16
+   unit box edge to edge, and the egg does not, so the box grew to the 18
+   unit square DESIGN-character-effects.md 1 measures against, and CH_RES
+   grew with it rather than leaving the grid a size narrower than the box
+   it now sits inside.
 
    Why those three steps and not a count of entries. A saboteur is four
-   addresses drawn as one block, and at 16 across a two seat mask gives an
-   address about three pixels of the half face, so a block of four is a
-   dozen pixels with a spacer taken out of it and its weight rounded to
-   thirds of a place. At 24 the same block is about twenty five, and at 32 a
-   complex's two blocks have room to read as two things joined. The finer
-   grid arrives when there is structure that needs it, and it arrives at the
-   two moments he tied to a reward: "if you create a saboteur if you create
-   a Complex it gets you your reward for it."
+   addresses drawn as one block, and Root and Sacral between them carry 32
+   addresses, so at 20 across, 60 half face cells over 32 addresses, a block
+   of four runs about seven or eight pixels with a spacer taken out of it
+   and its weight rounded to thirds of a place. At 28 across the same half
+   face holds 128 cells and the block is about sixteen; at 36 across it
+   holds 218 and the block is about twenty seven, where a complex's two
+   blocks have room to read as two things joined. Measured against the
+   current roster of addresses rather than quoted from the arc face's own
+   figures, which this file no longer builds against. The finer grid arrives
+   when there is structure that needs it, and it arrives at the two moments
+   he tied to a reward: "if you create a saboteur if you create a Complex it
+   gets you your reward for it."
 
    Either reading counts, light or dark, so pressing Light never changes the
    grid under it: the grid belongs to the mask, and the reading is what
    lights it. */
-var CH_RES=[16,24,32];
+var CH_RES=[20,28,36];
 var _CHGEO={}, _CHCTX=null;
 function chCtx(){
  if(!_CHCTX)_CHCTX=document.createElement('canvas').getContext('2d');
@@ -363,6 +380,13 @@ function chTone(b,tier,face){
  var C=seatCol(b);
  if(face==='light')return tier>=3?'color-mix(in srgb,'+C+' 22%,var(--ink))':'color-mix(in srgb,'+C+' 52%,var(--ink))';
  return tier>=3?'color-mix(in srgb,'+C+' 64%,var(--ink))':C;}
+/* THE MASK'S OWN TOP SEAT, for the selected pool, head.html's --mk-top.
+   m.b already runs low seat to high (Child ['Root','Sacral'], Adult
+   ['Sacral','Solar'], and so on), the same order chSvg's own rim reads
+   off when it colours the right half of the face by rd.m.b[rd.m.b.length-1]
+   rather than the left: reused here rather than adding a second "which
+   seat is this mask's own colour" lookup next to that one. */
+function chMkTop(m){return seatCol(m.b[m.b.length-1]);}
 /* ONE GRID AS SVG. A document, so the Selection panel can carry the same
    drawing, and so the render watch reads its markup: a canvas has no
    innerHTML, which is the lesson monitor.js already records about the Field.
@@ -569,7 +593,8 @@ function renderCharacter(r){
      Only the sighted, always-visible copy comes off, freeing the height
      his own complaint was about. */
   return '<button type="button" class="chv-m'+(weaveOn?' chv-weave-on':'')
-   +'" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
+   +'" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'"'
+   +' style="--mk-top:'+chMkTop(m)+'">'
    +chSvg(rd,'chv-svg',null,CHV.weave)+'</button>';}).join('');
  /* heroM is always set: CHV.pick is read off chLast() above the first time
     and off a real press every time after, and both only ever hand back a
@@ -585,9 +610,14 @@ function renderCharacter(r){
     would fight a person reading something unrelated elsewhere. */
  if(!CHV.opened){CHV.opened=true; chDrill(heroM);}
  var heroSay=heroM.nm+' mask, '+CHV.face+' reading, enlarged. It '+heroM.v+'.';
+ /* THE HERO'S OWN WRAP, head.html's .chv-hero-wrap, holds the svg alone and
+    not the name above it, so the pool's ::before can sit exactly over the
+    face it is meant to light rather than over the name and the face both:
+    see the sizing note beside .chv-hero-wrap for why that split matters. */
  var hero='<div class="chv-hero" data-chhero="'+esc(heroM.nm)+'">'
   +'<div class="chv-hero-nm">'+esc(heroM.nm)+'</div>'
-  +chSvg(heroRd,'chv-svg chv-hero-svg',heroSay,CHV.weave)+'</div>';
+  +'<div class="chv-hero-wrap" style="--mk-top:'+chMkTop(heroM)+'">'
+  +chSvg(heroRd,'chv-svg chv-hero-svg',heroSay,CHV.weave)+'</div></div>';
  var html=chWash(r)+'<div class="chv">'
   +'<div class="chv-top"><div class="seg" role="group" aria-label="Reading">'
   +['dark','light'].map(function(f){return '<button type="button" data-chface="'+f+'" aria-pressed="'+(CHV.face===f)+'">'

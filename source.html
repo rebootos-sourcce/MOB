@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1020 6f7ba7e 2026-10-01 03:42"><head><meta charset="utf-8">
+<html lang="en" data-build="v1021 6b8b7eb 2026-10-01 04:33"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -4838,9 +4838,45 @@ body:not(.tab-masksview) #masksview{display:none!important}
    sighted person sees printed under five small icons in a row. */
 .chv-m{display:flex;align-items:center;justify-content:center;min-width:0;padding:4px;
  background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
- font:inherit;cursor:pointer}
-.chv-m:hover{border-color:var(--edge)}
-.chv-m[aria-pressed=true]{border-color:var(--gold)}
+ font:inherit;cursor:pointer;position:relative}
+/* LIT, NOT PRESSED, ROUND NK. DESIGN-character-effects.md 2: "an edge drawn
+   round a control is a form button," which both the old aria-pressed gold
+   border and the old hover edge were, and the Field never selects that
+   way, Sol's own reading, "the chosen chain saturates rather than lights"
+   (wheel.js, "saturates rather than lights" near line 1163). Rest holds
+   the icon at .45 saturation, hover lifts it to .75, and selected drops
+   the filter back to none and lights the pool below instead, so the thing
+   that changes is the icon's own colour and never a line drawn around it. */
+.chv-m .chv-svg{filter:saturate(.45);transition:filter var(--t-element) var(--ease-out)}
+.chv-m:hover .chv-svg{filter:saturate(.75)}
+.chv-m[aria-pressed=true] .chv-svg{filter:none}
+/* THE POOL, a radial glow behind the icon and never a ring round it, in the
+   mask's own top seat colour. character.js sets --mk-top inline, the same
+   seatCol(m.b[m.b.length-1]) lookup chSvg's own rim already runs for the
+   right half of the face, rather than this file re-deriving which of a two
+   seat mask's colours is the one to light. Hover and selected share one
+   gradient and differ only in how strong it reads, 8% against 20%, so
+   hovering a mask previews the colour its own selection would light. */
+.chv-m::before{content:'';position:absolute;inset:0;border-radius:var(--r-s);pointer-events:none;
+ opacity:0;transition:opacity var(--t-element) var(--ease-out);
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 8%,transparent),transparent)}
+.chv-m:hover::before{opacity:1}
+.chv-m[aria-pressed=true]::before{opacity:1;
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 20%,transparent),transparent);
+ animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+/* SNOW, round NK: the same 20% mix sat right on paper rather than the
+   black stage the number above was measured on, so Snow gets its own
+   figure rather than inheriting Dark's. Glass reads as Dark, Sol's own
+   ruling, since it is the same seat palette under a different sheen. */
+body.snow .chv-m[aria-pressed=true]::before{
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
+/* PUNCH NEVER GLOWS, round NK: its own rule already standing everywhere
+   else a control in this file is selected, body.punch .ib[aria-pressed]
+   among them, is that a chosen thing is a fill and not a light. The pool
+   becomes a flat wash toward --sunk instead of a gradient, and the breath
+   comes off with it: a fill has no soft edge to breathe. */
+body.punch .chv-m[aria-pressed=true]::before{
+ background:color-mix(in srgb,var(--mk-top,var(--accent)) 22%,var(--sunk));animation:none}
 .chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 /* THE WEAVE'S OWN RAIL STATE. MX left the routing question open on purpose,
    "how the lines draw once one mask can be large and the others a rail":
@@ -4861,6 +4897,28 @@ body:not(.tab-masksview) #masksview{display:none!important}
    beside chv-svg on it. */
 .chv-svg{display:block;width:48px;height:48px;aspect-ratio:1}
 .chv-hero-svg{width:100%;max-width:560px;height:auto}
+/* THE HERO'S OWN POOL, ROUND NK: "never framed," the same light as the
+   rail's own selected pool at a second size, which is Petra's own point,
+   "same light at two sizes is what joins icon to hero." Carried by a wrap
+   around the svg alone and not .chv-hero, which also holds the name above
+   it: a pseudo element positioned over the whole hero div would centre on
+   the name and the face together, pulling the pool's own middle up off the
+   face it is meant to sit on. Centred at 49% down rather than 50%, because
+   the egg's own widest line sits 40.7% down the FACE (DESIGN-character-
+   effects.md 1), and the face sits inside a grid box with blank rows above
+   and below it (CH_Y0 to CH_Y0+CH_S), so the same point lands 49% down the
+   full box: (11.02-2.2)/18. Sized 60% rather than closest-side, which is
+   the rail's own choice: a circle wide enough to clear the egg's own chin
+   on a hero four times the rail's width, where closest-side would have
+   shrunk it to the nearest edge of a much wider box. */
+.chv-hero-wrap{position:relative;display:block;width:100%}
+.chv-hero-wrap::before{content:'';position:absolute;inset:0;pointer-events:none;
+ background:radial-gradient(60% 60% at 50% 49%,color-mix(in srgb,var(--mk-top,var(--accent)) 12%,transparent),transparent);
+ animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+body.snow .chv-hero-wrap::before{
+ background:radial-gradient(60% 60% at 50% 49%,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
+body.punch .chv-hero-wrap::before{
+ background:color-mix(in srgb,var(--mk-top,var(--accent)) 22%,var(--sunk));animation:none}
 /* a plain outline, never a fill: the fill already carries the tier's own
    tone (chTone in ui/character.js) and painting over it would answer a
    different question, how hot the pixel runs, with a colour meant to
@@ -4893,8 +4951,16 @@ body.punch .chv-wash{display:none}
    one clock and the reward stays legible as the rim lighting at all. */
 .chv-stage .chv-glow,.chv-stage .chv-rim-on{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
 @keyframes chvBreath{0%,100%{opacity:.64}50%{opacity:1}}
-body.rm .chv-glow,body.rm .chv-rim,body.quiet .chv-glow,body.quiet .chv-rim{animation:none;opacity:1}
-@media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim{animation:none;opacity:1}}
+/* THE SELECTED POOL JOINS THE SAME QUIET, round NK: it is carried on the
+   same chvBreath keyframe as the glow and the rim above it, so whatever
+   turns those still has to turn this still too, or a reduced motion
+   profile would have stopped two things on the face and left a third
+   pulsing behind the chosen icon. */
+body.rm .chv-glow,body.rm .chv-rim,body.rm .chv-m[aria-pressed=true]::before,body.rm .chv-hero-wrap::before,
+body.quiet .chv-glow,body.quiet .chv-rim,body.quiet .chv-m[aria-pressed=true]::before,body.quiet .chv-hero-wrap::before{
+ animation:none;opacity:1}
+@media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim,.chv-m[aria-pressed=true]::before,.chv-hero-wrap::before{
+ animation:none;opacity:1}}
 /* the same two grids in Selection, side by side, dark then light, on the
    rail's own sunk ground so the theme's ink and seat colours hold there */
 .chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
@@ -8441,7 +8507,20 @@ const SINAMES=SI.map(l=>l.nm);
    is the same object every time and what changes is how much has been built
    onto it. The outline is identical across all six so the family reads at a
    glance, and the mark inside is what that stage added. */
-const MASK_FACE='M4 9a8 6 0 0116 0c0 6-4 10-8 10S4 15 4 9z';
+/* E2, THE EGG BROAD AT THE BROW. Round NK, art direction (Mika Ueda-Salas,
+   Sol Amadi on colour, Bjorn Haraldsson on type and grid, Petra Nikau on
+   composition): the arc-based face above read as a rounded rectangle and
+   not a face, and he rejected two builds over it before this one. Drawn
+   from the proto's own curve, x=12+5.624 sin t (1+0.2 cos t), y=12.4-7.4
+   cos t, brow at y5 and chin at y19.8, 11.46 wide by 14.8 tall, widest
+   10.72 at a quarter height against 8.77 at three quarters: "broad at the
+   brow", 1.22 to 1. Fitted within 0.01 units of that curve and kept as one
+   path for canon, round NK's own closing line, "the egg ... is also the
+   cheapest certain win, because the drawing exists and the path above is
+   fitted." DESIGN-character-effects.md 1 November carries the drawing this
+   was checked against; the Knowledge icons change with it since they only
+   ever read MASKS[].ic, never their own copy of the face. */
+const MASK_FACE='M12 5C14.9 5 17.73 7.02 17.73 11.02C17.73 14.72 15 19.8 12 19.8C9 19.8 6.27 14.72 6.27 11.02C6.27 7.02 9.1 5 12 5Z';
 /* AND EVERY ONE OF THEM SAYS WHAT IT DOES. Ruled: "every named thing is
    described as a behaviour, not a label."
 
@@ -8455,17 +8534,47 @@ const MASK_FACE='M4 9a8 6 0 0116 0c0 6-4 10-8 10S4 15 4 9z';
    than about them, which is the difference between a description and a
    diagnosis. */
 const MASKS=[
- /* one eye open. nothing has been added yet. */
- {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M12 10v1',
+ /* one eye open. nothing has been added yet. MARKS ARE CELLS, NOT STROKE
+    TESTS, round NK: a centred mark takes an even column count because the
+    face mirrors at G/2, so this is drawn as a short horizontal bar rather
+    than the old vertical tick, centred on the grid's own x12 and sat at
+    y 11.6, the row the design's own cell drawing names for it on the 20
+    across Child. LENGTH 1, NOT 2: chGeo tests a cell's own centre against
+    this path stroked at CH_MARKW, and a round cap adds half that width
+    again past each end of the line, so a path already 2 long reads as
+    2.25 and lands on 3 of the grid's own columns either side of centre,
+    not the 2 by 1 the design calls for. A 1 long path, centred the same
+    way, reaches only the one column next to the mirror line on this half,
+    which chGeo's own mirror then doubles into exactly two. */
+ {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M11.5 11.6h1',
   v:'gets small so somebody else decides'},
- /* two. it has learned there is someone watching. */
- {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M9 10v1 M15 10v1',
+ /* two. it has learned there is someone watching. the same 1 long bar as
+    Child's own, since both sit off the mirror line here and never need
+    its doubling, placed as a mirrored pair at x 9.3 and 14.7 rather than
+    one centred bar, since the design calls two marks here and a centred
+    bar would read as Child's own. */
+ {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M8.8 11.6h1 M14.2 11.6h1',
   v:'checks the room before it says the thing'},
- /* a split down the middle, held together from outside. */
- {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 6v13',
+ /* a split down the middle, held together from outside. Centred on x12 the
+    same way Child's bar is, so it already lands on the two columns either
+    side of the grid's own centre line without being drawn any wider than a
+    single stroke. Run from the brow to three quarters down the face's own
+    height rather than brow to chin, round NK: a crack that reached the chin
+    read as cut clean through, where "held together from outside" needs the
+    bottom of the face still whole. Brow 5, face height 14.8, three quarters
+    11.1, so the bar ends at 16.1 and never reaches 19.8. */
+ {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 5v11.1',
   v:'pushes back on the person, not the problem'},
- /* a seam across. the two halves are joined and the join shows. */
- {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 12h14',
+ /* a seam across. the two halves are joined and the join shows, at the
+    height the two seats actually meet. y12 moved to y11.65, round NK: a
+    horizontal bar's own height comes from CH_MARKW alone, 1.25, and row
+    centres on the 20 across grid sit .9 apart, so a bar centred between
+    two of them, as y12 was, falls within reach of both and the seam ran
+    two rows deep instead of the one the design calls for. 11.65 sits on
+    row 10's own centre, where the next row either side is a full .9 away
+    and clears the .625 reach past the bar's own middle, so the seam is one
+    row again. */
+ {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 11.65h14',
   v:'handles it, and files what it cost'},
  /* a squared jaw fitted over the lower half. it was issued, not grown. */
  {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z',
@@ -8474,15 +8583,27 @@ const MASKS=[
     drew as a ring, "M9 4a3 3 0 006 0", the arc the comment used to name it
     by. His own correction, round MZ: "the halo shape, I said line", and
     round NB restated it rather than changed it when it was asked again:
-    "the halo: a flat line." Short and set high at y4 so it reads apart from
-    Adult's own full width seam at y12 two lines down, never the same mark
-    at a different height. Every reader of this path changes with it: the
-    pixel mark chGeo cuts out of the grid in ui/character.js, and the small
-    stroked icon glyph everywhere else MASKS[].ic is drawn, since icons here
-    are a ring and not a fill (a straight open segment auto closes to zero
-    area, so it would vanish under a fill and only ever reads under the
-    stroke this whole icon set already uses). */
- {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4h6',
+    "the halo: a flat line." MOVED AGAIN, ROUND NK, toward
+    DESIGN-character-effects.md 2's own figure for the egg's grid, which
+    reads this bar at row 1 of the 20 across Child, two empty rows clear
+    of the brow above it.
+
+    MEASURED AGAINST chGeo RATHER THAN TAKEN ON THAT COUNT, AND IT
+    DISAGREED: the drawing's own y2.6 sits above the egg's brow at y5, and
+    chGeo only ever cuts a mark where it is also inside the face,
+    inF[r][c], never above it, so that value measured mk 0 at every one
+    of CH_RES's three sizes. Rather than ship a visible mask with no
+    mark lit at all, this is placed where the egg's own curve, x=12+
+    5.624 sin t(1+0.2 cos t), y=12.4-7.4 cos t, actually clears the bar's
+    full width: the bar runs x9 to x15, 3 either side of centre, and the
+    egg's own half width does not reach 3 until y is past about 5.8, so
+    y6.2 carries a safe margin past that rather than sitting on the edge
+    of it. Still the closest row to the brow this face can actually cut,
+    which is as near "two clear rows above it" as a halo that has to sit
+    inside the egg can read. The small stroked icon glyph elsewhere,
+    everywhere else MASKS[].ic is drawn as a plain ring and not a fill,
+    draws this path regardless of inF and was never short a row. */
+ {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 6.2h6',
   v:'answers from the position instead of the moment'}];
 /* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
    rid of the uh, professional. Just hide it for now. Don't calculate it."
@@ -26785,9 +26906,17 @@ function chHoverHtml(x,r){
    +(x.cx?' Joined into a complex.':'')+(x.hy?' Inside a hyper complex.':'')
    +(x.sup?' It reaches your character.':'');}
  return t.replace('<hr><b>Click for detail.</b>',extra+'<hr><b>Click the mask for the full reading.</b>');}
-/* the face's box inside the icons' 24 unit viewBox. MASK_FACE runs 4 to 20
-   across and 3 to 19 down, so the grid is laid over exactly that square. */
-var CH_X0=4, CH_Y0=3, CH_S=16;
+/* THE GRID'S BOX, ROUND NK, moved with the egg. The old arc face ran 4 to
+   20 across and 3 to 19 down, a 16 unit square it filled edge to edge. The
+   egg is narrower and taller, 6.27 to 17.73 across and 5 to 19.8 down, and
+   does not fill a 16 unit square the same honest way, so the box is not the
+   face's own bounding box any more: it is the one 18 unit square Bjorn
+   measured against the drawing in DESIGN-character-effects.md 1, chosen so
+   chRow(3,20) through chRow(19,20) land on the egg's own brow to chin and
+   rows 0 to 2 sit clear above it, which a tighter box would have put inside
+   the face instead of above it. He measured 16 first and it dropped the
+   Teen's own crack to zero cells. */
+var CH_X0=3, CH_Y0=2.2, CH_S=18;
 /* A MARK IS A PHYSICAL WIDTH, in the icon's own units, and not a pixel
    count. The first cut stroked it one cell wide, so the Child's eye was a
    quarter of the size at 32 across that it was at 16, and a finer grid drew
@@ -26810,24 +26939,33 @@ var CH_UID=0; /* one glow per card can share the page with its own drill pair, s
    person goes over a certain amount, the grid will dynamically scale." The
    amount is the engine's own: a saboteur forms when the mean charge on its
    addresses reaches 3.7, and a complex when two saboteurs of one family are
-   both running (engine/compute.js). So a mask is 16 pixels across while
-   only loose fetters sit under it, 24 once a saboteur runs there, and 32
-   once one of those saboteurs has joined a complex.
+   both running (engine/compute.js). So a mask is 20 pixels across while
+   only loose fetters sit under it, 28 once a saboteur runs there, and 36
+   once one of those saboteurs has joined a complex. THESE THREE MOVED WITH
+   THE EGG, ROUND NK, from 16, 24 and 32: the old arc face filled its own 16
+   unit box edge to edge, and the egg does not, so the box grew to the 18
+   unit square DESIGN-character-effects.md 1 measures against, and CH_RES
+   grew with it rather than leaving the grid a size narrower than the box
+   it now sits inside.
 
    Why those three steps and not a count of entries. A saboteur is four
-   addresses drawn as one block, and at 16 across a two seat mask gives an
-   address about three pixels of the half face, so a block of four is a
-   dozen pixels with a spacer taken out of it and its weight rounded to
-   thirds of a place. At 24 the same block is about twenty five, and at 32 a
-   complex's two blocks have room to read as two things joined. The finer
-   grid arrives when there is structure that needs it, and it arrives at the
-   two moments he tied to a reward: "if you create a saboteur if you create
-   a Complex it gets you your reward for it."
+   addresses drawn as one block, and Root and Sacral between them carry 32
+   addresses, so at 20 across, 60 half face cells over 32 addresses, a block
+   of four runs about seven or eight pixels with a spacer taken out of it
+   and its weight rounded to thirds of a place. At 28 across the same half
+   face holds 128 cells and the block is about sixteen; at 36 across it
+   holds 218 and the block is about twenty seven, where a complex's two
+   blocks have room to read as two things joined. Measured against the
+   current roster of addresses rather than quoted from the arc face's own
+   figures, which this file no longer builds against. The finer grid arrives
+   when there is structure that needs it, and it arrives at the two moments
+   he tied to a reward: "if you create a saboteur if you create a Complex it
+   gets you your reward for it."
 
    Either reading counts, light or dark, so pressing Light never changes the
    grid under it: the grid belongs to the mask, and the reading is what
    lights it. */
-var CH_RES=[16,24,32];
+var CH_RES=[20,28,36];
 var _CHGEO={}, _CHCTX=null;
 function chCtx(){
  if(!_CHCTX)_CHCTX=document.createElement('canvas').getContext('2d');
@@ -26989,6 +27127,13 @@ function chTone(b,tier,face){
  var C=seatCol(b);
  if(face==='light')return tier>=3?'color-mix(in srgb,'+C+' 22%,var(--ink))':'color-mix(in srgb,'+C+' 52%,var(--ink))';
  return tier>=3?'color-mix(in srgb,'+C+' 64%,var(--ink))':C;}
+/* THE MASK'S OWN TOP SEAT, for the selected pool, head.html's --mk-top.
+   m.b already runs low seat to high (Child ['Root','Sacral'], Adult
+   ['Sacral','Solar'], and so on), the same order chSvg's own rim reads
+   off when it colours the right half of the face by rd.m.b[rd.m.b.length-1]
+   rather than the left: reused here rather than adding a second "which
+   seat is this mask's own colour" lookup next to that one. */
+function chMkTop(m){return seatCol(m.b[m.b.length-1]);}
 /* ONE GRID AS SVG. A document, so the Selection panel can carry the same
    drawing, and so the render watch reads its markup: a canvas has no
    innerHTML, which is the lesson monitor.js already records about the Field.
@@ -27195,7 +27340,8 @@ function renderCharacter(r){
      Only the sighted, always-visible copy comes off, freeing the height
      his own complaint was about. */
   return '<button type="button" class="chv-m'+(weaveOn?' chv-weave-on':'')
-   +'" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
+   +'" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'"'
+   +' style="--mk-top:'+chMkTop(m)+'">'
    +chSvg(rd,'chv-svg',null,CHV.weave)+'</button>';}).join('');
  /* heroM is always set: CHV.pick is read off chLast() above the first time
     and off a real press every time after, and both only ever hand back a
@@ -27211,9 +27357,14 @@ function renderCharacter(r){
     would fight a person reading something unrelated elsewhere. */
  if(!CHV.opened){CHV.opened=true; chDrill(heroM);}
  var heroSay=heroM.nm+' mask, '+CHV.face+' reading, enlarged. It '+heroM.v+'.';
+ /* THE HERO'S OWN WRAP, head.html's .chv-hero-wrap, holds the svg alone and
+    not the name above it, so the pool's ::before can sit exactly over the
+    face it is meant to light rather than over the name and the face both:
+    see the sizing note beside .chv-hero-wrap for why that split matters. */
  var hero='<div class="chv-hero" data-chhero="'+esc(heroM.nm)+'">'
   +'<div class="chv-hero-nm">'+esc(heroM.nm)+'</div>'
-  +chSvg(heroRd,'chv-svg chv-hero-svg',heroSay,CHV.weave)+'</div>';
+  +'<div class="chv-hero-wrap" style="--mk-top:'+chMkTop(heroM)+'">'
+  +chSvg(heroRd,'chv-svg chv-hero-svg',heroSay,CHV.weave)+'</div></div>';
  var html=chWash(r)+'<div class="chv">'
   +'<div class="chv-top"><div class="seg" role="group" aria-label="Reading">'
   +['dark','light'].map(function(f){return '<button type="button" data-chface="'+f+'" aria-pressed="'+(CHV.face===f)+'">'
@@ -48013,5 +48164,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003135756"></div>
+<div id="eof" hidden data-len="003146672"></div>
 </body></html>

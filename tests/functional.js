@@ -272,8 +272,14 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   btn.click(); await fr();
   const r=compute(), host=document.getElementById('masksview');
   const val=(n,f)=>f==='light'?Math.max(n.pole||0,n.jq||0):(n.sq||0);
+  /* CH_RES ITSELF, NOT TYPED HERE TWICE: round NK moved the egg's own grid
+     from 16/24/32 to 20/28/36 with the box it sits inside, and a literal
+     16/24/32 here would have kept passing against the old numbers while
+     silently checking nothing real against the build it was actually run
+     on. Reading CH_RES off the page this runs in is the same discipline
+     CLAUDE.md asks of a human: read the count off the run. */
   const wantG=m=>{const u=r.sabs.filter(s=>s.parts.some(n=>n&&m.b.indexOf(n.b)>=0));
-   return !u.length?16:r.cxs.some(c=>c.parts.some(s=>u.indexOf(s)>=0))?32:24;};
+   return !u.length?CH_RES[0]:r.cxs.some(c=>c.parts.some(s=>u.indexOf(s)>=0))?CH_RES[2]:CH_RES[1];};
   const read=f=>MASKS_READ.map(m=>{const rd=chRead(m,r,f);
    return {nm:m.nm,G:rd.G,want:wantG(m),lit:rd.px.length,
     stray:rd.px.filter(x=>m.b.indexOf(x.n.b)<0||val(x.n,f)<1).length,
@@ -368,7 +374,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   +mv.dark.concat(mv.light).filter(x=>x.stray).map(x=>x.nm+' '+x.stray).join(', '));
  ok(mv.dark.every(x=>x.left),'the half face is laid down and the other half is its mirror');
  ok(mv.dark.every(x=>x.G===x.want)&&mv.cards.every((c,i)=>c.G===mv.dark[i].want),
-  'each grid is 16, 24 or 32 across by what has formed under it, '+mv.dark.map(x=>x.nm+' '+x.G+'/'+x.want).join(', '));
+  'each grid is one of CH_RES\'s three sizes by what has formed under it, '+mv.dark.map(x=>x.nm+' '+x.G+'/'+x.want).join(', '));
  ok(mv.dark.filter(x=>x.lit>0).length>=3,'the stories light three masks or more, '+mv.dark.map(x=>x.nm+' '+x.lit).join(', '));
  ok(mv.lpressed==='true'&&mv.lcards.every((c,i)=>c.G===mv.cards[i].G),'Light is pressed and the grid under each mask does not move');
  ok(mv.light.some((x,i)=>x.pos!==mv.dark[i].pos)||mv.light.every(x=>!x.lit),'and Light lights its own reading, not the dark one again');
@@ -427,9 +433,11 @@ console.log('\n=== the six masks, as pixels on the figure ===');
    const sv=[...host.querySelectorAll('.chv-m svg')];
    return {unread:compute().unread,empty:(host.querySelector('.chv-empty')||{}).textContent||'',
     lit:sv.map(x=>+x.getAttribute('data-chlit')),res:sv.map(x=>+x.getAttribute('data-chres')),
-    faces:new Set(sv.map(x=>x.innerHTML)).size,want:MASKS_READ.length};});
+    faces:new Set(sv.map(x=>x.innerHTML)).size,want:MASKS_READ.length,res0:CH_RES[0]};});
   ok(bl.unread&&/^Nothing read yet, so the masks are empty\./.test(bl.empty),'a stranger reads that nothing is read yet, got '+bl.empty);
-  ok(bl.lit.every(n=>n===0)&&bl.res.every(g=>g===16),'nothing lit and every grid at its first size, '+bl.lit.join(',')+' / '+bl.res.join(','));
+  /* CH_RES[0], not 16 typed here: the same reason wantG above reads CH_RES
+     off the page rather than a number this file keeps its own copy of. */
+  ok(bl.lit.every(n=>n===0)&&bl.res.every(g=>g===bl.res0),'nothing lit and every grid at its first size, '+bl.lit.join(',')+' / '+bl.res.join(','));
   ok(bl.faces===bl.want,'and the empty faces are all different masks, '+bl.faces+' of '+bl.want);
   ok(bpErr.length===0,'no page errors on a fresh page, '+bpErr.join(' | '));
   await bp.close();}

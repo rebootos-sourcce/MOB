@@ -4838,9 +4838,45 @@ body:not(.tab-masksview) #masksview{display:none!important}
    sighted person sees printed under five small icons in a row. */
 .chv-m{display:flex;align-items:center;justify-content:center;min-width:0;padding:4px;
  background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
- font:inherit;cursor:pointer}
-.chv-m:hover{border-color:var(--edge)}
-.chv-m[aria-pressed=true]{border-color:var(--gold)}
+ font:inherit;cursor:pointer;position:relative}
+/* LIT, NOT PRESSED, ROUND NK. DESIGN-character-effects.md 2: "an edge drawn
+   round a control is a form button," which both the old aria-pressed gold
+   border and the old hover edge were, and the Field never selects that
+   way, Sol's own reading, "the chosen chain saturates rather than lights"
+   (wheel.js, "saturates rather than lights" near line 1163). Rest holds
+   the icon at .45 saturation, hover lifts it to .75, and selected drops
+   the filter back to none and lights the pool below instead, so the thing
+   that changes is the icon's own colour and never a line drawn around it. */
+.chv-m .chv-svg{filter:saturate(.45);transition:filter var(--t-element) var(--ease-out)}
+.chv-m:hover .chv-svg{filter:saturate(.75)}
+.chv-m[aria-pressed=true] .chv-svg{filter:none}
+/* THE POOL, a radial glow behind the icon and never a ring round it, in the
+   mask's own top seat colour. character.js sets --mk-top inline, the same
+   seatCol(m.b[m.b.length-1]) lookup chSvg's own rim already runs for the
+   right half of the face, rather than this file re-deriving which of a two
+   seat mask's colours is the one to light. Hover and selected share one
+   gradient and differ only in how strong it reads, 8% against 20%, so
+   hovering a mask previews the colour its own selection would light. */
+.chv-m::before{content:'';position:absolute;inset:0;border-radius:var(--r-s);pointer-events:none;
+ opacity:0;transition:opacity var(--t-element) var(--ease-out);
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 8%,transparent),transparent)}
+.chv-m:hover::before{opacity:1}
+.chv-m[aria-pressed=true]::before{opacity:1;
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 20%,transparent),transparent);
+ animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+/* SNOW, round NK: the same 20% mix sat right on paper rather than the
+   black stage the number above was measured on, so Snow gets its own
+   figure rather than inheriting Dark's. Glass reads as Dark, Sol's own
+   ruling, since it is the same seat palette under a different sheen. */
+body.snow .chv-m[aria-pressed=true]::before{
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
+/* PUNCH NEVER GLOWS, round NK: its own rule already standing everywhere
+   else a control in this file is selected, body.punch .ib[aria-pressed]
+   among them, is that a chosen thing is a fill and not a light. The pool
+   becomes a flat wash toward --sunk instead of a gradient, and the breath
+   comes off with it: a fill has no soft edge to breathe. */
+body.punch .chv-m[aria-pressed=true]::before{
+ background:color-mix(in srgb,var(--mk-top,var(--accent)) 22%,var(--sunk));animation:none}
 .chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 /* THE WEAVE'S OWN RAIL STATE. MX left the routing question open on purpose,
    "how the lines draw once one mask can be large and the others a rail":
@@ -4861,6 +4897,28 @@ body:not(.tab-masksview) #masksview{display:none!important}
    beside chv-svg on it. */
 .chv-svg{display:block;width:48px;height:48px;aspect-ratio:1}
 .chv-hero-svg{width:100%;max-width:560px;height:auto}
+/* THE HERO'S OWN POOL, ROUND NK: "never framed," the same light as the
+   rail's own selected pool at a second size, which is Petra's own point,
+   "same light at two sizes is what joins icon to hero." Carried by a wrap
+   around the svg alone and not .chv-hero, which also holds the name above
+   it: a pseudo element positioned over the whole hero div would centre on
+   the name and the face together, pulling the pool's own middle up off the
+   face it is meant to sit on. Centred at 49% down rather than 50%, because
+   the egg's own widest line sits 40.7% down the FACE (DESIGN-character-
+   effects.md 1), and the face sits inside a grid box with blank rows above
+   and below it (CH_Y0 to CH_Y0+CH_S), so the same point lands 49% down the
+   full box: (11.02-2.2)/18. Sized 60% rather than closest-side, which is
+   the rail's own choice: a circle wide enough to clear the egg's own chin
+   on a hero four times the rail's width, where closest-side would have
+   shrunk it to the nearest edge of a much wider box. */
+.chv-hero-wrap{position:relative;display:block;width:100%}
+.chv-hero-wrap::before{content:'';position:absolute;inset:0;pointer-events:none;
+ background:radial-gradient(60% 60% at 50% 49%,color-mix(in srgb,var(--mk-top,var(--accent)) 12%,transparent),transparent);
+ animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+body.snow .chv-hero-wrap::before{
+ background:radial-gradient(60% 60% at 50% 49%,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
+body.punch .chv-hero-wrap::before{
+ background:color-mix(in srgb,var(--mk-top,var(--accent)) 22%,var(--sunk));animation:none}
 /* a plain outline, never a fill: the fill already carries the tier's own
    tone (chTone in ui/character.js) and painting over it would answer a
    different question, how hot the pixel runs, with a colour meant to
@@ -4893,8 +4951,16 @@ body.punch .chv-wash{display:none}
    one clock and the reward stays legible as the rim lighting at all. */
 .chv-stage .chv-glow,.chv-stage .chv-rim-on{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
 @keyframes chvBreath{0%,100%{opacity:.64}50%{opacity:1}}
-body.rm .chv-glow,body.rm .chv-rim,body.quiet .chv-glow,body.quiet .chv-rim{animation:none;opacity:1}
-@media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim{animation:none;opacity:1}}
+/* THE SELECTED POOL JOINS THE SAME QUIET, round NK: it is carried on the
+   same chvBreath keyframe as the glow and the rim above it, so whatever
+   turns those still has to turn this still too, or a reduced motion
+   profile would have stopped two things on the face and left a third
+   pulsing behind the chosen icon. */
+body.rm .chv-glow,body.rm .chv-rim,body.rm .chv-m[aria-pressed=true]::before,body.rm .chv-hero-wrap::before,
+body.quiet .chv-glow,body.quiet .chv-rim,body.quiet .chv-m[aria-pressed=true]::before,body.quiet .chv-hero-wrap::before{
+ animation:none;opacity:1}
+@media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim,.chv-m[aria-pressed=true]::before,.chv-hero-wrap::before{
+ animation:none;opacity:1}}
 /* the same two grids in Selection, side by side, dark then light, on the
    rail's own sunk ground so the theme's ink and seat colours hold there */
 .chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;

@@ -28930,3 +28930,59 @@ Next, per the design review's own order: the oval face (ruled twice
 now, round MV and again this round, and the geometry every other
 effect depends on) and the selected state, the two items his review
 calls buildable now without a further ruling.
+
+## Round NM
+
+The two items the design review itself named buildable now: the oval
+face and the selected state. Dispatched with the design doc's own
+exact values quoted, built, and independently verified before
+anything landed, same discipline as every build this session.
+
+**The egg.** `MASK_FACE` is the recovered fitted path. The grid box
+and `CH_RES` moved with it, `3/2.2/18` and `20/28/36`, off the design
+doc's own measurement against the drawing rather than the old arc
+face's figures, which no longer apply to a face that does not fill
+its own box edge to edge.
+
+**Every mark measured against `chGeo`, not copied from the design
+doc's prose, and two of them disagreed with it.** Child and Preteen's
+marks read "2 by 1" in the spec; a path 2 long plus the round cap's
+own reach past each end actually spans three columns a side, so both
+shortened to length 1, verified at exactly 2 columns. Adult's seam
+sat on a row boundary it used to straddle between two row centres,
+and moved to a row's own centre, verified at exactly 1 row. Ideological's
+own bar, placed at the design's own y2.6, measured mk 0 at every one of
+the three grid sizes: the design's own drawing put it inside what it
+called two clear rows above the brow, but the egg's brow itself sits at
+y5, and chGeo only ever cuts a mark where it also sits inside the
+face. Verified myself, independent of the build, directly against
+chGeo rather than trusted from the report that flagged it: moved to
+y6.2, the first point down the egg's own curve where its full six unit
+width actually clears the face, and confirmed numerically, mk 4, 12
+and 22 across the three grid sizes, not by eye.
+
+**Selected, not pressed.** The gold border is gone; a mask reads
+chosen by colour, saturating from .45 at rest to full, with a soft
+pool in its own top seat colour breathing behind it, the same clock
+the rim already keeps. All four lightings carry their own figure,
+Punch a flat fill rather than a glow, its own standing rule everywhere
+else in this file that a selected thing there is a fill. The weave's
+own ring is untouched and sits beside the new pool rather than
+replacing it, two different questions answered at once without
+fighting each other, confirmed in a real screenshot.
+
+Gated in full: `BUILD.sh` and `BUILD-engine.sh` clean, 484 exports,
+`tests/engine.js` 1853/0, `tests/collide.js` 351/0, `tests/design.js`
+185/0 (all seven lightings), `tests/funnel.js` 172/0, `tests/boot.js`
+13/0, `tools/monitor.js` all surfaces render, voice objections
+unchanged. `tests/functional.js` 1368/1, the one already catalogued
+Field fade flake and nothing else; two hardcoded assertions there now
+read `CH_RES` off the running page rather than a literal 16/24/32,
+CLAUDE.md's own rule, read the count off the run, applied to a test
+file and not only to this one.
+
+`PRIORITY.md` 19.A6 built; a new row, 19.A-selected, for the pressed
+state complaint, also built. `DESIGN-character-effects.md` sections 3
+through 5, the Field effects, running hot and overexpressed, and the
+Selection column's own depths, remain open and are their own next
+round whenever he wants them.

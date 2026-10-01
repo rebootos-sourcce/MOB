@@ -487,7 +487,20 @@ const SINAMES=SI.map(l=>l.nm);
    is the same object every time and what changes is how much has been built
    onto it. The outline is identical across all six so the family reads at a
    glance, and the mark inside is what that stage added. */
-const MASK_FACE='M4 9a8 6 0 0116 0c0 6-4 10-8 10S4 15 4 9z';
+/* E2, THE EGG BROAD AT THE BROW. Round NK, art direction (Mika Ueda-Salas,
+   Sol Amadi on colour, Bjorn Haraldsson on type and grid, Petra Nikau on
+   composition): the arc-based face above read as a rounded rectangle and
+   not a face, and he rejected two builds over it before this one. Drawn
+   from the proto's own curve, x=12+5.624 sin t (1+0.2 cos t), y=12.4-7.4
+   cos t, brow at y5 and chin at y19.8, 11.46 wide by 14.8 tall, widest
+   10.72 at a quarter height against 8.77 at three quarters: "broad at the
+   brow", 1.22 to 1. Fitted within 0.01 units of that curve and kept as one
+   path for canon, round NK's own closing line, "the egg ... is also the
+   cheapest certain win, because the drawing exists and the path above is
+   fitted." DESIGN-character-effects.md 1 November carries the drawing this
+   was checked against; the Knowledge icons change with it since they only
+   ever read MASKS[].ic, never their own copy of the face. */
+const MASK_FACE='M12 5C14.9 5 17.73 7.02 17.73 11.02C17.73 14.72 15 19.8 12 19.8C9 19.8 6.27 14.72 6.27 11.02C6.27 7.02 9.1 5 12 5Z';
 /* AND EVERY ONE OF THEM SAYS WHAT IT DOES. Ruled: "every named thing is
    described as a behaviour, not a label."
 
@@ -501,17 +514,47 @@ const MASK_FACE='M4 9a8 6 0 0116 0c0 6-4 10-8 10S4 15 4 9z';
    than about them, which is the difference between a description and a
    diagnosis. */
 const MASKS=[
- /* one eye open. nothing has been added yet. */
- {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M12 10v1',
+ /* one eye open. nothing has been added yet. MARKS ARE CELLS, NOT STROKE
+    TESTS, round NK: a centred mark takes an even column count because the
+    face mirrors at G/2, so this is drawn as a short horizontal bar rather
+    than the old vertical tick, centred on the grid's own x12 and sat at
+    y 11.6, the row the design's own cell drawing names for it on the 20
+    across Child. LENGTH 1, NOT 2: chGeo tests a cell's own centre against
+    this path stroked at CH_MARKW, and a round cap adds half that width
+    again past each end of the line, so a path already 2 long reads as
+    2.25 and lands on 3 of the grid's own columns either side of centre,
+    not the 2 by 1 the design calls for. A 1 long path, centred the same
+    way, reaches only the one column next to the mirror line on this half,
+    which chGeo's own mirror then doubles into exactly two. */
+ {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M11.5 11.6h1',
   v:'gets small so somebody else decides'},
- /* two. it has learned there is someone watching. */
- {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M9 10v1 M15 10v1',
+ /* two. it has learned there is someone watching. the same 1 long bar as
+    Child's own, since both sit off the mirror line here and never need
+    its doubling, placed as a mirrored pair at x 9.3 and 14.7 rather than
+    one centred bar, since the design calls two marks here and a centred
+    bar would read as Child's own. */
+ {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M8.8 11.6h1 M14.2 11.6h1',
   v:'checks the room before it says the thing'},
- /* a split down the middle, held together from outside. */
- {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 6v13',
+ /* a split down the middle, held together from outside. Centred on x12 the
+    same way Child's bar is, so it already lands on the two columns either
+    side of the grid's own centre line without being drawn any wider than a
+    single stroke. Run from the brow to three quarters down the face's own
+    height rather than brow to chin, round NK: a crack that reached the chin
+    read as cut clean through, where "held together from outside" needs the
+    bottom of the face still whole. Brow 5, face height 14.8, three quarters
+    11.1, so the bar ends at 16.1 and never reaches 19.8. */
+ {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 5v11.1',
   v:'pushes back on the person, not the problem'},
- /* a seam across. the two halves are joined and the join shows. */
- {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 12h14',
+ /* a seam across. the two halves are joined and the join shows, at the
+    height the two seats actually meet. y12 moved to y11.65, round NK: a
+    horizontal bar's own height comes from CH_MARKW alone, 1.25, and row
+    centres on the 20 across grid sit .9 apart, so a bar centred between
+    two of them, as y12 was, falls within reach of both and the seam ran
+    two rows deep instead of the one the design calls for. 11.65 sits on
+    row 10's own centre, where the next row either side is a full .9 away
+    and clears the .625 reach past the bar's own middle, so the seam is one
+    row again. */
+ {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 11.65h14',
   v:'handles it, and files what it cost'},
  /* a squared jaw fitted over the lower half. it was issued, not grown. */
  {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z',
@@ -520,15 +563,27 @@ const MASKS=[
     drew as a ring, "M9 4a3 3 0 006 0", the arc the comment used to name it
     by. His own correction, round MZ: "the halo shape, I said line", and
     round NB restated it rather than changed it when it was asked again:
-    "the halo: a flat line." Short and set high at y4 so it reads apart from
-    Adult's own full width seam at y12 two lines down, never the same mark
-    at a different height. Every reader of this path changes with it: the
-    pixel mark chGeo cuts out of the grid in ui/character.js, and the small
-    stroked icon glyph everywhere else MASKS[].ic is drawn, since icons here
-    are a ring and not a fill (a straight open segment auto closes to zero
-    area, so it would vanish under a fill and only ever reads under the
-    stroke this whole icon set already uses). */
- {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4h6',
+    "the halo: a flat line." MOVED AGAIN, ROUND NK, toward
+    DESIGN-character-effects.md 2's own figure for the egg's grid, which
+    reads this bar at row 1 of the 20 across Child, two empty rows clear
+    of the brow above it.
+
+    MEASURED AGAINST chGeo RATHER THAN TAKEN ON THAT COUNT, AND IT
+    DISAGREED: the drawing's own y2.6 sits above the egg's brow at y5, and
+    chGeo only ever cuts a mark where it is also inside the face,
+    inF[r][c], never above it, so that value measured mk 0 at every one
+    of CH_RES's three sizes. Rather than ship a visible mask with no
+    mark lit at all, this is placed where the egg's own curve, x=12+
+    5.624 sin t(1+0.2 cos t), y=12.4-7.4 cos t, actually clears the bar's
+    full width: the bar runs x9 to x15, 3 either side of centre, and the
+    egg's own half width does not reach 3 until y is past about 5.8, so
+    y6.2 carries a safe margin past that rather than sitting on the edge
+    of it. Still the closest row to the brow this face can actually cut,
+    which is as near "two clear rows above it" as a halo that has to sit
+    inside the egg can read. The small stroked icon glyph elsewhere,
+    everywhere else MASKS[].ic is drawn as a plain ring and not a fill,
+    draws this path regardless of inF and was never short a row. */
+ {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 6.2h6',
   v:'answers from the position instead of the moment'}];
 /* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
    rid of the uh, professional. Just hide it for now. Don't calculate it."
