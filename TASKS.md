@@ -31293,3 +31293,42 @@ point cloud, the torus, a heat map. The torus oscillates, the oscillation tied
 directly to Vitality (which the seats drive; Vitality rises with coherence), each
 seat distorting the field. All text and readings go in the right-hand panel and
 none in the centre panel.
+
+## Round PF, 1 October. Accountability beside Ritual; Avatar, Summary and Intake to spec; Story redesigned; the release's black scroller wins
+
+> "look into this character is currently going to your page. Okay. Okay. Um,
+> accountability was supposed to be broken out of ritual. So under flow, it would
+> be ritual and accountability. Why is that not in spec? Please review. Avatar
+> should be updated and in spec. Summary should be updated and in spec. And take
+> there is supposed to be updated and I haven't seen that. Story, I want to
+> revise so it's more visually appealing, similar to like intake and the field.
+> Okay, the second image that you sent with the all black kind of like scroller,
+> that's the one that wins. The UI elements like the heart with the rings, those
+> can be really small on the upper left hand side. And then our stats on the
+> upper right hand side. And then the information screen at the very end is
+> fantastic. Um, I don't know why it says, I forgive myself for separation from
+> my boss. I gave up separation. I don't know what that is for, but it should
+> just tell us like which class we gave up. and what the adjusted SQ and DQ
+> score is, and CQ score. (clears throat) How do I use that record HTML? Do I
+> open it up in Explorer? Or Edge? Is that what you meant?"
+
+**Read as.**
+- Character "is currently going to your page": on a free profile the Character
+  tab is locked (tier three) and the lock takes him to the tiers page. The
+  Unlock all sight switch (Developer options, lower right of the login) is in
+  the build after v1106; he is on the older build.
+- Accountability: Flow carries Ritual and Accountability as two surfaces. It is
+  not in spec because the Practice audit marked the TDD's information
+  architecture (section 31: Practice, Release, Accountability, Intelligence) a
+  CONFLICT with the loop and no ruling was put to him (item I1). Ruled now. A
+  new Accountability page, built to TDD sections 11, 12, 24 and 25.
+- Avatar, Summary and Intake updated and in spec (Intake "take" read as Intake:
+  the sim pictures for archetypes, emotions and the six readings were never
+  sent).
+- Story page: visual redesign, in the manner of the Intake and the Field.
+- The release's black screen with the large scrolling prompt text wins: the
+  address ring with its glyph small at the upper left, the stats (counters, SQ,
+  DQ, CQ) at the upper right, the information screen at the end kept. The done
+  summary should say which class was given up and the adjusted SQ, DQ and CQ,
+  not "I forgive myself for separation from my boss".
+- The recorder: how to open record.html (answered in the report).
