@@ -28579,3 +28579,44 @@ sync (`PUT`/`GET /v1/sync`), the consent toggle (`PUT /v1/consent`),
 and account deletion. Each needs its own data model work, reconciling
 this product's own profile shape against the server's record kinds,
 and none of the four auth routes wired in needed them.
+
+## Round NF
+
+"make it live." Checked the real thing rather than the green
+checkmark: `MOB`'s own `deploy` workflow run for the login commit
+(`380665d`, run 23) had actually attempted the Cloudflare Pages
+deploy step this time, not skipped it the way every earlier run had.
+Both secrets, `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`, were
+present, added to this repository some time between run 20 and run
+23. But the deploy step itself failed: Cloudflare's own API returned
+"Authentication failed" and, on a second call, "Invalid format for
+Authorization header." That second message is the same shape of
+defect as every one of the nine reboot-os token failures earlier this
+session, a malformed pasted value rather than a wrong one, most often
+from copying out of a terminal window instead of Cloudflare's own
+Copy icon on the token creation screen. Reported honestly rather than
+either declaring it live on the strength of the secrets existing, or
+assuming the worst without reading the log.
+
+Gave him the same steps that worked for reboot-os, written for this
+repository and this permission instead: a new custom token scoped to
+`Account / Cloudflare Pages / Edit`, copied off Cloudflare's own
+button, pasted to replace `CLOUDFLARE_API_TOKEN` in `MOB`'s own
+repository settings, not `reboot-os`'s. He answered "done." Re-ran the
+same workflow run rather than invent a new commit to trigger one.
+
+Re-run (run 23, attempt 2) failed again, a different error. The format
+defect is gone, no more "Invalid format for Authorization header": the
+pasted value is clean this time. But Cloudflare's own API now answers
+"Authentication error [code: 10000]" on the Pages project call itself,
+and wrangler's own fallback, asking Cloudflare to list the account IDs
+this token can see, comes back empty: "Failed to automatically
+retrieve account IDs for the logged in user." A clean token that
+Cloudflare still will not honour for this account points at the
+permission grant or the account scope chosen when the token was made,
+not at a second copy-paste accident. Checked this repository's own
+workflow file for a secret-name mismatch first, since that is a defect
+on this side rather than his: `deploy.yml` reads `CLOUDFLARE_API_TOKEN`
+and `CLOUDFLARE_ACCOUNT_ID` by the same names in both the gate step and
+the deploy step, so the workflow itself is not the cause. Not yet
+resolved; the next ask is listed below.
