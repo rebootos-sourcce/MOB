@@ -29715,12 +29715,134 @@ together. Is there any way to make that look more fluid or fractal? I'd
 like to see two mockups with the trace and the point cloud data volume
 looking more fluid, more fractal."
 
-Two asks, both on the Field's own point cloud, the patterns plotted in
-`atuned_src/ui/wheel.js` and `component.js` by angle and charge: a new
-trace overlay reading the geometric volume a cluster of points occupies,
-and a treatment of density itself, where points sit closest together,
-that reads as fluid or fractal rather than a field of discrete dots.
-Two standalone mockups asked for, same posture as the Character page
-set: nothing wired into `atuned_src`, so comparing them costs nothing.
-Dispatched to the animation-vfx-director, who owns particle and field
-effects.
+Two asks, a new trace overlay reading the geometric volume a cluster of
+points occupies, and a treatment of density itself, where points sit
+closest together, that reads as fluid or fractal rather than a field of
+discrete dots. Two standalone mockups asked for, same posture as the
+Character page set: nothing wired into `atuned_src`, so comparing them
+costs nothing. Dispatched to the animation-vfx-director, who owns
+particle and field effects.
+
+**Correction, caught by the agent and verified: the brief named the
+wrong surface.** "The Field's own point cloud, plotted in `wheel.js`
+and `component.js`" above is wrong and mine; the wheel has no point
+cloud, it is wedges and beads. His own words name the real one, round
+KS, 28 September, already written into `cone.js`'s own header comment
+above `coneRegisters`: "wire in these point cloud, add it as a third
+option for the compass." The point cloud is the Registers view on the
+**Compass**, not the Field. Verified directly: `coneRegisters` exists
+at `cone.js:2207`, reads `leverPull` per address and `CQ` squared for
+the ball of light exactly as the agent reported, and the comment above
+it quotes him by name. The agent built the real mockups against the
+real surface despite the wrong brief rather than against what it was
+told, and said so plainly rather than silently complying with a wrong
+instruction.
+
+## Round NZ. Onboarding, release and paywall named again as the priority, the MVP gap resurfaced
+
+His words, verbatim: "We need to prioritize onboarding tutorial and
+release. I didn't see your feedback on the gap to MVP. We need to
+prioritize the paywall story. I think I said that before. Everything on
+your plate."
+
+The MVP gap was answered already, round NV, and did not reach him in a
+form he saw: resurfaced here rather than redone, with each pillar's own
+state brought current now that the paywall infrastructure landed
+between then and now (round NW/NX). All three pillars put in motion
+this round rather than queued for a later one, since "everything on
+your plate" is read as parallel work, not a sequence waiting on
+approval between pieces.
+
+**Two mockups delivered, both built against the real Registers model.**
+Ink (metaball fluid, density read as a liquid height field with pressure
+isolines as the trace) and Branch (space-colonisation fractal growth
+per address, a convex hull per pattern as the trace). Both read the
+real `leverPull` per address and the real `CQ` squared, ported from an
+offline `engine.js` dump the same way the shipped mockup this view was
+built from was. The agent's own recommendation: Branch, because its
+trace names a pattern's own volume where Ink only traces the total, and
+it holds the product's stroke-only ring language better than a glossy
+liquid would.
+
+**Two real defects found in the shipped Registers view, independently
+confirmed by reading `cone.js` myself.** The fall a caught point makes
+is linear in time (`(FM[i]+tf)%1`, no easing), where the mockups square
+it so matter accelerates like something actually falling. And reduced
+motion freezes every caught point at its own random mid-fall phase
+rather than landing it, since `tf` is forced to 0 under `REDUCED`
+rather than the fall being resolved; CLAUDE.md's own standing rule for
+reduced motion elsewhere in this product is that it shows the end
+state, never a paused middle one, so this is a real inconsistency with
+a rule the product already keeps everywhere else.
+
+**One measured finding that bears on round KR's own open question.**
+Whether an address's place on its own shell should mean anything is
+still open; measured now rather than argued: across the full sway,
+only Crown keeps a triple of addresses close together by accident of
+projection, every other seat's addresses land 40px or more apart. Dense
+clusters in the shipped view mostly are not patterns sitting near
+related patterns, they are coincidence of where the fixed lattice
+happens to place them.
+
+His, to answer: which of the two to lead with, or a hybrid (Branch's
+trace over Ink's fluid); whether an address's shelf position should be
+made to mean something, so pooling reflects a real relationship rather
+than projection; whether Ink's two drops per heavy address every 3.6
+seconds reads as alive or as too busy over repeated viewing.
+
+## Round OA. A copy sweep ordered, the copy engine named as the thing to build first
+
+His words, verbatim, pasting the current copy brief in full: "We need
+to do a copy sweep. This is the copy engine that needs to be developed
+and then utilized on the product. This is the current copy brief from
+the document we generated," followed by the full sixteen-section
+ATUNED Creative Brief and Product Writing System: the north star,
+DISCOVER/PLAY/FLOW/EMBODY mapped from NAME/EXPLAIN/REFLECT/EXPLORE, the
+voice adjectives, copy by layer (tooltip, information, summary/mirror,
+discovery, play, flow, embody), mirror language, evidence language
+(observation versus interpretation versus hypothesis), somatic language
+by surface, personalization from the user's own words, button verbs,
+notifications, the fourteen point AI writing rule sequence, and the
+closing line, "ATUNED does not talk at the user. It creates a space
+where the user can see themselves."
+
+**The document already exists in this repository, checked before
+treating a word of it as new:** `CREATIVE-BRIEF-voice.md`, 805 lines,
+same north star quotes, same architecture, already tracked. What he
+pasted is the same brief, not a new one.
+
+**Two systems, parallel and not yet reconciled.** `CREATIVE-BRIEF-voice.md`
+is the architecture: the four modes, the layer structure, mirror and
+evidence language. `.claude/skills/atuned-voice/SKILL.md`, 1235 lines,
+is the checkable half: the Encarta anchor, the ten micro rules with a
+runnable gate (`check.py`), the owner's own objections as a database.
+Searched the skill for the brief's own structure, DISCOVER/PLAY/FLOW/EMBODY,
+NAME/EXPLAIN/REFLECT/EXPLORE, mirror language, evidence language: none
+of it is there. The skill checks a line in isolation against micro
+rules; it has no idea which of the four modes a line belongs to or
+whether it is doing that mode's job. "The copy engine that needs to be
+developed" is read as closing exactly this gap, not writing a third
+system: the brief's architecture has to become checkable the way the
+micro rules already are, not stay a document a writer has to remember
+to reread.
+
+**One real violation found already, spot checking rather than waiting
+for the sweep.** The brief states a canonical line by name: "'Release
+the charge.' Not 'let go of the charge.'" `ui/release.js` line 136
+ships `REL_ENTRY=['I let go of ','I give up ','I forgive myself for ']`,
+live, user facing, in the exact language the brief singles out by
+name to forbid. Other named bans checked clean: no "unlock your",
+"transformational journey", "begin your" or "journey to" anywhere in
+`atuned_src/ui/`.
+
+**Sequencing: queued, not started, and said so rather than silently
+delayed.** Two other pieces of work are mid-flight in this same working
+tree right now, dispatched earlier this round: the real deliberate
+rerun mechanism for release (22.K17) and a real plan comparison page
+for the paywall pay journey, both editing files under `atuned_src/ui/`
+directly rather than in an isolated worktree. A copy sweep touches the
+same directory, broadly. Starting it now risks the exact failure this
+repository has already been bitten by once this session: a blanket
+stage sweeping one piece of unfinished, unverified work into another's
+commit. Queued to start the moment both finish and their diffs are
+separately verified and committed.
