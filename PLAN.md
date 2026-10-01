@@ -199,3 +199,13 @@ O8 are in the starting session.
   process; birth data does not travel and the analytic data does; a ticked
   agreement box. Open: age floor, dormant accounts, who holds the key to stored
   records.
+
+**Ruled by him, round PB**
+- The ten integrity laws of the first session: Truth, Transparency, Unity,
+  Humility, Compassion, Duty, Accountability, Patience, Temperance,
+  Forgiveness (seats: Throat 2, Crown 1, 3rd Eye 1, Heart 2, Solar 2, Sacral 1,
+  Root 1).
+- Twelve starting points; measure whether twelve is too many.
+- The layer observatory: pull in elements from the Field and reach an A against
+  the Field's C.
+- Research sharing is off and not offered at launch. The age floor is 18.

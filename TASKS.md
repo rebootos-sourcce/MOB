@@ -31210,3 +31210,22 @@ Legal facts (for the policy and terms)
   summary data, does. He did not understand "research sharing". The paid step
   uses a ticked box. Not answered: the age floor, dormant accounts, who holds
   the key to stored records.
+
+## Round PB, 1 October. The ten laws, twelve starting points, the observatory's bar, research sharing off, age 18
+
+> "truth transparency unity humility compassion duty accountability patience
+> Temperance, forgiveness, let's do twelve and figure out whether that's too
+> many. Cool. The observer. The observatory, awesome. Make sure it's pulling in
+> elements from the field. But it's got to like dramatically improve what it the
+> fields work if the field is our baseline, then that's a C try to get it to an
+> A. Oh, sure. The research sharing, turn it off. Eighteen is the age."
+
+**Read as.**
+- The ten integrity laws for the first session: Truth, Transparency, Unity,
+  Humility, Compassion, Duty, Accountability, Patience, Temperance,
+  Forgiveness.
+- Starting points: twelve, to be tested for whether that is too many.
+- The layer observatory is liked. It must pull in elements from the Field, and
+  it must dramatically improve on it: with the Field as the baseline, which he
+  grades a C, the observatory should reach an A.
+- Research sharing is off. Age floor is 18.
