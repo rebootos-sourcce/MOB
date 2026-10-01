@@ -121,6 +121,64 @@ function lexCanon(){
 var LEXCANONRUN=lexCanon();
 var LEXFOLDRUN=lexFold();
 /* ============================================================
+   THE PLACE WORD, 20.H2. "The body word the person used is where the body
+   is." The excavation document's own failure test, run on the shipped
+   build: "I felt tight in my chest when my boss called" read throat 16,
+   because body places were read only as fixed phrases, chest tight and jaw
+   clenched, and split up by other words "tight" fell back to its own seat.
+   The person said chest.
+
+   So a sensation word takes the seat of a place word written in the same
+   clause. Two tables, and neither carries a seat typed here.
+
+   THE SENSATIONS are the words in this lexicon that report what a muscle or
+   a pulse is doing, which is a thing that happens somewhere. A feeling word
+   does not move: "shaking" and "trembling" are fear, and fear is held at the
+   root wherever the hands are. Every one of these must already be a key, so
+   this never makes a hit, it only moves where one lands.
+
+   THE PLACES are read off the lexicon's own body phrases. A place word is
+   seated where every phrase containing it is seated: chest where chest is
+   tight, heavy in my chest and chest tight already sit. CHILD's loc column,
+   the plain words the product uses for where each axis is held, can veto a
+   seat and never add one. A place no phrase seats is not guessed at, it is
+   listed, and a place two phrases seat differently is refused by name. The
+   gate asserts the derived table exactly, so a phrase added at a new seat
+   moves this and says so.
+   ============================================================ */
+var SOMA_SENSE=['tight','tightness','tense','tensed','tension','clenched','clenching',
+ 'throbbing','throb','pounding'];
+/* every place a person names, seated or not. Only the ones the lexicon's
+   own phrases seat can move a sensation; the rest are here so they can stop
+   one. Measured on every string the repository ships, the book included:
+   with chest as the only place listed, "chest tightness, foot pain, lower
+   back tension" carried the back's tension to the chest. Listing back makes
+   it the nearest place to "tension", and a place with no seat moves
+   nothing. Adding a word here can only ever stop a move. */
+var SOMA_PLACE_WORDS=['chest','jaw','throat','stomach','neck','shoulder','shoulders','gut',
+ 'belly','heart','head','back','rib','ribs','spine','hip','hips','arm','arms','hand',
+ 'hands','leg','legs','foot','feet','face','eyes','forehead','temples','muscles','body'];
+function somaPlaces(){
+ var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[]};
+ SOMA_SENSE.forEach(function(w){(LEX[w]?out.sense:out.missing).push(w);});
+ SOMA_PLACE_WORDS.forEach(function(w){
+  var seats={};
+  Object.keys(LEX).forEach(function(k){
+   /* a phrase says where. a single word is a sensation or a feeling */
+   if(k.indexOf(' ')<0||(' '+k+' ').indexOf(' '+w+' ')<0)return;
+   var s=LEX[k][LEX_SEAT]; if(s!=='coherent')seats[s]=1;});
+  var sk=Object.keys(seats);
+  if(!sk.length){out.unseated.push(w);return;}
+  if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
+  var veto=CHILD.filter(function(c){
+   var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
+   return loc.indexOf(' '+w+' ')>=0&&B2K[c.seat]!==sk[0];});
+  if(veto.length){out.refused[w]='CHILD holds '+veto[0].nm+' at the '+veto[0].loc
+   +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
+  out.seat[w]=sk[0];});
+ return out;}
+var SOMA_PLACE=somaPlaces();
+/* ============================================================
    THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
 
    scanStory reads a normalised copy of the story: lowercased, everything that
@@ -208,8 +266,32 @@ function clauseFloor(t,nm,at){
  for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
   if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
  return -1;}
+/* EVERY WORD, WITH ITS CLAUSE. The forward half of clauseFloor, on the same
+   copy and by the same rule: a space whose raw character ends a clause opens
+   the next one, so a word whose own leading space is that boundary belongs
+   to the clause after it, which is where clauseFloor already puts it. One
+   reader of the boundary for every pass that needs it, 20.H1, 20.H2 and
+   20.H6, rather than a second rule to drift from the first.
+     at  the word's leading space in nm.s, which is what a hit's at is
+     s,e the raw letters it came from, so t.slice(s,e) is what was typed
+     c   the clause, counted from nought
+     g   the clause cut again at every comma. Only 20.H2 reads it: a comma
+         is too weak a break to end a negation, leanNorm's ruling, and it is
+         exactly the break between items in a list, which is where a place
+         and a sensation stop belonging together. */
+function wordsOf(t,nm){
+ t=String(t||''); nm=nm||normMap(t);
+ var out=[], c=0, g=0, s=nm.s;
+ for(var k=0;k<s.length;k++){
+  if(s.charAt(k)!==' ')continue;
+  var raw=t.charAt(nm.map[k]);
+  if(k>0&&SENT_END.test(raw)){c++;g++;}
+  else if(k>0&&raw===',')g++;
+  var j=s.indexOf(' ',k+1); if(j<0||j===k+1)continue;
+  out.push({at:k, w:s.slice(k+1,j), s:nm.map[k+1], e:nm.map[j-1]+1, c:c, g:g});}
+ return out;}
 function scanStory(text){
- var src=normMap(text).s;
+ var nm=normMap(text), src=nm.s;
  var hits=[];
  /* phrases first: an idiom outranks its own words */
  PHRASES.forEach(function(row){
@@ -263,6 +345,38 @@ function scanStory(text){
   for(var i=0;i<mods.length;i++){
    if(before.slice(-(mods[i].length+2))===' '+mods[i]+' '){
     h.mod=LEXMOD[mods[i]]; h.modw=mods[i]; h.amt=h.amt*h.mod; break;}}});
+ /* THE PLACE WORD, 20.H2, see SOMA_PLACE above. A sensation word moves to
+    the seat of the nearest place word in its own clause, counted in words,
+    and not across a comma (wordsOf's g). Measured on every string the
+    repository ships: "chest tightness, foot pain, lower back tension" has
+    the chest and the foot one word either side of "tightness".
+    Two places at the same distance that disagree move nothing, because
+    picking one would be the instrument choosing where the person meant.
+    The hit keeps the seat it had in `was` and the word that moved it in
+    `place`, so a reader can always say why it landed there. The amount is
+    untouched: the person said how much, and where. */
+ var sense=hits.filter(function(h){return h.kind==='word'&&SOMA_PLACE.sense.indexOf(h.t)>=0;});
+ if(sense.length){
+  var ws=wordsOf(text,nm), byAt={};
+  ws.forEach(function(w,i){byAt[w.at]=i;});
+  /* EVERY PLACE WORD COUNTS FOR NEAREST, SEATED OR NOT. "my stomach was in a
+     knot and my shoulders tight" names shoulders for the tightness, and
+     shoulders has no seat in this lexicon. Counting only the seated places
+     would carry the tightness eight words back to the stomach, which is a
+     place the person did not say was tight. So the nearest place decides,
+     and a nearest place with no seat moves nothing. */
+  var pl=[]; ws.forEach(function(w,i){if(SOMA_PLACE_WORDS.indexOf(w.w)>=0)pl.push(i);});
+  sense.forEach(function(h){
+   var i=byAt[h.at]; if(i===undefined)return;
+   var best=null, tie=false;
+   pl.forEach(function(j){
+    if(ws[j].g!==ws[i].g)return;
+    var d=Math.abs(j-i), seat=SOMA_PLACE.seat[ws[j].w]||null;
+    if(!best||d<best.d){best={d:d,seat:seat,w:ws[j].w,at:ws[j].at};tie=false;}
+    else if(d===best.d&&seat!==best.seat)tie=true;});
+   if(!best||tie||!best.seat)return;
+   h.place=best.w; h.placeAt=best.at;
+   if(best.seat!==h.band){h.was=h.band; h.band=best.seat;}});}
  hits.sort(function(a,b){return a.at-b.at;});
  return hits;}
 /* ============================================================
@@ -500,6 +614,40 @@ function marksOf(t,p){
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});
  return keep;}
+/* ============================================================
+   WHAT READ AS NOTHING, 20.H6. The complement of marksOf.
+
+   The excavation document's matching order ends at NOVEL: a signal with no
+   canon match is kept, not dropped. This instrument has one matcher,
+   scanStory, and until now nothing said which of a person's words it
+   passed over. marksOf reports what was read; this reports every stretch
+   of the entry that produced no hit at all, in the letters the person
+   typed, so "it read nothing" can always be answered with what it did not
+   read.
+
+   A stretch is a run of words with no mark on any of them, inside one
+   clause: a mark ends it, and so does a sentence end, by wordsOf's rule. A
+   word a mark touches at all is read, so a phrase's own words never come
+   back here. A place word that seated a sensation, 20.H2, is read too: it
+   scored nothing itself and it decided where the charge landed. A negated
+   word is still a mark, because the sniffer does not read negation and this
+   reports the sniffer, not what Source AI hears.
+
+   It is reporting and nothing else. No reading moves, nothing is scored,
+   and nothing leaves the device: the count 19.D8 wants across people is
+   built from this only once there is a server and a consent ruling.
+   ============================================================ */
+function unmarkedOf(t,p){
+ t=String(t||'');
+ var marks=marksOf(t,p), ws=wordsOf(t), out=[], cur=null, read=0, placed={};
+ ((p&&p.hits)||[]).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
+ ws.forEach(function(w){
+  var hit=placed[w.at]||marks.some(function(m){return m.s<w.e&&m.e>w.s;});
+  if(hit){read++; cur=null; return;}
+  if(cur&&cur.c===w.c){cur.e=w.e; cur.words++; return;}
+  cur={s:w.s, e:w.e, c:w.c, words:1}; out.push(cur);});
+ out.forEach(function(r){r.text=t.slice(r.s,r.e);});
+ return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
 function applyStory(text){
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
@@ -710,6 +858,49 @@ function lexComposite(){
   else out.unseated.push(k);});
  return out;}
 var LEXCOMPRUN=lexComposite();
+
+/* ============================================================
+   THE LEXICON VERSION, 19.B6. Every story entry is stamped with the
+   lexicon that read it, so reading it again later is reproducible, or at
+   least knowably not.
+
+   The atom layer re-parses stored entries under today's tables, and an
+   entry stores what it was told at the time, its imprint count and seat
+   totals, and never re-derives them. Those two disagree the moment the
+   lexicon moves, and nothing could say whether a given entry was read by
+   this lexicon or an older one. 20.H2 moves readings, so it is the first
+   change that needs this, and is why it lands first.
+
+   THE VERSION IS A HASH OF THE TABLES, NOT A NUMBER TYPED HERE. A typed
+   version is bumped by whoever remembers, which is the typed number
+   failure CLAUDE.md records again and again. This is computed at load, after
+   the canon, fold and composite passes have finished writing, over every
+   table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
+   PHRASES, LEXMOD and the place word tables, the blocking places included,
+   because adding one can stop a move. A word added, an amount
+   retuned or a seat moved changes it, and nothing else does.
+
+   WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
+   scanStory's or parseStory's own rules with no change to a table moves no
+   table, so it does not move this. The node table W is not the lexicon and
+   is not in it either. Same version means the same words land the same
+   way; it does not promise the same addresses.
+
+   FNV-1a, 32 bits, over a canonical JSON with object keys sorted, so key
+   insertion order cannot move it and the browser and node agree. */
+var LEXV_RE=/^lx[0-9a-f]{8}$/;
+function lexCanonJSON(v){
+ if(Array.isArray(v))return '['+v.map(lexCanonJSON).join(',')+']';
+ if(v&&typeof v==='object')return '{'+Object.keys(v).sort().map(function(k){
+  return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
+ return JSON.stringify(v===undefined?null:v);}
+function lexVersion(){
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+  .map(lexCanonJSON).join('|');
+ var h=0x811c9dc5;
+ for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}
+ return 'lx'+('0000000'+h.toString(16)).slice(-8);}
+var LEX_VERSION=lexVersion();
 
 /* ---------- the shared matcher ----------
    ONE SCANNER FOR EVERY PHRASE TABLE IN THIS LAYER, with the two rules the rest

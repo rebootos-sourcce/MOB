@@ -1763,7 +1763,10 @@ function avSeatAdd(b){
   applyStory(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
   saveYou();
   CURP.story=CURP.story||{entries:[]};
-  CURP.story.entries.push({t:new Date().toISOString(), text:pr.notbe, imprints:k, bands:p.bands});
+  /* stamped with the lexicon that read it, 19.B6, the same as the Story's
+     own commit, because this is a story entry written by a second door */
+  CURP.story.entries.push({t:new Date().toISOString(), text:pr.notbe, imprints:k, bands:p.bands,
+   lex:LEX_VERSION});
   pSave(); pSnap();
   var sv=(typeof saveState==='function')?saveState():{ok:true};
   msg=sv.ok?(old?'Changed. ':'Added. ')+k+(k===1?' imprint':' imprints')+' written to the field.'

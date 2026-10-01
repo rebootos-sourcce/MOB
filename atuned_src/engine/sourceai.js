@@ -176,3 +176,191 @@ function srcTurn(heard,state){
  return {move:'ask', seat:s.seat, band:s.band, rung:s.rung,
   why:s.rung>=SRC_ROOT?'root':(s.earlier?'earlier':'again'),
   mentions:s.mentions, earlier:s.earlier};}
+
+/* ============================================================
+   WHICH QUESTION, 20.H1. SOURCE-TDD-impression-excavation.md: "It selects
+   the smallest useful question based on uncertainty reduction." The page's
+   second button, "A question from what you wrote", walked four questions by
+   how many times it had been pressed. It asked "What happened in the minute
+   before?" of somebody who had just written what happened in the minute
+   before. This reads which of the document's dimensions the entry already
+   answers and asks about one it has not.
+
+   WHAT DOES NOT CHANGE. When Source AI asks on its own (SRC_ASK, the rung
+   at seven), the why it asks, Move on, and the person leading: all exactly
+   as ruled at round GO. This chooses only which question the button asks.
+
+   READ AS PRESENT OR ABSENT, NEVER NEGATED. "I did not say anything" answers
+   what the person did as fully as "I said it", so nothing here reads "not",
+   and PRIORITY.md's worry that these cues become a fourth negation handler
+   does not arise. A cue matches whole words on normMap's own copy.
+
+   THE PRECEDENCE, AND WHY IT IS AN ORDER AND NOT A SCORE. The document names
+   eight scoring factors and gives no weight for any of them, and there is
+   no labelled set to fit one against. A weighted sum here would be eight
+   magic numbers. So the factors become a stated order, each step one a
+   person could check:
+
+     1  uncertainty      a dimension the entry already answers is not asked.
+     2  the chain        among the rest, the document's own order. Its
+                         excavation chain runs trigger, contact, feel,
+                         locate, sense, behaviour, predict, believe,
+                         meaning. Its failure test's "correct progression"
+                         runs trigger, feel, expect, do, meaning, which puts
+                         the prediction before the behaviour. The failure
+                         test is the one place the document says what a
+                         correct order is for a real sentence, so it wins
+                         that one swap, and the gate holds it to it. Goal
+                         is not on the chain and goes last.
+     3  novelty          a dimension already asked in this entry waits
+                         behind one that has not been.
+     4  signal           the question is about a seat the entry was heard
+                         at and quotes the person's own word for it, the way
+                         the button always did.
+
+   Not used, and named: contradiction (19.D5 is not built), verification
+   (20.H4 is not built), and user effort and emotional load, which nothing
+   measures; one question at a time is the only form of them here.
+   ============================================================ */
+var SRC_DIM_ORDER=['trigger','contact','feeling','body','prediction','behaviour',
+ 'belief','meaning','goal'];
+/* the cues, by dimension. feeling and body are read off the sniffer as well,
+   below, because the lexicon already knows more of those than a list can. */
+var SRC_DIM_CUE={
+ trigger:['when','after','because','as soon as','the moment','right before','just before'],
+ contact:['he','she','they','him','her','them','his','their','someone','somebody',
+  'everyone','everybody','nobody','people','boss','manager','colleague','partner',
+  'husband','wife','boyfriend','girlfriend','mother','father','mum','mom','dad',
+  'parents','son','daughter','brother','sister','friend','friends','family','kids',
+  'child','children','teacher','client'],
+ prediction:['will','wont',"won't","i'll","they'll","it'll",'going to','gonna',
+  'expect','expected','expecting','what if','would happen','bound to'],
+ belief:['i believe','i must','i have to','i should','if i','i always','i never',
+  'people always','nobody ever'],
+ meaning:['means','meant','mean that','says about me','proves','which means','what it means'],
+ goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like',"i'd like",
+  'trying to']};
+/* WHAT A PERSON DID, ported rather than written. VERPCUE already carries the
+   engine's approach, avoidance and attachment cues (engine/verp.js), and the
+   idioms already label what is a behaviour. The one thing added is the
+   plainest report of all, "I" and a doing verb, from a stated list, because
+   "I froze" and "I left" are the document's own examples of an impression. */
+var SRC_DO=['left','leave','walked','ran','hid','froze','freeze','stopped','stop',
+ 'avoided','avoid','said','told','asked','shouted','yelled','screamed','snapped',
+ 'slammed','cried','went','stayed','keep','kept','quit','called','texted','apologised',
+ 'apologized','agreed','nodded','smiled','drank','ate','scrolled','checked',
+ 'shut','pretended','ignored','did'];
+var SRC_DO_IDIOM=['silenced','over-giving','avoidance','compulsion','concealment','rigidity'];
+/* after a feel verb, these say the feeling has not been named yet: "I felt
+   tight" is the body, "I felt like" is a thought on its way. Degree words
+   are stepped over, so "I felt so tight" reads the same. */
+var SRC_FEEL_V=['felt','feel','feeling','feels'];
+var SRC_BODY_NOT=['back','hand','hands','face','head','arm','arms'];
+var SRC_FEEL_NOT=['like','that','as','in','at','on','for','about','when','if','it',
+ 'my','a','an','the','this'];
+function srcCue(src,c){return src.indexOf(' '+c+' ')>=0;}
+/* WHICH DIMENSIONS AN ENTRY ANSWERS. Returns each answered dimension with
+   the cue that answered it, which is the because, and the open ones in the
+   order above. Pure, and reads nothing but the text. */
+function srcDims(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, p=parseStory(t);
+ var by={}, place=SOMA_PLACE_WORDS, sense=SOMA_PLACE.sense;
+ function say(k,why){var l=by[k]=by[k]||[]; if(l.indexOf(why)<0)l.push(why);}
+ Object.keys(SRC_DIM_CUE).forEach(function(k){
+  SRC_DIM_CUE[k].forEach(function(c){if(srcCue(src,c))say(k,c);});});
+ /* the body. a sensation word or a place word, but not the place words
+    ordinary sentences use for something else: "she came back", "on the
+    other hand", "face it", "head home". Those still stop a sensation moving
+    in scanStory, where a wrong move is the cost; here a wrong read would
+    only skip a question, but it would skip it on every entry that uses one
+    of these words in its ordinary sense. */
+ sense.concat(place).forEach(function(w){
+  if(SRC_BODY_NOT.indexOf(w)<0&&srcCue(src,w))say('body',w);});
+ /* the feeling. Any hit the sniffer read that is not a sensation or a body
+    phrase names a feeling, including a coherent one: "calm" answers how a
+    person felt. Biased this way on purpose: counting a dimension as answered
+    when it was not costs one question not asked, and counting it open when
+    it was answered is the over-questioning the document's failure tests
+    name. */
+ p.hits.forEach(function(h){
+  if(sense.indexOf(h.t)>=0)return;
+  if(place.some(function(w){return (' '+h.t+' ').indexOf(' '+w+' ')>=0;}))return;
+  say('feeling',h.t);});
+ var ws=src.trim().split(' ');
+ ws.forEach(function(w,i){
+  if(SRC_FEEL_V.indexOf(w)<0)return;
+  var j=i+1;
+  while(j<ws.length&&LEXMOD[ws[j]]!==undefined)j++;
+  var n=ws[j]; if(!n)return;
+  if(SRC_FEEL_NOT.indexOf(n)>=0||sense.indexOf(n)>=0||place.indexOf(n)>=0)return;
+  say('feeling',w+' '+n);});
+ /* what the person did */
+ ['intent','averse','attach'].forEach(function(g){
+  (VERPCUE[g]||[]).forEach(function(c){if(srcCue(src,c))say('behaviour',c);});});
+ p.hits.forEach(function(h){
+  if(h.kind==='phrase'&&SRC_DO_IDIOM.indexOf(h.label)>=0)say('behaviour',h.t);});
+ ws.forEach(function(w,i){
+  if(w!=='i')return;
+  var n=ws[i+1]==='just'||ws[i+1]==='then'?ws[i+2]:ws[i+1];
+  if(SRC_DO.indexOf(n)>=0)say('behaviour','i '+n);});
+ var open=SRC_DIM_ORDER.filter(function(k){return !by[k];});
+ return {answered:by, open:open, words:ws.filter(Boolean).length};}
+
+/* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
+   result, asked the kinds already asked in this entry in the order they
+   were asked, askable the dimensions the page has a question for. Returns a
+   kind, or null when there is nothing it can ask. When every askable
+   dimension is answered the person still pressed for a question, so it
+   walks them all in the same order rather than saying nothing. */
+function srcNext(dims,asked,askable){
+ var can=SRC_DIM_ORDER.filter(function(k){return (askable||[]).indexOf(k)>=0;});
+ if(!can.length)return null;
+ var open=can.filter(function(k){return dims&&dims.open.indexOf(k)>=0;});
+ var pool=open.length?open:can, a=asked||[];
+ var fresh=pool.filter(function(k){return a.indexOf(k)<0;});
+ if(fresh.length)return fresh[0];
+ /* everything here has been asked once: the one asked longest ago */
+ return pool.slice().sort(function(x,y){return a.lastIndexOf(x)-a.lastIndexOf(y);})[0];}
+
+/* ============================================================
+   WHAT SOURCE AI ASKED, KEPT WITH THE ENTRY, 20.H5. Every Source AI state
+   was page memory and went at commit, so nothing could ever say what was
+   asked about which entry, or whether the person moved on from it.
+
+   PRIVACY, CHECKED FIRST. It stays on the device, on the entry it was asked
+   about, and it stores a question KIND and a SEAT KEY. Never the words of
+   the question and never anything the person wrote in answer: the entry's
+   own text already holds what they wrote, and a second copy of a question
+   with their words quoted in it would be a second copy of their words.
+   This is inside the narrow version of DESIGN-sniffer.md question 12 that
+   round GO built.
+
+   THE KINDS. The document's dimensions the button can ask, the three whys
+   the ask move asks (again, earlier, root, see srcTurn), and the two the
+   button asks off earlier entries when this one has nothing heard.
+
+   THE OUTCOMES, and only the three this page can actually observe:
+     moved   the person pressed Move on while it was showing
+     wrote   they wrote more after it was asked, and did not move on
+     left    neither: committed with nothing added after it
+   "Answered" would claim the instrument knows that what was written is an
+   answer, and it does not, so it says wrote. "Refused" has no control on the
+   page today; that is 20.H4 and S6, and a state nothing can produce is not
+   offered. */
+var SRC_KINDS=SRC_DIM_ORDER.concat(['again','earlier','root','since','back']);
+var SRC_OUTCOMES=['moved','wrote','left'];
+/* log is the page's own list, one row per question shown: {k, seat, at, moved},
+   where at is the length of the text when it was first shown. Returns what
+   the entry keeps. A kind or seat it does not know is dropped here rather
+   than written, so the boundary never sees one. */
+function srcAsked(log,len){
+ var out=[], seen={};
+ (log||[]).forEach(function(r){
+  if(!r||SRC_KINDS.indexOf(r.k)<0)return;
+  var seat=(r.seat&&K2BAND[r.seat])?r.seat:null, key=r.k+'|'+seat;
+  if(seen[key])return; seen[key]=1;
+  out.push({k:r.k, seat:seat,
+   a:r.moved?'moved':((+len||0)>(+r.at||0)?'wrote':'left')});});
+ return out;}
+/* the most an entry can carry: every kind at every seat and at none. */
+function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
