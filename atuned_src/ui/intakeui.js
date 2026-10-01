@@ -729,15 +729,27 @@ function iqHeroRing(p,sc,cq){
  var seg=iqSegs(vals,function(i){return seatCol(SI[o[i]].b);},48,48,40,6.5,5);
  return '<span class="iqa-hr"><svg viewBox="0 0 96 96" aria-hidden="true">'+seg+'</svg>'
   +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i>CQ</i></span></span>';}
+/* A SIMULATION, NOT A BEHAVIOUR, round OK. His words: "What if we do show CQ
+   at 100 on starting? It shows the soul raw expression. And then as the input
+   stuff, it comes down. I don't want that to actually happen. But I'm curious
+   to see how that works. So I want to simulate that." Behind a switch that a
+   person never meets (?sim=cq100 on the address, or window.IQ_SIM_CQ100), the
+   ring's figure starts at 100 and every law answered swaps its assumed ten for
+   the real answer, so the figure falls as the person speaks. It reads r.CQ
+   and the count of laws measured and changes nothing it reads. */
+function iqSim(){
+ try{return !!(window.IQ_SIM_CQ100||/[?&]sim=cq100\b/.test(location.search));}catch(e){return false;}}
+function iqSimCQ(r,scored){return Math.max(0,Math.min(100,(+r.CQ||0)+(21-scored)*10/210*100));}
 function iqHeroHtml(p,sc,r,scored,answered,total){
  var left=total-answered;
  /* THE FIGURE WAITS FOR THE BAND. The summary beside this page says it in
     its own words, "The band is named once all 21 are in", and a CQ of 3 printed
     after one law is a stranger being told they are incoherent on the strength
     of a twenty first of the data. The ring still fills as each law lands. */
- return '<header class="iqa-hero iqa-card">'+iqHeroRing(p,sc,(scored&&r.tier)?r.CQ:null)
+ var simOn=iqSim();
+ return '<header class="iqa-hero iqa-card">'+iqHeroRing(p,sc,simOn?iqSimCQ(r,scored):((scored&&r.tier)?r.CQ:null))
   +'<div class="iqa-ht"><span class="iqa-eye">Energetics</span>'
-  +'<span class="iqa-hh">'+(r.tier?esc(r.tier):left+' questions left')+'</span>'
+  +'<span class="iqa-hh">'+(simOn?'Simulation: every unanswered law counts as ten':(r.tier?esc(r.tier):left+' questions left'))+'</span>'
   +'<span class="iqa-hs">'+scored+' law'+(scored===1?'':'s')+' measured'
   +(r.tier&&left>0?', '+left+' question'+(left===1?'':'s')+' left':'')+'</span></div>'
   +'<div class="iqa-tools">'+iqViewHtml()

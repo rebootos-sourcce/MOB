@@ -4487,6 +4487,13 @@ body.punch .iq-sl{box-shadow:none}
 .iq-n:hover{background:var(--panel);color:var(--ink)}
 .iq-n.on{background:var(--c);border-color:var(--c);color:var(--on-accent);font-weight:600}
 @media (max-width:1180px){.iq-qs{grid-template-columns:1fr}}
+/* ON A PHONE THE ELEVEN CELLS STAY ON ONE LINE, his ruling ("a scale that wraps
+   is two scales"), so each is about thirty wide. Round OK, his words: "just
+   make it legible so it looks good and doesn't break." The digit is larger and
+   heavier, the cell keeps the 44 high tap floor, and the number in the cell
+   never wraps or clips. */
+@media (max-width:520px){.iq-n{font-size:15px;font-weight:600;padding:0;min-width:0;letter-spacing:-.02em;
+ display:flex;align-items:center;justify-content:center}}
 
 /* ============================================================
    RELEASE AND RITUAL

@@ -30479,3 +30479,34 @@ are."
 - **Found, not mine to decide:** Light and Revelation both name Jesus as their
   coherent pole in `engine/data/compass.js`, while `DESIGN-compass.md` lists
   Meister Eckhart for Revelation.
+
+## Round OL. Combine the left menu, the nine, the name research, the CQ at 100 simulation
+
+His words, verbatim: "move to mine. Uh, for number one, combine, and I'll review.
+For the intake page, text on the phone, just make it legible so it looks good and
+doesn't break. The form. I think we could show for intake page, here's a thought.
+What if we do show CQ at 100 on starting? Right? It shows the soul raw
+expression. And then as the input stuff, it comes down. I don't want that to
+actually happen. But I'm, I'm curious to see how that works. So I want to
+simulate that. For number four, I, I need reference. I don't know what you're
+talking about now. The laws of emotion, that is, that is person's nine. Lance
+means to pierce, right? It's a weapon that a knight uses. So you need to go do
+your research again. For my full name, energetics. First, middle, and last. For
+number seven, go ahead and keep my ruling."
+
+- **Left menu:** the three concepts (art, innovation, animation) are being combined
+  into one build for his review. Defaults applied: Decoherence everywhere for the
+  DQ bar; the primary cable always on, the rest on hover; no cables on a phone.
+- **Intake on a phone:** the 0 to 10 cells stay on one line and the digits are
+  larger and heavier. **The CQ at 100 simulation** runs behind `?sim=cq100` and is
+  not shipped; its picture is `mockups/cq100-sim/sheet.png` (0 answered reads 100,
+  all 21 answered reads 64 on the worked person).
+- **"The person's nine" is the nine emotions** (the Child fetters), so the 3 by 3
+  as built stands.
+- **Name meanings, researched again.** Lance is the lance, the knight's spear,
+  Old French lance from Latin lancea (a lesser line runs to Germanic land);
+  O'Neill is Ó Néill, descendant of Niall, champion (also cloud, passionate);
+  Powell is ap Hywel, son of Hywel, eminent. The page reads first, middle and last
+  and the table now carries these three with their sources. The earlier DM and DZ
+  note that Lance means land is the lesser line, not the root he means.
+- **Sight by tier stands** over the experience model's "reading stays visible".

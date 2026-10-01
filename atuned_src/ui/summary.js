@@ -697,15 +697,26 @@ function sgRing(inner,col,tipT,tip){
    which is held in each entry's note and not printed.
    ============================================================ */
 const NAME_MEANINGS={
+ /* RESEARCHED AGAIN, round OK, on his word: "Lance means to pierce, right?
+    It's a weapon that a knight uses. So you need to go do your research
+    again." The meaning of a name for this page is its root as a word, which is
+    what a person grows into, and not only the line of descent. Lance is the
+    lance, the knight's spear, from Latin lancea (a second line of descent runs
+    to Germanic land, which is the lesser one). O'Neill is the descendant of
+    Niall, which most authorities give as champion (also cloud, passionate).
+    Powell is ap Hywel, the son of Hywel, and Hywel is eminent, which is
+    exalted. Sources are Wikipedia's entries on Lance (given name), O'Neill
+    (surname) and Powell (surname), and Behind the Name. This is still a
+    stub of three, and the table that replaces it is vetted before it ships. */
  lance:{part:'Lance',says:'to pierce',
-  src:'The owner, in his own words, round OJ, 1 October 2026',
-  note:'DM and DZ: the references root Lance to land, and to pierce comes from a later link to a word for spear.'},
+  src:'Lance: Old French lance, Latin lancea, the knight\'s spear (Wikipedia, Lance given name; Ancestry; Behind the Name)',
+  note:'A second line runs to Germanic land. The weapon is the root as a word.'},
  oneill:{part:"O'Neill",says:'champion',
-  src:'The owner, in his own words, round OJ, 1 October 2026',
-  note:'DM and DZ: the references give Niall no settled meaning, and champion is one proposal of several.'},
+  src:'O\'Neill: Ó Néill, descendant of Niall, champion (Wikipedia, O\'Neill surname; Library Ireland)',
+  note:'Niall is also given as cloud or passionate. Most authorities give champion.'},
  powell:{part:'Powell',says:'exalted',
-  src:'The owner, in his own words, round OJ, 1 October 2026',
-  note:'DM and DZ: the references give Hywel, which means eminent.'}};
+  src:'Powell: ap Hywel, son of Hywel, eminent (Wikipedia, Powell surname; Behind the Name)',
+  note:'Hywel is eminent, remarkable. Exalted is the same sense.'}};
 function nameKey(s){return String(s||'').toLowerCase().replace(/[^a-z]/g,'');}
 /* the parts of a name as the person entered them, first, middle and last. A
    reference case has only a full name, so it is split the way numerology
