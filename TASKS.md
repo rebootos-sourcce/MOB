@@ -29567,3 +29567,63 @@ rather than off a document's own claim:**
 Backlog scrub, asked for and not yet done: queued, named rather than
 started this round, since the MVP gap answer and the agent redirect
 came first.
+
+## Round NW. Four character mockups asked for, the paywall and release sequenced, the rerun defect ruled
+
+His words, verbatim: "For the character page, I'm going to see an
+interactive mockup, four versions. With one of the versions, with two
+of the versions, I'm going to see them get very creative with the
+masks. I want the masks to be symbolically representative of the
+emotions that they are manifesting. And I want it to change dynamically
+based off of what's leading, like what's the heaviest weight. Build the
+paywall infrastructure. Let's work on the release next. I'm not sure
+what you mean with the new issue, I obviously am going to go with the
+most ethical answer."
+
+**Character: four real options, not a fourth attempt at one.** Read as
+a deliberate change of process after two builds and a mid-flight
+cancellation this same night: four distinct, interactive mockups, shown
+before any one of them is committed to the live page. At least one or
+two pushed genuinely creative on the mask itself, symbolic of the
+emotion it carries rather than a reading of pixels, and all four
+dynamic off the heaviest weighted pattern currently leading, the same
+fact `chBuiltWord` and `chHotCount` already compute, read differently.
+Built as standalone pages, not wired into `atuned_src`, so choosing
+between them costs nothing to undo.
+
+**Sequencing confirmed: paywall now, release after.** "Build the
+paywall infrastructure" is explicit and first. `PLAN_HOST` is the one
+seam, named round NV; building it for real is a `reboot-os` change, a
+Cloudflare Worker route, not only this repository.
+
+**The rerun defect, round NV's own `22.K17`: ruled.** "The most ethical
+answer" is read as the one the ruling itself already points at:
+`DECISIONS.md` promises a free rerun four times over, so the fix is a
+real free rerun, not a weakened promise. Two halves, same as the
+finding itself named: the two sentences that currently state a false
+thing come off now, today's own work; the real mechanism, a deliberate
+rerun that plans opened lines and charges nothing, is release's own
+first item once paywall infrastructure lands, since he placed release
+second.
+
+**The two false "rerunning costs nothing" sentences came off**,
+`ui/release.js` and `ui/panels.js`, the fast half of the ethical answer.
+A gate had pinned the false sentence to the screen; it now asserts the
+sentence is gone instead. In removing it, found and fixed a real mistake
+of my own: round NU's commit had swept in 113 lines of orphaned test
+code the cancelled Character agent left in `tests/functional.js`,
+referencing a shelf and a console that no longer exist after that
+agent's work was stashed. Removed. `node tests/engine.js` 1858/0;
+`tests/functional.js` needed several runs to trust, two other pieces of
+work finishing concurrently on this machine, the same contention this
+session has hit before, confirmed this time by finding a second,
+agent-owned `functional.js` process actually running at the same time.
+
+**Four Character page mockups, standalone, delivered.** Charge cloud,
+Seal, Relief scan and Glass, each a real, different direction, all four
+reading one live toy model so the leading pattern visibly changes the
+mask. Screenshots and the files themselves sent to him directly. Two
+open questions named by the build itself rather than guessed past: the
+nine pattern to movement mappings are invented, not canon, and his
+pending open question about Heart and Crown carrying no mask surfaces
+again here, since those two seats still have nowhere to land.
