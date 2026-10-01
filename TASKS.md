@@ -28748,3 +28748,20 @@ never-blank rim, A6 the egg face (its own artwork does not exist yet),
 A7 the gradient frame, A9 the face as a body map. Not committed by the
 agent; will be read in full and re-gated independently before anything
 lands, same discipline as the login build after the restart.
+
+## Round NI
+
+"review." Three more documents. Diffed byte for byte before answering
+rather than assumed: two are the exact same files already reviewed and
+saved, `ATUNED_Intelligence_System_TDD_V3.md` against
+`SOURCE-TDD-V3-intelligence.md` and
+`ATUNED_Creative_Brief_Product_Writing_System.md` against
+`CREATIVE-BRIEF-voice.md`, both zero-diff. The third,
+`ATUNED_Funnel_Storyboard_v1.md`, is genuinely new: a full funnel
+redesign, Encounter through Invitation, built around "don't tell them
+what ATUNED does, let ATUNED do something to them," a symbolic opening
+question in place of a survey, the Story tool demonstrated before it is
+named, and the Story/Field/Recognition/Mirror loop run once in the
+funnel itself before account creation. Saved whole as
+`ATUNED-funnel-storyboard.md`. Queued into task #14 alongside the rest
+rather than built now.
