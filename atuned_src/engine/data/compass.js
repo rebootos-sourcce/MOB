@@ -59,7 +59,7 @@ const MIRROR=[
  {k:'TR', q:'Trust', seat:'Heart',
   up:'Rumi',   upd:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
   dn:'Charon', dnd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
-  ask:'Does this person access experience directly, or require verification before they allow themselves to feel?', ic:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z', dic:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z'},
+  ask:'Does this person feel things straight away, or wait for proof before they let themselves feel?', ic:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z', dic:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z'},
  {k:'CH', q:'Charge', seat:'Root',
   up:'Elijah',   upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
   dn:'Phlegyas', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
@@ -88,7 +88,7 @@ const MIRROR=[
     love rather than direct knowing stands at the top of it. */
  {k:'RE', q:'Revelation', seat:'Crown',
   up:'Jesus', upd:'Love as the highest charge. The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.',
-  dn:'The Furies',      dnd:'Map replacing territory permanently. The belief system defended against any experience that contradicts it.',
+  dn:'The Furies',      dnd:'The map takes the place of the ground, for good. The belief system is guarded against any experience that contradicts it.',
   ask:'Can this person change what they believe when what they live through says otherwise?',
   /* the same radiant he carries at the Heart, because it is the same figure
      and a second drawing would be a second concept. */
@@ -142,7 +142,7 @@ const BLUEPRINT=[
  {nm:'Malak',   d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
  {nm:'Baal',    d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
  {nm:'Set',     d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
- {nm:'Lucifer', d:'Pride as separation from Source. The highest functioning adversarial expression, hardest to detect, because it uses the vocabulary of coherence in service of decoherence.'}];
+ {nm:'Lucifer', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
 
 /* ---- THE NINE CIRCLES, THE DESCENT ----
    Depth, governor, the pattern and where it sits in the body. The
@@ -167,8 +167,8 @@ const CASCADE=[
  {nm:'The Drone',         d:'Obedience without independent thought. The system has outsourced its own navigation.'},
  {nm:'The NPC',           d:'Identity built from external narratives and approval. No interior reference point.'},
  {nm:'The Energy Vampire',d:'Extracting emotional resource from others to sustain the self. No internal generative charge. It runs on borrowed current.'},
- {nm:'The Demon',         d:'Chaotic destructive reactivity without self awareness. No gap between stimulus and response.'},
- {nm:'The Devil',         d:'Calculated manipulation and deliberate domination. Not reactive, strategic. Awareness is present and deployed against coherence.'}];
+ {nm:'The Demon',         d:'Wild, damaging reaction with no self awareness. No gap between what lands and what the person does.'},
+ {nm:'The Devil',         d:'Harm done on purpose, with a plan. It is not a reaction. The person sees clearly and uses what they see against coherence.'}];
 
 /* ---- THE ICONS FOR EVERYTHING ELSE WITH A NAME ----
    Ruled: "every figure gets an icon. Rumi, Buddha, Geryon, Moloch, all of

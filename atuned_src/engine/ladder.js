@@ -185,7 +185,7 @@ var MARKS=[
   ic:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',
   t:function(l){return l.ground>=10;}},
  {k:'fifty', fam:'Ground', b:'Throat', nm:'Fifty addresses',
-  d:'Fifty. Close to half the architecture has been opened at least once.',
+  d:'Fifty. Close to half your addresses have been opened at least once.',
   ic:'M3 12h18 M3 7h18 M3 17h18 M7 3v18 M17 3v18',
   t:function(l){return l.ground>=50;}},
  {k:'told', fam:'Ground', b:'Throat', nm:'First story',

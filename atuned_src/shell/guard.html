@@ -203,7 +203,7 @@
    var eof=null, arrived='unknown';
    try{ eof=document.getElementById('eof');
      arrived=eof?('whole file, '+eof.getAttribute('data-len')+' bytes')
-                :'THE FILE IS SHORT. The end of it never arrived.'; }catch(e){}
+                :'The file is short. The end of it never arrived.'; }catch(e){}
    pre.textContent=stamp+'\n'+arrived+'\nstopped after '+AT
     +'\n'+(lines.length?lines.join('\n'):'no error was thrown')
     +'\n'+where+'\n'+navigator.userAgent;

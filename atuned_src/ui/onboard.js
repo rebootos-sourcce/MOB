@@ -229,7 +229,7 @@ function obRender(){
    '<p class="ob-p">This product works with the body and the mind '
    +'together. A thought changes what your body does, and what your body '
    +'does changes the thought back.</p>'
-   +'<p class="ob-p">Sit down. Take ten slow breaths. Relax.</p>'
+   +'<p class="ob-p">Sit down. Put both feet on the floor. Take ten slow breaths.</p>'
    +'<p class="ob-p">When you are ready, bring your attention to your '
    +'throat.</p>'
    +'<p class="ob-p">Think <b>yes</b>, ten times. Notice what that feels '

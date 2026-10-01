@@ -96,7 +96,7 @@ const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 112 addresses. Each mark is the charge held at one place.'},
  {k:'seats',g:'carry',nm:'Assemblage Points',ic:FB_IC_SEAT,
-  tip:'The seven assemblage points, the seats up your body from the base of the spine to the top of the head. Each is named on its own stretch of the ring.'},
+  tip:'The seven seats, from the base of your spine to the top of your head.'},
  {k:'laws',g:'carry',nm:'Laws',ic:fbFlay('laws'),
   tip:'The twenty one laws, each set at its assemblage point. Their sum is the number at the centre.'},
  {k:'gates',g:'carry',nm:'Action',ic:fbFlay('gates'),

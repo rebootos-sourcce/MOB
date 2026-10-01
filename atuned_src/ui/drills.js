@@ -464,7 +464,7 @@ function runQDrill(q){
  else if(q==='sq'){
   h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+r.SQm.toFixed(1)+' mean</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, 0 to 10. '
-   +'Each segment of the shell is drawn to its own depth, so the wheel is 112 of these side by side. The mean is across the addresses that hold anything.</p>'
+   +'Each segment of the shell is drawn to its own depth, so the wheel is 112 segments side by side. The mean is across the addresses that hold anything.</p>'
    +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+r.darkV.toFixed(1)+'</b>. Click a segment on the wheel to read one address.</p>';}
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
@@ -956,8 +956,8 @@ function runRecogniseDrill(){
    +'<em>'+esc(c.sin||c.nm)+'</em></button>';});
  h+='</div><p class="ad-p">Each one has a body address behind it, which is where the work '
   +'happens. The name on the right is what people called the pattern for eight hundred years '
-  +'before anybody measured it.</p>'
-  +'<div class="ad-act"><button class="btn" id="rdage">None of these. Try by age</button></div>';
+  +'before anybody measured it. If none of them fits, start from your age.</p>'
+  +'<div class="ad-act"><button class="btn" id="rdage">Try by age</button></div>';
  rdShell(h);
  var ag=document.getElementById('rdage'); if(ag)ag.onclick=runAgeDrill;
  var host=document.getElementById('rdrill');

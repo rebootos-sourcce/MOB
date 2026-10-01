@@ -116,7 +116,7 @@ let BASE='';
     +' (at '+own+', extension at '+ext+')');
    ok(/stopped after engine\/read\.js/.test(r.pre),pg+' and it names the module it stopped after');}
   {const r=await withExtension('/cut60.html',read);
-   ok(r.alert&&/THE FILE IS SHORT/.test(r.pre),'a file cut to 60 percent says the file is short');}
+   ok(r.alert&&/The file is short\. The end of it never arrived\./.test(r.pre),'a file cut to 60 percent says the file is short');}
 
   console.log('\n=== one press copies the lines ===');
   {const b=await chromium.launch({executablePath:CHROME});

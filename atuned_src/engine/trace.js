@@ -146,15 +146,15 @@ var TRACE_RULES=[
  ['reframe','replaces','pattern','8, pattern replacement'],
  /* the story system, the one relationship the engine already computes */
  ['story','supports','pattern','2, the story system: parseStory imprints'],
- ['story','produces','impression','16, and PRIORITY 20.H8: the reading of an entry'],
- ['impression','supports','pattern','16, and PRIORITY 20.H8'],
+ ['story','produces','impression','16, and the priority list 20.H8: the reading of an entry'],
+ ['impression','supports','pattern','16, and the priority list 20.H8'],
  ['story','occurs_in','context','36'],
  /* section 12 and 13: observation and the somatic state */
  ['practice_event','produces','observation','12, source observation'],
  ['observation','supports','evidence','12, source observation'],
  ['observation','measures','somatic_state','13, affect'],
  ['observation','occurs_in','context','36'],
- ['somatic_state','associated_with','pattern','PRIORITY S3: registration, not causation'],
+ ['somatic_state','associated_with','pattern','the priority list S3: registration, not causation'],
  /* section 36, context transfer */
  ['behavior','occurs_in','context','36'],
  ['behavior','transfers_to','context','36'],
@@ -231,22 +231,27 @@ var TRACE_ID_MAX=120, TRACE_MAX=100000;
 /* WHAT A GAP IS. A node of these types that lacks one of these links is
    missing something the document says it must have, and traceOrphans
    names it. Required, not merely expected: a ritual that has never been
-   done is not a gap, a ritual that executes nothing is. */
+   done is not a gap, a ritual that executes nothing is.
+
+   The reasons below are read by a person and carry no citation. Where each
+   one comes from, in the practice and trace design document: ritual 1,
+   protocol 15, practice event 15, evidence 12, outcome 14, goal 19, and
+   impression in the priority list at 20.H8. */
 var TRACE_NEEDS={
  ritual:[{dir:'out',edges:['executes'],types:['protocol'],
-  why:'a ritual is the scheduled execution of a protocol (TDD 1), and this one executes none'}],
+  why:'a ritual is the scheduled execution of a protocol, and this one executes none'}],
  protocol:[{dir:'out',edges:['targets','addresses'],types:['pattern'],
-  why:'a protocol targets a pattern (TDD 15), and this one names none'}],
+  why:'a protocol targets a pattern, and this one names none'}],
  practice_event:[{dir:'in',edges:['produces'],types:['ritual'],
-  why:'a practice event is produced by a ritual (TDD 15), and nothing produced this one'}],
+  why:'a practice event is produced by a ritual, and nothing produced this one'}],
  evidence:[{dir:'out',edges:['supports','contradicts'],types:['pattern','behavior','outcome'],
-  why:'evidence is about something (TDD 12), and this bears on nothing'}],
+  why:'evidence is about something, and this bears on nothing'}],
  outcome:[{dir:'out',edges:['measures'],types:['goal'],
-  why:'an outcome measures progress against a goal (TDD 14), and this measures none'}],
+  why:'an outcome measures progress against a goal, and this measures none'}],
  goal:[{dir:'out',edges:['requires'],types:['behavior'],
-  why:'a goal decomposes into observable behaviour (TDD 19), and this one has none'}],
+  why:'a goal decomposes into observable behaviour, and this one has none'}],
  impression:[{dir:'in',edges:['produces'],types:['story'],
-  why:'an impression is the reading of a story (PRIORITY 20.H8), and no story produced this one'}],
+  why:'an impression is the reading of a story, and no story produced this one'}],
  release:[{dir:'out',edges:['targets','addresses'],types:['pattern'],
   why:'a release works at an address'}],
  reframe:[{dir:'out',edges:['targets','addresses'],types:['pattern'],

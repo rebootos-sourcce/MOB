@@ -239,7 +239,7 @@ function somaPlaces(){
   var veto=CHILD.filter(function(c){
    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
    return loc.indexOf(' '+w+' ')>=0&&B2K[c.seat]!==sk[0];});
-  if(veto.length){out.refused[w]='CHILD holds '+veto[0].nm+' at the '+veto[0].loc
+  if(veto.length){out.refused[w]='the codex holds '+veto[0].nm+' at the '+veto[0].loc
    +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
   out.seat[w]=sk[0];});
  /* the two word places. A half and a place: the owner's ruling, checked
@@ -1251,9 +1251,9 @@ function sniffFlow(text){
     this repository, so the honest answer is that they were not read. */
  return {nature:[], human:[], expression:expr,
   unread:['nature','human'],
-  because:['the 13 nature and 15 human nature elements carry their shadow strings in '+
-   'reviews/elements.json, which is not in this repository, so they were not read '+
-   'rather than read as clean']};}
+  because:['the 13 nature and 15 human nature elements were not read, and are not '+
+   'reported as clean. Their shadow strings are in reviews/elements.json, which is '+
+   'not in this repository']};}
 
 /* ---------- gates · two upstream feeding one sump ----------
    Section 8, and it is ruled that this is not three peers.
@@ -1310,8 +1310,8 @@ function sniffGates(text){
              'for each one distorted, which is his measured cascade']}:null,
   read:read, cues:s.total,
   because:read?['both upstream gates were read from the text']
-   :['the text matched '+s.total+' gate cues, and the sump is not computed '+
-     'without both upstream readings, because assuming them clean would report '+
+   :['the text matched '+s.total+' gate cues. The sump is not computed '+
+     'without both upstream readings. Assuming them clean would report '+
      'an avoidance number nobody entered']};}
 
 /* ---------- depth · Dante, and null rather than a guess ----------
@@ -1394,7 +1394,7 @@ function sniffOffer(axes){
          :', and this reading placed no address on it, so there is nowhere to '+
           'name'),
      'every shadow in the system has a named coherent opposite at the same '+
-      'address, and detecting the shadow is what names the replacement to offer']
+      'address. Finding the shadow names the replacement to offer']
      .concat(a.because.slice(0,2)),
     /* named where the two tables disagree, so a renderer can decline to print
        a replacement the rest of the product contradicts. */
