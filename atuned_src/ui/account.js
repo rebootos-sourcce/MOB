@@ -440,7 +440,11 @@ function accPrivacy(){
 
 /* ---------- 4.5 billing. almost entirely real, ported not rebuilt ---------- */
 function accBilling(m){
- return planSection(m)+accGroup('Invoices',accStub('Invoices','held by the processor'),
+ /* the tiers sit under the plan in force, ui/plans.js, and carry the presses */
+ if(typeof planTiersCss==='function')planTiersCss();
+ return planSection(m,{brief:true})
+  +(typeof planTiersHtml==='function'?planTiersHtml():'')
+  +accGroup('Invoices',accStub('Invoices','held by the processor'),
   'Invoices live with whoever takes the payment, which is never this file. '
   +'Nothing about a card is held here and the record carries no customer number.');}
 
@@ -564,7 +568,8 @@ function accWire(){
  var ab=$('achelpb'); if(ab)ab.onclick=function(){obCompose('bug');};
  var ar=$('acrate');  if(ar)ar.onclick=function(){obCompose('rating');};
  var as=$('acsurv');  if(as)as.onclick=function(){obCompose('feedback');};
- planWire();}
+ planWire();
+ if(typeof planTiersWire==='function')planTiersWire();}
 /* THE SIGN IN PRESSES. The request and every sentence it can end in are
    ui/auth.js's; what is here is the waiting and the redraw. A signed in
    section is a different set of rows, so a yes redraws the section and a no

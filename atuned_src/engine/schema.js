@@ -698,8 +698,11 @@ function vRitual(errs,i,x){
    var d=vDate(errs,path+'.done',x.done);
    if(d!==null)q.done=d;}}
  return q;}
-/* WHAT A STORY ENTRY MAY CARRY. The same four since the first build. */
-var ENT_KEYS=['t','text','imprints','bands'];
+/* WHAT A STORY ENTRY MAY CARRY. The same four since the first build, and two
+   optional ones since round OB: lex, the lexicon version that read it
+   (19.B6, LEX_VERSION in engine/sniff.js), and asked, what Source AI asked
+   about it (20.H5, srcAsked in engine/sourceai.js). */
+var ENT_KEYS=['t','text','imprints','bands','lex','asked'];
 function vEntry(errs,i,x){
  var path='story.entries['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -736,6 +739,38 @@ function vEntry(errs,i,x){
    if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
    var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
    if(v!==null)q.bands[k]=v;});}
+ /* THE LEXICON THAT READ IT, 19.B6. Missing is an entry from before the stamp
+    and stays missing: filling it with today's version would claim today's
+    lexicon read words it never saw, which is the lie the stamp exists to
+    prevent. Present, it is the form lexVersion writes or it is refused by
+    name. An older version is not an error; that is what it is for. */
+ if(x.lex!==undefined){
+  if(typeof x.lex!=='string'||!LEXV_RE.test(x.lex))
+   errs.push(path+'.lex is not a lexicon version: '+x.lex);
+  else q.lex=x.lex;}
+ /* WHAT SOURCE AI ASKED, 20.H5. A question kind and a seat key, and the one
+    outcome the page saw. Never text, and a row carrying anything else is
+    refused rather than stripped, so a field nobody declared cannot ride in
+    on a known one. Missing is an older entry, or one nothing was asked
+    about, and reads as nothing asked. */
+ if(x.asked!==undefined){
+  if(!Array.isArray(x.asked))errs.push(path+'.asked is not a list');
+  else if(x.asked.length>srcAskedMax())
+   errs.push(path+'.asked holds '+x.asked.length+', which is more than the '
+    +srcAskedMax()+' kinds and seats there are');
+  else{
+   var ak=[];
+   x.asked.forEach(function(r,j){
+    var ap=path+'.asked['+j+']';
+    if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(ap+' is not an object');return;}
+    var bad=0;
+    Object.keys(r).forEach(function(k){
+     if(['k','seat','a'].indexOf(k)<0){errs.push(ap+' may not carry '+k);bad++;}});
+    if(SRC_KINDS.indexOf(r.k)<0){errs.push(ap+'.k is not a question kind: '+r.k);bad++;}
+    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no seat: '+r.seat);bad++;}
+    if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
+    if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
+   q.asked=ak;}}
  return q;}
 function validateProfile(o){
  var errs=[];
@@ -1106,6 +1141,75 @@ function meterPlan(p,nodeIds,chans,cap){
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
  return out;}
+/* ============================================================
+   THE RERUN, 22.K17. DECISIONS.md rules it four times: "Anything
+   already opened may be rerun without limit and without cost,
+   forever." Nothing planned it. meterPlan above walks unopened lines
+   only and skips a channel with none left, so measured on one record
+   one address released four times planned lines 0, 1, 2 and 3 and
+   spent four patterns each time, 100 to 96 to 92 to 88, and an
+   address with every line open planned nothing at all. The free
+   rerun the plan sheet promised was a counting quirk in meterRun,
+   which skips a repeated key, reached by no planner.
+
+   So it is a second planner and a second writer, and neither one
+   touches the first. It is a deliberate act, which DECISIONS.md also
+   rules ("a rerun is a deliberate act rather than something that
+   happens while somebody thinks they are opening something"), so
+   meterPlan still never re-offers an open line and the release panel
+   only builds this plan when the person picks it.
+   ============================================================ */
+/* THE LINE A RERUN SAYS, which is the highest open line down that channel
+   at that address, or -1 when nothing there is open. meterNext opens the
+   lowest unopened line, so the highest open one is the newest, which is
+   what the last run there said. Line 0 again was the other candidate and it
+   says the same first line of the card forever, because the cursor is read
+   and never stored and so cannot walk a rerun forward. A line marked heavy
+   was the third, and the engine has nothing to read it from: RUN.heavy in
+   ui/release.js is keyed by plan index and pass and is gone when the card
+   closes. Read off the keys held, for the reason meterNext is. */
+function meterLast(p,nodeId,chan){
+ var have={}; ((p&&p.meter&&p.meter.unique)||[]).forEach(function(k){have[k]=1;});
+ for(var i=LINES_PER_CH-1;i>=0;i--)
+  if(have[meterKey(nodeId,chan,i)])return i;
+ return -1;}
+/* A RERUN, as a list of keys, the same shape as a run: the addresses picked
+   crossed with the channels, one line each, address by address so the
+   release card's relSpan still finds every address in one block. A channel
+   with nothing open is left out, never filled with new ground. The cap is
+   RUN_MAX and only RUN_MAX: the allowance is not read here, because nothing
+   here is charged. */
+function meterRerunPlan(p,nodeIds,chans,cap){
+ var out=[], lim=cap>0?cap:RUN_MAX;
+ for(var a=0;a<(nodeIds||[]).length&&out.length<lim;a++)
+  for(var c=0;c<(chans||[]).length&&out.length<lim;c++){
+   var n=meterLast(p,nodeIds[a],chans[c]);
+   if(n>=0)out.push(meterKey(nodeIds[a],chans[c],n));}
+ return out;}
+/* RECORDING A RERUN, which never spends. meterRun pushes every key it has not
+   seen onto meter.unique, and the allowance is that list's length, so the
+   rerun does not go through it at all: a rerun that reached meterRun would
+   cost nothing only for as long as every key in it happened to be open. This
+   checks each key against what is open and refuses the rest by name, so a
+   rerun plan gone stale between being shown and being run, after an undo,
+   opens nothing and is not counted. Lines spoken and the last run move,
+   because they were spoken and it was a run. */
+function meterRerun(p,keys){
+ var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
+ var m=(p&&p.meter)||null, have={}, said=[], refused=[];
+ ((m&&Array.isArray(m.unique)&&m.unique)||[]).forEach(function(k){have[k]=1;});
+ list.forEach(function(k){(have[k]?said:refused).push(k);});
+ if(m&&said.length){
+  /* THE FREE WEEKS MUST NOT MOVE. A record that ran the gift out before the
+     giftAt stamp existed counts its weeks from meter.last, which this is
+     about to move, so the stamp is written first off the value already read,
+     the way meterRun writes it. Without it a rerun would restart that count
+     and take weeks of allowance from somebody for using the free route. */
+  var now=new Date().toISOString();
+  if(!m.giftAt&&(m.unique||[]).length>=GIFT_N)m.giftAt=meterGiftAt(p)||now;
+  m.lines=(+m.lines||0)+said.length; m.last=now;
+  if(!m.first)m.first=now;}
+ return {added:0, repeated:said.length, fresh:[], refused:refused, rerun:true};}
 /* WHAT A RUN IS ALLOWED TO COST, WHICH IS NOT THE SAME AS WHAT IT CAPS AT.
 
    The release panel printed "16 patterns of the 0 you have left" and then ran

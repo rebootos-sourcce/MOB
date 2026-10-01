@@ -4562,6 +4562,98 @@ g('38 · one seed for one unmeasured law, and the allowance is a ceiling');
  }
 }
 
+g('38b · a rerun plans open ground only, and is charged nothing, 22.K17');
+/* DECISIONS.md: "Anything already opened may be rerun without limit and without
+   cost, forever." Measured before this landed: one address released four times
+   through meterPlan and meterRun spent four patterns every time, 100 to 96 to 92
+   to 88, and an address with every line open planned nothing. The first rows
+   reproduce that, so the gate is checked against the defect it was written for
+   and is not only a description of the fix. */
+{
+ const {meterPlan,meterRun,meterRerun,meterRerunPlan,meterLast,meterBudget,meterKey,
+        blankProfile,RUN_MAX,LINES_PER_CH,GIFT_N}=E;
+ const CH=['Llimit','Rlimit','Ltruth','Rtruth'];
+ ok(typeof meterRerun==='function'&&typeof meterRerunPlan==='function'&&typeof meterLast==='function',
+  'the rerun is reachable from the contract');
+ if(typeof meterRerun==='function'){
+ /* THE DEFECT, AS IT WAS. new ground every time, at four patterns a time */
+ const p=blankProfile('rerun'), seen=[];
+ for(let r=0;r<4;r++){meterRun(p,meterPlan(p,[7],CH,RUN_MAX)); seen.push(GIFT_N-p.meter.unique.length);}
+ ok(seen.join()===[GIFT_N-4,GIFT_N-8,GIFT_N-12,GIFT_N-16].join(),
+  'four releases at one address through meterPlan spend four each, '+seen.join(' to '));
+ ok(meterLast(p,7,'Rlimit')===3,'and the newest open line is the fourth, got '+meterLast(p,7,'Rlimit'));
+ ok(meterLast(p,8,'Rlimit')===-1,'an address never run has nothing to rerun');
+
+ /* THE RERUN. the same address, the newest line down each channel */
+ const rr=meterRerunPlan(p,[7],CH,RUN_MAX);
+ ok(rr.join()===CH.map(c=>meterKey(7,c,3)).join(),
+  'a rerun plans the last line opened down each channel, got '+rr.join(' '));
+ ok(rr.every(k=>p.meter.unique.indexOf(k)>=0),'and every line it plans is already open');
+ const b0=meterBudget(p).left, u0=p.meter.unique.length, l0=p.meter.lines;
+ for(let r=0;r<4;r++)meterRerun(p,meterRerunPlan(p,[7],CH,RUN_MAX));
+ ok(p.meter.unique.length===u0,'four reruns open nothing, unique '+u0+' to '+p.meter.unique.length);
+ ok(meterBudget(p).left===b0,'and the allowance does not move, '+b0+' to '+meterBudget(p).left);
+ ok(p.meter.lines===l0+16,'while the lines spoken do, '+l0+' to '+p.meter.lines);
+ ok(meterRerunPlan(p,[7],CH,RUN_MAX).join()===rr.join(),
+  'and the rerun after a rerun says the same lines, since nothing new was opened');
+ /* a run of new ground after it moves what the next rerun says */
+ meterRun(p,meterPlan(p,[7],CH,RUN_MAX));
+ ok(meterRerunPlan(p,[7],CH,RUN_MAX)[0]===meterKey(7,'Llimit',4),
+  'a new run moves the rerun on to the line it opened');
+
+ /* WHAT IT WILL NOT DO. a fresh record, a stale key, an address never run */
+ ok(meterRerunPlan(blankProfile('none'),[1,2,3],CH,RUN_MAX).length===0,
+  'a record with nothing open has nothing to rerun, and is never offered new ground instead');
+ {const u=p.meter.unique.length, l=p.meter.lines, m=meterRerun(p,[meterKey(50,'Rlimit',0)]);
+  ok(m.refused.length===1&&m.repeated===0,'a key that is not open is refused by name');
+  ok(p.meter.unique.length===u&&p.meter.lines===l,'and opens nothing and counts nothing');
+  ok(m.fresh.length===0&&m.added===0,'and hands releaseWork nothing to lift');}
+
+ /* A FULLY OPEN ADDRESS, which planned nothing at all before */
+ {const d=blankProfile('drained'), all=[];
+  CH.forEach(c=>{for(let i=0;i<LINES_PER_CH;i++)all.push(meterKey(1,c,i));});
+  meterRun(d,all);
+  ok(meterPlan(d,[1],CH,RUN_MAX).length===0,'a fully open address plans no new ground');
+  const r=meterRerunPlan(d,[1],CH,RUN_MAX);
+  ok(r.length===CH.length&&r.every(k=>/:49$/.test(k)),
+   'and reruns its last line on each channel, got '+r.join(' '));}
+
+ /* THE CAP IS RUN_MAX AND NOT THE ALLOWANCE */
+ {const w=blankProfile('wide'), ids=[1,2,3,4,5,6,7,8,9];
+  meterRun(w,meterPlan(w,ids.slice(0,6),CH,RUN_MAX)); meterRun(w,meterPlan(w,ids.slice(6),CH,RUN_MAX));
+  const r=meterRerunPlan(w,ids,CH,RUN_MAX);
+  ok(r.length===RUN_MAX,'a wide rerun is cut at the run ceiling, got '+r.length);
+  ok(new Set(r.map(k=>k.split(':')[0])).size*CH.length>=r.length,
+   'address by address, so one address is one block');}
+
+ /* A SPENT ALLOWANCE STILL RERUNS, which is "forever" */
+ {const s=blankProfile('spent'), keys=[];
+  for(let a=1;keys.length<GIFT_N+10;a++)CH.forEach(c=>keys.push(meterKey(a,c,0)));
+  meterRun(s,keys.slice(0,GIFT_N+10));
+  s.plan={tier:'free',status:'',granted:0,carried:0,base:GIFT_N,since:null,until:null};
+  const B=meterBudget(s);
+  ok(B.left===0,'a free record past the gift with the week spent has nothing left, got '+B.left);
+  const r=meterRerunPlan(s,[1,2],CH,RUN_MAX);
+  ok(r.length===2*CH.length,'and can still plan a rerun of what it opened, '+r.length);
+  const u=s.meter.unique.length; meterRerun(s,r);
+  ok(s.meter.unique.length===u&&meterBudget(s).left===0,'which spends nothing it does not have');}
+
+ /* THE FREE WEEKS DO NOT RESTART. A record that ran the gift out before the
+    stamp existed counts its weeks from meter.last, and a rerun moves last. */
+ {const o=blankProfile('old'), keys=[];
+  for(let a=1;keys.length<GIFT_N+10;a++)CH.forEach(c=>keys.push(meterKey(a,c,0)));
+  meterRun(o,keys.slice(0,GIFT_N+10));
+  const then='2026-08-01T00:00:00.000Z';
+  o.meter.giftAt=null; o.meter.last=then;
+  o.plan={tier:'free',status:'',granted:0,carried:0,base:GIFT_N,since:null,until:null};
+  const before=meterBudget(o).left;
+  meterRerun(o,meterRerunPlan(o,[1],CH,RUN_MAX));
+  ok(o.meter.giftAt===then,'the gift stamp is written from the old last before last moves, got '+o.meter.giftAt);
+  ok(meterBudget(o).left===before,'so the banked weeks read the same after the rerun, '
+   +before+' and '+meterBudget(o).left);}
+ }
+}
+
 g('39 · the sentence is read once, and the marks land on the letters');
 /* ============================================================
    THE HIGHLIGHTER READ THE SENTENCE TWICE.
@@ -5212,6 +5304,256 @@ g('ND · one saboteur, one entry, however many tests name it');
  ok(dupes.length===0,'no saboteur is named twice in one reading, got '+JSON.stringify(dupes));
  const selfCx=r.cxs.filter(c=>c.parts[0].nm===c.parts[1].nm);
  ok(selfCx.length===0,'no complex pairs a saboteur with itself, got '+JSON.stringify(selfCx.map(c=>c.nm)));
+}
+
+g('NZ · the tiers side by side, read off the ladder and nothing else');
+/* ui/plans.js draws one row per entry planLadder returns. Every figure on that
+   surface is asserted here against PLANS, so a grant moved in plan.js moves the
+   comparison and a number typed into the renderer has nowhere to hide. */
+{
+ const {planLadder,planPrice,PLAN_PRICE,PLANS,PLAN_BY,RUN_MIN}=E;
+ const free=planLadder(null);
+ const keys=PLANS.filter(p=>p.k!=='gift').map(p=>p.k);
+ ok(JSON.stringify(free.map(r=>r.k))===JSON.stringify(keys),
+  'one row per tier a person can be on, in ladder order, the gift left out: '+JSON.stringify(free.map(r=>r.k)));
+ ok(free.every(r=>r.grant===PLAN_BY[r.k].grant&&r.per===PLAN_BY[r.k].per),
+  'every row carries its own grant and period from PLANS');
+ ok(free.filter(r=>r.now).length===1&&free.find(r=>r.now).k==='free',
+  'a record with no plan is on free, and exactly one row says so');
+ ok(free.filter(r=>r.up).map(r=>r.k).join()==='one,two,three,four',
+  'from free every paid tier is a step up, got '+free.filter(r=>r.up).map(r=>r.k).join());
+ ok(PLAN_BY.one.per!=='month'||free.find(r=>r.k==='one').week===PLAN_BY.one.grant/4,
+  'a month is four weeks, the owner\'s own arithmetic: four hundred is a hundred a week');
+ ok(free.find(r=>r.k==='free').week===PLAN_BY.free.grant,'a weekly tier\'s week is its grant');
+ ok(free.every(r=>r.runs===Math.floor(r.grant/RUN_MIN)),'runs are counted against the smallest run');
+ const two=planLadder({tier:'two',status:'active'});
+ ok(two.find(r=>r.now).k==='two'&&two.filter(r=>r.up).map(r=>r.k).join()==='three,four',
+  'on tier two only three and four are offered as a move up');
+ ok(!two.find(r=>r.k==='one').up&&!two.find(r=>r.k==='free').up,'and nothing below is offered as one');
+ const dead=planLadder({tier:'three',status:'canceled'});
+ ok(dead.find(r=>r.now).k==='free','a cancelled tier three reads free here as everywhere, through planOf');
+ ok(planLadder({tier:'four',status:'active'}).every(r=>!r.up),'at the top there is nothing to move up to');
+ /* SIGHT IS NOT FOR SALE. The row has no field for it, so no renderer can
+    print a difference in what a tier sees. */
+ ok(free.every(r=>!('see' in r)&&!('sight' in r)),'a row carries no sight field, because sight does not vary');
+ /* only ruled prices carry a number */
+ ok(planPrice('four')===99,'tier four is ninety nine, ruled');
+ ok(planPrice('free')===0,'free costs nothing');
+ ok(['one','two','three'].every(k=>planPrice(k)===null),
+  'tiers one to three carry no price until he rules one, got '+JSON.stringify(PLAN_PRICE));
+ ok(planPrice('gift')===null&&planPrice('nonsense')===null,'an unknown key has no price rather than a wrong one');
+}
+
+g('OB1 · 19.B6, every entry carries the lexicon that read it');
+/* PRIORITY.md 19.B6: "Every story entry stamped with the lexicon version
+   that read it, so reading it again later is reproducible." The version is a
+   hash of the tables computed at load, never a number typed anywhere, so the
+   gate asserts what moves it and what does not rather than its value. */
+{
+ const {LEX_VERSION,LEXV_RE,lexVersion,LEX,SOMA_PLACE_WORDS,blankProfile,saveProfile,validateProfile,ENT_KEYS}=E;
+ ok(LEXV_RE.test(LEX_VERSION),'the stamp is lx and eight hex digits, got '+LEX_VERSION);
+ ok(lexVersion()===LEX_VERSION,'and computing it again gives the same stamp, so it is a property of the tables');
+ const k='furious', was=LEX[k][1];
+ LEX[k][1]=was+1; const moved=lexVersion(); LEX[k][1]=was;
+ ok(moved!==LEX_VERSION&&lexVersion()===LEX_VERSION,
+  'retuning one amount moves it, and putting it back puts it back');
+ /* key order is not content: the same table built in another order reads the same */
+ const keys=Object.keys(LEX), saved={};
+ keys.forEach(x=>{saved[x]=LEX[x];delete LEX[x];});
+ keys.slice().reverse().forEach(x=>{LEX[x]=saved[x];});
+ ok(lexVersion()===LEX_VERSION,'and the order keys were added in does not, so the browser and node agree');
+ keys.forEach(x=>{delete LEX[x];}); keys.forEach(x=>{LEX[x]=saved[x];});
+ SOMA_PLACE_WORDS.push('elbow'); const blk=lexVersion(); SOMA_PLACE_WORDS.pop();
+ ok(blk!==LEX_VERSION,'a blocking place word moves it, because adding one can stop a reading moving');
+ ok(ENT_KEYS.indexOf('lex')>=0,'an entry may carry lex');
+ const base=saveProfile(blankProfile('stamp'));
+ const now=new Date().toISOString();
+ const withEnt=e=>{const x=JSON.parse(JSON.stringify(base)); x.story={entries:[e]}; return x;};
+ const ent=lx=>Object.assign({t:now,text:'I was furious',imprints:4,bands:{solar:18}},lx===undefined?{}:{lex:lx});
+ const a=validateProfile(withEnt(ent(LEX_VERSION)));
+ ok(a.ok&&a.profile.story.entries[0].lex===LEX_VERSION,'a stamped entry loads with its stamp');
+ const b=validateProfile(withEnt(ent()));
+ ok(b.ok&&!('lex' in b.profile.story.entries[0]),
+  'an entry from before the stamp loads with none, and is not given today\'s');
+ const c=validateProfile(withEnt(ent('lx00000000')));
+ ok(c.ok&&c.profile.story.entries[0].lex==='lx00000000','an older lexicon is not an error, it is what the stamp is for');
+ [['lx123','a short stamp'],[42,'a number'],['LX0000000G','a stamp in the wrong form']].forEach(([v,what])=>{
+  const r=validateProfile(withEnt(ent(v)));
+  ok(!r.ok&&(r.errs||[]).join(' ').indexOf('.lex is not a lexicon version')>=0,what+' is refused by name');});
+}
+
+g('OB2 · 20.H6, what read as nothing is reported, and no reading moves');
+/* The complement of marksOf. A stretch is a run of words no mark touches,
+   inside one clause, in the letters the person typed. */
+{
+ const {unmarkedOf,marksOf,parseStory,wordsOf,normMap,clauseFloor}=E;
+ const t='I felt tight in my chest when my boss called.';
+ const p=parseStory(t), u=unmarkedOf(t,p);
+ ok(JSON.stringify(u.stretches.map(s=>s.text))===JSON.stringify(['I felt','in my','when my boss called']),
+  'the worked example reports what it did not read, chest read because it seated the tightness, got '
+  +JSON.stringify(u.stretches.map(s=>s.text)));
+ ok(u.read+u.unmarked===u.words&&u.words===10,'every word is read or unread, never both, '+u.read+' and '+u.unmarked);
+ ok(u.stretches.every(s=>t.slice(s.s,s.e)===s.text),'every stretch is the person\'s own letters, as typed');
+ const marks=marksOf(t,p);
+ ok(u.stretches.every(s=>!marks.some(m=>m.s<s.e&&m.e>s.s)),'and no stretch overlaps a mark');
+ const two=unmarkedOf('I was here. Then I left','');
+ ok(two.stretches.length===2&&two.stretches[0].c!==two.stretches[1].c,
+  'a sentence end ends a stretch, so two sentences that read nothing are two stretches');
+ const own='I keep putting off the conversation';
+ ok(unmarkedOf(own,parseStory(own)).stretches.map(s=>s.text).join()===own,
+  'his own example that reads nothing comes back whole, rather than as nothing');
+ ok(unmarkedOf('furious',parseStory('furious')).stretches.length===0,'a text read entire reports no stretch');
+ ok(unmarkedOf('',null).words===0,'and an empty one reports no words');
+ const before=JSON.stringify(E.S.charge), pj=JSON.stringify(parseStory(t));
+ unmarkedOf(t,parseStory(t));
+ ok(JSON.stringify(E.S.charge)===before&&JSON.stringify(parseStory(t))===pj,'and reporting it moves no charge and no reading');
+ /* the clause rule is clauseFloor's, read forward: a word is past a boundary
+    exactly when clauseFloor finds one behind it */
+ ['I am not afraid. Afraid now.','I was tight. My chest hurt! And then; nothing','no boundary, only a comma'].forEach(s=>{
+  const nm=normMap(s), ws=wordsOf(s,nm);
+  ok(ws.every(w=>(clauseFloor(s,nm,w.at)>=0)===(w.c>0)),'wordsOf and clauseFloor agree on where a clause starts in '+JSON.stringify(s));});
+}
+
+g('OB3 · 20.H2, the body word the person used is where the body is');
+/* The document's own failure test, measured before this: "I felt tight in my
+   chest when my boss called" read throat 16, because "tight" fell back to
+   its own seat. A sensation word now takes the seat of the nearest place
+   word in its clause, and only the lexicon's own body phrases seat a place. */
+{
+ const {SOMA_PLACE,SOMA_SENSE,LEX,parseStory,scanStory,CHILD,B2K}=E;
+ ok(JSON.stringify(SOMA_PLACE.seat)===JSON.stringify({chest:'heart',jaw:'throat',throat:'throat',stomach:'sacral'}),
+  'four places are seated, each where the lexicon\'s own phrases put it, got '+JSON.stringify(SOMA_PLACE.seat));
+ Object.keys(SOMA_PLACE.seat).forEach(w=>{
+  const ph=Object.keys(LEX).filter(k=>k.indexOf(' ')>0&&(' '+k+' ').indexOf(' '+w+' ')>=0&&LEX[k][0]!=='coherent');
+  ok(ph.length>0&&ph.every(k=>LEX[k][0]===SOMA_PLACE.seat[w]),
+   w+' is derived: '+ph.map(k=>k+' at '+LEX[k][0]).join(', '));});
+ ok(JSON.stringify(Object.keys(SOMA_PLACE.refused))==='["back"]',
+  'one place is refused, back, where went behind my back and CHILD\'s lower back disagree, got '
+  +JSON.stringify(SOMA_PLACE.refused));
+ ok(SOMA_PLACE.missing.length===0&&SOMA_PLACE.sense.length===SOMA_SENSE.length,
+  'every sensation is already a key, so this moves hits and never makes one');
+ const seatOf=(s,w)=>{const h=scanStory(s).find(x=>x.t===w);return h?h.band:null;};
+ const ex=parseStory('I felt tight in my chest when my boss called.');
+ ok(JSON.stringify(ex.bands)===JSON.stringify({heart:16}),'the failure test reads at the heart now, 16, got '+JSON.stringify(ex.bands));
+ const th=ex.hits.find(h=>h.t==='tight');
+ ok(th.place==='chest'&&th.was==='throat'&&th.amt===LEX.tight[1],
+  'and the hit says why: chest moved it from throat, and the amount is the word\'s own');
+ ok(seatOf('I was tight. My chest hurt.','tight')==='throat','a place in another sentence moves nothing');
+ ok(seatOf('my stomach was in a knot and my shoulders tight','tight')==='throat',
+  'the nearest place decides, and shoulders has no seat, so it stays rather than going back to the stomach');
+ ok(seatOf('stomach tight chest','tight')==='throat',
+  'two places at the same distance that disagree move nothing');
+ ok(seatOf('my chest, so tight','tight')==='throat'&&seatOf('so tight in my chest, all day','tight')==='heart',
+  'a comma ends the reach, the way it separates the items of a list');
+ ok(seatOf('chest tightness, foot pain, lower back tension','tension')==='throat'&&
+  seatOf('chest tightness, foot pain, lower back tension','tightness')==='heart',
+  'in a list the back keeps its own tension, and the chest its tightness');
+ ok(JSON.stringify(parseStory('my chest is tight').bands)===JSON.stringify({heart:24}),
+  'a fixed body phrase reads exactly as before');
+ ok(seatOf('my jaw was so tight','tight')==='throat'&&scanStory('my jaw was so tight').find(h=>h.t==='tight').place==='jaw',
+  'a place at the word\'s own seat moves nothing and is still named');
+ /* the same hits, the same amounts: only the seat moves */
+ const off=E.SOMA_PLACE.sense.splice(0), cmp=['I felt tight in my chest when my boss called.',
+  'my chest was tense and my jaw clenched','pounding in my chest'];
+ const bare=cmp.map(s=>scanStory(s).map(h=>h.t+':'+h.at+':'+h.amt).join());
+ off.forEach(x=>E.SOMA_PLACE.sense.push(x));
+ ok(cmp.every((s,i)=>scanStory(s).map(h=>h.t+':'+h.at+':'+h.amt).join()===bare[i]),
+  'with and without the rule the hits are the same words at the same offsets and amounts');
+ ok(CHILD.find(c=>c.loc.indexOf('chest')>=0&&B2K[c.seat]==='heart'),'and CHILD agrees the chest is the heart');
+}
+
+g('OB4 · 20.H3, the document\'s failure test, as a gate');
+/* SOURCE-TDD-impression-excavation.md: for "I felt tight in my chest when my
+   boss called", SOURCE must not immediately produce authority trauma,
+   abandonment, root chakra blockage or fear of failure. PRIORITY.md 20.H3
+   recorded the half that passes as "rung 1, move listen". Re-measured here:
+   the rung is 5, which is round(16 / 3), the sniffer's own reading of
+   "tight" under the cap of six, and the move is listen. The claim that
+   matters is the one asserted, one word is heard and never questioned. */
+{
+ const {srcHear,srcTurn,srcDims,srcNext,SRC_ASK,SRC_ONCE,NODES}=E;
+ const t='I felt tight in my chest when my boss called.';
+ const h=srcHear(t), turn=srcTurn(h,{typed:true});
+ ok(h.seats.length===1&&h.top.mentions===1,'one seat heard, once');
+ ok(h.top.rung<SRC_ASK&&h.top.rung<=SRC_ONCE,'under seven, so it is heard and not questioned, rung '+h.top.rung);
+ ok(turn.move==='listen'&&!h.asks&&!h.root,'it listens, asks nothing, and names no root');
+ ok(h.top.seat==='heart','and it heard the chest, at the heart, where the throat was read before 20.H2');
+ const said=JSON.stringify([h,turn,srcDims(t)]).toLowerCase();
+ ['authority','trauma','abandon','chakra','fear of failure','diagnos','blockage'].forEach(w=>
+  ok(said.indexOf(w)<0,'nothing it produces says '+w));
+ const named=NODES.filter(n=>n.n&&said.indexOf(String(n.n).toLowerCase())>=0).map(n=>n.n);
+ ok(named.length===0,'and it names no address of the 112, got '+JSON.stringify(named));
+ /* the document's correct progression, after the trigger it already names */
+ const d=srcDims(t), askable=['trigger','contact','feeling','body','prediction','behaviour','meaning'];
+ ok(d.answered.trigger&&d.answered.trigger[0]==='when'&&d.answered.contact[0]==='boss'&&d.answered.body,
+  'it reads the trigger, the boss and the body as already said, '+JSON.stringify(d.answered));
+ const asked=[]; for(let i=0;i<4;i++)asked.push(srcNext(d,asked,askable));
+ ok(asked.join()==='feeling,prediction,behaviour,meaning',
+  'and asks feel, expect, do, mean, the document\'s own order, got '+asked.join());
+ ok(srcNext(d,asked,askable)==='feeling','and comes back round to the one asked longest ago');
+}
+
+g('OB5 · 20.H1, the button asks what the entry has not answered');
+{
+ const {srcDims,srcNext,SRC_DIM_ORDER,SRC_KINDS,CHARGES,parseStory}=E;
+ ok(SRC_DIM_ORDER.join()==='trigger,contact,feeling,body,prediction,behaviour,belief,meaning,goal',
+  'the order is written down, '+SRC_DIM_ORDER.join());
+ const a=srcDims('He shouted at me and I slammed the door. I felt furious.');
+ ok(a.answered.contact&&a.answered.behaviour&&a.answered.feeling&&!a.answered.trigger,
+  'a person, a thing done and a feeling are read, and no trigger word is, '+JSON.stringify(a.answered));
+ ok(srcDims('I did not say anything').answered.behaviour,'a thing not done is still an answer to what you did, so no not is read');
+ ok(!srcDims('I felt tight').answered.feeling&&srcDims('I felt overwhelmed').answered.feeling,
+  'felt and a sensation is the body, felt and anything else is a feeling');
+ ok(srcDims('I felt so tight').answered.feeling===undefined,'a degree word is stepped over');
+ ok(!srcDims('she came back late').answered.body,'back in its ordinary sense is not the body');
+ const askable=['trigger','contact','feeling','body','prediction','behaviour','meaning'];
+ const texts=['I felt tight in my chest when my boss called.','I keep putting off the conversation',
+  'He shouted at me and I slammed the door. I felt furious.','I freeze when I need to speak.','calm today'];
+ ok(texts.every(s=>{const d=srcDims(s), k=srcNext(d,[],askable);
+   return d.open.filter(x=>askable.indexOf(x)>=0).length===0||d.open.indexOf(k)>=0;}),
+  'it never asks about a dimension the entry answered while one it has not is left');
+ ok(srcNext(srcDims('I felt tight'),['trigger'],askable)!=='trigger','a dimension already asked waits behind one that has not been');
+ ok(srcNext(srcDims('x'),[],[])===null,'with nothing it can ask, it asks nothing');
+ const all='When my boss called I felt scared in my chest. I expected he would shout. I left. It means I am not safe.';
+ const da=srcDims(all);
+ ok(da.open.filter(x=>askable.indexOf(x)>=0).length===0&&srcNext(da,[],askable)==='trigger',
+  'an entry that answers every askable one still gets a question, the first in order, open '+da.open.join());
+ ok(SRC_KINDS.every(k=>CHARGES.map(c=>c.toLowerCase()).indexOf(k)<0),'no question kind is a fetter name');
+ const before=JSON.stringify(E.S.charge), j=JSON.stringify(srcDims(all));
+ ok(JSON.stringify(srcDims(all))===j&&JSON.stringify(E.S.charge)===before,'reading the dimensions is pure');
+}
+
+g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a seat');
+{
+ const {srcAsked,srcAskedMax,SRC_KINDS,SRC_OUTCOMES,blankProfile,saveProfile,validateProfile,ENT_KEYS,OB_NEVER}=E;
+ ok(SRC_OUTCOMES.join()==='moved,wrote,left','three outcomes, the three the page can see');
+ const log=[{k:'again',seat:'solar',at:20,moved:true},{k:'feeling',seat:'heart',at:30,moved:false},
+  {k:'prediction',seat:null,at:44,moved:false},{k:'feeling',seat:'heart',at:40,moved:false},
+  {k:'pity',seat:'heart',at:1},{k:'body',seat:'spleen',at:1}];
+ const out=srcAsked(log,44);
+ ok(JSON.stringify(out)===JSON.stringify([{k:'again',seat:'solar',a:'moved'},{k:'feeling',seat:'heart',a:'wrote'},
+  {k:'prediction',seat:null,a:'left'},{k:'body',seat:null,a:'wrote'}]),
+  'moved on, written after, left; one row per kind and seat; an unknown kind dropped and an unknown seat read as none, got '+JSON.stringify(out));
+ ok(out.every(r=>Object.keys(r).join()==='k,seat,a'),'a row holds a kind, a seat and an outcome, and no text');
+ ok(ENT_KEYS.indexOf('asked')>=0&&OB_NEVER.indexOf('asked')<0&&OB_NEVER.indexOf('lex')<0,
+  'an entry may carry asked, and neither new key meets the outbox deny list');
+ const base=saveProfile(blankProfile('asked'));
+ const now=new Date().toISOString();
+ const withEnt=e=>{const x=JSON.parse(JSON.stringify(base)); x.story={entries:[e]}; return x;};
+ const ent=asked=>({t:now,text:'I was furious',imprints:4,bands:{solar:18},asked:asked});
+ const v=validateProfile(withEnt(ent(out)));
+ ok(v.ok&&JSON.stringify(v.profile.story.entries[0].asked)===JSON.stringify(out),'a kept record loads exactly as written');
+ const noAsk={t:now,text:'I was furious',imprints:4,bands:{solar:18}};
+ const w=validateProfile(withEnt(noAsk));
+ ok(w.ok&&!('asked' in w.profile.story.entries[0]),'an entry nothing was asked about loads with no record, not an empty one');
+ const refuse=(asked,frag,what)=>{const r=validateProfile(withEnt(ent(asked)));
+  ok(!r.ok&&(r.errs||[]).join(' ').indexOf(frag)>=0,what+' is refused by name: '+(r.errs||[]).join(' ').slice(0,90));};
+ refuse('again','.asked is not a list','a record that is not a list');
+ refuse([{k:'again',seat:'solar',a:'moved',q:'Why there?'}],'may not carry q','a row carrying the question\'s words');
+ refuse([{k:'pity',seat:'solar',a:'moved'}],'is not a question kind','an unknown kind');
+ refuse([{k:'again',seat:'spleen',a:'moved'}],'names no seat','an unknown seat');
+ refuse([{k:'again',seat:'solar',a:'answered'}],'is not an outcome','an outcome the page cannot see');
+ refuse(Array(srcAskedMax()+1).fill({k:'again',seat:'solar',a:'moved'}),'more than the','a record longer than every kind at every seat');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

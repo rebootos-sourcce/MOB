@@ -157,7 +157,7 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          dose:100,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
-         heavy:{},look:false};
+         heavy:{},look:false,rerun:false,pick:[]};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -172,6 +172,46 @@ function relPlan(){
     falls back to twenty five, which is the ceiling it was asked to remove. */
  var cap=relBudget();
  return (CURP&&cap>0)?meterPlan(CURP,ids,chans,cap):[];}
+/* THE RERUN'S PLAN, 22.K17. The same addresses and channels, read through
+   meterRerunPlan, which plans only lines already open. relBudget is not called
+   here and that is the point of this function: a rerun is charged nothing, so
+   the allowance cannot shorten it, and a person whose allowance is spent can
+   still rerun everything they have opened, which DECISIONS.md rules "forever".
+   RUN_MAX still caps it, because a run's length is a ceiling for the sake of
+   the person sitting through it and has nothing to do with price. */
+function relRerunPlan(q){
+ var ids=(q||[]).map(function(n){return n.i;});
+ var chans=CHAN.map(function(c){return c[0]+c[2];});
+ return (typeof CURP!=='undefined'&&CURP&&typeof meterRerunPlan==='function')
+  ?meterRerunPlan(CURP,ids,chans,RUN_MAX):[];}
+/* NEW OR RERUN, picked on the panel and never by the panel. relPick always
+   opens on new, because DECISIONS.md rules a rerun "a deliberate act rather
+   than something that happens while somebody thinks they are opening
+   something", so the only way into a rerun is the press below.
+   The queue narrows to the addresses the rerun plan reaches. relCoolDown
+   releases the charge at every address in the queue, and an address with
+   nothing open, or one the cap cut off, would otherwise be released for free
+   with no line said at it, which is new ground bought by the free route.
+   RUN.pick holds what was picked so pressing New puts it all back. */
+function relMode(rr){
+ var pick=RUN.pick||[];
+ RUN.rerun=!!rr;
+ if(RUN.rerun){
+  RUN.plan=relRerunPlan(pick);
+  var on={}; RUN.plan.forEach(function(k){on[String(k).split(':')[0]]=1;});
+  RUN.queue=pick.filter(function(n){return on[n.i];});}
+ else {RUN.queue=pick.slice(); RUN.plan=relPlan();}
+ RUN.proj=null; relRender();}
+/* what the panel says before a rerun begins, which is the whole of its price
+   and anything it leaves out of what was picked. Read off the plan it will
+   run, so the sentence cannot describe a different rerun. */
+function relRerunSay(){
+ var pick=RUN.pick||[], none=pick.filter(function(n){return !relRerunPlan([n]).length;}).length;
+ var cut=pick.length-none-RUN.queue.length;
+ return 'A rerun says the last line you opened on each channel again. It costs nothing and opens nothing new.'
+  +(none?' '+none+(none===1?' address you picked has nothing open yet, so it is'
+    :' addresses you picked have nothing open yet, so they are')+' left out.':'')
+  +(cut>0?' A run is full, so '+cut+(cut===1?' more address waits':' more addresses wait')+' for the next one.':'');}
 /* one entry of the plan, read back into the address and channel it names */
 function relAt(i){
  var k=(RUN.plan||[])[i]; if(!k)return null;
@@ -197,6 +237,7 @@ function relPick(nodeIds){
  RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
  RUN.heavy={};RUN.look=false;
+ RUN.pick=RUN.queue.slice(); RUN.rerun=false;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -735,7 +776,7 @@ function relCoolDown(){
  RUN.dq0=_pre.DQ;
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
- undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
+ undoPush((RUN.rerun?'the rerun at ':'the release at ')+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
  var freed=0;
  RUN.queue.forEach(function(n){
   var w0=n.sq*10;                                   /* weights are 0 to 100 here */
@@ -751,8 +792,7 @@ function relCoolDown(){
    heavy:hv,felt:hv.length>0});});
  RUN.freed=freed;
  /* One pattern is one line: one channel over one address. Every line of the
-    run is keyed, so a rerun of the same ground costs nothing and only new
-    ground spends the tier. */
+    run is keyed, and only new ground spends the tier. */
  /* THE PERSON WHO RAN IT IS THE PERSON WHO IS CHARGED. toYou repoints CURP at
     the person's own record, and it was called at the end of this function, so
     a release run while a reference case was loaded wrote its meter onto the
@@ -764,7 +804,13 @@ function relCoolDown(){
   /* the plan built when the run was picked, committed as it stands. a plan
      that changes between being shown and being charged is a bill a person did
      not agree to. */
-  RUN.meter=meterRun(CURP,RUN.plan||[]);
+  /* A RERUN IS RECORDED BY meterRerun AND NEVER BY meterRun, 22.K17. meterRun
+     is the one writer of meter.unique, which is what the allowance counts, so
+     the rerun goes round it rather than through it and relying on it to skip
+     a repeated key. meterRerun refuses any key that is not already open, so
+     a rerun plan gone stale opens nothing. fresh comes back empty, so
+     releaseWork below lifts nothing, as it never has for ground already open. */
+  RUN.meter=RUN.rerun?meterRerun(CURP,RUN.plan||[]):meterRun(CURP,RUN.plan||[]);
   /* THE LIFETIME SPLIT, round LY: "total number of patterns released, total
      number of patterns installed, over the history." tally is read at the
      top of this function, before the write, off where the list actually
@@ -1425,21 +1471,38 @@ function relRender(){
      control that silently does nothing is the failure this codebase forbids.
      The plan it runs is still meterPlan's, capped at what is left, and
      relCoolDown still charges exactly that plan. */
-  var left=relLeft(), spent=(left<=0);
+  /* A RERUN IS NEVER SPENT, so a spent allowance closes the new route only.
+     can is whether any picked address has a line open to rerun; with none,
+     the panel is exactly what it was before 22.K17 and offers no choice. */
+  var left=relLeft(), spent=(left<=0)&&!RUN.rerun,
+   can=RUN.rerun||relRerunPlan(RUN.pick||[]).length>0;
   out+='<div class="pm-eye">Release your selections</div>'
    +'<div class="rel-rings">'+q.map(function(n){
      return crNode(n,'xs',{raw:''});}).join('')+'</div>';
+  /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are, so it
+     reads as one more setting on the run and not a second panel. The slot
+     keeps its label and the press carries the state. The rerun's price is
+     said before Run release is offered, because a person is entitled to see
+     what a run costs before they begin it, and for a rerun that is nothing. */
+  if(can)out+='<div class="rel-fields"><div class="rel-field"><span>Lines</span>'
+    +'<div class="seg" role="group" aria-label="New lines or a rerun">'
+    +'<button type="button" data-relmode="new" aria-pressed="'+(!RUN.rerun)+'">New</button>'
+    +'<button type="button" data-relmode="rerun" aria-pressed="'+(!!RUN.rerun)+'">Rerun</button>'
+    +'</div></div></div>'
+   +(RUN.rerun?'<div class="rel-note">'+esc(relRerunSay())+'</div>':'');
   if(spent)out+='<div class="rel-node">Nothing left to open</div>'
    /* "New ground is what an allowance buys" is the lexicon read aloud, which
       is his GX complaint about "find an address". Said as what it pays for. */
    /* "RERUNNING AN ADDRESS COSTS NOTHING" CAME OFF, round NW, 22.K17. Measured:
-      it does not. meterNext only ever returns an unopened line, so a release
-      at an address already fully open plans nothing at all, and one still
-      partly open spends the same allowance as new ground. DECISIONS.md rules
-      a free rerun four times over and nothing in the product does it. The
-      sentence stays off until a real rerun route exists to make it true. */
+      it did not. meterNext only ever returns an unopened line, so a release
+      at an address already fully open planned nothing at all, and one still
+      partly open spent the same allowance as new ground. The rerun route is
+      real now, the Lines pair above, and it says its own price where it is
+      picked. This note stays about the allowance, which is what is spent. */
+   /* "on the plan in settings" sent a person to a section they then had to
+      find. The button below opens the tiers themselves, round NZ. */
    +'<div class="rel-note">Your allowance pays for addresses you have not released before, and this '
-   +'period\'s is spent. A wider allowance is on the plan in settings.</div>';
+   +'period\'s is spent. Each tier sets how much new ground a period opens.</div>';
   /* HOW MANY PATTERNS is the dose a channel, a hundred by default since round
      LY, which is what he described hearing (open question 5) with the
      default moved to what he later named. Run speed is 1 at speaking pace,
@@ -1470,7 +1533,7 @@ function relRender(){
       would be a control the panel is still offering, and the honest reading of
       a spent allowance is that this run does not exist yet. The route out goes
       where the allowance is, which is the only thing that changes the answer. */
-   +(spent?'<button class="btn pri" id="relplan">Open settings</button>'
+   +(spent?'<button class="btn pri" id="relplan">See the tiers</button>'
          :'<button class="btn pri" id="relgo">Run release</button>')+'</div>'
    /* and no switch for a run that cannot begin */
    +(spent?'':relSwitches(null));}
@@ -1488,7 +1551,11 @@ function relRender(){
  if((b=document.getElementById('relcancel')))b.onclick=relClose;
  /* the same call the profile button makes, which is the one route to that
     surface and goes through setTab so the folded surface ruling holds. */
- if((b=document.getElementById('relplan')))b.onclick=function(){relClose();setTab(TAB.SETTINGS);};
+ /* ROUND NZ. This went to Settings and landed on whichever section was last
+    open, the sign in form by default, which says nothing about a plan. It
+    opens Billing at the tiers now, ui/plans.js, still through setTab. */
+ if((b=document.getElementById('relplan')))b.onclick=function(){relClose();
+  if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  if((b=document.getElementById('relstop')))b.onclick=function(){RUN.halted=true;relCoolDown();};
@@ -1503,6 +1570,8 @@ function relRender(){
   RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
  h.querySelectorAll('[data-reldose]').forEach(function(el){el.onclick=function(){
   RUN.dose=+this.getAttribute('data-reldose');relRender();};});
+ h.querySelectorAll('[data-relmode]').forEach(function(el){el.onclick=function(){
+  relMode(this.getAttribute('data-relmode')==='rerun');};});
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){

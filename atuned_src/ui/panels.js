@@ -1011,7 +1011,13 @@ function profileSheet(){
    success before it has it, so while nothing is bound they say so
    through status() rather than opening a dead page or pretending.
    ============================================================ */
-function planSection(m){
+/* o.brief, from Billing, where the tiers group in ui/plans.js sits directly
+   below and carries what is on every tier, the next rung and a press on every
+   rung. Said twice on one pane is the same fact in two places, one edit away
+   from two answers, so brief drops those four and keeps the state and Manage
+   billing. The sheet, and the gate that reads it, keep the full form. */
+function planSection(m,o){
+ o=o||{};
  var pl=(CURP&&CURP.plan)||null;
  var t=planOf(pl), st=planState(pl);
  /* through meterBudget, the one read the release panel uses, because the free
@@ -1031,18 +1037,20 @@ function planSection(m){
      NW, 22.K17. This is the plan sheet, read while deciding what a tier
      buys, and the claim was false: measured, a release at an address
      already open spends the same allowance as new ground, or plans nothing
-     at all once every line is open. DECISIONS.md promises this for real
-     and nothing in the product does it yet. Stays off until a real rerun
-     route makes it true. */
+     at all once every line is open. The rerun route that makes it true is
+     the Lines pair on the release panel (relMode, ui/release.js), and this
+     sheet already says it once in PLAN_ALWAYS below, "rerunning anything
+     already open", so the second wording is not put back. */
   +'<p class="sh-p">'+esc(t.d)+'</p>'
   /* SIGHT IS NOT FOR SALE, ruled, so the panel says what is on every tier
      rather than what the next one would unlock. */
-  +'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>';
+  +(o.brief?'':'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>');
+ if(o.brief)up=null;
  if(yr)h+='<p class="sh-p">'+esc(yr.say)+'</p>';
  if(up)h+='<p class="sh-p">'+esc(up.to.nm)+' is '+esc(up.say)+'.</p>';
  /* WHAT IT IS WORTH, in the unit people already price against. Throughput and
     never outcome, at the conservative end of the book's own range. */
- var worth=planWorth(al.inGift?GIFT_N:t.grant);
+ var worth=o.brief?'':planWorth(al.inGift?GIFT_N:t.grant);
  if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
  h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '

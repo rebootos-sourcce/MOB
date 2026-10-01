@@ -131,6 +131,39 @@ function planYear(k){
     : 'Paid for the year. The allowance still arrives monthly, because it is '
       +'a pace.')};}
 
+/* THE PRICE, NAMED ONCE, in dollars a month. Only what is ruled carries a
+   number. DECISIONS.md rules tier four at ninety nine and leaves tiers one to
+   three open, recommended at twelve, twenty nine and fifty nine but never
+   ruled, so they are null here and the comparison says the price is shown on
+   the payment page before any charge. A number printed in this file that the
+   processor then charges differently is a bill nobody agreed to, which is the
+   one thing a price list must never be. When the owner rules, setting the
+   three numbers is the whole change, the same way PLAN_YEAR_FREE works above.
+
+   And never a dollar figure against a pattern. One pattern is valued at one
+   dollar internally and DECISIONS.md rules that it is never published. */
+const PLAN_PRICE={free:0, one:null, two:null, three:null, four:99};
+function planPrice(k){ var v=PLAN_PRICE[k]; return (typeof v==='number'&&isFinite(v))?v:null; }
+/* THE LADDER, READ FOR A COMPARISON. One row per tier a person can be on, the
+   gift left out because it is given once and never chosen. Each row says what
+   it opens, in the tier's own period and in a week, whether it is the tier in
+   force, and whether moving to it is a step up. Read off planOf, so a record
+   that says tier three and is cancelled reads free here as everywhere.
+
+   Sight is not on the row, because sight does not vary: every row sees
+   everything. What a comparison may show is the one thing that moves. */
+function planLadder(pl){
+ var now=planOf(pl), keys=PLANS.map(function(p){return p.k;});
+ var at=keys.indexOf(now.k);
+ return PLANS.filter(function(p){return p.k!=='gift';}).map(function(p){
+  var i=keys.indexOf(p.k);
+  return {k:p.k, nm:p.nm, per:p.per, grant:p.grant,
+   /* a month here is four weeks, which is the owner's own arithmetic: four
+      hundred a month is a hundred a week in DECISIONS.md */
+   week:(p.per==='week')?p.grant:Math.round(p.grant/4),
+   runs:Math.floor(p.grant/RUN_MIN), lead:!!p.lead, price:planPrice(p.k),
+   now:(p.k===now.k), up:(i>at&&p.k!=='free')};});}
+
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
    past_due keeps access, because cutting somebody off mid month over a card
    that expired is a punishment for a bank's timing. unpaid and canceled do

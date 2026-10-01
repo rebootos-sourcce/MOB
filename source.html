@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1042 bc74f36 2026-10-01 11:26"><head><meta charset="utf-8">
+<html lang="en" data-build="v1047 690ac5f 2026-10-01 15:09"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6940,6 +6940,11 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
     <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
     <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
+    <!-- INTAKE (TAB.ENERGY), DIRECTLY AFTER SUMMARY, round OD, reversing
+         round LO's move to Play as Body. His words: "Intake is not body.
+         It never has been... change it back to intake, move it back to
+         discover, after summary." engine/core.js has the ruling in full. -->
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Intake"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Intake</span></button>
     <!-- ANALYTICS, RIGHT AFTER SUMMARY, round LV: "story, avatar, summary,
          analytics." Integer 4, TAB.ANALYTICS, unfolded from Summary on the
          Games template. engine/core.js has the ruling in full. -->
@@ -6947,7 +6952,6 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    </div>
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
-    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
     <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
     <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
    </div>
@@ -12033,8 +12037,11 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
 
    Summary still reads last of the three Discover doors, on the ruling that
    put it there: "then my intake then my summary." Analytics reads after it,
-   his own order, so Discover is Story, Avatar, Summary, Analytics and the
-   bar still closes the loop on Embody. */
+   his own order, so Discover was Story, Avatar, Summary, Analytics and the
+   bar still closes the loop on Embody. Round OD moved Intake (TAB.ENERGY)
+   back into Discover, directly after Summary and ahead of Analytics, so
+   Discover now reads Story, Avatar, Summary, Intake, Analytics; see the
+   note above TAB.ENERGY's own entry in TABDEF. */
 /* THE MENU RULE, ruled. One word, and the word names exactly what the surface
    does. Not what it is about, not what it belongs to. What it does.
 
@@ -12110,30 +12117,28 @@ const TABDEF=[
  /* Summary last in Discover, on his own correction: "then my intake then my
     summary". */
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'discover'},
+ /* FOURTH NAME THIS SURFACE HAS CARRIED, round OD, reversing round LO.
+    Energetics, then Intake at his own word round KX, then Body at round LO
+    on the reasoning that he had called it Body and grouped it with Field
+    and Compass in every other round. Round OD overrides that reasoning
+    directly: "Intake is not body. It never has been. It's either been
+    called energetics or intake. Change it back to intake, move it back to
+    discover, after summary." Moved here, directly after Summary and ahead
+    of Analytics, and back to Discover's own section. Same integer, id and
+    class as always, tab-energy, energy.emap: those are never the name a
+    person reads. */
+ {k:TAB.ENERGY,  id:'emap',  nm:'Intake',    cls:'tab-energy',  sec:'discover'},
  /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
     story, avatar, summary, analytics." Integer 4, unfolded: see the note
     above TABDEF. #ana is body.html's own sibling of #sum now, never nested
-    inside it, and anaRender in ui/analytics.js is unchanged. */
+    inside it, and anaRender in ui/analytics.js is unchanged. Intake (TAB.ENERGY)
+    now sits between Summary and Analytics, round OD, so Discover reads
+    Story, Avatar, Summary, Intake, Analytics. */
  {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'discover'},
  /* "I want to move all the tools to play. And then get rid of the tools
     tab." The instruments are Play now, and the app still opens on the Field,
     so Play is the section pressed at start. */
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field',   sec:'play'},
- /* THE BODY KEEPS THE NAME INTAKE, AND MOVES BACK TO PLAY. KX renamed this
-    tab and moved it to Discover on his words about energetics and
-    coherence, but he had called it Body and grouped it with Field and
-    Compass in every round before and after that one, "our field body and
-    compass are in that" (KU), and round LD names the gap outright: "play
-    menu is missing Body entirely. fix, priority." Same integer, host,
-    class and renderer as always; only .sec moves, and the label he asked
-    for stays. */
- /* THIRD NAME THIS SURFACE HAS CARRIED, round LO. Energetics, then Intake
-    at his own word round KX ("I need my energetics, like my intake... I
-    just rename it Intake"), now Body. The id and class stay tab-energy,
-    energy.emap: those are never the name a person reads, and renaming them
-    on a label change is exactly what the TAB integer rule exists to stop
-    happening to the wrong thing. */
- {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
@@ -13276,6 +13281,39 @@ function planYear(k){
     : 'Paid for the year. The allowance still arrives monthly, because it is '
       +'a pace.')};}
 
+/* THE PRICE, NAMED ONCE, in dollars a month. Only what is ruled carries a
+   number. DECISIONS.md rules tier four at ninety nine and leaves tiers one to
+   three open, recommended at twelve, twenty nine and fifty nine but never
+   ruled, so they are null here and the comparison says the price is shown on
+   the payment page before any charge. A number printed in this file that the
+   processor then charges differently is a bill nobody agreed to, which is the
+   one thing a price list must never be. When the owner rules, setting the
+   three numbers is the whole change, the same way PLAN_YEAR_FREE works above.
+
+   And never a dollar figure against a pattern. One pattern is valued at one
+   dollar internally and DECISIONS.md rules that it is never published. */
+const PLAN_PRICE={free:0, one:null, two:null, three:null, four:99};
+function planPrice(k){ var v=PLAN_PRICE[k]; return (typeof v==='number'&&isFinite(v))?v:null; }
+/* THE LADDER, READ FOR A COMPARISON. One row per tier a person can be on, the
+   gift left out because it is given once and never chosen. Each row says what
+   it opens, in the tier's own period and in a week, whether it is the tier in
+   force, and whether moving to it is a step up. Read off planOf, so a record
+   that says tier three and is cancelled reads free here as everywhere.
+
+   Sight is not on the row, because sight does not vary: every row sees
+   everything. What a comparison may show is the one thing that moves. */
+function planLadder(pl){
+ var now=planOf(pl), keys=PLANS.map(function(p){return p.k;});
+ var at=keys.indexOf(now.k);
+ return PLANS.filter(function(p){return p.k!=='gift';}).map(function(p){
+  var i=keys.indexOf(p.k);
+  return {k:p.k, nm:p.nm, per:p.per, grant:p.grant,
+   /* a month here is four weeks, which is the owner's own arithmetic: four
+      hundred a month is a hundred a week in DECISIONS.md */
+   week:(p.per==='week')?p.grant:Math.round(p.grant/4),
+   runs:Math.floor(p.grant/RUN_MIN), lead:!!p.lead, price:planPrice(p.k),
+   now:(p.k===now.k), up:(i>at&&p.k!=='free')};});}
+
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
    past_due keeps access, because cutting somebody off mid month over a card
    that expired is a punishment for a bank's timing. unpaid and canceled do
@@ -14298,8 +14336,11 @@ function vRitual(errs,i,x){
    var d=vDate(errs,path+'.done',x.done);
    if(d!==null)q.done=d;}}
  return q;}
-/* WHAT A STORY ENTRY MAY CARRY. The same four since the first build. */
-var ENT_KEYS=['t','text','imprints','bands'];
+/* WHAT A STORY ENTRY MAY CARRY. The same four since the first build, and two
+   optional ones since round OB: lex, the lexicon version that read it
+   (19.B6, LEX_VERSION in engine/sniff.js), and asked, what Source AI asked
+   about it (20.H5, srcAsked in engine/sourceai.js). */
+var ENT_KEYS=['t','text','imprints','bands','lex','asked'];
 function vEntry(errs,i,x){
  var path='story.entries['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -14336,6 +14377,38 @@ function vEntry(errs,i,x){
    if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
    var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
    if(v!==null)q.bands[k]=v;});}
+ /* THE LEXICON THAT READ IT, 19.B6. Missing is an entry from before the stamp
+    and stays missing: filling it with today's version would claim today's
+    lexicon read words it never saw, which is the lie the stamp exists to
+    prevent. Present, it is the form lexVersion writes or it is refused by
+    name. An older version is not an error; that is what it is for. */
+ if(x.lex!==undefined){
+  if(typeof x.lex!=='string'||!LEXV_RE.test(x.lex))
+   errs.push(path+'.lex is not a lexicon version: '+x.lex);
+  else q.lex=x.lex;}
+ /* WHAT SOURCE AI ASKED, 20.H5. A question kind and a seat key, and the one
+    outcome the page saw. Never text, and a row carrying anything else is
+    refused rather than stripped, so a field nobody declared cannot ride in
+    on a known one. Missing is an older entry, or one nothing was asked
+    about, and reads as nothing asked. */
+ if(x.asked!==undefined){
+  if(!Array.isArray(x.asked))errs.push(path+'.asked is not a list');
+  else if(x.asked.length>srcAskedMax())
+   errs.push(path+'.asked holds '+x.asked.length+', which is more than the '
+    +srcAskedMax()+' kinds and seats there are');
+  else{
+   var ak=[];
+   x.asked.forEach(function(r,j){
+    var ap=path+'.asked['+j+']';
+    if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(ap+' is not an object');return;}
+    var bad=0;
+    Object.keys(r).forEach(function(k){
+     if(['k','seat','a'].indexOf(k)<0){errs.push(ap+' may not carry '+k);bad++;}});
+    if(SRC_KINDS.indexOf(r.k)<0){errs.push(ap+'.k is not a question kind: '+r.k);bad++;}
+    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no seat: '+r.seat);bad++;}
+    if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
+    if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
+   q.asked=ak;}}
  return q;}
 function validateProfile(o){
  var errs=[];
@@ -14706,6 +14779,75 @@ function meterPlan(p,nodeIds,chans,cap){
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
  return out;}
+/* ============================================================
+   THE RERUN, 22.K17. DECISIONS.md rules it four times: "Anything
+   already opened may be rerun without limit and without cost,
+   forever." Nothing planned it. meterPlan above walks unopened lines
+   only and skips a channel with none left, so measured on one record
+   one address released four times planned lines 0, 1, 2 and 3 and
+   spent four patterns each time, 100 to 96 to 92 to 88, and an
+   address with every line open planned nothing at all. The free
+   rerun the plan sheet promised was a counting quirk in meterRun,
+   which skips a repeated key, reached by no planner.
+
+   So it is a second planner and a second writer, and neither one
+   touches the first. It is a deliberate act, which DECISIONS.md also
+   rules ("a rerun is a deliberate act rather than something that
+   happens while somebody thinks they are opening something"), so
+   meterPlan still never re-offers an open line and the release panel
+   only builds this plan when the person picks it.
+   ============================================================ */
+/* THE LINE A RERUN SAYS, which is the highest open line down that channel
+   at that address, or -1 when nothing there is open. meterNext opens the
+   lowest unopened line, so the highest open one is the newest, which is
+   what the last run there said. Line 0 again was the other candidate and it
+   says the same first line of the card forever, because the cursor is read
+   and never stored and so cannot walk a rerun forward. A line marked heavy
+   was the third, and the engine has nothing to read it from: RUN.heavy in
+   ui/release.js is keyed by plan index and pass and is gone when the card
+   closes. Read off the keys held, for the reason meterNext is. */
+function meterLast(p,nodeId,chan){
+ var have={}; ((p&&p.meter&&p.meter.unique)||[]).forEach(function(k){have[k]=1;});
+ for(var i=LINES_PER_CH-1;i>=0;i--)
+  if(have[meterKey(nodeId,chan,i)])return i;
+ return -1;}
+/* A RERUN, as a list of keys, the same shape as a run: the addresses picked
+   crossed with the channels, one line each, address by address so the
+   release card's relSpan still finds every address in one block. A channel
+   with nothing open is left out, never filled with new ground. The cap is
+   RUN_MAX and only RUN_MAX: the allowance is not read here, because nothing
+   here is charged. */
+function meterRerunPlan(p,nodeIds,chans,cap){
+ var out=[], lim=cap>0?cap:RUN_MAX;
+ for(var a=0;a<(nodeIds||[]).length&&out.length<lim;a++)
+  for(var c=0;c<(chans||[]).length&&out.length<lim;c++){
+   var n=meterLast(p,nodeIds[a],chans[c]);
+   if(n>=0)out.push(meterKey(nodeIds[a],chans[c],n));}
+ return out;}
+/* RECORDING A RERUN, which never spends. meterRun pushes every key it has not
+   seen onto meter.unique, and the allowance is that list's length, so the
+   rerun does not go through it at all: a rerun that reached meterRun would
+   cost nothing only for as long as every key in it happened to be open. This
+   checks each key against what is open and refuses the rest by name, so a
+   rerun plan gone stale between being shown and being run, after an undo,
+   opens nothing and is not counted. Lines spoken and the last run move,
+   because they were spoken and it was a run. */
+function meterRerun(p,keys){
+ var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
+ var m=(p&&p.meter)||null, have={}, said=[], refused=[];
+ ((m&&Array.isArray(m.unique)&&m.unique)||[]).forEach(function(k){have[k]=1;});
+ list.forEach(function(k){(have[k]?said:refused).push(k);});
+ if(m&&said.length){
+  /* THE FREE WEEKS MUST NOT MOVE. A record that ran the gift out before the
+     giftAt stamp existed counts its weeks from meter.last, which this is
+     about to move, so the stamp is written first off the value already read,
+     the way meterRun writes it. Without it a rerun would restart that count
+     and take weeks of allowance from somebody for using the free route. */
+  var now=new Date().toISOString();
+  if(!m.giftAt&&(m.unique||[]).length>=GIFT_N)m.giftAt=meterGiftAt(p)||now;
+  m.lines=(+m.lines||0)+said.length; m.last=now;
+  if(!m.first)m.first=now;}
+ return {added:0, repeated:said.length, fresh:[], refused:refused, rerun:true};}
 /* WHAT A RUN IS ALLOWED TO COST, WHICH IS NOT THE SAME AS WHAT IT CAPS AT.
 
    The release panel printed "16 patterns of the 0 you have left" and then ran
@@ -15114,6 +15256,64 @@ function lexCanon(){
 var LEXCANONRUN=lexCanon();
 var LEXFOLDRUN=lexFold();
 /* ============================================================
+   THE PLACE WORD, 20.H2. "The body word the person used is where the body
+   is." The excavation document's own failure test, run on the shipped
+   build: "I felt tight in my chest when my boss called" read throat 16,
+   because body places were read only as fixed phrases, chest tight and jaw
+   clenched, and split up by other words "tight" fell back to its own seat.
+   The person said chest.
+
+   So a sensation word takes the seat of a place word written in the same
+   clause. Two tables, and neither carries a seat typed here.
+
+   THE SENSATIONS are the words in this lexicon that report what a muscle or
+   a pulse is doing, which is a thing that happens somewhere. A feeling word
+   does not move: "shaking" and "trembling" are fear, and fear is held at the
+   root wherever the hands are. Every one of these must already be a key, so
+   this never makes a hit, it only moves where one lands.
+
+   THE PLACES are read off the lexicon's own body phrases. A place word is
+   seated where every phrase containing it is seated: chest where chest is
+   tight, heavy in my chest and chest tight already sit. CHILD's loc column,
+   the plain words the product uses for where each axis is held, can veto a
+   seat and never add one. A place no phrase seats is not guessed at, it is
+   listed, and a place two phrases seat differently is refused by name. The
+   gate asserts the derived table exactly, so a phrase added at a new seat
+   moves this and says so.
+   ============================================================ */
+var SOMA_SENSE=['tight','tightness','tense','tensed','tension','clenched','clenching',
+ 'throbbing','throb','pounding'];
+/* every place a person names, seated or not. Only the ones the lexicon's
+   own phrases seat can move a sensation; the rest are here so they can stop
+   one. Measured on every string the repository ships, the book included:
+   with chest as the only place listed, "chest tightness, foot pain, lower
+   back tension" carried the back's tension to the chest. Listing back makes
+   it the nearest place to "tension", and a place with no seat moves
+   nothing. Adding a word here can only ever stop a move. */
+var SOMA_PLACE_WORDS=['chest','jaw','throat','stomach','neck','shoulder','shoulders','gut',
+ 'belly','heart','head','back','rib','ribs','spine','hip','hips','arm','arms','hand',
+ 'hands','leg','legs','foot','feet','face','eyes','forehead','temples','muscles','body'];
+function somaPlaces(){
+ var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[]};
+ SOMA_SENSE.forEach(function(w){(LEX[w]?out.sense:out.missing).push(w);});
+ SOMA_PLACE_WORDS.forEach(function(w){
+  var seats={};
+  Object.keys(LEX).forEach(function(k){
+   /* a phrase says where. a single word is a sensation or a feeling */
+   if(k.indexOf(' ')<0||(' '+k+' ').indexOf(' '+w+' ')<0)return;
+   var s=LEX[k][LEX_SEAT]; if(s!=='coherent')seats[s]=1;});
+  var sk=Object.keys(seats);
+  if(!sk.length){out.unseated.push(w);return;}
+  if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
+  var veto=CHILD.filter(function(c){
+   var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
+   return loc.indexOf(' '+w+' ')>=0&&B2K[c.seat]!==sk[0];});
+  if(veto.length){out.refused[w]='CHILD holds '+veto[0].nm+' at the '+veto[0].loc
+   +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
+  out.seat[w]=sk[0];});
+ return out;}
+var SOMA_PLACE=somaPlaces();
+/* ============================================================
    THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
 
    scanStory reads a normalised copy of the story: lowercased, everything that
@@ -15201,8 +15401,32 @@ function clauseFloor(t,nm,at){
  for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
   if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
  return -1;}
+/* EVERY WORD, WITH ITS CLAUSE. The forward half of clauseFloor, on the same
+   copy and by the same rule: a space whose raw character ends a clause opens
+   the next one, so a word whose own leading space is that boundary belongs
+   to the clause after it, which is where clauseFloor already puts it. One
+   reader of the boundary for every pass that needs it, 20.H1, 20.H2 and
+   20.H6, rather than a second rule to drift from the first.
+     at  the word's leading space in nm.s, which is what a hit's at is
+     s,e the raw letters it came from, so t.slice(s,e) is what was typed
+     c   the clause, counted from nought
+     g   the clause cut again at every comma. Only 20.H2 reads it: a comma
+         is too weak a break to end a negation, leanNorm's ruling, and it is
+         exactly the break between items in a list, which is where a place
+         and a sensation stop belonging together. */
+function wordsOf(t,nm){
+ t=String(t||''); nm=nm||normMap(t);
+ var out=[], c=0, g=0, s=nm.s;
+ for(var k=0;k<s.length;k++){
+  if(s.charAt(k)!==' ')continue;
+  var raw=t.charAt(nm.map[k]);
+  if(k>0&&SENT_END.test(raw)){c++;g++;}
+  else if(k>0&&raw===',')g++;
+  var j=s.indexOf(' ',k+1); if(j<0||j===k+1)continue;
+  out.push({at:k, w:s.slice(k+1,j), s:nm.map[k+1], e:nm.map[j-1]+1, c:c, g:g});}
+ return out;}
 function scanStory(text){
- var src=normMap(text).s;
+ var nm=normMap(text), src=nm.s;
  var hits=[];
  /* phrases first: an idiom outranks its own words */
  PHRASES.forEach(function(row){
@@ -15256,6 +15480,38 @@ function scanStory(text){
   for(var i=0;i<mods.length;i++){
    if(before.slice(-(mods[i].length+2))===' '+mods[i]+' '){
     h.mod=LEXMOD[mods[i]]; h.modw=mods[i]; h.amt=h.amt*h.mod; break;}}});
+ /* THE PLACE WORD, 20.H2, see SOMA_PLACE above. A sensation word moves to
+    the seat of the nearest place word in its own clause, counted in words,
+    and not across a comma (wordsOf's g). Measured on every string the
+    repository ships: "chest tightness, foot pain, lower back tension" has
+    the chest and the foot one word either side of "tightness".
+    Two places at the same distance that disagree move nothing, because
+    picking one would be the instrument choosing where the person meant.
+    The hit keeps the seat it had in `was` and the word that moved it in
+    `place`, so a reader can always say why it landed there. The amount is
+    untouched: the person said how much, and where. */
+ var sense=hits.filter(function(h){return h.kind==='word'&&SOMA_PLACE.sense.indexOf(h.t)>=0;});
+ if(sense.length){
+  var ws=wordsOf(text,nm), byAt={};
+  ws.forEach(function(w,i){byAt[w.at]=i;});
+  /* EVERY PLACE WORD COUNTS FOR NEAREST, SEATED OR NOT. "my stomach was in a
+     knot and my shoulders tight" names shoulders for the tightness, and
+     shoulders has no seat in this lexicon. Counting only the seated places
+     would carry the tightness eight words back to the stomach, which is a
+     place the person did not say was tight. So the nearest place decides,
+     and a nearest place with no seat moves nothing. */
+  var pl=[]; ws.forEach(function(w,i){if(SOMA_PLACE_WORDS.indexOf(w.w)>=0)pl.push(i);});
+  sense.forEach(function(h){
+   var i=byAt[h.at]; if(i===undefined)return;
+   var best=null, tie=false;
+   pl.forEach(function(j){
+    if(ws[j].g!==ws[i].g)return;
+    var d=Math.abs(j-i), seat=SOMA_PLACE.seat[ws[j].w]||null;
+    if(!best||d<best.d){best={d:d,seat:seat,w:ws[j].w,at:ws[j].at};tie=false;}
+    else if(d===best.d&&seat!==best.seat)tie=true;});
+   if(!best||tie||!best.seat)return;
+   h.place=best.w; h.placeAt=best.at;
+   if(best.seat!==h.band){h.was=h.band; h.band=best.seat;}});}
  hits.sort(function(a,b){return a.at-b.at;});
  return hits;}
 /* ============================================================
@@ -15493,6 +15749,40 @@ function marksOf(t,p){
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});
  return keep;}
+/* ============================================================
+   WHAT READ AS NOTHING, 20.H6. The complement of marksOf.
+
+   The excavation document's matching order ends at NOVEL: a signal with no
+   canon match is kept, not dropped. This instrument has one matcher,
+   scanStory, and until now nothing said which of a person's words it
+   passed over. marksOf reports what was read; this reports every stretch
+   of the entry that produced no hit at all, in the letters the person
+   typed, so "it read nothing" can always be answered with what it did not
+   read.
+
+   A stretch is a run of words with no mark on any of them, inside one
+   clause: a mark ends it, and so does a sentence end, by wordsOf's rule. A
+   word a mark touches at all is read, so a phrase's own words never come
+   back here. A place word that seated a sensation, 20.H2, is read too: it
+   scored nothing itself and it decided where the charge landed. A negated
+   word is still a mark, because the sniffer does not read negation and this
+   reports the sniffer, not what Source AI hears.
+
+   It is reporting and nothing else. No reading moves, nothing is scored,
+   and nothing leaves the device: the count 19.D8 wants across people is
+   built from this only once there is a server and a consent ruling.
+   ============================================================ */
+function unmarkedOf(t,p){
+ t=String(t||'');
+ var marks=marksOf(t,p), ws=wordsOf(t), out=[], cur=null, read=0, placed={};
+ ((p&&p.hits)||[]).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
+ ws.forEach(function(w){
+  var hit=placed[w.at]||marks.some(function(m){return m.s<w.e&&m.e>w.s;});
+  if(hit){read++; cur=null; return;}
+  if(cur&&cur.c===w.c){cur.e=w.e; cur.words++; return;}
+  cur={s:w.s, e:w.e, c:w.c, words:1}; out.push(cur);});
+ out.forEach(function(r){r.text=t.slice(r.s,r.e);});
+ return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
 function applyStory(text){
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
@@ -15703,6 +15993,49 @@ function lexComposite(){
   else out.unseated.push(k);});
  return out;}
 var LEXCOMPRUN=lexComposite();
+
+/* ============================================================
+   THE LEXICON VERSION, 19.B6. Every story entry is stamped with the
+   lexicon that read it, so reading it again later is reproducible, or at
+   least knowably not.
+
+   The atom layer re-parses stored entries under today's tables, and an
+   entry stores what it was told at the time, its imprint count and seat
+   totals, and never re-derives them. Those two disagree the moment the
+   lexicon moves, and nothing could say whether a given entry was read by
+   this lexicon or an older one. 20.H2 moves readings, so it is the first
+   change that needs this, and is why it lands first.
+
+   THE VERSION IS A HASH OF THE TABLES, NOT A NUMBER TYPED HERE. A typed
+   version is bumped by whoever remembers, which is the typed number
+   failure CLAUDE.md records again and again. This is computed at load, after
+   the canon, fold and composite passes have finished writing, over every
+   table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
+   PHRASES, LEXMOD and the place word tables, the blocking places included,
+   because adding one can stop a move. A word added, an amount
+   retuned or a seat moved changes it, and nothing else does.
+
+   WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
+   scanStory's or parseStory's own rules with no change to a table moves no
+   table, so it does not move this. The node table W is not the lexicon and
+   is not in it either. Same version means the same words land the same
+   way; it does not promise the same addresses.
+
+   FNV-1a, 32 bits, over a canonical JSON with object keys sorted, so key
+   insertion order cannot move it and the browser and node agree. */
+var LEXV_RE=/^lx[0-9a-f]{8}$/;
+function lexCanonJSON(v){
+ if(Array.isArray(v))return '['+v.map(lexCanonJSON).join(',')+']';
+ if(v&&typeof v==='object')return '{'+Object.keys(v).sort().map(function(k){
+  return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
+ return JSON.stringify(v===undefined?null:v);}
+function lexVersion(){
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+  .map(lexCanonJSON).join('|');
+ var h=0x811c9dc5;
+ for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}
+ return 'lx'+('0000000'+h.toString(16)).slice(-8);}
+var LEX_VERSION=lexVersion();
 
 /* ---------- the shared matcher ----------
    ONE SCANNER FOR EVERY PHRASE TABLE IN THIS LAYER, with the two rules the rest
@@ -16308,6 +16641,194 @@ function srcTurn(heard,state){
  return {move:'ask', seat:s.seat, band:s.band, rung:s.rung,
   why:s.rung>=SRC_ROOT?'root':(s.earlier?'earlier':'again'),
   mentions:s.mentions, earlier:s.earlier};}
+
+/* ============================================================
+   WHICH QUESTION, 20.H1. SOURCE-TDD-impression-excavation.md: "It selects
+   the smallest useful question based on uncertainty reduction." The page's
+   second button, "A question from what you wrote", walked four questions by
+   how many times it had been pressed. It asked "What happened in the minute
+   before?" of somebody who had just written what happened in the minute
+   before. This reads which of the document's dimensions the entry already
+   answers and asks about one it has not.
+
+   WHAT DOES NOT CHANGE. When Source AI asks on its own (SRC_ASK, the rung
+   at seven), the why it asks, Move on, and the person leading: all exactly
+   as ruled at round GO. This chooses only which question the button asks.
+
+   READ AS PRESENT OR ABSENT, NEVER NEGATED. "I did not say anything" answers
+   what the person did as fully as "I said it", so nothing here reads "not",
+   and PRIORITY.md's worry that these cues become a fourth negation handler
+   does not arise. A cue matches whole words on normMap's own copy.
+
+   THE PRECEDENCE, AND WHY IT IS AN ORDER AND NOT A SCORE. The document names
+   eight scoring factors and gives no weight for any of them, and there is
+   no labelled set to fit one against. A weighted sum here would be eight
+   magic numbers. So the factors become a stated order, each step one a
+   person could check:
+
+     1  uncertainty      a dimension the entry already answers is not asked.
+     2  the chain        among the rest, the document's own order. Its
+                         excavation chain runs trigger, contact, feel,
+                         locate, sense, behaviour, predict, believe,
+                         meaning. Its failure test's "correct progression"
+                         runs trigger, feel, expect, do, meaning, which puts
+                         the prediction before the behaviour. The failure
+                         test is the one place the document says what a
+                         correct order is for a real sentence, so it wins
+                         that one swap, and the gate holds it to it. Goal
+                         is not on the chain and goes last.
+     3  novelty          a dimension already asked in this entry waits
+                         behind one that has not been.
+     4  signal           the question is about a seat the entry was heard
+                         at and quotes the person's own word for it, the way
+                         the button always did.
+
+   Not used, and named: contradiction (19.D5 is not built), verification
+   (20.H4 is not built), and user effort and emotional load, which nothing
+   measures; one question at a time is the only form of them here.
+   ============================================================ */
+var SRC_DIM_ORDER=['trigger','contact','feeling','body','prediction','behaviour',
+ 'belief','meaning','goal'];
+/* the cues, by dimension. feeling and body are read off the sniffer as well,
+   below, because the lexicon already knows more of those than a list can. */
+var SRC_DIM_CUE={
+ trigger:['when','after','because','as soon as','the moment','right before','just before'],
+ contact:['he','she','they','him','her','them','his','their','someone','somebody',
+  'everyone','everybody','nobody','people','boss','manager','colleague','partner',
+  'husband','wife','boyfriend','girlfriend','mother','father','mum','mom','dad',
+  'parents','son','daughter','brother','sister','friend','friends','family','kids',
+  'child','children','teacher','client'],
+ prediction:['will','wont',"won't","i'll","they'll","it'll",'going to','gonna',
+  'expect','expected','expecting','what if','would happen','bound to'],
+ belief:['i believe','i must','i have to','i should','if i','i always','i never',
+  'people always','nobody ever'],
+ meaning:['means','meant','mean that','says about me','proves','which means','what it means'],
+ goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like',"i'd like",
+  'trying to']};
+/* WHAT A PERSON DID, ported rather than written. VERPCUE already carries the
+   engine's approach, avoidance and attachment cues (engine/verp.js), and the
+   idioms already label what is a behaviour. The one thing added is the
+   plainest report of all, "I" and a doing verb, from a stated list, because
+   "I froze" and "I left" are the document's own examples of an impression. */
+var SRC_DO=['left','leave','walked','ran','hid','froze','freeze','stopped','stop',
+ 'avoided','avoid','said','told','asked','shouted','yelled','screamed','snapped',
+ 'slammed','cried','went','stayed','keep','kept','quit','called','texted','apologised',
+ 'apologized','agreed','nodded','smiled','drank','ate','scrolled','checked',
+ 'shut','pretended','ignored','did'];
+var SRC_DO_IDIOM=['silenced','over-giving','avoidance','compulsion','concealment','rigidity'];
+/* after a feel verb, these say the feeling has not been named yet: "I felt
+   tight" is the body, "I felt like" is a thought on its way. Degree words
+   are stepped over, so "I felt so tight" reads the same. */
+var SRC_FEEL_V=['felt','feel','feeling','feels'];
+var SRC_BODY_NOT=['back','hand','hands','face','head','arm','arms'];
+var SRC_FEEL_NOT=['like','that','as','in','at','on','for','about','when','if','it',
+ 'my','a','an','the','this'];
+function srcCue(src,c){return src.indexOf(' '+c+' ')>=0;}
+/* WHICH DIMENSIONS AN ENTRY ANSWERS. Returns each answered dimension with
+   the cue that answered it, which is the because, and the open ones in the
+   order above. Pure, and reads nothing but the text. */
+function srcDims(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, p=parseStory(t);
+ var by={}, place=SOMA_PLACE_WORDS, sense=SOMA_PLACE.sense;
+ function say(k,why){var l=by[k]=by[k]||[]; if(l.indexOf(why)<0)l.push(why);}
+ Object.keys(SRC_DIM_CUE).forEach(function(k){
+  SRC_DIM_CUE[k].forEach(function(c){if(srcCue(src,c))say(k,c);});});
+ /* the body. a sensation word or a place word, but not the place words
+    ordinary sentences use for something else: "she came back", "on the
+    other hand", "face it", "head home". Those still stop a sensation moving
+    in scanStory, where a wrong move is the cost; here a wrong read would
+    only skip a question, but it would skip it on every entry that uses one
+    of these words in its ordinary sense. */
+ sense.concat(place).forEach(function(w){
+  if(SRC_BODY_NOT.indexOf(w)<0&&srcCue(src,w))say('body',w);});
+ /* the feeling. Any hit the sniffer read that is not a sensation or a body
+    phrase names a feeling, including a coherent one: "calm" answers how a
+    person felt. Biased this way on purpose: counting a dimension as answered
+    when it was not costs one question not asked, and counting it open when
+    it was answered is the over-questioning the document's failure tests
+    name. */
+ p.hits.forEach(function(h){
+  if(sense.indexOf(h.t)>=0)return;
+  if(place.some(function(w){return (' '+h.t+' ').indexOf(' '+w+' ')>=0;}))return;
+  say('feeling',h.t);});
+ var ws=src.trim().split(' ');
+ ws.forEach(function(w,i){
+  if(SRC_FEEL_V.indexOf(w)<0)return;
+  var j=i+1;
+  while(j<ws.length&&LEXMOD[ws[j]]!==undefined)j++;
+  var n=ws[j]; if(!n)return;
+  if(SRC_FEEL_NOT.indexOf(n)>=0||sense.indexOf(n)>=0||place.indexOf(n)>=0)return;
+  say('feeling',w+' '+n);});
+ /* what the person did */
+ ['intent','averse','attach'].forEach(function(g){
+  (VERPCUE[g]||[]).forEach(function(c){if(srcCue(src,c))say('behaviour',c);});});
+ p.hits.forEach(function(h){
+  if(h.kind==='phrase'&&SRC_DO_IDIOM.indexOf(h.label)>=0)say('behaviour',h.t);});
+ ws.forEach(function(w,i){
+  if(w!=='i')return;
+  var n=ws[i+1]==='just'||ws[i+1]==='then'?ws[i+2]:ws[i+1];
+  if(SRC_DO.indexOf(n)>=0)say('behaviour','i '+n);});
+ var open=SRC_DIM_ORDER.filter(function(k){return !by[k];});
+ return {answered:by, open:open, words:ws.filter(Boolean).length};}
+
+/* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
+   result, asked the kinds already asked in this entry in the order they
+   were asked, askable the dimensions the page has a question for. Returns a
+   kind, or null when there is nothing it can ask. When every askable
+   dimension is answered the person still pressed for a question, so it
+   walks them all in the same order rather than saying nothing. */
+function srcNext(dims,asked,askable){
+ var can=SRC_DIM_ORDER.filter(function(k){return (askable||[]).indexOf(k)>=0;});
+ if(!can.length)return null;
+ var open=can.filter(function(k){return dims&&dims.open.indexOf(k)>=0;});
+ var pool=open.length?open:can, a=asked||[];
+ var fresh=pool.filter(function(k){return a.indexOf(k)<0;});
+ if(fresh.length)return fresh[0];
+ /* everything here has been asked once: the one asked longest ago */
+ return pool.slice().sort(function(x,y){return a.lastIndexOf(x)-a.lastIndexOf(y);})[0];}
+
+/* ============================================================
+   WHAT SOURCE AI ASKED, KEPT WITH THE ENTRY, 20.H5. Every Source AI state
+   was page memory and went at commit, so nothing could ever say what was
+   asked about which entry, or whether the person moved on from it.
+
+   PRIVACY, CHECKED FIRST. It stays on the device, on the entry it was asked
+   about, and it stores a question KIND and a SEAT KEY. Never the words of
+   the question and never anything the person wrote in answer: the entry's
+   own text already holds what they wrote, and a second copy of a question
+   with their words quoted in it would be a second copy of their words.
+   This is inside the narrow version of DESIGN-sniffer.md question 12 that
+   round GO built.
+
+   THE KINDS. The document's dimensions the button can ask, the three whys
+   the ask move asks (again, earlier, root, see srcTurn), and the two the
+   button asks off earlier entries when this one has nothing heard.
+
+   THE OUTCOMES, and only the three this page can actually observe:
+     moved   the person pressed Move on while it was showing
+     wrote   they wrote more after it was asked, and did not move on
+     left    neither: committed with nothing added after it
+   "Answered" would claim the instrument knows that what was written is an
+   answer, and it does not, so it says wrote. "Refused" has no control on the
+   page today; that is 20.H4 and S6, and a state nothing can produce is not
+   offered. */
+var SRC_KINDS=SRC_DIM_ORDER.concat(['again','earlier','root','since','back']);
+var SRC_OUTCOMES=['moved','wrote','left'];
+/* log is the page's own list, one row per question shown: {k, seat, at, moved},
+   where at is the length of the text when it was first shown. Returns what
+   the entry keeps. A kind or seat it does not know is dropped here rather
+   than written, so the boundary never sees one. */
+function srcAsked(log,len){
+ var out=[], seen={};
+ (log||[]).forEach(function(r){
+  if(!r||SRC_KINDS.indexOf(r.k)<0)return;
+  var seat=(r.seat&&K2BAND[r.seat])?r.seat:null, key=r.k+'|'+seat;
+  if(seen[key])return; seen[key]=1;
+  out.push({k:r.k, seat:seat,
+   a:r.moved?'moved':((+len||0)>(+r.at||0)?'wrote':'left')});});
+ return out;}
+/* the most an entry can carry: every kind at every seat and at none. */
+function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
 
 try{window.__at&&window.__at('engine/sourceai.js');}catch(e){}
 
@@ -17994,6 +18515,10 @@ if(typeof module!=='undefined'&&module.exports){
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHear:srcHear, srcTurn:srcTurn,
+                 SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
+                 srcDims:srcDims, srcNext:srcNext,
+                 SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
+                 srcAsked:srcAsked, srcAskedMax:srcAskedMax,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -18013,6 +18538,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
+                 PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
@@ -18122,7 +18648,9 @@ if(typeof module!=='undefined'&&module.exports){
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterGiftAt:meterGiftAt,
-                  meterNext:meterNext, meterPlan:meterPlan, LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,
+                  meterNext:meterNext, meterPlan:meterPlan,
+                  meterLast:meterLast, meterRerunPlan:meterRerunPlan, meterRerun:meterRerun,
+                  LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
@@ -18136,6 +18664,9 @@ if(typeof module!=='undefined'&&module.exports){
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
+                  wordsOf:wordsOf, unmarkedOf:unmarkedOf,
+                  SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
+                  LEX_VERSION:LEX_VERSION, LEXV_RE:LEXV_RE, lexVersion:lexVersion,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
      because the gate asserts each part on its own and a part no test can reach
@@ -28470,7 +29001,7 @@ function stRender(){
   +'<div class="st-bar">'
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
-   +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
+   +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
   +'</div></div></div>'
   /* ---- the read column: the instrument over the list ---- */
@@ -28697,7 +29228,18 @@ function stFound(){
    so a caller that is not the button itself (the tutorial) can act on a real
    result instead of re-deriving it. */
 function stCommit(){
- if(!ST_PARSED||!ST_PARSED.imprints.length)return {ok:false,why:'empty'};
+ /* AN ENTRY THAT READS AS NOTHING IS STILL THE PERSON'S OWN WORDS, round NZ,
+    21.I1. This used to refuse the whole commit whenever the sniffer found no
+    imprint, which is a UI gate and not the boundary: validateProfile already
+    accepts an entry with imprints:0 and empty bands (engine/schema.js). Four
+    of his own example sentences measured nothing here, "I keep putting off
+    the conversation" among them, and the Day One tutorial runs this same
+    path, so a first entry exactly like one of his own examples was dropped
+    on day one while the card beside it said "it is not a problem with what
+    you wrote." The TDDs this product is built from rule it directly: "the
+    user's original words are evidence" and "unknown is a valid result." Kept
+    now, with no charge written and no reading moved, and said so below. */
+ if(!ST_PARSED||!ST_TEXT||!ST_TEXT.trim())return {ok:false,why:'empty'};
  /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
     the release cannot be run on one: the words are the person's and the field
     is not. This wrote the charge onto the case's field, pushed the entry onto
@@ -28715,28 +29257,37 @@ function stCommit(){
  if(typeof S!=='undefined'&&S.who!==0){
   status('Nothing committed on a worked example.','fail');
   return {ok:false,why:'example'};}
- /* the field is about to change and until now there was no way back */
- undoPush('committing the story');
- /* WHAT THIS ENTRY FOUND IS KEPT FOR THE RELEASE, because the chain he ruled
-    is journal, imprint, release. The box empties on commit, so without this
-    the release would fall back to the heaviest held the moment the entry it
-    was offering left the page. Read before applyStory moves the field. */
  var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
- applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
- /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
-    applyStory writes S and pSave writes the record, and neither writes
-    PEOPLE[0], which is the table loadP(0) reads the person's field back out
-    of. This was the one write of charge in the product that skipped saveYou.
-    Measured: 7.24 units committed and on disk, a visit to James and back
-    through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
-    on the record, and the next ordinary save wrote 0.00 over the disk. The
-    entry text survived and the charge it wrote did not. S.who is 0 here, the
-    guard above sees to it, so this mirrors and writes the way every slider
-    does. */
- saveYou();
+ /* NO READING MOVES ON AN ENTRY THAT FOUND NOTHING, 21.I1. applyStory also
+    pulls every charge down on coherent language even when k is 0, so calling
+    it here would still move the field on words the sniffer read as nothing
+    in particular. The entry is kept; the field is not touched at all, and
+    undoPush only runs for the branch that can actually be undone. */
+ if(k){
+  /* the field is about to change and until now there was no way back */
+  undoPush('committing the story');
+  applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
+     applyStory writes S and pSave writes the record, and neither writes
+     PEOPLE[0], which is the table loadP(0) reads the person's field back out
+     of. This was the one write of charge in the product that skipped saveYou.
+     Measured: 7.24 units committed and on disk, a visit to James and back
+     through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
+     on the record, and the next ordinary save wrote 0.00 over the disk. The
+     entry text survived and the charge it wrote did not. S.who is 0 here, the
+     guard above sees to it, so this mirrors and writes the way every slider
+     does. */
+  saveYou();}
  if(CURP){CURP.story=CURP.story||{entries:[]};
-  CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
-   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
+  /* lex, the lexicon that read it, 19.B6, so a later reading can say whether
+     it is reading these words the way they were read at the time. asked,
+     what Source AI asked while it was written, 20.H5: a kind and a seat for
+     each, and what the person did next. Never the words of a question. */
+  var ent={t:new Date().toISOString(),text:ST_TEXT,
+   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands,lex:LEX_VERSION};
+  var asked=srcAsked(SRC_LOG,ST_TEXT.length);
+  if(asked.length)ent.asked=asked;
+  CURP.story.entries.push(ent);
   pSave();pSnap();}
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
@@ -28747,7 +29298,8 @@ function stCommit(){
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
- status('Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.');
+ status(k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
+  :'Kept. Nothing here read as charge, so nothing moved.');
  return {ok:true,k:k,kept:kept,bands:bands,text:text};}
 
 /* refresh only what the text moves, so typing never loses the caret */
@@ -28755,7 +29307,7 @@ function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
- if(ap){ap.disabled=!(ST_PARSED&&ST_PARSED.imprints.length);
+ if(ap){ap.disabled=!ST_PARSED;
   ap.textContent='Commit '+(ST_PARSED?ST_PARSED.imprints.length:0);}
  stRead();
  stFocus('write');
@@ -28960,11 +29512,14 @@ function srcAsk(t,words){
 
      1  what they are writing now. Every seat srcHear heard in this entry,
         with the person's own words for it, one seat per press, heaviest rung
-        first, and one of four questions about the moment it happened.
-     2  nothing heard yet, so what they wrote before. The seat keys their
+        first, and the question about a dimension the entry has not
+        answered yet, 20.H1, srcDims and srcNext in engine/sourceai.js.
+     2  written, and heard at no seat. The same choice of question, with no
+        quote and no place, because the words are still the person's.
+     3  nothing written yet, so what they wrote before. The seat keys their
         committed entries stored, srcPrior, the only thing Source AI may read
         from an earlier entry. Never the text.
-     3  nothing on either. It says so, and asks nothing.
+     4  nothing on either. It says so, and asks nothing.
 
    WHAT IT IS NOT, SAID PLAINLY. It is not a model and it generates nothing.
    It picks a seat and a word the engine already read and puts them into one
@@ -28972,20 +29527,63 @@ function srcAsk(t,words){
    are the person's and the place is where their own story landed, which is
    every claim the instrument can make and no more. */
 var SRC_DQ='', SRC_DN=0, SRC_DW='';
+/* WHAT WAS ASKED IN THIS ENTRY, 20.H5. One row per question shown, a kind
+   and a seat key and the text's length when it first showed, and whether the
+   person moved on from it. srcAsked in engine/sourceai.js turns it into what
+   the entry keeps at commit. SRC_DK is the dimensions the button has asked,
+   in order, which is what srcNext reads for novelty. */
+var SRC_LOG=[], SRC_DK=[];
+function srcLog(k,seat){
+ if(SRC_LOG.some(function(r){return r.k===k&&r.seat===seat;}))return;
+ SRC_LOG.push({k:k, seat:seat||null, at:ST_TEXT.length, moved:false});}
 /* a new entry is a new conversation: the built question quoted the last one */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;}
-var SRC_DYN=[
- function(w,at){return 'You wrote '+w+'. It lands '+at+'. What happened in the minute before?';},
- function(w){return 'You wrote '+w+'. Who was there when it started?';},
- function(w){return 'You wrote '+w+'. What did your body want to do right then?';},
- function(w){return 'You wrote '+w+'. What did you do straight after?';}];
-function srcDyn(heard,entries){
+function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];}
+/* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
+   by how many times it was pressed; srcNext now picks the dimension the
+   entry has not answered, in the order written in engine/sourceai.js. Each
+   takes the person's own word in quotes, or nothing when this entry was
+   heard at no seat.
+     kept      trigger, contact and behaviour are the three this button
+               already asked, word for word.
+     from the  feeling, prediction and meaning are the document's own
+     document  "correct progression" for "I felt tight in my chest when my
+               boss called", "How did you feel?", "What did you expect would
+               happen?", "What does that mean to you?". Body is its somatic
+               following, "When you say 'freeze,' what happens in your
+               body?", and with no word to quote its somatic example,
+               "Where do you feel that?".
+     retired   "What did your body want to do right then?" It asked the
+               body and the behaviour at once, and one useful question is
+               the document's tenth rule. It is the one line this removes.
+   Belief and goal are read and never asked: the document gives no question
+   for either, and a wording made up here would be a wording nobody ruled. */
+var SRC_DIMQ={
+ trigger:function(w,at){return w?'You wrote '+w+'. It lands '+at+'. What happened in the minute before?'
+  :'What happened in the minute before?';},
+ contact:function(w){return (w?'You wrote '+w+'. ':'')+'Who was there when it started?';},
+ feeling:function(w){return (w?'You wrote '+w+'. ':'')+'How did you feel?';},
+ body:function(w){return w?'When you say '+w+', what happens in your body?':'Where do you feel that?';},
+ prediction:function(w){return (w?'You wrote '+w+'. ':'')+'What did you expect would happen?';},
+ behaviour:function(w){return (w?'You wrote '+w+'. ':'')+'What did you do straight after?';},
+ meaning:function(w){return (w?'You wrote '+w+'. ':'')+'What does that mean to you?';}};
+function srcDyn(heard,entries,text){
  var n=SRC_DN++, seats=((heard&&heard.seats)||[]).filter(function(s){return s.words&&s.words.length;});
- if(seats.length){
+ var t=String(text||''), dims=t.trim()?srcDims(t):null;
+ var k=dims?srcNext(dims,SRC_DK,Object.keys(SRC_DIMQ)):null;
+ if(seats.length&&k){
   var s=seats[n%seats.length], lap=Math.floor(n/seats.length);
   SRC_DW=s.words[lap%s.words.length];
-  return SRC_DYN[lap%SRC_DYN.length]('“'+SRC_DW+'”',srcPlace(s.band));}
+  SRC_DK.push(k); srcLog(k,s.seat);
+  return SRC_DIMQ[k]('“'+SRC_DW+'”',srcPlace(s.band));}
  SRC_DW='';
+ /* HEARD AT NO SEAT, AND STILL WRITTEN. 20.H6 says what the instrument read
+    nothing in; an entry it read nothing in is still the person's own words,
+    and the document's third rule is to follow the signal before the label.
+    So it asks about this entry, without a quote and without a place, before
+    it reaches back to earlier ones. */
+ if(k&&unmarkedOf(t,parseStory(t)).unmarked>0){
+  SRC_DK.push(k); srcLog(k,null);
+  return SRC_DIMQ[k]('',null);}
  var ents=entries||[], pr=srcPrior(ents);
  var ks=Object.keys(pr).sort(function(a,b){return pr[b]-pr[a]||(a<b?-1:1);});
  if(!ks.length)return '';
@@ -28994,10 +29592,12 @@ function srcDyn(heard,entries){
  var lk=Object.keys(last).filter(function(k){return K2BAND[k]&&last[k]>0;})
   .sort(function(a,b){return last[b]-last[a]||(a<b?-1:1);})[0];
  var turn=[];
- if(lk)turn.push(function(){return 'Last time, what you wrote landed '+srcPlace(K2BAND[lk])+'. What has moved since?';});
- ks.forEach(function(k){if(pr[k]<2&&turn.length)return;
-  turn.push(function(){return 'What you write has landed '+srcPlace(K2BAND[k])+' '+srcTimes(pr[k])+(pr[k]>1?' now':'')+'. Is it back today?';});});
- return turn[n%turn.length]();}
+ if(lk)turn.push({k:'since',seat:lk,q:function(){return 'Last time, what you wrote landed '+srcPlace(K2BAND[lk])+'. What has moved since?';}});
+ ks.forEach(function(sk){if(pr[sk]<2&&turn.length)return;
+  turn.push({k:'back',seat:sk,q:function(){return 'What you write has landed '+srcPlace(K2BAND[sk])+' '+srcTimes(pr[sk])+(pr[sk]>1?' now':'')+'. Is it back today?';}});});
+ var pick=turn[n%turn.length];
+ srcLog(pick.k,pick.seat);
+ return pick.q();}
 /* WHY RELEASE IT. His dictation, translated to the ten year old rule (V21):
 
      his        The stress response is impairing the nerve flow. While the
@@ -29056,6 +29656,8 @@ function srcPaint(){
     a claim, and the dot only says what is true: it reads on every key. */
  var o='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
  var ask=turn.move==='ask'?srcAsk(turn,heard.top&&heard.top.words):'';
+ /* an ask on screen is a question asked, 20.H5: its why and its seat */
+ if(turn.move==='ask')srcLog(turn.why,turn.seat);
  /* THE QUESTION, AND THE TWO PRESSES THAT CHANGE IT, ON THE RIGHT. Round LT,
     his words: "The cycle a new question needs to go on the right hand side.
     Then you need to be another button next to it that makes it dynamic."
@@ -29122,12 +29724,14 @@ function srcPaint(){
  var sy=document.getElementById('srcsay');
  if(sy&&sy.textContent!==said)sy.textContent=said;
  var mv=document.getElementById('srcpass');
- if(mv)mv.onclick=function(){SRC_PASSED=true; srcPaint();};
+ if(mv)mv.onclick=function(){SRC_PASSED=true;
+  SRC_LOG.forEach(function(r){if(r.k===turn.why&&r.seat===turn.seat)r.moved=true;});
+  srcPaint();};
  var press=function(id,fn){var b=document.getElementById(id); if(!b)return;
   b.onclick=function(){fn(); srcPaint(); var a=document.getElementById(id); if(a)a.focus();};};
  press('srcnew',function(){SRC_DNONE=false; srcNextQ();});
  press('srcdyn',function(){
-  var d=srcDyn(STR.heard||heard,(CURP&&CURP.story&&CURP.story.entries)||[]);
+  var d=srcDyn(STR.heard||heard,(CURP&&CURP.story&&CURP.story.entries)||[],ST_TEXT);
   SRC_DNONE=!d; if(d)SRC_DQ=d;});}
 /* WHAT WAS LAST ON SCREEN, so a repaint that changes nothing moves nothing.
    The column is rewritten on every key, and a question that faded in on
@@ -30186,7 +30790,11 @@ function tutRender(){
  else if(s===1){
   var c=TUT.commit, kept=(c&&c.kept)||[];
   var body;
-  if(!c||!c.ok){
+  /* 21.I1, round NZ: stCommit now keeps an entry that read as nothing
+     instead of refusing it, so c.ok is true here even with nothing caught.
+     The honest empty copy below still needs c.k, the count it actually
+     found, not just that the entry was kept. */
+  if(!c||!c.ok||!c.k){
    /* HONEST EMPTY, the same rule the signal test already keeps: nothing
       caught is a real answer, not a failure to paper over. */
    body='<p class="ob-p">Nothing in that one lit anything the engine could '
@@ -30209,7 +30817,7 @@ function tutRender(){
  else if(s===2){
   var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
   var body;
-  if(!c||!c.ok){
+  if(!c||!c.ok||!c.k){
    body='<p class="ob-p">With nothing named yet, there is no chain to draw '
     +'from this one. The next entry that lands somewhere will have one.</p>';
   }else{
@@ -33436,7 +34044,10 @@ function avSeatAdd(b){
   applyStory(pr.notbe); verpApply(pr.notbe); leanApply(pr.notbe);
   saveYou();
   CURP.story=CURP.story||{entries:[]};
-  CURP.story.entries.push({t:new Date().toISOString(), text:pr.notbe, imprints:k, bands:p.bands});
+  /* stamped with the lexicon that read it, 19.B6, the same as the Story's
+     own commit, because this is a story entry written by a second door */
+  CURP.story.entries.push({t:new Date().toISOString(), text:pr.notbe, imprints:k, bands:p.bands,
+   lex:LEX_VERSION});
   pSave(); pSnap();
   var sv=(typeof saveState==='function')?saveState():{ok:true};
   msg=sv.ok?(old?'Changed. ':'Added. ')+k+(k===1?' imprint':' imprints')+' written to the field.'
@@ -34463,7 +35074,7 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          dose:100,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
-         heavy:{},look:false};
+         heavy:{},look:false,rerun:false,pick:[]};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -34478,6 +35089,46 @@ function relPlan(){
     falls back to twenty five, which is the ceiling it was asked to remove. */
  var cap=relBudget();
  return (CURP&&cap>0)?meterPlan(CURP,ids,chans,cap):[];}
+/* THE RERUN'S PLAN, 22.K17. The same addresses and channels, read through
+   meterRerunPlan, which plans only lines already open. relBudget is not called
+   here and that is the point of this function: a rerun is charged nothing, so
+   the allowance cannot shorten it, and a person whose allowance is spent can
+   still rerun everything they have opened, which DECISIONS.md rules "forever".
+   RUN_MAX still caps it, because a run's length is a ceiling for the sake of
+   the person sitting through it and has nothing to do with price. */
+function relRerunPlan(q){
+ var ids=(q||[]).map(function(n){return n.i;});
+ var chans=CHAN.map(function(c){return c[0]+c[2];});
+ return (typeof CURP!=='undefined'&&CURP&&typeof meterRerunPlan==='function')
+  ?meterRerunPlan(CURP,ids,chans,RUN_MAX):[];}
+/* NEW OR RERUN, picked on the panel and never by the panel. relPick always
+   opens on new, because DECISIONS.md rules a rerun "a deliberate act rather
+   than something that happens while somebody thinks they are opening
+   something", so the only way into a rerun is the press below.
+   The queue narrows to the addresses the rerun plan reaches. relCoolDown
+   releases the charge at every address in the queue, and an address with
+   nothing open, or one the cap cut off, would otherwise be released for free
+   with no line said at it, which is new ground bought by the free route.
+   RUN.pick holds what was picked so pressing New puts it all back. */
+function relMode(rr){
+ var pick=RUN.pick||[];
+ RUN.rerun=!!rr;
+ if(RUN.rerun){
+  RUN.plan=relRerunPlan(pick);
+  var on={}; RUN.plan.forEach(function(k){on[String(k).split(':')[0]]=1;});
+  RUN.queue=pick.filter(function(n){return on[n.i];});}
+ else {RUN.queue=pick.slice(); RUN.plan=relPlan();}
+ RUN.proj=null; relRender();}
+/* what the panel says before a rerun begins, which is the whole of its price
+   and anything it leaves out of what was picked. Read off the plan it will
+   run, so the sentence cannot describe a different rerun. */
+function relRerunSay(){
+ var pick=RUN.pick||[], none=pick.filter(function(n){return !relRerunPlan([n]).length;}).length;
+ var cut=pick.length-none-RUN.queue.length;
+ return 'A rerun says the last line you opened on each channel again. It costs nothing and opens nothing new.'
+  +(none?' '+none+(none===1?' address you picked has nothing open yet, so it is'
+    :' addresses you picked have nothing open yet, so they are')+' left out.':'')
+  +(cut>0?' A run is full, so '+cut+(cut===1?' more address waits':' more addresses wait')+' for the next one.':'');}
 /* one entry of the plan, read back into the address and channel it names */
 function relAt(i){
  var k=(RUN.plan||[])[i]; if(!k)return null;
@@ -34503,6 +35154,7 @@ function relPick(nodeIds){
  RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
  RUN.heavy={};RUN.look=false;
+ RUN.pick=RUN.queue.slice(); RUN.rerun=false;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -35041,7 +35693,7 @@ function relCoolDown(){
  RUN.dq0=_pre.DQ;
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
- undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
+ undoPush((RUN.rerun?'the rerun at ':'the release at ')+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
  var freed=0;
  RUN.queue.forEach(function(n){
   var w0=n.sq*10;                                   /* weights are 0 to 100 here */
@@ -35057,8 +35709,7 @@ function relCoolDown(){
    heavy:hv,felt:hv.length>0});});
  RUN.freed=freed;
  /* One pattern is one line: one channel over one address. Every line of the
-    run is keyed, so a rerun of the same ground costs nothing and only new
-    ground spends the tier. */
+    run is keyed, and only new ground spends the tier. */
  /* THE PERSON WHO RAN IT IS THE PERSON WHO IS CHARGED. toYou repoints CURP at
     the person's own record, and it was called at the end of this function, so
     a release run while a reference case was loaded wrote its meter onto the
@@ -35070,7 +35721,13 @@ function relCoolDown(){
   /* the plan built when the run was picked, committed as it stands. a plan
      that changes between being shown and being charged is a bill a person did
      not agree to. */
-  RUN.meter=meterRun(CURP,RUN.plan||[]);
+  /* A RERUN IS RECORDED BY meterRerun AND NEVER BY meterRun, 22.K17. meterRun
+     is the one writer of meter.unique, which is what the allowance counts, so
+     the rerun goes round it rather than through it and relying on it to skip
+     a repeated key. meterRerun refuses any key that is not already open, so
+     a rerun plan gone stale opens nothing. fresh comes back empty, so
+     releaseWork below lifts nothing, as it never has for ground already open. */
+  RUN.meter=RUN.rerun?meterRerun(CURP,RUN.plan||[]):meterRun(CURP,RUN.plan||[]);
   /* THE LIFETIME SPLIT, round LY: "total number of patterns released, total
      number of patterns installed, over the history." tally is read at the
      top of this function, before the write, off where the list actually
@@ -35731,21 +36388,38 @@ function relRender(){
      control that silently does nothing is the failure this codebase forbids.
      The plan it runs is still meterPlan's, capped at what is left, and
      relCoolDown still charges exactly that plan. */
-  var left=relLeft(), spent=(left<=0);
+  /* A RERUN IS NEVER SPENT, so a spent allowance closes the new route only.
+     can is whether any picked address has a line open to rerun; with none,
+     the panel is exactly what it was before 22.K17 and offers no choice. */
+  var left=relLeft(), spent=(left<=0)&&!RUN.rerun,
+   can=RUN.rerun||relRerunPlan(RUN.pick||[]).length>0;
   out+='<div class="pm-eye">Release your selections</div>'
    +'<div class="rel-rings">'+q.map(function(n){
      return crNode(n,'xs',{raw:''});}).join('')+'</div>';
+  /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are, so it
+     reads as one more setting on the run and not a second panel. The slot
+     keeps its label and the press carries the state. The rerun's price is
+     said before Run release is offered, because a person is entitled to see
+     what a run costs before they begin it, and for a rerun that is nothing. */
+  if(can)out+='<div class="rel-fields"><div class="rel-field"><span>Lines</span>'
+    +'<div class="seg" role="group" aria-label="New lines or a rerun">'
+    +'<button type="button" data-relmode="new" aria-pressed="'+(!RUN.rerun)+'">New</button>'
+    +'<button type="button" data-relmode="rerun" aria-pressed="'+(!!RUN.rerun)+'">Rerun</button>'
+    +'</div></div></div>'
+   +(RUN.rerun?'<div class="rel-note">'+esc(relRerunSay())+'</div>':'');
   if(spent)out+='<div class="rel-node">Nothing left to open</div>'
    /* "New ground is what an allowance buys" is the lexicon read aloud, which
       is his GX complaint about "find an address". Said as what it pays for. */
    /* "RERUNNING AN ADDRESS COSTS NOTHING" CAME OFF, round NW, 22.K17. Measured:
-      it does not. meterNext only ever returns an unopened line, so a release
-      at an address already fully open plans nothing at all, and one still
-      partly open spends the same allowance as new ground. DECISIONS.md rules
-      a free rerun four times over and nothing in the product does it. The
-      sentence stays off until a real rerun route exists to make it true. */
+      it did not. meterNext only ever returns an unopened line, so a release
+      at an address already fully open planned nothing at all, and one still
+      partly open spent the same allowance as new ground. The rerun route is
+      real now, the Lines pair above, and it says its own price where it is
+      picked. This note stays about the allowance, which is what is spent. */
+   /* "on the plan in settings" sent a person to a section they then had to
+      find. The button below opens the tiers themselves, round NZ. */
    +'<div class="rel-note">Your allowance pays for addresses you have not released before, and this '
-   +'period\'s is spent. A wider allowance is on the plan in settings.</div>';
+   +'period\'s is spent. Each tier sets how much new ground a period opens.</div>';
   /* HOW MANY PATTERNS is the dose a channel, a hundred by default since round
      LY, which is what he described hearing (open question 5) with the
      default moved to what he later named. Run speed is 1 at speaking pace,
@@ -35776,7 +36450,7 @@ function relRender(){
       would be a control the panel is still offering, and the honest reading of
       a spent allowance is that this run does not exist yet. The route out goes
       where the allowance is, which is the only thing that changes the answer. */
-   +(spent?'<button class="btn pri" id="relplan">Open settings</button>'
+   +(spent?'<button class="btn pri" id="relplan">See the tiers</button>'
          :'<button class="btn pri" id="relgo">Run release</button>')+'</div>'
    /* and no switch for a run that cannot begin */
    +(spent?'':relSwitches(null));}
@@ -35794,7 +36468,11 @@ function relRender(){
  if((b=document.getElementById('relcancel')))b.onclick=relClose;
  /* the same call the profile button makes, which is the one route to that
     surface and goes through setTab so the folded surface ruling holds. */
- if((b=document.getElementById('relplan')))b.onclick=function(){relClose();setTab(TAB.SETTINGS);};
+ /* ROUND NZ. This went to Settings and landed on whichever section was last
+    open, the sign in form by default, which says nothing about a plan. It
+    opens Billing at the tiers now, ui/plans.js, still through setTab. */
+ if((b=document.getElementById('relplan')))b.onclick=function(){relClose();
+  if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  if((b=document.getElementById('relstop')))b.onclick=function(){RUN.halted=true;relCoolDown();};
@@ -35809,6 +36487,8 @@ function relRender(){
   RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
  h.querySelectorAll('[data-reldose]').forEach(function(el){el.onclick=function(){
   RUN.dose=+this.getAttribute('data-reldose');relRender();};});
+ h.querySelectorAll('[data-relmode]').forEach(function(el){el.onclick=function(){
+  relMode(this.getAttribute('data-relmode')==='rerun');};});
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){
@@ -44119,7 +44799,13 @@ function profileSheet(){
    success before it has it, so while nothing is bound they say so
    through status() rather than opening a dead page or pretending.
    ============================================================ */
-function planSection(m){
+/* o.brief, from Billing, where the tiers group in ui/plans.js sits directly
+   below and carries what is on every tier, the next rung and a press on every
+   rung. Said twice on one pane is the same fact in two places, one edit away
+   from two answers, so brief drops those four and keeps the state and Manage
+   billing. The sheet, and the gate that reads it, keep the full form. */
+function planSection(m,o){
+ o=o||{};
  var pl=(CURP&&CURP.plan)||null;
  var t=planOf(pl), st=planState(pl);
  /* through meterBudget, the one read the release panel uses, because the free
@@ -44139,18 +44825,20 @@ function planSection(m){
      NW, 22.K17. This is the plan sheet, read while deciding what a tier
      buys, and the claim was false: measured, a release at an address
      already open spends the same allowance as new ground, or plans nothing
-     at all once every line is open. DECISIONS.md promises this for real
-     and nothing in the product does it yet. Stays off until a real rerun
-     route makes it true. */
+     at all once every line is open. The rerun route that makes it true is
+     the Lines pair on the release panel (relMode, ui/release.js), and this
+     sheet already says it once in PLAN_ALWAYS below, "rerunning anything
+     already open", so the second wording is not put back. */
   +'<p class="sh-p">'+esc(t.d)+'</p>'
   /* SIGHT IS NOT FOR SALE, ruled, so the panel says what is on every tier
      rather than what the next one would unlock. */
-  +'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>';
+  +(o.brief?'':'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>');
+ if(o.brief)up=null;
  if(yr)h+='<p class="sh-p">'+esc(yr.say)+'</p>';
  if(up)h+='<p class="sh-p">'+esc(up.to.nm)+' is '+esc(up.say)+'.</p>';
  /* WHAT IT IS WORTH, in the unit people already price against. Throughput and
     never outcome, at the conservative end of the book's own range. */
- var worth=planWorth(al.inGift?GIFT_N:t.grant);
+ var worth=o.brief?'':planWorth(al.inGift?GIFT_N:t.grant);
  if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
  h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
@@ -44649,6 +45337,193 @@ function authPlanCheckout(tier){
 
 try{window.__at&&window.__at('ui/auth.js');}catch(e){}
 /* ============================================================
+   THE TIERS, SIDE BY SIDE. Round NZ: "We need to prioritize the
+   paywall story."
+
+   The Billing section said which tier a person is on and offered one
+   button, the next rung up. Nothing in the product laid the ladder
+   out, so a person deciding whether to pay was deciding about one
+   line of prose. This is the ladder, read off engine/plan.js and
+   nothing else, with a press on every rung above the one in force.
+
+   WHERE IT LIVES. Under Billing, in the account area, directly below
+   "Your plan", because that is where a person already goes to change
+   what they pay, and a second surface for the same decision would be
+   two answers to one question. It is reached three ways:
+
+     Settings, Billing                    the standing route
+     the release panel, when spent        "See the tiers", which opens
+                                          Billing at this group. This is
+                                          the moment of decision: a
+                                          person who has just picked
+                                          what to release and has
+                                          nothing left to open it with.
+     Account, signed out                  unchanged, it is the sign in
+
+   Before this, the release panel's button said "Open settings" and
+   landed on whichever account section was last open, the sign in form
+   by default, which is the one screen in the product that says
+   nothing about a plan.
+
+   WHAT IT MAY SHOW. Sight is not for sale, ruled, so nothing a person
+   can see differs between rows and no row lists a thing it unlocks.
+   What every tier gets is said once, across the top, the whole width
+   of the group, and the rows under it differ in one quantity: how
+   much new ground opens. The bar on each row is that quantity drawn,
+   so "the only thing that moves is volume" is a shape before it is a
+   sentence.
+
+   WHAT IT MAY NOT. No badge naming a tier as popular, no struck
+   price, no count of anything running down, no tier pre-selected.
+   A person on a tier sees it marked as the one they are on, which is
+   a fact about their record. A press goes through planOpen, the same
+   seam the "Move to" button uses, so a press here and a press there
+   do exactly the same thing.
+   ============================================================ */
+
+/* the per-month figure a bar is drawn against. Free is a week of ten, so a
+   month of it is forty, by the same four-week month plan.js reads. */
+function ptMonthly(r){ return r.per==='week'?r.grant*4:r.grant; }
+
+/* THE ONE LINE A ROW SAYS ABOUT ITSELF. Each one is checked against the
+   arithmetic it describes: free banks (planAllowance, "FREE BANKS"), tier
+   one's line is planWorth's own, two and three are multiples of tier one's
+   grant, and four is the cohort lead suite at tier three's grant. */
+function ptLine(r){
+ var one=PLAN_BY.one.grant;
+ if(r.k==='free')return 'What you do not spend carries over, week to week, until there is enough for a run.';
+ if(r.k==='one')return planWorth(r.grant);
+ if(r.lead)return 'The same ground as tier three, and the cohort lead suite: manage profiles, '
+  +'build rituals and build accountability for the people you lead. Each person grants a lead '
+  +'sight by name and can take it back.';
+ var x=r.grant/one;
+ if(x===2)return 'Twice the ground of tier one. Nothing else changes.';
+ if(x===3)return 'Three times the ground of tier one. Nothing else changes.';
+ return planWorth(r.grant);}
+
+/* "shown at checkout" and no more: the foot of the group already says the
+   processor's page shows the price before anything is charged */
+function ptPrice(r){
+ if(r.price===0)return 'nothing';
+ if(r.price!=null)return r.price+' dollars a month';
+ return 'shown at checkout';}
+/* 1,200 and not 1200, the way the funnel's own ladder prints it */
+function ptN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+
+function planTiersHtml(){
+ var pl=(typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;
+ var rows=planLadder(pl);
+ var top=Math.max.apply(null,rows.map(ptMonthly));
+ var bud=(typeof CURP!=='undefined'&&CURP&&typeof meterBudget==='function')?meterBudget(CURP):null;
+ var al=bud&&bud.allow;
+ var signed=(typeof authSession==='function')&&!!authSession();
+ var h='<div class="ac-grp pt-grp" id="plantiers">'
+  +'<div class="ac-gh">The tiers</div>'
+  /* the same on every row, said once and the full width, because it is the
+     part a comparison would otherwise repeat five times or leave out */
+  +'<div class="pt-same"><div class="pt-sh">On every tier, free included</div>'
+  +'<p>'+esc(PLAN_ALWAYS.join(', ').replace(/^./,function(c){return c.toUpperCase();}))+'.</p>'
+  +'<p class="pt-so">A tier sets one thing: how much new ground you can open.</p></div>'
+  +'<div class="pt-list" role="list">';
+ rows.forEach(function(r){
+  var w=Math.max(2,Math.round(ptMonthly(r)/top*100));
+  h+='<div class="pt-row'+(r.now?' on':'')+'" role="listitem"'+(r.now?' aria-current="true"':'')+'>'
+   +'<div class="pt-who"><div class="pt-nm">'+esc(r.nm)+'</div>'
+   +'<p class="pt-d">'+esc(ptLine(r))+'</p></div>'
+   +'<div class="pt-fig"><div class="pt-n"><b class="num">'+ptN(r.grant)+'</b> patterns a '+esc(r.per)+'</div>'
+   +(r.per==='week'?'':'<div class="pt-w">'+ptN(r.week)+' a week</div>')
+   +'<div class="pt-bar" aria-hidden="true"><i style="width:'+w+'%"></i></div>'
+   /* price sits under the figure it buys, a row of its own on every width.
+      As a fourth column it wrapped to two lines at 1600, measured. */
+   +'<div class="pt-pr"><span>Price</span><b>'+esc(ptPrice(r))+'</b></div></div>'
+   +'<div class="pt-go">'
+   +(r.now?'<span class="pt-now">You are on this</span>'
+     :(r.up?'<button class="btn" type="button" data-ptier="'+esc(r.k)+'">Move to '
+       +esc(r.nm.toLowerCase())+'</button>':''))
+   +'</div></div>';});
+ h+='</div>';
+ /* THE FOOT SAYS WHAT A PRESS WILL MEET, before it is pressed. */
+ var foot=[];
+ if(al&&al.inGift)foot.push('You have '+al.left+' patterns left of the '+GIFT_N+' you were given. '
+  +'While any of the gift is left, a run spends the gift first, on every tier.');
+ if(!signed)foot.push('Moving to a tier needs a sign in, because the plan is held on your record. '
+  +'Sign in from Account, then come back here.');
+ foot.push('Payment happens on the processor\'s page, which shows the price before anything is charged. '
+  +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
+ h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
+  +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to Account</button></div>')
+  +'</div></div>';
+ return h;}
+
+/* every press goes through planOpen, the seam "Move to" already uses, so a
+   tier pressed here and the same tier pressed there cannot do different
+   things */
+function planTiersWire(){
+ var host=document.getElementById('plantiers'); if(!host)return;
+ host.querySelectorAll('[data-ptier]').forEach(function(b){
+  b.onclick=function(){planOpen('checkout',b.getAttribute('data-ptier'));};});
+ var a=document.getElementById('ptacc');
+ if(a)a.onclick=function(){ACC_OPEN='account'; renderAccount();};}
+
+/* THE ROUTE IN FROM THE MOMENT OF DECISION. Opens Billing and brings the
+   tiers into view, rather than leaving a person on the sign in form. */
+/* The scroll waits a frame. setTab's own render repaints the account area
+   after this returns, and a scroll made before that repaint scrolled a node
+   that was then replaced: measured at 390, the press landed on Billing with
+   the tiers below the fold. */
+function planTiersOpen(){
+ if(typeof ACC_OPEN!=='undefined')ACC_OPEN='billing';
+ setTab(TAB.SETTINGS);
+ if(typeof renderAccount==='function')renderAccount();
+ var go=function(){var t=document.getElementById('plantiers');
+  if(t&&t.scrollIntoView){try{t.scrollIntoView({block:'start'});}catch(e){}}};
+ if(typeof requestAnimationFrame==='function')requestAnimationFrame(function(){setTimeout(go,0);});
+ else setTimeout(go,0);}
+
+/* the surface's own rules, injected once, the way accProfCss carries the
+   profiles section's, because the shell stylesheet is held by another seat */
+function planTiersCss(){
+ if(document.getElementById('pt-css'))return;
+ var st=document.createElement('style'); st.id='pt-css';
+ st.textContent=[
+  '.pt-same{padding:13px 15px 14px;border-bottom:1px solid var(--edge);background:var(--panel-2)}',
+  'body.punch .pt-same{border-bottom-color:transparent}',
+  '.pt-sh{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.06em;margin-bottom:6px}',
+  '.pt-same p{margin:0;font-size:14px;line-height:1.65;color:var(--ink);max-width:70ch}',
+  '.pt-same p.pt-so{margin-top:8px;color:var(--mid)}',
+  '.pt-row{display:grid;grid-template-columns:minmax(0,1fr) 228px 168px;gap:20px;align-items:center;',
+  ' padding:14px 15px;border-bottom:1px solid var(--edge)}',
+  'body.punch .pt-row{border-bottom-color:var(--panel)}',
+  '.pt-row.on{box-shadow:inset 3px 0 0 var(--c)}',
+  '.pt-nm{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.pt-d{margin:4px 0 0;font-size:13px;line-height:1.55;color:var(--mid)}',
+  '.pt-n{font-size:13px;color:var(--mid)}',
+  '.pt-n b{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:20px;font-weight:500;color:var(--ink);margin-right:2px}',
+  '.pt-w{font-size:12.5px;color:var(--dim);margin-top:2px}',
+  '.pt-bar{height:6px;border-radius:3px;background:var(--sunk);margin-top:8px;overflow:hidden}',
+  '.pt-bar i{display:block;height:100%;border-radius:3px;background:color-mix(in srgb,var(--c) 70%,var(--mid))}',
+  '.pt-pr{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:9px}',
+  '.pt-pr span{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.06em}',
+  '.pt-pr b{font-size:13.5px;font-weight:400;color:var(--ink);text-align:right}',
+  '.pt-go{display:flex;justify-content:flex-end}',
+  '.pt-go .btn{min-height:var(--tap);white-space:nowrap}',
+  '.pt-now{font-size:13px;color:var(--ink);padding:0 4px}',
+  '.pt-grp .ac-gf p{margin:0 0 6px}',
+  '.pt-grp .ac-gf p:last-of-type{margin-bottom:0}',
+  '.pt-acts{margin-top:10px}',
+  '.pt-acts .btn{min-height:var(--tap)}',
+  /* ONE COLUMN ON A PHONE. The first cut put price beside the figure and
+     squeezed "400 patterns a month" onto three lines, measured at 390. */
+  '@media (max-width:760px){',
+  ' .pt-row{grid-template-columns:1fr;gap:10px}',
+  ' .pt-go{justify-content:stretch}',
+  ' .pt-go .btn{width:100%}',
+  ' .pt-now{padding:0}',
+  ' .pt-go:empty{display:none}}'].join('\n');
+ document.head.appendChild(st);}
+
+try{window.__at&&window.__at('ui/plans.js');}catch(e){}
+/* ============================================================
    THE ACCOUNT AREA. Six sections, one column, no rails.
 
    Ruled by the owner: "our profile page is non-standard, I want for now go out
@@ -45090,7 +45965,11 @@ function accPrivacy(){
 
 /* ---------- 4.5 billing. almost entirely real, ported not rebuilt ---------- */
 function accBilling(m){
- return planSection(m)+accGroup('Invoices',accStub('Invoices','held by the processor'),
+ /* the tiers sit under the plan in force, ui/plans.js, and carry the presses */
+ if(typeof planTiersCss==='function')planTiersCss();
+ return planSection(m,{brief:true})
+  +(typeof planTiersHtml==='function'?planTiersHtml():'')
+  +accGroup('Invoices',accStub('Invoices','held by the processor'),
   'Invoices live with whoever takes the payment, which is never this file. '
   +'Nothing about a card is held here and the record carries no customer number.');}
 
@@ -45214,7 +46093,8 @@ function accWire(){
  var ab=$('achelpb'); if(ab)ab.onclick=function(){obCompose('bug');};
  var ar=$('acrate');  if(ar)ar.onclick=function(){obCompose('rating');};
  var as=$('acsurv');  if(as)as.onclick=function(){obCompose('feedback');};
- planWire();}
+ planWire();
+ if(typeof planTiersWire==='function')planTiersWire();}
 /* THE SIGN IN PRESSES. The request and every sentence it can end in are
    ui/auth.js's; what is here is the waiting and the redraw. A signed in
    section is a different set of rows, so a yes redraws the section and a no
@@ -48812,5 +49692,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003189654"></div>
+<div id="eof" hidden data-len="003242900"></div>
 </body></html>

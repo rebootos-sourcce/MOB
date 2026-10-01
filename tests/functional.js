@@ -2546,7 +2546,7 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
   out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),story:SECOF(TAB.STORY),
    know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),field:SECOF(TAB.FIELD),
-   body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
+   intake:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
    clients:SECOF(TAB.PRACTITIONER)};
   setTab(TAB.SETTINGS); await wait();
   out.settings={pressed:pressedSec().length, shown:vis().length};
@@ -2570,10 +2570,14 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
-  'LD and LE: Story, Avatar and Summary in Discover, Field, Body, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Body,Compass,Character / Field,Body,Compass,Character',
-  'Play reads in his order, Field, Body, Compass, Character, in the engine and the bar alike, '+nav.play);
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","intake":"discover","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+  /* round OD: Intake (TAB.ENERGY) moved back from Play to Discover, reversing
+     round LO's move to Body. His words: "Intake is not body. It never has
+     been... change it back to intake, move it back to discover, after
+     summary." engine/core.js has the ruling in full. */
+  'OD: Story, Avatar, Summary and Intake in Discover, Field, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Compass,Character / Field,Compass,Character',
+  'Play reads in his order, Field, Compass, Character, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
   'a first visit to each section opens its first tab, and Discover opens on the Story, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
@@ -3556,10 +3560,11 @@ ok(/On\s*Free/.test(plan.dead),
    which was itself the thing not checked: meterNext only ever returns an
    unopened line, so a rerun spends the same allowance as new ground, or
    plans nothing once an address is fully open. Measured directly against
-   meterPlan before this line changed. DECISIONS.md promises a free rerun
-   and nothing in the product does it yet, so the plan sheet no longer
-   claims it does. The gate now asserts the claim is gone rather than
-   present, the same way CO-25 asserts "two months free" stays off. */
+   meterPlan before this line changed. The rerun route is real now (the
+   Lines pair on the release panel, gated below under 22.K17), and the
+   sheet says it once already through PLAN_ALWAYS, so this second wording
+   stays off. The gate asserts the claim is gone rather than present, the
+   same way CO-25 asserts "two months free" stays off. */
 ok(!/Rerunning anything already open costs nothing/.test(plan.two),
  'the plan sheet no longer claims a free rerun the product does not do');
 ok(/no customer number/.test(plan.two),'and the record says what it does not hold');
@@ -3581,6 +3586,80 @@ const leak=await page.evaluate(()=>{
    if(re.test(src))bad.push(String(re));});
  return bad;});
 ok(leak.length===0,'no key, customer id or card field is anywhere in the build: '+leak.join(', '));
+
+console.log('\n=== the tiers, side by side, under Billing (round NZ) ===');
+/* ui/plans.js. One row per tier, the same on every tier said once across the
+   top, a press on every rung above the one in force, and every press through
+   the same planOpen the "Move to" button uses. Asserted on the rendered
+   Billing section rather than on the function's string, because the route a
+   person takes is setTab and a section press. */
+const tiers=await page.evaluate(async()=>{
+ const o={}, kept=CURP.plan?JSON.parse(JSON.stringify(CURP.plan)):null;
+ const keptU=CURP.meter.unique.slice(), keptHost=PLAN_HOST;
+ loadP(0);
+ CURP.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ ACC_OPEN='billing'; setTab(TAB.SETTINGS); renderAccount();
+ await new Promise(r=>setTimeout(r,80));
+ const g=document.getElementById('plantiers');
+ o.there=!!g;
+ o.rows=g?[...g.querySelectorAll('.pt-row')].map(r=>r.querySelector('.pt-nm').textContent):[];
+ o.now=g?[...g.querySelectorAll('.pt-row.on .pt-nm')].map(e=>e.textContent):[];
+ o.presses=g?[...g.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier')):[];
+ o.text=g?g.textContent.replace(/\s+/g,' '):'';
+ o.same=g?(g.querySelector('.pt-same')||{}).textContent||'':'';
+ /* "Your plan" above keeps its state and Manage billing, and drops what the
+    tiers below now carry, so nothing is said twice on one pane */
+ const pane=document.querySelector('#settings .ac-pane');
+ o.paneText=pane?pane.textContent.replace(/\s+/g,' '):'';
+ /* scoped to the pane: the profile sheet the group above opened keeps its own
+    #planup in the closed sheet, and a document lookup found that one */
+ o.planup=!!(pane&&pane.querySelector('#planup'));
+ o.planman=!!(pane&&pane.querySelector('#planman'));
+ /* a press goes through the seam with the tier on the button */
+ let called=null;
+ bindPlan(function(what,tier){called={what:what,tier:tier};});
+ const b2=g&&g.querySelector('[data-ptier="two"]'); if(b2)b2.click();
+ o.called=called;
+ /* the bars: tier four's ground equals tier three's, so the bars match */
+ const w=k=>{const r=[...g.querySelectorAll('.pt-row')].find(x=>x.querySelector('[data-ptier="'+k+'"]'));
+  return r?r.querySelector('.pt-bar i').style.width:'';};
+ o.bar3=w('three'); o.bar4=w('four');
+ /* on tier two, the rows below carry no press */
+ CURP.plan={tier:'two',status:'active',granted:800,carried:0,base:100,since:null,until:null};
+ renderAccount();
+ const g2=document.getElementById('plantiers');
+ o.presses2=[...g2.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier'));
+ o.now2=[...g2.querySelectorAll('.pt-row.on .pt-nm')].map(e=>e.textContent);
+ /* every control on the surface meets the touch floor */
+ o.small=[...g2.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();
+  return r.width>0&&r.height<44;}).length;
+ bindPlan(keptHost);
+ CURP.plan=kept; CURP.meter.unique=keptU; ACC_OPEN='account';
+ return o;});
+ok(tiers.there,'Billing carries the tiers group');
+ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Tier four']),
+ 'one row per tier, in ladder order, the gift left out: '+JSON.stringify(tiers.rows));
+ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only it: '+JSON.stringify(tiers.now));
+ok(tiers.presses.join()==='one,two,three,four','from free every paid tier has a press: '+tiers.presses.join());
+ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
+ 'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));
+ok(/On every tier, free included/.test(tiers.same)&&/the whole reading/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
+ 'what every tier gets is said once, across the top, from PLAN_ALWAYS');
+ok(/400 patterns a month/.test(tiers.text)&&/1,200 patterns a month/.test(tiers.text)&&/100 a week/.test(tiers.text)&&/10 patterns a week/.test(tiers.text),
+ 'each row states its own grant in its own period');
+ok(/99 dollars a month/.test(tiers.text),'tier four carries its ruled price');
+ok(!/\b(12|29|59) dollars/.test(tiers.text),'tiers one to three print no price that has not been ruled');
+ok(tiers.bar3&&tiers.bar3===tiers.bar4,'tier four draws the same ground as tier three, '+tiers.bar3+' and '+tiers.bar4);
+/* NO SALES TROPES. Sight is not for sale, and nothing counts down. */
+ok(!/most popular|recommended|best value|unlock|limited|only \d+ left|save \d+|ends in/i.test(tiers.text),
+ 'no badge, no unlock, no countdown, no struck saving');
+ok(/Manage billing/.test(tiers.paneText)&&tiers.planman,'Your plan keeps Manage billing above the tiers');
+ok(!tiers.planup,'and drops its own Move to, because the tiers below carry every press');
+ok((tiers.paneText.match(/On every tier/g)||[]).length===1,
+ 'what is on every tier is said once on the pane, not twice');
+ok(tiers.presses2.join()==='three,four','on tier two only three and four are offered: '+tiers.presses2.join());
+ok(JSON.stringify(tiers.now2)==='["Tier two"]','and tier two is the one marked');
+ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers.small+' under it');
 
 /* ============================================================
    THE ATOM LAYER IS REACHABLE, AND IT DRAWS WHERE THE STORIES ARE
@@ -4342,7 +4421,14 @@ console.log('\n=== the release panel quotes a price it then charges ===');
    sub:txt('.rel-sub'), note:txt('.rel-note'),
    begin:!!document.getElementById('relgo'),
    route:!!document.getElementById('relplan'),
+   label:(document.getElementById('relplan')||{}).textContent||'',
    before:CURP.meter.unique.length};
+  /* ROUND NZ. The route lands on the tiers, not on whichever account section
+     was last open, which by default is the sign in form. */
+  const rp=document.getElementById('relplan');
+  if(rp){ACC_OPEN='account'; rp.click(); await new Promise(r=>setTimeout(r,120));
+   out.landed=S.tab===TAB.SETTINGS&&ACC_OPEN==='billing'&&!!document.getElementById('plantiers');
+   ACC_OPEN='account'; setTab(TAB.FIELD);}
   if(out.begin){RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
   out.after=CURP.meter.unique.length;
   out.spent=out.after-out.before;
@@ -4352,6 +4438,9 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  ok(run.plan===0,'and there is no plan to sell, got '+run.plan);
  ok(run.begin===false,'so Begin is not offered at all, rather than offered and disabled');
  ok(run.route===true,'and the panel routes to the one thing that changes the answer');
+ ok(run.label==='See the tiers'&&run.landed===true,
+  'and the route opens Billing at the tiers, not the last account section: '
+  +JSON.stringify(run.label)+' landed '+run.landed);
  ok(run.spent===0,'and nothing is spent, '+run.spent+' patterns went out the door');
  ok(!/\b0 patterns of the 0\b/.test(run.sub),
   'the panel does not quote a price of nought against an allowance of nought, got '
@@ -4388,6 +4477,71 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  ok(part.sub===''&&part.note==='','and the panel quotes no price for it, got '
   +JSON.stringify([part.sub,part.note]));
  await rl.close();
+}
+
+console.log('\n=== a rerun is picked on purpose, priced before it starts, and charges nothing, 22.K17 ===');
+/* DECISIONS.md: "Anything already opened may be rerun without limit and
+   without cost, forever", and "a rerun is a deliberate act". The engine gate
+   holds the arithmetic (tests/engine.js 38b). This holds the panel: the
+   choice is offered only where something is open, it opens on New every
+   time, Rerun says its price before Run release, a spent allowance still
+   reruns, and the commit leaves the allowance where it was. The record is
+   the person's own, one address run once through the panel's own plan and
+   the rest of the allowance spent, so the new route is shut. */
+{
+ const rp=await browser.newPage({viewport:{width:1600,height:1000}});
+ await rp.goto(FILE,{waitUntil:'load'}); await booted(rp);
+ const o=await rp.evaluate(async()=>{
+  loadP(0);
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  const ids=compute().carrying.slice(0,2).map(n=>n.i);
+  relPick([ids[0]]); RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown(); relClose();
+  const opened=CURP.meter.unique.slice();
+  for(let i=0;CURP.meter.unique.length<110;i++)CURP.meter.unique.push('seed'+i+':Rlimit:0');
+  CURP.plan={tier:'free',status:'',granted:0,carried:0,base:100,since:null,until:null};
+  const host=document.getElementById('rel'), pressed=k=>{
+   const b=host.querySelector('[data-relmode="'+k+'"]'); return b?b.getAttribute('aria-pressed'):null;};
+  /* nothing open at the second address alone, so no choice is offered */
+  relPick([ids[1]]);
+  const out={opened:opened.length, bare:pressed('rerun')};
+  relPick(ids);
+  out.left0=relLeft(); out.newOn=pressed('new'); out.rerunOn=pressed('rerun');
+  out.beginNew=!!document.getElementById('relgo');
+  host.querySelector('[data-relmode="rerun"]').click();
+  out.rerunOn2=pressed('rerun'); out.rerun=RUN.rerun;
+  out.note=(host.querySelector('.rel-note')||{}).textContent||'';
+  out.beginRerun=!!document.getElementById('relgo');
+  out.queue=RUN.queue.length; out.plan=RUN.plan.slice();
+  out.allOpen=RUN.plan.every(k=>opened.indexOf(k)>=0);
+  out.time=((host.querySelector('.rel-time')||{}).textContent||'');
+  const u0=CURP.meter.unique.length, l0=CURP.meter.lines;
+  RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();
+  out.spent=CURP.meter.unique.length-u0; out.lines=CURP.meter.lines-l0;
+  out.left1=relLeft(); out.metered=!!(RUN.meter&&RUN.meter.rerun); out.log=RUN.log.length;
+  relClose();
+  /* and the next pick opens on New again, never carried over */
+  relPick(ids); out.after=pressed('new'); out.afterRerun=RUN.rerun; relClose();
+  return out;});
+ ok(o.opened===4,'one address run once opens four lines, got '+o.opened);
+ ok(o.bare===null,'an address with nothing open is offered no rerun');
+ ok(o.left0===0,'the allowance is spent, got '+o.left0);
+ ok(o.newOn==='true'&&o.rerunOn==='false','the panel opens on New, never on Rerun');
+ ok(o.beginNew===false,'and with nothing left New offers no run, as before');
+ ok(o.rerunOn2==='true'&&o.rerun===true,'pressing Rerun picks the rerun');
+ ok(/costs nothing/.test(o.note),'and its price is said before it begins, got '+JSON.stringify(o.note));
+ ok(/1 address you picked has nothing open yet/.test(o.note),
+  'and it says which part of the pick it leaves out, got '+JSON.stringify(o.note));
+ ok(o.beginRerun===true,'a spent allowance still reruns');
+ ok(o.queue===1&&o.plan.length===4&&o.allOpen,
+  'over the one address with ground open, four lines, every one already open: '+o.plan.join(' '));
+ ok(/^\d+:\d\d$/.test(o.time)&&o.time!=='0:00','and the time it will take is shown, '+o.time);
+ ok(o.metered&&o.spent===0,'the commit goes through meterRerun and spends nothing, '+o.spent);
+ ok(o.lines===4,'while the four lines are counted as spoken, '+o.lines);
+ ok(o.left1===0,'and the allowance reads what it read before, '+o.left1);
+ ok(o.log===1,'only the address reached is released, '+o.log+' in the log');
+ ok(o.after==='true'&&o.afterRerun===false,'and the next pick opens on New again');
+ console.log('  rerun      '+JSON.stringify(o.note));
+ await rp.close();
 }
 
 console.log('\n=== a release lifts the laws at its seat, and the undo arrow takes it back ===');
