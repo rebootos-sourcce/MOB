@@ -15,6 +15,8 @@
      --md PATH          write the markdown tables to a file (stdout always gets them)
      --widths 1600,390  default both
      --profile N        loadP(N), default 3 (Marcus, example). --profile -1 = blank
+     --verify           second opinion on every flagged contrast failure: hide its
+                        glyphs, photograph the box, compare the real ground pixel
      --selftest         run only the fixture self-test, then exit
      --baseline PATH    a --json file from an earlier run to compare against
      --gate             exit 1 if any "lower is better" metric got worse
@@ -66,6 +68,7 @@ const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
    THE IN PAGE PROBE. Self contained: Playwright serialises its source.
    --------------------------------------------------------------- */
 function PROBE(arg){
+ window.__flag=[];window.__flagKeys={};
  const hostIds=arg.hostIds, activeHost=arg.hostId;
  const IW=window.innerWidth, IH=window.innerHeight;
  const cv=document.createElement('canvas');cv.width=cv.height=1;
@@ -133,7 +136,7 @@ function PROBE(arg){
  /* background layers beneath an element, as a list of worst case candidate grounds */
  const canvases=[...document.querySelectorAll('canvas')].filter(c=>{const r=c.getBoundingClientRect();return r.width>0&&r.height>0;});
  function grounds(el,svgPoint){
-  const L=[];let unresolved=null;
+  const L=[];let unresolved=null,opaque=false;
   if(svgPoint){ /* shapes inside the same svg that sit under the text, top first */
    const svg=el.ownerSVGElement;
    if(svg){
@@ -154,26 +157,52 @@ function PROBE(arg){
      c=parse(f);if(!c)continue;
      c=[c[0],c[1],c[2],c[3]*(+sc.fillOpacity)*(+sc.opacity)];
      if(c[3]>0)L.push({c});
-     if(c[3]>=0.995)return resolve(L,unresolved); /* opaque shape: nothing beneath it matters */
+     if(c[3]>=0.995)return resolve(L,unresolved,null,true); /* opaque shape: nothing beneath it matters */
     }}}
   for(let n=el;n&&n.nodeType===1;n=n.parentElement){
    const cs=cstyle(n),bi=cs.backgroundImage;
    if(bi&&bi!=='none'){
     const toks=bi.match(COLTOK);
-    if(/gradient\(/.test(bi)&&toks){const st=toks.map(parse).filter(Boolean);if(st.length)L.push({grad:st});}
+    if(/gradient\(/.test(bi)&&toks){const st=toks.map(parse).filter(Boolean);if(st.length)L.push({grad:st,o:n});}
     else unresolved='image';}
    const c=parse(cs.backgroundColor);
-   if(c&&c[3]>0){L.push({c});if(c[3]>=0.995)break;}}
-  return resolve(L,unresolved);}
- function resolve(L,unresolved){
-  let cand=[[255,255,255,1]];
+   if(c&&c[3]>0){L.push({c,o:n});if(c[3]>=0.995){opaque=true;break;}}}
+  return resolve(L,unresolved,null,opaque);}
+ function resolve(L,unresolved,base,opaque){
+  let cand=base||[[255,255,255,1]];
   for(let i=L.length-1;i>=0;i--){
    const l=L[i];
    if(l.c)cand=cand.map(b=>over(l.c,b));
    else{const nc=[];const seenk={};
     l.grad.forEach(s=>cand.forEach(b=>{const o=over(s,b);const k=o.map(Math.round).join();if(!seenk[k]){seenk[k]=1;nc.push(o);}}));
     cand=nc;if(cand.length>40){cand.sort((a,b)=>lum(a)-lum(b));const keep=[];for(let j=0;j<40;j++)keep.push(cand[Math.floor(j*(cand.length-1)/39)]);cand=keep;}}}
-  return {cand,unresolved};}
+  return {cand,unresolved,opaque:!!opaque,L};}
+ /* A 2D canvas can be READ. When the DOM stack above a piece of text never reaches
+    an opaque layer, the ground is whatever the canvas under it painted, so sample
+    those pixels instead of assuming white. A canvas that is not 2D (WebGL) cannot be
+    read and stays UNRESOLVED rather than passing. */
+ const cdat=new Map();
+ function canvasPixels(c){
+  if(cdat.has(c))return cdat.get(c);
+  let d=null;
+  try{const x=c.getContext('2d');if(x&&c.width&&c.height)d=x.getImageData(0,0,c.width,c.height);}catch(e){}
+  cdat.set(c,d);return d;}
+ function canvasCands(r){
+  const cxm=(r.left+r.right)/2,cym=(r.top+r.bottom)/2;
+  let hit=null;canvases.forEach(c=>{const q=c.getBoundingClientRect();if(cxm>q.left&&cxm<q.right&&cym>q.top&&cym<q.bottom)hit=c;});
+  if(!hit)return null;
+  const d=canvasPixels(hit);if(!d)return {fail:'webgl or unreadable canvas'};
+  const q=hit.getBoundingClientRect(),sx=hit.width/q.width,sy=hit.height/q.height;
+  const base=grounds(hit,null).cand[0];
+  const under=hit;
+  const x0=Math.max(r.left,q.left),x1=Math.min(r.right,q.right),y0=Math.max(r.top,q.top),y1=Math.min(r.bottom,q.bottom);
+  const seenk={},out=[];
+  for(let i=0;i<7;i++)for(let j=0;j<5;j++){
+   const px=Math.min(hit.width-1,Math.max(0,Math.floor((x0+(x1-x0)*(i+0.5)/7-q.left)*sx)));
+   const py=Math.min(hit.height-1,Math.max(0,Math.floor((y0+(y1-y0)*(j+0.5)/5-q.top)*sy)));
+   const o=(py*hit.width+px)*4,c=[d.data[o],d.data[o+1],d.data[o+2],d.data[o+3]/255];
+   const v=over(c,base),k=v.map(Math.round).join();if(!seenk[k]){seenk[k]=1;out.push(v);}}
+  return {cand:out,hit};}
  /* does a rect sit over a visible canvas (whose pixels we cannot read as a ground) */
  const overCanvas=r=>{const x=(r.left+r.right)/2,y=(r.top+r.bottom)/2;
   return canvases.some(c=>{const q=c.getBoundingClientRect();return x>q.left&&x<q.right&&y>q.top&&y<q.bottom;});};
@@ -215,7 +244,10 @@ function PROBE(arg){
    if(r){
     const fs=parseFloat(cs.fontSize),fw=cs.fontWeight;
     const ff=(cs.fontFamily.split(',')[0]||'').replace(/["']/g,'').trim();
-    const fg0=parse(isSvgChild?cs.fill:cs.color);
+    /* a placeholder is painted by ::placeholder, never by the control's own color */
+    const isPh=(tn==='INPUT'||tn==='TEXTAREA')&&!el.value&&!!el.placeholder;
+    const phs=isPh?getComputedStyle(el,'::placeholder'):null;
+    const fg0=parse(isSvgChild?cs.fill:(isPh?phs.color:cs.color));
     for(const [ps,t] of texts){
      const chars=t.length;
      both(side,m=>{m.nText++;m.chars+=chars;add(m.fs,num(fs)+'px',1,chars);add(m.fw,fw,1,chars);add(m.ff,ff,1,chars);});
@@ -229,7 +261,8 @@ function PROBE(arg){
      /* colour and contrast */
      if(!fg0)continue;
      const op=infoOf(el).op;
-     const fg=[fg0[0],fg0[1],fg0[2],fg0[3]*op];
+     const fg=[fg0[0],fg0[1],fg0[2],fg0[3]*op*(isPh&&phs.opacity!==''?+phs.opacity:1)];
+     if(fg[3]<0.02){both(side,m=>{m.nInvisInk=(m.nInvisInk||0)+1;});continue;} /* transparent ink paints nothing (a textarea drawn by a highlight layer) */
      let gr;
      if(isSvgChild){ /* the centre of the text, in svg user space */
       let b=null;try{b=el.getBBox();}catch(e){}
@@ -239,7 +272,12 @@ function PROBE(arg){
         pt={x:s.x,y:s.y};}} /* screen coordinates of the text centre */
       gr=grounds(el,pt);}
      else gr=grounds(el,null);
-     let unres=gr.unresolved||(overCanvas(r)?'over canvas':null);
+     let unres=gr.unresolved;
+     if(!unres&&overCanvas(r)){
+      /* the canvas paints over any layer that contains it and under any layer that does not */
+      const cc=canvasCands(r);
+      if(!cc||cc.fail)unres=cc?cc.fail:'over canvas';
+      else{gr=resolve(gr.L.filter(l=>!l.o||!l.o.contains(cc.hit)),null,cc.cand,false);}}
      const disabled=el.disabled||el.closest('[disabled],[aria-disabled=true]');
      const eff=gr.cand.map(b=>over(fg,b));
      const worst=eff.reduce((a,b,i)=>{const q=ratio(b,gr.cand[i]);return q<a.q?{q,e:b,g:gr.cand[i]}:a;},{q:99,e:eff[0],g:gr.cand[0]});
@@ -252,7 +290,8 @@ function PROBE(arg){
        if(large&&worst.q>=3){m.nFailLarge++;}
        else{m.nFail++;}
        {const k=hex(worst.e)+'|'+hex(worst.g)+'|'+num(fs);
-       const f=m.fails[k]||(m.fails[k]={n:0,ratio:+worst.q.toFixed(2),fg:hex(worst.e),bg:hex(worst.g),fs:num(fs),fw,large:large&&worst.q>=3,sample:t.slice(0,28),sel:sel(el)});
+       if(m===A&&!window.__flagKeys[k]){window.__flagKeys[k]=window.__flag.length;window.__flag.push(el);}
+       const f=m.fails[k]||(m.fails[k]={n:0,ratio:+worst.q.toFixed(2),fg:hex(worst.e),bg:hex(worst.g),fs:num(fs),fw,large:large&&worst.q>=3,sample:t.slice(0,28),sel:sel(el),fi:m===A?window.__flagKeys[k]:-1,svg:isSvgChild});
        f.n++;}}});
     }}}
 
@@ -343,6 +382,50 @@ function PROBE(arg){
    svgs:document.querySelectorAll('svg').length,els:all.length}};
 }
 
+/* VERIFY: a second opinion that does not use the CSS cascade at all. Hide the
+   glyphs of a flagged element, photograph the box, and take the commonest
+   pixel as the ground. If the ground the probe computed from CSS is not what
+   the screen shows, the probe was lying about that element. */
+function HIDE(i){
+ const el=window.__flag[i];if(!el)return null;
+ el.scrollIntoView({block:'center',inline:'center'});
+ let r;
+ if(el instanceof SVGElement)r=el.getBoundingClientRect();
+ else{const tn=[...el.childNodes].find(n=>n.nodeType===3&&n.nodeValue.trim());
+  if(tn){const g=document.createRange();g.selectNodeContents(tn);r=g.getBoundingClientRect();}else r=el.getBoundingClientRect();}
+ window.__saved=[el,el.getAttribute('style')];
+ el.style.setProperty('color','transparent','important');el.style.setProperty('fill','transparent','important');
+ el.style.setProperty('text-shadow','none','important');el.style.setProperty('-webkit-text-fill-color','transparent','important');
+ if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){el.classList.add('__ph');
+  if(!document.getElementById('__phs')){const st=document.createElement('style');st.id='__phs';st.textContent='.__ph::placeholder{color:transparent !important}';document.head.appendChild(st);}}
+ return {x:Math.max(0,r.left+1),y:Math.max(0,r.top+1),w:Math.max(2,Math.min(r.width-2,innerWidth-r.left)),h:Math.max(2,Math.min(r.height-2,innerHeight-r.top))};}
+function SHOW(){const [el,st]=window.__saved;if(st===null)el.removeAttribute('style');else el.setAttribute('style',st);el.classList.remove('__ph');}
+async function MODECOLOUR(b64){
+ const blob=await (await fetch('data:image/png;base64,'+b64)).blob();const bm=await createImageBitmap(blob);
+ const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;const x=c.getContext('2d');x.drawImage(bm,0,0);
+ const d=x.getImageData(0,0,c.width,c.height).data,h={};
+ for(let i=0;i<d.length;i+=4){const k=(d[i]>>2)+','+(d[i+1]>>2)+','+(d[i+2]>>2);h[k]=(h[k]||0)+1;}
+ let best=null,bn=0;for(const k in h)if(h[k]>bn){bn=h[k];best=k;}
+ const q=best.split(',').map(v=>v*4+2);return q;}
+const lumN=c=>{const l=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};return 0.2126*l(c[0])+0.7152*l(c[1])+0.0722*l(c[2]);};
+const ratioN=(a,b)=>{const x=lumN(a),y=lumN(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);};
+const hexRGB=h=>{const n=parseInt(h.slice(1,7),16);return [n>>16&255,n>>8&255,n&255];};
+async function verifyFails(page,helper,fails,limit){
+ const res={checked:0,confirmed:0,falsePositive:0,groundMismatch:0,items:[]};
+ for(const f of fails.filter(x=>!x.large&&x.fi>=0).slice(0,limit)){
+  const r=await page.evaluate(HIDE,f.fi);if(!r||r.w<2||r.h<2)continue;
+  let b64;try{b64=(await page.screenshot({clip:{x:r.x,y:r.y,width:r.w,height:r.h}})).toString('base64');}catch(e){await page.evaluate(SHOW);continue;}
+  await page.evaluate(SHOW);
+  const px=await helper.evaluate(MODECOLOUR,b64);
+  const ours=hexRGB(f.bg),fg=hexRGB(f.fg);
+  const d=Math.max(Math.abs(px[0]-ours[0]),Math.abs(px[1]-ours[1]),Math.abs(px[2]-ours[2]));
+  const rp=+ratioN(fg,px).toFixed(2);
+  res.checked++;
+  const match=d<=10;if(!match)res.groundMismatch++;
+  const conf=rp<4.5;if(conf)res.confirmed++;else res.falsePositive++;
+  res.items.push({sel:f.sel,sample:f.sample,fs:f.fs,fg:f.fg,oursBg:f.bg,pixelBg:'rgb('+px.join(',')+')',oursRatio:f.ratio,pixelRatio:rp,groundMatch:match,confirmed:conf});}
+ return res;}
+
 /* ---------------------------------------------------------------
    NODE SIDE: aggregation
    --------------------------------------------------------------- */
@@ -403,6 +486,9 @@ const FIXTURE=`<!doctype html><meta charset=utf-8><body style="margin:0;backgrou
 <svg id=s2 width=48 height=48 viewBox="0 0 24 24"><path d="M2 2L20 20" stroke=#000 stroke-width=2 fill=none /></svg>
 <svg id=s3 width=16 height=16 viewBox="0 0 16 16"><rect width=8 height=8 fill=#000 /></svg>
 <svg id=s4 width=200 height=40><rect width=200 height=40 fill=#000 /><text x=10 y=25 font-size=16 fill=#fff>svg white on black</text></svg>
+<div style="position:relative;height:30px"><canvas id=cA width=100 height=30 style="position:absolute;left:0;top:0;width:100px;height:30px"></canvas><span style="position:relative;font:400 16px Arial;color:#fff">white on black canvas</span></div>
+<div style="position:relative;height:30px"><canvas id=cB width=100 height=30 style="position:absolute;left:0;top:0;width:100px;height:30px"></canvas><span style="position:relative;font:400 17px Arial;color:#fff">white on grey canvas</span></div>
+<script>document.getElementById('cA').getContext('2d').fillRect(0,0,100,30);var xb=document.getElementById('cB').getContext('2d');xb.fillStyle='#888888';xb.fillRect(0,0,100,30);</script>
 <div style="overflow:hidden;height:0"><p id=g1 style="margin:0;font:400 31px Arial;color:#111">ghost clipped</p></div>
 <p id=g2 style="margin:0;display:none;font:400 33px Arial">ghost none</p>
 <p id=g3 style="margin:0;position:absolute;left:-999px;font:400 35px Arial">ghost offscreen</p>
@@ -414,6 +500,12 @@ async function selftest(browser){
  const r=await p.evaluate(PROBE,{hostIds:['h'],hostId:'h'});
  await p.close();
  const A=r.all,d=digest(A),bad=[];
+ /* the oracle itself is checked against the fixture before it is trusted */
+ const hp=await browser.newPage();await hp.goto('about:blank');
+ const p3=await browser.newPage({viewport:{width:400,height:700}});await p3.setContent(FIXTURE);
+ const r3=await p3.evaluate(PROBE,{hostIds:['h'],hostId:'h'});
+ const vf=await verifyFails(p3,hp,Object.values(r3.all.fails).map(f=>f),20);
+ await p3.close();await hp.close();
  const near=(a,b,t)=>Math.abs(a-b)<=t;
  const f=k=>A.fails[Object.keys(A.fails).find(x=>x.endsWith('|'+k))];
  const chk=(name,ok,got)=>{if(!ok)bad.push(name+' got '+JSON.stringify(got));};
@@ -429,10 +521,11 @@ async function selftest(browser){
  chk('white on color-mix 50% = about 3.95',fmix&&near(fmix.ratio,3.95,0.08),fmix);
  const fgrad=Object.values(A.fails).filter(x=>x.fs==='16'&&x.ratio<1.2)[0];
  chk('white on black to white gradient worst = 1.0',fgrad&&near(fgrad.ratio,1,0.02),fgrad);
- chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===3&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
+ chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===4&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
  chk('black on white not a failure',!Object.values(A.fails).some(x=>x.sample==='black on white'),A.fails);
  chk('svg white on black passes (ground from the rect under it)',!Object.values(A.fails).some(x=>/svg white/.test(x.sample)),A.fails);
- chk('four ghosts add no text elements: 8 visible (t1..t5, b1, b2, the svg text)',A.nText===8,A.nText);
+ chk('four ghosts add no text elements: 10 visible (t1..t5, b1, b2, the svg text, two canvas spans)',A.nText===10,A.nText);
+ chk('text over a 2D canvas reads the canvas pixels: white on black passes, white on #888 = 3.54 fails',!Object.values(A.fails).some(x=>/black canvas/.test(x.sample))&&Object.values(A.fails).some(x=>/grey canvas/.test(x.sample)&&near(x.ratio,3.54,0.05))&&A.nUnres===0,[A.nUnres,A.fails]);
  /* taps: b1 20px, b2 48px */
  chk('two taps found',A.nTap===2,A.nTap);
  chk('smallest tap is 20',A.tap[0]&&A.tap[0].m===20,A.tap[0]);
@@ -447,6 +540,8 @@ async function selftest(browser){
  chk('icon classes 2 ring 1 solid',A.icCls.ring&&A.icCls.ring.n===2&&A.icCls.solid&&A.icCls.solid.n===1,A.icCls);
  chk('icon sizes 24 48 16 (and the 200px svg is a figure)',A.icSz['24px']&&A.icSz['48px']&&A.icSz['16px']&&!A.icSz['200px'],A.icSz);
  /* parser alone, through the page */
+ chk('verify oracle: 4 non large fixture failures; the three flat grounds are confirmed by pixels, and the gradient worst case (white stop, black under the text) is correctly exposed as a false positive',
+  vf.checked===4&&vf.confirmed===3&&vf.falsePositive===1&&vf.items.filter(i=>i.groundMatch).length===3&&vf.items.find(i=>/gradient/.test(i.sample)&&!i.groundMatch&&!i.confirmed),vf);
  const p2=await browser.newPage();await p2.setContent('<body>');
  const pr=await p2.evaluate(()=>{const cv=document.createElement('canvas');cv.width=cv.height=1;const cx=cv.getContext('2d',{willReadFrequently:true});
   const t=s=>{cx.fillStyle='#010203';cx.fillStyle=s;return cx.fillStyle;};
@@ -473,6 +568,8 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  if(opt('selftest',false)){await browser.close();return;}
 
  const out={file:FILE,profile:PROFILE,theme:null,widths:{},when:new Date().toISOString()};
+ const VERIFY=!!opt('verify',false);
+ const helper=VERIFY?await browser.newPage():null;if(helper)await helper.goto('about:blank');
  const errs=[];
  for(const W of WIDTHS){
   const page=await browser.newPage({viewport:{width:W,height:HEIGHT[W]||900}});
@@ -490,6 +587,8 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
    const theme=await page.evaluate(()=>S.theme||document.body.className);
    out.theme=theme;
    out.widths[W].surfaces[s.nm]={meta:s,stateOk,counts:raw.counts,doc:raw.doc,all:digest(raw.all),host:digest(raw.host),rawAll:raw.all};
+   if(VERIFY){const dg=out.widths[W].surfaces[s.nm].all;
+    dg.verify=await verifyFails(page,helper,dg.contrast.fails,40);}
   }
   await page.close();
  }
