@@ -31332,3 +31332,19 @@ none in the centre panel.
   summary should say which class was given up and the adjusted SQ, DQ and CQ,
   not "I forgive myself for separation from my boss".
 - The recorder: how to open record.html (answered in the report).
+
+## Round PG, 1 October
+
+> [audio file atuned-opening.wav] "I also need the API setup. For Stripe and I
+> think it was either Google Workspace or OAuth."
+
+**Read as.**
+- He recorded the opening voice for the release screen: `audio/atuned-opening.wav`,
+  49.7 seconds, mono. It is the clip the opening phase plays. The screen shows the
+  words as he says them, so the transcript on screen has to match what he said.
+- API setup: answered in `API-SETUP-NOW.md`. Google Workspace is his login and mail
+  domain. Google OAuth is a key pair made inside Google Cloud with that account, and
+  is what sign in with Google needs. Stripe is a separate account with its own keys.
+  Five values, each set with `npx wrangler secret put ... --name atuned-api`.
+- Work: compress the clip to Opus, write the timing file, hand both to the release
+  build, and give him the draft transcript so he can correct any word.
