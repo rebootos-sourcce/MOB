@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1047 690ac5f 2026-10-01 15:09"><head><meta charset="utf-8">
+<html lang="en" data-build="v1053 1968880 2026-10-01 15:31"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1673,7 +1673,8 @@ body:not(.tab-field) .fview,body:not(.tab-field) .fzoom{display:none}
    because the lower right of the stage is the compass's lane on the wheel,
    128 across, and three circles in a row are 136. */
 .fzoom{position:absolute;right:12px;bottom:12px;z-index:6;display:flex}
-.fzoom .fb-grp{flex-direction:column;gap:6px}
+/* ROUND OD, his words: "For the zoom icons, have those horizontal instead of vertical." Zoom out, zoom in and reframe sit in a row now, as they already did on a phone. */
+.fzoom .fb-grp{flex-direction:row;gap:6px}
 #frend{grid-column:2;grid-row:3;width:100%;height:100%;min-width:0;min-height:0;
  position:relative;overflow:hidden}
 /* FRAMES TAKES THE EMPTY LEFT LANE. The lane held the renditions switch and
@@ -3078,7 +3079,7 @@ body:not(.tab-field) .keylo{display:none}
 /* right 20 and not the Field's 12: the reframe circle's pill rides 20
    pixels past its circle, and at 12 it hung off the canvas's edge */
 .cn-zoom{position:absolute;right:20px;bottom:12px;z-index:3;display:flex}
-.cn-zoom .fb-grp{flex-direction:column;gap:6px}
+.cn-zoom .fb-grp{flex-direction:row;gap:6px}
 .cone-cv.zoomed{cursor:grab}
 /* ZOOMED IN, THE FIGURE RUNS UNDER THE NAMES AND THE SWITCHES, which sit over
    the canvas at a desk and have no ground of their own because at the whole
@@ -49692,5 +49693,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003242900"></div>
+<div id="eof" hidden data-len="003243066"></div>
 </body></html>
