@@ -5810,13 +5810,13 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
    'and stored sorted by address, channel and line number, got '+p.meter.heavy.join(' '));
   const o=meterRerunOrder(p,[9,7],CH,RUN_MAX);
   const want=[K(9,'Llimit',2),K(9,'Rlimit',1),K(9,'Rlimit',2),K(9,'Ltruth',2),K(9,'Rtruth',2),
-   K(7,'Llimit',1),K(7,'Llimit',3),K(7,'Llimit',4),K(7,'Rlimit',4),K(7,'Ltruth',0),K(7,'Ltruth',4),K(7,'Rtruth',4)];
-  ok(o.join()===want.join(),'the heavy lines sit among the opened one, least tense first, address major in the order picked, release before reframe:\n   '+o.join(' ')+'\n   '+want.join(' '));
+   K(7,'Llimit',1),K(7,'Llimit',3),K(7,'Llimit',4),K(7,'Rlimit',4),K(7,'Ltruth',4),K(7,'Ltruth',0),K(7,'Rtruth',4)];
+  ok(o.join()===want.join(),'the heavy lines sit among the opened one, release lines least tense first and reframe lines running back down, address major in the order picked, release before reframe:\n   '+o.join(' ')+'\n   '+want.join(' '));
   ok(o.length===new Set(o).size,'and no line is said twice');
   let asc=true; for(let i=1;i<o.length;i++){
    const a=o[i-1].split(':'), b=o[i].split(':');
-   if(a[0]===b[0]&&a[1]===b[1]&&+a[2]>=+b[2])asc=false;}
-  ok(asc,'inside a channel every line is higher than the one before it');
+   if(a[0]===b[0]&&a[1]===b[1]){const dn=/truth$/.test(a[1]); if(dn?+a[2]<=+b[2]:+a[2]>=+b[2])asc=false;}}
+  ok(asc,'inside a release channel every line is higher than the one before it, and inside a reframe channel every line is lower');
   const at7=o.filter(k=>k.split(':')[0]==='7'), lastLimit=at7.map(k=>/limit/.test(k)).lastIndexOf(true),
    firstTruth=at7.findIndex(k=>/truth/.test(k));
   ok(lastLimit>=0&&firstTruth>lastLimit,'at one address every release line comes before every reframe line');

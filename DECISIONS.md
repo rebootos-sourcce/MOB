@@ -2597,3 +2597,30 @@ want to give control to privacy violation." Notes are of two kinds, private and
 shared. He asked to see both versions of the right panel (structure only, and
 story-derived with the person's yes) before ruling. The role's word is
 Practitioner, which includes coaches.
+
+## Round OK, 1 October. Rulings
+
+**Tier two unlocks the Kundalini. Tier three unlocks the point cloud.** The
+Compass registers view is the point cloud. The Character masks stay at tier three
+until he says otherwise. The Kundalini has no surface in the shipped app yet.
+
+**Name meanings: a vetted table first, then a lookup.** He asked whether to
+look names up live through the Claude API or to start from a database of common
+names with the internet as the fallback. The recommendation, which he can
+overrule: the table first, so the common names are already checked and cost
+nothing to show; a lookup only for a name not in the table. The lookup runs on
+our server and the app never holds the API key and never calls Anthropic. It
+sends the person's name off the device, so it needs the person's yes in plain
+words and it is a second network seam, which `CLAUDE.md` allows only by his
+ruling. A result is kept on the device, marked as looked up and not vetted, and
+can be promoted into the table after a check.
+
+**The torso seats.** Lower torso is Root, Sacral and Solar. Upper torso is Heart
+and Throat. The head is 3rd Eye and Crown. "You nailed it."
+
+**The role is called Practitioner,** and it includes coaches.
+
+**The reframe half of a release runs back down.** The release lines run 1 to 50,
+least tense to most tense, and the reframe lines run 50 back to 1: "I never
+thought about cycling it back down to one. Let's try it." A rerun puts a heavy
+line in its place in that order.

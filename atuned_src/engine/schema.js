@@ -1451,11 +1451,17 @@ function meterRerunOrder(p,nodeIds,chans,cap){
    for(var i=0;i<LINES_PER_CH&&room>0;i++){
     var k=meterKey(id,ch,i);
     if(heavy[k]&&!take[k]){take[k]=1; room--;}}});});
+ /* THE DECOMPRESSION HALF RUNS DOWN, round OK. His words, on the order of
+    the reframe lines: "I never thought about cycling it back down to one.
+    Let's try it." The release channels run line 1 up to 50, least tense to
+    most tense, and the reframe channels (the ones ending in truth) run 50
+    back down to 1, so a run leaves the way it came in. */
  var out=[];
  ids.forEach(function(id){ if(!reached[id])return;
   (chans||[]).forEach(function(ch){
-   for(var i=0;i<LINES_PER_CH;i++){
-    var k=meterKey(id,ch,i);
+   var down=/truth$/.test(ch);
+   for(var j=0;j<LINES_PER_CH;j++){
+    var i=down?LINES_PER_CH-1-j:j, k=meterKey(id,ch,i);
     if(take[k])out.push(k);}});});
  return out;}
 

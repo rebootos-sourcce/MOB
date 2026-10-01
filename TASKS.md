@@ -30391,3 +30391,61 @@ adding over the last few rounds, make sure they're added to the plan."
    Whether the right panel may read the story, which he asked to see both of.
 
 The consolidated plan is `PLAN.md`.
+
+## Round OK. Tier answers, name meanings by table then lookup, the torso seats, Practitioner, and the experience and ICP model
+
+His words, verbatim, first message: "Tier two unlocks the Kundalini. Tier three
+unlocks the point cloud. Well, that's why I have Claude API. I need you to go to
+the internet and do the name energetics real time. Or do you recommend that we
+create a database of common names and anywhere we don't have a common name, then
+go out to the internet. That way we've got a database that already starts off
+with information that's already been vetted. For number three, you nailed it.
+Yeah, I think practitioners the win. I never thought about recycling it for
+number five. I never thought about cycling it back down to one. Let's try it."
+
+Second message, verbatim, with `atuned_experience_icp_model.md` attached: "Review
+three times. Figure out where it needs to go and plan. You're making good
+progress, so far. Keep crushing it."
+
+**What each answer settles.**
+- Tier two unlocks the Kundalini, tier three unlocks the point cloud (the
+  Compass registers view). The masks keep the proposed tier three until he says.
+- Name meanings: the team recommends his second option. A vetted table of
+  common names first; anything not in it goes to a lookup that runs on our
+  server through the Claude API, never from the app directly, and the result is
+  saved on the device and marked as a lookup until it is checked. Recorded in
+  `DECISIONS.md`.
+- "You nailed it" on the torso seats: lower torso is Root, Sacral and Solar; upper
+  torso is Heart and Throat; the head is 3rd Eye and Crown.
+- Practitioner is the word, and it includes coaches.
+- The rerun's decompression half runs back down, 50 to 1. Built and tested.
+
+**The experience and ICP model, read three times.**
+1. *What it says.* The product should optimise for successful transformation and
+   sustained practice, not conversion. First session is act, then experience,
+   then understand: write, the system finds one pattern, release, practice, with
+   at most one decision and no paywall before value. Activation is a chain of
+   three successes, a weekly ritual and self-directed practice. Usage is not
+   value, so both are tracked. Non-payment has seven states. Release has six
+   outcomes (success, partial, rejected, abandoned, confused, no effect) each
+   needing a recovery. Maturity (six levels) is independent of payment. Upgrades
+   follow demonstrated demand for more new ground. Marketing leads with see it,
+   release it, feel the difference, practice, change. Two new features sit apart:
+   an addiction-language sniffer with a six-step ladder (addicted, dependent,
+   crave, desire, need, want) that preserves the person's own object and never
+   diagnoses, and shadow-weight telemetry placed on the Summary.
+2. *Where each piece goes.* First-success design is an audit of the funnel and
+   the Day One tutorial against the doc's checklist, then a change to the first
+   release. Recovery states are a "how did that land" step at the end of a
+   release, stored on the Practice record. Experience metrics are local counters
+   on the device first (nothing leaves it). Maturity levels are derived from the
+   record and are internal unless he rules otherwise. The addiction sniffer is a
+   lexicon rung plus a ladder of release lines for six levels (the lines do not
+   exist yet). Shadow telemetry joins the Summary layout and the Daily Summary
+   detectors (DQ over time is already on every history row).
+3. *Conflicts, put to him.* The model says the reading stays visible across tiers
+   and "not pay more to see more of yourself", and that payment is never mastery.
+   Today's ruling gates saboteurs, complexes and hyper complexes by tier. Its
+   level names reuse Practitioner, now the tier-four role. Its marketing line
+   says not to lead with tier comparisons, which is a marketing rule and does not
+   touch the in-app upgrade page.

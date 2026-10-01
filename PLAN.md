@@ -87,3 +87,23 @@ Four-heading reports, questions listed in full with their context, pictures for
 anything visual before it is built, one gate run on the merged tree, no pushing
 ungated. Every new agent runs on Sonnet in its own copy of the repository with
 a sparse checkout, because the disk is the limit.
+
+## G. The experience and ICP model (round OK)
+
+`ATUNED-experience-icp-model.md`, read three times (see `TASKS.md` round OK).
+
+| Slice | What | Where it lands |
+|---|---|---|
+| X1 | Audit the funnel and the Day One tutorial against the first-success checklist: one decision, automatic pattern, no paywall before value, advanced hidden, achievements hidden at first | a written audit, then changes to the first release |
+| X2 | The six release outcomes and a recovery for each, a "how did that land" step at the end of a release, kept on the Practice record | release card, `engine/practice.js` |
+| X3 | Experience metrics as counters on the device: first, second, third release, weekly practice, return days; the person's own relevance and change answers | engine, Settings, never sent without a ruling |
+| X4 | Maturity levels from the record, internal; the names collide with Practitioner, so they need new words | after the Points and Becoming slices |
+| X5 | Upgrade prompts that follow demonstrated demand, reconciled with sight by tier | tiers page, allowance panel |
+| X6 | Addiction-language sniffer: six steps, the person's own object kept, release offered at the level found, no diagnosis; the release lines for six levels have to be written | lexicon, release, copy seat |
+| X7 | Shadow-weight telemetry on the Summary: DQ, change since the last release, where the weight sits, the heaviest areas, the patterns | Summary layout and Daily Summary detectors |
+| X8 | Marketing and tagline: see it, release it, feel the difference, practice, change | funnel copy, brand |
+
+Open with him: whether the reading stays visible across tiers (his tier ruling
+says no for saboteurs and above); what the six maturity levels are called;
+who writes the six ladder lines; whether the experience metrics may ever leave
+the device.
