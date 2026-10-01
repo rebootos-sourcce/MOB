@@ -1,6 +1,6 @@
 ---
 name: atuned-voice
-description: The house voice for Atüned / SOURCE, as a system a writer can be held to. The Encarta anchor, the warmth pass, the checkable micro rules with a failing and a fixed line beside each, the owner's own objections as a runnable database, the reading history of every writing seat, the ten passes, and a runnable gate. Load before writing or editing any user facing string: UI copy, labels, tooltips, drills, readings, errors, empty states, onboarding, funnel and quiz copy, the names of things. Loads alongside atuned-ux, which owns the surface; this owns the words on it.
+description: The house voice for Atüned / SOURCE, as a system a writer can be held to. The Encarta anchor, the warmth pass, the checkable micro rules with a failing and a fixed line beside each, the owner's own objections as a runnable database, the creative brief's layers and modes as a runnable gate, the reading history of every writing seat, the ten passes, and a runnable gate. Load before writing or editing any user facing string: UI copy, labels, tooltips, drills, readings, errors, empty states, onboarding, funnel and quiz copy, the names of things. Loads alongside atuned-ux, which owns the surface; this owns the words on it.
 ---
 
 # Atüned Voice
@@ -46,6 +46,9 @@ Then run the gate:
     python3 .claude/skills/atuned-voice/check.py atuned_src/ui/release.js
     python3 .claude/skills/atuned-voice/check.py --baseline
     python3 .claude/skills/atuned-voice/check.py --objections
+    python3 .claude/skills/atuned-voice/check.py --brief --line "..." --layer mirror
+
+The last one knows which layer the line sits in. Section 3c.
 
 ---
 
@@ -844,6 +847,183 @@ swept out and then held closed is what a gate is for.
 
 ---
 
+## 3c. The Brief, As Layers
+
+"We need to do a copy sweep. This is the copy engine that needs to be
+developed and then utilized on the product." And, on 1 October: "You have a
+document that gives you rules. I gave that to you earlier."
+
+The document is `CREATIVE-BRIEF-voice.md`. Every rule above reads one line in
+isolation. The brief reads a line by where it sits: a tooltip owes the person
+one idea, a reading owes them qualified language and a next step, a failure
+owes them a route and no comfort. A writer had to hold that in their head.
+Now the gate holds it, as a mode of the same gate and not a third system.
+
+    python3 .claude/skills/atuned-voice/check.py --brief atuned_src/ui \
+        atuned_src/engine atuned_src/shell funnel/*.html funnel/questions.js
+    ... --brief PATHS --json FILE        the same, machine readable
+    ... --brief PATHS --baseline         fails only on a new stop or flag
+    ... --brief PATHS --write-baseline   records today as the baseline
+    ... --brief --line "..." --layer L   one candidate line, in one layer
+    ... --brief --rules                  every rule, a failing and a fixed line
+
+**Every string gets a layer and a mode, and the reason for both.** The layers
+are the brief's own: tooltip, label, information, mirror (its summary or
+mirror layer), discovery, play, flow, embody, button, notification, status
+(its error and system states), metric. The mode is the station of the loop the
+string is read in, DISCOVER, PLAY, FLOW, EMBODY or none, and it is read off
+`TABDEF` in `engine/core.js` at run time, so a tab that changes section takes
+its strings with it. Nothing about the bar is typed into the gate.
+
+**The layer is decided by the first of these that answers.**
+
+    1  what the string is     a status() argument is status, a title or
+                              data-tip is a tooltip, text in a <button> is a
+                              button, a tab or a pressed toggle is a menu
+                              button, a heading or eyebrow is a label
+    2  the function           where a file mixes jobs: AV_ASK is discovery,
+                              STARTD is the doors, the tutorial's cards each
+                              carry their own station
+    3  the data table         GLOSS is information, the letting go cards are
+                              flow, PRACTICE is embody, PEOPLE is quoted
+    4  the file's job         one layer for the whole file, or a split: a
+                              prompt is the file's station, a sentence to the
+                              person is mirror, the rest information
+    5  UNCLASSIFIED           reported by file. Never guessed.
+
+A prompt in a renderer every tab opens, the drills or the controls, stays
+UNCLASSIFIED, because which station an instruction serves cannot be told from
+where it lives. A worked example's own story is **quoted**: somebody else's
+sentence, carried by the product, and no rule about the product's voice
+applies to it.
+
+**Three severities, and only two are mechanical.**
+
+    stop     a certain defect. The brief or the house names the phrase.
+    flag     a probable defect. Counts against the gate.
+    review   a question for a person, written out. Never fails anything.
+
+**The rules.** Each carries the brief section it comes from and a failing and a
+fixed line, the way the micro rules above do. Where the failing line is the
+brief's own Avoid, it is quoted. The list is printed by `--rules`; the count
+is not written here.
+
+    release-language   4, 1, 11   Let go of the charge.
+                                  Release the charge.
+    button-verb        5          Begin Your Transformational Journey
+                                  Begin
+    mirror-identity    5          You are afraid of confrontation.
+                                  You may be avoiding confrontation because
+                                  something about the outcome feels unsafe.
+    diagnosis          5, 8, 3    Your symptoms point to a trauma disorder.
+                                  You reported pressure in your chest three
+                                  times this week.
+    shame              5          You failed again because you are weak.
+    certainty          15.7       This will always hold you back.
+    evidence           6          This reveals a fear of disappointing people.
+                                  The situations seem to share a concern about
+                                  disappointing other people.
+    avoid-list         3          Unlock your full potential and step out of
+                                  your comfort zone.
+    readability        3          about ninth grade, Flesch Kincaid, shown as
+                                  its two halves: what the sentence adds and
+                                  what the words add, with the long words named
+    tooltip-one-idea   5, 14      one idea, prefer one sentence. A leading
+                                  name, "Coherence.", is the term and not a
+                                  second idea
+    next-step          15.10      a failure with no route, a full reading with
+                                  no next step. Review, because V15 lets the
+                                  control beside a refusal carry its route
+    error-plain        5          Oops, something went wrong. Take a breath.
+    notification-plain 5          Don't miss out. Your streak is about to end.
+    familiarity        13         We know exactly how you feel, friend.
+    somatic-metric     5, 12      a body word in a figure's line. Review
+
+**The brief's twelve generation steps, section 15, and what holds each.**
+
+    1  identify the writing layer        the classifier, or UNCLASSIFIED
+    2  identify the stage of the journey the mode, off TABDEF
+    3  the job of the sentence           not checked. Pass 2, the bucket
+    4  the simplest language             readability, and V21's lexicon
+    5  start from the user's experience  not checked
+    6  observation from interpretation   evidence
+    7  no unsupported certainty          certainty, and evidence
+    8  preserve agency                   mirror-identity, shame, diagnosis
+    9  somatic only when it serves       somatic-metric, and the share of
+                                         body words per layer, printed
+    10 a next step when appropriate      next-step
+    11 remove unnecessary words          the house sentence rates, preamble
+                                         and filler
+    12 concrete over inspirational       avoid-list, and V21
+
+Every string the brief engine reads also goes through `scan()` and his
+objections, so a house finding lands in the same report under a layer. The
+avoid list does not repeat the soft lexicon: a term `check.py` already holds
+is held there.
+
+**The avoid list leaves the canon alone, on purpose.** Soul, spiritual,
+source, energy, seat, charge, balance and coherence are his words and are on
+no list. Two of his brand sentences meet the self help list head on, "You are
+already the most powerful version of yourself" and "We help you become the
+best version of yourself", both in `BRAND.md` section 1. They are flagged so
+they are seen and never stopped, on the precedent V12 set for his welcome.
+
+**The baseline.** `--write-baseline` records every stop and flag finding,
+keyed by rule, file and the string itself, never by line, so a string that
+moves is not new and a second copy of a known one is. `--baseline` fails only
+on what is new. A review never counts. This is a different flag from the bare
+`--baseline` in section 6, which prints the house distribution and is
+unchanged.
+
+**It was checked against known good cases first, and it was wrong before it
+was trusted.** `test_brief.py` runs the order the repository asks for:
+
+    1  the brief's own approved lines, each in the layer its heading gives
+       it, must pass every brief rule. Its Avoid lines must fail
+    2  every rule against its failing line, its fixed line, and edge cases
+    3  the classifier against real strings in the product
+    4  real product files with defects put in on purpose: those come back
+       as new findings, and nothing else does
+    5  the old modes: --objections, --line and --baseline answer as they did
+
+What the known good case caught, kept here so the next extension does not
+repeat it. GLOSS went into the tooltip layer because it looks like TERM to
+SIMPLE MEANING, and most of its rows failed one idea per tooltip;
+`knowledge.js` renders it as a row and never on hover. The brief's own "You don't have to erase what
+happened" was flagged as erasing a memory, because the house negator guard
+did not know the contraction. The brief's own fifteenth section question
+graded 13.5 because "something" was counted as three syllables. And the
+mirror rule fired on items in `funnel/questions.js`, the model section 7 holds
+up, until it learned that a discovery item is offered for the person to refuse
+and a reading is not.
+
+**And it found what the house gate could not see.** The house harvest drops
+any literal carrying `=`, `{`, `}`, `#` or `;`, which is every string of
+markup with a class on it. "Sit down. Take ten slow breaths. Relax." ships on
+the first card in `ui/onboard.js` inside `<p class="ob-p">` and fails V2, and
+`check.py atuned_src/ui/onboard.js` does not see it. The brief engine walks
+the markup, and the house rules ride along on what it finds. The house
+harvest is left as it was, because changing what it reads would move every
+number it has ever printed; the brief run is where those strings are read.
+
+**What it cannot judge, printed at the end of every run.** Whether a reading
+is true. Whether a layer the split put a string in is right: read the reason
+it gives. Observation against interpretation beyond the words that mark them.
+Whether the person's own words were used where they would land. Whether body
+language serves the task. Whether an empty state manufactures insight.
+Whether the line helps a person see, understand, experience or choose. And
+the grade is an estimate off syllable counts: a canon name is not a hard word
+to him.
+
+**Where the brief and the rulings disagree, the gate does not settle it.**
+The release protocol's own statement is "I am letting go of believing", ruled
+in `DECISIONS.md`, and the brief says release, never let go. Integrate is a
+button verb in the brief and names no string in `COPY.md` round GS. The brief
+types em dashes and capitals in its examples. Each is flagged, never stopped,
+and each is a question in `COPY-SWEEP-FINDINGS.md`.
+
+---
+
 ## 4. The Seats And What They Read
 
 `TEAM.md` has eighteen seats. Seven of them write or rule on writing. A general
@@ -1040,6 +1220,8 @@ Three modes, and the first is the one that matters:
     --line "..."        one candidate line against that baseline
     <path> ...          one file or directory against that baseline
     --all               every file in the corpus, ranked
+    --brief PATH ...    the brief: every string by layer, mode, rule and
+                        severity. Section 3c
 
 **No house number is typed into the gate or into this document.** The
 distribution a line is measured against is computed off the shipping copy on
@@ -1105,6 +1287,10 @@ than no tool. If you extend the gate, break a known good line with it first.
 
     python3 .claude/skills/atuned-voice/check.py --objections
                                           his own objections, V18 to V20
+    python3 .claude/skills/atuned-voice/check.py --brief PATH ... --baseline
+                                          the brief, by layer, new findings only
+    python3 .claude/skills/atuned-voice/test_brief.py
+                                          the brief engine's own gate
     python3 tools/objections.py           renders COPY-OBJECTIONS.md and .html
     python3 tools/terms.py                terminology drift, V14
     node tests/design.js                  all caps, type floor
