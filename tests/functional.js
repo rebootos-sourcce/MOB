@@ -3284,6 +3284,12 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
    if(k==='POST /v1/auth/signout')return auth==='Bearer t-probe'?send(200,{ok:true}):send(401,{error:'sign in'});
    if(k==='GET /v1/me')return auth==='Bearer t-probe'?send(200,{account:ACC,consent:{share:false,at:null,v:1},records:0,entitlement:null})
     :send(401,{error:'sign in'});
+   /* Manage billing, in the Worker's own words: t-probe has never finished a
+      checkout, so it gets the 409; t-paid has a customer and gets a page */
+   if(k==='POST /v1/billing/portal'){
+    if(auth==='Bearer t-paid')return send(200,{url:'https://billing.stripe.test/1'});
+    if(auth==='Bearer t-probe')return send(409,{error:'there is no paid plan on this account yet, so there is no billing to manage'});
+    return send(401,{error:'sign in'});}
    send(404,{error:'no such route'});});});
  await new Promise(r=>stub.listen(0,'127.0.0.1',r));
  const API='http://127.0.0.1:'+stub.address().port;
@@ -3386,6 +3392,23 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   authForget();
   loginOpen(); document.getElementById('loginb-skip').click();
   o.skip=!LOGIN.open&&held()==='';
+  /* MANAGE BILLING, through the seam checkout already uses. Pressed on the
+     real button for both refusals, because the press goes PLAN_HOST, then
+     authPlanPortal, then status. The yes is read off authPlanPortal itself,
+     because pressing it would navigate this page to the URL. */
+  const pressMan=async()=>{
+   const was=said()[0]; profileSheet(); document.getElementById('planman').click();
+   for(let i=0;i<160&&said()[0]===was;i++)await wait(25);
+   const s=said(); sheetShut(); return s;};
+  authForget(); status('probe, before Manage billing signed out');
+  o.manOut=await pressMan();
+  authKeep({token:'t-probe',email:'probe@example.invalid'}); status('probe, before Manage billing with no plan');
+  o.manNone=await pressMan();
+  authKeep({token:'t-paid',email:'probe@example.invalid'});
+  o.manPaid=await authPlanPortal();
+  AUTH_API='http://127.0.0.1:1';
+  o.manOff=await authPlanPortal();
+  AUTH_API=API; authForget();
   return o;},API);
  await sp.close();
  await new Promise(r=>stub.close(r));
@@ -3427,6 +3450,19 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
  ok(o.bootSkipped,'a person already signed in is not shown the door');
  ok(o.skip,'Continue without an account goes through and holds nothing');
+ /* Manage billing used to answer "not built yet. Email support" on every
+    press. It goes to /v1/billing/portal now, through ui/auth.js. */
+ ok(/^Sign in first\./.test(o.manOut[0])&&o.manOut[1]==='fail'
+  &&!seen.some(s=>s.u==='/v1/billing/portal'&&!s.auth),
+  'Manage billing signed out answers here, and sends nothing, got '+JSON.stringify(o.manOut));
+ ok(o.manNone[0]==='There is no paid plan on this account yet, so there is no billing to manage.'&&o.manNone[1]==='fail',
+  'with nothing bought it says the server\'s own reason, got '+JSON.stringify(o.manNone));
+ ok(!/not built|email support/i.test(o.manOut[0]+o.manNone[0]),'and neither answer says Manage billing is unbuilt');
+ ok(seen.some(s=>s.m==='POST'&&s.u==='/v1/billing/portal'&&s.auth==='Bearer t-probe'),
+  'the request carries the session and nothing else names the account');
+ ok(o.manPaid&&o.manPaid.ok&&o.manPaid.url==='https://billing.stripe.test/1',
+  'with a customer on the account it hands back Stripe\'s page to go to, got '+JSON.stringify(o.manPaid));
+ ok(o.manOff&&!o.manOff.ok&&o.manOff.say===reach,'and with no network it says so rather than hanging, got '+JSON.stringify(o.manOff));
  ok(spErr.length===0,'no page errors across the whole walk: '+spErr.join(' | '));}
 
 console.log('\n=== the profiles on this device, by name (JZ) ===');
@@ -3646,10 +3682,24 @@ ok(/On every tier, free included/.test(tiers.same)&&/the whole reading/i.test(ti
  'what every tier gets is said once, across the top, from PLAN_ALWAYS');
 ok(/400 patterns a month/.test(tiers.text)&&/1,200 patterns a month/.test(tiers.text)&&/100 a week/.test(tiers.text)&&/10 patterns a week/.test(tiers.text),
  'each row states its own grant in its own period');
-ok(/99 dollars a month/.test(tiers.text),'tier four carries its ruled price');
-ok(!/\b(12|29|59) dollars/.test(tiers.text),'tiers one to three print no price that has not been ruled');
+/* THE LADDER IS 12, 24, 36, 99, ruled in DECISIONS.md over 12/29/59. These
+   two lines held tiers one to three at "shown at checkout" while that ruling
+   sat unread, which is why they now assert the four figures and the absence
+   of the superseded two, not the absence of a price. */
+ok(/12 dollars a month/.test(tiers.text)&&/24 dollars a month/.test(tiers.text)
+ &&/36 dollars a month/.test(tiers.text)&&/99 dollars a month/.test(tiers.text),
+ 'every paid tier carries its ruled price, 12, 24, 36 and 99');
+ok(!/\b(29|59) dollars/.test(tiers.text)&&!/shown at checkout/.test(tiers.text),
+ 'the superseded 29 and 59 are nowhere, and no row is left unpriced');
+/* one dollar a pattern is the internal unit and is never published, and the
+   flat rate the ladder was chosen for is not printed either */
+ok(!/(dollars?|cents?)\s+(a|per|each)\s+pattern/i.test(tiers.text),
+ 'no price is put against a single pattern');
 ok(tiers.bar3&&tiers.bar3===tiers.bar4,'tier four draws the same ground as tier three, '+tiers.bar3+' and '+tiers.bar4);
-/* NO SALES TROPES. Sight is not for sale, and nothing counts down. */
+/* NO SALES TROPES. Sight is not for sale, and nothing counts down. And the
+   phrase itself is not printed: the owner did not know what it meant, so a
+   customer would not. */
+ok(!/\bsight\b/i.test(tiers.text),'the tiers say what every tier sees in plain words, never "sight"');
 ok(!/most popular|recommended|best value|unlock|limited|only \d+ left|save \d+|ends in/i.test(tiers.text),
  'no badge, no unlock, no countdown, no struck saving');
 ok(/Manage billing/.test(tiers.paneText)&&tiers.planman,'Your plan keeps Manage billing above the tiers');

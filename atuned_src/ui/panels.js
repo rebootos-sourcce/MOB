@@ -1056,8 +1056,23 @@ function planSection(m,o){
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
     +esc(up.to.nm.toLowerCase())+'</button>':'')
   +'<button class="btn" id="planman">Manage billing</button></div>'
-  +'<p class="sh-p dim">Payment is handled off this device. Nothing about a card is '
-  +'ever held here, and the record carries no customer number.</p>'
+  /* WHAT THE BUTTON OPENS, said before it is pressed. Manage billing used to
+     answer "not built yet" on a press, so the line beside it only said where
+     payment was not. It opens Stripe's own page now, through authPlanPortal,
+     and a person deciding whether to press it is told what is on the other
+     side.
+
+     NOT "CHANGE TIER", although Stripe's page can offer it. The server's
+     webhook acts on checkout.session.completed and nothing else, so a tier
+     changed on that page would bill the new price while the plan here stayed
+     where it was. A new card needs nothing from the server, and a stop lands
+     through the server's hourly sweep, which ends the plan three days after
+     the paid month runs out. So those two are named, and the third waits for
+     the webhook to hear subscription changes. STRIPE-SETUP.md leaves plan
+     switching off in the portal for the same reason. */
+  +'<p class="sh-p dim">Manage billing opens the payment page, where you can replace a card '
+  +'or stop. Nothing about a card is ever held on this device, and the record carries no '
+  +'customer number.</p>'
   +'</div>';
  return h;}
 /* THE SEAM. Two host functions and nothing else. A build with no store bound

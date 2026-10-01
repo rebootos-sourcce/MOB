@@ -236,3 +236,26 @@ function authPlanCheckout(tier){
   if(typeof url!=='string'||!url)
    return {ok:false, say:'The server answered without a checkout page. Nothing has changed.'};
   return {ok:true, url:url};});}
+/* MANAGE BILLING, the second half of the same seam. The server asks Stripe for a Customer
+   Portal session for this account's own customer and hands back its URL, and that page is
+   where a plan is moved, a card replaced or a plan stopped. Nothing is sent but the session:
+   which customer to open is read off the sign in on the server, because a customer id sent
+   from here would let one account ask for another's billing.
+
+   Before this, the 'portal' case in ui/ui.js said "Managing billing from here is not built
+   yet" and sent a person to email support, because the server had no route to call.
+
+   Two refusals are worth their own sentence here. Signed out answers locally, as checkout
+   does. And a 409 is the server saying this account has never finished a checkout, so there
+   is no plan to manage: the server's own words say that, and authWhy shows them as they are,
+   so this file types none of them. */
+function authPlanPortal(){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false,
+  say:'Sign in first. Billing is held on your account, so there is nothing to manage while signed out.'});
+ return authCall('POST','/v1/billing/portal',null,s.token).then(function(r){
+  if(!r.ok)return {ok:false, say:authWhy(r,'portal')};
+  var url=r.body&&r.body.url;
+  if(typeof url!=='string'||!url)
+   return {ok:false, say:'The server answered without a billing page. Nothing has changed.'};
+  return {ok:true, url:url};});}

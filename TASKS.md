@@ -29694,8 +29694,10 @@ hit before), `collide.js` 351/0, `design.js` 185/0, `boot.js` 13/0,
 `funnel.js` 172/0, `monitor.js` all surfaces render, voice check clean.
 Committed `9bb10cf` on `claude/laughing-feynman-xhfyj3`.
 
-**His, before billing actually works:** three Stripe products, one per
-paid tier, created in the Stripe dashboard with their price ids pasted
+**His, before billing actually works:** four Stripe products, one per
+paid tier (this said three, and there are four paid tiers, one to four,
+with `STRIPE_PRICE_ONE` to `STRIPE_PRICE_FOUR` already in `wrangler.toml`;
+corrected 1 October, and the click by click is `STRIPE-SETUP.md`), created in the Stripe dashboard with their price ids pasted
 into `wrangler.toml` in place of the `REPLACE_WITH_...` placeholders;
 `wrangler secret put STRIPE_SECRET_KEY`; a webhook endpoint created in
 the Stripe dashboard pointing at this Worker's own `/v1/billing/webhook`
