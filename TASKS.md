@@ -30937,3 +30937,103 @@ protocols."
 - Trace on it: where the energy is leaking, visible.
 - Also this round: the owner asked for the "Fix teacher drill axis position and
   Brow lookup" task to be done now (task 71).
+
+## Round OX, 1 October. Teachers as imprints, a post-payment welcome, the rulings on the onboarding questions, a simple left menu
+
+> "I think with the teachers, we want to see almost like an imprint on the
+> right-hand side. and we want to find their impressions, positive and negative.
+> It's almost like using an affirmation with positive affirmation reinforcement.
+> This should tie to the ritual builder as well. And these should be unlockable.
+> by the scoring, by your achievements. So this should be a very powerful tool
+> of becoming, kind of using like ultra high limiting uh, affirmations. That you
+> won't find in any generic book. Oh, for the teachers, library just means I can
+> get information on my who I'm coaching. I hope that's what you mean. and any
+> of my notes and then save the notes. But if you mean the ascended teachers, I
+> don't know what you mean. I need context. I don't know, some of the teachers
+> would be Akhenaton for light, Zoroastria for truth, Rumi for duty, Krishna for
+> flow, Buddha for awareness, Jesus for love. Rumi for beauty, Confucius for
+> nature. Ramakrishna for will. Yeah, I think a uh, cohort, they can see the
+> teachers if that's shared with them. No, they shouldn't carry a match number.
+> After a person's done paying, there should be a pop-up screen welcoming them to
+> the software. It should tell them to Do the loop, go to the journal, input
+> stories, and get used to using the software 10 minutes a day until you no
+> longer need it. Uh, number two, I don't know. What do you recommend? Uh,
+> Attuned World is already on Cloudflare. Stripe is created. I don't know which
+> Google Cloud. I do have an Attuned on Google Workspace. I don't have a privacy
+> policy or terms page. where, do that go, where does that go in my information
+> architecture? Figure out what that goes in, in the information architecture.
+> Generate both with generic terms with a, a breakdown of our privacy policy. I
+> don't know if the iPhone will offer that. Username 3 to 20 is great. I don't
+> like any of these left menu designs. They're just they're overly complicated. I
+> want them aesthetically pleasing. And simple. And not to take up a lot of
+> space. I'm being formative, and I want their colors to be the colors and
+> symbols to be symbolic. And I don't want it to be text heavy. And I want it to
+> be dynamic, and I want if there's a posing forces, then let a gradient drive
+> that. And let the boundary be the oscillation range. Yes, we want to have the
+> user create an account not before the first release. When they sign up, and
+> then all the data from their input gets passed over. So number two, yes. Yes,
+> the gift can be a counter. We can use that counter space for other things. Uh,
+> four, let's try it. Uh, for number five, yes, a part of this starting session.
+> Safety line, no. The sniffer needs to be good enough to detect distress in a
+> person's story. As I just demonstrated earlier. I'm releasing believing
+> thinking feeling. Behaving and acting that I am. Review this twice. Figure out
+> what needs to be done where. And please update the plan."
+
+**Read twice. What each part is, and where it goes.**
+
+Teachers (design v2 and the Practice and Points work)
+- On the right-hand side a teacher shows as an imprint: their impressions,
+  positive and negative, used like an affirmation with positive reinforcement
+  ("ultra high limiting affirmations that you won't find in any generic book":
+  affirmations that reach past a limiting belief, written for each teacher).
+- It ties to the ritual builder, and the imprints are unlockable by scoring and
+  achievements. A tool of becoming.
+- "Library": he means information on who he is coaching, and his notes, saved.
+  He does not know what is meant by it for the ascended teachers and asks for
+  context: the Practitioner's client information and notes are one thing; the
+  shelf a teacher's protocol is drawn from is another. Asked again, with the
+  three shelves described plainly.
+- His qualities by teacher: Akhenaten for light, Zoroaster for truth, Rumi for
+  duty and also for beauty (named twice), Krishna for flow, Buddha for
+  awareness, Jesus for love, Confucius for nature, Ramakrishna for will. The
+  repeated Rumi needs a decision. Zoroaster and Confucius are new to the set.
+- A cohort lead sees the teachers when the person shares them. No match number.
+
+Payment, accounts and the server
+- After paying, a pop-up welcomes the person to the software: do the loop, go to
+  the journal, input stories, use it ten minutes a day until you no longer need
+  it. Built this round; the landing address after paying is still the server's
+  (funnel page) and needs the server change.
+- Server question 2 (commit and merge the uncommitted server edits): he does not
+  know and asks what I recommend. Recommendation given in the report.
+- atuned.world is already on Cloudflare. A Stripe account is created. He does
+  not know which Google Cloud account: the product has a Google Workspace,
+  which is the one to own the project.
+- No privacy policy or terms page exists. Asked: where do they go in the
+  information architecture, and generate both with generic terms and a plain
+  breakdown of the privacy policy.
+- The iPhone: not known whether it will offer Google sign in.
+- Username 3 to 20 characters: ruled.
+
+The left menu
+- All four options rejected: overcomplicated. He wants it aesthetically pleasing,
+  simple, small, formative, colours and symbols that are symbolic, not text
+  heavy, dynamic. Where two forces oppose, a gradient between them is the
+  picture and the boundary is the oscillation range (this answers where the
+  line sits). New, simpler mockups.
+
+Onboarding rulings (answers to the nine in PLAN.md section H)
+- 1: the account is created after the first release, never before; on sign up
+  all the data from the person's input is passed over.
+- 2: yes, a new person sees the whole reading while the gift lasts.
+- 3: the gift can be a counter, and that counter space can carry other things.
+- 4: "let's try it": the Mirror's cause is the person's own second answer.
+- 5: yes, the integrity and archetype questions are part of the starting
+  session. (Whether answers write to the laws is not answered: stays evidence
+  only until ruled.)
+- 6: no permanent safety line. The sniffer must be good enough to detect
+  distress in a person's story, "as I just demonstrated earlier".
+- 8: the release sentence: "I am releasing believing, thinking, feeling,
+  behaving and acting that I am ...". Five channels, in that order, with
+  "releasing"; this differs from the shipped stem (six channels, "letting go").
+- 7 and 9 are not answered.
