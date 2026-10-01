@@ -16,10 +16,14 @@ joins.
 
 | Tier | Patterns per month | A week | Sees | Price |
 |---|---|---|---|---|
-| One | 400 | 100 | everything | open |
-| Two | 800 | 200 | everything | open |
-| Three | 1200 | 300 | everything | open |
-| Four | 1200 | 300 | everything, and the cohort lead suite | **99** |
+| One | 400 | 100 | saboteurs | open |
+| Two | 800 | 200 | saboteurs and complexes | open |
+| Three | 1200 | 300 | hyper complexes and up | open |
+| Four | 1200 | 300 | the same as three, and the cohort lead suite | **99** |
+
+(The Sees column said "everything" until 1 October. It is rewritten to the
+ruling at the end of this file, "Sight by tier, round OK". Prices are in
+`engine/plan.js` and are not repeated here.)
 
 **A release run is at most 25 patterns**, so the gift of a hundred is exactly
 four runs. Ten a week on the free tier is less than one run, so the free grant
@@ -881,7 +885,8 @@ whatever the price, because the allowance is a pace and a year of patterns
 handed over at once is not a practice. That part was never about the
 discount.
 
-**Sight is not for sale.**
+**Sight is not for sale.** REVERSED 1 October, round OK. The ruling is kept
+below as it was made, and the reversal is the last section of this file.
 
 > Tier one can see the Jungian archetypes. Actually, they can see all that
 > shit. It is really about the patterns and what the patterns are doing. And
@@ -2624,3 +2629,55 @@ and Throat. The head is 3rd Eye and Crown. "You nailed it."
 least tense to most tense, and the reframe lines run 50 back to 1: "I never
 thought about cycling it back down to one. Let's try it." A rerun puts a heavy
 line in its place in that order.
+## Sight by tier, round OK, 1 October. It reverses "Sight is not for sale."
+
+**The ruling, his words.** "Yeah, you see your own reading. However, the tiers,
+the differences are: tier one can see saboteurs, tier two can see saboteurs and
+complexes, tier three and four can see hyper complexes on. That means that they
+can't see what's running them in the field or the body or how the point cloud is
+expressed or the child masks. Those buttons would be grayed out to them, with a
+little lock over it. If they hover over it, it gives them a little description
+of what's locked, and where to go to unlock it, with a button that takes them
+to an upgrade. The upgrades page is part of the paywall. It shows them which
+tier they currently have, and then shows you the benefits of going to the other
+tiers."
+
+**Read as.** Everybody sees their own reading at the level of the 112 addresses,
+the domains, the archetypes, the laws, the gates (said as action in the product)
+and the shadow. Free sees no saboteurs. Tier one adds saboteurs, tier two adds
+complexes, tiers three and four add hyper complexes and character. This
+supersedes the earlier "every tier sees the whole reading", and it sits beside
+"Sight by tier is real" above, which said the exact rung was still to be set:
+this is the rung.
+
+**The table is one place.** `engine/plan.js`, `SIGHT`. Which tier a thing needs
+is a word in that table and nowhere else: not in the ladder rows, not in the
+renderers, not in the tests, which read the table. The buy page is static, so
+`tests/funnel.js` reads it against the table instead.
+
+**The two rulings that followed, same round.** "Tier two unlocks the Kundalini.
+Tier three unlocks the point cloud." The point cloud is the Compass's Registers
+view, tier three. The Kundalini is in the table at tier two with no surface:
+the shipped app has a glossary entry for it and nothing that draws it (the rise
+bar is in `proto/avatar/rise.js`, which is not in the build), so nothing sells
+it until it is built, and `built:false` in the table is the one word that
+changes when it is.
+
+**Still open, and his.** The tier for the Character page's masks. He listed
+"the child masks" with what is locked and named no tier. They are proposed at
+tier three, with the character layer that lights them. Whether the gift, a
+hundred patterns with "everything visible" (above), still shows the chain for
+the length of the hundred, or whether free is free from the first minute: the
+gift line has not been touched by this ruling and the product now follows the
+plan alone, so a new person sees no saboteurs until they pay. And the
+conflict with `ATUNED-experience-icp-model.md` sections 7 and 8, which argue
+the reading stays visible across tiers and that payment is never mastery: his
+ruling stands over it, the lock copy says the view is part of a tier and never
+that a locked tier is a lower level of the person, and whether that document is
+rewritten to the ruling is his.
+
+**This is a product boundary and not security.** The record is on the person's
+own device. Anybody who edits their own record sees their own data. The lock
+stops the product drawing a layer for a tier that has not bought it, and the
+engine still computes everything: the lock is on what is drawn and listed,
+never on what is read.

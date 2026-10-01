@@ -1980,7 +1980,8 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
    is arithmetic over a plan record the host hands it, so the engine answers
    what somebody may open and may see without knowing a processor exists. */
 {
- const {PLANS,PLAN_BY,SEE_ORDER,planState,planOf,planSees,planNextSight,
+ const {PLANS,PLAN_BY,SEE_ORDER,SIGHT,TIER_KEYS,planSight,planNeed,planAdds,planSeesAt,planRank,planList,
+        planState,planOf,planSees,planNextSight,
         planAllowance,planUpgrade,PLAN_ALWAYS,blankProfile,saveProfile,validateProfile}=E;
  ok(PLANS.length===6,'the gift, free and four paid, got '+PLANS.length);
  ok(PLAN_BY.one.grant===400&&PLAN_BY.two.grant===800
@@ -2069,9 +2070,16 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(/1.5 months/.test(planWorth(800)),'eight hundred is a month and a half, got '+planWorth(800));
  ok(/therapy sessions/.test(planWorth(100)),'and the gift falls back to sessions, which is its unit');
  ok(planWorth(0)===''&&equivOf(0,'therapy')===null,'nothing is worth nothing, said as nothing');
- ok(PLAN_BY.gift.see==='sup','and the gift shows everything, which is the whole point of it');
- ok(PLANS.every(p=>SEE_ORDER.indexOf(p.see)>=0),'every tier names a rung it can see');
+ /* A ROW OF THE LADDER NO LONGER CARRIES ITS OWN SIGHT. It said see:'sup' on
+    every row, which was a second place the same fact lived, and the ruling of
+    1 October made the fact differ by tier. SIGHT is the one table. */
+ ok(PLANS.every(p=>!('see' in p)),'no row of the ladder types a sight of its own, SIGHT is the table');
  ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');
+ ok(['your 112 addresses','the domains','the archetypes','the laws','action','shadow']
+   .every(w=>PLAN_ALWAYS.indexOf(w)>=0),
+  'what is on every tier is the owner\'s own list: addresses, domains, archetypes, laws, action and shadow');
+ ok(!PLAN_ALWAYS.some(w=>/saboteur|complex|character|whole reading/i.test(w)),
+  'and nothing in it is a rung a tier buys, or the whole reading, which is no longer on every tier');
 
  /* WHAT IS IN FORCE, NOT WHAT IS WRITTEN. A record can say tier three and be
     cancelled, and the answer is free. */
@@ -2087,19 +2095,74 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(planOf({tier:'three',status:'something_new'}).k==='free','and pending grants nothing');
  ok(planOf(null).k==='free'&&planOf({}).k==='free','no plan at all is free');
 
- /* SIGHT IS NOT FOR SALE. Ruled. Everybody sees the whole reading at every
-    tier, free included, and what a tier buys is how much new ground may be
-    opened. This removed the one mechanic in the product that withheld a
-    person's own reading in order to sell it back. */
- const t1={tier:'one',status:'active'}, t3={tier:'three',status:'active'};
- SEE_ORDER.forEach(function(k){
-  ok(planSees(t1,k)&&planSees(t3,k)&&planSees(null,k)&&planSees({tier:'free'},k),
-   'every rung is visible on every plan including none, at '+k);});
- ok(PLANS.every(function(x){return x.see==='sup';}),
-  'no tier stops anywhere along the chain');
- ok(planNextSight(t1)===null&&planNextSight()===null,
-  'and there is no next rung of sight to sell, on any plan');
- ok(planSees(t1,'nonsense')===false,'a rung that does not exist is still not a rung');
+ /* SIGHT BY TIER. Ruled 1 October, reversing "sight is not for sale": everybody
+    sees their own reading down to the 112 addresses, and the chain above them
+    is bought. Free sees no saboteurs, tier one sees saboteurs, tier two adds
+    complexes, tiers three and four add hyper complexes and character. */
+ const mk=k=>({tier:k,status:'active'}), t1=mk('one'), t3=mk('three');
+ const seen=k=>SEE_ORDER.filter(r=>planSees(mk(k),r)).join();
+ ok(seen('free')==='','free sees no rung of the chain, got '+seen('free'));
+ ok(seen('one')==='sab','tier one sees saboteurs and nothing above them, got '+seen('one'));
+ ok(seen('two')==='sab,cx','tier two adds complexes, got '+seen('two'));
+ ok(seen('three')==='sab,cx,hy,sup','tier three adds hyper complexes and character, got '+seen('three'));
+ ok(seen('four')===seen('three'),'tier four sees what tier three sees, and buys the lead suite instead');
+ /* the three that are not rungs. The registers are the point cloud, ruled tier
+    three by the owner on 1 October. The Kundalini is ruled tier two and has no
+    surface yet, so it answers planSees and no copy mentions it. The masks are
+    PROPOSED at tier three and still open. */
+ ok(!planSees(mk('free'),'reg')&&!planSees(mk('two'),'reg')&&planSees(mk('three'),'reg')&&planSees(mk('four'),'reg'),
+  'the registers, the point cloud, need tier three');
+ ok(!planSees(mk('one'),'kund')&&planSees(mk('two'),'kund')&&planSees(mk('four'),'kund'),
+  'the Kundalini needs tier two, as ruled');
+ ok(!planSees(mk('two'),'mask')&&planSees(mk('three'),'mask')&&planSees(mk('four'),'mask'),
+  'the masks need tier three');
+ /* A LAPSED OR UNKNOWN PLAN READS AS FREE, through planOf, the way it does for
+    the allowance. The failure this holds is a cancelled tier three still
+    seeing hyper complexes. */
+ ok(SEE_ORDER.every(r=>!planSees({tier:'three',status:'canceled'},r)),'a cancelled tier three sees nothing above the addresses');
+ ok(SEE_ORDER.every(r=>!planSees({tier:'three',status:'unpaid'},r)),'nor an unpaid one');
+ ok(SEE_ORDER.every(r=>!planSees({tier:'three',status:'something_new'},r)),'an unknown status opens no door either');
+ ok(planSees({tier:'three',status:'past_due'},'hy'),'past due keeps sight, as it keeps access');
+ ok(SEE_ORDER.every(r=>!planSees({tier:'tier-from-the-future',status:'active'},r)),'a tier this build does not know reads free');
+ ok(SEE_ORDER.every(r=>!planSees(null,r)&&!planSees(undefined,r)&&!planSees({},r)),'a record with no plan reads free');
+ ok(planSees({tier:'gift',status:'active'},'sab')===false,'the gift is not a tier a person is on, so it grants no sight');
+ ok(planSees(mk('four'),'nonsense')===false,'a key SIGHT does not hold is not visible, on any plan');
+ /* THE TABLE IS WHOLE. Every row names a tier that exists, and the four rungs
+    stack: a tier that sees a rung sees every rung below it, because each rung
+    is built from the one before. */
+ ok(SIGHT.every(g=>TIER_KEYS.indexOf(g.need)>0),'every row names a paid tier that exists as its need');
+ ok(SEE_ORDER.join()==='sab,cx,hy,sup','the rungs are saboteur, complex, hyper, character, in chain order');
+ ok(SEE_ORDER.every((k,i)=>i===0||planRank(planNeed(k).k)>=planRank(planNeed(SEE_ORDER[i-1]).k)),
+  'and the tier a rung needs never falls as the chain goes up');
+ ok(SIGHT.every(g=>typeof g.what==='string'&&g.what.length>10&&!/\u2014/.test(g.what)),'every row says in a sentence what is locked');
+ ok(planNeed('hy').k==='three'&&planNeed('nonsense')===null,'planNeed names the tier row, or null for a key it does not hold');
+ const ps=planSight(mk('one'));
+ ok(ps.tier==='one'&&ps.sees.sab===true&&ps.sees.cx===false&&!ps.all,'planSight says the rung in force and what it sees');
+ ok(ps.locked.map(g=>g.k).join()==='cx,hy,sup,reg,mask','and what is locked, in table order, got '+ps.locked.map(g=>g.k).join());
+ ok(SIGHT.filter(g=>g.built===false).map(g=>g.k).join()==='kund'&&planSight(null).locked.every(g=>g.k!=='kund'),
+  'a row with no surface is in the table and in planSees but is never offered as a lock');
+ ok(planSight(mk('four')).all&&planSight(mk('four')).locked.length===0,'tier four has nothing locked');
+ ok(SIGHT.every(g=>Object.keys(planSight(null).sees).indexOf(g.k)>=0),'sees carries every key, so a caller never reads undefined as an answer');
+ /* WHAT A TIER ADDS reads off the same table, so the tiers page types none of it */
+ ok(planAdds('free').length===0,'free adds nothing, it is the floor');
+ ok(planAdds('one').map(g=>g.k).join()==='sab','tier one adds saboteurs');
+ ok(planAdds('two').map(g=>g.k).join()==='cx','tier two adds complexes, and not the Kundalini, which has no surface to sell');
+ ok(planAdds('three').map(g=>g.k).join()==='hy,sup,reg,mask','tier three adds hyper complexes, character, the registers and the masks');
+ ok(planAdds('four').length===0,'tier four adds no sight over tier three');
+ ok(planSeesAt('three').length===SIGHT.filter(g=>g.built!==false).length&&planSeesAt('free').length===0&&planSeesAt('nonsense').length===0,
+  'what a tier sees is every built row at or below it, and a tier that does not exist sees none');
+ ok(E.planLockedSay(['sab','cx','kund','reg'])==='saboteurs, unlocked on tier one and above; complexes, unlocked on tier two and above; the registers, unlocked on tier three and above',
+  'a locked clause is grouped by the tier that unlocks it, and leaves out what has no surface');
+ ok(E.planSightSay(null)==='your own reading, without what is running it'&&E.planSightSay(mk('two'))==='your own reading, with saboteurs and complexes',
+  'what a plan sees is said as one clause, off the table');
+ ok(!SIGHT.some(g=>/\b(level|rank|better|worse|behind|lower)\b/i.test(g.what)),
+  'no lock sentence says a locked tier is a lower level of the person, only that the view is part of a tier');
+ const nx=planNextSight(null);
+ ok(nx&&nx.to.k==='one'&&nx.adds.map(g=>g.k).join()==='sab','from free the next rung of sight is tier one, saboteurs');
+ ok(planNextSight(mk('one')).to.k==='two'&&planNextSight(mk('two')).to.k==='three','and each step names the next rung that adds something');
+ ok(planNextSight(mk('three'))===null&&planNextSight(mk('four'))===null,'at tier three there is no next rung of sight to sell');
+ ok(planNextSight({tier:'three',status:'canceled'}).to.k==='one','a lapsed tier three is offered tier one, the rung it actually stands on');
+ ok(planList(['a','b','c'])==='a, b and c'&&planList(['a'])==='a'&&planList([])==='','a list is said the way a person says it');
  /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling, and this test is
     what would have caught the product still making the offer: it asserted the
     discount rather than asserting that the discount is whatever the one
@@ -2243,8 +2306,15 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  const up=planUpgrade(t1);
  ok(up&&up.to.k==='two'&&up.ground===400,'an upgrade names the next tier and the ground');
  ok(/more of new ground/.test(up.say),'and says it as what it buys');
+ ok(up.sight.map(g=>g.k).join()==='cx'&&/and it shows you your complexes/.test(up.say),
+  'and what the next rung lets you see, off the table, got '+up.say);
  ok(!/miss|lose|locked out|only/i.test(up.say),'never as what a person is short of');
  ok(planUpgrade({tier:'four',status:'active'})===null,'with nothing to sell at the top');
+ /* tier three to tier four moves no ground and no sight: the step is the lead
+    suite alone, and the sentence says so without inventing a sight benefit */
+ const up34=planUpgrade({tier:'three',status:'active'});
+ ok(up34.to.k==='four'&&up34.ground===0&&up34.sight.length===0&&up34.say==='the same ground',
+  'tier three to four is the same ground and the same sight, said as that, got '+JSON.stringify(up34.say));
  /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
     week and tier one is four hundred a month. Subtracting gave 390 more a
     month, which is arithmetic over two different units. */
@@ -5345,9 +5415,13 @@ g('NZ · the tiers side by side, read off the ladder and nothing else');
  const dead=planLadder({tier:'three',status:'canceled'});
  ok(dead.find(r=>r.now).k==='free','a cancelled tier three reads free here as everywhere, through planOf');
  ok(planLadder({tier:'four',status:'active'}).every(r=>!r.up),'at the top there is nothing to move up to');
- /* SIGHT IS NOT FOR SALE. The row has no field for it, so no renderer can
-    print a difference in what a tier sees. */
- ok(free.every(r=>!('see' in r)&&!('sight' in r)),'a row carries no sight field, because sight does not vary');
+ /* SIGHT BY TIER. The row carries what the tier sees and what it adds over the
+    rung below, both read off SIGHT, so the comparison types no tier. */
+ ok(free.every(r=>JSON.stringify(r.adds.map(g=>g.k))===JSON.stringify(E.planAdds(r.k).map(g=>g.k))),
+  'a row carries what its tier adds, read off the table');
+ ok(free.find(r=>r.k==='free').sees.length===0&&free.find(r=>r.k==='four').sees.length===E.SIGHT.filter(g=>g.built!==false).length,
+  'free sees nothing beyond what is on every plan, and tier four sees the whole table');
+ ok(free.every(r=>!('see' in r)),'and no row has a field of its own for a single rung');
  /* THE LADDER IS 12, 29, 59, 99, stated by the owner on 1 October and
     superseding DECISIONS.md line 1095 (12, 24, 36, 99). This gate asserted
     the 24 and 36 for one round, and before that held tiers one to three at

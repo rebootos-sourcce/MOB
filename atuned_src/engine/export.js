@@ -30,6 +30,8 @@ if(typeof module!=='undefined'&&module.exports){
                  PUR_SIDES:PUR_SIDES, PUR_PER_SIDE:PUR_PER_SIDE,
                  PUR_SOUL:PUR_SOUL, PUR_EGO:PUR_EGO,
   /* plan */     PLANS:PLANS, PLAN_BY:PLAN_BY, PLAN_ALWAYS:PLAN_ALWAYS, SEE_ORDER:SEE_ORDER,
+                 SIGHT:SIGHT, TIER_KEYS:TIER_KEYS, planRank:planRank, planSight:planSight,
+                 planNeed:planNeed, planSightSay:planSightSay, planLockedSay:planLockedSay, planSeesAt:planSeesAt, planAdds:planAdds, planList:planList,
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
