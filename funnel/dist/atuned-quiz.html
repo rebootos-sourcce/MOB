@@ -5653,26 +5653,88 @@ function childFound(r){
    THE LADDER IS THE OWNER'S, from DECISIONS. The gift is a hundred
    patterns with everything visible. Free is ten a week. The four
    paid tiers buy unique ground and sight, and neither of them buys
-   more speaking, because a rerun costs nothing by construction.
+   more speaking, because a rerun costs nothing by construction. Sight
+   is the second axis and is ruled below, at SIGHT.
    ============================================================ */
 
 /* ============================================================
-   SIGHT IS NOT FOR SALE. Ruled.
+   SIGHT BY TIER. Ruled by the owner on 1 October 2026, reversing the ruling
+   of 19 September that stood on this spot, "Sight is not for sale".
 
-   > Tier one can see the Jungian archetypes. Actually, they can
-   > see all that shit. It is really about the patterns and what
-   > the patterns are doing. And then how many they can release.
+   > Yeah, you see your own reading. However, the tiers, the differences are:
+   > tier one can see saboteurs, tier two can see saboteurs and complexes,
+   > tier three and four can see hyper complexes on. That means that they
+   > can't see what's running them in the field or the body or how the point
+   > cloud is expressed or the child masks.
 
-   The ladder used to stop each tier somewhere along the chain.
-   That is gone. Everybody sees the whole reading at every tier,
-   free included. What a tier buys is one thing: how much new
-   ground you may open.
+   WHAT EVERYBODY SEES, free included, is their own reading at the level of
+   the 112 addresses (the fetters), the domains, the archetypes, the laws,
+   the gates and the shadow. That is PLAN_ALWAYS below. What a tier buys is
+   how far up the chain from a fetter a person may look: saboteur, complex,
+   hyper complex, character. And two surfaces that express what is running
+   somebody rather than listing it, the Compass's Registers (the point cloud)
+   and the Character page's masks, which sit on the same ladder.
 
-   Simpler to explain, simpler to price, and it removes the one
-   mechanic in the product that withheld a person's own reading
-   from them in order to sell it back.
+   It is the second axis of the tier system, beside velocity. DECISIONS.md
+   calls them "two axes of the same tier system": how many new patterns a
+   tier opens (grant, below) and how far up the chain it lets a person see
+   (SIGHT, below). Neither one buys the other.
+
+   ONE TABLE, AND NOTHING ELSE TYPES A TIER. SIGHT is the only place that says
+   which tier a thing needs. The ladder rows in PLANS no longer carry a `see`
+   of their own, because that was a second place the same fact lived and the
+   first one to drift. What a tier sees is read off SIGHT by planSight, and
+   what a tier adds over the one below it is read by planAdds, which is what
+   the tiers page prints.
+
+   THIS IS A PRODUCT BOUNDARY AND NOT SECURITY. The record is on the person's
+   own device, so nothing here can stop somebody who edits their own record
+   from reading their own data. What it stops is the product drawing it for
+   a tier that has not bought it. Said once here so no surface has to pretend
+   otherwise.
    ============================================================ */
-const SEE_ORDER=['sab','cx','hy','sup'];
+/* THE TABLE. k is identity and is compared, stored nowhere. nm is what a
+   sentence calls it. what is the one plain sentence a lock says about it, in
+   the product's own words. need is the tier that unlocks it, a key of PLANS.
+   layer marks the four rungs of the chain, in the order they stack: each one
+   is built from the one before, so a tier that sees a rung sees every rung
+   below it, and the table is checked for that in tests/engine.js.
+
+   built:false MARKS A ROW WITH NO SURFACE YET, and the copy readers below skip
+   it. The owner ruled "Tier two unlocks the Kundalini" on 1 October and the
+   shipped app has a glossary entry for it and nothing that draws it (the rise
+   bar is in proto/avatar/rise.js, which is not in the build). The row is here
+   so the ruling is held in the one table and planSees answers it, but a tiers
+   page that listed it under tier two would be selling something that is not
+   there, so planAdds, planSeesAt, planLockedSay and the lock lists leave it
+   out until the surface exists. Building it is one word here, built:true, and
+   one lockApply on its control.
+
+   THE TIERS OF THE TWO THAT ARE NOT RUNGS. The owner ruled the point cloud
+   on 1 October, in answer to the question this table asked: "Tier three
+   unlocks the point cloud." That is the Compass's Registers view, so reg is
+   tier three. He has not named a tier for the masks, which he listed with
+   "how the point cloud is expressed or the child masks", so the masks are
+   PROPOSED at tier three, where the character layer that lights them sits.
+   That one is still open, and moving it is one word in this table. */
+const SIGHT=[
+ {k:'sab', nm:'saboteurs', need:'one', layer:true,
+  what:'Which saboteurs are running on your charge.'},
+ {k:'cx', nm:'complexes', need:'two', layer:true,
+  what:'Where your saboteurs join into complexes.'},
+ {k:'hy', nm:'hyper complexes', need:'three', layer:true,
+  what:'Where your complexes join into hyper complexes.'},
+ {k:'sup', nm:'character', need:'three', layer:true,
+  what:'The character your whole chain builds up into.'},
+ {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
+  what:'How far the Kundalini has risen up your seven seats.'},
+ {k:'reg', nm:'the registers', need:'three', layer:false,
+  what:'The registers, your point cloud: where each pattern sits in the compass.'},
+ {k:'mask', nm:'the masks', need:'three', layer:false,
+  what:'The six masks, and how your chain lights each one.'}];
+/* the rows a person can be told about: the table less any with no surface */
+function sightRows(){ return SIGHT.filter(function(g){return g.built!==false;}); }
+const SEE_ORDER=SIGHT.filter(function(g){return g.layer;}).map(function(g){return g.k;});
 /* THE RUN CAP. A release run is at most twenty five patterns. It is a ceiling
    and not a size: a run costs the minimum for what was picked, and the cap
    only truncates a wide selection. It used to be both, which made every run
@@ -5686,21 +5748,21 @@ const RUN_MAX=25;
    twenty five was nought, which was not. */
 const RUN_MIN=4;
 const PLANS=[
- {k:'gift',  nm:'The gift',    per:'once',  grant:100,  see:'sup', lead:false,
-  d:'A hundred patterns, free, with everything visible. Twenty five releases at one address, or fewer and wider. It is spent by opening new ground and never by rerunning what is already open.'},
- {k:'free',  nm:'Free',        per:'week',  grant:10,   see:'sup', lead:false,
-  d:'Ten patterns a week, for life. Two releases at one address, and unlimited rerunning of anything already open. The whole reading is visible, the same as on every tier.'},
- {k:'one',   nm:'Tier one',    per:'month', grant:400,  see:'sup', lead:false,
+ {k:'gift',  nm:'The gift',    per:'once',  grant:100,  lead:false,
+  d:'A hundred patterns, free. Twenty five releases at one address, or fewer and wider. It is spent by opening new ground and never by rerunning what is already open.'},
+ {k:'free',  nm:'Free',        per:'week',  grant:10,   lead:false,
+  d:'Ten patterns a week, for life. Two releases at one address, and unlimited rerunning of anything already open.'},
+ {k:'one',   nm:'Tier one',    per:'month', grant:400,  lead:false,
   d:'Four hundred a month, a hundred a week. About what a month of half an hour of practice every day would release.'},
- {k:'two',   nm:'Tier two',    per:'month', grant:800,  see:'sup',  lead:false,
-  d:'Eight hundred a month, two hundred a week. Twice the ground and nothing else different.'},
- {k:'three', nm:'Tier three',  per:'month', grant:1200, see:'sup',  lead:false,
+ {k:'two',   nm:'Tier two',    per:'month', grant:800,  lead:false,
+  d:'Eight hundred a month, two hundred a week. Twice the ground of tier one.'},
+ {k:'three', nm:'Tier three',  per:'month', grant:1200, lead:false,
   d:'Twelve hundred a month, three hundred a week. Three times the ground.'},
  /* TIER FOUR IS NOT MORE OF THE SAME. It carries the same twelve hundred as
-    tier three, so patterns do not separate them at all: what tier four buys
-    is the cohort lead suite. Ruled, and it is the one rung with a price
-    attached. */
- {k:'four',  nm:'Tier four',   per:'month', grant:1200, see:'sup', lead:true,
+    tier three, so patterns do not separate them at all, and it sees what tier
+    three sees: what tier four buys is the cohort lead suite. Ruled, and it is
+    the one rung with a price attached. */
+ {k:'four',  nm:'Tier four',   per:'month', grant:1200, lead:true,
   d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
@@ -5739,12 +5801,14 @@ const LEAD_HIDDEN=['the story cloud','the spiritual material','the tools themsel
     person's own aim is written into its bank, so it takes the story's class */
  'the daily summary'];
 function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
-/* the pain map and the tools are on every tier, ruled, so they are named
-   here rather than left for a renderer to remember */
-/* on every tier including free, and the list is long on purpose: it is
-   everything except how much new ground you may open. */
-const PLAN_ALWAYS=['the whole reading','saboteurs, complexes, hyper complexes and character',
- 'the archetypes','the pain map','every tool','the journal',
+/* WHAT IS ON EVERY TIER, free included, and the list is long on purpose: it is
+   everything except how far up the chain a person sees (SIGHT) and how much
+   new ground they may open (grant). The first six are the owner's own words of
+   1 October, "your own reading at the level of the 112 addresses, domains,
+   archetypes, laws, gates and shadow", with gates said as action because that
+   is the word the Field's bar already prints for them. */
+const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the laws',
+ 'action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
 
@@ -5812,8 +5876,10 @@ function planPrice(k){ var v=PLAN_PRICE[k]; return (typeof v==='number'&&isFinit
    force, and whether moving to it is a step up. Read off planOf, so a record
    that says tier three and is cancelled reads free here as everywhere.
 
-   Sight is not on the row, because sight does not vary: every row sees
-   everything. What a comparison may show is the one thing that moves. */
+   Sight is on the row now, as the two reads a comparison needs: sees is every
+   thing the tier can see beyond what is on every plan, adds is what it sees
+   that the rung below did not. Both are SIGHT rows read by planSeesAt and
+   planAdds, so the ladder types no tier of its own. */
 function planLadder(pl){
  var now=planOf(pl), keys=PLANS.map(function(p){return p.k;});
  var at=keys.indexOf(now.k);
@@ -5824,6 +5890,7 @@ function planLadder(pl){
       hundred a month is a hundred a week in DECISIONS.md */
    week:(p.per==='week')?p.grant:Math.round(p.grant/4),
    runs:Math.floor(p.grant/RUN_MIN), lead:!!p.lead, price:planPrice(p.k),
+   sees:planSeesAt(p.k), adds:planAdds(p.k),
    now:(p.k===now.k), up:(i>at&&p.k!=='free')};});}
 
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
@@ -5899,15 +5966,72 @@ function planFromServer(prev,b,unique){
  return {plan:next, same:['tier','status','since','until'].every(eq),
   was:was.k, now:now.k, wasLive:planState(prev)==='live', nowLive:planState(next)==='live',
   status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:''};}
-/* SIGHT. Whether a rung of the chain is visible on this plan. */
-function planSees(pl,kind){
- /* everybody, on every plan, including free. ruled. */
- return SEE_ORDER.indexOf(kind)>=0;}
-/* the first rung this plan cannot see, which is what an upgrade buys and
-   what a locked row has to name. null when everything is visible. */
-/* there is no next rung of sight to sell, on any plan, ever. kept so a
-   renderer asking the question gets a straight no rather than an error. */
-function planNextSight(){ return null; }
+/* ============================================================
+   SIGHT, READ OFF SIGHT. Everything below is arithmetic over the one table at
+   the top of this file and a plan record, and none of it knows what a surface
+   is.
+
+   THE TIERS IN ORDER, as keys: every row of PLANS but the gift, which is given
+   once and is never a tier a person is on, so it has no rank. Free is the
+   floor, rank 0. planOf is what puts a person on a rung, so a record that says
+   tier three and is cancelled, one that names a tier this build has never
+   heard of and one with no plan at all all read free here, the same way they
+   read free for the allowance. Nothing in this section reads pl.tier.
+   ============================================================ */
+const TIER_KEYS=PLANS.filter(function(p){return p.k!=='gift';}).map(function(p){return p.k;});
+function planRank(k){ return TIER_KEYS.indexOf(k); }
+/* WHAT THIS PLAN CAN SEE. sees maps every key in SIGHT to a boolean, so a
+   caller never has to treat a missing key as an answer, and locked is the rows
+   it cannot, in table order, which is what a lock has to name. tier is the key
+   of the rung in force. */
+function planSight(pl){
+ var t=planOf(pl), at=planRank(t.k), sees={}, locked=[];
+ SIGHT.forEach(function(g){
+  var ok=at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
+ return {tier:t.k, sees:sees, locked:locked, all:locked.length===0};}
+/* Whether one thing is visible on this plan. A key that is not in SIGHT is not
+   a thing the product gates and answers false, the same straight no the old
+   version gave a rung that did not exist. */
+function planSees(pl,kind){ return planSight(pl).sees[kind]===true; }
+/* THE TIER THAT UNLOCKS A THING, as its PLANS row, or null for a key SIGHT does
+   not hold. This is what a lock names. */
+function planNeed(kind){
+ var g=SIGHT.filter(function(x){return x.k===kind;})[0];
+ return g?PLAN_BY[g.need]:null;}
+/* WHAT A TIER SEES, and WHAT IT ADDS OVER THE ONE BELOW IT, by tier key. The
+   tiers page prints the second, which is the only thing about a tier's sight
+   that is news: everything a rung sees, the rung below saw too. Both are SIGHT
+   rows, so a caller reads nm and what off them and types neither. */
+function planSeesAt(k){
+ var at=planRank(k); return at<0?[]:sightRows().filter(function(g){return planRank(g.need)<=at;});}
+function planAdds(k){
+ return sightRows().filter(function(g){return g.need===k;});}
+/* WHAT A PLAN SEES, SAID AS ONE CLAUSE for a sheet that has a line for it. The
+   reading everybody has is the stem, and what the plan adds is a list off
+   SIGHT, so this types no rung. */
+function planSightSay(pl){
+ var s=planSight(pl), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
+ return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it');}
+/* THE LOCKED ROWS, GROUPED BY THE TIER THAT UNLOCKS THEM, as clauses: saboteurs,
+   unlocked on tier one and above. Both the tiers page and a partly locked
+   preset say this, so it is said here once. keys are SIGHT keys. */
+function planLockedSay(keys){
+ var by={}, order=[];
+ keys.forEach(function(k){var g=SIGHT.filter(function(x){return x.k===k;})[0]; if(!g||g.built===false)return;
+  if(!by[g.need]){by[g.need]=[]; order.push(g.need);}
+  by[g.need].push(g.nm);});
+ return order.map(function(n){
+  return planList(by[n])+', unlocked on '+PLAN_BY[n].nm.toLowerCase()+' and above';}).join('; ');}
+/* WHAT AN UPGRADE WOULD UNLOCK, as the next rung up that adds anything to see,
+   with the rows it adds. null when everything is visible already. It never
+   skips a rung that adds something, so a person on free is told tier one, not
+   tier three. */
+function planNextSight(pl){
+ var at=planRank(planOf(pl).k);
+ for(var i=at+1;i<TIER_KEYS.length;i++){
+  var add=planAdds(TIER_KEYS[i]);
+  if(add.length)return {to:PLAN_BY[TIER_KEYS[i]], adds:add};}
+ return null;}
 /* ALLOWANCE. What is left to open this period. The gift is spent first and
    spent once, because it is a gift and not a monthly grant. Spend is never
    stored: it is always the unique count minus what has been granted, so the
@@ -5995,6 +6119,9 @@ function planAllowance(pl,uniqueCount,giftAt,now){
    :(left>granted?(left+' banked, and '+granted+' more arrive each '+t.per)
    :(runs>0?(left+' of '+granted+' left this '+t.per)
     :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)))};}
+/* A LIST SAID THE WAY A PERSON SAYS IT: a, b and c. */
+function planList(a){
+ return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
 /* WHAT AN UPGRADE WOULD BUY, said in the two things a tier actually changes.
    Never phrased as what a person is missing out on, because the product does
    not sell by making somebody feel short. */
@@ -6004,7 +6131,8 @@ function planUpgrade(pl){
  var nxt=null;
  for(var j=i+1;j<PLANS.length;j++){if(PLANS[j].k!=='gift'){nxt=PLANS[j];break;}}
  if(!nxt)return null;
- var moreSight=false;                /* sight is not for sale. ruled. */
+ /* what the next rung lets a person see that this one does not, off SIGHT */
+ var moreSight=planAdds(nxt.k);
  /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
     week and tier one is four hundred a month, and subtracting one from the
     other gave "390 more a month", which is arithmetic over two different
@@ -6015,7 +6143,7 @@ function planUpgrade(pl){
   say:(moreGround<=0?'the same ground'
      :same?(moreGround+' more of new ground a '+nxt.per)
      :(nxt.grant+' of new ground a '+nxt.per))
-   +(moreSight?', and the next rung of the chain':'')};}
+   +(moreSight.length?', and it shows you your '+planList(moreSight.map(function(g){return g.nm;})):'')};}
 
 /* ============================================================
    WHAT AN ALLOWANCE IS WORTH, in the units people already price
@@ -14593,6 +14721,8 @@ if(typeof module!=='undefined'&&module.exports){
                  PUR_SIDES:PUR_SIDES, PUR_PER_SIDE:PUR_PER_SIDE,
                  PUR_SOUL:PUR_SOUL, PUR_EGO:PUR_EGO,
   /* plan */     PLANS:PLANS, PLAN_BY:PLAN_BY, PLAN_ALWAYS:PLAN_ALWAYS, SEE_ORDER:SEE_ORDER,
+                 SIGHT:SIGHT, TIER_KEYS:TIER_KEYS, planRank:planRank, planSight:planSight,
+                 planNeed:planNeed, planSightSay:planSightSay, planLockedSay:planLockedSay, planSeesAt:planSeesAt, planAdds:planAdds, planList:planList,
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,

@@ -30510,3 +30510,51 @@ number seven, go ahead and keep my ruling."
   and the table now carries these three with their sources. The earlier DM and DZ
   note that Lance means land is the lesser line, not the root he means.
 - **Sight by tier stands** over the experience model's "reading stays visible".
+
+## Round OM. Direction on the left menu bars, the Summary overhaul, the Compass overlays
+
+His words, verbatim: "For coherence and decoherence, the percent is fine. For
+shadow, have hashes for each of the shadow chakra colors. and have those bars
+moving. Vertically. Flow. Let's use a, an actual sine wave. When a person's sine
+wave is healthy, it's ranges full spectrum zero to one. Otherwise, we get to
+show how choppy it is. By the weights of the chakra. Let's move masculine and
+feminine and benign and malignant. Here, and I want a more uniform way to like
+create cohesion between these aesthetics so they don't look like separate
+elements. Um, I don't like those lines. Give me something else. Something
+innovative something animation something that uses the data and adds life no I
+don't like this face this isn't the one I like I like the one before it you're
+gonna have to like bring it to me Show me. Okay, the coherence vitality flow
+with the bars is a little bit better. I don't like the way that they're
+represented. Have the colors represent them. And then mock up both options. The
+root energetics is interesting. The summary page um, it needs a visual overhaul
+too. It's like a wall of icons. These icons should be stacked. If I click on
+them, it gives me information on the right side. So the the icons need to be
+grouped by types. The summary page, I should be able to cycle back in time. It
+should have my vault here. And I want the summary to look like a readout. Like I
+want it to like use a, elements from our flow page, like really jazz the shit
+out of this. Okay, I can get behind that intake now. Let's add it also for the
+archetypes. And for the emotions. And for the six axis. I don't know if we're
+going to keep it all. I just want to see what it looks like when we add it. I
+like the version with the colors. For the face, Overlay placement, I like B. For
+the compass, that's better. I think the uh, icon display could be like let's make
+those like look like buttons because eventually those are going to be uh,
+protocols."
+
+**Read as, and where each goes.**
+- Left menu: sent to the combine build. Shadow becomes seven vertical bars in the
+  seat colours moving with each seat's weight, Flow an actual sine wave (smooth
+  full range when healthy, choppy by the seat weights when not), masculine and
+  feminine and benign and malignant move up into the block, one visual language,
+  the connection lines are dropped for something animated that uses the data, the
+  colours carry the readings, both options mocked up.
+- Character: "I don't like this face... I like the one before it, bring it to
+  me": taken to mean the Character mask; the earlier options are shown to him to
+  point at.
+- Summary: a visual overhaul as a readout in the Flow page's language: icons
+  grouped by type and stacked, a click gives the detail on the right, the person
+  can cycle back through past days, and the vault is on the page.
+- Intake: the redesign is accepted, and the CQ at 100 simulation is extended to
+  the archetypes, the emotions and the six readings, as pictures only.
+- Compass: layout reading B (the characters become circles in the overlay row,
+  names on hover, no side panels), and the circles look like buttons because they
+  will become protocols.
