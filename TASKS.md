@@ -30714,3 +30714,112 @@ protocols."
   of what is left.
 - A build for him to download, attached, with commit and md5, so he can go
   through the release and give notes.
+
+## Round OT, 1 October. Release notes on build v1106, and mockups of the onboarding and tutorial
+
+> "One frame before login starts, I can see the dashboard or the field. It should
+> start with the login. The login. Screen. Is not aesthetically pleasing. Make
+> this page inviting and not so dry. We don't want people to log in by email. We
+> want them to log in by their username. So when they create their account, they
+> can set up by username. Move developer options to the lower right. Change the
+> text continue with an account to just guest. The entire onboarding process,
+> we're going to want visually exciting. This whole drab, no. Um, coherence just
+> changes CQ, decoherence changes to DQ. I want their colors to be
+> representative of the elements that they reflect. So coherence blue to white.
+> Actually, maybe we should put decoherence and coherence on the same bar. Put
+> CQ on one end, DQ on the other. and then have it as a gradient pulling between
+> the two. That way we can just show it visually in one image. that would move
+> vitality up. Vitality to me is energy. Energy is yellow. Awareness is Indigo
+> will is blue. The line between decoherence and coherence should be measured by
+> the amount a person oscillates. And then a person's flow, that, that sine wave
+> should actually be measured against a person's SQ along the length of their
+> CQ. And then benign malignant, I want a halo and a pitchfork. And it'd be nice
+> to, for the remove the text that says filled, you added plus all of witness.
+> And give me a different visual. So domains, primary, secondary. The top ones
+> are visually represented, but they stand out. And I want to be able to collapse
+> all these blueprint, primary, secondary. If I click on Weaver or anything
+> else, it should show up on my information on the right-hand side, meaning that
+> summary should always be above reading. If summary starts open, reading starts
+> closed. The matrix is a great design uh, element, but it needs to be
+> redesigned. Pull in the same flow treatment that everything else has been
+> getting. Make it dynamic. And I want the field page to start on. Oh, never
+> mind, starting on a wheel. Uh, unlock all these for me. and on the left side,
+> I'm on the compass, the left panel starts open. I don't. Yeah. I want the
+> panels to start closed when I land here. We have eight ascended teachers here
+> now. We have more in our documentation. Let's get this to 12 plus their
+> opposites. And when I click on their names, it shows me who they are. It shows
+> me their opposite, how the behaviors operate. And it allows me to run a
+> protocol from my library that's in alignment with their behaviors. That's an
+> engine that needs to be designed. For the story journal prompt, the text is so
+> boring. Well, I want it to feel like it's alive. Um, and I want the output to
+> be a little bit more casual. So I was saying, what would you like to write
+> about today? Say, what are we writing about today? And then the names always
+> have to be capitalized. So that's, for example, starts lowercase. And the one
+> question I keep describing the fetters to the celestial as gears. or layer,
+> like rings that are influence each other. Is there a way to visually show
+> that? And then please update your plan by removing the tasks that have been
+> completed to a history so we know what's been done and what hasn't. Clear
+> what's been done. And then let's see what's left. I don't hear sound effects
+> they're on. Give me mock-ups of the onboarding. And tutorial."
+
+**Read as, sorted by where each goes.**
+
+*Login and first frame (fix and mockup)*
+- One frame of the dashboard or the Field shows before the login. The login
+  must be the first thing painted. A defect, to fix.
+- The login screen is dry. Make it inviting. Mockups first.
+- Sign in by username, not by email. When an account is created the person
+  sets a username. Needs the server side too (accounts); the app side and the
+  design come first.
+- Developer options move to the lower right of the login.
+- "Continue with an account" becomes "Guest" (his wording, taken to mean the
+  guest entry reads just Guest).
+- The whole onboarding is to be visually exciting. Mockups of the onboarding and
+  the tutorial asked for.
+
+*Left menu (goes to the left menu design in flight)*
+- Coherence is named CQ, Decoherence is named DQ.
+- Colours represent the elements they reflect: Vitality is energy, so yellow;
+  Awareness is indigo; Will is blue.
+- Coherence and Decoherence on one bar: CQ at one end, DQ at the other, a
+  gradient pulling between the two, one image. That moves Vitality up. The
+  line between them is placed by how much the person oscillates.
+- The Flow sine wave is measured against the person's SQ along the length of
+  their CQ.
+- Benign and malignant: a halo and a pitchfork.
+- Remove the text that says "filled, you added plus all of witness"; give a
+  different visual. Domains, primary, secondary: the top ones are visually
+  represented and stand out. Everything (blueprint, primary, secondary) can be
+  collapsed. Clicking Weaver or any other puts it in the right-hand
+  information panel, so Summary is always above Reading; if Summary starts
+  open, Reading starts closed.
+
+*Matrix and the gears*
+- The Matrix is a great element but needs redesigning with the same flow
+  treatment everything else has been getting, and dynamic.
+- "I keep describing the fetters to the celestial as gears or layers, like
+  rings that influence each other. Is there a way to visually show that?"
+  A question, answered with pictures.
+
+*Compass and Field*
+- The Field starts on the wheel (he withdrew a different ask in the same
+  breath). "Unlock all these for me": all sight unlocked on his own copy, for
+  testing.
+- Compass: the left panel starts open; he wants the panels closed on landing.
+
+*Ascended teachers*
+- Eight now. More in the documentation. Go to 12 plus their opposites. Click a
+  name: who they are, their opposite, how their behaviours operate, and run a
+  protocol from the person's library in alignment with them. "That's an engine
+  that needs to be designed."
+
+*Story journal*
+- The journal prompt is boring: make it feel alive, and the output more
+  casual: say "What are we writing about today?" in place of "What would you
+  like to write about today?". Names are always capitalised (an example
+  starts lowercase).
+
+*Sound and the plan*
+- "I don't hear sound effects they're on": a defect to reproduce and fix.
+- The plan moves completed work to a history, so what is done and what is left
+  are separate. Done in PLAN.md and the task list this round.
