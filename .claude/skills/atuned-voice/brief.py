@@ -775,6 +775,22 @@ def units_js(path, src, line0=0, rel=None):
         func = owner_at(pts, c['start'])
         line = line0 + line_at(nl, c['start'])
         text = c['text']
+
+        def at(t):
+            """The line the words themselves are on, not the line the
+            concatenation starts on. A drill is one chain fifty lines long,
+            and a finding that names its first line sends a writer to the
+            wrong string, which this directory has recorded twice."""
+            ws = re.findall(r"[A-Za-z][A-Za-z']*", t.replace('{x}', ' '))[:3]
+            if not ws:
+                return line, c['start']
+            m = re.search(r'\b' + r'\W+'.join(re.escape(w) for w in ws),
+                          src[c['start']:c['end']])
+            if not m:
+                return line, c['start']
+            p = c['start'] + m.start()
+            return line0 + line_at(nl, p), p
+
         if '<' in text and re.search(r'<\s*/?\s*[a-zA-Z]', text):
             for off, shape, t, info in walk_markup(text):
                 if sink in ('status', 'status-fail', 'error'):
@@ -782,9 +798,10 @@ def units_js(path, src, line0=0, rel=None):
                 if PLACEHOLDER:
                     t = PLACEHOLDER.sub('{x}', t)
                 if is_copy(t, shape != 'text'):
-                    out.append(Unit(file=rel, line=line, func=func, key=key,
+                    ln, p = at(t)
+                    out.append(Unit(file=rel, line=ln, func=func, key=key,
                                     shape=shape, text=t, info=info,
-                                    pos=None if line0 else c['start']))
+                                    pos=None if line0 else p))
             continue
         t = tidy(text)
         t = PLACEHOLDER.sub('{x}', t) if PLACEHOLDER else t
@@ -792,9 +809,10 @@ def units_js(path, src, line0=0, rel=None):
         if shape == 'text' and key in ('tip', 'title', 'tt'):
             shape = 'tooltip'
         if is_copy(t, shape != 'text', stem=text.endswith(' ')):
-            out.append(Unit(file=rel, line=line, func=func, key=key,
+            ln, p = at(t)
+            out.append(Unit(file=rel, line=ln, func=func, key=key,
                             shape=shape, text=t, info={},
-                            pos=None if line0 else c['start']))
+                            pos=None if line0 else p))
     return out
 
 
