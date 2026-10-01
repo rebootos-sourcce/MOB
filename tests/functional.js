@@ -5298,8 +5298,10 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
   sw:!!document.getElementById('reltone'), bed:bedState()}));
  ok(quietRun.phase==='run'&&quietRun.node.length>0&&quietEnd.phase==='done'&&/Released/.test(quietEnd.eye),
   'with the tone off a release runs and completes, '+JSON.stringify([quietRun,quietEnd.phase,quietEnd.eye]));
- ok(quietEnd.bed.ctx==='none'&&!quietEnd.bed.on,
-  'and no audio channel was ever opened for it, '+JSON.stringify(quietEnd.bed));
+ /* the context is shared with the effects (sound is on by default, round OH),
+    so it may be running; what must never exist is the tone's own pair */
+ ok(!quietEnd.bed.on&&quietEnd.bed.carrier===null,
+  'and the tone itself was never opened for it, '+JSON.stringify(quietEnd.bed));
  ok(!quietEnd.sw,'and the finished card offers no switch, because nothing is left to sound');
  await tp.evaluate(()=>relClose());
  /* ON, BY A PRESS, SAVED THROUGH THE ONE WRITER, AND NOTHING SOUNDS YET */
@@ -5310,7 +5312,7 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  ok(s1&&s1.checked==='true'&&k1===true,'a press turns it on and it is saved to the record, '
   +JSON.stringify([s1&&s1.checked,k1]));
  ok(/Saved/.test(said1),'and the save reports like every other preference, said '+JSON.stringify(said1));
- ok(!b1.on&&b1.ctx==='none','and nothing sounds before Begin, '+JSON.stringify(b1));
+ ok(!b1.on&&b1.carrier===null,'and nothing sounds before Begin, '+JSON.stringify(b1));
  /* REMEMBERED. The page is reloaded and the switch reads the record. */
  await tp.reload({waitUntil:'load'}); await booted(tp);
  await pick();
