@@ -5487,14 +5487,14 @@ g('OB3 · 20.H2, the body word the person used is where the body is');
    word in its clause, and only the lexicon's own body phrases seat a place. */
 {
  const {SOMA_PLACE,SOMA_SENSE,LEX,parseStory,scanStory,CHILD,B2K}=E;
- ok(JSON.stringify(SOMA_PLACE.seat)===JSON.stringify({chest:'heart',jaw:'throat',throat:'throat',stomach:'sacral'}),
-  'four places are seated, each where the lexicon\'s own phrases put it, got '+JSON.stringify(SOMA_PLACE.seat));
- Object.keys(SOMA_PLACE.seat).forEach(w=>{
+ ok(['chest','jaw','throat','stomach'].every(w=>SOMA_PLACE.seat[w]===({chest:'heart',jaw:'throat',throat:'throat',stomach:'sacral'})[w]),
+  'four places are seated by the lexicon\'s own phrases, each where they put it, got '+JSON.stringify(SOMA_PLACE.seat));
+ Object.keys(SOMA_PLACE.seat).filter(w=>(SOMA_PLACE.ruled||[]).indexOf(w)<0&&(SOMA_PLACE.codex||[]).indexOf(w)<0).forEach(w=>{
   const ph=Object.keys(LEX).filter(k=>k.indexOf(' ')>0&&(' '+k+' ').indexOf(' '+w+' ')>=0&&LEX[k][0]!=='coherent');
   ok(ph.length>0&&ph.every(k=>LEX[k][0]===SOMA_PLACE.seat[w]),
    w+' is derived: '+ph.map(k=>k+' at '+LEX[k][0]).join(', '));});
- ok(JSON.stringify(Object.keys(SOMA_PLACE.refused))==='["back"]',
-  'one place is refused, back, where went behind my back and CHILD\'s lower back disagree, got '
+ ok(JSON.stringify(Object.keys(SOMA_PLACE.refused))==='["back","abdomen","skin"]',
+  'three places are refused: back, where went behind my back and CHILD\'s lower back disagree, and abdomen and skin, which CHILD itself holds at two seats, got '
   +JSON.stringify(SOMA_PLACE.refused));
  ok(SOMA_PLACE.missing.length===0&&SOMA_PLACE.sense.length===SOMA_SENSE.length,
   'every sensation is already a key, so this moves hits and never makes one');
@@ -5526,6 +5526,61 @@ g('OB3 · 20.H2, the body word the person used is where the body is');
  ok(cmp.every((s,i)=>scanStory(s).map(h=>h.t+':'+h.at+':'+h.amt).join()===bare[i]),
   'with and without the rule the hits are the same words at the same offsets and amounts');
  ok(CHILD.find(c=>c.loc.indexOf('chest')>=0&&B2K[c.seat]==='heart'),'and CHILD agrees the chest is the heart');
+}
+
+g('OB3b · round OG, the body words the owner ruled, and the detail the codex already carries');
+/* The owner, round OG: "The belly button is the sacral. The diaphragm is a
+   solar plexus." And on detail for neck, shoulders and gut: "if you mean like
+   detail, then yeah." Three sources seat a place and the table names which:
+   the lexicon's phrases, the owner's rulings, and CHILD's loc column where it
+   names a word at exactly one seat. Where all three are silent a word is
+   listed, never guessed. */
+{
+ const {SOMA_PLACE,SOMA_PLACE_WORDS,CHILD,B2K,scanStory}=E;
+ /* defaults so a build from before round OG fails these cleanly and does not throw */
+ const RULED=E.SOMA_PLACE_RULED||{}, RULEDL=SOMA_PLACE.ruled||[], CODEX=SOMA_PLACE.codex||[], DISP=SOMA_PLACE.dispute||{};
+ const hit=(s,w)=>scanStory(s).find(x=>x.t===w);
+ const seatOf=(s,w)=>{const h=hit(s,w);return h?h.band:null;};
+ /* the owner's words */
+ [['my belly button was tight','tight','sacral'],['I felt tension in my navel','tension','sacral'],
+  ['so much tightness in my belly','tightness','sacral'],['a tight knot in my lower belly','tight','sacral'],
+  ['my diaphragm was tight','tight','solar'],['pounding in my diaphragm','pounding','solar']]
+ .forEach(([s,w,seat])=>{
+  const h=hit(s,w);
+  ok(h&&h.band===seat&&h.place,'"'+s+'" lands the '+w+' at '+seat+', got '+(h&&h.band)+' place '+(h&&h.place));});
+ ok((hit('my belly button was tight','tight')||{}).was==='throat','and the hit says it moved from the sensation word\'s own seat, throat');
+ /* the table is the proof, and its seat keys are the engine's own */
+ ok(['belly','navel','diaphragm'].every(w=>SOMA_PLACE_WORDS.indexOf(w)>=0),'the ruled words are place words, so they also stop a move they do not own');
+ ok(SOMA_PLACE.seat.belly==='sacral'&&SOMA_PLACE.seat.navel==='sacral'&&SOMA_PLACE.seat.diaphragm==='solar',
+  'belly and navel are sacral, diaphragm is solar, got '+JSON.stringify(SOMA_PLACE.seat));
+ ok(Object.keys(RULED).length===3&&Object.keys(RULED).every(w=>E.K2BAND[RULED[w]]),'every ruled seat is a key the engine has');
+ ok(JSON.stringify(RULEDL)===JSON.stringify(['belly','navel','diaphragm'])&&Object.keys(DISP).length===0,
+  'the ruled words are listed as ruled, and no lexicon phrase seats any of them the other way, got '+JSON.stringify(DISP));
+ /* the evidence that the ruling and the codex agree */
+ const loc=w=>CHILD.filter(c=>(' '+c.loc.toLowerCase().replace(/[^a-z]+/g,' ')+' ').indexOf(' '+w+' ')>=0).map(c=>B2K[c.seat]);
+ ok(JSON.stringify(loc('abdomen').sort())===JSON.stringify(['sacral','solar']),
+  'CHILD holds the lower abdomen at sacral and the upper abdomen at solar, which is why abdomen alone is refused and the ruled words are not');
+ /* the detail the codex already says */
+ ok(JSON.stringify(CODEX)==='["neck","gut","forehead","sternum"]',
+  'four places are seated by CHILD\'s loc column alone, got '+JSON.stringify(CODEX));
+ CODEX.forEach(w=>{const l=loc(w);ok(l.length>0&&l.every(k=>k===l[0])&&SOMA_PLACE.seat[w]===l[0],
+  w+' is seated where CHILD holds it, '+l.join()+', and CHILD names it at one seat only');});
+ ok(seatOf('my gut was so tight','tight')==='root'&&hit('my gut was so tight','tight').place==='gut',
+  'gut is the root, because CHILD holds Fear at the lower back and gut');
+ ok(seatOf('so tight in my forehead','tight')==='eye','forehead is the third eye, where CHILD holds Shock');
+ ok(hit('my neck was tight','tight').place==='neck'&&seatOf('my neck was tight','tight')==='throat','neck is the throat, where CHILD holds Apathy at the base of the neck');
+ /* a word two sources seat differently, or one source seats twice, is refused and moves nothing */
+ ok(seatOf('my abdomen was tight','tight')==='throat'&&!hit('my abdomen was tight','tight').place,'abdomen is refused and moves nothing');
+ ok(seatOf('my skin was tight','tight')==='throat'&&!hit('my skin was tight','tight').place,'skin is refused and moves nothing');
+ /* and the words the codex is silent on stay unmapped, even though the word is a place */
+ ['shoulder','shoulders','heart','head','spine','hands','face'].forEach(w=>{
+  ok(SOMA_PLACE.unseated.indexOf(w)>=0&&SOMA_PLACE.seat[w]===undefined,w+' is listed as unseated, the codex is silent');
+  const s='my '+w+' was tight',h=hit(s,'tight');
+  ok(h.band==='throat'&&!h.place&&!h.was,'"'+s+'" moves nothing, got '+h.band+' place '+h.place);});
+ ok(seatOf('my shoulders were tight and my belly button too','tight')==='throat',
+  'a silent place that is nearer than a seated one still stops the move, it does not hand it to the belly button');
+ /* a stopped place does not leave the ruled word reading as a hit of its own */
+ ok(scanStory('belly navel diaphragm').length===0,'a place word on its own is not a hit, so this moves seats and never makes one');
 }
 
 g('OB4 · 20.H3, the document\'s failure test, as a gate');

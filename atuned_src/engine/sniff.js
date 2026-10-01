@@ -129,7 +129,8 @@ var LEXFOLDRUN=lexFold();
    The person said chest.
 
    So a sensation word takes the seat of a place word written in the same
-   clause. Two tables, and neither carries a seat typed here.
+   clause. Three sources seat a place, and each is named on the table so a
+   reader can say which one moved a word.
 
    THE SENSATIONS are the words in this lexicon that report what a muscle or
    a pulse is doing, which is a thing that happens somewhere. A feeling word
@@ -137,14 +138,24 @@ var LEXFOLDRUN=lexFold();
    root wherever the hands are. Every one of these must already be a key, so
    this never makes a hit, it only moves where one lands.
 
-   THE PLACES are read off the lexicon's own body phrases. A place word is
-   seated where every phrase containing it is seated: chest where chest is
-   tight, heavy in my chest and chest tight already sit. CHILD's loc column,
-   the plain words the product uses for where each axis is held, can veto a
-   seat and never add one. A place no phrase seats is not guessed at, it is
-   listed, and a place two phrases seat differently is refused by name. The
-   gate asserts the derived table exactly, so a phrase added at a new seat
-   moves this and says so.
+   THE PLACES, in the order they are tried.
+   1. The lexicon's own body phrases. A place word is seated where every
+      phrase containing it is seated: chest where chest is tight, heavy in my
+      chest and chest tight already sit. CHILD's loc column, the plain words
+      the product uses for where each axis is held, can veto that seat.
+   2. The owner's rulings, SOMA_PLACE_RULED below, which are typed because a
+      ruling is a decision and not a derivation. Each names its round. A
+      ruled word that a phrase seats the other way is listed in `dispute`
+      and the gate asserts that list is empty.
+   3. CHILD's loc column, added round OG, on the owner's word that detail may be
+      added from what the codex already says. A word the phrases do not seat
+      and that CHILD names at exactly one seat takes that seat. A word CHILD
+      names at two seats is refused by name, never split. This reverses the
+      earlier rule that CHILD could only veto: the gate asserts the derived
+      table, so the reversal is visible and not silent.
+   A place none of these seat is not guessed at, it is listed in `unseated`,
+   which is the list of words the codex is silent on. A place two sources
+   seat differently is refused by name.
    ============================================================ */
 var SOMA_SENSE=['tight','tightness','tense','tensed','tension','clenched','clenching',
  'throbbing','throb','pounding'];
@@ -157,9 +168,15 @@ var SOMA_SENSE=['tight','tightness','tense','tensed','tension','clenched','clenc
    nothing. Adding a word here can only ever stop a move. */
 var SOMA_PLACE_WORDS=['chest','jaw','throat','stomach','neck','shoulder','shoulders','gut',
  'belly','heart','head','back','rib','ribs','spine','hip','hips','arm','arms','hand',
- 'hands','leg','legs','foot','feet','face','eyes','forehead','temples','muscles','body'];
+ 'hands','leg','legs','foot','feet','face','eyes','forehead','temples','muscles','body',
+ 'navel','diaphragm','abdomen','sternum','skin'];
+/* THE OWNER'S RULINGS, round OG: "The belly button is the sacral. The
+   diaphragm is a solar plexus." Belly button and lower belly are read through
+   the word belly, which is the only place word in them. The seat keys are the
+   engine's own, B2K's values, and the gate asserts that. */
+var SOMA_PLACE_RULED={belly:'sacral',navel:'sacral',diaphragm:'solar'};
 function somaPlaces(){
- var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[]};
+ var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{}};
  SOMA_SENSE.forEach(function(w){(LEX[w]?out.sense:out.missing).push(w);});
  SOMA_PLACE_WORDS.forEach(function(w){
   var seats={};
@@ -168,7 +185,21 @@ function somaPlaces(){
    if(k.indexOf(' ')<0||(' '+k+' ').indexOf(' '+w+' ')<0)return;
    var s=LEX[k][LEX_SEAT]; if(s!=='coherent')seats[s]=1;});
   var sk=Object.keys(seats);
-  if(!sk.length){out.unseated.push(w);return;}
+  if(SOMA_PLACE_RULED[w]){
+   if(sk.length&&(sk.length>1||sk[0]!==SOMA_PLACE_RULED[w]))out.dispute[w]=sk.sort().join(' and ');
+   out.seat[w]=SOMA_PLACE_RULED[w]; out.ruled.push(w); return;}
+  if(!sk.length){
+   /* no phrase seats it. CHILD's loc column may, if it names the word at one
+      seat and one only */
+   var cs={}; CHILD.forEach(function(c){
+    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
+    if(loc.indexOf(' '+w+' ')>=0&&B2K[c.seat])cs[B2K[c.seat]]=c;});
+   var ck=Object.keys(cs);
+   if(ck.length===1){out.seat[w]=ck[0]; out.codex.push(w);}
+   else if(ck.length>1)out.refused[w]='CHILD holds it at '+ck.sort().join(' and ')
+    +' ('+ck.map(function(k){return cs[k].nm+' at the '+cs[k].loc;}).join('; ')+')';
+   else out.unseated.push(w);
+   return;}
   if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
   var veto=CHILD.filter(function(c){
    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';

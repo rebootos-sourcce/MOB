@@ -165,7 +165,7 @@ if(typeof module!=='undefined'&&module.exports){
                   IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
-                  SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
+                  SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
                   LEX_VERSION:LEX_VERSION, LEXV_RE:LEXV_RE, lexVersion:lexVersion,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
