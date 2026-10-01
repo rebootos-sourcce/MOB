@@ -741,7 +741,12 @@ function vRitual(errs,i,x){
    optional ones since round OB: lex, the lexicon version that read it
    (19.B6, LEX_VERSION in engine/sniff.js), and asked, what Source AI asked
    about it (20.H5, srcAsked in engine/sourceai.js). */
-var ENT_KEYS=['t','text','imprints','bands','lex','asked'];
+var ENT_KEYS=['t','text','imprints','bands','lex','asked','subjects'];
+/* the longest a subject may be, in letters. A subject is the person's own words
+   for who or what a clause was about, "my boss", "him", or the span of an act,
+   and 80 is longer than any role phrase or act in the tables and shorter than
+   a sentence, which is what a value that was not a subject would be. */
+var SUBJ_MAX=80;
 function vEntry(errs,i,x){
  var path='story.entries['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -810,6 +815,38 @@ function vEntry(errs,i,x){
     if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
     if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
    q.asked=ak;}}
+ /* THE SUBJECT OF EACH SEAT, round OZ. Who or what the words at that seat were
+    about, kept with the entry so a release can say it. Optional: an older
+    entry has none and reads as none, and its text can be read again for it,
+    parseStory being pure. One row at most for each seat, a kind and a source
+    from the lists the sniffer writes, and nothing else, so a field nobody
+    declared cannot ride in on a known one. */
+ if(x.subjects!==undefined){
+  if(!Array.isArray(x.subjects))errs.push(path+'.subjects is not a list');
+  else if(x.subjects.length>Object.keys(K2BAND).length)
+   errs.push(path+'.subjects holds '+x.subjects.length+', which is more than the '
+    +Object.keys(K2BAND).length+' seats there are');
+  else{
+   var sk=[], seen={};
+   x.subjects.forEach(function(r,j){
+    var sp=path+'.subjects['+j+']';
+    if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(sp+' is not an object');return;}
+    var bad=0;
+    Object.keys(r).forEach(function(k){
+     if(['seat','kind','subject','role','ref','from'].indexOf(k)<0){errs.push(sp+' may not carry '+k);bad++;}});
+    if(!K2BAND[r.seat]){errs.push(sp+'.seat names no seat: '+r.seat);bad++;}
+    else if(seen[r.seat]){errs.push(sp+'.seat '+r.seat+' is listed twice');bad++;}
+    if(SUBJ_KINDS.indexOf(r.kind)<0){errs.push(sp+'.kind is not a subject kind: '+r.kind);bad++;}
+    if(SUBJ_FROM.indexOf(r.from)<0){errs.push(sp+'.from is not a source: '+r.from);bad++;}
+    if(typeof r.subject!=='string'||!r.subject.trim()||r.subject.length>SUBJ_MAX){
+     errs.push(sp+'.subject is not a text of 1 to '+SUBJ_MAX+' letters');bad++;}
+    if(r.role!==null&&r.role!==undefined&&(typeof r.role!=='string'||!/^[a-z]{1,24}$/.test(r.role))){
+     errs.push(sp+'.role is not a role word: '+r.role);bad++;}
+    if(r.ref!==null&&r.ref!==undefined&&(typeof r.ref!=='string'||!r.ref.trim()||r.ref.length>SUBJ_MAX)){
+     errs.push(sp+'.ref is not a text of 1 to '+SUBJ_MAX+' letters');bad++;}
+    if(!bad){seen[r.seat]=1;
+     sk.push({seat:r.seat,kind:r.kind,subject:r.subject,role:r.role||null,ref:r.ref||null,from:r.from});}});
+   q.subjects=sk;}}
  return q;}
 function validateProfile(o){
  var errs=[];

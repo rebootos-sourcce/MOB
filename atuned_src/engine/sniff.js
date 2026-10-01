@@ -285,7 +285,23 @@ var SOMA_PLACE=somaPlaces();
 function normMap(t){
  t=String(t||'');
  var body='',bm=[],i,c;
+ /* A MASKED SWEAR IS READ AS THE WORD IT FITS, round OU. Chrome's recogniser
+    hands back f***ing, and the plain rule below turns each asterisk into a
+    space, so the word becomes "f" and "ing", and "really f***ing rough" has
+    lost the intensifier and the adjacency the degree rule needs. swearFind
+    names the masked tokens; each is written into the normalised copy as the
+    word it fits, and every letter of that word maps back into the raw span, so
+    a mark placed from an offset still lands on the characters the person's
+    text holds. Text with no asterisk in it never reaches this and is read
+    exactly as it always was. */
+ var masks={};
+ if(t.indexOf('*')>=0)swearFind(t).forEach(function(x){masks[x.s]=x;});
  for(i=0;i<t.length;i++){
+  var mk=masks[i];
+  if(mk){
+   var w=mk.to, m=w.length, a=mk.s, b=mk.e-1, k;
+   for(k=0;k<m;k++){body+=w.charAt(k); bm.push(m===1?a:a+Math.round(k*(b-a)/(m-1)));}
+   i=mk.e-1; continue;}
   c=t.charAt(i).toLowerCase();
   if(!/[a-z' ]/.test(c))c=' ';
   body+=c; bm.push(i);}
@@ -421,9 +437,24 @@ function scanStory(text){
  hits.forEach(function(h){
   if(h.amt==null||(h.kind!=='word'&&h.kind!=='phrase'))return;
   var before=src.slice(0,h.at+1);
-  for(var i=0;i<mods.length;i++){
-   if(before.slice(-(mods[i].length+2))===' '+mods[i]+' '){
-    h.mod=LEXMOD[mods[i]]; h.modw=mods[i]; h.amt=h.amt*h.mod; break;}}});
+  function degreeBefore(b){
+   for(var i=0;i<mods.length;i++){
+    if(b.slice(-(mods[i].length+2))===' '+mods[i]+' ')return mods[i];}
+   return null;}
+  var near=degreeBefore(before);
+  if(near){
+   var use=near;
+   /* A PROFANE INTENSIFIER IS STEPPED OVER, round OU. "really fucking
+      furious" has two degree words in a row, and reading only the nearest
+      would price it as fucking alone and lose "really", or, said the other way
+      round, "absolutely fucking furious" would lose "absolutely". The word
+      before the swear is looked for, and the stronger of the two wins: they
+      are not added, because two degree words say one degree. Only a profane
+      intensifier is stepped over, so no other pair of degree words changes. */
+   if(SWEAR_INT.indexOf(near)>=0){
+    var b2=before.slice(0,before.length-near.length-1), prior=degreeBefore(b2);
+    if(prior&&LEXMOD[prior]>LEXMOD[near])use=prior;}
+   h.mod=LEXMOD[use]; h.modw=use; h.amt=h.amt*h.mod;}});
  /* THE PLACE WORD, 20.H2, see SOMA_PLACE above. A sensation word moves to
     the seat of the nearest place word in its own clause, counted in words,
     and not across a comma (wordsOf's g). Measured on every string the
@@ -471,6 +502,46 @@ function scanStory(text){
    h.place=best.w; h.placeAt=best.at;
    if(best.seat!==h.band){h.was=h.band; h.band=best.seat;}});}
  hits.sort(function(a,b){return a.at-b.at;});
+ /* A FEELING THE OTHER PERSON LACKS IS NOT THE WRITER'S, round OY. "He showed
+    no remorse" read as remorse, a heart word, charged to the writer, and then
+    struck as negated on the page. Remorse is missing in him, and nothing in the
+    sentence is the writer's. The rule is narrow on purpose: a hit with a
+    negator within three words before it, in its own clause, whose nearest
+    subject going back is somebody else (he, she, they or a role), and not the
+    writer (I, we). "I felt no remorse" is still the writer's, and still read
+    and set aside as before. The hit is taken out of the hits, so it places no
+    charge, draws no mark and is not counted as a negated mention; it is kept
+    on the array as aboutOther, with where it was and who it was said of, so
+    nothing the person wrote is lost and the story frame can carry it as a
+    note about him. Every other third person feeling still lands on the writer
+    ("he was furious"), which is the subject model DESIGN-sniffer.md names as
+    missing, and this is not it. */
+ var aboutOther=[];
+ if(hits.length){
+  var wsO=null;
+  var kept=hits.filter(function(h){
+   var pre=src.slice(0,h.at+1);
+   if(!/ (no|not|never|without|zero|hardly|barely) (\S+ ){0,2}$/.test(pre))return true;
+   if(!wsO)wsO=wordsOf(text,nm);
+   var i=-1; for(var k=0;k<wsO.length;k++)if(wsO[k].at===h.at){i=k;break;}
+   if(i<0)return true;
+   var c=wsO[i].c, j=-1;
+   for(var q=i-1;q>=0&&q>=i-3&&wsO[q].c===c;q--)
+    if(/^(no|not|never|without|zero|hardly|barely)$/.test(wsO[q].w)){j=q;break;}
+   if(j<0)return true;
+   for(var b=j-1,st=0;b>=0&&st<6&&wsO[b].c===c;b--,st++){
+    var w=wsO[b].w;
+    if(w==='i'||w==='we'||w==='me')return true;
+    if(w==='he'||w==='she'||w==='they'||ROLES[w]){
+     if(!aboutOther.some(function(a){return a.at===h.at;}))
+      aboutOther.push({t:h.t,at:h.at,from:wsO[b].at,who:w,neg:wsO[j].w});
+     return false;}}
+   return true;});
+  /* every hit at the same word goes together: the word hit and the adjective
+     hit are one event */
+  var gone={}; aboutOther.forEach(function(a){gone[a.at]=1;});
+  hits=kept.filter(function(h){return !gone[h.at];});}
+ hits.aboutOther=aboutOther;
  return hits;}
 /* ============================================================
    THE PATH.
@@ -645,6 +716,16 @@ function parseStory(text){
    /* keep whichever reading is better represented at this seat */
    if(mseg.length>seg.length) seg=mseg;
    if(!seg.length) seg=all;}
+  /* A FETTER STATED AT THIS SEAT GOVERNS THIS SEAT, round OY. `wanted` is
+     every fetter any word in the entry named, anywhere, so an entry that is
+     angry at the solar plexus and depressed at the heart wanted Anger and Sad
+     at both, and the heart was handed Hatred and Resentment for the
+     depression. Round GR made the stated fetter seat local for the case where
+     the seat could not house it; this is the other half, for the seat that
+     can. Where a fetter was stated at this seat, only the addresses of the
+     fetters stated here are used. A seat nothing was stated at reads exactly
+     as before. */
+  if(stateHere){var sk=seg.filter(function(n){return here[n.cf];}); if(sk.length)seg=sk;}
   seg=seg.sort(function(a,b){return (b.susc||1)-(a.susc||1);});
   if(!seg.length) return;
   /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
@@ -656,10 +737,21 @@ function parseStory(text){
        when this is true. */
     inferred:!named,
     amt:Math.round(share*10)/10, from:k});});});
+ /* THE SUBJECT OF EVERY IMPRINT, round OZ: who or what the words that made it
+    are about, from the person's own sentence, in engine/frame.js. Additive:
+    nothing above this line reads it and no amount moves because of it. */
+ var subj=(typeof hitSubjects==='function')?hitSubjects(text,hits):{hits:[],seats:{}};
+ imprints.forEach(function(im){
+  var sj=subj.seats[im.from];
+  if(!sj)sj={subject:'myself',kind:'inferred',role:null,ref:null,from:'none',why:'no word at this seat had a clause'};
+  im.subject=sj.subject; im.subjectKind=sj.kind; im.subjectRole=sj.role;
+  im.subjectRef=sj.ref; im.subjectFrom=sj.from;});
  var nm={}; Object.keys(byChg).forEach(function(c){
   var f=CHG2FET[c]; if(f) nm[f]=(nm[f]||0)+byChg[c];});
  var named=Object.keys(nm).sort(function(a,b){return nm[b]-nm[a];});
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
+  aboutOther:hits.aboutOther||[],
+  subjects:subj.hits, seatSubjects:subj.seats,
   path:pathOf(hits),
   words:hits.filter(function(h){return h.kind!=='adj';}).length};}
 /* ============================================================
@@ -969,7 +1061,7 @@ var LEXCOMPRUN=lexComposite();
    failure CLAUDE.md records again and again. This is computed at load, after
    the canon, fold and composite passes have finished writing, over every
    table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
-   PHRASES, LEXMOD and the place word tables, the blocking places included,
+   PHRASES, LEXMOD, the frame tables (round OU) and the place word tables, the blocking places included,
    because adding one can stop a move. A word added, an amount
    retuned or a seat moved changes it, and nothing else does.
 
@@ -988,7 +1080,9 @@ function lexCanonJSON(v){
   return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
  return JSON.stringify(v===undefined?null:v);}
 function lexVersion(){
- var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS,
+  DAYQ_NOUN,DAYQ_ADJ,DAYQ_AMT,DAYQ_IDIOM,DAYQ_NOUNQ,DAYQ_VERB,DAYQ_PHRASE,DAYQ_SUBJ,ROLES,PRON_OTHER,
+  ACTS,PAST_IRR,PAST_LIGHT,CHAN_CUE,SWEAR_WORDS]
   .map(lexCanonJSON).join('|');
  var h=0x811c9dc5;
  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}

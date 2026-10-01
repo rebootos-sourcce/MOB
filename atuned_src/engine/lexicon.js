@@ -208,7 +208,87 @@ var LEX={
     already built for exactly this register, low self worth and self doubt,
     solar plexus, Shame: ashamed, humiliated, stupid, worthless,
     embarrassed and guilty are already there. */
- insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame']};
+ insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame'],
+ /* ============================================================
+    ROUND OU, HIS OWN REPORT, dictated into the journal: "I had a
+    confrontation with my boss" and "I was really irritated by him" both read
+    nothing at all. Reproduced on the build in hand: zero hits, zero
+    imprints, for both. The table had the loud verbs (shouted, yelled, snapped,
+    lashed out) and the loud adjectives (furious, livid, seething) and none of
+    the ordinary middle of anger, which is the part people actually dictate.
+
+    THE IRRITATION FAMILY, solar plexus, Anger STATED. Stated, because every
+    word here names the axis itself, the way furious does, so the imprint
+    comes back named and not inferred. The amount is read off the Anger family
+    the table already carries, in three steps, and the gate asserts the rule
+    rather than the number:
+      16  the floor of the Anger family, defensive. irritated and annoyed are
+          the mildest thing a person says about anger, so they take the floor
+          and never more.
+      18  angry. frustrated, aggravated, fed up and pissed off are what
+          people say when they mean angry and are being casual about it.
+      24  furious. infuriated and enraged are its plain synonyms.
+    livid, seething, resentful and rage were already here and are untouched. */
+ irritated:['solar',16,'Anger'],irritating:['solar',16,'Anger'],irritation:['solar',16,'Anger'],
+ irritates:['solar',16,'Anger'],irritable:['solar',16,'Anger'],irked:['solar',16,'Anger'],
+ annoyed:['solar',16,'Anger'],annoying:['solar',16,'Anger'],annoyance:['solar',16,'Anger'],
+ annoys:['solar',16,'Anger'],
+ 'got on my nerves':['solar',16,'Anger'],'gets on my nerves':['solar',16,'Anger'],
+ 'on my nerves':['solar',16,'Anger'],
+ frustrated:['solar',18,'Anger'],frustrating:['solar',18,'Anger'],frustration:['solar',18,'Anger'],
+ frustrates:['solar',18,'Anger'],aggravated:['solar',18,'Anger'],aggravating:['solar',18,'Anger'],
+ 'fed up':['solar',18,'Anger'],'pissed off':['solar',18,'Anger'],pissed:['solar',18,'Anger'],
+ 'ticked off':['solar',18,'Anger'],'mad at':['solar',18,'Anger'],
+ 'pissing me off':['solar',18,'Anger'],'pisses me off':['solar',18,'Anger'],
+ infuriated:['solar',24,'Anger'],infuriating:['solar',24,'Anger'],enraged:['solar',24,'Anger'],
+ outraged:['solar',24,'Anger'],fuming:['solar',24,'Anger'],
+ /* AGGRESSION AND CONFRONTATION, ACTS AND NOT FEELINGS, solar plexus, no
+    stated fetter. The seat is where the table already puts every aggression
+    verb, and the fetter is left to the quarter rule, the way shouted and
+    snapped are, because "I had an argument" says what happened and not which
+    axis it was. 22 is snapped: a conflict named with no stated force.
+    Precision over recall: fight, fought and confront are ordinary words for
+    other things (fight for it, fought cancer, confront my fear), so the fight
+    entries are the ones that name a person to be fought with, and nothing
+    here fires on the bare verb fight. */
+ confrontation:['solar',22],confrontations:['solar',22],confronted:['solar',22],
+ argument:['solar',22],arguments:['solar',22],argued:['solar',22],arguing:['solar',22],
+ clashed:['solar',22],'got into it with':['solar',22],'got into it':['solar',22],'a fight':['solar',22],
+ 'fight with':['solar',22],'fought with':['solar',22],'fighting with':['solar',22],
+ 'raised my voice':['solar',22],'swore at':['solar',22],'screaming match':['solar',26],
+ 'shouting match':['solar',26],'told him off':['solar',22],'told her off':['solar',22],
+ 'told them off':['solar',22],'stood up to':['solar',18],
+ aggression:['solar',22],aggressive:['solar',20],hostile:['solar',20],hostility:['solar',20],
+ /* ROUND OY, HIS SCREENSHOT OF THE BUILD BEFORE THIS ONE. The entry read
+    "I had a really ******* rough day today. I had a confrontation with my
+    boss. I was really irritated by him. ... It made me depressed. Umm, it made
+    me irritable. It made me frustrated. And. It made me mad." and the panel
+    said it kept one word. He named what was missing: depressed, mad,
+    irritable, frustrated, irritated, and the confrontation. The anger ones are
+    above. These are the rest of what he named.
+
+    SAD, AT THE HEART, WHERE sad AND miserable ALREADY SIT, and named by
+    ADJ2CHG as sadness, the way those two are, and Sad STATED as well, for the
+    reason parseStory's seat rule gives: a stated fetter governs the seat it
+    sits at, so the heart of an entry that is also angry elsewhere is not
+    handed Anger addresses for the depression. depressed and depression weigh
+    22, which is miserable: it is the same register, a state and not a moment,
+    and sad at 16 would under read it while hopeless at 26 would read it as the
+    end of the family. unhappy, sadness, sadder and saddened are sad, 16. The
+    three ways people say down and low are phrases and not words, because
+    down and low are ordinary words for places and prices, and a phrase that
+    needs a feel in front of it is the only form that is about a person.
+    mad is Anger, 18, which is angry: in the owner's own speech it is the
+    plain word for it, and it is read as anger and not as the other mad
+    because the table has no entry for the other. Where a person means mad
+    about somebody, mad at and mad about are the ones that name a person to be
+    angry with, and only mad at is here. */
+ depressed:['heart',22,'Sad'],depression:['heart',22,'Sad'],
+ unhappy:['heart',16,'Sad'],sadness:['heart',16,'Sad'],sadder:['heart',16,'Sad'],saddened:['heart',16,'Sad'],
+ 'feel down':['heart',16,'Sad'],'feeling down':['heart',16,'Sad'],'felt down':['heart',16,'Sad'],'feels down':['heart',16,'Sad'],
+ 'feel low':['heart',16,'Sad'],'feeling low':['heart',16,'Sad'],'felt low':['heart',16,'Sad'],
+ mad:['solar',18,'Anger'],angrier:['solar',18,'Anger'],angriest:['solar',18,'Anger'],
+ angered:['solar',18,'Anger'],fury:['solar',24,'Anger']};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
@@ -219,6 +299,18 @@ var ADJ2CHG={
  scared:'fear',afraid:'fear',frightened:'fear',terrified:'fear',panicked:'fear',
  froze:'fear',frozen:'fear',paralyzed:'fear',paralysed:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
  angry:'anger',furious:'anger',defensive:'anger',blamed:'anger',
+ /* round OU, the irritation family names the Anger axis itself, the same fact
+    LEX states in its third element. Both are written, as the shame family's
+    are, because an imprint is named only when ADJ2CHG or a stated fetter says
+    so, and a word that did only one of them came back half named. */
+ irritated:'anger',irritating:'anger',irritation:'anger',irritates:'anger',irritable:'anger',
+ irked:'anger',annoyed:'anger',annoying:'anger',annoyance:'anger',annoys:'anger',
+ frustrated:'anger',frustrating:'anger',frustration:'anger',frustrates:'anger',mad:'anger',
+ angrier:'anger',angriest:'anger',angered:'anger',fury:'anger',
+ depressed:'sadness',depression:'sadness',unhappy:'sadness',sadness:'sadness',sadder:'sadness',
+ saddened:'sadness',
+ aggravated:'anger',aggravating:'anger',pissed:'anger',infuriated:'anger',
+ infuriating:'anger',enraged:'anger',outraged:'anger',fuming:'anger',
  ashamed:'shame',humiliated:'shame',embarrassed:'shame',guilty:'shame',
  stupid:'shame',worthless:'shame',inadequate:'shame',
  sad:'sadness',lonely:'sadness',grieving:'sadness',hurt:'sadness',rejected:'sadness',
@@ -251,7 +343,218 @@ var ADJ2CHG={
    still a hit; the word was written. */
 var LEXMOD={slightly:0.6,'a little':0.6,'kind of':0.7,somewhat:0.7,fairly:0.9,
  quite:1.2,so:1.35,really:1.4,very:1.4,deeply:1.6,totally:1.7,absolutely:1.7,
- entirely:1.7,extremely:1.8,completely:1.8,utterly:1.8};
+ entirely:1.7,extremely:1.8,completely:1.8,utterly:1.8,
+ /* ROUND OU. Two plain degree words the owner's own speech uses and the
+    table did not carry, each taking the factor of the word it means: "a bit"
+    is "a little", "pretty" is "fairly". And the profane intensifiers, which
+    are degree adverbs and read as degree adverbs: "fucking furious" is
+    "really furious" said louder, and a person dictating it is not reporting
+    a different feeling. They take 1.4, the factor of really, the commonest
+    spoken intensifier in the table, and no more. There is no labelled set to
+    say a swear is worth more than really, so it is not priced as though it
+    were. See SWEAR_INT, which names them for the code that has to step over
+    them to find the degree word before them. */
+ 'a bit':0.6,pretty:0.9,
+ fucking:1.4,fuckin:1.4,fricking:1.4,frickin:1.4,freaking:1.4,freakin:1.4,effing:1.4,
+ friggin:1.4,bloody:1.4,goddamn:1.4,goddamned:1.4,damn:1.4,damned:1.4,
+ motherfucking:1.4};
+/* THE PROFANE INTENSIFIERS, and the one thing that makes them different from
+   a degree word: they may stand between a real degree word and the word it
+   scales, "really fucking furious". scanStory steps over them to find it. */
+var SWEAR_INT=['fucking','fuckin','fricking','frickin','freaking','freakin','effing',
+ 'friggin','bloody','goddamn','goddamned','damn','damned','motherfucking'];
+/* ============================================================
+   MASKED PROFANITY, AND THE RESTORING MAP. Round OU and round OV.
+
+   Chrome's speech recogniser returns a swear with its middle replaced by
+   asterisks, f***ing, sh*t, b*tch, and the Web Speech interface has no switch
+   to stop it. None of this product's code makes them: the transcript is read
+   off the recogniser's result and appended as it comes (ui/storyui.js stMic),
+   and nothing in the repository holds a table of words to star. The owner
+   asked for the asterisks gone, so a masked token is mapped back to the word
+   that was said.
+
+   HOW. The recogniser keeps the letters it does not mask and puts one
+   asterisk for each it does. So a token fits a word when it is the same length
+   and every letter that is not an asterisk is the same letter in the same
+   place. f**k fits fuck and nothing else in the list. d*** fits damn and dick,
+   and that is the ambiguity, named and not hidden: SWEAR_WORDS is ordered most
+   common first and the first fit is taken, so d*** restores to damn. A token
+   that fits nothing is left exactly as the recogniser wrote it, because
+   inventing a word is worse than leaving a star. swearRestore says which tokens
+   had more than one fit, so a caller can show or log them.
+
+   The same function is the sniffer's fallback for text that arrives with the
+   masks already in it (typed, pasted, or an entry kept before this change):
+   normMap reads a masked token as the word it restores to, so f***ing is the
+   intensifier fucking whether or not anything restored it first. */
+var SWEAR_WORDS=['fuck','fucking','shit','fucked','shitty','bullshit','damn','damned',
+ 'goddamn','goddamned','ass','asshole','bitch','crap','crappy','pissed','piss','dick',
+ 'bastard','fucker','fuckin','shitting','dumbass','motherfucker','motherfucking',
+ 'cunt','dickhead','bitches','fucks','shits','pissing'];
+function swearCands(tok){
+ var t=String(tok||'').toLowerCase();
+ if(t.indexOf('*')<0||!/^[a-z*]+$/.test(t))return [];
+ /* A TOKEN OF STARS ALONE, round OY. The owner's own screenshot of the build
+    that shipped before this change: "I had a really ******* rough day". Seven
+    stars and no letter, because the recogniser masked the whole word and not
+    its middle. The only thing left to fit is the length, so a star run of four
+    or more is restored to the most common word in the list of that length,
+    which for seven is fucking, and is reported as ambiguous whenever a second
+    word has the same length. Under four, a run of stars is a rule or a
+    footnote and is left alone. */
+ if(/^\*+$/.test(t)){
+  if(t.length<4)return [];
+  return SWEAR_WORDS.filter(function(w){return w.length===t.length;});}
+ if(t.length<2||!/^[a-z]/.test(t))return [];
+ return SWEAR_WORDS.filter(function(w){
+  if(w.length!==t.length)return false;
+  for(var i=0;i<t.length;i++)if(t.charAt(i)!=='*'&&t.charAt(i)!==w.charAt(i))return false;
+  return true;});}
+/* where the masked tokens are in a text. A token is a run of letters and
+   asterisks that starts on a letter, with a boundary before it, and holds at
+   least one asterisk. "*angry*" and "angry**" are markdown and are not read as
+   masks, because a mask never starts on its asterisk and, when it ends on
+   one, has to fit a word of that length. */
+var SWEAR_TOK=/(^|[^A-Za-z*'])([A-Za-z][A-Za-z*]*\*[A-Za-z*]*|\*{4,})(?![A-Za-z*])/g;
+function swearFind(text){
+ var t=String(text||''), out=[], m;
+ SWEAR_TOK.lastIndex=0;
+ while((m=SWEAR_TOK.exec(t))){
+  var s=m.index+m[1].length, tok=m[2], c=swearCands(tok);
+  if(c.length)out.push({s:s,e:s+tok.length,tok:tok,to:c[0],alts:c.slice(1)});
+  SWEAR_TOK.lastIndex=s+tok.length;}
+ return out;}
+/* THE RESTORING MAP. Pure, host free, and it returns what it changed: the
+   text with each masked token written as the word it fits, and a row per
+   swap carrying the token, the word, and the other words it could have been.
+   The case of the first letter is kept, so a sentence that opened on F***ing
+   opens on Fucking. */
+function swearRestore(text){
+ var t=String(text||''), swaps=swearFind(t), out='', at=0;
+ swaps.forEach(function(x){
+  var w=x.to;
+  if(/[A-Z]/.test(x.tok.charAt(0)))w=w.charAt(0).toUpperCase()+w.slice(1);
+  out+=t.slice(at,x.s)+w; at=x.e;
+  x.at=x.s; x.word=w;});
+ out+=t.slice(at);
+ return {text:out, swaps:swaps.map(function(x){
+  return {from:x.tok,to:x.word,at:x.at,ambiguous:x.alts.length>0,alts:x.alts};})};}
+/* ============================================================
+   THE FRAME TABLES, round OU. What a sentence is ABOUT, as against how hot
+   its words are. Read by storyFrame in engine/frame.js; held here, with the
+   vocabulary, so the lexicon version stamp covers them and an entry can say
+   whether it was framed by the tables it is being read by now.
+
+   WHY A FRAME AND NOT A HIT. "I had a really rough day" carries a state of the
+   whole entry, bad and heavy, and no seat. The sniffer places charge at seats
+   and the product has no address for "the day". Making a hit of it would mean
+   inventing a seat, which is the defect parseStory was fixed for. So a day
+   quality is an entry level reading, valence and load, which the frame
+   reports and the question chain uses, and which moves no charge on its own.
+
+   EVERY AMOUNT HERE IS ANCHORED TO A WORD THE TABLE ALREADY CARRIES, and the
+   gate asserts the anchor and not the number:
+     DAYQ_AMT 1  16, the Anger family floor, defensive. A mild day word weighs
+                 what the mildest anger word weighs.
+     DAYQ_AMT 2  22, miserable, which the table already seats as the one day
+                 word it carries.
+   ============================================================ */
+var DAYQ_NOUN=['day','days','morning','afternoon','evening','night','week','weekend',
+ 'shift','month','year'];
+/* word: [valence, tier]. valence -1 bad, +1 good, 0 neither. tier 1 mild, 2
+   strong, and a tier is read only on a bad word: a good day has no load. long,
+   hard and exhausting are here as LOAD and not as verdict: a long day is not
+   a miserable one, and it still costs. */
+var DAYQ_ADJ={rough:[-1,1],bad:[-1,1],hard:[-1,1],long:[-1,1],tough:[-1,1],
+ stressful:[-1,1],lousy:[-1,1],crappy:[-1,1],off:[-1,1],heavy:[-1,1],
+ horrible:[-1,2],awful:[-1,2],terrible:[-1,2],miserable:[-1,2],shitty:[-1,2],
+ brutal:[-1,2],dreadful:[-1,2],worst:[-1,2],exhausting:[-1,2],draining:[-1,2],
+ disastrous:[-1,2],
+ good:[1,0],great:[1,0],lovely:[1,0],nice:[1,0],wonderful:[1,0],amazing:[1,0],
+ easy:[1,0],peaceful:[1,0],productive:[1,0],fun:[1,0],calm:[1,0],beautiful:[1,0],
+ okay:[0,0],ok:[0,0],fine:[0,0],alright:[0,0],normal:[0,0],quiet:[0,0]};
+var DAYQ_AMT={1:16,2:22};
+/* an adjective and a day noun that are a greeting, a farewell or a holiday and
+   not a verdict on a day. Measured: "I lost the long weekend" read as a bad
+   day and "Good morning" opening a dictation read as a good one. */
+var DAYQ_IDIOM=['good morning','good night','good evening','good afternoon','long weekend',
+ 'happy days','nice day'];
+/* a noun that says the day was bad when a day is called it: "today was a
+   disaster". Each of these is the word for a thing going wrong, not a size. */
+var DAYQ_NOUNQ={disaster:2,nightmare:2,mess:1,shitshow:2,hell:2};
+/* the verbs a day takes. sucked is plain and mild; the phrases are what
+   people say when a day went wrong and they will not say how. */
+var DAYQ_VERB={sucked:1,sucks:1};
+var DAYQ_PHRASE=[['one of those days',1],['not my day',1],['went wrong',1],['went badly',1],
+ ['went to shit',2]];
+/* the words a day is the subject of in "today was rough" */
+var DAYQ_SUBJ=['today','yesterday','tonight','day','morning','afternoon','evening','night',
+ 'week','weekend','shift','work','school'];
+var DAYQ_BE=['was','is','were','are','been','be','has','had','have','being','not',
+ "wasn't","isn't","hasn't","hadn't","weren't","aren't"];
+/* NEGATION, READ AS THE OWNER'S OWN WORDS DO. A negated bad word is unknown,
+   not good, so "not a bad day" reads as nothing. A negated good word is the
+   other way round: "not a good day" is a bad day, and says it. */
+var FRAME_NEG=['not','no','never','nobody','none','cannot','cant',"can't",'didnt',"didn't",
+ 'dont',"don't",'doesnt',"doesn't",'wont',"won't",'wasnt',"wasn't",'werent',"weren't",
+ 'isnt',"isn't",'arent',"aren't",'havent',"haven't",'hasnt',"hasn't",'couldnt',"couldn't",
+ 'wouldnt',"wouldn't",'hardly','barely','without'];
+/* THE OTHER PARTY. A role, and the relation it is in, which is what makes
+   authority a recorded fact and not an inference. The relations are plain:
+   above the person, a partner, level with them, below them or in their care,
+   and a person who pays or is paid. */
+var ROLES={boss:'authority',manager:'authority',supervisor:'authority',teacher:'authority',
+ professor:'authority',principal:'authority',landlord:'authority',director:'authority',
+ ceo:'authority',coach:'authority',lecturer:'authority',headmaster:'authority',
+ mother:'authority',father:'authority',mom:'authority',dad:'authority',mum:'authority',
+ parent:'authority',parents:'authority',
+ partner:'partner',husband:'partner',wife:'partner',boyfriend:'partner',
+ girlfriend:'partner',fiance:'partner',spouse:'partner',ex:'partner',
+ friend:'peer',friends:'peer',coworker:'peer',colleague:'peer',colleagues:'peer',
+ teammate:'peer',roommate:'peer',neighbour:'peer',neighbor:'peer',brother:'peer',
+ sister:'peer',cousin:'peer',classmate:'peer',
+ son:'dependent',daughter:'dependent',kid:'dependent',kids:'dependent',child:'dependent',
+ children:'dependent',baby:'dependent',student:'dependent',students:'dependent',
+ client:'client',customer:'client'};
+/* the pronouns a person uses for somebody who is not them, and the form each
+   takes as the subject of a question: him is asked about as he. */
+var PRON_OTHER={him:'he',her:'she',them:'they',he:'he',she:'she',they:'they'};
+/* AN ACT. A word or phrase that is something a person did to or with somebody,
+   which belongs in the acting and behaving channels of the release and not in
+   feeling. The channel names are C3_VERB's own, and the gate holds this list
+   to them. Every key is also a LEX key, so an act is read twice, as charge by
+   the sniffer and as an act by the frame, by one vocabulary. */
+var ACTS=['confrontation','confrontations','confronted','argument','arguments','argued',
+ 'arguing','clashed','got into it with','got into it','a fight','fight with','fought with',
+ 'fighting with','raised my voice','swore at','screaming match','shouting match',
+ 'told him off','told her off','told them off','stood up to','yelled','shouted',
+ 'screamed','snapped','blew up','lashed out','slammed','lost it'];
+var ACT_CHANNELS=['acting','behaving'];
+/* the acts that name a kind of event and not a thing somebody did. "I had a
+   confrontation" says there was one; it does not say what the person did, so
+   it does not answer what did you do. */
+var ACT_NOUN=['confrontation','confrontations','argument','arguments','a fight','fight with',
+ 'screaming match','shouting match'];
+/* the irregular pasts people actually write. -ed ends a regular one. */
+var PAST_IRR=['said','told','took','gave','made','went','came','saw','left','put','ran',
+ 'sent','brought','found','lost','kept','ate','drank','woke','broke','fell','wrote',
+ 'spoke','heard','stood','sat','threw','hit','cut','bought','paid','met','drove',
+ 'won','forgot','shut','called','began','quit','slept','pulled','pushed','grabbed'];
+/* the verbs that carry no event: state, possession, feeling, wanting. A
+   sentence made of these says how things were and not what happened. */
+var PAST_LIGHT=['was','were','had','felt','seemed','wanted','needed','looked','became',
+ 'thought','believed','used','supposed','hoped','wished','figured','noticed',
+ 'realised','realized','decided','tried','started','got'];
+/* the cues for the other four of the six release channels, as the words a
+   person uses when what they report is a thought, a belief or a perception.
+   Matched whole word on the normalised copy. */
+var CHAN_CUE={thinking:['i thought','i kept thinking','i figured','i wondered',
+  'i told myself','in my head','i was thinking'],
+ perceiving:['i saw','i noticed','i heard','i could tell','it looked like','i watched',
+  'i realised','i realized'],
+ believing:['i believe','i believed','i must','i have to','i should','i always',
+  'i never','nobody ever']};
 var PHRASES=[
  [['wrap myself in a blanket','pretend the world hit pause','pretend the world would stop',
    'want to disappear','wish i could disappear','not be here','not exist',

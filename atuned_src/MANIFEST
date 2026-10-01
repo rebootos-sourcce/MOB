@@ -27,6 +27,9 @@ engine/practice.js
 engine/intake.js
 engine/sniff.js
 engine/sourceai.js
+engine/frame.js
+engine/qframe.js
+engine/distress.js
 engine/astro.js
 engine/birth.js
 engine/numerology.js

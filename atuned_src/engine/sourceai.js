@@ -95,7 +95,14 @@ function srcNegated(src,at,floor){
  var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
  var before=String(src).slice(f,at).trim().split(' ');
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
- return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
+ /* THE APOSTROPHE IS NOT PART OF THE NEGATOR, round OU. normMap keeps the
+ apostrophe in a word, so "I wasn't afraid" reaches this as wasn't, and the
+ list below holds wasnt. Measured on the build before this change: "I was
+ not afraid" and "I wasnt afraid" were both heard as negated and "I wasn't
+ afraid" was heard as afraid, with a mention, which is the false positive this
+ function exists to prevent. stMarks on the page already strips the
+ apostrophe before it asks, so the page and the engine now ask the same way. */
+ return run.some(function(w){return SRC_NEG.indexOf(w.replace(/'/g,''))>=0;});}
 
 /* how many earlier committed entries touched each seat. Reads only the seat
    keys a commit already stored, never the text. */
@@ -171,6 +178,25 @@ function srcTurn(heard,state){
  var st=state||{};
  if(!heard||(heard.unread&&!st.typed))return {move:'open'};
  if(st.passed)return {move:'pass'};
+ /* THE FRAME'S ASK, round OU, moved ahead of the seat's own at round OY. When
+    the story frame says the entry has said how things were or who was in it
+    and has not said what happened, that one question is asked first: "What
+    made it rough?", "What did he do?". Measured on his own entry at round OY,
+    "I had a really fucking rough day. I had a confrontation with my boss. I
+    was really irritated by him. ... It made me mad.": the anger comes back
+    five times at one seat, which is rung eight, and the seat's own ask would
+    have been "Both land behind your stomach. Why there?" about a story that
+    has not yet said what he did. What happened comes before why there. Only
+    the first slot, and only while it is missing: the rest of the chain is
+    pulled by the person, with the button, and the ask goes the moment what
+    happened is written, so it never walks the person through the questions on
+    its own. A frame that triggers nothing leaves every entry exactly as it
+    was, and Move on silences it above. */
+ var f=st.frame;
+ if(f&&f.trigger&&f.missing&&f.missing[0]==='what'&&f.questions&&f.questions.what){
+  var b=(f.feeling&&heard&&heard.top)?heard.top.band:null;
+  return {move:'ask', why:SRC_FRAME_KIND.what, seat:null, band:b, rung:0, mentions:0,
+   earlier:0, q:f.questions.what.q, quote:f.questions.what.quote, slot:'what'};}
  if(!heard.asks)return {move:'listen'};
  var s=heard.top;
  return {move:'ask', seat:s.seat, band:s.band, rung:s.rung,
@@ -347,7 +373,14 @@ function srcNext(dims,asked,askable){
    answer, and it does not, so it says wrote. "Refused" has no control on the
    page today; that is 20.H4 and S6, and a state nothing can produce is not
    offered. */
-var SRC_KINDS=SRC_DIM_ORDER.concat(['again','earlier','root','since','back']);
+/* ROUND OU AND OV ADD SIX KINDS, and they are kinds and nothing more: the five
+   slots of the story frame, engine/frame.js, and one for any question out of
+   the named frameworks, engine/qframe.js. The framework and the layer are not
+   stored: the entry keeps that a framework question was asked, never which,
+   because which is a thing about the person's day and not about the page. */
+var SRC_FRAME_KIND={what:'fwhat',did:'fdid',feel:'ffeel',where:'fwhere',under:'funder'};
+var SRC_KINDS=SRC_DIM_ORDER.concat(['again','earlier','root','since','back',
+ 'fwhat','fdid','ffeel','fwhere','funder','qframe']);
 var SRC_OUTCOMES=['moved','wrote','left'];
 /* log is the page's own list, one row per question shown: {k, seat, at, moved},
    where at is the length of the text when it was first shown. Returns what

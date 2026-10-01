@@ -333,7 +333,12 @@ function stRead(){
  var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
-  heard:srcHear(t,srcPrior(ents))};}
+  heard:srcHear(t,srcPrior(ents)),
+  /* the story frame, engine/frame.js, round OU: how the day was, who was in
+     it, and which of what happened, what was done, how it felt, where and
+     what was under it the entry has not said. The slots already asked in this
+     entry are passed so the chain never repeats one. */
+  frame:storyFrame(t,{asked:srcFrameAsked()})};}
 /* the addresses this entry reaches, or the last committed entry's */
 function stFound(){
  var found=[];
@@ -408,6 +413,11 @@ function stCommit(){
    imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands,lex:LEX_VERSION};
   var asked=srcAsked(SRC_LOG,ST_TEXT.length);
   if(asked.length)ent.asked=asked;
+  /* the subject of each seat, round OZ: who or what the words were about, so a
+     release line can say it. Read off the same parse the imprints were. */
+  var sj=Object.keys(ST_PARSED.seatSubjects||{}).map(function(k){var r=ST_PARSED.seatSubjects[k];
+   return {seat:k,kind:r.kind,subject:r.subject,role:r.role||null,ref:r.ref||null,from:r.from};});
+  if(sj.length)ent.subjects=sj;
   CURP.story.entries.push(ent);
   pSave();pSnap();}
  /* a new entry is a new conversation, so moving on from the last one does
@@ -578,7 +588,18 @@ function srcQuestion(){
  if(SRC_DQ)return SRC_DQ;
  return SRC_QI<0?srcOpen():SRC_JOG[SRC_QI%SRC_JOG.length];}
 function srcNextQ(){
- SRC_DQ='';
+ SRC_DQ=''; SRC_DW='';
+ /* THE TURN ARROW ASKS FROM NAMED FRAMEWORKS, round OV, and no longer walks a
+    flat list. qfNext picks the next layer of the seven sins, the nine circles,
+    the ages and the proposed frameworks from the seats the entry touched and
+    what has been asked, one question, in engine/qframe.js. The flat list is
+    still here as the walk's own last resort, and is only reached when every
+    layer of every framework has been asked, which is more than a hundred
+    presses. */
+ var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var n=qfNext({touched:t.trim()?qfTouched(t,srcPrior(ents)):{},asked:SRC_QF,
+  seed:Math.floor(Date.now()/864e5)});
+ if(n){SRC_QF.push({fw:n.fw,id:n.id}); SRC_DQ=n.q; srcLog('qframe',null); return n.q;}
  SRC_QI=SRC_QI<0?Math.floor(Date.now()/864e5)%SRC_JOG.length:(SRC_QI+1)%SRC_JOG.length;
  return srcQuestion();}
 var SRC_JOG=['Who got under your skin today?',
@@ -655,6 +676,16 @@ var SRC_DQ='', SRC_DN=0, SRC_DW='';
    the entry keeps at commit. SRC_DK is the dimensions the button has asked,
    in order, which is what srcNext reads for novelty. */
 var SRC_LOG=[], SRC_DK=[];
+/* the frame slots already asked in this entry, read off the log by their kind */
+function srcFrameAsked(){
+ var m={}; Object.keys(SRC_FRAME_KIND).forEach(function(k){m[SRC_FRAME_KIND[k]]=k;});
+ return SRC_LOG.filter(function(r){return m[r.k];}).map(function(r){return m[r.k];});}
+/* THE FRAMEWORK LAYERS ALREADY ASKED, round OV, as {fw,id}. Page memory only,
+   and not cleared by a new entry: the descent is walked across the day and a
+   framework is not asked twice in a row, which neither can be said of a list
+   that starts again at every commit. The entry keeps only that a framework
+   question was asked, the kind qframe, and never which. */
+var SRC_QF=[];
 function srcLog(k,seat){
  if(SRC_LOG.some(function(r){return r.k===k&&r.seat===seat;}))return;
  SRC_LOG.push({k:k, seat:seat||null, at:ST_TEXT.length, moved:false});}
@@ -689,6 +720,18 @@ var SRC_DIMQ={
  behaviour:function(w){return (w?'You wrote '+w+'. ':'')+'What did you do straight after?';},
  meaning:function(w){return (w?'You wrote '+w+'. ':'')+'What does that mean to you?';}};
 function srcDyn(heard,entries,text){
+ /* THE STORY FRAME FIRST, round OU. When the entry says how the day was, or
+    names an act and who it was with, or a feeling aimed at somebody, and has
+    not said what happened, what was done, how it felt, where or what was
+    under it, the next of those is asked, in his order, once each. Entries the
+    frame has no reading of take the path below exactly as they did. The words
+    quoted are the person's own span, and a question that quotes a span they
+    have since deleted is dropped by srcPaint, the way the built ones are. */
+ var fr=storyFrame(text,{asked:srcFrameAsked()});
+ if(fr.trigger&&fr.ask&&fr.question){
+  SRC_DW=fr.question.quote||'';
+  srcLog(SRC_FRAME_KIND[fr.ask],null);
+  return fr.question.q;}
  var n=SRC_DN++, seats=((heard&&heard.seats)||[]).filter(function(s){return s.words&&s.words.length;});
  var t=String(text||''), dims=t.trim()?srcDims(t):null;
  var k=dims?srcNext(dims,SRC_DK,Object.keys(SRC_DIMQ)):null;
@@ -771,13 +814,13 @@ function srcPaint(){
  /* a built question that quotes a word the person has since deleted is no
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
- var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED,frame:STR.frame});
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
     a claim, and the dot only says what is true: it reads on every key. */
  var o='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
- var ask=turn.move==='ask'?srcAsk(turn,heard.top&&heard.top.words):'';
+ var ask=turn.move==='ask'?(turn.q||srcAsk(turn,heard.top&&heard.top.words)):'';
  /* an ask on screen is a question asked, 20.H5: its why and its seat */
  if(turn.move==='ask')srcLog(turn.why,turn.seat);
  /* THE QUESTION, AND THE TWO PRESSES THAT CHANGE IT, ON THE RIGHT. Round LT,
@@ -819,6 +862,10 @@ function srcPaint(){
   if(heard.top)o+='<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(heard.top.band)+'">'
    +'<span>Next question</span>'+srcPips(heard.top.rung,seatCol(heard.top.band))
    +'<span class="src-seat">'+esc(heard.top.band)+'</span></span></div>';
+  else if(STR.frame&&STR.frame.day&&STR.frame.day.text)
+   /* heard, and with no place in the body to put it: a day quality is a
+      reading of the entry and has no seat, so the gauge has nothing to draw */
+   o+='<p class="src-note">Heard \u201c'+esc(STR.frame.day.text)+'\u201d. Say what your body did, and where.</p>';
   else o+='<p class="src-note">Nothing read yet, so '+(SRC_DNONE?'there is nothing of yours to ask from':'nothing is asked')
    +'. Say what your body did, and where.</p>';}
  /* THE REFUSAL FOR A PRESS WITH NOTHING TO READ. Nothing heard in this entry
@@ -1809,7 +1856,16 @@ function stMic(){
  var heard=ST_TEXT;
  ST_REC.onresult=function(e){var fin='',live='';
   for(var i=e.resultIndex;i<e.results.length;i++){
-   var t=e.results[i][0].transcript;
+   /* THE ASTERISKS ARE GONE, round OV, his words: "I just want to get rid of
+      those asterisks." Chrome's recogniser masks a swear, f***ing, sh*t, and
+      this product's own code never did: the transcript was appended as it
+      came. A masked token is now written as the word it fits before it goes
+      anywhere, swearRestore in engine/lexicon.js, so the entry that is saved
+      carries the word that was said. It touches only a token that fits a
+      word in its list; a token that fits none is left exactly as the
+      recogniser wrote it. Typed and pasted text is never passed through
+      here: it is the person's own letters and stays so. */
+   var t=swearRestore(e.results[i][0].transcript).text;
    if(e.results[i].isFinal) fin+=t; else live+=t;}
   if(fin) heard=(heard+' '+fin).trim();
   ST_TEXT=(heard+' '+live).trim();
