@@ -2681,3 +2681,14 @@ own device. Anybody who edits their own record sees their own data. The lock
 stops the product drawing a layer for a tier that has not bought it, and the
 engine still computes everything: the lock is on what is drawn and listed,
 never on what is read.
+
+
+## Round PD, 1 October. The seats decide; questions only when blocked
+
+His words: "Honestly, dude, I've got super brain fatigue from all your questions.
+Let's get the tech and the features stood up." This overrides the 25 September
+ruling that every round ends with questions. From this round a report says what
+the seat decided and why, in the four headings, and "What I need from you" is
+empty unless something is genuinely blocked, in which case it carries one
+question with its context. A choice that has a sensible default is taken and
+recorded as taken, so he can overrule it later.

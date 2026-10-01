@@ -373,6 +373,8 @@ day, after a geometry question was put to him in prose and he said, correctly,
 that he could not tell what it meant. Both answers, side by side, same
 profile, both widths.
 
+**OVERRIDDEN, round PD, 1 October: the seats decide and ask at most one question, only when blocked** (his words: "super brain fatigue from all your questions"; see DECISIONS.md). What follows is the earlier ruling, kept for the record.
+
 **The team is always asking. Ruled 25 September.** He is the executive
 producer who holds the vision; the seats are his eyes and ears technically.
 So every round ends with questions under the fourth heading, framed for the

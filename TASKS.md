@@ -31246,3 +31246,33 @@ Legal facts (for the policy and terms)
 - CQ and DQ, two systems pulling on each other: one solid bar of colour with two
   opposing colours, and the place where they meet (the termination point)
   oscillates; the amount it oscillates is the oscillation range.
+
+## Round PD, 1 October. Stop asking; build; the recipe engine
+
+> "Honestly, dude, I've got fucking super brain fatigue from all your fucking
+> questions. Let's get the tech and the features stood up. Let's get the copy
+> replaced if you haven't done it. Yeah, the roster's right. Cool, do 13
+> features. I want 14 teachers, so Moses in order. Maybe anyway, the, those are.
+> Their behaviors in the compass, those are recipes. So we probably need a recipe
+> engine. To design what those SO recipes are that tie into the ritual. And tie
+> into the protocol and sniff for those behaviors. And it shows you which
+> behaviors are running. You that are keeping you from achieving that. That
+> sounds like a feature it needs to be updated to that system."
+
+**Read as.**
+- Process ruling, overriding the standing "the team is always asking" ruling of
+  25 September: the owner has decision fatigue from questions. From now the seats
+  decide, record the decision and the reason in the report, and ask only when
+  genuinely blocked, at most one question, never a list.
+- Build now: the tech and the features, in the order of what is designed. Replace
+  the copy in the app with the ruled copy where it is not done.
+- The teacher roster in `DESIGN-teachers.md` v2 is right (every flagged row taken
+  as recommended: Rumi for beauty and Rama for duty; the Heart's axes relabelled
+  Love and Beauty with Light to Akhenaten; the 14-row roster, which is the
+  thirteen people with Jesus at two poles). "Do 13" read as the thirteen
+  people; "14 teachers" as the fourteen poles; Moses stays in his order.
+- The behaviours at the Compass's poles are RECIPES: a recipe engine, which
+  designs what those recipes are, ties them to the ritual and the protocol, sniffs
+  for those behaviours in the person's stories, and shows which behaviours are
+  running that keep the person from achieving the quality. The teachers feature
+  is updated onto that system.
