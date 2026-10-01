@@ -14,6 +14,9 @@ Moved to `PLAN-HISTORY.md`, so this file carries only what is open.
 |---|---|---|
 | Login, onboarding and tutorial mockups, username first, visually exciting | art | `mockups/onboarding/` |
 | The Matrix redesigned in the flow treatment; fetters and the celestial shown as gears or rings | animation | `mockups/matrix-gears/` |
+| BUILD: recipe engine and the teachers (14 poles), the imprint panel, the ritual and protocol tie (`RECIPES.md`) | fullstack | `engine/recipes.js`, panel, tests |
+| BUILD: onboarding O0, O1, O3 (journey record, gift counter, mini release of 12 lines, ten integrity answers as evidence, the claim packaging) | fullstack | `engine/journey.js`, `tests/journey.js` |
+| BUILD: Login A (ring, username or email, one row of three buttons, ticked box, recovery email) and the ruled copy replaced | fullstack | login, copy |
 | Torus field around Orbit: bottom to top flow, Bezier geometry, seats distort it, trace for leaks | art | `mockups/character-torus/` |
 | Sniffer: day quality, acts, irritation, masked profanity restored, the framework questions (sins, Inferno, ages, others), distress detection | AI | engine build, `SNIFFER-RECOMMENDATION.md` |
 | Subtle atmospheric sound for everything, hover included | sound | build, `SOUND-MAP.md` |
@@ -209,3 +212,15 @@ O8 are in the starting session.
 - The layer observatory: pull in elements from the Field and reach an A against
   the Field's C.
 - Research sharing is off and not offered at launch. The age floor is 18.
+
+**Decisions taken by the seat, round PD (he is fatigued by questions; he can overrule any)**
+- The teacher roster in DESIGN-teachers.md v2 stands as recommended: 14 poles,
+  thirteen people, Jesus at two poles.
+- Left menu: horizontal stacked lines with the icons inside, one solid two-colour
+  CQ and DQ bar with an oscillating termination point (round PC); built after
+  the revision lands.
+- The release opens on his recorded voice with the app voice as the fallback
+  until he has recorded it; a recorder page is part of the release redesign.
+- Character page: Orbit with the torus, built after the torus mockup lands.
+- The observatory: pulls Field elements and is held to an A against the Field's
+  C.
