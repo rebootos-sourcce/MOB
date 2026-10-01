@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rail lines, live</title>
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="rail-lines.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 Inter,system-ui,sans-serif;padding:20px 16px 60px}
+h1{font-size:18px;font-weight:600;margin:0 0 4px}
+p{color:var(--dim);margin:0 0 14px;max-width:70ch}
+.bar{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.bar button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--edge-2);border-radius:8px;padding:0 14px;min-height:44px;cursor:pointer}
+.bar button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.cell{background:var(--panel);border-radius:14px;padding:14px}
+.cell h4{margin:0 0 10px;font-size:11px;color:var(--dim);font-weight:500}
+</style></head><body>
+<h1>Rail lines, live</h1>
+<p>Every figure is read from the built engine. Both edges move on the Compass's own drift, by the oscillation range, from the first frame. Under reduced motion the edge holds at CQ.</p>
+<div class="bar" id="bar"></div>
+<div class="grid" id="g"></div>
+<script src="data.js"></script><script src="rail-lines.js"></script>
+<script>
+var state={v:'hard',snow:false}, mounted=[];
+function build(){
+ mounted.forEach(function(m){m.destroy();}); mounted=[];
+ document.body.classList.toggle('snow',state.snow);
+ var g=document.getElementById('g'); g.innerHTML='';
+ ['marcus','tomas','diane','you'].forEach(function(k){
+  var c=document.createElement('div');c.className='cell';c.innerHTML='<h4>'+RS_DATA[k].nm+', '+state.v+' edge</h4><div></div>';g.appendChild(c);
+  mounted.push(RL.mount(c.lastChild,state.v,RS_DATA[k],{still:matchMedia('(prefers-reduced-motion:reduce)').matches}));});
+ [].forEach.call(document.querySelectorAll('#bar button'),function(b){b.setAttribute('aria-pressed',String((b.dataset.v&&b.dataset.v===state.v)||(b.dataset.s!==undefined&&(b.dataset.s==='1')===state.snow)));});
+}
+var bar=document.getElementById('bar');
+[['Hard edge','v','hard'],['Soft edge','v','soft'],['Dark','s','0'],['Snow','s','1']].forEach(function(a){
+ var b=document.createElement('button');b.type='button';b.textContent=a[0];b.dataset[a[1]]=a[2];
+ b.onclick=function(){if(a[1]==='v')state.v=a[2];else state.snow=a[2]==='1';build();};bar.appendChild(b);});
+build();
+</script></body></html>

@@ -1,0 +1,310 @@
+{
+ "base-marcus": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "hard-marcus": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "soft-marcus": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "base-tomas": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "hard-tomas": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "soft-tomas": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "base-diane": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "hard-diane": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "soft-diane": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "base-you": {
+  "fdockH": 617,
+  "awTop": 895,
+  "awBottom": 997
+ },
+ "hard-you": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "soft-you": {
+  "blockH": 285,
+  "blockW": 264,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 669,
+  "awTop": 567,
+  "vh": 1000
+ },
+ "m390-hard-marcus": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 1136,
+  "awTop": 1034,
+  "vh": 844
+ },
+ "m390-soft-marcus": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 546,
+  "awTop": 444,
+  "vh": 844
+ },
+ "m390-hard-tomas": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 546,
+  "awTop": 444,
+  "vh": 844
+ },
+ "m390-soft-tomas": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 546,
+  "awTop": 444,
+  "vh": 844
+ },
+ "m390-hard-diane": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 1136,
+  "awTop": 1034,
+  "vh": 844
+ },
+ "m390-soft-diane": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 546,
+  "awTop": 444,
+  "vh": 844
+ },
+ "m390-hard-you": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 1136,
+  "awTop": 1034,
+  "vh": 844
+ },
+ "m390-soft-you": {
+  "blockH": 285,
+  "blockW": 346,
+  "wrapH": 301,
+  "rows": [
+   44,
+   26,
+   26,
+   26,
+   26,
+   40,
+   26,
+   26
+  ],
+  "awBottom": 546,
+  "awTop": 444,
+  "vh": 844
+ }
+}
