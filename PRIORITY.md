@@ -2847,3 +2847,212 @@ told to add one section and renumber nothing. Flagged for the project manager.
   `21.J7`.
 - **HEAD moved during this read,** `28e3756` to `23defd5`, `TASKS.md` only, by
   another seat. Nothing read here changed.
+
+---
+
+# 22. 1 October. Release Intelligence V2 against V1 and the code
+
+His words, round NV in `TASKS.md`: "our three key pieces to focus on now are
+onboarding tutorial, release, and the user's paywall and the pay journey.
+Review the document attached, it's for the release protocol." The document is
+`SOURCE-TDD-release-intelligence-v2.md`. V1, `SOURCE-TDD-release-intelligence.md`,
+was audited at round NC into section 19 cluster C (`19.C8` to `19.C16`, and
+R5). This section does not redo that. It reads what V2 adds and holds it
+against the code.
+
+## The stamp on this measurement
+
+    commit                0983eca1a1a61d795f567a1daf6545c79e6a79c3
+    tree                  clean at the start of the read. This section is
+                          the only change, uncommitted
+    source.html           md5 708cbf19
+    engine.js             byte for byte the engine modules concatenated in
+                          MANIFEST order (cmp, checked), so it is current
+    measured              1 October
+    node tests/engine.js  1858 passed, 0 failed
+    browser gates         not run. This pass changes no source
+
+**Read in full:** V2, all 1960 lines; V1, all 1272; this page's section 19
+cluster C and R3 and R5, and sections 20 and 21; `DECISIONS.md` on the meter
+(lines 48 to 60, 850 to 862, 1088 to 1110); `DESIGN-ladder.md` sections 1 and
+2.1; `CREATIVE-BRIEF-voice.md` 150 to 195; `TASKS.md` rounds LY, NV and the
+LD items. **Checked against the code, not taken from the document:**
+`ui/release.js` whole; `engine/data/cards.js` 30 to 100 and 300 to 330;
+`engine/schema.js` 1060 to 1160 and 1234; `engine/compute.js` 170 to 215;
+`engine/ladder.js` 1 to 260; `ui/ritual.js` 397 to 400 and 535 to 560;
+`ui/summary.js` 615 to 690; `ui/panels.js` 1020 to 1034; every `relPick` and
+`meterPlan` caller in `ui/` and `engine/` (searched).
+
+**And the real code, run rather than read.** Each probe evaluates the
+committed `engine.js` and the real `ui/release.js` source in one scratch
+context, with the page and the sound stubbed to nothing and the timers held
+still, so `relPick`, `relPlan`, `relCar` and `relCoolDown` run as written.
+Known good cases first: a story moves the field (DQ 0.00 to 2.41), a fresh
+address plans its four lines, and a run walked to its end writes, charges and
+marks its ritual. **UNVERIFIED** below is V2's own fifth status, adopted here:
+read off a function's real output, not seen on a screen.
+
+## What V2 is, against V1
+
+**Nothing in V1 was changed or dropped.** V2's sections 0 to 22, its first
+1297 lines, are V1 word for word. Measured: with line wrapping, curly quotes,
+rule lines and fence spacing normalised, the two word streams differ by one
+blockquote marker. So every V1 line section 19 queued stands as queued, and
+the work here is sections 23 to 37 only, 663 new lines.
+
+**What is new is the product layer V1 left abstract.** Section 23 writes the
+live run down in his words: the preparation script, the release language, the
+counts, the reframe as "I know...", a cooldown of two to five minutes, and an
+immediate check, "What changed?", with five answers. Sections 24 to 27 specify
+the carousel as a product (seven requirements, a queue state, decision
+semantics that add Continue and Skip, and an optional expanded view of the
+current pattern). Section 28 gives the achievements an event contract and a
+new candidate list. Sections 29 to 35 say how a release feeds the longitudinal
+loop, recurrence ("must not automatically mean failed release"), replacement
+(softened from V1's detection to a candidate edge), Mirror, the Ladder's turn,
+a "Daily Work" card and the trace. Section 36 adds UNVERIFIED as a fifth
+status. **V2 also disagrees with itself in four places**, each named on its
+row: three lists of channels (eight, seven, six), three lists of verification
+outcomes (six, five, six), two lists of achievements, and a queue that may
+change mid session against a plan that is a bill.
+
+**And it was written before some of his own answers.** Section 24.1 repeats
+V1's two swipe mapping, which his round NE answer to R5 has since replaced.
+
+---
+
+## Read this first. What this adds to his list
+
+Each goes with its snapshot, per the 21 and 25 September rulings. None goes as
+it stands here.
+
+**U1. "What changed?" at the end of a release.** V2 section 23.6: "At the end:
+What changed?", answered with "I feel different, I see it differently,
+Something moved, Nothing changed, I'm not sure", recorded as chosen and never
+turned into a stronger claim. This is the first time one of his documents
+gives the words of a release check, and they are not a number, so it is the
+form `19.C3` (release measured, not calculated) has been waiting for. Against
+it, his R3 answer at NE: "No, the release is rapid." That answer refused a
+strength rating; this is one tap, after the two minutes, not during the run.
+And V2's own algorithm F and acceptance criteria list six outcomes including
+"stronger" and "replaced", while 23.6's five give a person no way to say it
+got worse. The ways it could go: ask it, with the five; ask it, with a sixth
+for stronger; or leave release calculated and labelled so. Holds `22.K11`, and
+reopens `19.C3`.
+
+**U2. What a run owes for ground it did not reach.** Measured (`22.K5`): End
+pressed after the first of six hundred lines lands exactly the write and the
+charge a finished run lands, DQ 5.19 to 4.10 both ways, twelve patterns spent
+both ways, and the finished card then says "You released 1 pattern." over a
+field moved as if all six hundred were said. V2 asks each line's completion to
+be recorded, and lets a pattern leave the queue mid session (`22.K16`). His
+standing ruling is that a plan shown is the bill (`DECISIONS.md`, "A run is a
+plan, built when the run is picked"). The ways it could go: the write scales
+with the share of lines said and the bill stays as shown; both scale; or as
+now, and the card says End finishes the release. Holds `22.K5` and `22.K16`.
+
+**U3. The reframe's words.** V2 section 23.4: "I know that I am..." or "I
+know...". Measured: of the 214 reframe head statements across the 107
+releasable addresses, none begins "I know"; 104 carry "I now embody the truth
+that I am" and the rest are his printed card text, Fear's being "I am safe in
+this body." The ways it could go: "I know" on the strict syntax only, leaving
+his printed cards as printed; "I know" everywhere, rewriting his cards; or
+keep "embody", which is his loop's own fourth word. Holds `22.K7`.
+
+**U4. Whether "installed" leaves the product.** V2 section 23.4: "Do not use
+the earlier term INSTALLING." The release card is small and ours (`22.K8`).
+Elsewhere "installed" names a different thing, the opposite held at an
+address, in string literals in 13 files under `ui/`, by a grep at this commit. His
+LY words were "total number of patterns installed". The ways it could go: the
+release card only; every surface, a product wide rename the size of the
+"Power" question; or keep it, as the state word, distinct from the step. Holds
+the product wide half of `22.K8`.
+
+**His, holding nothing this round.** Whether 10 becomes a fourth quick pick
+beside his LY three (`22.K6`). Whether "Daily Work" is a name he wants on a
+surface (`22.K22`). What "complex released" means, which is the same open
+question `ui/release.js` lines 614 to 617 already hold for "cleared a
+saboteur" (`22.K18`).
+
+---
+
+## The lines, by cluster
+
+Sections 19 to 21 used A to J. This continues at K.
+
+### K. Release Intelligence V2, sections 23 to 37
+
+| Line | What | Status | Buildable now, or blocked on |
+|---|---|---|---|
+| 22.K1 | **The preparation, in his words.** V2 23.1 (lines 1303 to 1325): "Sit down, relax. This moment is for you. Make sure you're in a quiet place... Remember you are the observer of the story, not the person that the thing happened to." And "The system should not require a specific emotional result before continuing" | PARTIAL. The screen's welcome, `REL_WELCOME` (`ui/release.js` lines 95 to 98), carries the position, attention inward and the breath; the quiet place and the observer position are on no line (searched `ui/` for "observer": none). His spoken script is reserved for his recording (lines 74 to 85). No emotional gate EXISTS: the welcome walks on its own clock and "Skip the opening" is there (line 1241). The voice check, run on his lines: it flags "relax" as category language and nothing else | **Now, small, copy.** The two missing moves join `REL_WELCOME` through the voice check, "relax" staying out of written copy by the standing rule. V2's verbatim text is the script for his recording, which waits on Q5 |
+| 22.K2 | The release language: "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling" (23.2, lines 1327 to 1337) | EXISTS. `C3_VERB`, `engine/data/cards.js` lines 50 to 52. Measured: all 214 release head statements open "I am letting go of believing,". V2's own three channel lists, eight in algorithm C, seven in `ReleasePattern`, six here: its operational section is the six the build has | None. It narrows section 19's "Which channels" question: his newest working text agrees with the build. He is told |
+| 22.K3 | **"Channel" and "side" as two fields** (23.2, lines 1339 to 1348): channel is the six verbs, side is left or right | CONFLICT, **UNVERIFIED** on screen. Measured off `relCar`'s own output, the list's row headings read "Release, left channel · feminine", "Release, right channel · masculine", "Reframe, left channel · feminine", "Reframe, right channel · masculine" (`relBucket` line 942, drawn at 1085). His LY ruling, item 12 in `TASKS.md`: "Get rid of the text saying release left channel, feminine, parasympathetic", and "Get rid of left feminine, right masculine". `d6dc7ba` removed the eyebrow; the row headings, added at `65b272a`, stayed | **Now, small, copy.** The heading reads Release or Reframe and the side, which the strips already colour. Shots at 1600 and 390 first, to confirm what the screen shows |
+| 22.K4 | What the engine records per line: pattern, channel, side, iteration, timestamp, completion (23.2) | MISSING on the record. Every value exists in memory during the run (the plan key `address:side+phase:line`, `RUN.pass`, `RUN.t0`), and nothing per line outlives the card | Folds into `19.C16`, which now has its field list from his own document. After `19.C2` |
+| 22.K5 | **End after one line lands the whole release.** 23.2's "completion"; 23.5, "Cooldown completion is not evidence of resolution"; principle 2, never confuse processing completion with change | **CONFLICT, measured.** One record, one story, the same three addresses at dose 100. End after line 1 of 600, and a run walked to its end: both moved DQ 5.19 to 4.10, both wrote Sad 3.500 to 2.800, both spent 12 patterns (unique 0 to 12). The differences are the lifetime count, 1 against 600, and the ritual hook, `ritRelDone`, not called against called. `relCoolDown` writes every queued address in full (`ui/release.js` lines 740 to 751) and charges the whole plan (line 767) wherever `RUN.idx` stood; the card then says "You released 1 pattern." (line 1349) | **U2** |
+| 22.K6 | The counts: 50, 25 and 10 a side, adaptive, custom, "not hard-coded into the UI" (23.3) | PARTIAL. The picks are his LY three, `REL_DOSES` `[25,50,100]` (line 121), the default his 100 (line 157); the number field runs 1 to 100, so 10 and any custom count are reachable (lines 1454 and 1455). Adaptive is settled by JA, section 19. The list is V1 section 3's, unchanged, and omits his 100. That the counts sit in a UI file is `19.C8` | No build. 10 as a fourth pick is his, holding nothing |
+| 22.K7 | **The reframe as "I know that I am..."** (23.4, lines 1366 to 1396) | CONFLICT, measured. 0 of 214 reframe heads begin "I know"; 104 carry `C3_TRUTH`, "I now embody the truth that I am" (`engine/data/cards.js` line 53, and the strict syntax at 315 to 320); the rest are his card text. Every reframe pass after the head is one word, the coherent opposite, "Trust." (`relShort`, lines 221 to 224; measured 214 of 214). Section 19 set aside generating "I know" lines because that needs a model; 23.4 is a template, which is a string, not a model | **U3**. Copy, small, once he says which |
+| 22.K8 | **"Do not use the earlier term INSTALLING"** (23.4) | CONFLICT. The running card prints "Installed" and "Installed, all time" (lines 558 and 565) beside "Reframes added" (line 562), and the finished card "truths installed" (line 1365): two words for one count on one card | **Now, small, copy, for the release card**: one word per concept already decides it, with "Reframes added" there. He is told, since LY's words said installed. The product wide state word is **U4** |
+| 22.K9 | "The reframe is independently recorded and verified" (23.4) | PARTIAL. Recorded only as a lifetime count, `meter.truthLines` (line 777); per run, nothing; verified, nowhere | Rides `22.K11` and the `19.C2` pass |
+| 22.K10 | The cooldown: two to five minutes, a visible and quiet timer, started, paused, resumed and completed recorded (23.5, lines 1398 to 1421) | PARTIAL. `REL_SETTLE_S` is 120 (line 109), his "two minutes", inside V2's range. The dial is visible (`relSettle`, line 1209) and nothing sounds at its end (`relSecond`, 599 to 606). The finished card has no Pause (lines 1408 to 1411); its start and finish are in memory only (lines 818 and 606) | Not this round. A stored cooldown pause with nothing to read it is the `leanSeries()` lesson. The two minutes stand on his word |
+| 22.K11 | **"What changed?"** with five answers (23.6, lines 1423 to 1444) | MISSING. The finished card asks nothing; it reports a line count and the engine's own figures | **U1**. If yes: one field on a per run record, the `19.C2` pass; engineering, copy. Medium |
+| 22.K12 | The carousel's requirements 1, 2, 5, 6 and 7 (24.2, lines 1503 to 1514): never lose the current pattern in animation, never advance on an animation, inspect without moving the run, see what is next, voice in step with the engine | EXISTS. The list is never redrawn under a finger (lines 1296 to 1313); looking never moves the run, `RUN.look` (925 to 930); Next is always whole (1143 to 1154, `relNextKey` 944); the walker moves on the voice or the clock behind a token, never on an animation (312 to 317, 343 to 374) | None |
+| 22.K13 | Requirement 3, queue state across pause and resume | PARTIAL. Pause and Resume hold the place in page memory (lines 1492 to 1496). A reload, or Cancel, loses the run with nothing written (`RUN`, line 154; `relClose`, 822) | Not this round. Nothing asks for a run to survive a reload |
+| 22.K14 | **Tap inspects, and the expanded pattern** (24.1; 27, lines 1584 to 1607): Pattern, Why it is here, What it connects to, Where it has appeared, What has happened before, all optional | CONFLICT on the gesture, PARTIAL on the content. A tap on a row is the Heavy mark (lines 1169 to 1173), his LY ruling: "If I press it, it fills in red." Of the five, what it connects to is computed every run (`relHits`, 633 to 646); where it has appeared is `atomIndex` in the interface (`19.B7`); what has happened before is the meter's opened lines and dated firsts (789 to 796); why it is here is the person's selection, and `19.C11` for a ranked reason. Following along without reading EXISTS: the run walks on its own | After a UX call on which press inspects. The address plate (line 1276) is free. Then a read of functions that exist. UX architect, engineering. Medium |
+| 22.K15 | Swipe left recycles, swipe right discards (24.1, lines 1476 to 1501; 26) | MISSING: no swipe handler; a touch move only marks the person as looking (line 1181). And V2 still carries V1 section 6's two swipe mapping, while R5's NE answer is one swipe, discard with history kept, and recycle for whatever is left untouched | Build per R5 as answered when the carousel gets its gesture. V2's own "the semantic mapping must be configurable" lets it fit. He is told V2 has not caught up |
+| 22.K16 | A queue that may change during the session, and Skip (25, lines 1518 to 1554; 26, lines 1575 to 1578) | CONFLICT with the bill. The plan is fixed when picked and charged as shown (lines 764 to 767; `DECISIONS.md`, "A run is a plan"). By `22.K5`'s measurement, a pattern swiped away mid run would today still be written in full and charged. No per address Skip: Forward moves the view only (line 1175) | **U2**, the same question |
+| 22.K17 | **A pattern that returns, and what it costs.** 26, Recycle "may return to a future session"; 30, "RECURRENCE must not automatically mean FAILED RELEASE" (lines 1690 to 1716) | **CONFLICT with his own ruling, measured.** `DECISIONS.md` lines 53, 857 to 862, 1090 and 1104: "Anything already opened may be rerun without limit and without cost, forever." No route reruns opened ground. `meterPlan` walks unopened lines only (`engine/schema.js` 1082 to 1108, `meterNext` 1074 to 1078), and `relPlan` is the one planner every release route calls (`relPick` from imprints, drills, map, avatar, personas, ritual and story). Measured: one address released three times on one record planned lines 0, then 1, then 2, and spent four patterns each time, 100 to 96 to 92 to 88; an address with all 200 lines open plans nothing (known good: a fresh one plans four). Two surfaces state the ruling as fact: "Rerunning an address costs nothing and is in the ritual" (`ui/release.js` line 1436) and, on the plan sheet, "Rerunning anything already open costs nothing, always" (`ui/panels.js` line 1030). So a release ritual at one address, run once a day, spends the 100 pattern gift in 25 days, and a recurring pattern is billed every time it returns | **Now, ruled already.** Two halves: the two sentences come off until they are true (small, copy), and a deliberate rerun route that plans opened lines and charges nothing (medium, engineering, with a UX call on the control, since `DECISIONS.md` line 858 wants a rerun to be "a deliberate act"). Which lines a rerun says, from line 0 again or the ones marked heavy (`DECISIONS.md` line 1104, "what a person marks heavy stays"), is ours to propose. **Paywall pillar** |
+| 22.K18 | The achievement contract and its candidate list (28, lines 1611 to 1656) | PARTIAL, different shape. Every mark is a pure function of the record (`engine/ladder.js` lines 17 to 20, `ladderRead` 236 to 244), so each earned mark can be derived again from what is stored, which meets "derive from actual events" without an event stream, `21.J2` aside. Type by type: FIRST_RELEASE is `meterFirst`'s dated firsts (`ui/release.js` 789 to 796); FIRST_IDENTIFICATION is First story (`ladder.js` 191 to 194); RITUAL_COMPLETED is First run (162 to 165, with `21.J2`'s defect); FIRST_REFRAME is derivable from `truthLines`. FIRST_COOLDOWN, FIRST_VERIFICATION, THREE_DAY_RELEASE and SEVEN_DAY_RELEASE need a dated per run record, and none exists. QUARTERLY_GOAL_COMPLETED has no goal object anywhere; "quarter" is a graph span (`ladder.js` line 258). LIMITER_RELEASED waits on `19.B8`. COMPLEX_RELEASED and HYPER_COMPLEX_RELEASED are his open question at `ui/release.js` 614 to 617 | Not as specified. Port: new marks are tests in `MARKS` once the `19.C2` pass gives a per run record. The complex marks are his, with Q4 |
+| 22.K19 | **The Ladder's turn** (33, lines 1791 to 1811): "Ladder measures the turning of the loop... A completed release session can contribute to a turn" | PARTIAL. The ruler EXISTS, `MARKERS` (`engine/schema.js` line 1234). The turn, `turnRead` in `DESIGN-ladder.md` sections 1.2 and 1.3, is not in `atuned_src/` (searched), and was on no row of this page. `TASKS.md` LD8 (what to build) is unchecked; LD10 (is "turn" the word) and LD11 (is the count shown as a number) are open | After LD10 and LD11, his. Then small: `DESIGN-ladder.md` sizes it as a pure read of four stamps the record already carries |
+| 22.K20 | Mirror after a release (32, lines 1754 to 1787) | PARTIAL. "Mirror" in his brief is the Summary layer (`CREATIVE-BRIEF-voice.md` lines 157 to 175). Summary reads the current reading and names what to release next (`ui/summary.js` 622 to 690); no surface tells a thread across releases, and what V2 says Mirror consumes, release events, verification, outcomes, recurrence, is not stored | After `22.K11` and `19.C16`. Not this round |
+| 22.K21 | "Mirror should not invent meaning after a release" (32), and 23.5 | CONFLICT, one line. The finished card says "The release keeps moving after the lines stop." (`ui/release.js` line 1356), added at `1a7083c`, ruled nowhere (searched `TASKS.md`, `DECISIONS.md`, `DESIGN-release.md`), measured by nothing | **Now, small, copy**, under the standing rule that took "cleared" off the same card (`19.C1`) |
+| 22.K22 | Daily Work: objective, target pattern, ritual, release protocol, reframe, verification, next action (34, lines 1815 to 1844) | PARTIAL under other names. Summary's output row carries the target ("Release this first") and the protocol (`ui/summary.js` 671 to 690); the Ritual page carries today (section 21, cluster J). Objective, verification and next action as one daily card: MISSING. Whether the change appeared outside the session is `19.C13` and R3 | Not a new surface, by one word per concept. His only if he wants the name |
+| 22.K23 | Replacement as a candidate edge, POSSIBLY_REPLACED_BY (31, lines 1720 to 1750), softer than V1's algorithm G | `19.C14`'s caution stands, measured again. On five test stories, one release at the heaviest address put a different, untouched address at the top in 1 of 5 (Victimhood fell from 26.2 to 17.6, and Fear, not part of the release, read 22.3 after it and became the heaviest). Five is a probe, not a rate; the point is that the arithmetic alone can make a new pattern "visible" | Not recommended until something other than the ranking can raise the edge |
+| 22.K24 | The longitudinal loop (29) and the trace chain (35) | Already `19.C13`, `19.D6`, R3, and the trace graph section 19 does not build | No new line |
+| 22.K25 | The handshake (36, lines 1878 to 1929): UNVERIFIED as a fifth status, P0 to P3 | UNVERIFIED adopted in this section. P0 to P3 not adopted: the live order is section 19's | None |
+
+### Added to existing lines, not new lines
+
+- **`19.C3`, release measured, not calculated.** `22.K11` gives it a form in
+  his own words that is not a number, which R3's answer did not rule out. U1.
+- **`19.C16`, a named event log.** `22.K4` is its field list, from 23.2.
+- **R5.** Two additions. V2 24.1 has not caught up with the NE answer
+  (`22.K15`). And its third sub-question, "does releasing it again spend
+  allowance?", now has a measured answer for today: yes, four patterns a run,
+  against his own ruling (`22.K17`).
+- **Section 19's "Which channels".** V2's operational text uses the six the
+  build uses, and calls left and right "side" (`22.K2`, `22.K3`).
+- **`21.J2`, the streak counting days never done.** V2 28's THREE_DAY_RELEASE
+  and SEVEN_DAY_RELEASE would inherit it if built on `pracDays`.
+
+## What a seat could pick up without him
+
+Not placed in the live order, for the reason sections 20 and 21 gave: this
+pass was told to add one section and renumber nothing. Flagged for the project
+manager.
+
+| Line | What | Size | Depends on |
+|---|---|---|---|
+| 22.K17 | The two "rerunning costs nothing" sentences come off until a rerun is free | small | nothing; ruled |
+| 22.K17 | A deliberate rerun route that plans opened lines and charges nothing, as ruled | medium | a UX call on the control |
+| 22.K21 | "The release keeps moving after the lines stop." comes off | small | nothing |
+| 22.K8 | One word for the reframe count on the release card | small | nothing; he is told |
+| 22.K3 | The list's row headings drop "channel" and the pole, per LY | small | shots at 1600 and 390 first |
+| 22.K1 | The quiet place and the observer position on the welcome | small | the voice check |
+| 22.K14 | Inspect the current pattern, off a press that is not the Heavy mark | medium | a UX call on the press |
+
+## Not doing this round
+
+- **The event bus, the services and the state machine as specified.** V2
+  repeats V1's and section 19 already ported rather than rebuilt.
+- **Daily Work as a new surface** (`22.K22`), **Mirror's thread** (`22.K20`)
+  and **the replacement edge** (`22.K23`).
+- **Editing either release document.** Where V2 disagrees with itself or with
+  his later answers, it is recorded here, not corrected there.
+
+## Found while doing this, and recorded where it lives
+
+- **`22.K17` touches the paywall pillar directly.** The plan sheet's own
+  sentence is the one a person reads when deciding what a tier buys.
+- **The rows of the LY ruling are not all landed.** `22.K3`, the row headings.
+- **`turnRead` was on no row of this page** before `22.K19`, though
+  `DESIGN-ladder.md` sized it and `TASKS.md` LD8 is open.
