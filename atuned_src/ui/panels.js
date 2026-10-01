@@ -1145,11 +1145,12 @@ function helpSheet(){
 
 /* wiring, once the shell exists */
 (function(){
- /* the profile button opens the Settings surface in the centre. The sheet
+ /* the profile button opens a menu of the account sections, round OI, and its
+    Settings row opens the Settings surface in the centre. The sheet
     version is kept as a function and no longer wired to anything, because it
     is the thing that was replaced and deleting it in the same pass as
     rewiring hides which of the two changed something. */
- var pb=$('profbtn'); if(pb)pb.onclick=function(){setTab(TAB.SETTINGS);};
+ var pb=$('profbtn'); if(pb)pb.onclick=function(){if(typeof profMenu==='function')profMenu(); else setTab(TAB.SETTINGS);};
  /* help's circle left the bar for the search on KC; helpSheet opens from its
     row on the profile page, ui/account.js, which round JZ asked for */
  var sh=$('sheet');

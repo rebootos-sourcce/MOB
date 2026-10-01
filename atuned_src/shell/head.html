@@ -2255,6 +2255,21 @@ body:not(.tab-field) .pol2{display:none}
    and 64 is the switch's own top of 8 plus its 50 of height plus the 6 the
    bar keeps between circles. The rail's rule and bottom edge went with the
    rail: over a canvas they drew a line across the wheel. */
+/* THE PROFILE MENU, round OI. Glass like the Field's floats, rows at the 44px
+   floor, the section's own seat colour on its icon, nothing else. */
+.pmenu{position:fixed;z-index:60;min-width:224px;padding:6px;border-radius:14px;color:var(--ink);
+ background:var(--fb-glass-on,var(--panel));border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 36px rgba(0,0,0,.32)}
+.pmenu[hidden]{display:none}
+.pm-who{padding:8px 10px 6px;font-size:14px;font-weight:600}
+.pm-who span{display:block;margin-top:2px;font-size:12px;font-weight:400;color:var(--dim);overflow:hidden;text-overflow:ellipsis}
+.pm-it{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:0 10px;border:0;
+ border-radius:10px;background:transparent;color:var(--ink);font:inherit;font-size:13.5px;text-align:left;cursor:pointer}
+.pm-it:hover,.pm-it:focus-visible{background:color-mix(in srgb,var(--c,var(--accent)) 14%,transparent);outline:none}
+.pm-it .ac-gl{display:inline-flex;width:22px;height:22px;color:var(--c,var(--accent))}
+.pm-it .ac-gl svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pm-sep{height:1px;margin:4px 6px;background:var(--edge)}
+.pm-all{font-weight:600}
 /* ROUND OG: THE BAND PILL MOVES TO THE LOWER LEFT, RIGHT NEXT TO ACCURACY. His
    words: "Where it says compounding, I want the lower left hand side right
    next to accuracy." It was the upper right under the three way switch. It

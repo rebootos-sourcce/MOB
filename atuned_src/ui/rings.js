@@ -489,9 +489,14 @@ function glowCss(r){
 function glowApply(r){
  var b=document.body, off=b.classList.contains('punch')||b.classList.contains('flat');
  var css=off?'':glowCss(r);
- var stage=document.querySelector('.stage'), cone=document.getElementById('cone');
+ var stage=document.querySelector('.stage'), cone=document.getElementById('cone'), emap=document.getElementById('emap');
  if(stage)stage.style.backgroundImage=(css&&S.tab===TAB.FIELD&&FVIEW==='wheel')?css:'';
- if(cone)cone.style.backgroundImage=css;}
+ if(cone)cone.style.backgroundImage=css;
+ /* THE BODY TOO, round OI. His words: "I want that in the background of
+    field, body, compass and character... and have it fill the frame." The
+    pools are sized off the farthest corner, so they fill the whole host and
+    not a patch of it; Character carries the same wash as its own SVG, chWash. */
+ if(emap)emap.style.backgroundImage=css;}
 /* THE CORE. The product's own ring grammar at hero size, carrying both
    quotients on the one ring. Ruled 26 September, CH in TASKS.md, picking A
    off the CE sheet: "for coherence, for CQ and DQ, A looks great."

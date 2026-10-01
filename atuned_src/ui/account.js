@@ -613,6 +613,60 @@ function accEnter(route){
   if(r.ok){ renderAccount(); status(r.say,r.kept?'ok':'fail'); return; }
   accBusy(false); status(r.say,'fail'); });
  return true;}
+/* THE PROFILE MENU, round OI. His words: "for the profile, I want a drop down
+   that has the left menu settings there. And if I click settings, then it
+   takes me to this single page." and "for my profile, it gave me a logout".
+   The profile button used to go straight to the Settings page. It opens a menu
+   now: the page's own left index (ACC_SECS) as quick doors, each opening the
+   page on that section, then Settings, which opens the single page where it
+   was left, and Sign out only while signed in. The rows are read off ACC_SECS
+   and not typed, so a new section appears here the moment it exists. */
+function profMenuShut(){
+ var m=document.getElementById('profmenu'), b=document.getElementById('profbtn');
+ if(m)m.hidden=true; if(b)b.setAttribute('aria-expanded','false');}
+function profMenuGo(k){
+ profMenuShut();
+ if(k)ACC_OPEN=k;
+ setTab(TAB.SETTINGS);}
+function profMenu(){
+ var b=document.getElementById('profbtn'); if(!b)return;
+ var m=document.getElementById('profmenu');
+ if(!m){
+  m=document.createElement('div'); m.id='profmenu'; m.className='pmenu'; m.setAttribute('role','menu');
+  m.setAttribute('aria-label','Profile'); m.hidden=true; document.body.appendChild(m);
+  document.addEventListener('click',function(e){
+   var x=document.getElementById('profmenu'); if(!x||x.hidden)return;
+   if(e.target.closest&&(e.target.closest('#profmenu')||e.target.closest('#profbtn')))return;
+   profMenuShut();});
+  document.addEventListener('keydown',function(e){
+   var x=document.getElementById('profmenu'); if(!x||x.hidden)return;
+   if(e.key==='Escape'){profMenuShut(); var pb=document.getElementById('profbtn'); if(pb)pb.focus(); return;}
+   if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    var it=[].slice.call(x.querySelectorAll('[role=menuitem]')), i=it.indexOf(document.activeElement);
+    i=e.key==='ArrowDown'?(i+1)%it.length:(i-1+it.length)%it.length; it[i].focus(); e.preventDefault();}});}
+ if(!m.hidden){profMenuShut(); return;}
+ var who=(typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile';
+ var ses=(typeof authSession==='function')?authSession():null;
+ m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'
+  +ACC_SECS.map(function(s){
+   return '<button type="button" role="menuitem" class="pm-it" data-pms="'+s.k+'" style="--c:'+seatCol(s.b)+'">'
+    +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+s.ic+'</svg></span>'
+    +'<span>'+esc(s.nm)+'</span></button>';}).join('')
+  +'<div class="pm-sep" role="separator"></div>'
+  +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
+  +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
+  +'<span>Settings</span></button>'
+  +(ses?'<button type="button" role="menuitem" class="pm-it" data-pmout="1"><span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +'<path d="M9 4.5H6.5A1.5 1.5 0 005 6v12a1.5 1.5 0 001.5 1.5H9M14 8l4 4-4 4M18 12H9"/></svg></span><span>Sign out</span></button>':'');
+ m.querySelectorAll('[data-pms]').forEach(function(x){
+  x.onclick=function(){profMenuGo(x.getAttribute('data-pms'));};});
+ var o=m.querySelector('[data-pmout]');
+ if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
+ var r=b.getBoundingClientRect();
+ m.style.top=(r.bottom+8)+'px'; m.style.right=Math.max(8,window.innerWidth-r.right)+'px';
+ m.hidden=false; b.setAttribute('aria-expanded','true'); b.setAttribute('aria-haspopup','menu');
+ var f=m.querySelector('[role=menuitem]'); if(f)f.focus();}
 function accSignOut(){
  if(ACC_BUSY||typeof authSignOut!=='function')return false;
  ACC_BUSY=true; accBusy(true);

@@ -2486,3 +2486,47 @@ style."
 do the intake questions at the very end for now, just restore the intake page."
 A Discover door of its own after Summary, integer 13, showing the diagnostic as
 it was. Redesigning the questions is the last item in the queue, not the next.
+
+## Round OI, 1 October. Rulings
+
+**Language on the Summary is universal and a soft rule.** His words: "keep it
+as the language as universal as possible. In the knowledge base we can do all
+the correlations: awareness and soul and the operating system are one unified
+field, source, Shiva, Brahman, or one. I don't want it to be a super hard rule.
+Part of this is educating the person and cross pollinating the language so that
+people understand we're talking about one thing." The Daily Summary document's
+list of words to avoid is guidance, not a gate. The Knowledge base carries the
+correlations. Those entries do not exist yet.
+
+**A daily intention is added.** A new daily act, written by the person.
+
+**The Summary is written once a day, on open, and frozen for that day.** "It's
+like astrology": each day goes in, the previous day goes into a bank, his word
+"a vault". Rules and templates for now, no model.
+
+**A rerun puts a heavy line back where it sits on the bell curve, which is the
+harmonic register of that address.** His words: "rerunning is a line you marked
+heavy. And it would go back into that kind of where it would sit in that bell
+curve. The bell curve, by the way, is the harmonic register of that address."
+
+**Body places.** "Sacral is just below the belly button and the plexus at the
+back of the spine. The solar is the diaphragm and the plexus at the back of the
+spine." Heart goes at the Heart seat. Upper and lower abdomen are Solar and
+Sacral. Spine is not a seat: it belongs to the Kundalini health reading and to
+the pain map. Shoulders, head, stomach and gut are not ruled.
+
+**Points never go down.** "You just don't get points for the day, or for that
+particular thing that you didn't do."
+
+**The referral is 25 patterns.** He asked for it to stop being asked about
+fifty and to be changed in the documentation. Everything above that says fifty
+is superseded.
+
+**Stripe dashboard steps go in the markdown document.** `STRIPE-SETUP.md`.
+
+**Practitioner mode.** Turned on in the profile, it unhides the practitioner
+section after Embody. The user story, the review of it and its build order are
+in `PRACTITIONER-STORY.md`. The gap to MVP is in `MVP-GAP.md`.
+
+**The profile button opens a menu** of the account sections, with Settings
+(the single page) and Sign out.

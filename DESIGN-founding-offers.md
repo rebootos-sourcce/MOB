@@ -56,7 +56,7 @@ Nothing in this design reopens any of these.
   plan with any discount at all is open and his. Nothing here assumes one.
 - **Tier four is 99** (ruled). Tiers one to three are open, recommended at 12,
   29 and 59.
-- **The referral is fifty patterns, capped at four a month** (ruled). The
+- **The referral is twenty five patterns, capped at four a month** (ruled; he changed it from fifty on 1 October, round OI: "I changed it to 25 patterns... stop asking me about 50"). The
   founding cascade is a second thing a shared link can carry, and whether the
   two stack is asked in section 11.
 - **Stripe never appears in the app, and the store writes five fields onto

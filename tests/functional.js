@@ -3086,6 +3086,47 @@ ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own p
 ok(ipg.btn==='Story,Avatar,Summary,Intake,Analytics'&&ipg.pressed==='true','Discover reads Story, Avatar, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
 ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
+console.log('\n=== the profile is a menu, and the glow fills the frame (round OI) ===');
+/* His words: "for the profile, I want a drop down that has the left menu
+   settings there. And if I click settings, then it takes me to this single
+   page." and "have it fill the frame" about the faint colour behind the
+   Field, Body, Compass and Character. */
+const pmn=await page.evaluate(async()=>{
+ const wait=()=>new Promise(r=>setTimeout(r,300)), o={};
+ loadP(GORDON()); setTab(TAB.FIELD); render(); await wait();
+ document.getElementById('profbtn').click(); await wait();
+ const m=document.getElementById('profmenu');
+ o.open=!!m&&!m.hidden&&document.getElementById('profbtn').getAttribute('aria-expanded')==='true';
+ o.items=m?[...m.querySelectorAll('[role=menuitem]')].map(e=>e.textContent.trim()):[];
+ o.want=ACC_SECS.map(s=>s.nm).concat(['Settings']);
+ o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
+ o.stillField=S.tab===TAB.FIELD;
+ m.querySelector('[data-pms="billing"]').click(); await wait();
+ o.page=S.tab===TAB.SETTINGS&&ACC_OPEN==='billing'&&m.hidden;
+ document.getElementById('profbtn').click(); await wait();
+ o.allOpen=!document.getElementById('profmenu').hidden;
+ document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'})); await wait();
+ o.esc=document.getElementById('profmenu').hidden;
+ document.getElementById('profbtn').click(); await wait();
+ document.querySelector('#profmenu .pm-all').click(); await wait();
+ o.single=S.tab===TAB.SETTINGS;
+ /* the glow, on each surface that carries it */
+ loadP(GORDON()); const g={};
+ for(const [k,t,id] of [['field',TAB.FIELD,'stage'],['body',TAB.ENERGY,'emap'],['compass',TAB.COMPASS,'cone']]){
+  setTab(t); render(); await wait();
+  const e=document.getElementById(id)||document.querySelector('.stage');
+  g[k]=(getComputedStyle(e).backgroundImage||'').split('radial-gradient').length-1;}
+ setTab(TAB.MASKS); render(); await wait();
+ g.character=document.querySelectorAll('.chv-wash').length;
+ o.glow=g;
+ setTab(TAB.FIELD); render();
+ return o;});
+ok(pmn.open&&JSON.stringify(pmn.items)===JSON.stringify(pmn.want)&&pmn.tall>=44&&pmn.stillField,
+ 'OI: the profile button opens a menu of the account sections and Settings, every row at the 44px floor, '+JSON.stringify({open:pmn.open,items:pmn.items,tall:pmn.tall}));
+ok(pmn.page&&pmn.allOpen&&pmn.esc&&pmn.single,'OI: a section row opens the page on that section, Escape shuts the menu, and Settings opens the single page, '+JSON.stringify({page:pmn.page,esc:pmn.esc,single:pmn.single}));
+ok(pmn.glow.field===4&&pmn.glow.body===4&&pmn.glow.compass===4&&pmn.glow.character>=1,
+ 'OI: the same four pools of faint colour sit behind the Field, the Body, the Compass and Character, '+JSON.stringify(pmn.glow));
+
 console.log('\n=== the avatar, and what it aims the work at ===');
 /* The becoming half. The right hand sentence resolves to a seat and the seat
    has addresses with weight, which is what turns a value into something the

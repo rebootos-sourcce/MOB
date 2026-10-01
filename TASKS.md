@@ -30210,3 +30210,117 @@ it how it wires in, what needs to be built, and where it goes in development".
   grounding pass, or corrections as events.
 - Audit running: `SUMMARY-AUDIT.md`, with one dependency graph across the five
   TDD builds (Practice, Trace graph, Becoming, Points, Summary).
+
+## Round OI. Answers to the open questions, the practitioner story, and a round of UI and Character asks
+
+His words, verbatim, first message:
+
+"We want to keep it as the language as universal as possible. In the knowledge
+base, we can do all the correlations, you know, awareness and soul and the
+operating system are one unified field source, Shiva, Brahman, or one,
+whatever. But we can keep it, you know, I don't want to be a super hard rule.
+Um, you know, this is part of part of this is educate educating the person.
+And kind of cross pollinating the language so that people understand that
+we're talking about the behavior or something of one thing. For number two, is
+this for the summary? Yeah, let's add the daily intention. The summary should
+be written once a day. It's like an astrology and it goes into each day goes
+in, previous day goes into a, a bank, a vault. Yeah, okay, written on open and
+frozen for the day. That's great. Yeah, rules for now. Yeah, rerunning is a
+line you marked heavy. And it would go back into that kind of where it would
+sit in that bell curve. The bell curve, by the way, is the harmonic register
+of that address. That's a good realization. So sacral is just below the belly
+button and the plexus at the back of the spine. The solar is the diaphragm and
+the plexus at the back of the spine. Heart, shoulders, head, spine. In which
+section are you referring to? Oh, heart should go at where the heart goes. Oh,
+I see what you mean. Spine would be for the Kundalini health. But this also
+looks like it's part of the pain map. I'm not in any more context for number
+four. No, upper and lower could be solar and sacral. Yeah, points never do go
+down. You just don't get points for the day. Or for that particular thing that
+you didn't do. Okay, I can, I can agree with you on points. Why do you say no
+points? For a site, I'm not sure what you mean. I need, I need context. For
+number 10, becoming avatar page, I need more context. I changed it to 25
+patterns for number 11. You stop asking me about number 50. Change that into
+the document documentation. For number 12, yes. The Stripe dashboard, yes. Put
+that in the markdown document document. Practitioner menu is turned on in the
+profile. When you turn that on, it unhides the practitioner menu after
+embody. As a user story, as a practitioner, when I come to this page, on the
+left-hand menu, I can see all I can see my cohort who are active and who are
+not. I can swipe left. To unlink them or swipe right. to edit the data I have
+access to. That was given to me by the user. and I can add notes that go back
+to the user. In the center column, is the analytics of the person. And on the
+right side is the summer, is the information panel, which gives me information
+on whatever analytics object I, I select. It summarizes based off of the
+person's story in relation the behavior of a person's story in relation to
+that object It pulls areas blocked like nerve health in those given areas. It
+gives a person CQ and DQ score. And Shadow weights. That can be sorted by name
+or weight. As a practitioner, I can save notes on each cohort individually. I
+can save those notes in the history. And I can see what the summary is of those
+notes. Based off of the Client. Individual cohort. Okay, review this twice.
+Review this three times, figure out how you're going to sort it and put this
+into development. And then from a percent complete to MVP, how are we looking?
+For the menu changes, on the upper left-hand side menu where it says root
+energetics, um, we need to decoherence under coherence. Um, the visual design,
+this is not what I want. What I want is for the color bar to be the taller than
+the font and I want the font inside the color bar so as the color bar grows you
+see the word underneath I mean it's already present but it's you know treat the
+color differently when it's over it than when it's not And then put the percent
+it needs a better visual treatment. The left side needs it's a C minus on the
+UI for the left side. The UI UX team needs to Upgraded. I think there's a task
+to pull elements from the flow to give it, make it look more dynamic. To show
+what's interacting with what. And even make the bars we're talking about
+dynamic as well. Just it, What I want is innovation and animation. And I want
+these things dynamic. Meaningfully dynamic. Uh, with the intake page, that's
+it. So let's pull some elements, UI, UX. Great. This is also a D. Let's
+upgrade this UI UX flow. Layout. I want more of the layout above the fold. Use
+iconography. And maybe even nesting techniques. So it doesn't look so
+overwhelming. And then the visual design is very bland. It looks like the
+design was stubbed in. So the design area needs improvement. So it doesn't
+look so boring."
+
+Second message, verbatim:
+
+"This is not what I want for the character pass. I want the art team to review
+this three times. I want them to pitch this with the ICPs and the focus group.
+I want them to get their feedback on what would make this more interesting and
+interactive. What would dazzle them? Right now, I thought I was going to see
+the word child is still center frame. eating up all the real estate of the
+mask. The mask is not dynamic. There's nothing animated. It, it should, when I
+click on it, it should visibly do something. And I think these designs aren't
+good. I think we need to make these designs more abstract. I want you to go out
+and find the symbolic expression of the nine emotions from attuned from the
+laws and find ways to design masks. Not gaudy like New Orleans. Not super
+simple, but something abstract that fits the nature of the child and can
+express the emotion that plays through. I know everything I just said is a
+little abstract. We'll see what we can do with that. Um, for the profile, I
+want a drop down that has the left menu settings there. And if I click
+settings, then it takes me to this single page. I don't hear the sound
+effects. Are they in yet? And it doesn't look like the copy engine is in or has
+been updated yet. Where is that? Then I want the UI UX team to have the compass
+overlays in the same design aesthetic as body and field. And then the panels on
+the left and right of the compass. Um, I want the center left, right of that
+render pane. And then like I asked for earlier, there's like a subtle overlay
+color in the background of frames option. And also dial. I want that in the
+background of field, body compass, and character. It gives a little color
+interest. and have it fill the frame. For a summary, we want to add there name
+root meaning energetics as well. As if it's the person written as if the
+person's nine. In grounded language. Whatever our documentation says. And then
+this layout is still really bad. So I want the UIUX team to review the layout
+three times. It's not organized. In a meaningful way. Um, for my profile, it
+gave me a logout."
+
+**Done and gated in this round:** the six bars are redrawn as he asked (the
+bar is the row, the name and number inside the fill, the words change colour
+at the fill's edge, Decoherence under Coherence); the profile button is a menu
+of the account sections with Settings and Sign out; the faint glow now sits
+behind the Body too and fills the host.
+
+**In flight:** Character masks (abstract, symbolic, three reviews, ICP pitch);
+the left menu redesign as three concepts (art, innovation, animation); the
+Intake page redesign; the Summary engine slices D1 to D6; the rerun that
+returns heavy lines to the bell curve; the body seats (belly, diaphragm,
+halves, heart, plexus names).
+
+**Not yet dispatched:** the Compass overlays and its two side panels in the
+Field and Body style; the Summary layout review (three passes) with the
+person's name, root meaning and energetics in grounded language; the copy
+sweep. Disk is the limit: each agent copy is about 650 MB.

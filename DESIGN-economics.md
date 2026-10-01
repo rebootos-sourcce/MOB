@@ -108,7 +108,7 @@ The same fact, safely: *as many patterns as a year of fortnightly sessions
 would release, on our own most conservative figure*. That is true, it is
 checkable against the book, and it survives somebody hostile reading it.
 
-### 6. The referral should be fifty
+### 6. The referral is twenty five (he ruled it on 1 October, round OI; the recommendation below was fifty and is superseded)
 
 The arithmetic that decides it is how many invites it takes to stay free
 forever at tier one volume:
