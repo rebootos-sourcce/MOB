@@ -29183,3 +29183,45 @@ rebuilt, nothing moved; this is a reading and no source file in
 `atuned_src` changed, so no gate needed to run. Queued in `PRIORITY.md`
 once the round in flight on that file lands, so two sessions do not write
 it at once.
+
+## Round NQ. The sniffer contract and the Impression Excavation Engine queued; the Character page's Field effects landed
+
+Two background builds dispatched earlier this window reported back. Both
+read in full, diffed line by line, independently re-gated from a clean
+rebuild, before anything was committed, the same discipline every build
+this session has carried.
+
+**The TDD queue, task 14.** `PRIORITY.md` section 20 added: `TDD-sniffer.md`
+plus `DESIGN-sniffer.md` (cluster G), `SOURCE-TDD-impression-excavation.md`
+(cluster H), and the finding that `SOURCE-TDD-handoff-master.md` is byte
+for byte `SOURCE-TDD.md` (same md5, caught mid run before a second audit
+pass was wasted on it). Independently re-ran a sample of the load bearing
+measurements myself before trusting them: "I am angry and exhausted" does
+give four stated Anger imprints with Apathy recovered separately;
+"I am disgusted" and "I was surprised" do read nothing while "I was in
+shock" reads; "I used to panic and I do not any more" does read identical
+to "I panic every day"; "I shouted at him" does read identical to "he
+shouted at me". All four held. Six new questions for him, S1 to S6.
+
+**The Character page, task 21, `DESIGN-character-effects.md` sections 3
+to 5.** Running hot outside the rim, overexpressed holding visibly still
+while the mask breathes, the weave alone falling the rest of the hero to
+.08 and walking a highlight through its own block, and three depths for
+Selection, an overview on arrival, three counts with real samples on a
+mask's own drill, and "Runs under" on a saboteur picked off the weave.
+A real bug the building agent caught itself before shipping: `chSeatHot`
+compared `hotDir()`'s full words against short codes and every seat read
+steady regardless of direction, fixed to read the numeric `frDir` field
+directly. Verified myself rather than trusted: read the full diff,
+checked the fix and the new constants against the source directly,
+reran the entire gate suite from a clean rebuild twice
+(`tests/functional.js` 1384/1 both times, the one already catalogued
+Field fade flake and nothing else), and looked at the real screenshots.
+Committed at `e3039df`.
+
+`PRIORITY.md`'s own live order, section 19, now carries real estimates
+for what each of these documents' remaining lines depend on. The next
+move his own words already named: "get to that sniffer," which the queue
+reads as `19.B4`, the shared negation handler, since three separate gaps
+(`20.G6` who acted, `20.G7` a charge described as past, `20.H1` the
+question engine itself) are blocked behind it.
