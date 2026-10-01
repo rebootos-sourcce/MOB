@@ -487,20 +487,29 @@ const SINAMES=SI.map(l=>l.nm);
    is the same object every time and what changes is how much has been built
    onto it. The outline is identical across all six so the family reads at a
    glance, and the mark inside is what that stage added. */
-/* E2, THE EGG BROAD AT THE BROW. Round NK, art direction (Mika Ueda-Salas,
-   Sol Amadi on colour, Bjorn Haraldsson on type and grid, Petra Nikau on
-   composition): the arc-based face above read as a rounded rectangle and
-   not a face, and he rejected two builds over it before this one. Drawn
-   from the proto's own curve, x=12+5.624 sin t (1+0.2 cos t), y=12.4-7.4
-   cos t, brow at y5 and chin at y19.8, 11.46 wide by 14.8 tall, widest
-   10.72 at a quarter height against 8.77 at three quarters: "broad at the
-   brow", 1.22 to 1. Fitted within 0.01 units of that curve and kept as one
-   path for canon, round NK's own closing line, "the egg ... is also the
-   cheapest certain win, because the drawing exists and the path above is
-   fitted." DESIGN-character-effects.md 1 November carries the drawing this
-   was checked against; the Knowledge icons change with it since they only
-   ever read MASKS[].ic, never their own copy of the face. */
-const MASK_FACE='M12 5C14.9 5 17.73 7.02 17.73 11.02C17.73 14.72 15 19.8 12 19.8C9 19.8 6.27 14.72 6.27 11.02C6.27 7.02 9.1 5 12 5Z';
+/* E2, THE EGG BROAD AT THE BROW, NOW ON THE GOLDEN RATIO, ROUND NN. "I
+   would prefer if it used the golden ratio as a measurement for its
+   aesthetic accuracy and symmetry." Read as overall proportion, the
+   classic reading of the phrase and the one a person can actually see at
+   a glance: width to height is 1 to 1.618 exactly. Height held at 14.8,
+   brow 5 to chin 19.8, since that is what the grid box and CH_RES below
+   are built against and moving it would reopen that measurement too;
+   width narrows from 11.46 to 14.8/1.618, 9.146. The curve family is
+   unchanged, x=12+4.49 sin t (1+0.2 cos t), y=12.4-7.4 cos t, only the
+   4.49 in place of the old 5.624, 0.798 of it, the same ratio the width
+   itself moves by: a Bezier curve scales exactly under an affine
+   transform, so the old fitted path's own control points were scaled by
+   that one number about x12 rather than re-measured from nothing. Widest
+   point still 40.7% down, unmoved, since scaling x alone never moves
+   where in t the curve is widest. Round NK, art direction (Mika
+   Ueda-Salas, Sol Amadi on colour, Bjorn Haraldsson on type and grid,
+   Petra Nikau on composition), gave the egg itself, replacing an arc
+   based face that read as a rounded rectangle and was rejected twice
+   before it. DESIGN-character-effects.md 1 carries the drawing the
+   original fit was checked against; the Knowledge icons change with this
+   one too, since they only ever read MASKS[].ic, never their own copy of
+   the face. */
+const MASK_FACE='M12 5C14.31 5 16.57 7.02 16.57 11.02C16.57 14.72 14.39 19.8 12 19.8C9.61 19.8 7.43 14.72 7.43 11.02C7.43 7.02 9.69 5 12 5Z';
 /* AND EVERY ONE OF THEM SAYS WHAT IT DOES. Ruled: "every named thing is
    described as a behaviour, not a label."
 
@@ -572,18 +581,24 @@ const MASKS=[
     DISAGREED: the drawing's own y2.6 sits above the egg's brow at y5, and
     chGeo only ever cuts a mark where it is also inside the face,
     inF[r][c], never above it, so that value measured mk 0 at every one
-    of CH_RES's three sizes. Rather than ship a visible mask with no
-    mark lit at all, this is placed where the egg's own curve, x=12+
-    5.624 sin t(1+0.2 cos t), y=12.4-7.4 cos t, actually clears the bar's
-    full width: the bar runs x9 to x15, 3 either side of centre, and the
-    egg's own half width does not reach 3 until y is past about 5.8, so
-    y6.2 carries a safe margin past that rather than sitting on the edge
-    of it. Still the closest row to the brow this face can actually cut,
-    which is as near "two clear rows above it" as a halo that has to sit
-    inside the egg can read. The small stroked icon glyph elsewhere,
-    everywhere else MASKS[].ic is drawn as a plain ring and not a fill,
-    draws this path regardless of inF and was never short a row. */
- {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 6.2h6',
+    of CH_RES's three sizes. Placed instead where the egg's own curve
+    actually clears the bar's full width, 3 either side of centre.
+
+    MOVED A SECOND TIME, ROUND NN, WHEN THE EGG ITSELF NARROWED to the
+    golden ratio: the curve's half width at any given y scales with the
+    same 0.798 the whole face did, so y6.2's own margin past the critical
+    point narrowed with it too, from comfortable to under half a unit.
+    Re-measured against the new curve, x=12+4.49 sin t(1+0.2 cos t):
+    half width reaches 3 at y about 6.35 now rather than 5.8, so the bar
+    moved to y7, a margin of about half a unit past that rather than on
+    top of it, same proportion of safety the first placement kept. One
+    row further from the brow than before, the width the egg lost and
+    not a choice; a bar built to run 3 either side of centre on a
+    narrower face has less room above it to sit in and still clear. The
+    small stroked icon glyph elsewhere, everywhere else MASKS[].ic is
+    drawn as a plain ring and not a fill, draws this path regardless of
+    inF and was never short a row either time. */
+ {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 7h6',
   v:'answers from the position instead of the moment'}];
 /* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
    rid of the uh, professional. Just hide it for now. Don't calculate it."

@@ -28986,3 +28986,57 @@ state complaint, also built. `DESIGN-character-effects.md` sections 3
 through 5, the Field effects, running hot and overexpressed, and the
 Selection column's own depths, remain open and are their own next
 round whenever he wants them.
+
+## Round NN
+
+His ruling on the oval, verbatim: "that oval shape is okay. I would
+prefer if it used the golden ratio as a measurement for its aesthetic
+accuracy and symmetry. Also, maximize that area. The Child text is
+taking up too much real estate." Read as overall proportion, width to
+height exactly 1 to 1.618, the reading a person can actually see at a
+glance against the two narrower readings the phrase could also have
+meant (brow to chin width, or where the widest line sits); asked which
+he meant and he dismissed the question rather than answer it, so built
+to the one named first and flagged plainly rather than held open.
+Height kept at 14.8, since the grid box and CH_RES are built against
+it and moving it would reopen that measurement too; width narrowed
+from 11.46 to 9.146. The fitted path scaled by the same 0.798 about
+its own centre, which a Bezier curve does exactly under an affine
+transform, so the fit is as tight as the first one rather than
+re-measured by eye. The hero's own name label dropped from 14px with a
+10px gap to 11px with 4px, freeing real height for the face itself.
+
+**Every mark re-measured against the narrower face, and one of them
+needed to move again.** Ideological's own bar, placed two rounds ago
+at the first y where the OLD, wider curve cleared its full width,
+measured mk 0 again once the curve narrowed: the same width in
+absolute units now needs more room below the brow to clear a thinner
+face. Moved from y6.2 to y7, re-measured numerically against chGeo
+rather than eyeballed: every one of the five masks now carries a real,
+non-zero mark at all three grid sizes, Child 2/6/8, Preteen 4/12/18,
+Teen 24/34/44, Adult 8/24/32, Ideological 6/16/36.
+
+**Then his own words on the bigger question, after I asked rather than
+built:** "I think what I want with the masks is both the compass and
+the body you pulled in effects from the field without me having to say
+much, you knew how to link the saboteurs a complex as a hyper complex
+naturally and cluster them, and so that's kind of what I want. When
+you keep waffling back and forth I feel like you keep saying that, but
+with the way the animations, the innovation is expressed, I just don't
+want it to be a static page. When I land there I want it to feel like
+not only does it know me but it sees me and it understands me because
+the data that's being expressed is calling my attention." Read as a
+standing instruction and not only for tonight: build with the same
+craft this codebase already used on Body and Compass, pulling the
+Field's own language in rather than asking what to pull in. Dispatched
+sections 3 through 5 of `DESIGN-character-effects.md` on exactly that
+instruction, told explicitly to read `map.js` and `cone.js` first for
+how that instinct already works elsewhere in this product and match
+it, rather than build to the design doc's own words alone.
+
+Gated in full before this round's own commit: `BUILD.sh` and
+`BUILD-engine.sh` clean, 484 exports, `tests/engine.js` 1853/0,
+`tests/collide.js` 351/0, `tests/design.js` 185/0, `tests/funnel.js`
+172/0, `tests/boot.js` 13/0, `tools/monitor.js` all surfaces render,
+voice objections unchanged, `tests/functional.js` 1369/0, clean on the
+first run this time.

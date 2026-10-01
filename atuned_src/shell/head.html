@@ -4825,9 +4825,15 @@ body:not(.tab-masksview) #masksview{display:none!important}
    caution its own hover handler keeps for a hover a hand is resting on. */
 .chv-stage{display:flex;flex-direction:row;gap:18px;flex:1 1 auto;min-height:0;width:100%}
 .chv-rail{display:flex;flex-direction:column;gap:10px;flex:0 0 auto;align-items:center}
-.chv-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+.chv-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
  flex:1 1 auto;min-height:0;min-width:0;text-align:center}
-.chv-hero-nm{font-size:14px;letter-spacing:.02em;color:var(--mid)}
+/* SHRUNK, ROUND NN: "the Child text is taking up too much real estate...
+   maximize that area." The name stays, his own round NK ruling that the
+   hero keeps it while the rail does not, but its own footprint comes down,
+   11px and a 4px gap rather than 14px and 10px, so more of .chv-hero's own
+   height, bounded by .chv-stage above it, goes to the face and not the
+   label sitting over it. */
+.chv-hero-nm{font-size:11px;letter-spacing:.02em;color:var(--mid)}
 /* THE NAME COMES OFF THE RAIL, ROUND NK: "I don't want the buttons that
    tall. Shrink the icons down. Remove the name above it so you get more
    space of the icons. And then keep the name above the major symbol,"
