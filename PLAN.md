@@ -1,70 +1,117 @@
-# The plan, 1 October, rounds OD to OJ
+# The plan, 1 October, rounds OD to OS
 
 Everything he has added over these rounds, sorted, with what state each is in.
 Statuses are read off the repository and the gate runs, not recalled. "Pushed"
 means on `claude/laughing-feynman-xhfyj3`. The in-app task list mirrors this.
 
-## A. Done, gated, pushed
+## A. Completed, gated and pushed
 
-- Header: wordmark centred on the hamburger; zoom icons laid out in a row.
-- Field: pulses run on the Shadow wave; jitter cut twice (30 percent, then
-  50 percent); the faint four-pool glow behind the wheel, the Body and the
-  Compass (Character already had it).
-- Nav: Body in Play between Field and Compass; the Intake door in Discover
-  after Summary, restored as its own page (integer 13).
-- Left menu: the six readings as bars, the bar is the row, the name and number
-  inside the fill, Decoherence under Coherence.
-- The Compounding band pill sits in the lower left beside Accuracy.
-- Profile button: a menu of the account sections, Settings, Sign out; sound
-  effects switch (on by default, round OJ, built and in the next push).
+Read off `git log` on `claude/laughing-feynman-xhfyj3` and the gate runs. The last
+full gate run, on the merged tree at build v1106 (`65af38d`): engine 3635
+passed, functional 1793 passed, locks 289 passed, and design, collide, boot,
+funnel, sound, monitor and the voice check all exit 0.
+
+**Navigation and shell**
+- Header: wordmark centred on the hamburger; zoom icons in a row (`80c11de`, `5651a17`).
+- Body in Play between Field and Compass; the Intake door in Discover restored
+  as its own page, integer 13 (`06f5c52`, `9ca2de5`).
+- Profile button as a menu of account sections, Settings and Sign out; sound
+  effects switch, on by default (`a14000d`, `237997c`).
 - A profile with no ritual track or seat no longer vanishes at boot.
+
+**Field, Body, Compass, Character**
+- Field pulses run on the Shadow wave; jitter cut twice; four-pool glow behind
+  the wheel, the Body and the Compass (`85a370c`, `0089635`).
+- Compass overlays as the glass bar's circles, characters as two panels
+  (`8868cf7`). Compounding band pill beside Accuracy.
+- Character page: masks rail, hero and weave; oval face; Field-sourced effects
+  (`6f7ba7e`, `47b101d`, `e3039df`).
+- Body places: belly, navel, diaphragm, halves, heart and plexus names
+  (`5245c55`, `935224c`).
+
+**Left menu and Summary and Intake**
+- Left menu combined from three concepts (`65af38d`): six readings with the
+  name and number inside the fill, Decoherence as seven seat hashes, Flow as a
+  sine wave, Orientation and Balance in the block, the Awareness fold, option 2
+  behind `?rail=2`, nothing drawn across to the centre pane.
+- Summary rebuilt by meaning, first drivers on the right, three reviews on
+  record (`d1ddd32`). Name meanings laid out with a researched table.
+- Intake page redesigned: a map first, the questions on open (`e6dea3e`); phone
+  digits legible; the CQ at 100 simulation as pictures (`45d4b8b`).
+
+**Release, practice, trace, sniffer**
+- Rerun v2: lines marked heavy go back where they sit; reframe half runs 50
+  back to 1 (`ce91fe6`, `fd81201`).
+- Practice domain (775 checks) and Trace graph (266), with their bridge gated
+  (`f38e0d8`, `8ff0d49`, `2289e9c`, `2dd3823`).
+- Impression Excavation Engine wired into the Story tab (`c6280fa`, `6af99b3`);
+  clause floor for the sniffer's negation (`c2999cf`).
+- Sound engine and the seat tone, default on (`c19337c`, `237997c`); the seat
+  tone gate now reads the tone's own pair (`9daeb33`).
+- Daily Summary engine, slices D1 to D7: the frozen day, the aim, the grounding
+  pass, the drawer, the vault of past days (`a93f388`).
+
+**Money and tiers**
 - Stripe: prices 12, 29, 59, 99; checkout, webhook for renewals, changes and
   cancellations, Manage billing, the plan read back into the app;
-  `STRIPE-SETUP.md` in steps for a ten year old.
-- Practice domain (775 checks), Trace graph (266), their bridge, sound engine,
-  the copy brief as a checker (`check.py --brief`), body place seats (belly,
-  navel, diaphragm, halves, heart, plexus names).
-- Audits written: Practice, Becoming, Points, Daily Summary, with their
-  questions. The practitioner story and the gap to MVP.
-- Impression excavation engine; Day One tutorial and onboarding copy.
+  `STRIPE-SETUP.md` (`0e43e2a`, `9b4707d`, `19337c2`, `9bb10cf`).
+- Sight by tier: one table in `engine/plan.js`, the lock treatment (greyed,
+  padlocked, described, not drawn), the buy page reading the table
+  (`088953c`, `28743dc`, `6178ea5`). Free rerun route and tiers page (`1da7e1e`).
+
+**Voice and copy**
+- Copy brief as a checker (`check.py --brief`); sweep first pass with 0 stops
+  left (`acacc3a`, `21bb264`, `31d3acb`); Day One tutorial and onboarding copy.
+
+**Audits and documents**
+- Practice, Becoming, Points, Daily Summary and Release Intelligence audits;
+  the practitioner story and the gap to MVP; the experience and ICP model
+  (`ATUNED-experience-icp-model.md`) and the Onboarding and First Experience
+  TDD copied in (`ATUNED-onboarding-first-experience-TDD.md`).
+
+**Mockups delivered, awaiting a pick**
+- Character masks: Seal and its variations, then three systems (Aura, Contour,
+  Mosaic); the owner chose Aura, the point cloud (round OR).
 
 ## B. In flight (agents running, nothing merged yet)
 
-| Work | Owner of the work | Delivers |
+| Work | Seat | Delivers |
 |---|---|---|
-| Summary engine, slices D1 to D6 plus the daily intention and the vault of past days (`engine/daily.js`) | fullstack | engine, boundary, gate with broken copies |
-| Left menu redesign, three concepts (art, innovation, animation) | three design seats | real renders, frame sequences, grades |
-| Intake page redesign | UI/UX | real render, cognitive load counts |
-| Character masks, abstract symbolic system, three reviews, ICP pitch | art | contact sheets, click and idle sequences |
-| Compass overlays and its panels in the Field and Body style | art | real render |
-| Summary layout, three reviews, right-hand name meanings panel | UI/UX | real render |
-| Tier locks and the upgrade page (sight by tier) | fullstack | engine, lock treatment, tests written |
-| Rerun v2 (merged in the tree, awaiting its gate run) | fullstack | `meter.heavy`, ordered rerun |
-| Copy sweep first pass (merged in the tree, awaiting its gate run) | narrative | 0 stops left |
+| Aura point cloud, three more renders: the cloud as mask and biofield, coherence lights it, five masks, new symbol icons | art | `mockups/character-aura/` |
+| Left menu, four more options: symbolic readings, the 112 node shadow as architecture, Flow tied to CQ, DQ and SQ | UI/UX | `mockups/rail-options/` |
+| Onboarding TDD, three reviews (product and ICP, systems and data, narrative and safety) | three seats | `ATUNED-onboarding-REVIEW-1..3` |
 
-## C. Next, sorted
+## C. What is left, in order
 
-1. Run the gates once on the merged tree and push (rerun, copy sweep, sound
-   default).
-2. Practitioner page, slices PR1 to PR4 on the example people, with BOTH right
-   panel versions (structure only, and story-derived) side by side for him to
-   see (`PRACTITIONER-STORY.md`).
-3. Avatar page rebuilt toward the Becoming document (`BECOMING-AUDIT.md`),
-   slices S1 to S4 first.
-4. Summary page UI (D7 to D9), after the engine and the layout pick.
-5. Practice screens (Today, Goal Builder) and the Ritual writer cutover.
-6. Points slice 0: the streak fix 21.J2 and the boundary for progress.
-7. Body place words: head, upper torso, lower torso, replacing the earlier
-   per-word seats where they overlap.
-8. Name meanings table for the Summary panel (source decided).
-9. Copy sweep second pass: the funnel pages, once his release-wording ruling
-   is made.
-10. Knowledge entries carrying the correlations (awareness, soul and the
-    operating system as one field).
-11. The Intake questions redesign (last, his order).
-12. Backlog scrub (`BACKLOG-AUDIT.md` is from 27 September).
-13. Compass and Character icons placed to match; Field landing check
-    (everything active, menu closed).
+1. **Character page build** in the Aura style once he picks a version; five
+   masks, the new symbol icons upper left, Trace, the biofield light by CQ.
+2. **Left menu build** in the option he picks.
+3. **Onboarding and First Experience**, designed into slices O1 to On once the
+   three reviews land (section H below).
+4. Compass layout B: characters as circles in the overlay row, names on hover,
+   no side panels, the circles drawn as buttons because they become protocols.
+5. Summary overhaul: icons stacked and grouped by type, a click gives detail on
+   the right, cycle back through past days, the vault on the page, a readout
+   look from the Flow page; then the Daily Summary UI D8 to D9.
+6. CQ at 100 simulation pictures for the archetypes, emotions and six axes.
+7. Practitioner page PR1 to PR4 on the example people, both right panel
+   versions side by side (`PRACTITIONER-STORY.md`).
+8. Avatar page toward the Becoming document, slices S1 to S4 first.
+9. Name meanings: the vetted table, then the server lookup route (the second
+   network seam needs his ruling).
+10. Body place words: head, upper torso, lower torso, replacing earlier seats
+    where they overlap.
+11. Points slice 0 and the achievements system. Today there is no achievements
+    or points engine: `engine/ladder.js` carries the rule that the reading is
+    not an achievement, and the ring badge in `ui/component.js` is a display
+    part. `POINTS-AUDIT.md` has the build order.
+12. Funnel: concern selection and the personalised 100 pattern gift (waits on
+    the storyboard and the onboarding slices).
+13. Practice screens (Today, Goal Builder) and the Ritual writer cutover.
+14. Copy sweep second pass, after his release wording ruling.
+15. Knowledge entries carrying the correlations; the Intake questions redesign
+    (last, his order); backlog scrub (`BACKLOG-AUDIT.md` dates from 27 September).
+16. Practitioner mode toggle: reported not appearing, could not reproduce.
 
 ## D. Waiting on him
 
