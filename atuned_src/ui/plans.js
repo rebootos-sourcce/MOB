@@ -55,16 +55,23 @@ function ptLine(r){
  var one=PLAN_BY.one.grant;
  if(r.k==='free')return 'What you do not spend carries over, week to week, until there is enough for a run.';
  if(r.k==='one')return planWorth(r.grant);
+ /* "GRANTS A LEAD SIGHT" WAS TEAM SHORTHAND, and the owner said he did not know
+    what sight meant here, so a customer would not either. The fact is the
+    consent rule CLAUDE.md sets for a practitioner: nothing crosses until that
+    person says yes, and they can take it back. LEAD_SEES is part of a reading
+    and not all of it, so the line says part. */
  if(r.lead)return 'The same ground as tier three, and the cohort lead suite: manage profiles, '
-  +'build rituals and build accountability for the people you lead. Each person grants a lead '
-  +'sight by name and can take it back.';
+  +'build rituals and build accountability for the people you lead. You see part of a person\'s '
+  +'reading only after they say yes, and they can take that back at any time.';
  var x=r.grant/one;
  if(x===2)return 'Twice the ground of tier one. Nothing else changes.';
  if(x===3)return 'Three times the ground of tier one. Nothing else changes.';
  return planWorth(r.grant);}
 
-/* "shown at checkout" and no more: the foot of the group already says the
-   processor's page shows the price before anything is charged */
+/* EVERY RUNG CARRIES ITS PRICE NOW. DECISIONS.md rules 12, 24, 36 and 99, and
+   PLAN_PRICE holds all four, so the "shown at checkout" this printed for tiers
+   one to three is gone from the screen. The branch stays for a rung added
+   later without a ruled price, which must still never print a guessed one. */
 function ptPrice(r){
  if(r.price===0)return 'nothing';
  if(r.price!=null)return r.price+' dollars a month';
@@ -85,7 +92,9 @@ function planTiersHtml(){
      part a comparison would otherwise repeat five times or leave out */
   +'<div class="pt-same"><div class="pt-sh">On every tier, free included</div>'
   +'<p>'+esc(PLAN_ALWAYS.join(', ').replace(/^./,function(c){return c.toUpperCase();}))+'.</p>'
-  +'<p class="pt-so">A tier sets one thing: how much new ground you can open.</p></div>'
+  /* patterns and not "new ground", the team's word for them, said in the unit
+     the rows below are counted in */
+  +'<p class="pt-so">A tier changes one thing: how many new patterns you can open.</p></div>'
   +'<div class="pt-list" role="list">';
  rows.forEach(function(r){
   var w=Math.max(2,Math.round(ptMonthly(r)/top*100));
@@ -110,8 +119,16 @@ function planTiersHtml(){
   +'While any of the gift is left, a run spends the gift first, on every tier.');
  if(!signed)foot.push('Moving to a tier needs a sign in, because the plan is held on your record. '
   +'Sign in from Account, then come back here.');
- foot.push('Payment happens on the processor\'s page, which shows the price before anything is charged. '
-  +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
+ /* the price is on every row now, so the foot says when it is charged rather
+    than promising to show it. Monthly and nothing more: no annual price is
+    ruled (PLAN_YEAR_FREE), so nothing here implies a year.
+    "MOVING DOWN OR STOPPING" became stopping alone when Manage billing was
+    built. The server hears a finished checkout and nothing else, so a tier
+    lowered on Stripe's page would not lower the plan here; panels.js
+    planSection carries the full reason beside its own line. */
+ foot.push('Each price is charged once a month until you stop. You pay on a separate payment page, '
+  +'and nothing is charged until you confirm there. '
+  +'Stopping goes through Manage billing above, and stopping deletes nothing.');
  h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
   +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to Account</button></div>')
   +'</div></div>';

@@ -111,7 +111,8 @@ function renderPrac(){
   +accGroup('A Client’s Profile',
     accStub('Add a client')+accStub('View a client’s profile')+accStub('Client consent'),
     /* the same promise the Privacy section already makes from the other
-       side, "Who Has Sight", said here as not yet true */
+       side, "Who Can See This" (it read "Who Has Sight" until the word was
+       found to be team shorthand), said here as not yet true */
     'Nothing about a client reaches this page until that client grants it. Once this '
     +'is built, the grant shows by name on the client’s own Privacy page, and one press '
     +'there takes it back.')

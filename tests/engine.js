@@ -5342,11 +5342,17 @@ g('NZ · the tiers side by side, read off the ladder and nothing else');
  /* SIGHT IS NOT FOR SALE. The row has no field for it, so no renderer can
     print a difference in what a tier sees. */
  ok(free.every(r=>!('see' in r)&&!('sight' in r)),'a row carries no sight field, because sight does not vary');
- /* only ruled prices carry a number */
+ /* THE LADDER IS 12, 24, 36, 99, ruled in DECISIONS.md and taken over the
+    12/29/59 that this gate used to hold off the page as unruled */
  ok(planPrice('four')===99,'tier four is ninety nine, ruled');
  ok(planPrice('free')===0,'free costs nothing');
- ok(['one','two','three'].every(k=>planPrice(k)===null),
-  'tiers one to three carry no price until he rules one, got '+JSON.stringify(PLAN_PRICE));
+ ok(planPrice('one')===12&&planPrice('two')===24&&planPrice('three')===36,
+  'tiers one to three are twelve, twenty four and thirty six, ruled, got '+JSON.stringify(PLAN_PRICE));
+ /* the reason that ladder was chosen: one, two and three times tier one, so
+    price moves with ground and the rate is flat across the three. Asserted
+    against the grants rather than typed, so a grant moved alone is caught. */
+ ok(['two','three'].every(k=>planPrice(k)/planPrice('one')===PLAN_BY[k].grant/PLAN_BY.one.grant),
+  'tiers two and three cost the same multiple of tier one as the ground they open');
  ok(planPrice('gift')===null&&planPrice('nonsense')===null,'an unknown key has no price rather than a wrong one');
 }
 

@@ -132,17 +132,26 @@ function planYear(k){
       +'a pace.')};}
 
 /* THE PRICE, NAMED ONCE, in dollars a month. Only what is ruled carries a
-   number. DECISIONS.md rules tier four at ninety nine and leaves tiers one to
-   three open, recommended at twelve, twenty nine and fifty nine but never
-   ruled, so they are null here and the comparison says the price is shown on
-   the payment page before any charge. A number printed in this file that the
-   processor then charges differently is a bill nobody agreed to, which is the
-   one thing a price list must never be. When the owner rules, setting the
-   three numbers is the whole change, the same way PLAN_YEAR_FREE works above.
+   number, and all four rungs are ruled now. DECISIONS.md, the operational
+   round of 19 September: "The ladder is 12, 24, 36, 99. The sales seat's flat
+   three cents a pattern at every rung, taken over 12/29/59/99." Tiers one to
+   three sat at null here for longer than that was true, because this comment
+   read the earlier passage, which calls twelve, twenty nine and fifty nine a
+   recommendation, and not the later one that replaced it. So the tiers page
+   said "shown at checkout" for three prices that had been ruled.
+
+   Twelve, twenty four and thirty six are one, two and three times tier one,
+   which is what the tiers page already says about the ground in words, so the
+   price and the patterns move together and the rate is the same on every
+   rung. A number printed in this file that the processor then charges
+   differently is a bill nobody agreed to, so the four Stripe prices are
+   created at exactly these figures (STRIPE-SETUP.md) and null stays the
+   answer for anything unruled.
 
    And never a dollar figure against a pattern. One pattern is valued at one
-   dollar internally and DECISIONS.md rules that it is never published. */
-const PLAN_PRICE={free:0, one:null, two:null, three:null, four:99};
+   dollar internally and DECISIONS.md rules that it is never published. The
+   flat rate is why the ladder was chosen, and it is still not printed. */
+const PLAN_PRICE={free:0, one:12, two:24, three:36, four:99};
 function planPrice(k){ var v=PLAN_PRICE[k]; return (typeof v==='number'&&isFinite(v))?v:null; }
 /* THE LADDER, READ FOR A COMPARISON. One row per tier a person can be on, the
    gift left out because it is given once and never chosen. Each row says what

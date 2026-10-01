@@ -399,11 +399,16 @@ function accPrivacy(){
    STORE_BOUND?'If a save fails, it tells you.'
     :'Storage is blocked in this browser, so nothing you do here will survive '
      +'a reload. Export is the only way to keep it.');
- h+=accGroup('Who Has Sight',
-   accRow('People with sight of this record','nobody'),
-   'Nobody sees this but you. A practitioner gets sight only when you grant '
-   +'it. The grant is listed here by name, with what they see and the date you '
-   +'gave it, and one press on the row takes it back. Never a silent default.');
+ /* "WHO HAS SIGHT" WAS TEAM SHORTHAND. The owner said he did not know what
+    sight meant, so a customer would not either. Same disclosure, same three
+    duties CLAUDE.md names for a practitioner grant: explicit consent, a
+    visible list, and revocation. "Never a silent default" said the same as
+    the first sentence in the team's words, and came out with it. */
+ h+=accGroup('Who Can See This',
+   accRow('People who can see this record','nobody'),
+   'Nobody sees this but you. A practitioner can see it only after you say yes. '
+   +'Each yes is listed here by name, with what they see and the date you gave '
+   +'it, and one press on the row takes it back.');
  h+=accGroup('Improve the Models',
    accTog('Use my stories to refine the reading','acmodel',
      !!(CURP&&CURP.ui&&CURP.ui.model)),
