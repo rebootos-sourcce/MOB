@@ -30605,3 +30605,24 @@ protocols."
 - Trace goes on the page as planned.
 - On landing the page is already in motion, and at a glance it is symbolic: a
   person sees what is happening without reading.
+
+## Round OP, 1 October. Each mask is its own symbol, and the page is linked
+
+> "No, I want to complete visual different. Look, between every mask. Right?
+> Every mask is symbolic on its own. And the way that it's expressed. We're
+> playing against that. We're playing with that language. Moves all the time.
+> Doesn't have to be in your face. I just want to show those UI elements are
+> linked. So it makes for a very fast read."
+
+**Read as.**
+- Not a better face. A completely different visual: each mask (Child, Preteen,
+  Teen, Ideological) is symbolic on its own, and the page is drawn in that
+  mask's own language, so the four read as four different things, not one face
+  at four ages.
+- It moves all the time, quietly, not in your face.
+- The elements on the page are visibly linked (the mask's symbol, its overlay
+  icon, and the left menu rows it draws on share colour and rhythm), so the
+  read is fast.
+- Supersedes the face and charge-cloud reading of rounds ON and OO where they
+  conflict. The no-ring, full-colour upper-left icons, no Professional and
+  Trace from round OO still stand.
