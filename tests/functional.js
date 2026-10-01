@@ -4507,6 +4507,39 @@ console.log('\n=== a teacher on the compass starts a ritual of becoming ===');
  await tp.close();
 }
 
+console.log('\n=== the teacher drill and the Compass panel read one axis position ===');
+/* Found by the teachers design review: the drill handed mirrorAt a fraction
+   where it takes the mean charge out of ten, so 95 of 120 persona by axis
+   readings differed from the Compass panel, by up to 38 points, and a lookup
+   by printed name found no third eye seat, so the Buddha axis read no load for
+   anybody. Every axis, for the heaviest person in the roster, by name. */
+{
+ const tp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
+ await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
+ const rows=await tp.evaluate(async()=>{
+  const wait=ms=>new Promise(r=>setTimeout(r,ms||120));
+  loadP(PERSON('Gordon')); setTab(TAB.COMPASS); await wait(400);
+  const out=[];
+  for(const m of MIRROR){
+   runTeacherDrill(m,'up'); await wait(60);
+   const t=(document.getElementById('rdrill')||{}).textContent||'';
+   const at=/puts you at (.+?) on this axis/.exec(t), carry=/carrying (\d+)%/.exec(t);
+   const seg=flSeats().filter(x=>K2B[x.p.k]===m.seat)[0];
+   out.push({k:m.k,seat:m.seat,got:at?at[1]:null,want:String(coneMirPos(m)),
+    carry:carry?+carry[1]:null,wantCarry:seg?Math.round(seg.load*100):null});}
+  return out;});
+ ok(rows.length===8&&rows.every(r=>r.got===r.want),
+  'the drill prints the position the Compass panel prints, on every axis: '
+  +rows.filter(r=>r.got!==r.want).map(r=>r.k+' '+r.got+' against '+r.want).join('; '));
+ ok(rows.every(r=>r.carry===r.wantCarry&&r.wantCarry!==null),
+  'and the seat it names is carrying what that seat carries, third eye included: '
+  +rows.filter(r=>r.carry!==r.wantCarry).map(r=>r.k+' '+r.carry+' against '+r.wantCarry).join('; '));
+ ok(rows.some(r=>r.seat==='3rd Eye'&&r.carry>0),'the third eye axis no longer reads no load for a person who carries at it');
+ ok(terr.length===0,'no errors, '+terr.join(' | '));
+ await tp.close();
+}
+
 console.log('\n=== the child pattern is found, marked and located ===');
 /* THE COUNT IS READ OFF THE RUN AND NEVER TYPED HERE.
 

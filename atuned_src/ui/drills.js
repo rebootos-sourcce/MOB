@@ -756,10 +756,20 @@ function runTeacherDrill(m,end){
  var up=(end!=='dn'), r=compute();
  var nm=up?m.up:m.dn, d=up?m.upd:m.dnd, ic=up?m.ic:m.dic;
  var other=up?m.dn:m.up, od=up?m.dnd:m.upd;
+ /* THE SEAT IS FOUND BY ITS ENGINE BAND, NOT BY ITS PRINTED NAME. FLOWSEAT
+    prints the third eye as Brow while MIRROR names its seat 3rd Eye, so a
+    lookup by name found nothing for that one seat and the Buddha axis read
+    nought load for every person. K2B maps the flow key to the band. */
  var load=(typeof flSeats==='function')
-  ?(flSeats().filter(function(x){return x.p.n===m.seat;})[0]||{load:0}).load:0;
+  ?(flSeats().filter(function(x){return K2B[x.p.k]===m.seat;})[0]||{load:0}).load:0;
  var ig=(typeof bandIg==='function')?bandIg(m.seat):0;
- var at=(typeof mirrorAt==='function')?mirrorAt(load,ig):null;
+ /* WHERE THE PERSON SITS IS THE ONE READER THE COMPASS USES. This passed
+    mirrorAt the flow's load, a fraction of one over the seat's hot addresses,
+    where mirrorAt takes the mean charge of all of them out of ten, so the
+    same axis printed two different numbers (95 of 120 readings differed, by
+    up to 38). coneMirPos is the arithmetic the mirror drill and the Compass
+    panel already share. */
+ var at=(typeof coneMirPos==='function')?coneMirPos(m):null;
  var h='<div class="pm-eye">'+esc(m.q)+(up?', at the crown':', at the floor')+'</div>'
   +'<div class="ad-nm">'+(ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
     +'<path d="'+ic+'"/></svg>':'')+esc(nm)+'</div>'
