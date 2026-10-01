@@ -29110,3 +29110,76 @@ in this same working tree, unreviewed. Rebuilding and committing the
 build products now would ship that unfinished, unverified work inside
 this round's commit. They rebuild and commit together once that
 agent's work is read and gated on its own.
+
+## Round NP. The Celestial Engine audited against `SOURCE-TDD.md` section 9
+
+Task 13, carried from an earlier round: audit `atuned_src/engine/birth.js`
+against the TDD's own section 9, the same discipline round NB already ran
+on the other TDD sections. Read section 9 in full, then
+`atuned_src/engine/birth.js`, `atuned_src/engine/overlap.js` and the
+behavioural tables in `atuned_src/engine/data/people.js`, and checked each
+against the running code rather than against either document's own claim.
+
+**The six peer systems, four of six reachable from a real birth date,
+two never built.** Western astrology (`sunSign`, `moonSign`,
+`risingSign`), Eastern astrology (`chineseYear`, `chineseElement`),
+numerology (`lifePath`, `masterNumber`) and Human Design (`hdOf`, the gate
+and line only) are real and run off the actual sky, `astro.js`'s own
+ephemeris, not a calendar shortcut. Kabbalah and Name Energetics are not
+built at all. Already ruled, not found new here: `PRIORITY.md`'s own
+"Not doing" list already names this exactly, "no surface asks for them,"
+against the standing no-etymology-table rule.
+
+**The pipeline the spec names, SOURCE SYSTEM through CELESTIAL READING,
+exists, in two layers the spec does not distinguish.** `birth.js`'s own
+`converge()` compares a person's birth reading against their own field
+reading, four comparisons, agree against differ against a third bucket,
+open, for whatever a gap in the birth record genuinely could not answer,
+Human Design's type among them. `overlap.js` is the deeper one: it reads
+only where two of the four built systems share a real bridge a tradition
+itself supplies, named in full in its own header, element, the design
+gate's trigrams, and planet, and weighs each meeting point by `q`, the
+chance that two systems would land on the same theme that often by
+chance alone. That is a real confidence figure per mapping, not a typed
+number: measured on 700 births over seventy years, `tests/engine.js`
+group 19's own sweep. The spec's TRADITIONAL MEANING and BEHAVIORAL
+TRANSLATION stages are `SIGN_RUNS`, `CH_RUNS`, `LP_RUNS`, `HD_RUNS` and
+`ROOT_SAYS` in `people.js`, one line of real behaviour per placement, and
+CANONICAL BEHAVIOR is `ELEM2ROOT`, `MODE2NOTE` and `LP2ARCH`, the existing
+root and archetype tables the rest of the product already runs on, not a
+new vocabulary.
+
+**The one line of the spec genuinely missing, and it is concrete.**
+"Every mapping requires provenance, confidence, and version." `overlap.js`
+carries a real confidence figure, `q`. Nothing here carries provenance or
+a version: `ELEM2ROOT`, `LP2ARCH`, `SIGN_RUNS` and the rest are plain
+objects with no `src`, `from` or `cite` field, and the exact mechanism to
+port already exists two files away, round NO's own `LEXMETA`/`CHGMETA` in
+`lexicon.js`, which already answers this for the word lexicon: a table
+of key to `{src, from, rule, cite}`, asserted by a gate to cover the table
+exactly in both directions. Porting it here is the same shape, not a new
+design.
+
+**What the spec asks for and the code already does better than asking
+it to remain explicit would require.** "Human Design and Kabbalah
+dependencies must remain explicit." Kabbalah is absent by a recorded
+ruling rather than a silent gap. Human Design's TYPE is the sharper case:
+`hdOf` refuses to compute it, states why in the object itself,
+`unresolved:'type and authority need the full bodygraph, which is not
+built'`, and `converge()` routes that into the open bucket rather than
+scoring an absent input as a disagreement, which the file's own comment
+names as the exact failure the old code shipped. `summary.js`'s own
+tooltip says the same thing to the person: "Type needs the full
+bodygraph and is not computed." The spec asks for this to be explicit.
+It already is, as explicit as a refusal gets.
+
+**Verdict.** Four of six source systems built and real, two ruled out by
+name and not missing by accident. The convergence pipeline the spec asks
+for exists in a form stronger than the spec itself specifies, a real
+weighted confidence per meeting point rather than a flat agree count.
+One real gap: no provenance or version on the behavioural tables, fixable
+by porting `lexicon.js`'s own pattern rather than inventing one. Nothing
+rebuilt, nothing moved; this is a reading and no source file in
+`atuned_src` changed, so no gate needed to run. Queued in `PRIORITY.md`
+once the round in flight on that file lands, so two sessions do not write
+it at once.
