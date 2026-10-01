@@ -5762,13 +5762,18 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const mid=r=>r.top+r.height/2;
   const bars=[...d.querySelectorAll('.rbar')], rc=bars.map(e=>e.getBoundingClientRect());
   const R=compute(), f=flSpeed();
-  const want=[['Coherence',R.CQ,false],['Shadow',R.DQ,true],['Vitality',R.X*100,false],['Awareness',R.Y*100,false],['Will',R.Z*100,false],['Flow',f*100,false]];
+  const want=[['Coherence',R.CQ,false],['Decoherence',R.DQ,true],['Vitality',R.X*100,false],['Awareness',R.Y*100,false],['Will',R.Z*100,false],['Flow',f*100,false]];
   const bar={names:bars.map(e=>e.querySelector('.rb-n').textContent),
    stacked:rc.every((r,i)=>i===0||r.top>=rc[i-1].bottom-0.5),
    oneColumn:new Set(rc.map(r=>Math.round(r.left))).size===1&&new Set(rc.map(r=>Math.round(r.width))).size===1,
    fills:bars.map((e,i)=>Math.abs(parseFloat(e.querySelector('.rb-t i').style.width)-Math.max(0,Math.min(100,want[i][1])))<0.1),
    colours:bars.map((e,i)=>e.style.getPropertyValue('--c')===rbCol(Math.max(0,Math.min(100,want[i][1])),want[i][2])),
-   tall:Math.min(...rc.map(r=>r.height))};
+   tall:Math.min(...rc.map(r=>r.height)),
+   inside:bars.every(e=>{const b=e.getBoundingClientRect(),n=e.querySelector('.rb-n').getBoundingClientRect(),v=e.querySelector('.rb-v').getBoundingClientRect();
+    return n.top>=b.top&&n.bottom<=b.bottom&&v.top>=b.top&&v.bottom<=b.bottom&&n.height<b.height;}),
+   turns:bars.every((e,i)=>{const o=e.querySelector('.rb-over'),cs=getComputedStyle(o),base=getComputedStyle(e.querySelector('.rb-n')).color,
+    over=getComputedStyle(o.querySelector('.rb-n')).color;
+    return cs.clipPath!=='none'&&base!==over&&Math.abs(parseFloat(e.style.getPropertyValue('--w'))-parseFloat(e.querySelector('.rb-t i').style.width))<0.1;})};
   const items=[...d.querySelectorAll('.kb, #accbtn')].map(e=>e.getBoundingClientRect());
   const rows=[...new Set(items.map(r=>Math.round(mid(r))))].sort((a,b)=>a-b);
   const st=document.getElementById('stage'),s=st.getBoundingClientRect(),acc=document.getElementById('acc');
@@ -5785,12 +5790,13 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     mirror:+Math.abs((ab.left-s.left)-(s.right-Math.max(...zs.map(r=>r.right)))).toFixed(2),
     overlay:typeof OVERLAY!=='undefined'&&OVERLAY.indexOf('acc')>=0}};});
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
- ok(JSON.stringify(dock.bar.names)==='["Coherence","Shadow","Vitality","Awareness","Will","Flow"]',
+ ok(JSON.stringify(dock.bar.names)==='["Coherence","Decoherence","Vitality","Awareness","Will","Flow"]',
   'OG: six readings, CQ first, in reading order, as bars, '+JSON.stringify(dock.bar.names));
  ok(dock.bar.stacked&&dock.bar.oneColumn,'OG: stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
  ok(dock.bar.fills.every(Boolean),'OG: every bar is filled to its own figure, '+JSON.stringify(dock.bar.fills));
  ok(dock.bar.colours.every(Boolean),'OG: and coloured from the wheel\'s ramp by that figure, the shadow from its inverse, '+JSON.stringify(dock.bar.colours));
  ok(dock.bar.tall>=44,'OG: every row is a button at the 44px floor, shortest '+dock.bar.tall);
+ ok(dock.bar.inside&&dock.bar.turns,'OG: the name and the number sit inside the bar, which is taller than the words, and the words turn colour at the fill\'s edge, '+JSON.stringify({inside:dock.bar.inside,turns:dock.bar.turns}));
  ok(!dock.sq&&dock.sqElsewhere,'SQ is off the dock and only off the dock: the bar\'s Addresses circle still says SQ');
  ok(dock.acc.inStage&&!dock.acc.inLeft&&dock.acc.lowerLeft,
   'LR: accuracy lies on the stage in its lower left and not in the rail, '+JSON.stringify(dock.acc));

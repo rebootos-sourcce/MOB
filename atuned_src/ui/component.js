@@ -349,19 +349,39 @@ function crMotion(hosts){
    reading of an arc is the thing that would have to be bent.
    ============================================================ */
 function rbCol(p,bad){var c=cqRamp(bad?100-p:p);return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
+/* THE INK OVER A FILL IS CHOSEN FOR THE FILL. A fixed dark ink read well on
+   the green end of the ramp and badly on the dark red end, where Vitality sat
+   at 0.42 in a muted red. Relative luminance of the ramp's own colour decides
+   between the two inks, so the words stay legible at every figure. */
+function rbOn(p,bad){var c=cqRamp(bad?100-p:p),f=function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);};
+ var L=.2126*f(c[0])+.7152*f(c[1])+.0722*f(c[2]);return L>.32?'#0B0D10':'#F6F4EF';}
+/* THE BAR IS THE ROW, round OG. His words: "I want for the color bar to be
+   taller than the font and I want the font inside the color bar so as the
+   color bar grows you see the word underneath... treat the color differently
+   when it's over it than when it's not. And then put the percent, it needs a
+   better visual treatment." So the fill is the whole 44 pixel row, the name
+   and the number sit inside it, and the words are drawn twice: once in the
+   panel's ink on the empty track, and once in the dark ink clipped to exactly
+   the filled width, so a letter changes colour at the edge of the fill the
+   way a gauge does. --w carries the width to the clip, and rbPaint moves
+   both together. The second copy is aria-hidden: one reading, said once. */
 function rbRow(q,nm,pct,raw,o){
  o=o||{};
- var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread;
+ var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread, w=read?p.toFixed(2):'0';
+ var cells='<span class="rb-n">'+esc(nm)+'</span><span class="rb-v">'+esc(raw)+'</span>';
  return '<button type="button" class="kb rbar'+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
-  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+'"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
-  +'<span class="rb-n">'+esc(nm)+'</span><span class="rb-v">'+esc(raw)+'</span>'
-  +'<span class="rb-t" aria-hidden="true"><i style="width:'+(read?p.toFixed(2):'0')+'%"></i></span></button>';}
+  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +'<span class="rb-t" aria-hidden="true"><i style="width:'+w+'%"></i></span>'
+  +'<span class="rb-row">'+cells+'</span>'
+  +'<span class="rb-row rb-over" aria-hidden="true">'+cells+'</span></button>';}
 var RBMO={}, RBMO_RAF=0;
 function rbPaint(m,now){
  var h=document.getElementById(m.host), el=h?h.querySelectorAll('.rbar')[m.j]:null; if(!el)return;
- var e=crMoAt(m,now), i=el.querySelector('.rb-t i'), pv=el.querySelector('.rb-v');
- if(i)i.style.width=(m.w0+(m.w1-m.w0)*e).toFixed(2)+'%';
- if(pv&&m.n0!==null&&m.n1!==null)pv.textContent=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;}
+ var e=crMoAt(m,now), i=el.querySelector('.rb-t i'), w=(m.w0+(m.w1-m.w0)*e).toFixed(2)+'%';
+ if(i)i.style.width=w;
+ el.style.setProperty('--w',w);
+ if(m.n0!==null&&m.n1!==null){var txt=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;
+  el.querySelectorAll('.rb-v').forEach(function(pv){pv.textContent=txt;});}}
 function rbTick(now){
  RBMO_RAF=0; var live=false;
  Object.keys(RBMO).forEach(function(k){var m=RBMO[k]; if(m.done)return;

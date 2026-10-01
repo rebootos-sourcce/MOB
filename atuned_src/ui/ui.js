@@ -1151,7 +1151,7 @@ function render(){
    rbRow('cq','Coherence',r.unread?0:r.CQ,r.unread?'\u2013':Math.round(r.CQ)+'%',
     {unread:r.unread,title:'Coherence. '+(r.unread?'Not read yet.'
       :r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')})
-  +rbRow('dq','Shadow',r.DQ,Math.round(r.DQ)+'%',
+  +rbRow('dq','Decoherence',r.DQ,Math.round(r.DQ)+'%',
     {unread:r.unread,bad:true,title:'Shadow weight. All the charge on all 112 addresses, against the most '
        +'they could hold.'});
  /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
