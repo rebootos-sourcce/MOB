@@ -97,7 +97,12 @@ function blankProfile(name){
   work:{},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
-  story:{entries:[]}, rituals:[], history:[]};
+  story:{entries:[]}, rituals:[], history:[],
+  /* THE PRACTICE OBJECTS, engine/practice.js. Additive: an older record has
+     none and is filled from this blank, and no SCHEMA_V bump, which is the
+     owner's call. p.rituals above is the Ritual tab's day log and is a
+     different thing; see PRACTICE-AUDIT.md for why both exist for now. */
+  practice:practiceBlank()};
  /* held was 3 on every axis, and this is the profile a new person gets. The
     laws beside it are correctly null, meaning not yet measured, and the charge
     was not given the same honesty. Nobody entered a 3. Zero is the only value
@@ -151,6 +156,9 @@ function loadProfile(p){
  /* a record from before the release lift has done no work since its answers,
     which is exactly what an empty map says */
  if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
+ /* a record from before the practice objects has none, which is a record
+    nobody has built a practice on yet */
+ if(!p.practice||typeof p.practice!=='object'||Array.isArray(p.practice))p.practice=practiceBlank();
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -1022,6 +1030,11 @@ function validateProfile(o){
  if(Array.isArray(o.rituals))p.rituals=o.rituals
   .map(function(x,i){return vRitual(errs,i,x);}).filter(Boolean);
  else if(o.rituals!==undefined&&o.rituals!==null)errs.push('rituals is not a list');
+ /* THE PRACTICE OBJECTS, through their own boundary (practiceValidate,
+    engine/practice.js), into the same errs, so one bad practice refuses the
+    whole record and pImport stays atomic. Missing or null is an older
+    record and keeps the blank. */
+ if(o.practice!==undefined&&o.practice!==null)p.practice=practiceValidate(errs,o.practice,'practice');
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
     crashed the record view on the first render after an import. */

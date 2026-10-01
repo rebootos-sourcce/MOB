@@ -275,6 +275,22 @@ if(typeof module!=='undefined'&&module.exports){
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
                   OB_KINDS:OB_KINDS,
   /* storage */   bindStore:bindStore,
+  /* practice, engine/practice.js. The tables are exported as the live
+     objects so the gate can hold them to the TDD's own lists and mutate a
+     copy of the engine to prove the gate bites. */
+                  PRACTICE_SCHEMA_V:PRACTICE_SCHEMA_V, practiceBlank:practiceBlank,
+                  practiceValidate:practiceValidate, practiceDo:practiceDo,
+                  practiceTransition:practiceTransition, practiceMissRead:practiceMissRead,
+                  practiceInvestigate:practiceInvestigate, practiceEffectAffect:practiceEffectAffect,
+                  practiceOutcomeRead:practiceOutcomeRead, practiceStage:practiceStage,
+                  practiceReleasePlan:practiceReleasePlan, practiceReleaseVerify:practiceReleaseVerify,
+                  practiceTraceIntents:practiceTraceIntents, practiceIntentOk:practiceIntentOk,
+                  practiceFromLegacy:practiceFromLegacy, practicePatternOk:practicePatternOk,
+                  PR_SRC:PR_SRC, PR_LIFE:PR_LIFE, PR_CLASS:PR_CLASS, PR_STEP:PR_STEP, PR_EV_ST:PR_EV_ST,
+                  PR_EVID_SOURCE:PR_EVID_SOURCE, PR_EVID_TYPE:PR_EVID_TYPE, PR_OUT_ST:PR_OUT_ST,
+                  PR_MISS:PR_MISS, PR_ADAPT:PR_ADAPT, PR_EVENTS:PR_EVENTS, PR_NODE:PR_NODE, PR_EDGE:PR_EDGE,
+                  PR_PROTO_ST:PR_PROTO_ST, PR_DIM:PR_DIM, PR_FLOW:PR_FLOW, PR_NEVER:PR_NEVER,
+                  PR_MISS_AT:PR_MISS_AT, PR_SPEC:PR_SPEC, PR_ARGS:PR_ARGS, PR_CAP:PR_CAP,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

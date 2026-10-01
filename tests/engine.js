@@ -5565,6 +5565,8 @@ g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a se
 /* the trace graph, engine/trace.js. Its gate is its own file and reports
    through this one's ok(), so its count is in the line below. */
 require('./trace.js')(E,ok,g);
+/* the practice objects, engine/practice.js, with this file's own ok and g */
+require('./practice.js')(E,ok,g,console.log);
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

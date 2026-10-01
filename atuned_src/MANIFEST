@@ -23,6 +23,7 @@ engine/plan.js
 engine/avatar.js
 engine/trace.js
 engine/schema.js
+engine/practice.js
 engine/intake.js
 engine/sniff.js
 engine/sourceai.js
