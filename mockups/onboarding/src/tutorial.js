@@ -1,5 +1,6 @@
 /* tutorial.js. The first-run tutorial, and the skippable questions.
-   Hash: #t0 #t1 #t2 #t3 #t4 #q0 #q1 #q2 #q3
+   Hash: #t0 #t1 #t2 #t3 #t4 #q0 #q1 #q2 #q3 #laws
+   and the worked questions #pat-r #pat-d #acc-r #acc-d #com-r #com-d
    The loop is the only progress object here: a ring docked top right, never a
    list. Each station is shown by doing it, then named. */
 (function(){
@@ -14,7 +15,7 @@ function chromeT(dset,lit){
  return '<div class="topl">'+mark()+'</div><div class="trace ring">'+loopRing(M?60:76,{doneSet:dset,lit:lit,labels:false,bare:true})+'</div>'+leaveBtn();}
 function chromeQ(n,total){
  return '<div class="topl">'+mark()+'</div>'
-  +'<div class="trace q"><span class="small">'+n+' of '+total+'</span><button type="button" class="btn ghost skipb" data-go="t4">'+ico('skip',18)+'Skip</button></div>'+leaveBtn();}
+  +'<div class="trace q"><span class="small">'+(n==null?'Format example':n+' of '+total)+'</span><button type="button" class="btn ghost skipb" data-go="t4">'+ico('skip',18)+'Skip</button></div>'+leaveBtn();}
 
 /* the wheel: a simplified Field, seven seats around a core. hi = the seat that
    carries the person's words. Everything else is held down to a third. */
@@ -119,9 +120,25 @@ SCR.t4=function(){
 };
 
 /* ---- questions: one question, one symbol, one continuum ---- */
-function lawRing(cx,cy,r,answered,hi){ // 21 laws, a quiet ring of nodes. answered ones are marked; none is graded.
- var out='';for(var i=0;i<21;i++){var a=-90+i*360/21,p=polar(cx,cy,r,a),on=answered.indexOf(i)>-1,h=i===hi;
-  out+='<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="'+(h?7:4.4)+'" fill="'+(on?'#0C0D12':'none')+'" stroke="'+(h?ACC:(on?INK:'rgba(255,255,255,.3)'))+'" stroke-width="'+(h?2.4:1.6)+'"/>'+(on?'<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="1.8" fill="'+INK+'"/>':'');}
+/* THE TEN, ROUND PB. His ten, and the order they are asked in: the body from the
+   bottom to the top, which is the Field's own order. Root first, Crown last.
+   Inside a seat the engine's own order holds (Duty before Accountability, and so
+   on). It opens on Patience, the quietest of them, and closes on Unity, the
+   widest. LAWS is the engine's table, read out of canon.js by build.js. */
+var TEN=['Patience','Temperance','Duty','Accountability','Compassion','Forgiveness','Truth','Transparency','Humility','Unity'];
+var SEATIX={'Root':0,'Sacral':1,'Solar':2,'Heart':3,'Throat':4,'3rd Eye':5,'Crown':6};
+var RING=LAWS.map(function(l,i){return {nm:l.nm,s:SEATIX[l.b],ic:l.ic,i:i};}).sort(function(a,b){return a.s-b.s||a.i-b.i;});
+function ringIdx(nm){for(var i=0;i<RING.length;i++)if(RING[i].nm===nm)return i;return -1;}
+function lawOf(nm){return RING[ringIdx(nm)];}
+function before(nm){return TEN.slice(0,TEN.indexOf(nm)).map(ringIdx);}
+var TENIX=TEN.map(ringIdx);
+/* every law wears its own mark, drawn in a 24 box. Stroke 1.1 in that box is
+   the weight the 48 box icons carry at stroke 2. */
+function lawIco(nm,size){var L=lawOf(nm);
+ return '<svg class="ic" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1.1">'+L.ic.split(/(?=M)/).map(function(d){return '<path d="'+d.trim()+'"/>';}).join('')+'</svg>';}
+function lawRing(cx,cy,r,answered,hi){ // 21 laws, a quiet ring of nodes in body order. answered ones are marked; none is graded. The eleven that wait are drawn smaller and fainter.
+ var out='';for(var i=0;i<21;i++){var a=-90+i*360/21,p=polar(cx,cy,r,a),on=answered.indexOf(i)>-1,h=i===hi,ten=TENIX.indexOf(i)>-1;
+  out+='<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="'+(h?7:(ten?4.4:2.6))+'" fill="'+(on?'#0C0D12':'none')+'" stroke="'+(h?ACC:(on?INK:(ten?'rgba(255,255,255,.3)':'rgba(255,255,255,.16)')))+'" stroke-width="'+(h?2.4:(ten?1.6:1.2))+'"/>'+(on?'<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="1.8" fill="'+INK+'"/>':'');}
  return out;}
 function cont(opts){ // the continuum. a path with a node. no colour changes with value.
  var w=opts.w,pos=opts.pos,out='<svg class="cont" viewBox="0 0 '+w+' 110" aria-label="'+opts.aria+'">';
@@ -143,26 +160,26 @@ function qlayout(sym,symIcon,symColor,lawName,bodyHTML,answered,hi){
 
 SCR.q0=function(){
  var R=M?106:Math.min(HT*.26,230);
- var ring=qlayout(0,'<span class="sym0">'+ico('thatsit',M?54:80)+'</span>',ACC,'Twenty-one laws',null,[],-1);
+ var ring=qlayout(0,'<span class="sym0">'+ico('thatsit',M?54:80)+'</span>',ACC,'Ten laws first',null,[],-1);
  ui.innerHTML=chromeQ(0,10)+ring
   +'<div class="col q"><span class="eyebrow acc">Reflect on a real moment</span><h1 class="'+(M?'h1':'display')+'">What do you actually do?</h1>'
   +'<p class="lead">Not how you want to. Not how you think you should. Where would you put yourself on the scale?</p>'
   +cont({w:M?330:600,pos:.5,aria:'A scale from 0 to 10. 5 is the middle.',nums:true,ticks:11})
   +'<div class="legend"><span>0 almost never</span><span>5 about half the time</span><span>10 consistently</span></div>'
   +'<p class="small">Five is the middle. Four to six is oscillating. Be as honest with yourself as you can.</p>'
-  +'<div class="row"><button type="button" class="btn pri" data-go="q1">Start</button><button type="button" class="btn ghost" data-go="t4">Come back later</button></div></div>';
+  +'<div class="row"><button type="button" class="btn pri" data-go="pat-r">Start</button><button type="button" class="btn ghost" data-go="laws">See the laws</button><button type="button" class="btn ghost" data-go="t4">Come back later</button></div></div>';
 };
 SCR.q1=function(){
- var ring=qlayout(0,ico('truth',M?54:80),SEATS[4].c,'Truth',null,[3,8,13],0);
- ui.innerHTML=chromeQ(3,10)+ring
+ var ring=qlayout(0,lawIco('Truth',M?54:80),SEATS[4].c,'Truth',null,before('Truth'),ringIdx('Truth'));
+ ui.innerHTML=chromeQ(7,10)+ring
   +'<div class="col q"><span class="eyebrow acc">Truth</span><h1 class="'+(M?'h1':'display')+' q1">Somebody asks you for the truth, and it will cost you something. You say it anyway.</h1>'
   +cont({w:M?330:600,pos:.7,val:7,aria:'7 on a scale from 0 to 10.',nums:true,ticks:11})
   +'<div class="legend"><span>0 almost never</span><span>5 half the time</span><span>10 consistently</span></div>'
   +'<div class="row"><button type="button" class="btn pri" data-go="q2">Next</button><button type="button" class="btn ghost" data-go="q2">Skip this one</button></div></div>';
 };
 SCR.q2=function(){
- var ring=qlayout(0,'<span class="sym2">'+ico('side',M?44:64)+ico('separate',M?44:64)+'</span>',SEATS[3].c,'Non-harm',null,[3,8,13,17],17);
- ui.innerHTML=chromeQ(5,10)+ring
+ var ring=qlayout(0,'<span class="sym2">'+ico('side',M?44:64)+ico('separate',M?44:64)+'</span>',SEATS[0].c,'Non-harm',null,[],ringIdx('Non-Harm'));
+ ui.innerHTML=chromeQ(null,10)+ring
   +'<div class="col q"><span class="eyebrow acc">Non-harm</span><h1 class="'+(M?'h1':'display')+' q1">You see two kids fighting. Do you choose a side, or break it up?</h1>'
   +cont({w:M?330:600,pos:.82,aria:'Closer to break it up than to choose a side.',ticks:11})
   +'<div class="poles"><span class="pole">'+ico('side',28)+'Choose a side</span><span class="pole mid">Both</span><span class="pole r">Break it up'+ico('separate',28)+'</span></div>'
@@ -178,6 +195,57 @@ SCR.q3=function(){
   +'<p class="small">This tracks a tendency. It is not who you are.</p>'
   +'<div class="row"><button type="button" class="btn pri" data-go="t4">Next</button><button type="button" class="btn ghost" data-go="t4">Skip this one</button></div></div>';
 };
+
+
+/* ---- the laws list: all 21 by seat, the ten that come first numbered ---- */
+SCR.laws=function(){
+ var cols='';
+ for(var k=0;k<7;k++){
+  var items=RING.filter(function(l){return l.s===k;});
+  cols+='<section class="lawcol" style="--c:'+SEATS[k].c+'"><h2 class="lawseat">'+SEATS[k].n+'</h2>'
+   +items.map(function(l){var n=TEN.indexOf(l.nm);
+    return '<div class="lawrow'+(n>-1?' ten':' wait')+'"><span class="lawic">'+lawIco(l.nm,M?20:26)+'</span><span class="lawnm">'+l.nm+'</span>'+(n>-1?'<span class="lawn" aria-label="Question '+(n+1)+'">'+(n+1)+'</span>':'')+'</div>';}).join('')
+   +'</section>';}
+ setBg({cx:W/2,cy:HT/2,r:Math.min(W,HT)*.5,arcs:false,ticks:false},'');
+ ui.innerHTML='<div class="topl">'+mark()+'</div>'+leaveBtn()
+  +'<div class="lawhead"><span class="eyebrow acc">The laws</span><h1 class="'+(M?'h1':'display')+'">Twenty one laws. You start with ten.</h1>'
+  +(M?'':'<p class="lead">Each law sits in one seat of the body. The ten come first, bottom to top, in the order numbered. The other eleven wait.</p>')+'</div>'
+  +'<div class="lawgrid">'+cols+'</div>'
+  +'<div class="lawfoot"><p class="small">'+(M?'Numbered: asked first. Faint: later.':'Numbered: asked first, in that order. Faint: later. Left to right is the body, bottom to top.')+'</p>'
+  +'<div class="row"><button type="button" class="btn pri" data-go="pat-r">Start</button><button type="button" class="btn ghost" data-go="q0">Back</button></div></div>';
+};
+
+/* ---- worked questions: one law, two formats. Real moment is one act and how
+   often you do it. Dilemma is two acts and where you sit between them. The
+   virtue is not always on the same side of the dilemma, on purpose. ---- */
+var WORK={
+ pat:{law:'Patience',n:1,next:'pat-d',after:'acc-r',
+  real:{t:'Something you want is taking longer than you planned. You let it take that long.',val:4},
+  dil:{t:'Someone you depend on is late with something you need today. Do you take it over, or wait for them?',pos:.64,
+   l:['Take it over','act'],r:['Wait for them','stop']}},
+ acc:{law:'Accountability',n:4,next:'acc-d',after:'com-r',
+  real:{t:'Something went wrong and part of it was yours. You say so before anyone asks.',val:5},
+  dil:{t:'A mistake of yours is being blamed on someone else. Do you say it was yours, or let it stand?',pos:.2,
+   l:['Say it was mine','seeit'],r:['Let it stand','nothing']}},
+ com:{law:'Compassion',n:5,next:'com-d',after:'q1',
+  real:{t:'Somebody near you is hurting, and you cannot fix it. You stay with them anyway.',val:7},
+  dil:{t:'You pass a man asking for money. Do you give him some, or walk on?',pos:.36,
+   l:['Walk on','around'],r:['Give him some','moved']}}};
+function workedReal(w){return function(){var L=w.law,c=SEATS[lawOf(L).s].c;
+ var ring=qlayout(0,lawIco(L,M?54:80),c,L,null,before(L),ringIdx(L));
+ ui.innerHTML=chromeQ(w.n,10)+ring
+  +'<div class="col q"><span class="eyebrow acc">'+L+'</span><h1 class="'+(M?'h1':'display')+' q1">'+w.real.t+'</h1>'
+  +cont({w:M?330:600,pos:w.real.val/10,val:w.real.val,aria:w.real.val+' on a scale from 0 to 10.',nums:true,ticks:11})
+  +'<div class="legend"><span>0 almost never</span><span>5 half the time</span><span>10 consistently</span></div>'
+  +'<div class="row"><button type="button" class="btn pri" data-go="'+w.next+'">Next</button><button type="button" class="btn ghost" data-go="'+w.next+'">Skip this one</button></div></div>';};}
+function workedDil(w){return function(){var L=w.law,c=SEATS[lawOf(L).s].c,d=w.dil;
+ var ring=qlayout(0,'<span class="sym2">'+ico(d.l[1],M?44:64)+ico(d.r[1],M?44:64)+'</span>',c,L,null,before(L),ringIdx(L));
+ ui.innerHTML=chromeQ(w.n,10)+ring
+  +'<div class="col q"><span class="eyebrow acc">'+L+'</span><h1 class="'+(M?'h1':'display')+' q1">'+d.t+'</h1>'
+  +cont({w:M?330:600,pos:d.pos,aria:'A mark between '+d.l[0]+' and '+d.r[0]+'.',ticks:11})
+  +'<div class="poles"><span class="pole">'+ico(d.l[1],28)+d.l[0]+'</span><span class="pole mid">Both</span><span class="pole r">'+d.r[0]+ico(d.r[1],28)+'</span></div>'
+  +'<div class="row"><button type="button" class="btn pri" data-go="'+w.after+'">Next</button><button type="button" class="btn ghost" data-go="'+w.after+'">Skip this one</button></div></div>';};}
+['pat','acc','com'].forEach(function(k){SCR[k+'-r']=workedReal(WORK[k]);SCR[k+'-d']=workedDil(WORK[k]);});
 
 var ROUTE=SCR;
 function show(){clearT();var h=setHash()||'t0';(ROUTE[h]||ROUTE.t0)();document.title='Tutorial, '+h;}

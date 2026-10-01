@@ -1,5 +1,5 @@
 /* flow.js. The onboarding, as one clickable prototype. Hash selects a frame:
-   #start #start-picked #feeling #story #story-voice #forming #mirror
+   #start #start-picked #start-measure #feeling #story #story-voice #forming #mirror
    #mirror-notquite #mirror-adjust #mirror-empty #somatic #release #observe #handoff */
 (function(){
 var W=innerWidth,HT=innerHeight,M=W<=700;
@@ -54,6 +54,23 @@ function readout(S,sc){
  if(!S)return '<div class="rd"><span class="rbig dim breathe">'+ico('other',64)+'</span><p class="lead c">Pick the closest one.</p></div>';
  return '<div class="rd"><span class="rbig" style="color:'+sc+'">'+ico(S.k,72)+'</span><h2 class="h1 c">'+S.n+'</h2>'
   +'<p class="gift">Your first 100 patterns are ready.</p><button type="button" class="btn pri" data-go="feeling">Begin</button></div>';}
+
+/* ================= 1b. IS TWELVE TOO MANY. A note frame, not a screen. ================= */
+SCR.startmeasure=function(){
+ var MEAS=[
+  ['Choice time','Seconds from the page opening to the first pick.','Expect about 5. A median past 10, or the slowest quarter past 30, is too many.'],
+  ['Drop at the page','The share who open this page and leave before they pick.','Set it beside the page after. If this page loses more people than that one, the choice is the cause. To compare twelve with six, it takes about 900 people on each to see a five point difference.'],
+  ['Something else','The share who pick the open door, and the words they type.','Over 20 percent means the list misses the room. Under 3 percent means the door is hidden or not needed. Read every word typed. That is how the next point gets named.']];
+ var cx=M?W/2:W*.25,cy=M?118:HT*.5,Rp=M?44:Math.min(HT*.28,260);
+ setBg({cx:cx,cy:cy,r:M?30:Rp*.56,radii:M?[40,50,60]:[Rp*1.2,Rp*1.4,Rp*1.62],lit:[],tl:M?7:12,sw:M?1.6:2},'');
+ var ring='';
+ if(!M){STARTS.forEach(function(st,i){var p=polar(cx,cy,Rp,-90+i*30),c=st.s>-1?SEATS[st.s].c:MID;
+  ring+='<span class="mk" style="left:'+f(p[0]-23)+'px;top:'+f(p[1]-23)+'px;--c:'+c+'">'+ico(st.k,26)+'</span>';});}
+ ui.innerHTML='<div class="topl">'+mark()+'</div>'+leaveBtn()+ring
+  +'<div class="col measR"><div class="measH"><span class="eyebrow acc">Starting points, a note</span><h1 class="'+(M?'h1':'display')+'">Is twelve too many?</h1>'
+  +'<p class="lead">Three readings answer it. Slow and leaving means too many. Fast and choosing Something else means the wrong twelve.</p></div>'+MEAS.map(function(m,i){return '<div class="mrow"><span class="mno">'+(i+1)+'</span><div><h2 class="mh">'+m[0]+'</h2><p class="mc">'+m[1]+'</p><p class="ml">'+m[2]+'</p></div></div>';}).join('')
+  +'<p class="small mfoot">The product reports nothing about how it is used. So today these are read by watching five people with a stopwatch. A count inside the product needs the person’s yes, and a change to the privacy policy first.</p></div>';
+};
 
 /* ================= 2. FEELING ================= */
 SCR.feeling=function(){
@@ -259,6 +276,7 @@ SCR.handoff=function(){
 var ROUTE={'start':function(){SCR.start(-1);},'start-picked':function(){SCR.start(0);},'feeling':function(){SCR.feeling();},
  'story':function(){SCR.story(false);},'story-voice':function(){SCR.story(true);},'forming':function(){SCR.forming();},
  'mirror':function(){SCR.mirror();},'mirror-notquite':function(){SCR.notquite();},'mirror-adjust':function(){SCR.adjust();},'mirror-empty':function(){SCR.empty();},
+ 'start-measure':function(){SCR.startmeasure();},
  'somatic':function(){SCR.somatic();},'release':function(){SCR.release(2);},'observe':function(){SCR.observe();},'handoff':function(){SCR.handoff();}};
 function show(){clearT();var h=setHash()||'start-picked';(ROUTE[h]||ROUTE['start-picked'])();document.title='Onboarding, '+h;}
 ui.addEventListener('click',function(e){

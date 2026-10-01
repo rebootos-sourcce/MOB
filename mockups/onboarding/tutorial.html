@@ -328,6 +328,28 @@ svg{display:block}
 .hp>svg.hring{position:absolute;left:0;top:0}
 .hp>.lpi{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .loop{overflow:visible}
+
+/* the note frame on whether twelve starting points is too many */
+.mk{position:absolute;width:46px;height:46px;border-radius:50%;border:1.8px solid color-mix(in srgb,var(--c) 58%,transparent);display:flex;align-items:center;justify-content:center;color:var(--c);background:rgba(12,13,18,.92);z-index:3}
+.measH{display:flex;flex-direction:column;gap:12px;margin-bottom:6px}
+.measH .display{font-size:44px}
+.col.measR{left:50%;top:50%;transform:translateY(-50%);width:min(700px,44vw);gap:14px}
+.mrow{display:flex;gap:18px;align-items:flex-start;border:1.5px solid var(--edge-2);border-radius:18px;background:rgba(18,20,28,.82);padding:16px 20px}
+.mno{flex:none;width:34px;height:34px;border-radius:50%;border:1.8px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600}
+.mh{font-size:20px;font-weight:600;margin:0 0 2px;letter-spacing:-.01em}
+.mc{margin:0;color:var(--mid);font-size:15px}
+.ml{margin:6px 0 0;color:var(--ink);font-size:15px;line-height:1.5}
+.mfoot{margin:6px 0 0;max-width:62ch}
+@media (max-width:700px){
+ .measH{gap:6px;padding:0 4px;margin-bottom:0}
+ .measH .h1{font-size:24px}
+ .measH .lead{font-size:14.5px;line-height:1.4}
+ .col.measR{left:12px;right:12px;top:176px;width:auto;transform:none;gap:8px}
+ .mrow{padding:10px 12px;gap:10px;border-radius:14px}
+ .mno{width:26px;height:26px;font-size:12.5px}
+ .mh{font-size:15px}.mc{font-size:12.5px}.ml{font-size:12.5px;line-height:1.4;margin-top:3px}
+ .mfoot{font-size:11.5px}
+}
 /* tutorial.css. Added on top of flow.css. */
 .trace.ring{top:8px;right:22px}
 .trace.ring svg{height:auto;width:76px}
@@ -400,6 +422,37 @@ svg{display:block}
  .legend{font-size:11.5px}
  .sym{font-size:12px;gap:6px}
 }
+
+/* the laws list. Seven seat columns, bottom of the body at the left. The ten
+   that come first are numbered and lit; the eleven that wait are faint. */
+.lawhead{position:absolute;left:max(64px,5vw);right:max(64px,5vw);top:64px;z-index:3;display:flex;flex-direction:column;gap:12px}
+.lawhead .lead{max-width:70ch}
+.lawgrid{position:absolute;left:max(64px,5vw);right:max(64px,5vw);top:270px;z-index:3;display:grid;grid-template-columns:repeat(7,1fr);gap:14px}
+.lawcol{border-top:2.4px solid var(--c);padding-top:12px;display:flex;flex-direction:column;gap:4px}
+.lawseat{font-size:14px;font-weight:600;color:var(--c);margin:0 0 6px;letter-spacing:0}
+.lawrow{display:flex;align-items:center;gap:10px;min-height:56px;font-size:16px}
+.lawic{flex:none;color:var(--c);display:flex}
+.lawnm{flex:1;min-width:0}
+.lawrow.ten .lawnm{color:var(--ink);font-weight:500}
+.lawrow.wait{opacity:.5}
+.lawrow.wait .lawnm{color:var(--mid)}
+.lawn{flex:none;width:26px;height:26px;border-radius:50%;border:1.8px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.lawfoot{position:absolute;left:max(64px,5vw);right:max(64px,5vw);bottom:64px;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.lawfoot .small{margin:0;max-width:60ch}
+@media (max-width:1300px) and (min-width:701px){.lawgrid{grid-template-columns:repeat(4,1fr);top:290px}.lawrow{font-size:14px}}
+@media (max-width:700px){
+ .lawhead{left:16px;right:16px;top:62px;gap:6px}
+ .lawhead .h1{font-size:25px}
+ .lawgrid{left:12px;right:12px;top:176px;grid-template-columns:1fr 1fr;gap:10px 12px}
+ .lawcol{padding-top:6px;gap:0}
+ .lawseat{font-size:12.5px;margin-bottom:2px}
+ .lawrow{min-height:30px;font-size:12.5px;gap:7px}
+ .lawn{width:19px;height:19px;font-size:11px;border-width:1.5px}
+ .lawfoot{left:16px;right:16px;bottom:12px;flex-direction:column;align-items:stretch;gap:6px}
+ .lawfoot .row{flex-wrap:nowrap}
+ .lawfoot .btn.pri{flex:1;height:52px}
+ .lawfoot .small{font-size:11.5px}
+}
 </style></head><body class="tut"><noscript>This mockup draws with script. Nothing is fetched.</noscript><script>/* kit.js. Shared drawing for the onboarding mockups. No network, no deps. */
 var SEATS=[
  {k:'root',n:'Root',c:'#D6524C'},{k:'sacral',n:'Sacral',c:'#D8924E'},
@@ -423,6 +476,7 @@ var ICONS={
  anger:'<circle cx="24" cy="24" r="17"/><path d="M27 11 L20 25 L28 25 L21 37"/>',
  burnout:'<path d="M24 7 A17 17 0 1 1 7 24"/><circle cx="10" cy="16.5" r="1.3"/><circle cx="15.5" cy="10.5" r="1.3"/>',
  fatigue:'<circle cx="24" cy="24" r="17"/><path d="M13 30 H35"/><path d="M18 18 L24 24 L30 18"/>',
+ pain:'<circle cx="24" cy="24" r="17"/><path d="M2 24 H21"/><circle cx="24" cy="24" r="3"/>',
  grief:'<circle cx="24" cy="19" r="12"/><path d="M24 31 V39"/><circle cx="24" cy="43" r="1.4"/>',
  fear:'<circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="3.5"/><path d="M24 10 V16 M24 38 V32 M10 24 H16 M38 24 H32"/>',
  relationships:'<circle cx="13" cy="24" r="8"/><circle cx="35" cy="24" r="8"/><path d="M21 24 H27"/>',
@@ -477,12 +531,16 @@ var ICONS={
 function ico(name,size,cls,extra){
  return '<svg class="ic '+(cls||'')+'" width="'+(size||24)+'" height="'+(size||24)+'" viewBox="0 0 48 48" aria-hidden="true" '+(extra||'')+'>'+(ICONS[name]||'')+'</svg>';}
 
-/* Starting points. PROPOSED seat for each: where the field is lit when the
+/* Starting points, twelve: eleven named and the open door. Round PB: twelve is
+   the main version. Pain came in at the owner's word in round PA and Fatigue
+   went out to make room, because Burnout already names the long tired kind and
+   Pain names the bodily one. Whether twelve is too many is measured in the note
+   frame #start-measure, not argued. PROPOSED seat for each: where the field is lit when the
    person picks it. Not an engine mapping; none exists (review, question 3). */
 var STARTS=[
  {k:'anxiety',n:'Anxiety',s:2},{k:'anger',n:'Anger',s:3},{k:'overwhelm',n:'Overwhelm',s:5},
  {k:'burnout',n:'Burnout',s:1},{k:'grief',n:'Grief',s:4},{k:'fear',n:'Fear',s:0},
- {k:'relationships',n:'Relationships',s:3},{k:'fatigue',n:'Fatigue',s:0},{k:'selfworth',n:'Self-worth',s:2},
+ {k:'relationships',n:'Relationships',s:3},{k:'pain',n:'Pain',s:0},{k:'selfworth',n:'Self-worth',s:2},
  {k:'purpose',n:'Purpose',s:6},{k:'money',n:'Money',s:0},{k:'other',n:'Something else',s:-1}];
 
 /* THE FIELD. 112 ticks, 16 per seat, root at the bottom going clockwise.
@@ -527,6 +585,7 @@ function trace(n,w){
 function leaveBtn(){return '<button class="leave" type="button">'+ico('back',16)+'Leave</button>';}
 function setHash(){return (location.hash||'').replace('#','');}
 
+var LAWS=[{"nm":"Truth","b":"Throat","ic":"M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0"},{"nm":"Transparency","b":"Throat","ic":"M4 4h16v16H4z M8 20L20 8"},{"nm":"Justice","b":"Throat","ic":"M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z"},{"nm":"Unity","b":"Crown","ic":"M10 7a5 5 0 100 10 5 5 0 100-10 M14 7a5 5 0 110 10 5 5 0 110-10"},{"nm":"Awareness","b":"Crown","ic":"M3 16h18 M7 16a5 5 0 0110 0"},{"nm":"Nature","b":"Crown","ic":"M12 21V6 M12 13L7 9 M12 16l5-4 M12 10l4-3"},{"nm":"Presence","b":"3rd Eye","ic":"M12 11.4v1.2 M4 12a8 8 0 1116 0 8 8 0 01-16 0"},{"nm":"Humility","b":"3rd Eye","ic":"M4 11h16 M4 11a8 8 0 0016 0"},{"nm":"Equanimity","b":"3rd Eye","ic":"M3 10h18v4H3z M12 10v4"},{"nm":"Compassion","b":"Heart","ic":"M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8"},{"nm":"Forgiveness","b":"Heart","ic":"M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2"},{"nm":"Generosity","b":"Heart","ic":"M5 13a7 7 0 0014 0 M12 11V3 M9 6l3-3 3 3"},{"nm":"Aesthetic Beauty","b":"Heart","ic":"M3 6h18v12H3z M3 18a12 12 0 0112-12"},{"nm":"Courage","b":"Solar","ic":"M12 21V4 M8 8l4-4 4 4 M6 14h12"},{"nm":"Duty","b":"Solar","ic":"M4 8h16 M7 8v12 M17 8v12"},{"nm":"Responsibility","b":"Solar","ic":"M4 9h16v5H4z M9 14v5 M15 14v5 M9 19h6"},{"nm":"Accountability","b":"Solar","ic":"M6 4v16 M18 4v16 M6 13h12 M9 8l2 2 4-4"},{"nm":"Temperance","b":"Sacral","ic":"M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"},{"nm":"Detachment","b":"Sacral","ic":"M3 12h5 M16 12h5 M10 7v10 M14 7v10"},{"nm":"Non-Harm","b":"Root","ic":"M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12h8"},{"nm":"Patience","b":"Root","ic":"M7 4h10 M7 20h10 M7 4l5 8 5-8 M7 20l5-8 5 8"}];
 /* scenes.js. Pure drawing for the two animated scenes and the body column.
    Each scene is a function of a parameter object, so a still frame in a strip
    and a frame in a live animation are the same code. */
@@ -693,7 +752,8 @@ function loopRing(sz,o){
  return out+'</svg>';}
 
 /* tutorial.js. The first-run tutorial, and the skippable questions.
-   Hash: #t0 #t1 #t2 #t3 #t4 #q0 #q1 #q2 #q3
+   Hash: #t0 #t1 #t2 #t3 #t4 #q0 #q1 #q2 #q3 #laws
+   and the worked questions #pat-r #pat-d #acc-r #acc-d #com-r #com-d
    The loop is the only progress object here: a ring docked top right, never a
    list. Each station is shown by doing it, then named. */
 (function(){
@@ -708,7 +768,7 @@ function chromeT(dset,lit){
  return '<div class="topl">'+mark()+'</div><div class="trace ring">'+loopRing(M?60:76,{doneSet:dset,lit:lit,labels:false,bare:true})+'</div>'+leaveBtn();}
 function chromeQ(n,total){
  return '<div class="topl">'+mark()+'</div>'
-  +'<div class="trace q"><span class="small">'+n+' of '+total+'</span><button type="button" class="btn ghost skipb" data-go="t4">'+ico('skip',18)+'Skip</button></div>'+leaveBtn();}
+  +'<div class="trace q"><span class="small">'+(n==null?'Format example':n+' of '+total)+'</span><button type="button" class="btn ghost skipb" data-go="t4">'+ico('skip',18)+'Skip</button></div>'+leaveBtn();}
 
 /* the wheel: a simplified Field, seven seats around a core. hi = the seat that
    carries the person's words. Everything else is held down to a third. */
@@ -813,9 +873,25 @@ SCR.t4=function(){
 };
 
 /* ---- questions: one question, one symbol, one continuum ---- */
-function lawRing(cx,cy,r,answered,hi){ // 21 laws, a quiet ring of nodes. answered ones are marked; none is graded.
- var out='';for(var i=0;i<21;i++){var a=-90+i*360/21,p=polar(cx,cy,r,a),on=answered.indexOf(i)>-1,h=i===hi;
-  out+='<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="'+(h?7:4.4)+'" fill="'+(on?'#0C0D12':'none')+'" stroke="'+(h?ACC:(on?INK:'rgba(255,255,255,.3)'))+'" stroke-width="'+(h?2.4:1.6)+'"/>'+(on?'<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="1.8" fill="'+INK+'"/>':'');}
+/* THE TEN, ROUND PB. His ten, and the order they are asked in: the body from the
+   bottom to the top, which is the Field's own order. Root first, Crown last.
+   Inside a seat the engine's own order holds (Duty before Accountability, and so
+   on). It opens on Patience, the quietest of them, and closes on Unity, the
+   widest. LAWS is the engine's table, read out of canon.js by build.js. */
+var TEN=['Patience','Temperance','Duty','Accountability','Compassion','Forgiveness','Truth','Transparency','Humility','Unity'];
+var SEATIX={'Root':0,'Sacral':1,'Solar':2,'Heart':3,'Throat':4,'3rd Eye':5,'Crown':6};
+var RING=LAWS.map(function(l,i){return {nm:l.nm,s:SEATIX[l.b],ic:l.ic,i:i};}).sort(function(a,b){return a.s-b.s||a.i-b.i;});
+function ringIdx(nm){for(var i=0;i<RING.length;i++)if(RING[i].nm===nm)return i;return -1;}
+function lawOf(nm){return RING[ringIdx(nm)];}
+function before(nm){return TEN.slice(0,TEN.indexOf(nm)).map(ringIdx);}
+var TENIX=TEN.map(ringIdx);
+/* every law wears its own mark, drawn in a 24 box. Stroke 1.1 in that box is
+   the weight the 48 box icons carry at stroke 2. */
+function lawIco(nm,size){var L=lawOf(nm);
+ return '<svg class="ic" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:1.1">'+L.ic.split(/(?=M)/).map(function(d){return '<path d="'+d.trim()+'"/>';}).join('')+'</svg>';}
+function lawRing(cx,cy,r,answered,hi){ // 21 laws, a quiet ring of nodes in body order. answered ones are marked; none is graded. The eleven that wait are drawn smaller and fainter.
+ var out='';for(var i=0;i<21;i++){var a=-90+i*360/21,p=polar(cx,cy,r,a),on=answered.indexOf(i)>-1,h=i===hi,ten=TENIX.indexOf(i)>-1;
+  out+='<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="'+(h?7:(ten?4.4:2.6))+'" fill="'+(on?'#0C0D12':'none')+'" stroke="'+(h?ACC:(on?INK:(ten?'rgba(255,255,255,.3)':'rgba(255,255,255,.16)')))+'" stroke-width="'+(h?2.4:(ten?1.6:1.2))+'"/>'+(on?'<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="1.8" fill="'+INK+'"/>':'');}
  return out;}
 function cont(opts){ // the continuum. a path with a node. no colour changes with value.
  var w=opts.w,pos=opts.pos,out='<svg class="cont" viewBox="0 0 '+w+' 110" aria-label="'+opts.aria+'">';
@@ -837,26 +913,26 @@ function qlayout(sym,symIcon,symColor,lawName,bodyHTML,answered,hi){
 
 SCR.q0=function(){
  var R=M?106:Math.min(HT*.26,230);
- var ring=qlayout(0,'<span class="sym0">'+ico('thatsit',M?54:80)+'</span>',ACC,'Twenty-one laws',null,[],-1);
+ var ring=qlayout(0,'<span class="sym0">'+ico('thatsit',M?54:80)+'</span>',ACC,'Ten laws first',null,[],-1);
  ui.innerHTML=chromeQ(0,10)+ring
   +'<div class="col q"><span class="eyebrow acc">Reflect on a real moment</span><h1 class="'+(M?'h1':'display')+'">What do you actually do?</h1>'
   +'<p class="lead">Not how you want to. Not how you think you should. Where would you put yourself on the scale?</p>'
   +cont({w:M?330:600,pos:.5,aria:'A scale from 0 to 10. 5 is the middle.',nums:true,ticks:11})
   +'<div class="legend"><span>0 almost never</span><span>5 about half the time</span><span>10 consistently</span></div>'
   +'<p class="small">Five is the middle. Four to six is oscillating. Be as honest with yourself as you can.</p>'
-  +'<div class="row"><button type="button" class="btn pri" data-go="q1">Start</button><button type="button" class="btn ghost" data-go="t4">Come back later</button></div></div>';
+  +'<div class="row"><button type="button" class="btn pri" data-go="pat-r">Start</button><button type="button" class="btn ghost" data-go="laws">See the laws</button><button type="button" class="btn ghost" data-go="t4">Come back later</button></div></div>';
 };
 SCR.q1=function(){
- var ring=qlayout(0,ico('truth',M?54:80),SEATS[4].c,'Truth',null,[3,8,13],0);
- ui.innerHTML=chromeQ(3,10)+ring
+ var ring=qlayout(0,lawIco('Truth',M?54:80),SEATS[4].c,'Truth',null,before('Truth'),ringIdx('Truth'));
+ ui.innerHTML=chromeQ(7,10)+ring
   +'<div class="col q"><span class="eyebrow acc">Truth</span><h1 class="'+(M?'h1':'display')+' q1">Somebody asks you for the truth, and it will cost you something. You say it anyway.</h1>'
   +cont({w:M?330:600,pos:.7,val:7,aria:'7 on a scale from 0 to 10.',nums:true,ticks:11})
   +'<div class="legend"><span>0 almost never</span><span>5 half the time</span><span>10 consistently</span></div>'
   +'<div class="row"><button type="button" class="btn pri" data-go="q2">Next</button><button type="button" class="btn ghost" data-go="q2">Skip this one</button></div></div>';
 };
 SCR.q2=function(){
- var ring=qlayout(0,'<span class="sym2">'+ico('side',M?44:64)+ico('separate',M?44:64)+'</span>',SEATS[3].c,'Non-harm',null,[3,8,13,17],17);
- ui.innerHTML=chromeQ(5,10)+ring
+ var ring=qlayout(0,'<span class="sym2">'+ico('side',M?44:64)+ico('separate',M?44:64)+'</span>',SEATS[0].c,'Non-harm',null,[],ringIdx('Non-Harm'));
+ ui.innerHTML=chromeQ(null,10)+ring
   +'<div class="col q"><span class="eyebrow acc">Non-harm</span><h1 class="'+(M?'h1':'display')+' q1">You see two kids fighting. Do you choose a side, or break it up?</h1>'
   +cont({w:M?330:600,pos:.82,aria:'Closer to break it up than to choose a side.',ticks:11})
   +'<div class="poles"><span class="pole">'+ico('side',28)+'Choose a side</span><span class="pole mid">Both</span><span class="pole r">Break it up'+ico('separate',28)+'</span></div>'
@@ -872,6 +948,57 @@ SCR.q3=function(){
   +'<p class="small">This tracks a tendency. It is not who you are.</p>'
   +'<div class="row"><button type="button" class="btn pri" data-go="t4">Next</button><button type="button" class="btn ghost" data-go="t4">Skip this one</button></div></div>';
 };
+
+
+/* ---- the laws list: all 21 by seat, the ten that come first numbered ---- */
+SCR.laws=function(){
+ var cols='';
+ for(var k=0;k<7;k++){
+  var items=RING.filter(function(l){return l.s===k;});
+  cols+='<section class="lawcol" style="--c:'+SEATS[k].c+'"><h2 class="lawseat">'+SEATS[k].n+'</h2>'
+   +items.map(function(l){var n=TEN.indexOf(l.nm);
+    return '<div class="lawrow'+(n>-1?' ten':' wait')+'"><span class="lawic">'+lawIco(l.nm,M?20:26)+'</span><span class="lawnm">'+l.nm+'</span>'+(n>-1?'<span class="lawn" aria-label="Question '+(n+1)+'">'+(n+1)+'</span>':'')+'</div>';}).join('')
+   +'</section>';}
+ setBg({cx:W/2,cy:HT/2,r:Math.min(W,HT)*.5,arcs:false,ticks:false},'');
+ ui.innerHTML='<div class="topl">'+mark()+'</div>'+leaveBtn()
+  +'<div class="lawhead"><span class="eyebrow acc">The laws</span><h1 class="'+(M?'h1':'display')+'">Twenty one laws. You start with ten.</h1>'
+  +(M?'':'<p class="lead">Each law sits in one seat of the body. The ten come first, bottom to top, in the order numbered. The other eleven wait.</p>')+'</div>'
+  +'<div class="lawgrid">'+cols+'</div>'
+  +'<div class="lawfoot"><p class="small">'+(M?'Numbered: asked first. Faint: later.':'Numbered: asked first, in that order. Faint: later. Left to right is the body, bottom to top.')+'</p>'
+  +'<div class="row"><button type="button" class="btn pri" data-go="pat-r">Start</button><button type="button" class="btn ghost" data-go="q0">Back</button></div></div>';
+};
+
+/* ---- worked questions: one law, two formats. Real moment is one act and how
+   often you do it. Dilemma is two acts and where you sit between them. The
+   virtue is not always on the same side of the dilemma, on purpose. ---- */
+var WORK={
+ pat:{law:'Patience',n:1,next:'pat-d',after:'acc-r',
+  real:{t:'Something you want is taking longer than you planned. You let it take that long.',val:4},
+  dil:{t:'Someone you depend on is late with something you need today. Do you take it over, or wait for them?',pos:.64,
+   l:['Take it over','act'],r:['Wait for them','stop']}},
+ acc:{law:'Accountability',n:4,next:'acc-d',after:'com-r',
+  real:{t:'Something went wrong and part of it was yours. You say so before anyone asks.',val:5},
+  dil:{t:'A mistake of yours is being blamed on someone else. Do you say it was yours, or let it stand?',pos:.2,
+   l:['Say it was mine','seeit'],r:['Let it stand','nothing']}},
+ com:{law:'Compassion',n:5,next:'com-d',after:'q1',
+  real:{t:'Somebody near you is hurting, and you cannot fix it. You stay with them anyway.',val:7},
+  dil:{t:'You pass a man asking for money. Do you give him some, or walk on?',pos:.36,
+   l:['Walk on','around'],r:['Give him some','moved']}}};
+function workedReal(w){return function(){var L=w.law,c=SEATS[lawOf(L).s].c;
+ var ring=qlayout(0,lawIco(L,M?54:80),c,L,null,before(L),ringIdx(L));
+ ui.innerHTML=chromeQ(w.n,10)+ring
+  +'<div class="col q"><span class="eyebrow acc">'+L+'</span><h1 class="'+(M?'h1':'display')+' q1">'+w.real.t+'</h1>'
+  +cont({w:M?330:600,pos:w.real.val/10,val:w.real.val,aria:w.real.val+' on a scale from 0 to 10.',nums:true,ticks:11})
+  +'<div class="legend"><span>0 almost never</span><span>5 half the time</span><span>10 consistently</span></div>'
+  +'<div class="row"><button type="button" class="btn pri" data-go="'+w.next+'">Next</button><button type="button" class="btn ghost" data-go="'+w.next+'">Skip this one</button></div></div>';};}
+function workedDil(w){return function(){var L=w.law,c=SEATS[lawOf(L).s].c,d=w.dil;
+ var ring=qlayout(0,'<span class="sym2">'+ico(d.l[1],M?44:64)+ico(d.r[1],M?44:64)+'</span>',c,L,null,before(L),ringIdx(L));
+ ui.innerHTML=chromeQ(w.n,10)+ring
+  +'<div class="col q"><span class="eyebrow acc">'+L+'</span><h1 class="'+(M?'h1':'display')+' q1">'+d.t+'</h1>'
+  +cont({w:M?330:600,pos:d.pos,aria:'A mark between '+d.l[0]+' and '+d.r[0]+'.',ticks:11})
+  +'<div class="poles"><span class="pole">'+ico(d.l[1],28)+d.l[0]+'</span><span class="pole mid">Both</span><span class="pole r">'+d.r[0]+ico(d.r[1],28)+'</span></div>'
+  +'<div class="row"><button type="button" class="btn pri" data-go="'+w.after+'">Next</button><button type="button" class="btn ghost" data-go="'+w.after+'">Skip this one</button></div></div>';};}
+['pat','acc','com'].forEach(function(k){SCR[k+'-r']=workedReal(WORK[k]);SCR[k+'-d']=workedDil(WORK[k]);});
 
 var ROUTE=SCR;
 function show(){clearT();var h=setHash()||'t0';(ROUTE[h]||ROUTE.t0)();document.title='Tutorial, '+h;}

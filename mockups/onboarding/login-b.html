@@ -223,6 +223,7 @@ var ICONS={
  anger:'<circle cx="24" cy="24" r="17"/><path d="M27 11 L20 25 L28 25 L21 37"/>',
  burnout:'<path d="M24 7 A17 17 0 1 1 7 24"/><circle cx="10" cy="16.5" r="1.3"/><circle cx="15.5" cy="10.5" r="1.3"/>',
  fatigue:'<circle cx="24" cy="24" r="17"/><path d="M13 30 H35"/><path d="M18 18 L24 24 L30 18"/>',
+ pain:'<circle cx="24" cy="24" r="17"/><path d="M2 24 H21"/><circle cx="24" cy="24" r="3"/>',
  grief:'<circle cx="24" cy="19" r="12"/><path d="M24 31 V39"/><circle cx="24" cy="43" r="1.4"/>',
  fear:'<circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="3.5"/><path d="M24 10 V16 M24 38 V32 M10 24 H16 M38 24 H32"/>',
  relationships:'<circle cx="13" cy="24" r="8"/><circle cx="35" cy="24" r="8"/><path d="M21 24 H27"/>',
@@ -277,12 +278,16 @@ var ICONS={
 function ico(name,size,cls,extra){
  return '<svg class="ic '+(cls||'')+'" width="'+(size||24)+'" height="'+(size||24)+'" viewBox="0 0 48 48" aria-hidden="true" '+(extra||'')+'>'+(ICONS[name]||'')+'</svg>';}
 
-/* Starting points. PROPOSED seat for each: where the field is lit when the
+/* Starting points, twelve: eleven named and the open door. Round PB: twelve is
+   the main version. Pain came in at the owner's word in round PA and Fatigue
+   went out to make room, because Burnout already names the long tired kind and
+   Pain names the bodily one. Whether twelve is too many is measured in the note
+   frame #start-measure, not argued. PROPOSED seat for each: where the field is lit when the
    person picks it. Not an engine mapping; none exists (review, question 3). */
 var STARTS=[
  {k:'anxiety',n:'Anxiety',s:2},{k:'anger',n:'Anger',s:3},{k:'overwhelm',n:'Overwhelm',s:5},
  {k:'burnout',n:'Burnout',s:1},{k:'grief',n:'Grief',s:4},{k:'fear',n:'Fear',s:0},
- {k:'relationships',n:'Relationships',s:3},{k:'fatigue',n:'Fatigue',s:0},{k:'selfworth',n:'Self-worth',s:2},
+ {k:'relationships',n:'Relationships',s:3},{k:'pain',n:'Pain',s:0},{k:'selfworth',n:'Self-worth',s:2},
  {k:'purpose',n:'Purpose',s:6},{k:'money',n:'Money',s:0},{k:'other',n:'Something else',s:-1}];
 
 /* THE FIELD. 112 ticks, 16 per seat, root at the bottom going clockwise.
