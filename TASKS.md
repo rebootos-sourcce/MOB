@@ -30914,3 +30914,26 @@ protocols."
   light, from the person's CQ and DQ.
 - Left menu: the decoherence hashes run all the way across the bar in colour,
   and the two are named CQ and DQ only. Sent to the left menu build.
+
+## Round OW, 1 October. The torus: bottom to top, built like geometry, distorted by the seats, tied to CQ and the stories, with a trace for leaks
+
+> "yeah, do a torus field that animates from the bottom to the top. around the
+> body. Have it look like geometry. And the 3D geometry like Bezier curves. So
+> you can see how the chakras are influencing and distorting it. And the areas
+> that are closed The, torus field animates poorly or is collapsed. Or isn't
+> radiating out brightly. And that should be tied to the CQ as well. This should
+> be dynamic and tied to the CQ. In fact, the point cloud should be tied to the
+> CQ and the stories, because it's the masks. We should have a trace on it so we
+> can see where we're leaking energy."
+
+**Read as.**
+- The torus flow runs from the bottom of the body to the top, around the body.
+- It is drawn as geometry: 3D curves (Bezier paths), so a person can see each
+  seat bending and distorting the torus.
+- A closed seat shows as the torus there animating poorly, collapsed, or not
+  radiating brightly.
+- It is dynamic and tied to CQ; the point cloud (the mask) is tied to CQ and to
+  the stories.
+- Trace on it: where the energy is leaking, visible.
+- Also this round: the owner asked for the "Fix teacher drill axis position and
+  Brow lookup" task to be done now (task 71).
