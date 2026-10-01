@@ -34,6 +34,7 @@ engine/overlap.js
 engine/seed.js
 engine/read.js
 engine/ladder.js
+engine/daily.js
 engine/outbox.js
 engine/profiles.js
 engine/export.js

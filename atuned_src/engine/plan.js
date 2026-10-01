@@ -95,7 +95,10 @@ function planWeeks(at,now){
    obligation attached.
    ============================================================ */
 const LEAD_SEES=['fetters','saboteurs','complexes','hyper complexes','analytics'];
-const LEAD_HIDDEN=['the story cloud','the spiritual material','the tools themselves'];
+const LEAD_HIDDEN=['the story cloud','the spiritual material','the tools themselves',
+ /* a daily summary is a derived join of the story and the record, and the
+    person's own aim is written into its bank, so it takes the story's class */
+ 'the daily summary'];
 function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
 /* the pain map and the tools are on every tier, ruled, so they are named
    here rather than left for a renderer to remember */

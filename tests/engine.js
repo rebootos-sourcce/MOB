@@ -5741,6 +5741,10 @@ g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a se
 require('./trace.js')(E,ok,g);
 /* the practice objects, engine/practice.js, with this file's own ok and g */
 require('./practice.js')(E,ok,g,console.log);
+/* the daily summary, engine/daily.js. It runs its suites on a private copy of
+   the engine so its fixtures never move this file's own state, and reports
+   through this file's ok and g. */
+require('./daily.js')(E,ok,g,console.log);
 /* THE TWO NEW DOMAINS MEET. practiceTraceIntents is what the practice build says
    about itself and traceApply is what the graph takes in, built apart by two
    hands. A practice built through the one door, its intents applied to a fresh

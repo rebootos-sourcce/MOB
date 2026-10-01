@@ -125,6 +125,11 @@ function blankProfile(name){
  /* the trace graph's stored half, engine/trace.js. Only what cannot be
     derived from the record lives here; everything else is read off it. */
  p.trace=traceNew();
+ /* the bank of frozen days, engine/daily.js. Additive: an older record has
+    none and is filled from this blank, and no SCHEMA_V bump, which is the
+    owner's call. Named here AND at the boundary below, because a key the
+    boundary does not name is deleted on the next load. */
+ p.summaries=dlyBlank();
  return p;}
 /* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
    LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
@@ -175,6 +180,9 @@ function loadProfile(p){
  /* a record from before the practice objects has none, which is a record
     nobody has built a practice on yet */
  if(!p.practice||typeof p.practice!=='object'||Array.isArray(p.practice))p.practice=practiceBlank();
+ /* and a record from before the daily summary has no bank of days, which is a
+    record that has never opened one */
+ if(!p.summaries||typeof p.summaries!=='object'||Array.isArray(p.summaries))p.summaries=dlyBlank();
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -1136,6 +1144,12 @@ function validateProfile(o){
   var tv=validateTrace(o.trace);
   if(tv.ok)p.trace=tv.trace;
   else tv.errs.forEach(function(e){errs.push('trace.'+e);});}
+ /* THE BANK OF FROZEN DAYS, through its own boundary (dlyValidate,
+    engine/daily.js), into the same errs, so one bad day refuses the whole
+    record and pImport stays atomic. Missing or null is an older record and
+    keeps the blank. The name is handed in for the one rule about it. */
+ if(o.summaries!==undefined&&o.summaries!==null)
+  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has

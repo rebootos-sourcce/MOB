@@ -31,7 +31,12 @@ var OB_NEVER=['name','first','middle','last','email','address','key','rk','rid',
  'customer','subscription','stripe','token','code','cookie','story','stories',
  'journal','imprints','born','birth','date','dob','cq','dq','sq','seed','type',
  'axes','laws','answers63','gates','device','ua','ip','geo','timezone','locale',
- 'practitioner','roster','avatar','purpose','history','meter'];
+ 'practitioner','roster','avatar','purpose','history','meter',
+ /* the bank of frozen days is built from the story and carries the person's own
+    aim, so it takes the story's class: on the device and never in an envelope.
+    Named here because a name left off this list is a silent hole (audit probe
+    X7). aim is the stored word for the daily intention, engine/daily.js. */
+ 'summaries','summary','mirror','aim','aims'];
 
 function obStore(){ try{ return JSON.parse(STORE.get(OBKEY)||'[]'); }catch(e){ return []; } }
 function obWrite(q){

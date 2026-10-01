@@ -290,13 +290,30 @@ function traceAddrWhy(id){
  if(TRACE_ADDR_ALIAS.test(id))return id+' is the spoken form; an address is stored as its number';
  if(!/^[0-9]+$/.test(id))return id+' is not an address number';
  return BY[+id]?null:id+' is not one of the 112 addresses';}
+/* A PATTERN IS AN ADDRESS OR ONE OF THE NINE FETTERS. practicePatternOk
+   (engine/practice.js) has always allowed a protocol to target fetter:Fear,
+   and this refused it twice with "is not an address number", so every intent
+   from a protocol aimed at a fetter was dropped from the graph without a word
+   (audit probe X6, SUMMARY-AUDIT.md). The two builds were each right alone and
+   disagreed at the seam. Repaired here, in the graph, because the graph is the
+   side that was narrower than the document: section 16 says a pattern, and a
+   fetter is one. Expanding a fetter into its addresses on the practice side
+   would instead have invented a link from a dozen addresses nobody named. The
+   spelling is the one practice writes, fetter:Name, and it is stored as it is
+   written, with no second spelling to alias. Release and reframe keys still
+   name an address and nothing else. */
+var TRACE_FETTER=/^fetter:(.+)$/;
+function tracePatternWhy(id){
+ var m=TRACE_FETTER.exec(id);
+ if(m)return CHARGES.indexOf(m[1])>=0?null:id+' is not one of the nine fetters';
+ return traceAddrWhy(id);}
 /* why an id cannot be one of this type, or null */
 function traceIdWhy(type,id){
  if(id===null)return 'id is not a string or a whole number';
  if(!id.length)return 'id is empty';
  if(id.length>TRACE_ID_MAX)return 'id is '+id.length+' characters and the cap is '+TRACE_ID_MAX;
  if(/[\u0000-\u001f]/.test(id))return 'id carries a control character';
- if(type==='pattern')return traceAddrWhy(id);
+ if(type==='pattern')return tracePatternWhy(id);
  if(type==='release'||type==='reframe'){
   var parts=id.split(':');
   if(parts.length!==2||!parts[1])return id+' is not an address and a channel';
@@ -732,6 +749,8 @@ function traceWithSoul(p,fn){
   W.forEach(function(n,i){n.susc=keep.susc[i];});}}
 
 function tracePatternAttrs(i){
+ var f=TRACE_FETTER.exec(String(i));
+ if(f)return {name:f[1], seat:null, nerve:null, fetter:f[1]};
  var n=BY[+i]; return n?{name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null}:{};}
 
 /* ============================================================

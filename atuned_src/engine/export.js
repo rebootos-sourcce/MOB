@@ -294,6 +294,24 @@ if(typeof module!=='undefined'&&module.exports){
                   PR_MISS:PR_MISS, PR_ADAPT:PR_ADAPT, PR_EVENTS:PR_EVENTS, PR_NODE:PR_NODE, PR_EDGE:PR_EDGE,
                   PR_PROTO_ST:PR_PROTO_ST, PR_DIM:PR_DIM, PR_FLOW:PR_FLOW, PR_NEVER:PR_NEVER,
                   PR_MISS_AT:PR_MISS_AT, PR_SPEC:PR_SPEC, PR_ARGS:PR_ARGS, PR_CAP:PR_CAP,
+  /* the daily summary, engine/daily.js. The tables are exported as the live
+     objects so the gate can hold them to the TDD's own lists and mutate a copy
+     of the engine to prove the gate bites. */
+                  DLY_SCHEMA_V:DLY_SCHEMA_V, DLY_RULES:DLY_RULES, DLY_BLOCKS:DLY_BLOCKS,
+                  DLY_RUNGS:DLY_RUNGS, DLY_SRC:DLY_SRC, DLY_RANK:DLY_RANK, DLY_ANSWER:DLY_ANSWER,
+                  DLY_RESP:DLY_RESP, DLY_RESP_TEXT:DLY_RESP_TEXT, DLY_EV:DLY_EV, DLY_REC:DLY_REC,
+                  DLY_CAP:DLY_CAP, DLY_SCORE:DLY_SCORE, DLY_LOSS:DLY_LOSS, DLY_SILENT:DLY_SILENT,
+                  DLY_MOVE:DLY_MOVE, DLY_NOTE_PHRASES:DLY_NOTE_PHRASES, DLY_CANON:DLY_CANON,
+                  DLY_TPL:DLY_TPL, DLY_GATES:DLY_GATES, DLY_AIM_WORD:DLY_AIM_WORD,
+                  DLY_NOVEL_DAYS:DLY_NOVEL_DAYS, DLY_EDU_DAYS:DLY_EDU_DAYS,
+                  dlyBlank:dlyBlank, dlyValidate:dlyValidate, dlyDay:dlyDay, dlyDayWord:dlyDayWord,
+                  dlyTpl:dlyTpl, dlyFill:dlyFill, dlyNamesOf:dlyNamesOf,
+                  dlyAimOf:dlyAimOf, dlyAimFold:dlyAimFold, dlyStanding:dlyStanding,
+                  dlyAimSet:dlyAimSet, dlyAimAnswer:dlyAimAnswer, dlyRespond:dlyRespond,
+                  dlyToday:dlyToday, dlySize:dlySize,
+                  dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
+                  dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
+                  dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
