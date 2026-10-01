@@ -5562,5 +5562,9 @@ g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a se
  refuse(Array(srcAskedMax()+1).fill({k:'again',seat:'solar',a:'moved'}),'more than the','a record longer than every kind at every seat');
 }
 
+/* the trace graph, engine/trace.js. Its gate is its own file and reports
+   through this one's ok(), so its count is in the line below. */
+require('./trace.js')(E,ok,g);
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
