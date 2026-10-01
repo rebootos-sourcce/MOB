@@ -31037,3 +31037,37 @@ Onboarding rulings (answers to the nine in PLAN.md section H)
   behaving and acting that I am ...". Five channels, in that order, with
   "releasing"; this differs from the shipped stem (six channels, "letting go").
 - 7 and 9 are not answered.
+
+## Round OY, 1 October. The journal still misses mad, depressed, irritable; Nested rings and Ridgeline combined
+
+> [A screenshot of the journal: the entry reads "Journal I had a really *******
+> rough day today. I had a confrontation with my boss. I was really irritated by
+> him. He showed no remorse. Towards how I felt. I didn't know what to do. It
+> made me depressed. Umm, it made me irritable. It made me frustrated. And. It
+> made me mad." The panel says "53 words read, 1 kept, 1 set aside as negated"
+> and "Nothing read yet, so nothing is asked." The opener still reads "What
+> would you like to write about today?" (the build he is on is the earlier
+> one).]
+>
+> "it's not picking up words like mad and sad. Or depressed. I'm sorry, not it's
+> picking up sad, but it's not picking up depressed. Nested rings and ridge line
+> win. Can you combine those two together? This will show me all the active
+> layers running. Except the center ring it'll show all the fetters active
+> popping on and off sometimes this a saboteur I can I can view it by saboteur I
+> can view it by complex and hyper complex and then I can see all the
+> connections between them and then get a summary off that. I'm not sure what I
+> want to interact with here yet."
+
+**Read as.**
+- The sniffer again, now with the exact entry. Misses: mad, depressed,
+  irritable, frustrated, irritated (and the confrontation). "Sad" is read. The
+  masked word is still asterisks (the build he has predates the fix). "Nothing
+  read yet, so nothing is asked" is the old question engine saying nothing:
+  the rebuilt chain should ask about this entry. The entry is added as a
+  regression fixture to the sniffer build.
+- Matrix and gears: Nested rings (the gears picture) and Ridgeline (the matrix
+  picture) win and are combined: one view of all the active layers running,
+  leaving out the centre ring, with the fetters popping on and off. He can view
+  it by saboteur, by complex, and by hyper complex, see all the connections
+  between them, and get a summary off that. He does not know yet what he wants to
+  interact with: so mockups show interaction options rather than decide one.
