@@ -3098,6 +3098,7 @@ const pmn=await page.evaluate(async()=>{
  const m=document.getElementById('profmenu');
  o.open=!!m&&!m.hidden&&document.getElementById('profbtn').getAttribute('aria-expanded')==='true';
  o.items=m?[...m.querySelectorAll('[role=menuitem]')].map(e=>e.textContent.trim()):[];
+ o.sfx=m?(()=>{const b=m.querySelector('[data-pmsfx]');return b?{h:b.getBoundingClientRect().height,on:b.getAttribute('aria-checked')}:null;})():null;
  o.want=ACC_SECS.map(s=>s.nm).concat(['Settings']);
  o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
  o.stillField=S.tab===TAB.FIELD;
@@ -3123,6 +3124,7 @@ const pmn=await page.evaluate(async()=>{
  return o;});
 ok(pmn.open&&JSON.stringify(pmn.items)===JSON.stringify(pmn.want)&&pmn.tall>=44&&pmn.stillField,
  'OI: the profile button opens a menu of the account sections and Settings, every row at the 44px floor, '+JSON.stringify({open:pmn.open,items:pmn.items,tall:pmn.tall}));
+ok(pmn.sfx&&pmn.sfx.h>=44&&pmn.sfx.on==='true','OJ: the profile menu carries the Sound effects switch, on by default, at the 44px floor, '+JSON.stringify(pmn.sfx));
 ok(pmn.page&&pmn.allOpen&&pmn.esc&&pmn.single,'OI: a section row opens the page on that section, Escape shuts the menu, and Settings opens the single page, '+JSON.stringify({page:pmn.page,esc:pmn.esc,single:pmn.single}));
 ok(pmn.glow.field===4&&pmn.glow.body===4&&pmn.glow.compass===4&&pmn.glow.character>=1,
  'OI: the same four pools of faint colour sit behind the Field, the Body, the Compass and Character, '+JSON.stringify(pmn.glow));

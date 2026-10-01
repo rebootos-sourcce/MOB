@@ -30324,3 +30324,70 @@ halves, heart, plexus names).
 Field and Body style; the Summary layout review (three passes) with the
 person's name, root meaning and energetics in grounded language; the copy
 sweep. Disk is the limit: each agent copy is about 650 MB.
+
+## Round OJ. Sound on by default, sight by tier with locks, the avatar pivot, the name meanings, the practitioner rulings
+
+His words, verbatim:
+
+"yes, sound on by default. With the sound on off in the profile. Copy that on
+no points. Run with it. Yeah, site you see your own reading. However, the
+tiers the differences are tier one can see saboteurs, tier two can see
+saboteurs and complexes, tier three and four can see hypercomplexes on. That
+means that can't they can't see what's running them in the field or the body
+or how the point cloud is expressed or the child masks. Those buttons would
+be grayed out to them. With a little lock over it. If they hover over it, it
+says gives them a little description of what's locked. And where to go to
+unlock it. with a button that takes them to an upgrade. the, the the upgrades
+page is part of the paywall. It shows them which tier they currently have. And
+then shows you the benefits of going to the other tiers. We're pivoting to the
+new avatar. Yeah, so for the summary header, not the header itself, but for
+the summary, on the right side, because this is information that won't change,
+we want the root energetic meanings of their name. For example, my name's
+Lance O'Neill Powell, O apostrophe N-E-A-L. The root energetic meanings, means
+to pierce, champion, and exalted. My root behaviors had you not told me that I
+act like that anyway. And so people tend to behave in accordance to the
+energies of their name. After you get your first root energetics, after you
+are severed from your mother's umbilical cord, The very next thing is your
+name. So we're showing the person what their name means so that you can
+understand how these things are all driving everything. This is really kind of
+like a cascade of drivers. Uh, the summary. You know, I don't think we need a
+head and shoulders. I just think we need the upper and lower torso. And we can
+put the head sorry. Keep the head, we don't need the heart or spine. Because
+those are inside the upper and lower torso. Yeah, I think that the
+practitioner can recommend make suggestions to their ritual and to their
+protocol I, I thought at the moment active means like clients that are online
+active Yeah, practitioner can edit their own additions. But they cannot touch
+the person's side data. We never want to give control to privacy violation.
+Notes are two kinds. Private and shared. May the right panel read a person's
+story with the person's can you give me both outputs so I can just see what
+that looks like um let's call it coach and practitioner This is one a better
+word that's one word that sums it up. Okay, read this three times, figure out
+where it needs to go in our plan, and then add the everything that I've been
+adding over the last few rounds, make sure they're added to the plan."
+
+**Read three times.**
+1. *What he said.* Sound defaults on, with a switch in the profile menu. Points
+   never go down, as the team put it. A person sees their own reading; what
+   they cannot see is gated by tier: tier one saboteurs, tier two saboteurs and
+   complexes, tiers three and four hyper complexes onward. Locked views are
+   greyed with a lock, explain themselves on hover, and carry a button to the
+   upgrade page, which shows the current tier and the benefits of the others.
+   The avatar work pivots to the new document. The Summary gets a right-hand
+   panel of the root meanings of the person's name. Body place words are the
+   head, the upper torso and the lower torso. Practitioners suggest rituals and
+   protocols, edit only their own additions, never the person's side, notes
+   are private or shared, "active" means online now, and he wants to see both
+   versions of the right panel.
+2. *What it changes.* It reverses "Sight is not for sale" and "every tier sees
+   the whole reading" (plan.js, the buy page, the tiers copy and tests). It
+   settles the sound default and moves the stored fact to the OFF (`sfxoff`).
+   It makes the practitioner page's first slices buildable with the ruled
+   boundaries. It makes the Avatar build follow the Becoming document.
+3. *What stays open.* The tier for the Compass registers view and the Character
+   masks (proposed two and three). Where the name meanings come from, since no
+   table exists. Which seats the upper and lower torso map to. What
+   "coach and practitioner" resolves to (read as: one role called
+   Practitioner, which includes coaches, as `DECISIONS.md` already says).
+   Whether the right panel may read the story, which he asked to see both of.
+
+The consolidated plan is `PLAN.md`.

@@ -304,10 +304,11 @@ function buzz(pat){
    SILENCE IS THE DEFAULT, and every switch below can only make it
    quieter. Five things hold it silent, read in sfxWhy:
 
-     off            the switch in Settings, Display, Sound. Off on
-                    every profile until the person turns it on. A
-                    sound is in their ears, the reason the seat tone
-                    is off for, and it is the same reason here.
+     off            the switch, in the profile menu and in Settings,
+                    Display, Sound. ON on every profile until the
+                    person turns it off, round OJ, his ruling: "sound
+                    on by default". The seat tone and the release's own
+                    switches are unchanged and stay off until chosen.
      quiet          the Quiet switch. A person who reached for less
                     on the screen did not ask for more in the ear.
      release        a release is running. It is its own room with its
@@ -494,8 +495,11 @@ function sfxRoomHeld(){
 /* WHY IT IS SILENT, or '' when it may sound. One reader for every switch, so
    the gate and the setting say the same thing. */
 function sfxWhy(){
- var u=(typeof CURP!=='undefined'&&CURP&&CURP.ui)||null;
- if(!u||!u.sfx)return 'off';
+ /* ON UNLESS THE PERSON TURNED IT OFF, round OJ. His words: "yes, sound on by
+    default. With the sound on off in the profile." So every profile plays
+    until it says sfxoff, which only the person's own press writes. */
+ var u=(typeof CURP!=='undefined'&&CURP)?(CURP.ui||{}):null;
+ if(!u||u.sfxoff===true)return 'off';
  if(u.quiet)return 'quiet';
  if(sfxRoomHeld())return 'release';
  if(!sfxGestured())return 'no press yet';

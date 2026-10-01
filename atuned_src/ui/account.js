@@ -357,7 +357,7 @@ function accDisplay(){
     gets no switch, because a control that cannot act is not offered. */
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
-    ? accTog('Sound effects','acsfx',!!(CURP&&CURP.ui&&CURP.ui.sfx),
+    ? accTog('Sound effects','acsfx',!(CURP&&CURP.ui&&CURP.ui.sfxoff),
        'a short sound when something is kept, done or refused, and when a timer ends')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
@@ -570,8 +570,8 @@ function accWire(){
  /* turned on, it plays the commonest one at once, so the person hears what
     they turned on and can set the volume by it. Only once the save landed. */
  var sx=$('acsfx');
- if(sx)sx.onclick=function(){var on=!(CURP.ui&&CURP.ui.sfx);
-  if(uiSet('sfx',on)&&on&&typeof sfx==='function')sfx('kept'); renderAccount();};
+ if(sx)sx.onclick=function(){var on=!!(CURP.ui&&CURP.ui.sfxoff);
+  if(uiSet('sfxoff',!on)&&on&&typeof sfx==='function')sfx('kept'); renderAccount();};
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');
@@ -642,17 +642,23 @@ function profMenu(){
    var x=document.getElementById('profmenu'); if(!x||x.hidden)return;
    if(e.key==='Escape'){profMenuShut(); var pb=document.getElementById('profbtn'); if(pb)pb.focus(); return;}
    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
-    var it=[].slice.call(x.querySelectorAll('[role=menuitem]')), i=it.indexOf(document.activeElement);
+    var it=[].slice.call(x.querySelectorAll('[role^=menuitem]')), i=it.indexOf(document.activeElement);
     i=e.key==='ArrowDown'?(i+1)%it.length:(i-1+it.length)%it.length; it[i].focus(); e.preventDefault();}});}
  if(!m.hidden){profMenuShut(); return;}
  var who=(typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile';
  var ses=(typeof authSession==='function')?authSession():null;
+ var sfxOn=!(CURP&&CURP.ui&&CURP.ui.sfxoff);
  m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'
   +ACC_SECS.map(function(s){
    return '<button type="button" role="menuitem" class="pm-it" data-pms="'+s.k+'" style="--c:'+seatCol(s.b)+'">'
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+s.ic+'</svg></span>'
     +'<span>'+esc(s.nm)+'</span></button>';}).join('')
   +'<div class="pm-sep" role="separator"></div>'
+  +((typeof bedCan==='function'&&bedCan())
+   ?'<button type="button" role="menuitemcheckbox" class="pm-it pm-sfx" data-pmsfx="1" aria-checked="'+sfxOn+'">'
+    +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
+    +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
+    +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
   +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
   +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
@@ -661,12 +667,17 @@ function profMenu(){
    +'<path d="M9 4.5H6.5A1.5 1.5 0 005 6v12a1.5 1.5 0 001.5 1.5H9M14 8l4 4-4 4M18 12H9"/></svg></span><span>Sign out</span></button>':'');
  m.querySelectorAll('[data-pms]').forEach(function(x){
   x.onclick=function(){profMenuGo(x.getAttribute('data-pms'));};});
+ var sw=m.querySelector('[data-pmsfx]');
+ if(sw)sw.onclick=function(){
+  var on=!!(CURP&&CURP.ui&&CURP.ui.sfxoff);
+  if(uiSet('sfxoff',!on)){sw.setAttribute('aria-checked',on?'true':'false');
+   if(on&&typeof sfx==='function')sfx('kept');}};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();
  m.style.top=(r.bottom+8)+'px'; m.style.right=Math.max(8,window.innerWidth-r.right)+'px';
  m.hidden=false; b.setAttribute('aria-expanded','true'); b.setAttribute('aria-haspopup','menu');
- var f=m.querySelector('[role=menuitem]'); if(f)f.focus();}
+ var f=m.querySelector('[role^=menuitem]'); if(f)f.focus();}
 function accSignOut(){
  if(ACC_BUSY||typeof authSignOut!=='function')return false;
  ACC_BUSY=true; accBusy(true);

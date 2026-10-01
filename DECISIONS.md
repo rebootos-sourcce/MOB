@@ -2550,3 +2550,50 @@ in `PRACTITIONER-STORY.md`. The gap to MVP is in `MVP-GAP.md`.
 
 **The profile button opens a menu** of the account sections, with Settings
 (the single page) and Sign out.
+
+## Round OJ, 1 October. Rulings
+
+**Sound is on by default.** "Yes, sound on by default. With the sound on off in
+the profile." The stored fact is now the off (`ui.sfxoff`), so the old stored
+`sfx:false`, which was the blank's own default and not a choice, cannot keep a
+person silent. The switch is in the profile menu and in Settings, Display.
+
+**Points never go down, and they exist.** "Copy that on no points. Run with
+it." Points only rise. Whether they can ever buy patterns waits for accounts.
+
+**Sight by tier is real. This reverses "Sight is not for sale" and "every tier
+sees the whole reading".** His words: "you see your own reading. However the
+tiers, the differences are: tier one can see saboteurs, tier two can see
+saboteurs and complexes, tier three and four can see hyper complexes on. That
+means they can't see what's running them in the field or the body or how the
+point cloud is expressed or the child masks. Those buttons would be grayed out
+to them with a little lock over it. If they hover over it, it gives them a
+little description of what's locked, and where to go to unlock it, with a
+button that takes them to an upgrade. The upgrades page is part of the paywall.
+It shows them which tier they currently have, and then shows you the benefits
+of going to the other tiers." Free sees the 112 addresses, domains,
+archetypes, laws, gates and shadow. This is a product boundary on the person's
+own device and is not security.
+
+**The avatar work pivots to the new document** (`ATUNED-becoming-system-TDD.md`,
+audited in `BECOMING-AUDIT.md`).
+
+**The Summary carries the root meanings of the person's name,** in a right-hand
+panel, because the information does not change. His example: Lance, to pierce;
+O'Neill, champion; Powell, exalted. "People tend to behave in accordance to the
+energies of their name... after you are severed from your mother's umbilical
+cord, the very next thing is your name... a cascade of drivers." No table of
+name meanings exists yet.
+
+**Body place words are the head, the upper torso and the lower torso.** "We
+don't need the heart or spine, because those are inside the upper and lower
+torso." Shoulders are not needed. Which seats each torso covers is not yet
+ruled.
+
+**Practitioner.** A practitioner may recommend (make suggestions on) a person's
+ritual and protocol. "Active" means clients who are online. A practitioner may
+edit their own additions and may not touch the person's side data: "We never
+want to give control to privacy violation." Notes are of two kinds, private and
+shared. He asked to see both versions of the right panel (structure only, and
+story-derived with the person's yes) before ruling. The role's word is
+Practitioner, which includes coaches.

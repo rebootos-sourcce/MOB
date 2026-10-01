@@ -134,7 +134,7 @@ async function soundGate(browser,FILE,ok,booted){
 
  /* ---------- 5. nothing before a press ---------- */
  const pre=await pg.evaluate(()=>{
-  CURP.ui=CURP.ui||{}; CURP.ui.sfx=true; CURP.ui.quiet=false;
+  CURP.ui=CURP.ui||{}; CURP.ui.sfxoff=false; CURP.ui.quiet=false;
   /* act is the browser's own flag, reported and not asserted: a harness that
      runs script into the page is counted by the browser as a press */
   var r={act:!!(navigator.userActivation&&navigator.userActivation.hasBeenActive), why:sfxWhy(),
@@ -160,15 +160,21 @@ async function soundGate(browser,FILE,ok,booted){
  /* ---------- 2 and 3. the switch, and Quiet ---------- */
  const sw=await pg.evaluate(()=>{
   var o={};
-  CURP.ui.sfx=false; CURP.ui.quiet=false;
+  CURP.ui.sfxoff=true; CURP.ui.quiet=false;
   var n0=window.__nodes;
   o.off={why:sfxWhy(), r:[sfx('kept'),sfx('undo'),sfx('refuse'),sfx('mark'),sfx('done'),sfx('time')]};
   status('A refusal with the switch off.','fail');
   o.off.made=window.__nodes-n0;
-  CURP.ui.sfx=true; CURP.ui.quiet=true; n0=window.__nodes;
+  CURP.ui.sfxoff=false; CURP.ui.quiet=true; n0=window.__nodes;
   o.quiet={why:sfxWhy(), r:[sfx('kept'),sfx('undo'),sfx('refuse'),sfx('mark'),sfx('done'),sfx('time')]};
   o.quiet.made=window.__nodes-n0;
+  /* ROUND OJ, SOUND IS ON BY DEFAULT: a profile that never said anything, and
+     one carrying the old blank's sfx:false, are both open; only sfxoff shuts it */
+  CURP.ui.quiet=false; delete CURP.ui.sfxoff; CURP.ui.sfx=false;
+  o.dflt=sfxWhy();
+  var fresh=blankProfile?blankProfile('x'):null; o.blank=fresh&&fresh.ui.sfxoff;
   return o;});
+ ok(sw.dflt!=='off'&&sw.blank===false,'ON BY DEFAULT: a profile that never turned it off is not silent by the switch, and the blank carries sfxoff false, '+JSON.stringify({dflt:sw.dflt,blank:sw.blank}));
  ok(sw.off.why==='off'&&sw.off.r.every(x=>x===false)&&sw.off.made===0,
   'with the switch off, every fitting and a refusal through status make zero audio nodes, '+JSON.stringify(sw.off));
  ok(sw.quiet.why==='quiet'&&sw.quiet.r.every(x=>x===false)&&sw.quiet.made===0,
@@ -177,9 +183,9 @@ async function soundGate(browser,FILE,ok,booted){
  const swBite=await pg.evaluate(()=>{
   var keep=window.sfxWhy, out={};
   window.sfxWhy=function(){return '';};
-  CURP.ui.sfx=false; CURP.ui.quiet=false; var n0=window.__nodes;
+  CURP.ui.sfxoff=true; CURP.ui.quiet=false; var n0=window.__nodes;
   out.off=sfx('kept'); out.offMade=window.__nodes-n0;
-  CURP.ui.sfx=true; CURP.ui.quiet=true; n0=window.__nodes;
+  CURP.ui.sfxoff=false; CURP.ui.quiet=true; n0=window.__nodes;
   out.quiet=sfx('done'); out.quietMade=window.__nodes-n0;
   window.sfxWhy=keep; CURP.ui.quiet=false;
   return out;});
@@ -261,7 +267,7 @@ async function soundGate(browser,FILE,ok,booted){
   REL_WORD_S=0.0004; REL_GAP_S=0.001; REL_HEAD_S=0; REL_FRAME_S=0;
   if(window.speechSynthesis)speechSynthesis.speak=function(u){ setTimeout(function(){ if(u.onend)u.onend({}); },1); };
   loadP(0); CHARGES.forEach(c=>{S.charge[c]=7;});
-  CURP.ui.sfx=true; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
+  CURP.ui.sfxoff=false; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
   var keepRoom=window.sfxRoomHeld;
   if(bite)window.sfxRoomHeld=function(){return false;};
   relPick(compute().carrying.slice(0,1).map(n=>n.i));
@@ -305,7 +311,7 @@ async function soundGate(browser,FILE,ok,booted){
 
  /* ---------- the setting ---------- */
  await pg.waitForTimeout(400);
- const acc=await pg.evaluate(()=>{loadP(0); CURP.ui.sfx=false; CURP.ui.quiet=false;
+ const acc=await pg.evaluate(()=>{loadP(0); CURP.ui.sfxoff=true; CURP.ui.quiet=false;
   setTab(TAB.SETTINGS); if(typeof ACC_OPEN!=='undefined')ACC_OPEN='display'; renderAccount();
   const b=document.getElementById('acsfx');
   return {has:!!b, on:b&&b.getAttribute('aria-checked'), role:b&&b.getAttribute('role'),
@@ -316,12 +322,12 @@ async function soundGate(browser,FILE,ok,booted){
   await pg.waitForTimeout(1600);
   const p0=await pg.evaluate(()=>SFX_PLAYED);
   await pg.click('#acsfx'); await pg.waitForTimeout(120);
-  const a1=await pg.evaluate(p0=>({on:!!CURP.ui.sfx, sw:document.getElementById('acsfx').getAttribute('aria-checked'),
-   played:SFX_PLAYED-p0, stored:(function(){try{return JSON.parse(JSON.stringify(validateProfile(JSON.parse(pExport())).profile.ui.sfx));}
+  const a1=await pg.evaluate(p0=>({on:!CURP.ui.sfxoff, sw:document.getElementById('acsfx').getAttribute('aria-checked'),
+   played:SFX_PLAYED-p0, stored:(function(){try{return JSON.parse(JSON.stringify(validateProfile(JSON.parse(pExport())).profile.ui.sfxoff));}
     catch(e){return 'unread: '+e.message;}})()}),p0);
   ok(a1.on&&a1.sw==='true'&&a1.played===1,'turned on, it is on and plays one sound so the person hears what they '
    +'turned on, '+JSON.stringify(a1));
-  ok(a1.stored===true,'and the profile boundary keeps it rather than dropping an unknown key, '+JSON.stringify(a1.stored));}
+  ok(a1.stored===false,'and the profile boundary keeps the switch rather than dropping an unknown key, '+JSON.stringify(a1.stored));}
  ok(err.length===0,'no page errors, '+err.join(' | '));
  await ctx.close();}
 

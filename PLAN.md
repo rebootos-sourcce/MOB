@@ -1,447 +1,89 @@
-# The build plan
-
-## State
-
-    BLOCK  1 summary          DONE   3990px to 2892, plate, reading has a home,
-                                     everything structural right, output row
-    BLOCK  2 field look dev   PART   chords carry weight and susceptibility,
-                                     60fps, thresholds down. Scale and the
-                                     travelling charge remain
-    BLOCK  3 compass look dev DONE   flat toggle, six axis arrows, Dante
-                                     layers, oscillation over 30/90/365
-    BLOCK  4 knowledge        DONE   the stack and the universal laws are
-                                     findable, masks have a deck, and every
-                                     card in all twelve decks wears a mark.
-                                     33 new icons. A gate holds the rule
-    BLOCK  5 two lightings    DONE   Glass white and Flat. Six, gate proves it
-    BLOCK  6 story + release  PART   story column split, release settings and
-                                     run in place. Standalone tab remains
-    BLOCK  7 tools scrub      OPEN
-    BLOCK  8 body             PART   the Nummenmaa treatment: filled
-                                     silhouette, one continuous field, clipped
-                                     at the skin. Markers are rings so the
-                                     field shows through. Pain map opens blank
-                                     and is painted on the figure. Chakra image
-                                     and zoom to region remain
-    BLOCK  9 intake           OPEN
-    BLOCK 10 games            PART   its own tab again. The games themselves open
-    BLOCK 11 onboarding       OPEN
-    BLOCK 12 the ladder       PART   engine module, 16 marks with their own
-                                     icons, streak, ledger, accountability
-                                     half, on the compass. No count against a
-                                     total anywhere, gated. Ritual builder was
-                                     already there. Points and tiers remain
-    BLOCK 13 intro variants   OPEN
-    BLOCK 14 motion system    PART   3 curves, 4 durations, every transition
-                                     tokened. 381 of 384 elements ran on the
-                                     browser default ease, now zero. Bead ease
-                                     is time based. Tab entrance in. Gate 12
-                                     holds it. Reading acknowledgement and the
-                                     Body pulse remain
-    BLOCK 15 simulations      OPEN
-    BLOCK 16 energetics       OPEN   redesign, questions on side by side cards
-                                     coloured by their seat, and the accuracy
-                                     note. Owner, 19 September
-    BLOCK 17 ritual + account OPEN   the third button in. Spec landed, 1496
-                                     lines, six passes. Wiring next
-    BLOCK 18 the phone        OPEN   a mobile version that the page serves
-                                     itself. Owner, 19 September   the third button in. Spec with the whole
-                                     team, six passes, then wired
-
-
-Written because the owner asked for the list in blocks, after finding that a
-mountain of work sat queued while small fixes shipped. That is a fair reading
-of what happened and this is the correction.
-
-Every block below is verified against the code, not against memory. Sizes are
-honest against this codebase. Dependencies are named. Nothing here is
-started unless it says so.
-
-**The rule for this plan:** a block is not done when the code is written. It
-is done when the four gates are green, a screenshot has been looked at, and
-the thing it was asked for is visibly true on screen.
-
----
-
-## BLOCK 1. The summary. Named four times, still wrong.
-
-**Verified state.** `sumFull` renders glance, then story and structure side by
-side, then the spiritual layer, then numerology. Exactly the order he
-described as broken: the blueprint stack, the chain beneath it, numerology at
-the bottom. The reading paragraph has no container, so it is text on the page
-ground. 3990px tall, 115 interactive elements, the person's name first
-appearing 1.9 screens down inside a numerology sentence.
-
-**Build.**
-1. The plate. First name at display size, the band and the direction out of
-   it beside it. Full bleed, no box.
-2. The reading gets a home: a display panel with its own ground, its own
-   edge, and room around it. This is the "text field behind the text".
-3. Everything structural moves to the right column: blueprint, primary,
-   secondary, masks, expression, soul urge, numerology. The centre carries
-   the reading and nothing else.
-4. Moral integrity as its own block, which he asked for by name and which
-   needs no new arithmetic.
-5. The output row: the protocol this state calls for, the release the field
-   calls for, the next marker. The block the page has none of.
-6. Analytics leaves Summary entirely and becomes its own tool with its own
-   header.
-
-**Size.** Large. `ui/summary.js` is a rewrite, `shell/head.html` gains a
-layout.
-**Depends on.** Nothing.
-**Proof.** Under 40 interactive elements at rest, under two screens tall, the
-name first thing on the page.
-
----
-
-## BLOCK 2. Look development, the Field.
-
-**Verified state.** The drawn disc is 26 percent of its own canvas and 16
-percent of its column. Chords now carry weight and susceptibility, which
-landed this session. Everything else is unchanged.
-
-**Build.**
-1. Scale the wheel into its column. It is a small object in a large empty
-   room and no amount of motion fixes that.
-2. The travelling charge: one charge per chord moving inward, period set by
-   weight. Turns the diagram into a circuit.
-3. Ease the zoom over 260ms, which makes all five reveal ramps dissolve
-   instead of snap, for free, because they all read S.zoom.
-4. Pull the reveal thresholds down so the symbols land while the ring is
-   still in frame. **Needs a ruling: this changes what a depth means.**
-5. The core breathes properly. Currently plus or minus 1.29px on a 25.7px
-   radius, which is under the threshold at which a human reads movement.
-
-**Size.** Large.
-**Depends on.** Item 4 needs the owner.
-
----
-
-## BLOCK 3. Look development, the compass. Graded D trending D plus.
-
-**Verified state.** Halo, pitchfork, ego compression, the oscillating band and
-the souls landed. None of the look development did.
-
-**Build.**
-1. Oscillation over time, lower left: 30 day, quarter, annual, so a person
-   can see whether they are improving.
-2. The six axis arrows. Three that up regulate and three that down regulate,
-   which is the nervous system and the spine composited onto the figure as
-   toggleable overlays.
-3. A symbol for every character, Jesus through Lucifer.
-4. Selecting a character shows their story and their polar opposite, because
-   the whole point of the compass is two paths of one behaviour.
-5. A layers button, with Dante's Inferno and Paradiso as the reading of what
-   compression over time looks like.
-6. A flat 2D version on a button, beside the spinning one.
-7. The figure scaled to 78 percent of the frame, labels haloed so they stop
-   colliding with the mesh they annotate.
-
-**Size.** Large. This is the biggest single surface rebuild on the list.
-**Depends on.** Nothing.
-
----
-
-## BLOCK 4. Look development, the knowledge base.
-
-**Verified state.** It is a deck of cards now, which is a structural
-improvement and not look development. It still looks nothing like the rest of
-the product.
-
-**Build.**
-1. Where is the stack, the universal laws, coherence. Three decks that do not
-   exist.
-2. The 27 named things with no icon: all 21 laws and all 6 masks. This is why
-   zooming resolves into geometry rather than into language, and it is a
-   standing Bible violation.
-3. One stroke weight across the product. Eleven distinct weights were
-   measured in one screenful, 1px to 3.5px.
-4. Make it feel like the codex: a special place, not a reference.
-
-**Size.** Medium, plus 27 icons which is its own afternoon.
-
----
-
-## BLOCK 5. Six versions of the look.
-
-**Verified state.** Four lightings exist: Dark, Snow, Punch, Glass.
-
-**Build.**
-5. Glass on white.
-6. Flat colour. Super futuristic, high end, less beveled than anything here
-   now.
-
-**Size.** Medium each. Gate 9 proves each lighting is genuinely its own.
-
----
-
-## BLOCK 6. The story, the release, and a standalone release tab.
-
-**Verified state.** The story is two columns: write on the left, imprints on
-the right. The release runs as an overlay from `relPick`. There is no release
-tab.
-
-**Build.**
-1. Split the right column in two, each half scrolling on its own. Imprints on
-   top, the release and all its settings on the bottom.
-2. The settings: how many patterns, how long, how quick, and which ones.
-3. Run a release from there without leaving the story.
-4. Then the standalone release tab carrying the same two halves.
-
-**Size.** Medium.
-
----
-
-## BLOCK 7. The tools scrub.
-
-**Verified state.** Eighteen readings the engine computes and no surface
-draws. Seven have zero callers anywhere in the UI: `pathOf`, `markersFor`,
-`boundaryCross`, `equivOf`, `verpShare`, `r.steer`, `CASCADE`.
-
-**Build.** Read the whole Mechanics of Being content and the whole engine, and
-answer the question properly: what could a person see about themselves that
-this instrument already knows and never says. Then expose the top ten in the
-left rail.
-
-**Size.** Medium to build, and the reading comes first.
-
----
-
-## BLOCK 8. The body.
-
-**Verified state.** The chakra image he supplied is unused. The pain map is
-region buttons. The heat is blooms at seven points on an outline.
-
-**Build.**
-1. Use the chakra image.
-2. Selecting head, throat or shoulders zooms to that location.
-3. The pain map starts blank and is paint to select. `NERVEBR` is 72 traced
-   polylines in the figure's coordinate space, already tagged by seat: it is
-   the hit geometry and it is already in the file.
-4. The Nummenmaa treatment for the heat: a continuous field across a filled
-   silhouette with a diverging scale, rather than blooms at seven points on
-   an outline. This is why his zones are not noticeable.
-5. From a painted region: what is going on there, the story associated with
-   it, and release it.
-
-**Size.** Large.
-**Depends on.** Storing imprint node ids per story entry, which is one
-additive field, for step 5.
-
----
-
-## BLOCK 9. The intake.
-
-**Build.** The redesign, the Ultima style moral dilemma questions, the nine
-child emotion questions, every question exposed in the centre rather than the
-rail, and the three copy failures: what a person is meant to do with the
-fetters, what "fear towards trust" means, and what the matrix is for.
-
-**Size.** Large.
-
----
-
-## BLOCK 10. Games.
-
-**Build.** A game development director with thirty years of mobile
-experience owns it: structure, the game design document, art direction, two
-games, and how they work into the point and badge system.
-
-**Size.** Large.
-**Blocked on a ruling.** Games as their own tab puts the bar back to eight
-and reverses the earlier fold that put them inside Knowledge.
-
----
-
-## BLOCK 11. Onboarding and the tutorial.
-
-**Build.** The welcome, the why, the story loop, how mindset programming
-works, the geometric nature of behaviour, the release protocol, the tools.
-Warm and inviting. The tutorial turns off once seen. Maximum flow and
-retention with no burden, while still capturing enough for CQ and the
-energetics.
-
-**Size.** Large.
-**Depends on.** Block 1, because onboarding ends on the summary.
-
----
-
-## BLOCK 12. The ladder.
-
-**Build.** Badges, achievements, score, the ritual builder and the
-accountability tracker from the original Atüned app, and how they fit
-together.
-
-**Size.** Large.
-
----
-
-## BLOCK 13. The intro, three versions.
-
-**Verified state.** Five seconds, black bookends, twelve principles, a skip.
-One version.
-
-**Build.** Three dramatically different versions, simulated twenty times.
-Line weight, effects, colour, the feeling of being invited to something new,
-clever ease in and ease out, anticipation, timing, staging. The material is
-there: the halo, the soul, the pitchfork, the geometric nature of the soul.
-
-**Size.** Medium each.
-
----
-
-## BLOCK 14. The motion system.
-
-**Build.** Three easing tokens and four duration tokens, then replace
-`transition: all` on 323 elements. The house curve is in the stylesheet and on
-zero live elements: 382 of 384 animated elements use the browser default.
-`n.disp` is frame rate bound and settles in half the time on a 120Hz panel.
-Readings change in zero frames. Tab change is a hard cut. The Body has 144
-SVG nodes and none of them move.
-
-**Size.** Medium. Touches everything, breaks nothing.
-
----
-
-## BLOCK 15. The simulations.
-
-**Build.** Day one to day thirty against the ICPs and the focus group.
-Onboarding, the tutorial, the story journal, Source AI, imprints and release.
-Sign ups, tier changes, drop off, acquisition cost. The three closing
-questions asked in the form that produces behaviour rather than opinion.
-
-**Size.** Large.
-**Depends on.** Blocks 1, 6, 11 existing to be simulated.
-
----
-
-## The order I would build them
-
-**First, because everything is judged through them:** 1 summary, 2 field,
-3 compass. These are the three surfaces he has graded and the three he looks
-at.
-
-**Then, because they are cheap and they lift every screen at once:** 14
-motion system, 4 knowledge base, 5 the two lightings.
-
-**Then the mechanics:** 6 story and release, 7 the tools, 8 the body.
-
-**Then the product:** 9 intake, 11 onboarding, 12 the ladder, 10 games.
-
-**Then:** 13 intro variants, 15 simulations.
-
-## What I need a ruling on before starting
-
-1. **Games as their own tab.** It puts the bar back to eight and reverses the
-   fold.
-2. **The zoom reveal thresholds.** Pulling them down changes what a depth
-   means, not only when it appears.
-3. **Summary structure:** everything structural on the right, or above the
-   reading. He said both in one sentence and they are different layouts.
-
-
----
-
-## BLOCK 16. The energetics page.
-
-Owner, 19 September, and the note is the substance rather than the layout.
-
-**The layout.**
-1. Art direction, UI, UX and design redesign the surface. Aesthetically
-   pleasing, and the flow reads clean.
-2. Anything that is text and should be a mark gets a mark. If it has a name it
-   has an icon, which is already the rule and is not kept here.
-3. The questions eat the horizontal space. Each question goes on its own card
-   and the cards sit side by side.
-4. Each card's background is coloured by the seat the question belongs to, so
-   the chakra is carried by the surface and not by a label.
-
-**The note, and this is the part that changes what the answers mean.** It goes
-on the page where somebody reads it while answering, not in a help sheet.
-
-- A ten means a hundred times out of a hundred. You do it all the time,
-  consistently. That is the scale.
-- This is not judgment and it is not how we would like to see ourselves. It is
-  accuracy.
-- Integrity up regulates or down regulates the nervous system, and that
-  maintains or disconnects the spiritual connection.
-- The story journal weights these answers and adjusts them toward the actual,
-  which is the reason accuracy matters here rather than optimism.
-- Worked examples, his: how often do you tell the truth, to yourself and to
-  others. Do you actually go to the gym four days a week like you say. Do you
-  drink eight glasses of water a day like you say.
-- We all slip. That is the point. The point is to find the slips so the
-  behaviour can be transformed and the integrity refined, which holds an
-  upward regulated nervous system that self heals. The internal state
-  transforms, and the external follows it.
-
-**Size.** Medium for the layout, small for the note, and the note is worth more
-than the layout.
-
----
-
-## BLOCK 17. The ritual builder and the accountability tracker.
-
-Owner, 19 September, with his own consolidated source document at
-`docs/RITUAL-ACCOUNTABILITY-source.md`. The team is specifying it now: six
-passes, the seats debating each other rather than writing in isolation, and
-the nine ICPs consulted on it as a high performance behaviour change tool.
-
-**What he asked for.** A calendar ritual builder and an accountability tracker
-that work together. It reads the sniffer so a release protocol can be
-automated. A person can add behaviours of their own, transforming
-communication being his example, on top of defaults like gratitude and
-affirmation. It carries the asks that belong around the app: set your
-boundary, set your avatar. Ritual becomes the third button in. The tracker
-holds somebody to account over time and pushes what to do next, to the phone
-and to the app, driven by the data already in the app. And when somebody
-fails, the accountability becomes a story saying why, which is what closes the
-loop back into the sniffer.
-
-**The five contradictions in his own document are blocking and unruled:** the
-daily number, streak versus season, four tabs versus two pages, whether the
-accountability map is built at all, and what a paused card does to a streak.
-The spec resolves or escalates each by name.
-
-**Size.** Large, and it is the largest thing left.
-
-
----
-
-## BLOCK 18. The phone.
-
-Owner, 19 September. "The React version on mobile, no good." That is
-`index.html`, the 5.9MB Mechanics of Being build, and it is a separate artifact
-from this one. What he wants is a mobile version of Atüned that the product
-serves itself: load it on a phone and it detects and gives you that version.
-
-**Measured first, at 390 by 844, device scale 2, touch on, Lance loaded.**
-
-    tabs off screen        4 of 8
-    other controls off     12
-    horizontal scroll      none, so the four tabs are unreachable rather
-                           than merely hidden
-    under the tap floor    0, which is the one thing that is right
-    page height            844, so everything below is scrolled
-
-Half the navigation does not exist on a phone. Knowledge, Games, Summary and
-Compass cannot be reached at all, because the bar truncates at Comp and there
-is nothing to scroll. The three wheel captions stack on top of each other and
-on the Crown label, so the centre reads as one illegible block. The chrome
-takes the top third before any content: profile, undo, redo, lighting, help
-and account, all at desktop size.
-
-`DESIGN-mobile.md` already carries a five pass creative and art direction study
-at this exact size, and it says of itself that nothing in it has been built.
-
-**The architectural question, and it is the first thing the spec has to
-answer.** The ruling is that `source.html` stays one file with no
-dependencies. A separate mobile build would be a second product to keep in
-step, and the two would drift the way a hand copied palette drifts. One file
-that adapts keeps the ruling and costs layout complexity. The spec argues it
-rather than assuming it, and detection is a consequence of that decision and
-not the decision itself.
-
-**Size.** Large, and it is the difference between a product somebody can use
-and a product they can only use at a desk.
+# The plan, 1 October, rounds OD to OJ
+
+Everything he has added over these rounds, sorted, with what state each is in.
+Statuses are read off the repository and the gate runs, not recalled. "Pushed"
+means on `claude/laughing-feynman-xhfyj3`. The in-app task list mirrors this.
+
+## A. Done, gated, pushed
+
+- Header: wordmark centred on the hamburger; zoom icons laid out in a row.
+- Field: pulses run on the Shadow wave; jitter cut twice (30 percent, then
+  50 percent); the faint four-pool glow behind the wheel, the Body and the
+  Compass (Character already had it).
+- Nav: Body in Play between Field and Compass; the Intake door in Discover
+  after Summary, restored as its own page (integer 13).
+- Left menu: the six readings as bars, the bar is the row, the name and number
+  inside the fill, Decoherence under Coherence.
+- The Compounding band pill sits in the lower left beside Accuracy.
+- Profile button: a menu of the account sections, Settings, Sign out; sound
+  effects switch (on by default, round OJ, built and in the next push).
+- A profile with no ritual track or seat no longer vanishes at boot.
+- Stripe: prices 12, 29, 59, 99; checkout, webhook for renewals, changes and
+  cancellations, Manage billing, the plan read back into the app;
+  `STRIPE-SETUP.md` in steps for a ten year old.
+- Practice domain (775 checks), Trace graph (266), their bridge, sound engine,
+  the copy brief as a checker (`check.py --brief`), body place seats (belly,
+  navel, diaphragm, halves, heart, plexus names).
+- Audits written: Practice, Becoming, Points, Daily Summary, with their
+  questions. The practitioner story and the gap to MVP.
+- Impression excavation engine; Day One tutorial and onboarding copy.
+
+## B. In flight (agents running, nothing merged yet)
+
+| Work | Owner of the work | Delivers |
+|---|---|---|
+| Summary engine, slices D1 to D6 plus the daily intention and the vault of past days (`engine/daily.js`) | fullstack | engine, boundary, gate with broken copies |
+| Left menu redesign, three concepts (art, innovation, animation) | three design seats | real renders, frame sequences, grades |
+| Intake page redesign | UI/UX | real render, cognitive load counts |
+| Character masks, abstract symbolic system, three reviews, ICP pitch | art | contact sheets, click and idle sequences |
+| Compass overlays and its panels in the Field and Body style | art | real render |
+| Summary layout, three reviews, right-hand name meanings panel | UI/UX | real render |
+| Tier locks and the upgrade page (sight by tier) | fullstack | engine, lock treatment, tests written |
+| Rerun v2 (merged in the tree, awaiting its gate run) | fullstack | `meter.heavy`, ordered rerun |
+| Copy sweep first pass (merged in the tree, awaiting its gate run) | narrative | 0 stops left |
+
+## C. Next, sorted
+
+1. Run the gates once on the merged tree and push (rerun, copy sweep, sound
+   default).
+2. Practitioner page, slices PR1 to PR4 on the example people, with BOTH right
+   panel versions (structure only, and story-derived) side by side for him to
+   see (`PRACTITIONER-STORY.md`).
+3. Avatar page rebuilt toward the Becoming document (`BECOMING-AUDIT.md`),
+   slices S1 to S4 first.
+4. Summary page UI (D7 to D9), after the engine and the layout pick.
+5. Practice screens (Today, Goal Builder) and the Ritual writer cutover.
+6. Points slice 0: the streak fix 21.J2 and the boundary for progress.
+7. Body place words: head, upper torso, lower torso, replacing the earlier
+   per-word seats where they overlap.
+8. Name meanings table for the Summary panel (source decided).
+9. Copy sweep second pass: the funnel pages, once his release-wording ruling
+   is made.
+10. Knowledge entries carrying the correlations (awareness, soul and the
+    operating system as one field).
+11. The Intake questions redesign (last, his order).
+12. Backlog scrub (`BACKLOG-AUDIT.md` is from 27 September).
+13. Compass and Character icons placed to match; Field landing check
+    (everything active, menu closed).
+
+## D. Waiting on him
+
+Tier for the Compass registers view and the Character masks (proposed two and
+three); where the name meanings come from; which seats the torsos cover;
+shoulders, head, stomach, gut; the rerun's decompression order and what the
+bell curve is as a rule; the release wording ("letting go" or "release"); the
+funnel opening lines; Stripe steps (`STRIPE-SETUP.md`); whether the practitioner
+right panel reads the story.
+
+## E. Waiting on accounts
+
+The practitioner grant model and everything that reads a client's record
+(PR5 to PR9), retention and deletion beyond the device, push, points that buy
+patterns, any server for the Summary.
+
+## F. Standing process
+
+Four-heading reports, questions listed in full with their context, pictures for
+anything visual before it is built, one gate run on the merged tree, no pushing
+ungated. Every new agent runs on Sonnet in its own copy of the repository with
+a sparse checkout, because the disk is the limit.
