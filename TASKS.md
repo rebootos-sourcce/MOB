@@ -31229,3 +31229,20 @@ Legal facts (for the policy and terms)
   it must dramatically improve on it: with the Field as the baseline, which he
   grades a C, the observatory should reach an A.
 - Research sharing is off. Age floor is 18.
+
+## Round PC, 1 October. The simple left menu: no standalone symbols; horizontal stacked lines with the icons; a two-colour bar with an oscillating end
+
+> "the CQ and the not the CQ, uh, I don't like the symbols. And I prefer it when
+> everyone's on a horizontal line. And if there are two systems pulling on each
+> other, that it was a solid bar of color with two opposing colors and an
+> oscillating termination point termination point is positions oscillating
+> amount can i have that and don't use a symbols by themselves they look really
+> bad go back to putting them on horizontal stack lines and then use the icons"
+
+**Read as.**
+- The three simple options (A, B, C) are rejected on their symbols: glyphs
+  standing alone look bad. Back to horizontal stacked lines, one reading per
+  line, with the icon inside the line (the built bars' grammar).
+- CQ and DQ, two systems pulling on each other: one solid bar of colour with two
+  opposing colours, and the place where they meet (the termination point)
+  oscillates; the amount it oscillates is the oscillation range.
