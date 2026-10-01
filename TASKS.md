@@ -31276,3 +31276,20 @@ Legal facts (for the policy and terms)
   for those behaviours in the person's stories, and shows which behaviours are
   running that keep the person from achieving the quality. The teachers feature
   is updated onto that system.
+
+## Round PE, 1 October. The torus as slices with subtle flow; overlays; oscillation tied to vitality; information on the right
+
+> "I'd like Taurus [the torus] to slices with subtle suggestions of flow. And my
+> overlay, I could turn off. Point cloud, Taurus, heat map. or turn it on. And my
+> Taurus field, oscillates. Based off of my coherence. the higher the coherence,
+> the higher it oscillates. Plus, the lower the, in fact, it's tied directly to
+> vitality. Which is vitality is driven by the chakras. Each chakra is influenced
+> distorts the field. All information should be on the right-hand side. It should
+> not be in the center panel."
+
+**Read as.** Torus 2 (the seven seat rings as slices) with the flow only
+suggested, subtly. Three overlays, each switched on or off by the person: the
+point cloud, the torus, a heat map. The torus oscillates, the oscillation tied
+directly to Vitality (which the seats drive; Vitality rises with coherence), each
+seat distorting the field. All text and readings go in the right-hand panel and
+none in the centre panel.
