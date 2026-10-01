@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The CQ and DQ bar, where the line sits</title><link rel="stylesheet" href="explain.css">
+<style>.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.pane h3{font-size:15px;margin:0 0 4px;font-weight:600}.pane .pc{font-size:13px;color:var(--dim);margin:0 0 14px;min-height:36px}
+.who{font-size:12.5px;color:var(--dim);margin:12px 0 5px}</style></head>
+<body>
+<h1>CQ and DQ on one bar: where does the line sit?</h1>
+<p class="sub">You asked for one bar, CQ at one end and DQ at the other with a gradient between, and a line whose position is measured by how much the person oscillates. The engine has one oscillation measure, and it is a width and not a position, so the line needs a rule. Three rules, same two people, same bar.</p>
+<div id="app"></div>
+<div class="plain" id="plain"></div>
+<p class="stamp">Example people: Marcus (CQ 62, DQ 11) and Tomas (CQ 31, DQ 53). Mockup only. In every version the line also moves slowly, the way the Compass marker does.</p>
+<script src="rail-data.js"></script><script src="rail-lib.js"></script>
+<script>
+(function(){
+ var RL=window.RL; document.body.insertAdjacentHTML('afterbegin',RL.defs());
+ var M=RL.person('marcus'), T=RL.person('tomas'), D=RL.person('diane');
+ function col(mode,title,tag){
+  var h='<div class="pane"><h3>'+title+'</h3><p class="pc">'+tag+'</p>';
+  [M,D,T].forEach(function(P){h+='<div class="who">'+P.nm+': CQ '+Math.round(P.CQ)+', DQ '+Math.round(P.DQ)+', swing '+RL.cqRange(P.CQ).band.toFixed(1)+' points</div>'+RL.cqdqBar(P,296,52,{mode:mode});});
+  return h+'</div>';}
+ document.getElementById('app').innerHTML='<div class="grid3">'
+  +col('osc','1. By oscillation (what the mockups use)','The line sits further from the CQ end the wider the person swings.')
+  +col('cq','2. At CQ itself (the Compass reading)','The line sits where coherence sits, as the Field\'s Compass marker does.')
+  +col('tug','3. A tug of war','The line sits where CQ and DQ balance: DQ as a share of the two.')+'</div>';
+ document.getElementById('plain').innerHTML=
+  '<p><b>What the engine measures.</b> The only oscillation measure in the engine is the Compass\'s. It lives in ui/personas.js as cqRange. Coherence is not a single number that holds still: it swings inside a band, and the band is 2.5 points wide at perfect coherence and grows as coherence falls (2.5 plus the square of the shortfall, times 26). Marcus swings about six points, Tomas about fifteen. The Compass already moves its marker across that band on two slow waves.</p>'
+  +'<p><b>Why it needs a rule.</b> That measure is a width. Your words put the line\'s position in it, so version 1 turns the width into a position: how much of the widest possible swing (28.5 points) the person reaches, measured from the CQ end. A steady person has the line near CQ. A person who swings wide has it pulled toward DQ.</p>'
+  +'<p><b>The other two.</b> Version 2 puts the line at CQ itself, which is what the Compass does today, and shows the swing only as the pill around it. Version 3 ignores the swing and puts the line where the two figures balance. Version 1 is the most literal reading of what you said. Version 2 is the most honest to what the engine already draws. Which one reads right to you?</p>';
+})();
+</script></body></html>
