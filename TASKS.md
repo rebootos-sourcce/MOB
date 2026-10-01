@@ -30626,3 +30626,23 @@ protocols."
 - Supersedes the face and charge-cloud reading of rounds ON and OO where they
   conflict. The no-ring, full-colour upper-left icons, no Professional and
   Trace from round OO still stand.
+
+## Round OQ, 1 October. Different shape per mask, driven by the leading weights, relaxing to a normal person
+
+> "yeah, just each of the formats should be a different shape. a different
+> symbolic look. if we can make it dynamic or reflex, where it reflects the
+> essence of the leading weights. And as a rate, weights reduce, the mask
+> returns to a normal looking person. that may be asking a lot."
+
+**Read as.**
+- Each mask format is a different shape with a different symbolic look. That
+  answers round OP's question: different kinds of shape, not one shape by age.
+- The shape is live. It reflects the essence of the leading weights: what the
+  heaviest patterns are decides how it is distorted.
+- As the weights fall (releases land, charge drops) the shape relaxes toward a
+  normal looking person. At zero weight it is a plain person; the heavier the
+  load, the further it is bent into the mask's symbol. So the shape is a
+  gauge of the person's own load, readable at a glance and moving as they work.
+- He flags this may be a lot. It is feasible as one parameter per pattern
+  driving a deformation of a base figure; the mockups should show weight high,
+  mid and low for each mask so he can judge it.
