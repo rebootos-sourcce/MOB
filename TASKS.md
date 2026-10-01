@@ -28714,3 +28714,37 @@ Sent the owner the funnel's four pages fresh off this branch
 (`atuned-funnel.html`, `atuned-quiz.html`, `atuned-about.html`,
 `atuned-buy.html`), rebuilt from `funnel/BUILD-single.sh` rather than
 the stale ones sitting in `funnel/dist/` from two days prior.
+
+## Round NH
+
+Five more documents, four markdown and one docx, saved whole:
+`SOURCE-TDD-handoff-master.md`, `ATUNED-creative-innovation-brief.md`,
+`ATUNED-art-ux-icp-review.md`, `ATUNED-architecture-security-review.md`,
+`ATUNED-MVP-architecture-v2.md`. Checked each for anything that
+supersedes the Character page's own already-ruled layout before
+answering his complaint with them: none of the five mentions a rail, a
+hero, or the weave. They are a master architecture handoff, a creative
+and symbol-grammar brief, a simulated ICP/art-direction review, a
+security and schema review, and a commercial 90-day MVP architecture
+document respectively. Not reconciled against the five TDD documents
+already in the repository this round; that reconciliation is task
+#14's own job and is real work, not a skim.
+
+**"This isn't the layout we agreed to at all... I'm suspecting half the
+shit that I needed you to build, you didn't build."** Checked rather
+than argued with. He is right that the rail, hero and weave are not in
+the build, and this is not new information: `PRIORITY.md` 19.A8 and
+19.A10 already logged exactly this as MISSING, against his own rulings
+at rounds MX, MZ and NA, quoted verbatim there. Nothing was silently
+skipped; it was sequenced and had not come up yet. Dispatched the
+build itself to a background agent with a precise brief quoting those
+three rounds in full: the rail of five masks, Child at the top in
+appearance order, the large hero, a rail press moving both the hero
+and the right column, the weave (selecting a saboteur shows where else
+it lights up, across every mask in the rail), and the Ideological
+halo as a flat bar rather than a ring. Named explicitly out of scope
+for this pass: A1 motion, A2 brightness/tier, A3 grid snapping, A5 the
+never-blank rim, A6 the egg face (its own artwork does not exist yet),
+A7 the gradient frame, A9 the face as a body map. Not committed by the
+agent; will be read in full and re-gated independently before anything
+lands, same discipline as the login build after the restart.
