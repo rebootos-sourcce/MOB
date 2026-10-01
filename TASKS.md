@@ -28765,3 +28765,60 @@ named, and the Story/Field/Recognition/Mirror loop run once in the
 funnel itself before account creation. Saved whole as
 `ATUNED-funnel-storyboard.md`. Queued into task #14 alongside the rest
 rather than built now.
+
+## Round NJ
+
+The Masks rail, hero and weave, built and independently verified before
+anything landed, the same discipline the login build after the restart
+used. Dispatched to a background agent (Sonnet, after Opus hit its own
+weekly limit on the first attempt) with rounds MX, MZ and NA quoted in
+full; it finished the real work before its own closing call also hit
+a weekly limit, so what verified it was read from the diff and re-run
+myself, not trusted from its report, which never fully arrived.
+
+**What changed, read from the diff rather than the commit message.**
+`ui/character.js`: `.chv-stage` replaces the three column grid with a
+left rail of the five read masks, Child to Ideological in canon's own
+order, and a hero that is whichever one a rail press names. A rail
+press moves the hero and Selection together, NA's own ruling. First
+visit opens on Child; a return visit reopens the last one, held on
+`CURP.ui.chmask` through `uiSet`, the same preference pattern every
+other UI toggle already uses rather than a second mechanism. The weave
+answers MX's own open question, how a line draws between a small rail
+icon and a large hero: it does not draw one. Clicking a lit pixel on
+the hero rings every mask in the rail that carries the same saboteur,
+complex or hyper complex, and the rail icon itself glows, reusing
+`runDrill` for the drill content rather than a second renderer.
+Clicking the same pixel again puts it down. `chCellAt` was factored
+out of the hover handler so the click reuses the exact same pointer
+to pixel arithmetic rather than a second copy of it. `canon.js`: the
+Ideological halo's own icon path changed from an arc to a flat
+segment, `M9 4h6`, per MZ and NB, "the halo shape, I said line."
+
+**Verified independently before anything was trusted.** Read every
+line of the diff first. Rebuilt from clean: `BUILD.sh` and
+`BUILD-engine.sh`, engine still host free, 484 exports (the one
+engine-adjacent change, the Ideological icon path, is canon data, not
+host-touching logic). `tests/engine.js` 1853/0. `tests/collide.js`
+351/0, `tests/design.js` 185/0, `tests/funnel.js` 172/0, `tests/boot.js`
+13/0, `tools/monitor.js` all surfaces render, the voice objections
+check unchanged. `tests/functional.js` hit real trouble on the first
+two runs, 12 failures clustered in the seat tone's own binaural audio
+and one Field fade timing assertion, none of them anywhere near masks,
+rail, hero or weave. Traced rather than waved off: the agent's own
+closing verification run was still alive in the background,
+`ps aux` genuinely showed two Chromium instances contending for the
+same box at once. Waited for its run to finish (1368 passed, 1 failed,
+the one already-catalogued Field fade flake) and then ran a third time
+alone, nothing else competing: 1369 passed, 0 failed, every new rail,
+hero and weave assertion included. Screenshots at 390 (`.scratchpad`
+of this session) show the hero over the rail in that exact order and
+the weave's own glow on two rail icons at once.
+
+`PRIORITY.md` 19.A8, 19.A10, 19.A11 marked built; 19.A4 (a lit pixel
+opens its own saboteur) built as a side effect of the weave's own
+click. Not touched, named rather than silently left out: 19.A1 motion,
+19.A2 brightness and tier, 19.A3 grid snapping, 19.A5 the never-blank
+rim, 19.A6 the egg face, 19.A7 the gradient frame, 19.A9 the face as a
+body map, 19.A12 mask weights on history rows, 19.A13 the toggled
+saboteur masks.

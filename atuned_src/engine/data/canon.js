@@ -516,8 +516,19 @@ const MASKS=[
  /* a squared jaw fitted over the lower half. it was issued, not grown. */
  {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z',
   v:'performs competence until the feeling passes'},
- /* a ring above the face, worn where a thought is kept. */
- {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0',
+ /* A FLAT BAR ABOVE THE FACE, WORN WHERE A THOUGHT IS KEPT, ROUND MZ. This
+    drew as a ring, "M9 4a3 3 0 006 0", the arc the comment used to name it
+    by. His own correction, round MZ: "the halo shape, I said line", and
+    round NB restated it rather than changed it when it was asked again:
+    "the halo: a flat line." Short and set high at y4 so it reads apart from
+    Adult's own full width seam at y12 two lines down, never the same mark
+    at a different height. Every reader of this path changes with it: the
+    pixel mark chGeo cuts out of the grid in ui/character.js, and the small
+    stroked icon glyph everywhere else MASKS[].ic is drawn, since icons here
+    are a ring and not a fill (a straight open segment auto closes to zero
+    area, so it would vanish under a fill and only ever reads under the
+    stroke this whole icon set already uses). */
+ {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4h6',
   v:'answers from the position instead of the moment'}];
 /* PROFESSIONAL HIDDEN, ROUND NE, HIS OWN CORRECTION MID SENTENCE: "let's get
    rid of the uh, professional. Just hide it for now. Don't calculate it."

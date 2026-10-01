@@ -251,16 +251,19 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  /* THE CHARACTER PAGE, round LP, which replaced the Masks door in full on his
     words: "if what you're asking in the current mask page is the human body
     with all the chakra points, then yes, it definitely replaces all that."
-    The door keeps integer 11 and host #masksview and draws six pixel grids
-    (ui/character.js), so the Body's figure is held to never arriving there,
-    and the Body is held to what it had before the visit.
+    The door keeps integer 11 and host #masksview and draws the five read
+    masks (ui/character.js), so the Body's figure is held to never arriving
+    there, and the Body is held to what it had before the visit.
 
-    What is asserted about the grids is worked out here from compute(), not
-    from the function that draws them: every lit pixel belongs to an address
-    under that mask's own seats and carrying at least 1 in the reading shown,
-    the resolution follows the rule read straight off r.sabs and r.cxs, the
-    Light switch changes the pixels and never the grid, and two people with
-    different saboteurs get a different Child. */
+    ROUNDS MX, MZ AND NA REBUILT THE LAYOUT INSIDE THAT SAME DOOR: a rail of
+    the five on the left, Child to Ideological, and a hero that is whichever
+    one a rail press names, the hero and Selection moving together on that
+    one press. What is asserted about the grids is still worked out here
+    from compute(), not from the function that draws them: every lit pixel
+    belongs to an address under that mask's own seats and carrying at least
+    1 in the reading shown, the resolution follows the rule read straight
+    off r.sabs and r.cxs, the Light switch changes the pixels and never the
+    grid, and two people with different saboteurs get a different Child. */
  const mv=await sp.evaluate(async()=>{
   const pressed=()=>[...document.querySelectorAll('#bmov [data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');
   const before={on:pressed(),mode:BM.mode};
@@ -278,22 +281,68 @@ console.log('\n=== the six masks, as pixels on the figure ===');
     pos:rd.px.map(x=>x.p.join(':')).join(' ')};});
   const cards=()=>[...host.querySelectorAll('.chv-m')].map(c=>({nm:c.getAttribute('data-chmask'),
    txt:(c.querySelector('.chv-nm')||{}).textContent,G:+(c.querySelector('svg')||{getAttribute:()=>0}).getAttribute('data-chres'),
-   svg:(c.querySelector('svg')||{}).outerHTML||''}));
+   svg:(c.querySelector('svg')||{}).outerHTML||'',on:c.getAttribute('aria-pressed')==='true',
+   weave:c.classList.contains('chv-weave-on')}));
+  const hero=()=>{const h=host.querySelector('.chv-hero');
+   return {nm:h&&h.getAttribute('data-chhero'),G:+((h&&h.querySelector('svg'))||{getAttribute:()=>0}).getAttribute('data-chres')};};
   const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),label:(btn.querySelector('.n')||{}).textContent,
    figure:!!(BM.cv&&host.contains(BM.cv)),emapFig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),
-   dark:read('dark'),cards:cards(),empty:!!host.querySelector('.chv-empty'),roster:MASKS_READ.map(m=>m.nm).join()};
+   dark:read('dark'),cards:cards(),empty:!!host.querySelector('.chv-empty'),roster:MASKS_READ.map(m=>m.nm).join(),
+   /* MX: "it always starts off on the user's last open. First time users
+      start off on child." A fresh page for this profile has never written
+      CURP.ui.chmask, so the hero this first visit opens on is the test. */
+   openFirst:hero().nm};
   /* the switch */
   host.querySelector('[data-chface="light"]').click(); await fr();
   out.light=read('light'); out.lcards=cards();
   out.lpressed=host.querySelector('[data-chface="light"]').getAttribute('aria-pressed');
   host.querySelector('[data-chface="dark"]').click(); await fr();
-  /* a press on a whole mask answers in Selection, both readings */
+  /* a rail press answers in Selection and becomes the hero together, round
+     NA: "a rail press updates the hero and the right column together." */
   host.querySelector('[data-chmask="Child"]').click(); await fr();
   const d=document.getElementById('rdrill');
   out.drill={shown:d.style.display!=='none',t:d.textContent,svgs:d.querySelectorAll('.chv-pair svg').length,
-   on:(host.querySelector('[data-chmask="Child"]')||{}).getAttribute('aria-pressed')};
+   on:(host.querySelector('[data-chmask="Child"]')||{}).getAttribute('aria-pressed'),hero:hero().nm};
+  /* a second press on the mask already the hero, round NH: there is no
+     toggle back to nothing now that the stage always needs one face on
+     it, so the hero and the drawer both stay exactly where they were */
   host.querySelector('[data-chmask="Child"]').click(); await fr();
-  out.drill.after=d.style.display==='none'&&host.querySelector('[data-chmask="Child"]').getAttribute('aria-pressed')==='false';
+  out.drill.after={shown:d.style.display!=='none',
+   on:(host.querySelector('[data-chmask="Child"]')||{}).getAttribute('aria-pressed'),hero:hero().nm};
+  /* THE WEAVE, round NH, built for "I'm able to select the saboteur
+     clusters, I'm able to see different effects" and MX's own "if you
+     select it on one mask, then you see how it shows up in all the
+     others." Picked off whichever read mask this profile's own stories
+     built a saboteur under, rather than named here, since the reference
+     case this file builds is stories and addresses and not which mask they
+     happen to land on (own.masks.some(x=>x.cl.length>0) above already
+     proved at least one exists). */
+  const heavy=out.dark.filter(x=>x.lit>0).slice().sort((a,b)=>b.lit-a.lit);
+  let weave={found:false};
+  for(const cand of heavy){
+   const m=MASKS_READ.filter(x=>x.nm===cand.nm)[0];
+   host.querySelector('[data-chmask="'+m.nm+'"]').click(); await fr();
+   const rd=chRead(m,r,'dark'), px=rd.px.find(x=>x.tier>=1&&x.o);
+   if(!px)continue;
+   weave.found=true; weave.mask=m.nm; weave.sab=px.o.nm;
+   const G=rd.G;
+   const clickAt=async()=>{
+    /* re-queried every time, never kept across a click: the press this is
+       aimed at calls render(), which rewrites #masksview's own innerHTML
+       and throws away the svg a stale reference would still be pointing
+       at, the same caution chDrill's own html===CHV.html guard exists
+       for on the production side of this exact element. */
+    const hs=host.querySelector('.chv-hero svg.chv-hero-svg'), rect=hs.getBoundingClientRect();
+    const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
+    hs.dispatchEvent(new PointerEvent('click',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
+    await fr();};
+   await clickAt();
+   weave.on=cards().filter(c=>c.weave).map(c=>c.nm);
+   weave.drillT=d.textContent;
+   await clickAt();
+   weave.after=cards().filter(c=>c.weave).map(c=>c.nm);
+   break;}
+  out.weave=weave;
   setTab(TAB.ENERGY); render(); await fr();
   out.back={on:pressed(),mode:BM.mode,views:bmViews().join(','),
    orbs:document.querySelectorAll('#bmov .fb-b .fb-orb').length,regs:!!document.getElementById('bmregs'),
@@ -307,7 +356,8 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  ok(mv.tab&&mv.sec==='play'&&mv.label==='Character','the door is Character, in Play, integer 11, got '+mv.label+' in '+mv.sec);
  ok(!mv.figure&&mv.emapFig,'the Body\'s figure never comes to the Character page and stays in the Body\'s host');
  ok(mv.cards.map(c=>c.nm).join()===mv.roster&&mv.cards.every(c=>c.txt===c.nm&&c.svg.indexOf('<svg')===0),
-  'every read mask is a grid in the roster\'s order, each under its own name, '+mv.cards.map(c=>c.txt).join(','));
+  'every read mask is a rail icon in the roster\'s order, each under its own name, '+mv.cards.map(c=>c.txt).join(','));
+ ok(mv.openFirst==='Child','a first visit opens on Child, '+mv.openFirst);
  ok(!mv.empty,'a profile with stories in says nothing about being empty');
  ok(mv.dark.every(x=>x.stray===0)&&mv.light.every(x=>x.stray===0),'every lit pixel is an address under that mask\'s own seats, held at 1 or more, '
   +mv.dark.concat(mv.light).filter(x=>x.stray).map(x=>x.nm+' '+x.stray).join(', '));
@@ -317,11 +367,17 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  ok(mv.dark.filter(x=>x.lit>0).length>=3,'the stories light three masks or more, '+mv.dark.map(x=>x.nm+' '+x.lit).join(', '));
  ok(mv.lpressed==='true'&&mv.lcards.every((c,i)=>c.G===mv.cards[i].G),'Light is pressed and the grid under each mask does not move');
  ok(mv.light.some((x,i)=>x.pos!==mv.dark[i].pos)||mv.light.every(x=>!x.lit),'and Light lights its own reading, not the dark one again');
- ok(mv.drill.shown&&/Child/.test(mv.drill.t)&&/The dark mask/i.test(mv.drill.t)&&/The light mask/i.test(mv.drill.t)&&mv.drill.svgs===2&&mv.drill.on==='true',
-  'pressing the Child opens its summary in Selection, both readings and both grids, '+mv.drill.svgs+' grids');
- ok(mv.drill.after,'a second press puts it down');
- ok(mv.james&&mv.derek&&mv.james!==mv.derek,'James and Derek, different saboteurs, light a different Child');
- console.log('  Character, dark: '+mv.dark.map(x=>x.nm+' '+x.G+' across '+x.lit+' lit').join(', '));
+ ok(mv.drill.shown&&/Child/.test(mv.drill.t)&&/The dark mask/i.test(mv.drill.t)&&/The light mask/i.test(mv.drill.t)&&mv.drill.svgs===2&&mv.drill.on==='true'&&mv.drill.hero==='Child',
+  'pressing Child opens its summary in Selection and makes it the hero, both readings and both grids, '+mv.drill.svgs+' grids');
+ ok(mv.drill.after.shown&&mv.drill.after.on==='true'&&mv.drill.after.hero==='Child',
+  'a second press on the same mask leaves it the hero and the drawer open, round NH, not a toggle back to nothing');
+ ok(mv.weave.found,'this profile\'s own stories built a saboteur under some read mask, '+JSON.stringify(mv.weave));
+ ok(mv.weave.on&&mv.weave.on.indexOf(mv.weave.mask)>=0,
+  'picking a saboteur\'s own pixel on the hero rings it on the mask it was picked on too, got '+JSON.stringify(mv.weave.on));
+ ok(new RegExp(mv.weave.sab.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(mv.weave.drillT),
+  'and opens that saboteur\'s own reading in Selection, reusing runDrill rather than a second renderer, got '+mv.weave.drillT.slice(0,80));
+ ok(mv.weave.after.length===0,'pressing the same pixel again puts the weave down, got '+mv.weave.after.join(','));
+ console.log('  Character, dark: '+mv.dark.map(x=>x.nm+' '+x.G+' across '+x.lit+' lit').join(', ')+'; weave on '+mv.weave.mask+': '+mv.weave.sab);
  ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chv,
   'and the Body gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
  /* THE HOVER, ROUND MQ: "as I hover over the pixels, the overlay tells my

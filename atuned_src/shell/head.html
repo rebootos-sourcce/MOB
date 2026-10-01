@@ -4800,25 +4800,61 @@ body:not(.tab-energy) #emap{display:none!important}
    hidden exactly the way the Body is */
 body.tab-masksview #masksview{display:flex!important;z-index:5}
 body:not(.tab-masksview) #masksview{display:none!important}
-/* THE CHARACTER PAGE, round LP: six pixel grids, each under its name
-   "in very small, simple font", and one switch for the reading. ui/character.js
+/* THE CHARACTER PAGE, round LP: pixel grids, each under its name "in very
+   small, simple font", and one switch for the reading. ui/character.js
    writes it. The grids sit on the render ground like the Field, MK2's "almost
    like a UI display", and the page scrolls inside its host at a desktop
-   width, because six faces and a switch are taller than a short window. */
+   width, because the hero and a switch are taller than a short window. */
 .chv{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;
  padding:18px 22px 24px;color:var(--ink)}
 .chv-top{display:flex;justify-content:flex-end}
 .chv-empty{margin:0 auto;max-width:880px;width:100%;font-size:13px;line-height:1.5;color:var(--mid)}
-.chv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px;
- width:100%;max-width:880px;margin:0 auto;align-content:start}
+/* THE RAIL AND THE HERO, ROUNDS MX, MZ AND NA, replacing the three column
+   grid this host used to draw (.chv-m, .chv-nm and .chv-svg below are the
+   same classes that grid used, kept rather than renamed, since the rail's
+   own icons and the pair in Selection, .chv-pair, still need exactly what
+   they always did). His words at MX: "we have all five masks as small
+   icons on the left hand side of the screen... but then it gives us, we
+   can maximize the rest of that space." The grid gave every mask the same
+   small square and used none of the width a wide desktop actually has,
+   five squares in a row above a blank field. .chv-stage is a row so the
+   rail sits on the left in source order and the hero second, flex:1 so it
+   takes whatever width the rail does not. Order is swapped on phone below
+   by CSS order, never by rewriting the markup: character.js only rewrites
+   #masksview when the html string it built actually changed, the same
+   caution its own hover handler keeps for a hover a hand is resting on. */
+.chv-stage{display:flex;flex-direction:row;gap:18px;flex:1 1 auto;min-height:0;width:100%}
+.chv-rail{display:flex;flex-direction:column;gap:10px;flex:0 0 auto;align-items:center}
+.chv-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+ flex:1 1 auto;min-height:0;min-width:0;text-align:center}
+.chv-hero-nm{font-size:14px;letter-spacing:.02em;color:var(--mid)}
 .chv-m{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:8px 6px 10px;
  background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
  font:inherit;cursor:pointer}
 .chv-m:hover{border-color:var(--edge)}
 .chv-m[aria-pressed=true]{border-color:var(--gold)}
 .chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* THE WEAVE'S OWN RAIL STATE. MX left the routing question open on purpose,
+   "how the lines draw once one mask can be large and the others a rail":
+   no line crosses the gap, because a rail icon and the hero are two
+   different sizes and a line between them would have to bend around every
+   icon in between. Instead the matching pixel is ringed on every mask that
+   carries it, .chv-weavepx below, and the icon that holds one gets this
+   glow too, so "does this show up here" answers at a glance before a
+   reader has found the one lit cell inside a 64 pixel square. */
+.chv-m.chv-weave-on{box-shadow:0 0 0 2px var(--accent)}
 .chv-nm{font-size:12px;font-weight:400;letter-spacing:.02em;color:var(--mid)}
-.chv-svg{display:block;width:100%;max-width:260px;aspect-ratio:1;height:auto}
+/* JAMES AT 64PX, ROUND MZ: his own pick of the rail icon's own size, off a
+   set of sizes shown to him named for who measured each one. The hero
+   overrides this with its own rule below rather than getting a second
+   class, since chSvg already writes chv-hero-svg beside chv-svg on it. */
+.chv-svg{display:block;width:64px;height:64px;aspect-ratio:1}
+.chv-hero-svg{width:100%;max-width:560px;height:auto}
+/* a plain outline, never a fill: the fill already carries the tier's own
+   tone (chTone in ui/character.js) and painting over it would answer a
+   different question, how hot the pixel runs, with a colour meant to
+   answer this one, where else it runs. */
+.chv-weavepx{pointer-events:none}
 /* THE FIELD'S OWN SHADOW, UNDER THE SIX, ROUND MQ. ui/character.js's chWash
    calls the Field's own frShadow, prefixed so its ids never collide with
    the Field's when both sit in the document at once. Behind the grid, never
@@ -4844,7 +4880,7 @@ body.punch .chv-wash{display:none}
    (0.82+0.18 sin(2 pi t/4.2), ui/wheel.js), and the rim joins that same
    beat, same token, once it lights, so six faces read as one character on
    one clock and the reward stays legible as the rim lighting at all. */
-.chv-grid .chv-glow,.chv-grid .chv-rim-on{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
+.chv-stage .chv-glow,.chv-stage .chv-rim-on{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
 @keyframes chvBreath{0%,100%{opacity:.64}50%{opacity:1}}
 body.rm .chv-glow,body.rm .chv-rim,body.quiet .chv-glow,body.quiet .chv-rim{animation:none;opacity:1}
 @media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim{animation:none;opacity:1}}
@@ -4867,7 +4903,28 @@ body.rm .chv-glow,body.rm .chv-rim,body.quiet .chv-glow,body.quiet .chv-rim{anim
 body.snow.tab-masksview .stage,body.snow #masksview{background:#F2F1EC}
 @media (max-width:700px){
  .chv{padding:14px 16px 20px}
- .chv-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
+ /* THE PHONE RAIL, ROUND MZ: "put it on the bottom. above the navigation.
+    you could change it to a flat bar." The hero still needs to read first
+    down a one column page, so it moves first in display order through
+    flex order rather than through the markup, which stays rail first, hero
+    second, the same source order the roster inside the rail never resorts
+    either. #masksview sits above the shell's own bottom tab bar the same
+    way every other tab's host does, so a rail that is simply the last
+    thing .chv-stage lays out already sits right above it with nothing
+    further to pin. */
+ .chv-stage{flex-direction:column;gap:12px}
+ .chv-hero{order:1}
+ .chv-rail{order:2;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;
+  width:100%;justify-content:center;gap:8px;padding:4px 2px}
+ .chv-hero-svg{max-width:300px}
+ /* the icon shrinks from James's own 64px so the roster of five fits a 390
+    wide phone without the flat bar ever needing to scroll to find
+    Ideological: five at 48px and four 8px gaps measure 332, inside even the
+    narrowest phone this product is held to. Still comfortably past the
+    44px tap floor, since the icon alone clears it before the button's own
+    padding and label are added on top. */
+ .chv-rail .chv-svg{width:48px;height:48px}
+ .chv-rail .chv-m{padding:6px 4px 8px}
 }
 /* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
    backdrop, which is right for something a drill throws up over your reading

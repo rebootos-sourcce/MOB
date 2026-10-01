@@ -132,7 +132,10 @@
    not CH: CH is the Field canvas's height, a let in ui/component.js, and the
    first cut declaring it a second time threw at parse and took every module
    after this one with it, loadP included, so the app booted to nothing. */
-var CHV={face:'dark', pick:null, html:''};
+/* pick is never null once a reading has rendered once, round MX/MZ/NA: see
+   chLast() below for why, and the big comment above renderCharacter for
+   what pick and weave each now answer. */
+var CHV={face:'dark', pick:null, weave:null, html:''};
 /* THE HOVER, ROUND MQ, built to the plan round LT wrote and left open: "As I
    hover over the pixels, the overlay tells my limiting belief (fetter),
    saboteur cluster, etc." One entry per rendered card, keyed by mask name,
@@ -366,8 +369,16 @@ function chTone(b,tier,face){
    One path per colour and opacity, so a 32 across face is a handful of
    elements and not a thousand rects. The rim's own paths sit in their own
    group now, round LT, so a CSS animation can address the rim alone: see
-   the breathing note where lit is set below. */
-function chSvg(rd,cls,label){
+   the breathing note where lit is set below.
+
+   WEAVENAME, ROUND NH, the fourth argument every older caller leaves out.
+   "I'm able to select the saboteur clusters, I'm able to see different
+   effects... if you select it on one mask, then you see how it shows up in
+   all the others" (MX). A saboteur's own addresses can sit under more than
+   one mask's seats, so the same name can match a pixel here even on a card
+   this call was never asked to treat as the hero: the ring below is drawn
+   on whichever of this mask's own held pixels belong to it, nothing more. */
+function chSvg(rd,cls,label,weaveName){
  var G=rd.G, geo=chGeo(rd.m,G), paths={}, rimPaths={}, on={};
  var addTo=function(dict,fill,op,c,r,inset){
   var key=fill+'|'+op+'|'+inset, s=(1-2*inset);
@@ -413,9 +424,22 @@ function chSvg(rd,cls,label){
     Dark but fails Snow at 2.78:1, so .52 is the floor and not a taste. */
  geo.mk.forEach(function(q){
   add('var(--ink)',lit?'.95':'.52',q[0],q[1],CH_MARK_INS);});
+ /* THE WEAVE'S OWN RING, ROUND NH. A stroke and never a fill, because the
+    cell underneath already carries the tier's own tone (chTone) and a
+    second fill would answer a different question, how hot this pixel runs,
+    with a colour meant to answer this one, where else it runs. Mirrored the
+    same way every fill above already is, since rd.px only ever names the
+    left half. */
+ var weave='';
+ if(weaveName){
+  var hits=rd.px.filter(function(x){return x.o&&x.o.nm===weaveName;}), wp=[];
+  hits.forEach(function(x){[[x.p[0],x.p[1]],[G-1-x.p[0],x.p[1]]].forEach(function(q){
+   var i=CH_FILL_INS, s=1-2*i;
+   wp.push('M'+(+(q[0]+i).toFixed(2))+' '+(+(q[1]+i).toFixed(2))+'h'+s+'v'+s+'h-'+s+'z');});});
+  if(wp.length)weave='<path class="chv-weavepx" fill="none" stroke="var(--accent)" stroke-width=".12" d="'+wp.join('')+'"/>';}
  return '<svg class="'+cls+'" viewBox="0 0 '+G+' '+G+'" data-chres="'+G+'" data-chlit="'+rd.lit+'"'
   +(label?' role="img" aria-label="'+esc(label)+'"':' aria-hidden="true"')+'>'
-  +glow+render(paths)+'<g class="chv-rim'+(lit?' chv-rim-on':'')+'">'+render(rimPaths)+'</g>'
+  +glow+render(paths)+weave+'<g class="chv-rim'+(lit?' chv-rim-on':'')+'">'+render(rimPaths)+'</g>'
   +'</svg>';}
 
 function chSentence(v){v=String(v||'');return v.charAt(0).toUpperCase()+v.slice(1)+'.';}
@@ -464,80 +488,161 @@ function chWash(r){
  frShadow(M,r,{pre:'chw'});
  return '<svg class="chv-wash" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">'
   +'<defs>'+M.defs.join('')+'</defs>'+M.L.shadow.join('')+'</svg>';}
+/* WHICH MASK OPENS. "It always starts off on the user's last open. First
+   time users start off on child" (MX). CHV.pick itself only lives for this
+   one session's module, the same as CHV.face always has, so a second visit
+   with CHV.pick still null reads the one small preference this page keeps
+   on the profile, CURP.ui.chmask, written by uiSet the way every other UI
+   preference here already is (ui/account.js). A name the profile does not
+   recognise, an older save or a hand edited one, falls back to the first
+   of the roster rather than throwing, and the first of the roster is Child
+   today because canon.js lists it there, not because this reads a position
+   that happens to be zero. */
+function chLast(){
+ var v=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.chmask)||'';
+ return MASKS_READ.some(function(m){return m.nm===v;})?v:MASKS_READ[0].nm;}
+/* THE POINTER TO PIXEL, SHARED. Pulled out of the hover handler below so
+   the hero's own click handler, THE WEAVE a few lines down, resolves the
+   exact cell the hover tooltip already does, rather than carrying a second
+   copy of the same arithmetic that quietly drifts from the first the next
+   time either one is touched. Returns the px entry at the nearest cell, or
+   null off the grid, in a dark gap, or before the svg has ever laid out. */
+function chCellAt(ch,svg,clientX,clientY){
+ var rect=svg.getBoundingClientRect(), G=ch.G;
+ if(!rect.width||!rect.height)return null;
+ var c=Math.max(0,Math.min(G-1,Math.floor((clientX-rect.left)/rect.width*G)));
+ var rr=Math.max(0,Math.min(G-1,Math.floor((clientY-rect.top)/rect.height*G)));
+ return ch.byCell[(c<G/2?c:G-1-c)+','+rr]||null;}
+/* THE RAIL, THE HERO AND THE WEAVE. Rounds MX, MZ and NA, quoted in full
+   against his words at `TASKS.md`. The three column grid every mask used to
+   share gave each one the same small square and left a wide desktop mostly
+   blank below it, exactly what MX calls out: "we have all five masks as
+   small icons on the left hand side of the screen... but then it gives us,
+   we can maximize the rest of that space." Five icons sit in .chv-rail,
+   Child at the top because MASKS_READ already carries child to ideological
+   off canon.js and nothing here resorts it, the rule round NA's own
+   PRIORITY line is keeping this file to. A press makes that mask the hero,
+   the one face the rest of the stage is built around, and calls chDrill for
+   it, the same summary the three column grid already opened in Selection,
+   so the hero and the right column move together on one press, his own
+   words at NA: "a rail press updates the hero and the right column
+   together."
+
+   THE WEAVE is CHV.weave, a saboteur's own name and never the object chRead
+   just built, because compute() runs fresh on every render and an object
+   from the pass before this one would never match the next one's by
+   reference, only a name survives that. Clicking a pixel on the HERO, and
+   only the hero, that is part of one sets it; clicking the hero anywhere
+   else, or the same pixel again, clears it. Every mask's own chSvg call
+   below is handed that name regardless of which one is the hero, and rings
+   whichever of its own held pixels belongs to it (see weaveName in chSvg).
+   That is the technical answer MX left open on purpose, "how the lines draw
+   once one mask can be large and the others a rail": no line crosses the
+   gap between two sizes of the same face, the pixel on each one answers
+   instead, and the rail icon it sits on gets a glow of its own
+   (.chv-weave-on) so "does this show up here" reads before a cell inside a
+   64 pixel square ever would. */
 function renderCharacter(r){
  var host=$('masksview'); if(!host)return;
- /* the pick goes down with the panel, the way every surface's does. rdClose
-    puts down PMPICK and S.pin by name and does not know this one, so it is
-    read off the panel itself rather than added to drills.js */
- var rd0=$('rdrill');
- if(CHV.pick&&(!rd0||rd0.style.display==='none'||!rd0.innerHTML))CHV.pick=null;
- var unread=!r||r.unread;
+ if(!CHV.pick)CHV.pick=chLast();
+ var unread=!r||r.unread, heroM=null, heroRd=null;
  var cards=MASKS_READ.map(function(m){
   var rd=chRead(m,r,CHV.face), on=CHV.pick===m.nm;
+  if(on){heroM=m;heroRd=rd;}
   /* the hover's own lookup, left-half cell to the pixel drawn there, built
      on the same pass that reads the mask so the overlay never disagrees
-     with what is on screen. Keyed by mask name because six cards render at
-     once and a pointer is only ever over one of them. */
+     with what is on screen. Keyed by mask name because five cards and the
+     hero all render at once and a pointer is only ever over one of them;
+     the hero shares this entry with its own rail icon rather than getting
+     a second one, since chRead is deterministic on the same inputs. */
   var byCell={};
   rd.px.forEach(function(x){byCell[x.p[0]+','+x.p[1]]=x;});
   CH_HOVER[m.nm]={G:rd.G,byCell:byCell,r:r};
+  var weaveOn=!!CHV.weave&&rd.px.some(function(x){return x.o&&x.o.nm===CHV.weave;});
   var say=m.nm+' mask, '+CHV.face+' reading. It '+m.v+'.';
-  return '<button type="button" class="chv-m" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
-   +'<span class="chv-nm">'+esc(m.nm)+'</span>'+chSvg(rd,'chv-svg')+'</button>';}).join('');
+  return '<button type="button" class="chv-m'+(weaveOn?' chv-weave-on':'')
+   +'" data-chmask="'+esc(m.nm)+'" aria-pressed="'+on+'" title="'+esc(say)+'" aria-label="'+esc(say)+'">'
+   +'<span class="chv-nm">'+esc(m.nm)+'</span>'+chSvg(rd,'chv-svg',null,CHV.weave)+'</button>';}).join('');
+ /* heroM is always set: CHV.pick is read off chLast() above the first time
+    and off a real press every time after, and both only ever hand back a
+    name MASKS_READ actually carries, so exactly one card's own on is true
+    and heroRd is that card's own rd, never computed twice. */
+ var heroSay=heroM.nm+' mask, '+CHV.face+' reading, enlarged. It '+heroM.v+'.';
+ var hero='<div class="chv-hero" data-chhero="'+esc(heroM.nm)+'">'
+  +'<div class="chv-hero-nm">'+esc(heroM.nm)+'</div>'
+  +chSvg(heroRd,'chv-svg chv-hero-svg',heroSay,CHV.weave)+'</div>';
  var html=chWash(r)+'<div class="chv">'
   +'<div class="chv-top"><div class="seg" role="group" aria-label="Reading">'
   +['dark','light'].map(function(f){return '<button type="button" data-chface="'+f+'" aria-pressed="'+(CHV.face===f)+'">'
    +(f==='dark'?'Dark':'Light')+'</button>';}).join('')+'</div></div>'
   +(unread?'<p class="chv-empty">Nothing read yet, so the masks are empty. Write what happened on the Story page and they start to fill.</p>':'')
-  +'<div class="chv-grid">'+cards+'</div><div class="probe" id="chprobe"></div></div>';
+  +'<div class="chv-stage"><div class="chv-rail" role="group" aria-label="Masks">'+cards+'</div>'+hero+'</div>'
+  +'<div class="probe" id="chprobe"></div></div>';
  /* written only when it changed. render() runs on every press anywhere in
     the app, and rewriting the host each time would drop the focus off the
     card a keyboard is sitting on */
  if(html===CHV.html&&host.firstChild)return;
  CHV.html=html; host.innerHTML=html;
- /* THE HOVER'S OWN LISTENERS, WIRED ONCE. host is the tab's fixed door and
-    outlives every render, where the buttons above do not: html is only
-    rewritten when it changes, so a listener attached here on every call
-    would pile up one more copy of itself on every face toggle. A flag on
-    the host is cheaper than a teardown. */
+ /* THE HOVER AND THE WEAVE'S LISTENERS, WIRED ONCE. host is the tab's fixed
+    door and outlives every render, where the buttons above do not: html is
+    only rewritten when it changes, so a listener attached here on every
+    call would pile up one more copy of itself on every face toggle. A flag
+    on the host is cheaper than a teardown. */
  if(!host._chHover){host._chHover=true;
   host.addEventListener('pointermove',function(e){
    /* a finger has no hover, the Field's own reason, ui/ui.js */
    if(e.pointerType==='touch')return;
    var svg=e.target&&e.target.closest&&e.target.closest('svg.chv-svg');
-   var pr=$('chprobe'), grid=host.querySelector('.chv-grid');
-   var btn=svg&&svg.closest('[data-chmask]');
-   var ch=btn&&CH_HOVER[btn.getAttribute('data-chmask')];
+   var pr=$('chprobe'), grid=host.querySelector('.chv-stage');
+   /* the hero carries data-chhero and a rail icon carries data-chmask, two
+      names for the same lookup rather than one shared attribute, so the
+      click handler below can tell a hero press from a rail press without
+      also having to check which class the button wears */
+   var btn=svg&&svg.closest('[data-chmask],[data-chhero]');
+   var nm=btn&&(btn.getAttribute('data-chmask')||btn.getAttribute('data-chhero'));
+   var ch=nm&&CH_HOVER[nm];
    if(!pr||!grid)return;
    if(!svg||!ch){pr.classList.remove('on');return;}
-   /* THE NEAREST CELL, SOLVED FROM THE POINTER. chGeo's own reason: the
-      grid is drawn as a handful of merged paths, one per fill colour, so
-      no single pixel carries its own element to read a hit off. Mirrored
-      past G/2 because rd.px only ever names the left half, chSvg's own
-      mirror for the right. */
-   var rect=svg.getBoundingClientRect(), G=ch.G;
-   if(!rect.width||!rect.height){pr.classList.remove('on');return;}
-   var c=Math.max(0,Math.min(G-1,Math.floor((e.clientX-rect.left)/rect.width*G)));
-   var rr=Math.max(0,Math.min(G-1,Math.floor((e.clientY-rect.top)/rect.height*G)));
-   var x=ch.byCell[(c<G/2?c:G-1-c)+','+rr];
+   var x=chCellAt(ch,svg,e.clientX,e.clientY);
    var t=x?chHoverHtml(x,ch.r):'';
    if(!t){pr.classList.remove('on');return;}
    pr.innerHTML=t;
    /* probeAt adds el.offsetLeft to the local x it is given to place pr
       against pr.offsetParent, so el has to be a plain, unpositioned child
       of that same box (.chv, set position:relative above) for the two
-      offsets to land in one coordinate space. .chv-grid is that child;
+      offsets to land in one coordinate space. .chv-stage is that child;
       host itself sits one level further out and does not share it. */
    var gb=grid.getBoundingClientRect();
    probeAt(pr,grid,e.clientX-gb.left,e.clientY-gb.top);});
-  host.addEventListener('pointerleave',function(){var pr=$('chprobe'); if(pr)pr.classList.remove('on');});}
+  host.addEventListener('pointerleave',function(){var pr=$('chprobe'); if(pr)pr.classList.remove('on');});
+  /* THE WEAVE'S OWN CLICK, scoped to svg.chv-hero-svg and nothing else, so
+     a press on a rail icon never reaches here: that press is a different
+     gesture, picking which mask is the hero, wired separately below. */
+  host.addEventListener('click',function(e){
+   var svg=e.target&&e.target.closest&&e.target.closest('svg.chv-hero-svg');
+   var wrap=svg&&svg.closest('[data-chhero]'); if(!wrap)return;
+   var nm=wrap.getAttribute('data-chhero'), ch=CH_HOVER[nm]; if(!ch)return;
+   var x=chCellAt(ch,svg,e.clientX,e.clientY);
+   var m=MASKS_READ.filter(function(mm){return mm.nm===nm;})[0];
+   if(x&&x.tier>=1&&x.o){
+    CHV.weave=(CHV.weave===x.o.nm)?null:x.o.nm;
+    if(CHV.weave)runDrill(x.o); else if(m)chDrill(m);
+   } else if(CHV.weave){CHV.weave=null; if(m)chDrill(m);}
+   else return;
+   render();});}
  host.querySelectorAll('[data-chface]').forEach(function(b){b.onclick=function(){
   CHV.face=b.getAttribute('data-chface'); render();};});
- host.querySelectorAll('[data-chmask]').forEach(function(b){b.onclick=function(){
+ /* a rail press, never the hero's own click above: picking which mask is
+    the hero rather than which pixel on it is the weave. Always sets both
+    the hero and Selection together (NA), and there is no toggle back to
+    nothing, round NH: the hero is never empty once a reading has rendered
+    once, so a second press on the one already open simply redraws it. */
+ host.querySelectorAll('.chv-rail [data-chmask]').forEach(function(b){b.onclick=function(){
   var m=MASKS.filter(function(x){return x.nm===b.getAttribute('data-chmask');})[0];
   if(!m)return;
-  if(CHV.pick===m.nm){CHV.pick=null;rdClose();return;}
-  CHV.pick=m.nm; chDrill(m); render();};});}
+  CHV.pick=m.nm;
+  if(typeof uiSet==='function')uiSet('chmask',m.nm);
+  chDrill(m); render();};});}
 
 /* THE SUMMARY IN SELECTION. "It gives me a full summary of what that mask
    is doing. How it operates through me. Both light and dark." Both grids
