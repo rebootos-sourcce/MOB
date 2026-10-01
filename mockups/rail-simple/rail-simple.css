@@ -1,0 +1,15 @@
+/* rail-simple: the three wordless instruments. Tokens come from the app when
+   it hosts them (--ink, --dim, --edge) and fall back to Dark's own values. */
+.rs{display:block;position:relative;font:600 11px/1 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink,#EFEDE8);
+ -webkit-user-select:none;user-select:none}
+.rs .rs-svg{display:block;overflow:visible}
+.rs text{font-family:inherit;font-variant-numeric:tabular-nums}
+.rs .lb{font-size:10.5px;font-weight:600;fill:var(--dim,#94908A);letter-spacing:.01em}
+.rs .nm{font-size:13px;font-weight:650;fill:var(--ink,#EFEDE8)}
+.rs .nm.big{font-size:19px;font-weight:600}
+.rs .bm-post,.rs .bm-beam path{fill:none;stroke:var(--mid,#B4B0A8);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.rs .bm-post{stroke:var(--dim,#94908A)}
+.rs .gz title,.rs title{pointer-events:none}
+/* the closed forms drop the names, and the ring-only form drops every mark outside the ring */
+.rs.rs-ringonly .hal,.rs.rs-ringonly .frk,.rs.rs-ringonly .bal,.rs.rs-ringonly text{display:none}
+.rs.rs-slim .tb,.rs.rs-slim .bu,.rs.rs-slim .sun,.rs.rs-slim .bal,.rs.rs-slim text{display:none}

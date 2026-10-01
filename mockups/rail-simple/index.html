@@ -1,0 +1,206 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Left rail, simple: three options</title>
+<link rel="stylesheet" href="rail-simple.css">
+<style>
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14);--accent:#7EB8D4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1380px;margin:0 auto;padding:36px 24px 80px}
+h1{font-size:26px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
+h2{font-size:20px;font-weight:600;margin:0 0 4px}
+h3{font-size:12px;font-weight:600;color:var(--dim);margin:26px 0 10px;letter-spacing:.01em}
+p{margin:0 0 10px;color:var(--mid);max-width:78ch}
+.sub{color:var(--dim);margin-bottom:28px}
+section{border-top:1px solid var(--edge-2);padding:34px 0 10px;margin-top:34px}
+.facts{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
+.facts span{background:var(--panel);border:1px solid var(--edge);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--mid)}
+.facts b{color:var(--ink);font-weight:600}
+.live{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:12px}
+.live .cell{background:var(--panel);border-radius:14px;padding:14px 14px 10px;position:relative}
+.live .who{position:absolute;right:12px;top:8px;font-size:11px;color:var(--dim)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.row figure{margin:0}
+.row img{display:block;border-radius:10px;border:1px solid var(--edge);background:#000}
+figcaption{font-size:12px;color:var(--dim);margin-top:6px}
+.note{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:16px 18px;margin-top:18px}
+.note p{max-width:none}
+.note b{color:var(--ink);font-weight:600}
+ul{margin:4px 0 0;padding-left:18px;color:var(--mid)}
+li{margin:3px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.live{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}}
+img.fw{max-width:100%;height:auto}
+.phones img{width:195px;height:auto}
+a{color:var(--accent)}
+</style></head><body><div class="wrap">
+
+<h1>Left rail, simple: three options</h1>
+<p class="sub">Round OX. Mockups only, nothing in atuned_src is touched. Every picture is the built app (source.html) with the readings emptied out of the left rail and one block put in the same place. Every figure is read from the engine. Each block is alive from its first frame.</p>
+
+<h3>What it replaces</h3>
+<div class="row">
+ <figure><img src="shots/crops/base-marcus-open.png" width="306" alt="The rail today, Marcus"><figcaption>Today, Marcus. Readings block is 617 px tall. The domain and archetype rows end at y 997 of 1000.</figcaption></figure>
+ <figure><img src="shots/crops/base-tomas-open.png" width="306" alt="The rail today, Tomas"><figcaption>Today, Tomas.</figcaption></figure>
+ <div style="flex:1;min-width:300px">
+  <p>Where the shared grammar sits, the same in all three:</p>
+  <ul>
+   <li><b>CQ and DQ</b> share one scale. Coherence is the light that fills it from the origin, decoherence is the ground it stands on. The seam between them is the oscillation range, 2.5 + (1 - CQ/100)^2 x 26 points wide, a soft blend whose midpoint swings on the Compass's own drift.</li>
+   <li><b>Seven marks</b> stand in the decoherence ground, root to crown, in their seat colours, as high as the charge on their seat.</li>
+   <li><b>Vitality</b> yellow vessel (Solar seat). <b>Awareness</b> indigo iris (3rd Eye seat). <b>Will</b> blue arrow (Throat seat). <b>Radiance</b> a sun carrying all three.</li>
+   <li><b>Flow</b> a live sine, seat colours root to crown, clean and full range when every seat passes, choppy where one holds back.</li>
+   <li><b>Orientation</b> a halo or a pitchfork, whichever applies, the other ghosted. <b>Balance</b> a beam that tips toward the heavier side.</li>
+   <li><b>Words on screen</b>, counted from the DOM: CQ and DQ. Two. Every other name lives in a tooltip.</li>
+  </ul>
+ </div>
+</div>
+
+<!-- ===================== A ===================== -->
+<section id="a">
+ <h2>A. One bar, four gauges, one wave</h2>
+ <p>A pill bar, coherence filling from the left, the seam softening into a dark ground that carries the seven marks. Under it four liquid gauges and the balance beam, under those the wave.</p>
+ <div class="facts"><span><b>138 px</b> block, 154 with its margin</span><span><b>2 words</b> (CQ, DQ)</span><span>domain and archetype end at <b>y 522</b> of 1000</span><span>closed: <b>46 x 304</b></span></div>
+ <h3>Alive, in your browser, all four people</h3>
+ <div class="live" id="liveA"></div>
+ <h3>In the app, column open, 1600 x 1000 (left rail cropped; the full frame is in shots/)</h3>
+ <div class="row">
+  <figure><a href="shots/1600-a-marcus-open.png"><img src="shots/crops/a-marcus-open.png" width="306" alt="A, Marcus, open"></a><figcaption>Marcus</figcaption></figure>
+  <figure><a href="shots/1600-a-tomas-open.png"><img src="shots/crops/a-tomas-open.png" width="306" alt="A, Tomas, open"></a><figcaption>Tomas</figcaption></figure>
+  <figure><a href="shots/1600-a-diane-open.png"><img src="shots/crops/a-diane-open.png" width="306" alt="A, Diane, open"></a><figcaption>Diane</figcaption></figure>
+  <figure><a href="shots/1600-a-you-open.png"><img src="shots/crops/a-you-open.png" width="306" alt="A, near blank, open"></a><figcaption>Near blank (You, nothing read)</figcaption></figure>
+ </div>
+ <h3>Column closed (58 px wide)</h3>
+ <div class="row">
+  <figure><img src="shots/crops/a-marcus-closed.png" alt="A closed, Marcus"><figcaption>Marcus</figcaption></figure>
+  <figure><img src="shots/crops/a-tomas-closed.png" alt="A closed, Tomas"><figcaption>Tomas</figcaption></figure>
+  <figure><img src="shots/crops/a-diane-closed.png" alt="A closed, Diane"><figcaption>Diane</figcaption></figure>
+  <figure><img src="shots/crops/a-you-closed.png" alt="A closed, near blank"><figcaption>Near blank</figcaption></figure>
+  <figure><img src="shots/crops/a-marcus-snow.png" width="306" alt="A, Snow"><figcaption>Snow lighting, Marcus</figcaption></figure>
+  <figure><img src="shots/crops/a-tomas-snow.png" width="306" alt="A, Snow, Tomas"><figcaption>Snow lighting, Tomas</figcaption></figure>
+ </div>
+ <h3>390 x 844</h3>
+ <div class="row phones">
+  <figure><img src="shots/390-a-marcus.png" alt=""><figcaption>Marcus</figcaption></figure>
+  <figure><img src="shots/390-a-tomas.png" alt=""><figcaption>Tomas</figcaption></figure>
+  <figure><img src="shots/390-a-diane.png" alt=""><figcaption>Diane</figcaption></figure>
+  <figure><img src="shots/390-a-you.png" alt=""><figcaption>Near blank</figcaption></figure>
+ </div>
+ <h3>Frame strip, Marcus (healthy) and Tomas (heavy)</h3>
+ <a href="shots/frames-a.png"><img class="fw" src="shots/frames-a.png" alt="frames, A"></a>
+ <div class="note">
+  <p><b>What a person reads at a glance.</b> How far the light reaches along the bar and how soft its edge is. Whether the dark end is empty or standing tall with colour, and which seat is tallest. Which of the three element glyphs are full. Whether the wave is one clean sine or torn. Halo or pitchfork. Which pan of the beam is down.</p>
+  <p><b>Height it takes.</b> 138 px, 154 with margin, against 617 today. The archetype and domain rows end at y 522 instead of y 997, so they clear the first screen with 478 px to spare.</p>
+  <p><b>Where it is weak.</b> The five glyphs are the smallest marks in the set (38 px) and a near empty gauge, Tomas's Vitality at 0.01, is an empty cup: true, and it looks like a missing icon. The dark end of the bar sits 1.11 to 1 against the panel, so it is carried by its hairline and its marks, and a person at CQ 97 has almost no dark end to see.</p>
+ </div>
+</section>
+
+<!-- ===================== B ===================== -->
+<section id="b">
+ <h2>B. One ring</h2>
+ <p>A three hundred degree gauge, coherence sweeping clockwise from the lower left, the dark ground and the seven marks in the rest, the seam as a blended arc. The wave is the ring's own edge. Inside, three lamps whose light adds, and a small sun where they meet.</p>
+ <div class="facts"><span><b>146 px</b> block, 162 with its margin</span><span><b>2 words</b> (CQ, DQ)</span><span>domain and archetype end at <b>y 530</b> of 1000</span><span>closed: <b>46 x 46</b>, the ring alone</span></div>
+ <h3>Alive, in your browser, all four people</h3>
+ <div class="live" id="liveB"></div>
+ <h3>In the app, column open, 1600 x 1000</h3>
+ <div class="row">
+  <figure><a href="shots/1600-b-marcus-open.png"><img src="shots/crops/b-marcus-open.png" width="306" alt="B, Marcus, open"></a><figcaption>Marcus</figcaption></figure>
+  <figure><a href="shots/1600-b-tomas-open.png"><img src="shots/crops/b-tomas-open.png" width="306" alt="B, Tomas, open"></a><figcaption>Tomas</figcaption></figure>
+  <figure><a href="shots/1600-b-diane-open.png"><img src="shots/crops/b-diane-open.png" width="306" alt="B, Diane, open"></a><figcaption>Diane</figcaption></figure>
+  <figure><a href="shots/1600-b-you-open.png"><img src="shots/crops/b-you-open.png" width="306" alt="B, near blank, open"></a><figcaption>Near blank</figcaption></figure>
+ </div>
+ <h3>Column closed (58 px wide), and Snow</h3>
+ <div class="row">
+  <figure><img src="shots/crops/b-marcus-closed.png" alt="B closed, Marcus"><figcaption>Marcus</figcaption></figure>
+  <figure><img src="shots/crops/b-tomas-closed.png" alt="B closed, Tomas"><figcaption>Tomas</figcaption></figure>
+  <figure><img src="shots/crops/b-diane-closed.png" alt="B closed, Diane"><figcaption>Diane</figcaption></figure>
+  <figure><img src="shots/crops/b-you-closed.png" alt="B closed, near blank"><figcaption>Near blank</figcaption></figure>
+  <figure><img src="shots/crops/b-marcus-snow.png" width="306" alt="B, Snow"><figcaption>Snow lighting, Marcus</figcaption></figure>
+  <figure><img src="shots/crops/b-tomas-snow.png" width="306" alt="B, Snow, Tomas"><figcaption>Snow lighting, Tomas</figcaption></figure>
+ </div>
+ <h3>390 x 844</h3>
+ <div class="row phones">
+  <figure><img src="shots/390-b-marcus.png" alt=""><figcaption>Marcus</figcaption></figure>
+  <figure><img src="shots/390-b-tomas.png" alt=""><figcaption>Tomas</figcaption></figure>
+  <figure><img src="shots/390-b-diane.png" alt=""><figcaption>Diane</figcaption></figure>
+  <figure><img src="shots/390-b-you.png" alt=""><figcaption>Near blank</figcaption></figure>
+ </div>
+ <h3>Frame strip, Marcus and Tomas</h3>
+ <a href="shots/frames-b.png"><img class="fw" src="shots/frames-b.png" alt="frames, B"></a>
+ <div class="note">
+  <p><b>What a person reads at a glance.</b> The shape first: a smooth round ring is a field that flows, a ragged one is not. Then how much of the ring is light and how much is shadow, with the seven colours standing in the shadow. Halo or pitchfork at the side, a beam under it. Inside, how much the three lamps overlap: a bright meeting point is high radiance, three separate dim lamps are not.</p>
+  <p><b>Height it takes.</b> 146 px, 162 with margin. Domain and archetype end at y 530.</p>
+  <p><b>Where it is weak.</b> It is the prettiest and the hardest to read exactly. The three glyphs are 18 px and sit inside soft light, so which lamp is the weak one is a guess until you hover. The seam on a high CQ is a hairline and is not seen. It leaves 60 px of empty margin either side of the ring at this width.</p>
+ </div>
+</section>
+
+<!-- ===================== C ===================== -->
+<section id="c">
+ <h2>C. One spine</h2>
+ <p>The Compass's own geometry made small. Coherence rises like mercury from the pitchfork toward the halo, the dark ground and the seven marks above it. Beside it the wave runs up the body, and the three elements are three thin tubes ending in their own bulb, with the sun above them.</p>
+ <div class="facts"><span><b>150 px</b> block, 166 with its margin</span><span><b>2 words</b> (CQ, DQ)</span><span>domain and archetype end at <b>y 534</b> of 1000</span><span>closed: <b>46 x 150</b>, spine and wave</span></div>
+ <h3>Alive, in your browser, all four people</h3>
+ <div class="live" id="liveC"></div>
+ <h3>In the app, column open, 1600 x 1000</h3>
+ <div class="row">
+  <figure><a href="shots/1600-c-marcus-open.png"><img src="shots/crops/c-marcus-open.png" width="306" alt="C, Marcus, open"></a><figcaption>Marcus</figcaption></figure>
+  <figure><a href="shots/1600-c-tomas-open.png"><img src="shots/crops/c-tomas-open.png" width="306" alt="C, Tomas, open"></a><figcaption>Tomas</figcaption></figure>
+  <figure><a href="shots/1600-c-diane-open.png"><img src="shots/crops/c-diane-open.png" width="306" alt="C, Diane, open"></a><figcaption>Diane</figcaption></figure>
+  <figure><a href="shots/1600-c-you-open.png"><img src="shots/crops/c-you-open.png" width="306" alt="C, near blank, open"></a><figcaption>Near blank</figcaption></figure>
+ </div>
+ <h3>Column closed (58 px wide), and Snow</h3>
+ <div class="row">
+  <figure><img src="shots/crops/c-marcus-closed.png" alt="C closed, Marcus"><figcaption>Marcus</figcaption></figure>
+  <figure><img src="shots/crops/c-tomas-closed.png" alt="C closed, Tomas"><figcaption>Tomas</figcaption></figure>
+  <figure><img src="shots/crops/c-diane-closed.png" alt="C closed, Diane"><figcaption>Diane</figcaption></figure>
+  <figure><img src="shots/crops/c-you-closed.png" alt="C closed, near blank"><figcaption>Near blank</figcaption></figure>
+  <figure><img src="shots/crops/c-marcus-snow.png" width="306" alt="C, Snow"><figcaption>Snow lighting, Marcus</figcaption></figure>
+  <figure><img src="shots/crops/c-tomas-snow.png" width="306" alt="C, Snow, Tomas"><figcaption>Snow lighting, Tomas</figcaption></figure>
+ </div>
+ <h3>390 x 844</h3>
+ <div class="row phones">
+  <figure><img src="shots/390-c-marcus.png" alt=""><figcaption>Marcus</figcaption></figure>
+  <figure><img src="shots/390-c-tomas.png" alt=""><figcaption>Tomas</figcaption></figure>
+  <figure><img src="shots/390-c-diane.png" alt=""><figcaption>Diane</figcaption></figure>
+  <figure><img src="shots/390-c-you.png" alt=""><figcaption>Near blank</figcaption></figure>
+ </div>
+ <h3>Frame strip, Marcus and Tomas</h3>
+ <a href="shots/frames-c.png"><img class="fw" src="shots/frames-c.png" alt="frames, C"></a>
+ <div class="note">
+  <p><b>What a person reads at a glance.</b> How high the light stands in the tube and where the seam sits, the colours stacked above it, and the wave beside it sharing the same seven heights. Three thin tubes: how full each element is. The sun above them: how much the three add up to.</p>
+  <p><b>Height it takes.</b> 150 px, 166 with margin. Domain and archetype end at y 534.</p>
+  <p><b>Where it is weak.</b> It is the most parts: spine, wave, three tubes, sun, beam, two labels. The element tubes have no relation to the spine except that they stand beside it, so the eye reads two instruments. The two labels stack close to each other when CQ is high. It is the only one whose closed form is the open object, cut down, and the one that borrows the Compass most directly.</p>
+ </div>
+</section>
+
+<section id="shared">
+ <h2>The block alone, four people, at twice the size</h2>
+ <a href="shots/blocks-2x.png"><img class="fw" src="shots/blocks-2x.png" alt="the three blocks, four people"></a>
+ <div class="note two">
+  <div>
+   <p><b>The four people, read from the built engine.</b></p>
+   <ul id="tbl"></ul>
+  </div>
+  <div>
+   <p><b>Measured, not eyeballed.</b></p>
+   <ul>
+    <li>Glyph and wave colours against the panel ground (#1A1D26): Solar 9.3 to 1, Throat 7.7, 3rd Eye 5.7, Crown 5.3, accent 7.8, Root pitchfork 4.1. All clear the 3 to 1 floor for a graphic.</li>
+    <li>CQ and DQ names 5.3 to 1, their numerals 14.4 to 1.</li>
+    <li>Will (Throat blue) against the coherence fill (accent blue): 1.22 to 1 apart in lightness. Same family, kept apart only by place.</li>
+    <li>The seat colours are the app's own current values (the fifteen percent punched up set, Root #D6524C and so on), not the unpunched list in the brief.</li>
+    <li>Twelve live blocks on one page run at 33 frames a second in a software rendered browser. The rail holds one.</li>
+   </ul>
+  </div>
+ </div>
+</section>
+
+</div>
+<script src="data.js"></script><script src="rail-simple.js"></script>
+<script>
+['a','b','c'].forEach(function(k){var g=document.getElementById('live'+k.toUpperCase());
+ ['marcus','tomas','diane','you'].forEach(function(n){var c=document.createElement('div');c.className='cell';
+  var w=document.createElement('div');w.className='who';w.textContent=RS_DATA[n].nm+(RS_DATA[n].unread?', nothing read':'');c.appendChild(w);
+  var h=document.createElement('div');c.appendChild(h);g.appendChild(c);RS.mount(h,k,RS_DATA[n],{W:262});});});
+var t=document.getElementById('tbl');
+['marcus','tomas','diane','you'].forEach(function(n){var d=RS_DATA[n],li=document.createElement('li');
+ li.textContent=d.nm+(d.unread?' (near blank, nothing read)':'')+': CQ '+d.cq.toFixed(1)+', DQ '+d.dq.toFixed(1)+', SQ '+d.sq.toFixed(1)+', Vitality '+d.x.toFixed(2)+', Awareness '+d.y.toFixed(2)+', Will '+d.z.toFixed(2)+', Radiance '+d.rad.toFixed(2)+', Flow '+d.flow.toFixed(2)+', seam '+d.band.toFixed(1)+' points wide';
+ t.appendChild(li);});
+</script></body></html>
