@@ -31071,3 +31071,48 @@ Onboarding rulings (answers to the nine in PLAN.md section H)
   it by saboteur, by complex, and by hyper complex, see all the connections
   between them, and get a summary off that. He does not know yet what he wants to
   interact with: so mockups show interaction options rather than decide one.
+
+## Round OZ, 1 October. The release opening screen: voice first, one screen, written out as it is said; the screen redesigned; and he cannot end it
+
+> "Okay, massive fail. on the starting uh, the release opening screen. It should
+> open on my voice. It should not cycle through text lines Right, we're trying
+> to minimize the number of screens, which is why the voice portion is
+> important. And then the intro text should all be on one screen and it should
+> be it should write out animation-wise, dynamically, it should write out as the
+> words are being said. And then when I get to the prompt, I am releasing. It
+> writes that all out and freezes that. And pulses it a little bit. To remind
+> me. And then I read the prompt. Underneath. Um, I don't want the number or the
+> word now there because that interrupts the text I'm reading. And I'm also
+> seeing that the release prompt doesn't have the subject. It says I'm, I'm, I
+> give up separation, but it doesn't say what. So the story needs to always have
+> the subject. That's important for the sniffer and for everything else. And
+> then I want the UX team to completely redesign this screen I want to minimize
+> it for UX for user flow simplify this make it more aesthetically visually
+> pleasing and no scroll everything has to be above the fold And I want some
+> visual animation of left channel, right channel, release and install. Maybe
+> those are the counters down or counter up. That way everything is visually
+> symbolic. And for separation, I see as an example, it should have its icon and
+> the percent Yeah, and then the left and right act as a counter. The timer, so
+> you don't need the timer anymore. I want a visual difference between left,
+> right, masculine, feminine, release, and install. And for buttons, I want
+> pause, voice on and off, end session, yeah, this is for, it's, it stood up,
+> but visually it's a D, yeah, I can't even end the screen now. Priority."
+
+**Read as.**
+- The release's opening: it opens on the person's voice (the voice is the
+  first thing, spoken), not on a sequence of text screens. One screen for the
+  intro text, written out dynamically as the words are spoken. At "I am
+  releasing" the line writes out, freezes, and pulses a little as a reminder.
+  Under the prompt no number or word label is shown during reading (it
+  interrupts).
+- Defect: the release prompt has no subject: "I give up separation" does not
+  say what. A story must always carry its subject, for the sniffer and for
+  everything else.
+- Redesign by the UX team: minimal flow, visually pleasing, no scroll,
+  everything above the fold. Visual animation for left channel, right channel,
+  release and install: counters counting down or up; the icon and the percent
+  for each address (separation as the example); left and right act as the
+  counter, so the timer goes. A clear visual difference between left, right,
+  masculine, feminine, release and install.
+- Buttons: pause, voice on and off, end session.
+- Defect, priority: he cannot end the screen.
