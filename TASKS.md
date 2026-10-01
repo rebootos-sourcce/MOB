@@ -29958,3 +29958,141 @@ now."
   Character icons move into where the Compass's overlay icons
   currently sit. Not yet compared side by side; needs that comparison
   before a build, same reasoning as the option frames line above.
+
+## Round OD. Vibration confirmed stable, Intake was never Body, practitioner mode toggle reported broken
+
+His words, verbatim, with four screenshots (the Field, a close detail of it, and the Body page front view): "The vibration that I'm seeing now does look the same. It doesn't feel worse. It feels the same. I don't know what you mean by the option frames, but going through the lines or individual pulses, and I want that dynamic. The pulse is dynamic. Intake is not body. It never has been. It's either been called energetics or intake. Change it back to intake, move it back to discover, after summary. So I turned on practitioner mode and the menu doesn't show up."
+
+**Vibration: closed, not a regression.** Same as before, not worse. The
+round MI dampening is doing its job; nothing further queued on this.
+
+**"Option frames": still open, he cannot clarify it either right now.**
+Not guessed at. The pulse-dynamic ask stands as already logged, his own
+restatement: "the pulse is dynamic."
+
+**He overrides the round LO history on Intake, directly and
+unambiguously.** `engine/core.js`'s own comment states that round LO
+renamed this surface from Intake to Body, at his word. He now says
+plainly: "Intake is not body. It never has been." Not argued with.
+Taken as a live correction to a standing ruling, which is exactly what
+this file's own rule on a conflict calls for: flagged, not silently
+overridden and not silently obeyed without saying the history existed.
+Building: `TAB.ENERGY`'s label moves from Body back to Intake, and its
+`.sec` moves from `play` back to `discover`, positioned directly after
+Summary, ahead of Analytics. Same integer, same id, same renderer; the
+TAB rule holds.
+
+**Practitioner mode toggle: reproduced for, not reproduced.** Tried
+directly three ways against the current built file: calling `uiSet`
+itself, clicking the real `#acprac` toggle through `setTab`+`renderAccount`
+at default width, and the same at 390. All three correctly flip
+`CURP.ui.practitioner`, correctly set the practitioner section and tab
+group's display, and the section reads `display:flex` in computed
+style at desktop width, matching the header screenshot he sent earlier
+this round. Could not reproduce the symptom. Not claimed fixed and not
+claimed his report is wrong either: put back to him, with what was
+tried, rather than guessed past.
+
+## Round OE. The funnel-to-software journey TDD, reviewed
+
+His words, verbatim, with the document attached: "Review this for onboarding, tutorial and paywall. User story. We will build off of this."
+
+`ATUNED_Funnel_to_Software_User_Journey_TDD_v1.md`, dated today, genuinely
+new, saved as `ATUNED-funnel-to-software-journey-TDD-v1.md`. A first
+read against the real code rather than a summary of the document's own
+claims.
+
+**Confirms, rather than conflicts with, everything just built this
+round.** "Sight is not for sale. New ground is," word for word the
+ruling the pay journey was just built against. "Reruns cost zero
+patterns... previously opened ground can be rerun without consuming
+another pattern," exactly the mechanism just landed (22.K17). "The
+paywall should be contextual, not an interruption to first value," and
+its suggested sequence, work, approach a constraint, explain state,
+show throughput options, choose, is the exact route the release wall's
+"See the tiers" button now takes, built this same round before this
+document arrived. Three pieces of work landed ahead of the document
+that asks for them.
+
+**One real conflict, not silently resolved.** The document states
+"the older 50-pattern referral copy must be replaced with 25 before
+launch." `DECISIONS.md` rules the referral at fifty, twice, each with
+real reasoning: "At a hundred, four invites a month replaces a [tier]"
+and "two full runs, half of what a person was given." No reasoning is
+given for 25 in the new document. And there is no "older copy" to
+replace: searched the whole product, no referral or invite-a-friend
+feature is built anywhere, in `atuned_src` or the funnel. The only
+places fifty appears are `DECISIONS.md`'s own ruling and a code comment
+in `funnel/buy.html` citing it. Put to him rather than silently
+changed either way.
+
+**The real, large gap: no concern-based starter gift exists.** The
+document's own core journey opens on selecting a concern (anxiety,
+burnout, grief, and so on) and mapping it to a curated hundred-pattern
+starter set, transferred into the account at signup. Searched for it:
+nothing in the funnel, nothing in the tutorial, nothing named
+StarterGift or close to it. The current funnel's quiz does not ask
+"what brought you here" as a ground selector at all. Of the document's
+sixteen acceptance criteria, the first five, land in the funnel, select
+a ground, receive a personalized gift, create an account without
+losing it, enter the tutorial with that gift, are the real net-new
+work and the reason the rest of the document reads as familiar: the
+release, rerun, free practice and paid mechanics it describes are
+already the ones this session has spent most of today building or
+fixing. The gap is specifically the front half, the concern-to-gift
+funnel, and that is unbuilt.
+
+**Not started this round.** Three gate-verified builds are mid-commit
+right now. A fuller pass, the full acceptance criteria table and the
+failure tests in section 20 against the real funnel and the real
+account creation flow, is the obvious next step once this round's
+commits land.
+
+## Round OF. The Practice TDD and the graph ordered today; pricing, billing, copy, sound; the plan refreshed
+
+His words, verbatim, with `ATUNED_Practice_Ritual_Accountability_Trace_Graph_TDD.md`
+attached: "review we're building this today also the graph That should
+have been part of our documentation and all that TDD documentation. New
+code should be in. Prioritize Stripe pricing. Site not for sale, not I
+don't know what that means. Manage building uh, billing. Copy sweep, do
+that next. You have a document that gives you rules. I gave that to you
+earlier. I'm working on the you have the stuff for the funnel actually
+don't have the full funnel storyboard yet so the sound effects wire that
+in make sure it's an engine Header logo, do that after copy. Zoom icons.
+Those are easy. Excavation engine. Okay, this looks like a good list. I'm
+going to keep adding, so your plan right now looks like it hasn't been
+updated in a long time. Please update that next. Review what my input
+twice so you don't forget. And then continue building."
+
+**Read twice, as asked. The same list both times:**
+1. Update the plan. Done first: the app's task list was stuck on one
+   finished item from this morning and held none of today's work.
+2. The Practice, Ritual, Accountability TDD: review and build today.
+3. The trace graph: build it. He says it belonged in the earlier TDDs.
+   That reverses the earlier "not doing" call on `20.H9` and section 19's
+   graph, which was made because the engine has no graph.
+4. Stripe pricing, prioritised.
+5. "Site not for sale, not I don't know what that means": read as "Sight
+   is not for sale, I don't know what that means". Not a ruling. A line
+   on the customer-facing pricing page that its owner cannot read.
+6. Manage billing: build it.
+7. Copy sweep next, against the brief he gave earlier.
+8. The funnel waits: he does not have the full storyboard yet.
+9. Sound effects: wire in, as an engine.
+10. Header logo after copy. Zoom icons, easy.
+11. Excavation engine: accepted.
+
+**Found while reading the pricing ask.** `DECISIONS.md` line 1095 rules
+"The ladder is 12, 24, 36, 99", a flat three cents a pattern, taken over
+12/29/59/99. The funnel buy page still prints 12/29/59 from the earlier
+open passage (line 734), and the pay-journey build and this log both said
+tiers one to three were unruled. They are ruled; the page is out of date.
+12, 24 and 36 are also exactly one, two and three times tier one, which
+is what the tiers page already says in words ("twice the ground... nothing
+else changes"). 29 and 59 would break that sentence.
+
+**Process change, from the cost of this morning.** Three builds in one
+working tree cost hours of waiting and a hand merge. From here every build
+agent works in its own isolated copy of the repository, runs the fast
+engine gate itself, and leaves the slow browser gates to one run on the
+merged result.
