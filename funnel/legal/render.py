@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Renders PRIVACY-POLICY.md and TERMS.md into two static funnel pages.
+"""Renders PRIVACY-POLICY.md, TERMS.md and CONSUMER-HEALTH-DATA.md into three static funnel pages.
 
-    python3 funnel/legal/render.py            writes funnel/legal/privacy.html and terms.html
-    python3 funnel/legal/render.py --wired    writes funnel/privacy.html and terms.html
+    python3 funnel/legal/render.py            writes privacy.html, terms.html and consumer-health-data.html in funnel/legal/
+    python3 funnel/legal/render.py --wired    writes the same three in funnel/
 
 THE PAGES LIVE IN funnel/legal/ AND NOT IN funnel/, ON PURPOSE. Two things read
 every .html file at the top of funnel/ by directory listing and not by a list:
@@ -17,8 +17,8 @@ written the way every other funnel page writes them (index.html, buy.html) and
 with the one line BUILD-single.sh asserts every page carries, the link to
 tokens.css. LEGAL-IA.md lists the rest of the wiring.
 
-The markdown is the source. Edit PRIVACY-POLICY.md or TERMS.md, run this, and
-commit both. A page edited by hand drifts from the document counsel reviewed.
+The markdown is the source. Edit PRIVACY-POLICY.md, TERMS.md or
+CONSUMER-HEALTH-DATA.md, run this, and commit both. A page edited by hand drifts from the document counsel reviewed.
 
 No network, no external font, no script in the output.
 """
@@ -37,7 +37,10 @@ PAGES = [
      'What Atüned keeps on your device, what leaves it and when, who sees it, and how to delete it.'),
     ('TERMS.md', 'terms.html', 'Terms', 'Terms',
      'The terms for using Atüned: what it is and is not, accounts, plans and billing, and what you own.'),
+    ('CONSUMER-HEALTH-DATA.md', 'consumer-health-data.html', 'Consumer health data privacy policy', 'Consumer health data',
+     'What consumer health data Atüned collects from people in Washington and Nevada, why, who handles it, and the rights you have over it.'),
 ]
+LEGAL_PAGES = ('privacy.html', 'terms.html', 'consumer-health-data.html')
 
 CSS = r"""
 /* THE TOKENS ARE THE FUNNEL'S OWN, copied from about.html's fallback block, and
@@ -96,9 +99,9 @@ h1.doc{font-size:34px;line-height:1.12;margin:34px 0 0;letter-spacing:-.02em;fon
 h2{font-size:22px;line-height:1.2;margin:44px 0 0;padding-top:26px;
  border-top:1px solid var(--edge);letter-spacing:-.012em;font-weight:600;
  max-width:var(--measure)}
-p,ul{max-width:var(--measure)}
+p,ul,ol{max-width:var(--measure)}
 p{margin:14px 0 0}
-ul{margin:14px 0 0;padding-left:22px}
+ul,ol{margin:14px 0 0;padding-left:22px}
 li{margin-top:6px}
 li::marker{color:var(--dim)}
 strong{font-weight:600}
@@ -117,9 +120,10 @@ p a,li a{padding:2px 0}
 
 /* A fact only the owner can supply, and a statement still to be tested against
    the build. Both are marked so neither can go live unseen. */
-mark.ph,mark.ck{background:transparent;color:var(--solar);
+mark.ph,mark.ck,mark.pr{background:transparent;color:var(--solar);
  border-bottom:1px dashed var(--solar);padding:0 1px}
 mark.ck{color:var(--mid);border-bottom-color:var(--edge-2)}
+mark.pr{color:var(--accent);border-bottom-color:var(--accent)}
 
 /* tables. Wide, they read as a table. Narrow, each row becomes its own block
    with its labels, because a four column table at 390 wide is a horizontal
@@ -164,10 +168,11 @@ def inline(s):
     def link(m):
         href = m.group(2)
         if href.endswith('.html') and '://' not in href:
-            href = UP + href if href not in ('privacy.html', 'terms.html') else href
+            href = UP + href if href not in LEGAL_PAGES else href
         return '<a href="%s">%s</a>' % (href, m.group(1))
     s = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link, s)
     s = re.sub(r'\[PLACEHOLDER:([^\]]*)\]', r'<mark class="ph">[PLACEHOLDER:\1]</mark>', s)
+    s = re.sub(r'\[PROPOSED:([^\]]*)\]', r'<mark class="pr">[PROPOSED:\1]</mark>', s)
     s = re.sub(r'\[CHECK:([^\]]*)\]', r'<mark class="ck">[CHECK:\1]</mark>', s)
     return s
 
@@ -201,6 +206,13 @@ def render_body(md):
             out.append('<aside class="draft" id="draft-warning" role="note">'
                        '<p>%s</p></aside>' % inline(' '.join(buf)))
             continue
+        if re.match(r'\d+\.\s', ln):
+            items = []
+            while i < len(lines) and re.match(r'\d+\.\s', lines[i]):
+                items.append('<li>%s</li>' % inline(re.sub(r'^\d+\.\s+', '', lines[i]).strip()))
+                i += 1
+            out.append('<ol>%s</ol>' % ''.join(items))
+            continue
         if ln.startswith('- '):
             items = []
             while i < len(lines) and lines[i].startswith('- '):
@@ -223,7 +235,7 @@ def render_body(md):
             out.append(t + '</tbody></table></div>')
             continue
         buf = []
-        while i < len(lines) and lines[i].strip() and not re.match(r'(#|>|- |\|)', lines[i]):
+        while i < len(lines) and lines[i].strip() and not re.match(r'(#|>|- |\||\d+\.\s)', lines[i]):
             buf.append(lines[i].rstrip())
             i += 1
         cls = ' class="stamp"' if (not seen_h2 and buf[0].startswith('Draft of')) else ''
@@ -234,7 +246,7 @@ def render_body(md):
 def page(title, short, desc, body, fname):
     others = [('index.html', 'What it reads'), ('about.html', 'About'),
               ('buy.html', 'Tiers'), ('quiz.html', 'The test')]
-    legal = [('privacy.html', 'Privacy'), ('terms.html', 'Terms')]
+    legal = [('privacy.html', 'Privacy'), ('terms.html', 'Terms'), ('consumer-health-data.html', 'Consumer health data')]
 
     def nav(cur):
         parts = []
@@ -258,7 +270,8 @@ def page(title, short, desc, body, fname):
      the same name. Do not edit this file: edit the markdown and render again.
      The noindex line below is for the draft. Take it out, and the draft warning
      with it, only when counsel has reviewed the text and every [PLACEHOLDER] is
-     filled. See LEGAL-IA.md, "Before the pages go live". -->
+     filled, every [CHECK] resolved and every [PROPOSED] confirmed. See
+     LEGAL-IA.md, "Before the pages go live". -->
 <meta name="robots" content="noindex">
 <title>Atüned, %(short)s</title>
 <meta name="description" content="%(desc)s">
@@ -276,7 +289,7 @@ def page(title, short, desc, body, fname):
 %(body)s
 
 <nav class="nav foot-nav" aria-label="Pages, again">%(nav)s</nav>
-<p class="foot">This page makes no request of any kind. &copy; <mark class="ph">[PLACEHOLDER: year and company legal name]</mark></p>
+<p class="foot">This page makes no request of any kind. &copy; 2026 Tula Unified LLC</p>
 
 </div></body></html>
 """ % dict(short=short, desc=html.escape(desc, quote=True), css=CSS, tok=tok, icon=icon,
