@@ -173,6 +173,55 @@ var TEACHER_PRACTICE=[
    +'rehearsed in your head, the checking. Stop it for the day and put nothing in its place. Each '
    +'time the pull to start it comes back, breathe out and let the pull pass. Notice what your '
    +'body does in the space it leaves.'}];
+/* ROUND PD, THE THREE POLES THAT HAVE NO PRACTICE OF THEIR OWN YET. Zoroaster
+   for truth, Akhenaten for light and Confucius for nature are new teachers
+   (POLES_EXTRA in compass.js), and where nothing in the library carries a
+   quality one short practice is written for it, the posture round KQ took.
+   The texts are the design's drafts (DESIGN-teachers.md section 12), for the
+   owner to edit. */
+TEACHER_PRACTICE.push(
+ {k:'plainword', tc:'TU', nm:'The Plain Word', track:'Mind', min:5, tier:1,
+  d:'Say one true thing in one sentence with no softener.',
+  how:'Pick one true thing you have been softening. Say it once, out loud or in writing, in one '
+   +'sentence, and stop where the sentence ends. Then say nothing for ten breaths and notice what '
+   +'your throat does. If the sentence shrank on the way out, write down the word that shrank it.'},
+ {k:'handon', tc:'SA', nm:'Hand It On', track:'Somatic', min:5, tier:1,
+  d:'Pass on one thing you were given, and name who gave it.',
+  how:'Take one thing you were given this week: an idea, a skill, a kindness. Pass it to somebody '
+   +'who can use it and say who gave it to you. Keep none of the credit. Afterward turn your palms '
+   +'up on your knees and notice your hands and your face.'},
+ {k:'tend', tc:'NA', nm:'Tend, Do Not Pull', track:'Body', min:10, tier:1,
+  d:'Do only the work a slow thing asks today, at its pace.',
+  how:'Pick one thing that grows slowly: a habit, a project, a child, a body. Do only the work it '
+   +'asks today, at the pace it asks. When the urge comes to pull it faster, breathe out and take '
+   +'your hands off it. Write one line on what you left alone.'});
+/* THE LINES STEP, ONE PER POLE. Each pole's affirmation lines (engine/data/
+   teachers.js) are said inside a ritual, between the breath and the practice,
+   and this row is how: a practice the boundary accepts with no schema change,
+   because RIT_STEP is read off PRACTICE, and a tc row that ritFor never calls
+   and the builder never lists, so a heavy field is handed nothing it was not
+   handed before. Pacing step 1 on purpose: a line said once and held at a seat
+   is the gentlest thing in a ritual, and the cautious side is the right
+   default. `aff` names the pole; the surface prints the person's open line for
+   the day on this step in place of static text, and this row's own text is the
+   fallback and the how. The name is built from the compass tables, so a rename
+   there is a rename here, and one name per pole is how Jesus at two poles
+   stays two rituals. */
+function affName(k){
+ var i, x=null, seat=null;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k){x=MIRROR[i];seat=x.seat;}
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)x=PATHS[i];
+ for(i=0;i<POLES_EXTRA.length;i++)if(POLES_EXTRA[i].k===k){x=POLES_EXTRA[i];seat=x.home;}
+ if(!x)return null;
+ return {nm:x.up+'\u2019s lines'+((x.up==='Jesus')?(seat==='Crown'?' at the crown':' at the heart'):''), seat:seat};}
+['IL','RE','DE','OR','PO','PE','TR','CH','FL','AL','HO','SA','TU','NA'].forEach(function(k){
+ var a=affName(k); if(!a)return;
+ var at=a.seat?'at the '+String(a.seat).toLowerCase():'at the place you feel it most';
+ TEACHER_PRACTICE.push({k:'aff_'+k, tc:k, aff:k, nm:a.nm, track:'Somatic', min:2, tier:1,
+  d:'Today\u2019s open line, said once '+at+'.',
+  how:'Today\u2019s open line is shown with this step. Say it once, out loud or under the breath. '
+   +'Hold it '+at+' for ten breaths. Expansion means the line holds. Contraction is data, so write '
+   +'down where it sat. Do not repeat the line to push it in.'});});
 TEACHER_PRACTICE.forEach(function(p){PRACTICE.push(p);});
 
 /* which practices each teacher calls for, in the order they are done. The
@@ -181,29 +230,45 @@ TEACHER_PRACTICE.forEach(function(p){PRACTICE.push(p);});
    path of the body and Buddha on the path of awareness are the same entries
    PATHS reads off MIRROR, so their rituals are those axes' rituals. */
 var BECOMING={
- IL:['heartpt','given'],   /* Jesus, light, at the heart */
- DE:['slow','offered'],    /* Ramakrishna, desire and will, at the sacral */
- OR:['truth','onerule'],   /* Moses, order, at the throat */
- PO:['box','samecut'],     /* Musashi, power, at the solar */
- PE:['noting','listen'],   /* Buddha, perception, at the third eye */
- TR:['truth','heartpt'],   /* Rumi, trust, at the heart */
- CH:['slow','resist'],     /* Elijah, charge, at the root */
- RE:['heartpt','meetit'],  /* Jesus, revelation, at the crown */
- FL:['sysbreath','letmove'],/* Krishna, flow, a path with no seat */
- AL:['box','linehold'],    /* Rama, alignment, a path with no seat */
- HO:['resist','stopone']}; /* Lao Tzu, the horizontal, a path with no seat */
+ /* ROUND PD: EVERY ROW GAINS ITS LINES STEP, in the order the loop gives:
+    ground, say the line, do the practice. The practice a row ended on before
+    is still the last step, so the ritual a person was already on reads the
+    same with one step more in the middle. The first three of the fourteen
+    keep the order they had; SA, TU and NA are new keys, appended. A key is
+    never renumbered or reused. */
+ IL:['heartpt','aff_IL','given'],   /* Jesus, love, at the heart */
+ DE:['slow','aff_DE','offered'],    /* Ramakrishna, desire and will, at the sacral */
+ OR:['truth','aff_OR','onerule'],   /* Moses, order, at the throat */
+ PO:['box','aff_PO','samecut'],     /* Musashi, power, at the solar */
+ PE:['noting','aff_PE','listen'],   /* Buddha, perception, at the third eye */
+ TR:['truth','aff_TR','heartpt'],   /* Rumi, beauty, at the heart */
+ CH:['slow','aff_CH','resist'],     /* Elijah, charge, at the root */
+ RE:['heartpt','aff_RE','meetit'],  /* Jesus, revelation, at the crown */
+ FL:['sysbreath','aff_FL','letmove'],/* Krishna, flow, a path with no seat */
+ AL:['box','aff_AL','linehold'],    /* Rama, duty, a path with no seat */
+ HO:['resist','aff_HO','stopone'],  /* Lao Tzu, the horizontal, a path with no seat */
+ SA:['box','aff_SA','handon'],      /* Akhenaten, light, read across the field */
+ TU:['truth','aff_TU','plainword'], /* Zoroaster, truth, home seat the throat */
+ NA:['slow','aff_NA','tend']};      /* Confucius, nature, home seat the crown */
 var BECOMING_SAME={BO:'IL', AW:'PE'};
 /* one teacher, read off the compass data rather than copied, so a rename
    there is a rename here. seat is null for a path, which sits at no seat. */
 function becomingOf(k){
  k=BECOMING_SAME[k]||k;
  if(!BECOMING[k])return null;
- var i, m=null, p=null;
+ var i, m=null, p=null, e=null;
  for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)m=MIRROR[i];
  for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)p=PATHS[i];
- var x=m||p; if(!x)return null;
+ for(i=0;i<POLES_EXTRA.length;i++)if(POLES_EXTRA[i].k===k)e=POLES_EXTRA[i];
+ var x=m||p||e; if(!x)return null;
+ /* A POLE NOT IN MIRROR WAS READ AS A PATH, and that printed "the five paths
+    sit at no one seat" under Zoroaster, who is not one. path is only true for
+    a pole in PATHS, and `home` is the seat a seatless pole's own law sits at
+    (null for a path and for Akhenaten, who is read across the field), so the
+    surface chooses its sentence by what the pole is and not by where it is
+    missing from. */
  return {k:k, who:x.up, q:x.q, d:x.upd, ic:x.ic||null, seat:m?m.seat:null,
-  path:!m, steps:BECOMING[k].slice()};}
+  home:e?e.home:null, path:!!p&&!m, extra:!!e, steps:BECOMING[k].slice()};}
 /* the steps a person at this tier may start. tier is ritFor's: 1 is heavy
    load, and pacing is the safety system here, so a step above the tier waits
    rather than being handed over. held names what waits, so it can be said. */
@@ -214,6 +279,19 @@ function becomingSteps(k,tier){
  b.steps.forEach(function(s){var p=byK[s]; if(!p)return;
   (p.tier<=tier?on:held).push(s);});
  return {steps:on, held:held};}
+
+/* WHICH TRACK EACH SEAT CALLS FOR, moved here from ui/ritual.js where ritFor
+   declared it, because the recipe engine (engine/recipes.js) needs it and the
+   engine may not read a renderer. ritual.js reads the same name. */
+var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
+                Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
+/* THE PACING STEP, ONE RULE. ritFor carried this as a line of its own and the
+   recipe engine needs the same answer, so it is a function both read: 1 is a
+   heavy field, 2 is median, 3 is light. The bands are the owner's, ruled 26
+   September on a zero to ten scale and carried to DQ's zero to a hundred
+   (the history of the number is the comment at ritFor). Heavy and collapsed
+   from 70, median from 40. */
+function pacingStep(DQ){return DQ>=70?1:(DQ>=40?2:3);}
 
 /* ---------- the seven seats, and where they sit on the figure ---------- */
 /* THE THIRD EYE WAS ON THE NOSE. It sat at 12.56, the middle of the drawn ear,

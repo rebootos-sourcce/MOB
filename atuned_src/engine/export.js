@@ -314,6 +314,13 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
                   dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+  /* the teachers as imprints, round PD: the roster, the lines, the unlocks */
+                  POLES_EXTRA:POLES_EXTRA, pacingStep:pacingStep, TRACK4BAND:TRACK4BAND,
+                  TEACH_V:TEACH_V, TEACH_FOCUS_MAX:TEACH_FOCUS_MAX, TEACH_RUNS_CAP:TEACH_RUNS_CAP,
+                  TEACH_CH:TEACH_CH, TEACH_IMP_IDS:TEACH_IMP_IDS, TEACH_REACH:TEACH_REACH,
+                  TEACH_UNLOCK:TEACH_UNLOCK, TEACH_W:TEACH_W, TEACH_ORDER:TEACH_ORDER,
+                  TEACH_ROWS:TEACH_ROWS, TEACH_KEYS_ALL:TEACH_KEYS_ALL,
+                  teachRow:teachRow, teachMarkIds:teachMarkIds, teachPole:teachPole, teachRoster:teachRoster,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

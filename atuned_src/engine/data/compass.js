@@ -6,8 +6,9 @@
    writing it for four thousand years of source material and the
    product's job is to carry it, not to improve it.
 
-   The CQ cone points up. Twelve masters anchor it, and the codex is
-   explicit that they are NOT the top of the spiral: "The Ascended
+   The CQ cone points up. The masters anchor it (MASTERS carries how
+   many, so no count is typed here), and the codex is explicit that
+   they are NOT the top of the spiral: "The Ascended
    Masters are not at the top of the upward spiral. They are
    coordinates on the CQ cone."
 
@@ -35,8 +36,18 @@ const MIRROR=[
     axis says the same word; a label changed only on the Compass would give
     one axis two names. k stays IL, because a key is identity, not a label.
     Trust at the Heart is untouched: whether it is Truth is still his own
-    open question, logged as thinking and not as a ruling. */
- {k:'IL', q:'Light', seat:'Heart',
+    open question, logged as thinking and not as a ruling.
+
+    ROUND PD RELABELLED BOTH HEART AXES, read from his own list: "Akhenaton for
+    light, ... Jesus for love. Rumi for beauty." So IL is called Love and TR is
+    called Beauty, and Light moved to Akhenaten (POLES_EXTRA, SA). The keys did
+    not move, because a key is identity. `engine` keeps the word the axis had
+    until round PD, so a surface that wants to show both can, and a record or a
+    ritual written under the old word still reads. The codex lines for Lucifer
+    ("Pride as false light") and Charon (threshold paralysis) are quoted and
+    were left as they were; they read as the inversion of Love and of Beauty
+    only loosely, and rereading them is the owner's, not a rewrite from here. */
+ {k:'IL', q:'Love', engine:'Light', seat:'Heart',
   up:'Jesus',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
   dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
@@ -56,7 +67,7 @@ const MIRROR=[
   up:'Buddha', upd:'Clear seeing. Reality without overlay. The compositor running on present signal.',
   dn:'Geryon', dnd:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
   ask:'Does this person’s self presentation match their interior state?', ic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM12 9.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2', dic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM5 5l14 14'},
- {k:'TR', q:'Trust', seat:'Heart',
+ {k:'TR', q:'Beauty', engine:'Trust', seat:'Heart',
   up:'Rumi',   upd:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
   dn:'Charon', dnd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
   ask:'Does this person feel things straight away, or wait for proof before they let themselves feel?', ic:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z', dic:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z'},
@@ -106,7 +117,7 @@ const MIRROR=[
    twelve the book says anchor the cone. That arithmetic is stated
    in BOOK-ERRATA rather than assumed here. */
 const MASTERS=[
- {nm:'Akhenaten', ax:'X',  of:'Sat apex',            was:'Truth and light',      d:'Maximum Sat. Energy conducting without distortion. The output is literal light.'},
+ {nm:'Akhenaten', ax:'X',  of:'Sat apex',            was:'Light',      d:'Maximum Sat. Energy conducting without distortion. The output is literal light.'},
  {nm:'Buddha',    ax:'Y',  of:'Chit apex',           was:'Wisdom and awareness', d:'Be with the emotions, do not become them. The awareness layer kept clean without identification locking the wave into a node.'},
  /* CHRIST WAS JESUS UNDER A SECOND NAME. One figure, one name, and the mirror
     pairs already used this one. */
@@ -119,7 +130,9 @@ const MASTERS=[
  {nm:'Musashi',   ax:'∴', of:'practice layer',  was:'Discipline',           d:'Sustained application of will at the node level over time. Two steps forward, one step back. Failure as data, not judgement.'},
  {nm:'Ramakrishna',ax:'Z', of:'desire surrendered',  was:'Devotion',             d:'Wanting that moves toward something beyond the self.'},
  {nm:'Elijah',    ax:'Z',  of:'charge grounded',     was:'Fire',                 d:'Intensity moving through the body without destroying the container or the target.'},
- /* ELEVEN, AND IT IS ELEVEN ON PURPOSE NOW RATHER THAN BY ACCIDENT.
+ /* THIS WAS ELEVEN ON PURPOSE RATHER THAN BY ACCIDENT, AND IS NOW THIRTEEN ON
+    PURPOSE (the end of this note says why). The reasoning that follows is the
+    record of the eleven and stays as it was written.
 
     Eckhart's row went with the ruling that took him off the mirror axis.
     Jesus carries Revelation now and he is already on this list at the Ananda
@@ -132,7 +145,20 @@ const MASTERS=[
     is one name now, and unifying it did not change the count because they
     were never two people.
 
-    BOOK-ERRATA carries the arithmetic. */];
+    BOOK-ERRATA carries the arithmetic.
+
+    THEN ROUND PD NAMED TWO MORE, and the count moved to thirteen on purpose.
+    His list: "Zoroastria for truth ... Confucius for nature." Both are
+    classical figures and neither is Eckhart's reversal, so the ruling that
+    took Eckhart out is untouched. Akhenaten's row lost "truth and" from its
+    quality word, because Truth went to Zoroaster and Light is Akhenaten's.
+    These two rows are PROPOSED (from:'proposed'): the description is a
+    working sentence and not a codex quotation, the placement on the three
+    axes is a first pass, and the owner edits both. */
+ {nm:'Zoroaster', ax:'X', of:'Sat spoken', was:'Truth', from:'proposed',
+  d:'Truth as a choice made at every word: the true thought, the true word and the true act kept in one line.'},
+ {nm:'Confucius', ax:'⊥', of:'the seasons', was:'Nature', from:'proposed',
+  d:'The seasons run their course and the hundred things are born. Tending what grows at the pace it asks.'}];
 
 /* ---- THE DECOHERENT BLUEPRINT, THE DQ TERMINUS ----
    "These are not mythological figures. They are behavioural modes,
@@ -267,16 +293,19 @@ const PATHS=(function(){
  return [
   {k:'FL', q:'flow', up:'Krishna', upd:mas('Krishna').d,
    dn:'Kaliya', dnd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+   ask:'Does this person move when the day wants to move, or hold one plan in place until it sours?',
    from:'research', src:'Bhagavata Purana, canto 10, chapter 16'},
   {k:'AW', q:'awareness', up:'Buddha', upd:pe.upd, dn:pe.dn, dnd:pe.dnd,
-   from:'codex', src:'mirror pair, perception'},
+   ask:pe.ask, from:'codex', src:'mirror pair, perception'},
   {k:'BO', q:'the body', up:'Jesus', upd:il.upd, dn:il.dn, dnd:il.dnd,
-   from:'codex', src:'mirror pair, light'},
+   ask:il.ask, from:'codex', src:'mirror pair, light'},
   {k:'AL', q:'alignment', up:'Rama', upd:mas('Rama').d,
    dn:'Ravana', dnd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
+   ask:'Does this person do what they said, or find the reason this one is an exception?',
    from:'research', src:'Valmiki Ramayana'},
   {k:'HO', q:'the horizontal', up:'Lao Tzu', upd:mas('Lao Tzu').d,
    dn:'Shu and Hu', dnd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
+   ask:'Does this person stop the activity making the noise, or hurry in to fix what was whole?',
    from:'research', src:'Zhuangzi, chapter 7'}];})();
 /* the three new inversions' marks, argued from what each one does, on the
    same 24 unit grid. Ring, not fill. */
@@ -291,6 +320,70 @@ IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 11
    they read as an eye, and on a slant as horns */
 IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+
+/* ---- THE THREE POLES THAT ARE NEITHER AN AXIS NOR ONE OF THE FIVE PATHS ----
+   Round PD, his words: the roster in DESIGN-teachers.md v2 is right, fourteen
+   poles, thirteen people, Jesus at two of them. Eight poles are MIRROR, three
+   are the paths that stand on no axis, and these three are the rest: Akhenaten
+   for Light, Zoroaster for Truth and Confucius for Nature, from his own list
+   ("Akhenaton for light, Zoroastria for truth ... Confucius for nature").
+
+   A SEPARATE TABLE, AND NOT THREE MORE ROWS IN PATHS, because the glossary's
+   five paths are named ("Krishna, flow. Buddha, awareness. Christ, the body.
+   Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source")
+   and a gate holds PATHS at five. These three are not paths and the surface
+   must not call them that, which is the sentence becomingOf used to get wrong
+   for any pole outside MIRROR.
+
+   NO SEAT, A HOME. A pole of this table is read across the field and has no
+   position on an axis, because Moses already holds the Throat's axis and a
+   second teacher there would print the same number. `home` is the seat the
+   quality's own law sits at (Truth at the Throat, Nature at the Crown), where
+   the ritual is kept and what colours the ring. Akhenaten has none: his law,
+   Transparency, sits at the Throat but his quality is read across the field.
+
+   ALL THREE OPPOSITES ARE PROPOSED, NOT CODEX, and marked so. Each is a named
+   figure out of that teacher's own tradition and none was made up, but none is
+   in the codex and the research seat is to check the sources named here.
+     Apep          the serpent that swallows the sun each night. Light taken in
+                   and nothing handed on. Amduat and the Book of Gates.
+     The Lie       Druj, the opposite of asha in Zoroaster's own teaching.
+                   Yasna 30 and 31. Narrower than Set: the false word itself
+                   and the word kept back, not betrayal of a structure.
+     The farmer    of Song, who pulled each shoot up to help it grow, and by
+                   evening they were dead. Mencius 2A2. A near cousin of Shu
+                   and Hu: both mean well and force. */
+const POLES_EXTRA=[
+ {k:'SA', q:'light', up:'Akhenaten', upd:mas0('Akhenaten').d,
+  dn:'Apep', dnd:'Light taken in and nothing handed on. The serpent that swallows the sun each night, so that what arrived stops with the one who received it.',
+  ask:'Does what this person was given pass through them to somebody else, or stop with them?',
+  home:null, from:'proposed', src:'the Aten, and the Amduat'},
+ {k:'TU', q:'truth', up:'Zoroaster', upd:mas0('Zoroaster').d,
+  dn:'The Lie', dnd:'The false word, and the true word kept back. Druj against asha: a person choosing the smaller sentence because the true one would cost the room.',
+  ask:'Does this person say the true thing once and plainly, or the smaller thing that keeps the room warm?',
+  home:'Throat', from:'proposed', src:'Yasna 30 and 31'},
+ {k:'NA', q:'nature', up:'Confucius', upd:mas0('Confucius').d,
+  dn:'The farmer of Song', dnd:'Pulling the shoot up to help it grow. Meaning well and forcing a season, until what was growing is dead by evening.',
+  ask:'Does this person tend what is growing at the pace it asks, or pull on it to make it faster?',
+  home:'Crown', from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
+/* the masters row by name, for the three above, so the description is read off
+   MASTERS and a change there is a change here (the rule PATHS keeps). Declared
+   as a function declaration so the table above can call it while it is built. */
+function mas0(nm){for(var i=0;i<MASTERS.length;i++)if(MASTERS[i].nm===nm)return MASTERS[i];
+ return {d:''};}
+/* Apep, a coil that has taken the disc in. The Lie, a plumb line cut through,
+   which is the Truth law's own mark with the middle taken out. The farmer, the
+   shoot with a hand's two strokes above it, pulling. Ring, not fill. */
+IC_NEW['Apep']='M4 16c2-3 4 3 6 0s4 3 6 0 3 2 4 0M12 3.5a3 3 0 110 6 3 3 0 010-6';
+IC_NEW['The Lie']='M12 3v5M12 12v2M9.5 17a2.5 2.5 0 005 0 2.5 2.5 0 00-5 0M7 10.5l10-1';
+IC_NEW['The farmer of Song']='M12 21v-8M12 13c-3 0-5-2-5-5 3 0 5 2 5 5M12 15c3 0 5-2 5-5-3 0-5 2-5 5M9 5l3-2.5L15 5M12 2.5V8';
+/* Zoroaster wears the Truth law's plumb line and Confucius the Nature law's
+   branch, read off SI by name so the pole and the law are one mark and not two
+   drawings of one idea. */
+(function(){function law(nm){for(var i=0;i<SI.length;i++)if(SI[i].nm===nm)return SI[i].ic;return null;}
+ IC_NEW['Zoroaster']=law('Truth'); IC_NEW['Confucius']=law('Nature');})();
+POLES_EXTRA.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+MASTERS.forEach(function(x){if(!x.ic)x.ic=icOf(x.nm);});
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for

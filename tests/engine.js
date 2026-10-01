@@ -1735,8 +1735,17 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(MIRROR.some(m=>m.up==='Musashi'&&m.dn==='Moloch'),'power is Musashi against Moloch');
  ok(MIRROR.some(m=>m.up==='Jesus'&&m.dn==='Lucifer'),'light is Jesus against Lucifer');
  /* round KE, his words: "Just change illumination to light." The key stays IL. */
- ok(MIRROR.some(m=>m.k==='IL'&&m.q==='Light')&&!MIRROR.some(m=>/Illumination/.test(m.q)),
-  'and the Heart axis is called Light, not Illumination');
+ /* ROUND PD CHANGED THIS ONE ON PURPOSE. It pinned the Heart axis at Light, the
+    word round KE gave it. His list at round PD read "Akhenaton for light ...
+    Jesus for love. Rumi for beauty", and he accepted the roster that relabels
+    the Heart's two axes Love and Beauty with Light going to Akhenaten. The key
+    IL did not move, and the old word is kept beside the new one as `engine`. */
+ ok(MIRROR.some(m=>m.k==='IL'&&m.q==='Love'&&m.engine==='Light')&&!MIRROR.some(m=>/Illumination/.test(m.q)),
+  'and the Heart axis is called Love, which was Light, and never Illumination');
+ ok(MIRROR.some(m=>m.k==='TR'&&m.q==='Beauty'&&m.engine==='Trust'),
+  'and its second axis is called Beauty, which was Trust, with the key unchanged');
+ ok(E.POLES_EXTRA.some(p=>p.k==='SA'&&p.up==='Akhenaten'&&p.q==='light'),
+  'and Light is Akhenaten\'s, in the table of poles that are neither an axis nor a path');
  ok(MIRROR.some(m=>m.up==='Buddha'),'and Buddha holds perception');
 
  /* ELEVEN, AND THE MISSING ONE IS A KNOWN HOLE RATHER THAN A DRIFT.
@@ -1752,8 +1761,16 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     gate that stops counting is a gate that stops catching. When he names the
     twelfth it goes back to twelve and this comment goes with it. BOOK-ERRATA
     carries it as an open disagreement between the codex and the engine. */
- ok(MASTERS.length===11,'eleven masters anchor the cone until he names the '
-  +'twelfth, got '+MASTERS.length);
+ /* ROUND PD MOVED THE COUNT, on purpose, and the count is no longer typed. It
+    said eleven. He named Zoroaster and Confucius ("Zoroastria for truth ...
+    Confucius for nature") and accepted a roster of fourteen poles for
+    thirteen people. The contract is now that the masters ARE the roster: every
+    teacher a person can press is on this list and nobody is on it who cannot be
+    pressed, which holds at any count and is what the typed number was guarding. */
+ {const names=E.teachRoster().map(t=>t.who).sort(), ms=MASTERS.map(m=>m.nm).sort();
+  ok(JSON.stringify(names)===JSON.stringify(ms),
+   'the masters are exactly the teachers a person can press, '+ms.length+' of them, drift '
+   +JSON.stringify(names.filter(n=>ms.indexOf(n)<0).concat(ms.filter(n=>names.indexOf(n)<0))));}
  ok(!MASTERS.some(m=>/Eckhart/.test(m.nm))&&!MIRROR.some(m=>/Eckhart/.test(m.up)),
   'and Eckhart is out of both lists, as ruled');
  /* JESUS AT THE CROWN, RULED, AND HE STANDS AT TWO POLES. That is the owner's
@@ -5312,8 +5329,12 @@ g('the rituals of becoming');
  ok(leak.length===0,'at the heaviest load no step above tier one is started, '+JSON.stringify(leak));
  ok(keys.every(k=>{const s=becomingSteps(k,3); return s.held.length===0&&s.steps.length===becomingOf(k).steps.length;}),
   'at the lightest load every step is started and none waits');
- ok(becomingSteps('PE',1).steps.length===0&&becomingSteps('PE',1).held.length===2,
-  'Buddha\'s two practices both wait at the heaviest load, which the surface then says');
+ /* ROUND PD ADDED THE LINES STEP to every row, at pacing step one, so at the
+    heaviest load Buddha's two practices still wait and the one step that does
+    not is his lines step. Pacing is unchanged: nothing above step one is
+    handed over, and the line is the gentlest step there is. */
+ ok(becomingSteps('PE',1).held.length===2&&becomingSteps('PE',1).steps.join()==='aff_PE',
+  'Buddha\'s two practices both wait at the heaviest load, which the surface then says, and the lines step is the one that does not');
  /* and the boundary takes a teacher practice as a step with no schema change */
  const rec=Object.assign(blankProfile(),{rituals:tp.map(p=>({t:new Date().toISOString(),track:p.track,band:'Heart',steps:[p.k],min:p.min}))});
  const v=validateProfile(rec);
@@ -5826,6 +5847,8 @@ require('./practice.js')(E,ok,g,console.log);
    the engine so its fixtures never move this file's own state, and reports
    through this file's ok and g. */
 require('./daily.js')(E,ok,g,console.log);
+/* the recipe engine and the teachers' data, round PD. Its own file, this file's ok and g. */
+require('./recipes.js')(E,ok,g,console.log);
 /* THE TWO NEW DOMAINS MEET. practiceTraceIntents is what the practice build says
    about itself and traceApply is what the graph takes in, built apart by two
    hands. A practice built through the one door, its intents applied to a fresh

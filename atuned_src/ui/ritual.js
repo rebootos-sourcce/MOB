@@ -77,8 +77,8 @@ var RIT={open:false, sel:{}, order:[], from:null, all:false, when:'', where:'',
     counts against so switching rituals cannot leave two ticking against one
     render, and never persisted, the same posture as hover and pin. */
  tags:[], on:null, tm:null, run:null, rang:null};
-var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
-                Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
+/* TRACK4BAND moved to engine/data/practice.js, which the recipe engine reads
+   and may not reach into a renderer for. The name is the same. */
 function ritFor(r){
  var band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
  /* HEAVY LOAD STARTS AT 70, AND IT WAS STARTING AT 8. This read DQ>=8 and
@@ -96,7 +96,9 @@ function ritFor(r){
     tools/ritualsim.js keeps 8 and 4 on purpose: it is the AP2 snapshot, it
     still calls the first practice rather than the lightest, and it reproduces
     the numbers that were taken with both. */
- var tier=r.DQ>=70?1:(r.DQ>=40?2:3);
+ /* the cut points are pacingStep's (engine/data/practice.js), one rule for
+    this and the recipe engine; the history above is the reason for them */
+ var tier=pacingStep(r.DQ);
  /* a teacher's own practice (tc) is reached through its teacher and is never
     what a seat calls for, so the call and the builder's library are what they
     were before the rituals of becoming existed. See engine/data/practice.js. */
@@ -420,7 +422,9 @@ function ritTeach(k){
  var r=compute(), c=ritFor(r), s=becomingSteps(b.k,c.tier);
  var entry=!s.steps.length;
  return {b:b, steps:entry?(c.called?[c.called.k]:[]):s.steps, held:s.held, entry:entry,
-  seat:b.seat||(r.unread?'':c.band)};}
+  /* a pole with a home seat (round PD) is kept there, as an axis teacher is kept at
+     its axis, and only a pole with neither is kept where the load sits today */
+  seat:b.seat||b.home||(r.unread?'':c.band)};}
 function ritTeachStart(k,days){
  var t=ritTeach(k); if(!t||!t.steps.length)return false;
  var nm=ritSteps({steps:t.steps}).map(function(p){return p.nm;});
@@ -450,7 +454,10 @@ function ritTeachHtml(k){
  h+='<p class="ad-p">'+(t.b.path
    ?(t.seat?'The five paths sit at no one seat, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
      :'The five paths sit at no one seat, and nothing is read yet, so this is kept without one.')
-   :'Kept at the '+esc(ritSeatNm(t.seat))+', the seat this axis is read at.')+'</p>';
+   :(t.b.home?'Kept at the '+esc(ritSeatNm(t.b.home))+', the seat this quality\u2019s own law sits at.'
+    :(t.b.extra?(t.seat?'This one is read across the field and sits at no one seat, so it is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
+      :'This one is read across the field, and nothing is read yet, so this is kept without a seat.')
+    :'Kept at the '+esc(ritSeatNm(t.seat))+', the seat this axis is read at.')))+'</p>';
  if(act)h+='<p class="ad-p"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</p>'
   +'<div class="rv-acts"><button type="button" class="btn" data-tbgo="1">Open the ritual</button></div>';
  else if(!ritOwn())h+='<p class="ad-p">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';
