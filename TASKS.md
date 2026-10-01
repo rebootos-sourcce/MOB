@@ -30646,3 +30646,49 @@ protocols."
 - He flags this may be a lot. It is feasible as one parameter per pattern
   driving a deformation of a base figure; the mockups should show weight high,
   mid and low for each mask so he can judge it.
+
+## Round OR, 1 October. The point cloud is the mask and the aura; three more renders; the left menu as symbols
+
+> "The point cloud is a really fascinating because it doubles as the aura
+> radiance. And so the point cloud is the mask. And then the aura is the
+> radiance. or biofield, radiance. So compressed is no light. Hundred percent
+> coherence is full spectrum. That's good. Let's come. Let's give me two more
+> renders of that. Style. Side the design let's do three more versions and then
+> the point cloud alongside the left menu of contour Where it says coherence,
+> decoherence, vitality, et cetera, for the numbers are, can we make that into
+> something symbolically meaningful? And visual at the same time. I do like that
+> flow. Band. That's pretty cool. That should be dynamic. And work with your CQ,
+> DQ, SQ. Yes, we're keeping adult. Yeah, let's do the new symbol so the color
+> like our, our design engine is consistent. Oh no, don't link the masks to
+> vitality and awareness and stuff like that. That doesn't go there. Left menu I
+> think I need to see a few more options. Decoherence is the total sum. of the
+> shadow. And shadow is the architecture the 114 or sorry 108 chakra nodes.
+> Maybe there's an interesting way to visualize those. And show where the shadow
+> is darkest and lightest. Now, left menu can be closed. Let's see the archetype
+> rows. On the first screen, I, I don't know what you mean. Should the bar arc
+> style, I don't know what you mean, I need context. Hash heights, I don't, I, I
+> need context. For aura, I thought the person was animated. Oh, no, using a
+> point cloud."
+
+**Read as.**
+- Aura (the point cloud) is the pick for the Character page. The cloud is the
+  mask and the radiance together: the aura is the biofield. Fully compressed
+  (no coherence) is no light; 100 percent coherence is the full spectrum.
+- Three more renders of the point cloud style, then the cloud beside the left
+  menu in the Contour mockup's arrangement.
+- Adult is kept as a fifth mask. Icons are the new per-system symbols, in the
+  design engine's colours. The masks do NOT link to Vitality, Awareness and the
+  like: that mapping is dropped.
+- The numbers on the left menu (Coherence, Decoherence, Vitality...) become
+  something symbolic and visual at once. The Flow band is liked: keep it, make
+  it dynamic, and tie it to CQ, DQ and SQ.
+- Left menu: more options wanted. Decoherence is the total of the shadow, and
+  the shadow is the architecture of the nodes (he said 114, then 108; the
+  count stated to users is 112, per the standing ruling). Show those nodes and
+  where the shadow is darkest and lightest.
+- The left menu can be closed by default. He wants the archetype rows on the
+  first screen.
+- He did not understand two of my questions (the Bar/Arc style switch, the hash
+  heights): they are re-asked with pictures.
+- "For aura, I thought the person was animated": he thought the figure was
+  animated; it is a point cloud. Confirms Aura.
