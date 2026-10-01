@@ -966,8 +966,35 @@ function enterSeat(b){
    ============================================================ */
 const PULSE_LEN=7;
 var PUL=[], TIER_A=1;
-function pulses(list){
+/* THE PULSES RUN ON THE SHADOW WAVE, round OD. His words: "I also want the
+   pulses to be dynamic and have their speed based off of the Shadow wave," and,
+   shown the Field, "going through the lines or individual pulses, and I want
+   that dynamic. The pulse is dynamic." Each thread's own speed still comes
+   from its own tension, below; what is new is one clock they all run on, whose
+   rate is the Shadow layer's. Shadow is DQ, the same figure drawAura's wash
+   reads (dens), so a person carrying more shadow sees the threads run faster,
+   and the wave is that layer's own slow breath: its swing grows with DQ, so a
+   record with no shadow runs steady and a heavy one surges and eases.
+
+   A CLOCK THAT IS INTEGRATED, NOT A MULTIPLIER ON S.t. Multiplying the clock
+   by a rate that changes from frame to frame moves every dash by the change
+   times the whole elapsed time, so the pulses would jump each time the rate
+   moved. PUL_CLK adds each frame's own step at that frame's own rate, so the
+   rate can move as it likes and no dash ever jumps.
+
+   The three numbers are the whole tuning: PUL_LO and PUL_HI the rate at DQ 0
+   and DQ 100 (1 is the speed before this round), PUL_WAVE how far the breath
+   swings at DQ 100, PUL_WAVE_HZ how often. Reduced motion draws no pulses at
+   all, so none of this runs there. */
+const PUL_LO=0.7, PUL_HI=1.5, PUL_WAVE=0.22, PUL_WAVE_HZ=0.11;
+var PUL_CLK=0, PUL_LAST=null;
+function pulseRate(r){
+ var dq=clamp((+(r&&r.DQ)||0)/100,0,1);
+ return lerp(PUL_LO,PUL_HI,dq)*(1+PUL_WAVE*dq*Math.sin(S.t*TAU*PUL_WAVE_HZ));}
+function pulses(list,r){
  if(REDUCED||!list.length)return;
+ var step=(PUL_LAST===null||S.t<PUL_LAST)?0:(S.t-PUL_LAST);
+ PUL_LAST=S.t; PUL_CLK+=step*pulseRate(r);
  g.save(); g.lineCap='round';
  for(var i=0;i<list.length;i++){var p=list[i],t=clamp(p.t||0,0,1);
   if(p.a<=0.01)continue;
@@ -977,7 +1004,7 @@ function pulses(list){
   /* a phase per thread off its own end, so neighbours never march in step */
   var ph=(((p.x0*12.9898+p.y0*78.233)%1)+1)%1*per;
   g.setLineDash([PULSE_LEN,per-PULSE_LEN]);
-  g.lineDashOffset=-((S.t*sp+ph)%per);
+  g.lineDashOffset=-((PUL_CLK*sp+ph)%per);
   g.beginPath(); g.moveTo(p.x0,p.y0);
   if(p.qx!==undefined)g.quadraticCurveTo(p.qx,p.qy,p.x1,p.y1); else g.lineTo(p.x1,p.y1);
   g.strokeStyle=rgba(mixc(p.c,[255,255,255],.42),p.a*(0.28+0.72*t));
@@ -1313,7 +1340,7 @@ function drawWheel0(r,L){
   g.restore();}
  /* the tension, running. Over every thread, after all of them, so a pulse is
     never under the thread beside it. See pulses() above. */
- pulses(PUL);
+ pulses(PUL,r);
 
  const cr0=solCore(r,coreBase);
  lay('gates',()=>verpArrows(cr0));
