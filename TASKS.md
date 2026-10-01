@@ -29274,3 +29274,40 @@ against every TDD document, told explicitly not to redo sections 19 and
 full pass it has had, specifically checking whether a completed ritual
 actually moves the avatar, `CS10`'s own standing question, "the line
 that makes the sheet a game rather than a report."
+
+## Round NS. T1, T2 and T3 ruled; the ElevenLabs voice asked for; a status check across everything in flight
+
+His words, verbatim, in order: "Yeah, A for T1. A person cannot delete a
+journal entry once committed. It's part of the story. Ritual belongs in
+flow. Right, it's training your behavior. Please swap out the voice the
+Claude voice with the 11 labs voice. Is the story engine updated, the
+sniffer updated, I see you're doing ritual, is a summary updated or is
+that what's being worked on now, did you find anything new in those
+TDDs, how's the onboarding and the tutorial, give me the latest build,
+what's your integrating right now, when will that be done?"
+
+**T1 ruled, option A.** A completed ritual moves its own progress on the
+avatar, separate from the seats, never a formula that fakes a seat's
+charge dropping. Holds `21.J1`.
+
+**T2 ruled.** A committed journal entry cannot be deleted. "It's part of
+the story." Closes `21.I3` as will not do, not an open question.
+
+**T3 ruled.** Ritual belongs in Flow. Confirms round KT's own standing
+build (`engine/core.js` line 214) over the narrative document's
+disagreement; nothing in the product changes. Closes `21.J9` and
+section 13 group D.
+
+**The voice swap, scoped before anything is built, because it crosses a
+repository boundary this one does not hold.** The only spoken voice
+anywhere in the product today is the browser's own `speechSynthesis`
+(`ui/sound.js`, `ui/release.js`), confirmed at round NR; there is no
+literal "Claude voice" to swap out, only this one. Wiring ElevenLabs in
+needs three things, named rather than assumed: a route on the
+`reboot-os` Worker that proxies the call, since the key cannot sit in
+`source.html` (the same ruling `QUESTIONS.md` D17 already made); his own
+ElevenLabs API key, added to that Worker as a Cloudflare secret the same
+way the two GitHub secrets were, never pasted into a chat message; and
+the client side swap in `ui/sound.js` with a fallback to
+`speechSynthesis` on any failure, the same "every call resolves" rule
+`ui/auth.js` already keeps. `reboot-os` is not in this session yet.
