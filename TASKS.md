@@ -29704,3 +29704,23 @@ signing secret that endpoint hands back. Until all three are done,
 checkout answers 503 honestly rather than opening a dead page, and the
 webhook refuses every event by name rather than trusting one it cannot
 verify.
+
+## Round NY. A trace overlay for the Field, and a fluid, fractal point cloud
+
+His words, verbatim: "For the point cloud data, I'd like to add another
+overlay that has trace data, the trace data of the point cloud so we
+could trace the geometric volume of the patterns. And then with the
+point cloud data, the area where the points are thickest or are closest
+together. Is there any way to make that look more fluid or fractal? I'd
+like to see two mockups with the trace and the point cloud data volume
+looking more fluid, more fractal."
+
+Two asks, both on the Field's own point cloud, the patterns plotted in
+`atuned_src/ui/wheel.js` and `component.js` by angle and charge: a new
+trace overlay reading the geometric volume a cluster of points occupies,
+and a treatment of density itself, where points sit closest together,
+that reads as fluid or fractal rather than a field of discrete dots.
+Two standalone mockups asked for, same posture as the Character page
+set: nothing wired into `atuned_src`, so comparing them costs nothing.
+Dispatched to the animation-vfx-director, who owns particle and field
+effects.
