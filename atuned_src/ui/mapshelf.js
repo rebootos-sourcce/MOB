@@ -13,7 +13,11 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   +'<div><div class="pm-eye">Flow</div>'
   /* flow through is a share that passes, so its high end is the good one and
     it never prints in the alarm colour. */
-  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow',hot:false})
+  /* NOTHING HELD, SO NOTHING PASSES AND NOTHING IS MEASURED. With no charge
+     on the body every seat passes everything and the ring read 100%, a share
+     printed off an empty field. It holds a dash until something is held.
+     Round J13. */
+  +cr(K2B[dom.p.k], loadedTot?speed*100:0, {size:'lg',label:'flow',hot:false,raw:loadedTot?null:'\u2013'})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
     :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"
@@ -79,7 +83,9 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    +'<i style="background:'+b.c+'"></i><span class="pm-sn">'+s.p.n+'</span>'
    +'<span class="pm-gauge"><b style="width:'+Math.round(s.pass*100)+'%;background:'+b.c+'"></b></span>'
    +'<span class="pm-sv">'+(s.hot?s.hot+' held':'clear')+'</span>'
-   +'<span class="pm-sp">'+Math.round(s.pass*100)+'%</span>'
+   /* A SEAT WITH NOTHING ON IT PASSES EVERYTHING, which is the default and not
+      a measurement, so the share is a dash until something is held. J13. */
+   +'<span class="pm-sp">'+(s.hot?Math.round(s.pass*100)+'%':'\u2013')+'</span>'
    +'<span class="pm-sk">'+s.p.nv+'</span></button>';});
  sh+='</div>';
  el.innerHTML=sh;
@@ -143,18 +149,20 @@ function runSeatFlowDrill(k){
   /* the Flow circle's step, KV, so the answer to a pressed seat says the
      same word the figure prints beside it; a phone has no lane for the word */
   +'<div class="pm-grid"><span>flow</span><b>'+bmFlowStep(ss.pass)+'</b>'
-  +'<span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
-  +'<span>held</span><b>'+ss.hot+'</b>'
-  +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
-  +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
+  +'<span>passes</span><b>'+(ss.hot?Math.round(ss.pass*100)+'%':'\u2013')+'</b>'
+  +'<span>held</span><b>'+(ss.hot||'\u2013')+'</b>'
+  +'<span>mean SQ</span><b>'+(ss.mean>0?ss.mean.toFixed(1):'\u2013')+'</b>'
+  +'<span>integrity</span><b>'+(unreadNow()?'\u2013':bandIg(bnd).toFixed(1))+'</b></div>'
   +'<div class="pm-eye" style="margin-top:12px">Moral integrity seated here</div><div class="pm-chips">'
   +lws.map(function(l){return '<span class="pm-chip" style="opacity:'
-    +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
+    +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+(unreadNow()?'':' '+S.law[l.nm].toFixed(1))+'</span>';}).join('')+'</div>'
   +'<div class="pm-eye" style="margin-top:12px">Addresses</div><div class="pm-rows">';
  seg.slice(0,8).forEach(function(n){
   var opp3=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
-  h+='<div class="pm-r"><span>'+String(n.i).padStart(3,'0')+' '+esc(n.k)+'</span><em>toward '
-   +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
+  /* the address number is the data model read out loud, CO-15, and the row
+     reads as a name now */
+  h+='<div class="pm-r"><span>'+esc(n.k)+'</span><em>toward '
+   +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+(n.sq>0?n.sq.toFixed(1):'\u2013')+'</b></div>';});
  h+='</div>';
  rdShell(h);}
 /* one painted region: what it presents as, and what is heaviest under it */

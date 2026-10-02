@@ -1155,9 +1155,9 @@ function avCycHTML(st){
   if(c.done)s+='<g transform="translate(10 10) scale(.84)" class="avc-ok">'+AV_OK+'</g>';
   var turns=c.turns.filter(function(f){return f>=1;}).length;
   out+='<div class="avc-one'+(c.done?' avc-done':'')+'" role="img" aria-label="'+AV_CYCN[i]+' cycle, '
-   +(c.done?'done':turns+(turns===1?' turn':' turns')+' done')+'">'+s+'</svg>'
+   +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg>'
    +'<span class="avc-lb">'+AV_CYCN[i]+'</span></div>';});
- out+='</div><div class="avc-fig"><span>Practised</span><b>'+C.days+(C.days===1?' day':' days')+'</b></div>'
+ out+='</div><div class="avc-fig"><span>Practised</span><b>'+(C.days?C.days+(C.days===1?' day':' days'):'\u2013')+'</b></div>'
   +'<p class="av-p avc-how">Seven days with a ritual done make one turn. Three turns make a cycle.</p>';
  return out+'</section>';}
 

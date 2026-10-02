@@ -123,7 +123,7 @@ function stRender(){
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
-    +'Commit '+(p?p.imprints.length:0)+'</button>'
+    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>'
   +'</div></div></div>'
   /* ---- the read column: the instrument over the list ---- */
   +'<div class="st-colr">'
@@ -148,7 +148,7 @@ function stRender(){
     +'title="The vault: what you have released">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
-    +'<span class="st-lb">Vault</span><b id="stvn">0</b></button>'
+    +'<span class="st-lb">Vault</span><b id="stvn">\u2013</b></button>'
    +'<button type="button" class="btn st-open" id="stlist">List</button></div>'
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    /* the key probe is never shown. The canvas cannot read a custom property,
@@ -430,7 +430,7 @@ function stRefresh(){
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
  if(ap){ap.disabled=!ST_PARSED;
-  ap.textContent='Commit '+(ST_PARSED?ST_PARSED.imprints.length:0);}
+  ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
  stFocus('write');
  /* the highlight is refreshed with the count, not with the whole surface,
@@ -1432,7 +1432,7 @@ function stVaultRows(){
  return Object.keys(by).map(function(id){return {n:BY[+id],lines:by[id],t:first[id]||''};})
   .sort(function(a,b){return String(b.t).localeCompare(String(a.t))||b.lines-a.lines;});}
 function stVaultCount(){
- var e=document.getElementById('stvn'); if(e)e.textContent=String(stVaultRows().length);}
+ var e=document.getElementById('stvn'); if(e){var n=stVaultRows().length; e.textContent=n?String(n):'\u2013';}}
 function stVaultPaint(hd,box){
  var rows=stVaultRows();
  hd.textContent='Released';
@@ -1637,7 +1637,7 @@ function stAnaPaint(){
  var b=document.getElementById('stanab'); if(!b)return;
  var o='';
  stAnaWins().forEach(function(w){
-  o+=stAnaHead(w.say,w.entries+(w.entries===1?' entry':' entries'));
+  o+=stAnaHead(w.say,w.entries?w.entries+(w.entries===1?' entry':' entries'):'\u2013');
   if(!w.entries)o+='<p class="st-none" style="margin-top:4px">Nothing written.</p>';
   else if(!w.top.length)o+='<p class="st-none" style="margin-top:4px">No charge named in words.</p>';
   else o+=w.top.map(function(t){var c=CHILD.filter(function(x){return x.nm===t.nm;})[0],col=seatCol(c?c.seat:'Heart');

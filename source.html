@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1296 db974fe 2026-10-02 05:21"><head><meta charset="utf-8">
+<html lang="en" data-build="v1298 dbbb9f1 2026-10-02 05:46"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -8021,14 +8021,14 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
-     <div class="tier1">0 &middot; Root domains</div>
+     <div class="tier1">Root domains</div>
      <!-- Four root domains would not fit one row, so Witness rendered as Witn
           with no affordance saying there was more. It wraps. Rule 10: never
           hide a control with no affordance. -->
      <div class="rootrow" id="roots"></div>
-     <div class="tier1">1 &middot; Blueprint domains</div>
+     <div class="tier1">Blueprint domains</div>
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
-     <div class="tier1" style="margin-top:18px">2 &middot; Primary</div>
+     <div class="tier1" style="margin-top:18px">Primary</div>
      <div class="g6" id="ar1"></div>
      <div class="sub ar-sec">Secondary</div>
      <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
@@ -8056,7 +8056,7 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
      It was also wrong about the controls. "the left slider is how much you
      carry it" describes one axis and these two sliders set all nine at once,
      which is the only thing about them a person cannot work out by looking. -->
-     <div class="tier1">5 &middot; Child emotions</div>
+     <div class="tier1">Child emotions</div>
      <p class="stk-def">Both sliders set all nine axes at once.</p>
      <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
      <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
@@ -8284,7 +8284,7 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
         the two Flow tabs only, head.html beside .fl-rail. -->
    <div class="fl-rail" id="flowrail"><div class="fl-hd" id="flowhd"></div><div class="rvr" id="flowside"></div></div>
    <div class="lsec re" data-rail="right" data-sec="overlap">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Energetic Summary</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Energetic summary</span><i></i></button>
     <div class="lsec-bd"><div id="rootsum"></div></div>
    </div>
    <!-- ON THE STORY, THIS RAIL IS THE IMPRINTS PAGE. GO in TASKS.md, his
@@ -25065,7 +25065,12 @@ function cr(band,pct,o){
     everything in this product calls them by and a drawing would be a second
     name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
- var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
+ var val=(o.raw!=null)?o.raw:(Math.round(p)>0?Math.round(p)+'%':'\u2013');
+ /* A ZERO IS A DASH, ruled in COPY.md under Value and said again on 2 October:
+    "the hardest carrying zero percent. I don't want that." Every figure this
+    component prints passes through here, so a ring that reads nought prints the
+    dash and its title says so, and no caller has to remember. Round J13. */
+ if(/^0(?:\.0+)?%?$/.test(String(val)))val='\u2013';
  var cls='cr '+size+(hot?' hot':'')+(o.act?' act':'')+(o.on?' on':'');
  var attrs=o.data||'';
  /* THE RING NAMED ITS COLOUR AND NOT ITS SUBJECT. The fallback led with the
@@ -25545,10 +25550,14 @@ const QICON_D={
    +'M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'};
 const QICON={};
 Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
+/* WHETHER NOTHING HAS BEEN READ, asked of the engine and never typed. Surfaces
+   that print a figure ask it before they do, and a figure printed off the seed
+   is a figure about the seed. Round J13. */
+function unreadNow(){try{return !!compute().unread;}catch(e){return false;}}
 /* an address, a saboteur or a seat, rendered as one object */
 function crNode(n,size,o){o=o||{};
  return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+n.sq.toFixed(1)+' left after the opposite'},o));}
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -25604,7 +25613,12 @@ function crBadge(band,pct,o){
     everything in this product calls them by and a drawing would be a second
     name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
- var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
+ var val=(o.raw!=null)?o.raw:(Math.round(p)>0?Math.round(p)+'%':'\u2013');
+ /* A ZERO IS A DASH, ruled in COPY.md under Value and said again on 2 October:
+    "the hardest carrying zero percent. I don't want that." Every figure this
+    component prints passes through here, so a ring that reads nought prints the
+    dash and its title says so, and no caller has to remember. Round J13. */
+ if(/^0(?:\.0+)?%?$/.test(String(val)))val='\u2013';
  var half=G.box/2;
  /* BARE IS THE RING WITHOUT ITS PILL. The codex row carries the figure at the
     far right of the row, where it aligns with every other figure in the
@@ -25626,7 +25640,7 @@ function crBadge(band,pct,o){
    ruling asked for. */
 function crbNode(n,size,o){o=o||{};
  return crBadge(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  title:n.k+', '+n.b.toLowerCase()+' seat. '+n.sq.toFixed(1)+' left after the opposite'},o));}
+  title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,
@@ -28116,7 +28130,8 @@ function solCore(r,base){
       2.3, 3.3 and 4.3. The functional gate caught it. */
    g.fillStyle=rgba(INK(),.5);
    g.font='400 '+sm.toFixed(1)+'px Inter, system-ui, sans-serif';
-   g.fillText('of 100', CX, CY+big*0.30+sm*1.75);}
+   /* the line "of 100" under the figure is gone: a count against a total.
+      Round J13. */}
   g.restore();}
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  /* THE TWO POLES INSIDE THE CIRCLE, on a phone. GF in TASKS.md, his words:
@@ -29875,7 +29890,7 @@ function frCore(M,r,cx,cy,R,o){
  var rin=R-w/2-2;
  s+=frFeathers(M,r,cx,cy,rin)+'<g class="frcq"><circle class="frcq-bk" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
   +'" r="'+(rin*.62).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>';
- var cq=String(Math.round(r.CQ)),dq=String(Math.round(+r.DQ||0)),lab=11;
+ var cq=String(Math.round(r.CQ)),dq=Math.round(+r.DQ||0)>0?String(Math.round(+r.DQ)):'\u2013',lab=11;
  var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
  var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
  /* THE TYPE IS FITTED TO THE HOLE, NOT TO A TABLE. The ring's inside runs
@@ -30364,7 +30379,7 @@ function frCallouts(M,r,P){
  var shut=SI.map(function(l,i){return {l:l,i:i,v:+S.law[l.nm]||0};})
   .filter(function(x){return typeof lawIn!=='function'||lawIn(x.l.nm);})
   .sort(function(a,b){return a.v-b.v;})[0];
- if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+shut.v.toFixed(1)+' of 10',M.seat(shut.l.b),P.hitOf['l'+shut.i]);
+ if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+shut.v.toFixed(1),M.seat(shut.l.b),P.hitOf['l'+shut.i]);
  var hp=r.sabs.slice().sort(function(a,b){return b.w-a.w;})[0];
  if(hp){var hk=M.ixSab.get(hp);
   push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+hp.w.toFixed(1),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}
@@ -30676,7 +30691,7 @@ const VICON=[
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 112 addresses. Each mark is the charge held at one place.'},
- {k:'seats',g:'carry',nm:'Assemblage Points',ic:FB_IC_SEAT,
+ {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
   tip:'The seven seats, from the base of your spine to the top of your head.'},
  {k:'laws',g:'carry',nm:'Laws',ic:fbFlay('laws'),
   tip:'The twenty one laws, each set at its assemblage point. Their sum is the number at the centre.'},
@@ -30753,11 +30768,13 @@ function fbReach(list,carry){
  return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
- var f1=function(x){return (+x||0).toFixed(1);}, pc=function(x){return Math.round(+x||0)+'%';};
+ var f1=function(x){var n=+x||0; return n>=0.05?n.toFixed(1):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
  V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
-  m:'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'};
+  m:r.SQm>=0.05?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
+   :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
  V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
-  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'};
+  m:(r.darkV||0)>=0.05?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
+   :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
  V.laws={p:r.CQ,v:pc(r.CQ),c:seatCol('Crown'),
   m:'Ring and number: coherence, CQ, which is the laws summed.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
@@ -30775,7 +30792,8 @@ function fbValues(r){
   ['complexes',r.cxs,'Solar'],['hyper',r.hys,'Sacral'],['character',r.sups,'Root']].forEach(function(t){
   var p=fbReach(t[1],carry);
   V[t[0]]={p:p,v:String(t[1].length),c:seatCol(t[2]),
-   m:'Number: how many are running, as the rail counts them. Ring: the share of your carrying addresses they are built on, '+pc(p)+'.'};});
+   m:'Number: how many are running, as the rail counts them.'
+    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+pc(p)+'.':'')};});
  var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
  var tot=aff.reduce(function(a,x){return a+x.v;},0)||1, top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{};
  V.archetypes={p:top.v/tot*100,v:pc(top.v/tot*100),c:seatCol(A.b||'Heart'),
@@ -31755,8 +31773,8 @@ function renderMap(r){
    +(on?1:(0.62+ld*0.38)).toFixed(2)+'"/>'
    +(held?'':'<circle cx="50" cy="'+b.yp+'" r="'+(0.42*ZS).toFixed(3)+'" fill="'+PC[b.b]+'" opacity=".92"/>');
   seatHit+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
-   +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '+st.hot+' carrying, '
-   +Math.round(st.pass*100)+' percent through</title></circle>';});
+   +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '
+   +(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'nothing carrying')+'</title></circle>';});
  /* the domains you run, ringing the seats they own. The ring used to grow by
     half a unit per address the domain held there, which on Gordon made one
     dashed circle thirteen units across that ran through Sacral and Root at
@@ -33774,7 +33792,7 @@ function bmSeats(seats){
  var g=BM.sv&&BM.sv.querySelector('[data-bmseats]'); if(!g)return;
  g.innerHTML=PMBANDS.map(function(b){var st=seats.filter(function(s){return s.p.k===b.k;})[0];
   return '<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="2.4" fill="transparent"><title>'
-   +b.nm+', '+bmFlowStep(st.pass)+'. '+st.hot+' carrying, '+Math.round(st.pass*100)+' percent through</title></circle>';}).join('');}
+   +b.nm+', '+bmFlowStep(st.pass)+'. '+(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'Nothing carrying')+'</title></circle>';}).join('');}
 
 /* ---------- what is under a point ---------- */
 /* THE PICK IS A REGION'S KEY, OR A PAIR'S. A name in the panel below stands
@@ -34476,16 +34494,16 @@ function bmOvVals(r){
  var F={},V={},dash='–';try{F=fbValues(r);}catch(e){}
  V.addr=F.addresses;V.sab=F.saboteurs;V.cx=F.complexes;V.hy=F.hyper;
  var mr=((r&&r.maskRing)||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
- V.masks=(mr&&!r.unread)?{p:mr.w*10,v:mr.w.toFixed(1),c:bmRgba(BMC.mask,1),
+ V.masks=(mr&&!r.unread&&mr.w>=0.05)?{p:mr.w*10,v:mr.w.toFixed(1),c:bmRgba(BMC.mask,1),
   m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+mr.w.toFixed(1)+'.'}
   :{p:0,v:dash,c:bmRgba(BMC.mask,1),m:'Nothing read yet.'};
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
  var sp=flSpeed();
- V.flow=(r&&!r.unread)?{p:sp*100,v:Math.round(sp*100)+'%',c:'var(--accent)',
+ V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:Math.round(sp*100)+'%',c:'var(--accent)',
   m:'Ring and number: flow, the share of charge that passes every seat, '+Math.round(sp*100)+'%.'}
-  :{p:0,v:dash,c:'var(--accent)',m:'Nothing read yet.'};
+  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every seat yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}
 /* the burger, shut and open: the Field's fbShutPaint in its own words */
@@ -34701,7 +34719,11 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   +'<div><div class="pm-eye">Flow</div>'
   /* flow through is a share that passes, so its high end is the good one and
     it never prints in the alarm colour. */
-  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow',hot:false})
+  /* NOTHING HELD, SO NOTHING PASSES AND NOTHING IS MEASURED. With no charge
+     on the body every seat passes everything and the ring read 100%, a share
+     printed off an empty field. It holds a dash until something is held.
+     Round J13. */
+  +cr(K2B[dom.p.k], loadedTot?speed*100:0, {size:'lg',label:'flow',hot:false,raw:loadedTot?null:'\u2013'})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
     :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"
@@ -34767,7 +34789,9 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    +'<i style="background:'+b.c+'"></i><span class="pm-sn">'+s.p.n+'</span>'
    +'<span class="pm-gauge"><b style="width:'+Math.round(s.pass*100)+'%;background:'+b.c+'"></b></span>'
    +'<span class="pm-sv">'+(s.hot?s.hot+' held':'clear')+'</span>'
-   +'<span class="pm-sp">'+Math.round(s.pass*100)+'%</span>'
+   /* A SEAT WITH NOTHING ON IT PASSES EVERYTHING, which is the default and not
+      a measurement, so the share is a dash until something is held. J13. */
+   +'<span class="pm-sp">'+(s.hot?Math.round(s.pass*100)+'%':'\u2013')+'</span>'
    +'<span class="pm-sk">'+s.p.nv+'</span></button>';});
  sh+='</div>';
  el.innerHTML=sh;
@@ -34831,18 +34855,20 @@ function runSeatFlowDrill(k){
   /* the Flow circle's step, KV, so the answer to a pressed seat says the
      same word the figure prints beside it; a phone has no lane for the word */
   +'<div class="pm-grid"><span>flow</span><b>'+bmFlowStep(ss.pass)+'</b>'
-  +'<span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
-  +'<span>held</span><b>'+ss.hot+'</b>'
-  +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
-  +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
+  +'<span>passes</span><b>'+(ss.hot?Math.round(ss.pass*100)+'%':'\u2013')+'</b>'
+  +'<span>held</span><b>'+(ss.hot||'\u2013')+'</b>'
+  +'<span>mean SQ</span><b>'+(ss.mean>0?ss.mean.toFixed(1):'\u2013')+'</b>'
+  +'<span>integrity</span><b>'+(unreadNow()?'\u2013':bandIg(bnd).toFixed(1))+'</b></div>'
   +'<div class="pm-eye" style="margin-top:12px">Moral integrity seated here</div><div class="pm-chips">'
   +lws.map(function(l){return '<span class="pm-chip" style="opacity:'
-    +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
+    +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+(unreadNow()?'':' '+S.law[l.nm].toFixed(1))+'</span>';}).join('')+'</div>'
   +'<div class="pm-eye" style="margin-top:12px">Addresses</div><div class="pm-rows">';
  seg.slice(0,8).forEach(function(n){
   var opp3=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
-  h+='<div class="pm-r"><span>'+String(n.i).padStart(3,'0')+' '+esc(n.k)+'</span><em>toward '
-   +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
+  /* the address number is the data model read out loud, CO-15, and the row
+     reads as a name now */
+  h+='<div class="pm-r"><span>'+esc(n.k)+'</span><em>toward '
+   +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+(n.sq>0?n.sq.toFixed(1):'\u2013')+'</b></div>';});
  h+='</div>';
  rdShell(h);}
 /* one painted region: what it presents as, and what is heaviest under it */
@@ -36036,7 +36062,7 @@ function impPill(n,maxW,IX,ghost,inferred){
        /* the saboteur count is a reading of saboteurs, which a plan below
           tier one cannot see: "part of 0 saboteurs" would be a false statement
           about somebody who is part of several */
-       +(lockSees('sab')?', part of '+fed+' saboteur'+(fed===1?'':'s'):'')+'.'));
+       +(lockSees('sab')&&fed?', part of '+fed+' saboteur'+(fed===1?'':'s'):'')+'.'));
  /* WHAT THE SENTENCE NAMED, OR WHAT THE SEAT IS. Never the address name on an
     inferred hit. The scan reads a seat and an intensity out of a sentence, and
     when the words name no child emotion the address is chosen by a fallback:
@@ -36120,7 +36146,7 @@ function impRender(){
     claim about a person who has not written anything yet. */
  var kids=(IX.kid&&IX.kid.found)||[];
  var h='<div class="ip-hd"><span class="pm-eye">Held</span>'
-  +'<span class="ip-n">'+held.length+'</span>'
+  +'<span class="ip-n">'+(held.length||'\u2013')+'</span>'
   +(filled?'<span class="pm-eye">Filled in</span><span class="ip-n">'+filled+'</span>':'')
   +(kids.length?'<span class="pm-eye">Child</span><span class="ip-n">'+kids.length+'</span>':'')
   +(ghosts.length?'<span class="pm-eye">Pending</span><span class="ip-n">'+ghosts.length+'</span>':'')
@@ -36392,7 +36418,7 @@ function stRender(){
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
-    +'Commit '+(p?p.imprints.length:0)+'</button>'
+    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>'
   +'</div></div></div>'
   /* ---- the read column: the instrument over the list ---- */
   +'<div class="st-colr">'
@@ -36417,7 +36443,7 @@ function stRender(){
     +'title="The vault: what you have released">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
-    +'<span class="st-lb">Vault</span><b id="stvn">0</b></button>'
+    +'<span class="st-lb">Vault</span><b id="stvn">\u2013</b></button>'
    +'<button type="button" class="btn st-open" id="stlist">List</button></div>'
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    /* the key probe is never shown. The canvas cannot read a custom property,
@@ -36699,7 +36725,7 @@ function stRefresh(){
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
  if(ap){ap.disabled=!ST_PARSED;
-  ap.textContent='Commit '+(ST_PARSED?ST_PARSED.imprints.length:0);}
+  ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
  stFocus('write');
  /* the highlight is refreshed with the count, not with the whole surface,
@@ -37701,7 +37727,7 @@ function stVaultRows(){
  return Object.keys(by).map(function(id){return {n:BY[+id],lines:by[id],t:first[id]||''};})
   .sort(function(a,b){return String(b.t).localeCompare(String(a.t))||b.lines-a.lines;});}
 function stVaultCount(){
- var e=document.getElementById('stvn'); if(e)e.textContent=String(stVaultRows().length);}
+ var e=document.getElementById('stvn'); if(e){var n=stVaultRows().length; e.textContent=n?String(n):'\u2013';}}
 function stVaultPaint(hd,box){
  var rows=stVaultRows();
  hd.textContent='Released';
@@ -37906,7 +37932,7 @@ function stAnaPaint(){
  var b=document.getElementById('stanab'); if(!b)return;
  var o='';
  stAnaWins().forEach(function(w){
-  o+=stAnaHead(w.say,w.entries+(w.entries===1?' entry':' entries'));
+  o+=stAnaHead(w.say,w.entries?w.entries+(w.entries===1?' entry':' entries'):'\u2013');
   if(!w.entries)o+='<p class="st-none" style="margin-top:4px">Nothing written.</p>';
   else if(!w.top.length)o+='<p class="st-none" style="margin-top:4px">No charge named in words.</p>';
   else o+=w.top.map(function(t){var c=CHILD.filter(function(x){return x.nm===t.nm;})[0],col=seatCol(c?c.seat:'Heart');
@@ -38317,6 +38343,7 @@ function lensWestern(r){
  return {t:'Western',a:d.r,b:unpackOf(String(d.r).toLowerCase()),c:'root domain as element'};}
 function lensEastern(r){
  var b=r.darkB||'Root';
+
  /* ROUND PO. Sanskrit names and seed sounds, said as what they are. */
  return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the seat carrying the most'};}
 function lensDesign(r){
@@ -38410,13 +38437,13 @@ function sumGlance(r,noCQ){
      of them that had been filled in, which is not a wording problem, it is a
      reading that says the reverse of the truth. */
   ['carried depth', 'Root', r.SQm*10, r.SQm.toFixed(1),
-   'How deep the charge runs, on average, across the addresses carrying it.', 'of 10'],
+   'How deep the charge runs, on average, across the addresses carrying it.', ''],
   /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
      to 0 and 10, so ten is the ceiling and always was. */
   ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2),
-   'How much of each opposite is installed, on average, across the body.', 'of 10'],
+   'How much of each opposite is installed, on average, across the body.', ''],
   ['energy', 'Solar', e*100, e.toFixed(2),
-   'The average of vitality, awareness and will.', 'of 1']];
+   'The average of vitality, awareness and will.', '']];
  /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"
     on the third line of a glance tile, which is the smallest place in the
     product and the last place a lab readout belongs. Ruled with the rest of
@@ -38424,7 +38451,11 @@ function sumGlance(r,noCQ){
     rule is the reason the third line exists at all. */
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
   'How much of you the instrument has actually measured.','']);
- /* THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
+ /* SUPERSEDED ON 2 OCTOBER, CO-31: the third line no longer carries "of 10" or
+    "of 1". A count against a total is a score at any scale, and he read it as
+    one. What follows is the ruling it replaced.
+
+    THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
     both were being broken by the same line.
 
     "You read 13, what does that mean." Every number says what it is out of.
@@ -38587,9 +38618,12 @@ function sumStory(r){
    +'<span class="s-blk">What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
    +sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '+sumUn('archetype:'+arch.toLowerCase())+' '
    +(elRoot===rootNow
-     ? 'Those agree, so what you are doing is what you were built for and the cost is elsewhere.'
-     : 'Those do not agree. Something was put on top of the '+unp('blueprint')+', and it has been carried so long '
-       +'that it feels like your personality.')+'</span>');
+     /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
+        runs another, and the instrument can say they differ. It cannot say
+        why, and "something was installed on top" was a story about a person
+        the ledger cannot show. Round J13. */
+     ? 'Those agree.'
+     : 'The blueprint says '+esc(elRoot)+'. The field runs '+esc(rootNow)+'. These differ.')+'</span>');
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
@@ -38603,12 +38637,11 @@ function sumStory(r){
    +seatB(String(held[0].cf).toLowerCase(),held[0].b,String(held[0].cf).toLowerCase(),'feeling')
    +' '+unp('axis')+', at a weight of '
    +held[0].sq.toFixed(1)+'.'
-   +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
-     +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
+   +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
-   +' Shadow weight is '+Math.round(r.DQ)+' per cent and the law furthest shut is '
+   +' Shadow weight is '+Math.round(r.DQ)+'. The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
    +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
  }else{
@@ -38628,11 +38661,15 @@ function sumStory(r){
  var gapLine='';
  if(rows.length){
   gapLine=blocked.length
+   /* A CAUSE IS NOT A READING. "Blocked by the same charge named above" said
+      why the avatar is short, and the ledger cannot show the chain. What the
+      instrument can say is that the part is not passing and which charge sits
+      under it. Round J13. */
    ? ' Against the avatar you stated, '+blocked.map(function(x){
        return '<b>'+esc(x.pair.be)+'</b>';}).join(' and ')
-     +' is the part still blocked, and it is blocked by the same charge named above.'
-   : ' Every seat your avatar depends on is passing. What you stated you are becoming is not '
-     +'being blocked by the field.';
+     +(blocked.length>1?' are not passing. The charge named above sits under them.'
+                       :' is not passing. The charge named above sits under it.')
+   : ' Every seat your avatar depends on is passing.';
  }else{
   gapLine=' No avatar has been stated, so there is nothing to measure this against. '
    +'Say who you are becoming and this paragraph names what stands in the way.';}
@@ -38650,12 +38687,15 @@ function sumStory(r){
  /* no lean sentence at all while CQ is still filling and no story cue has
     come in: leanRead reports read false, and 100 per cent benign off a field
     with no laws answered is a reading nobody took */
+ /* NO PERCENT. "Leans 100 per cent benign against 0 per cent malignant" was
+    a score, and on a field with one cue in it a share of a hundred reads as a
+    finding. The direction is the reading and the sentence says it once. The
+    clause "which means it is expanding" stated a cause and is now a
+    direction. Round J13, his words: "I keep seeing this percent shit, the
+    hardest carrying zero percent. I don't want that." */
  p.push(((lean.read===false?'':'The field leans <b>'
-  +Math.round(Math.max(lean.ben,lean.mal))+' per cent '
-  +(lean.ben>=lean.mal?'benign':'malignant')+'</b> against '
-  +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
-  +(lean.ben>=lean.mal?'malignant':'benign')
-  +(r.benign===null?'':', '+(r.benign?'which means it is expanding':'which means it is contracting'))+'.')
+  +(lean.ben>=lean.mal?'benign':'malignant')+'</b>'
+  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'.')
   /* .length, because r.excess is a list and an empty list is truthy: this
      told every one of the fourteen reference cases the pole was past paying,
      including the ones with nothing past it. ui.js reads it the same way. */
@@ -39307,8 +39347,10 @@ function sumOutput(r){
      'Coherence fills as you answer them, and expression cannot rise above it',
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
-     'Release has about '+rhead.toFixed(1)+' points of expression left in it for you. The rest '
-     +'is the laws, and they move when you answer them or when what you do changes',
+     (rhead>=0.05?'Release has about '+rhead.toFixed(1)+' points of expression left in it for you. The rest '
+      +'is the laws, and they move when you answer them or when what you do changes'
+      :'Release has no expression left in it for you. What is left is the laws, and they move '
+      +'when you answer them or when what you do changes'),
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
      'No address is holding anything','');}())
@@ -39492,7 +39534,7 @@ function sumIg(r){
  if(pts.length<2){
   body='<p class="cn-gp">'
    +(pts.length?'One reading with an integrity on it in this span, at <b>'
-     +pts[0].ig.toFixed(1)+' of 10</b>. Two makes a line.'
+     +pts[0].ig.toFixed(1)+'</b>. Two makes a line.'
     :'Nothing on the record for this span.')
    +'</p>';}
  else {
@@ -39518,8 +39560,8 @@ function sumIg(r){
   +'<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6" '
   +'vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>'
   +'</svg>'
-  +'<div class="s-ig-f"><span>'+first.toFixed(1)+' of 10</span>'
-  +'<b>'+dir+'</b><span>'+last.toFixed(1)+' of 10</span></div>';}
+  +'<div class="s-ig-f"><span>'+first.toFixed(1)+'</span>'
+  +'<b>'+dir+'</b><span>'+last.toFixed(1)+'</span></div>';}
  return head+body+'</div>';}
 
 /* ---- one delegated listener for everything on this surface ---- */
@@ -39627,13 +39669,18 @@ function anaField(title,sub,items,w,h){
   return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'
    +'<div class="ab-none">nothing here</div></div>';
  var P=anaPack(items,w,h),top=P[0]?P[0].it.v:1, LMIN=13;
+ /* NOTHING READ, SO NO FIGURE. The page says so in its first line and the
+    bubbles still printed 10.0 and 7.2 off the blueprint it had selected.
+    The bubbles keep their size, which is the blueprint, and lose the figure.
+    Round J13. */
+ var UN=false; try{UN=!!computeSeen().unread;}catch(e){}
  var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'
   +'<svg viewBox="0 0 '+w+' '+h+'" class="ab-svg">';
  P.forEach(function(p){
   var fit=p.r>=26, tiny=p.r<LMIN;
   var on=(ANA_PICK&&ANA_PICK.k===p.it.k&&ANA_PICK.nm===p.it.nm);
   s+='<g class="ab-b'+(on?' on':'')+'" data-ab="'+esc((p.it.k||'')+'|'+p.it.nm)+'">'
-   +'<title>'+esc(p.it.nm+', '+p.it.v.toFixed(1))+'</title>'
+   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.v>0?', '+p.it.v.toFixed(1):', nothing held')))+'</title>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
@@ -39649,7 +39696,7 @@ function anaField(title,sub,items,w,h){
     s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';
     if(fit)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+p.it.v.toFixed(1)+'</text>';}}
+     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(!UN&&p.it.v>0?p.it.v.toFixed(1):'\u2013')+'</text>';}}
   s+='</g>';});
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){
@@ -41159,9 +41206,9 @@ function avCycHTML(st){
   if(c.done)s+='<g transform="translate(10 10) scale(.84)" class="avc-ok">'+AV_OK+'</g>';
   var turns=c.turns.filter(function(f){return f>=1;}).length;
   out+='<div class="avc-one'+(c.done?' avc-done':'')+'" role="img" aria-label="'+AV_CYCN[i]+' cycle, '
-   +(c.done?'done':turns+(turns===1?' turn':' turns')+' done')+'">'+s+'</svg>'
+   +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg>'
    +'<span class="avc-lb">'+AV_CYCN[i]+'</span></div>';});
- out+='</div><div class="avc-fig"><span>Practised</span><b>'+C.days+(C.days===1?' day':' days')+'</b></div>'
+ out+='</div><div class="avc-fig"><span>Practised</span><b>'+(C.days?C.days+(C.days===1?' day':' days'):'\u2013')+'</b></div>'
   +'<p class="av-p avc-how">Seven days with a ritual done make one turn. Three turns make a cycle.</p>';
  return out+'</section>';}
 
@@ -42661,7 +42708,7 @@ function iqHeroHtml(p,sc,r,scored,answered,total){
  return '<header class="iqa-hero iqa-card">'+iqHeroRing(p,sc,simOn?iqSimCQ(r,scored):((scored&&r.tier)?r.CQ:null))
   +'<div class="iqa-ht"><span class="iqa-eye">Energetics</span>'
   +'<span class="iqa-hh">'+(simOn?'Simulation: every unanswered law counts as ten':(r.tier?esc(r.tier):left+' questions left'))+'</span>'
-  +'<span class="iqa-hs">'+scored+' law'+(scored===1?'':'s')+' measured'
+  +'<span class="iqa-hs">'+(scored?scored+' law'+(scored===1?'':'s')+' measured':'No laws measured yet')
   +(r.tier&&left>0?', '+left+' question'+(left===1?'':'s')+' left':'')+'</span></div>'
   +'<div class="iqa-tools">'+iqViewHtml()
   +'<button type="button" class="iqa-mb" id="iqmore" aria-expanded="'+IQ_MORE+'" aria-controls="iqmorep" '
@@ -43697,10 +43744,12 @@ function relTally(c){
  if(!c||!c.of)return '';
  /* the number large and the unit beside it at body size, so two of them fit
     across a phone's card with the strips on it */
+ /* A ZERO IS A DASH. "0 truths" and "0 patterns" read nought of a thing where
+    the slot has nothing to say yet. Round J13. */
  function fig(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b style="font-size:30px;line-height:1.1">'
-  +n+'<small style="font-size:13px;font-weight:400;color:var(--dim)"> '+u+'</small></b></div>';}
- function sm(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b>'+n
-  +'<small style="font-size:12px;font-weight:400;color:var(--dim)"> '+u+'</small></b></div>';}
+  +(n?n+'<small style="font-size:13px;font-weight:400;color:var(--dim)"> '+u+'</small>':'\u2013')+'</b></div>';}
+ function sm(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b>'
+  +(n?n+'<small style="font-size:12px;font-weight:400;color:var(--dim)"> '+u+'</small>':'\u2013')+'</b></div>';}
  /* the person's own record only, the same guard relProject and relCoolDown
     already read S.who by, not a worked example's */
  var hist=(typeof S!=='undefined'&&S.who===0&&typeof CURP!=='undefined'&&CURP&&CURP.meter)?CURP.meter:null;
@@ -45747,7 +45796,7 @@ function ritChainHtml(c,r,act){
  var out='<div class="rv-chain" role="group" aria-label="From your story to your ritual">';
  out+='<button type="button" class="rv-node rv-n-imp" data-act="go-story">'
   +'<span class="rv-lb">Imprints</span>'
-  +'<span class="rv-nv">'+ritIc('pen','rv-nic')+'<b>'+n+'</b><em>'+(n===1?'story':'stories')+'</em></span>'
+  +'<span class="rv-nv">'+ritIc('pen','rv-nic')+(n?'<b>'+n+'</b><em>'+(n===1?'story':'stories')+'</em>':'<em>No story yet</em>')+'</span>'
   +'</button>';
  out+='<span class="rv-arr" aria-hidden="true">'+ritIc('arrow')+'</span>';
  /* ROUND LT, HIS WORDS: "get rid of the text 'your words', just put
@@ -45807,11 +45856,12 @@ function ritTodayHtml(act,today,L){
  ((CURP&&CURP.rituals)||[]).forEach(function(x){if(ritIsDone(x)){var k=pracDay(x.t); if(k!==null)kd[k]=1;}});
  var kept=Object.keys(kd).length;
  return '<div class="rv-today">'
-  +'<div class="rv-hero">'+svg+'<div class="rv-mid"><b>'+s.run+'</b><span>Streak</span></div></div>'
+  +'<div class="rv-hero">'+svg+'<div class="rv-mid"><b>'+(s.run||'\u2013')+'</b><span>Streak</span></div></div>'
+  /* A ZERO IS A DASH, COPY.md Value. Round J13. */
   +'<div class="rv-figs">'
-  +'<div class="rv-fig"><b>'+best+'<small>'+(best===1?' day':' days')+'</small></b><span>Best</span></div>'
-  +'<div class="rv-fig"><b>'+kept+'<small>'+(kept===1?' day':' days')+'</small></b><span>Kept</span></div>'
-  +'<div class="rv-fig"><b>'+L.ledger.minutes+'<small> min</small></b><span>Practised</span></div>'
+  +'<div class="rv-fig"><b>'+(best?best+'<small>'+(best===1?' day':' days')+'</small>':'\u2013')+'</b><span>Best</span></div>'
+  +'<div class="rv-fig"><b>'+(kept?kept+'<small>'+(kept===1?' day':' days')+'</small>':'\u2013')+'</b><span>Kept</span></div>'
+  +'<div class="rv-fig"><b>'+(L.ledger.minutes?L.ledger.minutes+'<small> min</small>':'\u2013')+'</b><span>Practised</span></div>'
   +'</div></div>';}
 
 /* ACTIVE. The list a person keeps, in their order. */
@@ -46053,7 +46103,7 @@ function ritCalHtml(plans,today,empty){
   var tag=empty?'span':'button';
   out+='<'+tag+(empty?'':' type="button"')+' class="rv-day'+(day===today?' rv-now':'')+(sel?' rv-sel':'')+(day>today?' rv-fut':'')
    +'"'+(empty?' aria-hidden="true"':' data-act="day" data-d="'+day+'" aria-pressed="'+sel+'" aria-label="'+esc(ritDayName(day,today))+', '+d
-   +(segs.length?', '+doneN+' done':'')+'"')+'>'
+   +(segs.length?(doneN?', '+doneN+' done':', none done'):'')+'"')+'>'
    +'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" class="rv-track" style="stroke-width:3.5"/>'
    +ritArcs(20,20,15,segs,3.5)+'</svg><span>'+d+'</span></'+tag+'>';}
  out+='</div><div class="rv-key" aria-hidden="true">'
@@ -49204,7 +49254,7 @@ function coneKey(){
     +(dir>0?'M12 20V4M7 9l5-5 5 5':'M12 4v16M7 15l5 5 5-5')
     +'" fill="none" stroke="currentColor" stroke-width="1.7" '
     +'stroke-linecap="round" stroke-linejoin="round"/></svg>'
-    +esc(l.nm)+' <span class="ck-v">'+l.v.toFixed(1)+' of 10</span></span>';};
+    +esc(l.nm)+' <span class="ck-v">'+l.v.toFixed(1)+'</span></span>';};
   h+=grp('Lifting you',rg.up.map(function(l){
     return row(l,seatCol(PAL[l.b]?l.b:'Heart'),1);}).join(''));
   h+=grp('Pulling you down',rg.dn.map(function(l){
@@ -49386,8 +49436,7 @@ function coneRead(){
     says where the number sits, so the number is said once and the sentence
     carries the meaning rather than the arithmetic. */
  return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b> against a '
-  +'clean ten.</p>'
+  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>.</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
@@ -50047,9 +50096,9 @@ function ladderHtml(){
  /* the streak. A run that has lapsed still says what it was, because the
     thing a person built is not deleted by their having stopped. */
  h+='<div class="ld-streak'+(s.live?' live':'')+'">'
-  +'<span class="ld-n">'+s.run+'</span>'
+  +'<span class="ld-n">'+(s.run?s.run:'\u2013')+'</span>'
   /* the space before the comma was on the screen: "14 days , last run". */
-  +'<span class="ld-u">'+(s.run===1?'day':'days')+(s.live?' running':', last run')+'</span>'
+  +'<span class="ld-u">'+(s.run?(s.run===1?'day':'days')+(s.live?' running':', last run'):'')+'</span>'
   +'</div>';
  if(!s.days)
   h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, '
@@ -50091,12 +50140,17 @@ function ladderHtml(){
     AND THE LAST ROW WAS WRONG ABOUT WHAT IT COUNTS. ledgerRead walks CHILD,
     which is the nine axes, so clear is a count of axes and the row printed it
     as addresses. A label that names the wrong unit is not a style defect. */
- var LG=[['Practised',l.minutes+(l.minutes===1?' minute':' minutes')]];
+ /* A ZERO IS A DASH. "0 minutes", "0 rituals", "0 addresses" and "0 axes"
+    sat under "Nothing on the record yet", so the sentence said not read and
+    the figures said nought. COPY.md, Value: a dash is the honest glyph for
+    nothing yet, and it is not zero. Round J13. */
+ var ldn=function(n,one,many){return n?n+(n===1?one:many):'\u2013';};
+ var LG=[['Practised',ldn(l.minutes,' minute',' minutes')]];
  if(l.planned>l.minutes)LG.push(['Planned',
   (l.planned-l.minutes)+((l.planned-l.minutes)===1?' minute':' minutes')]);
- LG=LG.concat([['Saved',l.rituals+(l.rituals===1?' ritual':' rituals')],
-  ['Opened',l.ground+(l.ground===1?' address':' addresses')],
-  ['Installed',l.clear+(l.clear===1?' axis':' axes')]]);
+ LG=LG.concat([['Saved',ldn(l.rituals,' ritual',' rituals')],
+  ['Opened',ldn(l.ground,' address',' addresses')],
+  ['Installed',ldn(l.clear,' axis',' axes')]]);
  h+='<div class="ld-led">'+LG.map(function(x){
   return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
  /* the marks. icon, name, and what it meant. */
@@ -50357,21 +50411,26 @@ function runLawDrill(l){
  var v=S.law[l.nm], seg=W.filter(function(n){return n.b===l.b;});
  var hot=seg.filter(function(n){return n.sq>=4;});
  var sc=CURP?(iqScore(CURP)[l.nm]||null):null;
+ /* A LAW NOBODY HAS ANSWERED SITS AT THE SEED, and the drill read it out as a
+    finding: "Truth 6.0. Working but not strong." lawIn is the engine's own
+    answer to whether it was entered. Round J13. */
+ var read=(typeof lawIn!=='function')||lawIn(l.nm);
  var h='<div class="pm-eye">Law of integrity, '+l.b.toLowerCase()+'</div>'
-  +'<div class="ad-nm">'+l.nm+' '+v.toFixed(1)+'</div>'
+  +'<div class="ad-nm">'+l.nm+(read?' '+v.toFixed(1):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
      everything seated there pays for it" read the threshold aloud, ran an
      antithesis, and named a cost with no mechanism. compute.js has the
      mechanism: a law's seat relief scales down what is held there, so a shut
      law leaves more of the charge held. DESIGN-tooltip-copy.md, example 6. */
-  +(v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
+  +(!read?'Not read yet.'
+   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
    :'Working but not strong. It holds in some places and slips in others.')
   /* the count of what is held is the fact. Against the seat's total it is a
      score, and this is a reading. */
-  +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> address'
-  +(hot.length===1?' is':'es are')+' held.</p>';
+  +(read?' Seated at the '+l.b.toLowerCase()+(hot.length?', where <b>'+hot.length+'</b> address'
+   +(hot.length===1?' is':'es are')+' held.':', where nothing is held.'):'')+'</p>';
  h+= sc
   /* ONE SENTENCE, NOT A STOP AND THEN A LOWER CASE CLAUSE. It printed
      "Spread 3.6. holds when it costs, slips when unseen", which is a full stop
@@ -50419,7 +50478,7 @@ function runNodeDrill(n){
      lock's own panel: "nothing compounds from here" would be a false statement
      about an address that feeds a saboteur */
   +(lockSees('sab')
-   ?'<div class="pm-eye">Feeds '+owners.length+'</div><div class="pm-chips">'
+   ?'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
     +(owners.length?owners.slice(0,8).map(function(o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>'
@@ -50517,12 +50576,13 @@ function runCoreDrill(){
      you down. Ruled 25 September: CQ is the 21 laws and nothing else, and
      the shadow pulls on expression instead. It says that now, with the
      person's own figures in it. */
-  +'The '+SI.length+' laws, each out of 10, summed out of 210. '
+  +'The '+SI.length+' laws, each read from nothing to ten, added together. '
   +(r.complete?'All '+SI.length+' are in. '
-    :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts 0 until it is. ')
+    :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts nothing until it is. ')
   +'The shadow does not touch this number. It pulls on expression, which is '
-  +'coherence times what the shadow leaves: expression <b>'+Math.round(r.EX)
-  +'</b>, with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>.</p>'
+  +'coherence times what the shadow leaves'
+  +(r.unread?'':': expression <b>'+Math.round(r.EX)+'</b>'
+   +(r.PULL>=0.005?', with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>':''))+'.</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">'
   /* benign is null while CQ is still filling, and the clause waits with it */
   +(r.benign===null?'':'The field is <b>'
@@ -50577,10 +50637,10 @@ function runQDrill(q){
   /* REWRITTEN 25 SEPTEMBER. It said DQ was every address above its floor
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
-  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+Math.round(r.DQ)+'%</div>'
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+(r.DQ>=0.5?Math.round(r.DQ)+'%':'\u2013')+'</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
    +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
-   +'<div class="pm-eye">Where it sits</div><p class="ad-p"><b>'+r.loaded.length+'</b> addresses carry it. The heaviest:</p>'
+   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+(r.loaded.length?'<b>'+r.loaded.length+'</b> addresses carry it. The heaviest:':'No address carries it.')+'</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
  else if(q==='sq'){
   h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+r.SQm.toFixed(1)+' mean</div>'
@@ -50607,20 +50667,20 @@ function runQDrill(q){
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
-   +(S.charge.Apathy||0).toFixed(1)+'</b>, shadow weight <b>'+Math.round(r.DQ)+' per cent</b>.'],
+   +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
   ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
  var mean=(r.X+r.Y+r.Z)/3;
  var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
- var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(mean*100).toFixed(0)+'% across three axes</div>'
+ var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(r.unread?'\u2013':(mean*100).toFixed(0)+'% across three axes')+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">Three independent lines. They do not average into '
   +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
   +low[0]+'</b>.</p>'
   +'<div class="ad-rows">'+A.map(function(a){
-    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2),hot:false})
-     +a[0]+'</span><span class="ad-m">'+(a[1]*100).toFixed(0)+'%</span></div>';}).join('')+'</div>'
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:r.unread?'\u2013':a[1].toFixed(2),hot:false})
+     +a[0]+'</span><span class="ad-m">'+(r.unread?'\u2013':(a[1]*100).toFixed(0)+'%')+'</span></div>';}).join('')+'</div>'
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
@@ -50642,8 +50702,8 @@ function runAtomDrill(n,x){
   +'<p class="ad-p"><em>'+esc(x.text)+'</em></p>'
   +'<div class="pm-eye">What it weighed</div><p class="ad-p">'
   +(d?'Written '+d+'. ':'')+'This entry put <b>'+x.amt.toFixed(1)+'</b> at this '
-  +'address'+(all.length>1?', out of <b>'+tot.toFixed(1)+'</b> from '+all.length
-    +' entries that landed here':'')+'.</p>'
+  +'address'+(all.length>1?'. The '+all.length+' entries that landed here put <b>'+tot.toFixed(1)
+    +'</b> in all':'')+'.</p>'
   +'<div class="pm-eye">The address</div><p class="ad-p">'
   +esc(n.k)+' sits at the '+String(n.b).toLowerCase()+', on the <b>'
   +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
@@ -50679,8 +50739,8 @@ function runFlowDrill(){
   +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     return '<div class="ad-r static"><span class="ad-k">'
-     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.pass.toFixed(2),hot:false})+esc(s.p.n)+'</span>'
-     +'<span class="ad-m">'+Math.round(s.pass*100)+'%</span></div>';}).join('')+'</div>'
+     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.hot?s.pass.toFixed(2):'\u2013',hot:false})+esc(s.p.n)+'</span>'
+     +'<span class="ad-m">'+(s.hot?Math.round(s.pass*100)+'%':'\u2013')+'</span></div>';}).join('')+'</div>'
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
@@ -50712,8 +50772,8 @@ function runBalDrill(){
     :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
-  +'fair sum, so the means are what compare. Outward mean <b>'+b.outMean.toFixed(1)
-  +'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.'
+  +'fair sum, so the means are what compare.'
+  +(b.read?' Outward mean <b>'+b.outMean.toFixed(1)+'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.':'')
   /* THE REFUSAL, IN FULL, ONE DOOR IN. The strip's value slot carries a dash
      and nothing else, which is the whole of the fix: a refusal is not a value.
      This is where the refusal is allowed its own sentence, because there is
@@ -50743,7 +50803,7 @@ function runSeatDrill(c){
   +'<div class="pm-eye">The record</div><div class="ad-rows">'
   +c.sub.map(function(x){
     return '<div class="ad-r static"><span class="ad-k">'+esc(x[0])+'</span>'
-     +'<span class="ad-m">'+x[1]+' released, '+x[2]+' installed</span></div>';}).join('')
+     +'<span class="ad-m">'+([x[1]?x[1]+' released':'',x[2]?x[2]+' installed':''].filter(Boolean).join(', ')||'\u2013')+'</span></div>';}).join('')
   +'</div>'
   +'<div class="pm-eye">Addresses here</div><div class="ad-rows">'
   +W.filter(function(n){return n.b===c.b;}).slice(0,10).map(addrRow).join('')+'</div>';
@@ -50769,7 +50829,7 @@ function runSabDrill(s){
  var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
  var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
   +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
-    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'SOURCE library'))+'</div>'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'Source library'))+'</div>'
   +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
   +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
@@ -50782,7 +50842,7 @@ function runSabDrill(s){
    drill says both rather than picking one, because that ruling is not mine. */
 function runDomDrill(d){
  var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
- var h='<div class="pm-eye">Blueprint domain'+(def&&def.n?' '+def.n:'')+'</div>'
+ var h='<div class="pm-eye">Blueprint domain</div>'
   +'<div class="ad-nm">'+esc(d.nm)+'</div>'
   +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';
  if(def){
@@ -50911,8 +50971,9 @@ function runTeacherDrill(m,end){
   +'<div class="pm-eye">Where you sit</div><p class="ad-p">'
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
-    :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
-     +Math.round(load*100)+'%</b> and its integrity reads <b>'+ig.toFixed(1)
+    :'The '+esc(String(m.seat).toLowerCase())
+     +(Math.round(load*100)>0?' is carrying <b>'+Math.round(load*100)+'%</b> and its integrity reads <b>'
+      :' has nothing held, and its integrity reads <b>')+ig.toFixed(1)
      +'</b>.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
   +'</p>'
   +'<div class="pm-eye">The question that separates them</div>'
@@ -51813,7 +51874,11 @@ function kbRows(sec){
   var si=scored?kbFind(SI,e.t):null;
   var seat=(si&&si.b)||fam.b||'Heart';
   var row=kbRow('harm', e.t, scored?seat:'', seat,
-   scored&&S.law[e.t]!=null?kbPct(S.law[e.t]):null,
+   /* A PERCENT OFF A DEFAULT IS A FIGURE ABOUT THE DEFAULT. A law nobody has
+      answered still sits at the seed in S.law, so twenty one rows read "Truth
+      60%" on a person who had entered nothing. lawIn is the engine's own
+      answer to whether a law was entered. Round J13. */
+   scored&&S.law[e.t]!=null&&(typeof lawIn!=='function'||lawIn(e.t))?kbPct(S.law[e.t]):null,
    (si&&si.ic)||fam.ic||null, e);
   /* what the row says when nothing above it names the family */
   row.fam=HARM_AX[e.a]||e.a;
@@ -51832,6 +51897,11 @@ function kbRows(sec){
  if(sec==='gloss') GLOSS.forEach(function(g){
   out.push(kbRow('gloss', g.t, 'definition', glossBand(g.t), null,
    glossMark(g.t), g));});
+ /* NOTHING READ, SO NO PERCENT ON ANY ROW. The archetype, domain and blueprint
+    rows take their share off the blueprint that is selected, so a person who
+    had entered nothing read "Warrior 100%" down a whole deck. The dash is the
+    row's own empty state. Round J13. */
+ if(kbUnread())out.forEach(function(x){x.p=null;});
  return out;}
 
 /* THE OWNER ASKED WHERE THE STACK AND THE UNIVERSAL LAWS WERE. Both were on
@@ -51868,6 +51938,8 @@ const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards
  ['law','Moral integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
  ['addr','Fetters']];
 
+/* whether nothing has been read, asked once and never typed */
+function kbUnread(){return unreadNow();}
 /* what each deck's percent is a percent of. One line per family, and where a
    family has no honest percent for some of its rows the line says so rather
    than leaving a person to assume the blanks are zeroes. */
@@ -51954,7 +52026,7 @@ function kbRender(){
   +'<h2 class="kb-h">'+esc(kbSecName(KB_SEC))+'</h2>'
   +'<span class="kb-scale">'+rows.length+(q?' matching':' of them')
   +(KB_SEC==='addr'?'. Each is a pattern against its opposite, with the weight of each. The bar shows which way you lean.'
-    :KB_OF[KB_SEC]?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
+    :(KB_OF[KB_SEC]&&!kbUnread())?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search the codex" '
   +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
@@ -52008,10 +52080,10 @@ function kbRender(){
   if(x.k==='node'){h+=kbPoleRow(x,i,seat,c,fam); return;}
   h+='<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
    +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
-      glyph:glyphPath(x.ic), title:x.t+(x.p==null?'':' · '+x.p+'%')})
+      glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
    +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
    +(fam?'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+fam:fam)+'</span>':'')+'</span>'
-   +'<span class="kb-rv'+cls+'">'+(x.p==null?'–':x.p+'%')+'</span>'
+   +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
    +'</button>';});
  h+='</div>';
 
@@ -52098,28 +52170,32 @@ function kbPoleRow(x,i,seat,c,fam){
  var n=x.o, oc=seatCol('Heart'), pole=x.q!=null;
  var wl=pole?n.held:n.sq, wr=pole?n.rep:null;
  var sh=pole?poleShare(wl,wr):null;
- var say=x.t+', '+(fam||'')+', weight '+wl.toFixed(1)+'.'
-  +(pole?' Opposite, '+x.opp+', weight '+wr.toFixed(1)+'.'
-    +(sh?' '+sh.l+' per cent toward '+x.t+', '+sh.r+' toward '+x.opp+'.':''):' No opposite.');
+ /* A ZERO IS NOT SAID AND A SHARE IS NOT SAID AS A SCORE. "weight 0.0" and
+    "0 per cent toward Anger, 100 toward Equanimity" read a nought and a result
+    to a screen reader. The label says what is held, and which way it leans.
+    Round J13. */
+ var say=x.t+', '+(fam||'')+(wl>=0.05?', weight '+wl.toFixed(1):', nothing held')+'.'
+  +(pole?' Opposite, '+x.opp+(wr>=0.05?', weight '+wr.toFixed(1):', nothing installed')+'.'
+    +(sh?' Leans toward '+(sh.l>=sh.r?x.t:x.opp)+'.':''):' No opposite.');
  return '<button type="button" class="kb-row kbp" data-kbi="'+i+'" style="--c:'+c+';--oc:'+oc+'"'
   +' aria-label="'+esc(say)+'">'
    +'<span class="kbp-body"><span class="kbp-top">'
   +'<span class="kbp-side">'
   +crBadge(seat, x.p||0, {size:'sm', bare:true, color:c,
-     glyph:glyphPath(x.ic), title:x.t+' · '+wl.toFixed(1)})
+     glyph:glyphPath(x.ic), title:x.t+(wl>=0.05?' · '+wl.toFixed(1):'')})
   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
   +(fam?'<span class="kb-rs">'+esc(fam)+'</span>':'')+'</span>'
-  +'<span class="kb-rv'+(wl>=0.05?'':' z')+'">'+wl.toFixed(1)+'</span></span>'
+  +'<span class="kb-rv'+(wl>=0.05?'':' z')+'">'+(wl>=0.05?wl.toFixed(1):'\u2013')+'</span></span>'
   +(pole?'<span class="kbp-side kbp-o">'
-    +'<span class="kbp-w'+(wr>=0.05?'':' z')+'">'+wr.toFixed(1)+'</span>'
+    +'<span class="kbp-w'+(wr>=0.05?'':' z')+'">'+(wr>=0.05?wr.toFixed(1):'\u2013')+'</span>'
     +'<span class="kbp-op">'+esc(x.opp)+'</span>'
     +crBadge('Heart', x.q||0, {size:'sm', bare:true, color:oc,
-      glyph:glyphPath(x.ic), title:x.opp+' · '+wr.toFixed(1)})+'</span>'
+      glyph:glyphPath(x.ic), title:x.opp+(wr>=0.05?' · '+wr.toFixed(1):'')})+'</span>'
    :'<span class="kbp-side kbp-o"><span class="kbp-op z">no opposite</span></span>')
   +'</span>'
-  +'<span class="kbp-line"><span class="kbp-pc">'+(sh?sh.l+'%':'–')+'</span>'
+  +'<span class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'
   +poleBar(sh)
-  +'<span class="kbp-pc r">'+(sh?sh.r+'%':'–')+'</span></span>'
+  +'<span class="kbp-pc r">'+(sh&&sh.r?sh.r+'%':'–')+'</span></span>'
   +'</span></button>';}
 /* INJECTED, because the stylesheet in the shell is held by another seat this
    round. The precedent is iqArtCss in ui/intakeui.js. Every rule that sets
@@ -52177,13 +52253,13 @@ function poleDrillHead(n){
  return '<div class="kbp-dr" style="--c:'+col+';--oc:'+oc+'">'
   +'<div class="kbp-top"><span class="kbp-side">'
   +crBadge(n.b, kbPct(n.held), {size:'sm', bare:true, color:col, glyph:glyphPath(c.ic)})
-  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+n.held.toFixed(1)+'</span></span>'
-  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+n.rep.toFixed(1)+'</span>'
+  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+(n.held>=0.05?n.held.toFixed(1):'\u2013')+'</span></span>'
+  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+(n.rep>=0.05?n.rep.toFixed(1):'\u2013')+'</span>'
   +'<span class="kbp-nm">'+esc(c.opp)+'</span>'
   +crBadge('Heart', kbPct(n.rep), {size:'sm', bare:true, color:oc, glyph:glyphPath(c.ic)})
   +'</span></div>'
-  +'<div class="kbp-line"><span class="kbp-pc">'+(sh?sh.l+'%':'–')+'</span>'+poleBar(sh)
-  +'<span class="kbp-pc r">'+(sh?sh.r+'%':'–')+'</span></div></div>';}
+  +'<div class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'+poleBar(sh)
+  +'<span class="kbp-pc r">'+(sh&&sh.r?sh.r+'%':'–')+'</span></div></div>';}
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
  if(!x)return;
@@ -54683,7 +54759,7 @@ function planTiersHtml(){
   +'and nothing is charged until you confirm there. '
   +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
  h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
-  +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to Account</button></div>')
+  +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to account</button></div>')
   +'</div></div>';
  return h;}
 
@@ -54884,11 +54960,11 @@ function accAccount(){
     footers say that. Neither field is written to the record or the outbox;
     the session is kept by ui/auth.js under its own key in this browser. */
  var ses=(typeof authSession==='function')?authSession():null;
- var h=ses?accGroup('Sign In',
+ var h=ses?accGroup('Sign in',
    accRow('Signed in as',ses.email)
    +accAct('Sign out of this browser','acout',{btn:'Sign out'}),
    'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
-  :accGroup('Sign In',
+  :accGroup('Sign in',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
    +'<div class="ac-row ac-edit"><label class="ac-rl" for="acmail">Email</label>'
@@ -54904,9 +54980,9 @@ function accAccount(){
     where the list it has to be unique in is on the same screen. This row said
     "Profile name" as an input, and two editors for one field is two answers to
     one question, so it states the name and opens the section that edits it. */
- h+=accGroup('This Account',
+ h+=accGroup('This account',
    accRow('Open profile',capName((CURP&&CURP.name)||'You'))
-   +accAct('Save, open or delete a profile','acgoprof',{btn:'Open Profiles'}));
+   +accAct('Save, open or delete a profile','acgoprof',{btn:'Open profiles'}));
  /* A NOTE TO A TESTER, NOT TO A PERSON. "The profile picker sits in the top
     bar today. It is a demo control, and it comes out of the bar when sign in
     lands." is a roadmap line, the kind he named in GX: "screen when entry,
@@ -54923,7 +54999,7 @@ function accAccount(){
     profile, toggleable and replayable, and it does not spend real charge."
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
- h+=accGroup('The Opening',
+ h+=accGroup('The opening',
    accAct('Run the signal test again','acob',{btn:'Open it'})
    /* THE TUTORIAL IS THE SAME RULE. Round NF: built on the same promise as
       the signal test above, replayable and no charge of its own; what it
@@ -54974,18 +55050,18 @@ function accWhen(iso){
  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
 function accProfiles(){
  var own=accOwn(), h='';
- if(own)h+=accGroup('This Profile',
+ if(own)h+=accGroup('This profile',
    '<form id="acpform" class="ac-row ac-edit pf-edit" novalidate>'
    +'<label class="ac-rl" for="acpnm">Name</label>'
    +'<span class="pf-act"><input type="text" id="acpnm" autocomplete="off" spellcheck="false" '
    +'value="'+esc(CURP.name||'')+'">'
    +'<button class="btn pri" id="acpsave" type="submit">Save</button></span></form>',
    'Every change saves as you go, under this name.');
- else h+=accGroup('This Profile',
+ else h+=accGroup('This profile',
    accRow('Open now',((PEOPLE[S.who]||{}).nm||'A worked example')+', example'),
    'A worked example is not saved on this device. Open one of your own below.');
  var L=profList();
- h+=accGroup('Saved on This Device',
+ h+=accGroup('Saved on this device',
    L.map(function(x){
     var cur=own&&x.cur;
     var meta=['saved '+accWhen(x.updated||x.created),
@@ -55000,7 +55076,7 @@ function accProfiles(){
      +'</span></div>';}).join(''),
    'Held in this browser and nowhere else. Delete cannot be undone and there is '
    +'no copy unless you made one.');
- h+=accGroup('Start a New Profile',
+ h+=accGroup('Start a new profile',
    '<form id="acpnewf" class="ac-row ac-edit pf-edit" novalidate>'
    +'<label class="ac-rl" for="acpnew">Name</label>'
    +'<span class="pf-act"><input type="text" id="acpnew" autocomplete="off" spellcheck="false">'
@@ -55140,7 +55216,7 @@ function accSecurity(){
  var ses=(typeof authSession==='function')?authSession():null;
  return '<p class="ac-lead">Nothing about this record is protected by a password '
   +'today. It is held in this browser, so anybody with this browser has it.</p>'
-  +accGroup('How This Is Protected',
+  +accGroup('How this is protected',
    accRow('Sign in method',ses?'email and password':'none, this browser only')
    +(ses?accRow('Password','set'):accStub('Password','not set'))
    +accStub('Two factor','not set')
@@ -55166,10 +55242,10 @@ var ACC_HELD=[
 function accPrivacy(){
  var snaps=(CURP&&CURP.history&&CURP.history.length)||0;
  var h='<p class="ac-lead">We never sell anybody’s data. Ever.</p>';
- h+=accGroup('What Is Held Here',
+ h+=accGroup('What is held here',
    ACC_HELD.map(function(x){return accRow(x[0],x[1]);}).join(''),
    'Held in this browser and nowhere else.');
- h+=accGroup('This Device',
+ h+=accGroup('This device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),
    STORE_BOUND?'If a save fails, it tells you.'
@@ -55180,7 +55256,7 @@ function accPrivacy(){
     duties CLAUDE.md names for a practitioner grant: explicit consent, a
     visible list, and revocation. "Never a silent default" said the same as
     the first sentence in the team's words, and came out with it. */
- h+=accGroup('Who Can See This',
+ h+=accGroup('Who can see this',
    accRow('People who can see this record','nobody'),
    'Nobody sees this but you. A practitioner can see it only after you say yes. '
    +'Each yes is listed here by name, with what they see and the date you gave '
@@ -55200,7 +55276,7 @@ function accPrivacy(){
     already here and load is the inverse of export. A person holding a record
     file looks where the other two record controls are, and this is the surface
     that already says what is held and where. */
- h+=accGroup('Load a Record',
+ h+=accGroup('Load a record',
    recordImportHtml('ac'),
    /* "the whole handoff" is CO-26's own word, "Keep it: it is the handoff",
       and "validated" is the boundary function's name. Said as what happens. */
@@ -55211,7 +55287,7 @@ function accPrivacy(){
    And Getting Rid Of It": seven words, a comma, and a conjunction capitalised
    in a file that is otherwise in title case. It names two controls, so it
    says their two names. */
- accGroup('Export and Delete',
+ accGroup('Export and delete',
    accAct('Export this record','acexp',{btn:'Copy'})
    +accAct('Delete this record','acdel',{btn:'Delete',danger:true}),
    'Delete removes this record from this browser now. There is no store yet, '
@@ -55231,22 +55307,22 @@ function accBilling(m){
 
 /* ---------- 4.6 help ---------- */
 function accHelp(){
- var h=accGroup('Get Help',
+ var h=accGroup('Get help',
    accAct('Ask a question','achelpq',{btn:'Ask'})
    +accAct('Report something broken','achelpb',{btn:'Report'}),
    'Both go to the same place. There is nowhere to send them yet, so what you '
    +'write is held on this device and the outbox below says so.');
- h+=accGroup('Tell Us How It Is Going',
+ h+=accGroup('Tell us how it is going',
    accAct('Rate the product','acrate',{btn:'Rate'})
    +accAct('Product feedback','acsurv',{btn:'Open'}));
- h+=accGroup('Reading This',
+ h+=accGroup('Reading this',
    accAct('How to read this','achowto',{btn:'Open'}),'');
- h+=accGroup('What Is Waiting',
-   accRow('Outbox',obCount()+' waiting',{num:false}),
+ h+=accGroup('What is waiting',
+   accRow('Outbox',obCount()?obCount()+' waiting':'\u2013',{num:false}),
    obCount()?'Nothing can be sent yet. What you wrote is kept here and will go '
     +'when there is somewhere to send it.'
    :'Nothing waiting.');
- h+=accGroup('This Build',
+ h+=accGroup('This build',
    accRow('Build',(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'not stamped')
    +accRow('Version',(typeof VERSION!=='undefined'&&VERSION)||'alpha'),
    'Quote this when you report something.');
@@ -55532,30 +55608,30 @@ var OB_RATE=[
    type and the order. Two of his were doing two jobs each and are split or
    merged where asking them as one returns an answer actionable neither way. */
 var OB_SURVEY=[
- {lens:'What This Is',k:'m1',q:'Do you know what this product is for?',
+ {lens:'What this is',k:'m1',q:'Do you know what this product is for?',
   a:['No idea','Roughly','Yes, I could explain it']},
- {lens:'What This Is',k:'m2',q:'Do you know why we are doing this?',
+ {lens:'What this is',k:'m2',q:'Do you know why we are doing this?',
   a:['No','I have a guess','Yes']},
- {lens:'What This Is',k:'m3',q:'Who would you hand this to?',
+ {lens:'What this is',k:'m3',q:'Who would you hand this to?',
   a:['Nobody','Somebody who is stuck','Somebody who trains hard',
      'Somebody who works with people','Anybody']},
- {lens:'The Content',k:'p1',q:'Does the information make sense?',
+ {lens:'The content',k:'p1',q:'Does the information make sense?',
   a:['No','In places','Yes']},
- {lens:'The Content',k:'p2',q:'Do you know what you are reading when a reading prints?',
+ {lens:'The content',k:'p2',q:'Do you know what you are reading when a reading prints?',
   a:['No','Some of it','Yes']},
- {lens:'The Content',k:'p3',q:'Is the information helpful?',
+ {lens:'The content',k:'p3',q:'Is the information helpful?',
   a:['It cost me time','Neither','A little','A lot']},
- {lens:'The Content',k:'p4',q:'Does the explanation of the problem make sense?',
+ {lens:'The content',k:'p4',q:'Does the explanation of the problem make sense?',
   a:['No','In places','Yes']},
- {lens:'The Content',k:'p5',q:'Does the protocol make sense?',
+ {lens:'The content',k:'p5',q:'Does the protocol make sense?',
   a:['No','I understand it and I do not believe it','Mostly','Yes']},
- {lens:'The Content',k:'p6',q:'Does the knowledge base make sense?',
+ {lens:'The content',k:'p6',q:'Does the knowledge base make sense?',
   a:['I have not opened it','No','In places','Yes']},
- {lens:'The Product',k:'d1',q:'Do you know what you are doing when you open it?',
+ {lens:'The product',k:'d1',q:'Do you know what you are doing when you open it?',
   a:['No','I work it out each time','Yes']},
- {lens:'The Product',k:'d2',q:'How good is it?',
+ {lens:'The product',k:'d2',q:'How good is it?',
   a:['Bad','Weak','Fine','Good','Very good']},
- {lens:'The Product',k:'d3',q:'How would you feel if you could no longer use it?',
+ {lens:'The product',k:'d3',q:'How would you feel if you could no longer use it?',
   a:['Not bothered','A little disappointed','Very disappointed']}];
 var OB_KIND=null, OB_ANS={}, OB_BODY='';
 function obCompose(kind){
@@ -55757,9 +55833,9 @@ function renderPrac(){
   +'<h2 class="kb-h">Clients</h2></div>'
   +'<p class="ac-lead">A sketch of practitioner mode. No client is listed here yet, and no '
   +'profile opens from this page until sign in and consent are built.</p>'
-  +accGroup('Your Clients',row+row+row,
+  +accGroup('Your clients',row+row+row,
     'Each block marks where a client will sit. None of them is a person.')
-  +accGroup('A Client’s Profile',
+  +accGroup('A client’s profile',
     accStub('Add a client')+accStub('View a client’s profile')+accStub('Client consent'),
     /* the same promise the Privacy section already makes from the other
        side, "Who Can See This" (it read "Who Has Sight" until the word was
@@ -55769,7 +55845,7 @@ function renderPrac(){
     +'there takes it back.')
   /* the way back to the switch, because the door to this page is the only
      place a person who turned it on is sure to look for how to turn it off */
-  +accGroup('This Mode',accAct('Practitioner mode','pracacc',{btn:'Open Account'}))
+  +accGroup('This mode',accAct('Practitioner mode','pracacc',{btn:'Open account'}))
   +'</div>';
  var b=$('pracacc');
  if(b)b.onclick=function(){ACC_OPEN='account'; setTab(TAB.SETTINGS);};}
@@ -56135,8 +56211,8 @@ function renderAcc(r){
  var el=$('acc'); if(!el)return;
  var a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
- if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
- if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
+ if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
+ if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  /* This was a figure and three lines of diagnostics, 325 by 140, parked in
     the bottom corner of the stage. A circle inside a rectangle leaves the
@@ -56204,11 +56280,11 @@ function renderAcc(r){
 function runAccDrill(){
  var r=compute(), a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
- if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
- if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
+ if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
+ if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  rdShell('<div class="pm-eye">Family identification</div>'
-  +'<div class="ad-nm">'+a.pct.toFixed(1)+'%</div>'
+  +'<div class="ad-nm">'+(!r.unread&&a.pct>=0.05?a.pct.toFixed(1)+'%':'\u2013')+'</div>'
   /* THE SPREAD IS SAID BY ITS CAUSES, NOT BY A TOLERANCE. This printed
      "Plus or minus 11.4 at this reading" and then explained what a narrow
      one and a wide one mean, which is a person being handed a figure and
@@ -56224,7 +56300,7 @@ function runAccDrill(){
   +'<p class="ad-p">'+esc(w.length?w.join('. '):'Moral integrity, signal and expression are all full.')+'</p>'
   +'<div class="pm-eye">How reliable</div>'
   +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Too close to call'))
-  +'. <b>'+a.rel+'%</b> of the laws are spread three or more, which is what separates one '
+  +'. '+(a.rel>0?'<b>'+a.rel+'%</b> of the laws are':'None of the laws are')+' spread three or more, which is what separates one '
   +'family from another. Laws of integrity sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
@@ -56670,7 +56746,7 @@ $('bRel').addEventListener('click',function(){
  var _m=compute().measured;
  status(_m>0
   ?'Nothing is carrying, so there is nothing to release. The intake measured '
-   +_m+' of the 21 laws, which is how you act, not what you hold. A story is '
+   +_m+(_m===1?' law':' laws')+'. They show how you act and not what you hold. A story is '
    +'what puts an address on the map.'
   :'Nothing is carrying, so there is nothing to release. Write a story or set '
    +'a charge first.','warn');});
@@ -58741,19 +58817,19 @@ function railStack(r){
       legend, so the legend was cut only once each row opened runFetterDrill,
       the axis's own drill, which says both halves and what fills each. */
    return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
-    +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>',
-      title:c.nm+' held '+v.toFixed(1)})+esc(c.nm)+'</span>'
+    +cr(c.seat,v*10,{size:'xs',raw:v>0?v.toFixed(1):'\u2013',glyph:'<path d="'+c.ic+'"/>',
+      title:c.nm+(v>0?' held '+v.toFixed(1):', nothing held')})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
-      glyph:'<path d="'+c.ic+'"/>',title:c.opp+' installed '+p.toFixed(1)})+'</span></button>';}).join('');}
+    +cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
+      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(p>0?' installed '+p.toFixed(1):', nothing installed')})+'</span></button>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
   h+=list.length?list.map(function(o,i){var p=poleOf(o);
    return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
-      title:'Opposite installed '+p.toFixed(1)})+'</span></button>';}).join('')
+    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
+      title:p>0?'Opposite installed '+p.toFixed(1):'Nothing installed'})+'</span></button>';}).join('')
    :(lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB));}
  e.innerHTML=h;
  /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
@@ -58941,8 +59017,11 @@ function renderBal(r){
   R:{g:GLYPH_F,nm:'feminine',v:100-m,c:seatCol('Throat'),
    t:'Feminine. Energy and receptivity, held inward. Not women: the codex is explicit about that.'},
   title:b.read
-   ?'Balance. '+(b.lean===0?'even':Math.round(Math.abs(b.lean)*100)+' percent '+(b.lean>0?'masculine':'feminine'))
-    +', masculine '+Math.round(m)+' against feminine '+Math.round(100-m)+'. Open this for the rest.'
+   /* THE SPLIT WAS SAID TWICE AND BOTH TIMES AS A SCORE. "4 percent masculine,
+      masculine 52 against feminine 48" is one fact in two arithmetics, and a
+      pair of shares against each other reads as a result. The dial draws the
+      split. The title says which way it leans. Round J13. */
+   ?'Balance. '+(b.lean===0?'Even.':'Leans '+(b.lean>0?'masculine':'feminine')+'.')+' Open this for the rest.'
    :'Balance. Not read yet. Neither side reaches 1, so no direction is named. Open this for the rest.'});}
 /* ---- the rail's doors. one delegated set, on the rail itself ---- */
 var _KBJ=false;
@@ -59173,19 +59252,19 @@ function render(){
      and a name without its scale is the thing the copy editor rule stops. */
   lo.innerHTML=
    rbRow('xyz','Vitality',r.X*100,r.unread?'\u2013':r.X.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'vitality',title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
-       +'. How much energy is left once apathy and the decoherence are taken off. Seventy percent of it is what '
-       +'decoherence leaves, and decoherence is at '+Math.round(r.DQ)+'.'})
+    {unread:r.unread,fk:'core',ic:'vitality',title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2))
+       +'. How much energy is left once apathy and the decoherence are taken off. Seven tenths of it is what '
+       +'decoherence leaves'+(r.unread?'.':', and decoherence is at '+Math.round(r.DQ)+'.')})
   +rbRow('xyz','Awareness',r.Y*100,r.unread?'\u2013':r.Y.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'awareness',title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
+    {unread:r.unread,fk:'core',ic:'awareness',title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2))
        +'. How strong what you mean is, and how little of it gets bent on the way out.'})
   +rbRow('xyz','Will',r.Z*100,r.unread?'\u2013':r.Z.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'will',title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
+    {unread:r.unread,fk:'core',ic:'will',title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2))
        +'. How much of your integrity gets through the charge you are carrying.'})
   +rwRadRow(r)
   +rbRow('flow','Flow',f*100,r.unread?'\u2013':f.toFixed(2),
     {unread:r.unread,fk:'seats',ic:'flow',wave:rbSeatPass(),rate:lerp(PUL_LO,PUL_HI,clamp((+r.DQ||0)/100,0,1)),
-     title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
+     title:'Flow. '+(r.unread?'not read yet':f.toFixed(2))
        +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets. '
        +'The wave runs root to crown. A clean wave that spans the whole range is every seat passing everything; a seat '
        +'that holds charge back roughens the wave where it sits and shrinks it from there on.'});})();
@@ -59321,7 +59400,15 @@ function render(){
       goes when the state is not empty. */
    +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'')
    +run
-   +'<div class="pm-eye" style="margin-top:12px">Field</div>'
+   /* NOTHING READ, SO THE BLOCK IS NOT PRINTED. Four rows read "Carrying
+      nothing yet", "Filled in nothing yet", "Heaviest Root 0.0" and "Most
+      shut Truth at the throat" on a person who has entered nothing: two
+      empty states, a zero, and a verdict about a throat nobody has read,
+      drawn off the default. The four doors above already say "Nothing has
+      been read yet", so the block repeated the empty state in four rows and
+      then invented a finding under it. A value's empty state is a dash and a
+      dash four times is not a sentence. Round J13. */
+   +(r.unread?'':'<div class="pm-eye" style="margin-top:12px">Field</div>'
    /* "nothing" was being printed over charge a person had entered themselves.
       If something sits under the line, the row says so rather than reporting
       a zero that is not true. */
@@ -59333,34 +59420,35 @@ function render(){
      held?'':(r.under?r.under+' sitting under the line':''))
    +row('Filled in',inst?inst+' addresses':'nothing yet','')
    +row('Heaviest',r.darkB,r.darkV.toFixed(1))
-   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());
+   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase()));
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
- /* EVERY ONE OF THESE SAYS WHAT IT IS OUT OF. His instruction, and this
-    panel broke it five times in six lines: integrity 1.9, intention 1.9, pole
-    in 0.00, overshoot 0.00, distortion 10.0, on four different scales, with
-    nothing to measure any of them against. */
+ /* SUPERSEDED ON 2 OCTOBER, CO-31. These once said "of 10" after every
+    figure, which answered "what is it out of" and made each line a mark out
+    of ten. A count against a total is a score at any scale. The figure stands
+    with its name, and the tooltip says what it measures. On an unread profile
+    each is a dash, because the defaults are not readings. */
  /* V21. Five words, and none of them defined anywhere on the screen. Each
     line now carries a plain sentence on its title, true to compute.js, and
     "pole in" is "pole", the word the Summary tile already uses for it. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
-    'integrity <b>'+r.Ig.toFixed(1)+'</b> of 10')
+    'integrity <b>'+(r.unread?'\u2013':r.Ig.toFixed(1))+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+r.It.toFixed(1)+'</b> of 10')
+    'intention <b>'+(r.unread?'\u2013':r.It.toFixed(1))+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
      what the thing does: JQ is the opposite driven past the point where it
      serves. That is overshoot. The codex keeps its own word. */
   +ins('How far the installed opposites outweigh the charge, on average, across your body.',
-    'pole <b>'+r.poleMean.toFixed(2)+'</b> of 10')
+    'pole <b>'+(r.unread||r.poleMean<0.005?'\u2013':r.poleMean.toFixed(2))+'</b>')
   +ins('How far installed opposites have been pushed past the point where they help.',
-    'overshoot <b>'+r.JQ.toFixed(2)+'</b> of 10'
+    'overshoot <b>'+(r.unread||r.JQ<0.005?'\u2013':r.JQ.toFixed(2))+'</b>'
     +(r.excess.length?', '+r.excess.length+' address'+(r.excess.length===1?'':'es')+' overshot':''))
   +'<span title="'+esc('How much the patterns running in you bend what you mean. More patterns, '
-    +'and deeper ones, bend it more.')+'">distortion <b>'+r.dist.toFixed(1)+'</b> of 10</span>';
+    +'and deeper ones, bend it more.')+'">distortion <b>'+(r.unread||r.dist<0.05?'\u2013':r.dist.toFixed(1))+'</b></span>';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
  const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
@@ -59709,5 +59797,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003892712"></div>
+<div id="eof" hidden data-len="003900304"></div>
 </body></html>

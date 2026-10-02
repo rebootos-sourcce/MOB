@@ -95,7 +95,7 @@ const VICON=[
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 112 addresses. Each mark is the charge held at one place.'},
- {k:'seats',g:'carry',nm:'Assemblage Points',ic:FB_IC_SEAT,
+ {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
   tip:'The seven seats, from the base of your spine to the top of your head.'},
  {k:'laws',g:'carry',nm:'Laws',ic:fbFlay('laws'),
   tip:'The twenty one laws, each set at its assemblage point. Their sum is the number at the centre.'},
@@ -172,11 +172,13 @@ function fbReach(list,carry){
  return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
- var f1=function(x){return (+x||0).toFixed(1);}, pc=function(x){return Math.round(+x||0)+'%';};
+ var f1=function(x){var n=+x||0; return n>=0.05?n.toFixed(1):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
  V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
-  m:'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'};
+  m:r.SQm>=0.05?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
+   :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
  V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
-  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'};
+  m:(r.darkV||0)>=0.05?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
+   :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
  V.laws={p:r.CQ,v:pc(r.CQ),c:seatCol('Crown'),
   m:'Ring and number: coherence, CQ, which is the laws summed.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
@@ -194,7 +196,8 @@ function fbValues(r){
   ['complexes',r.cxs,'Solar'],['hyper',r.hys,'Sacral'],['character',r.sups,'Root']].forEach(function(t){
   var p=fbReach(t[1],carry);
   V[t[0]]={p:p,v:String(t[1].length),c:seatCol(t[2]),
-   m:'Number: how many are running, as the rail counts them. Ring: the share of your carrying addresses they are built on, '+pc(p)+'.'};});
+   m:'Number: how many are running, as the rail counts them.'
+    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+pc(p)+'.':'')};});
  var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
  var tot=aff.reduce(function(a,x){return a+x.v;},0)||1, top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{};
  V.archetypes={p:top.v/tot*100,v:pc(top.v/tot*100),c:seatCol(A.b||'Heart'),

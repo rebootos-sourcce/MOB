@@ -281,6 +281,15 @@ leans benign at 100 per cent" was a share with no denominator on a surface
 where a percent could mean three different things. The fixed line names both
 ends and says they add to a hundred.
 
+**Superseded, 2 October, CO-31.** That fixed line was itself the defect. "Leans
+100 per cent benign against 0 per cent malignant" is a score, and the sentence
+now says which way the field leans and stops. The exemption for a denominator
+of 1, 10 or 100 is withdrawn: "6.0 of 10" and "7.7 against a clean ten" are
+counts against a total at any scale. A zero is a dash. A percent is never
+printed on a profile nothing has been read for. None of the three can be seen
+from the source, because the digit and the profile arrive at run time, so they
+are held by `tools/copy-verify.py` over the page `tools/copy-walk.js` harvests.
+
 ### V9. A Label This Product Puts On A Person Carries Three Things
 
 The definition, the behaviour it produces, and the direction out of it. A word

@@ -236,7 +236,11 @@ function kbRows(sec){
   var si=scored?kbFind(SI,e.t):null;
   var seat=(si&&si.b)||fam.b||'Heart';
   var row=kbRow('harm', e.t, scored?seat:'', seat,
-   scored&&S.law[e.t]!=null?kbPct(S.law[e.t]):null,
+   /* A PERCENT OFF A DEFAULT IS A FIGURE ABOUT THE DEFAULT. A law nobody has
+      answered still sits at the seed in S.law, so twenty one rows read "Truth
+      60%" on a person who had entered nothing. lawIn is the engine's own
+      answer to whether a law was entered. Round J13. */
+   scored&&S.law[e.t]!=null&&(typeof lawIn!=='function'||lawIn(e.t))?kbPct(S.law[e.t]):null,
    (si&&si.ic)||fam.ic||null, e);
   /* what the row says when nothing above it names the family */
   row.fam=HARM_AX[e.a]||e.a;
@@ -255,6 +259,11 @@ function kbRows(sec){
  if(sec==='gloss') GLOSS.forEach(function(g){
   out.push(kbRow('gloss', g.t, 'definition', glossBand(g.t), null,
    glossMark(g.t), g));});
+ /* NOTHING READ, SO NO PERCENT ON ANY ROW. The archetype, domain and blueprint
+    rows take their share off the blueprint that is selected, so a person who
+    had entered nothing read "Warrior 100%" down a whole deck. The dash is the
+    row's own empty state. Round J13. */
+ if(kbUnread())out.forEach(function(x){x.p=null;});
  return out;}
 
 /* THE OWNER ASKED WHERE THE STACK AND THE UNIVERSAL LAWS WERE. Both were on
@@ -291,6 +300,8 @@ const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards
  ['law','Moral integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
  ['addr','Fetters']];
 
+/* whether nothing has been read, asked once and never typed */
+function kbUnread(){return unreadNow();}
 /* what each deck's percent is a percent of. One line per family, and where a
    family has no honest percent for some of its rows the line says so rather
    than leaving a person to assume the blanks are zeroes. */
@@ -377,7 +388,7 @@ function kbRender(){
   +'<h2 class="kb-h">'+esc(kbSecName(KB_SEC))+'</h2>'
   +'<span class="kb-scale">'+rows.length+(q?' matching':' of them')
   +(KB_SEC==='addr'?'. Each is a pattern against its opposite, with the weight of each. The bar shows which way you lean.'
-    :KB_OF[KB_SEC]?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
+    :(KB_OF[KB_SEC]&&!kbUnread())?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search the codex" '
   +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
@@ -431,10 +442,10 @@ function kbRender(){
   if(x.k==='node'){h+=kbPoleRow(x,i,seat,c,fam); return;}
   h+='<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
    +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
-      glyph:glyphPath(x.ic), title:x.t+(x.p==null?'':' · '+x.p+'%')})
+      glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
    +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
    +(fam?'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+fam:fam)+'</span>':'')+'</span>'
-   +'<span class="kb-rv'+cls+'">'+(x.p==null?'–':x.p+'%')+'</span>'
+   +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
    +'</button>';});
  h+='</div>';
 
@@ -521,28 +532,32 @@ function kbPoleRow(x,i,seat,c,fam){
  var n=x.o, oc=seatCol('Heart'), pole=x.q!=null;
  var wl=pole?n.held:n.sq, wr=pole?n.rep:null;
  var sh=pole?poleShare(wl,wr):null;
- var say=x.t+', '+(fam||'')+', weight '+wl.toFixed(1)+'.'
-  +(pole?' Opposite, '+x.opp+', weight '+wr.toFixed(1)+'.'
-    +(sh?' '+sh.l+' per cent toward '+x.t+', '+sh.r+' toward '+x.opp+'.':''):' No opposite.');
+ /* A ZERO IS NOT SAID AND A SHARE IS NOT SAID AS A SCORE. "weight 0.0" and
+    "0 per cent toward Anger, 100 toward Equanimity" read a nought and a result
+    to a screen reader. The label says what is held, and which way it leans.
+    Round J13. */
+ var say=x.t+', '+(fam||'')+(wl>=0.05?', weight '+wl.toFixed(1):', nothing held')+'.'
+  +(pole?' Opposite, '+x.opp+(wr>=0.05?', weight '+wr.toFixed(1):', nothing installed')+'.'
+    +(sh?' Leans toward '+(sh.l>=sh.r?x.t:x.opp)+'.':''):' No opposite.');
  return '<button type="button" class="kb-row kbp" data-kbi="'+i+'" style="--c:'+c+';--oc:'+oc+'"'
   +' aria-label="'+esc(say)+'">'
    +'<span class="kbp-body"><span class="kbp-top">'
   +'<span class="kbp-side">'
   +crBadge(seat, x.p||0, {size:'sm', bare:true, color:c,
-     glyph:glyphPath(x.ic), title:x.t+' · '+wl.toFixed(1)})
+     glyph:glyphPath(x.ic), title:x.t+(wl>=0.05?' · '+wl.toFixed(1):'')})
   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
   +(fam?'<span class="kb-rs">'+esc(fam)+'</span>':'')+'</span>'
-  +'<span class="kb-rv'+(wl>=0.05?'':' z')+'">'+wl.toFixed(1)+'</span></span>'
+  +'<span class="kb-rv'+(wl>=0.05?'':' z')+'">'+(wl>=0.05?wl.toFixed(1):'\u2013')+'</span></span>'
   +(pole?'<span class="kbp-side kbp-o">'
-    +'<span class="kbp-w'+(wr>=0.05?'':' z')+'">'+wr.toFixed(1)+'</span>'
+    +'<span class="kbp-w'+(wr>=0.05?'':' z')+'">'+(wr>=0.05?wr.toFixed(1):'\u2013')+'</span>'
     +'<span class="kbp-op">'+esc(x.opp)+'</span>'
     +crBadge('Heart', x.q||0, {size:'sm', bare:true, color:oc,
-      glyph:glyphPath(x.ic), title:x.opp+' · '+wr.toFixed(1)})+'</span>'
+      glyph:glyphPath(x.ic), title:x.opp+(wr>=0.05?' · '+wr.toFixed(1):'')})+'</span>'
    :'<span class="kbp-side kbp-o"><span class="kbp-op z">no opposite</span></span>')
   +'</span>'
-  +'<span class="kbp-line"><span class="kbp-pc">'+(sh?sh.l+'%':'–')+'</span>'
+  +'<span class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'
   +poleBar(sh)
-  +'<span class="kbp-pc r">'+(sh?sh.r+'%':'–')+'</span></span>'
+  +'<span class="kbp-pc r">'+(sh&&sh.r?sh.r+'%':'–')+'</span></span>'
   +'</span></button>';}
 /* INJECTED, because the stylesheet in the shell is held by another seat this
    round. The precedent is iqArtCss in ui/intakeui.js. Every rule that sets
@@ -600,13 +615,13 @@ function poleDrillHead(n){
  return '<div class="kbp-dr" style="--c:'+col+';--oc:'+oc+'">'
   +'<div class="kbp-top"><span class="kbp-side">'
   +crBadge(n.b, kbPct(n.held), {size:'sm', bare:true, color:col, glyph:glyphPath(c.ic)})
-  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+n.held.toFixed(1)+'</span></span>'
-  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+n.rep.toFixed(1)+'</span>'
+  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+(n.held>=0.05?n.held.toFixed(1):'\u2013')+'</span></span>'
+  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+(n.rep>=0.05?n.rep.toFixed(1):'\u2013')+'</span>'
   +'<span class="kbp-nm">'+esc(c.opp)+'</span>'
   +crBadge('Heart', kbPct(n.rep), {size:'sm', bare:true, color:oc, glyph:glyphPath(c.ic)})
   +'</span></div>'
-  +'<div class="kbp-line"><span class="kbp-pc">'+(sh?sh.l+'%':'–')+'</span>'+poleBar(sh)
-  +'<span class="kbp-pc r">'+(sh?sh.r+'%':'–')+'</span></div></div>';}
+  +'<div class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'+poleBar(sh)
+  +'<span class="kbp-pc r">'+(sh&&sh.r?sh.r+'%':'–')+'</span></div></div>';}
 /* one row, one door. every kind routes to the drill that already exists for it. */
 function kbOpen(x){
  if(!x)return;

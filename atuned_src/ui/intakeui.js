@@ -763,7 +763,7 @@ function iqHeroHtml(p,sc,r,scored,answered,total){
  return '<header class="iqa-hero iqa-card">'+iqHeroRing(p,sc,simOn?iqSimCQ(r,scored):((scored&&r.tier)?r.CQ:null))
   +'<div class="iqa-ht"><span class="iqa-eye">Energetics</span>'
   +'<span class="iqa-hh">'+(simOn?'Simulation: every unanswered law counts as ten':(r.tier?esc(r.tier):left+' questions left'))+'</span>'
-  +'<span class="iqa-hs">'+scored+' law'+(scored===1?'':'s')+' measured'
+  +'<span class="iqa-hs">'+(scored?scored+' law'+(scored===1?'':'s')+' measured':'No laws measured yet')
   +(r.tier&&left>0?', '+left+' question'+(left===1?'':'s')+' left':'')+'</span></div>'
   +'<div class="iqa-tools">'+iqViewHtml()
   +'<button type="button" class="iqa-mb" id="iqmore" aria-expanded="'+IQ_MORE+'" aria-controls="iqmorep" '

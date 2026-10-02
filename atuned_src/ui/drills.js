@@ -241,21 +241,26 @@ function runLawDrill(l){
  var v=S.law[l.nm], seg=W.filter(function(n){return n.b===l.b;});
  var hot=seg.filter(function(n){return n.sq>=4;});
  var sc=CURP?(iqScore(CURP)[l.nm]||null):null;
+ /* A LAW NOBODY HAS ANSWERED SITS AT THE SEED, and the drill read it out as a
+    finding: "Truth 6.0. Working but not strong." lawIn is the engine's own
+    answer to whether it was entered. Round J13. */
+ var read=(typeof lawIn!=='function')||lawIn(l.nm);
  var h='<div class="pm-eye">Law of integrity, '+l.b.toLowerCase()+'</div>'
-  +'<div class="ad-nm">'+l.nm+' '+v.toFixed(1)+'</div>'
+  +'<div class="ad-nm">'+l.nm+(read?' '+v.toFixed(1):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
      everything seated there pays for it" read the threshold aloud, ran an
      antithesis, and named a cost with no mechanism. compute.js has the
      mechanism: a law's seat relief scales down what is held there, so a shut
      law leaves more of the charge held. DESIGN-tooltip-copy.md, example 6. */
-  +(v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
+  +(!read?'Not read yet.'
+   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
    :'Working but not strong. It holds in some places and slips in others.')
   /* the count of what is held is the fact. Against the seat's total it is a
      score, and this is a reading. */
-  +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> address'
-  +(hot.length===1?' is':'es are')+' held.</p>';
+  +(read?' Seated at the '+l.b.toLowerCase()+(hot.length?', where <b>'+hot.length+'</b> address'
+   +(hot.length===1?' is':'es are')+' held.':', where nothing is held.'):'')+'</p>';
  h+= sc
   /* ONE SENTENCE, NOT A STOP AND THEN A LOWER CASE CLAUSE. It printed
      "Spread 3.6. holds when it costs, slips when unseen", which is a full stop
@@ -303,7 +308,7 @@ function runNodeDrill(n){
      lock's own panel: "nothing compounds from here" would be a false statement
      about an address that feeds a saboteur */
   +(lockSees('sab')
-   ?'<div class="pm-eye">Feeds '+owners.length+'</div><div class="pm-chips">'
+   ?'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
     +(owners.length?owners.slice(0,8).map(function(o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>'
@@ -401,12 +406,13 @@ function runCoreDrill(){
      you down. Ruled 25 September: CQ is the 21 laws and nothing else, and
      the shadow pulls on expression instead. It says that now, with the
      person's own figures in it. */
-  +'The '+SI.length+' laws, each out of 10, summed out of 210. '
+  +'The '+SI.length+' laws, each read from nothing to ten, added together. '
   +(r.complete?'All '+SI.length+' are in. '
-    :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts 0 until it is. ')
+    :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts nothing until it is. ')
   +'The shadow does not touch this number. It pulls on expression, which is '
-  +'coherence times what the shadow leaves: expression <b>'+Math.round(r.EX)
-  +'</b>, with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>.</p>'
+  +'coherence times what the shadow leaves'
+  +(r.unread?'':': expression <b>'+Math.round(r.EX)+'</b>'
+   +(r.PULL>=0.005?', with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>':''))+'.</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">'
   /* benign is null while CQ is still filling, and the clause waits with it */
   +(r.benign===null?'':'The field is <b>'
@@ -461,10 +467,10 @@ function runQDrill(q){
   /* REWRITTEN 25 SEPTEMBER. It said DQ was every address above its floor
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
-  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+Math.round(r.DQ)+'%</div>'
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+(r.DQ>=0.5?Math.round(r.DQ)+'%':'\u2013')+'</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
    +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
-   +'<div class="pm-eye">Where it sits</div><p class="ad-p"><b>'+r.loaded.length+'</b> addresses carry it. The heaviest:</p>'
+   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+(r.loaded.length?'<b>'+r.loaded.length+'</b> addresses carry it. The heaviest:':'No address carries it.')+'</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
  else if(q==='sq'){
   h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+r.SQm.toFixed(1)+' mean</div>'
@@ -491,20 +497,20 @@ function runQDrill(q){
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
-   +(S.charge.Apathy||0).toFixed(1)+'</b>, shadow weight <b>'+Math.round(r.DQ)+' per cent</b>.'],
+   +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
   ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
    +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
  var mean=(r.X+r.Y+r.Z)/3;
  var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
- var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(mean*100).toFixed(0)+'% across three axes</div>'
+ var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(r.unread?'\u2013':(mean*100).toFixed(0)+'% across three axes')+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">Three independent lines. They do not average into '
   +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
   +low[0]+'</b>.</p>'
   +'<div class="ad-rows">'+A.map(function(a){
-    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2),hot:false})
-     +a[0]+'</span><span class="ad-m">'+(a[1]*100).toFixed(0)+'%</span></div>';}).join('')+'</div>'
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:r.unread?'\u2013':a[1].toFixed(2),hot:false})
+     +a[0]+'</span><span class="ad-m">'+(r.unread?'\u2013':(a[1]*100).toFixed(0)+'%')+'</span></div>';}).join('')+'</div>'
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
@@ -526,8 +532,8 @@ function runAtomDrill(n,x){
   +'<p class="ad-p"><em>'+esc(x.text)+'</em></p>'
   +'<div class="pm-eye">What it weighed</div><p class="ad-p">'
   +(d?'Written '+d+'. ':'')+'This entry put <b>'+x.amt.toFixed(1)+'</b> at this '
-  +'address'+(all.length>1?', out of <b>'+tot.toFixed(1)+'</b> from '+all.length
-    +' entries that landed here':'')+'.</p>'
+  +'address'+(all.length>1?'. The '+all.length+' entries that landed here put <b>'+tot.toFixed(1)
+    +'</b> in all':'')+'.</p>'
   +'<div class="pm-eye">The address</div><p class="ad-p">'
   +esc(n.k)+' sits at the '+String(n.b).toLowerCase()+', on the <b>'
   +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
@@ -563,8 +569,8 @@ function runFlowDrill(){
   +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     return '<div class="ad-r static"><span class="ad-k">'
-     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.pass.toFixed(2),hot:false})+esc(s.p.n)+'</span>'
-     +'<span class="ad-m">'+Math.round(s.pass*100)+'%</span></div>';}).join('')+'</div>'
+     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.hot?s.pass.toFixed(2):'\u2013',hot:false})+esc(s.p.n)+'</span>'
+     +'<span class="ad-m">'+(s.hot?Math.round(s.pass*100)+'%':'\u2013')+'</span></div>';}).join('')+'</div>'
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
@@ -596,8 +602,8 @@ function runBalDrill(){
     :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
-  +'fair sum, so the means are what compare. Outward mean <b>'+b.outMean.toFixed(1)
-  +'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.'
+  +'fair sum, so the means are what compare.'
+  +(b.read?' Outward mean <b>'+b.outMean.toFixed(1)+'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.':'')
   /* THE REFUSAL, IN FULL, ONE DOOR IN. The strip's value slot carries a dash
      and nothing else, which is the whole of the fix: a refusal is not a value.
      This is where the refusal is allowed its own sentence, because there is
@@ -627,7 +633,7 @@ function runSeatDrill(c){
   +'<div class="pm-eye">The record</div><div class="ad-rows">'
   +c.sub.map(function(x){
     return '<div class="ad-r static"><span class="ad-k">'+esc(x[0])+'</span>'
-     +'<span class="ad-m">'+x[1]+' released, '+x[2]+' installed</span></div>';}).join('')
+     +'<span class="ad-m">'+([x[1]?x[1]+' released':'',x[2]?x[2]+' installed':''].filter(Boolean).join(', ')||'\u2013')+'</span></div>';}).join('')
   +'</div>'
   +'<div class="pm-eye">Addresses here</div><div class="ad-rows">'
   +W.filter(function(n){return n.b===c.b;}).slice(0,10).map(addrRow).join('')+'</div>';
@@ -653,7 +659,7 @@ function runSabDrill(s){
  var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
  var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
   +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
-    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'SOURCE library'))+'</div>'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'Source library'))+'</div>'
   +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
   +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
@@ -666,7 +672,7 @@ function runSabDrill(s){
    drill says both rather than picking one, because that ruling is not mine. */
 function runDomDrill(d){
  var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
- var h='<div class="pm-eye">Blueprint domain'+(def&&def.n?' '+def.n:'')+'</div>'
+ var h='<div class="pm-eye">Blueprint domain</div>'
   +'<div class="ad-nm">'+esc(d.nm)+'</div>'
   +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';
  if(def){
@@ -795,8 +801,9 @@ function runTeacherDrill(m,end){
   +'<div class="pm-eye">Where you sit</div><p class="ad-p">'
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
-    :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
-     +Math.round(load*100)+'%</b> and its integrity reads <b>'+ig.toFixed(1)
+    :'The '+esc(String(m.seat).toLowerCase())
+     +(Math.round(load*100)>0?' is carrying <b>'+Math.round(load*100)+'%</b> and its integrity reads <b>'
+      :' has nothing held, and its integrity reads <b>')+ig.toFixed(1)
      +'</b>.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
   +'</p>'
   +'<div class="pm-eye">The question that separates them</div>'

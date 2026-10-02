@@ -597,7 +597,7 @@ function frCore(M,r,cx,cy,R,o){
  var rin=R-w/2-2;
  s+=frFeathers(M,r,cx,cy,rin)+'<g class="frcq"><circle class="frcq-bk" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
   +'" r="'+(rin*.62).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>';
- var cq=String(Math.round(r.CQ)),dq=String(Math.round(+r.DQ||0)),lab=11;
+ var cq=String(Math.round(r.CQ)),dq=Math.round(+r.DQ||0)>0?String(Math.round(+r.DQ)):'\u2013',lab=11;
  var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
  var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
  /* THE TYPE IS FITTED TO THE HOLE, NOT TO A TABLE. The ring's inside runs
@@ -1086,7 +1086,7 @@ function frCallouts(M,r,P){
  var shut=SI.map(function(l,i){return {l:l,i:i,v:+S.law[l.nm]||0};})
   .filter(function(x){return typeof lawIn!=='function'||lawIn(x.l.nm);})
   .sort(function(a,b){return a.v-b.v;})[0];
- if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+shut.v.toFixed(1)+' of 10',M.seat(shut.l.b),P.hitOf['l'+shut.i]);
+ if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+shut.v.toFixed(1),M.seat(shut.l.b),P.hitOf['l'+shut.i]);
  var hp=r.sabs.slice().sort(function(a,b){return b.w-a.w;})[0];
  if(hp){var hk=M.ixSab.get(hp);
   push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+hp.w.toFixed(1),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}

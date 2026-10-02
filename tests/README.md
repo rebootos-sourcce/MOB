@@ -127,3 +127,24 @@ refuses to finish if either number is non-zero.
     d=0
     for m in re.finditer(r'<div\b|</div>',s): d+= 1 if m.group(0)=='<div' else -1
     print('div balance',d,'| em dashes',s.count(chr(8212)))"
+
+## The copy walk
+
+The voice gate in `.claude/skills/atuned-voice/check.py` reads the source, and
+the owner reads the screen. A string built at run time, a figure held in a
+table, or a title a stylesheet capitalises is not a literal in any file, so a
+source sweep reported clean while the Field rail printed "Heaviest Root 0.0".
+
+    NODE_PATH=/opt/node22/lib/node_modules node tools/copy-walk.js
+    python3 tools/copy-verify.py COPY-VERIFY-strings.json
+
+The walk loads the built page on a blank profile and on loaded ones, at 1600 and
+at 390, opens every tab and presses every control once, hovers the carriers, and
+collects every string a person can read: text, `title`, `aria-label`,
+placeholders, `data-tip`, the one tooltip's panels, the status line, dialogs and
+every table in the product. The verify step runs the gates in `check.py` and
+`objections.json`, called and not copied, and four rules a source sweep cannot
+carry because they depend on whether the profile is unread: a percent on an
+unread profile or off zero, a bare number on an unread profile, a count against
+a total at any scale, and a zero where a dash belongs. Nothing here is a typed
+count. Run it after a change a person can see, and read `COPY-VERIFY.md`.

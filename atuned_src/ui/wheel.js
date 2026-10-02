@@ -517,7 +517,8 @@ function solCore(r,base){
       2.3, 3.3 and 4.3. The functional gate caught it. */
    g.fillStyle=rgba(INK(),.5);
    g.font='400 '+sm.toFixed(1)+'px Inter, system-ui, sans-serif';
-   g.fillText('of 100', CX, CY+big*0.30+sm*1.75);}
+   /* the line "of 100" under the figure is gone: a count against a total.
+      Round J13. */}
   g.restore();}
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  /* THE TWO POLES INSIDE THE CIRCLE, on a phone. GF in TASKS.md, his words:

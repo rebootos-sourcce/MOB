@@ -121,11 +121,11 @@ function accAccount(){
     footers say that. Neither field is written to the record or the outbox;
     the session is kept by ui/auth.js under its own key in this browser. */
  var ses=(typeof authSession==='function')?authSession():null;
- var h=ses?accGroup('Sign In',
+ var h=ses?accGroup('Sign in',
    accRow('Signed in as',ses.email)
    +accAct('Sign out of this browser','acout',{btn:'Sign out'}),
    'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
-  :accGroup('Sign In',
+  :accGroup('Sign in',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
    +'<div class="ac-row ac-edit"><label class="ac-rl" for="acmail">Email</label>'
@@ -141,9 +141,9 @@ function accAccount(){
     where the list it has to be unique in is on the same screen. This row said
     "Profile name" as an input, and two editors for one field is two answers to
     one question, so it states the name and opens the section that edits it. */
- h+=accGroup('This Account',
+ h+=accGroup('This account',
    accRow('Open profile',capName((CURP&&CURP.name)||'You'))
-   +accAct('Save, open or delete a profile','acgoprof',{btn:'Open Profiles'}));
+   +accAct('Save, open or delete a profile','acgoprof',{btn:'Open profiles'}));
  /* A NOTE TO A TESTER, NOT TO A PERSON. "The profile picker sits in the top
     bar today. It is a demo control, and it comes out of the bar when sign in
     lands." is a roadmap line, the kind he named in GX: "screen when entry,
@@ -160,7 +160,7 @@ function accAccount(){
     profile, toggleable and replayable, and it does not spend real charge."
     The onboarding is the same: nothing it does writes to the nine axes, so
     running it again costs nothing and can be offered without a warning. */
- h+=accGroup('The Opening',
+ h+=accGroup('The opening',
    accAct('Run the signal test again','acob',{btn:'Open it'})
    /* THE TUTORIAL IS THE SAME RULE. Round NF: built on the same promise as
       the signal test above, replayable and no charge of its own; what it
@@ -211,18 +211,18 @@ function accWhen(iso){
  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
 function accProfiles(){
  var own=accOwn(), h='';
- if(own)h+=accGroup('This Profile',
+ if(own)h+=accGroup('This profile',
    '<form id="acpform" class="ac-row ac-edit pf-edit" novalidate>'
    +'<label class="ac-rl" for="acpnm">Name</label>'
    +'<span class="pf-act"><input type="text" id="acpnm" autocomplete="off" spellcheck="false" '
    +'value="'+esc(CURP.name||'')+'">'
    +'<button class="btn pri" id="acpsave" type="submit">Save</button></span></form>',
    'Every change saves as you go, under this name.');
- else h+=accGroup('This Profile',
+ else h+=accGroup('This profile',
    accRow('Open now',((PEOPLE[S.who]||{}).nm||'A worked example')+', example'),
    'A worked example is not saved on this device. Open one of your own below.');
  var L=profList();
- h+=accGroup('Saved on This Device',
+ h+=accGroup('Saved on this device',
    L.map(function(x){
     var cur=own&&x.cur;
     var meta=['saved '+accWhen(x.updated||x.created),
@@ -237,7 +237,7 @@ function accProfiles(){
      +'</span></div>';}).join(''),
    'Held in this browser and nowhere else. Delete cannot be undone and there is '
    +'no copy unless you made one.');
- h+=accGroup('Start a New Profile',
+ h+=accGroup('Start a new profile',
    '<form id="acpnewf" class="ac-row ac-edit pf-edit" novalidate>'
    +'<label class="ac-rl" for="acpnew">Name</label>'
    +'<span class="pf-act"><input type="text" id="acpnew" autocomplete="off" spellcheck="false">'
@@ -377,7 +377,7 @@ function accSecurity(){
  var ses=(typeof authSession==='function')?authSession():null;
  return '<p class="ac-lead">Nothing about this record is protected by a password '
   +'today. It is held in this browser, so anybody with this browser has it.</p>'
-  +accGroup('How This Is Protected',
+  +accGroup('How this is protected',
    accRow('Sign in method',ses?'email and password':'none, this browser only')
    +(ses?accRow('Password','set'):accStub('Password','not set'))
    +accStub('Two factor','not set')
@@ -403,10 +403,10 @@ var ACC_HELD=[
 function accPrivacy(){
  var snaps=(CURP&&CURP.history&&CURP.history.length)||0;
  var h='<p class="ac-lead">We never sell anybody’s data. Ever.</p>';
- h+=accGroup('What Is Held Here',
+ h+=accGroup('What is held here',
    ACC_HELD.map(function(x){return accRow(x[0],x[1]);}).join(''),
    'Held in this browser and nowhere else.');
- h+=accGroup('This Device',
+ h+=accGroup('This device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),
    STORE_BOUND?'If a save fails, it tells you.'
@@ -417,7 +417,7 @@ function accPrivacy(){
     duties CLAUDE.md names for a practitioner grant: explicit consent, a
     visible list, and revocation. "Never a silent default" said the same as
     the first sentence in the team's words, and came out with it. */
- h+=accGroup('Who Can See This',
+ h+=accGroup('Who can see this',
    accRow('People who can see this record','nobody'),
    'Nobody sees this but you. A practitioner can see it only after you say yes. '
    +'Each yes is listed here by name, with what they see and the date you gave '
@@ -437,7 +437,7 @@ function accPrivacy(){
     already here and load is the inverse of export. A person holding a record
     file looks where the other two record controls are, and this is the surface
     that already says what is held and where. */
- h+=accGroup('Load a Record',
+ h+=accGroup('Load a record',
    recordImportHtml('ac'),
    /* "the whole handoff" is CO-26's own word, "Keep it: it is the handoff",
       and "validated" is the boundary function's name. Said as what happens. */
@@ -448,7 +448,7 @@ function accPrivacy(){
    And Getting Rid Of It": seven words, a comma, and a conjunction capitalised
    in a file that is otherwise in title case. It names two controls, so it
    says their two names. */
- accGroup('Export and Delete',
+ accGroup('Export and delete',
    accAct('Export this record','acexp',{btn:'Copy'})
    +accAct('Delete this record','acdel',{btn:'Delete',danger:true}),
    'Delete removes this record from this browser now. There is no store yet, '
@@ -468,22 +468,22 @@ function accBilling(m){
 
 /* ---------- 4.6 help ---------- */
 function accHelp(){
- var h=accGroup('Get Help',
+ var h=accGroup('Get help',
    accAct('Ask a question','achelpq',{btn:'Ask'})
    +accAct('Report something broken','achelpb',{btn:'Report'}),
    'Both go to the same place. There is nowhere to send them yet, so what you '
    +'write is held on this device and the outbox below says so.');
- h+=accGroup('Tell Us How It Is Going',
+ h+=accGroup('Tell us how it is going',
    accAct('Rate the product','acrate',{btn:'Rate'})
    +accAct('Product feedback','acsurv',{btn:'Open'}));
- h+=accGroup('Reading This',
+ h+=accGroup('Reading this',
    accAct('How to read this','achowto',{btn:'Open'}),'');
- h+=accGroup('What Is Waiting',
-   accRow('Outbox',obCount()+' waiting',{num:false}),
+ h+=accGroup('What is waiting',
+   accRow('Outbox',obCount()?obCount()+' waiting':'\u2013',{num:false}),
    obCount()?'Nothing can be sent yet. What you wrote is kept here and will go '
     +'when there is somewhere to send it.'
    :'Nothing waiting.');
- h+=accGroup('This Build',
+ h+=accGroup('This build',
    accRow('Build',(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'not stamped')
    +accRow('Version',(typeof VERSION!=='undefined'&&VERSION)||'alpha'),
    'Quote this when you report something.');
@@ -769,30 +769,30 @@ var OB_RATE=[
    type and the order. Two of his were doing two jobs each and are split or
    merged where asking them as one returns an answer actionable neither way. */
 var OB_SURVEY=[
- {lens:'What This Is',k:'m1',q:'Do you know what this product is for?',
+ {lens:'What this is',k:'m1',q:'Do you know what this product is for?',
   a:['No idea','Roughly','Yes, I could explain it']},
- {lens:'What This Is',k:'m2',q:'Do you know why we are doing this?',
+ {lens:'What this is',k:'m2',q:'Do you know why we are doing this?',
   a:['No','I have a guess','Yes']},
- {lens:'What This Is',k:'m3',q:'Who would you hand this to?',
+ {lens:'What this is',k:'m3',q:'Who would you hand this to?',
   a:['Nobody','Somebody who is stuck','Somebody who trains hard',
      'Somebody who works with people','Anybody']},
- {lens:'The Content',k:'p1',q:'Does the information make sense?',
+ {lens:'The content',k:'p1',q:'Does the information make sense?',
   a:['No','In places','Yes']},
- {lens:'The Content',k:'p2',q:'Do you know what you are reading when a reading prints?',
+ {lens:'The content',k:'p2',q:'Do you know what you are reading when a reading prints?',
   a:['No','Some of it','Yes']},
- {lens:'The Content',k:'p3',q:'Is the information helpful?',
+ {lens:'The content',k:'p3',q:'Is the information helpful?',
   a:['It cost me time','Neither','A little','A lot']},
- {lens:'The Content',k:'p4',q:'Does the explanation of the problem make sense?',
+ {lens:'The content',k:'p4',q:'Does the explanation of the problem make sense?',
   a:['No','In places','Yes']},
- {lens:'The Content',k:'p5',q:'Does the protocol make sense?',
+ {lens:'The content',k:'p5',q:'Does the protocol make sense?',
   a:['No','I understand it and I do not believe it','Mostly','Yes']},
- {lens:'The Content',k:'p6',q:'Does the knowledge base make sense?',
+ {lens:'The content',k:'p6',q:'Does the knowledge base make sense?',
   a:['I have not opened it','No','In places','Yes']},
- {lens:'The Product',k:'d1',q:'Do you know what you are doing when you open it?',
+ {lens:'The product',k:'d1',q:'Do you know what you are doing when you open it?',
   a:['No','I work it out each time','Yes']},
- {lens:'The Product',k:'d2',q:'How good is it?',
+ {lens:'The product',k:'d2',q:'How good is it?',
   a:['Bad','Weak','Fine','Good','Very good']},
- {lens:'The Product',k:'d3',q:'How would you feel if you could no longer use it?',
+ {lens:'The product',k:'d3',q:'How would you feel if you could no longer use it?',
   a:['Not bothered','A little disappointed','Very disappointed']}];
 var OB_KIND=null, OB_ANS={}, OB_BODY='';
 function obCompose(kind){

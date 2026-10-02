@@ -779,19 +779,19 @@ function railStack(r){
       legend, so the legend was cut only once each row opened runFetterDrill,
       the axis's own drill, which says both halves and what fills each. */
    return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
-    +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>',
-      title:c.nm+' held '+v.toFixed(1)})+esc(c.nm)+'</span>'
+    +cr(c.seat,v*10,{size:'xs',raw:v>0?v.toFixed(1):'\u2013',glyph:'<path d="'+c.ic+'"/>',
+      title:c.nm+(v>0?' held '+v.toFixed(1):', nothing held')})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
-      glyph:'<path d="'+c.ic+'"/>',title:c.opp+' installed '+p.toFixed(1)})+'</span></button>';}).join('');}
+    +cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
+      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(p>0?' installed '+p.toFixed(1):', nothing installed')})+'</span></button>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
   h+=list.length?list.map(function(o,i){var p=poleOf(o);
    return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
-      title:'Opposite installed '+p.toFixed(1)})+'</span></button>';}).join('')
+    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
+      title:p>0?'Opposite installed '+p.toFixed(1):'Nothing installed'})+'</span></button>';}).join('')
    :(lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB));}
  e.innerHTML=h;
  /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
@@ -979,8 +979,11 @@ function renderBal(r){
   R:{g:GLYPH_F,nm:'feminine',v:100-m,c:seatCol('Throat'),
    t:'Feminine. Energy and receptivity, held inward. Not women: the codex is explicit about that.'},
   title:b.read
-   ?'Balance. '+(b.lean===0?'even':Math.round(Math.abs(b.lean)*100)+' percent '+(b.lean>0?'masculine':'feminine'))
-    +', masculine '+Math.round(m)+' against feminine '+Math.round(100-m)+'. Open this for the rest.'
+   /* THE SPLIT WAS SAID TWICE AND BOTH TIMES AS A SCORE. "4 percent masculine,
+      masculine 52 against feminine 48" is one fact in two arithmetics, and a
+      pair of shares against each other reads as a result. The dial draws the
+      split. The title says which way it leans. Round J13. */
+   ?'Balance. '+(b.lean===0?'Even.':'Leans '+(b.lean>0?'masculine':'feminine')+'.')+' Open this for the rest.'
    :'Balance. Not read yet. Neither side reaches 1, so no direction is named. Open this for the rest.'});}
 /* ---- the rail's doors. one delegated set, on the rail itself ---- */
 var _KBJ=false;
@@ -1211,19 +1214,19 @@ function render(){
      and a name without its scale is the thing the copy editor rule stops. */
   lo.innerHTML=
    rbRow('xyz','Vitality',r.X*100,r.unread?'\u2013':r.X.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'vitality',title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
-       +'. How much energy is left once apathy and the decoherence are taken off. Seventy percent of it is what '
-       +'decoherence leaves, and decoherence is at '+Math.round(r.DQ)+'.'})
+    {unread:r.unread,fk:'core',ic:'vitality',title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2))
+       +'. How much energy is left once apathy and the decoherence are taken off. Seven tenths of it is what '
+       +'decoherence leaves'+(r.unread?'.':', and decoherence is at '+Math.round(r.DQ)+'.')})
   +rbRow('xyz','Awareness',r.Y*100,r.unread?'\u2013':r.Y.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'awareness',title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
+    {unread:r.unread,fk:'core',ic:'awareness',title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2))
        +'. How strong what you mean is, and how little of it gets bent on the way out.'})
   +rbRow('xyz','Will',r.Z*100,r.unread?'\u2013':r.Z.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'will',title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
+    {unread:r.unread,fk:'core',ic:'will',title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2))
        +'. How much of your integrity gets through the charge you are carrying.'})
   +rwRadRow(r)
   +rbRow('flow','Flow',f*100,r.unread?'\u2013':f.toFixed(2),
     {unread:r.unread,fk:'seats',ic:'flow',wave:rbSeatPass(),rate:lerp(PUL_LO,PUL_HI,clamp((+r.DQ||0)/100,0,1)),
-     title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
+     title:'Flow. '+(r.unread?'not read yet':f.toFixed(2))
        +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets. '
        +'The wave runs root to crown. A clean wave that spans the whole range is every seat passing everything; a seat '
        +'that holds charge back roughens the wave where it sits and shrinks it from there on.'});})();
@@ -1359,7 +1362,15 @@ function render(){
       goes when the state is not empty. */
    +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'')
    +run
-   +'<div class="pm-eye" style="margin-top:12px">Field</div>'
+   /* NOTHING READ, SO THE BLOCK IS NOT PRINTED. Four rows read "Carrying
+      nothing yet", "Filled in nothing yet", "Heaviest Root 0.0" and "Most
+      shut Truth at the throat" on a person who has entered nothing: two
+      empty states, a zero, and a verdict about a throat nobody has read,
+      drawn off the default. The four doors above already say "Nothing has
+      been read yet", so the block repeated the empty state in four rows and
+      then invented a finding under it. A value's empty state is a dash and a
+      dash four times is not a sentence. Round J13. */
+   +(r.unread?'':'<div class="pm-eye" style="margin-top:12px">Field</div>'
    /* "nothing" was being printed over charge a person had entered themselves.
       If something sits under the line, the row says so rather than reporting
       a zero that is not true. */
@@ -1371,34 +1382,35 @@ function render(){
      held?'':(r.under?r.under+' sitting under the line':''))
    +row('Filled in',inst?inst+' addresses':'nothing yet','')
    +row('Heaviest',r.darkB,r.darkV.toFixed(1))
-   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());
+   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase()));
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
- /* EVERY ONE OF THESE SAYS WHAT IT IS OUT OF. His instruction, and this
-    panel broke it five times in six lines: integrity 1.9, intention 1.9, pole
-    in 0.00, overshoot 0.00, distortion 10.0, on four different scales, with
-    nothing to measure any of them against. */
+ /* SUPERSEDED ON 2 OCTOBER, CO-31. These once said "of 10" after every
+    figure, which answered "what is it out of" and made each line a mark out
+    of ten. A count against a total is a score at any scale. The figure stands
+    with its name, and the tooltip says what it measures. On an unread profile
+    each is a dash, because the defaults are not readings. */
  /* V21. Five words, and none of them defined anywhere on the screen. Each
     line now carries a plain sentence on its title, true to compute.js, and
     "pole in" is "pole", the word the Summary tile already uses for it. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
-    'integrity <b>'+r.Ig.toFixed(1)+'</b> of 10')
+    'integrity <b>'+(r.unread?'\u2013':r.Ig.toFixed(1))+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+r.It.toFixed(1)+'</b> of 10')
+    'intention <b>'+(r.unread?'\u2013':r.It.toFixed(1))+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
      what the thing does: JQ is the opposite driven past the point where it
      serves. That is overshoot. The codex keeps its own word. */
   +ins('How far the installed opposites outweigh the charge, on average, across your body.',
-    'pole <b>'+r.poleMean.toFixed(2)+'</b> of 10')
+    'pole <b>'+(r.unread||r.poleMean<0.005?'\u2013':r.poleMean.toFixed(2))+'</b>')
   +ins('How far installed opposites have been pushed past the point where they help.',
-    'overshoot <b>'+r.JQ.toFixed(2)+'</b> of 10'
+    'overshoot <b>'+(r.unread||r.JQ<0.005?'\u2013':r.JQ.toFixed(2))+'</b>'
     +(r.excess.length?', '+r.excess.length+' address'+(r.excess.length===1?'':'es')+' overshot':''))
   +'<span title="'+esc('How much the patterns running in you bend what you mean. More patterns, '
-    +'and deeper ones, bend it more.')+'">distortion <b>'+r.dist.toFixed(1)+'</b> of 10</span>';
+    +'and deeper ones, bend it more.')+'">distortion <b>'+(r.unread||r.dist<0.05?'\u2013':r.dist.toFixed(1))+'</b></span>';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
  const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};

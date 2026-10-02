@@ -50,13 +50,18 @@ function anaField(title,sub,items,w,h){
   return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'
    +'<div class="ab-none">nothing here</div></div>';
  var P=anaPack(items,w,h),top=P[0]?P[0].it.v:1, LMIN=13;
+ /* NOTHING READ, SO NO FIGURE. The page says so in its first line and the
+    bubbles still printed 10.0 and 7.2 off the blueprint it had selected.
+    The bubbles keep their size, which is the blueprint, and lose the figure.
+    Round J13. */
+ var UN=false; try{UN=!!computeSeen().unread;}catch(e){}
  var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'
   +'<svg viewBox="0 0 '+w+' '+h+'" class="ab-svg">';
  P.forEach(function(p){
   var fit=p.r>=26, tiny=p.r<LMIN;
   var on=(ANA_PICK&&ANA_PICK.k===p.it.k&&ANA_PICK.nm===p.it.nm);
   s+='<g class="ab-b'+(on?' on':'')+'" data-ab="'+esc((p.it.k||'')+'|'+p.it.nm)+'">'
-   +'<title>'+esc(p.it.nm+', '+p.it.v.toFixed(1))+'</title>'
+   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.v>0?', '+p.it.v.toFixed(1):', nothing held')))+'</title>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
@@ -72,7 +77,7 @@ function anaField(title,sub,items,w,h){
     s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';
     if(fit)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+p.it.v.toFixed(1)+'</text>';}}
+     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(!UN&&p.it.v>0?p.it.v.toFixed(1):'\u2013')+'</text>';}}
   s+='</g>';});
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){

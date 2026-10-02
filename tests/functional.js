@@ -6269,7 +6269,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   return out;});
  /* named Energetic Summary since GO, so the two rails no longer carry one
     name for two sections; the left keeps Root Energetics, asserted above */
- ok(fv.first&&fv.closed&&fv.name==='Energetic Summary','the summary is the right rail\'s first section, closed on arrival, '
+ ok(fv.first&&fv.closed&&fv.name==='Energetic summary','the summary is the right rail\'s first section, closed on arrival, '
   +JSON.stringify({first:fv.first,closed:fv.closed,name:fv.name}));
  ok(fv.meets.length&&fv.meets.join()===fv.want.join(),'it leads with the meetings the engine finds, '+fv.meets.join(', '));
  ok(fv.lit.join()===fv.wantLit.join(),'each band lights exactly the systems that land there, '+fv.lit.join(' '));
@@ -6667,8 +6667,8 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit at 1600 lands on the Field with the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
- ok(a.right==='Energetic Summary','and the right rail\'s summary is the Energetic Summary, so no two sections share a name, '+a.right);
- ok(a.seats==='Assemblage Points'&&a.gates==='Action'&&!a.stale.length,'the bar says Assemblage Points and Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
+ ok(a.right==='Energetic summary','and the right rail\'s summary is the Energetic summary, so no two sections share a name, '+a.right);
+ ok(a.seats==='Assemblage points'&&a.gates==='Action'&&!a.stale.length,'the bar says Assemblage points and Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
  /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,
