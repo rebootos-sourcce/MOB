@@ -227,7 +227,7 @@ function PROBE(arg){
  const SKIP=/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|TITLE|HEAD|META|LINK|DEFS|CLIPPATH|MASK|MARKER|PATTERN|SYMBOL|OPTION|OPTGROUP)$/i;
  const GLY=/[←-⇿⌀-⏿■-◿☀-➿⬀-⯿]|\p{Extended_Pictographic}/gu;
 
- const TX=[];window.__TXEL=[];
+ const TX=[];window.__TXEL=[];window.__TXCP=[];
  function trect(el,r){
   if(el instanceof SVGElement||/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))return r;
   const nodes=[...el.childNodes].filter(n=>n.nodeType===3&&n.nodeValue.trim());
@@ -301,7 +301,7 @@ function PROBE(arg){
      if(unres){both(side,m=>{m.nUnres++;const u=m.unres[unres]||(m.unres[unres]={n:0,s:{}});u.n++;if(Object.keys(u.s).length<6)u.s[sel(el)]=1;});continue;}
      if(disabled)continue;
      const large=fs>=24||(fs>=18.66&&+fw>=700);
-     if(!ps){const tr=trect(el,r);window.__TXEL.push(el);TX.push({x:tr.left+scrollX,y:tr.top+scrollY,w:tr.width,h:tr.height,fg:[fg[0],fg[1],fg[2],fg[3]],css:+worst.q.toFixed(2),large,side,fs:num(fs),fw,sel:sel(el),sample:t.slice(0,28),e:hex(worst.e),g:hex(worst.g)});}
+     if(!ps){const tr=trect(el,r);const cpf=(()=>{for(let n=el;n&&n.nodeType===1;n=n.parentElement){const c=cstyle(n).clipPath;if(c&&c!=='none')return true;}return false;})();window.__TXEL.push(el);window.__TXCP.push(cpf);TX.push({cp:cpf,x:tr.left+scrollX,y:tr.top+scrollY,w:tr.width,h:tr.height,fg:[fg[0],fg[1],fg[2],fg[3]],css:+worst.q.toFixed(2),large,side,fs:num(fs),fw,sel:sel(el),sample:t.slice(0,28),e:hex(worst.e),g:hex(worst.g)});}
      both(side,m=>{m.nChecked++;if(worst.q<m.minRatio)m.minRatio=worst.q;
       if(worst.q<4.5){
        if(large&&worst.q>=3){m.nFailLarge++;}
@@ -441,9 +441,9 @@ async function PIXREAD(arg){
    position where its whole box is on screen and the hit test finds it. */
 function PIXSCROLLERS(){
  window.__SC=[];
- const out=[{i:-1,total:document.documentElement.scrollHeight,view:innerHeight}];
+ const out=[{i:-1,total:document.documentElement.scrollHeight,view:innerHeight,vw:innerWidth,vh:innerHeight}];
  [...document.querySelectorAll('body,body *')].forEach(e=>{
-  if(e.clientHeight>40&&e.scrollHeight>e.clientHeight+8&&/(auto|scroll)/.test(getComputedStyle(e).overflowY)){window.__SC.push(e);out.push({i:window.__SC.length-1,total:e.scrollHeight,view:e.clientHeight});}});
+  if(e.clientHeight>40&&e.scrollHeight>e.clientHeight+8&&/(auto|scroll)/.test(getComputedStyle(e).overflowY)){window.__SC.push(e);out.push({i:window.__SC.length-1,total:e.scrollHeight,view:e.clientHeight,vw:innerWidth,vh:innerHeight});}});
  return out;}
 function PIXSCROLL(a){
  window.__SC.forEach(e=>{e.scrollTop=0;});window.scrollTo(0,0);
@@ -460,9 +460,39 @@ function PIXRECTS(pending){
    if(!(r.width>0&&r.height>0))r=el.getBoundingClientRect();}
   if(r.width<2||r.height<2||r.left<0||r.top<0||r.right>innerWidth||r.bottom>innerHeight)continue;
   const hit=document.elementsFromPoint((r.left+r.right)/2,(r.top+r.bottom)/2);
-  if(!hit.includes(el)&&getComputedStyle(el).pointerEvents!=='none')continue;
+  if(!hit.includes(el)&&getComputedStyle(el).pointerEvents!=='none'&&!window.__TXCP[i])continue; /* a clip-path hides an element from hit testing too, and the paint test is what decides those */
   out.push({i,x:r.left,y:r.top,w:r.width,h:r.height});}
  return out;}
+/* THE PAINT TEST. A box is not paint. The Field draws every bar's label twice, a light copy and a
+   dark copy clipped to the fill with clip-path, so the dark copy has a bounding box everywhere and
+   paints only over the fill, and the light copy is overdrawn where the fill is. A probe that reads
+   boxes and colours reports a dark ink on a dark ground that nobody can see. So any text that looks
+   like a failure, or sits in a clip-path, is photographed twice, as it is and with that one element's
+   glyphs blanked, and the difference between the two is the paint. No difference, no paint. */
+function PIXONE(a){
+ const el=window.__TXEL[a.i];if(!el)return false;
+ if(a.on){window.__saved1=[el,el.getAttribute('style')];
+  ['color','fill','text-shadow','-webkit-text-fill-color'].forEach(k=>el.style.setProperty(k,'transparent','important'));el.style.setProperty('text-shadow','none','important');}
+ else{const [e,st]=window.__saved1;if(st===null)e.removeAttribute('style');else e.setAttribute('style',st);}
+ return true;}
+async function PIXDIFF(a){
+ const dec=async b=>{const bm=await createImageBitmap(await (await fetch('data:image/png;base64,'+b)).blob());
+  const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(bm,0,0);return x.getImageData(0,0,bm.width,bm.height).data;};
+ const N=await dec(a.n),H=await dec(a.h);
+ let max=0;const diffs=[];
+ for(let i=0;i<N.length;i+=4){const d=Math.max(Math.abs(N[i]-H[i]),Math.abs(N[i+1]-H[i+1]),Math.abs(N[i+2]-H[i+2]));diffs.push(d);if(d>max)max=d;}
+ const hist={};
+ for(let k=0;k<diffs.length;k++){if(diffs[k]>=Math.max(6,max*0.5)){const i=k*4,q=(H[i]>>2)+','+(H[i+1]>>2)+','+(H[i+2]>>2);hist[q]=(hist[q]||0)+1;}}
+ /* ground = the commonest blanked-photo colour under the glyph pixels; if there are none, the commonest of all */
+ let best=null,bn=0;for(const q in hist)if(hist[q]>bn){bn=hist[q];best=q;}
+ if(!best){const h2={};for(let i=0;i<H.length;i+=4){const q=(H[i]>>2)+','+(H[i+1]>>2)+','+(H[i+2]>>2);h2[q]=(h2[q]||0)+1;}for(const q in h2)if(h2[q]>bn){bn=h2[q];best=q;}}
+ const g=best.split(',').map(v=>v*4+2);
+ const al=a.fg[3],f=[a.fg[0]*al+g[0]*(1-al),a.fg[1]*al+g[1]*(1-al),a.fg[2]*al+g[2]*(1-al)];
+ const D0=Math.max(Math.abs(f[0]-g[0]),Math.abs(f[1]-g[1]),Math.abs(f[2]-g[2]));
+ const lin=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};
+ const lum=q=>0.2126*lin(q[0])+0.7152*lin(q[1])+0.0722*lin(q[2]);
+ const L1=lum(f),L2=lum(g);
+ return {ghost:D0>=20&&max<0.4*D0,maxDiff:max,D0:Math.round(D0),g,f:f.map(Math.round),r:+((Math.max(L1,L2)+0.05)/(Math.min(L1,L2)+0.05)).toFixed(2)};}
 async function pixelPass(page,helper,texts){
  const res=texts.map(()=>null);
  let pending=texts.map((t,i)=>i);
@@ -481,6 +511,20 @@ async function pixelPass(page,helper,texts){
    const rd=await helper.evaluate(PIXREAD,{b64,texts:got.map(g=>({x:g.x,y:g.y,w:g.w,h:g.h,fg:texts[g.i].fg}))});
    got.forEach((g,k)=>{if(rd[k]){res[g.i]=rd[k];}});
    const done=new Set(got.filter((g,k)=>rd[k]).map(g=>g.i));
+   /* second look, by paint difference, at everything that looks like a failure or sits in a clip-path */
+   for(let k=0;k<got.length;k++){
+    const g=got[k];if(!rd[k]||!(rd[k].r<5||texts[g.i].cp))continue;
+    const x=Math.max(0,Math.floor(g.x)-1),y=Math.max(0,Math.floor(g.y)-1);
+    const w=Math.min(sc.vw-x,Math.ceil(g.w)+2),h=Math.min(sc.vh-y,Math.ceil(g.h)+2);
+    if(w<2||h<2)continue;
+    try{
+     const nb=(await page.screenshot({clip:{x,y,width:w,height:h}})).toString('base64');
+     await page.evaluate(PIXONE,{i:g.i,on:true});
+     const hb=(await page.screenshot({clip:{x,y,width:w,height:h}})).toString('base64');
+     await page.evaluate(PIXONE,{i:g.i,on:false});
+     const d=await helper.evaluate(PIXDIFF,{n:nb,h:hb,fg:texts[g.i].fg});
+     res[g.i]=d.ghost?{ghost:true,r:d.r,g:d.g,f:d.f}:{g:d.g,r:d.r,f:d.f,paint:true};
+    }catch(e){try{await page.evaluate(PIXONE,{i:g.i,on:false});}catch(_){}}}
    pending=pending.filter(i=>!done.has(i));}}
  await page.evaluate(PIXSCROLL,{i:-1,off:0});
  return res;}
@@ -534,13 +578,15 @@ function digest(raw){ /* raw = one PROBE result's .all or .host */
 /* Combine the CSS verdict and the photograph. Where the screen was photographed the
    photograph decides; where it was not, the CSS verdict stands and is counted. */
 function contrastOf(texts,px,side){
- const o={checked:0,photographed:0,fail:0,hard:0,failLargeOnly:0,falsePos:0,falseNeg:0,min:null,fails:[]};
+ const o={checked:0,photographed:0,ghost:0,fail:0,hard:0,failLargeOnly:0,falsePos:0,falseNeg:0,min:null,fails:[]};
  const g={};
  texts.forEach((t,i)=>{
   if(side&&t.side!==side)return;
-  o.checked++;
+  if(!(px[i]&&px[i].ghost))o.checked++;
   const cssBad=t.css<4.5&&!(t.large&&t.css>=3);
-  const p=px[i];let r=t.css,bad=cssBad,fgHex=t.e,gHex=t.g,largeOnly=t.large&&t.css<4.5&&t.css>=3;
+  const p=px[i];
+  if(p&&p.ghost){o.ghost++;return;} /* blank it and nothing changes: it paints nothing */
+  let r=t.css,bad=cssBad,fgHex=t.e,gHex=t.g,largeOnly=t.large&&t.css<4.5&&t.css>=3;
   if(p){o.photographed++;r=p.r;bad=p.r<4.5&&!(t.large&&p.r>=3);largeOnly=t.large&&p.r<4.5&&p.r>=3;fgHex=toHex(p.f);gHex=toHex(p.g);
    if(cssBad&&!bad)o.falsePos++;if(!cssBad&&bad)o.falseNeg++;}
   if(o.min===null||r<o.min)o.min=r;
@@ -571,6 +617,12 @@ const FIXTURE=`<!doctype html><meta charset=utf-8><body style="margin:0;backgrou
 <div style="position:relative;height:30px"><canvas id=cA width=100 height=30 style="position:absolute;left:0;top:0;width:100px;height:30px"></canvas><span style="position:relative;font:400 16px Arial;color:#fff">white on black canvas</span></div>
 <div style="position:relative;height:30px"><canvas id=cB width=100 height=30 style="position:absolute;left:0;top:0;width:100px;height:30px"></canvas><span style="position:relative;font:400 17px Arial;color:#fff">white on grey canvas</span></div>
 <script>document.getElementById('cA').getContext('2d').fillRect(0,0,100,30);var xb=document.getElementById('cB').getContext('2d');xb.fillStyle='#888888';xb.fillRect(0,0,100,30);</script>
+<div style="position:relative;width:200px;height:30px;background:#222"><div style="position:absolute;left:0;top:0;width:100px;height:30px;background:#88ccff"></div>
+<span style="position:absolute;left:8px;top:6px;font:400 16px Arial;color:#eeeeee">fill label</span>
+<span style="position:absolute;left:8px;top:6px;font:400 16px Arial;color:#001018;clip-path:inset(0)">fill label</span></div>
+<div style="position:relative;width:200px;height:30px;background:#222">
+<span style="position:absolute;left:8px;top:6px;font:400 16px Arial;color:#eeeeee">bare label</span>
+<span style="position:absolute;left:8px;top:6px;font:400 16px Arial;color:#001018;clip-path:inset(0 100% 0 0)">bare label</span></div>
 <div id=sc style="height:100px;overflow:auto;background:#000"><div style="height:400px"></div><p id=sp style="margin:0;background:#00aaff;color:#001018;font:400 16px Arial">scrolled text</p><div style="height:200px"></div></div>
 <div style="overflow:hidden;height:0"><p id=g1 style="margin:0;font:400 31px Arial;color:#111">ghost clipped</p></div>
 <p id=g2 style="margin:0;display:none;font:400 33px Arial">ghost none</p>
@@ -604,10 +656,10 @@ async function selftest(browser){
  chk('white on color-mix 50% = about 3.95',fmix&&near(fmix.ratio,3.95,0.08),fmix);
  const fgrad=Object.values(A.fails).filter(x=>x.fs==='16'&&x.ratio<1.2)[0];
  chk('white on black to white gradient worst = 1.0',fgrad&&near(fgrad.ratio,1,0.02),fgrad);
- chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===4&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
+ chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===6&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
  chk('black on white not a failure',!Object.values(A.fails).some(x=>x.sample==='black on white'),A.fails);
  chk('svg white on black passes (ground from the rect under it)',!Object.values(A.fails).some(x=>/svg white/.test(x.sample)),A.fails);
- chk('four ghosts add no text elements: 12 visible (t1..t5, b1, b2, the svg text, two canvas spans, one text inside a scroller, one pseudo element)',A.nText===12,A.nText);
+ chk('four ghosts add no text elements: 16 visible (t1..t5, b1, b2, the svg text, two canvas spans, one text inside a scroller, one pseudo element, two layers each of two bar labels)',A.nText===16,A.nText);
  chk('generated content is measured with its own font (21px bold), a checkbox contributes no text',A.fs['21px']&&A.fs['21px'].n===1&&A.fw['700'].n>=2&&A.fs['13.3px'].n===2,[A.fs,A.fw]);
  chk('text over a 2D canvas reads the canvas pixels: white on black passes, white on #888 = 3.54 fails',!Object.values(A.fails).some(x=>/black canvas/.test(x.sample))&&Object.values(A.fails).some(x=>/grey canvas/.test(x.sample)&&near(x.ratio,3.54,0.05))&&A.nUnres===0,[A.nUnres,A.fails]);
  /* taps: b1 20px, b2 48px */
@@ -631,6 +683,11 @@ async function selftest(browser){
  chk('pixel oracle: color-mix ground photographs near 3.95 (+-0.15)',P.mix&&P.mix.px&&near(P.mix.px,3.95,0.15),P.mix);
  chk('pixel oracle: gradient is a CSS false positive (css 1.0, pixels well above 4.5)',P.grad&&P.grad.css<1.2&&P.grad.px>4.5,P.grad);
  chk('pixel oracle: canvas black 21 and canvas grey 3.54 (+-0.15)',P.cb&&P.cb.px>20&&P.cg&&near(P.cg.px,3.54,0.15),[P.cb,P.cg]);
+ const ix=(sm,dark)=>r3.texts.findIndex(t=>t.sample.indexOf(sm)===0&&(dark?t.fg[0]<10:t.fg[0]>200));
+ const fl=ix('fill label',0),fd=ix('fill label',1),bl=ix('bare label',0),bd=ix('bare label',1);
+ chk('paint test: the light copy of a two layer label is overdrawn by the dark copy over the fill, so it is a ghost (a box and no paint)',fl>=0&&px3[fl]&&px3[fl].ghost===true,[fl,px3[fl]]);
+ chk('paint test: the dark copy clipped to the fill paints dark on light (about 11, where CSS alone said 1.1)',fd>=0&&r3.texts[fd].css<1.5&&px3[fd]&&!px3[fd].ghost&&px3[fd].r>8,[fd,r3.texts[fd]&&r3.texts[fd].css,px3[fd]]);
+ chk('paint test: a dark copy clipped away entirely is a ghost, and the light copy beside it paints at about 14',bd>=0&&px3[bd]&&px3[bd].ghost===true&&bl>=0&&px3[bl]&&!px3[bl].ghost&&px3[bl].r>12,[px3[bd],px3[bl]]);
  chk('pixel oracle: text far down inside a scroller is reached by scrolling and reads its own bright ground (about 8.6, not the 1.0 of a black padded screenshot)',P.sp&&P.sp.px>7&&P.sp.px<10,P.sp);
  chk('pixel oracle: svg text over a rect reads 21',P.svg&&P.svg.px>20,P.svg);
  const p2=await browser.newPage();await p2.setContent('<body>');
@@ -733,10 +790,10 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  for(const W of WIDTHS){
   const S=out.widths[W].surfaces;
   L.push('', '**'+W+' wide**','');
-  L.push('| surface | min contrast (pixels) | fails under 4.5 (pixels) | of which under 4.0 | css said fail, pixels disagree (false+) | css said pass, pixels fail (false-) | photographed of checked | unresolved ground | smallest tap | median tap | above the fold taps | all caps | em dash | glyph icons | h overflow px |');
-  L.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
+  L.push('| surface | min contrast (pixels) | fails under 4.5 (pixels) | of which under 4.0 | css said fail, pixels disagree (false+) | css said pass, pixels fail (false-) | photographed of checked | ghosts (box but no paint) | unresolved ground | smallest tap | median tap | above the fold taps | all caps | em dash | glyph icons | h overflow px |');
+  L.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
   for(const n of names){const d=S[n].all;
-   L.push('| '+n+' | '+(d.contrast.min===null?'n/a':d.contrast.min)+' | '+d.contrast.fail+' | '+d.contrast.hard+' | '+d.contrast.falsePos+' | '+d.contrast.falseNeg+' | '+d.contrast.photographed+' of '+d.contrast.checked+' | '+d.contrast.unresolved+' | '+(d.tap.min===null?'n/a':d.tap.min+'px')+' | '+d.tap.median+'px | '+d.tap.fold+' | '+d.text.caps+' | '+d.text.dash+' | '+d.text.glyph.reduce((s,g)=>s+g[1],0)+' | '+Math.max(0,S[n].doc.overflowX)+' |');}
+   L.push('| '+n+' | '+(d.contrast.min===null?'n/a':d.contrast.min)+' | '+d.contrast.fail+' | '+d.contrast.hard+' | '+d.contrast.falsePos+' | '+d.contrast.falseNeg+' | '+d.contrast.photographed+' of '+d.contrast.checked+' | '+d.contrast.ghost+' | '+d.contrast.unresolved+' | '+(d.tap.min===null?'n/a':d.tap.min+'px')+' | '+d.tap.median+'px | '+d.tap.fold+' | '+d.text.caps+' | '+d.text.dash+' | '+d.text.glyph.reduce((s,g)=>s+g[1],0)+' | '+Math.max(0,S[n].doc.overflowX)+' |');}
  }
  /* findings: the actual offenders, deduplicated across surfaces */
  for(const W of WIDTHS){
