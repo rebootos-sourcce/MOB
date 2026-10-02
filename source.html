@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1423 0b9f46c 2026-10-02 17:10"><head><meta charset="utf-8">
+<html lang="en" data-build="v1428 eaf6828 2026-10-02 17:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -18956,7 +18956,7 @@ function onbMiniPlan(p,signal,now){
 /* THE ANSWER TO "WHAT CHANGED?", written as evidence, one record per address
    the run worked. System Congruency TDD section 15; CONGRUENCY-AUDIT.md's
    next task, item 2. The vocabulary and its boundary are the evidence
-   domain's own (RV_METRIC, RV_VALUES and prCross in engine/practice.js);
+   domain's own (RV_METRIC, RV_ANSWERS and prCross in engine/practice.js);
    this is the one host free door that builds the records, so the gate can
    hold it without a browser.
 
@@ -18966,7 +18966,8 @@ function onbMiniPlan(p,signal,now){
    handed in comes back untouched: half a run's answer on the record would
    read as the person having answered about some addresses and not others.
 
-   answer   one of RV_VALUES: the five offered answers, or skipped
+   answer   one of RV_ANSWERS, the five offered answers. A skip is not
+            an answer and is never written, see RV_METRIC
    addrs    the node ids the run worked, the queue after End cut it
    opt      { story_t }: the entry the run was planned from, or nothing
    now      the time, one for every record, so one answer reads as one moment
@@ -18974,8 +18975,8 @@ function onbMiniPlan(p,signal,now){
    Returns { ok, P, ids } or { ok:false, P, errs } with every reason named. */
 function releaseVerify(P,answer,addrs,opt,now){
  var base=P||practiceBlank(), errs=[];
- if(RV_VALUES.indexOf(answer)<0)
-  errs.push('a release verification is one of '+RV_VALUES.join(', ')+', not '+JSON.stringify(answer));
+ if(RV_ANSWERS.indexOf(answer)<0)
+  errs.push('a release verification is one of '+RV_ANSWERS.join(', ')+', not '+JSON.stringify(answer));
  var ids=[];
  if(!Array.isArray(addrs)||!addrs.length)errs.push('a release verification names the addresses the release worked, and none were given');
  else addrs.forEach(function(a){
@@ -19153,12 +19154,20 @@ var PR_COMPLETION='completion';
 
    THE FIVE ANSWERS are the TDD's own minimum, in its order, as keys:
    I feel different, I see it differently, something moved, nothing changed,
-   not sure. SKIPPED IS A SIXTH STORED VALUE AND NOT A SIXTH ANSWER. A person
-   who pressed Skip, or left the card without answering, said something
-   different from a person who pressed Not sure, and storing the one as the
-   other would be a claim they did not make. So the question offers five and
-   the record holds six, and anything else is refused by name at the
-   boundary (prCross below), never read as the nearest one.
+   not sure. The record holds those five and nothing else, and anything else
+   is refused by name at the boundary (prCross below), never read as the
+   nearest one.
+
+   SKIP RECORDS NOTHING, and neither does leaving the card unanswered. The
+   audit's scope says so in as many words ("a way past it that records
+   nothing"), and the reason is the systems seat's: a stored "skipped" is a
+   record of a non act, written at every address, and it is derivable
+   anyway, since the release itself is on the meter and an unanswered one is
+   a release with no answer beside it. Storing it also made a pattern
+   appear in Your patterns off nothing the person said. A first cut stored a
+   sixth value; it was taken out before it reached the dev branch, so no
+   record anywhere carries it, and the boundary refuses it by name. Not sure
+   is still kept exactly as cleanly as Something moved: it is an answer.
 
    A VERIFICATION NEVER BECOMES AN EDGE. practiceTraceIntents turns evidence
    with a pattern_id into "evidence supports pattern", and TRACE_RULE has no
@@ -19175,16 +19184,13 @@ var PR_COMPLETION='completion';
    change" held from the other side. */
 var RV_METRIC='release_verification';
 var RV_ANSWERS=['feel_different','see_differently','something_moved','nothing_changed','not_sure'];
-var RV_SKIP='skipped';
-var RV_VALUES=RV_ANSWERS.concat([RV_SKIP]);
-/* the words each value is shown in, one table, read by the question on the
+/* the words each answer is shown in, one table, read by the question on the
    release card and by Your patterns, so the two never word one answer twice.
    The five are the TDD's minimum responses; "I'm not sure" is cut to the
    product's own Not sure, the wording onboarding already uses for the same
-   tap. Skipped is shown as what it is, no answer. */
+   tap. */
 var RV_SAY={feel_different:'I feel different', see_differently:'I see it differently',
- something_moved:'Something moved', nothing_changed:'Nothing changed', not_sure:'Not sure',
- skipped:'No answer'};
+ something_moved:'Something moved', nothing_changed:'Nothing changed', not_sure:'Not sure'};
 function prIsVerify(e){return !!(e&&e.metric===RV_METRIC);}
 
 /* ---------------- caps, refused above and never truncated ---------------- */
@@ -19538,10 +19544,11 @@ function prCross(errs,P,path){
   if(x.ritual_id&&!ix.rituals[x.ritual_id])errs.push(p2+'.ritual_id names no ritual: '+x.ritual_id);
   if(x.goal_id&&!ix.goals[x.goal_id])errs.push(p2+'.goal_id names no goal: '+x.goal_id);
   /* a verification is the person's answer about one address, and it is one
-     of the six values, refused by name otherwise */
+     of the five answers, refused by name otherwise. A skip is not one: it
+     records nothing, so a stored "skipped" is refused here like any other */
   if(prIsVerify(x)){
-   if(RV_VALUES.indexOf(x.value)<0)
-    errs.push(p2+'.value is not a release verification ('+RV_VALUES.join(', ')+'): '+JSON.stringify(x.value));
+   if(RV_ANSWERS.indexOf(x.value)<0)
+    errs.push(p2+'.value is not a release verification ('+RV_ANSWERS.join(', ')+'): '+JSON.stringify(x.value));
    if(!(typeof x.pattern_id==='string'&&/^addr:/.test(x.pattern_id)))
     errs.push(p2+' is a release verification and names no address');
    if(x.source!=='user')errs.push(p2+' is a release verification and its source is '+x.source+', not user');
@@ -25887,7 +25894,7 @@ if(typeof module!=='undefined'&&module.exports){
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
-                  RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SKIP:RV_SKIP, RV_VALUES:RV_VALUES, RV_SAY:RV_SAY,
+                  RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
@@ -45836,7 +45843,7 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
          heavy:{},look:false,rerun:false,pick:[],studioLost:false,
-         ask:false,said:null,storyT:null};
+         ask:false,said:null,skip:false,storyT:null};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -45930,9 +45937,6 @@ function relOpp(n){
    the run off an entry it just committed passes one; any other run has no
    story behind it and its answer carries none. */
 function relPick(nodeIds,from){
- /* a finished card still open and unanswered is being left, so its answer is
-    recorded as skipped before the run it belongs to is overwritten */
- relAskLeave();
  relHush();
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
@@ -45943,7 +45947,7 @@ function relPick(nodeIds,from){
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
  RUN.heavy={};RUN.look=false;
  RUN.pick=RUN.queue.slice(); RUN.rerun=false; RUN.reach=null; RUN.planN=0;
- RUN.ask=false; RUN.said=null; RUN.storyT=(from&&typeof from.story_t==='string')?from.story_t:null;
+ RUN.ask=false; RUN.said=null; RUN.skip=false; RUN.storyT=(from&&typeof from.story_t==='string')?from.story_t:null;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -46494,31 +46498,31 @@ function relEndNote(){
    A positive answer is never asked for and is not the default: Nothing
    changed and Not sure are kept exactly as cleanly as Something moved.
 
-   SKIP IS KEPT, AND SO IS LEAVING. The card has Done and Build a ritual on
-   it the whole time, and leaving is never blocked. A card left without an
-   answer, by Skip, by Done, by Build a ritual or by another release opened
-   over it, is kept as skipped: an answer that silently vanished would make
-   a release nobody answered look the same as one that was never asked. A
-   page closed mid card is the one way out that records nothing, because
-   there is no moment to write in, and that is said here rather than found.
+   SKIP RECORDS NOTHING, AND SO DOES LEAVING. The card has Done and Build a
+   ritual on it the whole time, and leaving is never blocked. Skip, Done,
+   Build a ritual, another release opened over it, or a page closed: none of
+   them writes, because none of them is an answer, and the audit's scope
+   asks for "a way past it that records nothing". Why the record does not
+   hold a "skipped" is written at RV_METRIC in engine/practice.js. Skip says
+   on the card that nothing was kept, so the press is never silent.
 
    One answer per run. Evidence is history, so a pressed answer is not
    rewritten; the next release is asked again.
    ============================================================ */
 function relAskHtml(){
  if(!RUN.ask)return '';
- if(RUN.said)return '<div class="rel-ask" id="relask"><div class="pm-eye">What changed?</div>'
-  +'<div class="rel-sub" id="relsaid">'+(RUN.said===RV_SKIP?'No answer. Kept on your record as skipped.'
-   :'You said: '+esc(RV_SAY[RUN.said]||RUN.said)+'. Kept on your record.')+'</div></div>';
+ if(RUN.said||RUN.skip)return '<div class="rel-ask" id="relask"><div class="pm-eye">What changed?</div>'
+  +'<div class="rel-sub" id="relsaid">'+(RUN.said?'You said: '+esc(RV_SAY[RUN.said]||RUN.said)+'. Kept on your record.'
+   :'Skipped. Nothing was recorded.')+'</div></div>';
  return '<div class="rel-ask" id="relask"><div class="pm-eye" id="relaskh">What changed?</div>'
   +'<div class="seg" role="group" aria-labelledby="relaskh">'+RV_ANSWERS.map(function(k){
     return '<button type="button" data-relsaid="'+k+'" aria-pressed="false">'+esc(RV_SAY[k])+'</button>';}).join('')
   +'</div><div class="rel-sub">Your answer is kept with each address this release worked.</div>'
-  +'<div class="rel-act"><button type="button" class="btn" data-relsaid="'+RV_SKIP+'">Skip</button></div></div>';}
+  +'<div class="rel-act"><button type="button" class="btn" data-relskip="1">Skip</button></div></div>';}
 /* the one writer. Refuses by name, writes all of the run's addresses or none,
    saves, and says so if the save fails. Returns whether it was kept. */
 function relAnswer(k){
- if(!RUN.ask||RUN.said||!CURP)return false;
+ if(!RUN.ask||RUN.said||RUN.skip||!CURP)return false;
  var ids=(RUN.queue||[]).map(function(n){return n.i;});
  var r=releaseVerify(CURP.practice||null,k,ids,{story_t:RUN.storyT});
  if(!r.ok){
@@ -46530,9 +46534,11 @@ function relAnswer(k){
  if(RUN.open&&RUN.phase==='done')relRender();
  if(typeof loopRepaint==='function')loopRepaint();
  return true;}
-/* leaving a card that asked and was not answered */
-function relAskLeave(){
- if(RUN.ask&&!RUN.said&&RUN.phase==='done')relAnswer(RV_SKIP);}
+/* Skip: writes nothing, and says so on the card */
+function relAskSkip(){
+ if(!RUN.ask||RUN.said||RUN.skip)return;
+ RUN.skip=true;
+ if(RUN.open&&RUN.phase==='done')relRender();}
 function relCoolDown(){
  if(RUN.done)return;
  /* where the walker stood, read before the phase moves off the list */
@@ -46725,7 +46731,7 @@ function relCoolDown(){
  /* WHAT CHANGED IS ASKED FROM HERE, after the write and only after it: a run
     refused on a worked example returned above and is never asked, and a run
     that wrote is asked once, on the finished card, with nothing chosen. */
- RUN.ask=!!(CURP&&RUN.queue.length); RUN.said=null;
+ RUN.ask=!!(CURP&&RUN.queue.length); RUN.said=null; RUN.skip=false;
  relMark(RUN.halted?'halt':'close');
  /* THE RUN HAS ENDED, SOUNDED ONCE, AFTER THE WRITE LANDED. Here and not at the
     top: a run refused on a worked example returns above and never reaches
@@ -46742,7 +46748,7 @@ function relCoolDown(){
 function relCancel(){
  relClose();
  status('Release closed. Nothing was started and nothing was charged.');}
-function relClose(){relAskLeave();relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
+function relClose(){relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
 /* ============================================================
    THE SEAT TONE FOLLOWS THE CARD.
 
@@ -47545,10 +47551,11 @@ function relRender(){
   RUN.dose=+this.getAttribute('data-reldose');relRender();};});
  h.querySelectorAll('[data-relmode]').forEach(function(el){el.onclick=function(){
   relMode(this.getAttribute('data-relmode')==='rerun');};});
- /* WHAT CHANGED, one press, and Skip is a press too. relAnswer writes and then
-    redraws the card, so the answer is shown as kept only once it is. */
+ /* WHAT CHANGED, one press. relAnswer writes and then redraws the card, so
+    the answer is shown as kept only once it is. Skip writes nothing. */
  h.querySelectorAll('[data-relsaid]').forEach(function(el){el.onclick=function(){
   relAnswer(this.getAttribute('data-relsaid'));};});
+ h.querySelectorAll('[data-relskip]').forEach(function(el){el.onclick=relAskSkip;});
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){
@@ -60667,9 +60674,7 @@ function lpChain(x){
  if(x.said&&x.said.n){
   var said=RV_ANSWERS.filter(function(k){return x.said.by[k];}).map(function(k){
    return '"'+RV_SAY[k]+'" after '+lpPlural(x.said.by[k],'release','releases');});
-  var none=x.said.by[RV_SKIP]||0;
-  st.push(['After',(said.length?'You said '+said.join(', ')+'.':'')
-   +(none?(said.length?' ':'')+'No answer after '+lpPlural(none,'release','releases')+'.':'')]);}
+  if(said.length)st.push(['After','You said '+said.join(', ')+'.']);}
  st.push(['Answer',x.state==='confirmed'
   ?(x.by==='protocol'?'You chose a practice for it':'You said yes to it')
   :'Not answered yet']);
@@ -64086,5 +64091,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004192969"></div>
+<div id="eof" hidden data-len="004193275"></div>
 </body></html>

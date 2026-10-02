@@ -152,12 +152,20 @@ var PR_COMPLETION='completion';
 
    THE FIVE ANSWERS are the TDD's own minimum, in its order, as keys:
    I feel different, I see it differently, something moved, nothing changed,
-   not sure. SKIPPED IS A SIXTH STORED VALUE AND NOT A SIXTH ANSWER. A person
-   who pressed Skip, or left the card without answering, said something
-   different from a person who pressed Not sure, and storing the one as the
-   other would be a claim they did not make. So the question offers five and
-   the record holds six, and anything else is refused by name at the
-   boundary (prCross below), never read as the nearest one.
+   not sure. The record holds those five and nothing else, and anything else
+   is refused by name at the boundary (prCross below), never read as the
+   nearest one.
+
+   SKIP RECORDS NOTHING, and neither does leaving the card unanswered. The
+   audit's scope says so in as many words ("a way past it that records
+   nothing"), and the reason is the systems seat's: a stored "skipped" is a
+   record of a non act, written at every address, and it is derivable
+   anyway, since the release itself is on the meter and an unanswered one is
+   a release with no answer beside it. Storing it also made a pattern
+   appear in Your patterns off nothing the person said. A first cut stored a
+   sixth value; it was taken out before it reached the dev branch, so no
+   record anywhere carries it, and the boundary refuses it by name. Not sure
+   is still kept exactly as cleanly as Something moved: it is an answer.
 
    A VERIFICATION NEVER BECOMES AN EDGE. practiceTraceIntents turns evidence
    with a pattern_id into "evidence supports pattern", and TRACE_RULE has no
@@ -174,16 +182,13 @@ var PR_COMPLETION='completion';
    change" held from the other side. */
 var RV_METRIC='release_verification';
 var RV_ANSWERS=['feel_different','see_differently','something_moved','nothing_changed','not_sure'];
-var RV_SKIP='skipped';
-var RV_VALUES=RV_ANSWERS.concat([RV_SKIP]);
-/* the words each value is shown in, one table, read by the question on the
+/* the words each answer is shown in, one table, read by the question on the
    release card and by Your patterns, so the two never word one answer twice.
    The five are the TDD's minimum responses; "I'm not sure" is cut to the
    product's own Not sure, the wording onboarding already uses for the same
-   tap. Skipped is shown as what it is, no answer. */
+   tap. */
 var RV_SAY={feel_different:'I feel different', see_differently:'I see it differently',
- something_moved:'Something moved', nothing_changed:'Nothing changed', not_sure:'Not sure',
- skipped:'No answer'};
+ something_moved:'Something moved', nothing_changed:'Nothing changed', not_sure:'Not sure'};
 function prIsVerify(e){return !!(e&&e.metric===RV_METRIC);}
 
 /* ---------------- caps, refused above and never truncated ---------------- */
@@ -537,10 +542,11 @@ function prCross(errs,P,path){
   if(x.ritual_id&&!ix.rituals[x.ritual_id])errs.push(p2+'.ritual_id names no ritual: '+x.ritual_id);
   if(x.goal_id&&!ix.goals[x.goal_id])errs.push(p2+'.goal_id names no goal: '+x.goal_id);
   /* a verification is the person's answer about one address, and it is one
-     of the six values, refused by name otherwise */
+     of the five answers, refused by name otherwise. A skip is not one: it
+     records nothing, so a stored "skipped" is refused here like any other */
   if(prIsVerify(x)){
-   if(RV_VALUES.indexOf(x.value)<0)
-    errs.push(p2+'.value is not a release verification ('+RV_VALUES.join(', ')+'): '+JSON.stringify(x.value));
+   if(RV_ANSWERS.indexOf(x.value)<0)
+    errs.push(p2+'.value is not a release verification ('+RV_ANSWERS.join(', ')+'): '+JSON.stringify(x.value));
    if(!(typeof x.pattern_id==='string'&&/^addr:/.test(x.pattern_id)))
     errs.push(p2+' is a release verification and names no address');
    if(x.source!=='user')errs.push(p2+' is a release verification and its source is '+x.source+', not user');

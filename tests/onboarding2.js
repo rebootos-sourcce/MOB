@@ -47,9 +47,13 @@
         reload; and Your patterns shows it on the pattern's row. Then each of
         the five, Skip, and leaving unanswered, each on a fresh store and each
         reloaded, so nothing changed and not sure are held exactly as hard as
-        a positive answer. Checked first against two known bad builds: the
-        build before this step, which asks nothing, and a copy where the
-        answer is shown as kept and never put on the record.
+        a positive answer, and the graph is read after each one to show no
+        evidence edge was drawn for it, nothing changed above all. Skip and
+        leaving record nothing, across the reload too. Checked first against
+        known bad builds: the build before this step, which asks nothing, a
+        copy where the answer is shown as kept and never put on the record,
+        a copy where the answer becomes a trace edge, and the first cut of
+        this step, which stored a skip as a sixth value.
 
    WHAT IT DOES NOT CLAIM. No distress detector exists anywhere in this
    engine, and this file does not pretend otherwise: see the J0 check near
@@ -304,7 +308,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   return {there:!!a, text:a?a.textContent:'',
    answers:[...document.querySelectorAll('#relask .seg [data-relsaid]')].map(b=>({k:b.getAttribute('data-relsaid'),
     p:b.getAttribute('aria-pressed'),t:b.textContent})),
-   skip:!!document.querySelector('#relask .rel-act [data-relsaid="skipped"]'),
+   skip:!!document.querySelector('#relask .rel-act [data-relskip]'),
    ev:((CURP.practice&&CURP.practice.evidence)||[]).length,
    five:(typeof RV_ANSWERS!=='undefined')?RV_ANSWERS.slice():null, say:(typeof RV_SAY!=='undefined')?RV_SAY:{}};});
  ok(ask.there&&/What changed\?/.test(ask.text),'the finished card asks what changed, got "'+ask.text.slice(0,60)+'"');
@@ -428,7 +432,7 @@ console.log('\n=== the Day One tutorial reaches the same real release ===');
  await page.close();
 }
 
-console.log('\n=== what changed: every answer, Skip, and leaving unanswered, each kept across a reload ===');
+console.log('\n=== what changed: every answer kept across a reload, Skip and leaving keep nothing ===');
 {
  /* SEVEN FRESH STORES. The five answers, Skip, and Done pressed with nothing
     answered, each on its own browser context so nothing carries over, each
@@ -437,13 +441,13 @@ console.log('\n=== what changed: every answer, Skip, and leaving unanswered, eac
     answer is: the TDD's "the user must not be forced to report a positive
     result" is only true if the negative ones are kept as well. */
  const CASES=[['feel_different','answer'],['see_differently','answer'],['something_moved','answer'],
-  ['nothing_changed','answer'],['not_sure','answer'],['skipped','skip'],['skipped','leave']];
+  ['nothing_changed','answer'],['not_sure','answer'],[null,'skip'],[null,'leave']];
  for(const [want,how] of CASES){
   const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
   const page=await ctx.newPage();
   const errs=[]; page.on('pageerror',e=>errs.push(e.message));
   await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
-  const tag=want+(how==='answer'?'':' by '+how);
+  const tag=how==='answer'?want:'no answer, by '+how;
   await page.evaluate(()=>{ loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; });
   await page.evaluate(SHRINK);
   await page.evaluate(()=>tutorialOpen(true));
@@ -462,20 +466,35 @@ console.log('\n=== what changed: every answer, Skip, and leaving unanswered, eac
   ok(pre.asked&&pre.ev===0&&pre.q.length>0,tag+': asked, with nothing recorded yet');
   if(pre.asked){
    if(how==='answer')await page.click('#relask [data-relsaid="'+want+'"]');
-   else if(how==='skip')await page.click('#relask [data-relsaid="skipped"]');}
+   else if(how==='skip'){const sb=await page.$('#relask [data-relskip]');
+    ok(!!sb,tag+': the card offers Skip'); if(sb)await sb.click();}}
   if(how==='leave')await page.click('#relclose');
   await page.waitForTimeout(80);
+  if(how==='skip'){
+   const sk=await page.evaluate(()=>({said:(document.getElementById('relsaid')||{}).textContent||'',
+    ev:((CURP.practice&&CURP.practice.evidence)||[]).length}));
+   ok(/Skipped\. Nothing was recorded\./.test(sk.said)&&sk.ev===0,tag+': the card says nothing was kept, and nothing was: "'+sk.said+'", evidence '+sk.ev);}
   await page.reload({waitUntil:'load'}); await booted(page);
-  const back=await page.evaluate(()=>{
+  const back=await page.evaluate(q=>{
    const ev=((CURP.practice&&CURP.practice.evidence)||[]).filter(e=>e.metric==='release_verification');
+   /* THE GRAPH, read directly: every edge that leaves an evidence node, and
+      every edge that lands on a released address's pattern from one */
+   const g=traceFromRecord(CURP,practiceTraceIntents(CURP.practice||null));
    return {ev:ev.map(e=>({v:e.value,p:e.pattern_id,s:e.story_t})), refused:storeRefused().length,
-    rows:loopRead(CURP).patterns.filter(x=>x.said&&x.said.n).map(x=>({a:x.address,by:x.said.by,evFor:x.evFor}))};});
+    rows:loopRead(CURP).patterns.filter(x=>x.said&&x.said.n).map(x=>({a:x.address,by:x.said.by,evFor:x.evFor})),
+    evEdges:g.edges.filter(e=>/^evidence:/.test(e.from)).map(e=>e.from+' '+e.edge+' '+e.to),
+    onReleased:g.edges.filter(e=>/^evidence:/.test(e.from)&&q.some(a=>e.to==='pattern:'+a)).length};},pre.q);
   ok(back.refused===0,tag+': the record is taken back at the boundary');
-  ok(back.ev.length===pre.q.length&&back.ev.length>0&&back.ev.every(e=>e.v===want),
-   tag+': kept across the reload as '+want+' at every address, '+JSON.stringify(back.ev.map(e=>e.v)));
-  ok(back.ev.length>0&&back.ev.every((e,i)=>e.p==='addr:'+pre.q[i]&&e.s===pre.t),tag+': linked to the addresses and the story entry');
-  ok(back.rows.length===pre.q.length&&back.rows.every(r=>r.by[want]===1&&r.evFor===0),
-   tag+': Your patterns shows it on each row and never as support');
+  ok(back.evEdges.length===0&&back.onReleased===0,tag+': the graph holds no evidence edge for it, to a released address or anywhere: '+JSON.stringify(back.evEdges));
+  if(how==='answer'){
+   ok(back.ev.length===pre.q.length&&back.ev.length>0&&back.ev.every(e=>e.v===want),
+    tag+': kept across the reload as '+want+' at every address, '+JSON.stringify(back.ev.map(e=>e.v)));
+   ok(back.ev.length>0&&back.ev.every((e,i)=>e.p==='addr:'+pre.q[i]&&e.s===pre.t),tag+': linked to the addresses and the story entry');
+   ok(back.rows.length===pre.q.length&&back.rows.every(r=>r.by[want]===1&&r.evFor===0),
+    tag+': Your patterns shows it on each row and never as support');}
+  else{
+   ok(back.ev.length===0,tag+': nothing is on the record after the reload, '+JSON.stringify(back.ev.map(e=>e.v)));
+   ok(back.rows.length===0,tag+': and Your patterns grows no row from it, '+back.rows.length);}
   ok(errs.length===0,tag+': no script error: '+errs.slice(0,3).join(' | '));
   await ctx.close();}
 }

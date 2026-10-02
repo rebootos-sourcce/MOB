@@ -71,9 +71,7 @@ function lpChain(x){
  if(x.said&&x.said.n){
   var said=RV_ANSWERS.filter(function(k){return x.said.by[k];}).map(function(k){
    return '"'+RV_SAY[k]+'" after '+lpPlural(x.said.by[k],'release','releases');});
-  var none=x.said.by[RV_SKIP]||0;
-  st.push(['After',(said.length?'You said '+said.join(', ')+'.':'')
-   +(none?(said.length?' ':'')+'No answer after '+lpPlural(none,'release','releases')+'.':'')]);}
+  if(said.length)st.push(['After','You said '+said.join(', ')+'.']);}
  st.push(['Answer',x.state==='confirmed'
   ?(x.by==='protocol'?'You chose a practice for it':'You said yes to it')
   :'Not answered yet']);

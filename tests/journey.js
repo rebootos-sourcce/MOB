@@ -148,8 +148,9 @@ mini(E,ok){
 /* WHAT CHANGED, AFTER A RELEASE. releaseVerify in engine/journey.js writes
    the answer as practice evidence, one record per address, and loopRead reads
    it back. System Congruency TDD section 15; CONGRUENCY-AUDIT.md's next task.
-   What is held: the closed set is exactly the TDD's five plus skipped, and
-   anything else is refused by name; it writes all or nothing; the record
+   What is held: the closed set is exactly the TDD's five, and anything
+   else, a stored "skipped" included, is refused by name (a skip records
+   nothing, see RV_METRIC); it writes all or nothing; the record
    survives the boundary on the way back in; no answer, "nothing changed"
    least of all, ever becomes a trace edge; and Your patterns shows it on the
    pattern's row as what was said, never as evidence for. */
@@ -158,10 +159,11 @@ verify(E,ok){
  const [a,b]=addrs(E,2);
  ok(J(E.RV_ANSWERS)===J(['feel_different','see_differently','something_moved','nothing_changed','not_sure']),
   'the five answers are the TDD\'s five, in its order: '+J(E.RV_ANSWERS));
- ok(J(E.RV_VALUES)===J(E.RV_ANSWERS.concat(['skipped'])),'and the record holds those five and skipped, nothing else');
- ok(E.RV_VALUES.every(k=>typeof E.RV_SAY[k]==='string'&&E.RV_SAY[k].length>0),'every value has its words in one table');
+ ok(E.RV_VALUES===undefined&&E.RV_SKIP===undefined,'and there is no second list beside them: a skip is not a stored value');
+ ok(J(Object.keys(E.RV_SAY))===J(E.RV_ANSWERS)&&E.RV_ANSWERS.every(k=>typeof E.RV_SAY[k]==='string'&&E.RV_SAY[k].length>0),
+  'every answer has its words in one table, and the table words nothing else');
  /* every value, positive, negative and uncertain alike, writes cleanly */
- E.RV_VALUES.forEach(v=>{
+ E.RV_ANSWERS.forEach(v=>{
   const P0=E.practiceBlank(), before=J(P0);
   const r=E.releaseVerify(P0,v,[a,b],{story_t:ST},T);
   ok(r.ok&&r.ids.length===2&&r.P.evidence.length===2,v+' is written once per address: '+J(r.errs||r.ids));
@@ -173,7 +175,7 @@ verify(E,ok){
   ok(e.source==='user'&&e.dimension==='affect'&&e.src==='known','and it is the person\'s own, about how it felt');
   ok(r.P.log.filter(x=>x.type==='EVIDENCE_RECORDED').length===2,'and the log says so, twice');});
  /* refused by name, and nothing written */
- [['banana','an unknown key'],['Something moved','the words in place of the key'],['improved','an outcome status'],[null,'no answer at all']].forEach(([v,what])=>{
+ [['banana','an unknown key'],['Something moved','the words in place of the key'],['improved','an outcome status'],[null,'no answer at all'],['skipped','a skip, which records nothing']].forEach(([v,what])=>{
   const P0=E.practiceBlank(), r=E.releaseVerify(P0,v,[a],null,T);
   ok(!r.ok&&r.P===P0&&r.P.evidence.length===0,what+' is refused and nothing is written');
   ok(!r.ok&&/release verification/.test(r.errs[0])&&r.errs[0].indexOf(J(v))>=0,what+' is refused by name: '+(r.errs&&r.errs[0]));});
@@ -186,18 +188,20 @@ verify(E,ok){
  /* THE RECORD SURVIVES THE BOUNDARY, every value */
  const p=fixture(E,0), keys=E.meterPlan(p,[a,b],E.ONB_CHANS,8); E.meterRun(p,keys);
  let P=p.practice;
- E.RV_VALUES.forEach((v,i)=>{const r=E.releaseVerify(P,v,[a,b],{story_t:ST},'2026-10-02T10:0'+i+':00.000Z'); P=r.P;});
+ E.RV_ANSWERS.forEach((v,i)=>{const r=E.releaseVerify(P,v,[a,b],{story_t:ST},'2026-10-02T10:0'+i+':00.000Z'); P=r.P;});
  p.practice=P;
  const back=E.validateProfile(JSON.parse(J(p)));
- ok(back.ok,'a record carrying all six values passes the boundary: '+J(back.errs||[]).slice(0,300));
+ ok(back.ok,'a record carrying all five answers passes the boundary: '+J(back.errs||[]).slice(0,300));
  if(back.ok){
   const ev=back.profile.practice.evidence;
-  ok(ev.length===12&&E.RV_VALUES.every(v=>ev.filter(e=>e.value===v).length===2),'and every answer is still on it, at both addresses');
+  ok(ev.length===10&&E.RV_ANSWERS.every(v=>ev.filter(e=>e.value===v).length===2),'and every answer is still on it, at both addresses');
   ok(ev.every(e=>e.story_t===ST),'and every one still names its story');}
- /* the boundary refuses a seventh value, and a verification nobody gave */
- const bad=JSON.parse(J(p)); bad.practice.evidence[0].value='maybe';
- const vb=E.validateProfile(bad);
- ok(!vb.ok&&vb.errs.some(x=>/release verification/.test(x)&&/maybe/.test(x)),'the boundary refuses a value outside the six, by name: '+J(vb.errs||[]).slice(0,200));
+ /* the boundary refuses a sixth value, a stored skip among them, and a
+    verification nobody gave */
+ ['maybe','skipped'].forEach(v=>{
+  const bad=JSON.parse(J(p)); bad.practice.evidence[0].value=v;
+  const vb=E.validateProfile(bad);
+  ok(!vb.ok&&vb.errs.some(x=>/release verification/.test(x)&&x.indexOf(J(v))>=0),'the boundary refuses '+J(v)+', outside the five, by name: '+J(vb.errs||[]).slice(0,200));});
  const sys=JSON.parse(J(p)); sys.practice.evidence[0].source='system';
  ok(!E.validateProfile(sys).ok,'and a verification whose source is not the person');
  const aff=JSON.parse(J(p)); aff.practice.evidence[0].dimension='effect';
@@ -213,7 +217,7 @@ verify(E,ok){
  const oi=E.practiceTraceIntents(other.P);
  ok(oi.some(i=>i.from.type==='evidence'&&i.to.id==='addr:'+a&&i.edge==='supports'),'the probe sees an edge where there is one: ordinary evidence supports its pattern');
  const vi=E.practiceTraceIntents(P);
- ok(vi.every(i=>i.from.type!=='evidence'&&i.to.type!=='evidence'),'six answers, nothing changed among them, emit no evidence intent at all: '+J(vi).slice(0,200));
+ ok(vi.every(i=>i.from.type!=='evidence'&&i.to.type!=='evidence'),'five answers, nothing changed among them, emit no evidence intent at all: '+J(vi).slice(0,200));
  const g=E.traceFromRecord(back.ok?back.profile:p,vi);
  ok(!g.nodes.some(n=>n.type==='evidence'),'and the graph holds no evidence node for them');
  ok(!g.edges.some(e=>/^evidence:/.test(e.from)&&e.to==='pattern:'+a),'and no edge from evidence to the address the person said did not move');
@@ -223,8 +227,8 @@ verify(E,ok){
  const row=L.patterns.find(x=>x.address===a);
  ok(!!row,'the address has a row in Your patterns');
  if(row){
-  ok(row.said.n===6&&E.RV_VALUES.every(v=>row.said.by[v]===1),'and the row counts every answer once: '+J(row.said));
-  ok(row.said.last==='skipped','and the newest is the last one given');
+  ok(row.said.n===5&&E.RV_ANSWERS.every(v=>row.said.by[v]===1),'and the row counts every answer once: '+J(row.said));
+  ok(row.said.last==='not_sure','and the newest is the last one given');
   ok(row.evFor===0&&row.evAgainst===0,'and none of it is counted as evidence for or against');
   ok(row.state==='unanswered','and an answer about a release does not confirm the pattern');}
  const L1=E.loopRead(fixture(E,0));
@@ -258,15 +262,15 @@ const MUTANTS=[
  {suite:'verify', what:'a verification becomes a trace edge, so nothing changed reads as support',
   from:"if(e.pattern_id&&!prIsVerify(e))put('evidence'", to:"if(e.pattern_id)put('evidence'"},
  {suite:'verify', what:'the boundary accepts any value on a verification',
-  from:"if(RV_VALUES.indexOf(x.value)<0)", to:"if(false)"},
+  from:"if(RV_ANSWERS.indexOf(x.value)<0)", to:"if(false)"},
+ {suite:'verify', what:'the boundary takes a stored skip, the value the first cut wrote',
+  from:"if(RV_ANSWERS.indexOf(x.value)<0)", to:"if(RV_ANSWERS.concat(['skipped']).indexOf(x.value)<0)"},
  {suite:'verify', what:'the link to the story entry is dropped on the way in',
   from:"'confidence','notes','story_t'].forEach(", to:"'confidence','notes'].forEach("},
  {suite:'verify', what:'Your patterns does not count the answers',
   from:"row.said.n++;", to:""},
  {suite:'verify', what:'an answer is counted as evidence for the pattern',
-  from:"var t=typeOf(e.from), src=node[e.from];", to:"var t=typeOf(e.from), src=node[e.from]; if(row.said.n)row.evFor=row.said.n;"},
- {suite:'verify', what:'skipped is stored as not sure',
-  from:"var RV_VALUES=RV_ANSWERS.concat([RV_SKIP]);", to:"var RV_VALUES=RV_ANSWERS.slice();"}];
+  from:"var t=typeOf(e.from), src=node[e.from];", to:"var t=typeOf(e.from), src=node[e.from]; if(row.said.n)row.evFor=row.said.n;"}];
 
 function load(src){
  const ctx={module:{exports:{}}, console:console};
