@@ -31658,3 +31658,15 @@ Open, and not reached:
 - [ ] A phone has no hover. A carrier opens on a tap, and on a control it opens
   on a hold of a second and a half, so a symbol inside a button needs the hold.
   Whether that is enough for the born card is his call.
+
+## Round PQ, 2 October. Triangulate, cut the percent, store it in the body
+
+His words, verbatim: "Maybe the right flow is we ask them the right combination of questions to have them triangulate on the behaviors that they identify with. Like, Yeah, September 27th picture. I, I don't know what you're talking about. I need context. No, it doesn't need to be a percent. Just a number. They store them in body. At the register at a register of the nerve. Uh, Gab analysis, I'm not sure what you mean. I want you to take a look at the rules in the copy and just write cleaner copy. I feel like I've just fatigued talking about it all day. Yeah, I'm shocked you haven't done it. Yeah, archetype questions and situational dilemmas. Review this twice, figure out what needs to be built. Strategize."
+
+Read as:
+- Archetype questions: ask a combination of questions so the pattern of answers triangulates the archetype, not a single either/or; situational dilemma format; review twice then build.
+- The Sept 27 picture reference: dropped, he has no memory of it; proceeding from the CLAUDE.md "Open, and whose call" wording alone (the beggar, the two kids fighting), stated in full each time it comes up.
+- The headline coherence number drops its percent sign. A number, no percent, everywhere that reading is the headline (rings, glass bar, Summary tile, the Compass centre).
+- Fixed directly: `engine/data/kb.js`, the Archetype glossary entry said "it is not stored in the body", against every other entry saying a pattern is stored in the body. Reworded: the patterns that run through an archetype are stored in the body, at the nerve register of whichever seat they land on. The archetype itself has no address of its own, so there is nothing at one place to release. The structural point (archetype is not a dial, not released) stands; only the wrong half of the claim moved.
+- Gap analysis: he does not remember asking it; dropped, no further explanation owed.
+- Standing instruction: stop asking and write cleaner copy against the rules already in the voice skill. No more questions on this unless truly blocked.

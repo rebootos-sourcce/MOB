@@ -2746,3 +2746,10 @@ public launch. Open for him, not blocking: Stripe price ids and secrets, and boo
 - **Intake adds** the Jungian archetypes, the nine emotional axes and the six action axes, all stacked on the current design.
 - **Analytics:** the glance answer sits above the fold.
 - **Built as a first draft, 2 October (branch po-intake).** Three blocks stacked under the laws, in the page's own design: the archetypes, the nine emotional axes and the six action axes. Evidence only: they feed no law, no charge and no CQ. Two readings of his words are mine and open for him, in full in `DESIGN-intake-axes.md`. First, the twelve archetypes asked are the product's own twelve (`ARCH`), which has Warrior and Everyman where his list has Hero and Orphan. Second, the "six action axes" are read as the six gates (awareness, detachment, intention, ignorance, attachment, aversion), because `DECISIONS.md` says the gates are "said as action in the product" and the engine calls them "the six axes". The other candidate is the six release channels. The page is now several screens longer; the length is read off `tools/intake-stacked.js`, and the folding proposals are in the design file, unbuilt.
+
+
+## Round PQ, 2 October: no percent on the headline reading; stored in the body
+
+- **No percent on the headline coherence number.** His words: "No, it doesn't need to be a percent. Just a number." Applies to the rings, the glass bar, the Summary tile and the Compass centre, wherever CQ or DQ is the headline reading.
+- **Patterns are stored in the body, at the nerve register of the seat they land on.** His words: "They store them in body. At the register at a register of the nerve." `engine/data/kb.js` Archetype entry corrected; it had said the opposite. The archetype itself still has no address and nothing to release; that structural point is unchanged.
+- **Archetype questions triangulate.** A combination of situational questions, not one either/or, read the pattern of answers to place the archetype. Round PQ.
