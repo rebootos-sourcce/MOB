@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1408 15f61a8 2026-10-02 16:18"><head><meta charset="utf-8">
+<html lang="en" data-build="v1412 fb13500 2026-10-02 16:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -4151,6 +4151,35 @@ body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @media (min-width:1181px){
  body.tab-story:not(.st-bank) .mid{grid-template-columns:302px 1fr}
  body.lshut.tab-story:not(.st-bank) .mid{grid-template-columns:58px 1fr}}
+/* ---------- the Summary's rail is today's summary, ui/daily.js ----------
+   The same step aside as the Story's: on the Summary the rail carries Today
+   and Selection, and Today is shown nowhere else. A silent day (nothing read
+   yet) takes the section with it rather than leaving an empty header. */
+body:not(.tab-summary) .lsec.sum-rail{display:none}
+body.tab-summary .lsec[data-rail="right"]:not(.sum-rail):not([data-sec="sel"]){display:none}
+body.tab-summary .lsec.sum-rail.dl-empty{display:none}
+.dl{padding:2px 2px 0}
+.dl-when{font-size:13px;line-height:1.6;color:var(--dim);margin:2px 0 16px}
+.dl-blk{margin:0 0 15px}
+.dl-blk .pm-eye{margin-bottom:5px}
+.dl-st{font-size:14.5px;line-height:1.62;color:var(--ink);margin:0 0 7px}
+.dl-st.dl-quiet{color:var(--dim)}
+.dl-aim{border-top:1px solid var(--edge);padding-top:15px;margin-top:4px}
+.dl-aimr+.dl-aimr{margin-top:16px}
+.dl-aimf{display:flex;gap:8px;margin-top:7px}
+.dl-in{flex:1 1 auto;min-width:0;min-height:44px;box-sizing:border-box;padding:0 13px;
+ background:transparent;border:1px solid var(--edge);border-radius:var(--r-s,8px);
+ color:var(--ink);font:inherit;font-size:14.5px}
+.dl-in:focus{outline:none;border-color:var(--accent)}
+.dl-in::placeholder{color:var(--dim)}
+.dl-go,.dl-mk{min-height:44px}
+.dl-go[disabled]{opacity:.45;cursor:default}
+.dl-own{font-size:15px;line-height:1.55;color:var(--ink);margin:3px 0 8px}
+.dl-ask,.dl-done{font-size:13.5px;line-height:1.6;color:var(--dim);margin:0}
+.dl-marks{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.dl-bank{margin-top:18px}
+.dl-past{margin:6px 0 14px}
+.dl-pd{font-size:12.5px;color:var(--dim);margin:0 0 5px;font-weight:600}
 /* ---------- Source AI, over the journal ----------
    Its own panel and its own look, HT in TASKS.md: no box, a bar in the
    accent down its left edge, so it reads as the system speaking and not as
@@ -8271,6 +8300,16 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
    <div class="lsec st-rail" data-rail="right" data-sec="simp">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/></svg>Imprints</span><i></i></button>
     <div class="lsec-bd"><div id="imp"></div></div>
+   </div>
+   <!-- ON THE SUMMARY, THIS RAIL IS TODAY. The daily summary, ui/daily.js,
+        in the page's own side column, on the funnel review's placement F24:
+        the words go to the side. Shown on the Summary only, and the rail's
+        other sections are hidden there except Selection, which is where every
+        drill on the Summary opens. ui/panels.js empties #sumday on the way
+        out, so a hidden rail never holds a stale day. -->
+   <div class="lsec sum-rail" data-rail="right" data-sec="today">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.6v4.6l3 1.8"/></svg>Today</span><i></i></button>
+    <div class="lsec-bd"><div id="sumday" class="dl"></div></div>
    </div>
    <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
         the stage's upper right now, EZ. The coherence ring and its band word
@@ -40260,7 +40299,9 @@ function sumGlance(r,noCQ){
      like third tier tiny information that no one's ever going to read." The
      line stays only where the figure has no unit of its own, which is where
      the scale is information. */
-  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'How closely you keep the 21 laws, all added up.',
+  /* round PQ: the headline reading is a number and not a percent, on this
+     tile by name ("the Summary tile"), for coherence and the shadow below */
+  ['coherence', r.darkB, r.CQ, String(Math.round(r.CQ)), 'How closely you keep the 21 laws, all added up.',
    '', TIERCOL[r.tier]],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
@@ -40273,7 +40314,7 @@ function sumGlance(r,noCQ){
      BOTH ARE FIXED BY THE RULING OF 25 SEPTEMBER rather than here. DQ is the
      total shadow on all 112 over the most they can hold, so it has a ceiling
      of 100 and the ring is the figure, on the same scale as coherence. */
-  ['shadow weight', 'Root', r.DQ, Math.round(r.DQ)+'%',
+  ['shadow weight', 'Root', r.DQ, String(Math.round(r.DQ)),
    'All the charge on all 112 addresses, against the most they could hold.',
    ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
@@ -40464,7 +40505,10 @@ function sumStory(r){
    +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
      +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
    +'<span class="s-blk">What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
-   +sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '+sumUn('archetype:'+arch.toLowerCase())+' '
+   /* the running root is said once. When it is the born root, this same
+      paragraph has just said what it means, three lines up, and saying it
+      again was the 14 to 18 words Sofia and Angela read twice */
+   +sumUn('running')+' '+(elRoot===rootNow?'':sumUn(rootNow.toLowerCase())+' ')+sumUn('archetype:'+arch.toLowerCase())+' '
    +(elRoot===rootNow
      /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
         runs another, and the instrument can say they differ. It cannot say
@@ -40783,7 +40827,10 @@ function sumRender(){
     compounding pattern are only what a plan can see (ui/lock.js) */
  var r=computeSeen();
  h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
- sumWire();}
+ sumWire();
+ /* and its side column, today's summary, off the same reading. A paint and
+    never a write: the day is frozen by sumDayOpen, after this returns. */
+ if(typeof sumDayPaint==='function')sumDayPaint(r);}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -41008,11 +41055,11 @@ function sumBorn(B){
     old line, "Earth, fixed. Builds and holds.", described the root with two
     words nobody had defined, and it said fixed of every Architect, though a
     Capricorn is cardinal. */
- rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
+ if(!sumSaid(unpackOf('symbolic reading')))rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
  var elSay=unpackOf(sp.sunEl), sgSay=unpackOf(sp.sun,'sign');
  rows+=sgMeet('root',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
   'Root',sp.root,[unpackOf(sp.root.toLowerCase()),
-   sp.sun?unpackOf('sun sign'):'',sgSay,elSay],'',rootPlain(sp.root),
+   sp.sun?unpackOf('sun sign'):'',sgSay,elSay].filter(function(x){return !sumSaid(x);}),'',rootPlain(sp.root),
   unp('root','Root'),unp(sp.root.toLowerCase(),sp.root));
  var sh=R.shown||[], anyLight=sh.some(function(a){return a.strength==='light';});
  if(sh.length)rows+='<p class="sg-note"><span>'+unpSay('overlap')+'</span>'
@@ -41036,7 +41083,7 @@ function sumNamed(B){
  else rows+='<p class="sg-note">No root meaning on file for '
   +parts.map(function(p){return esc(p.text);}).join(', ').replace(/, ([^,]*)$/,' or $1')+'.</p>';
  if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
-  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')],'',null,unp('expression','Expression'));
+  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')].filter(function(x){return !sumSaid(x);}),'',null,unp('expression','Expression'));
  return sgStage(2,'Named',rows);}
 function sumRealName(){
  var nm=capName(String((CURP&&CURP.name)||'').trim());
@@ -41055,7 +41102,12 @@ function sumPlate(r,B){
       one place on this page that names the band, so its ring has to mean the
       band. It was drawn in r.darkB, so a person at Embodied whose heaviest
       seat was the Root got a red ring on the second best reading there is. */
-   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false,
+   /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
+      need to be a percent. Just a number." This plate is the Summary's
+      headline and it still read 62%, measured 2 October by the visual review
+      after the ruling had landed everywhere else. The ring keeps the share as
+      its arc; only the sign goes. */
+   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:String(Math.round(r.CQ)),hot:false,
       color:TIERCOL[r.tier]||undefined})
    /* and the word wears it too. A ring in one colour beside the same band
       printed in the body colour reads as two facts, not one. */
@@ -41118,15 +41170,11 @@ function sumNine(){
   return '<div class="sg-n'+(sq>0&&sq===mx?' top':'')+'" data-nine="'+esc(c.nm)+'">'
    +cr(c.seat,sq*10,{size:'sm',raw:sq.toFixed(1),glyph:'<path d="'+c.ic+'"/>',label:c.nm})
    +'<span class="sg-n-t"><b>'+esc(c.nm)+'</b><em>'+esc(c.loc)+'</em></span></div>';}).join('')+'</div>';}
-/* THE DAY SLOT. Another seat builds the Daily Summary, engine/daily.js, and
-   this is where its block goes: under the story, above the output row, full
-   width. It renders nothing until sumDayHtml returns something, and an empty
-   slot takes no room. Whoever fills it returns the markup from sumDayHtml and
-   touches nothing else on this page. */
-function sumDayHtml(r){return '';}
-function sumDaySlot(r){
- return '<div id="sumday" class="sg-day" data-slot="daily" data-grp="day">'+sumDayHtml(r)+'</div>';}
-
+/* THE DAY SLOT MOVED TO THE SIDE. It stood here, under the story and above
+   the output row, full width, holding nothing until the daily summary was
+   built. It was built on 2 October in ui/daily.js, and it went to this page's
+   own side column instead, the right rail, on the funnel review's placement
+   (F24): the words go to the side. sumRender paints it; nothing here does. */
 /* WHAT THIS STATE CALLS FOR. ritFor is a pure function of the reading and has
    only ever been called from inside the ritual overlay, which opens after a
    release run, which means a person who has not run one has never seen it. */
@@ -41213,8 +41261,33 @@ function sumOutput(r){
     :m?card('Next marker','None left','Every marker is behind you',''):'')
   +'</div>';}
 
+/* ============================================================
+   ONE MEANING, PRINTED ONCE PER PAGE. Measured 2 October by the visual
+   review and again here: 111 to 130 words printed twice on every worked
+   example's Summary, three times for Sofia's root. The Reading unpacks every
+   term inline, as round PO ruled for exactly that sentence, and the drivers
+   card beside it then printed the same table sentences again as rows, under
+   titles that already carry them as tooltips. Both halves were following
+   the unpack rule, and between them the page said each meaning twice.
+
+   So the Reading is built first and its text is held for the length of one
+   render, and a row on the drivers card leaves out any sentence the Reading
+   already printed. The term on the card keeps its carrier, so the meaning is
+   still one hover or tap away in the same place, which is the rule's own
+   second shape. On a page with no Reading, the unread one, nothing is held
+   and the card prints in full. */
+var SUM_SAID=null;
+function sumPlain(html){
+ return String(html||'').replace(/<[^>]*>/g,' ').replace(/&quot;/g,'"').replace(/&#39;/g,"'")
+  .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/\s+/g,' ');}
+function sumSaid(x){
+ if(!SUM_SAID||!x)return false;
+ return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
  var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
+ var told=sumToldHtml(), story=sumStory(r), drv;
+ SUM_SAID=sumPlain(told+story);
+ try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
  /* THE ORDER IS THE ORDER A PERSON ASKS IN, and every group is one question.
     Who is this. What did they say, and what do their roots say beside it. What
     is running, and what does it cost. What do they do about it. Then, folded
@@ -41227,9 +41300,9 @@ function sumFull(r){
      it, and evidence goes first. It stands on the first screen, left of the
      roots, and the phone reads it before them. */
   +'<div class="sg-two sg-lead">'
-   +'<section class="sg-card sg-story" data-grp="story">'+sumToldHtml()
-    +'<div class="s-readbox sg-flat">'+sumStory(r)+'</div></section>'
-   +sumDrivers(B,r)
+   +'<section class="sg-card sg-story" data-grp="story">'+told
+    +'<div class="s-readbox sg-flat">'+story+'</div></section>'
+   +drv
   +'</div>'
   +sumMarks(B,r)
   +'<div class="sg-two">'
@@ -41247,7 +41320,6 @@ function sumFull(r){
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
-  +sumDaySlot(r)
   +sgZone('todo','What to do',sumOutput(r))
   +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +'<div class="sg-folds">'
@@ -41466,6 +41538,236 @@ function sumWire(){
   return runCoreDrill();});}
 
 try{window.__at&&window.__at('ui/summary.js');}catch(e){}
+/* ============================================================
+   TODAY. The daily summary on the page, slice D8 of SUMMARY-AUDIT.md.
+
+   engine/daily.js has composed, grounded and frozen a day since 1 October and
+   nothing in the app called it. The owner asked, round QA, why it was never
+   finished. This is the screen.
+
+   WHERE IT SITS. The Summary's own side column, the right rail, the way the
+   Story's rail became the Imprints page in round GO. The funnel review's
+   placement row F24 put it there: "D7 (dlyCompose in its own side column)",
+   in the grammar F12 named, the picture in the middle and the words to the
+   side. The shared rail it replaces on this tab repeated the page beside it
+   (the uiux pass, "the right rail is wallpaper"), so nothing is lost; the
+   Selection section stays, because every drill on the Summary opens there.
+
+   WHAT IS SHOWN, AND WHAT IS NEVER WRITTEN HERE.
+     a record, today frozen    the frozen day's sentences, as they were shown
+     a record, not yet today   nothing, for the moment between the paint and
+                               sumDayOpen, which freezes it and paints again
+     a worked example          the composition, live. A roster person is not a
+                               record and is never frozen (NotARecord), so
+                               nothing here is kept and no aim can be set
+     nothing read yet          silent. CLAUDE.md: a surface that prints a
+                               reading silences itself on r.unread, and a day
+                               is not frozen for it either, so a person's first
+                               real day can still be the one written
+   No sentence is written in this file. Every sentence is the engine's, sealed
+   on the day; this file only places them and carries the meaning of the terms
+   in them. The block eyebrows, the aim prompt and the marks are the only
+   words here, and none of them is a reading.
+
+   NO DAY COUNT. The bank is listed by date and never numbered, and nothing
+   here prints "day" with a number beside it or a share of a span. The journey
+   is shown as what the record says, never as a counter.
+
+   THE ONE WRITE. sumDayOpen, called by the two places that paint the Summary
+   and never by a render (SUMMARY-AUDIT.md, "never inside sumRender"), inside
+   one try. A save that fails is reported through status() and the day is not
+   claimed: the engine puts the old bank back, and this paints the live
+   composition so the person can still read today's sentences.
+   ============================================================ */
+
+/* the eyebrow over each of the engine's eight blocks, in DLY_BLOCKS order.
+   attention is never "needs attention", which is a verdict the record cannot
+   give: the sentence under it is a count of days, so the eyebrow says that. */
+var DLY_EYE={today:'Latest reading', showing:'Showing up', interfering:'In the way',
+ changing:'Changing', attention:'Most often', aim:'Your '+DLY_AIM_WORD+'s',
+ try:'One thing to do', why:'Where this comes from'};
+/* the four marks, in DLY_ANSWER order, as the button and as the line after */
+var DLY_MARK={kept:['Kept','kept'], partly:['Partly','partly kept'], not:['Not kept','not kept'],
+ unknown:['Not sure','not sure']};
+/* one live composition per worked example, read again only when what it reads
+   changes. Composing borrows the record's soul, which is the expensive part. */
+var DLY_LIVE={key:null, res:null};
+/* a record whose day could not be frozen this session is not asked again on
+   every repaint: one failure, one message */
+var DLY_TRIED=(typeof WeakMap==='function')?new WeakMap():null;
+var DLY_R=null;
+
+function dlyIsRec(p){return !!p&&typeof PROFILES!=='undefined'&&PROFILES.indexOf(p)>=0;}
+function dlyLiveKey(p,now){
+ var h=p.history||[], e=(p.story&&p.story.entries)||[], ri=p.rituals||[];
+ return [S.who, dlyDay(now), h.length, h.length?h[h.length-1].t:'', e.length, e.length?e[e.length-1].t:'',
+  ri.length, ((p.meter&&p.meter.firsts)||[]).length, p.avatar?(p.avatar.reviewedAt||p.avatar.at||''):'',
+  ((p.summaries&&p.summaries.events)||[]).length].join('|');}
+function dlyLive(p,now,r){
+ var k=dlyLiveKey(p,now);
+ if(DLY_LIVE.key!==k||DLY_LIVE.p!==p){DLY_LIVE={key:k, p:p, res:dlyCompose(p,new Date(now).toISOString(),{r:r})};}
+ return DLY_LIVE.res;}
+
+/* ---- the meaning of every term, carried in the sentence ----
+   UNPACK EVERY SYMBOL, round PO. A sealed sentence is plain text, so the terms
+   in it are found here and each becomes the one tooltip the product has, with
+   the table's own sentence in it. A seat is carried with its seat ("the Root
+   seat"), a law by its name, and coherence, charge, an address and a bare seat
+   by their own entries. The education sentence is left alone: it is a meaning
+   already. */
+var DLY_TERM_RX=null;
+function dlyTermRx(){
+ if(DLY_TERM_RX)return DLY_TERM_RX;
+ var q=function(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');};
+ var seats=BANDS.map(q).join('|'), laws=SINAMES.slice().sort(function(a,b){return b.length-a.length;}).map(q).join('|');
+ DLY_TERM_RX=new RegExp('\\b(?:('+seats+') seat|('+laws+')\\b|(seats?)\\b|(coherence)\\b|(charge)\\b|(address(?:es)?)\\b)','g');
+ return DLY_TERM_RX;}
+function dlyCarry(text){
+ var rx=dlyTermRx(), out='', at=0, m, used={};
+ rx.lastIndex=0;
+ while((m=rx.exec(text))){
+  var say='', k='';
+  if(m[1]){k='seat:'+m[1]; say=unpackOf(m[1],'seat');}
+  else if(m[2]){k='law:'+m[2]; say=unpackOf(m[2],'law');}
+  else if(m[3]){k='seat'; say=unpackOf('seat');}
+  else if(m[4]){k='coherence'; say=unpackOf('coherence');}
+  else if(m[5]){k='charge'; say=unpackOf('charge');}
+  else if(m[6]){k='address'; say=unpackOf('address');}
+  if(!say||used[k])continue;
+  used[k]=1;
+  out+=esc(text.slice(at,m.index))
+   +'<span class="tipu" tabindex="0" data-tip-k="'+esc(m[0])+'" data-tip="'+esc(say)+'">'+esc(m[0])+'</span>';
+  at=m.index+m[0].length;}
+ return out+esc(text.slice(at));}
+function dlyStHtml(s){
+ return '<p class="dl-st" data-tpl="'+esc(s.tpl)+'">'+(s.tpl==='why.edu'?esc(s.text):dlyCarry(s.text))+'</p>';}
+/* a day's sentences under the eyebrow of each block they belong to, in the
+   engine's block order, which is the order the document gives */
+function dlyBlocks(st){
+ var out='', by={};
+ st.forEach(function(s){(by[s.k]=by[s.k]||[]).push(s);});
+ DLY_BLOCKS.forEach(function(k){
+  if(!by[k])return;
+  out+='<div class="dl-blk" data-k="'+k+'"><div class="pm-eye">'+esc(DLY_EYE[k]||k)+'</div>'
+   +by[k].map(dlyStHtml).join('')+'</div>';});
+ return out;}
+function dlyClock(iso){
+ var t=new Date(iso), h=t.getHours(), m=t.getMinutes();
+ return (h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
+
+/* ---- the aim: one line a day, the person's own, and its mark ----
+   The aim goes on today's frozen day, so the line is only offered once there
+   is one. Leaving it empty is the skip: a day with no aim loses nothing. The
+   mark is asked for the latest aim that has none, today's or one from the
+   last week, which is how "asked on the next open" lands. */
+function dlyAimHtml(p,day,now){
+ var S2=p.summaries||dlyBlank(), a=dlyAimOf(S2,day.id), out='<div class="dl-aim">';
+ if(!a.set){
+  out+='<label class="pm-eye" for="dlaimin">Your '+esc(DLY_AIM_WORD)+' for today</label>'
+   +'<form class="dl-aimf" data-dlaim="1"><input id="dlaimin" class="dl-in" type="text" maxlength="'+DLY_CAP.aim+'" '
+   +'autocomplete="off" placeholder="One thing you mean to do today">'
+   +'<button type="submit" class="btn dl-go" disabled>Save</button></form>';}
+ else out+=dlyAimRow('Your '+DLY_AIM_WORD+' today',day.id,a);
+ /* an earlier aim still unmarked, the newest first, from the last week */
+ var today=pracDay(now), back=null;
+ for(var i=S2.days.length-1;i>=0&&!back;i--){
+  var d=S2.days[i]; if(d.id===day.id)continue;
+  var gap=today-dlyDayNum(d.d); if(gap<1||gap>7)continue;
+  var b=dlyAimOf(S2,d.id); if(b.state==='open')back={d:d, a:b};}
+ if(back)out+=dlyAimRow('Your '+DLY_AIM_WORD+' on '+dlyDayWord(back.d.d),back.d.id,back.a);
+ return out+'</div>';}
+function dlyAimRow(eye,sid,a){
+ var out='<div class="dl-aimr" data-sid="'+esc(sid)+'"><div class="pm-eye">'+esc(eye)+'</div>'
+  +'<p class="dl-own">'+esc(a.set.text)+'</p>';
+ if(a.state==='open')out+='<div class="dl-ask">How did it go?</div><div class="dl-marks">'
+  +DLY_ANSWER.map(function(k){return '<button type="button" class="btn dl-mk" data-dlmark="'+k+'" data-sid="'+esc(sid)+'">'
+   +esc(DLY_MARK[k][0])+'</button>';}).join('')+'</div>';
+ else out+='<p class="dl-done">Marked '+esc(DLY_MARK[a.state][1])+'.</p>';
+ return out+'</div>';}
+
+/* ---- the bank, listed by date. Past days stay as they were written. ---- */
+function dlyPastHtml(p,day){
+ var days=((p.summaries&&p.summaries.days)||[]).filter(function(d){return !day||d.id!==day.id;}).slice(-7).reverse();
+ if(!days.length)return '';
+ var body=days.map(function(d){
+  return '<div class="dl-past" data-sid="'+esc(d.id)+'"><div class="dl-pd">'+esc(dlyDayWord(d.d))+'</div>'
+   +(d.st.length?d.st.map(dlyStHtml).join('')
+     :'<p class="dl-st dl-quiet">Too little was on the record that day to say anything.</p>')+'</div>';}).join('');
+ return '<details class="sg-fold dl-bank"'+(SUM_OPEN.dlpast?' open':'')+' data-fold="dlpast"><summary><span>Past days</span>'
+  +sumIc('chev','sg-chev')+'</summary><div class="sg-fold-b">'+body+'</div></details>';}
+
+/* the whole column for one record and one moment. Returns '' when the
+   surface is silent. */
+function sumDayHtml(r,now){
+ var p=CURP; now=now||Date.now();
+ if(!p||!r||r.unread)return '';
+ var rec=dlyIsRec(p), day=rec?dlyToday(p,now):null, st=null, head='', thin=false;
+ if(day){
+  st=day.st; thin=!!day.silent;
+  head='<p class="dl-when">Written at '+dlyClock(day.t)+', the first time you opened this page today. '
+   +'It stays as written until tomorrow.</p>';}
+ else if(rec&&!(DLY_TRIED&&DLY_TRIED.get(p)===dlyDay(now)))return '';
+ else{
+  var res=dlyLive(p,now,r);
+  if(res.state==='unread')return '';
+  st=res.st; thin=!st.length;}
+ var out=head+(thin?'<p class="dl-st dl-quiet">Not enough is on the record yet to say anything about today.</p>':dlyBlocks(st));
+ if(day)out+=dlyAimHtml(p,day,now);
+ if(rec)out+=dlyPastHtml(p,day);
+ return out;}
+function sumDayPaint(r){
+ var h=document.getElementById('sumday'); if(!h)return;
+ DLY_R=r||null;
+ var html='';
+ try{html=sumDayHtml(r);}catch(e){html=''; if(typeof console!=='undefined')console.error(e);}
+ h.innerHTML=html;
+ h.closest&&h.closest('.lsec')&&h.closest('.lsec').classList.toggle('dl-empty',!html);
+ dlyWire(h);}
+function sumDayClear(){var h=document.getElementById('sumday'); if(h&&h.innerHTML)h.innerHTML=''; DLY_R=null;}
+
+/* ---- THE ONE WRITE. The first open of the Summary each local day. ---- */
+function sumDayOpen(){
+ try{
+  if(S.tab!==TAB.SUMMARY||!CURP||!dlyIsRec(CURP))return;
+  var r=DLY_R||computeSeen(), now=Date.now(), d=dlyDay(now);
+  if(r.unread||dlyToday(CURP,now))return;
+  if(DLY_TRIED&&DLY_TRIED.get(CURP)===d)return;
+  var o=dlyDayOpen(CURP,now,pSave,{r:r});
+  if(o.result==='error'){
+   if(DLY_TRIED)DLY_TRIED.set(CURP,d);
+   if(o.why!=='NotARecord')status(/could not save/.test(o.why)
+    ?'Today\'s summary was not saved. Storage is full or blocked.'
+    :'Today\'s summary was not saved. '+o.why,'fail');}
+  sumDayPaint(r);}
+ catch(e){if(typeof console!=='undefined')console.error(e);}}
+
+/* ---- the writes a person makes, each through the engine's boundary ----
+   A refused write changes nothing, because the engine returns a new bank and
+   the old one is only replaced once the save has it. */
+function dlyCommit(res){
+ if(!res||!res.ok){status('Not saved. '+((res&&res.errs&&res.errs[0])||'The record refused it.'),'fail'); return false;}
+ var old=CURP.summaries; CURP.summaries=res.S;
+ if(!pSave()){CURP.summaries=old; statusSaved(); return false;}
+ statusSaved(); return true;}
+function dlyWire(h){
+ if(!h||h._dlw)return; h._dlw=1;
+ h.addEventListener('toggle',function(ev){var d=ev.target;
+  if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
+ h.addEventListener('input',function(ev){
+  var t=ev.target; if(!t||t.id!=='dlaimin')return;
+  var b=t.form&&t.form.querySelector('.dl-go'); if(b)b.disabled=!t.value.trim();});
+ h.addEventListener('submit',function(ev){
+  var f=ev.target; if(!f||!f.getAttribute||!f.getAttribute('data-dlaim'))return;
+  ev.preventDefault();
+  var i=f.querySelector('#dlaimin'), v=i?i.value.trim():'';
+  if(!v||!CURP)return;
+  if(dlyCommit(dlyAimSet(CURP,Date.now(),v,null)))sumDayPaint(DLY_R);});
+ h.addEventListener('click',function(ev){
+  var b=ev.target.closest?ev.target.closest('[data-dlmark]'):null; if(!b||!CURP)return;
+  if(dlyCommit(dlyAimAnswer(CURP,b.getAttribute('data-sid'),b.getAttribute('data-dlmark'),Date.now())))
+   sumDayPaint(DLY_R);});}
+
+try{window.__at&&window.__at('ui/daily.js');}catch(e){}
 
 /* ============================================================
    ANALYTICS. Bubbles. Size is magnitude, colour is seat or tier. The
@@ -55066,7 +55368,9 @@ function setTab(i){
     Summary and #ana stopped being a child of #sum, so leaving one no longer
     has anything to say about the other. Each empties only its own host. */
  if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
-  var sb=$('sumbody'); if(sb)sb.innerHTML='';}
+  var sb=$('sumbody'); if(sb)sb.innerHTML='';
+  /* and its side column, today's sentences, for the same reason */
+  if(typeof sumDayClear==='function')sumDayClear();}
  if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
   var ab=$('ana'); if(ab)ab.innerHTML='';}
  /* ACCOUNTABILITY PRINTS A RECORD, so it is emptied on the way out for the
@@ -55230,6 +55534,9 @@ function setTab(i){
   WANT[TAB.STORY]={right:['simp']};
   /* the Character page's words are the right rail's own section, round PE */
   WANT[TAB.MASKS]={right:['chr']};
+  /* the Summary's rail is today's summary, ui/daily.js, opened the first
+     time the page is reached */
+  WANT[TAB.SUMMARY]={right:['today']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
@@ -55268,7 +55575,9 @@ function setTab(i){
     called both on entry to Summary, back when Analytics had no door of its
     own and rode in on Summary's arrival; now each tab renders only itself,
     the same shape as every other entry below. */
- if(i===TAB.SUMMARY)sumRender();
+ /* and entering the Summary is the open that freezes today's summary, once
+    a local day, after the page is painted and never inside its render */
+ if(i===TAB.SUMMARY){sumRender(); if(typeof sumDayOpen==='function')sumDayOpen();}
  else if(i===TAB.ANALYTICS)anaRender();
  /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
     the cone marker on the Field stage, then a button inside the drill that
@@ -63275,7 +63584,8 @@ function render(){
     (ui/character.js). It was renderMasks, the Body's figure with the masks
     alone on it, which he ruled replaced in full. */
  else if(S.tab===TAB.MASKS)renderCharacter(r);
- else if(S.tab===TAB.SUMMARY)sumRender();
+ /* a profile loaded while the Summary is open is that profile's first open */
+ else if(S.tab===TAB.SUMMARY){sumRender(); if(typeof sumDayOpen==='function')sumDayOpen();}
  else if(S.tab===TAB.ANALYTICS)anaRender();
  /* a release, an undo and a profile change all move what the Story's
     release column offers and what its vault holds, and none of them passes
@@ -63555,5 +63865,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004160419"></div>
+<div id="eof" hidden data-len="004178643"></div>
 </body></html>

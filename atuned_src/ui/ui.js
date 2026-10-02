@@ -1540,7 +1540,8 @@ function render(){
     (ui/character.js). It was renderMasks, the Body's figure with the masks
     alone on it, which he ruled replaced in full. */
  else if(S.tab===TAB.MASKS)renderCharacter(r);
- else if(S.tab===TAB.SUMMARY)sumRender();
+ /* a profile loaded while the Summary is open is that profile's first open */
+ else if(S.tab===TAB.SUMMARY){sumRender(); if(typeof sumDayOpen==='function')sumDayOpen();}
  else if(S.tab===TAB.ANALYTICS)anaRender();
  /* a release, an undo and a profile change all move what the Story's
     release column offers and what its vault holds, and none of them passes
