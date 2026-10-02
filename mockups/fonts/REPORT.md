@@ -10,7 +10,7 @@ Brief: future technology, frictionless, easy to read, loved. Every face is base6
 
 ## Ranking (measured at 1600 and 390, see png/)
 1. **Geist.** Reads newest, neutral, 5 percent narrower than Inter (hero line 867 vs 915 px), so no label wraps. x height 0.53 em. Own matching mono. Weak spot: at 14 px on a 1x screen the dots on the u with a diaeresis touch the stem rows (gap 0 px, Inter has 1). Still reads as u with dots, clean at 2x and above and at 56 px. Keep 14 px text at 400, not 600.
-2. **Manrope.** Calmer, rounder. 24.3 KB raw, 31.1 KB base64 at 300 to 700. Clean dots (gap 1 px).
+2. **Manrope.** Calmer, rounder. 24.3 KB raw, 31.1 KB base64 at 300 to 700. Clean dots.
 3. **Onest.** Safest swap. Looks like Inter, 40.6 KB base64, so little visible change.
 4. Sora. Most futuristic, but 5 percent wider than Inter, buttons 7 percent wider, 44 KB. Wrap risk on a phone.
 5. Instrument Sans. Good text, no 300 weight, so the hero would be 400.
