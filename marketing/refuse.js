@@ -120,11 +120,73 @@ const RULES = [
     why: 'The instrument reads self report and is not qualified to diagnose or treat. The engine already holds the clinical correspondences internally and refuses to print them at the person they are about, and marketing may not undo that from outside.',
     src: 'engine/data/nodes.js, the note on HCX_LIB sub.',
     re: [
-      /\b(cures?|curing|cured|treats?|treating|treatment for|heals?|healing)\s+(your\s+)?(anxiety|depression|ptsd|trauma|adhd|bipolar|burnout|insomnia|addiction)\b/,
+      /\b(cures?|curing|cured|treats?|treating|treatment for|heals?|healing)\s+(your\s+)?(anxiety|depression|ptsd|trauma|adhd|bipolar|burnout|insomnia|addiction|mental illness\w*|mental health conditions?|illness\w*|diseases?)\b/,
       /\b(diagnos\w+)\b/,
       /\b(clinically proven|medically proven|fda|evidence based therapy)\b/,
       /\b(you (have|may have)|signs? (that )?you have)\s+(anxiety|depression|ptsd|adhd|bipolar|c?ptsd)\b/,
-      /\b(replaces?|instead of) (therapy|medication|your doctor)\b/
+      /* MASTER BMT TDD SECTION 20, "WHAT NOT TO ADVERTISE", ADDED 2 OCTOBER.
+
+         The five patterns above caught five of the twenty lines in the known
+         bad set (reviews/MASTER-BMT-AUDIT.md 3.1 and section 20's own list),
+         and every line they missed was on section 20's list. One pattern per
+         item, each with the line that passed before this was written:
+
+           replaces therapy, replaces clinicians  "It replaces clinicians."
+           heals you (section 5, "AI heals you")  "AI heals you."
+           finds disease in the body              "It finds disease in the body."
+           predicts illness                       "Atuned predicts illness."
+           measures energetic frequencies         "It measures energetic frequencies."
+           scientifically maps chakras            "Your chakras are scientifically mapped."
+           reprograms the brain                   "It reprograms the brain."
+
+         "Unless validated" and "unless substantiated" are in section 20's
+         wording. Nothing in this product is either, so these patterns carry
+         no exception. When one is, the exception is a named entry in
+         tests/claims.js HELD with its evidence cited, never a wider pattern. */
+      /\b(replaces?|replacing|instead of|substitute for|alternative to|no need for) (a |an |your )?(therapy|therapists?|counsell?ing|counsell?ors?|medication|medicine|your doctor|doctors?|clinicians?|psychiatrists?|psychologists?|clinical care|treatment)\b/,
+      /\b(heals?|cures?|fixes) you\b/,
+      /\b(finds?|detects?|spots?|locates?|screens? for|sees?)\b[^.]{0,30}\b(diseases?|illness\w*|tumou?rs?|cancer|infections?|disorders?)\b/,
+      /\b(predicts?|predicting|forecasts?|foresees?)\b[^.]{0,20}\b(illness\w*|diseases?|sickness|cancer|relapses?|breakdowns?|heart attacks?)\b/,
+      /\b(measures?|measuring|detects?|scans?|reads?) (your |the )?(energetic|energy|vibrational|biofield|auric) (frequenc\w+|vibrations?|levels?|signatures?)\b/,
+      /\b(scientific\w*|clinical\w*|medical\w*|proven|validated)\b[^.]{0,30}\bchakras?\b/,
+      /\bchakras?\b[^.]{0,30}\b(scientific\w*|proven|validated|measured)\b/,
+      /\b(re-?program\w*|re-?wir\w+|re-?cod\w+|re-?train\w*)\b[^.]{0,12}\b(brains?|neural pathways|neurons|dna|genes)\b/
+    ]
+  },
+  {
+    id: 'cause',
+    why: 'A framework is not a medical fact. The book models a link between what is running in a person and what their body does, and nothing here has measured that link in anybody, so a line that names the cause of an illness or a symptom states as known what is at most a hypothesis.',
+    src: 'reviews/ATUNED-Master-BMT-TDD.md section 20, "knows the true cause of physical symptoms" and "Do not turn a framework into a medical fact"; section 3, the claims boundary; reviews/MASTER-BMT-AUDIT.md 3.1 and 3.2.',
+    re: [
+      /* each written against a line that passed every rule before it:
+           "It knows the true cause of your back pain."      audit probe
+           "Mindset programming is the cause."               funnel/index.html, meta
+           "... is making us ill."                            funnel/index.html
+           "... the leak shows up as ... disease."            funnel/index.html
+           "... the leak is what promotes ... disease."       funnel/quiz.html
+         The last four are the owner's own words and are held by name in
+         tests/claims.js HELD, waiting on his ruling. Caught first and held
+         second, so the hold is printed on every run rather than hidden. */
+      /\b(true|real|root|hidden|actual|underlying) causes? of\b/,
+      /\b(is|are|was|were) the (root |real |true |underlying |hidden |actual )?cause\b/,
+      /\b(is|are|was|were) (what'?s? |what is )?(making|keeping|getting) (us|you|people|them|everyone|everybody) (ill|sick|unwell)\b/,
+      /\b(makes?|made) (us|you|people|them|everyone|everybody) (ill|sick|unwell)\b/,
+      /\b(shows? up as|promotes?|causes?|leads? to|turns? into|produces?|breeds?)\b[^.]{0,50}\b(diseases?|illness(es)?|sickness)\b/
+    ]
+  },
+  {
+    id: 'ai',
+    why: 'Nothing in the shipped instrument is a model. The reading is arithmetic, and the one machine made thing a person meets is a synthetic voice reading a list. A line that sells it as an AI clinician sells a capability it does not have, in the one category where the false claim is also a medical one.',
+    src: 'reviews/ATUNED-Master-BMT-TDD.md section 5, "Do not lead with"; reviews/MASTER-BMT-AUDIT.md 3.3.',
+    re: [
+      /* section 5's five leads: "An AI therapist in your pocket.", "Your AI
+         clinician, always on.", "Get an AI diagnosis tonight.", "The AI knows
+         what is wrong with you.", "AI heals you." An AI diagnosis is also
+         refused by medical, and is here as well so this rule stands on its
+         own when medical is removed. */
+      /\bai[- ]?(powered |driven |based )?(therapist|therapy|clinician|counsell?or|counsell?ing|doctor|psychologist|psychiatrist|diagnos\w*|healer|nurse)\b/,
+      /\bai (heals?|cures?|treats?|diagnoses|fixes|repairs)\b/,
+      /\bknows what('?s| is) wrong with you\b/
     ]
   },
   {
@@ -308,7 +370,7 @@ const BODYWORDS = ['back', 'gut', 'chest', 'abdomen', 'pelvi', 'pelvis', 'hip', 
    the one line in the system whose entire job is to not invent one.
 
    It is exempt from the physical requirement only. It still has to be in his
-   form and still has to pass all nine refusal rules. */
+   form and still has to pass every refusal rule. */
 const NOBODY = { H18: 'the clear entry. Nothing is held, so there is no place to name.' };
 
 function form(h) {

@@ -77,8 +77,8 @@ different questions and the second one is the one this product lives on.
 
 ## What the gate refuses, and why each rule exists
 
-Nine rules. Every one carries its reason and its source in `refuse.js`, and
-every one has a deliberate violation written against it in `hooksim.js`
+Every rule carries its reason and its source in `refuse.js`, and every one
+has a deliberate violation written against it in `hooksim.js`
 validation group 5.
 
 | Rule | What it catches | Why |
@@ -86,7 +86,9 @@ validation group 5.
 | `countdown` | closing dates, deadlines, hours remaining, before it is too late | **Nothing in this product expires**, including unaccrued allowance. A countdown is a fabrication about the product itself |
 | `scarcity` | only N left, limited spots, filling fast, while stocks last | There is no inventory. A single file with no backend cannot run out |
 | `testimonial` | join N people, N out of ten users, rated by thousands, average user reports | **There are no users yet.** Any user voice or user figure is invented, and a fabricated proof point cannot be walked back once it ships |
-| `medical` | cures, treats, heals a named condition, diagnoses, clinically proven, replaces therapy | The instrument reads self report. The engine already holds the clinical correspondences internally and refuses to print them at the person they are about, and marketing may not undo that from outside |
+| `medical` | cures, treats, heals a named condition, heals you, diagnoses, clinically proven, replaces therapy or a clinician, finds disease, predicts illness, measures energetic frequencies, scientifically mapped chakras, reprograms the brain | The instrument reads self report. The engine already holds the clinical correspondences internally and refuses to print them at the person they are about, and marketing may not undo that from outside |
+| `cause` | the true cause of, is the cause, is making us ill, shows up as or promotes disease | A framework is not a medical fact. Nothing here has measured the link the book models, so naming the cause of an illness states a hypothesis as known. Master BMT TDD section 20 and section 3 |
+| `ai` | AI therapist, AI clinician, AI diagnosis, AI heals, knows what is wrong with you | Nothing in the shipped instrument is a model. Master BMT TDD section 5 |
 | `lossframe` | lose your progress, do not lose, falling behind, back to zero, streak resets, before it gets worse | The measured one. See points 1 to 3 above |
 | `urgency` | act now, hurry, do not wait, today only | Restraint on urgency here is not squeamishness, it is counter signalling. An instrument that shouts is a toy |
 | `verdict` | you are broken, what is wrong with you, the real reason you, stop making excuses | The reading names an address and a load, never a character. On this audience it also recruits the charge it is aiming at |
@@ -150,7 +152,7 @@ would be worse than one that names them as a person's job.
    runs on is readable inside the product" is true. Put beside a claim of
    accuracy it has not earned, it proves the wrong thing.
 2. **Whether a line is aimed at a charge the person is actually carrying.** That
-   is what `hooksim.js` measures. A line can pass all nine rules and still be
+   is what `hooksim.js` measures. A line can pass every rule and still be
    aimed at somebody it does not fit.
 
 And the voice skill's own gate names four more it cannot check, of which the

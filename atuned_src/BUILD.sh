@@ -104,6 +104,18 @@ PY
 # greens disagree. Regenerated on every build from the block above.
 python3 ../tools/tokens.py
 
+# THE CLAIMS GATE, ON EVERY BUILD, because it was a gate that nothing ran.
+#
+# marketing/refuse.js existed and was required by no test and called by no
+# build, so "Mindset programming is the cause." and "is making us ill" sat on
+# the public landing page through every green run. tests/claims.js reads every
+# string a stranger can read on the funnel, its sendable copies, the legal
+# pages, the engine's printed tables and the hooks, and refuses a medical,
+# causal, AI, testimonial or scarcity claim. It proves itself against a known
+# bad set before it reads a page. The owner's own lines that break it are held
+# by exact sentence and printed on every run until he rules on them.
+node ../tests/claims.js
+
 # THE DELIVERY BUILD, SMALLER, because the file was arriving cut.
 #
 # His browser reported "THE FILE IS SHORT. The end of it never arrived." with

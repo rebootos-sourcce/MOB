@@ -23,7 +23,7 @@ This directory is that lookup, built and measured. Nothing in it touches
     node marketing/hooksim.js --validate    the five validation groups alone
     node marketing/hooksim.js --sweep       the sensitivity tables alone
     node marketing/field.js        the panel, and its four validation groups
-    node marketing/refuse.js "a line"       one line against the nine rules
+    node marketing/refuse.js "a line"       one line against every rule
     node marketing/testimony.js    the simulated testimonial exercise
 
 Read the counts off the run. This file does not restate them.
@@ -209,7 +209,7 @@ it by name.
 
 It is a gate rather than a paragraph, because `TASKS.md` MS4 says the refusal
 has to survive the marketing system or the system will quietly find its way
-back to loss framing. Nine rules, each with its reason and its source, each with
+back to loss framing. Every rule carries its reason and its source, and each has
 a deliberate violation written against it that has to be caught by the full gate
 and has to pass when that one rule is removed. A gate nobody has broken on
 purpose is a gate nobody has tested.
