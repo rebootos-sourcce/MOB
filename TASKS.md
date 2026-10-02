@@ -32188,3 +32188,13 @@ One real flaw caught and fixed before it ever reached the branch: the first cut 
 Gates on the pushed tree: engine 4693/0 (re-run here, not only trusted), journey 142/0, onboarding2 181/0 (reloads after each of the five answers, and asserts no evidence edge reaches a released address), collide 831/0, design 187/0, voice clean. One loose end, backlog: the card's eyebrow renders "What Changed?" in title case through the shared eyebrow style, against the sentence-case rule; house-wide style, not this card's.
 
 Of the three breaks: the silent profile refusal is fixed, the missing what-changed step is fixed. Still open: the mirror's Yes and Not me never reach the graph or the Field rail (F16, the next closure).
+
+## Round QD/QE closed: twelve profiles and the AX8/vritti fix both landed
+
+Both survived the second model-switch restart cleanly (both agents had already committed everything, nothing to checkpoint this time) and are merged, verified on the real tree, pushed.
+
+**Twelve profiles** (`cf2fde8`): the roster is cut from 44 to 12, spread across real CQ, with four profiles labelled "Lance, developer" at CQ 15, 50, 85 and 100 as asked. Every one of the twelve carries real bank and vault depth produced by the actual engine writers (`engine/exdepth.js`, new), not hand-typed. `tests/engine.js` grew a QD group testing exactly this: "every worked example's bank and vault, replayed through the real writers." `tests/personas-tier.js` still passes with no changes needed, confirming it really does read the roster at run time as designed.
+
+**AX8 and the vritti wording** (`d1ae66f`): both screens that named these fixed, checked against the book's own definitions first rather than guessed. `tests/unpack.js` 838/0 on the merged tree.
+
+Gates on the fully merged tree: engine 4436/0, unpack 838/0.
