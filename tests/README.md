@@ -79,6 +79,12 @@ binds `localStorage`.
                                example. The last three are also called from
                                functional.js, and each fails on the build from
                                before its change.
+    node tests/personas-tier.js every worked example opens on a live tier four
+                               plan with nothing locked, read off the record with
+                               the SIGHT_PLAN seam off, and the person's own
+                               record keeps its own tier and is never written to
+                               tier four. Fails on the build from before Round
+                               PS (e0c46d6^) and on one example left unexempted.
 
 All three resolve `source.html` from the working directory, so run them from the
 repo root.
