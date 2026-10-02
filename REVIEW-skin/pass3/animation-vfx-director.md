@@ -2,8 +2,6 @@
 
 GRADE: 68/100 (pass 1 was 70, pass 2 was 66)
 
-I re-read the code behind my part before writing this. Three facts changed my spec, and they are in section 5.
-
 ## 1. THE PROPOSAL IN THREE SENTENCES
 
 - "Tare" puts one pre-drawn light figure on the Field, Summary and Avatar, shows the loop as one closed ring in the top bar, and holds every surface to one grammar of colour, type, shape and motion.
@@ -19,7 +17,7 @@ I re-read the code behind my part before writing this. Three facts changed my sp
 - **Marta, acute distress.** Unread: a still outline and one sentence. Nothing faster than the breath. Stays only on calm. "Please do not flash at me."
 - **Renata, operator.** Opens it forty times. Land is 320 ms and only on her own change. Stays. "It stayed out of my way."
 - **Trey, quiz tourist.** Arrives unread. A still outline is a dead dial, so he leaves in four seconds without one cue. "Nothing is happening."
-- **Sofia, open tables.** Barely looks at the Field. The figure is the only thing breathing, so nothing competes with her door. Stays. "Where is the data?"
+- **Sofia, open tables.** Barely looks at the Field. Only the figure breathes, so nothing competes with her door. "Where is the data?"
 
 ## 3. UNIFIED QUALITY: 72/100
 
@@ -32,16 +30,16 @@ Against one voice of motion from first screen to habit. Three biggest gaps left:
 ## 4. FINAL GRADE: 68/100
 
 - Up 2: the Compass fix is scoped to exact lines and Land at 320 ms needs no gate edit.
-- Held down: nothing is built; unread and the Release body are open.
+- Held down: nothing is built; unread and Release are open.
 - Standing: reduced motion 9, alive at rest 8, data 8, tokens 6, frame budget 6, release 3.
 
 ## 5. MY PART OF THE BUILD SPEC
 
 ### What I found in source that changes the spec
 
-- **The bead ease is already on elapsed time.** `wheel.js` `draw()` uses `1-exp(-9.05*dt)` with dt clamped at 100 ms. Pass 2 treated the 9.05 as new. It is built. What is not built is the fall rate of 4.5.
+- **The bead ease is already on elapsed time** (`wheel.js` `draw()`, `1-exp(-9.05*dt)`). Only the fall rate of 4.5 is unbuilt.
 - **Compass is frame counted in six places, not one.** All in `ui/cone.js` `coneTick`: `CONE.spin+=0.0022` (line 2587), `CONE.t+=1/60` (2596), `coneMirStep(1/60)` (2597), spin chase `gap*0.12` (2586), zoom chase `*.2` (`coneZoomStep`, line 131), pluck decay `TP*.965` (1788). At 120 Hz every one runs twice as fast. Measured by arithmetic: one turn is 0.0022 x 60 = 0.132 rad/s, 47.6 s at 60 Hz, 23.8 s at 120 Hz. The Compass breath (`sin(TAU*CONE.t/4.2)`) becomes 2.1 s on a fast screen.
-- **Land equals the surface step.** `--t-surface` is already 320 ms and `--ease-land` already exists in `shell/head.html`. So `--t-land: var(--t-surface)` passes gate 12 (`ALLOW` in `tests/design.js` line 667) with no edit. Drop my 260 to 340 ms range. Land is 320 ms.
+- **Land equals the surface step.** `--t-surface` is 320 ms and `--ease-land` exists in `shell/head.html`, so `--t-land: var(--t-surface)` passes gate 12 (`tests/design.js` line 667) with no edit. My 260 to 340 ms range is dropped.
 - **Two clocks exist.** `S.t` (`ui.js` line 1500) and `CONE.t`. They should be one.
 
 ### The `MOTION` object (in `ui/component.js`, next to `REDUCED` at line 1110)
@@ -76,9 +74,7 @@ Periods: 2.1, 4.2 or 8.4 s only, with one exemption: the Registers breathe at `4
 
 ### Period snaps (S, `ui/wheel.js`)
 
-- Line 385: `Math.sin(S.t*1.4)` (4.49 s) becomes `Math.sin(S.t*TAU/4.2)`.
-- `PUL_WAVE_HZ` 0.11 (9.09 s) becomes `1/8.4`.
-- Line 355 spin at `S.t*.05` is a slow drift, not a period; leave it.
+- Line 385: `sin(S.t*1.4)` (4.49 s) becomes `sin(S.t*TAU/4.2)`. `PUL_WAVE_HZ` 0.11 (9.09 s) becomes `1/8.4`. Line 355 spin is a drift; leave it.
 
 ### The four verbs, with the exact job
 
@@ -101,17 +97,17 @@ Periods: 2.1, 4.2 or 8.4 s only, with one exemption: the Registers breathe at `4
 
 ### Build order
 
-1. Compass elapsed time and the 60 Hz against 120 Hz gate. **S**, `ui/cone.js`, the new gate.
-2. Period snaps. **S**, `ui/wheel.js`, design gate 12 plus the new periods check.
-3. `MOTION` object and `--t-land`, one clock. **M**, `ui/component.js`, `shell/head.html`, token gate.
-4. Land on selection, floor .45, locks and unread still. **S**, `shell/head.html`, design gate 12.
-5. Cut `transition:all`, name the properties. **S**, `shell/head.html`, the count gate.
+1. Compass elapsed time. **S**, `ui/cone.js`, the 60 against 120 Hz gate.
+2. Period snaps. **S**, `ui/wheel.js`, the new periods check.
+3. `MOTION` object, `--t-land`, one clock. **M**, `ui/component.js`, `shell/head.html`, token gate.
+4. Land on selection, locks and unread still. **S**, `shell/head.html`, gate 12.
+5. Cut `transition:all`. **S**, `shell/head.html`, the count gate.
 6. Release body and Commit settle. **M**, `ui/release.js`, `ui/storyui.js`, `tests/functional.js`.
-7. Loop ring clockwise turn, one transform. **M**, top bar in `ui/ui.js`, design gate.
+7. Loop ring clockwise turn. **M**, `ui/ui.js`, design gate.
 
 ### Frame cost and reduced motion
 
-- Steps 1 to 5 add about ten operations a frame. Compass has 0.7 ms of headroom (7.3 against 8 ms); I add no drawing there.
+- Steps 1 to 5 add about ten operations a frame. Compass has 0.7 ms headroom (7.3 of 8 ms); no drawing added.
 - Land, ring and Breathe are `transform` and `opacity` on one element each: compositor only.
 - Reduced motion gets the end state: no overshoot, ring and counters already landed, clock frozen.
 
