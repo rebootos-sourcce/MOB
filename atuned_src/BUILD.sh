@@ -17,6 +17,13 @@ for f in $MODS; do
   esac
 done
 
+# NO TWO MODULES MAY DECLARE THE SAME TOP LEVEL FUNCTION.
+#
+# Concatenation means the second declaration silently wins: whichever body
+# actually runs is decided by MANIFEST order, not by either author's intent,
+# and nothing before this threw to say so.
+python3 dupefunc.py $MODS || exit 1
+
 # EVERY MODULE SAYS IT FINISHED.
 #
 # A build came back from the owner reporting that the script never reached the
