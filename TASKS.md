@@ -31801,3 +31801,7 @@ One structural cause under all five, not five separate mistakes: Story, Avatar a
 Three more defects found in passing, all measured, none yet fixed: the Summary still prints "62%" against round PQ's no-percent ruling on the headline number; 71 to 84 words print twice on the Summary for each profile checked; `pq-ritual`'s "Success by class" prints "3 of 6 days" with a filled bar, which is a count against a total even with no percent sign, against the project's own "never a count against a total" rule.
 
 Neither `pr-avatar` nor `pq-ritual` merges as it stands. The "after" pictures are layout sketches of the proposed fix, not a real build. Waiting on him before anything is built from this.
+
+## pw-headers2 landed, round PX
+
+Headers reversed as asked. Release keeps its original big bold style, nothing shrunk; Journal and Imprints raised to match it. The six reference pages (Analytics, Compass, Knowledge, Clients, Games, Settings) left untouched, that was never his complaint. `tests/headers.js` flipped to expect the big style on the five cluster spots and the small style on the six references, checked separately so one can't be mistaken for the other; 52/52, and it fails by name on both earlier builds (no-header and the one he just failed) proving it actually catches the regression. Gates clean apart from the same shared-load timing flakes on `design.js`, already proven environmental, and `functional.js` not finishing after three attempts under that same load, held rather than faked. Pictures sent. Committed `8d749af` on `pw-headers2`, not pushed.
