@@ -83,7 +83,9 @@ function sumGlance(r,noCQ){
      like third tier tiny information that no one's ever going to read." The
      line stays only where the figure has no unit of its own, which is where
      the scale is information. */
-  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'How closely you keep the 21 laws, all added up.',
+  /* round PQ: the headline reading is a number and not a percent, on this
+     tile by name ("the Summary tile"), for coherence and the shadow below */
+  ['coherence', r.darkB, r.CQ, String(Math.round(r.CQ)), 'How closely you keep the 21 laws, all added up.',
    '', TIERCOL[r.tier]],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
@@ -96,7 +98,7 @@ function sumGlance(r,noCQ){
      BOTH ARE FIXED BY THE RULING OF 25 SEPTEMBER rather than here. DQ is the
      total shadow on all 112 over the most they can hold, so it has a ceiling
      of 100 and the ring is the figure, on the same scale as coherence. */
-  ['shadow weight', 'Root', r.DQ, Math.round(r.DQ)+'%',
+  ['shadow weight', 'Root', r.DQ, String(Math.round(r.DQ)),
    'All the charge on all 112 addresses, against the most they could hold.',
    ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
@@ -287,7 +289,10 @@ function sumStory(r){
    +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
      +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
    +'<span class="s-blk">What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
-   +sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '+sumUn('archetype:'+arch.toLowerCase())+' '
+   /* the running root is said once. When it is the born root, this same
+      paragraph has just said what it means, three lines up, and saying it
+      again was the 14 to 18 words Sofia and Angela read twice */
+   +sumUn('running')+' '+(elRoot===rootNow?'':sumUn(rootNow.toLowerCase())+' ')+sumUn('archetype:'+arch.toLowerCase())+' '
    +(elRoot===rootNow
      /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
         runs another, and the instrument can say they differ. It cannot say
@@ -831,11 +836,11 @@ function sumBorn(B){
     old line, "Earth, fixed. Builds and holds.", described the root with two
     words nobody had defined, and it said fixed of every Architect, though a
     Capricorn is cardinal. */
- rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
+ if(!sumSaid(unpackOf('symbolic reading')))rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
  var elSay=unpackOf(sp.sunEl), sgSay=unpackOf(sp.sun,'sign');
  rows+=sgMeet('root',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
   'Root',sp.root,[unpackOf(sp.root.toLowerCase()),
-   sp.sun?unpackOf('sun sign'):'',sgSay,elSay],'',rootPlain(sp.root),
+   sp.sun?unpackOf('sun sign'):'',sgSay,elSay].filter(function(x){return !sumSaid(x);}),'',rootPlain(sp.root),
   unp('root','Root'),unp(sp.root.toLowerCase(),sp.root));
  var sh=R.shown||[], anyLight=sh.some(function(a){return a.strength==='light';});
  if(sh.length)rows+='<p class="sg-note"><span>'+unpSay('overlap')+'</span>'
@@ -859,7 +864,7 @@ function sumNamed(B){
  else rows+='<p class="sg-note">No root meaning on file for '
   +parts.map(function(p){return esc(p.text);}).join(', ').replace(/, ([^,]*)$/,' or $1')+'.</p>';
  if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
-  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')],'',null,unp('expression','Expression'));
+  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')].filter(function(x){return !sumSaid(x);}),'',null,unp('expression','Expression'));
  return sgStage(2,'Named',rows);}
 function sumRealName(){
  var nm=capName(String((CURP&&CURP.name)||'').trim());
@@ -878,7 +883,12 @@ function sumPlate(r,B){
       one place on this page that names the band, so its ring has to mean the
       band. It was drawn in r.darkB, so a person at Embodied whose heaviest
       seat was the Root got a red ring on the second best reading there is. */
-   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false,
+   /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
+      need to be a percent. Just a number." This plate is the Summary's
+      headline and it still read 62%, measured 2 October by the visual review
+      after the ruling had landed everywhere else. The ring keeps the share as
+      its arc; only the sign goes. */
+   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:String(Math.round(r.CQ)),hot:false,
       color:TIERCOL[r.tier]||undefined})
    /* and the word wears it too. A ring in one colour beside the same band
       printed in the body colour reads as two facts, not one. */
@@ -1036,8 +1046,33 @@ function sumOutput(r){
     :m?card('Next marker','None left','Every marker is behind you',''):'')
   +'</div>';}
 
+/* ============================================================
+   ONE MEANING, PRINTED ONCE PER PAGE. Measured 2 October by the visual
+   review and again here: 111 to 130 words printed twice on every worked
+   example's Summary, three times for Sofia's root. The Reading unpacks every
+   term inline, as round PO ruled for exactly that sentence, and the drivers
+   card beside it then printed the same table sentences again as rows, under
+   titles that already carry them as tooltips. Both halves were following
+   the unpack rule, and between them the page said each meaning twice.
+
+   So the Reading is built first and its text is held for the length of one
+   render, and a row on the drivers card leaves out any sentence the Reading
+   already printed. The term on the card keeps its carrier, so the meaning is
+   still one hover or tap away in the same place, which is the rule's own
+   second shape. On a page with no Reading, the unread one, nothing is held
+   and the card prints in full. */
+var SUM_SAID=null;
+function sumPlain(html){
+ return String(html||'').replace(/<[^>]*>/g,' ').replace(/&quot;/g,'"').replace(/&#39;/g,"'")
+  .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/\s+/g,' ');}
+function sumSaid(x){
+ if(!SUM_SAID||!x)return false;
+ return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
  var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
+ var told=sumToldHtml(), story=sumStory(r), drv;
+ SUM_SAID=sumPlain(told+story);
+ try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
  /* THE ORDER IS THE ORDER A PERSON ASKS IN, and every group is one question.
     Who is this. What did they say, and what do their roots say beside it. What
     is running, and what does it cost. What do they do about it. Then, folded
@@ -1050,9 +1085,9 @@ function sumFull(r){
      it, and evidence goes first. It stands on the first screen, left of the
      roots, and the phone reads it before them. */
   +'<div class="sg-two sg-lead">'
-   +'<section class="sg-card sg-story" data-grp="story">'+sumToldHtml()
-    +'<div class="s-readbox sg-flat">'+sumStory(r)+'</div></section>'
-   +sumDrivers(B,r)
+   +'<section class="sg-card sg-story" data-grp="story">'+told
+    +'<div class="s-readbox sg-flat">'+story+'</div></section>'
+   +drv
   +'</div>'
   +sumMarks(B,r)
   +'<div class="sg-two">'
