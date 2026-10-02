@@ -28,6 +28,40 @@
      the flying word chip. The bars rise on their own spring as a word lands,
        which is the same event, drawn once rather than twice.
    ============================================================ */
+/* THE THREE COLUMNS WEAR THEIR NAMES. Round QB, his words: "For the font
+   titles for the journal, I don't want source. I want journal, the word
+   journal and prints and release. And I want them to have a font and symbolic
+   icon that reflects them. So when I come here, it looks branded."
+
+   The left column had no name of its own. The first title in it read Source
+   AI, over the question box, and Source is already a canon word with its own
+   meaning in kb.js: the field before any pattern is put in. So the column is
+   Journal now, and the question box carries no eyebrow.
+
+   One mark per column, one shape for all three: a ring icon on the 24 unit
+   grid, stroked and never filled, beside the word, which is a carrier of the
+   word's sentence in engine/data/gloss.js. Three treatments of the one
+   typeface the build carries, each saying what the column does:
+     Journal   light, 300. Ink going on to the page.  The mark is a pen nib.
+     Imprints  heavy and tight, 700. Pressed in, held. The mark is the rail's
+               own three rings for Imprints, reused, never redrawn.
+     Release   regular, tracked wide. Coming apart.   The mark is a ring open
+               at the top, and the charge leaving through the gap as three
+               small rings. A line through the gap was the first cut, and
+               measured at its real size it read as a power button.
+   Knowledge already owns the open book and Story owns the page, so neither
+   is used here: a second drawing for a named thing is a second name for it. */
+var ST_MARK={
+ j:'<path d="M12 21l-5-6.5L9.2 5.5h5.6L17 14.5z"/><path d="M12 21v-7.4"/>'
+  +'<circle cx="12" cy="12.2" r="1.4"/><path d="M9 3h6"/>',
+ i:'<circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/>',
+ r:'<path d="M8.14 10.4A6 6 0 1 0 15.86 10.4"/>'
+  +'<circle cx="12" cy="8.4" r="1.3"/><circle cx="9.2" cy="4.9" r="1.3"/><circle cx="14.6" cy="2.9" r="1.3"/>'};
+function stMark(k,word,term,cls,tail){
+ var a=unpAttr(term,null,word);
+ return '<div class="st-mk st-mk-'+k+(cls?' '+cls:'')+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+ST_MARK[k]+'</svg>'
+  +'<h3'+(a?' class="tipu"'+a:'')+'>'+esc(word)+'</h3>'+(tail||'')+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -54,7 +88,11 @@ function stRender(){
      browser vendor. So the fact moved rather than went. It is in the
      button's own tooltip, on the one control that sends the audio anywhere,
      and it is off the page. */
+  /* the live dot came up here with the name, see srcPaint: it breathes while
+     the question box is idle and holds lit while it reads, and it sits beside
+     the word it was always beside. */
   +'<div class="st-hd">'
+   +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
    +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
      :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
@@ -102,7 +140,7 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
+  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   +srcComb()+'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -133,7 +171,7 @@ function stRender(){
   /* ---- the read column: the instrument over the list ---- */
   +'<div class="st-colr">'
   +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-   +'<div class="st-chd"><span class="st-eb">Imprints</span><span class="st-tag" id="stpend"></span>'
+   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
       vault, which is what's been released." Both were icons with their word
@@ -203,7 +241,7 @@ function stRender(){
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
  stRead(); stSortPaint();
- srcLock(h.querySelector('.st-glow'));
+ srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
@@ -785,8 +823,13 @@ function srcPaint(){
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
-    a claim, and the dot only says what is true: it reads on every key. */
- var o='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
+    a claim, and the dot only says what is true: it reads on every key.
+    ROUND QB TOOK THE NAME OFF THIS BOX. The eyebrow read "Source AI"; the
+    column is called Journal now and wears it in its own top row, see stMark,
+    so the dot went up with the name it sits beside. It is written once a
+    render there and not on every key here, which is cheaper, and the lock
+    below has nothing of its own left to put on the beat. */
+ var o='';
  var ask=turn.move==='ask'?srcAsk(turn,heard.top&&heard.top.words):'';
  /* an ask on screen is a question asked, 20.H5: its why and its seat */
  if(turn.move==='ask')srcLog(turn.why,turn.seat);
@@ -849,12 +892,11 @@ function srcPaint(){
  h.innerHTML=o;
  SRC_SHOWN=turn.move==='pass'?'':q;
  srcHearing(h);
- /* the dot is rebuilt with the column, so it is put back on the beat here,
-    but only when it is breathing: while it hears it is held lit and still,
-    and the lock is left to the moment it lets go, see srcHearing. Locking on
-    every key cost a forced layout a key, measured 143 to 190 over the same
-    typed line, on the one page where a key must cost nothing. */
- if(!h.classList.contains('hear'))srcLock(h.querySelector('.src-live'));
+ /* the dot used to be rebuilt here on every key and put back on the beat.
+    Since round QB it lives in the Journal row, which a key never rewrites,
+    so it is locked once a render with the halo, and again when it lets go,
+    see srcHearing. Locking on every key cost a forced layout a key, measured
+    143 to 190 over the same typed line, and that cost is gone with it. */
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
  var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
@@ -959,7 +1001,7 @@ function srcHearing(h){
  h.classList.add('hear');
  clearTimeout(SRC_HT);
  SRC_HT=setTimeout(function(){var e=document.getElementById('stsrc');
-  if(e){e.classList.remove('hear'); srcLock(e.querySelector('.src-live'));}},1100);}
+  if(e){e.classList.remove('hear'); srcLock(document.querySelector('#stjr .src-live'));}},1100);}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
    never sits in the document asserting a stale reading, the rule Summary
    already keeps. setTab calls this on every tab but Story. The bank closes
@@ -1547,7 +1589,7 @@ function stRelModel(){
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
  var M=stRelModel(), o='';
- o+='<div class="st-rlhd"><span class="st-ring"></span><h3>Release</h3></div>'
+ o+=stMark('r','Release','release','st-rlhd')
   +'<div class="st-rlmid">';
  /* The refusal stays, because with nothing held the panel would be a button
     that does nothing and no word why. */
