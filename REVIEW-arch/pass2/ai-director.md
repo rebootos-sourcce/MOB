@@ -16,24 +16,22 @@ Privacy checked first. Nothing below stores, counts, sends or exports anything n
 1. **Technical wants a new `p.ledger` and an `orchStep` returning hypotheses and a next action.** He also calls it a reducer. I take the reducer, refuse `p.ledger`. Sync needs ids on lists already stored (log, trace edges). Fix those, add no fifth store.
 2. **Seven states (proposal, narrative), seven classes (technical), three outcomes (creative).** I take three levels plus a closed `kind`. Ordinary and activated are the sniffer's reading by amount, not gate output. "Possible trauma" is a label on a person, so it is a cue (`past_harm`) that withholds labels and body steps on one entry.
 3. **Hypothesis.** Creative says cut, systems says a `proposed` trace edge plus a declined list. I side with systems, bounded by creative: one proposed edge, shown only as "Maybe" beside the person's quote, one at a time, never ranked, never "weakened".
-4. **Uiux wants local counts of care triggers.** No. Test care copy with scripts and consenting people.
-5. **Game wants a stored `careState`.** I want it derived: `sayNext` re-screens the newest entry's text. That text is already stored.
-6. **Correction to my pass 1.** Raw offsets exist: `normMap` (`sniff.js:285`) and `wordsOf` (`:361`). Only `distress.js` lacks them, since it reads through `lawNorm`.
+4. **Uiux wants local counts of care triggers, game a stored `careState`.** No to both. `sayNext` re-screens the newest entry's text, which is already stored. Test care copy with scripts and consenting people.
+5. **Correction to my pass 1.** Raw offsets exist: `normMap` (`sniff.js:285`) and `wordsOf` (`:361`). Only `distress.js` lacks them, since it reads through `lawNorm`.
 
 ## 3. WHAT I MISSED (measured on built `engine.js` plus branch reader `c1cbc1a`)
 
 | Text | Result |
 |---|---|
 | "I don't want to live anymore" | urgent |
-| same, with a curly apostrophe | **none** |
-| "I can’t go on" (curly) | **none** |
+| same, curly apostrophe | **none** |
 | "Nobody knows I want to die" | **none** (the word "nobody" voids it) |
 | "I cannot keep going" | none |
 | "This meeting makes me want to die" | urgent (false alarm) |
 
 - **The curly apostrophe is the big miss.** An iPhone types it by default. `lawNorm` (`sniff.js:1030`) and `normMap` turn it into a space, and every cue is written without apostrophes. The self harm table is blind on phone typed text.
-- **Cold recall is low.** Narrative reports 31 of 33 on the tuning set and 5 of 18 cold: 28 percent, true range about 13 to 51 at 18 cases. A phrase table is a floor.
-- **Source AI disagrees with itself.** "I didn't feel angry": `parseStory` lands Anger, `srcHear` hears solar 6, negated 0.
+- **Cold recall is low.** Narrative reports 31 of 33 on the tuning set, 5 of 18 cold: 28 percent, true range about 13 to 51. A phrase table is a floor.
+- **Source AI disagrees with itself.** "I didn't feel angry": `parseStory` lands Anger, `srcHear` hears solar 6, not negated.
 
 ## 4. THE ARCHITECTURE, TOGETHER (my part)
 
@@ -52,21 +50,21 @@ Libraries, not services. `engine/reading.js` goes right after `sniff.js` in MANI
 **4.4 `sayNext(state)`, one next.** Input is game's `journeyRead`, the safety result and the newest reading. Output is `{move, because:[row ids], src:'proposed'}` or nothing. First rule that holds wins: care, write, ask (`srcNext`), release, ritual, read again, summary. An order, never a score. Words come from the person's entry. "Not now" arrives as an argument and is never stored. `planNextSight` is a sale and never an input.
 
 **4.5 `safetyScreen(reading)`, the gate.** Returns `{level:'none'|'care'|'now', kind:'self'|'danger'|'medical'|'substance'|'past_harm'|null, cues:[{kind,s,e,method}], withhold:{release,body,labels}}` for one text snapshot. Never saved.
-- **Cost sets the rule.** For self harm a miss costs more than a false alarm, so lean to recall. That is affordable because a false alarm is one dismissible line, scoped to the entry, with no score and the reading unchanged. A dismissal holds in memory until a new cue appears.
+- **Cost sets the rule.** For self harm a miss costs more than a false alarm, so lean to recall. Affordable because a false alarm is one dismissible line, scoped to the entry, no score, reading unchanged. A dismissal holds in memory until a new cue appears.
 - **Negation steps down, not out.** "I would never kill myself" goes to care with an "if" lead. A negator counts within 2 tokens and not across "knows", "understands", "says", "why", which fixes "Nobody knows I want to die". Soft cues still void.
 - **Raw span.** The card quotes the raw clause, 12 words at most, through textContent. A cue naming a method drops the quote ("You wrote about hurting yourself"). The result dies when the text changes.
-- **Recognition only.** A wheel word never moves a level and "numb" stays a reason. Third person reaches care at most, later. Past tense steps down one.
+- **Recognition only.** A wheel word never moves a level. Third person reaches care at most, later. Past tense steps down one.
 - **Per kind.** Self: merge `distress.js`, fix the apostrophe, add "cannot keep going", guard "makes me want to die". Danger: present tense, harm verb, "me", gives `now`. Medical and substance: narrow lists, care only, since body words are the product's raw material.
-- **Clinician interim, decided.** Build now with a recall leaning list and ship to closed testers. **Clinician and locale review, plus counsel on the 988 and SAMHSA lines, gates any public launch.** Acceptable: today there is no screen, so any recall above zero is a gain. Conditions: the card holds only a quote and the drafted 988 line, nothing says anyone is watching, Help says "It reads English and it misses things", and the table has its own version stamp.
+- **Clinician interim, decided.** Build now with a recall leaning list and ship to closed testers. **Clinician and locale review, plus counsel on the 988 and SAMHSA lines, gates any public launch.** Acceptable: today there is no screen, so any recall above zero is a gain. Conditions: the card holds a quote and the drafted 988 line only, nothing says anyone is watching, Help says "It reads English and it misses things", and the table has a version stamp.
 - **Evaluation without labels.** A hand set of positives written by someone other than the table author, frozen before tuning, scored cold. The story bank cannot grade it (leakage: the lexicon grew from it). With 60 positives and no misses the miss rate is bounded only near 5 percent. Add a hand counted false alarm audit, target 2 cards per 100 ordinary entries (my judgement).
 
 **4.6 Build order (my slices).**
-1. Safety screen, self kind (curly fold, negation, raw span, table once, merge `distress.js`). S to M.
-2. `readEntry`, one negation handler, agreement and invariance gates. M. Run `tools/equiv.py`.
-3. `obsValid` and `SRC_CEIL`. S.
-4. `ledgerOf` and `declined`. M. Needs systems' record fixes.
-5. `sayNext`. S. Needs game's `journeyRead`.
-6. Danger, medical, substance, past harm kinds. M. Needs clinician cue review.
+1. Safety screen, self kind (curly fold, negation, raw span, merge `distress.js`). S to M.
+2. `readEntry`, agreement and invariance gates. M. Run `tools/equiv.py`.
+3. `obsValid`, `SRC_CEIL`. S.
+4. `ledgerOf`, `declined`. M. Needs systems' record fixes.
+5. `sayNext`. S. Needs `journeyRead`.
+6. Danger, medical, substance, past harm. M. Needs clinician cue review.
 
 **Agree before building.** Narrative: card strings per `kind`. Uiux: care register, dismissal in memory. Game: `journeyRead` fields. Systems: where `declined` and run addresses live. Sales: care suppresses commerce.
 
