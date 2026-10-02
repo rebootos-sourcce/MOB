@@ -24,7 +24,9 @@ The third review (the final funnel spec) split this into two pieces, and that sp
 - **B. Tell me who should write those words first,** you, a clinician you pick, or someone else. Cost: the response, and the public link going live for real strangers, both wait for that person.
 - **C. Keep the public link dark until a clinician has reviewed the words,** no matter how long that takes. Cost: same wait as B, but open-ended rather than tied to one person.
 
-If you don't answer soon I'll keep building the invisible detector either way, since it's safe to, and I will not point the public domain at this branch again until you've picked one of the three above.
+One more real data point, found trying to act on that plan tonight: the agent I sent to build the invisible detector was stopped mid-task by an automated content filter, specifically while writing test cases out of real crisis language (lines like "I do not want to be here anymore"). Even the harmless, shows-nothing-to-anyone half of this could not get all the way through automated building. I did not force it through. That is itself a reason to lean toward B or C rather than A: if a model cannot safely write test sentences for this, writing the real words a distressed stranger would actually see should be a person's job, not an agent's, whichever option you pick.
+
+I will not point the public domain at this branch again until you've picked one of the three above.
 
 ## Listen to this one when you're near a speaker
 
