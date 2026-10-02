@@ -5303,7 +5303,9 @@ g('the rituals of becoming');
  ok(becomingOf('IL').seat!==becomingOf('RE').seat&&becomingOf('IL').steps.join()!==becomingOf('RE').steps.join(),
   'Jesus at the heart and Jesus at the crown are two rituals at two seats');
  /* every teacher practice is tagged, names a teacher that exists, and is used */
- const tp=PRACTICE.filter(p=>p.tc);
+ /* rc marks a starter recipe step (engine/data/teachers_recipes.js), a second kind
+    of tc row that is not tied to BECOMING and is held to its own group below */
+ const tp=PRACTICE.filter(p=>p.tc&&!p.rc);
  ok(tp.length===TEACHER_PRACTICE.length&&tp.every(p=>!!becomingOf(p.tc)),'every teacher practice names a teacher that exists');
  const unused=tp.filter(p=>!BECOMING[p.tc]||BECOMING[p.tc].indexOf(p.k)<0).map(p=>p.k);
  ok(unused.length===0,'and every one is a step of its own teacher, '+JSON.stringify(unused));
@@ -5318,6 +5320,110 @@ g('the rituals of becoming');
  const rec=Object.assign(blankProfile(),{rituals:tp.map(p=>({t:new Date().toISOString(),track:p.track,band:'Heart',steps:[p.k],min:p.min}))});
  const v=validateProfile(rec);
  ok(v.ok,'a record carrying every teacher practice validates, '+(v.error||''));
+}
+
+/* ROUND PL, J14, THE STARTER RECIPE FOR EACH TEACHER. Content is a table he
+   edits with no code, so these gates hold the shape and the voice of whatever
+   he puts in it, and none of them types a count: every number below is read off
+   the tables. */
+g('J14 · the starter recipe for each teacher');
+{
+ const {TEACHER_RECIPES,RECIPE_STEPS,recipeOf,recipeRitual,recipeSteps,BECOMING,MIRROR,PATHS,PRACTICE,
+        validateProfile,blankProfile}=E;
+ const keys=TEACHER_RECIPES.map(r=>r.k);
+ ok(new Set(keys).size===keys.length,'one row a pole, no key twice, '+JSON.stringify(keys.filter((k,i)=>keys.indexOf(k)!==i)));
+ /* every pole the Compass carries has a recipe. BO and AW are the needle's names
+    for two axes that are already poles, and recipeOf reads them through */
+ const onCompass=MIRROR.map(m=>m.k).concat(PATHS.map(p=>p.k));
+ const lacking=onCompass.filter(k=>!recipeOf(k));
+ ok(lacking.length===0,'every teacher on the Compass opens a recipe, missing '+JSON.stringify(lacking));
+ ok(Object.keys(BECOMING).every(k=>!!recipeOf(k)),'and every pole that has a ritual of becoming has a recipe');
+ ok(recipeOf('BO')===recipeOf('IL')&&recipeOf('AW')===recipeOf('PE'),'the two needle names read the poles they stand for');
+ /* the roster's three new poles are written before the Compass carries them,
+    named here because their absence from MIRROR is the point */
+ ok(['SA','TU','NA'].every(k=>!!recipeOf(k)&&!MIRROR.some(m=>m.k===k)&&!PATHS.some(p=>p.k===k)),
+  'Akhenaten, Zoroaster and Confucius have recipes ahead of their place on the Compass');
+ ok(TEACHER_RECIPES.filter(r=>r.who==='Jesus').length===2,'Jesus stands at two poles and has two rows, one each');
+ /* the three not found branches, which coverage showed nothing reached: an
+    unknown pole, an unknown ritual id and a step the library no longer carries
+    each answer null or drop out, and none throws */
+ ok(recipeOf('ZZ')===null&&recipeOf('')===null&&recipeRitual('ZZ-nothing')===null,'an unknown pole or ritual id finds nothing and does not throw');
+ ok(recipeSteps({steps:['box','no_such_step']},3).steps.join()==='box'&&recipeSteps({steps:['box','no_such_step']},3).held.length===0,
+  'a step the library no longer carries is dropped and never held');
+ /* the credit and the inverted end are copied into the row, so a rename in the
+    compass data that the row did not follow is a named failure and not a drift */
+ const drift=[];
+ TEACHER_RECIPES.forEach(r=>{
+  const m=MIRROR.filter(x=>x.k===r.k)[0]||PATHS.filter(x=>x.k===r.k)[0]; if(!m)return;
+  if(m.up!==r.who)drift.push(r.k+' who '+r.who+' vs '+m.up);
+  if(m.dn!==r.opp)drift.push(r.k+' opp '+r.opp+' vs '+m.dn);
+  if(String(m.q).toLowerCase()!==String(r.q).toLowerCase())drift.push(r.k+' q '+r.q+' vs '+m.q);});
+ ok(drift.length===0,'who, quality and the inverted end agree with the compass data, '+JSON.stringify(drift));
+ /* both behaviour lists, and the shape of each */
+ const str=x=>typeof x==='string'&&x.trim().length>0&&x.length<=90;
+ const badList=[]; TEACHER_RECIPES.forEach(r=>['release','install'].forEach(f=>{
+  const a=r[f]; if(!Array.isArray(a)||a.length<3||a.length>5||!a.every(str))badList.push(r.k+'.'+f);}));
+ ok(badList.length===0,'every pole has 3 to 5 short behaviours to release and to install, '+JSON.stringify(badList));
+ ok(TEACHER_RECIPES.every(r=>str(r.line)&&str(r.who)&&str(r.q)&&str(r.opp)),'every row has a line, a credit, a quality and an inverted end');
+ ok(TEACHER_RECIPES.every(r=>r.release.every(t=>r.install.indexOf(t)<0)),'no behaviour is both released and installed');
+ /* the rituals, each a list of practice keys the boundary already accepts */
+ const byK={}; PRACTICE.forEach(p=>{byK[p.k]=p;});
+ const ids=[], badR=[];
+ TEACHER_RECIPES.forEach(r=>{
+  if(!Array.isArray(r.rituals)||r.rituals.length<2||r.rituals.length>3)badR.push(r.k+' has '+(r.rituals||[]).length+' rituals');
+  (r.rituals||[]).forEach(x=>{ids.push(x.id);
+   if(!/^[A-Z]{2}-[a-z]+$/.test(x.id)||x.id.indexOf(r.k+'-')!==0)badR.push(x.id+' is not an id of its own pole');
+   if(!str(x.nm))badR.push(x.id+' has no name');
+   if(!Array.isArray(x.steps)||x.steps.length<2||x.steps.length>4)badR.push(x.id+' has '+(x.steps||[]).length+' steps');
+   else{
+    if(new Set(x.steps).size!==x.steps.length)badR.push(x.id+' repeats a step');
+    x.steps.forEach(k=>{if(!byK[k])badR.push(x.id+' names no practice: '+k);});}});});
+ ok(badR.length===0,'every pole has 2 to 3 rituals of 2 to 4 steps, each a key in the library, '+JSON.stringify(badR));
+ ok(new Set(ids).size===ids.length,'ritual ids are unique across the table, '+JSON.stringify(ids.filter((k,i)=>ids.indexOf(k)!==i)));
+ ok(ids.every(id=>recipeRitual(id)&&recipeRitual(id).ritual.id===id),'every ritual id finds its ritual and its pole');
+ /* the recipe steps are rows in the library's own shape, and nothing else's */
+ const stepKeys=RECIPE_STEPS.map(p=>p.k);
+ ok(new Set(stepKeys).size===stepKeys.length&&PRACTICE.filter(p=>stepKeys.indexOf(p.k)>=0).length===stepKeys.length,
+  'every recipe step is in the library once, under a key nothing else uses');
+ ok(RECIPE_STEPS.every(p=>str(p.nm)&&['Mind','Body','Energy','Somatic'].indexOf(p.track)>=0&&p.min>=1&&p.min<=20
+   &&p.tier===1&&typeof p.d==='string'&&typeof p.how==='string'&&p.rc===1&&!!recipeOf(p.tc)),
+  'each has a name, a track, minutes, tier one and a pole of its own, in practice.js\'s shape');
+ /* tc keeps the seat's call and the builder's library what they were. The count
+    of rows a seat can call for is the 17 above, and it must not have moved */
+ ok(PRACTICE.filter(p=>!p.tc).length===17,'a seat can still call for the same practices it did before the recipes existed');
+ const unused=RECIPE_STEPS.filter(p=>!TEACHER_RECIPES.some(r=>r.rituals.some(x=>x.steps.indexOf(p.k)>=0))).map(p=>p.k);
+ ok(unused.length===0,'every recipe step is used by a ritual, so none is dead weight, '+JSON.stringify(unused));
+ /* PACING IS THE SAFETY SYSTEM. At the heaviest load every starter ritual still
+    hands a person something to do, and no step above tier one is handed over */
+ const heavy=[]; ids.forEach(id=>{const x=recipeRitual(id).ritual, s=recipeSteps(x,1);
+  if(!s.steps.length||s.steps.some(k=>(byK[k]||{tier:9}).tier>1)||s.steps.length+s.held.length!==x.steps.length)heavy.push(id);});
+ ok(heavy.length===0,'at the heaviest load every starter ritual starts on something and holds the rest back, '+JSON.stringify(heavy));
+ ok(ids.every(id=>{const x=recipeRitual(id).ritual, s=recipeSteps(x,3); return s.held.length===0&&s.steps.length===x.steps.length;}),
+  'at the lightest load every step starts and none waits');
+ /* and the boundary takes every starter ritual as a plan's steps with no schema change */
+ const rec=Object.assign(blankProfile(),{rituals:ids.map(id=>{const x=recipeRitual(id).ritual;
+  return {t:new Date().toISOString(),track:(byK[x.steps[0]]||PRACTICE[0]).track,band:'Heart',steps:x.steps.slice(),
+   min:x.steps.reduce((a,k)=>a+(byK[k]||{min:0}).min,0)};})});
+ const v=validateProfile(rec);
+ ok(v.ok,'a record carrying every starter ritual validates, '+(v.error||''));
+ /* NO SCORE, NO PERCENT, NO COUNT AGAINST A TOTAL, in any string a person reads.
+    A figure in a minutes field is not a string. */
+ const words=[]; TEACHER_RECIPES.forEach(r=>{[r.line,r.who,r.q,r.opp].concat(r.release,r.install,r.rituals.map(x=>x.nm)).forEach(t=>words.push(t));});
+ RECIPE_STEPS.forEach(p=>{words.push(p.nm,p.d,p.how);});
+ const scored=words.filter(t=>/%|\d+\s*(of|out of|\/)\s*\d+|\bscore\b|\bpercent\b|—|–/i.test(t));
+ ok(scored.length===0,'no percent, score, count against a total or dash in the copy, '+JSON.stringify(scored));
+ /* THE VOICE GATE OVER THE WHOLE TABLE, so a row he edits cannot arrive failing.
+    check.py reads the strings out of the file itself, comments stripped, and
+    exits non-zero on a hard failure. Checked against a known bad file first:
+    a tool that cannot fail is not a gate. */
+ {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
+  const py=(f)=>{try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});return 0;}
+   catch(e){return e.status===undefined?-1:e.status;}};
+  const bad=path.join(os.tmpdir(),'j14-known-bad.js');
+  fs.writeFileSync(bad,"var x=['Sit back and relax and breathe gently.','Done 2 of 5.'];\n");
+  const known=py(bad); try{fs.unlinkSync(bad);}catch(e){}
+  ok(known===1,'the voice gate fails a known bad file before it is trusted on this one, exit '+known);
+  ok(py('atuned_src/engine/data/teachers_recipes.js')===0,'no string in the recipe table fails the voice rules');}
 }
 
 g('LL · practitioner mode, the switch and its integer');

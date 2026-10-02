@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Teacher behaviour complex</title><style>:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14);--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--gold:#7EB8D4;--on-accent:#0B1418;--r:16px;--r-s:11px;--tap:44px;--t-micro:120ms;--ease-out:cubic-bezier(.22,1,.36,1);--sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.pg{padding:24px 16px 40px}
+.pg h1{font-size:13px;font-weight:600;color:var(--dim);margin:0 0 4px;font-family:var(--sans)}
+.pg p.n{margin:0 0 18px;font-size:13px;color:var(--dim);max-width:70ch}
+.rails{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+.rail{width:298px;max-width:100%}
+.cap{font-size:12px;color:var(--dim);margin:0 0 8px}
+.rd-card{border:1px solid rgba(223,204,126,.34);border-radius:var(--r);padding:16px 18px;background:var(--panel)}
+.rd-top{margin:-2px -2px 10px;padding:2px 2px 8px}
+.rd-back{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:6px 12px 6px 7px;margin-left:-7px;background:none;border:0;border-radius:999px;color:var(--dim);font:inherit;font-size:13px}
+.rd-back svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.pm-eye{font-size:11px;font-weight:600;color:var(--dim);line-height:1.45;font-family:var(--sans);text-transform:capitalize}
+.ad-nm{font-size:21px;font-weight:600;margin:5px 0 3px}
+.ad-nm.plain{text-transform:none}
+.ad-sub{font-size:13px;color:var(--dim);margin-bottom:11px}
+.ad-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:8px;opacity:.9}
+.ad-p{font-size:16px;line-height:1.7;color:var(--mid);max-width:68ch;margin:0 0 14px}
+.btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);border-radius:999px;min-height:var(--tap);padding:9px 17px;font-size:14px;font-family:var(--sans);cursor:pointer}
+.btn.pri{background:var(--gold);color:var(--on-accent);border-color:var(--gold);font-weight:500}
+.rv-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:flex-end}
+button{font-family:var(--sans)}
+@media (max-width:420px){.pg{padding:12px 16px 32px}.rail{width:100%}}
+
+.tcx .ad-nm{font-size:18px;line-height:1.3;margin:2px 0 4px}
+
+.tcx-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:14px;margin:12px 0 16px}
+
+.tcx-col{min-width:0;padding-top:10px;border-top:2px solid var(--edge-2)}
+
+.tcx-in{border-top-color:var(--accent)}
+
+.tcx-col .pm-eye{margin:0}
+
+.tcx-cap{font-size:13px;line-height:1.45;color:var(--dim);margin:2px 0 8px}
+
+.tcx-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+
+.tcx-l li{position:relative;padding-left:15px;font-size:14px;line-height:1.5;color:var(--mid)}
+
+.tcx-l li::before{content:"";position:absolute;left:0;top:.5em;width:7px;height:7px;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--dim)}
+
+.tcx-in .tcx-l li{color:var(--ink)}
+
+.tcx-in .tcx-l li::before{border-color:var(--accent)}
+
+.tcx-none{margin:0;color:var(--dim)}
+
+.tcx-rits{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px}
+
+.tcx-rit{display:block;width:100%;min-height:var(--tap);padding:10px 12px;text-align:left;font:inherit;color:var(--ink);
+ background:var(--panel-2);border:1px solid var(--edge);border-radius:12px;cursor:pointer;
+ transition:border-color var(--t-micro) var(--ease-out)}
+
+.tcx-rit:hover{border-color:var(--edge-2)}
+
+.tcx-rit:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.tcx-rit.tcx-on{border-color:var(--accent)}
+
+.tcx-rh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+
+.tcx-rn{font-size:15px;font-weight:600}
+
+.tcx-rm{font-size:13px;color:var(--mid);white-space:nowrap}
+
+.tcx-rs{display:block;margin-top:2px;font-size:13px;line-height:1.45;color:var(--dim)}
+
+.tcx-sd{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--edge)}
+
+.tcx-on .tcx-sd{display:block}
+
+.tcx-st{display:block;margin:0 0 9px}
+
+.tcx-st b{display:block;font-size:14px;font-weight:600;color:var(--ink)}
+
+.tcx-st small{font-weight:400;font-size:13px;color:var(--dim)}
+
+.tcx-st span{display:block;margin-top:2px;font-size:14px;line-height:1.5;color:var(--mid)}
+
+.tcx-pace{display:block;font-size:13px;line-height:1.5;color:var(--mid)}
+
+.tcx-hint{margin:8px 0 0;font-size:13px;line-height:1.5;color:var(--dim);text-align:right}
+
+.tcx-draft{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--edge);font-size:13px;line-height:1.55;color:var(--dim)}
+
+.rv-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:flex-end}
+
+.rv-acts .btn{display:inline-flex;align-items:center;gap:6px}</style></head><body><div class="pg"><h1>Compass, the right panel after a click on a teacher</h1><p class="n">Mockup, first draft content. Same markup and rules as the build, dark theme, with the card at the width it has in the rail. Static: the buttons do nothing here.</p><div class="rails" id="both"><div class="rail" data-t="IL"><div class="cap">Jesus at the heart, Light</div><div class="rd-card"><div class="rd-top"><button type="button" class="rd-back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Back to the compass</span></button></div><div class="tcx" data-tcx="IL"><div class="ad-nm plain"><svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8"/></svg>Give with no audience instead of for the room</div><div class="ad-sub">After Jesus · Light · Heart</div><div class="tcx-pair"><div class="tcx-col"><div class="pm-eye">Release</div><div class="tcx-cap">The old pattern, as Lucifer</div><ul class="tcx-l"><li>Warm in the room, flat when it empties</li><li>Keep count of who noticed the kindness</li><li>Tell the story of the favour afterwards</li><li>Chest tight when nobody is looking</li></ul></div><div class="tcx-col tcx-in"><div class="pm-eye">Install</div><div class="tcx-cap">Practise this instead</div><ul class="tcx-l"><li>Give one thing away and tell nobody</li><li>Ask what the person in front of you needs</li><li>Say the kind thing once and do not wait for thanks</li><li>Let the chest widen, then leave it alone</li></ul></div></div><div class="pm-eye">Starter rituals</div><div class="tcx-rits" role="group" aria-label="Starter rituals"><button type="button" class="tcx-rit tcx-on" aria-pressed="true" data-tcxr="IL-give" data-act="0"><span class="tcx-rh"><span class="tcx-rn">Give and tell nobody</span><span class="tcx-rm">10 min</span></span><span class="tcx-rs">Box Breathing and Given Freely</span><span class="tcx-sd"><span class="tcx-st"><b>Box Breathing <small>5 min</small></b><span>Four and four, or eight and eight. The entry into a grounded state.</span></span><span class="tcx-st"><b>Given Freely <small>5 min</small></b><span>Give one thing today with nothing asked back.</span></span></span></button><button type="button" class="tcx-rit" aria-pressed="false" data-tcxr="IL-need" data-act="0"><span class="tcx-rh"><span class="tcx-rn">Ask what they need</span><span class="tcx-rm">10 min</span></span><span class="tcx-rs">Box Breathing and What They Need</span><span class="tcx-sd"><span class="tcx-st"><b>Box Breathing <small>5 min</small></b><span>Four and four, or eight and eight. The entry into a grounded state.</span></span><span class="tcx-st"><b>What They Need <small>5 min</small></b><span>Before one conversation, ask what the other person needs from it.</span></span></span></button><button type="button" class="tcx-rit" aria-pressed="false" data-tcxr="IL-alone" data-act="0"><span class="tcx-rh"><span class="tcx-rn">Kind when alone</span><span class="tcx-rm">10 min</span></span><span class="tcx-rs">Kind When Alone and Given Freely</span><span class="tcx-sd"><span class="tcx-st"><b>Kind When Alone <small>5 min</small></b><span>Do one kind thing where nobody will see it, then check the chest.</span></span><span class="tcx-st"><b>Given Freely <small>5 min</small></b><span>Give one thing today with nothing asked back.</span></span></span></button></div><div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div><p class="tcx-hint">Runs for a week from today. The Ritual page changes the span.</p><p class="tcx-draft">First draft. These are starting behaviours and rituals, to be refined. They describe behaviours a reading can place, not people.</p></div><button class="btn" style="margin-top:14px">Close</button></div></div><div class="rail" data-t="HO"><div class="cap">Lao Tzu, the horizontal (a path with no seat), second ritual picked</div><div class="rd-card"><div class="rd-top"><button type="button" class="rd-back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Back to the compass</span></button></div><div class="tcx" data-tcx="HO"><div class="ad-nm plain"><svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5h18M3 14.5c3-3.2 6 3.2 9 0s6-3.2 9 0M3 19h18"/></svg>Stop one thing and wait instead of rushing in to help</div><div class="ad-sub">After Lao Tzu · The horizontal</div><div class="tcx-pair"><div class="tcx-col"><div class="pm-eye">Release</div><div class="tcx-cap">The old pattern, as Shu and Hu</div><ul class="tcx-l"><li>Hurry in to help and make it worse</li><li>Offer the fix nobody asked for</li><li>Decide that whatever is whole needs one more fix</li><li>Hands reach before you have decided</li></ul></div><div class="tcx-col tcx-in"><div class="pm-eye">Install</div><div class="tcx-cap">Practise this instead</div><ul class="tcx-l"><li>Find the one thing making the noise and stop it for the day</li><li>Ask what finishes by itself if you leave it</li><li>Say &quot;I will wait&quot; and wait</li><li>Let the hands rest open</li></ul></div></div><div class="pm-eye">Starter rituals</div><div class="tcx-rits" role="group" aria-label="Starter rituals"><button type="button" class="tcx-rit" aria-pressed="false" data-tcxr="HO-stop" data-act="0"><span class="tcx-rh"><span class="tcx-rn">Stop one thing</span><span class="tcx-rm">7 min</span></span><span class="tcx-rs">Box Breathing and Stop One Thing</span><span class="tcx-sd"><span class="tcx-st"><b>Box Breathing <small>5 min</small></b><span>Four and four, or eight and eight. The entry into a grounded state.</span></span><span class="tcx-st"><b>Stop One Thing <small>2 min</small></b><span>Find the one activity making the noise, and stop it for today.</span></span></span></button><button type="button" class="tcx-rit" aria-pressed="false" data-tcxr="HO-wait" data-act="0"><span class="tcx-rh"><span class="tcx-rn">Say I will wait</span><span class="tcx-rm">5 min</span></span><span class="tcx-rs">Open Hands and Say I Will Wait</span><span class="tcx-sd"><span class="tcx-st"><b>Open Hands <small>3 min</small></b><span>Rest the hands open and let the breath run.</span></span><span class="tcx-st"><b>Say I Will Wait <small>2 min</small></b><span>Leave one thing alone and say you will wait.</span></span></span></button><button type="button" class="tcx-rit tcx-on" aria-pressed="true" data-tcxr="HO-rest" data-act="0"><span class="tcx-rh"><span class="tcx-rn">Open hands</span><span class="tcx-rm">7 min</span></span><span class="tcx-rs">Open Hands, Stop One Thing and Say I Will Wait</span><span class="tcx-sd"><span class="tcx-st"><b>Open Hands <small>3 min</small></b><span>Rest the hands open and let the breath run.</span></span><span class="tcx-st"><b>Stop One Thing <small>2 min</small></b><span>Find the one activity making the noise, and stop it for today.</span></span><span class="tcx-st"><b>Say I Will Wait <small>2 min</small></b><span>Leave one thing alone and say you will wait.</span></span></span></button></div><div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div><p class="tcx-hint">Runs for a week from today. The Ritual page changes the span.</p><p class="tcx-draft">First draft. These are starting behaviours and rituals, to be refined. They describe behaviours a reading can place, not people.</p></div><button class="btn" style="margin-top:14px">Close</button></div></div></div></div><script>/* ?only=IL or ?only=HO shows one panel, which is how the phone width is shot */
+try{var o=new URLSearchParams(location.search).get("only");if(o)document.querySelectorAll(".rail").forEach(function(r){if(r.getAttribute("data-t")!==o)r.style.display="none";});}catch(e){}</script></body></html>

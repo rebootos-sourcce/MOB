@@ -4453,13 +4453,15 @@ ok(rp.cap>0,'the boundary names the cap, '+rp.cap);
 ok(rp.when===rp.cap,'the when input carries the boundary\'s cap, '+rp.when+' against '+rp.cap);
 ok(rp.where===rp.cap,'and so does the where input, '+rp.where+' against '+rp.cap);
 
-console.log('\n=== a teacher on the compass starts a ritual of becoming ===');
-/* ROUND KQ. Pressing a teacher's name opens its drill, the drill offers the
-   ritual toward that teacher's quality, and a start puts it on the Active list
-   at the teacher's seat through the one writer every ritual uses. Measured on
-   the person's own blank profile, since a worked example saves nothing. The
-   inversion carries no ritual, and a path badge on the needle now opens its
-   own drill. Read off the tables at run time, so no teacher is typed here. */
+console.log('\n=== a teacher on the compass opens the behaviour complex and adds a starter ritual ===');
+/* ROUND PL, J14, replacing the round KQ block that stood here. Pressing a
+   teacher's name opens the pole as a pair of behaviours, what is released and
+   what is installed, with a few starter rituals toward the second and one
+   button to add the picked one through the one writer every ritual uses.
+   Measured on the person's own blank profile, since a worked example saves
+   nothing. Read off the tables at run time, so no teacher and no step is typed
+   here. The pole is Perception because its third eye seat was the one a lookup
+   by printed name once missed. */
 {
  const tp=await browser.newPage({viewport:{width:1600,height:1000}});
  const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
@@ -4470,39 +4472,80 @@ console.log('\n=== a teacher on the compass starts a ritual of becoming ===');
   const i=MIRROR.findIndex(m=>m.k==='PE');
   const row=document.querySelector('#cone .cn-nr[data-cnax="'+i+'"]');
   row.click(); await wait();
-  const box=document.querySelector('#rdrill .tb-rit');
-  const o={row:!!row, box:!!box, starts:box?box.querySelectorAll('[data-tbd]').length:0,
-   steps:box?[...box.querySelectorAll('.rv-step b')].map(b=>b.firstChild.textContent.trim()):[]};
-  o.want=becomingSteps('PE',ritFor(compute()).tier).steps.map(k=>ritPr(k).nm);
-  if(!o.want.length)o.want=[ritFor(compute()).called.nm];
-  if(box)box.querySelector('[data-tbd="7"]').click(); await wait();
+  const box=document.querySelector('#rdrill .tcx'), rc=recipeOf('PE');
+  const lis=sel=>box?[...box.querySelectorAll(sel+' li')].map(l=>l.textContent):[];
+  const o={row:!!row, box:!!box, pole:box?box.getAttribute('data-tcx'):null,
+   line:box?box.querySelector('.ad-nm').textContent.trim():'', want:rc.line,
+   credit:box?box.querySelector('.ad-sub').textContent:'',
+   rel:lis('.tcx-col:not(.tcx-in)'), ins:lis('.tcx-in'),
+   rituals:box?box.querySelectorAll('[data-tcxr]').length:0,
+   btn:box&&box.querySelector('[data-tcxgo]')?box.querySelector('[data-tcxgo]').textContent:'',
+   draft:box?/first draft/i.test(box.textContent):false,
+   text:(document.getElementById('rdrill')||{}).textContent||'',
+   oldBlock:!!document.querySelector('#rdrill .tb-rit')};
+  o.wantRel=rc.release.slice(); o.wantIns=rc.install.slice(); o.wantN=rc.rituals.length;
+  /* pick the second ritual, which must change in place and write nothing */
+  const second=box.querySelectorAll('[data-tcxr]')[1];
+  second.click(); await wait(80);
+  o.picked=second.getAttribute('aria-pressed'); o.firstOff=box.querySelectorAll('[data-tcxr]')[0].getAttribute('aria-pressed');
+  o.wroteOnPick=ritPlans().length;
+  const id=second.getAttribute('data-tcxr'), rr=recipeRitual(id).ritual;
+  o.wantSteps=recipeSteps(rr,ritFor(compute()).tier).steps;
+  /* A FAILED WRITE SAYS SO. pSave throwing is the ritual writer's own failure
+     path, and the status line must carry it and nothing must be kept */
+  const was=window.pSave; window.pSave=function(){throw new Error('disk full');};
+  box.querySelector('[data-tcxgo]').click(); await wait(100);
+  o.failMsg=(document.getElementById('status')||{}).textContent||'';
+  o.failKept=ritPlans().length;
+  window.pSave=was;
+  document.querySelector('#rdrill [data-tcxgo]').click(); await wait(300);
   const p=ritPlans().filter(x=>x.tc==='PE')[0]||null;
   o.plan=p?{band:p.band,days:p.days,steps:p.steps}:null;
-  o.active=!!document.querySelector('#rdrill .tb-rit [data-tbgo]');
+  o.okMsg=(document.getElementById('status')||{}).textContent||'';
+  o.active=document.querySelector('#rdrill .tcx-on')?document.querySelector('#rdrill .tcx-on').getAttribute('data-act'):null;
+  o.goText=(document.querySelector('#rdrill [data-tcxgo]')||{}).textContent||'';
+  o.pickKept=document.querySelector('#rdrill .tcx-on')?document.querySelector('#rdrill .tcx-on').getAttribute('data-tcxr'):null; o.pickWas=id;
   o.saved=((JSON.parse(STORE.get('atuned-ritual-active')||'{}')[CURP.id])||[]).some(x=>x.tc==='PE');
+  /* the inverted end opens the same pair, because it is one pole */
   runTeacherDrill(MIRROR[i],'dn'); await wait(100);
-  o.inverted=!!document.querySelector('#rdrill .tb-rit');
+  o.inverted=!!document.querySelector('#rdrill .tcx');
   /* the path badge: a hit is registered for each of the five, and a press on
-     one standing on no axis opens a drill that carries its own ritual */
+     one standing on no axis opens a panel carrying its own recipe */
   CONE.side=false; CONE.top=false; coneOpen(true); await wait(1200);
   o.pathHits=(CONE.hits||[]).filter(h=>h.path!=null).length; o.pathN=PATHS.length;
   const own=PATHS.filter(p=>!MIRROR.some(m=>m.up===p.up&&m.upd===p.upd))[0];
   runPathDrill(own); await wait(100);
-  o.pathBox=document.querySelector('#rdrill .tb-rit');
-  o.pathBox=o.pathBox?o.pathBox.getAttribute('data-tb'):null; o.pathK=own.k;
+  const pb=document.querySelector('#rdrill .tcx');
+  o.pathBox=pb?pb.getAttribute('data-tcx'):null; o.pathK=own.k;
   setTab(TAB.RITUAL); await wait(400);
   o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
+  /* a worked example saves nothing, and the panel says so and offers no button */
+  loadP(PERSON('Gordon')); setTab(TAB.COMPASS); await wait(300);
+  runTeacherDrill(MIRROR[i],'up'); await wait(100);
+  o.exBtn=!!document.querySelector('#rdrill [data-tcxgo]'); o.exSays=/worked example/.test((document.getElementById('rdrill')||{}).textContent||'');
   return o;});
- ok(o.box,'pressing Buddha on the compass opens a drill carrying a ritual toward perception');
- ok(o.starts===2,'with a week and two weeks to start it for, '+o.starts);
- ok(o.steps.join()===o.want.join(),'the steps shown are the ones his tier allows, '+o.steps.join(', ')+' against '+o.want.join(', '));
- ok(o.plan&&o.plan.band==='3rd Eye'&&o.plan.days===7,'a start keeps it at the third eye for a week, '+JSON.stringify(o.plan));
- ok(o.saved,'and it is in the store beside the record, carrying the teacher');
- ok(o.active,'the drill then says Active and offers the ritual page');
- ok(!o.inverted,'the inversion carries no ritual');
+ ok(o.box&&o.pole==='PE','pressing Buddha on the compass opens the behaviour complex for that pole');
+ ok(o.line===o.want,'headed by the pole as one behaviour pair, '+o.line);
+ ok(/^After Buddha/.test(o.credit),'with the teacher as a small credit under it, '+o.credit);
+ ok(o.rel.join('|')===o.wantRel.join('|')&&o.rel.length>=3&&o.rel.length<=5,'what is released is listed, '+o.rel.length);
+ ok(o.ins.join('|')===o.wantIns.join('|')&&o.ins.length>=3&&o.ins.length<=5,'and what is installed, '+o.ins.length);
+ ok(o.rituals===o.wantN&&o.rituals>=2&&o.rituals<=3,'with the starter rituals, '+o.rituals);
+ ok(o.btn==='Add to my ritual','and one button, '+o.btn);
+ ok(o.draft,'and a line that this is a first draft');
+ ok(!/%/.test(o.text)&&!/puts you at/.test(o.text),'no percent and no position score on the panel');
+ ok(!o.oldBlock,'and the old two step ritual section is gone from it');
+ ok(o.picked==='true'&&o.firstOff==='false'&&o.wroteOnPick===0,'picking a ritual changes the pick in place and writes nothing');
+ ok(/Could not save/.test(o.failMsg)&&o.failKept===0,'a failed write is said through status and keeps nothing, '+JSON.stringify(o.failMsg));
+ ok(o.plan&&o.plan.band==='3rd Eye'&&o.plan.days===7&&o.plan.steps.join()===o.wantSteps.join(),
+  'Add keeps the picked ritual at the third eye for a week, '+JSON.stringify(o.plan)+' against '+o.wantSteps.join());
+ ok(/^Added/.test(o.okMsg),'and says it was added through status, '+o.okMsg);
+ ok(o.saved,'it is in the store beside the record, carrying the teacher');
+ ok(o.active==='1'&&o.goText==='Open the ritual'&&o.pickKept===o.pickWas,'the card then says Active, keeps the pick and offers the ritual page, '+o.active+' '+o.goText);
+ ok(o.inverted,'the inverted end opens the same pair');
  ok(o.pathHits===o.pathN,'every path badge on the needle is pressable, '+o.pathHits+' of '+o.pathN);
- ok(o.pathBox===o.pathK,'a path on no axis opens its own drill with its own ritual, '+o.pathBox);
+ ok(o.pathBox===o.pathK,'a path on no axis opens its own recipe, '+o.pathBox);
  ok(o.row===1,'and the Active list names the teacher, '+o.row);
+ ok(!o.exBtn&&o.exSays,'a worked example offers no button and says nothing here is saved');
  ok(terr.length===0,'no errors, '+terr.join(' | '));
  await tp.close();
 }
@@ -4550,12 +4593,15 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  await tp.close();
 }
 
-console.log('\n=== the teacher drill and the Compass panel read one axis position ===');
-/* Found by the teachers design review: the drill handed mirrorAt a fraction
-   where it takes the mean charge out of ten, so 95 of 120 persona by axis
-   readings differed from the Compass panel, by up to 38 points, and a lookup
-   by printed name found no third eye seat, so the Buddha axis read no load for
-   anybody. Every axis, for the heaviest person in the roster, by name. */
+console.log('\n=== the teacher panel prints no position and no load ===');
+/* WAS "the teacher drill and the Compass panel read one axis position", found
+   by the teachers design review: the drill handed mirrorAt a fraction where it
+   takes the mean charge out of ten, so 95 of 120 persona by axis readings
+   differed from the Compass panel, by up to 38 points. Round PL, J14 took both
+   numbers off the panel on the ruling that it carries no percent and no score,
+   which removes that defect class and not only that instance. What is held is
+   the other half of the rule: the panel prints neither, on every axis, for the
+   heaviest person in the roster, by name, and it still opens on every one. */
 {
  const tp=await browser.newPage({viewport:{width:1600,height:1000}});
  const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
@@ -4567,18 +4613,11 @@ console.log('\n=== the teacher drill and the Compass panel read one axis positio
   for(const m of MIRROR){
    runTeacherDrill(m,'up'); await wait(60);
    const t=(document.getElementById('rdrill')||{}).textContent||'';
-   const at=/puts you at (.+?) on this axis/.exec(t), carry=/carrying (\d+)%/.exec(t);
-   const seg=flSeats().filter(x=>K2B[x.p.k]===m.seat)[0];
-   out.push({k:m.k,seat:m.seat,got:at?at[1]:null,want:String(coneMirPos(m)),
-    carry:carry?+carry[1]:null,wantCarry:seg?Math.round(seg.load*100):null});}
-  return out;});
- ok(rows.length===8&&rows.every(r=>r.got===r.want),
-  'the drill prints the position the Compass panel prints, on every axis: '
-  +rows.filter(r=>r.got!==r.want).map(r=>r.k+' '+r.got+' against '+r.want).join('; '));
- ok(rows.every(r=>r.carry===r.wantCarry&&r.wantCarry!==null),
-  'and the seat it names is carrying what that seat carries, third eye included: '
-  +rows.filter(r=>r.carry!==r.wantCarry).map(r=>r.k+' '+r.carry+' against '+r.wantCarry).join('; '));
- ok(rows.some(r=>r.seat==='3rd Eye'&&r.carry>0),'the third eye axis no longer reads no load for a person who carries at it');
+   out.push({k:m.k, opens:!!document.querySelector('#rdrill .tcx[data-tcx="'+m.k+'"]'),
+    pct:/%/.test(t), at:/puts you at|carrying|integrity reads/.test(t)});}
+  return {out,n:MIRROR.length};});
+ ok(rows.out.length===rows.n&&rows.n>0&&rows.out.every(r=>r.opens),'the panel opens on every axis, '+rows.out.filter(r=>!r.opens).map(r=>r.k).join(' '));
+ ok(rows.out.every(r=>!r.pct&&!r.at),'and prints no percent, no load and no position on any of them: '+rows.out.filter(r=>r.pct||r.at).map(r=>r.k).join(' '));
  ok(terr.length===0,'no errors, '+terr.join(' | '));
  await tp.close();
 }
