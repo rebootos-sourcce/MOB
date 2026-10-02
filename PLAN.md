@@ -22,13 +22,33 @@ landed and found three breaks in the STORY to FIELD chain. Two are fixed and pus
 Still open, the one remaining closure: **F16**, the mirror's Yes/Not-me answers never reach the trace
 graph or the Field's rail. Not started. This is the next build this chain calls for.
 
-**TDD 2, the Tuned Awareness Architecture** (`reviews/TUNED-AWARENESS-ARCHITECTURE-TDD.md`, new round QF).
-A conceptual upgrade to the reasoning layer underneath the product: tuning and aperture as concepts
-distinct from awareness and localization, a tuning-drift state machine, a formal sniffer output contract,
-a named-type graph, and a home for the existing CQ formula inside a named coherence engine. Audit against
-the real sniffer/graph/coherence/release code is running now (`reviews/TUNED-AWARENESS-AUDIT.md`, dispatched
-round QF, not yet landed). Its own "plan of attack" lands in this section the moment it returns, not as a
-separate document he has to go find.
+**TDD 2, the Tuned Awareness Architecture** (`reviews/TUNED-AWARENESS-ARCHITECTURE-TDD.md`, round QF).
+Audited (`reviews/TUNED-AWARENESS-AUDIT.md`, round QG, landed and checked): 34 substantive requirements,
+13 exist, 9 partial, 5 missing, 7 conflict. Verdict: the restorative loop it proposes is largely the
+product already (the sniffer, the mirror, release, Embodied Truth as its own "retuning"); nine of eleven
+proposed state fields already have a real producer. Genuinely new and worth building: two signal fields
+(persistence, coupling) that exist nowhere today, a derived composition read, and a wider drift measure.
+
+Its one real conflict worth naming here: the document's `CQ = (Intention x Integrity) / Resistance` is
+not the shipped formula. `engine/compute.js:386` and `DECISIONS.md` (25 September) both confirm resistance
+stopped dividing CQ by owner ruling; CQ is the 21 laws alone. (This repo's own round QF log in `TASKS.md`
+restated the old formula as current and is corrected there, round QG; `CLAUDE.md` does not and never did
+carry this formula, despite the audit document citing it as a second source for the mistake, which does
+not hold on a direct check and is not relied on.)
+
+**Ordered steps, ahead of anything else in this TDD:**
+0. F16 (above) — precondition, already queued, not new work.
+1. A documentation-only reconciliation pass: observation-contract mapping between the two TDDs, the CQ
+   correction, a resistance-to-address mapping, recording that the document's graph vocabulary is not
+   adopted. No code. Can run beside F16.
+2. `srcPersist` in `engine/sourceai.js`: per-seat first-seen/last-seen/gap read. Depends on F16. The
+   single highest-value item in the document.
+3. Coupling: seat pairs appearing together above chance, a stated minimum support. Depends on step 2.
+
+Recommended against building as written: the document's coherence engine, its graph vocabulary, a stored
+tuning model, and aperture as a number (collides with the still-open QT3/QT6 fetters-narrow-awareness
+question). Named as the bigger lever on the whole premise, not scheduled as a step: the sniffer's own
+measured recall gap, about 91 percent of his prose currently reading as nothing.
 
 Everything in sections B through L below stays queued behind this chain until each requirement is DONE,
 PARTIAL, BLOCKED or NOT IMPLEMENTED in the audits' own report format, not assumed finished because the
