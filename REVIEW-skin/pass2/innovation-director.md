@@ -7,12 +7,11 @@ Rua Whitmore, innovation. Pass 2. I read all eleven other pass 1 reports. I buil
 - **The avatar is not the centrepiece.** Brand, art, creative, game, marketing, sales, uiux, systems, me. Systems adds the sharpest fact: the word "avatar" appears zero times in the files that draw charge (`rings.js`, `map.js`, `cone.js`, `wheel.js`). The centre is wired to nothing. Confirmed.
 - **The loop is a row, not a circle.** Seven seats. Confirmed.
 - **Seven hues carry many meanings.** Art counts 16 meanings on 7 hues. Systems counts 25 of 34 colours colliding. Technical: seat colour lives in JS, not CSS. Confirmed.
-- **No type scale.** Counts run 26 to 43 because each seat counted differently. Same verdict. Stop quoting a number and ship a scale.
+- **No type scale.** Counts run 26 to 43 because each seat counted differently. Same verdict. Ship a scale.
 - **Start Case against the sentence case rule.** Six seats.
 - **Locks read as a shop.** Nine to ten padlocks on the first Field screen. Six seats.
 - **The unread state prints verdicts and promises nothing.** Marketing ("Heaviest: Root 0.0"), narrative, uiux, me.
 - **The 390 pill overlaps the zoom buttons.** Seven seats. Confirmed.
-- **Release is silent.** Animation (4 of 10), game, me.
 
 ## 2. DISAGREEMENTS
 
@@ -32,7 +31,6 @@ Rua Whitmore, innovation. Pass 2. I read all eleven other pass 1 reports. I buil
 - **The goniometer must not flicker.** Animation's line: no visual near the 6 Hz theta beat, nothing faster than 0.3 Hz. Low pass the plot.
 - **Transclusion is half blocked.** Systems: the journal stores a count of imprints, not ids. A clause can open its address and law today, not "your lines". Storing ids is Schema v2, the owner's.
 - **Marcus contradicts himself.** Field says 62, Story says nothing is held (creative). That costs my truth score until the threshold is named in the line.
-- **Dashed already means "not yet drawn"** in the Compass side panels (sales). It must keep one meaning.
 
 ## 4. THE SKIN, TOGETHER
 
@@ -71,7 +69,7 @@ Rua Whitmore, innovation. Pass 2. I read all eleven other pass 1 reports. I buil
 4. **The lit figure on four surfaces.** Canvas, CQ light, free is one white light, registers paid. Crude behind a flag on the Field centre first. L, a redesign: a skin cannot make one object shared across tabs. Moves Marcus, Sofia, Diane, S6, S7.
 5. **Release as a field with a smoothed goniometer.** Animation's quiet ring plus a stereo plot of the real audio, 0.3 Hz or slower. M. Moves Derek, Marcus, S4, S1.
 
-Deferred: imprint waterfall (canvas, M), cross bearing (to Summary), transclusion (needs ids). The lamp test folds into the boot: on a blank profile the ring fills, then settles to unread.
+Deferred: imprint waterfall, cross bearing (to Summary), transclusion (needs ids). The lamp test folds into the boot.
 
 ## 7. QUESTION FOR THE OWNER
 
