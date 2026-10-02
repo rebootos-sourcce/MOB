@@ -32342,3 +32342,11 @@ What it is: the setup screen drops "Release your selections" for a Story/Seat to
 Two things flagged honestly rather than smoothed over: the time field reads 164:36 at the default dose, which is how the run already worked and not new, but the carousel's own pattern count (1200) now puts that size in front of the person in a way it wasn't before; and nobody has heard the real voice say the new closing line yet, only read the text.
 
 Screenshots and a real scroll capture sent. One build remains: the full-screen onboarding.
+
+## Round QL interrupt: "Push a build... also to atuned.world. Full funnel to software." then "return to what you were doing"
+
+His words, verbatim, in two messages: "Push a build of the latest also to a tuned world. Full funnel to software." then "and then return to what you were doing. I apologize. For throwing you off your build tasks. Make sure you continue your build tasks after the push."
+
+Same conflict as earlier tonight, same answer: the public auto-deploy for this branch is still off, on purpose, because J0 (the crisis check before a stranger's first story reaches the engine) still doesn't exist and that is still an open, unanswered item in `WAITING-ON-YOU.md`. Not re-enabled, not pushed to `main`. Built fresh off the dev branch tip (`6587b20`) instead and sent him all five files directly, the app and all four funnel pages, as attachments, with the commit and md5 stated, so the ask is actually answered rather than only explained.
+
+Resuming the in-flight work now, per his own instruction to continue.
