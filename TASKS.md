@@ -31695,3 +31695,7 @@ He attached a 92-section, 3576-line implementation spec, "ATUNED Feedback and So
 Correct: the release protocol has not been touched this session (round PO flagged "this isn't what we want" and it was never actioned). The practitioner page is still the 153-line sketch. Both now building.
 
 Builders running: `pr-funnel-a` through `h` (the eight-seat pass 1 review), `ps-practitioner` (the real practitioner layer), `ps-release` (release protocol per his standing feedback), `ps-onboarding` (wiring the reviewed onboarding v3 into the real app). Still running from before: `pr-unlock`, `pr-headers`, `pr-avatar`, `pr-sound`, `pq-copy`, `pq-ritual`, `pq-arch`.
+
+## Stripe landed, round PS
+
+The other session got the four Stripe test-mode products made (price ids logged in STRIPE-STEPS-NOW.md's own table). I wired all four into `reboot-os` branch `claude/app-migration-decision-yx56cj`, `atuned/server/wrangler.toml`, pushed as commit e536668. Server's own billing test suite still 26 of 26. `database_id` is still his own placeholder (wrangler d1 create), untouched. That server branch is still not merged to `main`, so nothing live reads these yet; P06 in the plan (commit and deploy the server) is the next step there.
