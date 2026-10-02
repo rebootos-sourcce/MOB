@@ -3969,7 +3969,7 @@ var UNPACK_BASE={
  'client:practised':'Practised counts the days in this window a practice was done in full or in part.',
  'client:done':'Done means the practice was run start to finish that day.',
  'client:part done':'Part done means the practice was started that day and some of its steps were run.',
- 'client:skipped':'Skipped means the client chose not to run it that day. A skip is a choice and does not count as a miss.',
+ 'client:skipped':'Skipped means the client chose not to run it that day, which is a choice and does not count as a miss.',
  'client:missed':'Missed means it came due and was not marked done by the end of the next day.',
  'client:not marked yet':'Not marked yet means it came due and nothing is recorded for it so far.',
  'client:nothing scheduled':'Nothing scheduled means no practice was due that day.',

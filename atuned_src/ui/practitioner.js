@@ -606,8 +606,7 @@ function pracFigs(R){
    +'<span class="lp-fl">'+esc(lab)+'</span><b class="lp-fv">'+(n?String(n):'–')+'</b></button>';};
  return '<div class="ac-grp"><div class="ac-gh">Patterns and practice</div><div class="pr-figs">'
   +f('confirmed','Confirmed',L.confirmed)+f('unanswered','Unanswered',L.unanswered)
-  +f('declined','Declined',L.declined.length)+f('practised','Practised',L.practice.events)+'</div>'
-  +'<div class="ac-gf">Press a figure to list what it counts.</div></div>';}
+  +f('declined','Declined',L.declined.length)+f('practised','Practised',L.practice.events)+'</div></div>';}
 
 /* THE DAYS, the telemetry. A day something was scheduled on is a press; a
    day nothing was is a mark and not a control, because a press that opens
@@ -622,8 +621,7 @@ function pracDaysCard(R){
  var key=PRAC_ST_ORDER.filter(function(st){return seen[st];}).map(function(st){
   return '<span><i class="st-'+st+'"></i>'+unp(pracStWord(st),pracCap(pracStWord(st)),'client')+'</span>';}).join('');
  return '<div class="ac-grp"><div class="ac-gh">Practice, the last '+PRAC_WINDOW_WORD+'</div>'
-  +'<div class="pr-days">'+cells+'</div><div class="pr-key">'+key+'</div>'
-  +'<div class="ac-gf">One square a day, oldest first, the last one yesterday. Press a day to read it.</div></div>';}
+  +'<div class="pr-days">'+cells+'</div><div class="pr-key">'+key+'</div></div>';}
 
 /* THE PATTERNS, confirmed first, the loop read's own order, then the
    practices turned down. LOOP_SHOW at a time, the working memory figure. */
@@ -852,7 +850,8 @@ function pracDrillSeat(p,b){
   +list.map(function(n){
    var a=pracAddrIdx(n);
    return '<div class="pr-addr" style="--c:'+seatCol(b)+'"><button type="button" class="pr-link pr-addr-k" data-prd="addr:'+a+'">'+esc(n.k)+'</button>'
-    +'<div class="pr-addr-x">Concerns '+esc(String(n.a||'').toLowerCase())+'. Shows up as '+esc(String(n.d||'').toLowerCase())+'.</div>'
+    +'<div class="pr-addr-x">Concerns '+esc(String(n.a||'').toLowerCase())+'. Shows up as '+esc(String(n.d||'').toLowerCase())+'.'
+    +(n.nerve?' The nerve that serves this place is the '+esc(String(n.nerve).toLowerCase())+'.':'')+'</div>'
     +pracMeter(n.sq)+'</div>';}).join('');
  pracShell(p,h);}
 
