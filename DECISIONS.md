@@ -2736,3 +2736,12 @@ memory only and is never stored; the four doors stay while a profile is unread; 
 never changes with time; the gift stays as ruled; tier four is closed until built; the
 distress reader ships to the private build first and clinician and counsel review gate any
 public launch. Open for him, not blocking: Stripe price ids and secrets, and booking the review.
+
+
+## Round PO, 2 October: unpack every symbol; Onest; flow and intake moves
+
+- **Unpack every symbol (general rule).** Any label, symbol, sign or term of art is shown with its plain meaning in the same place. Recorded in `CLAUDE.md`. A gate follows.
+- **The font is Onest** (his word, round PO), overriding the Geist pick. Latin variable subset, embedded. The product swap is a slice after the mockup.
+- **Flow:** New ritual goes to the right menu; accountability becomes its own tool set beside Ritual.
+- **Intake adds** the Jungian archetypes, the nine emotional axes and the six action axes, all stacked on the current design.
+- **Analytics:** the glance answer sits above the fold.
