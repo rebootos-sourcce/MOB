@@ -87,3 +87,16 @@ S3 stillness while unread, the 390 pill, Compass on elapsed time (S), S4 one MOT
 S5 pre-drawn figure (M, after J4), S6 lock mark inside P11 (M), S7 names and Embody (S, after
 J5), S8 ring unlit (M), S9 unread stage (M, after P18b), S10 engine data changes with a named
 `tools/equiv.py` diff (L, last). The coherence gate `tools/coherence.js` lands with S1.
+
+## QA's measured defects (pass 1, real Chromium, dark theme, 14 surfaces, 1600 and 390 wide)
+27 distinct text sizes (ten are half-pixel steps), 47 text colours, 19 icon sizes, 21 stroke widths,
+median 67 controls per screen, 106 of 2063 text items fail 4.5 to 1. Quick fixes, in order:
+1. The count on the selected tab (`.stk-t.on b`) is invisible, 1.12 to 1, on 11 of 14 surfaces:
+   two rules on one selector. FIXED in source this round (one line).
+2. Analytics archetype bar labels on their own bar colour read 1.6 to 3.5 to 1 (dark ink on the green bar is 7.9).
+3. `--dim` on tinted cards reads 3.6 to 4.4 (a step to about `#a5a29d` clears it).
+4. The red text token reads 3.5 to 4.1 (about `#dd716c` clears it; note the seat hue ruling).
+5. `button.s-row` (Summary at 390) and `button.bal` (Field dial) fall back to Arial (22 elements): `button{font:inherit}`.
+6. Body map dim labels read 2.4 to 3.1 (a deliberate dim state that still measures as a fail).
+7. The Source OS logotype is 1.34 to 1 in his fixed hex: record it as a named exemption.
+The probe `REVIEW-skin/measure-coherence.js` is validated against a hand-checked fixture and is ready to become a gate.

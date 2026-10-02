@@ -274,7 +274,7 @@ function PROBE(arg){
      const letters=(t.match(/[A-Za-z]/g)||[]).length;
      const caps=cs.textTransform==='uppercase'&&letters>=3||(letters>=4&&t===t.toUpperCase()&&/[A-Z]/.test(t));
      if(caps)both(side,m=>{m.capsN++;if(Object.keys(m.caps).length<10)m.caps[t.slice(0,24)+(cs.textTransform==='uppercase'?' [css]':' [source]')]=1;});
-     if(t.indexOf('—')>=0)both(side,m=>{m.dash++;if(m.dashS.length<5)m.dashS.push(t.slice(0,40));});
+     if(t.indexOf('\u2014')>=0)both(side,m=>{m.dash++;if(m.dashS.length<5)m.dashS.push(t.slice(0,40));});
      const gl=t.match(GLY);if(gl)gl.forEach(g=>both(side,m=>add(m.glyph,g)));
      /* colour and contrast */
      if(!fg0)continue;

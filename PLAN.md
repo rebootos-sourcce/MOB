@@ -166,7 +166,7 @@ tokens once per lighting; S3 stillness while unread, the 390 pill overlap, Compa
 time (six sites in `ui/cone.js`); S4 one MOTION clock; S5 the free pre-drawn figure; S6 the lock
 mark inside P11; S7 names and Embody (Embody stays Knowledge); S8 the loop ring, unlit; S9 the
 unread stage; S10 engine data changes. The funnel true-up (`funnel/buy.html`: 25 patterns, the
-tier claim) goes first and is small.
+tier claim) goes first and is small. QA's measured quick fixes are in `REVIEW-skin/TALLY.md` (the invisible selected-tab count is already fixed in source, one line; the probe `REVIEW-skin/measure-coherence.js` becomes a gate).
 
 ## I. Getting files to him
 
