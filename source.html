@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1349 8e05776 2026-10-02 11:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v1351 7f8905c 2026-10-02 11:28"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -59047,13 +59047,15 @@ function obRender(){
    ============================================================ */
 /* a seat's plain meaning, the one table round PO says every meaning lives in */
 function obSeatMean(b){ return (typeof unpackOf==='function')?unpackOf(b,'seat'):''; }
-/* what an address is about, off the node's own field, lower case, so a name
-   never stands alone: Martyrdom, the address about self-sacrifice. */
+/* what an address means, off the node's own two fields, in the words the
+   Practitioner page already uses for them ("Concerns ... Shows up as ..."),
+   so a name never stands alone: Separation. It concerns unity and shows up
+   as isolation. One wording for one concept, across both surfaces. */
+function obLow(x){ x=String(x||'').trim(); return x?x.charAt(0).toLowerCase()+x.slice(1):''; }
 function obAbout(n){
- var a=String((n&&n.a)||'').trim(); if(!a)return '';
- a=a.charAt(0).toLowerCase()+a.slice(1);
- a=a.replace(/,\s*([^,]+)$/,' and $1');
- return ', the address about '+esc(a);}
+ var a=obLow(n&&n.a), d=obLow(n&&n.d);
+ if(!a&&!d)return '';
+ return ' It concerns '+esc(a||'this place')+(d?' and shows up as '+esc(d):'')+'.';}
 /* THE READ, from a parse that has not been committed. One group per seat the
    words put weight on, in the order the words did it, stated groups first.
    A group is stated when parseStory says the words named its feeling
@@ -59078,7 +59080,7 @@ function obReadOf(p,src,seen){
    var w=String(h.t).trim(); if(w&&g.words.indexOf(w)<0)g.words.push(w);});
   /* a row is stated only inside a stated group. Said per row so the release
      can carry it without reading the group again. */
-  g.rows=g.rows.map(function(n){return {n:n, stated:g.stated};});});
+  g.rows=g.rows.map(function(n){return {n:n, stated:g.stated, fetter:g.fetter};});});
  return groups.filter(function(g){return g.stated;})
   .concat(groups.filter(function(g){return !g.stated;}));}
 /* every address on the card, in the order shown, the story's then each
@@ -59098,9 +59100,10 @@ function obQuoteList(ws){
 function obRow(r,seat){
  var n=r.n, a=OB.ans[n.i]||'';
  var said=r.stated
-  ?'<span class="ob-tag ob-tag-said">your words</span> <b>'+esc(n.k)+'</b>'+obAbout(n)+'.'
-  :'<span class="ob-tag">a guess</span> <b>'+esc(n.k)+'</b>'+obAbout(n)
-   +'. The engine&rsquo;s guess, from your '+esc(seat)+' seat.';
+  ?'<span class="ob-tag ob-tag-said">you named '+esc(obLow(r.fetter))+'</span> <b>'+esc(n.k)+'</b>. One place '
+   +esc(obLow(r.fetter))+' sits at your '+esc(seat)+' seat.'+obAbout(n)
+  :'<span class="ob-tag">a guess</span> <b>'+esc(n.k)+'</b>. The engine&rsquo;s guess, from your '
+   +esc(seat)+' seat.'+obAbout(n);
  return '<div class="ob-row" data-obrow="'+n.i+'">'
   +'<p class="ob-p ob-rowp">'+said+'</p>'
   +'<div class="ob-as" role="group" aria-label="'+esc(n.k)+'">'
@@ -59124,12 +59127,11 @@ function obGroup(g){
  var ws=g.words.length?obQuoteList(g.words):'';
  if(g.stated)
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws:'Your words')
-   +' named <b>'+esc(String(g.fetter||'').toLowerCase())+'</b>. Below is where '
-   +esc(String(g.fetter||'').toLowerCase())+' sits at this seat.</p>';
+   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks where at this seat it sits.</p>';
  else
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws+' put weight here.'
     :'Something in your words put weight here.')
-   +' They did not name a feeling, so what follows is a guess.</p>';
+   +(g.words.length>1?' They':' It')+' did not name a feeling, so what follows is a guess.</p>';
  var open=!!OB.more[g.id], show=open?g.rows:g.rows.slice(0,1);
  show.forEach(function(r){o+=obRow(r,g.seat);});
  var rest=g.rows.length-show.length;
@@ -61444,5 +61446,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004009356"></div>
+<div id="eof" hidden data-len="004009652"></div>
 </body></html>
