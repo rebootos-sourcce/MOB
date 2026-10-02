@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1315 127b573 2026-10-02 08:01"><head><meta charset="utf-8">
+<html lang="en" data-build="v1322 b8f2db0 2026-10-02 08:53"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -41684,14 +41684,28 @@ function renderAvatar(){
 /* repaint only when something the page reads has moved. renderIntake calls
    this on every press of its own, and a press on a law must not throw away a
    half typed pair. A ritual marked done moves the cycles without changing how
-   many rituals there are, so the done count is read as well as the length. */
+   many rituals there are, so the done count is read as well as the length.
+
+   THE PLAN IS PART OF WHAT THIS PAGE READS, and was missing, which is the
+   same defect ui/lock.js's own file header warns against by name: "never
+   cached... because a plan can change under an open surface: a payment
+   lands, a subscription lapses, a record is swapped." avRunHTML gates the
+   Running card on lockSees('sab'), read off CURP.plan, but nothing here told
+   the signature a plan had moved, so a tier change with nothing else on the
+   record moving left the Running card showing whatever it last drew. Found
+   through the worked-example tier-four unlock, round PS: loadP calls
+   renderIntake at its own end, before a caller's own plan.tier={...} can run
+   after it, so the card painted once at whatever plan was live that moment
+   and never again. Round PS 2 October fix, keyed to plan.tier and
+   plan.status, the two fields planState actually reads. */
 function avSig(){
  var s=0; CHARGES.forEach(function(c){s+=(S.charge[c]||0)+(S.replace[c]||0)*0.001;});
  var p=CURP||{}, e=(p.story&&p.story.entries)||[], av=(p.avatar&&p.avatar.pairs)||[];
  var R=p.rituals||[], dn=R.filter(function(x){return x&&x.done;}).length;
  /* answers is keyed by index and is not always an array, so it is read whole */
  var ans=JSON.stringify((p.intake&&p.intake.answers)||{});
- return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans].join('|');}
+ var pl=(p.plan&&p.plan.tier)+':'+(p.plan&&p.plan.status);
+ return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl].join('|');}
 function avRefresh(){
  var host=document.getElementById('avbody');
  if(host&&(!host.firstChild||AV.sig!==avSig()))renderAvatar();
@@ -56701,6 +56715,32 @@ function loadP(i){
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
+ /* EVERY WORKED EXAMPLE OPENS ON TIER FOUR SIGHT, the owner's own words: "for
+    the profiles unlock their tiers so that they all have tier four. Yeah, I
+    can't see anything." A demo persona carries no plan field (PEOPLE never
+    sets one), so it defaulted to the blank's tier, free, and every layer past
+    saboteurs (engine/plan.js SIGHT) read locked on every example. Ruled 2
+    October.
+
+    Keyed to !p.you, never to S.who, because p.you is the one flag the real
+    custom profile ("You", PEOPLE[0], the stranger who arrives with nothing)
+    carries and no example does, so this branch is reached exactly when
+    S.who!==0 and can never fire for the blank. The blank keeps whatever plan
+    its own record already holds and is never touched here.
+
+    THIS IS NOT THE SAME DOOR AS J11 (PLAN.md), which is a pasted or imported
+    record (pImport, engine/schema.js) claiming its own tier THROUGH THE
+    BOUNDARY. Nothing here goes near validateProfile or pImport: a demo is a
+    developer-authored object baked into the build at PEOPLE, never something
+    a stranger typed or pasted, and this write happens after the boundary, not
+    instead of it. J11 stays open and unfixed on purpose, tracked separately;
+    tests/plan-selfgrant.js is a new, narrow gate that watches pImport still
+    accepts a self-declared tier exactly as it did before this change, and
+    that this file's own unlock cannot be reached by handing pImport a tier.
+    status 'active' is the one PLAN_LIVE
+    recognises (engine/plan.js), the same literal tests/seed.js's FULL_SIGHT
+    and ui/lock.js's devSight already use to mean full sight. */
+ if(!p.you)CURP.plan={tier:'four',status:'active',granted:0,carried:0,base:null,since:null,until:null};
  /* loadP fills S from the persona table rather than through loadProfile, so it
     is the one route that has to say for itself which record S now holds. */
  S.rec=CURP.id||null;
@@ -59803,5 +59843,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003900940"></div>
+<div id="eof" hidden data-len="003903622"></div>
 </body></html>
