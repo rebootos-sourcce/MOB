@@ -3796,8 +3796,12 @@ ok(!/Rerunning anything already open costs nothing/.test(plan.two),
 ok(/no customer number/.test(plan.two),'and the record says what it does not hold');
 ok(/not connected yet/.test(plan.status)&&plan.kind==='fail',
  'with nothing bound the control says so rather than opening a dead page');
-ok(plan.called&&plan.called.what==='checkout'&&plan.called.tier==='three',
- 'and once a host is bound it is handed the action and the tier, got '
+/* ONE PLAN, ONE CHARGE. This asserted checkout, with tier three, from a live
+   tier two record, which is the press that opened a second subscription and
+   billed both. A live plan is moved on the portal; free still reaches
+   checkout with its tier, asserted on the tiers below. */
+ok(plan.called&&plan.called.what==='portal'&&plan.called.tier===null,
+ 'and once a host is bound, Move to on a live plan opens the portal and never a second checkout, got '
  +JSON.stringify(plan.called));
 /* THE PROMISE. No key, no customer id, no card field anywhere in the build. */
 const leak=await page.evaluate(()=>{
@@ -3860,6 +3864,20 @@ const tiers=await page.evaluate(async()=>{
  const g2=document.getElementById('plantiers');
  o.presses2=[...g2.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier'));
  o.now2=[...g2.querySelectorAll('.pt-row.on .pt-nm')].map(e=>e.textContent);
+ /* a press on a live plan goes to the portal, never a second checkout */
+ called=null;
+ const b3=g2.querySelector('[data-ptier="three"]'); if(b3)b3.click();
+ o.called2=called;
+ /* and past_due is still live, so it goes the same way */
+ CURP.plan.status='past_due'; renderAccount();
+ called=null;
+ const b3d=document.querySelector('#plantiers [data-ptier="three"]'); if(b3d)b3d.click();
+ o.calledDue=called;
+ /* an ended plan is free again, so a press is a checkout */
+ CURP.plan.status='canceled'; renderAccount();
+ called=null;
+ const b3c=document.querySelector('#plantiers [data-ptier="three"]'); if(b3c)b3c.click();
+ o.calledEnded=called;
  /* every control on the surface meets the touch floor */
  o.small=[...g2.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();
   return r.width>0&&r.height<44;}).length;
@@ -3924,6 +3942,12 @@ ok((tiers.paneText.match(/On every tier/g)||[]).length===1,
  'what is on every tier is said once on the pane, not twice');
 ok(tiers.presses2.join()==='three,four','on tier two only three and four are offered: '+tiers.presses2.join());
 ok(JSON.stringify(tiers.now2)==='["Tier two"]','and tier two is the one marked');
+ok(tiers.called2&&tiers.called2.what==='portal'&&tiers.called2.tier===null,
+ 'on a live plan a press opens the portal, never a second checkout: '+JSON.stringify(tiers.called2));
+ok(tiers.calledDue&&tiers.calledDue.what==='portal',
+ 'past_due is still live, so it opens the portal too: '+JSON.stringify(tiers.calledDue));
+ok(tiers.calledEnded&&tiers.calledEnded.what==='checkout'&&tiers.calledEnded.tier==='three',
+ 'an ended plan reads free, so a press is a checkout with its tier: '+JSON.stringify(tiers.calledEnded));
 ok(tiers.small===0,'every control on the tiers meets the 44 pixel floor, '+tiers.small+' under it');
 
 /* ============================================================

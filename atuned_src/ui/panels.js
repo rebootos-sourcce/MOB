@@ -1127,6 +1127,16 @@ function planOpen(what,tier){
   status('Billing is not connected yet. The plan is read from your record, and '
    +'the page that changes it lives behind sign in.','fail');
   return;}
+ /* ONE PLAN, ONE CHARGE. A checkout always starts a new subscription and
+    never moves the one a person has, so a "Move to" press on a live plan
+    opened a second subscription and billed both, measured. A live plan is
+    moved on the payment page (the portal), which changes the plan already
+    running. Decided here, at the one door both "Move to" buttons go
+    through (planWire and planTiersWire), and off planState, the one reading
+    of live. The server refuses the same checkout with a 409 on its own, so
+    an older build that still sends it is stopped there. */
+ if(what==='checkout'&&typeof CURP!=='undefined'&&CURP&&planState(CURP.plan)==='live'){
+  what='portal'; tier=null;}
  try{ PLAN_HOST(what,tier); }
  catch(e){ status('Could not open the billing page. Nothing has changed.','fail'); }}
 /* bound by the host the same way storage is, so the engine and this file both
