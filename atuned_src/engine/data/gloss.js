@@ -131,6 +131,22 @@ var UNPACK_BASE={
  'release line':'A release line is one spoken line of a release, aimed at one address, that lets go of the limit held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
+    practitioner.js). The entries above speak to the person about themselves,
+    "you said yes", and on the practitioner's page the reader is somebody
+    else, so the same word carries a third person sentence under client:.
+    Same word, same meaning, a different reader. The day words are the
+    practice event's own states (engine/practice.js PR_EV_ST), one word each. */
+ 'client:confirmed':'Confirmed means the client said yes, this pattern is theirs, or chose a practice to work on it.',
+ 'client:unanswered':'Unanswered means the instrument suggested this pattern or a practice for it, and the client has not said yes or no.',
+ 'client:declined':'Declined means the client turned down a practice the instrument suggested, and the record keeps that.',
+ 'client:practised':'Practised counts the days in this window a practice was done in full or in part.',
+ 'client:done':'Done means the practice was run start to finish that day.',
+ 'client:part done':'Part done means the practice was started that day and some of its steps were run.',
+ 'client:skipped':'Skipped means the client chose not to run it that day. A skip is a choice and does not count as a miss.',
+ 'client:missed':'Missed means it came due and was not marked done by the end of the next day.',
+ 'client:not marked yet':'Not marked yet means it came due and nothing is recorded for it so far.',
+ 'client:nothing scheduled':'Nothing scheduled means no practice was due that day.',
 
  /* THE COMPASS */
  'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',

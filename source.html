@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1372 777dd05 2026-10-02 14:43"><head><meta charset="utf-8">
+<html lang="en" data-build="v1374 ce50182 2026-10-02 15:03"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -12637,6 +12637,22 @@ var UNPACK_BASE={
  'release line':'A release line is one spoken line of a release, aimed at one address, that lets go of the limit held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
+    practitioner.js). The entries above speak to the person about themselves,
+    "you said yes", and on the practitioner's page the reader is somebody
+    else, so the same word carries a third person sentence under client:.
+    Same word, same meaning, a different reader. The day words are the
+    practice event's own states (engine/practice.js PR_EV_ST), one word each. */
+ 'client:confirmed':'Confirmed means the client said yes, this pattern is theirs, or chose a practice to work on it.',
+ 'client:unanswered':'Unanswered means the instrument suggested this pattern or a practice for it, and the client has not said yes or no.',
+ 'client:declined':'Declined means the client turned down a practice the instrument suggested, and the record keeps that.',
+ 'client:practised':'Practised counts the days in this window a practice was done in full or in part.',
+ 'client:done':'Done means the practice was run start to finish that day.',
+ 'client:part done':'Part done means the practice was started that day and some of its steps were run.',
+ 'client:skipped':'Skipped means the client chose not to run it that day. A skip is a choice and does not count as a miss.',
+ 'client:missed':'Missed means it came due and was not marked done by the end of the next day.',
+ 'client:not marked yet':'Not marked yet means it came due and nothing is recorded for it so far.',
+ 'client:nothing scheduled':'Nothing scheduled means no practice was due that day.',
 
  /* THE COMPASS */
  'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',
@@ -20008,8 +20024,14 @@ function loopRead(p){
  g.nodes.forEach(function(n){
   if(n.type!=='pattern')return;
   var k=traceKey(n.type,n.id), ins=into[k]||[], outs=from[k]||[];
-  var row={key:k, id:n.id, name:n.name||n.id, seat:n.seat||null, fetter:n.fetter||null,
-   nerve:n.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
+  /* A PATTERN ONLY A PRACTICE NAMES CARRIES NO NAME ON ITS NODE. The node
+     is made from the intent, which says addr:31 and nothing else, so this
+     read printed the pattern as "31". The address table names it, the same
+     lookup the story edges are made with. Found by the practitioner page,
+     round QB, whose examples reach their patterns through practice first. */
+  var at=(!n.name&&typeof tracePatternAttrs==='function')?tracePatternAttrs(n.id):{};
+  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
+   nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
    protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null};
   var confirmedBy=null;
@@ -20078,6 +20100,143 @@ function loopRead(p){
  return out;}
 
 try{window.__at&&window.__at('engine/loop.js');}catch(e){}
+/* ============================================================
+   A WORKED EXAMPLE'S HISTORY, for the practitioner page. Round QB, the
+   owner's words: "The practitioner page, when I select somebody within my
+   cohort, it gives me their analytics."
+
+   WHY THIS EXISTS. A worked example (engine/data/people.js) is a measurement
+   table: nine charges, a law table, a soul and one line the example says. It
+   has no days. So the trace graph read (engine/loop.js) of a worked example
+   is empty, and a practitioner opening one sees no confirmed pattern, no
+   practice and nothing over time, which is no analytics at all. This file
+   gives each of the ten examples the practitioner page lists a short history
+   of practice, written in PRACEX_HIST below, and builds it into a record
+   THROUGH THE REAL ENGINE: every protocol, ritual and practice event goes in
+   by practiceDo, so the boundary refuses a history the product could not
+   produce for a real person, and every figure the page shows is loopRead's
+   answer and not a figure typed here.
+
+   WHAT IS AUTHORED AND WHAT IS READ. Authored, per example: how many of the
+   system's proposed practices the example said yes to, left unanswered and
+   turned down, and one character per day for the last PRACEX_DAYS days.
+   Read: which addresses the practices aim at, which are the example's own
+   heaviest held addresses, handed in by the caller off compute(); the one
+   story line, which is the example's own `says`; and everything loopRead
+   derives from the result. The history is an example's and is labelled so
+   on the page. It is never a client's and never a measurement.
+
+   NEVER STORED. The record is built in memory per call, never validated into
+   PROFILES, never saved and never handed to pPersist. The page that asks for
+   it caches it per day and lets it go with the page.
+
+   HOST FREE. No document, no store, no clock: the moment is passed in.
+   ============================================================ */
+var PRACEX_DAYS=21;
+
+/* ONE CHARACTER A DAY, OLDEST FIRST, the last one yesterday.
+     .  nothing was scheduled
+     c  completed       p  partial      s  skipped, a choice
+     m  missed. Only three or more days back: the engine refuses a miss
+        while the day can still be marked (event_move), and its day is the
+        local date, so a day of slack keeps every time zone inside the rule.
+     -  scheduled and not marked yet, which yesterday can still be
+   The strip runs on the first accepted practice's ritual. A second accepted
+   practice is chosen and not scheduled, which is a real state and the page
+   says so. accept, leave and reject count the system's proposals, heaviest
+   address first. The shapes span what a practitioner meets, and each is
+   read off the example's own table, not assigned at random: Derek and
+   Abraham do it every day, Diane works hard and then stops, Ana stops and
+   starts, James and Gordon say yes to nothing. */
+var PRACEX_HIST={
+ Sofia:  {accept:1, leave:1, reject:0, strip:'......cpcpccpcpccpcpc'},
+ Diane:  {accept:2, leave:0, reject:1, strip:'.....cccccccccccmmm--'},
+ Marcus: {accept:1, leave:0, reject:1, strip:'..............ccpcccc'},
+ Angela: {accept:2, leave:1, reject:0, strip:'..cmcscmccmscmcmcsmcc'},
+ Derek:  {accept:1, leave:0, reject:0, strip:'ccccccccccccccccccccc'},
+ James:  {accept:0, leave:0, reject:2, strip:'.....................'},
+ Ana:    {accept:1, leave:2, reject:0, strip:'....ccmmmcpcpmmcpcccp'},
+ Wren:   {accept:1, leave:0, reject:0, strip:'ccscccscccscccscccscc'},
+ Gordon: {accept:0, leave:2, reject:1, strip:'.....................'},
+ Abraham:{accept:2, leave:0, reject:0, strip:'cccccccpccccccpcccccc'}};
+
+/* nine in the morning, UTC, back days before the moment's own UTC date */
+function pracexDay(now,back){
+ var d=new Date(now), base=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());
+ return new Date(base-back*DAY_MS+9*3600000).toISOString();}
+function pracexLater(iso,h){return new Date(Date.parse(iso)+h*3600000).toISOString();}
+
+/* the example's history, through practiceDo, or a thrown error naming the
+   step the engine refused. A history the boundary refuses is a defect in the
+   table above, and it is loud: tests/practitioner-ex.js runs every row. */
+function pracexPractice(nm,addrs,now){
+ var h=PRACEX_HIST[nm]; if(!h)return null;
+ var P=practiceBlank(), N=PRACEX_DAYS, strip=h.strip;
+ var go=function(act,a,t){
+  var r=practiceDo(P,act,a,t);
+  if(!r.ok)throw new Error('pracex '+nm+' '+act+': '+r.errs.join('; '));
+  P=r.P; return r.id;};
+ var first=strip.search(/[^.]/), firstBack=first<0?N-2:N-first;
+ var proposedAt=pracexDay(now,firstBack+1), acceptAt=pracexDay(now,firstBack);
+ var want=h.accept+h.leave+h.reject, ids=[];
+ (addrs||[]).slice(0,want).forEach(function(a,j){
+  var id='ex_pr'+(j+1);
+  go('protocol_add',{id:id, class:'release', target_patterns:['addr:'+a],
+   steps:[{type:'release', instruction:'Run a release at '+BY[a].k+'.'},
+    {type:'observation', instruction:'Notice which place in the body answers.'}],
+   generated_by:{system:'example', model_version:null, timestamp:proposedAt}},proposedAt);
+  ids.push(id);});
+ ids.forEach(function(id,j){
+  if(j<h.accept)go('protocol_accept',{id:id},acceptAt);
+  else if(j>=h.accept+h.leave)go('protocol_reject',{id:id},acceptAt);});
+ if(!h.accept||first<0)return P;
+ go('ritual_create',{id:'ex_rt1', protocol_id:'ex_pr1', title:'Release at '+BY[addrs[0]].k,
+  cadence:{type:'daily'}, start_at:acceptAt},acceptAt);
+ for(var i=0;i<N;i++){
+  var c=strip.charAt(i); if(c==='.')continue;
+  var at=pracexDay(now,N-i), ev='ex_ev'+(i+1);
+  go('event_schedule',{id:ev, ritual_id:'ex_rt1', scheduled_at:at},at);
+  if(c==='c'||c==='p'){
+   go('event_move',{id:ev,to:'available'},at);
+   go('event_move',{id:ev,to:'started'},pracexLater(at,1));
+   go('event_move',c==='c'?{id:ev,to:'completed',duration_seconds:720}
+    :{id:ev,to:'partial',duration_seconds:300,steps_completed:1},pracexLater(at,1.2));}
+  else if(c==='s')go('event_move',{id:ev,to:'skipped'},pracexLater(at,2));
+  else if(c==='m')go('event_move',{id:ev,to:'missed'},now);}
+ return P;}
+
+/* THE RECORD. A blank, the example's soul so the story reads under its own
+   seats, the example's own line as its one story entry, and the history. */
+function pracexRecord(p,addrs,now){
+ if(!p||!PRACEX_HIST[p.nm])return null;
+ var r=blankProfile(p.nm);
+ r.id='ex_'+p.nm; r.created=pracexDay(now,PRACEX_DAYS+2);
+ r.soul={doms:(p.doms||[p.dom]).slice(), arcs:(p.arcs||[p.a1,p.a2]).slice(), roots:(p.roots||[]).slice()};
+ r.story.entries=p.says?[{t:pracexDay(now,PRACEX_DAYS+1), text:p.says, lex:LEX_VERSION}]:[];
+ r.practice=pracexPractice(p.nm,addrs,now);
+ return r;}
+
+/* THE DAYS, oldest first, one per day of the window, each with what was
+   scheduled and what became of it. A day nothing was scheduled on reads
+   none. This is the telemetry strip, and it is read off the practice events
+   and not off the table above, so it is the same answer for a real record. */
+function pracexDays(rec,now){
+ var P=rec&&rec.practice, evs=(P&&Array.isArray(P.practice_events))?P.practice_events:[];
+ var byDay={};
+ evs.forEach(function(x){byDay[String(x.scheduled_at).slice(0,10)]=x;});
+ var out=[];
+ for(var back=PRACEX_DAYS;back>=1;back--){
+  var iso=pracexDay(now,back), k=iso.slice(0,10), x=byDay[k]||null;
+  out.push({day:k, status:x?x.status:'none', ritual:x?x.ritual_id:null, protocol:x?x.protocol_id:null,
+   seconds:x&&x.execution?x.execution.duration_seconds:null});}
+ return out;}
+
+/* THE ONE READ the page asks: the record, the loop read and the days. */
+function pracexRead(p,addrs,now){
+ var rec=pracexRecord(p,addrs,now); if(!rec)return null;
+ return {rec:rec, loop:loopRead(rec), days:pracexDays(rec,now)};}
+
+try{window.__at&&window.__at('engine/pracex.js');}catch(e){}
 /* ============================================================
    INTAKE · 21 laws x 3, triangulated left / right / neutral.
    Blocked into 21 units of three. Resumable. Live partial CQ.
@@ -25307,6 +25466,9 @@ if(typeof module!=='undefined'&&module.exports){
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
   /* the loop read, engine/loop.js: the one read of the graph a screen asks */
                   loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
+  /* a worked example's history, engine/pracex.js, for the practitioner page */
+                  PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
+                  pracexDays:pracexDays, pracexRead:pracexRead,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
@@ -54597,6 +54759,11 @@ function setTab(i){
     still in the document asserting them. */
  if(S.tab===TAB.ACCOUNT&&i!==TAB.ACCOUNT){
   var ac=$('acct'); if(ac)ac.innerHTML='';}
+ /* AND THE PRACTITIONER'S PAGE, for the same reason and one more: its drills
+    sit in Selection, the panel every surface shares, so a reading about an
+    example left there would stand beside the Field as the person's own.
+    ui/practitioner.js pracLeave empties both. */
+ if(S.tab===TAB.PRACTITIONER&&i!==TAB.PRACTITIONER&&typeof pracLeave==='function')pracLeave();
  S.tab=i; S.pin=null;
  /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
     Settings was shown and hidden by hand below, which held while Settings was
@@ -57523,13 +57690,39 @@ function pracCss(){
   /* one literal and not two: split across two, the voice gate read the first
      half as a figure's label standing over the second */
   '@media not all and (max-width:720px){.top[data-sec="practitioner"] #tabbar .tabgrp:not([data-sec="practitioner"]){display:none}}',
-  'body.tab-prac .mid,body.lshut.tab-prac .mid{grid-template-columns:1fr}',
-  'body.tab-prac .mid .col{display:none}',
+  /* THE RIGHT RAIL COMES BACK, CARRYING SELECTION ONLY, round QB. His words:
+     "if I select any of the analytic information, telemetry information, or
+     graph information, it shows up on the right-hand side of the screen."
+     The product already has that rule and one panel for it: every element
+     that carries data opens a drill in the right rail's Selection section
+     (ui/drills.js, rdShell), and round PE gave the Character page the same
+     arrangement, the rail stepping aside to Selection and the page's own
+     section. This page has no rail section of its own, so the rail shows
+     Selection alone. The left rail stays shut: it is the practitioner's own
+     field, and a list of other people beside it reads as one of them. The
+     track is the rail's usual 336, and a shut rail keeps its 58 pixel fold,
+     the two lines Ritual and Accountability already carry for a page with a
+     right rail and no left one. */
+  'body.tab-prac .mid>#lcol{display:none}',
+  'body.tab-prac #rpanel>*:not(.rfold):not([data-sec="sel"]){display:none!important}',
+  '@media (min-width:1181px){body.tab-prac .mid,body.lshut.tab-prac .mid{grid-template-columns:minmax(0,1fr) 336px}'
+   +'body.rshut.tab-prac .mid,body.lshut.rshut.tab-prac .mid{grid-template-columns:minmax(0,1fr) 58px}}',
+  /* the Selection empty line names what to press on this page and not the
+     Field's address, law, saboteur and core, none of which is here */
+  'body:not(.tab-prac) #pr-selnone{display:none}',
+  'body.tab-prac #rdrill-none{display:none!important}',
+  '#rdrill[style*="block"]~#pr-selnone{display:none}',
   '.pr-wrap{display:flex;flex-direction:column;gap:14px;width:100%;max-width:1400px;margin:0 auto;padding:4px 2px 28px}',
-  '.pr-cols{display:grid;grid-template-columns:272px minmax(0,1fr) 304px;gap:14px;align-items:start}',
-  /* the right column (notes, sight) rides under the reading on a narrower
-     desktop rather than vanishing: nothing here is only for a wide screen */
-  '@media (max-width:1180px){.pr-cols{grid-template-columns:260px minmax(0,1fr)}.pr-right{grid-column:1/-1}}',
+  /* TWO COLUMNS, NOT THREE, since the right one is the rail's Selection now:
+     the list, and the open client. The client splits in two side by side
+     when the room is there, what moved on the left and what is held on the
+     right, and stacks when it is not. */
+  '.pr-cols{display:grid;grid-template-columns:272px minmax(0,1fr);gap:14px;align-items:start}',
+  '@media (max-width:1180px){.pr-cols{grid-template-columns:260px minmax(0,1fr)}}',
+  '.pr-mid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}',
+  '.pr-mid>.pr-head{grid-column:1/-1}',
+  '.pr-stack{display:flex;flex-direction:column;gap:14px;min-width:0}',
+  '@media (max-width:1500px){.pr-mid{grid-template-columns:minmax(0,1fr)}}',
   /* BELOW THIS WIDTH THE LIST AND THE OPEN CLIENT TRADE PLACES, the way the
      Field's own sheets do on a phone, because 272 plus a reading plus a
      notes column has no room to sit side by side under about 900px. The
@@ -57538,7 +57731,7 @@ function pracCss(){
      all and holds at every size. */
   '@media (max-width:900px){.pr-cols{grid-template-columns:1fr}'
    +'.pr-wrap[data-open="1"] .pr-list-col{display:none}'
-   +'.pr-wrap:not([data-open="1"]) .pr-mid,.pr-wrap:not([data-open="1"]) .pr-right{display:none}}',
+   +'.pr-wrap:not([data-open="1"]) .pr-mid{display:none}}',
   '.pr-back{display:none}',
   '@media (max-width:900px){.pr-wrap[data-open="1"] .pr-back{display:flex}}',
   '.pr-sort{display:flex;align-items:center;gap:6px;margin:11px 15px 10px}',
@@ -57584,31 +57777,65 @@ function pracCss(){
      always visible, so a hover is never the only way to the meaning. */
   '.pr-ringwrap{position:relative;width:208px;max-width:100%;margin:6px auto 0}',
   '.pr-ringsvg{display:block;width:100%;height:auto}',
-  '.pr-ringsvg path{cursor:pointer}',
-  '.pr-ringsvg path:focus{outline:2px solid var(--accent);outline-offset:2px}',
+  /* each arc is drawn thin and pressed thick: a transparent stroke forty
+     wide over the drawn one is the finger's target, the 44 floor on a ring */
+  '.pr-ringsvg .pr-hit{cursor:pointer;pointer-events:stroke}',
+  '.pr-ringsvg .pr-hit:focus{outline:none;stroke:var(--edge-2);stroke-opacity:.5}',
+  '.pr-ringsvg .pr-hit.pr-sel{stroke:var(--accent);stroke-opacity:.22}',
   '.pr-ringmid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;'
    +'text-align:center;padding:0 46px}',
   '.pr-ringtier{font-size:15px;font-weight:600;color:var(--ink);line-height:1.3}',
-  /* ADDRESSES GROUPED UNDER THEIR SEAT AND COLLAPSED, right column. One seat
-     open at a time (PRAC_OPENSEAT), the heaviest by default, opened either
-     from its own header here or by tapping its arc on the ring: the two
-     controls write the same one state and this redraw is the only thing
-     either of them does, the rule every other control on this page follows. */
-  '.pr-seatgrp{border-bottom:1px solid var(--edge)}',
-  '.pr-seatgrp:last-child{border-bottom:0}',
-  '.pr-seathd{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;'
-   +'min-height:var(--tap);padding:9px 15px;background:transparent;border:0;cursor:pointer;'
-   +'font-family:var(--sans);font-size:14px;color:var(--ink);text-align:left}',
-  '.pr-seatgrp.open .pr-seathd{color:var(--c)}',
-  '.pr-seatct{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--dim);font-size:13px}',
-  '.pr-seatbody{display:none}',
-  '.pr-seatgrp.open .pr-seatbody{display:block}',
-  '.pr-addr{padding:8px 15px 10px 29px;border-top:1px solid var(--edge)}',
-  '.pr-seatbody .pr-addr:first-child{border-top:0}',
-  '.pr-addr-k{font-size:13.5px;font-weight:600;color:var(--ink)}',
+  /* A SEAT'S ADDRESSES, in Selection now: the seat groups that sat in the
+     page's own right column went with that column, round QB, and a seat is
+     opened from its arc. Inside the rail panel, so the indent is the rail's. */
+  '.pr-addr{padding:8px 0 10px;border-top:1px solid var(--edge)}',
+  '.pr-addr:first-of-type{border-top:0}',
+  '.pr-addr-k{font-size:13.5px;font-weight:600;color:var(--ink);text-align:left}',
   '.pr-addr-x{font-size:13px;color:var(--mid);line-height:1.55;margin-top:3px}',
   '.pr-meter{height:4px;border-radius:2px;background:var(--sunk);margin-top:7px;overflow:hidden}',
   '.pr-meter i{display:block;height:100%;border-radius:2px;background:var(--c)}',
+  /* THE FIGURES are Your patterns' own four (ui/loopread.js .lp-f), made
+     presses: each one opens its list in Selection */
+  '.pr-figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 15px 14px}',
+  '@media (max-width:720px){.pr-figs{grid-template-columns:repeat(2,minmax(0,1fr))}}',
+  'button.lp-f{min-height:var(--tap);text-align:left;background:transparent;cursor:pointer;font-family:var(--sans)}',
+  'button.lp-f:hover,.pr-pat:hover,.pr-day:hover,.pr-link:hover{background:var(--panel-2)}',
+  '.pr-sel{box-shadow:inset 0 0 0 2px var(--accent)}',
+  '.pr-say{margin:12px 15px 15px;font-size:15px;line-height:1.65;color:var(--ink)}',
+  '.pr-say p{margin:0 0 6px}.pr-say p:last-child{margin:0}',
+  /* THE DAYS. Three rows of seven, oldest first, the last cell yesterday: a
+     week to a row, so a run of misses reads as a gap in a row. 44 a cell,
+     the floor, which also sets the strip's width and fits a phone. */
+  '.pr-days{display:grid;grid-template-columns:repeat(7,44px);gap:5px;padding:12px 15px 6px}',
+  '.pr-day{margin:0;width:44px;height:44px;border-radius:var(--r-xs);border:1px solid var(--edge);background:var(--sunk);'
+   +'display:flex;align-items:flex-end;justify-content:flex-end;padding:3px 5px;box-sizing:border-box;'
+   +'font-family:var(--num);font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}',
+  'button.pr-day{cursor:pointer}',
+  '.pr-day.st-completed{background:var(--c);border-color:var(--c);color:var(--bg)}',
+  '.pr-day.st-partial{background:linear-gradient(to top,var(--c) 50%,var(--sunk) 50%);border-color:var(--c)}',
+  '.pr-day.st-skipped{border-style:dashed;border-color:var(--mid);background:transparent}',
+  /* a miss is struck through and not painted red: a missed day is a fact
+     about a schedule, and alarm colour on it is a penalty the product rules out */
+  '.pr-day.st-missed{background:linear-gradient(135deg,transparent 46%,var(--mid) 46%,var(--mid) 54%,transparent 54%);'
+   +'border-color:var(--mid);color:var(--ink)}',
+  '.pr-day.st-scheduled{background:transparent;border-color:var(--c)}',
+  '.pr-key{display:flex;flex-wrap:wrap;gap:6px 14px;padding:4px 15px 14px;font-size:12.5px;color:var(--dim)}',
+  '.pr-key span{display:inline-flex;align-items:center;gap:6px}',
+  '.pr-key i{width:12px;height:12px;border-radius:3px;border:1px solid var(--edge);background:var(--sunk);display:inline-block}',
+  '.pr-key i.st-completed{background:var(--c);border-color:var(--c)}',
+  '.pr-key i.st-partial{background:linear-gradient(to top,var(--c) 50%,var(--sunk) 50%);border-color:var(--c)}',
+  '.pr-key i.st-skipped{border-style:dashed;border-color:var(--mid);background:transparent}',
+  '.pr-key i.st-missed{background:linear-gradient(135deg,transparent 42%,var(--mid) 42%,var(--mid) 58%,transparent 58%);border-color:var(--mid)}',
+  '.pr-key i.st-scheduled{background:transparent;border-color:var(--c)}',
+  /* the patterns, one press each, the same row Your patterns draws */
+  '.pr-pats{display:flex;flex-direction:column;gap:8px;padding:12px 15px 14px}',
+  '.pr-pat{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:var(--tap);width:100%;'
+   +'padding:8px 12px;border:1px solid var(--edge);border-radius:var(--r-s);background:transparent;cursor:pointer;'
+   +'text-align:left;font-family:var(--sans)}',
+  '.pr-pat .lp-st.lp-declined{border-style:dashed}',
+  '.pr-link{background:transparent;border:0;border-bottom:1px dotted var(--mid);padding:0;min-height:var(--tap);'
+   +'font:inherit;color:var(--ink);cursor:pointer}',
+  '.pr-more{align-self:flex-start;min-height:var(--tap)}',
   '.pr-note-ta{width:100%;min-height:72px;background:var(--sunk);border:1px solid var(--edge);color:var(--ink);'
    +'border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;resize:vertical;'
    +'box-sizing:border-box}',
@@ -57672,7 +57899,7 @@ function pracPaint(){
    opening a client must not silently become that client everywhere else in
    the app. The swap and the restore happen inside one synchronous call with
    no await between them, so nothing else ever observes the state mid swap. */
-var PRAC_SEL=null, PRAC_SORT='attn', PRAC_OPENSEAT=null, PRAC_RCACHE={};
+var PRAC_SEL=null, PRAC_SORT='attn', PRAC_RCACHE={};
 /* TEN, NAMED, ON THE OWNER'S OWN WORD. "Just do 10 of the clients from our
    profiles... let's see what data we can see." PEOPLE carries 44 worked
    examples: the six ICPs (Sofia, Diane, Marcus, Angela, Derek, James), the
@@ -57746,8 +57973,14 @@ function pracRead(p){
     plain meaning round PO's unpack rule requires beside the word: never
     typed here a second time, read off the same table tierOf() reads. */
  var tierObj=(r.complete&&r.tier)?tierOf(r.CQ):null;
+ /* THE HEAVIEST CARRYING ADDRESSES, any weight above zero, heaviest first:
+    what the example's practice history aims at (engine/pracex.js). Carrying
+    and not only held, because Sofia holds nothing above the line and still
+    has a heaviest place a practice would be suggested for. */
+ var top=W.filter(function(n){return n.sq>0;})
+  .sort(function(a,b){return b.sq-a.sq||a.i-b.i;}).slice(0,6).map(function(n){return n.i;});
  var snap={cq:r.CQ,tier:(r.complete&&r.tier)?r.tier:null,tierDef:tierObj?tierObj.def:'',unread:r.unread,
-  darkB:r.darkB,loaded:loaded,
+  darkB:r.darkB,loaded:loaded,top:top,
   heaviest:r.heaviest?{k:r.heaviest.k,b:r.heaviest.b,sq:r.heaviest.sq}:null};
  S.dom=oldDom;S.a1=oldA1;S.a2=oldA2;S.doms=oldDoms;S.arcs=oldArcs;S.roots=oldRoots;S.rec=oldRec;
  CHARGES.forEach(function(c){S.charge[c]=oldCharge[c];S.replace[c]=oldReplace[c];});
@@ -57792,7 +58025,7 @@ function pracNoteAdd(nm,text){
    named every tier word on this page as printed with no meaning beside it,
    which gloss.js now carries as tier:<name>, built off TIERDEF the same way
    law: and archetype: already are. The return value therefore carries real
-   markup and is used as given, not re-escaped, the same as pracAddrCard(). */
+   markup and is used as given, not re-escaped. */
 function pracClientLine(p){
  var snap=pracRead(p), now=pracTierWord(snap), seen=pracSeenAll()[p.nm];
  var nowU=unp(now,null,'tier');
@@ -57856,10 +58089,15 @@ function pracArcs(loaded,cx,cy,r,sw,gap,withButtons){
      folded every one of the seven arcs into. Caught by reading the raw
      markup for three different clients and finding it identical where the
      data was not (tools, not screenshots, the rule this file already keeps). */
-  return '<path d="M'+x0+' '+y0+' A'+r+' '+r+' 0 0 1 '+x1+' '+y1+'" fill="none" stroke="'+seatCol(b)
-   +'" stroke-width="'+sw+'" opacity="'+op+'"'
-   +(withButtons?' data-prseat="'+esc(b)+'" tabindex="0" role="button" aria-label="'+esc(b)+'">'
-     +'<title>'+esc(b)+'</title></path>':'/>');}).join('');}
+  /* AN ARC IS A PRESS NOW, round QB, and it is pressed on a stroke forty
+     wide laid over the drawn one, transparent, so the target meets the 44
+     floor while the ring keeps its weight. It opens the seat in Selection. */
+  var d='M'+x0+' '+y0+' A'+r+' '+r+' 0 0 1 '+x1+' '+y1;
+  var drawn='<path d="'+d+'" fill="none" stroke="'+seatCol(b)+'" stroke-width="'+sw+'" opacity="'+op+'"'
+   +(withButtons?' pointer-events="none"':'')+'/>';
+  if(!withButtons)return drawn;
+  return drawn+'<path class="pr-hit" d="'+d+'" fill="none" stroke="transparent" stroke-width="40"'
+   +' data-prd="seat:'+esc(b)+'" tabindex="0" role="button" aria-label="'+esc(b)+'"><title>'+esc(b)+'</title></path>';}).join('');}
 function pracRingSvg(snap){
  return '<svg viewBox="0 0 200 200" class="pr-ringsvg">'+pracArcs(snap.loaded,100,100,74,18,0.05,true)+'</svg>';}
 /* THE SAME RING, SMALL AND QUIET, on a client's own row in the list: the
@@ -57869,135 +58107,427 @@ function pracRingSvg(snap){
    at a glance, closed. */
 function pracMiniRing(snap){
  return '<svg viewBox="0 0 40 40" class="pr-miniring" aria-hidden="true">'+pracArcs(snap.loaded,20,20,14,5,0.08,false)+'</svg>';}
+
+/* ============================================================
+   THE CLIENT'S ANALYTICS, round QB. His words: "when I select somebody
+   within my cohort, it gives me their analytics... And if I select any of
+   the analytic information, telemetry information, or graph information, it
+   shows up on the right-hand side of the screen."
+
+   WHAT IS READ. pracRead above is the structure, a real compute(). pracEx
+   below is what moved: engine/pracex.js builds the example's practice
+   history through practiceDo and reads it back with loopRead, the trace
+   graph's one read (engine/loop.js), which is the same read the Field's
+   Your patterns block makes. So a figure here and a figure there are one
+   function's answer. Nothing on this page walks the graph.
+
+   CONVERGE LATER. Your patterns (ui/loopread.js) is written to the person
+   about themselves, "you said yes", and this page is a practitioner reading
+   about somebody else, so the labels, figures and chain are its classes and
+   its order but the sentences are third person, from the client: entries in
+   the meaning table. The Daily Summary's page had not landed when this was
+   built; the plain words card below is an interim, built off the same loop
+   read, and should give way to that page's own component when it exists.
+
+   EVERY PRESS GOES TO SELECTION. One attribute, data-prd, "kind:key", on
+   every element that carries a figure, a day, a pattern, a seat or an
+   address, on the page and inside a drill, and one handler for all of
+   them, the rule this file already keeps for its own state. The drill is
+   written through rdShell (ui/drills.js), so it has the same back control,
+   the same close and the same escape as every other drill in the product.
+   ============================================================ */
+var PRAC_EX={}, PRAC_PICK=null, PRAC_ALLPAT=false;
+var PRAC_WINDOW_WORD='three weeks';
+function pracEx(p){
+ var now=new Date(), k=p.nm+'|'+now.toISOString().slice(0,10);
+ if(PRAC_EX[k]!==undefined)return PRAC_EX[k];
+ var R=null;
+ try{R=(typeof pracexRead==='function')?pracexRead(p,pracRead(p).top,now.toISOString()):null;}
+ catch(e){R=null; if(typeof status==='function')status('The practice history for '+p.nm+' did not build: '+((e&&e.message)||'error'),'fail');}
+ return (PRAC_EX[k]=R);}
+function pracPl(n,one,many){return n+' '+(n===1?one:many);}
+function pracAnd(list){
+ if(list.length<2)return list.join('');
+ return list.slice(0,-1).join(', ')+' and '+list[list.length-1];}
+var PRAC_NUMW=['no','one','two','three','four','five','six','seven','eight','nine','ten'];
+function pracNumW(n){return PRAC_NUMW[n]||String(n);}
+/* the day word, "2 October", off the day's own date and never the clock */
+function pracDayWord(k){return (typeof dlyDayWord==='function')?dlyDayWord(k):k;}
+/* the status words, one word per state, each with its meaning in the
+   table under client: so a tooltip and a drill read the same sentence */
+var PRAC_ST={completed:'done', partial:'part done', skipped:'skipped', missed:'missed',
+ scheduled:'not marked yet', none:'nothing scheduled'};
+var PRAC_ST_ORDER=['completed','partial','skipped','missed','scheduled','none'];
+function pracStWord(st){return PRAC_ST[st]||st;}
+function pracStMean(st){return unpackOf(pracStWord(st),'client');}
+function pracCap(t){t=String(t); return t.charAt(0).toUpperCase()+t.slice(1);}
+
+/* the pattern a practice aims at, by protocol id, off the record */
+function pracProtoOf(R,pid){
+ var P=R&&R.rec&&R.rec.practice; if(!P)return null;
+ var x=null; P.protocols.forEach(function(v){if(v.id===pid&&(!x||v.version>x.version))x=v;});
+ return x;}
+function pracProtoAddr(x){
+ var id=x&&x.target_patterns&&x.target_patterns.pattern_ids[0];
+ var m=/^addr:(\d+)$/.exec(id||''); return m?+m[1]:null;}
+function pracPatOfAddr(R,a){
+ var L=R&&R.loop; if(!L)return null;
+ for(var i=0;i<L.patterns.length;i++)if(L.patterns[i].address===a)return L.patterns[i];
+ return null;}
+function pracPatSeat(x){return x&&x.seat?String(x.seat):'';}
+
+/* THE PLAIN WORDS, two or three sentences, each read off the loop read and
+   the days. Interim, see above. Third person, the client's name as subject,
+   because the reader is the practitioner. No score and no total: a count
+   of what happened, and never one set against a count of what could have. */
+function pracSay(p,R){
+ var L=R.loop, nm=esc(p.nm), out=[];
+ var conf=L.patterns.filter(function(x){return x.state==='confirmed';});
+ if(conf.length)out.push(nm+' has said yes to '+pracNumW(conf.length)+' '+(conf.length===1?'pattern':'patterns')+': '
+  +pracAnd(conf.map(function(x){return esc(x.name);}))+'.');
+ else out.push(nm+' has not said yes to any pattern yet.');
+ var bits=[];
+ var nw=function(n,one,many){return pracNumW(n)+' '+(n===1?one:many);};
+ if(L.unanswered)bits.push(nw(L.unanswered,'pattern is','patterns are')+' waiting for an answer');
+ if(L.declined.length)bits.push(nw(L.declined.length,'suggested practice was','suggested practices were')+' turned down');
+ if(bits.length)out.push(pracCap(pracAnd(bits))+'.');
+ var ran=L.practice.events;
+ if(ran)out.push('Practised '+pracPl(ran,'time','times')+' in the last '+PRAC_WINDOW_WORD+'.');
+ else if(!conf.length)out.push('Nothing is scheduled, so there is no practice to read.');
+ else out.push('Nothing practised in the last '+PRAC_WINDOW_WORD+'.');
+ L.misses.forEach(function(m){
+  out.push('The last '+pracNumW(m.run)+' times it came due, it was not marked done.'
+   +(m.stage==='investigate'?' At three in a row, ask what got in the way: the time, the length, or the practice itself.':''));});
+ return out;}
+
+function pracSayCard(p,R){
+ return '<div class="ac-grp"><div class="ac-gh">In plain words</div><div class="pr-say">'
+  +pracSay(p,R).map(function(t){return '<p>'+t+'</p>';}).join('')+'</div></div>';}
+
+/* THE FOUR FIGURES, Your patterns' own four. A zero is a dash, V8. */
+function pracFigs(R){
+ var L=R.loop, f=function(k,lab,n){
+  return '<button type="button" class="lp-f" data-prd="fig:'+k+'" aria-label="'+esc(lab+', '+(n||'none'))+'">'
+   +'<span class="lp-fl">'+esc(lab)+'</span><b class="lp-fv">'+(n?String(n):'–')+'</b></button>';};
+ return '<div class="ac-grp"><div class="ac-gh">Patterns and practice</div><div class="pr-figs">'
+  +f('confirmed','Confirmed',L.confirmed)+f('unanswered','Unanswered',L.unanswered)
+  +f('declined','Declined',L.declined.length)+f('practised','Practised',L.practice.events)+'</div>'
+  +'<div class="ac-gf">Press a figure to list what it counts.</div></div>';}
+
+/* THE DAYS, the telemetry. A day something was scheduled on is a press; a
+   day nothing was is a mark and not a control, because a press that opens
+   "nothing scheduled" is a dead end. The key prints every state with its
+   meaning beside it, round PO. */
+function pracDaysCard(R){
+ var cells=R.days.map(function(d){
+  var lab=pracDayWord(d.day)+', '+pracStWord(d.status), n=String(+d.day.slice(8));
+  if(d.status==='none')return '<span class="pr-day st-none" title="'+esc(lab)+'">'+n+'</span>';
+  return '<button type="button" class="pr-day st-'+d.status+'" data-prd="day:'+d.day+'" aria-label="'+esc(lab)+'">'+n+'</button>';}).join('');
+ var seen={}; R.days.forEach(function(d){seen[d.status]=1;});
+ var key=PRAC_ST_ORDER.filter(function(st){return seen[st];}).map(function(st){
+  return '<span><i class="st-'+st+'"></i>'+unp(pracStWord(st),pracCap(pracStWord(st)),'client')+'</span>';}).join('');
+ return '<div class="ac-grp"><div class="ac-gh">Practice, the last '+PRAC_WINDOW_WORD+'</div>'
+  +'<div class="pr-days">'+cells+'</div><div class="pr-key">'+key+'</div>'
+  +'<div class="ac-gf">One square a day, oldest first, the last one yesterday. Press a day to read it.</div></div>';}
+
+/* THE PATTERNS, confirmed first, the loop read's own order, then the
+   practices turned down. LOOP_SHOW at a time, the working memory figure. */
+function pracPatsCard(R){
+ var L=R.loop, rows=L.patterns.map(function(x){
+  return {k:'pat:'+x.key, nm:x.name, seat:pracPatSeat(x), st:x.state};});
+ L.declined.forEach(function(d){
+  rows.push({k:'dec:'+d.id, nm:d.patterns.join(', ')||'no named pattern', seat:'', st:'declined'});});
+ if(!rows.length)return '<div class="ac-grp"><div class="ac-gh">Patterns</div>'
+  +'<div class="pr-empty">Nothing read yet, so no pattern is traced.</div></div>';
+ var show=PRAC_ALLPAT?rows:rows.slice(0,LOOP_SHOW);
+ var lab={confirmed:'Confirmed', unanswered:'Unanswered', declined:'Declined'};
+ return '<div class="ac-grp"><div class="ac-gh">Patterns</div><div class="pr-pats">'
+  +show.map(function(r){
+   return '<button type="button" class="pr-pat" data-prd="'+esc(r.k)+'">'
+    +'<span class="lp-pn"><b>'+esc(r.nm)+'</b>'+(r.seat?'<em>'+esc(r.seat)+'</em>':'')+'</span>'
+    +'<span class="lp-st lp-'+r.st+'">'+lab[r.st]+'</span></button>';}).join('')
+  +(rows.length>LOOP_SHOW?'<button type="button" class="btn pr-more" data-prall="1" aria-expanded="'+PRAC_ALLPAT+'">'
+   +(PRAC_ALLPAT?'Show the first '+LOOP_SHOW:'Show all '+rows.length)+'</button>':'')
+  +'</div></div>';}
+
+/* THE READING, the ring and the one heaviest address under it */
 function pracRingCard(p){
  var snap=pracRead(p), now=pracTierWord(snap);
  var tierWord=snap.tierDef?unp(now,null,'tier'):esc(now);
+ var n=snap.loaded.length, sent;
+ /* THE HEAVIEST, NAMED ONCE. It reads snap.loaded[0], the heaviest single
+    address, never r.darkB, the heaviest seat on average: a design review
+    measured the two disagreeing on 6 of 10 clients when both shared one
+    word. Under the line, not nothing: Sofia carries 52 addresses and none
+    crosses sq 4, and she is never told she is empty. */
+ var heavy=n?snap.loaded[0]:snap.heaviest;
+ /* the heaviest is a row and not a word in the sentence: a 44 pixel press
+    inside a line of text broke the line in two, measured in the first shot */
+ var heavyRow=heavy?'<div class="pr-pats" style="padding-top:8px">'
+  +pracRowBtn('addr:'+pracAddrIdx(heavy),heavy.k,pracAddrSeatSuffix(heavy)?'':heavy.b)+'</div>':'';
+ if(n)sent='<b>'+n+'</b> address'+(n===1?' is':'es are')+' carrying. The heaviest:';
+ else if(heavy)sent='Nothing is above the line. The heaviest, under it:';
+ else sent='Nothing is carrying.';
  var body='<div class="pr-ringwrap">'+pracRingSvg(snap)
   +'<div class="pr-ringmid"><div class="pr-ringtier">'+tierWord+'</div></div></div>'
-  +(snap.tierDef?'<p class="ac-lead" style="margin:14px 15px 0">'+esc(snap.tierDef)+'</p>':'');
+  +(snap.tierDef?'<p class="ac-lead" style="margin:14px 15px 0">'+esc(snap.tierDef)+'</p>':'')
+  +'<p class="ac-lead" style="margin:10px 15px 0">'+sent+'</p>'+heavyRow;
  return accGroup('The reading',body,
-   'One ring, seven seats. A brighter, thicker arc holds more charge at that seat. '
-   +'Tap a seat, on the ring or in the list on the right, to open its addresses.');}
-/* THE HEAVIEST, NAMED ONCE. This used to read the heaviest SEAT on average
-   (r.darkB, every address at that seat meaned together) in the sentence
-   while the list beneath it was sorted by the heaviest single ADDRESS, two
-   different facts sharing one word: a design review measured the two
-   disagreeing on 6 of 10 clients. Both now read snap.loaded[0], the same
-   address the list itself leads with, because sq is already sorted
-   descending where pracRead() builds it. And an address whose own name
-   already carries its seat, "Self-Judgment (Solar)", is only one of four in
-   the whole table (the other three are Resentment and Self-Judgment's
-   second seat), and naming the seat again after it read "Self-Judgment
-   (Solar), at the solar": pracAddrSeatSuffix catches exactly those four and
-   nothing else. */
+   'One ring, seven seats. A brighter arc holds more charge at that seat. Press a seat to list '
+   +'its addresses. Read off the structure, never off '+esc(p.nm)+'’s own words, which a '
+   +'practitioner never sees without a separate yes of its own.');}
+function pracAddrIdx(n){
+ if(typeof n.i==='number')return n.i;
+ for(var i=0;i<W.length;i++)if(W[i].k===n.k&&W[i].b===n.b)return W[i].i;
+ return -1;}
 function pracAddrSeatSuffix(n){
  var suf=' ('+n.b+')';
  return n.k.length>=suf.length&&n.k.slice(-suf.length)===suf;}
-function pracAddrNamed(n){
- return pracAddrSeatSuffix(n)?esc(n.k):esc(n.k)+', '+unp(n.b,null,'seat');}
-/* ADDRESSES, GROUPED UNDER THEIR SEAT AND COLLAPSED, heaviest seat first and
-   open by default so the right column is never a wall of forty rows: Gordon
-   carries 97. PRAC_OPENSEAT names the one seat open; null (a fresh client,
-   or one with nothing carrying) resolves to the heaviest seat here rather
-   than leaving every group shut on first paint. */
-function pracSeatGroups(loaded){
- var bySeat={};
- loaded.forEach(function(n){(bySeat[n.b]=bySeat[n.b]||[]).push(n);});
- var seats=Object.keys(bySeat).sort(function(a,b){
-   var ta=bySeat[a].reduce(function(s,n){return s+n.sq;},0);
-   var tb=bySeat[b].reduce(function(s,n){return s+n.sq;},0);
-   return tb-ta;});
- var openB=PRAC_OPENSEAT||seats[0];
- return seats.map(function(b){
-  var list=bySeat[b], open=(b===openB);
-  var rows=list.map(function(n){
-   var concern=(n.a||'').toLowerCase(), shows=(n.d||'').toLowerCase();
-   return '<div class="pr-addr"><div class="pr-addr-k">'+esc(n.k)+'</div>'
-    +'<div class="pr-addr-x">Concerns '+esc(concern)+'. Shows up as '+esc(shows)+'.'
-    +(n.nerve?' The nerve that serves this place is the '+esc(String(n.nerve).toLowerCase())+'.':'')+'</div>'
-    +'<div class="pr-meter"><i style="width:'+Math.max(2,Math.min(100,n.sq/10*100)).toFixed(0)+'%"></i></div>'
-    +'</div>';}).join('');
-  return '<div class="pr-seatgrp'+(open?' open':'')+'" style="--c:'+seatCol(b)+'">'
-   +'<button type="button" class="pr-seathd" data-prseat="'+esc(b)+'" aria-expanded="'+open+'">'
-   +'<span>'+unp(b,null,'seat')+'</span><span class="pr-seatct">'+list.length+'</span></button>'
-   +'<div class="pr-seatbody">'+rows+'</div></div>';}).join('');}
-function pracAddrCard(p){
- var snap=pracRead(p), n=snap.loaded.length, sent;
- if(n)sent='<b>'+n+'</b> address'+(n===1?' is':'es are')+' carrying. The heaviest is '+pracAddrNamed(snap.loaded[0])+'.';
- /* under the line, not nothing: the same honest second case analytics.js
-    already prints, so a field that is real but spread thin (Sofia carries
-    52 addresses and none crosses sq 4) is never told it is empty */
- else if(snap.heaviest)sent='Nothing is above the line. The heaviest is '+pracAddrNamed(snap.heaviest)+'.';
- else sent='Nothing is carrying.';
- return accGroup('What is held',
-   '<p class="ac-lead" style="margin:13px 15px 0">'+sent+'</p>'
-   +(n?pracSeatGroups(snap.loaded):'<div class="pr-empty">Nothing is carrying. There is nothing to group.</div>'),
-   'Read off the structure: which addresses hold charge and the nerve each one '+
-   'sits at. This is not the story in '+esc(p.nm)+'’s own words, which a practitioner '+
-   'never sees without a separate yes of its own.');}
 function pracNotesCard(p){
  var notes=pracNotesFor(p.nm).slice().reverse();
  var items=notes.map(function(n){
   var d=new Date(n.t); var when=isNaN(d)?n.t:d.toLocaleDateString();
   return '<div class="pr-note-item"><span class="pr-note-date">'+esc(when)+'</span>'+esc(n.text)+'</div>';
   }).join('');
- return accGroup('Notes on '+esc(p.nm),
+ return accGroup('Notes on '+p.nm,
    '<form class="pr-note-form" id="prnoteform"><textarea class="pr-note-ta" id="prnotetxt" '
    +'placeholder="Write a note" aria-label="Write a note on '+esc(p.nm)+'"></textarea>'
    +'<div style="margin-top:8px"><button class="btn pri" type="submit">Save note</button></div></form>'
    +(items||'<div class="pr-empty">No notes yet.</div>'),
    'Saved to this device only, never to '+esc(p.nm)+'’s own record and never sent '+
    'anywhere. Sending a note on to the person it is about is not built yet.');}
-/* WHO ELSE CAN SEE THIS CLIENT, honestly not here. "Sight" is team shorthand
-   the owner said he did not know the meaning of (ui/account.js, the person's
-   own privacy section, carries the fix already: the row there is titled
-   "Who can see this"); this stub takes the same wording. The mechanism that
-   would let a second practitioner, or anyone else, be listed on a row like
-   this does not exist in this build, so the stub says that in plain words
-   rather than rendering an empty list that implies the mechanism is there. */
+/* WHO ELSE CAN SEE THIS CLIENT, honestly not here. The mechanism that would
+   list a second practitioner on a row like this does not exist in this
+   build, so the stub says that in plain words rather than drawing an empty
+   list that implies the mechanism is there. */
 function pracSightStub(p){
- return accGroup('Who else can see '+esc(p.nm),
+ return accGroup('Who else can see '+p.nm,
    accStub('Other practitioners or services','not built yet'),
    'This waits on a way for a person to let a practitioner see their record, which this build '
    +'does not have yet. Until then the only route to this example is this device, and nothing '
    +'here is sent or shared.');}
-/* THE WAY BACK TO THE SWITCH. The sketch this page replaces carried the same
-   reasoning and the same button: the door to this page is the only place a
-   person who turned it on is sure to look for how to turn it off, so it
-   stays, on every state this renderer draws and not only the empty one. */
+/* THE WAY BACK TO THE SWITCH, on every state this renderer draws */
 function pracModeGroup(){
  return accGroup('This mode',accAct('Practitioner mode','pracacc',{btn:'Open account'}));}
+
 function pracDetail(){
  if(PRAC_SEL==null||!PEOPLE[PRAC_SEL])
-  return '<div class="pr-mid" id="prmid"><div class="ac-grp"><div class="pr-empty">'
-   +'Select a client on the left to open their reading.</div></div></div><div class="pr-right"></div>';
- var p=PEOPLE[PRAC_SEL];
- pracSeenSet(p.nm,pracTierWord(pracRead(p)));
- /* ONE "PRACTITIONER" EYEBROW, NOT TWO: the list beside this already carries
-    one, and the section bar above both carries the word a third time, which
-    a design review counted on the one screen. This head card drops its own
-    copy and keeps the name, the role and the one honest line. */
- var head='<div class="ac-grp"><div class="ac-hd" style="padding:13px 15px 0">'
+  return '<div class="pr-mid" id="prmid"><div class="ac-grp pr-head"><div class="pr-empty">'
+   +'Select a client on the left to open their reading.</div></div></div>';
+ var p=PEOPLE[PRAC_SEL], snap=pracRead(p);
+ pracSeenSet(p.nm,pracTierWord(snap));
+ var head='<div class="ac-grp pr-head"><div class="ac-hd" style="padding:13px 15px 0">'
   +'<h2 class="kb-h">'+esc(p.nm)+'</h2></div>'
   +'<p class="ac-lead" style="margin:11px 15px 15px">'+esc(p.role)+(p.age?', '+esc(String(p.age)):'')
-  +'. Example person, not a client.</p></div>';
- return '<div class="pr-mid" id="prmid">'+head+pracRingCard(p)+'</div>'
-  +'<div class="pr-right">'+pracAddrCard(p)+pracNotesCard(p)+pracSightStub(p)+'</div>';}
+  +'. Example person, not a client. The practice history is written for this example and read by the '
+  +'same engine a real record goes through.</p></div>';
+ /* SILENT ON AN UNREAD FIELD, the rule every surface that prints a reading
+    keeps: nothing below is drawn for a field nothing was read for */
+ if(snap.unread)
+  return '<div class="pr-mid" id="prmid">'+head+'<div class="ac-grp pr-head"><div class="pr-empty">'
+   +'Nothing read yet, so there is nothing to show for '+esc(p.nm)+'.</div></div></div>';
+ var R=pracEx(p);
+ var left=R?pracSayCard(p,R)+pracFigs(R)+pracDaysCard(R)+pracPatsCard(R)
+  :'<div class="ac-grp"><div class="pr-empty">No practice history is written for '+esc(p.nm)+'.</div></div>';
+ return '<div class="pr-mid" id="prmid">'+head
+  +'<div class="pr-stack">'+left+'</div>'
+  +'<div class="pr-stack">'+pracRingCard(p)+pracNotesCard(p)+pracSightStub(p)+'</div></div>';}
+
+/* ============================================================
+   THE DRILLS. One per kind, each into Selection through rdShell. Every one
+   names its client in the eyebrow, because the rail is not on the page and
+   a reading with no name on it, beside a list of ten people, is a reading
+   of whoever the eye lands on.
+   ============================================================ */
+function pracShell(p,h){
+ /* a press made on this page is always answered in view: on a phone the
+    rail is under the page, and there is no stage here to keep in sight */
+ var was=RD_INRAIL; RD_INRAIL=true;
+ try{rdShell('<div data-prdrill="'+esc(p.nm)+'">'+h+'</div>');}finally{RD_INRAIL=was;}
+ var b=document.getElementById('rdrill');
+ /* AND AGAIN ONCE IT IS FULL, stacked. rdOpen brings the section up before
+    rdShell writes the drill into it, and at the foot of a phone's page the
+    empty section cannot rise: measured at 390, the page stopped 2,137 down
+    with Selection's top at 762 of 844 and the drill under the screen. */
+ if(b&&b.closest&&window.matchMedia&&window.matchMedia('(max-width:1180px)').matches){
+  var sec=b.closest('.lsec'); if(sec&&sec.scrollIntoView)try{sec.scrollIntoView({block:'start'});}catch(e){}}
+ if(b){pracWireIn(b);
+  ['rdback','rdx'].forEach(function(id){var e=document.getElementById(id);
+   if(e)e.addEventListener('click',function(){PRAC_PICK=null; pracMark();});});}}
+function pracEye(p,what){return '<div class="pm-eye plain">'+esc(p.nm)+', '+esc(what)+'</div>';}
+function pracRowBtn(k,label,sub){
+ return '<button type="button" class="ad-r pr-pat" data-prd="'+esc(k)+'"><span class="lp-pn"><b>'+esc(label)+'</b>'
+  +(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>';}
+/* an address's own three facts, off NODES, the same words the seat list
+   carried before it moved here */
+function pracAddrFacts(a){
+ var n=BY[a]; if(!n)return '';
+ return '<p class="ad-p">Concerns '+esc(String(n.a||'').toLowerCase())+'. Shows up as '
+  +esc(String(n.d||'').toLowerCase())+'.'
+  +(n.n?' The nerve that serves this place is the '+esc(String(n.n).toLowerCase())+'.':'')+'</p>';}
+function pracSqOf(p,a){
+ var snap=pracRead(p); for(var i=0;i<snap.loaded.length;i++)if(snap.loaded[i].k===(BY[a]||{}).k&&snap.loaded[i].b===(BY[a]||{}).b)return snap.loaded[i].sq;
+ return null;}
+function pracMeter(sq){
+ return '<div class="pr-meter"><i style="width:'+Math.max(2,Math.min(100,sq/10*100)).toFixed(0)+'%"></i></div>';}
+
+function pracDrillFig(p,R,k){
+ var L=R.loop, word={confirmed:'confirmed',unanswered:'unanswered',declined:'declined',practised:'practised'}[k];
+ var h=pracEye(p,'patterns and practice')+'<div class="ad-nm">'+pracCap(word)+'</div>'
+  +'<p class="ad-p">'+esc(unpackOf(word,'client'))+'</p>';
+ if(k==='confirmed'||k==='unanswered'){
+  var list=L.patterns.filter(function(x){return x.state===k;});
+  h+=list.length?'<div class="ad-rows">'+list.map(function(x){return pracRowBtn('pat:'+x.key,x.name,pracPatSeat(x));}).join('')+'</div>'
+   :'<p class="ad-p">None on this record.</p>';}
+ else if(k==='declined'){
+  h+=L.declined.length?'<div class="ad-rows">'+L.declined.map(function(d){
+    return pracRowBtn('dec:'+d.id,d.patterns.join(', ')||'no named pattern','turned down '+(d.at?pracDayWord(d.at.slice(0,10)):''));}).join('')+'</div>'
+   :'<p class="ad-p">None on this record.</p>';}
+ else{
+  var ran=R.days.filter(function(d){return d.status==='completed'||d.status==='partial';});
+  h+=ran.length?'<div class="ad-rows">'+ran.slice().reverse().map(function(d){
+    return pracRowBtn('day:'+d.day,pracDayWord(d.day),pracStWord(d.status)+(d.seconds?', '+pracPl(Math.round(d.seconds/60),'minute','minutes'):''));}).join('')+'</div>'
+   :'<p class="ad-p">Nothing practised in the last '+PRAC_WINDOW_WORD+'.</p>';}
+ pracShell(p,h);}
+
+function pracDrillDay(p,R,day){
+ var d=null; R.days.forEach(function(x){if(x.day===day)d=x;}); if(!d)return;
+ var x=pracProtoOf(R,d.protocol), a=pracProtoAddr(x), pat=a!==null?pracPatOfAddr(R,a):null;
+ var h=pracEye(p,'one day of practice')+'<div class="ad-nm">'+esc(pracDayWord(d.day))+'</div>'
+  +'<div class="ad-sub">'+esc(pracCap(pracStWord(d.status)))+'</div>'
+  +'<p class="ad-p">'+esc(pracStMean(d.status))+'</p>';
+ if(d.seconds)h+='<p class="ad-p">It ran for '+pracPl(Math.round(d.seconds/60),'minute','minutes')+'.</p>';
+ if(a!==null&&BY[a])h+='<div class="pm-eye">Aimed at</div>'
+  +'<div class="ad-rows">'+pracRowBtn(pat?'pat:'+pat.key:'addr:'+a,BY[a].k,BY[a].b)+'</div>';
+ var miss=R.loop.misses.filter(function(m){return m.ritual===d.ritual;})[0];
+ if(miss&&d.status==='missed')h+='<p class="ad-p">The last '+pracNumW(miss.run)+' times this ritual came due, it was not marked done.'
+  +(miss.stage==='investigate'?' At three in a row, ask what got in the way: the time, the length, or the practice itself.':'')+'</p>';
+ pracShell(p,h);}
+
+/* THE WHY CHAIN, in the order lpChain draws it and with its classes, and in
+   the third person: what was written, what was opened, what practice aims
+   at it, and where the answer stands */
+function pracChain(p,x,R){
+ var st=[], nm=esc(p.nm);
+ if(x.stories)st.push(['Written',pracPl(x.stories,'entry','entries')+', '
+  +(x.named?'from '+nm+'’s own words':'placed by the seat the words pointed at')]);
+ var op=[];
+ if(x.lines)op.push(pracPl(x.lines,'release line','release lines'));
+ if(x.truths)op.push(pracPl(x.truths,'truth line','truth lines'));
+ st.push(['Opened',op.length?esc(op.join(', ')):'nothing opened here yet']);
+ if(x.protocols.length){
+  var acc=x.protocols.some(function(id){var v=pracProtoOf(R,id); return v&&v.status==='accepted';});
+  st.push(['Practice',(acc?'chosen':'suggested, no answer yet')
+   +(x.practised?', '+unp('practised','practised','client')+' '+pracPl(x.practised,'time','times'):'')]);}
+ if(x.evFor||x.evAgainst)st.push(['Evidence',x.evFor+' for, '+x.evAgainst+' against']);
+ st.push(['Answer',x.state==='confirmed'
+  ?(x.by==='protocol'?nm+' chose a practice for it':nm+' said yes to it')
+  :'Not answered yet']);
+ return '<ol class="lp-chain" aria-label="Why chain">'+st.map(function(s){
+  return '<li><span class="lp-cl">'+s[0]+'</span><span class="lp-cv">'+s[1]+'</span></li>';}).join('')+'</ol>';}
+
+function pracDrillPat(p,R,key){
+ var x=null; R.loop.patterns.forEach(function(y){if(y.key===key)x=y;}); if(!x)return;
+ var seat=pracPatSeat(x);
+ var h=pracEye(p,'one pattern')+'<div class="ad-nm">'+esc(x.name)+'</div>'
+  +(seat?'<div class="ad-sub">'+unp(seat.toLowerCase(),seat+' seat','seat')+'</div>':'')
+  +'<p class="ad-p">'+esc(unpackOf(x.state,'client'))+'</p>';
+ if(x.address!==null){
+  h+=pracAddrFacts(x.address);
+  var sq=pracSqOf(p,x.address); if(sq!==null)h+=pracMeter(sq);}
+ h+='<div class="pm-eye">The chain</div>'+pracChain(p,x,R);
+ pracShell(p,h);}
+
+function pracDrillDec(p,R,id){
+ var d=null; R.loop.declined.forEach(function(y){if(y.id===id)d=y;}); if(!d)return;
+ var h=pracEye(p,'a practice turned down')+'<div class="ad-nm">'+esc(d.patterns.join(', ')||'No named pattern')+'</div>'
+  +'<p class="ad-p">'+esc(unpackOf('declined','client'))+'</p>'
+  +'<p class="ad-p">A '+esc(d.cls||'')+' practice, turned down'+(d.at?' on '+esc(pracDayWord(d.at.slice(0,10))):'')
+  +'. No reason was recorded.</p>';
+ var x=pracProtoOf(R,d.id), a=pracProtoAddr(x);
+ if(a!==null)h+=pracAddrFacts(a);
+ pracShell(p,h);}
+
+function pracDrillSeat(p,b){
+ var snap=pracRead(p), list=snap.loaded.filter(function(n){return n.b===b;});
+ var h=pracEye(p,'one seat')+'<div class="ad-nm">'+esc(b)+'</div>'
+  +'<p class="ad-p">'+esc(unpackOf(b,'seat'))+'</p>';
+ if(!list.length)h+='<p class="ad-p">Nothing at this seat is above the line.</p>';
+ else h+='<p class="ad-p">'+pracPl(list.length,'address is','addresses are')+' carrying here, heaviest first.</p>'
+  +list.map(function(n){
+   var a=pracAddrIdx(n);
+   return '<div class="pr-addr" style="--c:'+seatCol(b)+'"><button type="button" class="pr-link pr-addr-k" data-prd="addr:'+a+'">'+esc(n.k)+'</button>'
+    +'<div class="pr-addr-x">Concerns '+esc(String(n.a||'').toLowerCase())+'. Shows up as '+esc(String(n.d||'').toLowerCase())+'.</div>'
+    +pracMeter(n.sq)+'</div>';}).join('');
+ pracShell(p,h);}
+
+function pracDrillAddr(p,R,a){
+ var n=BY[a]; if(!n)return;
+ var pat=R?pracPatOfAddr(R,a):null, sq=pracSqOf(p,a);
+ var h=pracEye(p,'one address')+'<div class="ad-nm">'+esc(n.k)+'</div>'
+  +'<div class="ad-sub">'+unp(String(n.b).toLowerCase(),n.b+' seat','seat')+'</div>'
+  +pracAddrFacts(a)+(sq!==null?pracMeter(sq):'')
+  +(pat?'<div class="ad-rows">'+pracRowBtn('pat:'+pat.key,'Read it as a pattern',pat.state==='confirmed'?'Confirmed':'Unanswered')+'</div>'
+   :'<p class="ad-p">No practice is aimed here yet.</p>');
+ pracShell(p,h);}
+
+/* THE ONE ROUTER. kind:key, from the page or from inside a drill */
+function pracOpen(k){
+ var p=PEOPLE[PRAC_SEL]; if(!p||!k)return;
+ var i=k.indexOf(':'), kind=k.slice(0,i), key=k.slice(i+1), R=pracEx(p);
+ PRAC_PICK=k; pracMark();
+ if(kind==='seat')return pracDrillSeat(p,key);
+ if(kind==='addr')return pracDrillAddr(p,R,+key);
+ if(!R)return;
+ if(kind==='fig')return pracDrillFig(p,R,key);
+ if(kind==='day')return pracDrillDay(p,R,key);
+ if(kind==='pat')return pracDrillPat(p,R,key);
+ if(kind==='dec')return pracDrillDec(p,R,key);}
+/* which element is open in Selection, marked on the page so the eye can go
+   from the answer back to the question */
+function pracMark(){
+ var host=$('prac'); if(!host)return;
+ host.querySelectorAll('[data-prd]').forEach(function(e){
+  var on=e.getAttribute('data-prd')===PRAC_PICK;
+  e.classList.toggle('pr-sel',on);
+  if(e.tagName==='BUTTON')e.setAttribute('aria-pressed',on?'true':'false');});}
+function pracWireIn(root){
+ root.querySelectorAll('[data-prd]').forEach(function(e){
+  var go=function(){pracOpen(e.getAttribute('data-prd'));};
+  e.onclick=go;
+  if(e.tagName!=='BUTTON')e.onkeydown=function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();go();}};});}
+/* A PRACTITIONER'S DRILL NEVER OUTLIVES ITS PAGE OR ITS CLIENT. Selection is
+   one panel shared by every surface, so a drill about Diane left in it would
+   sit beside the Field reading as the person's own. Cleared on a change of
+   client and on leaving the page (setTab, ui/panels.js), and the page host
+   is emptied on the way out for the reason Summary's is: a hidden surface
+   holding an example's history is still in the document asserting it. */
+function pracDrillClear(){
+ PRAC_PICK=null;
+ var b=document.getElementById('rdrill');
+ if(b&&b.querySelector('[data-prdrill]')){b.innerHTML='';b.style.display='none';
+  var n=document.getElementById('rdrill-none'); if(n)n.style.display='';}}
+function pracLeave(){pracDrillClear(); var h=$('prac'); if(h)h.innerHTML='';}
+function pracSelNone(open){
+ var none=document.getElementById('rdrill-none'), d=document.getElementById('pr-selnone');
+ if(!d&&none&&none.parentNode){d=document.createElement('div'); d.id='pr-selnone'; d.className='rel-note';
+  none.parentNode.insertBefore(d,none.nextSibling);}
+ if(d)d.textContent=open
+  ?'Nothing selected. Press a figure, a day, a pattern or a seat on '+open.nm+'’s page to read it here.'
+  :'Nothing selected. Open a client on the left.';}
+
 function pracWire(host){
  host.querySelectorAll('[data-pri]').forEach(function(b){
-  b.onclick=function(){PRAC_SEL=+b.getAttribute('data-pri'); PRAC_OPENSEAT=null; renderPrac();};});
+  b.onclick=function(){var i=+b.getAttribute('data-pri');
+   if(i!==PRAC_SEL){pracDrillClear(); PRAC_ALLPAT=false;}
+   PRAC_SEL=i; renderPrac();};});
  host.querySelectorAll('[data-prs]').forEach(function(b){
   b.onclick=function(){PRAC_SORT=b.getAttribute('data-prs'); renderPrac();};});
- /* THE RING'S OWN ARCS AND A SEAT'S HEADER BELOW WRITE THE SAME ONE STATE.
-    Either one opens that seat and nothing else: there is no toggle-closed,
-    because the seat a client's own reading leads with being impossible to
-    shut again is the one dead end that reads worse than always one open. */
- host.querySelectorAll('[data-prseat]').forEach(function(e){
-  var open=function(){PRAC_OPENSEAT=e.getAttribute('data-prseat'); renderPrac();};
-  e.onclick=open;
-  e.onkeydown=function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();open();}};});
+ pracWireIn(host);
+ var all=host.querySelector('[data-prall]');
+ if(all)all.onclick=function(){PRAC_ALLPAT=!PRAC_ALLPAT; renderPrac();};
  var back=host.querySelector('.pr-back');
- if(back)back.onclick=function(){PRAC_SEL=null; renderPrac();};
+ if(back)back.onclick=function(){pracDrillClear(); PRAC_SEL=null; renderPrac();};
  var accb=host.querySelector('#pracacc');
  if(accb)accb.onclick=function(){ACC_OPEN='account'; setTab(TAB.SETTINGS);};
  var f=host.querySelector('#prnoteform');
@@ -58009,7 +58539,8 @@ function pracWire(host){
 function renderPrac(){
  var host=$('prac'); if(!host)return;
  pracCss();
- var open=(PRAC_SEL!=null&&PEOPLE[PRAC_SEL]);
+ var open=(PRAC_SEL!=null&&PEOPLE[PRAC_SEL])?PEOPLE[PRAC_SEL]:null;
+ pracSelNone(open);
  host.innerHTML='<div class="pr-wrap" style="--c:'+seatCol('Throat')+'" data-open="'+(open?'1':'0')+'">'
   +'<div class="ac-hd"><div class="pm-eye">Practitioner</div><h2 class="kb-h">Clients</h2></div>'
   +'<button type="button" class="btn pr-back">Back to clients</button>'
@@ -58018,7 +58549,8 @@ function renderPrac(){
   +'<div class="ac-grp">'+pracList()+'</div>'+pracModeGroup()+'</div>'
   +pracDetail()
   +'</div></div>';
- pracWire(host);}
+ pracWire(host);
+ pracMark();}
 
 try{window.__at&&window.__at('ui/practitioner.js');}catch(e){}
 
@@ -62580,5 +63112,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004099571"></div>
+<div id="eof" hidden data-len="004133178"></div>
 </body></html>

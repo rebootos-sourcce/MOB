@@ -110,8 +110,14 @@ function loopRead(p){
  g.nodes.forEach(function(n){
   if(n.type!=='pattern')return;
   var k=traceKey(n.type,n.id), ins=into[k]||[], outs=from[k]||[];
-  var row={key:k, id:n.id, name:n.name||n.id, seat:n.seat||null, fetter:n.fetter||null,
-   nerve:n.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
+  /* A PATTERN ONLY A PRACTICE NAMES CARRIES NO NAME ON ITS NODE. The node
+     is made from the intent, which says addr:31 and nothing else, so this
+     read printed the pattern as "31". The address table names it, the same
+     lookup the story edges are made with. Found by the practitioner page,
+     round QB, whose examples reach their patterns through practice first. */
+  var at=(!n.name&&typeof tracePatternAttrs==='function')?tracePatternAttrs(n.id):{};
+  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
+   nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
    protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null};
   var confirmedBy=null;

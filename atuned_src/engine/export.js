@@ -286,6 +286,9 @@ if(typeof module!=='undefined'&&module.exports){
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
   /* the loop read, engine/loop.js: the one read of the graph a screen asks */
                   loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
+  /* a worked example's history, engine/pracex.js, for the practitioner page */
+                  PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
+                  pracexDays:pracexDays, pracexRead:pracexRead,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,

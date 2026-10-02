@@ -3957,6 +3957,22 @@ var UNPACK_BASE={
  'release line':'A release line is one spoken line of a release, aimed at one address, that lets go of the limit held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
+    practitioner.js). The entries above speak to the person about themselves,
+    "you said yes", and on the practitioner's page the reader is somebody
+    else, so the same word carries a third person sentence under client:.
+    Same word, same meaning, a different reader. The day words are the
+    practice event's own states (engine/practice.js PR_EV_ST), one word each. */
+ 'client:confirmed':'Confirmed means the client said yes, this pattern is theirs, or chose a practice to work on it.',
+ 'client:unanswered':'Unanswered means the instrument suggested this pattern or a practice for it, and the client has not said yes or no.',
+ 'client:declined':'Declined means the client turned down a practice the instrument suggested, and the record keeps that.',
+ 'client:practised':'Practised counts the days in this window a practice was done in full or in part.',
+ 'client:done':'Done means the practice was run start to finish that day.',
+ 'client:part done':'Part done means the practice was started that day and some of its steps were run.',
+ 'client:skipped':'Skipped means the client chose not to run it that day. A skip is a choice and does not count as a miss.',
+ 'client:missed':'Missed means it came due and was not marked done by the end of the next day.',
+ 'client:not marked yet':'Not marked yet means it came due and nothing is recorded for it so far.',
+ 'client:nothing scheduled':'Nothing scheduled means no practice was due that day.',
 
  /* THE COMPASS */
  'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',
@@ -11300,8 +11316,14 @@ function loopRead(p){
  g.nodes.forEach(function(n){
   if(n.type!=='pattern')return;
   var k=traceKey(n.type,n.id), ins=into[k]||[], outs=from[k]||[];
-  var row={key:k, id:n.id, name:n.name||n.id, seat:n.seat||null, fetter:n.fetter||null,
-   nerve:n.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
+  /* A PATTERN ONLY A PRACTICE NAMES CARRIES NO NAME ON ITS NODE. The node
+     is made from the intent, which says addr:31 and nothing else, so this
+     read printed the pattern as "31". The address table names it, the same
+     lookup the story edges are made with. Found by the practitioner page,
+     round QB, whose examples reach their patterns through practice first. */
+  var at=(!n.name&&typeof tracePatternAttrs==='function')?tracePatternAttrs(n.id):{};
+  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
+   nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
    protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null};
   var confirmedBy=null;
@@ -11368,6 +11390,141 @@ function loopRead(p){
 
  out.empty=!out.patterns.length&&!out.declined.length&&!out.practice.events&&!out.misses.length;
  return out;}
+/* ============================================================
+   A WORKED EXAMPLE'S HISTORY, for the practitioner page. Round QB, the
+   owner's words: "The practitioner page, when I select somebody within my
+   cohort, it gives me their analytics."
+
+   WHY THIS EXISTS. A worked example (engine/data/people.js) is a measurement
+   table: nine charges, a law table, a soul and one line the example says. It
+   has no days. So the trace graph read (engine/loop.js) of a worked example
+   is empty, and a practitioner opening one sees no confirmed pattern, no
+   practice and nothing over time, which is no analytics at all. This file
+   gives each of the ten examples the practitioner page lists a short history
+   of practice, written in PRACEX_HIST below, and builds it into a record
+   THROUGH THE REAL ENGINE: every protocol, ritual and practice event goes in
+   by practiceDo, so the boundary refuses a history the product could not
+   produce for a real person, and every figure the page shows is loopRead's
+   answer and not a figure typed here.
+
+   WHAT IS AUTHORED AND WHAT IS READ. Authored, per example: how many of the
+   system's proposed practices the example said yes to, left unanswered and
+   turned down, and one character per day for the last PRACEX_DAYS days.
+   Read: which addresses the practices aim at, which are the example's own
+   heaviest held addresses, handed in by the caller off compute(); the one
+   story line, which is the example's own `says`; and everything loopRead
+   derives from the result. The history is an example's and is labelled so
+   on the page. It is never a client's and never a measurement.
+
+   NEVER STORED. The record is built in memory per call, never validated into
+   PROFILES, never saved and never handed to pPersist. The page that asks for
+   it caches it per day and lets it go with the page.
+
+   HOST FREE. No document, no store, no clock: the moment is passed in.
+   ============================================================ */
+var PRACEX_DAYS=21;
+
+/* ONE CHARACTER A DAY, OLDEST FIRST, the last one yesterday.
+     .  nothing was scheduled
+     c  completed       p  partial      s  skipped, a choice
+     m  missed. Only three or more days back: the engine refuses a miss
+        while the day can still be marked (event_move), and its day is the
+        local date, so a day of slack keeps every time zone inside the rule.
+     -  scheduled and not marked yet, which yesterday can still be
+   The strip runs on the first accepted practice's ritual. A second accepted
+   practice is chosen and not scheduled, which is a real state and the page
+   says so. accept, leave and reject count the system's proposals, heaviest
+   address first. The shapes span what a practitioner meets, and each is
+   read off the example's own table, not assigned at random: Derek and
+   Abraham do it every day, Diane works hard and then stops, Ana stops and
+   starts, James and Gordon say yes to nothing. */
+var PRACEX_HIST={
+ Sofia:  {accept:1, leave:1, reject:0, strip:'......cpcpccpcpccpcpc'},
+ Diane:  {accept:2, leave:0, reject:1, strip:'.....cccccccccccmmm--'},
+ Marcus: {accept:1, leave:0, reject:1, strip:'..............ccpcccc'},
+ Angela: {accept:2, leave:1, reject:0, strip:'..cmcscmccmscmcmcsmcc'},
+ Derek:  {accept:1, leave:0, reject:0, strip:'ccccccccccccccccccccc'},
+ James:  {accept:0, leave:0, reject:2, strip:'.....................'},
+ Ana:    {accept:1, leave:2, reject:0, strip:'....ccmmmcpcpmmcpcccp'},
+ Wren:   {accept:1, leave:0, reject:0, strip:'ccscccscccscccscccscc'},
+ Gordon: {accept:0, leave:2, reject:1, strip:'.....................'},
+ Abraham:{accept:2, leave:0, reject:0, strip:'cccccccpccccccpcccccc'}};
+
+/* nine in the morning, UTC, back days before the moment's own UTC date */
+function pracexDay(now,back){
+ var d=new Date(now), base=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());
+ return new Date(base-back*DAY_MS+9*3600000).toISOString();}
+function pracexLater(iso,h){return new Date(Date.parse(iso)+h*3600000).toISOString();}
+
+/* the example's history, through practiceDo, or a thrown error naming the
+   step the engine refused. A history the boundary refuses is a defect in the
+   table above, and it is loud: tests/practitioner-ex.js runs every row. */
+function pracexPractice(nm,addrs,now){
+ var h=PRACEX_HIST[nm]; if(!h)return null;
+ var P=practiceBlank(), N=PRACEX_DAYS, strip=h.strip;
+ var go=function(act,a,t){
+  var r=practiceDo(P,act,a,t);
+  if(!r.ok)throw new Error('pracex '+nm+' '+act+': '+r.errs.join('; '));
+  P=r.P; return r.id;};
+ var first=strip.search(/[^.]/), firstBack=first<0?N-2:N-first;
+ var proposedAt=pracexDay(now,firstBack+1), acceptAt=pracexDay(now,firstBack);
+ var want=h.accept+h.leave+h.reject, ids=[];
+ (addrs||[]).slice(0,want).forEach(function(a,j){
+  var id='ex_pr'+(j+1);
+  go('protocol_add',{id:id, class:'release', target_patterns:['addr:'+a],
+   steps:[{type:'release', instruction:'Run a release at '+BY[a].k+'.'},
+    {type:'observation', instruction:'Notice which place in the body answers.'}],
+   generated_by:{system:'example', model_version:null, timestamp:proposedAt}},proposedAt);
+  ids.push(id);});
+ ids.forEach(function(id,j){
+  if(j<h.accept)go('protocol_accept',{id:id},acceptAt);
+  else if(j>=h.accept+h.leave)go('protocol_reject',{id:id},acceptAt);});
+ if(!h.accept||first<0)return P;
+ go('ritual_create',{id:'ex_rt1', protocol_id:'ex_pr1', title:'Release at '+BY[addrs[0]].k,
+  cadence:{type:'daily'}, start_at:acceptAt},acceptAt);
+ for(var i=0;i<N;i++){
+  var c=strip.charAt(i); if(c==='.')continue;
+  var at=pracexDay(now,N-i), ev='ex_ev'+(i+1);
+  go('event_schedule',{id:ev, ritual_id:'ex_rt1', scheduled_at:at},at);
+  if(c==='c'||c==='p'){
+   go('event_move',{id:ev,to:'available'},at);
+   go('event_move',{id:ev,to:'started'},pracexLater(at,1));
+   go('event_move',c==='c'?{id:ev,to:'completed',duration_seconds:720}
+    :{id:ev,to:'partial',duration_seconds:300,steps_completed:1},pracexLater(at,1.2));}
+  else if(c==='s')go('event_move',{id:ev,to:'skipped'},pracexLater(at,2));
+  else if(c==='m')go('event_move',{id:ev,to:'missed'},now);}
+ return P;}
+
+/* THE RECORD. A blank, the example's soul so the story reads under its own
+   seats, the example's own line as its one story entry, and the history. */
+function pracexRecord(p,addrs,now){
+ if(!p||!PRACEX_HIST[p.nm])return null;
+ var r=blankProfile(p.nm);
+ r.id='ex_'+p.nm; r.created=pracexDay(now,PRACEX_DAYS+2);
+ r.soul={doms:(p.doms||[p.dom]).slice(), arcs:(p.arcs||[p.a1,p.a2]).slice(), roots:(p.roots||[]).slice()};
+ r.story.entries=p.says?[{t:pracexDay(now,PRACEX_DAYS+1), text:p.says, lex:LEX_VERSION}]:[];
+ r.practice=pracexPractice(p.nm,addrs,now);
+ return r;}
+
+/* THE DAYS, oldest first, one per day of the window, each with what was
+   scheduled and what became of it. A day nothing was scheduled on reads
+   none. This is the telemetry strip, and it is read off the practice events
+   and not off the table above, so it is the same answer for a real record. */
+function pracexDays(rec,now){
+ var P=rec&&rec.practice, evs=(P&&Array.isArray(P.practice_events))?P.practice_events:[];
+ var byDay={};
+ evs.forEach(function(x){byDay[String(x.scheduled_at).slice(0,10)]=x;});
+ var out=[];
+ for(var back=PRACEX_DAYS;back>=1;back--){
+  var iso=pracexDay(now,back), k=iso.slice(0,10), x=byDay[k]||null;
+  out.push({day:k, status:x?x.status:'none', ritual:x?x.ritual_id:null, protocol:x?x.protocol_id:null,
+   seconds:x&&x.execution?x.execution.duration_seconds:null});}
+ return out;}
+
+/* THE ONE READ the page asks: the record, the loop read and the days. */
+function pracexRead(p,addrs,now){
+ var rec=pracexRecord(p,addrs,now); if(!rec)return null;
+ return {rec:rec, loop:loopRead(rec), days:pracexDays(rec,now)};}
 /* ============================================================
    INTAKE · 21 laws x 3, triangulated left / right / neutral.
    Blocked into 21 units of three. Resumable. Live partial CQ.
@@ -16569,6 +16726,9 @@ if(typeof module!=='undefined'&&module.exports){
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
   /* the loop read, engine/loop.js: the one read of the graph a screen asks */
                   loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
+  /* a worked example's history, engine/pracex.js, for the practitioner page */
+                  PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
+                  pracexDays:pracexDays, pracexRead:pracexRead,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
