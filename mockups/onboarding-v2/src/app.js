@@ -107,7 +107,7 @@ var stage=$('#stage'), cv=$('#cv'), ctx=cv.getContext('2d');
 var W=0,H=0,DPR=1,STILL=false;
 var S={act:'login',t:0,mask:0,rate:1,speed:1,mul:1,last:0,cues:[],card:null,outDone:false,
  mode:'account',door:'login',pick:null,seat:null,word:null,src:'',words:'',empty:0,seed:-1,
- breathOn:false,breathR:0,breathT:0,tableQ:false,stop:false,stopv:'direct',live:false,bead:null,
+ breathOn:false,breathR:0,breathT:0,ringT:0,tableQ:false,stop:false,stopv:'direct',live:false,bead:null,
  lastBack:-9,width:'fit',end:'',sealed:0,answered:'',sigQ:false,made:false};
 var POSE={cur:{cx:0,cy:0,h:0},from:null,to:null,t:0,dur:.42};
 var DECK={};
@@ -131,6 +131,7 @@ function relayout(){
  cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
  var top=lay('top');stage.style.setProperty('--top-b',(top.cy+top.h/2+(W<=700?4:10))+'px');
  var g=lay('gate');stage.style.setProperty('--gate-fb',(g.cy+g.h/2)+'px');
+ stage.style.setProperty('--dial',(W<=700?(H>=780?208:H>=700?160:0):0)+'px');
  layoutChips();
  var A=ACT[S.act];if(A&&A.pose){POSE.cur=lay(A.pose);POSE.to=null;}
  draw();}
@@ -402,23 +403,43 @@ function ticks112(c,cx,cy,r,len,a,hi,hiHue,hiP){
   c.strokeStyle=isH&&hiP.on?hiHue:rgba(INK,.4);c.lineWidth=isH&&hiP.on?(r<40?2:3):(r<40?1:1.5);c.globalAlpha=al;
   c.beginPath();c.moveTo(cx+ca*r,cy+sa*r);c.lineTo(cx+ca*(r+l),cy+sa*(r+l));c.stroke();}
  c.restore();}
+/* THE DOOR'S RINGS. Drawn on the stage canvas, which is already redrawn every frame, so the motion costs no extra layer:
+   every move here is a scale, a rotation or an alpha on a ring that is already being stroked, and nothing is blurred.
+   The tick ring (112 ticks, one per address, seven seat hues) only breathes: a 1.2 percent scale on 61 s and an alpha on
+   47 s. The three arc rings drift: each scales 1.5 percent and turns a few degrees back and forth, on periods of 53 to 89 s,
+   staggered by phase and alternating direction so no two ever agree. At the widest ring that is about 5 px a second.
+   Reduced motion (STILL, set by the strip's switch and by prefers-reduced-motion) draws the rest pose and nothing else.
+   The ring's centre is the stage centre when the door is wide and the middle of the wordmark's box when it is narrow. */
+function FONT(){return getComputedStyle(document.documentElement).getPropertyValue('--font-ui').trim()||'system-ui,sans-serif';}   /* the canvas reads the one font variable, never a typed name */
+var TAU=Math.PI*2,ARCP=[[53,71,0.0,1],[67,89,2.1,-1],[79,59,4.2,1]];
+function loginGeo(){
+ var nar=W<=700,tl=nar?8:11,cx=W/2,cy=H/2,R;
+ if(nar){var dial=H>=780?208:H>=700?160:0;R=dial?dial/2-tl:72;
+  var mk=$('#lg-mark').getBoundingClientRect(),sr=stage.getBoundingClientRect(),k=sr.height?H/sr.height:1;
+  if(mk.height)cy=((mk.top+mk.bottom)/2-sr.top)*k;
+  return {cx:cx,cy:cy,r:R,tl:tl,ticks:dial>0};}
+ return {cx:cx,cy:cy,r:Math.min(W,H)*.335,tl:tl,ticks:true};}
 function loginRing(c,k,a){
- var nar=W<=700,cx=W/2,cy=nar?140:H/2,r=nar?98:Math.min(W,H)*.335,tl=nar?8:11,i;
- var br=STILL?.75:.55+.4*(.5-.5*Math.cos(S.breathT*2*Math.PI/9));   /* login ring breathes on a 9 s period */
- c.save();c.translate(cx,cy);c.scale(k,k);c.translate(-cx,-cy);c.globalAlpha=a*br;
+ var g=loginGeo(),cx=g.cx,cy=g.cy,r=g.r,tl=g.tl,i,t=S.ringT;
+ var br=STILL?.75:.72+.16*Math.sin(TAU*t/47),kt=STILL?1:1+.012*Math.sin(TAU*t/61);
+ c.save();c.translate(cx,cy);c.scale(k*kt,k*kt);c.translate(-cx,-cy);c.globalAlpha=a*br;
  c.lineCap='round';c.lineWidth=2;
- for(i=0;i<112;i++){var s=Math.floor(i/16),ang=Math.PI/2+i*Math.PI*2/112+Math.PI/112;
+ if(g.ticks)for(i=0;i<112;i++){var s=Math.floor(i/16),ang=Math.PI/2+i*TAU/112+Math.PI/112;
   c.strokeStyle=PAL[s];c.beginPath();c.moveTo(cx+Math.cos(ang)*r,cy+Math.sin(ang)*r);c.lineTo(cx+Math.cos(ang)*(r+tl),cy+Math.sin(ang)*(r+tl));c.stroke();}
- [1.2,1.44,1.72].forEach(function(m,ri){c.lineWidth=1.4;c.globalAlpha=a*(.38-ri*.09);
-  for(var s=0;s<7;s++){var a0=Math.PI/2+s*Math.PI*2/7+.038+ri*.05,a1=Math.PI/2+(s+1)*Math.PI*2/7-.038+ri*.05;
-   c.strokeStyle=PAL[s];c.beginPath();c.arc(cx,cy,r*m,a0,a1);c.stroke();}});
- c.restore();}
+ c.restore();
+ [1.2,1.44,1.72].forEach(function(m,ri){
+  var P=ARCP[ri],sc=STILL?1:1+.015*Math.sin(TAU*t/P[0]+P[2]),rot=STILL?0:P[3]*(4+ri*1.5)*Math.PI/180*Math.sin(TAU*t/P[1]+P[2]);
+  c.save();c.translate(cx,cy);c.rotate(rot);c.scale(k*sc,k*sc);c.translate(-cx,-cy);
+  c.lineCap='round';c.lineWidth=1.4;c.globalAlpha=a*(.38-ri*.09)*(STILL?1:.9+.1*br);
+  for(var s=0;s<7;s++){var a0=Math.PI/2+s*TAU/7+.038+ri*.05,a1=Math.PI/2+(s+1)*TAU/7-.038+ri*.05;
+   c.strokeStyle=PAL[s];c.beginPath();c.arc(cx,cy,r*m,a0,a1);c.stroke();}
+  c.restore();});}
 /* the loop: one circle, four stations. Unlit in Reel A, lit only for an act done in Reel B. */
 function loopDraw(c,p,o){
  var R=ringR(p),cx=p.cx,cy=p.cy,i;
  arcRing(c,cx,cy,R,o.prog,rgba(INK,.4),1.5,1);
  var ang=[-Math.PI/2,0,Math.PI/2,Math.PI];
- c.save();c.font='400 13px Inter,system-ui,sans-serif';c.textBaseline='middle';
+ c.save();c.font='400 13px '+FONT();c.textBaseline='middle';
  for(i=0;i<4;i++){
   var L=o.st[i];if(L<=0)continue;
   var x=cx+R*Math.cos(ang[i]),y=cy+R*Math.sin(ang[i]),lit=o.lit&&o.lit[i];
@@ -560,6 +581,7 @@ function step(dt){
  var A=ACT[S.act];if(!A)return;
  stepPose(dt);
  S.breathT+=dt;
+ if(!(S.mask&64))S.ringT+=dt;   /* the door's ring clock. A frozen shot freezes the drift too, so a screenshot is the same picture twice */
  if(S.breathOn&&!(A.clocked&&S.mask))S.breathR+=dt;
  if(A.clocked){
   var tgt=S.mask?0:1;S.rate=tgt?Math.min(1,S.rate+dt/.32):0;     /* a release from hold or pause ramps in over 320 ms */
@@ -695,7 +717,7 @@ function showStop(on){
  S.stop=on;$('#stop').classList.toggle('on',on);
  if(on)S.mask|=16;else S.mask&=~16;
  $$('.act,#hair,#ctrls').forEach(function(e){if(on)e.setAttribute('inert','');else e.removeAttribute('inert');});
- var d=$('#devlink');d.textContent=on?'hide stop frame':'show stop frame';d.setAttribute('aria-pressed',String(on));
+ var d=$('#c-stop');d.textContent=on?'Hide':'Show';d.setAttribute('aria-pressed',String(on));
  if(!on)return;
  $('#stop-fig').innerHTML=stopFig();
  var ind=S.stopv==='indirect',row=$('#stop-row');
@@ -704,7 +726,7 @@ function showStop(on){
  $('#stop-3').textContent=(ind||S.made)?'':'Nobody reads this but you.';$('#stop-3').hidden=ind||S.made;
  row.innerHTML=(ind?'':'<button type="button" class="ring">Call 988</button><button type="button" class="ring">Text 988</button>')+'<button type="button" class="ring" id="stop-go">Go on</button>';
  $('#stop-go').addEventListener('click',function(){showStop(false);S.end='stop';go('end');});}
-$('#devlink').addEventListener('click',function(){showStop(!S.stop);});
+$('#c-stop').addEventListener('click',function(){showStop(!S.stop);});   /* the stop frame has no link on the stage: it is reached from the review strip only */
 
 /* ================================================================ the owner's strip */
 var JUMPS=[
@@ -740,7 +762,7 @@ function jump(key,t,o){
  if(key==='b3'&&o.keep){$('#b3-fine').classList.add('on');}
  ctlState();}
 function restart(quiet){
- S.mask=0;S.rate=1;S.pick=null;S.seat=null;S.word=null;S.src='';S.words='';S.empty=0;S.seed=-1;S.breathOn=false;S.breathR=0;S.tableQ=false;S.end='';S.made=false;
+ S.ringT=0;S.mask=0;S.rate=1;S.pick=null;S.seat=null;S.word=null;S.src='';S.words='';S.empty=0;S.seed=-1;S.breathOn=false;S.breathR=0;S.tableQ=false;S.end='';S.made=false;
  Object.keys(DECK).forEach(function(k){DECK[k].clear();});
  $('#words').value='';msg('');$('#lg').classList.remove('gone');setDoor('login');
  if(!quiet)go('login',{snap:true});}
