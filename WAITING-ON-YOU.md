@@ -2,7 +2,19 @@
 
 One list, in the order I'd look at it if I were you. Each line says what I sent, and what I need back.
 
-## Read this one first
+## Read this one before anything else. This may still be live right now.
+
+Short version: a real public web link, with no password on it, has been sitting open for hours tonight, and it leads to the exact unsafe thing named below (J0). I found it, I stopped it from getting any worse, but I cannot make the already-open link close. Only you can do that part.
+
+**What happened.** This project auto publishes every push to a website address whenever the code changes, a normal thing to have turned on. What I didn't realize until I checked the actual logs by hand, not just the green checkmark, is that it was really doing it: real keys, a real upload, a real working web address handed back by Cloudflare (the company hosting it) every single time, including the exact push hours ago that turned on the "onboarding" flow, the guided first-time walkthrough a brand new person goes through. That walkthrough ends by writing whatever a person typed straight into the product's memory, with nobody checking first whether what they typed was someone in real crisis. That check (I've been calling it J0) does not exist yet anywhere in this product, which is the single thing every review tonight flagged as the most important thing not to skip.
+
+**What I did about it.** I turned off the auto publish for this branch, so nothing more gets pushed out from tonight's work. I cannot undo the ones that already went out; taking those down needs your Cloudflare login, not mine. I do not think this is your main public website (atuned.world) itself, because of a detail in Cloudflare's own response, but I can't fully prove that from in here; my own internet access inside this session is restricted and refused to load either address directly to double check.
+
+**What I need from you, as soon as you see this, whatever time it is.** Open dash.cloudflare.com, sign in, go to Workers and Pages, open the project named "atuned", open its Deployments tab, and either delete the recent preview deployments from tonight or (safer and faster) turn on "Cloudflare Access" for the project so nobody can open any link to it without signing in first. If you want to just confirm first rather than act blind: tell me and I'll walk you through checking exactly what's live from your own browser, since I can't check it from mine.
+
+This is separate from, and does not replace, the J0 decision itself below. Fixing the leak stops a stranger from reaching the unsafe flow through this one link. It does not build the safety check that flow still needs.
+
+## Then read this one
 
 **J0: no stranger's first story should reach the engine until there's a distress check.** Three separate reviews tonight independently landed on the same gap: the Story screen writes a reading into your field the moment you finish typing, with no chance to confirm, correct or reject it, and no check at all for whether what was typed is a crisis, not a pattern to work on. This is also exactly the thing you said "not yet" to a few hours ago (the clinician and counsel review). I have not built anything here and will not without your word, it's a safety and clinical call, not an engineering one. When you're ready: either green-light a first version so it can be reviewed with real behavior to look at, or say who should design it before any code gets written.
 

@@ -31919,3 +31919,15 @@ Disk space also forced a stop here: the root filesystem read 1.1GB free at 98% u
 ## Pass 3 of the funnel review dispatched
 
 Quiet stretch, autonomous check-in. Pass 2's proposal (`REVIEW-funnel/PROPOSAL.md`, grade 31/100) has sat long enough with nothing contradicting it, so the standing three-pass procedure he asked for ("review this three times") continues to its last pass: an ICP walk-through of the 35-row build list and a final, standalone build spec, also checked against what's landed since pass 2 (the archetype intake merge, the still-unbuilt visual-fail rail-host proposal). Nothing built, read-only review work, the same procedure already run twice tonight with his explicit sign-off on the pattern.
+
+## Round PZ: the onboarding link carrying J0 was actually live and public, found and stopped
+
+Checked rather than assumed: the overnight reviews all named J0 (no distress check before a stranger's first story reaches the engine) as the top risk, and round PS's merge noted the gap was sitewide, not new. What hadn't been checked was whether a real stranger could actually reach it right now, tonight, without him showing anyone anything.
+
+They could. `.github/workflows/deploy.yml` deploys every push to this branch to a real Cloudflare Pages project, and the job's own logs, pulled directly rather than trusted from the workflow's green checkmark, show the deploy step actually ran against real `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` secrets and got back a real, live, no-login URL from Cloudflare each time, including on the exact push that merged the onboarding flow (round PS). That URL has been sitting there, reachable by anyone who has it, for hours.
+
+The one thing this is probably not: `atuned.world` itself. Cloudflare's own response named this a preview deployment (a branch alias URL, not a bare production one), which only happens when a Pages project's production branch is something else, almost certainly `main`, untouched by anything pushed tonight. Confirming that for certain needs either his Cloudflare dashboard or fetching the two sites directly, and this session's own outbound network is sandboxed and refused both `atuned.world` and the preview link itself, so that last step is written here as probable, not proven.
+
+Fixed the part inside reach: `deploy.yml` no longer deploys this branch at all, only `main`, pushed as `c46a872`. That stops any further push tonight from publishing anything new. It does not and cannot undo the deploys already made; Cloudflare keeps those live until someone with dashboard access removes them, and nobody in this session has that access. Named to him first, above, since it needs his action and his judgment on whether it's urgent enough to act on tonight rather than wait for morning.
+
+J0 itself is still not built and still not mine to build alone, unchanged from every earlier round that said so.
