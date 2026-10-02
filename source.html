@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1366 d486d3e 2026-10-02 14:33"><head><meta charset="utf-8">
+<html lang="en" data-build="v1371 eb33e54 2026-10-02 14:51"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3883,10 +3883,25 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  border:1.6px solid var(--c,var(--accent))}
 /* the column itself does not scroll: the list and the release queue do, each
    on its own, so a long entry never pushes Run off the screen. */
-/* Record alone since round LO took the eyebrow off its left, so the row ends
-   on it where space-between used to push it */
-.st-hd{display:flex;align-items:center;justify-content:flex-end;gap:6px 10px;
+/* Round QB put the column's name on the left of Record, so space-between
+   pushes Record to the right edge again */
+.st-hd{display:flex;align-items:center;justify-content:space-between;gap:6px 10px;
  flex-wrap:wrap;margin-bottom:9px}
+/* THE THREE COLUMN NAMES, round QB. One lockup, three treatments of the one
+   typeface: see stMark in ui/storyui.js for what each says. The mark is a
+   ring icon, stroked in the accent and never filled, the same weight and
+   caps as the rail's own section marks. The word is the same size in all
+   three, so the row reads as one family across the page, and only weight and
+   spacing move between them. */
+.st-mk{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.st-mk svg{width:20px;height:20px;flex:0 0 auto;fill:none;stroke:var(--accent);
+ stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.st-mk h3{margin:0;font-family:var(--sans);font-size:20px;line-height:1.15;color:var(--ink);
+ white-space:nowrap}
+.st-mk-j h3{font-weight:300;letter-spacing:.005em}
+.st-mk-i h3{font-weight:700;letter-spacing:-.03em}
+.st-mk-r h3{font-weight:400;letter-spacing:.11em}
+.st-mk-r svg{stroke:var(--glow,var(--accent))}
 /* ---- the instrument's panel: the name, the bank and the vault, the sort ---- */
 .st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
@@ -3947,9 +3962,9 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
   color-mix(in srgb,var(--ink) 3%,transparent);
  box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
-.st-rlhd{display:flex;align-items:center;gap:9px}
-.st-rlhd .st-ring{border-color:var(--glow)}
-.st-rlhd h3{margin:0;font-size:19px;font-weight:600;color:var(--ink)}
+/* the release's name is the .st-mk lockup above; this class keeps only the
+   phone rule that folds it away until the column is in use */
+.st-rlhd{flex:0 0 auto}
 .st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
 /* the selection as its rings and nothing else, the card's cut. Each ring is
    a toggle at the tap floor; out of the run it steps back rather than going,
@@ -4151,11 +4166,10 @@ body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @keyframes srcPass{0%{transform:translateY(0);opacity:0}6%{opacity:.7}
  25%{transform:translateY(163%);opacity:0}100%{transform:translateY(163%);opacity:0}}
 @keyframes srcScan{from{transform:translateY(0)}to{transform:translateY(163%)}}
-.src-hd{display:flex;align-items:center;gap:8px;min-height:20px}
 .src-live{width:6px;height:6px;border-radius:50%;flex:0 0 auto;background:var(--accent);
  animation:srcBreath 4.2s ease-in-out infinite}
 @keyframes srcBreath{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
-.st-pe.hear .src-live{animation:none;opacity:1;transform:scale(1.15);
+.st-jr:has(#stsrc.hear) .src-live{animation:none;opacity:1;transform:scale(1.15);
  box-shadow:0 0 6px var(--accent)}
 .src-land .src-w{display:inline-block;animation:srcWd var(--t-element) var(--ease-out) both;
  animation-delay:calc(var(--i) * var(--t-stagger) * .5)}
@@ -5529,6 +5543,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-flow:not([data-focus="read"]) .st-sort,.st-flow:not([data-focus="read"]) .st-ctr,
  .st-flow:not([data-focus="read"]) .st-ls{display:none}
  .st-flow:not([data-focus="read"]) .st-open{display:inline-flex}
+ /* the list door carries the pending count, "List 12", so while it shows the
+    tag beside the Imprints name steps aside. Round QB's name is set at the
+    column size, and at 390 the name, "12 pending", the bank, the vault and
+    the door measured past the row and the tag ran under the name. */
+ .st-flow:not([data-focus="read"]) #stpend{visibility:hidden;min-width:0;width:0;overflow:hidden}
  .st-lsb{overflow:visible}
  .st-flow:not([data-focus="release"]) .st-rl{display:grid;grid-template-columns:minmax(0,1fr) auto;
   align-items:center;gap:10px;padding:10px 12px}
@@ -12553,6 +12572,13 @@ var UNPACK_BASE={
  'yoga:throat':'In the yoga tradition the throat seat is called Vishuddha, its element is ether and its seed sound is Ham.',
  'yoga:3rd eye':'In the yoga tradition the 3rd Eye seat is called Ajna, its element is light and its seed sound is Om.',
  'yoga:crown':'In the yoga tradition the crown seat is called Sahasrara, its element is thought and its seed is silence.',
+
+ /* THE STORY PAGE'S THREE COLUMNS, round QB. Each column title is a carrier
+    of its own sentence, so the name over a column is never left for a person
+    to guess. Release says what kb.js says it is, in one sentence. */
+ 'journal':'The journal is where you write or say what happened, in your own words.',
+ 'imprint':'An imprint is a piece of what you wrote that lands as charge at one exact place in your body.',
+ 'release':'Release is stored charge leaving your body through the nerves.',
 
  /* THE CHAIN OF PATTERNS */
  'address':'An address is one exact place in your body where a pattern sits.',
@@ -37399,6 +37425,40 @@ try{window.__at&&window.__at('ui/imprints.js');}catch(e){}
      the flying word chip. The bars rise on their own spring as a word lands,
        which is the same event, drawn once rather than twice.
    ============================================================ */
+/* THE THREE COLUMNS WEAR THEIR NAMES. Round QB, his words: "For the font
+   titles for the journal, I don't want source. I want journal, the word
+   journal and prints and release. And I want them to have a font and symbolic
+   icon that reflects them. So when I come here, it looks branded."
+
+   The left column had no name of its own. The first title in it read Source
+   AI, over the question box, and Source is already a canon word with its own
+   meaning in kb.js: the field before any pattern is put in. So the column is
+   Journal now, and the question box carries no eyebrow.
+
+   One mark per column, one shape for all three: a ring icon on the 24 unit
+   grid, stroked and never filled, beside the word, which is a carrier of the
+   word's sentence in engine/data/gloss.js. Three treatments of the one
+   typeface the build carries, each saying what the column does:
+     Journal   light, 300. Ink going on to the page.  The mark is a pen nib.
+     Imprints  heavy and tight, 700. Pressed in, held. The mark is the rail's
+               own three rings for Imprints, reused, never redrawn.
+     Release   regular, tracked wide. Coming apart.   The mark is a ring open
+               at the top, and the charge leaving through the gap as three
+               small rings. A line through the gap was the first cut, and
+               measured at its real size it read as a power button.
+   Knowledge already owns the open book and Story owns the page, so neither
+   is used here: a second drawing for a named thing is a second name for it. */
+var ST_MARK={
+ j:'<path d="M12 21l-5-6.5L9.2 5.5h5.6L17 14.5z"/><path d="M12 21v-7.4"/>'
+  +'<circle cx="12" cy="12.2" r="1.4"/><path d="M9 3h6"/>',
+ i:'<circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/>',
+ r:'<path d="M8.14 10.4A6 6 0 1 0 15.86 10.4"/>'
+  +'<circle cx="12" cy="8.4" r="1.3"/><circle cx="9.2" cy="4.9" r="1.3"/><circle cx="14.6" cy="2.9" r="1.3"/>'};
+function stMark(k,word,term,cls,tail){
+ var a=unpAttr(term,null,word);
+ return '<div class="st-mk st-mk-'+k+(cls?' '+cls:'')+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+ST_MARK[k]+'</svg>'
+  +'<h3'+(a?' class="tipu"'+a:'')+'>'+esc(word)+'</h3>'+(tail||'')+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -37425,7 +37485,11 @@ function stRender(){
      browser vendor. So the fact moved rather than went. It is in the
      button's own tooltip, on the one control that sends the audio anywhere,
      and it is off the page. */
+  /* the live dot came up here with the name, see srcPaint: it breathes while
+     the question box is idle and holds lit while it reads, and it sits beside
+     the word it was always beside. */
   +'<div class="st-hd">'
+   +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
    +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
      :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
@@ -37473,7 +37537,7 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
+  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   +srcComb()+'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -37504,7 +37568,7 @@ function stRender(){
   /* ---- the read column: the instrument over the list ---- */
   +'<div class="st-colr">'
   +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-   +'<div class="st-chd"><span class="st-eb">Imprints</span><span class="st-tag" id="stpend"></span>'
+   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
       vault, which is what's been released." Both were icons with their word
@@ -37574,7 +37638,7 @@ function stRender(){
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
  stRead(); stSortPaint();
- srcLock(h.querySelector('.st-glow'));
+ srcLock(h.querySelector('.st-glow')); srcLock(h.querySelector('#stjr .src-live'));
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
@@ -38156,8 +38220,13 @@ function srcPaint(){
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
-    a claim, and the dot only says what is true: it reads on every key. */
- var o='<div class="src-hd"><span class="src-live" aria-hidden="true"></span><span class="pm-eye">Source AI</span></div>';
+    a claim, and the dot only says what is true: it reads on every key.
+    ROUND QB TOOK THE NAME OFF THIS BOX. The eyebrow read "Source AI"; the
+    column is called Journal now and wears it in its own top row, see stMark,
+    so the dot went up with the name it sits beside. It is written once a
+    render there and not on every key here, which is cheaper, and the lock
+    below has nothing of its own left to put on the beat. */
+ var o='';
  var ask=turn.move==='ask'?srcAsk(turn,heard.top&&heard.top.words):'';
  /* an ask on screen is a question asked, 20.H5: its why and its seat */
  if(turn.move==='ask')srcLog(turn.why,turn.seat);
@@ -38220,12 +38289,11 @@ function srcPaint(){
  h.innerHTML=o;
  SRC_SHOWN=turn.move==='pass'?'':q;
  srcHearing(h);
- /* the dot is rebuilt with the column, so it is put back on the beat here,
-    but only when it is breathing: while it hears it is held lit and still,
-    and the lock is left to the moment it lets go, see srcHearing. Locking on
-    every key cost a forced layout a key, measured 143 to 190 over the same
-    typed line, on the one page where a key must cost nothing. */
- if(!h.classList.contains('hear'))srcLock(h.querySelector('.src-live'));
+ /* the dot used to be rebuilt here on every key and put back on the beat.
+    Since round QB it lives in the Journal row, which a key never rewrites,
+    so it is locked once a render with the halo, and again when it lets go,
+    see srcHearing. Locking on every key cost a forced layout a key, measured
+    143 to 190 over the same typed line, and that cost is gone with it. */
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
  var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
@@ -38330,7 +38398,7 @@ function srcHearing(h){
  h.classList.add('hear');
  clearTimeout(SRC_HT);
  SRC_HT=setTimeout(function(){var e=document.getElementById('stsrc');
-  if(e){e.classList.remove('hear'); srcLock(e.querySelector('.src-live'));}},1100);}
+  if(e){e.classList.remove('hear'); srcLock(document.querySelector('#stjr .src-live'));}},1100);}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
    never sits in the document asserting a stale reading, the rule Summary
    already keeps. setTab calls this on every tab but Story. The bank closes
@@ -38918,7 +38986,7 @@ function stRelModel(){
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
  var M=stRelModel(), o='';
- o+='<div class="st-rlhd"><span class="st-ring"></span><h3>Release</h3></div>'
+ o+=stMark('r','Release','release','st-rlhd')
   +'<div class="st-rlmid">';
  /* The refusal stays, because with nothing held the panel would be a button
     that does nothing and no word why. */
@@ -62170,5 +62238,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004075031"></div>
+<div id="eof" hidden data-len="004079535"></div>
 </body></html>

@@ -3929,6 +3929,13 @@ var UNPACK_BASE={
  'yoga:3rd eye':'In the yoga tradition the 3rd Eye seat is called Ajna, its element is light and its seed sound is Om.',
  'yoga:crown':'In the yoga tradition the crown seat is called Sahasrara, its element is thought and its seed is silence.',
 
+ /* THE STORY PAGE'S THREE COLUMNS, round QB. Each column title is a carrier
+    of its own sentence, so the name over a column is never left for a person
+    to guess. Release says what kb.js says it is, in one sentence. */
+ 'journal':'The journal is where you write or say what happened, in your own words.',
+ 'imprint':'An imprint is a piece of what you wrote that lands as charge at one exact place in your body.',
+ 'release':'Release is stored charge leaving your body through the nerves.',
+
  /* THE CHAIN OF PATTERNS */
  'address':'An address is one exact place in your body where a pattern sits.',
  'charge':'Charge is survival energy stuck at one place in your body.',
