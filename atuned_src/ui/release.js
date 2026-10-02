@@ -157,7 +157,9 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          dose:100,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
-         heavy:{},look:false,rerun:false,pick:[]};
+         heavy:{},look:false,rerun:false,pick:[],
+         /* the teacher a run was started toward, in memory only and never kept */
+         toward:null};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -874,6 +876,12 @@ function relCoolDown(){
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
  if(CURP){pSave();pSnap();}
+ /* A RELEASE STARTED FROM A TEACHER'S PANEL IS LOGGED HERE, round PD, because
+    this is after the worked example refusal and after the write, so a refused
+    run logs nothing and a log is never made for a release that did not land.
+    RUN.toward is in memory only (ui/teachers.js sets it); the log holds a
+    count and never which addresses. */
+ if(RUN.toward&&typeof teachRunLogged==='function')teachRunLogged();
  /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
     ritual is tracking one of these addresses. Here and nowhere else: this is
     after the worked example refusal, so a refused run marks nothing, and after

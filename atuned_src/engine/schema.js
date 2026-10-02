@@ -115,7 +115,12 @@ function blankProfile(name){
      none and is filled from this blank, and no SCHEMA_V bump, which is the
      owner's call. p.rituals above is the Ritual tab's day log and is a
      different thing; see PRACTICE-AUDIT.md for why both exist for now. */
-  practice:practiceBlank()};
+  practice:practiceBlank(),
+  /* THE TEACHERS' BLOCK, engine/teach.js. Round PD. Additive: an older record
+     has none and is filled from this blank, and no SCHEMA_V bump, which is the
+     owner's call. Named here, in loadProfile and at the boundary, because a key
+     the boundary does not name is deleted on the next load. */
+  teach:teachBlank()};
  /* held was 3 on every axis, and this is the profile a new person gets. The
     laws beside it are correctly null, meaning not yet measured, and the charge
     was not given the same honesty. Nobody entered a 3. Zero is the only value
@@ -183,6 +188,9 @@ function loadProfile(p){
  /* and a record from before the daily summary has no bank of days, which is a
     record that has never opened one */
  if(!p.summaries||typeof p.summaries!=='object'||Array.isArray(p.summaries))p.summaries=dlyBlank();
+ /* and a record from before the teachers has chosen none and worked toward
+    none, which is exactly what the blank block says */
+ if(!p.teach||typeof p.teach!=='object'||Array.isArray(p.teach))p.teach=teachBlank();
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -1150,6 +1158,11 @@ function validateProfile(o){
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
   p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+ /* THE TEACHERS' BLOCK, through its own boundary (teachValidate,
+    engine/teach.js), into the same errs, so one bad field refuses the whole
+    record and pImport stays atomic. Missing or null is an older record and
+    keeps the blank. Refused by name and never clamped. */
+ if(o.teach!==undefined&&o.teach!==null)p.teach=teachValidate(errs,o.teach,'teach');
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has

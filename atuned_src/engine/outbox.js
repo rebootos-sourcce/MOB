@@ -36,7 +36,12 @@ var OB_NEVER=['name','first','middle','last','email','address','key','rk','rid',
     aim, so it takes the story's class: on the device and never in an envelope.
     Named here because a name left off this list is a silent hole (audit probe
     X7). aim is the stored word for the daily intention, engine/daily.js. */
- 'summaries','summary','mirror','aim','aims'];
+ 'summaries','summary','mirror','aim','aims',
+ /* the teachers' block, round PD: which teachers a person chose, which of
+    their own impressions they marked and whether they share any. It is theirs and
+    on the device, and the only thing that can leave is teachShareOut's key and
+    reach, to a linked lead and never through an envelope. */
+ 'teach','teachers'];
 
 function obStore(){ try{ return JSON.parse(STORE.get(OBKEY)||'[]'); }catch(e){ return []; } }
 function obWrite(q){

@@ -428,9 +428,29 @@ function ritTeach(k){
 function ritTeachStart(k,days){
  var t=ritTeach(k); if(!t||!t.steps.length)return false;
  var nm=ritSteps({steps:t.steps}).map(function(p){return p.nm;});
- return ritStartPlan({steps:t.steps, band:t.seat, days:days, tc:t.b.k},
+ var ok=ritStartPlan({steps:t.steps, band:t.seat, days:days, tc:t.b.k},
   'Set. '+(nm.length>1?nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]:nm[0])
-  +' each day, toward '+String(t.b.q).toLowerCase()+'.');}
+  +' each day, toward '+String(t.b.q).toLowerCase()+'.');
+ /* ROUND PD: a ritual started toward a teacher pins the teacher when there is
+    room and logs the start as a count (ui/teachers.js). Both are after the
+    writer has answered true, so a start that did not save logs nothing. */
+ if(ok&&typeof teachAfterStart==='function')teachAfterStart(t.b.k,'ritual',t.steps.length);
+ return ok;}
+/* THE LINES STEP PRINTS THE PERSON'S OPEN LINE FOR THE DAY, in place of the
+   static text, wherever a step prints (round PD). A step with `aff` names the
+   pole whose lines it carries. The line is read and never stored, one of the
+   open lines by the day number, so two devices agree. Below the level it is
+   shown in hold form, and with nothing open yet the step says how to open one.
+   Any other step prints the text it was handed. */
+function ritAffText(p,fallback){
+ if(!p||!p.aff||typeof teachReach!=='function'||typeof CURP==='undefined'||!CURP)return fallback;
+ var P=teachPole(p.aff); if(!P)return fallback;
+ var open=teachReach(CURP,p.aff).open, seat=P.seat||P.home;
+ var ln=teachLineOf(p.aff,open,ritToday0());
+ if(!ln)return 'Choose '+P.who+' on the Compass to open the first line. '+fallback;
+ var form=(typeof teachForm==='function')?teachForm(compute()):'say';
+ return 'Today\u2019s line, held at '+(seat?'the '+ritSeatNm(seat):'the place you feel it most')+': '
+  +(form==='hold'?TEACH_HOLD_PREFIX+' ':'')+ln.line;}
 /* the section the teacher drill carries. Only the coherent pole: nobody
    practises toward the inversion. */
 function ritTeachHtml(k){
@@ -443,7 +463,7 @@ function ritTeachHtml(k){
  var h='<div class="pm-eye">A ritual toward '+esc(String(t.b.q).toLowerCase())+'</div>'
   +'<div class="tb-rit" data-tb="'+t.b.k+'">'
   +ritSteps({steps:t.steps}).map(function(p){
-   return '<div class="rv-step"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b><p>'+esc(p.d)+'</p></div>';}).join('');
+   return '<div class="rv-step"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b><p>'+esc(ritAffText(p,p.d))+'</p></div>';}).join('');
  /* the pacing, said once, after the steps and never instead of them */
  var many=t.held.length>1;
  if(t.entry)h+='<p class="ad-p">At the charge you carry now, '+esc(nm(t.held).join(' and '))
@@ -892,7 +912,7 @@ function ritRowsHtml(list,today,act){
   if(open){
    out+='<div class="rv-more">'
     +ritSteps(p).map(function(s,i){
-     return '<div class="rv-step"><b>'+(p.steps.length>1?(i+1)+'. ':'')+esc(s.nm)+' <small>'+s.min+' min</small></b><p>'+esc(s.how)+'</p></div>';}).join('')
+     return '<div class="rv-step"><b>'+(p.steps.length>1?(i+1)+'. ':'')+esc(s.nm)+' <small>'+s.min+' min</small></b><p>'+esc(ritAffText(s,s.how))+'</p></div>';}).join('')
     +((p.when||p.where)?'<p class="rv-if">When '+esc(p.when||'it is time')+', '+esc(p.where?'at '+p.where:'wherever you are')+'.</p>':'')
     +'<div class="rv-acts">'
     +(p.rel!=null&&BY[p.rel]&&BY[p.rel].sq>=4?'<button type="button" class="btn" data-act="rel" data-n="'+p.rel+'">Release now</button>':'')

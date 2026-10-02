@@ -1106,8 +1106,9 @@ function nodeStateOf(w){
    writing it for four thousand years of source material and the
    product's job is to carry it, not to improve it.
 
-   The CQ cone points up. Twelve masters anchor it, and the codex is
-   explicit that they are NOT the top of the spiral: "The Ascended
+   The CQ cone points up. The masters anchor it (MASTERS carries how
+   many, so no count is typed here), and the codex is explicit that
+   they are NOT the top of the spiral: "The Ascended
    Masters are not at the top of the upward spiral. They are
    coordinates on the CQ cone."
 
@@ -1135,8 +1136,18 @@ const MIRROR=[
     axis says the same word; a label changed only on the Compass would give
     one axis two names. k stays IL, because a key is identity, not a label.
     Trust at the Heart is untouched: whether it is Truth is still his own
-    open question, logged as thinking and not as a ruling. */
- {k:'IL', q:'Light', seat:'Heart',
+    open question, logged as thinking and not as a ruling.
+
+    ROUND PD RELABELLED BOTH HEART AXES, read from his own list: "Akhenaton for
+    light, ... Jesus for love. Rumi for beauty." So IL is called Love and TR is
+    called Beauty, and Light moved to Akhenaten (POLES_EXTRA, SA). The keys did
+    not move, because a key is identity. `engine` keeps the word the axis had
+    until round PD, so a surface that wants to show both can, and a record or a
+    ritual written under the old word still reads. The codex lines for Lucifer
+    ("Pride as false light") and Charon (threshold paralysis) are quoted and
+    were left as they were; they read as the inversion of Love and of Beauty
+    only loosely, and rereading them is the owner's, not a rewrite from here. */
+ {k:'IL', q:'Love', engine:'Light', seat:'Heart',
   up:'Jesus',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
   dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
@@ -1156,7 +1167,7 @@ const MIRROR=[
   up:'Buddha', upd:'Clear seeing. Reality without overlay. The compositor running on present signal.',
   dn:'Geryon', dnd:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
   ask:'Does this person’s self presentation match their interior state?', ic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM12 9.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2', dic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM5 5l14 14'},
- {k:'TR', q:'Trust', seat:'Heart',
+ {k:'TR', q:'Beauty', engine:'Trust', seat:'Heart',
   up:'Rumi',   upd:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
   dn:'Charon', dnd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
   ask:'Does this person feel things straight away, or wait for proof before they let themselves feel?', ic:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z', dic:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z'},
@@ -1206,7 +1217,7 @@ const MIRROR=[
    twelve the book says anchor the cone. That arithmetic is stated
    in BOOK-ERRATA rather than assumed here. */
 const MASTERS=[
- {nm:'Akhenaten', ax:'X',  of:'Sat apex',            was:'Truth and light',      d:'Maximum Sat. Energy conducting without distortion. The output is literal light.'},
+ {nm:'Akhenaten', ax:'X',  of:'Sat apex',            was:'Light',      d:'Maximum Sat. Energy conducting without distortion. The output is literal light.'},
  {nm:'Buddha',    ax:'Y',  of:'Chit apex',           was:'Wisdom and awareness', d:'Be with the emotions, do not become them. The awareness layer kept clean without identification locking the wave into a node.'},
  /* CHRIST WAS JESUS UNDER A SECOND NAME. One figure, one name, and the mirror
     pairs already used this one. */
@@ -1219,7 +1230,9 @@ const MASTERS=[
  {nm:'Musashi',   ax:'∴', of:'practice layer',  was:'Discipline',           d:'Sustained application of will at the node level over time. Two steps forward, one step back. Failure as data, not judgement.'},
  {nm:'Ramakrishna',ax:'Z', of:'desire surrendered',  was:'Devotion',             d:'Wanting that moves toward something beyond the self.'},
  {nm:'Elijah',    ax:'Z',  of:'charge grounded',     was:'Fire',                 d:'Intensity moving through the body without destroying the container or the target.'},
- /* ELEVEN, AND IT IS ELEVEN ON PURPOSE NOW RATHER THAN BY ACCIDENT.
+ /* THIS WAS ELEVEN ON PURPOSE RATHER THAN BY ACCIDENT, AND IS NOW THIRTEEN ON
+    PURPOSE (the end of this note says why). The reasoning that follows is the
+    record of the eleven and stays as it was written.
 
     Eckhart's row went with the ruling that took him off the mirror axis.
     Jesus carries Revelation now and he is already on this list at the Ananda
@@ -1232,7 +1245,20 @@ const MASTERS=[
     is one name now, and unifying it did not change the count because they
     were never two people.
 
-    BOOK-ERRATA carries the arithmetic. */];
+    BOOK-ERRATA carries the arithmetic.
+
+    THEN ROUND PD NAMED TWO MORE, and the count moved to thirteen on purpose.
+    His list: "Zoroastria for truth ... Confucius for nature." Both are
+    classical figures and neither is Eckhart's reversal, so the ruling that
+    took Eckhart out is untouched. Akhenaten's row lost "truth and" from its
+    quality word, because Truth went to Zoroaster and Light is Akhenaten's.
+    These two rows are PROPOSED (from:'proposed'): the description is a
+    working sentence and not a codex quotation, the placement on the three
+    axes is a first pass, and the owner edits both. */
+ {nm:'Zoroaster', ax:'X', of:'Sat spoken', was:'Truth', from:'proposed',
+  d:'Truth as a choice made at every word: the true thought, the true word and the true act kept in one line.'},
+ {nm:'Confucius', ax:'⊥', of:'the seasons', was:'Nature', from:'proposed',
+  d:'The seasons run their course and the hundred things are born. Tending what grows at the pace it asks.'}];
 
 /* ---- THE DECOHERENT BLUEPRINT, THE DQ TERMINUS ----
    "These are not mythological figures. They are behavioural modes,
@@ -1367,16 +1393,19 @@ const PATHS=(function(){
  return [
   {k:'FL', q:'flow', up:'Krishna', upd:mas('Krishna').d,
    dn:'Kaliya', dnd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+   ask:'Does this person move when the day wants to move, or hold one plan in place until it sours?',
    from:'research', src:'Bhagavata Purana, canto 10, chapter 16'},
   {k:'AW', q:'awareness', up:'Buddha', upd:pe.upd, dn:pe.dn, dnd:pe.dnd,
-   from:'codex', src:'mirror pair, perception'},
+   ask:pe.ask, from:'codex', src:'mirror pair, perception'},
   {k:'BO', q:'the body', up:'Jesus', upd:il.upd, dn:il.dn, dnd:il.dnd,
-   from:'codex', src:'mirror pair, light'},
+   ask:il.ask, from:'codex', src:'mirror pair, light'},
   {k:'AL', q:'alignment', up:'Rama', upd:mas('Rama').d,
    dn:'Ravana', dnd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
+   ask:'Does this person do what they said, or find the reason this one is an exception?',
    from:'research', src:'Valmiki Ramayana'},
   {k:'HO', q:'the horizontal', up:'Lao Tzu', upd:mas('Lao Tzu').d,
    dn:'Shu and Hu', dnd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
+   ask:'Does this person stop the activity making the noise, or hurry in to fix what was whole?',
    from:'research', src:'Zhuangzi, chapter 7'}];})();
 /* the three new inversions' marks, argued from what each one does, on the
    same 24 unit grid. Ring, not fill. */
@@ -1391,6 +1420,70 @@ IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 11
    they read as an eye, and on a slant as horns */
 IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+
+/* ---- THE THREE POLES THAT ARE NEITHER AN AXIS NOR ONE OF THE FIVE PATHS ----
+   Round PD, his words: the roster in DESIGN-teachers.md v2 is right, fourteen
+   poles, thirteen people, Jesus at two of them. Eight poles are MIRROR, three
+   are the paths that stand on no axis, and these three are the rest: Akhenaten
+   for Light, Zoroaster for Truth and Confucius for Nature, from his own list
+   ("Akhenaton for light, Zoroastria for truth ... Confucius for nature").
+
+   A SEPARATE TABLE, AND NOT THREE MORE ROWS IN PATHS, because the glossary's
+   five paths are named ("Krishna, flow. Buddha, awareness. Christ, the body.
+   Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source")
+   and a gate holds PATHS at five. These three are not paths and the surface
+   must not call them that, which is the sentence becomingOf used to get wrong
+   for any pole outside MIRROR.
+
+   NO SEAT, A HOME. A pole of this table is read across the field and has no
+   position on an axis, because Moses already holds the Throat's axis and a
+   second teacher there would print the same number. `home` is the seat the
+   quality's own law sits at (Truth at the Throat, Nature at the Crown), where
+   the ritual is kept and what colours the ring. Akhenaten has none: his law,
+   Transparency, sits at the Throat but his quality is read across the field.
+
+   ALL THREE OPPOSITES ARE PROPOSED, NOT CODEX, and marked so. Each is a named
+   figure out of that teacher's own tradition and none was made up, but none is
+   in the codex and the research seat is to check the sources named here.
+     Apep          the serpent that swallows the sun each night. Light taken in
+                   and nothing handed on. Amduat and the Book of Gates.
+     The Lie       Druj, the opposite of asha in Zoroaster's own teaching.
+                   Yasna 30 and 31. Narrower than Set: the false word itself
+                   and the word kept back, not betrayal of a structure.
+     The farmer    of Song, who pulled each shoot up to help it grow, and by
+                   evening they were dead. Mencius 2A2. A near cousin of Shu
+                   and Hu: both mean well and force. */
+const POLES_EXTRA=[
+ {k:'SA', q:'light', up:'Akhenaten', upd:mas0('Akhenaten').d,
+  dn:'Apep', dnd:'Light taken in and nothing handed on. The serpent that swallows the sun each night, so that what arrived stops with the one who received it.',
+  ask:'Does what this person was given pass through them to somebody else, or stop with them?',
+  home:null, from:'proposed', src:'the Aten, and the Amduat'},
+ {k:'TU', q:'truth', up:'Zoroaster', upd:mas0('Zoroaster').d,
+  dn:'The Lie', dnd:'The false word, and the true word kept back. Druj against asha: a person choosing the smaller sentence because the true one would cost the room.',
+  ask:'Does this person say the true thing once and plainly, or the smaller thing that keeps the room warm?',
+  home:'Throat', from:'proposed', src:'Yasna 30 and 31'},
+ {k:'NA', q:'nature', up:'Confucius', upd:mas0('Confucius').d,
+  dn:'The farmer of Song', dnd:'Pulling the shoot up to help it grow. Meaning well and forcing a season, until what was growing is dead by evening.',
+  ask:'Does this person tend what is growing at the pace it asks, or pull on it to make it faster?',
+  home:'Crown', from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
+/* the masters row by name, for the three above, so the description is read off
+   MASTERS and a change there is a change here (the rule PATHS keeps). Declared
+   as a function declaration so the table above can call it while it is built. */
+function mas0(nm){for(var i=0;i<MASTERS.length;i++)if(MASTERS[i].nm===nm)return MASTERS[i];
+ return {d:''};}
+/* Apep, a coil that has taken the disc in. The Lie, a plumb line cut through,
+   which is the Truth law's own mark with the middle taken out. The farmer, the
+   shoot with a hand's two strokes above it, pulling. Ring, not fill. */
+IC_NEW['Apep']='M4 16c2-3 4 3 6 0s4 3 6 0 3 2 4 0M12 3.5a3 3 0 110 6 3 3 0 010-6';
+IC_NEW['The Lie']='M12 3v5M12 12v2M9.5 17a2.5 2.5 0 005 0 2.5 2.5 0 00-5 0M7 10.5l10-1';
+IC_NEW['The farmer of Song']='M12 21v-8M12 13c-3 0-5-2-5-5 3 0 5 2 5 5M12 15c3 0 5-2 5-5-3 0-5 2-5 5M9 5l3-2.5L15 5M12 2.5V8';
+/* Zoroaster wears the Truth law's plumb line and Confucius the Nature law's
+   branch, read off SI by name so the pole and the law are one mark and not two
+   drawings of one idea. */
+(function(){function law(nm){for(var i=0;i<SI.length;i++)if(SI[i].nm===nm)return SI[i].ic;return null;}
+ IC_NEW['Zoroaster']=law('Truth'); IC_NEW['Confucius']=law('Nature');})();
+POLES_EXTRA.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+MASTERS.forEach(function(x){if(!x.ic)x.ic=icOf(x.nm);});
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for
@@ -1852,6 +1945,55 @@ var TEACHER_PRACTICE=[
    +'rehearsed in your head, the checking. Stop it for the day and put nothing in its place. Each '
    +'time the pull to start it comes back, breathe out and let the pull pass. Notice what your '
    +'body does in the space it leaves.'}];
+/* ROUND PD, THE THREE POLES THAT HAVE NO PRACTICE OF THEIR OWN YET. Zoroaster
+   for truth, Akhenaten for light and Confucius for nature are new teachers
+   (POLES_EXTRA in compass.js), and where nothing in the library carries a
+   quality one short practice is written for it, the posture round KQ took.
+   The texts are the design's drafts (DESIGN-teachers.md section 12), for the
+   owner to edit. */
+TEACHER_PRACTICE.push(
+ {k:'plainword', tc:'TU', nm:'The Plain Word', track:'Mind', min:5, tier:1,
+  d:'Say one true thing in one sentence with no softener.',
+  how:'Pick one true thing you have been softening. Say it once, out loud or in writing, in one '
+   +'sentence, and stop where the sentence ends. Then say nothing for ten breaths and notice what '
+   +'your throat does. If the sentence shrank on the way out, write down the word that shrank it.'},
+ {k:'handon', tc:'SA', nm:'Hand It On', track:'Somatic', min:5, tier:1,
+  d:'Pass on one thing you were given, and name who gave it.',
+  how:'Take one thing you were given this week: an idea, a skill, a kindness. Pass it to somebody '
+   +'who can use it and say who gave it to you. Keep none of the credit. Afterward turn your palms '
+   +'up on your knees and notice your hands and your face.'},
+ {k:'tend', tc:'NA', nm:'Tend, Do Not Pull', track:'Body', min:10, tier:1,
+  d:'Do only the work a slow thing asks today, at its pace.',
+  how:'Pick one thing that grows slowly: a habit, a project, a child, a body. Do only the work it '
+   +'asks today, at the pace it asks. When the urge comes to pull it faster, breathe out and take '
+   +'your hands off it. Write one line on what you left alone.'});
+/* THE LINES STEP, ONE PER POLE. Each pole's affirmation lines (engine/data/
+   teachers.js) are said inside a ritual, between the breath and the practice,
+   and this row is how: a practice the boundary accepts with no schema change,
+   because RIT_STEP is read off PRACTICE, and a tc row that ritFor never calls
+   and the builder never lists, so a heavy field is handed nothing it was not
+   handed before. Pacing step 1 on purpose: a line said once and held at a seat
+   is the gentlest thing in a ritual, and the cautious side is the right
+   default. `aff` names the pole; the surface prints the person's open line for
+   the day on this step in place of static text, and this row's own text is the
+   fallback and the how. The name is built from the compass tables, so a rename
+   there is a rename here, and one name per pole is how Jesus at two poles
+   stays two rituals. */
+function affName(k){
+ var i, x=null, seat=null;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k){x=MIRROR[i];seat=x.seat;}
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)x=PATHS[i];
+ for(i=0;i<POLES_EXTRA.length;i++)if(POLES_EXTRA[i].k===k){x=POLES_EXTRA[i];seat=x.home;}
+ if(!x)return null;
+ return {nm:x.up+'\u2019s lines'+((x.up==='Jesus')?(seat==='Crown'?' at the crown':' at the heart'):''), seat:seat};}
+['IL','RE','DE','OR','PO','PE','TR','CH','FL','AL','HO','SA','TU','NA'].forEach(function(k){
+ var a=affName(k); if(!a)return;
+ var at=a.seat?'at the '+String(a.seat).toLowerCase():'at the place you feel it most';
+ TEACHER_PRACTICE.push({k:'aff_'+k, tc:k, aff:k, nm:a.nm, track:'Somatic', min:2, tier:1,
+  d:'Today\u2019s open line, said once '+at+'.',
+  how:'Today\u2019s open line is shown with this step. Say it once, out loud or under the breath. '
+   +'Hold it '+at+' for ten breaths. Expansion means the line holds. Contraction is data, so write '
+   +'down where it sat. Do not repeat the line to push it in.'});});
 TEACHER_PRACTICE.forEach(function(p){PRACTICE.push(p);});
 
 /* which practices each teacher calls for, in the order they are done. The
@@ -1860,29 +2002,45 @@ TEACHER_PRACTICE.forEach(function(p){PRACTICE.push(p);});
    path of the body and Buddha on the path of awareness are the same entries
    PATHS reads off MIRROR, so their rituals are those axes' rituals. */
 var BECOMING={
- IL:['heartpt','given'],   /* Jesus, light, at the heart */
- DE:['slow','offered'],    /* Ramakrishna, desire and will, at the sacral */
- OR:['truth','onerule'],   /* Moses, order, at the throat */
- PO:['box','samecut'],     /* Musashi, power, at the solar */
- PE:['noting','listen'],   /* Buddha, perception, at the third eye */
- TR:['truth','heartpt'],   /* Rumi, trust, at the heart */
- CH:['slow','resist'],     /* Elijah, charge, at the root */
- RE:['heartpt','meetit'],  /* Jesus, revelation, at the crown */
- FL:['sysbreath','letmove'],/* Krishna, flow, a path with no seat */
- AL:['box','linehold'],    /* Rama, alignment, a path with no seat */
- HO:['resist','stopone']}; /* Lao Tzu, the horizontal, a path with no seat */
+ /* ROUND PD: EVERY ROW GAINS ITS LINES STEP, in the order the loop gives:
+    ground, say the line, do the practice. The practice a row ended on before
+    is still the last step, so the ritual a person was already on reads the
+    same with one step more in the middle. The first three of the fourteen
+    keep the order they had; SA, TU and NA are new keys, appended. A key is
+    never renumbered or reused. */
+ IL:['heartpt','aff_IL','given'],   /* Jesus, love, at the heart */
+ DE:['slow','aff_DE','offered'],    /* Ramakrishna, desire and will, at the sacral */
+ OR:['truth','aff_OR','onerule'],   /* Moses, order, at the throat */
+ PO:['box','aff_PO','samecut'],     /* Musashi, power, at the solar */
+ PE:['noting','aff_PE','listen'],   /* Buddha, perception, at the third eye */
+ TR:['truth','aff_TR','heartpt'],   /* Rumi, beauty, at the heart */
+ CH:['slow','aff_CH','resist'],     /* Elijah, charge, at the root */
+ RE:['heartpt','aff_RE','meetit'],  /* Jesus, revelation, at the crown */
+ FL:['sysbreath','aff_FL','letmove'],/* Krishna, flow, a path with no seat */
+ AL:['box','aff_AL','linehold'],    /* Rama, duty, a path with no seat */
+ HO:['resist','aff_HO','stopone'],  /* Lao Tzu, the horizontal, a path with no seat */
+ SA:['box','aff_SA','handon'],      /* Akhenaten, light, read across the field */
+ TU:['truth','aff_TU','plainword'], /* Zoroaster, truth, home seat the throat */
+ NA:['slow','aff_NA','tend']};      /* Confucius, nature, home seat the crown */
 var BECOMING_SAME={BO:'IL', AW:'PE'};
 /* one teacher, read off the compass data rather than copied, so a rename
    there is a rename here. seat is null for a path, which sits at no seat. */
 function becomingOf(k){
  k=BECOMING_SAME[k]||k;
  if(!BECOMING[k])return null;
- var i, m=null, p=null;
+ var i, m=null, p=null, e=null;
  for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)m=MIRROR[i];
  for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)p=PATHS[i];
- var x=m||p; if(!x)return null;
+ for(i=0;i<POLES_EXTRA.length;i++)if(POLES_EXTRA[i].k===k)e=POLES_EXTRA[i];
+ var x=m||p||e; if(!x)return null;
+ /* A POLE NOT IN MIRROR WAS READ AS A PATH, and that printed "the five paths
+    sit at no one seat" under Zoroaster, who is not one. path is only true for
+    a pole in PATHS, and `home` is the seat a seatless pole's own law sits at
+    (null for a path and for Akhenaten, who is read across the field), so the
+    surface chooses its sentence by what the pole is and not by where it is
+    missing from. */
  return {k:k, who:x.up, q:x.q, d:x.upd, ic:x.ic||null, seat:m?m.seat:null,
-  path:!m, steps:BECOMING[k].slice()};}
+  home:e?e.home:null, path:!!p&&!m, extra:!!e, steps:BECOMING[k].slice()};}
 /* the steps a person at this tier may start. tier is ritFor's: 1 is heavy
    load, and pacing is the safety system here, so a step above the tier waits
    rather than being handed over. held names what waits, so it can be said. */
@@ -1893,6 +2051,19 @@ function becomingSteps(k,tier){
  b.steps.forEach(function(s){var p=byK[s]; if(!p)return;
   (p.tier<=tier?on:held).push(s);});
  return {steps:on, held:held};}
+
+/* WHICH TRACK EACH SEAT CALLS FOR, moved here from ui/ritual.js where ritFor
+   declared it, because the recipe engine (engine/recipes.js) needs it and the
+   engine may not read a renderer. ritual.js reads the same name. */
+var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
+                Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
+/* THE PACING STEP, ONE RULE. ritFor carried this as a line of its own and the
+   recipe engine needs the same answer, so it is a function both read: 1 is a
+   heavy field, 2 is median, 3 is light. The bands are the owner's, ruled 26
+   September on a zero to ten scale and carried to DQ's zero to a hundred
+   (the history of the number is the comment at ritFor). Heavy and collapsed
+   from 70, median from 40. */
+function pacingStep(DQ){return DQ>=70?1:(DQ>=40?2:3);}
 
 /* ---------- the seven seats, and where they sit on the figure ---------- */
 /* THE THIRD EYE WAS ON THE NOSE. It sat at 12.56, the middle of the drawn ear,
@@ -1985,6 +2156,360 @@ var PAINREG=[
  {k:'feet',box:[[39,89,61,99]],nm:'Feet',bands:['Root'],y0:90,y1:99,
   common:'plantar fasciitis, arch collapse, numbness',
   pattern:'Contact with the ground refused. The root address will not discharge.'}];
+/* ============================================================
+   THE TEACHERS AS IMPRINTS. Round PD, 1 October, and DESIGN-teachers.md v2,
+   which he accepted ("Yeah, the roster's right").
+
+   WHAT IS HERE AND WHAT IS NOT. The compass tables (MIRROR, PATHS,
+   POLES_EXTRA, MASTERS) own a teacher's name, quality, opposite, the codex
+   line and the seat. This file owns only what they do not: the eight
+   impression lines a pole leaves in a day (four channels, runs clean and runs
+   as the opposite), the five addresses the opposite is marked at, the laws a
+   pole is read through, and the six limit breaking lines. teachPole composes
+   the two so no sentence is copied from one table into the other, which is
+   how three lists joined by a name came to disagree about Jesus.
+
+   EVERY STRING IN TEACH_ROWS IS A DRAFT FOR THE OWNER TO EDIT, in the posture
+   round KQ took for the rituals of becoming ("plug that in, we'll edit it
+   later"). The impressions are the design's Appendix A. The lines are the
+   design's twelve worked ones (Zoroaster and Rumi) and seventy two more
+   written to the same five checks: behaviour first, no "I am", one sentence,
+   a belief it goes past, a cost or a condition where one exists.
+
+   THE MARKED ADDRESSES ARE PROPOSED. The codex gives each opposite a sentence
+   and a seat and never a list of addresses, so each list is argued from that
+   sentence, and every name has to resolve to one of the 112 or the gate
+   fails. They need the CQ seat's signature before they are called anything
+   but proposed.
+
+   KEYS ARE APPEND ONLY. A pole key is never reused or renamed, and a retired
+   teacher keeps its key (`retired:true`) so a record that names it still
+   loads. TEACH_ORDER is display order and moves freely, the rule the tab
+   integers carry. Socrates, whom v1 proposed, was never issued a key, so
+   there is nothing to retire.
+
+   NO MATCH NUMBER, ANYWHERE. He ruled it: "they shouldn't carry a match
+   number". Nothing in this file or in recipes.js stores, returns for display
+   or shares a score of how well a thing fits a person. A rank is an order, and
+   an order is all a surface is given.
+   ============================================================ */
+var TEACH_V=1;
+/* working memory holds about four, so the person pins at most three */
+var TEACH_FOCUS_MAX=3;
+/* refused above this, never truncated, which is PR_CAP's posture */
+var TEACH_RUNS_CAP=2000;
+var TEACH_CH=['do','think','body','say'];
+/* the closed set a mark may name, so a mark is an id and never a sentence */
+var TEACH_IMP_IDS=['pos.do','pos.think','pos.body','pos.say','neg.do','neg.think','neg.body','neg.say'];
+/* THREE REACHES, NAMED FOR WHAT THE PERSON DOES. The word tier already names
+   the plan (free to four) and the practice's pacing step, so a reach is not
+   called one. */
+var TEACH_REACH=[{r:1,nm:'Say it'},{r:2,nm:'Walk it'},{r:3,nm:'Hold it'}];
+/* WHAT OPENS A REACH, from a closed vocabulary of things a person did, read
+   from marks that exist today. `any` is a list of ways in and each way is a
+   list of conditions that must all hold. A reading of the person is never a
+   condition: an unlock reads what somebody did and never a state of them.
+   Every reach has a way in that spends nothing, because ground opened spends
+   patterns and a release must never be the only door (a gate asserts it).
+   Values are a first pass and the owner's to move, like BECOMING.
+     chosen    the teacher is pinned (teach.focus)
+     days      the teacher's own ritual steps done on this many different days
+     released  addresses of the opposite found in what was released */
+var TEACH_UNLOCK=[
+ {r:1, any:[[{c:'chosen'}]]},
+ {r:2, any:[[{c:'days',n:5}]]},
+ {r:3, any:[[{c:'days',n:14},{c:'released',n:1}], [{c:'days',n:28}]]}];
+/* the alignment's three weights, one table and the owner's to move. They sum
+   to one by gate. The score they make is an internal sort key and is never
+   printed. */
+var TEACH_W={authored:0.5, seat:0.2, cover:0.3};
+var TEACH_ORDER=['IL','RE','DE','OR','PO','PE','TR','CH','FL','AL','HO','SA','TU','NA'];
+var TEACH_ROWS=[
+ {k:'IL', word:"Love",
+  imp:{pos:{do:"You give something away and tell nobody.", think:"You ask what the person in front of you needs, and not who is watching.", body:"Your chest feels wide and your shoulders sit lower.", say:"You say the kind thing once and do not wait for thanks."},
+       neg:{do:"You are warm in the room and flat when it empties.", think:"You count who noticed the kindness.", body:"Your chest tightens when nobody is looking.", say:"You tell the story of the favour afterwards."}},
+  marks:["Manipulative Kindness", "False Love", "Stage Performing", "Spiritual Pride", "Seeking Validation"],
+  laws:["Compassion", "Forgiveness", "Generosity"],
+  lines:[{r:1, line:"I give one thing away today and tell nobody.",
+     past:"A kindness only counts if somebody sees it."},
+    {r:1, line:"I stay warm to the person who can do nothing for me.",
+     past:"Warmth is for people who can repay it."},
+    {r:2, line:"I finish the favour before I look around to see who noticed.",
+     past:"If nobody saw it, it did not happen."},
+    {r:2, line:"I help in a room where nobody knows me and I leave my name out.",
+     past:"My name on the help is what makes it worth doing."},
+    {r:3, line:"I keep the gift quiet while someone else takes the credit for it.",
+     past:"If I do not claim it, I lose it."},
+    {r:3, line:"I stay warm for the whole hour with the room empty and no one watching.",
+     past:"My warmth is for the audience."}]},
+ {k:'RE', word:"Love",
+  imp:{pos:{do:"You change your mind in front of people and do not defend the old view.", think:"You ask what it would change if the thing that cuts against you were true.", body:"Your head and jaw stay loose while you hear it out.", say:"You say \"that changes what I thought\" and stop there."},
+       neg:{do:"You steer away from the place that would test the belief.", think:"You decide what it means before it has finished happening.", body:"Your jaw sets the moment someone disagrees.", say:"You answer before the other person has finished."}},
+  marks:["Speaking To Be Right", "Dogma", "Condemnation", "Knowing Better Than God", "Denial Of Truth"],
+  laws:["Unity", "Awareness", "Nature"],
+  lines:[{r:1, line:"I say \u201cthat changes what I thought\u201d and I stop there.",
+     past:"Changing my mind in front of people loses their respect."},
+    {r:1, line:"I hear the whole sentence that disagrees with me before I answer.",
+     past:"I already know where this is going."},
+    {r:2, line:"I walk toward the place that would test what I hold.",
+     past:"My view is safe only while nothing tests it."},
+    {r:2, line:"I ask the person who disagrees what they saw that I did not.",
+     past:"They are wrong because they disagree."},
+    {r:3, line:"I let the thing that cuts against me stay in my chest for one minute before I reply.",
+     past:"A view I hold has to be defended at once."},
+    {r:3, line:"I drop a view I have defended for years while people watch, and I say what changed it.",
+     past:"Being wrong in public removes me."}]},
+ {k:'DE', word:"Will",
+  imp:{pos:{do:"You name one want and stop when you have enough.", think:"You ask who else the want would serve.", body:"The pull low in your belly rises, peaks and falls within ten breaths.", say:"You say \"that is enough\" and put the plate or the phone down."},
+       neg:{do:"You get it and reach for the next one within the hour.", think:"You decide having it will settle the wanting.", body:"Your belly stays tight after you have it.", say:"You say \"one more\" and keep going."}},
+  marks:["Addiction", "Lust", "Hypersexuality", "Infatuation", "Obsession"],
+  laws:["Temperance", "Detachment"],
+  lines:[{r:1, line:"I name one want and say who else it would serve.",
+     past:"A want is mine alone and serves only me."},
+    {r:1, line:"I say \u201cthat is enough\u201d and put the plate or the phone down.",
+     past:"One more will settle it."},
+    {r:2, line:"I let the pull in my belly rise and fall for ten breaths without acting.",
+     past:"The pull gets worse unless I feed it."},
+    {r:2, line:"I give away the thing I wanted most this week to somebody who needs it.",
+     past:"Having it is what ends the wanting."},
+    {r:3, line:"I stay with the want after I have it and I do not reach for the next one.",
+     past:"The next one will be the one that satisfies."},
+    {r:3, line:"I follow the one want that points past me, on the day it costs me the other three.",
+     past:"Every want has to be kept alive."}]},
+ {k:'OR', word:"Order",
+  imp:{pos:{do:"You set one rule others can lean on and keep it on the day it costs.", think:"You ask who is standing on this rule before you move it.", body:"Your throat is steady when you state the plan.", say:"You say the plan before it starts and write it down."},
+       neg:{do:"You change the rule after others have built on it.", think:"You decide the plan only has to hold while you are watching.", body:"Your throat goes dry when you are asked to repeat the plan.", say:"You agree in the meeting and say something else afterwards."}},
+  marks:["Manipulation Through Emotion", "Betrayal", "Deceit", "Lying", "Spiritual Language To Manipulate"],
+  laws:["Justice", "Truth", "Transparency"],
+  lines:[{r:1, line:"I say the plan out loud before it starts and I write it down.",
+     past:"A plan only has to hold while I am watching."},
+    {r:1, line:"I name one rule others can lean on and I say it to them.",
+     past:"Rules are for other people to keep."},
+    {r:2, line:"I keep the rule on the day it costs me.",
+     past:"A rule can bend when it is inconvenient."},
+    {r:2, line:"I ask who is standing on this rule before I change it.",
+     past:"I can change the rule without telling anyone."},
+    {r:3, line:"I tell the room the plan has changed before they build on the old one.",
+     past:"It is easier to let them find out."},
+    {r:3, line:"I say the same thing in the meeting and in the message afterwards.",
+     past:"One person in the room and another in the message is just tact."}]},
+ {k:'PO', word:"Power",
+  imp:{pos:{do:"You do the same hard thing at the same hour and pay for it yourself.", think:"You ask what the small version is when the big one is not on offer.", body:"Your breath stays low in the belly while you work.", say:"You write one line on a missed day and nothing about what it says about you."},
+       neg:{do:"Your standard is met with other people\u2019s time.", think:"You decide a day does not count unless you won it.", body:"Your upper stomach clenches when someone else sets the pace.", say:"You say \"somebody will cover it\" and move on."}},
+  marks:["Competition", "Entitlement", "Need To Win", "Superiority", "Force"],
+  laws:["Courage", "Responsibility", "Accountability"],
+  lines:[{r:1, line:"I do the same hard thing at the same hour today.",
+     past:"A standard is something other people help me meet."},
+    {r:1, line:"I write one line on a missed day and nothing about what it says about me.",
+     past:"A missed day proves I am weak."},
+    {r:2, line:"I pay for my own standard with my own hours.",
+     past:"Somebody will cover it."},
+    {r:2, line:"I do the small version when the big one is not on offer.",
+     past:"A day does not count unless I won it."},
+    {r:3, line:"I keep my breath low in the belly while somebody else sets the pace.",
+     past:"If I do not set the pace I lose."},
+    {r:3, line:"I take the cost of a missed standard myself and I ask nobody to cover it.",
+     past:"Costs belong to whoever is nearest."}]},
+ {k:'PE', word:"Awareness",
+  imp:{pos:{do:"You notice what you feel and name it without acting on it.", think:"You describe the situation as you would to the person in it.", body:"The space between your eyebrows stays soft while you look.", say:"You say what you see before you say what you make of it."},
+       neg:{do:"You manage the gap between how you look and how you are.", think:"You read people as terrain to cross.", body:"Your face holds a shape that does not match your stomach.", say:"You edit how you are before it leaves your mouth."}},
+  marks:["False Love", "Stage Performing", "Delusion", "Projection", "Distortion"],
+  laws:["Presence", "Humility", "Equanimity", "Awareness"],
+  lines:[{r:1, line:"I name what I feel before I act on it.",
+     past:"If I name it I become it."},
+    {r:1, line:"I say what I see before I say what I make of it.",
+     past:"My reading of a person is the person."},
+    {r:2, line:"I describe the situation to myself as I would to the person in it.",
+     past:"People are terrain to cross."},
+    {r:2, line:"I let my face match my stomach for one conversation.",
+     past:"The version I run is safer than the real one."},
+    {r:3, line:"I say how it is with me when someone asks and I do not edit it on the way out.",
+     past:"I must manage the gap between how I look and how I am."},
+    {r:3, line:"I keep the space between my eyebrows soft while someone tells me what I dislike.",
+     past:"I have to react to stay safe."}]},
+ {k:'TR', word:"Beauty",
+  imp:{pos:{do:"You stop for the thing that moves you and stay with it before you explain it.", think:"You let it reach your chest before you decide what it means.", body:"Your chest opens and your breath drops while it lands.", say:"You tell one person what moved you, with no evidence attached."},
+       neg:{do:"You wait at the edge of it until it can be proven.", think:"You prepare for the feeling instead of having it.", body:"Your chest stays braced while the moment goes past.", say:"You ask for more information about what you already feel."}},
+  marks:["Closed Heart", "Cynicism", "Distrust", "Overanalysis", "Doubt"],
+  laws:["Aesthetic Beauty", "Compassion", "Forgiveness", "Generosity"],
+  lines:[{r:1, line:"I stop for the one thing that moves me and stay with it for three breaths before I explain it.",
+     past:"I have to understand it before I let it move me."},
+    {r:1, line:"I let what moves me land in my chest before I decide what it means.",
+     past:"If I feel it before it is proved, I am a fool."},
+    {r:2, line:"I take one step toward what moves me before I have proof that it is safe.",
+     past:"I will go when I have enough information."},
+    {r:2, line:"I tell one person what moved me and I attach no evidence.",
+     past:"If I cannot prove it, I should not say it."},
+    {r:3, line:"I keep my chest open while the beautiful thing and the loss are in it together.",
+     past:"If I let it in, I will not be able to bear it."},
+    {r:3, line:"I cross the threshold I have been measuring and I leave the measuring unfinished.",
+     past:"I am not ready until I have checked everything."}]},
+ {k:'CH', word:"Charge",
+  imp:{pos:{do:"You walk or lift until the heat has somewhere to go, and nobody pays.", think:"You ask where the anger is in the body before you ask who caused it.", body:"Heat rises in your legs and belly and you stay on your feet.", say:"You say \"I need ten minutes\" and take them."},
+       neg:{do:"You go off at somebody, or you go flat for the afternoon.", think:"You decide you are either fine or finished.", body:"Your belly locks, then your legs go heavy.", say:"You shout, or you stop talking."}},
+  marks:["Fear", "Lethargy", "Panic", "Collapse", "Anger"],
+  laws:["Non-Harm", "Patience"],
+  lines:[{r:1, line:"I say \u201cI need ten minutes\u201d and I take them.",
+     past:"I am either fine or finished."},
+    {r:1, line:"I say where the anger sits in my body before I say who caused it.",
+     past:"The anger belongs to whoever set it off."},
+    {r:2, line:"I walk or lift until the heat has somewhere to go, and nobody pays.",
+     past:"It has to go off at somebody or go flat."},
+    {r:2, line:"I stay on my feet while the heat rises in my legs and belly.",
+     past:"If I stay in it I will break something."},
+    {r:3, line:"I keep my voice level while I tell someone what I will not do again.",
+     past:"Saying it plainly means shouting or silence."},
+    {r:3, line:"I let the charge end in an action and not in a freeze or a shout.",
+     past:"There is no middle setting."}]},
+ {k:'FL', word:"Flow",
+  imp:{pos:{do:"You make the call you were holding and let the plan change.", think:"You ask what the day wants to do before you tell it what to do.", body:"Your jaw, shoulders and belly move when you ask them to.", say:"You say \"let us do it the other way\" and mean it."},
+       neg:{do:"You hold one routine or grievance in place until it sours.", think:"You decide that moving it would be losing it.", body:"Your jaw is locked and your hands are shut.", say:"You tell the same complaint a fourth time."}},
+  marks:["Control", "Possession", "Resistance", "Compulsion", "Avoidance Of Grief"],
+  laws:[],
+  lines:[{r:1, line:"I say \u201clet us do it the other way\u201d and I mean it.",
+     past:"Moving the plan means losing it."},
+    {r:1, line:"I ask what the day wants to do before I tell it what to do.",
+     past:"A day goes where I hold it."},
+    {r:2, line:"I make the call I have been holding.",
+     past:"Waiting will keep it safe."},
+    {r:2, line:"I drop one routine that has stopped feeding anyone.",
+     past:"A routine is owed because I kept it."},
+    {r:3, line:"I let the plan change in front of the people who built on it and I thank them.",
+     past:"Changing the plan shows I was wrong."},
+    {r:3, line:"I open my jaw, my shoulders and my hands while the old grievance is in the room.",
+     past:"Letting go of it means it did not matter."}]},
+ {k:'AL', word:"Duty",
+  imp:{pos:{do:"You do what you said, and you do it without a grudge.", think:"You ask what you owe before you ask what it costs.", body:"Your spine feels long from the base of the back to the neck.", say:"You say \"I will\" only when you will."},
+       neg:{do:"You know the rule and cross it because you want the thing more.", think:"You decide this one is an exception.", body:"Your spine slumps when the rule is read out.", say:"You give a good reason for the thing you should not have done."}},
+  marks:["Lust", "Entitlement", "Excuse", "Hubris", "Knowing Better Than God"],
+  laws:["Duty", "Responsibility"],
+  lines:[{r:1, line:"I say \u201cI will\u201d only when I will.",
+     past:"A promise is whatever sounds good when I say it."},
+    {r:1, line:"I say the line I will hold today before the day starts.",
+     past:"I can decide where the line is when I get there."},
+    {r:2, line:"I do what I said without a grudge.",
+     past:"Doing it grudgingly cancels it."},
+    {r:2, line:"I keep a promise nobody would check.",
+     past:"If nobody checks, it does not bind me."},
+    {r:3, line:"I hold the line on the day I want the thing more.",
+     past:"This one is an exception."},
+    {r:3, line:"I give a plain reason and not a good one for the thing I should not have done.",
+     past:"A good enough reason makes it right."}]},
+ {k:'HO', word:"Non-resistance",
+  imp:{pos:{do:"You find the one activity making the noise and stop it for the day.", think:"You ask what finishes by itself if you leave it.", body:"Your hands rest open and your breath runs on its own.", say:"You say \"I will wait\" and wait."},
+       neg:{do:"You hurry to help and make it worse.", think:"You decide that whatever is whole needs one more fix.", body:"Your hands reach before you have decided to.", say:"You offer the fix nobody asked for."}},
+  marks:["Force", "Need To Be Needed", "Interrupting", "Savior Complex"],
+  laws:["Patience", "Detachment"],
+  lines:[{r:1, line:"I say \u201cI will wait\u201d and I wait.",
+     past:"If I do not help now it will fall apart."},
+    {r:1, line:"I ask what finishes by itself if I leave it.",
+     past:"Whatever is whole needs one more fix."},
+    {r:2, line:"I stop the one activity making the noise for the day.",
+     past:"Stopping it leaves a hole."},
+    {r:2, line:"I leave the fix nobody asked for unsaid.",
+     past:"Saying it is how I show I care."},
+    {r:3, line:"I keep my hands open while someone else does it badly.",
+     past:"I have to reach in before it goes wrong."},
+    {r:3, line:"I let a finished thing stay finished and I walk away from it.",
+     past:"One more change makes it better."}]},
+ {k:'SA', word:"Light",
+  imp:{pos:{do:"You hand on what you were given, and you keep none of the credit.", think:"You ask what the light is landing on, not how it looks on you.", body:"Your face and the back of your hands feel open to the air.", say:"You say it as it is, in one line, with the source named."},
+       neg:{do:"You take it in and pass nothing on.", think:"You decide that what you were given is yours to keep.", body:"Your chest folds in around what you are holding.", say:"You tell it as if it started with you."}},
+  marks:["Denial Of Light", "Distortion", "Nihilism", "Self-Exclusion", "Rejection Of Spirit"],
+  laws:["Transparency"],
+  lines:[{r:1, line:"I say it as it is, in one line, with the source named.",
+     past:"It sounds better if it started with me."},
+    {r:1, line:"I name who gave me the thing before I pass it on.",
+     past:"What I was given is mine to keep."},
+    {r:2, line:"I hand on what I was given this week to somebody who can use it.",
+     past:"If I pass it on I have less."},
+    {r:2, line:"I let the person I taught do it without me and I say it was theirs.",
+     past:"My share has to be visible to count."},
+    {r:3, line:"I keep none of the credit when the thing I passed on succeeds.",
+     past:"Credit is what I am owed for being the source."},
+    {r:3, line:"I say what was given to me on the day it costs me the look of having made it.",
+     past:"Being the origin is the only safe place."}]},
+ {k:'TU', word:"Truth",
+  imp:{pos:{do:"You say the true thing once, in one sentence, and let the room go quiet.", think:"You ask what is so before you ask what it will cost.", body:"Your throat is open and your breath drops after you speak.", say:"You end the sentence where it ends, with no softener after it."},
+       neg:{do:"You say the smaller thing to keep the room warm.", think:"You decide that saying it plainly means losing them.", body:"Your throat closes just before the sentence you meant.", say:"You say \"it is probably nothing\" about the thing that is something."}},
+  marks:["Lying", "Excuse", "Denial Of Truth", "Self-Silencing", "Talking To Avoid Feeling"],
+  laws:["Truth"],
+  lines:[{r:1, line:"I say the true thing once, in one sentence, and I let the room go quiet.",
+     past:"If I say it plainly I lose the room."},
+    {r:1, line:"I end the true sentence where it ends and add no softener after it.",
+     past:"A softened truth is still the same truth."},
+    {r:2, line:"When the excuse starts in my mouth, I say what happened instead.",
+     past:"An excuse protects the people I care about."},
+    {r:2, line:"I tell the person the thing I have been telling everyone but them.",
+     past:"It is kinder to say it behind their back."},
+    {r:3, line:"I let them be angry at what I said and I keep my feet where they are.",
+     past:"If they are angry, I was wrong to say it."},
+    {r:3, line:"On the day my word costs me, I keep it and I say what it cost.",
+     past:"A promise only binds me on the day it is easy."}]},
+ {k:'NA', word:"Nature",
+  imp:{pos:{do:"You tend what is growing, keep the hours it asks and pull on nothing.", think:"You ask what season this is before you ask what to do.", body:"Your breath follows the pace of the work and not the clock.", say:"You say \"it is not ready\" and leave it alone."},
+       neg:{do:"You pull the shoot up to help it grow.", think:"You decide the season is the problem.", body:"Your hands grip while you wait.", say:"You say \"why is this taking so long\" every day."}},
+  marks:["Force", "Perfectionism", "Rigidity", "Hubris", "Endless Seeking"],
+  laws:["Nature", "Patience"],
+  lines:[{r:1, line:"I say \u201cit is not ready\u201d and I leave it alone.",
+     past:"Faster is better."},
+    {r:1, line:"I ask what season this is before I ask what to do.",
+     past:"The season is the problem."},
+    {r:2, line:"I do only the work the slow thing asks today.",
+     past:"More work today means faster growth."},
+    {r:2, line:"I take my hands off it when the urge to pull comes.",
+     past:"If I stop pulling it will stop growing."},
+    {r:3, line:"I keep the hours it asks for a week and I add nothing.",
+     past:"Effort is measured by how hard I pull."},
+    {r:3, line:"I let something grow slower than I wanted and I do not ask why it is taking so long.",
+     past:"A slow thing is a failing thing."}]}];
+/* every key ever issued, retired ones included, so a record naming a retired
+   teacher still validates. Read off the rows and never typed. */
+var TEACH_KEYS_ALL=TEACH_ROWS.map(function(r){return r.k;});
+function teachRow(k){
+ for(var i=0;i<TEACH_ROWS.length;i++)if(TEACH_ROWS[i].k===k)return TEACH_ROWS[i];
+ return null;}
+/* THE ADDRESSES A POLE'S OPPOSITE IS MARKED AT, by the name every address
+   carries (n.k), resolved against the 112 at the call and never at load, so
+   this file does not depend on the order the node tables load in. A name that
+   resolves to nothing is dropped here and caught by the gate, which is the
+   honest place to catch it. */
+function teachMarkIds(k){
+ var r=teachRow(k); if(!r)return [];
+ var out=[];
+ r.marks.forEach(function(nm){
+  for(var i=0;i<NODES.length;i++)if(NODES[i].k===nm){out.push(NODES[i].i);return;}});
+ return out;}
+/* ONE POLE, COMPOSED. Everything a surface needs about one teacher, read from
+   the compass tables and TEACH_ROWS. The key is the pole key (IL, PO, FL, SA),
+   never the name, because Jesus stands at two poles. `seat` is where the axis
+   is read (null for a pole with no axis), `home` is where a seatless pole's
+   own law sits, and `kind` says which of the three tables the pole came from
+   so a surface chooses its sentence by what the pole is. */
+function teachPole(k){
+ var r=teachRow(k); if(!r)return null;
+ var i, m=null, p=null, e=null;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)m=MIRROR[i];
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)p=PATHS[i];
+ for(i=0;i<POLES_EXTRA.length;i++)if(POLES_EXTRA[i].k===k)e=POLES_EXTRA[i];
+ var x=m||p||e; if(!x)return null;
+ return {k:k, who:x.up, word:r.word, q:x.q, engine:(m&&m.engine)||null,
+  kind:m?'axis':(p?'path':'extra'),
+  seat:m?m.seat:null, home:e?e.home:null,
+  d:x.upd, ic:x.ic||null, ask:x.ask||'',
+  from:m?'codex':(x.from||'codex'), src:x.src||null,
+  opp:{nm:x.dn, d:x.dnd, ic:x.dic||null},
+  imp:r.imp, marks:r.marks.slice(), laws:r.laws.slice(), lines:r.lines.slice(),
+  retired:!!r.retired};}
+/* THE ROSTER, as the person reads it: one entry a teacher, in display order,
+   with the poles that teacher stands at. Jesus is one entry with two poles. */
+function teachRoster(){
+ var out=[], at={};
+ TEACH_ORDER.forEach(function(k){
+  var x=teachPole(k); if(!x||x.retired)return;
+  if(at[x.who]===undefined){at[x.who]=out.length; out.push({who:x.who, poles:[k]});}
+  else out[at[x.who]].poles.push(k);});
+ return out;}
 
 /* ============================================================
    PEOPLE. Six ICPs with both poles, plus three reference cases.
@@ -5411,7 +5936,14 @@ function planWeeks(at,now){
    twelve journals is a different product with a different
    obligation attached.
    ============================================================ */
-const LEAD_SEES=['fetters','saboteurs','complexes','hyper complexes','analytics'];
+/* ROUND PD, HIS WORDS: "a cohort, they can see the teachers if that's shared
+   with them. No, they shouldn't carry a match number." A person's chosen teacher
+   is spiritual material, which stays hidden below, so this carves one exception
+   and it is narrow on purpose: only when the person has switched sharing on for
+   that teacher, only the pole key and the reach opened (teachShareOut is the one
+   function that builds it, engine/teach.js), never the lines they marked, a word
+   they wrote or their story. Off by default and inert until accounts exist. */
+const LEAD_SEES=['fetters','saboteurs','complexes','hyper complexes','analytics','the teachers, when shared'];
 const LEAD_HIDDEN=['the story cloud','the spiritual material','the tools themselves',
  /* a daily summary is a derived join of the story and the record, and the
     person's own aim is written into its bank, so it takes the story's class */
@@ -6968,7 +7500,12 @@ function blankProfile(name){
      none and is filled from this blank, and no SCHEMA_V bump, which is the
      owner's call. p.rituals above is the Ritual tab's day log and is a
      different thing; see PRACTICE-AUDIT.md for why both exist for now. */
-  practice:practiceBlank()};
+  practice:practiceBlank(),
+  /* THE TEACHERS' BLOCK, engine/teach.js. Round PD. Additive: an older record
+     has none and is filled from this blank, and no SCHEMA_V bump, which is the
+     owner's call. Named here, in loadProfile and at the boundary, because a key
+     the boundary does not name is deleted on the next load. */
+  teach:teachBlank()};
  /* held was 3 on every axis, and this is the profile a new person gets. The
     laws beside it are correctly null, meaning not yet measured, and the charge
     was not given the same honesty. Nobody entered a 3. Zero is the only value
@@ -7036,6 +7573,9 @@ function loadProfile(p){
  /* and a record from before the daily summary has no bank of days, which is a
     record that has never opened one */
  if(!p.summaries||typeof p.summaries!=='object'||Array.isArray(p.summaries))p.summaries=dlyBlank();
+ /* and a record from before the teachers has chosen none and worked toward
+    none, which is exactly what the blank block says */
+ if(!p.teach||typeof p.teach!=='object'||Array.isArray(p.teach))p.teach=teachBlank();
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -8003,6 +8543,11 @@ function validateProfile(o){
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
   p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+ /* THE TEACHERS' BLOCK, through its own boundary (teachValidate,
+    engine/teach.js), into the same errs, so one bad field refuses the whole
+    record and pImport stays atomic. Missing or null is an older record and
+    keeps the blank. Refused by name and never clamped. */
+ if(o.teach!==undefined&&o.teach!==null)p.teach=teachValidate(errs,o.teach,'teach');
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -9607,6 +10152,769 @@ function practiceFromLegacy(p,plans,now){
  return {ok:!errs.length, errs:errs, P:V, entries:entryMap,
   plans:byPlan.map(function(b){return {plan:b.pl.id, ritual:b.r.id, protocol:b.r.protocol_id};}),
   orphans:Object.keys(orphan).length, notes:notes};}
+/* ============================================================
+   THE RECIPE ENGINE. Round PD, his words: "the behaviours in the Compass are
+   RECIPES. We probably need a recipe engine to design what those recipes are,
+   that tie into the ritual, and tie into the protocol, and sniff for those
+   behaviours, and it shows you which behaviours are running in you that are
+   keeping you from achieving that."
+
+   A RECIPE IS A POLE'S QUALITY TAKEN APART. The quality a teacher stands for
+   (Musashi's power, Zoroaster's truth) is not one thing a person has or lacks,
+   it is a set of behaviours done in four channels, Do, Think, Body and Say,
+   and each of those is an INGREDIENT. The same pole's opposite is the same
+   quality inverted, and that is a set of behaviours too, the INVERSION. A
+   person is not at one end of a pole. They run some ingredients and some of
+   the inversion's behaviours, in some channels, and the recipe is what makes
+   that visible.
+
+   THE FOUR THINGS THIS FILE DOES
+     sniff     finds both halves in the person's own entries, with the sentence
+               quoted and the entry it came from (recipeSniff)
+     rank      puts the inversion's behaviours that are running in order, so
+               the one most in the way of the quality is first (recipeBlockers)
+     tie       builds the ritual that builds the ingredients and the release
+               that clears the addresses the inversion sits at (recipeToRitual)
+     say       the reason for each thing it shows, in plain words (recipeReason)
+
+   WHAT IT DOES NOT CLAIM. It finds words in entries. A behaviour that is found
+   is a behaviour a person wrote about, and the engine never says it is why a
+   quality is missing, never says it is a trait of the person, and never gives
+   a number for how well anything fits. Every sentence it returns is a sentence
+   about what the entries describe. RECIPE_CLAIM is printed with the list.
+
+   HOST FREE. It reads the entries it is handed, the sniffer's own public
+   normaliser and negation guard (lawNorm, lawNegated, lawMatch in sniff.js)
+   and, for the person's own reading, the live field (W) through one function,
+   recipeCtx. Everything else is pure over its arguments, so it tests without a
+   browser. The sniffer is called and not extended: the cue tables below are
+   this file's.
+   ============================================================ */
+var RECIPE_CLAIM='This shows what your entries describe. It does not say why it happens.';
+/* evidence kept per behaviour, and the longest quoted sentence. A sentence over
+   the cap is cut at a word and marked, never cut silently. */
+var RECIPE_EV_MAX=3;
+var RECIPE_SNIP_MAX=200;
+/* ---- THE CUES, one table, the owner's to edit ----
+   A cue is a phrase a person writes when the behaviour is in their day. They
+   are written the way the sniffer's own tables are (engine/sniff.js lawNorm):
+   lowercase, no punctuation, an apostrophe is dropped, so "didn't" is didnt
+   and nobody has to guess how a cue was spelt. They are SPECIFIC and
+   FILMABLE: an event with a verb in it, never a mood word on its own and never
+   a trait ("i am a liar"). Where a phrase could be said of somebody else it is
+   written in the first person, because the sniffer's own known weakness is
+   that "she lied to me" fires on the writer, and a recipe that accused the
+   writer of what was done to them would be the instrument lying.
+
+   TWO HALVES A POLE. `pos` is the quality's ingredient in each of the four
+   channels (do, think, body, say) and `neg` is the inversion's behaviour in the
+   same four, each with the addresses it sits at, which is how a behaviour in a
+   sentence is tied back to the person's own reading. The addresses are the
+   opposite's five marked addresses (engine/data/teachers.js), by name, and a
+   test fails if one is not on that pole's list or does not resolve.
+
+   NO PHRASE IS IN TWO BEHAVIOURS. A phrase that fired two recipes at once
+   would read as the instrument finding the same sentence twice, so a gate
+   asserts that every cue is unique across the whole table, after the same
+   normalisation the match uses. */
+var RECIPE_CUES={
+ IL:{
+  pos:{do:['gave it away and told nobody','without telling anyone','kept it quiet that i helped','helped someone who could do nothing for me','did it for no one in particular'],
+       think:['asked what they needed','wondered what she needed','wondered what he needed','what did they need from me'],
+       body:['my chest felt wide','my chest felt warm and open','my shoulders dropped and my chest opened','shoulders sat lower'],
+       say:['said the kind thing and left it there','without waiting for thanks','did not wait for thanks','told her i was glad and meant it']},
+  neg:{do:{c:['warm in the room','put on a warm face','made sure they saw what i did','did it so they would see','went cold when they left','went flat when the room emptied'],a:['Stage Performing','Seeking Validation','Manipulative Kindness']},
+       think:{c:['wondered who noticed','did anyone notice','kept count of who noticed','hoped they noticed','nobody thanked me','nobody said thank you'],a:['Seeking Validation','Spiritual Pride']},
+       body:{c:['my chest tightened when nobody was looking','chest got tight when no one was watching','felt hollow after they left','my face ached from smiling'],a:['Stage Performing','False Love']},
+       say:{c:['told everyone what i did for','told the story of how i helped','after all i did for','after everything i did for','reminded them what i did for them'],a:['Manipulative Kindness','Spiritual Pride','Seeking Validation']}}},
+ RE:{
+  pos:{do:['changed my mind','went to see for myself','took another look at what i believed','tested it myself','i had it wrong'],
+       think:['what would it change if it were true','wondered if i had it wrong','considered that i might be wrong','maybe i have this wrong'],
+       body:['my jaw stayed loose while i listened','jaw relaxed while i listened','my forehead softened while they spoke'],
+       say:['that changes what i thought','i had not seen it that way','tell me what you saw','i did not know that']},
+  neg:{do:{c:['refused to look at the evidence','would not look at what they sent','avoided the one person who disagrees','changed the subject when it got close','shut the conversation down','walked away from the argument'],a:['Dogma','Denial Of Truth','Knowing Better Than God']},
+       think:{c:['i already knew how this works','i already know how this goes','i knew it all along','there is only one way to see this','they are just wrong'],a:['Knowing Better Than God','Condemnation','Dogma']},
+       body:{c:['my jaw set when they disagreed','jaw clenched when he disagreed','my jaw locked while she talked','my forehead tightened when they pushed back'],a:['Speaking To Be Right','Dogma']},
+       say:{c:['let me finish','i cut her off','i cut him off','i talked over them','i told them they were wrong','that is not how it works','i corrected them'],a:['Speaking To Be Right','Condemnation']}}},
+ DE:{
+  pos:{do:['stopped when i had enough','left some on the plate','put the phone down and left it','slept on it before buying','waited a day before buying'],
+       think:['who else would this serve','asked myself what i actually wanted','what is this want for'],
+       body:['the craving peaked and passed','let the urge pass','sat with the urge until it faded','the pull faded on its own'],
+       say:['that is enough for today','i have enough','i am done for today','i said that is enough']},
+  neg:{do:{c:['bought it and wanted another','kept scrolling for hours','kept eating after i was full','ate past full','ordered another one','another drink and another','could not stop myself','kept refreshing it','binged'],a:['Addiction','Obsession','Infatuation']},
+       think:{c:['once i have it i will be happy','as soon as i get it','i have to have it','i could not stop thinking about','i cannot stop thinking about'],a:['Obsession','Infatuation','Lust']},
+       body:{c:['my belly stayed tight after i had it','stomach stayed tight after','still hungry after eating','a craving in my belly'],a:['Addiction','Lust']},
+       say:{c:['just one more','i told myself just one more','just a little more','i promised myself just one'],a:['Addiction','Hypersexuality']}}},
+ OR:{
+  pos:{do:['kept the rule','kept my word even though it cost','followed the plan we agreed','wrote the plan down','told them the plan before we started'],
+       think:['who is relying on this','who is standing on this plan','who depends on this plan'],
+       body:['my throat felt steady when i said it','my voice was steady when i told them','my throat stayed open while i gave the plan'],
+       say:['told the team the plan','said the plan out loud','told them before they built on it','told them the plan had changed']},
+  neg:{do:{c:['changed the plan without telling','changed the rules without telling','went back on what we agreed','went behind their back','agreed in the meeting and then','said yes and did the opposite','broke the agreement','quietly undid'],a:['Betrayal','Deceit','Manipulation Through Emotion']},
+       think:{c:['nobody will check','they will not find out','no one will find out','i can get away with it','the plan only has to work while they are watching'],a:['Deceit','Lying']},
+       body:{c:['my throat went dry when i was asked','throat went dry when i had to repeat it','my mouth went dry when i had to explain','throat tightened when i had to explain the plan'],a:['Lying','Deceit']},
+       say:{c:['told them one thing and told someone else another','said one thing in the meeting and another','said yes in the meeting','smooth talked','spun it','told them what they wanted to hear'],a:['Lying','Manipulation Through Emotion','Spiritual Language To Manipulate']}}},
+ PO:{
+  pos:{do:['did it again today even though','did my practice anyway','showed up at the same time','kept to my schedule','did the small version','paid for it myself','took the hit myself','covered the cost myself'],
+       think:['what is the small version','what is the smallest version i can do','what can i still do today'],
+       body:['my breath stayed low','breathed into my belly while i worked','belly stayed soft while i worked'],
+       say:['i missed today and wrote one line','that one is on me','i own that','my mistake and i fixed it']},
+  neg:{do:{c:['made them cover for me','got someone to cover for me','left it for them to finish','dumped it on','made her stay late','made him stay late','made them stay late','pushed them to work late','expected them to cover','passed the work to','piled it on them'],a:['Entitlement','Force','Superiority']},
+       think:{c:['a day does not count unless','it does not count unless i won','i have to win','i need to win','i cannot lose'],a:['Need To Win','Competition']},
+       body:{c:['my stomach clenched when someone else led','my gut clenched when he took the lead','stomach clenched when she set the pace','upper stomach clenched'],a:['Competition','Need To Win']},
+       say:{c:['somebody will cover it','someone will cover it','it was his fault','it was her fault','it was their fault','because of him','because of her','because of them','showed no remorse','no remorse','never apologized','never apologised','refused to apologize','refused to apologise','would not own it','i blamed','blamed him','blamed her','blamed them','blamed it on','not my fault','he made me','she made me','they made me'],a:['Entitlement','Superiority','Force']}}},
+ PE:{
+  pos:{do:['noticed what i was feeling','named the feeling','noticed the urge and did not act','paused and noticed','watched the thought go by'],
+       think:['described it as i would to the person in it','what is actually happening here','what do i actually see'],
+       body:['the space between my eyebrows stayed soft','my forehead stayed soft while i looked','my eyes softened while i listened'],
+       say:['i said what i saw','i said what i noticed','i told them what i saw before what i thought','i notice that']},
+  neg:{do:{c:['put on a face','wore a mask','kept up the act','played the part','acted fine','pretended to be fine','pretended i was fine','faked it','put on my game face','managed how i came across'],a:['Stage Performing','Delusion','Distortion']},
+       think:{c:['read him like a book','read her like a book','worked out how to handle him','worked out how to handle her','how to play him','how to manage her','what they wanted to see'],a:['Projection','Distortion','Stage Performing']},
+       body:{c:['my face did not match how i felt','smiling while my stomach','smiling but my stomach','my face held a smile while'],a:['False Love','Stage Performing']},
+       say:{c:['told them i was fine','told everyone i was fine','edited what i said','said whatever kept them happy'],a:['Delusion','Distortion','False Love']}}},
+ TR:{
+  pos:{do:['stopped to look at it','stood and watched','let myself be moved','let it move me','cried at it','took the step before i had proof','let her in','let him in'],
+       think:['let it land before i explained it','let it sink in','did not try to explain it'],
+       body:['my chest opened','my breath dropped as it landed','my chest felt wide while it landed'],
+       say:['told her it moved me','told him it moved me','said it moved me','told someone what moved me']},
+  neg:{do:{c:['waited until i was sure','waited for proof','wanted proof first','checked everything first','researched it again','read one more review','held back until i knew','held off until i knew','kept my distance until','stood at the edge of it'],a:['Overanalysis','Doubt','Distrust']},
+       think:{c:['what if it is a mistake','i needed more information','i have to be sure','i needed to be sure','i could not be sure','i do not trust it','prove it'],a:['Cynicism','Distrust','Overanalysis']},
+       body:{c:['my chest stayed braced','chest stayed shut','braced in my chest','my chest was closed','chest closed up'],a:['Closed Heart']},
+       say:{c:['where is the evidence','what is the evidence','how do you know it is real','are you sure about that','it is too good to be true','too good to be true'],a:['Cynicism','Doubt']}}},
+ CH:{
+  pos:{do:['went for a walk to cool down','walked it off','lifted until the heat went','went for a run to burn it off','took a walk before i said anything','stood outside and breathed'],
+       think:['where is the anger in my body','where do i feel it in my body','what is the anger doing in my body'],
+       body:['heat rose in my legs and i stayed on my feet','felt the heat and stayed','i stayed on my feet while it rose'],
+       say:['i need ten minutes','i need a minute','i said i needed a break','told him i needed time']},
+  neg:{do:{c:['i yelled','i shouted','i screamed','i snapped at','i lost it','i lost my temper','i blew up','slammed the door','had a confrontation','confrontation with','got into it with','got into a fight','went off at','went flat','shut down for the afternoon','lay on the couch all afternoon','could not get off the couch','did nothing all afternoon','stared at the wall'],a:['Anger','Panic','Lethargy','Collapse']},
+       think:{c:['i am either fine or finished','i was irritated','so irritated','irritated by him','irritated by her','irritated by them','annoyed at','i was furious','i was livid','so angry at','so angry with','i hated him','i hated her','pissed off','fed up with','fuming','i was done with them'],a:['Anger','Fear']},
+       body:{c:['my belly locked','my stomach locked','my legs went heavy','my legs felt heavy','my chest was pounding','my heart was pounding','shaking with anger','my hands were shaking','heat in my face'],a:['Anger','Panic','Collapse']},
+       say:{c:['i raised my voice','i swore at','i told him off','i told her off','i went quiet and said nothing','i stopped answering','gave him the silent treatment','gave her the silent treatment'],a:['Anger','Lethargy']}}},
+ FL:{
+  pos:{do:['made the call','made the decision at last','let the plan change','tried it another way','took another route','let it go and moved on'],
+       think:['what does the day want to do','what wants to happen next','what is the next small move'],
+       body:['my jaw loosened','my shoulders dropped and moved','shook it out','stretched and let it move'],
+       say:['let us do it the other way','let us try it differently','let us change the plan','we can do it differently']},
+  neg:{do:{c:['held onto the plan no matter what','stuck to the plan no matter','kept doing the same thing','kept the same routine even though','refused to change it','would not let it go','held the grudge','kept going over it','kept replaying it'],a:['Control','Possession','Resistance','Compulsion']},
+       think:{c:['it has to be done this way','it has to go my way','it must be done my way','i could not let it go','i cannot let it go','i could not let go','i needed to control','if i let go it will all change'],a:['Control','Resistance','Possession']},
+       body:{c:['my jaw was locked','my jaw was clenched all day','my hands were clenched','my fists were clenched','my shoulders were locked'],a:['Control','Resistance']},
+       say:{c:['told the same story again','i said it again for the fourth time','i keep saying the same thing','here we go again','i have said this before'],a:['Possession','Avoidance Of Grief','Compulsion']}}},
+ AL:{
+  pos:{do:['did what i said i would','kept my promise even though no one would know','showed up as promised','did it without complaining','did it without a grudge','finished what i said i would'],
+       think:['what do i owe them','asked myself what i owe','what did i say i would do'],
+       body:['my back felt straight','stood tall while i said it','my spine felt long'],
+       say:['i said i would and i did','i gave my word and kept it','i promised and i meant it']},
+  neg:{do:{c:['broke my promise','broke my word','went back on my word','knew i should not and did','knew it was against the rules and','crossed the line','broke the rule','bent the rules','cut corners','skipped it again','let them down again'],a:['Excuse','Entitlement','Lust']},
+       think:{c:['this once will not matter','just this once','this time is different','it is an exception','this is an exception','i deserve it','i earned it','the rules do not apply to me'],a:['Entitlement','Hubris','Knowing Better Than God']},
+       body:{c:['my back slumped','my shoulders slumped when i was reminded','sank when they read out the rules'],a:['Excuse','Hubris']},
+       say:{c:['i had a good reason','i had my reasons','i explained why it was fine','i told them why it was okay','i justified it','i made an excuse','i made excuses'],a:['Excuse','Hubris','Knowing Better Than God']}}},
+ HO:{
+  pos:{do:['did nothing and waited','left it alone','waited and let it finish','let it be','stopped checking it','turned off the notifications','stopped scrolling','put the phone away','gave it space'],
+       think:['what finishes by itself','what would happen if i left it','what happens if i leave it'],
+       body:['my hands rested open','my hands were open','my breath ran on its own','sat with my hands open'],
+       say:['i will wait','i can wait','i said nothing and waited']},
+  neg:{do:{c:['i rushed in to help','rushed to help','jumped in to fix it','jumped in and fixed it','stepped in and took over','took over from','fixed it for them','did it for them','swooped in','redid their work','could not help myself','had to step in'],a:['Savior Complex','Need To Be Needed','Force']},
+       think:{c:['it needed one more fix','one more fix','they cannot do it without me','they cannot manage without me','somebody has to fix it','if i do not step in'],a:['Need To Be Needed','Savior Complex']},
+       body:{c:['my hands itched to fix it','my hands reached before i decided','i reached in before i could stop myself','could not keep my hands off it'],a:['Force','Interrupting']},
+       say:{c:['gave advice nobody asked for','offered advice nobody asked for','nobody asked but i told them','i told them how to do it','i told her how to do it','i told him how to do it','you should just','i cut in','jumped in with'],a:['Interrupting','Savior Complex','Need To Be Needed']}}},
+ SA:{
+  pos:{do:['passed it on','passed it along','shared what i learned','taught her what i knew','taught him what i knew','handed it on','gave them the credit','shared the credit','credited them'],
+       think:['who gave me this','who taught me this','where did this come from'],
+       body:['my hands felt open','sat with my palms up','my face felt open to the air'],
+       say:['i learned this from','i got this from','credit goes to','thanks to her for this','thanks to him for this','she taught me this','he taught me this']},
+  neg:{do:{c:['kept it to myself','kept it for myself','kept the credit','took the credit','took all the credit','took credit for','would not share it','kept the idea to myself','withheld it'],a:['Self-Exclusion','Denial Of Light','Rejection Of Spirit']},
+       think:{c:['it is mine','nobody needs to know where i got it','they do not need to know where i got it','it was all me','i did it all myself'],a:['Denial Of Light','Distortion','Self-Exclusion']},
+       body:{c:['my chest folded in','curled in on myself','folded in on myself','closed in on myself','withdrew into myself'],a:['Self-Exclusion','Nihilism']},
+       say:{c:['i built this on my own','i made this from nothing','i figured it out myself','it started with me','i came up with this','what is the point of sharing it','what is the point of sharing'],a:['Distortion','Nihilism','Denial Of Light']}}},
+ TU:{
+  pos:{do:['told her the truth','told him the truth','told them the truth','said what happened','said the true thing','owned up to it','admitted it','came clean','confessed'],
+       think:['what is actually so','what is true here','what really happened'],
+       body:['my throat felt open','my throat opened','my breath dropped after i spoke','my throat felt clear after i said it'],
+       say:['i said it plainly','i said it straight','i told them straight','i ended the sentence there','i did not soften it']},
+  neg:{do:{c:['i lied','told a white lie','left out the part','kept it from them','kept it from her','kept it from him','hid it from them','hid it from her','hid it from him','covered it up','kept quiet about it'],a:['Lying','Denial Of Truth','Self-Silencing']},
+       think:{c:['i could not say it','it was not worth saying','it would cost too much to say','it is probably nothing','they would not understand','it would ruin it','better not to say','it was easier not to say','i did not want to make it worse','i decided not to say'],a:['Self-Silencing','Excuse']},
+       body:{c:['my throat closed','my throat closed up','my throat tightened before i spoke','swallowed the words','a lump in my throat','my voice caught','held my breath before i spoke'],a:['Self-Silencing','Talking To Avoid Feeling']},
+       say:{c:['said it was fine when it was not','said it was nothing','said it was probably nothing','said i did not mind','told them it did not matter','talked around it','talked about something else','kept talking to fill the silence','made a joke of it','laughed it off'],a:['Talking To Avoid Feeling','Self-Silencing','Excuse']}}},
+ NA:{
+  pos:{do:['left it alone to grow','let it grow','gave it time','waited for the season','did only what it needed','took my hands off it','kept the same pace'],
+       think:['what season is this','what season am i in','what does this need today','what does it need right now'],
+       body:['breathed with the pace of the work','my breath slowed with the work','my hands relaxed on it'],
+       say:['it is not ready yet','it will be ready when it is ready','it takes the time it takes','these things take time']},
+  neg:{do:{c:['pushed it harder to make it grow','forced it to happen','tried to speed it up','rushed the process','pulled on it','kept pushing it','added more hours to it','overworked it','redid it again and again','kept tweaking it','kept polishing it'],a:['Force','Perfectionism','Rigidity']},
+       think:{c:['it has to be perfect','it is not good enough yet','it should be further along by now','it should be done by now','there has to be a faster way','tried another method','signed up for another course','bought another book','the next thing will be the one'],a:['Perfectionism','Hubris','Endless Seeking']},
+       body:{c:['my hands gripped the wheel while i waited','clenched my hands while i waited','tensed up while i waited','my shoulders were up around my ears'],a:['Rigidity','Force']},
+       say:{c:['why is this taking so long','how long will this take','hurry up','just do it faster','is it done yet','are we there yet'],a:['Force','Hubris','Endless Seeking']}}}};
+
+/* ---------------- the compiled table ----------------
+   Every cue goes through lawNorm, the sniffer's own normaliser, once, so the
+   spelling a cue was written in cannot differ from the spelling it is matched
+   against. Built on first use and kept, because the sniffer's tables load after
+   this file and nothing here may call them at load. */
+var RECIPE_ROWS=null;
+function recipeRows(){
+ if(RECIPE_ROWS)return RECIPE_ROWS;
+ var rows=[];
+ TEACH_ORDER.forEach(function(k){
+  var c=RECIPE_CUES[k]; if(!c)return;
+  TEACH_CH.forEach(function(ch){
+   rows.push({id:k+'.pos.'+ch, k:k, side:'pos', ch:ch, addrs:[], raw:c.pos[ch].slice(),
+    cues:c.pos[ch].map(function(x){return lawNorm(x).trim();})});});
+  TEACH_CH.forEach(function(ch){
+   rows.push({id:k+'.neg.'+ch, k:k, side:'neg', ch:ch, addrs:c.neg[ch].a.slice(), raw:c.neg[ch].c.slice(),
+    cues:c.neg[ch].c.map(function(x){return lawNorm(x).trim();})});});});
+ RECIPE_ROWS=rows; return rows;}
+function recipeRow(id){
+ var r=recipeRows(); for(var i=0;i<r.length;i++)if(r[i].id===id)return r[i];
+ return null;}
+/* the step of the pole's own ritual that builds each channel. Do is built by the
+   pole's practice, which is the last step of its ritual. Body is built by the
+   grounding, the first step. Think and Say are built by the lines step, which
+   is where a sentence is said and held at a seat. Read off BECOMING and never
+   typed, so a ritual edited there is a recipe edited here. */
+function recipeBuilds(k,ch){
+ var s=BECOMING[k]; if(!s)return null;
+ var step=(ch==='do')?s[s.length-1]:(ch==='body'?s[0]:'aff_'+k);
+ var p=null; for(var i=0;i<PRACTICE.length;i++)if(PRACTICE[i].k===step)p=PRACTICE[i];
+ return p?{step:step, nm:p.nm, min:p.min}:{step:step, nm:step, min:0};}
+/* ONE RECIPE, composed. The ingredients are the quality's four behaviours, each
+   with the cues the sniffer looks for and the step that builds it. The inversion
+   is the opposite's four, each with the addresses it sits at. Null for a key
+   nobody was issued. */
+function recipeFor(k){
+ var P=teachPole(k); if(!P||!RECIPE_CUES[k])return null;
+ var ids=teachMarkIds(k), byName={};
+ TEACH_ROWS.forEach(function(r){if(r.k===k)r.marks.forEach(function(nm,i){byName[nm]=ids[i];});});
+ return {k:k, who:P.who, word:P.word, opposite:P.opp.nm, seat:P.seat||P.home||null,
+  ingredients:TEACH_CH.map(function(ch){var r=recipeRow(k+'.pos.'+ch);
+   return {id:r.id, ch:ch, behaviour:P.imp.pos[ch], cues:r.raw.slice(), builds:recipeBuilds(k,ch)};}),
+  inversion:TEACH_CH.map(function(ch){var r=recipeRow(k+'.neg.'+ch);
+   return {id:r.id, ch:ch, behaviour:P.imp.neg[ch], cues:r.raw.slice(),
+    addrs:r.addrs.map(function(nm){return {k:nm, id:byName[nm]===undefined?null:byName[nm]};})};})};}
+
+/* ---------------- sniffing ----------------
+   One sentence at a time, because a negator in the sentence before must not
+   void a cue in the next (the sniffer learned that the expensive way, and
+   lawNorm turns a sentence end into a bar for lawNegated to stop at). All
+   fourteen poles' cues are matched together, longest first, so a long phrase
+   is not also counted as the shorter one inside it. */
+function recipeSentences(text){
+ return String(text).split(/[.!?\n\r]+/).map(function(s){return s.replace(/\s+/g,' ').trim();})
+  .filter(function(s){return s.length>0;});}
+function recipeQuote(s){
+ if(s.length<=RECIPE_SNIP_MAX)return s;
+ var cut=s.slice(0,RECIPE_SNIP_MAX), sp=cut.lastIndexOf(' ');
+ return (sp>40?cut.slice(0,sp):cut)+'...';}
+function recipeSniff(entries){
+ var rows=recipeRows(), by={}, list=Array.isArray(entries)?entries:[];
+ var ids=traceTimeIds(list), scanned=0;
+ list.forEach(function(e,i){
+  if(!e||typeof e!=='object'||typeof e.text!=='string')return;
+  scanned++;
+  recipeSentences(e.text).forEach(function(sent){
+   var hits=lawMatch(lawNorm(sent),rows,'cues');
+   hits.forEach(function(h){
+    var b=by[h.row.id]||(by[h.row.id]={id:h.row.id, k:h.row.k, side:h.row.side, ch:h.row.ch,
+     hits:0, entries:[], evidence:[]});
+    b.hits++;
+    if(b.entries.indexOf(ids[i])<0)b.entries.push(ids[i]);
+    /* one quoted sentence is quoted once, however many cues it carries */
+    if(!b.evidence.some(function(x){return x.entry===ids[i]&&x.snippet===recipeQuote(sent);}))
+     b.evidence.push({entry:ids[i], at:(typeof e.t==='string'?e.t:null), snippet:recipeQuote(sent), cue:h.cue, order:i});});});});
+ var poles=TEACH_ORDER.map(function(k){
+  var pick=function(side){return TEACH_CH.map(function(ch){return by[k+'.'+side+'.'+ch];}).filter(Boolean)
+   .map(function(b){
+    /* the newest evidence first, and a stable order inside one entry */
+    var ev=b.evidence.slice().sort(function(a,c){return c.order-a.order;}).slice(0,RECIPE_EV_MAX)
+     .map(function(x){return {entry:x.entry, at:x.at, snippet:x.snippet, cue:x.cue};});
+    var last=b.evidence.reduce(function(m,x){return x.order>m?x.order:m;},-1);
+    return {id:b.id, k:b.k, side:b.side, ch:b.ch, hits:b.hits, entries:b.entries.slice(), evidence:ev, last:last};});};
+  return {k:k, present:pick('pos'), running:pick('neg')};});
+ return {scanned:scanned, poles:poles};}
+function recipeScanOf(sn,k){
+ for(var i=0;i<sn.poles.length;i++)if(sn.poles[i].k===k)return sn.poles[i];
+ return {k:k, present:[], running:[]};}
+/* THE POLES WHOSE INVERSION IS RUNNING, most first, for a list that wants to
+   mark them. Ties break in roster order, so two runs give one order. */
+function recipeRunning(entries){
+ var sn=recipeSniff(entries);
+ return sn.poles.map(function(p,i){return {k:p.k, running:p.running.length, present:p.present.length, i:i};})
+  .filter(function(x){return x.running>0;})
+  .sort(function(a,b){return b.running-a.running||a.i-b.i;})
+  .map(function(x){return {k:x.k, running:x.running, present:x.present};});}
+
+/* ---------------- the person's own reading ----------------
+   The one impure line. A recipe ties a sentence to an address, and whether the
+   address is carrying is the field's to say, so it is read once into a plain
+   object and everything below is pure over it. Callers load the profile first
+   (loadProfile, which is what the app and the gates already do). A blank field
+   is `unread`, and unread says so rather than reading as nothing carrying. */
+function recipeCtx(){
+ var r=compute(), sq={}, seats={};
+ W.forEach(function(n){
+  sq[n.i]=n.sq;
+  var s=seats[n.b]||(seats[n.b]={sum:0,hot:0,tot:0});
+  s.sum+=n.sq; s.tot++; if(n.sq>=4)s.hot++;});
+ return {unread:!!r.unread, DQ:r.DQ, pacing:r.unread?1:pacingStep(r.DQ),
+  sq:sq, seats:seats, heaviest:r.darkB||null};}
+/* an address is carrying from 4 out of 10, the product's own line */
+var RECIPE_CARRY=4;
+function recipeAddr(ctx,a){
+ var n=null; for(var i=0;i<NODES.length;i++)if(NODES[i].i===a.id)n=NODES[i];
+ var v=(ctx&&ctx.sq&&ctx.sq[a.id]!==undefined)?ctx.sq[a.id]:null;
+ return {id:a.id, k:a.k, seat:n?n.b:null, charge:n?(n.cf||null):null,
+  sq:v, carrying:v!==null&&v>=RECIPE_CARRY};}
+
+/* ---------------- blockers ----------------
+   The inversion's behaviours that are running in this person, in the order
+   they are most in the way. THE ORDER, and why it is not arbitrary:
+     1  behaviours whose addresses are carrying come first, because a pattern
+        found in words AND held in the body is the one a release can reach
+     2  then the one found in more entries, because a behaviour that keeps
+        coming back is the one to start on
+     3  then the one found more times, then the channel in the order Do, Think,
+        Body, Say, then the id
+   A behaviour whose own quality is shown beside it, in the same channel, in an
+   entry at least as new, is marked `eased` and sorts after the ones that are
+   not, because the person is already doing something else there. Nothing in
+   the order is a score and none is returned: an order is all a surface gets. */
+function recipeBlockers(profile,k,o){
+ o=o||{};
+ var P=teachPole(k); if(!P)return [];
+ var sn=o.scan||recipeSniff(profile&&profile.story&&profile.story.entries);
+ var mine=recipeScanOf(sn,k), ctx=o.ctx||null;
+ var ids=teachMarkIds(k), byName={};
+ TEACH_ROWS.forEach(function(r){if(r.k===k)r.marks.forEach(function(nm,i){byName[nm]=ids[i];});});
+ var out=mine.running.map(function(b){
+  var row=recipeRow(b.id);
+  var addrs=row.addrs.map(function(nm){return recipeAddr(ctx,{id:byName[nm],k:nm});});
+  var pos=null; mine.present.forEach(function(x){if(x.ch===b.ch)pos=x;});
+  var eased=!!(pos&&pos.last>=b.last);
+  return {id:b.id, k:k, ch:b.ch, behaviour:P.imp.neg[b.ch], hits:b.hits, entries:b.entries.length,
+   evidence:b.evidence, addrs:addrs, carrying:addrs.filter(function(a){return a.carrying;}).length,
+   eased:eased, reason:null};});
+ out.sort(function(a,b){
+  return (a.eased-b.eased)||(b.carrying>0)-(a.carrying>0)||(b.entries-a.entries)||(b.hits-a.hits)
+   ||(TEACH_CH.indexOf(a.ch)-TEACH_CH.indexOf(b.ch))||(a.id<b.id?-1:(a.id>b.id?1:0));});
+ out.forEach(function(x){x.reason=recipeReason('blocker',x);});
+ return out;}
+/* the ingredients of the quality that are already present, for the same list */
+function recipeIngredients(profile,k,o){
+ o=o||{};
+ var P=teachPole(k); if(!P)return [];
+ var sn=o.scan||recipeSniff(profile&&profile.story&&profile.story.entries);
+ return recipeScanOf(sn,k).present.map(function(b){
+  var x={id:b.id, k:k, ch:b.ch, behaviour:P.imp.pos[b.ch], hits:b.hits, entries:b.entries.length,
+   evidence:b.evidence, builds:recipeBuilds(k,b.ch), reason:null};
+  x.reason=recipeReason('ingredient',x); return x;});}
+
+/* ---------------- the reasons, in plain words ----------------
+   Never a number as a match score, never a cause. A count is a count of
+   entries, with its unit, and never a count against a total. */
+function recipeTimes(n){return n===1?'once':(n===2?'twice':n+' times');}
+function recipeSeatWord(b){return String(b||'').toLowerCase();}
+function recipeReason(kind,x){
+ x=x||{};
+ if(kind==='blocker'){
+  var s='Your entries describe this '+recipeTimes(x.entries||0)+'.';
+  var hot=(x.addrs||[]).filter(function(a){return a.carrying;});
+  if(hot.length===1)s+=' '+hot[0].k+(hot[0].seat?', at the '+recipeSeatWord(hot[0].seat)+',':'')+' is carrying.';
+  else if(hot.length>1)s+=' '+hot.map(function(a){return a.k;}).join(' and ')+' are carrying.';
+  if(x.eased)s+=' Your newer entries also show the other way.';
+  return s;}
+ if(kind==='ingredient')
+  return 'Your entries describe this '+recipeTimes(x.entries||0)+'.';
+ if(kind==='release'){
+  var nm=(x.names||[]);
+  if(!nm.length)return '';
+  return (nm.length===1?nm[0]+' is':nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' are')
+   +' carrying, so a release is offered over '+(nm.length===1?'it':'them')+'.';}
+ if(kind==='saved')return 'Written for '+(x.who||'this teacher')+'.';
+ if(kind==='practice')return 'A step of the ritual toward '+String(x.word||'').toLowerCase()+'.';
+ if(kind==='held')return (x.nm||'This step')+' opens as the charge drops.';
+ if(kind==='lane-saved')return 'Your saved rituals that fit: none yet. Starting this one saves it there.';
+ if(kind==='lane-release-unread')return 'Nothing read yet, so there is nothing to release.';
+ if(kind==='lane-release-none')return 'Nothing to release here. No address this pole’s opposite sits at is carrying.';
+ return '';}
+
+/* ---------------- the tie to the ritual and the protocol ----------------
+   NO SECOND WRITER AND NO SECOND RUNNER. This returns the plan in the shape
+   ritStartPlan already takes and the addresses relPick already takes, and the
+   surface hands them to those. The library order is the owner's round OX
+   answer: the person's own saved rituals first, then the practices that ship
+   in the app, and a release only when an address is carrying.
+
+   PACING IS A GATE, NOT A SCORE. A step above the person's pacing step is
+   held, never offered, which is becomingSteps and the sentence ritTeachHtml
+   already says. Nothing is handed to a heavy field that ritFor would not hand
+   it, and unread is step one, the cautious side, where ritFor reads unread as
+   step three. That difference is deliberate: nothing has been measured, and a
+   screen that offers things to do should not assume a light field. */
+function recipeRelease(k,ctx){
+ var P=teachPole(k); if(!P||!ctx)return null;
+ var hot=teachMarkIds(k).map(function(id,i){return recipeAddr(ctx,{id:id,k:P.marks[i]});})
+  .filter(function(a){return a.carrying;});
+ if(!hot.length)return null;
+ /* the heaviest charge among the ones carrying, so the release is one card's
+    worth and not a spread: the group with the most weight, ties to the one
+    named first in the node table */
+ var g={}; hot.forEach(function(a){var c=a.charge||'';
+  var x=g[c]||(g[c]={charge:c,sum:0,list:[]}); x.sum+=a.sq; x.list.push(a);});
+ var best=Object.keys(g).map(function(c){return g[c];})
+  .sort(function(a,b){return b.sum-a.sum||(a.charge<b.charge?-1:1);})[0];
+ /* a run is capped, and four channels at an address is the smallest run, so
+    the most addresses a run carries is the cap over the smallest. Read off the
+    plan's own constants. */
+ var most=Math.max(1,Math.floor(RUN_MAX/RUN_MIN));
+ var list=best.list.slice().sort(function(a,b){return b.sq-a.sq||a.id-b.id;});
+ return {charge:best.charge, addrs:list.slice(0,most).map(function(a){return a.id;}),
+  names:list.slice(0,most).map(function(a){return a.k;}), rest:Math.max(0,list.length-most),
+  seat:list[0].seat};}
+function recipeFit(k,steps){
+ /* the share of a candidate's steps that are in this pole's own ritual. A sort
+    key and nothing else: it is not returned and it is not shown. */
+ var mine=BECOMING[k]||[]; if(!steps||!steps.length)return 0;
+ return steps.filter(function(s){return mine.indexOf(s)>=0;}).length/steps.length;}
+function recipeToRitual(profile,k,o){
+ o=o||{};
+ var P=teachPole(k), b=becomingOf(k); if(!P||!b)return null;
+ var ctx=o.ctx||null, tier=ctx?ctx.pacing:1;
+ var s=becomingSteps(k,tier);
+ var plan={tc:k, steps:s.steps.slice(), days:7,
+  band:b.seat||b.home||((ctx&&!ctx.unread&&ctx.heaviest)||'')};
+ var held=s.held.map(function(x){var p=recipePractice(x); return {step:x, nm:p?p.nm:x, reason:recipeReason('held',{nm:p?p.nm:x})};});
+ var rel=ctx?recipeRelease(k,ctx):null;
+ /* the person's saved rituals that fit: written toward this pole, or built of
+    its own steps. Sorted by how much of the plan is this pole's, then the
+    shorter first, then the id, and shown with a reason and no number. */
+ var own=PRACTICE.filter(function(p){return p.tc===k;}).map(function(p){return p.k;});
+ var saved=(Array.isArray(o.saved)?o.saved:[]).filter(function(p){
+  return p&&Array.isArray(p.steps)&&(p.tc===k||p.steps.some(function(x){return own.indexOf(x)>=0;}));})
+  .map(function(p){return {p:p, f:recipeFit(k,p.steps), m:recipeMinutes(p.steps)};})
+  .sort(function(a,c){return c.f-a.f||a.m-c.m||(a.p.id<c.p.id?-1:1);})
+  .map(function(x){return {id:x.p.id, steps:x.p.steps.slice(), tc:x.p.tc||null, reason:recipeReason('saved',{who:P.who})};});
+ var shipped=plan.steps.map(function(x){var p=recipePractice(x);
+  return {step:x, nm:p?p.nm:x, min:p?p.min:0, own:own.indexOf(x)>=0,
+   reason:recipeReason('practice',{word:P.word})};});
+ var lanes=[
+  {kind:'saved', items:saved, empty:saved.length?null:recipeReason('lane-saved')},
+  {kind:'practice', items:shipped, empty:null},
+  {kind:'release', items:rel?[rel]:[], empty:rel?null:(ctx&&ctx.unread?recipeReason('lane-release-unread'):recipeReason('lane-release-none'))}];
+ if(rel)lanes[2].reason=recipeReason('release',rel);
+ return {k:k, tc:k, who:P.who, word:P.word, pacing:tier, plan:plan, held:held,
+  protocol:rel, lanes:lanes, order:lanes.map(function(l){return l.kind;})};}
+/* two small readers so this file needs nothing from a renderer: a practice by
+   key, and the minutes of a list of steps. ritual.js has the same two for the
+   page; these are the engine's own and read the same table. */
+function recipePractice(key){for(var i=0;i<PRACTICE.length;i++)if(PRACTICE[i].k===key)return PRACTICE[i];return null;}
+function recipeMinutes(steps){return (steps||[]).reduce(function(a,x){var p=recipePractice(x);return a+(p?p.min:0);},0);}
+/* ============================================================
+   THE TEACHERS' STORED BLOCK, THEIR LINES AND THEIR REACHES. Round PD,
+   DESIGN-teachers.md v2 sections 4, 6, 8 and 9. The roster is
+   engine/data/teachers.js and the recipes are engine/recipes.js. This file is
+   what a person DOES with a teacher and what is kept of it.
+
+   WHAT IS STORED, AND NOTHING ELSE. One block on the profile, additive:
+
+     teach:{v:1,
+       focus:[{k, at, mine:[ids], share:{on, at}}],   up to three pole keys
+       opened:[{k, r, at}],                            a reach opened, never removed
+       runs:[{t, tc, kind, n}]}                        a count, never which addresses
+
+   It holds no free text, no story, no address id, no name, no number about the
+   person and no match number. `mine` is a list of ids from a closed set of
+   eight (TEACH_IMP_IDS), never a sentence, so it adds no free text field that
+   a practitioner model would later have to hide. `n` in a run is a count of
+   steps or addresses, so a release start does not write which addresses it
+   covered.
+
+   AND WHAT IS DERIVED, NEVER STORED. Where a person sits on an axis, whether
+   a reach is earned, the line for the day, how many days a ritual was done:
+   all read off the record on every call. The one place a derivable fact is
+   also stored is `opened`, and that is deliberate and the only one: a derived
+   mark can vanish when the record changes (a ritual day deleted, a clock set
+   wrong) and a reach once opened must not close. The grant is the event, "this
+   opened on this day"; the derivation is only how the build decides to write
+   it.
+
+   NO SCHEMA_V BUMP. teach.v is the block's own version, as PRACTICE_SCHEMA_V
+   is for practice. The profile stays version 2, and whether this touches the
+   contract with SOURCE is the owner's call (CLAUDE.md), so the block is
+   additive and a record with none loads and reads as never worked toward.
+   ============================================================ */
+function teachBlank(){return {v:TEACH_V, focus:[], opened:[], runs:[]};}
+/* what a stored block may carry. A closed set, not a second deny list: it
+   refuses what nobody thought of, and the two lists below only change which
+   words the refusal says: any other key, PR_NEVER's identity and payment names
+   included and every name a stored match number could wear, is refused by name
+   as "teach may not carry x", and a gate asserts both lists are refused. */
+var TEACH_KEYS=['v','focus','opened','runs'];
+var TEACH_SCORE=['score','match','fit','rank','percent'];
+var TEACH_FOCUS_KEYS=['k','at','mine','share'];
+var TEACH_RUN_KINDS=['practice','ritual','release'];
+var TEACH_RUN_N=25;
+function teachWholeNum(v,lo,hi){return typeof v==='number'&&isFinite(v)&&Math.floor(v)===v&&v>=lo&&v<=hi;}
+function teachValidate(errs,o,path){
+ path=path||'teach';
+ var out=teachBlank();
+ if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return out;}
+ Object.keys(o).forEach(function(k){
+  if(TEACH_KEYS.indexOf(k)<0)errs.push(path+' may not carry '+k);});
+ /* the version is the block's own. A newer one is refused by name: backward
+    compatibility is promised and forward is not, and dropping what a newer
+    build wrote would be the silent clamp this product refuses. Missing is an
+    older block and reads as this one. */
+ if(o.v!==undefined){
+  if(typeof o.v!=='number'||!isFinite(o.v)||Math.floor(o.v)!==o.v||o.v<1)errs.push(path+'.v is not a version');
+  else if(o.v>TEACH_V)errs.push(path+'.v '+o.v+' is newer than this build reads ('+TEACH_V+')');}
+ if(o.focus!==undefined){
+  if(!Array.isArray(o.focus))errs.push(path+'.focus is not a list');
+  else if(o.focus.length>TEACH_FOCUS_MAX)
+   errs.push(path+'.focus holds '+o.focus.length+', which is more than '+TEACH_FOCUS_MAX);
+  else{
+   var seenK={};
+   o.focus.forEach(function(f,i){
+    var fp=path+'.focus['+i+']';
+    if(!f||typeof f!=='object'||Array.isArray(f)){errs.push(fp+' is not an object'); return;}
+    Object.keys(f).forEach(function(k){if(TEACH_FOCUS_KEYS.indexOf(k)<0)errs.push(fp+' may not carry '+k);});
+    var bad=0;
+    if(TEACH_KEYS_ALL.indexOf(f.k)<0){errs.push(fp+'.k names no teacher: '+f.k); bad++;}
+    else if(seenK[f.k]){errs.push(path+'.focus repeats '+f.k); bad++;}
+    else seenK[f.k]=1;
+    var at=vDate(errs,fp+'.at',f.at); if(at===null)bad++;
+    var mine=[];
+    if(f.mine!==undefined){
+     if(!Array.isArray(f.mine)){errs.push(fp+'.mine is not a list'); bad++;}
+     else{var ms={};
+      f.mine.forEach(function(m,j){
+       if(TEACH_IMP_IDS.indexOf(m)<0){errs.push(fp+'.mine['+j+'] names no impression: '+m); bad++; return;}
+       if(ms[m]){errs.push(fp+'.mine repeats '+m); bad++; return;}
+       ms[m]=1; mine.push(m);});}}
+    /* CONSENT IS OFF UNLESS IT SAYS OTHERWISE. A missing share is off, and an
+       on with no date is refused, because a switch that is on and cannot say
+       since when is a consent nobody can read back. An off with a date is a
+       revoke and keeps its date, so the person can see off since. */
+    var share={on:false, at:null};
+    if(f.share!==undefined){
+     if(!f.share||typeof f.share!=='object'||Array.isArray(f.share)){errs.push(fp+'.share is not an object'); bad++;}
+     else{
+      Object.keys(f.share).forEach(function(k){if(k!=='on'&&k!=='at'){errs.push(fp+'.share may not carry '+k); bad++;}});
+      if(typeof f.share.on!=='boolean'){errs.push(fp+'.share.on is not true or false'); bad++;}
+      else{
+       share.on=f.share.on;
+       if(f.share.at!==undefined&&f.share.at!==null){var sa=vDate(errs,fp+'.share.at',f.share.at);
+        if(sa===null)bad++; else share.at=sa;}
+       if(share.on&&share.at===null){errs.push(fp+'.share.on is true and has no date'); bad++;}}}}
+    if(!bad)out.focus.push({k:f.k, at:at, mine:mine, share:share});});}}
+ if(o.opened!==undefined){
+  if(!Array.isArray(o.opened))errs.push(path+'.opened is not a list');
+  else{
+   var seenR={};
+   o.opened.forEach(function(g,i){
+    var gp=path+'.opened['+i+']';
+    if(!g||typeof g!=='object'||Array.isArray(g)){errs.push(gp+' is not an object'); return;}
+    Object.keys(g).forEach(function(k){if(['k','r','at'].indexOf(k)<0)errs.push(gp+' may not carry '+k);});
+    var bad=0;
+    if(TEACH_KEYS_ALL.indexOf(g.k)<0){errs.push(gp+'.k names no teacher: '+g.k); bad++;}
+    if(!teachWholeNum(g.r,1,TEACH_REACH.length)){errs.push(gp+'.r is out of range: '+g.r); bad++;}
+    var at=vDate(errs,gp+'.at',g.at); if(at===null)bad++;
+    if(!bad){var key=g.k+':'+g.r;
+     if(seenR[key]){errs.push(path+'.opened repeats '+g.k+' reach '+g.r); return;}
+     seenR[key]=1; out.opened.push({k:g.k, r:g.r, at:at});}});}}
+ if(o.runs!==undefined){
+  if(!Array.isArray(o.runs))errs.push(path+'.runs is not a list');
+  else if(o.runs.length>TEACH_RUNS_CAP)
+   errs.push(path+'.runs holds '+o.runs.length+', which is more than '+TEACH_RUNS_CAP);
+  else o.runs.forEach(function(x,i){
+   var xp=path+'.runs['+i+']';
+   if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(xp+' is not an object'); return;}
+   Object.keys(x).forEach(function(k){if(['t','tc','kind','n'].indexOf(k)<0)errs.push(xp+' may not carry '+k);});
+   var bad=0;
+   var t=vDate(errs,xp+'.t',x.t); if(t===null)bad++;
+   if(TEACH_KEYS_ALL.indexOf(x.tc)<0){errs.push(xp+'.tc names no teacher: '+x.tc); bad++;}
+   if(TEACH_RUN_KINDS.indexOf(x.kind)<0){errs.push(xp+'.kind is not a kind of run: '+x.kind); bad++;}
+   if(!teachWholeNum(x.n,0,TEACH_RUN_N)){errs.push(xp+'.n is out of range: '+x.n); bad++;}
+   if(!bad)out.runs.push({t:t, tc:x.tc, kind:x.kind, n:x.n});});}
+ /* the version the block leaves with is this build's, so a block written
+    before the field existed validates to the same thing twice */
+ out.v=TEACH_V;
+ return out;}
+/* ---------------- changing the block, through the boundary ----------------
+   Every function returns {ok:true, teach} or {ok:false, why}, and the block it
+   returns has been through teachValidate, so a surface can never write a block
+   the boundary would then refuse on the next load. Nothing mutates its input. */
+function teachClone(t){return JSON.parse(JSON.stringify(t&&typeof t==='object'?t:teachBlank()));}
+function teachDone(t){
+ var errs=[], v=teachValidate(errs,t,'teach');
+ return errs.length?{ok:false, why:errs[0]}:{ok:true, teach:v};}
+function teachFocusOf(t,k){
+ var f=(t&&t.focus)||[]; for(var i=0;i<f.length;i++)if(f[i].k===k)return f[i];
+ return null;}
+function teachFocusAdd(t,k,now){
+ var n=teachClone(t);
+ if(TEACH_KEYS_ALL.indexOf(k)<0)return {ok:false, why:'teach.focus names no teacher: '+k};
+ if(teachFocusOf(n,k))return {ok:true, teach:n};
+ if(n.focus.length>=TEACH_FOCUS_MAX)return {ok:false, why:'You have chosen '+TEACH_FOCUS_MAX
+  +' teachers. Unpin one before you choose another.'};
+ n.focus.push({k:k, at:now, mine:[], share:{on:false, at:null}});
+ return teachDone(n);}
+function teachFocusRemove(t,k){
+ var n=teachClone(t), f=teachFocusOf(n,k);
+ if(!f)return {ok:true, teach:n};
+ /* a teacher that is shared is not unpinned out from under the consent: the
+    switch goes off first, so the record of it keeps its date */
+ if(f.share&&f.share.on)return {ok:false, why:'Turn sharing off before you unpin this teacher.'};
+ n.focus=n.focus.filter(function(x){return x.k!==k;});
+ return teachDone(n);}
+function teachMarkToggle(t,k,id){
+ var n=teachClone(t), f=teachFocusOf(n,k);
+ if(!f)return {ok:false, why:'Choose this teacher before you mark what is yours.'};
+ var i=f.mine.indexOf(id);
+ if(i>=0)f.mine.splice(i,1); else f.mine.push(id);
+ return teachDone(n);}
+function teachShareSet(t,k,on,now){
+ var n=teachClone(t), f=teachFocusOf(n,k);
+ if(!f)return {ok:false, why:'Choose this teacher before you share it.'};
+ f.share={on:!!on, at:now};
+ return teachDone(n);}
+function teachGrantAdd(t,k,r,now){
+ var n=teachClone(t);
+ if(!n.opened.some(function(g){return g.k===k&&g.r===r;}))n.opened.push({k:k, r:r, at:now});
+ return teachDone(n);}
+function teachRunAdd(t,tc,kind,count,now){
+ var n=teachClone(t);
+ n.runs.push({t:now, tc:tc, kind:kind, n:count});
+ return teachDone(n);}
+
+/* ---------------- what a person did, read off the record ----------------
+   The steps that are a teacher's own, as opposed to the shared breath a dozen
+   rituals begin with. Counting a day of Box Breathing as a day toward every
+   teacher whose ritual starts with it would open Musashi's second reach for
+   somebody who has never done anything of his. */
+function teachOwnSteps(k){
+ return PRACTICE.filter(function(p){return p.tc===k;}).map(function(p){return p.k;});}
+/* DISTINCT DAYS A RITUAL WAS DONE WITH ONE OF THIS TEACHER'S OWN STEPS. Not
+   pracDays and not the streak: both count a day a ritual was SET and never
+   done (PRIORITY.md 21.J2). An entry with no done key was saved before the key
+   existed and is left out here and not read as done, which is the stricter
+   reading, because an unlock must not open on a day nobody can say was done.
+   Days are the person's own local days, through pracDay. */
+function teachDays(p,k){
+ var own=teachOwnSteps(k), seen={}, n=0;
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||typeof x!=='object')return;
+  if(x.done===undefined||x.done===false||x.done===null)return;
+  if(!Array.isArray(x.steps)||!x.steps.some(function(s){return own.indexOf(s)>=0;}))return;
+  var d=pracDay(x.t); if(d===null||seen[d])return;
+  seen[d]=1; n++;});
+ return n;}
+/* DISTINCT ADDRESSES OF THE OPPOSITE FOUND IN WHAT WAS RELEASED. meter.unique
+   holds one key a line opened, the address first, so this reads the address
+   out of each key and counts the ones this pole's opposite is marked at. */
+function teachReleased(p,k){
+ var ids={}; teachMarkIds(k).forEach(function(i){ids[i]=1;});
+ var seen={}, n=0;
+ ((p&&p.meter&&p.meter.unique)||[]).forEach(function(key){
+  var a=+String(key).split(':')[0];
+  if(ids[a]&&!seen[a]){seen[a]=1; n++;}});
+ return n;}
+/* WHICH REACHES ARE OPEN, by the table and by the grants. A reach is open when
+   any one of its ways in holds, or when it was ever granted. The result says
+   what the person has done and what the next reach takes in words, and never a
+   count against a total (the voice gate refuses "2 of 5") and never a timer. */
+function teachCond(c,st){
+ if(c.c==='chosen')return st.chosen;
+ if(c.c==='days')return st.days>=c.n;
+ if(c.c==='released')return st.released>=c.n;
+ return false;}
+function teachReach(p,k){
+ var t=(p&&p.teach)||teachBlank();
+ var st={chosen:!!teachFocusOf(t,k), days:teachDays(p,k), released:teachReleased(p,k)};
+ var earned=0;
+ TEACH_UNLOCK.forEach(function(u){
+  var open=u.any.some(function(way){return way.every(function(c){return teachCond(c,st);});});
+  /* in order: a later reach never opens past one that is shut */
+  if(open&&earned===u.r-1)earned=u.r;});
+ var granted=0;
+ (t.opened||[]).forEach(function(g){if(g.k===k&&g.r>granted)granted=g.r;});
+ var open=Math.max(earned,granted);
+ var next=null;
+ if(open<TEACH_REACH.length){
+  var u=TEACH_UNLOCK[open], r=TEACH_REACH[open];
+  next={r:r.r, nm:r.nm, say:teachSay(u,st)};}
+ return {open:open, earned:earned, granted:granted, next:next, days:st.days, released:st.released, chosen:st.chosen};}
+/* what a reach takes, in the words a person reads. The ways in are joined by
+   "or" and the conditions in one way by "and", and what has been done so far
+   is said in words. */
+function teachSay(u,st){
+ var ways=u.any.map(function(way){
+  return way.map(function(c){
+   if(c.c==='chosen')return 'you choose this teacher';
+   if(c.c==='days')return 'this ritual has been done on '+c.n+' different days';
+   if(c.c==='released')return c.n===1?'one address of the opposite has been released'
+    :c.n+' addresses of the opposite have been released';
+   return '';}).filter(Boolean).join(' and ');});
+ var did=st.days===0?'It has been done on none yet.':'It has been done on '+st.days+(st.days===1?' day.':' different days.');
+ var needs=u.any.some(function(way){return way.some(function(c){return c.c==='days';});});
+ return 'Opens when '+ways.join(', or when ')+'.'+(needs?' '+did:'');}
+/* NEW GRANTS DUE, pure. The reaches the record has earned that the block does
+   not yet hold. The surface writes each through teachGrantAdd and says so in
+   one quiet line, and if the write fails the reach still shows open this
+   session and the status line says it will open again, never silent. */
+function teachGrantsDue(p,k){
+ var r=teachReach(p,k), held={};
+ ((p&&p.teach&&p.teach.opened)||[]).forEach(function(g){if(g.k===k)held[g.r]=1;});
+ var out=[]; for(var i=1;i<=r.earned;i++)if(!held[i])out.push(i);
+ return out;}
+/* ---------------- the line for the day ----------------
+   READ AND NEVER STORED, so two devices agree and nothing has to be kept: one
+   of the open lines, round robin by the day number. A reach that is not open
+   contributes no line, and with nothing open there is no line to show. */
+function teachLineOf(k,open,day){
+ var r=teachRow(k); if(!r||!open)return null;
+ var ls=r.lines.filter(function(l){return l.r<=open;});
+ if(!ls.length)return null;
+ var i=((Math.floor(day)%ls.length)+ls.length)%ls.length;
+ return {line:ls[i].line, past:ls[i].past, r:ls[i].r};}
+/* THE FORM A LINE IS SHOWN IN. His words asked for ultra high limiting
+   affirmations, and the research the product already holds (Wood, Perunovic and
+   Lee 2009) found that a person with low self regard who repeats a positive
+   statement feels worse, and the arm that did no harm held it as both true and
+   not true. So at or below the level the same line is shown in hold form: read
+   against the body, never said as a fact. The level is the one the gamification
+   design reads, level 4 or below on expression (r.EX against TIERDEF), and
+   which reading decides it is the owner's open question, so it is read in one
+   place and moves in one place. An unread field is hold form: nothing has been
+   measured, and the cautious side is the right default for a line. */
+var TEACH_HOLD_LEVEL=4;
+function teachLevel(r){
+ if(!r||typeof r.EX!=='number')return null;
+ var nm=tierOf(r.EX).nm;
+ for(var i=0;i<TIERDEF.length;i++)if(TIERDEF[i].nm===nm)return TIERDEF.length-i;
+ return null;}
+function teachForm(r){
+ if(!r||r.unread)return 'hold';
+ var l=teachLevel(r);
+ return (l===null||l<=TEACH_HOLD_LEVEL)?'hold':'say';}
+var TEACH_HOLD_PREFIX='Hold this against the body and read it. Do not say it as a fact.';
+
+/* ---------------- sharing with a cohort lead ----------------
+   He said a lead can see the teachers if the person shares them, and no match
+   number. This is the ONE function that builds what leaves, and it can only
+   ever return a pole key and the reach opened. No name, no line text, no
+   marks, no evidence, no story, no number about the person. A lead's own
+   screen looks the teacher up by key, so the lead sees the product's public
+   content and nothing the person wrote.
+
+   TWO KEYS, and this function holds one of them: the person has switched
+   sharing on for that teacher, and a lead is linked. `linked` is false unless
+   the caller says so, and nothing in the product can link a lead before
+   accounts exist, so until then this returns nothing for anybody. An imported
+   record with share.on true is inert for the same reason. */
+function teachShareOut(p,o){
+ if(!o||o.linked!==true)return [];
+ var t=(p&&p.teach)||teachBlank();
+ return t.focus.filter(function(f){return f.share&&f.share.on===true;})
+  .map(function(f){return {k:f.k, r:teachReach(p,f.k).open};});}
 /* ============================================================
    INTAKE · 21 laws x 3, triangulated left / right / neutral.
    Blocked into 21 units of three. Resumable. Live partial CQ.
@@ -14097,7 +15405,12 @@ var OB_NEVER=['name','first','middle','last','email','address','key','rk','rid',
     aim, so it takes the story's class: on the device and never in an envelope.
     Named here because a name left off this list is a silent hole (audit probe
     X7). aim is the stored word for the daily intention, engine/daily.js. */
- 'summaries','summary','mirror','aim','aims'];
+ 'summaries','summary','mirror','aim','aims',
+ /* the teachers' block, round PD: which teachers a person chose, which of
+    their own impressions they marked and whether they share any. It is theirs and
+    on the device, and the only thing that can leave is teachShareOut's key and
+    reach, to a linked lead and never through an envelope. */
+ 'teach','teachers'];
 
 function obStore(){ try{ return JSON.parse(STORE.get(OBKEY)||'[]'); }catch(e){ return []; } }
 function obWrite(q){
@@ -14621,6 +15934,25 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
                   dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+  /* the teachers as imprints, round PD: the roster, the lines, the unlocks */
+                  POLES_EXTRA:POLES_EXTRA, pacingStep:pacingStep, TRACK4BAND:TRACK4BAND,
+                  TEACH_V:TEACH_V, TEACH_FOCUS_MAX:TEACH_FOCUS_MAX, TEACH_RUNS_CAP:TEACH_RUNS_CAP,
+                  TEACH_CH:TEACH_CH, TEACH_IMP_IDS:TEACH_IMP_IDS, TEACH_REACH:TEACH_REACH,
+                  TEACH_UNLOCK:TEACH_UNLOCK, TEACH_W:TEACH_W, TEACH_ORDER:TEACH_ORDER,
+                  TEACH_ROWS:TEACH_ROWS, TEACH_KEYS_ALL:TEACH_KEYS_ALL,
+                  teachRow:teachRow, teachMarkIds:teachMarkIds, teachPole:teachPole, teachRoster:teachRoster,
+  /* the recipe engine, engine/recipes.js */
+                  RECIPE_CLAIM:RECIPE_CLAIM, RECIPE_CUES:RECIPE_CUES, RECIPE_CARRY:RECIPE_CARRY, recipeRows:recipeRows,
+                  recipeFor:recipeFor, recipeSniff:recipeSniff, recipeRunning:recipeRunning, recipeCtx:recipeCtx,
+                  recipeBlockers:recipeBlockers, recipeIngredients:recipeIngredients, recipeReason:recipeReason,
+                  TEACH_KEYS:TEACH_KEYS, TEACH_SCORE:TEACH_SCORE, TEACH_HOLD_LEVEL:TEACH_HOLD_LEVEL, TEACH_HOLD_PREFIX:TEACH_HOLD_PREFIX,
+                  teachBlank:teachBlank, teachValidate:teachValidate, teachFocusOf:teachFocusOf,
+                  teachFocusAdd:teachFocusAdd, teachFocusRemove:teachFocusRemove, teachMarkToggle:teachMarkToggle,
+                  teachShareSet:teachShareSet, teachGrantAdd:teachGrantAdd, teachRunAdd:teachRunAdd,
+                  teachOwnSteps:teachOwnSteps, teachDays:teachDays, teachReleased:teachReleased, teachReach:teachReach,
+                  teachGrantsDue:teachGrantsDue, teachLineOf:teachLineOf, teachLevel:teachLevel, teachForm:teachForm,
+                  teachShareOut:teachShareOut,
+                  recipeToRitual:recipeToRitual, recipeRelease:recipeRelease, recipeBuilds:recipeBuilds,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

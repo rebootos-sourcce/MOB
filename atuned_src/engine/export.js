@@ -321,6 +321,18 @@ if(typeof module!=='undefined'&&module.exports){
                   TEACH_UNLOCK:TEACH_UNLOCK, TEACH_W:TEACH_W, TEACH_ORDER:TEACH_ORDER,
                   TEACH_ROWS:TEACH_ROWS, TEACH_KEYS_ALL:TEACH_KEYS_ALL,
                   teachRow:teachRow, teachMarkIds:teachMarkIds, teachPole:teachPole, teachRoster:teachRoster,
+  /* the recipe engine, engine/recipes.js */
+                  RECIPE_CLAIM:RECIPE_CLAIM, RECIPE_CUES:RECIPE_CUES, RECIPE_CARRY:RECIPE_CARRY, recipeRows:recipeRows,
+                  recipeFor:recipeFor, recipeSniff:recipeSniff, recipeRunning:recipeRunning, recipeCtx:recipeCtx,
+                  recipeBlockers:recipeBlockers, recipeIngredients:recipeIngredients, recipeReason:recipeReason,
+                  TEACH_KEYS:TEACH_KEYS, TEACH_SCORE:TEACH_SCORE, TEACH_HOLD_LEVEL:TEACH_HOLD_LEVEL, TEACH_HOLD_PREFIX:TEACH_HOLD_PREFIX,
+                  teachBlank:teachBlank, teachValidate:teachValidate, teachFocusOf:teachFocusOf,
+                  teachFocusAdd:teachFocusAdd, teachFocusRemove:teachFocusRemove, teachMarkToggle:teachMarkToggle,
+                  teachShareSet:teachShareSet, teachGrantAdd:teachGrantAdd, teachRunAdd:teachRunAdd,
+                  teachOwnSteps:teachOwnSteps, teachDays:teachDays, teachReleased:teachReleased, teachReach:teachReach,
+                  teachGrantsDue:teachGrantsDue, teachLineOf:teachLineOf, teachLevel:teachLevel, teachForm:teachForm,
+                  teachShareOut:teachShareOut,
+                  recipeToRitual:recipeToRitual, recipeRelease:recipeRelease, recipeBuilds:recipeBuilds,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

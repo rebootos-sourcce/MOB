@@ -753,47 +753,16 @@ function runKbDrill(eyebrow,title,sub,body){
    reading says is how far along that axis this person currently sits. */
 function runTeacherDrill(m,end){
  if(!m)return;
- var up=(end!=='dn'), r=compute();
- var nm=up?m.up:m.dn, d=up?m.upd:m.dnd, ic=up?m.ic:m.dic;
- var other=up?m.dn:m.up, od=up?m.dnd:m.upd;
- /* THE SEAT IS FOUND BY ITS ENGINE BAND, NOT BY ITS PRINTED NAME. FLOWSEAT
-    prints the third eye as Brow while MIRROR names its seat 3rd Eye, so a
-    lookup by name found nothing for that one seat and the Buddha axis read
-    nought load for every person. K2B maps the flow key to the band. */
- var load=(typeof flSeats==='function')
-  ?(flSeats().filter(function(x){return K2B[x.p.k]===m.seat;})[0]||{load:0}).load:0;
- var ig=(typeof bandIg==='function')?bandIg(m.seat):0;
- /* WHERE THE PERSON SITS IS THE ONE READER THE COMPASS USES. This passed
-    mirrorAt the flow's load, a fraction of one over the seat's hot addresses,
-    where mirrorAt takes the mean charge of all of them out of ten, so the
-    same axis printed two different numbers (95 of 120 readings differed, by
-    up to 38). coneMirPos is the arithmetic the mirror drill and the Compass
-    panel already share. */
- var at=(typeof coneMirPos==='function')?coneMirPos(m):null;
- var h='<div class="pm-eye">'+esc(m.q)+(up?', at the crown':', at the floor')+'</div>'
-  +'<div class="ad-nm">'+(ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
-    +'<path d="'+ic+'"/></svg>':'')+esc(nm)+'</div>'
-  +'<div class="ad-sub">'+esc(m.seat)+' \u00b7 '
-  +(up?'the quality running clean':'the same quality, inverted')+'</div>'
-  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(d)+'</p>'
-  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(other)+'</b>. '
-  +esc(od)+'</p>'
-  +'<div class="pm-eye">Where you sit</div><p class="ad-p">'
-  +(r.unread
-    ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
-    :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
-     +Math.round(load*100)+'%</b> and its integrity reads <b>'+ig.toFixed(1)
-     +'</b>.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
-  +'</p>'
-  +'<div class="pm-eye">The question that separates them</div>'
-  +'<p class="ad-p">'+esc(m.ask||'')+'</p>'
-  +'<p class="ad-p">Neither of these is a being. Both are behaviours, and they '
-  +'are the same behaviour at two settings.</p>'
-  /* ROUND KQ, the rituals of becoming: the coherent pole carries the ritual
-     that moves toward it. The inversion carries none. */
-  +(up&&typeof ritTeachHtml==='function'?ritTeachHtml(m.k):'');
- rdShell(h);
- if(up&&typeof ritTeachWire==='function')ritTeachWire(function(){runTeacherDrill(m,end);});}
+ /* ROUND PD: THE DRILL IS THE IMPRINT PANEL NOW. His words: "with the teachers,
+    we want to see almost like an imprint on the right-hand side." The panel
+    (ui/teachers.js) carries everything this drill carried and what it did
+    not: the position through coneMirPos, the same arithmetic the Compass panel
+    uses, the opposite, the imprint in four channels, what is running in the
+    person, the lines, and the ritual and release in his library order. A press
+    on the opposite's name opens the same panel at the opposite, because the
+    two ends are one axis and a second drill for the inversion was the second
+    concept this panel exists to remove. */
+ if(typeof teachOpen==='function')teachOpen(m.k,end);}
 /* ONE OF THE FIVE PATHS. Their badges on the needle had a name on hover and
    nothing on a press. Jesus on the path of the body and Buddha on the path of
    awareness are their mirror axes, read off MIRROR by PATHS itself, so a
@@ -801,6 +770,10 @@ function runTeacherDrill(m,end){
    it. Krishna, Rama and Lao Tzu stand on no axis and get this one. */
 function runPathDrill(p){
  if(!p)return;
+ /* ROUND PD: every pole opens the imprint panel, by its key. Jesus on the path
+    of the body and Buddha on the path of awareness are those axes under the
+    other key BECOMING_SAME names, so they open the axis's own panel. */
+ if(typeof teachOpen==='function'){teachOpen(BECOMING_SAME[p.k]||p.k,'up');return;}
  for(var i=0;i<MIRROR.length;i++)
   if(MIRROR[i].up===p.up&&MIRROR[i].upd===p.upd){runTeacherDrill(MIRROR[i],'up');return;}
  var h='<div class="pm-eye">One of the five paths</div>'
@@ -845,7 +818,13 @@ function runPoleDrill(end){
      three lists were the ones with nothing. Names that appear on both reuse
      the mirror icon rather than getting a second drawing. */
   MASTERS.forEach(function(x){
-   h+='<div class="ad-r static" title="'+esc(x.d)+'">'
+   /* a teacher on the roster is a door to the imprint panel, and the poles
+      that are on no axis (Akhenaten, Zoroaster, Confucius) have no other */
+   var tr=(typeof teachRoster==='function')?teachRoster().filter(function(t){return t.who===x.nm;})[0]:null;
+   if(tr)h+='<button type="button" class="ad-r" data-tpk="'+tr.poles[0]+'" title="'+esc(x.d)+'">'
+    +'<span class="ad-k">'+adGl(x.ic)+esc(x.nm)+'</span>'
+    +'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span></button>';
+   else h+='<div class="ad-r static" title="'+esc(x.d)+'">'
     +'<span class="ad-k">'+adGl(x.ic)+esc(x.nm)+'</span>'
     +'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span></div>';});
   /* THE COUNT IS READ, NEVER TYPED. This heading said "the twelve" while the
@@ -940,7 +919,9 @@ function runPoleDrill(end){
  /* a row opens the axis, both poles and the question a practitioner asks */
  var host=document.getElementById('rdrill');
  if(host)host.querySelectorAll('[data-mirror]').forEach(function(b){
-  b.onclick=function(){runMirrorDrill(b.getAttribute('data-mirror'));};});}
+  b.onclick=function(){runMirrorDrill(b.getAttribute('data-mirror'));};});
+ if(host)host.querySelectorAll('[data-tpk]').forEach(function(b){
+  b.onclick=function(){if(typeof teachOpen==='function')teachOpen(b.getAttribute('data-tpk'),'up');};});}
 
 /* ============================================================
    THE ENTRY FRAMEWORK, WHICH IS THE OWNER'S OWN.

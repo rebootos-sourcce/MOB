@@ -156,7 +156,14 @@ function planWeeks(at,now){
    twelve journals is a different product with a different
    obligation attached.
    ============================================================ */
-const LEAD_SEES=['fetters','saboteurs','complexes','hyper complexes','analytics'];
+/* ROUND PD, HIS WORDS: "a cohort, they can see the teachers if that's shared
+   with them. No, they shouldn't carry a match number." A person's chosen teacher
+   is spiritual material, which stays hidden below, so this carves one exception
+   and it is narrow on purpose: only when the person has switched sharing on for
+   that teacher, only the pole key and the reach opened (teachShareOut is the one
+   function that builds it, engine/teach.js), never the lines they marked, a word
+   they wrote or their story. Off by default and inert until accounts exist. */
+const LEAD_SEES=['fetters','saboteurs','complexes','hyper complexes','analytics','the teachers, when shared'];
 const LEAD_HIDDEN=['the story cloud','the spiritual material','the tools themselves',
  /* a daily summary is a derived join of the story and the record, and the
     person's own aim is written into its bank, so it takes the story's class */
