@@ -357,7 +357,7 @@ function accDisplay(){
     gets no switch, because a control that cannot act is not offered. */
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
-    ? accTog('Sound effects','acsfx',!(CURP&&CURP.ui&&CURP.ui.sfxoff),
+    ? accTog('Sound effects','acsfx',sfxIsOn(),
        'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
@@ -570,8 +570,13 @@ function accWire(){
  /* turned on, it plays the commonest one at once, so the person hears what
     they turned on and can set the volume by it. Only once the save landed. */
  var sx=$('acsfx');
- if(sx)sx.onclick=function(){var on=!!(CURP.ui&&CURP.ui.sfxoff);
-  if(uiSet('sfxoff',!on)&&on&&typeof sfx==='function')sfx('kept'); renderAccount();};
+ /* A DEVICE SETTING, NOT A PROFILE WRITE. This went through uiSet, which saves
+    the profile, so on a worked example turning sound off answered "Nothing
+    saved on a worked example." sfxSwitch writes the browser's own store, says
+    what it did, and plays the keep whenever it ends up on, saved or not,
+    because what a person hears is the state and not the write. */
+ if(sx)sx.onclick=function(){var want=!sfxIsOn();
+  sfxSwitch(want); if(want&&typeof sfx==='function')sfx('kept'); renderAccount();};
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');
@@ -647,7 +652,7 @@ function profMenu(){
  if(!m.hidden){profMenuShut(); return;}
  var who=capName((typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile');
  var ses=(typeof authSession==='function')?authSession():null;
- var sfxOn=!(CURP&&CURP.ui&&CURP.ui.sfxoff);
+ var sfxOn=sfxIsOn();
  m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'
   +ACC_SECS.map(function(s){
    return '<button type="button" role="menuitem" class="pm-it" data-pms="'+s.k+'" style="--c:'+seatCol(s.b)+'">'
@@ -669,9 +674,9 @@ function profMenu(){
   x.onclick=function(){profMenuGo(x.getAttribute('data-pms'));};});
  var sw=m.querySelector('[data-pmsfx]');
  if(sw)sw.onclick=function(){
-  var on=!!(CURP&&CURP.ui&&CURP.ui.sfxoff);
-  if(uiSet('sfxoff',!on)){sw.setAttribute('aria-checked',on?'true':'false');
-   if(on&&typeof sfx==='function')sfx('kept');}};
+  var want=!sfxIsOn();
+  sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
+  if(want&&typeof sfx==='function')sfx('kept');};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();

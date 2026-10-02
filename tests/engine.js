@@ -6228,6 +6228,26 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
   ok(pImport(JSON.stringify(bad))===null&&profiles().length===before,'a heavy mark on a line never opened refuses the whole import and pushes nothing');
   bindStore(()=>null,()=>{});});
 
+ /* THE DEVICE SETTING, 2 October. The sound switch was a profile write, so on a
+    worked example turning sound off answered "Nothing saved". A device
+    setting lives under its own key in the bound store, is never a profile,
+    and reports what happened. */
+ T('device setting',()=>{const {bindStore,devGet,devSet,DEVKEY,PKEY,profiles}=E;
+  const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+  ok(devGet('sfxoff')===null,'a setting never written reads null, which is the host\'s cue to fall back');
+  const r=devSet('sfxoff',true);
+  ok(r.ok&&r.err===null&&devGet('sfxoff')===true,'a write lands and reads back');
+  ok(devSet('sfxoff',false).ok&&devGet('sfxoff')===false,'and false is a value and not an absence');
+  ok(devSet('other',3).ok&&devGet('sfxoff')===false&&devGet('other')===3,'a second key leaves the first alone');
+  ok(DEVKEY!==PKEY&&mem[PKEY]===undefined,'it never writes the profile key, '+DEVKEY);
+  mem[DEVKEY]='not json'; ok(devGet('sfxoff')===null,'an unreadable object reads as nothing set and does not throw');
+  mem[DEVKEY]='[1,2]'; ok(devGet('sfxoff')===null,'and so does a list');
+  bindStore(()=>null,()=>{throw new Error('QuotaExceededError');});
+  const q=devSet('sfxoff',true); ok(!q.ok&&q.err==='Error','a store that throws is reported, not swallowed, '+JSON.stringify(q));
+  bindStore(()=>null,()=>{});
+  const n=devSet('sfxoff',true); ok(!n.ok&&n.err==='NotKept','a store that swallows the write and keeps nothing is caught by the read back, '+JSON.stringify(n));
+  bindStore(()=>null,()=>{});});
+
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

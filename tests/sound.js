@@ -386,12 +386,40 @@ async function soundGate(browser,FILE,ok,booted){
   await pg.waitForTimeout(1600);
   const p0=await pg.evaluate(()=>SFX_PLAYED);
   await pg.click('#acsfx'); await pg.waitForTimeout(120);
-  const a1=await pg.evaluate(p0=>({on:!CURP.ui.sfxoff, sw:document.getElementById('acsfx').getAttribute('aria-checked'),
-   played:SFX_PLAYED-p0, stored:(function(){try{return JSON.parse(JSON.stringify(validateProfile(JSON.parse(pExport())).profile.ui.sfxoff));}
-    catch(e){return 'unread: '+e.message;}})()}),p0);
+  const a1=await pg.evaluate(p0=>({on:sfxIsOn(), sw:document.getElementById('acsfx').getAttribute('aria-checked'),
+   played:SFX_PLAYED-p0, dev:devGet('sfxoff'), prof:CURP.ui.sfxoff}),p0);
   ok(a1.on&&a1.sw==='true'&&a1.played===1,'turned on, it is on and plays one sound so the person hears what they '
    +'turned on, '+JSON.stringify(a1));
-  ok(a1.stored===false,'and the profile boundary keeps the switch rather than dropping an unknown key, '+JSON.stringify(a1.stored));}
+  ok(a1.dev===false,'and it is kept as a device setting in the browser store, '+JSON.stringify(a1.dev));
+
+  /* ---------- the switch is the device's, so a worked example answers it ----------
+     2 October, the owner: "When I turn sound effects off, it says nothing
+     saved on worked example. So that's a bug." Measured before the fix: on a
+     worked example the press printed that line and the switch did not move,
+     because the switch saved the profile and a worked example has none. */
+ await pg.waitForTimeout(1400);
+ const wx=await pg.evaluate(()=>{ loadP(1); setTab(TAB.SETTINGS); if(typeof ACC_OPEN!=='undefined')ACC_OPEN='display'; renderAccount();
+  return {name:CURP.name, own:S.who===0, on:document.getElementById('acsfx').getAttribute('aria-checked')}; });
+ await pg.click('#acsfx'); await pg.waitForTimeout(150);
+ const wo=await pg.evaluate(()=>({sw:document.getElementById('acsfx').getAttribute('aria-checked'), why:sfxWhy(),
+  dev:devGet('sfxoff'), prof:CURP.ui.sfxoff, line:(document.getElementById('status')||{}).textContent,
+  kind:(document.getElementById('status')||{}).getAttribute('data-kind')}));
+ ok(!wx.own&&wx.on==='true'&&wo.sw==='false'&&wo.why==='off'&&wo.dev===true&&!/Nothing saved/.test(wo.line)&&wo.kind!=='fail'&&wo.prof!==true,
+  'on a worked example, turning sound off works, says nothing about saving, and does not touch the profile, '+JSON.stringify({wx,wo}));
+ /* and the same press with the old writer, the broken engine: it must print the old line */
+ const oldWay=await pg.evaluate(()=>{ loadP(1); var ok=uiSet('sfxoff',true); return {ok:ok, line:document.getElementById('status').textContent}; });
+ ok(oldWay.ok===false&&/Nothing saved on a worked example/.test(oldWay.line),'while the old route, uiSet, still prints it, so the absence above is a reading, '+JSON.stringify(oldWay));
+ /* a reload keeps it, because it is in the browser and not in the page */
+ await pg.reload({waitUntil:'load'}); await booted(pg);
+ const kept=await pg.evaluate(()=>({on:sfxIsOn(), dev:devGet('sfxoff')}));
+ ok(kept.on===false&&kept.dev===true,'and it is still off after a reload, '+JSON.stringify(kept));
+ /* a store that refuses the write is said, and the switch still does what it was asked this visit */
+ const bad=await pg.evaluate(()=>{ var keep=Storage.prototype.setItem; Storage.prototype.setItem=function(){ throw new Error('QuotaExceededError'); };
+  var r=sfxSwitch(true); Storage.prototype.setItem=keep;
+  var st=document.getElementById('status'); return {r:r, on:sfxIsOn(), line:st.textContent, kind:st.getAttribute('data-kind')}; });
+ ok(bad.r===false&&bad.on===true&&bad.kind==='fail'&&/this visit only/.test(bad.line),
+  'a browser that will not keep the setting is told so, and the switch still does what it was asked, '+JSON.stringify(bad));
+ }
  ok(err.length===0,'no page errors, '+err.join(' | '));
  await ctx.close();}
 

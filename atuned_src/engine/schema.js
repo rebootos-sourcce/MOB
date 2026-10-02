@@ -358,6 +358,40 @@ var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
 function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
+/* A DEVICE SETTING IS THE BROWSER'S, NOT THE PERSON'S RECORD.
+
+   The sound switch was written onto the profile with uiSet, which saves the
+   profile, so turning sound off while a worked example was open answered
+   "Nothing saved on a worked example." The owner hit it on 2 October: "When I
+   turn sound effects off, it says nothing saved on worked example. So that's
+   a bug." Whether this machine makes a noise is a fact about the machine. It
+   has nothing to do with whose record is loaded, a worked example has no
+   record to write, and a person on three profiles would have had to turn it
+   off three times.
+
+   So it lives under a key of its own in the same bound store, in one small
+   object, and never on a profile. It goes through bindStore like everything
+   else here, so the engine still never names a browser, and a host that bound
+   nothing gets a refusal and not a pretended write. devSet reports what
+   happened and the host decides the words, the same split pPersist keeps. A
+   key never written reads as null, which is the host's cue to fall back to
+   whatever it did before the setting existed. */
+var DEVKEY=PKEY+'.device';
+function devRead(){
+ try{ var t=STORE.get(DEVKEY), o=t?JSON.parse(t):{};
+  return (o&&typeof o==='object'&&!Array.isArray(o))?o:{};
+ }catch(e){ return {}; }}
+function devGet(k){
+ var o=devRead(); return Object.prototype.hasOwnProperty.call(o,k)?o[k]:null; }
+/* read back after the write, because a store that swallows a write and says
+   nothing is the failure this file refuses everywhere else */
+function devSet(k,v){
+ if(!STORE_BOUND)return {ok:false, err:'NoStore'};
+ var o=devRead(); o[k]=v;
+ try{ var txt=JSON.stringify(o); STORE.set(DEVKEY,txt);
+  if(STORE.get(DEVKEY)!==txt)return {ok:false, err:'NotKept'};
+  return {ok:true, err:null};
+ }catch(e){ return {ok:false, err:(e&&e.name)||'error'}; }}
 /* EVERYTHING THAT COMES OFF THE DISK GOES THROUGH THE BOUNDARY.
 
    This was the last route into the product that did not, and it was filed as a

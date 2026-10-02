@@ -312,9 +312,11 @@ function buzz(pat){
    quieter. Five things hold it silent, read in sfxWhy:
 
      off            the switch, in the profile menu and in Settings,
-                    Display, Sound. ON on every profile until the
-                    person turns it off, round OJ, his ruling: "sound
-                    on by default". The seat tone and the release's own
+                    Display, Sound. ON until the person turns it off,
+                    round OJ, his ruling: "sound on by default", and it
+                    is the device's setting and not a profile's, so it
+                    is the same on every profile and on a worked
+                    example. The seat tone and the release's own
                     switches are unchanged and stay off until chosen.
      quiet          the Quiet switch. A person who reached for less
                     on the screen did not ask for more in the ear.
@@ -538,14 +540,42 @@ function sfxRoomHeld(){
   if(p==='welcome'||p==='opening'||p==='run'||p==='pick')return true;
   return p==='done'&&typeof COOLING!=='undefined'&&RUN.cool<COOLING.length;
  }catch(e){ return false; }}
+/* WHETHER THE SWITCH IS ON, one reader for the gate, the setting and the menu.
+
+   A DEVICE SETTING, 2 October, and never the profile's. The device key wins
+   once it has been written. A device that was never asked reads the profile's
+   own sfxoff, which is what a person who turned it off before this existed
+   wrote, so nobody who chose silence is switched back on by an update. Nothing
+   written anywhere is on, round OJ. SFX_SESSION is what the person asked for
+   this visit and comes first, because a browser that would not keep the
+   setting must still do what the switch says until the page is closed. */
+var SFX_SESSION=null;
+function sfxIsOn(){
+ if(SFX_SESSION!==null)return SFX_SESSION;
+ var d=(typeof devGet==='function')?devGet('sfxoff'):null;
+ if(d!==null)return d!==true;
+ var u=(typeof CURP!=='undefined'&&CURP)?(CURP.ui||{}):null;
+ return !(u&&u.sfxoff===true);}
+/* the one writer. Returns whether the browser kept it, and says so through
+   status when it did not, in words that are true: the switch did what it was
+   asked for on this visit and will not survive a reload. It never touches a
+   profile, so it answers the same on a worked example as anywhere. */
+function sfxSwitch(on){
+ SFX_SESSION=!!on;
+ var r=(typeof devSet==='function')?devSet('sfxoff',!on):{ok:false,err:'NoStore'};
+ if(r.ok)SFX_SESSION=null;
+ if(typeof status==='function'){
+  if(r.ok)status(on?'Sound effects on.':'Sound effects off.');
+  else status('Sound effects are '+(on?'on':'off')+' for this visit only. This browser would not keep the setting.','fail');}
+ return r.ok;}
 /* WHY IT IS SILENT, or '' when it may sound. One reader for every switch, so
    the gate and the setting say the same thing. */
 function sfxWhy(room){
  /* ON UNLESS THE PERSON TURNED IT OFF, round OJ. His words: "yes, sound on by
-    default. With the sound on off in the profile." So every profile plays
-    until it says sfxoff, which only the person's own press writes. */
+    default. With the sound on off in the profile." The off is read by sfxIsOn,
+    which no longer reads only the profile: see above. */
  var u=(typeof CURP!=='undefined'&&CURP)?(CURP.ui||{}):null;
- if(!u||u.sfxoff===true)return 'off';
+ if(!u||!sfxIsOn())return 'off';
  if(u.quiet)return 'quiet';
  if(!room&&sfxRoomHeld())return 'release';
  if(!sfxGestured())return 'no press yet';

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1255 4d81750 2026-10-02 02:09"><head><meta charset="utf-8">
+<html lang="en" data-build="v1256 601b960 2026-10-02 02:20"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -16484,6 +16484,40 @@ var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
 function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
+/* A DEVICE SETTING IS THE BROWSER'S, NOT THE PERSON'S RECORD.
+
+   The sound switch was written onto the profile with uiSet, which saves the
+   profile, so turning sound off while a worked example was open answered
+   "Nothing saved on a worked example." The owner hit it on 2 October: "When I
+   turn sound effects off, it says nothing saved on worked example. So that's
+   a bug." Whether this machine makes a noise is a fact about the machine. It
+   has nothing to do with whose record is loaded, a worked example has no
+   record to write, and a person on three profiles would have had to turn it
+   off three times.
+
+   So it lives under a key of its own in the same bound store, in one small
+   object, and never on a profile. It goes through bindStore like everything
+   else here, so the engine still never names a browser, and a host that bound
+   nothing gets a refusal and not a pretended write. devSet reports what
+   happened and the host decides the words, the same split pPersist keeps. A
+   key never written reads as null, which is the host's cue to fall back to
+   whatever it did before the setting existed. */
+var DEVKEY=PKEY+'.device';
+function devRead(){
+ try{ var t=STORE.get(DEVKEY), o=t?JSON.parse(t):{};
+  return (o&&typeof o==='object'&&!Array.isArray(o))?o:{};
+ }catch(e){ return {}; }}
+function devGet(k){
+ var o=devRead(); return Object.prototype.hasOwnProperty.call(o,k)?o[k]:null; }
+/* read back after the write, because a store that swallows a write and says
+   nothing is the failure this file refuses everywhere else */
+function devSet(k,v){
+ if(!STORE_BOUND)return {ok:false, err:'NoStore'};
+ var o=devRead(); o[k]=v;
+ try{ var txt=JSON.stringify(o); STORE.set(DEVKEY,txt);
+  if(STORE.get(DEVKEY)!==txt)return {ok:false, err:'NotKept'};
+  return {ok:true, err:null};
+ }catch(e){ return {ok:false, err:(e&&e.name)||'error'}; }}
 /* EVERYTHING THAT COMES OFF THE DISK GOES THROUGH THE BOUNDARY.
 
    This was the last route into the product that did not, and it was filed as a
@@ -23891,7 +23925,7 @@ if(typeof module!=='undefined'&&module.exports){
                   bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
                   OB_KINDS:OB_KINDS,
-  /* storage */   bindStore:bindStore,
+  /* storage */   bindStore:bindStore, devGet:devGet, devSet:devSet, DEVKEY:DEVKEY,
   /* practice, engine/practice.js. The tables are exported as the live
      objects so the gate can hold them to the TDD's own lists and mutate a
      copy of the engine to prove the gate bites. */
@@ -25425,9 +25459,11 @@ function buzz(pat){
    quieter. Five things hold it silent, read in sfxWhy:
 
      off            the switch, in the profile menu and in Settings,
-                    Display, Sound. ON on every profile until the
-                    person turns it off, round OJ, his ruling: "sound
-                    on by default". The seat tone and the release's own
+                    Display, Sound. ON until the person turns it off,
+                    round OJ, his ruling: "sound on by default", and it
+                    is the device's setting and not a profile's, so it
+                    is the same on every profile and on a worked
+                    example. The seat tone and the release's own
                     switches are unchanged and stay off until chosen.
      quiet          the Quiet switch. A person who reached for less
                     on the screen did not ask for more in the ear.
@@ -25651,14 +25687,42 @@ function sfxRoomHeld(){
   if(p==='welcome'||p==='opening'||p==='run'||p==='pick')return true;
   return p==='done'&&typeof COOLING!=='undefined'&&RUN.cool<COOLING.length;
  }catch(e){ return false; }}
+/* WHETHER THE SWITCH IS ON, one reader for the gate, the setting and the menu.
+
+   A DEVICE SETTING, 2 October, and never the profile's. The device key wins
+   once it has been written. A device that was never asked reads the profile's
+   own sfxoff, which is what a person who turned it off before this existed
+   wrote, so nobody who chose silence is switched back on by an update. Nothing
+   written anywhere is on, round OJ. SFX_SESSION is what the person asked for
+   this visit and comes first, because a browser that would not keep the
+   setting must still do what the switch says until the page is closed. */
+var SFX_SESSION=null;
+function sfxIsOn(){
+ if(SFX_SESSION!==null)return SFX_SESSION;
+ var d=(typeof devGet==='function')?devGet('sfxoff'):null;
+ if(d!==null)return d!==true;
+ var u=(typeof CURP!=='undefined'&&CURP)?(CURP.ui||{}):null;
+ return !(u&&u.sfxoff===true);}
+/* the one writer. Returns whether the browser kept it, and says so through
+   status when it did not, in words that are true: the switch did what it was
+   asked for on this visit and will not survive a reload. It never touches a
+   profile, so it answers the same on a worked example as anywhere. */
+function sfxSwitch(on){
+ SFX_SESSION=!!on;
+ var r=(typeof devSet==='function')?devSet('sfxoff',!on):{ok:false,err:'NoStore'};
+ if(r.ok)SFX_SESSION=null;
+ if(typeof status==='function'){
+  if(r.ok)status(on?'Sound effects on.':'Sound effects off.');
+  else status('Sound effects are '+(on?'on':'off')+' for this visit only. This browser would not keep the setting.','fail');}
+ return r.ok;}
 /* WHY IT IS SILENT, or '' when it may sound. One reader for every switch, so
    the gate and the setting say the same thing. */
 function sfxWhy(room){
  /* ON UNLESS THE PERSON TURNED IT OFF, round OJ. His words: "yes, sound on by
-    default. With the sound on off in the profile." So every profile plays
-    until it says sfxoff, which only the person's own press writes. */
+    default. With the sound on off in the profile." The off is read by sfxIsOn,
+    which no longer reads only the profile: see above. */
  var u=(typeof CURP!=='undefined'&&CURP)?(CURP.ui||{}):null;
- if(!u||u.sfxoff===true)return 'off';
+ if(!u||!sfxIsOn())return 'off';
  if(u.quiet)return 'quiet';
  if(!room&&sfxRoomHeld())return 'release';
  if(!sfxGestured())return 'no press yet';
@@ -53573,7 +53637,7 @@ function accDisplay(){
     gets no switch, because a control that cannot act is not offered. */
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
-    ? accTog('Sound effects','acsfx',!(CURP&&CURP.ui&&CURP.ui.sfxoff),
+    ? accTog('Sound effects','acsfx',sfxIsOn(),
        'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
@@ -53786,8 +53850,13 @@ function accWire(){
  /* turned on, it plays the commonest one at once, so the person hears what
     they turned on and can set the volume by it. Only once the save landed. */
  var sx=$('acsfx');
- if(sx)sx.onclick=function(){var on=!!(CURP.ui&&CURP.ui.sfxoff);
-  if(uiSet('sfxoff',!on)&&on&&typeof sfx==='function')sfx('kept'); renderAccount();};
+ /* A DEVICE SETTING, NOT A PROFILE WRITE. This went through uiSet, which saves
+    the profile, so on a worked example turning sound off answered "Nothing
+    saved on a worked example." sfxSwitch writes the browser's own store, says
+    what it did, and plays the keep whenever it ends up on, saved or not,
+    because what a person hears is the state and not the write. */
+ if(sx)sx.onclick=function(){var want=!sfxIsOn();
+  sfxSwitch(want); if(want&&typeof sfx==='function')sfx('kept'); renderAccount();};
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');
@@ -53863,7 +53932,7 @@ function profMenu(){
  if(!m.hidden){profMenuShut(); return;}
  var who=capName((typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile');
  var ses=(typeof authSession==='function')?authSession():null;
- var sfxOn=!(CURP&&CURP.ui&&CURP.ui.sfxoff);
+ var sfxOn=sfxIsOn();
  m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'
   +ACC_SECS.map(function(s){
    return '<button type="button" role="menuitem" class="pm-it" data-pms="'+s.k+'" style="--c:'+seatCol(s.b)+'">'
@@ -53885,9 +53954,9 @@ function profMenu(){
   x.onclick=function(){profMenuGo(x.getAttribute('data-pms'));};});
  var sw=m.querySelector('[data-pmsfx]');
  if(sw)sw.onclick=function(){
-  var on=!!(CURP&&CURP.ui&&CURP.ui.sfxoff);
-  if(uiSet('sfxoff',!on)){sw.setAttribute('aria-checked',on?'true':'false');
-   if(on&&typeof sfx==='function')sfx('kept');}};
+  var want=!sfxIsOn();
+  sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
+  if(want&&typeof sfx==='function')sfx('kept');};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();
@@ -58084,5 +58153,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003782299"></div>
+<div id="eof" hidden data-len="003786194"></div>
 </body></html>
