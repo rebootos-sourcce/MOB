@@ -82,32 +82,36 @@ function loopHtml(r,where){
  if(!r||r.unread)return '';
  var p=(typeof CURP!=='undefined')?CURP:null;
  var L=loopOf(p); if(!L)return '';
- var h='<div class="lp lp-'+(where||'rail')+'">';
- h+='<div class="lp-figs">'+lpFig('confirmed','Confirmed',L.confirmed)+lpFig('unanswered','Unanswered',L.unanswered)
+ /* two halves: the counts, the one Next and what was turned down or not
+    done on one side, and the patterns with their chains on the other. On
+    the rail and on a phone the halves stack; on Summary they stand side by
+    side, so the list is not squeezed into four narrow columns. */
+ var a='<div class="lp-figs">'+lpFig('confirmed','Confirmed',L.confirmed)+lpFig('unanswered','Unanswered',L.unanswered)
   +lpFig('declined','Declined',L.declined.length)+lpFig('practised','Practised',L.practice.events)+'</div>';
+ var b='';
  if(!L.patterns.length){
-  h+='<p class="lp-note">Nothing read yet, so no '+unp('pattern')+' is traced. Write what happened and each '
+  b+='<p class="lp-note">Nothing read yet, so no '+unp('pattern')+' is traced. Write what happened and each '
    +'pattern lands here with the words that placed it.</p>';}
  else{
-  /* THE ONE NEXT goes first, because it is the one thing on the block a
-     person can press, and it names the pattern it acts on */
-  if(L.next)h+='<div class="lp-next"><span class="lp-cl">Next</span>'
+  /* THE ONE NEXT, because it is the one thing on the block a person can
+     press, and it names the pattern it acts on */
+  if(L.next)a+='<div class="lp-next"><span class="lp-cl">Next</span>'
    +'<span class="lp-nx">'+esc(L.next.name)+' came '+unp('from your words')+' and has no line opened yet.</span>'
    +'<button type="button" class="btn lp-go" data-lprel="'+L.next.address+'">Run a release</button></div>';
   var show=LP.all?L.patterns:L.patterns.slice(0,LOOP_SHOW);
-  h+='<div class="lp-list">'+show.map(lpRow).join('')+'</div>';
-  if(L.more)h+='<button type="button" class="btn lp-all" data-lpall="1" aria-expanded="'+(LP.all?'true':'false')+'">'
+  b+='<div class="lp-list">'+show.map(lpRow).join('')+'</div>';
+  if(L.more)b+='<button type="button" class="btn lp-all" data-lpall="1" aria-expanded="'+(LP.all?'true':'false')+'">'
    +(LP.all?'Show the first '+LOOP_SHOW:'Show all '+L.patterns.length)+'</button>';}
- if(L.declined.length)h+='<div class="lp-dec"><span class="lp-cl">'+unp('declined','Declined')+'</span><ul>'
+ if(L.declined.length)a+='<div class="lp-dec"><span class="lp-cl">'+unp('declined','Declined')+'</span><ul>'
   +L.declined.map(function(d){
    var what=d.patterns.length?d.patterns.join(', '):'no named pattern';
    return '<li>A '+esc(d.cls||'')+' practice for '+esc(what)+'. '
     +(d.why?esc(d.why):'No reason was recorded.')+'</li>';}).join('')+'</ul></div>';
- if(L.misses.length)h+='<div class="lp-dec"><span class="lp-cl">'+unp('not done','Not done')+'</span><ul>'
+ if(L.misses.length)a+='<div class="lp-dec"><span class="lp-cl">'+unp('not done','Not done')+'</span><ul>'
   +L.misses.map(function(m){
    return '<li>A ritual came due '+lpPlural(m.run,'time','times in a row')+' and was not marked done. '
     +'Change when it runs or how long it takes.</li>';}).join('')+'</ul></div>';
- return h+'</div>';}
+ return '<div class="lp lp-'+(where||'rail')+'"><div class="lp-a">'+a+'</div><div class="lp-b">'+b+'</div></div>';}
 
 /* SUMMARY'S ZONE. One call from sumFull, on a line of its own. The heading
    is written here with the zone classes Summary already styles, so nothing in

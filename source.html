@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1406 f0bf894 2026-10-02 16:15"><head><meta charset="utf-8">
+<html lang="en" data-build="v1408 15f61a8 2026-10-02 16:18"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2500,7 +2500,7 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
 .lp{display:flex;flex-direction:column;gap:12px;min-width:0}
 .lp-figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.lp-rail .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lp-rail .lp-figs,.sg-loop .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
 .lp-f{display:flex;flex-direction:column;gap:2px;padding:9px 11px;border:1px solid var(--edge);
  border-radius:var(--r-s);min-width:0}
 .lp-fl{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em}
@@ -2530,7 +2530,9 @@ body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
 .lp-cl{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em}
 .lp-cv{color:var(--ink);min-width:0}
 .lp-dec ul{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--ink)}
-.sg-loop .lp-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start}
+.lp-a,.lp-b{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sg-loop .lp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px;align-items:start}
+@media (max-width:1000px){.sg-loop .lp{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:720px){.lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
  .lp-chain li{grid-template-columns:70px minmax(0,1fr)}}
 /* ROOT ENERGETICS IS SET APART, on both rails. FV: "I want a slightly
@@ -12660,7 +12662,7 @@ var UNPACK_BASE={
  'not done':'Not done counts the times in a row a ritual came due and was not marked done.',
  'from your words':'From your words means a feeling word you wrote names this pattern.',
  'from the seat':'From the seat means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
- 'release line':'A release line is one spoken line of a release, aimed at one address, that lets go of the limit held there.',
+ 'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
  /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
@@ -60159,32 +60161,36 @@ function loopHtml(r,where){
  if(!r||r.unread)return '';
  var p=(typeof CURP!=='undefined')?CURP:null;
  var L=loopOf(p); if(!L)return '';
- var h='<div class="lp lp-'+(where||'rail')+'">';
- h+='<div class="lp-figs">'+lpFig('confirmed','Confirmed',L.confirmed)+lpFig('unanswered','Unanswered',L.unanswered)
+ /* two halves: the counts, the one Next and what was turned down or not
+    done on one side, and the patterns with their chains on the other. On
+    the rail and on a phone the halves stack; on Summary they stand side by
+    side, so the list is not squeezed into four narrow columns. */
+ var a='<div class="lp-figs">'+lpFig('confirmed','Confirmed',L.confirmed)+lpFig('unanswered','Unanswered',L.unanswered)
   +lpFig('declined','Declined',L.declined.length)+lpFig('practised','Practised',L.practice.events)+'</div>';
+ var b='';
  if(!L.patterns.length){
-  h+='<p class="lp-note">Nothing read yet, so no '+unp('pattern')+' is traced. Write what happened and each '
+  b+='<p class="lp-note">Nothing read yet, so no '+unp('pattern')+' is traced. Write what happened and each '
    +'pattern lands here with the words that placed it.</p>';}
  else{
-  /* THE ONE NEXT goes first, because it is the one thing on the block a
-     person can press, and it names the pattern it acts on */
-  if(L.next)h+='<div class="lp-next"><span class="lp-cl">Next</span>'
+  /* THE ONE NEXT, because it is the one thing on the block a person can
+     press, and it names the pattern it acts on */
+  if(L.next)a+='<div class="lp-next"><span class="lp-cl">Next</span>'
    +'<span class="lp-nx">'+esc(L.next.name)+' came '+unp('from your words')+' and has no line opened yet.</span>'
    +'<button type="button" class="btn lp-go" data-lprel="'+L.next.address+'">Run a release</button></div>';
   var show=LP.all?L.patterns:L.patterns.slice(0,LOOP_SHOW);
-  h+='<div class="lp-list">'+show.map(lpRow).join('')+'</div>';
-  if(L.more)h+='<button type="button" class="btn lp-all" data-lpall="1" aria-expanded="'+(LP.all?'true':'false')+'">'
+  b+='<div class="lp-list">'+show.map(lpRow).join('')+'</div>';
+  if(L.more)b+='<button type="button" class="btn lp-all" data-lpall="1" aria-expanded="'+(LP.all?'true':'false')+'">'
    +(LP.all?'Show the first '+LOOP_SHOW:'Show all '+L.patterns.length)+'</button>';}
- if(L.declined.length)h+='<div class="lp-dec"><span class="lp-cl">'+unp('declined','Declined')+'</span><ul>'
+ if(L.declined.length)a+='<div class="lp-dec"><span class="lp-cl">'+unp('declined','Declined')+'</span><ul>'
   +L.declined.map(function(d){
    var what=d.patterns.length?d.patterns.join(', '):'no named pattern';
    return '<li>A '+esc(d.cls||'')+' practice for '+esc(what)+'. '
     +(d.why?esc(d.why):'No reason was recorded.')+'</li>';}).join('')+'</ul></div>';
- if(L.misses.length)h+='<div class="lp-dec"><span class="lp-cl">'+unp('not done','Not done')+'</span><ul>'
+ if(L.misses.length)a+='<div class="lp-dec"><span class="lp-cl">'+unp('not done','Not done')+'</span><ul>'
   +L.misses.map(function(m){
    return '<li>A ritual came due '+lpPlural(m.run,'time','times in a row')+' and was not marked done. '
     +'Change when it runs or how long it takes.</li>';}).join('')+'</ul></div>';
- return h+'</div>';}
+ return '<div class="lp lp-'+(where||'rail')+'"><div class="lp-a">'+a+'</div><div class="lp-b">'+b+'</div></div>';}
 
 /* SUMMARY'S ZONE. One call from sumFull, on a line of its own. The heading
    is written here with the zone classes Summary already styles, so nothing in
@@ -63549,5 +63555,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004159924"></div>
+<div id="eof" hidden data-len="004160419"></div>
 </body></html>

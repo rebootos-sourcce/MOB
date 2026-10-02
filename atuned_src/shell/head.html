@@ -2500,7 +2500,7 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
 .lp{display:flex;flex-direction:column;gap:12px;min-width:0}
 .lp-figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.lp-rail .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lp-rail .lp-figs,.sg-loop .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
 .lp-f{display:flex;flex-direction:column;gap:2px;padding:9px 11px;border:1px solid var(--edge);
  border-radius:var(--r-s);min-width:0}
 .lp-fl{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em}
@@ -2530,7 +2530,9 @@ body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
 .lp-cl{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em}
 .lp-cv{color:var(--ink);min-width:0}
 .lp-dec ul{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--ink)}
-.sg-loop .lp-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start}
+.lp-a,.lp-b{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sg-loop .lp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px;align-items:start}
+@media (max-width:1000px){.sg-loop .lp{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:720px){.lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
  .lp-chain li{grid-template-columns:70px minmax(0,1fr)}}
 /* ROOT ENERGETICS IS SET APART, on both rails. FV: "I want a slightly
