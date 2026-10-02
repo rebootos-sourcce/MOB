@@ -2405,6 +2405,24 @@ const C3_STEM='I am letting go of '+C3_VERB.join(', ').replace(/, ([^,]*)$/,', a
  +' that I am ';
 const C3_TRUTH='I now embody the truth that I am ';
 
+/* ---- THE FIRST RUN RELEASE SENTENCE. Round OX, his words: "I am releasing
+   believing, thinking, feeling, behaving and acting that I am ...". It is the
+   wording of the first run mini release only, exposed here as a constant so
+   the surface that builds it reads it and does not retype it. NOTHING ELSE
+   READS IT: the shipped stem above, C3_STEM, and every line built on it, the
+   release, the games and the knowledge cards, are untouched.
+
+   WHERE THE SHIPPED STEM DIFFERS, so nobody has to find out:
+     the verb     shipped "I am letting go of", first run "I am releasing"
+     the channels shipped six, first run five: perceiving is not in it
+     the order    shipped believing, perceiving, thinking, behaving, acting,
+                  feeling; first run believing, thinking, feeling, behaving,
+                  acting, which puts feeling third and not last
+     the list     shipped joins its last two with ", and", first run with "and"
+   The five are five of C3_VERB's six names, and the gate holds them to it. ---- */
+const C3_FIRSTRUN_VERB=['believing','thinking','feeling','behaving','acting'];
+const C3_FIRSTRUN_STEM='I am releasing believing, thinking, feeling, behaving and acting that I am ';
+
 /* ---- the escalation curve ----
    fifty statements per channel, five bands of ten. the band is not
    decoration: it is nervous system pacing, and the purpose column is why
@@ -3487,7 +3505,87 @@ var LEX={
     already built for exactly this register, low self worth and self doubt,
     solar plexus, Shame: ashamed, humiliated, stupid, worthless,
     embarrassed and guilty are already there. */
- insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame']};
+ insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame'],
+ /* ============================================================
+    ROUND OU, HIS OWN REPORT, dictated into the journal: "I had a
+    confrontation with my boss" and "I was really irritated by him" both read
+    nothing at all. Reproduced on the build in hand: zero hits, zero
+    imprints, for both. The table had the loud verbs (shouted, yelled, snapped,
+    lashed out) and the loud adjectives (furious, livid, seething) and none of
+    the ordinary middle of anger, which is the part people actually dictate.
+
+    THE IRRITATION FAMILY, solar plexus, Anger STATED. Stated, because every
+    word here names the axis itself, the way furious does, so the imprint
+    comes back named and not inferred. The amount is read off the Anger family
+    the table already carries, in three steps, and the gate asserts the rule
+    rather than the number:
+      16  the floor of the Anger family, defensive. irritated and annoyed are
+          the mildest thing a person says about anger, so they take the floor
+          and never more.
+      18  angry. frustrated, aggravated, fed up and pissed off are what
+          people say when they mean angry and are being casual about it.
+      24  furious. infuriated and enraged are its plain synonyms.
+    livid, seething, resentful and rage were already here and are untouched. */
+ irritated:['solar',16,'Anger'],irritating:['solar',16,'Anger'],irritation:['solar',16,'Anger'],
+ irritates:['solar',16,'Anger'],irritable:['solar',16,'Anger'],irked:['solar',16,'Anger'],
+ annoyed:['solar',16,'Anger'],annoying:['solar',16,'Anger'],annoyance:['solar',16,'Anger'],
+ annoys:['solar',16,'Anger'],
+ 'got on my nerves':['solar',16,'Anger'],'gets on my nerves':['solar',16,'Anger'],
+ 'on my nerves':['solar',16,'Anger'],
+ frustrated:['solar',18,'Anger'],frustrating:['solar',18,'Anger'],frustration:['solar',18,'Anger'],
+ frustrates:['solar',18,'Anger'],aggravated:['solar',18,'Anger'],aggravating:['solar',18,'Anger'],
+ 'fed up':['solar',18,'Anger'],'pissed off':['solar',18,'Anger'],pissed:['solar',18,'Anger'],
+ 'ticked off':['solar',18,'Anger'],'mad at':['solar',18,'Anger'],
+ 'pissing me off':['solar',18,'Anger'],'pisses me off':['solar',18,'Anger'],
+ infuriated:['solar',24,'Anger'],infuriating:['solar',24,'Anger'],enraged:['solar',24,'Anger'],
+ outraged:['solar',24,'Anger'],fuming:['solar',24,'Anger'],
+ /* AGGRESSION AND CONFRONTATION, ACTS AND NOT FEELINGS, solar plexus, no
+    stated fetter. The seat is where the table already puts every aggression
+    verb, and the fetter is left to the quarter rule, the way shouted and
+    snapped are, because "I had an argument" says what happened and not which
+    axis it was. 22 is snapped: a conflict named with no stated force.
+    Precision over recall: fight, fought and confront are ordinary words for
+    other things (fight for it, fought cancer, confront my fear), so the fight
+    entries are the ones that name a person to be fought with, and nothing
+    here fires on the bare verb fight. */
+ confrontation:['solar',22],confrontations:['solar',22],confronted:['solar',22],
+ argument:['solar',22],arguments:['solar',22],argued:['solar',22],arguing:['solar',22],
+ clashed:['solar',22],'got into it with':['solar',22],'got into it':['solar',22],'a fight':['solar',22],
+ 'fight with':['solar',22],'fought with':['solar',22],'fighting with':['solar',22],
+ 'raised my voice':['solar',22],'swore at':['solar',22],'screaming match':['solar',26],
+ 'shouting match':['solar',26],'told him off':['solar',22],'told her off':['solar',22],
+ 'told them off':['solar',22],'stood up to':['solar',18],
+ aggression:['solar',22],aggressive:['solar',20],hostile:['solar',20],hostility:['solar',20],
+ /* ROUND OY, HIS SCREENSHOT OF THE BUILD BEFORE THIS ONE. The entry read
+    "I had a really ******* rough day today. I had a confrontation with my
+    boss. I was really irritated by him. ... It made me depressed. Umm, it made
+    me irritable. It made me frustrated. And. It made me mad." and the panel
+    said it kept one word. He named what was missing: depressed, mad,
+    irritable, frustrated, irritated, and the confrontation. The anger ones are
+    above. These are the rest of what he named.
+
+    SAD, AT THE HEART, WHERE sad AND miserable ALREADY SIT, and named by
+    ADJ2CHG as sadness, the way those two are, and Sad STATED as well, for the
+    reason parseStory's seat rule gives: a stated fetter governs the seat it
+    sits at, so the heart of an entry that is also angry elsewhere is not
+    handed Anger addresses for the depression. depressed and depression weigh
+    22, which is miserable: it is the same register, a state and not a moment,
+    and sad at 16 would under read it while hopeless at 26 would read it as the
+    end of the family. unhappy, sadness, sadder and saddened are sad, 16. The
+    three ways people say down and low are phrases and not words, because
+    down and low are ordinary words for places and prices, and a phrase that
+    needs a feel in front of it is the only form that is about a person.
+    mad is Anger, 18, which is angry: in the owner's own speech it is the
+    plain word for it, and it is read as anger and not as the other mad
+    because the table has no entry for the other. Where a person means mad
+    about somebody, mad at and mad about are the ones that name a person to be
+    angry with, and only mad at is here. */
+ depressed:['heart',22,'Sad'],depression:['heart',22,'Sad'],
+ unhappy:['heart',16,'Sad'],sadness:['heart',16,'Sad'],sadder:['heart',16,'Sad'],saddened:['heart',16,'Sad'],
+ 'feel down':['heart',16,'Sad'],'feeling down':['heart',16,'Sad'],'felt down':['heart',16,'Sad'],'feels down':['heart',16,'Sad'],
+ 'feel low':['heart',16,'Sad'],'feeling low':['heart',16,'Sad'],'felt low':['heart',16,'Sad'],
+ mad:['solar',18,'Anger'],angrier:['solar',18,'Anger'],angriest:['solar',18,'Anger'],
+ angered:['solar',18,'Anger'],fury:['solar',24,'Anger']};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
@@ -3498,6 +3596,18 @@ var ADJ2CHG={
  scared:'fear',afraid:'fear',frightened:'fear',terrified:'fear',panicked:'fear',
  froze:'fear',frozen:'fear',paralyzed:'fear',paralysed:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
  angry:'anger',furious:'anger',defensive:'anger',blamed:'anger',
+ /* round OU, the irritation family names the Anger axis itself, the same fact
+    LEX states in its third element. Both are written, as the shame family's
+    are, because an imprint is named only when ADJ2CHG or a stated fetter says
+    so, and a word that did only one of them came back half named. */
+ irritated:'anger',irritating:'anger',irritation:'anger',irritates:'anger',irritable:'anger',
+ irked:'anger',annoyed:'anger',annoying:'anger',annoyance:'anger',annoys:'anger',
+ frustrated:'anger',frustrating:'anger',frustration:'anger',frustrates:'anger',mad:'anger',
+ angrier:'anger',angriest:'anger',angered:'anger',fury:'anger',
+ depressed:'sadness',depression:'sadness',unhappy:'sadness',sadness:'sadness',sadder:'sadness',
+ saddened:'sadness',
+ aggravated:'anger',aggravating:'anger',pissed:'anger',infuriated:'anger',
+ infuriating:'anger',enraged:'anger',outraged:'anger',fuming:'anger',
  ashamed:'shame',humiliated:'shame',embarrassed:'shame',guilty:'shame',
  stupid:'shame',worthless:'shame',inadequate:'shame',
  sad:'sadness',lonely:'sadness',grieving:'sadness',hurt:'sadness',rejected:'sadness',
@@ -3530,7 +3640,218 @@ var ADJ2CHG={
    still a hit; the word was written. */
 var LEXMOD={slightly:0.6,'a little':0.6,'kind of':0.7,somewhat:0.7,fairly:0.9,
  quite:1.2,so:1.35,really:1.4,very:1.4,deeply:1.6,totally:1.7,absolutely:1.7,
- entirely:1.7,extremely:1.8,completely:1.8,utterly:1.8};
+ entirely:1.7,extremely:1.8,completely:1.8,utterly:1.8,
+ /* ROUND OU. Two plain degree words the owner's own speech uses and the
+    table did not carry, each taking the factor of the word it means: "a bit"
+    is "a little", "pretty" is "fairly". And the profane intensifiers, which
+    are degree adverbs and read as degree adverbs: "fucking furious" is
+    "really furious" said louder, and a person dictating it is not reporting
+    a different feeling. They take 1.4, the factor of really, the commonest
+    spoken intensifier in the table, and no more. There is no labelled set to
+    say a swear is worth more than really, so it is not priced as though it
+    were. See SWEAR_INT, which names them for the code that has to step over
+    them to find the degree word before them. */
+ 'a bit':0.6,pretty:0.9,
+ fucking:1.4,fuckin:1.4,fricking:1.4,frickin:1.4,freaking:1.4,freakin:1.4,effing:1.4,
+ friggin:1.4,bloody:1.4,goddamn:1.4,goddamned:1.4,damn:1.4,damned:1.4,
+ motherfucking:1.4};
+/* THE PROFANE INTENSIFIERS, and the one thing that makes them different from
+   a degree word: they may stand between a real degree word and the word it
+   scales, "really fucking furious". scanStory steps over them to find it. */
+var SWEAR_INT=['fucking','fuckin','fricking','frickin','freaking','freakin','effing',
+ 'friggin','bloody','goddamn','goddamned','damn','damned','motherfucking'];
+/* ============================================================
+   MASKED PROFANITY, AND THE RESTORING MAP. Round OU and round OV.
+
+   Chrome's speech recogniser returns a swear with its middle replaced by
+   asterisks, f***ing, sh*t, b*tch, and the Web Speech interface has no switch
+   to stop it. None of this product's code makes them: the transcript is read
+   off the recogniser's result and appended as it comes (ui/storyui.js stMic),
+   and nothing in the repository holds a table of words to star. The owner
+   asked for the asterisks gone, so a masked token is mapped back to the word
+   that was said.
+
+   HOW. The recogniser keeps the letters it does not mask and puts one
+   asterisk for each it does. So a token fits a word when it is the same length
+   and every letter that is not an asterisk is the same letter in the same
+   place. f**k fits fuck and nothing else in the list. d*** fits damn and dick,
+   and that is the ambiguity, named and not hidden: SWEAR_WORDS is ordered most
+   common first and the first fit is taken, so d*** restores to damn. A token
+   that fits nothing is left exactly as the recogniser wrote it, because
+   inventing a word is worse than leaving a star. swearRestore says which tokens
+   had more than one fit, so a caller can show or log them.
+
+   The same function is the sniffer's fallback for text that arrives with the
+   masks already in it (typed, pasted, or an entry kept before this change):
+   normMap reads a masked token as the word it restores to, so f***ing is the
+   intensifier fucking whether or not anything restored it first. */
+var SWEAR_WORDS=['fuck','fucking','shit','fucked','shitty','bullshit','damn','damned',
+ 'goddamn','goddamned','ass','asshole','bitch','crap','crappy','pissed','piss','dick',
+ 'bastard','fucker','fuckin','shitting','dumbass','motherfucker','motherfucking',
+ 'cunt','dickhead','bitches','fucks','shits','pissing'];
+function swearCands(tok){
+ var t=String(tok||'').toLowerCase();
+ if(t.indexOf('*')<0||!/^[a-z*]+$/.test(t))return [];
+ /* A TOKEN OF STARS ALONE, round OY. The owner's own screenshot of the build
+    that shipped before this change: "I had a really ******* rough day". Seven
+    stars and no letter, because the recogniser masked the whole word and not
+    its middle. The only thing left to fit is the length, so a star run of four
+    or more is restored to the most common word in the list of that length,
+    which for seven is fucking, and is reported as ambiguous whenever a second
+    word has the same length. Under four, a run of stars is a rule or a
+    footnote and is left alone. */
+ if(/^\*+$/.test(t)){
+  if(t.length<4)return [];
+  return SWEAR_WORDS.filter(function(w){return w.length===t.length;});}
+ if(t.length<2||!/^[a-z]/.test(t))return [];
+ return SWEAR_WORDS.filter(function(w){
+  if(w.length!==t.length)return false;
+  for(var i=0;i<t.length;i++)if(t.charAt(i)!=='*'&&t.charAt(i)!==w.charAt(i))return false;
+  return true;});}
+/* where the masked tokens are in a text. A token is a run of letters and
+   asterisks that starts on a letter, with a boundary before it, and holds at
+   least one asterisk. "*angry*" and "angry**" are markdown and are not read as
+   masks, because a mask never starts on its asterisk and, when it ends on
+   one, has to fit a word of that length. */
+var SWEAR_TOK=/(^|[^A-Za-z*'])([A-Za-z][A-Za-z*]*\*[A-Za-z*]*|\*{4,})(?![A-Za-z*])/g;
+function swearFind(text){
+ var t=String(text||''), out=[], m;
+ SWEAR_TOK.lastIndex=0;
+ while((m=SWEAR_TOK.exec(t))){
+  var s=m.index+m[1].length, tok=m[2], c=swearCands(tok);
+  if(c.length)out.push({s:s,e:s+tok.length,tok:tok,to:c[0],alts:c.slice(1)});
+  SWEAR_TOK.lastIndex=s+tok.length;}
+ return out;}
+/* THE RESTORING MAP. Pure, host free, and it returns what it changed: the
+   text with each masked token written as the word it fits, and a row per
+   swap carrying the token, the word, and the other words it could have been.
+   The case of the first letter is kept, so a sentence that opened on F***ing
+   opens on Fucking. */
+function swearRestore(text){
+ var t=String(text||''), swaps=swearFind(t), out='', at=0;
+ swaps.forEach(function(x){
+  var w=x.to;
+  if(/[A-Z]/.test(x.tok.charAt(0)))w=w.charAt(0).toUpperCase()+w.slice(1);
+  out+=t.slice(at,x.s)+w; at=x.e;
+  x.at=x.s; x.word=w;});
+ out+=t.slice(at);
+ return {text:out, swaps:swaps.map(function(x){
+  return {from:x.tok,to:x.word,at:x.at,ambiguous:x.alts.length>0,alts:x.alts};})};}
+/* ============================================================
+   THE FRAME TABLES, round OU. What a sentence is ABOUT, as against how hot
+   its words are. Read by storyFrame in engine/frame.js; held here, with the
+   vocabulary, so the lexicon version stamp covers them and an entry can say
+   whether it was framed by the tables it is being read by now.
+
+   WHY A FRAME AND NOT A HIT. "I had a really rough day" carries a state of the
+   whole entry, bad and heavy, and no seat. The sniffer places charge at seats
+   and the product has no address for "the day". Making a hit of it would mean
+   inventing a seat, which is the defect parseStory was fixed for. So a day
+   quality is an entry level reading, valence and load, which the frame
+   reports and the question chain uses, and which moves no charge on its own.
+
+   EVERY AMOUNT HERE IS ANCHORED TO A WORD THE TABLE ALREADY CARRIES, and the
+   gate asserts the anchor and not the number:
+     DAYQ_AMT 1  16, the Anger family floor, defensive. A mild day word weighs
+                 what the mildest anger word weighs.
+     DAYQ_AMT 2  22, miserable, which the table already seats as the one day
+                 word it carries.
+   ============================================================ */
+var DAYQ_NOUN=['day','days','morning','afternoon','evening','night','week','weekend',
+ 'shift','month','year'];
+/* word: [valence, tier]. valence -1 bad, +1 good, 0 neither. tier 1 mild, 2
+   strong, and a tier is read only on a bad word: a good day has no load. long,
+   hard and exhausting are here as LOAD and not as verdict: a long day is not
+   a miserable one, and it still costs. */
+var DAYQ_ADJ={rough:[-1,1],bad:[-1,1],hard:[-1,1],long:[-1,1],tough:[-1,1],
+ stressful:[-1,1],lousy:[-1,1],crappy:[-1,1],off:[-1,1],heavy:[-1,1],
+ horrible:[-1,2],awful:[-1,2],terrible:[-1,2],miserable:[-1,2],shitty:[-1,2],
+ brutal:[-1,2],dreadful:[-1,2],worst:[-1,2],exhausting:[-1,2],draining:[-1,2],
+ disastrous:[-1,2],
+ good:[1,0],great:[1,0],lovely:[1,0],nice:[1,0],wonderful:[1,0],amazing:[1,0],
+ easy:[1,0],peaceful:[1,0],productive:[1,0],fun:[1,0],calm:[1,0],beautiful:[1,0],
+ okay:[0,0],ok:[0,0],fine:[0,0],alright:[0,0],normal:[0,0],quiet:[0,0]};
+var DAYQ_AMT={1:16,2:22};
+/* an adjective and a day noun that are a greeting, a farewell or a holiday and
+   not a verdict on a day. Measured: "I lost the long weekend" read as a bad
+   day and "Good morning" opening a dictation read as a good one. */
+var DAYQ_IDIOM=['good morning','good night','good evening','good afternoon','long weekend',
+ 'happy days','nice day'];
+/* a noun that says the day was bad when a day is called it: "today was a
+   disaster". Each of these is the word for a thing going wrong, not a size. */
+var DAYQ_NOUNQ={disaster:2,nightmare:2,mess:1,shitshow:2,hell:2};
+/* the verbs a day takes. sucked is plain and mild; the phrases are what
+   people say when a day went wrong and they will not say how. */
+var DAYQ_VERB={sucked:1,sucks:1};
+var DAYQ_PHRASE=[['one of those days',1],['not my day',1],['went wrong',1],['went badly',1],
+ ['went to shit',2]];
+/* the words a day is the subject of in "today was rough" */
+var DAYQ_SUBJ=['today','yesterday','tonight','day','morning','afternoon','evening','night',
+ 'week','weekend','shift','work','school'];
+var DAYQ_BE=['was','is','were','are','been','be','has','had','have','being','not',
+ "wasn't","isn't","hasn't","hadn't","weren't","aren't"];
+/* NEGATION, READ AS THE OWNER'S OWN WORDS DO. A negated bad word is unknown,
+   not good, so "not a bad day" reads as nothing. A negated good word is the
+   other way round: "not a good day" is a bad day, and says it. */
+var FRAME_NEG=['not','no','never','nobody','none','cannot','cant',"can't",'didnt',"didn't",
+ 'dont',"don't",'doesnt',"doesn't",'wont',"won't",'wasnt',"wasn't",'werent',"weren't",
+ 'isnt',"isn't",'arent',"aren't",'havent',"haven't",'hasnt',"hasn't",'couldnt',"couldn't",
+ 'wouldnt',"wouldn't",'hardly','barely','without'];
+/* THE OTHER PARTY. A role, and the relation it is in, which is what makes
+   authority a recorded fact and not an inference. The relations are plain:
+   above the person, a partner, level with them, below them or in their care,
+   and a person who pays or is paid. */
+var ROLES={boss:'authority',manager:'authority',supervisor:'authority',teacher:'authority',
+ professor:'authority',principal:'authority',landlord:'authority',director:'authority',
+ ceo:'authority',coach:'authority',lecturer:'authority',headmaster:'authority',
+ mother:'authority',father:'authority',mom:'authority',dad:'authority',mum:'authority',
+ parent:'authority',parents:'authority',
+ partner:'partner',husband:'partner',wife:'partner',boyfriend:'partner',
+ girlfriend:'partner',fiance:'partner',spouse:'partner',ex:'partner',
+ friend:'peer',friends:'peer',coworker:'peer',colleague:'peer',colleagues:'peer',
+ teammate:'peer',roommate:'peer',neighbour:'peer',neighbor:'peer',brother:'peer',
+ sister:'peer',cousin:'peer',classmate:'peer',
+ son:'dependent',daughter:'dependent',kid:'dependent',kids:'dependent',child:'dependent',
+ children:'dependent',baby:'dependent',student:'dependent',students:'dependent',
+ client:'client',customer:'client'};
+/* the pronouns a person uses for somebody who is not them, and the form each
+   takes as the subject of a question: him is asked about as he. */
+var PRON_OTHER={him:'he',her:'she',them:'they',he:'he',she:'she',they:'they'};
+/* AN ACT. A word or phrase that is something a person did to or with somebody,
+   which belongs in the acting and behaving channels of the release and not in
+   feeling. The channel names are C3_VERB's own, and the gate holds this list
+   to them. Every key is also a LEX key, so an act is read twice, as charge by
+   the sniffer and as an act by the frame, by one vocabulary. */
+var ACTS=['confrontation','confrontations','confronted','argument','arguments','argued',
+ 'arguing','clashed','got into it with','got into it','a fight','fight with','fought with',
+ 'fighting with','raised my voice','swore at','screaming match','shouting match',
+ 'told him off','told her off','told them off','stood up to','yelled','shouted',
+ 'screamed','snapped','blew up','lashed out','slammed','lost it'];
+var ACT_CHANNELS=['acting','behaving'];
+/* the acts that name a kind of event and not a thing somebody did. "I had a
+   confrontation" says there was one; it does not say what the person did, so
+   it does not answer what did you do. */
+var ACT_NOUN=['confrontation','confrontations','argument','arguments','a fight','fight with',
+ 'screaming match','shouting match'];
+/* the irregular pasts people actually write. -ed ends a regular one. */
+var PAST_IRR=['said','told','took','gave','made','went','came','saw','left','put','ran',
+ 'sent','brought','found','lost','kept','ate','drank','woke','broke','fell','wrote',
+ 'spoke','heard','stood','sat','threw','hit','cut','bought','paid','met','drove',
+ 'won','forgot','shut','called','began','quit','slept','pulled','pushed','grabbed'];
+/* the verbs that carry no event: state, possession, feeling, wanting. A
+   sentence made of these says how things were and not what happened. */
+var PAST_LIGHT=['was','were','had','felt','seemed','wanted','needed','looked','became',
+ 'thought','believed','used','supposed','hoped','wished','figured','noticed',
+ 'realised','realized','decided','tried','started','got'];
+/* the cues for the other four of the six release channels, as the words a
+   person uses when what they report is a thought, a belief or a perception.
+   Matched whole word on the normalised copy. */
+var CHAN_CUE={thinking:['i thought','i kept thinking','i figured','i wondered',
+  'i told myself','in my head','i was thinking'],
+ perceiving:['i saw','i noticed','i heard','i could tell','it looked like','i watched',
+  'i realised','i realized'],
+ believing:['i believe','i believed','i must','i have to','i should','i always',
+  'i never','nobody ever']};
 var PHRASES=[
  [['wrap myself in a blanket','pretend the world hit pause','pretend the world would stop',
    'want to disappear','wish i could disappear','not be here','not exist',
@@ -3632,7 +3953,12 @@ var LEX_SEATS=['root','sacral','solar','heart','throat','eye','crown','coherent'
    family of them. The validator refused every composite entry until this line
    existed, which is the validator working: a new provenance is declared here or
    it does not reach the table. */
-var LEX_SRC=['authored','canon','fold','composite'];
+/* A FIFTH, round PA: `wheel`, a word added by lexWheel in engine/wheel.js off
+   the owner's feelings wheel, its charge from the family and its seat from
+   CHG2SEAT and its amount from the ring, each derived and none typed. It is
+   its own source because its derivation is its own, and a reviewer asking where
+   an entry came from gets one answer. */
+var LEX_SRC=['authored','canon','fold','composite','wheel'];
 var LEX_AMT_MAX=30;
 /* key -> {src, from, rule, cite}. Covers LEX exactly, in both directions, and
    the gate asserts that, because a provenance table with holes in it is worse
@@ -7594,7 +7920,12 @@ function vRitual(errs,i,x){
    optional ones since round OB: lex, the lexicon version that read it
    (19.B6, LEX_VERSION in engine/sniff.js), and asked, what Source AI asked
    about it (20.H5, srcAsked in engine/sourceai.js). */
-var ENT_KEYS=['t','text','imprints','bands','lex','asked'];
+var ENT_KEYS=['t','text','imprints','bands','lex','asked','subjects'];
+/* the longest a subject may be, in letters. A subject is the person's own words
+   for who or what a clause was about, "my boss", "him", or the span of an act,
+   and 80 is longer than any role phrase or act in the tables and shorter than
+   a sentence, which is what a value that was not a subject would be. */
+var SUBJ_MAX=80;
 function vEntry(errs,i,x){
  var path='story.entries['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -7663,6 +7994,38 @@ function vEntry(errs,i,x){
     if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
     if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
    q.asked=ak;}}
+ /* THE SUBJECT OF EACH SEAT, round OZ. Who or what the words at that seat were
+    about, kept with the entry so a release can say it. Optional: an older
+    entry has none and reads as none, and its text can be read again for it,
+    parseStory being pure. One row at most for each seat, a kind and a source
+    from the lists the sniffer writes, and nothing else, so a field nobody
+    declared cannot ride in on a known one. */
+ if(x.subjects!==undefined){
+  if(!Array.isArray(x.subjects))errs.push(path+'.subjects is not a list');
+  else if(x.subjects.length>Object.keys(K2BAND).length)
+   errs.push(path+'.subjects holds '+x.subjects.length+', which is more than the '
+    +Object.keys(K2BAND).length+' seats there are');
+  else{
+   var sk=[], seen={};
+   x.subjects.forEach(function(r,j){
+    var sp=path+'.subjects['+j+']';
+    if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(sp+' is not an object');return;}
+    var bad=0;
+    Object.keys(r).forEach(function(k){
+     if(['seat','kind','subject','role','ref','from'].indexOf(k)<0){errs.push(sp+' may not carry '+k);bad++;}});
+    if(!K2BAND[r.seat]){errs.push(sp+'.seat names no seat: '+r.seat);bad++;}
+    else if(seen[r.seat]){errs.push(sp+'.seat '+r.seat+' is listed twice');bad++;}
+    if(SUBJ_KINDS.indexOf(r.kind)<0){errs.push(sp+'.kind is not a subject kind: '+r.kind);bad++;}
+    if(SUBJ_FROM.indexOf(r.from)<0){errs.push(sp+'.from is not a source: '+r.from);bad++;}
+    if(typeof r.subject!=='string'||!r.subject.trim()||r.subject.length>SUBJ_MAX){
+     errs.push(sp+'.subject is not a text of 1 to '+SUBJ_MAX+' letters');bad++;}
+    if(r.role!==null&&r.role!==undefined&&(typeof r.role!=='string'||!/^[a-z]{1,24}$/.test(r.role))){
+     errs.push(sp+'.role is not a role word: '+r.role);bad++;}
+    if(r.ref!==null&&r.ref!==undefined&&(typeof r.ref!=='string'||!r.ref.trim()||r.ref.length>SUBJ_MAX)){
+     errs.push(sp+'.ref is not a text of 1 to '+SUBJ_MAX+' letters');bad++;}
+    if(!bad){seen[r.seat]=1;
+     sk.push({seat:r.seat,kind:r.kind,subject:r.subject,role:r.role||null,ref:r.ref||null,from:r.from});}});
+   q.subjects=sk;}}
  return q;}
 function validateProfile(o){
  var errs=[];
@@ -9679,6 +10042,231 @@ function iqApply(p){
  return sc;}
 
 /* ============================================================
+   THE FEELINGS WHEEL, as data for the sniffer. Round PA, the owner's own
+   wheel, FEELINGS-WHEEL.md: seven primary families, their secondary words and
+   their tertiary words, three rings. The sniffer looks for every word on it,
+   groups each word to its family, and maps the family to the places the engine
+   already holds a feeling: the nine charges, the seat each charge is held at,
+   and the addresses at that seat that carry the charge, which are the nodes
+   whose `c` is that charge.
+
+   THE MAPPING IS A PROPOSAL, AND IT IS FLAGGED AS ONE. The wheel names
+   families of feeling and the engine names nine charges. Nothing in the
+   repository says which family is which charge, so each mapping below is mine,
+   written as data so it can be changed in one place, and the owner is asked to
+   confirm it (SNIFFER-RECOMMENDATION.md, question 3). Where the engine already
+   rules a word, the ruling stands and the wheel does not overwrite it: ashamed
+   is Shame at the solar plexus because round GR said so, and the wheel puts
+   it under Sad. Authored entries are never touched. The wheel adds only the
+   words the lexicon had no entry for.
+
+   THE FAMILY, THEN THE CHARGE.
+     Happy       no charge. These subtract, as calm and grateful already do.
+     Surprised   Surprise, and under Startled and Confused Shock, which is where
+                 the product puts doubt, and under Excited Anticipation
+     Bad         Apathy, and under Busy and Stressed Anticipation, which is
+                 where the product puts anxiety
+     Fearful     Fear, Anticipation under Anxious, Shame under Insecure and Weak
+     Angry       Anger, Shame under Humiliated, Apathy under Distant, Disgust
+                 under Critical, Anger and Sad under Let down
+     Disgusted   Disgust
+     Sad         Sad, Shame under Guilty
+   The seat is not typed here. It is CHG2SEAT's, the owner's ruling about where
+   a charge is held, so the wheel can never seat a word somewhere the product
+   does not.
+
+   THE WEIGHT, BY RING, AND DERIVED. A tertiary word is more specific than a
+   secondary one and a secondary one is more specific than the family word, and
+   a more specific report is a stronger one, so the rings take three points of
+   the family's own authored amounts, read off the table at load: the lowest
+   for the family word, the median for a secondary, the upper quartile for a
+   tertiary. Nothing is typed. A family with one authored amount gives all
+   three the same, which under reads and is stated rather than hidden.
+
+   THE PLAIN WORDS. A word that is also an ordinary word for something else, a
+   free afternoon, a busy road, an exposed pipe, is on the wheel and grouped to
+   its family, and is read as a feeling only after a word that says a person
+   is feeling it: felt, feel, feeling, feels, "made me", "makes me". A
+   false positive in a somatic reading costs more than a miss, so the plain
+   words are read where the sentence says they are a feeling and nowhere else.
+
+   TWO FAMILIES. Overwhelmed, inferior, disappointed and embarrassed are under
+   two, and each is grouped to both. The first three read at both charges, the
+   second as a second hit at the same word, which the path already records as
+   one word reaching two places. Embarrassed stays Shame by the earlier ruling,
+   see WHEEL_DUAL, below, flagged.
+   ============================================================ */
+var WHEEL_TREE={
+ Happy:{Playful:['Aroused','Cheeky'],Content:['Free','Joyful'],Interested:['Curious','Inquisitive'],
+  Proud:['Successful','Confident'],Accepted:['Respected','Valued'],Powerful:['Courageous','Creative'],
+  Peaceful:['Loving','Thankful'],Trusting:['Sensitive','Intimate'],Optimistic:['Hopeful','Inspired']},
+ Surprised:{Startled:['Shocked','Dismayed'],Confused:['Disillusioned','Perplexed'],
+  Amazed:['Astonished','Awe'],Excited:['Eager','Energetic']},
+ Bad:{Bored:['Indifferent','Apathetic'],Busy:['Pressured','Rushed'],
+  Stressed:['Overwhelmed','Out of control'],Tired:['Sleepy','Unfocussed']},
+ Fearful:{Scared:['Helpless','Frightened'],Anxious:['Overwhelmed','Worried'],
+  Insecure:['Inadequate','Inferior'],Weak:['Worthless','Insignificant'],
+  Rejected:['Excluded','Persecuted'],Threatened:['Nervous','Exposed']},
+ Angry:{'Let down':['Betrayed','Resentful'],Humiliated:['Disrespected','Ridiculed'],
+  Bitter:['Indignant','Violated'],Mad:['Furious','Jealous'],Aggressive:['Provoked','Hostile'],
+  Frustrated:['Infuriated','Annoyed'],Distant:['Withdrawn','Numb'],Critical:['Skeptical','Dismissive']},
+ Disgusted:{Disapproving:['Judgmental','Embarrassed'],Disappointed:['Appalled','Revolted'],
+  Awful:['Nauseated','Detestable'],Repelled:['Horrified','Hesitant']},
+ Sad:{Lonely:['Isolated','Abandoned'],Vulnerable:['Victimized','Fragile'],
+  Despair:['Grief','Powerless'],Guilty:['Ashamed','Remorseful'],
+  Depressed:['Empty','Inferior'],Hurt:['Disappointed','Embarrassed']}};
+var WHEEL_PRIMARY=Object.keys(WHEEL_TREE);
+/* the family to charge map. [] is the family that subtracts. PROPOSED. */
+var WHEEL_FAM={Happy:[],Surprised:['Surprise'],Bad:['Apathy'],Fearful:['Fear'],
+ Angry:['Anger'],Disgusted:['Disgust'],Sad:['Sad']};
+/* the secondary overrides, family/secondary. PROPOSED. */
+var WHEEL_SEC={'Surprised/Startled':['Shock'],'Surprised/Confused':['Shock'],
+ 'Surprised/Excited':['Anticipation'],'Bad/Busy':['Anticipation'],'Bad/Stressed':['Anticipation'],
+ 'Fearful/Anxious':['Anticipation'],'Fearful/Insecure':['Shame'],'Fearful/Weak':['Shame'],
+ 'Angry/Let down':['Anger','Sad'],'Angry/Humiliated':['Shame','Anger'],
+ 'Angry/Distant':['Apathy'],'Angry/Critical':['Disgust'],'Sad/Guilty':['Shame']};
+/* the word overrides, where one word is read differently from its secondary.
+   PROPOSED. powerless is the despair that is also an absence of will. */
+var WHEEL_WORD={numb:['Apathy'],withdrawn:['Apathy'],powerless:['Sad','Apathy'],
+ embarrassed:['Shame'],ashamed:['Shame'],remorseful:['Shame'],jealous:['Anger'],
+ empty:['Apathy']};
+/* the words under two families that read at two charges, and the second
+   charge each one reads at besides the one the lexicon gives it. PROPOSED.
+   EMBARRASSED IS THE FOURTH AND IS NOT HERE. The wheel puts it under Disgusted
+   and under Sad, and both families are recorded for it in WHEEL, but round GR
+   ruled the shame family, and the gate holds every one of them to Shame and
+   nothing else, so a second hit at Disgust would break a ruling. It is the one
+   place the wheel and an earlier ruling disagree and the earlier ruling wins. */
+var WHEEL_DUAL={overwhelmed:'Fear',inferior:'Sad',disappointed:'Sad'};
+/* words that are also ordinary words, read only after a feeling lead */
+var WHEEL_PLAIN=['happy','bad','awful','aroused','cheeky','free','awe','creative','courageous',
+ 'respected','valued','successful','sensitive','intimate','energetic','eager','busy','rushed',
+ 'pressured','sleepy','tired','unfocussed','curious','inquisitive','interested','powerful',
+ 'accepted','trusting','distant','critical','weak','exposed','hesitant','skeptical','dismissive',
+ 'provoked','fragile','vulnerable','violated','excluded','out of control','confident','proud',
+ 'loving','playful','indifferent'];
+/* the lead that says a person is feeling it. "made me" and its kin are the
+   other way a person says it. */
+var WHEEL_LEAD=['felt','feel','feeling','feels','made me','makes me','make me','left me','leaves me'];
+
+function wheelFlat(){
+ var rows={}, order=[];
+ function add(w,fam,sec,ring){
+  var k=w.toLowerCase();
+  if(!rows[k]){rows[k]={w:k,fams:[],secs:[],ring:ring,rings:[]};order.push(k);}
+  var r=rows[k];
+  if(r.fams.indexOf(fam)<0)r.fams.push(fam);
+  if(r.secs.indexOf(sec)<0)r.secs.push(sec);
+  r.rings.push(ring); r.ring=Math.max(r.ring,ring);}
+ Object.keys(WHEEL_TREE).forEach(function(fam){
+  add(fam,fam,fam,1);
+  Object.keys(WHEEL_TREE[fam]).forEach(function(sec){
+   add(sec,fam,sec,2);
+   WHEEL_TREE[fam][sec].forEach(function(t){add(t,fam,sec,3);});});});
+ return order.map(function(k){return rows[k];});}
+var WHEEL=wheelFlat();
+var WHEEL_BY={}; WHEEL.forEach(function(r){WHEEL_BY[r.w]=r;});
+
+/* the charges a wheel word reads at, in the order they are tried */
+function wheelCharges(r){
+ if(WHEEL_WORD[r.w])return WHEEL_WORD[r.w].slice();
+ var out=[];
+ r.fams.forEach(function(f,i){
+  var sec=r.secs[i], c=WHEEL_SEC[f+'/'+sec]||WHEEL_FAM[f]||[];
+  c.forEach(function(x){if(out.indexOf(x)<0)out.push(x);});});
+ if(WHEEL_DUAL[r.w]&&out.indexOf(WHEEL_DUAL[r.w])<0)out.push(WHEEL_DUAL[r.w]);
+ return out;}
+/* the seat key a charge is held at, CHG2SEAT's own answer */
+function wheelSeatOf(fetter){
+ var key={Sad:'sadness'}[fetter]||String(fetter).toLowerCase();
+ var b=CHG2SEAT[key]; return b&&B2K[b]?B2K[b]:null;}
+/* the amounts of every authored word of a fetter, ascending */
+function wheelAmounts(fetter){
+ var out=[];
+ Object.keys(LEX).forEach(function(k){
+  var e=LEX[k], amt=e[LEX_AMT]; if(amt<=0)return;
+  var f=e[LEX_FET]!=null?e[LEX_FET]:(ADJ2CHG[k]?CHG2FET[ADJ2CHG[k]]:null);
+  if(f===fetter)out.push(amt);});
+ return out.sort(function(a,b){return a-b;});}
+/* the amount for a ring, the three points of the family's own amounts */
+function wheelAmount(fetter,ring){
+ var A=wheelAmounts(fetter);
+ /* a charge with no authored word takes the lowest charged amount anywhere in
+    the table, the rule lexCanon already keeps for an axis with no family */
+ if(!A.length)return lexFamilyFloor().floor;
+ var n=A.length, i=ring<=1?0:(ring===2?Math.floor((n-1)/2):Math.ceil(3*(n-1)/4));
+ return A[i];}
+
+/* THE PASS. Adds the wheel words the lexicon has no entry for, as a stated
+   fetter at the charge's seat, the amount from the ring. The plain words are
+   not added: they are read by the lead rule in scanStory. A word with no
+   charge, the Happy family, is added as a coherent entry, minus twelve, the
+   floor of the coherent words the lexicon already carries, and minus fourteen
+   at the third ring, the top of them. */
+function lexWheel(){
+ var out={added:0,already:0,plain:0,coherent:0,unseated:[],groups:WHEEL.length};
+ WHEEL.forEach(function(r){
+  var ch=wheelCharges(r);
+  if(WHEEL_PLAIN.indexOf(r.w)>=0){out.plain++;return;}
+  if(LEX[r.w]){out.already++;return;}
+  if(!ch.length){
+   var a=lexAdd(r.w,'coherent',r.ring>=3?-14:-12,null,{src:'wheel',from:'FEELINGS-WHEEL.md',rule:'happy family subtracts',cite:'wheel'});
+   if(a.ok&&!a.already){out.added++;out.coherent++;}
+   return;}
+  var f=ch[0], seat=wheelSeatOf(f), amt=wheelAmount(f,r.ring);
+  if(!seat||amt==null){out.unseated.push(r.w);return;}
+  var a2=lexAdd(r.w,seat,amt,f,{src:'wheel',from:'FEELINGS-WHEEL.md '+r.fams.join('+'),
+   rule:'family '+f+', ring '+r.ring+', seat from CHG2SEAT',cite:'wheel'});
+  if(a2.ok&&!a2.already)out.added++;
+  else if(!a2.ok)out.unseated.push(r.w);});
+ return out;}
+
+/* the second hit a two family word reads, see WHEEL_DUAL. Returns null for a
+   word that has none. */
+function wheelDual(w){
+ var f=WHEEL_DUAL[w]; if(!f)return null;
+ var seat=wheelSeatOf(f), amt=wheelAmount(f,(WHEEL_BY[w]||{ring:3}).ring);
+ return seat&&amt!=null?{band:seat,amt:amt,fet:f}:null;}
+/* the plain words by their key, with what they read at once a lead says so */
+function wheelPlain(){
+ var out={};
+ WHEEL_PLAIN.forEach(function(w){
+  var r=WHEEL_BY[w]; if(!r)return;
+  if(LEX[w]){return;}
+  var ch=wheelCharges(r);
+  if(!ch.length){out[w]={band:'coherent',amt:r.ring>=3?-14:-12,fet:null};return;}
+  var seat=wheelSeatOf(ch[0]), amt=wheelAmount(ch[0],r.ring);
+  if(seat&&amt!=null)out[w]={band:seat,amt:amt,fet:ch[0]};});
+ return out;}
+/* the addresses a charge is carried at, at its seat: the nodes whose child
+   fetter, cf, is the charge and whose band is the charge's seat, which is the
+   column parseStory routes an imprint through. NODES.c is the older name of the
+   same thing, and holds Sadness and Joy and Resentment where cf holds the nine
+   axes, so cf is the one that agrees with the imprints. */
+function wheelAddresses(fetter){
+ var seat=wheelSeatOf(fetter), band=seat?K2BAND[seat]:null;
+ return W.filter(function(n){return n.cf===fetter&&n.b===band;}).map(function(n){return n.i;});}
+
+/* WHAT A STORY SAYS, GROUPED. Every wheel word in the text, longest first, with
+   its family, its ring, the charges and seats it reads at, and whether the
+   sniffer read it as a hit or left it, which a plain word with no lead is. */
+function wheelRead(text){
+ var nm=normMap(text), src=nm.s, hits=scanStory(text), out=[], taken=[];
+ var keys=WHEEL.map(function(r){return r.w;}).sort(function(a,b){return b.length-a.length;});
+ keys.forEach(function(w){
+  var at=src.indexOf(' '+w+' ');
+  while(at>=0){
+   var hi=at+w.length+1;
+   if(!taken.some(function(t){return at<t.hi&&hi>t.at;})){
+    taken.push({at:at,hi:hi});
+    var r=WHEEL_BY[w], ch=wheelCharges(r);
+    out.push({w:w,at:at,families:r.fams.slice(),secondary:r.secs.slice(),ring:r.ring,
+     charges:ch,seats:ch.map(wheelSeatOf).filter(function(x){return x;}),
+     plain:WHEEL_PLAIN.indexOf(w)>=0,
+     read:hits.some(function(h){return h.at===at&&h.kind==='word'&&h.t===w;})});}
+   at=src.indexOf(' '+w+' ',at+1);}});
+ return out.sort(function(a,b){return a.at-b.at;});}
+/* ============================================================
    THE SNIFFER. scanStory finds every hit, parseStory turns tags
    into imprints, applyStory is the only function that mutates.
    ============================================================ */
@@ -9799,6 +10387,10 @@ function lexCanon(){
    and the gate would then be asserting the absence of a bug it had itself
    introduced. Both run before scanStory can be called. */
 var LEXCANONRUN=lexCanon();
+/* the wheel, round PA, after the canon and before the fold, so a fold can take an
+   inflection of a wheel word, and before the version stamp reads the table */
+var LEXWHEELRUN=lexWheel();
+var WHEELPLAIN=wheelPlain();
 var LEXFOLDRUN=lexFold();
 /* ============================================================
    THE PLACE WORD, 20.H2. "The body word the person used is where the body
@@ -9965,7 +10557,23 @@ var SOMA_PLACE=somaPlaces();
 function normMap(t){
  t=String(t||'');
  var body='',bm=[],i,c;
+ /* A MASKED SWEAR IS READ AS THE WORD IT FITS, round OU. Chrome's recogniser
+    hands back f***ing, and the plain rule below turns each asterisk into a
+    space, so the word becomes "f" and "ing", and "really f***ing rough" has
+    lost the intensifier and the adjacency the degree rule needs. swearFind
+    names the masked tokens; each is written into the normalised copy as the
+    word it fits, and every letter of that word maps back into the raw span, so
+    a mark placed from an offset still lands on the characters the person's
+    text holds. Text with no asterisk in it never reaches this and is read
+    exactly as it always was. */
+ var masks={};
+ if(t.indexOf('*')>=0)swearFind(t).forEach(function(x){masks[x.s]=x;});
  for(i=0;i<t.length;i++){
+  var mk=masks[i];
+  if(mk){
+   var w=mk.to, m=w.length, a=mk.s, b=mk.e-1, k;
+   for(k=0;k<m;k++){body+=w.charAt(k); bm.push(m===1?a:a+Math.round(k*(b-a)/(m-1)));}
+   i=mk.e-1; continue;}
   c=t.charAt(i).toLowerCase();
   if(!/[a-z' ]/.test(c))c=' ';
   body+=c; bm.push(i);}
@@ -10091,6 +10699,25 @@ function scanStory(text){
   var at=src.indexOf(' '+w+' ');
   while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
+ /* THE WHEEL'S PLAIN WORDS, round PA. A word that is also an ordinary word, a
+    busy road, a free afternoon, is read as a feeling only after a word that
+    says a person is feeling it, see WHEEL_LEAD. Nothing else reads it. */
+ Object.keys(WHEELPLAIN).forEach(function(w){
+  var at=src.indexOf(' '+w+' ');
+  while(at>=0){
+   var pre=src.slice(0,at+1), mm=Object.keys(LEXMOD).sort(function(a,b){return b.length-a.length;}), cut=true;
+   while(cut){cut=false;
+    for(var q=0;q<mm.length;q++)if(pre.slice(-(mm[q].length+2))===' '+mm[q]+' '){pre=pre.slice(0,pre.length-mm[q].length-1);cut=true;break;}}
+   var lead=WHEEL_LEAD.some(function(l){return pre.slice(-(l.length+2))===' '+l+' ';});
+   if(lead&&!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
+    hits.push({t:w,kind:'word',band:WHEELPLAIN[w].band,amt:WHEELPLAIN[w].amt,fet:WHEELPLAIN[w].fet,at:at});
+   at=src.indexOf(' '+w+' ',at+1);}});
+ /* THE TWO FAMILY WORDS, round PA: a second hit at the same word, at the
+    second charge. The path already records one word reaching two places. */
+ hits.slice().forEach(function(h){
+  if(h.kind!=='word'||!WHEEL_DUAL[h.t])return;
+  var d=wheelDual(h.t);
+  if(d)hits.push({t:h.t,kind:'word',band:d.band,amt:d.amt,fet:d.fet,at:h.at,dual:true});});
  /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
     phrase hit scales its amount, and the hit keeps both so the path and any
     reader can see what was scaled and by what. Only the nearest degree word
@@ -10101,9 +10728,24 @@ function scanStory(text){
  hits.forEach(function(h){
   if(h.amt==null||(h.kind!=='word'&&h.kind!=='phrase'))return;
   var before=src.slice(0,h.at+1);
-  for(var i=0;i<mods.length;i++){
-   if(before.slice(-(mods[i].length+2))===' '+mods[i]+' '){
-    h.mod=LEXMOD[mods[i]]; h.modw=mods[i]; h.amt=h.amt*h.mod; break;}}});
+  function degreeBefore(b){
+   for(var i=0;i<mods.length;i++){
+    if(b.slice(-(mods[i].length+2))===' '+mods[i]+' ')return mods[i];}
+   return null;}
+  var near=degreeBefore(before);
+  if(near){
+   var use=near;
+   /* A PROFANE INTENSIFIER IS STEPPED OVER, round OU. "really fucking
+      furious" has two degree words in a row, and reading only the nearest
+      would price it as fucking alone and lose "really", or, said the other way
+      round, "absolutely fucking furious" would lose "absolutely". The word
+      before the swear is looked for, and the stronger of the two wins: they
+      are not added, because two degree words say one degree. Only a profane
+      intensifier is stepped over, so no other pair of degree words changes. */
+   if(SWEAR_INT.indexOf(near)>=0){
+    var b2=before.slice(0,before.length-near.length-1), prior=degreeBefore(b2);
+    if(prior&&LEXMOD[prior]>LEXMOD[near])use=prior;}
+   h.mod=LEXMOD[use]; h.modw=use; h.amt=h.amt*h.mod;}});
  /* THE PLACE WORD, 20.H2, see SOMA_PLACE above. A sensation word moves to
     the seat of the nearest place word in its own clause, counted in words,
     and not across a comma (wordsOf's g). Measured on every string the
@@ -10151,6 +10793,46 @@ function scanStory(text){
    h.place=best.w; h.placeAt=best.at;
    if(best.seat!==h.band){h.was=h.band; h.band=best.seat;}});}
  hits.sort(function(a,b){return a.at-b.at;});
+ /* A FEELING THE OTHER PERSON LACKS IS NOT THE WRITER'S, round OY. "He showed
+    no remorse" read as remorse, a heart word, charged to the writer, and then
+    struck as negated on the page. Remorse is missing in him, and nothing in the
+    sentence is the writer's. The rule is narrow on purpose: a hit with a
+    negator within three words before it, in its own clause, whose nearest
+    subject going back is somebody else (he, she, they or a role), and not the
+    writer (I, we). "I felt no remorse" is still the writer's, and still read
+    and set aside as before. The hit is taken out of the hits, so it places no
+    charge, draws no mark and is not counted as a negated mention; it is kept
+    on the array as aboutOther, with where it was and who it was said of, so
+    nothing the person wrote is lost and the story frame can carry it as a
+    note about him. Every other third person feeling still lands on the writer
+    ("he was furious"), which is the subject model DESIGN-sniffer.md names as
+    missing, and this is not it. */
+ var aboutOther=[];
+ if(hits.length){
+  var wsO=null;
+  var kept=hits.filter(function(h){
+   var pre=src.slice(0,h.at+1);
+   if(!/ (no|not|never|without|zero|hardly|barely) (\S+ ){0,2}$/.test(pre))return true;
+   if(!wsO)wsO=wordsOf(text,nm);
+   var i=-1; for(var k=0;k<wsO.length;k++)if(wsO[k].at===h.at){i=k;break;}
+   if(i<0)return true;
+   var c=wsO[i].c, j=-1;
+   for(var q=i-1;q>=0&&q>=i-3&&wsO[q].c===c;q--)
+    if(/^(no|not|never|without|zero|hardly|barely)$/.test(wsO[q].w)){j=q;break;}
+   if(j<0)return true;
+   for(var b=j-1,st=0;b>=0&&st<6&&wsO[b].c===c;b--,st++){
+    var w=wsO[b].w;
+    if(w==='i'||w==='we'||w==='me')return true;
+    if(w==='he'||w==='she'||w==='they'||ROLES[w]){
+     if(!aboutOther.some(function(a){return a.at===h.at;}))
+      aboutOther.push({t:h.t,at:h.at,from:wsO[b].at,who:w,neg:wsO[j].w});
+     return false;}}
+   return true;});
+  /* every hit at the same word goes together: the word hit and the adjective
+     hit are one event */
+  var gone={}; aboutOther.forEach(function(a){gone[a.at]=1;});
+  hits=kept.filter(function(h){return !gone[h.at];});}
+ hits.aboutOther=aboutOther;
  return hits;}
 /* ============================================================
    THE PATH.
@@ -10325,6 +11007,16 @@ function parseStory(text){
    /* keep whichever reading is better represented at this seat */
    if(mseg.length>seg.length) seg=mseg;
    if(!seg.length) seg=all;}
+  /* A FETTER STATED AT THIS SEAT GOVERNS THIS SEAT, round OY. `wanted` is
+     every fetter any word in the entry named, anywhere, so an entry that is
+     angry at the solar plexus and depressed at the heart wanted Anger and Sad
+     at both, and the heart was handed Hatred and Resentment for the
+     depression. Round GR made the stated fetter seat local for the case where
+     the seat could not house it; this is the other half, for the seat that
+     can. Where a fetter was stated at this seat, only the addresses of the
+     fetters stated here are used. A seat nothing was stated at reads exactly
+     as before. */
+  if(stateHere){var sk=seg.filter(function(n){return here[n.cf];}); if(sk.length)seg=sk;}
   seg=seg.sort(function(a,b){return (b.susc||1)-(a.susc||1);});
   if(!seg.length) return;
   /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
@@ -10336,10 +11028,21 @@ function parseStory(text){
        when this is true. */
     inferred:!named,
     amt:Math.round(share*10)/10, from:k});});});
+ /* THE SUBJECT OF EVERY IMPRINT, round OZ: who or what the words that made it
+    are about, from the person's own sentence, in engine/frame.js. Additive:
+    nothing above this line reads it and no amount moves because of it. */
+ var subj=(typeof hitSubjects==='function')?hitSubjects(text,hits):{hits:[],seats:{}};
+ imprints.forEach(function(im){
+  var sj=subj.seats[im.from];
+  if(!sj)sj={subject:'myself',kind:'inferred',role:null,ref:null,from:'none',why:'no word at this seat had a clause'};
+  im.subject=sj.subject; im.subjectKind=sj.kind; im.subjectRole=sj.role;
+  im.subjectRef=sj.ref; im.subjectFrom=sj.from;});
  var nm={}; Object.keys(byChg).forEach(function(c){
   var f=CHG2FET[c]; if(f) nm[f]=(nm[f]||0)+byChg[c];});
  var named=Object.keys(nm).sort(function(a,b){return nm[b]-nm[a];});
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
+  aboutOther:hits.aboutOther||[],
+  subjects:subj.hits, seatSubjects:subj.seats,
   path:pathOf(hits),
   words:hits.filter(function(h){return h.kind!=='adj';}).length};}
 /* ============================================================
@@ -10649,7 +11352,7 @@ var LEXCOMPRUN=lexComposite();
    failure CLAUDE.md records again and again. This is computed at load, after
    the canon, fold and composite passes have finished writing, over every
    table the scanner reads a match, an amount or a seat from: LEX, ADJ2CHG,
-   PHRASES, LEXMOD and the place word tables, the blocking places included,
+   PHRASES, LEXMOD, the frame tables (round OU) and the place word tables, the blocking places included,
    because adding one can stop a move. A word added, an amount
    retuned or a seat moved changes it, and nothing else does.
 
@@ -10668,7 +11371,9 @@ function lexCanonJSON(v){
   return JSON.stringify(k)+':'+lexCanonJSON(v[k]);}).join(',')+'}';
  return JSON.stringify(v===undefined?null:v);}
 function lexVersion(){
- var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS]
+ var s=[LEX,ADJ2CHG,PHRASES,LEXMOD,SOMA_PLACE.sense,SOMA_PLACE.seat,SOMA_PLACE_WORDS,
+  WHEEL_TREE,WHEEL_FAM,WHEEL_SEC,WHEEL_WORD,WHEEL_DUAL,WHEEL_PLAIN,WHEEL_LEAD,DAYQ_NOUN,DAYQ_ADJ,DAYQ_AMT,DAYQ_IDIOM,DAYQ_NOUNQ,DAYQ_VERB,DAYQ_PHRASE,DAYQ_SUBJ,ROLES,PRON_OTHER,
+  ACTS,PAST_IRR,PAST_LIGHT,CHAN_CUE,SWEAR_WORDS]
   .map(lexCanonJSON).join('|');
  var h=0x811c9dc5;
  for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;}
@@ -11196,7 +11901,14 @@ function srcNegated(src,at,floor){
  var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
  var before=String(src).slice(f,at).trim().split(' ');
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
- return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
+ /* THE APOSTROPHE IS NOT PART OF THE NEGATOR, round OU. normMap keeps the
+ apostrophe in a word, so "I wasn't afraid" reaches this as wasn't, and the
+ list below holds wasnt. Measured on the build before this change: "I was
+ not afraid" and "I wasnt afraid" were both heard as negated and "I wasn't
+ afraid" was heard as afraid, with a mention, which is the false positive this
+ function exists to prevent. stMarks on the page already strips the
+ apostrophe before it asks, so the page and the engine now ask the same way. */
+ return run.some(function(w){return SRC_NEG.indexOf(w.replace(/'/g,''))>=0;});}
 
 /* how many earlier committed entries touched each seat. Reads only the seat
    keys a commit already stored, never the text. */
@@ -11272,6 +11984,25 @@ function srcTurn(heard,state){
  var st=state||{};
  if(!heard||(heard.unread&&!st.typed))return {move:'open'};
  if(st.passed)return {move:'pass'};
+ /* THE FRAME'S ASK, round OU, moved ahead of the seat's own at round OY. When
+    the story frame says the entry has said how things were or who was in it
+    and has not said what happened, that one question is asked first: "What
+    made it rough?", "What did he do?". Measured on his own entry at round OY,
+    "I had a really fucking rough day. I had a confrontation with my boss. I
+    was really irritated by him. ... It made me mad.": the anger comes back
+    five times at one seat, which is rung eight, and the seat's own ask would
+    have been "Both land behind your stomach. Why there?" about a story that
+    has not yet said what he did. What happened comes before why there. Only
+    the first slot, and only while it is missing: the rest of the chain is
+    pulled by the person, with the button, and the ask goes the moment what
+    happened is written, so it never walks the person through the questions on
+    its own. A frame that triggers nothing leaves every entry exactly as it
+    was, and Move on silences it above. */
+ var f=st.frame;
+ if(f&&f.trigger&&f.missing&&f.missing[0]==='what'&&f.questions&&f.questions.what){
+  var b=(f.feeling&&heard&&heard.top)?heard.top.band:null;
+  return {move:'ask', why:SRC_FRAME_KIND.what, seat:null, band:b, rung:0, mentions:0,
+   earlier:0, q:f.questions.what.q, quote:f.questions.what.quote, slot:'what'};}
  if(!heard.asks)return {move:'listen'};
  var s=heard.top;
  return {move:'ask', seat:s.seat, band:s.band, rung:s.rung,
@@ -11448,7 +12179,14 @@ function srcNext(dims,asked,askable){
    answer, and it does not, so it says wrote. "Refused" has no control on the
    page today; that is 20.H4 and S6, and a state nothing can produce is not
    offered. */
-var SRC_KINDS=SRC_DIM_ORDER.concat(['again','earlier','root','since','back']);
+/* ROUND OU AND OV ADD SIX KINDS, and they are kinds and nothing more: the five
+   slots of the story frame, engine/frame.js, and one for any question out of
+   the named frameworks, engine/qframe.js. The framework and the layer are not
+   stored: the entry keeps that a framework question was asked, never which,
+   because which is a thing about the person's day and not about the page. */
+var SRC_FRAME_KIND={what:'fwhat',did:'fdid',feel:'ffeel',where:'fwhere',under:'funder'};
+var SRC_KINDS=SRC_DIM_ORDER.concat(['again','earlier','root','since','back',
+ 'fwhat','fdid','ffeel','fwhere','funder','qframe']);
 var SRC_OUTCOMES=['moved','wrote','left'];
 /* log is the page's own list, one row per question shown: {k, seat, at, moved},
    where at is the length of the text when it was first shown. Returns what
@@ -11465,6 +12203,1200 @@ function srcAsked(log,len){
  return out;}
 /* the most an entry can carry: every kind at every seat and at none. */
 function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
+/* ============================================================
+   THE STORY FRAME. Round OU, TASKS.md, and his own report: he dictated "I had
+   a really rough day", then "I had a confrontation with my boss", then "I was
+   really irritated by him", and the instrument asked nothing about any of
+   them. Three sentences that between them say a day was bad, who was in it,
+   what kind of event it was and how he felt, and not one of them says what
+   happened. A person who writes that is mid sentence. What a friend does next
+   is ask what happened.
+
+   WHAT THIS IS. A pure, host free reading of an entry, or of the day's
+   running entries joined, into the slots a story has:
+
+     day      how the day was, bad or good, and how heavy. A state of the whole
+              entry. It carries no seat, and moves no charge, see below.
+     event    what happened, as a sentence a person could point at: somebody
+              did something. "I had a confrontation" is not one, it names the
+              kind of thing and not what was said or done.
+     other    who else is in it, the role they hold, and whether that role is
+              above the person. Recorded, never inferred about the person.
+     act      what somebody did to or with somebody, the thing that belongs in
+              the acting and behaving channels of the release.
+     feeling  the person's own feeling, its word, its aim, how strong.
+     body     where it was felt, if said.
+     under    what the person says was beneath it, if said.
+     missing  the slots the entry does not answer, in a fixed order.
+     ask      the one slot to ask about next, and the question for it.
+
+   THE QUESTION CHAIN. The order is the owner's, and it is a fixed order and
+   not a score, because there is no labelled set to fit a weight against and a
+   weighted sum here would be five magic numbers:
+
+     what     what happened, or what did he do or say
+     did      what did you do
+     feel     how did you feel, only when the entry names no feeling
+     where    where did you feel it
+     under    what was under it
+
+   "feel" sits between "did" and "where" because "where did you feel it"
+   needs an it. Every other relative order is his. The chain asks one slot at
+   a time, never one already asked in this entry, and never a slot the entry
+   already answers. What the person writes in answer goes in the journal and is
+   read again as part of the same story, which is the only feed back there is:
+   nothing here stores a thing the person did not write.
+
+   WHAT IT NEVER DOES. It claims no cause. "What made it rough?" asks for the
+   person's own account and supplies none, and "supports, not causes" is the
+   rule it is written to: every field is a thing the person's words say, with
+   the span they said it in. It diagnoses nothing, names no address, and a
+   question quotes the person's own words and never the lexicon's.
+
+   HOW A DAY QUALITY FEEDS THE ENGINE, STATED PLAINLY. It does not. A hit has a
+   seat and an amount, and "a rough day" has no seat: the sniffer places charge
+   in the body, and the product has no address for a day. A hit seated
+   anywhere would be invented, which is what parseStory was fixed for.
+   So day.load is a reading of the ENTRY, on the same zero to ten scale as a
+   seat's reading, from the same arithmetic: a tier amount anchored to a word
+   the lexicon already carries, scaled by the degree word before it,
+   divided by three, capped at ten. What moves because of it is the question,
+   srcTurn's frame ask, and what the page says it heard. What would move the
+   field is a ruling, and it is the owner's: see SNIFFER-RECOMMENDATION.md.
+
+   THE RELEASE'S SIX CHANNELS. believing, perceiving, thinking, behaving,
+   acting and feeling, C3_VERB in engine/data/cards.js, and read here and not
+   retyped. An imprint carries no channel: it is a node, a name, a band, a
+   fetter and an amount. The release sweeps all six on every line, so a
+   channel is not something a reading chooses today. The frame reports which
+   channels the person's own words sit in, as a fact about the words, so
+   "acts of aggression" is recorded as acting and behaving. Nothing reads it
+   yet.
+   ============================================================ */
+var FRAME_SLOTS=['what','did','feel','where','under'];
+/* a feeling ending in -ed is not a thing that happened */
+var FRAME_STATE=['tired','bored','stressed','worried','upset','excited','relieved','pleased',
+ 'confused','surprised','shocked','scared','stuck','drunk','married','retired'];
+var FRAME_ADV=['just','then','also','really','suddenly','immediately','finally','even',
+ 'still','again','only','actually','literally','honestly'];
+var FRAME_DET=['my','his','her','their','the','our','a','an','this','that','these','those','your'];
+var FRAME_PREP=['by','at','with','about','toward','towards','over','from','to','on','against'];
+var FRAME_ME=['i',"i'm",'im','me','myself'];
+var FRAME_THEM=['he','she','they',"he's","she's","they're",'you'];
+var FRAME_SKIP=['just','honestly','actually','literally','been','also','being','so','such',
+ 'a','an'];
+
+function frameClean(w){return String(w||'').replace(/'/g,'');}
+/* every degree word, longest first, as token lists */
+function frameMods(){
+ return Object.keys(LEXMOD).map(function(m){return {m:m,w:m.split(' ')};})
+  .sort(function(a,b){return b.w.length-a.w.length;});}
+function frameModEnd(ws,k,MODS){
+ for(var q=0;q<MODS.length;q++){
+  var m=MODS[q], n=m.w.length, ok=k-n+1>=0;
+  for(var z=0;ok&&z<n;z++)if(ws[k-n+1+z].w!==m.w[z])ok=false;
+  if(ok)return {m:m.m,len:n};}
+ return null;}
+function frameModAt(ws,j,MODS){
+ for(var q=0;q<MODS.length;q++){
+  var m=MODS[q], n=m.w.length, ok=j+n<=ws.length;
+  for(var z=0;ok&&z<n;z++)if(ws[j+z].w!==m.w[z])ok=false;
+  if(ok)return {m:m.m,len:n};}
+ return null;}
+function framePhraseAt(ws,i,key){
+ var p=key.split(' ');
+ if(i+p.length>ws.length)return false;
+ for(var z=0;z<p.length;z++)if(ws[i+z].w!==p[z])return false;
+ return true;}
+/* a negator inside the three words before an index, in the same clause */
+function frameNegBefore(ws,i){
+ for(var k=i-1,n=0;k>=0&&n<3;k--,n++){
+  if(ws[k].c!==ws[i].c)break;
+  if(FRAME_NEG.indexOf(ws[k].w)>=0)return true;}
+ return false;}
+function frameTyped(t,ws,i,j){return t.slice(ws[i].s,ws[j].e);}
+/* a swear, for the clause level lift. A word the lexicon reads, alone or inside
+   a phrase, is not one: pissed is in the restoring list because Chrome masks
+   it, and it is also an anger word with an amount of its own, so counting it
+   here would lift "pissed off" and "pissing me off" for being exactly that. */
+var FRAME_LEXTOK=null;
+function frameSwearWord(w){
+ if(!FRAME_LEXTOK){FRAME_LEXTOK={};
+  Object.keys(LEX).forEach(function(k){k.split(' ').forEach(function(x){FRAME_LEXTOK[x]=1;});});}
+ return (SWEAR_WORDS.indexOf(w)>=0||SWEAR_INT.indexOf(w)>=0)&&!FRAME_LEXTOK[w];}
+/* a swear anywhere in this clause */
+function frameProfane(ws,c){
+ for(var k=0;k<ws.length;k++)if(ws[k].c===c&&frameSwearWord(ws[k].w))return true;
+ return false;}
+
+/* THE DAY. Four shapes, and each one is a thing people actually say:
+     a really rough day        the adjective stands before the day noun
+     today was rough           the day is the subject of be and an adjective
+     today sucked              or of a verb the day takes
+     one of those days         a fixed phrase
+   Each is read as written and nothing is inferred from tone. A negated bad
+   word is unknown and reads as nothing; a negated good word is bad. */
+function frameDay(t,ws,MODS){
+ var found=[];
+ function add(c){found.push(c);}
+ function finish(c){
+  /* the degree factor is the strongest degree word among those standing
+     there, not their product: two degree words say one degree */
+  /* degs is in the order met going backward from the word, so degs[0] is the
+     nearest. It is the one that counts, which is scanStory's own rule, and a
+     swear standing nearest is stepped over to the word before it, the
+     stronger of the two winning. */
+  var f=1, prof=false;
+  if(c.degs.length){
+   f=LEXMOD[c.degs[0].m]; prof=SWEAR_INT.indexOf(c.degs[0].m)>=0;
+   if(prof&&c.degs[1]&&LEXMOD[c.degs[1].m]>f)f=LEXMOD[c.degs[1].m];}
+  c.mod=f; c.adjacentSwear=prof;
+  var v=c.valence, tier=c.tier;
+  if(c.negated){
+   if(v<0)return null;
+   v=-1; tier=1; c.flipped=true;}
+  c.valence=v; c.tier=v<0?tier:0;
+  var amt=v<0?DAYQ_AMT[c.tier]*f:0;
+  c.load=v<0?Math.round(Math.min(10,amt/3)*10)/10:0;
+  return c;}
+ var n,k,i;
+ /* attributive */
+ for(n=0;n<ws.length;n++){
+  if(DAYQ_NOUN.indexOf(ws[n].w)<0)continue;
+  var adjs=[], degs=[], start=n, kk=n-1, pend=null;
+  while(kk>=0&&ws[kk].c===ws[n].c){
+   if(DAYQ_ADJ[ws[kk].w]){adjs.unshift(kk);start=kk;pend=null;kk--;continue;}
+   var me=frameModEnd(ws,kk,MODS);
+   if(me){degs.push(me);start=kk-me.len+1;kk-=me.len;continue;}
+   if(ws[kk].w==='and'&&adjs.length){pend=kk;kk--;continue;}
+   break;}
+  if(!adjs.length)continue;
+  /* a greeting, a farewell and a holiday are not days that went well or badly */
+  if(DAYQ_IDIOM.indexOf(ws[adjs[adjs.length-1]].w+' '+ws[n].w)>=0)continue;
+  var vs=adjs.map(function(a){return DAYQ_ADJ[ws[a].w];});
+  var worst=vs.reduce(function(a,b){return (b[0]<a[0]||(b[0]===a[0]&&b[1]>a[1]))?b:a;});
+  add(finish({via:'before',valence:worst[0],tier:worst[1],degs:degs,i0:adjs[0],i1:n,
+   negated:frameNegBefore(ws,start),adjs:adjs}));}
+ /* the day as the subject */
+ for(i=0;i<ws.length;i++){
+  var sw=ws[i].w.replace(/'s$/,'');
+  if(DAYQ_SUBJ.indexOf(sw)<0)continue;
+  var j=i+1, negd=false, be=ws[i].w.slice(-2)==="'s"?1:0;
+  while(j<ws.length&&ws[j].c===ws[i].c&&DAYQ_BE.indexOf(ws[j].w)>=0&&j-i<=4){
+   if(FRAME_NEG.indexOf(ws[j].w)>=0)negd=true; be++; j++;}
+  /* a verb the day takes: today sucked */
+  if(!be&&ws[j]&&DAYQ_VERB[ws[j].w]){
+   add(finish({via:'verb',valence:-1,tier:DAYQ_VERB[ws[j].w],degs:[],i0:i,i1:j,
+    negated:frameNegBefore(ws,i),adjs:[j]}));continue;}
+  if(!be)continue;
+  var degs2=[];
+  while(j<ws.length&&ws[j].c===ws[i].c){
+   var ma=frameModAt(ws,j,MODS);
+   if(ma){degs2.push(ma);j+=ma.len;continue;}
+   if(FRAME_SKIP.indexOf(ws[j].w)>=0&&ws[j].w!=='a'&&ws[j].w!=='an'){j++;continue;}
+   break;}
+  var det=(ws[j]&&(ws[j].w==='a'||ws[j].w==='an'))?1:0;
+  var tk=ws[j+det];
+  if(!tk||tk.c!==ws[i].c)continue;
+  if(!det&&DAYQ_ADJ[tk.w]){
+   var dv=DAYQ_ADJ[tk.w];
+   add(finish({via:'is',valence:dv[0],tier:dv[1],degs:degs2,i0:i,i1:j,negated:negd||frameNegBefore(ws,i),adjs:[j]}));}
+  else if(DAYQ_NOUNQ[tk.w]){
+   add(finish({via:'is',valence:-1,tier:DAYQ_NOUNQ[tk.w],degs:degs2,i0:i,i1:j+det,negated:negd||frameNegBefore(ws,i),adjs:[j+det]}));}
+  else if(det&&DAYQ_ADJ[tk.w]){
+   var dv2=DAYQ_ADJ[tk.w], nx=ws[j+det+1];
+   /* "today was a good one" has no day noun to anchor, so it is read as the
+      adjective it is */
+   add(finish({via:'is',valence:dv2[0],tier:dv2[1],degs:degs2,i0:i,i1:j+det,negated:negd||frameNegBefore(ws,i),adjs:[j+det]}));}}
+ /* the fixed phrases */
+ DAYQ_PHRASE.forEach(function(p){
+  for(var q=0;q<ws.length;q++)if(framePhraseAt(ws,q,p[0])){
+   add(finish({via:'phrase',valence:-1,tier:p[1],degs:[],i0:q,i1:q+p[0].split(' ').length-1,
+    negated:frameNegBefore(ws,q),adjs:[q]}));}});
+ found=found.filter(function(c){return c;});
+ if(!found.length)return null;
+ /* the heaviest bad one wins, then a good one, then a flat one; earliest on a tie */
+ found.sort(function(a,b){
+  return (a.valence<0?0:a.valence>0?1:2)-(b.valence<0?0:b.valence>0?1:2)
+   ||b.load-a.load||a.i0-b.i0;});
+ var c=found[0], a0=c.adjs[0], a1=c.adjs[c.adjs.length-1];
+ var sp0=c.via==='before'?a0:(c.via==='phrase'?c.i0:a0), sp1=c.via==='before'?c.i1:(c.via==='phrase'?c.i1:a1);
+ return {valence:c.valence, tier:c.tier, load:c.load, via:c.via, mod:c.mod,
+  profane:c.adjacentSwear||frameProfane(ws,ws[c.i0].c), flipped:!!c.flipped,
+  word:(c.via==='before'||(c.via==='is'&&DAYQ_ADJ[ws[a0].w]))?ws[a0].w:null,
+  text:frameTyped(t,ws,sp0,sp1), s:ws[sp0].s, e:ws[sp1].e};}
+
+/* A ROLE OR A PRONOUN AT AN INDEX, as the other party. det is the word
+   before it when it was one of my, his, the. */
+function frameWho(t,ws,i){
+ var w=ws[i]&&ws[i].w, det=(ws[i-1]&&FRAME_DET.indexOf(ws[i-1].w)>=0)?i-1:i;
+ if(!w)return null;
+ if(ROLES[w]){
+  var dw=det<i?ws[det].w:'', you=dw==='my'?'your '+w:((dw==='the'||dw==='this'||dw==='that')?dw+' '+w:w);
+  return {word:w, pron:null, role:w, rel:ROLES[w], authority:ROLES[w]==='authority',
+   text:frameTyped(t,ws,det,i), you:you, i:i, resolved:false};}
+ if(PRON_OTHER[w])
+  return {word:w, pron:PRON_OTHER[w], role:null, rel:null, authority:false,
+   text:ws[i].w, you:PRON_OTHER[w], i:i, resolved:false};
+ return null;}
+/* the target after a word: an optional preposition, an optional determiner,
+   then a role or a pronoun. j is the first index after the word. */
+function frameAim(t,ws,j,c){
+ var k=j;
+ if(ws[k]&&ws[k].c===c&&FRAME_PREP.indexOf(ws[k].w)>=0)k++;
+ if(ws[k]&&ws[k].c===c&&FRAME_DET.indexOf(ws[k].w)>=0&&!PRON_OTHER[ws[k].w])k++;
+ if(!ws[k]||ws[k].c!==c)return null;
+ return frameWho(t,ws,k);}
+/* WHO A PRONOUN MEANS. Only when the entry has named exactly one role before
+   it. Two roles, or none, and the pronoun stays a pronoun: choosing between
+   two would be the instrument deciding who the person meant. */
+function frameResolve(t,ws,who){
+ if(!who||who.role||!who.pron)return who;
+ var seen={}, last=null;
+ for(var k=0;k<who.i;k++)if(ROLES[ws[k].w]){seen[ws[k].w]=1;last=k;}
+ var names=Object.keys(seen);
+ if(names.length!==1)return who;
+ var r=names[0];
+ who.role=r; who.rel=ROLES[r]; who.authority=ROLES[r]==='authority'; who.resolved=true;
+ /* the phrase the person used for the role when they named it, "my boss",
+    which is what a line that has to say who reads back */
+ var ref=frameWho(t,ws,last); who.ref=ref?ref.text:r;
+ return who;}
+
+function frameFeeling(t,ws,p,MODS,day){
+ var best=null, others=0, all=[];
+ p.hits.forEach(function(h){
+  if(h.kind!=='word')return;
+  if(!(h.fet||ADJ2CHG[h.t]))return;
+  if(ACTS.indexOf(h.t)>=0)return;
+  var i=-1; for(var k=0;k<ws.length;k++)if(ws[k].at===h.at){i=k;break;}
+  if(i<0)return;
+  /* a word the day quality already used is the day's and not a feeling: "a
+     miserable day" is how the day was, and miserable is not said of the person */
+  if(day&&ws[i].s>=day.s&&ws[i].e<=day.e)return;
+  var n=h.t.split(' ').length, e=i+n-1, c=ws[i].c;
+  /* whose feeling. Back up to six words in the clause to the first subject:
+     I and me are the person, he, she, they and a role are somebody else. "It
+     made me furious" is the person, through the me that stands before it. */
+  var mine=true, via=null;
+  for(var b=i-1,steps=0;b>=0&&steps<6&&ws[b].c===c;b--,steps++){
+   var w=ws[b].w;
+   if(FRAME_ME.indexOf(w)>=0){mine=true;break;}
+   if(FRAME_THEM.indexOf(w)>=0||ROLES[w]){mine=false;via=b;break;}}
+  /* "he irritated me": the subject is somebody else and the feeling is the
+     person's, which the me after it says */
+  var subjWho=null;
+  if(!mine&&((ws[e+1]&&ws[e+1].c===c&&ws[e+1].w==='me')||/\bmy\b/.test(h.t))){
+   mine=true;subjWho=frameWho(t,ws,via);}
+  if(!mine){others++;return;}
+  /* aimed at somebody: a preposition and a target after it, or somebody who is
+     the subject of a feeling verb directly before it, "my boss irritated me" */
+  var who=subjWho||frameAim(t,ws,e+1,c);
+  if(!who){
+   var b2=i-1; while(b2>=0&&frameModEnd(ws,b2,MODS))b2--;
+   var sw=ws[b2];
+   if(sw&&sw.c===c&&(ROLES[sw.w]||PRON_OTHER[sw.w])&&/(ed|nerves|s)$/.test(ws[e].w))who=frameWho(t,ws,b2);}
+  who=frameResolve(t,ws,who);
+  var amt=h.amt==null?0:h.amt, lvl=amt<18?1:(amt<24?2:3);
+  var lifted=false;
+  if(frameProfane(ws,c)&&SWEAR_INT.indexOf(h.modw||'')<0&&lvl<3){lvl++;lifted=true;}
+  var aimEnd=who?Math.max(who.i,e):e;
+  var f={word:h.t, typed:frameTyped(t,ws,i,e), fet:h.fet||CHG2FET[ADJ2CHG[h.t]]||null,
+   amt:Math.round(amt*10)/10, level:lvl, lifted:lifted, mod:h.mod||1, modw:h.modw||null,
+   other:who||null, aimed:!!who, i:i, text:frameTyped(t,ws,i,aimEnd), s:ws[i].s, e:ws[aimEnd].e};
+  all.push(f);
+  if(!best||f.amt>best.amt||(f.amt===best.amt&&f.i<best.i))best=f;});
+ all.sort(function(a,b){return a.i-b.i;});
+ if(best){best.others=others;
+  best.all=all.map(function(f){return {word:f.word,typed:f.typed,level:f.level,fet:f.fet,aimed:f.aimed};});}
+ return best;}
+
+function frameAct(t,ws){
+ var keys=ACTS.slice().sort(function(a,b){return b.split(' ').length-a.split(' ').length;});
+ var taken={}, found=[];
+ for(var i=0;i<ws.length;i++){
+  for(var q=0;q<keys.length;q++){
+   var key=keys[q], n=key.split(' ').length;
+   if(taken[i]||!framePhraseAt(ws,i,key))continue;
+   for(var z=0;z<n;z++)taken[i+z]=1;
+   var c=ws[i].c, mine=null, actor=null;
+   /* who did it. Back up four words, over a, had, the adverbs and degree
+      words, to a subject. */
+   for(var b=i-1,st=0;b>=0&&st<4&&ws[b].c===c;b--,st++){
+    var w=ws[b].w;
+    if(w==='i'||w==='we'){mine=true;break;}
+    if((FRAME_THEM.indexOf(w)>=0&&w!=='you')||ROLES[w]){mine=false;actor=b;break;}}
+   var e=i+n-1, who=frameAim(t,ws,e+1,c);
+   if(!who&&actor!==null)who=frameWho(t,ws,actor);
+   /* the person inside the act: "told him off" names him in the key itself */
+   if(!who){var kw=key.split(' ');
+    for(var y=0;y<kw.length;y++)if(kw[y]==='him'||kw[y]==='her'||kw[y]==='them')
+     who={word:kw[y],pron:PRON_OTHER[kw[y]],role:null,rel:null,authority:false,
+      text:kw[y],you:PRON_OTHER[kw[y]],i:i+y,resolved:false};}
+   who=frameResolve(t,ws,who);
+   var end=who&&who.i>e?who.i:e;
+   found.push({word:key, typed:frameTyped(t,ws,i,e), mine:mine, other:who||null, i:i,
+    text:frameTyped(t,ws,i,end), s:ws[i].s, e:ws[end].e,
+    channels:ACT_CHANNELS.slice()});}}
+ if(!found.length)return null;
+ found.sort(function(a,b){return (b.other?1:0)-(a.other?1:0)||a.i-b.i;});
+ return found[0];}
+
+/* a thing that happened: somebody, then a verb that is not was or had */
+function frameEvent(t,ws,MODS,skip){
+ var out=null;
+ function isVerb(w){
+  if(PAST_LIGHT.indexOf(w)>=0||FRAME_STATE.indexOf(w)>=0||DAYQ_ADJ[w])return false;
+  var L=LEX[w];
+  if(ADJ2CHG[w]||(L&&L[LEX_FET]))return false;
+  return PAST_IRR.indexOf(w)>=0||(w.length>3&&/ed$/.test(w));}
+ for(var i=0;i<ws.length&&!out;i++){
+  if(skip&&skip[i])continue;
+  var w=ws[i].w, c=ws[i].c, subj=null, vi=-1;
+  if(w==='i'||w==='we'||w==='he'||w==='she'||w==='they'||w==='it'||ROLES[w])subj=w;
+  else if(FRAME_DET.indexOf(w)>=0&&ws[i+1]&&ws[i+2]&&ws[i+2].c===c&&!ROLES[ws[i+1].w]){
+   /* the det, a noun, a verb: "my car broke down" */
+   if(isVerb(ws[i+2].w)){out={mine:false,typed:frameTyped(t,ws,i,i+2),i:i};}
+   continue;}
+  if(!subj)continue;
+  var j=i+1;
+  while(j<ws.length&&ws[j].c===c&&(FRAME_ADV.indexOf(ws[j].w)>=0||frameModAt(ws,j,MODS)))j++;
+  /* "it made me depressed" is a feeling and not a thing that happened */
+  if(j<ws.length&&ws[j].w==='made'&&ws[j+1]&&/^(me|us|him|her|them)$/.test(ws[j+1].w)&&ws[j+2]&&
+   (ADJ2CHG[ws[j+2].w]||LEX[ws[j+2].w]||DAYQ_ADJ[ws[j+2].w]))continue;
+  if(j<ws.length&&ws[j].c===c&&isVerb(ws[j].w))out={mine:(subj==='i'||subj==='we'),typed:frameTyped(t,ws,i,j),i:i};}
+ return out;}
+
+/* THE ENTRY, READ. text is what the person wrote, exactly as they wrote it,
+   and opts.asked is the slots the chain has already asked in this entry.
+   Returns every slot, what is missing, and the one to ask next. */
+function storyFrame(text,opts){
+ var t=String(text||''), o=opts||{};
+ var out={empty:!t.trim(), has:false, trigger:false, day:null, event:null, other:null,
+  act:null, feeling:null, feelings:[], note:[], body:null, under:null, channels:[], channelWords:{},
+  profane:false, missing:[], ask:null, question:null, questions:{}};
+ if(out.empty)return out;
+ var nm=normMap(t), ws=wordsOf(t,nm), MODS=frameMods(), p=parseStory(t);
+ out.day=frameDay(t,ws,MODS);
+ out.feeling=frameFeeling(t,ws,p,MODS,out.day);
+ out.feelings=out.feeling?out.feeling.all:[];
+ /* what the entry says about the other person that is not a feeling of the
+    writer's: "He showed no remorse." The sniffer takes a lacked feeling said
+    of somebody else out of its hits, p.aboutOther, so it is not charged to the
+    person who wrote it and is not struck on the page as their negated word.
+    Here it is kept, whole and in the person's own letters, as a note about
+    him. It does not answer what happened: showing no remorse is something he
+    did, and the confrontation it follows is still not said. */
+ out.note=(p.aboutOther||[]).map(function(a){
+  var i=-1,j=-1; for(var k=0;k<ws.length;k++){if(ws[k].at===a.from)i=k; if(ws[k].at===a.at)j=k;}
+  var n=a.t.split(' ').length;
+  return i>=0&&j>=0?{kind:'lacks',who:a.who,word:a.t,text:frameTyped(t,ws,i,Math.min(ws.length-1,j+n-1))}:null;})
+  .filter(function(x){return x;});
+ var skipEv={};
+ (p.aboutOther||[]).forEach(function(a){for(var k=0;k<ws.length;k++)if(ws[k].at===a.from)skipEv[k]=1;});
+ out.event=frameEvent(t,ws,MODS,skipEv);
+ out.act=frameAct(t,ws);
+ /* THE OTHER PARTY, in order of how directly the words name them: the target
+    of a feeling, the target or doer of an act, and last any role named at all,
+    which says somebody is in the story and not that the feeling was aimed. */
+ out.other=(out.feeling&&out.feeling.other)||(out.act&&out.act.other)||null;
+ if(!out.other)for(var k=0;k<ws.length;k++)if(ROLES[ws[k].w]){
+  out.other=frameResolve(t,ws,frameWho(t,ws,k));out.other.via='named';break;}
+ out.profane=ws.some(function(w){return frameSwearWord(w.w);});
+ var d=srcDims(t), ans=d.answered;
+ var feltWord=(ans.feeling||[]).some(function(x){return SRC_FEEL_V.indexOf(x.split(' ')[0])>=0&&x.indexOf(' ')>0;});
+ var did=!!(ans.behaviour||(out.event&&out.event.mine)||(out.act&&out.act.mine===true&&ACT_NOUN.indexOf(out.act.word)<0));
+ var src=nm.s;
+ out.body=ans.body?ans.body.slice():null;
+ out.under=(ans.meaning||ans.belief||ans.goal||(srcCue(src,'because')?['because']:null)||null);
+ var answered={what:!!out.event, did:did, feel:!!(out.feeling||feltWord), where:!!ans.body, under:!!out.under};
+ out.answered=answered;
+ out.has=!!(out.day||out.feeling||out.act);
+ out.trigger=!!((out.day&&out.day.valence<0)||(out.act&&out.other)||(out.feeling&&out.feeling.other));
+ out.missing=FRAME_SLOTS.filter(function(s){return !answered[s];});
+ /* the six channels the words sit in, as facts about the words */
+ function chan(name,w){if(out.channels.indexOf(name)<0)out.channels.push(name);
+  (out.channelWords[name]=out.channelWords[name]||[]).push(w);}
+ if(out.act)ACT_CHANNELS.forEach(function(c){chan(c,out.act.typed);});
+ if(out.feeling)chan('feeling',out.feeling.typed);
+ Object.keys(CHAN_CUE).forEach(function(c){CHAN_CUE[c].forEach(function(cue){
+  if(srcCue(src,cue))chan(c,cue);});});
+ out.channels=C3_VERB.filter(function(c){return out.channels.indexOf(c)>=0;});
+ var asked=o.asked||[];
+ out.ask=out.missing.filter(function(s){return asked.indexOf(s)<0;})[0]||null;
+ out.questions={};
+ out.missing.forEach(function(sl){out.questions[sl]=frameQuestion(out,sl);});
+ out.question=out.ask?out.questions[out.ask]:null;
+ return out;}
+
+/* THE DAY'S RUNNING ENTRIES, read as one story. The texts joined by a line
+   break, which the clause floor reads as a boundary, so a negation in one
+   entry cannot reach into the next. WHO MAY PASS IT. Source AI reads the seat
+   keys of earlier entries and not their text, round GO; whether it may read
+   the text is DESIGN-sniffer.md question 12 and is the owner's. This function
+   takes any texts and does not decide that: the Story page passes the entry
+   being written and nothing else. */
+function storyFrameDay(texts,opts){
+ return storyFrame((texts||[]).filter(function(x){return String(x||'').trim();}).join('\n'),opts);}
+
+/* THE QUESTIONS, in the house voice: short, casual, one thing at a time, the
+   person's own words quoted back when there are some to quote and never a
+   word of ours put in their mouth. The quote is the span they typed, without
+   the degree word and without any swear, so a question never echoes a
+   profanity back at them and never repeats the intensifier. None of them says
+   why anything happened. */
+function frameYou(who){return who?(who.you||who.word):null;}
+function frameQuestion(f,slot){
+ var q='', quote='', who=f.other, subj=who?frameYou(who):null;
+ var doer=who?(who.pron||subj):null;
+ if(slot==='what'){
+  if(f.act&&f.act.other){quote=f.act.text;
+   q='What did '+(f.act.other.pron||frameYou(f.act.other))+' do or say?';}
+  else if(f.feeling&&f.feeling.other){quote=f.feeling.text;
+   q='What did '+(f.feeling.other.pron||frameYou(f.feeling.other))+' do?';}
+  else if(f.day&&f.day.valence<0){quote=f.day.text;
+   if(f.day.flipped)quote='';
+   q=f.day.flipped?'What got in the way?':(f.day.word?'What made it '+(f.day.word==='worst'?'the worst':f.day.word)+'?':'What happened?');}
+  else if(f.feeling){quote=f.feeling.text;q='What happened?';}
+  else if(f.act){quote=f.act.text;q='What happened?';}
+  else if(f.day){quote=f.day.text;q=(f.day.valence>0&&f.day.word)?'What made it '+f.day.word+'?':'What happened?';}
+  else q='What happened?';}
+ else if(slot==='did'){
+  quote=(f.act&&f.act.text)||(f.feeling&&f.feeling.text)||'';
+  q='What did you do?';}
+ else if(slot==='feel'){
+  quote=(f.act&&f.act.text)||(f.day&&f.day.text)||'';
+  q='How did you feel?';}
+ else if(slot==='where'){
+  quote=(f.feeling&&f.feeling.text)||'';
+  q='Where did you feel it?';}
+ else if(slot==='under'){
+  quote=(f.feeling&&f.feeling.text)||(f.act&&f.act.text)||(f.day&&f.day.text)||'';
+  q='What was under it?';}
+ return {slot:slot, quote:quote, q:quote?'You wrote “'+quote+'”. '+q:q, ask:q};}
+
+/* ============================================================
+   THE SUBJECT OF A STORY, round OZ, his words: "the release prompt doesn't
+   have the subject. It says I give up separation, but it doesn't say what. So
+   the story needs to ALWAYS HAVE THE SUBJECT." An imprint said which address
+   and how much and never who or what it was about, so a release line built
+   from it could say "I give up separation" and no more.
+
+   WHAT A SUBJECT IS. What or who the words that made the imprint are about,
+   taken from the person's own sentence, in this order, and the order is the
+   rule:
+
+     1  the clause itself. A target after the word, "irritated by him",
+        "a confrontation with my boss", "angry at her", or somebody who is the
+        subject of the word, "he got on my nerves", "my boss irritated me".
+        kind other, from clause.
+     2  the person themself, stated. "I felt hopeless" with nobody else in the
+        clause: the sentence says I. kind self, from clause.
+     3  the entry. When the clause names nobody and does not say I, as in "it
+        made me mad", the one other person the entry names, and failing that
+        the event it names, the confrontation. kind other or event, from entry.
+     4  nothing. The person themself, as a default and marked as one: kind
+        inferred, from none. Never presented as something they said.
+
+   A pronoun is kept as the pronoun the person used ("him") and carries the
+   role it was resolved to ("boss", ref "my boss") only when the entry names
+   exactly one role before it, the same rule the frame uses and for the same
+   reason: choosing between two would be the instrument deciding who was meant.
+
+   WHAT AN IMPRINT TAKES. Imprints are made per seat, so the seat's subject is
+   the subject of the heaviest word there that had one in its own clause, then
+   a stated self, then the entry's. Every word keeps its own as well, in
+   subjects, so two clauses at one seat are both on the record.
+   ============================================================ */
+var SUBJ_KINDS=['other','self','event','inferred'];
+var SUBJ_FROM=['clause','entry','none'];
+/* the preposition each address name takes before a person, where one is
+   certain. Everything else takes "with", which is true of any of them and
+   claims the least. A release line owns its own grammar; this is the part the
+   data can say. */
+var SUBJ_PREP={separation:'from',abandonment:'by',rejection:'by',fear:'of',anger:'at',
+ hatred:'toward',resentment:'toward',longing:'for',grief:'over',shame:'about',guilt:'about'};
+function frameTarget(t,ws,i,e,c){
+ /* who the words are about: the target after them, or the somebody who is
+    their subject, and whether the person said I */
+ var who=frameAim(t,ws,e+1,c), subj=null, statedI=false, key=ws.slice(i,e+1).map(function(x){return x.w;}).join(' ');
+ /* BACK UP TO THE SUBJECT, and stop at a conjunction for anybody but the
+    person: "I snapped at my sister and felt ashamed" is ashamed of the
+    snapping and not of her, so the sister before the "and" is not the subject
+    of what follows it, where an I before it still is. */
+ var crossed=false;
+ for(var b=i-1,st=0;b>=0&&st<8&&ws[b].c===c;b--,st++){
+  var w=ws[b].w;
+  if(w==='and'||w==='but'||w==='then'||w==='because'||w==='so'||w==='while'){crossed=true;continue;}
+  if(w==='i'||w==="i'm"||w==='im'){statedI=true;break;}
+  if(w==='me'||w==='myself'){break;}
+  if(FRAME_THEM.indexOf(w)>=0||ROLES[w]){if(!crossed)subj=b;break;}}
+ if(!who&&subj!==null)who=frameWho(t,ws,subj);
+ if(who)who=frameResolve(t,ws,who);
+ return {who:who||null, statedI:statedI&&!who};}
+function hitSubjects(t,hits){
+ var nm=normMap(t), ws=wordsOf(t,nm), out=[], seats={};
+ if(!hits||!hits.length||!ws.length)return {hits:out,seats:seats};
+ /* the entry's one other person, for the clause that names nobody */
+ var firstWho=null, entryRole=null, act=null;
+ hits.forEach(function(h){
+  if(h.kind==='adj'||!h.band||h.band==='coherent')return;
+  var i=-1; for(var k=0;k<ws.length;k++)if(ws[k].at===h.at){i=k;break;}
+  if(i<0)return;
+  var e=i+String(h.t).split(' ').length-1, tg=frameTarget(t,ws,i,e,ws[i].c);
+  var rec={t:h.t, at:h.at, seat:h.band, amt:Math.abs(h.amt||0), subject:null, kind:null,
+   role:null, ref:null, from:null, why:null};
+  if(tg.who){
+   rec.pron=!!(tg.who.pron&&!tg.who.role);
+   rec.subject=tg.who.text; rec.kind='other'; rec.role=tg.who.role||null;
+   rec.ref=tg.who.ref||(tg.who.role&&tg.who.text!==tg.who.role?tg.who.text:null)||null;
+   rec.from='clause'; rec.why='the clause is about '+tg.who.text;
+   if(!firstWho)firstWho=tg.who;}
+  else if(tg.statedI){
+   rec.subject='myself'; rec.kind='self'; rec.from='clause'; rec.why='the clause says I';}
+  out.push(rec);});
+ for(var k=0;k<ws.length&&!entryRole;k++)if(ROLES[ws[k].w])entryRole=frameResolve(t,ws,frameWho(t,ws,k));
+ act=frameAct(t,ws);
+ /* THE ENTRY'S FALLBACK, in the order written above */
+ var fb;
+ if(firstWho)fb={subject:firstWho.text,kind:'other',role:firstWho.role||null,ref:firstWho.ref||null,
+  from:'entry',why:'the entry is about '+firstWho.text};
+ else if(entryRole)fb={subject:entryRole.text,kind:'other',role:entryRole.role,ref:null,
+  from:'entry',why:'the entry names '+entryRole.text};
+ else if(act)fb={subject:act.text,kind:'event',role:null,ref:null,from:'entry',
+  why:'the entry names '+act.typed};
+ else fb={subject:'myself',kind:'inferred',role:null,ref:null,from:'none',
+  why:'nothing in the entry says who it is about'};
+ out.forEach(function(r){
+  if(r.kind)return;
+  r.subject=fb.subject; r.kind=fb.kind; r.role=fb.role; r.ref=fb.ref; r.from=fb.from; r.why=fb.why;});
+ /* a seat takes the subject of its heaviest word that had one in its own
+    clause, then a stated self, then the entry's */
+ var rank={other:0,self:1,event:2,inferred:3};
+ out.forEach(function(r){
+  var cur=seats[r.seat], better=!cur;
+  if(cur){
+   var ra=(r.from==='clause'?rank[r.kind]:4), rb=(cur.from==='clause'?rank[cur.kind]:4);
+   better=ra<rb||(ra===rb&&r.amt>cur.amt);}
+  if(better)seats[r.seat]=r;});
+ /* never longer than the boundary will take: an act span is the person's
+    own words and may run on */
+ out.forEach(function(r){r.subject=String(r.subject).slice(0,SUBJ_MAX); if(r.ref)r.ref=String(r.ref).slice(0,SUBJ_MAX);});
+ var map={};
+ Object.keys(seats).forEach(function(k){var r=seats[k];
+  map[k]={subject:r.subject,kind:r.kind,role:r.role,ref:r.ref,from:r.from,why:r.why};});
+ return {hits:out,seats:map};}
+/* THE LINE A RELEASE CAN SAY. An imprint's address name and who it was about,
+   joined: "separation from my boss". A pronoun is read back as the role the
+   entry named it as, "my boss", when it resolved to one, and as the pronoun the
+   person used when it did not. A stated self reads "in myself". An imprint
+   whose subject was only inferred says nothing about anybody, because the
+   instrument did not hear it, and the line is the name alone. The pieces are
+   returned as well, so a release that owns its own grammar can use them. */
+var SUBJ_OBJ={he:'him',she:'her',they:'them'};
+function subjectLine(im){
+ var name=String((im&&im.name)||'').replace(/\s*\(.*\)\s*$/,'').toLowerCase();
+ var out={name:name, subject:null, kind:(im&&im.subjectKind)||null, prep:null, tail:'', line:name, certain:false};
+ if(!im||!im.subject||!im.subjectKind)return out;
+ if(im.subjectKind==='inferred')return out;
+ var who=im.subjectRef||im.subject;
+ /* a sentence that opened on My boss reads back as my boss, and he, she and
+    they, which are subjects, read back as him, her and them, which is what
+    follows a preposition */
+ who=SUBJ_OBJ[who]||who.replace(/^(My|His|Her|Their|The|Our|Your)\b/,function(m){return m.toLowerCase();});
+ if(im.subjectKind==='self'){out.prep='in';who='myself';}
+ else if(im.subjectKind==='event'){out.prep='around';}
+ else out.prep=SUBJ_PREP[name]||'with';
+ out.subject=who; out.tail=out.prep+' '+who; out.line=name+' '+out.tail; out.certain=im.subjectFrom==='clause';
+ return out;}
+
+/* ============================================================
+   IS THE SUBJECT CLEAR, round PA. The owner wants the Mirror's "Not quite" to be
+   able to say that the subject is not clear. This is the check it asks: for
+   every word the sniffer read, was who or what it is about said in the
+   person's own clause, and said as somebody, and not as a pronoun with
+   nobody behind it. It reports each word that fails and why, in the person's
+   own letters, and it is a reading of the writing and never of the person.
+
+   A word is unclear when
+     the clause names nobody and does not say I, and the subject was taken from
+       the rest of the entry (from entry), or from nothing at all (from none)
+     the clause names somebody only as he, she, they, him, her or them, and the
+       entry has not named exactly one role for it to be (a pronoun with
+       nobody behind it)
+   A stated I is clear. A role named in the clause is clear. An act in the
+   clause is clear.
+
+   `clear` is true when no word is unclear and at least one was read. An entry
+   the sniffer read nothing in has no subject to be unclear about, so it is
+   neither clear nor unclear: `read` is false and the Mirror has nothing to say.
+   ============================================================ */
+var SUBJECT_UNCLEAR='The subject is not clear.';
+function subjectCheck(text){
+ var p=parseStory(text), items=[];
+ (p.subjects||[]).forEach(function(r){
+  var why=null;
+  if(r.from==='none')why='nothing in the entry says who or what this is about';
+  else if(r.from==='entry')why='the clause names nobody, so the subject was taken from the rest of the entry';
+  else if(r.pron&&!r.role)why='the clause says '+r.subject+' and the entry does not say who that is';
+  items.push({word:r.t,subject:r.subject,kind:r.kind,from:r.from,unclear:!!why,why:why});});
+ var unclear=items.filter(function(x){return x.unclear;});
+ return {read:items.length>0, clear:items.length>0&&!unclear.length, unclear:unclear, items:items,
+  say:(items.length&&unclear.length)?SUBJECT_UNCLEAR:null};}
+
+/* ============================================================
+   THE MIRROR'S CAUSE LINE, round OX, his words: "Four, let's try it": the
+   Mirror's cause line is the person's OWN second answer quoted back, with no
+   language step. The question the chain asked is what made it rough, or what
+   he did, and what the person wrote in answer is the cause line. Nothing is
+   composed: the answer comes back as typed, trimmed of the space around it and
+   of nothing else, and it carries the question it answered so the Mirror can
+   say what it is quoting. A first answer with no frame, or no second answer,
+   gives no cause line, and the Mirror shows none rather than writing one.
+   ============================================================ */
+function mirrorCause(first,second){
+ var a=String(second==null?'':second).trim();
+ if(!a)return null;
+ var f=storyFrame(String(first||'')), q=f.questions&&f.questions.what?f.questions.what:null;
+ return {cause:a, asked:q?q.q:null, slot:'what', verbatim:true};}
+/* ============================================================
+   THE QUESTION FRAMEWORKS. Round OV, TASKS.md, his own words: when a person
+   lands on the journal, Source AI's questions should come from named
+   frameworks and not a flat list. The seven deadly sins, the nine circles of
+   Dante's Inferno as layers of descent, the ages of life, and more of that
+   kind, asked as the specifics of a life: "When have you been greedy?",
+   "When have you backstabbed someone?", "What do you love doing more than
+   anything else?".
+
+   WHAT THIS IS. A host free table, framework to layer to question, and a
+   picker that chooses the next layer. Each layer carries:
+
+     q         the question, in the house voice, one thing, a specific
+     looks     what it looks for, in plain words, so the person can be told
+               why it was asked
+     seats     the seats of the body its answer can light, and ONLY where an
+               existing table in this product already seats it, named in
+               `src`. A framework nothing in the product seats says [] and
+               does not guess one.
+     channels  which of the release's six channels the question invites,
+               C3_VERB's own names
+
+   WHERE THE WORDS COME FROM, AND WHERE THEY DO NOT.
+     sins       the sin each circle of the Compass carries, 'sin:' in
+                engine/data/compass.js, read at load. The Compass carries
+                Lust, Gluttony, Greed, Wrath and sloth, Pride, Wrath and
+                Envy, and "Wrath and sloth" is two of the seven, so the seven
+                are read off it and not typed. A question is written for each,
+                and qfCheck fails if the data ever carries a sin that has
+                none.
+     inferno    the nine circles, CIRCLES in the same file, in descent order,
+                each seated where its own 'at' column says.
+     ages       AGES in engine/data/ages.js, the owner's own age ladder, three
+                to eighteen, with his own questions. The product's age bands
+                are single years and this does not invent coarser ones.
+     PROPOSED   jouissance, cognitive bias, the shadow, attachment and the
+                four temperaments. Mine, not his, flagged `proposed` in the
+                table and in the Story page's own record of what was asked,
+                until he rules. Nothing in the product seats them, so they
+                feed channels and no seat.
+
+   WHAT NONE OF IT CLAIMS. A question asks for an event in a life and the
+   answer is the person's own. "Supports, not causes": a question is never a
+   finding, an answer is never a diagnosis, and no layer names a label the
+   person is. The temperaments are an old and unvalidated scheme, which is
+   the reason they are asked as things a person did and never as a type a
+   person is.
+
+   WHAT IT MAY SEE. Seat keys of the entry being written, and the framework
+   and layer already asked. Nothing leaves the device and nothing here can: the
+   engine has no host. It stores nothing; what was asked is page memory, and
+   the entry keeps only the kind of question, never its words.
+   ============================================================ */
+var QF_ORDER=['sins','inferno','ages','jouissance','bias','shadow','attachment','temperament'];
+
+/* the seat words in a Compass 'at' column, as the engine's own seat keys */
+var QF_SEATWORD={root:'root',sacral:'sacral',solar:'solar',heart:'heart',throat:'throat',
+ 'third eye':'eye',crown:'crown'};
+function qfSeatsIn(text){
+ var out=[], s=String(text||'').toLowerCase();
+ Object.keys(QF_SEATWORD).forEach(function(w){
+  if(new RegExp('\\b'+w+'\\b').test(s)&&out.indexOf(QF_SEATWORD[w])<0)out.push(QF_SEATWORD[w]);});
+ return out;}
+
+/* THE SEVEN, read off the Compass. A circle's `sin` may name two ("Wrath and
+   sloth"), and each is one of the seven. Each carries the seats of every
+   circle that carries it. */
+function qfSins(){
+ var out=[], by={};
+ CIRCLES.forEach(function(c){
+  String(c.sin||'').split(' and ').forEach(function(x){
+   x=x.trim().toLowerCase(); if(!x)return;
+   if(!by[x]){by[x]={id:x,seats:[],circles:[]};out.push(by[x]);}
+   by[x].circles.push(c.nm);
+   qfSeatsIn(c.at).forEach(function(k){if(by[x].seats.indexOf(k)<0)by[x].seats.push(k);});});});
+ return out;}
+
+var QF_SIN_Q={
+ pride:['When did you last refuse help you needed?','a time help was offered and turned down',['behaving']],
+ greed:['When have you been greedy?','a time more was taken than was needed',['behaving']],
+ lust:['What have you wanted more than was good for you?','a want that ran past its limit',['feeling']],
+ envy:['Who has what you wanted, and what did you do when you saw it?','a time somebody else’s luck was hard to watch',['feeling','behaving']],
+ gluttony:['What do you take more of than you need, when you are low?','what gets reached for to fill a gap',['behaving']],
+ wrath:['When did you last lose it with somebody?','a time anger went out as an act',['acting']],
+ sloth:['What have you put off the longest?','the thing that has waited the longest',['behaving']]};
+
+var QF_CIRCLE_Q={
+ limbo:['What are you going along with that you do not believe in?','going through the motions without belief',['believing']],
+ lust:['What do you do so that people want you around?','arranging things to be wanted',['behaving']],
+ gluttony:['What do you reach for when you feel the gap?','consuming to cover an empty place',['behaving']],
+ greed:['What do you count to know how you are doing?','worth measured by what is kept',['thinking']],
+ 'wrath and sloth':['What did you go off about this week, or go flat about?','anger out as an attack, or in as a shutdown',['acting','feeling']],
+ heresy:['What have you decided you already know, and stopped listening on?','a belief that has closed the question',['believing']],
+ violence:['When did you last want to break something?','the wish to break something, said out loud',['acting']],
+ fraud:['When have you been warm at someone because it was easy, and not because you meant it?','warmth that costs nothing',['behaving']],
+ treachery:['When have you backstabbed someone?','a time somebody who trusted you was gone against',['acting']]};
+
+/* THE PROPOSED FRAMEWORKS. Flagged, and the flag travels with every layer. */
+var QF_PROPOSED={
+ jouissance:{nm:'Jouissance',looks:'the thing a person returns to more than anything, the excess they will not give up',
+  layers:[
+  ['return','What do you go back to more than anything, even when it costs you?','what gets returned to against its cost',['behaving']],
+  ['love','What do you love doing more than anything else?','the enjoyment the person organises the week around',['feeling']],
+  ['hold','What would you not give up, even if somebody asked nicely?','what is held when it is asked for',['behaving']]]},
+ bias:{nm:'Mind habits',looks:'the three ordinary habits of a mind defending itself',
+  layers:[
+  ['confirm','What have you read or heard lately that only agreed with you?','taking in only what agrees',['perceiving']],
+  ['sunk','What are you still doing because of how much you have already put in?','staying for the cost already paid',['thinking']],
+  ['credit','What went wrong lately that you put on somebody else?','blame placed outside, credit kept inside',['believing']]]},
+ shadow:{nm:'The shadow',looks:'what a person will not own in themselves and sees in other people',
+  layers:[
+  ['project','What annoys you most in other people?','a trait that gets a stronger reaction than it earns',['perceiving']],
+  ['deny','What have you been told about yourself that you shrugged off?','a thing said and not taken in',['believing']],
+  ['hide','What do you pretend you do not do?','a habit kept out of the account',['behaving']]]},
+ attachment:{nm:'Attachment',looks:'how a person moves toward and away from the people they depend on',
+  layers:[
+  ['pull','Who do you go quiet around when you need them?','pulling away at the point of need',['behaving']],
+  ['check','Who do you check on more than you want to?','reaching for reassurance',['behaving']],
+  ['safe','Who can you call at three in the morning?','who is actually reachable',['perceiving']],
+  ['leave','What do you do when somebody pulls away?','the move made when a person withdraws',['acting']]]},
+ temperament:{nm:'The four temperaments',looks:'four old ways of describing what a person does with energy, asked as acts and never as a type',
+  layers:[
+  ['choleric','When did you last take charge of something nobody asked you to?','energy going out as command',['acting']],
+  ['sanguine','What did you start this month and drop?','energy going out and not landing',['behaving']],
+  ['melancholic','What have you gone over again and again this week?','energy going inward and round',['thinking']],
+  ['phlegmatic','What have you let slide because it was easier?','energy not spent',['behaving']]]}};
+
+/* THE TABLE, built once, at load, from the three sourced frameworks and the
+   five proposed ones. A layer is {fw, id, nm, q, looks, seats, channels, src,
+   proposed}. */
+function qfBuild(){
+ var T={};
+ var sins=qfSins();
+ T.sins={nm:'The seven deadly sins',ordered:false,proposed:false,
+  src:'engine/data/compass.js, the sin of each circle',
+  layers:sins.map(function(s){var d=QF_SIN_Q[s.id]||['','',[]];
+   return {fw:'sins',id:s.id,nm:s.id,q:d[0],looks:d[1],seats:s.seats.slice(),channels:d[2].slice(),
+    src:'compass: '+s.circles.join(', '),proposed:false};})};
+ T.inferno={nm:'The nine circles',ordered:true,proposed:false,
+  src:'engine/data/compass.js, CIRCLES in descent order',
+  layers:CIRCLES.map(function(c){var key=c.nm.toLowerCase(), d=QF_CIRCLE_Q[key]||['','',[]];
+   return {fw:'inferno',id:key,nm:c.nm,q:d[0],looks:d[1],seats:qfSeatsIn(c.at),channels:d[2].slice(),
+    src:'compass circle '+c.c+', at: '+c.at,proposed:false};})};
+ T.ages={nm:'The ages of life',ordered:true,proposed:false,
+  src:'engine/data/ages.js, the age ladder, three to eighteen',
+  layers:AGES.map(function(a){
+   return {fw:'ages',id:'a'+a.a,nm:'age '+a.a,q:a.q,looks:a.k,seats:[],channels:['believing'],
+    src:'age ladder, age '+a.a,proposed:false};})};
+ Object.keys(QF_PROPOSED).forEach(function(k){var f=QF_PROPOSED[k];
+  T[k]={nm:f.nm,ordered:false,proposed:true,src:'Proposed, not ruled',looks:f.looks,
+   layers:f.layers.map(function(l){
+    return {fw:k,id:l[0],nm:l[0],q:l[1],looks:l[2],seats:[],channels:l[3].slice(),
+     src:'Proposed, no table in the product seats it',proposed:true};})};});
+ return T;}
+var QF=qfBuild();
+function qfLayers(){
+ var out=[]; QF_ORDER.forEach(function(k){(QF[k]?QF[k].layers:[]).forEach(function(l){out.push(l);});});
+ return out;}
+
+/* WHAT THE STORY HAS TOUCHED: the seat keys Source AI heard, with negated
+   mentions already cleared by srcHear. Never the words. */
+function qfTouched(text,prior){
+ var h=srcHear(text,prior), out={};
+ h.seats.forEach(function(s){out[s.seat]=s.rung;});
+ return out;}
+
+/* THE NEXT LAYER. A stated order, not a score. There is no labelled set to
+   fit a weight against and no outcome to fit it to, so each step is one a
+   person could check by reading the table:
+
+     1  a framework is never asked twice in a row. Only when it is the only
+        one left does it go again.
+     2  a layer already asked is not asked again. An ordered framework, the
+        descent and the ages, offers only the first layer not yet asked, so
+        the descent is walked in the order it descends.
+     3  a layer that sits at a seat the story touched comes before one that
+        does not. That is following the signal: it is the only way the story
+        reaches this, and it never creates one, because a layer with no seat
+        has no signal and is neither favoured nor held back by it.
+     4  then the framework asked longest ago, never asked first.
+     5  then the table's own order, turned by seed. The seed is a whole number
+        the caller chooses, a day number is the natural one, so two days open
+        on two different questions and the same day opens on the same one.
+
+   state is {touched, asked:[{fw,id}], seed}. Returns the layer with the steps
+   that chose it, or null when nothing is left. */
+function qfNext(state){
+ var st=state||{}, touched=st.touched||{}, asked=st.asked||[], seed=Math.abs(+st.seed||0);
+ var last=asked.length?asked[asked.length-1].fw:null;
+ function done(l){return asked.some(function(a){return a.fw===l.fw&&a.id===l.id;});}
+ function eligible(k){
+  var f=QF[k]; if(!f)return [];
+  var left=f.layers.filter(function(l){return !done(l);});
+  return f.ordered?left.slice(0,1):left;}
+ function signal(l){return l.seats.filter(function(s){return touched[s]>0;});}
+ var ks=QF_ORDER.filter(function(k){return eligible(k).length;});
+ if(!ks.length)return null;
+ var pool=ks.filter(function(k){return k!==last;});
+ var why=[];
+ if(!pool.length)pool=ks; else if(last)why.push('not '+QF[last].nm.toLowerCase()+' again, it was the last one asked');
+ var sig=pool.filter(function(k){return eligible(k).some(function(l){return signal(l).length;});});
+ if(sig.length){pool=sig;}
+ function lastAt(k){for(var i=asked.length-1;i>=0;i--)if(asked[i].fw===k)return i;return -1;}
+ var oldest=Math.min.apply(null,pool.map(lastAt));
+ pool=pool.filter(function(k){return lastAt(k)===oldest;});
+ var k=pool.slice().sort(function(a,b){
+  var n=QF_ORDER.length, ia=(QF_ORDER.indexOf(a)-seed%n+n)%n, ib=(QF_ORDER.indexOf(b)-seed%n+n)%n;
+  return ia-ib;})[0];
+ var el=eligible(k), sl=el.filter(function(l){return signal(l).length;});
+ var l=sl.length?sl[0]:(QF[k].ordered?el[0]:el[seed%el.length]);
+ if(signal(l).length)why.unshift('the story touched '+signal(l).map(function(s){return K2BAND[s];}).join(' and ')+
+  ', and '+l.nm+' sits there in '+(l.fw==='sins'||l.fw==='inferno'?'the Compass':'the table'));
+ else if(QF[k].ordered)why.push(QF[k].nm.toLowerCase()+' is walked in order');
+ if(oldest<0)why.push('not asked yet');
+ return {fw:k,id:l.id,nm:l.nm,framework:QF[k].nm,q:l.q,looks:l.looks,seats:l.seats.slice(),
+  channels:l.channels.slice(),proposed:l.proposed,src:l.src,because:why};}
+
+/* THE GATE'S OWN CHECK, so the table cannot drift from the data it was built
+   from, and so a proposed framework cannot lose its flag. Returns the list of
+   things wrong, which is empty when the table holds. */
+function qfCheck(){
+ var bad=[], seen={};
+ var sins=qfSins();
+ if(sins.length!==7)bad.push('the Compass carries '+sins.length+' sins and the set is the seven');
+ sins.forEach(function(s){if(!QF_SIN_Q[s.id])bad.push('the sin '+s.id+' has no question');});
+ Object.keys(QF_SIN_Q).forEach(function(k){if(!sins.some(function(s){return s.id===k;}))bad.push('a question for '+k+', which the Compass does not carry');});
+ CIRCLES.forEach(function(c){if(!QF_CIRCLE_Q[c.nm.toLowerCase()])bad.push('the circle '+c.nm+' has no question');});
+ if(QF.inferno.layers.map(function(l){return l.id;}).join('|')!==CIRCLES.map(function(c){return c.nm.toLowerCase();}).join('|'))
+  bad.push('the descent is not the Compass order');
+ if(QF.ages.layers.length!==AGES.length)bad.push('the ages are not the age ladder');
+ QF_ORDER.forEach(function(k){
+  var f=QF[k]; if(!f){bad.push('the set '+k+' is not built');return;}
+  if(!f.layers.length)bad.push(k+' has no layers');
+  if((k==='jouissance'||k==='bias'||k==='shadow'||k==='attachment'||k==='temperament')!==f.proposed)
+   bad.push(k+' proposed flag is wrong');
+  f.layers.forEach(function(l){
+   var id=l.fw+'/'+l.id;
+   if(seen[id])bad.push(id+' is listed twice'); seen[id]=1;
+   if(!l.q||l.q.charAt(l.q.length-1)!=='?')bad.push(id+' is not a question');
+   if(!l.looks)bad.push(id+' does not say what it looks for');
+   l.channels.forEach(function(c){if(C3_VERB.indexOf(c)<0)bad.push(id+' names the channel '+c+', which is not one of the six');});
+   l.seats.forEach(function(s){if(!K2BAND[s])bad.push(id+' names the seat '+s+', which is not a seat');});
+   if(/[\u2014\u2013]/.test(l.q))bad.push(id+' has a dash in it');
+   if(/\byou are (a|an|so|too)\b|disorder|diagnos|trauma|narciss|psychopath/i.test(l.q))bad.push(id+' says what the person is');
+   if(l.proposed&&l.seats.length)bad.push(id+' is proposed and claims a seat nothing seats');});});
+ return bad;}
+/* ============================================================
+   DISTRESS, round OX, TASKS.md. The owner, on the permanent line under the
+   story box: "Safety line, no. The sniffer needs to be good enough to detect
+   distress in a person's story, as I just demonstrated earlier."
+
+   THE REVIEW'S TWO CASES, reproduced before anything was written, on the build
+   in hand:
+     "I want to end my life. I feel hopeless and numb."   read Sad 8.8, with a
+                                                          release offered
+     "I do not want to be here anymore."                  read nothing at all
+   The first is a person saying they want to die and being offered a ritual. The
+   second is a person saying the same thing in the passive voice and not being
+   heard at all. Nothing in the lexicon is wrong about either: it is a seat and
+   an amount, and what these sentences carry is neither.
+
+   WHAT THIS IS. A reader of one entry, pure and host free, that returns a
+   level, none, concern or urgent, and the reasons, each a phrase the person
+   wrote and what it says. It is not the sniffer and shares nothing with its
+   arithmetic: no seat, no amount, nothing that touches the field.
+
+   WHAT IT DOES, WHICH IS THE POINT OF IT. A detection has to do something. At
+   concern or urgent the Story page does not offer a release, and shows a short
+   plain message, the support lines drafted in reviews/LEGAL-floor.md block C
+   quoted exactly, and a way to keep writing. Under no detection it shows
+   nothing: there is no permanent line. The first-run Mirror takes the same
+   guard through mirrorGuard, which is a function and not a screen, because the
+   Mirror is not in this build.
+
+   WHY IT IS A PHRASE TABLE AND NOT A MODEL. A false negative here is the
+   expensive error and a false positive is not free: it stops a person's
+   release and puts a crisis line in front of somebody who wrote about a bad
+   day. There is no labelled set, and there is not going to be a safe one to
+   build, so the threshold cannot be fitted and a model would be a number
+   nobody could defend. A table can be read line by line by the owner, a
+   clinician and a lawyer, and every detection says which words it was.
+
+   THE KINDS, AND WHAT EACH ONE SAYS. The level follows from which kinds are
+   present, by a rule a person can check, and not from a score:
+
+     active    says they want to end their life or hurt themself. "I want to
+               end my life", "kill myself", "hurt myself"
+     passive   says they wish to be dead, or not to live. "I wish I was dead",
+               "I do not want to live", "I want to die"
+     burden    says others would be better off without them. "everyone would
+               be better off without me", "no one would miss me"
+     leave     says they do not want to be here, in the sense of anywhere. "I do
+               not want to be here anymore", "I want to disappear"
+     cant      says they cannot go on. "I can't do this anymore", "I can't go
+               on", "I can't take it anymore"
+     hopeless  says it is hopeless. "I feel hopeless", "no way out"
+     point     asks what the point is, and stops there. "What is the point."
+     weakburden  says they are a burden, with nothing about leaving
+     support   numb, empty. Recorded as a reason and never changes the level.
+
+     urgent  = any of active, passive, burden; or two different kinds among
+               leave, cant and hopeless
+     concern = any one of leave, cant, hopeless, point, weakburden
+     none    = anything else
+
+   The two pairings are the only judgement in the rule: that one of the five
+   concern kinds alone is worth a line, and that two of three together is worth
+   the stronger one. Both are stated here so they can be argued with.
+
+   WHAT IT WILL NOT READ AS DISTRESS, deliberately:
+     a negated cue. "I do not want to die", "I would never kill myself" stand
+       a negator in the three words before the cue, in the same clause, and
+       read as nothing. A cue that carries its own negation, "I do not want to
+       be here anymore", is matched as a whole and is not voided by it.
+     a cue about somebody else. Every cue carries I, me, myself or my in its
+       own words, so "he wants to end his life" matches none of them.
+     a cue in the past. "when I was a teenager I wanted to die" is a line and
+       not an alarm: urgent kinds drop to concern, concern kinds drop out.
+     "hopeless at" and "hopeless about": the word as a figure of speech.
+     "what is the point" with something after it: "what is the point of this
+       meeting" is not about a life. It reads only when it stops, or goes on to
+       living, going on, it all, anything or anymore.
+     "I could kill myself for being so stupid": a hyperbole, read at concern and
+       not urgent. Wrong in both directions sometimes, and named below.
+
+   WHAT IT CANNOT KNOW, and the report says it again because it is the part that
+   matters. It cannot know whether a person means it. It cannot read tone, a
+   quotation, a song lyric, a character in a story the person is writing, or
+   a thing said to a therapist about the past. It cannot read a euphemism it has
+   no phrase for, and the table is a floor and not the language: "I just want
+   it all to stop" is in it and "I'm so tired of fighting" is not. It reads
+   English only, and only what was typed. It cannot know that nobody is hurt
+   by a message shown to a person who did not need it. And no amount of testing
+   here makes it safe: the tests below measure the table against sentences
+   written for them, which is not the same as measuring it against the people
+   who will use it.
+   ============================================================ */
+var DISTRESS_LEVELS=['none','concern','urgent'];
+var DISTRESS_URGENT_KINDS=['active','passive','burden'];
+var DISTRESS_SOFT_KINDS=['leave','cant','hopeless'];
+var DISTRESS_CONCERN_KINDS=['leave','cant','hopeless','point','weakburden'];
+/* what each kind says, in plain words. This is the reason, and it is for the
+   person reading the detection and never shown to the person who wrote it. */
+var DISTRESS_SAY={
+ active:'says they want to end their life or hurt themself',
+ passive:'says they wish to be dead or not to live',
+ burden:'says others would be better off without them',
+ leave:'says they do not want to be here, or want to disappear',
+ cant:'says they cannot go on',
+ hopeless:'says it is hopeless',
+ point:'asks what the point is',
+ weakburden:'says they are a burden',
+ support:'says they feel numb or empty'};
+/* [kind, cues, options]. Cues are written as lawNorm reads a text: lower case,
+   no apostrophes, words only. "dont" is "don't". Options: end, the cue must
+   stand at the end of its clause or be followed only by one of the words in
+   `then`; not, words that may not follow it. */
+var DISTRESS_CUES=[
+ ['active',['want to end my life','wanna end my life','going to end my life','end my own life',
+  'end my life','take my own life','kill myself','killing myself',
+  'want to hurt myself','wanna hurt myself','going to hurt myself','urge to hurt myself',
+  'thinking about hurting myself','hurting myself on purpose','hurt myself on purpose',
+  'want to harm myself','going to harm myself','thinking of harming myself','harm myself',
+  'cut myself on purpose','cutting myself','end it all','thinking about suicide',
+  'thinking of suicide','think about suicide','considering suicide','am suicidal','im suicidal',
+  'feel suicidal','feeling suicidal','i was suicidal','suicidal thoughts','take an overdose',
+  'taking an overdose','i self harm','want to self harm','urge to self harm','self harming again',
+  'took a lot of pills','took all my pills','swallowed all my pills','overdosed on purpose',
+  'plan to end it','plan to kill myself','plan to end my life','plan to die','have a plan to end it',
+  'thoughts of hurting myself','thoughts of harming myself','thoughts of killing myself',
+  'thoughts of suicide','thoughts about suicide','thoughts of ending my life','thoughts of ending it']],
+ ['active',['take my life'],{not:['back']}],
+ ['passive',['want to die','wanna die'],{not:['of','from','laughing'],notBy:['he','she','they','you','people','who','everyone']}],
+ ['passive',['wish i was dead','wish i were dead','wish i would die',
+  'better off dead','rather be dead','want to be dead','dont want to live','do not want to live',
+  'dont want to be alive','do not want to be alive','no reason to live','nothing to live for',
+  'not worth living','isnt worth living',
+  'wish i had never been born','wish i was never born','wish i never woke up','wish id never been born',
+  'wish i would never have been born','dont deserve to live','dont deserve to be alive',
+  'do not deserve to live','do not deserve to be alive','want out of this life','want out of life',
+  'want to not wake up','wish i would not wake up','hope i do not wake up','hope i dont wake up',
+  'go to sleep and not wake up','sleep and never wake up']],
+ ['passive',['tired of living','tired of being alive','sick of living'],{not:['in','with','here','like','at']}],
+ ['passive',['think about dying','thinking about dying','thoughts of dying'],{}],
+ ['passive',['dont want to wake up','do not want to wake up'],{not:['at','early','before','to','in','until','on','tomorrow']}],
+ ['burden',['would notice if i just vanished','would notice if i vanished','would notice if i disappeared',
+  'would notice if i just disappeared','better off without me','better without me','no one would miss me','nobody would miss me',
+  'no one would notice if i was gone','nobody would notice if i were gone',
+  'better off if i was gone','better off if i were gone','better off if i were not here',
+  'better off if i was not here']],
+ ['weakburden',['if i wasnt around','if i wasnt here','if i werent around','if i werent here',
+  'if i was not around','if i was not here','if i were not around','if i was gone','if i were gone',
+  'am a burden','im a burden','such a burden','feel like a burden','burden to everyone',
+  'burden on everyone']],
+ ['leave',['dont want to be here anymore','do not want to be here anymore',
+  'dont want to be here any more','do not want to be here any more',
+  'dont want to be around anymore','do not want to be around anymore',
+  'dont want to exist','do not want to exist',
+  'wish i did not exist','wish i didnt exist',
+  'wish i was not here','wish i wasnt here','not be here anymore','want it all to stop',
+  'want it all to be over']],
+ ['leave',['want to disappear','wish i could disappear','want to vanish','wish i could vanish'],
+  {not:['into','to','for','on','off','somewhere','in']}],
+ ['cant',['cant do this anymore','cannot do this anymore','cant go on','cannot go on',
+  'cant take it anymore','cant take this anymore','cannot take it anymore','cant take much more',
+  'cant handle this anymore','cant live like this','cannot live like this',
+  'dont know how much more i can take','dont know how much longer i can',
+  'dont think i can keep going','dont think i can go on','dont think i can do this anymore',
+  'dont think i can take it','just cant do it anymore','cant do it anymore']],
+ ['cant',['cant keep going','cant keep doing this'],{end:true,then:['like this','on','anymore']}],
+ ['hopeless',['feel hopeless','feeling hopeless','felt hopeless','feels hopeless','am hopeless',
+  'hopelessness','without hope','see no way out','cant see any way out','cant see a way out',
+  'see any way out','no point in living','no point in going on','and hopeless','so hopeless'],
+  {not:['at','about','with','when','case']}],
+ ['hopeless',['feel so hopeless','feel completely hopeless','feel totally hopeless','feel utterly hopeless',
+  'feel absolutely hopeless'],{not:['at','about','with','when','case']}],
+ ['hopeless',['no hope'],{not:['of','for','that','in','to']}],
+ ['hopeless',['no way out','it will never get better','it never gets better',
+  'nothing will ever get better'],{end:true,then:['of this','of it','anymore']}],
+ ['point',['what is the point','whats the point'],{end:true,
+  then:['of living','of going on','of it all','of any of it','of anything','of all this','anymore','of me']}],
+ ['point',['no point anymore','no point any more'],{}],
+ ['point',['dont see the point','do not see the point'],{end:true,
+  then:['in anything','in going on','in living','in life','anymore','any more','in anything any more','in anything anymore']}],
+ ['leave',['want to sleep forever'],{}],
+ ['point',['nothing matters anymore','done with life','done with it all','done with everything'],{}],
+ ['support',['numb','empty inside','feel empty','feel nothing']]];
+/* the words before a cue that void it. Short on purpose: cant, cannot and
+   couldnt are left out because "I can't stop wanting to die" is exactly what
+   they would void. */
+var DISTRESS_NEG=['not','no','never','nobody','dont','didnt','wont','wouldnt','wasnt','isnt',
+ 'arent','without','hardly'];
+/* the words before a cue that put it in the past */
+var DISTRESS_PAST=['used to','back then','years ago','when i was','as a teenager','as a kid',
+ 'last year','long ago','in the past'];
+/* the shape of a hyperbole: "I could kill myself for being so stupid" */
+var DISTRESS_HYPER_BEFORE=['could','could have','almost','nearly','just about'];
+var DISTRESS_HYPER_AFTER=['for','when','if','over','because'];
+
+/* THE DRAFTED LINES, quoted from reviews/LEGAL-floor.md block C, "If You Are In
+   Danger Now", word for word, with the line breaks of the file joined. Nothing
+   is paraphrased and no number is written that the file does not carry: the
+   one number is the one it carries. The gate reads the file and fails if any of
+   these is not in it. Block C's last sentence, "Put the instrument down and use
+   it", is left out: the owner's instruction is to offer to keep writing, and
+   the two say opposite things. The permanent one line under the story box, the
+   file's other draft, is not used: he struck it. */
+var DISTRESS_LINES={
+ floor:'This is not an emergency service. Nobody reads what you write here. It stays on your device and there is no person on the other end of it.',
+ line:'If you are thinking about ending your life, or you do not feel safe, contact a crisis line now. In the United States, call or text 988 for the Suicide and Crisis Lifeline, or chat at 988lifeline.org. Outside the United States, use your local emergency number.',
+ help:'People trained for exactly this answer that line. Help is available.'};
+/* the one sentence that is this product's and not the file's: short, plain, no
+   method, no cause, no advice. */
+var DISTRESS_LEAD='What you wrote sounds like a lot to carry.';
+var DISTRESS_KEEP='Keep writing';
+
+function distressRead(text){
+ var out={level:'none', reasons:[], kinds:[], support:[], offerRelease:true};
+ var raw=String(text||'');
+ if(!raw.trim())return out;
+ var src=lawNorm(raw);
+ var rows=[];
+ DISTRESS_CUES.forEach(function(row){row[1].forEach(function(c){rows.push({kind:row[0],cue:c,opt:row[2]||{}});});});
+ rows.sort(function(a,b){return b.cue.length-a.cue.length;});
+ var taken=[], found=[];
+ rows.forEach(function(r){
+  var needle=' '+r.cue+' ', at=src.indexOf(needle);
+  while(at>=0){
+   var hi=at+needle.length-1;
+   if(!taken.some(function(t){return at<t.hi&&hi>t.at;})){
+    var pre=src.slice(0,at+1).split(' ').filter(function(x){return x!=='';});
+    var post=src.slice(hi).split(' ').filter(function(x){return x!=='';});
+    /* a negator within three words before, in the same clause. The cue's own
+       words are not looked at, so a cue that carries its own "not" is whole. */
+    var neg=false;
+    for(var k=pre.length-1,n=0;k>=0&&n<3;k--,n++){
+     if(pre[k]==='|')break;
+     if(DISTRESS_NEG.indexOf(pre[k])>=0){neg=true;break;}}
+    var ok=!neg;
+    /* the cue has to stop, or go on only the way the table says */
+    if(ok&&r.opt.end){
+     var nxt=post[0]===undefined||post[0]==='|';
+     var then=(r.opt.then||[]).some(function(w){
+      return post.slice(0,w.split(' ').length).join(' ')===w;});
+     ok=nxt||then;}
+    if(ok&&r.opt.not&&post[0]!==undefined&&r.opt.not.indexOf(post[0])>=0)ok=false;
+    /* somebody else wanting it: "they want to die" is not the person */
+    if(ok&&r.opt.notBy&&pre.length&&r.opt.notBy.indexOf(pre[pre.length-1])>=0)ok=false;
+    if(ok){
+     taken.push({at:at,hi:hi});
+     var before=pre.slice(Math.max(0,pre.length-8));
+     /* the clause floor for the look back: nothing before a bar counts */
+     var bi=before.lastIndexOf('|'); if(bi>=0)before=before.slice(bi+1);
+     var ctx=' '+before.join(' ')+' ';
+     var past=DISTRESS_PAST.some(function(p){return ctx.indexOf(' '+p+' ')>=0;});
+     var hyper=false;
+     if((r.cue==='kill myself'||r.cue==='killing myself')){
+      var b2=before.slice(-2).join(' '), b1=before.slice(-1).join(' ');
+      var a3=post.slice(0,3);
+      hyper=(DISTRESS_HYPER_BEFORE.indexOf(b1)>=0||DISTRESS_HYPER_BEFORE.indexOf(b2)>=0)&&
+       a3.some(function(w){return DISTRESS_HYPER_AFTER.indexOf(w)>=0;});}
+     found.push({kind:r.kind,cue:r.cue,at:at,past:past,hyper:hyper});}}
+   at=src.indexOf(needle,at+1);}});
+ found.sort(function(a,b){return a.at-b.at;});
+ /* the past and the hyperbole step a cue down, and say so */
+ var eff=[];
+ found.forEach(function(f){
+  var kind=f.kind, note='';
+  if(kind==='support'){out.support.push({kind:'support',text:f.cue,why:DISTRESS_SAY.support});return;}
+  if(f.hyper){kind='leave'; note=', read as a figure of speech and held at concern';}
+  else if(f.past){
+   if(DISTRESS_URGENT_KINDS.indexOf(kind)>=0){kind='leave'; note=', said of the past and held at concern';}
+   else{return;}}
+  eff.push({kind:kind,text:f.cue,why:DISTRESS_SAY[f.kind]+note,said:f.kind});});
+ var kinds=[]; eff.forEach(function(e){if(kinds.indexOf(e.kind)<0)kinds.push(e.kind);});
+ var soft=kinds.filter(function(k){return DISTRESS_SOFT_KINDS.indexOf(k)>=0;});
+ var level='none';
+ if(kinds.some(function(k){return DISTRESS_URGENT_KINDS.indexOf(k)>=0;})||soft.length>=2)level='urgent';
+ else if(kinds.some(function(k){return DISTRESS_CONCERN_KINDS.indexOf(k)>=0;}))level='concern';
+ out.level=level; out.kinds=kinds; out.reasons=eff;
+ out.offerRelease=(level==='none');
+ return out;}
+
+/* WHAT IS SHOWN, as data, so the Story page and the Mirror print the same
+   words. Under no detection it is nothing at all: a person who wrote about a bad
+   day is shown no line. */
+function distressMessage(level){
+ if(level!=='concern'&&level!=='urgent')return null;
+ return {level:level, lead:DISTRESS_LEAD,
+  lines:[DISTRESS_LINES.line,DISTRESS_LINES.help,DISTRESS_LINES.floor],
+  keep:DISTRESS_KEEP, offerRelease:false};}
+
+/* THE FIRST-RUN MIRROR'S GUARD. The Mirror is not in this build, so this is
+   the call it makes: the entry in, and out comes whether a release may be
+   offered and what to show instead. Pure, one line to wire. */
+function mirrorGuard(text){
+ var d=distressRead(text), m=distressMessage(d.level);
+ return {level:d.level, offerRelease:d.offerRelease, message:m, reasons:d.reasons};}
 
 /* ============================================================
    ASTRO. The actual sky, computed here, offline, from the birth
@@ -14325,6 +16257,32 @@ if(typeof module!=='undefined'&&module.exports){
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
                  srcAsked:srcAsked, srcAskedMax:srcAskedMax,
+  /* the story frame, engine/frame.js, round OU, and the masked swear map */
+                 storyFrame:storyFrame, storyFrameDay:storyFrameDay, frameQuestion:frameQuestion,
+                 FRAME_SLOTS:FRAME_SLOTS, frameDay:frameDay,
+                 subjectCheck:subjectCheck, SUBJECT_UNCLEAR:SUBJECT_UNCLEAR, mirrorCause:mirrorCause,
+                 hitSubjects:hitSubjects, subjectLine:subjectLine, frameTarget:frameTarget,
+                 SUBJ_KINDS:SUBJ_KINDS, SUBJ_FROM:SUBJ_FROM, SUBJ_PREP:SUBJ_PREP,
+                 DAYQ_NOUN:DAYQ_NOUN, DAYQ_ADJ:DAYQ_ADJ, DAYQ_AMT:DAYQ_AMT, DAYQ_IDIOM:DAYQ_IDIOM, DAYQ_NOUNQ:DAYQ_NOUNQ,
+                 DAYQ_VERB:DAYQ_VERB, DAYQ_PHRASE:DAYQ_PHRASE, DAYQ_SUBJ:DAYQ_SUBJ, ROLES:ROLES,
+                 PRON_OTHER:PRON_OTHER, ACTS:ACTS, ACT_NOUN:ACT_NOUN, ACT_CHANNELS:ACT_CHANNELS,
+                 PAST_IRR:PAST_IRR, PAST_LIGHT:PAST_LIGHT, CHAN_CUE:CHAN_CUE, FRAME_NEG:FRAME_NEG,
+                 LEXMOD:LEXMOD, SWEAR_INT:SWEAR_INT, SWEAR_WORDS:SWEAR_WORDS,
+                 swearCands:swearCands, swearFind:swearFind, swearRestore:swearRestore,
+  /* the feelings wheel, engine/wheel.js, round PA */
+                 WHEEL:WHEEL, WHEEL_TREE:WHEEL_TREE, WHEEL_FAM:WHEEL_FAM, WHEEL_SEC:WHEEL_SEC,
+                 WHEEL_WORD:WHEEL_WORD, WHEEL_DUAL:WHEEL_DUAL, WHEEL_PLAIN:WHEEL_PLAIN, WHEEL_LEAD:WHEEL_LEAD,
+                 WHEEL_BY:WHEEL_BY, wheelRead:wheelRead, wheelCharges:wheelCharges, wheelAddresses:wheelAddresses,
+                 wheelSeatOf:wheelSeatOf, wheelAmount:wheelAmount, wheelDual:wheelDual, WHEELPLAIN:WHEELPLAIN,
+                 LEXWHEELRUN:LEXWHEELRUN,
+  /* distress, engine/distress.js, round OX */
+                 distressRead:distressRead, distressMessage:distressMessage, mirrorGuard:mirrorGuard,
+                 DISTRESS_LINES:DISTRESS_LINES, DISTRESS_LEAD:DISTRESS_LEAD, DISTRESS_KEEP:DISTRESS_KEEP,
+                 DISTRESS_CUES:DISTRESS_CUES, DISTRESS_LEVELS:DISTRESS_LEVELS, DISTRESS_SAY:DISTRESS_SAY,
+                 DISTRESS_NEG:DISTRESS_NEG,
+  /* the question frameworks, engine/qframe.js, round OV */
+                 QF:QF, QF_ORDER:QF_ORDER, qfLayers:qfLayers, qfNext:qfNext, qfTouched:qfTouched,
+                 qfSins:qfSins, qfCheck:qfCheck,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -14367,7 +16325,7 @@ if(typeof module!=='undefined'&&module.exports){
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
                   GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
-  /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
+  /* catalog */   C3_VERB:C3_VERB, C3_FIRSTRUN_VERB:C3_FIRSTRUN_VERB, C3_FIRSTRUN_STEM:C3_FIRSTRUN_STEM, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
                   C3_CHAIN:C3_CHAIN, C3_DIR:C3_DIR, C3_PART:C3_PART, C3_HEAD:C3_HEAD,
                   C3_THEME:C3_THEME, C3_KIND:C3_KIND, C3_TRUTHRULE:C3_TRUTHRULE, C3_FAIL:C3_FAIL,

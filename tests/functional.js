@@ -5025,7 +5025,7 @@ console.log('\n=== the story lights what the engine read, once ===');
     +"I keep replaying it. I am furious with him and ashamed of myself, and I have no idea "
     +"which of those two is actually mine to carry, or whether I am simply too tired to tell."),
    idiom:read('idiom',
-    'I wanted to shut the door, and not come out at all. I felt so tired.'),
+    'I wanted to shut the door, and not come out at all. I stood in the hallway.'),
    empty:read('empty','')};}):null;
  if(!lit){
   ok(false,'so nothing this surface draws can be measured against it');
@@ -5127,6 +5127,80 @@ console.log('\n=== a sentence does not disappear at a pause, round NU ===');
   const out=ST_TEXT; rec.stop(); return out;});
  ok(/insecure/.test(heard)&&/spoke up/.test(heard),
   'both sentences survive the pause between them, got '+JSON.stringify(heard));
+ await st.close();
+}
+
+console.log('\n=== round OU to PA: the asterisks, the frame question, the subject kept, and distress, in the real page ===');
+/* THE ASTERISKS. Chrome's recogniser masks a swear and nothing in this product
+   does. A stand in for the recogniser delivers the masked shapes, including the
+   seven stars of the owner's own screenshot, and the page writes the word, and
+   an entry typed with asterisks is kept exactly as typed. */
+{
+ const fs=require('fs'), pth=require('path');
+ const FX=JSON.parse(fs.readFileSync(pth.resolve('tests/distress-fixtures.json'),'utf8'));
+ const st=await browser.newPage({viewport:{width:1600,height:1000}});
+ const errs=[]; st.on('pageerror',e=>errs.push(e.message));
+ await st.goto(FILE,{waitUntil:'load'}); await booted(st);
+ const dict=await st.evaluate(()=>{
+  setTab(TAB.STORY);
+  function FakeSR(){} FakeSR.prototype.start=function(){}; FakeSR.prototype.stop=function(){if(this.onend)this.onend();};
+  window.SpeechRecognition=FakeSR;
+  ST_TEXT=''; stMic(); const rec=ST_REC;
+  const seg=t=>({0:{transcript:t},isFinal:true,length:1});
+  rec.onresult({resultIndex:0,results:{0:seg('I had a really ******* rough day today.'),length:1}});
+  rec.onresult({resultIndex:1,results:{0:seg('I had a really ******* rough day today.'),1:seg('It was f***ing awful and sh*t went wrong.'),length:2}});
+  const out=ST_TEXT; rec.stop(); return out;});
+ ok(dict.indexOf('*')<0&&/really fucking rough day today/.test(dict)&&/fucking awful and shit went wrong/.test(dict),'dictation writes the word the mask fits and no asterisk is left: '+JSON.stringify(dict));
+ const typed=await st.evaluate(()=>{
+  setTab(TAB.STORY); ST_TEXT='';
+  const ta=document.getElementById('sttext'); ta.value='I was **furious** and f***ing done *today*'; ta.dispatchEvent(new Event('input'));
+  return ST_TEXT;});
+ ok(typed==='I was **furious** and f***ing done *today*','text a person types or pastes is never rewritten, asterisks and all');
+ /* the owner's own entry, as it was saved by the build before this change */
+ const owner="I had a really ******* rough day today. I had a confrontation with my boss. I was really irritated by him. He showed no remorse. Towards how I felt. I didn't know what to do. It made me depressed. Umm, it made me irritable. It made me frustrated. And. It made me mad.";
+ const read=await st.evaluate((t)=>{
+  setTab(TAB.STORY); ST_TEXT=''; stRender();
+  const ta=document.getElementById('sttext'); ta.value=t; ta.dispatchEvent(new Event('input'));
+  const src=document.getElementById('stsrc'); return {src:src?src.innerText:'', sup:!!document.getElementById('stsupport'), run:!!document.getElementById('strun'),
+   imps:ST_PARSED?ST_PARSED.imprints.length:0};},owner);
+ ok(read.imps>0&&!/Nothing read yet/.test(read.src),'his entry has charge and Source AI does not say nothing was read: '+JSON.stringify(read.src.slice(0,160)));
+ ok(/What did your boss do or say\?/.test(read.src),'it asks what the boss did, in his own words: '+read.src.replace(/\s+/g,' ').slice(0,160));
+ ok(!read.sup&&read.run,'and an ordinary hard day is not a detection: the release is offered and no support card is shown');
+ /* committing keeps the exact words and the subjects, through the real validator */
+ const saved=await st.evaluate(()=>{
+  const r=stCommit(); const e=CURP.story.entries[CURP.story.entries.length-1];
+  const v=validateProfile(JSON.parse(JSON.stringify(CURP)));
+  return {ok:r.ok,text:e.text,subj:e.subjects||null,valid:v.ok,errs:(v.errs||[]).slice(0,3)};});
+ ok(saved.ok&&saved.valid,'the commit succeeds and the record validates: '+JSON.stringify(saved.errs));
+ ok(saved.text.indexOf('*******')>=0&&saved.text.indexOf('I didn\'t know what to do.')>0,'the saved entry is the person\'s exact words, as the form held them');
+ ok(Array.isArray(saved.subj)&&saved.subj.some(r=>r.seat==='solar'&&r.kind==='other'&&r.role==='boss'),'and it carries the subject of its seats: '+JSON.stringify(saved.subj));
+ /* distress: the release is withdrawn, the drafted lines are shown, nothing else */
+ const d1=await st.evaluate((t)=>{
+  setTab(TAB.STORY); ST_TEXT=''; stRender();
+  const ta=document.getElementById('sttext'); ta.value=t; ta.dispatchEvent(new Event('input'));
+  const sup=document.getElementById('stsupport'), src=document.getElementById('stsrc');
+  return {sup:sup?sup.innerText:'', run:!!document.getElementById('strun'), keep:!!document.getElementById('stkeep'),
+   src:src?src.innerText.replace(/\s+/g,' ').trim():'', ask:!!document.querySelector('#stsrc .src-q')};},FX.A.pos[0][0]);
+ const lines=await st.evaluate(()=>[DISTRESS_LEAD,DISTRESS_LINES.line,DISTRESS_LINES.help,DISTRESS_LINES.floor,DISTRESS_KEEP]);
+ ok(d1.sup.length>0&&lines.slice(0,4).every(l=>d1.sup.indexOf(l)>=0),'a detection shows the short message and the three drafted lines');
+ ok(!d1.run,'and offers no release');
+ ok(d1.keep,'and offers to keep writing');
+ ok(d1.src==='Source AI'&&!d1.ask,'Source AI asks nothing while it holds: '+d1.src);
+ const d2=await st.evaluate(()=>{const b=document.getElementById('stkeep'); b.click(); return document.activeElement&&document.activeElement.id;});
+ ok(d2==='sttext','Keep writing puts the cursor back in the box');
+ const d3=await st.evaluate((t)=>{
+  const ta=document.getElementById('sttext'); ta.value=t; ta.dispatchEvent(new Event('input'));
+  const r=stCommit(); const held=!!document.getElementById('stsupport');
+  ST_TEXT=''; stRender(); const afterEmpty=!!document.getElementById('stsupport');
+  const ta2=document.getElementById('sttext'); ta2.value='I had a rough day.'; ta2.dispatchEvent(new Event('input'));
+  const cleared=!document.getElementById('stsupport')&&!!document.getElementById('strun');
+  ST_TEXT=''; stRender();
+  return {r:r.ok,held,afterEmpty,cleared,clean:!document.getElementById('stsupport')};},FX.A.pos[0][0]);
+ ok(d3.held&&d3.afterEmpty,'the card holds after the entry is committed, because the commit empties the box');
+ ok(d3.cleared,'and it goes when the person writes something that does not read as distress');
+ const d4=await st.evaluate(()=>{ST_TEXT='';STV.dist=null;STV.distKeep=null;stRender(); return !!document.getElementById('stsupport');});
+ ok(d4===false,'under no detection nothing is shown: there is no permanent line');
+ ok(errs.length===0,'no page errors: '+errs.slice(0,2).join(' | '));
  await st.close();
 }
 

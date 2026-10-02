@@ -6315,7 +6315,7 @@ g('OV1 · the question frameworks: the table holds, and it is built from the dat
  ok(QF.inferno.layers.map(l=>l.nm).join()===CIRCLES.map(c=>c.nm).join()&&QF.inferno.ordered===true,'the nine circles are the Compass\'s, in its order, and walked in order');
  ok(QF.ages.layers.length===AGES.length&&QF.ages.layers[0].q===AGES[0].q&&QF.ages.ordered===true,'the ages are the owner\'s age ladder, with his own questions');
  ok(QF_ORDER.length===8&&QF_ORDER.every(k=>QF[k]),'eight frameworks, all built');
- ok(['jouissance','bias','shadow','attachment','temperament'].every(k=>QF[k].proposed===true&&QF[k].layers.every(l=>l.proposed&&l.src.indexOf('PROPOSED')===0&&l.seats.length===0)),'the five of mine are flagged PROPOSED on every layer, and claim no seat nothing seats');
+ ok(['jouissance','bias','shadow','attachment','temperament'].every(k=>QF[k].proposed===true&&QF[k].layers.every(l=>l.proposed&&l.src.indexOf('Proposed')===0&&l.seats.length===0)),'the five of mine are flagged proposed on every layer, and claim no seat nothing seats');
  ok(['sins','inferno','ages'].every(k=>QF[k].proposed===false),'and the three of his are not');
  const L=qfLayers();
  ok(L.every(l=>/\?$/.test(l.q)&&l.looks&&l.channels.every(c=>C3_VERB.indexOf(c)>=0)&&l.seats.every(s=>K2BAND[s])),'every layer is a question, says what it looks for, and names only real channels and seats');

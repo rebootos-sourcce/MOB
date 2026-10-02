@@ -102,7 +102,7 @@ var QF_PROPOSED={
   ['return','What do you go back to more than anything, even when it costs you?','what gets returned to against its cost',['behaving']],
   ['love','What do you love doing more than anything else?','the enjoyment the person organises the week around',['feeling']],
   ['hold','What would you not give up, even if somebody asked nicely?','what is held when it is asked for',['behaving']]]},
- bias:{nm:'Cognitive bias',looks:'the three ordinary habits of a mind defending itself',
+ bias:{nm:'Mind habits',looks:'the three ordinary habits of a mind defending itself',
   layers:[
   ['confirm','What have you read or heard lately that only agreed with you?','taking in only what agrees',['perceiving']],
   ['sunk','What are you still doing because of how much you have already put in?','staying for the cost already paid',['thinking']],
@@ -147,10 +147,10 @@ function qfBuild(){
    return {fw:'ages',id:'a'+a.a,nm:'age '+a.a,q:a.q,looks:a.k,seats:[],channels:['believing'],
     src:'age ladder, age '+a.a,proposed:false};})};
  Object.keys(QF_PROPOSED).forEach(function(k){var f=QF_PROPOSED[k];
-  T[k]={nm:f.nm,ordered:false,proposed:true,src:'PROPOSED, not ruled',looks:f.looks,
+  T[k]={nm:f.nm,ordered:false,proposed:true,src:'Proposed, not ruled',looks:f.looks,
    layers:f.layers.map(function(l){
     return {fw:k,id:l[0],nm:l[0],q:l[1],looks:l[2],seats:[],channels:l[3].slice(),
-     src:'PROPOSED, no table in the product seats it',proposed:true};})};});
+     src:'Proposed, no table in the product seats it',proposed:true};})};});
  return T;}
 var QF=qfBuild();
 function qfLayers(){
@@ -221,7 +221,7 @@ function qfNext(state){
 function qfCheck(){
  var bad=[], seen={};
  var sins=qfSins();
- if(sins.length!==7)bad.push('the Compass carries '+sins.length+' sins and the framework is the seven');
+ if(sins.length!==7)bad.push('the Compass carries '+sins.length+' sins and the set is the seven');
  sins.forEach(function(s){if(!QF_SIN_Q[s.id])bad.push('the sin '+s.id+' has no question');});
  Object.keys(QF_SIN_Q).forEach(function(k){if(!sins.some(function(s){return s.id===k;}))bad.push('a question for '+k+', which the Compass does not carry');});
  CIRCLES.forEach(function(c){if(!QF_CIRCLE_Q[c.nm.toLowerCase()])bad.push('the circle '+c.nm+' has no question');});
@@ -229,7 +229,7 @@ function qfCheck(){
   bad.push('the descent is not the Compass order');
  if(QF.ages.layers.length!==AGES.length)bad.push('the ages are not the age ladder');
  QF_ORDER.forEach(function(k){
-  var f=QF[k]; if(!f){bad.push('the framework '+k+' is not built');return;}
+  var f=QF[k]; if(!f){bad.push('the set '+k+' is not built');return;}
   if(!f.layers.length)bad.push(k+' has no layers');
   if((k==='jouissance'||k==='bias'||k==='shadow'||k==='attachment'||k==='temperament')!==f.proposed)
    bad.push(k+' proposed flag is wrong');
