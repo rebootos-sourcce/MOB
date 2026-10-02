@@ -1493,3 +1493,799 @@ The highest-value remaining work is not more visual invention.
 It is making the intelligence architecture real, inspectable, correctable, persistent, and congruent across the product.
 
 **Primary target for today: close the Release → Verification → Evidence loop using the canonical system path.**
+
+# INFORMATION FLOW CONGRUENCY SWEEP
+
+## Purpose
+
+This section records the final architecture sweep across the information chain:
+
+USER INTERACTION
+↓
+EVIDENCE
+↓
+CANONICAL RECORD
+↓
+ALGORITHMS
+↓
+TRACE GRAPH
+↓
+MEMORY
+↓
+DECISION
+↓
+PRACTICE
+↓
+OUTCOME
+↓
+EVIDENCE
+
+The objective is to ensure that the graph, database/record, algorithms, architecture, and user experience do not become separate interpretations of the same person.
+
+## Canonical Information Model
+
+The system must distinguish five different things.
+
+### 1. Evidence
+
+What actually entered the system.
+
+Examples:
+
+User story
+User answer
+User correction
+Observed behavior
+Practice event
+Self reported outcome
+Release verification
+Journal entry
+
+Evidence is chronological and must retain provenance.
+
+### 2. Canonical Record
+
+The durable state of the person.
+
+The record is the persistence boundary.
+
+It contains durable objects such as:
+
+PROFILE
+HISTORY
+EVIDENCE
+HYPOTHESES
+PRACTICE
+OUTCOMES
+MEMORY
+TRACE STATE
+ENTITLEMENTS
+
+The record is the source from which deterministic derived state can be reconstructed.
+
+### 3. Hypothesis
+
+What the intelligence layer currently believes may be true about the user's experience or behavior.
+
+A hypothesis is not a fact.
+
+Lifecycle:
+
+PROPOSED
+↓
+TESTED
+├── CONFIRMED
+├── CORRECTED
+├── REJECTED
+└── UNRESOLVED
+
+A hypothesis must retain:
+
+id
+created_at
+evidence_ids
+candidate_interpretation
+alternative_interpretations
+algorithm_version
+provenance
+status
+user_response
+resolved_at
+
+A hypothesis must never silently become fact.
+
+### 4. Trace Graph
+
+The graph is a relationship projection.
+
+It answers:
+
+WHAT IS CONNECTED TO WHAT?
+
+It does not become a second database.
+
+Derived graph state should be reconstructed from the canonical record whenever possible.
+
+Relationships that cannot be reconstructed from the record may be stored as explicit user-confirmed or otherwise irreducible graph state.
+
+The graph must not independently invent a competing interpretation of the person.
+
+### 5. Memory
+
+Memory is durable learned state.
+
+Memory is not a transcript.
+
+Memory should contain conclusions that have survived sufficient evidence and/or explicit user confirmation.
+
+The preferred flow is:
+
+EVENT
+↓
+EVIDENCE
+↓
+INTERPRETATION
+↓
+USER CONFIRMATION / VERIFICATION
+↓
+MEMORY
+
+Memory must not be created merely because the system inferred something once.
+
+## Canonical Architecture
+
+```text
+                         USER
+                          │
+                          ▼
+                    INTERACTION
+                          │
+                          ▼
+                    EVIDENCE LEDGER
+                          │
+             ┌────────────┼────────────┐
+             ▼            ▼            ▼
+          SNIFFER      PRACTICE     OBSERVATION
+             │            │            │
+             ▼            ▼            ▼
+        STRUCTURED     EVIDENCE      OUTCOME
+         SIGNALS          │            │
+             │            └─────┬──────┘
+             ▼                  │
+        HYPOTHESIS ◄────────────┘
+             │
+       USER TEST / CORRECTION
+             │
+             ▼
+      CONFIRMED KNOWLEDGE
+             │
+       ┌─────┼─────┐
+       ▼     ▼     ▼
+     GRAPH MEMORY PATTERN
+       │     │     │
+       └─────┼─────┘
+             ▼
+       DECISION ENGINE
+             │
+             ▼
+     NEXT RIGHT PRACTICE
+             │
+             ▼
+       INTERVENTION
+             │
+             ▼
+       NEW OBSERVATION
+             │
+             └───────────────► EVIDENCE LEDGER
+```
+
+## Source of Truth Rules
+
+The following rules are mandatory.
+
+### Rule 1
+
+The Evidence Ledger is the chronological truth about what entered the system.
+
+### Rule 2
+
+The Canonical Record is the durable state.
+
+### Rule 3
+
+The Trace Graph is a relationship projection.
+
+### Rule 4
+
+Hypotheses are reasoning state and are never facts unless independently established or explicitly confirmed by the user.
+
+### Rule 5
+
+Memory is durable learned state and must have an evidence basis.
+
+### Rule 6
+
+Algorithms transform evidence into interpretations, priorities, and decisions.
+
+### Rule 7
+
+The Field visualizes resulting state. It does not become a source of truth.
+
+### Rule 8
+
+Practice records what actually happened. Completion does not equal change.
+
+### Rule 9
+
+Outcome records what changed relative to the user's goal. It must not be inferred solely from completion.
+
+### Rule 10
+
+Every domain has one canonical writer.
+
+No second writer may maintain a competing copy of the same state.
+
+## Practice / Ritual Cutover
+
+The current implementation contains both the newer Practice domain and legacy ritual/day-log state.
+
+The Practice engine explicitly defines:
+
+Protocol = intervention design
+Ritual = execution/scheduling
+PracticeEvent = actual execution
+
+The legacy ritual record must therefore be treated as transitional.
+
+The cutover requirement is:
+
+```text
+LEGACY RITUAL WRITE
+        ↓
+MIGRATION / COMPATIBILITY
+        ↓
+CANONICAL PRACTICE WRITE
+        ↓
+PRACTICE EVENT
+        ↓
+EVIDENCE
+        ↓
+TRACE PROJECTION
+```
+
+After cutover, the UI must not write two independent ritual histories.
+
+## Evidence Ledger Contract
+
+Every meaningful user interaction that can affect downstream intelligence should produce an evidence record.
+
+Minimum fields:
+
+```yaml
+Evidence:
+  id
+  user_id
+  timestamp
+  source
+  type
+  raw_value
+  normalized_value
+  context
+  related_story_id
+  related_pattern_id
+  related_goal_id
+  related_practice_id
+  related_outcome_id
+  provenance
+  algorithm_version
+```
+
+The exact schema may evolve, but the following distinction must remain:
+
+USER FACT
+SYSTEM OBSERVATION
+SYSTEM INFERENCE
+USER CONFIRMATION
+USER CORRECTION
+USER REJECTION
+OUTCOME
+
+These must never collapse into one field.
+
+## Story Intelligence Boundary
+
+The Story Sniffer must not write directly to the Trace Graph.
+
+The canonical flow is:
+
+```text
+RAW STORY
+↓
+SNIFFER
+↓
+STRUCTURED SIGNAL
+↓
+EVIDENCE
+↓
+HYPOTHESIS
+↓
+MIRROR
+↓
+USER CONFIRM / CORRECT / REJECT
+↓
+PATTERN
+```
+
+The Sniffer may identify candidates.
+
+It does not establish truth.
+
+The existing lexical and authored detection machinery may remain as a component, but it must be treated as sensing rather than final interpretation.
+
+## Hypothesis Contract
+
+Every system interpretation that is not directly stated by the user should be capable of being represented as a hypothesis.
+
+Examples:
+
+Possible pattern
+Possible body relationship
+Possible behavioral driver
+Possible relationship
+Possible recurring theme
+Possible blocker to a goal
+
+The system should be able to answer:
+
+What evidence produced this?
+What alternatives were considered?
+What algorithm produced it?
+Did the user confirm it?
+Did the user correct it?
+Did the user reject it?
+Did later evidence change it?
+
+## Algorithm Versioning
+
+The graph already carries derivation/version information.
+
+The same principle must extend across the intelligence layer.
+
+Required architecture:
+
+```text
+INTELLIGENCE_SCHEMA_VERSION
+INTELLIGENCE_ALGORITHM_VERSION
+
+TRACE_ALGORITHM_VERSION
+SNIFFER_ALGORITHM_VERSION
+HYPOTHESIS_ALGORITHM_VERSION
+PATTERN_ALGORITHM_VERSION
+MEMORY_ALGORITHM_VERSION
+DECISION_ALGORITHM_VERSION
+```
+
+A change in algorithm must not be represented as a change in the user.
+
+The system must be able to distinguish:
+
+THE PERSON CHANGED
+
+from:
+
+THE INTERPRETATION RULE CHANGED
+
+## Decision Boundary
+
+The Trace Graph must not decide what the user should do next.
+
+The decision chain is:
+
+```text
+EVIDENCE
+↓
+CURRENT STATE
+↓
+GRAPH CONTEXT
+↓
+CONFIRMED PATTERNS
+↓
+GOALS / BEHAVIOR OBJECTIVES
+↓
+DECISION ENGINE
+↓
+NEXT RIGHT PRACTICE
+```
+
+The decision engine must expose enough provenance to answer:
+
+Why was this practice selected?
+
+The answer should point back to evidence, pattern, goal, or behavior objective rather than to an opaque score.
+
+## Memory Contract
+
+Memory should answer:
+
+What do we now know about this person that is durable enough to carry forward?
+
+Memory should not simply repeat the user's history.
+
+Candidate memory should move through:
+
+```text
+CANDIDATE
+↓
+EVIDENCE CHECK
+↓
+CONFIRMATION / REPEATED SUPPORT
+↓
+MEMORY
+```
+
+Memory must retain its evidence basis.
+
+A later contradiction must be capable of reopening or revising memory without rewriting historical evidence.
+
+## Field Contract
+
+The Field is a projection.
+
+```text
+CANONICAL RECORD
+↓
+INTELLIGENCE
+↓
+CURRENT STATE
+↓
+FIELD
+```
+
+The Field may visualize:
+
+patterns
+relationships
+practice
+change
+attention
+current state
+
+But the Field must never become the place where those facts are authored independently.
+
+## Information Integrity Acceptance Tests
+
+### Test 1: Story
+
+User submits a story.
+
+Expected:
+
+Story exists as evidence.
+Sniffer produces structured candidates.
+Hypothesis is created where interpretation is required.
+Mirror shows the interpretation.
+User can confirm, correct, or reject it.
+Correction changes downstream interpretation.
+Original evidence remains unchanged.
+
+### Test 2: Release
+
+Confirmed pattern enters release.
+
+Expected:
+
+Pattern is linked to evidence.
+Release uses the authoritative release engine.
+Verification produces evidence.
+No-change verification remains valid.
+Field/history reflects the result.
+
+### Test 3: Practice
+
+User completes a ritual.
+
+Expected:
+
+PracticeEvent is created.
+Evidence can be attached.
+Outcome can be recorded.
+Graph can derive the relationship.
+No second ritual history is created.
+
+### Test 4: Reload
+
+User reloads the application.
+
+Expected:
+
+Canonical record reloads.
+Evidence remains.
+Hypothesis state remains.
+Practice history remains.
+Memory remains.
+Graph can be reconstructed.
+Field reflects the same underlying state.
+
+### Test 5: Algorithm Change
+
+A derivation algorithm changes.
+
+Expected:
+
+Historical evidence remains unchanged.
+Historical user statements remain unchanged.
+Algorithm version changes.
+Derived interpretations can be identified as having been produced under a different rule set.
+The system does not falsely represent the algorithm change as user change.
+
+### Test 6: Contradiction
+
+Later evidence contradicts an earlier interpretation.
+
+Expected:
+
+Earlier evidence remains immutable.
+Hypothesis can be reopened or superseded.
+Memory can be revised.
+Graph relationships update from the canonical state.
+Historical interpretation remains attributable to its original evidence and algorithm.
+
+## Remaining Architecture Gaps
+
+The sweep identifies these as unresolved implementation work:
+
+1. Canonical Evidence Ledger implementation.
+2. First-class Hypothesis object and lifecycle.
+3. Explicit Memory object and evidence basis.
+4. Single-writer enforcement across legacy Ritual and Practice.
+5. End-to-end intelligence versioning.
+6. Decision engine provenance for Next Right Practice.
+7. Full Story Sniffer → Evidence → Hypothesis integration.
+8. Automated persistence and reload tests across all new domains.
+9. Contradiction/revision handling for hypotheses and memory.
+10. Final graph projection audit after the above domains are canonical.
+
+These are architecture gaps, not reasons to create another parallel system.
+
+## Updated P0 Sequence
+
+```text
+1. CANONICAL EVIDENCE
+2. HYPOTHESIS LIFECYCLE
+3. MIRROR CONFIRM / CORRECT / REJECT
+4. SINGLE WRITER PER DOMAIN
+5. RELEASE → VERIFICATION → EVIDENCE
+6. PRACTICE → EVIDENCE → OUTCOME
+7. GRAPH PROJECTION
+8. MEMORY
+9. DECISION ENGINE
+10. NEXT RIGHT PRACTICE
+11. FIELD PROJECTION
+12. LONGITUDINAL STATE
+```
+
+The objective is not to build these as twelve independent systems.
+
+The objective is to close one continuous information chain.
+
+# AI HANDSHAKE
+
+## Purpose
+
+This document is an implementation handoff.
+
+Do not treat it as a suggestion, summary, or feature wishlist.
+
+The objective is to make the information architecture of ATUNED congruent from user interaction through evidence, canonical persistence, intelligence, graph projection, memory, decision, practice, and outcome.
+
+## Before You Touch Code
+
+Read this entire TDD first.
+
+Then inspect the actual current codebase.
+
+Do not assume that anything described here is already implemented.
+
+For every requirement, determine:
+
+EXISTS
+PARTIAL
+MISSING
+CONFLICT
+UNVERIFIED
+
+Documentation is not proof of implementation.
+
+Code is not proof of correctness.
+
+A screen looking correct is not proof that the underlying information chain is correct.
+
+## Canonical Information Principle
+
+The product must maintain one continuous truth:
+
+USER
+↓
+INTERACTION
+↓
+EVIDENCE
+↓
+CANONICAL RECORD
+↓
+HYPOTHESIS
+↓
+CONFIRM / CORRECT / REJECT
+↓
+PATTERN
+↓
+RELEASE / PRACTICE
+↓
+VERIFICATION
+↓
+OUTCOME
+↓
+MEMORY
+↓
+DECISION
+↓
+NEXT PRACTICE
+
+The Trace Graph is a projection across this information.
+
+The Field is a projection of resulting state.
+
+Neither is a replacement for the canonical record.
+
+## Implementation Rule
+
+Before adding anything:
+
+1. Find the existing implementation.
+2. Determine whether it already performs the required function.
+3. Reuse it when possible.
+4. Extend it when necessary.
+5. Replace it only when the existing implementation is structurally wrong.
+6. Remove or deprecate duplicate paths after migration.
+7. Test the resulting canonical path.
+
+Prefer integration over invention.
+
+Do not create:
+
+another Evidence Ledger
+another Hypothesis model
+another Memory model
+another Trace Graph
+another Release engine
+another Practice history
+another Field interpretation engine
+
+unless the audit proves the existing implementation cannot support the requirement.
+
+## Current Priority
+
+The immediate architectural priority is:
+
+```text
+EVIDENCE
+↓
+HYPOTHESIS
+↓
+CONFIRM / CORRECT
+↓
+RELEASE / PRACTICE
+↓
+VERIFICATION
+↓
+OUTCOME
+↓
+MEMORY
+↓
+GRAPH
+↓
+DECISION
+↓
+NEXT PRACTICE
+```
+
+Do not expand into unrelated features until this information chain is connected and tested.
+
+## Required Audit
+
+Before implementation, produce a requirement map:
+
+| Requirement | Implementation | Status | Evidence |
+|---|---|---|---|
+| Evidence Ledger | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Hypothesis | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Confirmation | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Correction | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Release | actual production engine | EXISTS/PARTIAL/MISSING | file/function/test |
+| Verification | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Practice | canonical writer | EXISTS/PARTIAL/MISSING | file/function/test |
+| Outcome | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Memory | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Trace projection | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Decision | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Field projection | actual code path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Persistence | actual storage path | EXISTS/PARTIAL/MISSING | file/function/test |
+| Reload | end-to-end test | EXISTS/PARTIAL/MISSING | test |
+| Versioning | actual implementation | EXISTS/PARTIAL/MISSING | file/function/test |
+
+Do not mark EXISTS because the TDD describes it.
+
+## Required Final Report
+
+When implementation is complete, report:
+
+### IMPLEMENTED
+
+What was actually completed.
+
+### TESTED
+
+What was actually tested and how.
+
+### UNVERIFIED
+
+Anything that could not be proven.
+
+### BLOCKED
+
+Anything preventing completion.
+
+### CONFLICTS
+
+Any conflict between:
+
+TDD
+code
+schema
+runtime
+build
+tests
+graph
+database
+algorithms
+UI
+
+### REMAINING GAPS
+
+Only unresolved gaps.
+
+### NEXT PRIORITY
+
+The single highest-value next implementation step.
+
+## Final Rule
+
+Do not declare success because the graph looks complete.
+
+Do not declare success because the database stores the objects.
+
+Do not declare success because the algorithms exist.
+
+Do not declare success because the UI displays the result.
+
+Declare success only when the same piece of user information can be traced:
+
+```text
+USER
+→ EVIDENCE
+→ RECORD
+→ ALGORITHM
+→ HYPOTHESIS
+→ CONFIRMATION
+→ GRAPH
+→ DECISION
+→ PRACTICE
+→ OUTCOME
+→ MEMORY
+→ FIELD
+```
+
+and back to new evidence without creating competing truths.
+
+The goal is not to make the architecture appear coherent.
+
+The goal is to make the information actually flow coherently through the system.
