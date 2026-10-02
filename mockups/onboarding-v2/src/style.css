@@ -1,0 +1,284 @@
+/* onboarding-v2 mockup. One stylesheet, inlined by build.js.
+
+   Tokens are the round PJ rulings, not the shipped head.html: the stage is
+   #06060a in every state and is the same ground as the login door (a one pixel
+   step between them shows as a seam), type is the six sizes 11, 13, 16, 20,
+   28 and 44 and nothing else, and every CSS transition is 120, 220, 320 or 420
+   ms. Moves longer than that run on the stage canvas, which gate 12 does not
+   see and which the clock can seek. */
+:root{
+ --stage:#06060a; --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --ink40:rgba(239,237,232,.4); --ink60:rgba(239,237,232,.6); --ink85:rgba(239,237,232,.85);
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --ease-out:cubic-bezier(.22,1,.36,1); --ease-in:cubic-bezier(.4,0,1,1); --ease-land:cubic-bezier(.34,1.56,.64,1);
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --f11:11px; --f13:13px; --f16:16px; --f20:20px; --f28:28px; --f44:44px;
+ --gut:16px; --top-b:140px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0a0a0f;color:var(--ink);font-family:var(--sans);font-size:var(--f16);line-height:1.5;-webkit-text-size-adjust:100%}
+body{overflow:hidden}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+svg{display:block}
+[hidden]{display:none!important}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ------------------------------------------------------------------ the owner's strip. Outside the stage, never in a screenshot taken with ?clean. */
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+#ctl{flex:none;background:#101117;border-bottom:1px solid rgba(255,255,255,.08);color:var(--mid);font-size:var(--f13);line-height:20px}
+#ctl .bar{display:flex;align-items:center;gap:12px;padding:6px 12px;min-height:36px}
+#ctl .ttl{font-weight:600;color:var(--ink);letter-spacing:.01em}
+#ctl .body{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding:2px 12px 10px}
+#ctl.shut .body{display:none}
+#ctl .grp{display:flex;align-items:center;gap:6px}
+#ctl .lab{color:var(--dim);font-size:var(--f11);letter-spacing:.04em}
+#ctl button,#ctl select{background:transparent;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px 12px;min-height:28px;font-size:var(--f13);color:var(--ink)}
+#ctl select{border-radius:8px;background:#101117;max-width:220px}
+#ctl button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+#ctl button:hover{border-color:rgba(255,255,255,.5)}
+#ctl .read{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--dim);font-size:var(--f11)}
+#ctl label.chk{display:flex;align-items:center;gap:6px}
+#ctl .note{color:var(--dim);font-size:var(--f11);flex-basis:100%}
+.clean #ctl{display:none}
+#wrap{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0a0a0f}
+#frame{position:relative;width:100%;height:100%;transform-origin:center center;flex:none}
+#frame.fixed{box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+#frame.phone{border-radius:28px;overflow:hidden}
+
+/* ------------------------------------------------------------------ the stage */
+.stage{position:relative;width:100%;height:100%;background:var(--stage);color:var(--ink);overflow:hidden;container-type:size;
+ -webkit-font-smoothing:antialiased;touch-action:manipulation}
+.stage.film,.stage.film *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.act{position:absolute;inset:0;z-index:1;opacity:0;visibility:hidden;pointer-events:none;
+ transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
+.act.on{opacity:1;visibility:visible;transition:opacity 420ms var(--ease-out),visibility 0s}
+.act.on button,.act.on input,.act.on textarea,.act.on label,.act.on a,.act.on select{pointer-events:auto}
+.mark{font-weight:600;letter-spacing:-.02em}
+
+/* type. hero 300 at 44 over wide screens, 400 at 28 on a phone: a 28 px stroke at 300 shimmers on a 1x screen. */
+.hero{margin:0 auto;font-weight:300;font-size:var(--f44);line-height:52px;letter-spacing:-.02em;color:var(--ink);text-wrap:balance;max-width:17em}
+.sub{margin:0;font-size:var(--f16);line-height:24px;color:var(--mid)}
+.cap{margin:0;font-size:var(--f13);line-height:20px;color:var(--dim)}
+.lead20{margin:0;font-size:var(--f20);line-height:28px;color:var(--mid)}
+.n{font-weight:inherit;display:inline-block;transform-origin:50% 60%}
+.n.pre{transform:scale(.82);transition:transform 320ms var(--ease-land)}
+.n.land{transform:scale(1)}
+
+/* decks. A card is one block of text. In 420 ms with a 10 px rise, out in 220 ms, opacity only. */
+.deck{display:grid}
+.card{grid-area:1/1;text-align:center;opacity:0;transform:translateY(10px)}
+.card.in{opacity:1;transform:none;transition:opacity 420ms var(--ease-out),transform 420ms var(--ease-out)}
+.card.out{opacity:0;transform:none;transition:opacity 220ms var(--ease-in)}
+.card.nt,.card.nt.in{transition:none}
+.copy{position:absolute;left:50%;top:66%;transform:translateX(-50%);width:min(760px,calc(100% - 32px))}
+.rcopy{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(900px,calc(100% - 32px))}
+
+/* rings are the product's one button shape: ring, not fill. */
+.ring{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:0 22px;border-radius:999px;
+ border:1.5px solid var(--ink60);background:transparent;color:var(--ink);font-size:var(--f16);line-height:20px;
+ transition:border-color 120ms var(--ease-out),opacity 220ms var(--ease-out)}
+.ring:hover{border-color:var(--ink)}
+.ring.quiet{border-color:var(--ink40);color:var(--mid)}
+.ring.live{border-color:var(--accent);color:var(--ink)}
+.ring[disabled]{opacity:.4;cursor:default}
+.ring svg{width:20px;height:20px}
+.ic{fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ------------------------------------------------------------------ controls, always above the acts */
+#ctrls{position:absolute;inset:0;z-index:5;pointer-events:none}
+#ctrls>*{pointer-events:auto;display:none}
+.stage[data-ctl~=pause] #pausew,.stage[data-ctl~=sound] #sound,.stage[data-ctl~=skip] #skip,.stage[data-ctl~=leave] #leave{display:flex}
+#pausew{position:absolute;left:var(--gut);bottom:calc(var(--gut) + env(safe-area-inset-bottom));align-items:center;gap:8px}
+.r44{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--ink60);background:transparent;display:flex;align-items:center;justify-content:center;padding:0;
+ transition:border-color 120ms var(--ease-out)}
+.r44:hover{border-color:var(--ink)}
+.r44 svg{width:22px;height:22px}
+#pausew .pl{font-size:var(--f13);color:var(--mid);min-width:3.6em}
+#sound{position:absolute;left:calc(var(--gut) + 44px + 8px + 3.6em + 8px);bottom:calc(var(--gut) + env(safe-area-inset-bottom));align-items:center;gap:8px}
+#sound .sl{font-size:var(--f13);color:var(--mid)}
+#skip{position:absolute;right:var(--gut);top:calc(max(env(safe-area-inset-top),12px) + 14px);min-height:44px;min-width:44px;padding:0 8px;background:none;border:0;
+ font-size:var(--f16);color:var(--ink60);align-items:center;transition:color 120ms var(--ease-out)}
+#skip:hover{color:var(--ink)}
+.stage.stats-on #skip{top:calc(max(env(safe-area-inset-top),12px) + 14px + 62px)}
+#leave{position:absolute;left:var(--gut);bottom:calc(14px + env(safe-area-inset-bottom));min-height:44px;min-width:44px;padding:0 8px;background:none;border:0;font-size:var(--f16);color:var(--ink60);align-items:center}
+#leave:hover{color:var(--ink)}
+#devlink{position:absolute;right:12px;bottom:6px;z-index:9;min-height:28px;padding:0 8px;background:none;border:0;font-size:var(--f13);color:var(--dim);display:flex;align-items:center}
+#devlink:hover{color:var(--ink)}
+
+/* the hairline. 2 px, one segment per slide, 4 px gaps. track ink 40 (3.35 to 1), fill ink 85. No transition: it is real time. */
+#hair{position:absolute;left:16px;right:16px;top:calc(max(env(safe-area-inset-top),12px) + 4px);height:2px;display:flex;gap:4px;z-index:5;pointer-events:none;
+ opacity:0;transition:opacity 220ms var(--ease-in)}
+#hair.on{opacity:1;transition:opacity 420ms var(--ease-out)}
+#hair i{flex:1;background:var(--ink40);position:relative;overflow:hidden}
+#hair i b{position:absolute;inset:0;background:var(--ink85);transform:scaleX(0);transform-origin:left}
+
+/* ------------------------------------------------------------------ login door (Login A, on the stage ground) */
+.lg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:344px;display:flex;flex-direction:column;gap:14px;align-items:stretch;
+ transition:opacity 220ms var(--ease-in)}
+.lg.gone{opacity:0}
+.lg .mark{text-align:center;font-size:var(--f20);line-height:24px}
+.lg h1{margin:0;font-size:var(--f28);line-height:34px;font-weight:400;letter-spacing:-.025em;text-align:center;text-wrap:balance}
+.seg{display:inline-flex;gap:4px;padding:4px;border:1.5px solid rgba(239,237,232,.16);border-radius:999px;align-self:center}
+.seg button{min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid transparent;background:none;color:var(--mid);font-size:var(--f13);font-weight:500;
+ transition:border-color 120ms var(--ease-out),color 120ms var(--ease-out)}
+.seg button[aria-pressed=true]{border-color:var(--accent);color:var(--ink)}
+.fields{display:flex;flex-direction:column;gap:12px;overflow:hidden;max-height:220px;transition:max-height 320ms var(--ease-out),opacity 220ms var(--ease-in)}
+.fields.shut{max-height:0;opacity:0}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld>span{font-size:var(--f13);font-weight:600;color:var(--mid)}
+.fld input,.field-in{height:52px;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:0 16px;font-size:var(--f16);width:100%}
+.fld input:focus{outline:none;border-color:var(--accent)}
+.fld input::placeholder,textarea::placeholder{color:var(--dim)}
+.lg .go{width:100%;min-height:52px;background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.lg .go:hover{background:#93c6de;border-color:#93c6de}
+.lg .guest{display:flex;flex-direction:column;align-items:center;gap:2px}
+.lg .guest .ring{border-color:transparent;color:var(--mid);padding:0 14px 0 10px}
+.lg .guest .ring:hover{color:var(--ink);border-color:var(--ink40)}
+.lg .guest .cap{max-width:30em;text-align:center}
+.lg .hintline{margin:-4px 0 0;text-align:center}
+@container (max-width:700px){
+ .lg{left:0;top:0;transform:none;width:100%;padding:0 22px;gap:12px}
+ .lg .mark{margin-top:max(88px,calc(var(--lg-cy,140px) - 12px))}
+ .lg h1{font-size:var(--f20);line-height:26px;margin-top:calc(var(--lg-pad,110px))}
+ .fld input{height:48px}
+}
+
+/* ------------------------------------------------------------------ the gate */
+.gate-h{position:absolute;left:50%;transform:translateX(-50%);top:56px;margin:0;text-align:center;font-size:var(--f28);line-height:36px;font-weight:400;letter-spacing:-.02em;width:min(34em,calc(100% - 32px))}
+.gate-t{position:absolute;left:50%;transform:translateX(-50%);top:98px;margin:0;text-align:center;font-size:var(--f16);line-height:24px;color:var(--dim);width:calc(100% - 32px)}
+.gate-tbl{position:absolute;left:50%;transform:translateX(-50%);top:132px;min-height:44px}
+.chips{position:absolute;inset:0}
+.chip{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px solid var(--ink40);background:transparent;color:var(--ink);
+ border-radius:10px;padding:6px 4px;font-size:var(--f16);line-height:20px;text-align:center;opacity:0;transform:scale(.6)}
+.chip svg{width:24px;height:24px;stroke:var(--ink);transition:stroke 220ms var(--ease-out)}
+.chip .lab{transition:color 220ms var(--ease-out)}
+.gate.on .chip{opacity:1;transform:none;transition:opacity 320ms var(--ease-out),transform 320ms var(--ease-land);transition-delay:calc(var(--i) * 62ms + 480ms)}
+.gate.live .chip{pointer-events:auto;transition:transform 120ms var(--ease-out),border-color 120ms var(--ease-out),opacity 220ms var(--ease-in);transition-delay:0s}
+.gate:not(.live) .chip{pointer-events:none}
+.gate.live:not(.picked) .chip:hover{transform:translateY(-2px);border-color:var(--ink60)}
+.gate.picked .chip:not(.picked){border-color:var(--ink40)}
+.gate.picked .chip:not(.picked) svg{stroke:var(--ink40)}
+.gate.picked .chip:not(.picked) .lab{color:var(--dim)}
+.gate .chip.picked{border-color:var(--ink);transform:none;transition:transform 320ms var(--ease-land),border-color 120ms var(--ease-out)}
+.gate.fold .chip{transform:translate(var(--tx,0),var(--ty,0)) scale(.3);opacity:0;transition:transform 420ms var(--ease-in),opacity 420ms var(--ease-in)}
+.chips.grid{left:16px;right:16px;top:auto;bottom:calc(52px + env(safe-area-inset-bottom));inset:auto 16px calc(52px + env(safe-area-inset-bottom)) 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chips.grid .chip{position:relative;min-height:64px}
+.chips.ring .chip{width:56px;height:56px;border-radius:50%;padding:0;left:calc(var(--x) * 1px - 28px);top:calc(var(--y) * 1px - 28px)}
+.chips.ring .chip .lab{position:absolute;white-space:nowrap}
+.chips.ring .chip.l-r .lab{left:calc(100% + 12px);top:50%;transform:translateY(-50%)}
+.chips.ring .chip.l-l .lab{right:calc(100% + 12px);top:50%;transform:translateY(-50%)}
+.chips.ring .chip.l-t .lab{bottom:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+.chips.ring .chip.l-b .lab{top:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+@container (max-width:700px){
+ .gate-h{font-size:var(--f20);line-height:28px;top:calc(var(--gate-fb,320px) + 8px)}
+ .gate-t{top:calc(var(--gate-fb,320px) + 8px + 56px);font-size:var(--f13);line-height:20px}
+ .gate-tbl{top:calc(var(--gate-fb,320px) + 8px + 84px);min-height:36px}
+}
+
+/* ------------------------------------------------------------------ story */
+.col{position:absolute;left:50%;transform:translateX(-50%);top:var(--top-b);width:min(640px,calc(100% - 32px));display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.stem{margin:0;font-weight:300;font-size:var(--f44);line-height:52px;letter-spacing:-.02em;text-wrap:balance;max-width:17em}
+.stem{opacity:0;transform:translateY(10px)}
+.act.on .stem{opacity:1;transform:none;transition:opacity 420ms var(--ease-out) 120ms,transform 420ms var(--ease-out) 120ms}
+.fin{font-size:var(--f20);line-height:28px;color:var(--mid);margin-top:4px}
+#words{width:100%;min-height:76px;resize:none;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:12px 16px;font-size:var(--f16);line-height:24px;text-align:left}
+#words:focus{outline:none;border-color:var(--accent)}
+.feels{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.feels .ring{min-height:44px;padding:0 20px;font-size:var(--f16)}
+.msgline{min-height:24px;margin:0;font-size:var(--f16);line-height:24px;color:var(--ink)}
+#commit{opacity:0;visibility:hidden;transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
+#commit.show{opacity:1;visibility:visible;transition:opacity 220ms var(--ease-out)}
+.seedlab{margin:0;min-height:20px}
+@container (max-width:700px){
+ .stem{font-size:var(--f28);line-height:36px;font-weight:400}
+ .fin{font-size:var(--f16);line-height:24px}
+}
+@container (max-height:560px){
+ .stem{font-size:var(--f20);line-height:28px;font-weight:400}
+ .fin{display:none}
+ #words{min-height:56px}
+}
+.wm{position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom));text-align:center;font-size:var(--f13);font-weight:600;color:var(--accent);letter-spacing:-.01em}
+
+/* ------------------------------------------------------------------ release */
+.stats{position:absolute;right:var(--gut);top:calc(var(--gut) + env(safe-area-inset-top));display:flex;align-items:center;gap:10px;text-align:right;opacity:0;transition:opacity 420ms var(--ease-out)}
+.act.on .stats{opacity:1}
+.stats .num{font-size:var(--f28);line-height:32px;font-weight:300;font-variant-numeric:tabular-nums;letter-spacing:-.02em;transform-origin:100% 50%;display:block}
+.stats .num.pre{transform:scale(.82);transition:transform 320ms var(--ease-land)}
+.stats .num.land{transform:scale(1)}
+.stats .lab{font-size:var(--f11);line-height:14px;color:var(--dim);display:block}
+.seals{position:absolute;left:0;right:0;bottom:calc(112px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:8px;opacity:0;transition:opacity 220ms var(--ease-in)}
+.seals.on{opacity:1;transition:opacity 420ms var(--ease-out)}
+.seals i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--ink40);transform:scale(1);transition:transform 320ms var(--ease-land),background-color 120ms var(--ease-out),border-color 120ms var(--ease-out)}
+.seals i.on{background:var(--ink85);border-color:var(--ink85);transform:scale(1.12)}
+.mocklab{position:absolute;left:var(--gut);right:var(--gut);bottom:calc(72px + env(safe-area-inset-bottom));text-align:center;font-size:var(--f11);line-height:14px;color:var(--dim);letter-spacing:.01em;pointer-events:none}
+.rcopy .hero.s{font-size:var(--f28);line-height:36px;font-weight:400}
+.rcopy .lead20{text-align:center}
+.rcopy .own{margin:20px auto 0;font-size:var(--f20);line-height:28px;color:var(--ink);max-width:22em;opacity:0;transform:translateY(10px);transition:opacity 420ms var(--ease-out),transform 420ms var(--ease-out)}
+.rcopy .own.in{opacity:1;transform:none}
+.rcopy .whisper{margin:20px auto 0;font-size:var(--f16);color:var(--dim);max-width:24em}
+@container (max-width:700px){
+ .rcopy{top:44%}
+ .rcopy .hero{font-size:var(--f28);line-height:36px;font-weight:400}
+}
+
+/* ------------------------------------------------------------------ reel B, the signal test, the end */
+.bcol{position:absolute;left:50%;transform:translateX(-50%);width:min(560px,calc(100% - 32px));display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;top:var(--top-b)}
+.bcol .hero{font-size:var(--f28);line-height:36px;font-weight:400;max-width:20em}
+.pair{display:flex;gap:8px;width:100%;justify-content:center}
+.pair .ring{flex:1;min-height:48px;max-width:260px}
+.fine{display:flex;flex-direction:column;gap:8px;width:100%;overflow:hidden;max-height:0;opacity:0;transition:max-height 420ms var(--ease-out),opacity 420ms var(--ease-out)}
+.fine.on{max-height:340px;opacity:1}
+.tick{display:flex;align-items:center;gap:12px;text-align:left;min-height:44px;font-size:var(--f16);line-height:22px;color:var(--mid);cursor:pointer}
+.tick input{width:44px;height:44px;flex:none;margin:0;accent-color:var(--accent)}
+.tick a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink40)}
+.signalq{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.stage .after{opacity:0;visibility:hidden;transition:opacity 420ms var(--ease-out),visibility 0s linear 420ms}
+.stage .after.in{opacity:1;visibility:visible;transition:opacity 420ms var(--ease-out)}
+.endc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 32px));text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+.endc h1{margin:0;font-size:var(--f28);line-height:36px;font-weight:400;letter-spacing:-.02em}
+
+/* ------------------------------------------------------------------ the read-only table (opens after the film, never during) */
+#tbl{position:absolute;inset:0;z-index:7;background:var(--stage);display:none;flex-direction:column;padding:20px 16px 16px;gap:12px}
+#tbl.on{display:flex}
+#tbl h2{margin:0;font-size:var(--f20);line-height:28px;font-weight:400}
+#tbl .scroll{flex:1;min-height:0;overflow:auto;border:1.5px solid var(--ink40);border-radius:10px}
+#tbl table{border-collapse:collapse;width:100%;font-size:var(--f13);line-height:20px;font-variant-numeric:tabular-nums}
+#tbl th,#tbl td{text-align:left;padding:6px 12px;border-bottom:1px solid rgba(239,237,232,.12)}
+#tbl th{position:sticky;top:0;background:var(--stage);color:var(--dim);font-weight:600}
+#tbl td.d{display:inline-block}
+#tbl .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
+
+/* ------------------------------------------------------------------ the distress stop frame. Nothing here animates, ever. */
+#stop{position:absolute;inset:0;z-index:8;background:var(--stage);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 16px;text-align:center}
+#stop.on{display:flex}
+#stop,#stop *{transition:none!important;animation:none!important}
+#stop .fg{opacity:.4;margin-bottom:20px}
+#stop .s1{margin:0;font-size:var(--f20);line-height:28px;color:var(--ink);max-width:22em}
+#stop .s2{margin:0;font-size:var(--f16);line-height:24px;color:var(--mid);max-width:30em}
+#stop .s3{margin:0;font-size:var(--f16);line-height:24px;color:var(--mid)}
+#stop .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+#stop .row .ring{border-color:var(--ink60)}
+#stop .draft{position:absolute;left:16px;bottom:10px;font-size:var(--f11);color:var(--dim);max-width:70%;text-align:left}
+
+/* ------------------------------------------------------------------ reduced motion. One class, set by one function: end states, a 220 ms fade, no rise, no pop. */
+.still .card,.still .card.in{transform:none}
+.still .card.in{transition:opacity 220ms var(--ease-out)}
+.still .stem,.still .rcopy .own{transform:none}
+.still .n.pre,.still .stats .num.pre{transform:none;transition:none}
+.still .gate.on .chip{transform:none;transition:opacity 220ms var(--ease-out);transition-delay:0s}
+.still .gate.fold .chip{transform:none;transition:opacity 220ms var(--ease-in)}
+.still .seals i,.still .seals i.on{transform:none;transition:none}
+.still .gate .chip.picked{transition:border-color 120ms var(--ease-out)}
+
+/* ------------------------------------------------------------------ short landscape: figure left, text right */
+@container (max-height:480px) and (min-aspect-ratio:1/1){
+ .copy{left:54%;top:50%;transform:translateY(-50%);width:42%}
+ .copy .card{text-align:left}
+ .hero{font-size:var(--f28);line-height:36px;font-weight:400;margin:0}
+ .gate-h{top:12px;font-size:var(--f20)}
+ .gate-t{top:44px}
+}

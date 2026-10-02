@@ -1,0 +1,157 @@
+<div id="app">
+ <header id="ctl">
+  <div class="bar">
+   <button id="ctl-t" type="button" aria-expanded="true" aria-controls="ctl-b">Review controls</button>
+   <span class="ttl">Onboarding v2, auto slider mockup</span>
+   <span class="read" id="readout" aria-live="off"></span>
+  </div>
+  <div class="body" id="ctl-b">
+   <div class="grp"><button type="button" id="c-restart">Restart</button></div>
+   <div class="grp"><span class="lab">JUMP TO</span><select id="c-jump" aria-label="Jump to a beat"></select></div>
+   <div class="grp"><span class="lab">SPEED</span>
+    <button type="button" class="c-speed" data-v="1" aria-pressed="true">1x</button>
+    <button type="button" class="c-speed" data-v="2" aria-pressed="false">2x</button>
+    <button type="button" class="c-speed" data-v="4" aria-pressed="false">4x</button></div>
+   <div class="grp"><label class="chk"><input type="checkbox" id="c-still"> Reduced motion</label></div>
+   <div class="grp"><span class="lab">WIDTH</span>
+    <button type="button" class="c-width" data-v="fit" aria-pressed="true">Fit</button>
+    <button type="button" class="c-width" data-v="1600" aria-pressed="false">1600</button>
+    <button type="button" class="c-width" data-v="390" aria-pressed="false">390</button></div>
+   <div class="grp"><span class="lab">DOOR PATH</span>
+    <button type="button" class="c-path" data-v="account" aria-pressed="true">Create account</button>
+    <button type="button" class="c-path" data-v="guest" aria-pressed="false">Guest</button></div>
+   <div class="grp"><span class="lab">STOP FRAME</span>
+    <button type="button" class="c-stopv" data-v="direct" aria-pressed="true">Direct</button>
+    <button type="button" class="c-stopv" data-v="indirect" aria-pressed="false">Indirect</button></div>
+   <p class="note" id="c-note">Guest and Create account start the first run. Log in goes to the Field and skips it. Press and hold the stage to pause. Tap the left third to go back, the right two thirds to go on. Space pauses. Esc is Skip on the slides and Leave at the gate.</p>
+  </div>
+ </header>
+ <div id="wrap">
+  <div id="frame">
+   <div class="stage film" id="stage" data-act="login" data-ctl="">
+    <div id="hair" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+
+    <!-- the door -->
+    <section class="act on" id="s-login" aria-label="Sign in">
+     <div class="lg" id="lg">
+      <div class="mark" id="lg-mark">atüned</div>
+      <h1>There is more running you than you can see.</h1>
+      <div class="seg" role="group" aria-label="Log in or create an account">
+       <button type="button" data-m="login" aria-pressed="true">Log in</button>
+       <button type="button" data-m="create" aria-pressed="false">Create account</button>
+      </div>
+      <div class="fields" id="lg-fields">
+       <label class="fld"><span>Username</span><input id="u" autocomplete="username" autocapitalize="none" spellcheck="false" value="mika.salas"></label>
+       <label class="fld"><span>Passphrase</span><input id="p" type="password" autocomplete="current-password" value="correct horse battery"></label>
+      </div>
+      <p class="cap hintline" id="lg-hint" hidden>You choose a name and a passphrase at the end, once there is something to keep.</p>
+      <button type="button" class="ring go" id="lg-go">Log in</button>
+      <div class="guest"><button type="button" class="ring" id="lg-guest" aria-describedby="lg-gcap"><span id="lg-gico"></span>Guest</button>
+       <span class="cap" id="lg-gcap">Guest keeps everything on this device. Clearing the browser clears it.</span></div>
+     </div>
+    </section>
+
+    <!-- reel A, five silent slides -->
+    <section class="act" id="s-reel" aria-label="Film"><div class="copy"><div class="deck" id="reel-deck"></div></div></section>
+
+    <!-- the gate -->
+    <section class="act gate" id="s-gate" aria-label="Pick your starting point">
+     <h1 class="gate-h" id="gate-h" tabindex="-1">Pick your starting point.</h1>
+     <p class="gate-t" id="gate-t"></p>
+     <button type="button" class="ring quiet gate-tbl" id="gate-tbl" hidden>Open the table</button>
+     <div class="chips" id="chips"></div>
+    </section>
+
+    <!-- the story -->
+    <section class="act" id="s-story" aria-label="Your sentence">
+     <div class="col" id="st-col">
+      <p class="cap seedlab" id="seedlab"></p>
+      <h1 class="stem" id="stem" tabindex="-1">I am releasing believing, thinking, feeling, behaving and acting that I am ...</h1>
+      <label class="fin" for="words">Finish it in your own words.</label>
+      <textarea id="words" rows="2" autocomplete="off" spellcheck="false" aria-describedby="msgline"></textarea>
+      <div class="feels" id="feels" role="group" aria-label="Name how it felt">
+       <button type="button" class="ring quiet" data-w="afraid">Afraid</button>
+       <button type="button" class="ring quiet" data-w="angry">Angry</button>
+       <button type="button" class="ring quiet" data-w="sad">Sad</button>
+      </div>
+      <p class="msgline" id="msgline" role="status"></p>
+      <button type="button" class="ring live" id="commit">Commit</button>
+     </div>
+    </section>
+    <section class="act" id="s-read" aria-label="Your first reading">
+     <div class="copy"><div class="deck" id="read-deck"></div></div>
+     <div class="wm">atüned</div>
+    </section>
+
+    <!-- the release -->
+    <section class="act" id="s-rel" aria-label="Release">
+     <div class="stats" id="stats"><div><span class="num" id="cnt">100</span><span class="lab">Patterns open</span></div></div>
+     <div class="rcopy"><div class="deck" id="rel-deck"></div></div>
+     <div class="seals" id="seals" aria-hidden="true"></div>
+     <p class="mocklab" id="mocklab"></p>
+    </section>
+
+    <!-- reel B -->
+    <section class="act" id="s-b1" aria-label="The reading"><div class="copy"><div class="deck" id="b1-deck"></div></div></section>
+    <section class="act" id="s-b2" aria-label="The loop"><div class="copy"><div class="deck" id="b2-deck"></div></div></section>
+    <section class="act" id="s-b3" aria-label="Keep this">
+     <div class="bcol" id="b3-col">
+      <h1 class="hero" id="b3-h" tabindex="-1"></h1>
+      <p class="sub" id="b3-sub"></p>
+      <div class="pair" id="b3-pair">
+       <button type="button" class="ring" id="b3-keep">Keep this</button>
+       <button type="button" class="ring" id="b3-not">Not now</button>
+      </div>
+      <div class="fine" id="b3-fine">
+       <label class="fld"><span>Username or email</span><input id="b3-u" autocomplete="username" autocapitalize="none" spellcheck="false"></label>
+       <label class="fld"><span>Passphrase</span><input id="b3-p" type="password" autocomplete="new-password"></label>
+       <label class="tick"><input type="checkbox" id="b3-tick"><span>I am 18 or older. I agree to the <a href="#" onclick="return false">Terms</a> and the <a href="#" onclick="return false">Privacy policy</a>.</span></label>
+       <button type="button" class="ring live" id="b3-make" disabled>Create account</button>
+      </div>
+      <button type="button" class="ring quiet" id="b3-guestgo" hidden>Open the Field</button>
+      <button type="button" class="ring quiet" id="b3-sig">Try the signal test</button>
+     </div>
+    </section>
+    <section class="act" id="s-sig" aria-label="The signal test">
+     <div class="copy"><div class="deck" id="sig-deck"></div></div>
+     <div class="bcol after" id="sig-q" style="top:62%">
+      <p class="lead20" id="sig-qt">Did the two feel different?</p>
+      <div class="signalq">
+       <button type="button" class="ring" data-a="different">Different</button>
+       <button type="button" class="ring" data-a="same">The same</button>
+       <button type="button" class="ring" data-a="unsure">Not sure</button>
+      </div>
+      <p class="sub" id="sig-reply"></p>
+      <button type="button" class="ring quiet" id="sig-back" hidden>Back</button>
+     </div>
+    </section>
+    <section class="act" id="s-end" aria-label="The Field">
+     <div class="endc"><h1 id="end-h">The Field opens here.</h1><p class="sub" id="end-sub"></p><p class="cap" id="end-cap"></p>
+      <button type="button" class="ring" id="end-restart">Restart the first run</button></div>
+    </section>
+
+    <canvas id="cv"></canvas>
+
+    <div id="ctrls">
+     <div id="pausew"><button type="button" class="r44" id="pause" aria-label="Pause"></button><span class="pl" id="pausel">Pause</span></div>
+     <div id="sound"><button type="button" class="r44" id="soundb" aria-pressed="false" aria-label="Sound off, turn on" title="Mockup: there is no audio file"></button><span class="sl" id="soundl"></span></div>
+     <button type="button" id="skip">Skip</button>
+     <button type="button" id="leave">Leave</button>
+    </div>
+
+    <div id="tbl" role="dialog" aria-label="The addresses table"><h2>The 112 addresses</h2><div class="scroll"><table><thead><tr><th>#</th><th>Address</th><th>Seat</th><th>Nerve or plexus</th></tr></thead><tbody id="tbl-b"></tbody></table></div>
+     <button type="button" class="ring" id="tbl-close" style="align-self:center">Close</button></div>
+
+    <div id="stop" role="alertdialog" aria-label="Stop here">
+     <svg class="fg" id="stop-fig" width="72" height="118" viewBox="0 0 72 118" aria-hidden="true"></svg>
+     <p class="s1" id="stop-1"></p><p class="s2" id="stop-2"></p><p class="s3" id="stop-3"></p>
+     <div class="row" id="stop-row"></div>
+     <p class="draft">Draft text. It needs a clinician's sign off before any public launch. Nothing on this frame moves, plays or sells.</p>
+    </div>
+
+    <button type="button" id="devlink" aria-pressed="false">show stop frame</button>
+    <div class="vh" aria-live="polite" id="live"></div>
+   </div>
+  </div>
+ </div>
+</div>
