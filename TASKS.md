@@ -31511,3 +31511,41 @@ sale"; he reversed that on 1 October (round OK). Entitlements follow the SIGHT t
 **Read as.** For each teacher give a STARTER recipe set: a few behaviours (released and
 installed) and a few rituals, plain and short, labelled as a first draft he will refine.
 Basics only, not a full library.
+
+## Round PM, 2 October
+
+> (on the onboarding mockup) "When I land on the login page, I guess what I'm not
+> certain of is is is this the funnel page? Oh, auto slider mockup. yeah, the auto slider
+> is cool. I wish there was animation in the background. Um, I'm with the attuned logo,
+> like I said, the blue one with the white dots. There's more running you than you can
+> see. Attuned is a mirror that sees through you. I went log in and create account on
+> the bottom. Then we have username and password. Replace that, replace passphrase with
+> password. Get rid of the second login button, like I said earlier, on the top. Keep
+> the login on the bottom. Add guests on the same line as login. Get rid of the text
+> that says guest keeps everything on this device. Clearing browser keeps it. Get rid of
+> that. And then create account. I want the very bottom. And I want everything
+> symmetrical and evenly spaced. And I want that red hue color in the background, but I
+> want it subtly undulating and moving. A very slow moving liquid. Okay, with Stripe,
+> like I said, I need plans. Six, seven, eight, nine. Yeah, you never gave me a stri-
+> instructions. Crazy."
+
+**Read as, and done.**
+- The mockup is the auto slider (round PJ), not the real funnel; said so plainly.
+- Wordmark set to the ruled accent blue. A second line added under the hero sentence:
+  "Atüned is a mirror that sees through you." (his own words).
+- The old two-tab toggle (Log in / Create account) at the top removed.
+- "Passphrase" renamed to "Password".
+- Log in and Guest now share one row, same height, same width.
+- The helper line under Guest removed.
+- "Create account" moved to its own quiet control at the very bottom of the card.
+- Spacing evened out; the row is symmetric.
+- A slow, subtle red wash added behind the login ring, undulating on a 34 second loop,
+  frozen under reduced motion. This updates the Login A ruling: the row is Log in and
+  Guest together; Create account sits alone at the bottom (the earlier summary, "one row
+  Log in/Create account/Guest", is superseded by this live direction).
+- Stripe: he wants more paid tiers, "six, seven, eight, nine". Today there are four paid
+  tiers (one to four, $12/29/59/99) plus the gift and free. Read as: extend the ladder to
+  nine tiers in total. This sets real prices, so it is not decided here; see "What I need
+  from you" is not used this round per round PD, but this item is flagged open rather than
+  guessed, because a wrong price is a real Stripe product that costs money to undo.
+- API-SETUP-NOW.md and STRIPE-STEPS-NOW.md resent as attachments.

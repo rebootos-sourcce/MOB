@@ -119,15 +119,19 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #hair i b{position:absolute;inset:0;background:var(--ink85);transform:scaleX(0);transform-origin:left}
 
 /* ------------------------------------------------------------------ login door (Login A, on the stage ground) */
-.lg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:344px;display:flex;flex-direction:column;gap:14px;align-items:stretch;
+.lg-wash{position:absolute;inset:-25%;z-index:0;pointer-events:none;filter:blur(46px);
+ background:radial-gradient(circle at 42% 62%,rgba(205,78,58,.26),rgba(205,78,58,0) 56%),
+  radial-gradient(circle at 60% 32%,rgba(170,46,40,.16),rgba(170,46,40,0) 60%);
+ animation:lgWash 34s var(--ease-io,ease-in-out) infinite}
+@keyframes lgWash{0%{transform:translate(0,0) scale(1)}33%{transform:translate(1.6%,-2.4%) scale(1.06)}
+ 66%{transform:translate(-1.8%,1.6%) scale(.97)}100%{transform:translate(0,0) scale(1)}}
+.still .lg-wash{animation:none}
+.lg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:344px;display:flex;flex-direction:column;gap:16px;align-items:stretch;z-index:1;
  transition:opacity 220ms var(--ease-in)}
 .lg.gone{opacity:0}
-.lg .mark{text-align:center;font-size:var(--f20);line-height:24px}
+.lg .mark{text-align:center;font-size:var(--f20);line-height:24px;color:var(--accent)}
 .lg h1{margin:0;font-size:var(--f28);line-height:34px;font-weight:400;letter-spacing:-.025em;text-align:center;text-wrap:balance}
-.seg{display:inline-flex;gap:4px;padding:4px;border:1.5px solid rgba(239,237,232,.16);border-radius:999px;align-self:center}
-.seg button{min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid transparent;background:none;color:var(--mid);font-size:var(--f13);font-weight:500;
- transition:border-color 120ms var(--ease-out),color 120ms var(--ease-out)}
-.seg button[aria-pressed=true]{border-color:var(--accent);color:var(--ink)}
+.lg .mirror-line{margin:-6px 0 0;font-size:var(--f16);line-height:22px;color:var(--mid);text-align:center;text-wrap:balance}
 .fields{display:flex;flex-direction:column;gap:12px;overflow:hidden;max-height:220px;transition:max-height 320ms var(--ease-out),opacity 220ms var(--ease-in)}
 .fields.shut{max-height:0;opacity:0}
 .fld{display:flex;flex-direction:column;gap:4px}
@@ -135,17 +139,19 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .fld input,.field-in{height:52px;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:0 16px;font-size:var(--f16);width:100%}
 .fld input:focus{outline:none;border-color:var(--accent)}
 .fld input::placeholder,textarea::placeholder{color:var(--dim)}
-.lg .go{width:100%;min-height:52px;background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.lg .row2{display:flex;gap:12px}
+.lg .row2 .ring{flex:1;min-height:52px}
+.lg .go{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
 .lg .go:hover{background:#93c6de;border-color:#93c6de}
-.lg .guest{display:flex;flex-direction:column;align-items:center;gap:2px}
-.lg .guest .ring{border-color:transparent;color:var(--mid);padding:0 14px 0 10px}
-.lg .guest .ring:hover{color:var(--ink);border-color:var(--ink40)}
-.lg .guest .cap{max-width:30em;text-align:center}
+.lg #lg-guest{color:var(--ink)}
+.lg #lg-guest:hover{border-color:var(--ink60)}
+.lg .quiet{align-self:center;border-color:transparent;color:var(--mid);min-height:44px}
+.lg .quiet:hover{color:var(--ink);border-color:var(--ink40)}
 .lg .hintline{margin:-4px 0 0;text-align:center}
 @container (max-width:700px){
- .lg{left:0;top:0;transform:none;width:100%;padding:0 22px;gap:12px}
- .lg .mark{margin-top:128px}
- .lg h1{font-size:var(--f20);line-height:26px;margin-top:96px}
+ .lg{left:0;top:0;transform:none;width:100%;padding:0 22px;gap:14px}
+ .lg .mark{margin-top:118px}
+ .lg h1{font-size:var(--f20);line-height:26px;margin-top:86px}
  .fld input{height:48px}
 }
 
@@ -322,21 +328,21 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
     <!-- the door -->
     <section class="act on" id="s-login" aria-label="Sign in">
+     <div class="lg-wash" aria-hidden="true"></div>
      <div class="lg" id="lg">
       <div class="mark" id="lg-mark">atüned</div>
       <h1>There is more running you than you can see.</h1>
-      <div class="seg" role="group" aria-label="Log in or create an account">
-       <button type="button" data-m="login" aria-pressed="true">Log in</button>
-       <button type="button" data-m="create" aria-pressed="false">Create account</button>
-      </div>
+      <p class="mirror-line">Atüned is a mirror that sees through you.</p>
       <div class="fields" id="lg-fields">
        <label class="fld"><span>Username</span><input id="u" autocomplete="username" autocapitalize="none" spellcheck="false" value="mika.salas"></label>
-       <label class="fld"><span>Passphrase</span><input id="p" type="password" autocomplete="current-password" value="correct horse battery"></label>
+       <label class="fld"><span>Password</span><input id="p" type="password" autocomplete="current-password" value="correct horse battery"></label>
       </div>
       <p class="cap hintline" id="lg-hint" hidden>You choose a name and a passphrase at the end, once there is something to keep.</p>
-      <button type="button" class="ring go" id="lg-go">Log in</button>
-      <div class="guest"><button type="button" class="ring" id="lg-guest" aria-describedby="lg-gcap"><span id="lg-gico"></span>Guest</button>
-       <span class="cap" id="lg-gcap">Guest keeps everything on this device. Clearing the browser clears it.</span></div>
+      <div class="row2">
+       <button type="button" class="ring go" id="lg-go">Log in</button>
+       <button type="button" class="ring" id="lg-guest"><span id="lg-gico"></span>Guest</button>
+      </div>
+      <button type="button" class="ring quiet" id="lg-create">Create account</button>
      </div>
     </section>
 
@@ -1091,12 +1097,14 @@ window.addEventListener('popstate',function(){
  else if(id==='story')go('gate',{nopush:true,keep:false});
  else pushH(id);});
 
-/* ---- the door */
+/* ---- the door. One row of Log in and Guest; Create account is its own quiet
+   control at the very bottom and flips the fields between the two modes. */
 function setDoor(m){
- S.door=m;$$('.seg button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===m));});
+ S.door=m;
  $('#lg-fields').classList.toggle('shut',m==='create');$('#lg-hint').hidden=m!=='create';
- $('#lg-go').textContent=m==='create'?'Create account':'Log in';}
-$$('.seg button').forEach(function(b){b.addEventListener('click',function(){setDoor(b.dataset.m);});});
+ $('#lg-go').textContent=m==='create'?'Create account':'Log in';
+ $('#lg-create').textContent=m==='create'?'Log in instead':'Create account';}
+$('#lg-create').addEventListener('click',function(){setDoor(S.door==='create'?'login':'create');});
 $('#lg-go').addEventListener('click',function(){if(S.door==='create'){S.mode='account';startRun();}else{S.end='login';go('end');}});
 $('#lg-guest').addEventListener('click',function(){S.mode='guest';startRun();});
 $('#lg-gico').innerHTML=ico('guest',20);

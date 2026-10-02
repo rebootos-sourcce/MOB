@@ -33,21 +33,21 @@
 
     <!-- the door -->
     <section class="act on" id="s-login" aria-label="Sign in">
+     <div class="lg-wash" aria-hidden="true"></div>
      <div class="lg" id="lg">
       <div class="mark" id="lg-mark">atüned</div>
       <h1>There is more running you than you can see.</h1>
-      <div class="seg" role="group" aria-label="Log in or create an account">
-       <button type="button" data-m="login" aria-pressed="true">Log in</button>
-       <button type="button" data-m="create" aria-pressed="false">Create account</button>
-      </div>
+      <p class="mirror-line">Atüned is a mirror that sees through you.</p>
       <div class="fields" id="lg-fields">
        <label class="fld"><span>Username</span><input id="u" autocomplete="username" autocapitalize="none" spellcheck="false" value="mika.salas"></label>
-       <label class="fld"><span>Passphrase</span><input id="p" type="password" autocomplete="current-password" value="correct horse battery"></label>
+       <label class="fld"><span>Password</span><input id="p" type="password" autocomplete="current-password" value="correct horse battery"></label>
       </div>
       <p class="cap hintline" id="lg-hint" hidden>You choose a name and a passphrase at the end, once there is something to keep.</p>
-      <button type="button" class="ring go" id="lg-go">Log in</button>
-      <div class="guest"><button type="button" class="ring" id="lg-guest" aria-describedby="lg-gcap"><span id="lg-gico"></span>Guest</button>
-       <span class="cap" id="lg-gcap">Guest keeps everything on this device. Clearing the browser clears it.</span></div>
+      <div class="row2">
+       <button type="button" class="ring go" id="lg-go">Log in</button>
+       <button type="button" class="ring" id="lg-guest"><span id="lg-gico"></span>Guest</button>
+      </div>
+      <button type="button" class="ring quiet" id="lg-create">Create account</button>
      </div>
     </section>
 

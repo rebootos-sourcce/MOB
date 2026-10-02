@@ -644,12 +644,14 @@ window.addEventListener('popstate',function(){
  else if(id==='story')go('gate',{nopush:true,keep:false});
  else pushH(id);});
 
-/* ---- the door */
+/* ---- the door. One row of Log in and Guest; Create account is its own quiet
+   control at the very bottom and flips the fields between the two modes. */
 function setDoor(m){
- S.door=m;$$('.seg button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===m));});
+ S.door=m;
  $('#lg-fields').classList.toggle('shut',m==='create');$('#lg-hint').hidden=m!=='create';
- $('#lg-go').textContent=m==='create'?'Create account':'Log in';}
-$$('.seg button').forEach(function(b){b.addEventListener('click',function(){setDoor(b.dataset.m);});});
+ $('#lg-go').textContent=m==='create'?'Create account':'Log in';
+ $('#lg-create').textContent=m==='create'?'Log in instead':'Create account';}
+$('#lg-create').addEventListener('click',function(){setDoor(S.door==='create'?'login':'create');});
 $('#lg-go').addEventListener('click',function(){if(S.door==='create'){S.mode='account';startRun();}else{S.end='login';go('end');}});
 $('#lg-guest').addEventListener('click',function(){S.mode='guest';startRun();});
 $('#lg-gico').innerHTML=ico('guest',20);
