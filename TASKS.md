@@ -31503,3 +31503,11 @@ sale"; he reversed that on 1 October (round OK). Entitlements follow the SIGHT t
    person was. Both behaviours: what the person releases (the old behaviour recipe) and what
    they install (the new one), as short behaviour lists with a way to add them to the ritual.
    No biography, no percent. Built to DESIGN-teachers.md section 3.
+
+> (same round, second message) "Also, for their when you design out the teachers, I'm sure
+> the behaviors and the rituals within that recipe set. And then we'll refine that. So just
+> give me some basics to start with."
+
+**Read as.** For each teacher give a STARTER recipe set: a few behaviours (released and
+installed) and a few rituals, plain and short, labelled as a first draft he will refine.
+Basics only, not a full library.
