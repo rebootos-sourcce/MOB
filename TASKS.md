@@ -32110,3 +32110,11 @@ Full report at `reviews/CONGRUENCY-AUDIT.md`, graded by driving one real story t
 Also merged this round: the Journal/Imprints/Release branding (ring icons, font weight and spacing as the only identity signal, no second typeface) and the trace graph's first real screen, "Your patterns" (on the Field's side column and Summary), both clean on every gate re-run on the real merged tree.
 
 **Next task, per the audit's own recommendation, matching the TDD's "smallest closure" instruction:** the "What changed?" verification step after a release, about 250 lines, with one real engine decision already flagged and decided: a "nothing changed" answer must not create an evidence-to-pattern edge, since that would be the graph inventing certainty the person never gave it.
+
+## Round QB: the daily summary lands on Summary, two named bugs fixed
+
+A "Today" column now sits on the right side of the Summary page, the same step-aside rail pattern the Story page already uses. The day freezes on the first open of the Summary each local day (never mid-paint, through its own hook called after the page actually renders), showing that frozen day's sentences grouped under the engine's own eight blocks, every term carrying its existing tooltip meaning. A one-line aim can be set and marked kept, partly, not kept, or not sure, with the last week's unanswered aim also asked for. No day count anywhere, dates only. An honest judgment call made and named rather than hidden: a profile with nothing read yet stays silent and freezes no day at all, since freezing an empty day would have locked a brand new person out of ever seeing a real one until the next day.
+
+Both named bugs were real. The "62%" line was printing a raw percent against round PQ's own no-percent ruling, same for two nearby tiles, all three now print a bare number. The doubled words were the drivers card repeating sentences the Reading paragraph had already unpacked, on all eleven worked examples (111 to 130 words each); the card now skips any sentence already said, 0 duplicates measured across all eleven after the fix.
+
+Merged (`3771b3b`), one real conflict beyond the usual source.html rebuild: both this branch and the Character-page work had separately added an entry to the same rail-seeding table in `panels.js`, kept both. `tests/engine.js` 4621/0 re-run on the merged tree.
