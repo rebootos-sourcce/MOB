@@ -12,14 +12,14 @@ What the merge lost or bent:
 
 ## 2. THE ICP ROOM (ten seconds on the new Field)
 
-- **Marcus, founder, level 7 (85 percent buy).** Sees a pencilled figure and one sentence naming what he cannot see. Writes a story at once. Stays, because a plain sentence of cost comes back fast. Leaves if the demo contradicts itself. "Fine. Show me where the leak is."
+- **Marcus, founder, level 7 (85 percent buy).** Sees a pencilled figure and one sentence naming what he cannot see. Writes a story at once and stays. Leaves if the demo contradicts itself. "Fine. Show me where the leak is."
 - **Whitney, phone only, level 5 (30 percent buy, but my referral channel).** On 390 the doors are above the fold and the pill is off the zoom buttons. She takes a door, then screenshots Summary. Leaves at a form or a padlock. "Is this the astrology app for people over astrology?"
-- **Nils, design skeptic.** Hunts for the crack. Sentence case holds and the clipped tabs are gone. He goes to the fifth door, the tables, and stays. One crack left: the Source OS wordmark at 1.36 to 1 contrast. "Somebody decided this. Now show me the tables."
+- **Nils, design skeptic.** Hunts for the crack. Sentence case holds. He goes to the fifth door, the tables, and stays. One crack left: the Source OS wordmark at 1.36 to 1 contrast. "Somebody decided this. Now show me the tables."
 - **Camille, somatic practitioner, level 8.** Sees a figure she could show a client, no number on it. The privacy line is at the door. Practitioner consent is still on no first screen. Leaves unless consent is findable. "Who sees my client's record, and how do I stop it?"
-- **Marta, acute distress.** Two in the morning. One sentence, one box, no zero, no verdict, no lock. That is kind. She writes one story and may leave, which is right. We do not market to her or follow her with a message. "I just need it to stop."
+- **Marta, acute distress.** Two in the morning. One sentence, one box, no zero, no verdict, no lock. That is kind. She may write one story and leave, which is right. No follow-up message. "I just need it to stop."
 - **Renata, operator, level 7.** Marcus, faster. Leaves at a red-brown low band with a price beside it. The proposal removes both. "Does this cost me an hour a day?"
 - **Trey, quiz tourist, level 4 to 5.** Wants a score. The quiz footer still prints "of the hundred points" and "out of ten". He finds a reading and leaves. Not a loss: wrong buyer. "Where is my number?"
-- **Sofia, loves the open tables.** The fifth door lifts the codex out of Embody. She needed no persuading. She is the testimonial. "Every table is readable. Nobody else does that."
+- **Sofia, loves the open tables.** The fifth door lifts the codex out of Embody. She is the testimonial. "Every table is readable. Nobody else does that."
 
 ## 3. UNIFIED QUALITY: 64/100
 
@@ -62,11 +62,11 @@ Pass 3 grades the proposal, not the shipped product. It rose because the merge t
 ## 6. RANKED RECOMMENDATIONS
 
 1. **Login A first.** S to M. Redesign (a skin cannot change the first screen). Moves Marcus, Renata, Whitney, Marta, Trey.
-2. **Unread screen, no verdicts.** M. Redesign. Moves all eight, most Marta and Whitney.
+2. **Unread screen, no verdicts.** M. Redesign. Moves all eight.
 3. **Funnel told true.** S. Reskin of words. Moves Nils, Trey, Camille, every referral.
 4. **One lock mark per surface, ink, never red or grey.** S to M. Reskin. Moves Marcus, Renata, Nils, Whitney.
 5. **Free figure, no number.** M to L. Redesign. Moves Marcus, Sofia, Whitney, Camille.
-6. **Privacy line, proof line at body size, fifth door.** S. Reskin. Moves Nils, Camille, Sofia.
+6. **Privacy and proof lines, fifth door.** S. Reskin. Moves Nils, Camille, Sofia.
 7. **Day 2 line with a real compare behind it.** M. Redesign. Moves Marcus, Renata, retention.
 8. **Measure it:** count Start, Create account and close at the login, then first stories committed. S. Before any paid reach.
 

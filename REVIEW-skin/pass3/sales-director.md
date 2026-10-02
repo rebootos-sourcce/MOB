@@ -1,6 +1,6 @@
 GRADE: 63/100 (pass 1 was 58, pass 2 was 55)
 
-Seat: Camille Boucher, sales director. Pass 3. Re-checked `engine/plan.js` (PLAN_PRICE 0, 12, 29, 59, 99), `ui/lock.js` and `funnel/buy.html` at HEAD c4523f8.
+Seat: Camille Boucher, sales director. Pass 3, checked at HEAD c4523f8.
 
 ## 1. THE PROPOSAL IN THREE SENTENCES
 
@@ -27,7 +27,7 @@ Three biggest gaps left:
 
 ## 4. FINAL GRADE: 63/100 (pass 1 was 58, pass 2 was 55)
 
-Up 8. Moved it: the free figure is ruled, so the demand exists; sealed door, one tray, sentence case and "tier means paid only" are in. Held back: no price on the chip, a false buy page, no measure, and tier two is still the weak rung.
+Up 8. Moved it: the free figure is ruled, so the demand exists; sealed door, one tray, sentence case and "tier means paid only" are in. Held back: no price on the chip, a false buy page, no measure, a weak tier two.
 
 Arithmetic, so no price moves on a guess. Free is 10 patterns a week, about 40 a month. Tier one, 12 dollars, 400 patterns, 3.0 cents each, plus saboteurs: the strongest rung. Tier two, 29, 800, 3.6 cents each; the extra 17 dollars buys 400 more (4.25 cents each) plus complexes. Tier three, 59, 1,200, 4.9 cents each; the extra 30 buys 400 more (7.5 cents each) plus hyper complexes, character, registers and masks. Tier four, 99, buys the lead suite on the same 1,200. Price per pattern rises with volume, and a hostile reader will compute it. The answer holds only if the sight on each rung is visibly worth it. Tier two is not. I move no price until the counts below exist.
 
