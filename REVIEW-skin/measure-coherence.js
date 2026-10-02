@@ -238,7 +238,9 @@ function PROBE(arg){
   /* ---------- text ---------- */
   let text='';
   const tn=el.tagName;
-  if(tn==='INPUT'||tn==='TEXTAREA'){text=(el.value||el.placeholder||'').trim();if(!text&&!/hidden|checkbox|radio|range|file|color/.test(el.type||''))text='';}
+  if(tn==='INPUT'||tn==='TEXTAREA'){
+   /* a checkbox's value is "on" and nobody reads it; only controls that print their value count as text */
+   text=/^(hidden|checkbox|radio|range|file|color|image)$/.test(el.type||'')?'':(el.value||el.placeholder||'').trim();}
   else if(tn==='SELECT'){text=(el.options&&el.options[el.selectedIndex]?el.options[el.selectedIndex].text:'').trim();}
   else text=[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.nodeValue).join('').replace(/\s+/g,' ').trim();
   const pseudo=[];
@@ -248,13 +250,14 @@ function PROBE(arg){
   if(texts.length){
    const r=seen(el,2);
    if(r){
-    const fs=parseFloat(cs.fontSize),fw=cs.fontWeight;
-    const ff=(cs.fontFamily.split(',')[0]||'').replace(/["']/g,'').trim();
     /* a placeholder is painted by ::placeholder, never by the control's own color */
     const isPh=(tn==='INPUT'||tn==='TEXTAREA')&&!el.value&&!!el.placeholder;
     const phs=isPh?getComputedStyle(el,'::placeholder'):null;
-    const fg0=parse(isSvgChild?cs.fill:(isPh?phs.color:cs.color));
     for(const [ps,t] of texts){
+     const tcs=ps?getComputedStyle(el,ps):cs; /* generated content has its own font and colour */
+     const fs=parseFloat(tcs.fontSize),fw=tcs.fontWeight;
+     const ff=(tcs.fontFamily.split(',')[0]||'').replace(/["']/g,'').trim();
+     const fg0=parse(isSvgChild?cs.fill:(isPh?phs.color:tcs.color));
      const chars=t.length;
      both(side,m=>{m.nText++;m.chars+=chars;add(m.fs,num(fs)+'px',1,chars);add(m.fw,fw,1,chars);add(m.ff,ff,1,chars);});
      if(fs<12)both(side,m=>{m.tiny++;if(Object.keys(m.tinyS).length<8)m.tinyS[num(fs)+'px '+sel(el)+' "'+t.slice(0,18)+'"']=1;});
@@ -511,7 +514,8 @@ function digest(raw){ /* raw = one PROBE result's .all or .host */
  o.radius=summarise(raw.rad);o.shadow=summarise(raw.sh);o.shadowGeom=summarise(raw.shg);
  o.iconStroke=summarise(raw.stI);o.iconStrokeAuthored=summarise(raw.stIa);o.figStroke=summarise(raw.stF);
  o.cap=summarise(raw.cap);o.iconSize=summarise(raw.icSz);o.iconClass=summarise(raw.icCls);o.strokeColor=summarise(raw.stCol,true);
- o.text={n:raw.nText,chars:raw.chars,tiny:raw.tiny,tinyS:Object.keys(raw.tinyS),caps:raw.capsN,capsS:Object.keys(raw.caps),dash:raw.dash,dashS:raw.dashS,glyph:Object.entries(raw.glyph).map(([k,v])=>[k,v.n])};
+ const smallC=Object.entries(raw.fs).reduce((a,[k,v])=>a+(parseFloat(k)<12?v.c:0),0);
+ o.text={n:raw.nText,chars:raw.chars,smallCharPct:raw.chars?Math.round(100*smallC/raw.chars):0,tiny:raw.tiny,tinyS:Object.keys(raw.tinyS),caps:raw.capsN,capsS:Object.keys(raw.caps),dash:raw.dash,dashS:raw.dashS,glyph:Object.entries(raw.glyph).map(([k,v])=>[k,v.n])};
  o.contrast={checked:raw.nChecked,fail:raw.nFail,failLargeOnly:raw.nFailLarge,unresolved:raw.nUnres,unresWhy:Object.fromEntries(Object.entries(raw.unres).map(([k,v])=>[k,{n:v.n,sel:Object.keys(v.s)}])),min:raw.nChecked?+raw.minRatio.toFixed(2):null,
   fails:Object.values(raw.fails).sort((a,b)=>a.ratio-b.ratio)};
  const mins=raw.tap.map(t=>t.m);
@@ -543,7 +547,9 @@ function contrastOf(texts,px,side){
    SELF TEST: a fixture with answers known by hand
    --------------------------------------------------------------- */
 const FIXTURE=`<!doctype html><meta charset=utf-8><body style="margin:0;background:#fff">
+<style>.pp::before{content:"Q";font:700 21px Arial;color:#111}</style>
 <div id=h>
+<p class=pp style="margin:0"></p><input type=checkbox id=cbx>
 <p id=t1 style="margin:0;font:400 16px Arial;color:#000">black on white</p>
 <p id=t2 style="margin:0;font:400 14px Arial;color:#777777">grey on white</p>
 <p id=t3 style="margin:0;font:400 12px Arial;color:#fff;background:color-mix(in srgb,#000 50%,#fff)">white on mix</p>
@@ -594,12 +600,13 @@ async function selftest(browser){
  chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===4&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
  chk('black on white not a failure',!Object.values(A.fails).some(x=>x.sample==='black on white'),A.fails);
  chk('svg white on black passes (ground from the rect under it)',!Object.values(A.fails).some(x=>/svg white/.test(x.sample)),A.fails);
- chk('four ghosts add no text elements: 11 visible (t1..t5, b1, b2, the svg text, two canvas spans, one text inside a scroller)',A.nText===11,A.nText);
+ chk('four ghosts add no text elements: 12 visible (t1..t5, b1, b2, the svg text, two canvas spans, one text inside a scroller, one pseudo element)',A.nText===12,A.nText);
+ chk('generated content is measured with its own font (21px bold), a checkbox contributes no text',A.fs['21px']&&A.fs['21px'].n===1&&A.fw['700'].n>=2&&A.fs['13.3px'].n===2,[A.fs,A.fw]);
  chk('text over a 2D canvas reads the canvas pixels: white on black passes, white on #888 = 3.54 fails',!Object.values(A.fails).some(x=>/black canvas/.test(x.sample))&&Object.values(A.fails).some(x=>/grey canvas/.test(x.sample)&&near(x.ratio,3.54,0.05))&&A.nUnres===0,[A.nUnres,A.fails]);
  /* taps: b1 20px, b2 48px */
- chk('two taps found',A.nTap===2,A.nTap);
- chk('smallest tap is 20',A.tap[0]&&A.tap[0].m===20,A.tap[0]);
- chk('lt24 = 1 and lt44 = 1',d.tap.lt24===1&&d.tap.lt44===1,d.tap);
+ chk('three taps found (two buttons and the checkbox)',A.nTap===3,A.nTap);
+ chk('smallest tap is the 13px checkbox, then the 20px button',A.tap[0]&&A.tap[0].m>=12&&A.tap[0].m<=16&&A.tap[1]&&A.tap[1].m===20,A.tap.slice(0,2));
+ chk('lt24 = 2 and lt44 = 2',d.tap.lt24===2&&d.tap.lt44===2,d.tap);
  /* paint */
  chk('radius 4px and pill and circle? b1=4px, b2 circle',A.rad['4px']&&A.rad['4px'].n===1&&A.rad['circle']&&A.rad['circle'].n===1,A.rad);
  chk('one box shadow',Object.keys(A.sh).length===1,A.sh);
@@ -644,7 +651,9 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  console.log('selftest: ok ('+st.nText+' visible text elements in the fixture, 4 ghosts excluded)');
  if(opt('selftest',false)){await browser.close();return;}
 
- const out={file:FILE,profile:PROFILE,theme:null,widths:{},when:new Date().toISOString()};
+ const cp=require('child_process');
+ const sh=c=>{try{return cp.execSync(c,{encoding:'utf8',cwd:path.dirname(FILE)}).trim();}catch(e){return '?';}};
+ const out={file:FILE,md5:sh('md5sum '+JSON.stringify(path.basename(FILE))).split(' ')[0],commit:sh('git rev-parse --short HEAD'),dirty:sh('git status --short -- '+JSON.stringify(path.basename(FILE)))!=='',profile:PROFILE,profileName:null,theme:null,widths:{},when:new Date().toISOString()};
  const helper=await browser.newPage();await helper.goto('about:blank');
  const errs=[];
  for(const W of WIDTHS){
@@ -661,7 +670,7 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
    const raw=await page.evaluate(PROBE,{hostIds,hostId:s.id});
    const stateOk=await page.evaluate(k=>S.tab===TABREAL(k),s.k);
    const theme=await page.evaluate(()=>S.theme||document.body.className);
-   out.theme=theme;
+   out.theme=theme;out.profileName=await page.evaluate(i=>i>=0&&PEOPLE[i]?(PEOPLE[i].name||PEOPLE[i].nm||PEOPLE[i].n||'?'):'blank',PROFILE);
    out.widths[W].surfaces[s.nm]={meta:s,stateOk,counts:raw.counts,doc:raw.doc,all:digest(raw.all),host:digest(raw.host),rawAll:raw.all};
    const px=await pixelPass(page,helper,raw.texts);
    const rec=out.widths[W].surfaces[s.nm];
@@ -672,11 +681,9 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  }
  await browser.close();
  out.errors=errs;
- if(opt('json',false)){const j=JSON.parse(JSON.stringify(out));
-  fs.writeFileSync(opt('json'),JSON.stringify(j));}
 
  /* ---------------- markdown tables ---------------- */
- const L=[];
+ const L=['Build '+path.basename(FILE)+' md5 '+out.md5+' commit '+out.commit+(out.dirty?' (file dirty)':'')+', theme '+out.theme+', profile '+PROFILE+' '+out.profileName+', widths '+WIDTHS.join(' and ')+', measured '+out.when];
  const names=Object.keys(out.widths[WIDTHS[0]].surfaces);
  for(const W of WIDTHS){
   const S=out.widths[W].surfaces;
@@ -705,6 +712,15 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  for(const k of Object.keys(LBL))for(const W of WIDTHS){const d=overall[W].dig[k],r=overall[W].reuse[k];
   L.push('| '+LBL[k]+' | '+W+' | '+d.distinct+' | '+(d.families||'')+' | '+r.inMany+' | '+r.onOne+' | '+d.top5pct+'% | '+fmtTop(d,3).replace(/\|/g,'/')+' |');}
 
+ const DIMS=[['fs','text sizes'],['fw','weights'],['tce','text ink'],['fill','fills'],['bd','border colours'],['rad','radii'],['shg','shadow geometry'],['stIa','icon stroke authored'],['icSz','icon sizes']];
+ L.push('','### Coherence summary (not a grade: two ratios a skin can move)','');
+ L.push('| width | concentration: mean share of uses covered by the top 5 values, over nine dimensions | local dialect: values seen on one surface only, as a share of all distinct values | text under 12px, share of characters |','|---|---|---|---|');
+ for(const W of WIDTHS){
+  const conc=Math.round(DIMS.reduce((a,[k])=>a+overall[W].dig[k].top5pct,0)/DIMS.length);
+  const dist=DIMS.reduce((a,[k])=>a+overall[W].reuse[k].distinct,0),one=DIMS.reduce((a,[k])=>a+overall[W].reuse[k].onOne,0);
+  const sm=names.reduce((a,n)=>a+out.widths[W].surfaces[n].all.text.smallCharPct,0)/names.length;
+  out.overall[W].concentration=conc;out.overall[W].dialectPct=Math.round(100*one/dist);out.overall[W].smallCharPct=Math.round(sm);
+  L.push('| '+W+' | '+conc+'% | '+Math.round(100*one/dist)+'% ('+one+' of '+dist+') | '+Math.round(sm)+'% (mean of surfaces) |');}
  L.push('','### Accessibility and voice floors, per surface','');
  for(const W of WIDTHS){
   const S=out.widths[W].surfaces;
@@ -732,6 +748,8 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  const md=L.join('\n');
  console.log(md);
  if(opt('md',false))fs.writeFileSync(opt('md'),md);
+ if(opt('json',false)){const j=JSON.parse(JSON.stringify(out));
+  fs.writeFileSync(opt('json'),JSON.stringify(j));}
  if(errs.length)console.log('\nPAGE ERRORS: '+errs.join(' | '));
 
  /* ---------------- gate: nothing that is "lower is better" may get worse ---------------- */
