@@ -15,19 +15,21 @@ THREE REVIEWS FINISHED as documents (no product code changed by them): the skin 
 the onboarding (`REVIEW-onboarding/`, tally and rulings in `TALLY.md`), the six-area
 architecture (`REVIEW-arch/`, tally and slice table in `TALLY.md` and section K).
 
-## B. In flight right now (2 October, evening)
+## B. In flight right now (2 October, night)
 
 | Work | State |
 |---|---|
-| Skin review, pass 3 (the last pass) | 12 of 13 seats running; brand 66 and mechanics 55 are in. QA's measured pass 1 still writing |
-| Onboarding: mockup of the automatic slider, for him to review first | one builder running; screenshots and a playable file come next |
-| Round PL: example profiles by coherence tier, plus three new per tier (J12) | builder running in its own copy |
-| Round PL: COPY, first (J13): site wide walk, no percent or zero verdicts, evidence file | copy director running in its own copy |
-| Round PL: Compass teacher click shows the behaviour complex, with starter recipes (J14) | builder running in its own copy |
-| Architecture review pass 3 | done except QA's gate list |
+| Copy walk (J13): every screen, no percent or zero verdicts | running |
+| Sound silent, sound switch writing the profile, bottom log, X and End on protocols (J2) | running |
+| MVP gap analysis with the Practitioner layer (`MVP-GAP-2.md`) | running |
+| Onboarding v3 mockup: feel and flow, twelve principles of animation (his round PP) | running |
+| Unpack every symbol (blueprint card, Jesus line, signs), gloss table and gate | running |
+| Intake: Jungian archetypes, nine emotional axes, six action axes, stacked | running |
+| Flow: New ritual to the right menu, Accountability its own tool set, TDD rules | running |
+| Mockups: reading display, what it drives, whole summary, analytics above the fold, Practitioner elevated | running |
+| Mockups: the Journal page and the Avatar page | running |
 
-HONEST ANSWER on the copy: it was not all updated. The site wide walk (J13) had not run. It is
-running now and it comes before any other build.
+Done and pushed this round: cover (white dots, moving rings, symmetry), teacher panel (J14), example profiles by tier (J12), font specimens (his pick: Onest), `tools/stripe-setup.js` and the Stripe steps for a nine year old.
 
 ## C. Next, in order
 

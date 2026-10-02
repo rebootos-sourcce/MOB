@@ -31589,3 +31589,17 @@ Read as:
 - A plain summary of what is running, what it costs, and how it works on me now, including the sign placements (Capricorn, Virgo).
 - Intake: add the Jungian archetypes, the nine emotional axes and the six action axes; keep the design; show all stacked.
 - Analytics: the glance answer goes above the fold; big boxes were below and thin lines above.
+
+## Round PP, 2 October. Feel and flow in the first minutes (his pasted review)
+
+Verbatim text saved whole in `REVIEW-onboarding/OWNER-FLOW-FEEDBACK.md`. Read as: the onboarding must feel like one continuous experience on one living Field: arrive, settle, notice, feel, body place, story, a Mirror that says what it heard with a correction path, then release. Rulings that stand are kept (account after the first release, gift of 100, five channel stem, twelve starting points, no numbers on screen). Sent to the onboarding v3 mockup builder together with the twelve principles of animation (round PO).
+
+Builds started 2 October after round PO and PP, each in its own sparse copy, none pushed until gated on the merged tree:
+- `po-anim` onboarding v3 (feel, flow, twelve principles of animation)
+- `po-unpack` unpack every symbol: harvester, gloss table, blueprint card, teacher lines, gate
+- `po-intake` Jungian archetypes, nine emotional axes, six action axes on the Intake page, stacked
+- `po-flow` New ritual to the right menu, Accountability as its own tool set, TDD rules
+- `po-views` mockups: reading display, what it drives, whole summary, analytics above the fold, Practitioner elevated
+- `po-journal` mockups: the Journal page and the Avatar page
+Already running: copy walk (J13), sound fix and bottom log (J2), the MVP gap analysis.
+Disk note: the cloud disk hit full during setup; four finished, merged work copies were removed and new copies exclude the big picture folders.
