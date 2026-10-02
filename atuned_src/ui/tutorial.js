@@ -231,7 +231,8 @@ addEventListener('click',function(e){
   /* the plan's addresses, never every address the entry read (F5) */
   var pl=TUT.plan||(typeof obMini==='function'?obMini(obImprints(TUT.parsed)):null), ids=(pl&&pl.ok)?pl.addrs:[];
   tutClose();
-  if(ids.length&&typeof relPick==='function')relPick(ids);
+  if(ids.length&&typeof relPick==='function')
+   relPick(ids,(TUT.commit&&TUT.commit.ok&&TUT.commit.t)?{story_t:TUT.commit.t}:null);
   return;}
  if(k==='field'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.FIELD); return; }
  if(k==='ritual'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return; }

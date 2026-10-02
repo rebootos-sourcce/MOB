@@ -143,6 +143,92 @@ mini(E,ok){
   const ps=E.parseStory('I felt tight in my chest when my boss yelled at me and I could not breathe.');
   const mp=E.onbMiniPlan(fixture(E,0),{unread:!ps.imprints.length,imprints:ps.imprints},at(0));
   ok(mp.ok&&mp.lines===12&&mp.found>3&&mp.rest===mp.found-3,'a real reading of more than three addresses is cut to three, twelve lines: '+J({ok:mp.ok,l:mp.lines,f:mp.found,i:mp.foundInferred}));}
+},
+
+/* WHAT CHANGED, AFTER A RELEASE. releaseVerify in engine/journey.js writes
+   the answer as practice evidence, one record per address, and loopRead reads
+   it back. System Congruency TDD section 15; CONGRUENCY-AUDIT.md's next task.
+   What is held: the closed set is exactly the TDD's five plus skipped, and
+   anything else is refused by name; it writes all or nothing; the record
+   survives the boundary on the way back in; no answer, "nothing changed"
+   least of all, ever becomes a trace edge; and Your patterns shows it on the
+   pattern's row as what was said, never as evidence for. */
+verify(E,ok){
+ const T='2026-10-02T10:00:00.000Z', ST='2026-10-02T09:58:00.000Z';
+ const [a,b]=addrs(E,2);
+ ok(J(E.RV_ANSWERS)===J(['feel_different','see_differently','something_moved','nothing_changed','not_sure']),
+  'the five answers are the TDD\'s five, in its order: '+J(E.RV_ANSWERS));
+ ok(J(E.RV_VALUES)===J(E.RV_ANSWERS.concat(['skipped'])),'and the record holds those five and skipped, nothing else');
+ ok(E.RV_VALUES.every(k=>typeof E.RV_SAY[k]==='string'&&E.RV_SAY[k].length>0),'every value has its words in one table');
+ /* every value, positive, negative and uncertain alike, writes cleanly */
+ E.RV_VALUES.forEach(v=>{
+  const P0=E.practiceBlank(), before=J(P0);
+  const r=E.releaseVerify(P0,v,[a,b],{story_t:ST},T);
+  ok(r.ok&&r.ids.length===2&&r.P.evidence.length===2,v+' is written once per address: '+J(r.errs||r.ids));
+  ok(J(P0)===before,v+': the object handed in is not touched');
+  if(!r.ok)return;
+  const e=r.P.evidence[0];
+  ok(e.metric===E.RV_METRIC&&e.value===v&&e.pattern_id==='addr:'+a&&e.story_t===ST&&e.timestamp===T,
+   v+' carries its metric, value, address, story and time: '+J({m:e.metric,v:e.value,p:e.pattern_id,s:e.story_t}));
+  ok(e.source==='user'&&e.dimension==='affect'&&e.src==='known','and it is the person\'s own, about how it felt');
+  ok(r.P.log.filter(x=>x.type==='EVIDENCE_RECORDED').length===2,'and the log says so, twice');});
+ /* refused by name, and nothing written */
+ [['banana','an unknown key'],['Something moved','the words in place of the key'],['improved','an outcome status'],[null,'no answer at all']].forEach(([v,what])=>{
+  const P0=E.practiceBlank(), r=E.releaseVerify(P0,v,[a],null,T);
+  ok(!r.ok&&r.P===P0&&r.P.evidence.length===0,what+' is refused and nothing is written');
+  ok(!r.ok&&/release verification/.test(r.errs[0])&&r.errs[0].indexOf(J(v))>=0,what+' is refused by name: '+(r.errs&&r.errs[0]));});
+ const none=E.releaseVerify(E.practiceBlank(),'not_sure',[],null,T);
+ ok(!none.ok&&/none were given/.test(none.errs[0]),'an answer about no address is refused: '+(none.errs&&none.errs[0]));
+ const half=E.releaseVerify(E.practiceBlank(),'not_sure',[a,999999],null,T);
+ ok(!half.ok&&half.P.evidence.length===0,'one bad address refuses the whole answer, so half a run is never on the record');
+ const noStory=E.releaseVerify(E.practiceBlank(),'nothing_changed',[a],null,T);
+ ok(noStory.ok&&noStory.P.evidence[0].story_t===null,'a release with no story behind it carries none');
+ /* THE RECORD SURVIVES THE BOUNDARY, every value */
+ const p=fixture(E,0), keys=E.meterPlan(p,[a,b],E.ONB_CHANS,8); E.meterRun(p,keys);
+ let P=p.practice;
+ E.RV_VALUES.forEach((v,i)=>{const r=E.releaseVerify(P,v,[a,b],{story_t:ST},'2026-10-02T10:0'+i+':00.000Z'); P=r.P;});
+ p.practice=P;
+ const back=E.validateProfile(JSON.parse(J(p)));
+ ok(back.ok,'a record carrying all six values passes the boundary: '+J(back.errs||[]).slice(0,300));
+ if(back.ok){
+  const ev=back.profile.practice.evidence;
+  ok(ev.length===12&&E.RV_VALUES.every(v=>ev.filter(e=>e.value===v).length===2),'and every answer is still on it, at both addresses');
+  ok(ev.every(e=>e.story_t===ST),'and every one still names its story');}
+ /* the boundary refuses a seventh value, and a verification nobody gave */
+ const bad=JSON.parse(J(p)); bad.practice.evidence[0].value='maybe';
+ const vb=E.validateProfile(bad);
+ ok(!vb.ok&&vb.errs.some(x=>/release verification/.test(x)&&/maybe/.test(x)),'the boundary refuses a value outside the six, by name: '+J(vb.errs||[]).slice(0,200));
+ const sys=JSON.parse(J(p)); sys.practice.evidence[0].source='system';
+ ok(!E.validateProfile(sys).ok,'and a verification whose source is not the person');
+ const aff=JSON.parse(J(p)); aff.practice.evidence[0].dimension='effect';
+ ok(!E.validateProfile(aff).ok,'and one written as evidence of effect, which self report is not');
+ /* an older record, evidence with no story_t, still loads, filled with null */
+ const old=JSON.parse(J(p)); old.practice.evidence.forEach(e=>{delete e.story_t;});
+ const vo=E.validateProfile(old);
+ ok(vo.ok&&vo.profile.practice.evidence.every(e=>e.story_t===null),'an older record with no story_t loads, read as null');
+ /* NO VERIFICATION IS EVER AN EDGE. Checked against the known good case
+    first: ordinary evidence about the same address does make one. */
+ const other=E.practiceDo(E.practiceBlank(),'evidence_record',{source:'user',type:'internal',dimension:'effect',
+  pattern_id:'addr:'+a,metric:'pain',value:3},T);
+ const oi=E.practiceTraceIntents(other.P);
+ ok(oi.some(i=>i.from.type==='evidence'&&i.to.id==='addr:'+a&&i.edge==='supports'),'the probe sees an edge where there is one: ordinary evidence supports its pattern');
+ const vi=E.practiceTraceIntents(P);
+ ok(vi.every(i=>i.from.type!=='evidence'&&i.to.type!=='evidence'),'six answers, nothing changed among them, emit no evidence intent at all: '+J(vi).slice(0,200));
+ const g=E.traceFromRecord(back.ok?back.profile:p,vi);
+ ok(!g.nodes.some(n=>n.type==='evidence'),'and the graph holds no evidence node for them');
+ ok(!g.edges.some(e=>/^evidence:/.test(e.from)&&e.to==='pattern:'+a),'and no edge from evidence to the address the person said did not move');
+ ok(!(g.gaps||[]).some(x=>/bears on nothing/.test(x.why||'')),'and no gap for evidence bearing on nothing');
+ /* YOUR PATTERNS reads it on the row, as what was said */
+ const L=E.loopRead(back.ok?back.profile:p);
+ const row=L.patterns.find(x=>x.address===a);
+ ok(!!row,'the address has a row in Your patterns');
+ if(row){
+  ok(row.said.n===6&&E.RV_VALUES.every(v=>row.said.by[v]===1),'and the row counts every answer once: '+J(row.said));
+  ok(row.said.last==='skipped','and the newest is the last one given');
+  ok(row.evFor===0&&row.evAgainst===0,'and none of it is counted as evidence for or against');
+  ok(row.state==='unanswered','and an answer about a release does not confirm the pattern');}
+ const L1=E.loopRead(fixture(E,0));
+ ok(L1.patterns.every(x=>x.said.n===0),'a record with no answer shows none');
 }};
 
 /* ============================================================
@@ -168,7 +254,19 @@ const MUTANTS=[
  {suite:'mini', what:'the inferred are counted only among those taken',
   from:"var found=cand.length, foundInf=cand.filter(", to:"var found=cand.length, foundInf=cand.slice(0,3).filter("},
  {suite:'read', what:'a record in use reads as a first run',
-  from:"var stage=prior?'continuing':(entries.length?'storied':'new');", to:"var stage=entries.length?'storied':'new';"}];
+  from:"var stage=prior?'continuing':(entries.length?'storied':'new');", to:"var stage=entries.length?'storied':'new';"},
+ {suite:'verify', what:'a verification becomes a trace edge, so nothing changed reads as support',
+  from:"if(e.pattern_id&&!prIsVerify(e))put('evidence'", to:"if(e.pattern_id)put('evidence'"},
+ {suite:'verify', what:'the boundary accepts any value on a verification',
+  from:"if(RV_VALUES.indexOf(x.value)<0)", to:"if(false)"},
+ {suite:'verify', what:'the link to the story entry is dropped on the way in',
+  from:"'confidence','notes','story_t'].forEach(", to:"'confidence','notes'].forEach("},
+ {suite:'verify', what:'Your patterns does not count the answers',
+  from:"row.said.n++;", to:""},
+ {suite:'verify', what:'an answer is counted as evidence for the pattern',
+  from:"var t=typeOf(e.from), src=node[e.from];", to:"var t=typeOf(e.from), src=node[e.from]; if(row.said.n)row.evFor=row.said.n;"},
+ {suite:'verify', what:'skipped is stored as not sure',
+  from:"var RV_VALUES=RV_ANSWERS.concat([RV_SKIP]);", to:"var RV_VALUES=RV_ANSWERS.slice();"}];
 
 function load(src){
  const ctx={module:{exports:{}}, console:console};

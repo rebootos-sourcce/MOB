@@ -18,7 +18,11 @@
    is the same object afterwards byte for byte (tests/journey.js holds
    that on every call).
 
-   NO SCHEMA_V BUMP, and none is needed: nothing new is stored.
+   NO SCHEMA_V BUMP, and none is needed. releaseVerify below is the one
+   function here that builds something to store, and it stores it as
+   practice evidence, which the boundary already guards; its one new field,
+   story_t, is additive and optional and an older record reads as null.
+   It is still pure: it returns a new practice object and the caller saves.
    ============================================================ */
 
 /* ---------------- the read ---------------- */
@@ -105,3 +109,49 @@ function onbMiniPlan(p,signal,now){
  return {ok:true, addrs:ids, keys:keys, lines:keys.length,
   inferred:take.filter(function(c){return c.inferred;}).length, cap:cap,
   found:found, foundInferred:foundInf, rest:found-ids.length};}
+
+/* ---------------- what changed, after a release ---------------- */
+/* THE ANSWER TO "WHAT CHANGED?", written as evidence, one record per address
+   the run worked. System Congruency TDD section 15; CONGRUENCY-AUDIT.md's
+   next task, item 2. The vocabulary and its boundary are the evidence
+   domain's own (RV_METRIC, RV_VALUES and prCross in engine/practice.js);
+   this is the one host free door that builds the records, so the gate can
+   hold it without a browser.
+
+   PURE, AND ALL OR NOTHING. It takes the practice object and returns a new
+   one, every record through practiceDo, so each one passes the same boundary
+   an import does. If any address is refused, none is written and the object
+   handed in comes back untouched: half a run's answer on the record would
+   read as the person having answered about some addresses and not others.
+
+   answer   one of RV_VALUES: the five offered answers, or skipped
+   addrs    the node ids the run worked, the queue after End cut it
+   opt      { story_t }: the entry the run was planned from, or nothing
+   now      the time, one for every record, so one answer reads as one moment
+
+   Returns { ok, P, ids } or { ok:false, P, errs } with every reason named. */
+function releaseVerify(P,answer,addrs,opt,now){
+ var base=P||practiceBlank(), errs=[];
+ if(RV_VALUES.indexOf(answer)<0)
+  errs.push('a release verification is one of '+RV_VALUES.join(', ')+', not '+JSON.stringify(answer));
+ var ids=[];
+ if(!Array.isArray(addrs)||!addrs.length)errs.push('a release verification names the addresses the release worked, and none were given');
+ else addrs.forEach(function(a){
+  if(!NUM(a)||!BY[a])errs.push('no address is '+JSON.stringify(a));
+  else if(ids.indexOf(a)<0)ids.push(a);});
+ if(errs.length)return {ok:false, P:base, errs:errs};
+ var t=now||new Date().toISOString(), st=(opt&&opt.story_t)||null, Q=base, out=[];
+ for(var i=0;i<ids.length;i++){
+  var r=practiceDo(Q,'evidence_record',{source:'user', type:'internal', dimension:'affect',
+   pattern_id:'addr:'+ids[i], metric:RV_METRIC, value:answer, story_t:st, timestamp:t},t);
+  if(!r.ok)return {ok:false, P:base, errs:r.errs};
+  Q=r.P; out.push(r.id);}
+ return {ok:true, P:Q, ids:out};}
+/* WHAT THE RECORD SAYS WAS ANSWERED AT ONE ADDRESS, newest last. Read off the
+   evidence and never stored. A run's answer is one record per address at one
+   timestamp, so at a single address every record is one release's answer. */
+function releaseVerifyAt(P,addr){
+ var id='addr:'+addr, ev=(P&&Array.isArray(P.evidence))?P.evidence:[];
+ return ev.filter(function(e){return e&&e.metric===RV_METRIC&&e.pattern_id===id;})
+  .map(function(e){return {value:e.value, at:e.timestamp, story_t:e.story_t||null};})
+  .sort(function(a,b){return String(a.at)<String(b.at)?-1:String(a.at)>String(b.at)?1:0;});}

@@ -119,7 +119,15 @@ function loopRead(p){
   var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
    nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
-   protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null};
+   protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null,
+   /* WHAT THE PERSON SAID CHANGED after each release here, read off the
+      evidence directly, because a verification is never an edge (RV_METRIC,
+      engine/practice.js). Counted by answer, with the newest, and never added
+      to evFor or evAgainst: an answer is what was said, not support. */
+   said:{n:0, by:{}, last:null}};
+  if(row.address!==null&&typeof releaseVerifyAt==='function')
+   releaseVerifyAt(P,row.address).forEach(function(v){
+    row.said.n++; row.said.by[v.value]=(row.said.by[v.value]||0)+1; row.said.last=v.value;});
   var confirmedBy=null;
   ins.concat(outs).forEach(function(e){
    if(e.src==='user_confirmed'&&!confirmedBy)confirmedBy=typeOf(e.from===k?e.to:e.from);});
@@ -142,7 +150,7 @@ function loopRead(p){
   if(confirmedBy){row.state='confirmed'; row.by=confirmedBy;}
   /* a pattern that only a stored release key names, with nothing read and
      nothing run, is a key and not yet anything about the person */
-  if(!row.stories&&!row.lines&&!row.truths&&!row.protocols.length&&!row.evFor&&!row.evAgainst&&!confirmedBy)return;
+  if(!row.stories&&!row.lines&&!row.truths&&!row.protocols.length&&!row.evFor&&!row.evAgainst&&!row.said.n&&!confirmedBy)return;
   out.patterns.push(row);});
 
  /* THE ORDER, and every step of it is a reason. Confirmed first: the person

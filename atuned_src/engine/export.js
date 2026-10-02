@@ -337,6 +337,8 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+                  releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
+                  RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SKIP:RV_SKIP, RV_VALUES:RV_VALUES, RV_SAY:RV_SAY,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
