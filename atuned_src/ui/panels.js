@@ -16,11 +16,15 @@ function panAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '
    stack on the right rail already draws the nine axes with them, so the
    sliders draw the same mark for the same thing. The colour is still the
    seat's. ic is optional, so a row with no glyph keeps the dot. */
-function numField(host,name,band,store,key,ic){
+function numField(host,name,band,store,key,ic,tip){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';
  d.innerHTML=(ic?'<i class="nf-g" style="color:'+col+'"><svg viewBox="0 0 24 24" aria-hidden="true">'
-   +glyphPath(ic)+'</svg></i>':'<i style="background:'+col+'"></i>')+'<label>'+name+'</label>'
+   +glyphPath(ic)+'</svg></i>':'<i style="background:'+col+'"></i>')
+  /* ROUND PO. The label carries what the axis or the law is, from the meaning
+     table, on the label and not on the row: the row holds a slider, and a tap
+     on a slider has to be a drag and not an explanation. */
+  +'<label'+(tip?' class="tipu" tabindex="0" data-tip-k="'+esc(name)+'" data-tip="'+esc(tip)+'"':'')+'>'+name+'</label>'
   +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+'" aria-valuemin="0" '
   +'aria-valuemax="10" aria-valuenow="'+store[key]+'"><b style="background:'+col+'"></b></span>'
   +'<input type="number" min="0" max="10" step="0.5" value="'+store[key]+'" aria-label="'+name+'">';
@@ -56,11 +60,11 @@ function numField(host,name,band,store,key,ic){
  return {inp,tr,trk};}
 const CHF={},RPF={},LWF={};
 CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic);
+ CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'));
  /* the opposite takes the same mark in Heart, as the stack draws it */
- RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic);
+ RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
  RPF[cf.nm].inp.parentElement.classList.add('oppf');});
-SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic);});
+SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
 function syncCh(){CHILD.forEach(function(cf){
  const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));

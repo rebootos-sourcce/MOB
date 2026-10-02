@@ -744,6 +744,15 @@ function runKbDrill(eyebrow,title,sub,body){
    That is the only reason the names earn their place: they carry
    the historical footprint, and the echo is in the room today.
    ============================================================ */
+/* A POLE, PHRASE BY PHRASE. Round PO, UNPACK EVERY SYMBOL. The codex's line for
+   a pole is a run of short phrases and each one is a claim: "Love generated
+   from within", "No transaction". Each is printed as the phrase, then what it
+   means, in one paragraph, from POLE_MEANS in engine/data/compass.js. The
+   phrase is the codex's own words and the meaning is beside it, so nothing is
+   left for the person to assume. */
+function poleMeansHtml(m,end){
+ return compassPoleLines(m,end).map(function(x){
+  return '<p class="ad-p un-pair"><b>'+esc(x[0])+'</b>'+(x[1]?' '+esc(x[1]):'')+'</p>';}).join('');}
 /* ONE TEACHER, OR ONE INVERSION. Clicking a name on the compass did nothing,
    because the figure had no hit testing at all: sixteen names were drawn as
    though they were buttons and were not.
@@ -781,9 +790,8 @@ function runTeacherDrill(m,end){
     +'<path d="'+ic+'"/></svg>':'')+esc(nm)+'</div>'
   +'<div class="ad-sub">'+esc(m.seat)+' \u00b7 '
   +(up?'the quality running clean':'the same quality, inverted')+'</div>'
-  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(d)+'</p>'
-  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(other)+'</b>. '
-  +esc(od)+'</p>'
+  +'<div class="pm-eye">What this is</div>'+poleMeansHtml(m,up?'up':'dn')
+  +'<div class="pm-eye">The other end, '+esc(other)+'</div>'+poleMeansHtml(m,up?'dn':'up')
   +'<div class="pm-eye">Where you sit</div><p class="ad-p">'
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
@@ -815,8 +823,8 @@ function runPathDrill(p){
   +'<div class="ad-nm">'+(p.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
     +'<path d="'+p.ic+'"/></svg>':'')+esc(p.up)+'</div>'
   +'<div class="ad-sub">the path of '+esc(p.q)+'</div>'
-  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(p.upd)+'</p>'
-  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(p.dn)+'</b>. '+esc(p.dnd)+'</p>'
+  +'<div class="pm-eye">What this is</div>'+poleMeansHtml(p,'up')
+  +'<div class="pm-eye">The other end, '+esc(p.dn)+'</div>'+poleMeansHtml(p,'dn')
   +(typeof ritTeachHtml==='function'?ritTeachHtml(p.k):'');
  rdShell(h);
  if(typeof ritTeachWire==='function')ritTeachWire(function(){runPathDrill(p);});}
@@ -1259,8 +1267,8 @@ function runMirrorDrill(k){
  rdShell('<div class="pm-eye">'+esc(m.q)+'</div>'
   +'<div class="ad-nm">'+esc(m.up)+' against '+esc(m.dn)+'</div>'
   +'<div class="ad-sub">at the '+String(m.seat).toLowerCase()+'</div>'
-  +'<div class="pm-eye">At full expression</div><p class="ad-p">'+esc(m.upd)+'</p>'
-  +'<div class="pm-eye">At full inversion</div><p class="ad-p">'+esc(m.dnd)+'</p>'
+  +'<div class="pm-eye">At full expression</div>'+poleMeansHtml(m,'up')
+  +'<div class="pm-eye">At full inversion</div>'+poleMeansHtml(m,'dn')
   +'<div class="pm-eye">The question that tells them apart</div>'
   +'<p class="ad-p"><b>'+esc(m.ask)+'</b></p>'
   +'<div class="pm-eye">Where you sit</div>'
@@ -1346,24 +1354,36 @@ function runCellDrill(c,rw){
  rdShell(h);}
 
 function runSpDrill(kind,val){
- var r=compute(), t='', nm=val, sub='', runs='', extra='';
+ var r=compute(), t='', nm=val, sub='', runs='', extra='', means=[], subh='';
  if(kind==='sign'){
   var z=null; ZSIGN.forEach(function(x){if(x[2]===val)z=x;});
   t='Zodiac sign'; sub=z?(z[3]+', '+z[4]):''; runs=SIGN_RUNS[val]||'';
+  /* ROUND PO. What a sign is, its element and its mode, each said once. */
+  means=[unpackOf(val,'sign'),z?unpackOf(z[3]):'',z?unpackOf(z[4]):''];
+  subh=z?unp(z[3])+', '+unp(z[4]):'';
   nm=(ZGLYPH[val]||'')+' '+val;
   var rootNow=(DOMAINS[S.doms[0]]||{}).r||'', maps=ELEM2ROOT[z?z[3]:''];
-  extra=maps?('This element maps to the <b>'+maps+'</b> root. You currently run <b>'+rootNow
-   +'</b>. '+(maps===rootNow?'They agree.':'They do not, which means something was installed '
-   +'on top of the blueprint.')):'';
+  /* ROUND PO. Each root is a carrier of what it is, and the disagreement says
+     what it means in words a person has: something put on top of the blueprint
+     that has run so long it feels like personality. */
+  extra=maps?('This element points to the <b>'+unp(maps.toLowerCase(),maps)+'</b> '+unp('root')
+   +'. What is running now is <b>'+unp(rootNow.toLowerCase(),rootNow)
+   +'</b>. '+(maps===rootNow?'Those agree.':'Those do not agree. Something was put on top of the '
+   +unp('blueprint')+', and it has been carried so long that it feels like your personality.')):'';
  } else if(kind==='chinese'){ t='Year animal'; runs=CH_RUNS[val]||''; sub='twelve year cycle';
+  means=[unpackOf('year animal'),unpackOf(val,'animal')];
  } else if(kind==='celem'){ t='Element'; runs=CE_RUNS[val]||''; sub='ten year stem cycle';
+  means=[unpackOf('year element'),unpackOf(val,'year')];
  } else if(kind==='lp'){
   t='Life path'; runs=LP_RUNS[+val]||''; sub='birth date, reduced';
+  means=[unpackOf('life path'),unpackOf('path:'+val),(+val===11||+val===22||+val===33)?unpackOf('master number'):''];
   var archNow=(ARCH[r.pi]||{}).nm||'';
-  extra='This path reads <b>'+(LP2ARCH[+val]||'unmapped')+'</b>. Your first archetype is <b>'
-   +archNow+'</b>. '+(LP2ARCH[+val]===archNow?'They agree.':'They do not.');
+  extra='This path points to <b>'+(LP2ARCH[+val]?unp(LP2ARCH[+val].toLowerCase(),LP2ARCH[+val],'archetype'):'unmapped')
+   +'</b>. Your first '+unp('archetype')+' is <b>'+(archNow?unp(archNow.toLowerCase(),archNow,'archetype'):'')
+   +'</b>. '+(LP2ARCH[+val]===archNow?'Those agree.':'Those do not agree.');
  } else if(kind==='hd'){
   t='Design type'; runs=HD_RUNS[val]||''; sub='type';
+  means=[unpackOf('design'),/^\d\/\d$/.test(String(val))?unpackOf('profile'):''];
   /* the comparison reads CQ against the median, which a CQ still filling
      cannot answer: it would call every Generator's field contracting */
   extra=!r.complete?'A '+val+'. Coherence is still filling, so the field has no direction to compare yet.'
@@ -1375,14 +1395,18 @@ function runSpDrill(kind,val){
   runs='the body signal this person is meant to decide from, rather than the mind';
  } else if(kind==='gk'){
   t='Gene key'; sub='gate and line';
+  means=[unpackOf('gene key'),unpackOf('gate'),unpackOf('line')];
   var top=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;})[0];
   var c2=top?(CHILD.filter(function(x){return x.nm===top.cf;})[0]||{}):{};
   runs='shadow to gift to siddhi, read one axis at a time';
   extra=top?('Your heaviest address is <b>'+top.k+'</b>, which sits on the <b>'+c2.nm
    +' toward '+(c2.opp||'')+'</b> axis. That is the shadow and the gift.')
    :'Nothing held, so no shadow is running to read.';}
- rdShell('<div class="pm-eye">'+t+'</div><div class="ad-nm">'+esc(nm)+'</div>'
-  +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'')
+ rdShell('<div class="pm-eye">'+(kind==='lp'?unp('life path',t):kind==='gk'?unp('gene key',t):kind==='hd'?unp('design',t):esc(t))
+  +'</div><div class="ad-nm">'+(kind==='sign'?unp(val,nm,'sign'):esc(nm))+'</div>'
+  +(sub?'<div class="ad-sub">'+(subh||esc(sub))+'</div>':'')
+  +(means.filter(Boolean).length?'<div class="pm-eye">What it is</div><p class="ad-p">'
+    +means.filter(Boolean).map(esc).join(' ')+'</p>':'')
   +'<div class="pm-eye">How it runs through you</div>'
   +'<p class="ad-p">'+(runs||'no behaviour on file')+'</p>'
   +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}

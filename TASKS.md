@@ -31589,3 +31589,59 @@ Read as:
 - A plain summary of what is running, what it costs, and how it works on me now, including the sign placements (Capricorn, Virgo).
 - Intake: add the Jungian archetypes, the nine emotional axes and the six action axes; keep the design; show all stacked.
 - Analytics: the glance answer goes above the fold; big boxes were below and thin lines above.
+
+### PO-U. UNPACK EVERY SYMBOL. Built first, and what is open.
+
+The rule is in CLAUDE.md, the voice rule is V23 in the voice skill, and his
+words are in FEEDBACK-log.md under 2 October. One table of meanings, the same
+way of showing it everywhere, and a gate.
+
+Built, in the order of his examples:
+- [x] `engine/data/gloss.js`. The one table of what a term means, one plain
+  sentence each, written from the engine's own tables (SIGN_RUNS, LP_RUNS,
+  CH_RUNS, CE_RUNS, IQ_STEM, CHILD, ARCH, DOMAINS) so a meaning cannot drift
+  from what the engine says a thing does. A count in a sentence is read off its
+  table. Exported as `unpackAll`, `unpackOf`, `unpackKey`.
+- [x] One way to show it, `unp()` in `ui/component.js`: the product's one
+  tooltip with the `.tipu` dotted underline, reachable by tap and by keyboard,
+  and the sentence itself in the line where a line has room.
+- [x] The blueprint card, the Summary reading (the lead sentence is unchanged,
+  and each symbol in it is followed by its meaning in the same paragraph), the
+  sign chips, the left rail's signs and numbers, the sign and life path drills,
+  the Root Energetics rail, and the axis and law labels in the left rail.
+- [x] The Compass poles. Every phrase of every pole, both ends, is cut out of
+  the codex line and printed with its meaning (`POLE_MEANS` in
+  `engine/data/compass.js`), in the teacher panel, the mirror drill and the path
+  drill. The codex lines `upd` and `dnd` are untouched and a test holds that the
+  phrases joined are the line, character for character.
+- [x] `tests/unpack.js`, and a group in `tests/engine.js`. Shown against a known
+  bad block first and against the build from before the round, which it fails.
+- [x] `tools/unpack-walk.js`, the finder. It walks every tab and the drills at
+  both widths on a blank and two loaded profiles and prints each seeded term
+  that stands bare, then the short labels nobody seeded.
+
+Found and fixed on the way:
+- [x] The born card said "Earth, fixed. Builds and holds." of every Architect,
+  though a Capricorn, an earth sign, is cardinal. The mode was never the root's.
+- [x] "Something was installed on top of the blueprint" used installed in a
+  second sense, where everywhere else it means the opposite quality put in at an
+  address. It says something was put on top of the blueprint now.
+
+Open, and not reached:
+- [ ] The Four lenses fold, Design and Gene key lines: "defined at the solar,
+  responds, authority at the solar plexus" is three Human Design terms with no
+  meaning, and "Shame to Worth to Worth as sovereignty" is a gene key line with
+  none.
+- [ ] Seat names in every rail and chip that is not the address rows: the seat
+  sentences are in the table and the wiring is one `unp(...,'seat')` per spot.
+- [ ] Archetype and mask names in the Avatar, Analytics, Character and Knowledge
+  tabs, and the saboteur, complex and hyper complex names in the rails. The
+  entries exist and are not wired.
+- [ ] The word Eastern means the Chinese calendar on the born card and the
+  yoga seat names in the Four lenses. One word, two concepts, in the product
+  itself. His call which word moves.
+- [ ] The 21 laws have a sentence each and a label in the left rail carries it.
+  Their names elsewhere (Analytics, Field rings) do not yet.
+- [ ] A phone has no hover. A carrier opens on a tap, and on a control it opens
+  on a hold of a second and a half, so a symbol inside a button needs the hold.
+  Whether that is enough for the born card is his call.

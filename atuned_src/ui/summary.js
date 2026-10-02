@@ -3,19 +3,19 @@
    function of soul, axes and laws, so they cannot drift from what the
    instrument already knows.
    ============================================================ */
-/* what each of the four roots is, said once. The Western lens reads it and so
-   does the person header, so the two cannot say it two ways. */
-const ROOT_ELSAYS={Architect:'Earth, fixed. Builds and holds.',Engine:'Fire, cardinal. Initiates and burns.',
- Weaver:'Water, mutable. Joins and dissolves.',Witness:'Air. Observes and names.'};
+/* WHAT EACH OF THE FOUR ROOTS IS lives in engine/data/gloss.js now, said once.
+   This held "Earth, fixed. Builds and holds." and its three siblings, which
+   named an element and a mode nobody had defined, and said fixed of every
+   Architect though a Capricorn is cardinal. The Western lens reads the table
+   and so does the card on the right of the story, so the two cannot say it
+   two ways. */
 function lensWestern(r){
  var d=DOMAINS[S.doms[0]]||{nm:'',r:''};
- return {t:'Western',a:d.r,b:ROOT_ELSAYS[d.r]||'',c:'root domain as element'};}
+ return {t:'Western',a:d.r,b:unpackOf(String(d.r).toLowerCase()),c:'root domain as element'};}
 function lensEastern(r){
  var b=r.darkB||'Root';
- var E={Root:'Muladhara, earth, LAM',Sacral:'Svadhisthana, water, VAM',Solar:'Manipura, fire, RAM',
-  Heart:'Anahata, air, YAM',Throat:'Vishuddha, ether, HAM','3rd Eye':'Ajna, light, OM',
-  Crown:'Sahasrara, thought, silence'};
- return {t:'Eastern',a:b,b:E[b]||'',c:'the seat carrying the most'};}
+ /* ROUND PO. Sanskrit names and seed sounds, said as what they are. */
+ return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the seat carrying the most'};}
 function lensDesign(r){
  var a=ARCH[r.pi]||{nm:''};
  return {t:'Design',a:a.nm,b:'defined at the '+(r.darkB||'Root').toLowerCase()+', '
@@ -218,13 +218,26 @@ function sumToldHtml(){
    A name with no family stays plain rather than being given a colour it has
    not earned. The numerology figures are the case: an expression of 1 belongs
    to no seat and no root, so it is not painted. */
-function sumB(text,col){
- return '<b'+(col?' class="s-w" style="--c:'+col+'"':'')+'>'+esc(text)+'</b>';}
-function rootB(nm){return sumB(nm,rootPlain(nm)||null);}
+function sumB(text,col,tk,tc){
+ /* A BOLD NAME CAN CARRY ITS MEANING. Round PO, unpack every symbol. When the
+    meaning table has a sentence for the name, the name becomes the product's
+    one tooltip carrier, reachable by tap and by keyboard as well as by hover. */
+ var say=tk?unpackOf(tk,tc):'';
+ var cls=(col?'s-w':'')+(say?(col?' ':'')+'tipu':'');
+ return '<b'+(cls?' class="'+cls+'"':'')+(col?' style="--c:'+col+'"':'')
+  +(say?' tabindex="0" data-tip-k="'+esc(text)+'" data-tip="'+esc(say)+'"':'')+'>'+esc(text)+'</b>';}
+function rootB(nm){return sumB(nm,rootPlain(nm)||null,String(nm).toLowerCase());}
 function archB(nm){
  var a=ARCH.filter(function(x){return x.nm===nm;})[0];
- return sumB(nm,a&&a.b?seatCol(a.b):null);}
-function seatB(nm,band){return sumB(nm,band?seatCol(band):null);}
+ return sumB(nm,a&&a.b?seatCol(a.b):null,nm,'archetype');}
+function seatB(nm,band,tk,tc){return sumB(nm,band?seatCol(band):null,tk,tc);}
+/* THE MEANING, PRINTED IN THE LINE. Round PO. One sentence from the table, set
+   in the quieter ink so the reading stays a reading and the meaning stays
+   beside the word it explains. The sentence is the table's, character for
+   character, which is how tests/unpack.js knows it is there. */
+function sumUn(term,ctx){
+ var s=unpackOf(term,ctx);
+ return s?'<span class="s-un">'+esc(s)+'</span>':'';}
 function sumStory(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r), e=C?C.e:null;
@@ -238,39 +251,63 @@ function sumStory(r){
  var lean=leanRead(r);
  var p=[];
 
- /* ONE. the spiritual into the psychological. */
+ /* ONE. the spiritual into the psychological.
+
+    ROUND PO, UNPACK EVERY SYMBOL. His words: "The blueprint you were born on
+    reads Earth, which is the architect route on life path nine. There's a
+    bunch of assumptions here that the person has to make... you have to unpack
+    blueprint. They don't know what that means. Earth, they don't know what
+    that means. Architect... And they don't know what life path nine."
+
+    So the lead sentence stays exactly as it was, because it is the reading,
+    and every symbol in it is followed by what it means, in the same paragraph,
+    from engine/data/gloss.js and from nowhere else. The sentences come in the
+    order the terms come in the lead. The last of them says whose claim this
+    is: a symbolic reading, with nothing in the body measured. */
  if(e){
   var elRoot=ELEM2ROOT[e.sunEl]||'';
   var num=numerologyOf(nm2,CURP);
-  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null)
-   +', which is the '+rootB(elRoot)+' root, on life path <b>'+e.lp+'</b>, the one who '
-   +esc(e.lpMean||'runs')+'.'
-   +(num?' The name carries an expression of <b>'+num.expression+'</b>, '
-     +esc(numSays('expression',num.expression))+'.':'')
-   +' What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
+  /* ONE PARAGRAPH, FOUR BLOCKS. The story is three paragraphs, the three joints
+     he named, and a gate holds that, so the meanings do not become paragraphs of
+     their own. They stand in the same paragraph as the lead, one block for each
+     thing the blueprint is read from: the sun, the date as a number, the name as
+     a number, and what is running now. A person can see where each claim comes
+     from, which is the point of unpacking it. */
+  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)
+   +', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '+sumB(String(e.lp),null,'life path')+', the one who '
+   +esc(e.lpMean||'runs')+'. '
+   +sumUn('blueprint')+' '+sumUn('symbolic reading')
+   +'<span class="s-blk">'+(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase())+'</span>'
+   +'<span class="s-blk">'+sumUn('life path')+' '+sumUn('path:'+e.lp)
+   +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
+     +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
+   +'<span class="s-blk">What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
+   +sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '+sumUn('archetype:'+arch.toLowerCase())+' '
    +(elRoot===rootNow
      ? 'Those agree, so what you are doing is what you were built for and the cost is elsewhere.'
-     : 'Those do not agree. A blueprint that says '+esc(elRoot)+' and a field that runs '
-       +esc(rootNow)+' means something was installed on top of the blueprint, and it has been '
-       +'carried long enough to feel like a personality.'));
+     : 'Those do not agree. Something was put on top of the '+unp('blueprint')+', and it has been carried so long '
+       +'that it feels like your personality.')+'</span>');
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
-   +', through '+archB(arch)+'.');}
+   +', through '+archB(arch)+'. '+sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '
+   +sumUn('archetype:'+arch.toLowerCase()));}
 
  /* TWO. the psychological into the body. */
  if(held.length){
-  p.push('That reaches the body at '+seatB(held[0].k,held[0].b)+', on the '
+  p.push('That reaches the body at '+seatB(held[0].k,held[0].b,'address')+', on the '
    /* the weight is the reading. "of 10" made it a mark out of ten. */
-   +seatB(String(held[0].cf).toLowerCase(),held[0].b)+' axis, at a weight of '
+   +seatB(String(held[0].cf).toLowerCase(),held[0].b,String(held[0].cf).toLowerCase(),'feeling')
+   +' '+unp('axis')+', at a weight of '
    +held[0].sq.toFixed(1)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
      +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
-   +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b)
+   +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
    +' Shadow weight is '+Math.round(r.DQ)+' per cent and the law furthest shut is '
-   +seatB(r.weakL.nm,r.weakL.b)+', at the '+seatB(String(r.weakL.b).toLowerCase(),r.weakL.b)+'.');
+   +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
+   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
  }else{
   p.push('Nothing is held above the line, so nothing is reaching the body as load. '
    +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}
@@ -324,8 +361,8 @@ function sumStory(r){
 
  return '<div class="s-story"><div class="pm-eye">Reading</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
-  +'<p class="s-src">Written from the nine axes, the twenty one laws, the blueprint and '
-  +'the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
+  +'<p class="s-src">Written from the nine '+unp('axis','axes')+', the twenty one '+unp('law','laws')+', the '
+  +unp('blueprint')+' and the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
   +'</div>';}
 
 /* ---- structures at a glance. the right hand panel. ---- */
@@ -346,9 +383,9 @@ function sumBlueprint(){
  /* the blueprint. a selection, drawn as a selection: icons and names, and no
     ring on any of them, because a ring is a measurement and this is a choice. */
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- return '<div class="pm-eye">Blueprint</div><div class="s-sel">'
+ return '<div class="pm-eye">'+unp('blueprint','Blueprint')+'</div><div class="s-sel">'
   +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
-  +esc(rootNow)+'</span>'
+  +unp(String(rootNow).toLowerCase(),rootNow)+'</span>'
   +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
    return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'" '
     +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
@@ -443,24 +480,29 @@ function sumChips(C){
    +'<span class="s-chip-l">'+esc(lab)+'</span>'
    +(val?'<span class="s-chip-v">'+esc(val)+'</span>':'')+'</button>';}
  function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
+ /* ROUND PO, UNPACK EVERY SYMBOL. Each chip's tooltip said a few words of what
+    the sign does in a person ("What it runs on underneath", "Design profile")
+    and never what the sign, the number or the system is. It says that now, from
+    engine/data/gloss.js: what the placement is, then what the sign claims. */
+ function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
  var out='<div class="s-chips">';
  out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
-  'Sun sign. '+(SIGN_RUNS[e.sun]||''));
+  say(unpackOf('sun sign'),unpackOf(e.sun,'sign')));
  if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
-  'Moon sign. What it runs on underneath.');
+  say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
  if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
-  'Rising sign. What arrives in the room first.');
+  say(unpackOf('rising sign'),unpackOf(e.rising,'sign')));
  out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
-  'Year animal and element. '+(CH_RUNS[e.chinese]||''));
+  say(unpackOf(e.chinese,'animal'),unpackOf(e.celem,'year')));
  out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
-  'Life path. '+(LP_RUNS[e.lp]||''));
+  say(unpackOf('life path'),unpackOf('path:'+e.lp)));
  out+=chip('hd',(e.hd.profile||'unresolved'),
   svgI('<path d="M7 4v16M17 4v16M7 9h10M7 15h10"/>'),'Human design',
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
-  e.hd.unresolved?'Type needs the full bodygraph and is not computed. The profile is.'
-   :'Design profile.');
+  e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
+   :say(unpackOf('design'),unpackOf('profile')));
  out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
-  'Gene key',e.gk.gate+'.'+e.gk.line,'Gate and line. Shadow to gift to siddhi.');
+  'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){
  var out='<p class="s-p">Five systems, read independently off one birth date. '
@@ -632,7 +674,7 @@ function sumUnread(r){
    ALREADY HOLDS and names it in data-src, so nothing on this block is
    written for the occasion:
 
-     the born root and the running root   ROOT_ELSAYS, DOMAINS d
+     the born root and the running root   the root sentences in engine/data/gloss.js, DOMAINS d
      a meeting of the four systems        ROOT_SAYS, off rootOverlap
      any other way it shows up            SIGN_RUNS, CH_RUNS, CE_RUNS,
                                           LP_RUNS, HD_LINE_RUNS
@@ -734,20 +776,34 @@ function nameMeaning(text){
  return null;}
 /* one row of what a table says about a person, a mark in a ring, a label, a
    title and the one line the table gives it */
-function sgMeet(src,glyph,k,t,say,tip,col){
+function sgMeet(src,glyph,k,t,say,tip,col,kh,th){
+ /* ROUND PO. A row may carry its label and its title as markup, so each can be a
+    carrier of its own meaning, and it may carry several sentences, so the
+    meaning of the title and the meaning of what it came from both stand in the
+    row. Anything not given as markup is escaped, as it always was. */
+ var says=(say instanceof Array?say:[say]).filter(Boolean);
  return '<div class="sg-m" data-src="'+esc(src)+'">'+sgRing(glyph,col,t,tip)
-  +'<div class="sg-m-t"><span class="sg-c-k">'+esc(k)+'</span><b>'+esc(t)+'</b>'
-  +'<p>'+esc(say)+'</p></div></div>';}
+  +'<div class="sg-m-t"><span class="sg-c-k">'+(kh||esc(k))+'</span><b>'+(th||esc(t))+'</b>'
+  +says.map(function(x){return '<p>'+esc(x)+'</p>';}).join('')+'</div></div>';}
 function sgStage(n,title,body){
  return '<div class="sg-st" data-stage="'+n+'"><div class="sg-st-h"><span class="sg-st-n">'+n+'</span>'
   +'<b>'+esc(title)+'</b></div><div class="sg-st-b">'+body+'</div></div>';}
 /* the systems that met, in words, and how strongly only when it is more than
    light, because most meetings are light and say so once under the stage */
+/* A SHARED ELEMENT NAMES TWO THINGS. Fire in the Western signs and Fire in the
+   Chinese calendar are one word for two systems, and a meeting between them is
+   about both, so the carrier says both. Wood and Metal are Chinese only. */
+function unpTheme(t){
+ var k=String(t).toLowerCase(), w=unpackOf(k), c=unpackOf(k,'year');
+ var say=[w,c].filter(function(x,i,a){return x&&a.indexOf(x)===i;}).join(' ');
+ return say?'<span class="tipu" tabindex="0" data-tip-k="'+esc(t)+'" data-tip="'+esc(say)+'">'+esc(t)+'</span>':'';}
 function sgMeetRow(a){
- return sgMeet('ROOT_SAYS',sgSvg(rsThemeIc(a)),
-  a.sys.map(function(x){return SYSNAME[x];}).join(', ')
-   +(a.strength==='light'?'':'. '+RS_STRENGTH[a.strength].replace(/\.$/,'')),
-  a.t,ROOT_SAYS[a.t]||'',RS_BRIDGE[a.voc]);}
+ /* THE SYSTEMS ARE NAMED BY CARRIERS. "Western, Number" told a stranger nothing
+    about what Western or Number is, so each name carries its sentence. */
+ var kh=a.sys.map(function(x){return unp(SYSNAME[x].toLowerCase(),SYSNAME[x]);}).join(', ')
+  +(a.strength==='light'?'':esc('. '+RS_STRENGTH[a.strength].replace(/\.$/,'')));
+ return sgMeet('ROOT_SAYS',sgSvg(rsThemeIc(a)),'',a.t,ROOT_SAYS[a.t]||'',RS_BRIDGE[a.voc],null,kh,
+  a.voc==='el'?unpTheme(a.t):'');}
 /* STAGE ONE. Where they were born: the root the sun sign gives, then where the
    four systems meet, led by the meeting least likely by chance, which is how
    rootOverlap orders them. FV: "where they overlap, because that's the truth." */
@@ -756,14 +812,25 @@ function sumBorn(B){
  if(!sp)return sgStage(1,'Born',
   '<p class="sg-note">No birth data on file. Date, time and place would put it in.</p>'
   +'<button type="button" class="btn s-oact" data-sout="iq">Open Energetics</button>');
- rows+=sgMeet('ROOT_ELSAYS',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
-  'Root',sp.root,ROOT_ELSAYS[sp.root]||'','',rootPlain(sp.root));
+ /* ROUND PO. The stage says what a birth reading is before it reads one, and
+    the root names the sign it came from and the element it came through. The
+    old line, "Earth, fixed. Builds and holds.", described the root with two
+    words nobody had defined, and it said fixed of every Architect, though a
+    Capricorn is cardinal. */
+ rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
+ var elSay=unpackOf(sp.sunEl), sgSay=unpackOf(sp.sun,'sign');
+ rows+=sgMeet('root',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
+  'Root',sp.root,[unpackOf(sp.root.toLowerCase()),
+   sp.sun?unpackOf('sun sign'):'',sgSay,elSay],'',rootPlain(sp.root),
+  unp('root','Root'),unp(sp.root.toLowerCase(),sp.root));
  var sh=R.shown||[], anyLight=sh.some(function(a){return a.strength==='light';});
- if(sh.length)rows+=(anyLight?'<p class="sg-note">A light overlap is one many people share. A strong one is rare.</p>':'');
+ if(sh.length)rows+='<p class="sg-note"><span>'+unpSay('overlap')+'</span>'
+  +(anyLight?' A light one is shared by many people, and a strong one is rare.':'')+'</p>';
  sh.slice(0,2).forEach(function(a){rows+=sgMeetRow(a);});
  if(!sh.length)rows+='<p class="sg-note">These four do not land on the same thing.</p>';
  more=sh.slice(2).map(sgMeetRow).concat((R.range||[]).map(function(x){var say=rsSays(x); if(!say)return '';
-  return sgMeet('range',sgSvg(SYSGLYPH[x.sys]),SYSNAME[x.sys],rsName(x),sgCap(say)+'.','');}));
+  return sgMeet('range',sgSvg(SYSGLYPH[x.sys]),'',rsName(x),[sgCap(say)+'.'].concat(rsMeans(x)),'',null,
+   unp(SYSNAME[x.sys].toLowerCase(),SYSNAME[x.sys]));}));
  return {stage:sgStage(1,'Born',rows),more:more.join('')};}
 /* STAGE TWO. What they were named: a root meaning for each part of the name,
    from NAME_MEANINGS and from nowhere else, then the number the whole name
@@ -778,7 +845,7 @@ function sumNamed(B){
  else rows+='<p class="sg-note">No root meaning on file for '
   +parts.map(function(p){return esc(p.text);}).join(', ').replace(/, ([^,]*)$/,' or $1')+'.</p>';
  if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
-  String(N.expression),sgCap(c.ex)+'.','');
+  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')],'',null,unp('expression','Expression'));
  return sgStage(2,'Named',rows);}
 function sumRealName(){
  var nm=capName(String((CURP&&CURP.name)||'').trim());

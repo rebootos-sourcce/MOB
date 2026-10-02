@@ -6230,5 +6230,123 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
 
 }
 
+g('PO · unpack every symbol: the meaning table and the pole meanings');
+/* Round PO. His words: "you have to unpack blueprint. They don't know what that
+   means. Earth, they don't know what that means... this is going to be a
+   general rule for all information across the board." engine/data/gloss.js is
+   the one table of what a term means, and engine/data/compass.js carries what
+   each phrase of a pole means. This group holds both: the table is whole, each
+   entry is one plain sentence, every claim in it is true to how the engine
+   computes the thing, and the voice gate passes every string. The page side is
+   tests/unpack.js. */
+{
+ const {unpackAll,unpackOf,unpackKey,MIRROR,PATHS,ZSIGN,CHINESE,LP_RUNS,SI,CHILD,ARCH,ROOTD,SINAMES}=E;
+ const T=unpackAll(), keys=Object.keys(T);
+ /* the two dashes, built from their codes so this file carries neither */
+ const DASHES=String.fromCharCode(0x2014)+'|'+String.fromCharCode(0x2013);
+ ok(keys.length>100,'the meaning table is built, '+keys.length+' entries');
+ /* ONE SENTENCE, PLAIN. A sentence ends on one full stop and has no second
+    sentence inside it, no percent, no score, no count against a total, no dash. */
+ const empty=keys.filter(k=>typeof T[k]!=='string'||T[k].trim().length<12);
+ ok(empty.length===0,'no entry is empty or a fragment, '+JSON.stringify(empty));
+ const notOne=keys.filter(k=>!/\.$/.test(T[k])||/[.!?]\s+[A-Z0-9]/.test(T[k].replace(/\b(Mr|Dr|St)\./g,'')));
+ ok(notOne.length===0,'every entry is exactly one sentence, '+JSON.stringify(notOne.slice(0,4)));
+ const scored=keys.filter(k=>new RegExp('%|\\bpercent\\b|\\bper cent\\b|\\bscore\\b|\\b\\d+\\s*(of|out of)\\s*\\d+\\b|'+DASHES,'i').test(T[k]));
+ ok(scored.length===0,'no percent, score, count against a total or dash in any entry, '+JSON.stringify(scored.slice(0,4)));
+ const long=keys.filter(k=>T[k].split(/\s+/).length>34);
+ ok(long.length===0,'no entry runs past thirty four words, '+JSON.stringify(long.slice(0,4)));
+ const bare=keys.filter(k=>k!==k.toLowerCase());
+ ok(bare.length===0,'every key is lower case');
+ /* A TERM IS NEVER CLAIMED TO BE MEASURED. The sun, moon and rising signs are
+    computed from the sky, and what a sign means is an old system's claim. */
+ ok(/symbolic reading/.test(T['symbolic reading'])&&/nothing in your body is measured/.test(T['symbolic reading']),
+  'the table says a symbolic reading is not a measurement');
+ ok(/Numerology claims/.test(T['path:9'])&&/astrology claims/.test(T['sign:capricorn']),'a number and a sign are said as a claim');
+
+ /* COVERAGE, in both directions: every name the engine carries has a sentence */
+ ok(ZSIGN.every(z=>T['sign:'+z[2].toLowerCase()]),'every one of the twelve signs has a sentence');
+ ok(['fire','earth','air','water'].every(e=>T[e]),'every Western element has a sentence');
+ ok(CHINESE.every(a=>T['animal:'+a.toLowerCase()]),'every year animal has a sentence');
+ ok(['wood','fire','earth','metal','water'].every(e=>T['year:'+e]),'every Chinese element has a sentence');
+ ok(Object.keys(LP_RUNS).every(n=>T['path:'+n]),'every life path number has a sentence, '+Object.keys(LP_RUNS));
+ ok(SI.every(l=>T['law:'+l.nm.toLowerCase()]),'every one of the laws has a sentence');
+ ok(CHILD.every(c=>T['feeling:'+c.nm.toLowerCase()]&&T['opposite:'+c.opp.toLowerCase()]),'every feeling and every opposite has a sentence');
+ ok(ARCH.every(a=>T['archetype:'+a.nm.toLowerCase()]),'every archetype has a sentence');
+ ok(ROOTD.every(r=>T[r.toLowerCase()]),'every root has a sentence, '+ROOTD);
+ ok(['root','sacral','solar','heart','throat','3rd eye','crown'].every(x=>T['seat:'+x]),'every seat has a sentence');
+ ok(MIRROR.every(m=>T['axis:'+m.q.toLowerCase()]),'every axis on the compass has a sentence');
+ ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
+  'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
+ /* the sentence a family builds reads off the table it describes, so it cannot drift */
+ ok(T['earth'].indexOf('Taurus, Virgo and Capricorn')>=0&&T['fire'].indexOf('Aries, Leo and Sagittarius')>=0
+  &&T['air'].indexOf('Gemini, Libra and Aquarius')>=0&&T['water'].indexOf('Cancer, Scorpio and Pisces')>=0,
+  'each element names the signs ZSIGN gives it');
+ ok(T['path:9'].indexOf(LP_RUNS[9])>=0&&T['law:truth'].indexOf(E.IQ_STEM.Truth)>=0,'a number and a law say what the engine says they do');
+ ok(T['law'].indexOf(String(SI.length))>=0&&T['archetype'].indexOf(String(ARCH.length))>=0,'a count in a sentence is read off its table, not typed');
+
+ /* THE CLAIMS, AGAINST THE ENGINE. Each sentence that states a mechanism is
+    checked against the arithmetic that produces it. */
+ const lp=[]; for(let y=1900;y<2100;y+=3)for(let m=1;m<=12;m+=2)for(let d=1;d<=28;d+=3)lp.push(E.lifePath(y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0')));
+ ok(lp.every(v=>(v>=1&&v<=9)||v===11||v===22||v===33)&&[11,22,33].every(v=>lp.indexOf(v)>=0),
+  'a life path is a digit or 11, 22 or 33, as the sentence says, and all three masters occur');
+ {const jd=julianDay(1976,3,9,12), dd=(((sunLon(jd)-sunLon(designJD(jd)))%360)+360)%360;
+  ok(Math.abs(dd-88)<0.01,'the design sun is 88 degrees of arc before the birth sun, as the sentence says, got '+dd);}
+ ok(E.GATE_WHEEL.length===64,'the gate wheel has 64 gates, as the sentence says');
+ ok(CHINESE.length===12,'the year animal cycle is twelve');
+ {const el=[0,1,2,3,4,5,6,7,8,9].map(i=>E.chineseElement(i)); ok(el.every((x,i)=>x===el[i-i%2]),'each Chinese element takes two years running, as the sentence says');}
+ ok(E.chineseYear({d:'1990-01-15'})===1989&&E.chineseYear({d:'1990-02-10'})===1990,'the Chinese year turns in early February, as the sentence says');
+ ok(E.moonSign({d:'1990-03-15'})===null||Array.isArray(E.moonSign({d:'1990-03-15'})),'a moon sign needs a time and is refused without one rather than guessed');
+
+ /* THE VOICE GATE OVER THE WHOLE TABLE, built strings included. check.py reads
+    a file, so the built entries are written to one. Checked against a known bad
+    file first, as the recipe table's gate is: a tool that cannot fail is not a
+    gate. */
+ {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
+  const py=(f)=>{try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});return 0;}
+   catch(e){return e.status===undefined?-1:e.status;}};
+  const bad=path.join(os.tmpdir(),'po-known-bad.js'), good=path.join(os.tmpdir(),'po-table.js');
+  fs.writeFileSync(bad,"var x=['Sit back and relax and breathe gently.','Your energy is 70% open '+String.fromCharCode(0x2014)+' simply lovely.'];\n");
+  const known=py(bad);
+  fs.writeFileSync(good,'var T=['+keys.map(k=>JSON.stringify(T[k])).join(',\n')+'];\n');
+  const real=py(good);
+  try{fs.unlinkSync(bad);fs.unlinkSync(good);}catch(e){}
+  ok(known===1,'the voice gate fails a known bad file before it is trusted on the table, exit '+known);
+  ok(real===0,'no entry in the built meaning table fails the voice rules, exit '+real);
+  ok(py('atuned_src/engine/data/gloss.js')===0,'no string in the meaning table file fails the voice rules');}
+
+ /* THE POLES. upd and dnd are the codex's own lines and are never edited. Each
+    is cut into its phrases and each phrase carries one meaning. */
+ const poles=MIRROR.concat(PATHS.filter(p=>!MIRROR.some(m=>m.k===p.k)));
+ ok(MIRROR.every(m=>m.upm&&m.upm.length&&m.dnm&&m.dnm.length)&&PATHS.every(p=>p.upm&&p.upm.length&&p.dnm&&p.dnm.length),
+  'every axis and every path has phrases with meanings at both ends');
+ const drift=[];
+ MIRROR.concat(PATHS).forEach(m=>{
+  if(m.upm.map(x=>x[0]).join(' ')!==m.upd)drift.push(m.k+' up');
+  if(m.dnm.map(x=>x[0]).join(' ')!==m.dnd)drift.push(m.k+' dn');});
+ ok(drift.length===0,'the phrases of every pole, joined, are the codex line character for character, '+JSON.stringify(drift));
+ const meanings=[]; MIRROR.concat(PATHS).forEach(m=>m.upm.concat(m.dnm).forEach(x=>meanings.push(x[1])));
+ ok(meanings.every(t=>typeof t==='string'&&t.length>=12&&/\.$/.test(t)),'every phrase has a meaning that is a sentence, '+meanings.filter(t=>!(typeof t==='string'&&t.length>=12&&/\.$/.test(t))));
+/* keeps score is the owner's own meaning for "no transaction": nobody is
+    keeping a tally of who owes whom. It is not a score a person is given. */
+ ok(meanings.filter(t=>new RegExp('%|(?<!keeps )\\bscore\\b|\\bpercent\\b|'+DASHES,'i').test(t)).length===0,'no meaning carries a percent, a score or a dash');
+ ok(meanings.filter(t=>t.split(/\s+/).length>30).length===0,'no meaning runs past thirty words');
+ ok(meanings.filter(t=>/[.!?]\s+[A-Z]/.test(t)).length===0,'no meaning is more than one sentence');
+ /* the owner's own example, by name */
+ const il=MIRROR.filter(m=>m.k==='IL')[0];
+ ok(il.upm.length===4&&il.upm[0][0]==='Love generated from within.'&&/does not depend on getting something back/.test(il.upm[0][1])
+  &&il.upm[1][0]==='Freely given.'&&/no expectation of thanks or return/.test(il.upm[1][1])
+  &&il.upm[2][0]==='No transaction.'&&/keeps score of who owes whom/.test(il.upm[2][1])
+  &&il.upm[3][0]==='Light that has a source.'&&/comes from inside the person and does not need a room to reflect it/.test(il.upm[3][1]),
+  'the Jesus line at the Heart is cut into his four phrases, each with the meaning he asked for');
+ ok(E.compassPoleOf&&E.compassPoleOf('IL')===il&&E.compassPoleLines(il,'up')===il.upm&&E.compassPoleLines({upd:'x'},'up')[0][0]==='x',
+  'a pole is found by its key and a pole with no meanings still returns its codex line');
+ {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
+  const f=path.join(os.tmpdir(),'po-pole-means.js');
+  fs.writeFileSync(f,'var M=['+meanings.map(t=>JSON.stringify(t)).join(',\n')+'];\n');
+  let code=0; try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});}catch(e){code=e.status===undefined?-1:e.status;}
+  try{fs.unlinkSync(f);}catch(e){}
+  ok(code===0,'no pole meaning fails the voice rules, exit '+code);}
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

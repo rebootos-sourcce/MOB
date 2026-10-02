@@ -2777,8 +2777,13 @@ function coneNames(side){
    return '<button type="button" class="cn-nr" data-cnax="'+x.i+'" '
     +'style="--ax:'+c+';--axd:'+cd+'" '
     +'aria-label="'+esc(x.m.q)+': '+esc(x.m.up)+', opposite '+esc(x.m.dn)+'" '
-    +'title="'+((CONE.top||CONE.shells)&&!CONE.side?'Read ':'Turn the figure to ')
-    +esc(x.m.up)+', opposite '+esc(x.m.dn)+'">'
+    /* ROUND PO. The hover said what the press does and not what the axis is.
+       A press does what its label says, so the tooltip carries the meaning:
+       what the axis measures and where its two ends sit. */
+    +(unpackOf(String(x.m.q).toLowerCase(),'axis')
+      ?'data-tip-k="'+esc(x.m.q)+'" data-tip="'+esc(unpackOf(String(x.m.q).toLowerCase(),'axis'))+'">'
+      :'title="'+((CONE.top||CONE.shells)&&!CONE.side?'Read ':'Turn the figure to ')
+        +esc(x.m.up)+', opposite '+esc(x.m.dn)+'">')
     /* EVERY NAME CARRIES ITS SYMBOL AND ITS OPPOSITE'S. Round JQ: "all the
        character names that pop up, I need their iconic symbol and their
        opposing nature's opposing character symbol." Round OC: "the character

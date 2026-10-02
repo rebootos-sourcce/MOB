@@ -55,14 +55,15 @@ function rsName(x){
 function rsChips(a){
  var out=[], gates={};
  a.hits.forEach(function(x){
-  if(x.sys!=='D'){out.push({sys:x.sys,t:rsName(x)});return;}
+  if(x.sys!=='D'){out.push({sys:x.sys,t:rsName(x),x:x});return;}
   (gates[x.v]=gates[x.v]||[]).push(x);});
  Object.keys(gates).forEach(function(g){var h=gates[g], up=h.filter(function(x){return x.part==='upper';})[0],
   lo=h.filter(function(x){return x.part==='lower';})[0];
-  out.push({sys:'D',t:'Design gate '+g+', '+(up&&lo?up.img+' over '+lo.img
+  out.push({sys:'D',x:(up||lo),t:'Design gate '+g+', '+(up&&lo?up.img+' over '+lo.img
    :(up||lo).img+((up||lo).part==='upper'?' above':' below'))});});
  return out.map(function(c){
-  return '<span class="rs-chip" data-tip-t="'+esc(SYSNAME[c.sys])+'" data-tip="'+esc(c.t)+'">'
+  var means=c.x?rsMeans(c.x).join(' '):'';
+  return '<span class="rs-chip" tabindex="0" data-tip-t="'+esc(c.t)+'" data-tip="'+esc(means||c.t)+'">'
    +rsIc(SYSGLYPH[c.sys])+'<span>'+esc(c.t)+'</span></span>';}).join('');}
 /* what a reading says, in the table that reading already has */
 function rsSays(x){
@@ -72,6 +73,24 @@ function rsSays(x){
  if(x.k==='profile')return HD_LINE_RUNS[x.line]||'';
  var hx=ROOT_HEX[x.v];
  return hx?ROOT_TRIGRAM[hx[1]].img+' over '+ROOT_TRIGRAM[hx[0]].img:'';}
+/* WHAT A READING IS, in the sentences engine/data/gloss.js holds for it. Round
+   PO. rsSays says what the reading does in a person. This says what the reading
+   is: which sign it names and what the sun, moon or rising sign is, which
+   element of the Chinese calendar, how a number was got. A reading is one to
+   three sentences and a reading with none returns an empty list. */
+function rsMeans(x){
+ var o=[];
+ function u(t,c){var s=unpackOf(t,c); if(s)o.push(s);}
+ if(x.sys==='W'){u(x.k+' sign'); u(x.v,'sign');}
+ else if(x.sys==='E'){
+  if(x.k==='year'){u('year element'); u(x.v,'year');}
+  else{u('year animal'); u(x.v,'animal');}}
+ else if(x.sys==='N'){
+  u(x.k==='lifePath'?'life path':x.k==='soul'?'soul urge':x.k);
+  if(x.k==='lifePath')u('path:'+x.v);}
+ else if(x.k==='profile')u('profile');
+ else{u('gate'); u('design');}
+ return o;}
 const RS_STRENGTH={strong:'They agree strongly.',clear:'They agree.',light:'A light overlap.'};
 /* how the bridge a meeting stands on works, for the tooltip, said once per
    vocabulary so nobody has to take a meeting on trust */
@@ -108,8 +127,9 @@ function renderRootSum(){
      the overclaim the strength words exist to prevent. What a light meeting
      is gets said once, under the heading, and not on every row. */
   h+='<div class="pm-eye plain rs-eye">Where they meet</div>'
+   +'<p class="rs-note"><span>'+unpSay('overlap')+'</span>'
    +(R.shown.some(function(a){return a.strength==='light';})
-     ?'<p class="rs-note">A light overlap is one many people share. A strong one is rare.</p>':'');
+     ?' A light one is shared by many people, and a strong one is rare.':'')+'</p>';
   h+=R.shown.map(function(a){
    var lit=['W','E','N','D'].map(function(s,i){var on=a.sys.indexOf(s)>=0;
     return '<span class="rs-seg'+(on?' on':'')+'" style="--i:'+i+'" data-tip-t="'+esc(SYSNAME[s])+'" data-tip="'
@@ -129,7 +149,8 @@ function renderRootSum(){
    +R.range.map(function(x){var say=rsSays(x);
     return '<div class="rs-r">'+rsIc(SYSGLYPH[x.sys])
      +'<span class="rs-rn">'+esc(rsName(x))+'</span>'
-     +(say?'<span class="rs-rs">'+esc(say)+'</span>':'')+'</div>';}).join('')+'</div>';}
+     +(say?'<span class="rs-rs">'+esc(say)+'</span>':'')
+     +rsMeans(x).map(function(m){return '<span class="rs-rm">'+esc(m)+'</span>';}).join('')+'</div>';}).join('')+'</div>';}
  el.innerHTML=h;
  var go=el.querySelector('.rs-go');
  if(go)go.onclick=function(){setTab(TAB.INTAKE);

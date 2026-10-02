@@ -58,6 +58,13 @@ binds `localStorage`.
                                drills, figure fallback, zero JS errors
     node tests/collide.js      40 checks · zero overlapping wheel nameplates,
                                every persona x every depth
+    node tests/unpack.js       round PO, unpack every symbol: on the Summary reading,
+                               the blueprint card, the sign chips, the left rail and
+                               every pole on the Compass, a seeded term with no
+                               meaning beside it fails. The table it holds the page
+                               to is engine/data/gloss.js. Shown against a known bad
+                               block first, and against the build from before the
+                               round, which it fails. Read the count off the run.
     node tests/sound.js        the fittings, ui/sound.js: every sound rendered
                                offline under its ceiling and its cap, silent
                                off, under Quiet, before a press and inside a
