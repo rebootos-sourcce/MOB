@@ -551,11 +551,21 @@ function relLive(){
    every few minutes, and a count down that holds still reads as a count down
    that stopped. Not aria-live: it changes on every line, and a reader that
    announced it would talk over the voice. */
+/* NO PERCENT ON A HEADLINE READING, round PQ, his words: "No, it doesn't
+   need to be a percent. Just a number." DQ is exactly the headline reading
+   the ruling names (the Field's rings, the glass bar, the Summary tile and
+   the Compass centre all read it bare), and this row is where a person
+   watches it move live while a run is open, so it is the one place the
+   figure is seen counting in real time. It carried the sign anyway, which
+   this file never swept because round PQ landed in a different session and
+   release.js was not touched this round either (see the owner's own words,
+   round PS in TASKS.md: "the release protocol has not been updated at all").
+   Two decimals stay, for the reason above them; only the sign goes. */
 function relShade(dq,dq0){
  if(dq==null||dq0==null)return '';
  return '<div class="rel-clock">'
-  +'<div class="rel-fig"><span>DQ</span><b>'+dq.toFixed(2)+'%</b></div>'
-  +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,dq0-dq).toFixed(2)+'%</b></div></div>';}
+  +'<div class="rel-fig"><span>DQ</span><b>'+dq.toFixed(2)+'</b></div>'
+  +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,dq0-dq).toFixed(2)+'</b></div></div>';}
 /* ============================================================
    THE TWO COUNTS. His words, 27 September: "You should have a
    countdown of how much is counting. Every time you release one, it
@@ -1453,8 +1463,18 @@ function relRender(){
      same breath, is the address itself: "you already have disconnection,
      root, sacral root ganglia, that's great." That line now carries the
      colour treatment he asked for it, below. */
+  /* THE RING'S OWN NUMBER CARRIED A PERCENT SIGN THIS COMPONENT HAS NEVER USED.
+     crNode's own default, the one every other address ring in the product
+     reads (the wheel, Imprints, the story picker), is the bare weight,
+     n.sq.toFixed(1): see crNode in ui/component.js. This plate overrode that
+     default to print a percent instead, so the one reading on the run card a
+     person watches the whole time read differently from the same address
+     everywhere else it is drawn. Round PQ also rules it directly: "it doesn't
+     need to be a percent. Just a number." Dropped to the component's own
+     format, so a run's plate agrees with the rest of the product rather than
+     inventing a second way to say the same number. */
   var hd=relStrips(ch[0])
-   +'<div class="rel-plate" style="--c:'+c+'">'+crNode(Object.assign({},n,{sq:sqNow}),'xs',{raw:Math.round(sqNow*10)+'%'})
+   +'<div class="rel-plate" style="--c:'+c+'">'+crNode(Object.assign({},n,{sq:sqNow}),'xs',{raw:sqNow.toFixed(1)})
    +'<span><span class="rel-node" style="color:'+c+'">'+esc(n.k)+'</span>'
    +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span></span></div>';
   /* PAUSE AND END, LOWER RIGHT, round LY. His words: "pause and end need to
