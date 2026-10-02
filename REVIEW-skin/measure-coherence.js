@@ -603,9 +603,9 @@ function contrastOf(texts,px,side){
    SELF TEST: a fixture with answers known by hand
    --------------------------------------------------------------- */
 const FIXTURE=`<!doctype html><meta charset=utf-8><body style="margin:0;background:#fff">
-<style>.pp::before{content:"Q";font:700 21px Arial;color:#111}</style>
+<style>.pp::before{content:"Q";font:700 21px Arial;color:#111}#phi::placeholder{color:#bbbbbb;opacity:1}</style>
 <div id=h>
-<p class=pp style="margin:0"></p><input type=checkbox id=cbx>
+<p class=pp style="margin:0"></p><input type=checkbox id=cbx><input id=phi placeholder="ph text" style="box-sizing:border-box;width:150px;height:24px;border:0;padding:0;background:#fff;color:#000;font:400 15px Arial">
 <p id=t1 style="margin:0;font:400 16px Arial;color:#000">black on white</p>
 <p id=t2 style="margin:0;font:400 14px Arial;color:#777777">grey on white</p>
 <p id=t3 style="margin:0;font:400 12px Arial;color:#fff;background:color-mix(in srgb,#000 50%,#fff)">white on mix</p>
@@ -659,16 +659,17 @@ async function selftest(browser){
  chk('white on color-mix 50% = about 3.95',fmix&&near(fmix.ratio,3.95,0.08),fmix);
  const fgrad=Object.values(A.fails).filter(x=>x.fs==='16'&&x.ratio<1.2)[0];
  chk('white on black to white gradient worst = 1.0',fgrad&&near(fgrad.ratio,1,0.02),fgrad);
- chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===6&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
+ chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===7&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
  chk('black on white not a failure',!Object.values(A.fails).some(x=>x.sample==='black on white'),A.fails);
  chk('svg white on black passes (ground from the rect under it)',!Object.values(A.fails).some(x=>/svg white/.test(x.sample)),A.fails);
- chk('four ghosts add no text elements: 16 visible (t1..t5, b1, b2, the svg text, two canvas spans, one text inside a scroller, one pseudo element, two layers each of two bar labels)',A.nText===16,A.nText);
+ chk('four ghosts add no text elements: 17 visible (t1..t5, b1, b2, the svg text, two canvas spans, one text inside a scroller, one pseudo element, one placeholder, two layers each of two bar labels)',A.nText===17,A.nText);
+ chk('a placeholder is measured with its own ink (#bbb on white = 1.9), not the control\'s black',Object.values(A.fails).some(x=>x.sample==='ph text'&&near(x.ratio,1.9,0.1)),A.fails);
  chk('generated content is measured with its own font (21px bold), a checkbox contributes no text',A.fs['21px']&&A.fs['21px'].n===1&&A.fw['700'].n>=2&&A.fs['13.3px'].n===2,[A.fs,A.fw]);
  chk('text over a 2D canvas reads the canvas pixels: white on black passes, white on #888 = 3.54 fails',!Object.values(A.fails).some(x=>/black canvas/.test(x.sample))&&Object.values(A.fails).some(x=>/grey canvas/.test(x.sample)&&near(x.ratio,3.54,0.05))&&A.nUnres===0,[A.nUnres,A.fails]);
  /* taps: b1 20px, b2 48px */
- chk('three taps found (two buttons and the checkbox)',A.nTap===3,A.nTap);
+ chk('four taps found (two buttons, the checkbox, the input)',A.nTap===4,A.nTap);
  chk('smallest tap is the 13px checkbox, then the 20px button',A.tap[0]&&A.tap[0].m>=12&&A.tap[0].m<=16&&A.tap[1]&&A.tap[1].m===20,A.tap.slice(0,2));
- chk('lt24 = 2 and lt44 = 2',d.tap.lt24===2&&d.tap.lt44===2,d.tap);
+ chk('lt24 = 2 and lt44 = 3',d.tap.lt24===2&&d.tap.lt44===3,d.tap);
  /* paint */
  chk('radius 4px and pill and circle? b1=4px, b2 circle',A.rad['4px']&&A.rad['4px'].n===1&&A.rad['circle']&&A.rad['circle'].n===1,A.rad);
  chk('one box shadow',Object.keys(A.sh).length===1,A.sh);

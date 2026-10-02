@@ -31475,3 +31475,31 @@ orchestration, the 90 day engine, evidence and verification, safety, privacy, co
 identity, as one connected architecture), turn it into executable slices, and put them in
 the plan as MVP work. One conflict is already visible: the proposal says "Sight is not for
 sale"; he reversed that on 1 October (round OK). Entitlements follow the SIGHT table.
+
+## Round PL, 2 October
+
+> "Show me the live plan. And have you updated all the copy Fix all of the profiles. By
+> tier. And then add three additional ones per tier. With different profiles. From minimum
+> to medium to maximum. And stuff in between. I just need a range. When I come to the
+> compass and I click on any of the teachers, would I want to see how the behaviors that I
+> need to install? I want to see a summary of who this person is, what their not the
+> person per se, but I want to see the behavior complex. Of both behaviors. And this is
+> what I keep asking about the copy. I keep seeing this percent shit, the hardest carrying
+> zero percent. I don't want that. You have rules for this content. Use them."
+
+**Read as.**
+1. Show the live plan (sent, and the Drive copy refreshed).
+2. "Have you updated all the copy": honest answer, no. The site wide copy verification (J7)
+   had not run, and the unread Field still prints verdicts and numbers ("Heaviest Root 0.0",
+   "Most shut Truth", percent and zero readings). The rules exist (no count against a total,
+   a dash for empty, no verdict on someone who has entered nothing) and were not applied
+   there. Moved to the top of the queue.
+3. Profiles: the worked examples are sorted by tier, every existing one checked and fixed,
+   and three new ones added per tier, spread from minimum to maximum. Read "tier" as the
+   coherence tier (the ten bands from Collapsed to Mastery that a reading lands in), because
+   the example profiles carry a reading and not a paid plan. If he meant the paid tiers, the
+   example profiles can still be tagged by plan; flagged here, not asked.
+4. Compass, click a teacher: the right panel shows the BEHAVIOUR COMPLEX, not who the
+   person was. Both behaviours: what the person releases (the old behaviour recipe) and what
+   they install (the new one), as short behaviour lists with a way to add them to the ritual.
+   No biography, no percent. Built to DESIGN-teachers.md section 3.
