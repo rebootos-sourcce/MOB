@@ -1,29 +1,29 @@
 GRADE: 72/100 (pass 1 was 42, pass 2 was 38)
 
-Ines Halldors, creative director, pass 3, round PJ. ICP sample (all simulated): Renata, Nils, Camille, Whitney, Marta, Trey from `PANEL-10k.md`; Marcus and Sofia from `people.js`. I read all twelve pass 2 reports and looked at `login-a-signin-1600.png` and `onb-01-start` at both widths.
+Ines Halldors, creative director, pass 3, round PJ. ICP sample (all simulated): Renata, Nils, Camille, Whitney, Marta, Trey from `PANEL-10k.md`; Marcus and Sofia from `people.js`. I read all twelve pass 2 reports and viewed `login-a-signin-1600.png` and `onb-01-start`.
 
 ## 1. The proposal as I understand it
 
-The login stays first. One tap starts a silent 26 s film on a black stage that stops at one decision, a starting point. Then one true sentence read back at once, a 12 line release, the change shown, "Keep this" and "Not now" at equal weight, and the figure walks into the Field. The merge is sound. It lost five things: Leave at the gate, the honest time line, a picture for each slide (it merged words, not pictures), the rule that a loop station lights only for an act done, and it lights a body seat from a topic before any reading exists.
+The login stays first. One tap starts a silent 26 s film on a black stage that stops at one decision, a starting point. Then one true sentence read back at once, a 12 line release, the change shown, "Keep this" and "Not now" at equal weight, and the figure walks into the Field. The merge is sound but lost: Leave at the gate, the honest time line, a picture for each slide (it merged words, not pictures), and the rule that a loop station lights only for an act done. It also lights a body seat from a topic before any reading exists.
 
 ## 2. The ICP room
 
-- **Marcus** (founder, level 7). Sees the ring fall away and the figure arrive. Lets it run. Stays, since nothing asked him for anything before it showed him something. Leaves if the proof row looks typed. "It earned the sentence before it asked for one."
-- **Whitney** (phone only, level 5). Sees seats land, a 28 px line, a 2 px hairline. Holds her thumb on "neurosomatic" to read it. Leaves if hold opens the iOS text callout. "Show me the table first. It did."
-- **Nils** (skeptic, level 4). Sees one black, one type scale, rings with one meaning each. Leaves when "Money" lights a seat, since money is not a place in the body. "Who decided Money lives in my root?"
-- **Camille** (practitioner, level 6). Sees a film too short to judge, looks for an exit at the gate, finds none. Stays only if Keep this says what leaves the device. "Show me where it keeps this before a client goes near it."
-- **Marta** (acute, 02:00). A still stage and a Pause ring suit her. She picks Grief and types "I do not want to be here anymore." With no detector the engine reads nothing and the product carries on. A ship blocker. "Please do not tell me it is okay."
-- **Renata** (operator, level 7, main target). Taps right twice, lands on the gate, wants the cost before the choice. Stays if the time is stated. First Mirror line about 90 s in. "Four minutes. Fine. Say so up front."
-- **Trey** (quiz tourist). Taps through in 6 s, types three words, screenshots the Mirror line, skips the settle, taps "Not now". The screenshot carries no digits, so it is on brand. "It read me in one line. Posting it."
+- **Marcus** (founder, level 7). Sees the ring fall away and the figure arrive. Lets it run. Stays, since nothing asked before it showed. Leaves if the proof row looks typed. "It earned the sentence before it asked for one."
+- **Whitney** (phone only, level 5). Holds her thumb on "neurosomatic" to read it. Leaves if hold opens the iOS text callout. "Show me the table first. It did."
+- **Nils** (skeptic, level 4). Likes one black and one type scale. Leaves when "Money" lights a seat, since money is not a place in the body. "Who decided Money lives in my root?"
+- **Camille** (practitioner, level 6). Looks for an exit at the gate, finds none. Stays only if Keep this says what leaves the device. "Show me where it keeps this before a client goes near it."
+- **Marta** (acute, 02:00). The stillness suits her. She picks Grief and types "I do not want to be here anymore." With no detector the engine reads nothing and carries on. A ship blocker. "Please do not tell me it is okay."
+- **Renata** (operator, level 7, main target). Taps right twice, wants the cost before the choice. Stays if the time is stated. "Four minutes. Fine. Say so up front."
+- **Trey** (quiz tourist). Taps through in 6 s, types three words, screenshots the Mirror line, skips the settle, taps "Not now". Harmless. "It read me in one line. Posting it."
 - **Sofia** (loves open tables). The proof row is her moment. She taps it, because "Check any row" is an instruction and a timed slide takes the tap as "next". "Where are the rest?"
 
 ## 3. Unified quality: 70/100
 
-Nearly one voice: one stage, one clock, one ring per meaning, ink for unread and hue for read. Three gaps. One, distress: no detector exists and the stop text is unsigned. Two, Reel A has words but no picture track, and two of its pictures claim more than is true. Three, nobody has seen it move; voice sync, the 390 layout and the settle are unreviewed.
+Nearly one voice. Three gaps. One, distress: no detector exists and the stop text is unsigned. Two, Reel A has words but no picture track. Three, nobody has seen it move; voice sync, 390 and the settle are unreviewed.
 
 ## 4. Final grade: 72/100
 
-Up 34 from 38. Stage and one clock, no button wall (+9). First release as the real onboarding (+10). Copy sweep, "it is okay" and "grades you" gone (+4). One token grammar, hairline progress (+6). Distress named a blocker (+5). Held down: no detector, no picture track, Leave and the honest time missing, and it is unbuilt.
+Up 34. Stage and one clock, no button wall (+9). First release as the onboarding (+10). Copy sweep (+4). One token grammar (+6). Distress named a blocker (+5). Held down: no detector, no picture track, Leave and honest time missing, unbuilt.
 
 ## 5. My part of the build spec
 
@@ -37,17 +37,13 @@ Up 34 from 38. Stage and one clock, no button wall (+9). First release as the re
 
 **Restore:** "Leave", gate lower left, 16 px, ink 60 percent, 44 px target, to the unread Field, writes nothing. Under the hero: "About {n} minutes. Stop any time." Computed from the cue table and the settle, never typed.
 
-**First frame.** The boot figure is not on the login, so the film opens with the figure arriving, seats landing root to crown 90 ms apart, as the login ring becomes the outer ring.
-
-**Reel A, dwell then picture.** A1 3.0 s: seats land, halo closes. A2 6.5 s: rim marks travel inward once, 1.1 s, each ends in one Land. A3 5.0 s: nothing moves, the film's one rest. A4 5.0 s: the row sets as one block at 16 px, read from the table at run time, name and seat only, "112 addresses" in dim ink beneath. A5 6.0 s: circle draws 0.9 s, dot travels, closes at twelve, stays as the gate ring. Text in 420 ms `cubic-bezier(.22,1,.36,1)`, 8 px rise; out 220 ms `cubic-bezier(.4,0,1,1)`.
+**Reel A, dwell then picture.** A1 3.0 s: the figure arrives (the boot figure is not on the login), seats land root to crown 90 ms apart, halo closes. A2 6.5 s: rim marks travel inward once, 1.1 s, each ends in one Land. A3 5.0 s: nothing moves, the film's one rest. A4 5.0 s: the row sets as one block at 16 px, read from the table at run time, name and seat only, "112 addresses" in dim ink beneath. A5 6.0 s: circle draws 0.9 s, dot travels, closes at twelve, stays as the gate ring. Text in 420 ms `cubic-bezier(.22,1,.36,1)`, 8 px rise; out 220 ms `cubic-bezier(.4,0,1,1)`.
 
 **Gate and colour.** Hero 44/28, weight 300/400. Chips are ink rings: stroke 1.6, ink 40 percent, 112 by 64 at 390, 16 px labels. A tap Lands the chip 0.32 s, drops the rest to ink 22 percent in 0.22 s, the seed mark travels 0.42 s. No idle nudge. Accent only on the one live control. No alarm hue on the stage.
 
 **Voice.** `webm` only, behind `canPlayType`, cut 0 to 40.0 s. Captions are the four `REL_WELCOME` lines at 4.88, 8.73, 16.55, 22.58 s, visuals 0.15 s early. At 29.89 s the stem returns as the hero and the person's sentence lands under it at 39.95 s, so his voice says "that I am" and their words finish it.
 
 **Distress frame.** Stage ground, figure at 35 percent ink, no hue, no motion, no counter, no gift, no Keep this, no timer, one 44 px ring. Words by Narrative, signed by a clinician.
-
-**Gates.** Reel A lines at most 12 words (the ruled 13 word line named); auto dwell sums to 30 s or less; no `setTimeout` clock; no `filter` on the stage; run at 390, 375 by 667 and 1600.
 
 ## 6. Ranked recommendations
 
