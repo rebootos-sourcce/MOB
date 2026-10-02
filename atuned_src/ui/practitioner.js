@@ -310,7 +310,12 @@ var PRAC_SEL=null, PRAC_SORT='attn', PRAC_RCACHE={};
    Rosa, Tomas and Nkem were left out as close seconds to Wren, Gordon and
    Diane respectively, and Lance was left out because his table is the
    owner's own simulated self and listing him as a "client" among examples
-   reads as the one name on this page that is not an example. */
+   reads as the one name on this page that is not an example.
+   THE ROSTER ABOVE IS THE ONE THESE TEN WERE CHOSEN FROM, and it is gone.
+   Round QD, 2 October, cut PEOPLE to twelve examples, these ten plus Rosa and
+   Tomas, and four of the owner (Lance 15, 50, 85 and 100). The ten stand as
+   they were, and the four of him stay off this list for the same reason the
+   first Lance was: they are the owner and not a client. */
 var PRAC_TEN=['Sofia','Diane','Marcus','Angela','Derek','James','Ana','Wren','Gordon','Abraham'];
 function pracRoster(){
  var out=[]; PEOPLE.forEach(function(p,i){if(PRAC_TEN.indexOf(p.nm)>=0)out.push(i);}); return out;}

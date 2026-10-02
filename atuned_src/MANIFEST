@@ -31,6 +31,7 @@ engine/journey.js
 engine/practice.js
 engine/loop.js
 engine/pracex.js
+engine/exdepth.js
 engine/intake.js
 engine/intakemore.js
 engine/sniff.js

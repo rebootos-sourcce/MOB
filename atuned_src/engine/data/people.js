@@ -1,23 +1,47 @@
 
 /* ============================================================
-   PEOPLE. Six ICPs with both poles, the reference cases, and the tier
-   ladder: three people in each of the ten coherence bands, bottom of the
-   band to the top, so a range exists to test every surface against.
-   c = held fetter, rep = coherent opposite installed. A high rep is
-   not health. Past 7 it is jouissance: the thing done past the point
-   where it serves, and not able to stop.
+   PEOPLE. Twelve worked examples across the coherence scale, and four of the
+   owner at four points on it. c = held fetter, rep = coherent opposite
+   installed. A high rep is not health. Past 7 it is jouissance: the thing
+   done past the point where it serves, and not able to stop.
+
+   CUT TO TWELVE IN ROUND QD, 2 October, his words: "There are too many now.
+   let's have 12, with a range that gives us a little bit of flavor across the
+   scale from 0 to 100." The roster was forty four: the six ICPs, eight
+   reference cases and thirty in a tier ladder (round PL, J12). The twelve kept
+   are the ten the practitioner page lists (PRAC_TEN, ui/practitioner.js), and
+   Tomas and Rosa, because those twelve are the ones gates and surfaces name:
+   tests/engine.js reads Rosa, Ana and Gordon as the cleared, middle and
+   collapsed cases and Tomas, Wren and Abraham as the ends of the scale. With
+   the four below they run from 3.8 to 100 and touch nine of the ten bands.
+   The one band no example sits in is Corrupt, 21 to 30: the ladder carried it
+   (Hamid, Beatrix, Jonah) and the twelve the gates name do not. Nkem and the
+   first Lance, the author at 92, went with the ladder: Nkem sat at 14.5
+   beside Gordon at 17.5 and the developer at 15, and four of the owner
+   replace one. Their tables are in git history at 4742bf6.
 
    THE TIER A PERSON SITS IN IS READ OFF THEIR LAW TABLE IN LAWSET AND NOTHING
    ELSE. CQ is the 21 laws summed over 210 (compute.js), so the charge a person
    carries does not move the word. That is the ruling and it is the reason a
    heavy field can sit beside a high tier on purpose (Wren), and it is also the
-   reason a new person's tier is chosen by solving the base law value, `_` in
-   LAWSET, against a target CQ and then confirming it in the browser, where the
-   intake seeded in ui/personas.js hands the same mean back. Append new people
-   at the end: the browser's persona index is this index plus one, because
-   ui/personas.js puts the blank profile in front, and a number typed into a
-   gate or a doc is only right while the order holds. The picker is sorted by
-   tier on its own (ui/personas.js), so the order here carries no meaning.
+   reason a new person's tier is chosen by solving the law table against a
+   target CQ and then confirming it in the browser, where the intake seeded in
+   ui/personas.js hands the same mean back. Append new people at the end: the
+   browser's persona index is this index plus one, because ui/personas.js puts
+   the blank profile in front, and a number typed into a gate or a doc is only
+   right while the order holds. The first eight are in their original order for
+   that reason, since tests/design.js and tests/device.js still load by index.
+   The picker is sorted by tier on its own (ui/personas.js), so the order here
+   carries no meaning.
+
+   THE NAME IS THE KEY. LAWSET, BIRTH, FULLNAME, the scratch record loadP keeps
+   (PROF_BY), the practitioner list and both history tables (pracex.js,
+   exdepth.js) look a person up by nm, so no two entries may share one. Two
+   entries called Lance would share one scratch record, and the second one
+   opened would show the first one's intake answers.
+
+   EACH ONE HAS A BANK AND A VAULT: a journal and a release history, replayed
+   through the real writers by engine/exdepth.js when the example is opened.
    ============================================================ */
 const PEOPLE=[
  {nm:'Sofia',age:41,role:'somatic practitioner · ICP',dom:12,a1:3,a2:1,
@@ -69,9 +93,8 @@ const PEOPLE=[
     were never re-solved, so they read 25.9, 45.6, 91.3 and 89.2: the floor pair
     sat in two different bands, one of them the median, and the ceiling pair in
     two. Measured again on 2 October (J12). Tomas is solved again to 3.8 and
-    reads Collapsed. Nkem is solved to 14.5 and reads Severe, which is her
-    story and not a miss: a very good nurse whose day is spent before it starts
-    is Severe, and the Collapsed band is now carried by three more people.
+    reads Collapsed. Nkem was solved to 14.5, Severe, and was cut with the
+    ladder in round QD.
     Wren (91.1, Mastery) and Abraham (89.1, Embodied) are left where they are.
     Abraham carries a held shame of 5.4 and six installed poles near 5, which
     is Embodied, "real load still in it", and moving him to the top of the
@@ -79,10 +102,6 @@ const PEOPLE=[
  {nm:'Tomas',age:58,role:'long haul driver, off the road fourteen months',dom:0,a1:9,a2:4,
   says:'I used to drive nine hundred miles and feel nothing. Now I cannot get to the end of the street.',
   c:{Fear:9.4,Anger:8.2,Shame:9.1,Disgust:7.6,Apathy:9.6,Shock:8.8,Sad:9.5,Surprise:6.4,Anticipation:8.9},
-  rep:{}},
- {nm:'Nkem',age:35,role:'paediatric nurse, third year of nights',dom:12,a1:3,a2:9,
-  says:'I am very good at the job. I have started crying in the car park before the shift, not after.',
-  c:{Fear:7.8,Anger:6.2,Shame:8.4,Disgust:5.1,Apathy:7.1,Shock:6,Sad:8,Surprise:4.2,Anticipation:7.4},
   rep:{}},
  {nm:'Wren',age:66,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
   says:'Most of it went quiet a long time ago. One thing did not, and I know exactly which.',
@@ -95,163 +114,59 @@ const PEOPLE=[
  {nm:'Gordon',age:58,role:'managing partner',dom:2,a1:6,a2:0,
   says:'There is nothing wrong with me. Four people left in a year and each had their reasons.',
   c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{}},
- /* THE OWNER'S OWN, added at his request so he can use the instrument as
-    himself rather than as somebody he invented. He gave the shape and asked
-    for the numbers to be simulated: fifty four, coherence near ninety two,
-    high eights and high nines across the laws, and no true tens, because he
-    does not believe in them. The whole let go list is behind him, which is
-    why the held charge is low and the installed side is not.
+ /* ---- the owner, four times. Round QD, his words: "give me ... one of me
+    with a CQ of fifteen, fifty, eighty-five and one hundred. That says Lance,
+    comma, developer." He said three and then named four numbers, and all four
+    are here because four were named.
 
-    The laws were found by bisection against compute() rather than chosen by
-    feel, the same way Tomas was. A ten would have been easy and wrong. */
- {nm:'Lance',age:54,role:'author',dom:0,a1:0,a2:6,
-  says:'I built the instrument to read me. It does, and that is the part I did not plan for.',
+    Each is a whole worked example in the shape every other one has, not a
+    special case. The soul is his: dom 0, a1 0, a2 6, carried from the profile
+    he asked for in round PL. The laws keep the shape he gave for himself then,
+    patience and humility lowest, detachment next, then temperance, then the
+    three of forgiveness, unity and equanimity, then presence, nature and
+    generosity, and the rest level, moved up or down together to land on each
+    target. The held side follows his own: anticipation heaviest, then anger
+    and sadness. Measured off compute(): fifteen holds 49 addresses over the
+    line, fifty holds 12, eighty five holds one, the waiting he names in his
+    line, and a hundred holds none: the held side is his own table from 92, the
+    whole let go list behind him. Its installed side is his shape set under 7
+    and not his 8.4 to 9.3, for two reasons. Past 7 is jouissance, by the
+    header above, which a ceiling reading should not carry. And an installed
+    side that high outweighs any charge a story can write, so the engine finds
+    nothing carrying and refuses every release, and his vault could only ever
+    read empty. Measured: with every law at ten a held charge lands at 58 per
+    cent of itself, and two anxious entries left nought addresses carrying.
+    Anticipation carries nothing installed at all, the need to know what comes
+    next, which is the one thread through all four of him: five addresses
+    carry it under the line, none is held, and it is what his journal writes to
+    and his releases take. No birth and no
+    full name, the same ruling as before: they are his to enter, and a made up
+    birth would be read back to him as his own.
+
+    ONE HUNDRED IS EVERY LAW AT A FULL TEN. CQ is the 21 laws over 210, so
+    there is no other way to read 100. In round PL he said he does not believe
+    in true tens, and the first Lance was solved to 92 with none for that
+    reason. Built as asked, and the contradiction is his to rule on.
+
+    The number in each name is there because four people cannot share a name
+    in this roster (the header above says why). The picker reads "Lance 15, 54,
+    developer". */
+ {nm:'Lance 15',age:54,role:'developer',dom:0,a1:0,a2:6,
+  says:'I ship at four in the morning and wake at six with my jaw already set. I built the thing that reads this, and it reads me as heavy.',
+  c:{Fear:7.6,Anger:8.2,Shame:7.4,Disgust:5.2,Apathy:6.8,Shock:6.4,Sad:7.8,Surprise:4.4,Anticipation:8.8},
+  rep:{Anticipation:1.4}},
+ {nm:'Lance 50',age:54,role:'developer',dom:0,a1:0,a2:6,
+  says:'Some weeks the work runs clean and I sleep through. Then one call lands wrong and I watch my own hands go back to the old wiring.',
+  c:{Fear:5.8,Anger:6.6,Shame:5.4,Disgust:3.6,Apathy:4.4,Shock:4,Sad:6,Surprise:3,Anticipation:7.4},
+  rep:{Anticipation:3,Anger:2.4}},
+ {nm:'Lance 85',age:54,role:'developer',dom:0,a1:0,a2:6,
+  says:'Most of it moves through me now. I still catch on waiting, and on needing to be the one who is right in the room.',
+  c:{Fear:1.6,Anger:6.8,Shame:1.4,Disgust:1,Apathy:1.2,Shock:1,Sad:2,Surprise:0.8,Anticipation:8.2},
+  rep:{Fear:6.4,Anger:1.2,Shame:6.6,Disgust:6.2,Apathy:6.4,Shock:6,Sad:5.8,Surprise:6,Anticipation:0.8}},
+ {nm:'Lance 100',age:54,role:'developer',dom:0,a1:0,a2:6,
+  says:'Nothing is holding. I keep this one to see what the instrument says at the ceiling, and whether it still tells the truth up there.',
   c:{Fear:.5,Anger:1,Shame:.5,Disgust:.5,Apathy:.5,Shock:.5,Sad:1,Surprise:.5,Anticipation:1.5},
-  rep:{Fear:9,Anger:8.8,Shame:9.3,Disgust:9,Apathy:9.2,Shock:8.6,Sad:8.9,Surprise:8.4,Anticipation:8.7}},
- /* ---- the tier ladder. Thirty people, three to a band, added on the owner's
-    ruling, round PL J12: "Fix all of the profiles. By tier. And then add three
-    additional ones per tier. With different profiles. From minimum to medium to
-    maximum. And stuff in between. I just need a range."
-
-    A tier is the coherence band a reading's CQ lands in, Collapsed to Mastery
-    (TIERDEF, canon.js). The three in each band are the bottom, the middle and
-    the top of it, in that order, so the thirty and the people above them read
-    as one continuous run from about one to about a hundred and no band has a
-    gap a surface has never been looked at across. Each law table was solved by
-    taking the named laws as the shape of the person and finding the base value
-    for the other laws that lands the sum on the target, then every one was
-    loaded in Chromium and read back through loadP, because the number a person
-    sees is the intake's mean and not the table.
-
-    What is held and what is installed do not follow the tier mechanically, on
-    purpose. The tier is the laws. A person near the floor carries almost
-    everything and has installed nothing. A person in the middle carries a
-    little of several things and has begun to install the opposite. A person
-    near the ceiling carries almost nothing and still has an installed side
-    under 7, because a high reading with an empty wheel tells a person they are
-    the wrong customer. The stories are in the first person, in the product's
-    voice, and none of them names what is wrong with anybody. Names and roles
-    are invented, and none of them is a real person. */
- {nm:'Pavel',age:52,role:'scaffolder, off the roof since the fall',dom:13,a1:10,a2:0,
-  says:'I stopped answering the phone in March. I know who it is and I know what they will ask.',
-  c:{Fear:9.2,Anger:6.5,Shame:8.8,Disgust:5,Apathy:9.8,Shock:9,Sad:9.4,Surprise:5.5,Anticipation:8.6},
-  rep:{}},
- {nm:'Marisol',age:29,role:'call centre team lead',dom:11,a1:10,a2:3,
-  says:'I run the whole shift from a metre behind my own head. The numbers come out right and I am not in them.',
-  c:{Fear:8.4,Anger:5.2,Shame:8,Disgust:4.6,Apathy:9,Shock:6.8,Sad:8.2,Surprise:3.9,Anticipation:7.8},
-  rep:{}},
- {nm:'Bilal',age:67,role:'taxi driver, widowed two winters',dom:8,a1:11,a2:3,
-  says:'The flat is quiet in a way I have no word for. I leave the radio on so the rooms have a voice.',
-  c:{Fear:6.2,Anger:3,Shame:6,Disgust:2.2,Apathy:8.6,Shock:5,Sad:9.7,Surprise:2,Anticipation:4.2},
-  rep:{}},
- {nm:'Keiko',age:38,role:'restaurant chef, two kitchens',dom:6,a1:4,a2:0,
-  says:'I can plate forty covers an hour and I cannot taste one of them. I check by watching the faces.',
-  c:{Fear:6.8,Anger:8,Shame:6.2,Disgust:5,Apathy:7.6,Shock:6.5,Sad:6,Surprise:2.8,Anticipation:7.2},
-  rep:{}},
- {nm:'Declan',age:44,role:'publican, last one out and first one up',dom:10,a1:3,a2:9,
-  says:'I pour for the whole street and I know what everyone owes. Nobody here knows mine. I keep that tab shut.',
-  c:{Fear:5.4,Anger:4.2,Shame:7.8,Disgust:3,Apathy:6.4,Shock:4,Sad:7,Surprise:3.2,Anticipation:5.6},
-  rep:{Surprise:4.2}},
- {nm:'Zainab',age:23,role:'delivery rider, nights',dom:5,a1:7,a2:2,
-  says:'I ride until the cold is a kind of speed. If I stop, the day catches up with me at the next red light.',
-  c:{Fear:5,Anger:6.8,Shame:4.2,Disgust:3.5,Apathy:6,Shock:5.4,Sad:4.8,Surprise:4,Anticipation:6.5},
-  rep:{Anticipation:3}},
- {nm:'Hamid',age:49,role:'site foreman',dom:2,a1:6,a2:0,
-  says:'I have never lost an argument on site. I have lost two crews and a brother.',
-  c:{Fear:3.8,Anger:8.4,Shame:6.6,Disgust:6,Apathy:4,Shock:5.6,Sad:3,Surprise:1.8,Anticipation:5.4},
-  rep:{Shock:3}},
- {nm:'Beatrix',age:63,role:'retired harbourmaster',dom:1,a1:6,a2:1,
-  says:'I ran the harbour by the book for thirty one years. The book was right. It did not follow me home well.',
-  c:{Fear:3,Anger:5.8,Shame:5,Disgust:6.8,Apathy:3.4,Shock:2.4,Sad:2.8,Surprise:1,Anticipation:3.2},
-  rep:{Sad:2.4}},
- {nm:'Jonah',age:31,role:'regional sales rep',dom:11,a1:9,a2:5,
-  says:'I can close anyone in the room. Then I sit in the car outside my own house for twenty minutes.',
-  c:{Fear:5.8,Anger:3.6,Shame:7,Disgust:2.6,Apathy:4.6,Shock:3.2,Sad:4.4,Surprise:3.6,Anticipation:7.6},
-  rep:{Anticipation:5.2,Surprise:4.6}},
- {nm:'Anjali',age:27,role:'hospital pharmacist, nights',dom:0,a1:1,a2:3,
-  says:'I check every dose twice and a third time in the lift. I am right every time. It does not help the third time.',
-  c:{Fear:6,Anger:2.4,Shame:5.6,Disgust:2,Apathy:3.8,Shock:3,Sad:5,Surprise:2.2,Anticipation:6.6},
-  rep:{Anticipation:3.4}},
- {nm:'Ola',age:55,role:'school bus driver',dom:18,a1:3,a2:10,
-  says:'Forty one children on the road and I have never lost one. I count them in my sleep. Some nights I count wrong and wake up sure.',
-  c:{Fear:5,Anger:3,Shame:3.8,Disgust:2,Apathy:4.2,Shock:3.4,Sad:5.6,Surprise:2,Anticipation:4},
-  rep:{Sad:3.8,Fear:3.2}},
- {nm:'Teo',age:34,role:'freelance illustrator',dom:6,a1:4,a2:7,
-  says:'On a good day the line goes down exactly where I meant it. On the other days I do not open the file. I cannot tell in advance which day it is.',
-  c:{Fear:4.2,Anger:2,Shame:5.2,Disgust:2.4,Apathy:5,Shock:2,Sad:4.6,Surprise:3,Anticipation:5.4},
-  rep:{Surprise:5.6,Anticipation:4.8}},
- {nm:'Fatima',age:40,role:'paramedic',dom:12,a1:3,a2:0,
-  says:'I am steady at the scene. It is the kitchen afterwards that gets me. Some days I wash one cup and stand there.',
-  c:{Fear:3,Anger:3.6,Shame:3,Disgust:3.4,Apathy:4,Shock:5.4,Sad:3.8,Surprise:2.4,Anticipation:3},
-  rep:{Shock:5.6,Fear:4.6}},
- {nm:'Callum',age:50,role:'dairy farmer',dom:15,a1:10,a2:11,
-  says:'The herd knows when I am off before my wife does. I get through the milking. It is the hours after that I do not know what to do with.',
-  c:{Fear:3.4,Anger:3,Shame:3.6,Disgust:1.6,Apathy:3,Shock:2.8,Sad:3.2,Surprise:1.6,Anticipation:3.6},
-  rep:{Apathy:4.4,Sad:3.6}},
- {nm:'Hyunwoo',age:36,role:'software engineer, platform team',dom:0,a1:1,a2:5,
-  says:'I find the fault in a system in an afternoon. I have been looking for the fault in the rest of my life for a year and I cannot get it to repeat.',
-  c:{Fear:3.8,Anger:2.4,Shame:3,Disgust:2.8,Apathy:3.4,Shock:2,Sad:2.6,Surprise:1.8,Anticipation:4.8},
-  rep:{Anticipation:6,Apathy:5.2}},
- {nm:'Lucia',age:33,role:'architect, first practice of her own',dom:6,a1:4,a2:6,
-  says:'I can draw a building and now I can carry the argument for it. I still apologise to the client for the price afterwards.',
-  c:{Fear:2.8,Anger:2.2,Shame:3.4,Disgust:1.8,Apathy:1.6,Shock:1.6,Sad:2,Surprise:1.4,Anticipation:4.4},
-  rep:{Anticipation:6.2,Fear:4}},
- {nm:'Kwame',age:58,role:'union organiser',dom:3,a1:2,a2:3,
-  says:'I know how to hold a room of four hundred. I do not know how to hold my own temper at a quarter to midnight.',
-  c:{Fear:2.2,Anger:5,Shame:2.4,Disgust:2.6,Apathy:1.4,Shock:2,Sad:2.8,Surprise:1,Anticipation:3.4},
-  rep:{Anger:5.8,Sad:4.6}},
- {nm:'Ingrid',age:45,role:'hospice cook',dom:12,a1:3,a2:10,
-  says:'I cook for people who eat three bites. I have learned to put the salt where they can find it. I carry the rest of the room home.',
-  c:{Fear:1.8,Anger:1,Shame:2.4,Disgust:0.8,Apathy:1.4,Shock:1.6,Sad:4.4,Surprise:0.8,Anticipation:1.6},
-  rep:{Sad:5.6,Fear:4.2}},
- {nm:'Rangi',age:41,role:'carpenter',dom:13,a1:10,a2:4,
-  says:'I measure twice and I still hand the client a number I made smaller. I am practising saying the true figure out loud.',
-  c:{Fear:1.4,Anger:2,Shame:1.8,Disgust:0.8,Apathy:1,Shock:1.2,Sad:1.8,Surprise:0.8,Anticipation:2},
-  rep:{Anger:6.2,Fear:5.4,Sad:4.8}},
- {nm:'Yusuf',age:29,role:'river guide',dom:15,a1:7,a2:9,
-  says:'Cold water settles me faster than anything I was ever taught to do. I am learning what to do on dry land.',
-  c:{Fear:1.6,Anger:0.8,Shame:1,Disgust:0.6,Apathy:0.8,Shock:1.6,Sad:1,Surprise:1.2,Anticipation:2.2},
-  rep:{Fear:6.4,Surprise:6,Anticipation:5.8}},
- {nm:'Helena',age:70,role:'retired surveyor',dom:1,a1:1,a2:6,
-  says:'I spent forty years finding where the line really runs. I am slower to forgive a line somebody else drew crooked.',
-  c:{Fear:0.8,Anger:1.2,Shame:1.6,Disgust:1,Apathy:0.6,Shock:0.6,Sad:1.4,Surprise:0.4,Anticipation:0.8},
-  rep:{Sad:6,Anger:5.2,Fear:5}},
- {nm:'Seun',age:39,role:'community radio host',dom:16,a1:10,a2:3,
-  says:'Two hundred people hear my voice at six in the morning. They hear it level now. It took eleven years to get the shake out of it.',
-  c:{Fear:1,Anger:0.8,Shame:1.4,Disgust:0.4,Apathy:0.6,Shock:0.8,Sad:1.2,Surprise:0.6,Anticipation:1.4},
-  rep:{Sad:6.6,Fear:6.2,Shame:5.8}},
- {nm:'Mateusz',age:63,role:'stonemason',dom:13,a1:4,a2:6,
-  says:'A wall goes up one stone at a time and I have the hands for that. I am slower at the rest. I have started letting my son lay the corner.',
-  c:{Fear:0.6,Anger:1.4,Shame:1,Disgust:0.4,Apathy:0.4,Shock:0.6,Sad:1.2,Surprise:0.2,Anticipation:0.6},
-  rep:{Anger:6.8,Shame:6.2,Sad:6.4}},
- {nm:'Aroha',age:47,role:'volunteer fire chief',dom:18,a1:0,a2:3,
-  says:'I run toward it and I know why. What is left is the call after the call, when the street is quiet and my hands are not.',
-  c:{Fear:0.8,Anger:0.4,Shame:0.6,Disgust:0.2,Apathy:0.4,Shock:1.6,Sad:0.8,Surprise:0.4,Anticipation:0.6},
-  rep:{Fear:6.9,Shock:6.7,Anger:6.2,Sad:6.6}},
- {nm:'Linh',age:52,role:'bakery owner',dom:13,a1:3,a2:10,
-  says:'I get up at three and it still feels like mine. There is one old argument with my sister that I carry in the flour. I know which bag.',
-  c:{Fear:0.4,Anger:0.2,Shame:0.8,Disgust:0.2,Apathy:0.2,Shock:0.2,Sad:0.6,Surprise:0.2,Anticipation:0.8},
-  rep:{Fear:6.7,Anger:6.8,Shame:6.4,Sad:6.9,Apathy:6}},
- {nm:'Esperanza',age:78,role:'retired hotel cleaner',dom:12,a1:11,a2:3,
-  says:'Forty years of rooms that belonged to other people. I never carried any of it out of the door. I am told that is a skill. I thought it was just Tuesday.',
-  c:{Fear:0.2,Anger:0.4,Shame:0.4,Disgust:0.2,Apathy:0,Shock:0.2,Sad:0.8,Surprise:0,Anticipation:0.2},
-  rep:{Sad:6.9,Anger:6.6,Fear:6.8,Shame:6.6,Disgust:6}},
- {nm:'Tariq',age:44,role:'ferry captain',dom:4,a1:7,a2:1,
-  says:'The crossing is eleven minutes and I have made it eleven thousand times. In fog I stop thinking and stay with the boat. I would like that outside the wheelhouse too.',
-  c:{Fear:0.6,Anger:0.2,Shame:0.2,Disgust:0,Apathy:0,Shock:0.4,Sad:0.2,Surprise:0.2,Anticipation:0.4},
-  rep:{Fear:6.9,Shock:6.8,Anger:6.6,Anticipation:6.6}},
- {nm:'Dalia',age:52,role:'beekeeper',dom:15,a1:11,a2:1,
-  says:'I open the hive and my hands are the temperature of the room. That did not come from the bees. It came from the nine years before them.',
-  c:{Fear:0.2,Anger:0,Shame:0.4,Disgust:0,Apathy:0,Shock:0.2,Sad:0.6,Surprise:0,Anticipation:0.2},
-  rep:{Fear:6.8,Anger:6.6,Sad:6.8,Apathy:6.7,Shock:6}},
- {nm:'Kofi',age:77,role:'retired choir master',dom:14,a1:1,a2:9,
-  says:'The last argument I carried, I put down on a station platform in 1994. I am told that is rare. Mostly I notice there is room in the day.',
-  c:{Fear:0.2,Anger:0,Shame:0.4,Disgust:0,Apathy:0,Shock:0,Sad:0.6,Surprise:0,Anticipation:0},
-  rep:{Sad:6.2,Fear:5.8,Shame:6,Anger:5.6,Surprise:6.6}},
- {nm:'Mei',age:31,role:'alpine hut warden',dom:17,a1:11,a2:7,
-  says:'Not much is left to say. I light the stove at five and read the sky, and that is the whole job. Some days I am sorry it is not harder to explain.',
-  c:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:0.4,Surprise:0,Anticipation:0.2},
-  rep:{Fear:6,Anger:6,Shame:6,Surprise:6.4,Anticipation:5.8,Sad:6}}];
+  rep:{Fear:6.6,Anger:6.4,Shame:6.8,Disgust:6.6,Apathy:6.7,Shock:6.3,Sad:6.5,Surprise:6.2}}];
 
 
 /* law values per persona. `_` is the baseline; named laws override it.
@@ -271,10 +186,6 @@ const LAWSET={
     the person still does is the highest thing in it) and the level is the new
     solve. Tomas 3.8, Collapsed. */
  Tomas:  {_:.124, Courage:.5, Truth:.7, Patience:.6, Duty:2, 'Non-Harm':2.2},
- /* Nkem 14.5, Severe: "capacity is spent before the day starts" is her, and a
-    very good nurse is a Severe reading and not a Collapsed one. The three care
-    laws still stand highest, and they are what the job is made of. */
- Nkem:   {_:.73, Compassion:5.6, Duty:6.4, 'Non-Harm':5.8, Temperance:.6, Detachment:.4, Patience:.7},
  Wren:   {_:9.221, Patience:9.4, Temperance:9.2, 'Aesthetic Beauty':9.6, Forgiveness:6.8},
  Abraham:{_:8.702, Equanimity:9.7, Justice:9.8, Humility:9.5, Presence:9.6, Temperance:9.4},
  Sofia:  {_:7.6, Compassion:8.6, 'Non-Harm':9.1, Generosity:8.2, Detachment:2.4, Temperance:3.1},
@@ -283,25 +194,6 @@ const LAWSET={
  Angela: {_:6.9, Unity:8.4, Nature:8.1, Awareness:7.4, Truth:2.6, Humility:2.1, Accountability:3.2},
  Derek:  {_:4.6, Courage:9.0, Duty:8.3, Responsibility:7.7, Temperance:1.8, 'Non-Harm':2.9, Equanimity:3.1},
  James:  {_:4.4, Accountability:7.8, Truth:6.9, Compassion:1.6, Forgiveness:1.9, Unity:2.2, Transparency:2.4},
- /* HIGH EIGHTS AND HIGH NINES, AND NOTHING AT TEN. His own account of
-    himself, and the one hard constraint here.
-
-    He also said coherence around ninety two. On the model this was first
-    solved against, CQ was the law mean times a load term, and those two
-    statements could not both be true: every law at 9.9 reached 90.8, nineteen
-    at a full ten reached 90.5, and the honest maximum of what he described was
-    eighty nine. CQ is the 21 laws over 210 since the 25 September ruling, so
-    ninety two needs a law mean of 9.2 and no ten at all, and the same table at
-    9.9 had drifted to 97.2, five points above the number he gave. Re-solved on
-    2 October to 92.0 by taking 0.52 off every law, which keeps the shape he
-    described (the two in the eights are still patience and humility, which is
-    a shape and not an accident) and brings the level back to what he said. */
- Lance:  {_:9.38, Truth:9.38, 'Aesthetic Beauty':9.38, Awareness:9.38,
-          Accountability:9.38, Transparency:9.38, 'Non-Harm':9.38,
-          Responsibility:9.38, Courage:9.38, Justice:9.38, Compassion:9.38, Duty:9.38,
-          Presence:9.28, Nature:9.28, Generosity:9.28,
-          Unity:9.18, Forgiveness:9.18, Equanimity:9.18, Temperance:9.08,
-          Detachment:8.98, Humility:8.38, Patience:8.28},
  Rosa:   {_:9.6, Presence:10, Equanimity:10, Compassion:10, 'Non-Harm':10, Unity:9.8, Patience:9.9},
  /* Ana 37.2, Incoherent: "caught between the weight in your body and the odd
     moment of seeing clearly", with forty one addresses carrying. She read 41.1,
@@ -309,74 +201,28 @@ const LAWSET={
     either way and not about a year of being in the middle of something. */
  Ana:    {_:3.828, Truth:6.4, Courage:6, Equanimity:1.9, Patience:2.1, Detachment:1.6, Temperance:2.7},
  Gordon: {_:1.9, Duty:3.0, Compassion:1.0, Forgiveness:1.0, Transparency:1.0, Truth:1.2, Unity:1.1},
- /* THE TIER LADDER. The first laws named in each entry are the shape of the
-    person. The base, `_`, is every law not named, and the few at the end of an
-    entry are laws moved a tenth off the base so that the sum over 210 lands on
-    the target to the second decimal: a shared base alone moves the sum in steps
-    of about 0.8 once the intake rounds it to a tenth, which is the wrong size
-    of step for a roster that has to cover a scale one point at a time. Each was
-    confirmed in the browser, and the figure on screen is the table's own to
-    within a hundredth. Bottom of the band to the top, three a band, Collapsed
-    first. */
- Pavel:   {_:0, Duty:0.9, Patience:0.7,
-           Truth:0.1, Justice:0.1, Awareness:0.1, Presence:0.1, Equanimity:0.1, Forgiveness:0.1, 'Aesthetic Beauty':0.1, Responsibility:0.1, Temperance:0.1},
- Marisol: {_:0, Compassion:3.1, Duty:3.6, Responsibility:3.4, Truth:0.6, Courage:0.8,
-           Transparency:0.1, Unity:0.1, Nature:0.1, Humility:0.1, Forgiveness:0.1, 'Aesthetic Beauty':0.1, Temperance:0.1},
- Bilal:   {_:0.5, Compassion:4.4, Generosity:3.9, Patience:3,
-           Truth:0.4, Unity:0.4, Presence:0.4, Forgiveness:0.4, Duty:0.4, Temperance:0.4},
- Keiko:   {_:0.8, 'Aesthetic Beauty':4.8, Duty:3.4, Courage:2.9, Temperance:0.4, Patience:0.5, Equanimity:0.6,
-           Generosity:0.7, Justice:0.7},
- Declan:  {_:1.2, Generosity:5.9, Compassion:5.2, Humility:3.8, Transparency:0.5, Accountability:0.7, Truth:1,
-           Justice:1.1, Awareness:1.1, Presence:1.1, Forgiveness:1.1, Courage:1.1, Responsibility:1.1, Detachment:1.1},
- Zainab:  {_:1.4, Courage:6.4, Nature:5, Detachment:4.9, Temperance:1.2, Forgiveness:1.8, Patience:2,
-           Truth:1.5},
- Hamid:   {_:1.4, Duty:7.2, Responsibility:6.4, Courage:6, Humility:0.9, Forgiveness:1.1, Compassion:1.8, Transparency:1.4,
-           Awareness:1.5, Presence:1.5, Generosity:1.5, Accountability:1.5, Detachment:1.5},
- Beatrix: {_:1.8, Justice:8, Truth:7.2, Accountability:6.6, Equanimity:1.9, Forgiveness:1.2, Unity:1.6, Humility:1.7,
-           Awareness:1.9, Compassion:1.9, Courage:1.9, Temperance:1.9},
- Jonah:   {_:2.7, 'Aesthetic Beauty':6, Courage:6.2, Detachment:5.8, Truth:1.6, Transparency:1.2, Accountability:2.2, Humility:2,
-           Awareness:2.8, Duty:2.8},
- Anjali:  {_:2.6, Truth:6.8, Duty:7, Responsibility:7.2, Presence:1.9, Equanimity:2.1, Temperance:2.5,
-           Transparency:2.5, Humility:2.5, Courage:2.5},
- Ola:     {_:2.9, Responsibility:7.8, 'Non-Harm':8, Patience:6.6, Courage:2.4, Transparency:2.2, Equanimity:2.9,
-           Truth:2.8, Unity:2.8, Nature:2.8, Humility:2.8, Forgiveness:2.8, 'Aesthetic Beauty':2.8, Accountability:2.8},
- Teo:     {_:3.7, 'Aesthetic Beauty':8.6, Awareness:6.4, Nature:6, Duty:2.6, Accountability:2.4, Temperance:2.8,
-           Transparency:3.6, Equanimity:3.6, Responsibility:3.6},
- Fatima:  {_:3.9, Courage:7.6, Compassion:6.8, Presence:6.4, Temperance:2.4, Detachment:2.9, Forgiveness:3.1,
-           Transparency:3.8, Humility:3.8, Responsibility:3.8},
- Callum:  {_:4.3, Nature:8.6, Patience:7.4, Duty:7.8, Transparency:2.6, Humility:3, Forgiveness:3.4,
-           Truth:4.2, Unity:4.2, Presence:4.2, Compassion:4.2, 'Aesthetic Beauty':4.2, Responsibility:4.2, Temperance:4.2},
- Hyunwoo: {_:5, Truth:7.4, Awareness:7, Courage:3, Unity:3.4, Generosity:3.8,
-           Transparency:5.1, Humility:5.1, 'Aesthetic Beauty':5.1, Temperance:5.1},
- Lucia:   {_:5.1, 'Aesthetic Beauty':8.2, Courage:6.8, Responsibility:6.6, Temperance:3.4, Detachment:3.6, Patience:3.8,
-           Truth:5, Justice:5, Awareness:5, Presence:5, Equanimity:5, Forgiveness:5, Duty:5},
- Kwame:   {_:5.4, Justice:8.6, Unity:7.8, Courage:7.6, Forgiveness:3.6, Detachment:3, Temperance:3.8,
-           Truth:5.5, Nature:5.5, Equanimity:5.5, 'Aesthetic Beauty':5.5, Accountability:5.5},
- Ingrid:  {_:5.7, Compassion:8.4, Presence:7.8, Generosity:7.2, Detachment:3.8, Forgiveness:4.4, Truth:4.6,
-           Transparency:5.8},
- Rangi:   {_:6.1, Duty:8.2, 'Aesthetic Beauty':7.8, Patience:7.4, Humility:4.6, Accountability:4.8, Transparency:4.4},
- Yusuf:   {_:6.6, Nature:9, Courage:8.6, Presence:8.2, Accountability:5, Duty:5.4, Temperance:4.8,
-           Truth:6.7, Justice:6.7, Awareness:6.7, Equanimity:6.7, Forgiveness:6.7, 'Aesthetic Beauty':6.7, Detachment:6.7},
- Helena:  {_:7, Truth:9, Justice:8.8, Accountability:8.2, Forgiveness:4.8, Generosity:5.2,
-           Transparency:6.9, Awareness:6.9, Presence:6.9, Equanimity:6.9, 'Aesthetic Beauty':6.9, Duty:6.9},
- Seun:    {_:7.1, Compassion:8.6, Transparency:8.2, Awareness:8, Temperance:5.4, Detachment:5.6,
-           Truth:7.2, Unity:7.2, Presence:7.2, Equanimity:7.2, Generosity:7.2, Courage:7.2, Responsibility:7.2, 'Non-Harm':7.2},
- Mateusz: {_:7.6, Patience:9.2, 'Aesthetic Beauty':9, Duty:8.8, Equanimity:6.4, Unity:6, Generosity:6.6,
-           Truth:7.5, Awareness:7.5, Humility:7.5, Courage:7.5},
- Aroha:   {_:8.1, Courage:9.4, Responsibility:9.2, Compassion:8.8, Temperance:6, Detachment:6.2, Humility:6.8,
-           Truth:8.2, Unity:8.2, Presence:8.2, Generosity:8.2, Accountability:8.2},
- Linh:    {_:8.2, Generosity:9.4, Duty:9.2, 'Aesthetic Beauty':9, Detachment:6.8, Temperance:7, Forgiveness:7.2,
-           Truth:8.1, Unity:8.1, Presence:8.1, Compassion:8.1},
- Esperanza:{_:8.5, Compassion:9.4, Presence:9.3, Humility:9.5, Forgiveness:8.2, Detachment:7.8, Temperance:8,
-           Truth:8.4},
- Tariq:   {_:8.8, Presence:9.6, Responsibility:9.5, Awareness:9.3, Humility:7.4, Forgiveness:7.6, Detachment:8,
-           Justice:8.9, Nature:8.9, Compassion:8.9, 'Aesthetic Beauty':8.9, Duty:8.9, Temperance:8.9},
- Dalia:   {_:9.5, Nature:9.9, Presence:9.7, Patience:9.8, Detachment:8.2, Courage:8.4,
-           Truth:9.4, Justice:9.4, Awareness:9.4, Equanimity:9.4, Forgiveness:9.4, 'Aesthetic Beauty':9.4},
- Kofi:    {_:9.8, Unity:10, Awareness:9.9, Forgiveness:9.9, Humility:8.8, Temperance:9,
-           Courage:9.9, Responsibility:9.9, Detachment:9.9, Patience:9.9, Transparency:9.9, Nature:9.9},
- Mei:     {_:10, Presence:10, Nature:10, Awareness:10, Unity:10, Humility:9.8, Patience:9.8,
-           Truth:9.9, Equanimity:9.9, Generosity:9.9, Duty:9.9}};
+ /* THE OWNER, FOUR TIMES. His own shape from round PL, every offset kept and
+    the level moved: six laws at the top value, five a tenth under it (the
+    tenth is what lands the sum on the target, since a shared step moves the
+    sum 2.1 at a time), presence, nature and generosity a tenth under the top,
+    unity, forgiveness and equanimity two, temperance three, detachment four,
+    humility a whole point and patience a point and a tenth. The sum over 210
+    is the target to the tenth, and the browser hands the same mean back
+    through the seeded intake. One hundred has no shape left to keep: every
+    law is ten. */
+ 'Lance 15': {_:1.7, Truth:1.7, 'Aesthetic Beauty':1.7, Awareness:1.7, Accountability:1.7, Transparency:1.7, 'Non-Harm':1.7,
+            Responsibility:1.6, Courage:1.6, Justice:1.6, Compassion:1.6, Duty:1.6,
+            Presence:1.6, Nature:1.6, Generosity:1.6, Unity:1.5, Forgiveness:1.5, Equanimity:1.5,
+            Temperance:1.4, Detachment:1.3, Humility:0.7, Patience:0.6},
+ 'Lance 50': {_:5.2, Truth:5.2, 'Aesthetic Beauty':5.2, Awareness:5.2, Accountability:5.2, Transparency:5.2, 'Non-Harm':5.2,
+            Responsibility:5.1, Courage:5.1, Justice:5.1, Compassion:5.1, Duty:5.1,
+            Presence:5.1, Nature:5.1, Generosity:5.1, Unity:5, Forgiveness:5, Equanimity:5,
+            Temperance:4.9, Detachment:4.8, Humility:4.2, Patience:4.1},
+ 'Lance 85': {_:8.7, Truth:8.7, 'Aesthetic Beauty':8.7, Awareness:8.7, Accountability:8.7, Transparency:8.7, 'Non-Harm':8.7,
+            Responsibility:8.6, Courage:8.6, Justice:8.6, Compassion:8.6, Duty:8.6,
+            Presence:8.6, Nature:8.6, Generosity:8.6, Unity:8.5, Forgiveness:8.5, Equanimity:8.5,
+            Temperance:8.4, Detachment:8.3, Humility:7.7, Patience:7.6},
+ 'Lance 100':{_:10}};
 
 /* ============================================================
    ENERGETICS. Nothing is stored beyond date, time and place.
@@ -398,44 +244,13 @@ var BIRTH={
  Ana:    {d:'1979-04-30', t:'20:45', p:'Lisbon, PT'},
  Gordon: {d:'1968-08-05', t:'14:00', p:'Greenwich, CT'},
  Tomas:  {d:'1967-11-22', t:'03:55', p:'Chicago, IL'},
- Nkem:   {d:'1990-09-03', t:'19:10', p:'Boston, MA'},
  Wren:   {d:'1959-04-17', t:'08:35', p:'Portland, OR'},
- Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'},
- /* The ladder. A place the table above does not name is read through its time
-    zone, z, which settles the clock offset for that year and lends the zone's
-    own point as a horizon, so Rising still resolves. Lance has no record here
-    and is left without one: it is his to enter, and a made up birth would be
-    read back to him as his own. */
- Pavel:   {d:'1974-02-09', t:'05:40', p:'Gdansk, PL', z:'Europe/Warsaw'},
- Marisol: {d:'1997-08-21', t:'14:25', p:'San Antonio, TX', z:'America/Chicago'},
- Bilal:   {d:'1959-11-03', t:'22:10', p:'Birmingham, UK', z:'Europe/London'},
- Keiko:   {d:'1988-04-02', t:'09:15', p:'Osaka, JP', z:'Asia/Tokyo'},
- Declan:  {d:'1982-01-27', t:'02:50', p:'Cork, IE', z:'Europe/Dublin'},
- Zainab:  {d:'2003-06-30', t:'18:35', p:'Lagos, NG', z:'Africa/Lagos'},
- Hamid:   {d:'1977-09-12', t:'07:05', p:'Tehran, IR', z:'Asia/Tehran'},
- Beatrix: {d:'1963-05-16', t:'12:30', p:'Rotterdam, NL', z:'Europe/Amsterdam'},
- Jonah:   {d:'1995-03-08', t:'21:00', p:'Perth, AU', z:'Australia/Perth'},
- Anjali:  {d:'1999-12-14', t:'04:45', p:'Pune, IN', z:'Asia/Kolkata'},
- Ola:     {d:'1971-10-25', t:'16:20', p:'Gothenburg, SE', z:'Europe/Stockholm'},
- Teo:     {d:'1992-07-04', t:'10:55', p:'Buenos Aires, AR', z:'America/Argentina/Buenos_Aires'},
- Fatima:  {d:'1986-02-18', t:'13:40', p:'Casablanca, MA', z:'Africa/Casablanca'},
- Callum:  {d:'1976-04-09', t:'06:15', p:'Dunedin, NZ', z:'Pacific/Auckland'},
- Hyunwoo: {d:'1990-11-26', t:'23:05', p:'Busan, KR', z:'Asia/Seoul'},
- Lucia:   {d:'1993-05-29', t:'08:20', p:'Bogota, CO', z:'America/Bogota'},
- Kwame:   {d:'1968-03-06', t:'19:30', p:'Accra, GH', z:'Africa/Accra'},
- Ingrid:  {d:'1981-08-13', t:'03:25', p:'Bergen, NO', z:'Europe/Oslo'},
- Rangi:   {d:'1985-10-01', t:'11:10', p:'Rotorua, NZ', z:'Pacific/Auckland'},
- Yusuf:   {d:'1997-01-16', t:'15:45', p:'Istanbul, TR', z:'Europe/Istanbul'},
- Helena:  {d:'1956-06-04', t:'09:50', p:'Vienna, AT', z:'Europe/Vienna'},
- Seun:    {d:'1987-07-19', t:'20:35', p:'Ibadan, NG', z:'Africa/Lagos'},
- Mateusz: {d:'1963-02-07', t:'05:55', p:'Milwaukee, WI', z:'America/Chicago'},
- Aroha:   {d:'1979-12-02', t:'17:15', p:'Gisborne, NZ', z:'Pacific/Auckland'},
- Linh:    {d:'1974-09-24', t:'01:30', p:'Da Nang, VN', z:'Asia/Ho_Chi_Minh'},
- Esperanza:{d:'1948-10-12', t:'12:05', p:'Guadalajara, MX', z:'America/Mexico_City'},
- Tariq:   {d:'1982-06-21', t:'06:40', p:'Karachi, PK', z:'Asia/Karachi'},
- Dalia:   {d:'1974-03-30', t:'10:25', p:'Haifa, IL', z:'Asia/Jerusalem'},
- Kofi:    {d:'1949-01-05', t:'14:50', p:'Kumasi, GH', z:'Africa/Accra'},
- Mei:     {d:'1995-05-10', t:'04:15', p:'Chengdu, CN', z:'Asia/Shanghai'}};
+ Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'}};
+ /* The four Lance profiles have no record here and are left without one: it
+    is his to enter, and a made up birth would be read back to him as his own.
+    A place this table does not name can carry its time zone, z, which settles
+    the clock offset for that year and lends the zone's own point as a horizon,
+    so Rising still resolves; the ladder used it and was cut in round QD. */
 /* FULL NAMES, because numerology reads the name on the certificate and not the
    one on the door. The roster carried first names only, so every name number
    in the product was computed off a nickname, which is the numerological
@@ -457,39 +272,8 @@ var FULLNAME={
  Ana:    'Ana Cristina Ferreira',
  Gordon: 'Gordon Blake Ashcroft',
  Tomas:  'Tomas Eduardo Ibarra',
- Nkem:   'Nkem Adaeze Okonkwo',
  Wren:   'Wren Josephine Halliday',
- Abraham:'Abraham Isaac Stern',
- Pavel:   'Pavel Tadeusz Wrobel',
- Marisol: 'Marisol Elena Trevino',
- Bilal:   'Bilal Hassan Qureshi',
- Keiko:   'Keiko Yuriko Matsuda',
- Declan:  'Declan Padraig Moloney',
- Zainab:  'Zainab Folake Adeyemi',
- Hamid:   'Hamid Reza Karimi',
- Beatrix: 'Beatrix Johanna Brouwer',
- Jonah:   'Jonah Samuel Thackeray',
- Anjali:  'Anjali Meenakshi Deshpande',
- Ola:     'Ola Margareta Lindqvist',
- Teo:     'Teo Matias Ferrante',
- Fatima:  'Fatima Zahra Bennani',
- Callum:  'Callum Angus Fraser',
- Hyunwoo: 'Hyunwoo Daniel Seo',
- Lucia:   'Lucia Camila Restrepo',
- Kwame:   'Kwame Yaw Asante',
- Ingrid:  'Ingrid Solveig Haugen',
- Rangi:   'Rangi Tane Parata',
- Yusuf:   'Yusuf Emre Demir',
- Helena:  'Helena Margarethe Gruber',
- Seun:    'Oluwaseun Ayodele Bakare',
- Mateusz: 'Mateusz Jan Kowal',
- Aroha:   'Aroha Mere Tamihana',
- Linh:    'Linh Thuy Nguyen',
- Esperanza:'Esperanza Guadalupe Robles',
- Tariq:   'Tariq Mahmood Siddiqui',
- Dalia:   'Dalia Ruth Mizrahi',
- Kofi:    'Kofi Nana Boateng',
- Mei:     'Mei Lin Zhou'};
+ Abraham:'Abraham Isaac Stern'};
 var ZSIGN=[[1,20,'Aquarius','air','fixed'],[2,19,'Pisces','water','mutable'],
  [3,21,'Aries','fire','cardinal'],[4,20,'Taurus','earth','fixed'],
  [5,21,'Gemini','air','mutable'],[6,21,'Cancer','water','cardinal'],

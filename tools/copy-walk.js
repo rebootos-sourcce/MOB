@@ -62,7 +62,7 @@ const sh=c=>{try{return cp.execSync(c,{encoding:'utf8',cwd:ROOT}).trim();}catch(
    anybody missing from PEOPLE is skipped, and the list is checked against it
    at run time. Heavy and light are both in, because copy that branches on the
    reading only shows when the reading is there. */
-const LOADED_FIRST=['Derek','Tomas','Angela','James','Nkem','Lance'];
+const LOADED_FIRST=['Derek','Tomas','Angela','James','Gordon','Lance 15','Lance 85'];
 const LOADED_BASE=null;        /* null: every persona in PEOPLE gets the tab pass */
 const CRAWL_LOADED=ONLY_CRAWL.length?ONLY_CRAWL:['Derek'];
 const WIDTHS=[[1600,1000,'desktop'],[390,844,'phone']];

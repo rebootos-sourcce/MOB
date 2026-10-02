@@ -209,13 +209,27 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  ok(m.bar.length>0&&m.bar.indexOf('masks')<0,'and the glass bar no Masks switch, got '+m.bar.join(','));
  ok(m.hits.slice().sort().join()===m.want.slice().sort().join(),'every read mask stands on the figure, got '+m.hits.join(','));
  ok(m.lit.every(x=>x.of>=20),'each patch has room for twenty stories or more, '+m.lit.map(x=>x.nm+' '+x.of).join(', '));
- ok(m.ents===0&&m.lit.every(x=>x.n===0),'Gordon is a worked example with no stories, so no mask lights a pixel, '
-  +m.ents+' entries, '+m.lit.map(x=>x.nm+' '+x.n).join(', '));
+ /* CHANGED IN ROUND QD. This held that Gordon, a worked example, had no
+    stories and so lit nothing. Every example now opens with its journal in
+    its record (engine/exdepth.js), so his masks light from his own entries
+    and from nothing else. The empty case, no story and no pixel, is held on
+    the person's own blank profile just below, before anything is committed. */
+ const gH=await page.evaluate(()=>(EXDEPTH_HIST.Gordon.e||[]).length);
+ ok(m.ents===gH&&gH>0&&m.lit.some(x=>x.n>0),'Gordon\'s masks light from his own journal, '
+  +m.ents+' entries of '+gH+', '+m.lit.map(x=>x.nm+' '+x.n).join(', '));
 
  /* the person's own profile, with stories committed the way a person does */
  const sp=await browser.newPage({viewport:{width:1600,height:1000}});
  const spErr=[];sp.on('pageerror',e=>spErr.push(e.message));
  await sp.goto(FILE,{waitUntil:'load'}); await booted(sp);
+ /* no story, no pixel: the own profile before its first commit */
+ await sp.evaluate(()=>{loadP(0);setTab(TAB.ENERGY);PMLAYER='map';render();});
+ await sp.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ await sp.waitForTimeout(300);
+ const none=await sp.evaluate(()=>{const r=compute();
+  return {ents:((CURP&&CURP.story&&CURP.story.entries)||[]).length,lit:BMG.masks.map(k=>({nm:k.nm,n:bmMaskLit(k,r)}))};});
+ ok(none.ents===0&&none.lit.every(x=>x.n===0),'a profile with no stories lights no mask, '
+  +none.ents+' entries, '+none.lit.map(x=>x.nm+' '+x.n).join(', '));
  const commit=async t=>{
   await sp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
    const ta=document.getElementById('sttext');ta.value=t;ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
@@ -647,7 +661,7 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   const pl=BMG.places.find(p=>bmSolidOn(p,0)), ps=bmW2S(bmPlaceX(pl,0),pl.y);
   out.addrBefore=bmPick(ps[0],ps[1]).place===pl;
   tap('addr'); out.addrAfter=bmPick(ps[0],ps[1]).place===pl; tap('addr');
-  out.masksOn=BM.sv.querySelectorAll('[data-bmmask]').length;
+  out.masksOn=BM.sv.querySelectorAll('[data-bmmask]').length; out.masksWant=MASKS_READ.length;
   tap('masks'); out.masksOff=BM.sv.querySelectorAll('[data-bmmask]').length; tap('masks');
   out.hubs0=BM.hubs.length; tap('cx'); out.hubsCx=BM.hubs.filter(h=>h.k==='cx').length;
   out.cxWant=Math.min(BMSABMAX,compute().cxs.length); tap('hy'); out.hubsHy=BM.hubs.filter(h=>h.k==='hy').length;
@@ -655,7 +669,10 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   return out;});
  ok(sw.sabBefore===true&&sw.sabAfter===false,'Saboteurs off takes the lines at rest off the figure, pointed at '+sw.sabBefore+' then '+sw.sabAfter);
  ok(sw.addrBefore===true&&sw.addrAfter===false,'Addresses off takes the addresses off, and nothing is left to point at');
- ok(sw.masksOn===5&&sw.masksOff===0,'Masks off takes every read mask off and their presses with them, '+sw.masksOn+' then '+sw.masksOff);
+ /* the count on is read and not typed: it was 5, every read mask on a
+    worked example with no stories, and round QD gave every example its
+    journal, so the masks carry their story presses as well (9 on Gordon) */
+ ok(sw.masksOn>=sw.masksWant&&sw.masksOff===0,'Masks off takes every read mask off and their presses with them, '+sw.masksOn+' then '+sw.masksOff);
  ok(sw.hubs0===0&&sw.hubsCx===sw.cxWant&&sw.hubsHy===sw.hyWant,'Complexes and Hyper complexes draw their hubs, eight at most, '
   +JSON.stringify(sw));
  /* a complex pressed on the figure, with the pointer, where its hub is */
@@ -4219,12 +4236,14 @@ console.log('\n=== a stranger is a stranger, whoever was on screen before ===');
    persisted them. Measured on a fresh page before the fix: loadP(0) alone
    gave unread true and measured 0; a trip through Lance and back gave unread false,
    measured 21, law mean 9.72 and the word Mastery, off Lance's numbers, on a
-   profile where nobody had entered anything. */
+   profile where nobody had entered anything. That Lance, the author at 92, was
+   cut in round QD; the trip now goes through Lance 100, every law at ten, the
+   loudest table there is to leak. */
 const base=await page.evaluate(()=>{loadP(0);const r=compute();
  return {unread:r.unread,measured:r.measured,
   laws:SINAMES.map(l=>S.law[l]).join(','),
   unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
-for(const via of ['Lance','James','Sofia']){
+for(const via of ['Lance 100','James','Sofia']){
  const s=await page.evaluate(v=>{const vi=PERSON(v);loadP(vi);loadP(0);const r=compute();
   return {unread:r.unread,measured:r.measured,nm:PEOPLE[vi].nm,
    laws:SINAMES.map(l=>S.law[l]).join(','),
@@ -4242,7 +4261,7 @@ const strg=await browser.newPage({viewport:{width:1600,height:1000}});
 await strg.goto(FILE,{waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(400);
 await strg.evaluate(()=>{try{localStorage.clear();}catch(e){}});
 await strg.reload({waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(700);
-const pris=await strg.evaluate(()=>{loadP(PERSON('Lance'));loadP(0);const r=compute();
+const pris=await strg.evaluate(()=>{loadP(PERSON('Lance 100'));loadP(0);const r=compute();
  return {unread:r.unread,measured:r.measured,tier:r.tier,
   unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
 ok(pris.unread===true,'a stranger who looked at a persona first is still unread');
@@ -4331,7 +4350,12 @@ console.log('\n=== the phone reaches everything it draws ===');
    so 996 pixels of that surface were unreachable. Story 432, Settings 402. */
 const ph=await browser.newPage({viewport:{width:390,height:844}});
 await ph.goto(FILE,{waitUntil:'load'}); await booted(ph); await ph.waitForTimeout(900);
-await ph.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Lance');loadP(i);});
+/* by name, and loud when the name is gone: round QD cut the Lance this read,
+   and findIndex handed -1 to loadP, which threw inside seedIntake with a
+   message about _seeded rather than about a missing person. Lance 15, the
+   heaviest of the four, so the phone is measured with the most drawn. */
+await ph.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Lance 15');
+ if(i<0)throw new Error('Lance 15 is not in the roster any more');loadP(i);});
 for(const [nm,t] of [['story',0],['summary',1],['field',2],['body',3],['intake',5],
                      ['know',6],['games',7],['compass',8],['settings',9]]){
  const o=await ph.evaluate(async t=>{setTab(t);await new Promise(r=>setTimeout(r,420));
@@ -4420,9 +4444,11 @@ console.log('\n=== a reading is not a score ===');
 for(const w of [[1600,1000],[390,844]]){
  const pg=await browser.newPage({viewport:{width:w[0],height:w[1]}});
  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(700);
- for(const who of ['Lance','Gordon','Sofia']){
+ /* Lance 85 stands where the Lance cut in round QD stood, the light end */
+ for(const who of ['Lance 85','Gordon','Sofia']){
   const hits=await pg.evaluate(async n=>{
-   const i=PEOPLE.findIndex(x=>x.nm===n); loadP(i);
+   const i=PEOPLE.findIndex(x=>x.nm===n);
+   if(i<0)throw new Error(n+' is not in the roster any more'); loadP(i);
    const bad=[];
    for(const t of [0,1,2,3,5,6,7,8,9]){
     setTab(t); await new Promise(r=>setTimeout(r,300));

@@ -757,7 +757,13 @@ function seedIntake(p){
   p.intakeAnswers[li*3+1]=Math.round(R*10)/10;
   p.intakeAnswers[li*3+2]=Math.round(N*10)/10;});}
 function loadP(i){
- var p=PEOPLE[i]; seedIntake(p); S.who=i; S.pin=null;
+ var p=PEOPLE[i];
+ /* refused by name. An index with nobody at it (a findIndex that found no one
+    hands back -1) used to throw inside seedIntake about _seeded, which says
+    nothing about a missing person. Round QD cut a roster that three callers
+    looked up by a name that went with it. */
+ if(!p)throw new Error('loadP: there is nobody at index '+i+' in a roster of '+PEOPLE.length);
+ seedIntake(p); S.who=i; S.pin=null;
  S.dom=p.dom;S.a1=p.a1;S.a2=p.a2;
  S.doms=p.doms?p.doms.slice():[p.dom];
  S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
@@ -868,6 +874,17 @@ function loadP(i){
     recognises (engine/plan.js), the same literal tests/seed.js's FULL_SIGHT
     and ui/lock.js's devSight already use to mean full sight. */
  if(!p.you)CURP.plan={tier:'four',status:'active',granted:0,carried:0,base:null,since:null,until:null};
+ /* AND EVERY WORKED EXAMPLE OPENS WITH A BANK AND A VAULT, round QD, his
+    words: "load up their bank and their vault. With real data." Its journal
+    and its releases are replayed through the real writers (engine/exdepth.js)
+    into this scratch record, once, the first time it is opened with none, and
+    S is put back exactly as the table set it above, so the reading is the
+    table's. Asked by what the record holds and not by whether it is new,
+    because the practitioner page makes these records blank before a first
+    load. A history the engine refuses is a defect in the table and says so. */
+ if(!p.you&&typeof exdepthFill==='function'&&!exdepthHas(CURP)){
+  try{exdepthFill(CURP,p,Date.now());}
+  catch(e){status('The history for '+p.nm+' did not load: '+((e&&e.message)||'error')+'.','fail');}}
  /* loadP fills S from the persona table rather than through loadProfile, so it
     is the one route that has to say for itself which record S now holds. */
  S.rec=CURP.id||null;
@@ -884,8 +901,10 @@ function loadP(i){
 
 /* ---- release button ---- */
 $('bRel').addEventListener('click',function(){
- var hot=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
- if(hot.length){relPick(hot.slice(0,8).map(function(n){return n.i;}));return;}
+ /* the heaviest eight, engine/compute.js relQueueOf: at or over the line
+    first, and below it when nothing is that heavy, for the reason below */
+ var hot=relQueueOf(8);
+ if(hot.length){relPick(hot.map(function(n){return n.i;}));return;}
  /* THIS IS WHERE THE REWARD CURVE ENDED. The queue was built at the sq 4 line
     only, so the control refused the moment nothing was stacked that high, and
     the core loop of the product had exactly two runs in it.
@@ -900,8 +919,8 @@ $('bRel').addEventListener('click',function(){
     the heaviest addresses actually holding something. The release run already
     handles them: it frees weight proportional to what is there, so the returns
     fall away honestly as the field empties instead of stopping at a cliff. */
- var warm=W.filter(function(n){return n.sq>0;}).sort(function(a,b){return b.sq-a.sq;});
- if(warm.length){relPick(warm.slice(0,8).map(function(n){return n.i;}));return;}
+ /* relQueueOf above has already taken that ground when nothing is over the
+    line, so reaching here means nothing is carrying at any depth. */
  /* Nothing is held, so there is nothing to release. This used to run a 2.8
     second animation that zeroed every charge and raised every law toward ten,
     on one click, with no confirmation and no undo. It was written as a
