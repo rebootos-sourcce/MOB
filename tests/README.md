@@ -65,6 +65,15 @@ binds `localStorage`.
                                to is engine/data/gloss.js. Shown against a known bad
                                block first, and against the build from before the
                                round, which it fails. Read the count off the run.
+    node tests/dailyui.js      the daily summary on the page, ui/daily.js: Today in
+                               the Summary's side column, one day frozen on the
+                               first open, the column printing that day sentence
+                               for sentence with every term carried, the aim set
+                               and marked through the boundary and kept across a
+                               reload, silent on nothing read, never frozen on a
+                               worked example, a refused save reported. Holds the
+                               Summary's percent and words-twice defects too. Fails
+                               on the build from before it. Read the count off the run.
     node tests/sound.js        the fittings, ui/sound.js: every sound rendered
                                offline under its ceiling and its cap, silent
                                off, under Quiet, before a press and inside a
