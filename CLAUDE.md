@@ -424,3 +424,5 @@ line number and the quotation, and which of the two should move.
 snippet privacy boundary and the practitioner model, with the open items named
 as open. Read it before proposing anything it already settles.
 `FEEDBACK-log.md` is one entry per piece of feedback that moved the product.
+
+**DELIVER, DO NOT POINT. Ruled 2 October, round PL.** His words: "Don't make me have to hunt for shit." Anything he needs to read or look at is SENT to him in the reply (attached, rendered, as a file or picture), never described as "it is in folder X". Reviews end with their tally attached. Mockups are sent as a playable file plus pictures. The live plan is re-sent after any change he asks about. Documents also go to his Drive folder `Atuned / From Claude`. A reply that says "see REVIEW-arch/..." is a defect.
