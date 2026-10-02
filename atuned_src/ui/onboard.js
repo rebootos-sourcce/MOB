@@ -212,7 +212,10 @@ function obSeatMark(b,share,cls){
    AT REST, which is most of the time a person spends here: the seat rings
    breathe on the Field's wave with the phase walking up the spine, root
    first, so the body takes a slow breath upward. The pools breathe under it.
-   Both are opacity only and run on the compositor.
+   The pools are layer opacity and run on the compositor. The rings are
+   stroke-opacity, which is a repaint and not free: seven circles of about
+   ten pixels, a few hundred pixels of paint a frame. Said so rather than
+   claimed free, which this line did until round QH measured it.
 
    WHAT THIS DOES NOT REOPEN, all ruled last round for reasons still true:
    no stock picture, no glossy figure with seven bright dots (the seats on the
