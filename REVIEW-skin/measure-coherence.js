@@ -214,7 +214,7 @@ function PROBE(arg){
   return canvases.some(c=>{const q=c.getBoundingClientRect();return x>q.left&&x<q.right&&y>q.top&&y<q.bottom;});};
 
  /* ---- collectors ---- */
- const mk=()=>({fs:{},fw:{},ff:{},tc:{},tce:{},fill:{},bd:{},bw:{},rad:{},sh:{},shg:{},
+ const mk=()=>({ffS:{},fs:{},fw:{},ff:{},tc:{},tce:{},fill:{},bd:{},bw:{},rad:{},sh:{},shg:{},
   stI:{},stIa:{},stF:{},cap:{},icSz:{},icCls:{},stCol:{},
   nText:0,chars:0,unres:{},fsChars:{},fwChars:{},fails:{},nFail:0,nFailLarge:0,nUnres:0,nChecked:0,minRatio:99,
   tiny:0,tinyS:{},caps:{},capsN:0,dash:0,dashS:[],glyph:{},
@@ -227,6 +227,7 @@ function PROBE(arg){
  const SKIP=/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|TITLE|HEAD|META|LINK|DEFS|CLIPPATH|MASK|MARKER|PATTERN|SYMBOL|OPTION|OPTGROUP)$/i;
  const GLY=/[←-⇿⌀-⏿■-◿☀-➿⬀-⯿]|\p{Extended_Pictographic}/gu;
 
+ const bodyFF=(cstyle(document.body).fontFamily.split(',')[0]||'').replace(/["']/g,'').trim();
  const TX=[];window.__TXEL=[];window.__TXCP=[];
  function trect(el,r){
   if(el instanceof SVGElement||/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))return r;
@@ -266,6 +267,7 @@ function PROBE(arg){
      const ff=(tcs.fontFamily.split(',')[0]||'').replace(/["']/g,'').trim();
      const fg0=parse(isSvgChild?cs.fill:(isPh?phs.color:tcs.color));
      const chars=t.length;
+     if(ff!==bodyFF)both(side,m=>{const a=m.ffS[ff]||(m.ffS[ff]={});if(Object.keys(a).length<5)a[sel(el)+(ps?' '+ps:'')+' "'+t.slice(0,12)+'"']=1;});
      both(side,m=>{m.nText++;m.chars+=chars;add(m.fs,num(fs)+'px',1,chars);add(m.fw,fw,1,chars);add(m.ff,ff,1,chars);});
      if(fs<12)both(side,m=>{m.tiny++;if(Object.keys(m.tinyS).length<8)m.tinyS[num(fs)+'px '+sel(el)+' "'+t.slice(0,18)+'"']=1;});
      /* voice rulings: no all caps copy, no em dashes, glyph icons are a style choice worth counting */
@@ -560,7 +562,7 @@ const median=a=>{if(!a.length)return 0;const s=[...a].sort((x,y)=>x-y);return s[
 
 function digest(raw){ /* raw = one PROBE result's .all or .host */
  const o={};
- o.size=summarise(raw.fs);o.weight=summarise(raw.fw);o.family=summarise(raw.ff);
+ o.size=summarise(raw.fs);o.weight=summarise(raw.fw);o.family=summarise(raw.ff);o.family.samples=Object.fromEntries(Object.entries(raw.ffS||{}).map(([k,v])=>[k,Object.keys(v)]));
  o.textColor=summarise(raw.tc,true);o.textEff=summarise(raw.tce,true);
  o.fill=summarise(raw.fill,true);o.border=summarise(raw.bd,true);o.borderW=summarise(raw.bw);
  o.radius=summarise(raw.rad);o.shadow=summarise(raw.sh);o.shadowGeom=summarise(raw.shg);
@@ -703,6 +705,14 @@ async function selftest(browser){
 /* ---------------------------------------------------------------
    MAIN
    --------------------------------------------------------------- */
+/* Wait until the surface has stopped changing: the same element count and host markup length on two reads half a
+   second apart. A fixed sleep measured the Story as a half drawn page under load (5 sizes, 16 controls, against
+   11 and 36 on the next two runs), which is a flake in the gate and a flake is a defect. */
+const waitStable=async(page,hostId)=>{let last=null;
+ for(let i=0;i<16;i++){
+  const cur=await page.evaluate(h=>{const e=document.getElementById(h);return document.body.querySelectorAll('*').length+':'+(e?e.innerHTML.length:0)+':'+(document.body.className);},hostId);
+  if(cur===last)return i;last=cur;await page.waitForTimeout(500);}
+ return -1;};
 const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
 const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
 
@@ -724,6 +734,7 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  for(const W of WIDTHS){
   const page=await browser.newPage({viewport:{width:W,height:HEIGHT[W]||900}});
   page.on('pageerror',e=>errs.push(W+': '+String(e.message)));
+  page.on('request',r=>{const u=r.url();if(!/^(file|data|blob|about):/.test(u))(out.requests=out.requests||[]).push(u);});
   await page.goto('file://'+FILE+'?dev=1');await booted(page);await page.waitForTimeout(400);
   const surfaces=await page.evaluate(()=>{const a=TABDEF.map(t=>({nm:t.nm,k:t.k,id:t.id,sec:t.sec||null,door:true}));
    Object.keys(TABEXTRA).forEach(k=>{const t=TABEXTRA[k];a.push({nm:t.nm,k:t.k,id:t.id,sec:null,door:false});});return a;});
@@ -733,6 +744,7 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
   for(const s of run){
    await page.evaluate(a=>{if(a.p>=0)loadP(a.p);setTab(a.k);render();},{p:PROFILE,k:s.k});
    await page.waitForTimeout(SETTLE);
+   const stab=await waitStable(page,s.id);if(stab<0)out.unstable=(out.unstable||[]).concat([W+' '+s.nm]);
    const raw=await page.evaluate(PROBE,{hostIds,hostId:s.id});
    const stateOk=await page.evaluate(k=>S.tab===TABREAL(k),s.k);
    const theme=await page.evaluate(()=>S.theme||document.body.className);
@@ -779,6 +791,9 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
   L.push('| '+LBL[k]+' | '+W+' | '+d.distinct+' | '+(d.families||'')+' | '+r.inMany+' | '+r.onOne+' | '+d.top5pct+'% | '+fmtTop(d,3).replace(/\|/g,'/')+' |');}
 
  const DIMS=[['fs','text sizes'],['fw','weights'],['tce','text ink'],['fill','fills'],['bd','border colours'],['rad','radii'],['shg','shadow geometry'],['stIa','icon stroke authored'],['icSz','icon sizes']];
+ {const fam={};for(const W of WIDTHS)names.forEach(n=>{const sm=out.widths[W].surfaces[n].all.family.samples;Object.entries(sm).forEach(([k,v])=>{(fam[k]=fam[k]||new Set());v.forEach(x=>fam[k].add(x));});});
+  L.push('','### Text not set in the house font ('+Object.keys(fam).join(', ')+'): first samples','');Object.entries(fam).forEach(([k,v])=>L.push('- '+k+': '+[...v].slice(0,8).join('; ')));
+  L.push('','Requests that were not file, data, blob or about: '+((out.requests||[]).length)+((out.requests||[]).length?' '+(out.requests||[]).slice(0,5).join(' '):'')+'. Surfaces still changing after 8 seconds: '+((out.unstable||[]).join(', ')||'none')+'.');}
  L.push('','### Coherence summary (not a grade: two ratios a skin can move)','');
  L.push('| width | concentration: mean share of uses covered by the top 5 values, over nine dimensions | local dialect: values seen on one surface only, as a share of all distinct values | text under 12px, share of characters |','|---|---|---|---|');
  for(const W of WIDTHS){
