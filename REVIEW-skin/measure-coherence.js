@@ -15,8 +15,8 @@
      --md PATH          write the markdown tables to a file (stdout always gets them)
      --widths 1600,390  default both
      --profile N        loadP(N), default 3 (Marcus, example). --profile -1 = blank
-     --verify           second opinion on every flagged contrast failure: hide its
-                        glyphs, photograph the box, compare the real ground pixel
+     (contrast is always checked twice: from the CSS cascade, and again from a
+      photograph of the page with every glyph blanked. See PIXHIDE.)
      --selftest         run only the fixture self-test, then exit
      --baseline PATH    a --json file from an earlier run to compare against
      --gate             exit 1 if any "lower is better" metric got worse
@@ -68,7 +68,6 @@ const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
    THE IN PAGE PROBE. Self contained: Playwright serialises its source.
    --------------------------------------------------------------- */
 function PROBE(arg){
- window.__flag=[];window.__flagKeys={};
  const hostIds=arg.hostIds, activeHost=arg.hostId;
  const IW=window.innerWidth, IH=window.innerHeight;
  const cv=document.createElement('canvas');cv.width=cv.height=1;
@@ -221,6 +220,13 @@ function PROBE(arg){
  const SKIP=/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|TITLE|HEAD|META|LINK|DEFS|CLIPPATH|MASK|MARKER|PATTERN|SYMBOL|OPTION|OPTGROUP)$/i;
  const GLY=/[←-⇿⌀-⏿■-◿☀-➿⬀-⯿]|\p{Extended_Pictographic}/gu;
 
+ const TX=[];window.__TXEL=[];
+ function trect(el,r){
+  if(el instanceof SVGElement||/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))return r;
+  const nodes=[...el.childNodes].filter(n=>n.nodeType===3&&n.nodeValue.trim());
+  if(!nodes.length)return r;
+  const g=document.createRange();g.setStartBefore(nodes[0]);g.setEndAfter(nodes[nodes.length-1]);
+  const q=g.getBoundingClientRect();return (q.width>0&&q.height>0)?q:r;}
  const all=document.body.querySelectorAll('*');
  for(const el of all){
   if(SKIP.test(el.tagName))continue;
@@ -275,7 +281,7 @@ function PROBE(arg){
      let unres=gr.unresolved;
      if(!unres&&overCanvas(r)){
       /* the canvas paints over any layer that contains it and under any layer that does not */
-      const cc=canvasCands(r);
+      const cc=canvasCands(trect(el,r));
       if(!cc||cc.fail)unres=cc?cc.fail:'over canvas';
       else{gr=resolve(gr.L.filter(l=>!l.o||!l.o.contains(cc.hit)),null,cc.cand,false);}}
      const disabled=el.disabled||el.closest('[disabled],[aria-disabled=true]');
@@ -285,13 +291,13 @@ function PROBE(arg){
      if(unres){both(side,m=>{m.nUnres++;const u=m.unres[unres]||(m.unres[unres]={n:0,s:{}});u.n++;if(Object.keys(u.s).length<6)u.s[sel(el)]=1;});continue;}
      if(disabled)continue;
      const large=fs>=24||(fs>=18.66&&+fw>=700);
+     if(!ps){const tr=trect(el,r);window.__TXEL.push(el);TX.push({x:tr.left+scrollX,y:tr.top+scrollY,w:tr.width,h:tr.height,fg:[fg[0],fg[1],fg[2],fg[3]],css:+worst.q.toFixed(2),large,side,fs:num(fs),fw,sel:sel(el),sample:t.slice(0,28),e:hex(worst.e),g:hex(worst.g)});}
      both(side,m=>{m.nChecked++;if(worst.q<m.minRatio)m.minRatio=worst.q;
       if(worst.q<4.5){
        if(large&&worst.q>=3){m.nFailLarge++;}
        else{m.nFail++;}
        {const k=hex(worst.e)+'|'+hex(worst.g)+'|'+num(fs);
-       if(m===A&&!window.__flagKeys[k]){window.__flagKeys[k]=window.__flag.length;window.__flag.push(el);}
-       const f=m.fails[k]||(m.fails[k]={n:0,ratio:+worst.q.toFixed(2),fg:hex(worst.e),bg:hex(worst.g),fs:num(fs),fw,large:large&&worst.q>=3,sample:t.slice(0,28),sel:sel(el),fi:m===A?window.__flagKeys[k]:-1,svg:isSvgChild});
+       const f=m.fails[k]||(m.fails[k]={n:0,ratio:+worst.q.toFixed(2),fg:hex(worst.e),bg:hex(worst.g),fs:num(fs),fw,large:large&&worst.q>=3,sample:t.slice(0,28),sel:sel(el)});
        f.n++;}}});
     }}}
 
@@ -376,55 +382,99 @@ function PROBE(arg){
  }
  const trim=m=>{m.tap.sort((a,b)=>a.m-b.m);return m;};
  trim(A);trim(H);
- return {all:A,host:H,counts,
+ return {all:A,host:H,counts,texts:TX,
   doc:{scrollW:document.documentElement.scrollWidth,scrollH:document.documentElement.scrollHeight,iw:IW,ih:IH,
    overflowX:document.documentElement.scrollWidth-IW,canvases:canvases.length,
    svgs:document.querySelectorAll('svg').length,els:all.length}};
 }
 
-/* VERIFY: a second opinion that does not use the CSS cascade at all. Hide the
-   glyphs of a flagged element, photograph the box, and take the commonest
-   pixel as the ground. If the ground the probe computed from CSS is not what
-   the screen shows, the probe was lying about that element. */
-function HIDE(i){
- const el=window.__flag[i];if(!el)return null;
- el.scrollIntoView({block:'center',inline:'center'});
- let r;
- if(el instanceof SVGElement)r=el.getBoundingClientRect();
- else{const tn=[...el.childNodes].find(n=>n.nodeType===3&&n.nodeValue.trim());
-  if(tn){const g=document.createRange();g.selectNodeContents(tn);r=g.getBoundingClientRect();}else r=el.getBoundingClientRect();}
- window.__saved=[el,el.getAttribute('style')];
- el.style.setProperty('color','transparent','important');el.style.setProperty('fill','transparent','important');
- el.style.setProperty('text-shadow','none','important');el.style.setProperty('-webkit-text-fill-color','transparent','important');
- if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){el.classList.add('__ph');
-  if(!document.getElementById('__phs')){const st=document.createElement('style');st.id='__phs';st.textContent='.__ph::placeholder{color:transparent !important}';document.head.appendChild(st);}}
- return {x:Math.max(0,r.left+1),y:Math.max(0,r.top+1),w:Math.max(2,Math.min(r.width-2,innerWidth-r.left)),h:Math.max(2,Math.min(r.height-2,innerHeight-r.top))};}
-function SHOW(){const [el,st]=window.__saved;if(st===null)el.removeAttribute('style');else el.setAttribute('style',st);el.classList.remove('__ph');}
-async function MODECOLOUR(b64){
- const blob=await (await fetch('data:image/png;base64,'+b64)).blob();const bm=await createImageBitmap(blob);
- const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;const x=c.getContext('2d');x.drawImage(bm,0,0);
- const d=x.getImageData(0,0,c.width,c.height).data,h={};
- for(let i=0;i<d.length;i+=4){const k=(d[i]>>2)+','+(d[i+1]>>2)+','+(d[i+2]>>2);h[k]=(h[k]||0)+1;}
- let best=null,bn=0;for(const k in h)if(h[k]>bn){bn=h[k];best=k;}
- const q=best.split(',').map(v=>v*4+2);return q;}
-const lumN=c=>{const l=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};return 0.2126*l(c[0])+0.7152*l(c[1])+0.0722*l(c[2]);};
-const ratioN=(a,b)=>{const x=lumN(a),y=lumN(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);};
-const hexRGB=h=>{const n=parseInt(h.slice(1,7),16);return [n>>16&255,n>>8&255,n&255];};
-async function verifyFails(page,helper,fails,limit){
- const res={checked:0,confirmed:0,falsePositive:0,groundMismatch:0,items:[]};
- for(const f of fails.filter(x=>!x.large&&x.fi>=0).slice(0,limit)){
-  const r=await page.evaluate(HIDE,f.fi);if(!r||r.w<2||r.h<2)continue;
-  let b64;try{b64=(await page.screenshot({clip:{x:r.x,y:r.y,width:r.w,height:r.h}})).toString('base64');}catch(e){await page.evaluate(SHOW);continue;}
-  await page.evaluate(SHOW);
-  const px=await helper.evaluate(MODECOLOUR,b64);
-  const ours=hexRGB(f.bg),fg=hexRGB(f.fg);
-  const d=Math.max(Math.abs(px[0]-ours[0]),Math.abs(px[1]-ours[1]),Math.abs(px[2]-ours[2]));
-  const rp=+ratioN(fg,px).toFixed(2);
-  res.checked++;
-  const match=d<=10;if(!match)res.groundMismatch++;
-  const conf=rp<4.5;if(conf)res.confirmed++;else res.falsePositive++;
-  res.items.push({sel:f.sel,sample:f.sample,fs:f.fs,fg:f.fg,oursBg:f.bg,pixelBg:'rgb('+px.join(',')+')',oursRatio:f.ratio,pixelRatio:rp,groundMatch:match,confirmed:conf});}
+/* THE PIXEL ORACLE. The CSS cascade is a model of what the screen shows, and a
+   model can be wrong: a chip painted by a sibling, a canvas wash that varies
+   across a block, an ancestor with opacity. So every checked piece of text is
+   also measured against the real screen. PIXHIDE blanks every glyph in the
+   document (colour, fill, shadow, placeholder) without moving anything; the
+   caller photographs the whole page; PIXREAD then takes the commonest pixel
+   inside each text's own box as the ground and recomputes the ratio with the
+   ink the CSS pass found. Text the photograph cannot reach (inside a scrolled
+   container) keeps its CSS verdict and is counted as unphotographed. */
+function PIXHIDE(on){
+ let st=document.getElementById('__pixhide');
+ if(on&&!st){st=document.createElement('style');st.id='__pixhide';
+  st.textContent='*,*::before,*::after{color:transparent !important;-webkit-text-fill-color:transparent !important;text-shadow:none !important;caret-color:transparent !important}svg text,svg tspan{fill:transparent !important;stroke:none !important}::placeholder{color:transparent !important;-webkit-text-fill-color:transparent !important}';
+  document.head.appendChild(st);}
+ if(!on&&st)st.remove();
+ return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight};}
+async function PIXREAD(arg){
+ const blob=await (await fetch('data:image/png;base64,'+arg.b64)).blob();const bm=await createImageBitmap(blob);
+ const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(bm,0,0);
+ const lin=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};
+ const lum=q=>0.2126*lin(q[0])+0.7152*lin(q[1])+0.0722*lin(q[2]);
+ const out=[];
+ for(const t of arg.texts){
+  const X=Math.max(0,Math.floor(t.x)),Y=Math.max(0,Math.floor(t.y)),W=Math.min(bm.width-X,Math.ceil(t.w)),H=Math.min(bm.height-Y,Math.ceil(t.h));
+  if(W<2||H<2||t.y>=bm.height||t.x>=bm.width){out.push(null);continue;}
+  const d=x.getImageData(X,Y,W,H).data,h={};
+  for(let i=0;i<d.length;i+=4){const k=(d[i]>>2)+','+(d[i+1]>>2)+','+(d[i+2]>>2);h[k]=(h[k]||0)+1;}
+  let best=null,bn=0;for(const k in h)if(h[k]>bn){bn=h[k];best=k;}
+  const g=best.split(',').map(v=>v*4+2);
+  const a=t.fg[3],f=[t.fg[0]*a+g[0]*(1-a),t.fg[1]*a+g[1]*(1-a),t.fg[2]*a+g[2]*(1-a)];
+  const L1=lum(f),L2=lum(g);
+  out.push({g,r:+((Math.max(L1,L2)+0.05)/(Math.min(L1,L2)+0.05)).toFixed(2),f:f.map(Math.round)});}
+ return out;}
+/* Scroll containers: the window, and any element that scrolls its own content. A
+   photograph of the viewport only shows what is in the viewport, and this app
+   scrolls inside .stage while the document itself stays one screen tall, so a
+   "full page" screenshot of it is a viewport with black padding. (The first
+   cut of this oracle did exactly that and read dark ink on a dark ground for
+   a button that is bright blue. The fixture could not have caught it because
+   the fixture does not scroll.) So each text is photographed at a scroll
+   position where its whole box is on screen and the hit test finds it. */
+function PIXSCROLLERS(){
+ window.__SC=[];
+ const out=[{i:-1,total:document.documentElement.scrollHeight,view:innerHeight}];
+ [...document.querySelectorAll('body,body *')].forEach(e=>{
+  if(e.clientHeight>40&&e.scrollHeight>e.clientHeight+8&&/(auto|scroll)/.test(getComputedStyle(e).overflowY)){window.__SC.push(e);out.push({i:window.__SC.length-1,total:e.scrollHeight,view:e.clientHeight});}});
+ return out;}
+function PIXSCROLL(a){
+ window.__SC.forEach(e=>{e.scrollTop=0;});window.scrollTo(0,0);
+ if(a.i<0)window.scrollTo(0,a.off);else window.__SC[a.i].scrollTop=a.off;
+ return true;}
+function PIXRECTS(pending){
+ const out=[];
+ for(const i of pending){
+  const el=window.__TXEL[i];if(!el||!el.isConnected)continue;
+  let r;
+  if(el instanceof SVGElement||/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))r=el.getBoundingClientRect();
+  else{const nodes=[...el.childNodes].filter(n=>n.nodeType===3&&n.nodeValue.trim());
+   if(!nodes.length)continue;const g=document.createRange();g.setStartBefore(nodes[0]);g.setEndAfter(nodes[nodes.length-1]);r=g.getBoundingClientRect();
+   if(!(r.width>0&&r.height>0))r=el.getBoundingClientRect();}
+  if(r.width<2||r.height<2||r.left<0||r.top<0||r.right>innerWidth||r.bottom>innerHeight)continue;
+  const hit=document.elementsFromPoint((r.left+r.right)/2,(r.top+r.bottom)/2);
+  if(!hit.includes(el)&&getComputedStyle(el).pointerEvents!=='none')continue;
+  out.push({i,x:r.left,y:r.top,w:r.width,h:r.height});}
+ return out;}
+async function pixelPass(page,helper,texts){
+ const res=texts.map(()=>null);
+ let pending=texts.map((t,i)=>i);
+ const scs=await page.evaluate(PIXSCROLLERS);
+ for(const sc of scs){
+  if(!pending.length)break;
+  const step=Math.max(30,Math.floor(sc.view*0.6));
+  for(let off=0;off<=Math.max(0,sc.total-sc.view)+1&&pending.length;off+=step){
+   await page.evaluate(PIXSCROLL,{i:sc.i,off});
+   const got=await page.evaluate(PIXRECTS,pending);
+   if(!got.length)continue;
+   await page.evaluate(PIXHIDE,true);
+   let b64=null;try{b64=(await page.screenshot()).toString('base64');}catch(e){}
+   await page.evaluate(PIXHIDE,false);
+   if(!b64)continue;
+   const rd=await helper.evaluate(PIXREAD,{b64,texts:got.map(g=>({x:g.x,y:g.y,w:g.w,h:g.h,fg:texts[g.i].fg}))});
+   got.forEach((g,k)=>{if(rd[k]){res[g.i]=rd[k];}});
+   const done=new Set(got.filter((g,k)=>rd[k]).map(g=>g.i));
+   pending=pending.filter(i=>!done.has(i));}}
+ await page.evaluate(PIXSCROLL,{i:-1,off:0});
  return res;}
+const toHex=c=>'#'+c.map(v=>('0'+Math.max(0,Math.min(255,Math.round(v))).toString(16)).slice(-2)).join('');
 
 /* ---------------------------------------------------------------
    NODE SIDE: aggregation
@@ -470,6 +520,25 @@ function digest(raw){ /* raw = one PROBE result's .all or .host */
   median:median(hard.map(t=>t.m)),min:hard.length?hard[0].m:null,worst:hard.slice(0,8)};
  return o;}
 
+/* Combine the CSS verdict and the photograph. Where the screen was photographed the
+   photograph decides; where it was not, the CSS verdict stands and is counted. */
+function contrastOf(texts,px,side){
+ const o={checked:0,photographed:0,fail:0,failLargeOnly:0,falsePos:0,falseNeg:0,min:null,fails:[]};
+ const g={};
+ texts.forEach((t,i)=>{
+  if(side&&t.side!==side)return;
+  o.checked++;
+  const cssBad=t.css<4.5&&!(t.large&&t.css>=3);
+  const p=px[i];let r=t.css,bad=cssBad,fgHex=t.e,gHex=t.g,largeOnly=t.large&&t.css<4.5&&t.css>=3;
+  if(p){o.photographed++;r=p.r;bad=p.r<4.5&&!(t.large&&p.r>=3);largeOnly=t.large&&p.r<4.5&&p.r>=3;fgHex=toHex(p.f);gHex=toHex(p.g);
+   if(cssBad&&!bad)o.falsePos++;if(!cssBad&&bad)o.falseNeg++;}
+  if(o.min===null||r<o.min)o.min=r;
+  if(largeOnly)o.failLargeOnly++;
+  if(bad){o.fail++;const k=fgHex+'|'+gHex+'|'+t.fs;
+   const f=g[k]||(g[k]={n:0,ratio:r,fg:fgHex,bg:gHex,fs:t.fs,fw:t.fw,sample:t.sample,sel:t.sel,photo:!!p});f.n++;}});
+ o.fails=Object.values(g).sort((a,b)=>a.ratio-b.ratio);
+ return o;}
+
 /* ---------------------------------------------------------------
    SELF TEST: a fixture with answers known by hand
    --------------------------------------------------------------- */
@@ -489,6 +558,7 @@ const FIXTURE=`<!doctype html><meta charset=utf-8><body style="margin:0;backgrou
 <div style="position:relative;height:30px"><canvas id=cA width=100 height=30 style="position:absolute;left:0;top:0;width:100px;height:30px"></canvas><span style="position:relative;font:400 16px Arial;color:#fff">white on black canvas</span></div>
 <div style="position:relative;height:30px"><canvas id=cB width=100 height=30 style="position:absolute;left:0;top:0;width:100px;height:30px"></canvas><span style="position:relative;font:400 17px Arial;color:#fff">white on grey canvas</span></div>
 <script>document.getElementById('cA').getContext('2d').fillRect(0,0,100,30);var xb=document.getElementById('cB').getContext('2d');xb.fillStyle='#888888';xb.fillRect(0,0,100,30);</script>
+<div id=sc style="height:100px;overflow:auto;background:#000"><div style="height:400px"></div><p id=sp style="margin:0;background:#00aaff;color:#001018;font:400 16px Arial">scrolled text</p><div style="height:200px"></div></div>
 <div style="overflow:hidden;height:0"><p id=g1 style="margin:0;font:400 31px Arial;color:#111">ghost clipped</p></div>
 <p id=g2 style="margin:0;display:none;font:400 33px Arial">ghost none</p>
 <p id=g3 style="margin:0;position:absolute;left:-999px;font:400 35px Arial">ghost offscreen</p>
@@ -500,11 +570,11 @@ async function selftest(browser){
  const r=await p.evaluate(PROBE,{hostIds:['h'],hostId:'h'});
  await p.close();
  const A=r.all,d=digest(A),bad=[];
- /* the oracle itself is checked against the fixture before it is trusted */
+ /* the pixel oracle is checked against the fixture before it is trusted */
  const hp=await browser.newPage();await hp.goto('about:blank');
  const p3=await browser.newPage({viewport:{width:400,height:700}});await p3.setContent(FIXTURE);
  const r3=await p3.evaluate(PROBE,{hostIds:['h'],hostId:'h'});
- const vf=await verifyFails(p3,hp,Object.values(r3.all.fails).map(f=>f),20);
+ const px3=await pixelPass(p3,hp,r3.texts);
  await p3.close();await hp.close();
  const near=(a,b,t)=>Math.abs(a-b)<=t;
  const f=k=>A.fails[Object.keys(A.fails).find(x=>x.endsWith('|'+k))];
@@ -524,7 +594,7 @@ async function selftest(browser){
  chk('large bold half black is a large-text pass (3.98 >= 3), not a failure',A.nFailLarge===1&&A.nFail===4&&Object.values(A.fails).filter(x=>x.fs==='24').every(x=>x.large),[A.nFailLarge,A.nFail]);
  chk('black on white not a failure',!Object.values(A.fails).some(x=>x.sample==='black on white'),A.fails);
  chk('svg white on black passes (ground from the rect under it)',!Object.values(A.fails).some(x=>/svg white/.test(x.sample)),A.fails);
- chk('four ghosts add no text elements: 10 visible (t1..t5, b1, b2, the svg text, two canvas spans)',A.nText===10,A.nText);
+ chk('four ghosts add no text elements: 11 visible (t1..t5, b1, b2, the svg text, two canvas spans, one text inside a scroller)',A.nText===11,A.nText);
  chk('text over a 2D canvas reads the canvas pixels: white on black passes, white on #888 = 3.54 fails',!Object.values(A.fails).some(x=>/black canvas/.test(x.sample))&&Object.values(A.fails).some(x=>/grey canvas/.test(x.sample)&&near(x.ratio,3.54,0.05))&&A.nUnres===0,[A.nUnres,A.fails]);
  /* taps: b1 20px, b2 48px */
  chk('two taps found',A.nTap===2,A.nTap);
@@ -540,8 +610,15 @@ async function selftest(browser){
  chk('icon classes 2 ring 1 solid',A.icCls.ring&&A.icCls.ring.n===2&&A.icCls.solid&&A.icCls.solid.n===1,A.icCls);
  chk('icon sizes 24 48 16 (and the 200px svg is a figure)',A.icSz['24px']&&A.icSz['48px']&&A.icSz['16px']&&!A.icSz['200px'],A.icSz);
  /* parser alone, through the page */
- chk('verify oracle: 4 non large fixture failures; the three flat grounds are confirmed by pixels, and the gradient worst case (white stop, black under the text) is correctly exposed as a false positive',
-  vf.checked===4&&vf.confirmed===3&&vf.falsePositive===1&&vf.items.filter(i=>i.groundMatch).length===3&&vf.items.find(i=>/gradient/.test(i.sample)&&!i.groundMatch&&!i.confirmed),vf);
+ const byS=sm=>{const i=r3.texts.findIndex(t=>t.sample.indexOf(sm)===0);return i<0?null:{css:r3.texts[i].css,px:px3[i]&&px3[i].r};};
+ const P={black:byS('black on white'),grey:byS('grey on white'),mix:byS('white on mix'),grad:byS('white on gradient'),cb:byS('white on black canvas'),cg:byS('white on grey canvas'),svg:byS('svg white'),sp:byS('scrolled text')};
+ chk('pixel oracle: black on white photographs as 21 (+-0.3)',P.black&&P.black.px&&near(P.black.px,21,0.3),P);
+ chk('pixel oracle: #777 on white photographs near 4.48 (+-0.1)',P.grey&&P.grey.px&&near(P.grey.px,4.48,0.1),P.grey);
+ chk('pixel oracle: color-mix ground photographs near 3.95 (+-0.15)',P.mix&&P.mix.px&&near(P.mix.px,3.95,0.15),P.mix);
+ chk('pixel oracle: gradient is a CSS false positive (css 1.0, pixels well above 4.5)',P.grad&&P.grad.css<1.2&&P.grad.px>4.5,P.grad);
+ chk('pixel oracle: canvas black 21 and canvas grey 3.54 (+-0.15)',P.cb&&P.cb.px>20&&P.cg&&near(P.cg.px,3.54,0.15),[P.cb,P.cg]);
+ chk('pixel oracle: text far down inside a scroller is reached by scrolling and reads its own bright ground (about 8.6, not the 1.0 of a black padded screenshot)',P.sp&&P.sp.px>7&&P.sp.px<10,P.sp);
+ chk('pixel oracle: svg text over a rect reads 21',P.svg&&P.svg.px>20,P.svg);
  const p2=await browser.newPage();await p2.setContent('<body>');
  const pr=await p2.evaluate(()=>{const cv=document.createElement('canvas');cv.width=cv.height=1;const cx=cv.getContext('2d',{willReadFrequently:true});
   const t=s=>{cx.fillStyle='#010203';cx.fillStyle=s;return cx.fillStyle;};
@@ -568,8 +645,7 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  if(opt('selftest',false)){await browser.close();return;}
 
  const out={file:FILE,profile:PROFILE,theme:null,widths:{},when:new Date().toISOString()};
- const VERIFY=!!opt('verify',false);
- const helper=VERIFY?await browser.newPage():null;if(helper)await helper.goto('about:blank');
+ const helper=await browser.newPage();await helper.goto('about:blank');
  const errs=[];
  for(const W of WIDTHS){
   const page=await browser.newPage({viewport:{width:W,height:HEIGHT[W]||900}});
@@ -587,8 +663,10 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
    const theme=await page.evaluate(()=>S.theme||document.body.className);
    out.theme=theme;
    out.widths[W].surfaces[s.nm]={meta:s,stateOk,counts:raw.counts,doc:raw.doc,all:digest(raw.all),host:digest(raw.host),rawAll:raw.all};
-   if(VERIFY){const dg=out.widths[W].surfaces[s.nm].all;
-    dg.verify=await verifyFails(page,helper,dg.contrast.fails,40);}
+   const px=await pixelPass(page,helper,raw.texts);
+   const rec=out.widths[W].surfaces[s.nm];
+   rec.all.contrast=Object.assign(contrastOf(raw.texts,px,null),{unresolved:rec.all.contrast.unresolved,unresWhy:rec.all.contrast.unresWhy,css:{fail:rec.all.contrast.fail,min:rec.all.contrast.min}});
+   rec.host.contrast=contrastOf(raw.texts,px,'host');
   }
   await page.close();
  }
@@ -631,10 +709,25 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  for(const W of WIDTHS){
   const S=out.widths[W].surfaces;
   L.push('', '**'+W+' wide**','');
-  L.push('| surface | min contrast | fails (non large) | unresolved ground | smallest tap | median tap | above the fold taps | all caps | em dash | glyph icons | h overflow px |');
-  L.push('|---|---|---|---|---|---|---|---|---|---|---|');
+  L.push('| surface | min contrast (pixels) | fails (pixels) | css said fail, pixels disagree (false+) | css said pass, pixels fail (false-) | photographed of checked | unresolved ground | smallest tap | median tap | above the fold taps | all caps | em dash | glyph icons | h overflow px |');
+  L.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
   for(const n of names){const d=S[n].all;
-   L.push('| '+n+' | '+(d.contrast.min===null?'n/a':d.contrast.min)+' | '+d.contrast.fail+' | '+d.contrast.unresolved+' | '+(d.tap.min===null?'n/a':d.tap.min+'px')+' | '+d.tap.median+'px | '+d.tap.fold+' | '+d.text.caps+' | '+d.text.dash+' | '+d.text.glyph.reduce((s,g)=>s+g[1],0)+' | '+Math.max(0,S[n].doc.overflowX)+' |');}
+   L.push('| '+n+' | '+(d.contrast.min===null?'n/a':d.contrast.min)+' | '+d.contrast.fail+' | '+d.contrast.falsePos+' | '+d.contrast.falseNeg+' | '+d.contrast.photographed+' of '+d.contrast.checked+' | '+d.contrast.unresolved+' | '+(d.tap.min===null?'n/a':d.tap.min+'px')+' | '+d.tap.median+'px | '+d.tap.fold+' | '+d.text.caps+' | '+d.text.dash+' | '+d.text.glyph.reduce((s,g)=>s+g[1],0)+' | '+Math.max(0,S[n].doc.overflowX)+' |');}
+ }
+ /* findings: the actual offenders, deduplicated across surfaces */
+ for(const W of WIDTHS){
+  const S=out.widths[W].surfaces,seenF={},fl=[];
+  names.forEach(n=>S[n].all.contrast.fails.forEach(f=>{const k=f.sel+'|'+f.sample+'|'+f.fg+'|'+f.bg;if(!seenF[k]){seenF[k]=1;fl.push(Object.assign({surface:n},f));}else seenF[k]++;}));
+  fl.sort((a,b)=>a.ratio-b.ratio);
+  L.push('','### '+W+' wide: contrast failures under 4.5 (pixel verified, unique by element, '+fl.length+' unique)','');
+  L.push('| ratio | ink on ground | px | element | text | first seen on |','|---|---|---|---|---|---|');
+  fl.slice(0,40).forEach(f=>L.push('| '+f.ratio+' | '+f.fg+' on '+f.bg+' | '+f.fs+' | '+f.sel+' | '+f.sample.replace(/\|/g,'/')+' | '+f.surface+' |'));
+  const tl=[],seenT={};
+  names.forEach(n=>S[n].all.tap.worst.forEach(t=>{const k=t.sel+'|'+t.n;if(!seenT[k]){seenT[k]=1;tl.push(Object.assign({surface:n},t));}}));
+  tl.sort((a,b)=>a.m-b.m);
+  L.push('','### '+W+' wide: smallest tap targets (unique, under 44)','');
+  L.push('| smaller side | size | element | name | surface |','|---|---|---|---|---|');
+  tl.filter(t=>t.m<44).slice(0,25).forEach(t=>L.push('| '+t.m+'px | '+t.w+'x'+t.h+' | '+t.sel+' ('+t.k+') | '+t.n.replace(/\|/g,'/')+' | '+t.surface+' |'));
  }
  const md=L.join('\n');
  console.log(md);
