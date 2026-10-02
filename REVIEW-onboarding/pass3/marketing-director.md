@@ -41,11 +41,11 @@ One room, one clock, one decision, no urgency. Three gaps left:
 
 GRADE: 58/100 (pass 1 was 38, pass 2 was 34)
 
-This grades the NEW proposal; the earlier two graded the old flow. Up: first value in about 75 seconds (was never), phone fit, acute arrival, proof now in the film, restraint kept at 9. Held down: no door on the proof, a possibly mis-sourced read, no share card, the data line unconfirmed, nothing measured. Assumed, unmeasured: 30 to 54 of 100 reach a first reading.
+This grades the NEW proposal; the earlier two graded the old flow. Up: first value in about 75 seconds (was never), phone fit, acute arrival, proof now in the film, restraint kept at 9. Held down: no door on the proof, a possibly mis-sourced read, no share card, nothing measured. Assumed, unmeasured: 30 to 54 of 100 reach a first reading.
 
 ## 5. My part of the build spec
 
-**Slides** (dwell = max(3.0, 1.0 + words / 2.5) in seconds, up to the next 0.5). Lead-in 1.0 s still.
+**Slides** (dwell = max(3.0, 1.0 + words / 2.5) in seconds, up to the next 0.5). Lead-in 1.0 s.
 
 | # | Dwell | Line |
 |---|---|---|
@@ -55,7 +55,7 @@ This grades the NEW proposal; the earlier two graded the old flow. Up: first val
 | 4 | 5.5 | Every table it reads is open. Check any row. |
 | 5 | 4.5 | Discover. Play. Flow. Embody. Then round again. |
 
-That is 25.0 s plus the lead-in, the 26 s ruled. Slide 2 is 13 words, so whitelist it.
+25.0 s plus lead-in is the 26 s ruled. Slide 2 is 13 words, so whitelist it.
 
 **Slide 4 proof row.** One real row read from the engine at run time, never typed. Label "An example", 11 px, 70 percent ink. Number 28 px at 390, 44 px at 1600, weight 300, tabular figures (digits of equal width). Under it a 44 px ring target, "Open the table". Tap pauses the clock and opens the read-only table view; Back returns to slide 4. If that view cannot be reached before login, DROP "Check any row" and say "Every table it reads is open inside." No claim without a door.
 
@@ -66,7 +66,7 @@ Never "You wrote" over a seeded place.
 
 **Empty read.** Lead's value: "Nothing in that matched a pattern. Name how it felt." My value: "Not quite. Which part sat heaviest?" with the three feeling chips. "Nothing matched" is a verdict on her own words. The lead's line is acceptable only with chips beneath it.
 
-**Gift counter.** Engine number only, neutral ink role, no accent, never red or amber at any count, updates at most twice a second. Said once, 4 s caption on the story screen: "100 patterns are open to you. Everything stays visible while you use them." No "left" or countdown word. Show "N used of 100" if Art agrees, since a falling number reads as stock. No padlock draws while `inGift` (the engine flag for the free gift period) is true.
+**Gift counter.** Engine number only, neutral ink role, no accent, never red or amber at any count, updates at most twice a second. Said once, as a 4 s caption on the story screen: "100 patterns are open to you. Everything stays visible while you use them." No "left" or countdown word. Show "N used of 100" if Art agrees, since a falling number reads as stock. No padlock draws while the gift flag `inGift` is on.
 
 **Keep this and Not now.** Two ring controls, equal weight, 48 px. Line above: "Your story is saved to your account. Your name and birth data are not." Print it only after Systems confirms it is true. Guest gloss: "Try it on this device. Clearing the browser clears it."
 
@@ -91,4 +91,4 @@ Never "You wrote" over a seeded place.
 
 ## 7. One question for the owner
 
-None. My decision: the proof row opens a table, the Mirror names its source, the empty read uses my line with chips. Reason: a level 6 or 7 buyer is moved by a row they can check.
+None. My decision: the proof row opens a table, the Mirror names its source, the empty read uses my line with chips.
