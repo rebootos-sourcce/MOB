@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1418 4742bf6 2026-10-02 17:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v1419 fc05ea5 2026-10-02 17:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -14857,7 +14857,7 @@ function relWrite(q,n,w0){
    ui/personas.js in round QD, the rule unchanged, so the worked examples'
    history picks its addresses the way a person pressing Release does. Only
    addresses with a fetter, which is the only kind relPick keeps. */
-function relHeaviest(max){
+function relQueueOf(max){
  var by=function(a,b){return b.sq-a.sq;};
  var hot=W.filter(function(n){return n.cf&&n.sq>=4;}).sort(by);
  var q=hot.length?hot:W.filter(function(n){return n.cf&&n.sq>0;}).sort(by);
@@ -20258,7 +20258,7 @@ try{window.__at&&window.__at('engine/pracex.js');}catch(e){}
                    verpApply and leanApply write it, exactly as stCommit does;
                    the entry is pushed in stCommit's shape, imprints and seats
                    as parseStory counted them
-     a release     relHeaviest picks the addresses the Release button would,
+     a release     relQueueOf picks the addresses the Release button would,
                    off the field as the history has left it that day,
                    meterBudget caps it, meterPlan keys it down the four
                    channels, relWrite moves the charge at each address,
@@ -20432,6 +20432,12 @@ function exdepthFill(rec,p,now){
  var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace);
  var v0=Object.assign({},VERPMIX), l0=Object.assign({},LEANMIX);
  var out={entries:0, imprints:0, runs:0, lines:0, addrs:0};
+ /* ALL OR NOTHING. A history the engine refuses half way would otherwise
+    leave the entries it had already pushed, and a vault with half its runs,
+    on a record that then reads as filled and is never asked again. What the
+    record held is kept and put back on any refusal, and the refusal is
+    thrown on to the caller, which says so. */
+ var keep=JSON.stringify({story:rec.story||null, meter:rec.meter||null, work:rec.work||null});
  try{
   rec.story=rec.story||{entries:[]};
   if(!Array.isArray(rec.story.entries))rec.story.entries=[];
@@ -20443,7 +20449,7 @@ function exdepthFill(rec,p,now){
     rec.story.entries.push({t:at, text:x.text, imprints:k, bands:P.bands, lex:LEX_VERSION});
     out.entries++; out.imprints+=k; return;}
    compute();
-   var q=relHeaviest(x.n);
+   var q=relQueueOf(x.n);
    if(!q.length)throw new Error('exdepth '+p.nm+' release '+x.back+' days back: nothing is carrying');
    var cap=meterBudget(rec,at).cap;
    if(cap<1)throw new Error('exdepth '+p.nm+' release '+x.back+' days back: the allowance is spent');
@@ -20472,6 +20478,9 @@ function exdepthFill(rec,p,now){
   /* the law table is the latest measurement, so every law was answered after
      the last release: the intake's own writer clears the lift */
   SI.forEach(function(l){lawAnswered(rec,l.nm);});}
+ catch(e){
+  var k0=JSON.parse(keep); rec.story=k0.story; rec.meter=k0.meter; rec.work=k0.work;
+  throw e;}
  finally{
   exdepthPut(S.charge,c0); exdepthPut(S.replace,r0);
   exdepthPut(VERPMIX,v0); exdepthPut(LEANMIX,l0);
@@ -25789,7 +25798,7 @@ if(typeof module!=='undefined'&&module.exports){
                   pracexDays:pracexDays, pracexRead:pracexRead,
   /* a worked example's bank and vault, engine/exdepth.js */
                   EXDEPTH_HIST:EXDEPTH_HIST, exdepthFill:exdepthFill, exdepthHas:exdepthHas,
-                  exdepthAt:exdepthAt, relHeaviest:relHeaviest, relWrite:relWrite,
+                  exdepthAt:exdepthAt, relQueueOf:relQueueOf, relWrite:relWrite,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
@@ -60256,9 +60265,9 @@ function loadP(i){
 
 /* ---- release button ---- */
 $('bRel').addEventListener('click',function(){
- /* the heaviest eight, engine/compute.js relHeaviest: at or over the line
+ /* the heaviest eight, engine/compute.js relQueueOf: at or over the line
     first, and below it when nothing is that heavy, for the reason below */
- var hot=relHeaviest(8);
+ var hot=relQueueOf(8);
  if(hot.length){relPick(hot.map(function(n){return n.i;}));return;}
  /* THIS IS WHERE THE REWARD CURVE ENDED. The queue was built at the sq 4 line
     only, so the control refused the moment nothing was stacked that high, and
@@ -60274,7 +60283,7 @@ $('bRel').addEventListener('click',function(){
     the heaviest addresses actually holding something. The release run already
     handles them: it frees weight proportional to what is there, so the returns
     fall away honestly as the field empties instead of stopping at a cliff. */
- /* relHeaviest above has already taken that ground when nothing is over the
+ /* relQueueOf above has already taken that ground when nothing is over the
     line, so reaching here means nothing is carrying at any depth. */
  /* Nothing is held, so there is nothing to release. This used to run a 2.8
     second animation that zeroed every charge and raised every law toward ten,
@@ -63937,5 +63946,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004181328"></div>
+<div id="eof" hidden data-len="004181870"></div>
 </body></html>

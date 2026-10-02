@@ -26,7 +26,7 @@
                    verpApply and leanApply write it, exactly as stCommit does;
                    the entry is pushed in stCommit's shape, imprints and seats
                    as parseStory counted them
-     a release     relHeaviest picks the addresses the Release button would,
+     a release     relQueueOf picks the addresses the Release button would,
                    off the field as the history has left it that day,
                    meterBudget caps it, meterPlan keys it down the four
                    channels, relWrite moves the charge at each address,
@@ -200,6 +200,12 @@ function exdepthFill(rec,p,now){
  var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace);
  var v0=Object.assign({},VERPMIX), l0=Object.assign({},LEANMIX);
  var out={entries:0, imprints:0, runs:0, lines:0, addrs:0};
+ /* ALL OR NOTHING. A history the engine refuses half way would otherwise
+    leave the entries it had already pushed, and a vault with half its runs,
+    on a record that then reads as filled and is never asked again. What the
+    record held is kept and put back on any refusal, and the refusal is
+    thrown on to the caller, which says so. */
+ var keep=JSON.stringify({story:rec.story||null, meter:rec.meter||null, work:rec.work||null});
  try{
   rec.story=rec.story||{entries:[]};
   if(!Array.isArray(rec.story.entries))rec.story.entries=[];
@@ -211,7 +217,7 @@ function exdepthFill(rec,p,now){
     rec.story.entries.push({t:at, text:x.text, imprints:k, bands:P.bands, lex:LEX_VERSION});
     out.entries++; out.imprints+=k; return;}
    compute();
-   var q=relHeaviest(x.n);
+   var q=relQueueOf(x.n);
    if(!q.length)throw new Error('exdepth '+p.nm+' release '+x.back+' days back: nothing is carrying');
    var cap=meterBudget(rec,at).cap;
    if(cap<1)throw new Error('exdepth '+p.nm+' release '+x.back+' days back: the allowance is spent');
@@ -240,6 +246,9 @@ function exdepthFill(rec,p,now){
   /* the law table is the latest measurement, so every law was answered after
      the last release: the intake's own writer clears the lift */
   SI.forEach(function(l){lawAnswered(rec,l.nm);});}
+ catch(e){
+  var k0=JSON.parse(keep); rec.story=k0.story; rec.meter=k0.meter; rec.work=k0.work;
+  throw e;}
  finally{
   exdepthPut(S.charge,c0); exdepthPut(S.replace,r0);
   exdepthPut(VERPMIX,v0); exdepthPut(LEANMIX,l0);

@@ -291,7 +291,7 @@ if(typeof module!=='undefined'&&module.exports){
                   pracexDays:pracexDays, pracexRead:pracexRead,
   /* a worked example's bank and vault, engine/exdepth.js */
                   EXDEPTH_HIST:EXDEPTH_HIST, exdepthFill:exdepthFill, exdepthHas:exdepthHas,
-                  exdepthAt:exdepthAt, relHeaviest:relHeaviest, relWrite:relWrite,
+                  exdepthAt:exdepthAt, relQueueOf:relQueueOf, relWrite:relWrite,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,

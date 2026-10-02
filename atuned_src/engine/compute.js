@@ -218,7 +218,7 @@ function relWrite(q,n,w0){
    ui/personas.js in round QD, the rule unchanged, so the worked examples'
    history picks its addresses the way a person pressing Release does. Only
    addresses with a fetter, which is the only kind relPick keeps. */
-function relHeaviest(max){
+function relQueueOf(max){
  var by=function(a,b){return b.sq-a.sq;};
  var hot=W.filter(function(n){return n.cf&&n.sq>=4;}).sort(by);
  var q=hot.length?hot:W.filter(function(n){return n.cf&&n.sq>0;}).sort(by);

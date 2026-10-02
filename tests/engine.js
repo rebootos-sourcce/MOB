@@ -6990,12 +6990,14 @@ g('QD · every worked example\'s bank and vault, replayed through the real write
   ok(chk(x,first.p).some(b=>/lift/.test(b)),'known bad: a lift left standing is caught');}
  /* A HISTORY THE ENGINE CANNOT RUN IS LOUD. A release with nothing carrying
     is refused by the queue, and the refusal names the step. */
- const ghost={nm:'__qd_ghost',dom:0,a1:0,a2:1,c:{},rep:{}};
- H.__qd_ghost={e:[],r:[[3,2,20]]};
+ const ghost={nm:'__qd_ghost',dom:0,a1:0,a2:1,c:{},rep:{Fear:9,Anger:9,Shame:9,Disgust:9,Apathy:9,Shock:9,Sad:9,Surprise:9,Anticipation:9}};
+ H.__qd_ghost={e:[[4,'I felt afraid and my stomach knotted.']],r:[[3,2,20]]};
  rd(ghost); let thr='';
- try{E.exdepthFill(E.blankProfile('g'),ghost,NOW);}catch(e){thr=e.message;}
+ const gr=E.blankProfile('g'), g0=JSON.stringify([gr.story,gr.meter,gr.work]);
+ try{E.exdepthFill(gr,ghost,NOW);}catch(e){thr=e.message;}
  delete H.__qd_ghost;
- ok(/nothing is carrying/.test(thr),'a release on an empty field is refused by name, '+thr);
+ ok(/nothing is carrying/.test(thr),'a release on a field with nothing carrying is refused by name, '+thr);
+ ok(JSON.stringify([gr.story,gr.meter,gr.work])===g0,'and the refused history leaves nothing behind, not even the entry before it');
  ok(E.exdepthFill(E.blankProfile('n'),{nm:'Nobody'},NOW)===null,'a person with no row has no history, and none is invented');
  ok(E.exdepthHas(E.blankProfile('b'))===false,'a blank record carries no history');
  /* THE ENGINE'S CHANNEL LIST IS THE CARD'S. ONB_CHANS is held equal to CHAN in

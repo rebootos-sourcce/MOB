@@ -895,9 +895,9 @@ function loadP(i){
 
 /* ---- release button ---- */
 $('bRel').addEventListener('click',function(){
- /* the heaviest eight, engine/compute.js relHeaviest: at or over the line
+ /* the heaviest eight, engine/compute.js relQueueOf: at or over the line
     first, and below it when nothing is that heavy, for the reason below */
- var hot=relHeaviest(8);
+ var hot=relQueueOf(8);
  if(hot.length){relPick(hot.map(function(n){return n.i;}));return;}
  /* THIS IS WHERE THE REWARD CURVE ENDED. The queue was built at the sq 4 line
     only, so the control refused the moment nothing was stacked that high, and
@@ -913,7 +913,7 @@ $('bRel').addEventListener('click',function(){
     the heaviest addresses actually holding something. The release run already
     handles them: it frees weight proportional to what is there, so the returns
     fall away honestly as the field empties instead of stopping at a cliff. */
- /* relHeaviest above has already taken that ground when nothing is over the
+ /* relQueueOf above has already taken that ground when nothing is over the
     line, so reaching here means nothing is carrying at any depth. */
  /* Nothing is held, so there is nothing to release. This used to run a 2.8
     second animation that zeroed every charge and raised every law toward ten,
