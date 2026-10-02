@@ -302,6 +302,37 @@ change: the overlays are the glass bar's circles, the characters are two glass
 panels beside the render pane, and the figure keeps the pane to itself. See
 TASKS.md round OJ and mockups/compass-overlays/.
 
+## 2026-10-02 · owner · unpack every symbol
+
+said: "I need text depth added. The blueprint you were born on reads Earth, which
+is the architect route on life path nine. There's a bunch of assumptions here
+that the person has to make. Uh, you have to unpack blueprint. They don't know
+what that means. Earth, they don't know what that means. Architect, they don't
+know what that means, especially when you say architect route. And they don't
+know what life path nine. So you have to unpack all those symbols in order to
+provide context. And this is going to be a general rule for all, all
+information across the board. I'm looking at Jesus's love generated from
+within, freely given, no transaction, light that has a source. Right? We want
+to express that. Love generated from within, what does that mean? Freely
+given, what does that mean? No transaction, what does that mean? Light that has
+a source, what does that mean? So meaning is missing." And: "Review this
+twice."
+read: the reading names six symbols in one sentence and explains none of them,
+and a pole line is four claims with no meaning on any. The lead sentence is the
+reading and stays. What was missing is the meaning beside each word, in the same
+place, never behind a link. The word he heard as route is the root, one of four.
+It also turned up a second defect in the same card: it said "Earth, fixed" of
+every Architect, though a Capricorn, an earth sign, is cardinal.
+change: one table of meanings, engine/data/gloss.js, and one way to show it,
+the tooltip the product already had, as an underlined carrier where a line has
+no room and as the sentence itself where it has. The blueprint card, the
+Summary reading, the sign chips, the left rail's signs, the sign drills, the
+axis and law labels and the Compass pole lines (every phrase of every pole, with
+its meaning, in POLE_MEANS) were wired first. A gate, tests/unpack.js, fails a
+surface that prints a seeded term bare, and it fails on the build from before.
+tools/unpack-walk.js finds the terms nobody seeded. See TASKS.md round PO and
+V23 in the voice skill.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

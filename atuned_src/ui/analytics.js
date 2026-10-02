@@ -119,7 +119,7 @@ function anaRender(){
   +'<div><div class="pm-eye">Coherence</div>'
   +'<div class="ab-say">'
   +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
-    +'below is drawn from the blueprint you have selected and not from a reading.'
+    +'below is drawn from the '+unp('blueprint')+' you have selected and not from a reading.'
    /* THE TIER WORD, which used to live in the label. It is the reading in
       plain words and it goes first, because it is the one thing on this
       surface a person reads before anything else.

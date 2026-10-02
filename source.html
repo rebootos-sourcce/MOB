@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1292 2bd5fcf 2026-10-02 05:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v1296 db974fe 2026-10-02 05:21"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1500,6 +1500,14 @@ body.punch .tp{font-weight:600}
 .s-p b{color:var(--ink);font-weight:500}
 .s-src{font-size:12.5px;line-height:1.6;color:var(--dim);margin:14px 0 0;max-width:70ch}
 .s-src b{color:var(--mid);font-weight:500}
+/* UNPACK, ROUND PO. A meaning printed in the line, beside the word it explains.
+   One step smaller than the reading and the same ink, so the sentence that is
+   the reading still leads and the sentence that explains it is still readable:
+   the quieter greys were measured against the contrast floor and the card
+   rows below this one already sit at it. */
+.s-un{font-size:15px;line-height:1.65}
+/* one block for each thing a blueprint is read from, inside the one paragraph the story keeps */
+.s-blk{display:block;margin-top:10px}
 
 /* THE STRUCTURES. scanned, not read, so the rhythm is one row per thing and
    every row is the same object: a ring with its value, then a name. */
@@ -2544,6 +2552,8 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
 .rs-r .rs-ic{width:15px;height:15px;color:var(--gold);margin-top:2px;grid-row:1 / span 2}
 .rs-rn{font-size:13px;color:var(--ink);font-weight:500}
 .rs-rs{font-size:12.5px;line-height:1.5;color:var(--mid);grid-column:2}
+/* what the reading is, round PO: the sentences from the meaning table, under the line that says what it does */
+.rs-rm{font-size:12.5px;line-height:1.5;color:var(--mid);grid-column:2}
 /* ---- THE LEFT COLUMN'S FOLD. EZ in TASKS.md: "I want to be able to close up
    that column." ui/ui.js, colFold. The control sits in the top right corner
    of the rail over Root energetics' header, which gives it the width a
@@ -4422,6 +4432,9 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
  background:rgba(223,204,126,.06);margin:12px 0}
 .ad-nm{font-size:21px;font-weight:600;margin:5px 0 3px;letter-spacing:0}
 .ad-sub{font-size:13px;color:var(--dim);margin-bottom:11px}
+/* a pole's phrase and what it means, one paragraph each, round PO. The phrase is the codex's and stands in the ink, the meaning follows in the body colour. */
+.ad-p.un-pair{margin:0 0 9px}
+.ad-p.un-pair b{font-weight:600}
 .ad-rows{display:flex;flex-direction:column;gap:2px;margin-top:6px}
 .ad-r{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
  text-align:left;width:100%;border:0;background:transparent;cursor:pointer;min-height:var(--tap);font-family:var(--sans);
@@ -10068,6 +10081,105 @@ IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 11
    they read as an eye, and on a slant as horns */
 IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+
+/* ============================================================
+   WHAT EACH PHRASE OF A POLE MEANS. Round PO, UNPACK EVERY SYMBOL.
+
+   His words, on this table's first line: "I'm looking at Jesus's love
+   generated from within, freely given, no transaction, light that has a
+   source. Right? We want to express that. Love generated from within, what
+   does that mean? Freely given, what does that mean? No transaction, what
+   does that mean? Light that has a source, what does that mean? So meaning is
+   missing."
+
+   upd and dnd above are the codex's own lines and they are not touched. This
+   table sits beside them. Each pole line is cut into its phrases exactly as
+   the codex wrote them, and each phrase carries one plain sentence of what it
+   means. upm is the coherent end and dnm is the inverted end, a list of
+   [phrase, meaning]. The phrases joined with a space are the codex line,
+   character for character, and tests/engine.js holds that, so a phrase cannot
+   be dropped, reworded or invented here.
+
+   A MEANING SAYS WHAT A PERSON DOES, in words a ten year old has. It never
+   says the person is the pole. Both ends are behaviours, never beings, which is
+   the standing ruling, so nothing here is written about a figure. */
+var POLE_MEANS={
+ IL:{up:[['Love generated from within.','The warmth does not depend on getting something back.'],
+   ['Freely given.','It is given with no expectation of thanks or return.'],
+   ['No transaction.','Nobody keeps score of who owes whom.'],
+   ['Light that has a source.','The care comes from inside the person and does not need a room to reflect it.']],
+  dn:[['Pride as false light.','The warmth is put on to be admired, and it is not felt.'],
+   ['Shine performed for reflection, not generated from Source.','The glow is staged for whoever is watching, and it does not come from the bedrock under every pattern in you.']]},
+ DE:{up:[['Will surrendered to Source.','You stop forcing the outcome and let your effort follow what is true underneath every pattern.'],
+   ['Desire as devotion.','The wanting is given to something, and not spent on getting.'],
+   ['Wanting that moves toward something beyond the self.','What you reach for is bigger than you and serves more than you.']],
+  dn:[['Craving without closure.','The wanting never reaches done.'],
+   ['Appetite that cannot satisfy.','Eating, buying or taking does not fill it.'],
+   ['Having never resolves the wanting.','Getting the thing does not end the wanting, so the next want starts at once.']]},
+ OR:{up:[['Structure in service of liberation.','Rules and routines that leave people freer than before.'],
+   ['Law that creates freedom.','The rule is what lets people move without fear.'],
+   ['Order others can stand within.','The order is firm enough that other people can lean on it.']],
+  dn:[['Chaos engineered to prevent coherence.','Disorder made on purpose so that nothing can line up.'],
+   ['Betrayal as systemic strategy.','Breaking trust again and again as a plan, and not as a slip.'],
+   ['Disruption from inside trusted systems.','The damage is done by someone people already rely on.']]},
+ PO:{up:[['Mastery that costs the practitioner.','Skill built by the person who pays for it with their own time and effort.'],
+   ['Power in service of precision.','Strength used to get one thing exactly right.'],
+   ['Discipline the self bears.','The person carries the strain of the practice, and nobody else does.']],
+  dn:[['Power that extracts from others.','Strength that is taken out of other people.'],
+   ['The machine that must be fed.','The system keeps asking for more, and people are what it eats.'],
+   ['Discipline that others pay for.','The cost of keeping the standard is passed on to other people.']]},
+ PE:{up:[['Clear seeing.','You see what is in front of you.'],
+   ['Reality without overlay.','Nothing is laid over it: no story, no hope, no fear.'],
+   ['The compositor running on present signal.','The part of the mind that builds your picture of things works from what is arriving now, and not from old pictures.']],
+  dn:[['Engineered surface.','The outside is built to be liked.'],
+   ['Beautiful above, serpentine beneath.','It looks pleasant on top, and underneath it coils like a snake.'],
+   ['Perception itself weaponised.','How things look is used as a tool against the person looking.']]},
+ TR:{up:[['Direct encounter with the field.','You meet what is around you first hand, with nothing in between.'],
+   ['Felt knowing.','You know it in your body before you can give a reason.'],
+   ['The heart as the instrument.','What you feel in your chest is the thing that reads.']],
+  dn:[['Threshold paralysis.','You stall at the edge of something new and cannot step over.'],
+   ['Cannot cross what cannot be measured.','If it cannot be proven first, you will not go.'],
+   ['The rational mind forever preparing to arrive.','The thinking mind keeps getting ready and never sets off.']]},
+ CH:{up:[['Grounded fire.','Heat that stays connected to the floor.'],
+   ['Intensity moving through the body without destroying the container or the target.','Strong feeling runs through you and harms neither you nor the one it is aimed at.']],
+  dn:[['Charge split at the root.','The charge divides at the base of the spine into two ways out.'],
+   ['Outward as rage or inward as paralysis.','It either goes out as rage or turns in and freezes you.'],
+   ['The same current, no clean exit.','It is one current with no way to leave cleanly.']]},
+ RE:{up:[['Love as the highest charge.','Love is the strongest current a person can carry.'],
+   ['The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.','Every other state in you lines up around it, like iron filings turning to a magnet, and it changes what it meets without a fight.']],
+  dn:[['The map takes the place of the ground, for good.','The belief about the world replaces the world itself, and it stays.'],
+   ['The belief system is guarded against any experience that contradicts it.','Anything you live through that disagrees with the belief is pushed away.']]},
+ FL:{up:[['The field wants to move,','The energy around you and inside you is built to keep moving.'],
+   ['and most suffering is the result of blocking that motion.','Most pain comes from holding that movement still.']],
+  dn:[['Flow held in one pool until it turns to poison.','Energy is kept in one place until it goes bad.'],
+   ['The river still runs, and nothing downstream can drink from it.','Life goes on around it, and nobody further along can use what comes through.']]},
+ AL:{up:[['Sat, Chit and Ananda clear at once.','Truth, awareness and love are all open at the same time.'],
+   ['Duty as the spine that keeps all three upright under pressure.','Doing what you owe is the backbone that holds all three up when things push on you.']],
+  dn:[['Learning and power with no line held.','Skill and strength with nothing they refuse to do.'],
+   ['He knows the law and crosses it, because the wanting outranks it.','The person knows the rule and breaks it anyway, because the want comes first.']]},
+ HO:{up:[['Perpendicular to the vertical axes.','It runs sideways to the up and down lines of the other poles, so it is not about climbing.'],
+   ['Stop the activity generating the interference.','Stop doing the thing that makes the noise, and the signal comes through.']],
+  dn:[['Haste that means well.','Rushing to help, with kind intent.'],
+   ['They forced openings into what was whole, one a day, and on the seventh day it died.','Help that cuts holes in something that was fine, a little each day, until it dies.']]}};
+/* the Buddha axis and the body path are the perception and light axes already
+   written above, so they read the same rows and a change there is a change here */
+POLE_MEANS.AW=POLE_MEANS.PE; POLE_MEANS.BO=POLE_MEANS.IL;
+MIRROR.forEach(function(m){var pm=POLE_MEANS[m.k]; if(pm){m.upm=pm.up; m.dnm=pm.dn;}});
+PATHS.forEach(function(p){var pm=POLE_MEANS[p.k]; if(pm){p.upm=pm.up; p.dnm=pm.dn;}});
+/* a pole by its key, from the eight mirror axes or the five paths, or null */
+function compassPoleOf(k){
+ var i;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)return MIRROR[i];
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)return PATHS[i];
+ return null;}
+/* a pole's phrases, each with its meaning, for one end. The phrases a pole has
+   no meanings for come back as the codex line whole, so nothing is ever blank. */
+function compassPoleLines(m,end){
+ if(!m)return [];
+ var a=end==='dn'?m.dnm:m.upm;
+ if(a&&a.length)return a;
+ var d=end==='dn'?m.dnd:m.upd;
+ return d?[[d,'']]:[];}
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for
@@ -12280,6 +12392,220 @@ const IX_BLOCKS=[
   line:'An action axis is a move you make when a feeling rises, from meeting it to going around it. Say how often you make each one.'}];
 
 try{window.__at&&window.__at('engine/data/intakemore.js');}catch(e){}
+/* ============================================================
+   THE MEANING TABLE. Round PO, ruled 2 October: UNPACK EVERY SYMBOL.
+
+   His words: "you have to unpack blueprint. They don't know what that means.
+   Earth, they don't know what that means. Architect, they don't know what
+   that means... And this is going to be a general rule for all information
+   across the board."
+
+   A label, a sign, a number or a term of art never stands alone. This is the
+   one table of what each one means, and it is the only place those sentences
+   are written. A surface asks it by name and prints the sentence beside the
+   term, either in the line itself or in the one tooltip the product already
+   has, so no surface keeps its own copy and none can say it differently.
+
+   ONE SENTENCE EACH. Short, present tense, words a ten year old has. A
+   sentence that is itself a claim says whose claim it is: numerology claims,
+   astrology claims. Nothing here says the instrument measured a sign or a
+   number, because it did not. The sun, moon and rising positions are
+   computed from the sky, and what a sign then means is an old symbol system's
+   say so. Where that matters the sentence says so in the sentence.
+
+   NO COUNT IS TYPED. Where a sentence names how many there are, the number is
+   read off the table it counts: SI for the laws, SAB33 for the saboteurs, ARCH
+   for the archetypes. This product has been bitten by a typed count twelve
+   times.
+
+   HOW A KEY IS WRITTEN. Lower case. A family has a prefix: sign:capricorn,
+   animal:tiger, path:9, law:truth, axis:light, feeling:fear, seat:root,
+   archetype:caregiver, year:fire. The Western element fire is plain fire and
+   the Chinese year element is year:fire, because one word means two things.
+
+   HOW IT IS BUILT. The families are written from the tables the engine already
+   carries, SIGN_RUNS, LP_RUNS, CH_RUNS, CE_RUNS, IQ_STEM, CHILD, ARCH and
+   DOMAINS, so a meaning here cannot drift from what the engine says a thing
+   does. They are built on the first ask and not at load, because IQ_STEM
+   loads after this file. Host free: no document, no window, no storage.
+   ============================================================ */
+var UNPACK_BASE={
+ /* THE BLUEPRINT, AND WHAT IT IS READ FROM */
+ 'blueprint':'Blueprint is the pattern you started with, before life added anything.',
+ 'symbolic reading':'A symbolic reading is a meaning an old system gives to a date or a name, and nothing in your body is measured to get it.',
+ 'running':'Running is what is acting in you now, as against what you were born with.',
+ 'root':'A root is one of four basic ways of running, and each one groups several of the starting patterns in your blueprint.',
+ 'architect':'Architect is the root that builds order and keeps it, by working things out and doing what is owed.',
+ 'engine':'Engine is the root that drives things, makes them and takes them apart to make room.',
+ 'weaver':'Weaver is the root that joins people, trades fairly, mends what broke and plays.',
+ 'witness':'Witness is the root that watches without stepping in and stays with a question without forcing an answer.',
+
+ /* THE FOUR SYSTEMS A BIRTH IS READ BY */
+ 'western':'Western means Western astrology: your sun sign, your moon sign and your rising sign.',
+ 'eastern':'Eastern means the Chinese calendar: the animal and the element of your birth year.',
+ 'number':'Number means numerology: figures worked out from your birth date and your full name.',
+ 'design':'Design means Human Design, a modern system that turns the sun at your birth, and the sun 88 degrees of its path earlier, into gates and lines.',
+ 'overlap':'An overlap is where two of the four systems point at the same thing, such as both naming fire.',
+
+ /* THE SIGNS, AND WHERE THEY COME FROM */
+ 'sun sign':'Your sun sign is the sign the sun stood in on the day you were born.',
+ 'moon sign':'Your moon sign is the sign the moon stood in when you were born, so it needs your birth time to be right.',
+ 'rising sign':'Your rising sign is the sign coming up over the eastern horizon where you were born, so it needs your birth time and your birthplace.',
+ 'cardinal':'Cardinal signs start things.',
+ 'fixed':'Fixed signs hold on to what has been started.',
+ 'mutable':'Mutable signs adapt as things change.',
+ 'year animal':'Your year animal is the animal for your birth year in the twelve year Chinese cycle, and the year turns in early February.',
+ 'year element':'Your year element is the element for your birth year in the Chinese calendar, and it repeats every ten years, two years to each element.',
+
+ /* THE ELEMENTS ARE BUILT BELOW, from the sign table */
+
+ /* NUMBERS */
+ 'life path':'Life path is the number you get by adding every digit of your birth date until one digit is left, except 11, 22 and 33, which stay as they are.',
+ 'master number':'A master number is 11, 22 or 33, and it is kept as it is and not added down to one digit.',
+ 'expression':'Expression is the number you get by adding the value of every letter in your full name.',
+ 'soul urge':'Soul urge is the number you get by adding only the vowels in your full name.',
+ 'personality':'Personality is the number you get by adding only the consonants in your full name.',
+ 'birthday':'Birthday is the day of the month you were born on.',
+ 'maturity':'Maturity is your life path added to your expression, and numerology claims it shows what the second half of life is for.',
+
+ /* HUMAN DESIGN */
+ 'gate':'A gate is one of 64 positions on a wheel from the I Ching, an old Chinese book, and the sun passes through all of them in a year.',
+ 'line':'A line is one of six steps inside a gate, each under one degree of the sun’s path.',
+ 'profile':'A profile is two line numbers from 1 to 6: the line of your birth sun over the line of the sun 88 degrees earlier.',
+ 'personality gate':'Your personality gate is the gate the sun stood in at the moment you were born.',
+ 'design gate':'Your design gate is the gate the sun stood in 88 degrees of its path before you were born.',
+ 'gene key':'A gene key is the gate the sun stood in on your birth day, read for its shadow, its gift and its highest form.',
+
+ /* THE SEATS */
+ 'seat':'A seat is one of seven places along the middle of your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
+ 'assemblage point':'An assemblage point is a seat: one of seven places along the middle of your body where the instrument reads what is held.',
+ 'seat:root':'Root is the seat at the base of the spine, and it holds what you stand on.',
+ 'seat:sacral':'Sacral is the seat in the lower belly, and it holds what you want.',
+ 'seat:solar':'Solar is the seat in the upper belly behind the stomach, and it holds what you carry.',
+ 'seat:heart':'Heart is the seat in the middle of the chest, and it holds what you give.',
+ 'seat:throat':'Throat is the seat at the neck, and it holds what you say.',
+ 'seat:3rd eye':'The 3rd Eye is the seat in the forehead, and it holds what you see.',
+ 'seat:crown':'Crown is the seat at the top of the head, and it holds what you belong to.',
+
+ /* THE SEATS IN THE YOGA TRADITION, which is where the Eastern lens takes its
+    names. The name, the element and the seed sound are that tradition's own. */
+ 'yoga:root':'In the yoga tradition the root seat is called Muladhara, its element is earth and its seed sound is Lam.',
+ 'yoga:sacral':'In the yoga tradition the sacral seat is called Svadhisthana, its element is water and its seed sound is Vam.',
+ 'yoga:solar':'In the yoga tradition the solar seat is called Manipura, its element is fire and its seed sound is Ram.',
+ 'yoga:heart':'In the yoga tradition the heart seat is called Anahata, its element is air and its seed sound is Yam.',
+ 'yoga:throat':'In the yoga tradition the throat seat is called Vishuddha, its element is ether and its seed sound is Ham.',
+ 'yoga:3rd eye':'In the yoga tradition the 3rd Eye seat is called Ajna, its element is light and its seed sound is Om.',
+ 'yoga:crown':'In the yoga tradition the crown seat is called Sahasrara, its element is thought and its seed is silence.',
+
+ /* THE CHAIN OF PATTERNS */
+ 'address':'An address is one exact place in your body where a pattern sits.',
+ 'charge':'Charge is survival energy stuck at one place in your body.',
+ 'fetter':'A fetter is a named pattern that sits at one address and fires when something matches it.',
+ 'complex':'A complex is two saboteurs from the same family joined into one pattern.',
+ 'hyper complex':'A hyper complex forms when complexes of the same family run together, one ring further in than a complex.',
+ 'character':'Character is the innermost ring, formed when two hyper complexes run together and are heavy enough.',
+ 'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
+ 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
+ 'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
+ 'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ 'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+
+ /* THE COMPASS */
+ 'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',
+ 'inversion':'An inversion is the same quality turned upside down, named for a figure who shows it, and it is a behaviour and not a being.',
+ 'pole':'A pole is one end of an axis, either the quality running clean or the same quality turned upside down.',
+ 'axis:light':'Light is the axis of warmth, from care that is given freely to a glow put on for an audience.',
+ 'axis:desire and will':'Desire and will is the axis of wanting, from a want that moves you toward something larger to a want that having never fills.',
+ 'axis:order':'Order is the axis of structure, from rules people can lean on to disorder made on purpose.',
+ 'axis:power':'Power is the axis of strength, from strength you pay for yourself to strength that others are billed for.',
+ 'axis:perception':'Perception is the axis of seeing and showing, from seeing what is there to presenting a surface that hides what is underneath.',
+ 'axis:trust':'Trust is the axis of knowing, from feeling things straight away to waiting for proof before you let yourself feel.',
+ 'axis:charge':'Charge is the axis of intensity, from strong feeling that moves through you cleanly to strong feeling with no clean way out.',
+ 'axis:revelation':'Revelation is the axis of belief, from changing what you believe when your life says otherwise to guarding a belief against what you live through.'
+};
+
+/* THE ELEMENTS. What each stands for is what ROOT_SAYS and ROOT_ELSAYS already
+   say about it, put as a short phrase. The signs it names are read off ZSIGN. */
+var UNPACK_ELEM={fire:'starting things and burning hot', earth:'steady, solid and slow to move',
+ air:'watching and naming what it sees', water:'finding the low route and still arriving'};
+
+/* THE SIGN LIST FOR AN ELEMENT, in the order the sky counts them from Aries */
+function unpackSigns(el){
+ if(typeof ZSIGN==='undefined')return [];
+ var order=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+ return order.filter(function(n){return ZSIGN.some(function(z){return z[2]===n&&z[3]===el;});});}
+function unpackList(a){return a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:(a[0]||'');}
+/* a or an, by the sound the word starts on: an Ox, an 8, an 11, a 9 */
+function unpackA(w){
+ var s=String(w);
+ return (/^[AEIOUaeiou]/.test(s)||/^(8|11|18)$/.test(s))?'an':'a';}
+
+var UNPACK_MEMO=null;
+function unpackAll(){
+ if(UNPACK_MEMO)return UNPACK_MEMO;
+ var t={}, k;
+ for(k in UNPACK_BASE)t[k]=UNPACK_BASE[k];
+ /* the four Western elements */
+ Object.keys(UNPACK_ELEM).forEach(function(el){
+  var signs=unpackSigns(el), nm=el.charAt(0).toUpperCase()+el.slice(1);
+  t[el]=nm+' is the element of '+unpackList(signs)+', and it stands for '+UNPACK_ELEM[el]+'.';});
+ /* the twelve signs. astrology's claim, said as the claim */
+ if(typeof ZSIGN!=='undefined'&&typeof SIGN_RUNS!=='undefined')
+  ZSIGN.forEach(function(z){
+   t['sign:'+z[2].toLowerCase()]=z[2]+' is '+unpackA(z[3])+' '+z[3]+' sign, and astrology claims it '
+    +(SIGN_RUNS[z[2]]||'')+'.';});
+ /* the twelve year animals */
+ if(typeof CHINESE!=='undefined'&&typeof CH_RUNS!=='undefined')
+  CHINESE.forEach(function(a){
+   t['animal:'+a.toLowerCase()]='The Chinese calendar claims '+unpackA(a)+' '+a+' year '+(CH_RUNS[a]||'')+'.';});
+ /* the five Chinese elements */
+ if(typeof CE_RUNS!=='undefined')
+  Object.keys(CE_RUNS).forEach(function(e){
+   t['year:'+e.toLowerCase()]=e+' is one of the five elements of the Chinese calendar, and it '+(CE_RUNS[e]||'')+'.';});
+ /* every life path number, with what numerology claims for it */
+ if(typeof LP_RUNS!=='undefined')
+  Object.keys(LP_RUNS).forEach(function(n){
+   t['path:'+n]='Numerology claims '+unpackA(n)+' '+n+' is the one who '+(LP_RUNS[n]||'')+'.';});
+ /* the laws, from the question the intake asks about each */
+ if(typeof SI!=='undefined'&&typeof IQ_STEM!=='undefined'){
+  SI.forEach(function(l){
+   t['law:'+l.nm.toLowerCase()]=l.nm+' is how often you '+(IQ_STEM[l.nm]||'')
+    +', when it costs you, when nobody would know and on an ordinary day.';});
+  t['law']='A law is one of '+SI.length+' ways of keeping your integrity, read from three questions you answer about each.';}
+ /* the nine feelings, as the ends of the nine axes */
+ if(typeof CHILD!=='undefined')
+  CHILD.forEach(function(c){
+   t['feeling:'+c.nm.toLowerCase()]=c.nm+' is one end of an axis, felt in the '+c.loc.replace(', ',' and ')
+    +', with '+c.opp.toLowerCase()+' as its opposite.';});
+ /* and the nine opposites, which are the other end of each axis: the slider
+    that says how much of the opposite is in place at the same address */
+ if(typeof CHILD!=='undefined')
+  CHILD.forEach(function(c){
+   t['opposite:'+c.opp.toLowerCase()]=c.opp+' is the opposite of '+c.nm.toLowerCase()
+    +', and this is how much of it is in place at the same address.';});
+ /* the twelve archetypes */
+ if(typeof ARCH!=='undefined')
+  ARCH.forEach(function(a){
+   t['archetype:'+a.nm.toLowerCase()]=a.nm+' is one of '+ARCH.length+' kinds of character, the one that '+a.v+'.';});
+ t['archetype']='An archetype is one of '+(typeof ARCH!=='undefined'?ARCH.length:'twelve')+' kinds of character you are born leaning toward.';
+ UNPACK_MEMO=t;
+ return t;}
+
+/* ONE LOOKUP. A term, and optionally the family it belongs to. Case and the
+   Brow spelling of the 3rd Eye are folded here so no caller has to. Returns the
+   sentence, or the empty string when the table has none, and a caller never
+   prints a guess in its place. */
+function unpackKey(term,ctx){
+ var k=String(term||'').toLowerCase().replace(/^\s+|\s+$/g,'');
+ if(k==='brow'||k==='third eye')k='3rd eye';
+ var t=unpackAll();
+ if(ctx&&t[ctx+':'+k])return ctx+':'+k;
+ return t[k]?k:'';}
+function unpackOf(term,ctx){
+ var k=unpackKey(term,ctx);
+ return k?unpackAll()[k]:'';}
+
+try{window.__at&&window.__at('engine/data/gloss.js');}catch(e){}
 
 /* ============================================================
    THE SIX AXES. Three higher gates and three lower gates. This is
@@ -24344,6 +24670,10 @@ if(typeof module!=='undefined'&&module.exports){
                   IX_DRAFT:IX_DRAFT, IX_ARCH:IX_ARCH, IX_AXIS:IX_AXIS, IX_ACT:IX_ACT, IX_BLOCKS:IX_BLOCKS,
                   IX_FLOOR:IX_FLOOR, IX_TIE_MAX:IX_TIE_MAX, ixBlank:ixBlank, ixFill:ixFill, ixGet:ixGet,
                   ixSet:ixSet, ixRead:ixRead, ixSay:ixSay, ixValidate:ixValidate, ixName:ixName,
+  /* the meaning table, round PO. Exported so the gate can assert every entry
+     is one plain sentence, and so a tool can read the same table the page does. */
+                  unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
+                  compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
   /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
@@ -24605,6 +24935,34 @@ function tierBuilding(){
    letter raised and the rest is left as typed, so McKay and O'Neill survive. */
 function capName(s){return String(s==null?'':s).replace(/(^|[\s\-'’])(\p{Ll})/gu,function(m,a,b){return a+b.toUpperCase();});}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* ============================================================
+   UNPACK, THE ONE WAY A MEANING IS SHOWN. Round PO, "unpack every symbol".
+
+   engine/data/gloss.js is the one table of what a term means. This is the one
+   way a renderer puts it on a screen, and it is not a new component: the
+   product already has one tooltip, ui/tip.js, which opens on hover, on a tap
+   and on keyboard focus, and the sheet sets the one class that says a word
+   carries something, .tipu, a dotted underline. So a term that has no room for
+   its sentence beside it becomes a carrier of that sentence, and a term that
+   has room is followed by the sentence itself.
+
+     unp(term,label,ctx)     the term as a carrier, or plain text when the table
+                             has no sentence for it. Never a guess.
+     unpAttr(term,ctx,label) the same three attributes, for an element a caller
+                             already owns, such as a chip that is a button.
+     unpSay(term,ctx)        the sentence, escaped, for a line that prints it.
+
+   The meaning is always in the same element as the term or on the term itself,
+   never behind a link to another page. The rule and its reason are in
+   CLAUDE.md, UNPACK EVERY SYMBOL.
+   ============================================================ */
+function unpSay(term,ctx){return esc(unpackOf(term,ctx));}
+function unpAttr(term,ctx,label){
+ var s=unpackOf(term,ctx); if(!s)return '';
+ return ' tabindex="0" data-tip-k="'+esc(label==null?term:label)+'" data-tip="'+esc(s)+'"';}
+function unp(term,label,ctx){
+ var t=label==null?term:label, a=unpAttr(term,ctx,t);
+ return a?'<span class="tipu"'+a+'>'+esc(t)+'</span>':esc(t);}
 /* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
    about one light ground out of two. Lumen arrived with paper rails and the
    dark palette went onto them unchanged, so Weaver, Solar and half the
@@ -25208,7 +25566,9 @@ function addrRow(n,o){o=o||{};
  return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
   +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
   +'<span>'+esc(n.k)+'</span><em'+(o.ink?' style="color:'+o.ink+'"':'')+'>'
-  +esc(o.em!=null?o.em:(opp||n.b))+'</em></button>';}
+  /* ROUND PO. When the right of the row is a seat, the seat says what it is. */
+  +(function(t){return (typeof BANDS!=='undefined'&&BANDS.indexOf(t)>=0)?unp(String(t).toLowerCase(),t,'seat'):esc(t);}(
+   o.em!=null?o.em:(opp||n.b)))+'</em></button>';}
 /* ============================================================
    THE BADGE. AN ICON CARRYING ITS OWN PERCENT, AND THE NUMBER IN A PILL.
 
@@ -37946,19 +38306,19 @@ try{window.__at&&window.__at('ui/tutorial.js');}catch(e){}
    function of soul, axes and laws, so they cannot drift from what the
    instrument already knows.
    ============================================================ */
-/* what each of the four roots is, said once. The Western lens reads it and so
-   does the person header, so the two cannot say it two ways. */
-const ROOT_ELSAYS={Architect:'Earth, fixed. Builds and holds.',Engine:'Fire, cardinal. Initiates and burns.',
- Weaver:'Water, mutable. Joins and dissolves.',Witness:'Air. Observes and names.'};
+/* WHAT EACH OF THE FOUR ROOTS IS lives in engine/data/gloss.js now, said once.
+   This held "Earth, fixed. Builds and holds." and its three siblings, which
+   named an element and a mode nobody had defined, and said fixed of every
+   Architect though a Capricorn is cardinal. The Western lens reads the table
+   and so does the card on the right of the story, so the two cannot say it
+   two ways. */
 function lensWestern(r){
  var d=DOMAINS[S.doms[0]]||{nm:'',r:''};
- return {t:'Western',a:d.r,b:ROOT_ELSAYS[d.r]||'',c:'root domain as element'};}
+ return {t:'Western',a:d.r,b:unpackOf(String(d.r).toLowerCase()),c:'root domain as element'};}
 function lensEastern(r){
  var b=r.darkB||'Root';
- var E={Root:'Muladhara, earth, LAM',Sacral:'Svadhisthana, water, VAM',Solar:'Manipura, fire, RAM',
-  Heart:'Anahata, air, YAM',Throat:'Vishuddha, ether, HAM','3rd Eye':'Ajna, light, OM',
-  Crown:'Sahasrara, thought, silence'};
- return {t:'Eastern',a:b,b:E[b]||'',c:'the seat carrying the most'};}
+ /* ROUND PO. Sanskrit names and seed sounds, said as what they are. */
+ return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the seat carrying the most'};}
 function lensDesign(r){
  var a=ARCH[r.pi]||{nm:''};
  return {t:'Design',a:a.nm,b:'defined at the '+(r.darkB||'Root').toLowerCase()+', '
@@ -38161,13 +38521,26 @@ function sumToldHtml(){
    A name with no family stays plain rather than being given a colour it has
    not earned. The numerology figures are the case: an expression of 1 belongs
    to no seat and no root, so it is not painted. */
-function sumB(text,col){
- return '<b'+(col?' class="s-w" style="--c:'+col+'"':'')+'>'+esc(text)+'</b>';}
-function rootB(nm){return sumB(nm,rootPlain(nm)||null);}
+function sumB(text,col,tk,tc){
+ /* A BOLD NAME CAN CARRY ITS MEANING. Round PO, unpack every symbol. When the
+    meaning table has a sentence for the name, the name becomes the product's
+    one tooltip carrier, reachable by tap and by keyboard as well as by hover. */
+ var say=tk?unpackOf(tk,tc):'';
+ var cls=(col?'s-w':'')+(say?(col?' ':'')+'tipu':'');
+ return '<b'+(cls?' class="'+cls+'"':'')+(col?' style="--c:'+col+'"':'')
+  +(say?' tabindex="0" data-tip-k="'+esc(text)+'" data-tip="'+esc(say)+'"':'')+'>'+esc(text)+'</b>';}
+function rootB(nm){return sumB(nm,rootPlain(nm)||null,String(nm).toLowerCase());}
 function archB(nm){
  var a=ARCH.filter(function(x){return x.nm===nm;})[0];
- return sumB(nm,a&&a.b?seatCol(a.b):null);}
-function seatB(nm,band){return sumB(nm,band?seatCol(band):null);}
+ return sumB(nm,a&&a.b?seatCol(a.b):null,nm,'archetype');}
+function seatB(nm,band,tk,tc){return sumB(nm,band?seatCol(band):null,tk,tc);}
+/* THE MEANING, PRINTED IN THE LINE. Round PO. One sentence from the table, set
+   in the quieter ink so the reading stays a reading and the meaning stays
+   beside the word it explains. The sentence is the table's, character for
+   character, which is how tests/unpack.js knows it is there. */
+function sumUn(term,ctx){
+ var s=unpackOf(term,ctx);
+ return s?'<span class="s-un">'+esc(s)+'</span>':'';}
 function sumStory(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r), e=C?C.e:null;
@@ -38181,39 +38554,63 @@ function sumStory(r){
  var lean=leanRead(r);
  var p=[];
 
- /* ONE. the spiritual into the psychological. */
+ /* ONE. the spiritual into the psychological.
+
+    ROUND PO, UNPACK EVERY SYMBOL. His words: "The blueprint you were born on
+    reads Earth, which is the architect route on life path nine. There's a
+    bunch of assumptions here that the person has to make... you have to unpack
+    blueprint. They don't know what that means. Earth, they don't know what
+    that means. Architect... And they don't know what life path nine."
+
+    So the lead sentence stays exactly as it was, because it is the reading,
+    and every symbol in it is followed by what it means, in the same paragraph,
+    from engine/data/gloss.js and from nowhere else. The sentences come in the
+    order the terms come in the lead. The last of them says whose claim this
+    is: a symbolic reading, with nothing in the body measured. */
  if(e){
   var elRoot=ELEM2ROOT[e.sunEl]||'';
   var num=numerologyOf(nm2,CURP);
-  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null)
-   +', which is the '+rootB(elRoot)+' root, on life path <b>'+e.lp+'</b>, the one who '
-   +esc(e.lpMean||'runs')+'.'
-   +(num?' The name carries an expression of <b>'+num.expression+'</b>, '
-     +esc(numSays('expression',num.expression))+'.':'')
-   +' What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
+  /* ONE PARAGRAPH, FOUR BLOCKS. The story is three paragraphs, the three joints
+     he named, and a gate holds that, so the meanings do not become paragraphs of
+     their own. They stand in the same paragraph as the lead, one block for each
+     thing the blueprint is read from: the sun, the date as a number, the name as
+     a number, and what is running now. A person can see where each claim comes
+     from, which is the point of unpacking it. */
+  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)
+   +', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '+sumB(String(e.lp),null,'life path')+', the one who '
+   +esc(e.lpMean||'runs')+'. '
+   +sumUn('blueprint')+' '+sumUn('symbolic reading')
+   +'<span class="s-blk">'+(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase())+'</span>'
+   +'<span class="s-blk">'+sumUn('life path')+' '+sumUn('path:'+e.lp)
+   +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
+     +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
+   +'<span class="s-blk">What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
+   +sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '+sumUn('archetype:'+arch.toLowerCase())+' '
    +(elRoot===rootNow
      ? 'Those agree, so what you are doing is what you were built for and the cost is elsewhere.'
-     : 'Those do not agree. A blueprint that says '+esc(elRoot)+' and a field that runs '
-       +esc(rootNow)+' means something was installed on top of the blueprint, and it has been '
-       +'carried long enough to feel like a personality.'));
+     : 'Those do not agree. Something was put on top of the '+unp('blueprint')+', and it has been carried so long '
+       +'that it feels like your personality.')+'</span>');
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
-   +', through '+archB(arch)+'.');}
+   +', through '+archB(arch)+'. '+sumUn('running')+' '+sumUn(rootNow.toLowerCase())+' '
+   +sumUn('archetype:'+arch.toLowerCase()));}
 
  /* TWO. the psychological into the body. */
  if(held.length){
-  p.push('That reaches the body at '+seatB(held[0].k,held[0].b)+', on the '
+  p.push('That reaches the body at '+seatB(held[0].k,held[0].b,'address')+', on the '
    /* the weight is the reading. "of 10" made it a mark out of ten. */
-   +seatB(String(held[0].cf).toLowerCase(),held[0].b)+' axis, at a weight of '
+   +seatB(String(held[0].cf).toLowerCase(),held[0].b,String(held[0].cf).toLowerCase(),'feeling')
+   +' '+unp('axis')+', at a weight of '
    +held[0].sq.toFixed(1)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
      +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
-   +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b)
+   +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
    +' Shadow weight is '+Math.round(r.DQ)+' per cent and the law furthest shut is '
-   +seatB(r.weakL.nm,r.weakL.b)+', at the '+seatB(String(r.weakL.b).toLowerCase(),r.weakL.b)+'.');
+   +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
+   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
  }else{
   p.push('Nothing is held above the line, so nothing is reaching the body as load. '
    +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}
@@ -38267,8 +38664,8 @@ function sumStory(r){
 
  return '<div class="s-story"><div class="pm-eye">Reading</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
-  +'<p class="s-src">Written from the nine axes, the twenty one laws, the blueprint and '
-  +'the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
+  +'<p class="s-src">Written from the nine '+unp('axis','axes')+', the twenty one '+unp('law','laws')+', the '
+  +unp('blueprint')+' and the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
   +'</div>';}
 
 /* ---- structures at a glance. the right hand panel. ---- */
@@ -38289,9 +38686,9 @@ function sumBlueprint(){
  /* the blueprint. a selection, drawn as a selection: icons and names, and no
     ring on any of them, because a ring is a measurement and this is a choice. */
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- return '<div class="pm-eye">Blueprint</div><div class="s-sel">'
+ return '<div class="pm-eye">'+unp('blueprint','Blueprint')+'</div><div class="s-sel">'
   +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
-  +esc(rootNow)+'</span>'
+  +unp(String(rootNow).toLowerCase(),rootNow)+'</span>'
   +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
    return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'" '
     +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
@@ -38386,24 +38783,29 @@ function sumChips(C){
    +'<span class="s-chip-l">'+esc(lab)+'</span>'
    +(val?'<span class="s-chip-v">'+esc(val)+'</span>':'')+'</button>';}
  function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
+ /* ROUND PO, UNPACK EVERY SYMBOL. Each chip's tooltip said a few words of what
+    the sign does in a person ("What it runs on underneath", "Design profile")
+    and never what the sign, the number or the system is. It says that now, from
+    engine/data/gloss.js: what the placement is, then what the sign claims. */
+ function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
  var out='<div class="s-chips">';
  out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
-  'Sun sign. '+(SIGN_RUNS[e.sun]||''));
+  say(unpackOf('sun sign'),unpackOf(e.sun,'sign')));
  if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
-  'Moon sign. What it runs on underneath.');
+  say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
  if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
-  'Rising sign. What arrives in the room first.');
+  say(unpackOf('rising sign'),unpackOf(e.rising,'sign')));
  out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
-  'Year animal and element. '+(CH_RUNS[e.chinese]||''));
+  say(unpackOf(e.chinese,'animal'),unpackOf(e.celem,'year')));
  out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
-  'Life path. '+(LP_RUNS[e.lp]||''));
+  say(unpackOf('life path'),unpackOf('path:'+e.lp)));
  out+=chip('hd',(e.hd.profile||'unresolved'),
   svgI('<path d="M7 4v16M17 4v16M7 9h10M7 15h10"/>'),'Human design',
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
-  e.hd.unresolved?'Type needs the full bodygraph and is not computed. The profile is.'
-   :'Design profile.');
+  e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
+   :say(unpackOf('design'),unpackOf('profile')));
  out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
-  'Gene key',e.gk.gate+'.'+e.gk.line,'Gate and line. Shadow to gift to siddhi.');
+  'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){
  var out='<p class="s-p">Five systems, read independently off one birth date. '
@@ -38575,7 +38977,7 @@ function sumUnread(r){
    ALREADY HOLDS and names it in data-src, so nothing on this block is
    written for the occasion:
 
-     the born root and the running root   ROOT_ELSAYS, DOMAINS d
+     the born root and the running root   the root sentences in engine/data/gloss.js, DOMAINS d
      a meeting of the four systems        ROOT_SAYS, off rootOverlap
      any other way it shows up            SIGN_RUNS, CH_RUNS, CE_RUNS,
                                           LP_RUNS, HD_LINE_RUNS
@@ -38677,20 +39079,34 @@ function nameMeaning(text){
  return null;}
 /* one row of what a table says about a person, a mark in a ring, a label, a
    title and the one line the table gives it */
-function sgMeet(src,glyph,k,t,say,tip,col){
+function sgMeet(src,glyph,k,t,say,tip,col,kh,th){
+ /* ROUND PO. A row may carry its label and its title as markup, so each can be a
+    carrier of its own meaning, and it may carry several sentences, so the
+    meaning of the title and the meaning of what it came from both stand in the
+    row. Anything not given as markup is escaped, as it always was. */
+ var says=(say instanceof Array?say:[say]).filter(Boolean);
  return '<div class="sg-m" data-src="'+esc(src)+'">'+sgRing(glyph,col,t,tip)
-  +'<div class="sg-m-t"><span class="sg-c-k">'+esc(k)+'</span><b>'+esc(t)+'</b>'
-  +'<p>'+esc(say)+'</p></div></div>';}
+  +'<div class="sg-m-t"><span class="sg-c-k">'+(kh||esc(k))+'</span><b>'+(th||esc(t))+'</b>'
+  +says.map(function(x){return '<p>'+esc(x)+'</p>';}).join('')+'</div></div>';}
 function sgStage(n,title,body){
  return '<div class="sg-st" data-stage="'+n+'"><div class="sg-st-h"><span class="sg-st-n">'+n+'</span>'
   +'<b>'+esc(title)+'</b></div><div class="sg-st-b">'+body+'</div></div>';}
 /* the systems that met, in words, and how strongly only when it is more than
    light, because most meetings are light and say so once under the stage */
+/* A SHARED ELEMENT NAMES TWO THINGS. Fire in the Western signs and Fire in the
+   Chinese calendar are one word for two systems, and a meeting between them is
+   about both, so the carrier says both. Wood and Metal are Chinese only. */
+function unpTheme(t){
+ var k=String(t).toLowerCase(), w=unpackOf(k), c=unpackOf(k,'year');
+ var say=[w,c].filter(function(x,i,a){return x&&a.indexOf(x)===i;}).join(' ');
+ return say?'<span class="tipu" tabindex="0" data-tip-k="'+esc(t)+'" data-tip="'+esc(say)+'">'+esc(t)+'</span>':'';}
 function sgMeetRow(a){
- return sgMeet('ROOT_SAYS',sgSvg(rsThemeIc(a)),
-  a.sys.map(function(x){return SYSNAME[x];}).join(', ')
-   +(a.strength==='light'?'':'. '+RS_STRENGTH[a.strength].replace(/\.$/,'')),
-  a.t,ROOT_SAYS[a.t]||'',RS_BRIDGE[a.voc]);}
+ /* THE SYSTEMS ARE NAMED BY CARRIERS. "Western, Number" told a stranger nothing
+    about what Western or Number is, so each name carries its sentence. */
+ var kh=a.sys.map(function(x){return unp(SYSNAME[x].toLowerCase(),SYSNAME[x]);}).join(', ')
+  +(a.strength==='light'?'':esc('. '+RS_STRENGTH[a.strength].replace(/\.$/,'')));
+ return sgMeet('ROOT_SAYS',sgSvg(rsThemeIc(a)),'',a.t,ROOT_SAYS[a.t]||'',RS_BRIDGE[a.voc],null,kh,
+  a.voc==='el'?unpTheme(a.t):'');}
 /* STAGE ONE. Where they were born: the root the sun sign gives, then where the
    four systems meet, led by the meeting least likely by chance, which is how
    rootOverlap orders them. FV: "where they overlap, because that's the truth." */
@@ -38699,14 +39115,25 @@ function sumBorn(B){
  if(!sp)return sgStage(1,'Born',
   '<p class="sg-note">No birth data on file. Date, time and place would put it in.</p>'
   +'<button type="button" class="btn s-oact" data-sout="iq">Open Energetics</button>');
- rows+=sgMeet('ROOT_ELSAYS',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
-  'Root',sp.root,ROOT_ELSAYS[sp.root]||'','',rootPlain(sp.root));
+ /* ROUND PO. The stage says what a birth reading is before it reads one, and
+    the root names the sign it came from and the element it came through. The
+    old line, "Earth, fixed. Builds and holds.", described the root with two
+    words nobody had defined, and it said fixed of every Architect, though a
+    Capricorn is cardinal. */
+ rows+='<p class="sg-note">'+unpSay('symbolic reading')+'</p>';
+ var elSay=unpackOf(sp.sunEl), sgSay=unpackOf(sp.sun,'sign');
+ rows+=sgMeet('root',sgSvg(glyphPath(ROOTGLYPH[sp.root])),
+  'Root',sp.root,[unpackOf(sp.root.toLowerCase()),
+   sp.sun?unpackOf('sun sign'):'',sgSay,elSay],'',rootPlain(sp.root),
+  unp('root','Root'),unp(sp.root.toLowerCase(),sp.root));
  var sh=R.shown||[], anyLight=sh.some(function(a){return a.strength==='light';});
- if(sh.length)rows+=(anyLight?'<p class="sg-note">A light overlap is one many people share. A strong one is rare.</p>':'');
+ if(sh.length)rows+='<p class="sg-note"><span>'+unpSay('overlap')+'</span>'
+  +(anyLight?' A light one is shared by many people, and a strong one is rare.':'')+'</p>';
  sh.slice(0,2).forEach(function(a){rows+=sgMeetRow(a);});
  if(!sh.length)rows+='<p class="sg-note">These four do not land on the same thing.</p>';
  more=sh.slice(2).map(sgMeetRow).concat((R.range||[]).map(function(x){var say=rsSays(x); if(!say)return '';
-  return sgMeet('range',sgSvg(SYSGLYPH[x.sys]),SYSNAME[x.sys],rsName(x),sgCap(say)+'.','');}));
+  return sgMeet('range',sgSvg(SYSGLYPH[x.sys]),'',rsName(x),[sgCap(say)+'.'].concat(rsMeans(x)),'',null,
+   unp(SYSNAME[x.sys].toLowerCase(),SYSNAME[x.sys]));}));
  return {stage:sgStage(1,'Born',rows),more:more.join('')};}
 /* STAGE TWO. What they were named: a root meaning for each part of the name,
    from NAME_MEANINGS and from nowhere else, then the number the whole name
@@ -38721,7 +39148,7 @@ function sumNamed(B){
  else rows+='<p class="sg-note">No root meaning on file for '
   +parts.map(function(p){return esc(p.text);}).join(', ').replace(/, ([^,]*)$/,' or $1')+'.</p>';
  if(c)rows+=sgMeet('NUM_CORE','<span class="s-num-g">'+N.expression+'</span>','Expression',
-  String(N.expression),sgCap(c.ex)+'.','');
+  String(N.expression),[sgCap(c.ex)+'.',unpackOf('expression')],'',null,unp('expression','Expression'));
  return sgStage(2,'Named',rows);}
 function sumRealName(){
  var nm=capName(String((CURP&&CURP.name)||'').trim());
@@ -39269,7 +39696,7 @@ function anaRender(){
   +'<div><div class="pm-eye">Coherence</div>'
   +'<div class="ab-say">'
   +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
-    +'below is drawn from the blueprint you have selected and not from a reading.'
+    +'below is drawn from the '+unp('blueprint')+' you have selected and not from a reading.'
    /* THE TIER WORD, which used to live in the label. It is the reading in
       plain words and it goes first, because it is the one thing on this
       surface a person reads before anything else.
@@ -44974,6 +45401,7 @@ function ritComplexHtml(k){
  ritCss();
  var b=(typeof becomingOf==='function')?becomingOf(row.k):null;
  var r=compute(), c=ritFor(r), today=ritToday0();
+ var pole=(typeof compassPoleOf==='function')?compassPoleOf(row.k):null;
  var pick=RIT_TCX[row.k];
  if(!row.rituals.some(function(x){return x.id===pick;}))pick=row.rituals[0].id;
  var list=function(a){
@@ -44982,12 +45410,22 @@ function ritComplexHtml(k){
  var h='<div class="tcx" data-tcx="'+esc(row.k)+'">'
   +'<div class="ad-nm plain">'+(b&&b.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
    +'<path d="'+b.ic+'"/></svg>':'')+esc(row.line)+'</div>'
-  +'<div class="ad-sub">After '+esc(row.who)+' · '+esc(row.q)+(b&&b.seat?' · '+esc(b.seat):'')+'</div>'
+  /* ROUND PO, UNPACK EVERY SYMBOL. "After Jesus · Light · Heart" was three
+     names and no meaning. Each is a carrier of its sentence, and under the two
+     columns the pole is said phrase by phrase, each phrase with what it means,
+     at both ends. The codex lines it reads from are in engine/data/compass.js. */
+  +'<div class="ad-sub">After '+unp('teacher',row.who)+' \u00b7 '
+   +unp(String(row.q).toLowerCase(),row.q,'axis')
+   +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
   +'<div class="tcx-pair">'
   +'<div class="tcx-col"><div class="pm-eye">Release</div>'
-  +'<div class="tcx-cap">The old pattern'+(row.opp?', as '+esc(row.opp):'')+'</div>'+list(row.release)+'</div>'
+  +'<div class="tcx-cap">The old pattern'+(row.opp?', as '+unp('inversion',row.opp):'')+'</div>'+list(row.release)+'</div>'
   +'<div class="tcx-col tcx-in"><div class="pm-eye">Install</div>'
   +'<div class="tcx-cap">Practise this instead</div>'+list(row.install)+'</div></div>'
+  /* the pole, phrase by phrase, under the two columns it explains and above the
+     rituals that act on it */
+  +((pole&&pole.upm)?'<div class="pm-eye">At full expression</div>'+poleMeansHtml(pole,'up')
+    +'<div class="pm-eye">At full inversion</div>'+poleMeansHtml(pole,'dn'):'')
   +'<div class="pm-eye">Starter rituals</div><div class="tcx-rits" role="group" aria-label="Starter rituals">';
  row.rituals.forEach(function(x){
   var s=recipeSteps(x,c.tier), act=s.steps.length?ritTcxActive(s.steps,today):null;
@@ -49061,8 +49499,13 @@ function coneNames(side){
    return '<button type="button" class="cn-nr" data-cnax="'+x.i+'" '
     +'style="--ax:'+c+';--axd:'+cd+'" '
     +'aria-label="'+esc(x.m.q)+': '+esc(x.m.up)+', opposite '+esc(x.m.dn)+'" '
-    +'title="'+((CONE.top||CONE.shells)&&!CONE.side?'Read ':'Turn the figure to ')
-    +esc(x.m.up)+', opposite '+esc(x.m.dn)+'">'
+    /* ROUND PO. The hover said what the press does and not what the axis is.
+       A press does what its label says, so the tooltip carries the meaning:
+       what the axis measures and where its two ends sit. */
+    +(unpackOf(String(x.m.q).toLowerCase(),'axis')
+      ?'data-tip-k="'+esc(x.m.q)+'" data-tip="'+esc(unpackOf(String(x.m.q).toLowerCase(),'axis'))+'">'
+      :'title="'+((CONE.top||CONE.shells)&&!CONE.side?'Read ':'Turn the figure to ')
+        +esc(x.m.up)+', opposite '+esc(x.m.dn)+'">')
     /* EVERY NAME CARRIES ITS SYMBOL AND ITS OPPOSITE'S. Round JQ: "all the
        character names that pop up, I need their iconic symbol and their
        opposing nature's opposing character symbol." Round OC: "the character
@@ -50417,6 +50860,15 @@ function runKbDrill(eyebrow,title,sub,body){
    That is the only reason the names earn their place: they carry
    the historical footprint, and the echo is in the room today.
    ============================================================ */
+/* A POLE, PHRASE BY PHRASE. Round PO, UNPACK EVERY SYMBOL. The codex's line for
+   a pole is a run of short phrases and each one is a claim: "Love generated
+   from within", "No transaction". Each is printed as the phrase, then what it
+   means, in one paragraph, from POLE_MEANS in engine/data/compass.js. The
+   phrase is the codex's own words and the meaning is beside it, so nothing is
+   left for the person to assume. */
+function poleMeansHtml(m,end){
+ return compassPoleLines(m,end).map(function(x){
+  return '<p class="ad-p un-pair"><b>'+esc(x[0])+'</b>'+(x[1]?' '+esc(x[1]):'')+'</p>';}).join('');}
 /* ONE TEACHER, OR ONE INVERSION. Clicking a name on the compass did nothing,
    because the figure had no hit testing at all: sixteen names were drawn as
    though they were buttons and were not.
@@ -50454,9 +50906,8 @@ function runTeacherDrill(m,end){
     +'<path d="'+ic+'"/></svg>':'')+esc(nm)+'</div>'
   +'<div class="ad-sub">'+esc(m.seat)+' \u00b7 '
   +(up?'the quality running clean':'the same quality, inverted')+'</div>'
-  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(d)+'</p>'
-  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(other)+'</b>. '
-  +esc(od)+'</p>'
+  +'<div class="pm-eye">What this is</div>'+poleMeansHtml(m,up?'up':'dn')
+  +'<div class="pm-eye">The other end, '+esc(other)+'</div>'+poleMeansHtml(m,up?'dn':'up')
   +'<div class="pm-eye">Where you sit</div><p class="ad-p">'
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
@@ -50488,8 +50939,8 @@ function runPathDrill(p){
   +'<div class="ad-nm">'+(p.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
     +'<path d="'+p.ic+'"/></svg>':'')+esc(p.up)+'</div>'
   +'<div class="ad-sub">the path of '+esc(p.q)+'</div>'
-  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(p.upd)+'</p>'
-  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(p.dn)+'</b>. '+esc(p.dnd)+'</p>'
+  +'<div class="pm-eye">What this is</div>'+poleMeansHtml(p,'up')
+  +'<div class="pm-eye">The other end, '+esc(p.dn)+'</div>'+poleMeansHtml(p,'dn')
   +(typeof ritTeachHtml==='function'?ritTeachHtml(p.k):'');
  rdShell(h);
  if(typeof ritTeachWire==='function')ritTeachWire(function(){runPathDrill(p);});}
@@ -50932,8 +51383,8 @@ function runMirrorDrill(k){
  rdShell('<div class="pm-eye">'+esc(m.q)+'</div>'
   +'<div class="ad-nm">'+esc(m.up)+' against '+esc(m.dn)+'</div>'
   +'<div class="ad-sub">at the '+String(m.seat).toLowerCase()+'</div>'
-  +'<div class="pm-eye">At full expression</div><p class="ad-p">'+esc(m.upd)+'</p>'
-  +'<div class="pm-eye">At full inversion</div><p class="ad-p">'+esc(m.dnd)+'</p>'
+  +'<div class="pm-eye">At full expression</div>'+poleMeansHtml(m,'up')
+  +'<div class="pm-eye">At full inversion</div>'+poleMeansHtml(m,'dn')
   +'<div class="pm-eye">The question that tells them apart</div>'
   +'<p class="ad-p"><b>'+esc(m.ask)+'</b></p>'
   +'<div class="pm-eye">Where you sit</div>'
@@ -51019,24 +51470,36 @@ function runCellDrill(c,rw){
  rdShell(h);}
 
 function runSpDrill(kind,val){
- var r=compute(), t='', nm=val, sub='', runs='', extra='';
+ var r=compute(), t='', nm=val, sub='', runs='', extra='', means=[], subh='';
  if(kind==='sign'){
   var z=null; ZSIGN.forEach(function(x){if(x[2]===val)z=x;});
   t='Zodiac sign'; sub=z?(z[3]+', '+z[4]):''; runs=SIGN_RUNS[val]||'';
+  /* ROUND PO. What a sign is, its element and its mode, each said once. */
+  means=[unpackOf(val,'sign'),z?unpackOf(z[3]):'',z?unpackOf(z[4]):''];
+  subh=z?unp(z[3])+', '+unp(z[4]):'';
   nm=(ZGLYPH[val]||'')+' '+val;
   var rootNow=(DOMAINS[S.doms[0]]||{}).r||'', maps=ELEM2ROOT[z?z[3]:''];
-  extra=maps?('This element maps to the <b>'+maps+'</b> root. You currently run <b>'+rootNow
-   +'</b>. '+(maps===rootNow?'They agree.':'They do not, which means something was installed '
-   +'on top of the blueprint.')):'';
+  /* ROUND PO. Each root is a carrier of what it is, and the disagreement says
+     what it means in words a person has: something put on top of the blueprint
+     that has run so long it feels like personality. */
+  extra=maps?('This element points to the <b>'+unp(maps.toLowerCase(),maps)+'</b> '+unp('root')
+   +'. What is running now is <b>'+unp(rootNow.toLowerCase(),rootNow)
+   +'</b>. '+(maps===rootNow?'Those agree.':'Those do not agree. Something was put on top of the '
+   +unp('blueprint')+', and it has been carried so long that it feels like your personality.')):'';
  } else if(kind==='chinese'){ t='Year animal'; runs=CH_RUNS[val]||''; sub='twelve year cycle';
+  means=[unpackOf('year animal'),unpackOf(val,'animal')];
  } else if(kind==='celem'){ t='Element'; runs=CE_RUNS[val]||''; sub='ten year stem cycle';
+  means=[unpackOf('year element'),unpackOf(val,'year')];
  } else if(kind==='lp'){
   t='Life path'; runs=LP_RUNS[+val]||''; sub='birth date, reduced';
+  means=[unpackOf('life path'),unpackOf('path:'+val),(+val===11||+val===22||+val===33)?unpackOf('master number'):''];
   var archNow=(ARCH[r.pi]||{}).nm||'';
-  extra='This path reads <b>'+(LP2ARCH[+val]||'unmapped')+'</b>. Your first archetype is <b>'
-   +archNow+'</b>. '+(LP2ARCH[+val]===archNow?'They agree.':'They do not.');
+  extra='This path points to <b>'+(LP2ARCH[+val]?unp(LP2ARCH[+val].toLowerCase(),LP2ARCH[+val],'archetype'):'unmapped')
+   +'</b>. Your first '+unp('archetype')+' is <b>'+(archNow?unp(archNow.toLowerCase(),archNow,'archetype'):'')
+   +'</b>. '+(LP2ARCH[+val]===archNow?'Those agree.':'Those do not agree.');
  } else if(kind==='hd'){
   t='Design type'; runs=HD_RUNS[val]||''; sub='type';
+  means=[unpackOf('design'),/^\d\/\d$/.test(String(val))?unpackOf('profile'):''];
   /* the comparison reads CQ against the median, which a CQ still filling
      cannot answer: it would call every Generator's field contracting */
   extra=!r.complete?'A '+val+'. Coherence is still filling, so the field has no direction to compare yet.'
@@ -51048,14 +51511,18 @@ function runSpDrill(kind,val){
   runs='the body signal this person is meant to decide from, rather than the mind';
  } else if(kind==='gk'){
   t='Gene key'; sub='gate and line';
+  means=[unpackOf('gene key'),unpackOf('gate'),unpackOf('line')];
   var top=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;})[0];
   var c2=top?(CHILD.filter(function(x){return x.nm===top.cf;})[0]||{}):{};
   runs='shadow to gift to siddhi, read one axis at a time';
   extra=top?('Your heaviest address is <b>'+top.k+'</b>, which sits on the <b>'+c2.nm
    +' toward '+(c2.opp||'')+'</b> axis. That is the shadow and the gift.')
    :'Nothing held, so no shadow is running to read.';}
- rdShell('<div class="pm-eye">'+t+'</div><div class="ad-nm">'+esc(nm)+'</div>'
-  +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'')
+ rdShell('<div class="pm-eye">'+(kind==='lp'?unp('life path',t):kind==='gk'?unp('gene key',t):kind==='hd'?unp('design',t):esc(t))
+  +'</div><div class="ad-nm">'+(kind==='sign'?unp(val,nm,'sign'):esc(nm))+'</div>'
+  +(sub?'<div class="ad-sub">'+(subh||esc(sub))+'</div>':'')
+  +(means.filter(Boolean).length?'<div class="pm-eye">What it is</div><p class="ad-p">'
+    +means.filter(Boolean).map(esc).join(' ')+'</p>':'')
   +'<div class="pm-eye">How it runs through you</div>'
   +'<p class="ad-p">'+(runs||'no behaviour on file')+'</p>'
   +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}
@@ -52261,11 +52728,15 @@ function panAnd(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '
    stack on the right rail already draws the nine axes with them, so the
    sliders draw the same mark for the same thing. The colour is still the
    seat's. ic is optional, so a row with no glyph keeps the dot. */
-function numField(host,name,band,store,key,ic){
+function numField(host,name,band,store,key,ic,tip){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';
  d.innerHTML=(ic?'<i class="nf-g" style="color:'+col+'"><svg viewBox="0 0 24 24" aria-hidden="true">'
-   +glyphPath(ic)+'</svg></i>':'<i style="background:'+col+'"></i>')+'<label>'+name+'</label>'
+   +glyphPath(ic)+'</svg></i>':'<i style="background:'+col+'"></i>')
+  /* ROUND PO. The label carries what the axis or the law is, from the meaning
+     table, on the label and not on the row: the row holds a slider, and a tap
+     on a slider has to be a drag and not an explanation. */
+  +'<label'+(tip?' class="tipu" tabindex="0" data-tip-k="'+esc(name)+'" data-tip="'+esc(tip)+'"':'')+'>'+name+'</label>'
   +'<span class="tr" role="slider" tabindex="0" aria-label="'+name+'" aria-valuemin="0" '
   +'aria-valuemax="10" aria-valuenow="'+store[key]+'"><b style="background:'+col+'"></b></span>'
   +'<input type="number" min="0" max="10" step="0.5" value="'+store[key]+'" aria-label="'+name+'">';
@@ -52301,11 +52772,11 @@ function numField(host,name,band,store,key,ic){
  return {inp,tr,trk};}
 const CHF={},RPF={},LWF={};
 CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic);
+ CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'));
  /* the opposite takes the same mark in Heart, as the stack draws it */
- RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic);
+ RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
  RPF[cf.nm].inp.parentElement.classList.add('oppf');});
-SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic);});
+SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
 function syncCh(){CHILD.forEach(function(cf){
  const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));
@@ -55388,8 +55859,13 @@ function renderSpirit(){
    setTab(TAB.INTAKE);
    requestAnimationFrame(function(){var d=$('wdate'); if(d)d.focus();});};
   return;}
- function row(k,glyph,v,x,dk,dv){
-  return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'">'
+ /* ROUND PO. A row carries what its label and its value are, from
+    engine/data/gloss.js, as the one tooltip: reachable by tap on a phone and by
+    keyboard, and said the same on every surface that shows the same sign. */
+ function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
+ function row(k,glyph,v,x,dk,dv,tip){
+  return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'"'
+   +(tip?' data-tip-k="'+esc(k)+'" data-tip="'+esc(tip)+'"':'')+'>'
    +'<span class="sp-k">'+k+'</span>'
    /* a glyph that starts with a tag is a drawn mark, the element's, and a
       character is the sign's own, which the rail has always set as text */
@@ -55422,7 +55898,7 @@ function renderSpirit(){
     icon." SYSGLYPH in ui/component.js, the same four the summary on the right
     rail lights in its band, so a system reads as the same thing on both. */
  function hd(k,t){return '<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
-  +SYSGLYPH[k]+'</svg>'+t+'</div>';}
+  +SYSGLYPH[k]+'</svg>'+unp(t.toLowerCase(),t)+'</div>';}
  /* THE EASTERN ROWS SAY WHAT THEY DO, as the number rows beside them always
     have. Their third column was empty, so the only two rows on the rail with
     nothing to say were the two whose behaviour lines, CH_RUNS and CE_RUNS,
@@ -55431,22 +55907,24 @@ function renderSpirit(){
  var cic=(typeof CELEM_IC!=='undefined'&&CELEM_IC[sp.celem])||'';
  el.innerHTML=rlMeetHtml(sp,p.nm)
   +hd('W','Western')
-  +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign'):unres('Sun',noZone))
-  +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign'):unres('Moon',noZone))
+  +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign',null,say(unpackOf('sun sign'),unpackOf(sp.sun,'sign'))):unres('Sun',noZone))
+  +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign',null,say(unpackOf('moon sign'),unpackOf(sp.moon,'sign'))):unres('Moon',noZone))
   /* The ascendant is the one reading that needs a place, because it is the
      degree rising on the horizon and that depends on where the horizon was.
      A blank row says nothing, so the row says what is missing and why. */
   +(sp.rising
-    ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign')
+    ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign',null,say(unpackOf('rising sign'),unpackOf(sp.rising,'sign')))
     /* a zone gives a horizon now, so a timed Rising with one that is still
        refused is the clock change and not a missing place */
     : unres('Rising',sp.needsTime?'needs a birth time':sp.needsPlace?noPlace:noZone))
   +hd('E','Eastern')
-  +row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese)
-  +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem)
+  +row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal')))
+  +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem,
+    say(unpackOf('year element'),unpackOf(sp.celem,'year')))
   +hd('N','Number')
-  +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp))
-  +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master)):'')
+  +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+  +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
   +spNumRows(p.nm,true)
   +hd('D','Design')
   /* the personality and design gates are real and computed. the type is
@@ -55454,16 +55932,18 @@ function renderSpirit(){
   /* These three fell back to the word unresolved inside a drill button, with
      the explanation of a value that was not there beside it. The fallback
      could not fire until the engine learned to refuse, and now it can. */
-  +(sp.hd.profile?row('Profile','',sp.hd.profile,'personality line over design line','hd',sp.hd.profile)
+  +(sp.hd.profile?row('Profile','',sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
     :unres('Profile',noZone))
   +(sp.hd.personality?row('Personality','','gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
-    'the sun at birth','gk',String(sp.hd.personality.gate)):unres('Personality',noZone))
+    'the sun at birth','gk',String(sp.hd.personality.gate),
+    say(unpackOf('personality gate'),unpackOf('gate'),unpackOf('line'))):unres('Personality',noZone))
   +(sp.hd.design?row('Design','','gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
-    'the sun 88 degrees earlier','gk',String(sp.hd.design.gate)):unres('Design',noZone))
+    'the sun 88 degrees earlier','gk',String(sp.hd.design.gate),
+    say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line'))):unres('Design',noZone))
   +unres('Type','needs the full bodygraph')
   /* this printed null.null the moment the engine could return no gate */
   +(sp.gk.gate!=null?row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
-    sp.gk.gate+'.'+sp.gk.line):unres('Gene key',noZone))
+    sp.gk.gate+'.'+sp.gk.line,say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone))
   +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
   +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
@@ -55494,7 +55974,9 @@ function spNumRows(nm,under){
     under it this one would be the same number twice */
  var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
  var rows=K.filter(function(k){return N[k]!==null&&N[k]!==undefined;}).map(function(k){
-  return '<button class="sp-row" type="button" data-num="'+k+'">'
+  var nsay=unpackOf((NUM_LABEL[k]||k).toLowerCase());
+  return '<button class="sp-row" type="button" data-num="'+k+'"'
+   +(nsay?' data-tip-k="'+esc(NUM_LABEL[k]||k)+'" data-tip="'+esc(nsay)+'"':'')+'>'
    +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
    +'<span class="sp-v">'+esc(String(N[k]))+'</span>'
    +'<span class="sp-x">'+esc(spNumSays(k,N[k]))+'</span></button>';}).join('');
@@ -56251,14 +56733,15 @@ function rsName(x){
 function rsChips(a){
  var out=[], gates={};
  a.hits.forEach(function(x){
-  if(x.sys!=='D'){out.push({sys:x.sys,t:rsName(x)});return;}
+  if(x.sys!=='D'){out.push({sys:x.sys,t:rsName(x),x:x});return;}
   (gates[x.v]=gates[x.v]||[]).push(x);});
  Object.keys(gates).forEach(function(g){var h=gates[g], up=h.filter(function(x){return x.part==='upper';})[0],
   lo=h.filter(function(x){return x.part==='lower';})[0];
-  out.push({sys:'D',t:'Design gate '+g+', '+(up&&lo?up.img+' over '+lo.img
+  out.push({sys:'D',x:(up||lo),t:'Design gate '+g+', '+(up&&lo?up.img+' over '+lo.img
    :(up||lo).img+((up||lo).part==='upper'?' above':' below'))});});
  return out.map(function(c){
-  return '<span class="rs-chip" data-tip-t="'+esc(SYSNAME[c.sys])+'" data-tip="'+esc(c.t)+'">'
+  var means=c.x?rsMeans(c.x).join(' '):'';
+  return '<span class="rs-chip" tabindex="0" data-tip-t="'+esc(c.t)+'" data-tip="'+esc(means||c.t)+'">'
    +rsIc(SYSGLYPH[c.sys])+'<span>'+esc(c.t)+'</span></span>';}).join('');}
 /* what a reading says, in the table that reading already has */
 function rsSays(x){
@@ -56268,6 +56751,24 @@ function rsSays(x){
  if(x.k==='profile')return HD_LINE_RUNS[x.line]||'';
  var hx=ROOT_HEX[x.v];
  return hx?ROOT_TRIGRAM[hx[1]].img+' over '+ROOT_TRIGRAM[hx[0]].img:'';}
+/* WHAT A READING IS, in the sentences engine/data/gloss.js holds for it. Round
+   PO. rsSays says what the reading does in a person. This says what the reading
+   is: which sign it names and what the sun, moon or rising sign is, which
+   element of the Chinese calendar, how a number was got. A reading is one to
+   three sentences and a reading with none returns an empty list. */
+function rsMeans(x){
+ var o=[];
+ function u(t,c){var s=unpackOf(t,c); if(s)o.push(s);}
+ if(x.sys==='W'){u(x.k+' sign'); u(x.v,'sign');}
+ else if(x.sys==='E'){
+  if(x.k==='year'){u('year element'); u(x.v,'year');}
+  else{u('year animal'); u(x.v,'animal');}}
+ else if(x.sys==='N'){
+  u(x.k==='lifePath'?'life path':x.k==='soul'?'soul urge':x.k);
+  if(x.k==='lifePath')u('path:'+x.v);}
+ else if(x.k==='profile')u('profile');
+ else{u('gate'); u('design');}
+ return o;}
 const RS_STRENGTH={strong:'They agree strongly.',clear:'They agree.',light:'A light overlap.'};
 /* how the bridge a meeting stands on works, for the tooltip, said once per
    vocabulary so nobody has to take a meeting on trust */
@@ -56304,8 +56805,9 @@ function renderRootSum(){
      the overclaim the strength words exist to prevent. What a light meeting
      is gets said once, under the heading, and not on every row. */
   h+='<div class="pm-eye plain rs-eye">Where they meet</div>'
+   +'<p class="rs-note"><span>'+unpSay('overlap')+'</span>'
    +(R.shown.some(function(a){return a.strength==='light';})
-     ?'<p class="rs-note">A light overlap is one many people share. A strong one is rare.</p>':'');
+     ?' A light one is shared by many people, and a strong one is rare.':'')+'</p>';
   h+=R.shown.map(function(a){
    var lit=['W','E','N','D'].map(function(s,i){var on=a.sys.indexOf(s)>=0;
     return '<span class="rs-seg'+(on?' on':'')+'" style="--i:'+i+'" data-tip-t="'+esc(SYSNAME[s])+'" data-tip="'
@@ -56325,7 +56827,8 @@ function renderRootSum(){
    +R.range.map(function(x){var say=rsSays(x);
     return '<div class="rs-r">'+rsIc(SYSGLYPH[x.sys])
      +'<span class="rs-rn">'+esc(rsName(x))+'</span>'
-     +(say?'<span class="rs-rs">'+esc(say)+'</span>':'')+'</div>';}).join('')+'</div>';}
+     +(say?'<span class="rs-rs">'+esc(say)+'</span>':'')
+     +rsMeans(x).map(function(m){return '<span class="rs-rm">'+esc(m)+'</span>';}).join('')+'</div>';}).join('')+'</div>';}
  el.innerHTML=h;
  var go=el.querySelector('.rs-go');
  if(go)go.onclick=function(){setTab(TAB.INTAKE);
@@ -58752,7 +59255,7 @@ function render(){
      list cut two ways: by weight, and by assemblage point. */
   var run=r.unread?'':lit.length
    ?'<div class="pm-eye" style="margin-top:14px">By weight</div><div class="ad-rows">'+top+'</div>'
-    +'<div class="pm-eye" style="margin-top:12px">By assemblage point</div><div class="ad-rows">'+per+'</div>'
+    +'<div class="pm-eye" style="margin-top:12px">'+unp('assemblage point','By assemblage point')+'</div><div class="ad-rows">'+per+'</div>'
    :'<div class="pm-eye" style="margin-top:14px">By weight</div><p class="rnone">Nothing is carrying charge yet.</p>';
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;
@@ -59206,5 +59709,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003854508"></div>
+<div id="eof" hidden data-len="003892712"></div>
 </body></html>

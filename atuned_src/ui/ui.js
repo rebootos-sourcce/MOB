@@ -1293,7 +1293,7 @@ function render(){
      list cut two ways: by weight, and by assemblage point. */
   var run=r.unread?'':lit.length
    ?'<div class="pm-eye" style="margin-top:14px">By weight</div><div class="ad-rows">'+top+'</div>'
-    +'<div class="pm-eye" style="margin-top:12px">By assemblage point</div><div class="ad-rows">'+per+'</div>'
+    +'<div class="pm-eye" style="margin-top:12px">'+unp('assemblage point','By assemblage point')+'</div><div class="ad-rows">'+per+'</div>'
    :'<div class="pm-eye" style="margin-top:14px">By weight</div><p class="rnone">Nothing is carrying charge yet.</p>';
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;

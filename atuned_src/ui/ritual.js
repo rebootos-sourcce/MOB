@@ -548,6 +548,7 @@ function ritComplexHtml(k){
  ritCss();
  var b=(typeof becomingOf==='function')?becomingOf(row.k):null;
  var r=compute(), c=ritFor(r), today=ritToday0();
+ var pole=(typeof compassPoleOf==='function')?compassPoleOf(row.k):null;
  var pick=RIT_TCX[row.k];
  if(!row.rituals.some(function(x){return x.id===pick;}))pick=row.rituals[0].id;
  var list=function(a){
@@ -556,12 +557,22 @@ function ritComplexHtml(k){
  var h='<div class="tcx" data-tcx="'+esc(row.k)+'">'
   +'<div class="ad-nm plain">'+(b&&b.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
    +'<path d="'+b.ic+'"/></svg>':'')+esc(row.line)+'</div>'
-  +'<div class="ad-sub">After '+esc(row.who)+' · '+esc(row.q)+(b&&b.seat?' · '+esc(b.seat):'')+'</div>'
+  /* ROUND PO, UNPACK EVERY SYMBOL. "After Jesus · Light · Heart" was three
+     names and no meaning. Each is a carrier of its sentence, and under the two
+     columns the pole is said phrase by phrase, each phrase with what it means,
+     at both ends. The codex lines it reads from are in engine/data/compass.js. */
+  +'<div class="ad-sub">After '+unp('teacher',row.who)+' \u00b7 '
+   +unp(String(row.q).toLowerCase(),row.q,'axis')
+   +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
   +'<div class="tcx-pair">'
   +'<div class="tcx-col"><div class="pm-eye">Release</div>'
-  +'<div class="tcx-cap">The old pattern'+(row.opp?', as '+esc(row.opp):'')+'</div>'+list(row.release)+'</div>'
+  +'<div class="tcx-cap">The old pattern'+(row.opp?', as '+unp('inversion',row.opp):'')+'</div>'+list(row.release)+'</div>'
   +'<div class="tcx-col tcx-in"><div class="pm-eye">Install</div>'
   +'<div class="tcx-cap">Practise this instead</div>'+list(row.install)+'</div></div>'
+  /* the pole, phrase by phrase, under the two columns it explains and above the
+     rituals that act on it */
+  +((pole&&pole.upm)?'<div class="pm-eye">At full expression</div>'+poleMeansHtml(pole,'up')
+    +'<div class="pm-eye">At full inversion</div>'+poleMeansHtml(pole,'dn'):'')
   +'<div class="pm-eye">Starter rituals</div><div class="tcx-rits" role="group" aria-label="Starter rituals">';
  row.rituals.forEach(function(x){
   var s=recipeSteps(x,c.tier), act=s.steps.length?ritTcxActive(s.steps,today):null;

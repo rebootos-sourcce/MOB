@@ -802,6 +802,63 @@ reports sits in a renderer, and most of those files are held by other seats.
 The ladder is ruled now. It waits on the lines between the rungs, on the V9
 three for each rung, and on those files. Read the count off the run.
 
+### V23. A Symbol Never Stands Alone. Unpack It, In The Same Place.
+
+Ruled 2 October 2026, round PO, for all information across the board. His
+words, on the first card he opened:
+
+> "The blueprint you were born on reads Earth, which is the architect route on
+> life path nine. There's a bunch of assumptions here that the person has to
+> make. You have to unpack blueprint. They don't know what that means. Earth,
+> they don't know what that means. Architect, they don't know what that means.
+> And they don't know what life path nine."
+
+And on a line of the Compass: "Love generated from within, what does that
+mean? Freely given, what does that mean? No transaction, what does that mean?
+Light that has a source, what does that mean? So meaning is missing."
+
+    FAIL  The blueprint you were born on reads earth, which is the Architect
+          root, on life path 9, the one who completes.
+    FIX   the same sentence, then, in the same paragraph: Blueprint is the
+          pattern you started with, before life added anything. A symbolic
+          reading is a meaning an old system gives to a date or a name, and
+          nothing in your body is measured to get it. Earth is the element of
+          Taurus, Virgo and Capricorn, and it stands for steady, solid and slow
+          to move. Architect is the root that builds order and keeps it.
+          Numerology claims a 9 is the one who completes what others abandoned.
+
+    FAIL  Love generated from within. Freely given. No transaction. Light that
+          has a source.
+    FIX   Love generated from within. The warmth does not depend on getting
+          something back. Freely given. It is given with no expectation of
+          thanks or return. No transaction. Nobody keeps score of who owes whom.
+          Light that has a source. The care comes from inside the person and
+          does not need a room to reflect it.
+
+**One table, three shapes, never a link.** The meaning is in `engine/data/gloss.js`
+and nowhere else is a meaning written. A line that has room prints the sentence
+after the term, set in the quieter size. A line with no room makes the term a
+carrier of the sentence, the one tooltip the product already has, with its dotted
+underline, which opens on hover, on a tap and on keyboard focus. A claim that is
+itself a phrase, a pole line, is cut into its phrases and each is printed with
+its meaning in one paragraph, from `POLE_MEANS` in `engine/data/compass.js`. The
+meaning is never behind a link to another page.
+
+**A claim says whose claim it is.** The sun, moon and rising positions are
+computed from the sky. What a sign or a number means is an old system's say so,
+so the sentence says "astrology claims" and "numerology claims", and the
+blueprint says it is a symbolic reading and not a measurement. A meaning that
+states a mechanism is held against the arithmetic in `tests/engine.js`: the 88
+degrees, the 64 gates, the masters kept at 11, 22 and 33.
+
+**A count in a meaning is read off the table it counts**, and never typed.
+
+**What the gate can hold.** `tests/unpack.js` opens the surfaces in a real
+Chromium and fails when a seeded term stands on one with no meaning beside it,
+and `tools/unpack-walk.js` finds the terms nobody seeded. Whether a stranger
+understands the sentence is the same fact about the reader that V21 records, and
+it is not gateable.
+
 ---
 
 ## 3b. His Objections, As A Database

@@ -15,6 +15,7 @@ engine/data/catalog.js
 engine/data/kb.js
 engine/data/cards.js
 engine/data/intakemore.js
+engine/data/gloss.js
 engine/verp.js
 engine/lexicon.js
 engine/core.js

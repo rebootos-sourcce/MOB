@@ -107,6 +107,34 @@ function tierBuilding(){
    letter raised and the rest is left as typed, so McKay and O'Neill survive. */
 function capName(s){return String(s==null?'':s).replace(/(^|[\s\-'’])(\p{Ll})/gu,function(m,a,b){return a+b.toUpperCase();});}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* ============================================================
+   UNPACK, THE ONE WAY A MEANING IS SHOWN. Round PO, "unpack every symbol".
+
+   engine/data/gloss.js is the one table of what a term means. This is the one
+   way a renderer puts it on a screen, and it is not a new component: the
+   product already has one tooltip, ui/tip.js, which opens on hover, on a tap
+   and on keyboard focus, and the sheet sets the one class that says a word
+   carries something, .tipu, a dotted underline. So a term that has no room for
+   its sentence beside it becomes a carrier of that sentence, and a term that
+   has room is followed by the sentence itself.
+
+     unp(term,label,ctx)     the term as a carrier, or plain text when the table
+                             has no sentence for it. Never a guess.
+     unpAttr(term,ctx,label) the same three attributes, for an element a caller
+                             already owns, such as a chip that is a button.
+     unpSay(term,ctx)        the sentence, escaped, for a line that prints it.
+
+   The meaning is always in the same element as the term or on the term itself,
+   never behind a link to another page. The rule and its reason are in
+   CLAUDE.md, UNPACK EVERY SYMBOL.
+   ============================================================ */
+function unpSay(term,ctx){return esc(unpackOf(term,ctx));}
+function unpAttr(term,ctx,label){
+ var s=unpackOf(term,ctx); if(!s)return '';
+ return ' tabindex="0" data-tip-k="'+esc(label==null?term:label)+'" data-tip="'+esc(s)+'"';}
+function unp(term,label,ctx){
+ var t=label==null?term:label, a=unpAttr(term,ctx,t);
+ return a?'<span class="tipu"'+a+'>'+esc(t)+'</span>':esc(t);}
 /* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
    about one light ground out of two. Lumen arrived with paper rails and the
    dark palette went onto them unchanged, so Weaver, Solar and half the
@@ -710,7 +738,9 @@ function addrRow(n,o){o=o||{};
  return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
   +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
   +'<span>'+esc(n.k)+'</span><em'+(o.ink?' style="color:'+o.ink+'"':'')+'>'
-  +esc(o.em!=null?o.em:(opp||n.b))+'</em></button>';}
+  /* ROUND PO. When the right of the row is a seat, the seat says what it is. */
+  +(function(t){return (typeof BANDS!=='undefined'&&BANDS.indexOf(t)>=0)?unp(String(t).toLowerCase(),t,'seat'):esc(t);}(
+   o.em!=null?o.em:(opp||n.b)))+'</em></button>';}
 /* ============================================================
    THE BADGE. AN ICON CARRYING ITS OWN PERCENT, AND THE NUMBER IN A PILL.
 

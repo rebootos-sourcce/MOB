@@ -82,8 +82,13 @@ function renderSpirit(){
    setTab(TAB.INTAKE);
    requestAnimationFrame(function(){var d=$('wdate'); if(d)d.focus();});};
   return;}
- function row(k,glyph,v,x,dk,dv){
-  return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'">'
+ /* ROUND PO. A row carries what its label and its value are, from
+    engine/data/gloss.js, as the one tooltip: reachable by tap on a phone and by
+    keyboard, and said the same on every surface that shows the same sign. */
+ function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
+ function row(k,glyph,v,x,dk,dv,tip){
+  return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'"'
+   +(tip?' data-tip-k="'+esc(k)+'" data-tip="'+esc(tip)+'"':'')+'>'
    +'<span class="sp-k">'+k+'</span>'
    /* a glyph that starts with a tag is a drawn mark, the element's, and a
       character is the sign's own, which the rail has always set as text */
@@ -116,7 +121,7 @@ function renderSpirit(){
     icon." SYSGLYPH in ui/component.js, the same four the summary on the right
     rail lights in its band, so a system reads as the same thing on both. */
  function hd(k,t){return '<div class="sp-hd"><svg class="sp-hi" viewBox="0 0 24 24" aria-hidden="true">'
-  +SYSGLYPH[k]+'</svg>'+t+'</div>';}
+  +SYSGLYPH[k]+'</svg>'+unp(t.toLowerCase(),t)+'</div>';}
  /* THE EASTERN ROWS SAY WHAT THEY DO, as the number rows beside them always
     have. Their third column was empty, so the only two rows on the rail with
     nothing to say were the two whose behaviour lines, CH_RUNS and CE_RUNS,
@@ -125,22 +130,24 @@ function renderSpirit(){
  var cic=(typeof CELEM_IC!=='undefined'&&CELEM_IC[sp.celem])||'';
  el.innerHTML=rlMeetHtml(sp,p.nm)
   +hd('W','Western')
-  +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign'):unres('Sun',noZone))
-  +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign'):unres('Moon',noZone))
+  +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign',null,say(unpackOf('sun sign'),unpackOf(sp.sun,'sign'))):unres('Sun',noZone))
+  +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign',null,say(unpackOf('moon sign'),unpackOf(sp.moon,'sign'))):unres('Moon',noZone))
   /* The ascendant is the one reading that needs a place, because it is the
      degree rising on the horizon and that depends on where the horizon was.
      A blank row says nothing, so the row says what is missing and why. */
   +(sp.rising
-    ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign')
+    ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign',null,say(unpackOf('rising sign'),unpackOf(sp.rising,'sign')))
     /* a zone gives a horizon now, so a timed Rising with one that is still
        refused is the clock change and not a missing place */
     : unres('Rising',sp.needsTime?'needs a birth time':sp.needsPlace?noPlace:noZone))
   +hd('E','Eastern')
-  +row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese)
-  +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem)
+  +row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal')))
+  +row('Element',cic,sp.celem,CE_RUNS[sp.celem]||'','celem',sp.celem,
+    say(unpackOf('year element'),unpackOf(sp.celem,'year')))
   +hd('N','Number')
-  +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp))
-  +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master)):'')
+  +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+  +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
   +spNumRows(p.nm,true)
   +hd('D','Design')
   /* the personality and design gates are real and computed. the type is
@@ -148,16 +155,18 @@ function renderSpirit(){
   /* These three fell back to the word unresolved inside a drill button, with
      the explanation of a value that was not there beside it. The fallback
      could not fire until the engine learned to refuse, and now it can. */
-  +(sp.hd.profile?row('Profile','',sp.hd.profile,'personality line over design line','hd',sp.hd.profile)
+  +(sp.hd.profile?row('Profile','',sp.hd.profile,'personality line over design line','hd',sp.hd.profile,unpackOf('profile'))
     :unres('Profile',noZone))
   +(sp.hd.personality?row('Personality','','gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
-    'the sun at birth','gk',String(sp.hd.personality.gate)):unres('Personality',noZone))
+    'the sun at birth','gk',String(sp.hd.personality.gate),
+    say(unpackOf('personality gate'),unpackOf('gate'),unpackOf('line'))):unres('Personality',noZone))
   +(sp.hd.design?row('Design','','gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
-    'the sun 88 degrees earlier','gk',String(sp.hd.design.gate)):unres('Design',noZone))
+    'the sun 88 degrees earlier','gk',String(sp.hd.design.gate),
+    say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line'))):unres('Design',noZone))
   +unres('Type','needs the full bodygraph')
   /* this printed null.null the moment the engine could return no gate */
   +(sp.gk.gate!=null?row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
-    sp.gk.gate+'.'+sp.gk.line):unres('Gene key',noZone))
+    sp.gk.gate+'.'+sp.gk.line,say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone))
   +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
   +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
@@ -188,7 +197,9 @@ function spNumRows(nm,under){
     under it this one would be the same number twice */
  var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
  var rows=K.filter(function(k){return N[k]!==null&&N[k]!==undefined;}).map(function(k){
-  return '<button class="sp-row" type="button" data-num="'+k+'">'
+  var nsay=unpackOf((NUM_LABEL[k]||k).toLowerCase());
+  return '<button class="sp-row" type="button" data-num="'+k+'"'
+   +(nsay?' data-tip-k="'+esc(NUM_LABEL[k]||k)+'" data-tip="'+esc(nsay)+'"':'')+'>'
    +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
    +'<span class="sp-v">'+esc(String(N[k]))+'</span>'
    +'<span class="sp-x">'+esc(spNumSays(k,N[k]))+'</span></button>';}).join('');

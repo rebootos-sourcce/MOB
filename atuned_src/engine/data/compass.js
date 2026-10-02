@@ -291,6 +291,105 @@ IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 11
    they read as an eye, and on a slant as horns */
 IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+
+/* ============================================================
+   WHAT EACH PHRASE OF A POLE MEANS. Round PO, UNPACK EVERY SYMBOL.
+
+   His words, on this table's first line: "I'm looking at Jesus's love
+   generated from within, freely given, no transaction, light that has a
+   source. Right? We want to express that. Love generated from within, what
+   does that mean? Freely given, what does that mean? No transaction, what
+   does that mean? Light that has a source, what does that mean? So meaning is
+   missing."
+
+   upd and dnd above are the codex's own lines and they are not touched. This
+   table sits beside them. Each pole line is cut into its phrases exactly as
+   the codex wrote them, and each phrase carries one plain sentence of what it
+   means. upm is the coherent end and dnm is the inverted end, a list of
+   [phrase, meaning]. The phrases joined with a space are the codex line,
+   character for character, and tests/engine.js holds that, so a phrase cannot
+   be dropped, reworded or invented here.
+
+   A MEANING SAYS WHAT A PERSON DOES, in words a ten year old has. It never
+   says the person is the pole. Both ends are behaviours, never beings, which is
+   the standing ruling, so nothing here is written about a figure. */
+var POLE_MEANS={
+ IL:{up:[['Love generated from within.','The warmth does not depend on getting something back.'],
+   ['Freely given.','It is given with no expectation of thanks or return.'],
+   ['No transaction.','Nobody keeps score of who owes whom.'],
+   ['Light that has a source.','The care comes from inside the person and does not need a room to reflect it.']],
+  dn:[['Pride as false light.','The warmth is put on to be admired, and it is not felt.'],
+   ['Shine performed for reflection, not generated from Source.','The glow is staged for whoever is watching, and it does not come from the bedrock under every pattern in you.']]},
+ DE:{up:[['Will surrendered to Source.','You stop forcing the outcome and let your effort follow what is true underneath every pattern.'],
+   ['Desire as devotion.','The wanting is given to something, and not spent on getting.'],
+   ['Wanting that moves toward something beyond the self.','What you reach for is bigger than you and serves more than you.']],
+  dn:[['Craving without closure.','The wanting never reaches done.'],
+   ['Appetite that cannot satisfy.','Eating, buying or taking does not fill it.'],
+   ['Having never resolves the wanting.','Getting the thing does not end the wanting, so the next want starts at once.']]},
+ OR:{up:[['Structure in service of liberation.','Rules and routines that leave people freer than before.'],
+   ['Law that creates freedom.','The rule is what lets people move without fear.'],
+   ['Order others can stand within.','The order is firm enough that other people can lean on it.']],
+  dn:[['Chaos engineered to prevent coherence.','Disorder made on purpose so that nothing can line up.'],
+   ['Betrayal as systemic strategy.','Breaking trust again and again as a plan, and not as a slip.'],
+   ['Disruption from inside trusted systems.','The damage is done by someone people already rely on.']]},
+ PO:{up:[['Mastery that costs the practitioner.','Skill built by the person who pays for it with their own time and effort.'],
+   ['Power in service of precision.','Strength used to get one thing exactly right.'],
+   ['Discipline the self bears.','The person carries the strain of the practice, and nobody else does.']],
+  dn:[['Power that extracts from others.','Strength that is taken out of other people.'],
+   ['The machine that must be fed.','The system keeps asking for more, and people are what it eats.'],
+   ['Discipline that others pay for.','The cost of keeping the standard is passed on to other people.']]},
+ PE:{up:[['Clear seeing.','You see what is in front of you.'],
+   ['Reality without overlay.','Nothing is laid over it: no story, no hope, no fear.'],
+   ['The compositor running on present signal.','The part of the mind that builds your picture of things works from what is arriving now, and not from old pictures.']],
+  dn:[['Engineered surface.','The outside is built to be liked.'],
+   ['Beautiful above, serpentine beneath.','It looks pleasant on top, and underneath it coils like a snake.'],
+   ['Perception itself weaponised.','How things look is used as a tool against the person looking.']]},
+ TR:{up:[['Direct encounter with the field.','You meet what is around you first hand, with nothing in between.'],
+   ['Felt knowing.','You know it in your body before you can give a reason.'],
+   ['The heart as the instrument.','What you feel in your chest is the thing that reads.']],
+  dn:[['Threshold paralysis.','You stall at the edge of something new and cannot step over.'],
+   ['Cannot cross what cannot be measured.','If it cannot be proven first, you will not go.'],
+   ['The rational mind forever preparing to arrive.','The thinking mind keeps getting ready and never sets off.']]},
+ CH:{up:[['Grounded fire.','Heat that stays connected to the floor.'],
+   ['Intensity moving through the body without destroying the container or the target.','Strong feeling runs through you and harms neither you nor the one it is aimed at.']],
+  dn:[['Charge split at the root.','The charge divides at the base of the spine into two ways out.'],
+   ['Outward as rage or inward as paralysis.','It either goes out as rage or turns in and freezes you.'],
+   ['The same current, no clean exit.','It is one current with no way to leave cleanly.']]},
+ RE:{up:[['Love as the highest charge.','Love is the strongest current a person can carry.'],
+   ['The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.','Every other state in you lines up around it, like iron filings turning to a magnet, and it changes what it meets without a fight.']],
+  dn:[['The map takes the place of the ground, for good.','The belief about the world replaces the world itself, and it stays.'],
+   ['The belief system is guarded against any experience that contradicts it.','Anything you live through that disagrees with the belief is pushed away.']]},
+ FL:{up:[['The field wants to move,','The energy around you and inside you is built to keep moving.'],
+   ['and most suffering is the result of blocking that motion.','Most pain comes from holding that movement still.']],
+  dn:[['Flow held in one pool until it turns to poison.','Energy is kept in one place until it goes bad.'],
+   ['The river still runs, and nothing downstream can drink from it.','Life goes on around it, and nobody further along can use what comes through.']]},
+ AL:{up:[['Sat, Chit and Ananda clear at once.','Truth, awareness and love are all open at the same time.'],
+   ['Duty as the spine that keeps all three upright under pressure.','Doing what you owe is the backbone that holds all three up when things push on you.']],
+  dn:[['Learning and power with no line held.','Skill and strength with nothing they refuse to do.'],
+   ['He knows the law and crosses it, because the wanting outranks it.','The person knows the rule and breaks it anyway, because the want comes first.']]},
+ HO:{up:[['Perpendicular to the vertical axes.','It runs sideways to the up and down lines of the other poles, so it is not about climbing.'],
+   ['Stop the activity generating the interference.','Stop doing the thing that makes the noise, and the signal comes through.']],
+  dn:[['Haste that means well.','Rushing to help, with kind intent.'],
+   ['They forced openings into what was whole, one a day, and on the seventh day it died.','Help that cuts holes in something that was fine, a little each day, until it dies.']]}};
+/* the Buddha axis and the body path are the perception and light axes already
+   written above, so they read the same rows and a change there is a change here */
+POLE_MEANS.AW=POLE_MEANS.PE; POLE_MEANS.BO=POLE_MEANS.IL;
+MIRROR.forEach(function(m){var pm=POLE_MEANS[m.k]; if(pm){m.upm=pm.up; m.dnm=pm.dn;}});
+PATHS.forEach(function(p){var pm=POLE_MEANS[p.k]; if(pm){p.upm=pm.up; p.dnm=pm.dn;}});
+/* a pole by its key, from the eight mirror axes or the five paths, or null */
+function compassPoleOf(k){
+ var i;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)return MIRROR[i];
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)return PATHS[i];
+ return null;}
+/* a pole's phrases, each with its meaning, for one end. The phrases a pole has
+   no meanings for come back as the codex line whole, so nothing is ever blank. */
+function compassPoleLines(m,end){
+ if(!m)return [];
+ var a=end==='dn'?m.dnm:m.upm;
+ if(a&&a.length)return a;
+ var d=end==='dn'?m.dnd:m.upd;
+ return d?[[d,'']]:[];}
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for
