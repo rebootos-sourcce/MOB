@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1326 043bb07 2026-10-02 08:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v1330 50b9e70 2026-10-02 09:46"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -38150,6 +38150,22 @@ try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
    entry typed into it: the entry is real and costs whatever any entry
    costs. What is free to repeat is walking someone through what an
    entry does, not the entry's own effect.
+
+   ROUND PS: IT NOW REACHES A FIRST RELEASE. This used to describe the
+   release step and stop; "Go to Ritual" was the only button that went
+   anywhere. The gap was named directly: "neither the onboarding nor the
+   Day One tutorial reaches a first release today." The Release step below
+   now hands the real offer's node to relPick, ui/release.js's own one
+   release entry every other door in the product uses, never a second
+   engine, so a person who presses Begin on day one is in the real release
+   card, running the real walker, for the real charge this entry actually
+   carries.
+
+   J0, SAID HERE TOO, BECAUSE IT IS THE SAME GAP ATUNED_SRC/UI/ONBOARD.JS
+   NAMES. tutCommit below is the first place a stranger's own words, typed
+   on day one, are handed to parseStory. No distress check of any kind
+   stands ahead of it. See onboard.js's own header for why nothing is
+   added here that only looks like one.
    ============================================================ */
 var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false};
 
@@ -38266,9 +38282,9 @@ function tutRender(){
    '<button type="button" class="btn pri" data-tut="next">Next</button>');
  }
  else if(s===3){
-  var d=TUT.deep, off=(d&&d.offer&&d.offer[0])||null;
+  var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
   var body;
-  if(off){
+  if(off&&kept.length){
    body='<p class="ob-p">This entry is heavy enough to show up in your Field '
     +'as something to work with: at the <b>'+esc(off.region||off.address||'')
     +'</b>, named <b>'+esc(off.axis)+'</b>'
@@ -38277,14 +38293,22 @@ function tutRender(){
     +'<p class="ob-p ob-dim">'+esc(off.because[0])+'</p>'
     +'<p class="ob-p">The release protocol does not tell you to let it go. '
     +'It knows the story, the pattern and where it sits, and it picks a way '
-    +'to work with exactly that.</p>';
+    +'to work with exactly that. This one is real: pressing Begin opens it '
+    +'on exactly what this entry just wrote.</p>';
   }else{
    body='<p class="ob-p">This particular entry did not carry enough charge '
     +'to name a release yet. That is fine, most days will have one that '
     +'does, and nothing is lost by writing a quiet one.</p>';}
+  /* THE REAL HAND OFF, round PS. kept's own node ids, read exactly as the
+     mirror in onboard.js reads them, never a second engine and never a
+     guess built from off's own axis name: relPick takes node ids and kept
+     already carries them. */
   out=tutCard('Release',body,
-   '<button type="button" class="btn pri" data-tut="next">Next</button>'
-   +(off?'<button type="button" class="btn" data-tut="field">See it in your Field</button>':''));
+   (off&&kept.length
+     ?'<button type="button" class="btn pri" data-tut="release">Begin the release</button>'
+       +'<button type="button" class="btn" data-tut="next">Not now</button>'
+       +'<button type="button" class="btn" data-tut="field">See it in your Field</button>'
+     :'<button type="button" class="btn pri" data-tut="next">Next</button>'));
  }
  else {
   out=tutCard('Flow',
@@ -38326,6 +38350,11 @@ addEventListener('click',function(e){
  var k=b.getAttribute('data-tut');
  if(k==='commit'){ tutCommit(); return; }
  if(k==='next'){ TUT.step++; tutRender(); return; }
+ if(k==='release'){
+  var c=TUT.commit, kept=(c&&c.kept)||[], ids=kept.map(function(n){return n.i;});
+  tutClose();
+  if(ids.length&&typeof relPick==='function')relPick(ids);
+  return;}
  if(k==='field'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.FIELD); return; }
  if(k==='ritual'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return; }
  if(k==='skip'||k==='done'){ tutClose(); return; }});
@@ -57517,75 +57546,105 @@ function railSection(sec,opening){
 
 try{window.__at&&window.__at('ui/railmotion.js');}catch(e){}
 /* ============================================================
-   ONBOARDING. Humble and warm, and it has them do exactly one
-   thing.
+   ONBOARDING, ROUND PS. The three reviews (REVIEW-onboarding/) and three
+   rounds of mockup (mockups/onboarding-v2/) converged on one flow: arrive,
+   the twelve starting points, settle, feel, body, story, a mirror with a
+   correction path, then a bridge into the release. The owner watched the
+   mockup's video and asked to "update the onboarding and tutorial" rather
+   than ask for another design, so this ports that flow into real code
+   rather than drawing a new one.
 
-   Every line of this is his ruling and the wording of the rulings
-   is kept where it is his.
+   WHAT IS PORTED AND WHAT IS NOT, same rule storyui.js states for its own
+   port of a prototype. The mockup's canvas Field, its 112 tick ring and its
+   choreographed motion are a standalone animation built to pitch a feel; none
+   of that is a document this product's engine can be asked to move for real,
+   so it is not ported. What is ported is the sequence, the twelve starting
+   points, the six feeling words, the seven body places, and the rule that
+   the mirror is built only from what the person gave and never invented.
+   The card is this file's own .ob-card, the same sheet a stranger already
+   meets, carrying the Field's own watermark figure and wash rather than a
+   second visual language copied from the mockup's CSS.
 
-   "Onboarding, humble, warm. This is for you. No one's coming to
-   save you. Save yourself. That's what this tool does. It helps
-   you recognise the patterns that impair your success and make
-   you mentally, physically and spiritually weak." Speak to their
-   pain. Inviting, welcoming, they are not alone, this is here to
-   help. AND WE DO NOT DO MECHANICAL, which settles the collision
-   between this and the instrument's own voice: the instrument is
-   mechanical about measurements and this is not a measurement.
+   EVERY RULING THE OLD FLOW CARRIED STILL HOLDS AND IS NOT RETYPED HERE
+   WHERE IT WOULD JUST REPEAT: humble and warm, the same flow for both
+   arrivals, replayable from the profile. One thing changed on purpose.
+   "it does not spend real charge" was true of the sheet and is still true
+   of the sheet; it was never true of a real entry typed into it, which
+   ui/tutorial.js's own header already states for the Day One tutorial: "the
+   entry is real and costs whatever any entry costs." The reviewed design
+   ends in a real release, which is the engine actually moving charge, so
+   this flow now carries a real entry the same way the tutorial does, through
+   the exact same functions the Story tab's own Apply button calls. Nothing
+   here is a second writer.
 
-   "The somatic opener, the signal test, should be on the
-   onboarding." It is the one thing it asks them to do, and it is
-   interactive because he ruled onboarding has to capture
-   something rather than be read.
+   THE SIGNAL TEST, round MP's breath script, is gone from this sheet. It was
+   the thing it asked a stranger to do before a story existed to read; the
+   reviewed design asks for the story itself instead, which is the one
+   interactive thing with something real behind it. The breath script is
+   not deleted from the product's history, it is superseded, the same way
+   the old six slides of Reel A were cut from the mockup itself.
 
-   "Same onboarding for both arrivals." One flow, no branch on
-   where they came from.
+   WHAT THIS IS NOT: a second parser. The mirror's one real-engine line comes
+   from parseStory and stCommit, read exactly as the Story tab and the Day
+   One tutorial already read them. Nothing here guesses a feeling or a place
+   from a word list of its own; the taps the person makes are kept as exactly
+   that, a tap, never dressed up as something the engine found.
 
-   "The tutorial lives in the profile, toggleable and replayable,
-   and it does not spend real charge." So does this. Nothing here
-   writes to the nine axes, nothing here is a reading, and it can
-   be run again from the account area any time.
-
-   WHAT IT CAPTURES, and why that is not a form. Round MP replaced the
-   original neutral/charged word draw with his own breath and
-   awareness script: think yes ten times, think no ten times, compare
-   the two at the throat. What is captured is only whether the two
-   felt different, yes, no or nothing, never a seat name: "remove all
-   the solar plex, sacral, I don't want any of that there in this
-   onboarding." The point stands the same as it always did, obtained
-   by having them feel something rather than by asking them to
-   describe themselves.
+   J0, SAID LOUDLY BECAUSE IT IS STILL OPEN. There is no distress detector
+   anywhere in this engine, and this flow reads a stranger's first story
+   through parseStory with no check of any kind ahead of it. The mockup's
+   own stop frame (06-controls.js, body.html) is inert by its own account,
+   "draft text, needs a clinician's sign off", reachable only from a
+   reviewer's own strip and triggered by nothing a person's words say. Adding
+   a frame that looks like a safety check but answers no real signal would be
+   worse than adding nothing, so none is added here. See obStory below,
+   where the first stranger's words are actually read, for the same warning
+   placed at the exact line it describes. Tracked in the owner's plan as J0,
+   a ship blocker for any build a stranger who is not the owner can reach.
    ============================================================ */
-/* THE AUTOMATIC OPEN IS OFF. Ruled 20 September: "let's turn off onboarding
-   for now." Off means a stranger is not met by a sheet, not that the flow is
-   deleted: every step below still exists, the account area still replays it,
-   and the gate still walks all four steps through obOpen(true). One flag, read
-   in one place, so turning it back on is a single word and not an archaeology
-   exercise. */
+/* THE AUTOMATIC OPEN IS OFF BY ITS OWN FLAG, unchanged: ui/login.js's
+   loginEnter runs this sheet on its own switch, DEV_PLAY_ONBOARDING, and
+   never reads this one. OB_AUTO is kept only because a gate still asserts
+   it reads false; nothing in the product reads it to decide anything. */
 var OB_AUTO=false;
-var OB={open:false, step:0, felt:null, replay:false};
+/* THE TWELVE STARTING POINTS. REVIEW-onboarding/PROPOSAL.md calls for
+   "twelve starting points as ring chips"; mockups/onboarding-v2/src/js/
+   01-data.js names the twelve itself, built and reviewed in that round, and
+   this is that list, unchanged, because inventing a different twelve here
+   would be a second, disagreeing answer to a question that round already
+   settled. The shapes of motion the mockup hung off each one are its own
+   animator's reading (NOTES.md says so) and are not a claim this file
+   carries forward; only the twelve names are. */
+var OB_STARTS=[
+ {k:'anxiety',n:'Anxiety'},{k:'anger',n:'Anger'},{k:'overwhelm',n:'Overwhelm'},
+ {k:'burnout',n:'Burnout'},{k:'grief',n:'Grief'},{k:'fear',n:'Fear'},
+ {k:'relationships',n:'Relationships'},{k:'pain',n:'Pain'},
+ {k:'selfworth',n:'Self-worth'},{k:'purpose',n:'Purpose'},{k:'money',n:'Money'},
+ {k:'other',n:'Something else'}];
+/* THE SIX FEELING WORDS, the same six the mockup's FEELS carries. Neither
+   set is tinted to a seat: a feeling is not one place in the body, and
+   tinting it that way would be a claim this sheet has not earned. */
+var OB_FEELS=[{k:'heavy',n:'Heavy'},{k:'tight',n:'Tight'},{k:'numb',n:'Numb'},
+ {k:'restless',n:'Restless'},{k:'hollow',n:'Hollow'},{k:'hot',n:'Hot'}];
+/* THE SEVEN BODY PLACES, one on each seat, root to crown, the engine's own
+   seven bands (obFigure's own col array, below, in the same order). Each is
+   tinted with seatCol, because this one is an engine fact: the place really
+   is that seat and nothing here is guessing. */
+var OB_PLACES=[{k:'pelvis',n:'Pelvis',b:'Root'},{k:'belly',n:'Belly',b:'Sacral'},
+ {k:'stomach',n:'Stomach',b:'Solar'},{k:'chest',n:'Chest',b:'Heart'},
+ {k:'throat',n:'Throat',b:'Throat'},{k:'forehead',n:'Forehead',b:'3rd Eye'},
+ {k:'head',n:'Head',b:'Crown'}];
+/* nsteps is 8: arrive, ask, settle, feel, body, story, mirror, bridge. */
+var OB_NSTEPS=8;
+var OB={open:false, step:0, replay:false,
+ pick:null, feel:null, place:null,
+ text:'', commit:null, corr:'', fixes:[], corrFound:null};
 
-/* THE SIGNAL TEST IS A BREATH EXERCISE NOW, ROUND MP. His own script,
-   replacing the neutral/charged word draw entirely: "the signal test is
-   simple, yes, no, say it to yourself... think yes ten times, see where
-   it feels, see what the quality is, note its nature, think no ten times,
-   feel its quality, note its nature, compare the difference between the
-   two." Nothing here reads S.charge or CHILD any more, and OB.felt now
-   holds 'yes', 'no' or 'none' rather than a seat name: there is no seat
-   in this exercise to hold. */
-
-/* THE FIGURE, AT REST. Ruled: "show, not tell, Japanese Zen, we do not have to
-   go super text heavy," and separately, "when I come to this page off the
-   funnel I need to be welcomed, there is something here that needs to be like,
-   these people see me."
-
-   Text cannot do that and a stock illustration would be a lie. So the welcome
-   carries the same column the boot just drew: seven seats on a spine with a
-   gold halo over the crown, standing still. A person has watched it assemble
-   four seconds ago, and meeting it again at rest is the product saying this is
-   the thing, and it is you, without a sentence.
-
-   Drawn here rather than shared with the boot because the boot sheet is
-   removed from the document and this one has to outlive it. */
+/* THE FIGURE, AT REST. Unchanged from the shipped sheet: seven seats on a
+   spine with a gold halo over the crown, the same column the boot just
+   drew. Kept here rather than moved, because every card below still wants
+   it as its watermark (obCard's own .ob-fig-wm) and the welcome still wants
+   it at full strength. */
 function obFigure(){
  var y=[160,140,120,100,80,60,40];
  var col=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
@@ -57598,37 +57657,20 @@ function obFigure(){
   +'</svg>';}
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
- OB.open=true; OB.step=0; OB.felt=null; OB.replay=!!replay;
+ OB.open=true; OB.step=0; OB.replay=!!replay;
+ OB.pick=null; OB.feel=null; OB.place=null;
+ OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[]; OB.corrFound=null;
  h.classList.remove('ob-leaving');
  obRender();
  h.style.display='flex';
- /* the sheet takes focus, because a person arriving here has nothing else to
-    do and a keyboard user should not have to find it */
- var f=h.querySelector('button'); if(f)f.focus();}
-/* THE HANDOFF TO THE FIELD IS A FADE, NOT A CUT, ROUND MP: "there needs to
-   be a transition between the last onboarding screen and the field." The
-   sheet's own CSS transition (see .ob-leaving in head.html) plays first,
-   then the sheet is actually removed once it has had time to finish; a
-   person who somehow skips ahead before it ends is still left with a sheet
-   that is at least invisible and non-interactive, never a stuck one. */
+ var f=h.querySelector('button,textarea'); if(f)f.focus();}
+/* THE HANDOFF TO THE FIELD IS A FADE, NOT A CUT, unchanged from round MP. */
 var OB_LEAVE_MS=520;
 function obClose(){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=false; h.classList.add('ob-leaving');
  setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },OB_LEAVE_MS);
- /* EVERY WRITE THAT CAN FAIL REPORTS, and this one did not.
-
-    It ignored what pSave returned and swallowed any throw into an empty
-    catch. `account.js` does the same call correctly one file over: it checks
-    the return and reports through status(). So if storage is full or blocked,
-    the flag never persisted, nothing said so, and the onboarding reopened on
-    every single launch with no explanation a person could act on. A flow that
-    will not close and will not say why is the worst shape a first run can
-    take.
-
-    It says so now, and it says the one thing a person can do about it. The
-    sheet still closes either way, because trapping somebody inside it to
-    punish a storage failure helps nobody. */
+ /* EVERY WRITE THAT CAN FAIL REPORTS, unchanged lesson. */
  try{
   if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.onboarded=true;
    if(!pSave()&&typeof status==='function')
@@ -57638,16 +57680,10 @@ function obClose(){
    status('This browser would not save. The first run will open again.','fail'); }
  if(typeof render==='function')render();}
 
-/* ---- the steps ---- */
-/* THE CARD NOW CARRIES THE SAME GROUND THE FIELD DOES, ROUND MP: "redesign
-   this so it's visually appealing, see what you can pull from the field
-   page." .ob-wash is the boot sheet's own seven seat colours (bx-wash in
-   body.html, same hex values) at a fraction of its strength, so the door
-   and the instrument behind it read as one world rather than a plain
-   sheet dropped over it. .ob-fig-wm is the same standing figure obFigure
-   draws, held very faint behind every card rather than shown once at full
-   strength on the welcome screen alone. */
-function obCard(eye,title,body,acts){
+/* ---- the card shell. nsteps carries over tutorial.js's own pattern,
+   because a sheet of a fixed four steps is no longer the only one. ---- */
+function obCard(eye,title,body,acts,nsteps){
+ var n=nsteps||OB_NSTEPS;
  return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
   +'<div class="ob-fig-wm" aria-hidden="true">'+obFigure()+'</div>'
@@ -57656,155 +57692,261 @@ function obCard(eye,title,body,acts){
   +'<h2 class="ob-h">'+esc(title)+'</h2>'
   +body
   +'<div class="ob-acts">'+acts+'</div>'
-  +'<div class="ob-dots">'+[0,1,2,3].map(function(i){
+  +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
     return '<span class="ob-dot'+(i===OB.step?' on':'')+'"></span>';}).join('')+'</div>'
   +'</div></div>';}
+/* a row of chips, one choice at most. sel is the picked index, -1 for "not
+   sure", null for nothing picked yet. b, when given, is the chip's seat
+   band and tints it through seatCol, the same colour the body figure and
+   the finished card already use for that seat; with no b the chip carries
+   no colour, because this file makes no claim it has not earned. */
+function obChips(items,attr,sel,withNotSure){
+ return '<div class="ob-seats">'+items.map(function(x,i){
+   var c=x.b?' style="--c:'+seatCol(x.b)+'"':'';
+   return '<button type="button" class="ob-seat'+(sel===i?' on':'')+'"'+c
+    +' data-'+attr+'="'+i+'">'+esc(x.n)+'</button>';}).join('')
+  +(withNotSure?'<button type="button" class="ob-seat'+(sel===-1?' on':'')+'" data-'+attr+'="-1">Not sure</button>':'')
+  +'</div>';}
 
 function obRender(){
  var h=document.getElementById('ob'); if(!h)return;
  var s=OB.step, out='';
  if(s===0){
-  /* THE WELCOME. Ruled twice, and the second ruling moved it.
-
-     It opened on "nobody is coming to save you," which is his sentence and a
-     true one, and it is the wrong first sentence. He said: "I want to be
-     greeted, I want to be welcomed. This is a mirror of the person. We are
-     going to be showing them their inside. We do not want to be cold. We just
-     want to let them know, hey, this is you, and it is okay. No judgment."
-
-     So the hard sentence moves one screen in, where it belongs, and the first
-     screen is a figure and eleven words. Show, not tell. Everything that used
-     to be here is still in the product and none of it is said first. */
-  out=obCard('Welcome','This is you, and it is okay.',
+  /* ARRIVE. His two rulings, kept exactly: the figure and eleven words
+     first, show not tell, and then the warmth he named, "hey, this is you,
+     and it is okay. No judgment." The mockup's own first card, "Welcome to
+     a neurosomatic experience," is his line too (NOTES.md item 1) and sits
+     here as the eyebrow rather than a second sentence, so the card still
+     opens on the figure and not on a claim. */
+  out=obCard('Welcome to a neurosomatic experience','This is you, and it is okay.',
    obFigure()
-   /* HIS TWO SENTENCES, AND THEN IT STOPS. "No judgment. Nothing here grades
-      you." is the ruling and it stands. A third clause had been added to it,
-      "you are not carrying it alone", which answers a fear nobody has raised
-      on this screen and claims companionship this product does not provide:
-      it is not a coach, a friend or a guide. Silence is a copy decision. */
    +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
-   +'<p class="ob-p ob-dim">Two minutes. One thing to try. Nothing to fill in.</p>',
+   +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }
  else if(s===1){
-  /* HIS SENTENCE, AND IT IS THE ONE THAT EARNS THE PRODUCT. "The stress that
-     we condition as normal is actually making us sick, and this tool shows you
-     how and where, and it gives you the what and the how." It is said second
-     rather than first, because it is a claim and a claim needs somebody
-     already in the room.
-
-     And the thing it reads is named: the body mind complex. His term, kept
-     because it says what it is. */
-  /* A MIRROR, NOT A GUIDE. "We walk you through you" is a guide claim and it
-     is the only place in the product that speaks as we. His own sentence for
-     what this is, kept as he says it: everything that is running you, from the
-     top to the bottom. */
-  out=obCard('What this is','Everything that is running you, top to bottom.',
-   /* V21, speak to a ten year old. "The strain we have agreed to call
-      normal" moves back toward his own sentence, which was already plain:
-      the stress we treat as normal is making us sick. The body mind complex
-      is his term and stays, said once in words a child has. */
-   '<p class="ob-p">Most of the stress we call normal is making us sick. This '
-   +'shows you where it sits in your body, what it costs you, and what to do '
-   +'about it.</p>'
-   +'<p class="ob-p">It reads one thing: the body mind complex, your body and '
-   +'your mind working as one. How you run, which patterns are running, and '
-   +'where in your body they sit.</p>'
-   +'<div class="ob-grid">'
-   /* TWO OF THESE FOUR DEFINED A THING BY WHAT IT IS NOT, on the first
-      screen a person sees, in the file that runs antithesis at five times the
-      house rate. The replacements are positive and concrete, and the first is
-      copy this product already ships in the story box. */
-   +[['You write what happened','the day, in your own words'],
-     ['It finds where that sits','one exact spot in your body'],
-     ['You release what is there','one spot at a time'],
-     ['And you watch it move','the same numbers, over months']]
-    .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
-      +'<span>'+esc(x[1])+'</span></div>';}).join('')
-   +'</div>'
-   /* "which is the good news" is the writer telling a person how to feel
-      about a fact. The fact is the sentence. */
-   +'<p class="ob-p ob-dim">Nothing here is made up. If it does not know '
-   +'something, it says so. The work is yours.</p>',
-   /* a control names what it does, and it starts on the verb. "Then" is
-      narration, and nobody says it pressing a button. */
-   '<button type="button" class="btn pri" data-ob="next">Try one thing</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+  /* ASK. Picking is the advance in the mockup; kept here, with a Back for
+     a person who taps the wrong one, which the mockup did not need because
+     its chips fly back into the ring and this sheet's do not. */
+  out=obCard('Ask','What brought you here?',
+   '<p class="ob-p ob-dim">Pick the one that is closest. Nothing is locked in.</p>'
+   +obChips(OB_STARTS,'obpick',OB.pick,false),
+   '<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===2){
-  /* THE SIGNAL TEST, ROUND MP, HIS OWN SCRIPT, REPLACING THE WORD DRAW
-     ENTIRELY. "The signal test is simple, yes, no, say it to yourself...
-     this is a neurosomatic product, meaning the story you create
-     conditions a body, one impacts the other and vice versa." No seat
-     names anywhere in this screen, his own ruling: "remove all the solar
-     plex, sacral, I don't want any of that there." The capture is
-     Yes / No / Nothing, never a disabled Next with no other way through,
-     the exact trap he hit: "I can't click next to go, I can only click
-     solar." Nothing is disabled here; Nothing is itself a real answer, on
-     the same honest-empty rule the reflection screen already keeps. */
-  out=obCard('The signal test','Say yes. Say no.',
-   '<p class="ob-p">This product works with the body and the mind '
-   +'together. A thought changes what your body does, and what your body '
-   +'does changes the thought back.</p>'
-   +'<p class="ob-p">Sit down. Put both feet on the floor. Take ten slow breaths.</p>'
-   +'<p class="ob-p">When you are ready, bring your attention to your '
-   +'throat.</p>'
-   +'<p class="ob-p">Think <b>yes</b>, ten times. Notice what that feels '
-   +'like there.</p>'
-   +'<p class="ob-p">Now think <b>no</b>, ten times. Notice what that '
-   +'feels like.</p>'
-   +'<p class="ob-p">Compare the two. Did they feel different?</p>',
-   '<div class="ob-seats">'
-   +[['yes','Yes'],['no','No'],['none','Nothing']].map(function(x){
-     return '<button type="button" class="ob-seat'+(OB.felt===x[0]?' on':'')
-      +'" data-obseat="'+x[0]+'">'+esc(x[1])+'</button>';}).join('')
-   +'</div>'
-   +'<button type="button" class="btn pri" data-ob="next"'
-   +(OB.felt?'':' disabled aria-describedby="ob-need"')+'>Next</button>'
-   +(OB.felt?'':'<span id="ob-need" class="ob-need">Pick one to go on.</span>')
+  /* SETTLE. His two lines, kept exactly as the mockup carries them
+     (NOTES.md item 1): the awareness line, which answers what this sheet
+     is asking the senses to do, and the instruction that follows it. */
+  out=obCard('Settle','Do not solve it yet.',
+   '<p class="ob-p">Awareness and intuition is a tool we use to turn your senses inward.</p>'
+   +'<p class="ob-p">Notice what is here.</p>',
+   '<button type="button" class="btn pri" data-ob="next">Continue</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
+ else if(s===3){
+  out=obCard('Feel','What are you feeling?',
+   '<p class="ob-p ob-dim">Take a second.</p>'
+   +obChips(OB_FEELS,'obfeel',OB.feel,true),
+   '<button type="button" class="btn" data-ob="back">Back</button>');
+ }
+ else if(s===4){
+  out=obCard('Body','Where do you notice it?',
+   '<p class="ob-p ob-dim">Tap the place on the body.</p>'
+   +obChips(OB_PLACES,'obplace',OB.place,true),
+   '<button type="button" class="btn" data-ob="back">Back</button>');
+ }
+ else if(s===5){
+  /* STORY. THE ONE REAL THING. This is the exact line J0 names in the
+     header above: a stranger's first typed words are about to be read by
+     parseStory with no distress check of any kind standing in front of it.
+     Anybody building that check wires it here, ahead of obStoryDone, and
+     nowhere else, because this is the only place in this sheet a stranger's
+     own words exist before the engine reads them. */
+  out=obCard('Story','What was happening?',
+   '<p class="ob-p ob-dim">A sentence or two is enough. Your own words.</p>'
+   +'<div class="ob-f"><textarea id="obtext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
+   '<button type="button" class="btn pri" id="obdone" data-ob="storydone" disabled>Done</button>'
+   +'<button type="button" class="btn" data-ob="storyskip">I would rather not say</button>'
+   +'<button type="button" class="btn" data-ob="back">Back</button>');
+ }
+ else if(s===6){
+  out=obMirrorCard();
+ }
  else {
-  /* WHAT IT SAYS, SHARPENED, ROUND MP: "you felt anticipation, actually
-     that doesn't even apply, it's just yes, no." There is no seat and no
-     word left to name, only whether the two felt different. */
-  var said;
-  if(OB.felt==='none'){
-   said='<p class="ob-p">Nothing stood out, and that is a real answer. '
-    +'Sometimes it takes stillness to notice. This works with quiet as '
-    +'well as loud.</p>';
-  }else{
-   said='<p class="ob-p">You noticed a difference between yes and no. '
-    +'Neither one is a word with any power of its own. What moved was '
-    +'your body.</p>';}
-  out=obCard('What just happened',
-   OB.felt==='none'?'Nothing moved this time.':'A thought moved your body.',
-   said
-   +'<p class="ob-p">'+(OB.felt==='none'?'':'That is the whole idea. ')
-   +'Words like anxious, overwhelmed, burned out or depressed do the same '
-   +'thing somewhere in you. This finds where, and gives you a way to '
-   +'work with it.</p>',
-   '<button type="button" class="btn pri" data-ob="done">Go in</button>');
+  out=obBridgeCard();
  }
  h.innerHTML=out;
+ var ta=document.getElementById('obtext');
+ if(ta){ta.value=OB.text; ta.oninput=function(){
+   var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);};
+  ta.focus();}
+ var ci=document.getElementById('obcorr');
+ if(ci){ci.oninput=function(){OB.corr=ci.value;};}
  var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
+
+/* ============================================================
+   THE MIRROR. Built only from what the person gave: the pick, the feel and
+   body taps exactly as tapped (never dressed up as an engine reading), the
+   person's own words quoted, and the one real-engine line, read off
+   stCommit's own kept array the same way ui/tutorial.js's tutSeatLine
+   already reads it. Nothing below is scripted copy standing in for that
+   read, and an entry that found nothing says so in the same honest-empty
+   words the tutorial and the signal test already use.
+   ============================================================ */
+function obSeatLine(n){
+ if(!n)return '';
+ return 'at your <b>'+esc(n.b||'')+'</b>, around the word &ldquo;'+esc(n.k||'')
+  +'&rdquo;, named <b>'+esc(n.cf||'')+'</b>';}
+function obQuote(t){
+ var s=String(t||'').replace(/\s+/g,' ').trim(), m=s.match(/^[^.!?]+/), q=(m?m[0]:s).trim();
+ var w=q.split(' '); if(w.length>16)q=w.slice(0,16).join(' ')+'...';
+ return q;}
+function obMirrorCard(){
+ var pk=OB.pick!=null&&OB.pick>=0?OB_STARTS[OB.pick]:null;
+ var fe=OB.feel!=null&&OB.feel>=0?OB_FEELS[OB.feel]:null;
+ var pl=OB.place!=null&&OB.place>=0?OB_PLACES[OB.place]:null;
+ var c=OB.commit, kept=(c&&c.kept)||[];
+ var lines='';
+ lines+='<p class="ob-p">'+(pk&&pk.k!=='other'?'You came in with <b>'+esc(pk.n.toLowerCase())+'</b>.'
+   :'You did not pick a starting point.')+'</p>';
+ if(fe||pl){
+  var a=fe?'It feels <b>'+esc(fe.n.toLowerCase())+'</b>':'You did not say how it feels';
+  var b=pl?', and you notice it in your <b>'+esc(pl.n.toLowerCase())+'</b>.':'.';
+  lines+='<p class="ob-p">'+a+b+'</p>';
+ } else lines+='<p class="ob-p">You did not say how it feels or where.</p>';
+ lines+='<p class="ob-p">'+(OB.text?'You said: <b>&ldquo;'+esc(obQuote(OB.text))+'&rdquo;</b>'
+   :'You did not say what happened.')+'</p>';
+ if(c&&c.ok&&c.k)
+  lines+='<p class="ob-p">This separates into its own components. What stood out '
+   +(kept[0]?obSeatLine(kept[0]):'landed')+'.</p>'
+   +(kept[1]?'<p class="ob-p">And a second place, '+obSeatLine(kept[1])+'.</p>':'');
+ else if(OB.text)
+  lines+='<p class="ob-p ob-dim">Nothing in that one lit anything the engine could name. '
+   +'That happens, and it is not a problem with what you wrote.</p>';
+ OB.fixes.forEach(function(t){lines+='<p class="ob-p">You added: <b>&ldquo;'+esc(t)+'&rdquo;</b></p>';});
+ if(OB.corrFound)
+  lines+='<p class="ob-p">And it lands '+obSeatLine(OB.corrFound)+'.</p>';
+ var body=lines
+  +'<p class="ob-p" style="margin-top:10px">Does that feel like you?</p>'
+  +'<div class="ob-acts" style="margin-top:0"><button type="button" class="btn pri" data-ob="mirroryes">That is me</button>'
+  +'<button type="button" class="btn" data-ob="mirrorno">Not quite</button></div>'
+  +'<div class="ob-f" id="obcorrwrap" hidden><label for="obcorr">Tell me what is off.</label>'
+  +'<textarea id="obcorr" rows="2"></textarea>'
+  +'<div class="ob-acts" style="margin-top:8px"><button type="button" class="btn pri" data-ob="mirroradjust">Adjust</button></div></div>';
+ return obCard('Mirror',OB.fixes.length?'Here is what I heard now.':'Here is what I heard.',
+  body,'<button type="button" class="btn" data-ob="back">Back</button>');}
+
+/* ---- adjust: a correction is read for real, through parseStory, and is
+   never a second write. It only changes what this card says. ---- */
+function obAdjust(){
+ var ta=document.getElementById('obcorr'); if(!ta)return;
+ var v=ta.value.trim(); if(!v)return;
+ OB.fixes.push(v);
+ var found=null;
+ try{
+  var p=parseStory(v);
+  if(p&&p.imprints&&p.imprints.length){var n=BY[p.imprints[0].node]; if(n&&n.cf)found=n;}
+ }catch(e){}
+ OB.corrFound=found;
+ /* the correction is kept on the same real entry the Story path already
+    wrote, never a second place: the entry carries what the person said
+    about it, same object, same pSave, no second write of charge. */
+ try{
+  if(CURP&&CURP.story&&CURP.story.entries&&CURP.story.entries.length){
+   var ent=CURP.story.entries[CURP.story.entries.length-1];
+   ent.ob=ent.ob||{}; ent.ob.fixes=ent.ob.fixes||[]; ent.ob.fixes.push(v);
+   pSave();}
+ }catch(e){}
+ ta.value=''; OB.corr='';
+ obRender();}
+
+/* ============================================================
+   THE BRIDGE. The hand off this round names by name: never a second
+   release engine, the one ui/release.js already carries, through relPick,
+   the same one every other door in the product uses (avatarui.js,
+   drills.js, imprints.js, map.js, personas.js, ritual.js, storyui.js,
+   summary.js). The node ids it hands over are exactly the ones the mirror
+   just named, kept's own .i, never a guess built from a pick or a feeling
+   word: those are taps and this is the engine's own read.
+   ============================================================ */
+function obBridgeCard(){
+ var c=OB.commit, kept=(c&&c.kept)||[];
+ if(c&&c.ok&&c.k&&kept.length){
+  var n0=kept[0];
+  return obCard('Next','Next is a release.',
+   '<p class="ob-p">'+kept.length+(kept.length===1?' line':' lines')+', one at a time, at your <b>'
+    +esc(n0.b||'')+'</b> seat.</p>'
+   +'<p class="ob-p ob-dim">You choose the pace and how many once you are there, and you can stop any time.</p>',
+   '<button type="button" class="btn pri" data-ob="release">Begin the release</button>'
+   +'<button type="button" class="btn" data-ob="done">Not now</button>');
+ }
+ /* HONEST EMPTY, the same rule the signal test and the tutorial already
+    keep: nothing to release is a real answer, not a failure to paper over. */
+ return obCard('Next','Nothing to release yet.',
+  '<p class="ob-p">This entry did not carry enough charge to name a release yet. '
+   +'That is fine. You can always write another in the Story tab.</p>',
+  '<button type="button" class="btn pri" data-ob="done">Go in</button>');}
 
 /* ---- one listener for the whole sheet ---- */
 addEventListener('click',function(e){
  if(!OB.open)return;
  var t=e.target&&e.target.closest?e.target:null; if(!t)return;
- var seat=t.closest?t.closest('[data-obseat]'):null;
- if(seat){ OB.felt=seat.getAttribute('data-obseat'); obRender(); return; }
+ var pk=t.closest?t.closest('[data-obpick]'):null;
+ if(pk){ OB.pick=+pk.getAttribute('data-obpick'); OB.step=2; obRender(); return; }
+ var fe=t.closest?t.closest('[data-obfeel]'):null;
+ if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
+ var pl=t.closest?t.closest('[data-obplace]'):null;
+ if(pl){ OB.place=+pl.getAttribute('data-obplace'); OB.step=5; obRender(); return; }
  var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
  var k=b.getAttribute('data-ob');
- if(k==='next'){ if(OB.step===2&&!OB.felt)return; OB.step++; obRender(); return; }
+ if(k==='next'){ OB.step++; obRender(); return; }
  if(k==='back'){ OB.step=Math.max(0,OB.step-1); obRender(); return; }
+ if(k==='storydone'){ obStoryDone(); return; }
+ if(k==='storyskip'){ OB.text=''; OB.commit={ok:false,why:'skip'}; OB.step=6; obRender(); return; }
+ if(k==='mirrorno'){ var w=document.getElementById('obcorrwrap'); if(w)w.hidden=false;
+  var ci=document.getElementById('obcorr'); if(ci)ci.focus(); return; }
+ if(k==='mirroradjust'){ obAdjust(); return; }
+ if(k==='mirroryes'){ OB.step=7; obRender(); return; }
+ if(k==='release'){
+  var c=OB.commit, kept=(c&&c.kept)||[], ids=kept.map(function(n){return n.i;});
+  obClose();
+  if(ids.length&&typeof relPick==='function')relPick(ids);
+  return;}
  if(k==='skip'||k==='done'){ obClose(); return; }});
 /* escape leaves, because a sheet a person cannot dismiss is a sheet that has
    stopped being an invitation. */
 addEventListener('keydown',function(e){
  if(OB.open&&e.key==='Escape')obClose();});
+
+/* ---- the one commit the story screen makes, through the real path, the
+   exact two lines the Story tab's own textarea runs and then stCommit,
+   factored out for the Day One tutorial first and reused here rather than
+   a third copy of it. ----
+
+   J0 AGAIN, NAMED AT THE LINE IT IS ABOUT. The call to stCommit below is
+   where a stranger's own first words, typed into this product for the
+   first time, are actually read. Nothing stands between that text and the
+   engine's own parser, and nothing here claims otherwise. */
+function obStoryDone(){
+ var ta=document.getElementById('obtext'); if(!ta)return;
+ var v=ta.value; OB.text=v;
+ if(v.trim().split(/\s+/).filter(Boolean).length<3)return;
+ ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
+ var r=stCommit();
+ OB.commit=r;
+ /* THE TAPS WRITE TO THE REAL PROFILE THE WAY THE STORY TAB ALREADY DOES:
+    the same entry, the same CURP.story.entries array, the same pSave, never
+    a second store. A tap is kept as exactly what it is, a tap, and is never
+    run back through parseStory as if the person had typed it: that would be
+    inventing their words, which the mirror above is built never to do. */
+ try{
+  if(r&&r.ok&&CURP&&CURP.story&&CURP.story.entries&&CURP.story.entries.length){
+   var ent=CURP.story.entries[CURP.story.entries.length-1];
+   ent.ob={pick:OB.pick,feel:OB.feel,place:OB.place};
+   pSave();}
+ }catch(e){}
+ OB.step=6; obRender();}
 
 try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
 /* ============================================================
@@ -59873,5 +60015,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003905800"></div>
+<div id="eof" hidden data-len="003914138"></div>
 </body></html>

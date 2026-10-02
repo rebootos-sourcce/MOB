@@ -2366,34 +2366,63 @@ ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults')
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 
-console.log('\n=== the opening, which is the one thing it asks a stranger to do ===');
-/* HIS RULINGS, GATED. Humble and warm, one interactive thing, the same flow
-   for both arrivals, replayable from the profile, and it spends no charge.
-   The last of those is the one that matters most: an opening that wrote to
-   the nine axes would be a reading taken before anybody had said anything. */
+console.log('\n=== the opening, round PS: arrive, the twelve, settle, feel, body, story, mirror, bridge ===');
+/* HIS RULINGS, GATED, CARRIED OVER FROM ROUND MP WHERE THEY STILL HOLD.
+   Humble and warm, one flow for both arrivals, replayable from the profile.
+   WHAT CHANGED THIS ROUND, named rather than left for a stale comment to
+   contradict: "it does not spend real charge" was true of the signal test,
+   which read nothing and asked nothing real. The reviewed, merged mockup
+   (mockups/onboarding-v2/) ends in a real story and a real release, the
+   same real entry ui/tutorial.js's own Day One sheet already writes, so this
+   sheet now writes real charge on a real entry, on purpose, through the
+   exact same stCommit the Story tab's own Apply button calls. A full walk
+   through to a real release is tests/onboarding2.js's own job; this block
+   stays the structural shape check every other gate in this file keeps. */
 {const ob=await page.evaluate(async()=>{
+  /* THE PERSON'S OWN RECORD, NEVER A WORKED EXAMPLE. stCommit refuses a
+     commit on a persona by name, and the suite above this point is deep in
+     Gordon's own record, so without this the real entry below would be
+     refused and every assertion past it would be measuring a refusal
+     instead of a release of its own. */
+  loadP(0);
   const before=CHARGES.map(c=>+(S.charge[c]||0));
   obOpen(true);
   const o={opened:OB.open, steps:[], wrote:false};
+  o.dots=document.querySelectorAll('.ob-dot').length;
   o.steps.push(document.querySelector('.ob-h').textContent);
+  document.querySelector('[data-ob=next]').click();             /* arrive -> ask */
+  await new Promise(r=>setTimeout(r,60));
+  o.steps.push(document.querySelector('.ob-h').textContent);
+  o.starts=document.querySelectorAll('[data-obpick]').length;
+  document.querySelector('[data-obpick="3"]').click();           /* burnout, picking is the advance */
+  await new Promise(r=>setTimeout(r,60));
+  o.steps.push(document.querySelector('.ob-h').textContent);     /* settle */
   document.querySelector('[data-ob=next]').click();
   await new Promise(r=>setTimeout(r,60));
-  o.steps.push(document.querySelector('.ob-h').textContent);
-  document.querySelector('[data-ob=next]').click();
+  o.steps.push(document.querySelector('.ob-h').textContent);     /* feel */
+  o.feels=document.querySelectorAll('[data-obfeel]').length;
+  document.querySelector('[data-obfeel="0"]').click();
   await new Promise(r=>setTimeout(r,60));
-  o.steps.push(document.querySelector('.ob-h').textContent);
-  o.seats=document.querySelectorAll('[data-obseat]').length;
-  /* it will not advance until the one question is answered */
-  o.blocked=document.querySelector('[data-ob=next]').disabled;
-  document.querySelector('[data-obseat=yes]').click();
+  o.steps.push(document.querySelector('.ob-h').textContent);     /* body */
+  o.places=document.querySelectorAll('[data-obplace]').length;
+  document.querySelector('[data-obplace="3"]').click();          /* chest, the Heart seat */
   await new Promise(r=>setTimeout(r,60));
-  o.freed=!document.querySelector('[data-ob=next]').disabled;
-  o.captured=OB.felt;
-  document.querySelector('[data-ob=next]').click();
+  o.steps.push(document.querySelector('.ob-h').textContent);     /* story */
+  o.blocked=document.getElementById('obdone').disabled;
+  const ta=document.getElementById('obtext');
+  ta.value='I felt tight in my chest when my boss yelled at me and I could not breathe.';
+  ta.dispatchEvent(new Event('input'));
+  o.freed=!document.getElementById('obdone').disabled;
+  document.getElementById('obdone').click();
   await new Promise(r=>setTimeout(r,60));
-  o.steps.push(document.querySelector('.ob-h').textContent);
+  o.steps.push(document.querySelector('.ob-h').textContent);     /* mirror */
   o.said=document.querySelector('.ob-card').innerText;
-  document.querySelector('[data-ob=done]').click();
+  o.k=OB.commit&&OB.commit.k;
+  document.querySelector('[data-ob=mirroryes]').click();
+  await new Promise(r=>setTimeout(r,60));
+  o.steps.push(document.querySelector('.ob-h').textContent);     /* bridge */
+  o.bridgeSaid=document.querySelector('.ob-card').innerText;
+  document.querySelector('[data-ob=done]').click();              /* Not now: close without a release */
   await new Promise(r=>setTimeout(r,60));
   o.closed=!OB.open;
   const after=CHARGES.map(c=>+(S.charge[c]||0));
@@ -2401,18 +2430,23 @@ console.log('\n=== the opening, which is the one thing it asks a stranger to do 
   o.flagged=!!(CURP&&CURP.ui&&CURP.ui.onboarded);
   return o;});
  ok(ob.opened,'the opening opens');
- ok(ob.steps.length===4,'four steps, got '+ob.steps.length);
- /* ROUND MP replaced the seven seat picker with a plain yes, no and
-    nothing, his own script: "the signal test is simple, yes, no, say it
-    to yourself." Three buttons, never a seat name, "remove all the solar
-    plex, sacral, I don't want any of that there." */
- ok(ob.seats===3,'the signal test offers yes, no and nothing, got '+ob.seats);
- ok(ob.blocked,'it will not go on until the one question is answered');
- ok(ob.freed&&ob.captured==='yes','and answering it frees the way on, captured '+ob.captured);
- ok(/moved your body/i.test(ob.said),'the last card names what just happened');
+ ok(ob.dots===8,'eight steps on the dots, arrive through the bridge, got '+ob.dots);
+ ok(ob.steps.length===8,'eight headings walked, got '+ob.steps.length);
+ ok(ob.starts===12,'the twelve starting points, got '+ob.starts);
+ ok(ob.feels===7,'six feeling words and Not sure, got '+ob.feels);
+ ok(ob.places===8,'seven body places and Not sure, got '+ob.places);
+ ok(ob.blocked,'the story step will not go on under three words');
+ ok(ob.freed,'and a real entry frees Done');
+ ok(/This separates into its own components/.test(ob.said),
+  'the mirror prints the real-engine read, never a scripted stand in');
+ ok(ob.k>0,'a real sentence reads real imprints, k='+ob.k);
+ ok(/Next is a release/.test(ob.bridgeSaid),'the bridge offers the real release it found');
  ok(ob.closed,'and it closes');
- /* THE ONE THAT MATTERS. Ruled: it does not spend real charge. */
- ok(ob.wrote===false,'and it wrote nothing to the nine axes');
+ /* THE THING THAT CHANGED, STATED RATHER THAN LEFT IMPLICIT: a real entry
+    writes real charge, the same way a real entry in the Day One tutorial
+    and the Story tab both already do. A sheet that still claimed otherwise
+    here would be asserting the old product. */
+ ok(ob.wrote===true,'and a real entry writes real charge, the same path the Story tab uses');
  ok(ob.flagged,'the record remembers it was met, so it does not open twice');}
 /* AND IT DOES NOT OPEN BY ITSELF. Ruled 20 September: onboarding is off for
    now. Off is a measurement and not a comment, so a fresh page with nothing

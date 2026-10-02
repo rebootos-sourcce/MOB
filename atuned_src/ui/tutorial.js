@@ -19,6 +19,22 @@
    entry typed into it: the entry is real and costs whatever any entry
    costs. What is free to repeat is walking someone through what an
    entry does, not the entry's own effect.
+
+   ROUND PS: IT NOW REACHES A FIRST RELEASE. This used to describe the
+   release step and stop; "Go to Ritual" was the only button that went
+   anywhere. The gap was named directly: "neither the onboarding nor the
+   Day One tutorial reaches a first release today." The Release step below
+   now hands the real offer's node to relPick, ui/release.js's own one
+   release entry every other door in the product uses, never a second
+   engine, so a person who presses Begin on day one is in the real release
+   card, running the real walker, for the real charge this entry actually
+   carries.
+
+   J0, SAID HERE TOO, BECAUSE IT IS THE SAME GAP ATUNED_SRC/UI/ONBOARD.JS
+   NAMES. tutCommit below is the first place a stranger's own words, typed
+   on day one, are handed to parseStory. No distress check of any kind
+   stands ahead of it. See onboard.js's own header for why nothing is
+   added here that only looks like one.
    ============================================================ */
 var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false};
 
@@ -135,9 +151,9 @@ function tutRender(){
    '<button type="button" class="btn pri" data-tut="next">Next</button>');
  }
  else if(s===3){
-  var d=TUT.deep, off=(d&&d.offer&&d.offer[0])||null;
+  var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
   var body;
-  if(off){
+  if(off&&kept.length){
    body='<p class="ob-p">This entry is heavy enough to show up in your Field '
     +'as something to work with: at the <b>'+esc(off.region||off.address||'')
     +'</b>, named <b>'+esc(off.axis)+'</b>'
@@ -146,14 +162,22 @@ function tutRender(){
     +'<p class="ob-p ob-dim">'+esc(off.because[0])+'</p>'
     +'<p class="ob-p">The release protocol does not tell you to let it go. '
     +'It knows the story, the pattern and where it sits, and it picks a way '
-    +'to work with exactly that.</p>';
+    +'to work with exactly that. This one is real: pressing Begin opens it '
+    +'on exactly what this entry just wrote.</p>';
   }else{
    body='<p class="ob-p">This particular entry did not carry enough charge '
     +'to name a release yet. That is fine, most days will have one that '
     +'does, and nothing is lost by writing a quiet one.</p>';}
+  /* THE REAL HAND OFF, round PS. kept's own node ids, read exactly as the
+     mirror in onboard.js reads them, never a second engine and never a
+     guess built from off's own axis name: relPick takes node ids and kept
+     already carries them. */
   out=tutCard('Release',body,
-   '<button type="button" class="btn pri" data-tut="next">Next</button>'
-   +(off?'<button type="button" class="btn" data-tut="field">See it in your Field</button>':''));
+   (off&&kept.length
+     ?'<button type="button" class="btn pri" data-tut="release">Begin the release</button>'
+       +'<button type="button" class="btn" data-tut="next">Not now</button>'
+       +'<button type="button" class="btn" data-tut="field">See it in your Field</button>'
+     :'<button type="button" class="btn pri" data-tut="next">Next</button>'));
  }
  else {
   out=tutCard('Flow',
@@ -195,6 +219,11 @@ addEventListener('click',function(e){
  var k=b.getAttribute('data-tut');
  if(k==='commit'){ tutCommit(); return; }
  if(k==='next'){ TUT.step++; tutRender(); return; }
+ if(k==='release'){
+  var c=TUT.commit, kept=(c&&c.kept)||[], ids=kept.map(function(n){return n.i;});
+  tutClose();
+  if(ids.length&&typeof relPick==='function')relPick(ids);
+  return;}
  if(k==='field'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.FIELD); return; }
  if(k==='ritual'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return; }
  if(k==='skip'||k==='done'){ tutClose(); return; }});
