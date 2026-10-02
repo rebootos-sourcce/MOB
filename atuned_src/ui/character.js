@@ -97,6 +97,14 @@ function chMon(t){var d=new Date(t);if(isNaN(d.getTime()))return '';
 function chLast(){
  var v=(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.chmask)||'';
  return MASKS_READ.some(function(m){return m.nm===v;})?v:MASKS_READ[0].nm;}
+/* WHO THE PICK WAS MADE FOR. "The user's last open" is that user's: CHV.pick
+   was read once a session, so switching profile carried the last person's
+   mask onto the next one and never read their own CURP.ui.chmask. It is read
+   again whenever the profile on screen is not the one it was read for. */
+function chWho(){return (typeof CURP!=='undefined'&&CURP)?(CURP.id||CURP.name||''):'';}
+/* a seat's name standing on its own as a label, which takes a capital. The
+   lower case form above is for the middle of a sentence. */
+function chSeatName(b){var s=chSeatWord(b);return s.charAt(0).toUpperCase()+s.slice(1);}
 
 /* THE OVERLAYS, kept in the browser's store like the other view preferences
    (STORE, 'fview', 'bmov'). Nothing stored means the defaults above. A store
@@ -225,7 +233,13 @@ function chTrace(k,addr){
  if(host){host.classList.toggle('chp-tracing',k>=0);
   var b=host.querySelector('[data-chov="trace"]'); if(b)b.setAttribute('aria-pressed',k>=0?'true':'false');}
  chRail(CHV.r);
- chAnchor();}
+ chAnchor();
+ /* ON A PHONE THE CARD IS NOT UNDER THE STAGE. The left menu sits between
+    them, so the trace card opened about 480 pixels below the bottom of the
+    stage at 390 wide, measured, and a press on the field changed nothing a
+    person could see except the field. The card is brought to them. */
+ if(sc.mobile&&k>=0){var cd=document.querySelector('#charrail .chr-trace');
+  if(cd&&cd.scrollIntoView){try{cd.scrollIntoView({block:'start',behavior:rbStill()?'auto':'smooth'});}catch(e){cd.scrollIntoView();}}}}
 /* where the dotted thread ends: the right edge of the canvas on a desktop, its
    foot on a phone, where the card sits under the stage */
 function chAnchor(){
@@ -240,7 +254,7 @@ function chHoverText(j,seat){
  var sc=CHV.sc;
  if(j>=0){var a=CHC.addr()[j];
   return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
-   +(a.fld?esc(a.b):esc(chSeatWord(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
+   +(a.fld?esc(a.b):esc(chSeatName(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
    +'. Charge '+(sc.achT[j]*10).toFixed(1)+' of 10.';}
  if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
   return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+Math.round(sh*100)+' percent shadow. Press to trace it.';}
@@ -285,22 +299,26 @@ function chChain(k){
  return out;}
 function chStoryHtml(t){t=String(t||'');return esc(t.length>220?t.slice(0,217)+'...':t);}
 
+/* THE CHARGE TAKES ITS SEAT'S COLOUR. addrRow's right hand word is Heart
+   green by default, the colour it carries for a direction elsewhere, so a
+   charge on a Root address printed in the Heart's colour: a colour that
+   meant a seat the address is not in. ink is the option addrRow already has. */
 function chTraceCard(r){
  var sc=CHV.sc, k=CHV.sel, st=CHC.seatState(sc,true).st, col=PAL[BANDS[k]], ch=chChain(k), m=maskOf(CHV.pick);
  var under=MASKS_READ.filter(function(mm){return mm.b.indexOf(BANDS[k])>=0;}).map(function(mm){return mm.nm;});
  var tabs=st.leaks.slice(); if(tabs.indexOf(k)<0)tabs.push(k);
  var lk=st.lk[k];
  var h='<section class="chr-trace" aria-label="Trace" style="--tc:'+col+'">'
-  +'<div class="pm-eye">Trace. Where the energy leaks.</div>'
+  +'<div class="pm-eye plain">Trace. Where the energy leaks.</div>'
   +'<div class="chr-tabs" role="group" aria-label="Leaks">'+tabs.map(function(t){
-    return '<button type="button" class="chr-tab" data-chtrace="'+t+'" aria-pressed="'+(t===k)+'" style="--lc:'+PAL[BANDS[t]]+'"><i></i>'+esc(chSeatWord(BANDS[t]))+'</button>';}).join('')+'</div>'
-  +'<div class="chr-ttl"><b>'+esc(chSeatWord(BANDS[k]).charAt(0).toUpperCase()+chSeatWord(BANDS[k]).slice(1))+' seat</b><span>'
+    return '<button type="button" class="chr-tab" data-chtrace="'+t+'" aria-pressed="'+(t===k)+'" style="--lc:'+PAL[BANDS[t]]+'"><i></i>'+esc(chSeatName(BANDS[t]))+'</button>';}).join('')+'</div>'
+  +'<div class="chr-ttl"><b>'+esc(chSeatName(BANDS[k]))+' seat</b><span>'
   +(lk>.12?'Leaking, '+Math.round(lk*100)+' percent':'Holding. No leak')+'</span></div>';
  if(ch.story)h+='<div class="chr-step"><div class="chr-k">Story'+(ch.when?', '+esc(ch.when):'')+'<i>'+esc(ch.src)+'</i></div><p class="chr-q">“'+chStoryHtml(ch.story)+'”</p></div><div class="chr-edge">supports</div>';
  else h+='<div class="chr-step"><div class="chr-k">Story<i>none</i></div><p class="chr-m">No story has landed here. The charge is from your intake.</p></div><div class="chr-edge">supports</div>';
  if(ch.addr){var n=BY[ch.addr.i];
-  h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+ch.addr.sq.toFixed(1)+' of 10'})
-   +'<p class="chr-m">'+esc(chSeatWord(ch.addr.seat))+' seat'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
+  h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+ch.addr.sq.toFixed(1)+' of 10',ink:PAL[ch.addr.seat]})
+   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' seat'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
  h+='<div class="chr-edge">worn under</div><div class="chr-step"><div class="chr-k">Mask<i>known</i></div><p class="chr-m"><b>'
   +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' seat.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
   +'<p class="chr-why">Supports, not causes. The ring on the field marks where the flow leaves at this seat. A story put charge on the address. Nothing on the record says it is the only cause.</p>'
@@ -315,10 +333,14 @@ function chRailHtml(r){
  if(unread)h+='<p class="chr-note">Nothing read yet, so the field is dark and the cloud is plain. Write what happened on the Story page and it starts to answer.</p>';
  /* the leading pattern, what the mask does, and the one line the stage used to
     carry as a caption */
- h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
+ /* AN UNREAD PROFILE LEADS WITH NOTHING. It printed "Leading pattern, Fear
+    0.0", in Fear's red, to somebody who has entered nothing, which is a
+    reading the record does not hold. The note above says the field is dark;
+    the panel now agrees with it. */
+ if(!unread)h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
   +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig">'+(w[a.nm]||0).toFixed(1)+'</span></div></div>'
   +'<div class="chr-where">'+esc(chSentence(a.loc))+'</div>';
- h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">worn over the '+esc(chSeats(m))+'</div>'
+ h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
   +'<p class="ad-p">It '+esc(m.v)+'.</p>'
   +'<button type="button" class="btn" id="chread">Read this mask</button>';
  if(CHV.sel>=0)h+=chTraceCard(r);
@@ -326,21 +348,21 @@ function chRailHtml(r){
  /* the two readings that light and move the field */
  var cq=unread?0:Math.round(+r.CQ||0), dq=unread?0:Math.round(+r.DQ||0), vt=unread?0:(+r.X||0);
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
-  +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(charCohWord(unread?0:cq/100))+'. It lights the figure and sets how wide, bright and whole the field is.</i></div>'
+  +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
   +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
   +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>';
  /* the seven seats: root first as everywhere, each a button that traces it */
- h+='<div class="pm-eye chr-sp">The seven seats. Press one to trace it.</div><div class="chr-seats">'
+ h+='<div class="pm-eye chr-sp plain">The seven seats. Press one to trace it.</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-    +'<span class="chr-sn">'+esc(chSeatWord(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+Math.round(sh*100)+'</span></button>';}).join('')
+    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+Math.round(sh*100)+'</span></button>';}).join('')
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
   +'<p class="ad-p">Each point round the body is one of the 112 addresses. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
   +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
-  +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatWord(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
+  +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
  return h;}
 /* the words for a vitality, the left menu's own scale of 0 to 1 */
@@ -414,7 +436,7 @@ function renderCharacter(r){
   if(host._lk!==lh){host._lk=lh; host.innerHTML=lh;}
   return;}
  if(host._lk){host._lk=null; CHV.built=false;}
- if(!CHV.pick)CHV.pick=chLast();
+ if(!CHV.pick||CHV.pickFor!==chWho()){CHV.pick=chLast();CHV.pickFor=chWho();}
  chBuild(host);
  CHV.r=r;
  var sc=CHV.sc, d=chData(r);
@@ -443,7 +465,7 @@ function renderCharacter(r){
 function chDrill(m){
  var r=compute(), SF=seatField(), AF=addrField();
  var h='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div>'
-  +'<div class="ad-sub">worn over the '+esc(chSeats(m))+'</div>'
+  +'<div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'+esc(chSentence('It '+m.v))+'</p>';
  if(r.unread){
   h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened on the Story page and it starts to fill.</p>';
@@ -452,11 +474,11 @@ function chDrill(m){
  h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){
   var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean);
   return '<div class="chr-seat chr-seat-ro" style="--sc:'+PAL[s.seat]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-   +'<span class="chr-sn">'+esc(chSeatWord(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+Math.round(sh*100)+'</span></div>';}).join('')+'</div>';
+   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+Math.round(sh*100)+'</span></div>';}).join('')+'</div>';
  var top=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>0;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,6);
  h+='<div class="pm-eye">Carrying the most</div>';
  if(!top.length)h+='<p class="ad-p">Nothing held under this mask.</p>';
- else h+='<div class="ad-rows">'+top.map(function(a){return addrRow(BY[a.i],{em:'Charge '+a.sq.toFixed(1)});}).join('')+'</div>';
+ else h+='<div class="ad-rows">'+top.map(function(a){return addrRow(BY[a.i],{em:'Charge '+a.sq.toFixed(1),ink:PAL[a.seat]});}).join('')+'</div>';
  var cov=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0;}).length;
  h+='<p class="ad-p">It covers '+chPl(cov,'address','addresses')+'. '+chPl(AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>=4;}).length,'is','are')+' held at 4 or more.</p>';
  rdShell(h);}

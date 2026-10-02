@@ -578,7 +578,14 @@ var CHC=(function(){
  /* a torus, at its present size. Coherence sets the size, the sag and the roughness. */
  function mkT(id,Rmax,b0,M,P){return {id:id,Rmax:Rmax,b0:b0,cy0:-.02,M:M,P:P};}
  function tEff(sc,T){var c=sc.c,cw=sstep(0,.95,c);T.Rm=T.Rmax*(.55+.45*cw);T.b=T.b0*(.6+.4*cw);T.cy=T.cy0+(1-cw)*.18;T.A=T.Rm-RHOMIN;T.wch=.1*T.Rm/1.12;
-  T.jit=.1*Math.pow(1-c,1.6);T.fc=.12+.88*sstep(.02,.9,c);T.omega=.035+.2*Math.pow(c,1.25);}
+  /* fc is how complete the field is. Its floor of .12 is now itself faded in
+     over the first five points of coherence, so at nothing the field is gone
+     and the figure is the dim silhouette alone, which is what the page and
+     the right panel both say happens. With the floor held at zero coherence
+     two or three broken meridians survived, and collapsed onto a figure that
+     narrow they draped over the shoulders like a cape: a shape that meant
+     nothing, drawn on every profile nobody has read yet. */
+  T.jit=.1*Math.pow(1-c,1.6);T.fc=.12*sstep(0,.05,c)+.88*sstep(.02,.9,c);T.omega=.035+.2*Math.pow(c,1.25);}
  /* the anchors of a loop and the clock it runs on. The clock is the time a
     pulse takes to reach each vertex, longer where the flow is slow, so a pulse
     bunches and hurries through a closed seat the way traffic does. */
