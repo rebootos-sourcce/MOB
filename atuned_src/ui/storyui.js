@@ -98,7 +98,12 @@ function stRender(){
      to change. It has to be a real element and not a third pseudo on .st-pe,
      because that panel already spends both of its own, ::before and
      ::after, on the passing light and the scan; see the same CSS. */
-  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Source AI"></div></div>'
+  /* ROUND PW PUTS THE FIELD ON ITS FLOOR, see srcComb below and the CSS at
+     .src-comb. It is a sibling of #stsrc and not inside it, for the reason
+     the halo is: srcPaint rewrites #stsrc on every key, and the floor is
+     painted once a render. srcLock puts every loop in here on one clock. */
+  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Source AI"></div>'
+  +srcComb()+'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -198,6 +203,7 @@ function stRender(){
     lane sprang in from above the chart on each arrival at the tab. */
  stSize();
  stRead(); stSortPaint();
+ srcLock(h.querySelector('.st-glow'));
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
@@ -843,6 +849,12 @@ function srcPaint(){
  h.innerHTML=o;
  SRC_SHOWN=turn.move==='pass'?'':q;
  srcHearing(h);
+ /* the dot is rebuilt with the column, so it is put back on the beat here,
+    but only when it is breathing: while it hears it is held lit and still,
+    and the lock is left to the moment it lets go, see srcHearing. Locking on
+    every key cost a forced layout a key, measured 143 to 190 over the same
+    typed line, on the one page where a key must cost nothing. */
+ if(!h.classList.contains('hear'))srcLock(h.querySelector('.src-live'));
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
  var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
@@ -859,6 +871,55 @@ function srcPaint(){
  press('srcdyn',function(){
   var d=srcDyn(STR.heard||heard,(CURP&&CURP.story&&CURP.story.entries)||[],ST_TEXT);
   SRC_DNONE=!d; if(d)SRC_DQ=d;});}
+/* ONE CLOCK FOR THE PANEL, round PW. Every loop on the Source AI panel is on
+   the Field's 4.2 second breath or twice it, and each is created at a
+   different moment: the halo, the bar and the floor once a render, the dot
+   on every key. Started bare, each breathes from whenever it was made, so
+   the dot, rebuilt on a key, falls out of step with the halo it sits in.
+
+   A delay worked out from the clock at the moment the markup is written was
+   the first cut, and measured it was not enough: an animation starts on the
+   next frame and not when its markup is written, and with keys arriving the
+   dot came back 319ms behind the halo, a fourteenth of a breath. So the start
+   is set on the animation itself, after it exists: every one of these starts
+   at the document's own zero, and so all of them are on the same beat
+   however late each was made. Only the named loops are touched; the words
+   landing and the caret are one shot and keep their own start. */
+var SRC_LOOPS={srcHalo:1,srcPass:1,srcBreath:1,srcWind:1};
+function srcLock(el){
+ if(!el||typeof el.getAnimations!=='function')return;
+ el.getAnimations({subtree:true}).forEach(function(a){
+  if(SRC_LOOPS[a.animationName])a.startTime=0;});}
+/* THE FLOOR. The Field's ring of addresses, unrolled: the two below the body,
+   the seven seats Root to Crown in the ring's own order, W, then the two
+   above, which is FIELD split by the side it extends. One tick per address,
+   as tall as its charge, a fifth of the floor at nothing and all of it at
+   ten, so a blank profile is an even comb and never an empty strip. The
+   height goes as the square root, the rule the Field's pulses already take
+   for tension: most charges sit under three, and on a straight line a
+   person carrying 2.5 at the heaviest drew a floor indistinguishable from a
+   blank one, measured on Marcus. The ticks are the mask, painted once; the
+   colour under them is the seats', one hard stop per seat, through seatCol
+   so it follows the lighting; the two outside the body wear the seat they
+   extend, his torus, the rule compute already uses for their charge. Nothing is printed and nothing is
+   interactive: aria-hidden, and the reading it draws is the Field's. */
+function srcComb(){
+ var lo=FIELD.filter(function(n){return n.b==='Field-Below';}),
+     hi=FIELD.filter(function(n){return n.b==='Field-Above';}),
+     L=lo.concat(W,hi), N=L.length; if(!N)return '';
+ var seat=function(n){return n.b==='Field-Below'?'Root':(n.b==='Field-Above'?'Crown':n.b);};
+ var r='';
+ for(var i=0;i<N;i++){var v=Math.sqrt(clamp((+L[i].sq||0)/10,0,1)),h=2+8*v;
+  r+='<rect x="'+(i+.3)+'" y="'+(10-h).toFixed(2)+'" width=".4" height="'+h.toFixed(2)+'"/>';}
+ var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+N+' 10" preserveAspectRatio="none">'+r+'</svg>';
+ var m='url(&quot;data:image/svg+xml,'+encodeURIComponent(svg).replace(/'/g,'%27')+'&quot;)';
+ var stops=[],a=0;
+ while(a<N){var s=seat(L[a]),b=a; while(b<N&&seat(L[b])===s)b++;
+  var c=seatCol(s);
+  stops.push(c+' '+(a/N*100).toFixed(2)+'%',c+' '+(b/N*100).toFixed(2)+'%'); a=b;}
+ return '<i class="src-comb" aria-hidden="true" style="-webkit-mask-image:'+m+';mask-image:'+m+'">'
+  +'<i class="src-seats" style="background:linear-gradient(90deg,'+stops.join(',')+')"></i>'
+  +'<i class="src-wind"></i></i>';}
 /* WHAT WAS LAST ON SCREEN, so a repaint that changes nothing moves nothing.
    The column is rewritten on every key, and a question that faded in on
    every key would be motion saying something new landed when nothing had. */
@@ -897,7 +958,8 @@ function srcHearing(h){
  if(!t.trim()){h.classList.remove('hear');return;}
  h.classList.add('hear');
  clearTimeout(SRC_HT);
- SRC_HT=setTimeout(function(){var e=document.getElementById('stsrc'); if(e)e.classList.remove('hear');},1100);}
+ SRC_HT=setTimeout(function(){var e=document.getElementById('stsrc');
+  if(e){e.classList.remove('hear'); srcLock(e.querySelector('.src-live'));}},1100);}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
    never sits in the document asserting a stale reading, the rule Summary
    already keeps. setTab calls this on every tab but Story. The bank closes
