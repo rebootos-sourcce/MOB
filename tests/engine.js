@@ -2928,10 +2928,19 @@ console.log('\n27 · the ladder');
    'a profile with only a set-but-not-done entry has no streak, got '
    +streakRead(q,NOW).run);}
 
- /* THE LEDGER COUNTS EVENTS AND NEVER A SHARE OF ANYTHING. */
- {const p=mk([0,1]); p.meter.unique=['a','b','c']; p.meter.lines=9;
+ /* THE LEDGER COUNTS EVENTS AND NEVER A SHARE OF ANYTHING.
+
+    Real keys are address:channel:line (HEAVY_KEY, schema.js), never bare
+    letters, so the fixture uses that shape: three lines at address 4 across
+    two channels, one line each at 9 and 20. Five keys, three addresses.
+    ground once read m.unique.length directly and would have said 5 here,
+    counting the repeat lines at 4 as new ground; checked against that
+    reading before trusting the fix, it failed exactly there. */
+ {const p=mk([0,1]);
+  p.meter.unique=['4:Llimit:1','4:Llimit:2','4:Rlimit:1','9:Llimit:1','20:Rtruth:5'];
+  p.meter.lines=9;
   const l=ledgerRead(p);
-  ok(l.ground===3,'ground is the unique addresses opened, got '+l.ground);
+  ok(l.ground===3,'ground is the unique addresses opened, not the lines at them, got '+l.ground);
   ok(l.lines===9,'lines counts every line spoken, repeats included');
   ok(l.rituals===2,'rituals counts saved rituals');
   ok(Object.keys(l).every(k=>l[k]>=0),'no ledger figure is negative');}

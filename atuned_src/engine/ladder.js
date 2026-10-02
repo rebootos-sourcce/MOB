@@ -80,6 +80,24 @@ function streakRead(p,now){
  var gap=today-days[0];
  return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap};}
 
+/* GROUND COUNTED LINES, AND CALLED THEM ADDRESSES. p.meter.unique holds one
+   entry per line ever opened, address:channel:line (HEAVY_KEY, schema.js), so
+   opening one address across its left and right channels at fifty lines each
+   already wrote a hundred entries. ledgerRead read that array's own length as
+   "ground", and the two Ground marks below promise "ten distinct addresses"
+   and "fifty, close to half your addresses" on the strength of it, so a
+   person could earn "fifty addresses opened" from one address barely touched
+   twice over. The engine test that stood over this wrote ['a','b','c'] by
+   hand, three bare letters with no channel or line on them, so it never
+   exercised the shape real keys actually have and passed on a fixture that
+   could not have shown the bug. Counted here by the address each key names,
+   not by how many keys there are. */
+function meterGroundCount(m){
+ var seen={},n=0;
+ ((m&&m.unique)||[]).forEach(function(k){
+  var a=String(k).split(':')[0];
+  if(a&&!seen[a]){seen[a]=1;n++;}});
+ return n;}
 /* THE LEDGER. Four quantities, each a count of something that happened.
 
    minutes is what the person put in. lines is what was spoken, repeats
@@ -109,7 +127,7 @@ function ledgerRead(p){
   var a=p.axes[c.nm]||{}; if((a.opp||0)>=4)clear++; if((a.held||0)>=4)carry++;}));
  return {minutes:mins, planned:plan, done:doneN,
   rituals:((p&&p.rituals)||[]).length,
-  lines:+m.lines||0, ground:((m.unique||[]).length),
+  lines:+m.lines||0, ground:meterGroundCount(m),
   clear:clear, carry:carry, snaps:((p&&p.history)||[]).length};}
 
 /* ============================================================
