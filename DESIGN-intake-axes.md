@@ -1,5 +1,14 @@
 # The Intake's three added blocks. FIRST DRAFT, round PP.
 
+**SUPERSEDED IN PART, ROUND PQ.** The archetype block this file describes,
+`IX_ARCH`, one row per archetype, is replaced by `IX_ARCH2` in
+`DESIGN-archetype-questions.md`: eighteen rows that each put two archetypes
+against each other, a dilemma or an either or, triangulated rather than asked
+once each. Everything below about the axis and action blocks is still
+current; everything about the archetype block (the table `arch` reads, its
+decision 1, the "one question per archetype" note) is history. Read the newer
+file for how archetype questions work now.
+
 His words, 2 October: "Intake, I asked for the Jungian archetypes. And we should
 also do, also do the nine emotional axis and the six action axis uh, for the
 intake. We'll keep this design for now. Let's see what it looks like with all of

@@ -4488,14 +4488,52 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   if(!out.table)return out;
   IX_BLOCKS.forEach(b=>{
    const el=host.querySelector('#iqx-'+b.id), t=el?(el.innerText||'').replace(/\s+/g,' '):'';
+   /* THE ARCHETYPE BLOCK IS NOT THE SAME SHAPE, ROUND PQ. Every axes and acts
+      row is still one eleven cell scale carrying its own q verbatim. An arch
+      row is a dilemma (two buttons, .iqx-dlb, its scene is its q) or an
+      either or (the eleven cell scale, same as before, but its q is read off
+      ta and tb rather than printed as one joined sentence on the page), so a
+      control is "one of either shape" and a row's words are read off the
+      field that is actually rendered for its own type. */
+   const isArch=(b.id==='arch');
+   const scaleEls=el?[...el.querySelectorAll('.iq-sl')]:[];
+   const dilEls=el?[...el.querySelectorAll('.iqx-dlb')]:[];
    out.blocks.push({id:b.id, present:!!el, heading:el&&t.indexOf(b.nm)>=0,
-    scales:el?el.querySelectorAll('.iq-sl').length:0, rows:b.rows.length,
-    cells:el?[...el.querySelectorAll('.iq-sl')].every(s=>s.querySelectorAll('button.iq-n').length===11):false,
-    words:b.rows.filter(r=>t.indexOf(r.q.replace(/\s+/g,' '))<0).map(r=>r.k),
+    scales:isArch?(scaleEls.length+dilEls.length):scaleEls.length, rows:b.rows.length,
+    cells:el?(scaleEls.every(s=>s.querySelectorAll('button.iq-n').length===11)
+      &&dilEls.every(s=>s.querySelectorAll('button').length===2)):false,
+    words:b.rows.filter(r=>isArch
+      ?(r.type==='dilemma'?t.indexOf(r.scene.replace(/\s+/g,' '))<0
+        :(t.toLowerCase().indexOf(r.ta.replace(/\s+/g,' ').toLowerCase())<0||t.toLowerCase().indexOf(r.tb.replace(/\s+/g,' ').toLowerCase())<0))
+      :t.indexOf(r.q.replace(/\s+/g,' '))<0).map(r=>r.k),
     read:!!(el&&el.querySelector('.iqx-read'))});});
-  /* the archetype rows are not named before they are answered */
-  const at=(host.querySelector('#iqx-arch')||{innerText:''}).innerText;
-  out.named=ARCH.filter(a=>new RegExp('\\b'+a.nm+'\\b').test(at)).map(a=>a.nm);
+  /* THE ARCHETYPE ROWS NAME BOTH ARCHETYPES, IN HIS ORDER. Round PV reversed
+     round PQ's rule, his words: "I want to see the symbol of the archetype and
+     a description, and then the question." So every plate carries both of
+     its archetypes, each with its own mark (the glyph ARCH holds for it), its
+     name and its description, and they sit above the question, which sits
+     above the answer. Read off positions on the page, not off the markup's
+     order, because the order a person sees is the claim. And the plate is a
+     mirror: the two marks and the two answers are the same distance either
+     side of the plate's own centre, within a pixel. */
+  out.nArch=IX_ARCH2.length;
+  out.plates=[...host.querySelectorAll('#iqx-arch .iqx-ap')].map((pl,i)=>{
+   const row=IX_ARCH2[i]||{}, figs=[...pl.querySelectorAll('.iqx-af')];
+   const marks=figs.map(f=>f.querySelector('.iqx-mk path')), q=pl.querySelector('.iqx-aq');
+   const ansEl=pl.querySelector('.iqx-dlb')||pl.querySelector('.iqx-eol');
+   const R=e=>e?e.getBoundingClientRect():null, pr=R(pl);
+   const mid=pr.left+pr.width/2, ctr=r=>r.left+r.width/2;
+   const mk=figs.map(f=>R(f.querySelector('.iqx-mk'))), dsc=figs.map(f=>R(f.querySelector('.iqx-ad')));
+   const btn=[...pl.querySelectorAll('.iqx-ab,.iqx-eol>span[data-side]')].map(R);
+   const A=ARCH.find(a=>a.nm===row.a)||{}, B=ARCH.find(a=>a.nm===row.b)||{};
+   return {k:row.k,
+    named:figs.length===2&&figs[0].innerText.indexOf(row.a)>=0&&figs[1].innerText.indexOf(row.b)>=0,
+    glyph:marks.length===2&&!!marks[0]&&!!marks[1]&&marks[0].getAttribute('d')===A.ic&&marks[1].getAttribute('d')===B.ic,
+    described:!!A.d&&!!B.d&&figs.length===2&&figs[0].innerText.indexOf(A.d)>=0&&figs[1].innerText.indexOf(B.d)>=0,
+    order:!!(mk[0]&&dsc[0]&&q&&ansEl)&&mk[0].bottom<=dsc[0].top+1&&dsc[0].bottom<=R(q).top+1&&R(q).bottom<=R(ansEl).top+1,
+    mirror:mk.length===2&&btn.length===2&&Math.abs((mid-ctr(mk[0]))-(ctr(mk[1])-mid))<=1
+     &&Math.abs((mid-ctr(btn[0]))-(ctr(btn[1])-mid))<=1&&Math.abs(ctr(btn[0])-ctr(mk[0]))<=1,
+    qOnAxis:!!q&&Math.abs(ctr(R(q))-mid)<=1};});
   /* a page missing the block it presses on fails the checks above by name and
      stops here, rather than throwing on a null */
   if(!host.querySelector('#iqx-axes .iq-n[data-ixk="Anger"][data-v="8"]'))return out;
@@ -4532,7 +4570,14 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   ok(b.words.length===0,'and every question is on the page in its own words, missing '+JSON.stringify(b.words));
   ok(!b.read,'and before a block is answered it prints no read-out, '+b.id);}
  if(ix.pressed){
- ok(ix.named.length===0,'the archetype questions name no archetype before they are answered, found '+JSON.stringify(ix.named));
+ {const P=ix.plates||[], bad=f=>P.filter(x=>!x[f]).map(x=>x.k);
+  ok(P.length===ix.nArch,'every archetype question is drawn as one plate, '+P.length+' of '+ix.nArch);
+  ok(bad('named').length===0,'every plate names both of its archetypes, missing on '+JSON.stringify(bad('named')));
+  ok(bad('glyph').length===0,'and each wears its own mark from ARCH, not a new icon, missing on '+JSON.stringify(bad('glyph')));
+  ok(bad('described').length===0,'and each carries its description, missing on '+JSON.stringify(bad('described')));
+  ok(bad('order').length===0,'and the order is the mark, the description, the question, then the answer, broken on '+JSON.stringify(bad('order')));
+  ok(bad('mirror').length===0,'and the plate is a mirror: both marks and both answers sit the same distance either side of its centre, each answer under its own archetype, broken on '+JSON.stringify(bad('mirror')));
+  ok(bad('qOnAxis').length===0,'and the question sits on the centre axis, off on '+JSON.stringify(bad('qOnAxis')));}
  ok(ix.pressed.stored===8&&ix.pressed.on,'a press records the answer and the cell stays pressed after the page redraws, '+JSON.stringify(ix.pressed));
  ok(/left/.test(ix.pressed.part),'and a half answered block says what is left, "'+ix.pressed.part+'"');
  ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Equanimity: /.test(ix.read),
@@ -4555,9 +4600,12 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   loadP(0); setTab(TAB.INTAKE); await new Promise(r=>setTimeout(r,500));
   const sub=document.querySelector('[data-avface="iq"]'); if(sub)sub.click();
   await new Promise(r=>setTimeout(r,400)); renderIntake();
-  const q=[...document.querySelectorAll('#iqbody .iqx .iq-sl')];
+  /* a control is an eleven cell scale or, for an archetype dilemma, its two
+     buttons (.iqx-dlb), round PQ: see the note on the same count at 1600. */
+  const q=[...document.querySelectorAll('#iqbody .iqx .iq-sl')].length
+   +[...document.querySelectorAll('#iqbody .iqx .iqx-dlb')].length;
   const over=[...document.querySelectorAll('#iqbody .iqx *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).length;
-  return {scales:q.length, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over,
+  return {scales:q, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over,
    w:document.documentElement.scrollWidth-innerWidth};});
  ok(o.scales===o.want,'all of the questions are on the phone page, '+o.scales+' of '+o.want);
  ok(o.over===0&&o.w<=2,'and none of them runs off the right edge, '+o.over+' elements, document '+o.w+' wide of the screen');

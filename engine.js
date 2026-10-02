@@ -652,19 +652,42 @@ const AFFIN={Architect:['Apathy','Shock'],Engine:['Anger','Shame','Disgust'],
    it has an icon, the icon has a family, and the family has a colour. Twelve
    named things wore a mark and no family, so twelve distinct archetypes
    rendered in one accent. */
+/* AND EACH ONE CARRIES A SECOND SENTENCE, d, round PV. His words: "for the
+   archetype intake, I want to see the symbol of the archetype and a
+   description, and then the question." v is the behaviour in four words and
+   stays the first sentence; d is what that behaviour looks like when it runs,
+   one mechanical sentence with the archetype as its subject. Kept here and not
+   in the intake's own table because a description of an archetype is a fact
+   about the archetype: the next surface that needs one reads it from ARCH
+   instead of writing a third. No soft words, no verdict, nothing the person
+   is told they should be. And no word the product already spends on charge:
+   weight and load both mean the charge value elsewhere (tools/terms.py lists
+   them), so the Caregiver carries "theirs" and not a weight. */
 const ARCH=[
- {nm:'Warrior',  v:'moves on the threat',   b:'Root', ic:'M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z'},
- {nm:'Sage',     v:'reads the situation',   b:'Crown', ic:'M4 6h7v13H4zM20 6h-7v13h7'},
- {nm:'Rebel',    v:'refuses the frame',     b:'Throat', ic:'M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5'},
- {nm:'Caregiver',v:'attends to the other',  b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
- {nm:'Creator',  v:'makes the thing',       b:'Sacral', ic:'M3 20l9-16 9 16z'},
- {nm:'Magician', v:'changes the conditions',b:'3rd Eye', ic:'M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z'},
- {nm:'Ruler',    v:'orders the field',      b:'Solar', ic:'M3 19l3-12 6 6 6-6 3 12z'},
- {nm:'Explorer', v:'goes to the edge',      b:'Sacral', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z'},
- {nm:'Lover',    v:'closes the distance',   b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13'},
- {nm:'Jester',   v:'breaks the tension',    b:'Throat', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
- {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
- {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
+ {nm:'Warrior',  v:'moves on the threat',   d:'Acts first and reads the damage after.',
+  b:'Root', ic:'M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z'},
+ {nm:'Sage',     v:'reads the situation',   d:'Stops to work out what is true before it moves.',
+  b:'Crown', ic:'M4 6h7v13H4zM20 6h-7v13h7'},
+ {nm:'Rebel',    v:'refuses the frame',     d:'Pushes back on a rule it never agreed to.',
+  b:'Throat', ic:'M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5'},
+ {nm:'Caregiver',v:'attends to the other',  d:'Puts its own plans down to help somebody else carry theirs.',
+  b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
+ {nm:'Creator',  v:'makes the thing',       d:'Builds what is missing out of what is lying around.',
+  b:'Sacral', ic:'M3 20l9-16 9 16z'},
+ {nm:'Magician', v:'changes the conditions',d:'Moves the setup so the problem stops on its own.',
+  b:'3rd Eye', ic:'M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z'},
+ {nm:'Ruler',    v:'orders the field',      d:'Sets the order so everyone moves together.',
+  b:'Solar', ic:'M3 19l3-12 6 6 6-6 3 12z'},
+ {nm:'Explorer', v:'goes to the edge',      d:'Keeps going past where the path ran out.',
+  b:'Sacral', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z'},
+ {nm:'Lover',    v:'closes the distance',   d:'Moves toward the person and says what it feels.',
+  b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13'},
+ {nm:'Jester',   v:'breaks the tension',    d:'Lets the pressure out of a heavy room.',
+  b:'Throat', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
+ {nm:'Everyman', v:'stays with the room',   d:'Fits in with the group and keeps it in one piece.',
+  b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
+ {nm:'Innocent', v:'takes it at face value',d:'Hears what was said exactly as it was said.',
+  b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
 /* Give source a credit, his own words. All twelve, Warrior through Innocent,
    are Carol Pearson and Margaret Mark's brand archetype set, built on Jung's
    own archetype theory but never a canonical list Jung himself wrote down,
@@ -3551,7 +3574,9 @@ function c3Band(n){for(var i=0;i<C3_BAND.length;i++)
 
    WHAT EACH BLOCK PLACES A PERSON ON, AND WHERE THE SET COMES FROM
 
-   arch   The product's own twelve (ARCH, engine/data/canon.js): Warrior, Sage,
+   arch   TRIANGULATED, ROUND PQ. See the long note above IX_ARCH2 below for
+          the method; this paragraph says only what did not change. The
+          product's own twelve (ARCH, engine/data/canon.js): Warrior, Sage,
           Rebel, Caregiver, Creator, Magician, Ruler, Explorer, Lover, Jester,
           Everyman, Innocent. ARCH_CREDIT says what they are: "Jung-derived,
           after Carol Pearson and Margaret Mark". Orphan and Hero, which the
@@ -3565,6 +3590,8 @@ function c3Band(n){for(var i=0;i<C3_BAND.length;i++)
           axis, on the held side only. The opposite is not asked, because the
           engine already stores it as the installed opposite (p.axes[..].opp)
           and a person has not installed anything by answering a question.
+          UNCHANGED THIS ROUND: his ask was archetype questions and situational
+          dilemmas, and this block is neither.
    acts   The six gates (VERP, engine/verp.js), said as action. DECISIONS.md,
           "Read as": "the gates (said as action in the product)", and TASKS.md
           GL4 records that the only six axes the product has are these. The
@@ -3574,6 +3601,7 @@ function c3Band(n){for(var i=0;i<C3_BAND.length;i++)
           (believing, perceiving, thinking, behaving, acting, feeling) are the
           other candidate and were not taken: they are a sentence a person says
           in a release, not a thing a person does, and nobody rates them.
+          UNCHANGED THIS ROUND, for the same reason as axes.
 
    EVIDENCE, NOT A VERDICT. These answers are stored on the profile beside the
    63 and are read by no sum. They do not write to the laws, the charge, CQ or
@@ -3582,36 +3610,150 @@ function c3Band(n){for(var i=0;i<C3_BAND.length;i++)
    what the person CHOSE on the Avatar and which the onboarding review records
    as authoritative (ATUNED-onboarding-REVIEW-3-narrative.md, S17): what a
    person says they do and who they say they are becoming are two records and
-   neither overwrites the other.
+   neither overwrites the other. This still holds for the triangulated version:
+   it is a second, independent lean on the same set of twelve, shown back to
+   the person beside the one they chose, never written over it.
 
-   THE DIRECTION OF EVERY QUESTION IS THE SAME, how often, 0 never to 10 every
-   time, the scale the 63 already use. A person who says yes to everything
-   produces a level read and the read-out says so, and does not name a winner
-   (IX_FLOOR, engine/intakemore.js). Forced choice would resist that better and
-   needs a control the page does not have; it is the first thing to try if this
-   draft reads flat.
-
-   THE ARCHETYPE ROWS CARRY NO NAME ON THE PAGE. A row labelled "Ruler" is a
-   question about whether you would like to be called a ruler. The name appears
-   in the read-out, with its meaning, once all of them are answered. The axes
-   and the actions are named on the page, each with its meaning beside it,
-   because the question is a sensation or a move and the name does not flatter.
+   THE AXIS AND ACTION ROWS ARE NAMED ON THE PAGE, each with its meaning
+   beside it, because the question is a sensation or a move and the name does
+   not flatter. The archetype rows are named now too, by his ruling at round
+   PV: see the note at the foot of the one above IX_ARCH2.
    ============================================================ */
 const IX_DRAFT=true;
 
-const IX_ARCH=[
- {k:'Warrior',  q:'When something you care about is threatened, how often do you move on it at once?'},
- {k:'Sage',     q:'When something goes wrong, how often do you stop and work out what is happening before you act?'},
- {k:'Rebel',    q:'When you are handed a rule you did not make, how often do you push back on it?'},
- {k:'Caregiver',q:'When someone near you is struggling, how often do you put your own plans down to help?'},
- {k:'Creator',  q:'When you have a free hour, how often do you spend it making something?'},
- {k:'Magician', q:'When you are stuck, how often do you change the set up so the problem stops being one?'},
- {k:'Ruler',    q:'When a group has nobody in charge, how often do you step in and set the order?'},
- {k:'Explorer', q:'When a place or a path is new to you, how often do you go on past where the others stop?'},
- {k:'Lover',    q:'When you care about someone, how often do you move closer and say so?'},
- {k:'Jester',   q:'When the room goes tense and nobody speaks, how often do you break it with a joke?'},
- {k:'Everyman', q:'When you walk into a room where everyone already knows each other, how often do you stay with the group and fit in?'},
- {k:'Innocent', q:'When someone tells you something, how often do you take it as they said it, without looking for a catch?'}];
+/* ============================================================
+   IX_ARCH2. THE ARCHETYPE BLOCK, TRIANGULATED. ROUND PQ, REPLACING IX_ARCH.
+
+   HIS WORDS THIS ROUND: "Maybe the right flow is we ask them the right
+   combination of questions to have them triangulate on the behaviors that
+   they identify with." And: "For archetype questions, are the archetype
+   opposite behaviors? If they are, we simply want to ask more moral ethical
+   questions that tease out which archetype would react or respond to a given
+   situation... For the archetype, you can also ask either or questions."
+
+   THE QUESTION HE ASKED FIRST, ANSWERED HERE RATHER THAN ASSUMED: ARE THE
+   TWELVE OPPOSITE PAIRS IN THE PRODUCT'S OWN DATA. They are not, and not
+   partially either. ARCH (engine/data/canon.js) carries nm, v (what it does)
+   and b, the seat it is drawn at, and nothing else: no opp field, unlike
+   CHILD, the nine emotional axes, which names an explicit opposite for every
+   one of its nine rows (Fear's opp is Trust, and so on). The seat is the only
+   grouping ARCH has, and it is not a polarity: five seats hold two archetypes
+   each (Root: Warrior, Everyman. Crown: Sage, Innocent. Throat: Rebel,
+   Jester. Heart: Caregiver, Lover. Sacral: Creator, Explorer) and two seats
+   hold one each (Solar: Ruler. 3rd Eye: Magician), which is an uneven five
+   and two and not a clean set of six pairs, and sharing a seat is "lives in
+   the same part of the body", not "is the opposite move". So the premise of
+   his first question is false of this data: there is no canon polarity to
+   build a dilemma on, and the twelve had to be paired by hand, on what the
+   two archetypes actually do, the same way the round JQ integrity law
+   dilemmas were.
+
+   WHICH IS WHY HIS SECOND SENTENCE IS THE ONE THIS TABLE BUILDS: moral or
+   practical situations where two named responses lean toward two different
+   archetypes, mixed with either or pairs, which he offered as an addition and
+   not a replacement ("you can also ask either or questions").
+
+   THE PAIRING. Twelve archetypes, each put against three different others,
+   never the same pair twice, so no single question can carry the whole
+   reading for any one archetype: Warrior against Sage, Ruler and Innocent;
+   Sage against Warrior, Rebel and Explorer; and so on round the table. In
+   graph terms it is a three regular circulant on the twelve, built from
+   ARCH's own order: every archetype against its two table neighbours plus
+   the one six seats away. Eighteen pairs come out of twelve things each
+   appearing three times (12 x 3 / 2 = 18), nine built as a dilemma (a short
+   two clause scene, two named responses, the round JQ shape: "you see a
+   beggar on the street, do you walk over them or give them money") and nine
+   as an either or (two short behaviours on the same eleven cell scale this
+   page already uses, 0 fully the first and 10 fully the second, so a person
+   can also sit between them rather than only pick one). Every archetype gets
+   at least one of each format, against three different rivals, which is the
+   whole of how a single answer is kept from deciding the outcome: Warrior
+   only wins if it wins across three separate contests, each against a
+   different name, not because a nervous morning on one scene pushed it over.
+
+   STORAGE, AND WHY IT IS A SINGLE NUMBER. Each row's two archetypes, a and b,
+   sit at the two ends of one line, 0 fully a to 10 fully b, so a dilemma's
+   forced choice (a button each) and an either or's graded pick (the eleven
+   cell scale) write the exact same shape of number through the exact same
+   boundary (ixSet, ixValidate) with no new code there at all: a dilemma is
+   simply an either or a person is not offered the middle of. engine/intakemore.js
+   reads the tally off it, in the note above ixRead's own branch for this
+   block, and that is the whole of the arithmetic: nothing here is a black box,
+   because the method this table sets up is read entirely in that one function.
+
+   THE ROWS NAME BOTH ARCHETYPES ON THE PAGE NOW. Round PQ kept the names off
+   until the block was complete, on the argument that naming the archetype
+   behind an answer tells a person which one they are picking. That was this
+   seat's rule, not his, and he reversed it at round PV, verbatim: "for the
+   archetype intake, I want to see the symbol of the archetype and a
+   description, and then the question." So every row shows its two
+   archetypes first, each as its own mark (ARCH[].ic, in the colour of the
+   seat ARCH places it at), its name and its two sentence description
+   (ARCH[].v then ARCH[].d), then the question, then the two answers, each
+   standing under the archetype it leans toward. The cost is named rather
+   than hidden: an answer is now given knowing whose it is. The tally does not
+   change, and the read-out still names the leader only once the block is
+   complete.
+   ============================================================ */
+const IX_ARCH2=[
+ {k:'Warrior_Sage',type:'dilemma',a:'Warrior',b:'Sage',
+  scene:'Something you care about is under threat right now. Do you move on it before you have worked out the shape of it, or stop and read the situation first?',
+  ra:'Move on it now',rb:'Read the situation first'},
+ {k:'Rebel_Caregiver',type:'dilemma',a:'Rebel',b:'Caregiver',
+  scene:'You are handed a rule you never agreed to, in a room where it is landing hardest on someone near you. Do you push back on the rule in front of everyone, or go straight to that person and help them carry it?',
+  ra:'Push back on the rule',rb:'Go help the person'},
+ {k:'Creator_Magician',type:'dilemma',a:'Creator',b:'Magician',
+  scene:'The tool in front of you does not do what the job needs. Do you build a new one out of what is lying around, or change the setup so the job stops needing it?',
+  ra:'Build a new one',rb:'Change the setup'},
+ {k:'Ruler_Explorer',type:'dilemma',a:'Ruler',b:'Explorer',
+  scene:'Your group reaches a fork with nobody in charge and no path marked. Do you set the order so everyone moves together, or go on ahead past where anyone has gone?',
+  ra:'Set the order',rb:'Go on ahead'},
+ {k:'Lover_Jester',type:'dilemma',a:'Lover',b:'Jester',
+  scene:'The room goes quiet and heavy after hard news lands. Do you move closer to the person it landed on and say so, or break the quiet with something that lets the room breathe again?',
+  ra:'Move closer and say so',rb:'Break the quiet'},
+ {k:'Everyman_Innocent',type:'dilemma',a:'Everyman',b:'Innocent',
+  scene:'Someone says something that does not add up, in a room where everyone else is nodding along. Do you stay with the group and let it go, or take what was said exactly as it was meant and ask the plain question?',
+  ra:'Stay with the group',rb:'Ask the plain question'},
+ {k:'Warrior_Ruler',type:'dilemma',a:'Warrior',b:'Ruler',
+  scene:'Two people square up in front of you and nobody steps in. Do you put yourself between them right now, or wait and set a rule afterward so it does not happen again?',
+  ra:'Step between them now',rb:'Set a rule afterward'},
+ {k:'Rebel_Lover',type:'dilemma',a:'Rebel',b:'Lover',
+  scene:'Somebody you love asks you to go along with a rule you think is wrong, to keep the peace between you. Do you push back on the rule even if it costs the peace, or let the rule go for now and close the distance with them?',
+  ra:'Push back anyway',rb:'Let it go and close the distance'},
+ {k:'Creator_Everyman',type:'dilemma',a:'Creator',b:'Everyman',
+  scene:'You walk into a room full of people who already know each other, in the middle of something nobody has built well. Do you sit down and make it properly yourself, or leave it as it is and stay with the group?',
+  ra:'Make it properly',rb:'Stay with the group'},
+ {k:'Sage_Rebel',type:'either',a:'Sage',b:'Rebel',
+  ta:'stop and work out what happened',tb:'refuse the rule that let it happen'},
+ {k:'Caregiver_Creator',type:'either',a:'Caregiver',b:'Creator',
+  ta:'put your plans down to help someone',tb:'spend the hour making something'},
+ {k:'Magician_Ruler',type:'either',a:'Magician',b:'Ruler',
+  ta:'change the setup so the problem stops',tb:'step in and set the order yourself'},
+ {k:'Explorer_Lover',type:'either',a:'Explorer',b:'Lover',
+  ta:'go on past where the others stopped',tb:'move closer and say what you feel'},
+ {k:'Jester_Everyman',type:'either',a:'Jester',b:'Everyman',
+  ta:'break the tension with a joke',tb:'stay with the group and fit in'},
+ {k:'Innocent_Warrior',type:'either',a:'Innocent',b:'Warrior',
+  ta:'take it exactly as it was said',tb:'move on the threat at once'},
+ {k:'Sage_Explorer',type:'either',a:'Sage',b:'Explorer',
+  ta:'read the situation before you move',tb:'keep going past where the path ran out'},
+ {k:'Caregiver_Jester',type:'either',a:'Caregiver',b:'Jester',
+  ta:'put your own plans down for someone else',tb:'break a heavy silence with a joke'},
+ {k:'Magician_Innocent',type:'either',a:'Magician',b:'Innocent',
+  ta:'change the conditions instead of fighting them',tb:'take what you are told at face value'}];
+/* EVERY ROW ALSO CARRIES q, A PLAIN SENTENCE, for the gate that checks every
+   string a person reads is a sentence, and for the control's own aria-label.
+   A dilemma's q is its scene, already written as a question. An either or's q
+   joins its two behaviours into one sentence, because nothing else on this
+   row is one on its own. */
+IX_ARCH2.forEach(function(r){ if(!r.q) r.q = (r.type==='dilemma') ? r.scene : (r.ta+', or '+r.tb+'.'); });
+/* THE QUESTION AN EITHER OR ASKS. A dilemma's question is its scene. An either
+   or had none of its own: its two behaviours sat on the page as two end labels
+   with nothing above them asking anything, so the order he ruled (the mark,
+   the description, then the question) had no third thing to put third. One
+   sentence, the same for all nine, because the question is the same for all
+   nine and only the two behaviours under it change. */
+const IX_EO_ASK='Which of these two is closer to what you do?';
 
 /* k is the axis's name in CHILD. means is the held side in one sentence and
    oppMeans is its other end in one, because the page prints the opposite's
@@ -3676,8 +3818,8 @@ const IX_ACT=[
    NO DIGIT AND NO NUMBER WORD IN ANY LINE. A count typed into a heading is the
    defect this repository has been bitten by more than any other. */
 const IX_BLOCKS=[
- {id:'arch', nm:'Archetypes', rows:IX_ARCH,
-  line:'An archetype is a stock role people play, like the one who leads or the one who helps. Each question is a moment. Say how often you act that way.'},
+ {id:'arch', nm:'Archetypes', rows:IX_ARCH2,
+  line:'An archetype is a stock role people play, like the one who leads or the one who helps. Each one here puts two of those roles against each other, in a short scene or a short pair of actions. Pick the one closer to what you actually do.'},
  {id:'axes', nm:'Emotional axes', rows:IX_AXIS,
   line:'An axis is a line from a feeling to its opposite. Each question is a feeling the body can hold. Say how often it runs in you.'},
  {id:'acts', nm:'Action axes', rows:IX_ACT,
@@ -10975,9 +11117,13 @@ function iqApply(p){
    boundary that guards it, and the read-out sentence. No browser in here.
 
    WHERE THE ANSWERS LIVE. p.intake.more, three bags keyed by the row's own
-   name, each value 0 to 10 and an absent key meaning not answered:
+   key, each value 0 to 10 and an absent key meaning not answered. axes and
+   acts key by the thing named; arch keys by the pair a row asks about, since
+   round PQ made every archetype row a contest between two archetypes rather
+   than a question about one (see engine/data/intakemore.js, IX_ARCH2, and the
+   tally note on ixRead below):
 
-     p.intake.more = {arch:{Warrior:7, ..}, axes:{Fear:4, ..}, acts:{aware:5, ..}}
+     p.intake.more = {arch:{Warrior_Sage:7, ..}, axes:{Fear:4, ..}, acts:{aware:5, ..}}
 
    Beside the 63 and not mixed into them, because the 63 are indexed by
    position and read by iqScore, iqApply and CQ, and these are read by none of
@@ -11003,6 +11149,17 @@ var IX_FLOOR=3;
    answer (a person can lead with the Sage and the Rebel). Five tied at 10 is a
    person who pressed ten twelve times. */
 var IX_TIE_MAX=3;
+/* THE ARCHETYPE FLOOR, DERIVED FROM IX_FLOOR RATHER THAN TYPED FRESH. Round PQ.
+   axes and acts read one row as one archetype's whole answer, 0 to 10, and
+   IX_FLOOR=3 is the noise floor on that scale. The archetype block reads
+   twelve archetypes off eighteen two way rows, three rows touching each
+   archetype, each worth at most one point (see the tally note on ixRead
+   below), so the ceiling there is 3 and not 10. The same floor, carried across
+   by the same ratio: 3 x (3/10) = 0.9. It is not retyped as 0.9 with its own
+   reasoning, because a second number arguing the same noise floor by a
+   different path is the next thing this file would disagree with itself
+   about. */
+var IX_ARCH_FLOOR=IX_FLOOR*3/10;
 function ixBlank(){return {arch:{}, axes:{}, acts:{}};}
 function ixBlock(id){
  for(var i=0;i<IX_BLOCKS.length;i++)if(IX_BLOCKS[i].id===id)return IX_BLOCKS[i];
@@ -11062,6 +11219,39 @@ function ixRead(p,id){
  out.left=out.total-out.got;
  if(!out.got)return out;
  if(out.left){out.state='part'; return out;}
+ /* THE ARCHETYPE TALLY. Round PQ. Every other block has one row per named
+    thing and reads its lead straight off the row values. The archetype block
+    has one row per PAIR of named things (row.a, row.b), each row a single
+    number 0 to 10 saying where the answer fell between them, 0 fully a and 10
+    fully b (a dilemma's two buttons simply write the two ends of this same
+    line, never the middle). The tally for one archetype is the sum, over the
+    three rows that name it, of how much of that row it won: (10-v)/10 at the
+    a end, v/10 at the b end. Three rows at a full win each give a ceiling of
+    3, which is what IX_ARCH_FLOOR above is measured against. This is the
+    whole method, in full, and it is the only place it is computed: nothing
+    else in the engine reads these eighteen rows. */
+ if(id==='arch'){
+  var tally={}; ARCH.forEach(function(x){tally[x.nm]=0;});
+  b.rows.forEach(function(r,i){
+   var v=vals[i], ptB=v/10, ptA=1-ptB;
+   tally[r.a]+=ptA; tally[r.b]+=ptB;});
+  var names=Object.keys(tally);
+  var hiv=Math.max.apply(null,names.map(function(n){return tally[n];}));
+  var lov=Math.min.apply(null,names.map(function(n){return tally[n];}));
+  out.spread=Math.round((hiv-lov)*100)/100;
+  /* EXPOSED FOR AUDIT. Not printed as a number on screen (ixSay never reads
+     it), but a test, or a person reading this file, can reconstruct every
+     archetype's tally from the stored answers alone and check it against
+     this field. */
+  out.tally=tally;
+  names.forEach(function(n){if(tally[n]===hiv)out.lead.push(n);});
+  /* STABLE ORDER. ARCH's own table order, not the order Object.keys happens
+     to produce, so the same tie reads the same way on every run. */
+  out.lead.sort(function(x,y){
+   var ix=-1,iy=-1; ARCH.forEach(function(a,i){if(a.nm===x)ix=i; if(a.nm===y)iy=i;});
+   return ix-iy;});
+  out.state=(out.spread<IX_ARCH_FLOOR||out.lead.length>IX_TIE_MAX)?'level':'lead';
+  return out;}
  var hi=Math.max.apply(null,vals), lo=Math.min.apply(null,vals);
  out.spread=Math.round((hi-lo)*10)/10;
  b.rows.forEach(function(r,i){if(vals[i]===hi)out.lead.push(r.k);});
@@ -11078,7 +11268,10 @@ function ixJoin(a){
 function ixSay(id,r){
  var none={head:'', body:''};
  if(!r||r.state==='none')return none;
- if(r.state==='part')return {head:r.left+' left', body:''};
+ /* A NUMBER SAYS WHAT IT COUNTS, round PU: "17 left" on its own left a person
+    to work out seventeen of what. It says how many questions and out of how
+    many, in the same line. */
+ if(r.state==='part')return {head:r.left+' of '+r.total+' questions left', body:''};
  var lbl={arch:['Leading archetype','Leading archetypes'], axes:['Loudest axis','Loudest axes'],
           acts:['Most used move','Most used moves']}[id];
  if(r.state==='level')return {head:'Nothing leads.',
@@ -15933,8 +16126,8 @@ if(typeof module!=='undefined'&&module.exports){
   /* the three blocks under the 63. The tables are exported so the gate reads
      every count off them rather than typing one, and the functions so it can
      drive the boundary and the read-out. */
-                  IX_DRAFT:IX_DRAFT, IX_ARCH:IX_ARCH, IX_AXIS:IX_AXIS, IX_ACT:IX_ACT, IX_BLOCKS:IX_BLOCKS,
-                  IX_FLOOR:IX_FLOOR, IX_TIE_MAX:IX_TIE_MAX, ixBlank:ixBlank, ixFill:ixFill, ixGet:ixGet,
+                  IX_DRAFT:IX_DRAFT, IX_ARCH2:IX_ARCH2, IX_AXIS:IX_AXIS, IX_ACT:IX_ACT, IX_BLOCKS:IX_BLOCKS,
+                  IX_FLOOR:IX_FLOOR, IX_TIE_MAX:IX_TIE_MAX, IX_ARCH_FLOOR:IX_ARCH_FLOOR, ixBlank:ixBlank, ixFill:ixFill, ixGet:ixGet,
                   ixSet:ixSet, ixRead:ixRead, ixSay:ixSay, ixValidate:ixValidate, ixName:ixName,
   /* the meaning table, round PO. Exported so the gate can assert every entry
      is one plain sentence, and so a tool can read the same table the page does. */

@@ -507,6 +507,106 @@ function iqArtCss(){
   '.iqx-qs{display:grid;gap:8px;padding:2px 6px 6px}',
   '.iqx-qs .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
   '.iqx-m{font-size:13.5px;line-height:1.45;color:var(--dim);margin:0 0 6px}',
+  /* ---- the archetype rows, round PV: one plate per pair, mirrored on one
+     axis. See the note above iqxArchCard for the why; this is the geometry.
+     Every vertical gap is on the 8 px step the cover uses (8, 16, 24, 32,
+     40). --mk is the mark, --gt the gutter between the two halves. The pair,
+     the pills and the labels share one three column grid, so their centres
+     land on the same two verticals by construction. ---- */
+  '#iqx-arch{--mk:56px;--gt:64px}',
+  '#iqx-arch .iqa-ph{justify-content:center;padding:16px 16px 8px}',
+  '#iqx-arch .iqx-line{margin:0 auto;padding:0 16px 8px;text-align:center;max-width:62ch;text-wrap:balance}',
+  '#iqx-arch .iqx-read{margin:8px auto 0;text-align:center;max-width:62ch}',
+  '#iqx-arch .iqx-qs{gap:0;padding:8px 0 0}',
+  '.iqx-ap{display:grid;max-width:816px;width:100%;margin:0 auto;padding:40px 16px;box-sizing:border-box}',
+  '.iqx-ap+.iqx-ap{border-top:1px solid var(--edge)}',
+  '.iqx-pr,.iqx-dlb,.iqx-eol{display:grid;grid-template-columns:minmax(0,1fr) var(--gt) minmax(0,1fr)}',
+  '.iqx-pr{position:relative;align-items:start}',
+  '.iqx-af{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}',
+  '.iqx-af[data-side="a"]{--k:var(--ca);--i:var(--ia)}',
+  /* b is placed by name and not by flow: the hairline between them is
+     absolutely positioned and takes no cell, so in flow b fell into the
+     gutter. Measured at offset 0 from the axis where a sat at minus 212. */
+  '.iqx-af[data-side="b"]{--k:var(--cb);--i:var(--ib);grid-column:3}',
+  '.iqx-mk{display:block;width:var(--mk);height:var(--mk);color:var(--i);fill:none;stroke:currentColor;stroke-width:1.5;',
+  ' stroke-linecap:round;stroke-linejoin:round;overflow:visible}',
+  '.iqx-mk path{stroke-width:1.5}',
+  '.iqx-an{display:block;margin-top:16px;font-size:17px;font-weight:600;line-height:1.3;',
+  ' color:color-mix(in srgb,var(--k) 62%,var(--ink))}',
+  /* centred lines are balanced, so no line ends on one stranded word */
+  '.iqx-ad{margin:8px 0 0;max-width:30ch;font-size:14px;line-height:1.5;color:var(--mid);text-wrap:balance}',
+  /* the hairline between the two rings: from just outside a's ring to just
+     outside b's, at the height of their centres, a's seat running into b's,
+     with one node on the axis */
+  '.iqx-sp{position:absolute;top:calc(var(--mk) / 2);height:1px;',
+  ' left:calc((100% - var(--gt)) / 4 + var(--mk) / 2 + 12px);right:calc((100% - var(--gt)) / 4 + var(--mk) / 2 + 12px);',
+  ' background:linear-gradient(90deg,color-mix(in srgb,var(--ca) 55%,transparent),color-mix(in srgb,var(--cb) 55%,transparent))}',
+  '.iqx-sp::after{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:var(--dim)}',
+  '.iqx-aq{margin:32px auto 0;max-width:34em;text-align:center;font-size:18px;line-height:1.5;color:var(--ink);text-wrap:balance}',
+  '.iqx-dlb{margin-top:24px;align-items:stretch}',
+  '.iqx-gt{display:block}',
+  '.iqx-ab{--k:var(--ca);justify-self:center;width:100%;max-width:320px;min-height:var(--tap);padding:10px 20px;border-radius:999px;',
+  ' border:1px solid var(--edge-2,var(--edge));background:transparent;color:var(--ink);font-family:var(--sans);font-size:15px;',
+  ' font-weight:500;line-height:1.35;cursor:pointer;',
+  ' transition:background var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out),box-shadow var(--t-micro) var(--ease-out)}',
+  '.iqx-ab[data-side="b"]{--k:var(--cb)}',
+  '.iqx-ab:hover{border-color:color-mix(in srgb,var(--k) 60%,var(--edge))}',
+  /* pressed is a ring in the archetype's own seat over a faint wash of it,
+     never the solid accent slab round PQ drew, which was the brightest thing
+     on the screen and pulled the eye off the question */
+  '.iqx-ab.on{border-color:var(--k);box-shadow:inset 0 0 0 .5px var(--k);background:color-mix(in srgb,var(--k) 14%,transparent)}',
+  '.iqx-eo{margin-top:24px}',
+  '.iqx-eol{margin:0 0 8px;font-size:15px;font-weight:500;line-height:1.35;color:var(--ink);text-align:center;text-wrap:balance}',
+  /* the line as nodes on a path. Each cell is a full height tap target with
+     the path drawn through its middle and its node on the path. The node
+     grows toward the ends and its colour runs from a's seat to b's. */
+  '#iqbody .iqa .iqx-ap .iq-sl{position:relative;border-radius:0;overflow:visible;box-shadow:none}',
+  '#iqbody .iqa .iqx-ap .iq-n{--k:color-mix(in srgb,var(--cb) calc(var(--v) * 10%),var(--ca));position:relative;min-height:48px;',
+  ' border:0;border-radius:var(--r-xs);background:transparent;color:transparent}',
+  '#iqbody .iqa .iqx-ap .iq-n::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;',
+  ' background:color-mix(in srgb,var(--k) 40%,transparent)}',
+  '#iqbody .iqa .iqx-ap .iq-n:first-child::before{left:50%}',
+  '#iqbody .iqa .iqx-ap .iq-n:last-child::before{right:50%}',
+  '#iqbody .iqa .iqx-ap .iq-n::after{content:"";position:absolute;left:50%;top:50%;',
+  ' width:calc(6px + var(--d) * 1px);height:calc(6px + var(--d) * 1px);transform:translate(-50%,-50%);border-radius:50%;',
+  ' background:color-mix(in srgb,var(--k) 72%,var(--panel-2));transition:box-shadow var(--t-micro) var(--ease-out)}',
+  '#iqbody .iqa .iqx-ap .iq-n:hover{background:color-mix(in srgb,var(--k) 8%,transparent)}',
+  '#iqbody .iqa .iqx-ap .iq-n:hover::after{box-shadow:0 0 0 6px color-mix(in srgb,var(--k) 22%,transparent)}',
+  '#iqbody .iqa .iqx-ap .iq-n.on{background:transparent}',
+  '#iqbody .iqa .iqx-ap .iq-n.on::after{width:12px;height:12px;background:var(--k);',
+  ' box-shadow:0 0 0 5px var(--panel-2),0 0 0 6.5px var(--k)}',
+  /* THE OTHER LIGHTINGS, each its own. Punch draws nothing outlined, so the
+     ring becomes a solid disc of the seat under the glyph, the pills are
+     solid ground and the pressed one is the seat's own ground. Lumen and Flat
+     fill whatever is selected, in its family's colour, their standing rule. */
+  'body.punch .iqx-ap+.iqx-ap{border-top-color:transparent}',
+  'body.punch .iqx-mk circle{stroke:none;fill:color-mix(in srgb,var(--k) 18%,transparent)}',
+  /* the solid pill sits on the sunk ground: on panel-2 it was the panel's own
+     colour and the unpressed answer had no shape at all, measured in all three */
+  'body.punch .iqx-ab,body.flat .iqx-ab,body.lumen .iqx-ab{border-color:transparent;background:var(--sunk)}',
+  'body.punch .iqx-ab.on{box-shadow:none;background:color-mix(in srgb,var(--k) 30%,var(--sunk))}',
+  /* Flat and Lumen fill a pressed control with the accent, their own standing
+     rule for every other pressed control. Filled with the seat it put a Root
+     answer in solid red, 240 46 60 under Lumen, beside the alarm colour,
+     which is reserved for something being wrong. */
+  'body.flat .iqx-ab.on,body.lumen .iqx-ab.on{box-shadow:none;background:var(--accent);color:var(--on-accent)}',
+  /* Lumen's accent is a bright blue, and its on-accent white measured 3.37
+     on it, under the 4.5 floor for this size. The panel's own black reads
+     4.87 on the same blue. */
+  'body.lumen .iqx-ab.on{color:var(--panel)}',
+  'body.lumen .iqx-mk{stroke-width:1.9}',
+  /* a phone: the same mirror, closer. The gutter shrinks before anything else
+     does, and the type steps down one size on the same scale. */
+  /* scoped to the block by id: a bare class here would be a second claim on
+     the word, which the design gate refuses for anything setting geometry */
+  '@container (max-width:560px){#iqx-arch{--mk:48px;--gt:16px}',
+  ' #iqx-arch .iqx-ap{padding:32px 4px}',
+  ' #iqx-arch .iqx-an{margin-top:8px;font-size:15px}',
+  ' #iqx-arch .iqx-ad{font-size:13px;line-height:1.45}',
+  ' #iqx-arch .iqx-aq{margin-top:24px;font-size:16px}',
+  ' #iqx-arch .iqx-dlb,#iqx-arch .iqx-eo{margin-top:16px}',
+  ' #iqx-arch .iqx-ab{padding:10px 12px;font-size:14px}',
+  ' #iqx-arch .iqx-eol{font-size:14px}}',
   '.iqx-note{margin:0;padding:0 10px;font-size:13px;color:var(--dim)}',
   /* ---- one law: its three framings, each a card with its own icon ---- */
   '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
@@ -940,13 +1040,96 @@ function iqxSeat(id,k){
  if(id==='axes'){for(i=0;i<CHILD.length;i++)if(CHILD[i].nm===k)return CHILD[i].seat;}
  return 'Heart';}
 /* the mark a named row wears, drawn from the product's own tables: an axis its
-   glyph in CHILD, an action its gate glyph. An archetype row is not named on
-   the page (see engine/data/intakemore.js) so it wears none. */
+   glyph in CHILD, an action its gate glyph. An archetype row is a pair and
+   draws its two marks itself, in iqxArchCard below. */
 function iqxIcon(id,k){
  var i;
  if(id==='axes'){for(i=0;i<CHILD.length;i++)if(CHILD[i].nm===k)return CHILD[i].ic;}
  if(id==='acts')return GATEGLYPH[k]||null;
  return null;}
+/* THE ARCHETYPE ROWS, ROUND PV. His words: "for the archetype intake, I want
+   to see the symbol of the archetype and a description, and then the question.
+   Uh, also review the layout. This isn't very symmetrical even. It's not using
+   any of the design aesthetics that we've come up with. So fail on design."
+
+   A ROW IS A PAIR, SO THE PLATE IS A MIRROR. Every row is a contest between
+   two archetypes (row.a, row.b) on one line, 0 fully a to 10 fully b. The
+   plate is drawn on that line's own symmetry: one centre axis, a on the left
+   and b on the right, and every element either sits on the axis or has its
+   twin across it. Read top to bottom, in his order:
+
+     the pair    each archetype's own mark (ARCH[].ic, the twelve marks the
+                 Avatar and the rail already carry, inside a ring in the
+                 colour of its seat), its name, and its two sentence
+                 description (ARCH[].v then ARCH[].d). A hairline joins the
+                 two rings, carrying a's seat colour into b's: the line the
+                 answer is a point on.
+     the question  on the axis. A dilemma's scene, or for an either or the one
+                 question all nine share (IX_EO_ASK).
+     the answer  a dilemma's two responses as two equal pills, each standing
+                 directly under the archetype it leans toward, so the pill's
+                 centre and the mark's centre share one vertical. An either
+                 or's two behaviours sit in those same two places, over the
+                 eleven positions of the line drawn as nodes on a path, the
+                 Field's own grammar, centre node on the axis.
+
+   ONE GRID FOR ALL THREE BANDS. The pair, the dilemma's pills and the either
+   or's labels all use the same three columns, 1fr, a fixed gutter, 1fr, so
+   their centres fall on the same two verticals by construction and never by
+   eye. The node line is the one element that runs the full width, the
+   single break of that grid.
+
+   NO NUMBER ON THE LINE. The cells printed 0 to 10, and a digit standing
+   alone is what round PO fails ("a label, symbol, sign, number or term of art
+   never stands alone"). The two behaviours at the ends already say what the
+   line measures; the node's size says how far toward an end it is, and its
+   colour moves from a's seat to b's. Each node still says its position to a
+   screen reader in words.
+
+   NO TINTED CARD. Round PQ washed every row in its seat colour at six
+   percent, eighteen muddy boxes. The colour lives on the marks, the names,
+   the hairline and the pressed answer, the places it means something, and
+   the plates are separated by a hairline rule and space, the way the cover
+   is built. */
+function iqxArch(nm){
+ var i; for(i=0;i<ARCH.length;i++)if(ARCH[i].nm===nm)return ARCH[i]; return null;}
+/* the mark: a ring in the seat's colour with the archetype's own glyph inside,
+   stroked and never filled, the house rule for icons */
+function iqxMark(A){
+ return '<svg class="iqx-mk" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26.5"/>'
+  +'<path transform="translate(16 16)" d="'+A.ic+'"/></svg>';}
+function iqxFig(A,side){
+ var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
+ return '<div class="iqx-af" data-side="'+side+'">'+iqxMark(A)
+  +'<b class="iqx-an">'+esc(A.nm)+'</b>'
+  +'<p class="iqx-ad">'+esc(cap(A.v)+'. '+(A.d||''))+'</p></div>';}
+function iqxArchCard(p,row){
+ var A=iqxArch(row.a)||{nm:row.a,v:'',d:'',b:'Heart',ic:''}, B=iqxArch(row.b)||{nm:row.b,v:'',d:'',b:'Heart',ic:''};
+ var v=ixGet(p,'arch',row.k), cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
+ var st='--ca:'+seatCol(A.b)+';--cb:'+seatCol(B.b)+';--ia:'+icCol(A.b)+';--ib:'+icCol(B.b);
+ var gt='<span class="iqx-gt" aria-hidden="true"></span>', ans;
+ if(row.type==='dilemma'){
+  /* two equal pills, each under the archetype it leans toward */
+  var pill=function(side,val,txt){var sel=(v===val);
+   return '<button type="button" class="iqx-ab'+(sel?' on':'')+'" data-side="'+side+'" data-ixb="arch" data-ixk="'+esc(row.k)
+    +'" data-v="'+val+'" aria-pressed="'+sel+'">'+esc(txt)+'</button>';};
+  ans='<p class="iqx-aq">'+esc(row.scene)+'</p>'
+   +'<div class="iqx-dlb" role="group" aria-label="'+esc(row.scene)+'">'+pill('a',0,row.ra)+gt+pill('b',10,row.rb)+'</div>';}
+ else{
+  /* the two behaviours in the pills' places, over the line as eleven nodes */
+  var near=(v==null)?null:Math.round(v), nodes='';
+  for(var n=0;n<=10;n++){
+   var d=Math.abs(n-5), say=n===5?'Even between the two'
+    :(n<5?'Toward '+row.ta:'Toward '+row.tb)+', '+(d===5?'all the way':d+' of 5 steps from even');
+   nodes+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-ixb="arch" data-ixk="'+esc(row.k)+'" data-v="'+n
+    +'" style="--v:'+n+';--d:'+d+'" aria-pressed="'+(near===n)+'" aria-label="'+esc(say)+'"></button>';}
+  ans='<p class="iqx-aq">'+esc(IX_EO_ASK)+'</p>'
+   +'<div class="iqx-eo"><p class="iqx-eol"><span data-side="a">'+esc(cap(row.ta))+'</span>'+gt
+   +'<span data-side="b">'+esc(cap(row.tb))+'</span></p>'
+   +'<div class="iq-sl" role="group" aria-label="'+esc(cap(row.ta))+', or '+esc(row.tb)+'">'+nodes+'</div></div>';}
+ return '<div class="iqx-ap" data-type="'+row.type+'" style="'+st+'">'
+  +'<div class="iqx-pr">'+iqxFig(A,'a')+'<span class="iqx-sp" aria-hidden="true"></span>'+iqxFig(B,'b')+'</div>'
+  +ans+'</div>';}
 function iqxCard(p,id,row){
  var c=seatCol(iqxSeat(id,row.k)), v=ixGet(p,id,row.k), near=(v==null)?null:Math.round(v);
  var ic=iqxIcon(id,row.k), nm=ixName(id,row.k);
@@ -969,7 +1152,7 @@ function iqxHtml(p){
    +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b.nm)+'</span></div>'
    +'<p class="iqx-line">'+esc(b.line)+'</p>'
    +(say.head?'<p class="iqx-read" data-st="'+r.state+'"><b>'+esc(say.head)+'</b>'+(say.body?' '+esc(say.body):'')+'</p>':'')
-   +'<div class="iqx-qs">'+b.rows.map(function(row){return iqxCard(p,b.id,row);}).join('')+'</div>'
+   +'<div class="iqx-qs">'+b.rows.map(function(row){return b.id==='arch'?iqxArchCard(p,row):iqxCard(p,b.id,row);}).join('')+'</div>'
    +'</section>';}).join('')
   /* said once under the stack and not under each block: three copies of one
      sentence is the page explaining itself three times */
