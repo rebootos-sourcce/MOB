@@ -313,9 +313,16 @@ const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in and the core open
 cv.addEventListener('pointerup',function(e){
  cv.style.cursor='';
  if(TAP){var tp=TAP; TAP=null; if(tp.id===e.pointerId)hitPress(tp.h,tp.e); return;}
- if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
+ if(PAN){var wasCore=PAN.core, moved=PAN.moved, px0=PAN.x, py0=PAN.y; PAN=null;
   /* a press on the core that never moved is still a click on the core */
   if(!moved&&wasCore){S.pin=null;runCoreDrill();render();}
+  /* A FINGER TOUCHES A WIRE BY TAPPING IT, because a finger has no hover and
+     the spark is otherwise an arrival of the pointer. A tap on bare canvas
+     that lands on a thread sparks; a mouse already sparked on the way in. A
+     frame that moved under the pointer is a new frame, so whatever thread is
+     under it now is taken in without a sound. */
+  else if(!moved&&e.pointerType!=='mouse'&&wireOn(px0,py0)&&typeof sfx==='function')sfx('spark');
+  if(moved){var Lm=loc(e);WIRE_AT=wireOn(Lm[0],Lm[1]);}
   return;}
  if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
@@ -350,6 +357,9 @@ cv.addEventListener('pointermove',function(e){
     opens the mark's reading instead, on its release. */
  if(e.pointerType==='touch')return;
  var h=hitTest(x,y),pr=$('probe');
+ /* the tension lines, touched: a spark on arriving at one, on bare canvas
+    only, since a mark under the pointer is what it is pointing at */
+ wireTouch(h?null:wireOn(x,y));
  S.hover=h?(h.n||h.o||null):null;
  rlEcho(h);
  if(!h){pr.classList.remove('on');cv.style.cursor='crosshair';return;}
@@ -395,7 +405,33 @@ function probeAt(pr,el,x,y){
  pr.style.left=side(sx,pw,box.clientWidth)+'px';
  pr.style.top=side(sy,ph,box.clientHeight)+'px';
  pr.classList.add('on');}
-cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;rlEcho(null);$('probe').classList.remove('on');});
+cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;rlEcho(null);$('probe').classList.remove('on');WIRE_AT=null;});
+/* ============================================================
+   THE TENSION LINES SPARK. 2 October, the owner: "Make sure there's sound
+   effects for the tension lines on the field." The lines are the threads
+   pulses() runs on, PUL in ui/wheel.js, from an address to its pattern and
+   on in to the core. The sound is the spark row in ui/sound.js, and why it
+   is a touch and not a bed is written there.
+
+   AN ARRIVAL, NOT A HOVER HELD. WIRE_AT is the thread the pointer is on, by
+   its two ends. A spark plays only when that changes to a thread, so a
+   pointer resting on a line, or sliding along it, is silent, and sweeping
+   across the web sparks on each new line it meets, down to the row's own
+   gap. Off a line, WIRE_AT is cleared, so coming back to the same line is
+   arriving again.
+
+   ONLY ON THE WHEEL. Frames and Dial draw their threads as their own
+   pictures, ui/rings.js, and are not wired here. The wheel is the default
+   and the one every Field check in tests/ measures, and the frames are a
+   second set of hooks for a second time.
+   ============================================================ */
+var WIRE_AT=null;
+function wireOn(x,y){
+ if(S.tab!==TAB.FIELD||(typeof fviewOn==='function'&&fviewOn()))return null;
+ return threadAt(x,y);}
+function wireTouch(k){
+ var was=WIRE_AT; WIRE_AT=k;
+ if(k&&k!==was&&typeof sfx==='function')sfx('spark');}
 /* ============================================================
    THE RENDITIONS ANSWER THE WAY THE WHEEL DOES. BP8.
 

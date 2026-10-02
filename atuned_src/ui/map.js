@@ -2694,6 +2694,27 @@ function bmPlaceTip(p){
   b:ids.map(function(id){var n=BY[id];
    return n.k+' · '+(n.c||'no fetter')+' · '+String(n.n).toLowerCase()+' · '+(n.sq||0).toFixed(1);}).join('. ')};}
 
+/* ---------- the lines, touched ----------
+   2 October, the owner: "And the body when you zoom in, close to the tension
+   lines. Sounds more like static. Or electricity." The lines are the
+   saboteur cables above, whose tension is the saboteur's weight, and the
+   sound is the spark row in ui/sound.js, the same one the Field's threads
+   make, because they are the same wire drawn on two pictures.
+
+   ONLY CLOSE. At the whole body the cables cross the figure a few pixels
+   apart and a pointer moving over it would arrive on one every few frames,
+   which is the dense soundscape this is not. BMSPARK_Z is 1.3 of the fitted
+   view, the line this file already draws between the whole body and a close
+   look: under it the step words sit in the lane between the two figures and
+   the name labels are drawn, over it both step aside (bmDrawFlow, bmDraw). It
+   is two notches of a mouse wheel, so a person who zooms toward a line hears
+   it by the time they can tell one cable from the next.
+
+   AN ARRIVAL, NOT A HOVER HELD: called where BM.hoverSab changes to a line,
+   so resting on a line, or sliding along it, is silent. */
+const BMSPARK_Z=1.3;
+function bmClose(){return !!(BM.cam&&BM.z0&&BM.cam.z>=BM.z0*BMSPARK_Z);}
+function bmSpark(){if(bmClose()&&typeof sfx==='function')sfx('spark');}
 /* ---------- pressing, pointing, painting ---------- */
 function bmWire(){
  var sv=BM.sv;
@@ -2717,7 +2738,7 @@ function bmWire(){
    return;}
   var pk=bmPick(p[0],p[1]);
   BM.hoverReg=pk.reg||null;BM.hoverCell=pk.cell||null;
-  if(pk.sab&&!pk.place&&pk.sab.nm!==BM.hoverSab){BM.hoverSab=pk.sab.nm;BM.traceT0=performance.now();}
+  if(pk.sab&&!pk.place&&pk.sab.nm!==BM.hoverSab){BM.hoverSab=pk.sab.nm;BM.traceT0=performance.now();bmSpark();}
   if(!pk.sab&&BM.hoverSab&&BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.hoverFrom='map';
   BM.hoverPlace=pk.place||null;BM.hoverView=pk.v;
@@ -2750,6 +2771,8 @@ function bmWire(){
   if(pk.hub){var ho=pk.hub.o, hk=bmHeldObj();
    PMPICK=(hk&&hk.kind===ho.kind&&hk.nm===ho.nm)?null:ho;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   if(pk.sab&&!pk.place){var o=pk.sab.o, same=(bmHoldNm()===o.nm);
+   /* a finger has no hover, so its tap on a line is its arrival on it */
+   if(e.pointerType!=='mouse')bmSpark();
    PMPICK=same?null:o;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   /* A MASK OPENS ITS DRILL, the fix DY made on the Field carried to where
      the masks went: "I click on Ideological, I get nothing." pmAnswer sends

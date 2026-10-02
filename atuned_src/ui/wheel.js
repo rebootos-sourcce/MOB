@@ -1025,6 +1025,30 @@ function pulses(list,r){
   g.lineWidth=Math.max(1.2,p.w*0.9);
   g.stroke();}
  g.setLineDash([]); g.lineDashOffset=0; g.restore();}
+/* THE THREAD UNDER A POINT, for the spark a live wire makes when the pointer
+   arrives on it (ui/sound.js, the spark row). PUL is the list the frame just
+   drew, so what can be touched is exactly what is on the glass: a tier still
+   arriving or leaving is in it at its own strength, and a thread faded under
+   a twentieth, the rest of the web under a selection, is not a wire a person
+   can see and so is not one they can touch. PUL is filled whether or not
+   reduced motion is on, because the threads are drawn either way and only
+   the pulses on them stop. Each thread is walked as twelve straight pieces
+   of its own curve, four pixels either side plus half its width. The answer
+   is the thread's two ends, which do not shake, so the same wire is the same
+   wire from one frame to the next while its middle trembles. */
+const THREAD_NEAR=4;
+function threadAt(x,y){
+ for(var i=PUL.length-1;i>=0;i--){var p=PUL[i];
+  if(!(p.a>0.05))continue;
+  var near=THREAD_NEAR+(p.w||1)/2, ax=p.x0, ay=p.y0;
+  for(var k=1;k<=12;k++){var u=k/12, bx, by;
+   if(p.qx!==undefined){bx=(1-u)*(1-u)*p.x0+2*(1-u)*u*p.qx+u*u*p.x1; by=(1-u)*(1-u)*p.y0+2*(1-u)*u*p.qy+u*u*p.y1;}
+   else{bx=p.x0+(p.x1-p.x0)*u; by=p.y0+(p.y1-p.y0)*u;}
+   var dx=bx-ax, dy=by-ay, l2=dx*dx+dy*dy, s=l2?clamp(((x-ax)*dx+(y-ay)*dy)/l2,0,1):0;
+   if(Math.hypot(x-(ax+dx*s),y-(ay+dy*s))<=near)
+    return Math.round(p.x0)+','+Math.round(p.y0)+','+Math.round(p.x1)+','+Math.round(p.y1);
+   ax=bx; ay=by;}}
+ return null;}
 /* ============================================================
    THE RING BENDS UNDER LOAD. GQ in TASKS.md, his words: "what I really like
    is how the field is distorted, which is exactly what would end up

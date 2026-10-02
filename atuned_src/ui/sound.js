@@ -363,6 +363,10 @@ function buzz(pat){
    tip, and no sound for the release wall, "Nothing left to open", which is a
    state a person reads and not a press that was refused.
 
+   ONE HOVER IS NOW IN, by name, and only one: the pointer arriving on a
+   tension line, the spark row below, which the owner asked for. It is an
+   arrival and not a hover held, so a pointer resting on a line is silent.
+
    THE RELEASE'S ROOM, which this paragraph used to hold shut. A release is
    still its own room with its own switches and its own four marks, and a
    fitting that arrives from inside it is still held off, so the gate in
@@ -475,7 +479,49 @@ var SFX=[
     touched by it. */
  {k:'begin', at:'a release beginning', max:480, ceil:0.14, gap:1500, buzz:[14],
   parts:[{w:'noise',bp:2200,q:1.4,at:0,a:1,r:10,pk:0.03},
-   {w:'sine',f:294,f1:370,gl:120,p2:1.5,g2:0.1,at:4,a:40,h:40,r:330,pk:0.09,lp:1700}]}];
+   {w:'sine',f:294,f1:370,gl:120,p2:1.5,g2:0.1,at:4,a:40,h:40,r:330,pk:0.09,lp:1700}]},
+ /* SPARK. A live wire touched. 2 October, the owner: "Make sure there's
+    sound effects for the tension lines on the field. And the body when you
+    zoom in, close to the tension lines. Sounds more like static. Or
+    electricity."
+
+    THE ONE FITTING WITH NO BODY. Every other row is a struck or sealed thing
+    with mass, a sine between 392 and 587. A wire under load has no mass to
+    strike; what it has is metal and air. So it is ticks only, the family's
+    own tick, four of them at uneven spacing, 0, 17, 29 and 54 ms, each on its
+    own bandpass between 1.8 and 2.5 kilohertz so no two are the same click,
+    and where a body would sit, a hum: the same seeded noise through a narrow
+    bandpass at 1150, Q 9, 8 ms in and 150 out. Narrow noise is the nearest
+    thing to a pitch noise can have, and it is what makes crackle read as
+    current and not as a dropped pin. Q 4.5 on the ticks and not the 1.4 the
+    other ticks use, because a wider tick at this level put 7.6 percent of
+    the energy over 4 kilohertz, measured, where the family's floor is 5.
+
+    DISCRETE AND NOT A BED, decided and not defaulted. A wire that sounded the
+    whole time a dense web was on screen would be a hiss under a person
+    reading their own record at nine at night, it would be the only loop in
+    the interface family, and it would hold a phone's audio device awake,
+    which is the reason the bed sleeps (bedStop) and the fittings nap. The eye
+    already has the continuous half: the pulses run and the cables hum. The
+    ear gets the touch. One spark when the pointer arrives on a line, never
+    again while it stays on that line, and one on a finger's tap on a line,
+    since a finger has no hover. The hooks are wireTouch in ui/ui.js and
+    bmSpark in ui/map.js.
+
+    THE SAME SPARK ON EVERY LINE. A taut line and a slack one sound alike,
+    because a sound that differed by what was read would be a reading by ear,
+    the rule kept above; how taut a line is stays with its sag and its pulse.
+
+    GAP 600, so it can never use up the burst. SFX_BURST is three a second
+    for everything, and a pointer swept across the web arrives on a new line
+    several times a second. At 600 at most two sparks land inside any one
+    second, so the third slot is always left for a press. */
+ {k:'spark', at:'the pointer arriving on a tension line, on the Field, or on the Body zoomed in', max:200, ceil:0.12, gap:600, buzz:[10,20,8],
+  parts:[{w:'noise',bp:2200,q:4.5,at:0,a:1,r:9,pk:0.46},
+   {w:'noise',bp:1800,q:4.5,at:17,a:1,r:7,pk:0.32},
+   {w:'noise',bp:2500,q:4.5,at:29,a:1,r:10,pk:0.36},
+   {w:'noise',bp:1900,q:4.5,at:54,a:1,r:8,pk:0.24},
+   {w:'noise',bp:1150,q:9,at:2,a:8,r:150,pk:0.16}]}];
 var SFX_BY={}; SFX.forEach(function(x){SFX_BY[x.k]=x;});
 /* the declared length of a row, the latest any part of it ends */
 function sfxLen(x){

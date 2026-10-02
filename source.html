@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1333 ded9adc 2026-10-02 10:00"><head><meta charset="utf-8">
+<html lang="en" data-build="v1335 8b30146 2026-10-02 10:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -26536,6 +26536,10 @@ function buzz(pat){
    tip, and no sound for the release wall, "Nothing left to open", which is a
    state a person reads and not a press that was refused.
 
+   ONE HOVER IS NOW IN, by name, and only one: the pointer arriving on a
+   tension line, the spark row below, which the owner asked for. It is an
+   arrival and not a hover held, so a pointer resting on a line is silent.
+
    THE RELEASE'S ROOM, which this paragraph used to hold shut. A release is
    still its own room with its own switches and its own four marks, and a
    fitting that arrives from inside it is still held off, so the gate in
@@ -26648,7 +26652,49 @@ var SFX=[
     touched by it. */
  {k:'begin', at:'a release beginning', max:480, ceil:0.14, gap:1500, buzz:[14],
   parts:[{w:'noise',bp:2200,q:1.4,at:0,a:1,r:10,pk:0.03},
-   {w:'sine',f:294,f1:370,gl:120,p2:1.5,g2:0.1,at:4,a:40,h:40,r:330,pk:0.09,lp:1700}]}];
+   {w:'sine',f:294,f1:370,gl:120,p2:1.5,g2:0.1,at:4,a:40,h:40,r:330,pk:0.09,lp:1700}]},
+ /* SPARK. A live wire touched. 2 October, the owner: "Make sure there's
+    sound effects for the tension lines on the field. And the body when you
+    zoom in, close to the tension lines. Sounds more like static. Or
+    electricity."
+
+    THE ONE FITTING WITH NO BODY. Every other row is a struck or sealed thing
+    with mass, a sine between 392 and 587. A wire under load has no mass to
+    strike; what it has is metal and air. So it is ticks only, the family's
+    own tick, four of them at uneven spacing, 0, 17, 29 and 54 ms, each on its
+    own bandpass between 1.8 and 2.5 kilohertz so no two are the same click,
+    and where a body would sit, a hum: the same seeded noise through a narrow
+    bandpass at 1150, Q 9, 8 ms in and 150 out. Narrow noise is the nearest
+    thing to a pitch noise can have, and it is what makes crackle read as
+    current and not as a dropped pin. Q 4.5 on the ticks and not the 1.4 the
+    other ticks use, because a wider tick at this level put 7.6 percent of
+    the energy over 4 kilohertz, measured, where the family's floor is 5.
+
+    DISCRETE AND NOT A BED, decided and not defaulted. A wire that sounded the
+    whole time a dense web was on screen would be a hiss under a person
+    reading their own record at nine at night, it would be the only loop in
+    the interface family, and it would hold a phone's audio device awake,
+    which is the reason the bed sleeps (bedStop) and the fittings nap. The eye
+    already has the continuous half: the pulses run and the cables hum. The
+    ear gets the touch. One spark when the pointer arrives on a line, never
+    again while it stays on that line, and one on a finger's tap on a line,
+    since a finger has no hover. The hooks are wireTouch in ui/ui.js and
+    bmSpark in ui/map.js.
+
+    THE SAME SPARK ON EVERY LINE. A taut line and a slack one sound alike,
+    because a sound that differed by what was read would be a reading by ear,
+    the rule kept above; how taut a line is stays with its sag and its pulse.
+
+    GAP 600, so it can never use up the burst. SFX_BURST is three a second
+    for everything, and a pointer swept across the web arrives on a new line
+    several times a second. At 600 at most two sparks land inside any one
+    second, so the third slot is always left for a press. */
+ {k:'spark', at:'the pointer arriving on a tension line, on the Field, or on the Body zoomed in', max:200, ceil:0.12, gap:600, buzz:[10,20,8],
+  parts:[{w:'noise',bp:2200,q:4.5,at:0,a:1,r:9,pk:0.46},
+   {w:'noise',bp:1800,q:4.5,at:17,a:1,r:7,pk:0.32},
+   {w:'noise',bp:2500,q:4.5,at:29,a:1,r:10,pk:0.36},
+   {w:'noise',bp:1900,q:4.5,at:54,a:1,r:8,pk:0.24},
+   {w:'noise',bp:1150,q:9,at:2,a:8,r:150,pk:0.16}]}];
 var SFX_BY={}; SFX.forEach(function(x){SFX_BY[x.k]=x;});
 /* the declared length of a row, the latest any part of it ends */
 function sfxLen(x){
@@ -28730,6 +28776,30 @@ function pulses(list,r){
   g.lineWidth=Math.max(1.2,p.w*0.9);
   g.stroke();}
  g.setLineDash([]); g.lineDashOffset=0; g.restore();}
+/* THE THREAD UNDER A POINT, for the spark a live wire makes when the pointer
+   arrives on it (ui/sound.js, the spark row). PUL is the list the frame just
+   drew, so what can be touched is exactly what is on the glass: a tier still
+   arriving or leaving is in it at its own strength, and a thread faded under
+   a twentieth, the rest of the web under a selection, is not a wire a person
+   can see and so is not one they can touch. PUL is filled whether or not
+   reduced motion is on, because the threads are drawn either way and only
+   the pulses on them stop. Each thread is walked as twelve straight pieces
+   of its own curve, four pixels either side plus half its width. The answer
+   is the thread's two ends, which do not shake, so the same wire is the same
+   wire from one frame to the next while its middle trembles. */
+const THREAD_NEAR=4;
+function threadAt(x,y){
+ for(var i=PUL.length-1;i>=0;i--){var p=PUL[i];
+  if(!(p.a>0.05))continue;
+  var near=THREAD_NEAR+(p.w||1)/2, ax=p.x0, ay=p.y0;
+  for(var k=1;k<=12;k++){var u=k/12, bx, by;
+   if(p.qx!==undefined){bx=(1-u)*(1-u)*p.x0+2*(1-u)*u*p.qx+u*u*p.x1; by=(1-u)*(1-u)*p.y0+2*(1-u)*u*p.qy+u*u*p.y1;}
+   else{bx=p.x0+(p.x1-p.x0)*u; by=p.y0+(p.y1-p.y0)*u;}
+   var dx=bx-ax, dy=by-ay, l2=dx*dx+dy*dy, s=l2?clamp(((x-ax)*dx+(y-ay)*dy)/l2,0,1):0;
+   if(Math.hypot(x-(ax+dx*s),y-(ay+dy*s))<=near)
+    return Math.round(p.x0)+','+Math.round(p.y0)+','+Math.round(p.x1)+','+Math.round(p.y1);
+   ax=bx; ay=by;}}
+ return null;}
 /* ============================================================
    THE RING BENDS UNDER LOAD. GQ in TASKS.md, his words: "what I really like
    is how the field is distorted, which is exactly what would end up
@@ -33938,6 +34008,27 @@ function bmPlaceTip(p){
   b:ids.map(function(id){var n=BY[id];
    return n.k+' · '+(n.c||'no fetter')+' · '+String(n.n).toLowerCase()+' · '+(n.sq||0).toFixed(1);}).join('. ')};}
 
+/* ---------- the lines, touched ----------
+   2 October, the owner: "And the body when you zoom in, close to the tension
+   lines. Sounds more like static. Or electricity." The lines are the
+   saboteur cables above, whose tension is the saboteur's weight, and the
+   sound is the spark row in ui/sound.js, the same one the Field's threads
+   make, because they are the same wire drawn on two pictures.
+
+   ONLY CLOSE. At the whole body the cables cross the figure a few pixels
+   apart and a pointer moving over it would arrive on one every few frames,
+   which is the dense soundscape this is not. BMSPARK_Z is 1.3 of the fitted
+   view, the line this file already draws between the whole body and a close
+   look: under it the step words sit in the lane between the two figures and
+   the name labels are drawn, over it both step aside (bmDrawFlow, bmDraw). It
+   is two notches of a mouse wheel, so a person who zooms toward a line hears
+   it by the time they can tell one cable from the next.
+
+   AN ARRIVAL, NOT A HOVER HELD: called where BM.hoverSab changes to a line,
+   so resting on a line, or sliding along it, is silent. */
+const BMSPARK_Z=1.3;
+function bmClose(){return !!(BM.cam&&BM.z0&&BM.cam.z>=BM.z0*BMSPARK_Z);}
+function bmSpark(){if(bmClose()&&typeof sfx==='function')sfx('spark');}
 /* ---------- pressing, pointing, painting ---------- */
 function bmWire(){
  var sv=BM.sv;
@@ -33961,7 +34052,7 @@ function bmWire(){
    return;}
   var pk=bmPick(p[0],p[1]);
   BM.hoverReg=pk.reg||null;BM.hoverCell=pk.cell||null;
-  if(pk.sab&&!pk.place&&pk.sab.nm!==BM.hoverSab){BM.hoverSab=pk.sab.nm;BM.traceT0=performance.now();}
+  if(pk.sab&&!pk.place&&pk.sab.nm!==BM.hoverSab){BM.hoverSab=pk.sab.nm;BM.traceT0=performance.now();bmSpark();}
   if(!pk.sab&&BM.hoverSab&&BM.hoverFrom!=='rail')BM.hoverSab=null;
   BM.hoverFrom='map';
   BM.hoverPlace=pk.place||null;BM.hoverView=pk.v;
@@ -33994,6 +34085,8 @@ function bmWire(){
   if(pk.hub){var ho=pk.hub.o, hk=bmHeldObj();
    PMPICK=(hk&&hk.kind===ho.kind&&hk.nm===ho.nm)?null:ho;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   if(pk.sab&&!pk.place){var o=pk.sab.o, same=(bmHoldNm()===o.nm);
+   /* a finger has no hover, so its tap on a line is its arrival on it */
+   if(e.pointerType!=='mouse')bmSpark();
    PMPICK=same?null:o;S.pin=PMPICK;BM.traceT0=performance.now();pmAnswer(PMPICK);return;}
   /* A MASK OPENS ITS DRILL, the fix DY made on the Field carried to where
      the masks went: "I click on Ideological, I get nothing." pmAnswer sends
@@ -55441,7 +55534,7 @@ function accDisplay(){
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
     ? accTog('Sound effects','acsfx',sfxIsOn(),
-       'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends')
+       'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends. A crackle when the pointer meets a line on the Field, or on the Body zoomed in')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
  return h;}
@@ -59164,9 +59257,16 @@ const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in and the core open
 cv.addEventListener('pointerup',function(e){
  cv.style.cursor='';
  if(TAP){var tp=TAP; TAP=null; if(tp.id===e.pointerId)hitPress(tp.h,tp.e); return;}
- if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
+ if(PAN){var wasCore=PAN.core, moved=PAN.moved, px0=PAN.x, py0=PAN.y; PAN=null;
   /* a press on the core that never moved is still a click on the core */
   if(!moved&&wasCore){S.pin=null;runCoreDrill();render();}
+  /* A FINGER TOUCHES A WIRE BY TAPPING IT, because a finger has no hover and
+     the spark is otherwise an arrival of the pointer. A tap on bare canvas
+     that lands on a thread sparks; a mouse already sparked on the way in. A
+     frame that moved under the pointer is a new frame, so whatever thread is
+     under it now is taken in without a sound. */
+  else if(!moved&&e.pointerType!=='mouse'&&wireOn(px0,py0)&&typeof sfx==='function')sfx('spark');
+  if(moved){var Lm=loc(e);WIRE_AT=wireOn(Lm[0],Lm[1]);}
   return;}
  if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
@@ -59201,6 +59301,9 @@ cv.addEventListener('pointermove',function(e){
     opens the mark's reading instead, on its release. */
  if(e.pointerType==='touch')return;
  var h=hitTest(x,y),pr=$('probe');
+ /* the tension lines, touched: a spark on arriving at one, on bare canvas
+    only, since a mark under the pointer is what it is pointing at */
+ wireTouch(h?null:wireOn(x,y));
  S.hover=h?(h.n||h.o||null):null;
  rlEcho(h);
  if(!h){pr.classList.remove('on');cv.style.cursor='crosshair';return;}
@@ -59246,7 +59349,33 @@ function probeAt(pr,el,x,y){
  pr.style.left=side(sx,pw,box.clientWidth)+'px';
  pr.style.top=side(sy,ph,box.clientHeight)+'px';
  pr.classList.add('on');}
-cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;rlEcho(null);$('probe').classList.remove('on');});
+cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;rlEcho(null);$('probe').classList.remove('on');WIRE_AT=null;});
+/* ============================================================
+   THE TENSION LINES SPARK. 2 October, the owner: "Make sure there's sound
+   effects for the tension lines on the field." The lines are the threads
+   pulses() runs on, PUL in ui/wheel.js, from an address to its pattern and
+   on in to the core. The sound is the spark row in ui/sound.js, and why it
+   is a touch and not a bed is written there.
+
+   AN ARRIVAL, NOT A HOVER HELD. WIRE_AT is the thread the pointer is on, by
+   its two ends. A spark plays only when that changes to a thread, so a
+   pointer resting on a line, or sliding along it, is silent, and sweeping
+   across the web sparks on each new line it meets, down to the row's own
+   gap. Off a line, WIRE_AT is cleared, so coming back to the same line is
+   arriving again.
+
+   ONLY ON THE WHEEL. Frames and Dial draw their threads as their own
+   pictures, ui/rings.js, and are not wired here. The wheel is the default
+   and the one every Field check in tests/ measures, and the frames are a
+   second set of hooks for a second time.
+   ============================================================ */
+var WIRE_AT=null;
+function wireOn(x,y){
+ if(S.tab!==TAB.FIELD||(typeof fviewOn==='function'&&fviewOn()))return null;
+ return threadAt(x,y);}
+function wireTouch(k){
+ var was=WIRE_AT; WIRE_AT=k;
+ if(k&&k!==was&&typeof sfx==='function')sfx('spark');}
 /* ============================================================
    THE RENDITIONS ANSWER THE WAY THE WHEEL DOES. BP8.
 
@@ -60610,5 +60739,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003953166"></div>
+<div id="eof" hidden data-len="003961204"></div>
 </body></html>

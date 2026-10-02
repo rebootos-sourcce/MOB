@@ -19,6 +19,9 @@
         the fittings switch says.
      7  the hooks fire: a refusal through status, a Story commit,
         and the mark replacing the keep on the press that earned it.
+     9  the tension lines spark: a mouse arriving on a thread on the
+        Field, and on a cable on the Body once zoomed in close, and not
+        while it rests there or at the whole body.
 
    THE INSTRUMENT IS CHECKED BEFORE IT READS ANYTHING, the standing
    rule: a known 0.05 sine of 200 ms must read 0.05 and 200, a 6
@@ -125,7 +128,10 @@ async function soundGate(browser,FILE,ok,booted){
     switch on and heard nothing, and asked for a sound on each, so tap, field
     and begin joined kept, undo, refuse, mark, done and time. The bound is
     still a bound, because a family a person cannot learn is the other way to
-    be unheard. */
+    be unheard. NINE BECAME TEN the same day, spark, for the tension lines
+    on the Field and on the Body zoomed in. Ten is the top of this bound, so
+    the next sound a person asks for replaces a row or argues for the bound,
+    and does not slip in under it. */
  ok(T.n>=2&&T.n<=10,'between two and ten fittings, the size of a family a person can learn, got '+T.n);
  console.log('  name     peak    dBFS   rms dBFS  length  cap   <150Hz  >4kHz  centroid');
  T.rows.forEach(r=>{
@@ -210,6 +216,86 @@ async function soundGate(browser,FILE,ok,booted){
  await pg.evaluate(()=>{ window.sfx=window.__sfxKeep; });
  ok(dtab&&dtab.osc===0&&dfield===0,'and with the hooks taken out the same two presses start none, so the counts above are readings, tab '
   +(dtab&&dtab.osc)+', field '+dfield);
+ await pg.waitForTimeout(1400);
+
+ /* ---------- 9. THE TENSION LINES SPARK ----------
+    2 October, the owner: "Make sure there's sound effects for the tension
+    lines on the field. And the body when you zoom in, close to the tension
+    lines. Sounds more like static. Or electricity." Held through a real
+    mouse, the way he would meet it: arriving on a thread on the Field
+    sparks, staying on it does not, leaving and coming back does again. On
+    the Body the same arrival on a cable is silent at the whole body and
+    sparks once the view is close. Each silence is checked against an engine
+    with its rule taken out. The threads and cables are behind the plan's
+    sight, so the gate opens it for this section and puts it back. Every
+    move waits out the row's own 600 ms gap first, so a silence is the rule
+    and not the rate limit. */
+ const sightWas=await pg.evaluate(()=>{ const w=typeof SIGHT_PLAN==='undefined'?undefined:SIGHT_PLAN;
+  SIGHT_PLAN={tier:'four',status:'active'}; loadP(1); CURP.ui.sfxoff=false; CURP.ui.quiet=false;
+  setTab(TAB.FIELD); render(); return w===undefined||w===null?'__none':w; });
+ await pg.waitForTimeout(1500);
+ const spk=()=>pg.evaluate(()=>SFX_LAST.spark||0);
+ const FW=await pg.evaluate(()=>{ const b=cv.getBoundingClientRect(); let tgt=null, off=null;
+  for(const p of PUL){ for(const u of [0.5,0.4,0.6,0.3,0.7]){
+    const x=p.qx!==undefined?(1-u)*(1-u)*p.x0+2*(1-u)*u*p.qx+u*u*p.x1:p.x0+(p.x1-p.x0)*u;
+    const y=p.qy!==undefined?(1-u)*(1-u)*p.y0+2*(1-u)*u*p.qy+u*u*p.y1:p.y0+(p.y1-p.y0)*u;
+    if(!hitTest(x,y)&&threadAt(x,y)){tgt={x:b.left+x,y:b.top+y};break;}} if(tgt)break;}
+  for(const q of [[8,8],[b.width-8,8],[8,b.height-8],[b.width-8,b.height-8]])
+   if(!hitTest(q[0],q[1])&&!threadAt(q[0],q[1])){off={x:b.left+q[0],y:b.top+q[1]};break;}
+  return {n:PUL.length,tgt:tgt,off:off};});
+ const fw={n:FW.n};
+ if(FW.tgt&&FW.off){
+  await pg.mouse.move(FW.off.x,FW.off.y); await pg.waitForTimeout(700);
+  const t0=await spk(); await pg.mouse.move(FW.tgt.x,FW.tgt.y); await pg.waitForTimeout(120);
+  const t1=await spk(); fw.arrive=t1>t0; await pg.waitForTimeout(700);
+  await pg.mouse.move(FW.tgt.x+0.5,FW.tgt.y+0.5); await pg.waitForTimeout(120);
+  const t2=await spk(); fw.stay=t2===t1;
+  await pg.mouse.move(FW.off.x,FW.off.y); await pg.waitForTimeout(700);
+  await pg.mouse.move(FW.tgt.x,FW.tgt.y); await pg.waitForTimeout(120);
+  fw.again=(await spk())>t2;
+  /* the broken engine: the arrival rule taken out, every move on a line sparks */
+  await pg.waitForTimeout(700);
+  await pg.evaluate(()=>{ window.__wt=window.wireTouch; window.wireTouch=function(k){ WIRE_AT=k; if(k)sfx('spark'); }; });
+  const t3=await spk(); await pg.mouse.move(FW.tgt.x+0.5,FW.tgt.y+0.5); await pg.waitForTimeout(120);
+  fw.biteStay=(await spk())>t3;
+  await pg.evaluate(()=>{ window.wireTouch=window.__wt; });
+  await pg.mouse.move(FW.off.x,FW.off.y);}
+ ok(fw.n>0&&fw.arrive&&fw.stay&&fw.again,'on the Field, a mouse arriving on a tension line sparks, resting on it does not, and coming back to it does again, '
+  +JSON.stringify(fw));
+ ok(fw.biteStay===true,'and with the arrival rule taken out the same resting move does spark, so the silence above is a reading, '+fw.biteStay);
+ await pg.mouse.move(2,2);
+ await pg.evaluate(()=>{ setTab(TAB.ENERGY); render(); });
+ await pg.waitForFunction(()=>BM.sabs&&BM.sabs.length>0&&!BM.camT,null,{timeout:15000}).catch(()=>{});
+ await pg.waitForTimeout(600);
+ const cable=()=>pg.evaluate(()=>{ const r=BM.sv.getBoundingClientRect(); let hit=null, off=null;
+  for(const s of BM.sabs){ for(const v of [0,1]){ const c=s.views[v]; if(!c||!c.samp)continue;
+    for(let j=Math.floor(c.samp.length/3);j<c.samp.length;j+=3){ const q=bmW2S(c.samp[j][0],c.samp[j][1]);
+     if(q[0]<20||q[1]<20||q[0]>r.width-20||q[1]>r.height-20)continue;
+     const pk=bmPick(q[0],q[1]); if(pk.sab&&!pk.place&&!pk.hub){hit={x:r.left+q[0],y:r.top+q[1],w:[c.samp[j][0],c.samp[j][1]]};break;}}
+    if(hit)break;} if(hit)break;}
+  for(let y=30;y<r.height-30&&!off;y+=37)for(let x=30;x<r.width-30;x+=37){ if(!bmPick(x,y).sab){off={x:r.left+x,y:r.top+y};break;}}
+  return {hit:hit,off:off,close:bmClose(),zr:+(BM.cam.z/BM.z0).toFixed(2)};});
+ const touchLine=async c=>{ await pg.mouse.move(c.off.x,c.off.y); await pg.waitForTimeout(700);
+  const t0=await spk(); await pg.mouse.move(c.hit.x,c.hit.y); await pg.waitForTimeout(120);
+  return {spark:(await spk())>t0, on:await pg.evaluate(()=>BM.hoverSab)};};
+ const bw={};
+ const fitC=await cable(); bw.fit={zr:fitC.zr,close:fitC.close};
+ if(fitC.hit&&fitC.off){
+  Object.assign(bw.fit,await touchLine(fitC));
+  /* the broken engine: the close rule taken out, the same arrival must spark */
+  await pg.evaluate(()=>{ window.__bc=window.bmClose; window.bmClose=function(){return true;}; });
+  bw.fitBite=(await touchLine(fitC)).spark;
+  await pg.evaluate(()=>{ window.bmClose=window.__bc; });
+  await pg.evaluate(w=>bmFlyTo(w[0],w[1],BM.z0*2.5),fitC.hit.w);
+  await pg.waitForFunction(()=>!BM.camT,null,{timeout:20000}).catch(()=>{});
+  await pg.waitForTimeout(400);
+  const cl=await cable(); bw.close={zr:cl.zr,close:cl.close};
+  if(cl.hit&&cl.off)Object.assign(bw.close,await touchLine(cl));}
+ ok(bw.fit&&bw.fit.on&&bw.fit.spark===false&&bw.close&&bw.close.close&&bw.close.on&&bw.close.spark===true,
+  'on the Body, arriving on a tension line is silent at the whole body and sparks once zoomed in close, '+JSON.stringify(bw));
+ ok(bw.fitBite===true,'and with the close rule taken out the same arrival at the whole body sparks, so that silence is a reading, '+bw.fitBite);
+ await pg.mouse.move(2,2);
+ await pg.evaluate(w=>{ SIGHT_PLAN=w==='__none'?null:w; if(BM.cv){BM.cam=bmFitCam();BM.camT=null;} setTab(TAB.FIELD); render(); },sightWas);
  await pg.waitForTimeout(1400);
 
  /* ---------- 2 and 3. the switch, and Quiet ---------- */
