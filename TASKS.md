@@ -32236,3 +32236,9 @@ Dispatched as its own build, starting from the real current release code and the
 His words, verbatim: "But don't let my posts interrupt what you're building. Don't forget the tasks that you already have to do. Update the plan so I can see your list of tasks."
 
 Read plainly: do not stop in-flight work to process a new message, and do not let a new message bump what was already queued. The three agents already running when this message arrived (onboarding redesign, the Tuned Awareness audit, the three-column layout) keep running undisturbed. `PLAN.md` section 0 gets refreshed now rather than only after they land, so the list is visible in the meantime.
+
+## Round QG: the carousel build dispatched
+
+animation-vfx-director, branch `release-carousel`: setup screen's "Release your selections" heading replaced by a live story/chakra toggled preview with pattern counts, the running carousel's three-state said/now/next CSS reworked into a true brightness gradient, the six-channel prompt kept visually distinct from the per-line release script (agent's own call, told to document it), the two-minute cooldown's clock checked for visibility on the carousel screen itself, and the closing voice line rewritten to name the count released and reframed before the two-minute relax instruction. Told to verify the real current behavior live before changing it, run the real gates, push to its own branch with screenshots at both widths (and a capture of the carousel actually scrolling, since this is a motion ask) without merging.
+
+Four background builds now running: the onboarding redesign, the Tuned Awareness audit, the three-column layout, and this one. None merged yet; each needs his look (or, for the audit, a read) before it lands.
