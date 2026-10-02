@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1261 464e4d5 2026-10-02 03:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v1262 d561538 2026-10-02 03:13"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -25890,6 +25890,13 @@ function sfxMarkNew(){
    one place every browser allows it, and reads the marks. Enter and Space are
    presses; letters typed into a story are not, so typing costs nothing. */
 function sfxOnPress(e){
+ /* A PRESS IS A PRESS A PERSON MADE. Script can dispatch a click, and the
+    click listener added for Safari below saw those as presses: tests/design.js
+    drives Run release with a bare click() on a release with its own sound off
+    and found the audio context running, which its rule, "a run with the sound
+    off never opens a channel at all", forbids. A synthetic event is not a
+    gesture to any browser either, so it is not one here. */
+ if(e&&e.isTrusted===false)return;
  SFX_PRESSED=true;
  if(e&&e.type==='keydown'){
   var t=e.target&&e.target.tagName;
@@ -58405,5 +58412,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003803349"></div>
+<div id="eof" hidden data-len="003803833"></div>
 </body></html>

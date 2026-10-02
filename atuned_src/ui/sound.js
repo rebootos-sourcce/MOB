@@ -626,6 +626,13 @@ function sfxMarkNew(){
    one place every browser allows it, and reads the marks. Enter and Space are
    presses; letters typed into a story are not, so typing costs nothing. */
 function sfxOnPress(e){
+ /* A PRESS IS A PRESS A PERSON MADE. Script can dispatch a click, and the
+    click listener added for Safari below saw those as presses: tests/design.js
+    drives Run release with a bare click() on a release with its own sound off
+    and found the audio context running, which its rule, "a run with the sound
+    off never opens a channel at all", forbids. A synthetic event is not a
+    gesture to any browser either, so it is not one here. */
+ if(e&&e.isTrusted===false)return;
  SFX_PRESSED=true;
  if(e&&e.type==='keydown'){
   var t=e.target&&e.target.tagName;
