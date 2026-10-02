@@ -32053,3 +32053,13 @@ The pasted preview was a fraction of it; the real file is 1495 lines (`reviews/A
 Section 20 (Safety Architecture) also sketches where he wants the crisis gate to sit structurally (INPUT, SAFETY GATE, NORMAL / HEIGHTENED CARE / OUT OF SCOPE, APPROPRIATE EXPERIENCE) and AT-11 requires a safety branch exists. This is architecture and tone guidance, not a ruling on the actual crisis-response words; it does not answer the three options still open in WAITING-ON-YOU.md, which stays open.
 
 Dispatched a dedicated audit first, exactly as the document itself requires (section 25, steps 1 to 5): identify the canonical build, inventory the real implementations against every section, find duplicate truths, trace one real user journey end to end, and grade every requirement before anything new gets built.
+
+## Round QB: practitioner page shows real client analytics, merged
+
+Picking a person in the practitioner's client list now fills the centre with their real activity, and pressing any figure, day, pattern, seat or address routes its detail to the right rail, the same one-panel rule the Character page already uses, example people only, nothing touching real client data. Reused rather than duplicated: `trace-graph-ui`'s `loopRead` output for the patterns and cards (merged cleanly, one conflict in `shell/body.html` kept both sides), with a client-name label layer added on top since its own sentences read "you said yes" and this page needs "Diane said yes". `daily-summary-ui` had only a copy tweak, no component yet, so an interim "In plain words" card was built and marked to give way once the real one lands, so nothing gets built twice.
+
+A real cross-cutting bug was caught and fixed in the same pass: `loopRead` was printing a pattern reached only through practice by its bare address number ("31") instead of its name, in `engine/loop.js`, which would have shown up on the Field's own "Your patterns" block too, not just here.
+
+Ten short written practice histories were built for the example people (`engine/pracex.js`, engine only, never saved, every step forced through the real `practiceDo` so nothing can exist that the engine itself couldn't have produced for a real person), since the examples had no days to show otherwise.
+
+Merged onto `claude/laughing-feynman-xhfyj3` (`01bbafc`), the source.html conflict resolved by a fresh rebuild as always. `tests/engine.js` 4550/0 and `tests/practitioner.js` 35/0 re-run directly on the merged tree. `tests/functional.js` is running now in the background, it had reached zero failures through the Character section before timing out under three other agents sharing the machine, not from a real failure.
