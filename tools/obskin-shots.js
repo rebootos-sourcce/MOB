@@ -27,11 +27,12 @@ fs.mkdirSync(OUT,{recursive:true});
   await p.waitForTimeout(600);
   const shot=async n=>{await p.screenshot({path:`${OUT}/${TAG}-${w}-${n}.png`});};
   const click=async s=>{await p.evaluate(q=>{var e=document.querySelector(q);if(e)e.click();},s);
-   await p.waitForTimeout(900);};
+   await p.waitForTimeout(1300);};
 
   await p.evaluate(()=>{ if(typeof LOGIN!=='undefined'&&LOGIN.open)loginClose();
    loadP(0); obOpen(true); });
-  await p.waitForTimeout(500);
+  /* round QH: the stage has an arrival, about 1.6s to the last name */
+  await p.waitForTimeout(2200);
   await shot('1-welcome');
   await click('[data-ob=next]');
   await shot('2-orient');                      /* the loop, or the old ask */

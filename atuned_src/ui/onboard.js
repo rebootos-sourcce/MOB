@@ -145,57 +145,274 @@ function obSeatMark(b,share,cls){
   +(s>0?'<circle class="ob-mk-ld" cx="28" cy="28" r="'+R+'" transform="rotate(-90 28 28)" '
    +'stroke-dasharray="'+(C*s).toFixed(1)+' '+C.toFixed(1)+'"/>':'')
   +'<g class="ob-mk-gl" transform="translate(16 16)">'+(SEATGLYPH[b]||SEATGLYPH._)+'</g></svg>';}
-/* THE FIGURE. The Body page's own silhouette, at the Body page's own
-   transform, with the seven seats where PMBANDS puts them.
+/* ============================================================
+   THE STAGE, ROUND QH. His words, on the screenshots of round QG: "I don't
+   want anything in the pop-up panel. I want full screen. I want this to feel
+   heavily like visually designed. As if an ad agency did it ... And I want it
+   to feel like I'm being led through a process. Right now it's doing none of
+   those."
 
-   WHY THE SEATS ON IT ARE NOT THE CONTROL, said here because the storyboard
-   asks for a tap on the figure. Measured: at 390 the card is 346 wide, the
-   drawing 310, and the seven seats span 49 of 102 units of its height, which
-   is 15 pixels between the crown and the 3rd eye. The tap floor is 44. Seven
-   targets cannot sit 15 pixels apart and be pressable, so the figure is the
-   picture and the chips under it are the control, and pressing a chip lights
-   its seat here. One concept, one control, and the drawing says where.
+   What he was looking at: a 560 pixel card centred over the running app, the
+   bar and the right rail dimmed behind it, and a step change that swapped the
+   card's text in place. A dialog that paused the product, which is the
+   opposite of somebody being taken somewhere.
 
-   WHERE THE NAMES SIT, AND WHY THERE IS NO LEADER LINE TO THEM. The figure
-   occupies x 28.8 to 71.4 of its own hundred unit box, which leaves 28.8
-   units of gutter on its left with nothing in it. The seat names go there, at
-   the seat's own height, which is how the four release sheets drawn this
-   round carry them (release-redesign/, mockup B). No rule is drawn between a
-   name and its ring: the two share a baseline, which is the connection, and a
-   line from the name would cross the silhouette at every seat below the
-   throat. One mark fewer, and nothing lost.
+   SO THE SHEET IS NOW A STAGE, and the stage is built once per open and
+   stays. Three depths, the boot's own staging (shell/head.html, .bx-wash is
+   "the far depth", the figure "the middle depth", the lens "the near"):
 
-   THE NAMES COME OFF WHEN THEY WOULD BE TOO SMALL TO READ. 4.4 units of a 300
-   pixel drawing is 13 pixels and of a 220 pixel drawing is 9.7, which is under
-   the eleven pixel type floor. So the caller says whether this drawing is
-   large enough to carry them, and the small one on the mirror does not: the
-   groups under it name every seat in full.
+     far    the seven seat pools, the boot's wash, breathing on the Field's
+            4.2 second wave. Moves least and arrives last.
+     middle the 112 addresses as one ring, each tick in its own seat's colour,
+            the Field's wheel drawn as a halo. It turns one eighth of a turn
+            per step, so eight steps walk it once round: the turn the Settle
+            card names ("you are about to walk one turn of it") is a turn a
+            person watches happen. Progress, readable with every label off.
+     near   the body. The real silhouette, the same one object for all eight
+            steps. It is never redrawn between steps, it is moved: each step
+            gives it a pose, and the change of pose is the camera.
 
-   lit is a list of seat names to light, pick is the one seat answered. */
-function obBodyFig(o){
- o=o||{}; var lit={}; (o.lit||[]).forEach(function(b){lit[b]=1;});
- var names=o.names!==false;
- /* THE BOX IS CROPPED TO WHAT IS DRAWN, not left at the Body page's hundred
-    units. With names the content runs x 10 to 71.4 and with them off it runs
-    28.8 to 71.4, so one box for both put the figure visibly right of the
-    card's centre, measured at 1600 on the welcome. Each is cropped to its own
-    content and the figure lands on the optical centre either way. */
- var box=names?'6 0 68 102':'26 0 48 102';
- var s='<svg class="ob-bodyfig'+(o.cls?' '+o.cls:'')+'" viewBox="'+box+'" aria-hidden="true">'
+   The card is the fourth thing, on top, and it is the only thing that is
+   replaced. The old one leaves as a ghost, a copy with every id and data-ob
+   attribute stripped so nothing can click it or find it, and the new one
+   rises in behind it.
+
+   THE MOTION LANGUAGE, and why each piece of it:
+
+     direction   forward is up. The outgoing card lifts 36 pixels and goes on
+                 the ease in, 260ms; the incoming one rises 26 from below on
+                 the ease out. Back reverses both signs, so a person who
+                 pressed Back sees the column come down to meet them. The
+                 direction is the information: with the words blurred out a
+                 viewer could still say which button was pressed.
+     overlap     the new card starts 140ms in, while the old is still going.
+                 Nothing waits for the thing before it to finish.
+     staging     eyebrow, headline, body, actions, 70ms apart, inside the
+                 60 to 110 range where siblings read as a sequence and not as
+                 a list being read out. The headline rises word by word out
+                 of its own line, 45ms apart, deliberately under 50 so it
+                 reads as one event with texture rather than as six.
+     parallax    the three depths go to the same pose on different clocks:
+                 the body in 640ms with a backswing, the ring in 820, the far
+                 pools in 1100. Same destination, different arrival, and the
+                 difference is what the eye reads as depth.
+     anticipation the body draws back a little before every move, two percent
+                 against the way it is about to go, 16 per cent of the move.
+                 The boot's own push does exactly this (bxPush, "a push with
+                 no draw back first starts from rest at full speed, which is
+                 the one thing nothing in nature does").
+     data        light only where something was read. The seat a person
+                 picks ignites on the body and stays lit into the Story. The
+                 mirror ignites the seats the words put weight on, root to
+                 crown on the boot's 90ms beat, each one landing with a single
+                 overshoot and a ring of light leaving it. Nothing glows on a
+                 step where nothing has been read, which is the rule iqxMark
+                 set for an arc, carried to a glow.
+
+   AT REST, which is most of the time a person spends here: the seat rings
+   breathe on the Field's wave with the phase walking up the spine, root
+   first, so the body takes a slow breath upward. The pools breathe under it.
+   Both are opacity only and run on the compositor.
+
+   WHAT THIS DOES NOT REOPEN, all ruled last round for reasons still true:
+   no stock picture, no glossy figure with seven bright dots (the seats on the
+   welcome are the house rings at half strength, never glows), no five step
+   rail over an eight step flow (the rail has eight stations), no countdown on
+   the hand off, and no targets on the body itself. Round QG measured it and
+   the number still stands: at 390 the seven seats span 49 of 102 units of the
+   drawing's height, 15 pixels between crown and brow against a tap floor of
+   44, so the chips stay the control and the body is the picture.
+
+   REDUCED MOTION GETS THE END STATE, never a faster animation: no ghost, no
+   rise, no camera, no breath. The poses are still there; they are simply
+   where everything already is.
+   ============================================================ */
+function obCalm(){ try{ return !!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(e){ return false; } }
+/* the step names on the rail, the same words each card's eyebrow already uses */
+var OB_STEPNM=['Arrive','Ask','Settle','Feel','Body','Story','Mirror','Next'];
+/* THE BODY, ONCE, AT STAGE SIZE. The Body page's silhouette at the Body page's
+   transform, seats where PMBANDS puts them. The names are HTML laid over the
+   drawing at each seat's own height rather than SVG text, because an SVG name
+   scales with the drawing: 4.4 units is 33 pixels on a 760 pixel body and 11
+   on a 250 pixel one, and this one object is shown at both. A name in pixels
+   is 13 pixels at every size. Under it, on the steps that introduce the
+   seats, the anatomy line FLOWSEAT already carries, so a name never stands
+   without its meaning (round PO).
+
+   The box is the Body page's own with the gutter on the left kept, 6 to 74
+   wide, so the names have the 28.8 units left of the silhouette to sit in. */
+var OB_FIGBOX={x:6,w:68,h:102};
+function obStageFig(){
+ var rows=obSeatRows(), B=OB_FIGBOX;
+ var s='<div class="obx-fig" aria-hidden="true">'
+  +'<svg class="obx-figsv" viewBox="'+B.x+' 0 '+B.w+' '+B.h+'">'
   +'<g transform="translate(0 1)">'
   +'<g transform="translate('+PMTX+','+PMTY+') scale('+PMS+')">'
-  +'<path class="ob-bf-skin" d="'+BODYPATH+'"/></g>'
-  /* the midline the seats stand on, the Body page's own axis */
-  +'<line class="ob-bf-ax" x1="50" y1="3.6" x2="50" y2="57"/>';
- obSeatRows().forEach(function(r,i){
-  var on=lit[r.b]||o.pick===r.b, c=seatCol(r.b);
-  s+='<g class="ob-bf-s'+(on?' on':'')+'" style="--c:'+c+'">'
-   +(names?'<text class="ob-bf-n" x="26" y="'+(r.y+1.6)+'">'+esc(r.b)+'</text>':'')
-   +'<circle class="ob-bf-r" cx="50" cy="'+r.y+'" r="'+(on?3.4:2.4)+'" '
-   +'style="animation-delay:'+(0.05+(6-i)*0.035).toFixed(3)+'s"/>'
-   +(on?'<circle class="ob-bf-h" cx="50" cy="'+r.y+'" r="6.2"/>':'')
-   +'</g>';});
- return s+'</g></svg>';}
+  +'<path class="obx-skin" d="'+BODYPATH+'"/></g>'
+  +'<line class="obx-ax" x1="50" y1="3.6" x2="50" y2="57"/>';
+ rows.forEach(function(r,i){
+  s+='<g class="obx-s" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';--i:'+i+'">'
+   +'<circle class="obx-sr" cx="50" cy="'+r.y+'" r="2.4"/></g>';});
+ s+='</g></svg>';
+ /* the glows and the names, in the drawing's own coordinates as percentages */
+ rows.forEach(function(r,i){
+  var top=((r.y+1)/B.h*100).toFixed(3)+'%', left=((50-B.x)/B.w*100).toFixed(3)+'%';
+  var right=((B.x+B.w-26)/B.w*100).toFixed(3)+'%';
+  s+='<span class="obx-glow" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';left:'+left+'">'
+   +'<i class="obx-wave"></i></span>'
+   +'<span class="obx-fn" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';right:'+right+';--i:'+i+'">'
+   +'<b>'+esc(r.b)+'</b>'+(r.where?'<i>'+esc(r.where)+'</i>':'')+'</span>';});
+ return s+'</div>';}
+/* THE 112, AS A RING. Every address, in the engine's own order, which runs
+   seat by seat root first, so the ring reads as seven arcs of colour and four
+   neutral ticks for the two places above and below the body. The Field's
+   wheel at the size of a halo: the product's two primary drawings, the body
+   and the wheel, composed as one picture. Drawn once, coloured once, and never
+   repainted: it moves only as a whole layer. */
+function obRing(){
+ var s='<svg class="obx-ringsv" viewBox="0 0 200 200">'
+  +'<circle class="obx-r0" cx="100" cy="100" r="98.6"/>'
+  +'<circle class="obx-r1" cx="100" cy="100" r="88.4"/>';
+ var N=(typeof NODES!=='undefined'&&NODES.length)?NODES:[], n=N.length||112;
+ for(var k=0;k<n;k++){
+  var a=(-90+k*360/n)*Math.PI/180, b=N[k]?N[k].b:null;
+  var c=(b&&BANDS.indexOf(b)>=0)?seatCol(b):'var(--dim)';
+  var r0=91.2, r1=(k%4===0)?96.6:95.2, ca=Math.cos(a), sa=Math.sin(a);
+  s+='<line class="obx-tk" style="--c:'+c+';--s:'+k+'" x1="'+(100+r0*ca).toFixed(2)+'" y1="'+(100+r0*sa).toFixed(2)
+   +'" x2="'+(100+r1*ca).toFixed(2)+'" y2="'+(100+r1*sa).toFixed(2)+'"/>';}
+ /* the gold halo, the boot's, as ruled: gold round the whole figure */
+ return s+'<circle class="obx-halo" cx="100" cy="100" r="101.6" pathLength="100"/></svg>';}
+/* THE SKELETON. Built on open and kept until close. The rail's eight stations
+   are the .ob-dot every gate already counts; they moved from inside the card
+   to the top of the screen, because a rail that is redrawn with each card
+   cannot show the run so far filling. The wordmark is the bar's own, cloned
+   from the document rather than drawn a second time. */
+function obStage(h){
+ if(h.querySelector('.obx-slot'))return;
+ var wm=document.querySelector('#brand .bn'), mark=wm?wm.outerHTML:'';
+ h.classList.add('obx');
+ h.innerHTML='<div class="obx-far" aria-hidden="true"><div class="obx-wash"></div></div>'
+  +'<div class="obx-vig" aria-hidden="true"></div>'
+  +'<div class="obx-tint" aria-hidden="true"></div>'
+  +'<div class="obx-ring" aria-hidden="true">'+obRing()+'</div>'
+  +'<div class="obx-near">'+obStageFig()+'</div>'
+  +'<div class="obx-top">'
+  +'<span class="obx-mark" aria-hidden="true">'+mark+'</span>'
+  +'<div class="obx-rail" role="progressbar" aria-valuemin="1" aria-valuemax="'+OB_NSTEPS+'">'
+  +'<div class="obx-track"><i class="obx-fill"></i>'
+  +Array.from({length:OB_NSTEPS}).map(function(_,i){
+    return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
+  +'<span class="obx-step"></span></div>'
+  +'<button type="button" class="obx-x" data-ob="skip">Not now</button>'
+  +'</div>'
+  +'<div class="obx-slot"></div>';}
+/* WHAT THE BODY SHOWS ON EACH STEP. lit is the seats that carry a reading,
+   pick the one a person tapped. Every name here is read off what this sheet
+   already holds; nothing is lit that the mirror or the plan does not say. */
+function obLitNow(){
+ var s=OB.step, lit=[], pick=null;
+ var pl=(OB.place!=null&&OB.place>=0)?OB_PLACES[OB.place]:null;
+ if((s===4||s===5)&&pl)pick=pl.b;
+ if(s===6){
+  (OB.read||[]).forEach(function(g){if(lit.indexOf(g.seat)<0)lit.push(g.seat);});
+  OB.fixReads.forEach(function(f){f.groups.forEach(function(g){if(lit.indexOf(g.seat)<0)lit.push(g.seat);});});}
+ if(s===7&&OB.plan&&OB.plan.ok)
+  OB.plan.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&lit.indexOf(b)<0)lit.push(b);});
+ if(pick&&lit.indexOf(pick)<0)lit.push(pick);
+ return {lit:lit, pick:pick};}
+/* LIGHT THE BODY. A seat newly lit ignites; one already lit stays lit and is
+   not ignited again, so an answer on the mirror that redraws the card does
+   not fire every seat a second time. Ignition order is root to crown on the
+   boot's 90ms beat, starting after the body has landed in its new pose. */
+function obFigSync(h,delay){
+ var now=obLitNow(), on={}, k=0, calm=obCalm();
+ now.lit.forEach(function(b){on[b]=1;});
+ BANDS.forEach(function(b){
+  var q='[data-obseat="'+b.replace(/"/g,'')+'"]';
+  var els=h.querySelectorAll('.obx-near '+q);
+  var was=els[0]&&els[0].classList.contains('on');
+  els.forEach(function(e){
+   e.classList.toggle('on',!!on[b]);
+   e.classList.toggle('pick',now.pick===b);});
+  if(on[b]&&!was&&!calm){
+   var gl=h.querySelector('.obx-glow'+q);
+   if(gl){ gl.classList.remove('ign'); void gl.offsetWidth;
+    gl.style.setProperty('--ig',((delay||0)+k*90)+'ms'); gl.classList.add('ign'); k++; }}});
+ /* the room takes the colour of the first seat that carries a reading */
+ var tc=now.lit.length?seatCol(now.lit[0]):null;
+ h.classList.toggle('obx-lit',!!tc);
+ if(tc)h.style.setProperty('--tc',tc);}
+/* THE CAMERA. The poses are CSS, per step and per width, so a pose is a
+   design value and not a number buried in a function. This reads where each
+   layer is, lets the new step's pose apply, reads where each layer now
+   belongs, and animates the difference. First, last, invert, play. */
+var OB_LAYERS=[
+ /* near: the body. 640ms, a two per cent backswing over the first 16 per cent */
+ {q:'.obx-near', ms:640, back:true},
+ /* middle: the ring. 820ms, no backswing, a turn does not wind up */
+ {q:'.obx-ring', ms:820},
+ {q:'.obx-tint', ms:820},
+ /* far: the pools. slowest, least, last */
+ {q:'.obx-far', ms:1100}];
+function obPoseRead(h){
+ return OB_LAYERS.map(function(L){
+  var e=h.querySelector(L.q); if(!e)return null;
+  var c=getComputedStyle(e);
+  return {e:e, translate:c.translate, scale:c.scale, rotate:c.rotate, opacity:c.opacity};});}
+function obPosePlay(h,from,dir){
+ if(obCalm())return;
+ var to=obPoseRead(h);
+ OB_LAYERS.forEach(function(L,i){
+  var a=from[i], b=to[i]; if(!a||!b)return;
+  if(a.translate===b.translate&&a.scale===b.scale&&a.rotate===b.rotate&&a.opacity===b.opacity)return;
+  var A={translate:a.translate, scale:a.scale, rotate:a.rotate, opacity:a.opacity};
+  var Z={translate:b.translate, scale:b.scale, rotate:b.rotate, opacity:b.opacity};
+  var kf;
+  if(L.back){
+   /* the backswing: against the direction of travel, and drawn in */
+   var s0=parseFloat(a.scale)||1, sB=s0*0.98;
+   kf=[Object.assign({},A,{easing:'cubic-bezier(.45,0,.55,1)'}),
+    Object.assign({},A,{offset:.16, scale:String(sB), easing:'cubic-bezier(.22,1,.36,1)'}),Z];
+  } else kf=[Object.assign({},A,{easing:'cubic-bezier(.22,1,.36,1)'}),Z];
+  try{ b.e.animate(kf,{duration:L.ms}); }catch(e){}});}
+/* THE GHOST. The outgoing card, copied where it stands and made inert: no id,
+   no data-ob attribute, no pointer, hidden from the accessibility tree. It is
+   appended after the live slot, so document order still finds the live card
+   first for anything that asks for .ob-card, .ob-h or #obtext. */
+function obGhost(h,old,dir){
+ if(!old||obCalm())return;
+ var r=old.getBoundingClientRect(), sc=old.querySelector('.ob-scroll'), y=sc?sc.scrollTop:0;
+ var g=old.cloneNode(true);
+ g.className='obx-ghost'; ['role','aria-modal','aria-label'].forEach(function(a){g.removeAttribute(a);});
+ g.setAttribute('aria-hidden','true'); g.inert=true;
+ [g].concat([].slice.call(g.querySelectorAll('*'))).forEach(function(e){
+  if(e.id)e.removeAttribute('id');
+  [].slice.call(e.attributes).forEach(function(a){if(/^data-ob/.test(a.name))e.removeAttribute(a.name);});});
+ g.style.left=r.left+'px'; g.style.top=r.top+'px'; g.style.width=r.width+'px'; g.style.height=r.height+'px';
+ h.appendChild(g);
+ var gs=g.querySelector('.ob-scroll'); if(gs)gs.scrollTop=y;
+ var gone=function(){ if(g.parentNode)g.parentNode.removeChild(g); }, an=null;
+ try{
+  an=g.animate([{opacity:1,translate:'0 0'},{opacity:0,translate:'0 '+(-36*dir)+'px'}],
+   {duration:260,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+  an.onfinish=gone; an.oncancel=gone;
+ }catch(e){ gone(); }
+ /* the fallback only for an exit that is not alive: one that is still
+    running, or held, finishes on its own and removes itself */
+ setTimeout(function(){ if(!an||(an.playState!=='running'&&an.playState!=='paused'))gone(); },900);}
+/* THE STAGGER. Each direct child of the card's column gets its place in the
+   order, capped at seven so a long mirror does not keep a person waiting on
+   its last paragraph; chips inside a row get their own faster count. */
+function obStagger(card){
+ var inn=card.querySelector('.obx-in'); if(!inn)return;
+ [].slice.call(inn.children).forEach(function(c,i){
+  c.style.setProperty('--si',Math.min(i,7));
+  [].slice.call(c.querySelectorAll('.ob-seat')).forEach(function(x,j){x.style.setProperty('--ci',j);});});}
+/* the headline, one word to a masked line, so it rises out of its own baseline.
+   textContent is the title exactly: the spaces stay as text between the words. */
+function obWords(t){
+ return String(t||'').split(' ').map(function(w,i){
+  return '<span class="obx-wl"><span class="obx-w" style="--wi:'+i+'">'+esc(w)+'</span></span>';}).join(' ');}
 /* THE LOOP, AND IT CLOSES. CLAUDE.md: "it is a circle, never a list ... a
    numbered column of four says the fourth one is the end, which is the
    opposite of a loop. Anywhere the four appear together they close." So the
@@ -243,42 +460,48 @@ function obLoopRows(){
    return '<li><svg class="ob-loopr-ic" viewBox="0 0 24 24" aria-hidden="true">'+x.ic+'</svg>'
     +'<span class="ob-loopr-n">'+esc(x.nm)+'</span>'
     +'<span class="ob-loopr-s">'+esc(x.say)+'</span></li>';}).join('')+'</ol>';}
-/* THE FIGURE, AT REST, kept as the watermark only. The welcome draws the real
-   body above instead, because a spine with seven coloured dots on it is the
-   rainbow column the brief rules out, at small size. The watermark keeps this
-   one: behind a card at seven percent it is a shape and not a claim, and the
-   real silhouette at that opacity reads as a smudge. */
-function obFigure(){
- var y=[160,140,120,100,80,60,40];
- var col=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
- return '<svg class="ob-fig" viewBox="0 0 200 178" aria-hidden="true">'
-  +'<ellipse class="ob-fig-h" cx="100" cy="21" rx="13" ry="4.4"/>'
-  +'<line class="ob-fig-s" x1="100" y1="160" x2="100" y2="40"/>'
-  +y.map(function(yy,i){
-    return '<circle class="ob-fig-d" cx="100" cy="'+yy+'" r="4.6" '
-     +'style="fill:'+seatCol(col[i])+';animation-delay:'+(0.1+i*0.07).toFixed(2)+'s"/>';}).join('')
-  +'</svg>';}
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=true; OB.step=0; OB.replay=!!replay;
  OB.pick=null; OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
  OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
+ OB.shown=-1;
+ if(OB.leaveT){ clearTimeout(OB.leaveT); OB.leaveT=null; }
  h.classList.remove('ob-leaving');
+ /* a fresh stage on every open, so the arrival plays from its first frame */
+ h.innerHTML=''; h.classList.remove('obx','obx-lit','obx-in-arrive');
+ obStage(h);
+ /* the running app goes out of the picture, not dimmed behind it: hidden, so
+    nothing of it shows and the compositor stops drawing what nobody sees */
+ document.body.classList.add('ob-on');
  obRender();
  h.style.display='flex';
- var f=h.querySelector('button,textarea'); if(f)f.focus();}
-/* THE HANDOFF TO THE FIELD IS A FADE, NOT A CUT, unchanged from round MP. */
+ var f=h.querySelector('.obx-slot button,.obx-slot textarea'); if(f)f.focus({preventScroll:true});}
+/* THE HANDOFF TO THE FIELD, unchanged in length from round MP and now a push
+   rather than a fade: the body goes forward and past the camera, the boot's
+   own exit (bxPush), so leaving the first run reads as going in. */
 var OB_LEAVE_MS=520;
 function obClose(){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=false; h.classList.add('ob-leaving');
+ document.body.classList.remove('ob-on');
+ if(!obCalm()){
+  try{
+   var n=h.querySelector('.obx-near'), r=h.querySelector('.obx-ring');
+   if(n)n.animate([{scale:getComputedStyle(n).scale,opacity:1,easing:'cubic-bezier(.45,0,.55,1)'},
+    {offset:.26,scale:String((parseFloat(getComputedStyle(n).scale)||1)*.972),opacity:1,easing:'cubic-bezier(.4,0,1,1)'},
+    {scale:String((parseFloat(getComputedStyle(n).scale)||1)*1.45),opacity:0}],{duration:460,fill:'forwards'});
+   if(r)r.animate([{opacity:getComputedStyle(r).opacity},{opacity:0,scale:String((parseFloat(getComputedStyle(r).scale)||1)*1.12)}],
+    {duration:420,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+  }catch(e){}}
  /* LEFT BEFORE COMMIT. Nothing was written, and the words are not lost:
     they are still the Story tab's pending text, ST_TEXT, where the Commit
     button there can keep them. Said once, so a person who pressed Escape on
     the mirror is not left to assume the story was saved. */
  var left=OB.read&&!OB.commit&&OB.text&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text;
- setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },OB_LEAVE_MS);
+ OB.leaveT=setTimeout(function(){ OB.leaveT=null; if(OB.open)return;
+  h.style.display='none'; h.classList.remove('ob-leaving','obx','obx-lit'); h.innerHTML=''; },OB_LEAVE_MS);
  /* EVERY WRITE THAT CAN FAIL REPORTS, unchanged lesson. */
  try{
   if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.onboarded=true;
@@ -317,20 +540,31 @@ function obEyeCls(s){
    of the loop ring and puts a mark where the loop has no station. A card that
    carries a drawing carries no watermark, read off the body it was handed
    rather than off a flag a caller has to remember to pass. */
-function obCard(eye,title,body,acts,nsteps){
- var n=nsteps||OB_NSTEPS, b=String(body||'');
- var wm=b.indexOf('ob-bodyfig')<0&&b.indexOf('ob-loop')<0;
+/* ROUND QH: the card is a column on the stage and no longer a sheet. The wash,
+   the watermark and the dots are the stage's, built once in obStage, so a card
+   carries only what changes from one step to the next. The column is wrapped
+   in .obx-in so a short card sits on the optical centre of the screen and a
+   long one, the mirror, scrolls from its top. */
+function obCard(eye,title,body,acts){
  return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +(wm?'<div class="ob-fig-wm" aria-hidden="true">'+obFigure()+'</div>':'')
-  +'<div class="ob-scroll">'
-  +'<span class="'+obEyeCls(eye)+'">'+esc(eye)+'</span>'
-  +'<h2 class="ob-h">'+esc(title)+'</h2>'
+  +'<div class="ob-scroll"><div class="obx-in">'
+  +'<span class="'+obEyeCls(eye)+' obx-eye">'+esc(eye)+'</span>'
+  +'<h2 class="ob-h" tabindex="-1">'+obWords(title)+'</h2>'
   +body
   +'<div class="ob-acts">'+acts+'</div>'
-  +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
-    return '<span class="ob-dot'+(i===OB.step?' on':(i<OB.step?' past':''))+'"></span>';}).join('')+'</div>'
-  +'</div></div>';}
+  +'</div></div></div>';}
+/* THE RAIL. Eight stations, the run so far filled, the step in hand named in
+   words beside it, so the rail says how far along without anybody counting. */
+function obRail(h){
+ var s=OB.step;
+ h.querySelectorAll('.obx-rail .ob-dot').forEach(function(d,i){
+  d.classList.toggle('on',i===s); d.classList.toggle('past',i<s);});
+ var f=h.querySelector('.obx-fill'); if(f)f.style.setProperty('--p',(s/(OB_NSTEPS-1)).toFixed(4));
+ var rl=h.querySelector('.obx-rail');
+ if(rl){ rl.setAttribute('aria-valuenow',String(s+1));
+  rl.setAttribute('aria-valuetext','Step '+(s+1)+' of '+OB_NSTEPS+', '+OB_STEPNM[s]); }
+ var t=h.querySelector('.obx-step');
+ if(t)t.innerHTML='Step <b>'+(s+1)+'</b> of '+OB_NSTEPS+'<span class="obx-stepn">'+esc(OB_STEPNM[s])+'</span>';}
 /* a row of chips, one choice at most. sel is the picked index, -1 for "not
    sure", null for nothing picked yet. b, when given, is the chip's seat
    band and tints it through seatCol, the same colour the body figure and
@@ -382,9 +616,11 @@ function obRender(){
      its left the way the release sheets name them. The storyboard's stock
      mountain lake and its glowing ring are not replaced by another picture,
      they are replaced by the one drawing this product already owns. */
+  /* ROUND QH: the body is the stage's now, the one figure every step moves,
+     so the card carries the words and the figure stands beside them at a
+     size a card could never give it. */
   out=obCard('Welcome to a neurosomatic experience','This is you, and it is okay.',
-   obBodyFig({cls:'ob-bodyfig-hero'})
-   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
+   '<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
    +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>'
    /* THE PRIVACY LINE IS A FACT ABOUT THE BUILD AND NOT A PROMISE. One file,
       no network: the storyboard's three fragments say it three times, so it
@@ -435,17 +671,21 @@ function obRender(){
      not a decoration added. The card said "Tap the place on the body" over
      seven grey word chips and no body, so the instruction named a thing that
      was not there. The figure is the real one, the chips are the control for
-     the reason obBodyFig states, and each chip carries its seat's own mark.
+     the reason the stage's header states (15 pixels between seats at 390),
+     and each chip carries its seat's own mark.
 
-     ONE THING THE DRAWING DOES NOT SAY, kept out of the copy on purpose. A
-     press on a place is the advance, so the seat it lights is on screen for
-     one frame and then the card is the Story. The line under the figure
-     therefore says what the figure is, and never promises a light a person
-     will not see. Coming back lights it, because OB.place is still set. */
+     WHAT THE DRAWING SAYS NOW, round QH. Round QG kept a promise out of the
+     copy here because the lit seat was on screen for one frame: a press is
+     the advance, and the card that held the figure was replaced by the
+     Story. The figure is the stage's now and is not replaced, so the seat a
+     person presses ignites and stays lit through the Story step. The copy
+     still promises nothing; the light is simply no longer thrown away. */
   var pb=(OB.place!=null&&OB.place>=0)?OB_PLACES[OB.place]:null;
   out=obCard('Body','Where do you notice it?',
    '<p class="ob-p ob-dim">Pick the place that is closest to it.</p>'
-   +obBodyFig({pick:pb?pb.b:null})
+   /* the figure is the stage's, beside this column on a wide screen and over
+      it on a narrow one; a chip held under a pointer lights its seat there
+      before it is pressed, and the press keeps it lit into the Story */
    /* THE MEANING ONCE, round PO. The first cut led with "Seven seats, from the
       base of the spine to the top of the head" and then printed the table's
       sentence, which says the same thing in the same words: one fact, twice,
@@ -477,14 +717,35 @@ function obRender(){
  else {
   out=obBridgeCard();
  }
- h.innerHTML=out;
+ /* ROUND QH. The card goes into the stage's slot. On a change of step the
+    old card leaves as a ghost and the new one rises; on a redraw of the same
+    step, an answer on the mirror, it is swapped where it stands, because a
+    person who pressed Yes has not gone anywhere. */
+ obStage(h);
+ var slot=h.querySelector('.obx-slot'), old=slot.querySelector('.ob-card');
+ var moved=OB.shown!==s, arrive=OB.shown<0, dir=(s<OB.shown)?-1:1;
+ var from=(moved&&!arrive)?obPoseRead(h):null;
+ if(moved&&!arrive)obGhost(h,old,dir);
+ h.setAttribute('data-dir',dir<0?'back':'fwd');
+ h.setAttribute('data-step',String(s));
+ h.classList.toggle('obx-in-arrive',arrive);
+ slot.innerHTML=out;
+ var card=slot.querySelector('.ob-card');
+ if(moved&&card&&!obCalm()){ card.classList.add('obx-enter'); obStagger(card); }
+ obRail(h);
+ /* the seat lights land after the body has: 420ms into a move, at once on a
+    redraw where the body has not moved */
+ obFigSync(h,moved?(arrive?1300:420):0);
+ if(from)obPosePlay(h,from,dir);
+ OB.shown=s;
  var ta=document.getElementById('obtext');
  if(ta){ta.value=OB.text; ta.oninput=function(){
    var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);};
-  ta.focus();}
+  ta.focus({preventScroll:true});}
+ else if(moved&&!arrive){ var hd=card&&card.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true}); }
  var ci=document.getElementById('obcorr');
  if(ci){ci.oninput=function(){OB.corr=ci.value;};}
- var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
+ var f=card&&card.querySelector('.ob-scroll'); if(f&&moved)f.scrollTop=0;}
 
 /* ============================================================
    THE MIRROR. Built only from what the person gave: the pick, the feel and
@@ -679,8 +940,8 @@ function obMirrorCard(){
      lit standing out on it, read off the groups below and never a second
      reading of its own. */
   var seats=[]; groups.forEach(function(g){if(seats.indexOf(g.seat)<0)seats.push(g.seat);});
-  lines+='<div class="ob-mirrorfig">'+obBodyFig({lit:seats,names:false})
-   +'<p class="ob-p ob-dim ob-figsay">Lit where your words put weight: '
+  lines+='<div class="ob-mirrorfig">'
+   +'<p class="ob-p ob-dim ob-figsay">Lit on the body where your words put weight: '
    +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
    +(seats.length===1?' seat.':' seats.')+'</p></div>'
    +'<p class="ob-p">This separates into its own components, one seat at a time. '
@@ -915,6 +1176,24 @@ addEventListener('click',function(e){
    relPick(ids,(OB.commit&&OB.commit.ok&&OB.commit.t)?{story_t:OB.commit.t}:null);
   return;}
  if(k==='skip'||k==='done'){ obClose(); return; }});
+/* THE PREVIEW, round QH. On the Body step a chip under the pointer, or under
+   keyboard focus, lights its own seat on the figure before it is pressed: the
+   secondary action under the main one, so the word and the place are seen
+   together and the press reads as a consequence of what was already shown.
+   A class and a 120ms transition, nothing more; reduced motion still gets the
+   light, at once, because the light is information and not decoration. */
+function obPreview(e,on){
+ if(!OB.open||OB.step!==4)return;
+ var t=e.target&&e.target.closest?e.target.closest('[data-obplace]'):null;
+ var h=document.getElementById('ob'); if(!h)return;
+ h.querySelectorAll('.obx-near .prev').forEach(function(x){x.classList.remove('prev');});
+ if(!on||!t)return;
+ var i=+t.getAttribute('data-obplace'), p=(i>=0)?OB_PLACES[i]:null; if(!p)return;
+ h.querySelectorAll('.obx-near [data-obseat="'+p.b+'"]').forEach(function(x){x.classList.add('prev');});}
+addEventListener('pointerover',function(e){obPreview(e,true);});
+addEventListener('pointerout',function(e){obPreview(e,false);});
+addEventListener('focusin',function(e){obPreview(e,true);});
+addEventListener('focusout',function(e){obPreview(e,false);});
 /* escape leaves, because a sheet a person cannot dismiss is a sheet that has
    stopped being an invitation. */
 addEventListener('keydown',function(e){
