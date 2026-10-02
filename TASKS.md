@@ -31549,3 +31549,10 @@ Basics only, not a full library.
   from you" is not used this round per round PD, but this item is flagged open rather than
   guessed, because a wrong price is a real Stripe product that costs money to undo.
 - API-SETUP-NOW.md and STRIPE-STEPS-NOW.md resent as attachments.
+
+**J12 landed, round PM.** Found and fixed a real bug: the engine's coherence math was
+clamping each half of a spread separately, so a person's score drifted up to a whole band
+above what their own data said (one worked example read one tier higher than it should
+have). 30 new example people added, one per coherence step across all ten tiers, each
+with a measured score and a plain one-line story. Staged for the merged gate run once
+the other two round PM builds land.
