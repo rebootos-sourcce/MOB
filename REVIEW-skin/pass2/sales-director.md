@@ -8,14 +8,13 @@ Seat: Camille Boucher, sales director. Pass 2. I read all eleven other pass 1 re
 - **The avatar is not the centrepiece.** Brand, creative, game, innovation, UIUX, systems, art, marketing. Character is a black stage and a dashed box. The Avatar tab is a form with no figure.
 - **The loop is a row, not a circle.** Eight seats. Embody is where a person decides to stay, and it opens to a library.
 - **Start Case fights sentence case.** Narrative, brand, creative, art, marketing.
-- **No type scale.** 26 to 43 sizes by whose count. Mine: 18 on `funnel/buy.html`, 8 in the in-app paywall.
+- **No type scale.** Mine: 18 sizes on `funnel/buy.html`, 8 in the in-app paywall.
 - **The unread screen prints verdicts and has no promise.** Marketing, UIUX, game.
-- **The 390 wide pill overlaps the zoom buttons.** Eight seats.
 
 ## 2. DISAGREEMENTS, and my side
 
 - **Brand and marketing: "lock as a dim state, no icon".** Cap at one tray per surface, yes. No icon, no. A dim chip with no mark looks like "off" or "empty" (my pass 1 finding). The sealed layer keeps its seat hue at about 80 percent, ring lit, one small ink lock mark.
-- **Marketing: "padlocks are scarcity".** Scarcity is a count, a clock or a rival. A padlock is honest. The harm is how many there are and that they sit before any value.
+- **Marketing: "padlocks are scarcity".** Scarcity is a count or a clock. A padlock is honest. The harm is how many, and that they sit before any value.
 - **Game: "a free figure may weaken tier three. Test it."** I take the other side. The figure is the demand, the masks are the buy. A free figure drawn only from free sight (112 addresses, seats, CQ) breaks no ruling, because the 1 October ruling keeps masks and registers on tier three. A black page with a lock makes a want of nothing.
 - **Art and systems vs my rec 7** (colour the buy table's rungs with the Field's tier colours). I was wrong. `TIERCOL` is the coherence ladder and wears seat hues. Withdrawn. Paid tiers wear no hue.
 - **Innovation: dashed or pencilled means "stated, not measured".** My dashed ring meant "not drawn on this plan". One stroke, two meanings is the fault systems and art flag. I take: dashed means absent. Confidence uses opacity on a solid line.
