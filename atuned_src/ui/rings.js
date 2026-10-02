@@ -1267,7 +1267,9 @@ function fzClamp(){var h=document.getElementById('frend');if(!h)return;
 function fzAt(ns,px,py){ns=Math.max(1,Math.min(FZ_MAX,ns));
  var wx=(px-FZ.x)/FZ.s, wy=(py-FZ.y)/FZ.s;
  FZ.x=px-wx*ns; FZ.y=py-wy*ns; FZ.s=ns; fzClamp(); fzApply();
- if(typeof fbPaint==='function')fbPaint();}
+ if(typeof fbPaint==='function')fbPaint();
+ /* the room under the Field follows the zoom, ui/sound.js */
+ if(typeof atmZoom==='function')atmZoom(ns,FZ_MAX);}
 /* ONE ZOOM FOR THE THREE PICTURES, so the bar's circles and the keys never
    ask which picture is up. The wheel keeps its own, setZoom in ui/ui.js,
    because its zoom is a radius and resolves layers, and these two are a
@@ -1278,8 +1280,10 @@ function fieldZoomBy(k){
  else setZoom(S.zoom*k,CW/2,CH/2);}
 function fieldReframe(){
  if(fviewOn()){FZ={s:1,x:0,y:0};fzApply();
-  status('Reframed. Scroll on the picture to move in, drag to move it, F to come back.');}
- else{layGesture();S.zoom=1;S.panx=0;S.pany=0;reframe();render();status(HOWTO_ZOOM_OUT);}
+  status('Reframed. Scroll on the picture to move in, drag to move it, F to come back.');
+  if(typeof atmZoom==='function')atmZoom(1,FZ_MAX);}
+ else{layGesture();S.zoom=1;S.panx=0;S.pany=0;reframe();render();status(HOWTO_ZOOM_OUT);
+  if(typeof atmZoom==='function')atmZoom(1,WHEEL_ZOOM_MAX);}
  if(typeof fbPaint==='function')fbPaint();}
 (function(){
  var h=document.getElementById('frend'); if(!h)return;

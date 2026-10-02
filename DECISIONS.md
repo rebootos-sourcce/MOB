@@ -2681,3 +2681,20 @@ own device. Anybody who edits their own record sees their own data. The lock
 stops the product drawing a layer for a tier that has not bought it, and the
 engine still computes everything: the lock is on what is drawn and listed,
 never on what is read.
+
+## Round OU and OV, 1 October. Sound under everything
+
+**The seven moments are not enough, and the earlier reading is ruled out.** "I
+don't hear sound effects, they're on." Then: "I want everything to have a very
+subtle atmospheric sound. Overlays, clicks, if I click on the field, if I zoom
+in, this field sounds a little bit louder. You know, very subtle sci-fi.
+Sounds, nothing overwhelming." And on hover: "Yeah, hover should make sound."
+The fittings had been built on no sound for a tab, a press, a hover, a sheet or
+a tip. That reading is reversed. The atmosphere layer in `ui/sound.js` puts a
+quiet sound under presses, overlays, sheets and columns, the wheel and the zoom,
+and a hovering pointer, in one family built from the seven seat tones.
+
+What holds from before: silent until a person presses something, on by default
+with the switch in the profile menu and Settings, Quiet wins, a running release
+keeps its own room, nothing carried by sound alone, nothing on load, one
+audio context. Every sound is in `SOUND-MAP.md`, generated from the code.

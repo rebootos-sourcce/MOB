@@ -196,6 +196,10 @@ cv.addEventListener('pointerdown',function(e){
    on an address has already armed the drag above and returned. A rendition
    has no drag, so every press it makes on an address is the tap case. */
 function hitPress(h,e){
+ /* THE FIELD SOUNDS WHEN IT IS PRESSED, round OU: a soft ping at the seat of
+    whatever was hit, on the wheel, Frames and Dial alike, because they all
+    come through here. ui/sound.js says which seat and how loud. */
+ if(typeof atmPing==='function')atmPing(h);
  if(h.k==='node'&&h.n.cf){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
  /* the same setters as the left rail's icons, so the same guard, notYours in
@@ -273,7 +277,9 @@ function setZoom(z,ax,ay){
  layGesture();
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render();}
+ reframe(); render();
+ /* the room under the Field follows the zoom, ui/sound.js */
+ if(typeof atmZoom==='function')atmZoom(nz,WHEEL_ZOOM_MAX);}
 /* paintLegend is gone with the legend it wrote. Ruled 25 September (BA9), and
    the reason is at wheelLegend's old place in wheel.js. */
 cv.addEventListener('wheel',function(e){
@@ -311,14 +317,15 @@ cv.addEventListener('pointerup',function(e){
  if(TAP){var tp=TAP; TAP=null; if(tp.id===e.pointerId)hitPress(tp.h,tp.e); return;}
  if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
   /* a press on the core that never moved is still a click on the core */
-  if(!moved&&wasCore){S.pin=null;runCoreDrill();render();}
+  if(!moved&&wasCore){if(typeof atmPing==='function')atmPing(null);S.pin=null;runCoreDrill();render();}
   return;}
- if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
+ if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;if(typeof atmPing==='function')atmPing({k:'node',n:n});S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
 cv.addEventListener('pointercancel',function(){PAN=null;DRAG=null;TAP=null;cv.style.cursor='';});
 /* double click puts the frame back, the same thing F does, because a person
    who has panned into a corner should not have to find a keyboard. */
-cv.addEventListener('dblclick',function(){S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
+cv.addEventListener('dblclick',function(){S.zoom=1;S.panx=0;S.pany=0;reframe();render();
+ if(typeof atmZoom==='function')atmZoom(1,WHEEL_ZOOM_MAX);});
 cv.addEventListener('pointermove',function(e){
  /* two fingers down is the pinch's, and fieldPinch moves the frame */
  if(fieldFingers()>1)return;

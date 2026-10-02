@@ -62,8 +62,17 @@ binds `localStorage`.
                                offline under its ceiling and its cap, silent
                                off, under Quiet, before a press and inside a
                                release, each proven against a broken engine.
+                               It also holds the atmosphere layer, round OU:
+                               the control map complete against every control
+                               on every tab, every sound at every pitch within
+                               its table level, the room under a zoom silent at
+                               1x and exactly zero 1.5 s after the last input,
+                               the limiters, and hover.
                                Also called at the end of functional.js.
                                Read the count off the run.
+    node tools/soundmap.js     SOUND-MAP.md and sound-map/*.png, rendered from
+                               the same code: rerun after any change to the
+                               sounds, and commit the result.
 
 All three resolve `source.html` from the working directory, so run them from the
 repo root.
