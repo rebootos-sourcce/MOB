@@ -30,7 +30,6 @@
  <div id="wrap">
   <div id="frame">
    <div class="stage film" id="stage" data-act="login" data-ctl="">
-    <div id="hair" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
 
     <!-- the door -->
     <section class="act on" id="s-login" aria-label="Sign in">
@@ -54,41 +53,18 @@
      </div>
     </section>
 
-    <!-- reel A, five silent slides -->
-    <section class="act" id="s-reel" aria-label="Film"><div class="copy"><div class="deck" id="reel-deck"></div></div></section>
-
-    <!-- the gate -->
-    <section class="act gate" id="s-gate" aria-label="Pick your starting point">
-     <h1 class="gate-h" id="gate-h" tabindex="-1">Pick your starting point.</h1>
-     <p class="gate-t" id="gate-t"></p>
-     <button type="button" class="ring quiet gate-tbl" id="gate-tbl" hidden>Open the table</button>
-     <div class="chips" id="chips"></div>
-    </section>
-
-    <!-- the story -->
-    <section class="act" id="s-story" aria-label="Your sentence">
-     <div class="col" id="st-col">
-      <p class="cap seedlab" id="seedlab"></p>
-      <h1 class="stem" id="stem" tabindex="-1">I am releasing believing, thinking, feeling, behaving and acting that I am ...</h1>
-      <label class="fin" for="words">Finish it in your own words.</label>
-      <textarea id="words" rows="2" autocomplete="off" spellcheck="false" aria-describedby="msgline"></textarea>
-      <div class="feels" id="feels" role="group" aria-label="Name how it felt">
-       <button type="button" class="ring quiet" data-w="afraid">Afraid</button>
-       <button type="button" class="ring quiet" data-w="angry">Angry</button>
-       <button type="button" class="ring quiet" data-w="sad">Sad</button>
-      </div>
-      <p class="msgline" id="msgline" role="status"></p>
-      <button type="button" class="ring live" id="commit">Commit</button>
-     </div>
-    </section>
-    <section class="act" id="s-read" aria-label="Your first reading">
-     <div class="copy"><div class="deck" id="read-deck"></div></div>
-     <div class="wm">atüned</div>
+    <!-- the flow: arrive, ask, settle, feel, body, story, mirror. One section, one Field behind it. -->
+    <section class="act" id="s-flow" aria-label="The first minutes">
+     <div id="trail" class="trail" aria-label="What you have said so far"></div>
+     <div class="chipset start gone" id="chips-start" role="group" aria-label="What brought you here"></div>
+     <div class="chipset feel gone" id="chips-feel" role="group" aria-label="What are you feeling"></div>
+     <div id="bodyt" role="group" aria-label="Where do you notice it"></div>
+     <button type="button" class="ring quiet" id="body-ns">Not sure</button>
+     <div id="fq"><div class="deck" id="fl-deck"></div></div>
     </section>
 
     <!-- the release -->
     <section class="act" id="s-rel" aria-label="Release">
-     <i id="aslot" style="position:absolute;left:16px;top:16px;width:56px;height:56px;display:block"></i>
      <div class="stats" id="stats"><i id="cslot"></i><div><span class="num" id="cnt">100</span><span class="lab">Patterns open</span></div></div>
      <div class="rcopy"><div class="deck" id="rel-deck"></div></div>
      <div class="seals" id="seals" aria-hidden="true"></div>
@@ -118,7 +94,7 @@
     </section>
     <section class="act" id="s-sig" aria-label="The signal test">
      <div class="copy"><div class="deck" id="sig-deck"></div></div>
-     <div class="bcol after" id="sig-q" style="top:62%">
+     <div class="bcol after" id="sig-q">
       <p class="lead20" id="sig-qt">Did the two feel different?</p>
       <div class="signalq">
        <button type="button" class="ring" data-a="different">Different</button>
@@ -142,9 +118,6 @@
      <button type="button" id="skip">Skip</button>
      <button type="button" id="leave">Leave</button>
     </div>
-
-    <div id="tbl" role="dialog" aria-label="The addresses table"><h2>The 112 addresses</h2><div class="scroll"><table><thead><tr><th>#</th><th>Address</th><th>Seat</th><th>Nerve or plexus</th></tr></thead><tbody id="tbl-b"></tbody></table></div>
-     <button type="button" class="ring" id="tbl-close" style="align-self:center">Close</button></div>
 
     <div id="stop" role="alertdialog" aria-label="Stop here">
      <svg class="fg" id="stop-fig" width="72" height="118" viewBox="0 0 72 118" aria-hidden="true"></svg>

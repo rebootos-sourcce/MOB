@@ -5,7 +5,8 @@ var fs=require('fs'),path=require('path');
 var root=path.join(__dirname,'..'),repo=path.join(root,'..','..');
 var css=fs.readFileSync(path.join(__dirname,'style.css'),'utf8');
 var body=fs.readFileSync(path.join(__dirname,'body.html'),'utf8');
-var js=fs.readFileSync(path.join(__dirname,'app.js'),'utf8');
+/* the script is src/js/NN-name.js joined in name order inside one function (01 opens it, 06 closes it) */
+var js=fs.readdirSync(path.join(__dirname,'js')).filter(function(f){return /^\d\d-.*\.js$/.test(f);}).sort().map(function(f){return fs.readFileSync(path.join(__dirname,'js',f),'utf8');}).join('\n');
 var login=fs.readFileSync(path.join(repo,'mockups/onboarding/login-a.html'),'utf8');
 var font="@font-face{font-family:'Onest';font-style:normal;font-weight:300 700;font-display:block;src:url(data:font/woff2;base64,"+fs.readFileSync(path.join(repo,'mockups/fonts/files/onest-latin-300-700.woff2')).toString('base64')+") format('woff2')}";
 var nodesSrc=fs.readFileSync(path.join(repo,'atuned_src/engine/data/nodes.js'),'utf8');

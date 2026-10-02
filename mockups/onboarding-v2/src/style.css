@@ -10,7 +10,7 @@
  --stage:#06060a; --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
  --ink40:rgba(239,237,232,.4); --ink60:rgba(239,237,232,.6); --ink85:rgba(239,237,232,.85);
  --accent:#7EB8D4; --on-accent:#0B1418;
- --ease-out:cubic-bezier(.22,1,.36,1); --ease-in:cubic-bezier(.4,0,1,1); --ease-land:cubic-bezier(.34,1.56,.64,1);
+ --ease-out:cubic-bezier(.22,1,.36,1); --ease-io:cubic-bezier(.45,0,.55,1); --ease-in:cubic-bezier(.4,0,1,1); --ease-land:cubic-bezier(.34,1.56,.64,1);
  /* THE ONE PLACE THE TYPEFACE IS NAMED. A font swap is this line, plus the @font-face that build.js inlines. Everything
     else reads --sans, which is only an alias, and the canvas reads this variable at draw time (see FONT in app.js). */
  --font-ui:'Onest','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -55,7 +55,7 @@ svg{display:block}
 .stage{position:relative;width:100%;height:100%;background:var(--stage);color:var(--ink);overflow:hidden;container-type:size;
  -webkit-font-smoothing:antialiased;touch-action:manipulation}
 .stage.film,.stage.film *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-#cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+#cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .act{position:absolute;inset:0;z-index:1;opacity:0;visibility:hidden;pointer-events:none;
  transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
 .act.on{opacity:1;visibility:visible;transition:opacity 420ms var(--ease-out),visibility 0s}
@@ -71,14 +71,25 @@ svg{display:block}
 .n.pre{transform:scale(.82);transition:transform 320ms var(--ease-land)}
 .n.land{transform:scale(1)}
 
-/* decks. A card is one block of text. In 420 ms with a 10 px rise, out in 220 ms, opacity only. */
+/* decks. A card is one block of text; its words are spans (src/js/02-state.js stag) so they can rise on an arc, one after
+   another. Words (elements, so 180 to 260 ms): opacity 220 ms out, translate (x) 260 ms on the arc curve, transform (y) 260 ms out, 70 ms apart at most.
+   Leaving: every word together, 220 ms in, drifting up. A .rv root numbers its own words, and .hold keeps them back until .in. */
 .deck{display:grid}
-.card{grid-area:1/1;text-align:center;opacity:0;transform:translateY(10px)}
-.card.in{opacity:1;transform:none;transition:opacity 420ms var(--ease-out),transform 420ms var(--ease-out)}
-.card.out{opacity:0;transform:none;transition:opacity 220ms var(--ease-in)}
-.card.nt,.card.nt.in{transition:none}
+.card{grid-area:1/1;text-align:center;opacity:0}
+.card.in{opacity:1;transition:opacity 220ms var(--ease-out)}
+.card.out{opacity:0;transition:opacity 220ms var(--ease-in)}
+.card .w{display:inline-block;opacity:0;translate:-.35em 0;transform:translateY(.55em)}
+.card.in .w,.card .rv.in .w{opacity:1;translate:0 0;transform:none;
+ transition:opacity 220ms var(--ease-out),translate 260ms var(--ease-io),transform 260ms var(--ease-out);
+ transition-delay:calc(var(--w) * var(--st,0ms) + var(--pd,0ms))}
+.card .rv.hold:not(.in) .w{opacity:0;translate:-.35em 0;transform:translateY(.55em);transition:none}
+.card.out .w{opacity:0;translate:0 0;transform:translateY(-.2em);transition:opacity 220ms var(--ease-in),transform 220ms var(--ease-in);transition-delay:0s}
+.card.nt,.card.nt.in,.card.nt .w{transition:none!important}
 .copy{position:absolute;left:50%;top:66%;transform:translateX(-50%);width:min(760px,calc(100% - 32px))}
 .rcopy{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(900px,calc(100% - 32px))}
+
+#sig-q{top:70%}
+@container (min-width:701px){.copy{top:74%}#sig-q{top:78%}}
 
 /* rings are the product's one button shape: ring, not fill. */
 .ring{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:0 22px;border-radius:999px;
@@ -112,13 +123,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #leave{position:absolute;left:var(--gut);bottom:calc(14px + env(safe-area-inset-bottom));min-height:44px;min-width:44px;padding:0 8px;background:none;border:0;font-size:var(--f16);color:var(--ink60);align-items:center}
 #leave:hover{color:var(--ink)}
 
-/* the hairline. 2 px, one segment per slide, 4 px gaps. track ink 40 (3.35 to 1), fill ink 85. No transition: it is real time. */
-#hair{position:absolute;left:16px;right:16px;top:calc(max(env(safe-area-inset-top),12px) + 4px);height:2px;display:flex;gap:4px;z-index:5;pointer-events:none;
- opacity:0;transition:opacity 220ms var(--ease-in)}
-#hair.on{opacity:1;transition:opacity 420ms var(--ease-out)}
-#hair i{flex:1;background:var(--ink40);position:relative;overflow:hidden}
-#hair i b{position:absolute;inset:0;background:var(--ink85);transform:scaleX(0);transform-origin:left}
-
 /* ------------------------------------------------------------------ login door (Login A, on the stage ground)
    ONE SPACING SCALE. The unit is 8 px. Every gap between stacked items below is 8, 16, 24, 32 or 40, every box height
    is a multiple of 8, and the column is one width with equal side gutters, so the door is symmetrical about its own
@@ -135,8 +139,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @keyframes lgWash{0%{transform:translate(0,0) scale(1)}33%{transform:translate(1.6%,-2.4%) scale(1.06)}
  66%{transform:translate(-1.8%,1.6%) scale(.97)}100%{transform:translate(0,0) scale(1)}}
 .still .lg-wash{animation:none}
+.act:not(.on) .lg-wash{animation-play-state:paused}   /* a hidden door does not keep a 34 s drift running */
 /* the rings are drawn on the stage canvas (loginRing in app.js). On the door that canvas goes under the text. */
-.stage[data-act=login] #cv,.stage[data-act=transit] #cv{z-index:0}
 .lg{--u:8px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(352px,calc(100% - 48px));display:flex;flex-direction:column;align-items:stretch;z-index:1;
  transition:opacity 220ms var(--ease-in)}
 .lg.gone{opacity:0}
@@ -172,62 +176,91 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
  .lg h1{font-size:var(--f20);line-height:24px;font-weight:400;margin-top:calc(var(--u) * 3)}
 }
 
-/* ------------------------------------------------------------------ the gate */
-.gate-h{position:absolute;left:50%;transform:translateX(-50%);top:56px;margin:0;text-align:center;font-size:var(--f28);line-height:36px;font-weight:400;letter-spacing:-.02em;width:min(34em,calc(100% - 32px))}
-.gate-t{position:absolute;left:50%;transform:translateX(-50%);top:98px;margin:0;text-align:center;font-size:var(--f16);line-height:24px;color:var(--dim);width:calc(100% - 32px)}
-.gate-tbl{position:absolute;left:50%;transform:translateX(-50%);top:132px;min-height:44px}
-.chips{position:absolute;inset:0}
+/* ------------------------------------------------------------------ the flow (one section, one Field behind it)
+   The chips are born inside the Field: they start at its centre, small and clear, and travel out on an arc (x on the arc
+   curve, y on the land curve), 62 ms apart. Folding sends them back, nearest to the tapped one first. */
+#fq{position:absolute;z-index:1;pointer-events:none}
+#fq[data-al=left] .card{text-align:left}
+#fq[data-al=left] .hero{margin:0}
+.chipset{position:absolute;inset:0;pointer-events:none}
+.chipset.gone{display:none}
 .chip{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px solid var(--ink40);background:transparent;color:var(--ink);
- border-radius:10px;padding:6px 4px;font-size:var(--f16);line-height:20px;text-align:center;opacity:0;transform:scale(.6)}
-.chip svg{width:24px;height:24px;stroke:var(--ink);transition:stroke 220ms var(--ease-out)}
-.chip .lab{transition:color 220ms var(--ease-out)}
-.gate.on .chip{opacity:1;transform:none;transition:opacity 320ms var(--ease-out),transform 320ms var(--ease-land);transition-delay:calc(var(--i) * 62ms + 480ms)}
-.gate.live .chip{pointer-events:auto;transition:transform 120ms var(--ease-out),border-color 120ms var(--ease-out),opacity 220ms var(--ease-in);transition-delay:0s}
-.gate:not(.live) .chip{pointer-events:none}
-.gate.live:not(.picked) .chip:hover{transform:translateY(-2px);border-color:var(--ink60)}
-.gate.picked .chip:not(.picked){border-color:var(--ink40)}
-.gate.picked .chip:not(.picked) svg{stroke:var(--ink40)}
-.gate.picked .chip:not(.picked) .lab{color:var(--dim)}
-.gate .chip.picked{border-color:var(--ink);transform:none;transition:transform 320ms var(--ease-land),border-color 120ms var(--ease-out)}
-.gate.fold .chip{transform:translate(var(--tx,0),var(--ty,0)) scale(.3);opacity:0;transition:transform 420ms var(--ease-in),opacity 420ms var(--ease-in)}
-.chips.lay-grid{inset:auto 16px calc(64px + env(safe-area-inset-bottom)) 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.chips.lay-grid .chip{position:relative;min-height:64px}
-.chips.lay-ring .chip{width:56px;height:56px;border-radius:50%;padding:0;left:calc(var(--x) * 1px - 28px);top:calc(var(--y) * 1px - 28px)}
-.chips.lay-ring .chip .lab{position:absolute;white-space:nowrap}
-.chips.lay-ring .chip.l-r .lab{left:calc(100% + 12px);top:50%;transform:translateY(-50%)}
-.chips.lay-ring .chip.l-l .lab{right:calc(100% + 12px);top:50%;transform:translateY(-50%)}
-.chips.lay-ring .chip.l-t .lab{bottom:calc(100% + 8px);left:50%;transform:translateX(-50%)}
-.chips.lay-ring .chip.l-b .lab{top:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+ border-radius:10px;padding:6px 4px;font-size:var(--f16);line-height:20px;text-align:center;
+ opacity:0;translate:var(--tx,0px) 0;transform:translateY(var(--ty,0px)) scale(.3);pointer-events:none}
+.chip svg{width:24px;height:24px;stroke:var(--ink)}
+.chipset.on .chip{opacity:1;translate:0 0;transform:none;
+ transition:opacity 220ms var(--ease-out) calc(var(--i) * 62ms + 480ms),translate 420ms var(--ease-io) calc(var(--i) * 62ms + 480ms),transform 420ms var(--ease-land) calc(var(--i) * 62ms + 480ms)}
+.chipset.live .chip.rdy{pointer-events:auto}
+.chipset.live .chip{transition:transform 120ms var(--ease-out),border-color 120ms var(--ease-out),opacity 220ms var(--ease-in),translate 120ms var(--ease-out);transition-delay:0s}
+.chipset.live .chip:hover{transform:translateY(-2px);border-color:var(--ink60)}
+.chipset.live .chip.picked{border-color:var(--ink)}
+.chipset.fold .chip{opacity:0;translate:var(--tx,0px) 0;transform:translateY(var(--ty,0px)) scale(.3);pointer-events:none;
+ transition:opacity 260ms var(--ease-in) var(--fd,0ms),translate 420ms var(--ease-io) var(--fd,0ms),transform 420ms var(--ease-in) var(--fd,0ms)}
+.chipset.lay-grid{inset:auto 16px calc(64px + env(safe-area-inset-bottom)) 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chipset.lay-grid.gone{display:none}
+.lay-grid .chip{position:relative;min-height:64px}
+.lay-grid .chip.ns{grid-column:1/-1;min-height:44px;border-color:transparent;color:var(--mid);flex-direction:row}
+.lay-ring .chip{width:56px;height:56px;border-radius:50%;padding:0;left:calc(var(--x) * 1px - 28px);top:calc(var(--y) * 1px - 28px)}
+.lay-ring .chip .lab{position:absolute;white-space:nowrap}
+.lay-ring .chip.l-r .lab{left:calc(100% + 12px);top:50%;transform:translateY(-50%)}
+.lay-ring .chip.l-l .lab{right:calc(100% + 12px);top:50%;transform:translateY(-50%)}
+.lay-ring .chip.l-t .lab{bottom:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+.lay-ring .chip.l-b .lab{top:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+.lay-ring .chip.ns{width:120px;height:44px;border-radius:999px;border-color:transparent;color:var(--mid);left:calc(var(--x) * 1px - 60px);top:calc(var(--y) * 1px - 22px)}
+.lay-ring .chip.ns .lab{position:static;transform:none}
+
+/* the door's wash leaves with the door: opacity only, 640 ms, so the transit has no pop at its end */
+.stage[data-act=transit] .lg-wash{opacity:0;transition:opacity 640ms var(--ease-out)}
+
+/* the trail: the person's own words, gathering at the top as they answer */
+.trail{position:absolute;left:0;right:0;top:calc(max(env(safe-area-inset-top),12px) + 12px);text-align:center;font-size:var(--f13);line-height:20px;color:var(--mid);opacity:0;pointer-events:none;
+ transition:opacity 220ms var(--ease-in)}
+.trail.on{opacity:1;transition:opacity 420ms var(--ease-out)}
+.trail .tw{display:inline-block;opacity:0;translate:-.4em 0;transform:translateY(.7em)}
+.trail .tw.in{opacity:1;translate:0 0;transform:none;transition:opacity 220ms var(--ease-out),translate 260ms var(--ease-io),transform 260ms var(--ease-land)}
+.trail .ts{color:var(--dim)}
+
+/* the body: seven tap targets sit on the seat dots. The label sits beside the body, alternating sides. */
+#bodyt{position:absolute;inset:0;pointer-events:none}
+.bt{position:absolute;height:48px;display:flex;align-items:center;background:transparent;border:0;border-radius:24px;color:var(--mid);font-size:var(--f16);line-height:20px;padding:0;
+ opacity:0;visibility:hidden;translate:0 8px;transition:opacity 220ms var(--ease-in),translate 220ms var(--ease-in),visibility 0s linear 220ms}
+#bodyt.on .bt{opacity:1;visibility:visible;translate:0 0;transition:opacity 320ms var(--ease-out) calc(var(--i) * 62ms),translate 420ms var(--ease-out) calc(var(--i) * 62ms)}
+.bt[data-side=r]{justify-content:flex-start;text-align:left}
+.bt[data-side=l]{justify-content:flex-end;text-align:right}
+.bt .lab{transition:color 120ms var(--ease-out);text-shadow:0 0 6px var(--stage),0 0 6px var(--stage)}
+.bt:hover .lab{color:var(--ink)}
+.bt.picked .lab{color:var(--ink);font-weight:600}
+#body-ns{position:absolute;left:50%;margin-left:-60px;width:120px;opacity:0;visibility:hidden;transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
+#body-ns.on{opacity:1;visibility:visible;transition:opacity 420ms var(--ease-out) 500ms}
+
+/* story and mirror */
+.st,.mir{display:flex;flex-direction:column;gap:12px}
+.st .hero.s,.mir .hero.s{margin:0;max-width:none}
+#words{width:100%;min-height:96px;resize:none;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:12px 16px;font-size:var(--f16);line-height:24px;text-align:left}
+#words:focus{outline:none;border-color:var(--accent)}
+.srow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.srow .ring{min-height:44px;padding:0 20px}
+#st-done{display:none}
+#st-done.show{display:inline-flex;animation:fadeIn 220ms var(--ease-out)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lines{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.lines li{font-size:var(--f20);line-height:28px;color:var(--mid)}
+.lines li b{font-weight:400;color:var(--ink)}
+.lines li .lcap{display:block;font-size:var(--f13);line-height:20px;color:var(--dim);margin-top:2px}
+.lines li b.chg,.lines li.fix b{color:var(--accent)}
+.qwrap{display:grid;margin-top:8px}
+.qwrap>*{grid-area:1/1}
+.mq .lead20,.corr .lead20{margin:0 0 12px}
+#fq[data-al=left] .pair{justify-content:flex-start}
+.crow{display:flex;gap:8px}
+.crow input{flex:1;min-width:0;height:48px;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:0 16px;font-size:var(--f16);transition:border-color 120ms var(--ease-out)}
+.crow input:focus{outline:none;border-color:var(--accent)}
+.crow .ring{min-height:48px}
 @container (max-width:700px){
  .hero{font-size:var(--f28);line-height:36px;font-weight:400}
- .gate-h{font-size:var(--f20);line-height:28px;top:calc(var(--gate-fb,320px) + 8px)}
- .gate-t{top:calc(var(--gate-fb,320px) + 40px);font-size:var(--f13);line-height:20px}
- .gate-tbl{top:calc(var(--gate-fb,320px) + 66px);min-height:36px}
+ .lines li{font-size:var(--f16);line-height:24px}
 }
-
-/* ------------------------------------------------------------------ story */
-.col{position:absolute;left:50%;transform:translateX(-50%);top:var(--top-b);width:min(640px,calc(100% - 32px));display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-.stem{margin:0;font-weight:300;font-size:var(--f44);line-height:52px;letter-spacing:-.02em;text-wrap:balance;max-width:17em}
-.stem{opacity:0;transform:translateY(10px)}
-.act.on .stem{opacity:1;transform:none;transition:opacity 420ms var(--ease-out) 120ms,transform 420ms var(--ease-out) 120ms}
-.fin{font-size:var(--f20);line-height:28px;color:var(--mid);margin-top:4px}
-#words{width:100%;min-height:76px;resize:none;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:12px 16px;font-size:var(--f16);line-height:24px;text-align:left}
-#words:focus{outline:none;border-color:var(--accent)}
-.feels{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.feels .ring{min-height:44px;padding:0 20px;font-size:var(--f16)}
-.msgline{min-height:24px;margin:0;font-size:var(--f16);line-height:24px;color:var(--ink)}
-#commit{opacity:0;visibility:hidden;transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
-#commit.show{opacity:1;visibility:visible;transition:opacity 220ms var(--ease-out)}
-.seedlab{margin:0;min-height:20px}
-@container (max-width:700px){
- .stem{font-size:var(--f28);line-height:36px;font-weight:400}
- .fin{font-size:var(--f16);line-height:24px}
-}
-@container (max-height:560px){
- .stem{font-size:var(--f20);line-height:28px;font-weight:400}
- .fin{display:none}
- #words{min-height:56px}
-}
+@container (max-height:560px){#words{min-height:56px}}
 .wm{position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom));text-align:center;font-size:var(--f13);font-weight:600;color:var(--accent);letter-spacing:-.01em}
 
 /* ------------------------------------------------------------------ release */
@@ -269,17 +302,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .endc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 32px));text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
 .endc h1{margin:0;font-size:var(--f28);line-height:36px;font-weight:400;letter-spacing:-.02em}
 
-/* ------------------------------------------------------------------ the read-only table (opens after the film, never during) */
-#tbl{position:absolute;inset:0;z-index:7;background:var(--stage);display:none;flex-direction:column;padding:20px 16px 16px;gap:12px}
-#tbl.on{display:flex}
-#tbl h2{margin:0;font-size:var(--f20);line-height:28px;font-weight:400}
-#tbl .scroll{flex:1;min-height:0;overflow:auto;border:1.5px solid var(--ink40);border-radius:10px}
-#tbl table{border-collapse:collapse;width:100%;font-size:var(--f13);line-height:20px;font-variant-numeric:tabular-nums}
-#tbl th,#tbl td{text-align:left;padding:6px 12px;border-bottom:1px solid rgba(239,237,232,.12)}
-#tbl th{position:sticky;top:0;background:var(--stage);color:var(--dim);font-weight:600}
-#tbl td.d{display:inline-block}
-#tbl .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
-
 /* ------------------------------------------------------------------ the distress stop frame. Nothing here animates, ever. */
 #stop{position:absolute;inset:0;z-index:8;background:var(--stage);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 16px;text-align:center}
 #stop.on{display:flex}
@@ -292,21 +314,22 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #stop .row .ring{border-color:var(--ink60)}
 #stop .draft{position:absolute;left:16px;bottom:10px;font-size:var(--f11);color:var(--dim);max-width:70%;text-align:left}
 
-/* ------------------------------------------------------------------ reduced motion. One class, set by one function: end states, a 220 ms fade, no rise, no pop. */
-.still .card,.still .card.in{transform:none}
-.still .card.in{transition:opacity 220ms var(--ease-out)}
-.still .stem,.still .rcopy .own{transform:none}
+/* ------------------------------------------------------------------ reduced motion. One class, set by one function: end states, a 220 ms fade, no rise, no arc, no pop. */
+.still .card .w,.still .trail .tw,.still .bt{translate:none;transform:none}
+.still .card.in .w,.still .card .rv.in .w{transition:opacity 220ms var(--ease-out);transition-delay:0s}
+.still .trail .tw.in{transition:opacity 220ms var(--ease-out)}
+.still .chipset.on .chip{translate:none;transform:none;transition:opacity 220ms var(--ease-out);transition-delay:0s}
+.still .chipset.live .chip:hover{transform:none}
+.still .chipset.fold .chip{translate:none;transform:none;transition:opacity 220ms var(--ease-in);transition-delay:0s}
+.still #bodyt.on .bt{translate:none;transition:opacity 220ms var(--ease-out);transition-delay:0s}
+.still .act.on,.still .act{transition-duration:220ms}
+.still .rcopy .own{transform:none}
 .still .n.pre,.still .stats .num.pre{transform:none;transition:none}
-.still .gate.on .chip{transform:none;transition:opacity 220ms var(--ease-out);transition-delay:0s}
-.still .gate.fold .chip{transform:none;transition:opacity 220ms var(--ease-in)}
 .still .seals i,.still .seals i.on{transform:none;transition:none}
-.still .gate .chip.picked{transition:border-color 120ms var(--ease-out)}
 
 /* ------------------------------------------------------------------ short landscape: figure left, text right */
 @container (max-height:480px) and (min-aspect-ratio:1/1){
  .copy{left:54%;top:50%;transform:translateY(-50%);width:42%}
  .copy .card{text-align:left}
  .hero{font-size:var(--f28);line-height:36px;font-weight:400;margin:0}
- .gate-h{top:12px;font-size:var(--f20)}
- .gate-t{top:44px}
 }

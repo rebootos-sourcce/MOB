@@ -11,7 +11,7 @@
  --stage:#06060a; --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
  --ink40:rgba(239,237,232,.4); --ink60:rgba(239,237,232,.6); --ink85:rgba(239,237,232,.85);
  --accent:#7EB8D4; --on-accent:#0B1418;
- --ease-out:cubic-bezier(.22,1,.36,1); --ease-in:cubic-bezier(.4,0,1,1); --ease-land:cubic-bezier(.34,1.56,.64,1);
+ --ease-out:cubic-bezier(.22,1,.36,1); --ease-io:cubic-bezier(.45,0,.55,1); --ease-in:cubic-bezier(.4,0,1,1); --ease-land:cubic-bezier(.34,1.56,.64,1);
  /* THE ONE PLACE THE TYPEFACE IS NAMED. A font swap is this line, plus the @font-face that build.js inlines. Everything
     else reads --sans, which is only an alias, and the canvas reads this variable at draw time (see FONT in app.js). */
  --font-ui:'Onest','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -56,7 +56,7 @@ svg{display:block}
 .stage{position:relative;width:100%;height:100%;background:var(--stage);color:var(--ink);overflow:hidden;container-type:size;
  -webkit-font-smoothing:antialiased;touch-action:manipulation}
 .stage.film,.stage.film *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-#cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+#cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .act{position:absolute;inset:0;z-index:1;opacity:0;visibility:hidden;pointer-events:none;
  transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
 .act.on{opacity:1;visibility:visible;transition:opacity 420ms var(--ease-out),visibility 0s}
@@ -72,14 +72,25 @@ svg{display:block}
 .n.pre{transform:scale(.82);transition:transform 320ms var(--ease-land)}
 .n.land{transform:scale(1)}
 
-/* decks. A card is one block of text. In 420 ms with a 10 px rise, out in 220 ms, opacity only. */
+/* decks. A card is one block of text; its words are spans (src/js/02-state.js stag) so they can rise on an arc, one after
+   another. Words (elements, so 180 to 260 ms): opacity 220 ms out, translate (x) 260 ms on the arc curve, transform (y) 260 ms out, 70 ms apart at most.
+   Leaving: every word together, 220 ms in, drifting up. A .rv root numbers its own words, and .hold keeps them back until .in. */
 .deck{display:grid}
-.card{grid-area:1/1;text-align:center;opacity:0;transform:translateY(10px)}
-.card.in{opacity:1;transform:none;transition:opacity 420ms var(--ease-out),transform 420ms var(--ease-out)}
-.card.out{opacity:0;transform:none;transition:opacity 220ms var(--ease-in)}
-.card.nt,.card.nt.in{transition:none}
+.card{grid-area:1/1;text-align:center;opacity:0}
+.card.in{opacity:1;transition:opacity 220ms var(--ease-out)}
+.card.out{opacity:0;transition:opacity 220ms var(--ease-in)}
+.card .w{display:inline-block;opacity:0;translate:-.35em 0;transform:translateY(.55em)}
+.card.in .w,.card .rv.in .w{opacity:1;translate:0 0;transform:none;
+ transition:opacity 220ms var(--ease-out),translate 260ms var(--ease-io),transform 260ms var(--ease-out);
+ transition-delay:calc(var(--w) * var(--st,0ms) + var(--pd,0ms))}
+.card .rv.hold:not(.in) .w{opacity:0;translate:-.35em 0;transform:translateY(.55em);transition:none}
+.card.out .w{opacity:0;translate:0 0;transform:translateY(-.2em);transition:opacity 220ms var(--ease-in),transform 220ms var(--ease-in);transition-delay:0s}
+.card.nt,.card.nt.in,.card.nt .w{transition:none!important}
 .copy{position:absolute;left:50%;top:66%;transform:translateX(-50%);width:min(760px,calc(100% - 32px))}
 .rcopy{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(900px,calc(100% - 32px))}
+
+#sig-q{top:70%}
+@container (min-width:701px){.copy{top:74%}#sig-q{top:78%}}
 
 /* rings are the product's one button shape: ring, not fill. */
 .ring{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:0 22px;border-radius:999px;
@@ -113,13 +124,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #leave{position:absolute;left:var(--gut);bottom:calc(14px + env(safe-area-inset-bottom));min-height:44px;min-width:44px;padding:0 8px;background:none;border:0;font-size:var(--f16);color:var(--ink60);align-items:center}
 #leave:hover{color:var(--ink)}
 
-/* the hairline. 2 px, one segment per slide, 4 px gaps. track ink 40 (3.35 to 1), fill ink 85. No transition: it is real time. */
-#hair{position:absolute;left:16px;right:16px;top:calc(max(env(safe-area-inset-top),12px) + 4px);height:2px;display:flex;gap:4px;z-index:5;pointer-events:none;
- opacity:0;transition:opacity 220ms var(--ease-in)}
-#hair.on{opacity:1;transition:opacity 420ms var(--ease-out)}
-#hair i{flex:1;background:var(--ink40);position:relative;overflow:hidden}
-#hair i b{position:absolute;inset:0;background:var(--ink85);transform:scaleX(0);transform-origin:left}
-
 /* ------------------------------------------------------------------ login door (Login A, on the stage ground)
    ONE SPACING SCALE. The unit is 8 px. Every gap between stacked items below is 8, 16, 24, 32 or 40, every box height
    is a multiple of 8, and the column is one width with equal side gutters, so the door is symmetrical about its own
@@ -136,8 +140,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @keyframes lgWash{0%{transform:translate(0,0) scale(1)}33%{transform:translate(1.6%,-2.4%) scale(1.06)}
  66%{transform:translate(-1.8%,1.6%) scale(.97)}100%{transform:translate(0,0) scale(1)}}
 .still .lg-wash{animation:none}
+.act:not(.on) .lg-wash{animation-play-state:paused}   /* a hidden door does not keep a 34 s drift running */
 /* the rings are drawn on the stage canvas (loginRing in app.js). On the door that canvas goes under the text. */
-.stage[data-act=login] #cv,.stage[data-act=transit] #cv{z-index:0}
 .lg{--u:8px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(352px,calc(100% - 48px));display:flex;flex-direction:column;align-items:stretch;z-index:1;
  transition:opacity 220ms var(--ease-in)}
 .lg.gone{opacity:0}
@@ -173,62 +177,91 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
  .lg h1{font-size:var(--f20);line-height:24px;font-weight:400;margin-top:calc(var(--u) * 3)}
 }
 
-/* ------------------------------------------------------------------ the gate */
-.gate-h{position:absolute;left:50%;transform:translateX(-50%);top:56px;margin:0;text-align:center;font-size:var(--f28);line-height:36px;font-weight:400;letter-spacing:-.02em;width:min(34em,calc(100% - 32px))}
-.gate-t{position:absolute;left:50%;transform:translateX(-50%);top:98px;margin:0;text-align:center;font-size:var(--f16);line-height:24px;color:var(--dim);width:calc(100% - 32px)}
-.gate-tbl{position:absolute;left:50%;transform:translateX(-50%);top:132px;min-height:44px}
-.chips{position:absolute;inset:0}
+/* ------------------------------------------------------------------ the flow (one section, one Field behind it)
+   The chips are born inside the Field: they start at its centre, small and clear, and travel out on an arc (x on the arc
+   curve, y on the land curve), 62 ms apart. Folding sends them back, nearest to the tapped one first. */
+#fq{position:absolute;z-index:1;pointer-events:none}
+#fq[data-al=left] .card{text-align:left}
+#fq[data-al=left] .hero{margin:0}
+.chipset{position:absolute;inset:0;pointer-events:none}
+.chipset.gone{display:none}
 .chip{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px solid var(--ink40);background:transparent;color:var(--ink);
- border-radius:10px;padding:6px 4px;font-size:var(--f16);line-height:20px;text-align:center;opacity:0;transform:scale(.6)}
-.chip svg{width:24px;height:24px;stroke:var(--ink);transition:stroke 220ms var(--ease-out)}
-.chip .lab{transition:color 220ms var(--ease-out)}
-.gate.on .chip{opacity:1;transform:none;transition:opacity 320ms var(--ease-out),transform 320ms var(--ease-land);transition-delay:calc(var(--i) * 62ms + 480ms)}
-.gate.live .chip{pointer-events:auto;transition:transform 120ms var(--ease-out),border-color 120ms var(--ease-out),opacity 220ms var(--ease-in);transition-delay:0s}
-.gate:not(.live) .chip{pointer-events:none}
-.gate.live:not(.picked) .chip:hover{transform:translateY(-2px);border-color:var(--ink60)}
-.gate.picked .chip:not(.picked){border-color:var(--ink40)}
-.gate.picked .chip:not(.picked) svg{stroke:var(--ink40)}
-.gate.picked .chip:not(.picked) .lab{color:var(--dim)}
-.gate .chip.picked{border-color:var(--ink);transform:none;transition:transform 320ms var(--ease-land),border-color 120ms var(--ease-out)}
-.gate.fold .chip{transform:translate(var(--tx,0),var(--ty,0)) scale(.3);opacity:0;transition:transform 420ms var(--ease-in),opacity 420ms var(--ease-in)}
-.chips.lay-grid{inset:auto 16px calc(64px + env(safe-area-inset-bottom)) 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.chips.lay-grid .chip{position:relative;min-height:64px}
-.chips.lay-ring .chip{width:56px;height:56px;border-radius:50%;padding:0;left:calc(var(--x) * 1px - 28px);top:calc(var(--y) * 1px - 28px)}
-.chips.lay-ring .chip .lab{position:absolute;white-space:nowrap}
-.chips.lay-ring .chip.l-r .lab{left:calc(100% + 12px);top:50%;transform:translateY(-50%)}
-.chips.lay-ring .chip.l-l .lab{right:calc(100% + 12px);top:50%;transform:translateY(-50%)}
-.chips.lay-ring .chip.l-t .lab{bottom:calc(100% + 8px);left:50%;transform:translateX(-50%)}
-.chips.lay-ring .chip.l-b .lab{top:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+ border-radius:10px;padding:6px 4px;font-size:var(--f16);line-height:20px;text-align:center;
+ opacity:0;translate:var(--tx,0px) 0;transform:translateY(var(--ty,0px)) scale(.3);pointer-events:none}
+.chip svg{width:24px;height:24px;stroke:var(--ink)}
+.chipset.on .chip{opacity:1;translate:0 0;transform:none;
+ transition:opacity 220ms var(--ease-out) calc(var(--i) * 62ms + 480ms),translate 420ms var(--ease-io) calc(var(--i) * 62ms + 480ms),transform 420ms var(--ease-land) calc(var(--i) * 62ms + 480ms)}
+.chipset.live .chip.rdy{pointer-events:auto}
+.chipset.live .chip{transition:transform 120ms var(--ease-out),border-color 120ms var(--ease-out),opacity 220ms var(--ease-in),translate 120ms var(--ease-out);transition-delay:0s}
+.chipset.live .chip:hover{transform:translateY(-2px);border-color:var(--ink60)}
+.chipset.live .chip.picked{border-color:var(--ink)}
+.chipset.fold .chip{opacity:0;translate:var(--tx,0px) 0;transform:translateY(var(--ty,0px)) scale(.3);pointer-events:none;
+ transition:opacity 260ms var(--ease-in) var(--fd,0ms),translate 420ms var(--ease-io) var(--fd,0ms),transform 420ms var(--ease-in) var(--fd,0ms)}
+.chipset.lay-grid{inset:auto 16px calc(64px + env(safe-area-inset-bottom)) 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chipset.lay-grid.gone{display:none}
+.lay-grid .chip{position:relative;min-height:64px}
+.lay-grid .chip.ns{grid-column:1/-1;min-height:44px;border-color:transparent;color:var(--mid);flex-direction:row}
+.lay-ring .chip{width:56px;height:56px;border-radius:50%;padding:0;left:calc(var(--x) * 1px - 28px);top:calc(var(--y) * 1px - 28px)}
+.lay-ring .chip .lab{position:absolute;white-space:nowrap}
+.lay-ring .chip.l-r .lab{left:calc(100% + 12px);top:50%;transform:translateY(-50%)}
+.lay-ring .chip.l-l .lab{right:calc(100% + 12px);top:50%;transform:translateY(-50%)}
+.lay-ring .chip.l-t .lab{bottom:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+.lay-ring .chip.l-b .lab{top:calc(100% + 8px);left:50%;transform:translateX(-50%)}
+.lay-ring .chip.ns{width:120px;height:44px;border-radius:999px;border-color:transparent;color:var(--mid);left:calc(var(--x) * 1px - 60px);top:calc(var(--y) * 1px - 22px)}
+.lay-ring .chip.ns .lab{position:static;transform:none}
+
+/* the door's wash leaves with the door: opacity only, 640 ms, so the transit has no pop at its end */
+.stage[data-act=transit] .lg-wash{opacity:0;transition:opacity 640ms var(--ease-out)}
+
+/* the trail: the person's own words, gathering at the top as they answer */
+.trail{position:absolute;left:0;right:0;top:calc(max(env(safe-area-inset-top),12px) + 12px);text-align:center;font-size:var(--f13);line-height:20px;color:var(--mid);opacity:0;pointer-events:none;
+ transition:opacity 220ms var(--ease-in)}
+.trail.on{opacity:1;transition:opacity 420ms var(--ease-out)}
+.trail .tw{display:inline-block;opacity:0;translate:-.4em 0;transform:translateY(.7em)}
+.trail .tw.in{opacity:1;translate:0 0;transform:none;transition:opacity 220ms var(--ease-out),translate 260ms var(--ease-io),transform 260ms var(--ease-land)}
+.trail .ts{color:var(--dim)}
+
+/* the body: seven tap targets sit on the seat dots. The label sits beside the body, alternating sides. */
+#bodyt{position:absolute;inset:0;pointer-events:none}
+.bt{position:absolute;height:48px;display:flex;align-items:center;background:transparent;border:0;border-radius:24px;color:var(--mid);font-size:var(--f16);line-height:20px;padding:0;
+ opacity:0;visibility:hidden;translate:0 8px;transition:opacity 220ms var(--ease-in),translate 220ms var(--ease-in),visibility 0s linear 220ms}
+#bodyt.on .bt{opacity:1;visibility:visible;translate:0 0;transition:opacity 320ms var(--ease-out) calc(var(--i) * 62ms),translate 420ms var(--ease-out) calc(var(--i) * 62ms)}
+.bt[data-side=r]{justify-content:flex-start;text-align:left}
+.bt[data-side=l]{justify-content:flex-end;text-align:right}
+.bt .lab{transition:color 120ms var(--ease-out);text-shadow:0 0 6px var(--stage),0 0 6px var(--stage)}
+.bt:hover .lab{color:var(--ink)}
+.bt.picked .lab{color:var(--ink);font-weight:600}
+#body-ns{position:absolute;left:50%;margin-left:-60px;width:120px;opacity:0;visibility:hidden;transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
+#body-ns.on{opacity:1;visibility:visible;transition:opacity 420ms var(--ease-out) 500ms}
+
+/* story and mirror */
+.st,.mir{display:flex;flex-direction:column;gap:12px}
+.st .hero.s,.mir .hero.s{margin:0;max-width:none}
+#words{width:100%;min-height:96px;resize:none;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:12px 16px;font-size:var(--f16);line-height:24px;text-align:left}
+#words:focus{outline:none;border-color:var(--accent)}
+.srow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.srow .ring{min-height:44px;padding:0 20px}
+#st-done{display:none}
+#st-done.show{display:inline-flex;animation:fadeIn 220ms var(--ease-out)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lines{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.lines li{font-size:var(--f20);line-height:28px;color:var(--mid)}
+.lines li b{font-weight:400;color:var(--ink)}
+.lines li .lcap{display:block;font-size:var(--f13);line-height:20px;color:var(--dim);margin-top:2px}
+.lines li b.chg,.lines li.fix b{color:var(--accent)}
+.qwrap{display:grid;margin-top:8px}
+.qwrap>*{grid-area:1/1}
+.mq .lead20,.corr .lead20{margin:0 0 12px}
+#fq[data-al=left] .pair{justify-content:flex-start}
+.crow{display:flex;gap:8px}
+.crow input{flex:1;min-width:0;height:48px;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:0 16px;font-size:var(--f16);transition:border-color 120ms var(--ease-out)}
+.crow input:focus{outline:none;border-color:var(--accent)}
+.crow .ring{min-height:48px}
 @container (max-width:700px){
  .hero{font-size:var(--f28);line-height:36px;font-weight:400}
- .gate-h{font-size:var(--f20);line-height:28px;top:calc(var(--gate-fb,320px) + 8px)}
- .gate-t{top:calc(var(--gate-fb,320px) + 40px);font-size:var(--f13);line-height:20px}
- .gate-tbl{top:calc(var(--gate-fb,320px) + 66px);min-height:36px}
+ .lines li{font-size:var(--f16);line-height:24px}
 }
-
-/* ------------------------------------------------------------------ story */
-.col{position:absolute;left:50%;transform:translateX(-50%);top:var(--top-b);width:min(640px,calc(100% - 32px));display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-.stem{margin:0;font-weight:300;font-size:var(--f44);line-height:52px;letter-spacing:-.02em;text-wrap:balance;max-width:17em}
-.stem{opacity:0;transform:translateY(10px)}
-.act.on .stem{opacity:1;transform:none;transition:opacity 420ms var(--ease-out) 120ms,transform 420ms var(--ease-out) 120ms}
-.fin{font-size:var(--f20);line-height:28px;color:var(--mid);margin-top:4px}
-#words{width:100%;min-height:76px;resize:none;border-radius:14px;border:1.5px solid var(--ink40);background:rgba(9,10,14,.72);padding:12px 16px;font-size:var(--f16);line-height:24px;text-align:left}
-#words:focus{outline:none;border-color:var(--accent)}
-.feels{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.feels .ring{min-height:44px;padding:0 20px;font-size:var(--f16)}
-.msgline{min-height:24px;margin:0;font-size:var(--f16);line-height:24px;color:var(--ink)}
-#commit{opacity:0;visibility:hidden;transition:opacity 220ms var(--ease-in),visibility 0s linear 220ms}
-#commit.show{opacity:1;visibility:visible;transition:opacity 220ms var(--ease-out)}
-.seedlab{margin:0;min-height:20px}
-@container (max-width:700px){
- .stem{font-size:var(--f28);line-height:36px;font-weight:400}
- .fin{font-size:var(--f16);line-height:24px}
-}
-@container (max-height:560px){
- .stem{font-size:var(--f20);line-height:28px;font-weight:400}
- .fin{display:none}
- #words{min-height:56px}
-}
+@container (max-height:560px){#words{min-height:56px}}
 .wm{position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom));text-align:center;font-size:var(--f13);font-weight:600;color:var(--accent);letter-spacing:-.01em}
 
 /* ------------------------------------------------------------------ release */
@@ -270,17 +303,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .endc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 32px));text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
 .endc h1{margin:0;font-size:var(--f28);line-height:36px;font-weight:400;letter-spacing:-.02em}
 
-/* ------------------------------------------------------------------ the read-only table (opens after the film, never during) */
-#tbl{position:absolute;inset:0;z-index:7;background:var(--stage);display:none;flex-direction:column;padding:20px 16px 16px;gap:12px}
-#tbl.on{display:flex}
-#tbl h2{margin:0;font-size:var(--f20);line-height:28px;font-weight:400}
-#tbl .scroll{flex:1;min-height:0;overflow:auto;border:1.5px solid var(--ink40);border-radius:10px}
-#tbl table{border-collapse:collapse;width:100%;font-size:var(--f13);line-height:20px;font-variant-numeric:tabular-nums}
-#tbl th,#tbl td{text-align:left;padding:6px 12px;border-bottom:1px solid rgba(239,237,232,.12)}
-#tbl th{position:sticky;top:0;background:var(--stage);color:var(--dim);font-weight:600}
-#tbl td.d{display:inline-block}
-#tbl .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
-
 /* ------------------------------------------------------------------ the distress stop frame. Nothing here animates, ever. */
 #stop{position:absolute;inset:0;z-index:8;background:var(--stage);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 16px;text-align:center}
 #stop.on{display:flex}
@@ -293,23 +315,24 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #stop .row .ring{border-color:var(--ink60)}
 #stop .draft{position:absolute;left:16px;bottom:10px;font-size:var(--f11);color:var(--dim);max-width:70%;text-align:left}
 
-/* ------------------------------------------------------------------ reduced motion. One class, set by one function: end states, a 220 ms fade, no rise, no pop. */
-.still .card,.still .card.in{transform:none}
-.still .card.in{transition:opacity 220ms var(--ease-out)}
-.still .stem,.still .rcopy .own{transform:none}
+/* ------------------------------------------------------------------ reduced motion. One class, set by one function: end states, a 220 ms fade, no rise, no arc, no pop. */
+.still .card .w,.still .trail .tw,.still .bt{translate:none;transform:none}
+.still .card.in .w,.still .card .rv.in .w{transition:opacity 220ms var(--ease-out);transition-delay:0s}
+.still .trail .tw.in{transition:opacity 220ms var(--ease-out)}
+.still .chipset.on .chip{translate:none;transform:none;transition:opacity 220ms var(--ease-out);transition-delay:0s}
+.still .chipset.live .chip:hover{transform:none}
+.still .chipset.fold .chip{translate:none;transform:none;transition:opacity 220ms var(--ease-in);transition-delay:0s}
+.still #bodyt.on .bt{translate:none;transition:opacity 220ms var(--ease-out);transition-delay:0s}
+.still .act.on,.still .act{transition-duration:220ms}
+.still .rcopy .own{transform:none}
 .still .n.pre,.still .stats .num.pre{transform:none;transition:none}
-.still .gate.on .chip{transform:none;transition:opacity 220ms var(--ease-out);transition-delay:0s}
-.still .gate.fold .chip{transform:none;transition:opacity 220ms var(--ease-in)}
 .still .seals i,.still .seals i.on{transform:none;transition:none}
-.still .gate .chip.picked{transition:border-color 120ms var(--ease-out)}
 
 /* ------------------------------------------------------------------ short landscape: figure left, text right */
 @container (max-height:480px) and (min-aspect-ratio:1/1){
  .copy{left:54%;top:50%;transform:translateY(-50%);width:42%}
  .copy .card{text-align:left}
  .hero{font-size:var(--f28);line-height:36px;font-weight:400;margin:0}
- .gate-h{top:12px;font-size:var(--f20)}
- .gate-t{top:44px}
 }
 </style></head><body><noscript>This mockup draws with script. Nothing is fetched.</noscript><div id="app">
  <header id="ctl">
@@ -343,7 +366,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
  <div id="wrap">
   <div id="frame">
    <div class="stage film" id="stage" data-act="login" data-ctl="">
-    <div id="hair" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
 
     <!-- the door -->
     <section class="act on" id="s-login" aria-label="Sign in">
@@ -367,41 +389,18 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
      </div>
     </section>
 
-    <!-- reel A, five silent slides -->
-    <section class="act" id="s-reel" aria-label="Film"><div class="copy"><div class="deck" id="reel-deck"></div></div></section>
-
-    <!-- the gate -->
-    <section class="act gate" id="s-gate" aria-label="Pick your starting point">
-     <h1 class="gate-h" id="gate-h" tabindex="-1">Pick your starting point.</h1>
-     <p class="gate-t" id="gate-t"></p>
-     <button type="button" class="ring quiet gate-tbl" id="gate-tbl" hidden>Open the table</button>
-     <div class="chips" id="chips"></div>
-    </section>
-
-    <!-- the story -->
-    <section class="act" id="s-story" aria-label="Your sentence">
-     <div class="col" id="st-col">
-      <p class="cap seedlab" id="seedlab"></p>
-      <h1 class="stem" id="stem" tabindex="-1">I am releasing believing, thinking, feeling, behaving and acting that I am ...</h1>
-      <label class="fin" for="words">Finish it in your own words.</label>
-      <textarea id="words" rows="2" autocomplete="off" spellcheck="false" aria-describedby="msgline"></textarea>
-      <div class="feels" id="feels" role="group" aria-label="Name how it felt">
-       <button type="button" class="ring quiet" data-w="afraid">Afraid</button>
-       <button type="button" class="ring quiet" data-w="angry">Angry</button>
-       <button type="button" class="ring quiet" data-w="sad">Sad</button>
-      </div>
-      <p class="msgline" id="msgline" role="status"></p>
-      <button type="button" class="ring live" id="commit">Commit</button>
-     </div>
-    </section>
-    <section class="act" id="s-read" aria-label="Your first reading">
-     <div class="copy"><div class="deck" id="read-deck"></div></div>
-     <div class="wm">atüned</div>
+    <!-- the flow: arrive, ask, settle, feel, body, story, mirror. One section, one Field behind it. -->
+    <section class="act" id="s-flow" aria-label="The first minutes">
+     <div id="trail" class="trail" aria-label="What you have said so far"></div>
+     <div class="chipset start gone" id="chips-start" role="group" aria-label="What brought you here"></div>
+     <div class="chipset feel gone" id="chips-feel" role="group" aria-label="What are you feeling"></div>
+     <div id="bodyt" role="group" aria-label="Where do you notice it"></div>
+     <button type="button" class="ring quiet" id="body-ns">Not sure</button>
+     <div id="fq"><div class="deck" id="fl-deck"></div></div>
     </section>
 
     <!-- the release -->
     <section class="act" id="s-rel" aria-label="Release">
-     <i id="aslot" style="position:absolute;left:16px;top:16px;width:56px;height:56px;display:block"></i>
      <div class="stats" id="stats"><i id="cslot"></i><div><span class="num" id="cnt">100</span><span class="lab">Patterns open</span></div></div>
      <div class="rcopy"><div class="deck" id="rel-deck"></div></div>
      <div class="seals" id="seals" aria-hidden="true"></div>
@@ -431,7 +430,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     </section>
     <section class="act" id="s-sig" aria-label="The signal test">
      <div class="copy"><div class="deck" id="sig-deck"></div></div>
-     <div class="bcol after" id="sig-q" style="top:62%">
+     <div class="bcol after" id="sig-q">
       <p class="lead20" id="sig-qt">Did the two feel different?</p>
       <div class="signalq">
        <button type="button" class="ring" data-a="different">Different</button>
@@ -456,9 +455,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
      <button type="button" id="leave">Leave</button>
     </div>
 
-    <div id="tbl" role="dialog" aria-label="The addresses table"><h2>The 112 addresses</h2><div class="scroll"><table><thead><tr><th>#</th><th>Address</th><th>Seat</th><th>Nerve or plexus</th></tr></thead><tbody id="tbl-b"></tbody></table></div>
-     <button type="button" class="ring" id="tbl-close" style="align-self:center">Close</button></div>
-
     <div id="stop" role="alertdialog" aria-label="Stop here">
      <svg class="fg" id="stop-fig" width="72" height="118" viewBox="0 0 72 118" aria-hidden="true"></svg>
      <p class="s1" id="stop-1"></p><p class="s2" id="stop-2"></p><p class="s3" id="stop-3"></p>
@@ -471,20 +467,18 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   </div>
  </div>
 </div>
-<script>/* onboarding-v2 mockup. No network, no dependencies, no audio.
+<script>/* onboarding-v2 mockup, round PP. No network, no dependencies, no audio.
 
-   THE SHAPE. One clock, REEL time S.t in seconds, local to the act that is
-   running. Every picture is a pure function of (act, S.t) drawn on one canvas,
-   so the film can be paused, held, seeked, jumped into and screenshotted at an
-   exact instant, and the owner's Speed control is a multiplier on dt and
-   nothing else. Text lives in the DOM as cards that fade in 420 ms and out
-   220 ms, driven by cues on the same clock. CSS transitions are 120, 220, 320
-   and 420 ms only; anything longer is on the canvas.
+   THE SHAPE. One Field (a ring of 112 ticks round the body figure) is drawn on one canvas and never cuts. The intro is
+   states on that Field, not pages: the Field changes pose, the text swaps in words, the chips leave the Field and
+   return to it. REEL time S.t is local to the state that is running, so a clocked state can be paused, held, seeked,
+   jumped into and screenshotted at an exact instant. CSS motion is transform, translate and opacity only.
 
-   WHAT IS REAL AND WHAT IS A STUB is listed in NOTES.md. The short version:
-   the 112 addresses, the seven seat colours and the shipped release lines are
-   read from the engine's own tables at build time; the reading is a fourteen
-   word lexicon, the distress frame is inert, there is no audio and no account. */
+   WHAT IS REAL AND WHAT IS A STUB is listed in NOTES.md. The short version: the 112 addresses, the seven seat colours and
+   the shipped release lines are read from the engine's own tables at build time; the reading is a fourteen word
+   lexicon plus the person's own three taps; the distress frame is inert, there is no audio and no account.
+
+   The files in src/js are joined in name order by build.js inside one function. */
 (function(){
 'use strict';
 
@@ -495,25 +489,49 @@ var NODES=[[1,"Fear","Root","Lumbar Plexus"],[2,"Shame","Root","Pudendal Nerve"]
 var BAND=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
 var INK=[239,237,232], INK40=[100,100,99], BGC='#06060a';
 
-/* twelve starting points, clockwise from twelve. s is the seat a pick would seed. It is a STUB: no table in the
-   engine maps a topic to a seat (creative pass 3), so the pick only places a 12 px ink seed mark and never a hue. */
+/* THE FIELD'S PARAMETERS. Five wave modes (2, 3, 5, 7 and 9 lobes round the ring) plus sag, tight, dim, warm and len.
+   Each starting point is a profile of those, so the first tap changes how the ring MOVES and not only a label.
+   m is the weight of each mode, sag pulls the ring down, tight pulls it in, dim is brightness, warm is a shift of the
+   tick colour toward the Sacral amber (at most 35 percent), len is tick length, spd is the drift rate.
+   STUB: no engine table maps a topic to a shape of movement. These are an animator's reading, and are the part the
+   owner is most likely to retune. */
+var BASE={m:[.12,.1,.06,.04,.02],sag:0,tight:0,dim:1,warm:0,len:1,spd:1};
 var STARTS=[
- {k:'anxiety',n:'Anxiety',s:0},{k:'anger',n:'Anger',s:2},{k:'overwhelm',n:'Overwhelm',s:2},
- {k:'burnout',n:'Burnout',s:2},{k:'grief',n:'Grief',s:3},{k:'fear',n:'Fear',s:0},
- {k:'relationships',n:'Relationships',s:3},{k:'pain',n:'Pain',s:0},{k:'selfworth',n:'Self-worth',s:1},
- {k:'purpose',n:'Purpose',s:6},{k:'money',n:'Money',s:0},{k:'other',n:'Something else',s:-1}];
+ {k:'anxiety',n:'Anxiety',s:0,f:{m:[0,.2,.5,.9,1],spd:1.5,tight:.2}},
+ {k:'anger',n:'Anger',s:2,f:{m:[.9,.5,0,0,0],spd:.8,tight:.4,warm:.5}},
+ {k:'overwhelm',n:'Overwhelm',s:2,f:{m:[.2,.5,.8,.9,.6],spd:1}},
+ {k:'burnout',n:'Burnout',s:2,f:{m:[.15,.1,0,0,0],spd:.3,sag:.4,dim:.45}},
+ {k:'grief',n:'Grief',s:3,f:{m:[.6,.2,0,0,0],spd:.25,sag:.8,dim:.8}},
+ {k:'fear',n:'Fear',s:0,f:{m:[.1,.3,.9,.4,0],spd:1,tight:.7}},
+ {k:'relationships',n:'Relationships',s:3,f:{m:[1,0,.3,0,0],spd:.5}},
+ {k:'pain',n:'Pain',s:0,f:{m:[.3,.3,.3,.3,.3],spd:.4,len:1.2}},
+ {k:'selfworth',n:'Self-worth',s:1,f:{m:[.2,.3,0,0,0],spd:.5,tight:.5,sag:.5,dim:.75}},
+ {k:'purpose',n:'Purpose',s:6,f:{m:[.3,.2,0,0,0],spd:.4,tight:-.2,warm:.3}},
+ {k:'money',n:'Money',s:0,f:{m:[.3,0,.5,0,0],spd:.6,tight:.3}},
+ {k:'other',n:'Something else',s:-1,f:{m:[.3,.3,.3,0,0],spd:.5}}];
+
+/* The feeling words. Each one bends the profile: amp multiplies the modes, spd multiplies the drift, the rest add. */
+var FEELS=[
+ {k:'heavy',n:'Heavy',f:{amp:.8,spd:.6,sag:.7,dim:.9}},
+ {k:'tight',n:'Tight',f:{amp:.7,spd:1.1,tight:.6,hi:1.5}},
+ {k:'numb',n:'Numb',f:{amp:.3,spd:.4,dim:.35}},
+ {k:'restless',n:'Restless',f:{amp:1.2,spd:1.8,hi:1.4}},
+ {k:'hollow',n:'Hollow',f:{amp:.8,spd:.7,len:.5,dim:.6}},
+ {k:'hot',n:'Hot',f:{amp:1.2,spd:1.2,warm:1,len:1.4}}];
+
+/* The seven body places, one on each seat. s is the seat index in SEAT. The plain word is what the person taps. */
+var PLACES=[
+ {s:6,n:'Head',seat:'Crown'},{s:5,n:'Forehead',seat:'3rd Eye'},{s:4,n:'Throat',seat:'Throat'},{s:3,n:'Chest',seat:'Heart'},
+ {s:2,n:'Stomach',seat:'Solar'},{s:1,n:'Belly',seat:'Sacral'},{s:0,n:'Pelvis',seat:'Root'}];
+function placeOf(s){for(var i=0;i<PLACES.length;i++)if(PLACES[i].s===s)return PLACES[i];return null;}
+/* words a person may use to correct a place or a feeling. The correction line is read against these and the lexicon. */
+var PLACE_WORDS={head:6,crown:6,mind:6,forehead:5,eyes:5,throat:4,neck:4,jaw:4,shoulders:3,chest:3,heart:3,lungs:3,ribs:3,stomach:2,gut:2,belly:1,abdomen:1,pelvis:0,hips:0,groin:0,legs:0,feet:0};
+var FEEL_WORDS={heavy:0,weight:0,weighed:0,tight:1,tense:1,clenched:1,numb:2,flat:2,restless:3,jumpy:3,wired:3,hollow:4,empty:4,hot:5,burning:5,angry:5};
 
 /* the stub reading. Values are the engine's own LEX entries (seat, amount), fourteen of the real words. */
 var LEX={afraid:[0,16],panicking:[0,28],exhausted:[2,26],snapped:[2,22],angry:[2,18],mortified:[1,26],criticised:[1,22],
  grief:[3,26],lonely:[3,20],sad:[3,16],interrupted:[4,20],betrayed:[4,28],overthinking:[5,22],pointless:[6,22]};
 
-/* Reel A. dwell = max(3.0, 1.0 + words / 2.5), up to 0.5 s, cap 7.0, checked in DWELLCHECK below. */
-var SL=[
- {id:'A1',text:'Welcome to a neurosomatic experience.',dwell:3.0,lineIn:.4},
- {id:'A2',text:'Awareness and intuition is a tool we use to turn your senses inward.',dwell:6.5,ruled:true},
- {id:'A3',text:'This is a mirror. It shows what is running you.',dwell:5.0},
- {id:'A4',text:'It reads {N} addresses. Each is a place in your body.',dwell:5.0},
- {id:'A5',text:'Discover. Play. Flow. Embody. Then round again.',dwell:5.0}];
 var LOOP=['Discover','Play','Flow','Embody'];
 
 /* The release, SHORTENED for the mockup and labelled so on screen. The real table is in REAL. */
@@ -523,7 +541,8 @@ var REL_WELCOME=['Sit down. Put both feet on the floor.','Move your awareness in
  'Take one deep breath. Feel what your body is doing mechanically.','Keep your awareness inside your body.'];
 var REL_SETTLE_LINE='Keep your awareness inside your body for two minutes.';
 var ENTRY=['I let go of ','I give up ','I forgive myself for '];
-var REAL={pick:5,story:30,open:38.5,lines:48,settle:120,b:11};   /* seconds, the silent column of the narrative cue table */
+/* seconds, the silent column of the narrative cue table, plus the new feel, body and mirror beats (design time, not measured on a person) */
+var REAL={pick:5,feel:8,body:8,settle:11.5,story:30,mirror:22,open:38.5,lines:48,relsettle:120,b:11};
 var GIFT_START=100;                                              /* STUB for the engine's gift number */
 var SIG=[['Bring your attention to your throat.',3.5],['Think yes, ten times. Notice how it feels there.',12],['Now think no, ten times. Notice how that feels.',12]];
 var SIG_LEN=SIG.reduce(function(a,s){return a+s[1];},0);
@@ -541,6 +560,12 @@ var ICONS={
  money:'<circle cx="24" cy="24" r="17"/><path d="M16 20 H32 M16 28 H32"/>',
  purpose:'<circle cx="24" cy="24" r="17"/><path d="M24 24 L36 12"/><circle cx="36" cy="12" r="2.4"/>',
  other:'<circle cx="24" cy="24" r="17" stroke-dasharray="3 5.2"/><circle cx="24" cy="24" r="2.2"/>',
+ heavy:'<circle cx="24" cy="24" r="17"/><path d="M14 33 H34"/>',
+ tight:'<path d="M9 14 Q24 24 9 34 M39 14 Q24 24 39 34"/>',
+ numb:'<circle cx="24" cy="24" r="17" stroke-dasharray="2 4.5"/>',
+ restless:'<circle cx="15" cy="17" r="4"/><circle cx="32" cy="22" r="4"/><circle cx="20" cy="33" r="4"/>',
+ hollow:'<circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="8" stroke-dasharray="2 3.4"/>',
+ hot:'<circle cx="24" cy="24" r="10"/><path d="M24 4 V10 M24 38 V44 M4 24 H10 M38 24 H44 M10 10 L14 14 M34 34 L38 38 M38 10 L34 14 M10 38 L14 34"/>',
  guest:'<circle cx="24" cy="24" r="9"/><circle cx="24" cy="24" r="18" stroke-dasharray="2 4.5"/>',
  pause:'<path d="M17 13 V35 M31 13 V35"/>',
  play:'<path d="M17 12 L36 24 L17 36Z"/>',
@@ -563,256 +588,642 @@ function bez(x1,y1,x2,y2){
   for(i=0;i<8;i++){e=X(t)-x; if(Math.abs(e)<1e-5)break; d=dX(t); if(Math.abs(d)<1e-6)break; t-=e/d;}
   if(Math.abs(X(t)-x)>1e-4||t<0||t>1){var lo=0,hi=1;t=x;for(i=0;i<24;i++){if(X(t)<x)lo=t;else hi=t;t=(lo+hi)/2;}}
   return Y(t);};}
-var EOUT=bez(.22,1,.36,1), EIN=bez(.4,0,1,1), ELAND=bez(.34,1.56,.64,1), EDRAW=bez(.45,0,.15,1);
+var EOUT=bez(.22,1,.36,1), EIN=bez(.4,0,1,1), ELAND=bez(.34,1.56,.64,1), EDRAW=bez(.45,0,.15,1), EIO=bez(.45,0,.55,1);
 function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
 function hex(h){return [parseInt(h.substr(1,2),16),parseInt(h.substr(3,2),16),parseInt(h.substr(5,2),16)];}
 function mix(a,b,u){return 'rgb('+Math.round(lerp(a[0],b[0],u))+','+Math.round(lerp(a[1],b[1],u))+','+Math.round(lerp(a[2],b[2],u))+')';}
+function mixA(a,b,u,al){return 'rgba('+Math.round(lerp(a[0],b[0],u))+','+Math.round(lerp(a[1],b[1],u))+','+Math.round(lerp(a[2],b[2],u))+','+al.toFixed(3)+')';}
+var PALRGB=PAL.map(hex), AMBER=PALRGB[1];
 function words(s){return (String(s).match(/[A-Za-z0-9'’-]+/g)||[]);}
 function cap1(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function smooth(x){x=clamp(x,0,1);return x*x*(3-2*x);}
+/* a small seeded generator, so the motes are in the same place every run and a screenshot is the same picture twice */
+function rng(seed){var s=seed>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
 
-/* The dwell rule, stated once and checked against the table so a typed number cannot drift from it (the repository has
-   been bitten by that nine times). A4 has eleven words, which the rule rounds to 5.5; the narrative table says 5.0. */
-function dwellRule(txt){var w=words(txt.replace('{N}',String(NODES.length))).length;return Math.min(7,Math.ceil(Math.max(3,1+w/2.5)*2)/2);}
-var DWELLCHECK=SL.map(function(s){return {id:s.id,table:s.dwell,rule:dwellRule(s.text),words:words(s.text.replace('{N}','112')).length};});
+/* The time line, computed and never typed. It is the sum of the measured design path and it is printed in words,
+   rounded to the nearest minute. Round PP: it prints whatever it measures, because the new path is longer than the old
+   rule's window (240 s plus or minus 30) and a computed line that hides itself is a worse lie than a longer one. */
+function pathSeconds(){return REAL.pick+REAL.feel+REAL.body+REAL.settle+REAL.story+REAL.mirror+REAL.open+REAL.lines+REAL.relsettle+REAL.b;}
+function timeLine(){
+ var s=pathSeconds(),m=Math.max(1,Math.round(s/60)),w=['zero','one','two','three','four','five','six','seven','eight'];
+ return 'About '+(w[m]||m)+' minutes. Stop any time.';}
+
 
 /* ================================================================ stage, state, layout */
 var stage=$('#stage'), cv=$('#cv'), ctx=cv.getContext('2d');
 var W=0,H=0,DPR=1,STILL=false;
 var S={act:'login',t:0,mask:0,rate:1,speed:1,mul:1,last:0,cues:[],card:null,outDone:false,
- mode:'account',door:'login',pick:null,seat:null,word:null,src:'',words:'',empty:0,seed:-1,
- breathOn:false,breathR:0,breathT:0,ringT:0,tableQ:false,stop:false,stopv:'direct',live:false,bead:null,
- lastBack:-9,width:'fit',end:'',sealed:0,answered:'',sigQ:false,made:false};
-var POSE={cur:{cx:0,cy:0,h:0},from:null,to:null,t:0,dur:.42};
+ mode:'account',door:'login',pick:null,feel:null,place:-1,words:'',skipStory:false,lex:null,fixes:[],
+ breathOn:false,ringT:0,tableQ:false,stop:false,stopv:'direct',live:false,bead:null,dw:null,figT:0,
+ lastBack:-9,width:'fit',end:'',sealed:0,answered:'',sigQ:false,made:false,mark:null,hover:-1,mood:null,trace:[],bodyA:0,bodyD:0,asked:false};
+/* POSE is the Field's stage: the figure's centre and height, and the ring's two radii. */
+var POSE={cur:{cx:0,cy:0,h:0,rx:0,ry:0},from:null,to:null,t:0,dur:.42};
 var DECK={};
+function trace(ev,id){if(S.trace.length<4000)S.trace.push({ev:ev,id:id,t:performance.now()});}
 
+/* The poses. Each is a pure function of the stage size, so a resize or a rotation re-solves them. h is the figure's
+   height in px; rx and ry are the ring's radii. The ring is a circle in most poses and an ellipse round the body. */
+function P(cx,cy,h,rx,ry){return {cx:cx,cy:cy,h:h,rx:rx,ry:ry==null?rx:ry};}
 function lay(kind){
  var nar=W<=700, sho=H<=480&&W>H, h;
+ if(kind==='arrive'||kind==='settle'){
+  if(sho){h=Math.min(.7*H,300);return P(.27*W,.5*H,h,.56*h);}
+  h=nar?clamp(.30*H,200,300):clamp(.34*H,220,340);return P(W/2,(nar?.36:.40)*H,h,Math.min(.56*h,W/2-36));}
+ if(kind==='ask'){
+  if(nar){h=clamp(.22*H,120,200);return P(W/2,.26*H,h,.56*h);}
+  h=clamp(.2*H,160,220);return P(W/2,.56*H,h,.56*h);}
+ if(kind==='body'){
+  if(nar){h=Math.min(.62*H,520);return P(W/2,.5*H+24,h,Math.min(.4*W,150),Math.min(.28*H,240));}
+  h=Math.min(.58*H,580);return P(W/2,.54*H,h,Math.min(.24*W,330),.34*H);}
+ if(kind==='side'){
+  if(nar){h=140;return P(W/2,56+.56*h+8,h,.56*h);}
+  h=clamp(.42*H,300,440);return P(.27*W,.5*H,h,.56*h);}
+ if(kind==='rel'){
+  if(nar)return P(W/2,.5*H,200,W/2-16,.44*H);
+  return P(W/2,.5*H,260,Math.min(.46*H,.4*W),.46*H);}
  if(kind==='reel'){
-  if(sho){h=Math.min(.7*H,300);return {cx:.27*W,cy:.5*H,h:h};}
-  h=clamp(.34*H,220,340);return {cx:W/2,cy:.40*H,h:h};}
- if(kind==='gate'){
-  if(nar){h=clamp(.22*H,120,200);return {cx:W/2,cy:.26*H,h:h};}
-  h=clamp(.2*H,160,220);return {cx:W/2,cy:.56*H,h:h};}
+  if(sho){h=Math.min(.7*H,300);return P(.27*W,.5*H,h,.56*h);}
+  h=clamp(.34*H,220,340);return P(W/2,.40*H,h,Math.min(.56*h,W/2-52));}
  if(kind==='top'){
-  h=H<560?72:(nar?96:150);return {cx:W/2,cy:nar||H<560?24+h/2:Math.max(30+h/2,.16*H),h:h};}
- return {cx:W/2,cy:H/2,h:200};}
-function ringR(p){return Math.min(p.h*.6,W/2-44,H/2-36);}
+  h=H<560?72:(nar?96:150);var cy=nar||H<560?24+h/2:Math.max(30+h/2,.16*H);return P(W/2,cy,h,.56*h);}
+ return P(W/2,H/2,200,112);}
+function tickLen(g){return Math.max(6,Math.min(g.rx,g.ry)*.075);}
 function seatXY(p,i){var s=p.h/178;return {x:p.cx,y:p.cy+(160-20*i-89)*s};}
 
-function relayout(){
- W=stage.clientWidth;H=stage.clientHeight;DPR=Math.min(2,window.devicePixelRatio||1);
- cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
- var top=lay('top');stage.style.setProperty('--top-b',(top.cy+top.h/2+(W<=700?4:10))+'px');
- var g=lay('gate');stage.style.setProperty('--gate-fb',(g.cy+g.h/2)+'px');
- stage.style.setProperty('--dial',(W<=700?(H>=780?208:H>=700?160:0):0)+'px');
- layoutChips();
- var A=ACT[S.act];if(A&&A.pose){POSE.cur=lay(A.pose);POSE.to=null;}
- draw();}
 function setPose(to,dur,snap){
  if(snap||STILL||!POSE.cur.h){POSE.cur=to;POSE.to=null;return;}
- POSE.from={cx:POSE.cur.cx,cy:POSE.cur.cy,h:POSE.cur.h};POSE.to=to;POSE.t=0;POSE.dur=dur||.42;}
+ var c=POSE.cur;POSE.from={cx:c.cx,cy:c.cy,h:c.h,rx:c.rx,ry:c.ry};POSE.to=to;POSE.t=0;POSE.dur=dur||.42;}
 function stepPose(dt){
  if(!POSE.to)return;
  POSE.t+=dt;var u=clamp(POSE.t/POSE.dur,0,1),e=EOUT(u),f=POSE.from,t=POSE.to;
- var dx=t.cx-f.cx,dy=t.cy-f.cy,d=Math.sqrt(dx*dx+dy*dy)||1,bend=.12*d*Math.sin(Math.PI*e);   /* travel is bent 12 percent */
- POSE.cur={cx:lerp(f.cx,t.cx,e)+(-dy/d)*bend,cy:lerp(f.cy,t.cy,e)+(dx/d)*bend,h:lerp(f.h,t.h,e)};
+ var dx=t.cx-f.cx,dy=t.cy-f.cy,d=Math.sqrt(dx*dx+dy*dy)||1,bend=.12*d*Math.sin(Math.PI*e);   /* travel is bent 12 percent: an arc, not a line */
+ POSE.cur={cx:lerp(f.cx,t.cx,e)+(-dy/d)*bend,cy:lerp(f.cy,t.cy,e)+(dx/d)*bend,h:lerp(f.h,t.h,e),rx:lerp(f.rx,t.rx,e),ry:lerp(f.ry,t.ry,e)};
  if(u>=1){POSE.cur=t;POSE.to=null;}}
 
 /* A tween read off the clock. Under reduced motion every move is its end state at the cue time. */
 function tw(t,t0,d,e){if(STILL)return t>=t0?1:0;var u=clamp((t-t0)/d,0,1);return (e||EOUT)(u);}
 
-/* ================================================================ decks and cues */
+/* ================================================================ decks and cues
+   A card is one block of text. Its words are wrapped so they can rise on an arc, one after another (stagger 70 ms,
+   capped so a long line is a flow and not a list being read out). In: opacity 320 ms out, translate (x) 420 ms arc curve,
+   transform (y) 420 ms out. Out: all words together, 220 ms in, drifting up. Reveal roots (.rv) number their own words. */
+function stag(card){
+ var roots=[card].concat($$('.rv',card));
+ roots.forEach(function(root){
+  var tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),L=[],x,i=0;
+  while((x=tw.nextNode())){
+   if(!x.nodeValue.trim())continue;
+   var p=x.parentNode;if(p.closest('button,textarea,input,label,.nostag'))continue;
+   var near=p.closest('.rv');if((near||card)!==root)continue;
+   L.push(x);}
+  L.forEach(function(t){var f=document.createDocumentFragment();
+   t.nodeValue.split(/(\s+)/).forEach(function(s){if(!s)return;
+    if(/^\s+$/.test(s))f.appendChild(document.createTextNode(s));
+    else{var e=document.createElement('span');e.className='w';e.style.setProperty('--w',i++);e.textContent=s;f.appendChild(e);}});
+   t.parentNode.replaceChild(f,t);});
+  root.style.setProperty('--st',(i>1?Math.min(70,560/(i-1)):0).toFixed(1)+'ms');});}
 function Deck(id){this.el=$('#'+id);this.cur=null;}
 Deck.prototype.show=function(html,nt){
- var n=document.createElement('div');n.className='card'+(nt?' nt':'');n.innerHTML=html;this.el.appendChild(n);
+ var n=document.createElement('div');n.className='card'+(nt?' nt':'');n.innerHTML=html;stag(n);n.dataset.beat=S.act;this.el.appendChild(n);
  var old=this.cur;this.cur=n;if(old)this._out(old);
+ trace('in',S.act);
  if(nt)n.classList.add('in');else{void n.offsetWidth;requestAnimationFrame(function(){n.classList.add('in');});}
  return n;};
-Deck.prototype._out=function(n){n.classList.remove('in');n.classList.add('out');setTimeout(function(){if(n.parentNode)n.parentNode.removeChild(n);},260);};
+Deck.prototype._out=function(n){trace('out',n.dataset.beat);n.classList.remove('in');n.classList.add('out');setTimeout(function(){if(n.parentNode)n.parentNode.removeChild(n);},260);};
 Deck.prototype.hide=function(){if(this.cur){this._out(this.cur);this.cur=null;}};
 Deck.prototype.clear=function(){this.el.innerHTML='';this.cur=null;};
 function cue(t,f){S.cues.push({t:t,f:f,done:false});}
 function runCues(){for(var i=0;i<S.cues.length;i++){var c=S.cues[i];if(!c.done&&S.t>=c.t){c.done=true;c.f();}}}
 function say(t){$('#live').textContent=t;}
 
-/* ================================================================ acts */
+
+/* ================================================================ the Field
+   112 ticks round the body figure. This is the door's ring, the same ticks, so the door does not end: it becomes the Field.
+   Every tick carries ten springs (five wave modes, sag, tight, dim, warm, len). An answer (aim) does not change them all
+   at once: it starts a WAVE from the place the input came from, so each tick starts moving when the wave reaches it and
+   overshoots on its own spring. That is overlapping action, and it is also how the person can see where the answer landed.
+   Under reduced motion every spring is its end value at once and nothing ripples. */
+var TAU=Math.PI*2,MODEK=[2,3,5,7,9],OMEGA=[.35,.5,.8,1.1,1.4];
+var FD={N:112,K:10,val:new Float32Array(1120),vel:new Float32Array(1120),tgt:new Float32Array(1120),st:new Float32Array(112),
+ spd:1,spdT:1,sc:1,scV:0,scT:1,scRel:-1,t:0,ph:[0,1.3,2.6,3.9,5.2],door:1,doorT:1,
+ lean:0,leanV:0,leanT:0,fseat:-1,hueF:0,hueFT:0,hueAt:-1,fa:0,
+ bt:0,breathA:.3,breathAT:.3,arcAT:1,sig:'',rip:[],motes:[],lit:new Uint8Array(112),litCur:-1,litHue:0,geo:{cx:0,cy:0,rx:1,ry:1},
+ mv:{pose:0,wave:0,rip:0,pull:0,bead:0,lean:0},arcA:1};
+FD.sig=JSON.stringify(fieldTarget());
+function fieldTarget(){
+ var st=S.pick!=null&&STARTS[S.pick]?STARTS[S.pick].f:null,fe=S.feel!=null&&S.feel>=0&&FEELS[S.feel]?FEELS[S.feel].f:null,md=S.mood||{};
+ var m=(st?st.m:BASE.m).slice(),sag=st&&st.sag||0,tight=st&&st.tight||0,dim=st&&st.dim!=null?st.dim:1,warm=st&&st.warm||0,len=st&&st.len||1,spd=st&&st.spd||1;
+ if(fe){var a=fe.amp==null?1:fe.amp;m=m.map(function(v,i){return v*a*((i>=3&&fe.hi)?fe.hi:1);});
+  spd*=fe.spd||1;sag+=fe.sag||0;tight+=fe.tight||0;dim*=fe.dim==null?1:fe.dim;warm+=fe.warm||0;len*=fe.len||1;}
+ if(md.amp!=null)m=m.map(function(v){return v*md.amp;});
+ spd*=md.spd||1;warm+=md.warm||0;dim*=md.dim==null?1:md.dim;
+ return {m:m,sag:sag,tight:clamp(tight,-.4,1),dim:clamp(dim,.2,1),warm:clamp(warm,0,1),len:len,spd:spd};}
+function tickPos(j,g){var th=Math.PI/2+(j+.5)*TAU/112;return {x:g.cx+g.rx*Math.cos(th),y:g.cy+g.ry*Math.sin(th)};}
+(function initField(){
+ var tg=fieldTarget(),j,k;
+ for(j=0;j<112;j++){var b=j*10;for(k=0;k<5;k++)FD.val[b+k]=FD.tgt[b+k]=tg.m[k];
+  FD.val[b+5]=FD.tgt[b+5]=tg.sag;FD.val[b+6]=FD.tgt[b+6]=tg.tight;FD.val[b+7]=FD.tgt[b+7]=tg.dim;FD.val[b+8]=FD.tgt[b+8]=tg.warm;FD.val[b+9]=FD.tgt[b+9]=tg.len;}
+ var r=rng(7);for(j=0;j<28;j++)FD.motes.push({a:r()*TAU,rm:1.14+r()*.34,w:(.05+r()*.09)*(r()<.5?-1:1),sz:1+r()*1.1,al:.3+.4*r(),ph:r()*TAU,j:r(),f:r(),g:0});})();
+
+/* The seat the Field is leaning toward, as a screen point. It is read live from the pose, so the lean follows the figure. */
+function focusPt(){return FD.fseat<0?null:seatXY(POSE.cur,FD.fseat);}
+function focusDir(g){var f=focusPt();if(!f)return null;var dx=f.x-g.cx,dy=f.y-g.cy,m=Math.sqrt(dx*dx+dy*dy);
+ if(m<.25*Math.min(g.rx,g.ry))return null;return Math.atan2(dy,dx);}   /* a seat near the middle leans no one side of the ring: the whole ring answers */
+function angDiff(a,b){var d=(a-b)%TAU;if(d>Math.PI)d-=TAU;if(d<-Math.PI)d+=TAU;return d;}
+
+/* aim: retarget every tick from the current state. o is the wave's origin in screen px (or null for none).
+   delay is the anticipation (the ring pulls in 4.5 percent first), span is how long the wave takes to reach the far tick. */
+FD.aim=function(o,opt){
+ opt=opt||{};var g=FD.geo,tg=fieldTarget(),j,k,d=[],dmax=1;FD.spdT=tg.spd;FD.sig=JSON.stringify(tg);
+ for(j=0;j<112;j++){var p=tickPos(j,g);d[j]=o?Math.sqrt((p.x-o.x)*(p.x-o.x)+(p.y-o.y)*(p.y-o.y)):0;if(d[j]>dmax)dmax=d[j];}
+ var snap=STILL||opt.snap,delay=opt.delay==null?.12:opt.delay,span=opt.span||.55;
+ for(j=0;j<112;j++){var b=j*10;
+  for(k=0;k<5;k++)FD.tgt[b+k]=tg.m[k];
+  FD.tgt[b+5]=tg.sag;FD.tgt[b+6]=tg.tight;FD.tgt[b+7]=tg.dim;FD.tgt[b+8]=tg.warm;FD.tgt[b+9]=tg.len;
+  FD.st[j]=snap?0:FD.t+delay+(o?span*d[j]/dmax:0);
+  if(snap)for(k=0;k<10;k++){FD.val[b+k]=FD.tgt[b+k];FD.vel[b+k]=0;}}
+ if(snap)FD.spd=FD.spdT;
+ else if(opt.pull!==false){FD.pull(.955,delay);}};
+FD.pull=function(amt,delay,kick){if(STILL)return;FD.scT=amt;FD.scRel=FD.t+(delay==null?.12:delay);FD.kk=kick||.8;};
+FD.ripple=function(o,amp,delay){if(STILL)return;FD.rip.push({x:o.x,y:o.y,t0:FD.t+(delay==null?.12:delay),amp:amp==null?1:amp});};
+/* lean: seat index or -1. The hue and the motes follow 300 ms late, which is the secondary action. */
+FD.leanTo=function(seat,snap){
+ FD.fseat=seat;FD.leanT=seat>=0?1:0;FD.hueFT=seat>=0?1:0;
+ if(snap||STILL){FD.lean=FD.leanT;FD.leanV=0;FD.hueF=FD.hueFT;FD.hueAt=-1;if(seat>=0)FD.pack();}
+ else FD.hueAt=FD.t+(seat>=0?.3:0);};
+FD.pack=function(){};
+FD.light=function(j,cur){if(j>=0&&j<112)FD.lit[j]=cur?0:1;FD.litCur=cur?j:-1;};
+FD.resetLit=function(){FD.lit.fill(0);FD.litCur=-1;};
+FD.snapAll=function(){FD.aim(null,{snap:true});FD.sc=FD.scT=1;FD.scV=0;FD.scRel=-1;FD.rip.length=0;
+ FD.door=FD.doorT;FD.breathA=FD.breathAT;FD.lean=FD.leanT;FD.hueF=FD.hueFT;if(FD.fseat>=0)FD.pack();};
+
+FD.step=function(dt,ambientFrozen){
+ dt=Math.min(dt,.05);FD.t+=dt;
+ var j,k,mvWave=0,mvLean=0;
+ if(FD.scRel>=0&&FD.t>=FD.scRel){FD.scT=1;FD.scV+=(FD.kk||.8);FD.scRel=-1;}
+ for(j=0;j<112;j++){
+  if(FD.t<FD.st[j]){mvWave=1;continue;}
+  var b=j*10;
+  for(k=0;k<10;k++){var i=b+k,e=FD.tgt[i]-FD.val[i];
+   if(e===0&&FD.vel[i]===0)continue;
+   FD.vel[i]+=(90*e-8.5*FD.vel[i])*dt;FD.val[i]+=FD.vel[i]*dt;
+   if(Math.abs(e)>.004||Math.abs(FD.vel[i])>.02)mvWave=1;else{FD.val[i]=FD.tgt[i];FD.vel[i]=0;}}}
+ var ks=160,cs=12.6,es=FD.scT-FD.sc;FD.scV+=(ks*es-cs*FD.scV)*dt;FD.sc+=FD.scV*dt;
+ var pullOn=Math.abs(es)>.002||Math.abs(FD.scV)>.02;
+ var el=FD.leanT-FD.lean;FD.leanV+=(70*el-9*FD.leanV)*dt;FD.lean+=FD.leanV*dt;if(Math.abs(el)>.003||Math.abs(FD.leanV)>.02)mvLean=1;
+ if(FD.hueAt>=0&&FD.t>=FD.hueAt)FD.hueAt=-1;
+ if(FD.hueAt<0)FD.hueF+=(FD.hueFT-FD.hueF)*(1-Math.exp(-dt/.2));
+ FD.door+=(FD.doorT-FD.door)*(1-Math.exp(-dt/.22));
+ FD.spd+=(FD.spdT-FD.spd)*(1-Math.exp(-dt/.5));
+ FD.breathA+=(FD.breathAT-FD.breathA)*(1-Math.exp(-dt/.6));
+ FD.arcA+=(FD.arcAT-FD.arcA)*(1-Math.exp(-dt/.4));
+ for(var r=FD.rip.length-1;r>=0;r--)if(FD.t-FD.rip[r].t0>1.8)FD.rip.splice(r,1);
+ if(!ambientFrozen){
+  if(!STILL){for(k=0;k<5;k++)FD.ph[k]+=OMEGA[k]*FD.spd*dt;
+  FD.bt+=dt;}
+  FD.motes.forEach(function(m){
+   m.g=smooth((FD.lean*1.15-m.j*.5)/.5);                     /* about 70 percent of the motes leave the ring and gather round the seat */
+   if(!STILL)m.a+=m.w*FD.spd*(1+4*m.g)*dt;});}
+ if(STILL){FD.door=FD.doorT;FD.arcA=FD.arcAT;FD.breathA=FD.breathAT;FD.spd=FD.spdT;FD.hueF=FD.hueFT;FD.lean=FD.leanT;FD.sc=1;FD.scV=0;}
+ FD.mv={pose:POSE.to?1:0,wave:mvWave,rip:FD.rip.length?1:0,pull:pullOn?1:0,bead:S.bead&&!S.bead.done?1:0,lean:mvLean};};
+/* a run of steps with no drawing, so a jump lands on a settled Field with its motes already gathered */
+FD.sim=function(sec){var n=Math.round(sec*20);for(var i=0;i<n;i++){stepPose(.05);FD.step(.05,false);}};
+
+function breathShape(){if(STILL)return 0;var ph=(FD.bt%4.2)/4.2;return ph<.4?smooth(ph/.4):1-smooth((ph-.4)/.6);}   /* in 1.7 s, out 2.5 s: the exhale is longer */
+var ARCP=[[53,71,0.0,1],[67,89,2.1,-1],[79,59,4.2,1]];
+
+/* Draw the Field. g is the ring's geometry. o.tl overrides the tick length (the door's, during the transit). */
+FD.draw=function(c,g,o){
+ o=o||{};FD.geo=g;
+ var N=112,j,k,tl=o.tl||tickLen(g),amb=STILL?0:Math.sin(TAU*S.ringT/61),ambA=STILL?.9:.9+.1*Math.sin(TAU*S.ringT/47);
+ var br=breathShape()*FD.breathA,sc=FD.sc*(1+.012*amb)*(1+.035*br);
+ var fd=focusDir(g),leanX=0,leanY=0,fpt=focusPt();
+ if(fpt){var dx=fpt.x-g.cx,dy=fpt.y-g.cy,m=Math.sqrt(dx*dx+dy*dy)||1,mm=Math.min(m,.5*Math.min(g.rx,g.ry));leanX=dx/m*mm*.2*FD.lean;leanY=dy/m*mm*.2*FD.lean;}
+ var cx=g.cx+leanX,cy=g.cy+leanY,rx=g.rx*sc,ry=g.ry*sc,al=o.a==null?1:o.a;
+ /* the three tide arcs: the Field's outer harmonics. 7 segments each, in ink, taking the door's colours while the door
+    weight is up and the seat colour on the side the person leans toward. Scale and turn on periods of 53 to 89 s. */
+ var aw=FD.arcA*al;
+ if(aw>0){
+  [1.2,1.44,1.72].forEach(function(mu,ri){
+   var P=ARCP[ri],sx=STILL?1:1+.015*Math.sin(TAU*S.ringT/P[0]+P[2]),rot=STILL?0:P[3]*(4+ri*1.5)*Math.PI/180*Math.sin(TAU*S.ringT/P[1]+P[2]);
+   c.lineCap='round';c.lineWidth=1.4;
+   for(var s=0;s<7;s++){
+    var a0=Math.PI/2+s*TAU/7+.038+ri*.05,a1=Math.PI/2+(s+1)*TAU/7-.038+ri*.05,am=(a0+a1)/2;
+    var wf=FD.fseat<0?0:FD.hueF*Math.min(1,FD.lean)*(s===FD.fseat?1:.15);
+    var wd=FD.door,col,aa;
+    var base=[.2,.15,.1][ri],hi=[.38,.29,.2][ri];
+    if(wd>=wf){col=mixA(INK,PALRGB[s],wd,lerp(base,hi,wd));aa=1;}
+    else{col=mixA(INK,PALRGB[FD.fseat],wf,lerp(base,hi*1.3,wf));aa=1;}
+    c.globalAlpha=aw*aa*(.9+.1*ambA);c.strokeStyle=col;c.beginPath();c.ellipse(cx,cy,rx*mu*sx,ry*mu*sx,rot,a0,a1);c.stroke();}});
+  c.globalAlpha=1;}
+ /* the ticks */
+ c.lineCap='round';
+ for(j=0;j<N;j++){
+  var b=j*10,V=FD.val,th=Math.PI/2+(j+.5)*TAU/N,co=Math.cos(th),si=Math.sin(th);
+  var w=0;for(k=0;k<5;k++)w+=V[b+k]*Math.sin(MODEK[k]*th+FD.ph[k]);
+  var sag=V[b+5],tight=V[b+6],dim=V[b+7],warm=V[b+8],lenm=V[b+9];
+  var kr=1-.16*tight,px=cx+rx*kr*co,py=cy+ry*kr*si+sag*.15*ry*(.5+.5*si);
+  var nx=co/g.rx,ny=si/g.ry,nl=Math.sqrt(nx*nx+ny*ny)||1;nx/=nl;ny/=nl;
+  var push=tl*1.25*w,rb=0;
+  for(var r=0;r<FD.rip.length;r++){var R=FD.rip[r],age=FD.t-R.t0;if(age<0)continue;
+   var mr=Math.max(rx,ry),front=age*mr*1.8,d=Math.sqrt((px-R.x)*(px-R.x)+(py-R.y)*(py-R.y)),ww=.16*mr;
+   rb+=R.amp*Math.exp(-Math.pow((d-front)/ww,2))*Math.exp(-age*1.4);}
+  push+=tl*1.6*rb;
+  var x0=px+nx*push,y0=py+ny*push,L=tl*lenm*(1+.45*Math.abs(w)+.6*rb);
+  var wd=FD.door,wf=FD.fseat<0?0:FD.hueF*Math.min(1,FD.lean)*(.28+(fd==null?0:.5*Math.exp(-Math.pow(angDiff(th,fd)/.9,2))));
+  var lw=2,col,wm=Math.max(wd,wf);
+  if(wd>=wf)col=mixA(INK,PALRGB[Math.min(6,Math.floor(j/16))],wd,lerp(.4*dim,.75,wd)*ambA);
+  else col=mixA(INK,PALRGB[FD.fseat],wf,lerp(.4*dim,.82,wf)*ambA);
+  if(warm>.01&&wm<.5){var wc=lerp(0,.35,warm);col=mixA(INK,AMBER,wc,.4*dim*ambA+.1*warm);}
+  if(FD.lit[j]){col=rgba(INK,.85);}
+  if(j===FD.litCur){col=PAL[o.litSeat==null?0:o.litSeat];lw=3;L*=1.5;}
+  c.globalAlpha=al;c.strokeStyle=col;c.lineWidth=lw;
+  c.beginPath();c.moveTo(x0,y0);c.lineTo(x0+nx*L,y0+ny*L);c.stroke();}
+ c.globalAlpha=1;
+ /* the ripple's own ring, so the wave can be seen between the figure and the ticks. ink at 18 percent, fading as it spreads */
+ for(var q=0;q<FD.rip.length;q++){var Q=FD.rip[q],ag=FD.t-Q.t0;if(ag<0)continue;
+  var fr=ag*Math.max(rx,ry)*1.8,fa=.18*Math.exp(-ag*1.4)*Q.amp;
+  if(fa>.01){c.globalAlpha=fa*al;c.strokeStyle=rgba(INK,1);c.lineWidth=1;c.beginPath();c.arc(Q.x,Q.y,fr,0,TAU);c.stroke();}}
+ c.globalAlpha=1;
+ /* the motes: 28 points that drift on the tide, and gather on the side the person leans toward. Position is the data. */
+ if(o.motes!==false){
+  var pf=fpt,hh=POSE.cur.h;
+  FD.motes.forEach(function(m){
+   var gx=cx+rx*m.rm*Math.cos(m.a),gy=cy+ry*m.rm*Math.sin(m.a),x=gx,y=gy,gs=m.g;
+   if(pf&&gs>.001){var rr=(.05+.1*m.f)*hh,ox=pf.x+Math.cos(m.a)*rr,oy=pf.y+Math.sin(m.a)*rr*.8,dx=ox-gx,dy=oy-gy,d=Math.sqrt(dx*dx+dy*dy)||1,bend=.14*d*Math.sin(Math.PI*gs);
+    x=lerp(gx,ox,gs)+(-dy/d)*bend;y=lerp(gy,oy,gs)+(dx/d)*bend;}
+   var a=(m.al*(.7+.3*Math.sin(m.ph+(STILL?0:S.ringT*.4)))+.3*gs)*al;
+   c.globalAlpha=Math.min(.85,a);c.fillStyle=gs>.35?mix(INK,PALRGB[FD.fseat],FD.hueF*.8):rgba(INK,1);
+   c.beginPath();c.arc(x,y,m.sz*(1+.4*gs),0,TAU);c.fill();});
+  c.globalAlpha=1;}
+};
+
+
+/* ================================================================ the flow: arrive, ask, settle, feel, body, story, mirror
+   One section (#s-flow) stays up for all of it. Its text box glides between anchors (a translate, never a layout change),
+   its chips leave the Field and return to it, and the Field answers every input. Nothing on this screen is a page. */
+var fq=$('#fq'),flowSec=$('#s-flow');
+
+/* ---- the text box. FLIP: set the new anchor, then animate a translate from where it was. compositor only. */
+function boxRect(kind,pose){
+ var nar=W<=700,p=lay(pose),tl=tickLen(p),w;
+ if(kind==='under'){w=Math.min(760,W-32);return {left:W/2-w/2,top:p.cy+p.ry*(nar?1.5:1.74)+(nar?28:20),width:w,al:'center',mid:false};}
+ if(kind==='head'){w=Math.min(34*16,W-32);return {left:W/2-w/2,top:nar?p.cy+p.ry*1.06+tl+16:56,width:w,al:'center',mid:false};}
+ if(kind==='bodyhead'){w=Math.min(34*16,W-32);return {left:W/2-w/2,top:nar?52:56,width:w,al:'center',mid:false};}
+ if(kind==='side'){
+  if(nar){w=W-32;return {left:16,top:p.cy+p.ry*1.06+tl+18,width:w,al:'left',mid:false};}
+  w=Math.min(620,W*.38);return {left:W*.52,top:H*.5,width:w,al:'left',mid:true};}
+ return {left:16,top:16,width:W-32,al:'center',mid:false};}
+function placeBox(kind,pose,snap){
+ var b=boxRect(kind,pose),el=fq,r0=el.getBoundingClientRect(),sr=stage.getBoundingClientRect(),k=sr.width/(stage.clientWidth||1)||1;
+ el.style.left=b.left+'px';el.style.top=b.top+'px';el.style.width=b.width+'px';el.style.transform=b.mid?'translateY(-50%)':'none';
+ el.dataset.box=kind;el.dataset.al=b.al;
+ if(snap||STILL||!r0.width)return;
+ var r1=el.getBoundingClientRect(),dx=(r0.left-r1.left)/k,dy=(r0.top-r1.top)/k;
+ if(Math.abs(dx)+Math.abs(dy)>2&&el.animate)el.animate([{translate:dx+'px '+dy+'px'},{translate:'0 0'}],{duration:420,easing:'cubic-bezier(.22,1,.36,1)'});}
+
+/* ---- chips. Two sets share one layout routine. They are born inside the Field and travel out on arcs (x on the arc curve,
+   y on the land curve), 62 ms apart, so they read as the Field's answer and not as a menu that appeared. */
+var SETS={
+ start:{host:$('#chips-start'),items:STARTS,els:[],ry:.33,n:12,a0:0,pose:'ask'},
+ feel:{host:$('#chips-feel'),items:FEELS,els:[],ry:.30,n:6,a0:Math.PI/6,pose:'ask',ns:true}};
+function buildChips(){
+ Object.keys(SETS).forEach(function(key){
+  var set=SETS[key];set.host.innerHTML='';set.els=[];
+  set.items.forEach(function(s,i){
+   var b=document.createElement('button');b.type='button';b.className='chip';b.dataset.k=s.k;b.style.setProperty('--i',i);
+   b.innerHTML=ico(s.k,24)+'<span class="lab">'+s.n+'</span>';b.setAttribute('aria-label',s.n);
+   b.addEventListener('click',function(){key==='start'?pickStart(i,b):pickFeel(i,b);});set.host.appendChild(b);set.els.push(b);});
+  if(set.ns){var b=document.createElement('button');b.type='button';b.className='chip ns';b.style.setProperty('--i',set.items.length);b.dataset.k='notsure';
+   b.innerHTML='<span class="lab">Not sure</span>';b.addEventListener('click',function(){pickFeel(-1,b);});set.host.appendChild(b);set.els.push(b);}});}
+function layoutChips(){
+ if(!W)return;
+ Object.keys(SETS).forEach(function(key){
+  var set=SETS[key],ring=W>700,gp=lay(set.pose),host=set.host,m=set.items.length;
+  host.className='chipset '+key+(ring?' lay-ring':' lay-grid')+(host.classList.contains('on')?' on':'')+(host.classList.contains('live')?' live':'')+(host.classList.contains('fold')?' fold':'')+(host.classList.contains('gone')?' gone':'');
+  if(ring){
+   var ry=set.ry*H,rx=Math.min((key==='start'?.36:.30)*W,ry*(key==='start'?1.9:1.5));
+   set.els.forEach(function(c,i){
+    if(i>=m){c.style.setProperty('--x',gp.cx.toFixed(1));c.style.setProperty('--y',(H-58).toFixed(1));c.style.setProperty('--tx','0px');c.style.setProperty('--ty',(gp.cy-(H-58)).toFixed(1)+'px');return;}
+    var a=set.a0+i*Math.PI*2/m,x=gp.cx+rx*Math.sin(a),y=gp.cy-ry*Math.cos(a),sn=Math.sin(a);
+    c.style.setProperty('--x',x.toFixed(1));c.style.setProperty('--y',y.toFixed(1));
+    c.style.setProperty('--tx',(gp.cx-x).toFixed(1)+'px');c.style.setProperty('--ty',(gp.cy-y).toFixed(1)+'px');
+    c.className=c.className.replace(/\bl-[trlb]\b/g,'').trim()+' '+(key==='start'&&i===0?'l-t':key==='start'&&i===6?'l-b':sn>0?'l-r':'l-l');});
+  }else{
+   var rows=Math.ceil(m/3)+(set.ns?1:0),cw=(W-32-16)/3,gh=rows*64+(rows-1)*8,top=H-64-gh;
+   set.els.forEach(function(c,i){
+    var r=i>=m?Math.ceil(m/3):Math.floor(i/3),cc=i>=m?1:i%3,x=i>=m?W/2:16+cc*(cw+8)+cw/2,y=top+r*72+(i>=m?22:32);
+    c.className=c.className.replace(/\bl-[trlb]\b/g,'').trim();
+    c.style.setProperty('--tx',(gp.cx-x).toFixed(1)+'px');c.style.setProperty('--ty',(gp.cy-y).toFixed(1)+'px');});}});}
+function relPos(el){var r=el.getBoundingClientRect(),sr=stage.getBoundingClientRect(),k=sr.width/(stage.clientWidth||1)||1;
+ return {x:(r.left+r.width/2-sr.left)/k,y:(r.top+r.height/2-sr.top)/k};}
+/* squash and stretch: 80 ms to 1.10 wide by 0.90 tall, then 320 ms land back to 1 by 1 on the overshoot curve.
+   The neighbours lean away and come back, nearest first, so the tap is felt along the ring. */
+function squash(el,set){
+ if(STILL||!el.animate)return;
+ el.animate([{transform:'scale(1,1)',offset:0,easing:'cubic-bezier(.4,0,1,1)'},{transform:'scale(1.1,.9)',offset:.2,easing:'cubic-bezier(.34,1.56,.64,1)'},{transform:'scale(1,1)',offset:1}],{duration:400});
+ var c=relPos(el);
+ set.els.forEach(function(o){if(o===el)return;var q=relPos(o),dx=q.x-c.x,dy=q.y-c.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=14*Math.exp(-d/(.25*Math.max(W,H)));
+  if(f<1.5)return;o.animate([{translate:'0 0'},{translate:(dx/d*f).toFixed(1)+'px '+(dy/d*f).toFixed(1)+'px',offset:.3},{translate:'0 0'}],{duration:520,delay:Math.min(240,d*.35),easing:'cubic-bezier(.22,1,.36,1)',composite:'add'});});}
+function openSet(key,on,snap){
+ var set=SETS[key],h=set.host;
+ (set.tm||[]).forEach(clearTimeout);set.tm=[];
+ if(on){h.classList.remove('gone','fold','live');set.els.forEach(function(c){c.classList.remove('picked','rdy');c.style.removeProperty('--fd');});void h.offsetWidth;h.classList.add('on');
+  /* a chip takes taps only once it has landed, so one still travelling cannot sit on top of another */
+  set.els.forEach(function(c,i){if(snap||STILL)c.classList.add('rdy');else set.tm.push(setTimeout(function(){c.classList.add('rdy');},480+i*62+420));});}
+ else{h.classList.remove('on','live','fold');h.classList.add('gone');}}
+function foldSet(key,fromEl){
+ var set=SETS[key],h=set.host,c=fromEl?relPos(fromEl):lay('ask');
+ var order=set.els.map(function(e,i){var q=relPos(e);return {i:i,d:Math.sqrt((q.x-(c.x))*(q.x-c.x)+(q.y-c.y)*(q.y-c.y))};}).sort(function(a,b){return a.d-b.d;});
+ order.forEach(function(o,r){set.els[o.i].style.setProperty('--fd',(r*55)+'ms');});
+ h.classList.remove('live');h.classList.add('fold');
+ setTimeout(function(){if(h.classList.contains('fold')){h.classList.remove('on');h.classList.add('gone');}},order.length*55+520);}
+
+/* ---- the trail: the person's own words, gathering at the top as they answer. It is what the mirror is made of. */
+S.trail=[];
+function renderTrail(){
+ var el=$('#trail');el.innerHTML='';
+ S.trail.forEach(function(t,i){
+  if(i){var sp=document.createElement('span');sp.className='ts';sp.textContent=' · ';el.appendChild(sp);}
+  var w=document.createElement('span');w.className='tw'+(t.fresh?'':' in');w.textContent=t.s;el.appendChild(w);
+  if(t.fresh){t.fresh=false;void w.offsetWidth;requestAnimationFrame(function(){w.classList.add('in');});}});}
+function setTrail(i,s){S.trail[i]={s:s,fresh:true};S.trail.length=Math.max(S.trail.length,i+1);renderTrail();}
+function clearTrail(){S.trail=[];renderTrail();}
+
+/* ---- the field's answer to an input. Anticipation first (the ring pulls in), then the wave. */
+function centre(){var p=POSE.to||POSE.cur;return {x:p.cx,y:p.cy};}
+function fieldAnswer(origin,amp){FD.aim(origin||centre(),{delay:.12});FD.ripple(origin||centre(),amp==null?1:amp,.12);}
+
+/* ---- ask: the twelve starting points. Picking is the advance. */
+function enterAsk(o){
+ var nt=!!(o&&o.snap),d=DECK.fl;S.live=false;S.picked=false;S.asked=true;
+ if(!(o&&o.keep)){S.pick=null;S.feel=null;S.place=-1;S.mark=null;FD.leanTo(-1,true);clearTrail();}
+ S.mood=null;S.bead=null;
+ openSet('start',true,nt);if(nt){SETS.start.host.classList.add('live');S.live=true;}
+ cue(.05,function(){d.show('<h1 class="hero s qh" tabindex="-1">What brought you here?</h1><p class="cap nostag">'+timeLine()+'</p>',nt);say('What brought you here? '+timeLine());
+  var h=$('.qh',fq);h&&h.focus({preventScroll:true});});}
+function pickStart(i,el){
+ if(S.picked||!S.live)return;S.picked=true;S.pick=i;
+ var set=SETS.start,st=STARTS[i];
+ set.host.classList.remove('live');el.classList.add('picked');
+ squash(el,set);
+ var c=relPos(el),g=centre();S.bead=STILL?null:{x0:c.x,y0:c.y,t:-.12,dur:.6,done:false};
+ cue(S.t+.3,function(){foldSet('start',el);});
+ cue(S.t+.35,function(){DECK.fl.hide();});
+ cue(S.t+.6,function(){S.mood=null;fieldAnswer(g,1);});                      /* the pull starts as the bead arrives */
+ cue(S.t+.72,function(){setTrail(0,st.n);});
+ cue(S.t+1.6,function(){go('settle');});}
+
+/* ---- settle: the descent. The Field slows and warms; the breath is its pace. */
+function enterSettle(o){
+ var nt=!!(o&&o.snap),d=DECK.fl;
+ cue(.3,function(){d.show('<p class="hero s">Awareness and intuition is a tool we use to turn your senses inward.</p>',nt);say('Awareness and intuition is a tool we use to turn your senses inward.');});
+ cue(6.8,function(){d.show('<p class="hero">Do not solve it yet.</p><p class="hero rv" style="--pd:700ms">Notice what is here.</p>',nt);say('Do not solve it yet. Notice what is here.');});}
+
+/* ---- feel */
+function enterFeel(o){
+ var nt=!!(o&&o.snap),d=DECK.fl;S.live=false;S.dw=null;
+ SETS.feel.els.forEach(function(c){c.classList.remove('picked');});
+ openSet('feel',true,nt);if(nt)SETS.feel.host.classList.add('live');
+ if(S.feel!=null&&S.feel>=0)SETS.feel.els[S.feel].classList.add('picked');
+ cue(.05,function(){d.show('<h1 class="hero s qh" tabindex="-1">What are you feeling?</h1><p class="sub rv" style="--pd:380ms">Take a second.</p><p class="cap nostag" style="margin-top:12px">The ring behind this is your Field. It moves as you answer.</p>',nt);say('What are you feeling? Take a second.');
+  var h=$('.qh',fq);h&&h.focus({preventScroll:true});});
+ cue(.95,function(){SETS.feel.host.classList.add('live');S.live=true;});}
+function pickFeel(i,el){
+ if(!S.live)return;
+ var set=SETS.feel;set.els.forEach(function(c){c.classList.remove('picked');});el.classList.add('picked');
+ S.feel=i;squash(el,set);
+ var c=relPos(el),g=centre();S.bead=STILL?null:{x0:c.x,y0:c.y,t:-.12,dur:.5,done:false};
+ S.mood=null;
+ cue(S.t+.5,function(){fieldAnswer(g,.9);});
+ cue(S.t+.62,function(){if(i>=0)setTrail(1,FEELS[i].n);else{S.trail.length=Math.min(S.trail.length,1);renderTrail();}});
+ S.dw={left:i>=0?1.8:1.2,next:'body'};}
+
+/* ---- body: tap where you feel it. The outline draws itself on the seat spacing, then the seven places arrive top to bottom. */
+function layoutBody(){
+ var host=$('#bodyt');if(!W||!host)return;var p=lay('body'),s=p.h/178,nar=W<=700;
+ $$('.bt',host).forEach(function(b,i){
+  var pl=PLACES[i],y=p.cy+(160-20*pl.s-89)*s;
+  var hw=(function(u){if(u>=39&&u<=73)return 13;if(u<=80)return 8;if(u<=92)return 8+(u-80)*2.4;if(u<=150)return 36;return 32;})(160-20*pl.s)*s;
+  var right=i%2===0,x=p.cx;
+  b.style.top=(y-24)+'px';b.dataset.side=right?'r':'l';
+  var gap=hw+12,lw=(nar?96:130);
+  if(right){b.style.left=(x-24)+'px';b.style.width=(24+gap+lw)+'px';b.style.paddingLeft=(24+gap)+'px';}
+  else{b.style.left=(x-24-gap-lw+48)+'px';b.style.width=(24+gap+lw)+'px';b.style.paddingRight=(24+gap)+'px';}
+  b.style.setProperty('--i',i);});
+ var ns=$('#body-ns');if(ns){ns.style.top=(H-(nar?64:64))+'px';}}
+function buildBody(){
+ var host=$('#bodyt');host.innerHTML='';
+ PLACES.forEach(function(pl,i){
+  var b=document.createElement('button');b.type='button';b.className='bt';b.dataset.s=pl.s;b.setAttribute('aria-label',pl.n);
+  b.innerHTML='<span class="lab">'+pl.n+'</span>';
+  b.addEventListener('click',function(){pickPlace(i,b);});
+  b.addEventListener('pointerenter',function(){S.hover=pl.s;});b.addEventListener('pointerleave',function(){if(S.hover===pl.s)S.hover=-1;});
+  b.addEventListener('focus',function(){if(b.matches(':focus-visible'))S.hover=pl.s;});b.addEventListener('blur',function(){if(S.hover===pl.s)S.hover=-1;});
+  host.appendChild(b);});
+ $('#body-ns').addEventListener('click',function(){pickPlace(-1);});}
+function enterBody(o){
+ var nt=!!(o&&o.snap),d=DECK.fl;S.live=false;S.dw=null;
+ layoutBody();
+ var host=$('#bodyt');host.classList.remove('live');$$('.bt',host).forEach(function(b){b.classList.remove('picked');});
+ if(S.place>=0){var pl=PLACES.filter(function(x){return x.s===S.place;})[0],ix=PLACES.indexOf(pl);host.children[ix].classList.add('picked');}
+ foldSet('feel',null);
+ S.bodyOn=true;if(nt||STILL){S.bodyW=2;S.bodyD=1;}
+ cue(.2,function(){d.show('<h1 class="hero s qh" tabindex="-1">Where do you notice it?</h1><p class="cap nostag" style="margin-top:8px">Tap the place on the body.</p><p class="cap nostag" id="bd-cap" style="min-height:20px;margin-top:4px"></p>',nt);say('Where do you notice it? Tap the place on the body.');
+  var h=$('.qh',fq);h&&h.focus({preventScroll:true});});
+ cue(.7,function(){host.classList.add('on');$('#body-ns').classList.add('on');});
+ cue(1.5,function(){host.classList.add('live');$('#body-ns').classList.add('live');S.live=true;});
+ if(S.place>=0&&nt){var cp=$('#bd-cap');}
+ if(nt){host.classList.add('on','live');$('#body-ns').classList.add('on','live');S.live=true;}}
+function setBodyCap(){
+ var el=$('#bd-cap');if(!el)return;
+ var pl=placeOf(S.place);var t=pl?pl.n+'. That is the '+pl.seat+' seat, one of seven places the Field reads.':'Not placed. The Field stays centred.';
+ el.style.opacity=0;setTimeout(function(){el.textContent=t;el.style.opacity=1;},STILL?0:140);}
+function pickPlace(i,btn){
+ if(!S.live)return;
+ var host=$('#bodyt');$$('.bt',host).forEach(function(b){b.classList.remove('picked');});
+ if(i<0){S.place=-1;FD.leanTo(-1);S.mark=null;FD.pull(.97,.1);S.trail.length=Math.min(S.trail.length,2);renderTrail();setBodyCap();S.dw={left:1.2,next:'story'};return;}
+ btn.classList.add('picked');
+ var pl=PLACES[i],p=POSE.cur,o=seatXY(p,pl.s);
+ S.place=pl.s;S.mark={seat:pl.s,t:-.12};
+ FD.pull(.955,.12);FD.ripple(o,1.6,.12);FD.leanTo(pl.s);          /* anticipation, then a ripple 1.6 tick lengths high, then the lean, then (300 ms late) the colour and the motes */
+ setTrail(2,pl.n);setBodyCap();say(pl.n+'. '+pl.seat+' seat.');
+ S.dw={left:2.0,next:'story'};}
+
+/* ---- story: one open field, only now. */
+function enterStory(o){
+ var nt=!!(o&&o.snap),d=DECK.fl;S.dw=null;
+ foldSet('feel',null);$('#bodyt').classList.remove('on','live');$('#body-ns').classList.remove('on','live');
+ cue(.25,function(){d.show('<div class="st"><h1 class="hero s qh" tabindex="-1">What was happening?</h1><p class="cap nostag" style="margin-top:8px">A sentence is enough.</p>'
+  +'<textarea id="words" rows="3" autocomplete="off" spellcheck="false" aria-label="What was happening"></textarea>'
+  +'<div class="srow"><button type="button" class="ring live" id="st-done">Done</button><button type="button" class="ring quiet" id="st-skip">I would rather not say</button></div></div>',nt);
+  var ta=$('#words');if(ta){ta.value=S.words||'';S.wc=wordCount();syncDone();}say('What was happening? A sentence is enough.');
+  setTimeout(function(){var t=$('#words');if(t&&S.act==='story')t.focus({preventScroll:true});},nt?0:700);});}
+function wordCount(){var t=$('#words');return t?words(t.value).length:0;}
+function syncDone(){var b=$('#st-done');if(b)b.classList.toggle('show',wordCount()>=3);}
+document.addEventListener('input',function(e){
+ if(!e.target||e.target.id!=='words')return;
+ syncDone();var n=wordCount();
+ if(n>(S.wc||0)&&!STILL){var p=POSE.cur;FD.ripple({x:p.cx,y:p.cy},.45,0);}   /* the Field hears each word: a small ripple per word, nothing else */
+ S.wc=n;});
+function readWords(txt){
+ var best=null;words(txt.toLowerCase()).forEach(function(w){var e=LEX[w];if(e&&(!best||e[1]>best.amt))best={word:w,seat:e[0],amt:e[1]};});
+ return best;}
+function doStory(skip){
+ var t=$('#words'),txt=t?t.value.trim():'';
+ if(!skip&&words(txt).length<3)return;
+ S.words=skip?'':txt;S.skipStory=!!skip;S.lex=skip?null:readWords(txt);S.fixes=[];
+ go('mirror');}
+
+/* ---- mirror. Everything it says is the person's own: a pick, a feeling, a place, a quote, a word the lexicon knows.
+   Nothing is inferred and nothing is added. */
+function quoteOf(txt){
+ var s=txt.replace(/\s+/g,' ').trim(),m=s.match(/^[^.!?]+/),t=(m?m[0]:s).trim(),w=t.split(' ');
+ if(w.length>14)t=w.slice(0,14).join(' ')+'...';
+ return t;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function mirrorSeat(){
+ if(S.place>=0)return S.place;if(S.lex)return S.lex.seat;
+ var st=S.pick!=null?STARTS[S.pick]:null;return st&&st.s>=0?st.s:0;}
+function mirrorLines(){
+ var L=[],st=S.pick!=null?STARTS[S.pick]:null,pl=placeOf(S.place),fe=S.feel>=0?FEELS[S.feel]:null;
+ L.push({src:'pick',h:'You came in with <b>'+(st&&st.k!=='other'?esc(st.n.toLowerCase()):'something else')+'</b>.'});
+ var a=fe?'It feels <b class="'+((S.chg&1)?'chg':'')+'">'+fe.n.toLowerCase()+'</b>':'You did not name how it feels',b=pl?', and you notice it in your <b class="'+((S.chg&2)?'chg':'')+'">'+pl.n.toLowerCase()+'</b>.':'. You did not place it in your body.';
+ L.push({src:'place',h:a+b,cap:pl?pl.n+' is the '+pl.seat+' seat. A seat is one of seven places on the body that the Field reads.':''});
+ if(S.words)L.push({src:'story',h:'You said: <b>“'+esc(quoteOf(S.words))+'”</b>'});else L.push({src:'story',h:'You did not say what happened.'});
+ if(S.lex)L.push({src:'lex',h:'Your word <b>“'+esc(S.lex.word)+'”</b> sits at the '+SEAT[S.lex.seat]+' seat.'});
+ S.fixes.forEach(function(f){L.push({src:'fix',h:'You added: <b>“'+esc(f)+'”</b>'});});
+ return L;}
+function mirrorHTML(){
+ var L=mirrorLines();
+ return '<div class="mir"><h1 class="hero s qh" tabindex="-1">'+(S.fixes.length?'Here is what I heard now.':'Here is what I heard.')+'</h1><ul class="lines">'
+  +L.map(function(l,i){return '<li class="rv hold'+(l.src==='fix'?' fix':'')+'" data-src="'+l.src+'" data-i="'+i+'">'+l.h+(l.cap?'<span class="cap nostag lcap">'+esc(l.cap)+'</span>':'')+'</li>';}).join('')
+  +'</ul><div class="qwrap"><div class="after mq rv hold" id="mq"><p class="lead20">Does that feel like you?</p><div class="pair"><button type="button" class="ring live" id="m-yes">That is me</button><button type="button" class="ring" id="m-no">Not quite</button></div></div>'
+  +'<div class="after corr rv hold" id="corr"><label for="m-in" class="lead20">Tell me what is off.</label><div class="crow"><input id="m-in" autocomplete="off" spellcheck="false" aria-label="What is off"><button type="button" class="ring live" id="m-adj">Adjust</button></div></div></div></div>';}
+function cite(src){
+ var p=POSE.cur,o={x:p.cx,y:p.cy};
+ if(src==='pick'){FD.ripple(o,.5,.1);}
+ else if(src==='place'){var sx=S.place>=0?seatXY(p,S.place):o;FD.pull(.98,.1);FD.ripple(sx,1,.1);if(S.place>=0)S.mark={seat:S.place,t:-.1};}
+ else if(src==='story'){FD.ripple(o,.7,.1);FD.ripple(o,.5,.4);}
+ else if(src==='lex'&&S.lex){var sx2=seatXY(p,S.lex.seat);FD.ripple(sx2,1,.1);S.lexMark={seat:S.lex.seat,t:-.1};}
+ else if(src==='fix'){FD.ripple(o,.6,.1);}}
+function enterMirror(o){
+ var nt=!!(o&&o.snap),d=DECK.fl;S.dw=null;S.recog=false;S.lexMark=null;S.chg=0;
+ $('#trail').classList.remove('on');
+ if(S.lex===undefined)S.lex=null;
+ cue(.3,function(){var card=d.show(mirrorHTML(),nt);S.card=card;say('Here is what I heard.');
+  var lines=$$('.lines li',card),t0=nt?0:2.1;
+  lines.forEach(function(li,i){var tt=S.t+(nt?0:(2.1+i*.9));
+   cue(tt,function(){li.classList.add('in');cite(li.dataset.src);});});
+  var tq=S.t+(nt?0:(2.1+lines.length*.9+.3));
+  cue(tq,function(){var q=$('#mq',card);q&&q.classList.add('in');});});
+ if(nt){/* snapped: everything shown at once */}}
+function applyFix(txt){
+ var ws=words(txt.toLowerCase()),changed=0,p=POSE.cur;
+ ws.forEach(function(w){if(FEEL_WORDS[w]!=null&&FEEL_WORDS[w]!==S.feel){S.feel=FEEL_WORDS[w];changed|=1;}});
+ ws.forEach(function(w){if(PLACE_WORDS[w]!=null&&PLACE_WORDS[w]!==S.place){S.place=PLACE_WORDS[w];changed|=2;}});
+ ws.forEach(function(w){if(LEX[w]&&(!S.lex||S.lex.word!==w)){S.lex={word:w,seat:LEX[w][0]};changed|=4;}});
+ S.fixes.push(txt.trim());S.chg=changed;
+ /* the Field adjusts: a changed feeling retargets the whole ring, a changed place moves the lean and the mark, and when
+    nothing was recognised the ring still answers once, because the person was heard */
+ if(changed&1){S.mood=ACT[S.act]&&ACT[S.act].fm||null;FD.aim(centre(),{delay:.12});FD.ripple(centre(),1,.12);setTrail(1,FEELS[S.feel].n);}
+ if(changed&2){var o=seatXY(p,S.place);FD.pull(.955,.12);FD.ripple(o,1.6,.12);FD.leanTo(S.place);S.mark={seat:S.place,t:-.12};setTrail(2,placeOf(S.place).n);}
+ if(!changed){FD.pull(.955,.12);FD.ripple(centre(),.9,.12);}
+ var d=DECK.fl,nt=false;
+ var card=d.show(mirrorHTML(),nt);S.card=card;say('Changed. Does that feel like you?');
+ var lines=$$('.lines li',card);
+ lines.forEach(function(li,i){cue(S.t+.45+i*.28,function(){li.classList.add('in');});});
+ cue(S.t+.45+lines.length*.28+.7,function(){var q=$('#mq',card);q&&q.classList.add('in');});}
+
+/* ---- recognition, then the bridge into the release. The space after "That is me" is the beat. */
+function enterRecog(o){
+ var nt=!!(o&&o.snap),d=DECK.fl,seat=mirrorSeat(),pl=SEAT[seat];S.seat=seat;S.dw=null;
+ var p=POSE.cur,so=seatXY(p,seat);
+ if(!nt)d.hide();
+ S.mark={seat:seat,t:-.16,hold:true};
+ if(!nt){FD.pull(.94,.16,1.4);FD.leanTo(seat);FD.ripple(so,1.8,.16);FD.ripple({x:p.cx,y:p.cy},1,.6);FD.breathAT=1;}
+ else{FD.leanTo(seat,true);}
+ S.mood={amp:.8,spd:.55,warm:.3};FD.aim(so,{delay:.16,span:.7,pull:false});if(nt)FD.snapAll();
+ cue(1.2,function(){d.show('<p class="hero s">Next is a release. Twelve lines, one at a time, at your '+pl+' seat.</p><div class="after" id="rc-go" style="margin-top:24px"><button type="button" class="ring live" id="go-rel">Begin the release</button></div>',nt);say('Next is a release. Twelve lines, one at a time, at your '+pl+' seat.');});
+ cue(4.0,function(){var g=$('#rc-go');g&&g.classList.add('in');});}
+
+
+/* ================================================================ acts
+   fm is the Field's mood in that act: amp multiplies the wave, spd the drift, warm shifts the tick colour, dim the
+   brightness, br the breath depth (0 to 1), arc the tide arcs. A change of mood is a wave from the centre, not a cut. */
 var ACT={};
 var SECS={};
-['login','reel','gate','story','read','rel','b1','b2','b3','sig','end'].forEach(function(k){SECS[k]=$('#s-'+k);});
+['login','flow','rel','b1','b2','b3','sig','end'].forEach(function(k){SECS[k]=$('#s-'+k);});
 function showSec(k){Object.keys(SECS).forEach(function(j){SECS[j].classList.toggle('on',j===k);});}
+var FM={calm:{amp:1,spd:1,br:.3},settle:{amp:.6,spd:.45,warm:.25,br:1},listen:{amp:.5,spd:.5,dim:.8,br:.3},
+ rel:{amp:.35,spd:.4,dim:.55,br:.6},after:{amp:.5,spd:.5,dim:.7,br:.4}};
 
-ACT.login={sec:'login',ctl:'',enter:function(){
- var lg=$('#lg');lg.classList.remove('gone');$('#hair').classList.remove('on');}};
-ACT.transit={sec:'login',ctl:'',clocked:true,len:.62,next:'A1',film:true,enter:function(){
- /* fields fade 220 ms ease in, then the ring scales 1 to 1.5 and fades over 420 ms, ending on the first frame of Reel A.
-    The ground is the door's own #06060a, so there is no seam to hide. */
- cue(0,function(){$('#lg').classList.add('gone');});}};
-SL.forEach(function(s,i){
- ACT[s.id]={sec:'reel',ctl:'pause sound skip',clocked:true,film:true,len:s.dwell,pose:'reel',hair:i,
-  next:i<4?SL[i+1].id:'gate',deck:'reel',enter:function(o){enterSlide(i,o);}};});
-ACT.gate={sec:'gate',ctl:'leave',pose:'gate',enter:function(o){enterGate(o);}};
-ACT.story={sec:'story',ctl:'',pose:'top',enter:function(o){enterStory(o);}};
-ACT.read={sec:'read',ctl:'',pose:'reel',deck:'read',enter:function(o){enterRead(o);}};
-ACT.rel={sec:'rel',ctl:'pause sound skip',clocked:true,film:true,len:REL.end,next:'b1',deck:'rel',enter:function(o){enterRel(o);}};
-ACT.b1={sec:'b1',ctl:'',pose:'reel',deck:'b1',enter:function(o){enterB1(o);}};
-ACT.b2={sec:'b2',ctl:'pause sound skip',clocked:true,film:true,len:5.0,next:'b3',pose:'reel',deck:'b2',enter:function(o){enterB2(o);}};
-ACT.b3={sec:'b3',ctl:'',pose:'top',enter:function(o){enterB3(o);}};
-ACT.sig={sec:'sig',ctl:'pause sound skip',clocked:true,film:true,len:SIG_LEN,holdEnd:true,pose:'reel',deck:'sig',enter:function(o){enterSig(o);},
- onEnd:function(){S.sigQ=true;stage.dataset.ctl='';$('#sig-q').classList.add('in');$('#sig-reply').textContent='';$('#sig-back').hidden=true;
-  $('#sig-qt').hidden=false;$$('#sig-q .signalq').forEach(function(e){e.hidden=false;});DECK.sig.hide();say('Did the two feel different?');}};
-ACT.end={sec:'end',ctl:'',enter:function(){
- var m={login:['Log in goes to the Field.','A returning person skips the film and lands where they left off.'],
-  leave:['The Field opens here.','Leave writes that onboarding is done and opens the Field unread. Nothing was read.'],
-  notnow:['The Field opens here.','The reading stays on this device.'],
-  account:['The Field opens here.','Your story moves to your account.'],
-  guest:['The Field opens here.','This stays on this device.'],
-  stop:['The Field opens here.','Unread. No release was run.']}[S.end]||['The Field opens here.',''];
- $('#end-h').textContent=m[0];$('#end-sub').textContent=m[1];
- $('#end-cap').textContent='Mockup end. In the build the figure arcs into the Field hub here.';
- $('#hair').classList.remove('on');}};
+ACT.login={sec:'login',ctl:'',enter:function(){var lg=$('#lg');lg.classList.remove('gone');}};
+ACT.transit={sec:'login',ctl:'',clocked:true,len:1.0,next:'arr1',film:true,pose:'arrive',pdur:.01,enter:function(){
+ /* the door's text leaves in 220 ms; its ring (the same 112 ticks) morphs into the Field's, hue draining to ink,
+    and the figure begins to assemble inside it. */
+ FD.door=1;FD.doorT=1;
+ cue(0,function(){$('#lg').classList.add('gone');});
+ cue(.15,function(){FD.doorT=0;});}};
+ACT.arr1={sec:'flow',ctl:'pause sound skip',clocked:true,film:true,len:3.0,next:'arr2',pose:'arrive',box:'under',fm:FM.calm,
+ enter:function(o){var nt=!!(o&&o.snap);cue(.35,function(){DECK.fl.show('<p class="hero">Welcome to a neurosomatic experience.</p>',nt);say('Welcome to a neurosomatic experience.');});}};
+ACT.arr2={sec:'flow',ctl:'pause sound skip',clocked:true,film:true,len:4.0,next:'ask',pose:'arrive',box:'under',fm:FM.calm,
+ enter:function(o){var nt=!!(o&&o.snap);cue(.3,function(){DECK.fl.show('<p class="hero">Something brought you here.</p><p class="hero rv" style="--pd:620ms">Let’s start there.</p>',nt);say('Something brought you here. Let us start there.');});}};
+ACT.ask={sec:'flow',ctl:'leave',pose:'ask',box:'head',fm:FM.calm,enter:function(o){enterAsk(o);}};
+ACT.settle={sec:'flow',ctl:'pause sound skip',clocked:true,film:true,len:13.0,next:'feel',pose:'settle',box:'under',fm:FM.settle,trail:true,enter:function(o){enterSettle(o);}};
+ACT.feel={sec:'flow',ctl:'',pose:'ask',box:'head',fm:FM.calm,trail:true,enter:function(o){enterFeel(o);}};
+ACT.body={sec:'flow',ctl:'',pose:'body',pdur:.52,box:'bodyhead',fm:{amp:.75,spd:.8,br:.3},trail:true,body:1,enter:function(o){enterBody(o);}};
+ACT.story={sec:'flow',ctl:'',pose:'side',pdur:.52,box:'side',fm:FM.listen,trail:true,body:.3,enter:function(o){enterStory(o);}};
+ACT.mirror={sec:'flow',ctl:'',pose:'side',box:'side',fm:FM.listen,body:.3,enter:function(o){enterMirror(o);}};
+ACT.recog={sec:'flow',ctl:'',pose:'side',box:'side',fm:null,body:.3,enter:function(o){enterRecog(o);}};
 
 function go(id,o){
  o=o||{};var A=ACT[id];if(!A)return;
  var prev=ACT[S.act];
  if(prev&&prev.deck&&prev.deck!==A.deck)DECK[prev.deck].hide();
  if(A.deck&&(!prev||prev.deck!==A.deck))DECK[A.deck].clear();
- S.act=id;S.t=o.t||0;S.cues=[];S.outDone=false;S.card=null;S.rate=o.snap?1:S.rate;
- if(id!=='gate'){S.live=false;}
+ S.act=id;S.t=o.t||0;S.cues=[];S.outDone=false;S.card=null;S.rate=o.snap?1:S.rate;S.dw=null;
+ if(id!=='ask'&&id!=='feel'&&id!=='body'){S.live=false;}
+ trace('go',id);
  stage.dataset.act=id;stage.dataset.ctl=A.ctl||'';
  stage.classList.toggle('film',!!A.film);
  stage.classList.toggle('stats-on',id==='rel');
- $('#hair').classList.toggle('on',A.hair!=null);
  $('#soundl').textContent=id==='rel'?'Hear it':'';
  showSec(A.sec);
- if(A.pose)setPose(lay(A.pose),.42,o.snap);
+ $('#trail').classList.toggle('on',!!A.trail);
+ if(A.pose)setPose(lay(A.pose),A.pdur||.42,o.snap||id==='transit');
+ if(A.box)placeBox(A.box,A.pose,o.snap||!prev||prev.sec!=='flow');
+ if(A.body!=null){S.bodyAT=A.body;if(A.body>=1&&!S.bodyOn){S.bodyOn=true;S.bodyW=0;}}
+ else if(id==='transit'||id==='login'||/^arr/.test(id)||id==='ask'||id==='settle'||id==='feel'){S.bodyAT=0;}
+ if(A.fm!==undefined){
+  S.mood=A.fm;var m=A.fm||{};FD.breathAT=m.br!=null?m.br:.3;FD.arcAT=m.arc!=null?m.arc:1;
+  if(JSON.stringify(fieldTarget())!==FD.sig)FD.aim(centre(),{delay:.12,snap:!!o.snap});}
+ if(A.lean&&!o.nolean)FD.leanTo(A.lean(),!!o.snap);
  if(A.enter)A.enter(o);
  runCues();
  if(!o.nopush)pushH(id);
  var js=$('#c-jump');if(js&&$('option[value="'+id+'"]',js))js.value=id;
  ctlState();}
 
-/* ---- Reel A */
-function a4Extra(){
- var r=NODES[0]||[1,'Fear','Root','Lumbar Plexus'];   /* the first real row, read at run time */
- return '<div class="proof after" id="proof"><div class="row" style="display:flex;gap:14px;justify-content:center;align-items:center;margin-top:24px;font-size:var(--f16);line-height:24px">'
-  +'<span>'+r[1]+'</span><span style="color:var(--mid);display:inline-flex;align-items:center;gap:8px"><i style="width:10px;height:10px;border-radius:50%;background:'+PAL[BAND.indexOf(r[2])]+'"></i>'+r[2]+'</span>'
-  +'<span style="color:var(--mid)">'+r[3]+'</span></div>'
-  +'<p class="cap" style="margin-top:6px">From the addresses table. Row '+r[0]+' of '+NODES.length+'.</p>'
-  +'<div style="margin-top:12px"><button type="button" class="ring quiet" id="tbl-q">'+(S.tableQ?'Opens after the film':'Open the table')+'</button></div></div>';}
-function slideHTML(i){
- var s=SL[i],txt=s.text.replace('{N}','<b class="n pre">'+NODES.length+'</b>');
- return '<p class="hero">'+txt+'</p>'+(i===3?a4Extra():'');}
-function enterSlide(i,o){
- var s=SL[i],d=DECK.reel;
- cue(s.lineIn||0,function(){S.card=d.show(slideHTML(i),!!(o&&o.snap));say(s.text.replace('{N}',String(NODES.length)));});
- if(i===3){
-  cue(.5,function(){var p=$('#proof');p&&p.classList.add('in');});
-  cue(1.4,function(){var n=$('#reel-deck .n');n&&n.classList.add('land');});
-  cue(2.0,function(){var b=$('#tbl-q');if(b)b.classList.add('live');});}}
-
-/* ---- the gate */
-var chipEls=[];
-function buildChips(){
- var host=$('#chips');host.innerHTML='';chipEls=[];
- STARTS.forEach(function(s,i){
-  var b=document.createElement('button');b.type='button';b.className='chip';b.dataset.k=s.k;b.style.setProperty('--i',i);
-  b.innerHTML=ico(s.k,24)+'<span class="lab">'+s.n+'</span>';b.setAttribute('aria-label',s.n);
-  b.addEventListener('click',function(){pickStart(i,b);});host.appendChild(b);chipEls.push(b);});}
-function relPos(el){var r=el.getBoundingClientRect(),sr=stage.getBoundingClientRect(),k=sr.width/(stage.clientWidth||1)||1;
- return {x:(r.left+r.width/2-sr.left)/k,y:(r.top+r.height/2-sr.top)/k};}
-function layoutChips(){
- var host=$('#chips');if(!host||!chipEls.length||!W)return;
- var ring=W>700;host.className='chips'+(ring?' lay-ring':' lay-grid');
- var gp=lay('gate');
- if(ring){
-  var ry=.33*H,rx=Math.min(.36*W,ry*1.9);
-  chipEls.forEach(function(c,i){
-   var a=i*Math.PI/6,x=gp.cx+rx*Math.sin(a),y=gp.cy-ry*Math.cos(a);
-   c.style.setProperty('--x',x.toFixed(1));c.style.setProperty('--y',y.toFixed(1));
-   c.style.setProperty('--tx',(gp.cx-x).toFixed(1)+'px');c.style.setProperty('--ty',(gp.cy-y).toFixed(1)+'px');
-   var sn=Math.sin(a);c.className=c.className.replace(/\bl-[trlb]\b/g,'').trim()+' '+(i===0?'l-t':i===6?'l-b':sn>0?'l-r':'l-l');});
- }else{
-  chipEls.forEach(function(c){c.className=c.className.replace(/\bl-[trlb]\b/g,'').trim();});
-  requestAnimationFrame(function(){chipEls.forEach(function(c){var p=relPos(c);
-   c.style.setProperty('--tx',(gp.cx-p.x).toFixed(1)+'px');c.style.setProperty('--ty',(gp.cy-p.y).toFixed(1)+'px');});});}}
-/* HONEST TIME LINE. Computed from the cue table, never typed. It is printed only when the measured path from the pick
-   to the end of Reel B is within 30 s of four minutes (narrative pass 3), and rounded to the nearest minute. */
-function pathSeconds(){return REAL.pick+REAL.story+REAL.open+REAL.lines+REAL.settle+REAL.b;}
-function timeLine(){
- var s=pathSeconds(),m=Math.round(s/60),w=['zero','one','two','three','four','five','six','seven'];
- return Math.abs(s-240)<=30?'About '+w[m]+' minutes. Stop any time.':'';}
-function enterGate(o){
- var g=$('#s-gate');g.classList.remove('live','picked','fold');
- chipEls.forEach(function(c){c.classList.remove('picked');c.style.transition='';c.style.transform='';});
- S.live=false;S.bead=null;S.picked=false;S.pick=S.pick&&o&&o.keep?S.pick:null;
- $('#gate-t').textContent=timeLine();
- var tb=$('#gate-tbl');tb.hidden=!S.tableQ;
- layoutChips();say('Pick your starting point. '+timeLine());
- $('#gate-h').focus({preventScroll:true});}
-function pickStart(i,el){
- if(S.picked||!S.live)return;S.picked=true;S.pick=i;
- var st=STARTS[i],g=$('#s-gate');
- g.classList.add('picked');
- /* the pressed chip Lands 320 ms: set it small with no transition, then let the class carry it home on ease-land */
- el.style.transition='none';el.style.transform='scale(.9)';void el.offsetWidth;el.style.transition='';el.style.transform='';el.classList.add('picked');
- var c=relPos(el);S.bead={x:c.x,y:c.y,t0:S.t+.12,dur:.6};
- S.seed=st.s;
- cue(S.t+.72,function(){g.classList.add('fold');});
- cue(S.t+1.2,function(){go('story');});}
-
-/* ---- the story. No clock: nothing here advances itself. */
-function readWords(txt){
- var best=null;words(txt.toLowerCase()).forEach(function(w){var e=LEX[w];if(e&&(!best||e[1]>best.amt))best={word:w,seat:e[0],amt:e[1]};});
- return best;}
-function msg(t){$('#msgline').textContent=t;}
-function wordCount(){return words($('#words').value).length;}
-function syncCommit(){$('#commit').classList.toggle('show',wordCount()>=5);}
-function enterStory(o){
- var st=S.pick!=null?STARTS[S.pick]:null;
- S.seed=st?st.s:-1;
- $('#seedlab').textContent=st?'Starting point: '+st.n:'';
- if(!(o&&o.keep)){$('#words').value=S.words||'';S.empty=0;msg('');}
- syncCommit();say('Finish it in your own words.');$('#stem').focus({preventScroll:true});}
-function doCommit(){
- var txt=$('#words').value.trim(),r=readWords(txt);
- if(wordCount()<5)return;
- S.words=txt;
- if(r){S.word=r.word;S.seat=r.seat;S.src='words';go('read');return;}
- S.empty++;
- if(S.empty===1){msg('Nothing in that matched a pattern. Name how it felt.');return;}
- var st=S.pick!=null?STARTS[S.pick]:null;
- if(st&&st.s>=0){S.word=st.n;S.seat=st.s;S.src='pick';}
- else{S.word=null;S.seat=0;S.src='none';}
- go('read');}
-function seatName(){return SEAT[S.seat==null?0:S.seat];}
-function enterRead(o){
- S.breathOn=true;S.breathR=0;
- var line,src;
- if(S.src==='words'){line=cap1(S.word)+' sits at your '+seatName()+'.';src='You wrote “'+S.word+'”.';}
- else if(S.src==='pick'){line=S.word+' sits at your '+seatName()+'.';src='From your pick, not your words.';}
- else{line='Nothing matched.';src='The release starts at the Root.';}
- var d=DECK.read;
- cue(.5,function(){d.show('<p class="hero">'+line+'</p><p class="sub" style="margin-top:12px">'+src+'</p>'
-  +'<div style="margin-top:24px"><button type="button" class="ring live" id="go-rel">Begin the release</button></div>',!!(o&&o.snap));say(line+' '+src);});}
-
-/* ---- the release (shortened) */
+/* ---- the release (shortened). Its address ring is the Field's own ticks: the line being said is lit in its seat colour,
+   the ones already said stay lit at ink 85, and the Field remembers them in Reel B. */
+ACT.rel={sec:'rel',ctl:'pause sound skip',clocked:true,film:true,len:REL.end,next:'b1',deck:'rel',pose:'rel',pdur:.52,fm:FM.rel,body:0,enter:function(o){enterRel(o);}};
 function relNodes(){
  var seat=BAND[S.seat==null?0:S.seat];
- var l=NODES.filter(function(n){return n[2]===seat&&!/Unnamed/.test(n[1]);}).slice(0,REL.n);
- return l;}
+ return NODES.filter(function(n){return n[2]===seat&&!/Unnamed/.test(n[1]);}).slice(0,REL.n);}
 function relLine(i,list){
  var n=list[i%list.length];var k=n[1].toLowerCase().replace(/\s*\((solar|heart)\)/,'');
  return ENTRY[i%3]+k+'.';}
 function enterRel(o){
- S.sealed=0;var list=relNodes();S.relList=list;
+ S.sealed=0;var list=relNodes();S.relList=list;FD.resetLit();
  var seals=$('#seals');seals.innerHTML='';for(var i=0;i<REL.n;i++)seals.appendChild(document.createElement('i'));seals.classList.remove('on');
  $('#cnt').textContent=GIFT_START;$('#cnt').classList.remove('land');$('#cnt').classList.add('pre');
- $('#mocklab').textContent='Mockup, shortened. Real: his voice for about '+Math.round(REAL.open)+' s, '+REL.n+' lines at 4 s, a '+REAL.settle+' s settle. Here: '+REL.lineLen+' s lines, a '+REL.settleLen+' s settle.';
+ $('#mocklab').textContent='Mockup, shortened. Real: his voice for about '+Math.round(REAL.open)+' s, '+REL.n+' lines at 4 s, a '+REAL.relsettle+' s settle. Here: '+REL.lineLen+' s lines, a '+REL.settleLen+' s settle.';
  var d=DECK.rel,nt=!!(o&&o.snap);
  cue(REL.gift,function(){var c=$('#cnt');c.classList.add('land');d.show('<p class="lead20">'+GIFT_START+' patterns are open to you.</p>',nt);});
  REL_WELCOME.forEach(function(l,i){cue(REL.caps[i],function(){d.show('<p class="hero">'+l+'</p>',nt);say(l);});});
  cue(REL.stem,function(){d.show('<p class="hero">I am releasing believing, thinking, feeling, behaving and acting that I am ...</p><p class="own" id="own"></p>',nt);
-  var own=$('#own');own.textContent=S.words||'';});
+  var own=$('#own');own.textContent=S.words?'“'+quoteOf(S.words)+'”':'';});
  cue(REL.own,function(){var o2=$('#own');o2&&o2.classList.add('in');});
  cue(REL.hint,function(){d.show('<p class="lead20">Each line names one pattern. Repeat it in thought as it lands.</p>',nt);});
  for(var j=0;j<REL.n;j++)(function(j){cue(REL.lines0+j*REL.lineLen,function(){var l=relLine(j,list);d.show('<p class="hero">'+l+'</p>',nt);say(l);});})(j);
@@ -820,14 +1231,29 @@ function enterRel(o){
  cue(REL.settle0+REL.settleLen-.22,function(){d.hide();});}
 
 /* ---- reel B */
+ACT.b1={sec:'b1',ctl:'',pose:'reel',deck:'b1',fm:FM.after,body:.3,lean:function(){return S.seat==null?-1:S.seat;},enter:function(o){enterB1(o);}};
+ACT.b2={sec:'b2',ctl:'pause sound skip',clocked:true,film:true,len:5.0,next:'b3',pose:'reel',deck:'b2',lean:function(){return S.seat==null?-1:S.seat;},fm:{amp:.5,spd:.5,dim:.7,br:.4,arc:0},body:.3,enter:function(o){enterB2(o);}};
+ACT.b3={sec:'b3',ctl:'',pose:'top',deck:null,lean:function(){return S.seat==null?-1:S.seat;},fm:FM.after,body:.3,enter:function(o){enterB3(o);}};
+ACT.sig={sec:'sig',ctl:'pause sound skip',clocked:true,film:true,len:SIG_LEN,holdEnd:true,pose:'reel',deck:'sig',lean:function(){return 4;},fm:FM.after,body:.3,enter:function(o){enterSig(o);},
+ onEnd:function(){S.sigQ=true;stage.dataset.ctl='';$('#sig-q').classList.add('in');$('#sig-reply').textContent='';$('#sig-back').hidden=true;
+  $('#sig-qt').hidden=false;$$('#sig-q .signalq').forEach(function(e){e.hidden=false;});DECK.sig.hide();say('Did the two feel different?');}};
+ACT.end={sec:'end',ctl:'',fm:FM.calm,enter:function(){
+ var m={login:['Log in goes to the Field.','A returning person skips the film and lands where they left off.'],
+  leave:['The Field opens here.','Leave writes that onboarding is done and opens the Field unread. Nothing was read.'],
+  notnow:['The Field opens here.','The reading stays on this device.'],
+  account:['The Field opens here.','Your story moves to your account.'],
+  guest:['The Field opens here.','This stays on this device.'],
+  stop:['The Field opens here.','Unread. No release was run.']}[S.end]||['The Field opens here.',''];
+ $('#end-h').textContent=m[0];$('#end-sub').textContent=m[1];
+ $('#end-cap').textContent='Mockup end. In the build the figure arcs into the Field hub here.';}};
 function enterB1(o){
- var d=DECK.b1,nt=!!(o&&o.snap);
- cue(1.2,function(){d.show('<p class="hero">'+seatName()+' is lower.</p><p class="cap" style="margin-top:12px">The outline is where it was. The colour is where it is.</p>'
-  +'<div class="after" id="b1-go" style="margin-top:24px"><button type="button" class="ring" id="b1-btn">Go on</button></div>',nt);say(seatName()+' is lower.');});
+ var d=DECK.b1,nt=!!(o&&o.snap),sn=SEAT[S.seat||0];
+ cue(1.2,function(){d.show('<p class="hero">'+sn+' is lower.</p><p class="cap">The outline is where it was. The colour is where it is.</p>'
+  +'<div class="after" id="b1-go" style="margin-top:24px"><button type="button" class="ring" id="b1-btn">Go on</button></div>',nt);say(sn+' is lower.');});
  cue(3.0,function(){var g=$('#b1-go');g&&g.classList.add('in');});}
 function enterB2(o){
  var d=DECK.b2,nt=!!(o&&o.snap);
- cue(.2,function(){S.card=d.show('<p class="hero">This is your avatar.</p><p class="cap" style="margin-top:12px">A lit station is something you did. The rest wait.</p>',nt);say('This is your avatar.');});
+ cue(.2,function(){S.card=d.show('<p class="hero">This is your avatar.</p><p class="cap">A lit station is something you did. The rest wait.</p>',nt);say('This is your avatar.');});
  cue(5.0-.22,function(){d.hide();});}
 function enterB3(o){
  var guest=S.mode==='guest';
@@ -840,51 +1266,58 @@ function enterB3(o){
 function enterSig(o){
  S.sigQ=false;$('#sig-q').classList.remove('in');$('#sig-qt').hidden=false;$$('#sig-q .signalq').forEach(function(e){e.hidden=false;});$('#sig-reply').textContent='';$('#sig-back').hidden=true;
  var d=DECK.sig,t=0,nt=!!(o&&o.snap);
- SIG.forEach(function(s){cue(t,function(){d.show('<p class="hero s" style="font-size:var(--f28);line-height:36px;font-weight:400">'+s[0]+'</p>',nt);say(s[0]);});t+=s[1];});}
+ SIG.forEach(function(s){cue(t,function(){d.show('<p class="hero s">'+s[0]+'</p>',nt);say(s[0]);});t+=s[1];});}
 
 /* ================================================================ drawing */
-function figAlpha(){
- if(!S.breathOn||STILL)return 1;
- var ramp=clamp(S.breathR/1.2,0,1),ph=(S.breathT%4.2)/4.2;
- var sm=function(x){return x*x*(3-2*x);};
- var shape=ph<.4?sm(ph/.4):1-sm((ph-.4)/.6);                 /* in for 1.7 s, out for 2.5 s: the exhale is longer */
- return 1-ramp*(1-(.64+.36*shape));}
-function drawFigure(c,p,o){
+/* the figure: a spine, seven seats (ring marks at rest), a halo, and a body outline drawn on the seat spacing.
+   Units are the figure's own, 178 high, so the outline, the seats and the tap targets are one geometry. */
+var BODYP=(function(){
+ function bz(p0,p1,p2,p3,n,out){for(var i=1;i<=n;i++){var t=i/n,u=1-t;out.push([u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]]);}}
+ var pts=[[94,74]],o=pts;
+ bz([94,74],[86,80],[72,83],[66,92],10,o);bz([66,92],[61,100],[62,112],[64,124],10,o);bz([64,124],[66,138],[68,150],[76,158],10,o);
+ bz([76,158],[84,166],[116,166],[124,158],14,o);bz([124,158],[132,150],[134,138],[136,124],10,o);
+ bz([136,124],[138,112],[139,100],[134,92],10,o);bz([134,92],[128,83],[114,80],[106,74],10,o);
+ var cum=[0],i;for(i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
+ return {pts:pts,cum:cum,len:cum[cum.length-1]};})();
+function figTime(){
+ if(S.figDone)return 9;
+ if(S.act==='transit')return S.t-.4;
+ if(S.act==='arr1')return .6+S.t;
+ return 9;}
+function drawFig(c,p,o){
  var s=p.h/178,X=function(x){return p.cx+(x-100)*s;},Y=function(y){return p.cy+(y-89)*s;};
- var i,r=Math.min(4.6*s,6);
+ var i,r=Math.min(4.6*s,6),ft=figTime(),asm=ft<9;
+ var sp=asm?tw(ft,0,.7,EDRAW):1,halo=asm?tw(ft,.9,.9,EDRAW):1;
  c.save();c.globalAlpha=o.alpha==null?1:o.alpha;
- var sp=o.spine==null?1:o.spine;
+ /* the body outline: ink at 28 percent, drawn on over 900 ms (straight ahead: it is drawn, not faded) */
+ if(S.bodyA>.01){
+  var D=EDRAW(clamp(S.bodyD,0,1)),a=S.bodyA;
+  c.strokeStyle=rgba(INK,.3*a);c.lineWidth=1.5;c.lineCap='round';c.lineJoin='round';
+  var hd=clamp(D/.3,0,1);if(hd>0){c.beginPath();c.ellipse(X(100),Y(56),12.5*s,17*s,0,-Math.PI/2,-Math.PI/2+TAU*hd);c.stroke();}
+  var td=clamp((D-.2)/.8,0,1),lim=BODYP.len*td;
+  if(td>0){c.beginPath();c.moveTo(X(BODYP.pts[0][0]),Y(BODYP.pts[0][1]));
+   for(i=1;i<BODYP.pts.length;i++){if(BODYP.cum[i]>lim){var f=(lim-BODYP.cum[i-1])/(BODYP.cum[i]-BODYP.cum[i-1]);
+     c.lineTo(X(BODYP.pts[i-1][0]+(BODYP.pts[i][0]-BODYP.pts[i-1][0])*f),Y(BODYP.pts[i-1][1]+(BODYP.pts[i][1]-BODYP.pts[i-1][1])*f));break;}
+    c.lineTo(X(BODYP.pts[i][0]),Y(BODYP.pts[i][1]));}
+   c.stroke();}}
  if(sp>0){c.strokeStyle=rgba(INK,.4);c.lineWidth=1.5;c.beginPath();c.moveTo(X(100),Y(160));c.lineTo(X(100),Y(160-120*sp));c.stroke();}
- if(o.halo>0){c.strokeStyle=rgba(INK,.85);c.lineWidth=1.5;c.beginPath();c.ellipse(X(100),Y(21),13*s,4.4*s,0,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,o.halo));c.stroke();}
+ if(halo>0){c.strokeStyle=rgba(INK,.85);c.lineWidth=1.5;c.beginPath();c.ellipse(X(100),Y(21),13*s,4.4*s,0,-Math.PI/2,-Math.PI/2+TAU*Math.min(1,halo));c.stroke();}
  for(i=0;i<7;i++){
-  var L=o.land?o.land[i]:1;if(L<=0)continue;
+  var L=asm?tw(ft,.2+.09*i,.32,ELAND):1;if(L<=0)continue;
   var hu=o.hue?o.hue[i]:0;
-  c.fillStyle=mix(INK40,hex(PAL[i]),hu);c.beginPath();c.arc(X(100),Y(160-20*i),Math.max(.1,r*L),0,6.2832);c.fill();}
+  c.fillStyle=mix(INK40,PALRGB[i],hu);c.beginPath();c.arc(X(100),Y(160-20*i),Math.max(.1,r*L*(o.land?o.land[i]:1)),0,TAU);c.fill();}
  c.restore();}
 function arcRing(c,cx,cy,r,prog,col,lw,a){
  if(prog<=0||a<=0)return;c.save();c.globalAlpha=a;c.strokeStyle=col;c.lineWidth=lw;c.beginPath();
- c.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,prog));c.stroke();c.restore();}
-function dot(c,x,y,r,col,a){c.save();c.globalAlpha=a==null?1:a;c.fillStyle=col;c.beginPath();c.arc(x,y,r,0,6.2832);c.fill();c.restore();}
-function ringMark(c,x,y,r,col,lw,a){c.save();c.globalAlpha=a==null?1:a;c.strokeStyle=col;c.lineWidth=lw;c.beginPath();c.arc(x,y,r,0,6.2832);c.stroke();c.restore();}
-function ticks112(c,cx,cy,r,len,a,hi,hiHue,hiP){
- c.save();c.lineCap='round';c.lineWidth=r<40?1:1.5;
- for(var j=0;j<112;j++){
-  var ang=Math.PI/2+j*Math.PI*2/112,ca=Math.cos(ang),sa=Math.sin(ang);
-  var al=a*(STILL?1:clamp((hiP.grow-j*.006)/.2,0,1));
-  if(al<=0)continue;
-  var isH=(j===hi),l=isH?len*1.8:len;
-  c.strokeStyle=isH&&hiP.on?hiHue:rgba(INK,.4);c.lineWidth=isH&&hiP.on?(r<40?2:3):(r<40?1:1.5);c.globalAlpha=al;
-  c.beginPath();c.moveTo(cx+ca*r,cy+sa*r);c.lineTo(cx+ca*(r+l),cy+sa*(r+l));c.stroke();}
- c.restore();}
-/* THE DOOR'S RINGS. Drawn on the stage canvas, which is already redrawn every frame, so the motion costs no extra layer:
-   every move here is a scale, a rotation or an alpha on a ring that is already being stroked, and nothing is blurred.
-   The tick ring (112 ticks, one per address, seven seat hues) only breathes: a 1.2 percent scale on 61 s and an alpha on
-   47 s. The three arc rings drift: each scales 1.5 percent and turns a few degrees back and forth, on periods of 53 to 89 s,
-   staggered by phase and alternating direction so no two ever agree. At the widest ring that is about 5 px a second.
-   Reduced motion (STILL, set by the strip's switch and by prefers-reduced-motion) draws the rest pose and nothing else.
-   The ring's centre is the stage centre when the door is wide and the middle of the wordmark's box when it is narrow. */
-function FONT(){return getComputedStyle(document.documentElement).getPropertyValue('--font-ui').trim()||'system-ui,sans-serif';}   /* the canvas reads the one font variable, never a typed name */
-var TAU=Math.PI*2,ARCP=[[53,71,0.0,1],[67,89,2.1,-1],[79,59,4.2,1]];
+ c.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+TAU*Math.min(1,prog));c.stroke();c.restore();}
+function dot(c,x,y,r,col,a){c.save();c.globalAlpha=a==null?1:a;c.fillStyle=col;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();c.restore();}
+function ringMark(c,x,y,r,col,lw,a){c.save();c.globalAlpha=a==null?1:a;c.strokeStyle=col;c.lineWidth=lw;c.beginPath();c.arc(x,y,r,0,TAU);c.stroke();c.restore();}
+
+/* THE DOOR'S RINGS. Drawn on the stage canvas, so the motion costs no extra layer. The tick ring (112 ticks, one per
+   address, seven seat hues) breathes: 1.2 percent scale on 61 s and an alpha on 47 s. The three arc rings drift: each scales
+   1.5 percent and turns a few degrees back and forth on periods of 53 to 89 s, staggered so no two ever agree. Reduced
+   motion draws the rest pose. Unchanged by round PP: the Field takes over from these same ticks in the transit. */
+function FONT(){return getComputedStyle(document.documentElement).getPropertyValue('--font-ui').trim()||'system-ui,sans-serif';}
 function loginGeo(){
  var nar=W<=700,tl=nar?8:11,cx=W/2,cy=H/2,R;
  if(nar){var dial=H>=780?208:H>=700?160:0;R=dial?dial/2-tl:72;
@@ -892,6 +1325,7 @@ function loginGeo(){
   if(mk.height)cy=((mk.top+mk.bottom)/2-sr.top)*k;
   return {cx:cx,cy:cy,r:R,tl:tl,ticks:dial>0};}
  return {cx:cx,cy:cy,r:Math.min(W,H)*.335,tl:tl,ticks:true};}
+var ARCP2=ARCP;
 function loginRing(c,k,a){
  var g=loginGeo(),cx=g.cx,cy=g.cy,r=g.r,tl=g.tl,i,t=S.ringT;
  var br=STILL?.75:.72+.16*Math.sin(TAU*t/47),kt=STILL?1:1+.012*Math.sin(TAU*t/61);
@@ -901,15 +1335,16 @@ function loginRing(c,k,a){
   c.strokeStyle=PAL[s];c.beginPath();c.moveTo(cx+Math.cos(ang)*r,cy+Math.sin(ang)*r);c.lineTo(cx+Math.cos(ang)*(r+tl),cy+Math.sin(ang)*(r+tl));c.stroke();}
  c.restore();
  [1.2,1.44,1.72].forEach(function(m,ri){
-  var P=ARCP[ri],sc=STILL?1:1+.015*Math.sin(TAU*t/P[0]+P[2]),rot=STILL?0:P[3]*(4+ri*1.5)*Math.PI/180*Math.sin(TAU*t/P[1]+P[2]);
+  var P=ARCP2[ri],sc=STILL?1:1+.015*Math.sin(TAU*t/P[0]+P[2]),rot=STILL?0:P[3]*(4+ri*1.5)*Math.PI/180*Math.sin(TAU*t/P[1]+P[2]);
   c.save();c.translate(cx,cy);c.rotate(rot);c.scale(k*sc,k*sc);c.translate(-cx,-cy);
   c.lineCap='round';c.lineWidth=1.4;c.globalAlpha=a*(.38-ri*.09)*(STILL?1:.9+.1*br);
   for(var s=0;s<7;s++){var a0=Math.PI/2+s*TAU/7+.038+ri*.05,a1=Math.PI/2+(s+1)*TAU/7-.038+ri*.05;
    c.strokeStyle=PAL[s];c.beginPath();c.arc(cx,cy,r*m,a0,a1);c.stroke();}
   c.restore();});}
-/* the loop: one circle, four stations. Unlit in Reel A, lit only for an act done in Reel B. */
+
+/* the loop: one circle, four stations. Lit only for an act done. */
 function loopDraw(c,p,o){
- var R=ringR(p),cx=p.cx,cy=p.cy,i;
+ var R=o.R,cx=p.cx,cy=p.cy,i;
  arcRing(c,cx,cy,R,o.prog,rgba(INK,.4),1.5,1);
  var ang=[-Math.PI/2,0,Math.PI/2,Math.PI];
  c.save();c.font='400 13px '+FONT();c.textBaseline='middle';
@@ -923,84 +1358,45 @@ function loopDraw(c,p,o){
   if(i===0){c.textAlign='center';ty=y+22;}else if(i===2){c.textAlign='center';ty=y-22;}else if(i===1){c.textAlign='right';tx=x-16;}else{c.textAlign='left';tx=x+16;}
   c.fillText(LOOP[i],tx,ty);c.globalAlpha=1;}
  c.restore();
- if(o.dot!=null&&o.dot>0){var a=-Math.PI/2+o.dot*Math.PI*2;dot(c,cx+R*Math.cos(a),cy+R*Math.sin(a),4,rgba(INK,.85));}}
+ if(o.dot!=null&&o.dot>0){var a=-Math.PI/2+o.dot*TAU;dot(c,cx+R*Math.cos(a),cy+R*Math.sin(a),4,rgba(INK,.85));}}
 
-function sceneReel(c,i,t,p){
- var R=ringR(p),cx=p.cx,cy=p.cy,j,s7=function(v){return [v,v,v,v,v,v,v];};
- var o={hue:s7(1),land:s7(1),spine:1,halo:1};
- if(i===0){
-  o.spine=tw(t,0,.7,EDRAW);o.halo=tw(t,.9,.9,EDRAW);
-  for(j=0;j<7;j++)o.land[j]=tw(t,.2+.09*j,.32,ELAND);}
- if(i===1){
-  [.5,.75,1].forEach(function(m,k){arcRing(c,cx,cy,R*m,tw(t,.6+.15*k,.9,EDRAW),rgba(INK,.4),1,1);});
-  var pop=t>4.1&&t<4.42&&!STILL?Math.sin(Math.PI*(t-4.1)/.32):0;
-  for(j=0;j<7;j++)o.land[j]=1+.35*pop;}
- if(i===2){[.5,.75,1].forEach(function(m){arcRing(c,cx,cy,R*m,1,rgba(INK,.4),1,1);});}
- drawFigure(c,p,o);
- if(i===1&&t>=1.5&&t<4.1){
-  var u=tw(t,3.0,1.1,EIN),ap=tw(t,1.5,.22,EOUT);
-  for(j=0;j<7;j++){
-   var th=-Math.PI/2+(j+.5)*Math.PI*2/7,x0=cx+R*Math.cos(th),y0=cy+R*Math.sin(th),sp=seatXY(p,j);
-   var dx=sp.x-x0,dy=sp.y-y0,d=Math.sqrt(dx*dx+dy*dy)||1,bend=.12*d*Math.sin(Math.PI*u);
-   dot(c,lerp(x0,sp.x,u)+(-dy/d)*bend,lerp(y0,sp.y,u)+(dx/d)*bend,4,PAL[j],ap);}}
- if(i===3){
-  var ra=1-tw(t,0,.22,EIN);
-  [.5,.75,1].forEach(function(m){arcRing(c,cx,cy,R*m,1,rgba(INK,.4),1,ra);});
-  var hp={grow:STILL?9:(t-.3)*1.25,on:t>=1.4};         /* ticks sweep clockwise from the root, 112 of them, over about 1.1 s */
-  ticks112(c,cx,cy,R,Math.max(6,R*.045),1,0,PAL[0],hp);}
- if(i===4){
-  var ta=1-tw(t,0,.22,EIN);
-  if(ta>0)ticks112(c,cx,cy,R,Math.max(6,R*.045),ta,-1,PAL[0],{grow:9,on:false});
-  var st=[];for(j=0;j<4;j++)st.push(tw(t,.9+j*1.0,.32,ELAND));
-  var dp=tw(t,.9,4.0,function(x){return x;});               /* one dot, once round, linear: it is real time */
-  loopDraw(c,p,{prog:tw(t,0,.9,EDRAW),st:st,lit:[0,0,0,0],dot:dp});}
- }
+function figAlpha(){
+ if(STILL||FD.breathA<.05)return 1;
+ return 1-FD.breathA*.36*(1-breathShape());}
+/* the flow scenes: the figure, the seat marks (a ring that Lands with 35 percent overshoot), the hover ring, the bead */
+function sceneFlow(c,p){
+ var hue=[0,0,0,0,0,0,0],land=[1,1,1,1,1,1,1],mk=S.mark;
+ if(mk){var u=tw(mk.t,0,.42,EOUT);hue[mk.seat]=mk.t<0?0:u;
+  var pu=mk.t>0&&mk.t<.32&&!STILL?Math.sin(Math.PI*mk.t/.32):0;land[mk.seat]=1+.35*pu;}
+ if(S.lexMark){hue[S.lexMark.seat]=tw(S.lexMark.t,0,.42,EOUT);}
+ drawFig(c,p,{hue:hue,land:land,alpha:figAlpha()});
+ var s=p.h/178,rr=.062*p.h;
+ if(S.hover>=0&&S.act==='body'&&!(S.mark&&S.mark.seat===S.hover)){var h=seatXY(p,S.hover);ringMark(c,h.x,h.y,rr*.8,rgba(INK,.6),1.5,1);}
+ if(mk&&mk.t>=-.0){var q=seatXY(p,mk.seat),a=tw(mk.t,0,.32,ELAND);ringMark(c,q.x,q.y,rr*Math.max(a,0)*(1+.2*(mk.t>0&&mk.t<.32&&!STILL?Math.sin(Math.PI*mk.t/.32):0)),PAL[mk.seat],1.5,clamp(a,0,1));}
+ if(S.lexMark&&S.lexMark.t>=0){var q2=seatXY(p,S.lexMark.seat),a2=tw(S.lexMark.t,0,.32,ELAND);ringMark(c,q2.x,q2.y,rr*Math.max(a2,0),PAL[S.lexMark.seat],1.5,clamp(a2,0,1));}}
+function sceneBead(c){
+ var b=S.bead;if(!b||b.done||b.t<0)return;
+ var g=centre(),u=EIN(clamp(b.t/b.dur,0,1)),dx=g.x-b.x0,dy=g.y-b.y0,d=Math.sqrt(dx*dx+dy*dy)||1,bend=.12*d*Math.sin(Math.PI*u);
+ dot(c,lerp(b.x0,g.x,u)+(-dy/d)*bend,lerp(b.y0,g.y,u)+(dx/d)*bend,4,rgba(INK,.85));}
 
-function sceneRead(c,t,p){
- var hue=[0,0,0,0,0,0,0];if(S.seat!=null&&S.src!=='none')hue[S.seat]=tw(t,.3,.42,EOUT);
- var land=[1,1,1,1,1,1,1];if(S.seat!=null&&S.src!=='none'&&!STILL){var u=t-.3;land[S.seat]=1+(u>0&&u<.32?.35*Math.sin(Math.PI*u/.32):0);}
- drawFigure(c,p,{hue:hue,land:land,alpha:figAlpha()});
- if(S.seat!=null&&S.src!=='none'){var sp=seatXY(p,S.seat),a=tw(t,.3,.32,ELAND);
-  ringMark(c,sp.x,sp.y,.062*p.h*Math.max(a,0),mix(INK40,hex(PAL[S.seat]),1),1.5,clamp(a,0,1));}}
-
-function sceneGate(c,t,p){
- var hue=[1,1,1,1,1,1,1],d=tw(t,0,.42,EOUT);hue=hue.map(function(){return 1-d;});
- drawFigure(c,p,{hue:hue});
- /* the loop circle from slide 5 stays for a moment around the figure, then folds in with it */
- var fa=1-tw(t,0,.22,EIN);
- if(fa>0){arcRing(c,p.cx,p.cy,ringR(p),1,rgba(INK,.4),1.5,fa);}
- if(S.bead){var b=S.bead,u=tw(S.t-b.t0,0,b.dur,EIN);
-  if(S.t>=b.t0){var to=S.seed>=0?seatXY(p,S.seed):{x:p.cx,y:p.cy};
-   var dx=to.x-b.x,dy=to.y-b.y,dd=Math.sqrt(dx*dx+dy*dy)||1,bend=.12*dd*Math.sin(Math.PI*u);
-   var done=S.t>=b.t0+b.dur;
-   if(!done)dot(c,lerp(b.x,to.x,u)+(-dy/dd)*bend,lerp(b.y,to.y,u)+(dx/dd)*bend,4,rgba(INK,.85));
-   else if(S.seed>=0)ringMark(c,to.x,to.y,7,rgba(INK,.85),1.5,tw(S.t,b.t0+b.dur,.32,ELAND));}}}
-function sceneStory(c,t,p){
- drawFigure(c,p,{hue:[0,0,0,0,0,0,0]});
- if(S.seed>=0){var sp=seatXY(p,S.seed);ringMark(c,sp.x,sp.y,7,rgba(INK,.85),1.5,1);}}   /* the seed mark: a 12 px ink ring, never a hue */
 function sceneRel(c,t){
- var nar=W<=700,a=$('#aslot'),cs=$('#cslot');
- var sealed=clamp(Math.floor((t-REL.lines0)/REL.lineLen),0,REL.n);
- if(t<REL.lines0)sealed=0;
- /* address ring, small, upper left: 112 ticks, the current line's address in its seat's hue at 12 px or less */
- var r1=a.getBoundingClientRect(),sr=stage.getBoundingClientRect(),k=sr.width/(stage.clientWidth||1)||1;
- var ax=(r1.left+r1.width/2-sr.left)/k,ay=(r1.top+r1.height/2-sr.top)/k,ar=r1.width/k/2-6;
+ var nar=W<=700,cs=$('#cslot');
+ var sealed=clamp(Math.floor((t-REL.lines0)/REL.lineLen),0,REL.n);if(t<REL.lines0)sealed=0;
  var list=S.relList||[],cur=(t>=REL.lines0&&t<REL.settle0)?list[clamp(Math.floor((t-REL.lines0)/REL.lineLen),0,list.length-1)]:null;
- var hi=cur?cur[0]-1:-1;
- ticks112(c,ax,ay,ar,4,1,hi,cur?PAL[BAND.indexOf(cur[2])]:PAL[0],{grow:9,on:!!cur});
- /* gift ring, 100 ticks, one drops to ink 40 per line */
+ FD.resetLit();for(var q=0;q<sealed&&q<list.length;q++)FD.lit[list[q][0]-1]=1;
+ if(cur){FD.litCur=cur[0]-1;S.litSeat=BAND.indexOf(cur[2]);}
+ var sr=stage.getBoundingClientRect(),k=sr.width/(stage.clientWidth||1)||1;
  var r2=cs.getBoundingClientRect(),gx=(r2.left+r2.width/2-sr.left)/k,gy=(r2.top+r2.height/2-sr.top)/k,gr=r2.width/k/2-5;
  var show=tw(t,REL.gift,.42,EOUT);
  if(show>0){c.save();c.lineWidth=1;c.lineCap='butt';c.globalAlpha=show;
-  for(var j=0;j<GIFT_START;j++){var ang=-Math.PI/2+j*Math.PI*2/GIFT_START,spent=j>=GIFT_START-sealed;
+  for(var j=0;j<GIFT_START;j++){var ang=-Math.PI/2+j*TAU/GIFT_START,spent=j>=GIFT_START-sealed;
    c.strokeStyle=spent?rgba(INK,.4):rgba(INK,.85);c.beginPath();c.moveTo(gx+Math.cos(ang)*gr,gy+Math.sin(ang)*gr);c.lineTo(gx+Math.cos(ang)*(gr+5),gy+Math.sin(ang)*(gr+5));c.stroke();}
   c.restore();}
- /* the settle dial, linear because it is real time */
  if(t>=REL.settle0){
-  var q=(t-REL.settle0)/REL.settleLen;if(STILL)q=Math.floor(q*REL.settleLen)/REL.settleLen;
-  var dr=nar?54:68,dcx=W/2,dcy=H*(nar?.66:.68);
-  arcRing(c,dcx,dcy,dr,1,rgba(INK,.4),1.5,1);arcRing(c,dcx,dcy,dr,clamp(q,0,1),rgba(INK,.85),2,1);
-  var an=-Math.PI/2+clamp(q,0,1)*Math.PI*2;dot(c,dcx+dr*Math.cos(an),dcy+dr*Math.sin(an),4,rgba(INK,.85));}
+  var qq=(t-REL.settle0)/REL.settleLen;if(STILL)qq=Math.floor(qq*REL.settleLen)/REL.settleLen;
+  var dr=nar?54:68,dcx=W/2,dcy=H*(nar?.7:.74);
+  arcRing(c,dcx,dcy,dr,1,rgba(INK,.4),1.5,1);arcRing(c,dcx,dcy,dr,clamp(qq,0,1),rgba(INK,.85),2,1);
+  var an=-Math.PI/2+clamp(qq,0,1)*TAU;dot(c,dcx+dr*Math.cos(an),dcy+dr*Math.sin(an),4,rgba(INK,.85));}
  syncRel(sealed,t);}
 function syncRel(n,t){
  if(S.sealed!==n){S.sealed=n;
@@ -1008,73 +1404,93 @@ function syncRel(n,t){
   var c=$('#cnt');c.textContent=GIFT_START-n;
   if(n>0){c.classList.remove('land');c.classList.add('pre');void c.offsetWidth;c.classList.add('land');}}
  $('#seals').classList.toggle('on',t>=REL.lines0&&t<REL.settle0);}
+function seatHue(){var h=[0,0,0,0,0,0,0];h[S.seat||0]=1;return h;}
 function sceneB1(c,t,p){
- var hue=[0,0,0,0,0,0,0];hue[S.seat||0]=1;
- drawFigure(c,p,{hue:hue,alpha:figAlpha()});
+ drawFig(c,p,{hue:seatHue(),alpha:figAlpha()});
  var sp=seatXY(p,S.seat||0),r0=.062*p.h,r1=.034*p.h,u=tw(t,.8,.9,EOUT);
  ringMark(c,sp.x,sp.y,r0,rgba(INK,.4),1.5,1);
  ringMark(c,sp.x,sp.y,lerp(r0,r1,u),PAL[S.seat||0],1.5,1);}
 function sceneB2(c,t,p){
- var hue=[0,0,0,0,0,0,0];hue[S.seat||0]=1;
- drawFigure(c,p,{hue:hue,alpha:figAlpha()});
- /* stations in loop order: Discover, Play, Flow, Embody. Discover is the reading, Flow the release lines, Embody the
-    settle. Play is games and nothing here played one, so it stays unlit. */
- var lit=[1,0,1,1];
- var earn=[1.2,0,1.6,2.0],st=earn.map(function(e,i){return i===1?tw(t,.9,.32,ELAND):tw(t,e,.32,ELAND);});
- loopDraw(c,p,{prog:tw(t,.3,.9,EDRAW),st:st,lit:lit});}
-function sceneB3(c,t,p){var hue=[0,0,0,0,0,0,0];hue[S.seat||0]=1;drawFigure(c,p,{hue:hue,alpha:figAlpha()});}
+ drawFig(c,p,{hue:seatHue(),alpha:figAlpha()});
+ /* stations in loop order: Discover, Play, Flow, Embody. Play is games and nothing here played one, so it stays unlit. */
+ var lit=[1,0,1,1],earn=[1.2,0,1.6,2.0],st=earn.map(function(e,i){return i===1?tw(t,.9,.32,ELAND):tw(t,e,.32,ELAND);});
+ loopDraw(c,p,{R:p.rx+tickLen(p)+20,prog:tw(t,.3,.9,EDRAW),st:st,lit:lit});}
+function sceneB3(c,t,p){drawFig(c,p,{hue:seatHue(),alpha:figAlpha()});}
 function sceneSig(c,t,p){
- var hue=[0,0,0,0,0,0,0];hue[4]=1;drawFigure(c,p,{hue:hue,alpha:figAlpha()});
+ var hue=[0,0,0,0,0,0,0];hue[4]=1;drawFig(c,p,{hue:hue,alpha:figAlpha()});
  var sp=seatXY(p,4);ringMark(c,sp.x,sp.y,.062*p.h*tw(t,.3,.32,ELAND),PAL[4],1.5,1);}
 
 function draw(){
  if(!W)return;
  var c=ctx,t=S.t,p=POSE.cur,a=S.act;
  c.setTransform(DPR,0,0,DPR,0,0);c.clearRect(0,0,W,H);
- if(a==='login')loginRing(c,1,1);
- else if(a==='transit'){var u=tw(t,.2,.42,EOUT);loginRing(c,1+.5*u,1-u);}
- else if(/^A[1-5]$/.test(a))sceneReel(c,+a.charAt(1)-1,t,p);
- else if(a==='gate')sceneGate(c,t,p);
- else if(a==='story')sceneStory(c,t,p);
- else if(a==='read')sceneRead(c,t,p);
- else if(a==='rel')sceneRel(c,t);
- else if(a==='b1')sceneB1(c,t,p);
+ if(a==='login'){loginRing(c,1,1);return;}
+ if(a==='transit'){
+  var d=loginGeo(),u=tw(t,.15,.75,EOUT),e={cx:p.cx,cy:p.cy,rx:p.rx,ry:p.ry},g={cx:lerp(d.cx,e.cx,u),cy:lerp(d.cy,e.cy,u),rx:lerp(d.r,e.rx,u),ry:lerp(d.r,e.ry,u)};
+  FD.draw(c,g,{tl:lerp(d.tl,tickLen(e),u),a:d.ticks?1:u,motes:false});
+  sceneFlow(c,p);return;}
+ var g2={cx:p.cx,cy:p.cy,rx:p.rx,ry:p.ry};
+ if(a==='rel'){FD.draw(c,g2,{motes:false,litSeat:S.litSeat,a:1});sceneRel(c,t);return;}
+ if(a==='end'){return;}
+ FD.draw(c,g2,{});
+ if(a==='b1')sceneB1(c,t,p);
  else if(a==='b2')sceneB2(c,t,p);
  else if(a==='b3')sceneB3(c,t,p);
- else if(a==='sig')sceneSig(c,t,p);}
+ else if(a==='sig')sceneSig(c,t,p);
+ else{sceneFlow(c,p);sceneBead(c);}}
+
+
+/* ================================================================ layout on resize */
+function relayout(){
+ W=stage.clientWidth;H=stage.clientHeight;DPR=Math.min(2,window.devicePixelRatio||1);
+ cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
+ stage.style.setProperty('--dial',(W<=700?(H>=780?208:H>=700?160:0):0)+'px');
+ var top=lay('top');stage.style.setProperty('--top-b',(top.cy+top.ry*1.74+16)+'px');
+ layoutChips();layoutBody();
+ var A=ACT[S.act];
+ if(A&&A.pose){POSE.cur=lay(A.pose);POSE.to=null;}
+ if(A&&A.box)placeBox(A.box,A.pose,true);
+ draw();}
 
 /* ================================================================ the clock */
 function ctlState(){
- var A=ACT[S.act],user=!!(S.mask&4);
+ var user=!!(S.mask&4);
  $('#pause').innerHTML=ico(user?'play':'pause',22);
  $('#pause').setAttribute('aria-label',user?'Resume':'Pause');$('#pausel').textContent=user?'Resume':'Pause';
  var snd=$('#soundb');snd.innerHTML=ico(snd.getAttribute('aria-pressed')==='true'?'sound':'muted',22);}
 function step(dt){
  if(S.mask&16)return;
  var A=ACT[S.act];if(!A)return;
- stepPose(dt);
- S.breathT+=dt;
+ var paused=!!(S.mask&(1|2|4|32));
  if(!(S.mask&64))S.ringT+=dt;   /* the door's ring clock. A frozen shot freezes the drift too, so a screenshot is the same picture twice */
- if(S.breathOn&&!(A.clocked&&S.mask))S.breathR+=dt;
+ if(!paused){
+  stepPose(dt);FD.step(dt,!!(S.mask&64));
+  if(S.bead){S.bead.t+=dt;if(S.bead.t>=S.bead.dur)S.bead.done=true;}
+  if(S.mark)S.mark.t+=dt;if(S.lexMark)S.lexMark.t+=dt;
+  if(S.bodyOn)S.bodyW+=dt;
+  S.bodyD=STILL?1:clamp((S.bodyW-.25)/.9,0,1);
+  S.bodyA+=STILL?(S.bodyAT-S.bodyA):(S.bodyAT-S.bodyA)*(1-Math.exp(-dt/.25));
+  if(S.dw){S.dw.left-=dt;if(S.dw.left<=0){var nx=S.dw.next;S.dw=null;go(nx);return;}}}
  if(A.clocked){
   var tgt=S.mask?0:1;S.rate=tgt?Math.min(1,S.rate+dt/.32):0;     /* a release from hold or pause ramps in over 320 ms */
   S.t+=dt*S.rate*S.speed/S.mul;
   runCues();
-  if(A.hair!=null)hairline(A);
   if(!S.outDone&&A.deck&&S.t>=A.len-.22&&A.next){S.outDone=true;DECK[A.deck].hide();}
+  if(!S.outDone&&A.sec==='flow'&&S.t>=A.len-.22&&A.next){S.outDone=true;DECK.fl.hide();}
   if(S.t>=A.len){
    if(A.holdEnd){S.t=A.len;if(!S.sigQ&&A.onEnd)A.onEnd();}
    else go(A.next);}
  }else{
   S.t+=dt;runCues();
-  if(S.act==='gate'&&!S.live&&S.t>=1.1){S.live=true;$('#s-gate').classList.add('live');}
+  if(S.act==='ask'&&!S.live&&S.t>=1.0&&!S.picked){S.live=true;SETS.start.host.classList.add('live');}
   if(S.act==='b1'&&S.t>=3.0)$('#b1-go')&&$('#b1-go').classList.add('in');}}
-function hairline(A){
- $$('#hair i b').forEach(function(b,i){
-  var f=i<A.hair?1:i===A.hair?clamp(S.t/A.len,0,1):0;b.style.transform='scaleX('+f+')';});}
+var MEAS={rec:false,ft:[]};
 function frame(ts){
  var dt=(ts-S.last)/1000;S.last=ts;if(!(dt>0))dt=0;if(dt>.1)dt=.1;       /* clamp 100 ms: a longer gap is a hidden tab, which is a pause */
- step(dt);draw();readout();requestAnimationFrame(frame);}
+ if(MEAS.manual){requestAnimationFrame(frame);return;}                       /* filmstrip.js steps the clock by hand */
+ var a=performance.now();step(dt);draw();var b=performance.now();
+ if(MEAS.rec)MEAS.ft.push([ts,dt*1000,b-a,S.act,FD.mv.pose+FD.mv.wave+FD.mv.rip+FD.mv.pull+FD.mv.bead+FD.mv.lean]);
+ readout();requestAnimationFrame(frame);}
 var roAt=0;
 function readout(){
  var n=performance.now();if(n-roAt<120)return;roAt=n;
@@ -1083,15 +1499,16 @@ function readout(){
 
 /* ================================================================ controls */
 function togglePause(){S.mask^=4;ctlState();}
-function nextSlide(){var A=ACT[S.act];if(A.hair==null&&S.act!=='b2')return;go(A.next);}
+var TAPNEXT={arr1:1,arr2:1,settle:1,b2:1},TAPBACK={arr2:'arr1',b2:'b1'};
+function nextSlide(){var A=ACT[S.act];if(!TAPNEXT[S.act])return;go(A.next);}
 function backSlide(){
- var A=ACT[S.act],now=S.t;
- if(A.hair==null&&S.act!=='b2')return;
+ if(!TAPNEXT[S.act])return;
  var twice=(performance.now()/1000-S.lastBack)<1.5;S.lastBack=performance.now()/1000;
- if(twice&&A.hair>0)go(SL[A.hair-1].id);else if(twice&&S.act==='b2')go('b1');else go(S.act);}   /* first tap restarts this one, a second within 1.5 s goes back one */
+ if(twice&&TAPBACK[S.act])go(TAPBACK[S.act]);else go(S.act);}   /* first tap restarts this one, a second within 1.5 s goes back one */
 function skip(){
  var id=S.act;
- if(/^A[1-5]$/.test(id)||id==='transit')go('gate');
+ if(id==='arr1'||id==='arr2'||id==='transit')go('ask');
+ else if(id==='settle')go('feel');
  else if(id==='rel')go('b1');
  else if(id==='b2'||id==='sig')go('b3');}
 function leave(){S.end='leave';go('end');}
@@ -1105,13 +1522,17 @@ function endHold(e,cancel){
  if(!hold)return;clearTimeout(hold.timer);var h=hold;hold=null;
  if(h.held){S.mask&=~1;ctlState();return;}
  if(cancel)return;
- var A=ACT[S.act];if(!A||(A.hair==null&&S.act!=='b2'))return;
+ if(!TAPNEXT[S.act])return;
  var r=stage.getBoundingClientRect(),f=(h.x-r.left)/r.width;
  if(f<1/3)backSlide();else nextSlide();}
 stage.addEventListener('pointerup',function(e){endHold(e,false);});
 stage.addEventListener('pointercancel',function(e){endHold(e,true);});
 stage.addEventListener('pointerleave',function(e){if(hold&&hold.held)endHold(e,true);});
 stage.addEventListener('contextmenu',function(e){if(stage.classList.contains('film'))e.preventDefault();});
+/* a tap on empty stage while the space after an answer is running goes on at once */
+stage.addEventListener('click',function(e){
+ if(!S.dw||e.target.closest('button,a,input,textarea,select,label'))return;
+ var n=S.dw.next;S.dw=null;go(n);});
 
 $('#pause').addEventListener('click',function(e){e.stopPropagation();togglePause();});
 $('#pause').addEventListener('focus',function(){if($('#pause').matches(':focus-visible')){S.mask|=32;}});
@@ -1124,23 +1545,24 @@ document.addEventListener('visibilitychange',function(){if(document.hidden)S.mas
 document.addEventListener('keydown',function(e){
  var A=ACT[S.act],typing=/^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName||''));
  if(S.stop){if(e.key==='Escape')showStop(false);return;}
- if(e.key==='Escape'){if(A&&A.clocked&&/skip/.test(A.ctl))skip();else if(S.act==='gate')leave();return;}
+ if(e.key==='Escape'){if(A&&A.clocked&&/skip/.test(A.ctl))skip();else if(S.act==='ask')leave();return;}
+ if(e.target.id==='m-in'&&e.key==='Enter'){e.preventDefault();var v=e.target.value.trim();if(v)applyFix(v);return;}
+ if(e.target.id==='words'&&e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();doStory(false);return;}
  if(typing||e.target.closest&&e.target.closest('#ctl'))return;
  if(A&&A.clocked&&e.key===' '&&!(e.target.tagName==='BUTTON')){togglePause();e.preventDefault();}
  if(e.key==='ArrowRight')nextSlide();
  if(e.key==='ArrowLeft')backSlide();});
 
-/* browser Back steps back one slide and never leaves the app */
+/* browser Back steps back one beat and never leaves the app */
 function pushH(id){try{history.pushState({a:id},'',location.href);}catch(e){}}
 window.addEventListener('popstate',function(){
- var id=S.act,m=/^A([1-5])$/.exec(id);
- if(m&&+m[1]>1)go(SL[+m[1]-2].id,{nopush:true});
- else if(id==='gate')go('A5',{nopush:true});
- else if(id==='story')go('gate',{nopush:true,keep:false});
+ var id=S.act;
+ if(id==='arr2')go('arr1',{nopush:true});
+ else if(id==='ask')go('arr2',{nopush:true});
  else pushH(id);});
 
-/* ---- the door. One row of Log in and Guest; Create account is its own quiet
-   control at the very bottom and flips the fields between the two modes. */
+/* ---- the door. One row of Log in and Guest; Create account is its own quiet control at the very bottom and flips the
+   fields between the two modes. UNCHANGED by round PP. */
 function setDoor(m){
  S.door=m;
  $('#lg-fields').classList.toggle('shut',m==='create');$('#lg-hint').hidden=m!=='create';
@@ -1150,16 +1572,16 @@ $('#lg-create').addEventListener('click',function(){setDoor(S.door==='create'?'l
 $('#lg-go').addEventListener('click',function(){if(S.door==='create'){S.mode='account';startRun();}else{S.end='login';go('end');}});
 $('#lg-guest').addEventListener('click',function(){S.mode='guest';startRun();});
 $('#lg-gico').innerHTML=ico('guest',20);
-function startRun(){S.breathOn=false;go('transit');}
+function startRun(){go('transit');}
 
-/* ---- the gate extras, the story, the read, reel B */
+/* ---- the flow's own buttons, reel B, the signal test */
 document.addEventListener('click',function(e){
  var b=e.target.closest('button');if(!b)return;
- if(b.id==='tbl-q'){S.tableQ=true;b.textContent='Opens after the film';}
- if(b.id==='gate-tbl')openTbl(true);
- if(b.id==='tbl-close')openTbl(false);
- if(b.id==='commit')doCommit();
- if(b.closest('#feels')){var w=b.dataset.w,ta=$('#words');ta.value=(ta.value.replace(/\s+$/,'')+(ta.value.trim()?' ':'')+w+' ').replace(/^\s+/,'');ta.focus();syncCommit();}
+ if(b.id==='st-done')doStory(false);
+ if(b.id==='st-skip')doStory(true);
+ if(b.id==='m-yes')go('recog');
+ if(b.id==='m-no'){var q=$('#mq');q&&q.classList.remove('in');var cr=$('#corr');cr&&cr.classList.add('in');setTimeout(function(){var i=$('#m-in');i&&i.focus({preventScroll:true});},STILL?0:420);}
+ if(b.id==='m-adj'){var v=($('#m-in')||{}).value;if(v&&v.trim())applyFix(v.trim());}
  if(b.id==='go-rel')go('rel');
  if(b.id==='b1-btn')go('b2');
  if(b.id==='b3-keep'){$('#b3-fine').classList.add('on');b.classList.add('live');$('#b3-u').focus({preventScroll:true});}
@@ -1174,13 +1596,8 @@ document.addEventListener('click',function(e){
  if(b.id==='sig-back')go('b3');
  if(b.id==='end-restart')restart();
 });
-$('#words').addEventListener('input',syncCommit);
-$('#words').addEventListener('keydown',function(e){if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();doCommit();}});
 $('#b3-tick').addEventListener('change',function(){$('#b3-make').disabled=!(this.checked&&$('#b3-u').value.trim().length>0&&$('#b3-p').value.length>0);});
 ['#b3-u','#b3-p'].forEach(function(s){$(s).addEventListener('input',function(){$('#b3-make').disabled=!($('#b3-tick').checked&&$('#b3-u').value.trim().length>0&&$('#b3-p').value.length>0);});});
-function openTbl(on){$('#tbl').classList.toggle('on',on);}
-(function buildTbl(){var h='';NODES.forEach(function(n){var bi=BAND.indexOf(n[2]);
- h+='<tr><td>'+n[0]+'</td><td>'+n[1]+'</td><td>'+(bi>=0?'<i class="dot" style="background:'+PAL[bi]+'"></i>':'')+n[2]+'</td><td>'+n[3]+'</td></tr>';});$('#tbl-b').innerHTML=h;})();
 
 /* ---- the distress stop frame. A static document: nothing animates and nothing is sold on it. */
 function stopFig(){
@@ -1189,7 +1606,7 @@ function stopFig(){
 function showStop(on){
  S.stop=on;$('#stop').classList.toggle('on',on);
  if(on)S.mask|=16;else S.mask&=~16;
- $$('.act,#hair,#ctrls').forEach(function(e){if(on)e.setAttribute('inert','');else e.removeAttribute('inert');});
+ $$('.act,#ctrls').forEach(function(e){if(on)e.setAttribute('inert','');else e.removeAttribute('inert');});
  var d=$('#c-stop');d.textContent=on?'Hide':'Show';d.setAttribute('aria-pressed',String(on));
  if(!on)return;
  $('#stop-fig').innerHTML=stopFig();
@@ -1203,41 +1620,70 @@ $('#c-stop').addEventListener('click',function(){showStop(!S.stop);});   /* the 
 
 /* ================================================================ the owner's strip */
 var JUMPS=[
- ['login','The door'],['transit','Transit from the door'],
- ['A1','Reel A 1, Welcome'],['A2','Reel A 2, Awareness'],['A3','Reel A 3, Mirror'],['A4','Reel A 4, 112 addresses'],['A5','Reel A 5, The loop'],
- ['gate','The gate'],['story','The story'],['read','The first reading'],
+ ['login','The door'],['transit','Transit from the door'],['arr1','Arrive 1, Welcome'],['arr2','Arrive 2, The invitation'],
+ ['ask','Ask, what brought you here'],['settle','Settle and notice'],['feel','Feel, what are you feeling'],['body','Body, where do you notice it'],
+ ['story','Story, what was happening'],['mirror','Mirror, here is what I heard'],['recog','Recognition and bridge'],
  ['rel-open','Release, opening'],['rel-lines','Release, lines'],['rel-settle','Release, settle'],
  ['b1','Reel B 1, The reading'],['b2','Reel B 2, The loop'],['b3','Reel B 3, Keep this'],['sig','Signal test'],['sigq','Signal test, question'],
  ['end','The Field (end)'],['stop','Stop frame']];
-function ensureDefaults(){
- if(S.pick==null){S.pick=0;}
- if(S.seat==null){S.seat=0;S.word='afraid';S.src='words';}
- if(!S.words)S.words='I am afraid that I am not enough';
- S.seed=STARTS[S.pick].s;}
+var ORDER=['login','transit','arr1','arr2','ask','settle','feel','body','story','mirror','recog','rel','b1','b2','b3','sig','end'];
+var DEFWORDS='I was trying to handle everyone and nobody asked if I was okay';
+/* a jump fills in what the person would have answered on the way, so any beat can be opened cold */
+function ensureDefaults(key){
+ var k=key.indexOf('rel')===0?'rel':key==='sigq'?'sig':key,ix=ORDER.indexOf(k);
+ if(ix>ORDER.indexOf('ask')&&S.pick==null)S.pick=2;
+ if(ix>ORDER.indexOf('feel')&&S.feel==null)S.feel=0;
+ if(ix>ORDER.indexOf('body')&&S.place===-1&&!S.placeAsked)S.place=3;
+ if(ix>ORDER.indexOf('story')&&!S.words&&!S.skipStory)S.words=DEFWORDS;
+ if(ix>ORDER.indexOf('story')&&!S.lex&&S.words)S.lex=readWords(S.words);
+ if(ix>ORDER.indexOf('mirror'))S.seat=mirrorSeat();
+ if(ix>=ORDER.indexOf('rel')&&S.seat==null)S.seat=mirrorSeat();
+ S.trail=[];
+ if(ix>ORDER.indexOf('ask')&&S.pick!=null)S.trail[0]={s:STARTS[S.pick].n};
+ if(ix>ORDER.indexOf('feel')&&S.feel>=0)S.trail[1]={s:FEELS[S.feel].n};
+ if(ix>ORDER.indexOf('body')&&S.place>=0)S.trail[2]={s:placeOf(S.place).n};
+ S.trail=S.trail.filter(Boolean);renderTrail();
+ S.mark=(ix>ORDER.indexOf('body')&&S.place>=0)?{seat:S.place,t:1}:null;
+ if(ix>=ORDER.indexOf('recog'))S.mark={seat:S.seat,t:1,hold:true};
+ S.lexMark=null;}
 function jump(key,t,o){
- o=o||{};var snap=true;
+ o=o||{};
  if(S.stop)showStop(false);
- openTbl(false);
- ensureDefaults();
- var m;
- if(/^A[1-5]$/.test(key)||key==='transit'||key==='gate'||key==='b1'||key==='b2'||key==='b3'||key==='sig'||key==='story'||key==='read'||key==='login'||key==='end'){
-  if(key==='read'||key==='b1'||key==='b2'||key==='b3'||key==='sig'){S.breathOn=true;S.breathR=2;}
-  if(key==='login')restart(true);
-  if(key==='end'&&!S.end)S.end='notnow';
-  if(key==='story')go('story',{snap:snap,keep:true});
-  else go(key==='login'?'login':key,{t:t||0,snap:snap});
- }else if(key==='rel-open'){S.breathOn=true;go('rel',{t:t!=null?t:REL.stem+1.9,snap:snap});}
- else if(key==='rel-lines'){S.breathOn=true;go('rel',{t:t!=null?t:REL.lines0+5.0,snap:snap});}
- else if(key==='rel-settle'){S.breathOn=true;go('rel',{t:t!=null?t:REL.settle0+4.0,snap:snap});}
- else if(key==='sigq'){S.breathOn=true;go('sig',{t:SIG_LEN,snap:snap});}
- else if(key==='stop'){showStop(true);}
+ var k=key.indexOf('rel')===0?'rel':key==='sigq'?'sig':key;
+ if(key==='login'){restart(true);go('login',{t:0,snap:true});if(o.freeze)S.mask|=64;else S.mask&=~64;ctlState();return;}
+ ensureDefaults(key);
+ S.figDone=ORDER.indexOf(k)>ORDER.indexOf('arr1');
+ SETS.start.host.className='chipset start';SETS.feel.host.className='chipset feel';layoutChips();
+ S.bodyOn=ORDER.indexOf(k)>=ORDER.indexOf('body');S.bodyW=S.bodyOn?3:0;
+ if(key==='stop'){showStop(true);return;}
+ var tt=t;
+ if(key==='rel-open')tt=t!=null?t:REL.stem+1.9;else if(key==='rel-lines')tt=t!=null?t:REL.lines0+5.0;else if(key==='rel-settle')tt=t!=null?t:REL.settle0+4.0;
+ else if(key==='sigq')tt=SIG_LEN;
+ else if(key==='mirror')tt=t!=null?t:12;
+ else if(key==='recog')tt=t!=null?t:5;
+ else if(key==='ask'||key==='feel'||key==='body'||key==='story')tt=t!=null?t:2;
+ if(key==='end'&&!S.end)S.end='notnow';
+ S.bodyA=S.bodyAT=(ACT[k]&&ACT[k].body!=null)?ACT[k].body:0;S.bodyD=S.bodyOn?1:0;
+ go(k,{t:tt||0,snap:true,keep:true});
+ FD.geo={cx:POSE.cur.cx,cy:POSE.cur.cy,rx:POSE.cur.rx,ry:POSE.cur.ry};
+ FD.aim(null,{snap:true});FD.resetLit();
+ FD.leanTo(S.place>=0&&ORDER.indexOf(k)>ORDER.indexOf('body')?S.place:-1,true);
+ if(ORDER.indexOf(k)>=ORDER.indexOf('recog'))FD.leanTo(S.seat,true);
+ if(ACT[k]&&ACT[k].lean)FD.leanTo(ACT[k].lean(),true);
+ FD.snapAll();FD.sim(3);
+ if(ORDER.indexOf(k)>=ORDER.indexOf('b1')){FD.resetLit();relNodes().forEach(function(n){FD.lit[n[0]-1]=1;});}
+ FD.door=FD.doorT=(k==='transit'?0:(ORDER.indexOf(k)<ORDER.indexOf('transit')?1:0));if(k==='transit'){FD.door=clamp(1-((tt||0)-.15)/.6,0,1);}
  if(o.freeze)S.mask|=64;else S.mask&=~64;
  if(key==='b3'&&o.keep){$('#b3-fine').classList.add('on');}
  ctlState();}
 function restart(quiet){
- S.ringT=0;S.mask=0;S.rate=1;S.pick=null;S.seat=null;S.word=null;S.src='';S.words='';S.empty=0;S.seed=-1;S.breathOn=false;S.breathR=0;S.tableQ=false;S.end='';S.made=false;
+ S.ringT=0;S.mask=0;S.rate=1;S.pick=null;S.feel=null;S.place=-1;S.placeAsked=false;S.words='';S.skipStory=false;S.lex=null;S.fixes=[];S.seat=null;S.mark=null;S.lexMark=null;S.bead=null;S.dw=null;
+ S.breathOn=false;S.tableQ=false;S.end='';S.made=false;S.figDone=false;S.bodyOn=false;S.bodyW=0;S.bodyD=0;S.bodyA=0;S.bodyAT=0;S.mood=null;S.picked=false;S.live=false;
+ clearTrail();FD.door=FD.doorT=1;FD.resetLit();FD.leanTo(-1,true);FD.rip.length=0;FD.breathA=FD.breathAT=.3;FD.arcA=FD.arcAT=1;FD.aim(null,{snap:true});FD.snapAll();
  Object.keys(DECK).forEach(function(k){DECK[k].clear();});
- $('#words').value='';msg('');$('#lg').classList.remove('gone');setDoor('login');
+ openSet('start',false);openSet('feel',false);SETS.start.host.className='chipset start gone';SETS.feel.host.className='chipset feel gone';layoutChips();
+ $('#bodyt').classList.remove('on','live');$('#body-ns').classList.remove('on','live');
+ $('#lg').classList.remove('gone');setDoor('login');
  if(!quiet)go('login',{snap:true});}
 function buildStrip(){
  var sel=$('#c-jump');sel.innerHTML=JUMPS.map(function(j){return '<option value="'+j[0]+'">'+j[1]+'</option>';}).join('');
@@ -1257,17 +1703,20 @@ function fitFrame(){
  setTimeout(relayout,0);}
 
 /* ONE FUNCTION SETS body.still. It reads the system setting and the owner's toggle, and it sets the dwell multiplier
-   with it: dwell times x1.5, which the clock applies by running slower, so every cue keeps its design time. */
-function setStill(v){STILL=!!v;S.mul=STILL?1.5:1;document.body.classList.toggle('still',STILL);$('#c-still').checked=STILL;}
+   with it: dwell times x1.5, which the clock applies by running slower, so every cue keeps its design time. Under it the
+   Field draws its rest pose and answers an input with the end state: no spring, no wave, no ripple, no drift. */
+function setStill(v){STILL=!!v;S.mul=STILL?1.5:1;document.body.classList.toggle('still',STILL);$('#c-still').checked=STILL;
+ if(STILL){FD.snapAll();S.bodyD=1;}}
 var mq=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)');
 if(mq){setStill(mq.matches);if(mq.addEventListener)mq.addEventListener('change',function(e){setStill(e.matches);});}
 
 /* ================================================================ boot */
 var q=location.search;
 if(/[?&]clean\b/.test(q))document.body.classList.add('clean');
-DECK.reel=new Deck('reel-deck');DECK.read=new Deck('read-deck');DECK.rel=new Deck('rel-deck');
+DECK.fl=new Deck('fl-deck');DECK.rel=new Deck('rel-deck');
 DECK.b1=new Deck('b1-deck');DECK.b2=new Deck('b2-deck');DECK.sig=new Deck('sig-deck');
-buildChips();buildStrip();ctlState();
+buildChips();buildBody();buildStrip();ctlState();
+S.bodyAT=0;S.bodyW=0;
 if(window.ResizeObserver)new ResizeObserver(function(){relayout();}).observe(stage);
 window.addEventListener('resize',function(){fitFrame();});
 fitFrame();relayout();
@@ -1275,8 +1724,9 @@ try{history.replaceState({a:'login'},'',location.href);}catch(e){}
 go('login',{snap:true,nopush:true});
 requestAnimationFrame(function(t){S.last=t;requestAnimationFrame(frame);});
 
-/* handles for the screenshot script and the owner's console */
-window.MOCK={jump:jump,go:go,S:S,ACT:ACT,DWELLCHECK:DWELLCHECK,timeLine:timeLine,pathSeconds:pathSeconds,setStill:setStill,showStop:showStop,
- pick:function(i){var el=chipEls[i];S.live=true;pickStart(i,el);},doCommit:doCommit,relayout:relayout,fitFrame:fitFrame};
+/* handles for the screenshot script, the probes and the owner's console */
+window.MOCK={advance:function(sec){var n=Math.round(sec*60);for(var i=0;i<n;i++)step(1/60);draw();},jump:jump,go:go,S:S,ACT:ACT,FD:FD,MEAS:MEAS,timeLine:timeLine,pathSeconds:pathSeconds,setStill:setStill,showStop:showStop,relayout:relayout,fitFrame:fitFrame,
+ pickStart:function(i){S.live=true;pickStart(i,SETS.start.els[i]);},pickFeel:function(i){S.live=true;pickFeel(i,SETS.feel.els[i<0?SETS.feel.els.length-1:i]);},
+ pickPlace:function(i){S.live=true;pickPlace(i,$$('#bodyt .bt')[i]);},PLACES:PLACES,STARTS:STARTS,FEELS:FEELS,restart:restart,POSE:POSE,doStory:doStory,applyFix:applyFix};
 })();
 </script></body></html>
