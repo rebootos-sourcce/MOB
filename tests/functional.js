@@ -4444,9 +4444,11 @@ console.log('\n=== a reading is not a score ===');
 for(const w of [[1600,1000],[390,844]]){
  const pg=await browser.newPage({viewport:{width:w[0],height:w[1]}});
  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(700);
- for(const who of ['Lance','Gordon','Sofia']){
+ /* Lance 85 stands where the Lance cut in round QD stood, the light end */
+ for(const who of ['Lance 85','Gordon','Sofia']){
   const hits=await pg.evaluate(async n=>{
-   const i=PEOPLE.findIndex(x=>x.nm===n); loadP(i);
+   const i=PEOPLE.findIndex(x=>x.nm===n);
+   if(i<0)throw new Error(n+' is not in the roster any more'); loadP(i);
    const bad=[];
    for(const t of [0,1,2,3,5,6,7,8,9]){
     setTab(t); await new Promise(r=>setTimeout(r,300));
