@@ -10096,7 +10096,11 @@ function importError(){ return IMPORT_ERR; }
    is the same object afterwards byte for byte (tests/journey.js holds
    that on every call).
 
-   NO SCHEMA_V BUMP, and none is needed: nothing new is stored.
+   NO SCHEMA_V BUMP, and none is needed. releaseVerify below is the one
+   function here that builds something to store, and it stores it as
+   practice evidence, which the boundary already guards; its one new field,
+   story_t, is additive and optional and an older record reads as null.
+   It is still pure: it returns a new practice object and the caller saves.
    ============================================================ */
 
 /* ---------------- the read ---------------- */
@@ -10183,6 +10187,52 @@ function onbMiniPlan(p,signal,now){
  return {ok:true, addrs:ids, keys:keys, lines:keys.length,
   inferred:take.filter(function(c){return c.inferred;}).length, cap:cap,
   found:found, foundInferred:foundInf, rest:found-ids.length};}
+
+/* ---------------- what changed, after a release ---------------- */
+/* THE ANSWER TO "WHAT CHANGED?", written as evidence, one record per address
+   the run worked. System Congruency TDD section 15; CONGRUENCY-AUDIT.md's
+   next task, item 2. The vocabulary and its boundary are the evidence
+   domain's own (RV_METRIC, RV_VALUES and prCross in engine/practice.js);
+   this is the one host free door that builds the records, so the gate can
+   hold it without a browser.
+
+   PURE, AND ALL OR NOTHING. It takes the practice object and returns a new
+   one, every record through practiceDo, so each one passes the same boundary
+   an import does. If any address is refused, none is written and the object
+   handed in comes back untouched: half a run's answer on the record would
+   read as the person having answered about some addresses and not others.
+
+   answer   one of RV_VALUES: the five offered answers, or skipped
+   addrs    the node ids the run worked, the queue after End cut it
+   opt      { story_t }: the entry the run was planned from, or nothing
+   now      the time, one for every record, so one answer reads as one moment
+
+   Returns { ok, P, ids } or { ok:false, P, errs } with every reason named. */
+function releaseVerify(P,answer,addrs,opt,now){
+ var base=P||practiceBlank(), errs=[];
+ if(RV_VALUES.indexOf(answer)<0)
+  errs.push('a release verification is one of '+RV_VALUES.join(', ')+', not '+JSON.stringify(answer));
+ var ids=[];
+ if(!Array.isArray(addrs)||!addrs.length)errs.push('a release verification names the addresses the release worked, and none were given');
+ else addrs.forEach(function(a){
+  if(!NUM(a)||!BY[a])errs.push('no address is '+JSON.stringify(a));
+  else if(ids.indexOf(a)<0)ids.push(a);});
+ if(errs.length)return {ok:false, P:base, errs:errs};
+ var t=now||new Date().toISOString(), st=(opt&&opt.story_t)||null, Q=base, out=[];
+ for(var i=0;i<ids.length;i++){
+  var r=practiceDo(Q,'evidence_record',{source:'user', type:'internal', dimension:'affect',
+   pattern_id:'addr:'+ids[i], metric:RV_METRIC, value:answer, story_t:st, timestamp:t},t);
+  if(!r.ok)return {ok:false, P:base, errs:r.errs};
+  Q=r.P; out.push(r.id);}
+ return {ok:true, P:Q, ids:out};}
+/* WHAT THE RECORD SAYS WAS ANSWERED AT ONE ADDRESS, newest last. Read off the
+   evidence and never stored. A run's answer is one record per address at one
+   timestamp, so at a single address every record is one release's answer. */
+function releaseVerifyAt(P,addr){
+ var id='addr:'+addr, ev=(P&&Array.isArray(P.evidence))?P.evidence:[];
+ return ev.filter(function(e){return e&&e.metric===RV_METRIC&&e.pattern_id===id;})
+  .map(function(e){return {value:e.value, at:e.timestamp, story_t:e.story_t||null};})
+  .sort(function(a,b){return String(a.at)<String(b.at)?-1:String(a.at)>String(b.at)?1:0;});}
 
 /* ============================================================
    PRACTICE. The P0 domain of the Practice TDD
@@ -10329,6 +10379,47 @@ var PR_MOTIVE=['motivation','lazy','laziness','discipline','willpower','weak','w
 /* the metric a system writes when it records only that a practice ran.
    It is evidence the practice happened and never evidence of change. */
 var PR_COMPLETION='completion';
+/* WHAT CHANGED, ASKED AFTER A RELEASE. The System Congruency TDD, section
+   15, and CONGRUENCY-AUDIT.md's next task: after the release has written, the
+   person is asked what changed, and the answer is evidence on this list, one
+   record per address the run worked, through evidence_record and nothing
+   else. There is no second ledger.
+
+   THE FIVE ANSWERS are the TDD's own minimum, in its order, as keys:
+   I feel different, I see it differently, something moved, nothing changed,
+   not sure. SKIPPED IS A SIXTH STORED VALUE AND NOT A SIXTH ANSWER. A person
+   who pressed Skip, or left the card without answering, said something
+   different from a person who pressed Not sure, and storing the one as the
+   other would be a claim they did not make. So the question offers five and
+   the record holds six, and anything else is refused by name at the
+   boundary (prCross below), never read as the nearest one.
+
+   A VERIFICATION NEVER BECOMES AN EDGE. practiceTraceIntents turns evidence
+   with a pattern_id into "evidence supports pattern", and TRACE_RULE has no
+   neutral row. "Nothing changed" written that way would be the graph
+   inventing support for a pattern the person just said did not move, which
+   the TDD forbids (section 16, and the Sweep's rule 4). So evidence on this
+   metric emits no evidence edge in either direction, and loopRead counts it
+   off the record directly, as what the person said. A neutral relation in
+   the rule table is the larger change and is the owner's.
+
+   Every value is self report about how it felt afterwards, so the dimension
+   is affect, never effect: prClaimErr already refuses an outcome claiming
+   change on affect alone, which is the TDD's "completion does not equal
+   change" held from the other side. */
+var RV_METRIC='release_verification';
+var RV_ANSWERS=['feel_different','see_differently','something_moved','nothing_changed','not_sure'];
+var RV_SKIP='skipped';
+var RV_VALUES=RV_ANSWERS.concat([RV_SKIP]);
+/* the words each value is shown in, one table, read by the question on the
+   release card and by Your patterns, so the two never word one answer twice.
+   The five are the TDD's minimum responses; "I'm not sure" is cut to the
+   product's own Not sure, the wording onboarding already uses for the same
+   tap. Skipped is shown as what it is, no answer. */
+var RV_SAY={feel_different:'I feel different', see_differently:'I see it differently',
+ something_moved:'Something moved', nothing_changed:'Nothing changed', not_sure:'Not sure',
+ skipped:'No answer'};
+function prIsVerify(e){return !!(e&&e.metric===RV_METRIC);}
 
 /* ---------------- caps, refused above and never truncated ---------------- */
 var PR_CAP={goals:200, behavior_objectives:1000, protocols:2000, protocol_steps:10000,
@@ -10428,7 +10519,15 @@ var PR_SPEC={
   protocol_id:{t:'id',nul:1}, ritual_id:{t:'id',nul:1}, goal_id:{t:'id',nul:1},
   metric:PR_S.nstr(80), value:PR_SN, unit:PR_S.nstr(40),
   before:PR_SN, after:PR_SN, later:PR_SN,
-  confidence:PR_S.nnum(0,1), notes:PR_S.nstr(2000)}),
+  confidence:PR_S.nnum(0,1), notes:PR_S.nstr(2000),
+  /* THE STORY ENTRY IT FOLLOWS, by the entry's own identity, its t. Additive
+     and optional: an older record has none and is filled with null, and a
+     release with no story behind it (Imprints, a drill, the ritual) has
+     none either. A typed field and not a convention inside context, because
+     a link written into a free string cannot be checked and is a second
+     name for one thing. Not cross checked against story.entries: evidence
+     is history and outlives the entry it points at. */
+  story_t:PR_S.ndate}),
  outcomes:prSpec({
   goal_id:{t:'id',req:1}, timestamp:PR_S.date, metric:{t:'str',max:80,min:1,req:1},
   before:PR_SN, current:PR_SN, target:PR_SN, status:{t:'enum',of:PR_OUT_ST,req:1},
@@ -10671,7 +10770,16 @@ function prCross(errs,P,path){
   var p2=path+'.evidence['+i+']';
   if(x.protocol_id&&!ix.protocols[x.protocol_id])errs.push(p2+'.protocol_id names no protocol: '+x.protocol_id);
   if(x.ritual_id&&!ix.rituals[x.ritual_id])errs.push(p2+'.ritual_id names no ritual: '+x.ritual_id);
-  if(x.goal_id&&!ix.goals[x.goal_id])errs.push(p2+'.goal_id names no goal: '+x.goal_id);});
+  if(x.goal_id&&!ix.goals[x.goal_id])errs.push(p2+'.goal_id names no goal: '+x.goal_id);
+  /* a verification is the person's answer about one address, and it is one
+     of the six values, refused by name otherwise */
+  if(prIsVerify(x)){
+   if(RV_VALUES.indexOf(x.value)<0)
+    errs.push(p2+'.value is not a release verification ('+RV_VALUES.join(', ')+'): '+JSON.stringify(x.value));
+   if(!(typeof x.pattern_id==='string'&&/^addr:/.test(x.pattern_id)))
+    errs.push(p2+' is a release verification and names no address');
+   if(x.source!=='user')errs.push(p2+' is a release verification and its source is '+x.source+', not user');
+   if(x.dimension!=='affect')errs.push(p2+' is a release verification and its dimension is '+x.dimension+', not affect');}});
  P.outcomes.forEach(function(x,i){
   var p2=path+'.outcomes['+i+']';
   if(!ix.goals[x.goal_id])errs.push(p2+'.goal_id names no goal: '+x.goal_id);
@@ -10959,7 +11067,7 @@ var PR_ACT={
   var src=prCreateSrc({src:a.src||dflt, generated_by:a.generated_by},errs,'evidence');
   var f={timestamp:a.timestamp||t};
   ['source','type','dimension','context','pattern_id','protocol_id','ritual_id','goal_id','metric',
-   'value','unit','before','after','later','confidence','notes'].forEach(function(k){if(a[k]!==undefined)f[k]=a[k];});
+   'value','unit','before','after','later','confidence','notes','story_t'].forEach(function(k){if(a[k]!==undefined)f[k]=a[k];});
   var x=prNew('evidence',f,src,t,a);
   P.evidence.push(x);
   if(a.practice_event_id){
@@ -11016,7 +11124,7 @@ var PR_ARGS={
  event_schedule:['id','ritual_id','scheduled_at','src'],
  event_move:['id','to','steps_completed','duration_seconds','quality','src'],
  evidence_record:['id','source','type','dimension','timestamp','context','pattern_id','protocol_id','ritual_id',
-  'goal_id','metric','value','unit','before','after','later','confidence','notes','practice_event_id','src','generated_by'],
+  'goal_id','metric','value','unit','before','after','later','confidence','notes','story_t','practice_event_id','src','generated_by'],
  outcome_record:['id','goal_id','timestamp','metric','before','current','target','status','evidence_ids','notes',
   'practice_event_id','src','generated_by'],
  adapt:['ritual_id','classification','adaptation']};
@@ -11198,13 +11306,16 @@ function practiceTraceIntents(P){
  P.practice_events.forEach(function(x){
   put('ritual',x.ritual_id,'practice_event',x.id,'produces',x.src);
   x.evidence_ids.forEach(function(id){var e=ix.evidence[id];
-   if(e)put('practice_event',x.id,'evidence',id,'produces',e.src);});
+   if(e&&!prIsVerify(e))put('practice_event',x.id,'evidence',id,'produces',e.src);});
   if(x.outcome_id&&ix.outcomes[x.outcome_id])put('practice_event',x.id,'outcome',x.outcome_id,'produces',ix.outcomes[x.outcome_id].src);});
+ /* a release verification is never an edge, see RV_METRIC: no evidence node
+    is made for it, so it cannot read as support, and the graph does not
+    count it as evidence bearing on nothing either */
  P.evidence.forEach(function(e){
-  if(e.pattern_id)put('evidence',e.id,'pattern',e.pattern_id,e.type==='negative'?'contradicts':'supports',e.src);});
+  if(e.pattern_id&&!prIsVerify(e))put('evidence',e.id,'pattern',e.pattern_id,e.type==='negative'?'contradicts':'supports',e.src);});
  P.outcomes.forEach(function(o){
   o.evidence_ids.forEach(function(id){var e=ix.evidence[id];
-   if(e)put('evidence',id,'outcome',o.id,e.type==='negative'?'contradicts':'supports',e.src);});
+   if(e&&!prIsVerify(e))put('evidence',id,'outcome',o.id,e.type==='negative'?'contradicts':'supports',e.src);});
   put('outcome',o.id,'goal',o.goal_id,'measures',o.src);});
  return out;}
 function practiceIntentOk(i){
@@ -11439,7 +11550,15 @@ function loopRead(p){
   var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
    nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
-   protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null};
+   protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null,
+   /* WHAT THE PERSON SAID CHANGED after each release here, read off the
+      evidence directly, because a verification is never an edge (RV_METRIC,
+      engine/practice.js). Counted by answer, with the newest, and never added
+      to evFor or evAgainst: an answer is what was said, not support. */
+   said:{n:0, by:{}, last:null}};
+  if(row.address!==null&&typeof releaseVerifyAt==='function')
+   releaseVerifyAt(P,row.address).forEach(function(v){
+    row.said.n++; row.said.by[v.value]=(row.said.by[v.value]||0)+1; row.said.last=v.value;});
   var confirmedBy=null;
   ins.concat(outs).forEach(function(e){
    if(e.src==='user_confirmed'&&!confirmedBy)confirmedBy=typeOf(e.from===k?e.to:e.from);});
@@ -11462,7 +11581,7 @@ function loopRead(p){
   if(confirmedBy){row.state='confirmed'; row.by=confirmedBy;}
   /* a pattern that only a stored release key names, with nothing read and
      nothing run, is a key and not yet anything about the person */
-  if(!row.stories&&!row.lines&&!row.truths&&!row.protocols.length&&!row.evFor&&!row.evAgainst&&!confirmedBy)return;
+  if(!row.stories&&!row.lines&&!row.truths&&!row.protocols.length&&!row.evFor&&!row.evAgainst&&!row.said.n&&!confirmedBy)return;
   out.patterns.push(row);});
 
  /* THE ORDER, and every step of it is a reason. Confirmed first: the person
@@ -16967,6 +17086,8 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+                  releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
+                  RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SKIP:RV_SKIP, RV_VALUES:RV_VALUES, RV_SAY:RV_SAY,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
