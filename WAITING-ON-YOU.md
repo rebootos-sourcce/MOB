@@ -41,9 +41,9 @@ I will not point the public domain at this branch again until you've picked one 
 5. **The onboarding video** (door, pick a start, feel, body, mirror, release, actually moving). Sent as a real video. Say yes, or what to change.
 6. **The MVP gap report**, with a headline number: 25 percent of what blocks a first paying stranger is done. Say if that number or the ten risks under it feel right.
 7. **Intake, stacked** (archetypes, nine feelings, six axes). Two direct questions inside it: keep the product's own twelve archetype names, or switch two of them to Hero and Orphan? And is "six action axes" the six gates I used, or something else?
-8. **The Flow split** (Ritual and Accountability as two pages). You said "get rid of the left and right menu, actually, sorry" — I read that as drop the left, keep the right. Confirm, or say the right one goes too.
 9. **"Patterns are stored in the body, at the nerve register of the seat."** Read it once and confirm it says what you meant.
 10. **The yoga seat names need a new word.** "Eastern" is settled as the date system (Chinese), round PW, so the seat names can't use it any more. Needs a replacement word.
+11. **Flow's three columns, built and pushed, not merged.** Ritual and Accountability are one page now (left: New, centre: Ritual, right: Accountability), per your own round QF: "Left menu will be for inputting new. Right side of the menu is for the accountability tracker." Item 8 above is answered by that and dropped. What's still open: your round QF message named the knowledge base too ("we're re-merging the knowledge base and the accountability tracker"), but the three columns you then listed only have room for two of those three things. The Knowledge page (laws, archetypes, masks, gates) was left where it is rather than guessed into one of the three slots. Pick one: (A) Knowledge stays its own page in Embody, untouched, and "re-merging" only meant Ritual and Accountability; (B) Knowledge becomes a fourth column or a tab inside Flow; (C) something else, say what. Pictures sent of the build as it stands.
 
 ## Settled this round, round PW, no longer open
 
