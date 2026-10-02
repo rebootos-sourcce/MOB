@@ -592,7 +592,10 @@ addEventListener('click',function(e){
      the story read (F5), and never one the person did not say yes to (F4) */
   var pl=OB.plan||obMini(obYesSignal()), ids=(pl&&pl.ok)?pl.addrs:[];
   obClose();
-  if(ids.length&&typeof relPick==='function')relPick(ids);
+  /* and the entry the mirror committed, so the answer to What changed after
+     this release names the story it came from */
+  if(ids.length&&typeof relPick==='function')
+   relPick(ids,(OB.commit&&OB.commit.ok&&OB.commit.t)?{story_t:OB.commit.t}:null);
   return;}
  if(k==='skip'||k==='done'){ obClose(); return; }});
 /* escape leaves, because a sheet a person cannot dismiss is a sheet that has

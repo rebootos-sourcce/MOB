@@ -157,7 +157,8 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          dose:100,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
-         heavy:{},look:false,rerun:false,pick:[],studioLost:false};
+         heavy:{},look:false,rerun:false,pick:[],studioLost:false,
+         ask:false,said:null,skip:false,storyT:null};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -246,7 +247,11 @@ function relNow(){
  return relAt(RUN.phase==='run'?RUN.idx:0)||{n:RUN.queue[0],ch:CHAN[0],line:0};}
 function relOpp(n){
  return (n&&(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp)||'';}
-function relPick(nodeIds){
+/* from, optional: { story_t }, the t of the story entry this run was planned
+   from, so the answer to What changed can name it. Only a door that planned
+   the run off an entry it just committed passes one; any other run has no
+   story behind it and its answer carries none. */
+function relPick(nodeIds,from){
  relHush();
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
@@ -257,6 +262,7 @@ function relPick(nodeIds){
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
  RUN.heavy={};RUN.look=false;
  RUN.pick=RUN.queue.slice(); RUN.rerun=false; RUN.reach=null; RUN.planN=0;
+ RUN.ask=false; RUN.said=null; RUN.skip=false; RUN.storyT=(from&&typeof from.story_t==='string')?from.story_t:null;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -782,6 +788,60 @@ function relEndNote(){
     :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
   +'The other '+rest+(rest===1?' line was':' lines were')+' never started'
   +(RUN.rerun?'.':', so '+(rest===1?'it was':'they were')+' not charged.')+'</div>';}
+/* ============================================================
+   WHAT CHANGED. The System Congruency TDD, section 15, and the step
+   CONGRUENCY-AUDIT.md found missing from every release path: "There is no
+   'what changed?' step anywhere." The finished card asked nothing, so a
+   release ended on Heavy, Done and Build a ritual and the record never heard
+   whether anything moved.
+
+   Five answers, none chosen, and Skip. The answer is written as evidence,
+   one record per address this run worked, through releaseVerify in
+   engine/journey.js and so through practiceDo and the boundary, and saved.
+   A positive answer is never asked for and is not the default: Nothing
+   changed and Not sure are kept exactly as cleanly as Something moved.
+
+   SKIP RECORDS NOTHING, AND SO DOES LEAVING. The card has Done and Build a
+   ritual on it the whole time, and leaving is never blocked. Skip, Done,
+   Build a ritual, another release opened over it, or a page closed: none of
+   them writes, because none of them is an answer, and the audit's scope
+   asks for "a way past it that records nothing". Why the record does not
+   hold a "skipped" is written at RV_METRIC in engine/practice.js. Skip says
+   on the card that nothing was kept, so the press is never silent.
+
+   One answer per run. Evidence is history, so a pressed answer is not
+   rewritten; the next release is asked again.
+   ============================================================ */
+function relAskHtml(){
+ if(!RUN.ask)return '';
+ if(RUN.said||RUN.skip)return '<div class="rel-ask" id="relask"><div class="pm-eye">What changed?</div>'
+  +'<div class="rel-sub" id="relsaid">'+(RUN.said?'You said: '+esc(RV_SAY[RUN.said]||RUN.said)+'. Kept on your record.'
+   :'Skipped. Nothing was recorded.')+'</div></div>';
+ return '<div class="rel-ask" id="relask"><div class="pm-eye" id="relaskh">What changed?</div>'
+  +'<div class="seg" role="group" aria-labelledby="relaskh">'+RV_ANSWERS.map(function(k){
+    return '<button type="button" data-relsaid="'+k+'" aria-pressed="false">'+esc(RV_SAY[k])+'</button>';}).join('')
+  +'</div><div class="rel-sub">Your answer is kept with each address this release worked.</div>'
+  +'<div class="rel-act"><button type="button" class="btn" data-relskip="1">Skip</button></div></div>';}
+/* the one writer. Refuses by name, writes all of the run's addresses or none,
+   saves, and says so if the save fails. Returns whether it was kept. */
+function relAnswer(k){
+ if(!RUN.ask||RUN.said||RUN.skip||!CURP)return false;
+ var ids=(RUN.queue||[]).map(function(n){return n.i;});
+ var r=releaseVerify(CURP.practice||null,k,ids,{story_t:RUN.storyT});
+ if(!r.ok){
+  if(typeof status==='function')status('Your answer was not kept. '+(r.errs[0]||''),'fail');
+  return false;}
+ CURP.practice=r.P; RUN.said=k;
+ if(!pSave()&&typeof status==='function')
+  status('This browser would not save. Your answer is on this card and not on your record.','fail');
+ if(RUN.open&&RUN.phase==='done')relRender();
+ if(typeof loopRepaint==='function')loopRepaint();
+ return true;}
+/* Skip: writes nothing, and says so on the card */
+function relAskSkip(){
+ if(!RUN.ask||RUN.said||RUN.skip)return;
+ RUN.skip=true;
+ if(RUN.open&&RUN.phase==='done')relRender();}
 function relCoolDown(){
  if(RUN.done)return;
  /* where the walker stood, read before the phase moves off the list */
@@ -971,6 +1031,10 @@ function relCoolDown(){
     your awareness inside your body". The cooldown's lines are said inside
     them. Leaving is never blocked; Done is on the card the whole time. */
  RUN.settleAt=Date.now(); RUN.settled=false; relTicker(true);
+ /* WHAT CHANGED IS ASKED FROM HERE, after the write and only after it: a run
+    refused on a worked example returned above and is never asked, and a run
+    that wrote is asked once, on the finished card, with nothing chosen. */
+ RUN.ask=!!(CURP&&RUN.queue.length); RUN.said=null; RUN.skip=false;
  relMark(RUN.halted?'halt':'close');
  /* THE RUN HAS ENDED, SOUNDED ONCE, AFTER THE WRITE LANDED. Here and not at the
     top: a run refused on a worked example returns above and never reaches
@@ -1280,7 +1344,13 @@ function relCss(){
   ' .rel-cr .rel-cr-h{padding:5px 10px}',
   ' .rel-cr .rel-cr-i{font-size:15px;grid-template-columns:28px 1fr 14px;gap:6px;padding-right:8px}}',
   'body.punch .rel-cr .rel-cr-l{border-color:transparent;background:var(--sunk)}',
-  'body.punch .rel-cr .rel-cr-h{background:var(--sunk)}'].join('\n');
+  'body.punch .rel-cr .rel-cr-h{background:var(--sunk)}',
+  /* WHAT CHANGED. Five answers in one pressed group that wraps, so at 390 they
+     fold onto two rows inside the card rather than running out of it. */
+  '.rel-ask{margin:14px 0 8px;text-align:left}',
+  '.rel-ask .seg{flex-wrap:wrap;flex:1 1 auto;margin:6px 0}',
+  '.rel-ask .seg button{flex:1 1 auto}',
+  '.rel-ask .rel-act{justify-content:flex-start;margin-top:4px}'].join('\n');
  document.head.appendChild(st);}
 function relCar(sp){
  var rows='', i, p;
@@ -1581,6 +1651,7 @@ function relRender(){
    +'<div class="rel-speak rel-cool">'+esc(COOLING[Math.min(RUN.cool,COOLING.length-1)])+'</div>'
    +'<div class="rel-node" style="font-size:24px">You released '+t.said+(t.said===1?' pattern.':' patterns.')+'</div>'
    +relEndNote()
+   +relAskHtml()
    +'<div class="rel-sub">The heaviest ones are the work. Mark them.</div>'
    +relHeaviest()
    /* THE TWO MINUTES, then what the run reached. The summary takes the
@@ -1783,6 +1854,11 @@ function relRender(){
   RUN.dose=+this.getAttribute('data-reldose');relRender();};});
  h.querySelectorAll('[data-relmode]').forEach(function(el){el.onclick=function(){
   relMode(this.getAttribute('data-relmode')==='rerun');};});
+ /* WHAT CHANGED, one press. relAnswer writes and then redraws the card, so
+    the answer is shown as kept only once it is. Skip writes nothing. */
+ h.querySelectorAll('[data-relsaid]').forEach(function(el){el.onclick=function(){
+  relAnswer(this.getAttribute('data-relsaid'));};});
+ h.querySelectorAll('[data-relskip]').forEach(function(el){el.onclick=relAskSkip;});
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){

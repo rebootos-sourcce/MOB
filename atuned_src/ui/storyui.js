@@ -266,7 +266,7 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],hot:null,view:'lanes',ana:false};
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -443,6 +443,7 @@ function stCommit(){
      guard above sees to it, so this mirrors and writes the way every slider
      does. */
   saveYou();}
+ var entT=null;
  if(CURP){CURP.story=CURP.story||{entries:[]};
   /* lex, the lexicon that read it, 19.B6, so a later reading can say whether
      it is reading these words the way they were read at the time. asked,
@@ -453,11 +454,16 @@ function stCommit(){
   var asked=srcAsked(SRC_LOG,ST_TEXT.length);
   if(asked.length)ent.asked=asked;
   CURP.story.entries.push(ent);
+  /* the entry's identity, handed back so a release planned off this entry can
+     name it on the answer to What changed (relPick's from). STV.lastT sits
+     beside STV.lastFound because they are one fact: what the last commit
+     found, and which entry found it. */
+  entT=ent.t;
   pSave();pSnap();}
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
  var text=ST_TEXT;
- ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;
+ ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;
  /* the release takes the room on a desktop. On a phone it stays the bar
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
@@ -466,7 +472,7 @@ function stCommit(){
  status(k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
   :'Kept. Nothing here read as charge, so nothing moved.');
  if(typeof sfx==='function')sfx('kept');
- return {ok:true,k:k,kept:kept,bands:bands,text:text};}
+ return {ok:true,k:k,kept:kept,bands:bands,text:text,t:entT};}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
@@ -1585,7 +1591,8 @@ function stRelModel(){
  else if(found.length)take=found.slice().sort(bySq).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
-  added:!!(picked.length||found.length)};}
+  added:!!(picked.length||found.length),
+  fromLast:!picked.length&&!!found.length&&found===STV.lastFound};}
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
  var M=stRelModel(), o='';
@@ -1638,7 +1645,10 @@ function stRelPanel(){
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
   RUN.speed=2.2/(RUN.pace||1);
-  relPick(M.sel.map(function(n){return n.i;}));
+  /* the entry is named only when the panel is reading the last commit's own
+     addresses: not a bank pick, not a draft still being typed, not the three
+     heaviest held, none of which came from one entry */
+  relPick(M.sel.map(function(n){return n.i;}),M.fromLast&&STV.lastT?{story_t:STV.lastT}:null);
   var begin=document.getElementById('relgo'); if(begin)begin.click();};}
 
 /* ============================================================

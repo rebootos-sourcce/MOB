@@ -64,6 +64,14 @@ function lpChain(x){
  if(x.protocols.length)st.push(['Practice',lpPlural(x.protocols.length,'practice aims','practices aim')+' here'
   +(x.practised?', '+unp('practised','practised')+' '+lpPlural(x.practised,'time','times'):'')]);
  if(x.evFor||x.evAgainst)st.push(['Evidence',unp('evidence',x.evFor+' for')+', '+x.evAgainst+' against']);
+ /* WHAT YOU SAID CHANGED after each release here, the answers counted in the
+    order the question offers them, in the question's own words (RV_SAY). A
+    step of its own and never folded into Evidence above: an answer is what
+    the person said, and Evidence counts what bears for or against. */
+ if(x.said&&x.said.n){
+  var said=RV_ANSWERS.filter(function(k){return x.said.by[k];}).map(function(k){
+   return '"'+RV_SAY[k]+'" after '+lpPlural(x.said.by[k],'release','releases');});
+  if(said.length)st.push(['After','You said '+said.join(', ')+'.']);}
  st.push(['Answer',x.state==='confirmed'
   ?(x.by==='protocol'?'You chose a practice for it':'You said yes to it')
   :'Not answered yet']);
