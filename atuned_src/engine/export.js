@@ -284,9 +284,15 @@ if(typeof module!=='undefined'&&module.exports){
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
+  /* the loop read, engine/loop.js: the one read of the graph a screen asks */
+                  loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
+  /* a worked example's history, engine/pracex.js, for the practitioner page */
+                  PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
+                  pracexDays:pracexDays, pracexRead:pracexRead,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
+                  obDrainAsync:obDrainAsync,
                   obCount:obCount, obStore:obStore, obBand:obBand,
                   bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,

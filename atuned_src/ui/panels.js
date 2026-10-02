@@ -109,6 +109,11 @@ function setTab(i){
     still in the document asserting them. */
  if(S.tab===TAB.ACCOUNT&&i!==TAB.ACCOUNT){
   var ac=$('acct'); if(ac)ac.innerHTML='';}
+ /* AND THE PRACTITIONER'S PAGE, for the same reason and one more: its drills
+    sit in Selection, the panel every surface shares, so a reading about an
+    example left there would stand beside the Field as the person's own.
+    ui/practitioner.js pracLeave empties both. */
+ if(S.tab===TAB.PRACTITIONER&&i!==TAB.PRACTITIONER&&typeof pracLeave==='function')pracLeave();
  S.tab=i; S.pin=null;
  /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
     Settings was shown and hidden by hand below, which held while Settings was

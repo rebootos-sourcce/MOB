@@ -528,9 +528,31 @@ function iqArtCss(){
      absolutely positioned and takes no cell, so in flow b fell into the
      gutter. Measured at offset 0 from the axis where a sat at minus 212. */
   '.iqx-af[data-side="b"]{--k:var(--cb);--i:var(--ib);grid-column:3}',
-  '.iqx-mk{display:block;width:var(--mk);height:var(--mk);color:var(--i);fill:none;stroke:currentColor;stroke-width:1.5;',
+  '.iqx-mk{display:block;width:var(--mk);height:var(--mk);color:var(--i);fill:none;stroke:currentColor;',
   ' stroke-linecap:round;stroke-linejoin:round;overflow:visible}',
-  '.iqx-mk path{stroke-width:1.5}',
+  /* the seat chip, round QB, on the numbers of the Character masks and the
+     Field's orbs. See the note above iqxMark. */
+  '.iqx-mk .iqx-dk{stroke:none;fill:color-mix(in srgb,var(--i) 12%,var(--sunk))}',
+  /* the track is the seat's identity before anything is answered, so it is
+     lit near the Field wheel's own seat rings and not at the Character
+     mask's forty percent: on this disc forty read as brown, and the seat
+     survived in the glyph alone. The arc over it stays the heavier, brighter
+     layer, 3.2 at full strength. */
+  '.iqx-mk .iqx-tk{stroke-width:2.4;opacity:.8}',
+  '.iqx-mk .iqx-ld{stroke-width:3.2}',
+  '.iqx-mk .iqx-gl{stroke-width:1.7}',
+  /* THE LIGHT LIGHTINGS. The disc sits on the panel with the seat's wash and
+     does not sink below it, the way the Field's orbs lift on Snow; a sunk
+     disc read as a grey hole on a white page. And the mark takes the seat
+     unlifted (icCol lifts fifteen percent for a dark ground) and deepened
+     toward ink, because the track is drawn at eighty percent and is the
+     seat's only colour before anything is answered. Measured on Snow against
+     the disc it sits on, rendered fresh in that lighting: with icCol the
+     track read 2.85 to 3.21, Heart, Solar and Sacral under the 3 to 1 a
+     graphic needs; with this, 3.82 to 4.21, and the glyph 5.85 to 6.74.
+     On Dark the track reads 3.24 to 6.28 and the glyph 4.41 to 9.04. */
+  'body.snow .iqx-mk,body.glasswhite .iqx-mk{color:color-mix(in srgb,var(--k) 78%,var(--ink))}',
+  'body.snow .iqx-mk .iqx-dk,body.glasswhite .iqx-mk .iqx-dk{fill:color-mix(in srgb,var(--k) 8%,var(--panel))}',
   '.iqx-an{display:block;margin-top:16px;font-size:17px;font-weight:600;line-height:1.3;',
   ' color:color-mix(in srgb,var(--k) 62%,var(--ink))}',
   /* centred lines are balanced, so no line ends on one stranded word */
@@ -580,7 +602,10 @@ function iqArtCss(){
      solid ground and the pressed one is the seat's own ground. Lumen and Flat
      fill whatever is selected, in its family's colour, their standing rule. */
   'body.punch .iqx-ap+.iqx-ap{border-top-color:transparent}',
-  'body.punch .iqx-mk circle{stroke:none;fill:color-mix(in srgb,var(--k) 18%,transparent)}',
+  /* the disc goes solid at Punch's own 26 percent, the figure on .cr, and the
+     track, an outline, goes. The arc stays: it is a reading and not a border. */
+  'body.punch .iqx-mk .iqx-dk{fill:color-mix(in srgb,var(--k) 26%,var(--sunk))}',
+  'body.punch .iqx-mk .iqx-tk{display:none}',
   /* the solid pill sits on the sunk ground: on panel-2 it was the panel's own
      colour and the unpressed answer had no shape at all, measured in all three */
   'body.punch .iqx-ab,body.flat .iqx-ab,body.lumen .iqx-ab{border-color:transparent;background:var(--sunk)}',
@@ -594,7 +619,7 @@ function iqArtCss(){
      on it, under the 4.5 floor for this size. The panel's own black reads
      4.87 on the same blue. */
   'body.lumen .iqx-ab.on{color:var(--panel)}',
-  'body.lumen .iqx-mk{stroke-width:1.9}',
+  'body.lumen .iqx-mk .iqx-gl{stroke-width:1.9}',
   /* a phone: the same mirror, closer. The gutter shrinks before anything else
      does, and the type steps down one size on the same scale. */
   /* scoped to the block by id: a bare class here would be a second claim on
@@ -1093,14 +1118,47 @@ function iqxIcon(id,k){
    is built. */
 function iqxArch(nm){
  var i; for(i=0;i<ARCH.length;i++)if(ARCH[i].nm===nm)return ARCH[i]; return null;}
-/* the mark: a ring in the seat's colour with the archetype's own glyph inside,
-   stroked and never filled, the house rule for icons */
-function iqxMark(A){
- return '<svg class="iqx-mk" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26.5"/>'
-  +'<path transform="translate(16 16)" d="'+A.ic+'"/></svg>';}
-function iqxFig(A,side){
+/* THE MARK IS THE SEAT CHIP, ROUND QB. His words: "Archetypes uh, under
+   intake. need to be visual. The archetype uh, it should match the same as the
+   chakra style." Round PV drew each mark as one closed hairline in the seat's
+   colour floating on the panel, and beside the Field's bar, the Character
+   page's masks and Summary's rings it read as a line drawing and not as one
+   of them. Measured against the three, two things were different:
+
+     the ground  every seat chip on those pages sits on its own disc, darker
+                 than the panel and washed with its seat (.fb-orb, .chp-mk,
+                 .cr). This mark had none.
+     the ring    those rings are two layers, a quiet track and a heavier arc
+                 that reports a quantity, at 5 to 7.6 percent of the chip's
+                 width (Character 3 on 60, the Field 2.6 on 40, Summary 3.5 on
+                 46). This one was a single hairline at 2.7 percent, 1.5 on 56,
+                 reporting nothing.
+
+   So the mark is now the chip: a disc on the sunk ground washed with the seat,
+   the seat's track under it, and an arc at 3.2 on 56. The arc says the one quantity this row has, how much of the
+   person's answer sits with this archetype: a dilemma answered toward it fills
+   the ring, an either or at the middle fills half of each. Unanswered there is
+   no arc, which is how the Character page draws an unloaded mask. An arc
+   drawn full for decoration would lie in a product where every arc is a
+   reading. The glyph stays the archetype's own, in its seat's colour, as on
+   the Character masks and the Summary rings.
+
+   NO PILL. Those chips carry a figure in a pill at the lower right. This one
+   does not, because round PV took the digits off this line for round PO's
+   reason, a number standing alone, and the two answers under the pair
+   already say what the arc measures. */
+function iqxMark(A,share){
+ var R=24.5, C=2*Math.PI*R, s=Math.max(0,Math.min(1,share||0));
+ return '<svg class="iqx-mk" viewBox="0 0 56 56" aria-hidden="true">'
+  +'<circle class="iqx-dk" cx="28" cy="28" r="27"/><circle class="iqx-tk" cx="28" cy="28" r="'+R+'"/>'
+  /* a zero length dash with a round cap still paints a dot, so no answer
+     draws no arc at all */
+  +(s>0?'<circle class="iqx-ld" cx="28" cy="28" r="'+R+'" transform="rotate(-90 28 28)" stroke-dasharray="'
+   +(C*s).toFixed(1)+' '+C.toFixed(1)+'"/>':'')
+  +'<path class="iqx-gl" transform="translate(16 16)" d="'+A.ic+'"/></svg>';}
+function iqxFig(A,side,share){
  var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
- return '<div class="iqx-af" data-side="'+side+'">'+iqxMark(A)
+ return '<div class="iqx-af" data-side="'+side+'">'+iqxMark(A,share)
   +'<b class="iqx-an">'+esc(A.nm)+'</b>'
   +'<p class="iqx-ad">'+esc(cap(A.v)+'. '+(A.d||''))+'</p></div>';}
 function iqxArchCard(p,row){
@@ -1128,7 +1186,9 @@ function iqxArchCard(p,row){
    +'<span data-side="b">'+esc(cap(row.tb))+'</span></p>'
    +'<div class="iq-sl" role="group" aria-label="'+esc(cap(row.ta))+', or '+esc(row.tb)+'">'+nodes+'</div></div>';}
  return '<div class="iqx-ap" data-type="'+row.type+'" style="'+st+'">'
-  +'<div class="iqx-pr">'+iqxFig(A,'a')+'<span class="iqx-sp" aria-hidden="true"></span>'+iqxFig(B,'b')+'</div>'
+  /* the line runs 0 fully a to 10 fully b, so a holds what b does not */
+  +'<div class="iqx-pr">'+iqxFig(A,'a',v==null?0:(10-v)/10)+'<span class="iqx-sp" aria-hidden="true"></span>'
+  +iqxFig(B,'b',v==null?0:v/10)+'</div>'
   +ans+'</div>';}
 function iqxCard(p,id,row){
  var c=seatCol(iqxSeat(id,row.k)), v=ixGet(p,id,row.k), near=(v==null)?null:Math.round(v);

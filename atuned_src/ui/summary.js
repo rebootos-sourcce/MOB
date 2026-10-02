@@ -1072,6 +1072,7 @@ function sumFull(r){
   +'</div>'
   +sumDaySlot(r)
   +sgZone('todo','What to do',sumOutput(r))
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +'<div class="sg-folds">'
    +sgFold('lens','Four lenses',sumLens(r,true))
    +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')

@@ -6,6 +6,25 @@ read off the repository and the gate runs, not recalled. "Pushed" means on
 since round PH: plain words, as if he is ten, no fixed headings; questions only
 when blocked (round PD).
 
+## 0. CURRENT TOP PRIORITY, round QC, 2 October night. Supersedes the ordering below until closed
+
+His own implementation handoff, in full at `reviews/ATUNED-System-Congruency-MVP-TDD.md` (2291 lines, two
+parts: the original Congruency TDD and an appended Information Flow Congruency Sweep). Its own words:
+"Do not expand into unrelated features until this path is closed and tested." Everything in sections B
+through L below stays queued behind this one chain until it is DONE, PARTIAL, BLOCKED or NOT IMPLEMENTED
+per requirement, in the document's own report format, not assumed finished because the sections below
+say so.
+
+The chain: STORY, OBSERVATION, MIRROR, CONFIRM/CORRECT, PATTERN, RELEASE, VERIFY, EVIDENCE, FIELD/HISTORY,
+with a second layer under it: EVIDENCE, CANONICAL RECORD, HYPOTHESIS, TRACE GRAPH, MEMORY, DECISION,
+PRACTICE, OUTCOME, each kept as a distinct thing, one canonical writer per domain, a hypothesis never
+silently treated as fact, the Field never authoring a fact independently of the record behind it.
+
+Required first, per the document's own order, before any code: a full audit against real code (not
+assumed from file names or this plan's own claims), grading every requirement EXISTS, PARTIAL, MISSING,
+CONFLICT or UNVERIFIED with file/function/test evidence. That audit is running now (`reviews/CONGRUENCY-AUDIT.md`,
+not yet landed). The smallest closure it identifies is the next build, not a guess at one.
+
 ## A. Done and pushed (latest build v1161, commit 8df2ce2, sent to him as atuned.html)
 
 Full list in `PLAN-HISTORY.md`. This round: all gates green on a quiet machine; welcome
