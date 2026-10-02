@@ -29,6 +29,7 @@ engine/trace.js
 engine/schema.js
 engine/journey.js
 engine/practice.js
+engine/loop.js
 engine/intake.js
 engine/intakemore.js
 engine/sniff.js
@@ -78,6 +79,7 @@ ui/account.js
 ui/practitioner.js
 ui/personas.js
 ui/rootsum.js
+ui/loopread.js
 ui/railtiles.js
 ui/railwire.js
 ui/railmotion.js

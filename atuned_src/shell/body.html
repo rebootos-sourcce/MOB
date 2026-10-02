@@ -1058,6 +1058,19 @@
     <div class="lsec-bd"><div id="charrail"></div></div>
    </div>
 
+   <!-- YOUR PATTERNS, the trace graph's home on the Field. F23 in the pass 3
+        funnel spec: "Its home is the Field's side column, where the app
+        opens; Summary's pinned card is the same component." ui/loopread.js
+        fills #loopside with the block Summary also carries, so it is shown on
+        the Field only (head.html) and the two never stand on one screen.
+        Under the Reading because it is the Reading's evidence: what was
+        written, what was opened, what the person has said yes to. Closed on
+        arrival, like every section but the Reading. -->
+   <div class="lsec lp-sec" data-rail="right" data-sec="loop">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="12" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M8.4 7.2l7.2 3.6M15.6 13.2l-7.2 3.6"/></svg>Your patterns</span><i></i></button>
+    <div class="lsec-bd"><div id="loopside"></div></div>
+   </div>
+
    <div class="lsec" data-rail="right" data-sec="sel">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8l12 7.4-5.4 1.4 3.2 6.2-2.6 1.4-3.2-6.2L6 18z"/></svg>Selection</span><i></i></button>
     <div class="lsec-bd">

@@ -284,6 +284,8 @@ if(typeof module!=='undefined'&&module.exports){
                   traceNeighbors:traceNeighbors, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
+  /* the loop read, engine/loop.js: the one read of the graph a screen asks */
+                  loopRead:loopRead, LOOP_SHOW:LOOP_SHOW,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
