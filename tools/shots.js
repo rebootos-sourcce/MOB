@@ -17,8 +17,13 @@ const booted=async p=>{try{await p.waitForFunction(
    one surface whose first reviewer was the owner. Intake, knowledge, compass
    and settings are added; the integers are identity and are never renumbered,
    so they are written out rather than derived from a position. */
+/* AND RITUAL WAS MISSING FROM IT, found at round QF. Flow is the one page
+   this list did not carry, so the surface the owner judges by looking was the
+   one surface no shot was ever taken of, which is the same hole Settings was
+   in before it was added above. It is integer 10. */
 const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4],
- ['intake',5],['knowledge',6],['compass',8],['settings',9],['masks',11],['intake-page',13]];
+ ['intake',5],['knowledge',6],['compass',8],['settings',9],['ritual',10],
+ ['masks',11],['intake-page',13]];
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
  const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
