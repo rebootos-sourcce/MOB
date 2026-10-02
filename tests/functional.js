@@ -153,6 +153,42 @@ for(const nm of people){
    right count is zero everywhere, and that is asserted rather than skipped;
    the stories are committed through the Story tab on a person's own profile,
    on a page of their own so no later check finds them. */
+/* THE CHARACTER PAGE'S OWN PROBE, installed on every page that measures it.
+   The page is one canvas drawn by ui/chcloud.js, so what it draws is read as
+   paint and never off a bounding box: a shot is a settled frame, every ease
+   finished (snap), at a fixed moment past the opening, with every point drawn
+   and the colour field rebuilt (setQ(0), manual), so two shots of the same
+   state are the same pixels. Measured: two shots in a row differ in 0 pixels.
+   Without the fixed quality the governor's stride drew alternate halves of the
+   cloud on alternate frames and two shots of one state differed by about four
+   hundred pixels, which is the probe measuring its own frame count.
+
+   AND THE TRACE'S OWN EASE IS FINISHED, which snap() leaves alone. Close
+   trace sets the stop of the turn easing back to nothing over a few frames,
+   and a tab switch inside those frames stops the loop with it part way, .26
+   to .33 measured, so the next shots each turned the field by a different
+   amount: James drawn twice, a page apart, measured 31,120 and then 32,999
+   pixels apart from himself on two full runs (2 October), the probe
+   measuring when it was called. Reproduced on its own page (trace, Close
+   trace, Body, then James, Derek, James) at 45,551 apart, and 0 apart with
+   the ease finished for the shot.
+
+   The phases are started fresh as well, as a guard and not as the fix: the
+   turn, the orbits, the flow and the breath are each a phase Scene.acc keeps
+   counting from the last frame when that frame was under half a second ago,
+   so a phase whose rate was still easing carries that history. Emptied for
+   the shot, every phase is its rate times 3.2. Measured on its own it moved
+   nothing in the cases tried, and it is cheap.
+
+   The clock, the phases, the quality and the manual flag are put back after,
+   so the live loop carries on as it was. A pixel counts as changed past 8 in
+   luminance and as lit past 40. */
+const CH_HELP=`window.__chShot=function(){var sc=CHV.sc,cv=sc.cv,q=sc.q,m=sc.manual,t=sc.t,am=sc.accm,ts=sc.ts;
+ sc.snap();sc.setQ(0);sc.manual=true;sc.t=3.2;sc.accm={};sc.ts=sc.tsT;sc.render();
+ var d=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;sc.manual=m;sc.setQ(q);sc.t=t;sc.accm=am;sc.ts=ts;return d;};
+window.__chL=function(a,i){return .2126*a[i]+.7152*a[i+1]+.0722*a[i+2];};
+window.__chDiff=function(a,b){var n=0;for(var i=0;i<a.length;i+=4)if(Math.abs(__chL(a,i)-__chL(b,i))>8)n++;return n;};
+window.__chLit=function(a){var n=0;for(var i=0;i<a.length;i+=4)if(__chL(a,i)>40)n++;return n;};`;
 console.log('\n=== the six masks, as pixels on the figure ===');
 {
  const was=await page.evaluate(()=>PMLAYER);
@@ -258,197 +294,174 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   return {into:into,b1:b1,shown:k.shown,ms:Math.round(performance.now()-t0)};},newT);
  ok(live.into&&live.b1===lv0+1&&live.shown===live.b1,'a story written into the pelvis is one more Child pixel, '
   +lv0+' to '+live.b1+', drawn '+live.shown+' in '+live.ms+'ms'+(live.into?'':', and the story did not land there'));
- /* THE CHARACTER PAGE, round LP, which replaced the Masks door in full on his
-    words: "if what you're asking in the current mask page is the human body
-    with all the chakra points, then yes, it definitely replaces all that."
-    The door keeps integer 11 and host #masksview and draws the five read
-    masks (ui/character.js), so the Body's figure is held to never arriving
-    there, and the Body is held to what it had before the visit.
+ /* THE CHARACTER PAGE, FIFTH BUILD, rounds ON to OW and PE (ui/character.js
+    and ui/chcloud.js over engine/charfield.js). The door keeps integer 11 and
+    host #masksview. Everything below is held against what that page actually
+    is: one canvas in #chpstage with the five read masks upper left and four
+    toggles upper right and no text in the centre, and every word the page says
+    in the right rail's own section, #charrail.
 
-    ROUNDS MX, MZ AND NA REBUILT THE LAYOUT INSIDE THAT SAME DOOR: a rail of
-    the five on the left, Child to Ideological, and a hero that is whichever
-    one a rail press names, the hero and Selection moving together on that
-    one press. What is asserted about the grids is still worked out here
-    from compute(), not from the function that draws them: every lit pixel
-    belongs to an address under that mask's own seats and carrying at least
-    1 in the reading shown, the resolution follows the rule read straight
-    off r.sabs and r.cxs, the Light switch changes the pixels and never the
-    grid, and two people with different saboteurs get a different Child. */
+    REWRITTEN 2 OCTOBER, round PZ, and rewritten rather than patched: the
+    fourth build's grids, the Dark and Light switch, the weave and the pixel
+    hover are gone, and chRead, CHV.face, CHV.weave and CHV.opened with them.
+    This block crashed on chRead and reported nothing at all about the page that
+    replaced it, which is a gate measuring a page that no longer exists.
+
+    What is worked out here and not read off the function that draws it: the
+    leading pattern is the largest of S.charge over CHILD; the trace's leaks are
+    seats in order of seatField's mean charge, since a seat's leak only rises
+    with it; the address the trace card names sits at the traced seat and its
+    charge is addrField's; the story it quotes is one of this person's own
+    entries; the hover names addrField's own address and charge. */
+ await sp.evaluate(CH_HELP);
  const mv=await sp.evaluate(async()=>{
   const pressed=()=>[...document.querySelectorAll('#bmov [data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');
   const before={on:pressed(),mode:BM.mode};
   const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
   const btn=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]');
   btn.click(); await fr();
-  const r=compute(), host=document.getElementById('masksview');
-  const val=(n,f)=>f==='light'?Math.max(n.pole||0,n.jq||0):(n.sq||0);
-  /* CH_RES ITSELF, NOT TYPED HERE TWICE: round NK moved the egg's own grid
-     from 16/24/32 to 20/28/36 with the box it sits inside, and a literal
-     16/24/32 here would have kept passing against the old numbers while
-     silently checking nothing real against the build it was actually run
-     on. Reading CH_RES off the page this runs in is the same discipline
-     CLAUDE.md asks of a human: read the count off the run. */
-  const wantG=m=>{const u=r.sabs.filter(s=>s.parts.some(n=>n&&m.b.indexOf(n.b)>=0));
-   return !u.length?CH_RES[0]:r.cxs.some(c=>c.parts.some(s=>u.indexOf(s)>=0))?CH_RES[2]:CH_RES[1];};
-  const read=f=>MASKS_READ.map(m=>{const rd=chRead(m,r,f);
-   return {nm:m.nm,G:rd.G,want:wantG(m),lit:rd.px.length,
-    stray:rd.px.filter(x=>m.b.indexOf(x.n.b)<0||val(x.n,f)<1).length,
-    left:rd.px.every(x=>x.p[0]<rd.G/2),
-    pos:rd.px.map(x=>x.p.join(':')).join(' ')};});
-  /* THE NAME COMES OFF THE RAIL'S OWN VISIBLE TEXT, ROUND NK, so this reads
-     it off aria-label instead of a .chv-nm span that no longer exists:
-     still "under its own name" exactly as the assertion below says, just
-     read where a screen reader would find it rather than where a sighted
-     person used to see it printed. */
-  const cards=()=>[...host.querySelectorAll('.chv-m')].map(c=>({nm:c.getAttribute('data-chmask'),
-   txt:(c.getAttribute('aria-label')||'').split(' mask,')[0],G:+(c.querySelector('svg')||{getAttribute:()=>0}).getAttribute('data-chres'),
-   svg:(c.querySelector('svg')||{}).outerHTML||'',on:c.getAttribute('aria-pressed')==='true',
-   weave:c.classList.contains('chv-weave-on')}));
-  const hero=()=>{const h=host.querySelector('.chv-hero');
-   return {nm:h&&h.getAttribute('data-chhero'),G:+((h&&h.querySelector('svg'))||{getAttribute:()=>0}).getAttribute('data-chres')};};
+  const host=document.getElementById('masksview'), stage=host.querySelector('#chpstage'), rail=document.getElementById('charrail');
+  const cvs=stage?[...stage.querySelectorAll('canvas')]:[];
+  const mk=()=>[...host.querySelectorAll('[data-chmask]')];
   const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),label:(btn.querySelector('.n')||{}).textContent,
    figure:!!(BM.cv&&host.contains(BM.cv)),emapFig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),
-   dark:read('dark'),cards:cards(),empty:!!host.querySelector('.chv-empty'),roster:MASKS_READ.map(m=>m.nm).join(),
-   /* MX: "it always starts off on the user's last open. First time users
-      start off on child." A fresh page for this profile has never written
-      CURP.ui.chmask, so the hero this first visit opens on is the test. */
-   openFirst:hero().nm};
-  /* the switch */
-  host.querySelector('[data-chface="light"]').click(); await fr();
-  out.light=read('light'); out.lcards=cards();
-  out.lpressed=host.querySelector('[data-chface="light"]').getAttribute('aria-pressed');
-  host.querySelector('[data-chface="dark"]').click(); await fr();
-  /* a rail press answers in Selection and becomes the hero together, round
-     NA: "a rail press updates the hero and the right column together." */
-  host.querySelector('[data-chmask="Child"]').click(); await fr();
+   canvases:cvs.length,mine:!!(CHV.sc&&cvs[0]===CHV.sc.cv),role:cvs[0]&&cvs[0].getAttribute('role'),cvLabel:(cvs[0]&&cvs[0].getAttribute('aria-label'))||'',
+   roster:MASKS_READ.map(m=>m.nm).join(),
+   masks:mk().map(b=>({nm:b.getAttribute('data-chmask'),label:b.getAttribute('aria-label')||'',on:b.getAttribute('aria-pressed')})),
+   ovs:[...host.querySelectorAll('[data-chov]')].map(b=>b.getAttribute('data-chov')+':'+b.getAttribute('aria-pressed')).join(),
+   stageText:(stage?stage.textContent:'x').trim(),
+   railShown:(()=>{const s=document.querySelector('.lsec.ch-rail');return !!s&&getComputedStyle(s).display!=='none'&&!!rail&&rail.textContent.length>0;})(),
+   unread:compute().unread};
+  /* THE CANVAS DRAWS: a settled frame, its lit pixels against its area */
+  const sh=__chShot(); out.lit=__chLit(sh); out.px=sh.length/4;
+  /* THE LEADING PATTERN, the largest of S.charge, first of a tie as CHILD lists them */
+  let li=0; CHILD.forEach((c,i)=>{if((+S.charge[c.nm]||0)>(+S.charge[CHILD[li].nm]||0))li=i;});
+  const lead=rail.querySelector('.chr-lead');
+  out.lead={want:CHILD[li].nm,fig:(+S.charge[CHILD[li].nm]||0).toFixed(1),got:lead?lead.textContent:''};
+  /* TRACE. The toggle opens the card on the heaviest leak. */
+  const SF=seatField(), byMean=SF.map((s,k)=>k).sort((a,b)=>SF[b].mean-SF[a].mean||a-b);
+  const trace=host.querySelector('[data-chov="trace"]');
+  trace.click(); await fr();
+  let card=rail.querySelector('.chr-trace');
+  const tabs=card?[...card.querySelectorAll('.chr-tabs [data-chtrace]')]:[];
+  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+) of 10/.exec(ct);
+  const N=am?+am[1]:-1, af=addrField().filter(a=>a.i===N)[0];
+  const q=card&&card.querySelector('.chr-q'), qt=q?q.textContent.replace(/^“|”$/g,'').replace(/\.\.\.$/,''):'';
+  out.trace={pressed:trace.getAttribute('aria-pressed'),tracing:host.classList.contains('chp-tracing'),card:!!card,sel:CHV.sel,
+   tabs:tabs.map(b=>+b.getAttribute('data-chtrace')),on:tabs.filter(b=>b.getAttribute('aria-pressed')==='true').map(b=>+b.getAttribute('data-chtrace')),
+   names:tabs.map(b=>b.textContent.trim()),seats:tabs.map(b=>BANDS[+b.getAttribute('data-chtrace')]),byMean:byMean,meanSeats:byMean.map(k=>BANDS[k]),
+   topSh:charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,SF[byMean[0]].mean),
+   addr:{N:N,seat:BY[N]?BY[N].b:null,want:BANDS[CHV.sel],field:af?af.field:null,got:cm?cm[1]:null,charge:af?af.sq.toFixed(1):null},
+   story:{q:qt,own:!!qt&&CURP.story.entries.some(e=>String(e.text).indexOf(qt)===0)}};
+  /* Close trace puts all of it down */
+  const tc=document.getElementById('chtc'); if(tc)tc.click(); await fr();
+  out.closed={card:!!rail.querySelector('.chr-trace'),pressed:trace.getAttribute('aria-pressed'),tracing:host.classList.contains('chp-tracing'),sel:CHV.sel};
+  /* THE HOVER. A real pointermove on the canvas, aimed at the drawn place of
+     the most charged address the last frame put down, the same list the
+     handler's own hit test reads. Rendered first in this same task, so no
+     frame moves the points between the aim and the event. */
+  const sc=CHV.sc, cv=sc.cv; sc.render();
+  const rc=cv.getBoundingClientRect(), ap=sc.AP.slice().sort((a,b)=>sc.achT[b[2]]-sc.achT[a[2]])[0];
+  cv.dispatchEvent(new PointerEvent('pointermove',{clientX:rc.left+ap[0],clientY:rc.top+ap[1],pointerType:'mouse',bubbles:true}));
+  const hf=addrField()[ap[2]], hl=document.getElementById('chhover');
+  out.hover={name:hf.name,charge:hf.sq.toFixed(1),txt:hl?hl.textContent:''};
+  cv.dispatchEvent(new PointerEvent('pointerleave',{pointerType:'mouse',bubbles:true}));
+  out.hover.off=hl?hl.textContent:'';
+  /* READ THIS MASK opens its summary in Selection */
+  const m0=CHV.pick, rd=document.getElementById('chread'); if(rd)rd.click(); await fr();
   const d=document.getElementById('rdrill');
-  out.drill={shown:d.style.display!=='none',t:d.textContent,svgs:d.querySelectorAll('.chv-pair svg').length,
-   on:(host.querySelector('[data-chmask="Child"]')||{}).getAttribute('aria-pressed'),hero:hero().nm};
-  /* a second press on the mask already the hero, round NH: there is no
-     toggle back to nothing now that the stage always needs one face on
-     it, so the hero and the drawer both stay exactly where they were */
-  host.querySelector('[data-chmask="Child"]').click(); await fr();
-  out.drill.after={shown:d.style.display!=='none',
-   on:(host.querySelector('[data-chmask="Child"]')||{}).getAttribute('aria-pressed'),hero:hero().nm};
-  /* THE WEAVE, round NH, built for "I'm able to select the saboteur
-     clusters, I'm able to see different effects" and MX's own "if you
-     select it on one mask, then you see how it shows up in all the
-     others." Picked off whichever read mask this profile's own stories
-     built a saboteur under, rather than named here, since the reference
-     case this file builds is stories and addresses and not which mask they
-     happen to land on (own.masks.some(x=>x.cl.length>0) above already
-     proved at least one exists). */
-  const heavy=out.dark.filter(x=>x.lit>0).slice().sort((a,b)=>b.lit-a.lit);
-  let weave={found:false};
-  for(const cand of heavy){
-   const m=MASKS_READ.filter(x=>x.nm===cand.nm)[0];
-   host.querySelector('[data-chmask="'+m.nm+'"]').click(); await fr();
-   const rd=chRead(m,r,'dark'), px=rd.px.find(x=>x.tier>=1&&x.o);
-   if(!px)continue;
-   weave.found=true; weave.mask=m.nm; weave.sab=px.o.nm;
-   const G=rd.G;
-   const clickAt=async()=>{
-    /* re-queried every time, never kept across a click: the press this is
-       aimed at calls render(), which rewrites #masksview's own innerHTML
-       and throws away the svg a stale reference would still be pointing
-       at, the same caution chDrill's own html===CHV.html guard exists
-       for on the production side of this exact element. */
-    const hs=host.querySelector('.chv-hero svg.chv-hero-svg'), rect=hs.getBoundingClientRect();
-    const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
-    hs.dispatchEvent(new PointerEvent('click',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
-    await fr();};
-   await clickAt();
-   weave.on=cards().filter(c=>c.weave).map(c=>c.nm);
-   weave.drillT=d.textContent;
-   await clickAt();
-   weave.after=cards().filter(c=>c.weave).map(c=>c.nm);
-   break;}
-  out.weave=weave;
+  out.drill={pick:m0,shown:d.style.display!=='none',t:d.textContent};
+  rdClose();
   setTab(TAB.ENERGY); render(); await fr();
   out.back={on:pressed(),mode:BM.mode,views:bmViews().join(','),
    orbs:document.querySelectorAll('#bmov .fb-b .fb-orb').length,regs:!!document.getElementById('bmregs'),
-   fig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),chv:!!host.querySelector('.chv')};
+   fig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),chp:!!host.querySelector('.chp')};
   out.before=before;
-  /* the shape is the person's: two reference people, one mask */
-  const child=nm=>{loadP(PEOPLE.findIndex(p=>p.nm===nm));const rr=compute();
-   return chRead(MASKS[0],rr,'dark').px.map(x=>x.p.join(':')+x.n.b).join(' ');};
-  out.james=child('James'); out.derek=child('Derek');
+  /* the figure is the person's: two reference people, one mask, two drawings */
+  const fig=async nm=>{loadP(PERSON(nm));setTab(TAB.MASKS);render();await fr();
+   host.querySelector('[data-chmask="Child"]').click();await fr();return __chShot();};
+  const ja=await fig('James'), de=await fig('Derek'), ja2=await fig('James');
+  out.people={d:__chDiff(ja,de),same:__chDiff(ja,ja2)};
   return out;});
  ok(mv.tab&&mv.sec==='play'&&mv.label==='Character','the door is Character, in Play, integer 11, got '+mv.label+' in '+mv.sec);
  ok(!mv.figure&&mv.emapFig,'the Body\'s figure never comes to the Character page and stays in the Body\'s host');
- ok(mv.cards.map(c=>c.nm).join()===mv.roster&&mv.cards.every(c=>c.txt===c.nm&&c.svg.indexOf('<svg')===0),
-  'every read mask is a rail icon in the roster\'s order, each under its own name, '+mv.cards.map(c=>c.txt).join(','));
- ok(mv.openFirst==='Child','a first visit opens on Child, '+mv.openFirst);
- ok(!mv.empty,'a profile with stories in says nothing about being empty');
- ok(mv.dark.every(x=>x.stray===0)&&mv.light.every(x=>x.stray===0),'every lit pixel is an address under that mask\'s own seats, held at 1 or more, '
-  +mv.dark.concat(mv.light).filter(x=>x.stray).map(x=>x.nm+' '+x.stray).join(', '));
- ok(mv.dark.every(x=>x.left),'the half face is laid down and the other half is its mirror');
- ok(mv.dark.every(x=>x.G===x.want)&&mv.cards.every((c,i)=>c.G===mv.dark[i].want),
-  'each grid is one of CH_RES\'s three sizes by what has formed under it, '+mv.dark.map(x=>x.nm+' '+x.G+'/'+x.want).join(', '));
- ok(mv.dark.filter(x=>x.lit>0).length>=3,'the stories light three masks or more, '+mv.dark.map(x=>x.nm+' '+x.lit).join(', '));
- ok(mv.lpressed==='true'&&mv.lcards.every((c,i)=>c.G===mv.cards[i].G),'Light is pressed and the grid under each mask does not move');
- ok(mv.light.some((x,i)=>x.pos!==mv.dark[i].pos)||mv.light.every(x=>!x.lit),'and Light lights its own reading, not the dark one again');
- ok(mv.drill.shown&&/Child/.test(mv.drill.t)&&/The dark mask/i.test(mv.drill.t)&&/The light mask/i.test(mv.drill.t)&&mv.drill.svgs===2&&mv.drill.on==='true'&&mv.drill.hero==='Child',
-  'pressing Child opens its summary in Selection and makes it the hero, both readings and both grids, '+mv.drill.svgs+' grids');
- ok(mv.drill.after.shown&&mv.drill.after.on==='true'&&mv.drill.after.hero==='Child',
-  'a second press on the same mask leaves it the hero and the drawer open, round NH, not a toggle back to nothing');
- ok(mv.weave.found,'this profile\'s own stories built a saboteur under some read mask, '+JSON.stringify(mv.weave));
- ok(mv.weave.on&&mv.weave.on.indexOf(mv.weave.mask)>=0,
-  'picking a saboteur\'s own pixel on the hero rings it on the mask it was picked on too, got '+JSON.stringify(mv.weave.on));
- ok(new RegExp(mv.weave.sab.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(mv.weave.drillT),
-  'and opens that saboteur\'s own reading in Selection, reusing runDrill rather than a second renderer, got '+mv.weave.drillT.slice(0,80));
- ok(mv.weave.after.length===0,'pressing the same pixel again puts the weave down, got '+mv.weave.after.join(','));
- console.log('  Character, dark: '+mv.dark.map(x=>x.nm+' '+x.G+' across '+x.lit+' lit').join(', ')+'; weave on '+mv.weave.mask+': '+mv.weave.sab);
- ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chv,
+ ok(mv.canvases===1&&mv.mine&&mv.role==='img'&&mv.cvLabel.length>20,
+  'the stage is one canvas, the scene\'s own, named to a screen reader, '+JSON.stringify({n:mv.canvases,mine:mv.mine,role:mv.role}));
+ ok(mv.stageText==='','round PE: the centre carries no text, got '+JSON.stringify(mv.stageText.slice(0,60)));
+ ok(mv.railShown,'and the page\'s words are in the right rail\'s own section, which is shown');
+ ok(!mv.unread&&mv.lit>mv.px*0.05,'the canvas draws this person: '+mv.lit+' lit pixels of '+mv.px+', the floor is a twentieth');
+ ok(mv.masks.map(c=>c.nm).join()===mv.roster&&mv.masks.every(c=>c.label.indexOf(c.nm+' mask')===0),
+  'every read mask is a button in the roster\'s order, each named for a screen reader, '+mv.masks.map(c=>c.nm).join(','));
+ ok(mv.masks.filter(c=>c.on==='true').map(c=>c.nm).join()==='Child'&&mv.masks.every(c=>c.on==='true'||c.on==='false'),
+  'MX: a first visit opens on Child, the one mask pressed, '+mv.masks.map(c=>c.nm+' '+c.on).join(', '));
+ ok(mv.ovs==='cloud:true,torus:true,heat:false,trace:false',
+  'round PE: the four toggles, point cloud and torus on, heat map off and trace not tracing, '+mv.ovs);
+ ok(mv.lead.got.indexOf(mv.lead.want)>=0&&mv.lead.got.indexOf(mv.lead.fig)>=0,
+  'the leading pattern is the largest charge, '+mv.lead.want+' '+mv.lead.fig+', got '+JSON.stringify(mv.lead.got));
+ const T=mv.trace;
+ ok(T.pressed==='true'&&T.tracing&&T.card,'pressing trace opens the trace card and marks the stage tracing, '+JSON.stringify({p:T.pressed,t:T.tracing,c:T.card}));
+ ok(T.topSh<.25||T.tabs.length>0,'a seat closed past a quarter is always a leak, heaviest seat at '+T.topSh.toFixed(2)+', '+T.tabs.length+' listed');
+ ok(T.tabs.length>0&&T.tabs.length<=3&&T.tabs.join()===T.byMean.slice(0,T.tabs.length).join(),
+  'the leaks it lists are the heaviest seats by their own mean charge, heaviest first, at most three, '+T.seats.join(',')+' against '+T.meanSeats.slice(0,3).join(','));
+ ok(T.on.join()===String(T.tabs[0])&&T.sel===T.tabs[0]&&T.names.every((n,i)=>n.toLowerCase()===T.seats[i].toLowerCase()),
+  'the first press traces the heaviest, its tab the one pressed, each tab named for its seat, '+T.names.join(','));
+ ok(T.addr.N>=0&&T.addr.seat===T.addr.want&&T.addr.field===false&&T.addr.got!==null&&T.addr.got===T.addr.charge,
+  'the card names a real address at the traced seat with its own charge, '+JSON.stringify(T.addr));
+ ok(T.story.own,'and the story it quotes is one of this person\'s own entries, '+JSON.stringify(T.story.q.slice(0,60)));
+ ok(!mv.closed.card&&mv.closed.pressed==='false'&&!mv.closed.tracing&&mv.closed.sel===-1,'Close trace puts the card, the toggle and the stage down, '+JSON.stringify(mv.closed));
+ ok(mv.hover.txt.indexOf(mv.hover.name)===0&&mv.hover.txt.indexOf('Charge '+mv.hover.charge+' of 10')>=0,
+  'a hovered point names its own address and charge, '+JSON.stringify(mv.hover));
+ ok(/^Hover a point/.test(mv.hover.off),'and leaving the canvas puts the line back, '+mv.hover.off);
+ ok(mv.drill.shown&&mv.drill.t.indexOf(mv.drill.pick)>=0&&/Worn over the/.test(mv.drill.t)&&/Carrying the most/.test(mv.drill.t),
+  'Read this mask opens '+mv.drill.pick+'\'s summary in Selection, '+mv.drill.t.slice(0,60));
+ ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chp,
   'and the Body gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
- /* THE HOVER, ROUND MQ: "as I hover over the pixels, the overlay tells my
-    limiting belief, saboteur cluster, etc." A real pointermove, aimed at a
-    lit pixel's own cell centre in the svg's own rendered box, the same
-    conversion character.js's own handler runs, so this fails if that
-    handler's math and the assertion's ever disagree rather than agreeing
-    by construction. */
- const hv=await sp.evaluate(async()=>{
-  const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
-  document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]').click(); await fr();
-  const r=compute();
-  /* whichever mask this profile's own stories lit the most, rather than a
-     name typed here: the reference case this file builds is stories and
-     addresses, not which of the read masks they happen to land on. MASKS_READ,
-     not MASKS: Professional is hidden, round NE, and has no card to find. */
-  const reads=MASKS_READ.map(m=>({m:m,rd:chRead(m,r,'dark')}));
-  const best=reads.slice().sort((a,b)=>b.rd.px.length-a.rd.px.length)[0];
-  const card=document.querySelector('[data-chmask="'+best.m.nm+'"]'), svg=card.querySelector('svg');
-  const rd=best.rd, px=rd.px.find(x=>x.tier>=1)||rd.px[0], rect=svg.getBoundingClientRect(), G=rd.G;
-  const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
-  svg.dispatchEvent(new PointerEvent('pointermove',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
-  await fr();
-  const pr=document.getElementById('chprobe');
-  const on1={on:pr.classList.contains('on'),t:pr.textContent,name:px.n.k,tier:px.tier};
-  /* off the mask entirely: the readout puts itself down rather than keep
-     naming the last pixel it was ever aimed at */
-  document.getElementById('masksview').dispatchEvent(new PointerEvent('pointermove',
-   {clientX:rect.left-40,clientY:rect.top-40,pointerType:'mouse',bubbles:true}));
-  await fr();
-  return {on1:on1,offAfter:!pr.classList.contains('on')};});
- ok(hv.on1.on&&hv.on1.t.indexOf(hv.on1.name)>=0,'a hovered pixel names its own address, '+JSON.stringify(hv.on1));
- ok(hv.on1.tier<1||/saboteur/.test(hv.on1.t),'and says the chain it sits in once it is part of one, '+hv.on1.t);
- ok(hv.offAfter,'and moving off the grid puts the readout down');
- /* and a stranger, on a fresh page: the empty state reads honestly, nothing
-    lit anywhere, and the six faces are still six different masks, which is
-    the mark doing its job before any data arrives */
+ ok(mv.people.same===0&&mv.people.d>2000,'the figure is the person\'s: one mask, James against Derek, '+mv.people.d+' pixels apart, James twice '+mv.people.same);
+ console.log('  Character: '+mv.lit+' lit, lead '+mv.lead.want+', trace '+T.seats.join('>')+' address '+T.addr.N+', hover '+mv.hover.name+', people '+mv.people.d);
+ /* AND A STRANGER, on a fresh page with a fresh store. Unread, so the panel
+    says so and leads with nothing (the house silence on r.unread, 5dcb45d:
+    it printed "Leading pattern, Fear 0.0" in Fear's red). The field is dark:
+    the torus draws nothing at all at no coherence, measured as paint with it
+    on against it off. With the old floor two or three broken meridians draped
+    the blank figure like a cape, which is the regression this holds, and the
+    same probe on James, lit, is the case that proves it can see a torus.
+    Then the overlays are set and the page reloaded, which is the only honest
+    way to say a preference is kept. */
  {const bp=await browser.newPage({viewport:{width:1600,height:1000}});
   const bpErr=[];bp.on('pageerror',e=>bpErr.push(e.message));
-  await bp.goto(FILE,{waitUntil:'load'}); await booted(bp);
-  const bl=await bp.evaluate(()=>{setTab(TAB.MASKS);render();const host=document.getElementById('masksview');
-   const sv=[...host.querySelectorAll('.chv-m svg')];
-   return {unread:compute().unread,empty:(host.querySelector('.chv-empty')||{}).textContent||'',
-    lit:sv.map(x=>+x.getAttribute('data-chlit')),res:sv.map(x=>+x.getAttribute('data-chres')),
-    faces:new Set(sv.map(x=>x.innerHTML)).size,want:MASKS_READ.length,res0:CH_RES[0]};});
-  ok(bl.unread&&/^Nothing read yet, so the masks are empty\./.test(bl.empty),'a stranger reads that nothing is read yet, got '+bl.empty);
-  /* CH_RES[0], not 16 typed here: the same reason wantG above reads CH_RES
-     off the page rather than a number this file keeps its own copy of. */
-  ok(bl.lit.every(n=>n===0)&&bl.res.every(g=>g===bl.res0),'nothing lit and every grid at its first size, '+bl.lit.join(',')+' / '+bl.res.join(','));
-  ok(bl.faces===bl.want,'and the empty faces are all different masks, '+bl.faces+' of '+bl.want);
+  await bp.goto(FILE,{waitUntil:'load'}); await booted(bp); await bp.evaluate(CH_HELP);
+  const ovs=()=>bp.evaluate(()=>[...document.querySelectorAll('#masksview [data-chov]')].map(b=>b.getAttribute('data-chov')+':'+b.getAttribute('aria-pressed')).join());
+  const bl=await bp.evaluate(async()=>{
+   const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+   loadP(0); setTab(TAB.MASKS); render(); await fr();
+   const host=document.getElementById('masksview'), rail=document.getElementById('charrail'), sc=CHV.sc;
+   const row=[...rail.querySelectorAll('.chr-row')].filter(x=>/Coherence/.test(x.textContent))[0];
+   const o={unread:compute().unread,txt:rail.textContent,lead:!!rail.querySelector('.chr-lead'),
+    coh:row?row.querySelector('b').textContent:null,chov:STORE.get('chov'),
+    on:[...host.querySelectorAll('[data-chmask][aria-pressed="true"]')].map(b=>b.getAttribute('data-chmask')).join()};
+   const cape=()=>{const was=sc.ov.torus;sc.ov.torus=true;const a=__chShot();sc.ov.torus=false;const b=__chShot();sc.ov.torus=was;return {d:__chDiff(a,b),lit:__chLit(a),px:a.length/4,c:sc.c};};
+   o.blank=cape();
+   loadP(PERSON('James')); render(); await fr(); o.james=cape();
+   loadP(0); render(); await fr();
+   host.querySelector('[data-chov="heat"]').click(); host.querySelector('[data-chov="cloud"]').click();
+   o.set=STORE.get('chov');
+   return o;});
+  const set=await ovs();
+  await bp.reload({waitUntil:'load'}); await booted(bp);
+  const rl=await bp.evaluate(async()=>{setTab(TAB.MASKS); render();
+   await new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+   return {chov:STORE.get('chov'),on:CHV.ov};});
+  const after=await ovs();
+  ok(bl.unread&&/^Nothing read yet, so the field is dark/.test(bl.txt),'a stranger reads that nothing is read yet, got '+bl.txt.slice(0,60));
+  ok(!bl.lead&&!/Leading pattern/.test(bl.txt),'and an unread profile leads with no pattern at all, 5dcb45d, got '+(bl.lead?'a lead block':'')+(/Leading pattern/.test(bl.txt)?' the words':''));
+  ok(bl.coh==='–','its coherence reads a dash and not a number, got '+bl.coh);
+  ok(bl.on==='Child','and it opens on Child, got '+bl.on);
+  ok(bl.blank.c===0&&bl.blank.lit>0,'the blank figure is still drawn, dim, '+bl.blank.lit+' lit pixels at coherence '+bl.blank.c);
+  ok(bl.james.c>.2&&bl.james.d>2000,'the probe sees a torus where there is one: James at coherence '+bl.james.c.toFixed(2)+', torus on against off, '+bl.james.d+' pixels');
+  ok(bl.blank.d===0,'5dcb45d: at coherence zero the torus draws nothing, no cape of broken meridians, '+bl.blank.d+' pixels changed by it');
+  ok(bl.chov===null&&set==='cloud:false,torus:true,heat:true,trace:false'&&bl.set==='torus,heat',
+   'a fresh store holds no overlays, and the presses are kept under chov, '+JSON.stringify({was:bl.chov,set:bl.set,btn:set}));
+  ok(rl.chov==='torus,heat'&&after===set,'and they come back after a reload, '+after);
   ok(bpErr.length===0,'no page errors on a fresh page, '+bpErr.join(' | '));
   await bp.close();}
  ok(spErr.length===0,'no page errors on the story profile, '+spErr.join(' | '));
@@ -475,117 +488,113 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  await page.evaluate(w=>{rdClose();PMPICK=null;PMLAYER=w;loadP(PEOPLE.length-1);render();},was);}
 
 /* ---------------------------------------------------------------------------
-   CHARACTER'S OWN EFFECTS, DESIGN-character-effects.md 3 to 5: running hot
-   outside the rim, overexpressed holding still while the mask breathes, and
-   the weave's own fall and walk, plus the three depths the right column now
-   opens at. Each checked against a reference person known to carry the
-   state in question, found off compute() itself rather than typed as a
-   count or a name that drifts the day the roster changes: James for a dark
-   reading's own hot address, Sofia for a light reading's own saboteur that
-   only ever shows up overshot.
+   CHARACTER: THE FIVE MASKS, THE OVERLAYS, RUNS UNDER AND THE LOCK.
+
+   REWRITTEN 2 OCTOBER, round PZ. This section held the fourth build's own
+   effects (running hot, overexpressed, the weave, the three drawer depths),
+   every one of them read through chRead and CHV.face, which the fifth build
+   removed with the grids they drew. What the fifth build does instead is held
+   here, on the main page, and always as paint where paint is the claim:
+
+     each mask press presses that one button and no other, is kept on the
+     profile (CURP.ui.chmask, round MX) and bends the figure, so the five
+     settled figures are five different drawings;
+     each overlay toggle flips its own aria-pressed, is written under the
+     store key character.js keeps it under, 'chov', and changes the drawing;
+     the pick is the profile's own: a person who never picked opens on Child
+     even straight after somebody else picked Adult (5dcb45d, which found the
+     last person's mask carried across a profile switch);
+     a "Runs under" row in a saboteur's drill opens that mask here, which is
+     why chDrill survived the rewrite;
+     and below the tier that carries the masks the host is the lock's own
+     panel with nothing drawn, which is read off planNeed and PLANS and not
+     typed here as a rung.
 --------------------------------------------------------------------------- */
-console.log('\n=== Character\'s own effects: running hot, overexpressed, the weave alone ===');
+console.log('\n=== Character: the five masks, the overlays, Runs under, the lock ===');
 {
- const frames=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
- /* RUNNING HOT, DARK READING, HERO ONLY. The hottest read mask under James
-    is found rather than named, so this keeps answering correctly if his
-    own worked numbers ever move. */
- await page.evaluate(()=>{rdClose();CHV.weave=null;CHV.face='dark';loadP(PERSON('James'));setTab(TAB.MASKS);render();});
- await frames(); await page.waitForTimeout(150);
- const hot=await page.evaluate(()=>{
-  const host=document.getElementById('masksview');
-  const cand=MASKS_READ.map(m=>({m:m,n:W.filter(n=>m.b.indexOf(n.b)>=0&&(n.sq||0)>RUNHOT_AT).length}))
-   .filter(x=>x.n>0).sort((a,b)=>b.n-a.n)[0];
-  if(!cand)return {found:false};
-  host.querySelector('[data-chmask="'+cand.m.nm+'"]').click();
-  const hotCells=host.querySelector('.chv-hero svg.chv-hero-svg').querySelectorAll('.chv-hotcell').length;
-  const railHot=!!host.querySelector('.chv-rail [data-chmask="'+cand.m.nm+'"] .chv-hotcell');
-  CHV.face='light'; render();
-  const lightCells=document.querySelector('.chv-hero svg.chv-hero-svg').querySelectorAll('.chv-hotcell').length;
-  CHV.face='dark'; render();
-  return {found:true,mask:cand.m.nm,n:cand.n,hotCells:hotCells,railHot:railHot,lightCells:lightCells};});
- ok(hot.found,'James runs hot under some read mask, found off compute(), '+JSON.stringify(hot));
- ok(hot.hotCells>0,'and the hero draws running hot dashes outside its rim, '+JSON.stringify(hot));
- ok(!hot.railHot,'a rail icon, 48 pixels, never draws them, hero only, got '+hot.railHot);
- ok(hot.lightCells===0,'and the light reading never draws them either, dark reading only, got '+hot.lightCells);
-
- /* OVEREXPRESSED, LIGHT READING ONLY. Sofia, found the same way: whichever
-    read mask her own light reading shows an overshot saboteur under,
-    since the roster of who overshoots is the engine's. */
- await page.evaluate(()=>{rdClose();loadP(PERSON('Sofia'));CHV.weave=null;CHV.face='light';setTab(TAB.MASKS);render();});
- await frames(); await page.waitForTimeout(150);
- const over=await page.evaluate(()=>{
-  const r=compute(), host=document.getElementById('masksview');
-  for(const m of MASKS_READ){
-   const lt=chRead(m,r,'light'), px=lt.px.find(x=>x.o&&x.o.over);
-   if(!px)continue;
-   host.querySelector('[data-chmask="'+m.nm+'"]').click();
-   const hs=host.querySelector('.chv-hero svg.chv-hero-svg'), rect=hs.getBoundingClientRect(), G=lt.G;
-   const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
-   hs.dispatchEvent(new PointerEvent('click',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
-   const still=!!host.querySelector('.chv-weaveband-still');
-   const spill=hs.querySelectorAll('path[fill-opacity=".30"]').length;
-   return {found:true,mask:m.nm,sab:px.o.nm,still:still,spill:spill};}
-  return {found:false};});
- ok(over.found,'Sofia runs an overshot saboteur under some read mask, found off compute(), '+JSON.stringify(over));
- ok(over.still,'picking it holds the woven block visibly still, chv-weaveband-still, got '+JSON.stringify(over));
- ok(over.spill>0,'and a one cell spill lights the ground cells touching it at .30, '+over.spill+' spilled');
-
- /* THE WEAVE ALONE, STILL ON SOFIA'S OWN WEAVE FROM ABOVE: every hero cell
-    outside the woven block falls to .08, the glow goes out, a rail icon
-    that does not carry the weave desaturates, and the woven block itself
-    walks a highlight through its own cells. */
- const wv=await page.evaluate(()=>{
-  const host=document.getElementById('masksview');
-  const rest=host.querySelector('.chv-hero .chv-rest'), glow=host.querySelector('.chv-hero .chv-glow');
-  const offRail=[...host.querySelectorAll('.chv-rail .chv-m')].find(b=>!b.classList.contains('chv-weave-on'));
-  const band=host.querySelector('.chv-weaveband');
-  return {weaving:host.querySelector('.chv').classList.contains('chv-weaving'),
-   restOp:rest?getComputedStyle(rest).opacity:null,glowOp:glow?getComputedStyle(glow).opacity:null,
-   railFilter:offRail?getComputedStyle(offRail.querySelector('.chv-svg')).filter:null,
-   cells:band?band.querySelectorAll('.chv-weavecell').length:0,
-   idxs:band?[...band.querySelectorAll('.chv-weavecell')].map(g=>g.style.getPropertyValue('--i')):[]};});
- ok(wv.weaving,'the page knows a saboteur is picked, chv-weaving on .chv');
- ok(wv.restOp!==null&&Math.abs(parseFloat(wv.restOp)-0.08)<0.01,
-  'the rest of the hero falls to .08, the Field\'s own Fall number, got '+wv.restOp);
- ok(wv.glowOp!==null&&parseFloat(wv.glowOp)===0,'the hero\'s own glow goes out, got '+wv.glowOp);
- ok(/saturate\(0\)/.test(wv.railFilter||''),'a rail icon that does not carry the weave desaturates, got '+wv.railFilter);
- ok(wv.cells>0&&wv.idxs.length===wv.cells&&new Set(wv.idxs).size===wv.idxs.length,
-  'the woven block walks, one cell stepped at a time, each its own --i, got '+JSON.stringify(wv.idxs));
-
- /* DEPTH 1, THE OPENING OVERVIEW, A FRESH ARRIVAL. */
- await page.evaluate(()=>{rdClose();CHV.weave=null;CHV.face='dark';CHV.opened=false;
-  loadP(PERSON('Gordon'));setTab(TAB.MASKS);render();});
- await frames(); await page.waitForTimeout(150);
- const ov=await page.evaluate(()=>{
-  const d=document.getElementById('rdrill');
-  return {shown:d.style.display!=='none',t:d.textContent,rows:d.querySelectorAll('.chv-ov-row').length,
-   heroRow:d.querySelectorAll('.chv-ov-row.chv-ov-hero').length,want:MASKS_READ.length};});
- ok(ov.shown&&/Your character/.test(ov.t),'a fresh arrival opens Selection on the overview, got '+ov.t.slice(0,30));
- ok(ov.rows===ov.want&&ov.heroRow===1,
-  'one row a mask, canon order, the hero\'s own row told apart, '+ov.rows+' of '+ov.want+', '+ov.heroRow+' marked hero');
-
- /* DEPTH 2, THE THREE COUNTS, ON A REAL PRESS. */
- const d2=await page.evaluate(()=>{
-  document.querySelector('[data-chmask="Child"]').click();
-  const d=document.getElementById('rdrill');
-  return {tiles:d.querySelectorAll('.chv-ct').length,samples:d.querySelectorAll('.chv-samp').length};});
- ok(d2.tiles===3&&d2.samples===3,'a mask\'s own drill leads with three counts, each with its own sample, got '+JSON.stringify(d2));
-
- /* DEPTH 3, "RUNS UNDER," ON A SABOTEUR PICKED OFF THE WEAVE. */
- const d3=await page.evaluate(()=>{
-  const r=compute();
-  for(const m of MASKS_READ){const rd=chRead(m,r,'dark'), px=rd.px.find(x=>x.tier>=1&&x.o);
-   if(!px)continue;
-   document.querySelector('[data-chmask="'+m.nm+'"]').click();
-   const hs=document.querySelector('.chv-hero svg.chv-hero-svg'), rect=hs.getBoundingClientRect(), G=rd.G;
-   const cx=rect.left+(px.p[0]+.5)/G*rect.width, cy=rect.top+(px.p[1]+.5)/G*rect.height;
-   hs.dispatchEvent(new PointerEvent('click',{clientX:cx,clientY:cy,pointerType:'mouse',bubbles:true}));
+ await page.evaluate(CH_HELP);
+ const ms=await page.evaluate(async()=>{
+  const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+  rdClose(); loadP(PERSON('James')); setTab(TAB.MASKS); render(); await fr();
+  const host=document.getElementById('masksview'), o={masks:[],pairs:[]}, shots={};
+  const on=()=>[...host.querySelectorAll('[data-chmask][aria-pressed="true"]')].map(x=>x.getAttribute('data-chmask')).join();
+  for(const b of [...host.querySelectorAll('[data-chmask]')]){
+   const nm=b.getAttribute('data-chmask'); b.click(); await fr();
+   o.masks.push({nm:nm,on:on(),pick:CHV.pick,kept:CURP.ui&&CURP.ui.chmask,drawn:CHV.sc.mask});
+   shots[nm]=__chShot();}
+  const nms=Object.keys(shots);
+  for(let i=0;i<nms.length;i++)for(let j=i+1;j<nms.length;j++)o.pairs.push({a:nms[i],b:nms[j],d:__chDiff(shots[nms[i]],shots[nms[j]])});
+  /* the overlays, each pressed and pressed back, on the Child figure */
+  host.querySelector('[data-chmask="Child"]').click(); await fr();
+  const base=__chShot(); o.noise=__chDiff(base,__chShot()); o.ov={};
+  for(const k of ['cloud','torus','heat']){const b=host.querySelector('[data-chov="'+k+'"]'), was=b.getAttribute('aria-pressed');
+   b.click(); await fr(); const now=b.getAttribute('aria-pressed'), kept=STORE.get('chov'), d=__chDiff(base,__chShot());
+   b.click(); await fr(); o.ov[k]={was:was,now:now,back:b.getAttribute('aria-pressed'),kept:kept,d:d};}
+  o.keptAfter=STORE.get('chov');
+  /* THE PICK IS THE PROFILE'S. James picks Adult; somebody who never picked
+     opens on Child; James comes back on Adult. */
+  host.querySelector('[data-chmask="Adult"]').click(); await fr();
+  loadP(PERSON('Derek')); render(); await fr();
+  o.derek={kept:(CURP.ui&&CURP.ui.chmask)||null,on:on()};
+  loadP(PERSON('James')); render(); await fr();
+  o.jamesBack=on();
+  /* RUNS UNDER. A saboteur of James's whose addresses sit under a read mask
+     other than the one on screen; its drill's row opens that mask here. */
+  const r=compute(), cur=CHV.pick;
+  let ru={found:false};
+  for(const s of r.sabs){
+   const seats=s.parts.filter(Boolean).map(n=>n.b);
+   const m=MASKS_READ.filter(x=>x.nm!==cur&&x.b.some(b=>seats.indexOf(b)>=0))[0];
+   if(!m)continue;
+   runDrill(s); await fr();
+   const row=document.querySelector('#rdrill [data-rununder="'+m.nm+'"]');
+   if(!row)continue;
+   row.click(); await fr();
    const d=document.getElementById('rdrill');
-   return {found:true,mask:m.nm,sab:px.o.nm,runsUnder:/Runs under/.test(d.textContent)};}
-  return {found:false};});
- ok(d3.found&&d3.runsUnder,'a saboteur picked off the weave leads with Runs under, '+JSON.stringify(d3));
- await page.evaluate(()=>{rdClose();CHV.weave=null;loadP(PEOPLE.length-1);render();});
+   ru={found:true,sab:s.nm,mask:m.nm,pick:CHV.pick,kept:CURP.ui&&CURP.ui.chmask,on:on(),
+    t:d.style.display!=='none'?d.textContent:''};
+   break;}
+  o.ru=ru; rdClose();
+  /* the rung that carries the masks, and the one under it, off the table */
+  const keys=PLANS.map(p=>p.k), need=planNeed('mask').k;
+  o.need=need; o.below=keys[keys.indexOf(need)-1];
+  return o;});
+ ok(ms.masks.every(x=>x.on===x.nm&&x.pick===x.nm&&x.kept===x.nm&&x.drawn===x.nm),
+  'each mask press presses that one mask and no other, is kept on the profile and drawn, '+ms.masks.map(x=>x.nm+' '+x.on).join(', '));
+ ok(ms.pairs.every(x=>x.d>2000),'and the five settled figures are five different drawings, '+ms.pairs.map(x=>x.a[0]+x.b[0]+' '+x.d).join(', '));
+ ok(ms.noise===0,'two shots of one state are the same pixels, so a difference is the toggle and not the probe, got '+ms.noise);
+ ok(['cloud','torus','heat'].every(k=>ms.ov[k].now!==ms.ov[k].was&&ms.ov[k].back===ms.ov[k].was),
+  'each overlay flips its own aria-pressed and back, '+JSON.stringify(ms.ov));
+ ok(ms.ov.cloud.kept==='torus'&&ms.ov.torus.kept==='cloud'&&ms.ov.heat.kept==='cloud,torus,heat'&&ms.keptAfter==='cloud,torus',
+  'and each press is kept under chov, '+[ms.ov.cloud.kept,ms.ov.torus.kept,ms.ov.heat.kept,ms.keptAfter].join(' | '));
+ ok(ms.ov.cloud.d>2000&&ms.ov.torus.d>2000&&ms.ov.heat.d>2000,
+  'and each reaches the drawing, pixels changed: cloud '+ms.ov.cloud.d+', torus '+ms.ov.torus.d+', heat '+ms.ov.heat.d);
+ ok(!ms.derek.kept&&ms.derek.on==='Child'&&ms.jamesBack==='Adult',
+  '5dcb45d: the pick is the profile\'s own, Derek who never picked opens on '+ms.derek.on+' after James picked Adult, James comes back on '+ms.jamesBack);
+ ok(ms.ru.found&&ms.ru.pick===ms.ru.mask&&ms.ru.kept===ms.ru.mask&&ms.ru.on===ms.ru.mask&&ms.ru.t.indexOf(ms.ru.mask)>=0&&/Worn over the/.test(ms.ru.t),
+  'a Runs under row in a saboteur\'s drill opens that mask here and its summary in Selection, '+JSON.stringify({sab:ms.ru.sab,mask:ms.ru.mask,on:ms.ru.on}));
+ /* THE LOCK, on two pages of their own: the seed every page here carries is
+    overridden by a later init script, the rung under the masks' and the
+    masks' own. */
+ for(const [tier,sees] of [[ms.below,false],[ms.need,true]]){
+  const lp=await browser.newPage({viewport:{width:1600,height:1000}});
+  await lp.addInitScript("window.SIGHT_PLAN={tier:'"+tier+"',status:'active'};");
+  const lpErr=[]; lp.on('pageerror',e=>lpErr.push(e.message));
+  await lp.goto(FILE,{waitUntil:'load'}); await booted(lp);
+  const lk=await lp.evaluate(async()=>{
+   loadP(PERSON('James')); setTab(TAB.MASKS); render();
+   await new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+   const host=document.getElementById('masksview'), door=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]');
+   return {sees:lockSees('mask'),panel:!!host.querySelector('.lk-panel[data-lock-panel="mask"] .lk-go'),
+    cv:host.querySelectorAll('canvas').length,masks:host.querySelectorAll('[data-chmask]').length,
+    rail:((document.getElementById('charrail')||{}).textContent||'').length,sc:!!CHV.sc,door:door?door.getAttribute('data-lock'):'none'};});
+  ok(lk.sees===sees&&(sees
+    ?(!lk.panel&&lk.cv===1&&lk.masks>0&&lk.rail>0&&lk.sc&&lk.door===null)
+    :(lk.panel&&lk.cv===0&&lk.masks===0&&lk.rail===0&&!lk.sc&&lk.door==='mask')),
+   'on '+tier+' the Character page is '+(sees?'drawn, no lock':'the lock\'s own panel, nothing drawn, the rail empty and the door padlocked')+', '+JSON.stringify(lk));
+  ok(lpErr.length===0,'no page errors on '+tier+', '+lpErr.join(' | '));
+  await lp.close();}
+ await page.evaluate(()=>{rdClose();loadP(PEOPLE.length-1);render();});
 }
 
 /* ---------------------------------------------------------------------------
@@ -3128,7 +3137,11 @@ const pmn=await page.evaluate(async()=>{
   const e=document.getElementById(id)||document.querySelector('.stage');
   g[k]=(getComputedStyle(e).backgroundImage||'').split('radial-gradient').length-1;}
  setTab(TAB.MASKS); render(); await wait();
- g.character=document.querySelectorAll('.chv-wash').length;
+ /* the fifth build's pool is the stage's own ground, .chp, one radial wash on
+    black on every theme (head.html: the page draws light and needs a dark
+    ground); the fourth build's .chv-wash went with its grids */
+ {const c=document.querySelector('#masksview .chp');
+  g.character=c?(getComputedStyle(c).backgroundImage||'').split('radial-gradient').length-1:0;}
  o.glow=g;
  setTab(TAB.FIELD); render();
  return o;});
