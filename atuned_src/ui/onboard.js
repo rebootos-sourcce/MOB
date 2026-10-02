@@ -77,11 +77,177 @@ var OB={open:false, step:0, replay:false,
     the bridge and never stored: the record keeps ob.yes, not the plan. */
  plan:null};
 
-/* THE FIGURE, AT REST. Unchanged from the shipped sheet: seven seats on a
-   spine with a gold halo over the crown, the same column the boot just
-   drew. Kept here rather than moved, because every card below still wants
-   it as its watermark (obCard's own .ob-fig-wm) and the welcome still wants
-   it at full strength. */
+/* ============================================================
+   THE SKIN, ROUND QG. "Redesign this in our field compass or body style.
+   Just pull our aesthetics into this. And replace what's there."
+
+   A six panel storyboard was drawn against this flow: a stock mountain lake
+   under a glowing orange ring, a glossy translucent human with seven bright
+   rainbow dots down its middle, a blue to pink gradient portal with the word
+   Release inside it, and bright blue pill buttons. Section 4 of the owner's
+   own Congruency TDD (reviews/ATUNED-System-Congruency-MVP-TDD.md) lists
+   exactly that set as what this product avoids: "stock photography, humans as
+   decoration, mystical portals, religious imagery, dashboard clutter, generic
+   wellness aesthetics." The same section names what the language is: "dark
+   field, minimal typography, thin geometry, body figure, rings, nodes, 112
+   addresses, colour, motion, breathing, symbolic geometry."
+
+   SO NOTHING HERE IS DRAWN BY EYE. Every mark below is the product's own,
+   taken from the file that already owns it:
+
+     the figure      BODYPATH and its transform, engine/data/figure.js, the
+                     same silhouette ui/map.js clips the Body page to. Not a
+                     spine with dots on it, which is what this file drew.
+     the seat places PMBANDS, engine/data/practice.js, each seat's real height
+                     on that figure. The Body page puts its seat rings there.
+     the seat names  FLOWSEAT, same file, for where on the body each one is:
+                     mid sternum, below the navel. The anatomy, not a mood.
+     the seat colour seatCol, ui/component.js, which reads PAL, PAL_LIGHT or
+                     PAL_VIVID by lighting, so a seat is the same colour here
+                     as on the wheel and goes light on Snow like everything
+                     else.
+     the seat mark   iqxMark's grammar, ui/intakeui.js, merged this round and
+                     named the house standard for a seat shown as a mark: a
+                     disc washed with its seat, a quiet track at 2.4, a
+                     heavier arc at 3.2 over it, and the glyph stroked and
+                     never filled. The glyph is SEATGLYPH, canon.js, and no
+                     second drawing is made for a thing that has one.
+     the loop        the four section marks in shell/body.html, the eye, the
+                     play ring, the two waves and the standing figure, which
+                     is what the bar already draws for discover, play, flow
+                     and embody.
+     the release     ui/release.js keeps every line of it. This sheet hands
+                     over through relPick and draws no release of its own.
+
+   AND ONE RULE FROM THE CHIP IT COPIES, kept rather than loosened: an arc is
+   a reading. iqxMark's own note says "an arc drawn full for decoration would
+   lie in a product where every arc is a reading." So a seat mark on a card
+   where nothing has been read yet carries its track and no arc, and the two
+   cards that do carry an arc say in words what it counts.
+   ============================================================ */
+/* THE SEVEN SEATS ON THE REAL FIGURE. PMBANDS is crown first; this sheet
+   reads root first, the order OB_PLACES and the body itself run in. */
+function obSeatRows(){
+ return BANDS.map(function(b){
+  var pb=null, fs=null, i;
+  for(i=0;i<PMBANDS.length;i++)if(PMBANDS[i].b===b)pb=PMBANDS[i];
+  for(i=0;i<FLOWSEAT.length;i++)if(pb&&FLOWSEAT[i].k===pb.k)fs=FLOWSEAT[i];
+  return {b:b, y:pb?pb.yp:50, where:fs?fs.seat:''};});}
+/* ONE SEAT AS A MARK, the chip grammar iqxMark set. share is a real quantity
+   or null, and null draws no arc. The box is 56 like the chip's, so the two
+   are the same object at two sizes and not two drawings. */
+function obSeatMark(b,share,cls){
+ var R=24.5, C=2*Math.PI*R, s=(share==null)?null:Math.max(0,Math.min(1,share));
+ return '<svg class="ob-mk'+(cls?' '+cls:'')+'" viewBox="0 0 56 56" aria-hidden="true" '
+  +'style="--c:'+seatCol(b)+'">'
+  +'<circle class="ob-mk-dk" cx="28" cy="28" r="27"/>'
+  +'<circle class="ob-mk-tk" cx="28" cy="28" r="'+R+'"/>'
+  +(s>0?'<circle class="ob-mk-ld" cx="28" cy="28" r="'+R+'" transform="rotate(-90 28 28)" '
+   +'stroke-dasharray="'+(C*s).toFixed(1)+' '+C.toFixed(1)+'"/>':'')
+  +'<g class="ob-mk-gl" transform="translate(16 16)">'+(SEATGLYPH[b]||SEATGLYPH._)+'</g></svg>';}
+/* THE FIGURE. The Body page's own silhouette, at the Body page's own
+   transform, with the seven seats where PMBANDS puts them.
+
+   WHY THE SEATS ON IT ARE NOT THE CONTROL, said here because the storyboard
+   asks for a tap on the figure. Measured: at 390 the card is 346 wide, the
+   drawing 310, and the seven seats span 49 of 102 units of its height, which
+   is 15 pixels between the crown and the 3rd eye. The tap floor is 44. Seven
+   targets cannot sit 15 pixels apart and be pressable, so the figure is the
+   picture and the chips under it are the control, and pressing a chip lights
+   its seat here. One concept, one control, and the drawing says where.
+
+   WHERE THE NAMES SIT, AND WHY THERE IS NO LEADER LINE TO THEM. The figure
+   occupies x 28.8 to 71.4 of its own hundred unit box, which leaves 28.8
+   units of gutter on its left with nothing in it. The seat names go there, at
+   the seat's own height, which is how the four release sheets drawn this
+   round carry them (release-redesign/, mockup B). No rule is drawn between a
+   name and its ring: the two share a baseline, which is the connection, and a
+   line from the name would cross the silhouette at every seat below the
+   throat. One mark fewer, and nothing lost.
+
+   THE NAMES COME OFF WHEN THEY WOULD BE TOO SMALL TO READ. 4.4 units of a 300
+   pixel drawing is 13 pixels and of a 220 pixel drawing is 9.7, which is under
+   the eleven pixel type floor. So the caller says whether this drawing is
+   large enough to carry them, and the small one on the mirror does not: the
+   groups under it name every seat in full.
+
+   lit is a list of seat names to light, pick is the one seat answered. */
+function obBodyFig(o){
+ o=o||{}; var lit={}; (o.lit||[]).forEach(function(b){lit[b]=1;});
+ var names=o.names!==false;
+ /* THE BOX IS CROPPED TO WHAT IS DRAWN, not left at the Body page's hundred
+    units. With names the content runs x 10 to 71.4 and with them off it runs
+    28.8 to 71.4, so one box for both put the figure visibly right of the
+    card's centre, measured at 1600 on the welcome. Each is cropped to its own
+    content and the figure lands on the optical centre either way. */
+ var box=names?'6 0 68 102':'26 0 48 102';
+ var s='<svg class="ob-bodyfig'+(o.cls?' '+o.cls:'')+'" viewBox="'+box+'" aria-hidden="true">'
+  +'<g transform="translate(0 1)">'
+  +'<g transform="translate('+PMTX+','+PMTY+') scale('+PMS+')">'
+  +'<path class="ob-bf-skin" d="'+BODYPATH+'"/></g>'
+  /* the midline the seats stand on, the Body page's own axis */
+  +'<line class="ob-bf-ax" x1="50" y1="3.6" x2="50" y2="57"/>';
+ obSeatRows().forEach(function(r,i){
+  var on=lit[r.b]||o.pick===r.b, c=seatCol(r.b);
+  s+='<g class="ob-bf-s'+(on?' on':'')+'" style="--c:'+c+'">'
+   +(names?'<text class="ob-bf-n" x="26" y="'+(r.y+1.6)+'">'+esc(r.b)+'</text>':'')
+   +'<circle class="ob-bf-r" cx="50" cy="'+r.y+'" r="'+(on?3.4:2.4)+'" '
+   +'style="animation-delay:'+(0.05+(6-i)*0.035).toFixed(3)+'s"/>'
+   +(on?'<circle class="ob-bf-h" cx="50" cy="'+r.y+'" r="6.2"/>':'')
+   +'</g>';});
+ return s+'</g></svg>';}
+/* THE LOOP, AND IT CLOSES. CLAUDE.md: "it is a circle, never a list ... a
+   numbered column of four says the fourth one is the end, which is the
+   opposite of a loop. Anywhere the four appear together they close." So the
+   storyboard's four cards with arrows between them are drawn as four marks on
+   one ring with the track running all the way round and no arrow head on it.
+   The marks are the section bar's own, shell/body.html, so the four things a
+   person is about to meet are drawn here exactly as they will be drawn in the
+   menu they meet them in. */
+var OB_LOOP=[
+ {k:'discover', nm:'Discover', say:'You write what happened, in your own words.',
+  ic:'<path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/>'},
+ {k:'play', nm:'Play', say:'The instrument reads where that sits in your body.',
+  ic:'<circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/>'},
+ {k:'flow', nm:'Flow', say:'You say the lines, and the charge leaves.',
+  ic:'<path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/>'},
+ {k:'embody', nm:'Embody', say:'What is left is yours, and the circle starts again.',
+  ic:'<circle cx="12" cy="7.8" r="2.3"/><path d="M3.6 4.4c1.7 4.9 4.5 7.4 8.4 7.4s6.7-2.5 8.4-7.4M12 11.8v4.4M7.4 21c1.2-3.2 2.7-4.8 4.6-4.8s3.4 1.6 4.6 4.8"/>'}];
+function obLoopRing(){
+ /* R 36 and a node of 11.5, not 34 and 13: at the first values the chord
+    between two neighbouring nodes was 48 units and the nodes took 26 of it,
+    so 22 units of track showed between them and the ring read as a flower of
+    four discs rather than as a turn with four stations on it. 28 units show
+    now, which is the shortest run of clear track that still reads as track. */
+ var R=36, cx=50, cy=50, NR=11.5;
+ var s='<svg class="ob-loop" viewBox="0 0 100 100" aria-hidden="true">'
+  +'<circle class="ob-loop-tk" cx="'+cx+'" cy="'+cy+'" r="'+R+'"/>';
+ OB_LOOP.forEach(function(x,i){
+  var a=(-90+i*90)*Math.PI/180, px=cx+R*Math.cos(a), py=cy+R*Math.sin(a);
+  s+='<g class="ob-loop-n" style="animation-delay:'+(0.08+i*0.07).toFixed(2)+'s">'
+   +'<circle class="ob-loop-d" cx="'+px.toFixed(2)+'" cy="'+py.toFixed(2)+'" r="'+NR+'"/>'
+   +'<g class="ob-loop-g" transform="translate('+(px-8).toFixed(2)+' '+(py-8).toFixed(2)+') scale(.667)">'
+   +x.ic+'</g></g>';});
+ return s+'</svg>';}
+/* the four, as rows beside the ring, each with its own plain sentence. One
+   object says the shape and the rows say the words: a ring with four words
+   crammed on it says neither, and at a hundred and sixteen pixels a word on
+   that ring renders at five, which is half the type floor.
+
+   THE MARK IS ON BOTH, which is a legend and not a second drawing. The ring
+   says these four close; the row says which mark is which word. A person
+   reading the row learns the mark, and the mark is the one the section bar
+   will draw for the rest of their time in the product. */
+function obLoopRows(){
+ return '<ol class="ob-loopr">'+OB_LOOP.map(function(x){
+   return '<li><svg class="ob-loopr-ic" viewBox="0 0 24 24" aria-hidden="true">'+x.ic+'</svg>'
+    +'<span class="ob-loopr-n">'+esc(x.nm)+'</span>'
+    +'<span class="ob-loopr-s">'+esc(x.say)+'</span></li>';}).join('')+'</ol>';}
+/* THE FIGURE, AT REST, kept as the watermark only. The welcome draws the real
+   body above instead, because a spine with seven coloured dots on it is the
+   rainbow column the brief rules out, at small size. The watermark keeps this
+   one: behind a card at seven percent it is a shape and not a claim, and the
+   real silhouette at that opacity reads as a smudge. */
 function obFigure(){
  var y=[160,140,120,100,80,60,40];
  var col=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
@@ -126,30 +292,77 @@ function obClose(){
 
 /* ---- the card shell. nsteps carries over tutorial.js's own pattern,
    because a sheet of a fixed four steps is no longer the only one. ---- */
+/* A LABEL IS TITLE CASED AND A SENTENCE IS NOT, and this card was printing a
+   sentence as a title. .pm-eye carries text-transform:capitalize, and
+   shell/head.html states the rule beside it: "A label is a short name for a
+   region: four words or fewer, and no comma with a word after it ... Everything
+   else is a sentence. A sentence takes plain and stays in sentence case."
+   Measured on the shipped sheet: the welcome's eyebrow rendered "Welcome To A
+   Neurosomatic Experience", five words, a sentence wearing a title. The rule
+   is applied here once rather than remembered per card. */
+function obEyeCls(s){
+ var t=String(s||'').trim();
+ return (t.split(/\s+/).length<=4&&!/,\s*\S/.test(t))?'pm-eye':'pm-eye plain';}
+/* HOW FAR ALONG, not only where. Eight identical dots with one lit answers
+   "which step is this" only by counting them, which is a person doing the
+   instrument's arithmetic. A passed step is marked, so the run so far is a
+   length a person reads on sight. */
+/* ONE DRAWING PER CARD. The watermark is the standing figure behind every
+   card, which was the only figure this sheet had. Four cards now carry a
+   drawing of their own, and the watermark sat behind them: a spine with seven
+   coloured dots showing through a silhouette, two drawings of one subject on
+   one card, and the one the brief rules out drawn over the one it asks for.
+   Measured on the Body card at 390, where the watermark's column reads through
+   the figure's belly, and on Settle, where its gold halo lands in the middle
+   of the loop ring and puts a mark where the loop has no station. A card that
+   carries a drawing carries no watermark, read off the body it was handed
+   rather than off a flag a caller has to remember to pass. */
 function obCard(eye,title,body,acts,nsteps){
- var n=nsteps||OB_NSTEPS;
+ var n=nsteps||OB_NSTEPS, b=String(body||'');
+ var wm=b.indexOf('ob-bodyfig')<0&&b.indexOf('ob-loop')<0;
  return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-fig-wm" aria-hidden="true">'+obFigure()+'</div>'
+  +(wm?'<div class="ob-fig-wm" aria-hidden="true">'+obFigure()+'</div>':'')
   +'<div class="ob-scroll">'
-  +'<span class="pm-eye">'+esc(eye)+'</span>'
+  +'<span class="'+obEyeCls(eye)+'">'+esc(eye)+'</span>'
   +'<h2 class="ob-h">'+esc(title)+'</h2>'
   +body
   +'<div class="ob-acts">'+acts+'</div>'
   +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
-    return '<span class="ob-dot'+(i===OB.step?' on':'')+'"></span>';}).join('')+'</div>'
+    return '<span class="ob-dot'+(i===OB.step?' on':(i<OB.step?' past':''))+'"></span>';}).join('')+'</div>'
   +'</div></div>';}
 /* a row of chips, one choice at most. sel is the picked index, -1 for "not
    sure", null for nothing picked yet. b, when given, is the chip's seat
    band and tints it through seatCol, the same colour the body figure and
    the finished card already use for that seat; with no b the chip carries
-   no colour, because this file makes no claim it has not earned. */
+   no colour, because this file makes no claim it has not earned.
+
+   A SEAT CHIP CARRIES ITS SEAT MARK, round QG, the grammar ui/intakeui.js set
+   this round and the reason the twelve starting points and the six feeling
+   words still carry none: a feeling is not one place in the body, which
+   engine/data/onboarding.js states beside those two lists, and a mark would
+   be the claim this file has not earned. The seven body places are a seat and
+   the data says so, so they get the mark and nothing else does. The mark
+   carries no arc here: nothing has been read at the point a person is being
+   asked where they feel it.
+
+   AND THE PRESSED CHIP IS A RING, NEVER A SLAB. It filled solid with the
+   seat, which on Dark put a Root answer at full #D6524C and made the pressed
+   chip the brightest object on the card. ui/intakeui.js records the same
+   defect and its fix, round PQ: "pressed is a ring in the archetype's own
+   seat over a faint wash of it, never the solid accent slab ... which was the
+   brightest thing on the screen and pulled the eye off the question." Same
+   fix, same values, so the two surfaces press the same way. */
 function obChips(items,attr,sel,withNotSure){
- return '<div class="ob-seats">'+items.map(function(x,i){
+ return '<div class="ob-seats'+(items.some(function(x){return x.b;})?' ob-seats-mk':'')+'">'
+  +items.map(function(x,i){
    var c=x.b?' style="--c:'+seatCol(x.b)+'"':'';
    return '<button type="button" class="ob-seat'+(sel===i?' on':'')+'"'+c
-    +' data-'+attr+'="'+i+'">'+esc(x.n)+'</button>';}).join('')
-  +(withNotSure?'<button type="button" class="ob-seat'+(sel===-1?' on':'')+'" data-'+attr+'="-1">Not sure</button>':'')
+    +' data-'+attr+'="'+i+'">'
+    +(x.b?obSeatMark(x.b,null,'ob-mk-s'):'')
+    +'<span class="ob-seat-n">'+esc(x.n)+'</span></button>';}).join('')
+  +(withNotSure?'<button type="button" class="ob-seat'+(sel===-1?' on':'')+'" data-'+attr+'="-1">'
+   +'<span class="ob-seat-n">Not sure</span></button>':'')
   +'</div>';}
 
 function obRender(){
@@ -162,10 +375,21 @@ function obRender(){
      a neurosomatic experience," is his line too (NOTES.md item 1) and sits
      here as the eyebrow rather than a second sentence, so the card still
      opens on the figure and not on a claim. */
+  /* THE HERO IS THE REAL BODY, round QG. It was a vertical line with seven
+     coloured dots on it, which at 168 pixels reads as a dotted rule and is
+     the rainbow column the brief rules out drawn small. This is the Body
+     page's own silhouette with the seats where PMBANDS puts them, named down
+     its left the way the release sheets name them. The storyboard's stock
+     mountain lake and its glowing ring are not replaced by another picture,
+     they are replaced by the one drawing this product already owns. */
   out=obCard('Welcome to a neurosomatic experience','This is you, and it is okay.',
-   obFigure()
+   obBodyFig({cls:'ob-bodyfig-hero'})
    +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
-   +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>',
+   +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>'
+   /* THE PRIVACY LINE IS A FACT ABOUT THE BUILD AND NOT A PROMISE. One file,
+      no network: the storyboard's three fragments say it three times, so it
+      is said once, as the thing that is actually true. */
+   +'<p class="ob-p ob-foot">Nothing you write leaves this device.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }
@@ -182,9 +406,21 @@ function obRender(){
   /* SETTLE. His two lines, kept exactly as the mockup carries them
      (NOTES.md item 1): the awareness line, which answers what this sheet
      is asking the senses to do, and the instruction that follows it. */
+  /* THE LOOP GOES HERE, round QG. The storyboard's second panel is "a 30
+     second look at how Atuned works", four cards in a row with arrows between
+     them. Four in a row with arrows is the one shape CLAUDE.md rules out by
+     name: "a numbered column of four says the fourth one is the end, which is
+     the opposite of a loop. Anywhere the four appear together they close." So
+     the four are drawn on a closed ring, in the section bar's own marks, and
+     they sit on this card because Settle is where the flow already pauses and
+     was two sentences and nothing else. No step was added: the dots still
+     read eight and every index below is where it was. */
   out=obCard('Settle','Do not solve it yet.',
    '<p class="ob-p">Awareness and intuition is a tool we use to turn your senses inward.</p>'
-   +'<p class="ob-p">Notice what is here.</p>',
+   +'<p class="ob-p">Notice what is here.</p>'
+   +'<div class="ob-loopw">'+obLoopRing()+obLoopRows()+'</div>'
+   +'<p class="ob-p ob-dim">Four parts, and the fourth goes back to the first. '
+   +'You are about to walk one turn of it.</p>',
    '<button type="button" class="btn pri" data-ob="next">Continue</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
@@ -195,9 +431,30 @@ function obRender(){
    '<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===4){
+  /* THE BODY IS ON THE SCREEN NOW, round QG, and that is a defect fixed and
+     not a decoration added. The card said "Tap the place on the body" over
+     seven grey word chips and no body, so the instruction named a thing that
+     was not there. The figure is the real one, the chips are the control for
+     the reason obBodyFig states, and each chip carries its seat's own mark.
+
+     ONE THING THE DRAWING DOES NOT SAY, kept out of the copy on purpose. A
+     press on a place is the advance, so the seat it lights is on screen for
+     one frame and then the card is the Story. The line under the figure
+     therefore says what the figure is, and never promises a light a person
+     will not see. Coming back lights it, because OB.place is still set. */
+  var pb=(OB.place!=null&&OB.place>=0)?OB_PLACES[OB.place]:null;
   out=obCard('Body','Where do you notice it?',
-   '<p class="ob-p ob-dim">Tap the place on the body.</p>'
-   +obChips(OB_PLACES,'obplace',OB.place,true),
+   '<p class="ob-p ob-dim">Pick the place that is closest to it.</p>'
+   +obBodyFig({pick:pb?pb.b:null})
+   /* THE MEANING ONCE, round PO. The first cut led with "Seven seats, from the
+      base of the spine to the top of the head" and then printed the table's
+      sentence, which says the same thing in the same words: one fact, twice,
+      on the card where the word seat is first used. The table's sentence is
+      the one that ships, because it is the one every other surface prints. */
+   +'<p class="ob-p ob-dim ob-figsay">'+esc(unpackOf('seat'))+'</p>'
+   +obChips(OB_PLACES,'obplace',OB.place,true)
+   +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> seat. '
+     +esc(obSeatMean(pb.b))+'</p>':''),
    '<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===5){
@@ -353,12 +610,29 @@ function obRow(r,seat){
    has when the words named the feeling. The first address shows; the rest
    at the seat sit behind a button that says how many, never hidden with no
    affordance. */
+/* HOW MUCH OF A SEAT HAS BEEN ANSWERED YES, as a share of the addresses this
+   card has actually shown at it. It is the one real quantity a seat carries on
+   this card, so it is the one thing the seat mark's arc is allowed to draw.
+   Nothing answered draws no arc, which is the chip's own rule. */
+function obGrpShare(g){
+ var shown=g.rows.filter(function(r,i){return i===0||OB.more[g.id];});
+ if(!shown.length)return null;
+ var yes=shown.filter(function(r){return OB.ans[r.n.i]==='yes';}).length;
+ return yes/shown.length;}
 function obGroup(g){
  var col=(typeof seatCol==='function')?seatCol(g.seat):'';
  var mean=obSeatMean(g.seat);
+ /* THE SEAT ARRIVES AS A MARK AND NOT AS A TWO PIXEL RULE. It was a coloured
+    left border and a bold word, which on a card of nine paragraphs gives the
+    eye nothing to land on and makes the seat colour the thinnest thing in the
+    product carrying it. The mark is the house chip, obSeatMark, so a seat
+    reads the same here as on the Avatar's archetype rows and the Summary
+    rings. The heading stays the first <p> inside .ob-grp, which is where the
+    gate reads the lead off. */
  var o='<div class="ob-grp" data-obgrp="'+esc(g.id)+'" style="--c:'+col+'">'
+  +'<div class="ob-grph-r">'+obSeatMark(g.seat,obGrpShare(g),'ob-mk-g')
   +'<p class="ob-p ob-grph">At your <b>'+esc(g.seat)+'</b> seat.'
-  +(mean?' <span class="ob-dim">'+esc(mean)+'</span>':'')+'</p>';
+  +(mean?' <span class="ob-dim">'+esc(mean)+'</span>':'')+'</p></div>';
  var ws=g.words.length?obQuoteList(g.words):'';
  if(g.stated)
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws:'Your words')
@@ -398,9 +672,21 @@ function obMirrorCard(){
  lines+='<p class="ob-p">'+(OB.text?'You said: <b>&ldquo;'+esc(obQuote(OB.text))+'&rdquo;</b>'
    :'You did not say what happened.')+'</p>';
  if(groups.length){
-  lines+='<p class="ob-p">This separates into its own components, one seat at a time. '
+  /* WHERE IT LIVES, AS THE FIGURE AND NOT AS A SENTENCE ALONE. The storyboard's
+     fourth panel draws a body with a glow at the heart under the words "Where
+     it lives: Heart". The body it draws is a glossy figure that is not this
+     product's; this is the real silhouette with the seats the words actually
+     lit standing out on it, read off the groups below and never a second
+     reading of its own. */
+  var seats=[]; groups.forEach(function(g){if(seats.indexOf(g.seat)<0)seats.push(g.seat);});
+  lines+='<div class="ob-mirrorfig">'+obBodyFig({lit:seats,names:false})
+   +'<p class="ob-p ob-dim ob-figsay">Lit where your words put weight: '
+   +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
+   +(seats.length===1?' seat.':' seats.')+'</p></div>'
+   +'<p class="ob-p">This separates into its own components, one seat at a time. '
    +'<span class="ob-dim">'+esc(unpackOf('seat'))+' '+esc(unpackOf('address'))+'</span></p>'
-   +'<p class="ob-p ob-dim">Say Yes to each one that fits you. Only a yes goes into your release.</p>';
+   +'<p class="ob-p ob-dim">Say Yes to each one that fits you. Only a yes goes into your release. '
+   +'The ring beside each seat fills as you answer yes at it.</p>';
   if(pl&&!groups.some(function(g){return obSameSeat(g.seat,pl.b);}))
    lines+='<p class="ob-p ob-dim">You tapped your '+esc(pl.n.toLowerCase())+', at your '+esc(pl.b)
     +' seat. Your words put weight at other seats, shown below. Both are kept as they are.</p>';
@@ -528,6 +814,27 @@ function obMiniWhy(pl,yes){
  if(pl&&pl.why==='no new ground')
   return 'Every place '+(yes?'you said yes to':'this story touched')+' is already fully opened, so there is nothing new to release from it.';
  return '';}
+/* THE PLAN AS MARKS, round QG. The card said what the release takes in three
+   paragraphs and drew nothing, on the one screen where a person is deciding
+   whether to start. One mark per seat the plan reaches, in the house chip
+   grammar, with the lines that seat carries under it. The arc is that seat's
+   share of the run's lines, which is a real quantity off the plan and is said
+   in words beside it: a count of places with no arc would be a figure with no
+   picture, and an arc with no count would be a picture of nothing. */
+function obPlanMarks(pl){
+ if(!pl||!pl.ok||!pl.addrs||!pl.addrs.length)return '';
+ var per=pl.lines/pl.addrs.length, by=[], ix={};
+ pl.addrs.forEach(function(i){
+  var b=BY[i]&&BY[i].b; if(!b)return;
+  if(ix[b]==null){ix[b]=by.length; by.push({b:b,n:0});}
+  by[ix[b]].n++;});
+ if(!by.length)return '';
+ return '<div class="ob-plan">'+by.map(function(x){
+   var ln=Math.round(x.n*per);
+   return '<div class="ob-plan-i">'+obSeatMark(x.b,pl.lines?ln/pl.lines:null,'ob-mk-p')
+    +'<b class="ob-plan-n">'+esc(x.b)+'</b>'
+    +'<span class="ob-plan-v">'+ln+(ln===1?' line':' lines')+'</span></div>';}).join('')
+  +'</div>';}
 function obBridgeCard(){
  var c=OB.commit, yes=(c&&c.ok)?obYesSignal():[];
  /* the plan reads the yes rows, F4's answers, never the raw story read */
@@ -535,8 +842,18 @@ function obBridgeCard(){
  if(pl&&pl.ok){
   var first=(typeof journeyRead==='function')?journeyRead(CURP).first:true;
   return obCard('Next',first?'Next is your first release.':'Next is a release.',
-   obMiniSay(pl,first,true)
-   +'<p class="ob-p ob-dim">You choose the pace and how many times each line repeats once you are there, and you can stop any time.</p>',
+   obPlanMarks(pl)
+   +obMiniSay(pl,first,true)
+   /* SILENCE IS STATED, round QG. The storyboard's fifth panel is a blue to
+      pink gradient ring the width of the screen with the word Release inside
+      it, a timer, and "Breathe with the field". None of that is drawn here and
+      no second release is drawn here either: the handoff is relPick and
+      ui/release.js owns every pixel of the run. What this card owes a person
+      is the one thing that panel does not say, which is that the run is
+      silent and they set its pace. tests/design.js already holds the release
+      to it: "the release runs to its end in silence." */
+   +'<p class="ob-p">The lines are read in silence. Nothing speaks and nothing counts down. '
+   +'You set the pace and how many times each line repeats, and you can stop at any line.</p>',
    '<button type="button" class="btn pri" data-ob="release">Begin the release</button>'
    +'<button type="button" class="btn" data-ob="done">Not now</button>');
  }

@@ -6486,7 +6486,17 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  color:var(--ink);margin-top:10px;cursor:pointer}
 .login-sw-off{color:var(--dim);cursor:default}
 .login-dim{color:var(--dim);font-size:11.5px;margin-left:4px}
-.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
+/* THE DOTS SURVIVE EVERY LIGHTING. They were drawn in var(--edge-2), which
+   Punch, Flat and Lumen set to transparent by their own rule that nothing is
+   outlined, so on those three the whole rail vanished and one lit dot sat
+   alone over the actions: a progress indicator that cannot say how long the
+   run is. Mixed off var(--ink) instead, which every lighting defines, so the
+   rail is there on all seven. Round QG, and the defect predates it. */
+.ob-dot{width:6px;height:6px;border-radius:50%;
+ background:color-mix(in srgb,var(--ink) 18%,transparent)}
+/* HOW FAR ALONG. A passed step is half the accent, the step in hand is all of
+   it, and what is still to come is the plain rest. */
+.ob-dot.past{background:color-mix(in srgb,var(--accent) 48%,transparent)}
 .ob-dot.on{background:var(--accent)}
 /* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the
    screen with any size to it. The seats fade up root to crown in a hundred and
@@ -6523,11 +6533,132 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  border:1px solid var(--edge);background:var(--panel-2);color:var(--mid);
  font:inherit;font-size:13px;cursor:pointer}
 .ob-seat:hover{color:var(--ink);border-color:var(--edge-2)}
-.ob-seat.on{background:var(--c,var(--accent));border-color:var(--c,var(--accent));
- color:var(--on-accent);font-weight:600}
+/* THE PRESSED CHIP IS A RING OVER A WASH, NEVER A SOLID SLAB OF THE SEAT.
+   Round QG. It filled with var(--c), so on Dark a pressed Root chip was
+   #D6524C at full strength and the brightest object on a card whose subject
+   is the question above it. ui/intakeui.js records the same defect and its
+   fix at round PQ for the archetype pills, and these are the same values, so
+   a seat is pressed the same way on both surfaces. The ink stays var(--ink)
+   over the wash: measured on Dark, 14 per cent of each of the seven seats over
+   var(--panel) reads 11.4 to 1 at worst, against a 4.5 floor for this size. */
+.ob-seat.on{background:color-mix(in srgb,var(--c,var(--accent)) 14%,transparent);
+ border-color:var(--c,var(--accent));box-shadow:inset 0 0 0 .5px var(--c,var(--accent));
+ color:var(--ink);font-weight:600}
+/* a chip carrying a seat mark is a row of two things, not a word with a
+   picture glued to its left: the mark takes the line's height and the word
+   sits on the optical centre of it */
+.ob-seats-mk .ob-seat{display:inline-flex;align-items:center;gap:8px;padding:5px 13px 5px 7px}
+.ob-seats-mk .ob-seat:has(.ob-seat-n:only-child){padding-left:13px}
+.ob-mk{display:block;flex:0 0 auto;width:26px;height:26px;overflow:visible}
+.ob-mk-dk{stroke:none;fill:color-mix(in srgb,var(--c) 12%,var(--sunk))}
+.ob-mk-tk{fill:none;stroke:var(--c);stroke-width:2.4;opacity:.8}
+.ob-mk-ld{fill:none;stroke:var(--c);stroke-width:3.2;stroke-linecap:round}
+.ob-mk-gl{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ob-mk-g{width:30px;height:30px}
+.ob-mk-p{width:34px;height:34px}
+/* THE LIGHT LIGHTINGS, the same reading ui/intakeui.js took for the same
+   object: the disc sits on the panel rather than sinking below it, and the
+   seat is deepened toward ink so the track, drawn at eighty per cent, still
+   clears 3 to 1 as a graphic on paper. */
+body.snow .ob-mk,body.glasswhite .ob-mk{--c:color-mix(in srgb,var(--c) 78%,var(--ink))}
+body.snow .ob-mk-dk,body.glasswhite .ob-mk-dk{fill:color-mix(in srgb,var(--c) 8%,var(--panel))}
+/* a thin colour recedes on paper, so the resting seat ring on the figure
+   carries more of itself there and the lit one keeps the same step to full */
+body.snow .ob-bf-r,body.glasswhite .ob-bf-r,body.lumen .ob-bf-r{stroke-opacity:.68}
+/* Punch draws nothing outlined: the disc goes solid at its own 26 per cent and
+   the track, an outline, goes. The arc stays, because it is a reading. */
+body.punch .ob-mk-dk{fill:color-mix(in srgb,var(--c) 26%,var(--sunk))}
+body.punch .ob-mk-tk{display:none}
+/* ---------- the real body, round QG ----------
+   engine/data/figure.js's own silhouette at ui/map.js's own transform, with
+   the seats where engine/data/practice.js puts them. The skin is the Body
+   page's own fill and stroke values, which were argued there: a solid shape
+   on a dark ground gives the eye a body to read the seats against, where a
+   wire gives it a diagram. */
+/* THE FIGURE IS SIZED BY ITS HEIGHT AND THE HEIGHT IS SET BY THE TYPE ON IT.
+   The seat names are 4.4 user units of a 102 unit tall box, so the rendered
+   size of a name is the drawing's height times 0.0431: at 300 pixels it is
+   12.9 and at 270 it is 11.6, both over the eleven pixel floor, and at 250 it
+   is 10.8 and under it. Sizing by width instead put the names at 19 pixels on
+   desktop, larger than the body copy beside them, because cropping the box to
+   its content made the drawing narrow and the scale went up with it. Height
+   is also the dimension the card is actually short of: at 390 the scroll area
+   is 697 pixels and everything but the figure takes 394.
+   The mirror's own figure carries no names, so it is free to be smaller. */
+.ob-bodyfig{display:block;height:min(32vh,300px);width:auto;aspect-ratio:68/102;
+ max-width:100%;margin:6px auto 10px;overflow:visible}
+.ob-bf-skin{fill:color-mix(in srgb,var(--ink) 7%,transparent);stroke:var(--mid);
+ stroke-width:1.4;vector-effect:non-scaling-stroke;stroke-opacity:.34}
+.ob-bf-ax{stroke:var(--edge-2);stroke-width:.5}
+.ob-bf-n{fill:var(--dim);font-family:var(--sans);font-size:4.4px;font-weight:500;
+ text-anchor:end;letter-spacing:.01em}
+/* LIT HAS TO MEAN SOMETHING. Every seat was drawn at full strength and the
+   three the words actually lit were told apart by a stroke a thousandth of an
+   inch heavier and a halo. Half strength at rest, full when lit, so the
+   difference is a value step and not a weight step: the eye reads value first
+   and this is the mirror's one piece of information. The animated opacity and
+   the resting stroke-opacity are separate channels on purpose, so the
+   entrance does not have to know which seats are lit. */
+.ob-bf-r{fill:none;stroke:var(--c);stroke-width:1.1;stroke-opacity:.5;opacity:0;
+ animation:obSeatIn .5s cubic-bezier(.22,1,.36,1) both}
+.ob-bf-h{fill:none;stroke:var(--c);stroke-width:.6;opacity:.34}
+.ob-bf-s.on .ob-bf-n{fill:var(--ink)}
+.ob-bf-s.on .ob-bf-r{stroke-width:1.8;stroke-opacity:1}
+@keyframes obSeatIn{0%{opacity:0}100%{opacity:.92}}
+@media (prefers-reduced-motion:reduce){.ob-bf-r{animation:none;opacity:.92}}
+.ob-bodyfig-hero{margin:10px auto 16px}
+.ob-mirrorfig{margin:10px 0 4px}
+.ob-mirrorfig .ob-bodyfig{height:min(26vh,230px);aspect-ratio:48/102;margin-bottom:6px}
+.ob-figsay{margin:0 0 12px;text-align:center;max-width:none}
+.ob-seatsay{margin-top:10px}
+.ob-foot{margin-top:16px;color:var(--dim);font-size:12.5px}
+/* ---------- the loop, and it closes ---------- */
+.ob-loopw{display:grid;grid-template-columns:116px 1fr;gap:16px;align-items:center;
+ margin:14px 0 4px}
+.ob-loop{display:block;width:116px;height:116px;overflow:visible}
+/* THE TRACK IS UNBROKEN AND CARRIES NO ARROW HEAD. An arrow head is a start
+   and an end; a closed ring with four marks on it is a turn. */
+/* THE TRACK BELONGS TO THE SAME FAMILY AS THE MARKS ON IT. Drawn in
+   var(--edge-2), which is white at fourteen per cent, a 1.6 pixel line read as
+   nothing between four discs and the figure came out as a cross of circles
+   rather than a turn. It is the accent at thirty per cent now: the loop is the
+   subject and the stations are on it. */
+.ob-loop-tk{fill:none;stroke:color-mix(in srgb,var(--accent) 30%,transparent);
+ stroke-width:1.8}
+.ob-loop-d{fill:var(--sunk);stroke:var(--accent);stroke-width:1.4;stroke-opacity:.7}
+.ob-loop-g{fill:none;stroke:var(--accent);stroke-width:1.9;stroke-linecap:round;
+ stroke-linejoin:round}
+.ob-loop-n{opacity:0;animation:obLoopIn .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes obLoopIn{0%{opacity:0}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.ob-loop-n{animation:none;opacity:1}}
+.ob-loopr{list-style:none;margin:0;padding:0;display:grid;
+ grid-template-columns:19px 1fr;gap:3px 9px;align-items:start}
+.ob-loopr li{display:contents}
+.ob-loopr-ic{grid-column:1;width:19px;height:19px;margin-top:1px;fill:none;
+ stroke:var(--accent);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ob-loopr-n{grid-column:2;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.4}
+.ob-loopr-s{grid-column:2;font-size:13px;line-height:1.5;color:var(--mid);
+ margin-bottom:7px}
+/* ---------- the mirror's seat heading ---------- */
+.ob-grph-r{display:flex;align-items:flex-start;gap:9px}
+.ob-grph-r .ob-grph{flex:1 1 auto;margin-top:3px}
+/* ---------- the first release's plan ---------- */
+.ob-plan{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 14px}
+.ob-plan-i{display:flex;align-items:center;gap:9px;padding:7px 13px 7px 8px;
+ border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel-2)}
+.ob-plan-n{font-size:13.5px;font-weight:600;color:var(--ink)}
+.ob-plan-v{font-family:var(--num);font-size:12.5px;color:var(--dim)}
 @media(max-width:640px){
  .ob{padding:12px}.ob-card{padding:20px 18px 16px}.ob-h{font-size:20px}
- .ob-word{font-size:27px;padding:17px 10px}}
+ .ob-word{font-size:27px;padding:17px 10px}
+ /* THE RING GOES OVER THE ROWS AT 390, not beside them. Beside them it had
+    92 pixels to live in and its four glyphs rendered at 14, which is a
+    symbol a person cannot read beside the same symbol at 19 in the row under
+    it. Over them it gets 132 and the two match. */
+ .ob-loopw{grid-template-columns:1fr;justify-items:center;gap:14px}
+ .ob-loop{width:132px;height:132px}
+ .ob-loopr{width:100%}
+ .ob-plan{gap:7px}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
 .s-ln{background:var(--panel);padding:9px 12px 10px;display:flex;
