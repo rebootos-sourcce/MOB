@@ -1627,14 +1627,28 @@ function renderAvatar(){
 /* repaint only when something the page reads has moved. renderIntake calls
    this on every press of its own, and a press on a law must not throw away a
    half typed pair. A ritual marked done moves the cycles without changing how
-   many rituals there are, so the done count is read as well as the length. */
+   many rituals there are, so the done count is read as well as the length.
+
+   THE PLAN IS PART OF WHAT THIS PAGE READS, and was missing, which is the
+   same defect ui/lock.js's own file header warns against by name: "never
+   cached... because a plan can change under an open surface: a payment
+   lands, a subscription lapses, a record is swapped." avRunHTML gates the
+   Running card on lockSees('sab'), read off CURP.plan, but nothing here told
+   the signature a plan had moved, so a tier change with nothing else on the
+   record moving left the Running card showing whatever it last drew. Found
+   through the worked-example tier-four unlock, round PS: loadP calls
+   renderIntake at its own end, before a caller's own plan.tier={...} can run
+   after it, so the card painted once at whatever plan was live that moment
+   and never again. Round PS 2 October fix, keyed to plan.tier and
+   plan.status, the two fields planState actually reads. */
 function avSig(){
  var s=0; CHARGES.forEach(function(c){s+=(S.charge[c]||0)+(S.replace[c]||0)*0.001;});
  var p=CURP||{}, e=(p.story&&p.story.entries)||[], av=(p.avatar&&p.avatar.pairs)||[];
  var R=p.rituals||[], dn=R.filter(function(x){return x&&x.done;}).length;
  /* answers is keyed by index and is not always an array, so it is read whole */
  var ans=JSON.stringify((p.intake&&p.intake.answers)||{});
- return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans].join('|');}
+ var pl=(p.plan&&p.plan.tier)+':'+(p.plan&&p.plan.status);
+ return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl].join('|');}
 function avRefresh(){
  var host=document.getElementById('avbody');
  if(host&&(!host.firstChild||AV.sig!==avSig()))renderAvatar();
