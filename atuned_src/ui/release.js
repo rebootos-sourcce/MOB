@@ -1405,8 +1405,18 @@ function relCss(){
   '.rel-hd .rel-hdt .seg{display:inline-flex}',
   '.rel-cr{--ch:min(360px,44vh)}',
   '.rel-cr .rel-cr-hint{margin:6px 0 0;font-size:13px;color:var(--dim)}',
+  /* A FEATHER AT THE TWO EDGES, and only there. The gradient is the steps,
+     counted in rows; the feather is the window's own edge, so a row passing
+     out of the list thins away over 24 pixels instead of being cut through
+     its letters, measured at 390 where the head statement above the centre
+     showed its lower half under the heading as a sliced line. The band
+     under the sticky heading stays opaque, so the heading is never faded:
+     --hh is the heading's own height, measured at 31 here and 29 on a phone. Paint
+     only, so a row under the feather still takes the press. */
   '.rel-cr .rel-cr-l{position:relative;height:var(--ch);overflow-y:auto;overscroll-behavior:contain;',
-  ' scrollbar-width:none;text-align:center;outline:none}',
+  ' scrollbar-width:none;text-align:center;outline:none;--hh:31px;',
+  ' -webkit-mask-image:linear-gradient(to bottom,#000 var(--hh),transparent var(--hh),#000 calc(var(--hh) + 24px),#000 calc(100% - 24px),transparent);',
+  ' mask-image:linear-gradient(to bottom,#000 var(--hh),transparent var(--hh),#000 calc(var(--hh) + 24px),#000 calc(100% - 24px),transparent)}',
   '.rel-cr .rel-cr-l::-webkit-scrollbar{display:none}',
   '.rel-cr .rel-cr-l:focus-visible{box-shadow:0 0 0 2px var(--accent);border-radius:var(--r-s)}',
   /* the spacers, so the first line and the last can both sit on the centre */
@@ -1424,7 +1434,14 @@ function relCss(){
   ' min-height:52px;padding:8px 4px;border:0;border-radius:var(--r-s);background:transparent;color:var(--ink);',
   ' font:inherit;font-size:20px;line-height:1.45;font-weight:300;letter-spacing:-.005em;text-align:center;cursor:pointer;',
   ' opacity:.05;transform:scale(.88);',
-  ' transition:opacity var(--t-element) var(--ease-out),transform var(--t-element) var(--ease-out)}',
+  /* THE STEP LANDS WITH THE GLIDE. The rows changed ink on the element
+     duration, 220, while the list glided on the surface duration, 320, so
+     the line arriving reached full ink a hundred milliseconds before it
+     reached the centre and read as two events, a light and then a move.
+     Both are the surface duration on the arriving curve now, REL_GLIDE_MS
+     and --t-surface being the same 320, so brightness and place land on
+     the same frame. */
+  ' transition:opacity var(--t-surface) var(--ease-out),transform var(--t-surface) var(--ease-out)}',
   '.rel-cr .rel-cr-i[data-d="0"]{opacity:1;transform:none}',
   '.rel-cr .rel-cr-i[data-d="1"]{opacity:.46;transform:scale(.95)}',
   '.rel-cr .rel-cr-i[data-d="2"]{opacity:.16;transform:scale(.91)}',
@@ -1480,7 +1497,9 @@ function relCss(){
      is a thing to stop on and a line is not.
      ============================================================ */
   '.rel-gc{--gh:min(330px,42vh);position:relative;height:var(--gh);overflow-y:auto;overscroll-behavior:contain;',
-  ' scroll-snap-type:y mandatory;scrollbar-width:none;margin:6px 0 0;outline:none}',
+  ' scroll-snap-type:y mandatory;scrollbar-width:none;margin:6px 0 0;outline:none;',
+  ' -webkit-mask-image:linear-gradient(to bottom,transparent,#000 24px,#000 calc(100% - 24px),transparent);',
+  ' mask-image:linear-gradient(to bottom,transparent,#000 24px,#000 calc(100% - 24px),transparent)}',
   '.rel-gc::-webkit-scrollbar{display:none}',
   '.rel-gc:focus-visible{box-shadow:0 0 0 2px var(--accent);border-radius:var(--r-s)}',
   '.rel-gc .rel-gpad{height:calc(var(--gh) / 2 - 40px)}',
@@ -1496,7 +1515,11 @@ function relCss(){
   '.rel-gi .rel-gi-t{font-size:20px;line-height:1.4;font-weight:300;max-width:520px;text-wrap:balance;',
   ' display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}',
   '.rel-gi .rel-gi-s{font-size:12.5px;color:var(--dim);max-width:460px;line-height:1.45}',
-  '.rel-gi .rel-gi-a{font-size:14px;font-weight:500;line-height:1.5}',
+  /* the names wrap as words, never as a clipped run: at 390 five addresses
+     on one line ran out of both sides of the card */
+  '.rel-gc .rel-gi{white-space:normal}',
+  '.rel-gi .rel-gi-a{display:flex;flex-wrap:wrap;justify-content:center;column-gap:0;row-gap:2px;max-width:520px;',
+  ' font-size:14px;font-weight:500;line-height:1.5}',
   '.rel-gi .rel-gi-a i{font-style:normal;color:var(--dim);margin:0 6px}',
   '.rel-gi .rel-gi-c{font-size:13px;color:var(--mid)}',
   '.rel-gi .rel-gi-c b{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:22px;font-weight:500;color:var(--ink);margin-right:5px}',
@@ -1552,7 +1575,7 @@ function relCss(){
      says what it does. */
   /* and the groups take less height on a phone than on a desk, because Run
      release sits under them and has to stay on the first screen */
-  '@media (max-width:520px){.rel-cr{--ch:min(330px,42vh)}.rel-cr .rel-cr-l{margin:0 -12px}',
+  '@media (max-width:520px){.rel-cr{--ch:min(330px,42vh)}.rel-cr .rel-cr-l{margin:0 -12px;--hh:29px}',
   ' .rel-gc{--gh:min(250px,31vh)}',
   ' .rel-cr .rel-cr-h{padding:5px 10px}',
   ' .rel-cr .rel-cr-i{font-size:17px;grid-template-columns:20px 1fr 20px;gap:6px;padding:8px 2px}',
