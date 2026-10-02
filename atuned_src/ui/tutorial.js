@@ -75,10 +75,13 @@ function tutRender(){
  var h=document.getElementById('tutorial'); if(!h)return;
  var s=TUT.step, out='';
  if(s===0){
-  out=tutCard('Let’s look at something from your journal.',
-   '<p class="ob-p">Write one thing. A sentence or two is enough. Not a '
-   +'summary of your life, just something real from today or recently, the '
-   +'kind of thing you would actually write in here.</p>'
+  /* THE TITLE WAS "Let's look at something from your journal", which is the
+     line that says a thing is starting (V1), and the body defined the entry by
+     what it is not (V10, "not a summary of your life, just something real").
+     It says what to do now, and what kind of thing counts. */
+  out=tutCard('Write one thing from your journal.',
+   '<p class="ob-p">A sentence or two is enough. Something real from today or '
+   +'recently, the kind of thing you would write in here.</p>'
    +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
    '<button type="button" class="btn pri" data-tut="commit">Continue</button>'
    +'<button type="button" class="btn" data-tut="skip">Skip the tutorial</button>');
@@ -93,20 +96,23 @@ function tutRender(){
   if(!c||!c.ok||!c.k){
    /* HONEST EMPTY, the same rule the signal test already keeps: nothing
       caught is a real answer, not a failure to paper over. */
+   /* THE EMPTY READING ASKS ONE QUESTION, AND IT IS HIS: "Where does it land
+      in your body?" Ruled, in place of "where do you feel it", which asks for
+      a feeling and gets a label. It is a place a person can point at, and the
+      reading is placed by exactly that. It stays honest: nothing was caught,
+      and the line says so before it asks. */
    body='<p class="ob-p">Nothing in that one lit anything the engine could '
-    +'name. That happens, and it is not a problem with what you wrote. Some '
-    +'entries are quiet.</p>'
-    +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
-    +'them, usually give it more to find. You can always write another in '
-    +'the Story tab later.</p>';
+    +'name. Some entries are quiet.</p>'
+    +'<p class="ob-p">Where does it land in your body?</p>'
+    +'<p class="ob-p ob-dim">Write that in the Story tab, and there is more '
+    +'for it to find.</p>';
   }else{
    body='<p class="ob-p">You wrote:</p>'
     +'<p class="ob-p ob-dim">&ldquo;'+esc(c.text.length>220?c.text.slice(0,220)+'…':c.text)+'&rdquo;</p>'
-    +'<p class="ob-p">This separates into its own components. What stood out '
+    +'<p class="ob-p">Your words split into parts. What stood out '
     +(kept[0]?tutSeatLine(kept[0]):'landed')+'.</p>'
     +(kept[1]?'<p class="ob-p">And a second place, '+tutSeatLine(kept[1])+'.</p>':'')
-    +'<p class="ob-p ob-dim">That is Discover: not labelling you, revealing '
-    +'what is actually there.</p>';}
+    +'<p class="ob-p ob-dim">That is Discover. It shows what is there.</p>';}
   out=tutCard('What this found',body,
    '<button type="button" class="btn pri" data-tut="next">Next</button>');
  }
@@ -157,12 +163,17 @@ function tutRender(){
  }
  else {
   out=tutCard('Flow',
-   '<p class="ob-p">Insight and release are not the end of it. Flow turns '
-   +'what just happened into something repeatable: a practice tied to this '
-   +'exact pattern, not a generic habit.</p>'
-   +'<p class="ob-p ob-dim">Noticing the moment a pattern starts, returning '
-   +'attention to the body, working the same release again. The ritual '
-   +'builder holds what is yours to practice.</p>',
+   /* THE LOOP CLOSES HERE, AND SAYS SO. "It is a circle, never a list": a last
+      card that ends on Done reads as the fourth step being the end. Flow turns
+      what just happened into a practice tied to this pattern, and the practice
+      is what the next entry starts from. Said in the card's own words, so the
+      person who presses Done leaves holding a circle and not a finished list. */
+   '<p class="ob-p">Flow turns what just happened into a practice tied to this '
+   +'exact pattern.</p>'
+   +'<p class="ob-p ob-dim">Notice the moment a pattern starts. Bring your '
+   +'attention back to your body. Work the same release again. The ritual '
+   +'builder holds what is yours to practice.</p>'
+   +'<p class="ob-p ob-dim">Then you write again, and it goes round.</p>',
    '<button type="button" class="btn pri" data-tut="ritual">Go to Ritual</button>'
    +'<button type="button" class="btn" data-tut="done">Done</button>');
  }

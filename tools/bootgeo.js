@@ -27,6 +27,16 @@
    tests/design.js gate 11 reads the figure in a browser against the live
    engine, tick by tick, so if the loop ever changes shape and this was not
    rerun, the gate says so rather than the owner.
+
+   THE LOGIN'S RING IS WRITTEN HERE TOO, between its own two markers. Round
+   OT approved Login A, the ring behind the door, and asked for it to be the
+   boot's own drawing rather than a second one: the same one tick per address,
+   the same seat runs, the same seam at twelve, root to crown clockwise. It
+   has to be static markup, because the door is painted from the first byte,
+   before any script has run to ask the engine where a seat sits. It carries
+   its own class names (lg-*) and shares none with the boot, so gate 11's
+   read of .b-addr cannot count it, and the boot's figure cannot be restyled
+   by a rule written for the door.
    ============================================================ */
 const fs=require('fs'), path=require('path');
 const ROOT=path.resolve(__dirname,'..');
@@ -147,15 +157,62 @@ const fig=` <div class="bx-stage">
   </div>
  </div>`;
 
-const A='<!-- BOOT FIGURE BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->';
-const Z='<!-- BOOT FIGURE END -->';
-const body=fs.readFileSync(BODY,'utf8');
-const i0=body.indexOf(A), i1=body.indexOf(Z);
-if(i0<0||i1<0||i1<i0)throw new Error('cannot find the boot figure markers in shell/body.html');
-const next=body.slice(0,i0+A.length)+'\n'+fig+'\n '+body.slice(i1);
+/* THE LOGIN RING, in a 100 unit box centred on 50. Radii are fractions of the
+   ring's own radius R, as Login A's mockup draws them: the addresses at R, three
+   rings of seat arcs outside at 1.2, 1.44 and 1.72 times it, and the inner
+   track the passphrase draws round. The CSS sizes the box; nothing here knows
+   a pixel. Ticks carry data-s, their place on the loop, so a gate can read the
+   ring back against the engine the way gate 11 reads the boot. */
+const LC=50, LR=33.5, LTICK=1.6, LTRK=LR-3;
+const lpt=(r,deg)=>{const a=(deg-90)*Math.PI/180;return [LC+Math.cos(a)*r,LC+Math.sin(a)*r];};
+const larc=(r,d0,d1)=>{const a=lpt(r,d0),b=lpt(r,d1),large=(d1-d0)>180?1:0;
+ return 'M'+f2(a[0])+' '+f2(a[1])+'A'+r+' '+r+' 0 '+large+' 1 '+f2(b[0])+' '+f2(b[1]);};
+let lt='', la='';
+BANDS.forEach((b,i)=>{
+ const q=sector[b];
+ for(let j=0;j<q.n;j++){
+  const sIdx=q.s0+j, deg=(sIdx+.5)/N*360;
+  const p0=lpt(LR,deg), p1=lpt(LR+LTICK,deg);
+  lt+='\n    <line class="lg-t" x1="'+f2(p0[0])+'" y1="'+f2(p0[1])+'" x2="'+f2(p1[0])+'" y2="'+f2(p1[1])
+   +'" data-s="'+sIdx+'" style="--c:'+PAL[b]+'"/>';}
+ [1.2,1.44,1.72].forEach((k,ri)=>{
+  /* a gap either side of every seat, and each ring turned a little further
+     than the one inside it so the three read as layers and not as one */
+  const d0=q.s0/N*360+2.2+ri*3, d1=(q.s1+1)/N*360-2.2+ri*3;
+  la+='\n    <path class="lg-a lg-a'+ri+'" d="'+larc(LR*k,d0,d1)+'" style="--c:'+PAL[b]+'"/>';});
+});
+const ltop=lpt(LTRK,0), lbot=lpt(LTRK,180), lerr=lpt(LTRK,252);
+const lring=` <svg class="lg-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+   <g class="lg-breath">
+    <g class="lg-ticks">${lt}
+    </g>
+    <g class="lg-arcs">${la}
+    </g>
+   </g>
+   <circle class="lg-trk" cx="${LC}" cy="${LC}" r="${LTRK}"/>
+   <path class="lg-cl" pathLength="100" d="M${f2(ltop[0])} ${f2(ltop[1])}A${LTRK} ${LTRK} 0 0 0 ${f2(lbot[0])} ${f2(lbot[1])}"/>
+   <path class="lg-cr" pathLength="100" d="M${f2(ltop[0])} ${f2(ltop[1])}A${LTRK} ${LTRK} 0 0 1 ${f2(lbot[0])} ${f2(lbot[1])}"/>
+   <g class="lg-err">
+    <path class="lg-eb" d="M${f2(lerr[0])} ${f2(lerr[1])}l-6.2 -4.8M${f2(lerr[0])} ${f2(lerr[1])}l-7 4.4"/>
+    <circle class="lg-ec" cx="${f2(lerr[0])}" cy="${f2(lerr[1])}" r="1.5"/>
+    <path class="lg-ex" d="M${f2(lerr[0]-.9)} ${f2(lerr[1]-.9)}l1.8 1.8"/>
+   </g>
+   <g class="lg-nu"><circle class="lg-nr" cx="${f2(ltop[0])}" cy="${f2(ltop[1])}" r=".9"/><circle class="lg-nd" cx="${f2(ltop[0])}" cy="${f2(ltop[1])}" r=".3"/></g>
+   <circle class="lg-nb" cx="${f2(lbot[0])}" cy="${f2(lbot[1])}" r=".55"/>
+  </svg>`;
+
+const BLOCKS=[
+ ['<!-- BOOT FIGURE BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->','<!-- BOOT FIGURE END -->',fig,' '],
+ ['<!-- LOGIN RING BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->','<!-- LOGIN RING END -->',lring,'']];
+let body=fs.readFileSync(BODY,'utf8');
+const was=body;
+BLOCKS.forEach(([A,Z,txt,pad])=>{
+ const i0=body.indexOf(A), i1=body.indexOf(Z);
+ if(i0<0||i1<0||i1<i0)throw new Error('cannot find the markers '+A.slice(0,24)+' in shell/body.html');
+ body=body.slice(0,i0+A.length)+'\n'+txt+'\n'+pad+body.slice(i1);});
 if(process.argv.includes('--check')){
- if(next!==body){console.log('the boot figure in shell/body.html is out of date: run node tools/bootgeo.js');process.exit(1);}
- console.log('boot figure current: '+N+' addresses, '+BANDS.length+' seats');process.exit(0);}
-fs.writeFileSync(BODY,next);
-console.log('wrote the boot figure: '+N+' addresses, '+BANDS.length+' seats, '
+ if(body!==was){console.log('a figure in shell/body.html is out of date: run node tools/bootgeo.js');process.exit(1);}
+ console.log('boot figure and login ring current: '+N+' addresses, '+BANDS.length+' seats');process.exit(0);}
+fs.writeFileSync(BODY,body);
+console.log('wrote the boot figure and the login ring: '+N+' addresses, '+BANDS.length+' seats, '
  +BANDS.map(b=>b+' '+sector[b].n).join(', '));

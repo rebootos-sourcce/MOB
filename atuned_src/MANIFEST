@@ -36,6 +36,7 @@ engine/read.js
 engine/ladder.js
 engine/daily.js
 engine/outbox.js
+engine/identity.js
 engine/profiles.js
 engine/export.js
 ui/component.js

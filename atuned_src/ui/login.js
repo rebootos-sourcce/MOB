@@ -27,6 +27,8 @@
    The username field is gone. The server keys an account on the
    email and takes no username anywhere, so a field it ignores was a
    question asked for nothing and an answer thrown away in silence.
+   (It is back, one round later, and the same reasoning is why it is
+   back only as far as the server can honour it. See ROUND OT below.)
 
    Log in no longer lets anything through. A door that now checks
    needs a way past it that does not, or a person with no network or
@@ -56,7 +58,60 @@
    step below no longer reads it. What reads it now is DEV_SKIP, and
    the default is to show the door, his own words this round: "if
    it's not pressed, then it goes to the sequence." */
-var LOGIN={open:false,reset:false,busy:false};
+/* ============================================================
+   ROUND OT REBUILT THE DOOR, LOGIN A, THE RING. His words: "One frame before
+   login starts, I can see the dashboard or the field. It should start with
+   the login. The login. Screen. Is not aesthetically pleasing. Make this page
+   inviting and not so dry. We don't want people to log in by email. We want
+   them to log in by their username. So when they create their account, they
+   can set up by username. Move developer options to the lower right. Change
+   the text continue with an account to just guest."
+
+   WHAT CHANGED, AND WHAT DID NOT.
+
+   The markup moved out of this file. The door is static in shell/body.html,
+   painted from the first byte, and this file finds it, wires it and moves it
+   between its modes by data attributes, so there is one copy of it. It used
+   to be a string built here, which is the reason the first frame of the app
+   was visible before it: a door made by script cannot be on screen before the
+   script has run. html.door, set by a line in the head, is what keeps the app
+   from painting in that gap, and every way out of the door takes it off.
+
+   One field takes a username or an email. The kind is decided by an at sign
+   (engine/identity.js), and ui/auth.js's authIdent is the only place that
+   turns it into a request, so an email goes exactly where it always went and a
+   username goes as {username} on the same routes. The server does not read
+   usernames yet. A sign in by one is therefore sent and the server's own
+   refusal is what the person reads, in the card, never a success this file
+   made up. Creating one with no recovery email is refused here instead, with
+   a plain line, and one with a recovery email is sent and reported for what
+   came back, for the reason written at AUTH_USERNAMES.
+
+   Three buttons in one row: Log in, Create account, Guest. There is one Log in
+   on the screen. Create account is two presses by design. The first opens the
+   fields a new account needs, the recovery email and the box that agrees to
+   the Terms and the Privacy policy, and the second sends it. Log in, pressed
+   while those are open, closes them and sends nothing: a sign in is never sent
+   from a screen that is showing the terms of a new account.
+
+   The ring behind the card carries state and nothing else. A name typed
+   lights the node at the top. The passphrase draws the ring shut as it grows.
+   A request out makes the two halves pulse. A refusal draws a crossed ring where
+   the path stopped. A yes closes the ring and lights every address, and the
+   door fades. None of it is decoration a gate could not read: each is a data
+   attribute on the host, which is what the gate reads.
+   ============================================================ */
+var LOGIN={open:false,reset:false,busy:false,mode:'login'};
+/* HOW LONG A PASSPHRASE DRAWS THE RING. Twenty characters closes it and more
+   changes nothing. It is a picture's scale and not a rule: nothing refuses a
+   passphrase for being short or long here, and the server's own bounds are
+   AUTH_PW_MIN and AUTH_PW_MAX in ui/auth.js. */
+var LOGIN_RING_FULL=20;
+/* HOW LONG THE DOOR TAKES TO FADE OFF, which is the same half second the
+   stylesheet gives #login. A timer and not an animationend, because a door
+   that never gets to finish fading, on a machine that skipped the transition,
+   must still end up hidden. */
+var LOGIN_FADE_MS=520;
 /* THE DEVELOPER SKIP. His words: "have a switch for that loading
    screen to turn onboarding tutorial off, so I can just bypass
    straight to the dashboard, just put it as a developer button, on
@@ -111,65 +166,60 @@ function loginSuggestPassword(){
  while(out.length<n) out.push(all[rnd(all.length)]);
  for(var i=out.length-1;i>0;i--){ var j=rnd(i+1); var t=out[i]; out[i]=out[j]; out[j]=t; }
  return out.join('');}
-/* The email a person typed is carried between the two cards, so going to the
-   forgotten password and back does not make them type it a second time. */
-function loginCard(mail){
- return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Log in">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Welcome</span>'
-  +'<h2 class="ob-h">Log in</h2>'
-  +'<form id="loginform" novalidate>'
-  +'<div class="login-row"><label class="login-l" for="loginmail">Email</label>'
-  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
-  /* current-password, because the person pressing Log in has one: new-password
-     told a password manager to offer a fresh one instead of filling the saved
-     one, which was right for a card nothing checked and wrong for one that does.
-     Suggest still fills the field for somebody about to press Create account. */
-  +'<div class="login-row"><label class="login-l" for="loginpass">Password</label>'
-  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="current-password">'
-  +'<button type="button" class="login-pwsug" id="loginsug">Suggest</button></div>'
-  +'<span class="login-hint" id="loginpwhint" hidden></span></div>'
-  +'<button type="button" class="login-forgot" id="loginforgot">Forgot your password?</button>'
-  +'</form>'
-  +'<p class="login-msg" id="loginmsg"></p>'
-  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
-  +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-  +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
-  +loginDevOptions()
-  +'</div></div>';}
-function loginResetCard(mail){
- return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Reset your password">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Password reset</span>'
-  +'<h2 class="ob-h">Reset your password</h2>'
-  +'<p class="ob-p">Enter the email the account uses. A link to set a new password goes there.</p>'
-  +'<form id="loginresetf" novalidate>'
-  +'<div class="login-row"><label class="login-l" for="loginrmail">Email</label>'
-  +'<input type="email" id="loginrmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
-  +'</form>'
-  +'<p class="login-msg" id="loginmsg"></p>'
-  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-send">Send the link</button>'
-  +'<button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
-  +'</div></div>';}
+/* THE DOOR IS FOUND, NEVER BUILT. shell/body.html carries it as static markup,
+   so every one of these reads an element that is already there, and each is
+   written to say nothing when it is not: a gate that stands up a page without
+   the shell must not have the login throw into it. */
+function loginHost(){ return document.getElementById('login'); }
+function loginEl(id){ return document.getElementById(id); }
+/* html.door is the head's first paint guard. It is taken off on every way out:
+   a yes, Guest, a held session, the developer skip, and the guard when the
+   build did not start. Never put back by this file: a door that closes and
+   reopens for a sign out is an overlay and is opaque on its own. */
+function loginDoor(on){
+ try{ document.documentElement.classList[on?'add':'remove']('door'); }catch(e){}}
 /* THE CARD SAYS IT, AND SO DOES STATUS. status() is the one writer every
    result goes through, and it is the live region a screen reader hears; but
-   the status line sits in the top bar, under this card, which covers the
+   the status line sits in the top bar, under this door, which covers the
    whole screen. A refusal written only there is a refusal nobody sighted can
-   see. So the card carries the same sentence on its own line, and the status
-   line is told too, which is also what is still on screen when the card
-   closes. A line that is only progress is the card's alone: nothing was
-   written, so there is nothing for the status line to report. */
+   see. So the door carries the same sentence on its own line, and the status
+   line is told too, which is also what is still on screen when the door
+   closes. A line that is only progress is the door's alone: nothing was
+   written, so there is nothing for the status line to report.
+
+   The line is the one in the view that is showing: the reset view has its own,
+   because two elements may not share an id and a sentence about a reset belongs
+   under the reset. */
+function loginMsgEl(){ return loginEl(LOGIN.reset?'loginrmsg':'loginmsg'); }
 function loginSay(msg,kind,own){
- var m=document.getElementById('loginmsg');
+ var m=loginMsgEl();
  if(m){ m.textContent=msg||''; if(kind)m.setAttribute('data-kind',kind); else m.removeAttribute('data-kind'); }
  if(!own&&typeof status==='function')status(msg,kind);}
-/* Every press in the card waits while a request is out, so a second press
+/* THE RING'S STATE, which is the door's one animation and is read off two
+   data attributes and one custom property on the host, so a gate can read it
+   without reading a frame. data-state is idle, busy, error or ok. data-id is
+   whether a name has been typed. data-pw is whether the passphrase has a first
+   character. --p is how much of the ring the passphrase has drawn, and it is
+   pinned while a refusal or a yes is showing: a refusal stops the path where
+   it was, and a yes closes it. */
+function loginRing(){
+ var h=loginHost(); if(!h)return;
+ var pw=loginEl('loginpass'), id=loginEl('loginid');
+ var n=pw?String(pw.value||'').length:0, st=h.getAttribute('data-state');
+ var p=Math.min(n,LOGIN_RING_FULL)/LOGIN_RING_FULL;
+ if(st==='ok')p=1; else if(st==='error')p=Math.min(p,.6);
+ h.style.setProperty('--p',String(p));
+ h.setAttribute('data-pw',n?'1':'0');
+ h.setAttribute('data-id',id&&String(id.value||'').trim()?'1':'0');}
+function loginState(st){
+ var h=loginHost(); if(!h)return;
+ h.setAttribute('data-state',st); loginRing();}
+/* Every press in the door waits while a request is out, so a second press
    never sends a second request under the first one's answer. */
 function loginBusy(on){
- var h=document.getElementById('login'); if(!h)return;
- h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
+ var h=loginHost(); if(!h)return;
+ h.querySelectorAll('.lg-acts .btn').forEach(function(b){ b.disabled=!!on; });
+ if(on)loginState('busy'); else if(h.getAttribute('data-state')==='busy')loginState('idle');}
 /* UNLOCK ALL SIGHT, A TESTING SWITCH, round OT, his words: "unlock all these
    for me." It reads the top tier for the lock (ui/lock.js lockPlan) and is kept
    in the browser's own store, so it holds across a reload and never travels on
@@ -183,85 +233,190 @@ function devSightSet(on){
  DEV_SIGHT=!!on;
  try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
  if(typeof render==='function')render();}
-/* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
-   testing control, not a thing a stranger meeting the funnel needs to
-   see open by default. */
-function loginDevOptions(){
- return '<details class="login-dev">'
-  +'<summary>Developer options</summary>'
-  +'<label class="login-sw"><input type="checkbox" id="devob"'
-  +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devtut"'
-  +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devsight"'
-  +(devSight()?' checked':'')+'> Unlock all sight</label>'
-  +'</details>';}
+/* WHAT THE DOOR TELLS ui/auth.js, in one place so the three requests it makes
+   cannot disagree: the identifier may be a username, and the secret is called
+   a passphrase here and a password in the Account section, one word per
+   screen. extra is the recovery email on a new account. */
+function loginAuthOpt(extra){
+ var o={names:true, noun:'passphrase'};
+ if(extra)for(var k in extra)o[k]=extra[k];
+ return o;}
+/* THE HINT UNDER THE IDENTIFIER, AND WHETHER THE RECOVERY EMAIL SHOWS. Both
+   depend on what is typed, so both are read again on every keystroke and on
+   every change of mode.
+
+   The hint is only there on a new account, and it says the true thing: while
+   the server cannot hold a username (AUTH_USERNAMES), the line says what a
+   username needs before a person has typed one, rather than letting them
+   choose a name and be refused for it after. And the recovery email is the way back in for a
+   username and for nothing else. Beside an email address it would be the same
+   address asked for twice, so it is gone the moment an at sign is typed. */
+function loginIdHint(){
+ var h=loginEl('loginidhint'), id=loginEl('loginid'), row=loginEl('loginrecrow');
+ var create=LOGIN.mode==='create', kind=identKind(id?id.value:'');
+ if(h){
+  var t=(create&&kind!=='email')
+   ?(AUTH_USERNAMES?usernameRule()+' An email works too.'
+    :'For now a username needs a recovery email.'):'';
+  h.textContent=t; h.hidden=!t; }
+ if(row)row.hidden=!(create&&kind!=='email');}
+/* a keystroke in any field. A refusal was about what was there a moment ago,
+   so it goes the moment the person starts correcting it, and the crossed ring
+   with it. */
+function loginTyped(){
+ var h=loginHost();
+ if(h&&h.getAttribute('data-state')==='error'){ loginSay('','',true); h.setAttribute('data-state','idle'); }
+ loginIdHint(); loginRing();}
+/* LOG IN OR CREATE, ON ONE CARD. The mode is a data attribute on the host and
+   the stylesheet shows and hides what belongs to each, so there is one set of
+   fields and nothing to rebuild or lose. The primary button follows the mode,
+   because the one filled button is the one thing the screen is asking for.
+   The secret's autocomplete follows it too: current-password on a card that
+   checks one, so a password manager fills the saved one, and new-password on a
+   card that is making one, so it offers a fresh one instead. */
+function loginMode(m){
+ var h=loginHost(); if(!h)return;
+ LOGIN.mode=m; h.setAttribute('data-mode',m);
+ var go=loginEl('loginb-go'), nw=loginEl('loginb-new'), pw=loginEl('loginpass'), pwh=loginEl('loginpwhint');
+ if(go)go.classList.toggle('pri',m==='login');
+ if(nw)nw.classList.toggle('pri',m==='create');
+ if(pw)pw.setAttribute('autocomplete',m==='create'?'new-password':'current-password');
+ if(pwh){
+  pwh.textContent=m==='create'?'At least '+AUTH_PW_MIN+' characters. A few words work well.':'';
+  pwh.hidden=m!=='create'; }
+ loginIdHint(); loginSay('','',true); loginState('idle');}
+/* the reset view and back. The identifier is carried across both ways, so
+   going to the forgotten passphrase and back does not make anybody type it a
+   second time. */
+function loginReset(on){
+ var h=loginHost(); if(!h)return;
+ var id=loginEl('loginid'), rid=loginEl('loginrid');
+ LOGIN.reset=!!on; h.setAttribute('data-view',on?'reset':'in');
+ if(on){ if(id&&rid)rid.value=id.value.trim(); loginSay('','',true); if(rid)rid.focus(); }
+ else{ if(id&&rid&&rid.value.trim())id.value=rid.value.trim(); loginIdHint(); loginRing(); if(id)id.focus(); }}
+/* ENTER SENDS, which a form with two text fields and no submit button does not
+   do on its own, so it is said here. What it sends is whatever the primary
+   button is. */
+function loginKey(e){
+ if(e.key!=='Enter'||e.isComposing)return;
+ var t=e.target; if(!t||t.tagName!=='INPUT'||t.type==='checkbox')return;
+ e.preventDefault();
+ if(LOGIN.reset)loginForgot(); else if(LOGIN.mode==='create')loginSubmit('signup'); else loginGo();}
 function loginOpen(){
- var h=document.getElementById('login'); if(!h)return;
- LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
- loginWire(h);}
+ var h=loginHost(); if(!h)return;
+ LOGIN.open=true; LOGIN.reset=false; LOGIN.busy=false;
+ h.classList.remove('lg-out'); h.style.display='flex';
+ h.setAttribute('data-view','in');
+ loginWire(h); loginMode('login');
+ var f=loginEl('loginid'); if(f)f.focus();}
 function loginWire(h){
- var f=h.querySelector('input'); if(f)f.focus();
- var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
- var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
- var sk=document.getElementById('loginb-skip');
+ var go=loginEl('loginb-go');
+ if(go)go.onclick=function(){
+  /* Log in, pressed on a card showing the terms of a new account, goes back
+     to the plain card and sends nothing */
+  if(LOGIN.mode==='create'){ loginMode('login'); var f=loginEl('loginid'); if(f)f.focus(); }
+  else loginGo(); };
+ var nw=loginEl('loginb-new');
+ if(nw)nw.onclick=function(){
+  if(LOGIN.mode==='login'){
+   loginMode('create');
+   loginSay('Agree to the terms, then press Create account again.','',true); }
+  else loginSubmit('signup'); };
+ var sk=loginEl('loginb-skip');
  if(sk)sk.onclick=function(){ loginClose(); loginEnter(); };
- var form=document.getElementById('loginform');
- if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
- var sug=document.getElementById('loginsug');
+ ['loginform','loginresetf'].forEach(function(id){
+  var f=loginEl(id); if(f)f.onsubmit=function(e){ e.preventDefault(); }; });
+ h.onkeydown=loginKey;
+ ['loginid','loginpass','loginrec'].forEach(function(id){
+  var f=loginEl(id); if(f)f.oninput=loginTyped; });
+ var show=loginEl('loginshow');
+ if(show)show.onclick=function(){
+  var p=loginEl('loginpass'); if(!p)return;
+  var on=p.type==='password'; p.type=on?'text':'password'; show.textContent=on?'Hide':'Show'; };
+ var sug=loginEl('loginsug');
  if(sug)sug.onclick=function(){
-  var p=document.getElementById('loginpass'), hint=document.getElementById('loginpwhint');
+  var p=loginEl('loginpass'), hint=loginEl('loginpwhint');
   if(!p)return; var pw=loginSuggestPassword();
   p.value=pw; p.type='text';
-  if(hint){ hint.hidden=false; hint.textContent='Suggested: '+pw; } };
- var forgot=document.getElementById('loginforgot');
- if(forgot)forgot.onclick=function(){
-  var m=document.getElementById('loginmail');
-  LOGIN.reset=true; h.innerHTML=loginResetCard(m?m.value.trim():'');
-  var rm=document.getElementById('loginrmail');
-  var back=document.getElementById('loginb-back');
-  if(back)back.onclick=function(){ LOGIN.reset=false;
-   h.innerHTML=loginCard(rm?rm.value.trim():''); loginWire(h); };
-  var send=document.getElementById('loginb-send');
-  if(send)send.onclick=function(){ loginForgot(); };
-  var rf=document.getElementById('loginresetf');
-  if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
-  if(rm)rm.focus(); };
- var devob=document.getElementById('devob');
- if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
- var devtut=document.getElementById('devtut');
- if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };
- var devs=document.getElementById('devsight');
- if(devs)devs.onchange=function(){ devSightSet(!!devs.checked); };}
-function loginClose(){
- var h=document.getElementById('login'); if(!h)return;
- LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
+  var s2=loginEl('loginshow'); if(s2)s2.textContent='Hide';
+  if(hint){ hint.hidden=false; hint.textContent='Suggested: '+pw; }
+  loginRing(); };
+ var forgot=loginEl('loginforgot');
+ if(forgot)forgot.onclick=function(){ loginReset(true); };
+ var back=loginEl('loginb-back');
+ if(back)back.onclick=function(){ loginReset(false); };
+ var send=loginEl('loginb-send');
+ if(send)send.onclick=function(){ loginForgot(); };
+ /* THE THREE TESTING SWITCHES are static markup too, so what they show is set
+    here from what they hold, not from what the markup guessed */
+ var devob=loginEl('devob');
+ if(devob){ devob.checked=!!DEV_PLAY_ONBOARDING; devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; }; }
+ var devtut=loginEl('devtut');
+ if(devtut){ devtut.checked=!!DEV_PLAY_TUTORIAL; devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; }; }
+ var devs=loginEl('devsight');
+ if(devs){ devs.checked=!!devSight(); devs.onchange=function(){ devSightSet(!!devs.checked); }; }}
+/* CLOSING THE DOOR, every way out of it. The class that held the app back is
+   taken off first and always, so the app is never left hidden behind a door
+   that has gone. soft is a yes: the ring has just closed, and the door fades
+   for half a second instead of cutting, so the person sees the ring finish.
+   Everything else cuts, because Guest and the developer skip are a person
+   asking to be past it.
+
+   And the passphrase does not stay behind in a hidden field. A secret typed
+   into a door that is no longer showing has no reason to be in the document. */
+function loginClose(soft){
+ var h=loginHost(); if(!h)return;
+ LOGIN.open=false; LOGIN.reset=false;
+ loginDoor(false);
+ ['loginpass','loginrec','loginrid'].forEach(function(id){ var f=loginEl(id); if(f)f.value=''; });
+ var ag=loginEl('loginagree'); if(ag)ag.checked=false;
+ if(soft){
+  h.classList.add('lg-out');
+  setTimeout(function(){
+   /* a door that was opened again inside the fade is not hidden under its owner */
+   if(LOGIN.open)return;
+   h.style.display='none'; h.classList.remove('lg-out'); },LOGIN_FADE_MS);
+  return; }
+ h.style.display='none'; h.classList.remove('lg-out');}
 /* THE REAL SIGN IN. This was the fake one, "anything counts, including
    nothing: there is no account to fail against yet," and there is one now.
    The card stays open until the server has answered, and closes only on a
    yes: a card that closed first and then reported a refusal would have
    claimed a sign in it did not have, which is the one thing CLAUDE.md says a
    control may never do. On a no, the card keeps what was typed, so the fix is
-   one field and not two. */
+   one field and not two.
+
+   A REFUSAL BEFORE ANYTHING IS SENT IS NOT A REFUSAL BY THE SERVER, and the
+   ring says which it was. An empty field or a username with a capital letter
+   in the wrong place is the card's own sentence and leaves the ring as it was.
+   Only an answer that came back no, or never came, draws the crossed ring. */
 function loginGo(){ loginSubmit('signin'); }
 function loginSubmit(route){
  if(LOGIN.busy)return;
- var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
+ var id=loginEl('loginid'), pw=loginEl('loginpass'), rec=loginEl('loginrec'), ag=loginEl('loginagree');
+ var ident=id?id.value.trim():'', pass=pw?pw.value:'', isNew=route==='signup';
+ var opt=loginAuthOpt(isNew?{recovery:rec?rec.value.trim():''}:null);
+ var bad=authFieldsWhy(ident,pass,isNew,opt);
+ /* the box is the person's own tick and nothing else ticks it. It is checked
+    after the fields, so the first thing said is the first thing on the card. */
+ if(!bad&&isNew&&!(ag&&ag.checked))bad='Tick the box to agree to the Terms and the Privacy policy.';
+ if(bad){ loginSay(bad,'fail'); return; }
  LOGIN.busy=true; loginBusy(true);
- loginSay(route==='signup'?'Creating the account.':'Checking with the server.','',true);
- authEnter(route,m?m.value.trim():'',p?p.value:'').then(function(r){
+ loginSay(isNew?'Creating the account.':'Checking with the server.','',true);
+ authEnter(route,ident,pass,opt).then(function(r){
   LOGIN.busy=false; loginBusy(false);
-  if(!r.ok){ loginSay(r.say,'fail'); return; }
-  loginClose(); status(r.say,r.kept?'ok':'fail'); loginEnter(); });}
-/* The forgotten password, with the one sentence authForgot returns for an
+  if(!r.ok){ loginState('error'); loginSay(r.say,'fail'); return; }
+  loginState('ok'); loginSay('Opening your field.','',true);
+  loginClose(true); status(r.say,r.kept?'ok':'fail'); loginEnter(); });}
+/* The forgotten passphrase, with the one sentence authForgot returns for an
    address with an account and for one without. 'ok', not 'fail', on the
    status line: the request landed, which is all this press can know. */
 function loginForgot(){
  if(LOGIN.busy)return;
- var m=document.getElementById('loginrmail');
+ var m=loginEl('loginrid');
  LOGIN.busy=true; loginBusy(true);
  loginSay('Sending the request.','',true);
- authForgot(m?m.value.trim():'').then(function(r){
+ authForgot(m?m.value.trim():'',loginAuthOpt()).then(function(r){
   LOGIN.busy=false; loginBusy(false);
   loginSay(r.say,r.ok?'ok':'fail'); });}
 /* A HELD SESSION SKIPS THE DOOR, and the boot asks the server whether it is
@@ -270,8 +425,10 @@ function loginForgot(){
    when nothing is held, so the gates, which never sign in, make none. */
 function loginBoot(){
  if(typeof authCheck==='function')authCheck();
- if(DEV_SKIP)return;
- if(typeof authSession==='function'&&authSession()){ loginEnter(); return; }
+ /* the two ways past the door that never open it still take the class off, or
+    the app would be painted nowhere: the head set it before any of this ran */
+ if(DEV_SKIP){ loginDoor(false); return; }
+ if(typeof authSession==='function'&&authSession()){ loginDoor(false); loginEnter(); return; }
  loginOpen();}
 /* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
    a sign in, a new account, or continuing without one. */

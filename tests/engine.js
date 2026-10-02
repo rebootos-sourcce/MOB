@@ -6031,5 +6031,40 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
 
 }
 
+g('IDENTITY · one field takes a username or an email, and the kind is one character (round OT, OX)');
+{const {identKind,identNorm,usernameWhy,usernameRule,USERNAME_MIN,USERNAME_MAX,USERNAME_SHAPE}=E;
+ /* HIS RULING IS THE CONTRACT. "Username 3 to 20 is great," round OX. Moving
+    either number is a ruling and not a tuning, so it fails here by name. */
+ ok(USERNAME_MIN===3&&USERNAME_MAX===20,'the bounds are the ruled three to twenty, got '+USERNAME_MIN+' to '+USERNAME_MAX);
+ /* the kind: an at sign is a complete test, and nothing else is read */
+ ok(identKind('')===''&&identKind('   ')===''&&identKind(null)===''&&identKind(undefined)==='','nothing typed is its own answer, and is no kind');
+ ok(identKind('mika')==='username'&&identKind('mika_salas-2')==='username','a word is a username');
+ ok(identKind('mika@example.invalid')==='email'&&identKind('  a@b  ')==='email','an at sign makes an email, spaces ignored');
+ ok(identKind('mika@')==='email'&&identKind('@')==='email','and it is the at sign alone: an incomplete address is still read as an email, so the email check is what refuses it, never the username one');
+ /* the fold: a username is lower case, an email is left as typed */
+ ok(identNorm('  Mika  ')==='mika'&&identNorm('MIKA_1')==='mika_1','a username is trimmed and folded to lower case, which is what a phone that capitalises the first letter needs');
+ ok(identNorm(' Probe@Example.Invalid ')==='Probe@Example.Invalid','an email is trimmed and nothing else, its case being the server\'s business');
+ /* the shape, at and around both bounds, built from the constants and not from numbers */
+ const rep=(c,n)=>new Array(n+1).join(c);
+ ok(usernameWhy(rep('a',USERNAME_MIN))==='','the shortest username is accepted');
+ ok(usernameWhy(rep('a',USERNAME_MAX))==='','the longest username is accepted');
+ ok(usernameWhy(rep('a',USERNAME_MIN-1))===usernameRule(),'one under the shortest is refused with the whole rule');
+ ok(usernameWhy(rep('a',USERNAME_MAX+1))===usernameRule(),'one over the longest is refused with the whole rule');
+ ok(usernameWhy('mika_salas-2')===''&&usernameWhy('0123')==='','lower case letters, digits, underscore and hyphen are all accepted');
+ ok(usernameWhy('Mika')==='','a capital is folded first and so is never the reason for a refusal');
+ ['mika salas','mika.salas','mika!','mika@x','\u00e9mile','a\tb','mi/ka'].forEach(bad=>
+  ok(usernameWhy(bad)===usernameRule(),'refused with the whole rule, one sentence: '+JSON.stringify(bad)));
+ ok(usernameWhy('')==='Enter a username.'&&usernameWhy('   ')==='Enter a username.','nothing typed is asked for and not called a bad shape');
+ /* the rule sentence is built off the constants, so a ruling moves the screen */
+ ok(usernameRule().indexOf(USERNAME_MIN+' to '+USERNAME_MAX)>=0,'the rule sentence carries both bounds off the constants');
+ ok(!/[\u2013\u2014]/.test(usernameRule()+usernameWhy('')),'and no dash of either kind in what a person reads');
+ /* the contract the card relies on: anything the shape accepts is a username
+    to identKind, and no email ever passes the username check */
+ {let agree=true; ['abc','a_b','a-b','x0y','user_name_9'].forEach(u=>{
+   if(identKind(u)!=='username'||!USERNAME_SHAPE.test(u)||usernameWhy(u)!=='')agree=false;});
+  ok(agree,'every accepted shape reads as a username');
+  let leak=false; ['a@b.co','me@example.invalid','x@y'].forEach(m=>{ if(usernameWhy(m)==='')leak=true; });
+  ok(!leak,'and no email ever passes as a username');}}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

@@ -279,6 +279,9 @@ if(typeof module!=='undefined'&&module.exports){
                   bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
                   OB_KINDS:OB_KINDS,
+  /* identity */  identKind:identKind, identNorm:identNorm, usernameWhy:usernameWhy,
+                  usernameRule:usernameRule, USERNAME_MIN:USERNAME_MIN,
+                  USERNAME_MAX:USERNAME_MAX, USERNAME_SHAPE:USERNAME_SHAPE,
   /* storage */   bindStore:bindStore,
   /* practice, engine/practice.js. The tables are exported as the live
      objects so the gate can hold them to the TDD's own lists and mutate a

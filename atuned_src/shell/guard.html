@@ -70,10 +70,22 @@
     file, so when the script stops the guard can name the module it stopped
     after instead of saying it stopped somewhere. */
  window.__at=function(f){AT=f;};
+ /* THE DOOR CLASS IS THE GUARD'S TO TAKE OFF WHEN NOTHING ELSE WILL. The head
+    sets html.door so the app is not painted ahead of the login (round OT), and
+    ui/login.js takes it off on every way out of the door. If the door never
+    opened, because the start up stopped or because the login step alone
+    failed, nothing would, and the person would be left looking at a door that
+    does nothing, with the instrument hidden behind it. */
+ function liftDoor(){
+  try{ document.documentElement.classList.remove('door'); }catch(e){}
+  try{ var lg=document.getElementById('login'); if(lg)lg.style.display='none'; }catch(e){}}
  /* the app calls this at the end of its own init, and hands over anything
     that failed along the way. */
  window.__bootOk=function(failed){
   BOOTED=true;
+  /* a start up that finished without opening the door has no door to hold:
+     the login step was lost, or a held session took the person past it */
+  try{ if(!(window.LOGIN&&window.LOGIN.open))liftDoor(); }catch(e){}
   /* THE START UP FINISHED, SO NOTHING BEFORE THIS STOPPED IT. A screen painted
      early, by the ceiling below while the document was still arriving, is
      taken back. An error from our own code that did not stop the start up is
@@ -255,6 +267,9 @@
    /* the boot sheet fades on a CSS animation whether or not scripts ran, so it
       has to be taken off by hand or it uncovers this and then covers it again */
    var bt=document.getElementById('boot'); if(bt)bt.style.display='none';
+   /* and a door that did not start has to come down with it, or it covers the
+      screen this message is on, and the message is the one thing that must show */
+   liftDoor();
   }catch(e){
    /* if even that fails, the document is beyond help and the console is all
       that is left. Saying nothing is still not an option. */

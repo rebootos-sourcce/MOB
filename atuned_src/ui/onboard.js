@@ -157,7 +157,11 @@ function obRender(){
      So the hard sentence moves one screen in, where it belongs, and the first
      screen is a figure and eleven words. Show, not tell. Everything that used
      to be here is still in the product and none of it is said first. */
-  out=obCard('Welcome','This is you, and it is okay.',
+  /* THE EYEBROW IS HELLO, NOT WELCOME. OB4 in the first run rulings, and the
+     voice skill's own: a greeting is "Hello", and "Welcome" is the line that
+     says a thing is starting (V1). It was the one word on the first screen a
+     stranger meets that the product's own rule had already struck. */
+  out=obCard('Hello','This is you, and it is okay.',
    obFigure()
    /* HIS TWO SENTENCES, AND THEN IT STOPS. "No judgment. Nothing here grades
       you." is the ruling and it stands. A third clause had been added to it,
@@ -193,7 +197,16 @@ function obRender(){
    +'<p class="ob-p">It reads one thing: the body mind complex, your body and '
    +'your mind working as one. How you run, which patterns are running, and '
    +'where in your body they sit.</p>'
-   +'<div class="ob-grid">'
+   /* THE FOUR ARE A CIRCLE, NEVER A LIST. Ruled 20 September, with his reason:
+      "we're showing a core game loop mechanic." A column or a row of four says
+      the fourth is the end, which is the opposite of a loop, and this card is
+      where a stranger first meets the four together. They sit at the corners
+      of a square in the order a clock reads them, one, two, three, four going
+      round, and a small ring in the middle carries an arrow back to the first.
+      The order in the document is still one to four, so a screen reader
+      reads them as they go, and only the grid areas in the stylesheet move
+      the third and fourth to the bottom row, right to left. */
+   +'<div class="ob-grid ob-loop">'
    /* TWO OF THESE FOUR DEFINED A THING BY WHAT IT IS NOT, on the first
       screen a person sees, in the file that runs antithesis at five times the
       house rate. The replacements are positive and concrete, and the first is
@@ -202,9 +215,12 @@ function obRender(){
      ['It finds where that sits','one exact spot in your body'],
      ['You release what is there','one spot at a time'],
      ['And you watch it move','the same numbers, over months']]
-    .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
+    .map(function(x,i){return '<div class="ob-g ob-g'+(i+1)+'"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')
+   +'<svg class="ob-loop-ring" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+   +'<path d="M12 3.5 A8.5 8.5 0 1 1 3.5 12"/><path d="M0.8 8.6 L3.5 12 L6.9 9.6"/></svg>'
    +'</div>'
+   +'<p class="ob-p ob-dim">Then you write again, and it goes round.</p>'
    /* "which is the good news" is the writer telling a person how to feel
       about a fact. The fact is the sentence. */
    +'<p class="ob-p ob-dim">Nothing here is made up. If it does not know '
@@ -225,9 +241,24 @@ function obRender(){
      the exact trap he hit: "I can't click next to go, I can only click
      solar." Nothing is disabled here; Nothing is itself a real answer, on
      the same honest-empty rule the reflection screen already keeps. */
+  /* HIS TWO LINES OPEN THE SOMATIC SETUP, IN HIS WORDS. "Welcome to a
+     neurosomatic experience." and "Awareness and intuition is a tool we use
+     to turn your senses inward." Ruled, and they stand as he wrote them: the
+     first is a line that says a thing is starting, which V1 rules out and OB4
+     ruled "Hello" over, and the second has "intuition" and no place to turn
+     the senses to, which V4 asks for. His ruling outranks all three, and the
+     rest of the card does the work they leave: where to sit, where to put the
+     attention, and the one place it goes, the throat.
+
+     The sentence that followed it before, "This product works with the body
+     and the mind together", is gone, because the first of his two lines says
+     the word it was explaining. What is kept is the half that tells a person
+     what neurosomatic means, in the words a child already has. */
   out=obCard('The signal test','Say yes. Say no.',
-   '<p class="ob-p">This product works with the body and the mind '
-   +'together. A thought changes what your body does, and what your body '
+   '<p class="ob-p">Welcome to a neurosomatic experience.</p>'
+   +'<p class="ob-p">Awareness and intuition is a tool we use to turn your '
+   +'senses inward.</p>'
+   +'<p class="ob-p">A thought changes what your body does, and what your body '
    +'does changes the thought back.</p>'
    +'<p class="ob-p">Sit down. Put both feet on the floor. Take ten slow breaths.</p>'
    +'<p class="ob-p">When you are ready, bring your attention to your '

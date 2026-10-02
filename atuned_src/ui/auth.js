@@ -51,114 +51,141 @@ var AUTH_WAIT_MS=15000;
    still arrives and is shown; this only saves a round trip. */
 var AUTH_PW_MIN=8, AUTH_PW_MAX=200;
 var AUTH_MAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-/* The session in memory, and whether the store has been read into it yet.
-   Held in memory as well as in the store because a browser that blocks
-   storage still deserves a sign in that lasts the visit, and says so. */
-var AUTH_S=null, AUTH_READ=false;
-/* READ ONCE THE STORE IS BOUND AND NOT BEFORE. ui/ui.js binds localStorage
-   near the end of the build, and a read before that meets the engine's no-op
-   store, which answers null. Caching that null would sign a person out for the
-   whole visit, so the store is only read, and the read only remembered, once
-   STORE_BOUND says there is a real one. Only the two fields a sign in needs
-   come back out: the token, and the email to print beside "Signed in as". */
-function authSession(){
- if(!AUTH_READ&&typeof STORE_BOUND!=='undefined'&&STORE_BOUND){
-  AUTH_READ=true;
-  try{ var o=JSON.parse(STORE.get(AUTH_KEY)||'null');
-   if(o&&typeof o.token==='string'&&o.token&&typeof o.email==='string')
-    AUTH_S={token:o.token, email:o.email}; }
-  catch(e){ AUTH_S=null; } }
- return AUTH_S;}
-/* True when the write landed, read back to prove it, the way storeSetAside in
-   engine/schema.js proves its own. A set that did not throw is not a set that
-   landed. */
-function authKeep(s){
- AUTH_S=s; AUTH_READ=true;
- if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
- var txt=s?JSON.stringify(s):'';
- try{ STORE.set(AUTH_KEY,txt); return STORE.get(AUTH_KEY)===txt; }catch(e){ return false; }}
-function authForget(){ return authKeep(null); }
-/* One request. Resolves to {ok, status, body, late}, and never rejects. */
-function authCall(method,path,body,token){
- return new Promise(function(done){
-  var ctl=null, timer=null, over=false;
-  var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
-  if(typeof fetch!=='function'){ end({ok:false, status:0, body:null}); return; }
-  try{ ctl=new AbortController(); }catch(e){ ctl=null; }
-  timer=setTimeout(function(){
-   if(ctl)try{ ctl.abort(); }catch(e){}
-   end({ok:false, status:0, body:null, late:true}); },AUTH_WAIT_MS);
-  var h={};
-  if(body)h['Content-Type']='application/json';
-  if(token)h.Authorization='Bearer '+token;
-  var req;
-  /* credentials omit: the session is the bearer header and nothing else, so no
-     cookie of any host's is ever sent along with it. */
-  try{ req=fetch(AUTH_API+path,{method:method, headers:h,
-   body:body?JSON.stringify(body):undefined, signal:ctl?ctl.signal:undefined,
-   cache:'no-store', credentials:'omit'}); }
-  catch(e){ end({ok:false, status:0, body:null}); return; }
-  /* the body is read as text and parsed here, because a Cloudflare error page
-     in front of the Worker is HTML with a real status, and res.json() on it
-     would throw away the status along with the page. */
-  req.then(function(res){
-    return res.text().then(function(t){
-     var b=null; try{ b=JSON.parse(t); }catch(e){ b=null; }
-     return {ok:res.ok, status:res.status, body:b}; },
-    function(){ return {ok:res.ok, status:res.status, body:null}; }); },
-   function(){ return {ok:false, status:0, body:null}; })
-  .then(end,function(){ end({ok:false, status:0, body:null}); });});}
-/* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
-   ("too many attempts. wait fifteen minutes"), and they are the true reason,
-   so they are shown rather than rewritten. Rewriting them would also mean
-   typing the server's numbers into this file, the fifteen minutes and the
-   eight characters, which is the defect CLAUDE.md records a dozen times. */
-function authSay(s){
- s=String(s||'').trim(); if(!s)return '';
- s=s.replace(/(^|[.?]\s+)([a-z])/g,function(m,a,b){return a+b.toUpperCase();});
- return /[.?]$/.test(s)?s:s+'.';}
+/* WHETHER THE SERVER HOLDS A USERNAME YET. It does not: it keys an account on
+   the email and reads no other identifier, and the owner's round OT ruling
+   ("we want them to log in by their username") needs a server slice that has
+   not shipped. One flag says so, so the day it ships is one word here and a
+   server answer, and not a hunt through the card.
+
+   A SIGN IN BY USERNAME IS SENT REGARDLESS, as {username} on the same route,
+   and the server's own refusal is what the person reads. That is true
+   whatever the server does, and a check here that refused it first would be
+   this file claiming to know what the server will say.
+
+   CREATING IS THE ONE PRESS THIS GATES, AND ONLY HALF OF IT. A username with
+   no email behind it is an account the server cannot key at all, so while this
+   is false that press is refused here with a plain line and nothing is sent.
+   A username WITH a recovery email goes out as it is, {username, email,
+   password}, and the server keys the account on the email as it always has.
+   What it must not do is let the person think they now have a username that
+   works. The answer is read for that: an account that comes back without the
+   username is said to have come back without it, in the line that reports
+   the creation (authEnter), so the success claimed is the one that happened. */
+var AUTH_USERNAMES=false;
+/* THE ONE ADAPTER BETWEEN WHAT A PERSON TYPES AND WHAT THE SERVER IS SENT.
+   Anything with an at sign is an email and goes as {email}, exactly the body
+   every route took before this existed, so the existing sign in is not
+   touched. Anything else is a username and goes as {username}, folded to
+   lower case. The kind is read by engine/identity.js, so the card's checks and
+   this body cannot disagree about which one was typed. Nothing else in the
+   product builds an identifier by hand. */
+function authIdent(s){
+ var v=identNorm(s);
+ return identKind(v)==='username'?{username:v}:{email:v};}
+/* THE NAME TO PRINT BESIDE "Signed in as", AND THE ONE THE SESSION IS HELD
+   UNDER. An account that has a username is known by it, because that is the
+   name its owner logs in by and the one they chose. An account with none is
+   known by its email, which is every account the server holds today, so for
+   them nothing here changes. An account the server knows by username may
+   answer with no email at all, and "no email" must not read as "not signed
+   in": authCheck once asked for a string email on the answer and would have
+   said the server could not check a sign in it had just made. */
+function authHandle(acc,fallback){
+ if(acc&&typeof acc.username==='string'&&acc.username)return acc.username;
+ if(acc&&typeof acc.email==='string'&&acc.email)return acc.email;
+ return fallback||'';}
 /* What went wrong, as one sentence. Three answers are this file's because
    the server's word for them would mislead here: no connection has no server
    words at all, a refused sign in must not say which of the two fields was
-   wrong, and a taken email has a route the server cannot name. */
-function authWhy(r,route){
+   wrong, and a taken name has a route the server cannot name.
+
+   o is the login card's own wording and is absent for the Account section,
+   which says email and password and always has: o.kind is what was typed, and
+   o.noun is the word the screen uses for the secret, passphrase on the door
+   and password inside, one word per screen and each screen keeping its own. */
+function authWhy(r,route,o){
+ var noun=(o&&o.noun)||'password', name=(o&&o.kind==='username')?'username':'email';
  if(r.late)return 'The server did not answer in time. Try again.';
  if(!r.status)return 'Could not reach the server. Check the connection and try again.';
- if(route==='signin'&&r.status===401)return 'No account matches that email and password.';
- if(route==='signup'&&r.status===409)return 'An account already uses that email. Log in instead.';
+ if(route==='signin'&&r.status===401)return 'No account matches that '+name+' and '+noun+'.';
+ if(route==='signup'&&r.status===409)
+  return name==='username'?'That username is taken. Choose another.'
+   :'An account already uses that email. Log in instead.';
  var said=(r.body&&typeof r.body.error==='string')?authSay(r.body.error):'';
  return said||('The server refused that, with code '+r.status+'.');}
 /* Refused here, before a request, when the server would refuse it anyway. A
    new account is held to the length; an existing one is not, because an
-   account made under an older rule must still be able to sign in. */
-function authFieldsWhy(mail,pw,isNew){
- if(!mail)return 'Enter an email address.';
- if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';
+   account made under an older rule must still be able to sign in.
+
+   o.names turns on the door's second kind of identifier. Without it this is
+   the email-only check it always was, word for word, so the Account section
+   keeps its behaviour: a field there that is not an email is still "not
+   complete", and never quietly becomes a username it has no way to take. */
+function authFieldsWhy(mail,pw,isNew,o){
+ var names=!!(o&&o.names), noun=(o&&o.noun)||'password';
+ if(names){
+  var kind=identKind(mail);
+  if(!kind)return 'Enter your username or email.';
+  if(kind==='username'){
+   var bad=usernameWhy(mail); if(bad)return bad;
+   /* a recovery email that is typed is checked whatever else is true of it */
+   if(isNew&&o.recovery&&(!AUTH_MAIL.test(o.recovery)||o.recovery.length>254))
+    return 'The recovery email is not complete.';
+   /* and a username with nothing behind it cannot be created until the server
+      can key an account on it, and not at all when used to log in: see
+      AUTH_USERNAMES above */
+   if(isNew&&!AUTH_USERNAMES&&!o.recovery)
+    return 'Add a recovery email to create an account with a username.';}
+  else if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';}
+ else{
+  if(!mail)return 'Enter an email address.';
+  if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';}
  if(pw===undefined)return '';
- if(!pw)return 'Enter a password.';
- if(pw.length>AUTH_PW_MAX)return 'A password can be at most '+AUTH_PW_MAX+' characters.';
- if(isNew&&pw.length<AUTH_PW_MIN)return 'A password needs at least '+AUTH_PW_MIN+' characters.';
+ if(!pw)return 'Enter a '+noun+'.';
+ if(pw.length>AUTH_PW_MAX)return 'A '+noun+' can be at most '+AUTH_PW_MAX+' characters.';
+ if(isNew&&pw.length<AUTH_PW_MIN)return 'A '+noun+' needs at least '+AUTH_PW_MIN+' characters.';
  return '';}
 /* SIGN IN OR SIGN UP. Both routes answer the same shape, a token and the
    account, so one function carries both. Resolves {ok, kept, say}: say is the
    sentence to show, and kept is false when the browser would not hold the
-   session, which is still a sign in and is said as one that ends on reload. */
-function authEnter(route,mail,pw){
- var bad=authFieldsWhy(mail,pw,route==='signup');
+   session, which is still a sign in and is said as one that ends on reload.
+
+   o is {names, noun, recovery}, and only the login card passes it: names lets
+   the identifier be a username, noun is the card's word for the secret, and
+   recovery is the optional email beside a username on a new account. */
+function authEnter(route,mail,pw,o){
+ var isNew=route==='signup';
+ var bad=authFieldsWhy(mail,pw,isNew,o);
  if(bad)return Promise.resolve({ok:false, say:bad});
- return authCall('POST','/v1/auth/'+route,{email:mail, password:pw}).then(function(r){
+ var body=(o&&o.names)?authIdent(mail):{email:mail}, kind=body.username?'username':'email';
+ body.password=pw;
+ /* the recovery email rides only with a username, where it is the one way
+    back in. With an email as the identifier it would be the same address
+    twice. Its key is a guess at the server slice that does not exist yet:
+    email, the field the server already reads for contact. */
+ if(isNew&&kind==='username'&&o&&o.recovery)body.email=o.recovery;
+ var why={kind:kind, noun:o&&o.noun};
+ return authCall('POST','/v1/auth/'+route,body).then(function(r){
   var b=r.body||{}, acc=b.account||{};
-  if(!r.ok)return {ok:false, say:authWhy(r,route)};
+  if(!r.ok)return {ok:false, say:authWhy(r,route,why)};
   if(typeof b.token!=='string'||!b.token)
    return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
-  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase()};
+  var s={token:b.token, email:authHandle(acc,kind==='username'?body.username:mail.toLowerCase())};
   var kept=authKeep(s);
+  /* A USERNAME THE SERVER DID NOT KEEP IS SAID, NOT HIDDEN. The account that
+     came back has no username, so it is the email account the server has
+     always made, and the person is told which name to log in with. Reading it
+     off the answer, never off the flag, so a server that keeps usernames and
+     one that does not are both told the truth about what they did. */
+  var dropped=isNew&&kind==='username'&&!(typeof acc.username==='string'&&acc.username);
   /* the plan is read after the sign in is held, and not waited on: the
      caller says "Signed in as" now, and the plan speaks after it only if the
      record changed. A second device is exactly this path. */
   authPlanRead();
   return {ok:true, kept:kept,
-   say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
+   say:(route==='signup'?'Account created. ':'')
+    +(dropped?'The server does not hold usernames yet, so log in with '+s.email+'. ':'')
+    +'Signed in as '+s.email+'.'
     +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
 /* THE FORGOTTEN PASSWORD SAYS WHAT THE SERVER SAYS, AND NO MORE. The server
    answers the same whether or not the address has an account, on purpose, so
@@ -167,13 +194,16 @@ function authEnter(route,mail,pw){
    rather than promising an email, because for an address with no account no
    email is coming, and a line that promised one would be a lie to exactly the
    person who typed the wrong address. */
-function authForgot(mail){
- var bad=authFieldsWhy(mail);
+function authForgot(mail,o){
+ var bad=authFieldsWhy(mail,undefined,false,o);
  if(bad)return Promise.resolve({ok:false, say:bad});
- return authCall('POST','/v1/auth/forgot',{email:mail}).then(function(r){
+ var body=(o&&o.names)?authIdent(mail):{email:mail};
+ return authCall('POST','/v1/auth/forgot',body).then(function(r){
   if(r.ok)return {ok:true,
-   say:'If an account uses that email, a link to set a new password is on its way.'};
-  return {ok:false, say:authWhy(r,'forgot')};});}
+   say:(o&&o.names&&body.username)
+    ?'If an account uses that username, a link to set a new passphrase is on its way to its recovery email.'
+    :'If an account uses that email, a link to set a new '+((o&&o.noun)||'password')+' is on its way.'};
+  return {ok:false, say:authWhy(r,'forgot',{kind:body.username?'username':'email',noun:o&&o.noun})};});}
 /* SIGN OUT ENDS IT HERE WHATEVER THE SERVER SAYS. A person who pressed Sign
    out on a train has asked for this browser to stop being signed in, and
    refusing that because the server is out of reach would keep a session they
@@ -208,12 +238,12 @@ function authCheck(){
   if(back==='done')status('Payment finished. Log in from Account to bring the plan onto this record.','fail');
   return Promise.resolve(null);}
  return authCall('GET','/v1/me',null,s.token).then(function(r){
-  var acc=r.body&&r.body.account;
+  var acc=r.body&&r.body.account, who=authHandle(acc,'');
   var redraw=function(){
    if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
     &&typeof renderAccount==='function')renderAccount(); };
-  if(r.ok&&acc&&typeof acc.email==='string'){
-   if(acc.email!==s.email){ authKeep({token:s.token, email:acc.email}); redraw(); }
+  if(r.ok&&acc&&who){
+   if(who!==s.email){ authKeep({token:s.token, email:who}); redraw(); }
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);

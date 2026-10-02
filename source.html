@@ -5,8 +5,19 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1134 f6162b3 2026-10-01 22:02"><head><meta charset="utf-8">
+<html lang="en" data-build="v1137 7b2941b 2026-10-01 23:05"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- THE DOOR CLASS, BEFORE ANYTHING IS PAINTED. Round OT, his words: "One frame
+     before login starts, I can see the dashboard or the field. It should start
+     with the login." The login used to open from script at the end of a two and
+     a half megabyte file, so until then the app was the only thing there was to
+     paint. With html.door on the root, the stylesheet hides the app and shows
+     the door that shell/body.html carries as static markup. The same ?dev=1 the
+     gates and the boot sheet's own developer button use skips it, read here the
+     way ui/login.js reads it, and no script at all leaves the class unset, so
+     the noscript notice is what is seen. ui/login.js and the boot guard take
+     the class off again. -->
+<script>try{if(!/(?:^|[?&])dev=1(?:&|$)/.test(location.search||''))document.documentElement.className+=' door';}catch(e){}</script>
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
 <!-- ============================================================
@@ -6286,59 +6297,202 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 .ob-dim{color:var(--dim);font-size:13.5px}
 .ob-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
 .ob-dots{display:flex;gap:6px;justify-content:center;margin-top:18px}
-/* LOGIN. Same card as onboarding, .ob-card/.pm-eye/.ob-h/.ob-p/.ob-acts, a
-   row per field is all that is new. Its own class rather than the account
-   sheet's .avin, which carries no rule of its own anywhere in this file. */
-.login-row{display:flex;flex-direction:column;gap:5px;margin:0 0 13px}
-.login-l{font-size:13px;color:var(--dim)}
-.login-row input{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
- border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
- min-height:var(--tap);width:100%}
-.login-row input:focus{border-color:var(--accent)}
-/* THE STRONG PASSWORD SUGGESTION AND FORGOT PASSWORD LINK, ROUND MP: "the
-   login needs the typical login stuff... I also want us to be able to
-   suggest a strong password." .login-pw turns the password row into an
-   input plus a button sharing one line; loginSuggestPassword() in
-   ui/login.js fills the field and reveals the suggestion as plain text
-   underneath, since a hidden suggestion is not one a person can copy. */
-.login-pw{display:flex;gap:7px}
-.login-pw input{flex:1 1 auto;min-width:0}
-.login-pwsug{flex:0 0 auto;background:var(--sunk);border:1px solid var(--edge);
- color:var(--ink);border-radius:var(--r-xs);padding:0 12px;font-family:var(--sans);
- font-size:13px;min-height:var(--tap);cursor:pointer}
-.login-pwsug:hover{border-color:var(--accent)}
-.login-hint{display:block;margin-top:6px;font-size:12.5px;color:var(--dim);
- font-family:var(--num);word-break:break-all}
-.login-forgot{display:block;background:none;border:none;color:var(--dim);
- font-size:13px;font-family:var(--sans);text-decoration:underline;cursor:pointer;
- padding:2px 0;margin:-6px 0 4px}
+/* ============================================================
+   THE DOOR. Login A, the ring, approved at round OT: "make this page inviting
+   and not so dry." One ring behind a short column, the boot's own drawing in
+   the boot's own colours, written by tools/bootgeo.js and standing in the
+   document from the first byte (shell/body.html).
+
+   THE DOOR HAS ITS OWN TOKENS, and they are fixed. The product has five
+   lightings and the login is met before a person has chosen one, on a ground
+   that is always dark, as the boot sheet's is: --sky and --um in Snow are a
+   dark blue and a near black, which on this ground would be an invisible
+   wordmark. Declared on the host so nothing inside reads a lighting's value.
+
+   html.door IS THE FIRST PAINT, AND IT IS SET BEFORE ANY OF THIS IS PARSED.
+   A one line script in the head adds it unless the page was asked to skip the
+   door. While it is set, every child of the body except the door, the boot
+   sheet and the guard's own failure screen is visibility:hidden, not
+   display:none: the app is still laid out, so the Field measures itself as
+   it did, and only its painting waits. ui/login.js removes the class on every
+   way out of the door, and the guard removes it when a build did not start,
+   so a door that never opens can never be the only thing on screen.
+   ============================================================ */
+html.door body>*:not(#login):not(#boot):not([role="alert"]){visibility:hidden}
+html.door #login{display:flex}
+#login.lg-door{--bg:#0C0D12;--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--ctl:rgba(255,255,255,.38);
+ --edge:rgba(255,255,255,.09);--sunk:#090A0E;--accent:#7EB8D4;--on-accent:#0B1418;
+ --sky:#7EB8D4;--um:#FFFFFF;--bad:#FF6A5C;--alarm:#FF2E1F;--throat:#5EBBDB;--root:#D6524C;
+ --lgsw:.18;
+ background:var(--bg);padding:0;overflow-x:hidden;overflow-y:auto;align-items:stretch;
+ justify-content:center;color:var(--ink);transition:opacity .5s ease}
+/* the way out: the ring has closed on a yes, and the door fades off the app
+   it was standing in front of. Never takes a press while it goes. */
+#login.lg-door.lg-out{opacity:0;pointer-events:none}
+.lg-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+/* A SQUARE AS WIDE AS THE SHORTER SIDE, SO THE RING IS ROUND AT ANY SHAPE of
+   screen and its radius is a third of that side. The outer arcs run past the
+   box on purpose, and an outermost svg clips to its own box and not to its
+   viewBox, so they are drawn to the screen's edge. */
+.lg-ring{position:absolute;left:50%;top:50%;width:100vmin;height:100vmin;
+ transform:translate(-50%,-50%);overflow:visible}
+.lg-breath{animation:lgBreath 9s ease-in-out infinite}
+@keyframes lgBreath{0%,100%{opacity:.55}50%{opacity:.95}}
+.lg-t{stroke:var(--c);stroke-width:2px;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.8}
+.lg-a{fill:none;stroke:var(--c);stroke-width:1.4px;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.45}
+.lg-a1{opacity:.34}
+.lg-a2{opacity:.23}
+.lg-trk{fill:none;stroke:rgba(255,255,255,.07);stroke-width:1px;vector-effect:non-scaling-stroke}
+/* THE PASSPHRASE DRAWS THE RING SHUT. --p is how much of it there is, zero to
+   one, written by ui/login.js on the host; the two halves leave the top and
+   meet at the bottom. pathLength is 100 on both, so the dash is in percent of
+   the path whatever size the ring is drawn at. No vector-effect here: it moves
+   dashes into screen units and the percent would stop meaning anything. */
+.lg-cl,.lg-cr{fill:none;stroke:var(--accent);stroke-width:var(--lgsw);stroke-linecap:round;
+ stroke-dasharray:100;stroke-dashoffset:calc(100 - 100 * var(--p,0));
+ transition:stroke-dashoffset .9s ease-out}
+/* a name has been typed: the node at the top lights. Ring, not fill. */
+.lg-nu{opacity:0;transition:opacity .4s ease;transform-box:fill-box;transform-origin:center}
+.lg-nr{fill:var(--bg);stroke:var(--accent);stroke-width:2px;vector-effect:non-scaling-stroke}
+.lg-nd{fill:var(--accent)}
+#login[data-id="1"] .lg-nu{opacity:1}
+/* the node at the bottom waits until the passphrase has a first character */
+.lg-nb{fill:var(--bg);stroke:rgba(255,255,255,.3);stroke-width:1.5px;vector-effect:non-scaling-stroke;
+ opacity:.6;transition:opacity .4s ease;transform-box:fill-box;transform-origin:center}
+#login[data-pw="1"] .lg-nb{opacity:0}
+/* A REFUSAL IS DRAWN ON THE RING: a crossed ring at the place the path stopped,
+   and two dashed lines running off it, the path splitting. It never says which
+   of the two fields was wrong, which is also what the sentence does. */
+.lg-err{opacity:0;transition:opacity .3s ease}
+#login[data-state="error"] .lg-err{opacity:1}
+.lg-eb{fill:none;stroke:var(--mid);stroke-width:1.5px;stroke-dasharray:3 5;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.lg-ec{fill:none;stroke:var(--alarm);stroke-width:1.6px;vector-effect:non-scaling-stroke}
+.lg-ex{fill:none;stroke:var(--alarm);stroke-width:2.6px;stroke-linecap:round;vector-effect:non-scaling-stroke}
+/* a request is out: the two halves pulse, which means waiting */
+#login[data-state="busy"] .lg-cl,#login[data-state="busy"] .lg-cr{animation:lgWait 1.1s ease-in-out infinite alternate}
+@keyframes lgWait{from{opacity:.4}to{opacity:1}}
+/* a yes: every address reads full and the ring has closed. The breath stops,
+   because the ring is no longer waiting for anything. */
+#login[data-state="ok"] .lg-breath{animation:none;opacity:1}
+#login[data-state="ok"] .lg-t{opacity:1;stroke-width:3px}
+@media (prefers-reduced-motion:reduce){
+ .lg-breath,#login[data-state="busy"] .lg-cl,#login[data-state="busy"] .lg-cr{animation:none}
+ .lg-cl,.lg-cr,.lg-nu,.lg-nb,.lg-err,#login.lg-door{transition:none}}
+.lg-col{position:relative;z-index:2;width:min(360px,100%);margin:auto;padding:28px 0;
+ display:flex;flex-direction:column;align-items:stretch;gap:16px}
+.lg-wmk{display:flex;justify-content:center;color:var(--sky)}
+.lg-wm{display:block;width:142px;height:auto;overflow:visible}
+.lg-wm-d{fill:var(--um)}
+.lg-h{margin:0;text-align:center;font-size:27px;line-height:1.2;font-weight:500;
+ letter-spacing:-.025em;color:var(--ink)}
+.lg-h2{margin:0 0 6px;font-size:20px;line-height:1.25;font-weight:500;letter-spacing:-.02em;color:var(--ink)}
+.lg-p{margin:0 0 12px;font-size:14.5px;line-height:1.55;color:var(--mid)}
+#login:not([data-view="reset"]) .lg-view[data-v="reset"],
+#login[data-view="reset"] .lg-view[data-v="in"],
+#login[data-view="reset"] .lg-consent,
+#login:not([data-mode="create"]) [data-only="create"],
+#login[data-mode="create"] [data-only="login"]{display:none}
+.lg-form{display:flex;flex-direction:column;gap:14px}
+.login-row{display:flex;flex-direction:column;gap:6px;margin:0}
+.login-l{display:flex;align-items:center;font-size:13px;font-weight:600;color:var(--mid)}
+.lg-dot{display:inline-block;flex:none;width:10px;height:10px;margin-right:8px;border-radius:50%;
+ border:1.6px solid var(--c,var(--accent))}
+.lg-dot-id{--c:var(--throat)}
+.lg-dot-pw{--c:var(--root)}
+.login-row input[type="text"],.login-row input[type="email"],.login-row input[type="password"]{
+ height:54px;border-radius:14px;border:1.5px solid var(--ctl);background:rgba(9,10,14,.72);
+ color:var(--ink);padding:0 16px;font-family:var(--sans);font-size:17px;width:100%;min-width:0}
+.login-row input:focus{outline:none;border-color:var(--accent)}
+.login-row input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* THE PASSPHRASE ROW CARRIES ITS TWO SMALL CONTROLS BESIDE THE FIELD: Show
+   always, and Suggest only on a new account, where there is something to
+   suggest. They are rings and not fills, and they are as tall as the field so
+   a thumb finds them. */
+.login-pw{display:flex;gap:8px}
+.login-pw input{flex:1 1 auto}
+.login-pwsug{flex:0 0 auto;min-height:54px;padding:0 14px;border-radius:14px;
+ border:1.5px solid var(--edge);background:transparent;color:var(--mid);
+ font-family:var(--sans);font-size:13.5px;cursor:pointer}
+.login-pwsug:hover{color:var(--ink);border-color:var(--ctl)}
+.login-pwsug:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#login .login-hint{display:block;margin:0;font-size:13px;line-height:1.45;color:var(--dim);word-break:break-word}
+#login .login-hint[hidden],#login .login-row[hidden]{display:none}
+.lg-agree{display:flex;align-items:flex-start;gap:12px;min-height:44px;padding:4px 0;
+ font-size:14px;line-height:1.5;color:var(--mid);cursor:pointer}
+.lg-agree input{flex:none;width:22px;height:22px;margin:2px 0 0;accent-color:var(--accent);cursor:pointer}
+.lg-agree a,.lg-consent a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.lg-agree a:hover,.lg-consent a:hover{color:var(--ink)}
+.login-forgot{align-self:flex-start;min-height:36px;background:none;border:0;color:var(--dim);
+ font-family:var(--sans);font-size:13px;text-decoration:underline;text-underline-offset:2px;
+ cursor:pointer;padding:0 2px;margin:-6px 0 -4px}
 .login-forgot:hover{color:var(--ink)}
+.login-forgot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 /* THE CARD'S OWN RESULT LINE, 30 September, when Log in started asking a real
-   server. The status line sits in the top bar under this full screen card, so
-   a refusal written only there could not be seen. Same size and same refusal
-   colour as #status, so the two read as one message in two places. Empty, it
-   takes no room, the way #status:empty does. */
-.login-msg{margin:4px 0 0;font-size:13px;line-height:1.5;color:var(--mid)}
-.login-msg:empty{display:none}
-.login-msg[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
-/* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
-   a stranger meeting the funnel for the first time, round MP: "the login
-   screen should give me the options, onboarding and tutorial." */
-/* round OT: developer options sit in the lower right of the screen, not in
-   the card. The switches open upward from the summary. */
-.login-dev{position:fixed;right:18px;bottom:14px;z-index:96;margin:0;border:0;
+   server. The status line sits in the top bar under this full screen door, so
+   a refusal written only there could not be seen. It keeps one line of room
+   when empty, so the commonest message, one line, arrives without moving the
+   buttons under a thumb that is already going for one. A second line does move
+   them, and that is the price of not leaving a gap of two lines on a door
+   that is empty most of the time. */
+.login-msg{margin:0;min-height:21px;font-size:14px;line-height:1.5;color:var(--mid)}
+.login-msg[data-kind="fail"]{color:var(--bad);font-weight:500}
+/* ONE ROW OF THREE, round OT: Log in is the primary and the other two ring
+   buttons sit beside it, so there is one Log in on the screen and one thing
+   to press first. They share the width and never wrap: a second row would put
+   Guest where the eye reads it as a lesser door and not as a sibling. */
+.lg-acts{display:flex;gap:8px;flex-wrap:nowrap}
+.lg-acts .btn{flex:1 1 auto;min-width:0;min-height:50px;padding:0 10px;border-radius:999px;
+ border:1.5px solid var(--ctl);background:transparent;color:var(--ink);font-family:var(--sans);
+ font-size:14.5px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;
+ justify-content:center;transition:border-color .2s,background .2s}
+.lg-acts .btn:hover{border-color:var(--mid);background:transparent;filter:none}
+.lg-acts .btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.lg-acts .btn.pri:hover{background:#93c6de;border-color:#93c6de}
+.lg-acts .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.lg-acts .btn:disabled{opacity:.45;cursor:default}
+.lg-consent{margin:0;text-align:center;font-size:12.5px;line-height:1.5;color:var(--dim)}
+/* DEVELOPER OPTIONS, lower right and small, round OT: "move developer options
+   to the lower right." A testing control, disclosed rather than open, and
+   outside the column so it never takes a place in the one a stranger reads.
+   The switches open upward from the summary. */
+.login-dev{position:fixed;right:14px;bottom:10px;z-index:96;margin:0;border:0;
  padding:0;display:flex;flex-direction:column-reverse;align-items:flex-end;opacity:.7}
 .login-dev[open]{opacity:1}
-#login{background:#06060a}
-.login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
- list-style:none}
+.login-dev summary{font-size:12px;color:var(--dim);cursor:pointer;list-style:none;
+ min-height:44px;display:flex;align-items:center;padding:0 6px}
 .login-dev summary::-webkit-details-marker{display:none}
-.login-dev summary::before{content:'▸ ';font-size:10px}
+.login-dev summary::before{content:'▸ ';font-size:10px;margin-right:4px}
 .login-dev[open] summary::before{content:'▾ '}
 .login-sw{display:flex;align-items:center;gap:8px;font-size:13.5px;
- color:var(--ink);margin-top:10px;cursor:pointer}
-.login-sw-off{color:var(--dim);cursor:default}
-.login-dim{color:var(--dim);font-size:11.5px;margin-left:4px}
+ color:var(--ink);min-height:36px;cursor:pointer}
+#login .login-dev[open]{background:rgba(26,29,38,.96);border:1.5px solid var(--ctl);border-radius:14px;padding:4px 14px 0}
+/* THE NARROW SCREEN: the ring sits at the top with the mark inside it, and
+   the column hangs below. The ring's box is fixed at the size that puts its
+   radius at ninety eight pixels, centred a hundred and forty down. The
+   strokes thicken because the box is a third the size and a hairline at that
+   scale is gone. */
+/* CREATING AN ACCOUNT OPENS THE RING. The form is taller then: two more rows and
+   a box. Taller than the ring is wide, the headline and the first field sat on
+   the circle's own line and were struck through by it. The ring grows by a
+   quarter, which holds the whole column with the circle outside it, and the
+   growth is the state: the door is bigger because a new account asks for more.
+   Wide screens only: on a narrow one the ring is a small dial at the top with
+   the mark inside it, and growing it would take the mark off its centre. */
+@media (min-width:701px){
+ .lg-ring{transition:transform .5s ease}
+ #login[data-mode="create"] .lg-ring{transform:translate(-50%,-50%) scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.lg-ring{transition:none}}
+@media (max-width:700px){
+ #login.lg-door{--lgsw:.5}
+ .lg-ring{width:292px;height:292px;top:-6px;left:50%;transform:translateX(-50%)}
+ .lg-nu,.lg-nb{transform:scale(2.6)}
+ .lg-col{width:100%;padding:112px 22px 56px;margin:0 auto auto;gap:14px}
+ .lg-wm{width:128px}
+ .lg-wmk{position:absolute;left:0;right:0;top:124px}
+ .lg-h{font-size:21px;margin-top:140px;padding:0 6px}
+ .login-dev{right:6px;bottom:2px}}
+@media (max-width:359px){
+ .lg-acts .btn{font-size:13.5px;padding:0 6px}}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
 .ob-dot.on{background:var(--accent)}
 /* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the
@@ -6363,6 +6517,22 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  flex-direction:column;gap:2px}
 .ob-g b{font-size:14px;color:var(--ink);font-weight:600}
 .ob-g span{font-size:12.5px;color:var(--dim)}
+/* THE FOUR ARE A CIRCLE. Ruled 20 September: "we're showing a core game loop
+   mechanic," never a list. The grid areas put one and two on the top row and
+   three and four under them, right to left, so the eye goes round a clock and
+   ends beside where it began, and the ring in the middle is the arrow from the
+   last back to the first. The document order stays one to four. It is 22
+   pixels because the cells' own padding is 13 across and 10 down, and a bigger
+   ring would sit on the first letters of the right hand cells. */
+.ob-loop{position:relative;grid-template-columns:1fr 1fr;grid-template-areas:'a b' 'd c'}
+.ob-loop .ob-g1{grid-area:a}
+.ob-loop .ob-g2{grid-area:b}
+.ob-loop .ob-g3{grid-area:c}
+.ob-loop .ob-g4{grid-area:d}
+.ob-loop-ring{position:absolute;left:50%;top:50%;width:22px;height:22px;
+ transform:translate(-50%,-50%);box-sizing:border-box;padding:3px;border-radius:50%;
+ background:var(--panel-2);fill:none;stroke:var(--accent);stroke-width:2;
+ stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
 /* THE TWO WORDS. Large, alone, and with room around them, because the whole
    practice is reading one word slowly. A word in a paragraph is read at the
    speed of the paragraph. */
@@ -7151,11 +7321,253 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
 <!-- ONBOARDING. A sheet, not a tab: it is met once and replayed on request,
      and a surface in the bar is a peer of the instrument, which this is not. -->
 <div id="ob" class="ob" style="display:none"></div>
-<!-- LOGIN. Round MH and MI: the return door, not the front door, so it is
-     met on every boot rather than once, unless a sign in is already held.
-     It signs in against the account server through ui/auth.js, and it
-     always offers a way through without an account, ui/login.js. -->
-<div id="login" class="ob" style="display:none"></div>
+<!-- ============================================================
+     THE DOOR, AS STATIC MARKUP. Round OT, his words: "One frame before login
+     starts, I can see the dashboard or the field. It should start with the
+     login." and "Make this page inviting and not so dry." Login A, the ring,
+     is the direction he approved.
+
+     IT IS HERE, IN THE FIRST BYTES, AND NOT BUILT BY SCRIPT. The door used to
+     be an empty div that ui/login.js filled once the whole file had parsed,
+     and the file is two and a half megabytes: for as long as that took the
+     only thing a browser had to paint was the app. The head's one line script
+     puts html.door on the root element before anything is painted, the sheet
+     keeps every other child of the body at visibility:hidden under that
+     class, and this host shows itself under the same class. So the first
+     thing a stranger can see is the door, and a frame of the Field is not
+     among the things there is to see. It is not a mask over the app: the app
+     is still laid out beneath it, so the Field measures itself as it always
+     did, and only its painting waits.
+
+     ui/login.js does not build any of this. It finds it, wires it, and moves
+     it between its modes by a data attribute, so there is one copy of the
+     markup and a gate can read the first byte against the boot. The ring is
+     written by tools/bootgeo.js from the engine, the same loop the boot draws.
+
+     WITH NO SCRIPT AT ALL there is no door: the class is never set, the host
+     stays display:none, and the notice above is what a person reads.
+
+     THE BOOT SHEET STILL COVERS IT FOR ITS FIVE SECONDS, because the boot
+     overture was ruled to open the product and this is the return door, met
+     after it. Under the sheet the door is already standing, as it was.
+     ============================================================ -->
+<div id="login" class="ob lg-door" data-mode="login" data-view="in" data-state="idle" data-id="0" style="--p:0">
+ <div class="lg-bg" aria-hidden="true">
+  <!-- LOGIN RING BEGIN. Written by tools/bootgeo.js off engine.js. Do not edit by hand. -->
+ <svg class="lg-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+   <g class="lg-breath">
+    <g class="lg-ticks">
+    <line class="lg-t" x1="50.97" y1="16.51" x2="51.02" y2="14.91" data-s="0" style="--c:#D6524C"/>
+    <line class="lg-t" x1="52.92" y1="16.63" x2="53.06" y2="15.03" data-s="1" style="--c:#D6524C"/>
+    <line class="lg-t" x1="54.86" y1="16.85" x2="55.09" y2="15.27" data-s="2" style="--c:#D6524C"/>
+    <line class="lg-t" x1="56.77" y1="17.19" x2="57.10" y2="15.63" data-s="3" style="--c:#D6524C"/>
+    <line class="lg-t" x1="58.67" y1="17.64" x2="59.08" y2="16.10" data-s="4" style="--c:#D6524C"/>
+    <line class="lg-t" x1="60.54" y1="18.20" x2="61.04" y2="16.68" data-s="5" style="--c:#D6524C"/>
+    <line class="lg-t" x1="62.37" y1="18.87" x2="62.96" y2="17.38" data-s="6" style="--c:#D6524C"/>
+    <line class="lg-t" x1="64.16" y1="19.64" x2="64.83" y2="18.19" data-s="7" style="--c:#D6524C"/>
+    <line class="lg-t" x1="65.90" y1="20.51" x2="66.66" y2="19.10" data-s="8" style="--c:#D6524C"/>
+    <line class="lg-t" x1="67.59" y1="21.49" x2="68.43" y2="20.13" data-s="9" style="--c:#D6524C"/>
+    <line class="lg-t" x1="69.21" y1="22.56" x2="70.13" y2="21.25" data-s="10" style="--c:#D6524C"/>
+    <line class="lg-t" x1="70.78" y1="23.72" x2="71.77" y2="22.47" data-s="11" style="--c:#D6524C"/>
+    <line class="lg-t" x1="72.27" y1="24.97" x2="73.33" y2="23.78" data-s="12" style="--c:#D6524C"/>
+    <line class="lg-t" x1="73.69" y1="26.31" x2="74.82" y2="25.18" data-s="13" style="--c:#D6524C"/>
+    <line class="lg-t" x1="75.03" y1="27.73" x2="76.22" y2="26.67" data-s="14" style="--c:#D6524C"/>
+    <line class="lg-t" x1="76.28" y1="29.22" x2="77.53" y2="28.23" data-s="15" style="--c:#D6524C"/>
+    <line class="lg-t" x1="77.44" y1="30.79" x2="78.75" y2="29.87" data-s="16" style="--c:#D8924E"/>
+    <line class="lg-t" x1="78.51" y1="32.41" x2="79.87" y2="31.57" data-s="17" style="--c:#D8924E"/>
+    <line class="lg-t" x1="79.49" y1="34.10" x2="80.90" y2="33.34" data-s="18" style="--c:#D8924E"/>
+    <line class="lg-t" x1="80.36" y1="35.84" x2="81.81" y2="35.17" data-s="19" style="--c:#D8924E"/>
+    <line class="lg-t" x1="81.13" y1="37.63" x2="82.62" y2="37.04" data-s="20" style="--c:#D8924E"/>
+    <line class="lg-t" x1="81.80" y1="39.46" x2="83.32" y2="38.96" data-s="21" style="--c:#D8924E"/>
+    <line class="lg-t" x1="82.36" y1="41.33" x2="83.90" y2="40.92" data-s="22" style="--c:#D8924E"/>
+    <line class="lg-t" x1="82.81" y1="43.23" x2="84.37" y2="42.90" data-s="23" style="--c:#D8924E"/>
+    <line class="lg-t" x1="83.15" y1="45.14" x2="84.73" y2="44.91" data-s="24" style="--c:#D8924E"/>
+    <line class="lg-t" x1="83.37" y1="47.08" x2="84.97" y2="46.94" data-s="25" style="--c:#D8924E"/>
+    <line class="lg-t" x1="83.49" y1="49.03" x2="85.09" y2="48.98" data-s="26" style="--c:#D8924E"/>
+    <line class="lg-t" x1="83.49" y1="50.97" x2="85.09" y2="51.02" data-s="27" style="--c:#D8924E"/>
+    <line class="lg-t" x1="83.37" y1="52.92" x2="84.97" y2="53.06" data-s="28" style="--c:#D8924E"/>
+    <line class="lg-t" x1="83.15" y1="54.86" x2="84.73" y2="55.09" data-s="29" style="--c:#D8924E"/>
+    <line class="lg-t" x1="82.81" y1="56.77" x2="84.37" y2="57.10" data-s="30" style="--c:#D8924E"/>
+    <line class="lg-t" x1="82.36" y1="58.67" x2="83.90" y2="59.08" data-s="31" style="--c:#D8924E"/>
+    <line class="lg-t" x1="81.80" y1="60.54" x2="83.32" y2="61.04" data-s="32" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="81.13" y1="62.37" x2="82.62" y2="62.96" data-s="33" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="80.36" y1="64.16" x2="81.81" y2="64.83" data-s="34" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="79.49" y1="65.90" x2="80.90" y2="66.66" data-s="35" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="78.51" y1="67.59" x2="79.87" y2="68.43" data-s="36" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="77.44" y1="69.21" x2="78.75" y2="70.13" data-s="37" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="76.28" y1="70.78" x2="77.53" y2="71.77" data-s="38" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="75.03" y1="72.27" x2="76.22" y2="73.33" data-s="39" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="73.69" y1="73.69" x2="74.82" y2="74.82" data-s="40" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="72.27" y1="75.03" x2="73.33" y2="76.22" data-s="41" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="70.78" y1="76.28" x2="71.77" y2="77.53" data-s="42" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="69.21" y1="77.44" x2="70.13" y2="78.75" data-s="43" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="67.59" y1="78.51" x2="68.43" y2="79.87" data-s="44" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="65.90" y1="79.49" x2="66.66" y2="80.90" data-s="45" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="64.16" y1="80.36" x2="64.83" y2="81.81" data-s="46" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="62.37" y1="81.13" x2="62.96" y2="82.62" data-s="47" style="--c:#DABF6A"/>
+    <line class="lg-t" x1="60.54" y1="81.80" x2="61.04" y2="83.32" data-s="48" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="58.67" y1="82.36" x2="59.08" y2="83.90" data-s="49" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="56.77" y1="82.81" x2="57.10" y2="84.37" data-s="50" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="54.86" y1="83.15" x2="55.09" y2="84.73" data-s="51" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="52.92" y1="83.37" x2="53.06" y2="84.97" data-s="52" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="50.97" y1="83.49" x2="51.02" y2="85.09" data-s="53" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="49.03" y1="83.49" x2="48.98" y2="85.09" data-s="54" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="47.08" y1="83.37" x2="46.94" y2="84.97" data-s="55" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="45.14" y1="83.15" x2="44.91" y2="84.73" data-s="56" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="43.23" y1="82.81" x2="42.90" y2="84.37" data-s="57" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="41.33" y1="82.36" x2="40.92" y2="83.90" data-s="58" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="39.46" y1="81.80" x2="38.96" y2="83.32" data-s="59" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="37.63" y1="81.13" x2="37.04" y2="82.62" data-s="60" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="35.84" y1="80.36" x2="35.17" y2="81.81" data-s="61" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="34.10" y1="79.49" x2="33.34" y2="80.90" data-s="62" style="--c:#5FD5A6"/>
+    <line class="lg-t" x1="32.41" y1="78.51" x2="31.57" y2="79.87" data-s="63" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="30.79" y1="77.44" x2="29.87" y2="78.75" data-s="64" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="29.22" y1="76.28" x2="28.23" y2="77.53" data-s="65" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="27.73" y1="75.03" x2="26.67" y2="76.22" data-s="66" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="26.31" y1="73.69" x2="25.18" y2="74.82" data-s="67" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="24.97" y1="72.27" x2="23.78" y2="73.33" data-s="68" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="23.72" y1="70.78" x2="22.47" y2="71.77" data-s="69" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="22.56" y1="69.21" x2="21.25" y2="70.13" data-s="70" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="21.49" y1="67.59" x2="20.13" y2="68.43" data-s="71" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="20.51" y1="65.90" x2="19.10" y2="66.66" data-s="72" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="19.64" y1="64.16" x2="18.19" y2="64.83" data-s="73" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="18.87" y1="62.37" x2="17.38" y2="62.96" data-s="74" style="--c:#5EBBDB"/>
+    <line class="lg-t" x1="18.20" y1="60.54" x2="16.68" y2="61.04" data-s="75" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="17.64" y1="58.67" x2="16.10" y2="59.08" data-s="76" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="17.19" y1="56.77" x2="15.63" y2="57.10" data-s="77" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="16.85" y1="54.86" x2="15.27" y2="55.09" data-s="78" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="16.63" y1="52.92" x2="15.03" y2="53.06" data-s="79" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="16.51" y1="50.97" x2="14.91" y2="51.02" data-s="80" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="16.51" y1="49.03" x2="14.91" y2="48.98" data-s="81" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="16.63" y1="47.08" x2="15.03" y2="46.94" data-s="82" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="16.85" y1="45.14" x2="15.27" y2="44.91" data-s="83" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="17.19" y1="43.23" x2="15.63" y2="42.90" data-s="84" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="17.64" y1="41.33" x2="16.10" y2="40.92" data-s="85" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="18.20" y1="39.46" x2="16.68" y2="38.96" data-s="86" style="--c:#7D93E0"/>
+    <line class="lg-t" x1="18.87" y1="37.63" x2="17.38" y2="37.04" data-s="87" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="19.64" y1="35.84" x2="18.19" y2="35.17" data-s="88" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="20.51" y1="34.10" x2="19.10" y2="33.34" data-s="89" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="21.49" y1="32.41" x2="20.13" y2="31.57" data-s="90" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="22.56" y1="30.79" x2="21.25" y2="29.87" data-s="91" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="23.72" y1="29.22" x2="22.47" y2="28.23" data-s="92" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="24.97" y1="27.73" x2="23.78" y2="26.67" data-s="93" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="26.31" y1="26.31" x2="25.18" y2="25.18" data-s="94" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="27.73" y1="24.97" x2="26.67" y2="23.78" data-s="95" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="29.22" y1="23.72" x2="28.23" y2="22.47" data-s="96" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="30.79" y1="22.56" x2="29.87" y2="21.25" data-s="97" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="32.41" y1="21.49" x2="31.57" y2="20.13" data-s="98" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="34.10" y1="20.51" x2="33.34" y2="19.10" data-s="99" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="35.84" y1="19.64" x2="35.17" y2="18.19" data-s="100" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="37.63" y1="18.87" x2="37.04" y2="17.38" data-s="101" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="39.46" y1="18.20" x2="38.96" y2="16.68" data-s="102" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="41.33" y1="17.64" x2="40.92" y2="16.10" data-s="103" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="43.23" y1="17.19" x2="42.90" y2="15.63" data-s="104" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="45.14" y1="16.85" x2="44.91" y2="15.27" data-s="105" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="47.08" y1="16.63" x2="46.94" y2="15.03" data-s="106" style="--c:#A77EDB"/>
+    <line class="lg-t" x1="49.03" y1="16.51" x2="48.98" y2="14.91" data-s="107" style="--c:#A77EDB"/>
+    </g>
+    <g class="lg-arcs">
+    <path class="lg-a lg-a0" d="M51.54 9.83A40.199999999999996 40.199999999999996 0 0 1 81.30 24.77" style="--c:#D6524C"/>
+    <path class="lg-a lg-a1" d="M54.37 1.96A48.239999999999995 48.239999999999995 0 0 1 89.09 21.74" style="--c:#D6524C"/>
+    <path class="lg-a lg-a2" d="M58.22 -7.03A57.62 57.62 0 0 1 98.40 18.73" style="--c:#D6524C"/>
+    <path class="lg-a lg-a0" d="M83.14 27.25A40.199999999999996 40.199999999999996 0 0 1 88.93 60.04" style="--c:#D8924E"/>
+    <path class="lg-a lg-a1" d="M91.15 24.82A48.239999999999995 48.239999999999995 0 0 1 96.02 64.48" style="--c:#D8924E"/>
+    <path class="lg-a lg-a2" d="M100.65 22.54A57.62 57.62 0 0 1 103.98 70.15" style="--c:#D8924E"/>
+    <path class="lg-a lg-a0" d="M88.04 63.00A40.199999999999996 40.199999999999996 0 0 1 65.19 87.22" style="--c:#DABF6A"/>
+    <path class="lg-a lg-a1" d="M94.77 67.97A48.239999999999995 48.239999999999995 0 0 1 65.86 95.56" style="--c:#DABF6A"/>
+    <path class="lg-a lg-a2" d="M102.28 74.23A57.62 57.62 0 0 1 66.08 105.33" style="--c:#DABF6A"/>
+    <path class="lg-a lg-a0" d="M62.29 88.28A40.199999999999996 40.199999999999996 0 0 1 31.25 85.56" style="--c:#5FD5A6"/>
+    <path class="lg-a lg-a1" d="M62.32 96.64A48.239999999999995 48.239999999999995 0 0 1 25.30 91.44" style="--c:#5FD5A6"/>
+    <path class="lg-a lg-a2" d="M61.78 106.40A57.62 57.62 0 0 1 17.95 97.88" style="--c:#5FD5A6"/>
+    <path class="lg-a lg-a0" d="M28.58 84.02A40.199999999999996 40.199999999999996 0 0 1 12.78 65.19" style="--c:#5EBBDB"/>
+    <path class="lg-a lg-a1" d="M22.19 89.42A48.239999999999995 48.239999999999995 0 0 1 4.44 65.86" style="--c:#5EBBDB"/>
+    <path class="lg-a lg-a2" d="M14.37 95.28A57.62 57.62 0 0 1 -5.33 66.08" style="--c:#5EBBDB"/>
+    <path class="lg-a lg-a0" d="M11.72 62.29A40.199999999999996 40.199999999999996 0 0 1 11.72 37.71" style="--c:#7D93E0"/>
+    <path class="lg-a lg-a1" d="M3.36 62.32A48.239999999999995 48.239999999999995 0 0 1 4.90 32.87" style="--c:#7D93E0"/>
+    <path class="lg-a lg-a2" d="M-6.40 61.78A57.62 57.62 0 0 1 -2.72 26.75" style="--c:#7D93E0"/>
+    <path class="lg-a lg-a0" d="M12.78 34.81A40.199999999999996 40.199999999999996 0 0 1 48.46 9.83" style="--c:#A77EDB"/>
+    <path class="lg-a lg-a1" d="M6.35 29.46A48.239999999999995 48.239999999999995 0 0 1 50.67 1.76" style="--c:#A77EDB"/>
+    <path class="lg-a lg-a2" d="M-0.78 22.77A57.62 57.62 0 0 1 53.82 -7.49" style="--c:#A77EDB"/>
+    </g>
+   </g>
+   <circle class="lg-trk" cx="50" cy="50" r="30.5"/>
+   <path class="lg-cl" pathLength="100" d="M50.00 19.50A30.5 30.5 0 0 0 50.00 80.50"/>
+   <path class="lg-cr" pathLength="100" d="M50.00 19.50A30.5 30.5 0 0 1 50.00 80.50"/>
+   <g class="lg-err">
+    <path class="lg-eb" d="M20.99 59.43l-6.2 -4.8M20.99 59.43l-7 4.4"/>
+    <circle class="lg-ec" cx="20.99" cy="59.43" r="1.5"/>
+    <path class="lg-ex" d="M20.09 58.53l1.8 1.8"/>
+   </g>
+   <g class="lg-nu"><circle class="lg-nr" cx="50.00" cy="19.50" r=".9"/><circle class="lg-nd" cx="50.00" cy="19.50" r=".3"/></g>
+   <circle class="lg-nb" cx="50.00" cy="80.50" r=".55"/>
+  </svg>
+<!-- LOGIN RING END -->
+ </div>
+ <div class="lg-col" role="dialog" aria-modal="true" aria-labelledby="lg-h">
+  <div class="lg-wmk" aria-label="Atüned" role="img"><svg class="lg-wm" viewBox="-2 -2 655.5 136"
+   focusable="false" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="19"
+   stroke-linecap="butt" stroke-linejoin="round"><path
+   d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80"/><path
+   d="M 93.5 30 L 93.5 130"/><path d="M 24 4 L 24 130" transform="translate(123.75 0)"/><path
+   d="M 0 38.75 L 56 38.75" transform="translate(123.75 0)"/><path
+   d="M 9.5 30 L 9.5 80 A 40.5 40.5 0 0 0 90.5 80 L 90.5 30" transform="translate(189.75 0)"/><path
+   d="M 9.5 130 L 9.5 30" transform="translate(318.25 0)"/><path
+   d="M 9.5 80 A 40.5 40.5 0 0 1 90.5 80 L 90.5 130" transform="translate(318.25 0)"/><path
+   d="M 9.5 83 L 102.91 83" transform="translate(436.75 0)"/><path
+   d="M 93.39 83 A 42 42 0 1 0 82.71 108.1" transform="translate(436.75 0)"/><path
+   d="M 9.5 80 A 42 42 0 1 0 93.5 80 A 42 42 0 1 0 9.5 80" transform="translate(548.5 0)"/><path
+   d="M 93.5 0 L 93.5 130" transform="translate(548.5 0)"/></g><g class="lg-wm-d"><circle
+   cx="214.75" cy="12.5" r="9.5"/><circle cx="264.75" cy="12.5" r="9.5"/></g></svg></div>
+  <h1 class="lg-h" id="lg-h">There is more running you than you can see.</h1>
+  <section class="lg-view" data-v="in">
+   <form id="loginform" class="lg-form" novalidate>
+    <div class="login-row"><label class="login-l" for="loginid"><i class="lg-dot lg-dot-id"></i>Username or email</label>
+     <input type="text" id="loginid" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" aria-describedby="loginidhint">
+     <span class="login-hint" id="loginidhint" data-only="create" hidden></span></div>
+    <div class="login-row"><label class="login-l" for="loginpass"><i class="lg-dot lg-dot-pw"></i>Passphrase</label>
+     <div class="login-pw"><input type="password" id="loginpass" autocomplete="current-password" enterkeyhint="go" aria-describedby="loginpwhint">
+      <button type="button" class="login-pwsug" id="loginshow" aria-controls="loginpass">Show</button>
+      <button type="button" class="login-pwsug" id="loginsug" data-only="create">Suggest</button></div>
+     <span class="login-hint" id="loginpwhint" hidden></span></div>
+    <div class="login-row" data-only="create" id="loginrecrow"><label class="login-l" for="loginrec">Recovery email, optional</label>
+     <input type="email" id="loginrec" autocomplete="email" autocapitalize="none" spellcheck="false" aria-describedby="loginrechint">
+     <span class="login-hint" id="loginrechint">Only used to reset your passphrase.</span></div>
+    <label class="lg-agree" data-only="create"><input type="checkbox" id="loginagree">
+     <span>I agree to the <a href="https://atuned.world/terms" target="_blank" rel="noopener noreferrer">Terms</a> and the <a href="https://atuned.world/privacy" target="_blank" rel="noopener noreferrer">Privacy policy</a>.</span></label>
+    <button type="button" class="login-forgot" id="loginforgot" data-only="login">Forgot your passphrase?</button>
+    <p class="login-msg" id="loginmsg" role="status" aria-live="polite"></p>
+    <div class="lg-acts">
+     <button type="button" class="btn pri" id="loginb-go">Log in</button>
+     <button type="button" class="btn" id="loginb-new">Create account</button>
+     <button type="button" class="btn" id="loginb-skip">Guest</button>
+    </div>
+   </form>
+  </section>
+  <section class="lg-view" data-v="reset">
+   <form id="loginresetf" class="lg-form" novalidate>
+    <h2 class="lg-h2">Reset your passphrase</h2>
+    <p class="lg-p">Enter your username or email. A link to set a new passphrase goes to the email on the account.</p>
+    <div class="login-row"><label class="login-l" for="loginrid">Username or email</label>
+     <input type="text" id="loginrid" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></div>
+    <p class="login-msg" id="loginrmsg" role="status" aria-live="polite"></p>
+    <div class="lg-acts">
+     <button type="button" class="btn pri" id="loginb-send">Send the link</button>
+     <button type="button" class="btn" id="loginb-back">Back to log in</button>
+    </div>
+   </form>
+  </section>
+  <p class="lg-consent" id="loginconsent">By continuing you agree to the <a href="https://atuned.world/terms" target="_blank" rel="noopener noreferrer">Terms</a> and the <a href="https://atuned.world/privacy" target="_blank" rel="noopener noreferrer">Privacy policy</a>.</p>
+ </div>
+ <!-- DEVELOPER OPTIONS, lower right and small, round OT. A testing control
+      a stranger has no use for: disclosed, never open by default. Its three
+      switches are read and written by ui/login.js. -->
+ <details class="login-dev">
+  <summary>Developer options</summary>
+  <label class="login-sw"><input type="checkbox" id="devob" checked> Onboarding</label>
+  <label class="login-sw"><input type="checkbox" id="devtut"> Tutorial</label>
+  <label class="login-sw"><input type="checkbox" id="devsight"> Unlock all sight</label>
+ </details>
+</div>
 <!-- THE DAY ONE TUTORIAL. A sheet, the same family as onboarding: met once
      behind the door, replayable from the account area, round NF. It writes
      the person's first entry through the Story tab's own real commit
@@ -8252,10 +8664,22 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
     file, so when the script stops the guard can name the module it stopped
     after instead of saying it stopped somewhere. */
  window.__at=function(f){AT=f;};
+ /* THE DOOR CLASS IS THE GUARD'S TO TAKE OFF WHEN NOTHING ELSE WILL. The head
+    sets html.door so the app is not painted ahead of the login (round OT), and
+    ui/login.js takes it off on every way out of the door. If the door never
+    opened, because the start up stopped or because the login step alone
+    failed, nothing would, and the person would be left looking at a door that
+    does nothing, with the instrument hidden behind it. */
+ function liftDoor(){
+  try{ document.documentElement.classList.remove('door'); }catch(e){}
+  try{ var lg=document.getElementById('login'); if(lg)lg.style.display='none'; }catch(e){}}
  /* the app calls this at the end of its own init, and hands over anything
     that failed along the way. */
  window.__bootOk=function(failed){
   BOOTED=true;
+  /* a start up that finished without opening the door has no door to hold:
+     the login step was lost, or a held session took the person past it */
+  try{ if(!(window.LOGIN&&window.LOGIN.open))liftDoor(); }catch(e){}
   /* THE START UP FINISHED, SO NOTHING BEFORE THIS STOPPED IT. A screen painted
      early, by the ceiling below while the document was still arriving, is
      taken back. An error from our own code that did not stop the start up is
@@ -8437,6 +8861,9 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
    /* the boot sheet fades on a CSS animation whether or not scripts ran, so it
       has to be taken off by hand or it uncovers this and then covers it again */
    var bt=document.getElementById('boot'); if(bt)bt.style.display='none';
+   /* and a door that did not start has to come down with it, or it covers the
+      screen this message is on, and the message is the one thing that must show */
+   liftDoor();
   }catch(e){
    /* if even that fails, the document is beyond help and the console is all
       that is left. Saying nothing is still not an option. */
@@ -22746,6 +23173,71 @@ function obDrain(){
 
 try{window.__at&&window.__at('engine/outbox.js');}catch(e){}
 /* ============================================================
+   WHO A PERSON SAYS THEY ARE, AT THE DOOR. Round OT, his words: "We don't
+   want people to log in by email. We want them to log in by their username.
+   So when they create their account, they can set up by username." Round OX
+   ruled the bounds: "Username 3 to 20 is great."
+
+   This file is only the shape of the thing a person types into the one
+   identifier field. It makes no request and holds no account, and it cannot:
+   the engine has no host. What goes over the wire, and which route takes it,
+   is ui/auth.js's authIdent, which asks this file what kind of thing was
+   typed so the two cannot disagree about it.
+
+   THE KIND IS DECIDED BY ONE CHARACTER, AND THAT IS ON PURPOSE. A username
+   may not contain an at sign (the shape below has no room for one), and an
+   email always does, so the presence of one is a complete test and a person
+   never has to say which they are typing. It is also the reason the existing
+   email sign in needs no change at all: everything that carried an at sign
+   before still does, and still goes where it went.
+
+   THE BOUNDS ARE HERE AND NOWHERE ELSE. The card prints them in its hint and
+   its refusal off these two numbers, so a ruling that moves them moves the
+   screen. A count typed into a sentence is the defect this repository has
+   recorded a dozen times, and a hint that says "3 to 20" in a string is the
+   next one waiting.
+
+   A USERNAME IS LOWER CASE BECAUSE A PHONE CAPITALISES THE FIRST LETTER.
+   identNorm folds case on a username before anything is checked or sent, so
+   "Mika" typed on a phone reaches the server as the "mika" the person chose,
+   rather than being refused for a capital they never meant. An email is left
+   exactly as typed: its case is the server's business, as it always was.
+   ============================================================ */
+var USERNAME_MIN=3, USERNAME_MAX=20;
+/* the whole rule in one class: lower case letters, digits, underscore and
+   hyphen. No dot, no space and no at sign. The mockup's "mika.salas" was a
+   draft; the ruling has no dot in it, and a dot would also have let a
+   username look like the start of an email address. */
+var USERNAME_SHAPE=/^[a-z0-9_-]+$/;
+/* 'email' when an at sign is present, 'username' for anything else, and ''
+   for nothing at all, so an empty field is its own answer and not a kind. */
+function identKind(s){
+ s=String(s==null?'':s).trim();
+ if(!s) return '';
+ return s.indexOf('@')>=0?'email':'username';}
+/* what is sent and checked: trimmed always, and folded to lower case only for
+   a username. */
+function identNorm(s){
+ s=String(s==null?'':s).trim();
+ return identKind(s)==='username'?s.toLowerCase():s;}
+/* '' when the username is acceptable, one plain sentence when it is not. The
+   sentence states the whole rule at once, because a person told only that
+   they are too short will next be told that an underscore is not allowed, and
+   a refusal that arrives in installments is a refusal that costs three
+   presses. It is checked after identNorm, so capitals never reach it. */
+function usernameWhy(s){
+ s=identNorm(s);
+ if(!s) return 'Enter a username.';
+ if(s.length<USERNAME_MIN||s.length>USERNAME_MAX||!USERNAME_SHAPE.test(s))
+  return usernameRule();
+ return '';}
+/* the rule as a sentence, for the hint under the field, so the hint and the
+   refusal are one string and cannot say two different bounds */
+function usernameRule(){
+ return 'A username is '+USERNAME_MIN+' to '+USERNAME_MAX+' characters: lower case letters, digits, underscore and hyphen.';}
+
+try{window.__at&&window.__at('engine/identity.js');}catch(e){}
+/* ============================================================
    THE PROFILES ON THIS DEVICE, BY NAME. Round JZ, his words: "build out the
    profile page. So if I enter my profile, it saves my data. Under Lance. And I
    can delete or retrieve it."
@@ -23144,6 +23636,9 @@ if(typeof module!=='undefined'&&module.exports){
                   bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
                   OB_KINDS:OB_KINDS,
+  /* identity */  identKind:identKind, identNorm:identNorm, usernameWhy:usernameWhy,
+                  usernameRule:usernameRule, USERNAME_MIN:USERNAME_MIN,
+                  USERNAME_MAX:USERNAME_MAX, USERNAME_SHAPE:USERNAME_SHAPE,
   /* storage */   bindStore:bindStore,
   /* practice, engine/practice.js. The tables are exported as the live
      objects so the gate can hold them to the TDD's own lists and mutate a
@@ -36313,10 +36808,13 @@ function tutRender(){
  var h=document.getElementById('tutorial'); if(!h)return;
  var s=TUT.step, out='';
  if(s===0){
-  out=tutCard('Let’s look at something from your journal.',
-   '<p class="ob-p">Write one thing. A sentence or two is enough. Not a '
-   +'summary of your life, just something real from today or recently, the '
-   +'kind of thing you would actually write in here.</p>'
+  /* THE TITLE WAS "Let's look at something from your journal", which is the
+     line that says a thing is starting (V1), and the body defined the entry by
+     what it is not (V10, "not a summary of your life, just something real").
+     It says what to do now, and what kind of thing counts. */
+  out=tutCard('Write one thing from your journal.',
+   '<p class="ob-p">A sentence or two is enough. Something real from today or '
+   +'recently, the kind of thing you would write in here.</p>'
    +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
    '<button type="button" class="btn pri" data-tut="commit">Continue</button>'
    +'<button type="button" class="btn" data-tut="skip">Skip the tutorial</button>');
@@ -36331,20 +36829,23 @@ function tutRender(){
   if(!c||!c.ok||!c.k){
    /* HONEST EMPTY, the same rule the signal test already keeps: nothing
       caught is a real answer, not a failure to paper over. */
+   /* THE EMPTY READING ASKS ONE QUESTION, AND IT IS HIS: "Where does it land
+      in your body?" Ruled, in place of "where do you feel it", which asks for
+      a feeling and gets a label. It is a place a person can point at, and the
+      reading is placed by exactly that. It stays honest: nothing was caught,
+      and the line says so before it asks. */
    body='<p class="ob-p">Nothing in that one lit anything the engine could '
-    +'name. That happens, and it is not a problem with what you wrote. Some '
-    +'entries are quiet.</p>'
-    +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
-    +'them, usually give it more to find. You can always write another in '
-    +'the Story tab later.</p>';
+    +'name. Some entries are quiet.</p>'
+    +'<p class="ob-p">Where does it land in your body?</p>'
+    +'<p class="ob-p ob-dim">Write that in the Story tab, and there is more '
+    +'for it to find.</p>';
   }else{
    body='<p class="ob-p">You wrote:</p>'
     +'<p class="ob-p ob-dim">&ldquo;'+esc(c.text.length>220?c.text.slice(0,220)+'…':c.text)+'&rdquo;</p>'
-    +'<p class="ob-p">This separates into its own components. What stood out '
+    +'<p class="ob-p">Your words split into parts. What stood out '
     +(kept[0]?tutSeatLine(kept[0]):'landed')+'.</p>'
     +(kept[1]?'<p class="ob-p">And a second place, '+tutSeatLine(kept[1])+'.</p>':'')
-    +'<p class="ob-p ob-dim">That is Discover: not labelling you, revealing '
-    +'what is actually there.</p>';}
+    +'<p class="ob-p ob-dim">That is Discover. It shows what is there.</p>';}
   out=tutCard('What this found',body,
    '<button type="button" class="btn pri" data-tut="next">Next</button>');
  }
@@ -36395,12 +36896,17 @@ function tutRender(){
  }
  else {
   out=tutCard('Flow',
-   '<p class="ob-p">Insight and release are not the end of it. Flow turns '
-   +'what just happened into something repeatable: a practice tied to this '
-   +'exact pattern, not a generic habit.</p>'
-   +'<p class="ob-p ob-dim">Noticing the moment a pattern starts, returning '
-   +'attention to the body, working the same release again. The ritual '
-   +'builder holds what is yours to practice.</p>',
+   /* THE LOOP CLOSES HERE, AND SAYS SO. "It is a circle, never a list": a last
+      card that ends on Done reads as the fourth step being the end. Flow turns
+      what just happened into a practice tied to this pattern, and the practice
+      is what the next entry starts from. Said in the card's own words, so the
+      person who presses Done leaves holding a circle and not a finished list. */
+   '<p class="ob-p">Flow turns what just happened into a practice tied to this '
+   +'exact pattern.</p>'
+   +'<p class="ob-p ob-dim">Notice the moment a pattern starts. Bring your '
+   +'attention back to your body. Work the same release again. The ritual '
+   +'builder holds what is yours to practice.</p>'
+   +'<p class="ob-p ob-dim">Then you write again, and it goes round.</p>',
    '<button type="button" class="btn pri" data-tut="ritual">Go to Ritual</button>'
    +'<button type="button" class="btn" data-tut="done">Done</button>');
  }
@@ -38268,7 +38774,7 @@ var AV_ASK={
   notbe:'I lie awake scared about money and my legs will not keep still.'},
  Sacral:{ask:['When did you last stop yourself making something? What did your belly do?',
   'What would you make if nobody was watching?',
-  'Think of a time you wanted something and said nothing. Where did you feel it?'],
+  'Think of a time you wanted something and said nothing. Where did it land in your body?'],
   be:'Someone who makes things and shows them.',
   notbe:'When I show something I made, I feel exposed and I hide it.'},
  Solar:{ask:['Think of a hard day at work. Where did the pressure sit in your body?',
@@ -51598,114 +52104,141 @@ var AUTH_WAIT_MS=15000;
    still arrives and is shown; this only saves a round trip. */
 var AUTH_PW_MIN=8, AUTH_PW_MAX=200;
 var AUTH_MAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-/* The session in memory, and whether the store has been read into it yet.
-   Held in memory as well as in the store because a browser that blocks
-   storage still deserves a sign in that lasts the visit, and says so. */
-var AUTH_S=null, AUTH_READ=false;
-/* READ ONCE THE STORE IS BOUND AND NOT BEFORE. ui/ui.js binds localStorage
-   near the end of the build, and a read before that meets the engine's no-op
-   store, which answers null. Caching that null would sign a person out for the
-   whole visit, so the store is only read, and the read only remembered, once
-   STORE_BOUND says there is a real one. Only the two fields a sign in needs
-   come back out: the token, and the email to print beside "Signed in as". */
-function authSession(){
- if(!AUTH_READ&&typeof STORE_BOUND!=='undefined'&&STORE_BOUND){
-  AUTH_READ=true;
-  try{ var o=JSON.parse(STORE.get(AUTH_KEY)||'null');
-   if(o&&typeof o.token==='string'&&o.token&&typeof o.email==='string')
-    AUTH_S={token:o.token, email:o.email}; }
-  catch(e){ AUTH_S=null; } }
- return AUTH_S;}
-/* True when the write landed, read back to prove it, the way storeSetAside in
-   engine/schema.js proves its own. A set that did not throw is not a set that
-   landed. */
-function authKeep(s){
- AUTH_S=s; AUTH_READ=true;
- if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
- var txt=s?JSON.stringify(s):'';
- try{ STORE.set(AUTH_KEY,txt); return STORE.get(AUTH_KEY)===txt; }catch(e){ return false; }}
-function authForget(){ return authKeep(null); }
-/* One request. Resolves to {ok, status, body, late}, and never rejects. */
-function authCall(method,path,body,token){
- return new Promise(function(done){
-  var ctl=null, timer=null, over=false;
-  var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
-  if(typeof fetch!=='function'){ end({ok:false, status:0, body:null}); return; }
-  try{ ctl=new AbortController(); }catch(e){ ctl=null; }
-  timer=setTimeout(function(){
-   if(ctl)try{ ctl.abort(); }catch(e){}
-   end({ok:false, status:0, body:null, late:true}); },AUTH_WAIT_MS);
-  var h={};
-  if(body)h['Content-Type']='application/json';
-  if(token)h.Authorization='Bearer '+token;
-  var req;
-  /* credentials omit: the session is the bearer header and nothing else, so no
-     cookie of any host's is ever sent along with it. */
-  try{ req=fetch(AUTH_API+path,{method:method, headers:h,
-   body:body?JSON.stringify(body):undefined, signal:ctl?ctl.signal:undefined,
-   cache:'no-store', credentials:'omit'}); }
-  catch(e){ end({ok:false, status:0, body:null}); return; }
-  /* the body is read as text and parsed here, because a Cloudflare error page
-     in front of the Worker is HTML with a real status, and res.json() on it
-     would throw away the status along with the page. */
-  req.then(function(res){
-    return res.text().then(function(t){
-     var b=null; try{ b=JSON.parse(t); }catch(e){ b=null; }
-     return {ok:res.ok, status:res.status, body:b}; },
-    function(){ return {ok:res.ok, status:res.status, body:null}; }); },
-   function(){ return {ok:false, status:0, body:null}; })
-  .then(end,function(){ end({ok:false, status:0, body:null}); });});}
-/* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
-   ("too many attempts. wait fifteen minutes"), and they are the true reason,
-   so they are shown rather than rewritten. Rewriting them would also mean
-   typing the server's numbers into this file, the fifteen minutes and the
-   eight characters, which is the defect CLAUDE.md records a dozen times. */
-function authSay(s){
- s=String(s||'').trim(); if(!s)return '';
- s=s.replace(/(^|[.?]\s+)([a-z])/g,function(m,a,b){return a+b.toUpperCase();});
- return /[.?]$/.test(s)?s:s+'.';}
+/* WHETHER THE SERVER HOLDS A USERNAME YET. It does not: it keys an account on
+   the email and reads no other identifier, and the owner's round OT ruling
+   ("we want them to log in by their username") needs a server slice that has
+   not shipped. One flag says so, so the day it ships is one word here and a
+   server answer, and not a hunt through the card.
+
+   A SIGN IN BY USERNAME IS SENT REGARDLESS, as {username} on the same route,
+   and the server's own refusal is what the person reads. That is true
+   whatever the server does, and a check here that refused it first would be
+   this file claiming to know what the server will say.
+
+   CREATING IS THE ONE PRESS THIS GATES, AND ONLY HALF OF IT. A username with
+   no email behind it is an account the server cannot key at all, so while this
+   is false that press is refused here with a plain line and nothing is sent.
+   A username WITH a recovery email goes out as it is, {username, email,
+   password}, and the server keys the account on the email as it always has.
+   What it must not do is let the person think they now have a username that
+   works. The answer is read for that: an account that comes back without the
+   username is said to have come back without it, in the line that reports
+   the creation (authEnter), so the success claimed is the one that happened. */
+var AUTH_USERNAMES=false;
+/* THE ONE ADAPTER BETWEEN WHAT A PERSON TYPES AND WHAT THE SERVER IS SENT.
+   Anything with an at sign is an email and goes as {email}, exactly the body
+   every route took before this existed, so the existing sign in is not
+   touched. Anything else is a username and goes as {username}, folded to
+   lower case. The kind is read by engine/identity.js, so the card's checks and
+   this body cannot disagree about which one was typed. Nothing else in the
+   product builds an identifier by hand. */
+function authIdent(s){
+ var v=identNorm(s);
+ return identKind(v)==='username'?{username:v}:{email:v};}
+/* THE NAME TO PRINT BESIDE "Signed in as", AND THE ONE THE SESSION IS HELD
+   UNDER. An account that has a username is known by it, because that is the
+   name its owner logs in by and the one they chose. An account with none is
+   known by its email, which is every account the server holds today, so for
+   them nothing here changes. An account the server knows by username may
+   answer with no email at all, and "no email" must not read as "not signed
+   in": authCheck once asked for a string email on the answer and would have
+   said the server could not check a sign in it had just made. */
+function authHandle(acc,fallback){
+ if(acc&&typeof acc.username==='string'&&acc.username)return acc.username;
+ if(acc&&typeof acc.email==='string'&&acc.email)return acc.email;
+ return fallback||'';}
 /* What went wrong, as one sentence. Three answers are this file's because
    the server's word for them would mislead here: no connection has no server
    words at all, a refused sign in must not say which of the two fields was
-   wrong, and a taken email has a route the server cannot name. */
-function authWhy(r,route){
+   wrong, and a taken name has a route the server cannot name.
+
+   o is the login card's own wording and is absent for the Account section,
+   which says email and password and always has: o.kind is what was typed, and
+   o.noun is the word the screen uses for the secret, passphrase on the door
+   and password inside, one word per screen and each screen keeping its own. */
+function authWhy(r,route,o){
+ var noun=(o&&o.noun)||'password', name=(o&&o.kind==='username')?'username':'email';
  if(r.late)return 'The server did not answer in time. Try again.';
  if(!r.status)return 'Could not reach the server. Check the connection and try again.';
- if(route==='signin'&&r.status===401)return 'No account matches that email and password.';
- if(route==='signup'&&r.status===409)return 'An account already uses that email. Log in instead.';
+ if(route==='signin'&&r.status===401)return 'No account matches that '+name+' and '+noun+'.';
+ if(route==='signup'&&r.status===409)
+  return name==='username'?'That username is taken. Choose another.'
+   :'An account already uses that email. Log in instead.';
  var said=(r.body&&typeof r.body.error==='string')?authSay(r.body.error):'';
  return said||('The server refused that, with code '+r.status+'.');}
 /* Refused here, before a request, when the server would refuse it anyway. A
    new account is held to the length; an existing one is not, because an
-   account made under an older rule must still be able to sign in. */
-function authFieldsWhy(mail,pw,isNew){
- if(!mail)return 'Enter an email address.';
- if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';
+   account made under an older rule must still be able to sign in.
+
+   o.names turns on the door's second kind of identifier. Without it this is
+   the email-only check it always was, word for word, so the Account section
+   keeps its behaviour: a field there that is not an email is still "not
+   complete", and never quietly becomes a username it has no way to take. */
+function authFieldsWhy(mail,pw,isNew,o){
+ var names=!!(o&&o.names), noun=(o&&o.noun)||'password';
+ if(names){
+  var kind=identKind(mail);
+  if(!kind)return 'Enter your username or email.';
+  if(kind==='username'){
+   var bad=usernameWhy(mail); if(bad)return bad;
+   /* a recovery email that is typed is checked whatever else is true of it */
+   if(isNew&&o.recovery&&(!AUTH_MAIL.test(o.recovery)||o.recovery.length>254))
+    return 'The recovery email is not complete.';
+   /* and a username with nothing behind it cannot be created until the server
+      can key an account on it, and not at all when used to log in: see
+      AUTH_USERNAMES above */
+   if(isNew&&!AUTH_USERNAMES&&!o.recovery)
+    return 'Add a recovery email to create an account with a username.';}
+  else if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';}
+ else{
+  if(!mail)return 'Enter an email address.';
+  if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';}
  if(pw===undefined)return '';
- if(!pw)return 'Enter a password.';
- if(pw.length>AUTH_PW_MAX)return 'A password can be at most '+AUTH_PW_MAX+' characters.';
- if(isNew&&pw.length<AUTH_PW_MIN)return 'A password needs at least '+AUTH_PW_MIN+' characters.';
+ if(!pw)return 'Enter a '+noun+'.';
+ if(pw.length>AUTH_PW_MAX)return 'A '+noun+' can be at most '+AUTH_PW_MAX+' characters.';
+ if(isNew&&pw.length<AUTH_PW_MIN)return 'A '+noun+' needs at least '+AUTH_PW_MIN+' characters.';
  return '';}
 /* SIGN IN OR SIGN UP. Both routes answer the same shape, a token and the
    account, so one function carries both. Resolves {ok, kept, say}: say is the
    sentence to show, and kept is false when the browser would not hold the
-   session, which is still a sign in and is said as one that ends on reload. */
-function authEnter(route,mail,pw){
- var bad=authFieldsWhy(mail,pw,route==='signup');
+   session, which is still a sign in and is said as one that ends on reload.
+
+   o is {names, noun, recovery}, and only the login card passes it: names lets
+   the identifier be a username, noun is the card's word for the secret, and
+   recovery is the optional email beside a username on a new account. */
+function authEnter(route,mail,pw,o){
+ var isNew=route==='signup';
+ var bad=authFieldsWhy(mail,pw,isNew,o);
  if(bad)return Promise.resolve({ok:false, say:bad});
- return authCall('POST','/v1/auth/'+route,{email:mail, password:pw}).then(function(r){
+ var body=(o&&o.names)?authIdent(mail):{email:mail}, kind=body.username?'username':'email';
+ body.password=pw;
+ /* the recovery email rides only with a username, where it is the one way
+    back in. With an email as the identifier it would be the same address
+    twice. Its key is a guess at the server slice that does not exist yet:
+    email, the field the server already reads for contact. */
+ if(isNew&&kind==='username'&&o&&o.recovery)body.email=o.recovery;
+ var why={kind:kind, noun:o&&o.noun};
+ return authCall('POST','/v1/auth/'+route,body).then(function(r){
   var b=r.body||{}, acc=b.account||{};
-  if(!r.ok)return {ok:false, say:authWhy(r,route)};
+  if(!r.ok)return {ok:false, say:authWhy(r,route,why)};
   if(typeof b.token!=='string'||!b.token)
    return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
-  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase()};
+  var s={token:b.token, email:authHandle(acc,kind==='username'?body.username:mail.toLowerCase())};
   var kept=authKeep(s);
+  /* A USERNAME THE SERVER DID NOT KEEP IS SAID, NOT HIDDEN. The account that
+     came back has no username, so it is the email account the server has
+     always made, and the person is told which name to log in with. Reading it
+     off the answer, never off the flag, so a server that keeps usernames and
+     one that does not are both told the truth about what they did. */
+  var dropped=isNew&&kind==='username'&&!(typeof acc.username==='string'&&acc.username);
   /* the plan is read after the sign in is held, and not waited on: the
      caller says "Signed in as" now, and the plan speaks after it only if the
      record changed. A second device is exactly this path. */
   authPlanRead();
   return {ok:true, kept:kept,
-   say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
+   say:(route==='signup'?'Account created. ':'')
+    +(dropped?'The server does not hold usernames yet, so log in with '+s.email+'. ':'')
+    +'Signed in as '+s.email+'.'
     +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
 /* THE FORGOTTEN PASSWORD SAYS WHAT THE SERVER SAYS, AND NO MORE. The server
    answers the same whether or not the address has an account, on purpose, so
@@ -51714,13 +52247,16 @@ function authEnter(route,mail,pw){
    rather than promising an email, because for an address with no account no
    email is coming, and a line that promised one would be a lie to exactly the
    person who typed the wrong address. */
-function authForgot(mail){
- var bad=authFieldsWhy(mail);
+function authForgot(mail,o){
+ var bad=authFieldsWhy(mail,undefined,false,o);
  if(bad)return Promise.resolve({ok:false, say:bad});
- return authCall('POST','/v1/auth/forgot',{email:mail}).then(function(r){
+ var body=(o&&o.names)?authIdent(mail):{email:mail};
+ return authCall('POST','/v1/auth/forgot',body).then(function(r){
   if(r.ok)return {ok:true,
-   say:'If an account uses that email, a link to set a new password is on its way.'};
-  return {ok:false, say:authWhy(r,'forgot')};});}
+   say:(o&&o.names&&body.username)
+    ?'If an account uses that username, a link to set a new passphrase is on its way to its recovery email.'
+    :'If an account uses that email, a link to set a new '+((o&&o.noun)||'password')+' is on its way.'};
+  return {ok:false, say:authWhy(r,'forgot',{kind:body.username?'username':'email',noun:o&&o.noun})};});}
 /* SIGN OUT ENDS IT HERE WHATEVER THE SERVER SAYS. A person who pressed Sign
    out on a train has asked for this browser to stop being signed in, and
    refusing that because the server is out of reach would keep a session they
@@ -51755,12 +52291,12 @@ function authCheck(){
   if(back==='done')status('Payment finished. Log in from Account to bring the plan onto this record.','fail');
   return Promise.resolve(null);}
  return authCall('GET','/v1/me',null,s.token).then(function(r){
-  var acc=r.body&&r.body.account;
+  var acc=r.body&&r.body.account, who=authHandle(acc,'');
   var redraw=function(){
    if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
     &&typeof renderAccount==='function')renderAccount(); };
-  if(r.ok&&acc&&typeof acc.email==='string'){
-   if(acc.email!==s.email){ authKeep({token:s.token, email:acc.email}); redraw(); }
+  if(r.ok&&acc&&who){
+   if(who!==s.email){ authKeep({token:s.token, email:who}); redraw(); }
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
@@ -54867,7 +55403,11 @@ function obRender(){
      So the hard sentence moves one screen in, where it belongs, and the first
      screen is a figure and eleven words. Show, not tell. Everything that used
      to be here is still in the product and none of it is said first. */
-  out=obCard('Welcome','This is you, and it is okay.',
+  /* THE EYEBROW IS HELLO, NOT WELCOME. OB4 in the first run rulings, and the
+     voice skill's own: a greeting is "Hello", and "Welcome" is the line that
+     says a thing is starting (V1). It was the one word on the first screen a
+     stranger meets that the product's own rule had already struck. */
+  out=obCard('Hello','This is you, and it is okay.',
    obFigure()
    /* HIS TWO SENTENCES, AND THEN IT STOPS. "No judgment. Nothing here grades
       you." is the ruling and it stands. A third clause had been added to it,
@@ -54903,7 +55443,16 @@ function obRender(){
    +'<p class="ob-p">It reads one thing: the body mind complex, your body and '
    +'your mind working as one. How you run, which patterns are running, and '
    +'where in your body they sit.</p>'
-   +'<div class="ob-grid">'
+   /* THE FOUR ARE A CIRCLE, NEVER A LIST. Ruled 20 September, with his reason:
+      "we're showing a core game loop mechanic." A column or a row of four says
+      the fourth is the end, which is the opposite of a loop, and this card is
+      where a stranger first meets the four together. They sit at the corners
+      of a square in the order a clock reads them, one, two, three, four going
+      round, and a small ring in the middle carries an arrow back to the first.
+      The order in the document is still one to four, so a screen reader
+      reads them as they go, and only the grid areas in the stylesheet move
+      the third and fourth to the bottom row, right to left. */
+   +'<div class="ob-grid ob-loop">'
    /* TWO OF THESE FOUR DEFINED A THING BY WHAT IT IS NOT, on the first
       screen a person sees, in the file that runs antithesis at five times the
       house rate. The replacements are positive and concrete, and the first is
@@ -54912,9 +55461,12 @@ function obRender(){
      ['It finds where that sits','one exact spot in your body'],
      ['You release what is there','one spot at a time'],
      ['And you watch it move','the same numbers, over months']]
-    .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
+    .map(function(x,i){return '<div class="ob-g ob-g'+(i+1)+'"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')
+   +'<svg class="ob-loop-ring" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+   +'<path d="M12 3.5 A8.5 8.5 0 1 1 3.5 12"/><path d="M0.8 8.6 L3.5 12 L6.9 9.6"/></svg>'
    +'</div>'
+   +'<p class="ob-p ob-dim">Then you write again, and it goes round.</p>'
    /* "which is the good news" is the writer telling a person how to feel
       about a fact. The fact is the sentence. */
    +'<p class="ob-p ob-dim">Nothing here is made up. If it does not know '
@@ -54935,9 +55487,24 @@ function obRender(){
      the exact trap he hit: "I can't click next to go, I can only click
      solar." Nothing is disabled here; Nothing is itself a real answer, on
      the same honest-empty rule the reflection screen already keeps. */
+  /* HIS TWO LINES OPEN THE SOMATIC SETUP, IN HIS WORDS. "Welcome to a
+     neurosomatic experience." and "Awareness and intuition is a tool we use
+     to turn your senses inward." Ruled, and they stand as he wrote them: the
+     first is a line that says a thing is starting, which V1 rules out and OB4
+     ruled "Hello" over, and the second has "intuition" and no place to turn
+     the senses to, which V4 asks for. His ruling outranks all three, and the
+     rest of the card does the work they leave: where to sit, where to put the
+     attention, and the one place it goes, the throat.
+
+     The sentence that followed it before, "This product works with the body
+     and the mind together", is gone, because the first of his two lines says
+     the word it was explaining. What is kept is the half that tells a person
+     what neurosomatic means, in the words a child already has. */
   out=obCard('The signal test','Say yes. Say no.',
-   '<p class="ob-p">This product works with the body and the mind '
-   +'together. A thought changes what your body does, and what your body '
+   '<p class="ob-p">Welcome to a neurosomatic experience.</p>'
+   +'<p class="ob-p">Awareness and intuition is a tool we use to turn your '
+   +'senses inward.</p>'
+   +'<p class="ob-p">A thought changes what your body does, and what your body '
    +'does changes the thought back.</p>'
    +'<p class="ob-p">Sit down. Put both feet on the floor. Take ten slow breaths.</p>'
    +'<p class="ob-p">When you are ready, bring your attention to your '
@@ -55028,6 +55595,8 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
    The username field is gone. The server keys an account on the
    email and takes no username anywhere, so a field it ignores was a
    question asked for nothing and an answer thrown away in silence.
+   (It is back, one round later, and the same reasoning is why it is
+   back only as far as the server can honour it. See ROUND OT below.)
 
    Log in no longer lets anything through. A door that now checks
    needs a way past it that does not, or a person with no network or
@@ -55057,7 +55626,60 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
    step below no longer reads it. What reads it now is DEV_SKIP, and
    the default is to show the door, his own words this round: "if
    it's not pressed, then it goes to the sequence." */
-var LOGIN={open:false,reset:false,busy:false};
+/* ============================================================
+   ROUND OT REBUILT THE DOOR, LOGIN A, THE RING. His words: "One frame before
+   login starts, I can see the dashboard or the field. It should start with
+   the login. The login. Screen. Is not aesthetically pleasing. Make this page
+   inviting and not so dry. We don't want people to log in by email. We want
+   them to log in by their username. So when they create their account, they
+   can set up by username. Move developer options to the lower right. Change
+   the text continue with an account to just guest."
+
+   WHAT CHANGED, AND WHAT DID NOT.
+
+   The markup moved out of this file. The door is static in shell/body.html,
+   painted from the first byte, and this file finds it, wires it and moves it
+   between its modes by data attributes, so there is one copy of it. It used
+   to be a string built here, which is the reason the first frame of the app
+   was visible before it: a door made by script cannot be on screen before the
+   script has run. html.door, set by a line in the head, is what keeps the app
+   from painting in that gap, and every way out of the door takes it off.
+
+   One field takes a username or an email. The kind is decided by an at sign
+   (engine/identity.js), and ui/auth.js's authIdent is the only place that
+   turns it into a request, so an email goes exactly where it always went and a
+   username goes as {username} on the same routes. The server does not read
+   usernames yet. A sign in by one is therefore sent and the server's own
+   refusal is what the person reads, in the card, never a success this file
+   made up. Creating one with no recovery email is refused here instead, with
+   a plain line, and one with a recovery email is sent and reported for what
+   came back, for the reason written at AUTH_USERNAMES.
+
+   Three buttons in one row: Log in, Create account, Guest. There is one Log in
+   on the screen. Create account is two presses by design. The first opens the
+   fields a new account needs, the recovery email and the box that agrees to
+   the Terms and the Privacy policy, and the second sends it. Log in, pressed
+   while those are open, closes them and sends nothing: a sign in is never sent
+   from a screen that is showing the terms of a new account.
+
+   The ring behind the card carries state and nothing else. A name typed
+   lights the node at the top. The passphrase draws the ring shut as it grows.
+   A request out makes the two halves pulse. A refusal draws a crossed ring where
+   the path stopped. A yes closes the ring and lights every address, and the
+   door fades. None of it is decoration a gate could not read: each is a data
+   attribute on the host, which is what the gate reads.
+   ============================================================ */
+var LOGIN={open:false,reset:false,busy:false,mode:'login'};
+/* HOW LONG A PASSPHRASE DRAWS THE RING. Twenty characters closes it and more
+   changes nothing. It is a picture's scale and not a rule: nothing refuses a
+   passphrase for being short or long here, and the server's own bounds are
+   AUTH_PW_MIN and AUTH_PW_MAX in ui/auth.js. */
+var LOGIN_RING_FULL=20;
+/* HOW LONG THE DOOR TAKES TO FADE OFF, which is the same half second the
+   stylesheet gives #login. A timer and not an animationend, because a door
+   that never gets to finish fading, on a machine that skipped the transition,
+   must still end up hidden. */
+var LOGIN_FADE_MS=520;
 /* THE DEVELOPER SKIP. His words: "have a switch for that loading
    screen to turn onboarding tutorial off, so I can just bypass
    straight to the dashboard, just put it as a developer button, on
@@ -55112,65 +55734,60 @@ function loginSuggestPassword(){
  while(out.length<n) out.push(all[rnd(all.length)]);
  for(var i=out.length-1;i>0;i--){ var j=rnd(i+1); var t=out[i]; out[i]=out[j]; out[j]=t; }
  return out.join('');}
-/* The email a person typed is carried between the two cards, so going to the
-   forgotten password and back does not make them type it a second time. */
-function loginCard(mail){
- return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Log in">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Welcome</span>'
-  +'<h2 class="ob-h">Log in</h2>'
-  +'<form id="loginform" novalidate>'
-  +'<div class="login-row"><label class="login-l" for="loginmail">Email</label>'
-  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
-  /* current-password, because the person pressing Log in has one: new-password
-     told a password manager to offer a fresh one instead of filling the saved
-     one, which was right for a card nothing checked and wrong for one that does.
-     Suggest still fills the field for somebody about to press Create account. */
-  +'<div class="login-row"><label class="login-l" for="loginpass">Password</label>'
-  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="current-password">'
-  +'<button type="button" class="login-pwsug" id="loginsug">Suggest</button></div>'
-  +'<span class="login-hint" id="loginpwhint" hidden></span></div>'
-  +'<button type="button" class="login-forgot" id="loginforgot">Forgot your password?</button>'
-  +'</form>'
-  +'<p class="login-msg" id="loginmsg"></p>'
-  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
-  +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-  +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
-  +loginDevOptions()
-  +'</div></div>';}
-function loginResetCard(mail){
- return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Reset your password">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Password reset</span>'
-  +'<h2 class="ob-h">Reset your password</h2>'
-  +'<p class="ob-p">Enter the email the account uses. A link to set a new password goes there.</p>'
-  +'<form id="loginresetf" novalidate>'
-  +'<div class="login-row"><label class="login-l" for="loginrmail">Email</label>'
-  +'<input type="email" id="loginrmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
-  +'</form>'
-  +'<p class="login-msg" id="loginmsg"></p>'
-  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-send">Send the link</button>'
-  +'<button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
-  +'</div></div>';}
+/* THE DOOR IS FOUND, NEVER BUILT. shell/body.html carries it as static markup,
+   so every one of these reads an element that is already there, and each is
+   written to say nothing when it is not: a gate that stands up a page without
+   the shell must not have the login throw into it. */
+function loginHost(){ return document.getElementById('login'); }
+function loginEl(id){ return document.getElementById(id); }
+/* html.door is the head's first paint guard. It is taken off on every way out:
+   a yes, Guest, a held session, the developer skip, and the guard when the
+   build did not start. Never put back by this file: a door that closes and
+   reopens for a sign out is an overlay and is opaque on its own. */
+function loginDoor(on){
+ try{ document.documentElement.classList[on?'add':'remove']('door'); }catch(e){}}
 /* THE CARD SAYS IT, AND SO DOES STATUS. status() is the one writer every
    result goes through, and it is the live region a screen reader hears; but
-   the status line sits in the top bar, under this card, which covers the
+   the status line sits in the top bar, under this door, which covers the
    whole screen. A refusal written only there is a refusal nobody sighted can
-   see. So the card carries the same sentence on its own line, and the status
-   line is told too, which is also what is still on screen when the card
-   closes. A line that is only progress is the card's alone: nothing was
-   written, so there is nothing for the status line to report. */
+   see. So the door carries the same sentence on its own line, and the status
+   line is told too, which is also what is still on screen when the door
+   closes. A line that is only progress is the door's alone: nothing was
+   written, so there is nothing for the status line to report.
+
+   The line is the one in the view that is showing: the reset view has its own,
+   because two elements may not share an id and a sentence about a reset belongs
+   under the reset. */
+function loginMsgEl(){ return loginEl(LOGIN.reset?'loginrmsg':'loginmsg'); }
 function loginSay(msg,kind,own){
- var m=document.getElementById('loginmsg');
+ var m=loginMsgEl();
  if(m){ m.textContent=msg||''; if(kind)m.setAttribute('data-kind',kind); else m.removeAttribute('data-kind'); }
  if(!own&&typeof status==='function')status(msg,kind);}
-/* Every press in the card waits while a request is out, so a second press
+/* THE RING'S STATE, which is the door's one animation and is read off two
+   data attributes and one custom property on the host, so a gate can read it
+   without reading a frame. data-state is idle, busy, error or ok. data-id is
+   whether a name has been typed. data-pw is whether the passphrase has a first
+   character. --p is how much of the ring the passphrase has drawn, and it is
+   pinned while a refusal or a yes is showing: a refusal stops the path where
+   it was, and a yes closes it. */
+function loginRing(){
+ var h=loginHost(); if(!h)return;
+ var pw=loginEl('loginpass'), id=loginEl('loginid');
+ var n=pw?String(pw.value||'').length:0, st=h.getAttribute('data-state');
+ var p=Math.min(n,LOGIN_RING_FULL)/LOGIN_RING_FULL;
+ if(st==='ok')p=1; else if(st==='error')p=Math.min(p,.6);
+ h.style.setProperty('--p',String(p));
+ h.setAttribute('data-pw',n?'1':'0');
+ h.setAttribute('data-id',id&&String(id.value||'').trim()?'1':'0');}
+function loginState(st){
+ var h=loginHost(); if(!h)return;
+ h.setAttribute('data-state',st); loginRing();}
+/* Every press in the door waits while a request is out, so a second press
    never sends a second request under the first one's answer. */
 function loginBusy(on){
- var h=document.getElementById('login'); if(!h)return;
- h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
+ var h=loginHost(); if(!h)return;
+ h.querySelectorAll('.lg-acts .btn').forEach(function(b){ b.disabled=!!on; });
+ if(on)loginState('busy'); else if(h.getAttribute('data-state')==='busy')loginState('idle');}
 /* UNLOCK ALL SIGHT, A TESTING SWITCH, round OT, his words: "unlock all these
    for me." It reads the top tier for the lock (ui/lock.js lockPlan) and is kept
    in the browser's own store, so it holds across a reload and never travels on
@@ -55184,85 +55801,190 @@ function devSightSet(on){
  DEV_SIGHT=!!on;
  try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
  if(typeof render==='function')render();}
-/* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
-   testing control, not a thing a stranger meeting the funnel needs to
-   see open by default. */
-function loginDevOptions(){
- return '<details class="login-dev">'
-  +'<summary>Developer options</summary>'
-  +'<label class="login-sw"><input type="checkbox" id="devob"'
-  +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devtut"'
-  +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devsight"'
-  +(devSight()?' checked':'')+'> Unlock all sight</label>'
-  +'</details>';}
+/* WHAT THE DOOR TELLS ui/auth.js, in one place so the three requests it makes
+   cannot disagree: the identifier may be a username, and the secret is called
+   a passphrase here and a password in the Account section, one word per
+   screen. extra is the recovery email on a new account. */
+function loginAuthOpt(extra){
+ var o={names:true, noun:'passphrase'};
+ if(extra)for(var k in extra)o[k]=extra[k];
+ return o;}
+/* THE HINT UNDER THE IDENTIFIER, AND WHETHER THE RECOVERY EMAIL SHOWS. Both
+   depend on what is typed, so both are read again on every keystroke and on
+   every change of mode.
+
+   The hint is only there on a new account, and it says the true thing: while
+   the server cannot hold a username (AUTH_USERNAMES), the line says what a
+   username needs before a person has typed one, rather than letting them
+   choose a name and be refused for it after. And the recovery email is the way back in for a
+   username and for nothing else. Beside an email address it would be the same
+   address asked for twice, so it is gone the moment an at sign is typed. */
+function loginIdHint(){
+ var h=loginEl('loginidhint'), id=loginEl('loginid'), row=loginEl('loginrecrow');
+ var create=LOGIN.mode==='create', kind=identKind(id?id.value:'');
+ if(h){
+  var t=(create&&kind!=='email')
+   ?(AUTH_USERNAMES?usernameRule()+' An email works too.'
+    :'For now a username needs a recovery email.'):'';
+  h.textContent=t; h.hidden=!t; }
+ if(row)row.hidden=!(create&&kind!=='email');}
+/* a keystroke in any field. A refusal was about what was there a moment ago,
+   so it goes the moment the person starts correcting it, and the crossed ring
+   with it. */
+function loginTyped(){
+ var h=loginHost();
+ if(h&&h.getAttribute('data-state')==='error'){ loginSay('','',true); h.setAttribute('data-state','idle'); }
+ loginIdHint(); loginRing();}
+/* LOG IN OR CREATE, ON ONE CARD. The mode is a data attribute on the host and
+   the stylesheet shows and hides what belongs to each, so there is one set of
+   fields and nothing to rebuild or lose. The primary button follows the mode,
+   because the one filled button is the one thing the screen is asking for.
+   The secret's autocomplete follows it too: current-password on a card that
+   checks one, so a password manager fills the saved one, and new-password on a
+   card that is making one, so it offers a fresh one instead. */
+function loginMode(m){
+ var h=loginHost(); if(!h)return;
+ LOGIN.mode=m; h.setAttribute('data-mode',m);
+ var go=loginEl('loginb-go'), nw=loginEl('loginb-new'), pw=loginEl('loginpass'), pwh=loginEl('loginpwhint');
+ if(go)go.classList.toggle('pri',m==='login');
+ if(nw)nw.classList.toggle('pri',m==='create');
+ if(pw)pw.setAttribute('autocomplete',m==='create'?'new-password':'current-password');
+ if(pwh){
+  pwh.textContent=m==='create'?'At least '+AUTH_PW_MIN+' characters. A few words work well.':'';
+  pwh.hidden=m!=='create'; }
+ loginIdHint(); loginSay('','',true); loginState('idle');}
+/* the reset view and back. The identifier is carried across both ways, so
+   going to the forgotten passphrase and back does not make anybody type it a
+   second time. */
+function loginReset(on){
+ var h=loginHost(); if(!h)return;
+ var id=loginEl('loginid'), rid=loginEl('loginrid');
+ LOGIN.reset=!!on; h.setAttribute('data-view',on?'reset':'in');
+ if(on){ if(id&&rid)rid.value=id.value.trim(); loginSay('','',true); if(rid)rid.focus(); }
+ else{ if(id&&rid&&rid.value.trim())id.value=rid.value.trim(); loginIdHint(); loginRing(); if(id)id.focus(); }}
+/* ENTER SENDS, which a form with two text fields and no submit button does not
+   do on its own, so it is said here. What it sends is whatever the primary
+   button is. */
+function loginKey(e){
+ if(e.key!=='Enter'||e.isComposing)return;
+ var t=e.target; if(!t||t.tagName!=='INPUT'||t.type==='checkbox')return;
+ e.preventDefault();
+ if(LOGIN.reset)loginForgot(); else if(LOGIN.mode==='create')loginSubmit('signup'); else loginGo();}
 function loginOpen(){
- var h=document.getElementById('login'); if(!h)return;
- LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
- loginWire(h);}
+ var h=loginHost(); if(!h)return;
+ LOGIN.open=true; LOGIN.reset=false; LOGIN.busy=false;
+ h.classList.remove('lg-out'); h.style.display='flex';
+ h.setAttribute('data-view','in');
+ loginWire(h); loginMode('login');
+ var f=loginEl('loginid'); if(f)f.focus();}
 function loginWire(h){
- var f=h.querySelector('input'); if(f)f.focus();
- var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
- var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
- var sk=document.getElementById('loginb-skip');
+ var go=loginEl('loginb-go');
+ if(go)go.onclick=function(){
+  /* Log in, pressed on a card showing the terms of a new account, goes back
+     to the plain card and sends nothing */
+  if(LOGIN.mode==='create'){ loginMode('login'); var f=loginEl('loginid'); if(f)f.focus(); }
+  else loginGo(); };
+ var nw=loginEl('loginb-new');
+ if(nw)nw.onclick=function(){
+  if(LOGIN.mode==='login'){
+   loginMode('create');
+   loginSay('Agree to the terms, then press Create account again.','',true); }
+  else loginSubmit('signup'); };
+ var sk=loginEl('loginb-skip');
  if(sk)sk.onclick=function(){ loginClose(); loginEnter(); };
- var form=document.getElementById('loginform');
- if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
- var sug=document.getElementById('loginsug');
+ ['loginform','loginresetf'].forEach(function(id){
+  var f=loginEl(id); if(f)f.onsubmit=function(e){ e.preventDefault(); }; });
+ h.onkeydown=loginKey;
+ ['loginid','loginpass','loginrec'].forEach(function(id){
+  var f=loginEl(id); if(f)f.oninput=loginTyped; });
+ var show=loginEl('loginshow');
+ if(show)show.onclick=function(){
+  var p=loginEl('loginpass'); if(!p)return;
+  var on=p.type==='password'; p.type=on?'text':'password'; show.textContent=on?'Hide':'Show'; };
+ var sug=loginEl('loginsug');
  if(sug)sug.onclick=function(){
-  var p=document.getElementById('loginpass'), hint=document.getElementById('loginpwhint');
+  var p=loginEl('loginpass'), hint=loginEl('loginpwhint');
   if(!p)return; var pw=loginSuggestPassword();
   p.value=pw; p.type='text';
-  if(hint){ hint.hidden=false; hint.textContent='Suggested: '+pw; } };
- var forgot=document.getElementById('loginforgot');
- if(forgot)forgot.onclick=function(){
-  var m=document.getElementById('loginmail');
-  LOGIN.reset=true; h.innerHTML=loginResetCard(m?m.value.trim():'');
-  var rm=document.getElementById('loginrmail');
-  var back=document.getElementById('loginb-back');
-  if(back)back.onclick=function(){ LOGIN.reset=false;
-   h.innerHTML=loginCard(rm?rm.value.trim():''); loginWire(h); };
-  var send=document.getElementById('loginb-send');
-  if(send)send.onclick=function(){ loginForgot(); };
-  var rf=document.getElementById('loginresetf');
-  if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
-  if(rm)rm.focus(); };
- var devob=document.getElementById('devob');
- if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
- var devtut=document.getElementById('devtut');
- if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };
- var devs=document.getElementById('devsight');
- if(devs)devs.onchange=function(){ devSightSet(!!devs.checked); };}
-function loginClose(){
- var h=document.getElementById('login'); if(!h)return;
- LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
+  var s2=loginEl('loginshow'); if(s2)s2.textContent='Hide';
+  if(hint){ hint.hidden=false; hint.textContent='Suggested: '+pw; }
+  loginRing(); };
+ var forgot=loginEl('loginforgot');
+ if(forgot)forgot.onclick=function(){ loginReset(true); };
+ var back=loginEl('loginb-back');
+ if(back)back.onclick=function(){ loginReset(false); };
+ var send=loginEl('loginb-send');
+ if(send)send.onclick=function(){ loginForgot(); };
+ /* THE THREE TESTING SWITCHES are static markup too, so what they show is set
+    here from what they hold, not from what the markup guessed */
+ var devob=loginEl('devob');
+ if(devob){ devob.checked=!!DEV_PLAY_ONBOARDING; devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; }; }
+ var devtut=loginEl('devtut');
+ if(devtut){ devtut.checked=!!DEV_PLAY_TUTORIAL; devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; }; }
+ var devs=loginEl('devsight');
+ if(devs){ devs.checked=!!devSight(); devs.onchange=function(){ devSightSet(!!devs.checked); }; }}
+/* CLOSING THE DOOR, every way out of it. The class that held the app back is
+   taken off first and always, so the app is never left hidden behind a door
+   that has gone. soft is a yes: the ring has just closed, and the door fades
+   for half a second instead of cutting, so the person sees the ring finish.
+   Everything else cuts, because Guest and the developer skip are a person
+   asking to be past it.
+
+   And the passphrase does not stay behind in a hidden field. A secret typed
+   into a door that is no longer showing has no reason to be in the document. */
+function loginClose(soft){
+ var h=loginHost(); if(!h)return;
+ LOGIN.open=false; LOGIN.reset=false;
+ loginDoor(false);
+ ['loginpass','loginrec','loginrid'].forEach(function(id){ var f=loginEl(id); if(f)f.value=''; });
+ var ag=loginEl('loginagree'); if(ag)ag.checked=false;
+ if(soft){
+  h.classList.add('lg-out');
+  setTimeout(function(){
+   /* a door that was opened again inside the fade is not hidden under its owner */
+   if(LOGIN.open)return;
+   h.style.display='none'; h.classList.remove('lg-out'); },LOGIN_FADE_MS);
+  return; }
+ h.style.display='none'; h.classList.remove('lg-out');}
 /* THE REAL SIGN IN. This was the fake one, "anything counts, including
    nothing: there is no account to fail against yet," and there is one now.
    The card stays open until the server has answered, and closes only on a
    yes: a card that closed first and then reported a refusal would have
    claimed a sign in it did not have, which is the one thing CLAUDE.md says a
    control may never do. On a no, the card keeps what was typed, so the fix is
-   one field and not two. */
+   one field and not two.
+
+   A REFUSAL BEFORE ANYTHING IS SENT IS NOT A REFUSAL BY THE SERVER, and the
+   ring says which it was. An empty field or a username with a capital letter
+   in the wrong place is the card's own sentence and leaves the ring as it was.
+   Only an answer that came back no, or never came, draws the crossed ring. */
 function loginGo(){ loginSubmit('signin'); }
 function loginSubmit(route){
  if(LOGIN.busy)return;
- var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
+ var id=loginEl('loginid'), pw=loginEl('loginpass'), rec=loginEl('loginrec'), ag=loginEl('loginagree');
+ var ident=id?id.value.trim():'', pass=pw?pw.value:'', isNew=route==='signup';
+ var opt=loginAuthOpt(isNew?{recovery:rec?rec.value.trim():''}:null);
+ var bad=authFieldsWhy(ident,pass,isNew,opt);
+ /* the box is the person's own tick and nothing else ticks it. It is checked
+    after the fields, so the first thing said is the first thing on the card. */
+ if(!bad&&isNew&&!(ag&&ag.checked))bad='Tick the box to agree to the Terms and the Privacy policy.';
+ if(bad){ loginSay(bad,'fail'); return; }
  LOGIN.busy=true; loginBusy(true);
- loginSay(route==='signup'?'Creating the account.':'Checking with the server.','',true);
- authEnter(route,m?m.value.trim():'',p?p.value:'').then(function(r){
+ loginSay(isNew?'Creating the account.':'Checking with the server.','',true);
+ authEnter(route,ident,pass,opt).then(function(r){
   LOGIN.busy=false; loginBusy(false);
-  if(!r.ok){ loginSay(r.say,'fail'); return; }
-  loginClose(); status(r.say,r.kept?'ok':'fail'); loginEnter(); });}
-/* The forgotten password, with the one sentence authForgot returns for an
+  if(!r.ok){ loginState('error'); loginSay(r.say,'fail'); return; }
+  loginState('ok'); loginSay('Opening your field.','',true);
+  loginClose(true); status(r.say,r.kept?'ok':'fail'); loginEnter(); });}
+/* The forgotten passphrase, with the one sentence authForgot returns for an
    address with an account and for one without. 'ok', not 'fail', on the
    status line: the request landed, which is all this press can know. */
 function loginForgot(){
  if(LOGIN.busy)return;
- var m=document.getElementById('loginrmail');
+ var m=loginEl('loginrid');
  LOGIN.busy=true; loginBusy(true);
  loginSay('Sending the request.','',true);
- authForgot(m?m.value.trim():'').then(function(r){
+ authForgot(m?m.value.trim():'',loginAuthOpt()).then(function(r){
   LOGIN.busy=false; loginBusy(false);
   loginSay(r.say,r.ok?'ok':'fail'); });}
 /* A HELD SESSION SKIPS THE DOOR, and the boot asks the server whether it is
@@ -55271,8 +55993,10 @@ function loginForgot(){
    when nothing is held, so the gates, which never sign in, make none. */
 function loginBoot(){
  if(typeof authCheck==='function')authCheck();
- if(DEV_SKIP)return;
- if(typeof authSession==='function'&&authSession()){ loginEnter(); return; }
+ /* the two ways past the door that never open it still take the class off, or
+    the app would be painted nowhere: the head set it before any of this ran */
+ if(DEV_SKIP){ loginDoor(false); return; }
+ if(typeof authSession==='function'&&authSession()){ loginDoor(false); loginEnter(); return; }
  loginOpen();}
 /* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
    a sign in, a new account, or continuing without one. */
@@ -57049,5 +57773,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003710994"></div>
+<div id="eof" hidden data-len="003763413"></div>
 </body></html>

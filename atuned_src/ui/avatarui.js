@@ -192,7 +192,7 @@ var AV_ASK={
   notbe:'I lie awake scared about money and my legs will not keep still.'},
  Sacral:{ask:['When did you last stop yourself making something? What did your belly do?',
   'What would you make if nobody was watching?',
-  'Think of a time you wanted something and said nothing. Where did you feel it?'],
+  'Think of a time you wanted something and said nothing. Where did it land in your body?'],
   be:'Someone who makes things and shows them.',
   notbe:'When I show something I made, I feel exposed and I hide it.'},
  Solar:{ask:['Think of a hard day at work. Where did the pressure sit in your body?',
