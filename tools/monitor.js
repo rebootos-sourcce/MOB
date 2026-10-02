@@ -87,7 +87,10 @@ const FLOOR_CANVAS=60;
   await p.addInitScript(require('../tests/seed.js').FULL_SIGHT);
   const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,140)));
   await p.goto(FILE_URL); await p.waitForTimeout(7000);
-  const L=await p.evaluate(()=>PEOPLE.findIndex(x=>x.nm==='Lance'));
+  /* by name, and loud when the name is gone: round QD cut the Lance this
+     read, and findIndex handed back -1 to loadP without a word */
+  const L=await p.evaluate(()=>PEOPLE.findIndex(x=>x.nm==='Lance 85'));
+  if(L<0)throw new Error('monitor: Lance 85 is not in the roster, name the loaded profile again');
   const TABS=await p.evaluate(TABS_JS);
   for(const who of ['blank','loaded']){
    if(who==='loaded')await p.evaluate(i=>loadP(i),L);
@@ -162,8 +165,8 @@ const FLOOR_CANVAS=60;
       after each press and the voice is held off for the visit and put back, so
       the watch neither speaks nor spends. The host is #rel, by its id.
 
-      Lance carries nothing, measured: nought addresses loaded on his profile,
-      so a release has nothing to open on him. The watch opens it on whichever
+      The loaded profile may carry little or nothing (Lance 85 holds one
+      address over the line), so a release may have nothing to open on him. The watch opens it on whichever
       profile carries most, read at run time rather than named here, and puts
       Lance back after. A worked example is fine: nothing is committed. */
    if(who==='loaded'){

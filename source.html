@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1419 fc05ea5 2026-10-02 17:15"><head><meta charset="utf-8">
+<html lang="en" data-build="v1420 36f0b6a 2026-10-02 17:50"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -58731,7 +58731,12 @@ var PRAC_SEL=null, PRAC_SORT='attn', PRAC_RCACHE={};
    Rosa, Tomas and Nkem were left out as close seconds to Wren, Gordon and
    Diane respectively, and Lance was left out because his table is the
    owner's own simulated self and listing him as a "client" among examples
-   reads as the one name on this page that is not an example. */
+   reads as the one name on this page that is not an example.
+   THE ROSTER ABOVE IS THE ONE THESE TEN WERE CHOSEN FROM, and it is gone.
+   Round QD, 2 October, cut PEOPLE to twelve examples, these ten plus Rosa and
+   Tomas, and four of the owner (Lance 15, 50, 85 and 100). The ten stand as
+   they were, and the four of him stay off this list for the same reason the
+   first Lance was: they are the owner and not a client. */
 var PRAC_TEN=['Sofia','Diane','Marcus','Angela','Derek','James','Ana','Wren','Gordon','Abraham'];
 function pracRoster(){
  var out=[]; PEOPLE.forEach(function(p,i){if(PRAC_TEN.indexOf(p.nm)>=0)out.push(i);}); return out;}
@@ -60127,7 +60132,13 @@ function seedIntake(p){
   p.intakeAnswers[li*3+1]=Math.round(R*10)/10;
   p.intakeAnswers[li*3+2]=Math.round(N*10)/10;});}
 function loadP(i){
- var p=PEOPLE[i]; seedIntake(p); S.who=i; S.pin=null;
+ var p=PEOPLE[i];
+ /* refused by name. An index with nobody at it (a findIndex that found no one
+    hands back -1) used to throw inside seedIntake about _seeded, which says
+    nothing about a missing person. Round QD cut a roster that three callers
+    looked up by a name that went with it. */
+ if(!p)throw new Error('loadP: there is nobody at index '+i+' in a roster of '+PEOPLE.length);
+ seedIntake(p); S.who=i; S.pin=null;
  S.dom=p.dom;S.a1=p.a1;S.a2=p.a2;
  S.doms=p.doms?p.doms.slice():[p.dom];
  S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
@@ -63946,5 +63957,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004181870"></div>
+<div id="eof" hidden data-len="004182610"></div>
 </body></html>

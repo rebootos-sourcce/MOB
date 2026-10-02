@@ -37,7 +37,8 @@ const SPAN=42;                 /* characters either side that count as near */
  for(const [w,h,wn] of [[1600,1000,'desktop'],[390,844,'phone']]){
   const p=await b.newPage({viewport:{width:w,height:h}});
   await p.goto(FILE); await p.waitForTimeout(7400);
-  const L=await p.evaluate(()=>PEOPLE.findIndex(x=>x.nm==='Lance'));
+  const L=await p.evaluate(()=>PEOPLE.findIndex(x=>x.nm==='Lance 85'));
+  if(L<0)throw new Error('scales: Lance 85 is not in the roster');
   await p.evaluate(i=>loadP(i),L);
   const tabs=await p.evaluate(()=>TABDEF.map(t=>[t.nm,t.k])
    .concat(Object.keys(TABEXTRA).map(k=>[TABEXTRA[k].nm,TABEXTRA[k].k])));

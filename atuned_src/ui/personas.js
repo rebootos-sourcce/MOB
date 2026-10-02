@@ -757,7 +757,13 @@ function seedIntake(p){
   p.intakeAnswers[li*3+1]=Math.round(R*10)/10;
   p.intakeAnswers[li*3+2]=Math.round(N*10)/10;});}
 function loadP(i){
- var p=PEOPLE[i]; seedIntake(p); S.who=i; S.pin=null;
+ var p=PEOPLE[i];
+ /* refused by name. An index with nobody at it (a findIndex that found no one
+    hands back -1) used to throw inside seedIntake about _seeded, which says
+    nothing about a missing person. Round QD cut a roster that three callers
+    looked up by a name that went with it. */
+ if(!p)throw new Error('loadP: there is nobody at index '+i+' in a roster of '+PEOPLE.length);
+ seedIntake(p); S.who=i; S.pin=null;
  S.dom=p.dom;S.a1=p.a1;S.a2=p.a2;
  S.doms=p.doms?p.doms.slice():[p.dom];
  S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];

@@ -4236,12 +4236,14 @@ console.log('\n=== a stranger is a stranger, whoever was on screen before ===');
    persisted them. Measured on a fresh page before the fix: loadP(0) alone
    gave unread true and measured 0; a trip through Lance and back gave unread false,
    measured 21, law mean 9.72 and the word Mastery, off Lance's numbers, on a
-   profile where nobody had entered anything. */
+   profile where nobody had entered anything. That Lance, the author at 92, was
+   cut in round QD; the trip now goes through Lance 100, every law at ten, the
+   loudest table there is to leak. */
 const base=await page.evaluate(()=>{loadP(0);const r=compute();
  return {unread:r.unread,measured:r.measured,
   laws:SINAMES.map(l=>S.law[l]).join(','),
   unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
-for(const via of ['Lance','James','Sofia']){
+for(const via of ['Lance 100','James','Sofia']){
  const s=await page.evaluate(v=>{const vi=PERSON(v);loadP(vi);loadP(0);const r=compute();
   return {unread:r.unread,measured:r.measured,nm:PEOPLE[vi].nm,
    laws:SINAMES.map(l=>S.law[l]).join(','),
@@ -4259,7 +4261,7 @@ const strg=await browser.newPage({viewport:{width:1600,height:1000}});
 await strg.goto(FILE,{waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(400);
 await strg.evaluate(()=>{try{localStorage.clear();}catch(e){}});
 await strg.reload({waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(700);
-const pris=await strg.evaluate(()=>{loadP(PERSON('Lance'));loadP(0);const r=compute();
+const pris=await strg.evaluate(()=>{loadP(PERSON('Lance 100'));loadP(0);const r=compute();
  return {unread:r.unread,measured:r.measured,tier:r.tier,
   unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
 ok(pris.unread===true,'a stranger who looked at a persona first is still unread');
@@ -4348,7 +4350,12 @@ console.log('\n=== the phone reaches everything it draws ===');
    so 996 pixels of that surface were unreachable. Story 432, Settings 402. */
 const ph=await browser.newPage({viewport:{width:390,height:844}});
 await ph.goto(FILE,{waitUntil:'load'}); await booted(ph); await ph.waitForTimeout(900);
-await ph.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Lance');loadP(i);});
+/* by name, and loud when the name is gone: round QD cut the Lance this read,
+   and findIndex handed -1 to loadP, which threw inside seedIntake with a
+   message about _seeded rather than about a missing person. Lance 15, the
+   heaviest of the four, so the phone is measured with the most drawn. */
+await ph.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Lance 15');
+ if(i<0)throw new Error('Lance 15 is not in the roster any more');loadP(i);});
 for(const [nm,t] of [['story',0],['summary',1],['field',2],['body',3],['intake',5],
                      ['know',6],['games',7],['compass',8],['settings',9]]){
  const o=await ph.evaluate(async t=>{setTab(t);await new Promise(r=>setTimeout(r,420));

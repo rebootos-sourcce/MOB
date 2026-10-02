@@ -6896,7 +6896,7 @@ g('QD · every worked example\'s bank and vault, replayed through the real write
    groups (ui/imprints.js); the vault is stVaultRows (ui/storyui.js), which
    reads meter.unique and meter.firsts and nothing else. engine/exdepth.js
    writes both by replaying each example's journal and releases through
-   parseStory, applyStory, relHeaviest, meterPlan, relWrite, meterRun,
+   parseStory, applyStory, relQueueOf, meterPlan, relWrite, meterRun,
    releaseWork and meterFirst. This holds that every figure in the result is
    one those writers produced, that the boundary takes the record back, and
    that the reading a person sees is still the table's. The roster is read off
