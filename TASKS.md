@@ -32306,3 +32306,7 @@ Knowledge (tab 6, in Embody) was explicitly left alone: his round QF message nam
 That last one is live on the public funnel right now, not a draft, and several of the lines are his own words, so it goes to him rather than getting silently rewritten: logged as `WAITING-ON-YOU.md` item 12, with the five lines quoted in full and three options. Folded the rest into `PLAN.md` section 0 as TDD 3, same discipline as the other two: what's real, what's missing (the claims-hierarchy classification itself, section 38), and the first three ordered steps, with step 1 (make the claims gate real) dispatched now since it is pure infrastructure and touches no copy of his.
 
 Five builds have run tonight; three now remain: the full-screen onboarding, the release carousel, and the one just dispatched below.
+
+## A session restart killed three agents mid-task; recovered, nothing lost
+
+His "how are you looking?" landed right after a restart (new session identity, all three background agents unreachable). Checked each one's worktree rather than assume: the release-carousel and full-screen-onboarding builds both had real uncommitted work, checkpointed and pushed (`611e47a`, `0c0f2b6`). The claims-gate build had made no commits yet, so nothing to save there. All three re-dispatched, each told explicitly to resume from its pushed checkpoint and verify what was already done before continuing, not restart from scratch. Pruned the now-stale worktrees after confirming each was clean and either merged or safely preserved on its own branch.
