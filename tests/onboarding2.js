@@ -106,43 +106,98 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   n:(CURP.story&&CURP.story.entries||[]).length}));
  await page.click('#obdone'); await page.waitForTimeout(80);
  st=await step(); ok(st.step===6,'story advances into the mirror, step '+st.step);
- const mirror=await page.evaluate(()=>({text:document.querySelector('.ob-card').innerText,
-  k:OB.commit&&OB.commit.k, ok:OB.commit&&OB.commit.ok,
-  i0:(OB.commit&&OB.commit.kept&&OB.commit.kept[0])?OB.commit.kept[0].i:null,
-  b0:(OB.commit&&OB.commit.kept&&OB.commit.kept[0])?OB.commit.kept[0].b:null}));
- ok(mirror.ok&&mirror.k>0,'the real engine read real imprints out of the typed entry, k='+mirror.k);
- ok(/Heart|Solar/.test(mirror.b0||''),'the first kept node sits at a real seat, got '+mirror.b0);
+ /* F4, ROUND QA. THE MIRROR COMES BEFORE THE COMMIT. Done reads the story
+    and writes nothing: no entry, no charge, until the mirror's own Commit.
+    Before this round the charge was in the field before the card was shown,
+    so a no on it had nothing to take back. */
+ const pre=await page.evaluate(()=>({ch:Object.assign({},S.charge),
+  n:(CURP.story&&CURP.story.entries||[]).length, commit:OB.commit}));
+ ok(pre.n===before.n,'Done writes no entry before the mirror is answered, entries '+before.n+' to '+pre.n);
+ ok(Object.keys(before.ch).every(k=>Math.abs((before.ch[k]||0)-(pre.ch[k]||0))<1e-9),
+  'and moves no charge before the mirror is answered');
+ ok(pre.commit===null,'and the commit has not run');
+ const mirror=await page.evaluate(story=>{
+  const card=document.querySelector('.ob-card'), p=parseStory(story);
+  const rows=[...card.querySelectorAll('[data-obrow]')].map(r=>({i:+r.getAttribute('data-obrow'),
+   text:r.innerText, guess:!!r.querySelector('.ob-tag:not(.ob-tag-said)'), said:!!r.querySelector('.ob-tag-said')}));
+  const inf={}; p.imprints.forEach(im=>{inf[im.node]=im.inferred;});
+  return {text:card.innerText, rows:rows, inf:inf, k:p.imprints.length,
+   yes:card.querySelectorAll('[data-obans="yes"]').length, no:card.querySelectorAll('[data-obans="no"]').length,
+   global:card.querySelectorAll('[data-ob="mirroryes"]').length,
+   b0:(OB.read&&OB.read[0])?OB.read[0].seat:null};},REAL_STORY);
+ ok(mirror.k>0&&mirror.rows.length>0,'the real engine read real imprints out of the typed entry, k='+mirror.k);
+ ok(/Heart|Solar/.test(mirror.b0||''),'the first seat the mirror leads with is a real seat, got '+mirror.b0);
  ok(/This separates into its own components/.test(mirror.text),
   'the mirror prints the real-engine line, not a scripted stand in');
  ok(!/anticipation|solar plex/i.test(mirror.text),
   'and never a seat name the owner struck from this sheet');
+ /* A GUESS IS NEVER PRINTED AS A QUOTE. Each row is checked against what
+    parseStory itself says about that address for this exact string. */
+ ok(!/around the word/i.test(mirror.text),'no address is printed "around the word", which reads as a quotation');
+ ok(mirror.rows.every(r=>r.guess===!!mirror.inf[r.i]&&r.said===!mirror.inf[r.i]),
+  'every address is tagged a guess exactly when parseStory marks it inferred: '
+   +mirror.rows.map(r=>r.i+(r.guess?'g':'')+(r.said?'s':'')+'/'+mirror.inf[r.i]).join(' '));
+ ok(mirror.rows.filter(r=>r.guess).every(r=>/The engine.s guess, from your (Heart|Solar|Sacral|Root|Throat|3rd Eye|Crown) seat/.test(r.text)),
+  'and every guess says it is the engine\'s guess and names the seat it came from');
+ ok(/A seat is one of seven places/.test(mirror.text)&&/An address is one exact place/.test(mirror.text),
+  'seat and address carry their plain meaning on the card, round PO');
+ /* ONE ANSWER PER ADDRESS. */
+ ok(mirror.global===0,'there is no single global "That is me" confirming every address at once');
+ ok(mirror.yes===mirror.rows.length&&mirror.no===mirror.rows.length,
+  'every address shown has its own Yes and its own Not me, rows '+mirror.rows.length+' yes '+mirror.yes+' no '+mirror.no);
 
  /* THE CORRECTION PATH, sourced only from the person's own words. */
  await page.click('[data-ob="mirrorno"]'); await page.waitForTimeout(60);
  await page.fill('#obcorr','it also sits in my jaw');
  await page.click('[data-ob="mirroradjust"]'); await page.waitForTimeout(80);
  const adj=await page.evaluate(()=>({text:document.querySelector('.ob-card').innerText,
-  fixes:(CURP.story.entries[CURP.story.entries.length-1].ob||{}).fixes}));
+  n:(CURP.story&&CURP.story.entries||[]).length}));
  ok(/You added:.*jaw/.test(adj.text),'the correction is shown back exactly as typed, never rewritten');
- ok(adj.fixes&&adj.fixes[0]==='it also sits in my jaw',
-  'and is written onto the real entry, the same object the Story tab writes, got '+JSON.stringify(adj.fixes));
+ ok(adj.n===before.n,'and a correction writes no entry of its own before Commit');
 
- await page.click('[data-ob="mirroryes"]'); await page.waitForTimeout(80);
- st=await step(); ok(st.step===7,'mirror advances into the bridge, step '+st.step);
+ /* ACCEPT ONE GUESS, REJECT ANOTHER, IN THE SAME MIRROR. The first seat is
+    opened so its second address is reachable, through the button that says
+    how many more there are. */
+ const g0=await page.evaluate(()=>OB.read[0].id);
+ await page.click('[data-obmore="'+g0+'"]'); await page.waitForTimeout(60);
+ const ids=await page.evaluate(()=>[...document.querySelectorAll('[data-obrow]')].map(r=>+r.getAttribute('data-obrow')));
+ ok(ids.length>=2,'opening a seat shows its other addresses, rows now '+ids.length);
+ const yesI=ids[0], noI=ids[1];
+ await page.click('[data-obans="yes"][data-obi="'+yesI+'"]'); await page.waitForTimeout(40);
+ await page.click('[data-obans="no"][data-obi="'+noI+'"]'); await page.waitForTimeout(40);
+ const ans=await page.evaluate(([a,b])=>({ya:document.querySelector('[data-obans="yes"][data-obi="'+a+'"]').getAttribute('aria-pressed'),
+  nb:document.querySelector('[data-obans="no"][data-obi="'+b+'"]').getAttribute('aria-pressed'),
+  yb:document.querySelector('[data-obans="yes"][data-obi="'+b+'"]').getAttribute('aria-pressed'),
+  text:document.querySelector('.ob-card').innerText}),[yesI,noI]);
+ ok(ans.ya==='true'&&ans.nb==='true'&&ans.yb==='false','one address says yes and the next says no, each on its own control');
+ ok(/In your release\./.test(ans.text)&&/Kept out of your release/.test(ans.text),'and each row says what its answer does');
+
+ await page.click('[data-ob="mirrorcommit"]'); await page.waitForTimeout(80);
+ st=await step(); ok(st.step===7,'Commit advances into the bridge, step '+st.step);
+ const ent=await page.evaluate(()=>{const e=CURP.story.entries[CURP.story.entries.length-1];
+  return {n:CURP.story.entries.length, ob:e.ob, ch:Object.assign({},S.charge), k:OB.commit&&OB.commit.k};});
+ ok(ent.n===before.n+1,'Commit writes the one real entry, entries '+before.n+' to '+ent.n);
+ ok(ent.k>0&&Object.keys(before.ch).some(k=>Math.abs((before.ch[k]||0)-(ent.ch[k]||0))>1e-9),
+  'and the real commit moves the field only now, k='+ent.k);
+ ok(ent.ob&&ent.ob.yes&&ent.ob.yes.indexOf(yesI)>=0&&ent.ob.no&&ent.ob.no.indexOf(noI)>=0,
+  'the yes and the no are written onto the real entry, got '+JSON.stringify(ent.ob&&{yes:ent.ob.yes,no:ent.ob.no}));
+ ok(ent.ob&&ent.ob.fixes&&ent.ob.fixes[0]==='it also sits in my jaw',
+  'and the correction is written onto the same entry, word for word, got '+JSON.stringify(ent.ob&&ent.ob.fixes));
  const bridge=await page.evaluate(()=>document.querySelector('.ob-card').innerText);
  ok(/Begin the release/.test(bridge),'the bridge offers a real release, found a node to carry it');
 
  /* THE HAND OFF. Never a second engine: this closes onboarding and opens
-    ui/release.js's own one entry, relPick, on the exact node the mirror
-    named. */
+    ui/release.js's own one entry, relPick, on the addresses the person said
+    yes to, and never on one they said no to. */
  await page.evaluate(SHRINK);
  await page.click('[data-ob="release"]'); await page.waitForTimeout(150);
  const rel=await page.evaluate(()=>({open:RUN.open,queueI:(RUN.queue||[]).map(n=>n.i),
   obClosed:!OB.open}));
  ok(rel.open,'the release card opens, handed off rather than duplicated');
  ok(rel.obClosed,'and the onboarding sheet is gone, never stacked behind it');
- ok(rel.queueI.length&&rel.queueI[0]===mirror.i0,
-  'and it carries the exact node the mirror read, never a guess built from a pick or a feeling word');
+ ok(rel.queueI.length&&rel.queueI[0]===yesI,
+  'and it carries the exact address the person said yes to, never a guess built from a pick or a feeling word');
+ ok(rel.queueI.indexOf(noI)<0,'and never the address they said no to');
 
  /* RUN IT TO A REAL COOLDOWN, the same way tests/design.js already proves
     the card itself can finish, so "reaches a release" means the walker
@@ -221,10 +276,12 @@ console.log('\n=== the mirror is checked against the engine directly, never trus
   document.getElementById('obtext').dispatchEvent(new Event('input'));
   document.getElementById('obdone').click();
   const text=document.querySelector('.ob-card').innerText;
-  return {direct:direct,shown:text,k:OB.commit.k};
+  const rows=document.querySelectorAll('[data-obrow]').length;
+  document.querySelector('[data-ob="mirrorcommit"]').click();
+  return {direct:direct,shown:text,rows:rows,k:OB.commit.k};
  },'the weather was fine today and nothing much happened');
  ok(q.direct===0,'a check sentence the engine itself reads as nothing, confirmed off parseStory directly');
- ok(q.k===0,'the onboarding reads the identical nothing, same engine call');
+ ok(q.k===0&&q.rows===0,'the onboarding reads the identical nothing, same engine call, and shows no address');
  ok(/Nothing in that one lit anything the engine could name/.test(q.shown),
   'and says so in the honest-empty words, never inventing a finding');
  await page.close();
@@ -246,7 +303,7 @@ console.log('\n=== J0, the distress gap, reported rather than papered over ===')
  console.log('  J0 STILL OPEN: no distress detector runs on a stranger\'s first story before it is');
  console.log('  committed. typeof a detector function: '+q.detector+' (expect undefined). This is a');
  console.log('  ship blocker for any build a stranger who is not the owner can reach, named as such in');
- console.log('  atuned_src/ui/onboard.js\'s own header, at the exact line obStoryDone calls stCommit.');
+ console.log('  atuned_src/ui/onboard.js\'s own header, at the exact line obStoryDone hands the words to parseStory.');
  ok(q.detector==='undefined',
   'confirmed: no distress detector exists in this build (the gap is real, not assumed)');
 }
