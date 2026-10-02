@@ -82,7 +82,11 @@ fs.mkdirSync(OUT,{recursive:true});
    document.getElementById('obdone').click();});
   await p.waitForTimeout(350);
   await p.screenshot({path:`${OUT}/new-${w}-mirror.png`});
-  await p.evaluate(()=>{document.querySelector('[data-ob=mirroryes]').click();});
+  /* F4, round QA: one Yes per address, then the mirror's own Commit */
+  await p.evaluate(()=>{document.querySelector('[data-obans="yes"]').click();});
+  await p.waitForTimeout(200);
+  await p.screenshot({path:`${OUT}/new-${w}-mirror-answered.png`});
+  await p.evaluate(()=>{document.querySelector('[data-ob=mirrorcommit]').click();});
   await p.waitForTimeout(300);
   await p.screenshot({path:`${OUT}/new-${w}-bridge.png`});
   await p.close();

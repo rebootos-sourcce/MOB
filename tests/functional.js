@@ -2417,9 +2417,14 @@ console.log('\n=== the opening, round PS: arrive, the twelve, settle, feel, body
   await new Promise(r=>setTimeout(r,60));
   o.steps.push(document.querySelector('.ob-h').textContent);     /* mirror */
   o.said=document.querySelector('.ob-card').innerText;
-  o.k=OB.commit&&OB.commit.k;
-  document.querySelector('[data-ob=mirroryes]').click();
+  /* F4, ROUND QA: the mirror comes before the commit, and each address has
+     its own Yes. Nothing is written until the mirror's Commit. */
+  o.early=before.some((v,i)=>Math.abs(v-(+(S.charge[CHARGES[i]]||0)))>1e-9);
+  document.querySelector('[data-obans="yes"]').click();
   await new Promise(r=>setTimeout(r,60));
+  document.querySelector('[data-ob=mirrorcommit]').click();
+  await new Promise(r=>setTimeout(r,60));
+  o.k=OB.commit&&OB.commit.k;
   o.steps.push(document.querySelector('.ob-h').textContent);     /* bridge */
   o.bridgeSaid=document.querySelector('.ob-card').innerText;
   document.querySelector('[data-ob=done]').click();              /* Not now: close without a release */
@@ -2439,7 +2444,8 @@ console.log('\n=== the opening, round PS: arrive, the twelve, settle, feel, body
  ok(ob.freed,'and a real entry frees Done');
  ok(/This separates into its own components/.test(ob.said),
   'the mirror prints the real-engine read, never a scripted stand in');
- ok(ob.k>0,'a real sentence reads real imprints, k='+ob.k);
+ ok(ob.early===false,'and nothing is written while the mirror is being read, F4');
+ ok(ob.k>0,'a real sentence reads real imprints, committed from the mirror, k='+ob.k);
  ok(/Next is a release/.test(ob.bridgeSaid),'the bridge offers the real release it found');
  ok(ob.closed,'and it closes');
  /* THE THING THAT CHANGED, STATED RATHER THAN LEFT IMPLICIT: a real entry
