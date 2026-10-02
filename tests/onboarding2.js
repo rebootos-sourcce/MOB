@@ -286,6 +286,40 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(mini.pl&&spent===mini.pl.lines,'the first release opened '+spent+' lines of new ground, the twelve it was shown and no more');
  ok(errs.length===0,'no script error the whole way through: '+errs.slice(0,3).join(' | '));
  console.log('  reached a real release in '+(Date.now()-t0)+'ms of wall clock, shrunk timing');
+
+ /* THE NEXT VISIT, ROUND QB. Every assertion above ran inside the one page
+    that wrote the record, and nothing in this file ever loaded it back, so
+    the profile boundary never saw what onboarding writes. It refused it:
+    obCommit puts ob on the story entry, ENT_KEYS did not name ob, and the
+    boot's validateProfile refused the whole profile, "story.entries[0] may
+    not carry ob". A blank "You" opened in its place, the welcome sheet
+    replayed, and the status line said nothing, because storeRefused() had
+    no caller. Checked against that build first: these assertions fail on
+    it and pass on the fix.
+
+    A real reload in the same page, so the same browser store, through the
+    real boot. What is compared is read off the disk before the reload and
+    off the loaded record after it, never typed here. */
+ const kept=await page.evaluate(()=>{const e=CURP.story.entries[CURP.story.entries.length-1];
+  return {id:CURP.id, n:CURP.story.entries.length, ob:JSON.stringify(e.ob), text:e.text,
+   onboarded:!!(CURP.ui&&CURP.ui.onboarded), disk:localStorage.getItem(PKEY)};});
+ ok(kept.disk&&kept.disk.indexOf('"ob":')>=0,'the answers are on the disk before the reload');
+ await page.reload({waitUntil:'load'}); await booted(page);
+ const back=await page.evaluate(()=>{const es=(CURP&&CURP.story&&CURP.story.entries)||[], e=es[es.length-1]||{};
+  return {id:CURP&&CURP.id, n:es.length, ob:JSON.stringify(e.ob), text:e.text,
+   onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded), refused:storeRefused(), unread:storeUnread(),
+   profiles:PROFILES.length, status:(document.getElementById('status')||{}).textContent||''};});
+ ok(back.refused.length===0,'the boundary takes the record onboarding wrote, refused '+JSON.stringify(back.refused));
+ ok(back.unread===null,'and the store reads at all');
+ ok(back.id===kept.id&&back.n===kept.n&&back.text===kept.text,
+  'the same profile comes back after a reload, with the same story, '+back.n+' entries of '+kept.n);
+ ok(back.ob===kept.ob,'and every yes, no and correction comes back as written: '+back.ob);
+ ok(back.onboarded,'the record still says onboarding was finished');
+ await page.waitForSelector('#loginb-skip',{timeout:8000}).catch(()=>{});
+ if(await page.$('#loginb-skip'))await page.click('#loginb-skip');
+ await page.waitForTimeout(300);
+ const replay=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
+ ok(!replay,'and the welcome sheet does not replay on the next visit');
  await page.close();
 }
 
