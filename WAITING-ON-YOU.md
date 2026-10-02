@@ -6,6 +6,10 @@ One list, in the order I'd look at it if I were you. Each line says what I sent,
 
 **J0: no stranger's first story should reach the engine until there's a distress check.** Three separate reviews tonight independently landed on the same gap: the Story screen writes a reading into your field the moment you finish typing, with no chance to confirm, correct or reject it, and no check at all for whether what was typed is a crisis, not a pattern to work on. This is also exactly the thing you said "not yet" to a few hours ago (the clinician and counsel review). I have not built anything here and will not without your word, it's a safety and clinical call, not an engineering one. When you're ready: either green-light a first version so it can be reviewed with real behavior to look at, or say who should design it before any code gets written.
 
+## Listen to this one when you're near a speaker
+
+**The tension-line sound, built tonight, is unheard by anyone.** A crackle on the Field's threads and the Body's cables once zoomed in, exactly what you asked for in shape (static or electricity), measured inside the product's own loudness and length caps. But a gate can measure a sound, not hear it. Whether it actually reads as static rather than a tap or a glitch is yours to judge, first thing once you're at a machine with sound.
+
 ## Look at these first — pictures and files already in your hands
 
 1. **The cover and landing page**: CONFIRMED, round PU. "Let's run with that attuned landing page for now."
