@@ -189,6 +189,16 @@ function obDrainAsync(){
      a loss on this one, and the person is told rather than shown "sent". */
   if(!obWrite(left)) return {state:'retry', n:q.length+tail.length, sent:sent,
    why:'sent, but could not clear them from storage, so they may send again'};
+  /* WHAT ARRIVED DURING THE WAIT GOES IN THE SAME PASS. Its own Send was told
+     busy, so leaving it would hold a clean entry until the person wrote
+     another, and reporting the pass as a retry because of it said "not sent"
+     over a send that went. The first cut did both; tests/feedback.js caught
+     it. Only when everything tried went, so a server that said no is not
+     knocked on again for the newcomer. */
+  if(tail.length&&!stopped) return obDrainAsync().then(function(d){
+   if(d.state==='sent') return {state:'sent', n:sent+d.n,
+    refused:(bad.length+(d.refused||0))||undefined};
+   d.sent=(d.sent||0)+sent; return d;});
   if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad};
   if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
   return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};},
