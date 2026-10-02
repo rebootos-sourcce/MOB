@@ -169,6 +169,12 @@ if(typeof module!=='undefined'&&module.exports){
      rename that missed this table shipped six broken questions, and a table
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
+  /* the three blocks under the 63. The tables are exported so the gate reads
+     every count off them rather than typing one, and the functions so it can
+     drive the boundary and the read-out. */
+                  IX_DRAFT:IX_DRAFT, IX_ARCH:IX_ARCH, IX_AXIS:IX_AXIS, IX_ACT:IX_ACT, IX_BLOCKS:IX_BLOCKS,
+                  IX_FLOOR:IX_FLOOR, IX_TIE_MAX:IX_TIE_MAX, ixBlank:ixBlank, ixFill:ixFill, ixGet:ixGet,
+                  ixSet:ixSet, ixRead:ixRead, ixSay:ixSay, ixValidate:ixValidate, ixName:ixName,
   /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,

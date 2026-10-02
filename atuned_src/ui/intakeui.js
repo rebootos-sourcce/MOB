@@ -495,6 +495,19 @@ function iqArtCss(){
   '.iqa-gw{min-width:0}',
   '.iqa-sv{font-family:var(--num);font-size:18px;font-weight:600;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--c) 62%,var(--ink));text-align:right}',
   '.iqa-open{display:grid;gap:10px;padding:8px 6px 14px 62px}',
+  /* ---- the three blocks stacked under the laws. the seat panel's own surface,
+     open, with the framing card's own scale ---- */
+  '.iqx{display:grid;gap:4px}',
+  '.iqx-line{margin:0;padding:0 10px 6px;font-size:14px;line-height:1.5;color:var(--mid);max-width:70ch}',
+  '.iqx-read{margin:0 6px 6px;padding:10px 12px;border-radius:var(--r-s);font-size:15px;line-height:1.5;color:var(--ink);',
+  ' background:color-mix(in srgb,var(--accent) 10%,transparent)}',
+  '.iqx-read b{font-weight:600;color:var(--accent)}',
+  '.iqx-read[data-st="part"],.iqx-read[data-st="level"]{background:none;color:var(--dim)}',
+  '.iqx-read[data-st="part"] b,.iqx-read[data-st="level"] b{color:var(--mid)}',
+  '.iqx-qs{display:grid;gap:8px;padding:2px 6px 6px}',
+  '.iqx-qs .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
+  '.iqx-m{font-size:13.5px;line-height:1.45;color:var(--dim);margin:0 0 6px}',
+  '.iqx-note{margin:0;padding:0 10px;font-size:13px;color:var(--dim)}',
   /* ---- one law: its three framings, each a card with its own icon ---- */
   '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
   '#iqbody .iqa .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
@@ -563,7 +576,7 @@ function iqArtCss(){
   '@container (max-width:1040px){',
   ' .iqa .iqa-stage{grid-template-columns:1fr}',
   ' .iqa .iqa-side{border-left:0;border-top:1px solid var(--edge)}',
-  ' .iqa .iqa-open .iqa-fr{grid-template-columns:1fr;gap:10px}',
+  ' .iqa .iqa-open .iqa-fr,.iqa .iqx-qs .iqa-fr{grid-template-columns:1fr;gap:10px}',
   ' .iqa .iqa-open{padding-left:6px}}',
   '@container (max-width:900px){',
   ' .iqa .iqa-whob{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"i t v" "c c c";row-gap:10px}',
@@ -899,6 +912,69 @@ function iqViewOne(p,Q,sc){
   +'<div class="iqa-nav"><button type="button" class="btn" data-step="-1">Previous law</button>'
   +'<button type="button" class="btn pri" data-step="1">Next law</button></div></div></div>';}
 
+/* ============================================================
+   THE THREE BLOCKS STACKED UNDER THE LAWS. Round PP, his words: "Intake, I
+   asked for the Jungian archetypes. And we should also do the nine emotional
+   axis and the six action axis ... We'll keep this design for now. Let's see
+   what it looks like with all of them stacked."
+
+   KEPT TO THE DESIGN IT SITS IN. Each block is the seat panel's own surface
+   (.iqa-pn), each question is the law's framing card (.iq-qc, .iqa-fr) with
+   the same eleven cell scale, and nothing new is drawn. They are STACKED, all
+   open, under the laws in all three views: the point of this round is to see
+   the page at its full length, so nothing here is folded behind a press.
+
+   The questions are data (engine/data/intakemore.js) and the record, the
+   boundary and the read-out sentence are engine (engine/intakemore.js). This
+   draws them and writes one answer through ixSet. It does not call
+   lawAnswered, iqApply or render(): these answers are evidence and are read by
+   no sum, so there is nothing else on the page to bring up to date.
+   ============================================================ */
+var IQ_XPOP=null;
+/* a row's seat, and so its colour, from the table that already places it. An
+   archetype and an axis each have one. The six gates have none of their own
+   and the Field's bar draws them at the Heart (ui/fieldbar.js). */
+function iqxSeat(id,k){
+ var i;
+ if(id==='arch'){for(i=0;i<ARCH.length;i++)if(ARCH[i].nm===k)return ARCH[i].b;}
+ if(id==='axes'){for(i=0;i<CHILD.length;i++)if(CHILD[i].nm===k)return CHILD[i].seat;}
+ return 'Heart';}
+/* the mark a named row wears, drawn from the product's own tables: an axis its
+   glyph in CHILD, an action its gate glyph. An archetype row is not named on
+   the page (see engine/data/intakemore.js) so it wears none. */
+function iqxIcon(id,k){
+ var i;
+ if(id==='axes'){for(i=0;i<CHILD.length;i++)if(CHILD[i].nm===k)return CHILD[i].ic;}
+ if(id==='acts')return GATEGLYPH[k]||null;
+ return null;}
+function iqxCard(p,id,row){
+ var c=seatCol(iqxSeat(id,row.k)), v=ixGet(p,id,row.k), near=(v==null)?null:Math.round(v);
+ var ic=iqxIcon(id,row.k), nm=ixName(id,row.k);
+ /* THE LABEL ROW IS THERE FOR A NAMED ROW ONLY, and a name never stands alone:
+    the one sentence that says what it means sits under it. */
+ var lab=(id==='arch')?'':'<div class="iqa-flr"><span class="iqa-fi">'+iqSvg(ic)+'</span>'
+   +'<em class="iqa-fl">'+esc(nm)+'</em></div><div class="iqx-m">'+esc(row.means)+'</div>';
+ var h='<div class="iq-qc iqa-fr" style="--c:'+c+'"><div>'+lab
+  +'<div class="iqa-qt">'+esc(row.q)+'</div></div>'
+  +'<div class="iq-sl" role="group" aria-label="'+esc(row.q)+'">';
+ for(var n=0;n<=10;n++)
+  h+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-ixb="'+id+'" data-ixk="'+esc(row.k)+'" data-v="'+n
+   +'" style="--v:'+n+'" aria-pressed="'+(near===n)+'">'+n+'</button>';
+ return h+'</div></div>';}
+function iqxHtml(p){
+ ixFill(p);
+ return IX_BLOCKS.map(function(b){
+  var r=ixRead(p,b.id), say=ixSay(b.id,r);
+  return '<section class="iqa-pn iqx" id="iqx-'+b.id+'" data-st="'+r.state+'" style="--c:var(--accent)">'
+   +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b.nm)+'</span></div>'
+   +'<p class="iqx-line">'+esc(b.line)+'</p>'
+   +(say.head?'<p class="iqx-read" data-st="'+r.state+'"><b>'+esc(say.head)+'</b>'+(say.body?' '+esc(say.body):'')+'</p>':'')
+   +'<div class="iqx-qs">'+b.rows.map(function(row){return iqxCard(p,b.id,row);}).join('')+'</div>'
+   +'</section>';}).join('')
+  /* said once under the stack and not under each block: three copies of one
+     sentence is the page explaining itself three times */
+  +'<p class="iqx-note">These three are kept beside your reading. They do not change it.</p>';}
+
 function renderIntake(){
  /* ITS OWN BODY, round HG. The tab is the Avatar now and the avatar is its
     hero, in #avbody above this. This renderer writes the whole of its host on
@@ -939,6 +1015,7 @@ function renderIntake(){
     answers on Unity landed the page on Awareness with Unity's reading unseen. */
  if(IQ_VIEW!=='list'&&IQ_OPEN==null)IQ_OPEN=iqInHand(p);
  h+=(IQ_VIEW==='wheel'?iqViewWheel(p,Q,sc,r,scored):IQ_VIEW==='one'?iqViewOne(p,Q,sc):iqViewList(p,Q,sc));
+ h+=iqxHtml(p);
  h+='</div>';
  iqArtCss(); iqDoors();
  host.innerHTML=h;
@@ -952,6 +1029,7 @@ function renderIntake(){
   var at=an.who?host.querySelector('.iqa-whop:not([hidden])'):an.more?host.querySelector('.iqa-more:not([hidden])')
    :an.seat?host.querySelector('.iqa-pn:not([hidden])'):an.law!=null?host.querySelector('.iqa-open'):null;
   if(at)at.classList.add('iqa-in');}
+ if(IQ_XPOP){var xe=host.querySelector(IQ_XPOP+'.on'); IQ_XPOP=null; if(xe)xe.classList.add('iqa-pop');}
  if(pu){
   var pg=iqGot(p,pu.li), seg=pu.fresh?(pg>=3?'s':String(pg-1)):null;
   host.querySelectorAll('[data-law="'+pu.li+'"] .iqa-rg').forEach(function(e){
@@ -999,6 +1077,16 @@ function renderIntake(){
   var kf=[].slice.call(host.querySelectorAll(IQ_FOCUS)).filter(function(e){
    return e.getClientRects().length;})[0]; IQ_FOCUS=null;
   if(kf&&kf.focus)kf.focus({preventScroll:true});}
+ /* THE THREE BLOCKS' ANSWERS. One write through ixSet, which refuses a row or a
+    value the product does not have and says so by returning false. It saves and
+    reports through the status region like every write that can fail, and the
+    answer stays on screen either way, because it is what the person pressed
+    and the status line is what says whether it will survive a reload. */
+ host.querySelectorAll('[data-ixb]').forEach(function(el){el.onclick=function(){
+  var id=el.getAttribute('data-ixb'), k=el.getAttribute('data-ixk'), v=+el.getAttribute('data-v');
+  if(!ixSet(CURP,id,k,v)){status('That answer was not recorded.','fail');return;}
+  IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
+  IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
   /* a changed answer is a new reading of that law, so the releases counted
      against the old one stop counting (engine/compute.js, lawAnswered). Even

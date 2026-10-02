@@ -393,6 +393,7 @@ var ACC_HELD=[
  ['The identity and birth moment','name, sex, date, time and place'],
  ['The 63 answers','what you said about the twenty one laws'],
  ['The charge on nine axes','what the answers and the stories wrote'],
+ ['The archetype, axis and action answers','what you said about how you act and feel, kept beside the 63'],
  ['The stories','every entry, in your words, as you typed it'],
  ['The imprints','what the engine read out of them'],
  ['The meter','which addresses have been opened and when'],

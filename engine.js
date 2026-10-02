@@ -3429,6 +3429,160 @@ function relLine(n,chan,line){
 function c3Band(n){for(var i=0;i<C3_BAND.length;i++)
  if(n>=C3_BAND[i].lo&&n<=C3_BAND[i].hi)return C3_BAND[i];
  return C3_BAND[0];}
+/* ============================================================
+   THE THREE BLOCKS STACKED UNDER THE 63. FIRST DRAFT, AND MARKED SO.
+   Round PP, his words: "Intake, I asked for the Jungian archetypes. And we
+   should also do the nine emotional axis and the six action axis for the
+   intake. We'll keep this design for now. Let's see what it looks like with
+   all of them stacked."
+
+   THIS FILE IS CONTENT AND NOTHING ELSE. Every question is a row of plain
+   text keyed by the name of the thing it places a person on, so the owner can
+   rewrite a sentence, reorder a row or strike one without a code change. The
+   renderer (ui/intakeui.js, iqxHtml) and the boundary (engine/intakemore.js)
+   read these tables and hold no question of their own. The gate in
+   tests/engine.js reads every count off these arrays, so adding a row needs
+   no edit anywhere else, and a row that names nothing the product has is
+   refused by that gate rather than rendered.
+
+   IX_DRAFT IS THE SWITCH THE OWNER WILL LOOK FOR. True means the wording has
+   not been through him. Nothing reads it to change behaviour, so flipping it
+   changes no screen; it is there so that a reader of this file, and the tests,
+   can say out loud that the sentences below are mine and not his.
+
+   WHAT EACH BLOCK PLACES A PERSON ON, AND WHERE THE SET COMES FROM
+
+   arch   The product's own twelve (ARCH, engine/data/canon.js): Warrior, Sage,
+          Rebel, Caregiver, Creator, Magician, Ruler, Explorer, Lover, Jester,
+          Everyman, Innocent. ARCH_CREDIT says what they are: "Jung-derived,
+          after Carol Pearson and Margaret Mark". Orphan and Hero, which the
+          brief listed, are two of the eighteen in ARCH18 and not of the twelve
+          the Avatar, the Field and the rail already carry, and one word per
+          concept: a person who is asked about Hero here and finds no Hero on
+          the Avatar has been given two lists. So the twelve the product holds
+          are the twelve asked. Hero and Orphan are named in
+          DESIGN-intake-axes.md as the way this would change if he wants his.
+   axes   The nine poled axes (CHILD, engine/data/canon.js). One question per
+          axis, on the held side only. The opposite is not asked, because the
+          engine already stores it as the installed opposite (p.axes[..].opp)
+          and a person has not installed anything by answering a question.
+   acts   The six gates (VERP, engine/verp.js), said as action. DECISIONS.md,
+          "Read as": "the gates (said as action in the product)", and TASKS.md
+          GL4 records that the only six axes the product has are these. The
+          engine calls them "THE SIX AXES" at the top of verp.js. They are how
+          a person meets a feeling when it rises, which is an action and not a
+          feeling, so they are the six action axes. The six release channels
+          (believing, perceiving, thinking, behaving, acting, feeling) are the
+          other candidate and were not taken: they are a sentence a person says
+          in a release, not a thing a person does, and nobody rates them.
+
+   EVIDENCE, NOT A VERDICT. These answers are stored on the profile beside the
+   63 and are read by no sum. They do not write to the laws, the charge, CQ or
+   the gate counts (p.gates.verp is counts of sentences read out of stories and
+   stays that). The archetype answers also do not touch p.soul.arcs, which is
+   what the person CHOSE on the Avatar and which the onboarding review records
+   as authoritative (ATUNED-onboarding-REVIEW-3-narrative.md, S17): what a
+   person says they do and who they say they are becoming are two records and
+   neither overwrites the other.
+
+   THE DIRECTION OF EVERY QUESTION IS THE SAME, how often, 0 never to 10 every
+   time, the scale the 63 already use. A person who says yes to everything
+   produces a level read and the read-out says so, and does not name a winner
+   (IX_FLOOR, engine/intakemore.js). Forced choice would resist that better and
+   needs a control the page does not have; it is the first thing to try if this
+   draft reads flat.
+
+   THE ARCHETYPE ROWS CARRY NO NAME ON THE PAGE. A row labelled "Ruler" is a
+   question about whether you would like to be called a ruler. The name appears
+   in the read-out, with its meaning, once all of them are answered. The axes
+   and the actions are named on the page, each with its meaning beside it,
+   because the question is a sensation or a move and the name does not flatter.
+   ============================================================ */
+const IX_DRAFT=true;
+
+const IX_ARCH=[
+ {k:'Warrior',  q:'When something you care about is threatened, how often do you move on it at once?'},
+ {k:'Sage',     q:'When something goes wrong, how often do you stop and work out what is happening before you act?'},
+ {k:'Rebel',    q:'When you are handed a rule you did not make, how often do you push back on it?'},
+ {k:'Caregiver',q:'When someone near you is struggling, how often do you put your own plans down to help?'},
+ {k:'Creator',  q:'When you have a free hour, how often do you spend it making something?'},
+ {k:'Magician', q:'When you are stuck, how often do you change the set up so the problem stops being one?'},
+ {k:'Ruler',    q:'When a group has nobody in charge, how often do you step in and set the order?'},
+ {k:'Explorer', q:'When a place or a path is new to you, how often do you go on past where the others stop?'},
+ {k:'Lover',    q:'When you care about someone, how often do you move closer and say so?'},
+ {k:'Jester',   q:'When the room goes tense and nobody speaks, how often do you break it with a joke?'},
+ {k:'Everyman', q:'When you walk into a room where everyone already knows each other, how often do you stay with the group and fit in?'},
+ {k:'Innocent', q:'When someone tells you something, how often do you take it as they said it, without looking for a catch?'}];
+
+/* k is the axis's name in CHILD. means is the held side in one sentence and
+   oppMeans is its other end in one, because the page prints the opposite's
+   name (Trust, Equanimity) and a name never stands alone. The place in the
+   body is not written here: it is CHILD[..].loc and is read from there so the
+   two cannot drift. */
+const IX_AXIS=[
+ {k:'Fear',        q:'How often does your lower back or gut clench, as if something is about to hit, when nothing in the room could hit you?',
+  means:'The body braces against a threat, real or not.',
+  oppMeans:'The body rests and has nothing to brace against.'},
+ {k:'Anger',       q:'How often does heat or pressure build in your upper belly when something is unfair or a line is crossed?',
+  means:'The body heats up and pushes against something that feels wrong.',
+  oppMeans:'The body stays level while the pressure is there.'},
+ {k:'Shame',       q:'How often do you want to shrink or hide when you are seen getting something wrong?',
+  means:'The body shrinks and hides from being seen.',
+  oppMeans:'The body stays upright and does not hide.'},
+ {k:'Disgust',     q:'How often does your stomach turn or your skin crawl at something you have to be near or take in?',
+  means:'The body pulls away from something it cannot take in.',
+  oppMeans:'The body takes the thing in and lets it be.'},
+ {k:'Apathy',      q:'How often do your neck and shoulders go heavy and flat, so that starting anything feels like too much?',
+  means:'The body goes flat and the will to start goes quiet.',
+  oppMeans:'The body has the energy to start.'},
+ {k:'Shock',       q:'How often does your head go blank and your skin go cold, because the moment hit before you could take it in?',
+  means:'The body freezes because the moment arrived too fast to take in.',
+  oppMeans:'The body keeps its footing when the moment hits.'},
+ {k:'Sad',         q:'How often does the middle of your chest feel heavy or hollow, as if something was taken out of it?',
+  means:'The body goes heavy over something that was lost.',
+  oppMeans:'The body lifts and opens.'},
+ {k:'Surprise',    q:'How often do your upper chest and back jump or brace at a sound or a change you did not see coming?',
+  means:'The body jumps at something it did not see coming.',
+  oppMeans:'The body is set and steady for what comes.'},
+ {k:'Anticipation',q:'How often do you feel a pull under your breastbone, leaning toward something that has not happened yet?',
+  means:'The body leans ahead toward something that has not happened.',
+  oppMeans:'The body stays in this moment and not the next one.'}];
+
+/* k is the gate's key in VERP. The question is always "when a strong feeling
+   rises", because that is the only thing the six have in common, and the
+   stem is written once per row so a row can be struck or reworded alone. */
+const IX_ACT=[
+ {k:'aware', q:'When a strong feeling rises, how often do you notice where it sits in your body and stay with it?',
+  means:'You notice the feeling in your body while it is there.'},
+ {k:'detach',q:'When a strong feeling rises, how often do you feel it without following the story it tells?',
+  means:'You feel it and stay out of the story it tells.'},
+ {k:'intent',q:'When a strong feeling rises, how often do you keep doing what you were doing while it passes?',
+  means:'It rises and you keep to what you were doing.'},
+ {k:'ignore',q:'When a strong feeling rises, how often do you find out only afterward that it was there?',
+  means:'You do not see it coming, or you choose not to look.'},
+ {k:'attach',q:'When a strong feeling rises, how often do you get pulled into the story and go wherever it goes?',
+  means:'The story takes you and you go with it.'},
+ {k:'averse',q:'When a strong feeling rises, how often do you go around it, put it off or change the subject?',
+  means:'You go around it, put it off or change the subject.'}];
+
+/* THE THREE BLOCKS, IN THE ORDER THEY STACK. id is the key of the answers on
+   the profile (p.intake.more[id]), so it is part of the saved record and a
+   rename here is a migration. rows is the table above. nm is the heading and
+   line is the one sentence that says what the block is, because a term of art
+   never stands alone (UNPACK EVERY SYMBOL, CLAUDE.md): archetype, axis and
+   action axis are each said in plain words in the block that uses them.
+   A row finds its colour in the renderer, from the seat ARCH and CHILD already
+   place it at. The actions have none of their own in the product, and the gates
+   are drawn at the Heart in the Field's bar (ui/fieldbar.js), so they take that.
+   NO DIGIT AND NO NUMBER WORD IN ANY LINE. A count typed into a heading is the
+   defect this repository has been bitten by more than any other. */
+const IX_BLOCKS=[
+ {id:'arch', nm:'Archetypes', rows:IX_ARCH,
+  line:'An archetype is a stock role people play, like the one who leads or the one who helps. Each question is a moment. Say how often you act that way.'},
+ {id:'axes', nm:'Emotional axes', rows:IX_AXIS,
+  line:'An axis is a line from a feeling to its opposite. Each question is a feeling the body can hold. Say how often it runs in you.'},
+ {id:'acts', nm:'Action axes', rows:IX_ACT,
+  line:'An action axis is a move you make when a feeling rises, from meeting it to going around it. Say how often you make each one.'}];
 
 /* ============================================================
    THE SIX AXES. Three higher gates and three lower gates. This is
@@ -7697,7 +7851,11 @@ function blankProfile(name){
      stored, because a derived value that is also stored is one that can
      drift. */
   avatar:avatarBlank(), purpose:purposeBlank(),
-  laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
+  laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null,
+   /* the three blocks stacked under the 63, engine/intakemore.js. Evidence and
+      read by no sum. Additive: an older record has none and is filled from this
+      blank, with no SCHEMA_V bump. */
+   more:ixBlank()},
   /* THE RELEASES SINCE EACH LAW WAS ANSWERED, by law: n patterns of new ground
      at the law's seat, counted against the answer on. CQ reads a law as its
      answer lifted by these (engine/compute.js, LIFT_R). Kept beside the answer
@@ -7784,6 +7942,9 @@ function loadProfile(p){
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
  if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[]};
+ /* and a record from before the archetype and axis blocks has no answers to
+    them, which is a record that was never asked */
+ ixFill(p);
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -8487,7 +8648,10 @@ function validateProfile(o){
    if(v!==null)p.intake.answers[i]=v;});
   if(Array.isArray(o.intake.done))p.intake.done=o.intake.done.slice();
   if(typeof o.intake.startedAt==='string')p.intake.startedAt=o.intake.startedAt;
-  if(typeof o.intake.completedAt==='string')p.intake.completedAt=o.intake.completedAt;}
+  if(typeof o.intake.completedAt==='string')p.intake.completedAt=o.intake.completedAt;
+  /* THE THREE BLOCKS UNDER THE 63, through their own boundary into the same
+     errs. Missing is an older record and keeps the blank. */
+  p.intake.more=ixValidate(errs,o.intake.more,'intake.more');}
  /* who. strings only, and never trusted into the document by this file. */
  if(o.who&&typeof o.who==='object'){
   ['first','middle','last','sex','sealed'].forEach(function(k){
@@ -10456,6 +10620,164 @@ function iqApply(p){
  if(p.intake.done.length===21 && !p.intake.completedAt) p.intake.completedAt=new Date().toISOString();
  return sc;}
 
+/* ============================================================
+   THE THREE BLOCKS UNDER THE 63, THE ENGINE HALF. Archetypes, the nine
+   emotional axes and the six action axes. The questions are data
+   (engine/data/intakemore.js); this is the record they are answered into, the
+   boundary that guards it, and the read-out sentence. No browser in here.
+
+   WHERE THE ANSWERS LIVE. p.intake.more, three bags keyed by the row's own
+   name, each value 0 to 10 and an absent key meaning not answered:
+
+     p.intake.more = {arch:{Warrior:7, ..}, axes:{Fear:4, ..}, acts:{aware:5, ..}}
+
+   Beside the 63 and not mixed into them, because the 63 are indexed by
+   position and read by iqScore, iqApply and CQ, and these are read by none of
+   them. THAT IS THE WHOLE POINT AND IT IS WHAT THE GATE PINS: answering any
+   question here must leave every law, every charge, every gate count and CQ
+   exactly where they were. They are evidence the person gave about themselves,
+   shown back to them, and a number that moved the reading would turn a draft
+   questionnaire nobody has calibrated into a verdict.
+
+   NO SCHEMA_V BUMP. The field is additive, and an older record has none and is
+   filled from the blank, which is the posture the practice objects and the
+   daily summaries already take. Named here AND in loadProfile AND at the
+   boundary, because a key the boundary does not name is deleted on the next
+   load.
+   ============================================================ */
+/* UNDER THIS A SPREAD IS NOISE. The same floor iqScore uses for the 63: three
+   framings of one law that sit within three points of each other do not
+   distinguish a lean, and twelve answers within three points of each other
+   do not distinguish a leading archetype. Said as "level" rather than
+   inventing a winner. */
+var IX_FLOOR=3;
+/* MORE THAN THIS TIED AT THE TOP IS LEVEL TOO. Two or three tied is a real
+   answer (a person can lead with the Sage and the Rebel). Five tied at 10 is a
+   person who pressed ten twelve times. */
+var IX_TIE_MAX=3;
+function ixBlank(){return {arch:{}, axes:{}, acts:{}};}
+function ixBlock(id){
+ for(var i=0;i<IX_BLOCKS.length;i++)if(IX_BLOCKS[i].id===id)return IX_BLOCKS[i];
+ return null;}
+function ixRow(id,k){
+ var b=ixBlock(id); if(!b)return null;
+ for(var i=0;i<b.rows.length;i++)if(b.rows[i].k===k)return b.rows[i];
+ return null;}
+/* WHAT A ROW IS CALLED ON THE PAGE, from the product's own table so a rename
+   there is carried here. An archetype and an axis are keyed by their name; a
+   gate is keyed by a short key and named by VERP. */
+function ixName(id,k){
+ var i;
+ if(id==='acts'){for(i=0;i<VERP.length;i++)if(VERP[i].k===k)return VERP[i].nm; return k;}
+ return k;}
+/* A LOADED OR OLDER RECORD IS FILLED FROM THE BLANK, never refused: loadProfile
+   trusts its input and everything a person can paste goes through ixValidate
+   first. A profile with no intake at all, which the Avatar's own writer can
+   leave behind (CURP.intake=CURP.intake||{answers:[]}), gets one rather than a
+   throw on the first press. */
+function ixFill(p){
+ if(!p)return p;
+ if(!p.intake||typeof p.intake!=='object'||Array.isArray(p.intake))
+  p.intake={answers:{}, done:[], startedAt:null, completedAt:null};
+ var m=p.intake.more;
+ if(!m||typeof m!=='object'||Array.isArray(m))m=p.intake.more=ixBlank();
+ ['arch','axes','acts'].forEach(function(id){
+  if(!m[id]||typeof m[id]!=='object'||Array.isArray(m[id]))m[id]={};});
+ return p;}
+function ixGet(p,id,k){
+ var m=p&&p.intake&&p.intake.more, v=m&&m[id]&&m[id][k];
+ return (typeof v==='number')?v:null;}
+/* THE ONE WRITE. A key the product does not have, or a value that is not a
+   number from 0 to 10, writes nothing and says so by returning false, so a
+   control cannot report an answer it did not record. Never clamped: 9999 is
+   not a 10 the person pressed. */
+function ixSet(p,id,k,v){
+ if(!ixRow(id,k))return false;
+ if(!NUM(v)||v<0||v>10)return false;
+ /* startedAt is NOT stamped here. It says the 63 were begun, and a person who
+    has answered only these has not begun them. */
+ ixFill(p); p.intake.more[id][k]=v;
+ return true;}
+/* THE READ OF ONE BLOCK. Nothing is named until every row is answered, because
+   a leader among seven of twelve is a leader among the ones you happened to
+   reach. got and left count the answers, and the page says what is left and
+   never a count against a total.
+     state  'none' no answer, 'part' some, 'level' all answered and nothing
+            stands out, 'lead' all answered and one to IX_TIE_MAX stand out
+     lead   the row keys at the top, in table order
+     spread top minus bottom, so a gate can see why a block read level */
+function ixRead(p,id){
+ var b=ixBlock(id), out={id:id, got:0, total:b?b.rows.length:0, left:0, state:'none', lead:[], spread:0};
+ if(!b)return out;
+ var vals=b.rows.map(function(r){return ixGet(p,id,r.k);});
+ vals.forEach(function(v){if(v!==null)out.got++;});
+ out.left=out.total-out.got;
+ if(!out.got)return out;
+ if(out.left){out.state='part'; return out;}
+ var hi=Math.max.apply(null,vals), lo=Math.min.apply(null,vals);
+ out.spread=Math.round((hi-lo)*10)/10;
+ b.rows.forEach(function(r,i){if(vals[i]===hi)out.lead.push(r.k);});
+ out.state=(out.spread<IX_FLOOR||out.lead.length>IX_TIE_MAX)?'level':'lead';
+ return out;}
+function ixJoin(a){
+ return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+/* THE SENTENCE UNDER A BLOCK, in the product's own plain words, and every name
+   in it carries its meaning in the same sentence (UNPACK EVERY SYMBOL). head is
+   the line that says what leads and body is what it means, so the page can set
+   the first in weight. Empty strings mean there is nothing to say yet.
+   An axis names the place it sits in the body (CHILD.loc) and its other end
+   with that end's meaning, which is the pair the engine already holds. */
+function ixSay(id,r){
+ var none={head:'', body:''};
+ if(!r||r.state==='none')return none;
+ if(r.state==='part')return {head:r.left+' left', body:''};
+ var lbl={arch:['Leading archetype','Leading archetypes'], axes:['Loudest axis','Loudest axes'],
+          acts:['Most used move','Most used moves']}[id];
+ if(r.state==='level')return {head:'Nothing leads.',
+  body:'Your answers sit level across the whole block, so it names none.'};
+ var one=r.lead.length===1, names=r.lead.map(function(k){return ixName(id,k);});
+ /* TIED, NOT LEVEL. Level is the word for a block that names nothing, and the
+    first cut used it for two at the top as well, so "Sage and Rebel, level"
+    read as if the answers were flat when they were not. */
+ var head=(one?lbl[0]:lbl[1])+': '+ixJoin(names)+(one?'.':', tied.');
+ var low=function(t){return t.charAt(0).toLowerCase()+t.slice(1);};
+ var body=r.lead.map(function(k,i){
+  var row=ixRow(id,k), nm=ixName(id,k);
+  if(id==='arch'){
+   var a=null; ARCH.forEach(function(x){if(x.nm===k)a=x;});
+   return nm+' '+(a?a.v:'')+'.';}
+  /* the head already names a single leader, so its meaning follows without the
+     name said a second time. With a tie each meaning keeps its name. */
+  var pre=one?'':nm+': ', mean=one?row.means:low(row.means);
+  if(id==='axes'){
+   var c=null; CHILD.forEach(function(x){if(x.nm===k)c=x;});
+   return pre+mean+(c?' Felt in the '+c.loc+'. Its other end is '+c.opp+': '+low(row.oppMeans):'');}
+  return pre+mean;}).join(' ');
+ return {head:head, body:body};}
+/* THE BOUNDARY FOR THE THREE BAGS, called from validateProfile with the same
+   errs array so one bad answer refuses the whole record and pImport stays
+   atomic. Missing or null is an older record and returns the blank. A bag that
+   is not an object, a key that names nothing the product has, and a value that
+   is not a number from 0 to 10 are each refused BY NAME and never dropped or
+   clamped: a dropped key is an answer the person gave that quietly is not
+   there, and a clamped one reads as a ten they never pressed. null inside a
+   bag is not answered, the way a null in intake.answers is. */
+function ixValidate(errs,o,path){
+ var out=ixBlank();
+ if(o===undefined||o===null)return out;
+ if(typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return out;}
+ Object.keys(o).forEach(function(id){
+  if(!ixBlock(id))errs.push(path+' names no block: '+id);});
+ IX_BLOCKS.forEach(function(b){
+  var bag=o[b.id];
+  if(bag===undefined||bag===null)return;
+  if(typeof bag!=='object'||Array.isArray(bag)){errs.push(path+'.'+b.id+' is not an object'); return;}
+  Object.keys(bag).forEach(function(k){
+   if(!ixRow(b.id,k)){errs.push(path+'.'+b.id+' names no question: '+k); return;}
+   if(bag[k]===null)return;
+   var v=vRange(errs,path+'.'+b.id+'.'+k,bag[k],0,10);
+   if(v!==null)out[b.id][k]=v;});});
+ return out;}
 /* ============================================================
    THE SNIFFER. scanStory finds every hit, parseStory turns tags
    into imprints, applyStory is the only function that mutates.
@@ -15254,6 +15576,12 @@ if(typeof module!=='undefined'&&module.exports){
      rename that missed this table shipped six broken questions, and a table
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
+  /* the three blocks under the 63. The tables are exported so the gate reads
+     every count off them rather than typing one, and the functions so it can
+     drive the boundary and the read-out. */
+                  IX_DRAFT:IX_DRAFT, IX_ARCH:IX_ARCH, IX_AXIS:IX_AXIS, IX_ACT:IX_ACT, IX_BLOCKS:IX_BLOCKS,
+                  IX_FLOOR:IX_FLOOR, IX_TIE_MAX:IX_TIE_MAX, ixBlank:ixBlank, ixFill:ixFill, ixGet:ixGet,
+                  ixSet:ixSet, ixRead:ixRead, ixSay:ixSay, ixValidate:ixValidate, ixName:ixName,
   /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,

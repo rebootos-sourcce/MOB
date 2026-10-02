@@ -6250,5 +6250,169 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
 
 }
 
+g('PP1 · the archetype, emotional axis and action axis blocks under the 63, round PP');
+/* THE THREE TABLES ARE CONTENT, AND EVERY COUNT HERE IS READ OFF THE TABLES
+   THEY ARE CHECKED AGAINST. The archetype block is held to the product's own
+   archetype table, the axis block to the nine axes, the action block to the
+   six gates, so a row added to one of those and not asked here, or a question
+   written about something the product does not have, fails by name. */
+{
+ const {IX_ARCH,IX_AXIS,IX_ACT,IX_BLOCKS,VERP,ixBlank,ixSet,ixGet,ixRead,ixSay,ixValidate,
+        blankProfile,saveProfile,validateProfile,loadProfile}=E;
+ const keys=t=>t.map(r=>r.k);
+ const same=(a,b,nm)=>{
+  const miss=b.filter(k=>a.indexOf(k)<0), extra=a.filter(k=>b.indexOf(k)<0);
+  ok(miss.length===0,nm+' asks every one the product has, missing '+JSON.stringify(miss));
+  ok(extra.length===0,nm+' asks nothing the product does not have, extra '+JSON.stringify(extra));
+  ok(new Set(a).size===a.length,nm+' asks nothing twice');};
+ same(keys(IX_ARCH),ARCH.map(a=>a.nm),'the archetype block, against ARCH,');
+ same(keys(IX_AXIS),CHARGES.slice(),'the emotional axis block, against the nine axes,');
+ same(keys(IX_ACT),VERP.map(v=>v.k),'the action axis block, against the six gates,');
+ ok(IX_ARCH.length<=ARCH.length&&IX_ARCH.length<=12,'the archetype block is no longer than the set it places a person on, read '+IX_ARCH.length);
+ ok(IX_BLOCKS.length===3&&IX_BLOCKS.map(b=>b.id).join()==='arch,axes,acts','the three blocks stack in the order the owner named them');
+ ok(IX_BLOCKS[0].rows===IX_ARCH&&IX_BLOCKS[1].rows===IX_AXIS&&IX_BLOCKS[2].rows===IX_ACT,'and each block reads its own table');
+ ok(E.IX_DRAFT===true,'the wording is marked draft in the data file, so it can be refined without a code change');
+ /* every sentence a person reads */
+ const all=[]; IX_BLOCKS.forEach(b=>{all.push(b.nm,b.line); b.rows.forEach(r=>{all.push(r.q); if(r.means)all.push(r.means); if(r.oppMeans)all.push(r.oppMeans);});});
+ ok(all.every(t=>typeof t==='string'&&t.trim().length>0),'every question, name and meaning is a sentence and none is empty');
+ ok(!all.some(t=>/—|–/.test(t)),'no em or en dash in anything a person reads');
+ ok(!all.some(t=>/\d/.test(t)),'no digit in anything a person reads, so no count is typed into a heading');
+ ok(!all.some(t=>/undefined|\[object/.test(t)),'and no hole in any of it');
+ IX_BLOCKS.forEach(b=>{
+  ok(b.rows.every(r=>/how often/i.test(r.q)&&/\?$/.test(r.q)),b.id+': every question asks how often, the scale the 63 use');
+  ok(new Set(b.rows.map(r=>r.q)).size===b.rows.length,b.id+': no two questions are the same sentence');});
+ ok(IX_AXIS.every(r=>r.means&&r.oppMeans),'every axis says what it means and what its other end means, so no name stands alone');
+ ok(IX_ACT.every(r=>r.means),'every action axis says what it means');
+ /* the clinical words the voice rules keep off the page */
+ ok(!all.some(t=>/\b(disorder|diagnos\w*|trauma\w*|anxiety|depress\w*|therapy|symptom\w*|patholog\w*)\b/i.test(t)),
+  'no clinical label in any of it');
+
+ /* THE RECORD. blank, older, wrong. */
+ const bp=blankProfile('ix');
+ ok(JSON.stringify(bp.intake.more)===JSON.stringify(ixBlank()),'a new profile carries empty bags for all three blocks');
+ ok(Object.keys(bp.intake.more).join()==='arch,axes,acts','and the bags are the three block ids');
+ {const old=JSON.parse(JSON.stringify(saveProfile(blankProfile('older')))); delete old.intake.more;
+  const r=validateProfile(old);
+  ok(r.ok&&JSON.stringify(r.profile.intake.more)===JSON.stringify(ixBlank()),'an older record with no blocks is filled from the blank and not refused');
+  const old2=JSON.parse(JSON.stringify(old)); delete old2.intake;
+  const r2=validateProfile(old2);
+  ok(r2.ok&&r2.profile.intake.more&&r2.profile.intake.more.arch,'and so is one with no intake at all');
+  const half=JSON.parse(JSON.stringify(old)); half.intake.more={arch:{Sage:7}};
+  const r3=validateProfile(half);
+  ok(r3.ok&&r3.profile.intake.more.arch.Sage===7&&Object.keys(r3.profile.intake.more.axes).length===0,
+   'and a record that answered one block keeps it and leaves the others empty');
+  const raw=JSON.parse(JSON.stringify(old)); delete raw.intake.more;
+  loadProfile(raw);
+  ok(raw.intake.more&&raw.intake.more.acts,'loadProfile fills an older record in place so the first press cannot throw');}
+ const wire=()=>JSON.parse(JSON.stringify(saveProfile(blankProfile('w'))));
+ const refuses=(mut,re,nm)=>{const o=wire(); mut(o); const r=validateProfile(o);
+  ok(!r.ok&&re.test(String(r.errs)),nm+' is refused by name, got '+JSON.stringify((r.errs||[]).slice(0,2)));};
+ refuses(o=>{o.intake.more='yes';},/intake\.more is not an object/,'a block record that is a string');
+ refuses(o=>{o.intake.more=[1];},/intake\.more is not an object/,'a block record that is a list');
+ refuses(o=>{o.intake.more={arch:[1,2]};},/intake\.more\.arch is not an object/,'a bag that is a list');
+ refuses(o=>{o.intake.more={arch:{Hero:5}};},/intake\.more\.arch names no question: Hero/,'an archetype the product does not ask');
+ refuses(o=>{o.intake.more={axes:{Anxiety:5}};},/intake\.more\.axes names no question: Anxiety/,'an axis the product does not have');
+ refuses(o=>{o.intake.more={acts:{believing:5}};},/intake\.more\.acts names no question: believing/,'an action the product does not ask');
+ refuses(o=>{o.intake.more={nope:{}};},/intake\.more names no block: nope/,'a block that does not exist');
+ refuses(o=>{o.intake.more={arch:{Sage:9999}};},/intake\.more\.arch\.Sage is 9999, outside 0 to 10/,'an answer of 9999');
+ refuses(o=>{o.intake.more={axes:{Fear:-1}};},/intake\.more\.axes\.Fear is -1/,'a negative answer');
+ refuses(o=>{o.intake.more={acts:{aware:'7'}};},/intake\.more\.acts\.aware is not a number/,'an answer that is text');
+ {const o=wire(); o.intake.more={arch:{Sage:null}}; const r=validateProfile(o);
+  ok(r.ok&&ixGet(r.profile,'arch','Sage')===null,'a null answer is not answered, the way a null in the 63 is');}
+ /* the boundary function on its own, and it never clamps */
+ {const errs=[]; const out=ixValidate(errs,{arch:{Sage:12}},'x');
+  ok(errs.length===1&&out.arch.Sage===undefined,'a value out of range is dropped from the result and named in the errors, never clamped to 10');}
+
+ /* the repairs the coverage run found nothing reaching: a bag of the wrong type
+    in a record already in memory is replaced by an empty one, and the helpers
+    answer a name or a block the product does not have without throwing */
+ {const q={intake:{more:{arch:'x',axes:[1],acts:null}}}; E.ixFill(q);
+  ok(['arch','axes','acts'].every(id=>q.intake.more[id]&&typeof q.intake.more[id]==='object'&&!Array.isArray(q.intake.more[id])),
+   'a bag of the wrong type in memory is replaced by an empty one');
+  const q2={intake:[]}; E.ixFill(q2);
+  ok(Array.isArray(q2.intake)===false&&q2.intake.more&&q2.intake.answers,'and an intake that is a list is replaced rather than written into');
+  ok(E.ixFill(null)===null,'and no profile at all is left alone');
+  ok(E.ixName('acts','zzz')==='zzz'&&E.ixRead(blankProfile('u'),'nope').state==='none'&&E.ixRead(blankProfile('u'),'nope').total===0,
+   'a name or a block the product does not have is read as nothing and does not throw');}
+
+ /* THE ONE WRITE REFUSES WHAT THE PRODUCT DOES NOT HAVE */
+ {const p=blankProfile('w1');
+  ok(ixSet(p,'arch','Sage',7)&&ixGet(p,'arch','Sage')===7,'a real answer is written and read back');
+  ok(!ixSet(p,'arch','Hero',5)&&!ixSet(p,'axes','Fear',11)&&!ixSet(p,'axes','Fear',-1)
+   &&!ixSet(p,'acts','aware','5')&&!ixSet(p,'acts','aware',NaN)&&!ixSet(p,'nope','x',1),
+   'an unknown row, an unknown block and a value outside 0 to 10 write nothing and say so');
+  ok(ixGet(p,'axes','Fear')===null&&ixGet(p,'acts','aware')===null,'and nothing was written by the refusals');
+  ok(p.intake.startedAt===null,'answering here does not say the 63 were started');
+  const bare={}; ok(ixSet(bare,'acts','aware',3)&&bare.intake.more.acts.aware===3,'a profile with no intake is given one rather than throwing');}
+
+ /* ROUND TRIP, through the saver, the boundary, the export and the import */
+ {const p=blankProfile('rt');
+  IX_BLOCKS.forEach(b=>b.rows.forEach((r,i)=>ixSet(p,b.id,r.k,(i*3)%11)));
+  const wireP=JSON.parse(JSON.stringify(saveProfile(p)));
+  const r=validateProfile(wireP);
+  ok(r.ok,'a profile with every block answered validates: '+JSON.stringify(r.errs||[]).slice(0,120));
+  ok(r.ok&&JSON.stringify(r.profile.intake.more)===JSON.stringify(p.intake.more),'and every answer comes back exactly as it went in');
+  const mem={}; E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+  const got=E.pImport(JSON.stringify(wireP));
+  ok(got!==null&&JSON.stringify(got.intake.more)===JSON.stringify(p.intake.more),'an import keeps every answer');
+  const out=JSON.parse(E.pExport());
+  ok(JSON.stringify(out.intake.more)===JSON.stringify(p.intake.more),'and an export carries them');
+  const again=E.pImport(JSON.stringify(out));
+  ok(again!==null&&JSON.stringify(again.intake.more)===JSON.stringify(p.intake.more),'and a second import of that export is the same answers');
+  const badw=JSON.parse(JSON.stringify(wireP)); badw.intake.more.arch.Hero=3;
+  const before=E.profiles().length;
+  ok(E.pImport(JSON.stringify(badw))===null&&E.profiles().length===before&&/intake\.more\.arch names no question: Hero/.test(String(E.importError())),
+   'one answer to a question the product does not ask refuses the whole import by name and pushes nothing');
+  E.bindStore(()=>null,()=>{});}
+
+ /* EVIDENCE, NOT A VERDICT. Answering every question, to the top and to the
+    bottom, moves no law, no charge, no gate count and no number CQ is made of. */
+ {const read=p=>{loadProfile(p); const r=compute();
+   return JSON.stringify({cq:r.CQ,dq:r.DQ,jq:r.JQ,tier:r.tier,laws:p.laws,charge:S.charge,
+    gates:p.gates,arcs:p.soul.arcs,doms:p.soul.doms,ia:E.iqScore(p),answers:p.intake.answers});};
+  const p=blankProfile('ev'); for(let i=0;i<63;i++)p.intake.answers[i]=(i*7)%11; E.iqApply(p);
+  const before=read(p);
+  IX_BLOCKS.forEach(b=>b.rows.forEach((r,i)=>ixSet(p,b.id,r.k,10)));
+  ok(read(p)===before,'every question answered 10 changes no law, charge, gate, CQ, DQ or stated archetype');
+  IX_BLOCKS.forEach(b=>b.rows.forEach((r,i)=>ixSet(p,b.id,r.k,i%2?0:10)));
+  ok(read(p)===before,'and answered 0 and 10 in turn changes none of them either');
+  ok(E.saveProfile(p).gates.verp.aware===0,'and the gate counts, which are sentences read out of stories, stay at nought');}
+
+ /* THE READ-OUT, state by state */
+ {const p=blankProfile('ro');
+  IX_BLOCKS.forEach(b=>{
+   const none=ixRead(p,b.id);
+   ok(none.state==='none'&&none.got===0&&none.left===b.rows.length&&ixSay(b.id,none).head==='',b.id+': nothing answered says nothing');
+   ixSet(p,b.id,b.rows[0].k,5);
+   const part=ixRead(p,b.id);
+   ok(part.state==='part'&&part.got===1&&part.left===b.rows.length-1&&ixSay(b.id,part).head===(b.rows.length-1)+' left'
+    &&part.lead.length===0,b.id+': part answered names no leader and says what is left');
+   b.rows.forEach(r=>ixSet(p,b.id,r.k,5));
+   const lvl=ixRead(p,b.id);
+   ok(lvl.state==='level'&&lvl.lead.length===b.rows.length&&/^Nothing leads\./.test(ixSay(b.id,lvl).head),b.id+': every row the same names no leader');
+   b.rows.forEach(r=>ixSet(p,b.id,r.k,4)); ixSet(p,b.id,b.rows[1].k,6);
+   const nearly=ixRead(p,b.id);
+   ok(nearly.state==='level'&&nearly.spread<E.IX_FLOOR,b.id+': a spread under the noise floor is level and not a winner, spread '+nearly.spread);
+   b.rows.forEach(r=>ixSet(p,b.id,r.k,1));
+   /* each row as the only leader, so every name and meaning that can be printed is printed once */
+   b.rows.forEach((r,i)=>{
+    ixSet(p,b.id,r.k,9); const rd=ixRead(p,b.id), say=ixSay(b.id,rd);
+    ok(rd.state==='lead'&&rd.lead.length===1&&rd.lead[0]===r.k,b.id+': '+r.k+' alone at the top leads');
+    const txt=say.head+' '+say.body;
+    ok(txt.indexOf(E.ixName(b.id,r.k))>=0&&!/undefined/.test(txt)&&say.body.length>8,b.id+': '+r.k+' is named and said in plain words, got "'+txt.slice(0,90)+'"');
+    if(b.id==='axes'){
+     const c=CHILD.filter(x=>x.nm===r.k)[0];
+     ok(txt.indexOf(c.loc)>=0&&txt.indexOf(c.opp)>=0&&txt.indexOf(r.oppMeans.toLowerCase().slice(0,12))>=0,
+      'axes: '+r.k+' says where it sits and what its other end is, with that end unpacked');}
+    ixSet(p,b.id,r.k,1);});
+   /* a tie of two leads, a tie of too many is level */
+   ixSet(p,b.id,b.rows[0].k,9); ixSet(p,b.id,b.rows[1].k,9);
+   const tie=ixRead(p,b.id);
+   ok(tie.state==='lead'&&tie.lead.length===2&&/tied\.$/.test(ixSay(b.id,tie).head),b.id+': two at the top is a tie and both are named');
+   b.rows.forEach((r,i)=>{if(i<=E.IX_TIE_MAX)ixSet(p,b.id,r.k,9);});
+   const many=ixRead(p,b.id);
+   ok(many.lead.length>E.IX_TIE_MAX&&many.state==='level',b.id+': more than '+E.IX_TIE_MAX+' tied at the top is level');});}
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
