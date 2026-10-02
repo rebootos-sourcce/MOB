@@ -839,7 +839,7 @@ function relAskHtml(){
   +'<div class="rel-act"><button type="button" class="btn" data-relsaid="'+RV_SKIP+'">Skip</button></div></div>';}
 /* the one writer. Refuses by name, writes all of the run's addresses or none,
    saves, and says so if the save fails. Returns whether it was kept. */
-function relSay(k){
+function relAnswer(k){
  if(!RUN.ask||RUN.said||!CURP)return false;
  var ids=(RUN.queue||[]).map(function(n){return n.i;});
  var r=releaseVerify(CURP.practice||null,k,ids,{story_t:RUN.storyT});
@@ -854,7 +854,7 @@ function relSay(k){
  return true;}
 /* leaving a card that asked and was not answered */
 function relAskLeave(){
- if(RUN.ask&&!RUN.said&&RUN.phase==='done')relSay(RV_SKIP);}
+ if(RUN.ask&&!RUN.said&&RUN.phase==='done')relAnswer(RV_SKIP);}
 function relCoolDown(){
  if(RUN.done)return;
  /* where the walker stood, read before the phase moves off the list */
@@ -1867,10 +1867,10 @@ function relRender(){
   RUN.dose=+this.getAttribute('data-reldose');relRender();};});
  h.querySelectorAll('[data-relmode]').forEach(function(el){el.onclick=function(){
   relMode(this.getAttribute('data-relmode')==='rerun');};});
- /* WHAT CHANGED, one press, and Skip is a press too. relSay writes and then
+ /* WHAT CHANGED, one press, and Skip is a press too. relAnswer writes and then
     redraws the card, so the answer is shown as kept only once it is. */
  h.querySelectorAll('[data-relsaid]').forEach(function(el){el.onclick=function(){
-  relSay(this.getAttribute('data-relsaid'));};});
+  relAnswer(this.getAttribute('data-relsaid'));};});
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){

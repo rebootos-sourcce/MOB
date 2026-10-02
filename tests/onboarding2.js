@@ -40,6 +40,17 @@
         build before the fix, where these assertions fail: that build handed
         over all eight addresses, ran 25 lines and printed "8 lines".
 
+     5  WHAT CHANGED, the step the System Congruency audit found missing from
+        every release path. The finished card asks it with the TDD's five
+        answers and none chosen; the answer is written as practice evidence
+        per address, linked to the entry the run came from; it survives a
+        reload; and Your patterns shows it on the pattern's row. Then each of
+        the five, Skip, and leaving unanswered, each on a fresh store and each
+        reloaded, so nothing changed and not sure are held exactly as hard as
+        a positive answer. Checked first against two known bad builds: the
+        build before this step, which asks nothing, and a copy where the
+        answer is shown as kept and never put on the record.
+
    WHAT IT DOES NOT CLAIM. No distress detector exists anywhere in this
    engine, and this file does not pretend otherwise: see the J0 check near
    the foot, which reports the gap rather than papering over it, the same
@@ -287,6 +298,36 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(errs.length===0,'no script error the whole way through: '+errs.slice(0,3).join(' | '));
  console.log('  reached a real release in '+(Date.now()-t0)+'ms of wall clock, shrunk timing');
 
+ /* WHAT CHANGED, on the card the run landed on. Read off the build: the five
+    keys and their words off the engine's own table, never typed here. */
+ const ask=await page.evaluate(()=>{const a=document.getElementById('relask');
+  return {there:!!a, text:a?a.textContent:'',
+   answers:[...document.querySelectorAll('#relask .seg [data-relsaid]')].map(b=>({k:b.getAttribute('data-relsaid'),
+    p:b.getAttribute('aria-pressed'),t:b.textContent})),
+   skip:!!document.querySelector('#relask .rel-act [data-relsaid="skipped"]'),
+   ev:((CURP.practice&&CURP.practice.evidence)||[]).length,
+   five:(typeof RV_ANSWERS!=='undefined')?RV_ANSWERS.slice():null, say:(typeof RV_SAY!=='undefined')?RV_SAY:{}};});
+ ok(ask.there&&/What changed\?/.test(ask.text),'the finished card asks what changed, got "'+ask.text.slice(0,60)+'"');
+ ok(ask.five&&JSON.stringify(ask.answers.map(a=>a.k))===JSON.stringify(ask.five)&&ask.five.length===5,
+  'with exactly the five answers, in the TDD\'s order: '+JSON.stringify(ask.answers.map(a=>a.k)));
+ ok(ask.answers.length===5&&ask.answers.every(a=>a.p==='false'),'and none of them chosen before the person chooses');
+ ok(ask.answers.length===5&&ask.answers.every(a=>a.t===ask.say[a.k]),'each worded from the one table: '+ask.answers.map(a=>a.t).join(' / '));
+ ok(ask.skip,'and a way past it, Skip');
+ ok(ask.ev===0,'nothing is recorded before an answer, evidence '+ask.ev);
+ if(ask.there)await page.click('#relask [data-relsaid="something_moved"]');
+ await page.waitForTimeout(80);
+ const said=await page.evaluate(()=>({said:(typeof RUN.said!=='undefined')?RUN.said:null,
+  ev:((CURP.practice&&CURP.practice.evidence)||[]).map(e=>({m:e.metric,v:e.value,p:e.pattern_id,s:e.story_t,src:e.source})),
+  q:(RUN.queue||[]).map(n=>n.i), t:CURP.story.entries[CURP.story.entries.length-1].t,
+  text:(document.getElementById('relask')||{}).innerText||'', disk:localStorage.getItem(PKEY)}));
+ ok(said.said==='something_moved'&&said.ev.length===said.q.length&&said.q.length>0,
+  'one answer is one record per address the release worked, '+said.ev.length+' for '+said.q.length);
+ ok(said.ev.length>0&&said.ev.every((e,i)=>e.m==='release_verification'&&e.v==='something_moved'&&e.p==='addr:'+said.q[i]&&e.src==='user'),
+  'each carries the metric, the answer and its own address: '+JSON.stringify(said.ev.map(e=>e.p)));
+ ok(said.ev.length>0&&said.ev.every(e=>e.s===said.t),'and each names the story entry the release came from, by its t, '+said.t);
+ ok(/You said: Something moved\. Kept on your record\./.test(said.text),'the card says what was kept only once it is: "'+said.text.replace(/\n/g,' ')+'"');
+ ok(!!said.disk&&said.disk.indexOf('release_verification')>=0,'and it is on the disk before the reload');
+
  /* THE NEXT VISIT, ROUND QB. Every assertion above ran inside the one page
     that wrote the record, and nothing in this file ever loaded it back, so
     the profile boundary never saw what onboarding writes. It refused it:
@@ -315,11 +356,31 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   'the same profile comes back after a reload, with the same story, '+back.n+' entries of '+kept.n);
  ok(back.ob===kept.ob,'and every yes, no and correction comes back as written: '+back.ob);
  ok(back.onboarded,'the record still says onboarding was finished');
+ const vback=await page.evaluate(()=>((CURP&&CURP.practice&&CURP.practice.evidence)||[])
+  .map(e=>({m:e.metric,v:e.value,p:e.pattern_id,s:e.story_t})));
+ ok(vback.length>0&&JSON.stringify(vback)===JSON.stringify(said.ev.map(e=>({m:e.m,v:e.v,p:e.p,s:e.s}))),
+  'every answer comes back after the reload, linked to the same addresses and entry: '+vback.length);
  await page.waitForSelector('#loginb-skip',{timeout:8000}).catch(()=>{});
  if(await page.$('#loginb-skip'))await page.click('#loginb-skip');
  await page.waitForTimeout(300);
  const replay=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
  ok(!replay,'and the welcome sheet does not replay on the next visit');
+ /* YOUR PATTERNS, after the reload, on the Field's own rail: the answer is
+    on each released pattern's row as what the person said, and the graph
+    counts it as evidence for nothing. Every row is listed so the check does
+    not depend on which four come first. */
+ const lp=await page.evaluate(q=>{
+  if(typeof LP!=='undefined'){LP.all=true; if(typeof loopRepaint==='function')loopRepaint();}
+  const L=loopRead(CURP), rows=L.patterns.filter(x=>q.indexOf(x.address)>=0);
+  const side=document.getElementById('loopside');
+  return {rows:rows.map(x=>({a:x.address,said:x.said||null,evFor:x.evFor,evAgainst:x.evAgainst})),
+   rail:side?side.textContent:'',
+   evEdges:traceFromRecord(CURP,practiceTraceIntents(CURP.practice)).edges.filter(e=>/^evidence:/.test(e.from)).length};},said.q);
+ ok(lp.rows.length===said.q.length&&lp.rows.every(r=>r.said&&r.said.n===1&&r.said.by.something_moved===1),
+  'Your patterns reads the answer on every released address\'s row: '+JSON.stringify(lp.rows.map(r=>r.said)));
+ ok(lp.rows.every(r=>r.evFor===0&&r.evAgainst===0),'and never counts it as evidence for or against');
+ ok(lp.evEdges===0,'and the graph holds no evidence edge for it, got '+lp.evEdges);
+ ok(/"Something moved" after 1 release/.test(lp.rail),'the Field rail prints it on the row, in the question\'s own words');
  await page.close();
 }
 
@@ -365,6 +426,58 @@ console.log('\n=== the Day One tutorial reaches the same real release ===');
  ok(after.meter>0,'a real line is recorded released off the tutorial path too, got '+after.meter);
  ok(errs.length===0,'no script error the whole way through: '+errs.slice(0,3).join(' | '));
  await page.close();
+}
+
+console.log('\n=== what changed: every answer, Skip, and leaving unanswered, each kept across a reload ===');
+{
+ /* SEVEN FRESH STORES. The five answers, Skip, and Done pressed with nothing
+    answered, each on its own browser context so nothing carries over, each
+    through a real story commit and a real release to its own cooldown, then
+    reloaded. Nothing changed and not sure are asserted exactly as a positive
+    answer is: the TDD's "the user must not be forced to report a positive
+    result" is only true if the negative ones are kept as well. */
+ const CASES=[['feel_different','answer'],['see_differently','answer'],['something_moved','answer'],
+  ['nothing_changed','answer'],['not_sure','answer'],['skipped','skip'],['skipped','leave']];
+ for(const [want,how] of CASES){
+  const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
+  const page=await ctx.newPage();
+  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
+  const tag=want+(how==='answer'?'':' by '+how);
+  await page.evaluate(()=>{ loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; });
+  await page.evaluate(SHRINK);
+  await page.evaluate(()=>tutorialOpen(true));
+  await page.fill('#tuttext',REAL_STORY);
+  await page.click('[data-tut="commit"]'); await page.waitForTimeout(60);
+  await page.click('[data-tut="next"]'); await page.waitForTimeout(40);
+  await page.click('[data-tut="next"]'); await page.waitForTimeout(40);
+  await page.click('[data-tut="release"]'); await page.waitForTimeout(120);
+  const d=await page.$('#reldose');
+  if(d){await d.evaluate(el=>{el.value='1';el.dispatchEvent(new Event('change'));});}
+  await page.click('#relgo');
+  await page.waitForFunction(()=>RUN.phase==='done'&&RUN.cool>=COOLING.length,null,{timeout:60000}).catch(()=>{});
+  const pre=await page.evaluate(()=>({asked:!!document.querySelector('#relask .seg'),
+   ev:((CURP.practice&&CURP.practice.evidence)||[]).length, q:(RUN.queue||[]).map(n=>n.i),
+   t:(CURP.story.entries[CURP.story.entries.length-1]||{}).t}));
+  ok(pre.asked&&pre.ev===0&&pre.q.length>0,tag+': asked, with nothing recorded yet');
+  if(pre.asked){
+   if(how==='answer')await page.click('#relask [data-relsaid="'+want+'"]');
+   else if(how==='skip')await page.click('#relask [data-relsaid="skipped"]');}
+  if(how==='leave')await page.click('#relclose');
+  await page.waitForTimeout(80);
+  await page.reload({waitUntil:'load'}); await booted(page);
+  const back=await page.evaluate(()=>{
+   const ev=((CURP.practice&&CURP.practice.evidence)||[]).filter(e=>e.metric==='release_verification');
+   return {ev:ev.map(e=>({v:e.value,p:e.pattern_id,s:e.story_t})), refused:storeRefused().length,
+    rows:loopRead(CURP).patterns.filter(x=>x.said&&x.said.n).map(x=>({a:x.address,by:x.said.by,evFor:x.evFor}))};});
+  ok(back.refused===0,tag+': the record is taken back at the boundary');
+  ok(back.ev.length===pre.q.length&&back.ev.length>0&&back.ev.every(e=>e.v===want),
+   tag+': kept across the reload as '+want+' at every address, '+JSON.stringify(back.ev.map(e=>e.v)));
+  ok(back.ev.length>0&&back.ev.every((e,i)=>e.p==='addr:'+pre.q[i]&&e.s===pre.t),tag+': linked to the addresses and the story entry');
+  ok(back.rows.length===pre.q.length&&back.rows.every(r=>r.by[want]===1&&r.evFor===0),
+   tag+': Your patterns shows it on each row and never as support');
+  ok(errs.length===0,tag+': no script error: '+errs.slice(0,3).join(' | '));
+  await ctx.close();}
 }
 
 console.log('\n=== the mirror is checked against the engine directly, never trusted by eye ===');
