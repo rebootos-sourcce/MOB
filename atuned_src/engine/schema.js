@@ -130,6 +130,10 @@ function blankProfile(name){
     owner's call. Named here AND at the boundary below, because a key the
     boundary does not name is deleted on the next load. */
  p.summaries=dlyBlank();
+ /* the journey, engine/journey.js: what a new person has done on the way in.
+    Additive and under its own version, so no SCHEMA_V bump. Named here AND at
+    the boundary, for the reason the line above gives. */
+ p.journey=journeyBlank();
  return p;}
 /* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
    LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
@@ -183,6 +187,9 @@ function loadProfile(p){
  /* and a record from before the daily summary has no bank of days, which is a
     record that has never opened one */
  if(!p.summaries||typeof p.summaries!=='object'||Array.isArray(p.summaries))p.summaries=dlyBlank();
+ /* and a record from before the journey has walked nothing, which is a record
+    nobody has onboarded on yet and not a broken one */
+ if(!p.journey||typeof p.journey!=='object'||Array.isArray(p.journey))p.journey=journeyBlank();
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -399,6 +406,15 @@ var STORE_REFUSED=[], STORE_KEPT=[];
    save reports itself where a silent one did not. The engine reports, and the
    host decides the words (storeUnread, below). */
 var STORE_UNREAD=null;
+/* WHAT THE BOUNDARY LEFT BEHIND, BY RECORD. validateProfile rebuilds a record
+   from the blank and copies across only the keys it names, so a top level key
+   it does not name was deleted at the next save and nothing said so: that is
+   how the two first run flags were lost at every load (measured, Review 2
+   finding 1), and it is how a field written by a newer build is lost by an
+   older one. The deletion is still the rule, because a record this build does
+   not understand is not one it can vouch for, but it is no longer silent: pStore
+   collects the names here and the host says so. */
+var STORE_DROPPED=[];
 function storeSetAside(txt,why){
  var key=PKEY+'.unreadable.'+Date.now().toString(36), kept=false;
  try{ STORE.set(key,txt); kept=(STORE.get(key)===txt); }catch(e){}
@@ -406,13 +422,15 @@ function storeSetAside(txt,why){
  return [];}
 function pStore(){
  var raw, txt=STORE.get(PKEY);
- STORE_UNREAD=null; STORE_REFUSED=[]; STORE_KEPT=[];
+ STORE_UNREAD=null; STORE_REFUSED=[]; STORE_KEPT=[]; STORE_DROPPED=[];
  try{ raw=JSON.parse(txt||'[]'); }catch(e){ return storeSetAside(String(txt),'it does not parse'); }
  if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
   var v=validateProfile(raw[i]);
-  if(v.ok){ out.push(v.profile); }
+  if(v.ok){ out.push(v.profile);
+   if(v.dropped&&v.dropped.length)
+    STORE_DROPPED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed', keys:v.dropped.slice()}); }
   else {
    STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
     errs:(v.errs||[]).slice(0,3)});
@@ -431,6 +449,10 @@ function pStore(){
  return out;}
 /* what the boundary would not take, for a host that wants to say so */
 function storeRefused(){ return STORE_REFUSED.slice(); }
+/* and the top level keys of a record that read, which it did not carry across
+   and will not write back: one row per record, the keys named. */
+function storeDropped(){ return STORE_DROPPED.map(function(d){
+ return {i:d.i, name:d.name, keys:d.keys.slice()};}); }
 /* and the store it could not read at all: null when it read, otherwise why,
    how many bytes, and the key the copy is under, null if the copy failed. */
 function storeUnread(){ return STORE_UNREAD?Object.assign({},STORE_UNREAD):null; }
@@ -813,7 +835,7 @@ function vEntry(errs,i,x){
  return q;}
 function validateProfile(o){
  var errs=[];
- if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
+ if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object'], dropped:[]};
  if(!NUM(o.v)||o.v<1||o.v>SCHEMA_V)errs.push('schema version '+o.v+' is not 1 to '+SCHEMA_V);
  var p=blankProfile(typeof o.name==='string'?o.name:'Imported');
  p.v=NUM(o.v)?o.v:SCHEMA_V;
@@ -1134,7 +1156,12 @@ function validateProfile(o){
     level the way plan refuses it one level down, so a pasted record carrying
     somebody's session says so rather than being dropped with nothing said,
     and nothing that writes a profile can put one back without this failing. */
- ['token','session','password','email'].forEach(function(f){
+ /* user_id, userId and customer_id join them at round OX: the record carries no
+    account link, by ruling, and the gift and the claim are written so that none
+    is needed. practice.js refuses user_id by name on every object (PR_NEVER)
+    and this is the same refusal at the top. */
+ var NEVER_TOP=['token','session','password','email','user_id','userId','customer_id'];
+ NEVER_TOP.forEach(function(f){
   if(o[f]!==undefined)errs.push(f+' is not held by this product');});
  /* THE TRACE GRAPH'S STORED HALF, engine/trace.js. Missing or null is an
     older record and reads as the blank's empty layer. Anything else goes
@@ -1150,7 +1177,20 @@ function validateProfile(o){
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
   p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
- return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
+ /* THE JOURNEY, through its own boundary (journeyValidate, engine/journey.js),
+    into the same errs, so one bad run or one bad log line refuses the whole
+    record and pImport stays atomic. Missing or null is an older record and
+    keeps the blank. Read last, because the meter is what bounds its runs. */
+ if(o.journey!==undefined&&o.journey!==null)
+  p.journey=journeyValidate(errs,o.journey,'journey',{unique:p.meter.unique.length});
+ /* WHAT WAS NOT CARRIED ACROSS, named. The record above is rebuilt from the blank
+    and only the keys this function reads are copied, so every other top level
+    key the input held is gone from p. It is reported and never an error: an
+    unknown key is not corruption, and an older build opening a newer record
+    must still open it. The refused names are an error already and are not
+    listed twice. */
+ var dropped=Object.keys(o).filter(function(k){return !(k in p)&&NEVER_TOP.indexOf(k)<0;});
+ return errs.length?{ok:false, errs:errs, dropped:dropped}:{ok:true, profile:p, dropped:dropped};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
    validated and loaded. A failure leaves the app exactly as it was, and

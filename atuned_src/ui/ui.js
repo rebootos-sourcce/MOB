@@ -1647,6 +1647,15 @@ step('the stored record',function(){
    +'The unreadable copy is kept in this browser, untouched.'
   :'Your saved profiles could not be read or copied. Nothing saves in this '
    +'session, so they stay as they are.','fail');
+ /* WHAT THE BOUNDARY DID NOT CARRY ACROSS IS SAID. A top level field this build
+    does not name was deleted at the next save with nothing on the screen, which
+    is how the first run flags were lost at every load without anybody being
+    told. A record from a newer build is the case it is for. The unreadable
+    store above is the worse report and keeps the line when there is one. */
+ var lost=[]; storeDropped().forEach(function(d){d.keys.forEach(function(k){
+  if(lost.indexOf(k)<0)lost.push(k);});});
+ if(lost.length&&!unread)status('Some saved fields were not read, so they will not be kept at the next save: '
+  +lost.slice(0,3).join(', ')+(lost.length>3?' and more':'')+'.','fail');
  CURP=PROFILES[0];
  /* loadP(0) cached a blank profile under the persona name a moment ago, and
     replacing PROFILES left that cache pointing at an object no longer in the

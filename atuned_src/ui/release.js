@@ -871,9 +871,23 @@ function relCoolDown(){
   Object.keys(seats).forEach(function(b){
    var f=meterFirst(CURP,'seat:'+b,'first release at the '+String(b).toLowerCase());
    if(f)RUN.firsts.push(f);});}
+ /* THE RUN IS WRITTEN DOWN BEFORE THE SAVE, so it lands in the same write as
+    the meter it describes (journey.runs, ui/journeyui.js). */
+ if(typeof relJourney==='function')relJourney(RUN.halted?'ended':'completed');
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
- if(CURP){pSave();pSnap();}
+ /* AND THE ANSWER IS READ. Both calls discarded it and the card then printed a
+    finished release, so a browser that blocks storage produced a first release
+    that said it worked and was gone at the next load (Review 2 finding 2).
+    pSnap writes the whole record, so the last write's state is the one that
+    matters, and statusSaved says the true thing about it. It is called on a
+    success too, because a failure holds on screen until something replaces it
+    and a release that saved after one that did not would otherwise leave the
+    old "Not saved" standing over a record that is safe. The one line it must
+    not replace is the heavy mark refusal above, which is a different failure
+    and is still the only thing that says it. */
+ if(CURP){pSave();pSnap();
+  if(!saveState().ok||!(RUN.kept&&RUN.kept.refused.length))statusSaved();}
  /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
     ritual is tracking one of these addresses. Here and nowhere else: this is
     after the worked example refusal, so a refused run marks nothing, and after
@@ -896,7 +910,10 @@ function relCoolDown(){
  relMark(RUN.halted?'halt':'close');
  syncCh();relRender();render();
  relStep();}
-function relClose(){relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
+function relClose(){
+ /* a card shut before it finished leaves a record that it was (ui/journeyui.js) */
+ if(typeof relJourney==='function'&&relJourney('closed')){pSave();if(!saveState().ok)statusSaved();}
+ relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
 /* ============================================================
    THE SEAT TONE FOLLOWS THE CARD.
 

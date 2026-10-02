@@ -6540,6 +6540,12 @@ await require('./sound.js').soundGate(browser,FILE,ok,booted);
 console.log('\n=== the locks: what a tier cannot see is greyed, padlocked, described and not drawn ===');
 await require('./locks.js').lockGate(browser,FILE,ok,booted);
 
+/* THE JOURNEY RECORD, tests/journeyui.js: the three hook lines in ui/release.js
+   and the boot report of what the boundary left behind. tests/journey.js holds
+   the engine's half headlessly. Its own file so it can be run alone. */
+console.log('\n=== the journey: a run is written down, a failed save is said ===');
+await require('./journeyui.js').journeyGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

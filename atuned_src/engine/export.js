@@ -240,7 +240,7 @@ if(typeof module!=='undefined'&&module.exports){
                   ROOT_Q_CLEAR:ROOT_Q_CLEAR, ROOT_SHOW:ROOT_SHOW,
                   ROOT_SAYS:ROOT_SAYS, HD_LINE_RUNS:HD_LINE_RUNS, ZSIGN:ZSIGN, CELEM:CELEM,
                   CHINESE:CHINESE, SIGN_RUNS:SIGN_RUNS, CH_RUNS:CH_RUNS, CE_RUNS:CE_RUNS, LP_RUNS:LP_RUNS,
-  /* store */     storeRefused:storeRefused, storeUnread:storeUnread, pStore:pStore, pPersist:pPersist,
+  /* store */     storeRefused:storeRefused, storeDropped:storeDropped, storeUnread:storeUnread, pStore:pStore, pPersist:pPersist,
   /* the save and the snapshot write every surface calls, and the only route a
      history row reaches the disk by. They were browser globals and nothing
      headless could drive them, so the one write that grows the record had no
@@ -314,6 +314,23 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
                   dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+  /* onboarding and the journey, engine/data/onboarding.js and engine/journey.js.
+     The tables are the live objects so the gate can hold them to the TDD's own
+     list and to the engine's own tables. */
+                  ONB_VERB:ONB_VERB, ONB_STEM:ONB_STEM, ONB_MINI_ADDRS:ONB_MINI_ADDRS,
+                  ONB_CHANS:ONB_CHANS, JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS,
+                  JOURNEY_LOG_MAX:JOURNEY_LOG_MAX, JOURNEY_RUNS_MAX:JOURNEY_RUNS_MAX,
+                  JOURNEY_EXTRAS_MAX:JOURNEY_EXTRAS_MAX, JOURNEY_END:JOURNEY_END,
+                  JOURNEY_VIA:JOURNEY_VIA, JOURNEY_SRC:JOURNEY_SRC, JOURNEY_MID:JOURNEY_MID,
+                  JOURNEY_INTEGRITY:JOURNEY_INTEGRITY, JOURNEY_CLAIM_SEND:JOURNEY_CLAIM_SEND,
+                  JOURNEY_CLAIM_NEVER:JOURNEY_CLAIM_NEVER, JOURNEY_CLAIM_V:JOURNEY_CLAIM_V,
+                  journeyBlank:journeyBlank, journeyValidate:journeyValidate,
+                  journeyLog:journeyLog, journeyRead:journeyRead, journeyRun:journeyRun,
+                  journeyGiftRead:journeyGiftRead, journeyGiftSync:journeyGiftSync,
+                  journeyGiftIssue:journeyGiftIssue, journeyGiftExtra:journeyGiftExtra,
+                  journeyIntegrityAnswer:journeyIntegrityAnswer, onbMiniPlan:onbMiniPlan,
+                  journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
+                  journeyClaimed:journeyClaimed,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
