@@ -143,8 +143,16 @@ function runSeatFlowDrill(k){
  if(!sd||!ss)return;
  var seg=W.filter(function(n){return n.b===bnd;}).sort(function(a,b){return b.sq-a.sq;});
  var lws=SI.filter(function(l){return l.b===bnd;});
- var h='<div class="pm-eye">'+sd.sk+' · '+sd.hz+' Hz · source '+sd.src+'</div>'
-  +'<div class="pm-dn">'+sd.n+'</div><div class="pm-dm"><b>'+sd.nv+'</b><br>vritti '+sd.vt
+ /* AX8, closed 2 October. The eyebrow printed "Muladhara · 396 Hz · source
+    502" and the line under the plexus printed "vritti L1 to L4". Every term
+    is now a carrier of its sentence in engine/data/gloss.js, the house way
+    (unp, ui/component.js), and the level is printed as its own sentence,
+    which names it. Vritti is gone: the codex makes it the wave around a
+    nerve, never a spine level. The reason is written at the table. */
+ var h='<div class="pm-eye">'+unp(sd.n,sd.sk,'yoga')+' · '+unp('seat tone',sd.hz+' Hz')
+  +' · '+unp('codex page','codex page '+sd.src)+'</div>'
+  +'<div class="pm-dn">'+unp(sd.n,sd.n,'seat')+'</div><div class="pm-dm"><b>'+unp('plexus',sd.nv)+'</b><br>'
+  +unpSay('level:'+sd.k)
   +'<br>seated at '+sd.seat+'</div>'
   /* the Flow circle's step, KV, so the answer to a pressed seat says the
      same word the figure prints beside it; a phone has no lane for the word */

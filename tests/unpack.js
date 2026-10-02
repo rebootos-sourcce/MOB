@@ -249,6 +249,46 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  ok(await p.evaluate(()=>{var c=document.querySelector('#rdrill .ad-nm .tipu');return !!c&&!!c.getAttribute('data-tip');}),
   'and the sign\'s own name at the head of the drill is a carrier of its sentence');
  await p.evaluate(()=>{try{rdClose();}catch(e){}});
+ /* ---- AX8: THE SEAT DRILLS. The Field shelf's answer to a pressed seat
+    (runSeatFlowDrill) and the seat drill (anaDrill) printed a Sanskrit name,
+    a pitch, a nerve name and a citation bare, and called a spine level a
+    vritti, which the codex makes the wave around a nerve. Every term must
+    carry its sentence, every level is printed as its own sentence, and the
+    word vritti is not on either screen. ---- */
+ {const FS=E.FLOWSEAT, seatKey=s=>(s.n==='Brow'?'3rd eye':s.n.toLowerCase());
+  const rulesFor=s=>[
+   ['sanskrit','\\b'+s.sk+'\\b','yoga:'+seatKey(s)],
+   ['hz','\\bHz\\b','seat tone'],
+   ['plexus','\\bplexus\\b','plexus'],
+   ['citation','\\bsource \\d+|\\bcodex page\\b','codex page'],
+   ['level','\\b'+s.vt.split(',')[0]+'\\b','level:'+s.k],
+   ['vritti','\\bvritti\\b','no such entry']];
+  /* known bad first: the line as it shipped before the fix must read bare */
+  await p.evaluate(()=>{var d=document.createElement('div');d.id='unp-bad';
+   d.innerHTML='<div class="pm-eye">Muladhara · 396 Hz · source 502</div><div class="pm-dm"><b>Lumbar plexus</b><br>vritti L1 to L4, into the pelvic floor</div>';
+   document.body.appendChild(d);});
+  const badS=await run(p,'#unp-bad',rulesFor(FS.filter(s=>s.k==='root')[0]));
+  ok(new Set(badS.found.map(f=>f.term)).size>=5&&badS.found.every(f=>!f.glossed),
+   'the gate calls the old seat line bare before it is trusted: '+JSON.stringify(badS.found.map(f=>f.term+':'+f.glossed)));
+  await p.evaluate(()=>{document.getElementById('unp-bad').remove();});
+  for(const s of FS){
+   for(const [how,sels] of [['shelf',['#rdrill .pm-eye','#rdrill .pm-dm']],['seat drill',['#rdrill .ad-sub','#rdrill .ad-p']]]){
+    await p.evaluate(a=>{try{rdClose();}catch(e){}
+     if(a.how==='shelf')runSeatFlowDrill(a.k);
+     else{ANA_PICK={k:'seat',nm:a.n};anaDrill();}},{how,k:s.k,n:s.n});
+    await p.waitForTimeout(120);
+    const seen=new Set();
+    for(const sel of sels){
+     const got=await run(p,sel,rulesFor(s));
+     ok(!got.missing,how+' '+s.k+': '+sel+' is on the page');
+     got.found.forEach(f=>{seen.add(f.term);
+      ok(f.glossed,how+' '+s.k+': "'+f.term+'" in "'+f.text+'" has no meaning beside it');});}
+    const want=how==='shelf'?['sanskrit','hz','plexus','citation','level']:['sanskrit','hz','plexus','level'];
+    ok(want.every(t=>seen.has(t)),how+' '+s.k+' prints every term the gate holds, so it has something to hold: saw '+Array.from(seen));
+    const txt=await p.evaluate(()=>document.getElementById('rdrill').innerText);
+    ok(!/vritti/i.test(txt),how+' '+s.k+': the word vritti is not on the screen');}}
+  await p.evaluate(()=>{try{rdClose();}catch(e){}});}
+
  ok(errs.length===0,'no page errors: '+errs.slice(0,2));
  await c.close();
 }

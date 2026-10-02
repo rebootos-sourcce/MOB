@@ -103,6 +103,32 @@ var UNPACK_BASE={
  'yoga:3rd eye':'In the yoga tradition the 3rd Eye seat is called Ajna, its element is light and its seed sound is Om.',
  'yoga:crown':'In the yoga tradition the crown seat is called Sahasrara, its element is thought and its seed is silence.',
 
+ /* THE SEAT'S NERVES, TONE AND PAGE, AX8, closed 2 October. Two drills, the
+    Field shelf's seat answer (ui/mapshelf.js runSeatFlowDrill) and the seat
+    drill (ui/analytics.js anaDrill), printed FLOWSEAT's hz, nv, vt and src as
+    "Muladhara · 396 Hz · source 502" and "vritti L1 to L4": a pitch that read
+    as measured, a nerve name, a citation and a spine level, none explained.
+
+    VRITTI IS NOT A SPINE LEVEL. The codex defines the vritti as the composite
+    wave of sensory input and emotional charge (index.html:1526) and as the
+    field wrapped around a nerve (index.html:1529). FLOWSEAT.vt holds where
+    the nerve bundle sits, a level on the spine or a landmark in the skull, and
+    no vritti is read per seat, so the word is dropped from both screens
+    rather than redefined. The level is said in the sentence below, keyed by
+    the seat's own k, and tests/engine.js holds each sentence to the vt it
+    explains so the two cannot drift. The hz is a sound healing choice and
+    the sentence says whose. */
+ 'plexus':'A plexus is a bundle of nerves that meet and branch out at one place in your body.',
+ 'seat tone':'Sound healers give each seat one note, Hz is how many times that note shakes in a second, and nothing in your body is measured to get it.',
+ 'codex page':'The codex is the book this instrument is built on, and this is the page this seat comes from.',
+ 'level:crown':'This bundle of nerves sits at the pineal gland, a small gland deep in the middle of your brain, and in the cortex, the wrinkled outer layer of your brain.',
+ 'level:eye':'This bundle of nerves sits in the cavernous sinus, a pool of veins beside the small bony cup in the middle of your skull.',
+ 'level:throat':'This bundle of nerves sits level with C1 to C4, the top four bones of your neck.',
+ 'level:heart':'This bundle of nerves sits level with T4 to T5, the fourth and fifth bones of your upper back, where the big artery from your heart arches over.',
+ 'level:solar':'This bundle of nerves sits level with T12 to L1, where the last bone of your upper back meets the first bone of your lower back.',
+ 'level:sacral':'This bundle of nerves sits level with L5, the lowest bone of your lower back, just below where the big artery from your heart splits toward each leg.',
+ 'level:root':'This bundle of nerves sits level with L1 to L4, the top four bones of your lower back, and its nerves run down into the floor of your pelvis.',
+
  /* THE STORY PAGE'S THREE COLUMNS, round QB. Each column title is a carrier
     of its own sentence, so the name over a column is never left for a person
     to guess. Release says what kb.js says it is, in one sentence. */

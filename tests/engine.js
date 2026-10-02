@@ -6767,6 +6767,16 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  ok(ROOTD.every(r=>T[r.toLowerCase()]),'every root has a sentence, '+ROOTD);
  ok(['root','sacral','solar','heart','throat','3rd eye','crown'].every(x=>T['seat:'+x]),'every seat has a sentence');
  ok(MIRROR.every(m=>T['axis:'+m.q.toLowerCase()]),'every axis on the compass has a sentence');
+ /* AX8. Each seat's level sentence names the level FLOWSEAT.vt carries, so a
+    vt that moves fails here rather than leaving a sentence about another
+    bone. The pitch is said as the sound healers' choice and never as a
+    reading, and no sentence calls a level a vritti, which the codex makes the
+    wave around a nerve (index.html:1526, 1529). */
+ ok(E.FLOWSEAT.every(s=>T['level:'+s.k]&&T['level:'+s.k].toLowerCase().indexOf(s.vt.split(',')[0].toLowerCase())>=0),
+  'every seat has a level sentence naming its own vt: '+E.FLOWSEAT.filter(s=>!T['level:'+s.k]||T['level:'+s.k].toLowerCase().indexOf(s.vt.split(',')[0].toLowerCase())<0).map(s=>s.k));
+ ok(T['plexus']&&/Sound healers/.test(T['seat tone'])&&/nothing in your body is measured/.test(T['seat tone'])&&T['codex page'],
+  'the plexus, the seat tone and the codex page each have a sentence, and the tone is said as a choice and not a measurement');
+ ok(keys.every(k=>!/vritti/i.test(T[k])),'no sentence in the table uses the word vritti');
  ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
   'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
  /* the sentence a family builds reads off the table it describes, so it cannot drift */

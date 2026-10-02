@@ -397,8 +397,14 @@ function anaDrill(){
   var s2=flSeats().filter(function(x){return x.p.n===P.nm;})[0];
   if(s2){var bn=K2B[s2.p.k];
    var seg=W.filter(function(n){return n.b===bn;}).sort(function(a,b){return b.sq-a.sq;});
-   h+=head('Seat',s2.p.n,s2.p.sk+' · '+s2.p.nv+' · '+s2.p.hz+' Hz');
-   h+='<p class="ad-p">Vritti '+s2.p.vt+', seated at '+s2.p.seat+'. It passes <b>'
+   /* AX8, closed 2 October. The sub line printed "Sahasrara · Cranial plexus
+      · 963 Hz" bare, and the paragraph opened "Vritti pineal, cortical". The
+      sub line's terms carry their sentences now, and the level is its own
+      sentence. Vritti is gone: the codex makes it the wave around a nerve,
+      never a spine level. The reason is written at engine/data/gloss.js. */
+   h+=head('Seat',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
+    +' · '+unp('seat tone',s2.p.hz+' Hz')+'</div>';
+   h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' Its seat is '+s2.p.seat+'. It passes <b>'
     +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> address'
     +(s2.hot===1?' is':'es are')+' held here.</p>'
     +'<div class="pm-eye">Moral integrity seated here</div><div class="pm-chips">'
