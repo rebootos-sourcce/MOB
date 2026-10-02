@@ -156,6 +156,18 @@ Public launch (not slices): clinician and counsel review of every cue list and t
 and SAMHSA lines; one timed real signup; the restore drill on a real iPhone; the owner reads
 the gift end copy. Two owner actions: Stripe price ids and secrets, and booking that review.
 
+## L. The skin, as a build order (round PH, three reviews)
+
+Source: `REVIEW-skin/` (tally and the lead's rulings in `TALLY.md`). The shipped product
+averages 53 to 55 across twelve disciplines; the proposal projects 62 on paper and the
+coherence index reads 23 today (floor 40 for this round, 65 to ship). It waits on J13, J9, J5,
+J3, J4 (same files), then: S1 token layer, type codemod and the coherence gate; S2 canvases read
+tokens once per lighting; S3 stillness while unread, the 390 pill overlap, Compass on elapsed
+time (six sites in `ui/cone.js`); S4 one MOTION clock; S5 the free pre-drawn figure; S6 the lock
+mark inside P11; S7 names and Embody (Embody stays Knowledge); S8 the loop ring, unlit; S9 the
+unread stage; S10 engine data changes. The funnel true-up (`funnel/buy.html`: 25 patterns, the
+tier claim) goes first and is small.
+
 ## I. Getting files to him
 
 I cannot reach a disk on his own computer: this session runs in a cloud
