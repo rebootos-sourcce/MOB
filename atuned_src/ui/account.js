@@ -257,6 +257,14 @@ function accProfCss(){
   '.pf-row.on{box-shadow:inset 3px 0 0 var(--c)}',
   '.pf-now{min-width:64px;text-align:center;font-size:13px;color:var(--mid)}',
   '.pf-act .btn{min-width:64px;min-height:var(--tap)}',
+  /* the Discord door is the one .btn on this page that is a link, because it
+     leaves for another site, and a link takes the browser's underline and
+     wraps; looked at, "Open Discord" read as underlined text on two lines
+     inside the pill at 390 */
+  '#accomm{text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;'
+   +'justify-content:center;min-height:var(--tap)}',
+  /* the kind switch in the feedback sheet sat flush on the lead under it */
+  '.ob-kinds{margin:2px 0 10px}',
   '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}'].join('\n');
  document.head.appendChild(st);}
 
