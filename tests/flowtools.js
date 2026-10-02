@@ -168,8 +168,8 @@ async function flowGate(browser,FILE,ok,booted){
    go:!!document.querySelector('#flowside [data-act="go-ritual"]'),
    streak:(document.querySelector('#acct .rv-mid b')||{}).textContent,
    made:document.querySelectorAll('#flowside [data-act="add"],#flowside [data-act="save"]').length}));
-  ok(/Nothing active yet/.test(e0.due)&&/Nothing to miss yet/.test(e0.miss)&&e0.go&&e0.streak==='0'&&e0.made===0,
-   'FT8: with nothing active Accountability says so, offers Open Ritual and not a second builder, and the streak is a real 0, '+JSON.stringify(e0));
+  ok(/Nothing active yet/.test(e0.due)&&/Nothing to miss yet/.test(e0.miss)&&e0.go&&e0.streak==='–'&&e0.made===0,
+   'FT8: with nothing active Accountability says so, offers Open Ritual and not a second builder, and a zero streak is the house dash (round J13, COPY.md), not a bare 0, '+JSON.stringify(e0));
   await pg.evaluate(()=>document.querySelector('#flowside [data-act="go-ritual"]').click()); await wait(400);
   ok(await pg.evaluate(()=>S.tab===TAB.RITUAL&&!!document.querySelector('#rcol #ritwhen')),
    'FT8: Open Ritual lands on Ritual with the builder in the right menu');

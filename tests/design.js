@@ -596,9 +596,25 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
     Wheel's once a session entrance started no earlier than the first frame
     the sheet began to lift, so it did not run out under a solid sheet. */
  const ev=await p6.evaluate(()=>({log:__BOOTLOG,t0:typeof ENTER_T0==='undefined'?null:ENTER_T0}));
- ok(ev.log.start>0&&ev.log.end>0&&ev.log.end<=ev.log.gone+1,
+ /* READ ON THE FADE'S OWN CLOCK, NOT ON THE ORDER TWO EVENTS ARRIVED IN.
+    This asked for animationend before the removal. animationend is sent on
+    the first frame after the fade's end, and the floor in ui/panels.js
+    removes the sheet 200ms after that end by a timer, so the old form held
+    only while every frame landed inside 200ms. The fade's frames are the
+    heaviest of the session, because the Field's entrance starts on the same
+    frame the fade does. Measured 2 October with the gate alone at top CPU
+    priority: animationend 13 to 28ms after the fade's end at load 9 to 11,
+    150ms after it at load 16 to 19, and on runs at load 7 and at load 80
+    never, the floor removing the sheet first at 413 and 426ms past the fade's
+    start, a fade that had already run its whole 240ms. That is a timer
+    racing a frame, not a cut fade. What ET found, a removal 1.57s before the
+    fade could begin, is a removal ahead of the fade's own end, and this
+    still fails on that. Checked: a build whose floor is typed at 4000ms
+    fails here and on the floor check above. */
+ ok(ev.log.start>0&&!!fl&&ev.log.gone>=fl.end-1,
   'the sheet\'s fade played to its end before it left: began '+Math.round(ev.log.start)
-  +'ms, ended '+Math.round(ev.log.end)+'ms, removed '+Math.round(ev.log.gone)+'ms');
+  +'ms, due to end '+(fl?Math.round(fl.end):'unknown')+'ms, removed '+Math.round(ev.log.gone)+'ms'
+  +(ev.log.end>0?', animationend at '+Math.round(ev.log.end)+'ms':', animationend not reached before the floor'));
  ok(ev.t0>0&&ev.t0>=ev.log.start-5,'the Field\'s entrance started as the sheet lifted, not under it: '
   +'entrance '+Math.round(ev.t0)+'ms, lift '+Math.round(ev.log.start)+'ms');
  console.log('  cleared:',late.gone);
@@ -718,12 +734,50 @@ console.log('\n=== 13 -  no lighting costs the Field its frame rate ===');
    return {n,worst,cls:document.body.className};});
   ok(m.n===0,'nothing over the Field carries a backdrop under '+t
     +', found '+m.n+(m.worst?' e.g. '+String(m.worst).slice(0,40):''));
-  const fps=await pf.evaluate(()=>new Promise(r=>{
+  console.log('  '+t.padEnd(11)+'backdrops '+String(m.n).padStart(3));
+ }
+ /* THE BACKSTOP IS A RATIO NOW, NOT A FLOOR, because a floor measured the
+    runner. Measured 2 October, this build, Gordon seeded to full sight as
+    every page here is, on a shared four core machine. With the gate alone at
+    top CPU priority the floor failed two whole runs of this file in three at
+    load 7 to 10 (punch 23.4 and 26.7, glass 24.9) and passed every lighting
+    at 38 to 53 at load 4 to 8. Under the other seats' load every lighting
+    fell together, 3.0 to 4.3 at load 80. The build this gate was written on,
+    4103efb, read 29.5 in dark on the same runner at load 11, so the floor
+    could not tell the build it was calibrated on from today's: the number
+    moved with the machine, not with the product.
+    What this backstop is for is one lighting costing the Field what the
+    others do not: glass at 12.0 against dark at 60.5, a fifth, glass white
+    at 16.4, about a quarter. So each lighting is measured three times,
+    interleaved so a burst of load lands on all of them alike, and its median
+    is held to at least a third of the best lighting's median. The
+    regression this was written for sat at 0.20 and 0.27 of the best; today's
+    worst, glass, read 0.44 to 0.93 of the best across eight measurements, so
+    a third is the middle of that gap and not a number picked to pass. Load
+    cancels because it moves both sides: the single windows of the two
+    loaded runs above read their worst lighting at 0.70 and 0.54 of their
+    best, and at six times CPU throttling glass read 0.92 to 1.14 of dark.
+    Checked against a build with a blur backdrop put back on the glass
+    panes: glass read 8.3 against 43.9, 0.19, and it fails here. */
+ {
+  const fpsWin=()=>pf.evaluate(()=>new Promise(r=>{
    let n=0;const t0=performance.now();
    (function f(){n++;if(performance.now()-t0<1400)requestAnimationFrame(f);
     else r(+(n/((performance.now()-t0)/1000)).toFixed(1));})();}));
-  ok(fps>=30,'and the Field still animates under '+t+', measured '+fps);
-  console.log('  '+t.padEnd(11)+'backdrops '+String(m.n).padStart(3)+'   fps '+fps);
+  const LT=await pf.evaluate(()=>LIGHTINGS.map(x=>x[0]));
+  const runs={}; LT.forEach(t=>runs[t]=[]);
+  for(let i=0;i<3;i++)for(const t of LT){
+   await pf.evaluate(t=>{setLighting(t);setTab(TAB.FIELD);},t);
+   await pf.waitForTimeout(500);
+   runs[t].push(await fpsWin());}
+  const med=a=>[...a].sort((x,y)=>x-y)[Math.floor(a.length/2)];
+  const md={}; LT.forEach(t=>md[t]=med(runs[t]));
+  const best=Math.max(...LT.map(t=>md[t]));
+  LT.forEach(t=>{const ratio=best>0?md[t]/best:0;
+   ok(md[t]>0&&ratio>=1/3,'and the Field animates under '+t+' at no less than a third of the best lighting, median '
+    +md[t]+' fps against '+best+', '+ratio.toFixed(2));
+   console.log('  '+t.padEnd(11)+'fps '+runs[t].join(' ').padEnd(16)+' median '+String(md[t]).padStart(5)
+    +'   of best '+ratio.toFixed(2));});
  }
  /* and the lighting is still itself: the panes are still translucent panes */
  const look=await pf.evaluate(()=>{setLighting('glass');setTab(TAB.FIELD);
