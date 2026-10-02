@@ -104,7 +104,7 @@ in its own sparse worktree, each merged only after the gates.
 | J6 | Flow menu becomes mini routines, set up from the Ritual builder, built from the lineup in his reading | `ui/ritual*.js`, recipe engine | recipe engine merge | L |
 | J7 | Copy verification: the narrative seat walks the whole site, every tooltip and info line, against the voice rules; QA independently re-checks; evidence file `COPY-VERIFY.md` with counts; fixes land in data files and strings | many files; runs LAST, after J2 to J5 merge | J2 to J5 | M |
 | J8 | Two defects the onboarding review found: (a) the gift is not honoured in code: he ruled the whole reading is visible while the gift lasts, but `planSight` ignores the gift, so a new person sees no saboteurs (measured: `planSees(null,'sab')` is false); (b) "Unlock all sight" sits on the real login screen for any stranger. He asked for developer options lower right, so it stays for him; before any public release it must hide behind `?dev=1` | `engine/plan.js`, `ui/login.js` | nothing | S |
-| K1 to K6 | The six-area architecture (orchestrator and one contract, the 90-day state machine, the evidence ledger, the safety gate, privacy as architecture, identity and entitlement): review in 3 passes, then the executable slices are written into this table | `REVIEW-arch/` | review pass 3 | L |
+| K | The six-area architecture: reviewed three times, cut into slices P01 to P23 in section K below | `REVIEW-arch/` | see section K | L |
 
 **Round PK, what is already clear.** The proposal quotes "Sight is not for sale, new
 ground is". He reversed that on 1 October: the tier table now sells how far up the chain
@@ -116,6 +116,35 @@ before the Field rewrite (J4) because all three edit `ui.js` and `component.js`.
 review: J7 runs last because it touches strings in every other block; J5 is tiny and
 independent so it goes first; J1 stays at the top because he asked to review it while
 the rest is built.
+
+## K. The six-area architecture, as executable slices (round PK, three reviews)
+
+Source: `REVIEW-arch/` (tally in `TALLY.md`, the single merged table in
+`pass3/project-manager.md`). What it became, in his terms: not an orchestrator service but
+"the reading rules" (one reader, one rule table); not a ledger store but "the trace" (a
+derived view with six rows: Said, Heard, Maybe, Felt, Changed, Confirmed); not a 90 day state
+machine but "where the loop is" (a derived read that orders ONE suggestion, never a gate,
+never a day count); a safety screen before the story is read; privacy as a data table with a
+gate; entitlements read off the SIGHT table.
+
+| Wave | Slices (see the table file for goals, files, gates) | Size |
+|---|---|---|
+| 1, day one, parallel (cap four builders) | P01 re-measure; P02 typing floor (79 ms median now, must be 16); P03 record door (unknown keys carried, new id on import, delete seam); P04 truth sweep and voice gates (J9); P05 safety engine, self harm (J0); P12 one reading (J10 after); P06 server deploy | S to L |
+| 2 | P05b safety kinds (private build only); P07 server hygiene; P08 privacy table; P09 care register and Help sheet; P19 land `journey.js` with `addrs` (it sits uncommitted in a worktree); P13 one rule table | S to M |
+| 3 | P10 entitlement rules (includes J11); P11 gift and lock (J8); P14 the trace; P17 first writers; P09b kind cards | S to M |
+| 4 | P15 claim row; P18a `loopRead` and Next; P16 Why chain; P20 side stores, forget, entry delete | M |
+| 5 | P18b Next slot and rail (waits for J4); P21 encrypted export and restore drill; P22 data page and consent | M |
+| 6 | P23 release candidate: every gate on the merged tree | M |
+| Later | L1 ring and avatar from dated facts; L2 Confirmed ask; L3 sync; L4 practitioner grants; L5 trauma detection, locales, lead suite, signed lease, founding seats, crypto shredding, end to end encryption | |
+
+Estimate: about 55 agent days of build, 67 with rework, 82 with the other blocks; 18 to 32
+working days wall clock with four builders. Cut order if short: P16, then P22 to its table
+gate, then P09b. Never cut P02, P03, P05, P09, P10, P21.
+New gates (`tests/perf.js`, `safety.js`, `journey.js`, `privacy.js`, `drill.js`) join the
+pre-commit list in `CLAUDE.md` the day each lands, or they stay ungated as `funnel.js` did.
+Public launch (not slices): clinician and counsel review of every cue list and the 988, 911
+and SAMHSA lines; one timed real signup; the restore drill on a real iPhone; the owner reads
+the gift end copy. Two owner actions: Stripe price ids and secrets, and booking that review.
 
 ## I. Getting files to him
 
