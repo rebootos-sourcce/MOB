@@ -16,6 +16,7 @@ engine/data/kb.js
 engine/data/cards.js
 engine/data/intakemore.js
 engine/data/gloss.js
+engine/data/onboarding.js
 engine/verp.js
 engine/lexicon.js
 engine/core.js
@@ -26,6 +27,7 @@ engine/plan.js
 engine/avatar.js
 engine/trace.js
 engine/schema.js
+engine/journey.js
 engine/practice.js
 engine/intake.js
 engine/intakemore.js

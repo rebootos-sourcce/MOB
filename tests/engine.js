@@ -6041,6 +6041,11 @@ require('./practice.js')(E,ok,g,console.log);
    the engine so its fixtures never move this file's own state, and reports
    through this file's ok and g. */
 require('./daily.js')(E,ok,g,console.log);
+/* the first release's size and where a person is on the way in,
+   engine/journey.js, the two reads F5 landed from 3869d96. Its suites run on
+   this engine and then on broken copies of it, and report through this file's
+   ok and g. */
+require('./journey.js')(E,ok,g,console.log);
 /* THE TWO NEW DOMAINS MEET. practiceTraceIntents is what the practice build says
    about itself and traceApply is what the graph takes in, built apart by two
    hands. A practice built through the one door, its intents applied to a fresh

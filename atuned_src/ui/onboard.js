@@ -94,7 +94,10 @@ var OB={open:false, step:0, replay:false,
  text:'', commit:null, corr:'', fixes:[],
  /* the mirror's read of the story before it is committed, each
     correction's read, and one answer per address: yes or no, by node id */
- read:null, fixReads:[], ans:{}, more:{}};
+ read:null, fixReads:[], ans:{}, more:{},
+ /* the first release's plan, read off the yes rows above (F5). Derived on
+    the bridge and never stored: the record keeps ob.yes, not the plan. */
+ plan:null};
 
 /* THE FIGURE, AT REST. Unchanged from the shipped sheet: seven seats on a
    spine with a gold halo over the crown, the same column the boot just
@@ -116,7 +119,7 @@ function obOpen(replay){
  OB.open=true; OB.step=0; OB.replay=!!replay;
  OB.pick=null; OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
- OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={};
+ OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
  h.classList.remove('ob-leaving');
  obRender();
  h.style.display='flex';
@@ -318,7 +321,10 @@ function obReadOf(p,src,seen){
   if(!g){ g=by[im.from]={id:src+':'+im.from, from:im.from, seat:im.band, stated:false,
     fetter:im.fetter, words:[], rows:[]}; groups.push(g); }
   if(!im.inferred){ g.stated=true; g.fetter=im.fetter; }
-  g.rows.push({n:n, fetter:im.fetter});});
+  /* imStated is parseStory's own stated flag, carried so the first
+     release's plan (F5, obYesSignal) can keep the engine's order, stated
+     before named before inferred, without a second parse. */
+  g.rows.push({n:n, fetter:im.fetter, imStated:!!im.stated});});
  groups.forEach(function(g){
   (p.hits||[]).forEach(function(h){
    if(h.band!==g.from||!h.t)return;
@@ -462,21 +468,104 @@ function obAdjust(){
    release engine, the one ui/release.js already carries, through relPick,
    the same one every other door in the product uses (avatarui.js,
    drills.js, imprints.js, map.js, personas.js, ritual.js, storyui.js,
-   summary.js). The node ids it hands over are exactly the ones the mirror
-   just named, kept's own .i, never a guess built from a pick or a feeling
-   word: those are taps and this is the engine's own read.
+   summary.js). The node ids it hands over come from what the mirror just
+   read, never a guess built from a pick or a feeling word: those are taps
+   and this is the engine's own read. Since F5 they are the first release's
+   plan out of that read, at most three, and not all of it.
    ============================================================ */
+/* ============================================================
+   THE FIRST RELEASE'S SIZE, F5, ruled round PA: "The mini release is 12
+   lines." This bridge handed relPick every address the story read, eight or
+   twelve of them, and the card printed the count of addresses as a count of
+   lines: "8 lines" over a run that was 25 (RUN_MAX cut the eighth address off
+   and the seventh to one line). Measured on the shipped build, 2 October,
+   with the gate's own sentence.
+
+   Now the bridge goes through onbMiniPlan (engine/journey.js), which takes at
+   most three whole addresses, stated before named before inferred, inside the
+   allowance, and writes nothing. The ids handed to relPick are the plan's, so
+   relPlan builds the same twelve keys the card counted (tests/onboarding2.js
+   holds the two equal), and every number on the card is read off the plan.
+
+   The Day One tutorial is the other door into the same first release and
+   calls the same two functions, so there is one size and one sentence.
+   ============================================================ */
+/* THE SIGNAL IS A LIST, and the caller says which list. The Day One tutorial
+   has no per address answer, so it passes parseStory's imprints. This sheet
+   passes its yes rows (F4): only an address the person said yes to can be
+   planned, so a no or an unanswered guess never reaches relPick. */
+function obMini(list){
+ if(typeof onbMiniPlan!=='function'||typeof CURP==='undefined'||!CURP)return {ok:false, why:'no record'};
+ var ims=Array.isArray(list)?list:[];
+ return onbMiniPlan(CURP,{unread:!ims.length, imprints:ims});}
+/* parseStory's imprints, or none, for a door that kept the parse */
+function obImprints(parsed){ return (parsed&&Array.isArray(parsed.imprints))?parsed.imprints:[]; }
+/* THE YES ROWS, IN THE SHAPE onbMiniPlan READS: node, stated, inferred, as
+   parseStory's imprints carry them. inferred is the row's own "a guess" tag
+   on the mirror, so the plan's count of guesses is the card's. In the order
+   the mirror showed them, the story's then each correction's. */
+function obYesSignal(){
+ return obAllRows().filter(function(r){return OB.ans[r.n.i]==='yes';})
+  .map(function(r){return {node:r.n.i, stated:!!(r.stated&&r.imStated), inferred:!r.stated};});}
+/* WHAT THE CARD SAYS ABOUT THE PLAN. Every number is the plan's. "Address" is
+   the product's word and he ruled it means nothing to a person (SX1), so the
+   card says place, which is what the mirror above already says. A line is
+   unpacked where it is first used (round PO). The count of places the words
+   did not name is said, never hidden: those are the engine's guess from where
+   the feeling sits, and a person is owed the difference. */
+function obMiniSay(pl,first,yes){
+ if(!pl||!pl.ok)return '';
+ var n=pl.addrs.length, rel=first?'Your first release':'This release';
+ var places=function(k){return k+(k===1?' place':' places');};
+ var seats=[]; pl.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&seats.indexOf(b)<0)seats.push(b);});
+ var at=seats.length?(n===1?'It sits':(seats.length===1?'All '+n+' sit':'They sit'))+' at your '
+  +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
+  +(seats.length===1?' seat.':' seats.'):'';
+ var out='';
+ if(pl.rest>0){
+  var nm=pl.found-pl.foundInferred;
+  /* this sheet plans from the yes rows only, so its count is the yes count
+     and never the story's: a place the person said no to is not owed a wait */
+  out+='<p class="ob-p">'+(yes?'You said yes to '+places(pl.found)+'. ':'Your story touched '+places(pl.found)+' in your body. ')
+   +(pl.foundInferred===0?'Your words point to all '+pl.found+'.'
+    :(nm===0?'All '+pl.found+' come from where the feeling sits. Your words did not name them.'
+     :'Your words point to '+nm+'. The other '+pl.foundInferred+' come from where the feeling sits.'))+'</p>'
+   +'<p class="ob-p">'+rel+' takes '+n+(nm>0&&pl.foundInferred>0?', the ones your words point to first':'')
+   +'. '+(pl.rest===1?'The other one waits':'The other '+pl.rest+' wait')+' for your next release.</p>';
+ } else if(pl.inferred>0){
+  out+='<p class="ob-p">'+(pl.inferred===n?(n===1?'This place comes':'All '+n+' come')
+    :pl.inferred+' of the '+n+' come')+' from where the feeling sits. Your words did not name '
+   +(pl.inferred===1?'it':'them')+'.</p>';
+ }
+ out+='<p class="ob-p">'+(pl.rest>0?'That is ':rel+' is ')+pl.lines+' lines, '
+  +(n===1?'all at one place':(pl.lines/n)+' at each of '+places(n))+'. '+at+'</p>'
+  +'<p class="ob-p ob-dim">A line is one short sentence you follow in thought.</p>';
+ return out;}
+/* WHY THERE IS NO RELEASE TO BEGIN, when the story read and the plan is still
+   refused. Said once, plainly; the route is the button beside it. */
+function obMiniWhy(pl,yes){
+ if(pl&&pl.why==='allowance')
+  return 'There are no patterns left in your allowance right now, so no new release can begin from this story. '
+   +'A pattern is one line you have not said before.';
+ if(pl&&pl.why==='no new ground')
+  return 'Every place '+(yes?'you said yes to':'this story touched')+' is already fully opened, so there is nothing new to release from it.';
+ return '';}
 function obBridgeCard(){
- var c=OB.commit, kept=(c&&c.ok)?obYes():[];
- if(c&&c.ok&&c.k&&kept.length){
-  var n0=kept[0];
-  return obCard('Next','Next is a release.',
-   '<p class="ob-p">'+kept.length+(kept.length===1?' line':' lines')+', one at a time, at your <b>'
-    +esc(n0.b||'')+'</b> seat.</p>'
-   +'<p class="ob-p ob-dim">You choose the pace and how many once you are there, and you can stop any time.</p>',
+ var c=OB.commit, yes=(c&&c.ok)?obYesSignal():[];
+ /* the plan reads the yes rows, F4's answers, never the raw story read */
+ var pl=OB.plan=(c&&c.ok&&c.k&&yes.length)?obMini(yes):null;
+ if(pl&&pl.ok){
+  var first=(typeof journeyRead==='function')?journeyRead(CURP).first:true;
+  return obCard('Next',first?'Next is your first release.':'Next is a release.',
+   obMiniSay(pl,first,true)
+   +'<p class="ob-p ob-dim">You choose the pace and how many times each line repeats once you are there, and you can stop any time.</p>',
    '<button type="button" class="btn pri" data-ob="release">Begin the release</button>'
    +'<button type="button" class="btn" data-ob="done">Not now</button>');
  }
+ if(obMiniWhy(pl,true))
+  return obCard('Next','Nothing new to release yet.',
+   '<p class="ob-p">'+obMiniWhy(pl,true)+'</p>',
+   '<button type="button" class="btn pri" data-ob="done">Go in</button>');
  /* HONEST EMPTY, the same rule the signal test and the tutorial already
     keep: nothing to release is a real answer, not a failure to paper over. */
  return obCard('Next','Nothing to release yet.',
@@ -514,14 +603,16 @@ addEventListener('click',function(e){
  if(k==='storyskip'){
   /* a story read on an earlier Done and then withdrawn is not left pending */
   if(OB.read&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text){ ST_TEXT=''; ST_PARSED=null; }
-  OB.text=''; OB.read=null; OB.fixReads=[]; OB.fixes=[]; OB.ans={};
+  OB.text=''; OB.read=null; OB.fixReads=[]; OB.fixes=[]; OB.ans={}; OB.plan=null;
   OB.commit={ok:false,why:'skip'}; OB.step=6; obRender(); return; }
  if(k==='mirrorno'){ var w=document.getElementById('obcorrwrap'); if(w)w.hidden=false;
   var ci=document.getElementById('obcorr'); if(ci)ci.focus(); return; }
  if(k==='mirroradjust'){ obAdjust(); return; }
  if(k==='mirrorcommit'){ obCommit(); return; }
  if(k==='release'){
-  var ids=obYes().map(function(n){return n.i;});
+  /* the plan's addresses, out of the yes rows only: never every address
+     the story read (F5), and never one the person did not say yes to (F4) */
+  var pl=OB.plan||obMini(obYesSignal()), ids=(pl&&pl.ok)?pl.addrs:[];
   obClose();
   if(ids.length&&typeof relPick==='function')relPick(ids);
   return;}
@@ -549,7 +640,7 @@ function obStoryDone(){
  if(v.trim().split(/\s+/).filter(Boolean).length<3)return;
  ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
  OB.commit=null; OB.read=obReadOf(ST_PARSED,'s',{});
- OB.fixReads=[]; OB.fixes=[]; OB.ans={}; OB.more={};
+ OB.fixReads=[]; OB.fixes=[]; OB.ans={}; OB.more={}; OB.plan=null;
  OB.step=6; obRender();}
 
 /* ---- the one commit this sheet makes, through the real path: stCommit,
@@ -558,7 +649,7 @@ function obStoryDone(){
    is exactly the story the mirror showed. ---- */
 function obCommit(){
  if(!OB.text||!OB.text.trim()){ OB.step=7; obRender(); return; }
- ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text);
+ ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text); OB.plan=null;
  var r=stCommit();
  OB.commit=r;
  /* THE TAPS AND THE ANSWERS WRITE TO THE REAL PROFILE THE WAY THE STORY TAB

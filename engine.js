@@ -4055,6 +4055,32 @@ function unpackKey(term,ctx){
 function unpackOf(term,ctx){
  var k=unpackKey(term,ctx);
  return k?unpackAll()[k]:'';}
+/* ============================================================
+   THE ONBOARDING TABLES. Data only: no function here reads the
+   record, and nothing here touches a host. engine/journey.js is
+   what reads them.
+
+   PORTED, NOT REBUILT, from 3869d96 on worktree-agent-ad7f4b5294abbc82c,
+   and only the two rows the first release's size needs (F5 in
+   REVIEW-funnel/FINAL-SPEC.md). The rest of that file, the journey
+   record's version, its event list, its ceilings and the ten integrity
+   questions, is the journey record (F13) and lands with it: a table
+   for a record nothing stores yet is a second answer waiting to drift.
+   ============================================================ */
+
+/* THE MINI RELEASE'S SIZE, in addresses and not in lines. Ruled, round PA,
+   1 October (PLAN.md, "Ruled by him, round PA"): "The mini release is 12
+   lines." One address crossed with the four channels is four lines, the
+   smallest run there is (RUN_MIN in plan.js), so twelve lines is three whole
+   addresses. The size is one number so one edit moves it, and the twelve is
+   read off it times RUN_MIN, never typed a second time. */
+const ONB_MINI_ADDRS=3;
+/* THE FOUR CHANNELS A RUN SAYS AN ADDRESS DOWN, as meter keys: side then track,
+   release first and reframe after, the order the release card walks them
+   (CHAN in ui/release.js, which is the host's own copy of this list because the
+   card needs the words). The engine has to plan without the card, and
+   tests/onboarding2.js holds the two lists equal in a real browser. */
+const ONB_CHANS=['Llimit','Rlimit','Ltruth','Rtruth'];
 
 /* ============================================================
    THE SIX AXES. Three higher gates and three lower gates. This is
@@ -9904,6 +9930,113 @@ function pImport(txt){
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
 
+/* ============================================================
+   THE JOURNEY, THE READ HALF. Where a new person is on the way in,
+   and what their first release is, both read off the record and
+   neither stored.
+
+   PORTED FROM 3869d96 (worktree-agent-ad7f4b5294abbc82c), whose base
+   7b2941b is about two hundred commits behind this branch. Two
+   functions came across: onbMiniPlan whole and unchanged in body, and
+   journeyRead cut to the part the current record can answer. That
+   file also held the journey record itself (runs, a log, the gift's
+   stored counter, the ten integrity answers, the claim packet), and
+   that is F13 in REVIEW-funnel/FINAL-SPEC.md, a schema addition with
+   its own boundary. It is not landed here, so nothing in this file
+   reads or writes p.journey, and validateProfile is untouched.
+
+   HOST FREE. No document, no store, no network, and no writer. Every
+   function here takes the record and returns an answer, and the record
+   is the same object afterwards byte for byte (tests/journey.js holds
+   that on every call).
+
+   NO SCHEMA_V BUMP, and none is needed: nothing new is stored.
+   ============================================================ */
+
+/* ---------------- the read ---------------- */
+/* WHERE THE PERSON IS, derived off the record and never stored.
+
+   A record that has used the product, a first line spoken, a finished intake
+   or a ritual on the log, reads `continuing`, and onboarding does not treat it
+   as a first run. A record with a story and none of those reads `storied`, and
+   a record with nothing reads `new`. Both of the last two are a first run.
+
+   WHAT THE PORT LEFT BEHIND, said so a caller does not assume it. The original
+   had a fourth stage, `released`, which needs the run log F13 stores, so that a
+   record released inside onboarding can be told from one that was in use
+   before onboarding existed. Without the log the two read the same, and both
+   read `continuing`, which is the conservative answer: neither is a first run.
+   The count of releases is unknown for the same reason, and `runs.known` says
+   so rather than reporting a nought nobody counted. When F13 lands it fills
+   runs from the log and restores `released`; no caller of `first` changes. */
+function journeyRead(p){
+ var m=(p&&p.meter)||{}, entries=(p&&p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
+ var prior=!!(m.first||(p&&p.intake&&p.intake.completedAt)
+  ||(p&&Array.isArray(p.rituals)&&p.rituals.length));
+ var stage=prior?'continuing':(entries.length?'storied':'new');
+ return {stage:stage, first:stage==='new'||stage==='storied',
+  runs:{n:0, known:(+m.lines||0)===0}};}
+
+/* ---------------- the mini release's plan ---------------- */
+/* THE PLAN FOR A FIRST RELEASE, in whole addresses, and it writes nothing.
+
+   A run is an address across four channels, four lines, and an address is never
+   cut in half: half an address is not a release at all (RUN_MIN, plan.js). The
+   owner ruled the mini release is twelve lines, three addresses (ONB_MINI_ADDRS).
+   Fewer when the allowance leaves fewer, and a whole number of addresses
+   whatever it leaves: the cap is the allowance read through meterBudget, and
+   an address is only taken if all four of its lines are inside it.
+
+   DETERMINISTIC. The same record and the same signal give the same plan, so a
+   plan a person was shown is the plan that runs. No clock but the one handed
+   in, and no randomness.
+
+   THE SIGNAL is what the story read: { unread, addrs }, where addrs is a list
+   of { node, stated, inferred } in the order the reading weighed them, which
+   is parseStory's imprints exactly (a signal may also carry them as
+   `imprints`). An unread signal plans nothing, because there is nothing to
+   choose from and inventing a plan for a story that read as nothing is the
+   Mirror claiming a certainty it does not have. A stated address goes first, an
+   address the words did not name but the seat did goes after, and an inferred
+   one last: the charge still lands where the body holds it, and the plan says
+   how many of its addresses were inferred (`inferred`) so the card can say so.
+   New ground only: an address with a line already open down any channel is
+   still planned, at its next unopened line, but one with nothing left to open
+   is skipped, since a plan that opens nothing is a rerun and not this.
+
+   WHAT THE READING FOUND, BESIDE WHAT WAS TAKEN. Added in the port, for the
+   card (F5): `found` is how many distinct addresses the reading carried,
+   `foundInferred` how many of those the words did not name, and `rest` how
+   many were found and not taken, so a first release of three out of eight says
+   five more were read rather than hiding them. Counts only. They are derived
+   from the signal on every call and nothing stores them.
+
+   Returns { ok, addrs, keys, lines, inferred, cap, found, foundInferred, rest }
+   or { ok:false, why } with why one of: 'no record', 'unread', 'no new ground',
+   'allowance', and the found counts beside it whenever there is a signal. */
+function onbMiniPlan(p,signal,now){
+ if(!p||!p.meter)return {ok:false, why:'no record'};
+ var sg=signal||{}, list=sg.addrs||sg.imprints||[];
+ var cand=[], seen={};
+ list.forEach(function(a,i){
+  var id=(a&&typeof a==='object')?a.node:a;
+  if(!NUM(id)||seen[id]||!BY[id]||!BY[id].cf)return;
+  seen[id]=1;
+  var tier=(a&&typeof a==='object')?(a.stated?0:(a.inferred?2:1)):1;
+  cand.push({id:id, tier:tier, at:i, inferred:tier===2});});
+ var found=cand.length, foundInf=cand.filter(function(c){return c.inferred;}).length;
+ if(sg.unread===true||!cand.length)return {ok:false, why:'unread', found:found, foundInferred:foundInf};
+ cand.sort(function(a,b){return a.tier-b.tier||a.at-b.at;});
+ var cap=meterBudget(p,now).cap;
+ var whole=Math.min(ONB_MINI_ADDRS,Math.floor(cap/RUN_MIN));
+ if(whole<1)return {ok:false, why:'allowance', cap:cap, found:found, foundInferred:foundInf};
+ var open=cand.filter(function(c){return meterPlan(p,[c.id],ONB_CHANS,RUN_MIN).length===RUN_MIN;});
+ if(!open.length)return {ok:false, why:'no new ground', found:found, foundInferred:foundInf};
+ var take=open.slice(0,whole), ids=take.map(function(c){return c.id;});
+ var keys=meterPlan(p,ids,ONB_CHANS,ids.length*RUN_MIN);
+ return {ok:true, addrs:ids, keys:keys, lines:keys.length,
+  inferred:take.filter(function(c){return c.inferred;}).length, cap:cap,
+  found:found, foundInferred:foundInf, rest:found-ids.length};}
 
 /* ============================================================
    PRACTICE. The P0 domain of the Practice TDD
@@ -16280,6 +16413,10 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyCtx:dlyCtx, dlyChanges:dlyChanges, dlyContra:dlyContra, dlyFocus:dlyFocus,
                   dlyUnread:dlyUnread, dlyCompose:dlyCompose, dlyGround:dlyGround, dlyNotes:dlyNotes,
                   dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
+  /* the first release's size and where a person is on the way in,
+     engine/data/onboarding.js and engine/journey.js. Reads only. */
+                  ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_CHANS:ONB_CHANS,
+                  journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
