@@ -224,9 +224,12 @@ async function lockGate(browser,FILE,ok,booted){
   ok(ch.lock==='mask'&&ch.dis==='true'&&ch.mark,tag+'the Character door is greyed and padlocked, '+JSON.stringify(ch));
   await pg.evaluate(()=>{setTab(TAB.MASKS);render();}); await pg.waitForTimeout(700);
   const cp=await pg.evaluate(()=>{const h=document.getElementById('masksview'), b=h.querySelector('.lk-go'), r=b?b.getBoundingClientRect():null;
-   return {panel:!!h.querySelector('.lk-panel'),text:h.textContent.replace(/\s+/g,' '),grids:h.querySelectorAll('.chv-m,.chv-svg').length,
+   return {panel:!!h.querySelector('.lk-panel'),text:h.textContent.replace(/\s+/g,' '),grids:h.querySelectorAll('canvas,[data-chmask],[data-chov]').length,
     go:b?b.textContent.trim():'',gw:r?r.width:0,gh:r?r.height:0};});
-  ok(cp.panel&&cp.grids===0,tag+'the Character page holds the lock\'s panel and no grid, '+cp.grids+' grids');
+  /* the fifth build draws a canvas and two rows of buttons, and the fourth
+     build's .chv-m grids are gone: counting those passed against a page that
+     could not have drawn any, so this counts what the page draws now */
+  ok(cp.panel&&cp.grids===0,tag+'the Character page holds the lock\'s panel and nothing drawn, no canvas and no mask or overlay buttons, '+cp.grids+' found');
   ok(/Unlocked on tier three and above|Unlocked on tier \w+ and above/.test(cp.text)&&cp.go==='See tiers'&&cp.gw>=44&&cp.gh>=44,
    tag+'saying which tier opens it, with a 44 pixel See tiers, '+cp.text+' '+cp.gw+'x'+cp.gh);
   await pg.evaluate(()=>{document.querySelector('#masksview .lk-go').click();}); await pg.waitForTimeout(500);
@@ -294,10 +297,10 @@ async function lockGate(browser,FILE,ok,booted){
    const rg=await pg.evaluate(()=>document.querySelector('#cone [data-cn="shells"]').getAttribute('data-lock'));
    ok((rg===null)===seen(tier,'reg'),tag+'on tier '+tier+' the Registers are '+(seen(tier,'reg')?'open':'locked')+', SIGHT says '+need('reg'));
    await pg.evaluate(()=>{setTab(TAB.MASKS);render();}); await pg.waitForTimeout(600);
-   const mk=await pg.evaluate(()=>({grids:document.querySelectorAll('#masksview .chv-m').length,
+   const mk=await pg.evaluate(()=>({masks:document.querySelectorAll('#masksview [data-chmask]').length,cv:document.querySelectorAll('#masksview canvas').length,
     panel:!!document.querySelector('#masksview .lk-panel'),door:document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]').getAttribute('data-lock')}));
-   ok((mk.grids>0)===seen(tier,'mask')&&mk.panel===!seen(tier,'mask')&&(mk.door===null)===seen(tier,'mask'),
-    tag+'on tier '+tier+' the Character page is '+(seen(tier,'mask')?'open with its grids':'the lock\'s panel')+', SIGHT says '+need('mask')+', '+JSON.stringify(mk));
+   ok((mk.masks>0&&mk.cv===1)===seen(tier,'mask')&&mk.panel===!seen(tier,'mask')&&(mk.door===null)===seen(tier,'mask'),
+    tag+'on tier '+tier+' the Character page is '+(seen(tier,'mask')?'drawn, its canvas and its masks':'the lock\'s panel')+', SIGHT says '+need('mask')+', '+JSON.stringify(mk));
    await pg.evaluate(()=>{setTab(TAB.FIELD);render();});}
 
   /* ---- 10 · TIER FOUR AND PAYING: nothing is locked, and the lock goes ---- */

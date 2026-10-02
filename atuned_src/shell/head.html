@@ -5247,308 +5247,129 @@ body:not(.tab-energy) #emap{display:none!important}
    hidden exactly the way the Body is */
 body.tab-masksview #masksview{display:flex!important;z-index:5}
 body:not(.tab-masksview) #masksview{display:none!important}
-/* THE CHARACTER PAGE, round LP: pixel grids, each under its name "in very
-   small, simple font", and one switch for the reading. ui/character.js
-   writes it. The grids sit on the render ground like the Field, MK2's "almost
-   like a UI display", and the page scrolls inside its host at a desktop
-   width, because the hero and a switch are taller than a short window. */
-.chv{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;
- padding:18px 22px 24px;color:var(--ink)}
-.chv-top{display:flex;justify-content:flex-end}
-.chv-empty{margin:0 auto;max-width:880px;width:100%;font-size:13px;line-height:1.5;color:var(--mid)}
-/* THE RAIL AND THE HERO, ROUNDS MX, MZ AND NA, replacing the three column
-   grid this host used to draw (.chv-m and .chv-svg below are the same
-   classes that grid used, kept rather than renamed, since the rail's own
-   icons and the pair in Selection, .chv-pair, still need exactly what
-   they always did). His words at MX: "we have all five masks as small
-   icons on the left hand side of the screen... but then it gives us, we
-   can maximize the rest of that space." The grid gave every mask the same
-   small square and used none of the width a wide desktop actually has,
-   five squares in a row above a blank field. .chv-stage is a row so the
-   rail sits on the left in source order and the hero second, flex:1 so it
-   takes whatever width the rail does not. Order is swapped on phone below
-   by CSS order, never by rewriting the markup: character.js only rewrites
-   #masksview when the html string it built actually changed, the same
-   caution its own hover handler keeps for a hover a hand is resting on. */
-.chv-stage{display:flex;flex-direction:row;gap:18px;flex:1 1 auto;min-height:0;width:100%}
-.chv-rail{display:flex;flex-direction:column;gap:10px;flex:0 0 auto;align-items:center}
-.chv-hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
- flex:1 1 auto;min-height:0;min-width:0;text-align:center}
-/* SHRUNK, ROUND NN: "the Child text is taking up too much real estate...
-   maximize that area." The name stays, his own round NK ruling that the
-   hero keeps it while the rail does not, but its own footprint comes down,
-   11px and a 4px gap rather than 14px and 10px, so more of .chv-hero's own
-   height, bounded by .chv-stage above it, goes to the face and not the
-   label sitting over it. */
-.chv-hero-nm{font-size:11px;letter-spacing:.02em;color:var(--mid)}
-/* THE NAME COMES OFF THE RAIL, ROUND NK: "I don't want the buttons that
-   tall. Shrink the icons down. Remove the name above it so you get more
-   space of the icons. And then keep the name above the major symbol,"
-   his own word for the hero, which is why .chv-hero-nm above is untouched
-   and only this button's own padding and the icon size below move. The
-   name is still read aloud: ui/character.js keeps it on title and
-   aria-label both, so nothing a screen reader says changed, only what a
-   sighted person sees printed under five small icons in a row. */
-.chv-m{display:flex;align-items:center;justify-content:center;min-width:0;padding:4px;
- background:transparent;border:1px solid transparent;border-radius:var(--r-s);color:var(--mid);
- font:inherit;cursor:pointer;position:relative}
-/* LIT, NOT PRESSED, ROUND NK. DESIGN-character-effects.md 2: "an edge drawn
-   round a control is a form button," which both the old aria-pressed gold
-   border and the old hover edge were, and the Field never selects that
-   way, Sol's own reading, "the chosen chain saturates rather than lights"
-   (wheel.js, "saturates rather than lights" near line 1163). Rest holds
-   the icon at .45 saturation, hover lifts it to .75, and selected drops
-   the filter back to none and lights the pool below instead, so the thing
-   that changes is the icon's own colour and never a line drawn around it. */
-.chv-m .chv-svg{filter:saturate(.45);transition:filter var(--t-element) var(--ease-out)}
-.chv-m:hover .chv-svg{filter:saturate(.75)}
-.chv-m[aria-pressed=true] .chv-svg{filter:none}
-/* THE POOL, a radial glow behind the icon and never a ring round it, in the
-   mask's own top seat colour. character.js sets --mk-top inline, the same
-   seatCol(m.b[m.b.length-1]) lookup chSvg's own rim already runs for the
-   right half of the face, rather than this file re-deriving which of a two
-   seat mask's colours is the one to light. Hover and selected share one
-   gradient and differ only in how strong it reads, 8% against 20%, so
-   hovering a mask previews the colour its own selection would light. */
-.chv-m::before{content:'';position:absolute;inset:0;border-radius:var(--r-s);pointer-events:none;
- opacity:0;transition:opacity var(--t-element) var(--ease-out);
- background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 8%,transparent),transparent)}
-.chv-m:hover::before{opacity:1}
-.chv-m[aria-pressed=true]::before{opacity:1;
- background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 20%,transparent),transparent);
- animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
-/* SNOW, round NK: the same 20% mix sat right on paper rather than the
-   black stage the number above was measured on, so Snow gets its own
-   figure rather than inheriting Dark's. Glass reads as Dark, Sol's own
-   ruling, since it is the same seat palette under a different sheen. */
-body.snow .chv-m[aria-pressed=true]::before{
- background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
-/* PUNCH NEVER GLOWS, round NK: its own rule already standing everywhere
-   else a control in this file is selected, body.punch .ib[aria-pressed]
-   among them, is that a chosen thing is a fill and not a light. The pool
-   becomes a flat wash toward --sunk instead of a gradient, and the breath
-   comes off with it: a fill has no soft edge to breathe. */
-body.punch .chv-m[aria-pressed=true]::before{
- background:color-mix(in srgb,var(--mk-top,var(--accent)) 22%,var(--sunk));animation:none}
-.chv-m:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-/* THE WEAVE'S OWN RAIL STATE. MX left the routing question open on purpose,
-   "how the lines draw once one mask can be large and the others a rail":
-   no line crosses the gap, because a rail icon and the hero are two
-   different sizes and a line between them would have to bend around every
-   icon in between. Instead the matching pixel is ringed on every mask that
-   carries it, .chv-weavepx below, and the icon that holds one gets this
-   glow too, so "does this show up here" answers at a glance before a
-   reader has found the one lit cell inside a 64 pixel square. */
-.chv-m.chv-weave-on{box-shadow:0 0 0 2px var(--accent)}
-/* JAMES AT 64PX, ROUND MZ, WAS THE RAIL ICON'S OWN SIZE WHILE THE NAME
-   SAT ABOVE IT. Round NK, his own words, "I don't want the buttons that
-   tall, shrink the icons down": with the label gone the button's own
-   height is the icon's alone, so the icon itself comes down to 48px here,
-   the same figure the phone width below already measured against the
-   44px tap floor. The hero overrides this with its own rule below rather
-   than getting a second class, since chSvg already writes chv-hero-svg
-   beside chv-svg on it. */
-.chv-svg{display:block;width:48px;height:48px;aspect-ratio:1}
-.chv-hero-svg{width:100%;max-width:560px;height:auto}
-/* THE HERO'S OWN POOL, ROUND NK: "never framed," the same light as the
-   rail's own selected pool at a second size, which is Petra's own point,
-   "same light at two sizes is what joins icon to hero." Carried by a wrap
-   around the svg alone and not .chv-hero, which also holds the name above
-   it: a pseudo element positioned over the whole hero div would centre on
-   the name and the face together, pulling the pool's own middle up off the
-   face it is meant to sit on. Centred at 49% down rather than 50%, because
-   the egg's own widest line sits 40.7% down the FACE (DESIGN-character-
-   effects.md 1), and the face sits inside a grid box with blank rows above
-   and below it (CH_Y0 to CH_Y0+CH_S), so the same point lands 49% down the
-   full box: (11.02-2.2)/18. Sized 60% rather than closest-side, which is
-   the rail's own choice: a circle wide enough to clear the egg's own chin
-   on a hero four times the rail's width, where closest-side would have
-   shrunk it to the nearest edge of a much wider box. */
-.chv-hero-wrap{position:relative;display:block;width:100%}
-.chv-hero-wrap::before{content:'';position:absolute;inset:0;pointer-events:none;
- background:radial-gradient(60% 60% at 50% 49%,color-mix(in srgb,var(--mk-top,var(--accent)) 12%,transparent),transparent);
- animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
-body.snow .chv-hero-wrap::before{
- background:radial-gradient(60% 60% at 50% 49%,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
-body.punch .chv-hero-wrap::before{
- background:color-mix(in srgb,var(--mk-top,var(--accent)) 22%,var(--sunk));animation:none}
-/* a plain outline, never a fill: the fill already carries the tier's own
-   tone (chTone in ui/character.js) and painting over it would answer a
-   different question, how hot the pixel runs, with a colour meant to
-   answer this one, where else it runs. */
-.chv-weavepx{pointer-events:none}
-/* THE FIELD'S OWN SHADOW, UNDER THE SIX, ROUND MQ. ui/character.js's chWash
-   calls the Field's own frShadow, prefixed so its ids never collide with
-   the Field's when both sit in the document at once. Behind the grid, never
-   in front of a card a person is reading. */
-.chv-wash{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-#masksview>.chv{position:relative;z-index:1}
-/* Punch already tints the whole shell toward the heaviest seat, one plane
-   of colour; a second wash under it would be two answers to one question. */
-body.punch .chv-wash{display:none}
-/* THE RIM BREATHES ONCE A MASK'S CHAIN REACHES THE CHARACTER, round LT.
-   character.js puts the class on the rim's own <g> only when rd.sup is
-   true, so a mask nobody has built past a loose fetter never animates.
-   Opacity only, not scale: the rim is a ring of many small rects and not
-   one shape with a centre a transform can scale against cleanly, which is
-   why this is its own keyframe and not a reuse of srcBreath above, whose
-   scale would pull the rim's rects toward the svg's own corner.
+/* THE CHARACTER PAGE, fifth build, rounds ON to OW and PE: a person made of
+   points inside a torus of light, drawn on one canvas (ui/chcloud.js) with the
+   mask icons upper left and the overlay toggles upper right. Nothing else is in
+   the centre: every word the page says is in the right rail's own section,
+   .ch-rail, which is the only section that rail shows here besides Selection,
+   the way the Story shows its own.
 
-   ROUND MQ MOVED THE BEAT FROM EARNED TO ALIVE. The rim used to be the only
-   thing that ever moved on this page, on its own 6s, and 9 of the 14
-   reference profiles never reach rd.sup in the default Dark reading, so
-   the page stood still for most of them. The archetype's glow now breathes
-   for every read mask regardless, on the Field's own 4.2 second wave
-   (0.82+0.18 sin(2 pi t/4.2), ui/wheel.js), and the rim joins that same
-   beat, same token, once it lights, so six faces read as one character on
-   one clock and the reward stays legible as the rim lighting at all. */
-.chv-stage .chv-glow,.chv-stage .chv-rim-on{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
-@keyframes chvBreath{0%,100%{opacity:.64}50%{opacity:1}}
-/* THE SELECTED POOL JOINS THE SAME QUIET, round NK: it is carried on the
-   same chvBreath keyframe as the glow and the rim above it, so whatever
-   turns those still has to turn this still too, or a reduced motion
-   profile would have stopped two things on the face and left a third
-   pulsing behind the chosen icon. */
-body.rm .chv-glow,body.rm .chv-rim,body.rm .chv-m[aria-pressed=true]::before,body.rm .chv-hero-wrap::before,
-body.quiet .chv-glow,body.quiet .chv-rim,body.quiet .chv-m[aria-pressed=true]::before,body.quiet .chv-hero-wrap::before{
- animation:none;opacity:1}
-@media (prefers-reduced-motion:reduce){.chv-glow,.chv-rim,.chv-m[aria-pressed=true]::before,.chv-hero-wrap::before{
- animation:none;opacity:1}}
-/* THE WEAVE-ALONE MOTION, SECTION 5, DESIGN-character-effects.md 5.
-   ui/character.js puts chv-weaving on .chv itself whenever CHV.weave is
-   truthy, so every surface this round touches reads off the one fact
-   rather than each one being told separately: the wash drops to .35, the
-   hero's own rest (ui/character.js's chv-rest, every fill that is not the
-   woven block and not a mark) falls to .08, the Field's own Fall number
-   from section 3, and the hero's glow goes dark. A rail icon that does not
-   carry the weave desaturates to a silhouette, "the rest go saturate(0)",
-   leaving its rim and mark exactly where chv-weave-on already rings the
-   ones that do. Rim and marks are never inside chv-rest to begin with
-   (ui/character.js keeps them in their own paths), so "rim and marks hold"
-   needs no rule here: it is already true by construction. */
-.chv-weaving .chv-wash{opacity:.35;transition:opacity var(--t-surface) var(--ease-out)}
-.chv-weaving .chv-hero .chv-rest{opacity:.08;transition:opacity var(--t-surface) var(--ease-out)}
-/* ANIMATION:NONE HAS TO SIT BESIDE OPACITY:0 HERE, not opacity alone. The
-   glow and the pool both breathe on chvBreath unconditionally (.chv-stage
-   .chv-glow above, .chv-hero-wrap::before in its own rule), and a running
-   CSS animation's own keyframe value for a property beats any ordinary
-   rule's static value for that same property, specificity or no, short of
-   !important. Measured first: opacity:0 alone left the glow breathing
-   through .64 to 1 exactly as before, because chvBreath was still the
-   thing deciding its opacity every frame. */
-.chv-weaving .chv-hero .chv-glow{animation:none;opacity:0;transition:opacity var(--t-surface) var(--ease-out)}
-.chv-weaving .chv-hero .chv-hero-wrap::before{animation:none;opacity:0;transition:opacity var(--t-surface) var(--ease-out)}
-.chv-weaving .chv-rail .chv-m:not(.chv-weave-on) .chv-svg{
- filter:saturate(0);transition:filter var(--t-surface) var(--ease-out)}
-/* THE WALK, PULSE FROM SECTION 3, BUILT FOR REAL HERE. One cell of the
-   woven block brightened at a time in the order ui/character.js already
-   laid the block down (the Hilbert walk chRead builds it on, --i), a step
-   at --step (180ms slack to 90ms taut, wheel.js's own tension carried
-   over rather than a second clock) then a rest before the pass repeats.
-   filter and not opacity: the fill already carries the tier's own tone
-   and its own opacity, and brightening it is a smaller claim than
-   replacing it. chv-weaveband-still freezes the cell in place for an
-   overexpressed group, "it holds visually still while the mask breathes,"
-   DESIGN-character-effects.md 4, which a light reading's own weave always
-   is: chOwn only ever shows an over group there. */
-.chv-weavecell{animation:chvWalk calc(var(--n,1) * var(--step,180ms) + 600ms) linear infinite;
- animation-delay:calc(var(--i,0) * var(--step,180ms))}
-@keyframes chvWalk{0%,100%{filter:brightness(1)}6%{filter:brightness(1.55)}14%{filter:brightness(1)}}
-.chv-weaveband-still .chv-weavecell{animation:none}
-/* RUNNING HOT, SECTION 4. The alpha of every dash is set inline in
-   ui/character.js off frStress itself (zero at RUNHOT_AT, wheel.js, a
-   visible step on crossing), so a reduced motion profile that turns this
-   animation off still shows the correct picture rather than a blank one:
-   the animation only ever adds a travelling brightness on top of an alpha
-   that was already right. chv-hot-exp and chv-hot-col travel out and in
-   over 1.1s, each of the three echoes staggered a little further by --k
-   (one echo born at the rim before the next, the Field's own fringes
-   "born at the ring and travel out" read for a static grid rather than a
-   per frame position), and chv-hot-steady breathes on the page's own 4.2s
-   clock instead, "holding and breathing when steady." */
-.chv-hotcell{transform-box:fill-box;transform-origin:center}
-.chv-hotcell.chv-hot-exp{animation:chvHotWave 1.1s ease-in-out infinite;animation-delay:calc(var(--k,0) * .18s)}
-.chv-hotcell.chv-hot-col{animation:chvHotWave 1.1s ease-in-out infinite reverse;animation-delay:calc(var(--k,0) * .18s)}
-.chv-hotcell.chv-hot-steady{animation:chvBreath var(--t-breath) var(--ease-breath) infinite}
-@keyframes chvHotWave{0%,100%{opacity:.55}30%{opacity:1}}
-body.rm .chv-weavecell,body.rm .chv-hotcell,body.quiet .chv-weavecell,body.quiet .chv-hotcell{animation:none}
-body.rm .chv-hotcell,body.quiet .chv-hotcell{opacity:1}
-@media (prefers-reduced-motion:reduce){.chv-weavecell,.chv-hotcell{animation:none}.chv-hotcell{opacity:1}}
-/* DEPTH 1, SECTION 5: THE OPENING OVERVIEW, "Your character." The same
-   chv-row tap target every other list in this panel already uses, with a
-   small icon in front rather than a second badge, since a mask already
-   has a face (section 1) and a ring drawn round it here would answer a
-   question that page already answered. */
-.chv-ov-rows{display:flex;flex-direction:column;margin:4px 0 8px}
-.chv-ov-row{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:6px 4px;
- background:transparent;border:0;border-top:1px solid var(--edge);color:var(--ink);font:inherit;
- font-size:13px;text-align:left;cursor:pointer;position:relative}
-.chv-ov-row:hover{color:var(--gold)}
-.chv-ov-ic{width:28px;height:28px;flex:0 0 auto;filter:saturate(.6)}
-.chv-ov-row.chv-ov-hero .chv-ov-ic{filter:none}
-/* THE HERO'S OWN ROW, "visually distinguished," the same pool token every
-   selected mask already lights (--mk-top, section 2) at a third size. */
-.chv-ov-row.chv-ov-hero::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:var(--r-s);
- background:radial-gradient(closest-side,color-mix(in srgb,var(--mk-top,var(--accent)) 14%,transparent),transparent)}
-.chv-ov-nm{flex:0 0 auto;font-weight:500}
-.chv-ov-word{flex:1 1 auto;color:var(--mid);text-transform:lowercase}
-.chv-ov-hot{flex:0 0 auto;font-size:11px;color:var(--alarm)}
-/* DEPTH 2'S OWN LEAD, SECTION 5: three counts, each with a 3 by 3 crop of
-   the real grid (ui/character.js's chSampleSvg) rather than a bare figure.
-   The sunk ground chv-pair already uses, so the three sit as one unit
-   under the two grids above them rather than three strays. */
-.chv-counts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:2px 0 10px}
-.chv-ct{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;
- border-radius:var(--r-s);background:var(--sunk);text-align:center}
-.chv-samp{width:24px;height:24px}
-.chv-ct-v{font-size:15px;font-weight:600}
-.chv-ct-lb{font-size:11px;color:var(--mid)}
+   THE STAGE IS BLACK ON EVERY THEME. The page draws light, additively, so it
+   needs a dark ground, and the paper themes' own ground made the points
+   invisible: Snow and Glass white kept #F2F1EC under the old pixel grids
+   because those were drawn for paper, and this is not. The controls on it are
+   fixed light on dark for the same reason, and the rail beside it is the
+   theme's own and reads in the theme's ink. */
+body.tab-masksview #masksview{background:#0C0D12}
+.chp{position:relative;flex:1 1 auto;min-height:0;width:100%;overflow:hidden;color:#EFEDE8;
+ background:radial-gradient(ellipse at 50% 44%,#13151C 0%,#0C0D12 62%,#090A0E 100%)}
+.chp-stage{position:absolute;inset:0;overflow:hidden}
+.chp-cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
+.chp-cv.hit{cursor:pointer}
+/* THE MASK ICONS, upper left, full colour. Each is a real button because each
+   becomes a protocol, and 60 pixels, well over the 44 floor. */
+.chp-masks{position:absolute;left:20px;top:18px;display:flex;gap:12px;z-index:3}
+.chp-mk{position:relative;width:60px;height:60px;border-radius:50%;border:0;padding:0;cursor:pointer;
+ background:rgba(14,16,22,.55);color:inherit;filter:saturate(1.05);
+ transition:transform var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),filter var(--t-element) var(--ease-out)}
+.chp-mk svg{position:absolute;inset:0;width:60px;height:60px;overflow:visible}
+.chp-mk:hover{transform:translateY(-1px);box-shadow:0 0 18px -4px var(--mc2)}
+.chp-mk[aria-pressed="true"]{transform:scale(1.08);filter:saturate(1.25) brightness(1.12);
+ box-shadow:0 0 0 1px var(--mc1),0 0 30px -2px var(--mc2),0 0 62px -14px var(--mc1)}
+.chp-mk[aria-pressed="true"] .wash{fill-opacity:1}
+.chp-mk:focus-visible,.chp-ob:focus-visible{outline:2px solid #EFEDE8;outline-offset:4px}
+/* THE OVERLAY TOGGLES, upper right. Ring icons, 44 pixels, lit when on and
+   dim when off, which is the whole of their state: no text on them. */
+.chp-ovs{position:absolute;right:20px;top:20px;display:flex;gap:10px;z-index:3}
+.chp-ob{width:44px;height:44px;border-radius:50%;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+ background:rgba(20,22,29,.62);border:1px solid rgba(239,237,232,.2);color:rgba(239,237,232,.42);
+ transition:color var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
+.chp-ob svg{width:24px;height:24px}
+.chp-ob:hover{color:#EFEDE8;border-color:rgba(239,237,232,.4)}
+.chp-ob[aria-pressed="true"]{color:#EFEDE8;border-color:var(--mc1,#7EB8D4);box-shadow:0 0 0 1px var(--mc1,#7EB8D4),0 0 16px -4px var(--mc1,#7EB8D4)}
+body.punch .chp-mk,body.punch .chp-ob{box-shadow:none}
+@media (prefers-reduced-motion:reduce){.chp-mk,.chp-ob{transition:none}}
+@media (max-width:700px){
+ /* the stage is a block on a phone, in flow, so it needs a height of its own:
+    the figure and its torus are taller than they are wide */
+ .chp{flex:0 0 auto;height:min(150vw,640px)}
+ .chp-masks{left:14px;top:12px;gap:8px}
+ .chp-mk,.chp-mk svg{width:52px;height:52px}
+ /* five icons and four toggles do not share a row at 390, so the toggles sit
+    along the foot of the stage, still in the picture's own space */
+ .chp-ovs{right:auto;left:50%;transform:translateX(-50%);top:auto;bottom:12px}
+}
+/* THE RIGHT PANEL's own section. Hidden off this page, and on this page every
+   other section of the rail steps aside except Selection, where a mask's
+   summary and an address's drill open. The Release button steps aside with
+   them, as it does on the Story. */
+body:not(.tab-masksview) .lsec.ch-rail{display:none}
+body.tab-masksview .lsec[data-rail="right"]:not(.ch-rail):not([data-sec="sel"]){display:none}
+body.tab-masksview #bRel{display:none}
+.chr .pm-eye.chr-sp{margin-top:18px}
+.chr-note{margin:0 0 12px;font-size:12.5px;line-height:1.45;color:var(--dim)}
+.chr-lead{display:flex;align-items:center;gap:12px}
+.chr-lead svg{width:36px;height:36px;flex:0 0 auto}
+.chr-lead b{font-size:24px;font-weight:600;letter-spacing:-.01em;color:var(--lead);margin-right:10px}
+.chr-fig{font-size:17px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.chr-where{margin:2px 0 14px 48px;font-size:12.5px;color:var(--mid)}
+.chr-hover{min-height:44px;font-size:13px;line-height:1.45;color:var(--mid)}
+.chr-hover b{color:var(--ink);font-weight:600}
+.chr-read{display:flex;flex-direction:column;gap:10px}
+.chr-row{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;align-items:baseline}
+.chr-row span{font-size:13px;color:var(--ink)}
+.chr-row b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.chr-row i{grid-column:1/-1;font-style:normal;font-size:12px;line-height:1.4;color:var(--dim)}
+.chr-seats{display:flex;flex-direction:column}
+.chr-seat{display:grid;grid-template-columns:24px 76px minmax(0,1fr) 28px;align-items:center;gap:10px;min-height:var(--tap);
+ padding:0 6px;margin:0 -6px;width:calc(100% + 12px);border-radius:8px;background:none;border:0;text-align:left;color:var(--mid);cursor:pointer;font:inherit}
+.chr-seat:hover{background:var(--hover,rgba(127,127,127,.08))}
+.chr-seat:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.chr-seat[aria-pressed="true"]{color:var(--ink)}
+.chr-seat[aria-pressed="true"] .chr-sn{font-weight:600}
+.chr-seat-ro{cursor:default}
+.chr-seat svg{width:20px;height:20px}
+.chr-sn{font-size:13px}
+.chr-bar{position:relative;height:4px;border-radius:2px;background:var(--edge)}
+.chr-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:var(--sc)}
+.chr-sv{font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.chr-counts{display:flex;flex-wrap:wrap;gap:6px 14px}
+.chr-counts span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mid)}
+.chr-counts b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.chr-counts i{width:10px;height:10px;border-radius:50%;border:2px solid var(--sc,var(--ink));display:block}
+.chr-counts .chr-anc i{width:12px;height:12px;border-width:1.5px;border-color:var(--ink)}
+/* the trace card. A chain of three steps joined by a dotted line, in the colour
+   of the seat. */
+.chr-trace{margin:16px 0 4px;padding:14px 14px 12px;border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--edge-2)}
+.chr-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
+.chr-tab{min-height:var(--tap);padding:0 14px;border-radius:22px;border:1px solid var(--edge);background:transparent;color:var(--mid);cursor:pointer;
+ font:inherit;font-size:13px;display:inline-flex;align-items:center;gap:8px}
+.chr-tab i{width:10px;height:10px;border-radius:50%;border:2px solid var(--lc);display:block}
+.chr-tab:hover{color:var(--ink);border-color:var(--edge-2)}
+.chr-tab[aria-pressed="true"]{color:var(--ink);border-color:var(--lc);box-shadow:inset 0 0 0 1px var(--lc)}
+.chr-ttl{display:flex;align-items:center;gap:10px;margin:8px 0 12px}
+.chr-ttl b{font-size:19px;font-weight:600;letter-spacing:-.01em;color:var(--tc)}
+.chr-ttl span{margin-left:auto;font-size:12.5px;color:var(--mid)}
+.chr-step{position:relative;padding-left:20px}
+.chr-step:before{content:"";position:absolute;left:3px;top:5px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--tc)}
+.chr-k{display:flex;gap:8px;align-items:baseline;font-size:12px;color:var(--dim)}
+.chr-k i{font-style:normal;margin-left:auto;padding:1px 8px;border-radius:10px;border:1px solid var(--edge-2);color:var(--mid);font-size:11.5px}
+.chr-q{margin:2px 0 0;color:var(--ink);font-size:14px;line-height:1.4}
+.chr-m{margin:2px 0 0;color:var(--mid);font-size:13px;line-height:1.4}
+.chr-m b{color:var(--ink);font-weight:600}
+.chr-edge{margin:8px 0 8px 20px;font-size:12px;color:var(--dim)}
+.chr-why{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--edge);font-size:12.5px;line-height:1.45;color:var(--mid)}
+.chr-acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 /* DEPTH 3'S OWN "RUNS UNDER," ui/drills.js. The address count sits where
-   every other chv-row already right aligns its own figure. */
+   every other chv-row already right aligns its own figure. These rules are the
+   ones the old Character page's grids shared with the drill, and the drill
+   still wears them. */
 .chv-ru-n{margin-left:auto;font-size:12px;color:var(--mid)}
-/* the same two grids in Selection, side by side, dark then light, on the
-   rail's own sunk ground so the theme's ink and seat colours hold there */
-.chv-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px;
- padding:10px;border-radius:var(--r-s);background:var(--sunk)}
-.chv-pair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px}
-.chv-pair figcaption{font-size:12px;color:var(--mid)}
 .chv-rows{display:flex;flex-direction:column;margin:2px 0 8px}
 .chv-row{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);padding:4px 0;
  background:transparent;border:0;border-top:1px solid var(--edge);color:var(--ink);font:inherit;
  font-size:13px;text-align:left;cursor:pointer}
 .chv-row:hover{color:var(--gold)}
-/* SNOW KEEPS ITS PAPER HERE, the way Glass white does. The render ground was
-   ruled black for the field, body and compass, and it reached this host with
-   the Masks door; Snow's ink and its seat colours are drawn for paper, so on
-   black the names measured dark on dark and every pixel was a muddy step of
-   the same brown. Lumen needs nothing: it lightens the stage's ink itself. */
-body.snow.tab-masksview .stage,body.snow #masksview{background:#F2F1EC}
-@media (max-width:700px){
- .chv{padding:14px 16px 20px}
- /* THE PHONE RAIL, ROUND MZ: "put it on the bottom. above the navigation.
-    you could change it to a flat bar." The hero still needs to read first
-    down a one column page, so it moves first in display order through
-    flex order rather than through the markup, which stays rail first, hero
-    second, the same source order the roster inside the rail never resorts
-    either. #masksview sits above the shell's own bottom tab bar the same
-    way every other tab's host does, so a rail that is simply the last
-    thing .chv-stage lays out already sits right above it with nothing
-    further to pin. */
- .chv-stage{flex-direction:column;gap:12px}
- .chv-hero{order:1}
- .chv-rail{order:2;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;
-  width:100%;justify-content:center;gap:8px;padding:4px 2px}
- .chv-hero-svg{max-width:300px}
- /* ROUND NK DROPPED THE RAIL ICON TO 48PX ON EVERY WIDTH, not only here,
-    once the name came off the button and stopped driving its height; this
-    media query no longer needs its own override to match. Five icons at
-    48px, each with 4px of padding on every side so the button itself is
-    56px, and four 8px gaps between them, measure 312 at a 390 wide phone,
-    inside the narrowest width this product is held to without the flat
-    bar ever needing to scroll to find Ideological. Comfortably past the
-    44px tap floor on the icon alone, before the button's own padding is
-    added on top. */
-}
 /* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
    backdrop, which is right for something a drill throws up over your reading
    and wrong for a surface you navigated to. In tab mode it is the stage. */

@@ -332,6 +332,95 @@ ok(ref('Ana').CQ>ref('Gordon').CQ,'and mid-crisis reads higher than the collapse
 ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
+/* ============================================================
+   OW1 . THE CHARACTER FIELD, round OW. engine/charfield.js, which the
+   Character page reads and which holds every number the torus is bent by.
+   Each assertion is worked out here from NODES and bandIg, never from the
+   function it checks, so an accessor that drifts from the table fails.
+   ============================================================ */
+g('OW1 · the character field: the 112, the seven seats, the light and the opening');
+{
+ const {addrField,seatField,charAddrName,charLit,charGrow,charCohWord,charSeatState,CHAR_SEAT_LO,CHAR_SEAT_FULL,CHAR_GROW_S,bandIg}=E;
+ ref('Gordon');
+ const A=addrField();
+ ok(A.length===112&&A.length===NODES.length,'the 112 addresses, every one, in table order, got '+A.length);
+ ok(A.every((a,j)=>a.i===NODES[j].i)&&new Set(A.map(a=>a.i)).size===112,'each address once, by its own number');
+ ok(A.every(a=>BANDS.includes(a.seat)),'every address names a real seat, the anchors by the seat they extend');
+ ok(A.filter(a=>a.field).length===4&&A.filter(a=>a.field&&a.above).length===2&&A.filter(a=>a.field&&!a.above).length===2,
+  'four field anchors, two above the head and two below the feet');
+ ok(A.filter(a=>a.field&&a.above).every(a=>a.seat==='Crown')&&A.filter(a=>a.field&&!a.above).every(a=>a.seat==='Root'),
+  'the two above take the Crown and the two below take the Root, the ruling of 25 September');
+ ok(A.filter(a=>!a.field).length===108,'and 108 are somatic');
+ ok(A.every((a,j)=>a.sq===Math.min(10,Math.max(0,NODES[j].sq))),'sq is what compute() left on the address, held to 0 to 10');
+ ok(A.every(a=>a.name&&!/_/.test(a.name)),'no stored key reaches a person, no underscore in any name');
+ ok(A.every(a=>a.channel===(NODES[a.i-1].c||null)&&a.pattern===(NODES[a.i-1].cf||null)),'channel and pattern are the table\'s own');
+ /* THE ONE ADDRESS WITH NO NAME */
+ ok(A.find(a=>a.key==='Root_08_Unnamed').name==='Unnamed, Root 08','Root_08_Unnamed reads as Unnamed, Root 08');
+ ok(charAddrName('Doubt Of God')==='Doubt of God'&&charAddrName('Self-Exclusion')==='Self-exclusion'
+  &&charAddrName('Resentment (Solar)')==='Resentment (Solar)'&&charAddrName('Celiac Plexus')==='Celiac plexus'
+  &&charAddrName('Sol Star')==='Sol Star'&&charAddrName('Gaia Gateway')==='Gaia Gateway',
+  'sentence case, with God, the seat in brackets and the anchors kept: '+['Doubt Of God','Self-Exclusion','Resentment (Solar)','Celiac Plexus'].map(charAddrName).join(' | '));
+ ok(charAddrName(null)===''&&charAddrName(undefined)==='','a missing name is empty and never throws');
+ /* SEATS */
+ const SF=seatField();
+ ok(SF.length===7&&SF.map(s=>s.seat).join()===BANDS.join()&&SF.every((s,k)=>s.idx===k),'seven seats, root first, in BANDS order');
+ ok(SF.reduce((a,s)=>a+s.n,0)===108,'and between them the 108 somatic addresses, the anchors counted by none, got '+SF.reduce((a,s)=>a+s.n,0));
+ SF.forEach(s=>{const g=NODES.filter(n=>n.b===s.seat),m=g.reduce((a,n)=>a+n.sq,0)/g.length/10;
+  near(s.mean,m,1e-12,s.seat+' mean charge over ten is the mean sq of its addresses');
+  near(s.ig,bandIg(s.seat)/10,1e-12,s.seat+' integrity is bandIg over ten');});
+ const gm=seatField().reduce((a,s)=>a+s.mean,0), rosaM=(ref('Rosa'),seatField().reduce((a,s)=>a+s.mean,0));
+ ok(gm>3&&rosaM<.3&&gm>rosaM*10,'Gordon carries many times what Rosa does, '+gm.toFixed(2)+' against '+rosaM.toFixed(2)+' summed over the seats');
+ ref('Gordon');
+ /* THE LIGHT */
+ ok([0,1,2,3,4,5,6].every(k=>charLit(k,0)<.001),'at no coherence no seat is lit, the figure is what the floor in the renderer holds');
+ ok([0,1,2,3,4,5,6].every(k=>charLit(k,1)>.999),'at full coherence every seat is lit, full spectrum');
+ ok([0,1,2,3,4,5,6].every(k=>{let p=-1;for(let c=0;c<=1.0001;c+=.05){const v=charLit(k,c);if(v<p-1e-12)return false;p=v;}return true;}),'more coherence never lights a seat less');
+ ok(charLit(0,.31)>charLit(2,.31)&&charLit(2,.31)>charLit(4,.31)&&charLit(6,.31)===0,'coherence fills from the root up: at 31 percent the root is brighter than the solar seat, which is brighter than the throat, and the crown is dark');
+ ok(charLit(0,-5)===charLit(0,0)&&charLit(6,9)===charLit(6,1),'out of range coherence is held to 0 and 1');
+ ok(charCohWord(0)==='compressed'&&charCohWord(.5)==='partial'&&charCohWord(1)==='full spectrum','the three words he gave: compressed, partial, full spectrum');
+ /* THE OPENING GROW */
+ ok(charGrow(0)===0&&charGrow(-1)===0,'the page opens at nothing, the dim floor');
+ ok(charGrow(CHAR_GROW_S)===1&&charGrow(60)===1,'and has grown to the real level by '+CHAR_GROW_S+' seconds and stays');
+ ok(CHAR_GROW_S>=1.5&&CHAR_GROW_S<=3,'about two seconds, the owner\'s own word, got '+CHAR_GROW_S);
+ ok(Math.abs(charGrow(CHAR_GROW_S/2)-.5)<1e-9,'eased, half way at half the time');
+ ok((()=>{let p=-1;for(let t=0;t<=3;t+=.05){const v=charGrow(t);if(v<p-1e-12)return false;p=v;}return true;})(),'and it only ever climbs');
+ /* THE TORUS STATE */
+ const open=charSeatState([0,0,0,0,0,0,0],[1,1,1,1,1,1,1],1);
+ ok(open.sh.every(v=>v===0)&&open.leaks.length===0&&open.pinch.every(v=>v===0)&&open.slow.every(v=>v===1),'an open field does nothing: no pinch, full speed, no leak');
+ ok(open.bulge.every(v=>v>.1),'and an open, whole, lit seat swells, '+open.bulge.map(v=>v.toFixed(2)).join(' '));
+ const mid=charSeatState([.15,.15,.15,.15,.15,.15,.15],[1,1,1,1,1,1,1],1);
+ ok(mid.sh.every(v=>v===0)&&mid.pinch.every(v=>v===0),'a moderate load, .15 over ten, does not yet bend it: the default view is not a bell');
+ ok(CHAR_SEAT_LO>.1&&CHAR_SEAT_FULL<.6&&CHAR_SEAT_LO<CHAR_SEAT_FULL,'the thresholds sit where the roster measured, '+CHAR_SEAT_LO+' to '+CHAR_SEAT_FULL);
+ const closed=charSeatState([.7,.7,.7,.7,.7,.7,.7],[.2,.2,.2,.2,.2,.2,.2],1);
+ ok(closed.sh.every(v=>v===1)&&closed.pinch.every(v=>v>.25)&&closed.slow.every(v=>v<.3)&&closed.bulge.every(v=>v===0),'a closed seat pinches, runs slow and does not swell');
+ ok(closed.leaks.length===3&&closed.stut.every(v=>v===1),'every seat closed names three leaks, never more, and stutters');
+ /* MONOTONE: more charge at a seat only ever closes it further */
+ let prev=null,mono=true;for(let m=0;m<=1.0001;m+=.05){const s=charSeatState([m,0,0,0,0,0,0],[1,1,1,1,1,1,1],.6);
+  if(prev&&(s.sh[0]<prev.sh[0]-1e-12||s.pinch[0]<prev.pinch[0]-1e-12||s.slow[0]>prev.slow[0]+1e-12||s.bulge[0]>prev.bulge[0]+1e-12))mono=false;
+  prev={sh:s.sh[0],pinch:s.pinch[0],slow:s.slow[0],bulge:s.bulge[0]};}
+ ok(mono,'more charge at a seat only ever pinches it more, slows it more and swells it less');
+ /* integrity: an unanswered seat does not swell as much as a whole one */
+ const ig1=charSeatState([0,0,0,0,0,0,0],[1,1,1,1,1,1,1],1), ig0=charSeatState([0,0,0,0,0,0,0],[0,0,0,0,0,0,0],1);
+ ok(ig1.bulge[2]>ig0.bulge[2]&&ig0.bulge[2]>0,'integrity raises the swell and a lit seat with none still swells a little');
+ /* a leak is a closed seat, and a field that is not lit holds less */
+ const dim=charSeatState([.4,.4,.4,.4,.4,.4,.4],null,.05), lit=charSeatState([.4,.4,.4,.4,.4,.4,.4],null,1);
+ ok(dim.lk[0]>lit.lk[0],'the same load leaks more at low coherence');
+ const sorted=charSeatState([.9,.3,.6,.2,.5,.1,.7],[1,1,1,1,1,1,1],.5);
+ ok(sorted.leaks.length<=3&&sorted.leaks.every((k,i,a)=>i===0||sorted.lk[a[i-1]]>=sorted.lk[k])&&sorted.leaks.every(k=>sorted.lk[k]>.12),
+  'leaks are at most three, heaviest first, each one over the line: '+sorted.leaks.join(','));
+ /* THE ROSTER, through the real engine */
+ const lk=nm=>{const x=ref(nm),sf=seatField();return charSeatState(sf.map(s=>s.mean),sf.map(s=>s.ig),x.CQ/100);};
+ ok(lk('Rosa').leaks.length===0&&lk('Sofia').leaks.length===0,'Rosa and Sofia leak nowhere');
+ ok(lk('Gordon').leaks.length===3&&lk('Gordon').sh.filter(v=>v>.7).length>=5,'Gordon leaks at three seats and is closed at most of them');
+ /* THE REUSE, because the page asks every frame */
+ const o2=charSeatState([.4,.1,.1,.1,.1,.1,.1],null,.5),o3=charSeatState([.1,.4,.1,.1,.1,.1,.1],null,.5,o2);
+ ok(o3===o2&&o2.sh[1]>0&&o2.sh[0]===0,'a state handed back in is rewritten in place and not allocated again');
+ /* FOUR OUTSIDE THE BODY take the seat they extend, through compute() and not through this file */
+ ref('Gordon');const AF=addrField(),cr=AF.filter(a=>a.field&&a.above),rt=AF.filter(a=>a.field&&!a.above);
+ near(cr[0].sq,seatField()[6].mean*10,1e-9,'the anchors above carry the Crown\'s mean sq');
+ near(rt[0].sq,seatField()[0].mean*10,1e-9,'and the anchors below carry the Root\'s');
+}
+
 
 g('15d \u00b7 the meter');
 {
