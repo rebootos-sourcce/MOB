@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1351 7f8905c 2026-10-02 11:28"><head><meta charset="utf-8">
+<html lang="en" data-build="v1353 32026e2 2026-10-02 11:31"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -59073,14 +59073,14 @@ function obReadOf(p,src,seen){
   if(!g){ g=by[im.from]={id:src+':'+im.from, from:im.from, seat:im.band, stated:false,
     fetter:im.fetter, words:[], rows:[]}; groups.push(g); }
   if(!im.inferred){ g.stated=true; g.fetter=im.fetter; }
-  g.rows.push(n);});
+  g.rows.push({n:n, fetter:im.fetter});});
  groups.forEach(function(g){
   (p.hits||[]).forEach(function(h){
    if(h.band!==g.from||!h.t)return;
    var w=String(h.t).trim(); if(w&&g.words.indexOf(w)<0)g.words.push(w);});
   /* a row is stated only inside a stated group. Said per row so the release
      can carry it without reading the group again. */
-  g.rows=g.rows.map(function(n){return {n:n, stated:g.stated, fetter:g.fetter};});});
+  g.rows.forEach(function(r){r.stated=g.stated;});});
  return groups.filter(function(g){return g.stated;})
   .concat(groups.filter(function(g){return !g.stated;}));}
 /* every address on the card, in the order shown, the story's then each
@@ -59100,8 +59100,14 @@ function obQuoteList(ws){
 function obRow(r,seat){
  var n=r.n, a=OB.ans[n.i]||'';
  var said=r.stated
-  ?'<span class="ob-tag ob-tag-said">you named '+esc(obLow(r.fetter))+'</span> <b>'+esc(n.k)+'</b>. One place '
-   +esc(obLow(r.fetter))+' sits at your '+esc(seat)+' seat.'+obAbout(n)
+  ?'<span class="ob-tag ob-tag-said">you named '+esc(obLow(r.fetter))+'</span> <b>'+esc(n.k)+'</b>. '
+   /* A STATED FEELING THIS SEAT HAS NO ADDRESS FOR, sniff.js round GR:
+      exhaustion names apathy and the Solar seat has none, so parseStory
+      holds the weight at the seat's first address. Said as that, never as
+      "one place apathy sits", which would be false. */
+   +(n.cf===r.fetter?'One place '+esc(obLow(r.fetter))+' sits at your '+esc(seat)+' seat.'
+    :'Your '+esc(seat)+' seat has no place for '+esc(obLow(r.fetter))+', so the engine holds it here.')
+   +obAbout(n)
   :'<span class="ob-tag">a guess</span> <b>'+esc(n.k)+'</b>. The engine&rsquo;s guess, from your '
    +esc(seat)+' seat.'+obAbout(n);
  return '<div class="ob-row" data-obrow="'+n.i+'">'
@@ -59248,6 +59254,13 @@ addEventListener('click',function(e){
  if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
  if(pl){ OB.place=+pl.getAttribute('data-obplace'); OB.step=5; obRender(); return; }
+ var an=t.closest?t.closest('[data-obans]'):null;
+ if(an){ var ni=+an.getAttribute('data-obi'), v=an.getAttribute('data-obans');
+  /* a second press on the pressed answer takes it back to unanswered */
+  if(OB.ans[ni]===v)delete OB.ans[ni]; else OB.ans[ni]=v;
+  obRenderKeep(an); return; }
+ var mo=t.closest?t.closest('[data-obmore]'):null;
+ if(mo){ OB.more[mo.getAttribute('data-obmore')]=true; obRenderKeep(mo); return; }
  var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
  var k=b.getAttribute('data-ob');
  if(k==='next'){ OB.step++; obRender(); return; }
@@ -59258,13 +59271,6 @@ addEventListener('click',function(e){
   if(OB.read&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text){ ST_TEXT=''; ST_PARSED=null; }
   OB.text=''; OB.read=null; OB.fixReads=[]; OB.fixes=[]; OB.ans={};
   OB.commit={ok:false,why:'skip'}; OB.step=6; obRender(); return; }
- var an=t.closest?t.closest('[data-obans]'):null;
- if(an){ var ni=+an.getAttribute('data-obi'), v=an.getAttribute('data-obans');
-  /* a second press on the pressed answer takes it back to unanswered */
-  if(OB.ans[ni]===v)delete OB.ans[ni]; else OB.ans[ni]=v;
-  obRenderKeep(an); return; }
- var mo=t.closest?t.closest('[data-obmore]'):null;
- if(mo){ OB.more[mo.getAttribute('data-obmore')]=true; obRenderKeep(mo); return; }
  if(k==='mirrorno'){ var w=document.getElementById('obcorrwrap'); if(w)w.hidden=false;
   var ci=document.getElementById('obcorr'); if(ci)ci.focus(); return; }
  if(k==='mirroradjust'){ obAdjust(); return; }
@@ -61446,5 +61452,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004009652"></div>
+<div id="eof" hidden data-len="004010046"></div>
 </body></html>

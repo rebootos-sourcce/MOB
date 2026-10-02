@@ -287,6 +287,93 @@ console.log('\n=== the mirror is checked against the engine directly, never trus
  await page.close();
 }
 
+console.log('\n=== F4: the mirror says which addresses are guesses, on the review\'s own sentences ===');
+{
+ /* THE SENTENCES ARE THE FUNNEL REVIEW'S OWN (REVIEW-funnel/FINAL-SPEC.md,
+    section 3), the three walks that measured the defect: Diane's twelve
+    addresses, every one inferred; Marcus's angry, which names anger and
+    never says Pride; Angela's bereavement, inferred, with Martyrdom in it.
+    And one more, "I am exhausted", which states a feeling (apathy) the Solar
+    seat has no address for, the one case where a stated feeling sits at an
+    address of another family. Each is checked against parseStory for that
+    exact string, never against a number typed here. */
+ const page=await browser.newPage({viewport:{width:1600,height:1000}});
+ const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+ await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
+ const read=story=>page.evaluate(story=>{
+  loadP(0); obOpen(true); OB.step=5; obRender();
+  const ta=document.getElementById('obtext'); ta.value=story; ta.dispatchEvent(new Event('input'));
+  document.getElementById('obdone').click();
+  const p=parseStory(story), card=document.querySelector('.ob-card');
+  const grp=[...card.querySelectorAll('.ob-grp')].map(g=>g.innerText);
+  const firstGrp=card.querySelector('.ob-grp');
+  const lead=firstGrp?firstGrp.querySelector('p').innerText:'';
+  return {text:card.innerText, grp:grp, lead:lead,
+   inferred:p.imprints.filter(i=>i.inferred).length, stated:p.imprints.filter(i=>!i.inferred).length,
+   guessTags:card.querySelectorAll('.ob-tag:not(.ob-tag-said)').length,
+   saidTags:card.querySelectorAll('.ob-tag-said').length,
+   rows:card.querySelectorAll('[data-obrow]').length, seats:grp.length,
+   entries:(CURP.story&&CURP.story.entries||[]).length};},story);
+ const diane=await read('I snapped at my co-founder in front of the team and I cannot stop replaying it.');
+ ok(diane.stated===0&&diane.inferred>0,'Diane\'s sentence is all inferred by parseStory itself, '+diane.inferred+' inferred, '+diane.stated+' stated');
+ ok(diane.saidTags===0&&diane.guessTags===diane.rows,'and every address on her mirror is tagged a guess, none as her words');
+ ok(/^At your (Solar|Sacral|3rd Eye|Heart|Root|Throat|Crown) seat\./.test(diane.lead),
+  'with nothing stated, each seat leads, not an address name, got "'+diane.lead.slice(0,40)+'"');
+ ok(/snapped/.test(diane.text),'and the seat is tied to her own word that put weight there');
+ ok(!/around the word/i.test(diane.text),'never "around the word" for a word she did not say');
+ ok(diane.rows===diane.seats,'one address per seat shows, the rest behind a button that says how many: rows '+diane.rows+' seats '+diane.seats);
+ ok(/more guesses at this seat/.test(diane.text),'and that button says they are guesses');
+ ok(diane.entries===0,'nothing is written while she reads it');
+
+ const marcus=await read('My partner says I am impossible to work with. She is probably right and I am still angry about it.');
+ ok(marcus.stated>0,'Marcus\'s "angry" is stated by parseStory itself, '+marcus.stated+' stated');
+ ok(marcus.saidTags===marcus.rows&&marcus.guessTags===0,'and his mirror tags his address as named by him, not as a guess');
+ ok(/Your word .angry. named/.test(marcus.text),'quoting the word he actually used');
+ ok(/you named anger/.test(marcus.text)&&!/around the word/i.test(marcus.text),
+  'the tag says he named anger, and nowhere that he said Pride');
+
+ const angela=await read('My mother died last spring and I keep feeling her in my chest when I try to sleep.');
+ ok(angela.stated===0&&angela.guessTags===angela.rows,'Angela\'s bereavement is all guesses and says so');
+ ok(/The engine.s guess, from your Heart seat/.test(angela.text),'in the review\'s own words: the engine\'s guess, from your Heart seat');
+ const ang2=await page.evaluate(()=>{
+  OB.more[OB.read[0].id]=true; obRender();
+  const r=[...document.querySelectorAll('[data-obrow]')].find(x=>/Martyrdom/.test(x.innerText));
+  return r?{guess:!!r.querySelector('.ob-tag:not(.ob-tag-said)'),text:r.innerText}:null;});
+ ok(!ang2||(ang2.guess&&/guess/.test(ang2.text)),
+  'a moral word on a bereavement, if the engine reaches it, is shown as a guess, got '+(ang2&&ang2.text));
+ /* SHE SAYS NOT ME TO ALL OF IT, AND THE NO LANDS. Nothing goes to a release. */
+ const ang3=await page.evaluate(()=>{
+  /* each press redraws the card, so the next unpressed control is found
+     again every time rather than clicking a list of detached buttons */
+  let b; while((b=document.querySelector('[data-obans="no"][aria-pressed="false"]')))b.click();
+  document.querySelector('[data-ob="mirrorcommit"]').click();
+  const e=CURP.story.entries[CURP.story.entries.length-1];
+  return {bridge:document.querySelector('.ob-card').innerText, release:!!document.querySelector('[data-ob="release"]'),
+   no:(e.ob&&e.ob.no||[]).length, yes:(e.ob&&e.ob.yes||[]).length, shown:OB.read.reduce((a,g)=>a+g.rows.length,0)};});
+ ok(!ang3.release&&/did not say yes to any place/.test(ang3.bridge),'a no to every address offers no release on them');
+ ok(ang3.no===ang3.shown&&ang3.yes===0,'and every no is on her record as a no, '+ang3.no+' of '+ang3.shown);
+
+ const tired=await read('I am exhausted.');
+ ok(tired.stated>0&&/you named apathy/.test(tired.text),'"exhausted" names apathy, stated');
+ ok(/has no place for apathy, so the engine holds it here/.test(tired.text)&&!/One place apathy sits/.test(tired.text),
+  'and where the seat has no apathy address the card says so, never "one place apathy sits"');
+
+ /* LEAVING BEFORE COMMIT KEEPS NOTHING AND LOSES NOTHING. */
+ const esc=await page.evaluate(()=>{
+  loadP(0); const n0=(CURP.story&&CURP.story.entries||[]).length;
+  obOpen(true); OB.step=5; obRender();
+  const ta=document.getElementById('obtext'); ta.value='I snapped at my brother and I hate it.'; ta.dispatchEvent(new Event('input'));
+  document.getElementById('obdone').click();
+  document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+  return {n0:n0, n1:(CURP.story&&CURP.story.entries||[]).length, pending:ST_TEXT,
+   status:(document.getElementById('status')||{}).textContent};});
+ ok(esc.n1===esc.n0,'Escape on the mirror writes no entry');
+ ok(/snapped at my brother/.test(esc.pending),'and the words wait as the Story tab\'s pending text');
+ ok(/Nothing committed/.test(esc.status||''),'and the status line says so, got "'+esc.status+'"');
+ ok(errs.length===0,'no script error: '+errs.slice(0,3).join(' | '));
+ await page.close();
+}
+
 console.log('\n=== J0, the distress gap, reported rather than papered over ===');
 /* THIS IS NOT A SAFETY TEST. It cannot be: there is nothing in this engine
    to test. It is a standing check that nobody has quietly added a decorative

@@ -499,6 +499,13 @@ addEventListener('click',function(e){
  if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
  if(pl){ OB.place=+pl.getAttribute('data-obplace'); OB.step=5; obRender(); return; }
+ var an=t.closest?t.closest('[data-obans]'):null;
+ if(an){ var ni=+an.getAttribute('data-obi'), v=an.getAttribute('data-obans');
+  /* a second press on the pressed answer takes it back to unanswered */
+  if(OB.ans[ni]===v)delete OB.ans[ni]; else OB.ans[ni]=v;
+  obRenderKeep(an); return; }
+ var mo=t.closest?t.closest('[data-obmore]'):null;
+ if(mo){ OB.more[mo.getAttribute('data-obmore')]=true; obRenderKeep(mo); return; }
  var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
  var k=b.getAttribute('data-ob');
  if(k==='next'){ OB.step++; obRender(); return; }
@@ -509,13 +516,6 @@ addEventListener('click',function(e){
   if(OB.read&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text){ ST_TEXT=''; ST_PARSED=null; }
   OB.text=''; OB.read=null; OB.fixReads=[]; OB.fixes=[]; OB.ans={};
   OB.commit={ok:false,why:'skip'}; OB.step=6; obRender(); return; }
- var an=t.closest?t.closest('[data-obans]'):null;
- if(an){ var ni=+an.getAttribute('data-obi'), v=an.getAttribute('data-obans');
-  /* a second press on the pressed answer takes it back to unanswered */
-  if(OB.ans[ni]===v)delete OB.ans[ni]; else OB.ans[ni]=v;
-  obRenderKeep(an); return; }
- var mo=t.closest?t.closest('[data-obmore]'):null;
- if(mo){ OB.more[mo.getAttribute('data-obmore')]=true; obRenderKeep(mo); return; }
  if(k==='mirrorno'){ var w=document.getElementById('obcorrwrap'); if(w)w.hidden=false;
   var ci=document.getElementById('obcorr'); if(ci)ci.focus(); return; }
  if(k==='mirroradjust'){ obAdjust(); return; }
