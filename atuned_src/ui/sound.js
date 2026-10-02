@@ -751,6 +751,9 @@ function speak(text,rate,onend,onfail){
  var v=voicePick(), t0=Date.now(), over=false;
  try{
   if(speechSynthesis.speaking||speechSynthesis.pending)speakStop();
+  /* the studio voice is not speechSynthesis, so the test above cannot see it,
+     and a switch from it mid line would otherwise say the line twice at once */
+  studioStop();
   parts.forEach(function(s,i){
    var u=new SpeechSynthesisUtterance(s);
    if(v){u.voice=v; u.lang=v.lang;}
@@ -762,4 +765,65 @@ function speak(text,rate,onend,onfail){
    speechSynthesis.speak(u);});
   return true;
  }catch(e){ return false; }}
-function speakStop(){ try{ if(voiceCan())speechSynthesis.cancel(); }catch(e){} }
+function speakStop(){ try{ if(voiceCan())speechSynthesis.cancel(); }catch(e){} studioStop(); }
+/* ============================================================
+   THE STUDIO VOICE. The same line, rendered by ElevenLabs on the
+   server (ui/auth.js authVoice) and played here, behind the browser
+   voice and never in place of it: reboot-os 38_voice.js rules
+   "generated first, ElevenLabs later", free speech to find the
+   pacing and the paid voice to render a script whose timing is
+   proven. The release's timing is the four second spacing, ruled 27
+   September, and it holds whichever voice says the line, so this is
+   a switch a person turns on and not a default.
+
+   THE SAME CONTRACT AS speak(), so the walker in ui/release.js needs
+   nothing new: onend gets the milliseconds from the call to the end
+   of the sound, onfail is told once. The milliseconds include the
+   wait for the server on purpose, for the reason speak() includes the
+   browser's own: the walker spaces lines start to start, and a wait
+   it was not told about would push every line late by that much.
+
+   A LATE LINE NEVER PLAYS. Every call and every stop moves STUDIO.seq,
+   and audio that arrives for a seq that has moved is dropped, so a
+   slow answer cannot sound over the line the run has moved on to.
+   And a line that has not started within STUDIO_WAIT_MS is a failure,
+   because the walker's own guard is the estimate plus nine seconds
+   and a voice that answers after it has already been talked over.
+   ============================================================ */
+var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
+function studioCan(){
+ try{ return typeof Audio==='function'&&typeof URL!=='undefined'&&!!URL.createObjectURL
+  &&typeof authVoice==='function'; }catch(e){ return false; }}
+function studioStop(){
+ STUDIO.seq++;
+ try{ if(STUDIO.el){ STUDIO.el.onended=STUDIO.el.onerror=null; STUDIO.el.pause(); } }catch(e){}
+ try{ if(STUDIO.url)URL.revokeObjectURL(STUDIO.url); }catch(e){}
+ STUDIO.el=null; STUDIO.url='';}
+/* onfail gets the server's status when there was one (503 not set up, 429
+   today's limit, 401 signed out) and 0 for anything else, so the caller can
+   say which of those it was. */
+function speakStudio(text,rate,style,onend,onfail){
+ if(!studioCan()||!String(text||'').trim())return false;
+ speakStop();
+ var seq=STUDIO.seq, t0=Date.now(), over=false;
+ var lose=function(st){ if(over||seq!==STUDIO.seq)return; over=true; studioStop(); if(onfail)onfail(st||0); };
+ var wait=setTimeout(function(){ lose(0); },STUDIO_WAIT_MS);
+ authVoice(String(text),style).then(function(r){
+  if(over||seq!==STUDIO.seq)return;
+  if(!r.ok){ clearTimeout(wait); lose(r.status); return; }
+  var el, url;
+  try{ url=URL.createObjectURL(r.blob); el=new Audio(url); }catch(e){ clearTimeout(wait); lose(0); return; }
+  STUDIO.el=el; STUDIO.url=url;
+  /* the server renders at the voice's own speed and pace is applied here,
+     the way speak() applies it to the browser voice, so one render serves
+     every pace and the server's cache keeps answering */
+  el.playbackRate=Math.max(0.5,Math.min(1.8,rate||1));
+  el.onplaying=function(){ clearTimeout(wait); };
+  el.onended=function(){ if(over||seq!==STUDIO.seq)return; over=true;
+   var ms=Date.now()-t0; studioStop(); if(onend)onend(ms); };
+  el.onerror=function(){ clearTimeout(wait); lose(0); };
+  /* a browser that refuses to play without a fresh press says so here, and
+     that is a failure the run hears about rather than a silence */
+  try{ var p=el.play(); if(p&&p.catch)p.catch(function(){ clearTimeout(wait); lose(0); }); }
+  catch(e){ clearTimeout(wait); lose(0); }});
+ return true;}

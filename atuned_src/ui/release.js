@@ -157,7 +157,7 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          dose:100,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
-         heavy:{},look:false,rerun:false,pick:[]};
+         heavy:{},look:false,rerun:false,pick:[],studioLost:false};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -251,7 +251,7 @@ function relPick(nodeIds){
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
  RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;RUN.paused=false;
- RUN.proj=null;RUN.dq0=null;
+ RUN.proj=null;RUN.dq0=null;RUN.studioLost=false;
  relTicker(false);
  RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
@@ -379,6 +379,38 @@ function relMMSS(sec){
 function relVoiceOn(){
  if(typeof voiceCan!=='function'||!voiceCan())return false;
  return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
+/* THE STUDIO VOICE is a choice inside the voice, never a second voice switch:
+   with the voice off nothing is said by either. Signed in only, because the
+   server answers only a session, and switched on by the person, because the
+   browser voice is the default by ruling (ui/sound.js, THE STUDIO VOICE).
+   studioLost is this run giving up on it after a failure, so one dead server
+   costs one line and not one per line. A new run asks again. */
+function relStudioOn(){
+ if(!relVoiceOn()||RUN.studioLost||typeof studioCan!=='function'||!studioCan())return false;
+ if(typeof authSession!=='function'||!authSession())return false;
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.studio===true);}
+/* what each failure means for the run, in words. The server's own sentence
+   for a 503 names a setting on the server, so it is not shown; a 401 is a
+   sign in the server has ended, which ui/auth.js authCheck says on its own. */
+function relStudioLostSay(st){
+ if(st===503)return 'The studio voice is not switched on at the server yet, so this browser\'s voice reads the run.';
+ if(st===429)return 'Today\'s studio voice lines are used up, so this browser\'s voice reads the rest of the run.';
+ return 'The studio voice did not answer, so this browser\'s voice reads the rest of the run.';}
+/* SAY ONE STEP, in whichever voice is on. The list is the server's 'list'
+   style and everything around it is 'frame', the same split both apps
+   already make by saying the frame slower. A studio failure falls back to the
+   browser voice for this same line, so the line the person was waiting for is
+   still said, and then for the rest of the run. */
+function relSay(st,onend,onfail){
+ if(!relStudioOn())return speak(st.text,RUN.pace,onend,onfail);
+ var style=(st.kind==='head'||st.kind==='pass')?'list':'frame', tok=RUN.tok;
+ return speakStudio(st.text,RUN.pace,style,onend,function(why){
+  if(tok!==RUN.tok)return;
+  RUN.studioLost=true;
+  /* said and not redrawn: the switch still says what the person chose, and a
+     redraw mid line would move the list under their eyes */
+  status(relStudioLostSay(why),'fail');
+  if(!speak(st.text,RUN.pace,onend,onfail)&&onfail)onfail(why);});}
 function relBuzzOn(){
  return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.buzz)&&typeof buzzCan==='function'&&buzzCan();}
 function relHush(){
@@ -420,7 +452,7 @@ function relStep(){
   if(!RUN.paused)relAdvance();}
  /* THE WELCOME IS NEVER SYNTHESISED. It is his recorded voice or it is
     silence, whatever the voice switch says; see THE SCRIPT above. */
- if(st.kind!=='welcome'&&relVoiceOn()&&speak(st.text,RUN.pace,function(ms){
+ if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms){
     if(tok!==RUN.tok)return;
     if(ms<raw*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
     RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text);
@@ -1035,10 +1067,21 @@ function relVoiceRow(){
  var v=voicePick();
  return accTog('Voice','relvoice',relVoiceOn(),
   !v?'':v.name+(v.localService?', on this machine':', a network service'));}
+/* the studio voice's switch, under the voice's and only while the voice is on
+   and a person is signed in, since it can do nothing otherwise. Its note is
+   the same privacy line the voice row carries, cut to its facts: who says the
+   words and what they are given. ElevenLabs is a company name, so the note
+   says what it is in the same place (round PO). The Atüned server passes the
+   line on and keeps a count of characters, never the line. */
+function relStudioRow(){
+ if(!relVoiceOn()||typeof studioCan!=='function'||!studioCan()||typeof accTog!=='function')return '';
+ if(typeof authSession!=='function'||!authSession())return '';
+ return accTog('Studio voice','relstudio',!!(CURP&&CURP.ui&&CURP.ui.studio===true),
+  'ElevenLabs, a voice company, over the network. It gets each line and nothing about you.');}
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
-function relSwitches(n){return relVoiceRow()+relToneRow(n)+relBuzzRow();}
+function relSwitches(n){return relVoiceRow()+relStudioRow()+relToneRow(n)+relBuzzRow();}
 /* ============================================================
    THE LIST, IN FRONT OF THE PERSON. His words, 27 September: "For
    the letting go of believing list and the reframes, it needs to be
@@ -1772,6 +1815,14 @@ function relRender(){
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
   if(live)relStep(); else {if(!relVoiceOn())speakStop(); relRender();}};
+ /* the studio voice, the same way: the line starts again in the voice just
+    chosen. Turning it on asks again after a run gave up on it, because the
+    press is the person saying try it now. */
+ if((b=document.getElementById('relstudio')))b.onclick=function(){
+  uiSet('studio',!(CURP&&CURP.ui&&CURP.ui.studio===true)); RUN.studioLost=false;
+  var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run'
+    ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
+  if(live)relStep(); else relRender();};
  if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}
 /* THE LIST OF VOICES ARRIVES LATE. The panel names the voice before a word is
    said, so when the browser finally names its voices the panel says it again. */

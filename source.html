@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1332 d38b337 2026-10-02 09:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v1333 ded9adc 2026-10-02 10:00"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -16870,8 +16870,11 @@ function blankProfile(name){
      ruling "sound on by default", so the stored fact is the OFF, which a
      profile written before the ruling cannot have set by accident (the old
      sfx:false was the blank's own default and not a choice, so it is
-     ignored and kept only so an older record still validates). */
-  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false, paidWelcomed:false},
+     ignored and kept only so an older record still validates). studio is the
+     ElevenLabs voice in the release, off: the browser voice is the default by
+     ruling, and a voice that sends each line to a company over the network is
+     one a person chooses, never one they find already on. */
+  ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false, paidWelcomed:false, studio:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -17744,7 +17747,7 @@ function validateProfile(o){
  if(o.ui&&typeof o.ui==='object'){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
-  ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen','paidWelcomed'].forEach(function(k){
+  ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen','paidWelcomed','studio'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
@@ -26921,6 +26924,9 @@ function speak(text,rate,onend,onfail){
  var v=voicePick(), t0=Date.now(), over=false;
  try{
   if(speechSynthesis.speaking||speechSynthesis.pending)speakStop();
+  /* the studio voice is not speechSynthesis, so the test above cannot see it,
+     and a switch from it mid line would otherwise say the line twice at once */
+  studioStop();
   parts.forEach(function(s,i){
    var u=new SpeechSynthesisUtterance(s);
    if(v){u.voice=v; u.lang=v.lang;}
@@ -26932,7 +26938,68 @@ function speak(text,rate,onend,onfail){
    speechSynthesis.speak(u);});
   return true;
  }catch(e){ return false; }}
-function speakStop(){ try{ if(voiceCan())speechSynthesis.cancel(); }catch(e){} }
+function speakStop(){ try{ if(voiceCan())speechSynthesis.cancel(); }catch(e){} studioStop(); }
+/* ============================================================
+   THE STUDIO VOICE. The same line, rendered by ElevenLabs on the
+   server (ui/auth.js authVoice) and played here, behind the browser
+   voice and never in place of it: reboot-os 38_voice.js rules
+   "generated first, ElevenLabs later", free speech to find the
+   pacing and the paid voice to render a script whose timing is
+   proven. The release's timing is the four second spacing, ruled 27
+   September, and it holds whichever voice says the line, so this is
+   a switch a person turns on and not a default.
+
+   THE SAME CONTRACT AS speak(), so the walker in ui/release.js needs
+   nothing new: onend gets the milliseconds from the call to the end
+   of the sound, onfail is told once. The milliseconds include the
+   wait for the server on purpose, for the reason speak() includes the
+   browser's own: the walker spaces lines start to start, and a wait
+   it was not told about would push every line late by that much.
+
+   A LATE LINE NEVER PLAYS. Every call and every stop moves STUDIO.seq,
+   and audio that arrives for a seq that has moved is dropped, so a
+   slow answer cannot sound over the line the run has moved on to.
+   And a line that has not started within STUDIO_WAIT_MS is a failure,
+   because the walker's own guard is the estimate plus nine seconds
+   and a voice that answers after it has already been talked over.
+   ============================================================ */
+var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
+function studioCan(){
+ try{ return typeof Audio==='function'&&typeof URL!=='undefined'&&!!URL.createObjectURL
+  &&typeof authVoice==='function'; }catch(e){ return false; }}
+function studioStop(){
+ STUDIO.seq++;
+ try{ if(STUDIO.el){ STUDIO.el.onended=STUDIO.el.onerror=null; STUDIO.el.pause(); } }catch(e){}
+ try{ if(STUDIO.url)URL.revokeObjectURL(STUDIO.url); }catch(e){}
+ STUDIO.el=null; STUDIO.url='';}
+/* onfail gets the server's status when there was one (503 not set up, 429
+   today's limit, 401 signed out) and 0 for anything else, so the caller can
+   say which of those it was. */
+function speakStudio(text,rate,style,onend,onfail){
+ if(!studioCan()||!String(text||'').trim())return false;
+ speakStop();
+ var seq=STUDIO.seq, t0=Date.now(), over=false;
+ var lose=function(st){ if(over||seq!==STUDIO.seq)return; over=true; studioStop(); if(onfail)onfail(st||0); };
+ var wait=setTimeout(function(){ lose(0); },STUDIO_WAIT_MS);
+ authVoice(String(text),style).then(function(r){
+  if(over||seq!==STUDIO.seq)return;
+  if(!r.ok){ clearTimeout(wait); lose(r.status); return; }
+  var el, url;
+  try{ url=URL.createObjectURL(r.blob); el=new Audio(url); }catch(e){ clearTimeout(wait); lose(0); return; }
+  STUDIO.el=el; STUDIO.url=url;
+  /* the server renders at the voice's own speed and pace is applied here,
+     the way speak() applies it to the browser voice, so one render serves
+     every pace and the server's cache keeps answering */
+  el.playbackRate=Math.max(0.5,Math.min(1.8,rate||1));
+  el.onplaying=function(){ clearTimeout(wait); };
+  el.onended=function(){ if(over||seq!==STUDIO.seq)return; over=true;
+   var ms=Date.now()-t0; studioStop(); if(onend)onend(ms); };
+  el.onerror=function(){ clearTimeout(wait); lose(0); };
+  /* a browser that refuses to play without a fresh press says so here, and
+     that is a failure the run hears about rather than a silence */
+  try{ var p=el.play(); if(p&&p.catch)p.catch(function(){ clearTimeout(wait); lose(0); }); }
+  catch(e){ clearTimeout(wait); lose(0); }});
+ return true;}
 
 try{window.__at&&window.__at('ui/sound.js');}catch(e){}
 /* ============================================================
@@ -43363,7 +43430,7 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          dose:100,pace:1,spokeMs:0,spokeW:0,
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
-         heavy:{},look:false,rerun:false,pick:[]};
+         heavy:{},look:false,rerun:false,pick:[],studioLost:false};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -43457,7 +43524,7 @@ function relPick(nodeIds){
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
  RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;RUN.paused=false;
- RUN.proj=null;RUN.dq0=null;
+ RUN.proj=null;RUN.dq0=null;RUN.studioLost=false;
  relTicker(false);
  RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
@@ -43585,6 +43652,38 @@ function relMMSS(sec){
 function relVoiceOn(){
  if(typeof voiceCan!=='function'||!voiceCan())return false;
  return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
+/* THE STUDIO VOICE is a choice inside the voice, never a second voice switch:
+   with the voice off nothing is said by either. Signed in only, because the
+   server answers only a session, and switched on by the person, because the
+   browser voice is the default by ruling (ui/sound.js, THE STUDIO VOICE).
+   studioLost is this run giving up on it after a failure, so one dead server
+   costs one line and not one per line. A new run asks again. */
+function relStudioOn(){
+ if(!relVoiceOn()||RUN.studioLost||typeof studioCan!=='function'||!studioCan())return false;
+ if(typeof authSession!=='function'||!authSession())return false;
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.studio===true);}
+/* what each failure means for the run, in words. The server's own sentence
+   for a 503 names a setting on the server, so it is not shown; a 401 is a
+   sign in the server has ended, which ui/auth.js authCheck says on its own. */
+function relStudioLostSay(st){
+ if(st===503)return 'The studio voice is not switched on at the server yet, so this browser\'s voice reads the run.';
+ if(st===429)return 'Today\'s studio voice lines are used up, so this browser\'s voice reads the rest of the run.';
+ return 'The studio voice did not answer, so this browser\'s voice reads the rest of the run.';}
+/* SAY ONE STEP, in whichever voice is on. The list is the server's 'list'
+   style and everything around it is 'frame', the same split both apps
+   already make by saying the frame slower. A studio failure falls back to the
+   browser voice for this same line, so the line the person was waiting for is
+   still said, and then for the rest of the run. */
+function relSay(st,onend,onfail){
+ if(!relStudioOn())return speak(st.text,RUN.pace,onend,onfail);
+ var style=(st.kind==='head'||st.kind==='pass')?'list':'frame', tok=RUN.tok;
+ return speakStudio(st.text,RUN.pace,style,onend,function(why){
+  if(tok!==RUN.tok)return;
+  RUN.studioLost=true;
+  /* said and not redrawn: the switch still says what the person chose, and a
+     redraw mid line would move the list under their eyes */
+  status(relStudioLostSay(why),'fail');
+  if(!speak(st.text,RUN.pace,onend,onfail)&&onfail)onfail(why);});}
 function relBuzzOn(){
  return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.buzz)&&typeof buzzCan==='function'&&buzzCan();}
 function relHush(){
@@ -43626,7 +43725,7 @@ function relStep(){
   if(!RUN.paused)relAdvance();}
  /* THE WELCOME IS NEVER SYNTHESISED. It is his recorded voice or it is
     silence, whatever the voice switch says; see THE SCRIPT above. */
- if(st.kind!=='welcome'&&relVoiceOn()&&speak(st.text,RUN.pace,function(ms){
+ if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms){
     if(tok!==RUN.tok)return;
     if(ms<raw*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
     RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text);
@@ -44241,10 +44340,21 @@ function relVoiceRow(){
  var v=voicePick();
  return accTog('Voice','relvoice',relVoiceOn(),
   !v?'':v.name+(v.localService?', on this machine':', a network service'));}
+/* the studio voice's switch, under the voice's and only while the voice is on
+   and a person is signed in, since it can do nothing otherwise. Its note is
+   the same privacy line the voice row carries, cut to its facts: who says the
+   words and what they are given. ElevenLabs is a company name, so the note
+   says what it is in the same place (round PO). The Atüned server passes the
+   line on and keeps a count of characters, never the line. */
+function relStudioRow(){
+ if(!relVoiceOn()||typeof studioCan!=='function'||!studioCan()||typeof accTog!=='function')return '';
+ if(typeof authSession!=='function'||!authSession())return '';
+ return accTog('Studio voice','relstudio',!!(CURP&&CURP.ui&&CURP.ui.studio===true),
+  'ElevenLabs, a voice company, over the network. It gets each line and nothing about you.');}
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
-function relSwitches(n){return relVoiceRow()+relToneRow(n)+relBuzzRow();}
+function relSwitches(n){return relVoiceRow()+relStudioRow()+relToneRow(n)+relBuzzRow();}
 /* ============================================================
    THE LIST, IN FRONT OF THE PERSON. His words, 27 September: "For
    the letting go of believing list and the reframes, it needs to be
@@ -44978,6 +45088,14 @@ function relRender(){
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
   if(live)relStep(); else {if(!relVoiceOn())speakStop(); relRender();}};
+ /* the studio voice, the same way: the line starts again in the voice just
+    chosen. Turning it on asks again after a run gave up on it, because the
+    press is the person saying try it now. */
+ if((b=document.getElementById('relstudio')))b.onclick=function(){
+  uiSet('studio',!(CURP&&CURP.ui&&CURP.ui.studio===true)); RUN.studioLost=false;
+  var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run'
+    ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
+  if(live)relStep(); else relRender();};
  if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}
 /* THE LIST OF VOICES ARRIVES LATE. The panel names the voice before a word is
    said, so when the browser finally names its voices the panel says it again. */
@@ -54328,8 +54446,11 @@ function authKeep(s){
  var txt=s?JSON.stringify(s):'';
  try{ STORE.set(AUTH_KEY,txt); return STORE.get(AUTH_KEY)===txt; }catch(e){ return false; }}
 function authForget(){ return authKeep(null); }
-/* One request. Resolves to {ok, status, body, late}, and never rejects. */
-function authCall(method,path,body,token){
+/* One request. Resolves to {ok, status, body, late}, and never rejects. With
+   blob set, a yes comes back as the bytes and not as parsed text, because the
+   voice route answers audio; a no is still the server's json and still read
+   as one, so its error reaches authWhy the same way every other route's does. */
+function authCall(method,path,body,token,blob){
  return new Promise(function(done){
   var ctl=null, timer=null, over=false;
   var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
@@ -54352,6 +54473,8 @@ function authCall(method,path,body,token){
      in front of the Worker is HTML with a real status, and res.json() on it
      would throw away the status along with the page. */
   req.then(function(res){
+    if(blob&&res.ok)return res.blob().then(function(b){ return {ok:true, status:res.status, body:b}; },
+     function(){ return {ok:false, status:res.status, body:null}; });
     return res.text().then(function(t){
      var b=null; try{ b=JSON.parse(t); }catch(e){ b=null; }
      return {ok:res.ok, status:res.status, body:b}; },
@@ -54502,6 +54625,29 @@ function authPlanCheckout(tier){
   if(typeof url!=='string'||!url)
    return {ok:false, say:'The server answered without a checkout page. Nothing has changed.'};
   return {ok:true, url:url};});}
+/* THE STUDIO VOICE, one line of audio from the reboot-os Worker's
+   POST /v1/voice/synthesize, which asks ElevenLabs with a key that lives only
+   on the server. D17 in QUESTIONS.md is why it goes this way round: a key in
+   this file is a key every person who opens the file can read and spend, so
+   this side holds nothing but the person's own session, exactly as checkout
+   does.
+
+   style is the server's word for which kind of line it is, 'list' for the
+   release and reframe statements and 'frame' for the words around them. The
+   server turns that into a voice and its settings, so no voice id is ever
+   written here.
+
+   Resolves {ok, blob} or {ok:false, status}. The status is handed back rather
+   than a sentence, because the server's own words for a 503 name a server
+   setting, and that is not a sentence for the person; ui/release.js says what
+   each status means for the run. Signed out answers locally with status 401,
+   the server's own answer to no session, without a request. */
+function authVoice(text,style){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false, status:401});
+ return authCall('POST','/v1/voice/synthesize',{text:text, style:style||'list'},s.token,true).then(function(r){
+  if(r.ok&&r.body&&typeof r.body.size==='number'&&r.body.size>0)return {ok:true, blob:r.body};
+  return {ok:false, status:r.ok?502:r.status, late:!!r.late};});}
 /* MANAGE BILLING, the second half of the same seam. The server asks Stripe for a Customer
    Portal session for this account's own customer and hands back its URL, and that page is
    where a plan is moved, a card replaced or a plan stopped. Nothing is sent but the session:
@@ -60464,5 +60610,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003943775"></div>
+<div id="eof" hidden data-len="003953166"></div>
 </body></html>

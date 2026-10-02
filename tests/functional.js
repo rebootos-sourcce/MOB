@@ -4791,6 +4791,67 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  await tp.close();
 }
 
+console.log('\n=== the studio voice: opt in, signed in only, and a failure falls back out loud ===');
+/* The ElevenLabs path behind the browser voice (ui/sound.js, THE STUDIO VOICE).
+   The Worker is faked with a route, so the binary half of authCall is held by a
+   real request and a real Blob, and nothing leaves the machine. Then the walker's
+   seam, relSay, with authVoice and speak stubbed, because what is held there is
+   the decision and not the sound card. */
+{
+ const tp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
+ await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
+ await tp.route('https://voice.stub.test/**',r=>{
+  const b=JSON.parse(r.request().postData()||'{}');
+  if(b.text==='refused')return r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'the voice is not connected on this server yet: ELEVENLABS_API_KEY is not set'})});
+  return r.fulfill({status:200,contentType:'audio/mpeg',body:Buffer.from([0x49,0x44,0x33,4])});});
+ const o=await tp.evaluate(async()=>{
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  loadP(0); const api0=AUTH_API, av0=authVoice, sp0=speak; AUTH_API='https://voice.stub.test';
+  const out={};
+  authForget();
+  out.outRow=relStudioRow(); out.outOn=relStudioOn(); out.outCall=await authVoice('I let go of fear.','list');
+  authKeep({token:'tok_test',email:'v@x.co'});
+  out.inRow=relStudioRow(); out.blankOn=relStudioOn();
+  out.real=await authVoice('I let go of fear.','list'); out.realSize=out.real.blob&&out.real.blob.size;
+  out.refused=await authVoice('refused','list');
+  CURP.ui.studio=true; out.chosenOn=relStudioOn();
+  /* the server is not set up: the line is still said, in the browser voice, and the run says why */
+  const asked=[], said=[]; RUN.studioLost=false;
+  authVoice=function(t,s){ asked.push(s); return Promise.resolve({ok:false,status:503}); };
+  speak=function(t){ said.push(t); return true; };
+  relSay({kind:'pass',text:'I let go of fear.'},function(){},function(){}); await wait(30);
+  out.asked=asked.slice(); out.said=said.slice(); out.lost=RUN.studioLost;
+  out.status=document.getElementById('status').textContent;
+  relSay({kind:'pass',text:'I let go of shame.'},function(){},function(){}); await wait(30);
+  out.askedAfter=asked.length; out.saidAfter=said.slice();
+  /* the frame is the slower style, the list the steadier one */
+  RUN.studioLost=false; asked.length=0;
+  relSay({kind:'cool',text:'Stop the work. Stay where you are.'},function(){},function(){}); await wait(30);
+  out.frame=asked[0];
+  /* a late line never plays over the line the run moved on to */
+  RUN.studioLost=false; let fired=0;
+  authVoice=function(){ return new Promise(r=>setTimeout(()=>r({ok:true,blob:new Blob([new Uint8Array([0x49,0x44,0x33,4])],{type:'audio/mpeg'})}),60)); };
+  speakStudio('I let go of fear.',1,'list',function(){fired++;},function(){fired++;}); speakStop(); await wait(150);
+  out.lateEl=STUDIO.el; out.lateFired=fired;
+  authVoice=av0; speak=sp0; AUTH_API=api0; CURP.ui.studio=false; RUN.studioLost=false; authForget();
+  return out;});
+ ok(o.outRow===''&&o.outOn===false,'signed out there is no studio switch and no studio voice');
+ ok(o.outCall.ok===false&&o.outCall.status===401,'and authVoice answers locally without a request, '+JSON.stringify(o.outCall));
+ ok(/Studio voice/.test(o.inRow)&&/ElevenLabs, a voice company/.test(o.inRow),'signed in, the switch shows and says who speaks the line');
+ ok(o.blankOn===false,'and it is off until the person turns it on');
+ ok(o.real.ok===true&&o.realSize===4,'a yes from the server comes back as the audio bytes, '+JSON.stringify(o.real));
+ ok(o.refused.ok===false&&o.refused.status===503,'a refusal comes back as its status, '+JSON.stringify(o.refused));
+ ok(o.chosenOn===true,'chosen, the run uses it');
+ ok(o.asked[0]==='list'&&o.said[0]==='I let go of fear.','a refused line is still said, in the browser voice, '+JSON.stringify(o));
+ ok(o.lost===true&&/not switched on at the server/.test(o.status)&&!/ELEVENLABS/.test(o.status),'and the run says why in words, never the server setting, '+o.status);
+ ok(o.askedAfter===1&&o.saidAfter[1]==='I let go of shame.','and the rest of the run goes straight to the browser voice');
+ ok(o.frame==='frame','the words around the list ask for the frame style');
+ ok(o.lateEl===null&&o.lateFired===0,'a line that arrives after a stop never plays and never reports');
+ ok(terr.length===0,'no errors, '+terr.join(' | '));
+ await tp.close();
+}
+
 console.log('\n=== the teacher panel prints no position and no load ===');
 /* WAS "the teacher drill and the Compass panel read one axis position", found
    by the teachers design review: the drill handed mirrorAt a fraction where it

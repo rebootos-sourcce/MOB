@@ -436,7 +436,10 @@ g('15d \u00b7 the meter');
   const back=validateProfile(fl);
   ok(back.ok&&back.profile.ui.onboarded===true&&back.profile.ui.tutorialSeen===true,'the first run flags survive a load');
   ok(validateProfile(JSON.parse(JSON.stringify(saveProfile(p)))).profile.ui.onboarded===false,'and read as not seen on a profile that never set them');
-  fl.ui.paidWelcomed=true; ok(validateProfile(fl).profile.ui.paidWelcomed===true,'the welcome after paying is remembered across a load');}
+  fl.ui.paidWelcomed=true; ok(validateProfile(fl).profile.ui.paidWelcomed===true,'the welcome after paying is remembered across a load');
+  /* the studio voice sends each line to a company, so it is never found on */
+  ok(validateProfile(JSON.parse(JSON.stringify(saveProfile(p)))).profile.ui.studio===false,'the studio voice reads off on a profile that never chose it');
+  fl.ui.studio=true; ok(validateProfile(fl).profile.ui.studio===true,'and a person who chose it keeps it across a load');}
  const neg=JSON.parse(JSON.stringify(saveProfile(p))); neg.meter.lines=-5;
  ok(!validateProfile(neg).ok,'a negative line count is refused at the boundary');
  const notlist=JSON.parse(JSON.stringify(saveProfile(p))); notlist.meter.unique='lots';

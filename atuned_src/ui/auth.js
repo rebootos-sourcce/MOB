@@ -78,8 +78,11 @@ function authKeep(s){
  var txt=s?JSON.stringify(s):'';
  try{ STORE.set(AUTH_KEY,txt); return STORE.get(AUTH_KEY)===txt; }catch(e){ return false; }}
 function authForget(){ return authKeep(null); }
-/* One request. Resolves to {ok, status, body, late}, and never rejects. */
-function authCall(method,path,body,token){
+/* One request. Resolves to {ok, status, body, late}, and never rejects. With
+   blob set, a yes comes back as the bytes and not as parsed text, because the
+   voice route answers audio; a no is still the server's json and still read
+   as one, so its error reaches authWhy the same way every other route's does. */
+function authCall(method,path,body,token,blob){
  return new Promise(function(done){
   var ctl=null, timer=null, over=false;
   var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
@@ -102,6 +105,8 @@ function authCall(method,path,body,token){
      in front of the Worker is HTML with a real status, and res.json() on it
      would throw away the status along with the page. */
   req.then(function(res){
+    if(blob&&res.ok)return res.blob().then(function(b){ return {ok:true, status:res.status, body:b}; },
+     function(){ return {ok:false, status:res.status, body:null}; });
     return res.text().then(function(t){
      var b=null; try{ b=JSON.parse(t); }catch(e){ b=null; }
      return {ok:res.ok, status:res.status, body:b}; },
@@ -252,6 +257,29 @@ function authPlanCheckout(tier){
   if(typeof url!=='string'||!url)
    return {ok:false, say:'The server answered without a checkout page. Nothing has changed.'};
   return {ok:true, url:url};});}
+/* THE STUDIO VOICE, one line of audio from the reboot-os Worker's
+   POST /v1/voice/synthesize, which asks ElevenLabs with a key that lives only
+   on the server. D17 in QUESTIONS.md is why it goes this way round: a key in
+   this file is a key every person who opens the file can read and spend, so
+   this side holds nothing but the person's own session, exactly as checkout
+   does.
+
+   style is the server's word for which kind of line it is, 'list' for the
+   release and reframe statements and 'frame' for the words around them. The
+   server turns that into a voice and its settings, so no voice id is ever
+   written here.
+
+   Resolves {ok, blob} or {ok:false, status}. The status is handed back rather
+   than a sentence, because the server's own words for a 503 name a server
+   setting, and that is not a sentence for the person; ui/release.js says what
+   each status means for the run. Signed out answers locally with status 401,
+   the server's own answer to no session, without a request. */
+function authVoice(text,style){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false, status:401});
+ return authCall('POST','/v1/voice/synthesize',{text:text, style:style||'list'},s.token,true).then(function(r){
+  if(r.ok&&r.body&&typeof r.body.size==='number'&&r.body.size>0)return {ok:true, blob:r.body};
+  return {ok:false, status:r.ok?502:r.status, late:!!r.late};});}
 /* MANAGE BILLING, the second half of the same seam. The server asks Stripe for a Customer
    Portal session for this account's own customer and hands back its URL, and that page is
    where a plan is moved, a card replaced or a plan stopped. Nothing is sent but the session:
