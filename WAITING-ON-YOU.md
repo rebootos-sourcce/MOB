@@ -1,36 +1,33 @@
-# Everything sent to you that is still waiting on your word, 2 October
+# Everything waiting on your word, front and center. 2 October.
 
-Pulled from the plan and the last ten rounds. Grouped by how long it has waited.
+One list, in the order I'd look at it if I were you. Each line says what I sent, and what I need back.
 
-## From this session, sent and not yet answered
+## Look at these first — pictures and files already in your hands
 
-- **The cover redesign** (white dots, moving rings, symmetry): sent as a playable file and pictures. No word back yet on whether it is right.
-- **The font pick, Geist**, was sent with a specimen sheet; you picked Onest instead, so that one is closed. But the specimen sheet also showed two runners-up (Manrope, Onest) you have not weighed in on beyond the pick itself.
-- **The Journal and Avatar page redesigns**, sent twice (the second time rebuilt inside the real app shell, after you said the first did not match the product). No word yet on the second version.
-- **The five screens** (reading display, what it drives, the whole summary, analytics above the fold, the Practitioner page): sent as one playable file with before and after pictures. No word yet.
-- **The MVP gap report**, with the headline number (25 percent of what blocks a first paying stranger is done) and the ten biggest risks. No word on whether that number or the risk order is right.
-- **The onboarding v3 video** (feel, flow, the twelve principles of animation): sent as an actual video. No word yet.
-- **Intake stacked** (archetypes, nine emotional axes, six action axes): sent with two open questions (keep the product's own twelve archetype names, or switch to Hero and Orphan; "six action axes" read as the six gates, confirm or correct).
-- **Unpack every symbol**: sent with one open naming clash ("Eastern" means two different things in the product, a date system and a yoga seat) and a question about whether a phone needs a hold-to-open gesture on symbols inside a button.
-- **The Flow split** into Ritual and Accountability: sent with one open question (you said "get rid of the left and right menu, actually, sorry," read as "drop the left, keep the right"; say if the right one should go too).
-- **The copy walk**: one open decision taken by default and not yet confirmed (the headline coherence number still carries a percent sign; you have since said no percent, so this is now in motion, not fully open).
-- **"Stored in the body"**: fixed on my own read of your words this round; not yet confirmed as correct.
+1. **The cover** (white dots, moving rings, symmetry). Sent as a playable file and two pictures. Say yes, or say what's off.
+2. **The Journal and Avatar pages**, second version (rebuilt inside the real app after you said the first one didn't match). Sent as one playable file, shipped-vs-new pictures for both. Say yes, or what's still wrong.
+3. **The onboarding video** (door, pick a start, feel, body, mirror, release, actually moving). Sent as a real video. Say yes, or what to change.
+4. **The five redesigned screens** (reading, what it drives, the whole summary, analytics, Practitioner). Sent as one playable file with before/after pictures. One real question sitting inside it: should the Practitioner page show your coherence number at all, given the no-score rule?
+5. **The MVP gap report**, with a headline number: 25 percent of what blocks a first paying stranger is done. Say if that number or the ten risks under it feel right.
+6. **Intake, stacked** (archetypes, nine feelings, six axes). Two direct questions inside it: keep the product's own twelve archetype names, or switch two of them to Hero and Orphan? And is "six action axes" the six gates I used, or something else?
+7. **Unpack every symbol** (every term gets its meaning). One open naming clash: "Eastern" means two different things in the product today (a date system, and yoga seat names). Pick a new word for one of them.
+8. **The Flow split** (Ritual and Accountability as two pages). You said "get rid of the left and right menu, actually, sorry" — I read that as drop the left, keep the right. Confirm, or say the right one goes too.
+9. **"Patterns are stored in the body, at the nerve register of the seat."** I wrote this from your words this round. Read it once and confirm it says what you meant.
 
-## Standing, from before this session, still open
+## Business and legal, these are steps only you can do
 
-- **The referral grant**: 25 patterns or 50. `DECISIONS.md` has it listed open.
-- **The Stripe tier ladder past tier four**: tiers five through nine, draft prices sent (149, 249, 399, 699, 999), not confirmed.
-- **The sight-reversal question**: should the first release show the whole chain (saboteurs, complexes and up), which every reviewing seat recommended yes on, not yet ruled.
-- **The seed decay policy**: whether a seeded four-letter type fades on its own or only moves when the person moves it.
-- **Cognitive load**: the working-memory ceiling for one screen, needs a decision before the architectural fix is sized.
-- **Schema v2, the compressed CQ mid-range, domain weighting, the depth button names, the Matrix wiring**: named in `CLAUDE.md` as his to call, not mine.
-- **Whether the kink sits at the highest or the lowest charge**: the engine now reports both ends so either can be picked.
+10. **Stripe**: the four products, by hand in the dashboard (the steps are a few messages up) or by API once a session gets past the approval prompt.
+11. **Tiers five through nine**: I drafted 149, 249, 399, 699, 999 a month. Say real numbers or confirm the draft.
+12. **Google sign-in**: client ID and secret, steps in `API-SETUP-NOW.md`, not sent again unless you want it.
+13. **The clinician and counsel review** for the distress and safety copy. Not booked, as far as I know.
+14. **Instagram**: if you want to move on this, a Meta Developer app is the next step, on your side.
 
-## Business and legal, his steps named plainly
+## Older, standing, still open
 
-- **Stripe**: products and keys (steps sent twice, most recently `STRIPE-API-STEPS.md`).
-- **Google OAuth**: client ID and secret (`API-SETUP-NOW.md`).
-- **The clinician and counsel review** for the distress and safety copy: not booked yet, as far as I can tell from here.
-- **Instagram**: a Meta Developer account and converting the Instagram account to Business, if he wants to pursue that (just answered, this round).
+15. The referral grant: 25 patterns or 50.
+16. Whether the first release should show the whole chain (saboteurs and up); every reviewer recommended yes.
+17. The seed decay policy: fades on its own, or only moves when you move it.
+18. The cognitive load ceiling for one screen, needed before that fix can be sized.
+19. Schema v2, domain weighting, the Matrix wiring, the depth button names: named as yours to call.
 
-If something here is already decided and I missed it, say which line and I will drop it from this list.
+Everything else from earlier rounds has either landed or been folded into one of the items above. If something here is already decided and I missed it, name the line and I'll drop it.
