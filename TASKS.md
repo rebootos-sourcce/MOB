@@ -32432,3 +32432,19 @@ Binaural audio was already real in `ui/sound.js` (a true two-ear beat centred on
 One real engine defect found independently by this agent, already fixed earlier tonight on the dev branch (round "Fix ladder ground counting lines as addresses") before this branch forked from it: its own results screenshot still shows the stale "Ten addresses" mark firing off a six-address run, which is the exact bug already corrected on `claude/laughing-feynman-xhfyj3`. This branch never touched `engine/ladder.js` itself, so merging it onto the current dev tip carries no conflict and the fix is simply already there waiting. A task the agent queued for this same finding had already been started elsewhere before it could be withdrawn as a duplicate; no action needed, it will find the fix already landed.
 
 Screenshots and two motion captures sent. Three builds have now landed and verified tonight (onboarding, release screen, claims gate merged); Flow and the FAQ/nav work are still running.
+
+## Round QQ, 2 October night. Feedback on the release-screen pictures, and one real ambiguity worth asking rather than guessing
+
+His words, verbatim: "feedback on the release screen. These aren't labeled, so I'm assuming the first image is A. Rejecting A. Accepting B. Get rid of three now next. Swap left inward with left channel. And then right on that right side, right channel. Get rid of the text three lines marked heavy to kept in your bank. One way in shadow. There should be a button for how many you selected for your bank. That can be submitted. Or recycled. For the gauge on the bottom, release just have a release and reframe. It doesn't need to say reframe the charge. I need all my controls here. I need end session. Pause, play. Bookmark. I want to see my CQ improvement. and I want to see my SQ score of this particular okay there, there it is. It's here. Um, the carousel part is right. So remember, the output is that I am. Plus the subject is the subject of the story. Frame. Before they get into the reframes. Add this and build it. Review it twice so you know your strategy."
+
+Read back, organized, the clear parts:
+- "Left, inward" / "Right, outward" become "Left channel" / "Right channel".
+- Cut the sentence "N lines marked heavy: X kept in your bank, Y weighted in your shadow" entirely.
+- A new control: how many lines are currently marked toward the bank, with a way to submit that selection or recycle it (put it back, clear the pick).
+- The scrub bar's two headings simplify from "Release" / "Reframe, the recharge" to just "Release" / "Reframe".
+- Controls he wants present and did not see: End session, Pause/Play, Bookmark.
+- CQ improvement should be visible on this screen; he confirms SQ already is, once he looked again ("there it is, it's here").
+- The carousel/list itself is approved as correct.
+- The reframe content rule, restated and confirmed rather than new: the line is "that I am" plus the subject, and the subject has to come from the person's own story, bound before the reframe pass starts. Checked against the agent's own report: this already matches what was built ("the engine's opening words... swapped... keeping his card words after it").
+
+One real ambiguity, not guessed at: he calls the first picture sent "A" (the release pass) and the second "B" (the reframe pass) and says reject A, accept B, but those two pictures are the same screen in two different states of the same run, not two competing designs. Which parts of A he means to reject, if the two are meant to converge on one look, is not guessable from the words alone, so it is not acted on and is asked about directly rather than built on a guess that could throw away the other's real work. "Get rid of three now next" is also unclear on its own (the list currently mixes line numbers with the words "Now" and "Next" on different rows) and is handed to the build as a judgment call to make and document rather than guessed at here.
