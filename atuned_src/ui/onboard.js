@@ -345,10 +345,17 @@ function obAdjust(){
    The Day One tutorial is the other door into the same first release and
    calls the same two functions, so there is one size and one sentence.
    ============================================================ */
-function obMini(parsed){
+/* THE SIGNAL IS A LIST, and the caller says which list. Today both doors pass
+   parseStory's imprints, which carry node, stated and inferred exactly as
+   onbMiniPlan reads them. A door that lets a person answer yes or no per
+   address (F4) passes its yes rows in the same shape, and nothing here
+   changes. */
+function obMini(list){
  if(typeof onbMiniPlan!=='function'||typeof CURP==='undefined'||!CURP)return {ok:false, why:'no record'};
- var ims=(parsed&&Array.isArray(parsed.imprints))?parsed.imprints:[];
+ var ims=Array.isArray(list)?list:[];
  return onbMiniPlan(CURP,{unread:!ims.length, imprints:ims});}
+/* parseStory's imprints, or none, for a door that kept the parse */
+function obImprints(parsed){ return (parsed&&Array.isArray(parsed.imprints))?parsed.imprints:[]; }
 /* WHAT THE CARD SAYS ABOUT THE PLAN. Every number is the plan's. "Address" is
    the product's word and he ruled it means nothing to a person (SX1), so the
    card says place, which is what the mirror above already says. A line is
@@ -392,7 +399,7 @@ function obMiniWhy(pl){
  return '';}
 function obBridgeCard(){
  var c=OB.commit, kept=(c&&c.kept)||[];
- var pl=OB.plan=(c&&c.ok&&c.k&&kept.length)?obMini(OB.parsed):null;
+ var pl=OB.plan=(c&&c.ok&&c.k&&kept.length)?obMini(obImprints(OB.parsed)):null;
  if(pl&&pl.ok){
   var first=(typeof journeyRead==='function')?journeyRead(CURP).first:true;
   return obCard('Next',first?'Next is your first release.':'Next is a release.',
@@ -434,7 +441,7 @@ addEventListener('click',function(e){
  if(k==='mirroryes'){ OB.step=7; obRender(); return; }
  if(k==='release'){
   /* the plan's addresses, never every address the story read (F5) */
-  var pl=OB.plan||obMini(OB.parsed), ids=(pl&&pl.ok)?pl.addrs:[];
+  var pl=OB.plan||obMini(obImprints(OB.parsed)), ids=(pl&&pl.ok)?pl.addrs:[];
   obClose();
   if(ids.length&&typeof relPick==='function')relPick(ids);
   return;}

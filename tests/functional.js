@@ -2440,7 +2440,11 @@ console.log('\n=== the opening, round PS: arrive, the twelve, settle, feel, body
  ok(/This separates into its own components/.test(ob.said),
   'the mirror prints the real-engine read, never a scripted stand in');
  ok(ob.k>0,'a real sentence reads real imprints, k='+ob.k);
- ok(/Next is a release/.test(ob.bridgeSaid),'the bridge offers the real release it found');
+ /* F5: the title says first release on a record that has not released yet,
+    and the plain one otherwise (journeyRead). Which one this walk meets
+    depends on persona 0's record, so either is the real release; the size it
+    offers is held in tests/onboarding2.js, not here. */
+ ok(/Next is (your first|a) release/.test(ob.bridgeSaid),'the bridge offers the real release it found');
  ok(ob.closed,'and it closes');
  /* THE THING THAT CHANGED, STATED RATHER THAN LEFT IMPLICIT: a real entry
     writes real charge, the same way a real entry in the Day One tutorial

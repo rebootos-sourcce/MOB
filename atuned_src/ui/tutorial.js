@@ -155,7 +155,7 @@ function tutRender(){
   /* THE FIRST RELEASE'S SIZE, F5: the same plan and the same sentence as the
      onboarding bridge (ui/onboard.js, obMini), so both doors into a first
      release open the ruled twelve lines and say the true count. */
-  var pl=TUT.plan=(off&&kept.length&&typeof obMini==='function')?obMini(TUT.parsed):null;
+  var pl=TUT.plan=(off&&kept.length&&typeof obMini==='function')?obMini(obImprints(TUT.parsed)):null;
   var go=!!(pl&&pl.ok);
   var body;
   if(off&&kept.length){
@@ -229,7 +229,7 @@ addEventListener('click',function(e){
  if(k==='next'){ TUT.step++; tutRender(); return; }
  if(k==='release'){
   /* the plan's addresses, never every address the entry read (F5) */
-  var pl=TUT.plan||(typeof obMini==='function'?obMini(TUT.parsed):null), ids=(pl&&pl.ok)?pl.addrs:[];
+  var pl=TUT.plan||(typeof obMini==='function'?obMini(obImprints(TUT.parsed)):null), ids=(pl&&pl.ok)?pl.addrs:[];
   tutClose();
   if(ids.length&&typeof relPick==='function')relPick(ids);
   return;}
