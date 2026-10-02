@@ -31685,3 +31685,13 @@ Read as:
 - A list of everything still waiting on his word. Sent as `WAITING-ON-YOU.md`.
 
 Builders running: `pr-unlock` (tier four on examples, then the 90-day stress test), `pr-headers` (Journal/Imprints/Release then the site), `pr-avatar` (nested seat icons), `pr-sound` (light dusting). Still running from round PQ: `pq-copy`, `pq-ritual`, `pq-arch`.
+
+## Round PS, 2 October. The funnel and intelligence spec, and what's still undone
+
+His words, verbatim: "It doesn't look like the release protocol has been updated at all. Per my suggestion, or uh, request. Neither is a practitioner layer. Let's do the feedback first. On what's been created. Feedback on any remaining questions and then review the backlog. In the meantime, build the practitioner layer. Update the sound effects and update the onboarding and tutorial. See attached review three times."
+
+He attached a 92-section, 3576-line implementation spec, "ATUNED Feedback and Solutions Implementation Spec," archived whole at `REVIEW-funnel/OWNER-INPUT.md`. It asks for one causal loop (feel, say, ATUNED sees, confirm, works, notice, practice, remember) connecting the funnel through 90 days, with acceptance criteria, a testing strategy and a P0/P1/P2 priority stack. Read as: run the standing three-pass review on it (`REVIEW-funnel/`, brief written), flagging the real tension it has with round PK's already-settled architecture rulings (a derived trace and loopRead, not a stored day-numbered state machine) rather than silently picking a side.
+
+Correct: the release protocol has not been touched this session (round PO flagged "this isn't what we want" and it was never actioned). The practitioner page is still the 153-line sketch. Both now building.
+
+Builders running: `pr-funnel-a` through `h` (the eight-seat pass 1 review), `ps-practitioner` (the real practitioner layer), `ps-release` (release protocol per his standing feedback), `ps-onboarding` (wiring the reviewed onboarding v3 into the real app). Still running from before: `pr-unlock`, `pr-headers`, `pr-avatar`, `pr-sound`, `pq-copy`, `pq-ritual`, `pq-arch`.
