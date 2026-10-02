@@ -2073,3 +2073,65 @@ INTENTION
 ```
 
 This is what turns Ritual from a standard habit feature into an integral component of Atüned's intelligence and results as a service architecture.
+
+---
+
+# 45. Flow Tool Sets: Ritual and Accountability
+
+Ruled 2 October, round PO, in his words: "On the flow pages, get rid of the
+left and right menu. Actually, sorry. Move the new ritual to the right menu. And
+you're supposed to move accountability to its own tool set. You should have
+rules on a TDD for all this."
+
+Section 31 already put ACCOUNTABILITY in its own group of the information
+architecture, beside PRACTICE. The product now matches it: Flow holds two tool
+sets, and each has a stage and a right menu.
+
+```text
+FLOW
+ ├── RITUAL            what I will do, and when
+ │     stage:  the chain, the becoming prompt, the Active list
+ │     menu:   New ritual (the builder)
+ └── ACCOUNTABILITY    did I do what I set
+       stage:  Done (rings, streak, figures, marks) and the Record
+       menu:   Due today, and Missed
+```
+
+Flow has no left column. The full rules are in `DESIGN-flow-tools.md`, FT1 to
+FT15, and each carries the gate that fails it. The index:
+
+```text
+FT1   Flow is exactly two tool sets, each a tab of its own looked up by key
+FT2   Flow has no left column
+FT3   Flow's right column holds one panel, the Flow menu
+FT4   New ritual lives in the right menu on Ritual, and only there
+FT5   The Ritual stage holds no accountability
+FT6   Accountability is its own entry and it renders
+FT7   Accountability reads three things and invents nothing
+FT8   Empty states say what is empty and never offer a second builder
+FT9   Every write goes through the one writer and says how it went
+FT10  Add to my ritual on the Compass teacher panel still lands
+FT11  A caller off Flow goes to Flow
+FT12  Both widths hold: inside the screen, the builder's week fits
+FT13  The fold is the person's and still works
+FT14  Every heading says what it means, in the same place
+FT15  The rules and the gates are one list
+```
+
+The gates that hold them, named so none is left to be found:
+
+```text
+tests/flowtools.js     FT1 to FT15. Runs alone, and is called from tests/functional.js.
+tests/functional.js    the TAB integers, the nav placements (Ritual and Accountability
+                       in Flow), and the Compass teacher panel's Add to my ritual
+tests/engine.js        the TAB integers, headless
+tests/design.js        one surface per tab, the 44 pixel tap floor on every TABDEF tab
+tools/monitor.js       every surface renders, at both widths, blank and loaded
+tests/practice.js      the practice domain under the surface: schema, state machine, miss reads
+tests/trace.js         the trace graph under the surface
+```
+
+Accountability in this section is the Flow surface and reads the existing plan
+and record stores. The richer accountability of sections 11 to 14, 24 and 35
+(evidence, outcome, the reason for a miss, the 30, 60 and 90 day record) is not
+built in this change, and `DESIGN-flow-tools.md` section 5 says why for each.

@@ -2555,7 +2555,7 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   out.play=TABDEF.filter(t=>t.sec==='play').map(t=>t.nm).join(',')+' / '
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
   out.placed={avatar:SECOF(TAB.INTAKE),summary:SECOF(TAB.SUMMARY),intake:SECOF(TAB.QUESTIONS),story:SECOF(TAB.STORY),
-   know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),field:SECOF(TAB.FIELD),
+   know:SECOF(TAB.KNOW),ritual:SECOF(TAB.RITUAL),acct:SECOF(TAB.ACCOUNT),field:SECOF(TAB.FIELD),
    body:SECOF(TAB.ENERGY),compass:SECOF(TAB.COMPASS),masks:SECOF(TAB.MASKS),games:SECOF(TAB.GAMES),
    clients:SECOF(TAB.PRACTITIONER)};
   setTab(TAB.SETTINGS); await wait();
@@ -2574,17 +2574,17 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   out.searched={tab:S.tab===TAB.KNOW, q:KB_Q, closed:!document.getElementById('srch').classList.contains('open')};
   KB_Q=''; setTab(TAB.FIELD); await wait();
   return out;});
- ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13}',
+ ok(nav.tab==='{"STORY":0,"SUMMARY":1,"FIELD":2,"ENERGY":3,"ANALYTICS":4,"INTAKE":5,"KNOW":6,"GAMES":7,"COMPASS":8,"SETTINGS":9,"RITUAL":10,"MASKS":11,"PRACTITIONER":12,"QUESTIONS":13,"ACCOUNT":14}',
   'every identity integer holds its value, '+nav.tab);
  ok(JSON.stringify(nav.loopKeys)==='["discover","play","flow","embody"]'&&JSON.stringify(nav.shownKeys)===JSON.stringify(nav.loopKeys),
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","intake":"discover","story":"discover","know":"embody","ritual":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+ ok(JSON.stringify(nav.placed)==='{"avatar":"discover","summary":"discover","intake":"discover","story":"discover","know":"embody","ritual":"flow","acct":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
   /* round OG reverses round OD: the body map is Body, in Play, between Field
      and Compass. His words: "Body should be between field and compass...
      the intake that you call intake is body." engine/core.js has it. */
-  'OG: Story, Avatar, Summary and Intake in Discover, Field, Body, Compass and Character in Play, Ritual in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
+  'OG: Story, Avatar, Summary and Intake in Discover, Field, Body, Compass and Character in Play, Ritual and Accountability in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
  ok(nav.play==='Field,Body,Compass,Character / Field,Body,Compass,Character',
   'Play reads in his order, Field, Body, Compass, Character, in the engine and the bar alike, '+nav.play);
  ok(JSON.stringify(nav.first)==='{"discover":"Story","play":"Field","flow":"Ritual","embody":"Knowledge"}',
@@ -6784,6 +6784,16 @@ await require('./sound.js').soundGate(browser,FILE,ok,booted);
    top tier (tests/seed.js). */
 console.log('\n=== the locks: what a tier cannot see is greyed, padlocked, described and not drawn ===');
 await require('./locks.js').lockGate(browser,FILE,ok,booted);
+
+/* THE FLOW TOOL SETS, tests/flowtools.js, 2 October. His words: "On the flow
+   pages, get rid of the left and right menu. Actually, sorry. Move the new
+   ritual to the right menu. And you're supposed to move accountability to its
+   own tool set. You should have rules on a TDD for all this." The rules are
+   DESIGN-flow-tools.md, and the file is called from here, as the fittings and
+   the locks are, so a full run holds it through the same code and it can still
+   be run alone. */
+console.log('\n=== the flow tool sets: no left menu, New ritual in the right menu, Accountability its own tool set ===');
+await require('./flowtools.js').flowGate(browser,FILE,ok,booted);
 
 await browser.close();
 
