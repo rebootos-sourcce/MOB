@@ -37,3 +37,33 @@ Facts that are rulings, not arguments: sentence case is the rule in CLAUDE.md. A
 ruling at DECISIONS.md around line 353 asked for Start Case on some labels and the CSS
 follows it; treat the two as in conflict and RECOMMEND which wins, with the reason.
 Write only your own file. Read only otherwise.
+
+## Round PK specifics (settle these; each seat gives its side and a reason)
+Read every report in `REVIEW-arch/pass1/` (nine; the QA one may land while you work).
+Agreed already, confirm or correct: the "an inference never becomes a fact" rule already
+exists three times in the code (`TRACE_PROMOTE`, `TRACE_CAUSE_SRC`, `dlyGroundOne`); the
+competition between modules is duplicate code, not autonomous agents; nothing screens
+text for distress at runtime (the reader on branch `worktree-agent-a6d4e60928876b711`,
+commit `c1cbc1a`, is unmerged); typing is already over its frame budget so new reasoning
+runs on commit, never per keystroke; a server owned meter cannot work because all
+content ships in one file; the proposal's "Sight is not for sale" is stale (reversed 1 Oct).
+Settle: (1) the evidence ledger as a DERIVED VIEW over the four existing stores (practice
+evidence, trace edges, practice log, daily resolve) vs a new store; (2) a hypothesis object:
+a `proposed` trace edge plus a declined list, or cut it (creative says cut the ranked list);
+(3) "next best action": a prescription, or one slot called Next in the person's own
+words; (4) the 90 day engine: gates on access (game and creative say no) vs a derived read
+that only orders one suggestion; days never shown; (5) safety: seven content states vs four
+response levels vs three outcomes (ordinary, strong, needs a person now) and the wording of
+each; which states have no detection yet; the clinician review dependency (decide an interim:
+build now with a conservative recall leaning list, flag clinician review as a pre public
+launch gate, say whether that is acceptable); (6) entitlements re-cut onto the SIGHT table:
+the five verbs, the downgrade latch (opened ground kept, layer sight latched or not);
+(7) server work in reboot-os: what to build and what to defer (deploy first, then clamp
+`granted`, lease, base on tier change, one live subscription, free banking cap);
+(8) the record: carry unknown top level keys through `validateProfile`, run `addrs`,
+declined list, side stores into the record, import id duplicates; whether a schema bump is
+needed (systems found none); (9) names: orchestrator vs "reading rules", ledger vs "the trace",
+JourneyState vs "where the loop is", verified vs "held" or "confirmed"; (10) privacy: the data
+boundary lines, the "Improve the Models" toggle, deletion holes, encrypted export; (11) the
+order of the work, and MVP vs later.
+Section 4 is ONE merged architecture and ONE build order of slices.
