@@ -73,6 +73,8 @@ if(typeof module!=='undefined'&&module.exports){
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   TEACHER_PRACTICE:TEACHER_PRACTICE, BECOMING:BECOMING, becomingOf:becomingOf, becomingSteps:becomingSteps,
+                  TEACHER_RECIPES:TEACHER_RECIPES, RECIPE_STEPS:RECIPE_STEPS, recipeOf:recipeOf,
+                  recipeRitual:recipeRitual, recipeSteps:recipeSteps,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,

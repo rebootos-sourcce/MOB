@@ -467,6 +467,114 @@ function ritTeachWire(redraw){
   b.onclick=function(){if(ritTeachStart(k,+b.getAttribute('data-tbd'))&&redraw)redraw();};});
  var go=box.querySelector('[data-tbgo]');
  if(go)go.onclick=function(){if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL);};}
+/* ---------------- the behaviour complex, from a teacher ----------------
+   Round PL, J14. His words, the click on the Compass: "I want to see the
+   behaviors that I need to install. I want to see a summary of who this person
+   is, not the person per se, but I want to see the behavior complex. Of both
+   behaviors." So a press on a teacher opens the pole as a pair of behaviours,
+   what is released and what is installed, with a few starter rituals toward
+   the second. The teacher is a small credit under the line and never the
+   headline, and nothing on the panel is a biography.
+
+   WHAT WAS TAKEN OFF THE PANEL. The drill used to print the seat's load as a
+   percent and the position on the axis as a number out of a hundred. Both are
+   scores and the ruling for this panel is no percent and no score, so they are
+   gone and not softened. The two descriptions of the ends were the codex's
+   own sentences about the pole and read as a biography, which is also what he
+   said he did not want. The content is engine/data/teachers_recipes.js, a
+   table he can edit with no code, and nothing on this panel is typed here.
+
+   THE ADD IS THE BUILDER'S OWN WRITER. ritStartPlan does the writing, so a
+   ritual added from here is one ritual among the others on the page with the
+   same ring, record and streak, and ritWrite is what reports a failed save
+   through status(). The two refusals that happen before the writer is reached
+   say so through status() as well: a control must never claim success it does
+   not have, and a press that does nothing and says nothing is that claim.
+
+   PACING STAYS. A step above the tier the person's load allows waits, and the
+   card says which, in words, exactly as ritTeachHtml does. A tc is set on the
+   plan only for a pole becomingOf knows, because ritPlanOk refuses a plan
+   whose tc it cannot answer and one pole's absence from the Compass must not
+   cost a person the whole ritual. */
+var RIT_TCX={};
+function ritTcxNames(ks){
+ return ks.map(function(x){var p=ritPr(x);return p?p.nm:'';}).filter(Boolean);}
+function ritTcxJoin(a){
+ return a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:(a[0]||'');}
+/* the active plan that is exactly these steps, if there is one */
+function ritTcxActive(steps,today){
+ var key=ritKey(steps);
+ return ritPlans().filter(function(p){return ritActive(p,today)&&ritKey(p.steps)===key;})[0]||null;}
+function ritComplexHtml(k){
+ var row=(typeof recipeOf==='function')?recipeOf(k):null; if(!row)return '';
+ ritCss();
+ var b=(typeof becomingOf==='function')?becomingOf(row.k):null;
+ var r=compute(), c=ritFor(r), today=ritToday0();
+ var pick=RIT_TCX[row.k];
+ if(!row.rituals.some(function(x){return x.id===pick;}))pick=row.rituals[0].id;
+ var list=function(a){
+  return a&&a.length?'<ul class="tcx-l">'+a.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>'
+   :'<p class="tcx-none">–</p>';};
+ var h='<div class="tcx" data-tcx="'+esc(row.k)+'">'
+  +'<div class="ad-nm plain">'+(b&&b.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+   +'<path d="'+b.ic+'"/></svg>':'')+esc(row.line)+'</div>'
+  +'<div class="ad-sub">After '+esc(row.who)+' · '+esc(row.q)+(b&&b.seat?' · '+esc(b.seat):'')+'</div>'
+  +'<div class="tcx-pair">'
+  +'<div class="tcx-col"><div class="pm-eye">Release</div>'
+  +'<div class="tcx-cap">The old pattern'+(row.opp?', as '+esc(row.opp):'')+'</div>'+list(row.release)+'</div>'
+  +'<div class="tcx-col tcx-in"><div class="pm-eye">Install</div>'
+  +'<div class="tcx-cap">Practise this instead</div>'+list(row.install)+'</div></div>'
+  +'<div class="pm-eye">Starter rituals</div><div class="tcx-rits" role="group" aria-label="Starter rituals">';
+ row.rituals.forEach(function(x){
+  var s=recipeSteps(x,c.tier), act=s.steps.length?ritTcxActive(s.steps,today):null;
+  var many=s.held.length>1;
+  h+='<button type="button" class="tcx-rit'+(x.id===pick?' tcx-on':'')+'" aria-pressed="'+(x.id===pick)
+   +'" data-tcxr="'+esc(x.id)+'" data-act="'+(act?1:0)+'">'
+   +'<span class="tcx-rh"><span class="tcx-rn">'+esc(x.nm)+'</span>'
+   +'<span class="tcx-rm">'+(s.steps.length?ritMin(s.steps)+' min':'–')+'</span></span>'
+   +'<span class="tcx-rs">'+esc(ritTcxJoin(ritTcxNames(x.steps)))+'</span>'
+   +'<span class="tcx-sd">'
+   +ritSteps({steps:s.steps}).map(function(p){
+     return '<span class="tcx-st"><b>'+esc(p.nm)+' <small>'+p.min+' min</small></b><span>'+esc(p.d)+'</span></span>';}).join('')
+   +(s.held.length?'<span class="tcx-pace">'+esc(ritTcxJoin(ritTcxNames(s.held)))+(many?' open':' opens')
+     +' as the charge drops.</span>':'')
+   +(act?'<span class="tcx-pace"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</span>':'')
+   +'</span></button>';});
+ h+='</div>';
+ if(!ritOwn())h+='<p class="ad-p">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';
+ else h+='<div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div>'
+  +'<p class="tcx-hint">Runs for a week from today. The Ritual page changes the span.</p>';
+ if(row.draft!==false)h+='<p class="tcx-draft">First draft. These are starting behaviours and rituals, to be refined. '
+  +'They describe behaviours a reading can place, not people.</p>';
+ return h+'</div>';}
+/* ADD ONE STARTER RITUAL. Returns true only when the plan is written. */
+function ritRecipeAdd(id){
+ var f=(typeof recipeRitual==='function')?recipeRitual(id):null;
+ if(!f){status('That ritual is no longer in the list. Nothing was added.','fail'); return false;}
+ var r=compute(), c=ritFor(r), s=recipeSteps(f.ritual,c.tier);
+ if(!s.steps.length){status('Every step in that ritual waits at the charge you carry now. Nothing was added.','fail'); return false;}
+ var b=(typeof becomingOf==='function')?becomingOf(f.pole.k):null;
+ return ritStartPlan({steps:s.steps, band:(b&&b.seat)||(r.unread?'':c.band), days:7, tc:b?b.k:null},
+  'Added. '+ritTcxJoin(ritTcxNames(s.steps))+' each day for a week.');}
+/* one wire for the panel. Picking a ritual changes it in place and never
+   redraws, so the panel keeps the scroll position the person had; redraw is
+   only called after an add, so the card then says Active. */
+function ritComplexWire(redraw){
+ var box=document.querySelector('#rdrill .tcx'); if(!box)return;
+ var k=box.getAttribute('data-tcx');
+ var cards=box.querySelectorAll('[data-tcxr]'), go=box.querySelector('[data-tcxgo]');
+ var cur=(box.querySelector('.tcx-on')||cards[0]).getAttribute('data-tcxr');
+ function sync(){
+  cards.forEach(function(b){var on=b.getAttribute('data-tcxr')===cur;
+   b.classList.toggle('tcx-on',on); b.setAttribute('aria-pressed',on?'true':'false');
+   if(on&&go)go.textContent=b.getAttribute('data-act')==='1'?'Open the ritual':'Add to my ritual';});}
+ cards.forEach(function(b){b.onclick=function(){cur=b.getAttribute('data-tcxr'); RIT_TCX[k]=cur; sync();};});
+ if(go)go.onclick=function(){
+  var on=box.querySelector('[data-tcxr="'+cur+'"]');
+  if(on&&on.getAttribute('data-act')==='1'){
+   if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return;}
+  if(ritRecipeAdd(cur)&&redraw)redraw();};
+ sync();}
 function ritSaveEdit(){
  var steps=ritDraft(); if(!steps.length||!RIT.edit)return;
  var id=RIT.edit, today=ritToday0();
@@ -1406,6 +1514,40 @@ function ritCss(){
   '.rv-step b{display:block;font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px}',
   '.rv-step small{font-weight:400;color:var(--dim);font-size:13px}',
   '.rv-step p{margin:0;font-size:15px;line-height:1.65;color:var(--mid);max-width:62ch}',
+  /* the behaviour complex on a teacher's panel. Two columns that stack when the
+     rail is narrower than two readable lines, never a hidden scroller */
+  '.tcx .ad-nm{font-size:18px;line-height:1.3;margin:2px 0 4px}',
+  '.tcx-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:14px;margin:12px 0 16px}',
+  '.tcx-col{min-width:0;padding-top:10px;border-top:2px solid var(--edge-2)}',
+  '.tcx-in{border-top-color:var(--accent)}',
+  '.tcx-col .pm-eye{margin:0}',
+  '.tcx-cap{font-size:13px;line-height:1.45;color:var(--dim);margin:2px 0 8px}',
+  '.tcx-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}',
+  '.tcx-l li{position:relative;padding-left:15px;font-size:14px;line-height:1.5;color:var(--mid)}',
+  '.tcx-l li::before{content:"";position:absolute;left:0;top:.5em;width:7px;height:7px;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--dim)}',
+  '.tcx-in .tcx-l li{color:var(--ink)}',
+  '.tcx-in .tcx-l li::before{border-color:var(--accent)}',
+  '.tcx-none{margin:0;color:var(--dim)}',
+  '.tcx-rits{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px}',
+  '.tcx-rit{display:block;width:100%;min-height:var(--tap);padding:10px 12px;text-align:left;font:inherit;color:var(--ink);',
+  ' background:var(--panel-2);border:1px solid var(--edge);border-radius:12px;cursor:pointer;',
+  ' transition:border-color var(--t-micro) var(--ease-out)}',
+  '.tcx-rit:hover{border-color:var(--edge-2)}',
+  '.tcx-rit:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.tcx-rit.tcx-on{border-color:var(--accent)}',
+  '.tcx-rh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}',
+  '.tcx-rn{font-size:15px;font-weight:600}',
+  '.tcx-rm{font-size:13px;color:var(--mid);white-space:nowrap}',
+  '.tcx-rs{display:block;margin-top:2px;font-size:13px;line-height:1.45;color:var(--dim)}',
+  '.tcx-sd{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--edge)}',
+  '.tcx-on .tcx-sd{display:block}',
+  '.tcx-st{display:block;margin:0 0 9px}',
+  '.tcx-st b{display:block;font-size:14px;font-weight:600;color:var(--ink)}',
+  '.tcx-st small{font-weight:400;font-size:13px;color:var(--dim)}',
+  '.tcx-st span{display:block;margin-top:2px;font-size:14px;line-height:1.5;color:var(--mid)}',
+  '.tcx-pace{display:block;font-size:13px;line-height:1.5;color:var(--mid)}',
+  '.tcx-hint{margin:8px 0 0;font-size:13px;line-height:1.5;color:var(--dim);text-align:right}',
+  '.tcx-draft{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--edge);font-size:13px;line-height:1.55;color:var(--dim)}',
   '.rv-if{margin:8px 0 0;font-size:14px;line-height:1.6;color:var(--mid)}',
   '.rv-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:flex-end}',
   '.rv-acts .btn{display:inline-flex;align-items:center;gap:6px}',

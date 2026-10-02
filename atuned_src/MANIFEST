@@ -8,6 +8,7 @@ engine/data/canon.js
 engine/data/compass.js
 engine/data/ages.js
 engine/data/practice.js
+engine/data/teachers_recipes.js
 engine/data/people.js
 engine/data/zones.js
 engine/data/catalog.js

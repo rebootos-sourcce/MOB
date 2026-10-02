@@ -753,6 +753,12 @@ function runKbDrill(eyebrow,title,sub,body){
    reading says is how far along that axis this person currently sits. */
 function runTeacherDrill(m,end){
  if(!m)return;
+ /* THE BEHAVIOUR COMPLEX FIRST, round PL J14. The panel is the pole as a pair
+    of behaviours with starter rituals, from engine/data/teachers_recipes.js.
+    The body below it is what the drill said before, kept for a pole the table
+    does not carry, which tests/engine.js says is none on the Compass. */
+ var cx=(typeof ritComplexHtml==='function')?ritComplexHtml(m.k):'';
+ if(cx){rdShell(cx); ritComplexWire(function(){runTeacherDrill(m,end);}); return;}
  var up=(end!=='dn'), r=compute();
  var nm=up?m.up:m.dn, d=up?m.upd:m.dnd, ic=up?m.ic:m.dic;
  var other=up?m.dn:m.up, od=up?m.dnd:m.upd;
@@ -801,6 +807,8 @@ function runTeacherDrill(m,end){
    it. Krishna, Rama and Lao Tzu stand on no axis and get this one. */
 function runPathDrill(p){
  if(!p)return;
+ var cx=(typeof ritComplexHtml==='function')?ritComplexHtml(p.k):'';
+ if(cx){rdShell(cx); ritComplexWire(function(){runPathDrill(p);}); return;}
  for(var i=0;i<MIRROR.length;i++)
   if(MIRROR[i].up===p.up&&MIRROR[i].upd===p.upd){runTeacherDrill(MIRROR[i],'up');return;}
  var h='<div class="pm-eye">One of the five paths</div>'
