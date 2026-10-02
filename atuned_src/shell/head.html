@@ -4092,6 +4092,35 @@ body.tab-story:not(.st-bank) .mid>.col:not(#lcol){display:none}
 @media (min-width:1181px){
  body.tab-story:not(.st-bank) .mid{grid-template-columns:302px 1fr}
  body.lshut.tab-story:not(.st-bank) .mid{grid-template-columns:58px 1fr}}
+/* ---------- the Summary's rail is today's summary, ui/daily.js ----------
+   The same step aside as the Story's: on the Summary the rail carries Today
+   and Selection, and Today is shown nowhere else. A silent day (nothing read
+   yet) takes the section with it rather than leaving an empty header. */
+body:not(.tab-summary) .lsec.sum-rail{display:none}
+body.tab-summary .lsec[data-rail="right"]:not(.sum-rail):not([data-sec="sel"]){display:none}
+body.tab-summary .lsec.sum-rail.dl-empty{display:none}
+.dl{padding:2px 2px 0}
+.dl-when{font-size:13px;line-height:1.6;color:var(--dim);margin:2px 0 16px}
+.dl-blk{margin:0 0 15px}
+.dl-blk .pm-eye{margin-bottom:5px}
+.dl-st{font-size:14.5px;line-height:1.62;color:var(--ink);margin:0 0 7px}
+.dl-st.dl-quiet{color:var(--dim)}
+.dl-aim{border-top:1px solid var(--edge);padding-top:15px;margin-top:4px}
+.dl-aimr+.dl-aimr{margin-top:16px}
+.dl-aimf{display:flex;gap:8px;margin-top:7px}
+.dl-in{flex:1 1 auto;min-width:0;min-height:44px;box-sizing:border-box;padding:0 13px;
+ background:transparent;border:1px solid var(--edge);border-radius:var(--r-s,8px);
+ color:var(--ink);font:inherit;font-size:14.5px}
+.dl-in:focus{outline:none;border-color:var(--accent)}
+.dl-in::placeholder{color:var(--dim)}
+.dl-go,.dl-mk{min-height:44px}
+.dl-go[disabled]{opacity:.45;cursor:default}
+.dl-own{font-size:15px;line-height:1.55;color:var(--ink);margin:3px 0 8px}
+.dl-ask,.dl-done{font-size:13.5px;line-height:1.6;color:var(--dim);margin:0}
+.dl-marks{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.dl-bank{margin-top:18px}
+.dl-past{margin:6px 0 14px}
+.dl-pd{font-size:12.5px;color:var(--dim);margin:0 0 5px;font-weight:600}
 /* ---------- Source AI, over the journal ----------
    Its own panel and its own look, HT in TASKS.md: no box, a bar in the
    accent down its left edge, so it reads as the system speaking and not as

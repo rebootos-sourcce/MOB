@@ -1025,6 +1025,16 @@
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/></svg>Imprints</span><i></i></button>
     <div class="lsec-bd"><div id="imp"></div></div>
    </div>
+   <!-- ON THE SUMMARY, THIS RAIL IS TODAY. The daily summary, ui/daily.js,
+        in the page's own side column, on the funnel review's placement F24:
+        the words go to the side. Shown on the Summary only, and the rail's
+        other sections are hidden there except Selection, which is where every
+        drill on the Summary opens. ui/panels.js empties #sumday on the way
+        out, so a hidden rail never holds a stale day. -->
+   <div class="lsec sum-rail" data-rail="right" data-sec="today">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.6v4.6l3 1.8"/></svg>Today</span><i></i></button>
+    <div class="lsec-bd"><div id="sumday" class="dl"></div></div>
+   </div>
    <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
         the stage's upper right now, EZ. The coherence ring and its band word
         followed them in round IT, and the Reading is the first thing under

@@ -58,6 +58,7 @@ ui/imprints.js
 ui/storyui.js
 ui/tutorial.js
 ui/summary.js
+ui/daily.js
 ui/analytics.js
 ui/avatarui.js
 ui/intakeui.js

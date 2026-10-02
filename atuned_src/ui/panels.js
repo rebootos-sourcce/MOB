@@ -101,7 +101,9 @@ function setTab(i){
     Summary and #ana stopped being a child of #sum, so leaving one no longer
     has anything to say about the other. Each empties only its own host. */
  if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
-  var sb=$('sumbody'); if(sb)sb.innerHTML='';}
+  var sb=$('sumbody'); if(sb)sb.innerHTML='';
+  /* and its side column, today's sentences, for the same reason */
+  if(typeof sumDayClear==='function')sumDayClear();}
  if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
   var ab=$('ana'); if(ab)ab.innerHTML='';}
  /* ACCOUNTABILITY PRINTS A RECORD, so it is emptied on the way out for the
@@ -258,6 +260,9 @@ function setTab(i){
      release went into the Story's own third column, round IJ, so it has no
      rail section left to open. */
   WANT[TAB.STORY]={right:['simp']};
+  /* the Summary's rail is today's summary, ui/daily.js, opened the first
+     time the page is reached */
+  WANT[TAB.SUMMARY]={right:['today']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
@@ -296,7 +301,9 @@ function setTab(i){
     called both on entry to Summary, back when Analytics had no door of its
     own and rode in on Summary's arrival; now each tab renders only itself,
     the same shape as every other entry below. */
- if(i===TAB.SUMMARY)sumRender();
+ /* and entering the Summary is the open that freezes today's summary, once
+    a local day, after the page is painted and never inside its render */
+ if(i===TAB.SUMMARY){sumRender(); if(typeof sumDayOpen==='function')sumDayOpen();}
  else if(i===TAB.ANALYTICS)anaRender();
  /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
     the cone marker on the Field stage, then a button inside the drill that

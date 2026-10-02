@@ -611,7 +611,10 @@ function sumRender(){
     compounding pattern are only what a plan can see (ui/lock.js) */
  var r=computeSeen();
  h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
- sumWire();}
+ sumWire();
+ /* and its side column, today's summary, off the same reading. A paint and
+    never a write: the day is frozen by sumDayOpen, after this returns. */
+ if(typeof sumDayPaint==='function')sumDayPaint(r);}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -951,15 +954,11 @@ function sumNine(){
   return '<div class="sg-n'+(sq>0&&sq===mx?' top':'')+'" data-nine="'+esc(c.nm)+'">'
    +cr(c.seat,sq*10,{size:'sm',raw:sq.toFixed(1),glyph:'<path d="'+c.ic+'"/>',label:c.nm})
    +'<span class="sg-n-t"><b>'+esc(c.nm)+'</b><em>'+esc(c.loc)+'</em></span></div>';}).join('')+'</div>';}
-/* THE DAY SLOT. Another seat builds the Daily Summary, engine/daily.js, and
-   this is where its block goes: under the story, above the output row, full
-   width. It renders nothing until sumDayHtml returns something, and an empty
-   slot takes no room. Whoever fills it returns the markup from sumDayHtml and
-   touches nothing else on this page. */
-function sumDayHtml(r){return '';}
-function sumDaySlot(r){
- return '<div id="sumday" class="sg-day" data-slot="daily" data-grp="day">'+sumDayHtml(r)+'</div>';}
-
+/* THE DAY SLOT MOVED TO THE SIDE. It stood here, under the story and above
+   the output row, full width, holding nothing until the daily summary was
+   built. It was built on 2 October in ui/daily.js, and it went to this page's
+   own side column instead, the right rail, on the funnel review's placement
+   (F24): the words go to the side. sumRender paints it; nothing here does. */
 /* WHAT THIS STATE CALLS FOR. ritFor is a pure function of the reading and has
    only ever been called from inside the ritual overlay, which opens after a
    release run, which means a person who has not run one has never seen it. */
@@ -1105,7 +1104,6 @@ function sumFull(r){
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
-  +sumDaySlot(r)
   +sgZone('todo','What to do',sumOutput(r))
   +'<div class="sg-folds">'
    +sgFold('lens','Four lenses',sumLens(r,true))
