@@ -4,10 +4,10 @@ One list, in the order I'd look at it if I were you. Each line says what I sent,
 
 ## Look at these first — pictures and files already in your hands
 
-1. **The cover** (white dots, moving rings, symmetry). Sent as a playable file and two pictures. Say yes, or say what's off.
-2. **The Journal and Avatar pages**, second version (rebuilt inside the real app after you said the first one didn't match). Sent as one playable file, shipped-vs-new pictures for both. Say yes, or what's still wrong.
+1. **The cover and landing page**: CONFIRMED, round PU, 2 October. "Let's run with that attuned landing page for now."
+2. **Avatar, Story, Summary, Accountability and Ritual**: FAILED, round PU, 2 October. Not waiting on you any more, it's waiting on a rebuild. Your words: too much information where the centre console should be the one hero element shown first, the information side carrying text should not be in the centre, visual informs and text only gives it context, never the reverse. Team review dispatched, ten passes amongst themselves before anything comes back to you.
 3. **The onboarding video** (door, pick a start, feel, body, mirror, release, actually moving). Sent as a real video. Say yes, or what to change.
-4. **The five redesigned screens** (reading, what it drives, the whole summary, analytics, Practitioner). Sent as one playable file with before/after pictures. One real question sitting inside it: should the Practitioner page show your coherence number at all, given the no-score rule?
+4. **The Practitioner page**: still open. One real question sitting inside it: should the Practitioner page show your coherence number at all, given the no-score rule?
 5. **The MVP gap report**, with a headline number: 25 percent of what blocks a first paying stranger is done. Say if that number or the ten risks under it feel right.
 6. **Intake, stacked** (archetypes, nine feelings, six axes). Two direct questions inside it: keep the product's own twelve archetype names, or switch two of them to Hero and Orphan? And is "six action axes" the six gates I used, or something else?
 7. **Unpack every symbol** (every term gets its meaning). One open naming clash: "Eastern" means two different things in the product today (a date system, and yoga seat names). Pick a new word for one of them.
