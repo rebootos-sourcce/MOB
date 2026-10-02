@@ -31769,3 +31769,17 @@ Rulings, recorded:
 - New ask: a feedback form that posts straight to a Discord channel, and a Discord connection for users to reach the community. He asked directly whether this is buildable and how to set it up on his end, answered below, not deferred to a file.
 - "Decay," "cognitive load" and "schema v2" marked as not understood, not decided. Read as: these need a plain explanation before they can be a decision, not that he wants to decide now. Explained in the reply, left open.
 - Asked whether an achievement/points system TDD exists. It does not; answered honestly below.
+
+## pq-ritual landed in full, round PQ
+
+The Ritual/Accountability rebuild finished, commit `1caf444` on `pq-ritual`. Rituals renamed "Your rituals," a bank with a count, rows washed in their own seat colour, click-row opens straight into edit (steps, tags, timer, days, Stop, Move up, Release now). Imprints gained a third button, "Add to a ritual." Box Breathing retired as a default everywhere it was offered, old saved rituals still load. Accountability gained "Success by class" (kept vs due by seat, worst first, no percent) and a small calendar ring on a day everything due was kept and one was tied to a release, honestly marked a stand-in since there is no real achievement system yet. A real bug was found and fixed in passing: editing a ritual then starting a new one right after could silently fail to save. Gates clean apart from the same load-caused browser timing flakes, confirmed against the unmodified build.
+
+This is the exact surface round PU already failed ("the accountability page and the virtual page is terrible") and round PW confirmed rebuilding ("great, do it"). Not sent to him as a finished deliverable, it's the input the ten-pass visual review is reading, told to re-check this final commit rather than whatever partial state it started from.
+
+## Round PX, 2 October. Headers reversed, and the Source question area needs to feel alive
+
+His words, verbatim: "These are terrible headers. They're not uniform. I like the release header. Imprints. In journal. Should look just like it. I need new innovation around the source AI text question area above the journal. It needs to be more alive. Even when it's static."
+
+Direct reversal of what `pr-headers` just shipped: that build picked the small gray caption because six other pages already used it, and shrank Release down to match. He wants the opposite, Release's bigger bold header kept, Imprints and Journal raised up to match it. Sent back to the same agent with the correction and the exact quote, new branch `pw-headers2` off `pr-headers` so it keeps what it already mapped.
+
+Second ask: the Source AI question element sitting above the journal text box (`storyui.js`, `#stsrc` inside `.st-glow`) needs to feel alive even at rest, not a dead label. Sent to animation-vfx-director with art-director and technical-director pulled in, told explicitly to reuse an idiom the Field already has (pulse, shadow glow, oscillation tied to vitality) rather than invent a new visual language, since that's the exact mistake round PU already failed twice this session.
