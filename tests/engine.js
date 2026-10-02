@@ -6770,5 +6770,42 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
   ok(code===0,'no pole meaning fails the voice rules, exit '+code);}
 }
 
+/* QB · A WORKED EXAMPLE'S PRACTICE HISTORY, engine/pracex.js, for the
+   practitioner page. Every row of the table builds through practiceDo, the
+   loop read hands back exactly what the row says, and a row the engine would
+   refuse is refused here too: the known bad case runs first. */
+g('QB · a worked example\'s practice history, through the real engine');
+{
+ const NOW='2026-10-02T15:00:00.000Z', ADDRS=[53,54,55,56,57,58];
+ const H=E.PRACEX_HIST, names=Object.keys(H);
+ /* the known bad case: a miss written for yesterday, which event_move refuses */
+ const keep=H.Derek.strip;
+ H.Derek.strip=keep.slice(0,-1)+'m';
+ let threw=''; try{E.pracexRecord(E.PEOPLE.find(x=>x.nm==='Derek'),ADDRS,NOW);}catch(e){threw=e.message;}
+ H.Derek.strip=keep;
+ ok(/not missed yet/.test(threw),'a miss the engine would refuse is refused by the builder, by name: "'+threw+'"');
+ ok(names.length===10&&names.every(n=>E.PEOPLE.some(x=>x.nm===n)),'ten rows, every one a worked example in PEOPLE');
+ ok(names.every(n=>H[n].strip.length===E.PRACEX_DAYS&&/^[.cpsm-]+$/.test(H[n].strip)),'every strip is one character a day for the whole window');
+ const bad=[];
+ names.forEach(n=>{
+  const p=E.PEOPLE.find(x=>x.nm===n), h=H[n];
+  let R=null; try{R=E.pracexRead(p,ADDRS,NOW);}catch(e){bad.push(n+' threw '+e.message); return;}
+  const L=R.loop, ran=(h.strip.match(/[cp]/g)||[]).length;
+  if(L.confirmed!==h.accept)bad.push(n+' confirmed '+L.confirmed+' vs '+h.accept);
+  if(L.declined.length!==h.reject)bad.push(n+' declined '+L.declined.length+' vs '+h.reject);
+  if(L.practice.events!==(h.accept?ran:0))bad.push(n+' practised '+L.practice.events+' vs '+ran);
+  const want={'.':'none',c:'completed',p:'partial',s:'skipped',m:'missed','-':'scheduled'};
+  const got=R.days.map(d=>d.status).join(','), exp=h.strip.split('').map(c=>h.accept?want[c]:'none').join(',');
+  if(got!==exp)bad.push(n+' days '+got);
+  if(L.patterns.some(x=>/^[0-9]+$/.test(String(x.name))))bad.push(n+' a pattern named by its number');
+  const tail=(h.strip.match(/m+[-s]*$/)||[''])[0].replace(/[-s]/g,'').length;
+  if(tail>=3&&!(L.misses[0]&&L.misses[0].stage==='investigate'))bad.push(n+' three misses not read as investigate');});
+ ok(bad.length===0,'every row reads back exactly what it says, '+JSON.stringify(bad));
+ const a=JSON.stringify(E.pracexRead(E.PEOPLE.find(x=>x.nm==='Ana'),ADDRS,NOW).days);
+ const b=JSON.stringify(E.pracexRead(E.PEOPLE.find(x=>x.nm==='Ana'),ADDRS,NOW).days);
+ ok(a===b,'the same example and the same moment build the same history');
+ ok(E.pracexRecord({nm:'Nobody'},ADDRS,NOW)===null,'a person with no row has no history, and none is invented');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

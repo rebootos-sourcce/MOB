@@ -115,6 +115,38 @@ var UNPACK_BASE={
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  'cq':'CQ is your coherence number, built only from your answers on the laws.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
+    Each word below is a label that block prints, and its meaning is the
+    graph's own: confirmed is a user_confirmed edge, unanswered is everything
+    the sniffer inferred that nobody has answered, from your words is a story
+    edge marked named. */
+ 'pattern':'A pattern is a reaction you keep having, and the instrument places it at one exact spot in your body.',
+ 'confirmed':'Confirmed means you said yes, this pattern is yours, or you chose a practice to work on it.',
+ 'unanswered':'Unanswered means the instrument read this from what you wrote, and you have not said yes or no to it yet.',
+ 'declined':'Declined means you turned down a practice the instrument suggested, and your record keeps that.',
+ 'practised':'Practised counts the rituals on your record that were done.',
+ 'not done':'Not done counts the times in a row a ritual came due and was not marked done.',
+ 'from your words':'From your words means a feeling word you wrote names this pattern.',
+ 'from the seat':'From the seat means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
+ 'release line':'A release line is one spoken line of a release, aimed at one address, that lets go of the limit held there.',
+ 'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
+ 'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
+    practitioner.js). The entries above speak to the person about themselves,
+    "you said yes", and on the practitioner's page the reader is somebody
+    else, so the same word carries a third person sentence under client:.
+    Same word, same meaning, a different reader. The day words are the
+    practice event's own states (engine/practice.js PR_EV_ST), one word each. */
+ 'client:confirmed':'Confirmed means the client said yes, this pattern is theirs, or chose a practice to work on it.',
+ 'client:unanswered':'Unanswered means the instrument suggested this pattern or a practice for it, and the client has not said yes or no.',
+ 'client:declined':'Declined means the client turned down a practice the instrument suggested, and the record keeps that.',
+ 'client:practised':'Practised counts the days in this window a practice was done in full or in part.',
+ 'client:done':'Done means the practice was run start to finish that day.',
+ 'client:part done':'Part done means the practice was started that day and some of its steps were run.',
+ 'client:skipped':'Skipped means the client chose not to run it that day, which is a choice and does not count as a miss.',
+ 'client:missed':'Missed means it came due and was not marked done by the end of the next day.',
+ 'client:not marked yet':'Not marked yet means it came due and nothing is recorded for it so far.',
+ 'client:nothing scheduled':'Nothing scheduled means no practice was due that day.',
 
  /* THE COMPASS */
  'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',

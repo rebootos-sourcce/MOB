@@ -2710,7 +2710,12 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
    clients:host.querySelectorAll('.pr-client').length,
    buttons:[...host.querySelectorAll('button')].map(b=>b.id).filter(Boolean),
    honest:/example/i.test(host.textContent)&&/let a practitioner see/i.test(host.textContent)};
-  o.rails=[...document.querySelectorAll('.mid .col')].filter(c=>c.offsetParent).length;
+  /* round QB: the right rail comes back carrying Selection alone, where a
+     press on a client's figure, day, pattern or seat is answered. The left
+     rail, the practitioner's own field, stays shut. */
+  o.rails=[...document.querySelectorAll('.mid .col')].filter(c=>c.offsetParent).map(c=>c.id).join(',');
+  o.railSecs=[...document.querySelectorAll('#rpanel>.lsec')].filter(e=>getComputedStyle(e).display!=='none')
+   .map(e=>e.getAttribute('data-sec')).join(',');
   $q('#pracacc').click(); await wait();
   o.back=S.tab===TAB.SETTINGS&&ACC_OPEN==='account'&&!!$q('#acprac');
   return o;});
@@ -2730,7 +2735,8 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   'the page behind it renders a real client list on the example roster, honestly labelled, '+JSON.stringify(o.host));
  ok(o.host.buttons.indexOf('pracacc')>=0&&o.host.buttons.filter(b=>b==='pracacc').length===1,
   'the way back to the switch is still on the page among the client rows, '+JSON.stringify(o.host.buttons));
- ok(o.rails===0,'the rails leave, as they do on Settings, '+o.rails+' showing');
+ ok(o.rails==='rcol'&&o.railSecs==='sel','the left rail leaves and the right one stays, carrying Selection alone, '
+  +o.rails+' showing, sections '+o.railSecs);
  ok(o.back,'Open Account goes back to the switch');
  /* ACROSS A RELOAD. applyUiPrefs never ran at start up, so this is the check
     that the door reads the stored switch on the way in. */
