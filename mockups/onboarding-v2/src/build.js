@@ -7,7 +7,7 @@ var css=fs.readFileSync(path.join(__dirname,'style.css'),'utf8');
 var body=fs.readFileSync(path.join(__dirname,'body.html'),'utf8');
 var js=fs.readFileSync(path.join(__dirname,'app.js'),'utf8');
 var login=fs.readFileSync(path.join(repo,'mockups/onboarding/login-a.html'),'utf8');
-var font=login.match(/@font-face\{[^}]*\}/)[0];
+var font="@font-face{font-family:'Geist';font-style:normal;font-weight:300 700;font-display:block;src:url(data:font/woff2;base64,"+fs.readFileSync(path.join(repo,'mockups/fonts/files/geist-latin-300-700.woff2')).toString('base64')+") format('woff2')}";
 var nodesSrc=fs.readFileSync(path.join(repo,'atuned_src/engine/data/nodes.js'),'utf8');
 var N=JSON.parse(nodesSrc.match(/const NODES=\n(\[.*\]);/)[1]);
 var rows=N.map(function(n){return [n.i,n.k,n.b,n.n];});
