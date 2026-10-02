@@ -4400,10 +4400,24 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   if(!out.table)return out;
   IX_BLOCKS.forEach(b=>{
    const el=host.querySelector('#iqx-'+b.id), t=el?(el.innerText||'').replace(/\s+/g,' '):'';
+   /* THE ARCHETYPE BLOCK IS NOT THE SAME SHAPE, ROUND PQ. Every axes and acts
+      row is still one eleven cell scale carrying its own q verbatim. An arch
+      row is a dilemma (two buttons, .iqx-dlb, its scene is its q) or an
+      either or (the eleven cell scale, same as before, but its q is read off
+      ta and tb rather than printed as one joined sentence on the page), so a
+      control is "one of either shape" and a row's words are read off the
+      field that is actually rendered for its own type. */
+   const isArch=(b.id==='arch');
+   const scaleEls=el?[...el.querySelectorAll('.iq-sl')]:[];
+   const dilEls=el?[...el.querySelectorAll('.iqx-dlb')]:[];
    out.blocks.push({id:b.id, present:!!el, heading:el&&t.indexOf(b.nm)>=0,
-    scales:el?el.querySelectorAll('.iq-sl').length:0, rows:b.rows.length,
-    cells:el?[...el.querySelectorAll('.iq-sl')].every(s=>s.querySelectorAll('button.iq-n').length===11):false,
-    words:b.rows.filter(r=>t.indexOf(r.q.replace(/\s+/g,' '))<0).map(r=>r.k),
+    scales:isArch?(scaleEls.length+dilEls.length):scaleEls.length, rows:b.rows.length,
+    cells:el?(scaleEls.every(s=>s.querySelectorAll('button.iq-n').length===11)
+      &&dilEls.every(s=>s.querySelectorAll('button').length===2)):false,
+    words:b.rows.filter(r=>isArch
+      ?(r.type==='dilemma'?t.indexOf(r.scene.replace(/\s+/g,' '))<0
+        :(t.indexOf(r.ta.replace(/\s+/g,' '))<0||t.indexOf(r.tb.replace(/\s+/g,' '))<0))
+      :t.indexOf(r.q.replace(/\s+/g,' '))<0).map(r=>r.k),
     read:!!(el&&el.querySelector('.iqx-read'))});});
   /* the archetype rows are not named before they are answered */
   const at=(host.querySelector('#iqx-arch')||{innerText:''}).innerText;
@@ -4467,9 +4481,12 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   loadP(0); setTab(TAB.INTAKE); await new Promise(r=>setTimeout(r,500));
   const sub=document.querySelector('[data-avface="iq"]'); if(sub)sub.click();
   await new Promise(r=>setTimeout(r,400)); renderIntake();
-  const q=[...document.querySelectorAll('#iqbody .iqx .iq-sl')];
+  /* a control is an eleven cell scale or, for an archetype dilemma, its two
+     buttons (.iqx-dlb), round PQ: see the note on the same count at 1600. */
+  const q=[...document.querySelectorAll('#iqbody .iqx .iq-sl')].length
+   +[...document.querySelectorAll('#iqbody .iqx .iqx-dlb')].length;
   const over=[...document.querySelectorAll('#iqbody .iqx *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).length;
-  return {scales:q.length, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over,
+  return {scales:q, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over,
    w:document.documentElement.scrollWidth-innerWidth};});
  ok(o.scales===o.want,'all of the questions are on the phone page, '+o.scales+' of '+o.want);
  ok(o.over===0&&o.w<=2,'and none of them runs off the right edge, '+o.over+' elements, document '+o.w+' wide of the screen');

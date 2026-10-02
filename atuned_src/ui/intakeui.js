@@ -507,6 +507,17 @@ function iqArtCss(){
   '.iqx-qs{display:grid;gap:8px;padding:2px 6px 6px}',
   '.iqx-qs .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
   '.iqx-m{font-size:13.5px;line-height:1.45;color:var(--dim);margin:0 0 6px}',
+  /* ---- the archetype rows, round PQ: a dilemma's two buttons, an either or's
+     two end labels beside the eleven cell scale every other row here uses.
+     Neither carries iqa-fr, the two column grid the named rows use for their
+     label and their scale side by side, because a scene and its two buttons,
+     or two behaviours and one scale, read better stacked than split: both
+     are a plain block, the one rule the design gate asks every class have. ---- */
+  '.iqx-dl,.iqx-eo{display:block}',
+  '.iqx-dlb{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}',
+  '.iqx-dlb .btn{flex:1 1 180px;min-height:var(--tap)}',
+  '.iqx-eol{display:flex;justify-content:space-between;gap:14px;margin:0 0 8px;font-size:14px;line-height:1.4;color:var(--mid)}',
+  '.iqx-eov{text-align:right}',
   '.iqx-note{margin:0;padding:0 10px;font-size:13px;color:var(--dim)}',
   /* ---- one law: its three framings, each a card with its own icon ---- */
   '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
@@ -947,6 +958,32 @@ function iqxIcon(id,k){
  if(id==='axes'){for(i=0;i<CHILD.length;i++)if(CHILD[i].nm===k)return CHILD[i].ic;}
  if(id==='acts')return GATEGLYPH[k]||null;
  return null;}
+/* THE ARCHETYPE ROWS, ROUND PQ. A row no longer names one thing, it is a
+   contest between two (row.a, row.b) with one number between them, 0 fully a
+   to 10 fully b, so it draws differently from the generic iqxCard below: a
+   dilemma (its scene, then its two named responses as two buttons) or an
+   either or (its two behaviours flanking the same eleven cell scale every
+   other row on this page already uses). Colour is read off row.a's own seat:
+   a pair needs one colour, and the row carries no archetype name either way,
+   same rule as before (see the note above IX_ARCH2, engine/data/intakemore.js). */
+function iqxArchSeat(nm){
+ var i; for(i=0;i<ARCH.length;i++)if(ARCH[i].nm===nm)return ARCH[i].b; return 'Heart';}
+function iqxArchCard(p,row){
+ var c=seatCol(iqxArchSeat(row.a)), v=ixGet(p,'arch',row.k);
+ if(row.type==='dilemma'){
+  var selA=(v===0), selB=(v===10);
+  return '<div class="iq-qc iqx-dl" style="--c:'+c+'"><div class="iqa-qt">'+esc(row.scene)+'</div>'
+   +'<div class="iqx-dlb" role="group" aria-label="'+esc(row.scene)+'">'
+   +'<button type="button" class="btn'+(selA?' pri':'')+'" data-ixb="arch" data-ixk="'+esc(row.k)+'" data-v="0" aria-pressed="'+selA+'">'+esc(row.ra)+'</button>'
+   +'<button type="button" class="btn'+(selB?' pri':'')+'" data-ixb="arch" data-ixk="'+esc(row.k)+'" data-v="10" aria-pressed="'+selB+'">'+esc(row.rb)+'</button>'
+   +'</div></div>';}
+ var near=(v==null)?null:Math.round(v);
+ var h='<div class="iq-qc iqx-eo" style="--c:'+c+'"><p class="iqx-eol"><span>'+esc(row.ta)+'</span><span class="iqx-eov">'+esc(row.tb)+'</span></p>'
+  +'<div class="iq-sl" role="group" aria-label="'+esc(row.ta)+', or '+esc(row.tb)+'">';
+ for(var n=0;n<=10;n++)
+  h+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-ixb="arch" data-ixk="'+esc(row.k)+'" data-v="'+n
+   +'" style="--v:'+n+'" aria-pressed="'+(near===n)+'">'+n+'</button>';
+ return h+'</div></div>';}
 function iqxCard(p,id,row){
  var c=seatCol(iqxSeat(id,row.k)), v=ixGet(p,id,row.k), near=(v==null)?null:Math.round(v);
  var ic=iqxIcon(id,row.k), nm=ixName(id,row.k);
@@ -969,7 +1006,7 @@ function iqxHtml(p){
    +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b.nm)+'</span></div>'
    +'<p class="iqx-line">'+esc(b.line)+'</p>'
    +(say.head?'<p class="iqx-read" data-st="'+r.state+'"><b>'+esc(say.head)+'</b>'+(say.body?' '+esc(say.body):'')+'</p>':'')
-   +'<div class="iqx-qs">'+b.rows.map(function(row){return iqxCard(p,b.id,row);}).join('')+'</div>'
+   +'<div class="iqx-qs">'+b.rows.map(function(row){return b.id==='arch'?iqxArchCard(p,row):iqxCard(p,b.id,row);}).join('')+'</div>'
    +'</section>';}).join('')
   /* said once under the stack and not under each block: three copies of one
      sentence is the page explaining itself three times */

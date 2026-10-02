@@ -172,8 +172,8 @@ if(typeof module!=='undefined'&&module.exports){
   /* the three blocks under the 63. The tables are exported so the gate reads
      every count off them rather than typing one, and the functions so it can
      drive the boundary and the read-out. */
-                  IX_DRAFT:IX_DRAFT, IX_ARCH:IX_ARCH, IX_AXIS:IX_AXIS, IX_ACT:IX_ACT, IX_BLOCKS:IX_BLOCKS,
-                  IX_FLOOR:IX_FLOOR, IX_TIE_MAX:IX_TIE_MAX, ixBlank:ixBlank, ixFill:ixFill, ixGet:ixGet,
+                  IX_DRAFT:IX_DRAFT, IX_ARCH2:IX_ARCH2, IX_AXIS:IX_AXIS, IX_ACT:IX_ACT, IX_BLOCKS:IX_BLOCKS,
+                  IX_FLOOR:IX_FLOOR, IX_TIE_MAX:IX_TIE_MAX, IX_ARCH_FLOOR:IX_ARCH_FLOOR, ixBlank:ixBlank, ixFill:ixFill, ixGet:ixGet,
                   ixSet:ixSet, ixRead:ixRead, ixSay:ixSay, ixValidate:ixValidate, ixName:ixName,
   /* the meaning table, round PO. Exported so the gate can assert every entry
      is one plain sentence, and so a tool can read the same table the page does. */

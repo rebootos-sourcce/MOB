@@ -6250,14 +6250,18 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
 
 }
 
-g('PP1 · the archetype, emotional axis and action axis blocks under the 63, round PP');
+g('PP1 · the archetype, emotional axis and action axis blocks under the 63, round PP and PQ');
 /* THE THREE TABLES ARE CONTENT, AND EVERY COUNT HERE IS READ OFF THE TABLES
-   THEY ARE CHECKED AGAINST. The archetype block is held to the product's own
-   archetype table, the axis block to the nine axes, the action block to the
-   six gates, so a row added to one of those and not asked here, or a question
-   written about something the product does not have, fails by name. */
+   THEY ARE CHECKED AGAINST. The axis block is held to the nine axes, the
+   action block to the six gates, so a row added to one of those and not asked
+   here, or a question written about something the product does not have,
+   fails by name. The archetype block was the same shape at round PP, one row
+   per archetype; round PQ replaced it with IX_ARCH2, eighteen rows that each
+   put two archetypes against each other, so it is held to its own, different,
+   structural rule a few lines down rather than to the one-row-one-name rule
+   axes and acts still use. */
 {
- const {IX_ARCH,IX_AXIS,IX_ACT,IX_BLOCKS,VERP,ixBlank,ixSet,ixGet,ixRead,ixSay,ixValidate,
+ const {IX_ARCH2,IX_AXIS,IX_ACT,IX_BLOCKS,VERP,ixBlank,ixSet,ixGet,ixRead,ixSay,ixValidate,
         blankProfile,saveProfile,validateProfile,loadProfile}=E;
  const keys=t=>t.map(r=>r.k);
  const same=(a,b,nm)=>{
@@ -6265,22 +6269,56 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
   ok(miss.length===0,nm+' asks every one the product has, missing '+JSON.stringify(miss));
   ok(extra.length===0,nm+' asks nothing the product does not have, extra '+JSON.stringify(extra));
   ok(new Set(a).size===a.length,nm+' asks nothing twice');};
- same(keys(IX_ARCH),ARCH.map(a=>a.nm),'the archetype block, against ARCH,');
  same(keys(IX_AXIS),CHARGES.slice(),'the emotional axis block, against the nine axes,');
  same(keys(IX_ACT),VERP.map(v=>v.k),'the action axis block, against the six gates,');
- ok(IX_ARCH.length<=ARCH.length&&IX_ARCH.length<=12,'the archetype block is no longer than the set it places a person on, read '+IX_ARCH.length);
  ok(IX_BLOCKS.length===3&&IX_BLOCKS.map(b=>b.id).join()==='arch,axes,acts','the three blocks stack in the order the owner named them');
- ok(IX_BLOCKS[0].rows===IX_ARCH&&IX_BLOCKS[1].rows===IX_AXIS&&IX_BLOCKS[2].rows===IX_ACT,'and each block reads its own table');
+ ok(IX_BLOCKS[0].rows===IX_ARCH2&&IX_BLOCKS[1].rows===IX_AXIS&&IX_BLOCKS[2].rows===IX_ACT,'and each block reads its own table');
  ok(E.IX_DRAFT===true,'the wording is marked draft in the data file, so it can be refined without a code change');
- /* every sentence a person reads */
- const all=[]; IX_BLOCKS.forEach(b=>{all.push(b.nm,b.line); b.rows.forEach(r=>{all.push(r.q); if(r.means)all.push(r.means); if(r.oppMeans)all.push(r.oppMeans);});});
+
+ /* THE PAIRING, read off ARCH rather than typed. Round PQ: "we ask them the
+    right combination of questions to have them triangulate on the behaviors
+    that they identify with." Checked here as a structural fact about the
+    table rather than taken on the comment's word: every archetype sits in
+    exactly three rows, against three different others, never the same pair
+    twice, so no single row can carry the whole reading for any one name. */
+ {
+  ok(IX_ARCH2.length===ARCH.length*3/2,'arch: three rows for every one of the twelve, read off ARCH.length, got '+IX_ARCH2.length+' for '+ARCH.length);
+  const dil=IX_ARCH2.filter(r=>r.type==='dilemma'), eith=IX_ARCH2.filter(r=>r.type==='either');
+  ok(dil.length===eith.length&&dil.length+eith.length===IX_ARCH2.length,
+   'arch: the dilemma and either or rows split the table evenly, got '+dil.length+' dilemma and '+eith.length+' either or');
+  const cnt={}; ARCH.forEach(a=>{cnt[a.nm]=0;}); const pairs=new Set();
+  IX_ARCH2.forEach(r=>{
+   ok(r.a!==r.b,'arch: '+r.k+' never puts an archetype against itself');
+   ok(ARCH.some(a=>a.nm===r.a)&&ARCH.some(a=>a.nm===r.b),'arch: '+r.k+' names two archetypes the product actually has');
+   cnt[r.a]++; cnt[r.b]++;
+   const pk=[r.a,r.b].sort().join('|');
+   ok(!pairs.has(pk),'arch: the pair '+pk+' is asked only once, from one row');
+   pairs.add(pk);});
+  ARCH.forEach(a=>ok(cnt[a.nm]===3,'arch: '+a.nm+' is implicated by exactly three rows, each against a different other, got '+cnt[a.nm]));
+ }
+
+ /* every sentence a person reads. An arch row carries scene/ra/rb (dilemma)
+    or ta/tb (either or) beside its own q, and all of it is read, the same as
+    axes and acts read means and oppMeans beside q. */
+ const all=[]; IX_BLOCKS.forEach(b=>{all.push(b.nm,b.line); b.rows.forEach(r=>{
+  all.push(r.q); if(r.means)all.push(r.means); if(r.oppMeans)all.push(r.oppMeans);
+  if(r.ra)all.push(r.ra); if(r.rb)all.push(r.rb); if(r.ta)all.push(r.ta); if(r.tb)all.push(r.tb);});});
  ok(all.every(t=>typeof t==='string'&&t.trim().length>0),'every question, name and meaning is a sentence and none is empty');
  ok(!all.some(t=>/—|–/.test(t)),'no em or en dash in anything a person reads');
  ok(!all.some(t=>/\d/.test(t)),'no digit in anything a person reads, so no count is typed into a heading');
  ok(!all.some(t=>/undefined|\[object/.test(t)),'and no hole in any of it');
- IX_BLOCKS.forEach(b=>{
-  ok(b.rows.every(r=>/how often/i.test(r.q)&&/\?$/.test(r.q)),b.id+': every question asks how often, the scale the 63 use');
-  ok(new Set(b.rows.map(r=>r.q)).size===b.rows.length,b.id+': no two questions are the same sentence');});
+ ok(IX_AXIS.every(r=>/how often/i.test(r.q)&&/\?$/.test(r.q))&&IX_ACT.every(r=>/how often/i.test(r.q)&&/\?$/.test(r.q)),
+  'axes and acts: every question asks how often, the scale the 63 use');
+ /* arch asks nothing as "how often": a dilemma is a forced choice between two
+    named responses and an either or is a graded pick between two named
+    behaviours, neither of which is a frequency question. A dilemma's own
+    scene still ends as a question, the round JQ shape; an either or does not
+    ask one, it offers two things to choose between. */
+ ok(IX_ARCH2.filter(r=>r.type==='dilemma').every(r=>/\?$/.test(r.scene)),
+  'arch: every dilemma is put as a scene ending in a question, the round JQ shape');
+ ok(IX_ARCH2.filter(r=>r.type==='either').every(r=>r.ta&&r.tb&&!/\?/.test(r.ta)&&!/\?/.test(r.tb)),
+  'arch: every either or offers two behaviours and asks neither as a question');
+ IX_BLOCKS.forEach(b=>ok(new Set(b.rows.map(r=>r.q)).size===b.rows.length,b.id+': no two rows read the same sentence'));
  ok(IX_AXIS.every(r=>r.means&&r.oppMeans),'every axis says what it means and what its other end means, so no name stands alone');
  ok(IX_ACT.every(r=>r.means),'every action axis says what it means');
  /* the clinical words the voice rules keep off the page */
@@ -6297,9 +6335,10 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
   const old2=JSON.parse(JSON.stringify(old)); delete old2.intake;
   const r2=validateProfile(old2);
   ok(r2.ok&&r2.profile.intake.more&&r2.profile.intake.more.arch,'and so is one with no intake at all');
-  const half=JSON.parse(JSON.stringify(old)); half.intake.more={arch:{Sage:7}};
+  const k0=IX_ARCH2[0].k;
+  const half=JSON.parse(JSON.stringify(old)); half.intake.more={arch:{[k0]:7}};
   const r3=validateProfile(half);
-  ok(r3.ok&&r3.profile.intake.more.arch.Sage===7&&Object.keys(r3.profile.intake.more.axes).length===0,
+  ok(r3.ok&&r3.profile.intake.more.arch[k0]===7&&Object.keys(r3.profile.intake.more.axes).length===0,
    'and a record that answered one block keeps it and leaves the others empty');
   const raw=JSON.parse(JSON.stringify(old)); delete raw.intake.more;
   loadProfile(raw);
@@ -6310,18 +6349,20 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
  refuses(o=>{o.intake.more='yes';},/intake\.more is not an object/,'a block record that is a string');
  refuses(o=>{o.intake.more=[1];},/intake\.more is not an object/,'a block record that is a list');
  refuses(o=>{o.intake.more={arch:[1,2]};},/intake\.more\.arch is not an object/,'a bag that is a list');
- refuses(o=>{o.intake.more={arch:{Hero:5}};},/intake\.more\.arch names no question: Hero/,'an archetype the product does not ask');
+ refuses(o=>{o.intake.more={arch:{Hero:5}};},/intake\.more\.arch names no question: Hero/,'a row the archetype block does not ask');
+ refuses(o=>{o.intake.more={arch:{Sage:5}};},/intake\.more\.arch names no question: Sage/,
+  'and round PQ\'s own migration edge: the round PP key, a bare archetype name, is refused too, since a row is now a pair');
  refuses(o=>{o.intake.more={axes:{Anxiety:5}};},/intake\.more\.axes names no question: Anxiety/,'an axis the product does not have');
  refuses(o=>{o.intake.more={acts:{believing:5}};},/intake\.more\.acts names no question: believing/,'an action the product does not ask');
  refuses(o=>{o.intake.more={nope:{}};},/intake\.more names no block: nope/,'a block that does not exist');
- refuses(o=>{o.intake.more={arch:{Sage:9999}};},/intake\.more\.arch\.Sage is 9999, outside 0 to 10/,'an answer of 9999');
+ refuses(o=>{o.intake.more={arch:{[IX_ARCH2[0].k]:9999}};},new RegExp('intake\\.more\\.arch\\.'+IX_ARCH2[0].k+' is 9999, outside 0 to 10'),'an answer of 9999');
  refuses(o=>{o.intake.more={axes:{Fear:-1}};},/intake\.more\.axes\.Fear is -1/,'a negative answer');
  refuses(o=>{o.intake.more={acts:{aware:'7'}};},/intake\.more\.acts\.aware is not a number/,'an answer that is text');
- {const o=wire(); o.intake.more={arch:{Sage:null}}; const r=validateProfile(o);
-  ok(r.ok&&ixGet(r.profile,'arch','Sage')===null,'a null answer is not answered, the way a null in the 63 is');}
+ {const o=wire(); o.intake.more={arch:{[IX_ARCH2[0].k]:null}}; const r=validateProfile(o);
+  ok(r.ok&&ixGet(r.profile,'arch',IX_ARCH2[0].k)===null,'a null answer is not answered, the way a null in the 63 is');}
  /* the boundary function on its own, and it never clamps */
- {const errs=[]; const out=ixValidate(errs,{arch:{Sage:12}},'x');
-  ok(errs.length===1&&out.arch.Sage===undefined,'a value out of range is dropped from the result and named in the errors, never clamped to 10');}
+ {const errs=[]; const out=ixValidate(errs,{arch:{[IX_ARCH2[0].k]:12}},'x');
+  ok(errs.length===1&&out.arch[IX_ARCH2[0].k]===undefined,'a value out of range is dropped from the result and named in the errors, never clamped to 10');}
 
  /* the repairs the coverage run found nothing reaching: a bag of the wrong type
     in a record already in memory is replaced by an empty one, and the helpers
@@ -6336,11 +6377,11 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
    'a name or a block the product does not have is read as nothing and does not throw');}
 
  /* THE ONE WRITE REFUSES WHAT THE PRODUCT DOES NOT HAVE */
- {const p=blankProfile('w1');
-  ok(ixSet(p,'arch','Sage',7)&&ixGet(p,'arch','Sage')===7,'a real answer is written and read back');
-  ok(!ixSet(p,'arch','Hero',5)&&!ixSet(p,'axes','Fear',11)&&!ixSet(p,'axes','Fear',-1)
+ {const p=blankProfile('w1'), k0=IX_ARCH2[0].k;
+  ok(ixSet(p,'arch',k0,7)&&ixGet(p,'arch',k0)===7,'a real answer is written and read back');
+  ok(!ixSet(p,'arch','Hero',5)&&!ixSet(p,'arch','Sage',5)&&!ixSet(p,'axes','Fear',11)&&!ixSet(p,'axes','Fear',-1)
    &&!ixSet(p,'acts','aware','5')&&!ixSet(p,'acts','aware',NaN)&&!ixSet(p,'nope','x',1),
-   'an unknown row, an unknown block and a value outside 0 to 10 write nothing and say so');
+   'an unknown row (including the round PP shape, a bare archetype name), an unknown block and a value outside 0 to 10 write nothing and say so');
   ok(ixGet(p,'axes','Fear')===null&&ixGet(p,'acts','aware')===null,'and nothing was written by the refusals');
   ok(p.intake.startedAt===null,'answering here does not say the 63 were started');
   const bare={}; ok(ixSet(bare,'acts','aware',3)&&bare.intake.more.acts.aware===3,'a profile with no intake is given one rather than throwing');}
@@ -6378,9 +6419,15 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
   ok(read(p)===before,'and answered 0 and 10 in turn changes none of them either');
   ok(E.saveProfile(p).gates.verp.aware===0,'and the gate counts, which are sentences read out of stories, stay at nought');}
 
- /* THE READ-OUT, state by state */
+ /* THE READ-OUT, state by state. axes and acts only: each reads one row as
+    one named thing's whole answer, which is the shape this loop assumes
+    (setting row i to 9 alone must make row i's own name the lead). The arch
+    block reads twelve names off eighteen two way rows and needs its own
+    method below, because that assumption is false for it: one row names two
+    archetypes, not one, and "alone at the top" is a fact about a tally over
+    three rows, not about a single row's value. */
  {const p=blankProfile('ro');
-  IX_BLOCKS.forEach(b=>{
+  IX_BLOCKS.filter(b=>b.id!=='arch').forEach(b=>{
    const none=ixRead(p,b.id);
    ok(none.state==='none'&&none.got===0&&none.left===b.rows.length&&ixSay(b.id,none).head==='',b.id+': nothing answered says nothing');
    ixSet(p,b.id,b.rows[0].k,5);
@@ -6412,6 +6459,87 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
    b.rows.forEach((r,i)=>{if(i<=E.IX_TIE_MAX)ixSet(p,b.id,r.k,9);});
    const many=ixRead(p,b.id);
    ok(many.lead.length>E.IX_TIE_MAX&&many.state==='level',b.id+': more than '+E.IX_TIE_MAX+' tied at the top is level');});}
+
+ /* THE ARCHETYPE READ-OUT. Round PQ. THE AUDIT: a tally recomputed here, from
+    nothing but the stored answers and the formula the comment on ixRead
+    states (one row splits one point between its two ends, 0 fully a to 10
+    fully b, and an archetype's tally is the sum of what it won across its
+    three rows), independently of ixRead. If this ever disagrees with what
+    ixRead reports, the method is no longer the one written down, which is
+    what "auditable" has to mean for a reading nobody can see labelled data
+    for: a person reading the engine file can run this arithmetic by hand. */
+ {const p=blankProfile('roa');
+  const audit=p=>{const t={}; ARCH.forEach(a=>{t[a.nm]=0;});
+   IX_ARCH2.forEach(r=>{const v=ixGet(p,'arch',r.k); if(v==null)return;
+    const pb=v/10; t[r.a]+=1-pb; t[r.b]+=pb;}); return t;};
+
+  const none=ixRead(p,'arch');
+  ok(none.state==='none'&&none.got===0&&none.left===IX_ARCH2.length&&ixSay('arch',none).head==='','arch: nothing answered says nothing');
+  ixSet(p,'arch',IX_ARCH2[0].k,5);
+  const part=ixRead(p,'arch');
+  ok(part.state==='part'&&part.got===1&&part.left===IX_ARCH2.length-1&&ixSay('arch',part).head===(IX_ARCH2.length-1)+' left'&&part.lead.length===0,
+   'arch: part answered names no leader and says what is left');
+
+  /* EVERY ROW AT THE MIDPOINT. Every archetype ties at the same tally, so
+     nothing leads, and the independent audit agrees with ixRead exactly. */
+  IX_ARCH2.forEach(r=>ixSet(p,'arch',r.k,5));
+  let rd=ixRead(p,'arch');
+  ok(JSON.stringify(rd.tally)===JSON.stringify(audit(p)),'arch: the reported tally matches the independent audit at the midpoint');
+  ok(rd.state==='level'&&rd.lead.length===ARCH.length&&/^Nothing leads\./.test(ixSay('arch',rd).head),'arch: dead level across the whole table names no leader');
+
+  /* ONE ARCHETYPE WINS ALL THREE OF ITS OWN CONTESTS, everything else stays
+     at the midpoint. THE CEILING: three full wins tally to exactly three,
+     which is what IX_ARCH_FLOOR is measured against. */
+  const pick='Warrior';
+  IX_ARCH2.forEach(r=>{ if(r.a===pick)ixSet(p,'arch',r.k,0); else if(r.b===pick)ixSet(p,'arch',r.k,10); });
+  rd=ixRead(p,'arch');
+  ok(JSON.stringify(rd.tally)===JSON.stringify(audit(p)),'arch: the reported tally still matches the independent audit after the change');
+  ok(Math.abs(rd.tally[pick]-3)<1e-9,'arch: winning its own three contests tallies '+pick+' to exactly three, got '+rd.tally[pick]);
+  ok(rd.state==='lead'&&rd.lead.length===1&&rd.lead[0]===pick,'arch: '+pick+' leads alone, having won where it was asked about and nowhere else it was not');
+  const say=ixSay('arch',rd);
+  ok(say.head.indexOf(pick)>=0&&!/undefined/.test(say.head+' '+say.body)&&say.body.length>8,
+   'arch: named and said in plain words, got "'+(say.head+' '+say.body).slice(0,90)+'"');
+
+  /* DETERMINISM. The same stored answers read the same lean on a second call,
+     with nothing moved in between. */
+  const rd2=ixRead(p,'arch');
+  ok(JSON.stringify(rd2)===JSON.stringify(rd),'arch: the same answers read exactly the same lean a second time');
+
+  /* SENSITIVITY. Flip one row that does not name the pick, and the output
+     changes, and it changes for the two archetypes that row actually names,
+     never for every row touching the pick, which stayed untouched. */
+  const other=IX_ARCH2.filter(r=>r.a!==pick&&r.b!==pick)[0];
+  const ov=ixGet(p,'arch',other.k);
+  ixSet(p,'arch',other.k,ov===0?10:0);
+  const rd3=ixRead(p,'arch');
+  ok(JSON.stringify(rd3)!==JSON.stringify(rd),'arch: changing one stored answer changes the reported lean');
+  ok(rd3.tally[pick]===rd.tally[pick],'arch: a row that does not name '+pick+' never moves its tally, got '+rd3.tally[pick]+' against '+rd.tally[pick]);
+  ok(rd3.tally[other.a]!==rd.tally[other.a]||rd3.tally[other.b]!==rd.tally[other.b],
+   'arch: the two archetypes that changed row actually names are the ones whose tally moved');
+  ixSet(p,'arch',other.k,ov);
+
+  /* NO SINGLE QUESTION CAN DECIDE A TWELVE WAY LEAD. Each row is worth at
+     most one point and every archetype sits in three rows, so flipping one
+     row end to end moves either side of it by at most one point, never by
+     the three a row's own name would need to reach the ceiling alone. */
+  IX_ARCH2.forEach(r=>ixSet(p,'arch',r.k,0));
+  const base=ixRead(p,'arch').tally;
+  const row0=IX_ARCH2[0];
+  ixSet(p,'arch',row0.k,10);
+  const after=ixRead(p,'arch').tally;
+  ok(Math.abs(after[row0.a]-base[row0.a])<=1+1e-9&&Math.abs(after[row0.b]-base[row0.b])<=1+1e-9,
+   'arch: one row moves either name in its own pair by at most one point, never enough alone to decide a lead');
+
+  /* A TIE OF TWO LEADS, A TIE OF TOO MANY IS LEVEL, the same rule axes and
+     acts hold, read here off the tally rather than off a row value. */
+  IX_ARCH2.forEach(r=>ixSet(p,'arch',r.k,5));
+  const w2=['Warrior','Sage'];
+  IX_ARCH2.forEach(r=>{
+   if(w2.indexOf(r.a)>=0&&w2.indexOf(r.b)<0)ixSet(p,'arch',r.k,0);
+   else if(w2.indexOf(r.b)>=0&&w2.indexOf(r.a)<0)ixSet(p,'arch',r.k,10);});
+  const tie=ixRead(p,'arch');
+  ok(tie.state==='lead'&&tie.lead.length===2&&tie.lead.indexOf('Warrior')>=0&&tie.lead.indexOf('Sage')>=0&&/tied\.$/.test(ixSay('arch',tie).head),
+   'arch: two archetypes tied at the same top tally is a real tie and both are named, got '+JSON.stringify(tie.lead));}
 }
 
 g('PO · unpack every symbol: the meaning table and the pole meanings');

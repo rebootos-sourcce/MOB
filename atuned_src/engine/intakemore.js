@@ -5,9 +5,13 @@
    boundary that guards it, and the read-out sentence. No browser in here.
 
    WHERE THE ANSWERS LIVE. p.intake.more, three bags keyed by the row's own
-   name, each value 0 to 10 and an absent key meaning not answered:
+   key, each value 0 to 10 and an absent key meaning not answered. axes and
+   acts key by the thing named; arch keys by the pair a row asks about, since
+   round PQ made every archetype row a contest between two archetypes rather
+   than a question about one (see engine/data/intakemore.js, IX_ARCH2, and the
+   tally note on ixRead below):
 
-     p.intake.more = {arch:{Warrior:7, ..}, axes:{Fear:4, ..}, acts:{aware:5, ..}}
+     p.intake.more = {arch:{Warrior_Sage:7, ..}, axes:{Fear:4, ..}, acts:{aware:5, ..}}
 
    Beside the 63 and not mixed into them, because the 63 are indexed by
    position and read by iqScore, iqApply and CQ, and these are read by none of
@@ -33,6 +37,17 @@ var IX_FLOOR=3;
    answer (a person can lead with the Sage and the Rebel). Five tied at 10 is a
    person who pressed ten twelve times. */
 var IX_TIE_MAX=3;
+/* THE ARCHETYPE FLOOR, DERIVED FROM IX_FLOOR RATHER THAN TYPED FRESH. Round PQ.
+   axes and acts read one row as one archetype's whole answer, 0 to 10, and
+   IX_FLOOR=3 is the noise floor on that scale. The archetype block reads
+   twelve archetypes off eighteen two way rows, three rows touching each
+   archetype, each worth at most one point (see the tally note on ixRead
+   below), so the ceiling there is 3 and not 10. The same floor, carried across
+   by the same ratio: 3 x (3/10) = 0.9. It is not retyped as 0.9 with its own
+   reasoning, because a second number arguing the same noise floor by a
+   different path is the next thing this file would disagree with itself
+   about. */
+var IX_ARCH_FLOOR=IX_FLOOR*3/10;
 function ixBlank(){return {arch:{}, axes:{}, acts:{}};}
 function ixBlock(id){
  for(var i=0;i<IX_BLOCKS.length;i++)if(IX_BLOCKS[i].id===id)return IX_BLOCKS[i];
@@ -92,6 +107,39 @@ function ixRead(p,id){
  out.left=out.total-out.got;
  if(!out.got)return out;
  if(out.left){out.state='part'; return out;}
+ /* THE ARCHETYPE TALLY. Round PQ. Every other block has one row per named
+    thing and reads its lead straight off the row values. The archetype block
+    has one row per PAIR of named things (row.a, row.b), each row a single
+    number 0 to 10 saying where the answer fell between them, 0 fully a and 10
+    fully b (a dilemma's two buttons simply write the two ends of this same
+    line, never the middle). The tally for one archetype is the sum, over the
+    three rows that name it, of how much of that row it won: (10-v)/10 at the
+    a end, v/10 at the b end. Three rows at a full win each give a ceiling of
+    3, which is what IX_ARCH_FLOOR above is measured against. This is the
+    whole method, in full, and it is the only place it is computed: nothing
+    else in the engine reads these eighteen rows. */
+ if(id==='arch'){
+  var tally={}; ARCH.forEach(function(x){tally[x.nm]=0;});
+  b.rows.forEach(function(r,i){
+   var v=vals[i], ptB=v/10, ptA=1-ptB;
+   tally[r.a]+=ptA; tally[r.b]+=ptB;});
+  var names=Object.keys(tally);
+  var hiv=Math.max.apply(null,names.map(function(n){return tally[n];}));
+  var lov=Math.min.apply(null,names.map(function(n){return tally[n];}));
+  out.spread=Math.round((hiv-lov)*100)/100;
+  /* EXPOSED FOR AUDIT. Not printed as a number on screen (ixSay never reads
+     it), but a test, or a person reading this file, can reconstruct every
+     archetype's tally from the stored answers alone and check it against
+     this field. */
+  out.tally=tally;
+  names.forEach(function(n){if(tally[n]===hiv)out.lead.push(n);});
+  /* STABLE ORDER. ARCH's own table order, not the order Object.keys happens
+     to produce, so the same tie reads the same way on every run. */
+  out.lead.sort(function(x,y){
+   var ix=-1,iy=-1; ARCH.forEach(function(a,i){if(a.nm===x)ix=i; if(a.nm===y)iy=i;});
+   return ix-iy;});
+  out.state=(out.spread<IX_ARCH_FLOOR||out.lead.length>IX_TIE_MAX)?'level':'lead';
+  return out;}
  var hi=Math.max.apply(null,vals), lo=Math.min.apply(null,vals);
  out.spread=Math.round((hi-lo)*10)/10;
  b.rows.forEach(function(r,i){if(vals[i]===hi)out.lead.push(r.k);});
