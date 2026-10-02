@@ -156,7 +156,10 @@ function ixJoin(a){
 function ixSay(id,r){
  var none={head:'', body:''};
  if(!r||r.state==='none')return none;
- if(r.state==='part')return {head:r.left+' left', body:''};
+ /* A NUMBER SAYS WHAT IT COUNTS, round PU: "17 left" on its own left a person
+    to work out seventeen of what. It says how many questions and out of how
+    many, in the same line. */
+ if(r.state==='part')return {head:r.left+' of '+r.total+' questions left', body:''};
  var lbl={arch:['Leading archetype','Leading archetypes'], axes:['Loudest axis','Loudest axes'],
           acts:['Most used move','Most used moves']}[id];
  if(r.state==='level')return {head:'Nothing leads.',

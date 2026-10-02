@@ -6432,7 +6432,7 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
    ok(none.state==='none'&&none.got===0&&none.left===b.rows.length&&ixSay(b.id,none).head==='',b.id+': nothing answered says nothing');
    ixSet(p,b.id,b.rows[0].k,5);
    const part=ixRead(p,b.id);
-   ok(part.state==='part'&&part.got===1&&part.left===b.rows.length-1&&ixSay(b.id,part).head===(b.rows.length-1)+' left'
+   ok(part.state==='part'&&part.got===1&&part.left===b.rows.length-1&&ixSay(b.id,part).head===(b.rows.length-1)+' of '+b.rows.length+' questions left'
     &&part.lead.length===0,b.id+': part answered names no leader and says what is left');
    b.rows.forEach(r=>ixSet(p,b.id,r.k,5));
    const lvl=ixRead(p,b.id);
@@ -6477,7 +6477,7 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
   ok(none.state==='none'&&none.got===0&&none.left===IX_ARCH2.length&&ixSay('arch',none).head==='','arch: nothing answered says nothing');
   ixSet(p,'arch',IX_ARCH2[0].k,5);
   const part=ixRead(p,'arch');
-  ok(part.state==='part'&&part.got===1&&part.left===IX_ARCH2.length-1&&ixSay('arch',part).head===(IX_ARCH2.length-1)+' left'&&part.lead.length===0,
+  ok(part.state==='part'&&part.got===1&&part.left===IX_ARCH2.length-1&&ixSay('arch',part).head===(IX_ARCH2.length-1)+' of '+IX_ARCH2.length+' questions left'&&part.lead.length===0,
    'arch: part answered names no leader and says what is left');
 
   /* EVERY ROW AT THE MIDPOINT. Every archetype ties at the same tally, so

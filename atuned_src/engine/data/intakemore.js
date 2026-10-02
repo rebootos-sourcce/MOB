@@ -63,8 +63,8 @@
 
    THE AXIS AND ACTION ROWS ARE NAMED ON THE PAGE, each with its meaning
    beside it, because the question is a sensation or a move and the name does
-   not flatter. The archetype rows carry no archetype name on the page either,
-   for the same reason as before: see the note above IX_ARCH2.
+   not flatter. The archetype rows are named now too, by his ruling at round
+   PV: see the note at the foot of the one above IX_ARCH2.
    ============================================================ */
 const IX_DRAFT=true;
 
@@ -128,11 +128,19 @@ const IX_DRAFT=true;
    block, and that is the whole of the arithmetic: nothing here is a black box,
    because the method this table sets up is read entirely in that one function.
 
-   THE ROWS CARRY NO ARCHETYPE NAME ON THE PAGE, same rule as before: a
-   dilemma names two responses and an either or names two behaviours, and
-   naming the archetype behind either one would be telling a person which
-   answer is the "right" one before they have given it. The name arrives only
-   in the read-out, once the block is complete, the way it always has.
+   THE ROWS NAME BOTH ARCHETYPES ON THE PAGE NOW. Round PQ kept the names off
+   until the block was complete, on the argument that naming the archetype
+   behind an answer tells a person which one they are picking. That was this
+   seat's rule, not his, and he reversed it at round PV, verbatim: "for the
+   archetype intake, I want to see the symbol of the archetype and a
+   description, and then the question." So every row shows its two
+   archetypes first, each as its own mark (ARCH[].ic, in the colour of the
+   seat ARCH places it at), its name and its two sentence description
+   (ARCH[].v then ARCH[].d), then the question, then the two answers, each
+   standing under the archetype it leans toward. The cost is named rather
+   than hidden: an answer is now given knowing whose it is. The tally does not
+   change, and the read-out still names the leader only once the block is
+   complete.
    ============================================================ */
 const IX_ARCH2=[
  {k:'Warrior_Sage',type:'dilemma',a:'Warrior',b:'Sage',
@@ -186,6 +194,13 @@ const IX_ARCH2=[
    joins its two behaviours into one sentence, because nothing else on this
    row is one on its own. */
 IX_ARCH2.forEach(function(r){ if(!r.q) r.q = (r.type==='dilemma') ? r.scene : (r.ta+', or '+r.tb+'.'); });
+/* THE QUESTION AN EITHER OR ASKS. A dilemma's question is its scene. An either
+   or had none of its own: its two behaviours sat on the page as two end labels
+   with nothing above them asking anything, so the order he ruled (the mark,
+   the description, then the question) had no third thing to put third. One
+   sentence, the same for all nine, because the question is the same for all
+   nine and only the two behaviours under it change. */
+const IX_EO_ASK='Which of these two is closer to what you do?';
 
 /* k is the axis's name in CHILD. means is the held side in one sentence and
    oppMeans is its other end in one, because the page prints the opposite's
