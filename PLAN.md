@@ -6,24 +6,47 @@ read off the repository and the gate runs, not recalled. "Pushed" means on
 since round PH: plain words, as if he is ten, no fixed headings; questions only
 when blocked (round PD).
 
-## 0. CURRENT TOP PRIORITY, round QC, 2 October night. Supersedes the ordering below until closed
+## 0. CURRENT TOP PRIORITY, refreshed round QG, 2 October night. Supersedes the ordering below until closed
 
-His own implementation handoff, in full at `reviews/ATUNED-System-Congruency-MVP-TDD.md` (2291 lines, two
-parts: the original Congruency TDD and an appended Information Flow Congruency Sweep). Its own words:
-"Do not expand into unrelated features until this path is closed and tested." Everything in sections B
-through L below stays queued behind this one chain until it is DONE, PARTIAL, BLOCKED or NOT IMPLEMENTED
-per requirement, in the document's own report format, not assumed finished because the sections below
-say so.
+Round QG, his words: "Review the last two or three TDDs find out what needs to be blocked and put into
+plan I don't see them in plan right now." This section is the fix: it names where each of the two TDDs
+actually stands, read off the repo now rather than left as a stale snapshot from the night they arrived.
 
-The chain: STORY, OBSERVATION, MIRROR, CONFIRM/CORRECT, PATTERN, RELEASE, VERIFY, EVIDENCE, FIELD/HISTORY,
-with a second layer under it: EVIDENCE, CANONICAL RECORD, HYPOTHESIS, TRACE GRAPH, MEMORY, DECISION,
-PRACTICE, OUTCOME, each kept as a distinct thing, one canonical writer per domain, a hypothesis never
-silently treated as fact, the Field never authoring a fact independently of the record behind it.
+**TDD 1, the Congruency MVP** (`reviews/ATUNED-System-Congruency-MVP-TDD.md`). Its own words: "Do not
+expand into unrelated features until this path is closed and tested." The audit (`reviews/CONGRUENCY-AUDIT.md`)
+landed and found three breaks in the STORY to FIELD chain. Two are fixed and pushed:
+- the onboarding `ob` field silently failing the profile boundary on reload (fixed, `storeRefused()` wired
+  into the boot path);
+- no "what changed?" step after a release (fixed, round QC, `releaseVerify` in `engine/journey.js`, build v1428).
 
-Required first, per the document's own order, before any code: a full audit against real code (not
-assumed from file names or this plan's own claims), grading every requirement EXISTS, PARTIAL, MISSING,
-CONFLICT or UNVERIFIED with file/function/test evidence. That audit is running now (`reviews/CONGRUENCY-AUDIT.md`,
-not yet landed). The smallest closure it identifies is the next build, not a guess at one.
+Still open, the one remaining closure: **F16**, the mirror's Yes/Not-me answers never reach the trace
+graph or the Field's rail. Not started. This is the next build this chain calls for.
+
+**TDD 2, the Tuned Awareness Architecture** (`reviews/TUNED-AWARENESS-ARCHITECTURE-TDD.md`, new round QF).
+A conceptual upgrade to the reasoning layer underneath the product: tuning and aperture as concepts
+distinct from awareness and localization, a tuning-drift state machine, a formal sniffer output contract,
+a named-type graph, and a home for the existing CQ formula inside a named coherence engine. Audit against
+the real sniffer/graph/coherence/release code is running now (`reviews/TUNED-AWARENESS-AUDIT.md`, dispatched
+round QF, not yet landed). Its own "plan of attack" lands in this section the moment it returns, not as a
+separate document he has to go find.
+
+Everything in sections B through L below stays queued behind this chain until each requirement is DONE,
+PARTIAL, BLOCKED or NOT IMPLEMENTED in the audits' own report format, not assumed finished because the
+sections below say so.
+
+**In flight right now, round QF/QG, running in background, none merged yet:**
+- Onboarding redesign in the real Field/Compass/Body aesthetic, replacing the stock-photo mockup he sent
+  (branch `onboarding-real-skin`). Screenshots come to him before merge.
+- The Tuned Awareness audit itself (above).
+- The three-column layout: left for new input, centre the ritual, right the accountability tracker,
+  merging the knowledge base and accountability tracker back into one page (branch `flow-three-column`).
+  Screenshots come to him before merge.
+- The release screen carousel, round QG: Horizon kept as the base, rebuilt as a vertical carousel (centre
+  item readable, one above/below dimmed, the ring past those nearly black), the "Release your selections"
+  heading replaced by the carousel's own story/chakra count, the short per-item prompt line split from the
+  longer release script, a heavy flag per item, the two-minute cooldown moved onto this screen, and a new
+  closing line naming the count released and reframed before the cooldown. Not yet dispatched as of this
+  write; next action this session.
 
 ## A. Done and pushed (latest build v1161, commit 8df2ce2, sent to him as atuned.html)
 
