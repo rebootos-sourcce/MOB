@@ -6,6 +6,10 @@ build of `atuned_src/` at this HEAD, written to a scratch folder, is byte for by
 apart from the stamp line, and `engine.js` built fresh is identical (md5 `9fd3afbf`), so every
 gate below ran against what is actually committed. Read only: nothing was built or merged.
 
+The branch moved while this was being counted (tip `b8c4c4d` when this file was committed). What
+landed in between, and what it changes here, is in section 9. One of those commits found a
+defect that was already present on `f2fd8ff`, and it is scored in below.
+
 Every number in this file was read off a run made for this file. Where something could not be
 checked from here, it says so.
 
@@ -13,15 +17,16 @@ checked from here, it says so.
 
 **Percent to MVP, two ways.**
 
-- **Every step counted the same (the "flat" count): 15 of 34 steps, 44 percent.** On the same
-  32 steps the last count used, 14 of 32, also 44 percent (it was 10 of 32, 31 percent, this
+- **Every step counted the same (the "flat" count): 14 of 34 steps, 41 percent.** On the
+  same 32 steps the last count used, 13 of 32, 41 percent (it was 10 of 32, 31 percent, this
   morning). The two extra steps are the two things you added tonight (round QA): the daily
   summary on screen, and the feedback tracker.
 - **Only the steps that stop the first paying stranger (the "weighted" count): 3.5 of 12, 29
   percent** (it was 3 of 12, 25 percent). This is the one to steer by. It barely moved because
   tonight's work was mostly on things a stranger sees after the blockers, not on the blockers.
-  Of the 12, the five with nothing done at all are all safety or truth: the distress check, the
-  care card, the outside safety review, the free-upgrade hole, and the empty first reading.
+  Of the 12, six have nothing done. Five are safety or truth: the distress check, the care
+  card, the outside safety review, the free-upgrade hole, and the empty first reading. The
+  sixth is one real test payment, which waits on the pay steps before it.
 
 How a step scores: done and reachable in the app is 1, built but partly done or not reachable is
 one half, not started is 0. The steps are the team's list, so this is a way to see what is
@@ -35,13 +40,15 @@ database also exists and is switched on: you created it in Cloudflare on 27 Sept
 database, Cloudflare's built-in database, named `atuned`), and on 30 September the server (a
 small program Cloudflare runs for us, called the Worker) went live at
 `atuned-api.lance-o-powell.workers.dev` and built its tables. But the live server is the older
-version: it can make accounts and sign people in, and it has empty tables ready for records, but
+version: it can make accounts and sign people in, and it has tables ready to hold records, but
 it has no payment parts and no voice part. Those are written and pass all 72 of their own tests
 here, but they sit on a side branch that has never been sent live. And the app only ever asks
 the live server about sign in; it never saves a person's record there. This sandbox's network
 refused the server's address, so I could not see whether anyone has actually signed up.
 
-**The single next task.** F1, the distress reader's engine half (the part of the code that
+**The single next task.** One fix is already being built by another seat and must land first:
+a finished onboarding loses the person's whole record on their next visit (section 4, row 0).
+The next task nobody has picked up is F1, the distress reader's engine half (the part of the code that
 checks a first story for a person in crisis and shows nothing yet): start from the 292 line
 draft already saved on branch `f1-distress-detector`, fix the curly apostrophe and the
 "not" handling, and put a test on it. It needs nothing from anyone and it unblocks every safety
@@ -70,7 +77,7 @@ must pass) or my own probe shows it working. "Changed" says what moved since the
 | **Onboarding and tutorial** | | | | | |
 | Funnel quiz and buy pages | built, not visible | `funnel/dist/` rebuilt at `b052556`; `funnel/buy.html` still says "Checkout is not open yet" | No public address (held on purpose until the distress response is in, F3). No pay button | him: domain, later. me: pay button | No |
 | Starting point choice, pattern gift | partly | Twelve starting points in the onboarding (`OB_STARTS`, `ui/onboard.js`, `c30a70c`), kept on the story entry as `ent.ob.pick` | Not kept as a fact about the person, and the gift does not read it (F15) | me | **Yes, 0 to one half.** The choice now exists in the app |
-| First run onboarding | built and used | On by default for every new arrival (`DEV_PLAY_ONBOARDING=true`, `ui/login.js:95`). `tests/onboarding2.js` 104 passed, 0 failed, in a real browser, including its F4 and F5 sections | "Not me" keeps a place out of the release but the story's charge still lands on it in the Field (the no is recorded, `ent.ob.no`, and nothing reads it yet). Per place yes and no, finished, is F16 | me | **Yes, one half to 1.** Wired in (`c30a70c`), mirror made true (F4), first release capped (F5, `7acd9f2`). Detail in section 4 |
+| First run onboarding | partly | On by default for every new arrival (`DEV_PLAY_ONBOARDING=true`, `ui/login.js:95`). `tests/onboarding2.js` 104 passed, 0 failed, in a real browser, including its F4 and F5 sections. But the record it saves is refused on the next load: reproduced by me headless, the boundary answers "story.entries[0] may not carry ob" (`ENT_KEYS`, `engine/schema.js:788`). Found first by the 90 day walk (`c441be1`) | The `ob` fix (dispatched, row 0). Then: "Not me" keeps a place out of the release but the charge still lands on it in the Field (F16) | me | Wired in (`c30a70c`), mirror made true (F4), first release capped (F5, `7acd9f2`), so it would be 1. **Stays one half** until a finished onboarding survives a reload. Detail in section 4 |
 | Day One tutorial | built, not visible | `ui/tutorial.js`; reachable only by the developer switch (`DEV_PLAY_TUTORIAL=false`, `ui/login.js:96`) | Sequence it after the onboarding as aftercare, the seats' call | me | No |
 | First reading never empty | not started | My run today: 7 of the 12 plain sentences the review named still read nothing ("I am tired.", "I am stuck.", "I feel like a fraud at work.", four more) | Reading coverage, J10 / F10, large | me | No |
 | Copy sweep | built and used | J13 copy walk merged (`d3a4e46`); unpack every symbol merged (`b25beb0`), its gate `tests/unpack.js` 560 passed, 0 failed | One wording tension in the F5 card ("place" is right, the counting is more than you asked for), seats to settle | me | **Yes, one half to 1** |
@@ -104,24 +111,24 @@ must pass) or my own probe shows it working. "Changed" says what moved since the
 | Sound effects and release bed | partly | Sound made audible (J2, `1035de8`); the tension line spark (`44fc4db`); `tests/sound.js` 48 passed, 0 failed | Your last word on it was "I don't hear sound effects" and nobody has heard the spark. Your ear is the test | him: listen | Spark built and gated |
 | **Quality gates** | | | | | |
 | Engine gate | built and used | `node tests/engine.js` 4489 passed, 0 failed | The voice self-check still writes to a shared `/tmp` file (`tests/engine.js:6640`), F6 | me | Count grew from 4172 |
-| Browser gates | BROWSER_STATE | BROWSER_PROOF | BROWSER_LEFT | me | BROWSER_CHANGED |
+| Browser gates | partly | `collide.js` 831/0, `funnel.js` 200/0, `boot.js` 13/0, `design.js` 187/0 on a second run (the first lost its browser mid run). `functional.js` 2663 passed, 6 failed: 3 were the browser itself crashing, 1 a timing check, 1 a 43 pixel button that `locks.js` alone measures at 44, and 1 real | The real one: "the answer survives the boundary on the way back in" (`tests/functional.js:4610`), the record check refusing a record after an intake answer, already logged at `ce0fe79`. It passes when I probe the same check on a fresh load, so it depends on what ran before it; `c441be1` names the `ob` defect as the likely cause, not yet proven. A second full run died when the disk filled (section 8) | me | Same score. Functional now finishes instead of timing out; the disk is the new problem |
 | New gates: safety, privacy, speed, journey | partly | Landed since: `journey.js` 70/0, `onboarding2.js`, `practitioner.js`, `device.js` 6/0, `plan-selfgrant.js`, and `trace.js` 266/0, `daily.js` 437/0, `practice.js` 780/0 | Safety, privacy and speed gates do not exist | me | **Yes, 0 to one half** |
 | Packed file | built, not current | `atuned-packed.html` inflates to `v1349 8e05776 2026-10-02 11:22`; `source.html` is `v1358 96355ba`. It is missing F4 and F5 | Repack, and a check that fails when the two stamps differ | me | Repacked at `b052556`, stale again within three hours |
 | **Added by you, round QA** | | | | | |
-| Daily summary on screen | built, not visible | The engine half is on this branch: `engine/daily.js`, `tests/daily.js` 437 passed, 0 failed. Nothing on screen calls it | In progress on branch `daily-summary-ui`, 0 commits yet | me | New row |
-| Feedback tracker and Discord door | partly | Account, Get help: "Ask a question", "Report something broken", "Rate", "Product feedback" exist and queue on the device (`engine/outbox.js`), and say "held on this device", truthfully, because nothing sends | In progress on branch `feedback-tracker`, uncommitted edits. Discord needs your webhook address and invite link | me, him: the two Discord links | New row |
+| Daily summary on screen | built, not visible | The engine half is on this branch: `engine/daily.js`, `tests/daily.js` 437 passed, 0 failed. Nothing on screen calls it | In progress on branch `daily-summary-ui`, not merged as of `b8c4c4d` | me | New row |
+| Feedback tracker and Discord door | partly | Account, Get help: "Ask a question", "Report something broken", "Rate", "Product feedback" exist and queue on the device (`engine/outbox.js`), and say "held on this device", truthfully, because nothing sends | In progress on branch `feedback-tracker`, not merged as of `b8c4c4d`. Discord needs your webhook address and invite link | me, him: the two Discord links | New row |
 
-**Counting it up.** Onboarding 4 of 7. Release 1.5 of 2. Paywall 2.5 of 7. Accounts 0.5 of 3.
-Practitioner 2 of 3. Safety 0 of 5. Sound 0.5 of 1. Gates BROWSER_GATES_SUM of 4. Your two new
-rows 1 of 2. **Flat: FLAT_34.** **Weighted**, over the same 12 blocker steps the second count
+**Counting it up.** Onboarding 3.5 of 7. Release 1.5 of 2. Paywall 2.5 of 7. Accounts 0.5 of 3.
+Practitioner 2 of 3. Safety 0 of 5. Sound 0.5 of 1. Gates 2.5 of 4. Your two new
+rows 1 of 2. **Flat: 14 of 34, 41 percent; 13 of the comparable 32, 41 percent.** **Weighted**, over the same 12 blocker steps the second count
 used (distress, care, outside review, self-grant, first reading, the four pay steps, sign in,
 the public page, the release run): release 1, sign in one half, public page one half, and three
 pay steps at one half each, so **3.5 of 12, 29 percent.**
 
 ## 4. Onboarding, checked end to end
 
-You asked whether the honest mirror and the three place cap really work now. They do, inside
-the onboarding, with one gap named below.
+You asked whether the honest mirror and the three place cap really work now. They do while the
+person is in it. One defect undoes it on the next visit, and one gap remains, both below.
 
 - **The mirror** (the step that shows a person what was read and lets them say yes or no) now
   reads the story before anything is saved (`ST_PARSED`, set at `ui/onboard.js:641`), and the
@@ -136,6 +143,12 @@ the onboarding, with one gap named below.
   and says 9 wait. A sentence with named feelings ("I am exhausted and I cannot stop working.")
   reads 5, plans 3 and 12 lines. The plan is built only from the places the person said yes to
   (`obYesSignal`, `ui/onboard.js:507`), so a "Not me" can no longer slip into the release.
+- **The defect that undoes it.** The saved story entry carries the answers in a field called
+  `ob`, and the record check run on every load (`validateProfile`, the "boundary") only accepts
+  six named fields on an entry. So a person who finishes the onboarding opens a blank profile on
+  the next visit, and nothing tells them why (`c441be1`, `RETENTION-90DAY.md`). I reproduced
+  the refusal myself. The gate missed it because it never reloads the page. A fix is
+  dispatched; it is row 0 below.
 - **The gap.** The engine still reads Diane's sentence as 12 guesses: the mirror is now honest
   about guessing, but the guessing itself (F10) is unchanged. And a "Not me" keeps a place out
   of the release while the story's charge still lands on that place in the Field (F16).
@@ -226,6 +239,7 @@ again, so it moves into row 7 below. F12's voice half landed (`d297a9c`).
 | # | Was | What | Who | Size | Depends on | Blocks |
 |---|---|---|---|---|---|---|
 | **Wave 0** | | **Make the live first ten minutes safe and true** | | | | |
+| 0 | new | The `ob` boundary fix: accept a well formed `ob` on a story entry, refuse a malformed one by name, say so out loud when a stored record is refused, and make the onboarding gate reload the page. Already dispatched (`c441be1`); confirm it lands | systems-director, devops-qa | S | nothing | no, but every onboarded person loses their record until it lands |
 | 1 | F1 | Distress reader, engine half: from `600e65e` and `c1cbc1a`; read the curly apostrophe; "not" steps a cue down instead of voiding it; three outcomes (ordinary, strong, needs a person now) with a gate. The crisis phrase test file stopped an agent's content filter tonight, so a person may need to write that one file | ai-director, devops-qa | M | nothing | yes |
 | 2 | F6 | Voice self-check writes to its own temporary file, not a shared one | devops-qa | S | nothing | no, protects every row |
 | 3 | J11 | Self-grant: the boundary ignores a pasted plan; flip `tests/plan-selfgrant.js` in the same change | systems-director | S | nothing | yes |
@@ -260,19 +274,18 @@ again, so it moves into row 7 below. F12's voice half landed (`d297a9c`).
 | 30 | new | The 25 pattern referral | systems-director | M | 16 | no |
 | 31 | F36 | Release candidate: every gate on the merged tree, repack, stamps equal | devops-qa | M | everything above | yes |
 
-**Your round QA adds, already moving** (in progress, not landed; each branch has 0 commits
-past `f2fd8ff` at the time of this count, so check them there):
+**Your round QA adds.** Still in progress, not landed (each branch has 3 or 4 commits of its
+own and is not merged as of `b8c4c4d`, so check them there):
 - Daily summary on screen: branch `daily-summary-ui`.
 - Trace graph view: branch `trace-graph-ui`.
-- Every worked example reading as tier four: branch `personas-tier-four` (a new
-  `tests/personas-tier.js`, uncommitted).
-- Feedback tracker: branch `feedback-tracker` (uncommitted edits to `engine/outbox.js`,
-  `engine/export.js`, `ui/account.js`).
-- The Character page rebuild: the merge is mid-way on branch `char-torus-merge2`, waiting on
-  the rewrite of `tests/functional.js`'s Character section; the reviewed work is `5dcb45d`.
-- The achievements TDD review: no branch named to me.
+- Feedback tracker: branch `feedback-tracker`.
 
-**Size, honestly.** 31 rows: 12 small, 17 medium, 2 large. About 56 to 73 builder days. The
+Landed while this was being counted (section 9): every worked example reading as tier four
+was already true and now has a gate (`personas-tier-four`, merged `727635b`); the Character page
+rebuild (`d486d3e`); the achievements TDD v3 (`777dd05`); the 90 day walk
+(`RETENTION-90DAY.md`, `2354130`).
+
+**Size, honestly.** 32 rows: 13 small, 17 medium, 2 large. About 57 to 74 builder days. The
 longest chain is rows 1, 9, 12, 19, 23, 31, about 17 working days on its own, so with four
 builders in parallel plan on 4 to 5 weeks, not less. Your nine steps are under two hours in
 total and four of them (Y1, Y3, Y4, Y5) sit on the critical path.
@@ -311,15 +324,68 @@ Row 1 is built either way, since it shows nothing to a person.
 All from the repo root on HEAD `f2fd8ff`, against the committed `source.html` and `engine.js`,
 one at a time, with `NODE_PATH=/opt/node22/lib/node_modules`.
 
-GATE_TABLE
+| Gate | Result | Notes |
+|---|---|---|
+| `./atuned_src/BUILD.sh` (to a scratch folder) | passed | div balance 0, no em dashes, length stamp exact |
+| `./atuned_src/BUILD-engine.sh` (to a scratch folder) | passed | engine is host free, 678 exports, identical to the committed `engine.js` |
+| `tests/engine.js` | 4489 passed, 0 failed | 19 seconds |
+| `tests/functional.js`, run 1 | 2663 passed, 6 failed | 1262 seconds. Failures: FT7, FT10, FT11 "Target crashed" (the browser died, load average 26 to 30 on 4 cores); "wheel: Archetypes off fades out" (timing); "See tiers button is 44 pixels, 90 by 43"; "the answer survives the boundary on the way back in" (real, pre-existing, `ce0fe79`) |
+| `tests/functional.js`, run 2 | did not finish | Chromium crashed at the GB section with the disk at 100 percent, 312 megabytes free. Before it died, one failure: the same boundary check |
+| `tests/collide.js` | 831 passed, 0 failed | |
+| `tests/design.js`, run 1 | crashed | "Target page, context or browser has been closed" at its own check 9 (four lightings), under load |
+| `tests/design.js`, run 2 | 187 passed, 0 failed | alone, load about 15 |
+| `tests/funnel.js` | 200 passed, 0 failed | outbound requests 0 |
+| `tests/boot.js` | 13 passed, 0 failed | |
+| `tests/onboarding2.js` | 104 passed, 0 failed | includes F4 and F5 sections; prints "J0 STILL OPEN" |
+| `tests/plan-selfgrant.js` | 5 passed, 0 failed | passes only while the self-grant hole is open |
+| `tests/practitioner.js` | 23 passed, 0 failed | |
+| `tests/sound.js` | 48 passed, 0 failed | |
+| `tests/locks.js` | 289 passed, 0 failed | |
+| `tests/journey.js` | 70 passed, 0 failed | |
+| `tests/trace.js` | 266 passed, 0 failed | |
+| `tests/daily.js` | 437 passed, 0 failed | the "BITE" lines are deliberately broken copies failing, as designed |
+| `tests/practice.js` | 780 passed, 0 failed | |
+| `tests/protocol.js` | 18 passed, 0 failed | |
+| `tests/unpack.js` | 560 passed, 0 failed | |
+| `tests/device.js` | 6 passed, 0 failed | |
+| `tests/msglog.js` | 11 passed, 0 failed | |
+| `tests/release-percent.js` | 8 passed, 0 failed | |
+| `tests/flowtools.js` | 66 passed, 0 failed | |
+| `reboot-os` server, `node --test test/*.test.mjs` | 72 passed, 0 failed | branch tip `28fa6de` |
+
+**The disk is now the risk to every build in flight.** During this count the root disk went
+from 3.1 gigabytes free to 312 megabytes free (100 percent used) while the parallel builds
+ran, and the second functional run died of it. Each `scratchpad/mob-*` worktree is about 1.1
+gigabytes; `mob-doublebill` holds a commit already landed as `f6bbd1a` and can be pruned by
+whoever owns it. I removed only my own scratch build files.
 
 Not run: `node tools/monitor.js` and `tools/equiv.py`, because nothing changed; `check.py
 --objections`, because no words changed.
 
-## 9. What changed in this file's own method
+## 9. Landed while this was being counted
+
+Measured above on `f2fd8ff`. Between that and `b8c4c4d`, the tip this file was committed onto:
+
+- `c441be1`, `2354130`: the 90 day walk found the `ob` defect. It was already in `f2fd8ff`, so
+  it is scored in section 3 (onboarding down to one half) and is row 0.
+- `d486d3e`, `93352f0`: the Character page's fifth build merged, with `tests/functional.js`'s
+  Character section rewritten (`cf8aae0`). Not an MVP row.
+- `727635b`: the worked example tier four gate. Not an MVP row; your assumption was already true.
+- `777dd05`: the points, marks and unlocks TDD v3. After MVP. Its log (`7e739b6`) also says
+  `tools/ritualsim.js --validate` fails 6 of its own 50 checks while the 90 day walk reports 18 of
+  18; the two runs disagree, so check which one before quoting any retention number.
+- `516591f`: the funnel quiz rebuilt again. Row "Funnel quiz and buy pages" is unchanged (still
+  no address and no pay button).
+- The committed `source.html` is now `v1366 d486d3e 2026-10-02 14:33`, md5 `a9c9b260`; the
+  packed file is still `v1349`, so it is staler than section 3 says.
+- `tests/engine.js` on the new tip: 4544 passed, 0 failed. The browser gates were not rerun on
+  the new tip, because the disk was full (section 8).
+
+## 10. What changed in this file's own method
 
 - The table and scoring are the second count's. Two rows were added because you asked for them
   by name tonight; the comparable number on the old 32 rows is given beside the new one.
-- One row went down (phone widths) because a defect came in. One row is a correction (the
+- One row went down (phone widths) because a defect came in. One row that would have gone up
+  (the onboarding) is held at one half, because a finished onboarding does not survive a reload. One row is a correction (the
   server has been live since 30 September; the second count said it was not deployed).
 - The distress draft is not counted, as instructed: it has never been built into the app or run.
