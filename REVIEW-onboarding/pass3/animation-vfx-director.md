@@ -1,11 +1,11 @@
 # Pass 3: animation and VFX director (Kai Moana), round PJ
 
 ## 1. The proposal as I understand it
-One black room, one figure, one clock: a silent five slide film (about 26 s to a decision), a starting point, one sentence, a first reading, his voice opening the release, the 12 line run, an aftercare film, an arc into the Field. The merge lost three things of mine: breathing starts at the first Mirror line, distress needs motion rules, and its 180, 520 and 200 ms values fail gate 12 (the test allowing only 120, 220, 320 and 420 ms for CSS transitions). The lead's order (story before voice) is right; I had it backwards.
+One black room, one figure, one clock: a silent five slide film (about 26 s to a decision), a starting point, one sentence, a first reading, his voice opening the release, the 12 line run, an aftercare film, an arc into the Field. The merge lost three things of mine: breathing starts at the first Mirror line, distress needs motion rules, and its 180, 520 and 200 ms values fail gate 12 (it allows only 120, 220, 320 and 420 ms for CSS transitions). The lead's order (story before voice) is right.
 
 ## 2. The ICP room
 - **Marcus (7).** Sees black, the standing figure, one line. Stays. "The first frame finally is the avatar."
-- **Whitney (phone, 5).** Sees seven marks land up a spine, taps right, stays. Sound is off, so her opening is silent. "Feels like an altar, not an app."
+- **Whitney (phone, 5).** Sees seven marks land, taps right, stays. Sound off, so her opening is silent. "Feels like an altar, not an app."
 - **Nils (4).** Finds Skip, lands on the gate, stays. "Fine, if nothing spins."
 - **Camille (6).** Counts the breath, in 2.3 s, out 3.5 s. Approves. "Exhale longer than inhale. Good."
 - **Marta (02:00).** Motion starts before she types, so the detector cannot know her yet. Taps Pause, which must exist from frame one. "Make it stop moving."
@@ -17,12 +17,12 @@ One black room, one figure, one clock: a silent five slide film (about 26 s to a
 Gaps: (a) the 40 s opening is silent for most people; (b) frame cost is estimated, not measured on a phone; (c) the distress frame has no clinician text.
 
 ## 4. FINAL GRADE: GRADE: 71/100 (pass 1 was 46, pass 2 was 42)
-Up: one clock, opaque stage, distress as a blocker. Held down by the gaps.
+Up: one clock, opaque stage, distress blocker.
 
 ## 5. Build spec
 **Tokens.** Ease out `cubic-bezier(.22,1,.36,1)` (arrivals). Ease in `(.4,0,1,1)` (exits). Land `(.34,1.56,.64,1)` (an overshoot pop). Breath `(.37,0,.63,1)`, 4.2 s, opacity .64 to 1, only once a reading exists. Draw `(.45,0,.15,1)`, 900 ms (canvas). CSS transitions use only 120, 220, 320, 420 ms; longer moves run on the stage canvas (gate 12 does not see them).
 **Verbs.** Travel 700 ms ease in, path bent 12 percent. Land 320. Text in 420 ease out, 10 px rise; out 220 ease in. Stagger 62 ms (90 for seats, 70 for twelve points).
-**Clock.** One `REEL.t` in seconds inside the existing `loop(ts)`. Delta clamp 100 ms (Technical says 50; at 10 frames a second that doubles a 25 s film). A gap over 100 ms is a hidden tab, which is a pause. Pause mask: hold 1, hidden 2, user 4, typing 8, distress 16, keyboard focus 32. Voice on: `audio.currentTime` is the clock; drift over 120 ms slews, over 400 snaps.
+**Clock.** One `REEL.t` in seconds inside the existing `loop(ts)`. Delta clamp 100 ms (Technical says 50; at 10 frames a second that doubles a 25 s film). A gap over 100 ms is a hidden tab, which is a pause. Pause mask: hold 1, hidden 2, user 4, typing 8, distress 16, keyboard focus 32. Voice on: `audio.currentTime` rules; drift over 120 ms slews, over 400 snaps.
 **Transit (0 is its end).** Login fields fade 220 ease in, -0.62 to -0.40. Ring scales 1 to 1.5 and fades, 420 ease out, -0.42 to 0. Ground `#06060a`, same as the login.
 
 **Reel A.** Dwell = max(3.0, 1.0 + words/2.5), up to 0.5 s, cap 7.0, or last cue + 0.5 s if longer. Cue times are slide local.
@@ -32,7 +32,7 @@ Up: one clock, opaque stage, distress as a blocker. Held down by the gaps.
 | A1 | 0.0 to 3.0 | Welcome to a neurosomatic experience. 3.0 | Seven seats Land root to crown from 0.2; line in 0.4; halo draws 0.9 to 1.8 |
 | A2 | 3.0 to 9.5 | Awareness and intuition... inward. 13 words, 6.5 | Three rings draw from 0.6; seven rim marks Travel inward 3.0 to 4.1, one Land at 4.1 |
 | A3 | 9.5 to 14.5 | Mirror line, 10 words, 5.0 | Bead arcs to Throat 2.2 to 2.9, 8 percent squash; seat rises at 9.05 a second to 6.5 by 3.6 |
-| A4 | 14.5 to 19.0 | Proof row, 8 words at most, 4.5 | Row in 0.5; "112" Lands 1.4, no counting |
+| A4 | 14.5 to 19.0 | Proof row, 8 words at most, 4.5 | Row in 0.5; "112" Lands 1.4 |
 | A5 | 19.0 to 24.5 | Loop line, 7 words, cue bound 5.5 | Lit arc clockwise; four stations Land 0.4, 1.2, 2.0, 2.8; closes 3.6; glow falls to 5.0 |
 
 Slide change: out ends on the boundary, in starts on it. Hairline: 2 px, one segment per slide, 4 px gaps, `scaleX` fill, linear (real time), ink .5 over .28; out 220 at the gate.
@@ -69,12 +69,12 @@ Narrative wants silent 4.5 s shorter; I keep one table so the sound toggle is a 
 **Gate 12b** in `tests/design.js`: load the stage without `?dev=1`; every transition is one of the four durations, none default `ease`; zero animations running on the hidden app; under reduced motion zero running and Pause visible at frame 0.
 
 ## 6. Ranked recommendations
-1. Clock, pause mask, cues, distress frame (M, redesign): Marta, Whitney.
+1. Clock, pause mask, cues, distress frame (M, redesign): Marta.
 2. Reel A and gate at 26 s (M, redesign): Marcus, Nils, Renata, Trey.
 3. Opening cued to voice (M, redesign): Camille, Marta.
 4. Hide app, cut `.ob-wash`, gate 12b (S, reskin): Whitney, Nils.
 5. Reel B and Field arc (M, redesign): Renata, Sofia.
-6. Pause visible from frame one (S, reskin): Marta.
+6. Pause from frame one (S, reskin): Marta.
 
 ## 7. Question for the owner
 None.
