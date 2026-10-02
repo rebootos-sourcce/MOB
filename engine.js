@@ -5621,9 +5621,9 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
 
    AND ONE IS BACK IN IT, round QF: ACCOUNTABILITY. The line above said
    adding one back is a single line here and a TABDEF entry taken out, and
-   that is exactly what this is. Integer 14 keeps its value, acctRender in
-   ui/accountability.js keeps its name and its body, and what moved is where
-   it draws: it is the right column of the Ritual page rather than a page of
+   that is exactly what this is. Integer 14 keeps its value, acctSideHtml in
+   ui/accountability.js keeps the body the page's renderer had, and what moved
+   is where it draws: it is the right column of the Ritual page rather than a page of
    its own, so a tab stored by anybody who used it while it had a door still
    resolves to the surface that carries it instead of falling through to
    Summary. Games and Analytics were each folded this way before. */

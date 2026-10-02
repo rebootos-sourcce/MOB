@@ -7050,7 +7050,7 @@ await require('./locks.js').lockGate(browser,FILE,ok,booted);
    DESIGN-flow-tools.md, and the file is called from here, as the fittings and
    the locks are, so a full run holds it through the same code and it can still
    be run alone. */
-console.log('\n=== the flow tool sets: no left menu, New ritual in the right menu, Accountability its own tool set ===');
+console.log('\n=== flow, one page of three columns: inputting new, the ritual, the accountability tracker ===');
 await require('./flowtools.js').flowGate(browser,FILE,ok,booted);
 
 await browser.close();
