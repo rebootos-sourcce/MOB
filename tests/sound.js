@@ -38,11 +38,12 @@ const path=require('path');
 
 async function soundGate(browser,FILE,ok,booted){
  const COUNT=`(function(){
-  window.__nodes=0; window.__ctxs=0;
+  window.__nodes=0; window.__ctxs=0; window.__osc=0;
   var B=window.BaseAudioContext||window.AudioContext;
   ['createOscillator','createGain','createBiquadFilter','createBufferSource','createStereoPanner','createChannelMerger']
    .forEach(function(m){ var f=B.prototype[m]; if(!f)return;
-    B.prototype[m]=function(){ if(!(window.OfflineAudioContext&&this instanceof OfflineAudioContext))window.__nodes++;
+    B.prototype[m]=function(){ if(!(window.OfflineAudioContext&&this instanceof OfflineAudioContext)){
+      window.__nodes++; if(m==='createOscillator')window.__osc++; }
      return f.apply(this,arguments); }; });
   var AC=window.AudioContext;
   if(AC){ window.AudioContext=function(o){ window.__ctxs++; return new AC(o); };
@@ -120,7 +121,12 @@ async function soundGate(browser,FILE,ok,booted){
   'the meter reads a known 0.05 sine of 200 ms as itself first, and tells high from low, got peak '
   +T.self.a.peak.toFixed(4)+' length '+T.self.a.ms.toFixed(1)+' ms, 6 kHz '+(T.self.hi.hi*100).toFixed(0)
   +'% high, 100 Hz '+(T.self.lo.lo*100).toFixed(0)+'% low');
- ok(T.n>=2&&T.n<=6,'between two and six fittings, the size of a family a person can learn, got '+T.n);
+ /* SIX BECAME NINE on 2 October: the owner pressed tabs and the Field with the
+    switch on and heard nothing, and asked for a sound on each, so tap, field
+    and begin joined kept, undo, refuse, mark, done and time. The bound is
+    still a bound, because a family a person cannot learn is the other way to
+    be unheard. */
+ ok(T.n>=2&&T.n<=10,'between two and ten fittings, the size of a family a person can learn, got '+T.n);
  console.log('  name     peak    dBFS   rms dBFS  length  cap   <150Hz  >4kHz  centroid');
  T.rows.forEach(r=>{
   console.log('  '+r.k.padEnd(8)+r.m.peak.toFixed(4).padStart(7)+db(r.m.peak).padStart(7)
@@ -156,6 +162,55 @@ async function soundGate(browser,FILE,ok,booted){
   d.style.cssText='position:fixed;left:0;bottom:0;width:40px;height:40px;z-index:99999';
   document.body.appendChild(d);});
  await pg.click('#sfxpad'); await pg.waitForTimeout(1300);
+
+ /* ---------- 8. THE OWNER'S DEFECT, through real presses ----------
+    2 October: "I have the sound effects on, but I don't hear any sound
+    effects." Measured before the fix, switch on, context running, a worked
+    example open: a tab press started 0 oscillators and a Field press started
+    0. So this holds the claim in the owner's own terms: with the switch on, a
+    real press on a tab and a real press on the Field each start at least one
+    oscillator and leave the context running. A real press and not a call to
+    sfx(), because a call to sfx() was already green. */
+ await pg.evaluate(()=>{ loadP(1); CURP.ui.sfxoff=false; CURP.ui.quiet=false; setTab(TAB.FIELD); render(); });
+ await pg.waitForTimeout(1400);
+ const mom={};
+ const pressTab=async()=>{
+  const id=await pg.evaluate(()=>{ const b=[...document.querySelectorAll('.tabtop')]
+   .filter(x=>x.offsetParent&&x.getAttribute('aria-pressed')==='false')[0];
+   if(!b)return null; b.setAttribute('data-sfxpick','1'); return true; });
+  if(!id)return null;
+  const o0=await pg.evaluate(()=>window.__osc);
+  await pg.click('[data-sfxpick="1"]'); await pg.waitForTimeout(160);
+  const r=await pg.evaluate(o0=>({osc:window.__osc-o0, ctx:BED_AC?BED_AC.state:'none'}),o0);
+  await pg.evaluate(()=>{ const b=document.querySelector('[data-sfxpick]'); if(b)b.removeAttribute('data-sfxpick'); });
+  return r;};
+ mom.tab=await pressTab();
+ ok(mom.tab&&mom.tab.osc>=1&&mom.tab.ctx==='running','with the switch on, a real press on a tab starts an oscillator and the context is running, '+JSON.stringify(mom.tab));
+ await pg.evaluate(()=>{ setTab(TAB.FIELD); render(); });
+ await pg.waitForTimeout(1400);
+ const pt=await pg.evaluate(()=>{
+  const b=cv.getBoundingClientRect(); const h=HIT.filter(x=>x.k==='node'&&x.x!==undefined&&x.n&&x.n.cf)[0]
+   ||HIT.filter(x=>x.k==='law'||x.k==='seat')[0];
+  if(!h)return null;
+  const x=h.x!==undefined?h.x:h.cx+Math.cos((h.a0+h.a1)/2)*(h.r0+h.r1)/2;
+  const y=h.y!==undefined?h.y:h.cy+Math.sin((h.a0+h.a1)/2)*(h.r0+h.r1)/2;
+  return {x:b.left+x,y:b.top+y,k:h.k,osc:window.__osc};});
+ if(pt){
+  await pg.mouse.click(pt.x,pt.y); await pg.waitForTimeout(220);
+  mom.field=await pg.evaluate(o0=>({osc:window.__osc-o0, ctx:BED_AC?BED_AC.state:'none', last:SFX_LAST.field>0}),pt.osc);}
+ ok(pt&&mom.field&&mom.field.osc>=1&&mom.field.ctx==='running'&&mom.field.last,
+  'and a real press on the Field starts an oscillator and sounds field, '+JSON.stringify({pt:pt&&pt.k,r:mom.field}));
+ /* the broken engine: the hooks taken out, the same two presses */
+ await pg.waitForTimeout(1400);
+ const deaf=await pg.evaluate(()=>{ window.__sfxKeep=window.sfx; window.sfx=function(){return false;}; return true; });
+ const dtab=await pressTab();
+ let dfield=null;
+ if(pt){ const o1=await pg.evaluate(()=>window.__osc); await pg.mouse.click(pt.x,pt.y); await pg.waitForTimeout(220);
+  dfield=await pg.evaluate(o1=>window.__osc-o1,o1); }
+ await pg.evaluate(()=>{ window.sfx=window.__sfxKeep; });
+ ok(dtab&&dtab.osc===0&&dfield===0,'and with the hooks taken out the same two presses start none, so the counts above are readings, tab '
+  +(dtab&&dtab.osc)+', field '+dfield);
+ await pg.waitForTimeout(1400);
 
  /* ---------- 2 and 3. the switch, and Quiet ---------- */
  const sw=await pg.evaluate(()=>{
@@ -280,12 +335,13 @@ async function soundGate(browser,FILE,ok,booted){
     status('A refusal inside the run.','fail');
     probes.push({ph:p+(p==='done'?' cooldown':''), r:a});}};
   var go=document.getElementById('relgo'); if(!go){ window.relRender=orig; window.sfxRoomHeld=keepRoom; return {go:false}; }
-  n0=window.__nodes; var p0=SFX_PLAYED;
+  n0=window.__nodes; var p0=SFX_PLAYED, last0=Object.assign({},SFX_LAST);
   go.click();
   var t0=Date.now();
   while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<60000)
    await new Promise(r=>setTimeout(r,40));
   var out={go:true, probes:probes, made:window.__nodes-n0, played:SFX_PLAYED-p0, phase:RUN.phase,
+   keys:Object.keys(SFX_LAST).filter(function(k){return SFX_LAST[k]>=t0-5000&&SFX_LAST[k]!==(last0[k]||0);}),
    bed:bedState().on, ms:Date.now()-t0};
   window.relRender=orig; window.sfxRoomHeld=keepRoom;
   return out;},bite);
@@ -299,9 +355,17 @@ async function soundGate(browser,FILE,ok,booted){
  if(rs.go)rs.after=await after();
  ok(rs.go,'the release offers Run release on the person\'s own record');
  if(rs.go){
-  ok(new Set(rs.probes.map(p=>p.ph)).size===4&&rs.probes.every(p=>p.r===false)&&rs.made===0&&rs.played===0&&!rs.bed,
+  /* THE ROOM LETS TWO THROUGH, since 2 October: begin on the press that starts
+     the run and done where it closes, the two boundaries the owner asked to
+     hear. Everything else a probe fires inside the run, a keep, an undo, a
+     mark, a time and a refusal at every phase, is still held, so the rule
+     the gate was written for holds in the same words: nothing but the two
+     boundaries, one each. */
+  ok(new Set(rs.probes.map(p=>p.ph)).size===4&&rs.probes.every(p=>p.r===false)&&rs.played===2
+   &&rs.keys.indexOf('begin')>=0&&rs.keys.some(k=>k==='done'||k==='mark')&&rs.keys.length===2&&!rs.bed,
    'a release run with voice and tone off, the fittings switched on, and a fitting and a refusal fired at '
-   +rs.probes.length+' steps of it, stays silent: '+rs.made+' nodes, '+rs.played+' played, phases '
+   +rs.probes.length+' steps of it, sounds only its own two boundaries, begin and done: '+rs.made+' nodes, '
+   +rs.played+' played, '+rs.keys.join('+')+', phases '
    +[...new Set(rs.probes.map(p=>p.ph))].join(' ')+', in '+rs.ms+' ms');
   ok(rs.after==='done','and once the run has closed, and a press, the interface sounds again, '+rs.after);
   await pg.waitForTimeout(1600);

@@ -358,7 +358,7 @@ function accDisplay(){
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
     ? accTog('Sound effects','acsfx',!(CURP&&CURP.ui&&CURP.ui.sfxoff),
-       'a short sound when something is kept, done or refused, and when a timer ends')
+       'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
  return h;}

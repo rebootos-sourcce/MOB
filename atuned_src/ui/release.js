@@ -894,6 +894,11 @@ function relCoolDown(){
     them. Leaving is never blocked; Done is on the card the whole time. */
  RUN.settleAt=Date.now(); RUN.settled=false; relTicker(true);
  relMark(RUN.halted?'halt':'close');
+ /* THE RUN HAS ENDED, SOUNDED ONCE, AFTER THE WRITE LANDED. Here and not at the
+    top: a run refused on a worked example returns above and never reaches
+    this line, so a refusal is heard as the refusal and not as a finish. The
+    room argument lets it through the release's own hold. */
+ if(typeof sfx==='function')sfx('done',true);
  syncCh();relRender();render();
  relStep();}
 function relClose(){relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
@@ -1596,6 +1601,10 @@ function relRender(){
  /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
     a sound. The technical requirement and the ritual are the same press. */
  if((b=document.getElementById('relgo')))b.onclick=function(){
+  /* sounded first, while the room is still the interface's, and with the room
+     argument as well so it does not depend on that: it is the one fitting a
+     run is allowed, and it is one per run. */
+  if(typeof sfx==='function')sfx('begin',true);
   RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
   RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();};
  if((b=document.getElementById('relskip')))b.onclick=function(){

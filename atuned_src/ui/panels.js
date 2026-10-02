@@ -354,7 +354,10 @@ function tabTop(i){
  bar.querySelectorAll('[data-tabk]').forEach(function(b){
   var k=+b.getAttribute('data-tabk');
   b.setAttribute('aria-pressed',k===S.tab);
-  b.addEventListener('click',function(){setTab(k);});});
+  /* THE PRESS SOUNDS, NOT THE ARRIVAL. setTab is called by a drill, a door and
+     a restore as well, and a sound on those would be a sound with no press in
+     front of it. Only these two listeners are a finger on the bar. */
+  b.addEventListener('click',function(){if(typeof sfx==='function')sfx('tap'); setTab(k);});});
 }());
 /* ---- THE FIRST TIER, KC and KM in TASKS.md ----
    The sections over the tabs, the loop's four since KT. The section is read
@@ -416,7 +419,7 @@ function secGo(sec){
 (function(){
  var sb=$('secbar'); if(!sb)return;
  sb.querySelectorAll('.secb').forEach(function(b){
-  b.addEventListener('click',function(){secGo(b.getAttribute('data-sec'));});});
+  b.addEventListener('click',function(){if(typeof sfx==='function')sfx('tap'); secGo(b.getAttribute('data-sec'));});});
  /* the pressed section moves when the width moves, when the fold rolls the
     others in, which it does over a transition, so that is waited out, and
     when the typeface arrives, since the words are measured in it */

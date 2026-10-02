@@ -196,6 +196,10 @@ cv.addEventListener('pointerdown',function(e){
    on an address has already armed the drag above and returned. A rendition
    has no drag, so every press it makes on an address is the tap case. */
 function hitPress(h,e){
+ /* ONE SOUND FOR A PRESS ON A MARK, on the wheel and on both renditions, since
+    all three come through here. Before this the Field made no sound at all:
+    the owner pressed it with the switch on and heard nothing, 2 October. */
+ if(typeof sfx==='function')sfx('field');
  if(h.k==='node'&&h.n.cf){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
  /* the same setters as the left rail's icons, so the same guard, notYours in
