@@ -100,6 +100,11 @@ function setTab(i){
   var sb=$('sumbody'); if(sb)sb.innerHTML='';}
  if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
   var ab=$('ana'); if(ab)ab.innerHTML='';}
+ /* ACCOUNTABILITY PRINTS A RECORD, so it is emptied on the way out for the
+    same reason Summary is: a hidden host holding the last person's days is
+    still in the document asserting them. */
+ if(S.tab===TAB.ACCOUNT&&i!==TAB.ACCOUNT){
+  var ac=$('acct'); if(ac)ac.innerHTML='';}
  S.tab=i; S.pin=null;
  /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
     Settings was shown and hidden by hand below, which held while Settings was
@@ -123,7 +128,12 @@ function setTab(i){
      moment the tab is, because a surface that needs a second press to show
      anything is a blank screen with a name on it. */
   if(i===TAB.RITUAL&&typeof ritOpen==='function'){
-   if(!RIT.open)ritOpen(null); else ritRender(); }})();
+   if(!RIT.open)ritOpen(null); else ritRender(); }
+  /* ACCOUNTABILITY DRAWS ON ENTRY, through the one Flow painter. It has no
+     open state of its own to reset, so this is only the repaint: what it
+     shows is read off the record each time, and a record that changed on the
+     Compass since the last visit is on the page the moment the tab is. */
+  if(i===TAB.ACCOUNT&&typeof ritRender==='function')ritRender();})();
  /* THE FIELD IS DRAWN ONE OF THREE WAYS NOW, BP8, and which of the canvas,
     the depth row, a rendition and its layer row are up is decided in one
     place, fviewPaint in ui/rings.js. This showed the canvas and the depth

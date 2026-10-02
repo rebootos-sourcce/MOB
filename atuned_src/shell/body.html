@@ -443,7 +443,7 @@
    <button type="button" class="secb" data-sec="play" aria-pressed="true"
     title="Play. Field, Body, Compass and Character."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
-    title="Flow. Your ritual, and keeping it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
+    title="Flow. Ritual sets what you will do. Accountability shows what you did."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
     title="Embody. Knowledge."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.8" r="2.3"/><path d="M3.6 4.4c1.7 4.9 4.5 7.4 8.4 7.4s6.7-2.5 8.4-7.4M12 11.8v4.4M7.4 21c1.2-3.2 2.7-4.8 4.6-4.8s3.4 1.6 4.6 4.8"/></svg><span class="sn">Embody</span></button>
    <!-- PRACTITIONER, round LL, and shut in the document. His words: "If I turn
@@ -477,6 +477,7 @@
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
     <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+    <button type="button" class="vt tabtop" data-tabk="14" aria-pressed="false" title="Accountability"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.4l2.8 2.8 5.2-5.8"/></svg><span class="n">Accountability</span></button>
    </div>
    <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
     <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
@@ -922,6 +923,13 @@
    <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
+   <!-- ACCOUNTABILITY, ITS OWN HOST. A sibling of #rit and never a child of it,
+        on the #sum and #ana rule this file already names: setTab shows and
+        hides every host by its own id, so a surface carried inside another
+        host disappears with it. Drawn by acctRender in ui/accountability.js.
+        Its class is iq and not rel, because rel is a modal overlay and this
+        is a page. -->
+   <div id="acct" class="iq"></div>
    <!-- the compass with volume. its own canvas, its own context, and an
         axonometric projection. no library and no new dependency. -->
    <div id="cone" class="rel"></div>
@@ -988,6 +996,15 @@
         keeps Root Energetics, what each system says; this is the Energetic
         Summary, what they say together. The key stays overlap, so nothing that
         opens it by key moves. -->
+   <!-- THE FLOW MENU. Ruled 2 October, his words: "On the flow pages, get rid of
+        the left and right menu. Actually, sorry. Move the new ritual to the
+        right menu." So on Flow the left column is gone and this column holds
+        one thing, the menu of the tool set the person is in: New ritual on
+        Ritual, what is due and what was missed on Accountability. It is not a
+        .lsec: a section folds, and a tool menu that folds shut is a New ritual
+        that cannot be found. Drawn by ritRender in ui/ritual.js and shown on
+        the two Flow tabs only, head.html beside .fl-rail. -->
+   <div class="fl-rail" id="flowrail"><div class="fl-hd" id="flowhd"></div><div class="rvr" id="flowside"></div></div>
    <div class="lsec re" data-rail="right" data-sec="overlap">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Energetic Summary</span><i></i></button>
     <div class="lsec-bd"><div id="rootsum"></div></div>

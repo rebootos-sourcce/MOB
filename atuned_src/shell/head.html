@@ -5472,6 +5472,61 @@ body.tab-ritual #rit .rit-card{width:100%;max-width:820px;margin:0 auto;
  max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
 body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
  padding-top:10px;margin-top:14px}
+/* FLOW IS TWO TOOL SETS AND HAS NO LEFT COLUMN. Ruled 2 October, his words:
+   "On the flow pages, get rid of the left and right menu. Actually, sorry.
+   Move the new ritual to the right menu." The left column is not drawn on
+   Ritual or Accountability, and the right column holds one thing, #flowrail,
+   the menu of the tool set the person is in: New ritual on Ritual, what is due
+   and what was missed on Accountability. Every other section the rail carries
+   (the Energetic Summary, the Reading, Selection, Flow's own shelf, Running,
+   Moral integrity and Run a release) is hidden here, by the child selector and
+   not by a list of names, so a section added to the rail later does not turn
+   up on Flow. !important because the rail's own shut rule above is important
+   and the Run a release row carries its display inline.
+
+   THE FOLD STILL WORKS. A person who shut the right column on the Field keeps
+   it shut here, because the fold is their arrangement of the screen, and the
+   one control it leaves is the way back. Shut, New ritual is one press away
+   and the Active list says where it went. */
+body.tab-ritual .mid>#lcol,body.tab-acct .mid>#lcol{display:none}
+body.tab-ritual #rpanel>*:not(.rfold):not(.fl-rail),
+body.tab-acct #rpanel>*:not(.rfold):not(.fl-rail){display:none!important}
+body:not(.tab-ritual):not(.tab-acct) .fl-rail{display:none}
+/* 400 and not the rail's usual 336, measured: the builder's week is seven
+   presses of the 44 pixel floor, 308 plus its gaps, and 336 less the rail's
+   padding and the card around it left 280 */
+@media (min-width:1181px){
+ body.tab-ritual .mid,body.tab-acct .mid,
+ body.lshut.tab-ritual .mid,body.lshut.tab-acct .mid{grid-template-columns:minmax(0,1fr) 400px}
+ body.rshut.tab-ritual .mid,body.rshut.tab-acct .mid,
+ body.lshut.rshut.tab-ritual .mid,body.lshut.rshut.tab-acct .mid{grid-template-columns:minmax(0,1fr) 58px}}
+/* stacked, the menu comes first on both tool sets, ahead of the stage whose own
+   order is -1 on a phone. On Ritual a person who presses Start on the chain or
+   opens a ritual to edit it is looking at the top of the page, and a builder
+   opened below a screenful of list is an opening nobody sees. On Accountability
+   the menu is what is due today and what was missed, the things to act on, and
+   the month under them is a record to read once they are done: below the
+   month they were four screens down on a phone, measured at 390. */
+@media (max-width:1180px){body.tab-ritual #rcol,body.tab-acct #rcol{order:-2}}
+/* THE MENU'S OWN RULES LIVE HERE AND NOT IN ui/ritual.js. #flowhd and #flowside
+   are in the document from the first paint, and the design gate holds every
+   class the document carries to a rule in the sheet: they sat in the script's
+   injected style, which is written only after Flow has been opened, and it
+   measured two classes with no rule. The rail host is its own container, rvr,
+   and not rv: the queries written for the stage's card asked of a rail 400
+   wide would have hidden the tags on the closed New ritual, which is what the
+   old narrow rule did to the same markup. */
+.rvr{container-type:inline-size;text-align:left}
+.rvr .rit-f{margin:7px 0}
+.rvr>:last-child{margin-bottom:0}
+.fl-hd{display:flex;flex-direction:column;gap:3px;margin:0 0 12px;padding:2px 52px 0 2px}
+.fl-nm{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;color:var(--ink)}
+.fl-nm svg{width:20px;height:20px;fill:none;stroke:var(--sec-flow);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fl-says{font-size:13.5px;line-height:1.5;color:var(--mid)}
+body.tab-acct #acct{display:flex!important;z-index:5;overflow-y:auto}
+body:not(.tab-acct) #acct{display:none!important}
+body.tab-acct #acct .rit-card{width:100%;max-width:1760px;margin:0 auto;
+ max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
 #cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
 #cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
  box-shadow:none;padding:14px 18px 18px}

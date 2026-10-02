@@ -4867,7 +4867,15 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
     page: the diagnostic's 21 blocks of questions on a page of their own, in
     Discover. The integer's name says what it holds so it is never confused
     with TAB.INTAKE, which is the Avatar and keeps that name as history. */
- QUESTIONS:13};
+ QUESTIONS:13,
+ /* ACCOUNTABILITY IS 14, APPENDED, on the same rule as every integer above it.
+    Ruled 2 October, in his words: "you're supposed to move accountability to
+    its own tool set." It had been built inside Ritual since round JQ, and the
+    note at TAB.RITUAL above says so: "built inside it rather than beside it".
+    That ruling is superseded, not erased. The integer names a surface of its
+    own now, host #acct, and DESIGN-flow-tools.md is where the split is
+    written down with a gate under every rule. */
+ ACCOUNT:14};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -5019,6 +5027,13 @@ const TABDEF=[
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
+ /* "Flow is ritual and accountability" was one tab at round KT, and the
+    comment above says "nothing is split". On 2 October he split it: "move
+    accountability to its own tool set." Flow is two tool sets now, in that
+    order, Ritual to set what a person will do and Accountability to read
+    what they did. Looked up by .k like every other entry, never by position,
+    because Practitioner's door comes and goes and a position would move. */
+ {k:TAB.ACCOUNT, id:'acct',  nm:'Accountability', cls:'tab-acct', sec:'flow'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
