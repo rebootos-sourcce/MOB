@@ -6605,6 +6605,55 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
 }
 
 /* ---------------------------------------------------------------------------
+   THE PROFILE PICKER IS SORTED BY COHERENCE TIER, J12 round PL. The owner:
+   "Fix all of the profiles. By tier." The group heading is the tier name, the
+   groups run Collapsed to Mastery, and inside a group the lowest CQ comes
+   first. Read off the live select and the live engine, so what is asserted is
+   what a person sees and not what the sort function was meant to do.
+--------------------------------------------------------------------------- */
+console.log('\n=== the profile picker: grouped by tier, lowest first ===');
+{
+ const pk=await page.evaluate(()=>{
+  const sel=document.getElementById('psel'), groups=[].map.call(sel.children,g=>({
+   label:g.label, opts:[].map.call(g.children,o=>+o.value)}));
+  /* the number a person sees for each, through the one door every example goes by */
+  const keep=S.who, cq={};
+  PEOPLE.forEach((p,i)=>{if(p.you)return; loadP(i); cq[i]=compute().CQ;});
+  loadP(keep);
+  return {groups,cq,tiers:TIERDEF.map(t=>t.nm),each:PEOPLE.map((p,i)=>p.you?null:{i,tier:tierOf(cq[i]).nm,nm:p.nm}).filter(Boolean),
+   nExamples:PEOPLE.filter(p=>!p.you).length,
+   words:[].map.call(sel.querySelectorAll('option'),o=>o.textContent)};});
+ const own=pk.groups.filter(g=>g.label==='Your own'), tg=pk.groups.filter(g=>g.label!=='Your own');
+ ok(pk.groups[0].label==='Your own'&&own.length===1&&own[0].opts.length===1,
+  'the blank profile stays in front, in a group of its own, got '+pk.groups.map(g=>g.label).join(', '));
+ /* every group is a tier, once, and they run lowest band first */
+ const order=pk.tiers.slice().reverse();
+ const idx=tg.map(g=>order.indexOf(g.label));
+ ok(idx.every(i=>i>=0),'every group heading is a tier name, got '+tg.map(g=>g.label).join(', '));
+ ok(idx.every((v,k)=>k===0||v>idx[k-1]),'the groups run from the lowest band to the highest, got '+tg.map(g=>g.label).join(', '));
+ ok(new Set(tg.map(g=>g.label)).size===tg.length,'and no tier is split into two groups');
+ /* every example is listed once, under the tier its own reading names */
+ const listed=[].concat.apply([],tg.map(g=>g.opts));
+ ok(listed.length===pk.nExamples&&new Set(listed).size===listed.length,
+  'every example is in the picker exactly once, '+listed.length+' listed of '+pk.nExamples);
+ const wrong=[]; tg.forEach(g=>g.opts.forEach(i=>{const e=pk.each.find(x=>x.i===i); if(e.tier!==g.label)wrong.push(e.nm+' is '+e.tier+' under '+g.label);}));
+ ok(wrong.length===0,'each person sits under the tier their reading names, '+wrong.join('; '));
+ /* inside a group, and across the whole list, CQ never goes down */
+ const run=listed.map(i=>pk.cq[i]);
+ ok(run.every((v,k)=>k===0||v>=run[k-1]-1e-9),'the whole list reads from the lowest CQ to the highest, '
+  +run[0].toFixed(1)+' to '+run[run.length-1].toFixed(1));
+ /* and a row still says who it is: name, age and role, as it did */
+ ok(pk.words.filter(w=>/, \d+, /.test(w)||/, example$/.test(w)).length>=pk.nExamples,
+  'each row keeps the name, the age and the role');
+ /* the phone menu is read off the same select, so it carries the same groups */
+ const menu=await page.evaluate(()=>{const b=document.getElementById('ploadbtn'); if(!b)return null;
+  b.click(); const m=document.getElementById('pload');
+  const heads=[].map.call(m.querySelectorAll('.pl-g'),x=>x.textContent); b.click(); return heads;});
+ ok(menu!==null&&menu.join('|')===pk.groups.map(g=>g.label).join('|'),
+  'the phone menu lists the same groups in the same order, got '+(menu&&menu.join(', ')));
+}
+
+/* ---------------------------------------------------------------------------
    THE FITTINGS, the interface's own sounds in ui/sound.js. The gate lives in
    tests/sound.js, on a context of its own, because it counts audio nodes by
    wrapping the context before the page loads, and it runs alone as
