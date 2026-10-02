@@ -30,21 +30,11 @@ A stranger hires this to answer one question in four seconds: "is this safe, and
 - **Focus is lost on every step.** `obRender` rewrites the sheet, the focused button is destroyed, nothing refocuses or announces.
 - **A dead button with no word.** Tutorial Continue on an empty box does nothing (`tutorial.js` line 180). It is the trap he named on the signal test, in a new coat.
 - **Two and a half first-input surfaces:** tutorial step 0, the Field door "Write what happened", the Story tab.
-- **A faint watermark figure** overlaps the welcome paragraph at 390.
 - **The true length is hidden.** 12 lines at four seconds is about 48 s. Add his 50 s opening and the 120 s settle and it is near four minutes (est, from code comments).
 
-## Criteria, current
+## Criteria, current (out of 10)
 
-1. First four seconds: 5. Right sentence, wrong object.
-2. Taps: 4.
-3. Decisions: 3. Six against a ruling of one.
-4. Load per screen: 6. Cards are light, the ground behind is not.
-5. Words before the act: 3.
-6. Pacing and feedback: 4. No clock on a timed exercise, one dead button.
-7. Escape and honest controls: 5. Esc is permanent; Not now lands on the wrong screen.
-8. Accessibility: 3. Focus lost, no live region, text under floor.
-9. Flow as one object: 4. Welcome, tutorial and door disagree on the first input.
-10. Fit across levels 3 to 8: 5.
+First four seconds 5. Taps 4. Decisions 3. Load per screen 6 (cards light, ground behind heavy). Words before the act 3. Pacing and feedback 4. Escape and honest controls 5. Accessibility 3. Flow as one object 4. Fit across levels 3 to 8 is 5.
 
 ## The soul
 
@@ -52,7 +42,7 @@ A stranger hires this to answer one question in four seconds: "is this safe, and
 
 ## What breaks
 
-A person reads a lot and presses a lot before anything is felt. His scripted exercise (ten yes, ten no) is already a timeline and is printed as paragraphs.
+A person reads and presses a lot before anything is felt. His ten yes, ten no script is already a timeline, printed as paragraphs.
 
 ## Recommendations for the NEW onboarding
 
@@ -71,10 +61,10 @@ Black stage, no card, no dimmed app. Same stage as the release (direction A).
 - **Type and colour.** Hero 30px at 390, 40px at 1600, weight 300, line 1.25. Sub 18px. Labels 16px. Roles: stage black, hero ink, sub mid, one accent for playhead and pause, seat hues only on the figure.
 - **Motion.** Beat change: 400 ms crossfade, 8 px rise, `cubic-bezier(.22,1,.36,1)`. Breath: `cubic-bezier(.37,0,.63,1)`.
 - **Reduced motion.** Figure static, no drift, no rise, 150 ms fade. The clock still runs and the pause rule holds.
-- **Keyboard and screen reader.** Pause first in tab order. The clock stops while any control has focus. One polite live region speaks each beat once. Sound is off and never plays before a press.
+- **Keyboard and screen reader.** Pause first in tab order. The clock stops while any control has focus. One polite live region speaks each beat once. Sound never plays before a press.
 
 **2. Voice goes in the release, once (S). Moves Angela, Sofia.**
-His 49.7 s opening is the release's welcome (a standing ruling). If the slider played it too, a person hears it twice in two minutes. So the slider is silent and the release opens on the voice, with beats at the phrase starts in the timing file (1.85, 4.88, 8.73, 14.9, 18.85, 22.58, 27.13, 29.89, 40.86 s). Show only confirmed words. The webm is 143 KB, about 191 KB as base64, under 10 percent of the build. The Sound ring starts it inside the press, which phones require.
+His 49.7 s opening is the release's welcome (a standing ruling). If the slider played it too, a person hears it twice in two minutes. So the slider is silent and the release opens on the voice, with beats at the phrase starts in the timing file (1.85, 4.88, 8.73, 14.9, 18.85, 22.58, 27.13, 29.89, 40.86 s). The webm is 143 KB, about 191 KB as base64. The Sound ring starts it inside the press, which phones require.
 
 **3. The one decision is the starting point (M). Moves Angela, James, Derek.**
 Auto stops here. "What brought you here?" 12 tiles, three across and four down, each 112 by 64, 8px gap, 16px labels, Pain in and Fatigue out as ruled. With Back and Not now that is 14 controls, over my 12 target. It is one pick of recognisable words, so I accept it and flag it. A tap fills the ring for 600 ms, then the release starts. Under the tiles: "About four minutes. Stop any time."
@@ -93,7 +83,7 @@ Held on the record as dated flags, nothing sent:
 - Reached the starting point, tile chosen, release started, release finished.
 - Seconds and taps from first paint to a finished release.
 - Sound on rate, and whether the compare chips were answered.
-- Five real strangers at 390, watched.
+- Five strangers at 390, watched.
 
 ## Grade delta
 
