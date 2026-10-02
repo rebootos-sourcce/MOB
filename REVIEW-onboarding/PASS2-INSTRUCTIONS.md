@@ -37,3 +37,28 @@ Facts that are rulings, not arguments: sentence case is the rule in CLAUDE.md. A
 ruling at DECISIONS.md around line 353 asked for Start Case on some labels and the CSS
 follows it; treat the two as in conflict and RECOMMEND which wins, with the reason.
 Write only your own file. Read only otherwise.
+
+## Round PJ specifics (settle these, each seat gives its side and a reason)
+Read all pass 1 reports in `REVIEW-onboarding/pass1/` (twelve; the QA report may land
+while you work). Agreed already, confirm or correct: a full bleed black stage replaces the
+centred card; no dots, a progress ring or hairline; hold to pause, tap thirds, a quiet
+Skip that lands on the starting point screen not the app; the clock never advances
+through a decision or the story box; the first release is the real onboarding (today a
+stranger never reaches one); sound off by default; reduced motion keeps the timer;
+"it is okay" and "making us sick" go; distress detection is a ship blocker for the first
+story (nothing detects it today).
+Settle: (1) total length before the first decision, 22 s vs 28 s vs 70 s, and slide count;
+(2) the dwell formula (1.0 + words/2.5, 1.2 + words/3, 2.5 + 0.32 per word, 1.2 + 0.35 per
+word); (3) the recorded voice: on the slider, or only on the release opening, and what it
+means that every phrase in `audio/atuned-opening-timing.json` is `confirmed:false`;
+(4) the signal test: before the first release, after it, or in the tutorial; its hold or
+chip mechanic; (5) does the day one tutorial fold into the slider after the release;
+(6) the seat palette: the shipped `PAL` in `engine/data/canon.js` vs the quieter canon
+colours; (7) the first slide line (`Welcome to a neurosomatic experience.` ruled, vs
+"This is you", vs "There is more running you than you can see"); (8) progress mark: ring
+of arcs vs hairline segments vs ten ticks; (9) Login A as the first screen; (10) account
+fields and the ticked box placement (after the first release); (11) what the person
+does at the end of the slider, one decision, the twelve starting points; (12) the 12 line
+mini release run length and what the person sees.
+Your section 4 is ONE unified onboarding proposal as exact values (timings, sizes, colours
+as roles, curves, copy lines) that the build agent can implement.
