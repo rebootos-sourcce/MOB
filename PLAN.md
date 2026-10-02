@@ -88,6 +88,15 @@ Everything in sections B through L below stays queued behind this chain until ea
 PARTIAL, BLOCKED or NOT IMPLEMENTED in the audits' own report format, not assumed finished because the
 sections below say so.
 
+**Queued behind this chain, round QK, his own words: "Add this to our plan after our priority build."**
+A timeline scrubber under Play: a thin slider, kept deliberately short so it never crowds the hero image,
+that scrubs back through a person's own history and redraws SQ and CQ as they were at that point, to see
+progress over time. His own placement call: bottom of the screen, small, or folded into a collapsible
+footer menu rather than a fixed strip, so it costs no height until opened. Needs its own historical data:
+telemetry/analytics has to start capturing a time series of SQ and CQ (and whatever else the scrubber
+reads) per person, which does not exist today and is a precondition, not a detail. Not started. Queued
+after F16 and the rest of section 0 above, per his own order.
+
 **In flight right now, round QF/QG, running in background, none merged yet:**
 - Onboarding redesign in the real Field/Compass/Body aesthetic, replacing the stock-photo mockup he sent
   (branch `onboarding-real-skin`). Screenshots come to him before merge.
