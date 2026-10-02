@@ -31390,3 +31390,76 @@ he made on 24 September); I cannot write to a disk on his own computer, because 
 runs in a cloud container. Made `Atuned / From Claude` inside it and put the plan there.
 Documents are copied there at the end of each round; builds stay attachments, too big for
 the connector. PLAN.md rewritten for 2 October, with a section I on getting files to him.
+
+## Round PJ, 2 October
+
+> "I don't like the onboarding design aesthetic. Visual at all. Team to do what they
+> did with their last round bounce it amongst themselves simulate it amongst themselves
+> in the ICPs etc same framework as before and when I repeat this it'll be the same
+> framework unless I adjust it I don't like that I have to keep pressing buttons So I
+> want this to be an automatic slider. and I want my copy team I need in the verify that
+> they've gone through the site because I've seen much stuff that doesn't have the
+> rules. Especially in the tooltips. And some of the info. So the first screen I don't
+> want it to just oh this isn't the most updated okay never mind when I come to the
+> field page I don't want to look at all my patterns first under you I want to see a
+> summary From the macro field down to the fetters, and I can link off and go to the
+> summary page. Help me make sense of these. This is field carrying filled in heaviest
+> most shut. What are you trying to tell me here? If it doesn't make sense, cut it. The
+> U by weight and by assemblage points. I want those as collapsible. underneath the
+> summary. For the energetic summary, I know we've got rules for this type of
+> information. Now, please make sure it is accurate This limited information is not it.
+> For the flow part of the menu, this should be uh, mini routines so they can set up
+> from the ritual. Builder. They can set up mini routines based off of the lineup of
+> what's in my under my reading. And I said, please change the menu where the examples
+> are sorted by tier. And then character, when I click on it, it says six masks and how
+> you can change the uh, so I can't okay it says see tiers yep so this definitely and
+> make sure mine's the one that says Lance 54 make sure that one has all tiers that will
+> be the in fact have it load up on that one Actually, no, that's not true. Just have it
+> load up on blank. and I'll select that one. I have the sound effects on, but I don't
+> hear any sound effects. When I turn sound effects off, it says nothing saved on worked
+> example. So that's a bug. also, it popped that up in a command line just underneath
+> this secondary navigation, which I asked earlier to move command output errors down to
+> a bottom navigation. Have it spit out that information to a log, and maybe have that
+> only show for three seconds unless the person presses a button to keep it up longer.
+> Um, when I click on a protocol, if I don't want to run it, give me the X so I can have
+> the option of canceling. but also on the screen, make sure there's an end or stop. Each
+> line names one pattern. Actually, have it start on the save state as me. And then if I
+> go to not custom new, I can input my information. And create a new profile from there.
+> But whichever state I leave this in it saves it in Um, for tier one, I want them to be
+> able to see the child and preteen uh, masks. We'll see the ideological and the limiter
+> mask. For tiers three and four, and teen mask for tiers three. Review twice. Get it
+> organized, figure out how you're going to block it in. to the plan. I want you to move
+> onboarding and tutorial up. I can review that while you're still building."
+
+**Read as (first pass; the review below tightens it).**
+1. Onboarding visual: he dislikes the whole aesthetic. Redo it through the SAME
+   three-pass framework as round PH (independent, cross read, ICP pitch and grade), and
+   keep that framework as a standing, reusable procedure (`REVIEW-FRAMEWORK.md`).
+2. Onboarding must advance by itself: an automatic slider, no button presses to move on.
+3. Copy team must VERIFY they have walked the whole site (tooltips and info text above
+   all) against the voice rules, and show the evidence.
+4. Field page: top is a summary from the macro field down to the fetters, linking off to
+   the Summary page. The patterns list is not first. "Carrying, filled in, heaviest, most
+   shut": explain what it says, or cut it. "By weight" and "By assemblage point" become
+   collapsible sections under the summary. The energetic summary must be accurate to the
+   rules; the thin version is wrong.
+5. Flow menu: mini routines, set up from the Ritual builder, built from the lineup in the
+   reading.
+6. Profile menu: examples sorted by tier. Start on his saved state; "Custom, new" lets
+   him enter his own information and create a profile; whichever profile he leaves on is
+   the one that loads next time. (Earlier asks in the same message: a profile named
+   Lance 54 with all tiers, then "load on blank"; the final one is "start on the saved
+   state as me".)
+7. Character: the page says "See tiers" for a locked profile; masks are tiered.
+8. Sound: on, but nothing is heard (bug). Turning sound off prints "Nothing saved on
+   worked example" (bug: wrong message, and it should not claim a save).
+9. Status and error lines print under the secondary nav. Move to a bottom log; show for
+   three seconds unless a button holds it open.
+10. Protocols: an X to cancel before running, and an End or Stop on the running screen.
+    "Each line names one pattern" (release screen: one pattern per line).
+11. Masks by tier: tier one sees the child and preteen masks; the ideological and limiter
+    masks are named as the next group; the teen mask belongs to tier three; tier four as
+    three. Exact mapping to be checked against `engine/plan.js` SIGHT and ruled in the
+    review.
+12. Plan: review twice, block it in, and move onboarding and tutorial UP so he can review
+    them while the rest is built.

@@ -17,6 +17,8 @@
      --profile N        loadP(N), default 3 (Marcus, example). --profile -1 = blank
      (contrast is always checked twice: from the CSS cascade, and again from a
       photograph of the page with every glyph blanked. See PIXHIDE.)
+     --settle MS        wait after setTab before measuring (default 2200)
+     --only A,B         only these surfaces by name, e.g. Field,Body
      --selftest         run only the fixture self-test, then exit
      --baseline PATH    a --json file from an earlier run to compare against
      --gate             exit 1 if any "lower is better" metric got worse
@@ -62,6 +64,11 @@ const FILE=path.resolve(opt('file','source.html'));
 const WIDTHS=String(opt('widths','1600,390')).split(',').map(Number);
 const HEIGHT={1600:1000,390:844};
 const PROFILE=+opt('profile',3);
+/* THE SETTLE TIME IS A MEASUREMENT PARAMETER. The Field's bars fill over about a second and flip the ink
+   on top of them between light and dark as they pass underneath, so a probe that reads too early
+   measures the animation, not the screen. */
+const SETTLE=+opt('settle',2200);
+const ONLY=opt('only',false);
 const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 
 /* ---------------------------------------------------------------
@@ -663,10 +670,11 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
   const surfaces=await page.evaluate(()=>{const a=TABDEF.map(t=>({nm:t.nm,k:t.k,id:t.id,sec:t.sec||null,door:true}));
    Object.keys(TABEXTRA).forEach(k=>{const t=TABEXTRA[k];a.push({nm:t.nm,k:t.k,id:t.id,sec:null,door:false});});return a;});
   const hostIds=surfaces.map(s=>s.id);
+  const run=surfaces.filter(s=>!ONLY||String(ONLY).split(',').indexOf(s.nm)>=0);
   out.widths[W]={surfaces:{}};
-  for(const s of surfaces){
+  for(const s of run){
    await page.evaluate(a=>{if(a.p>=0)loadP(a.p);setTab(a.k);render();},{p:PROFILE,k:s.k});
-   await page.waitForTimeout(1100);
+   await page.waitForTimeout(SETTLE);
    const raw=await page.evaluate(PROBE,{hostIds,hostId:s.id});
    const stateOk=await page.evaluate(k=>S.tab===TABREAL(k),s.k);
    const theme=await page.evaluate(()=>S.theme||document.body.className);
