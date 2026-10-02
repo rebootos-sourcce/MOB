@@ -1,6 +1,6 @@
 # Views mockups: notes
 
-Every picture is the real app. `source.html` runs in Chromium with its own shell, tokens and classes, and only the centre stage is replaced. Font is Onest (injected, the product swap is a later slice). `index.html` carries the shell's own CSS and markup, so the chrome is the app's. Rebuild: `src/snap.js`, then `src/build.js`. Pictures: `src/run-after.sh`, `src/compose.py`.
+Every picture is the real app. `source.html` runs in Chromium with its own shell, tokens and classes, and only the centre stage is replaced. Font is Onest (injected, the product swap is a later slice). `index.html` carries the shell's own CSS and markup, so the chrome is the app's.
 
 ## Real fields each display reads
 - **Reading.** `flSeats()` per seat: `src` (position on the body), `load`, `pass`, `hot`, `held`; the heaviest address per lit seat from `W` (`k`, `b`, `a`, `d`, `sq`); `tierOf(CQ)`; `steer`; `BODYPATH` from `engine/data/figure.js`. The tube narrows by each seat's own `pass`.
@@ -15,17 +15,15 @@ Exists in the product: Summary and Analytics renderers, every engine read above,
 ## Findings
 - **Sol.** Live seat tokens (Root #D6524C) are more saturated than the brief's set (#C4635E). I used tokens. The coherence ring is accent, never a seat colour: Wren's red ring beside "Mastery" read as an alarm.
 - **Petra.** The seat tube echoes the shipped Flow element's pinch, so Reading and Flow share one grammar.
-- **Bjorn.** Eyebrows follow the shipped rule: labels capitalise through CSS, sentences take `plain`.
 - **Engine.** `darkB` is a mean over every address in a seat, and names Throat for Wren who holds nothing there. The displays use the brightest seat instead. `converge()` agree line "design line 4" needs a plain rewrite. There is no time cost in the engine, so cost lanes are energy and other people only.
 
 ## One choice per surface
 1. Reading: dark well, tube with pinch, five callouts. 2. Drives: ribbons on the lighter well at 700 px and up, a relay card chain below. 3. Summary: paragraph first, then the TDD order. 4. Analytics: five readouts, seven seats and nine axes above the fold, long lists folded. 5. Practitioner: three columns, the sight card always visible, words not numbers.
 
 ## Motion, subtle, none under reduced motion
-- Reading: halos breathe over 7 s, ease in and out. On load seats light root upward, 60 ms apart.
-- Drives: dots drift along each ribbon over 5 s, linear. On load ribbons widen left to right, 700 ms, heaviest first. Hover lifts one ribbon and dims the rest.
-- Summary: sections rise 8 px and fade, 40 ms apart.
-- Analytics: tiles fade up 40 ms apart. The arrow on "what changed" nudges once.
+- Reading: halos breathe over 7 s. On load seats light root upward, 60 ms apart.
+- Drives: dots drift along ribbons over 5 s. On load ribbons widen left to right, heaviest first. Hover lifts one and dims the rest.
+- Summary and Analytics: sections and tiles rise 8 px and fade, 40 ms apart.
 - Practitioner: the accent bar slides to a selected row in 150 ms. Unlink shows a six second undo.
 
 ## Documented elements, and where they went
