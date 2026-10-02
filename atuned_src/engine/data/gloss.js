@@ -194,6 +194,25 @@ function unpackAll(){
   ARCH.forEach(function(a){
    t['archetype:'+a.nm.toLowerCase()]=a.nm+' is one of '+ARCH.length+' kinds of character, the one that '+a.v+'.';});
  t['archetype']='An archetype is one of '+(typeof ARCH!=='undefined'?ARCH.length:'twelve')+' kinds of character you are born leaning toward.';
+ /* THE TEN COHERENCE TIERS, round PT, added for the Practitioner page. TIERDEF
+    already carries one sentence per tier in its own def field, written for
+    exactly this job (tierOf, tierRange), so this is the same precedent as
+    law: and archetype: just above: a meaning table entry built from the
+    table the engine already carries, never typed a second time here. A gap
+    this closed: before it, the tier word a reading is built on, "severe",
+    "oscillating", "mastery", printed with no meaning beside it at all, which
+    round PO's unpack rule names as a gate and not a preference.
+
+    ONE SENTENCE, THE GATE'S OWN RULE, caught this file's first pass: def is
+    sometimes two sentences ("Fifty is the median... The field crosses it
+    both ways...") and this prepended the tier's own name as a third, "Gaining.
+    The field builds...", so every one of the ten failed PO's own check for
+    it. The display word already carries the name, unp()'s own label, so the
+    tip needs only the first sentence of def and not the name again: split on
+    the first ". " and keep one trailing full stop, never two. */
+ if(typeof TIERDEF!=='undefined')
+  TIERDEF.forEach(function(x){
+   t['tier:'+x.nm.toLowerCase()]=String(x.def||'').split('. ')[0].replace(/\.+$/,'')+'.';});
  UNPACK_MEMO=t;
  return t;}
 

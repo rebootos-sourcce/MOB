@@ -2676,13 +2676,20 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   const tn=$q('#tabbar .tabtop[data-tabk="'+TAB.PRACTITIONER+'"] .n').getBoundingClientRect();
   o.below=tn.top>=sn.bottom; o.dx=Math.round((tn.left-sn.left)*10)/10;
   const host=$q('#prac'), hr=host.getBoundingClientRect();
+  /* round PT replaced the three row sketch with the client list, the reading
+     and notes, built on the example roster (PR1 to PR4, PRACTITIONER-STORY.md).
+     No client is open yet at this point in the walk, so the centre and right
+     columns still show their own honest empty state and carry no .ac-stub;
+     the one stub this page can print (who else can see an open client) only
+     appears once a client is selected, which a later block covers. A design
+     review round PT2 found "the grant model" and "the six ICPs" reaching
+     the person as internal shorthand the 25 September no-shorthand ruling
+     already forbids, so the honest check here reads the plain words that
+     replaced them and not the old research label. */
   o.host={w:Math.round(hr.width),h:Math.round(hr.height),len:host.innerHTML.length,
-   stubs:host.querySelectorAll('.ac-stub').length,
-   /* the one control on it is the way back to the switch. A stub that took a
-      press and then refused would be the dead button account.js was written
-      against, so every other row is counted as not a button */
-   buttons:[...host.querySelectorAll('button')].map(b=>b.id),
-   honest:/not built yet/.test(host.textContent)&&/sketch/i.test(host.textContent)};
+   clients:host.querySelectorAll('.pr-client').length,
+   buttons:[...host.querySelectorAll('button')].map(b=>b.id).filter(Boolean),
+   honest:/example/i.test(host.textContent)&&/let a practitioner see/i.test(host.textContent)};
   o.rails=[...document.querySelectorAll('.mid .col')].filter(c=>c.offsetParent).length;
   $q('#pracacc').click(); await wait();
   o.back=S.tab===TAB.SETTINGS&&ACC_OPEN==='account'&&!!$q('#acprac');
@@ -2699,10 +2706,10 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   'pressing it opens Clients, shows only its own tab and presses it alone, row '+JSON.stringify(o.row)+' pressed '+JSON.stringify(o.pressed));
  ok(o.below&&Math.abs(o.dx)<=1,
   'and Clients sits in the row below it, its word starting under Practitioner\'s first letter, off by '+o.dx+'px');
- ok(o.host.w>300&&o.host.h>300&&o.host.len>1200&&o.host.honest&&o.host.stubs===3,
-  'the page behind it renders, says it is a sketch and names three rows as not built yet, '+JSON.stringify(o.host));
- ok(JSON.stringify(o.host.buttons)==='["pracacc"]',
-  'and its one button is the way back to the switch, nothing that takes a press and refuses, '+JSON.stringify(o.host.buttons));
+ ok(o.host.w>300&&o.host.h>300&&o.host.len>1200&&o.host.honest&&o.host.clients>=10,
+  'the page behind it renders a real client list on the example roster, honestly labelled, '+JSON.stringify(o.host));
+ ok(o.host.buttons.indexOf('pracacc')>=0&&o.host.buttons.filter(b=>b==='pracacc').length===1,
+  'the way back to the switch is still on the page among the client rows, '+JSON.stringify(o.host.buttons));
  ok(o.rails===0,'the rails leave, as they do on Settings, '+o.rails+' showing');
  ok(o.back,'Open Account goes back to the switch');
  /* ACROSS A RELOAD. applyUiPrefs never ran at start up, so this is the check
