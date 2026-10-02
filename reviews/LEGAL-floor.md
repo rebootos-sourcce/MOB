@@ -2,7 +2,7 @@
 
 Ruled by the owner, 19 September 2026: "go out to the internet and see if
 there's any disclaimers type stuff for a website like this that I need to have
-on the bottom. And then we need copyright information, Tool of Unified LLC.
+on the bottom. And then we need copyright information, Tula Unified LLC.
 Somewhere we need a contact us. I think that's all in the help or the profile."
 
 This is research and copy. No product code was written. Sizes are build effort:
@@ -421,12 +421,12 @@ brackets mark a value somebody has to supply or a ruling that is still open.
 
 Every surface, static markup, present before any script runs.
 
-    © 2026 Tool of Unified LLC
+    © 2026 Tula Unified LLC
     What this is not · Privacy · Terms · Contact
 
 If the footer must be one line on a phone, drop to:
 
-    © 2026 Tool of Unified LLC · What this is not · Contact
+    © 2026 Tula Unified LLC · What this is not · Contact
 
 A copyright notice is optional for anything published after 1 March 1989, but a
 proper notice denies an infringer the innocent infringement mitigation, which is
@@ -498,7 +498,7 @@ For the Privacy section, above the list that is already there:
 
 > **Who Holds This**
 >
-> Tool of Unified LLC makes this instrument. This build has no network. It does
+> Tula Unified LLC makes this instrument. This build has no network. It does
 > not call out, it loads nothing from anywhere, and no server holds a copy. What
 > you enter is written to this browser, on this device, and that is the only
 > place it exists.
@@ -541,7 +541,7 @@ For the Privacy section, above the list that is already there:
 > accurate, complete, or right for you.
 >
 > **Limit Of Liability**
-> To the fullest extent the law allows, Tool of Unified LLC is not liable for
+> To the fullest extent the law allows, Tula Unified LLC is not liable for
 > indirect, incidental or consequential loss arising out of your use of the
 > instrument. Nothing here limits liability that cannot be limited by law.
 >
