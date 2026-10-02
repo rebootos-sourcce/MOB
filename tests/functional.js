@@ -3694,6 +3694,29 @@ console.log('\n=== the plan, and the seam that now goes somewhere ===');
    first, not by trusting the build never binds anything. */
 const plan=await page.evaluate(()=>{
  const o={}, txt=()=>(document.getElementById('sheet').textContent||'').replace(/\s+/g,' ');
+ /* EXPLICITLY THE PERSON'S OWN RECORD, NOT WHATEVER WAS LEFT LOADED.
+    Earlier blocks on this same page (the Intake page, the profile menu, the
+    avatar, the compass) all end on a worked example (Gordon), and none of
+    them had reason to switch back: nothing in this file promised the next
+    block a free record, this one just happened to follow one that left the
+    own profile loaded. Round PS, 2 October, gave every worked example tier
+    four sight (ui/personas.js, loadP), so CURP.plan on a leftover example is
+    no longer free by default and this assertion started failing on the
+    example's own tier rather than on the person's, which is a defect in the
+    test's precondition and not in the plan. loadP(0) states the precondition
+    this block has always needed rather than borrowing it by accident.
+
+    AND A FRESH GIFT, NOT WHATEVER THE OWN RECORD HAD ALREADY OPENED. "You" is
+    one object PROF_BY keeps for the whole of this file's run, so every
+    earlier block that touched the person's own record (there are dozens)
+    left its mark on CURP.meter.unique, and "100 patterns left of the 100 you
+    were given" is a claim about a gift nothing has drawn on yet. Before this
+    block stated its own precondition it borrowed whichever profile loadP had
+    last loaded, which was never this one, so the claim happened to hold by
+    accident the same way the free tier did. Reset here rather than asserting
+    a number this run cannot promise. */
+ loadP(0);
+ CURP.meter={lines:0,unique:[],firsts:[],first:null,last:null,giftAt:null,relLines:0,truthLines:0};
  const kept=CURP.plan?JSON.parse(JSON.stringify(CURP.plan)):null;
  const keptU=CURP.meter.unique.slice();
  o.boundAtBoot=(typeof PLAN_HOST==='function');

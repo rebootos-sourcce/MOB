@@ -842,6 +842,32 @@ function loadP(i){
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
+ /* EVERY WORKED EXAMPLE OPENS ON TIER FOUR SIGHT, the owner's own words: "for
+    the profiles unlock their tiers so that they all have tier four. Yeah, I
+    can't see anything." A demo persona carries no plan field (PEOPLE never
+    sets one), so it defaulted to the blank's tier, free, and every layer past
+    saboteurs (engine/plan.js SIGHT) read locked on every example. Ruled 2
+    October.
+
+    Keyed to !p.you, never to S.who, because p.you is the one flag the real
+    custom profile ("You", PEOPLE[0], the stranger who arrives with nothing)
+    carries and no example does, so this branch is reached exactly when
+    S.who!==0 and can never fire for the blank. The blank keeps whatever plan
+    its own record already holds and is never touched here.
+
+    THIS IS NOT THE SAME DOOR AS J11 (PLAN.md), which is a pasted or imported
+    record (pImport, engine/schema.js) claiming its own tier THROUGH THE
+    BOUNDARY. Nothing here goes near validateProfile or pImport: a demo is a
+    developer-authored object baked into the build at PEOPLE, never something
+    a stranger typed or pasted, and this write happens after the boundary, not
+    instead of it. J11 stays open and unfixed on purpose, tracked separately;
+    tests/plan-selfgrant.js is a new, narrow gate that watches pImport still
+    accepts a self-declared tier exactly as it did before this change, and
+    that this file's own unlock cannot be reached by handing pImport a tier.
+    status 'active' is the one PLAN_LIVE
+    recognises (engine/plan.js), the same literal tests/seed.js's FULL_SIGHT
+    and ui/lock.js's devSight already use to mean full sight. */
+ if(!p.you)CURP.plan={tier:'four',status:'active',granted:0,carried:0,base:null,since:null,until:null};
  /* loadP fills S from the persona table rather than through loadProfile, so it
     is the one route that has to say for itself which record S now holds. */
  S.rec=CURP.id||null;
