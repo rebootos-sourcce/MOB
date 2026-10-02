@@ -281,7 +281,7 @@ if(typeof module!=='undefined'&&module.exports){
                   bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
                   OB_KINDS:OB_KINDS,
-  /* storage */   bindStore:bindStore,
+  /* storage */   bindStore:bindStore, devGet:devGet, devSet:devSet, DEVKEY:DEVKEY,
   /* practice, engine/practice.js. The tables are exported as the live
      objects so the gate can hold them to the TDD's own lists and mutate a
      copy of the engine to prove the gate bites. */

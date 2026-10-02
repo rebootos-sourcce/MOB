@@ -2629,8 +2629,10 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   o.swOff=sw.getAttribute('aria-checked');
   sw.click(); await wait();
   o.swOn=$q('#acprac').getAttribute('aria-checked');
-  o.stored=!!(CURP.ui&&CURP.ui.practitioner);
-  o.disk=JSON.parse(localStorage.getItem('source.profiles')||'[]').map(p=>p.ui&&p.ui.practitioner);
+  /* A DEVICE SETTING since 2 October: in the browser's own store under its own
+     key, and not on any profile */
+  o.stored=devGet('practitioner')===true&&!(CURP.ui&&CURP.ui.practitioner);
+  o.disk=[JSON.parse(localStorage.getItem('source.profiles.device')||'{}').practitioner];
   o.shownOn=[...document.querySelectorAll('#secbar .secb')]
    .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec'));
   $q('#secbar .secb[data-sec="practitioner"]').click(); await wait();
@@ -2655,8 +2657,8 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   'a new profile opens with practitioner mode off: four sections and the practitioner group shut, '+JSON.stringify(off0)+' '+o.grpOff);
  ok(o.sw&&o.swOff==='false'&&o.swOn==='true',
   'Account carries the switch, off, and one press turns it on, '+o.swOff+' to '+o.swOn);
- ok(o.stored&&o.disk.length>0&&o.disk.every(x=>x===true),
-  'and it is written to the profile and to the disk, '+JSON.stringify(o.disk));
+ ok(o.stored&&o.disk.every(x=>x===true),
+  'and it is written to the device store and not to the profile, '+JSON.stringify(o.disk));
  ok(JSON.stringify(o.shownOn)==='["discover","play","flow","embody","practitioner"]',
   'on, Practitioner joins the bar after the loop\'s four, which stay where they were, '+JSON.stringify(o.shownOn));
  ok(o.tab&&JSON.stringify(o.row)===JSON.stringify(o.want)&&JSON.stringify(o.pressed)==='["practitioner"]',
@@ -2679,20 +2681,21 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   const wait=()=>new Promise(r=>setTimeout(r,260)), o={}, $q=s=>document.querySelector(s);
   const vis=()=>[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent).length;
   /* shut by a change of profile while standing on the page: the switch lives
-     on the profile, so another profile with it off shuts the door under the
-     person, and they land on the Field rather than on a page with no door */
+     on the device, so shutting it while standing on the page shuts the door
+     under the person, and they land on the Field rather than on a page with
+     no door */
   setTab(TAB.PRACTITIONER); await wait();
-  CURP.ui.practitioner=false; applyUiPrefs(); await wait();
+  pracSwitch(false); await wait();
   o.landed=S.tab===TAB.FIELD;
   o.secOff=document.querySelector('.top').getAttribute('data-sec');
-  CURP.ui.practitioner=true; applyUiPrefs(); await wait();
+  pracSwitch(true); await wait();
   /* and shut by the switch, having come to Account from the page, which is
      the route that leaves the bar pointing at the section that just went */
   setTab(TAB.PRACTITIONER); await wait();
   $q('#pracacc').click(); await wait();
   $q('#acprac').click(); await wait();
   o.swOff=$q('#acprac').getAttribute('aria-checked');
-  o.stored=CURP.ui.practitioner;
+  o.stored=pracOn();
   o.shown=[...document.querySelectorAll('#secbar .secb')]
    .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec'));
   o.sec=document.querySelector('.top').getAttribute('data-sec');
@@ -3109,7 +3112,7 @@ const pmn=await page.evaluate(async()=>{
  o.open=!!m&&!m.hidden&&document.getElementById('profbtn').getAttribute('aria-expanded')==='true';
  o.items=m?[...m.querySelectorAll('[role=menuitem]')].map(e=>e.textContent.trim()):[];
  o.sfx=m?(()=>{const b=m.querySelector('[data-pmsfx]');return b?{h:b.getBoundingClientRect().height,on:b.getAttribute('aria-checked')}:null;})():null;
- o.want=ACC_SECS.map(s=>s.nm).concat(['Settings']);
+ o.want=ACC_SECS.map(s=>s.nm).concat(['Message log','Settings']);
  o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
  o.stillField=S.tab===TAB.FIELD;
  m.querySelector('[data-pms="billing"]').click(); await wait();
@@ -3138,6 +3141,10 @@ ok(pmn.sfx&&pmn.sfx.h>=44&&pmn.sfx.on==='true','OJ: the profile menu carries the
 ok(pmn.page&&pmn.allOpen&&pmn.esc&&pmn.single,'OI: a section row opens the page on that section, Escape shuts the menu, and Settings opens the single page, '+JSON.stringify({page:pmn.page,esc:pmn.esc,single:pmn.single}));
 ok(pmn.glow.field===4&&pmn.glow.body===4&&pmn.glow.compass===4&&pmn.glow.character>=1,
  'OI: the same four pools of faint colour sit behind the Field, the Body, the Compass and Character, '+JSON.stringify(pmn.glow));
+
+await require('./msglog.js').msgGate(page,ok);
+await require('./protocol.js').protocolGate(browser,FILE,ok,booted);
+await require('./device.js').deviceGate(browser,FILE,ok,booted);
 
 console.log('\n=== the avatar, and what it aims the work at ===');
 /* The becoming half. The right hand sentence resolves to a seat and the seat
@@ -5407,6 +5414,10 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  await tp.click('#relskip'); await tp.waitForTimeout(150);
  const quietRun=await tp.evaluate(()=>({phase:RUN.phase,
   node:(document.querySelector('#rel .rel-node')||{}).textContent||''}));
+ /* a pass has been said before End, 2 October: End at the very first line,
+    before anything is said, closes the release and charges nothing, so a run
+    that is meant to reach the cooldown has to have reached a line first */
+ await tp.evaluate(()=>{ clearTimeout(RUN.timer); RUN.pass=1; });
  await tp.click('#relstop'); await tp.waitForTimeout(200);
  const quietEnd=await tp.evaluate(()=>({phase:RUN.phase,
   eye:(document.querySelector('#rel .pm-eye')||{}).textContent||'',

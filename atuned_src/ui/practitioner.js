@@ -9,7 +9,8 @@
    being added when I toggle it on and a very rough framework."
 
    So three things and no fourth. The switch is accTog in ui/account.js,
-   stored as CURP.ui.practitioner through uiSet like every other preference.
+   stored as a DEVICE setting through pracSwitch below and never on a profile,
+   see pracOn.
    The door is the fifth section in the bar, written shut into the document
    and opened here. The sketch is the page behind it.
 
@@ -21,8 +22,36 @@
    opacity, the real label, "not built yet" where a value would sit, and
    nothing that takes a press and then refuses.
    ============================================================ */
+/* A DEVICE SETTING, THE SAME FIX AS THE SOUND SWITCH, 2 October. This was
+   stored on the profile through uiSet, which saves the profile, so on a worked
+   example the switch slid on, the save was refused with "Nothing saved on a
+   worked example.", the door never opened and the person was left looking at a
+   switch that said on over a menu that said nothing. Whether this browser
+   shows the Practitioner section is a fact about the person using it, not
+   about whose record is loaded, and a worked example has no record to write.
+
+   The device key wins once written. A device never asked reads the profile's
+   own ui.practitioner, which is what a person who turned it on before this
+   existed wrote, so nobody loses the door to an update. PRAC_SESSION is what
+   was asked for this visit, first, so a browser that would not keep the
+   setting still does what the switch says until the page is closed. */
+var PRAC_SESSION=null;
 function pracOn(){
+ if(PRAC_SESSION!==null)return PRAC_SESSION;
+ var d=(typeof devGet==='function')?devGet('practitioner'):null;
+ if(d!==null)return d===true;
  return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.practitioner);}
+/* the one writer. It reports a store that will not keep it, in words that are
+   true, and opens or shuts the door either way, because what a person sees is
+   the state and not the write. */
+function pracSwitch(on){
+ PRAC_SESSION=!!on;
+ var r=(typeof devSet==='function')?devSet('practitioner',!!on):{ok:false,err:'NoStore'};
+ if(r.ok)PRAC_SESSION=null;
+ if(typeof applyUiPrefs==='function')applyUiPrefs(); else pracPaint();
+ if(typeof status==='function'&&!r.ok)
+  status('Practitioner mode is '+(on?'on':'off')+' for this visit only. This browser would not keep the setting.','fail');
+ return r.ok;}
 
 /* THE SURFACE'S OWN RULES, injected once, the way accProfCss carries the
    profiles section's, because the shell stylesheet is held by another seat.

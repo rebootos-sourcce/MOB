@@ -288,11 +288,18 @@ function buzz(pat){
    channel, and a fitting that came from one side would say a channel
    it does not mean.
 
-   THE LEVEL. Every fitting peaks under SFX_CEIL, 0.08 of full scale,
-   about 22 dB down, and each row carries its own lower ceiling. The
-   release's loudest mark, CROSS, is 0.09: an interface sound is never
-   the loudest thing the product makes, because the release is the
-   event and a save is not.
+   THE LEVEL. Every fitting peaks under SFX_CEIL, 0.16 of full scale,
+   about 16 dB down, and each row carries its own lower ceiling. IT WAS
+   TWICE QUIETER, AND THAT WAS PART OF WHY NOTHING WAS HEARD. 2 October, the
+   owner, with the switch on and a worked example open: "I don't hear sound
+   effects." Measured off the gate's own render, the rows peaked at 0.037 to
+   0.066 and ran at minus 35 to minus 38 dBFS RMS, which a laptop speaker at
+   a working volume drops under the room. Every pk and every ceil is doubled,
+   plus 6 dB and nothing else changed, so the grammar below still holds: the
+   shapes, the lengths and the pitches are untouched. The release's loudest
+   mark, CROSS, is 0.09 and a fitting may now pass it. That was a rule so a
+   save would never be the loudest thing in the product, and it was written
+   before a person said they could not hear the product at all.
 
    THE LENGTH. SFX_MAX_MS is 600. An interface sound has to be over
    before the next press, and a person's next press comes about half
@@ -305,9 +312,11 @@ function buzz(pat){
    quieter. Five things hold it silent, read in sfxWhy:
 
      off            the switch, in the profile menu and in Settings,
-                    Display, Sound. ON on every profile until the
-                    person turns it off, round OJ, his ruling: "sound
-                    on by default". The seat tone and the release's own
+                    Display, Sound. ON until the person turns it off,
+                    round OJ, his ruling: "sound on by default", and it
+                    is the device's setting and not a profile's, so it
+                    is the same on every profile and on a worked
+                    example. The seat tone and the release's own
                     switches are unchanged and stay off until chosen.
      quiet          the Quiet switch. A person who reached for less
                     on the screen did not ask for more in the ear.
@@ -338,18 +347,31 @@ function buzz(pat){
    Done on the ritual, "Time is up" on the timer, the mark on the
    record. A person who never turns this on loses nothing.
 
-   WHAT IS LEFT OUT, and it is most of the product. No sound on a
-   tab, a press, a hover, a slider, a save, a sheet opening, a tip.
-   Those are forty times a session and a sound on each is the product
-   that ships thirty sounds and is unbearable. No sound for a release
-   beginning, a rerun beginning or a release ending: the release
-   already has the seat tone fading in under its opening and CLOSE at
-   its cooldown, on its own switch. And no sound for the release wall,
-   "Nothing left to open": it is a state a person reads, not a press
-   that was refused, and a sound with no press in front of it is an
-   alarm.
+   WHAT WAS LEFT OUT, AND IS NOW IN. This paragraph said: no sound on a tab, a
+   press, a hover, a slider, a save, a sheet opening, a tip, because those
+   happen forty times a session. It was written as a rule against a product
+   that ships thirty sounds, and it was also the cause of a defect report: the
+   owner turned the switch on, pressed tabs and the Field on a worked example,
+   and heard nothing, because the only moments that sounded were a Story
+   commit, a practice done, undo, a timer and a refusal. Measured in headless
+   Chromium with a spy on the oscillators and the context running: a tab press
+   started 0 oscillators, a Field press started 0, and a refused commit
+   started 4. So three moments are added and each is one sound for one press:
+   tap on a tab, field on the Field's canvas, begin on Run release. A
+   release ending is the existing done, played inside the room where it was
+   held off. What stays out is the rest: no hover, no slider, no sheet, no
+   tip, and no sound for the release wall, "Nothing left to open", which is a
+   state a person reads and not a press that was refused.
+
+   THE RELEASE'S ROOM, which this paragraph used to hold shut. A release is
+   still its own room with its own switches and its own four marks, and a
+   fitting that arrives from inside it is still held off, so the gate in
+   tests/sound.js still probes every phase of a run and still expects
+   silence. Two fittings are called with the room argument set, begin on
+   the press that starts a run and done where the run closes, and nothing
+   else is. They are boundaries, one each per run.
    ============================================================ */
-var SFX_CEIL=0.08, SFX_MAX_MS=600;
+var SFX_CEIL=0.16, SFX_MAX_MS=600;
 /* no more than three fittings in any one second, whatever asks */
 var SFX_BURST=3;
 /* ONE ROW PER SOUND. k the name a hook point uses. at the moment it marks.
@@ -377,16 +399,16 @@ var SFX=[
     carries a reading here. Also redo, which keeps the same thing again. A
     3000 hertz tick and a short struck body on B4, 150 ms. The commonest
     fitting, so the shortest and among the quietest. */
- {k:'kept', at:'a Story entry kept, and redo', max:200, ceil:0.06, gap:300, earn:true, buzz:[8],
-  parts:[{w:'noise',bp:3000,q:1.4,at:0,a:1,r:16,pk:0.03},
-   {w:'sine',f:494,p2:2.76,g2:0.12,at:2,a:3,r:140,pk:0.045,lp:2400}]},
+ {k:'kept', at:'a Story entry kept, and redo', max:200, ceil:0.12, gap:300, earn:true, buzz:[8],
+  parts:[{w:'noise',bp:3000,q:1.4,at:0,a:1,r:16,pk:0.06},
+   {w:'sine',f:494,p2:2.76,g2:0.12,at:2,a:3,r:140,pk:0.09,lp:2400}]},
  /* UNDO. The same latch drawn back: kept with its envelope reversed. A 60 ms
     swell on the same body, cut short, and the tick at the end where the
     latch catches. A person who has heard kept hears this as kept undone with
     nothing to learn. */
- {k:'undo', at:'undo, taking back a commit', max:160, ceil:0.05, gap:180, buzz:[0,66,8],
-  parts:[{w:'sine',f:494,p2:2.76,g2:0.12,at:0,a:60,r:26,pk:0.035,lp:2400},
-   {w:'noise',bp:3000,q:1.4,at:66,a:1,r:14,pk:0.02}]},
+ {k:'undo', at:'undo, taking back a commit', max:160, ceil:0.1, gap:180, buzz:[0,66,8],
+  parts:[{w:'sine',f:494,p2:2.76,g2:0.12,at:0,a:60,r:26,pk:0.07,lp:2400},
+   {w:'noise',bp:3000,q:1.4,at:66,a:1,r:14,pk:0.04}]},
  /* REFUSE. A valve shut against pressure. Two dull knocks on G4, level, with
     a hollow octave and the darkest filter in the family, 900 hertz. Still is
     a stop, as it is in the release's HALT. No tick: a refusal has no metal in
@@ -394,9 +416,9 @@ var SFX=[
     status(), for every status(msg,'fail'), so every refusal the product
     already writes is heard and none is missed by a call site. gap 1200,
     because the same refusal said twice in a second is one refusal. */
- {k:'refuse', at:'any status(msg,"fail"): a refusal or a failed write', max:280, ceil:0.06, gap:1200, buzz:[18,100,18],
-  parts:[{w:'sine',f:392,p2:2,g2:0.06,at:0,a:4,r:95,pk:0.05,lp:900},
-   {w:'sine',f:392,p2:2,g2:0.06,at:120,a:4,r:95,pk:0.045,lp:900}]},
+ {k:'refuse', at:'any status(msg,"fail"): a refusal or a failed write', max:280, ceil:0.12, gap:1200, buzz:[18,100,18],
+  parts:[{w:'sine',f:392,p2:2,g2:0.06,at:0,a:4,r:95,pk:0.1,lp:900},
+   {w:'sine',f:392,p2:2,g2:0.06,at:120,a:4,r:95,pk:0.09,lp:900}]},
  /* MARK. A key landing and turning. Two ticks a pin apart, then the body
     rising a semitone into D5 over 40 ms, the one fitting that rises, because
     up is arriving. Only when a press earned a mark on the record for the
@@ -404,20 +426,20 @@ var SFX=[
     practice done that makes seven days. It replaces kept or done for that
     press, one sound per press, the heavier one. Not a coin: no square wave,
     no leap, no bright top, and 0.4 of a second. */
- {k:'mark', at:'a mark on the record earned for the first time', max:480, ceil:0.07, gap:1500, buzz:[8,47,8,30,30],
-  parts:[{w:'noise',bp:2600,q:1.6,at:0,a:1,r:12,pk:0.025},
-   {w:'noise',bp:2900,q:1.6,at:55,a:1,r:12,pk:0.025},
-   {w:'sine',f:554,f1:587,gl:40,p2:2,g2:0.08,at:80,a:6,h:30,r:330,pk:0.05,lp:2000}]},
+ {k:'mark', at:'a mark on the record earned for the first time', max:480, ceil:0.14, gap:1500, buzz:[8,47,8,30,30],
+  parts:[{w:'noise',bp:2600,q:1.6,at:0,a:1,r:12,pk:0.05},
+   {w:'noise',bp:2900,q:1.6,at:55,a:1,r:12,pk:0.05},
+   {w:'sine',f:554,f1:587,gl:40,p2:2,g2:0.08,at:80,a:6,h:30,r:330,pk:0.1,lp:2000}]},
  /* DONE. A seal settling. A practice marked done on the ritual. A soft tick
     where the two faces meet, then G4 with a fifth over it, the colour of the
     release's CLOSE at a quarter of its length: the release ends on CLOSE and
     a practice ends on its small cousin. A breath of low noise under it, the
     air leaving the seal. The longest strike in the family, because it is the
     heaviest thing a person does outside a release. */
- {k:'done', at:'a practice marked done', max:600, ceil:0.07, gap:600, earn:true, buzz:[30],
-  parts:[{w:'noise',bp:1800,q:1.2,at:0,a:1,r:10,pk:0.015},
-   {w:'sine',f:392,p2:1.5,g2:0.12,at:2,a:10,h:40,r:470,pk:0.055,lp:1400},
-   {w:'noise',lp:700,at:4,a:20,r:160,pk:0.008}]},
+ {k:'done', at:'a practice marked done', max:600, ceil:0.14, gap:600, earn:true, buzz:[30],
+  parts:[{w:'noise',bp:1800,q:1.2,at:0,a:1,r:10,pk:0.03},
+   {w:'sine',f:392,p2:1.5,g2:0.12,at:2,a:10,h:40,r:470,pk:0.11,lp:1400},
+   {w:'noise',lp:700,at:4,a:20,r:160,pk:0.016}]},
  /* TIME. The ritual timer has run out. The one place in the interface where
     sound carries something the eye cannot: a person running a timed practice
     may have their eyes shut. So it is the one fitting with no tick and no
@@ -425,9 +447,35 @@ var SFX=[
     inside a practice undoes the practice. It plays with no press in front of
     it, the only one that does, on the audio a press already opened. "Time is
     up" is on the timer and the status line either way. */
- {k:'time', at:'the ritual timer running out', max:600, ceil:0.07, gap:2000, buzz:[40,240,40],
-  parts:[{w:'sine',f:392,p2:1.5,g2:0.12,at:0,a:70,h:20,r:190,pk:0.055,lp:1400},
-   {w:'sine',f:392,p2:1.5,g2:0.12,at:300,a:70,h:20,r:190,pk:0.055,lp:1400}]}];
+ {k:'time', at:'the ritual timer running out', max:600, ceil:0.14, gap:2000, buzz:[40,240,40],
+  parts:[{w:'sine',f:392,p2:1.5,g2:0.12,at:0,a:70,h:20,r:190,pk:0.11,lp:1400},
+   {w:'sine',f:392,p2:1.5,g2:0.12,at:300,a:70,h:20,r:190,pk:0.11,lp:1400}]} ,
+ /* TAP. A tab pressed. The lightest thing in the family: a 2400 hertz tick
+    and a 60 ms body on A4 with the free bar partial, over before the next
+    tap. One sound per press and the one a person hears most, so it is the
+    shortest and the quietest row, and its gap is the loosest in the family so
+    a person walking the bar hears each press. 2 October, the owner: "sound
+    effects everywhere, subtle." */
+ {k:'tap', at:'a tab pressed', max:120, ceil:0.11, gap:90,
+  parts:[{w:'noise',bp:2400,q:1.4,at:0,a:1,r:10,pk:0.03},
+   {w:'sine',f:440,p2:2.76,g2:0.1,at:1,a:2,r:70,pk:0.08,lp:2400}]},
+ /* FIELD. A press on the Field's canvas. Lower than the tap and a little
+    longer, a body on G4 gliding up a whole tone over 50 ms, because a press
+    on the field is arriving at a point on it, and up is arriving. The one
+    place the owner asked for the sound to carry a little more: "if I click on
+    the field, if I zoom in, this field sounds a little bit louder." */
+ {k:'field', at:'a press on the Field', max:220, ceil:0.13, gap:140,
+  parts:[{w:'noise',bp:1900,q:1.2,at:0,a:1,r:12,pk:0.025},
+   {w:'sine',f:392,f1:440,gl:50,p2:2,g2:0.08,at:2,a:6,r:150,pk:0.1,lp:1800}]},
+ /* BEGIN. A release starting. The Run release press, and the only fitting
+    that plays inside a release's room, once, before the opening is said. A
+    swell and not a strike: 40 ms of attack on D4 rising a third to F sharp
+    over 120 ms, a latch drawn and seated, then a ring. It is a boundary, one
+    per run, and the release's own four marks and its seat tone are not
+    touched by it. */
+ {k:'begin', at:'a release beginning', max:480, ceil:0.14, gap:1500, buzz:[14],
+  parts:[{w:'noise',bp:2200,q:1.4,at:0,a:1,r:10,pk:0.03},
+   {w:'sine',f:294,f1:370,gl:120,p2:1.5,g2:0.1,at:4,a:40,h:40,r:330,pk:0.09,lp:1700}]}];
 var SFX_BY={}; SFX.forEach(function(x){SFX_BY[x.k]=x;});
 /* the declared length of a row, the latest any part of it ends */
 function sfxLen(x){
@@ -492,16 +540,44 @@ function sfxRoomHeld(){
   if(p==='welcome'||p==='opening'||p==='run'||p==='pick')return true;
   return p==='done'&&typeof COOLING!=='undefined'&&RUN.cool<COOLING.length;
  }catch(e){ return false; }}
+/* WHETHER THE SWITCH IS ON, one reader for the gate, the setting and the menu.
+
+   A DEVICE SETTING, 2 October, and never the profile's. The device key wins
+   once it has been written. A device that was never asked reads the profile's
+   own sfxoff, which is what a person who turned it off before this existed
+   wrote, so nobody who chose silence is switched back on by an update. Nothing
+   written anywhere is on, round OJ. SFX_SESSION is what the person asked for
+   this visit and comes first, because a browser that would not keep the
+   setting must still do what the switch says until the page is closed. */
+var SFX_SESSION=null;
+function sfxIsOn(){
+ if(SFX_SESSION!==null)return SFX_SESSION;
+ var d=(typeof devGet==='function')?devGet('sfxoff'):null;
+ if(d!==null)return d!==true;
+ var u=(typeof CURP!=='undefined'&&CURP)?(CURP.ui||{}):null;
+ return !(u&&u.sfxoff===true);}
+/* the one writer. Returns whether the browser kept it, and says so through
+   status when it did not, in words that are true: the switch did what it was
+   asked for on this visit and will not survive a reload. It never touches a
+   profile, so it answers the same on a worked example as anywhere. */
+function sfxSwitch(on){
+ SFX_SESSION=!!on;
+ var r=(typeof devSet==='function')?devSet('sfxoff',!on):{ok:false,err:'NoStore'};
+ if(r.ok)SFX_SESSION=null;
+ if(typeof status==='function'){
+  if(r.ok)status(on?'Sound effects on.':'Sound effects off.');
+  else status('Sound effects are '+(on?'on':'off')+' for this visit only. This browser would not keep the setting.','fail');}
+ return r.ok;}
 /* WHY IT IS SILENT, or '' when it may sound. One reader for every switch, so
    the gate and the setting say the same thing. */
-function sfxWhy(){
+function sfxWhy(room){
  /* ON UNLESS THE PERSON TURNED IT OFF, round OJ. His words: "yes, sound on by
-    default. With the sound on off in the profile." So every profile plays
-    until it says sfxoff, which only the person's own press writes. */
+    default. With the sound on off in the profile." The off is read by sfxIsOn,
+    which no longer reads only the profile: see above. */
  var u=(typeof CURP!=='undefined'&&CURP)?(CURP.ui||{}):null;
- if(!u||u.sfxoff===true)return 'off';
+ if(!u||!sfxIsOn())return 'off';
  if(u.quiet)return 'quiet';
- if(sfxRoomHeld())return 'release';
+ if(!room&&sfxRoomHeld())return 'release';
  if(!sfxGestured())return 'no press yet';
  if(SFX_DEAF||!bedCan())return 'no audio';
  return '';}
@@ -512,6 +588,12 @@ function sfxWhy(){
 function sfxCtx(){
  if(SFX_DEAF)return null;
  if(!BED_AC){
+  /* iOS SAFARI MUTES WEB AUDIO WHEN THE RING SWITCH IS ON SILENT, because it
+     files the page's audio under ambient sound. The audio session type says
+     it is playback, which is what a person who turned a switch on means. Not
+     reproducible in headless Chromium, which has no such switch, so this line
+     is the documented fix and not a measured one. Absent everywhere else. */
+  try{ if(navigator.audioSession)navigator.audioSession.type='playback'; }catch(e){}
   try{ BED_AC=new (window.AudioContext||window.webkitAudioContext)(); }
   catch(e){ SFX_DEAF=true;
    if(typeof status==='function')status('No sound effects. This browser would not open an audio channel.','fail');
@@ -544,6 +626,13 @@ function sfxMarkNew(){
    one place every browser allows it, and reads the marks. Enter and Space are
    presses; letters typed into a story are not, so typing costs nothing. */
 function sfxOnPress(e){
+ /* A PRESS IS A PRESS A PERSON MADE. Script can dispatch a click, and the
+    click listener added for Safari below saw those as presses: tests/design.js
+    drives Run release with a bare click() on a release with its own sound off
+    and found the audio context running, which its rule, "a run with the sound
+    off never opens a channel at all", forbids. A synthetic event is not a
+    gesture to any browser either, so it is not one here. */
+ if(e&&e.isTrusted===false)return;
  SFX_PRESSED=true;
  if(e&&e.type==='keydown'){
   var t=e.target&&e.target.tagName;
@@ -553,20 +642,27 @@ function sfxOnPress(e){
  /* opened here, inside the press, so the timer's end, which has no press in
     front of it, finds the audio already open on a browser that only allows
     it inside one */
- if(w===''&&sfxCtx())sfxNapLater(20000);
+ if((w===''||w==='release')&&sfxCtx())sfxNapLater(20000);
  sfxMarksTake();}
-try{ addEventListener('pointerdown',sfxOnPress,true); addEventListener('keydown',sfxOnPress,true); }catch(e){}
+/* SAFARI WAKES A CONTEXT ON A CLICK OR A TOUCH END AND NOT ON A POINTER DOWN.
+   WebKit counts the end of a press as the gesture that may start audio, so a
+   context resumed only at pointerdown stayed suspended after the nap on an
+   iPhone and every fitting after it scheduled onto a clock that did not run.
+   Chromium and Firefox take pointerdown, which is why the gate cannot see the
+   difference. The same listener runs on all four, and it is idempotent: a
+   running context is left alone. */
+try{ ['pointerdown','keydown','click','touchend'].forEach(function(t){addEventListener(t,sfxOnPress,true);}); }catch(e){}
 /* PLAY ONE. The only entry point a hook uses. Returns the name of the sound
    it played, which is mark when the press earned one, or false.
    An unknown name is said once in the console and never throws, so a typo at
    a hook point is found by whoever reads the console and costs a person
    nothing. */
-function sfx(name){
+function sfx(name,room){
  var x=SFX_BY[name];
  if(!x){
   if(!SFX_TOLD[name]){ SFX_TOLD[name]=1; try{ console.warn('sfx: there is no sound named '+name); }catch(e){} }
   return false;}
- if(sfxWhy())return false;
+ if(sfxWhy(room))return false;
  if(x.earn&&sfxMarkNew())x=SFX_BY.mark;
  var now=Date.now();
  if(now-(SFX_LAST[x.k]||-1e9)<x.gap)return false;

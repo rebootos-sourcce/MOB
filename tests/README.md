@@ -64,6 +64,14 @@ binds `localStorage`.
                                release, each proven against a broken engine.
                                Also called at the end of functional.js.
                                Read the count off the run.
+    node tests/msglog.js       the bottom message dock: three seconds, Keep, the
+                               last fifty in a log, a failure never swallowed.
+    node tests/protocol.js     a release's cross, End on every phase, and End
+                               charging only the lines that were said.
+    node tests/device.js       device settings (Practitioner mode) on a worked
+                               example. The last three are also called from
+                               functional.js, and each fails on the build from
+                               before its change.
 
 All three resolve `source.html` from the working directory, so run them from the
 repo root.

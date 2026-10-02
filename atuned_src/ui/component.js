@@ -847,21 +847,114 @@ function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
  return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
 /* ---- the one status writer ----
    Every surface reports through here so the wording, the timing and the
-   announcement behave the same way wherever they come from. A failure stays
-   on screen until something replaces it. A confirmation clears after 2.4s,
-   which is past the point a person has read it and before it becomes
-   furniture. */
-var _stT=null;
+   announcement behave the same way wherever they come from.
+
+   THE MESSAGE DOCK, 2 October. A message printed in a line under the secondary
+   navigation, which the owner had already asked to move: "it popped that up in
+   a command line just underneath this secondary navigation, which I asked
+   earlier to move command output errors down to a bottom navigation. Have it
+   spit out that information to a log, and maybe have that only show for three
+   seconds unless the person presses a button to keep it up longer." So every
+   message, a confirmation or a failure, shows in the dock at the bottom for
+   three seconds and fades, unless Keep is pressed or the words are tapped. A
+   failure used to hold on screen until something replaced it, which was the
+   rule that a refusal must not vanish. It still must not, and it does not:
+   every message is in MSG_LOG, the last fifty of this session, behind the Log
+   button and the profile menu, and a failure raises the red count on Log until
+   the log has been opened. The failure is reported twice, in the dock and in
+   the log, and swallowed by neither.
+
+   #status is still the one region with role=status, so a screen reader hears
+   the message when it is written whether or not anyone is looking at the dock,
+   and the text sits in it until the fade has finished. */
+var _stT=null, _stF=null, MSG_LOG=[], MSG_MAX=50, MSG_SHOW_MS=3000, MSG_FADE_MS=260,
+ MSG_KEPT=false, MSG_UNSEEN=0;
+function msgPaint(){
+ var d=document.getElementById('msgdock'), k=document.getElementById('msgkeep'),
+  b=document.getElementById('msgbadge');
+ if(d){ d.classList.add('on'); d.classList.remove('out'); }
+ if(k){ k.setAttribute('aria-pressed',String(MSG_KEPT)); k.textContent=MSG_KEPT?'Dismiss':'Keep'; }
+ if(b){ b.hidden=!MSG_UNSEEN; b.textContent=MSG_UNSEEN>9?'9+':String(MSG_UNSEEN); }}
+function msgHide(){
+ clearTimeout(_stT); clearTimeout(_stF); MSG_KEPT=false;
+ var d=document.getElementById('msgdock'), e=document.getElementById('status');
+ if(e){ e.textContent=''; e.removeAttribute('data-kind'); }
+ if(d){ d.classList.remove('on'); d.classList.remove('out'); }}
+/* three seconds on screen, then the fade, then the words are cleared, unless
+   the person has taken hold of it. Keep is per message: a new message replaces
+   the kept one and starts its own three seconds, because a kept message that
+   silently held back every later one would be the failure this file forbids. */
+function msgArm(){
+ clearTimeout(_stT); clearTimeout(_stF);
+ if(MSG_KEPT)return;
+ _stT=setTimeout(function(){
+  var d=document.getElementById('msgdock'); if(d)d.classList.add('out');
+  _stF=setTimeout(msgHide,MSG_FADE_MS);},MSG_SHOW_MS);}
+function msgKeep(){
+ var d=document.getElementById('msgdock'); if(!d||!d.classList.contains('on'))return;
+ MSG_KEPT=!MSG_KEPT;
+ if(!MSG_KEPT){ msgHide(); return; }
+ clearTimeout(_stT); clearTimeout(_stF); msgPaint();}
 function status(msg,kind){
  var e=document.getElementById('status'); if(!e)return;
- clearTimeout(_stT);
+ clearTimeout(_stT); clearTimeout(_stF); MSG_KEPT=false;
  e.textContent=msg||'';
  /* every refusal the product writes is heard here, once, and not at each of
     its call sites. ui/sound.js: off until turned on */
  if(kind==='fail'&&typeof sfx==='function')sfx('refuse');
  if(kind)e.setAttribute('data-kind',kind); else e.removeAttribute('data-kind');
- if(msg&&kind!=='fail')_stT=setTimeout(function(){
-  e.textContent='';e.removeAttribute('data-kind');},2400);}
+ if(!msg){ msgHide(); return; }
+ MSG_LOG.push({t:Date.now(), msg:String(msg), kind:kind||''});
+ if(MSG_LOG.length>MSG_MAX)MSG_LOG.shift();
+ if(kind==='fail')MSG_UNSEEN++;
+ msgPaint(); msgArm();
+ if(typeof msgLogOpen==='function'&&msgLogIsOpen())msgLogDraw();}
+/* THE LOG SHEET. Last fifty, oldest first so the newest is at the bottom the
+   way a log reads, drawn fresh each time it opens and again while it is open
+   when a message lands. Times are the person's own clock. A failure carries
+   the word as well as the colour, because a red line alone says nothing to
+   a person who cannot see red. */
+function msgLogIsOpen(){ var l=document.getElementById('msglog'); return !!l&&!l.hidden; }
+function msgLogDraw(){
+ var l=document.getElementById('msglog'); if(!l)return;
+ var pad=function(n){return (n<10?'0':'')+n;};
+ l.innerHTML='<div class="msglog-h"><span>Messages, this session</span>'
+  +'<button type="button" class="msg-b" id="msglogx" aria-label="Close">'
+  +'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" '
+  +'stroke-linecap="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button></div>'
+  +'<ul class="msglog-b" id="msglogb">'
+  +(MSG_LOG.length?MSG_LOG.map(function(m){var t=new Date(m.t);
+    return '<li'+(m.kind?' data-kind="'+m.kind+'"':'')+'><time>'+pad(t.getHours())+':'+pad(t.getMinutes())+':'+pad(t.getSeconds())
+     +'</time><span>'+(m.kind==='fail'?'Failed. ':'')+esc(m.msg)+'</span></li>';}).join('')
+   :'<li class="msglog-e">Nothing has been said yet.</li>')
+  +'</ul>';
+ var x=document.getElementById('msglogx'); if(x)x.onclick=msgLogShut;
+ var bd=document.getElementById('msglogb'); if(bd)bd.scrollTop=bd.scrollHeight;}
+function msgLogOpen(){
+ var l=document.getElementById('msglog'); if(!l)return;
+ MSG_UNSEEN=0; msgPaint();
+ /* the dock steps aside while the log is up, and the log's own list holds
+    the message that was in it */
+ var d=document.getElementById('msgdock'); if(d)d.classList.remove('on');
+ clearTimeout(_stT); clearTimeout(_stF);
+ var e=document.getElementById('status'); if(e){ e.textContent=''; e.removeAttribute('data-kind'); }
+ l.hidden=false; msgLogDraw();
+ var x=document.getElementById('msglogx'); if(x)x.focus();}
+function msgLogShut(){
+ var l=document.getElementById('msglog'); if(!l)return;
+ l.hidden=true; l.innerHTML='';
+ var b=document.getElementById('msglogbtn'); if(b&&b.offsetParent)b.focus();}
+/* wired once. The words are a button for a pointer, because Keep is a small
+   target and the owner said a tap on the message is enough. */
+(function(){
+ var k=document.getElementById('msgkeep'), b=document.getElementById('msglogbtn'),
+  e=document.getElementById('status');
+ if(k)k.addEventListener('click',msgKeep);
+ if(e)e.addEventListener('click',function(){ if(!MSG_KEPT)msgKeep(); });
+ if(b)b.addEventListener('click',msgLogOpen);
+ document.addEventListener('keydown',function(ev){
+  if(ev.key==='Escape'&&msgLogIsOpen()){ msgLogShut(); ev.stopPropagation(); }},true);
+}());
 /* saving is the case that was lying, so it gets its own wording */
 function statusSaved(){
  var st=(typeof saveState==='function')?saveState():{ok:true};

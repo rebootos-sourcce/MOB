@@ -177,7 +177,7 @@ function accAccount(){
     of the switch: it says the page it opens is a sketch before a person
     turns it on expecting clients. */
  h+=accGroup('Practitioner',
-   accTog('Practitioner mode','acprac',!!(CURP&&CURP.ui&&CURP.ui.practitioner),
+   accTog('Practitioner mode','acprac',pracOn(),
     'adds Practitioner to the menu'),
    'Turned on, it opens a sketch with no clients on it.');
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
@@ -357,8 +357,8 @@ function accDisplay(){
     gets no switch, because a control that cannot act is not offered. */
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
-    ? accTog('Sound effects','acsfx',!(CURP&&CURP.ui&&CURP.ui.sfxoff),
-       'a short sound when something is kept, done or refused, and when a timer ends')
+    ? accTog('Sound effects','acsfx',sfxIsOn(),
+       'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
  return h;}
@@ -570,12 +570,18 @@ function accWire(){
  /* turned on, it plays the commonest one at once, so the person hears what
     they turned on and can set the volume by it. Only once the save landed. */
  var sx=$('acsfx');
- if(sx)sx.onclick=function(){var on=!!(CURP.ui&&CURP.ui.sfxoff);
-  if(uiSet('sfxoff',!on)&&on&&typeof sfx==='function')sfx('kept'); renderAccount();};
+ /* A DEVICE SETTING, NOT A PROFILE WRITE. This went through uiSet, which saves
+    the profile, so on a worked example turning sound off answered "Nothing
+    saved on a worked example." sfxSwitch writes the browser's own store, says
+    what it did, and plays the keep whenever it ends up on, saved or not,
+    because what a person hears is the state and not the write. */
+ if(sx)sx.onclick=function(){var want=!sfxIsOn();
+  sfxSwitch(want); if(want&&typeof sfx==='function')sfx('kept'); renderAccount();};
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');
- if(pr)pr.onclick=function(){uiSet('practitioner',!(CURP.ui&&CURP.ui.practitioner)); renderAccount();};
+ /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
+ if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
  if(ex)ex.onclick=function(){var t=pExport();
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
@@ -647,7 +653,7 @@ function profMenu(){
  if(!m.hidden){profMenuShut(); return;}
  var who=capName((typeof CURP!=='undefined'&&CURP&&CURP.name)||'Profile');
  var ses=(typeof authSession==='function')?authSession():null;
- var sfxOn=!(CURP&&CURP.ui&&CURP.ui.sfxoff);
+ var sfxOn=sfxIsOn();
  m.innerHTML='<div class="pm-who">'+esc(who)+(ses?'<span>'+esc(ses.email)+'</span>':'')+'</div>'
   +ACC_SECS.map(function(s){
    return '<button type="button" role="menuitem" class="pm-it" data-pms="'+s.k+'" style="--c:'+seatCol(s.b)+'">'
@@ -659,6 +665,12 @@ function profMenu(){
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
     +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
     +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
+  /* THE LOG IS REACHABLE WHEN NOTHING IS ON SCREEN. The dock shows for three
+     seconds, so its Log button is only there while a message is, and a person
+     who looked away needs a door that does not depend on timing. */
+  +'<button type="button" role="menuitem" class="pm-it" data-pmlog="1">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5h14M5 12h14M5 17.5h9"/></svg></span>'
+  +'<span>Message log</span></button>'
   +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
   +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
@@ -669,9 +681,11 @@ function profMenu(){
   x.onclick=function(){profMenuGo(x.getAttribute('data-pms'));};});
  var sw=m.querySelector('[data-pmsfx]');
  if(sw)sw.onclick=function(){
-  var on=!!(CURP&&CURP.ui&&CURP.ui.sfxoff);
-  if(uiSet('sfxoff',!on)){sw.setAttribute('aria-checked',on?'true':'false');
-   if(on&&typeof sfx==='function')sfx('kept');}};
+  var want=!sfxIsOn();
+  sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
+  if(want&&typeof sfx==='function')sfx('kept');};
+ var lg=m.querySelector('[data-pmlog]');
+ if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();
@@ -696,8 +710,10 @@ function uiSet(k,v){
 function applyUiPrefs(){
  var q=!!(CURP&&CURP.ui&&CURP.ui.quiet);
  document.body.classList.toggle('quiet',q);
- /* the practitioner door follows its switch, and follows the profile, since
-    the switch is stored on the profile like every preference here */
+ /* the practitioner door follows its switch. The switch is the device's and
+    not the profile's since 2 October, so a change of profile no longer moves
+    the door; this still runs on one because a legacy profile that carries the
+    old flag is read until the device has been asked. */
  if(typeof pracPaint==='function')pracPaint();}
 /* DELETE IS A REAL CONTROL AND IT SAYS EXACTLY WHAT IT DID. It removes this
    record from this browser. There is no store, so it does not claim to have

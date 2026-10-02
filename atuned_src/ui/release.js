@@ -256,7 +256,7 @@ function relPick(nodeIds){
  RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
  RUN.heavy={};RUN.look=false;
- RUN.pick=RUN.queue.slice(); RUN.rerun=false;
+ RUN.pick=RUN.queue.slice(); RUN.rerun=false; RUN.reach=null; RUN.planN=0;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan();
  RUN.open=true; relRender();}
@@ -721,10 +721,40 @@ function relHitRows(H){
        title:x.nm+', '+x.hit+' of its '+x.of+(x.of===1?' address':' addresses')+' in this run'})
      +'<span>'+esc(x.nm)+'</span><em>'+x.hit+' of '+x.of+(x.of===1?' address':' addresses')+'</em></div>';}).join('')
    +'</div>';}).join('');}
+/* HOW MUCH OF THE PLAN WAS TRULY SAID, as a count of plan entries from the
+   front. An entry counts once one of its passes has been said, which is the
+   same rule relCounts reads, and never while a pass is still being spoken. A
+   run that reached its end has said all of them, and a card still on the
+   opening has said none. This was not asked at all: End jumped to the
+   cooldown, which committed RUN.plan whole and wrote the field at every
+   address in the queue, so a person who pressed End on the first address of
+   forty was charged for forty and shown forty addresses released. 2 October,
+   the owner: "make sure there's an end or stop", and the rule that comes with
+   it is that End charges what was released and nothing else. */
+function relReach(){
+ var n=(RUN.plan||[]).length;
+ if(RUN.phase==='done')return RUN.reach==null?n:RUN.reach;
+ if(RUN.phase!=='run')return 0;
+ return Math.min(n,RUN.idx+(RUN.pass>0?1:0));}
+/* WHAT END DID, IN PLAIN WORDS, on the card the run lands on. Said only when the
+   run was cut short, and read off the figures the write used, never typed:
+   reach and planN from relCoolDown, and added from the meter's own answer. A
+   rerun is never charged, so it says so and does not print a charge that did
+   not happen. */
+function relEndNote(){
+ if(!RUN.halted||RUN.reach==null||RUN.reach>=RUN.planN)return '';
+ var rest=RUN.planN-RUN.reach, paid=(RUN.meter&&RUN.meter.added)||0;
+ return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early. '
+  +RUN.reach+' of '+RUN.planN+(RUN.planN===1?' line was':' lines were')+' said. '
+  +(RUN.rerun?'A rerun costs nothing. '
+    :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
+  +'The other '+rest+(rest===1?' line was':' lines were')+' never started'
+  +(RUN.rerun?'.':', so '+(rest===1?'it was':'they were')+' not charged.')+'</div>';}
 function relCoolDown(){
  if(RUN.done)return;
  /* where the walker stood, read before the phase moves off the list */
  var tally=relCounts();
+ var planN=(RUN.plan||[]).length, reach=RUN.halted?relReach():planN;
  RUN.done=true; RUN.phase='done';
  relHush();
  /* THE RUN IS OVER HOWEVER THIS ENDS, AND SO IS THE TONE. relRender is what
@@ -783,6 +813,22 @@ function relCoolDown(){
     the panel reads the move a person can see, and expression carries the lift
     inside it, since expression is CQ times what the pull leaves. */
  var _pre=compute(); RUN.ex0=_pre.EX; RUN.ceil0=exCeiling();
+ /* END CHARGES WHAT WAS REACHED. A run ended early keeps only the plan
+    entries that had a pass said and the addresses those entries belong to,
+    before anything reads the queue or the plan: the meter below, the write
+    at every address, the log and the hits all read these two, so cutting
+    them here is what keeps the money, the field and the card agreeing. An
+    address with at least one line said is written whole, because the engine
+    has one write per address and no half way state, and the book's own
+    reason for End still running the cooldown holds for an opened address:
+    the space has to be filled whichever way the run ended. An address the run
+    never reached is not written and not charged. A run that reached its end
+    has reach equal to the plan and nothing is cut. */
+ RUN.reach=reach; RUN.planN=planN;
+ if(reach<planN){
+  var reached={}; RUN.plan.slice(0,reach).forEach(function(k){reached[String(k).split(':')[0]]=1;});
+  RUN.queue=RUN.queue.filter(function(n){return reached[n.i];});
+  RUN.plan=RUN.plan.slice(0,reach);}
  /* what the finished card reports, fixed here: the two counts where the list
     stopped, the elapsed clock stopped with it, and what was running through
     these addresses before the write moved any of it */
@@ -894,8 +940,21 @@ function relCoolDown(){
     them. Leaving is never blocked; Done is on the card the whole time. */
  RUN.settleAt=Date.now(); RUN.settled=false; relTicker(true);
  relMark(RUN.halted?'halt':'close');
+ /* THE RUN HAS ENDED, SOUNDED ONCE, AFTER THE WRITE LANDED. Here and not at the
+    top: a run refused on a worked example returns above and never reaches
+    this line, so a refusal is heard as the refusal and not as a finish. The
+    room argument lets it through the release's own hold. */
+ if(typeof sfx==='function')sfx('done',true);
+ if(RUN.halted&&reach<planN&&typeof status==='function')
+  status(RUN.rerun?'Rerun ended early. A rerun costs nothing.'
+   :'Release ended early. You were charged only for the lines you reached.');
  syncCh();relRender();render();
  relStep();}
+/* CANCEL BEFORE A RUN. Nothing has started, so there is nothing to undo and
+   nothing charged: the meter is written in relCoolDown and nowhere else. */
+function relCancel(){
+ relClose();
+ status('Release closed. Nothing was started and nothing was charged.');}
 function relClose(){relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
 /* ============================================================
    THE SEAT TONE FOLLOWS THE CARD.
@@ -1079,7 +1138,9 @@ var REL_IC={
  /* Resume is not Pause struck through: a run held still asks to be moved,
     which is a play mark, the same triangle every other surface uses for it */
  play:'<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/>',
- stop:'<circle cx="12" cy="12" r="8.5"/><path d="M9 9h6v6H9z" fill="currentColor" stroke="none"/>'};
+ stop:'<circle cx="12" cy="12" r="8.5"/><path d="M9 9h6v6H9z" fill="currentColor" stroke="none"/>',
+ /* the cancel mark, a ring and a cross, ring and not fill like every icon here */
+ x:'<circle cx="12" cy="12" r="9"/><path d="M8.7 8.7l6.6 6.6M15.3 8.7l-6.6 6.6"/>'};
 function relIc(k){
  return '<svg viewBox="0 0 24 24" class="rel-ic" aria-hidden="true">'+REL_IC[k]+'</svg>';}
 /* its styles travel with it. The stylesheet in shell/head.html is not this
@@ -1147,6 +1208,22 @@ function relCss(){
   '.rel-cr .rel-cr-nav{display:flex;justify-content:center;margin:8px 0 4px}',
   '.rel-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;',
   ' stroke-linejoin:round;flex:0 0 auto}',
+  /* PAUSE, END AND THE CANCEL CROSS ARE 44 TALL AND AT LEAST 44 WIDE, ON EVERY
+     PHASE. They rendered blank on the welcome and the opening, measured 0 by
+     0: this sheet was only appended by the run phase, so the icon had no size
+     until the first line of the list, and a person who opened a release and
+     wanted out had nothing to press. relRender appends it first now, whichever
+     phase it draws. The label is words beside the mark, because a ring with a
+     square in it is not a word a person has been told means End. */
+  '.rel-act .rel-b{display:inline-flex;align-items:center;justify-content:center;gap:8px;',
+  ' min-width:44px;min-height:44px;padding:0 16px}',
+  '.rel-hd .rel-x{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;',
+  ' width:44px;height:44px;margin:-8px -10px -8px 0;padding:0;border:0;border-radius:50%;',
+  ' background:transparent;color:var(--mid);cursor:pointer}',
+  '.rel-hd .rel-x:hover,.rel-hd .rel-x:focus-visible{background:var(--sunk);color:var(--ink);outline:none}',
+  '.rel-hd .rel-x .rel-ic{width:24px;height:24px}',
+  '.rel-hd .rel-hdt{flex:1 1 auto;text-align:left}',
+  '.rel-card .rel-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}',
   /* A PHONE GETS ITS WIDTH BACK, not height. The head statement of a block is
      143 to 225 characters, and at 390 in a text column of 184 pixels the
      longest stood 248 tall in a list of 298, so at the start of every block
@@ -1304,6 +1381,10 @@ function relRender(){
  var h=document.getElementById('rel'); if(!h)return;
  if(!RUN.open){h.style.display='none';h.innerHTML='';return;}
  h.style.display='flex';
+ /* THE STYLES GO IN BEFORE ANY PHASE DRAWS. This was called only inside the run
+    phase, so the welcome, the opening and the setup drew Pause and End with an
+    unsized icon and nothing to press. See the 44 rule in relCss. */
+ relCss();
  var st=relCur();
  var out='<div class="rel-card'+(RUN.phase==='run'?' rel-running':'')+'">', kept=false;
  if(RUN.phase==='welcome'){
@@ -1325,14 +1406,14 @@ function relRender(){
      +'read it to yourself.'+(relVoiceOn()?' The app voice starts with the list.':'')+'</div>':'')
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
-   +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
-   +relIc(RUN.paused?'play':'pause')+'</button>'
+   +'<button class="btn rel-b" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
+   +relIc(RUN.paused?'play':'pause')+'<span>'+(RUN.paused?'Resume':'Pause')+'</span></button>'
    /* END IS ON THE OPENING TOO, round OZ, his words: "I can't even end the
       screen now. Priority." The opening and the welcome carried Skip and Pause
       and nothing that left, so a person who did not want a release could only
       skip it into the list. Nothing has been released at this point, so End
       here closes without committing anything. */
-   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>'
+   +'<button class="btn rel-b" id="relstop" aria-label="End">'+relIc('stop')+'<span>End</span></button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -1342,14 +1423,14 @@ function relRender(){
    +'<div class="rel-speak">'+esc(st.text)+'</div>'
    +relClock()
    +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button>'
-   +'<button class="btn" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
-   +relIc(RUN.paused?'play':'pause')+'</button>'
+   +'<button class="btn rel-b" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
+   +relIc(RUN.paused?'play':'pause')+'<span>'+(RUN.paused?'Resume':'Pause')+'</span></button>'
    /* END IS ON THE OPENING TOO, round OZ, his words: "I can't even end the
       screen now. Priority." The opening and the welcome carried Skip and Pause
       and nothing that left, so a person who did not want a release could only
       skip it into the list. Nothing has been released at this point, so End
       here closes without committing anything. */
-   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>'
+   +'<button class="btn rel-b" id="relstop" aria-label="End">'+relIc('stop')+'<span>End</span></button></div>'
    +relSwitches(relNow().n);
  } else if(RUN.phase==='run'){
   var at=relNow();
@@ -1387,10 +1468,12 @@ function relRender(){
    +relClock()
    +(live?relShade(live.dq,live.dq0):'')
    +relSwitches(n)
-   +'<div class="rel-act rel-act-lr"><button class="btn" id="relpause" aria-label="'
-   +(RUN.paused?'Resume':'Pause')+'">'+relIc(RUN.paused?'play':'pause')+'</button>'
-   /* End does not abandon the run. It commits the plan and runs the cooldown. */
-   +'<button class="btn" id="relstop" aria-label="End">'+relIc('stop')+'</button></div>';
+   +'<div class="rel-act rel-act-lr"><button class="btn rel-b" id="relpause" aria-label="'
+   +(RUN.paused?'Resume':'Pause')+'">'+relIc(RUN.paused?'play':'pause')+'<span>'+(RUN.paused?'Resume':'Pause')+'</span></button>'
+   /* End does not abandon the run, and it does not bill the whole plan: it
+      runs the cooldown over what was reached and charges only that, see
+      relReach and relCoolDown. */
+   +'<button class="btn rel-b" id="relstop" aria-label="End">'+relIc('stop')+'<span>End</span></button></div>';
   /* AND THE LIST IS NEVER REDRAWN UNDER A FINGER. This function rewrote the
      whole card on every line, which for one line cost nothing. For a list it
      throws away where the person had scrolled to, stops a flick mid glide on
@@ -1405,7 +1488,6 @@ function relRender(){
      channels he ruled through C3_STEM. */
   var sp=relSpan(RUN.idx), car=document.getElementById('relcar'),
    hdE=document.getElementById('relhd'), ftE=document.getElementById('relft');
-  relCss();
   if(car&&hdE&&ftE&&car.getAttribute('data-span')===sp.key){
    hdE.innerHTML=hd; ftE.innerHTML=ft; kept=true;}
   else {RUN.look=false; out+='<div id="relhd">'+hd+'</div>'+relCar(sp)+'<div id="relft">'+ft+'</div>';}
@@ -1445,6 +1527,7 @@ function relRender(){
   out+='<div class="pm-eye">Released</div>'
    +'<div class="rel-speak rel-cool">'+esc(COOLING[Math.min(RUN.cool,COOLING.length-1)])+'</div>'
    +'<div class="rel-node" style="font-size:24px">You released '+t.said+(t.said===1?' pattern.':' patterns.')+'</div>'
+   +relEndNote()
    +'<div class="rel-sub">The heaviest ones are the work. Mark them.</div>'
    +relHeaviest()
    /* THE TWO MINUTES, then what the run reached. The summary takes the
@@ -1528,7 +1611,14 @@ function relRender(){
      the panel is exactly what it was before 22.K17 and offers no choice. */
   var left=relLeft(), spent=(left<=0)&&!RUN.rerun,
    can=RUN.rerun||relRerunPlan(RUN.pick||[]).length>0;
-  out+='<div class="pm-eye">Release your selections</div>'
+  /* THE CROSS, ruled 2 October. His words: "when I click on a protocol, if I
+     don't want to run it, give me the X so I can have the option of
+     canceling." The setup had a Cancel button at the foot and nothing at the
+     top where a hand goes to leave a dialog. Same close as the button, so
+     nothing is started and nothing is charged: the run has not begun, and a
+     run is only charged in relCoolDown. 44 by 44, a ring and not a fill. */
+  out+='<div class="rel-hd"><div class="pm-eye rel-hdt">Release your selections</div>'
+   +'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button></div>'
    +'<div class="rel-rings">'+q.map(function(n){
      return crNode(n,'xs',{raw:''});}).join('')+'</div>';
   /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are, so it
@@ -1596,11 +1686,19 @@ function relRender(){
  /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
     a sound. The technical requirement and the ritual are the same press. */
  if((b=document.getElementById('relgo')))b.onclick=function(){
+  /* sounded first, while the room is still the interface's, and with the room
+     argument as well so it does not depend on that: it is the one fitting a
+     run is allowed, and it is one per run. */
+  if(typeof sfx==='function')sfx('begin',true);
   RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
   RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();};
  if((b=document.getElementById('relskip')))b.onclick=function(){
   RUN.phase='run';RUN.line=0;RUN.idx=0;RUN.pass=0;relStep();};
- if((b=document.getElementById('relcancel')))b.onclick=relClose;
+ /* the cross and the Cancel button are one close, and it says what did not
+    happen, because closing a dialog with nothing said leaves a person unsure
+    whether anything was spent */
+ if((b=document.getElementById('relcancel')))b.onclick=relCancel;
+ if((b=document.getElementById('relx')))b.onclick=relCancel;
  /* the same call the profile button makes, which is the one route to that
     surface and goes through setTab so the folded surface ruling holds. */
  /* ROUND NZ. This went to Settings and landed on whichever section was last
@@ -1610,8 +1708,14 @@ function relRender(){
   if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
+ /* END, ON EVERY PHASE. Before the list there is nothing to commit, so End
+    closes and says nothing was released and nothing was charged. On the list
+    it runs the cooldown over what was reached and charges only that. At the
+    very first line, before a single pass has been said, there is nothing
+    reached, so it is the same close and not a cooldown over an empty run. */
  if((b=document.getElementById('relstop')))b.onclick=function(){
-  if(RUN.phase==='welcome'||RUN.phase==='opening'){ relClose(); return; }
+  if(RUN.phase==='welcome'||RUN.phase==='opening'||(RUN.phase==='run'&&relReach()===0)){
+   relClose(); status('Release ended. Nothing was released and nothing was charged.'); return; }
   RUN.halted=true;relCoolDown();};
  /* Pause stops the voice mid word. Resume says the line again from its start,
     because half a statement is not one. */
