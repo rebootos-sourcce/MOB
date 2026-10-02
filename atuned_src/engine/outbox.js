@@ -19,8 +19,13 @@ var OB_MAX=20, OB_BYTES=65536;
 /* the free text ceilings, per kind. A ceiling is refused at the boundary and
    never silently truncated, because a silently cut sentence reads back to the
    person as something they never said. */
-var OB_LIMIT={question:600, bug:600, rating:300, feedback:600};
-var OB_KINDS=['question','bug','rating','feedback'];
+var OB_LIMIT={question:600, bug:600, rating:300, feedback:600, comment:600};
+/* COMMENT IS ITS OWN KIND, 2 October. The owner named three: "comments,
+   questions, bugs". A remark that is neither a question nor a fault had only
+   feedback to go to, and feedback is the eleven question survey, so a comment
+   filed there would read on the other side as a survey with every answer
+   blank. The relay sorts on kind, so the kind has to be the true one. */
+var OB_KINDS=['question','bug','rating','feedback','comment'];
 
 /* WHAT AN ENVELOPE MAY CARRY. This list is the spec, not a summary of one.
    Anything not on it is refused by name, including by whoever adds a helpful
@@ -63,7 +68,9 @@ function obBand(r){
 function obValidate(e){
  var errs=[];
  if(!e||typeof e!=='object') return {ok:false,errs:['no envelope']};
- if(OB_KINDS.indexOf(e.kind)<0) errs.push('kind '+e.kind+' is not one of the four');
+ /* the kinds are named off the list and never counted in the sentence: this
+    said "not one of the four" and was wrong the day comment made five */
+ if(OB_KINDS.indexOf(e.kind)<0) errs.push('kind '+e.kind+' is not one of '+OB_KINDS.join(', '));
  Object.keys(e).forEach(function(k){
   if(OB_KEYS.indexOf(k)<0) errs.push('the envelope may not carry '+k);});
  var lim=OB_LIMIT[e.kind]||600;
@@ -128,3 +135,62 @@ function obDrain(){
   return {state:'refused', n:bad.length, bad:bad};
  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};}
+
+/* THE SAME DRAIN FOR A HOST THAT ANSWERS LATER. 2 October, the owner: "the
+   data gets dumped to Discord". A send over the network is a promise, and
+   obDrain reads SEND_HOST's return as true or not, so a promise handed to it
+   reads as a refusal every time and nothing would ever leave. This is obDrain
+   with the wait in it, and the boundary on the way out is the same call.
+
+   TWO THINGS A WAIT BREAKS THAT A LOOP DOES NOT, and each was a way to lose
+   what somebody wrote.
+
+   AN ENTRY QUEUED DURING THE WAIT. obDrain writes back the list it read, which
+   is safe when nothing can run between the read and the write. Here a person
+   can press Send again while the first request is out, and writing back the
+   list read before the wait would erase the second entry. The queue only ever
+   grows at its end (obQueue concats) and only a drain shortens it, so what
+   arrived during the wait is everything past the length that was read, and it
+   is kept after whatever was not sent.
+
+   TWO DRAINS AT ONCE. Both would send the same entries and both would write.
+   The second one is told it is busy and touches nothing.
+
+   AND IT STOPS AT THE FIRST NO. A server that is down answers every entry the
+   same way, and twenty requests each waiting out a timeout is minutes of a
+   person watching nothing, and twenty knocks on a route that limits per
+   address. What was not tried stays in the queue untouched, in order. */
+var OB_DRAINING=false;
+function obDrainAsync(){
+ if(OB_DRAINING) return Promise.resolve({state:'busy', n:obCount()});
+ var q=obStore();
+ if(!q.length) return Promise.resolve({state:'empty', n:0});
+ if(typeof SEND_HOST!=='function') return Promise.resolve({state:'nohost', n:q.length});
+ OB_DRAINING=true;
+ var left=[], sent=0, err=null, bad=[], stopped=false;
+ function step(i){
+  if(i>=q.length) return Promise.resolve();
+  if(stopped){ left.push(q[i]); return step(i+1); }
+  var v=obValidate(q[i]);
+  if(!v.ok){ bad.push({i:i,errs:v.errs.slice(0,2)}); return step(i+1); }
+  var p;
+  try{ p=Promise.resolve(SEND_HOST(q[i])); }catch(ex){ p=Promise.reject(ex); }
+  return p.then(function(r){
+    if(r===true){ sent++; return; }
+    left.push(q[i]); stopped=true; if(!err)err='the send was refused'; },
+   function(ex){ left.push(q[i]); stopped=true; err=String(ex&&ex.message||ex); })
+   .then(function(){ return step(i+1); });}
+ return step(0).then(function(){
+  var tail=obStore().slice(q.length);
+  OB_DRAINING=false;
+  left=left.concat(tail);
+  /* A WRITE THAT DID NOT LAND IS SAID. The entries that went are still on the
+     disk and will go again, which is a duplicate on the other side and never
+     a loss on this one, and the person is told rather than shown "sent". */
+  if(!obWrite(left)) return {state:'retry', n:q.length+tail.length, sent:sent,
+   why:'sent, but could not clear them from storage, so they may send again'};
+  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad};
+  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
+  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};},
+ function(ex){ OB_DRAINING=false; return {state:'retry', n:obCount(), sent:0,
+  why:String(ex&&ex.message||ex)}; });}

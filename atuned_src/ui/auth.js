@@ -113,6 +113,27 @@ function authCall(method,path,body,token,blob){
     function(){ return {ok:res.ok, status:res.status, body:null}; }); },
    function(){ return {ok:false, status:0, body:null}; })
   .then(end,function(){ end({ok:false, status:0, body:null}); });});}
+/* THE OUTBOX'S SENDER, 2 October. The owner: "the data gets dumped to
+   Discord". The Discord webhook is never in this file: a webhook address lets
+   whoever holds it post as the team, and anything here is read by everyone
+   who opens the file, so it is a Worker secret, DISCORD_WEBHOOK_URL, and the
+   Worker relays. This posts the outbox's own envelope, already validated by
+   obDrainAsync, to POST /v1/feedback and nothing else.
+
+   NO TOKEN, EVEN WHEN SIGNED IN. The sheet says "nothing about who you are
+   travels with it", and a bearer header would let the server join the words to
+   an account. authCall sends Authorization only when handed a token, so null
+   here is the whole of that promise.
+
+   Resolves true on a yes and rejects with authWhy's sentence on a no, because
+   obDrainAsync keeps the entry on a rejection and carries its message to the
+   status line. Until the route is deployed the server answers 404, and until
+   the secret is set it answers 503, and both are a held entry and a sentence,
+   never a loss. */
+function authFeedback(e){
+ return authCall('POST','/v1/feedback',e,null).then(function(r){
+  if(r.ok)return true;
+  throw new Error(r.status===404?'The server does not take these yet.':authWhy(r,'feedback')); });}
 /* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
    ("too many attempts. wait fifteen minutes"), and they are the true reason,
    so they are shown rather than rewritten. Rewriting them would also mean

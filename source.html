@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1358 96355ba 2026-10-02 12:39"><head><meta charset="utf-8">
+<html lang="en" data-build="v1362 f2fd8ff 2026-10-02 14:33"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -24704,8 +24704,13 @@ var OB_MAX=20, OB_BYTES=65536;
 /* the free text ceilings, per kind. A ceiling is refused at the boundary and
    never silently truncated, because a silently cut sentence reads back to the
    person as something they never said. */
-var OB_LIMIT={question:600, bug:600, rating:300, feedback:600};
-var OB_KINDS=['question','bug','rating','feedback'];
+var OB_LIMIT={question:600, bug:600, rating:300, feedback:600, comment:600};
+/* COMMENT IS ITS OWN KIND, 2 October. The owner named three: "comments,
+   questions, bugs". A remark that is neither a question nor a fault had only
+   feedback to go to, and feedback is the eleven question survey, so a comment
+   filed there would read on the other side as a survey with every answer
+   blank. The relay sorts on kind, so the kind has to be the true one. */
+var OB_KINDS=['question','bug','rating','feedback','comment'];
 
 /* WHAT AN ENVELOPE MAY CARRY. This list is the spec, not a summary of one.
    Anything not on it is refused by name, including by whoever adds a helpful
@@ -24748,7 +24753,9 @@ function obBand(r){
 function obValidate(e){
  var errs=[];
  if(!e||typeof e!=='object') return {ok:false,errs:['no envelope']};
- if(OB_KINDS.indexOf(e.kind)<0) errs.push('kind '+e.kind+' is not one of the four');
+ /* the kinds are named off the list and never counted in the sentence: this
+    said "not one of the four" and was wrong the day comment made five */
+ if(OB_KINDS.indexOf(e.kind)<0) errs.push('kind '+e.kind+' is not one of '+OB_KINDS.join(', '));
  Object.keys(e).forEach(function(k){
   if(OB_KEYS.indexOf(k)<0) errs.push('the envelope may not carry '+k);});
  var lim=OB_LIMIT[e.kind]||600;
@@ -24813,6 +24820,65 @@ function obDrain(){
   return {state:'refused', n:bad.length, bad:bad};
  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};}
+
+/* THE SAME DRAIN FOR A HOST THAT ANSWERS LATER. 2 October, the owner: "the
+   data gets dumped to Discord". A send over the network is a promise, and
+   obDrain reads SEND_HOST's return as true or not, so a promise handed to it
+   reads as a refusal every time and nothing would ever leave. This is obDrain
+   with the wait in it, and the boundary on the way out is the same call.
+
+   TWO THINGS A WAIT BREAKS THAT A LOOP DOES NOT, and each was a way to lose
+   what somebody wrote.
+
+   AN ENTRY QUEUED DURING THE WAIT. obDrain writes back the list it read, which
+   is safe when nothing can run between the read and the write. Here a person
+   can press Send again while the first request is out, and writing back the
+   list read before the wait would erase the second entry. The queue only ever
+   grows at its end (obQueue concats) and only a drain shortens it, so what
+   arrived during the wait is everything past the length that was read, and it
+   is kept after whatever was not sent.
+
+   TWO DRAINS AT ONCE. Both would send the same entries and both would write.
+   The second one is told it is busy and touches nothing.
+
+   AND IT STOPS AT THE FIRST NO. A server that is down answers every entry the
+   same way, and twenty requests each waiting out a timeout is minutes of a
+   person watching nothing, and twenty knocks on a route that limits per
+   address. What was not tried stays in the queue untouched, in order. */
+var OB_DRAINING=false;
+function obDrainAsync(){
+ if(OB_DRAINING) return Promise.resolve({state:'busy', n:obCount()});
+ var q=obStore();
+ if(!q.length) return Promise.resolve({state:'empty', n:0});
+ if(typeof SEND_HOST!=='function') return Promise.resolve({state:'nohost', n:q.length});
+ OB_DRAINING=true;
+ var left=[], sent=0, err=null, bad=[], stopped=false;
+ function step(i){
+  if(i>=q.length) return Promise.resolve();
+  if(stopped){ left.push(q[i]); return step(i+1); }
+  var v=obValidate(q[i]);
+  if(!v.ok){ bad.push({i:i,errs:v.errs.slice(0,2)}); return step(i+1); }
+  var p;
+  try{ p=Promise.resolve(SEND_HOST(q[i])); }catch(ex){ p=Promise.reject(ex); }
+  return p.then(function(r){
+    if(r===true){ sent++; return; }
+    left.push(q[i]); stopped=true; if(!err)err='the send was refused'; },
+   function(ex){ left.push(q[i]); stopped=true; err=String(ex&&ex.message||ex); })
+   .then(function(){ return step(i+1); });}
+ return step(0).then(function(){
+  var tail=obStore().slice(q.length);
+  OB_DRAINING=false;
+  left=left.concat(tail);
+  /* A WRITE THAT DID NOT LAND IS SAID. The entries that went are still on the
+     disk and will go again, which is a duplicate on the other side and never
+     a loss on this one, and the person is told rather than shown "sent". */
+  if(!obWrite(left)) return {state:'retry', n:q.length+tail.length, sent:sent,
+   why:'sent, but could not clear them from storage, so they may send again'};
+  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad};
+  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
+  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};},
+ function(ex){ OB_DRAINING=false; return {state:'retry', n:obCount(), sent:0,
+  why:String(ex&&ex.message||ex)}; });}
 
 try{window.__at&&window.__at('engine/outbox.js');}catch(e){}
 /* ============================================================
@@ -25222,6 +25288,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
+                  obDrainAsync:obDrainAsync,
                   obCount:obCount, obStore:obStore, obBand:obBand,
                   bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
                   OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
@@ -55244,6 +55311,27 @@ function authCall(method,path,body,token,blob){
     function(){ return {ok:res.ok, status:res.status, body:null}; }); },
    function(){ return {ok:false, status:0, body:null}; })
   .then(end,function(){ end({ok:false, status:0, body:null}); });});}
+/* THE OUTBOX'S SENDER, 2 October. The owner: "the data gets dumped to
+   Discord". The Discord webhook is never in this file: a webhook address lets
+   whoever holds it post as the team, and anything here is read by everyone
+   who opens the file, so it is a Worker secret, DISCORD_WEBHOOK_URL, and the
+   Worker relays. This posts the outbox's own envelope, already validated by
+   obDrainAsync, to POST /v1/feedback and nothing else.
+
+   NO TOKEN, EVEN WHEN SIGNED IN. The sheet says "nothing about who you are
+   travels with it", and a bearer header would let the server join the words to
+   an account. authCall sends Authorization only when handed a token, so null
+   here is the whole of that promise.
+
+   Resolves true on a yes and rejects with authWhy's sentence on a no, because
+   obDrainAsync keeps the entry on a rejection and carries its message to the
+   status line. Until the route is deployed the server answers 404, and until
+   the secret is set it answers 503, and both are a held entry and a sentence,
+   never a loss. */
+function authFeedback(e){
+ return authCall('POST','/v1/feedback',e,null).then(function(r){
+  if(r.ok)return true;
+  throw new Error(r.status===404?'The server does not take these yet.':authWhy(r,'feedback')); });}
 /* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
    ("too many attempts. wait fifteen minutes"), and they are the true reason,
    so they are shown rather than rewritten. Rewriting them would also mean
@@ -56313,21 +56401,60 @@ function accBilling(m){
   +'Nothing about a card is held here and the record carries no customer number.');}
 
 /* ---------- 4.6 help ---------- */
+/* THE COMMUNITY DOOR, 2 October. The owner: "the community work is on
+   Discord so there needs to be a doorway to Discord as well." The invite link
+   is the owner's to make, from his own Discord server, and it does not exist
+   yet (WAITING-ON-YOU.md item 13). It is not a secret: an invite link is made
+   to be handed out, so it lives here in the open, and this is the one place it
+   is written. Paste it between the quotes and rebuild.
+
+   EMPTY SAYS NOT OPEN YET, AND A WRONG ONE SAYS THE SAME. A door that opens
+   onto Discord's "invite invalid" page is a dead button in a new tab, so the
+   link only becomes a door when it is an https invite on one of Discord's own
+   two invite hosts. Anything else, a typo or a link to some other site pasted
+   here by mistake, stays a stub and never reaches a person as a link. */
+var COMMUNITY_INVITE='';
+function commInvite(){
+ var u=String(COMMUNITY_INVITE||'').trim();
+ return /^https:\/\/(discord\.gg|discord\.com\/invite)\/[A-Za-z0-9-]{2,64}\/?$/.test(u)?u:'';}
 function accHelp(){
- var h=accGroup('Get help',
-   accAct('Ask a question','achelpq',{btn:'Ask'})
+ /* THE THREE THE OWNER NAMED, comment, question and bug, in one group and one
+    sheet. Each row opens the sheet on its own kind, and the sheet can be
+    switched to either of the other two without losing what was typed, because
+    a person who opened Ask and is writing about a fault should not have to
+    start again to file it as one. */
+ var h=accGroup('Write to us',
+   accAct('Leave a comment','achelpc',{btn:'Write'})
+   +accAct('Ask a question','achelpq',{btn:'Ask'})
    +accAct('Report something broken','achelpb',{btn:'Report'}),
-   'Both go to the same place. There is nowhere to send them yet, so what you '
-   +'write is held on this device and the outbox below says so.');
+   'They all go to the same place. What you write is held on this device first, '
+   +'and the outbox below says whether it has gone.');
+ var inv=commInvite();
+ h+=accGroup('Community',
+   inv?'<div class="ac-row ac-act"><span class="ac-rl">Talk to other people who use this</span>'
+    +'<a class="btn" id="accomm" href="'+esc(inv)+'" target="_blank" rel="noopener noreferrer">'
+    +'Open Discord</a></div>'
+   :accStub('Talk to other people who use this','not open yet'),
+   /* UNPACKED, round PO. Discord is a name a person may not know, so what it
+      is goes beside it, and the one fact a person needs before pressing: it
+      is somebody else's site with its own sign in, and nothing from here goes
+      with them. */
+   'Discord is a free chat app where the community talks. It opens in a new tab, '
+   +'it needs its own Discord account, and nothing from this app goes with you.');
  h+=accGroup('Tell us how it is going',
    accAct('Rate the product','acrate',{btn:'Rate'})
    +accAct('Product feedback','acsurv',{btn:'Open'}));
  h+=accGroup('Reading this',
    accAct('How to read this','achowto',{btn:'Open'}),'');
+ /* A RETRY HAS A DOOR. The drain runs on every Send, so without this a held
+    entry only left when the person wrote another one, which is a queue that
+    asks for more words to move the old ones. */
+ var nq=obCount();
  h+=accGroup('What is waiting',
-   accRow('Outbox',obCount()?obCount()+' waiting':'\u2013',{num:false}),
-   obCount()?'Nothing can be sent yet. What you wrote is kept here and will go '
-    +'when there is somewhere to send it.'
+   accRow('Outbox',nq?nq+' waiting':'\u2013',{num:false})
+   +(nq&&typeof SEND_HOST==='function'?accAct('Try sending them again','acobsend',{btn:'Send now'}):''),
+   nq?'What you wrote is kept here until the server takes it, and nothing is '
+    +'thrown away while it waits.'
    :'Nothing waiting.');
  h+=accGroup('This build',
    accRow('Build',(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'not stamped')
@@ -56439,6 +56566,8 @@ function accWire(){
     redraws on a load that landed because the record's own name is printed on it */
  if(typeof recordImportWire==='function')recordImportWire('ac',function(){renderAccount();});
  var hw=$('achowto'); if(hw)hw.onclick=function(){sheetOpen(helpSheet());};
+ var ac=$('achelpc'); if(ac)ac.onclick=function(){obCompose('comment');};
+ var os=$('acobsend'); if(os)os.onclick=function(){obFlush(os);};
  var aq=$('achelpq'); if(aq)aq.onclick=function(){obCompose('question');};
  var ab=$('achelpb'); if(ab)ab.onclick=function(){obCompose('bug');};
  var ar=$('acrate');  if(ar)ar.onclick=function(){obCompose('rating');};
@@ -56582,9 +56711,10 @@ function accDelete(){
 /* ============================================================
    COMPOSING SOMETHING TO SEND, AND THE HONEST FAILURE.
 
-   Four kinds through one sheet: a question, a bug, a rating and the
-   questionnaire. The rating and the questionnaire carry their answers; the
-   question and the bug carry a body.
+   Every kind in OB_KINDS through one sheet: a comment, a question, a bug, a
+   rating and the questionnaire. The rating and the questionnaire carry their
+   answers; the other three carry a body. (This said "four kinds" until the
+   comment made it wrong, so the kinds are named and not counted.)
 
    The line above the field is always the same words and it is there before
    anybody types, per the practice: say it at the moment of contribution, not
@@ -56595,8 +56725,15 @@ function accDelete(){
    ============================================================ */
 /* sentence case, because sh-h is capitalised by the sheet */
 var OB_TITLE={question:'Ask a question',bug:'Report something broken',
- rating:'Rate the product',feedback:'Product feedback'};
+ rating:'Rate the product',feedback:'Product feedback',comment:'Leave a comment'};
+/* the three free text kinds and their names on the switch. The bug's name is
+   the row's own words, "something broken", because bug is a programmer's word
+   and the row a person pressed to get here did not use it. */
+var OB_FREE=[['comment','Comment'],['question','Question'],['bug','Something broken']];
+function obFree(k){ return OB_FREE.some(function(x){return x[0]===k;}); }
 var OB_LEAD={
+ comment:'Anything you want the team to know. What works, what does not, what '
+  +'you would change.',
  question:'Ask anything about what a reading means, what a control does, or why '
   +'the instrument said what it said.',
  bug:'What did you do, what did you expect, and what happened instead. The build '
@@ -56648,6 +56785,10 @@ function obCompose(kind){
 function obSheet(){
  var k=OB_KIND, lim=OB_LIMIT[k]||600;
  var h='<div class="pm-eye">Help</div><p class="sh-h">'+esc(OB_TITLE[k]||'Send')+'</p>'
+  +(obFree(k)?'<div class="seg ob-kinds" role="group" aria-label="What this is">'
+   +OB_FREE.map(function(x){
+    return '<button type="button" data-obk="'+x[0]+'" aria-pressed="'+(x[0]===k)+'">'
+     +esc(x[1])+'</button>';}).join('')+'</div>':'')
   +'<p class="sh-p">'+esc(OB_LEAD[k]||'')+'</p>';
  if(k==='rating'||k==='feedback'){
   var list=(k==='rating')?OB_RATE:OB_SURVEY, lens=null;
@@ -56672,9 +56813,15 @@ function obSheet(){
   +'<div class="sh-act"><button class="btn pri" id="obsend" type="button">'
   +(k==='rating'||k==='feedback'?'Send':'Send it')+'</button>'
   +'<button class="btn" id="obcancel" type="button">Cancel</button></div>'
-  +'<p class="sh-p dim">There is nowhere to send this yet. It is kept on this '
-  +'device and goes when there is somewhere to send it. Nothing about who you '
-  +'are travels with it.</p>';
+  /* THE DISCLOSURE CHANGED BECAUSE THE FACT DID. "There is nowhere to send
+     this yet" was true while no host was bound. One is now, and what it sends
+     to is a channel on the team's Discord server, so the line says where it
+     lands and who can read it there, before anybody types. Whether that channel
+     is private to the team or open to the community is the owner's to set, and
+     "anyone who can read that channel" is true either way. */
+  +'<p class="sh-p dim">Kept on this device first, then sent to a channel on our '
+  +'Discord server. Anyone who can read that channel can read it. Nothing about '
+  +'who you are travels with it.</p>';
  return h;}
 function obWire(){
  document.querySelectorAll('[data-obq]').forEach(function(b){
@@ -56683,8 +56830,42 @@ function obWire(){
    var t=$('obtext'); if(t)OB_BODY=t.value;
    sheetOpen(obSheet()); obWire();
    var t2=$('obtext'); if(t2)t2.value=OB_BODY;};});
+ /* the switch redraws the sheet, so what was typed is carried across it the
+    way the answer buttons above carry it */
+ document.querySelectorAll('[data-obk]').forEach(function(b){
+  b.onclick=function(){
+   var t=$('obtext'); if(t)OB_BODY=t.value;
+   OB_KIND=b.getAttribute('data-obk');
+   sheetOpen(obSheet()); obWire();
+   var t2=$('obtext'); if(t2)t2.value=OB_BODY;};});
  var c=$('obcancel'); if(c)c.onclick=function(){sheetShut();};
  var s=$('obsend'); if(s)s.onclick=function(){obSend();};}
+/* WHAT A DRAIN ENDED IN, AS ONE SENTENCE. Held is said as held and sent only
+   as sent, because the drain's state is the only thing that knows. A retry
+   carries the reason the host gave, which is ui/auth.js's sentence for what
+   the server or the connection did. */
+function obSaid(d){
+ var dropped=d.refused?' One waiting entry carried something that identifies a '
+  +'person, so it was taken out and not sent.':'';
+ switch(d.state){
+  case 'sent':   return 'Sent. Thank you.'+dropped;
+  case 'empty':  return 'Nothing is waiting to send.';
+  case 'busy':   return 'Already sending. What you wrote is held on this device.';
+  case 'nohost': return 'Held on this device. There is nowhere to send it yet, so '
+   +'it waits in the outbox.';
+  case 'refused':return 'Nothing was sent. What was waiting carried something that '
+   +'identifies a person, so it was taken out of the outbox.';
+  default:       return 'Held on this device, not sent yet. '+(d.why||'')
+   +' It waits in the outbox and nothing has been thrown away.'+dropped;}}
+function obFlush(btn){
+ if(btn)btn.disabled=true;
+ status('Sending.');
+ return obDrainAsync().then(function(d){
+  /* the redraw first, because renderAccount does not touch the status line and
+     the order makes the sentence the last thing written */
+  renderAccount();
+  status(obSaid(d),d.state==='sent'||d.state==='empty'?'ok':'fail');
+  return d;});}
 function obSend(){
  var t=$('obtext'), body=t?t.value.trim():'';
  var r=compute();
@@ -56695,12 +56876,14 @@ function obSend(){
   viewport:(window.innerWidth<720?'narrow':'wide')};
  var q=obQueue(e);
  if(!q.ok){ status(q.why,'fail'); return false; }
- /* QUEUED SAYS QUEUED. Never sent, because it has not been. */
- var d=obDrain();
- if(d.state==='sent'){ status('Sent. Thank you.','ok'); }
- else { status('Held on this device. There is nowhere to send it yet, so it is '
-   +'waiting in the outbox and nothing has been thrown away.','ok'); }
- sheetShut(); renderAccount(); return true;}
+ /* QUEUED SAYS QUEUED. Never sent, because it has not been. The sheet shuts
+    on the queue and not on the send: the words are safe on this device the
+    moment obQueue says so, and the send is told separately when it answers.
+    obDrain was called here and read a promise as a refusal, so once a network
+    host was bound nothing would ever have left. */
+ sheetShut(); renderAccount();
+ obFlush(null);
+ return true;}
 
 try{window.__at&&window.__at('ui/account.js');}catch(e){}
 /* ============================================================
@@ -61505,6 +61688,11 @@ bindPlan(function(what,tier){
      that looks pressed and did nothing. */
   try{ location.href=r.url; }
   catch(e){ status('Could not open the '+page+' page. Nothing has changed.','fail'); }});});
+/* THE OUTBOX GETS ITS HOST, the same way billing got its own above: the
+   engine queues and validates, ui/auth.js makes the request, and this line is
+   the only thing joining them. Bound at boot, so an entry held from an
+   earlier visit goes on the next Send or the Send now in Help. */
+bindSend(authFeedback);
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
@@ -61693,5 +61881,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004025481"></div>
+<div id="eof" hidden data-len="004036737"></div>
 </body></html>
