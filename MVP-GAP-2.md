@@ -49,12 +49,12 @@ MVP is the smallest thing a stranger can use, pay for, and be safe in. His three
 |Sound effects and release bed|partly|ui/sound.js plays after a press in my run|He hears none. Builder on it|me|
 |**Quality gates**||||| 
 |Engine gate|built and used|node tests/engine.js: 4172 passed, 0 failed|None|none|
-|Browser gates|built and used|collide 831 passed; design and functional: see note|None|none|
+|Browser gates|partly|collide 831 and design 186 pass; functional timed out at 10 minutes|Rerun on a quiet machine|me|
 |New gates: safety, privacy, perf, journey|not started|not in tests/|Land with each slice|me|
 |Packed file|built, not wired or not visible|inflates to v1161; source.html is v1253|Repack (P23)|me|
 
 
-**Two numbers, and neither is a measurement.** Old file: 16 of 25 steps, 64 percent, every step weighing the same. Today: 10.5 of 32 steps, 33 percent. The drop is the longer list (safety, practitioner, sound and gates were left out) and stub-only work now counting half. **Second number, weighted by what blocks a first paying stranger:** of the 12 steps marked as blockers in this table (distress, care, review, self-grant, first reading, the pay chain, sign in, the public page, the release), 3 points are earned out of 12, 25 percent. This is the number to steer by.
+**Two numbers, and neither is a measurement.** Old file: 16 of 25 steps, 64 percent, every step weighing the same. Today: 10 of 32 steps, 31 percent. The drop is the longer list (safety, practitioner, sound and gates were left out) and stub-only work now counting half. **Second number, weighted by what blocks a first paying stranger:** of the 12 steps marked as blockers in this table (distress, care, review, self-grant, first reading, the pay chain, sign in, the public page, the release), 3 points are earned out of 12, 25 percent. This is the number to steer by.
 
 ## 3. The practitioner layer
 
