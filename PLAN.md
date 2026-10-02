@@ -1,4 +1,4 @@
-# The plan, 2 October, rounds OD to PH
+# The plan, 2 October, rounds OD to PL
 
 Everything he has asked for, sorted, with what state each is in. Statuses are
 read off the repository and the gate runs, not recalled. "Pushed" means on
@@ -6,21 +6,28 @@ read off the repository and the gate runs, not recalled. "Pushed" means on
 since round PH: plain words, as if he is ten, no fixed headings; questions only
 when blocked (round PD).
 
-## A. Done and pushed (latest build v1161, commit 8df2ce2)
+## A. Done and pushed (latest build v1161, commit 8df2ce2, sent to him as atuned.html)
 
-Full list in `PLAN-HISTORY.md`. This round: all gates green on a quiet machine;
-welcome pop-up after paying; Guest label and developer options lower right;
-End button on the release opening screens; his recorded opening voice saved
-(`audio/`: master wav, 143 KB Opus clip, phrase timing); API setup on one page
-(`API-SETUP-NOW.md`); round PH review passes 1 and 2 written (`REVIEW-skin/`).
+Full list in `PLAN-HISTORY.md`. This round: all gates green on a quiet machine; welcome
+pop-up after paying; Guest label and developer options lower right; End button on the
+release opening screens; his recorded opening voice saved (`audio/`); API setup on one page.
+THREE REVIEWS FINISHED as documents (no product code changed by them): the skin (`REVIEW-skin/`),
+the onboarding (`REVIEW-onboarding/`, tally and rulings in `TALLY.md`), the six-area
+architecture (`REVIEW-arch/`, tally and slice table in `TALLY.md` and section K).
 
-## B. In flight right now
+## B. In flight right now (2 October, evening)
 
-| Work | Who | State |
-|---|---|---|
-| Skin review, pass 2 (cross reading) | all directors | 11 of 12 reports in; technical pass 2 and the QA measurement report still writing |
-| Skin review, pass 3 (pitch to the ICPs, final grades, tally, ranked recommendations) | all directors | starts when pass 2 and QA land |
-| Export of finished files to his Drive folder | me | set up this round, see section I |
+| Work | State |
+|---|---|
+| Skin review, pass 3 (the last pass) | 12 of 13 seats running; brand 66 and mechanics 55 are in. QA's measured pass 1 still writing |
+| Onboarding: mockup of the automatic slider, for him to review first | one builder running; screenshots and a playable file come next |
+| Round PL: example profiles by coherence tier, plus three new per tier (J12) | builder running in its own copy |
+| Round PL: COPY, first (J13): site wide walk, no percent or zero verdicts, evidence file | copy director running in its own copy |
+| Round PL: Compass teacher click shows the behaviour complex, with starter recipes (J14) | builder running in its own copy |
+| Architecture review pass 3 | done except QA's gate list |
+
+HONEST ANSWER on the copy: it was not all updated. The site wide walk (J13) had not run. It is
+running now and it comes before any other build.
 
 ## C. Next, in order
 
