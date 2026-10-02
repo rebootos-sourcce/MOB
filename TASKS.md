@@ -32169,3 +32169,15 @@ A model switch restarted the session and killed the three builds in flight (the 
 - AX8/vritti: nothing pushed, uncommitted work in its worktree, checkpointed and pushed as `9259afc`. Resumed from there.
 
 Disk had drifted back to 1.5GB free (97%) from the night's accumulated worktrees. Pruned eight checkouts after confirming each was clean and either already merged into the dev branch or a plain non-git copy of it: 13GB free now. The three resumed agents each start from a fresh worktree off their pushed branch.
+
+## Round QC, closed: the "What changed?" step is live. Two of the audit's three breaks are now fixed
+
+The second break the Congruency audit found ("there is no what-changed step anywhere after a release") is closed on the dev branch at `2a5f3cd`, build v1428. After a release settles, the card asks what changed with the TDD's own five answers (felt different / see it differently / something moved / nothing changed / not sure), none pre-selected. Each answer is written once per released address through the existing evidence writer (`releaseVerify` in `engine/journey.js`, `practiceDo(...,'evidence_record',...)`, `metric:'release_verification'`), all addresses or none, an unknown value refused by name at the boundary, linked to the story entry by a typed `story_t` field. No schema bump. "Your patterns" now shows "You said 'X' after N releases" on the pattern's row, and never counts it as evidence for or against.
+
+The one engine decision the audit flagged is proven, not assumed: a "nothing changed" answer adds no evidence-to-pattern trace edge. Driven in a real browser, edges were 20 before the answer and 20 after, with the same three records producing three "supports" edges when the exclusion was bypassed, so the test can see what it's guarding. The exclusion covers all five answers; whether a verification should ever carry a neutral relation in the rule table stays an open design question, not decided silently.
+
+One real flaw caught and fixed before it ever reached the branch: the first cut recorded a sixth value, `skipped`, at every address on Skip and on simply leaving the card, which both invented a record of something the person did not do and made three pattern rows appear in "Your patterns" from one skip. Skip and leaving now write nothing, the card says "Skipped. Nothing was recorded," and a stored `skipped` is refused by name. Each fix was checked against a deliberately broken copy first.
+
+Gates on the pushed tree: engine 4693/0 (re-run here, not only trusted), journey 142/0, onboarding2 181/0 (reloads after each of the five answers, and asserts no evidence edge reaches a released address), collide 831/0, design 187/0, voice clean. One loose end, backlog: the card's eyebrow renders "What Changed?" in title case through the shared eyebrow style, against the sentence-case rule; house-wide style, not this card's.
+
+Of the three breaks: the silent profile refusal is fixed, the missing what-changed step is fixed. Still open: the mirror's Yes and Not me never reach the graph or the Field rail (F16, the next closure).
