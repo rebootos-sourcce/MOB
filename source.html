@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1442 fbb4e91 2026-10-02 18:43"><head><meta charset="utf-8">
+<html lang="en" data-build="v1445 8d3f4cd 2026-10-02 19:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5472,42 +5472,72 @@ body.tab-ritual #rit .rit-card{width:100%;max-width:820px;margin:0 auto;
  max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
 body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
  padding-top:10px;margin-top:14px}
-/* FLOW IS TWO TOOL SETS AND HAS NO LEFT COLUMN. Ruled 2 October, his words:
-   "On the flow pages, get rid of the left and right menu. Actually, sorry.
-   Move the new ritual to the right menu." The left column is not drawn on
-   Ritual or Accountability, and the right column holds one thing, #flowrail,
-   the menu of the tool set the person is in: New ritual on Ritual, what is due
-   and what was missed on Accountability. Every other section the rail carries
-   (the Energetic Summary, the Reading, Selection, Flow's own shelf, Running,
-   Moral integrity and Run a release) is hidden here, by the child selector and
-   not by a list of names, so a section added to the rail later does not turn
-   up on Flow. !important because the rail's own shut rule above is important
-   and the Run a release row carries its display inline.
+/* FLOW IS ONE PAGE OF THREE COLUMNS, round QF, 2 October, his words: "we're
+   re-merging the knowledge base and the accountability tracker. Left menu will
+   be for inputting new. Right side of the menu is for the accountability
+   tracker. Center piece is for the ritual."
 
-   THE FOLD STILL WORKS. A person who shut the right column on the Field keeps
-   it shut here, because the fold is their arrangement of the screen, and the
-   one control it leaves is the way back. Shut, New ritual is one press away
-   and the Active list says where it went. */
-body.tab-ritual .mid>#lcol,body.tab-acct .mid>#lcol{display:none}
-body.tab-ritual #rpanel>*:not(.rfold):not(.fl-rail),
-body.tab-acct #rpanel>*:not(.rfold):not(.fl-rail){display:none!important}
-body:not(.tab-ritual):not(.tab-acct) .fl-rail{display:none}
-/* 400 and not the rail's usual 336, measured: the builder's week is seven
-   presses of the 44 pixel floor, 308 plus its gaps, and 336 less the rail's
-   padding and the card around it left 280 */
+   So each of the three columns the shell already has gets one job and keeps it,
+   and the person never presses anything to see all three:
+
+     left    #flownew, inputting new. Closed it is one press and the seven
+             tags; open it is the builder.
+     centre  #rit, the ritual. The chain from story to work, and the Active
+             list with the ring that marks a day done.
+     right   #flowrail, the accountability tracker. What is due today, what
+             was done, what was missed, and the record.
+
+   This reverses round PO, which took the left column off Flow and put the
+   builder on the right. The left column comes back with a job, and the right
+   column changes hands. Every other section the rails carry (Root Energetics,
+   Awareness, Child emotions, Matrix on the left; the Energetic Summary, the
+   Reading, Selection, Flow's own shelf, Running, Moral integrity and Run a
+   release on the right) is hidden here by the child selector and not by a list
+   of names, so a section added to either rail later does not turn up on Flow.
+   !important because each rail's own shut rule above is important and the Run
+   a release row carries its display inline.
+
+   THE FOLD STILL WORKS, on both columns. A person who shut a column on the
+   Field keeps it shut here, because the fold is their arrangement of the
+   screen, and the one control it leaves is the way back. */
+body.tab-ritual #lpanel>*:not(.lfold):not(.fl-rail){display:none!important}
+body.tab-ritual #rpanel>*:not(.rfold):not(.fl-rail){display:none!important}
+body:not(.tab-ritual) .fl-rail{display:none}
+/* 400 ON BOTH SIDES, measured rather than chosen, and measured twice. Both
+   columns carry a row of seven presses at the 44 pixel floor: the builder's
+   week on the left, the record's month on the right. That is 308 plus its
+   gaps, and the rail's usual 302 less its padding and the card inside it left
+   246. 360 was tried first and the seventh day of the week was still cut off
+   at 1600, which a shot caught and a number in a stylesheet would not have. */
 @media (min-width:1181px){
- body.tab-ritual .mid,body.tab-acct .mid,
- body.lshut.tab-ritual .mid,body.lshut.tab-acct .mid{grid-template-columns:minmax(0,1fr) 400px}
- body.rshut.tab-ritual .mid,body.rshut.tab-acct .mid,
- body.lshut.rshut.tab-ritual .mid,body.lshut.rshut.tab-acct .mid{grid-template-columns:minmax(0,1fr) 58px}}
-/* stacked, the menu comes first on both tool sets, ahead of the stage whose own
-   order is -1 on a phone. On Ritual a person who presses Start on the chain or
-   opens a ritual to edit it is looking at the top of the page, and a builder
-   opened below a screenful of list is an opening nobody sees. On Accountability
-   the menu is what is due today and what was missed, the things to act on, and
-   the month under them is a record to read once they are done: below the
-   month they were four screens down on a phone, measured at 390. */
-@media (max-width:1180px){body.tab-ritual #rcol,body.tab-acct #rcol{order:-2}}
+ body.tab-ritual .mid{grid-template-columns:400px minmax(0,1fr) 400px}
+ body.lshut.tab-ritual .mid{grid-template-columns:58px minmax(0,1fr) 400px}
+ body.rshut.tab-ritual .mid{grid-template-columns:400px minmax(0,1fr) 58px}
+ body.lshut.rshut.tab-ritual .mid{grid-template-columns:58px minmax(0,1fr) 58px}}
+/* THE PHONE STACK IS THE CENTRE, THEN THE TRACKER, THEN NEW, and the order was
+   measured rather than argued. Three columns side by side become three blocks
+   in a scroll, and whichever goes first is the only one most people see.
+
+   The tracker went first on the first cut, on the reasoning that a person
+   opens this page to press a ring. Measured at 390 with two rituals running,
+   that put the accountability column at 1553 pixels tall and the ritual list
+   at 1684 down the page, nearly two screens of scrolling to reach the thing
+   the page is named after. And it bought nothing: the ring that marks a day
+   done is on the Active row in the centre as well, which is the one piece of
+   accountability the Ritual stage has always carried. So the centre goes
+   first, the press is on the first screen either way, and the tracker reads
+   underneath it.
+
+   Inputting new is last, because starting a ritual is rarer than keeping one.
+   AND IT MOVES WHEN THE BUILDER OPENS. A person who presses New ritual, or
+   Edit on a missed one, has asked for that column, and a builder two screens
+   down is an opening nobody sees. ritRender puts ritbuild on the body while
+   the builder is holding something, so the column they just asked for is the
+   one in front of them. */
+@media (max-width:1180px){
+ body.tab-ritual #rcol{order:1}
+ body.tab-ritual #lcol{order:2}
+ body.tab-ritual.ritbuild #lcol{order:-2}}
 /* THE MENU'S OWN RULES LIVE HERE AND NOT IN ui/ritual.js. #flowhd and #flowside
    are in the document from the first paint, and the design gate holds every
    class the document carries to a rule in the sheet: they sat in the script's
@@ -5523,10 +5553,10 @@ body:not(.tab-ritual):not(.tab-acct) .fl-rail{display:none}
 .fl-nm{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;color:var(--ink)}
 .fl-nm svg{width:20px;height:20px;fill:none;stroke:var(--sec-flow);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fl-says{font-size:13.5px;line-height:1.5;color:var(--mid)}
-body.tab-acct #acct{display:flex!important;z-index:5;overflow-y:auto}
-body:not(.tab-acct) #acct{display:none!important}
-body.tab-acct #acct .rit-card{width:100%;max-width:1760px;margin:0 auto;
- max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
+/* the left menu's head takes the accent, the colour of every primary press,
+   because inputting new is what this column is for. The right menu's head
+   keeps Flow's own colour above. */
+.fl-new .fl-nm svg{stroke:var(--accent)}
 #cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
 #cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
  box-shadow:none;padding:14px 18px 18px}
@@ -7753,7 +7783,12 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
     <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
-    <button type="button" class="vt tabtop" data-tabk="14" aria-pressed="false" title="Accountability"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.4l2.8 2.8 5.2-5.8"/></svg><span class="n">Accountability</span></button>
+    <!-- ACCOUNTABILITY HAS NO BUTTON, round QF. It is the right column of the
+         Ritual page, not a page beside it: "Right side of the menu is for the
+         accountability tracker." Integer 14 is folded onto 10 in core.js, so
+         it keeps its integer and its renderer and loses only its door, the
+         way Games and Analytics each did before it. The gate holds this group
+         to TABDEF, so a button left here would fail the run. -->
    </div>
    <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
     <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
@@ -7914,6 +7949,21 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9 4.5v15"/>
      <path class="lf-ch" d="M15.6 9.4L13 12l2.6 2.6"/></svg></button>
+   <!-- THE FLOW INPUT MENU. Ruled round QF, 2 October, his words: "Left menu
+        will be for inputting new." So on the Ritual page this column is the
+        one place a person starts or changes a ritual: closed it is one press
+        and the seven tags, open it is the builder. Round PO had taken the
+        left column off Flow and put the builder on the right; this reverses
+        the second half of that and gives the left column a job instead of
+        hiding it.
+
+        It is not a .lsec. A section folds, and an input menu that folds shut
+        is a New ritual a person cannot find, which is the standing rule that
+        a control is never hidden with no affordance. The column's own fold
+        still works, because that is the person's arrangement of the screen.
+        Drawn by ritRender in ui/ritual.js, shown on the Ritual tab only,
+        head.html beside .fl-rail. -->
+   <div class="fl-rail fl-new" id="flownew"><div class="fl-hd" id="flownewhd"></div><div class="rvr" id="flowleft"></div></div>
    <!-- ROOT ENERGETICS, ABOVE THE READINGS, AND IT OPENS CLOSED. EZ in
         TASKS.md, his words: "The states Western Eastern number design I need
         all my numerology stuff ... that is all collapsible and goes above
@@ -8196,13 +8246,15 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
    <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
-   <!-- ACCOUNTABILITY, ITS OWN HOST. A sibling of #rit and never a child of it,
-        on the #sum and #ana rule this file already names: setTab shows and
-        hides every host by its own id, so a surface carried inside another
-        host disappears with it. Drawn by acctRender in ui/accountability.js.
-        Its class is iq and not rel, because rel is a modal overlay and this
-        is a page. -->
-   <div id="acct" class="iq"></div>
+   <!-- ACCOUNTABILITY HAS NO HOST ON THE STAGE ANY MORE, round QF. It was a
+        page of its own for one round and it is the right column of this page
+        now, so what it draws goes into #flowside in the right rail and
+        nothing is nested inside #rit. That matters and is not tidiness: the
+        renderer for #rit writes the whole innerHTML of its host, so a host
+        for a second surface placed inside it is deleted on the way past,
+        which is the #know and #games lesson this file already carries. The
+        right rail is a sibling of the stage, so it cannot be deleted by the
+        stage's own paint. -->
    <!-- the compass with volume. its own canvas, its own context, and an
         axonometric projection. no library and no new dependency. -->
    <div id="cone" class="rel"></div>
@@ -14313,14 +14365,19 @@ const TABDEF=[
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
+ /* FLOW IS ONE PAGE OF THREE COLUMNS, round QF, 2 October, and that is the
+    third ruling on this one surface. Round JQ attached the accountability
+    tracker to the ritual page, round PO split it out into a tool set of its
+    own, and round QF put it back, with a column each and a job named for
+    every column. His words: "we're re-merging the knowledge base and the
+    accountability tracker. Left menu will be for inputting new. Right side
+    of the menu is for the accountability tracker. Center piece is for the
+    ritual."
+    So TAB.RITUAL is the whole of Flow again: the left column inputs a new
+    ritual, the centre is the ritual, the right column is the accountability
+    tracker. DESIGN-flow-tools.md is the rulebook and every rule names its
+    gate. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
- /* "Flow is ritual and accountability" was one tab at round KT, and the
-    comment above says "nothing is split". On 2 October he split it: "move
-    accountability to its own tool set." Flow is two tool sets now, in that
-    order, Ritual to set what a person will do and Accountability to read
-    what they did. Looked up by .k like every other entry, never by position,
-    because Practitioner's door comes and goes and a position would move. */
- {k:TAB.ACCOUNT, id:'acct',  nm:'Accountability', cls:'tab-acct', sec:'flow'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
@@ -14362,14 +14419,16 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    before a fold still resolves to something rather than silently to the
    first entry in the bar, which is what TABOF would have done.
 
-   IT IS EMPTY NOW. Both surfaces this file has ever folded have been
-   unfolded: Games first, back at KT and unfolded before this comment was
-   last true, and Analytics at round LV, in the same round this comment is
-   being corrected in. TABFOLD stays declared, empty, rather than removed,
-   because TABREAL still has to check it and a fold is exactly the kind of
-   ruling that gets made again. Adding one back is a single line here and a
-   TABDEF entry taken out, not a rewrite of the function below. */
+   AND ONE IS BACK IN IT, round QF: ACCOUNTABILITY. The line above said
+   adding one back is a single line here and a TABDEF entry taken out, and
+   that is exactly what this is. Integer 14 keeps its value, acctRender in
+   ui/accountability.js keeps its name and its body, and what moved is where
+   it draws: it is the right column of the Ritual page rather than a page of
+   its own, so a tab stored by anybody who used it while it had a door still
+   resolves to the surface that carries it instead of falling through to
+   Summary. Games and Analytics were each folded this way before. */
 const TABFOLD={};
+TABFOLD[TAB.ACCOUNT]=TAB.RITUAL;
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
@@ -47896,9 +47955,10 @@ function ritSteps(r){
    would leave a named tab showing an empty box. */
 function ritTab(){
  return typeof TAB!=='undefined'&&typeof S!=='undefined'&&S.tab===TAB.RITUAL;}
-/* the other Flow tool set, looked up by its key and never by where it sits */
-function acctTab(){
- return typeof TAB!=='undefined'&&typeof S!=='undefined'&&S.tab===TAB.ACCOUNT;}
+/* acctTab is gone, round QF. Accountability had a tab of its own for one round
+   and is the right column of this page now, so there is no second Flow tab to
+   ask about: TAB.ACCOUNT is folded onto TAB.RITUAL in engine/core.js and
+   ritTab above answers for the whole of Flow. */
 function ritClose(){
  if(typeof TAB!=='undefined'&&typeof S!=='undefined'&&S.tab===TAB.RITUAL){
   if(typeof setTab==='function'){setTab(TAB.SUMMARY);return;} }
@@ -48719,17 +48779,23 @@ function ritTimer(id){
    867, so each row dropped to its ring and its name. The builder is in the
    right menu now and the list has the stage to itself, so the timer, the
    days and the rest are on the row all the time and the mode is gone. */
-function ritActiveHtml(act,today){
+function ritActiveHtml(act,today,building){
  var due=act.filter(function(p){return ritDue(p,today);}), rest=act.filter(function(p){return !ritDue(p,today);});
  var out='<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Active today</span>'
   +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>';
- /* the empty line says where the start is, because the start is not on this
-    surface: it is in the menu on the right, and a list that says Nothing
-    active yet and offers no press would be the blank screen with a name on
-    it that panels.js already warns about. The unpacking is the same
-    sentence: what Active means, said where it is shown. */
- out+=due.length?'':'<p class="rv-empty">'+(act.length?'Nothing due today.'
-  :'Nothing active yet. Start one with New ritual in the right menu.')+'</p>';
+ /* THE EMPTY LINE CARRIES THE PRESS AND NOT A DIRECTION, round QF. It used to
+    say "in the right menu", which was true for one round and is wrong twice
+    over now: the builder is in the left column, and on a phone the columns
+    stack so neither of them is on a side at all. A list that says Nothing
+    active yet and offers no press would be the blank screen with a name on it
+    that panels.js already warns about, so the press is here. The unpacking is
+    the same sentence: what Active means, said where it is shown. */
+ /* and the press is offered only while the builder is shut. With nothing
+    active the builder opens itself in the left column, so a second New ritual
+    here would be the same control twice on one screen, which is how a person
+    ends up wondering whether the two do different things. */
+ out+=due.length?'':'<p class="rv-empty">'+(act.length?'Nothing due today.':'Nothing active yet.')+'</p>'
+  +((act.length||building)?'':'<div class="rv-acts"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
  out+='<p class="rv-mean">A ritual is active from the day you start it until it ends or you stop it.</p>';
  out+=ritRowsHtml(due,today,act);
  if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
@@ -48809,7 +48875,13 @@ function ritBuildHtml(c,nAct){
  var draft=ritDraft(), editing=!!RIT.edit, mins=ritMin(draft);
  /* the minutes the steps add up to used to sit in this heading. The timer
     below starts at that figure and prints it, so it is said once, there. */
- var out='<div class="rv-sec rv-build rv-new"><div class="rv-hd"><span class="rv-h">'+(editing?'Edit':'New ritual')+'</span></div>';
+ /* THE HEADING SAYS EDIT, OR NOTHING, round QF. It said New ritual, and the
+    column's own head one line above it now says New, so the two said one
+    thing twice. Editing is a state the column head cannot carry, because a
+    slot keeps its label and the value carries the state, so that word stays
+    and the other one goes. */
+ var out='<div class="rv-sec rv-build rv-new">'
+  +(editing?'<div class="rv-hd"><span class="rv-h">Edit</span></div>':'');
  if(RIT.from&&RIT.from.length)
   out+='<p class="rit-from">After releasing '+esc(RIT.from.slice(0,3).map(function(x){return x.name;}).join(', '))
    +(RIT.from.length>3?' and '+(RIT.from.length-3)+' more':'')+'</p>';
@@ -48995,13 +49067,19 @@ function ritRecordHtml(plans,today){
   +(sel===null?'':'<div class="rv-dayh">'+esc(ritDayName(sel,today))+'</div>'+ritDayRows(sel,plans,today));
  return out+'</div>';}
 
-/* THE RITUAL STAGE. The three column layout that stood here, round LT, put the
-   chain, today's rings, the list, the record and the builder on one card and
-   measured 969 pixels of content in 867. Today's rings and the record are
-   Accountability's now and the builder is the right menu's, so what is left is
-   the chain over the list, in one column, and no grid to keep honest. */
+/* THE CENTRE PIECE. Round LT put six parts on this one card and measured 969
+   pixels of content in 867. Round PO took three of them off it. Round QF names
+   what is left: "Center piece is for the ritual." So the stage is the chain
+   from story to work and the Active list under it, in one column, with no grid
+   to keep honest, and the two columns beside it carry the other two jobs.
+
+   It names itself, because the three columns each say what they are for and a
+   centre with no name is the one a stranger cannot place. The sentence under
+   the name is the unpack rule: a word a person has to guess is a defect. */
 function ritLayout(P){
- return P.note+P.why+'<div class="rv-main">'+P.chain+P.active+'</div>';}
+ return '<div class="rv-pagehd"><span class="rv-pagenm">'+ritIc('ring','rv-nic')+'Ritual</span>'
+  +'<span class="rv-pagesay">A set of practices you repeat on days you choose.</span></div>'
+  +P.note+P.why+'<div class="rv-main">'+P.chain+P.active+'</div>';}
 
 /* WHAT BOTH TOOL SETS READ, and nothing they write. Pure: the builder's own
    opening on a first visit is not here, because it writes RIT.sel and a read
@@ -49015,30 +49093,48 @@ function ritRead(){
 function ritNote(){
  return ritOwn()?'':'<p class="rv-note">'+esc(ritWhose())+' is a worked example, so nothing here is saved.</p>';}
 
-/* THE MENU'S HEAD, one writer for both tool sets. It names the tool set, and it
-   leaves the right end free because the rail's fold control is pinned there,
-   head.html beside .fl-hd. The meaning is said in the same place, which is the
-   unpack rule: a word a person has to guess is a defect. */
-function flowHead(nm,says,ic){
- var h=document.getElementById('flowhd'); if(!h)return;
+/* A MENU'S HEAD, one writer for both menus. It names what the column is for,
+   and it leaves the right end free because each rail's fold control is pinned
+   there, head.html beside .fl-hd. The meaning is said in the same place, which
+   is the unpack rule: a word a person has to guess is a defect. */
+function flowHeadAt(id,nm,says,ic){
+ var h=document.getElementById(id); if(!h)return;
  h.innerHTML='<span class="fl-nm">'+ritIc(ic)+esc(nm)+'</span><span class="fl-says">'+esc(says)+'</span>';}
+/* the right menu's head, kept under its own name because the Compass, the
+   release and the gate all reach the Flow menu through it */
+function flowHead(nm,says,ic){flowHeadAt('flowhd',nm,says,ic);}
 
+/* ONE PAGE, THREE COLUMNS, round QF. Every paint writes all three, because a
+   column that is only written on some paths is a column that goes stale: the
+   Accountability page and the Ritual page each used to write one menu, and the
+   other one's markup stayed in the document until the tab changed.
+
+     left    inputting new. One press and the seven tags, or the builder.
+     centre  the ritual. The chain, and the Active list.
+     right   the accountability tracker. Due today, Done, Missed, the record.
+
+   ritbuild on the body says the builder is holding something. It only drives
+   the phone stack, where it brings the left column to the front: a person who
+   pressed Start or Edit asked for that column and a builder three screens down
+   is an opening nobody sees. */
 function ritRender(){
- var h=document.getElementById('rit'), a=document.getElementById('acct'), side=document.getElementById('flowside');
- var onR=ritTab(), onA=acctTab();
+ var h=document.getElementById('rit'), left=document.getElementById('flowleft'),
+     side=document.getElementById('flowside');
+ var onR=ritTab();
  /* #rit IS SHOWN ON ITS OWN TAB AND NOWHERE ELSE. It was shown whenever RIT.open
     was true, which was right while it was a modal over any tab and is a ritual
     drawn over the Compass now: the Compass add writes through ritWrite, which
     ends here. Hidden hosts are emptied, so a closed surface never sits in the
     document holding a stale record, setTab's own rule for Summary. */
  if(h&&(!onR||!RIT.open)){h.style.display='none';h.innerHTML='';}
- if(a&&!onA)a.innerHTML='';
- if(!onR&&!onA){if(side)side.innerHTML='';return;}
+ if(!onR){
+  if(left)left.innerHTML=''; if(side)side.innerHTML='';
+  if(document.body)document.body.classList.remove('ritbuild');
+  return;}
  ritCss();
- if(onA){if(typeof acctRender==='function')acctRender(); return;}
  if(!h||!RIT.open)return;
  h.style.display='flex';
- var st=ritRead(), c=st.c, r=st.r, today=st.today, plans=st.plans, act=st.act;
+ var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;
  var drafting=Object.keys(RIT.sel).some(function(k){return RIT.sel[k];});
  /* when nothing is active the page's one job is to start something, so the
     builder is open with the called practice ready and nothing else to find. */
@@ -49047,11 +49143,14 @@ function ritRender(){
  var P={
   note:ritNote(),
   why:ritBecomingHtml(ritBecoming(),act),
-  chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today)};
+  chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today,building)};
  h.innerHTML='<div class="rel-card rit-card rv">'+ritLayout(P)+'</div>';
- flowHead('Ritual','A set of practices you repeat on days you choose.','ring');
- if(side)side.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml());
- ritWire(h,c); if(side)ritWire(side,c);}
+ flowHeadAt('flownewhd','New','Start a ritual, or change one you already have.','plus');
+ flowHead('Accountability','Whether you did what you set.','check');
+ if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml());
+ if(side)side.innerHTML=acctSideHtml(st);
+ if(document.body)document.body.classList.toggle('ritbuild',building);
+ ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);}
 
 /* one listener on the host. Every control carries what it does in data-act,
    so a layout that moves a control does not have to move its wiring. */
@@ -49064,13 +49163,14 @@ function ritWire(h,c){
   if(['putback','view','day','mo','exp','more'].indexOf(a)<0)RIT.gone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
-   /* THE TWO WAYS ACCOUNTABILITY SENDS A PERSON BACK TO RITUAL. It reads and
-      it marks days, and it does not build: a ritual is started or changed on
-      Ritual, in its menu. Edit on a missed ritual goes there and opens that
-      ritual in the builder, in that order, because setTab(TAB.RITUAL) resets
-      the builder and the edit has to be opened after it. */
-   case 'go-ritual': if(typeof setTab==='function')setTab(TAB.RITUAL); return;
-   case 'miss-edit': if(typeof setTab==='function')setTab(TAB.RITUAL); ritEditOpen(id); return;
+   /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
+      While Accountability was a page of its own this went through
+      setTab(TAB.RITUAL) first and had to open the edit afterwards, because
+      setTab resets the builder. The tracker and the builder are two columns of
+      one page now, so the press opens the ritual in the left column where the
+      person is already looking. The ritbuild class brings that column to the
+      front on a phone, ritRender above. */
+   case 'miss-edit': ritEditOpen(id); return;
    case 'go-bank': if(typeof setTab==='function')setTab(TAB.STORY);
     if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
    case 'start-called': RIT.sel={}; RIT.order=[]; if(c.called)ritPick(c.called.k); RIT.add=true; RIT.edit=null; break;
@@ -49146,7 +49246,13 @@ function ritCss(){
   /* 1180 was the cap that left the width unused at 1600, round LT. The stage
      is the limit now; 1760 only stops three columns spreading past reading
      distance on a very wide screen with both rails shut. */
-  'body.tab-ritual #rit .rit-card.rv,body.tab-acct #acct .rit-card.rv{max-width:1760px}',
+  'body.tab-ritual #rit .rit-card.rv{max-width:1760px}',
+  /* THE CENTRE NAMES ITSELF, round QF. Three columns each saying what they are
+     for leaves the middle one unnamed, and the middle one is the page. */
+  '.rv-pagehd{display:flex;flex-direction:column;gap:3px;margin:0 0 14px}',
+  '.rv-pagenm{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:600;color:var(--ink)}',
+  '.rv-pagenm svg{stroke:var(--sec-flow)}',
+  '.rv-pagesay{font-size:13.5px;line-height:1.5;color:var(--mid);max-width:62ch}',
   '.rv{container-type:inline-size;container-name:rv;text-align:left}',
   '.rv-note{margin:0 0 12px;font-size:14px;color:var(--mid)}',
   '.rv-lb{display:block;font-size:12.5px;color:var(--dim);font-weight:500}',
@@ -49193,22 +49299,22 @@ function ritCss(){
   ' .rv .rv-nv{gap:5px;flex-wrap:wrap} .rv .rv-nv b{font-size:20px} .rv .rv-nv em{font-size:12.5px}',
   ' .rv .rv-nv .rv-pn{font-size:14px} .rv .rv-nic{width:18px;height:18px} .rv .rv-lb{font-size:12px}',
   ' .rv .rv-ns{font-size:12px} .rv .rv-go{padding:0 14px}}',
-  /* ONE COLUMN ON RITUAL, TWO ON ACCOUNTABILITY. The grid of areas that stood
-     here placed six parts, the chain, the new ritual, today, the list, the
-     marks and the record, and it needed three container queries and a
-     display:contents to keep them off each other. Three of the six left the
-     card, so the stage is a column and Accountability's is a pair. The pair
-     asks the card it is in, rv, so the answer is the stage's width and not
-     the window's: under 760 the two stack and over it the figures keep the
-     narrower share, because the month's seven days of 44 pixel presses are the
-     floor it cannot go under. */
+  /* THE CENTRE IS ONE COLUMN, round QF, and that is the whole of this rule
+     now. Round LT had a grid of six areas on this card, the chain, the new
+     ritual, today, the list, the marks and the record, and it needed three
+     container queries and a display:contents to keep them off each other.
+     Four of the six are in the two side columns now, so the stage is a column
+     and there is no grid left to keep honest. The pair that Accountability's
+     own page used went with the page. */
   '.rv-main,.rv-col{min-width:0}',
-  '.rv-acct-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0 18px;align-items:start}',
-  '@container rv (min-width:760px){.rv .rv-acct-cols{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}}',
   /* a meaning is a sentence under the heading it explains, quiet and short */
   '.rv-mean{margin:0 0 10px;font-size:13px;line-height:1.55;color:var(--dim);max-width:62ch}',
   '.rv-txt{flex:1 1 auto;min-width:0;padding:8px 10px 8px 2px}',
-  '.rv-ac .rv-today{margin-bottom:10px}',
+  /* the right column's four parts, in one scroll, each already a .rv-sec with
+     its own edge and its own heading, so the wrap only has to stop the last
+     one hanging a margin off the foot of the rail */
+  '.rvr-wrap>:last-child{margin-bottom:0}',
+  '.rvr-wrap .rv-today{margin-bottom:10px}',
   /* ---- colour, round LT: "I want color on this page to separate things,
      everything is gray." Each part takes one hue from tokens the product
      already carries and themes, as a ring before its heading, a wash behind
@@ -49439,15 +49545,21 @@ function ritCss(){
 
 try{window.__at&&window.__at('ui/ritual.js');}catch(e){}
 /* ============================================================
-   ACCOUNTABILITY. The second tool set in Flow. Ritual is what a person will
-   do, and this is what they did.
+   ACCOUNTABILITY. The right column of the Ritual page. Ritual is what a
+   person will do, and this is what they did.
 
-   Ruled 2 October, his words: "you're supposed to move accountability to its
-   own tool set." It was a part of the Ritual page from round JQ ("attach the
-   accountability tracker to it") and it is its own door beside Ritual now,
-   TAB.ACCOUNT, host #acct, drawn through ritRender so that every writer in
-   ui/ritual.js repaints it without knowing it is there. The rules are in
-   DESIGN-flow-tools.md and each one names its gate.
+   THIS SURFACE HAS MOVED THREE TIMES AND THE THIRD IS THE ONE IT IS ON. Round
+   JQ built it inside the Ritual page ("attach the accountability tracker to
+   it"). Round PO, 2 October, pulled it out into a tool set with a door of its
+   own ("you're supposed to move accountability to its own tool set"). Round
+   QF, the same day, put it back as a column: "we're re-merging the knowledge
+   base and the accountability tracker ... Right side of the menu is for the
+   accountability tracker. Center piece is for the ritual."
+
+   So it has no host on the stage and no door. TAB.ACCOUNT keeps integer 14,
+   folded onto TAB.RITUAL in engine/core.js, and what this file draws goes into
+   #flowside in the right rail, written by ritRender on every paint. The rules
+   are in DESIGN-flow-tools.md and each one names its gate.
 
    WHAT IT READS, and it reads three things and invents none of them.
      the plans   ritPlans, beside the record under their own key. What is
@@ -49468,9 +49580,11 @@ try{window.__at&&window.__at('ui/ritual.js');}catch(e){}
    Ritual's menu, and Edit on a missed ritual sends the person there with the
    ritual already open.
 
-   WHERE EACH THING SITS. The stage is the history: today's rings and the
-   streak, the marks, and the month. The right menu is what to act on: what is
-   due today, and what was missed. Flow has no left column.
+   WHERE EACH THING SITS, and the order is what a person came for. Due today
+   first, because the one thing they open this page to do is press a ring.
+   Done second, the streak and the figures, which is the answer to whether it
+   is holding. Missed third. The record last, because a month is a thing to
+   read once the day is marked and not before.
 
    A MISS IS NOT A VERDICT. engine/practice.js says it in PR_MISS_AT and the
    TDD says it in section 24: "Repeated failure should trigger investigation
@@ -49511,9 +49625,14 @@ function acctDueHtml(st){
  /* one exit and the body built in branches, because the build's div balance
     check counts the markup in the source text and a function that closes its
     card on three different returns reads as three closes for one open */
+ /* NOTHING ACTIVE, AND THE WAY OUT IS ONE PRESS AND NOT A PAGE. This offered
+    Open Ritual while Accountability was a page of its own. The builder is the
+    left column of this same page now, so the press opens it where it stands:
+    naming a column would have been wrong anyway, because on a phone the
+    columns stack and the left one is not on the left. */
  if(!st.act.length)
   body='<p class="rv-empty">Nothing active yet.</p>'
-   +'<div class="rv-acts"><button type="button" class="btn" data-act="go-ritual">Open Ritual</button></div>';
+   +'<div class="rv-acts"><button type="button" class="btn" data-act="add">New ritual</button></div>';
  else if(!due.length)body='<p class="rv-empty">Nothing due today.</p>';
  else{
   body='<ol class="rv-list">';
@@ -49566,17 +49685,17 @@ function acctDoneHtml(st){
   +'Best is your longest run with no gap. Kept is the days you marked a ritual done. Practised is the minutes you put in.</p>'
   +ritMarksHtml(st.L)+'</div>';}
 
-function acctRender(){
- var h=document.getElementById('acct'), side=document.getElementById('flowside');
- if(!h)return;
- ritCss();
- var st=ritRead();
- h.innerHTML='<div class="rel-card rit-card rv rv-ac">'+ritNote()
-  +'<div class="rv-acct-cols"><div class="rv-col">'+acctDoneHtml(st)+'</div>'
-  +'<div class="rv-col">'+ritRecordHtml(st.plans,st.today)+'</div></div></div>';
- flowHead('Accountability','Whether you did what you set.','check');
- if(side)side.innerHTML=acctDueHtml(st)+acctMissHtml(st);
- ritWire(h,st.c); if(side)ritWire(side,st.c);}
+/* THE WHOLE COLUMN, AS ONE STRING, and ritRender writes it. It returns markup
+   rather than painting a host of its own, because there is no host of its own
+   any more: the four parts are the right rail's contents and the rail is a
+   sibling of the stage, so the stage's paint cannot delete them. The read is
+   handed in, so this column and the centre cannot disagree about the day.
+
+   The worked example note is not repeated here. The centre already carries it
+   once, ritNote in ui/ritual.js, and one page says a thing once. */
+function acctSideHtml(st){
+ return '<div class="rvr-wrap">'+acctDueHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
+  +ritRecordHtml(st.plans,st.today)+'</div>';}
 
 try{window.__at&&window.__at('ui/accountability.js');}catch(e){}
 /* ============================================================
@@ -55703,11 +55822,10 @@ function setTab(i){
   if(typeof sumDayClear==='function')sumDayClear();}
  if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
   var ab=$('ana'); if(ab)ab.innerHTML='';}
- /* ACCOUNTABILITY PRINTS A RECORD, so it is emptied on the way out for the
-    same reason Summary is: a hidden host holding the last person's days is
-    still in the document asserting them. */
- if(S.tab===TAB.ACCOUNT&&i!==TAB.ACCOUNT){
-  var ac=$('acct'); if(ac)ac.innerHTML='';}
+ /* ACCOUNTABILITY HAS NO HOST TO EMPTY, round QF. It printed a record into
+    #acct while it had a page, and it is the right rail's contents now, which
+    ritRender empties itself the moment Flow is not the tab: the same rule, one
+    writer nearer the markup. */
  /* AND THE PRACTITIONER'S PAGE, for the same reason and one more: its drills
     sit in Selection, the panel every surface shares, so a reading about an
     example left there would stand beside the Field as the person's own.
@@ -55737,11 +55855,20 @@ function setTab(i){
      anything is a blank screen with a name on it. */
   if(i===TAB.RITUAL&&typeof ritOpen==='function'){
    if(!RIT.open)ritOpen(null); else ritRender(); }
-  /* ACCOUNTABILITY DRAWS ON ENTRY, through the one Flow painter. It has no
-     open state of its own to reset, so this is only the repaint: what it
-     shows is read off the record each time, and a record that changed on the
-     Compass since the last visit is on the page the moment the tab is. */
-  if(i===TAB.ACCOUNT&&typeof ritRender==='function')ritRender();})();
+  /* AND LEAVING FLOW EMPTIES ALL THREE COLUMNS, round QF. The two menus live
+     in the rails, which no other surface's renderer writes, so markup left in
+     them on the way out stayed in the document: the gate measured 4143
+     characters of builder and 8654 of record still sitting in the rails while
+     the Field was showing. That is the rule this function already keeps for
+     Summary and Analytics, a hidden host never holds a stale reading, and it
+     is kept here by the one painter rather than by a second writer reaching
+     into its hosts. ritRender empties and returns the moment Flow is not the
+     tab, so this costs nothing on every other surface. */
+  else if(typeof ritRender==='function')ritRender();
+  /* ACCOUNTABILITY NEEDS NO LINE OF ITS OWN HERE, round QF. It is the right
+     column of the Ritual page, so the ritOpen above paints it with everything
+     else, and TAB.ACCOUNT no longer reaches setTab as a tab: it is folded onto
+     TAB.RITUAL in engine/core.js and TABREAL answers Ritual for it. */})();
  /* THE FIELD IS DRAWN ONE OF THREE WAYS NOW, BP8, and which of the canvas,
     the depth row, a rendition and its layer row are up is decided in one
     place, fviewPaint in ui/rings.js. This showed the canvas and the depth
@@ -63110,11 +63237,29 @@ var LCOL_BESIDE='(min-width:1181px)';
    column is repainted from the right key on every arrival (colTab, from
    setTab), so a person who opens it on the Compass keeps it open there and the
    Field's choice is untouched. */
-function colKey(){ return (typeof TAB!=='undefined'&&S&&S.tab===TAB.COMPASS)?'lcolc':'lcol'; }
+/* AND FLOW HAS ITS OWN, round QF, for the opposite reason to the Compass's.
+   His ruling that the left column starts shut names one surface, "the field
+   left panel starts closed", and on the Field the column is a rail of readings
+   a person can go and open. On Flow it is the input menu: "Left menu will be
+   for inputting new." A menu that arrives shut is a control hidden with no
+   affordance, which is the one thing this product never does, so Flow's key
+   defaults open. The key is its own, the Compass's own pattern, so a person
+   who shuts it on Flow keeps it shut on Flow and the Field's choice is
+   untouched. */
+function colKey(){
+ if(typeof TAB==='undefined'||!S)return 'lcol';
+ if(S.tab===TAB.COMPASS)return 'lcolc';
+ if(S.tab===TAB.RITUAL)return 'lcolf';
+ return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
- var shut=beside;
- try{var got=STORE.get(colKey()); shut=got?(got==='shut'):beside;}catch(e){shut=false;}
+ var k=colKey();
+ /* only a store with nothing in it defaults, and what it defaults to is the
+    surface's own answer: shut where the column is a rail, open where it is
+    the menu the surface is for */
+ var dflt=(k==='lcolf')?false:beside;
+ var shut=dflt;
+ try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
 function colTab(){ colFoldPaint(colShut()); }
 function colFold(){
@@ -64230,5 +64375,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004201406"></div>
+<div id="eof" hidden data-len="004210290"></div>
 </body></html>

@@ -1,13 +1,19 @@
 /* ============================================================
-   ACCOUNTABILITY. The second tool set in Flow. Ritual is what a person will
-   do, and this is what they did.
+   ACCOUNTABILITY. The right column of the Ritual page. Ritual is what a
+   person will do, and this is what they did.
 
-   Ruled 2 October, his words: "you're supposed to move accountability to its
-   own tool set." It was a part of the Ritual page from round JQ ("attach the
-   accountability tracker to it") and it is its own door beside Ritual now,
-   TAB.ACCOUNT, host #acct, drawn through ritRender so that every writer in
-   ui/ritual.js repaints it without knowing it is there. The rules are in
-   DESIGN-flow-tools.md and each one names its gate.
+   THIS SURFACE HAS MOVED THREE TIMES AND THE THIRD IS THE ONE IT IS ON. Round
+   JQ built it inside the Ritual page ("attach the accountability tracker to
+   it"). Round PO, 2 October, pulled it out into a tool set with a door of its
+   own ("you're supposed to move accountability to its own tool set"). Round
+   QF, the same day, put it back as a column: "we're re-merging the knowledge
+   base and the accountability tracker ... Right side of the menu is for the
+   accountability tracker. Center piece is for the ritual."
+
+   So it has no host on the stage and no door. TAB.ACCOUNT keeps integer 14,
+   folded onto TAB.RITUAL in engine/core.js, and what this file draws goes into
+   #flowside in the right rail, written by ritRender on every paint. The rules
+   are in DESIGN-flow-tools.md and each one names its gate.
 
    WHAT IT READS, and it reads three things and invents none of them.
      the plans   ritPlans, beside the record under their own key. What is
@@ -28,9 +34,11 @@
    Ritual's menu, and Edit on a missed ritual sends the person there with the
    ritual already open.
 
-   WHERE EACH THING SITS. The stage is the history: today's rings and the
-   streak, the marks, and the month. The right menu is what to act on: what is
-   due today, and what was missed. Flow has no left column.
+   WHERE EACH THING SITS, and the order is what a person came for. Due today
+   first, because the one thing they open this page to do is press a ring.
+   Done second, the streak and the figures, which is the answer to whether it
+   is holding. Missed third. The record last, because a month is a thing to
+   read once the day is marked and not before.
 
    A MISS IS NOT A VERDICT. engine/practice.js says it in PR_MISS_AT and the
    TDD says it in section 24: "Repeated failure should trigger investigation
@@ -71,9 +79,14 @@ function acctDueHtml(st){
  /* one exit and the body built in branches, because the build's div balance
     check counts the markup in the source text and a function that closes its
     card on three different returns reads as three closes for one open */
+ /* NOTHING ACTIVE, AND THE WAY OUT IS ONE PRESS AND NOT A PAGE. This offered
+    Open Ritual while Accountability was a page of its own. The builder is the
+    left column of this same page now, so the press opens it where it stands:
+    naming a column would have been wrong anyway, because on a phone the
+    columns stack and the left one is not on the left. */
  if(!st.act.length)
   body='<p class="rv-empty">Nothing active yet.</p>'
-   +'<div class="rv-acts"><button type="button" class="btn" data-act="go-ritual">Open Ritual</button></div>';
+   +'<div class="rv-acts"><button type="button" class="btn" data-act="add">New ritual</button></div>';
  else if(!due.length)body='<p class="rv-empty">Nothing due today.</p>';
  else{
   body='<ol class="rv-list">';
@@ -126,14 +139,14 @@ function acctDoneHtml(st){
   +'Best is your longest run with no gap. Kept is the days you marked a ritual done. Practised is the minutes you put in.</p>'
   +ritMarksHtml(st.L)+'</div>';}
 
-function acctRender(){
- var h=document.getElementById('acct'), side=document.getElementById('flowside');
- if(!h)return;
- ritCss();
- var st=ritRead();
- h.innerHTML='<div class="rel-card rit-card rv rv-ac">'+ritNote()
-  +'<div class="rv-acct-cols"><div class="rv-col">'+acctDoneHtml(st)+'</div>'
-  +'<div class="rv-col">'+ritRecordHtml(st.plans,st.today)+'</div></div></div>';
- flowHead('Accountability','Whether you did what you set.','check');
- if(side)side.innerHTML=acctDueHtml(st)+acctMissHtml(st);
- ritWire(h,st.c); if(side)ritWire(side,st.c);}
+/* THE WHOLE COLUMN, AS ONE STRING, and ritRender writes it. It returns markup
+   rather than painting a host of its own, because there is no host of its own
+   any more: the four parts are the right rail's contents and the rail is a
+   sibling of the stage, so the stage's paint cannot delete them. The read is
+   handed in, so this column and the centre cannot disagree about the day.
+
+   The worked example note is not repeated here. The centre already carries it
+   once, ritNote in ui/ritual.js, and one page says a thing once. */
+function acctSideHtml(st){
+ return '<div class="rvr-wrap">'+acctDueHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
+  +ritRecordHtml(st.plans,st.today)+'</div>';}

@@ -5565,14 +5565,19 @@ const TABDEF=[
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
+ /* FLOW IS ONE PAGE OF THREE COLUMNS, round QF, 2 October, and that is the
+    third ruling on this one surface. Round JQ attached the accountability
+    tracker to the ritual page, round PO split it out into a tool set of its
+    own, and round QF put it back, with a column each and a job named for
+    every column. His words: "we're re-merging the knowledge base and the
+    accountability tracker. Left menu will be for inputting new. Right side
+    of the menu is for the accountability tracker. Center piece is for the
+    ritual."
+    So TAB.RITUAL is the whole of Flow again: the left column inputs a new
+    ritual, the centre is the ritual, the right column is the accountability
+    tracker. DESIGN-flow-tools.md is the rulebook and every rule names its
+    gate. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
- /* "Flow is ritual and accountability" was one tab at round KT, and the
-    comment above says "nothing is split". On 2 October he split it: "move
-    accountability to its own tool set." Flow is two tool sets now, in that
-    order, Ritual to set what a person will do and Accountability to read
-    what they did. Looked up by .k like every other entry, never by position,
-    because Practitioner's door comes and goes and a position would move. */
- {k:TAB.ACCOUNT, id:'acct',  nm:'Accountability', cls:'tab-acct', sec:'flow'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
@@ -5614,14 +5619,16 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    before a fold still resolves to something rather than silently to the
    first entry in the bar, which is what TABOF would have done.
 
-   IT IS EMPTY NOW. Both surfaces this file has ever folded have been
-   unfolded: Games first, back at KT and unfolded before this comment was
-   last true, and Analytics at round LV, in the same round this comment is
-   being corrected in. TABFOLD stays declared, empty, rather than removed,
-   because TABREAL still has to check it and a fold is exactly the kind of
-   ruling that gets made again. Adding one back is a single line here and a
-   TABDEF entry taken out, not a rewrite of the function below. */
+   AND ONE IS BACK IN IT, round QF: ACCOUNTABILITY. The line above said
+   adding one back is a single line here and a TABDEF entry taken out, and
+   that is exactly what this is. Integer 14 keeps its value, acctRender in
+   ui/accountability.js keeps its name and its body, and what moved is where
+   it draws: it is the right column of the Ritual page rather than a page of
+   its own, so a tab stored by anybody who used it while it had a door still
+   resolves to the surface that carries it instead of falling through to
+   Summary. Games and Analytics were each folded this way before. */
 const TABFOLD={};
+TABFOLD[TAB.ACCOUNT]=TAB.RITUAL;
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;

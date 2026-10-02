@@ -701,11 +701,29 @@ var LCOL_BESIDE='(min-width:1181px)';
    column is repainted from the right key on every arrival (colTab, from
    setTab), so a person who opens it on the Compass keeps it open there and the
    Field's choice is untouched. */
-function colKey(){ return (typeof TAB!=='undefined'&&S&&S.tab===TAB.COMPASS)?'lcolc':'lcol'; }
+/* AND FLOW HAS ITS OWN, round QF, for the opposite reason to the Compass's.
+   His ruling that the left column starts shut names one surface, "the field
+   left panel starts closed", and on the Field the column is a rail of readings
+   a person can go and open. On Flow it is the input menu: "Left menu will be
+   for inputting new." A menu that arrives shut is a control hidden with no
+   affordance, which is the one thing this product never does, so Flow's key
+   defaults open. The key is its own, the Compass's own pattern, so a person
+   who shuts it on Flow keeps it shut on Flow and the Field's choice is
+   untouched. */
+function colKey(){
+ if(typeof TAB==='undefined'||!S)return 'lcol';
+ if(S.tab===TAB.COMPASS)return 'lcolc';
+ if(S.tab===TAB.RITUAL)return 'lcolf';
+ return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
- var shut=beside;
- try{var got=STORE.get(colKey()); shut=got?(got==='shut'):beside;}catch(e){shut=false;}
+ var k=colKey();
+ /* only a store with nothing in it defaults, and what it defaults to is the
+    surface's own answer: shut where the column is a rail, open where it is
+    the menu the surface is for */
+ var dflt=(k==='lcolf')?false:beside;
+ var shut=dflt;
+ try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
 function colTab(){ colFoldPaint(colShut()); }
 function colFold(){

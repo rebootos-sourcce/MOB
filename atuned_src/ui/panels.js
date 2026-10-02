@@ -106,11 +106,10 @@ function setTab(i){
   if(typeof sumDayClear==='function')sumDayClear();}
  if(S.tab===TAB.ANALYTICS&&i!==TAB.ANALYTICS){
   var ab=$('ana'); if(ab)ab.innerHTML='';}
- /* ACCOUNTABILITY PRINTS A RECORD, so it is emptied on the way out for the
-    same reason Summary is: a hidden host holding the last person's days is
-    still in the document asserting them. */
- if(S.tab===TAB.ACCOUNT&&i!==TAB.ACCOUNT){
-  var ac=$('acct'); if(ac)ac.innerHTML='';}
+ /* ACCOUNTABILITY HAS NO HOST TO EMPTY, round QF. It printed a record into
+    #acct while it had a page, and it is the right rail's contents now, which
+    ritRender empties itself the moment Flow is not the tab: the same rule, one
+    writer nearer the markup. */
  /* AND THE PRACTITIONER'S PAGE, for the same reason and one more: its drills
     sit in Selection, the panel every surface shares, so a reading about an
     example left there would stand beside the Field as the person's own.
@@ -140,11 +139,20 @@ function setTab(i){
      anything is a blank screen with a name on it. */
   if(i===TAB.RITUAL&&typeof ritOpen==='function'){
    if(!RIT.open)ritOpen(null); else ritRender(); }
-  /* ACCOUNTABILITY DRAWS ON ENTRY, through the one Flow painter. It has no
-     open state of its own to reset, so this is only the repaint: what it
-     shows is read off the record each time, and a record that changed on the
-     Compass since the last visit is on the page the moment the tab is. */
-  if(i===TAB.ACCOUNT&&typeof ritRender==='function')ritRender();})();
+  /* AND LEAVING FLOW EMPTIES ALL THREE COLUMNS, round QF. The two menus live
+     in the rails, which no other surface's renderer writes, so markup left in
+     them on the way out stayed in the document: the gate measured 4143
+     characters of builder and 8654 of record still sitting in the rails while
+     the Field was showing. That is the rule this function already keeps for
+     Summary and Analytics, a hidden host never holds a stale reading, and it
+     is kept here by the one painter rather than by a second writer reaching
+     into its hosts. ritRender empties and returns the moment Flow is not the
+     tab, so this costs nothing on every other surface. */
+  else if(typeof ritRender==='function')ritRender();
+  /* ACCOUNTABILITY NEEDS NO LINE OF ITS OWN HERE, round QF. It is the right
+     column of the Ritual page, so the ritOpen above paints it with everything
+     else, and TAB.ACCOUNT no longer reaches setTab as a tab: it is folded onto
+     TAB.RITUAL in engine/core.js and TABREAL answers Ritual for it. */})();
  /* THE FIELD IS DRAWN ONE OF THREE WAYS NOW, BP8, and which of the canvas,
     the depth row, a rendition and its layer row are up is decided in one
     place, fviewPaint in ui/rings.js. This showed the canvas and the depth
