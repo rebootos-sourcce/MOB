@@ -3954,7 +3954,7 @@ var UNPACK_BASE={
  'not done':'Not done counts the times in a row a ritual came due and was not marked done.',
  'from your words':'From your words means a feeling word you wrote names this pattern.',
  'from the seat':'From the seat means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
- 'release line':'A release line is one spoken line of a release, aimed at one address, that lets go of the limit held there.',
+ 'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
 
