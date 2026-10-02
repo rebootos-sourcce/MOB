@@ -2753,3 +2753,13 @@ public launch. Open for him, not blocking: Stripe price ids and secrets, and boo
 - **No percent on the headline coherence number.** His words: "No, it doesn't need to be a percent. Just a number." Applies to the rings, the glass bar, the Summary tile and the Compass centre, wherever CQ or DQ is the headline reading.
 - **Patterns are stored in the body, at the nerve register of the seat they land on.** His words: "They store them in body. At the register at a register of the nerve." `engine/data/kb.js` Archetype entry corrected; it had said the opposite. The archetype itself still has no address and nothing to release; that structural point is unchanged.
 - **Archetype questions triangulate.** A combination of situational questions, not one either/or, read the pattern of answers to place the archetype. Round PQ.
+
+## Round PW, 2 October: referral, tiers, Discord, the practitioner's number
+
+- **Referral grant is 25 patterns.** Settled, replacing the open 25-or-50 question.
+- **There are no tiers five through nine.** The ladder stops at four. The drafted 149/249/399/699/999 numbers are dead, not a pending decision.
+- **The Practitioner page shows the person's coherence number.** Settled, answering round PR's open question (the no-percent rule still applies, it is a number, never a percent).
+- **"Eastern" is the date system (Chinese), not the yoga seat names.** His word: "Eastern means Chinese." The yoga seat names still need a different word; that part is still open.
+- **A Discord feedback and community connection, asked for round PW.** A feedback form posting to a Discord channel, and a Discord invite/connection surfaced to users so they can reach the community. Not yet built; see the reply to round PW in `TASKS.md` for what it needs from him to set up.
+- **Google OAuth is wanted**, round PW, becomes a build item.
+- **Clinician and counsel review of the safety copy: explicitly not now.** Round PW, "not getting... not yet." Stays open, just not active.

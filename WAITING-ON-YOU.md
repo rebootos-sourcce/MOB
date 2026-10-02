@@ -4,30 +4,36 @@ One list, in the order I'd look at it if I were you. Each line says what I sent,
 
 ## Look at these first — pictures and files already in your hands
 
-1. **The cover and landing page**: CONFIRMED, round PU, 2 October. "Let's run with that attuned landing page for now."
-2. **Avatar, Story, Summary, Accountability and Ritual**: FAILED, round PU, 2 October. Not waiting on you any more, it's waiting on a rebuild. Your words: too much information where the centre console should be the one hero element shown first, the information side carrying text should not be in the centre, visual informs and text only gives it context, never the reverse. Team review dispatched, ten passes amongst themselves before anything comes back to you.
-3. **The onboarding video** (door, pick a start, feel, body, mirror, release, actually moving). Sent as a real video. Say yes, or what to change.
-4. **The Practitioner page**: still open. One real question sitting inside it: should the Practitioner page show your coherence number at all, given the no-score rule?
+1. **The cover and landing page**: CONFIRMED, round PU. "Let's run with that attuned landing page for now."
+2. **Avatar, Story, Summary, Accountability, Ritual, and now the archetype intake**: FAILED, confirmed again round PW ("those are all the components I'm not seeing updates to, so great, do it"). Not waiting on you, waiting on the rebuilds already dispatched.
+3. **Headers**: sent before/after, waiting on your look. One open question inside it: should the Field, body map, avatar wheel and character page (drawings, not text) also carry a small name label, or stay bare?
+4. **The onboarding video** (door, pick a start, feel, body, mirror, release, actually moving). Sent as a real video. Say yes, or what to change.
 5. **The MVP gap report**, with a headline number: 25 percent of what blocks a first paying stranger is done. Say if that number or the ten risks under it feel right.
 6. **Intake, stacked** (archetypes, nine feelings, six axes). Two direct questions inside it: keep the product's own twelve archetype names, or switch two of them to Hero and Orphan? And is "six action axes" the six gates I used, or something else?
-7. **Unpack every symbol** (every term gets its meaning). One open naming clash: "Eastern" means two different things in the product today (a date system, and yoga seat names). Pick a new word for one of them.
-8. **The Flow split** (Ritual and Accountability as two pages). You said "get rid of the left and right menu, actually, sorry" — I read that as drop the left, keep the right. Confirm, or say the right one goes too.
-9. **"Patterns are stored in the body, at the nerve register of the seat."** I wrote this from your words this round. Read it once and confirm it says what you meant.
+7. **The Flow split** (Ritual and Accountability as two pages). You said "get rid of the left and right menu, actually, sorry" — I read that as drop the left, keep the right. Confirm, or say the right one goes too.
+8. **"Patterns are stored in the body, at the nerve register of the seat."** Read it once and confirm it says what you meant.
+9. **The yoga seat names need a new word.** "Eastern" is settled as the date system (Chinese), round PW, so the seat names can't use it any more. Needs a replacement word.
+
+## Settled this round, round PW, no longer open
+
+- Referral grant: 25 patterns.
+- Tiers five through nine: do not exist. The drafted 149/249/399/699/999 numbers are dropped.
+- Practitioner page shows your coherence number: yes.
+- Clinician and counsel review of the safety copy: explicitly not now, your words.
+- Instagram: still just "maybe," no action taken.
 
 ## Business and legal, these are steps only you can do
 
-10. **Stripe**: the four products, by hand in the dashboard (the steps are a few messages up) or by API once a session gets past the approval prompt.
-11. **Tiers five through nine**: I drafted 149, 249, 399, 699, 999 a month. Say real numbers or confirm the draft.
-12. **Google sign-in**: client ID and secret, steps in `API-SETUP-NOW.md`, not sent again unless you want it.
-13. **The clinician and counsel review** for the distress and safety copy. Not booked, as far as I know.
-14. **Instagram**: if you want to move on this, a Meta Developer app is the next step, on your side.
+10. **Stripe**: the four products are made (test mode). What's left is your own `wrangler d1 create` step, already done (I can see the real database id in `wrangler.toml`), and a Stripe test key in this environment's secrets so the paywall can actually be proven end to end rather than only against a fake Stripe.
+11. **Google OAuth**: now a build item per round PW. Client ID and secret, steps in `API-SETUP-NOW.md`, resend if you want it again.
+12. **Discord**: you asked for a feedback form that posts to a Discord channel, and a Discord connection so users can reach the community, and asked how to set it up. Short answer: both are buildable. What I need from you to wire the feedback form: a Discord webhook URL (Discord: open the server, Server Settings, Integrations, Webhooks, New Webhook, name it, pick the channel, Copy Webhook URL, paste it to me or set it as a secret, never post it in a public channel since anyone with it can post as that webhook). For the community connection: a standing invite link to your Discord server (right click the server name, Invite People, copy the link; set it to never expire if you want it permanent), which I put on a button in the app. If you don't have a Discord server yet for this, that's step zero, on your side, Discord.com, Add a Server.
 
 ## Older, standing, still open
 
-15. The referral grant: 25 patterns or 50.
-16. Whether the first release should show the whole chain (saboteurs and up); every reviewer recommended yes.
-17. The seed decay policy: fades on its own, or only moves when you move it.
-18. The cognitive load ceiling for one screen, needed before that fix can be sized.
-19. Schema v2, domain weighting, the Matrix wiring, the depth button names: named as yours to call.
+13. Whether the first release should show the whole chain (saboteurs and up); every reviewer recommended yes.
+14. The seed decay policy: fades on its own, or only moves when you move it. You said this round you don't know what it means yet; plain version: a reading has a dominant pattern type baked in at intake (the "seed"). Decay asks whether that seed's share of the reading should shrink on its own over time even if you do nothing, or stay fixed until you actually work on it.
+15. The cognitive load ceiling: you said you don't know what this means. Plain version: how many choices or pieces of information one screen can show before it's too many to hold in your head at once. Needed before a few screens can be sized correctly.
+16. Schema v2, domain weighting, the Matrix wiring, the depth button names: you said you don't know what schema v2 means. Plain version: the saved-data format for a person's record. V2 would add new fields; v1 records still have to load without breaking. Named as yours to call because it changes what a record promises to keep forever.
+17. Achievement/points system: no TDD exists yet, you asked directly. There's an audit (`POINTS-AUDIT.md`) and a slice 0 plan (the streak fix, points never going down) but nothing specified end to end the way the Ritual Builder TDD was. Say if you want that written.
 
 Everything else from earlier rounds has either landed or been folded into one of the items above. If something here is already decided and I missed it, name the line and I'll drop it.
