@@ -1,8 +1,8 @@
 # Pass 1, art director: the onboarding and tutorial (round PJ)
 
-Mika, with Sol (colour, light), Bjorn (type, grid), Petra (composition, symbol). Looked at the real build shots at 1600 and 390, the login mockup, the ring mockups in `mockups/onboarding/png/`, and read `ui/onboard.js`, `ui/tutorial.js` and the `.ob-*` CSS at `shell/head.html:6244-6383`. Measured in plain arithmetic from the tokens, not from memory.
+Mika, with Sol (colour, light), Bjorn (type, grid), Petra (composition, symbol). Looked at the build shots, the login and ring mockups in `mockups/onboarding/png/`, `ui/onboard.js`, `ui/tutorial.js` and `.ob-*` at `shell/head.html:6244-6383`.
 
-One gap first. `1600-tut-0.png` and `390-tut-0.png` do not show the tutorial. They show the bare Field, so the tutorial never opened in that capture. I graded the tutorial from its source and from the shared card CSS, and the capture needs redoing before pass 3.
+Gap: `1600-tut-0.png` and `390-tut-0.png` show the bare Field, not the tutorial. I graded the tutorial from source. Redo the capture before pass 3.
 
 GRADE: 38/100
 
@@ -20,22 +20,22 @@ GRADE: 38/100
 Contrast, measured against each element's own ground. Body `--mid` on panel 7.8 to 1, `--dim` 5.3 to 1, so the text passes. The inactive dot is `--edge-2` (14% white) on panel at 1.55 to 1, and it is a 6px target, so the progress mark fails the 3 to 1 floor for UI parts. Tap targets are fine (44px).
 
 ## THE SOUL
-The soul of this product is the ring that is also a clock: login A (the tick ring and concentric arcs), the boot figure assembling root to crown, the Field wheel. A dark case, one cool light, seven small seat colours. Onboarding already has its soul in `mockups/onboarding/png/onb-01-start-1600.png` (twelve starting points on a ring) and `tut-01-loop-1600.png` (the loop as a real circle). The shipped build kept none of it.
+A ring that is also a clock: login A (tick ring, concentric arcs), the boot figure assembling root to crown, the Field wheel. Dark case, one cool light, seven small seat colours. The mockups `onb-01-start-1600.png` (twelve starting points on a ring) and `tut-01-loop-1600.png` (the loop as a real circle) already hold it. The shipped build kept none of it.
 
 ## WHY THE OWNER REJECTS IT (my reading, with the evidence)
-- **Sol:** it is a dialog over a dimmed app. A stranger who just left the ring login lands in a grey rounded box with the clutter of the real product ghosting behind it. The light has nowhere to come from, so nothing glows and nothing is welcomed.
-- **Petra:** the shape changes between screen 1 and screen 2. Login is the instrument (rings, ticks). Onboarding is a SaaS modal. The first thing a person learns is that the two are different products. Also two defects in the symbols: the faint watermark figure behind the card (`.ob-fig-wm`, 7% opacity, 64% wide) is a second figure at a different scale, so in `1600-ob-0.png` three grey dots hang below the Root dot of the real figure at y 546, 582 and 618. And the Next button on the signal test renders as a 66px disc beside 44px pill buttons (`1600-ob-3.png`). Three button shapes on one card.
-- **Bjorn:** text is the hero on every card, so the person reads instead of arriving. Eyebrows render in Start Case ("The Signal Test", "Where To Start") against the sentence case rule. Dots sit under the buttons, so the eye reads actions first and progress last.
-- **Mika:** the card asks him to press. Four steps, five buttons (Come in, Not now, Try one thing, Back, Next, Go in), plus Yes, No and Nothing. A story or a title sequence has no buttons because the pace is the control. The shape of the thing disagrees with what he asked for.
+- **Sol:** a dialog over a dimmed app. A stranger leaves the ring login and lands in a grey box with the real product's clutter ghosting behind it. The light has no source, so nothing glows and nothing welcomes.
+- **Petra:** the shape changes between screen 1 and 2. Login is the instrument, onboarding is a SaaS modal, so the first lesson is that they are two products. Defects: the watermark figure (`.ob-fig-wm`, 7% opacity, 64% wide) is a second figure at another scale, so `1600-ob-0.png` shows three grey dots below the Root dot (y 546, 582, 618). The signal test Next renders as a 66px disc beside 44px pills (`1600-ob-3.png`).
+- **Bjorn:** text is the hero on every card, so a person reads instead of arriving. Eyebrows print in Start Case ("The Signal Test"), against the sentence case rule. Dots sit under the buttons, so progress is read last.
+- **Mika:** it asks him to press. Six named buttons (Come in, Not now, Try one thing, Back, Next, Go in) plus Yes, No, Nothing. A title sequence has no buttons because the pace is the control.
 
 ## WHAT BREAKS
-1. **Welcome figure is not the avatar.** `obFigure()` draws seven dots on a line at 168px. The Field centre is a wheel with a core disc. Neither is the avatar (still a mockup). "This is you" is a claim the picture does not make.
-2. **Ghost figure** double-image (above). A real defect, found by Petra on the screenshot.
-3. **Seat palette mismatch.** The shipped `PAL` at `engine/data/canon.js:261` is `#D6524C #D8924E #DABF6A #5FD5A6 #5EBBDB #7D93E0 #A77EDB`. The canon I hold is `#C4635E #D19255 #D4BC70 #6FC5A3 #65B8D4 #8296DB #A98BCE`. Saturation, shipped against canon: Root 63% vs 46%, Heart 58% vs 43%, Crown 56% vs 41%, Sacral 64% vs 57%. Saturation is what makes a surface calm or loud, and the boot and onboarding wash use the louder set. Systems and Brand must reconcile which is ruled. My decision for this surface: use the canon set, because a full-screen dark stage multiplies any saturation.
-4. **Dots do nothing.** 1.55 to 1 off state, four of them, no timer in them.
-5. **Signal test is a paragraph.** It tells a person to count ten breaths in the same type as the explanation. The action is invisible inside the instructions.
-6. **390 wide:** the card is 90% of the screen height (`390-ob-1.png`, 756 of 844) and Back wraps to its own row (`390-ob-3.png`). It is a page pretending to be a card, with the app's nav ghosting in a 12px margin.
-7. **Tutorial** (from source): same card, five cards of text, a textarea in a modal, Continue disabled until typed. The loop is never drawn as a circle, which breaks a standing ruling.
+1. **The welcome figure is not the avatar.** `obFigure()` draws seven dots on a line at 168px. "This is you" is a claim the picture does not make.
+2. **Ghost figure** double image (above).
+3. **Seat palette mismatch.** Shipped `PAL` at `engine/data/canon.js:261` is `#D6524C #D8924E #DABF6A #5FD5A6 #5EBBDB #7D93E0 #A77EDB`. The canon I hold is `#C4635E #D19255 #D4BC70 #6FC5A3 #65B8D4 #8296DB #A98BCE`. Saturation, shipped vs canon: Root 63% vs 46%, Heart 58% vs 43%, Crown 56% vs 41%. Saturation decides whether a surface reads calm, and the boot and the wash use the louder set. Systems and Brand must say which is ruled. My decision here: canon, because a full-screen dark stage multiplies saturation.
+4. **Dots do nothing.** Off state 1.55 to 1, no time in them.
+5. **Signal test is a paragraph.** The ten-breath action hides inside the explanation, same type.
+6. **390:** the card is 90% of screen height (756 of 844, `390-ob-1.png`), Back wraps to its own row (`390-ob-3.png`). A page pretending to be a card.
+7. **Tutorial** (from source): five text cards, a textarea in a modal, Continue disabled until typed, the loop never drawn as a circle against the standing ruling.
 
 ## RECOMMENDATIONS FOR THE NEW ONBOARDING
 Name: **the stage**. One full-bleed black screen, no card, no dimmed app behind it. It is the login's ring world continued, so login to onboarding to first release is one room.
@@ -56,8 +56,8 @@ Name: **the stage**. One full-bleed black screen, no card, no dimmed app behind 
 
 **R8. The handoff (M).** The last slide is the ring of twelve starting points (the mockup `onb-01`), which waits, because it is the one real decision. Choosing one contracts the ring into the figure with that seat lit (380ms, `--ease-enter`), then the writing stage opens. No button wall. ICPs moved: practitioner (sees the structure), phone only (one thumb).
 
-**R9. The tutorial (L).** Not five cards. The same stage, the loop as a circle, and the person's own sentence travelling round it: Discover (their sentence appears, the words that lit glow in the seat colour), Play, Flow, Embody, then it closes into a circle. Day one ends where it began. No textarea in a modal, it uses the release stage direction A.
+**R9. The tutorial (L).** Same stage. The loop as a circle, the person's own sentence travelling round it: Discover (the words that lit glow in their seat colour), Play, Flow, Embody, closing into a circle. No textarea in a modal, the writing uses release stage direction A.
 
-**R10. 390 wide (S).** Full bleed at 100dvh with safe area insets. Figure top at 18% of height, text lower third, hold zone is the whole screen, Skip top left. No card, no Back button, no 12px ghost margin.
+**R10. 390 wide (S).** Full bleed 100dvh with safe area insets. Figure at the top 18%, text in the lower third, whole screen is the hold zone, Skip top left, no card, no Back button.
 
-**Out of scope for me, flagged:** the palette decision in WHAT BREAKS 3, and the sniffer that must watch for distress during the signal test (no permanent safety line, so a held or abandoned breath beat must hand to it, which is a systems job).
+**Flagged to others:** the palette ruling (WHAT BREAKS 3), and the sniffer, which must watch the signal test for distress because there is no permanent safety line (a systems job).
