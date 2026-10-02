@@ -1,0 +1,96 @@
+/* login.css, round PA revision. Login A, the ring, is the login. One form, one
+   row of three buttons. Everything is a 44 px target or more. */
+.lg-logo{position:absolute;left:0;right:0;top:34px;display:flex;justify-content:center;z-index:4}
+.lg{position:absolute;z-index:3;display:flex;flex-direction:column;left:50%;top:50%;transform:translate(-50%,-50%);width:420px;gap:14px}
+.lg-h{margin:0;font-weight:500;letter-spacing:-.025em;font-size:27px;line-height:1.2;text-align:center;color:var(--ink)}
+.lg-sub{margin:-6px 0 0;text-align:center;font-size:14px;color:var(--mid)}
+.lg-fields{display:flex;flex-direction:column;gap:14px}
+.fld{display:flex;flex-direction:column;gap:6px;position:relative}
+.fl{font-size:13px;font-weight:600;color:var(--mid);display:flex;align-items:center;gap:8px}
+.fl .opt{font-weight:500;color:var(--dim)}
+.fl .dot{width:10px;height:10px;border-radius:50%;border:1.6px solid var(--c,var(--accent))}
+.fld input{height:56px;border-radius:14px;border:1.5px solid var(--ctl);background:rgba(9,10,14,.8);
+ color:var(--ink);padding:0 16px;font-size:17px;width:100%}
+.fld input:focus{outline:none;border-color:var(--accent)}
+.fld .av{position:absolute;right:14px;top:26px;height:56px;display:none;align-items:center;gap:8px;font-size:13px;color:var(--accent)}
+.fld .av svg{width:20px;height:20px}
+.fld.has-av .av{display:flex}
+.fld .show{position:absolute;right:6px;top:30px;height:48px;min-width:56px;border:0;background:none;color:var(--mid);font-size:13px;padding:0 12px;border-radius:10px}
+.hint{font-size:13px;color:var(--dim);margin:0;line-height:1.4}
+.hint:empty{display:none}
+.row-forgot{display:flex;justify-content:flex-end;margin-top:-6px}
+.lnk{background:none;border:0;color:var(--accent);font-size:14px;font-weight:500;min-height:44px;padding:0 4px;display:inline-flex;align-items:center;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.lnk:hover{color:#A9D0E4}
+a.il{color:var(--accent);text-decoration:underline;text-underline-offset:3px;display:inline-block;padding:14px 8px;margin:-14px -6px;min-width:44px;text-align:center}
+.msg{min-height:22px;margin:0;font-size:14px;display:flex;align-items:center;gap:8px;color:var(--mid);justify-content:center;text-align:center}
+.msg.bad{color:#FF6A5C}
+.msg svg{width:20px;height:20px;flex:none}
+.fld.bad input{border-color:#FF6A5C}
+
+/* the one row: Log in, Create account, Guest. The primary changes place with
+   the mode, so there is always exactly one filled button and one of each name. */
+.lg-acts{display:flex;gap:8px;align-items:stretch}
+.lg-acts .btn{height:56px;font-size:15px;padding:0 14px;flex:1 1 auto;white-space:nowrap}
+.lg-acts .btn.pri{flex:1.15 1 auto;font-size:16px}
+.lg-acts .btn svg{width:20px;height:20px}
+.lg-acts .btn.g{padding:0 14px 0 10px}
+.cap{margin:0;text-align:center;font-size:12.5px;line-height:1.45;color:var(--dim)}
+.cap.consent{color:var(--mid)}
+.nw{white-space:nowrap}
+
+/* a ticked box. A ring with a hollow centre when empty, a ring with a tick when
+   ticked. The whole row is the target. */
+.ck{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 4px;cursor:pointer;font-size:14px;line-height:1.35;color:var(--ink);text-align:left}
+.ck input{position:absolute;opacity:0;width:1px;height:1px}
+.ck .bx{width:26px;height:26px;border-radius:8px;border:1.8px solid var(--ctl);flex:none;display:flex;align-items:center;justify-content:center;color:transparent;background:rgba(9,10,14,.8)}
+.ck .bx svg{width:18px;height:18px}
+.ck input:checked+.bx{border-color:var(--accent);color:var(--accent)}
+.ck input:focus-visible+.bx{outline:2px solid var(--accent);outline-offset:3px}
+.ck.bad .bx{border-color:var(--ink)}
+.checks{display:flex;flex-direction:column;gap:0}
+
+/* developer options: small, lower right, never in the way */
+.dev{position:fixed;right:12px;bottom:10px;z-index:9;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.dev-b{min-height:44px;padding:0 12px;border:0;background:none;color:var(--dim);font-size:12px;display:flex;align-items:center;gap:8px;border-radius:10px}
+.dev-b:hover{color:var(--ink)}
+.dev-b svg{width:16px;height:16px}
+.dev-p{display:none;border:1.5px solid var(--ctl);border-radius:14px;background:rgba(26,29,38,.96);padding:12px 14px;min-width:210px;flex-direction:column;gap:4px}
+.dev.open .dev-p{display:flex}
+.dev-p label{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;font-size:14px;color:var(--ink)}
+.sw{width:42px;height:24px;border-radius:999px;border:1.5px solid var(--ctl);position:relative;flex:none}
+.sw::after{content:'';position:absolute;left:3px;top:3px;width:15px;height:15px;border-radius:50%;border:1.5px solid var(--mid)}
+.sw.on{border-color:var(--accent)}.sw.on::after{left:21px;border-color:var(--accent)}
+.dev-p .eyebrow{padding:2px 0 0}
+
+/* motion, only for people who have not asked for less of it */
+@media (prefers-reduced-motion:no-preference){
+ .sweep{animation:sweepturn 48s linear infinite}
+ @keyframes sweepturn{to{transform:rotate(360deg)}}
+ .swwrap{transition:opacity .6s ease}
+ .lit line.pop{animation:tickpop .55s ease-out}
+ @keyframes tickpop{0%{stroke-width:7;opacity:.4}100%{stroke-width:3;opacity:1}}
+ .leave-ring{transform-box:fill-box;transform-origin:center;animation:leaving 1.6s ease-out forwards}
+ @keyframes leaving{from{transform:scale(1);opacity:.5}to{transform:scale(1.16);opacity:0}}
+}
+.swwrap.off{opacity:0}
+#ringhost svg{width:100%;height:100%}
+
+/* ---------- 390 ---------- */
+@media (max-width:700px){
+ .lg-logo{top:20px}
+ .lg{left:0;top:0;transform:none;width:100%;padding:222px 20px 0;gap:10px}
+ .lg-h{font-size:21px;padding:0 6px}
+ .lg-sub{font-size:13px}
+ .fld input{height:52px;font-size:16px}
+ .fld .av{top:24px;height:52px}
+ .fld .show{top:28px;height:44px}
+ .lg-fields{gap:10px}
+ .lg-acts{gap:6px}
+ .lg-acts .btn{height:52px;font-size:14px;padding:0 10px}
+ .lg-acts .btn.pri{font-size:15px}
+ .lg-acts .btn.g{padding:0 10px 0 6px}
+ .lg-acts .btn svg{width:18px;height:18px}
+ .cap{font-size:12px}
+ .ck{font-size:13.5px;min-height:46px}
+ .dev{right:6px;bottom:4px}
+}

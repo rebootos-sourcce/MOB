@@ -1,0 +1,108 @@
+/* tutorial.css. Added on top of flow.css. */
+.trace.ring{top:8px;right:22px}
+.trace.ring svg{height:auto;width:76px}
+.trace.q{display:flex;align-items:center;gap:10px;top:14px}
+.skipb{min-height:44px;padding:0 14px 0 10px}
+.leave svg{width:16px;height:16px}
+.col.t0{left:max(80px,7vw);top:50%;transform:translateY(-50%);width:min(560px,44vw)}
+.t0r{position:absolute;right:max(80px,9vw);top:50%;transform:translateY(-50%);z-index:2}
+.col.t1{left:58%;top:50%;transform:translateY(-50%);width:min(560px,36vw)}
+.wh{position:absolute;z-index:2}
+.wh svg{display:block}
+.addr{padding:22px 26px;display:flex;flex-direction:column;gap:12px;background:rgba(12,13,18,.62)}
+.a1{font-size:36px;font-weight:500;letter-spacing:-.02em;margin:0;line-height:1.1}
+.kv{display:flex;flex-direction:column;gap:3px}
+.kv .sv{font-size:19px}
+.col.t2{left:54%;top:50%;transform:translateY(-50%);width:min(600px,40vw)}
+.t2c{position:absolute;z-index:2}
+.ledger{display:flex;gap:34px}
+.ledger .sv{font-size:24px;font-weight:600}
+.ledger .st.z .sv{color:var(--accent)}
+.tenr{width:300px;height:auto}
+.col.t3{left:max(80px,7vw);top:50%;transform:translateY(-50%);width:min(640px,50vw)}
+.t3v{position:absolute;left:76%;top:50%;transform:translate(-50%,-50%);z-index:2}
+.col.t3 .display{font-size:42px}
+.col.t3{gap:22px}
+.col.t3 .chipcol{flex-direction:row;flex-wrap:wrap}
+.day{width:100%;height:auto}
+.col.t4{left:58%;top:50%;transform:translateY(-50%);width:min(580px,36vw)}
+.core{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.col.q{left:50%;top:50%;transform:translateY(-50%);width:min(720px,44vw);gap:16px}
+.qs{position:absolute;z-index:2}
+.sym{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:15px;font-weight:600;text-align:center}
+.sym svg{display:block}
+.sym2{display:flex;gap:14px;align-items:center}
+.sym2.arch span{display:block}
+.sym0 svg{display:block}
+.q1{font-size:34px !important;line-height:1.2}
+.cont{width:100%;height:auto;margin-top:2px;overflow:visible}
+.legend{display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-top:-6px}
+.poles{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px;color:var(--ink);margin-top:-4px}
+.pole{display:flex;align-items:center;gap:10px}
+.pole svg{color:var(--accent);flex:none}
+.pole.mid{color:var(--mid);font-size:14px}
+
+@media (max-width:700px){
+ .trace.ring{top:6px;right:14px}
+ .trace.ring svg{width:60px}
+ .trace.q{top:8px;right:12px}
+ .col.t0,.col.t1,.col.t2,.col.t3,.col.t4,.col.q{left:16px;right:16px;width:auto;transform:none}
+ .col.t0{top:76px}
+ .t0r{right:auto;left:50%;top:372px;transform:translateX(-50%)}
+ .col.t1{top:432px;gap:10px}
+ .col.t1 .a1{font-size:24px}
+ .addr{padding:14px 16px;gap:8px}
+ .col.t2{top:350px;gap:12px}
+ .ledger{gap:22px}.ledger .sv{font-size:19px}
+ .col.t3{top:74px;gap:12px}
+ .col.t3 .display,.col.t3 .h1{font-size:25px}
+ .col.t4{top:430px}
+ .col.q{top:326px;gap:10px}
+ .q1{font-size:21px !important}
+ .col .row{position:fixed;left:16px;right:16px;bottom:14px;z-index:6}
+ .col .row .btn.pri{flex:1;height:56px}
+ .col.t2 .row .btn{flex:1}
+ .col.t4 .row .btn{flex:1}
+ .col.t4 .row{flex-direction:column;align-items:stretch;gap:8px}
+ .col.t4 .row .btn{height:52px}
+ .col.q .row .btn{flex:1;height:52px}
+ .poles{font-size:13px}.pole{gap:6px}.pole svg{width:22px;height:22px}
+ .legend{font-size:11.5px}
+ .sym{font-size:12px;gap:6px}
+}
+
+/* ---- the 21 laws, by seat ---- */
+.lawsh{position:absolute;left:max(64px,5vw);top:62px;z-index:3;max-width:min(760px,56vw)}
+.lawsh h1{margin-top:4px}
+.lawsh .small{margin:8px 0 0}
+.lawsp{position:absolute;right:max(48px,4vw);top:84px;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.lgd{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mid)}
+.nmk{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--accent);background:radial-gradient(circle,var(--accent) 0 2px,transparent 2.5px);flex:none}
+.chip.law{padding:0 18px 0 12px;position:relative}
+.chip.law .nmk{margin-left:2px}
+.chip.law.on{border-color:var(--c);border-width:2.2px}
+.lawlist{position:absolute;left:max(64px,5vw);right:max(48px,4vw);top:196px;bottom:96px;display:flex;flex-direction:column;gap:10px;z-index:3}
+.lrow{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;min-height:62px;border-bottom:1px solid var(--edge);padding-bottom:10px}
+.lseat{display:flex;align-items:center;gap:10px;font-size:15px}
+.lseat b{font-weight:600;color:var(--ink)}
+.lchips{display:flex;flex-wrap:wrap;gap:10px}
+.lawsf{position:absolute;right:max(48px,4vw);bottom:28px;display:flex;gap:12px;z-index:6}
+.lawsf .btn{height:56px;padding:0 28px}
+.btn.dis{background:transparent;border:1.5px solid var(--ctl);color:var(--mid);cursor:default}
+.chip.seeall{border-color:var(--ctl)}
+
+@media (max-width:700px){
+ .lawsh{left:16px;right:16px;top:60px;max-width:none}
+ .lawsh .h1{font-size:23px}
+ .lawsp{left:16px;right:auto;top:136px;flex-direction:row;gap:12px;align-items:center}
+ .lawsp .lgd{font-size:12px}
+ .lawlist{left:12px;right:12px;top:176px;bottom:84px;overflow-y:auto;scrollbar-width:none;gap:6px}
+ .lawlist::-webkit-scrollbar{display:none}
+ .lrow{grid-template-columns:1fr;gap:6px;min-height:0;padding-bottom:8px}
+ .lseat{font-size:14px}
+ .lchips{gap:8px}
+ .chip.law{min-height:46px;font-size:14px;padding:0 12px 0 8px;gap:8px}
+ .chip.law svg{width:22px;height:22px}
+ .lawsf{left:16px;right:16px;bottom:14px}
+ .lawsf .btn{flex:1;padding:0 10px;height:54px}
+}
