@@ -31670,3 +31670,18 @@ Read as:
 - Fixed directly: `engine/data/kb.js`, the Archetype glossary entry said "it is not stored in the body", against every other entry saying a pattern is stored in the body. Reworded: the patterns that run through an archetype are stored in the body, at the nerve register of whichever seat they land on. The archetype itself has no address of its own, so there is nothing at one place to release. The structural point (archetype is not a dial, not released) stands; only the wrong half of the claim moved.
 - Gap analysis: he does not remember asking it; dropped, no further explanation owed.
 - Standing instruction: stop asking and write cleaner copy against the rules already in the voice skill. No more questions on this unless truly blocked.
+
+## Round PR, 2 October. Unlock the examples, headers, nested seats, a dusting of sound
+
+His words, verbatim: "for the profiles unlock their tiers so that they all have tier four. Yeah, I can't see anything. For the journal imprints and release, they'll have different headers. The journal has none. Put a tiny one that says source AI. Get rid of the AI part. There's the journal area needs a header. Imprints needs the same header as release. So this is a UI pass across the site is to be a consistency. The avatar page has not been updated to the request archetypes I want this these questions nested like the crown third eye third heart soul or sacral nested giant icons what percent complete does a person represent Should be the same model. Stress test the system by pushing the ICP through a 90-day funnel from the funnel entry through the product use for 90 days. Unlock the tiers first. Great job on this, the sound design. Engine. I think you can do a light dusting more. Across the system. Give me the funnel HTML as well. Give me all the HTML and a zip file. From the funnel to attuned. And then what did I not give you feedback on? That's still remaining. All my feedback."
+
+Read as:
+- Every example profile opens on tier four (he cannot see locked content browsing them); the blank "Custom, new" profile stays a real stranger. Scoped away from the J11 self-grant bug (that is about a pasted record, this is baked-in demo data).
+- Header pass: Journal gets a small header, "Source" (he said "Source AI" then struck "AI" mid-sentence). Imprints matches Release's header exactly. Then a full site sweep to one header pattern.
+- Avatar page: seven seats (crown, third eye, throat, heart, solar plexus, sacral, root) as giant nested ring icons, each with a completion NUMBER, never a percent (his round PQ ruling). Same visual model as the rest of the product.
+- A 90-day stress test: an ICP pushed through the funnel then 90 days of simulated use, after the tier unlock lands.
+- Sound: he likes it, wants a light amount more coverage, not a redesign.
+- Deliverables: the build and the full funnel as HTML, zipped. Sent.
+- A list of everything still waiting on his word. Sent as `WAITING-ON-YOU.md`.
+
+Builders running: `pr-unlock` (tier four on examples, then the 90-day stress test), `pr-headers` (Journal/Imprints/Release then the site), `pr-avatar` (nested seat icons), `pr-sound` (light dusting). Still running from round PQ: `pq-copy`, `pq-ritual`, `pq-arch`.
