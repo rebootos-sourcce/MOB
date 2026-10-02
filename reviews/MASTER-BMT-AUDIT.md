@@ -611,6 +611,11 @@ the drawing.
 
 - Whether the five funnel pages that are live on the public host are the same
   bytes as the committed ones. No outbound access to it.
+- The first screen counts in 3.6 are for `source.html` md5 `259189ae...`. While
+  this audit was being committed the branch logged the three column Flow layout
+  as landed (`20d5b6e`, a `TASKS.md` entry; `source.html` on the branch was
+  still byte identical). When that build arrives the counts change, and Block
+  4 is what re-reads them.
 - The onboarding rebuild in flight (rounds QG and QH). Section 8's animated
   loop and section 16's stations were graded on the committed onboarding, not
   on that branch.
