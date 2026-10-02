@@ -6022,9 +6022,14 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    out from under the last three seats still standing on it. */
 .bx-spine{stroke:var(--edge-2);stroke-width:1.2;stroke-dasharray:100 100;stroke-dashoffset:100;
  animation:bxSpine .5s cubic-bezier(.22,1,.36,1) .70s forwards,
-  bxSpent .70s cubic-bezier(.45,0,.55,1) 1.66s forwards}
+  bxSpent .70s cubic-bezier(.45,0,.55,1) 1.66s forwards,
+  bxHumSpine 2.6s cubic-bezier(.45,0,.55,1) 3.56s infinite}
 @keyframes bxSpine{to{stroke-dashoffset:0}}
 @keyframes bxSpent{from{stroke-dashoffset:0;opacity:1}80%{opacity:1}to{stroke-dashoffset:-100;opacity:0}}
+/* THE HUM reaches the spine too, the fundamental under the register the
+   seven seats sit on: see THE HUM below, after the wordmark, for why this
+   is here at all and why it is transform only. */
+@keyframes bxHumSpine{0%,100%{transform:translateX(0)}50%{transform:translateX(1.3px)}}
 
 /* THE SEVEN. Still .b-seat and still PAL, so design gate 11 reads them as it
    read the old figure. Each lands on the spine on the beat, as a spring:
@@ -6034,8 +6039,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    first and the reach draws in, which is the anticipation; the reach lands
    past its radius and settles, which is the follow through. */
 .bx .b-seat{opacity:0;transform-origin:100px 100px;translate:0 calc(var(--r0) * -1px);
- animation:bxPop .44s both,bxReach .64s both;
- animation-delay:calc(.78s + var(--i) * var(--beat)),calc(1.62s + var(--i) * var(--beat))}
+ animation:bxPop .44s both,bxReach .64s both,
+  bxHumSeat calc(2.1s - var(--i) * .16s) cubic-bezier(.45,0,.55,1) infinite;
+ animation-delay:calc(.78s + var(--i) * var(--beat)),calc(1.62s + var(--i) * var(--beat)),
+  calc(3.58s + var(--i) * .05s)}
 @keyframes bxPop{
  0%{opacity:0;scale:.2;animation-timing-function:cubic-bezier(.22,1,.36,1)}
  45%{opacity:1;scale:1.32;animation-timing-function:cubic-bezier(.45,0,.55,1)}
@@ -6077,8 +6084,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    animation over the first third, so the band is solid before it lands and
    not fading while it does. */
 .bx-arc{stroke-width:5.6;stroke-linecap:round;opacity:0;transform-origin:100px 100px;scale:1.18;
- animation:bxBar .44s both,bxBarOp .14s cubic-bezier(.22,1,.36,1) both;
- animation-delay:calc(1.78s + var(--i) * var(--beat)),calc(1.78s + var(--i) * var(--beat))}
+ animation:bxBar .44s both,bxBarOp .14s cubic-bezier(.22,1,.36,1) both,
+  bxHumArc calc(2.1s - var(--i) * .16s) cubic-bezier(.45,0,.55,1) infinite;
+ animation-delay:calc(1.78s + var(--i) * var(--beat)),calc(1.78s + var(--i) * var(--beat)),
+  calc(3.58s + var(--i) * .05s)}
 @keyframes bxBar{
  0%{scale:1.18;animation-timing-function:cubic-bezier(.4,0,1,1)}
  50%{scale:1;animation-timing-function:cubic-bezier(.22,1,.36,1)}
@@ -6104,7 +6113,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    travel, done on the dash rather than on the shape, so nothing squashes. */
 .bx .b-addr line{stroke:var(--c);stroke-width:1.1;opacity:0;stroke-dasharray:100 100;
  transform-origin:100px 100px;scale:.1;
- animation:bxThrow .62s both;animation-delay:calc(2.56s + var(--s) * .003s)}
+ animation:bxThrow .62s both,bxPayOut .5s cubic-bezier(.45,0,.55,1) forwards;
+ animation-delay:calc(2.56s + var(--s) * .003s),calc(3.56s + var(--s) * .004s)}
 @keyframes bxThrow{
  0%{opacity:0;scale:.1;rotate:-32deg;stroke:#FFF6E8;stroke-dasharray:100 100;
   animation-timing-function:cubic-bezier(.22,1,.36,1)}
@@ -6183,24 +6193,102 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  background:radial-gradient(120% 90% at 32% 14%,rgba(255,255,255,.18),rgba(255,255,255,0) 46%)}
 /* the lens's ring: fieldbar's track, ink at sixteen percent, and its value in
    the accent with a round cap, from twelve and clockwise */
-.bx-ctrk{stroke:rgba(239,237,232,.16);stroke-width:2.2;opacity:0;
- animation:bxFade .3s cubic-bezier(.22,1,.36,1) 2.62s forwards}
+.bx-ctrk{stroke:rgba(239,237,232,.16);stroke-width:2.2;opacity:0;transform-origin:100px 100px;
+ animation:bxFade .3s cubic-bezier(.22,1,.36,1) 2.62s forwards,
+  bxGravCore 2s cubic-bezier(.45,0,.55,1) 3.62s infinite}
 @keyframes bxFade{to{opacity:1}}
 .bx-cval{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:0 100;opacity:0;
  transform-origin:100px 100px;rotate:-90deg;
- animation:bxFill .96s cubic-bezier(.45,0,.15,1) 2.74s both}
+ animation:bxFill .96s cubic-bezier(.45,0,.15,1) 2.74s both,
+  bxGravCore 2s cubic-bezier(.45,0,.55,1) 3.62s infinite}
 @keyframes bxFill{0%{opacity:0;stroke-dasharray:0 100}4%{opacity:1}100%{opacity:1;stroke-dasharray:100 100}}
 /* THE HALO, gold as ruled, round the whole figure rather than over a head,
    on the same fill curve as the lens so the two closings are one family */
 .bx-halo{stroke:var(--au);stroke-width:.8;stroke-dasharray:0 100;opacity:0;
  transform-origin:100px 100px;rotate:-90deg;
- animation:bxHalo .9s cubic-bezier(.45,0,.15,1) 3.00s both}
+ animation:bxHalo .9s cubic-bezier(.45,0,.15,1) 3.00s both,
+  bxGravRing 2s cubic-bezier(.45,0,.55,1) 3.62s infinite}
 @keyframes bxHalo{0%{opacity:0;stroke-dasharray:0 100}4%{opacity:.7}100%{opacity:.7;stroke-dasharray:100 100}}
+/* THE PULL. See THE HUM below, after the wordmark, for the full account.
+   bxGravRing contracts the outer halo a fraction of a percent at the
+   midpoint; bxGravCore does the opposite to the lens ring at the centre,
+   on the same clock, so the whole figure reads as one thing being drawn
+   toward its own middle and let go, rather than two rings moving at
+   random. Transform only, and the halo and the lens ring already carry
+   no other scale, so there is nothing here to compose against. */
+@keyframes bxGravRing{0%,100%{transform:scale(1)}50%{transform:scale(.992)}}
+@keyframes bxGravCore{0%,100%{transform:scale(1)}50%{transform:scale(1.018)}}
 
 /* THE WORDMARK. The shipped landing, untouched, and a leaving added. */
 .bx .boot-wm{animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both,
  bxWmOut .24s cubic-bezier(.4,0,1,1) calc(4.52s + var(--hold)) forwards}
 @keyframes bxWmOut{from{opacity:1}to{opacity:0;transform:translateY(-6px)}}
+/* ============================================================
+   THE HUM AND THE PULL. His words: "I want to see harmonic registers,
+   harmonic vibrations with subtle gravity distortions to kind of paint the
+   picture of what's going on under the hood. Maybe it's a body that is
+   vibrating through."
+
+   WHERE IT LIVES. 3.50s to 4.40s is the one span in the arrival above with
+   nothing moving: every other beat is already claimed, down to the
+   millisecond, by a ruling with his own words beside it. This fills only
+   that span, starting a touch after the last address lands and stopping
+   before the push's own scale and fade make a two pixel wobble impossible
+   to tell from nothing. It never competes with a single line above it.
+
+   A HARMONIC SERIES, ROOT TO CROWN. Each seat already carries --i, the
+   same index the arrival uses for its own landing beat, 0 at the root to
+   6 at the crown. bxHumSeat and bxHumArc read it twice: period
+   calc(2.1s - var(--i)*.16s), so the root hums at 2.1s and the crown at
+   1.06s, very nearly double; and reach calc(2.1px - var(--i)*.2px) for the
+   seats and a scale fraction for the bands, so the root swings widest and
+   the crown tightest. That is a harmonic series read as a rule rather than
+   picked by eye: each seat up is faster and smaller than the one below it,
+   the way a string's overtones stack. The spine hums under all seven,
+   slower and wider than the root, the fundamental the register sits on.
+
+   TRANSFORM, LAYERED, NOT REPLACED. None of this touches translate, rotate
+   or individual scale, which the arrival above still owns on every one of
+   these elements. The legacy transform property composes on top of those
+   per the CSS transforms spec rather than overwriting them, so a hum can
+   be added to a pose without knowing or disturbing what that pose is. A
+   gate that reads a seat's position off translate, or an arc's radius off
+   scale, reads the same number it always did.
+
+   THE WAVE. bxPayOut, on the ticks that already carry --s for the
+   arrival's own throw, pulses opacity from .64 up to 1 and back, staggered
+   four milliseconds an address, so it crosses all 112 in well under half a
+   second: a second, subtler pass of the same paying out the throw already
+   did once, timed at 3.56s so it starts just as the throw's own last tick
+   settles. opacity only, never filter: a brightness filter would repaint,
+   and this is a compositor change on a hundred and twelve elements that
+   already exist, nothing drawn twice.
+
+   THE PULL, KEPT CHEAP ON PURPOSE. A true lens is a displacement filter,
+   and this sheet already knows what an SVG filter costs it: gate 13 and
+   the wash's own comment above both measure the same thing, that the one
+   expensive layer in this figure is the two and a half figure wide wash,
+   turning. So the pull here is the cheap fallback the brief itself names:
+   a soft radial scale pulse. bxGravRing contracts the halo, the outermost
+   ring, a fraction of a percent; bxGravCore does the opposite to the
+   lens's own ring at the centre, on the same two second clock, so the
+   whole figure reads as something pulling gently toward its own middle
+   and letting go, rather than two rings moving at random. Nothing here
+   gets an SVG filter and nothing here touches the wash. The faint pull on
+   the arc paths the brief also asks for is bxHumArc itself: one mechanism
+   carrying both the register and the lensing, rather than two effects
+   fighting for the same pixels.
+
+   REDUCED MOTION NEEDS NOTHING HERE. Line 6540's own rule,
+   ".boot.bx,.bx *{animation:none!important}", already matches every
+   element this section touches, since all of them sit inside .bx. A
+   person who has told the machine to stop moving never starts this loop
+   in the first place, for the same reason they never see the arrival. */
+@keyframes bxHumSeat{0%,100%{transform:translateX(0)}
+ 50%{transform:translateX(calc(2.1px - var(--i) * .2px))}}
+@keyframes bxHumArc{0%,100%{transform:scale(1)}
+ 50%{transform:scale(calc(1 + (.012 - var(--i) * .0014)))}}
+@keyframes bxPayOut{0%{opacity:.64}40%{opacity:1}100%{opacity:.64}}
 /* ============================================================
    THE COMPASS NAME RAILS. Four axes each side of the figure.
 
