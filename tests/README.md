@@ -28,6 +28,35 @@ string literals and fails on `document`, `window`, `navigator`, `localStorage`,
 matters: a comment naming `localStorage` is not a call to it, and the lexicon
 data legitimately contains the word window.
 
+## The claims gate
+
+Headless, no dependencies, and `BUILD.sh` runs it on every build, so a build
+with a medical claim on the funnel does not finish.
+
+    node tests/claims.js
+
+It reads every string a stranger can read on the funnel pages, their
+sendable copies in `funnel/dist`, the legal pages, the engine's printed
+tables and the hooks in `marketing/hooks.js`, and puts each sentence through
+the claims rules of `marketing/refuse.js`: medical, cause, ai, testimonial,
+scarcity. The forbidden lists in `reviews/ATUNED-Master-BMT-TDD.md` section
+20 and section 5 are written in as patterns, one per item.
+
+Before it reads a page it proves itself: every line in a known bad set is
+refused by the rule named beside it, every line in a known good set (the
+product refusing the thing) passes, the reader finds a line planted in a
+meta tag, a paragraph, an alt and a string split across a `+`, and skips one
+planted in a comment, and each rule removed alone lets its own lines
+through. If any of that fails, no page is read. On 2 October, run against
+the rule set from before it, the self test refused 7 of its 28 known bad
+lines and stopped; that sentence is dated on purpose.
+
+The owner's own lines that break it are held by exact sentence in `HELD`,
+each with whose words they are and where he said them, and every run prints
+every hold. A held line changed by one word is caught again, and a hold whose
+line no longer ships fails the run until it is deleted. Nothing goes in
+`HELD` without his ruling. Read the counts off the run.
+
 ## The front door
 
 The engine has one entrance and the three surfaces are separable, so each can be

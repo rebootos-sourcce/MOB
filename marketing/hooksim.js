@@ -265,6 +265,8 @@ function validate() {
     scarcity: 'Only 12 spots left for the reading of your gut.',
     testimonial: 'Join 40,000 people who have read their own chest.',
     medical: 'This treats your anxiety and your back pain.',
+    cause: 'Your story is the true cause of the pain in your lower back.',
+    ai: 'An AI therapist that reads your chest in your pocket.',
     lossframe: 'Do not lose your progress. Your chest is falling behind.',
     urgency: 'Sign up now. Do not wait, your gut is waiting.',
     verdict: 'You are broken and what is wrong with you sits in your chest.',
