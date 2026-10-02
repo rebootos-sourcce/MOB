@@ -289,6 +289,9 @@ if(typeof module!=='undefined'&&module.exports){
   /* a worked example's history, engine/pracex.js, for the practitioner page */
                   PRACEX_DAYS:PRACEX_DAYS, PRACEX_HIST:PRACEX_HIST, pracexRecord:pracexRecord,
                   pracexDays:pracexDays, pracexRead:pracexRead,
+  /* a worked example's bank and vault, engine/exdepth.js */
+                  EXDEPTH_HIST:EXDEPTH_HIST, exdepthFill:exdepthFill, exdepthHas:exdepthHas,
+                  exdepthAt:exdepthAt, relHeaviest:relHeaviest, relWrite:relWrite,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,

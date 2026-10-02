@@ -1444,7 +1444,13 @@ function meterBudget(p,now){
    ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length,meterGiftAt(p),now) : null;
  var left=(a&&a.left!=null)?Math.max(0,Math.floor(a.left)):0;
  return {left:left, cap:Math.min(RUN_MAX,left), allow:a};}
-function meterRun(p,keys){
+/* `at`, optional, is the moment the run happened, an ISO string. Missing is
+   now, which is every live run. A worked example's history is replayed
+   through this same writer (engine/exdepth.js) and passes the day each run
+   happened, so its dated first and last are the history's and not the
+   moment the page was opened. Added on the end, so every caller that passes
+   two arguments reads exactly as it did. */
+function meterRun(p,keys,at){
  if(!p)return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
@@ -1464,7 +1470,7 @@ function meterRun(p,keys){
  var spentBefore=p.meter.unique.length>=GIFT_N;
  p.meter.unique.forEach(function(k){have[k]=1;});
  list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);fresh.push(k);added++;} });
- var now=new Date().toISOString();
+ var now=(typeof at==='string'&&!isNaN(Date.parse(at)))?at:new Date().toISOString();
  /* the gift runs out once, and this is where it is seen to. If it ran out in
     this run, it ran out now. If it ran out before the stamp existed, the date
     it has been read at is kept, read through meterGiftAt before last moves,
@@ -1712,13 +1718,14 @@ function meterRead(p,now){
    and nothing read it. These are facts about the work, never statements
    about the person: the ladder says an address was opened on a date, it
    does not say what that made someone. */
-function meterFirst(p,key,label){
+function meterFirst(p,key,label,at){
  if(!p||!key)return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.firsts))p.meter.firsts=[];
  for(var i=0;i<p.meter.firsts.length;i++)
   if(p.meter.firsts[i].k===key)return null;      /* a first happens once */
- var f={k:key, t:new Date().toISOString(), nm:label||key};
+ /* `at` is meterRun's: the moment of the run, missing for a live one */
+ var f={k:key, t:(typeof at==='string'&&!isNaN(Date.parse(at)))?at:new Date().toISOString(), nm:label||key};
  p.meter.firsts.push(f);
  return f;}
 

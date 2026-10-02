@@ -482,21 +482,9 @@ function relAdvance(){
   RUN.cool++;
   if(RUN.cool>=COOLING.length){RUN.cool=COOLING.length;relRender();return;}
   return relStep();}}
-/* ONE ADDRESS'S SHARE OF THE WRITE, and the only copy of it. It sat inline in
-   relCoolDown, and the live shadow row below has to run the same arithmetic
-   ahead of the commit. Two copies of it would be two answers to "what does
-   this run do", and the row would count down to a number the run then did not
-   land on. w0 is passed in because relCoolDown reads every weight before the
-   first write moves anything, and the projection has to read them the same
-   way. */
-function relWrite(q,n,w0){
- var d=-Math.round(w0*0.21+2);
- var w1=Math.max(0,w0+d);
- var share=Math.abs(d)/10/Math.max(1,q.filter(function(x){return x.cf===n.cf;}).length);
- S.charge[n.cf]=clamp((S.charge[n.cf]||0)-share,0,10);
- /* release empties the address, replace fills it. the second half is not optional. */
- S.replace[n.cf]=clamp((S.replace[n.cf]||0)+share*0.62,0,10);
- return {d:d,w1:w1};}
+/* relWrite, one address's share of the write, lives in engine/compute.js
+   beside releaseWork, so a worked example's history (engine/exdepth.js) runs
+   the same arithmetic the card does and there is still one copy of it. */
 /* put a saved map back in place. The object is kept and its keys are
    restored, because S.charge is read by reference elsewhere and a new object
    would leave those readers holding the projection's numbers. */

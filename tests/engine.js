@@ -1585,12 +1585,13 @@ g('19a \u00b7 the roster covers the scale');
     What is still true, and asserted: the floor cases sit below the median on
     CQ and further down on expression, the ceiling cases sit in the top two
     bands, and CQ is exactly each table summed over 210. */
- ['Tomas','Nkem'].forEach(n=>{
+ /* Nkem was cut in round QD, and Gordon, at 17.5, is the second floor case */
+ ['Tomas','Gordon'].forEach(n=>{
   ok(by[n].CQ<E.MEDIAN,n+' is a floor case, below the median, got '+by[n].CQ.toFixed(1));
   ok(by[n].EX<by[n].CQ,n+' and its load pulls expression lower, '+by[n].EX.toFixed(1));});
  ['Wren','Abraham'].forEach(n=>ok(by[n].CQ>=81,
   n+' is a ceiling case, in the top two bands, got '+by[n].CQ.toFixed(1)));
- ['Tomas','Nkem','Wren','Abraham'].forEach(n=>{
+ ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
   const LS=LAWSET[n];
   const sum=SINAMES.reduce((a,l)=>a+((LS[l]!==undefined)?LS[l]:LS._),0);
   ok(Math.abs(by[n].CQ-sum/210*100)<1e-9,n+' reads its laws over 210, '+by[n].CQ.toFixed(1));});
@@ -1604,19 +1605,20 @@ g('19a \u00b7 the roster covers the scale');
  const bands={}; PEOPLE.forEach(p=>{bands[by[p.nm].tier]=1;});
  ok(Object.keys(bands).length>=6,'the roster covers at least six bands, got '+Object.keys(bands).length);
  /* every new case resolves the cosmological layer too */
- ['Tomas','Nkem','Wren','Abraham'].forEach(n=>{
+ ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
   const sp=E.spiritual(n);
   ok(sp&&sp.sun&&sp.rising,n+' resolves a full birth reading');});
 }
 
-g('19ba \u00b7 the tier ladder: a person in every band, and no band left unvisited');
-/* J12, round PL. The owner: "Fix all of the profiles. By tier. And then add three
-   additional ones per tier. From minimum to medium to maximum. And stuff in
-   between. I just need a range." A tier is the coherence band a reading's CQ
-   lands in, so this reads each person's CQ off the real engine and asserts the
-   properties the range depends on, and none of the numbers a roster happens to
-   hold today: the count of bands is TIERDEF's own length, the width of a band
-   is read off TIERDEF, and nobody is counted by hand. */
+g('19ba · the roster: twelve across the scale, and the owner at four points on it');
+/* ROUND QD, 2 October, which replaces the J12 ladder this group held (three
+   people in every band, round PL). His words: "There are too many now. let's
+   have 12, with a range that gives us a little bit of flavor across the scale
+   from 0 to 100. And then give me ... one of me with a CQ of fifteen, fifty,
+   eighty-five and one hundred. That says Lance, comma, developer." Read off the
+   real engine and off TIERDEF, and no count of people is typed here: the
+   roster's size is his to move and a gate that counted it would be the defect
+   this repository keeps paying for. */
 {
  const rd=p=>{
   S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
@@ -1628,28 +1630,29 @@ g('19ba \u00b7 the tier ladder: a person in every band, and no band left unvisit
  const ppl=PEOPLE.filter(p=>!p.you), read=ppl.map(p=>({p,r:rd(p)}));
  const byTier={}; E.TIERDEF.forEach(t=>{byTier[t.nm]=[];});
  read.forEach(x=>byTier[x.r.tier].push(x));
- /* THE RULE THE OWNER ASKED FOR, three to a tier. Added people are the ones past
-    the original reference cases, so the floor is three in every band and not
-    exactly three, which the original cases would already have broken. */
- E.TIERDEF.forEach(t=>ok(byTier[t.nm].length>=3,
-  t.nm+' has at least three people in it, got '+byTier[t.nm].length));
- /* AND A BAND IS WALKED, NOT TOUCHED. Three people at one end of a band is a
-    point and not a range, so in every band the lowest and the highest sit at
-    least a third of a band apart where the band is as wide as a band is. The top band is
-    one wider than the others at 91 to 100 and the bottom one at 0 to 10, which
-    is why the width is read off tierTop and not assumed. */
- E.TIERDEF.forEach(t=>{
-  const xs=byTier[t.nm].map(x=>x.r.CQ).sort((a,b)=>a-b), w=E.tierTop(t.nm)-t.at;
-  ok(xs[xs.length-1]-xs[0]>=w/3,t.nm+' is walked from '+xs[0].toFixed(1)+' to '+xs[xs.length-1].toFixed(1)
-   +' and not touched at one end');});
- /* ONE CONTINUOUS RUN. Sorted by CQ, no two neighbours are further apart than
-    half the widest band, so the picker never jumps over a stretch of the scale
-    a surface has not been looked at across. */
+ /* THE FOUR OF HIM, at the four numbers he gave, each a whole example named
+    Lance with the role he said. A name carries the number, because nm is the
+    key every table looks a person up by (people.js says why). */
+ const lance=ppl.filter(p=>/^Lance /.test(p.nm));
+ const want=[15,50,85,100];
+ ok(lance.length===want.length,'there is one Lance profile per number he gave, '+lance.map(p=>p.nm).join(', '));
+ want.forEach(n=>{const x=read.find(y=>y.p.nm==='Lance '+n);
+  ok(!!x&&Math.abs(x.r.CQ-n)<0.05&&x.p.role==='developer',
+   'Lance '+n+' reads CQ '+n+' and says developer, got '+(x?x.r.CQ.toFixed(2)+', '+x.p.role:'nothing'));});
+ /* A RANGE, NOT A CLUSTER. Most of the bands carry somebody, the ends are the
+    ends, and sorted by CQ no stretch of the scale between two neighbours is
+    wider than two bands. Twelve cannot fill ten bands three deep, so the old
+    half a band is not the bar: the widest gap at this cut is the Corrupt band,
+    21 to 30, which none of the twelve the gates name sits in, and people.js
+    records that rather than this gate hiding it. */
+ const hit=E.TIERDEF.filter(t=>byTier[t.nm].length>0).length;
+ ok(hit>=E.TIERDEF.length-1,'every band but at most one carries somebody, '+hit+' of '+E.TIERDEF.length
+  +', empty: '+E.TIERDEF.filter(t=>!byTier[t.nm].length).map(t=>t.nm).join(', '));
  const cq=read.map(x=>x.r.CQ).sort((a,b)=>a-b);
  const widest=Math.max.apply(null,E.TIERDEF.map(t=>E.tierTop(t.nm)-t.at+1));
  let gap=0; for(let i=1;i<cq.length;i++)gap=Math.max(gap,cq[i]-cq[i-1]);
- ok(gap<=widest/2,'no stretch of the scale is left empty: the widest gap is '+gap.toFixed(1)
-  +', the limit is '+(widest/2));
+ ok(gap<=widest*2,'no stretch of the scale wider than two bands is left empty: the widest gap is '+gap.toFixed(1)
+  +', the limit is '+(widest*2));
  /* AND THE ENDS ARE THE ENDS. The lowest reading is in the lowest band and the
     highest in the highest, and neither is the median pretending. */
  ok(E.tierOf(cq[0]).nm===E.TIERDEF[E.TIERDEF.length-1].nm,
@@ -1663,16 +1666,20 @@ g('19ba \u00b7 the tier ladder: a person in every band, and no band left unvisit
  const miss=ppl.filter(p=>!p.nm||!p.role||!p.says||!(p.age>0)||p.dom==null||p.a1==null||p.a2==null||!p.c||!p.rep);
  ok(miss.length===0,'every reference case is complete, '+miss.length+' are not'+(miss[0]?': '+miss[0].nm:''));
  const dup=k=>{const seen={},d=[]; ppl.forEach(p=>{const v=String(p[k]).toLowerCase(); if(seen[v])d.push(p.nm); seen[v]=1;}); return d;};
- ['nm','role','says'].forEach(k=>ok(dup(k).length===0,'no two reference cases share a '+k+', '+dup(k).join(', ')));
+ ['nm','says'].forEach(k=>ok(dup(k).length===0,'no two reference cases share a '+k+', '+dup(k).join(', ')));
+ /* the role too, except the four Lance profiles, which are one person at four
+    depths and carry the one role he gave them, "Lance, comma, developer" */
+ const dupRole=dup('role').filter(n=>!/^Lance /.test(n));
+ ok(dupRole.length===0,'no two different people share a role, '+dupRole.join(', '));
  ok(ppl.every(p=>p.dom>=0&&p.dom<DOMAINS.length&&p.a1>=0&&p.a1<ARCH.length&&p.a2>=0&&p.a2<ARCH.length),
   'every reference case names a real domain and real archetypes');
  ok(ppl.every(p=>!/[\u2013\u2014]/.test(p.says+p.role)),'and no reference case speaks with a dash');
  const clinical=/\b(depress|ptsd|trauma|disorder|bipolar|anxiety|adhd|diagnos|psycho|patholog|symptom|syndrome|burnout)/i;
  ok(ppl.every(p=>!clinical.test(p.says+' '+p.role)),'and none of them wears a clinical label');
- /* EVERY ONE CARRIES THE BIRTH THE COSMOLOGICAL LAYER READS, but Lance, whose
-    birth is his to enter and is not invented for him. */
+ /* EVERY ONE CARRIES THE BIRTH THE COSMOLOGICAL LAYER READS, but the owner's
+    own four, whose birth is his to enter and is not invented for him. */
  const noBirth=ppl.filter(p=>!E.BIRTH[p.nm]||!E.FULLNAME[p.nm]).map(p=>p.nm);
- ok(noBirth.every(n=>n==='Lance'),'every reference case has a birth and a full name but Lance, '+noBirth.join(', '));
+ ok(noBirth.every(n=>/^Lance /.test(n)),'every reference case has a birth and a full name but Lance, '+noBirth.join(', '));
  /* A TABLE THAT ANSWERS EVERY LAW, and a law that exists. A misspelt law name
     in a persona table is a key the engine never reads, which silently moves the
     person to the base value and the tier with it. */
@@ -2813,7 +2820,13 @@ g('26 \u00b7 numerology, in full');
  /* THE ROSTER. Every reference case has a full name, because a numerology read
     off a first name is a numerology read off a nickname. */
  const roster=Object.keys(FULLNAME).filter(function(k){return FULLNAME[k];});
- ok(roster.length>=13,'every reference case carries a full name, got '+roster.length);
+ /* read off PEOPLE and not counted here: this said at least 13, a count typed
+    into a gate, and round QD cut the roster to twelve and the owner's four,
+    who carry none because their names are his to enter */
+ const named=PEOPLE.filter(function(p){return !p.you&&!/^Lance /.test(p.nm);});
+ const unnamed=named.filter(function(p){return !FULLNAME[p.nm];}).map(function(p){return p.nm;});
+ ok(named.length>0&&unnamed.length===0&&roster.length===named.length,
+  'every reference case carries a full name, got '+roster.length+' of '+named.length+(unnamed.length?', missing '+unnamed.join(', '):''));
  roster.forEach(function(k){
   ok(FULLNAME[k].split(' ').length===3,k+' has a first, a middle and a last');
   const x=numerologyOf(k,null);
@@ -6875,6 +6888,121 @@ g('QB · a worked example\'s practice history, through the real engine');
  const b=JSON.stringify(E.pracexRead(E.PEOPLE.find(x=>x.nm==='Ana'),ADDRS,NOW).days);
  ok(a===b,'the same example and the same moment build the same history');
  ok(E.pracexRecord({nm:'Nobody'},ADDRS,NOW)===null,'a person with no row has no history, and none is invented');
+}
+
+g('QD · every worked example\'s bank and vault, replayed through the real writers');
+/* Round QD: "load up their bank and their vault. With real data." The bank is
+   the Story page's held field and the committed entries the Imprints page
+   groups (ui/imprints.js); the vault is stVaultRows (ui/storyui.js), which
+   reads meter.unique and meter.firsts and nothing else. engine/exdepth.js
+   writes both by replaying each example's journal and releases through
+   parseStory, applyStory, relHeaviest, meterPlan, relWrite, meterRun,
+   releaseWork and meterFirst. This holds that every figure in the result is
+   one those writers produced, that the boundary takes the record back, and
+   that the reading a person sees is still the table's. The roster is read off
+   PEOPLE, never counted. */
+{
+ const NOW=Date.parse('2026-10-02T12:00:00Z');
+ const H=E.EXDEPTH_HIST;
+ const rd=p=>{
+  S.dom=p.dom; S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
+  E.VERPMIX.aware=E.VERPMIX.detach=E.VERPMIX.intent=0;
+  E.VERPMIX.ignore=E.VERPMIX.attach=E.VERPMIX.averse=0;
+  E.LEANMIX.benign=E.LEANMIX.malignant=0;
+  return compute();};
+ const snapS=()=>JSON.stringify([S.charge,S.replace,E.VERPMIX,E.LEANMIX]);
+ /* WHAT A REPLAYED RECORD MUST SAY, as one checker, so it can be pointed at a
+    known bad record first. Every problem comes back by name. */
+ const chk=(rec,p)=>{
+  const bad=[], h=H[p.nm], win=Math.max.apply(null,(h.e||[]).concat(h.r||[]).map(x=>x[0]))+1;
+  const ents=rec.story.entries;
+  if(ents.length!==(h.e||[]).length)bad.push('entries '+ents.length+' of '+(h.e||[]).length);
+  ents.forEach((x,i)=>{const P=E.parseStory(x.text);
+   if(x.imprints!==P.imprints.length)bad.push('entry '+i+' says '+x.imprints+' imprints, the sniffer reads '+P.imprints.length);
+   if(JSON.stringify(x.bands)!==JSON.stringify(P.bands))bad.push('entry '+i+' seats are not the sniffer\'s');
+   if(x.lex!==E.LEX_VERSION)bad.push('entry '+i+' is not stamped with the lexicon');});
+  for(let i=1;i<ents.length;i++)if(ents[i].t<ents[i-1].t)bad.push('entries out of order at '+i);
+  const m=rec.meter, keys=m.unique;
+  if(keys.some(k=>!/^\d+:[LR](limit|truth):\d+$/.test(k)))bad.push('a key is not a meter key');
+  if(new Set(keys).size!==keys.length)bad.push('a key is held twice');
+  if(keys.length>=E.GIFT_N)bad.push('the history spends the whole gift, '+keys.length);
+  if(m.lines!==keys.length)bad.push('lines '+m.lines+' is not the keys said once each, '+keys.length);
+  const runs=(h.r||[]);
+  /* the lifetime split is relCoolDown's: every line said `dose` times. A key
+     is one line, and the runs are in time order, so the keys are dealt to the
+     runs in order by how many each one planned, which is read off the firsts. */
+  const addrs=[...new Set(keys.map(k=>+k.split(':')[0]))];
+  const firstAddr=m.firsts.filter(f=>/^addr:/.test(f.k)).map(f=>+f.k.slice(5));
+  if(addrs.some(a=>firstAddr.indexOf(a)<0))bad.push('an address in the vault has no dated first');
+  if(firstAddr.some(a=>addrs.indexOf(a)<0))bad.push('a first names an address with no line said at it');
+  if(m.firsts.some(f=>{const t=Date.parse(f.t); return !(t<NOW&&t>NOW-win*86400000);}))
+   bad.push('a first is dated outside the history');
+  if(m.relLines!==m.truthLines)bad.push('released '+m.relLines+' and installed '+m.truthLines+' should match on whole runs');
+  if(runs.length&&!(m.relLines>0))bad.push('a history with releases released nothing');
+  if(!runs.length&&(keys.length||m.firsts.length||m.relLines))bad.push('a history with no release has a vault');
+  if(Object.keys(rec.work||{}).length)bad.push('the law lift was not cleared by the later answers');
+  const v=E.validateProfile(JSON.parse(JSON.stringify(rec)));
+  if(!v.ok)bad.push('the boundary refuses it: '+v.errs.slice(0,2).join('; '));
+  return bad;};
+ const ppl=PEOPLE.filter(p=>!p.you);
+ ok(ppl.length>0&&ppl.every(p=>H[p.nm]),'every example on the roster has a history, missing: '
+  +ppl.filter(p=>!H[p.nm]).map(p=>p.nm).join(', '));
+ ok(Object.keys(H).every(k=>ppl.some(p=>p.nm===k)),'and no history names somebody who is not on the roster: '
+  +Object.keys(H).filter(k=>!ppl.some(p=>p.nm===k)).join(', '));
+ let first=null;
+ ppl.forEach(p=>{
+  if(!H[p.nm])return;
+  const r0=rd(p), s0=snapS(), rec=E.blankProfile(p.nm);
+  let out=null, threw='';
+  try{out=E.exdepthFill(rec,p,NOW);}catch(e){threw=e.message;}
+  ok(!threw,p.nm+'\'s history runs through the engine, '+threw);
+  if(threw)return;
+  ok(snapS()===s0,p.nm+': the field and both gate mixes are put back exactly');
+  ok(Math.abs(compute().CQ-r0.CQ)<1e-9&&Math.abs(compute().DQ-r0.DQ)<1e-9,
+   p.nm+': the reading is still the table\'s, CQ '+r0.CQ.toFixed(1));
+  const bad=chk(rec,p);
+  ok(bad.length===0,p.nm+': every figure is the writers\' own, '+bad.join(' | '));
+  ok(out.entries>0&&rec.story.entries.some(x=>x.imprints>0),p.nm+': the bank holds entries the sniffer read, '+out.imprints+' imprints');
+  if((H[p.nm].r||[]).length)ok(rec.meter.unique.length>0,p.nm+': the vault holds released lines, '+rec.meter.unique.length);
+  /* the same day builds the same history, byte for byte */
+  rd(p); const again=E.blankProfile(p.nm); E.exdepthFill(again,p,NOW);
+  ok(JSON.stringify(again.story)===JSON.stringify(rec.story)&&JSON.stringify(again.meter)===JSON.stringify(rec.meter),
+   p.nm+': the history is the same on a second build');
+  if(!first&&rec.meter.unique.length&&rec.story.entries.length>1)first={p,rec};});
+ /* CHECKED AGAINST KNOWN BAD RECORDS FIRST, the standing rule. Each one is a
+    real record with one figure hand typed, and the checker must name it. */
+ if(first){
+  const T=()=>JSON.parse(JSON.stringify(first.rec));
+  let x=T(); x.story.entries[0].imprints+=1;
+  ok(chk(x,first.p).some(b=>/imprints/.test(b)),'known bad: a hand typed imprint count is caught');
+  x=T(); x.meter.relLines+=50;
+  ok(chk(x,first.p).some(b=>/released/.test(b)),'known bad: a hand typed lifetime count is caught');
+  x=T(); x.meter.firsts.push({k:'addr:1',t:new Date(NOW-86400000).toISOString(),nm:'x'});
+  if(x.meter.unique.every(k=>+k.split(':')[0]!==1))
+   ok(chk(x,first.p).some(b=>/no line said/.test(b)),'known bad: a first with no line said at it is caught');
+  x=T(); x.meter.unique.push(x.meter.unique[0]);
+  ok(chk(x,first.p).length>0,'known bad: a key held twice is caught');
+  x=T(); x.work={Truth:{n:3,on:5}};
+  ok(chk(x,first.p).some(b=>/lift/.test(b)),'known bad: a lift left standing is caught');}
+ /* A HISTORY THE ENGINE CANNOT RUN IS LOUD. A release with nothing carrying
+    is refused by the queue, and the refusal names the step. */
+ const ghost={nm:'__qd_ghost',dom:0,a1:0,a2:1,c:{},rep:{}};
+ H.__qd_ghost={e:[],r:[[3,2,20]]};
+ rd(ghost); let thr='';
+ try{E.exdepthFill(E.blankProfile('g'),ghost,NOW);}catch(e){thr=e.message;}
+ delete H.__qd_ghost;
+ ok(/nothing is carrying/.test(thr),'a release on an empty field is refused by name, '+thr);
+ ok(E.exdepthFill(E.blankProfile('n'),{nm:'Nobody'},NOW)===null,'a person with no row has no history, and none is invented');
+ ok(E.exdepthHas(E.blankProfile('b'))===false,'a blank record carries no history');
+ /* THE ENGINE'S CHANNEL LIST IS THE CARD'S. ONB_CHANS is held equal to CHAN in
+    ui/release.js by tests/onboarding2.js in a real browser; here, the four
+    keys are the four a key may carry. */
+ ok(E.ONB_CHANS.length===4&&E.ONB_CHANS.every(c=>/^[LR](limit|truth)$/.test(c)),'the replay plans down the card\'s four channels');
+ reset();
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

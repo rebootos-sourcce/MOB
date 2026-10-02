@@ -195,6 +195,34 @@ function releaseWork(p,keys){
    keyed to the value; this is what the intake calls when a person changes an
    answer, so a new measurement always wins over the model's estimate. */
 function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
+/* ONE ADDRESS'S SHARE OF THE WRITE, and the only copy of it. It sat inline in
+   relCoolDown, and the live shadow row below has to run the same arithmetic
+   ahead of the commit. Moved here from ui/release.js in round QD, body
+   unchanged, because a worked example's history (engine/exdepth.js) replays
+   releases with no card and must run this and not a second copy of it. Two copies of it would be two answers to "what does
+   this run do", and the row would count down to a number the run then did not
+   land on. w0 is passed in because relCoolDown reads every weight before the
+   first write moves anything, and the projection has to read them the same
+   way. */
+function relWrite(q,n,w0){
+ var d=-Math.round(w0*0.21+2);
+ var w1=Math.max(0,w0+d);
+ var share=Math.abs(d)/10/Math.max(1,q.filter(function(x){return x.cf===n.cf;}).length);
+ S.charge[n.cf]=clamp((S.charge[n.cf]||0)-share,0,10);
+ /* release empties the address, replace fills it. the second half is not optional. */
+ S.replace[n.cf]=clamp((S.replace[n.cf]||0)+share*0.62,0,10);
+ return {d:d,w1:w1};}
+/* THE QUEUE THE RELEASE BUTTON TAKES, the heaviest addresses holding
+   something: at or over the line at 4 first, and when nothing is that heavy,
+   whatever is carrying at all. Moved out of the button's handler in
+   ui/personas.js in round QD, the rule unchanged, so the worked examples'
+   history picks its addresses the way a person pressing Release does. Only
+   addresses with a fetter, which is the only kind relPick keeps. */
+function relHeaviest(max){
+ var by=function(a,b){return b.sq-a.sq;};
+ var hot=W.filter(function(n){return n.cf&&n.sq>=4;}).sort(by);
+ var q=hot.length?hot:W.filter(function(n){return n.cf&&n.sq>0;}).sort(by);
+ return q.slice(0,max>0?max:8);}
 
 /* ============================================================
    THE LEVER'S BELL, FITTED. The owner: "I'm a little tense is different than
