@@ -32075,3 +32075,15 @@ The audit already running against the shorter, earlier version (round QC's first
 ## Round QB: functional gate deferred, not failed
 
 Tried twice on the practitioner-analytics merge: the first run (inside the dispatched agent) timed out at 28 minutes with zero failures up to the Character section, under three other agents sharing the machine. A second attempt here hit the container's 30 minute background limit with no output at all. Load average at the time: 27 to 29. Not restarted a third time; the machine is too contended right now for a clean read, and the merge is already verified by four other gates (engine 4550/0, practitioner 35/0, collide 831/0, design 187/0). Queued to actually run once load drops, not skipped.
+
+## Round QB: the feedback tracker and Discord doorway, built and merged both sides
+
+Built on the existing outbox rather than a second system, correctly: `engine/outbox.js` already queued entries locally with a closed field list refusing email addresses and phone numbers. "Write to us" now lives in Settings, Help, with three kinds (comment, question, something broken) in one form, says exactly where the text goes before anyone types, and reports "Sent" only when the server actually accepts it, "Held on this device" with a reason otherwise, with a retry. Deliberately left out: a tier field, since combined with build, device band and screen size that could narrow feedback down to one person in a small user base; adding one is his call, not a default.
+
+The Discord door reads one constant that is empty right now; while empty it says "not open yet" with no link, and only becomes a real button once a real `discord.gg` or `discord.com/invite` link is set.
+
+The server half (`reboot-os`, branch `claude/app-migration-decision-yx56cj`, merged) is `POST /v1/feedback`: public, no sign-in token even when signed in, so a comment can never be tied to an account; rate limited; relays to a Discord webhook with markup escaped and no mentions allowed, so a comment can't ping or plant a link; stores nothing on the server. 503 while the webhook secret is unset. Not deployed, same reason as everything else tonight: that needs his Cloudflare login.
+
+**What's actually needed from him now, the same two items already sitting in `WAITING-ON-YOU.md` item 13, now genuinely ready the moment he provides them:** a Discord webhook URL (Server Settings, Integrations, Webhooks, New Webhook, pick the channel, Copy Webhook URL, never pasted anywhere public) for someone to set as `DISCORD_WEBHOOK_URL` and deploy; and a Discord invite link for `COMMUNITY_INVITE`. No app rebuild needed for the first one; anything already queued on a person's device goes out the next time they press Send.
+
+Gates on the merged tree: engine 4550/0, the new `tests/feedback.js` 67/0 (fails 3 of 30 on the build from before this work, confirming it tests the real change), server 80/80 on `reboot-os`. One real bug the gate itself caught before merge: an entry typed while a send was already in flight was kept correctly but reported as not sent over what was actually a clean send; fixed.
