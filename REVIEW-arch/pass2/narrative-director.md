@@ -1,47 +1,46 @@
 # Pass 2, narrative director (June Okonkwo-Lund). Round PK, 2 October
 
-Read: BRIEF, PASS2-INSTRUCTIONS, my pass 1, and all seven other pass 1 reports and four pass 2 reports now in `REVIEW-arch/`. Checked in the repo: `ui/account.js:424`, `ui/summary.js:236-318`, `ui/drills.js:1348`, `ui/storyui.js` (it calls `SpeechRecognition`), `PRIVACY-POLICY.md:166`. Every string in the blocks was run through `check.py --line`. One hard failure: the caps rule on the hotline keyword START, which is the hotline's own word and stays in quotes. Counted prose is under 1400 words. The string blocks are the deliverable and are not counted, as in pass 1.
+Read: BRIEF, PASS2-INSTRUCTIONS, my pass 1, the seven other pass 1 reports and four pass 2 reports. Checked in the repo: `ui/account.js:424`, `ui/summary.js:236-318`, `ui/drills.js:1348`, `ui/storyui.js`, `PRIVACY-POLICY.md:166`. Every string in the blocks passed `check.py --line` except one: the caps rule on START, the hotline's own keyword, which stays in quotes. Prose is under 1400 words. The string blocks are the deliverable and are not counted.
 
 ## 1. Agreements
 
-- **No day, no "of 90", no stage word on screen.** Creative, UIUX, game, me. A count against a total is a score.
-- **Never store a care result.** AI, systems, creative, technical, me. A stored crisis flag is health data. My strings read the screen result passed in, never the record.
-- **Nothing screens text for distress.** All seats. The words for it are below, and they did not exist.
-- **The ledger is a view.** All seats. Screen name: there is none. The person taps Why and sees their own words.
-- **A confidence number never reaches a screen.** AI, systems, UIUX. A count a person can check replaces it.
-- **Four shipped lines state a cause.** Creative confirms and adds the sweep to its slice 2. Systems and technical confirm the false privacy lines (the toggle, "Not your stories").
-- **One word: Confirmed.** UIUX proposed it. Creative conceded `held`, because `held` already means an address at 4 or over. Systems, game and technical agree. I agree.
+- **No day, no "of 90", no stage word.** Creative, UIUX, game, me. A count against a total is a score.
+- **Never store a care result.** AI, systems, creative, technical, me. A stored crisis flag is health data. My strings read a screen result passed in.
+- **Nothing screens text for distress.** All seats. The words for it did not exist. They do now.
+- **The ledger is a view.** All seats. It has no screen name. The person taps Why and sees their own words.
+- **No confidence number on screen.** AI, systems, UIUX.
+- **Four shipped lines state a cause.** Creative adds the sweep to its slice 2. Systems and technical confirm the false privacy lines.
+- **Confirmed.** UIUX proposed it. Creative conceded `held`, which already means an address at 4 or over. Game, systems and technical agree.
 
 ## 2. Disagreements
 
-- **My own "The instrument infers".** The gate flags `infers` as abstract, and a ten year old would ask. The lead verb becomes **guesses**. It is plain, and it carries the humility the voice asks for.
-- **UIUX and creative: "Keep writing".** Two words. My ruling is one word per menu item, so the button is **Continue**. It sits beside **Call** and **Text**, three verbs in one grammar. UIUX's "Stop here" becomes **Pause**, and "Talk to a person" becomes **Help**. The owner asked that the card offer to keep writing. It does.
-- **UIUX: empty row says "Not yet".** It promises a next and turns the Confirmed row into a nag. Mine: **Nothing recorded.** It states a fact and expects nothing.
-- **UIUX: "Partly", "Context", "Correct" as three buttons.** "Correct" reads as "that is correct", which is Fits. One button, **Reword**, opens one box. Systems and the engine map it to `correct`, and `context` rides in the same box.
-- **Game vs sales on the gift.** Not my call. The lock line below works either way.
-- **Creative's "Keep writing" beside the number.** Same ruling as UIUX.
+- **My own "The instrument infers".** The gate flags `infers` as abstract. The lead verb becomes **guesses**: plain, and humble.
+- **UIUX and creative: "Keep writing".** Two words. Menus are one word, so the button is **Continue**, beside **Call** and **Text**, three verbs in one grammar. "Stop here" becomes **Pause**. "Talk to a person" becomes **Help**. The card still offers to keep writing, as the owner asked.
+- **UIUX: an empty row says "Not yet".** That promises a next and makes the Confirmed row a nag. Mine: **Nothing recorded.**
+- **UIUX: Partly, Context, Correct as buttons.** "Correct" reads as "that is correct", which is Fits. One button, **Reword**, opens one box. The engine maps it to `correct`.
+- **Game vs sales on the gift.** Not my call. The lock line works either way.
 
 ## 3. What I missed
 
-- **"Leaves: Nothing" is false today.** `storyui.js` calls the browser's speech recogniser, which sends voice to the browser's maker. The device only boundary needs the exception. My pass 1 block C said "Nothing."
-- **The account Delete control is not built** (`PRIVACY-POLICY.md:166`, marked CHECK). The signed in Delete line cannot promise a button that does not exist. Until it ships, the line says write to the address.
-- **Sync is not built** (technical R4, later). A typed signed in line would be false on a build with no copy of the stories. The line must come from the `PRIVACY` table (systems 4.10), not from a string constant.
-- **Past harm needs a rule now.** I put it in the later "possible trauma" state. With three outcomes, a past harm entry lands in Strong, and a Victim or Martyr label printed on it is the worst line this product can produce. New rule: **while a care outcome is on, no saboteur, complex, mask or Dante name prints on that entry.**
-- **The Fits and Confirmed collision.** Both are the person's yes. Resolved in 4.2.
-- **Two more causal lines.** `summary.js` near 252 ("the cost is elsewhere") and 295 ("is not being blocked by the field"). Rewrites below.
-- **"Quiet is on" needs its own line** (UIUX). Hiding the streak with no word is lying. Added.
+- **"Leaves: Nothing" is false today.** `storyui.js` calls the browser's speech recogniser, which sends voice to the browser's maker. My pass 1 said "Nothing."
+- **The account Delete control is not built** (`PRIVACY-POLICY.md:166`). The line cannot promise a button that does not exist.
+- **Sync is not built** (technical R4). A typed signed in line would be false. It must come from the `PRIVACY` table (systems 4.10).
+- **Past harm needs a rule now.** With three outcomes it lands in Strong, and a Victim or Martyr label there is the worst line this product could print. New rule: **while a care outcome is on, no saboteur, complex, mask or Dante name prints on that entry.**
+- **Fits and Confirmed collide.** Both are the person's yes. Resolved in 4.2.
+- **Two more causal lines** near `summary.js:252` and at 295. Rewrites in block E.
+- **"Quiet is on" needs its own line** (UIUX). Hiding the streak with no word is lying.
 
 ## 4. The architecture, together: the words
 
 ### 4.1 Rules for every string in the merged build
 
-1. **One bucket per string.** Menu, label, value, definition, instruction, reading, refusal. Every new string is registered in `COPY.md` with its bucket.
+1. **One bucket per string**, registered in `COPY.md`.
 2. **Lead verbs.** A sentence that states a conclusion starts with one of six: **You wrote. The instrument heard. The instrument guesses. You reported. You marked. You confirmed.** A conclusion that cannot start with one does not ship. Gate: new rule in `objections.json`.
-3. **Sensation rule.** A sensation is a report. It is never a cause, a sign or a result. The gate fails any string that joins a body word to means, shows, proves, because, due to, from, blocked, stuck, stored, healed or cleared. Run it first on the current build. `summary.js:293` must fail, which proves the gate on a known bad case.
+3. **Sensation rule.** A sensation is a report, never a cause, a sign or a result. The gate fails any string that joins a body word to means, shows, proves, because, due to, from, blocked, stuck, stored, healed or cleared. Run it on the current build first. `summary.js:293` must fail.
 4. **No label on a person while care is on.** See section 3.
 5. **No monitoring claim.** No string says or implies the product watches. The Help sheet says it does not.
-6. **Never printed, anywhere:** Day, of 90, stage, step back, score, confidence as a number, verified, detected, journey, milestone. A count is allowed only if it is of dated acts a person can check ("3 entries, 3 days").
-7. **One word per concept, fixed.** Record (on this device). Account (the sign in). Copy (what we hold). Delete (the only removing verb). Set aside (a claim the person said no to). Password and Email, never passphrase or username. File password for the export, so there is one account password and one file password, named apart.
+6. **Never printed:** Day, of 90, stage, step back, score, a confidence number, verified, detected, journey, milestone. A count is allowed only of dated acts a person can check ("3 entries, 3 days").
+7. **One word per concept.** Record (on this device). Account (the sign in). Copy (what we hold). Delete (the only removing verb). Set aside (a claim refused). Password and Email, never passphrase or username. File password for the export, named apart from the account password.
 
 ### 4.2 Names, in the product's words
 
@@ -57,9 +56,9 @@ Read: BRIEF, PASS2-INSTRUCTIONS, my pass 1, and all seven other pass 1 reports a
 
 ### 4.3 My rulings on the eleven
 
-5. **Safety.** Engine: none, care, crisis, route. Person: three outcomes. Interim is acceptable for the owner and a private build, on five conditions: no monitoring claim anywhere; the Help line ships with the first private build; the quote is dropped when it names a method; the recall figure (5 of 18 cold) never appears in the product; clinician and counsel review of every number and the two medical lines gates the first public release. Engine needs one addition from technical: the reader returns the raw span, and a `urgent` flag on crisis, so the card can choose the sure or the conditional wording.
+5. **Safety.** Engine: none, care, crisis, route. Person: three outcomes. The interim is acceptable for a private build on four conditions: no monitoring claim anywhere; the Help line ships in the first private build; the quote is dropped when it names a method; clinician and counsel review of every number and the medical lines gates the first public release. Technical must add two things: the reader returns the raw span, and crisis carries an `urgent` flag, so the card can pick the sure or the conditional wording.
 9. **Names.** The table above.
-10. **Privacy.** Three labels, Stays, Leaves, Delete, in the same order every time. Two states. The toggle goes. The boundary is generated from the table, so it cannot say a thing the build does not do. "People who can see this record" is derived from grants.
+10. **Privacy.** Stays, Leaves, Delete, in that order, two states. The toggle goes. The boundary is generated from the table, so it cannot say what the build does not do.
 2, 3, 6. **Words only.** One live Maybe. Next is an act in the person's words. Lock lines say what is kept (block E).
 
 ### 4.4 My slices in the merged order
@@ -73,7 +72,7 @@ Read: BRIEF, PASS2-INSTRUCTIONS, my pass 1, and all seven other pass 1 reports a
 | W5 | Claim row and chain strings | S words | UIUX (label above, buttons below), creative |
 | W6 | Confirmed ask on ritual done | S | UIUX, game (nothing is paid or scored) |
 
-W1 and W3 run in parallel with creative's slices 1 to 4 and share no file with them.
+W1 and W3 share no file with creative's slices 1 to 4.
 
 ## 5. Revised grade
 
@@ -81,11 +80,11 @@ GRADE: 69/100 (was 57 for safety and 63 for privacy). Up: every string for three
 
 ## 6. Top 5
 
-1. **W1 truth sweep (S).** Derek, Gordon, Sofia. Six lines and three false privacy claims.
-2. **W2 care cards and Help (M).** Ana, Nkem. Sofia and Derek keep trust if the false alarm is one tap.
-3. **W3 gates (S).** All. Stops the cause lines coming back.
-4. **W4 boundary from the table (M).** Phone only arrival, Sofia. Readable in ten seconds and true.
-5. **W5 claim row and chain words (S, then M).** Gordon says no cheaply. Derek checks the chain.
+1. **W1 truth sweep (S).** Derek, Gordon, Sofia.
+2. **W2 care cards and Help (M).** Ana, Nkem. Sofia and Derek keep trust if a false alarm is one tap.
+3. **W3 gates (S).** All. Stops the cause lines returning.
+4. **W4 boundary from the table (M).** Phone only arrival, Sofia.
+5. **W5 claim row and chain words (S, then M).** Gordon, Derek.
 
 ## 7. Question for the owner
 
