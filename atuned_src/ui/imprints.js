@@ -78,7 +78,7 @@ function impPill(n,maxW,IX,ghost,inferred){
        /* the saboteur count is a reading of saboteurs, which a plan below
           tier one cannot see: "part of 0 saboteurs" would be a false statement
           about somebody who is part of several */
-       +(lockSees('sab')?', part of '+fed+' saboteur'+(fed===1?'':'s'):'')+'.'));
+       +(lockSees('sab')&&fed?', part of '+fed+' saboteur'+(fed===1?'':'s'):'')+'.'));
  /* WHAT THE SENTENCE NAMED, OR WHAT THE SEAT IS. Never the address name on an
     inferred hit. The scan reads a seat and an intensity out of a sentence, and
     when the words name no child emotion the address is chosen by a fallback:
@@ -162,7 +162,7 @@ function impRender(){
     claim about a person who has not written anything yet. */
  var kids=(IX.kid&&IX.kid.found)||[];
  var h='<div class="ip-hd"><span class="pm-eye">Held</span>'
-  +'<span class="ip-n">'+held.length+'</span>'
+  +'<span class="ip-n">'+(held.length||'\u2013')+'</span>'
   +(filled?'<span class="pm-eye">Filled in</span><span class="ip-n">'+filled+'</span>':'')
   +(kids.length?'<span class="pm-eye">Child</span><span class="ip-n">'+kids.length+'</span>':'')
   +(ghosts.length?'<span class="pm-eye">Pending</span><span class="ip-n">'+ghosts.length+'</span>':'')

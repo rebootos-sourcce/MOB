@@ -19,10 +19,10 @@ It exits non zero on a finding at a severity that stops a build. Every
 other mode of that gate enforces the same rules, so there is one set of
 rules and one place they live.
 
-    commit 8f74efb, tree dirty   database md5 7dde2abec7f7
-    29 objections logged, 24 of them with a quotation on record
-    22 rules, 11 with patterns in the database, 11 held by a gate elsewhere
-    12 more objections are guidance, because no check can express them
+    commit 8245e7f, tree dirty   database md5 2be8e35238f8
+    30 objections logged, 25 of them with a quotation on record
+    25 rules, 11 with patterns in the database, 14 held by a gate elsewhere
+    13 more objections are guidance, because no check can express them
     23 findings on this run, 0 at a severity that stops a build
 
 ---
@@ -325,6 +325,17 @@ Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rule
 
 A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The ladder for a weight was open in this round: "Is it flowing? Is it blocked? And then what are the states in between? ... it's zero to five, but you can scale that up to zero to 10." Round KD in TASKS.md named it, and this entry's own placeholder is superseded: "Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked." The words are ruled. The figures between the rungs are not: NODESTATE_PROPOSED in engine/data/canon.js is a proposal and says so. The icon model he names is Summary's, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the lines between the rungs, on a definition, behaviour and direction out for each rung (V9), and on files other seats hold.
 
+### CO-31. A percent printed off zero or off a default, a count against a total at any scale, a zero shown as a number, and a block of four rows on an unread profile that reads two empty states, a zero and a verdict about a throat nobody has read.
+
+> I keep seeing this percent shit, the hardest carrying zero percent. I don't want that. You have rules for this content. Use them. And earlier: I need you to verify that you have gone through the site because I have seen much stuff that doesn't have the rules. Especially in the tooltips. And some of the info. And on the Field rail: Help me make sense of these: This is field carrying filled in heaviest most shut. What are you trying to tell me here? If it doesn't make sense, cut it.
+
+    where    round PL, task J13
+    when     2 October, in his words
+    quoted   verbatim
+    rules    count-against-total, percent-on-unread, bare-number-on-unread, zero-as-dash
+
+The rules existed and the product broke them, because the gate read the source and he reads the screen. The strings that broke them are built at run time or held in tables and shown by a stylesheet, so a literal sweep reported zero while the Field rail printed "Heaviest Root 0.0". The answer is a second gate that reads the rendered page: tools/copy-walk.js and tools/copy-verify.py, with the counts in COPY-VERIFY.md. The Field rail block is not printed while the profile is unread, because the four doors above it already say nothing has been read.
+
 ---
 
 ## The rules, and where each one is enforced
@@ -333,7 +344,7 @@ A refinement of CO-29 and not a second rule beside it: V21 had one reader and th
     tolerance             notation      stop      objections                  CO-01, CO-02, CO-03
     interval-word         notation      flag      objections                  CO-03
     scale-prose           scale         stop      objections                  CO-04
-    count-against-total   score         stop      objections                  CO-05
+    count-against-total   score         stop      objections                  CO-05, CO-31
     empty-state           value         stop      objections                  CO-09, CO-22
     serial-to-a-person    label         stop      objections                  CO-15
     two-months-free       offer         stop      objections                  CO-25
@@ -352,6 +363,9 @@ A refinement of CO-29 and not a second rule beside it: V21 had one reader and th
     plain-field-label     form          stop      objections                  CO-26
     abstract-word         register      stop      objections                  CO-29
     bare-weight           reading       flag      objections                  CO-30
+    percent-on-unread     value         stop      tools/copy-verify.py:percent-on-unread CO-31
+    bare-number-on-unread value         stop      tools/copy-verify.py:bare-number-on-unread CO-31
+    zero-as-dash          value         stop      tools/copy-verify.py:zero-as-dash CO-31
 
 ### tolerance
 
@@ -385,11 +399,11 @@ Zero in the product when this was written, because the scrub already ran. It is 
 
 A count against a total invites a person to pass or fail, and a reading is not a score.
 
-    fails   11 of 12
-    fixed   11 addresses carrying
+    fails   6.0 of 10
+    fixed   6.0
     found   0
 
-Two survivors are ruled and neither has this shape: intake progress and release queue position, where the person is working through a finite list. A SCALE IS NOT A TOTAL, and the first cut of this rule did not know the difference: it fired on "4 of 10 counts as loaded" in funnel/about.html, which is a threshold on the depth scale and is the shape CO-04's own resolution ruled survives. A denominator of 1, 10 or 100 is a scale and is exempt unless a countable set is named after it.
+Two survivors are ruled and neither has this shape: intake progress and release queue position, where the person is working through a finite list. A SCALE IS NOT A TOTAL, and the first cut of this rule did not know the difference: it fired on "4 of 10 counts as loaded" in funnel/about.html, which is a threshold on the depth scale and is the shape CO-04's own resolution ruled survives. A denominator of 1, 10 or 100 is a scale and is exempt unless a countable set is named after it. SUPERSEDED ON 2 OCTOBER, CO-31: the exemption for a denominator of 1, 10 or 100 is withdrawn. "Integrity 6.0 of 10" and "Your integrity is 7.7 against a clean ten" are counts against a total whatever the scale, and he read them as a mark out of ten. The three new patterns read the template fragment as well as the sentence, because the digit arrives at run time and the literal is only " of 10". tools/copy-verify.py applies the same rule to the rendered page.
 
 ### empty-state
 
@@ -454,51 +468,51 @@ A weight printed on its own says nothing to either reader. The layman needs a no
     fails   That reaches the body at the anterior heart, on the fear axis, at a weight of 7.4.
     fixed   That reaches the body at the anterior heart, on the fear axis, heavily impaired at a weight of 7.4.
     found   23
-    atuned_src/ui/analytics.js:134
+    atuned_src/ui/analytics.js:148
         carrying, at a shadow weight of <b>
-    atuned_src/ui/analytics.js:360
+    atuned_src/ui/analytics.js:379
         weight
-    atuned_src/ui/avatarui.js:1011
-        <p class="av-imp-r">Running at a weight of
-    atuned_src/ui/avatarui.js:1249
-        , at a weight of
-    atuned_src/ui/component.js:452
+    atuned_src/ui/component.js:790
         , weight
-    atuned_src/ui/drills.js:261
+    atuned_src/ui/cone.js:2922
+        , at a weight of
+    atuned_src/ui/drills.js:297
         Charge held here <b>
-    atuned_src/ui/drills.js:458
+    atuned_src/ui/drills.js:500
         </b>, shadow weight <b>
-    atuned_src/ui/fieldbar.js:176
+    atuned_src/ui/fieldbar.js:177
         Ring and number: segment depth, SQ, at a weight of
-    atuned_src/ui/fieldbar.js:178
+    atuned_src/ui/fieldbar.js:180
         , at a weight of
-    atuned_src/ui/fieldbar.js:208
-        , at a weight of
-    atuned_src/ui/imprints.js:75
+    atuned_src/ui/imprints.js:77
         Charge left
-    atuned_src/ui/imprints.js:254
+    atuned_src/ui/imprints.js:260
         weight
-    atuned_src/ui/knowledge.js:512
+    atuned_src/ui/knowledge.js:539
         , weight
-    atuned_src/ui/knowledge.js:513
+    atuned_src/ui/knowledge.js:540
         , weight
-    atuned_src/ui/map.js:946
+    atuned_src/ui/map.js:942
         addresses, weight
-    atuned_src/ui/map.js:2179
+    atuned_src/ui/map.js:2157
+        at a weight of
+    atuned_src/ui/map.js:2732
         , at a weight of
-    atuned_src/ui/rings.js:1056
+    atuned_src/ui/map.js:3346
+        , at a weight of
+    atuned_src/ui/rings.js:1092
         Heaviest pattern. Weight
-    atuned_src/ui/summary.js:263
+    atuned_src/ui/summary.js:271
         axis, at a weight of
-    atuned_src/ui/summary.js:787
+    atuned_src/ui/summary.js:1057
         </b>, at a weight of <b>
     atuned_src/ui/ui.js:53
         <hr>charge held <b>
     atuned_src/ui/ui.js:79
         <br>weight <b>
-    atuned_src/ui/ui.js:93
+    atuned_src/ui/ui.js:91
         weight <b>
-    atuned_src/ui/ui.js:1434
+    atuned_src/ui/ui.js:1484
         , weight
 
 FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. The ladder is real now and this entry supersedes its own first cut: round KD in TASKS.md, his words, "Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked." The placeholder heavily blocked, his example from round JX, is retired, and the pattern no longer accepts it or his other examples (heavy, light, flowing, clear). It clears on impaired and on blocked when blocked is not qualified, which covers four rungs. It does not clear on open, which in this product is also a verb and a plan word, "Rerunning anything already open costs nothing", so it would clear lines on a word that means something else; a weight at open prints 0.0, which the product rarely prints. First reason: the words are ruled and the lines between them are not. He named five rungs and no figures. NODESTATE_PROPOSED in engine/data/canon.js is a proposal, named as one, and no surface calls nodeStateOf until he confirms the lines. A stop here would make every writer pick a node state per surface by eye, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run.
@@ -583,6 +597,12 @@ One line serves a practitioner who needs the real figure and a layman who needs 
 
 *Why no pattern.* Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with no node state in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, nodeStateOf in engine/data/canon.js, the way tierOf reads CQ, and never by a writer choosing it. Its lines are a proposal until he rules them, round KD. Read the line as Derek and as Angela, with a profile loaded, and look at the shot.
 
+**percent-with-a-denominator.** CO-31
+
+A percent on a read profile is allowed only where it says what it is a percent of. Coherence and decoherence are read on a scale of a hundred and are printed with a percent sign, and whether that sign stays is his call.
+
+*Why no pattern.* copy-verify.py flags every percent on a read profile and fails none. The sweep lists the templates, so the owner can rule on the sign once for the product and not string by string.
+
 ---
 
 ## The strings the build seat has to change
@@ -601,7 +621,7 @@ The balance pill, and the last piece of the string the objection names. The stru
 
 If an empty label draws an empty box, drop the key rather than passing a space.
 
-### atuned_src/ui/ui.js:915
+### atuned_src/ui/ui.js:983
 
     bucket  refusal
     rule    empty-state, from CO-09
@@ -610,7 +630,7 @@ If an empty label draws an empty box, drop the key rather than passing a space.
 
 The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.
 
-### atuned_src/ui/drills.js:559
+### atuned_src/ui/drills.js:601
 
     bucket  value
     rule    empty-state, from CO-09

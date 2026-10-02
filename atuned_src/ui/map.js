@@ -621,8 +621,8 @@ function renderMap(r){
    +(on?1:(0.62+ld*0.38)).toFixed(2)+'"/>'
    +(held?'':'<circle cx="50" cy="'+b.yp+'" r="'+(0.42*ZS).toFixed(3)+'" fill="'+PC[b.b]+'" opacity=".92"/>');
   seatHit+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
-   +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '+st.hot+' carrying, '
-   +Math.round(st.pass*100)+' percent through</title></circle>';});
+   +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '
+   +(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'nothing carrying')+'</title></circle>';});
  /* the domains you run, ringing the seats they own. The ring used to grow by
     half a unit per address the domain held there, which on Gordon made one
     dashed circle thirteen units across that ran through Sacral and Root at
@@ -2640,7 +2640,7 @@ function bmSeats(seats){
  var g=BM.sv&&BM.sv.querySelector('[data-bmseats]'); if(!g)return;
  g.innerHTML=PMBANDS.map(function(b){var st=seats.filter(function(s){return s.p.k===b.k;})[0];
   return '<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="2.4" fill="transparent"><title>'
-   +b.nm+', '+bmFlowStep(st.pass)+'. '+st.hot+' carrying, '+Math.round(st.pass*100)+' percent through</title></circle>';}).join('');}
+   +b.nm+', '+bmFlowStep(st.pass)+'. '+(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'Nothing carrying')+'</title></circle>';}).join('');}
 
 /* ---------- what is under a point ---------- */
 /* THE PICK IS A REGION'S KEY, OR A PAIR'S. A name in the panel below stands
@@ -3342,16 +3342,16 @@ function bmOvVals(r){
  var F={},V={},dash='–';try{F=fbValues(r);}catch(e){}
  V.addr=F.addresses;V.sab=F.saboteurs;V.cx=F.complexes;V.hy=F.hyper;
  var mr=((r&&r.maskRing)||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
- V.masks=(mr&&!r.unread)?{p:mr.w*10,v:mr.w.toFixed(1),c:bmRgba(BMC.mask,1),
+ V.masks=(mr&&!r.unread&&mr.w>=0.05)?{p:mr.w*10,v:mr.w.toFixed(1),c:bmRgba(BMC.mask,1),
   m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+mr.w.toFixed(1)+'.'}
   :{p:0,v:dash,c:bmRgba(BMC.mask,1),m:'Nothing read yet.'};
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
  var sp=flSpeed();
- V.flow=(r&&!r.unread)?{p:sp*100,v:Math.round(sp*100)+'%',c:'var(--accent)',
+ V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:Math.round(sp*100)+'%',c:'var(--accent)',
   m:'Ring and number: flow, the share of charge that passes every seat, '+Math.round(sp*100)+'%.'}
-  :{p:0,v:dash,c:'var(--accent)',m:'Nothing read yet.'};
+  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every seat yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}
 /* the burger, shut and open: the Field's fbShutPaint in its own words */

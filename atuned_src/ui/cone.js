@@ -2482,7 +2482,7 @@ function coneKey(){
     +(dir>0?'M12 20V4M7 9l5-5 5 5':'M12 4v16M7 15l5 5 5-5')
     +'" fill="none" stroke="currentColor" stroke-width="1.7" '
     +'stroke-linecap="round" stroke-linejoin="round"/></svg>'
-    +esc(l.nm)+' <span class="ck-v">'+l.v.toFixed(1)+' of 10</span></span>';};
+    +esc(l.nm)+' <span class="ck-v">'+l.v.toFixed(1)+'</span></span>';};
   h+=grp('Lifting you',rg.up.map(function(l){
     return row(l,seatCol(PAL[l.b]?l.b:'Heart'),1);}).join(''));
   h+=grp('Pulling you down',rg.dn.map(function(l){
@@ -2664,8 +2664,7 @@ function coneRead(){
     says where the number sits, so the number is said once and the sentence
     carries the meaning rather than the arithmetic. */
  return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b> against a '
-  +'clean ten.</p>'
+  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>.</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
@@ -3320,9 +3319,9 @@ function ladderHtml(){
  /* the streak. A run that has lapsed still says what it was, because the
     thing a person built is not deleted by their having stopped. */
  h+='<div class="ld-streak'+(s.live?' live':'')+'">'
-  +'<span class="ld-n">'+s.run+'</span>'
+  +'<span class="ld-n">'+(s.run?s.run:'\u2013')+'</span>'
   /* the space before the comma was on the screen: "14 days , last run". */
-  +'<span class="ld-u">'+(s.run===1?'day':'days')+(s.live?' running':', last run')+'</span>'
+  +'<span class="ld-u">'+(s.run?(s.run===1?'day':'days')+(s.live?' running':', last run'):'')+'</span>'
   +'</div>';
  if(!s.days)
   h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, '
@@ -3364,12 +3363,17 @@ function ladderHtml(){
     AND THE LAST ROW WAS WRONG ABOUT WHAT IT COUNTS. ledgerRead walks CHILD,
     which is the nine axes, so clear is a count of axes and the row printed it
     as addresses. A label that names the wrong unit is not a style defect. */
- var LG=[['Practised',l.minutes+(l.minutes===1?' minute':' minutes')]];
+ /* A ZERO IS A DASH. "0 minutes", "0 rituals", "0 addresses" and "0 axes"
+    sat under "Nothing on the record yet", so the sentence said not read and
+    the figures said nought. COPY.md, Value: a dash is the honest glyph for
+    nothing yet, and it is not zero. Round J13. */
+ var ldn=function(n,one,many){return n?n+(n===1?one:many):'\u2013';};
+ var LG=[['Practised',ldn(l.minutes,' minute',' minutes')]];
  if(l.planned>l.minutes)LG.push(['Planned',
   (l.planned-l.minutes)+((l.planned-l.minutes)===1?' minute':' minutes')]);
- LG=LG.concat([['Saved',l.rituals+(l.rituals===1?' ritual':' rituals')],
-  ['Opened',l.ground+(l.ground===1?' address':' addresses')],
-  ['Installed',l.clear+(l.clear===1?' axis':' axes')]]);
+ LG=LG.concat([['Saved',ldn(l.rituals,' ritual',' rituals')],
+  ['Opened',ldn(l.ground,' address',' addresses')],
+  ['Installed',ldn(l.clear,' axis',' axes')]]);
  h+='<div class="ld-led">'+LG.map(function(x){
   return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
  /* the marks. icon, name, and what it meant. */

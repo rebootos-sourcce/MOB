@@ -488,6 +488,44 @@ were cut by reading, and they pass the patterns. A paragraph
 that explains its section in words no pattern foresaw passes the gate. Read
 the surface.
 
+## Ruled 2 October, round J13. The rules were there and the screen broke them.
+
+His words, `COPY-OBJECTIONS.md` CO-31: "I keep seeing this percent shit, the
+hardest carrying zero percent. I don't want that. You have rules for this
+content. Use them." And: "I need you to verify that you have gone through the
+site because I have seen much stuff that doesn't have the rules. Especially in
+the tooltips. And some of the info."
+
+The gate read the source and he reads the screen. A string built at run time, a
+figure printed off a table, a title shown in capitals by a stylesheet: none of
+them is a literal in a file, so a literal sweep reported clean while the Field
+rail printed "Heaviest Root 0.0". The answer is a second gate that reads the
+page. `tools/copy-walk.js` harvests every string a person can see, on a blank
+profile and a loaded one, at both widths. `tools/copy-verify.py` runs the
+house rules over them. The counts are in `COPY-VERIFY.md`.
+
+Four rules, and each is a Value rule that was already ruled and is now held.
+
+    A zero is a dash.             "0 days", "0.0", "0%" and "Commit 0" are out.
+                                  A dash is the honest glyph for not read yet.
+    No percent where nothing was  A percent sign, or per cent, on a profile
+    read.                         that is unread, and a percent printed off
+                                  zero anywhere. A percent on a read profile
+                                  names what it is a percent of, or it goes.
+    A count against a total is    "6.0 of 10", "7.7 against a clean ten" and
+    a score at any scale.         "of the hundred points". The exemption for a
+                                  denominator of 1, 10 or 100 is withdrawn.
+    A sensation is a report.      Never "means", "blocked by", "something was
+                                  installed on top". Say what was entered and
+                                  what differs. The instrument cannot say why.
+
+And a block that says nothing is cut. The unread Field rail printed four rows
+under "Field": two empty states, a zero, and a verdict about a throat nobody had
+read. It was the default talking: with every value at the seed, the heaviest
+seat is the first one in the list and the most shut law is the first in the
+list. The four doors above it already say "Nothing has been read yet", so the
+block is not printed while the profile is unread.
+
 ## Where each bucket lives
 
     menu          engine/core.js TABDEF, shell/body.html .lsec-hd

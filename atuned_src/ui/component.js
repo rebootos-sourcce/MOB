@@ -209,7 +209,12 @@ function cr(band,pct,o){
     everything in this product calls them by and a drawing would be a second
     name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
- var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
+ var val=(o.raw!=null)?o.raw:(Math.round(p)>0?Math.round(p)+'%':'\u2013');
+ /* A ZERO IS A DASH, ruled in COPY.md under Value and said again on 2 October:
+    "the hardest carrying zero percent. I don't want that." Every figure this
+    component prints passes through here, so a ring that reads nought prints the
+    dash and its title says so, and no caller has to remember. Round J13. */
+ if(/^0(?:\.0+)?%?$/.test(String(val)))val='\u2013';
  var cls='cr '+size+(hot?' hot':'')+(o.act?' act':'')+(o.on?' on':'');
  var attrs=o.data||'';
  /* THE RING NAMED ITS COLOUR AND NOT ITS SUBJECT. The fallback led with the
@@ -689,10 +694,14 @@ const QICON_D={
    +'M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'};
 const QICON={};
 Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
+/* WHETHER NOTHING HAS BEEN READ, asked of the engine and never typed. Surfaces
+   that print a figure ask it before they do, and a figure printed off the seed
+   is a figure about the seed. Round J13. */
+function unreadNow(){try{return !!compute().unread;}catch(e){return false;}}
 /* an address, a saboteur or a seat, rendered as one object */
 function crNode(n,size,o){o=o||{};
  return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+n.sq.toFixed(1)+' left after the opposite'},o));}
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -746,7 +755,12 @@ function crBadge(band,pct,o){
     everything in this product calls them by and a drawing would be a second
     name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
- var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
+ var val=(o.raw!=null)?o.raw:(Math.round(p)>0?Math.round(p)+'%':'\u2013');
+ /* A ZERO IS A DASH, ruled in COPY.md under Value and said again on 2 October:
+    "the hardest carrying zero percent. I don't want that." Every figure this
+    component prints passes through here, so a ring that reads nought prints the
+    dash and its title says so, and no caller has to remember. Round J13. */
+ if(/^0(?:\.0+)?%?$/.test(String(val)))val='\u2013';
  var half=G.box/2;
  /* BARE IS THE RING WITHOUT ITS PILL. The codex row carries the figure at the
     far right of the row, where it aligns with every other figure in the
@@ -768,7 +782,7 @@ function crBadge(band,pct,o){
    ruling asked for. */
 function crbNode(n,size,o){o=o||{};
  return crBadge(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  title:n.k+', '+n.b.toLowerCase()+' seat. '+n.sq.toFixed(1)+' left after the opposite'},o));}
+  title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,

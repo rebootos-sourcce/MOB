@@ -164,7 +164,7 @@ function planTiersHtml(){
   +'and nothing is charged until you confirm there. '
   +'Moving down or stopping goes through Manage billing above, and stopping deletes nothing.');
  h+='<div class="ac-gf">'+foot.map(function(s){return '<p>'+esc(s)+'</p>';}).join('')
-  +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to Account</button></div>')
+  +(signed?'':'<div class="pt-acts"><button class="btn" type="button" id="ptacc">Go to account</button></div>')
   +'</div></div>';
  return h;}
 

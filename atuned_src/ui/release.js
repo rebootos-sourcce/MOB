@@ -606,10 +606,12 @@ function relTally(c){
  if(!c||!c.of)return '';
  /* the number large and the unit beside it at body size, so two of them fit
     across a phone's card with the strips on it */
+ /* A ZERO IS A DASH. "0 truths" and "0 patterns" read nought of a thing where
+    the slot has nothing to say yet. Round J13. */
  function fig(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b style="font-size:30px;line-height:1.1">'
-  +n+'<small style="font-size:13px;font-weight:400;color:var(--dim)"> '+u+'</small></b></div>';}
- function sm(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b>'+n
-  +'<small style="font-size:12px;font-weight:400;color:var(--dim)"> '+u+'</small></b></div>';}
+  +(n?n+'<small style="font-size:13px;font-weight:400;color:var(--dim)"> '+u+'</small>':'\u2013')+'</b></div>';}
+ function sm(lbl,n,u){return '<div class="rel-fig"><span>'+lbl+'</span><b>'
+  +(n?n+'<small style="font-size:12px;font-weight:400;color:var(--dim)"> '+u+'</small>':'\u2013')+'</b></div>';}
  /* the person's own record only, the same guard relProject and relCoolDown
     already read S.who by, not a worked example's */
  var hist=(typeof S!=='undefined'&&S.who===0&&typeof CURP!=='undefined'&&CURP&&CURP.meter)?CURP.meter:null;

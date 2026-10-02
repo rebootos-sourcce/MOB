@@ -347,8 +347,8 @@ function renderAcc(r){
  var el=$('acc'); if(!el)return;
  var a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
- if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
- if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
+ if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
+ if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  /* This was a figure and three lines of diagnostics, 325 by 140, parked in
     the bottom corner of the stage. A circle inside a rectangle leaves the
@@ -416,11 +416,11 @@ function renderAcc(r){
 function runAccDrill(){
  var r=compute(), a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
- if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
- if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
+ if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
+ if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  rdShell('<div class="pm-eye">Family identification</div>'
-  +'<div class="ad-nm">'+a.pct.toFixed(1)+'%</div>'
+  +'<div class="ad-nm">'+(!r.unread&&a.pct>=0.05?a.pct.toFixed(1)+'%':'\u2013')+'</div>'
   /* THE SPREAD IS SAID BY ITS CAUSES, NOT BY A TOLERANCE. This printed
      "Plus or minus 11.4 at this reading" and then explained what a narrow
      one and a wide one mean, which is a person being handed a figure and
@@ -436,7 +436,7 @@ function runAccDrill(){
   +'<p class="ad-p">'+esc(w.length?w.join('. '):'Moral integrity, signal and expression are all full.')+'</p>'
   +'<div class="pm-eye">How reliable</div>'
   +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Too close to call'))
-  +'. <b>'+a.rel+'%</b> of the laws are spread three or more, which is what separates one '
+  +'. '+(a.rel>0?'<b>'+a.rel+'%</b> of the laws are':'None of the laws are')+' spread three or more, which is what separates one '
   +'family from another. Laws of integrity sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
@@ -838,7 +838,7 @@ $('bRel').addEventListener('click',function(){
  var _m=compute().measured;
  status(_m>0
   ?'Nothing is carrying, so there is nothing to release. The intake measured '
-   +_m+' of the 21 laws, which is how you act, not what you hold. A story is '
+   +_m+(_m===1?' law':' laws')+'. They show how you act and not what you hold. A story is '
    +'what puts an address on the map.'
   :'Nothing is carrying, so there is nothing to release. Write a story or set '
    +'a charge first.','warn');});

@@ -12,8 +12,8 @@ function lensWestern(r){
  return {t:'Western',a:d.r,b:ROOT_ELSAYS[d.r]||'',c:'root domain as element'};}
 function lensEastern(r){
  var b=r.darkB||'Root';
- var E={Root:'Muladhara, earth, LAM',Sacral:'Svadhisthana, water, VAM',Solar:'Manipura, fire, RAM',
-  Heart:'Anahata, air, YAM',Throat:'Vishuddha, ether, HAM','3rd Eye':'Ajna, light, OM',
+ var E={Root:'Muladhara, earth, Lam',Sacral:'Svadhisthana, water, Vam',Solar:'Manipura, fire, Ram',
+  Heart:'Anahata, air, Yam',Throat:'Vishuddha, ether, Ham','3rd Eye':'Ajna, light, OM',
   Crown:'Sahasrara, thought, silence'};
  return {t:'Eastern',a:b,b:E[b]||'',c:'the seat carrying the most'};}
 function lensDesign(r){
@@ -107,13 +107,13 @@ function sumGlance(r,noCQ){
      of them that had been filled in, which is not a wording problem, it is a
      reading that says the reverse of the truth. */
   ['carried depth', 'Root', r.SQm*10, r.SQm.toFixed(1),
-   'How deep the charge runs, on average, across the addresses carrying it.', 'of 10'],
+   'How deep the charge runs, on average, across the addresses carrying it.', ''],
   /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
      to 0 and 10, so ten is the ceiling and always was. */
   ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2),
-   'How much of each opposite is installed, on average, across the body.', 'of 10'],
+   'How much of each opposite is installed, on average, across the body.', ''],
   ['energy', 'Solar', e*100, e.toFixed(2),
-   'The average of vitality, awareness and will.', 'of 1']];
+   'The average of vitality, awareness and will.', '']];
  /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"
     on the third line of a glance tile, which is the smallest place in the
     product and the last place a lab readout belongs. Ruled with the rest of
@@ -121,7 +121,11 @@ function sumGlance(r,noCQ){
     rule is the reason the third line exists at all. */
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
   'How much of you the instrument has actually measured.','']);
- /* THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
+ /* SUPERSEDED ON 2 OCTOBER, CO-31: the third line no longer carries "of 10" or
+    "of 1". A count against a total is a score at any scale, and he read it as
+    one. What follows is the ruling it replaced.
+
+    THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
     both were being broken by the same line.
 
     "You read 13, what does that mean." Every number says what it is out of.
@@ -249,10 +253,12 @@ function sumStory(r){
      +esc(numSays('expression',num.expression))+'.':'')
    +' What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
    +(elRoot===rootNow
-     ? 'Those agree, so what you are doing is what you were built for and the cost is elsewhere.'
-     : 'Those do not agree. A blueprint that says '+esc(elRoot)+' and a field that runs '
-       +esc(rootNow)+' means something was installed on top of the blueprint, and it has been '
-       +'carried long enough to feel like a personality.'));
+     /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
+        runs another, and the instrument can say they differ. It cannot say
+        why, and "something was installed on top" was a story about a person
+        the ledger cannot show. Round J13. */
+     ? 'Those agree.'
+     : 'The blueprint says '+esc(elRoot)+'. The field runs '+esc(rootNow)+'. These differ.'));
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
@@ -264,12 +270,11 @@ function sumStory(r){
    /* the weight is the reading. "of 10" made it a mark out of ten. */
    +seatB(String(held[0].cf).toLowerCase(),held[0].b)+' axis, at a weight of '
    +held[0].sq.toFixed(1)+'.'
-   +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
-     +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
+   +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b)
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
-   +' Shadow weight is '+Math.round(r.DQ)+' per cent and the law furthest shut is '
+   +' Shadow weight is '+Math.round(r.DQ)+'. The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b)+', at the '+seatB(String(r.weakL.b).toLowerCase(),r.weakL.b)+'.');
  }else{
   p.push('Nothing is held above the line, so nothing is reaching the body as load. '
@@ -288,11 +293,15 @@ function sumStory(r){
  var gapLine='';
  if(rows.length){
   gapLine=blocked.length
+   /* A CAUSE IS NOT A READING. "Blocked by the same charge named above" said
+      why the avatar is short, and the ledger cannot show the chain. What the
+      instrument can say is that the part is not passing and which charge sits
+      under it. Round J13. */
    ? ' Against the avatar you stated, '+blocked.map(function(x){
        return '<b>'+esc(x.pair.be)+'</b>';}).join(' and ')
-     +' is the part still blocked, and it is blocked by the same charge named above.'
-   : ' Every seat your avatar depends on is passing. What you stated you are becoming is not '
-     +'being blocked by the field.';
+     +(blocked.length>1?' are not passing. The charge named above sits under them.'
+                       :' is not passing. The charge named above sits under it.')
+   : ' Every seat your avatar depends on is passing.';
  }else{
   gapLine=' No avatar has been stated, so there is nothing to measure this against. '
    +'Say who you are becoming and this paragraph names what stands in the way.';}
@@ -310,12 +319,15 @@ function sumStory(r){
  /* no lean sentence at all while CQ is still filling and no story cue has
     come in: leanRead reports read false, and 100 per cent benign off a field
     with no laws answered is a reading nobody took */
+ /* NO PERCENT. "Leans 100 per cent benign against 0 per cent malignant" was
+    a score, and on a field with one cue in it a share of a hundred reads as a
+    finding. The direction is the reading and the sentence says it once. The
+    clause "which means it is expanding" stated a cause and is now a
+    direction. Round J13, his words: "I keep seeing this percent shit, the
+    hardest carrying zero percent. I don't want that." */
  p.push(((lean.read===false?'':'The field leans <b>'
-  +Math.round(Math.max(lean.ben,lean.mal))+' per cent '
-  +(lean.ben>=lean.mal?'benign':'malignant')+'</b> against '
-  +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
-  +(lean.ben>=lean.mal?'malignant':'benign')
-  +(r.benign===null?'':', '+(r.benign?'which means it is expanding':'which means it is contracting'))+'.')
+  +(lean.ben>=lean.mal?'benign':'malignant')+'</b>'
+  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'.')
   /* .length, because r.excess is a list and an empty list is truthy: this
      told every one of the fourteen reference cases the pole was past paying,
      including the ones with nothing past it. ui.js reads it the same way. */
@@ -937,8 +949,10 @@ function sumOutput(r){
      'Coherence fills as you answer them, and expression cannot rise above it',
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
-     'Release has about '+rhead.toFixed(1)+' points of expression left in it for you. The rest '
-     +'is the laws, and they move when you answer them or when what you do changes',
+     (rhead>=0.05?'Release has about '+rhead.toFixed(1)+' points of expression left in it for you. The rest '
+      +'is the laws, and they move when you answer them or when what you do changes'
+      :'Release has no expression left in it for you. What is left is the laws, and they move '
+      +'when you answer them or when what you do changes'),
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
      'No address is holding anything','');}())
@@ -1122,7 +1136,7 @@ function sumIg(r){
  if(pts.length<2){
   body='<p class="cn-gp">'
    +(pts.length?'One reading with an integrity on it in this span, at <b>'
-     +pts[0].ig.toFixed(1)+' of 10</b>. Two makes a line.'
+     +pts[0].ig.toFixed(1)+'</b>. Two makes a line.'
     :'Nothing on the record for this span.')
    +'</p>';}
  else {
@@ -1148,8 +1162,8 @@ function sumIg(r){
   +'<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6" '
   +'vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>'
   +'</svg>'
-  +'<div class="s-ig-f"><span>'+first.toFixed(1)+' of 10</span>'
-  +'<b>'+dir+'</b><span>'+last.toFixed(1)+' of 10</span></div>';}
+  +'<div class="s-ig-f"><span>'+first.toFixed(1)+'</span>'
+  +'<b>'+dir+'</b><span>'+last.toFixed(1)+'</span></div>';}
  return head+body+'</div>';}
 
 /* ---- one delegated listener for everything on this surface ---- */

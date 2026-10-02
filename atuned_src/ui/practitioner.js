@@ -106,9 +106,9 @@ function renderPrac(){
   +'<h2 class="kb-h">Clients</h2></div>'
   +'<p class="ac-lead">A sketch of practitioner mode. No client is listed here yet, and no '
   +'profile opens from this page until sign in and consent are built.</p>'
-  +accGroup('Your Clients',row+row+row,
+  +accGroup('Your clients',row+row+row,
     'Each block marks where a client will sit. None of them is a person.')
-  +accGroup('A Client’s Profile',
+  +accGroup('A client’s profile',
     accStub('Add a client')+accStub('View a client’s profile')+accStub('Client consent'),
     /* the same promise the Privacy section already makes from the other
        side, "Who Can See This" (it read "Who Has Sight" until the word was
@@ -118,7 +118,7 @@ function renderPrac(){
     +'there takes it back.')
   /* the way back to the switch, because the door to this page is the only
      place a person who turned it on is sure to look for how to turn it off */
-  +accGroup('This Mode',accAct('Practitioner mode','pracacc',{btn:'Open Account'}))
+  +accGroup('This mode',accAct('Practitioner mode','pracacc',{btn:'Open account'}))
   +'</div>';
  var b=$('pracacc');
  if(b)b.onclick=function(){ACC_OPEN='account'; setTab(TAB.SETTINGS);};}

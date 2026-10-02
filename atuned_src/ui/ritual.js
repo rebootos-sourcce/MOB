@@ -737,7 +737,7 @@ function ritChainHtml(c,r,act){
  var out='<div class="rv-chain" role="group" aria-label="From your story to your ritual">';
  out+='<button type="button" class="rv-node rv-n-imp" data-act="go-story">'
   +'<span class="rv-lb">Imprints</span>'
-  +'<span class="rv-nv">'+ritIc('pen','rv-nic')+'<b>'+n+'</b><em>'+(n===1?'story':'stories')+'</em></span>'
+  +'<span class="rv-nv">'+ritIc('pen','rv-nic')+(n?'<b>'+n+'</b><em>'+(n===1?'story':'stories')+'</em>':'<em>No story yet</em>')+'</span>'
   +'</button>';
  out+='<span class="rv-arr" aria-hidden="true">'+ritIc('arrow')+'</span>';
  /* ROUND LT, HIS WORDS: "get rid of the text 'your words', just put
@@ -797,11 +797,12 @@ function ritTodayHtml(act,today,L){
  ((CURP&&CURP.rituals)||[]).forEach(function(x){if(ritIsDone(x)){var k=pracDay(x.t); if(k!==null)kd[k]=1;}});
  var kept=Object.keys(kd).length;
  return '<div class="rv-today">'
-  +'<div class="rv-hero">'+svg+'<div class="rv-mid"><b>'+s.run+'</b><span>Streak</span></div></div>'
+  +'<div class="rv-hero">'+svg+'<div class="rv-mid"><b>'+(s.run||'\u2013')+'</b><span>Streak</span></div></div>'
+  /* A ZERO IS A DASH, COPY.md Value. Round J13. */
   +'<div class="rv-figs">'
-  +'<div class="rv-fig"><b>'+best+'<small>'+(best===1?' day':' days')+'</small></b><span>Best</span></div>'
-  +'<div class="rv-fig"><b>'+kept+'<small>'+(kept===1?' day':' days')+'</small></b><span>Kept</span></div>'
-  +'<div class="rv-fig"><b>'+L.ledger.minutes+'<small> min</small></b><span>Practised</span></div>'
+  +'<div class="rv-fig"><b>'+(best?best+'<small>'+(best===1?' day':' days')+'</small>':'\u2013')+'</b><span>Best</span></div>'
+  +'<div class="rv-fig"><b>'+(kept?kept+'<small>'+(kept===1?' day':' days')+'</small>':'\u2013')+'</b><span>Kept</span></div>'
+  +'<div class="rv-fig"><b>'+(L.ledger.minutes?L.ledger.minutes+'<small> min</small>':'\u2013')+'</b><span>Practised</span></div>'
   +'</div></div>';}
 
 /* ACTIVE. The list a person keeps, in their order. */
@@ -1029,7 +1030,7 @@ function ritCalHtml(plans,today,empty){
   var tag=empty?'span':'button';
   out+='<'+tag+(empty?'':' type="button"')+' class="rv-day'+(day===today?' rv-now':'')+(sel?' rv-sel':'')+(day>today?' rv-fut':'')
    +'"'+(empty?' aria-hidden="true"':' data-act="day" data-d="'+day+'" aria-pressed="'+sel+'" aria-label="'+esc(ritDayName(day,today))+', '+d
-   +(segs.length?', '+doneN+' done':'')+'"')+'>'
+   +(segs.length?(doneN?', '+doneN+' done':', none done'):'')+'"')+'>'
    +'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" class="rv-track" style="stroke-width:3.5"/>'
    +ritArcs(20,20,15,segs,3.5)+'</svg><span>'+d+'</span></'+tag+'>';}
  out+='</div><div class="rv-key" aria-hidden="true">'
