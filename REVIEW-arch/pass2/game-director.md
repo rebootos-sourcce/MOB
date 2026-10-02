@@ -27,9 +27,9 @@ The hard line, stated because it is crossed twice below: this product reads some
 
 ## 3. What I missed
 
-- `journey.js` exists in a worktree with its own `journeyRead()` that returns four onboarding values (new, storied, continuing, released). My function name collided with it. I rename mine `loopRead`, creative's "where the loop is". The onboarding one must never print its values either.
-- Typing is already over the frame budget (technical, 79ms median at 1000 words, 4x throttle). `loopRead` runs on commit and on Field open, never per keystroke. Fold cost measured at 0.12ms for 2,000 events.
-- Distress reader numbers (narrative): five of eighteen on phrases it was not tuned on. That is roughly one in four. A care state derived from it is best effort and the copy must never claim monitoring.
+- `journey.js` in a worktree has its own `journeyRead()` with four onboarding values. Mine collided, so I rename mine `loopRead`. The onboarding values must never print either.
+- Typing is already over frame budget (technical: 79ms at 1000 words, 4x throttle). `loopRead` runs on commit and Field open, never per keystroke. Fold cost 0.12ms at 2,000 events.
+- The distress reader got five of eighteen on phrases it was not tuned on (narrative). Care is best effort and copy must never claim monitoring.
 - Points TDD sections 19 and 20 unlock Saboteur views, and tier SIGHT is the other key. **Points never open sight.**
 - Creative's SIG17: rewarding a reported change teaches people to report change. A reported change pays nothing and no gate reads it alone.
 - Sales: a person who renewed elsewhere and opens an offline desktop reads "nothing left". The worst trust failure in the economy.
@@ -50,15 +50,15 @@ The hard line, stated because it is crossed twice below: this product reads some
 
 `care` is derived by re-scanning the newest entry with `safetyScreen` (about 40 microseconds, technical), for three days (my judgement) or until a newer ordinary entry. Never stored: a stored crisis bit is health data (AI, systems, both default no).
 
-**One rule table, keyed on the open quarter.** Acute: one address and one line, or nothing. No reading: Next is "Write what happened". Reading, no run: write a second line. Run, no ritual: the ritual or its 60 second floor. Done, no new reading: read again. Circle closed: rerun an opened address, free. After several turns: compass or avatar.
+**One rule table, keyed on the open quarter.** Acute: one address and one line, or nothing. No reading: "Write what happened". Reading, no run: a second line. Run, no ritual: the ritual or its 60 second floor. Done, no new reading: read again. Circle closed: rerun an opened address, free. Later: compass or avatar.
 
 **Gate rule.** A gate may rest only on a free act (entry, rerun, ritual, reading), never on spent supply. Behaviour opens nothing. It orders one suggestion. Tier is the only key to ground and sight.
 
 **Next slot.** One sentence, one button, one quiet **Not now**. At most 14 words, 12 in care. Its `because` lines open with a fixed verb (narrative): You wrote, The instrument read. It replaces the four doors and the three cards (UI). The doors stay reachable behind a visible fold, never hover only. **Not now writes to one `declined` list** (systems' `{from, edge, to, at}` plus `{act, quarter, at}`), so a No changes what shows next. Window seven days (my judgement). Closed kinds, capped.
 
-**Session shape.** Sixty seconds: Next at its floor, one line or one ritual floor. Twenty minutes: write, run, read, ritual. Neither is punished: no clock, no loss on leaving, nothing waiting.
+**Session shape.** Sixty seconds: Next at its floor. Twenty minutes: write, run, read, ritual. Neither is punished.
 
-**Economy.** Free 10 a week banking, gift 100 once, 400, 800, 1200, 1200 a month, as ruled. Keep sales' items: clamp `granted` to the tier's grant, a lease on cached plans, a refusal re-reads `/v1/me` before saying no, mid period change keeps `base`, one live subscription. **Banking cap 120 patterns, and no copy ever mentions the cap or approaching it.** A cap you are warned about is a scarcity timer.
+**Economy.** Amounts as ruled. Keep sales' items: clamp `granted`, lease the cached plan, re-read `/v1/me` before any refusal, mid period change keeps `base`, one live subscription. **Banking cap 120 patterns, and no copy ever mentions the cap or approaching it.** A cap you are warned about is a scarcity timer.
 
 **Stored, additive, flagged.** `addrs` on `journey.runs` (`JOURNEY_V`) and the `declined` list. No `SCHEMA_V` bump (systems). Before either lands, `validateProfile` must carry unknown top-level keys through, because an older build silently deletes them (systems, measured).
 
@@ -76,11 +76,11 @@ The hard line, stated because it is crossed twice below: this product reads some
 4. **Next slot replacing four doors and three cards, with `declined` (M).** Moves Angela and the phone only arrival. Model benchmark: leading a stranger to an if-then plan is worth up to 5.6 points at day 30, not additive.
 5. **One tap after a ritual is done, writing `reported` (S).** Gives evidence its first writer. Moves Derek and Sofia.
 
-Cost I keep paying: refusing the loss framed streak arm is worth 2.9 points of day 30 retention (model). I decline it.
+Cost I keep: refusing the loss framed streak arm is worth 2.9 points of day 30 retention (model).
 
 ## 7. Question for the owner
 
-None. Decisions: no stage stamps, points never open sight, gift shows base sight only, banking cap unmentioned. Reason: each follows the hard line, and the owner can overrule any.
+None. Decided: no stage stamps, points never open sight, gift shows base sight only, banking cap unmentioned. Each follows the hard line; the owner can overrule any.
 
 ## Merged build order (first five)
 
