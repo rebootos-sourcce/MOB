@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1353 32026e2 2026-10-02 11:31"><head><meta charset="utf-8">
+<html lang="en" data-build="v1355 bee76a5 2026-10-02 11:58"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6981,7 +6981,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 .ob-tag{display:inline-block;font-size:12px;line-height:1.4;padding:1px 8px;margin-right:2px;
  border:1px dashed var(--edge-2);border-radius:999px;color:var(--dim);vertical-align:1px}
 .ob-tag-said{border-style:solid;border-color:var(--c,var(--edge-2));color:var(--ink)}
-.ob-more{margin:2px 0 4px}
+.ob-more{margin:2px 0 4px;background:transparent;border-style:dashed;color:var(--dim)}
 
 /* ============================================================
    THE PHONE, GF in TASKS.md, 27 September. His feedback from his own phone
@@ -59133,7 +59133,7 @@ function obGroup(g){
  var ws=g.words.length?obQuoteList(g.words):'';
  if(g.stated)
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws:'Your words')
-   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks where at this seat it sits.</p>';
+   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks the place at this seat.</p>';
  else
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws+' put weight here.'
     :'Something in your words put weight here.')
@@ -61452,5 +61452,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004010046"></div>
+<div id="eof" hidden data-len="004010102"></div>
 </body></html>

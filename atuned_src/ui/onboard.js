@@ -378,7 +378,7 @@ function obGroup(g){
  var ws=g.words.length?obQuoteList(g.words):'';
  if(g.stated)
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws:'Your words')
-   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks where at this seat it sits.</p>';
+   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks the place at this seat.</p>';
  else
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws+' put weight here.'
     :'Something in your words put weight here.')
