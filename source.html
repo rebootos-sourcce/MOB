@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1422 04dfd22 2026-10-02 17:24"><head><meta charset="utf-8">
+<html lang="en" data-build="v1423 9259afc 2026-10-02 17:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -12685,8 +12685,12 @@ var UNPACK_BASE={
     explains so the two cannot drift. The hz is a sound healing choice and
     the sentence says whose. */
  'plexus':'A plexus is a bundle of nerves that meet and branch out at one place in your body.',
- 'seat tone':'Sound healers give each seat one note, Hz is how many times that note shakes in a second, and nothing in your body is measured to get it.',
- 'codex page':'The codex is the book this instrument is built on, and this is the page this seat comes from.',
+ 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this seat its note, so nothing in your body is measured to get it.',
+ 'codex page':'The codex is the book this instrument is built on, and this number is the page this seat comes from.',
+ /* Two of the seven places a seat is found on the skin are anatomy words,
+    printed on the same two lines. The other five are already plain. */
+ 'spot:throat':'The suprasternal notch is the soft dip at the bottom of your neck, between your two collarbones.',
+ 'spot:heart':'Mid sternum is the middle of your breastbone, the flat bone down the centre of your chest.',
  'level:crown':'This bundle of nerves sits at the pineal gland, a small gland deep in the middle of your brain, and in the cortex, the wrinkled outer layer of your brain.',
  'level:eye':'This bundle of nerves sits in the cavernous sinus, a pool of veins beside the small bony cup in the middle of your skull.',
  'level:throat':'This bundle of nerves sits level with C1 to C4, the top four bones of your neck.',
@@ -36210,12 +36214,14 @@ function runSeatFlowDrill(k){
     is now a carrier of its sentence in engine/data/gloss.js, the house way
     (unp, ui/component.js), and the level is printed as its own sentence,
     which names it. Vritti is gone: the codex makes it the wave around a
-    nerve, never a spine level. The reason is written at the table. */
- var h='<div class="pm-eye">'+unp(sd.n,sd.sk,'yoga')+' · '+unp('seat tone',sd.hz+' Hz')
+    nerve, never a spine level. The reason is written at the table. The Hz
+    wears its own seat's colour, as ruled 25 September (TASKS.md AX8). */
+ var h='<div class="pm-eye">'+unp(sd.n,sd.sk,'yoga')+' · <span style="color:'+seatCol(bnd)+'">'
+  +unp('seat tone',sd.hz+' Hz')+'</span>'
   +' · '+unp('codex page','codex page '+sd.src)+'</div>'
   +'<div class="pm-dn">'+unp(sd.n,sd.n,'seat')+'</div><div class="pm-dm"><b>'+unp('plexus',sd.nv)+'</b><br>'
   +unpSay('level:'+sd.k)
-  +'<br>seated at '+sd.seat+'</div>'
+  +'<br>Seated at '+unp('spot:'+sd.k,sd.seat)+'.</div>'
   /* the Flow circle's step, KV, so the answer to a pressed seat says the
      same word the figure prints beside it; a phone has no lane for the word */
   +'<div class="pm-grid"><span>flow</span><b>'+bmFlowStep(ss.pass)+'</b>'
@@ -42205,10 +42211,11 @@ function anaDrill(){
       · 963 Hz" bare, and the paragraph opened "Vritti pineal, cortical". The
       sub line's terms carry their sentences now, and the level is its own
       sentence. Vritti is gone: the codex makes it the wave around a nerve,
-      never a spine level. The reason is written at engine/data/gloss.js. */
+      never a spine level. The reason is written at engine/data/gloss.js. The
+      Hz wears its own seat's colour, as ruled 25 September (TASKS.md AX8). */
    h+=head('Seat',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
-    +' · '+unp('seat tone',s2.p.hz+' Hz')+'</div>';
-   h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' Its seat is '+s2.p.seat+'. It passes <b>'
+    +' · <span style="color:'+seatCol(bn)+'">'+unp('seat tone',s2.p.hz+' Hz')+'</span></div>';
+   h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The seat sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
     +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> address'
     +(s2.hot===1?' is':'es are')+' held here.</p>'
     +'<div class="pm-eye">Moral integrity seated here</div><div class="pm-chips">'
@@ -63905,5 +63912,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004182129"></div>
+<div id="eof" hidden data-len="004182807"></div>
 </body></html>

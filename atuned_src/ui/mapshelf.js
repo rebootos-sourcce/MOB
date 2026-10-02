@@ -148,12 +148,14 @@ function runSeatFlowDrill(k){
     is now a carrier of its sentence in engine/data/gloss.js, the house way
     (unp, ui/component.js), and the level is printed as its own sentence,
     which names it. Vritti is gone: the codex makes it the wave around a
-    nerve, never a spine level. The reason is written at the table. */
- var h='<div class="pm-eye">'+unp(sd.n,sd.sk,'yoga')+' · '+unp('seat tone',sd.hz+' Hz')
+    nerve, never a spine level. The reason is written at the table. The Hz
+    wears its own seat's colour, as ruled 25 September (TASKS.md AX8). */
+ var h='<div class="pm-eye">'+unp(sd.n,sd.sk,'yoga')+' · <span style="color:'+seatCol(bnd)+'">'
+  +unp('seat tone',sd.hz+' Hz')+'</span>'
   +' · '+unp('codex page','codex page '+sd.src)+'</div>'
   +'<div class="pm-dn">'+unp(sd.n,sd.n,'seat')+'</div><div class="pm-dm"><b>'+unp('plexus',sd.nv)+'</b><br>'
   +unpSay('level:'+sd.k)
-  +'<br>seated at '+sd.seat+'</div>'
+  +'<br>Seated at '+unp('spot:'+sd.k,sd.seat)+'.</div>'
   /* the Flow circle's step, KV, so the answer to a pressed seat says the
      same word the figure prints beside it; a phone has no lane for the word */
   +'<div class="pm-grid"><span>flow</span><b>'+bmFlowStep(ss.pass)+'</b>'

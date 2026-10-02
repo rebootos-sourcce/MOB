@@ -119,8 +119,12 @@ var UNPACK_BASE={
     explains so the two cannot drift. The hz is a sound healing choice and
     the sentence says whose. */
  'plexus':'A plexus is a bundle of nerves that meet and branch out at one place in your body.',
- 'seat tone':'Sound healers give each seat one note, Hz is how many times that note shakes in a second, and nothing in your body is measured to get it.',
- 'codex page':'The codex is the book this instrument is built on, and this is the page this seat comes from.',
+ 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this seat its note, so nothing in your body is measured to get it.',
+ 'codex page':'The codex is the book this instrument is built on, and this number is the page this seat comes from.',
+ /* Two of the seven places a seat is found on the skin are anatomy words,
+    printed on the same two lines. The other five are already plain. */
+ 'spot:throat':'The suprasternal notch is the soft dip at the bottom of your neck, between your two collarbones.',
+ 'spot:heart':'Mid sternum is the middle of your breastbone, the flat bone down the centre of your chest.',
  'level:crown':'This bundle of nerves sits at the pineal gland, a small gland deep in the middle of your brain, and in the cortex, the wrinkled outer layer of your brain.',
  'level:eye':'This bundle of nerves sits in the cavernous sinus, a pool of veins beside the small bony cup in the middle of your skull.',
  'level:throat':'This bundle of nerves sits level with C1 to C4, the top four bones of your neck.',

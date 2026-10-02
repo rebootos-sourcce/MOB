@@ -401,10 +401,11 @@ function anaDrill(){
       · 963 Hz" bare, and the paragraph opened "Vritti pineal, cortical". The
       sub line's terms carry their sentences now, and the level is its own
       sentence. Vritti is gone: the codex makes it the wave around a nerve,
-      never a spine level. The reason is written at engine/data/gloss.js. */
+      never a spine level. The reason is written at engine/data/gloss.js. The
+      Hz wears its own seat's colour, as ruled 25 September (TASKS.md AX8). */
    h+=head('Seat',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
-    +' · '+unp('seat tone',s2.p.hz+' Hz')+'</div>';
-   h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' Its seat is '+s2.p.seat+'. It passes <b>'
+    +' · <span style="color:'+seatCol(bn)+'">'+unp('seat tone',s2.p.hz+' Hz')+'</span></div>';
+   h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The seat sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
     +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> address'
     +(s2.hot===1?' is':'es are')+' held here.</p>'
     +'<div class="pm-eye">Moral integrity seated here</div><div class="pm-chips">'

@@ -262,14 +262,19 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    ['plexus','\\bplexus\\b','plexus'],
    ['citation','\\bsource \\d+|\\bcodex page\\b','codex page'],
    ['level','\\b'+s.vt.split(',')[0]+'\\b','level:'+s.k],
+   ['spot','\\bsuprasternal notch\\b|\\bmid sternum\\b','spot:'+s.k],
    ['vritti','\\bvritti\\b','no such entry']];
   /* known bad first: the line as it shipped before the fix must read bare */
   await p.evaluate(()=>{var d=document.createElement('div');d.id='unp-bad';
-   d.innerHTML='<div class="pm-eye">Muladhara · 396 Hz · source 502</div><div class="pm-dm"><b>Lumbar plexus</b><br>vritti L1 to L4, into the pelvic floor</div>';
+   d.innerHTML='<div class="pm-eye">Muladhara · 396 Hz · source 502</div><div class="pm-dm"><b>Lumbar plexus</b><br>vritti L1 to L4, into the pelvic floor</div>'
+    +'<div class="pm-dm" id="unp-bad2">seated at the suprasternal notch</div>';
    document.body.appendChild(d);});
   const badS=await run(p,'#unp-bad',rulesFor(FS.filter(s=>s.k==='root')[0]));
   ok(new Set(badS.found.map(f=>f.term)).size>=5&&badS.found.every(f=>!f.glossed),
    'the gate calls the old seat line bare before it is trusted: '+JSON.stringify(badS.found.map(f=>f.term+':'+f.glossed)));
+  const bad2=await run(p,'#unp-bad2',rulesFor(FS.filter(s=>s.k==='throat')[0]));
+  ok(bad2.found.length===1&&bad2.found[0].term==='spot'&&!bad2.found[0].glossed,
+   'and the old bare spot on the skin is called bare too: '+JSON.stringify(bad2.found.map(f=>f.term+':'+f.glossed)));
   await p.evaluate(()=>{document.getElementById('unp-bad').remove();});
   for(const s of FS){
    for(const [how,sels] of [['shelf',['#rdrill .pm-eye','#rdrill .pm-dm']],['seat drill',['#rdrill .ad-sub','#rdrill .ad-p']]]){
@@ -283,7 +288,13 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
      ok(!got.missing,how+' '+s.k+': '+sel+' is on the page');
      got.found.forEach(f=>{seen.add(f.term);
       ok(f.glossed,how+' '+s.k+': "'+f.term+'" in "'+f.text+'" has no meaning beside it');});}
-    const want=how==='shelf'?['sanskrit','hz','plexus','citation','level']:['sanskrit','hz','plexus','level'];
+    const want=(how==='shelf'?['sanskrit','hz','plexus','citation','level']:['sanskrit','hz','plexus','level'])
+     .concat(/notch|sternum/i.test(s.seat)?['spot']:[]);
+    /* the Hz wears its own seat's colour, ruled 25 September, TASKS.md AX8 */
+    const hzc=await p.evaluate(a=>{var c=[].slice.call(document.querySelectorAll('#rdrill .tipu')).filter(function(e){return /\bHz\b/.test(e.textContent);})[0];
+     if(!c||!c.parentElement)return null;var t=document.createElement('span');t.style.color=seatCol(K2B[a]);document.body.appendChild(t);
+     var want=getComputedStyle(t).color;t.remove();return {got:getComputedStyle(c.parentElement).color,want:want};},s.k);
+    ok(hzc&&hzc.got===hzc.want,how+' '+s.k+': the Hz is printed in its own seat\'s colour: '+JSON.stringify(hzc));
     ok(want.every(t=>seen.has(t)),how+' '+s.k+' prints every term the gate holds, so it has something to hold: saw '+Array.from(seen));
     const txt=await p.evaluate(()=>document.getElementById('rdrill').innerText);
     ok(!/vritti/i.test(txt),how+' '+s.k+': the word vritti is not on the screen');}}

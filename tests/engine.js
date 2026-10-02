@@ -6774,9 +6774,12 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
     wave around a nerve (index.html:1526, 1529). */
  ok(E.FLOWSEAT.every(s=>T['level:'+s.k]&&T['level:'+s.k].toLowerCase().indexOf(s.vt.split(',')[0].toLowerCase())>=0),
   'every seat has a level sentence naming its own vt: '+E.FLOWSEAT.filter(s=>!T['level:'+s.k]||T['level:'+s.k].toLowerCase().indexOf(s.vt.split(',')[0].toLowerCase())<0).map(s=>s.k));
- ok(T['plexus']&&/Sound healers/.test(T['seat tone'])&&/nothing in your body is measured/.test(T['seat tone'])&&T['codex page'],
+ ok(T['plexus']&&/sound healers/.test(T['seat tone'])&&/nothing in your body is measured/.test(T['seat tone'])&&T['codex page'],
   'the plexus, the seat tone and the codex page each have a sentence, and the tone is said as a choice and not a measurement');
  ok(keys.every(k=>!/vritti/i.test(T[k])),'no sentence in the table uses the word vritti');
+ /* the two anatomy words among the seat spots carry a sentence that names them */
+ ok(E.FLOWSEAT.filter(s=>/notch|sternum/i.test(s.seat)).every(s=>T['spot:'+s.k]&&T['spot:'+s.k].toLowerCase().indexOf(s.seat.replace(/^the /,'').toLowerCase())>=0),
+  'every anatomy word among the seat spots has a sentence naming it');
  ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
   'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
  /* the sentence a family builds reads off the table it describes, so it cannot drift */
