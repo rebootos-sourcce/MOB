@@ -6,7 +6,7 @@ Dani Sorensen, UI UX architect. Pass 2, 2 October 2026. I read the eleven other 
 
 - **The avatar is not the centre.** Art, brand, creative, game, innovation, marketing, systems, me. Confirmed. Systems adds the hardest fact: the word "avatar" appears zero times in the files that draw charge (`rings.js`, `map.js`, `cone.js`, `wheel.js`). It also has three names: Avatar, Intake, Character (`TAB.MASKS`).
 - **The loop is a row.** Eight seats. Confirmed. Flow and Embody hold one door each.
-- **Seat hues do too many jobs.** Art (16 meanings on 7 hues), systems (25 of 34 colours collide), creative (loop hues reuse seat hues). I missed this: I count choices, not colours. One colour cannot answer both "where" and "how bad".
+- **Seat hues do too many jobs.** Art (16 meanings on 7 hues), systems (25 of 34 collide), creative. I missed this: I count choices, not colours. One colour cannot answer both "where" and "how bad".
 - **No type scale.** Seven seats, counts from 26 to 43, differing by what was counted. Nobody found a scale.
 - **Start Case against sentence case.** Art, brand, copy, creative, marketing.
 - **Locks read as a shop.** Brand, marketing, game, sales, me. Nine padlocks on the first Field screen.
@@ -15,15 +15,15 @@ Dani Sorensen, UI UX architect. Pass 2, 2 October 2026. I read the eleven other 
 
 ## 2. DISAGREEMENTS
 
-**a. Avatar behind a tier lock.** Sales accepts the ruling (`DECISIONS.md` line 2609: "The Character masks stay at tier three"). Game, innovation, marketing, brand want a free figure. I side with the free figure, and it does not break the ruling, because the ruling names the masks, not the figure. Split the object. The figure (light for coherence, bend for load) is free and sits at the centre of the Field. The masks page keeps the tier. Reason: the centrepiece cannot also be the upsell (marketing), and the day 30 reason to return (game) must live on the free side. Game's guard holds: no number on it.
+**a. Avatar behind a tier lock.** Sales accepts the ruling (`DECISIONS.md` line 2609: "The Character masks stay at tier three"). Game, innovation, marketing, brand want a free figure. I side with the free figure, and it does not break the ruling, because the ruling names the masks, not the figure. Split the object. The figure (light for coherence, bend for load) is free and sits at the centre of the Field. The masks page keeps the tier. Reason: the centrepiece cannot also be the upsell (marketing), and the day 30 reason to return (game) must be free. Game's guard holds: no number on it.
 
 **b. Ring loop, skin or redesign.** Creative, game, innovation (one chance in three) say redesign. Brand, art, marketing say skin. Both, in two layers. Layer 1, a skin: a ring marker of four arcs beside the four section words, current arc lit, an arrow closing Embody to Discover. Buttons, doors and keys do not move. Layer 2, a redesign: the ring as the only navigation. It waits for five people at levels 4 to 6. On a phone the marker is one 44 by 44 button opening a sheet of four stations, not "Play | Field v".
 
 **c. Regrouping Flow and Embody.** I proposed it in pass 1 and I withdraw it. `core.js` quotes the owner, round KT: "Flow is ritual and accountability. Embody is knowledge." That is a ruling. Instead a one-tab section loses its one-tab sub bar, and the ring station opens the tab itself.
 
-**d. Loop colours.** Art wants the four section hues. Creative and systems want ink tints. I side with them. The loop answers "where am I in my process", a seat hue answers "where in my body", and the Field shows both at once. One ink hue, four lightness steps, plus four station icons (eye, play, waves, figure).
+**d. Loop colours.** Art wants the four section hues; creative and systems want ink tints. I side with them. The loop says "where am I in my process", a seat hue says "where in my body", and the Field shows both at once. One ink hue, four lightness steps, plus four station icons (eye, play, waves, figure).
 
-**e. Lock look.** Brand: drop the padlock, dim the chip. Sales: dim looks like "off", keep colour and add a dashed ring. Sales is right about dim, brand about the padlock. Both: no padlock, full hue at about 80 percent, dashed outer ring (the product's own "not drawn yet" language). I also revise pass 1. I said locked tabs should leave the bar. That breaks my own rule (never hide a control with no affordance) and the ruling that a slot keeps its label. Locked slots stay.
+**e. Lock look.** Brand: drop the padlock, dim the chip. Sales: dim looks like "off", so keep colour and add a dashed ring. Both are right: no padlock, hue at about 80 percent, dashed outer ring (the product's own "not drawn yet" language). I also revise pass 1: locked tabs should not leave the bar. That breaks my own rule (never hide a control with no affordance). Locked slots stay.
 
 **f. Source OS at 1.36 to 1.** Four seats call it a defect. It is the owner's hex, asked for three times (`DECISIONS.md` line 2309). It is a credit, not a control or a reading, and no walk fails on it. Leave it. Pass 3 shows the contrast figure beside his hex once.
 
@@ -38,8 +38,7 @@ Dani Sorensen, UI UX architect. Pass 2, 2 October 2026. I read the eleven other 
 - **Systems:** the right rail renames itself (Energetic Summary, Selection, Root Energetics), and the Field's top row prints 0.0, 1.3, 62% and 11% in one chip style: four scales in a row.
 - **Marketing:** S7, phone only, 1,240 people, is the acquisition channel. I walked six named people and none is her. Her doors sit below the fold at 390. Also the privacy line ("stays on this device") belongs on the first screen and login, not Settings.
 - **Animation:** the selection ring fades to 4 percent each cycle. A chosen state must be legible at every moment.
-- **Art:** on Compass the brightest thing is the rail button "Build today's ritual", not the cone.
-- **Technical:** Body and Compass already pass the node ceiling, so a skin must add no nodes.
+- **Technical:** Body and Compass already pass the node ceiling, so a skin adds no nodes there.
 
 ## 4. THE SKIN, TOGETHER (my part)
 
