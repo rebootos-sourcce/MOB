@@ -1159,8 +1159,19 @@ g('19 \u00b7 energetics, the birth module');
   &&spiritualOf({d:'1990-01-15',t:'08:00',z:'Etc/GMT+5'}).needsPlace===true,
   'UTC and the fixed offset zones read the clock and give no horizon, so Rising still asks for a place');
  /* the nine cities keep their exact horizon, zone or no zone */
- ok(Object.keys(BIRTH).filter(k=>BIRTH[k]).every(n=>spiritual(n).risingFrom==='place'),
-  'every reference case reads its rising from its own city');
+ /* A REFERENCE CASE NAMES A CITY OR A ZONE, NOT BOTH, and the claim is about the
+    first. The tier ladder (J12) is thirty people born in places the nine cities
+    do not cover, each carrying the IANA zone it was born in, which is exactly
+    what the zone path is for. This said every case, so the first person added
+    outside the nine failed it for the right reason and the wrong claim. It is
+    split: a case with no zone reads from its own city, and a case with a zone
+    must still resolve a Rising, read from the zone's own point. */
+ ok(Object.keys(BIRTH).filter(k=>BIRTH[k]&&!BIRTH[k].z).every(n=>spiritual(n).risingFrom==='place'),
+  'every reference case without a zone reads its rising from its own city');
+ ok(Object.keys(BIRTH).filter(k=>BIRTH[k]&&BIRTH[k].z).every(n=>{const s=spiritual(n);
+   return s.risingFrom==='zone'&&!!s.rising;}),
+  'and every reference case with a zone reads its rising from that zone, '
+  +Object.keys(BIRTH).filter(k=>BIRTH[k]&&BIRTH[k].z).length+' of them');
  const both=spiritualOf({d:'1988-04-12',t:'07:30',p:'Chicago, IL',z:'America/Chicago'});
  ok(both.rising===risingSign({d:'1988-04-12',t:'07:30',p:'Chicago, IL'})[2]&&both.risingFrom==='place',
   'a place the table names outranks the zone point for the horizon');
@@ -1504,6 +1515,88 @@ g('19a \u00b7 the roster covers the scale');
  ['Tomas','Nkem','Wren','Abraham'].forEach(n=>{
   const sp=E.spiritual(n);
   ok(sp&&sp.sun&&sp.rising,n+' resolves a full birth reading');});
+}
+
+g('19ba \u00b7 the tier ladder: a person in every band, and no band left unvisited');
+/* J12, round PL. The owner: "Fix all of the profiles. By tier. And then add three
+   additional ones per tier. From minimum to medium to maximum. And stuff in
+   between. I just need a range." A tier is the coherence band a reading's CQ
+   lands in, so this reads each person's CQ off the real engine and asserts the
+   properties the range depends on, and none of the numbers a roster happens to
+   hold today: the count of bands is TIERDEF's own length, the width of a band
+   is read off TIERDEF, and nobody is counted by hand. */
+{
+ const rd=p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
+  return compute();};
+ const ppl=PEOPLE.filter(p=>!p.you), read=ppl.map(p=>({p,r:rd(p)}));
+ const byTier={}; E.TIERDEF.forEach(t=>{byTier[t.nm]=[];});
+ read.forEach(x=>byTier[x.r.tier].push(x));
+ /* THE RULE THE OWNER ASKED FOR, three to a tier. Added people are the ones past
+    the original reference cases, so the floor is three in every band and not
+    exactly three, which the original cases would already have broken. */
+ E.TIERDEF.forEach(t=>ok(byTier[t.nm].length>=3,
+  t.nm+' has at least three people in it, got '+byTier[t.nm].length));
+ /* AND A BAND IS WALKED, NOT TOUCHED. Three people at one end of a band is a
+    point and not a range, so in every band the lowest and the highest sit at
+    least a third of a band apart where the band is as wide as a band is. The top band is
+    one wider than the others at 91 to 100 and the bottom one at 0 to 10, which
+    is why the width is read off tierTop and not assumed. */
+ E.TIERDEF.forEach(t=>{
+  const xs=byTier[t.nm].map(x=>x.r.CQ).sort((a,b)=>a-b), w=E.tierTop(t.nm)-t.at;
+  ok(xs[xs.length-1]-xs[0]>=w/3,t.nm+' is walked from '+xs[0].toFixed(1)+' to '+xs[xs.length-1].toFixed(1)
+   +' and not touched at one end');});
+ /* ONE CONTINUOUS RUN. Sorted by CQ, no two neighbours are further apart than
+    half the widest band, so the picker never jumps over a stretch of the scale
+    a surface has not been looked at across. */
+ const cq=read.map(x=>x.r.CQ).sort((a,b)=>a-b);
+ const widest=Math.max.apply(null,E.TIERDEF.map(t=>E.tierTop(t.nm)-t.at+1));
+ let gap=0; for(let i=1;i<cq.length;i++)gap=Math.max(gap,cq[i]-cq[i-1]);
+ ok(gap<=widest/2,'no stretch of the scale is left empty: the widest gap is '+gap.toFixed(1)
+  +', the limit is '+(widest/2));
+ /* AND THE ENDS ARE THE ENDS. The lowest reading is in the lowest band and the
+    highest in the highest, and neither is the median pretending. */
+ ok(E.tierOf(cq[0]).nm===E.TIERDEF[E.TIERDEF.length-1].nm,
+  'the lowest reading is in the lowest band, '+cq[0].toFixed(1));
+ ok(E.tierOf(cq[cq.length-1]).nm===E.TIERDEF[0].nm,
+  'the highest reading is in the highest band, '+cq[cq.length-1].toFixed(1));
+ /* A REFERENCE CASE IS A WHOLE PERSON. Each one fills the fields every surface
+    reads, and they are told apart by name, by role and by what they say, so the
+    picker never lists two rows that read as one. No clinical label is allowed to
+    stand in for a story. */
+ const miss=ppl.filter(p=>!p.nm||!p.role||!p.says||!(p.age>0)||p.dom==null||p.a1==null||p.a2==null||!p.c||!p.rep);
+ ok(miss.length===0,'every reference case is complete, '+miss.length+' are not'+(miss[0]?': '+miss[0].nm:''));
+ const dup=k=>{const seen={},d=[]; ppl.forEach(p=>{const v=String(p[k]).toLowerCase(); if(seen[v])d.push(p.nm); seen[v]=1;}); return d;};
+ ['nm','role','says'].forEach(k=>ok(dup(k).length===0,'no two reference cases share a '+k+', '+dup(k).join(', ')));
+ ok(ppl.every(p=>p.dom>=0&&p.dom<DOMAINS.length&&p.a1>=0&&p.a1<ARCH.length&&p.a2>=0&&p.a2<ARCH.length),
+  'every reference case names a real domain and real archetypes');
+ ok(ppl.every(p=>!/[\u2013\u2014]/.test(p.says+p.role)),'and no reference case speaks with a dash');
+ const clinical=/\b(depress|ptsd|trauma|disorder|bipolar|anxiety|adhd|diagnos|psycho|patholog|symptom|syndrome|burnout)/i;
+ ok(ppl.every(p=>!clinical.test(p.says+' '+p.role)),'and none of them wears a clinical label');
+ /* EVERY ONE CARRIES THE BIRTH THE COSMOLOGICAL LAYER READS, but Lance, whose
+    birth is his to enter and is not invented for him. */
+ const noBirth=ppl.filter(p=>!E.BIRTH[p.nm]||!E.FULLNAME[p.nm]).map(p=>p.nm);
+ ok(noBirth.every(n=>n==='Lance'),'every reference case has a birth and a full name but Lance, '+noBirth.join(', '));
+ /* A TABLE THAT ANSWERS EVERY LAW, and a law that exists. A misspelt law name
+    in a persona table is a key the engine never reads, which silently moves the
+    person to the base value and the tier with it. */
+ const bad=[]; ppl.forEach(p=>Object.keys(LAWSET[p.nm]).forEach(k=>{if(k!=='_'&&SINAMES.indexOf(k)<0)bad.push(p.nm+':'+k);}));
+ ok(bad.length===0,'no persona table names a law that does not exist, '+bad.join(', '));
+ /* THE FIELD DOES NOT CONTRADICT THE WORD AT THE ENDS. Whoever reads Collapsed
+    carries most of what they hold, and whoever reads Mastery carries almost none
+    of it. The tier is the laws alone, so this is the one place the held charge
+    is checked against it, and only where the two have to agree. */
+ const lo=byTier[E.TIERDEF[E.TIERDEF.length-1].nm], hi=byTier[E.TIERDEF[0].nm];
+ ok(lo.every(x=>x.r.DQ>=30),'everyone in the lowest band carries a real load, '
+  +lo.map(x=>x.p.nm+' '+x.r.DQ.toFixed(0)).join(', '));
+ ok(hi.every(x=>x.r.DQ<=10),'and everyone in the highest carries little, '
+  +hi.map(x=>x.p.nm+' '+x.r.DQ.toFixed(0)).join(', '));
+ console.log('  '+read.length+' people, '+E.TIERDEF.length+' bands, CQ '+cq[0].toFixed(1)+' to '
+  +cq[cq.length-1].toFixed(1)+', widest gap '+gap.toFixed(1));
 }
 
 g('19bb \u00b7 charge under the line is not nothing');

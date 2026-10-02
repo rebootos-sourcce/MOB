@@ -496,14 +496,44 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
 function pselName(p,up){
  if(p.you)return 'Custom';
  return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
+/* THE PICKER READS THE SAME CQ THE PROFILE WILL, AND IS SORTED BY IT.
+   The examples were two groups by an accident of how they were added: the six
+   ICPs under Examples and everyone else under More examples. Ruled round PL
+   (J12): "Fix all of the profiles. By tier." So the group heading is the
+   coherence tier, Collapsed first and Mastery last, and inside a tier the
+   lowest CQ comes first, which gives one run from the floor of the scale to
+   the ceiling with the person's name and role unchanged on each row.
+
+   The number a person sorts under is not LAWSET summed over 210, though the two
+   agree to a tenth. It is the mean of the seeded intake answers, which is what
+   loadP puts in S.law and what every surface prints, so a person at 40.0 in the
+   table cannot sit under one word here and read the next one on screen. That
+   needs the seed to exist before the first load, which seedIntake allows: it is
+   idempotent and loadP calls it again for free.
+
+   The blank profile stays in its own group in front, because it is the
+   person's own and not an example. Nothing else changed about the select: the
+   value is still the index into PEOPLE, so loadP, the phone menu that reads
+   this element and every gate that loads by index are untouched. */
+function personaCQ(p){
+ seedIntake(p);
+ var sc=iqScore({intake:{answers:p.intakeAnswers}});
+ return SINAMES.reduce(function(a,l){return a+(sc[l]?sc[l].score:0);},0)/(SINAMES.length*10)*100;}
 (function(){var sel=$('psel');
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
- var gYou=null,gICP=null,gRef=null;
- PEOPLE.forEach(function(p,i){var o=document.createElement('option');o.value=i;
-  o.textContent=pselName(p,false);
-  if(p.you){gYou=gYou||mk('Your own');gYou.appendChild(o);}
-  else if(/ICP/.test(p.role)){gICP=gICP||mk('Examples');gICP.appendChild(o);}
-  else {gRef=gRef||mk('More examples');gRef.appendChild(o);}});})();
+ var gYou=null, ex=[];
+ PEOPLE.forEach(function(p,i){
+  if(p.you){var o=document.createElement('option');o.value=i;o.textContent=pselName(p,false);
+   gYou=gYou||mk('Your own'); gYou.appendChild(o);}
+  else ex.push({i:i,cq:personaCQ(p)});});
+ /* a tie keeps the roster order, so the sort is stable on every engine */
+ ex.sort(function(a,b){return a.cq-b.cq||a.i-b.i;});
+ var g=null, gt=null;
+ ex.forEach(function(e){
+  var t=tierOf(e.cq).nm;
+  if(t!==gt){g=mk(t); gt=t;}
+  var o=document.createElement('option');o.value=e.i;
+  o.textContent=pselName(PEOPLE[e.i],false); g.appendChild(o);});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
 /* THE LOADER ON A PHONE, GF in TASKS.md. A circle beside help, and the list it
    opens is read off #psel every time it opens, groups and names and which one
@@ -696,7 +726,21 @@ function seedIntake(p){
      3 the spread is inside self-report noise, so do not manufacture one. */
   var split=Math.max(0,(9-v))*(0.62+bias*0.30);
   if(v<7) split=Math.max(split,3.4);
-  var L=clamp(v+split/2,0,10), R=clamp(v-split/2,0,10), N=clamp(v,0,10);
+  /* THE SPREAD STOPS AT THE EDGE OF THE SCALE, AND THE MEAN STAYS WHERE THE
+     TABLE PUT IT. This clamped each end on its own, so a law at 1.1 with a
+     4.9 split gave 3.6, 0 (from -1.35) and 1.1, which averages 1.6, and iqScore
+     reads the mean. Every weak law in the roster was therefore scored higher on
+     screen than its own table said, and the heaviest examples read the most
+     wrong: Tomas is solved to 25.9 and showed 30.8, one band up, beside a field
+     carrying 77 addresses. LAWSET is the persona's measurement (loadP says so
+     in as many words), so the intake derived from it must hand the same mean
+     back. The half spread is capped at the distance to the nearer end, which
+     keeps L and R inside 0 to 10 and keeps (L+R+N)/3 equal to the law. The
+     cost is that a law under 1.7 cannot carry the 3.4 spread asked for above,
+     which is true of a law that low and was previously bought with the wrong
+     score. */
+  var h=Math.min(split/2,Math.max(0,v),Math.max(0,10-v));
+  var L=clamp(v+h,0,10), R=clamp(v-h,0,10), N=clamp(v,0,10);
   if(bias===1){var t=L;L=R;R=t;}
   p.intakeAnswers[li*3]=Math.round(L*10)/10;
   p.intakeAnswers[li*3+1]=Math.round(R*10)/10;
