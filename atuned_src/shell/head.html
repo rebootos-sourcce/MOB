@@ -2491,6 +2491,48 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 .lsec-hd>span{display:inline-flex;align-items:center;gap:9px;min-width:0}
 .lsec-ic{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* YOUR PATTERNS, ui/loopread.js. One block in two homes: the Field's right
+   column and Summary's own zone, #sumloop. The rail section is the Field's
+   only, so the same block never stands twice on one screen, and it steps out
+   of the column when there is nothing to say (an unread field). The four
+   counts are figures with a one word label each; the why chain is a line of
+   rings, one per step on the record, ring and not fill. */
+body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
+.lp{display:flex;flex-direction:column;gap:12px;min-width:0}
+.lp-figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.lp-rail .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lp-f{display:flex;flex-direction:column;gap:2px;padding:9px 11px;border:1px solid var(--edge);
+ border-radius:var(--r-s);min-width:0}
+.lp-fl{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em}
+.lp-fv{font-family:var(--num);font-size:20px;font-weight:500;color:var(--ink);line-height:1.2}
+.lp-note{font-size:13.5px;color:var(--dim);line-height:1.6;margin:0}
+.lp-next{display:flex;flex-direction:column;gap:6px;padding:12px 13px;border:1px solid var(--accent);
+ border-radius:var(--r-s)}
+.lp-nx{font-size:14px;color:var(--ink);line-height:1.5}
+.lp-go,.lp-all{align-self:flex-start;min-height:44px}
+.lp-list{display:flex;flex-direction:column;gap:8px}
+.lp-p{border:1px solid var(--edge);border-radius:var(--r-s);min-width:0}
+.lp-p>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;
+ padding:6px 12px;cursor:pointer;list-style:none}
+.lp-p>summary::-webkit-details-marker{display:none}
+.lp-pn{display:flex;flex-direction:column;min-width:0}
+.lp-pn b{font-size:14px;font-weight:600;color:var(--ink);line-height:1.3}
+.lp-pn em{font-style:normal;font-size:12px;color:var(--dim);line-height:1.4}
+.lp-st{flex:0 0 auto;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;
+ border:1px solid var(--edge-2);color:var(--dim)}
+.lp-st.lp-confirmed{border-color:var(--accent);color:var(--accent)}
+.lp-chain{list-style:none;margin:0;padding:2px 12px 12px 12px;display:flex;flex-direction:column}
+.lp-chain li{position:relative;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;
+ padding:5px 0 5px 18px;font-size:13px;line-height:1.5}
+.lp-chain li::before{content:"";position:absolute;left:0;top:10px;width:8px;height:8px;
+ border:1.5px solid var(--accent);border-radius:50%}
+.lp-chain li+li::after{content:"";position:absolute;left:4.5px;top:-6px;height:16px;border-left:1px solid var(--edge-2)}
+.lp-cl{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.02em}
+.lp-cv{color:var(--ink);min-width:0}
+.lp-dec ul{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--ink)}
+.sg-loop .lp-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start}
+@media (max-width:720px){.lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .lp-chain li{grid-template-columns:70px minmax(0,1fr)}}
 /* ROOT ENERGETICS IS SET APART, on both rails. FV: "I want a slightly
    different treatment for root energetics." Everything else on the rail is a
    reading of the field; this is the birth, the one layer nothing a person does
