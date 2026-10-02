@@ -32198,3 +32198,7 @@ Both survived the second model-switch restart cleanly (both agents had already c
 **AX8 and the vritti wording** (`d1ae66f`): both screens that named these fixed, checked against the book's own definitions first rather than guessed. `tests/unpack.js` 838/0 on the merged tree.
 
 Gates on the fully merged tree: engine 4436/0, unpack 838/0.
+
+## Direct task: the build now refuses a twice-declared top-level function
+
+His exact ask, a standalone task separate from any round. `atuned_src/dupefunc.py`, wired into `BUILD.sh` right after the existing per-module parse check: walks every module in MANIFEST order, strips comments and strings the same way `hostfree.py` already does, and refuses by name the moment a top-level function name repeats across two modules, naming both files. Checked against a known-bad case first: a real duplicate injected across two real modules (`engine/data/nodes.js`, `ui/ui.js`) is caught, named, build exits 1; reverted, exit 0. 1938 top-level functions across 88 modules today, each declared once. `tests/engine.js` 4436/0 re-run after.
