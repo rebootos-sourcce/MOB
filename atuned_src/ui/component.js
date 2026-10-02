@@ -867,7 +867,7 @@ function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
    #status is still the one region with role=status, so a screen reader hears
    the message when it is written whether or not anyone is looking at the dock,
    and the text sits in it until the fade has finished. */
-var _stT=null, _stF=null, MSG_LOG=[], MSG_MAX=50, MSG_SHOW_MS=3000, MSG_FADE_MS=400,
+var _stT=null, _stF=null, MSG_LOG=[], MSG_MAX=50, MSG_SHOW_MS=3000, MSG_FADE_MS=260,
  MSG_KEPT=false, MSG_UNSEEN=0;
 function msgPaint(){
  var d=document.getElementById('msgdock'), k=document.getElementById('msgkeep'),

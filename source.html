@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1259 87d6310 2026-10-02 02:34"><head><meta charset="utf-8">
+<html lang="en" data-build="v1261 464e4d5 2026-10-02 03:05"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -719,7 +719,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  display:none;align-items:center;gap:4px;
  max-width:min(620px,calc(100vw - 24px));padding:3px 3px 3px 16px;
  border-radius:var(--r);background:var(--panel);color:var(--ink);border:1px solid var(--edge-2);
- box-shadow:0 12px 32px rgba(0,0,0,.34);opacity:1;transition:opacity .38s var(--ease-out)}
+ box-shadow:0 12px 32px rgba(0,0,0,.34);opacity:1;transition:opacity var(--t-element) var(--ease-out)}
 .msgdock.on{display:flex}
 .msgdock.out{opacity:0;pointer-events:none}
 #status{flex:1 1 auto;min-width:0;font-family:var(--sans);font-size:14px;line-height:1.4;color:var(--ink);
@@ -24858,7 +24858,7 @@ function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
    #status is still the one region with role=status, so a screen reader hears
    the message when it is written whether or not anyone is looking at the dock,
    and the text sits in it until the fade has finished. */
-var _stT=null, _stF=null, MSG_LOG=[], MSG_MAX=50, MSG_SHOW_MS=3000, MSG_FADE_MS=400,
+var _stT=null, _stF=null, MSG_LOG=[], MSG_MAX=50, MSG_SHOW_MS=3000, MSG_FADE_MS=260,
  MSG_KEPT=false, MSG_UNSEEN=0;
 function msgPaint(){
  var d=document.getElementById('msgdock'), k=document.getElementById('msgkeep'),
@@ -58405,5 +58405,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003803337"></div>
+<div id="eof" hidden data-len="003803349"></div>
 </body></html>
