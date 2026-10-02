@@ -105,6 +105,32 @@ async function engineSuite(E,ok){
   ok(calls===1&&d.state==='retry'&&J(q().map(x=>x.body))===J(['first','second']),
    'after a no, an entry that arrived during it waits in order and the server is not asked again, calls '+calls+', '+J(q().map(x=>x.body)));}
 
+ /* the newcomer's own pass says no after the first went: the count of what
+    went is carried, and the newcomer waits */
+ reset(); E.obQueue(Object.assign(env(),{body:'first'}));
+ {let calls=0;
+  E.bindSend(()=>{calls++; return new Promise(r=>setTimeout(()=>{
+    if(calls===1){ E.obQueue(Object.assign(env(),{body:'second'})); r(true); } else r(false);},5));});
+  const d=await E.obDrainAsync();
+  ok(calls===2&&d.state==='retry'&&d.sent===1&&J(q().map(x=>x.body))===J(['second']),
+   'when the second pass says no, the first is counted as sent and the second waits, '+J(d));}
+
+ /* a host that throws instead of answering is a no, not a crash */
+ reset(); E.obQueue(env());
+ {E.bindSend(()=>{ throw new Error('no fetch in this browser'); });
+  const d=await E.obDrainAsync();
+  ok(d.state==='retry'&&q().length===1&&/no fetch/.test(d.why||''),
+   'a host that throws keeps the entry and carries the reason, '+J(d));}
+
+ /* sent, but the store would not take the shorter list: never told sent */
+ reset(); E.obQueue(env());
+ {E.bindSend(()=>Promise.resolve(true));
+  E.bindStore(k=>mem[k]===undefined?null:mem[k],()=>{ throw new Error('QuotaExceededError'); });
+  const d=await E.obDrainAsync();
+  E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+  ok(d.state==='retry'&&/may send again/.test(d.why||'')&&q().length===1,
+   'when storage will not take the write after a send it says so and never says sent, '+J(d));}
+
  /* two drains at once: the second is told busy and nothing goes twice */
  reset(); E.obQueue(env());
  {let calls=0;
