@@ -2905,9 +2905,16 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    was there to keep. */
 /* "Pace" read "Run speed" from round LY, his own words, "run speed instead
    of pace"; the field's id and RUN.pace are untouched, only the label moved. */
-ok(/Release your selections/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
+/* "RELEASE YOUR SELECTIONS" CAME OFF, round QH, his words: "get rid of the
+   text that says release your selections. I want this to show me the stories
+   or the patterns that I'm about to release." The heading's place is the
+   Story and Seat toggle, and the selection is shown as what it is, each group
+   with its count of patterns. */
+ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
+ &&/\d+ patterns/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
  &&/Patterns/.test(relrun.setup)&&/Run release/.test(relrun.setup),
- 'the setup is the selection, run speed, how many patterns and one button: '+relrun.setup.slice(0,120));
+ 'the setup is what is picked, by story or seat with its patterns, run speed, how many patterns and one button: '
+ +relrun.setup.slice(0,160));
 ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
  'and it quotes no cost and no framing, '+relrun.setup.slice(0,160));
 ok(relrun.beforeWho===0&&relrun.afterWho===0,

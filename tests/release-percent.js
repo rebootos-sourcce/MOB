@@ -51,6 +51,9 @@ const booted=async p=>{
   o.plateText=(document.querySelector('.rel-plate')||{}).textContent||'';
   o.plateHtml=(document.querySelector('.rel-plate')||{}).innerHTML||'';
   RUN.halted=true; relCoolDown();
+  /* round QH: the two minutes are their own screen before the finished card,
+     so the card is reached the way a person reaches it early, by Skip */
+  var rest=document.getElementById('relrest'); o.rest=!!rest; if(rest)rest.click();
   o.dqFig=Array.from(document.querySelectorAll('.rel-fig')).map(function(e){return e.textContent;});
   o.cardHtml=document.getElementById('rel').innerHTML;
   return o;});
