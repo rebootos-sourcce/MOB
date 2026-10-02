@@ -1609,6 +1609,11 @@ bindPlan(function(what,tier){
      that looks pressed and did nothing. */
   try{ location.href=r.url; }
   catch(e){ status('Could not open the '+page+' page. Nothing has changed.','fail'); }});});
+/* THE OUTBOX GETS ITS HOST, the same way billing got its own above: the
+   engine queues and validates, ui/auth.js makes the request, and this line is
+   the only thing joining them. Bound at boot, so an entry held from an
+   earlier visit goes on the next Send or the Send now in Help. */
+bindSend(authFeedback);
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){

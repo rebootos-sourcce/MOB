@@ -85,6 +85,17 @@ binds `localStorage`.
                                record keeps its own tier and is never written to
                                tier four. Fails on the build from before Round
                                PS (e0c46d6^) and on one example left unexempted.
+    node tests/feedback.js     the feedback tracker: comment, question and
+                               something broken in Help, the outbox losing
+                               nothing on a late or refused send, no token on
+                               the request, and the Discord door a stub until
+                               its invite is a real Discord invite. The engine
+                               half runs on a private copy and against broken
+                               copies; the surface half against a stubbed
+                               /v1/feedback, so nothing leaves the machine.
+                               Also called from functional.js. Fails on the
+                               build from before it. FB_NO_BROWSER=1 runs the
+                               engine half alone.
 
 All three resolve `source.html` from the working directory, so run them from the
 repo root.

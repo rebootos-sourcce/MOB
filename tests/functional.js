@@ -3216,6 +3216,11 @@ ok(pmn.glow.field===4&&pmn.glow.body===4&&pmn.glow.compass===4&&pmn.glow.charact
 await require('./msglog.js').msgGate(page,ok);
 await require('./protocol.js').protocolGate(browser,FILE,ok,booted);
 await require('./device.js').deviceGate(browser,FILE,ok,booted);
+/* the feedback tracker. Its engine half is here and not in tests/engine.js
+   because the drain it holds is a promise and that file is synchronous to its
+   last line; it runs on a private copy of the engine either way. */
+await require('./feedback.js').engineGate(ok);
+await require('./feedback.js').feedbackGate(browser,FILE,ok,booted);
 
 console.log('\n=== the avatar, and what it aims the work at ===');
 /* The becoming half. The right hand sentence resolves to a seat and the seat
