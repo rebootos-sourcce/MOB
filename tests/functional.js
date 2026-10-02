@@ -4366,6 +4366,109 @@ ok(iq.three,'and an open law shows its three framings side by side, each named, 
 ok(iq.resume,'and that it can be stopped and come back to');
 ok(iq.left,'and the progress line says what is left');
 
+console.log('\n=== the three blocks stacked under the laws, round PP ===');
+/* HIS WORDS: "Intake, I asked for the Jungian archetypes. And we should also
+   do the nine emotional axis and the six action axis ... Let's see what it
+   looks like with all of them stacked." This fails when a block is missing
+   from the page, and it reads the blocks off the data tables rather than
+   naming them, so a fourth block or a struck question moves the gate with it.
+
+   WHAT IT HOLDS: every block is a section on the Intake page, every row is a
+   question with the eleven cell scale the laws use, the question's own words
+   are on the page, a press records through the engine and survives the next
+   draw, the read-out names a leader once a block is answered and its name
+   carries its meaning, and the archetype rows do not carry an archetype's name
+   before they are answered. Nothing a press does may move CQ. */
+{
+ const ix=await page.evaluate(async()=>{
+  loadP(0); setTab(TAB.INTAKE);
+  const sub=document.querySelector('[data-avface="iq"]'); if(sub)sub.click();
+  await new Promise(r=>setTimeout(r,500));
+  renderIntake();
+  const host=document.getElementById('iqbody'), out={blocks:[]};
+  const cq0=compute().CQ;
+  /* a build that does not carry the table at all fails here by name rather
+     than by throwing, which is what the gate is for */
+  out.table=(typeof IX_BLOCKS!=='undefined')?IX_BLOCKS.length:0;
+  if(!out.table)return out;
+  IX_BLOCKS.forEach(b=>{
+   const el=host.querySelector('#iqx-'+b.id), t=el?(el.innerText||'').replace(/\s+/g,' '):'';
+   out.blocks.push({id:b.id, present:!!el, heading:el&&t.indexOf(b.nm)>=0,
+    scales:el?el.querySelectorAll('.iq-sl').length:0, rows:b.rows.length,
+    cells:el?[...el.querySelectorAll('.iq-sl')].every(s=>s.querySelectorAll('button.iq-n').length===11):false,
+    words:b.rows.filter(r=>t.indexOf(r.q.replace(/\s+/g,' '))<0).map(r=>r.k),
+    read:!!(el&&el.querySelector('.iqx-read'))});});
+  /* the archetype rows are not named before they are answered */
+  const at=(host.querySelector('#iqx-arch')||{innerText:''}).innerText;
+  out.named=ARCH.filter(a=>new RegExp('\\b'+a.nm+'\\b').test(at)).map(a=>a.nm);
+  /* a page missing the block it presses on fails the checks above by name and
+     stops here, rather than throwing on a null */
+  if(!host.querySelector('#iqx-axes .iq-n[data-ixk="Anger"][data-v="8"]'))return out;
+  /* a press, the way a person makes it */
+  const b0=host.querySelector('#iqx-axes .iq-n[data-ixk="Anger"][data-v="8"]');
+  b0.click(); await new Promise(r=>setTimeout(r,150));
+  const after=document.querySelector('#iqx-axes .iq-n[data-ixk="Anger"][data-v="8"]');
+  out.pressed={stored:CURP.intake.more.axes.Anger, on:!!(after&&after.classList.contains('on')&&after.getAttribute('aria-pressed')==='true'),
+   part:(document.querySelector('#iqx-axes .iqx-read')||{innerText:''}).innerText};
+  /* answer the rest of the axes, Anger on top, and the leader is named with its meaning */
+  CHARGES.forEach((c,i)=>{if(c!=='Anger'){
+   document.querySelector('#iqx-axes .iq-n[data-ixk="'+c+'"][data-v="'+(i%3)+'"]').click();}});
+  await new Promise(r=>setTimeout(r,150));
+  out.read=(document.querySelector('#iqx-axes .iqx-read')||{innerText:''}).innerText.replace(/\s+/g,' ');
+  /* a different cell on the same row moves the answer and does not add one */
+  document.querySelector('#iqx-axes .iq-n[data-ixk="Anger"][data-v="9"]').click();
+  await new Promise(r=>setTimeout(r,100));
+  out.moved=CURP.intake.more.axes.Anger;
+  out.on=document.querySelectorAll('#iqx-axes .iq-sl:nth-of-type(1) .iq-n.on').length;
+  out.onAnger=[...document.querySelectorAll('#iqx-axes .iq-n[data-ixk="Anger"].on')].length;
+  /* a reload of the record keeps it */
+  const wire=JSON.parse(JSON.stringify(saveProfile(CURP)));
+  out.kept=validateProfile(wire).ok&&wire.intake.more.axes.Anger===9;
+  out.cqMoved=Math.abs(compute().CQ-cq0)>1e-9;
+  out.scrollW=document.documentElement.scrollWidth-innerWidth;
+  return out;});
+ ok(ix.table>0,'the build carries the archetype, emotional axis and action axis blocks at all');
+ if(ix.table>0){
+ for(const b of ix.blocks){
+  ok(b.present,'the '+b.id+' block is on the Intake page');
+  ok(b.present&&b.heading,'and says its name');
+  ok(b.scales===b.rows&&b.scales>0,'and carries one scale for every question in its table, '+b.scales+' of '+b.rows);
+  ok(b.cells,'and every scale is the eleven cell scale the laws use');
+  ok(b.words.length===0,'and every question is on the page in its own words, missing '+JSON.stringify(b.words));
+  ok(!b.read,'and before a block is answered it prints no read-out, '+b.id);}
+ if(ix.pressed){
+ ok(ix.named.length===0,'the archetype questions name no archetype before they are answered, found '+JSON.stringify(ix.named));
+ ok(ix.pressed.stored===8&&ix.pressed.on,'a press records the answer and the cell stays pressed after the page redraws, '+JSON.stringify(ix.pressed));
+ ok(/left/.test(ix.pressed.part),'and a half answered block says what is left, "'+ix.pressed.part+'"');
+ ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Equanimity: /.test(ix.read),
+  'a finished block names its leader with the place and its other end unpacked, "'+ix.read+'"');
+ ok(ix.moved===9&&ix.onAnger===1,'a second press on the same question moves the answer and leaves one cell pressed');
+ ok(ix.kept,'and the answer survives the boundary on the way back in');
+ ok(!ix.cqMoved,'and no press moved CQ');
+ ok(ix.scrollW<=2,'and the stacked page does not push the document wider than the screen, '+ix.scrollW);
+ }
+ else ok(false,'the axes block has no scale to press, so nothing below it could be checked');
+ await page.evaluate(()=>{CURP.intake.more=ixBlank(); setTab(TAB.FIELD);});
+ }
+}
+{
+ /* AND ON A PHONE, where the page is longest */
+ const ph=await browser.newPage({viewport:{width:390,height:844}});
+ await ph.goto(FILE,{waitUntil:'load'}); await booted(ph); await ph.waitForTimeout(700);
+ const o=await ph.evaluate(async()=>{
+  if(typeof IX_BLOCKS==='undefined')return {scales:0,want:1,over:0,w:0};
+  loadP(0); setTab(TAB.INTAKE); await new Promise(r=>setTimeout(r,500));
+  const sub=document.querySelector('[data-avface="iq"]'); if(sub)sub.click();
+  await new Promise(r=>setTimeout(r,400)); renderIntake();
+  const q=[...document.querySelectorAll('#iqbody .iqx .iq-sl')];
+  const over=[...document.querySelectorAll('#iqbody .iqx *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).length;
+  return {scales:q.length, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over,
+   w:document.documentElement.scrollWidth-innerWidth};});
+ ok(o.scales===o.want,'all of the questions are on the phone page, '+o.scales+' of '+o.want);
+ ok(o.over===0&&o.w<=2,'and none of them runs off the right edge, '+o.over+' elements, document '+o.w+' wide of the screen');
+ await ph.close();
+}
+
 console.log('\n=== the avatar is a ring, with tags from the lexicon, and archetypes carry no percent (KH) ===');
 /* ROUND KH, his words: "The hero graphic, I just wanted to take up the
    majority of the space. There's way too much text all over the screen." And

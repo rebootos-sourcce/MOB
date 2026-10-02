@@ -31587,5 +31587,5 @@ Read as:
 - Release protocol: "this isn't what we want" (unclear which screen; read as the release run screen; sorted by the release design seat).
 - Reading area and "what it drives": new displays, black background allowed, interesting.
 - A plain summary of what is running, what it costs, and how it works on me now, including the sign placements (Capricorn, Virgo).
-- Intake: add the Jungian archetypes, the nine emotional axes and the six action axes; keep the design; show all stacked.
+- Intake: add the Jungian archetypes, the nine emotional axes and the six action axes; keep the design; show all stacked. FIRST DRAFT BUILT on branch `po-intake`, evidence only, see `DESIGN-intake-axes.md`. Open for him: the twelve are the product's (Warrior and Everyman, not Hero and Orphan); the six action axes are read as the six gates; the stacked page is long and the fold, ring strip or one-at-a-time treatments are proposed and unbuilt; every sentence is draft and his to rewrite in `engine/data/intakemore.js`.
 - Analytics: the glance answer goes above the fold; big boxes were below and thin lines above.

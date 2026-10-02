@@ -100,7 +100,11 @@ function blankProfile(name){
      stored, because a derived value that is also stored is one that can
      drift. */
   avatar:avatarBlank(), purpose:purposeBlank(),
-  laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
+  laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null,
+   /* the three blocks stacked under the 63, engine/intakemore.js. Evidence and
+      read by no sum. Additive: an older record has none and is filled from this
+      blank, with no SCHEMA_V bump. */
+   more:ixBlank()},
   /* THE RELEASES SINCE EACH LAW WAS ANSWERED, by law: n patterns of new ground
      at the law's seat, counted against the answer on. CQ reads a law as its
      answer lifted by these (engine/compute.js, LIFT_R). Kept beside the answer
@@ -187,6 +191,9 @@ function loadProfile(p){
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
  if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[]};
+ /* and a record from before the archetype and axis blocks has no answers to
+    them, which is a record that was never asked */
+ ixFill(p);
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -856,7 +863,10 @@ function validateProfile(o){
    if(v!==null)p.intake.answers[i]=v;});
   if(Array.isArray(o.intake.done))p.intake.done=o.intake.done.slice();
   if(typeof o.intake.startedAt==='string')p.intake.startedAt=o.intake.startedAt;
-  if(typeof o.intake.completedAt==='string')p.intake.completedAt=o.intake.completedAt;}
+  if(typeof o.intake.completedAt==='string')p.intake.completedAt=o.intake.completedAt;
+  /* THE THREE BLOCKS UNDER THE 63, through their own boundary into the same
+     errs. Missing is an older record and keeps the blank. */
+  p.intake.more=ixValidate(errs,o.intake.more,'intake.more');}
  /* who. strings only, and never trusted into the document by this file. */
  if(o.who&&typeof o.who==='object'){
   ['first','middle','last','sex','sealed'].forEach(function(k){
