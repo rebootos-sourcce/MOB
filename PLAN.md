@@ -1,98 +1,92 @@
-# The plan, 1 October, rounds OD to OS
+# The plan, 2 October, rounds OD to PH
 
-Everything he has added over these rounds, sorted, with what state each is in.
-Statuses are read off the repository and the gate runs, not recalled. "Pushed"
-means on `claude/laughing-feynman-xhfyj3`. The in-app task list mirrors this.
+Everything he has asked for, sorted, with what state each is in. Statuses are
+read off the repository and the gate runs, not recalled. "Pushed" means on
+`claude/laughing-feynman-xhfyj3`. The in-app task list mirrors this. Reply style
+since round PH: plain words, as if he is ten, no fixed headings; questions only
+when blocked (round PD).
 
-## A. Done
+## A. Done and pushed (latest build v1161, commit 8df2ce2)
 
-Moved to `PLAN-HISTORY.md`, so this file carries only what is open.
+Full list in `PLAN-HISTORY.md`. This round: all gates green on a quiet machine;
+welcome pop-up after paying; Guest label and developer options lower right;
+End button on the release opening screens; his recorded opening voice saved
+(`audio/`: master wav, 143 KB Opus clip, phrase timing); API setup on one page
+(`API-SETUP-NOW.md`); round PH review passes 1 and 2 written (`REVIEW-skin/`).
 
-## B. In flight (agents running, nothing merged yet)
+## B. In flight right now
 
-| Work | Seat | Delivers |
+| Work | Who | State |
 |---|---|---|
-| Login, onboarding and tutorial mockups, username first, visually exciting | art | `mockups/onboarding/` |
-| The Matrix redesigned in the flow treatment; fetters and the celestial shown as gears or rings | animation | `mockups/matrix-gears/` |
-| BUILD: recipe engine and the teachers (14 poles), the imprint panel, the ritual and protocol tie (`RECIPES.md`) | fullstack | `engine/recipes.js`, panel, tests |
-| BUILD: onboarding O0, O1, O3 (journey record, gift counter, mini release of 12 lines, ten integrity answers as evidence, the claim packaging) | fullstack | `engine/journey.js`, `tests/journey.js` |
-| BUILD: Login A (ring, username or email, one row of three buttons, ticked box, recovery email) and the ruled copy replaced | fullstack | login, copy |
-| Torus field around Orbit: bottom to top flow, Bezier geometry, seats distort it, trace for leaks | art | `mockups/character-torus/` |
-| Sniffer: day quality, acts, irritation, masked profanity restored, the framework questions (sins, Inferno, ages, others), distress detection | AI | engine build, `SNIFFER-RECOMMENDATION.md` |
-| Subtle atmospheric sound for everything, hover included | sound | build, `SOUND-MAP.md` |
-| Teachers v2: imprints, affirmations, ritual tie, unlocks, cohort share | systems | `DESIGN-teachers.md` v2, mockup |
-| Left menu round 3: simple, symbolic, gradient with the oscillation range as the boundary | art | `mockups/rail-simple/` |
-| Privacy policy, terms, and where they live in the information architecture | narrative | `LEGAL-IA.md`, `PRIVACY-POLICY.md`, `TERMS.md`, `funnel/privacy.html`, `funnel/terms.html` |
-| Skin review, three passes (round PH): every discipline grades the product, finds the soul, builds a symbol map and a coherence measure, pitches a reskin to the ICPs; tally and ranked recommendations | all directors | `REVIEW-skin/` |
+| Skin review, pass 2 (cross reading) | all directors | 11 of 12 reports in; technical pass 2 and the QA measurement report still writing |
+| Skin review, pass 3 (pitch to the ICPs, final grades, tally, ranked recommendations) | all directors | starts when pass 2 and QA land |
+| Export of finished files to his Drive folder | me | set up this round, see section I |
 
-All three Onboarding TDD reviews, the OAuth and Stripe steps, the left menu
-round 2 and the teachers v1 design are merged.
+## C. Next, in order
 
-## C. What is left, in order
-
-1. **Fixes from round OT not yet done**
-   - Sound: most presses are silent by design (seven moments play); decide how
-     much to widen it (question to him).
-   - Compass: panels start closed on landing (waits on which panel he means and
-     on layout B, which removes the side panels).
-   - "Unlock all these for me": all sight unlocked on his own copy.
-   - The story prompt made alive (in the onboarding mockups).
-2. **Character page build** in the Aura style once he picks; five masks, the new
-   symbol icons upper left, Trace, the biofield light by CQ.
-3. **Left menu build** in the option he picks (CQ and DQ on one bar, Vitality
-   yellow, Awareness indigo, Will blue, Flow against SQ, halo and pitchfork).
-4. **Login by username**: the app side and the server side (accounts); the
-   login redesign from the mockups.
-5. **Onboarding and First Experience**, slices O0 to O11 from review 2, once he
-   rules on the plan-changing questions (section H).
-6. **Matrix rebuilt and the gears view** in the picks he makes.
-7. **Ascended teachers**: 12 plus opposites, the panel, and the alignment
-   engine, in the slices the design lists.
-8. Compass layout B (characters as circles in the overlay row, button look, no
-   side panels).
-9. Summary overhaul: icons stacked and grouped by type, a click gives detail on
-   the right, cycle back through past days, the vault on the page, a readout
-   look from the Flow page; then the Daily Summary UI D8 to D9.
-10. CQ at 100 simulation pictures for the archetypes, emotions and six axes.
-11. Practitioner page PR1 to PR4 on the example people, both right panel
-    versions side by side (`PRACTITIONER-STORY.md`).
-12. Avatar page toward the Becoming document, slices S1 to S4 first.
-13. Name meanings: the vetted table, then the server lookup route (the second
-    network seam needs his ruling).
-14. Body place words: head, upper torso, lower torso.
-15. Points slice 0 and the achievements system. Today `engine/ladder.js` holds
-    16 derived marks in three families, a streak, a ledger and `meter.firsts`,
-    read by the Compass, the Ritual page and the sound layer. Stored points,
-    grants, unlocks and a hiding gate do not exist (`POINTS-AUDIT.md`).
-16. Funnel: concern selection and the personalised gift (waits on the
-    onboarding rulings).
-17. Practice screens (Today, Goal Builder) and the Ritual writer cutover.
-18. Copy sweep second pass, after his release wording ruling.
-19. Knowledge entries carrying the correlations; the Intake questions
-    redesign (last, his order); backlog scrub (`BACKLOG-AUDIT.md`).
-20. Practitioner mode toggle: reported not appearing, could not reproduce.
+1. **Finish the skin review** (round PH): pass 3, then one tally and one ranked
+   list, as a page he can read. Every seat so far agrees on the same top items:
+   - the avatar is not on screen (Character locked and empty) and must be a free
+     figure on the Field centre, with masks and layers staying on the tiers;
+   - the loop must be drawn as a ring, not a row;
+   - seat colours carry too many meanings (16 to 25 collisions): hue means place
+     only, state moves to lightness and shape;
+   - no type scale (26 to 43 sizes): about six sizes, three weights;
+   - sentence case wins over the capitalise rule (one CSS line, 99 strings);
+   - locks read as a shop: one sealed mark per surface;
+   - the unread Field prints verdicts and makes no promise;
+   - the phone pill overlaps the zoom buttons (cheapest fix, eight seats named it);
+   - the buy page says false things (50 patterns, "new ground and nothing else").
+2. **Skin build**, in this order once he sees pass 3: one source for seat colour
+   (CSS tokens, canvases read them), type and spacing ramps, state split from
+   place, the free figure, the loop ring, one lock grammar, motion verbs and one
+   clock, then a coherence gate (`tools/coherence.js`) so the number cannot rot.
+3. **Restart the builds stopped by the machine restart**, each merged only after
+   the gates: release screen (black stage, his voice, done screen with class
+   given up and adjusted SQ, DQ, CQ), Character page (Orbit with Torus 2,
+   overlays, Vitality oscillation, info on the right), left menu on horizontal
+   lines, sniffer and feelings wheel and distress detection, atmospheric sound,
+   recipe engine and 14 teachers, Login A and ruled copy, onboarding O0 to O4.
+4. Layer observatory as a fourth Field rendition (graded A against the Field).
+5. Accountability page beside Ritual in Flow; Avatar, Summary, Intake to spec;
+   Story page redesign (mockups first); Compass layout B.
+6. Points and achievements engine (slice 0 per `POINTS-AUDIT.md`).
+7. Login by username (app and server); server commit and Stripe and Google
+   OAuth wiring (his steps in `API-SETUP-NOW.md`).
+8. Update the TDD set to match the sniffer, sound and login work.
+9. Funnel true-up: buy page facts, quiz scores, landing loop words.
+10. Practitioner page, name meanings, body place words, copy sweep second pass,
+    Knowledge correlations, backlog scrub.
 
 ## D. Waiting on him
 
-Tier for the Compass registers view and the Character masks (proposed two and
-three); where the name meanings come from; which seats the torsos cover;
-shoulders, head, stomach, gut; the rerun's decompression order and what the
-bell curve is as a rule; the release wording ("letting go" or "release"); the
-funnel opening lines; Stripe steps (`STRIPE-SETUP.md`); whether the practitioner
-right panel reads the story.
+Nothing blocks work. Standing, not blocking: say if any word in the ten
+phrases of the recording is wrong (`audio/atuned-opening-timing.json`); the
+sight reversal question (should the first release show the whole chain), which
+the seats recommend yes; the Stripe and Google steps when he has time.
 
 ## E. Waiting on accounts
 
-The practitioner grant model and everything that reads a client's record
-(PR5 to PR9), retention and deletion beyond the device, push, points that buy
-patterns, any server for the Summary.
+The practitioner grant model and everything that reads a client's record,
+retention and deletion beyond the device, push, points that buy patterns, any
+server for the Summary.
 
 ## F. Standing process
 
-Four-heading reports, questions listed in full with their context, pictures for
-anything visual before it is built, one gate run on the merged tree, no pushing
-ungated. Every new agent runs on Sonnet in its own copy of the repository with
-a sparse checkout, because the disk is the limit.
+Plain words as if he is ten. Pictures for anything visual before it is built.
+One gate run on the merged tree, on a quiet machine. No pushing ungated. Every
+agent runs on Sonnet in its own sparse copy of the repository. Seats decide and
+record the reason; one question only if blocked.
+
+## I. Getting files to him
+
+I cannot reach a disk on his own computer: this session runs in a cloud
+container. What works, and what is automatic:
+- Every push puts the files on the branch; each file has a raw address.
+- Builds are sent as an attached `atuned.html` with commit and md5.
+- Documents (this plan, the review tally, the reports) are copied into his Google
+  Drive folder `Atuned / From Claude` at the end of each round. A packed build is
+  too big for that route, so builds stay attachments.
 
 ## G. The experience and ICP model (round OK)
 

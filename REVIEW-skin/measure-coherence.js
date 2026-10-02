@@ -527,7 +527,7 @@ function digest(raw){ /* raw = one PROBE result's .all or .host */
 /* Combine the CSS verdict and the photograph. Where the screen was photographed the
    photograph decides; where it was not, the CSS verdict stands and is counted. */
 function contrastOf(texts,px,side){
- const o={checked:0,photographed:0,fail:0,failLargeOnly:0,falsePos:0,falseNeg:0,min:null,fails:[]};
+ const o={checked:0,photographed:0,fail:0,hard:0,failLargeOnly:0,falsePos:0,falseNeg:0,min:null,fails:[]};
  const g={};
  texts.forEach((t,i)=>{
   if(side&&t.side!==side)return;
@@ -538,7 +538,7 @@ function contrastOf(texts,px,side){
    if(cssBad&&!bad)o.falsePos++;if(!cssBad&&bad)o.falseNeg++;}
   if(o.min===null||r<o.min)o.min=r;
   if(largeOnly)o.failLargeOnly++;
-  if(bad){o.fail++;const k=fgHex+'|'+gHex+'|'+t.fs;
+  if(bad){o.fail++;if(r<4.0)o.hard++;const k=fgHex+'|'+gHex+'|'+t.fs;
    const f=g[k]||(g[k]={n:0,ratio:r,fg:fgHex,bg:gHex,fs:t.fs,fw:t.fw,sample:t.sample,sel:t.sel,photo:!!p});f.n++;}});
  o.fails=Object.values(g).sort((a,b)=>a.ratio-b.ratio);
  return o;}
@@ -725,10 +725,10 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
  for(const W of WIDTHS){
   const S=out.widths[W].surfaces;
   L.push('', '**'+W+' wide**','');
-  L.push('| surface | min contrast (pixels) | fails (pixels) | css said fail, pixels disagree (false+) | css said pass, pixels fail (false-) | photographed of checked | unresolved ground | smallest tap | median tap | above the fold taps | all caps | em dash | glyph icons | h overflow px |');
-  L.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
+  L.push('| surface | min contrast (pixels) | fails under 4.5 (pixels) | of which under 4.0 | css said fail, pixels disagree (false+) | css said pass, pixels fail (false-) | photographed of checked | unresolved ground | smallest tap | median tap | above the fold taps | all caps | em dash | glyph icons | h overflow px |');
+  L.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
   for(const n of names){const d=S[n].all;
-   L.push('| '+n+' | '+(d.contrast.min===null?'n/a':d.contrast.min)+' | '+d.contrast.fail+' | '+d.contrast.falsePos+' | '+d.contrast.falseNeg+' | '+d.contrast.photographed+' of '+d.contrast.checked+' | '+d.contrast.unresolved+' | '+(d.tap.min===null?'n/a':d.tap.min+'px')+' | '+d.tap.median+'px | '+d.tap.fold+' | '+d.text.caps+' | '+d.text.dash+' | '+d.text.glyph.reduce((s,g)=>s+g[1],0)+' | '+Math.max(0,S[n].doc.overflowX)+' |');}
+   L.push('| '+n+' | '+(d.contrast.min===null?'n/a':d.contrast.min)+' | '+d.contrast.fail+' | '+d.contrast.hard+' | '+d.contrast.falsePos+' | '+d.contrast.falseNeg+' | '+d.contrast.photographed+' of '+d.contrast.checked+' | '+d.contrast.unresolved+' | '+(d.tap.min===null?'n/a':d.tap.min+'px')+' | '+d.tap.median+'px | '+d.tap.fold+' | '+d.text.caps+' | '+d.text.dash+' | '+d.text.glyph.reduce((s,g)=>s+g[1],0)+' | '+Math.max(0,S[n].doc.overflowX)+' |');}
  }
  /* findings: the actual offenders, deduplicated across surfaces */
  for(const W of WIDTHS){
@@ -765,9 +765,9 @@ const fmtTop=(s,n)=>s.top.slice(0,n).map(e=>e[0]+' x'+e[1]).join(', ');
      ['text ink families',a.textEff.families,b.textEff.families],['fills families',a.fill.families,b.fill.families],
      ['border families',a.border.families,b.border.families],['radii',a.radius.distinct,b.radius.distinct],
      ['shadows',a.shadow.distinct,b.shadow.distinct],['icon strokes',a.iconStroke.distinct,b.iconStroke.distinct],
-     ['contrast fails',a.contrast.fail,b.contrast.fail],['tap <44',a.tap.lt44,b.tap.lt44],['tap <24',a.tap.lt24,b.tap.lt24],
+     ['contrast under 4.0',a.contrast.hard,b.contrast.hard],['contrast under 4.5 (tolerance 1: the canvas wash moves the ground)',a.contrast.fail,b.contrast.fail,1],['tap <44',a.tap.lt44,b.tap.lt44],['tap <24',a.tap.lt24,b.tap.lt24],
      ['text <12px',a.text.tiny,b.text.tiny],['all caps',a.text.caps,b.text.caps],['em dashes',a.text.dash,b.text.dash]];
-    pairs.forEach(([k,x,y])=>{if(x>y)worse.push(W+' '+n+': '+k+' '+y+' -> '+x);});}}
+    pairs.forEach(([k,x,y,tol])=>{if(x>y+(tol||0))worse.push(W+' '+n+': '+k+' '+y+' -> '+x);});}}
   if(worse.length){console.log('\nGATE FAIL: '+worse.length+' metric(s) worse than the baseline');worse.slice(0,60).forEach(w=>console.log('  '+w));process.exit(1);}
   console.log('\nGATE PASS: no metric worse than the baseline');
  }
