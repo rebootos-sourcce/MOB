@@ -131,6 +131,24 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   n:(CURP.story&&CURP.story.entries||[]).length}));
  await page.click('#obdone'); await page.waitForTimeout(80);
  st=await step(); ok(st.step===6,'story advances into the mirror, step '+st.step);
+ /* ROUND QH. THE BODY ON THE STAGE SAYS WHAT THE MIRROR SAYS, and nothing
+    else. page.click above moved a real pointer onto the Chest chip before it
+    pressed it, which is how the preview light got stuck: the chip was removed
+    under the pointer and never said pointerout. So, on the mirror: no seat is
+    in preview, the seats lit are exactly the seats the read put weight on,
+    and the seat the person tapped is either lit by the words or marked as
+    the tap, never silently dropped, which is what the card's own sentence
+    "Both are kept as they are" promises. */
+ const fig=await page.evaluate(()=>{
+  const read=[]; (OB.read||[]).forEach(g=>{if(read.indexOf(g.seat)<0)read.push(g.seat);});
+  const lit=[...document.querySelectorAll('.obx-near .obx-s.on')].map(e=>e.getAttribute('data-obseat'));
+  const mark=[...document.querySelectorAll('.obx-near .obx-s.mark')].map(e=>e.getAttribute('data-obseat'));
+  return {read:read.sort(), lit:lit.sort(), mark:mark, prev:document.querySelectorAll('.obx-near .prev').length,
+   tap:OB_PLACES[OB.place]&&OB_PLACES[OB.place].b};});
+ ok(fig.prev===0,'no seat is left in hover preview once the Body step is gone, '+fig.prev+' still are');
+ ok(JSON.stringify(fig.lit)===JSON.stringify(fig.read),'the body lights exactly the seats the read put weight on, lit '+fig.lit+' read '+fig.read);
+ ok(fig.read.indexOf(fig.tap)>=0?fig.mark.length===0:(fig.mark.length===1&&fig.mark[0]===fig.tap),
+  'the tapped seat, '+fig.tap+', is lit by the words or marked as the tap, marked '+JSON.stringify(fig.mark));
  /* F4, ROUND QA. THE MIRROR COMES BEFORE THE COMMIT. Done reads the story
     and writes nothing: no entry, no charge, until the mirror's own Commit.
     Before this round the charge was in the field before the card was shown,

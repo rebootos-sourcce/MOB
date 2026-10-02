@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1452 fe32587 2026-10-02 20:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v1453 0c0f2b6 2026-10-02 21:23"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6745,12 +6745,46 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    a name reads as behind it: ui/wheel.js strokes the words inside its ring on
    the stage's own ground for the same reason */
 .obx-fn{text-shadow:0 0 3px var(--bg),0 0 6px var(--bg),0 0 10px var(--bg)}
+/* AND A PLATE UNDER THE HALO, round QH. Measured on the Body step at 1600:
+   the ring's ticks cross "the top of the head", "3rd Eye" and "between the
+   eyebrows", and a ten pixel glow round the letters does not cover a tick
+   that runs between two of them. A soft field of the ground behind the whole
+   label puts the ring visibly behind the words rather than through them. It
+   is the ground's own colour at little more than half, faded out at the edge:
+   the first cut at 88 per cent read as a black smudge on the lit mirror's
+   warm room, a box after all. Painted once, never animated. */
+.obx-fn::before{content:'';position:absolute;z-index:-1;inset:-8px -6px -8px -22px;border-radius:999px;
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--bg) 58%,transparent) 0,
+  color-mix(in srgb,var(--bg) 42%,transparent) 55%,transparent);
+ pointer-events:none}
+/* the tap the mirror keeps: said under the name in words, because a ring with
+   no light needs its meaning beside it (round PO) */
+.obx-fn em{display:none;font-style:normal;font-size:11.5px;color:var(--dim)}
+.obx .obx-fn.mark{opacity:1}
+.obx .obx-fn.mark em{display:block}
+.obx-s.mark .obx-sr{stroke-opacity:.95;stroke-width:1.6;stroke-dasharray:1.6 1.2;animation:none}
 .obx-fn b{font-size:13px;font-weight:500;letter-spacing:.01em;color:color-mix(in srgb,var(--ink) 82%,transparent)}
 .obx-fn i{font-style:normal;font-size:11.5px;color:var(--dim)}
 .obx[data-step="0"] .obx-fn,.obx[data-step="4"] .obx-fn,.obx .obx-fn.on,.obx .obx-fn.prev{opacity:1}
 .obx .obx-fn.on b,.obx .obx-fn.prev b{color:var(--c);font-weight:600}
 .obx:not([data-step="0"]):not([data-step="4"]) .obx-fn i{display:none}
-.obx-in-arrive .obx-fn{animation:obxName .5s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.82s + var(--i) * 90ms)}
+/* backwards and not both. A fill that holds the end of the entrance holds
+   opacity 1 above the base rule, and when the step changes the hold and the
+   rule change in the same frame, so the 320ms fade had nothing to start
+   from: measured, the seven names went from 1 to 0 in one frame on Arrive to
+   Ask. Backwards holds only the hidden start through the delay; the end is
+   the base rule's own 1, which the fade then has to leave from. */
+.obx-in-arrive .obx-fn{animation:obxName .5s cubic-bezier(.22,1,.36,1) backwards;animation-delay:calc(.82s + var(--i) * 90ms)}
+/* THE NAMES COME IN AFTER THE BODY HAS LANDED, on the step that is about the
+   body. Measured at 390 on Feel to Body: the names began their fade at 0ms
+   while the body was still the half scale emblem, so for the first 160ms
+   seven names stood stacked on a figure 150 pixels tall. The body's move is
+   640ms with its backswing in the first hundred; the names wait 280ms, past
+   the backswing and into the glide, then come up root to crown 40ms apart, a
+   secondary action under the move that reads as its consequence. Only the way
+   in is delayed: the rule for leaving carries no delay, so a name never
+   lingers on a step that is not about it. */
+.obx[data-step="4"] .obx-fn{transition-delay:calc(280ms + var(--i) * 40ms)}
 @keyframes obxName{from{opacity:0;translate:6px -50%}to{opacity:1;translate:0 -50%}}
 /* ---- the poses. Wide: the body stands in the left half, the words in the
    right. Receding is smaller, fainter and a little further from the words;
@@ -6797,6 +6831,14 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 .obx .ob-card{position:absolute;inset:0;width:auto;max-height:none;background:none;border:0;border-radius:0;
  padding:0;overflow:visible;transition:none}
 .obx-ghost{position:fixed;z-index:3;pointer-events:none}
+/* A COPY STARTS ITS ANIMATIONS AGAIN. Measured on Settle going Back to Ask:
+   the cloned loop's names restarted their own entrance from zero, so for the
+   first 160ms of its exit the ghost's ring stood empty and then its icons
+   popped in on a card that was leaving. A negative delay longer than any
+   entrance puts every one of them at its own last frame, already arrived,
+   without this rule having to know each one's resting state; anything that
+   breathes simply carries on at some phase of its breath. */
+.obx-ghost,.obx-ghost *{animation-delay:-60s!important}
 .obx .ob-scroll{position:absolute;inset:0;max-height:none;overflow:auto;display:flex;flex-direction:column;
  padding:108px 64px 56px 0;scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 18%,transparent) transparent}
 .obx .obx-in{margin:auto 0;width:100%;max-width:600px;font-size:17px}
@@ -62090,7 +62132,8 @@ function obStageFig(){
   s+='<span class="obx-glow" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';left:'+left+'">'
    +'<i class="obx-wave"></i></span>'
    +'<span class="obx-fn" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';right:'+right+';--i:'+i+'">'
-   +'<b>'+esc(r.b)+'</b>'+(r.where?'<i>'+esc(r.where)+'</i>':'')+'</span>';});
+   +'<b>'+esc(r.b)+'</b>'+(r.where?'<i>'+esc(r.where)+'</i>':'')
+   +'<em>you tapped here</em></span>';});
  return s+'</div>';}
 /* THE 112, AS A RING. Every address, in the engine's own order, which runs
    seat by seat root first, so the ring reads as seven arcs of colour and four
@@ -62148,13 +62191,28 @@ function obLitNow(){
  if(s===7&&OB.plan&&OB.plan.ok)
   OB.plan.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&lit.indexOf(b)<0)lit.push(b);});
  if(pick&&lit.indexOf(pick)<0)lit.push(pick);
- return {lit:lit, pick:pick};}
+ /* THE MIRROR KEEPS THE TAP, round QH. Its own copy says "You tapped your
+    chest, at your Heart seat. Your words put weight at other seats ... Both
+    are kept as they are", and the body showed only the second half: the seat
+    the person pressed went dark the moment the mirror came up, so the drawing
+    and the sentence beside it disagreed. The tapped seat is marked, a full
+    ring and its name with no light, because light means words put weight
+    there and the words did not. A tap the words also lit is simply lit. */
+ var mark=(s===6&&pl&&lit.indexOf(pl.b)<0)?pl.b:null;
+ return {lit:lit, pick:pick, mark:mark};}
 /* LIGHT THE BODY. A seat newly lit ignites; one already lit stays lit and is
    not ignited again, so an answer on the mirror that redraws the card does
    not fire every seat a second time. Ignition order is root to crown on the
    boot's 90ms beat, starting after the body has landed in its new pose. */
 function obFigSync(h,delay){
  var now=obLitNow(), on={}, k=0, calm=obCalm();
+ /* A PREVIEW NEVER OUTLIVES ITS STEP. Found in the frame capture, which
+    hovers a chip before pressing it the way a pointer does: the press
+    replaces the card, a removed chip never fires pointerout, and obPreview
+    ignores every step but the Body one, so the hovered seat kept its preview
+    light through the Story and onto the mirror, where it claimed weight the
+    words did not put there. Every sync starts from no preview. */
+ h.querySelectorAll('.obx-near .prev').forEach(function(x){x.classList.remove('prev');});
  now.lit.forEach(function(b){on[b]=1;});
  BANDS.forEach(function(b){
   var q='[data-obseat="'+b.replace(/"/g,'')+'"]';
@@ -62162,7 +62220,8 @@ function obFigSync(h,delay){
   var was=els[0]&&els[0].classList.contains('on');
   els.forEach(function(e){
    e.classList.toggle('on',!!on[b]);
-   e.classList.toggle('pick',now.pick===b);});
+   e.classList.toggle('pick',now.pick===b);
+   e.classList.toggle('mark',now.mark===b);});
   if(on[b]&&!was&&!calm){
    var gl=h.querySelector('.obx-glow'+q);
    if(gl){ gl.classList.remove('ign'); void gl.offsetWidth;
@@ -62208,6 +62267,14 @@ function obPosePlay(h,from,dir){
    no data-ob attribute, no pointer, hidden from the accessibility tree. It is
    appended after the live slot, so document order still finds the live card
    first for anything that asks for .ob-card, .ob-h or #obtext. */
+/* HOW LONG THE OLD CARD TAKES TO GO. 260 on a wide screen, where the words
+   and the body never share ground. 180 on a narrow one, where they do: the
+   body stands over the column there, and on the move into the Body step it
+   grows from the emblem down into the space the outgoing card is lifting
+   out of. Measured at 390 before this: at 160ms the ghost was still at about
+   half strength under the growing figure and its names. At 180 the ease in
+   has it under a tenth by then. Still inside the 180 to 260 an exit takes. */
+function obGhostMs(){ try{ return (window.matchMedia&&matchMedia('(max-width: 899px)').matches)?180:260; }catch(e){ return 260; } }
 function obGhost(h,old,dir){
  if(!old||obCalm())return;
  var r=old.getBoundingClientRect(), sc=old.querySelector('.ob-scroll'), y=sc?sc.scrollTop:0;
@@ -62223,7 +62290,7 @@ function obGhost(h,old,dir){
  var gone=function(){ if(g.parentNode)g.parentNode.removeChild(g); }, an=null;
  try{
   an=g.animate([{opacity:1,translate:'0 0'},{opacity:0,translate:'0 '+(-36*dir)+'px'}],
-   {duration:260,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+   {duration:obGhostMs(),easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
   an.onfinish=gone; an.oncancel=gone;
  }catch(e){ gone(); }
  /* the fallback only for an exit that is not alive: one that is still
@@ -65220,5 +65287,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004267151"></div>
+<div id="eof" hidden data-len="004272041"></div>
 </body></html>

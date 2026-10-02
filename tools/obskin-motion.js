@@ -20,7 +20,9 @@ const OUT=path.resolve(process.argv[2]||'motion');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 const SIZES=[[1600,1000],[390,844]];
 const STORY='I snapped at my co-founder in front of the whole team and I cannot stop replaying it.';
-const STEP_MS=40, SPAN_MS=1240;
+/* the arrival is the one long move, about 1.9s to its last name; every step
+   change after it is settled inside 1.24s */
+const STEP_MS=40, SPAN_MS=1240, ARRIVE_MS=2000;
 const booted=async p=>{try{await p.waitForFunction(
   ()=>document.body.classList.contains('booted'),null,{timeout:15000});}catch(e){}};
 fs.mkdirSync(OUT,{recursive:true});
@@ -69,16 +71,24 @@ const MOVES=[
    for(const [nm,fn] of MOVES){
     /* the move, then every animation on the page paused where it stands, with
        its clock read, so frame t is every animation at its own start plus t */
+    /* FROZEN BY RATE, NEVER BY pause(). Measured: calling pause() and play()
+       on a CSS animation hands it to script, and Chrome then stops cancelling
+       it when its selector stops matching. The arrival's name entrance was
+       paused on the first move, and from then on every later step replayed it,
+       so the frames showed seven names on steps where the page shows none.
+       playbackRate 0 holds the clock without taking the animation over, and
+       CSS still cancels what it should. Checked both ways before trusting it. */
     await p.evaluate(([src,s])=>{
      (new Function('s','return ('+src+')(s)'))(s);
      getComputedStyle(document.body).opacity;
-     window.__obA=document.getAnimations().map(a=>{a.pause(); return [a,a.currentTime||0];});},[fn.toString(),STORY]);
-    for(let t=0;t<=SPAN_MS;t+=STEP_MS){
+     window.__obA=document.getAnimations().map(a=>{a.playbackRate=0; return [a,a.currentTime||0];});},[fn.toString(),STORY]);
+    const span=nm==='00-arrive'?ARRIVE_MS:SPAN_MS;
+    for(let t=0;t<=span;t+=STEP_MS){
      await p.evaluate(t=>{ window.__obA.forEach(([a,t0])=>{ try{a.currentTime=t0+t;}catch(e){} }); },t);
      await p.screenshot({path:path.join(fdir,String(n).padStart(4,'0')+'-'+nm+'-'+String(t).padStart(4,'0')+'.png')});
      n++;}
     /* let the move finish for real before the next one */
-    await p.evaluate(()=>window.__obA.forEach(([a])=>{try{a.play();}catch(e){}}));
+    await p.evaluate(()=>window.__obA.forEach(([a])=>{try{a.playbackRate=1;}catch(e){}}));
     await p.waitForTimeout(1500);}
    await p.close(); await c.close();
    console.log('  '+w+': '+n+' frames');}

@@ -261,7 +261,8 @@ function obStageFig(){
   s+='<span class="obx-glow" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';left:'+left+'">'
    +'<i class="obx-wave"></i></span>'
    +'<span class="obx-fn" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';right:'+right+';--i:'+i+'">'
-   +'<b>'+esc(r.b)+'</b>'+(r.where?'<i>'+esc(r.where)+'</i>':'')+'</span>';});
+   +'<b>'+esc(r.b)+'</b>'+(r.where?'<i>'+esc(r.where)+'</i>':'')
+   +'<em>you tapped here</em></span>';});
  return s+'</div>';}
 /* THE 112, AS A RING. Every address, in the engine's own order, which runs
    seat by seat root first, so the ring reads as seven arcs of colour and four
@@ -319,13 +320,28 @@ function obLitNow(){
  if(s===7&&OB.plan&&OB.plan.ok)
   OB.plan.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&lit.indexOf(b)<0)lit.push(b);});
  if(pick&&lit.indexOf(pick)<0)lit.push(pick);
- return {lit:lit, pick:pick};}
+ /* THE MIRROR KEEPS THE TAP, round QH. Its own copy says "You tapped your
+    chest, at your Heart seat. Your words put weight at other seats ... Both
+    are kept as they are", and the body showed only the second half: the seat
+    the person pressed went dark the moment the mirror came up, so the drawing
+    and the sentence beside it disagreed. The tapped seat is marked, a full
+    ring and its name with no light, because light means words put weight
+    there and the words did not. A tap the words also lit is simply lit. */
+ var mark=(s===6&&pl&&lit.indexOf(pl.b)<0)?pl.b:null;
+ return {lit:lit, pick:pick, mark:mark};}
 /* LIGHT THE BODY. A seat newly lit ignites; one already lit stays lit and is
    not ignited again, so an answer on the mirror that redraws the card does
    not fire every seat a second time. Ignition order is root to crown on the
    boot's 90ms beat, starting after the body has landed in its new pose. */
 function obFigSync(h,delay){
  var now=obLitNow(), on={}, k=0, calm=obCalm();
+ /* A PREVIEW NEVER OUTLIVES ITS STEP. Found in the frame capture, which
+    hovers a chip before pressing it the way a pointer does: the press
+    replaces the card, a removed chip never fires pointerout, and obPreview
+    ignores every step but the Body one, so the hovered seat kept its preview
+    light through the Story and onto the mirror, where it claimed weight the
+    words did not put there. Every sync starts from no preview. */
+ h.querySelectorAll('.obx-near .prev').forEach(function(x){x.classList.remove('prev');});
  now.lit.forEach(function(b){on[b]=1;});
  BANDS.forEach(function(b){
   var q='[data-obseat="'+b.replace(/"/g,'')+'"]';
@@ -333,7 +349,8 @@ function obFigSync(h,delay){
   var was=els[0]&&els[0].classList.contains('on');
   els.forEach(function(e){
    e.classList.toggle('on',!!on[b]);
-   e.classList.toggle('pick',now.pick===b);});
+   e.classList.toggle('pick',now.pick===b);
+   e.classList.toggle('mark',now.mark===b);});
   if(on[b]&&!was&&!calm){
    var gl=h.querySelector('.obx-glow'+q);
    if(gl){ gl.classList.remove('ign'); void gl.offsetWidth;
@@ -379,6 +396,14 @@ function obPosePlay(h,from,dir){
    no data-ob attribute, no pointer, hidden from the accessibility tree. It is
    appended after the live slot, so document order still finds the live card
    first for anything that asks for .ob-card, .ob-h or #obtext. */
+/* HOW LONG THE OLD CARD TAKES TO GO. 260 on a wide screen, where the words
+   and the body never share ground. 180 on a narrow one, where they do: the
+   body stands over the column there, and on the move into the Body step it
+   grows from the emblem down into the space the outgoing card is lifting
+   out of. Measured at 390 before this: at 160ms the ghost was still at about
+   half strength under the growing figure and its names. At 180 the ease in
+   has it under a tenth by then. Still inside the 180 to 260 an exit takes. */
+function obGhostMs(){ try{ return (window.matchMedia&&matchMedia('(max-width: 899px)').matches)?180:260; }catch(e){ return 260; } }
 function obGhost(h,old,dir){
  if(!old||obCalm())return;
  var r=old.getBoundingClientRect(), sc=old.querySelector('.ob-scroll'), y=sc?sc.scrollTop:0;
@@ -394,7 +419,7 @@ function obGhost(h,old,dir){
  var gone=function(){ if(g.parentNode)g.parentNode.removeChild(g); }, an=null;
  try{
   an=g.animate([{opacity:1,translate:'0 0'},{opacity:0,translate:'0 '+(-36*dir)+'px'}],
-   {duration:260,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+   {duration:obGhostMs(),easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
   an.onfinish=gone; an.oncancel=gone;
  }catch(e){ gone(); }
  /* the fallback only for an exit that is not alive: one that is still
