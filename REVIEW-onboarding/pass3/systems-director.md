@@ -1,94 +1,103 @@
 # Pass 3: systems director (Yuki Brennan), onboarding round PJ
 
-Checked in source at HEAD `6fd2306`: `engine/schema.js` (the blank profile and `validateProfile`, the one door where stored data is checked), `shell/head.html` tokens (a token is a named value such as `--ink` that every screen reads), `ui/storyui.js:412`, `ui/release.js:876`.
+Checked in source at HEAD `6fd2306`: `engine/schema.js`, `shell/head.html`, `ui/storyui.js:412`, `ui/release.js:876`. A token is a named value such as `--ink` that every screen reads. A boundary is the one door where stored data is checked.
 
 ## 1. THE PROPOSAL AS I UNDERSTAND IT
 
-One black stage with the standing figure plays five silent slides on one clock, then waits at a gate where the person picks one of twelve starting points, writes one sentence, is read back, runs a 12 line release, and lands on the Field after an aftercare reel. Where the person is lives nowhere as a step: it is worked out from facts already stored. The lead's merge kept my state design (`obAct`, `journey`, the clock inside `loop`, checked saves). It lost two things I care about. My handover list named nine keys and the blank profile has twenty five, so a gate that demands every key sit in one list would fail on day one. And it never said what closes the aftercare, so `obAct` has no way to leave `reading`.
+One black stage with the standing figure plays five silent slides on one clock, waits at a gate for one of twelve starting points, takes one sentence, runs a 12 line release, then shows an aftercare reel and lands on the Field. Position is never stored as a step; it is worked out from facts already stored. The merge kept my state design but lost two things. My handover list named nine keys and the blank profile holds twenty five, so a "every key in one list" gate fails on day one. And nothing says what closes the aftercare, so `obAct` could never leave `reading`.
 
 ## 2. THE ICP ROOM
 
-- **Marcus (founder, level 7).** In 10 seconds he sees a black room, a figure, one line. He taps right twice, hits the gate, picks a seat, writes. He stays, because nothing asks for a card. He leaves only if reload replays the slides. It does not skip them silently, but Skip is one tap. "Where did my starting point go?" It is stored as `journey.start`, so reload keeps it.
-- **Whitney (phone only, esoteric native, level 5).** She sees 28 px type and a hairline, and the reel runs while she reads. She holds to pause, and it pauses. She stays through the loop circle. Risk: if she backgrounds the tab mid-slide, the `hidden` pause reason must hold the clock. "It waited for me."
-- **Nils (design skeptic, level 4).** He sees no card, no dots, no glow he can name. He looks for the seam: a tab theme recolouring the stage, or a blur. Tokens block both. He stays if the proof row is a real engine row. He leaves if "112 addresses" is typed text. "Show me it is read from the engine." It is.
-- **Camille (somatic practitioner, level 6).** She watches for the first story and the privacy line. She reads "The name you gave never leaves." She leaves if distress is not detected, because her people arrive in it. "What happens when someone writes something dark?" The detector pauses everything, stores nothing.
-- **Marta (acute distress, 02:00).** She sees a still black screen. She types a hard sentence. The distress reason must stop the clock and replace the film with the plain stop frame before any release voice. Without the detector she hears a body script. She leaves here, correctly, if it is missing. "Please stop talking at me."
-- **Renata (operator, level 7, main target).** She wants the first release fast. Reel 26 s, gate, one decision, the story, 12 lines. She never presses Next. She stays through the gift counter falling from 100 to 88, because it is the engine's number. She leaves if a failed save loses her sentence. It is kept and reported. "I wrote one line and it ran."
-- **Trey (quiz tourist).** He sees a login first, taps Guest, gets the reel, bounces at the story box. Guest has no account fields at all, so nothing blocks him. Nothing stored means nothing to clean up. "I just wanted the result."
-- **Sofia (loves the open tables).** The proof row and the seat names please her. She stays, and later finds `STARTS` and `SL_DWELL` are plain tables. She leaves if the handover is opaque. Print what leaves. "Where is the list of what you send?" It is `HAND`.
+- **Marcus (founder).** Sees a black room, a figure, one line. Taps twice, reaches the gate, picks a seat, writes. Stays, since no card asks for anything. Leaves if reload loses his choice; it is kept as `journey.start`. "It remembered where I was."
+- **Whitney (phone only).** Sees 28 px type and a hairline. Holds to pause, and it pauses. Backgrounds the tab mid slide; the `hidden` reason must freeze the clock. Stays. "It waited for me."
+- **Nils (skeptic).** Hunts for a seam: a theme recolouring the stage, a blur. Tokens block both. Stays if "112 addresses" is read off the engine, leaves if typed. "Show me it is real." It is a table row.
+- **Camille (practitioner).** Reads the privacy line, then asks what happens with a dark sentence. She leaves unless the detector pauses everything and stores nothing. "Her people arrive in it."
+- **Marta (distress, 02:00).** Sees a still screen, types something hard. The distress reason must stop the clock before any release voice. Without the detector she is talked at and leaves. "Please stop."
+- **Renata (operator).** Reel, gate, one decision, 12 lines, no Next. Stays through the gift counter, the engine's own number. Leaves only if a failed save eats her sentence; it is kept and reported. "I wrote one line and it ran."
+- **Trey (tourist).** Taps Guest, gets the reel, bounces at the story box. No account fields exist for Guest, so nothing blocks him and nothing is left behind. "I wanted the result."
+- **Sofia (open tables).** Likes the seat names and proof row, finds `STARTS` and `SL_DWELL` are plain tables. Leaves if the handover is opaque, so print it. "Where is the list of what you send?" It is `HAND`.
 
 ## 3. UNIFIED QUALITY: 64/100
 
 Gaps left:
-1. **Distress is a pure function that does not exist yet.** The whole proposal gives it a pause hook with nothing behind the hook. Ship blocker.
-2. **Handover is specified but unpartitioned** until the list below is accepted, and "the name never leaves" is false when the name is in the story.
-3. **Three kinds of "done" are loose:** Skip, Leave, Not now. This spec fixes them, but nothing is written to the owner's tests yet.
+1. The distress detector is a hook with no function behind it. Ship blocker.
+2. The handover is unpartitioned until the list in 5d is accepted, and "the name never leaves" is false if the name is in the story.
+3. Skip, Leave and Not now each mean something different and no test pins them.
 
 ## 4. FINAL GRADE
 
 GRADE: 61/100 (pass 1 was 42, pass 2 was 40)
 
-Up 21. The lead adopted the derived position, the additive field, one clock with a mask of reasons, the checked saves and the hairline. I lost points because my own allowlist was incomplete, and because nothing is built.
+Up 21. The lead adopted the derived position, the additive field, one clock with a reason mask, checked saves and the hairline. Held back: my own list was incomplete and nothing is built.
 
 ## 5. BUILD SPEC (systems part)
 
 ### 5a. `obAct(profile)`, pure, host free, tested in `tests/engine.js`
-Rules run in this order:
-1. `ui.onboarded` or `ui.tutorialSeen` or `journey.handedAt` set: `done`.
-2. `journey.start` empty and (entries or `meter.lines` exist): `done` (an older record onboarded by doing).
+In this order:
+1. `ui.onboarded` or `ui.tutorialSeen` or `journey.handedAt`: `done`.
+2. `journey.start` empty and (entries or `meter.lines`): `done` (an older record).
 3. `journey.start` empty: `welcome` (Reel A, then the gate).
 4. `story.entries` empty: `story`.
 5. `meter.relLines` is 0: `release`.
-6. else: `reading` (Reel B, the aftercare).
+6. else `reading` (Reel B).
 
-What closes `reading` is `ui.onboarded=true`, written when the person presses Keep this or Not now. Skip and Esc write nothing and land on the gate. "Leave" at the gate writes `ui.onboarded=true` (a refusal is a real event; without it a person who refuses is replayed for ever). Narrative's wording lands there too, and the lead's text is silent, so both are kept: Leave stores one boolean, Skip stores none. A release closed halfway commits nothing and says "Nothing was kept from that run." Guest never sees account fields, and handover is skipped, `handedAt` stays empty. `tutorialSeen` stays as a reader only.
+Keep this or Not now writes `ui.onboarded=true`, which closes `reading`. Skip and Esc write nothing and land on the gate. "Leave" at the gate writes `ui.onboarded=true`, because a refusal is a real event and without it the person is replayed for ever. Narrative wants Leave to write nothing; both values are given and I recommend mine. A release closed halfway commits nothing and says "Nothing was kept from that run." Guest sees no account fields, and `handedAt` stays empty. `tutorialSeen` becomes reader only.
 
-### 5b. The timer (memory only, never stored)
-- State `SL={k, ms, mask}`. Slides are rows in `OB_SLIDES`, found by `.k`, with `.kind` of `auto`, `gate` or `act`. Only `auto` has a clock.
-- `slStep(SL, dtMs)` is pure and lives in the engine so tests drive a fake clock. The UI calls it once per frame from the existing `loop`, `dt = min(dt, 50)`. `ms += dt` only if `mask == 0` and the kind is `auto`. At `ms >= dwell` go to the next row.
-- Mask bits: hold 1, hidden 2, user 4, focus 8, distress 16. `focus` is set only by `:focus-visible` on the Pause ring. `typing` is dropped, since acts have no clock.
-- `SL_DWELL = {base:1.0, wps:2.5, min:3.0, max:7.0, step:0.5, rm:1.5}`. `dwell = ceil(clamp(base + words/wps, min, max) / step) * step`. Slides with a drawing take the larger of this and a stated `draw` seconds (the loop circle, one station a second: 4.0). Words are whitespace splits of the slide text, a digit run counts one. Reduced motion multiplies by `rm`. The lead ruled it, and I withdraw my pass 2 objection, because it is one data field and not a second formula.
-- Length gate: sum of `auto` dwells from the table must be at most 30 s, and at most 45 s with `rm`. It prints the sum. With the current lines it reads 22.0 to 26 s depending on the proof row, read off the run.
-- Tap: right two thirds next, left third restarts the slide, a second left tap within 1.5 s goes back a slide. Hold over 180 ms sets `hold`. Distress sets bit 16, shows the stop frame, and clears only on the person's own action.
-- Hairline: 2 px, one segment per `auto` slide, 4 px gaps. The bar is written only when `floor(ms/dwell*200)` changes, with `scaleX`.
+### 5b. The timer (memory only)
+- `SL={k, ms, mask}`. Slides are `OB_SLIDES` rows found by `.k`, `.kind` is `auto`, `gate` or `act`. Only `auto` runs a clock.
+- `slStep(SL, dtMs)` is pure and lives in the engine, so tests drive a fake clock. The UI calls it once per frame inside `loop`, `dt = min(dt, 50)`. `ms += dt` only if `mask == 0` and kind is `auto`; at `ms >= dwell` go to the next row.
+- Mask bits: hold 1, hidden 2, user 4, focus 8, distress 16. `focus` is only `:focus-visible` on the Pause ring. `typing` is dropped; acts have no clock.
+- `SL_DWELL={base:1.0, wps:2.5, min:3.0, max:7.0, step:0.5, rm:1.5}`. `dwell = ceil(clamp(base + words/wps, min, max)/step)*step`. A slide with a drawing takes the larger of that and its stated `draw` seconds (the loop circle: 4.0). Reduced motion multiplies by `rm`. The lead ruled it; I withdraw my objection because it is one data field.
+- Length gate: sum of `auto` dwells at most 30 s, at most 45 s with `rm`. It prints the sum, read off the run.
+- Tap: right two thirds next; left third restarts the slide; a second left tap within 1.5 s goes back one. Hold over 180 ms sets `hold`. Distress shows the stop frame and clears only on the person's own action.
+- Hairline: 2 px, one segment per `auto` slide, 4 px gaps, `scaleX`, written only when `floor(ms/dwell*200)` changes.
 
 ### 5c. Additive fields (no `SCHEMA_V` bump; that is the owner's call)
-`journey:{start:'', handedAt:''}` in `blankProfile`. It must also be named in `validateProfile`, or it is deleted on the next load (the source says so at the summaries block). Refusals by name, never clamped:
+`journey:{start:'', handedAt:''}` in `blankProfile` and named in `validateProfile`, or the next load deletes it. Refusals by name, never clamped:
 - `journey.start is not a starting point this build knows: X`
 - `journey.handedAt is not a date or empty`
-- `ui.onboarded is not true or false`, the same wording for every `ui` key (today `!!v` turns `'banana'` into true)
+- `ui.onboarded is not true or false`, same wording for every `ui` key (today `!!v` turns `'banana'` into true)
 
-`STARTS` is a 12 row table in `engine/data/`, keys stable strings, display order a separate field. The `ui` whitelist at `schema.js:877` is generated from `Object.keys(blank.ui)`. A missing `journey` is filled from the blank. A record fetched at sign in sets `handedAt`.
+`STARTS` is a 12 row table in `engine/data/`, stable string keys, display order a separate field. The `ui` whitelist at `schema.js:877` is generated from `Object.keys(blank.ui)`. A missing `journey` is filled from the blank. A fetch at sign in sets `handedAt`.
 
 ### 5d. Handover allowlist (names what leaves)
-Blank keys read from the running engine, 25 plus `journey`.
-- **HAND:** `story`, `axes`, `laws`, `intake`, `meter`, `history`, `work`, `gates`, `seed`, `avatar`, `purpose`, `rituals`, `practice`, `trace`, `summaries`, `soul` (a chosen invariant, `S.roots` is set from the UI and not from birth, but technical and owner confirm), `journey.start`.
+- **HAND:** `story`, `axes`, `laws`, `intake`, `meter`, `history`, `work`, `gates`, `seed`, `avatar`, `purpose`, `rituals`, `practice`, `trace`, `summaries`, `soul` (a chosen value, not derived from birth; technical confirms), `journey.start`.
 - **STAY:** `v`, `id`, `name`, `created`, `updated`, `who` whole, `plan`, `ui`, `journey.handedAt`.
-- Gate: every top level key, with `journey` counted as two paths, sits in exactly one list. A new key then forces a decision. Customer, subscription, email, key, secret, token stay refused by name.
-- Distress is in neither list and never stored. Two phases, honestly reported: account created, then data pushed. A failed push leaves `handedAt` empty so it retries. Print: "The name you gave never leaves. Your own words do, once you keep this."
+- Gate: every top level key, `journey` counted as two paths, is in exactly one list. A new key forces a decision. Customer, subscription, email, key, secret and token stay refused by name.
+- Distress is in neither list and never stored. Two phases, honestly reported: account made, then data pushed. A failed push leaves `handedAt` empty so it retries.
+- Print: "The name you gave never leaves. Your own words do, once you keep this."
 
 ### 5e. Tokens and prefix
-- Prefix `.sl-`, host `#sl`. `.ob-*` stays for the login only. Delete `.ob-word*`, `OB_AUTO`, `.ob-b`. Rename `.ob-a` and `.ob-qs` to `.fb-`. `obOpen`, `obClose`, `OB.open` keep their names.
-- `--stage:#06060a` in `:root`, replacing the literal at `head.html:6332`. `#sl` re-points `--bg`, `--ink`, `--mid`, `--dim` to the dark theme values (`head.html:68,80`) so Punch and light cannot recolour it. Define `--hot:#c0392b` (the fallback it already carries).
-- Type, lead's six values on the skin round names so one name has one value: 11 is `--fs-1`, 13 `--fs-3`, 16 `--fs-5`, 20 `--fs-6`, 28 `--fs-7`, and 44 is a new `--fs-9` (appended, never renumbered). No `--fs-` token is in `head.html` yet, so the build creates the whole table. Hero 44 above 640 px wide, 28 below, weight 300. Floor 16 for Skip and labels.
+- Prefix `.sl-`, host `#sl`. `.ob-*` stays for the login only. Delete `.ob-word*`, `OB_AUTO`, `.ob-b`. Rename `.ob-a`, `.ob-qs` to `.fb-`. `obOpen`, `obClose`, `OB.open` keep names.
+- `--stage:#06060a` in `:root`, replacing the literal at `head.html:6332`. `#sl` re-points `--bg`, `--ink`, `--mid`, `--dim` to the dark values, so Punch and light cannot recolour it. Define `--hot:#c0392b`, the fallback it already carries.
+- Type (lead's six, on skin round names so one name keeps one value): 11 `--fs-1`, 13 `--fs-3`, 16 `--fs-5`, 20 `--fs-6`, 28 `--fs-7`, 44 new `--fs-9`, appended, never renumbered. No `--fs-` token exists in `head.html` yet. Hero 44 above 640 px wide, 28 below, weight 300. Floor 16 for Skip and labels.
 - Space `--sp-1..8`: 4, 8, 12, 16, 24, 32, 48, 64.
-- Radius: the lead says 10 and 999. I give both. Use `--r-s` (11) and add `--r-pill:999px` if absent: a value of 10 is a third near duplicate beside 8 and 11. If the owner wants 10, change `--r-s` once, not the stage.
-- Motion: in is `--t-context` (420) on `--ease-out` with an 8 px rise, out `--t-element` (220) on `--ease-in`, land `--t-surface` (320) on `--ease-land` for seats only, breath `--t-breath`. Transit from login: fields 220, ring 420 together (the lead's 180 and 520 fail gate 12). Travel into the Field is 640 ms in the tick, not a CSS transition. Unlit seat: `color-mix(in srgb, var(--ink) 40%, transparent)`.
-- Leaving: `OB_LEAVE_MS` reads `--t-element`; `.sl-leaving` sets `pointer-events:none`.
+- Radius: lead says 10 and 999. Mine: `--r-s` (11) and `--r-pill:999px`, since 10 is a third near duplicate beside 8 and 11. If he wants 10, change `--r-s` once.
+- Motion: in `--t-context` on `--ease-out` with an 8 px rise; out `--t-element` on `--ease-in`; land `--t-surface` on `--ease-land`, seats only; breath `--t-breath`. Login transit: fields 220, ring 420 together (180 and 520 fail gate 12). Travel to the Field is 640 ms inside the tick, not a CSS transition. Unlit seat: `color-mix(in srgb, var(--ink) 40%, transparent)`.
+- `OB_LEAVE_MS` reads `--t-element`; `.sl-leaving` sets `pointer-events:none`.
 
 ### 5f. Engine changes the build depends on
-1. `journey` in blank and boundary, with three refusals and the generated `ui` list. 2. `obAct`. 3. `STARTS`, loaded before `schema.js` in `MANIFEST`. 4. `slStep`, `slDwell`, `SL_DWELL`. 5. A pure `distress(text)`, derived and never stored (J0, ship blocker). 6. `planSight` honours the gift (J8); `planSees` assertions in `tests/engine.js` change by name. 7. A read that reports zero hits, so the empty line shows. 8. `handoverPayload(profile)` with `HAND` and `STAY` and the partition gate; `fetch` stays in `ui/auth.js`. 9. `pSave()` and `pSnap()` results checked in `stCommit` and `relCoolDown` and reported through `status()`, draft kept. 10. No palette edit, so `equiv.py` shows only new names.
+1. `journey` in blank and boundary, three refusals, generated `ui` list.
+2. `obAct`.
+3. `STARTS`, before `schema.js` in `MANIFEST`.
+4. `slStep`, `slDwell`, `SL_DWELL`.
+5. Pure `distress(text)`, derived, never stored (J0).
+6. `planSight` honours the gift (J8); `planSees` assertions change by name.
+7. A read that reports zero hits, so the empty line shows.
+8. `handoverPayload(profile)` with `HAND`, `STAY` and the partition gate; `fetch` stays in `ui/auth.js`.
+9. `pSave()` and `pSnap()` results checked in `stCommit` and `relCoolDown`, reported through `status()`, draft kept.
+10. No palette edit, so `equiv.py` names only new items.
 
 ## 6. RANKED RECOMMENDATIONS
 
-1. `obAct`, `journey`, three refusals, close rule. **M, redesign.** Moves Renata, Marcus, Whitney.
-2. Distress function, the mask bit and stop frame. **L, redesign.** Moves Marta, Camille.
-3. `slStep` in `loop`, mask, dwell row, length gate. **S, redesign.** Moves Whitney, Nils.
-4. Handover partition and two phase report. **M, redesign.** Moves Camille, Nils, Sofia.
-5. Checked saves and generated `ui` list. **S, reskin.** Moves Renata, Marcus.
-6. Tokens and `.sl-` prefix, `#sl` re-point. **S, reskin.** Moves Nils, Whitney.
-7. `planSight` gift. **M, redesign.** Moves Renata, Trey.
+1. `obAct`, `journey`, refusals, close rule. **M, redesign.** Renata, Marcus, Whitney.
+2. Distress function, mask bit, stop frame. **L, redesign.** Marta, Camille.
+3. `slStep` in `loop`, dwell row, length gate. **S, redesign.** Whitney, Nils.
+4. Handover partition, two phase report. **M, redesign.** Camille, Nils, Sofia.
+5. Checked saves, generated `ui` list. **S, reskin.** Renata, Marcus.
+6. Tokens, `.sl-` prefix, `#sl` re-point. **S, reskin.** Nils, Whitney.
+7. `planSight` gift. **M, redesign.** Renata, Trey.
 
 ## 7. QUESTION FOR THE OWNER
 
-None. Decisions: Leave stores one boolean and Skip stores none; the signal test answer is not stored until something reads it.
+None. Decision: Leave stores one boolean, Skip stores none.
