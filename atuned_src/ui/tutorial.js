@@ -36,11 +36,11 @@
    stands ahead of it. See onboard.js's own header for why nothing is
    added here that only looks like one.
    ============================================================ */
-var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false};
+var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null};
 
 function tutOpen(replay){
  var h=document.getElementById('tutorial'); if(!h)return;
- TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay;
+ TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay; TUT.parsed=null; TUT.plan=null;
  h.classList.remove('ob-leaving');
  tutRender();
  h.style.display='flex';
@@ -152,6 +152,11 @@ function tutRender(){
  }
  else if(s===3){
   var c=TUT.commit, d=TUT.deep, kept=(c&&c.kept)||[], off=(d&&d.offer&&d.offer[0])||null;
+  /* THE FIRST RELEASE'S SIZE, F5: the same plan and the same sentence as the
+     onboarding bridge (ui/onboard.js, obMini), so both doors into a first
+     release open the ruled twelve lines and say the true count. */
+  var pl=TUT.plan=(off&&kept.length&&typeof obMini==='function')?obMini(TUT.parsed):null;
+  var go=!!(pl&&pl.ok);
   var body;
   if(off&&kept.length){
    body='<p class="ob-p">This entry is heavy enough to show up in your Field '
@@ -163,7 +168,9 @@ function tutRender(){
     +'<p class="ob-p">The release protocol does not tell you to let it go. '
     +'It knows the story, the pattern and where it sits, and it picks a way '
     +'to work with exactly that. This one is real: pressing Begin opens it '
-    +'on exactly what this entry just wrote.</p>';
+    +'on what this entry just wrote.</p>'
+    +(go?obMiniSay(pl,typeof journeyRead==='function'?journeyRead(CURP).first:true)
+     :(typeof obMiniWhy==='function'&&obMiniWhy(pl)?'<p class="ob-p">'+obMiniWhy(pl)+'</p>':''));
   }else{
    body='<p class="ob-p">This particular entry did not carry enough charge '
     +'to name a release yet. That is fine, most days will have one that '
@@ -173,7 +180,7 @@ function tutRender(){
      guess built from off's own axis name: relPick takes node ids and kept
      already carries them. */
   out=tutCard('Release',body,
-   (off&&kept.length
+   (off&&kept.length&&go
      ?'<button type="button" class="btn pri" data-tut="release">Begin the release</button>'
        +'<button type="button" class="btn" data-tut="next">Not now</button>'
        +'<button type="button" class="btn" data-tut="field">See it in your Field</button>'
@@ -205,6 +212,7 @@ function tutCommit(){
  /* the exact two lines the Story tab's own textarea runs on every
     keystroke, run once here instead of on each one. */
  ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
+ TUT.parsed=ST_PARSED; TUT.plan=null;
  var r=stCommit();
  TUT.commit=r;
  if(r.ok){
@@ -220,7 +228,8 @@ addEventListener('click',function(e){
  if(k==='commit'){ tutCommit(); return; }
  if(k==='next'){ TUT.step++; tutRender(); return; }
  if(k==='release'){
-  var c=TUT.commit, kept=(c&&c.kept)||[], ids=kept.map(function(n){return n.i;});
+  /* the plan's addresses, never every address the entry read (F5) */
+  var pl=TUT.plan||(typeof obMini==='function'?obMini(TUT.parsed):null), ids=(pl&&pl.ok)?pl.addrs:[];
   tutClose();
   if(ids.length&&typeof relPick==='function')relPick(ids);
   return;}

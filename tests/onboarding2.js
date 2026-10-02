@@ -30,6 +30,16 @@
         found, checked against what parseStory itself returns for that exact
         string.
 
+     4  THE FIRST RELEASE'S SIZE, F5 in REVIEW-funnel/FINAL-SPEC.md, ruled
+        round PA: "The mini release is 12 lines." Both doors hand relPick
+        the plan onbMiniPlan made and never every address the story read,
+        the run the release card builds is exactly the twelve keys the plan
+        counted, the card prints that count and not the count of addresses,
+        and when the story read more than three it says how many more, and
+        how many of them the words did not name. Checked first against the
+        build before the fix, where these assertions fail: that build handed
+        over all eight addresses, ran 25 lines and printed "8 lines".
+
    WHAT IT DOES NOT CLAIM. No distress detector exists anywhere in this
    engine, and this file does not pretend otherwise: see the J0 check near
    the foot, which reports the gap rather than papering over it, the same
@@ -132,6 +142,34 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  const bridge=await page.evaluate(()=>document.querySelector('.ob-card').innerText);
  ok(/Begin the release/.test(bridge),'the bridge offers a real release, found a node to carry it');
 
+ /* F5, THE FIRST RELEASE'S SIZE. Every number below is read off the build:
+    the ruled size off its own tables, what was found off the commit, and
+    what the card says off the card. Nothing typed but the sentence. */
+ const mini=await page.evaluate(()=>{
+  const pl=(typeof OB.plan==='object'&&OB.plan)||null;
+  const kept=(OB.commit&&OB.commit.kept||[]).map(n=>n.i);
+  return {pl:pl, kept:kept,
+   size:(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null,
+   chans:(typeof ONB_CHANS!=='undefined'&&typeof CHAN!=='undefined')
+    ?{onb:ONB_CHANS.slice(),rel:CHAN.map(c=>c[0]+c[2])}:null};});
+ ok(mini.size===12,'the ruled first release is twelve lines, three addresses at four, read off the tables: '+mini.size);
+ ok(mini.chans&&JSON.stringify(mini.chans.onb)===JSON.stringify(mini.chans.rel),
+  'the engine plans down the same four channels the release card walks, in the same order: '+JSON.stringify(mini.chans));
+ ok(mini.kept.length>3,'the check sentence reads more than three addresses, so the cap has something to cut: '+mini.kept.length);
+ ok(mini.pl&&mini.pl.ok&&mini.pl.lines===mini.size&&mini.pl.addrs.length===3,
+  'the bridge plans three addresses and twelve lines, not every address read: '+JSON.stringify(mini.pl&&{a:mini.pl.addrs,l:mini.pl.lines}));
+ ok(mini.pl&&mini.pl.addrs.every(i=>mini.kept.indexOf(i)>=0),'and every planned address is one the mirror read, none invented');
+ ok(mini.pl&&new RegExp('\\b'+mini.pl.lines+' lines\\b').test(bridge),'the card prints the true count of lines, '+(mini.pl&&mini.pl.lines));
+ ok(!new RegExp('\\b'+mini.kept.length+' lines\\b').test(bridge),
+  'and never the count of addresses dressed as lines, the old "'+mini.kept.length+' lines" label');
+ ok(mini.pl&&new RegExp('touched '+mini.pl.found+' places').test(bridge)&&new RegExp(mini.pl.rest===1?'other one waits':'other '+mini.pl.rest+' wait').test(bridge),
+  'it says how many places the story touched and how many wait, '+(mini.pl&&(mini.pl.found+' and '+mini.pl.rest)));
+ ok(mini.pl&&(mini.pl.foundInferred===0?/point to all/.test(bridge)
+   :new RegExp((mini.pl.foundInferred===mini.pl.found?'All ':'other ')+mini.pl.foundInferred+' come from where the feeling sits').test(bridge)),
+  'and how many of them the words did not name, '+(mini.pl&&mini.pl.foundInferred)+' of '+(mini.pl&&mini.pl.found));
+ ok(/A line is one short sentence/.test(bridge),'a line is unpacked where the card first uses it (round PO)');
+ ok(!/addresses?\b/i.test(bridge),'and the card never says address, which he ruled means nothing to a person (SX1)');
+
  /* THE HAND OFF. Never a second engine: this closes onboarding and opens
     ui/release.js's own one entry, relPick, on the exact node the mirror
     named. */
@@ -141,8 +179,18 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   obClosed:!OB.open}));
  ok(rel.open,'the release card opens, handed off rather than duplicated');
  ok(rel.obClosed,'and the onboarding sheet is gone, never stacked behind it');
- ok(rel.queueI.length&&rel.queueI[0]===mirror.i0,
-  'and it carries the exact node the mirror read, never a guess built from a pick or a feeling word');
+ ok(rel.queueI.length&&rel.queueI.every(i=>mini.kept.indexOf(i)>=0),
+  'and it carries nodes the mirror read, never a guess built from a pick or a feeling word');
+ /* F5 at the door: the queue is the plan's, and the run is the plan's keys.
+    This assertion used to be queueI[0]===mirror.i0, the first node the mirror
+    read. The plan puts stated before named before inferred, so its first
+    address is the reading's first only when the reading weighed them that
+    way; the queue is now held to the plan, which is held to the reading. */
+ const runPlan=await page.evaluate(()=>({queue:(RUN.queue||[]).map(n=>n.i),plan:(RUN.plan||[]).slice()}));
+ ok(mini.pl&&JSON.stringify(runPlan.queue)===JSON.stringify(mini.pl.addrs),
+  'the release opens on exactly the plan\'s three addresses: '+JSON.stringify(runPlan.queue));
+ ok(mini.pl&&JSON.stringify(runPlan.plan)===JSON.stringify(mini.pl.keys),
+  'and builds exactly the twelve lines the card counted, '+runPlan.plan.length+' of them');
 
  /* RUN IT TO A REAL COOLDOWN, the same way tests/design.js already proves
     the card itself can finish, so "reaches a release" means the walker
@@ -161,6 +209,8 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  const moved=Object.keys(before.ch).some(k=>Math.abs((before.ch[k]||0)-(after.ch[k]||0))>1e-9);
  ok(moved,'and the field actually moved: a release that opens a card but changes nothing is not a release');
  ok(after.meter>0,'the record keeps a real line released, got '+after.meter);
+ const spent=await page.evaluate(()=>(CURP.meter&&CURP.meter.unique||[]).length);
+ ok(mini.pl&&spent===mini.pl.lines,'the first release opened '+spent+' lines of new ground, the twelve it was shown and no more');
  ok(errs.length===0,'no script error the whole way through: '+errs.slice(0,3).join(' | '));
  console.log('  reached a real release in '+(Date.now()-t0)+'ms of wall clock, shrunk timing');
  await page.close();
@@ -178,7 +228,8 @@ console.log('\n=== the Day One tutorial reaches the same real release ===');
  await page.fill('#tuttext',REAL_STORY);
  await page.click('[data-tut="commit"]'); await page.waitForTimeout(80);
  const commit=await page.evaluate(()=>({ok:TUT.commit&&TUT.commit.ok,k:TUT.commit&&TUT.commit.k,
-  i0:(TUT.commit&&TUT.commit.kept&&TUT.commit.kept[0])?TUT.commit.kept[0].i:null}));
+  i0:(TUT.commit&&TUT.commit.kept&&TUT.commit.kept[0])?TUT.commit.kept[0].i:null,
+  kept:(TUT.commit&&TUT.commit.kept||[]).map(n=>n.i)}));
  ok(commit.ok&&commit.k>0,'the same real engine reads the same real entry, k='+commit.k);
  await page.click('[data-tut="next"]'); await page.waitForTimeout(60);  /* what this found -> how it runs through you */
  await page.click('[data-tut="next"]'); await page.waitForTimeout(60);  /* -> release */
@@ -187,7 +238,14 @@ console.log('\n=== the Day One tutorial reaches the same real release ===');
  await page.click('[data-tut="release"]'); await page.waitForTimeout(150);
  const rel=await page.evaluate(()=>({open:RUN.open,queueI:(RUN.queue||[]).map(n=>n.i),tutClosed:!TUT.open}));
  ok(rel.open&&rel.tutClosed,'the Day One tutorial hands off to the real release and closes its own sheet');
- ok(rel.queueI.length&&rel.queueI[0]===commit.i0,'on the exact node the tutorial just found');
+ ok(rel.queueI.length&&rel.queueI.indexOf(commit.i0)>=0||rel.queueI.length&&rel.queueI.every(i=>commit.kept.indexOf(i)>=0),
+  'on nodes the tutorial just found');
+ /* F5 on the second door: the same plan, the same size. */
+ const tpl=await page.evaluate(()=>({pl:TUT.plan||null,queue:(RUN.queue||[]).map(n=>n.i),plan:(RUN.plan||[]).slice()}));
+ ok(tpl.pl&&tpl.pl.ok&&tpl.queue.length<=3&&JSON.stringify(tpl.queue)===JSON.stringify(tpl.pl.addrs),
+  'the tutorial hands over the plan\'s addresses, at most three, out of '+commit.kept.length+' read: '+JSON.stringify(tpl.queue));
+ ok(tpl.pl&&tpl.plan.length<=12&&JSON.stringify(tpl.plan)===JSON.stringify(tpl.pl.keys),
+  'and the run is the plan\'s lines, '+tpl.plan.length+' of them');
  const d=await page.$('#reldose');
  if(d){await d.evaluate(el=>{el.value='1';el.dispatchEvent(new Event('change'));});}
  await page.click('#relgo');
