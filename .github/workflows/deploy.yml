@@ -20,8 +20,20 @@ name: deploy
 # is copied to index.html so atuned.world itself opens on the funnel, his
 # ruling round LW: "the landing page is the funnel... Atuned is a destination."
 on:
+  # 2 October: claude/laughing-feynman-xhfyj3 removed from this list. Every
+  # push to it had been publishing a real, public, no-login preview link
+  # (wrangler's own "Deployment alias URL") carrying the onboarding flow,
+  # which writes a stranger's story into the engine with no distress check
+  # at all (J0, named in WAITING-ON-YOU.md as the single most important open
+  # risk, explicitly not yet built pending the owner's word). That gap being
+  # reachable by anyone with the link, even an unadvertised one, is a live
+  # safety exposure, not a hypothetical one, so the dev branch stops
+  # auto-publishing until the owner says otherwise. This does not delete the
+  # deployments already made tonight; only he can do that, from his own
+  # Cloudflare dashboard. main is untouched by this change and still
+  # deploys, same as before, and nothing pushes to main without his word.
   push:
-    branches: [main, claude/laughing-feynman-xhfyj3]
+    branches: [main]
     paths:
       - 'atuned_src/**'
       - 'funnel/**'
@@ -88,7 +100,7 @@ jobs:
         if: env.CF_TOKEN != '' && env.CF_ACCOUNT != ''
         run: npm install --no-audit --no-fund wrangler@4
       - name: deploy to Cloudflare Pages
-        if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/laughing-feynman-xhfyj3') && env.CF_TOKEN != '' && env.CF_ACCOUNT != ''
+        if: github.ref == 'refs/heads/main' && env.CF_TOKEN != '' && env.CF_ACCOUNT != ''
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
