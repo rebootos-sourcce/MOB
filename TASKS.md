@@ -31378,3 +31378,15 @@ none in the centre panel.
 - Symbol map: every colour, symbol and shape traced to its meaning, its upstream data and
   its downstream use. Gaps and clashes counted.
 - Reply style change recorded (DECISIONS.md, CLAUDE.md).
+
+## Round PI, 2 October
+
+> "Can you automatically export files out to my folder? Show me the plan. with the
+> uh, show me the plan, update it."
+
+**Read as.** Two asks. (1) Send finished files to his folder automatically. (2) Show
+the plan, updated. Ruled: "my folder" read as his Google Drive folder `Atuned` (the one
+he made on 24 September); I cannot write to a disk on his own computer, because this
+runs in a cloud container. Made `Atuned / From Claude` inside it and put the plan there.
+Documents are copied there at the end of each round; builds stay attachments, too big for
+the connector. PLAN.md rewritten for 2 October, with a section I on getting files to him.
