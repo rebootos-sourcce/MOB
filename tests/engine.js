@@ -6121,6 +6121,73 @@ g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a se
  refuse(Array(srcAskedMax()+1).fill({k:'again',seat:'solar',a:'moved'}),'more than the','a record longer than every kind at every seat');
 }
 
+g('QB · what onboarding writes on the entry comes back through the boundary, and nothing else does');
+{
+ /* ROUND QB. obCommit wrote ob onto the story entry and ENT_KEYS did not name
+    it, so the next boot refused the whole profile: "story.entries[0] may not
+    carry ob". Checked first on the build before the fix, where the first
+    assertion below fails with exactly that line. */
+ const {blankProfile,saveProfile,validateProfile,ENT_KEYS,ENT_OB_KEYS,OB_NEVER,OB_STARTS,OB_FEELS,OB_PLACES,NODES}=E;
+ const ids=NODES.filter(n=>n.cf).map(n=>n.i);
+ const base=saveProfile(blankProfile('ob'));
+ const now=new Date().toISOString();
+ const withEnt=e=>{const x=JSON.parse(JSON.stringify(base)); x.story={entries:[e]}; return x;};
+ /* the exact shape obCommit writes, read off ui/onboard.js: three positions,
+    the yes and the no as node ids, and the corrections word for word */
+ const good={pick:2, feel:0, place:3, yes:[ids[0],ids[1]], no:[ids[2]], fixes:['it also sits in my jaw']};
+ const ent=ob=>({t:now,text:'I felt tight in my chest',imprints:2,bands:{heart:10},ob:ob});
+ const v=validateProfile(withEnt(ent(good)));
+ ok(v.ok,'an entry carrying what onboarding wrote is taken, errs '+JSON.stringify(v.errs||[]));
+ ok(v.ok&&JSON.stringify(v.profile.story.entries[0].ob)===JSON.stringify(good),'and comes back exactly as written');
+ const ns={pick:0, feel:-1, place:-1, yes:[], no:[]};
+ const vn=validateProfile(withEnt(ent(ns)));
+ ok(vn.ok&&JSON.stringify(vn.profile.story.entries[0].ob)===JSON.stringify(ns),
+  'Not sure on the feeling and the place, and no answers at all, are taken as written');
+ const none=validateProfile(withEnt({t:now,text:'I felt tight in my chest',imprints:2,bands:{heart:10}}));
+ ok(none.ok&&!('ob' in none.profile.story.entries[0]),
+  'an older entry, or one the Story tab committed, has no ob and is given none: nobody was shown a mirror');
+ const part=validateProfile(withEnt(ent({yes:[ids[0]]})));
+ ok(part.ok&&JSON.stringify(part.profile.story.entries[0].ob)===JSON.stringify({pick:null,feel:null,place:null,yes:[ids[0]],no:[]}),
+  'inside an ob, a missing answer is not answered rather than refused, got '+JSON.stringify(part.ok&&part.profile.story.entries[0].ob));
+ ok(ENT_KEYS.indexOf('ob')>=0&&ENT_OB_KEYS.every(k=>OB_NEVER.indexOf(k)<0),
+  'an entry may carry ob, and none of its keys meets the outbox deny list');
+ const refuse=(ob,frag,what)=>{const r=validateProfile(withEnt(ent(ob)));
+  ok(!r.ok&&(r.errs||[]).join(' ').indexOf(frag)>=0,what+' is refused by name: '+(r.errs||[]).join(' ').slice(0,110));};
+ refuse('yes','.ob is not an object','an ob that is not an object');
+ refuse([1,2],'.ob is not an object','an ob that is a list');
+ refuse(Object.assign({},good,{email:'a@b.c'}),'.ob may not carry email','a key nobody declared');
+ OB_NEVER.filter(k=>ENT_OB_KEYS.indexOf(k)<0).forEach(k=>{
+  const r=validateProfile(withEnt(ent(Object.assign({},good,{[k]:'x'}))));
+  if(r.ok||(r.errs||[]).join(' ').indexOf('.ob may not carry '+k)<0)ok(false,'the deny list name '+k+' rides in on ob');});
+ ok(true,'every name on the outbox deny list is refused inside ob, '+OB_NEVER.length+' checked');
+ refuse(Object.assign({},good,{pick:OB_STARTS.length}),'.ob.pick is not a position','a starting point past the end of the list');
+ refuse(Object.assign({},good,{pick:-1}),'.ob.pick is not a position','Not sure on the starting point, which the sheet does not offer');
+ refuse(Object.assign({},good,{feel:OB_FEELS.length}),'.ob.feel is not a position','a feeling past the end of the list');
+ refuse(Object.assign({},good,{place:OB_PLACES.length}),'.ob.place is not a position','a body place past the end of the list');
+ refuse(Object.assign({},good,{place:1.5}),'.ob.place is not a position','a body place that is not a whole number');
+ refuse(Object.assign({},good,{feel:'0'}),'.ob.feel is not a position','a feeling written as text');
+ refuse(Object.assign({},good,{yes:ids[0]}),'.ob.yes is not a list','a yes that is not a list');
+ refuse(Object.assign({},good,{no:[999999]}),'.ob.no[0] names no node','a no naming no node');
+ refuse(Object.assign({},good,{yes:[String(ids[0])]}),'.ob.yes[0] names no node','a node id written as text');
+ refuse(Object.assign({},good,{yes:[ids[0],ids[0]]}),'.ob.yes[1] repeats','the same yes twice');
+ refuse(Object.assign({},good,{no:[ids[0]]}),'.ob.no[0] is also a yes','one place answered both yes and no');
+ refuse(Object.assign({},good,{fixes:'it also sits in my jaw'}),'.ob.fixes is not a list','corrections that are not a list');
+ refuse(Object.assign({},good,{fixes:[42]}),'.ob.fixes[0] is not a string','a correction that is not words');
+ /* AND THE BOOT PATH: the same record through pStore, the read the page runs
+    at start up, so the store and the boundary are checked together. */
+ let mem={};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ mem['source.profiles']=JSON.stringify([withEnt(ent(good))]);
+ const got=E.pStore();
+ ok(got.length===1&&E.storeRefused().length===0,'a store holding a finished onboarding loads at boot, refused '+JSON.stringify(E.storeRefused()));
+ const badRec=withEnt(ent(Object.assign({},good,{no:[ids[0]]})));
+ mem['source.profiles']=JSON.stringify([badRec]);
+ ok(E.pStore().length===0&&E.storeRefused().length===1
+  &&/story\.entries\[0\]\.ob\.no\[0\] is also a yes/.test(E.storeRefused()[0].errs.join(' ')),
+  'a malformed one is refused at boot and the refusal is reported with its reason, '+JSON.stringify(E.storeRefused()));
+ E.bindStore(()=>null,()=>{});
+}
+
 /* the trace graph, engine/trace.js. Its gate is its own file and reports
    through this one's ok(), so its count is in the line below. */
 require('./trace.js')(E,ok,g);

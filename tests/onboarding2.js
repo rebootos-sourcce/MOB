@@ -511,6 +511,37 @@ console.log('\n=== F5 on F4: one yes is a release of one place, whatever the sto
  await page.close();
 }
 
+console.log('\n=== a record the boundary refuses at boot is reported, and kept, never silent (round QB) ===');
+{
+ /* storeRefused() had no caller, so a store that parsed but held a record the
+    boundary would not take opened a blank profile and said nothing. The record
+    here is what onboarding writes, with one answer made impossible: the same
+    place both yes and no, which OB.ans cannot hold. Checked against the build
+    before the fix, where the status assertion fails because nothing is said. */
+ const page=await browser.newPage({viewport:{width:1600,height:1000}});
+ const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+ await page.goto(FILE,{waitUntil:'load'}); await booted(page);
+ const seeded=await page.evaluate(()=>{
+  const p=saveProfile(blankProfile('Kept'));
+  const i=NODES.filter(n=>n.cf)[0].i;
+  p.story={entries:[{t:new Date().toISOString(),text:'I felt tight in my chest',imprints:1,bands:{heart:5},
+   ob:{pick:0,feel:0,place:3,yes:[i],no:[i]}}]};
+  const raw=JSON.stringify([p]); localStorage.setItem(PKEY,raw); return raw;});
+ await page.reload({waitUntil:'load'}); await booted(page);
+ const r=await page.evaluate(()=>({refused:storeRefused(), names:PROFILES.map(p=>p.name),
+  log:MSG_LOG.map(m=>m.kind+': '+m.msg), disk:localStorage.getItem(PKEY)}));
+ ok(r.refused.length===1&&/ob\.no\[0\] is also a yes/.test(r.refused[0].errs.join(' ')),
+  'the impossible answer is refused by name, '+JSON.stringify(r.refused));
+ ok(r.log.some(m=>/^fail: One saved profile could not be read by this version of the app, so this is a new blank profile\. It is kept in this browser, untouched\.$/.test(m)),
+  'and the person is told, on the status line, that it was not read and is kept: '+JSON.stringify(r.log));
+ const disk=JSON.parse(r.disk||'[]');
+ ok(disk.some(p=>p.name==='Kept'&&JSON.stringify(p)===JSON.stringify(JSON.parse(seeded)[0])),
+  'and the refused record is still on the disk, byte for byte the same, beside the blank');
+ ok(r.names.indexOf('Kept')<0,'and it is never loaded or shown');
+ ok(errs.length===0,'no script error: '+errs.slice(0,3).join(' | '));
+ await page.close();
+}
+
 console.log('\n=== J0, the distress gap, reported rather than papered over ===');
 /* THIS IS NOT A SAFETY TEST. It cannot be: there is nothing in this engine
    to test. It is a standing check that nobody has quietly added a decorative

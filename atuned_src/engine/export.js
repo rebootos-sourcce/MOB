@@ -264,7 +264,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the two nested bags' closed key sets, exported so the gate can assert
      them against OB_NEVER rather than against a second list typed in the
      test, and RIT_PLAN_MAX so the surface and the boundary are one number */
-                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS,
+                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS, ENT_OB_KEYS:ENT_OB_KEYS,
                   RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
   /* the ring's parameter. ritTarget tells the three shapes apart off the
      tables and returns a target only for the one that is a count, so a
@@ -329,6 +329,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the first release's size and where a person is on the way in,
      engine/data/onboarding.js and engine/journey.js. Reads only. */
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_CHANS:ONB_CHANS,
+                  OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };

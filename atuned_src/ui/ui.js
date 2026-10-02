@@ -1685,7 +1685,8 @@ step('first profile',function(){loadP(0);});
    reload always came back to the demo. */
 step('the stored record',function(){
  try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
- if(!PROFILES.length){ pNew('You'); }
+ var blank=!PROFILES.length;
+ if(blank){ pNew('You'); }
  /* AN EMPTY LIST IS TWO DIFFERENT THINGS, AND ONLY ONE OF THEM IS SILENT.
     A first visit gets a blank "You" and nothing to say. A store pStore could
     not read also arrives here as an empty list, and it used to get the same
@@ -1699,6 +1700,23 @@ step('the stored record',function(){
    +'The unreadable copy is kept in this browser, untouched.'
   :'Your saved profiles could not be read or copied. Nothing saves in this '
    +'session, so they stay as they are.','fail');
+ /* AND A RECORD THE BOUNDARY REFUSED SAYS SO, round QB. storeRefused had no
+    caller, so a store that parsed but held a record validateProfile would not
+    take opened on a blank "You" and the status line said nothing. That is
+    exactly what every person who finished onboarding met on their next visit
+    while ob was undeclared: their record was still on the disk, kept by
+    pPersist beside the blank, and nothing told them it existed. The person is
+    told what happened and that it is safe, in plain words; the boundary's own
+    reasons go to the console, where a person helping them can read them, and
+    are never printed as if they were a sentence. */
+ var refused=storeRefused();
+ if(refused.length){
+  try{ if(window.console)console.warn('[atuned] saved profiles this build would not read',refused); }catch(e){}
+  var one=refused.length===1;
+  status((one?'One saved profile':refused.length+' saved profiles')
+   +' could not be read by this version of the app'
+   +(blank?', so this is a new blank profile. ':' and '+(one?'is':'are')+' not shown. ')
+   +(one?'It is':'They are')+' kept in this browser, untouched.','fail');}
  CURP=PROFILES[0];
  /* loadP(0) cached a blank profile under the persona name a moment ago, and
     replacing PROFILES left that cache pointing at an object no longer in the

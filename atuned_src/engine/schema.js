@@ -784,8 +784,76 @@ function vRitual(errs,i,x){
 /* WHAT A STORY ENTRY MAY CARRY. The same four since the first build, and two
    optional ones since round OB: lex, the lexicon version that read it
    (19.B6, LEX_VERSION in engine/sniff.js), and asked, what Source AI asked
-   about it (20.H5, srcAsked in engine/sourceai.js). */
-var ENT_KEYS=['t','text','imprints','bands','lex','asked'];
+   about it (20.H5, srcAsked in engine/sourceai.js). And a third since round
+   QB: ob, what the person answered on the onboarding sheet that committed it
+   (vEntryOb, below).
+
+   ob WAS WRITTEN BEFORE IT WAS DECLARED HERE, and that cost every person who
+   finished onboarding their whole profile on the next visit: obCommit put ob
+   on the entry, this list did not name it, and the boot refused the record,
+   "story.entries[0] may not carry ob". The closed set did its job, which is
+   to refuse what nobody declared. The defect was a writer that shipped
+   without a rule here, so the rule now sits beside the list it extends. */
+var ENT_KEYS=['t','text','imprints','bands','lex','asked','ob'];
+/* WHAT ONBOARDING WRITES, read off obCommit in ui/onboard.js and nowhere else:
+
+     pick    which of OB_STARTS the person picked, by position, or null
+     feel    which of OB_FEELS, by position, -1 for Not sure, or null
+     place   which of OB_PLACES, by position, -1 for Not sure, or null
+     yes     the node ids they said yes to on the mirror
+     no      the node ids they said no to
+     fixes   their corrections, word for word, only when there were any
+
+   The three lists are engine data (engine/data/onboarding.js) so a position
+   is checked against the list it points into, and a position past the end is
+   refused by name rather than read as the last one. pick has no Not sure on
+   the sheet, so -1 is refused there and taken for the other two.
+
+   yes and no are node ids, refused by name when no node carries the id, when
+   one repeats, or when the same id is both. OB.ans holds one answer per id,
+   so the writer cannot produce either, and a record that carries one did not
+   come from it.
+
+   MISSING IS NOT ANSWERED. An entry from before onboarding wrote ob, or one
+   the Story tab committed, has no ob and keeps none: filling one would claim
+   the person was shown a mirror they never saw, the same lie the lex stamp
+   refuses above. Inside an ob that is present, a missing pick, feel or place
+   is null and a missing yes or no is empty, so a field added to ob later
+   does not refuse the ones written before it. fixes is taken as text is: a
+   string, and no length is invented, for the reason the text has none. */
+var ENT_OB_KEYS=['pick','feel','place','yes','no','fixes'];
+function vEntryOb(errs,path,x){
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ var bad=errs.length;
+ vKeys(errs,path,x,ENT_OB_KEYS);
+ var q={pick:null, feel:null, place:null, yes:[], no:[]};
+ [['pick',OB_STARTS,false],['feel',OB_FEELS,true],['place',OB_PLACES,true]].forEach(function(f){
+  var v=x[f[0]];
+  if(v===undefined||v===null)return;
+  if(typeof v!=='number'||v!==Math.floor(v)||(v<0&&!(f[2]&&v===-1))||v>=f[1].length){
+   errs.push(path+'.'+f[0]+' is not a position in its list of '+f[1].length
+    +(f[2]?' or -1 for Not sure':'')+': '+v);
+   return;}
+  q[f[0]]=v;});
+ var seen={};
+ ['yes','no'].forEach(function(f){
+  var v=x[f];
+  if(v===undefined)return;
+  if(!Array.isArray(v)){errs.push(path+'.'+f+' is not a list'); return;}
+  v.forEach(function(i,j){
+   var ip=path+'.'+f+'['+j+']';
+   if(typeof i!=='number'||!BY[i]){errs.push(ip+' names no node: '+i); return;}
+   if(seen[i]){errs.push(ip+(seen[i]===f?' repeats ':' is also a '+seen[i]+': ')+i); return;}
+   seen[i]=f; q[f].push(i);});});
+ if(x.fixes!==undefined){
+  if(!Array.isArray(x.fixes))errs.push(path+'.fixes is not a list');
+  else{
+   var fx=[];
+   x.fixes.forEach(function(s,j){
+    var v=vStr(errs,path+'.fixes['+j+']',s);
+    if(v!==null)fx.push(v);});
+   q.fixes=fx;}}
+ return errs.length>bad?null:q;}
 function vEntry(errs,i,x){
  var path='story.entries['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -854,6 +922,11 @@ function vEntry(errs,i,x){
     if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
     if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
    q.asked=ak;}}
+ /* WHAT THE ONBOARDING SHEET WAS TOLD, round QB. Missing stays missing:
+    vEntryOb above says why. */
+ if(x.ob!==undefined){
+  var ob=vEntryOb(errs,path+'.ob',x.ob);
+  if(ob)q.ob=ob;}
  return q;}
 function validateProfile(o){
  var errs=[];

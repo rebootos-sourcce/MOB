@@ -60,33 +60,11 @@
    never reads this one. OB_AUTO is kept only because a gate still asserts
    it reads false; nothing in the product reads it to decide anything. */
 var OB_AUTO=false;
-/* THE TWELVE STARTING POINTS. REVIEW-onboarding/PROPOSAL.md calls for
-   "twelve starting points as ring chips"; mockups/onboarding-v2/src/js/
-   01-data.js names the twelve itself, built and reviewed in that round, and
-   this is that list, unchanged, because inventing a different twelve here
-   would be a second, disagreeing answer to a question that round already
-   settled. The shapes of motion the mockup hung off each one are its own
-   animator's reading (NOTES.md says so) and are not a claim this file
-   carries forward; only the twelve names are. */
-var OB_STARTS=[
- {k:'anxiety',n:'Anxiety'},{k:'anger',n:'Anger'},{k:'overwhelm',n:'Overwhelm'},
- {k:'burnout',n:'Burnout'},{k:'grief',n:'Grief'},{k:'fear',n:'Fear'},
- {k:'relationships',n:'Relationships'},{k:'pain',n:'Pain'},
- {k:'selfworth',n:'Self-worth'},{k:'purpose',n:'Purpose'},{k:'money',n:'Money'},
- {k:'other',n:'Something else'}];
-/* THE SIX FEELING WORDS, the same six the mockup's FEELS carries. Neither
-   set is tinted to a seat: a feeling is not one place in the body, and
-   tinting it that way would be a claim this sheet has not earned. */
-var OB_FEELS=[{k:'heavy',n:'Heavy'},{k:'tight',n:'Tight'},{k:'numb',n:'Numb'},
- {k:'restless',n:'Restless'},{k:'hollow',n:'Hollow'},{k:'hot',n:'Hot'}];
-/* THE SEVEN BODY PLACES, one on each seat, root to crown, the engine's own
-   seven bands (obFigure's own col array, below, in the same order). Each is
-   tinted with seatCol, because this one is an engine fact: the place really
-   is that seat and nothing here is guessing. */
-var OB_PLACES=[{k:'pelvis',n:'Pelvis',b:'Root'},{k:'belly',n:'Belly',b:'Sacral'},
- {k:'stomach',n:'Stomach',b:'Solar'},{k:'chest',n:'Chest',b:'Heart'},
- {k:'throat',n:'Throat',b:'Throat'},{k:'forehead',n:'Forehead',b:'3rd Eye'},
- {k:'head',n:'Head',b:'Crown'}];
+/* THE TWELVE STARTING POINTS, THE SIX FEELING WORDS AND THE SEVEN BODY
+   PLACES live in engine/data/onboarding.js since round QB, unchanged. The
+   record carries their positions on every entry onboarding commits (ob.pick,
+   ob.feel, ob.place), so the profile boundary has to know how long each list
+   is, and the boundary is engine and may not read a table that lives here. */
 /* nsteps is 8: arrive, ask, settle, feel, body, story, mirror, bridge. */
 var OB_NSTEPS=8;
 var OB={open:false, step:0, replay:false,
