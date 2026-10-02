@@ -2,7 +2,7 @@
 
 Standing framework, three passes. All grades are for the proposal as it stood at that pass
 (pass 1: the owner's text as written; pass 2: the merged cut; pass 3: the lead's merge with
-slices). QA's pass 3 gate list is still being written.
+slices). QA's pass 3 gate list is in (not signed off to build the safety slices until `tests/safety.js` exists and is red on HEAD).
 
 | Seat | Pass 1 | Pass 2 | Pass 3 |
 |---|---|---|---|
@@ -14,9 +14,9 @@ slices). QA's pass 3 gate list is still being written.
 | Sales | 58 | 63 | 68 |
 | UX | 58 | 64 | 70 |
 | Creative | 48 | 66 | 72 |
-| QA | 57 | (none) | pending |
+| QA | 57 | (none) | 68 |
 | Project manager | (none) | (none) | 72 |
-| **Average** | **55.7** | **65.5** | **69.7** |
+| **Average** | **55.7** | **65.5** | **69.9** |
 
 As written the proposal averaged 56: right direction, wrong shape. The cuts took it to 66, and
 the slice plan to about 70. What cut it down: no second store (a derived view instead), no

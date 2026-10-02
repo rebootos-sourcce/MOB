@@ -150,7 +150,7 @@ gate; entitlements read off the SIGHT table.
 Estimate: about 55 agent days of build, 67 with rework, 82 with the other blocks; 18 to 32
 working days wall clock with four builders. Cut order if short: P16, then P22 to its table
 gate, then P09b. Never cut P02, P03, P05, P09, P10, P21.
-New gates (`tests/perf.js`, `safety.js`, `journey.js`, `privacy.js`, `drill.js`) join the
+QA pass 3 added: 'private build only' needs a real mechanism, so `BUILD.sh --public` must fail while the safety table says unreviewed; the privacy gate needs a runtime `setItem` wrapper (a static grep misses the ritual and avatar keys); `tools/packcheck.js` stops a stale packed file recurring; the Field's 30 fps floor in `design.js` has no margin (it flaked at 29.8), use a median of three. New gates (`tests/perf.js`, `safety.js`, `journey.js`, `privacy.js`, `drill.js`) join the
 pre-commit list in `CLAUDE.md` the day each lands, or they stay ungated as `funnel.js` did.
 Public launch (not slices): clinician and counsel review of every cue list and the 988, 911
 and SAMHSA lines; one timed real signup; the restore drill on a real iPhone; the owner reads
