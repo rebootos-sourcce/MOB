@@ -32071,3 +32071,7 @@ His words: "review this document, see the handshake, we're going to run all this
 Saved as the canonical `reviews/ATUNED-System-Congruency-MVP-TDD.md`, in full this time (2291 lines). Put in the plan: a new top section in `PLAN.md`, marked as superseding the rest of that file's ordering until closed, exactly as the document itself demands.
 
 The audit already running against the shorter, earlier version (round QC's first dispatch) was still in progress, so it was redirected mid-flight to cover the new section too rather than report against a stale spec and need a second pass. "Execute" is read as running the whole sequence the document itself lays out, which starts with that audit, not skipping to code before it reports, since that is the document's own explicit, twice-repeated rule.
+
+## Round QB: functional gate deferred, not failed
+
+Tried twice on the practitioner-analytics merge: the first run (inside the dispatched agent) timed out at 28 minutes with zero failures up to the Character section, under three other agents sharing the machine. A second attempt here hit the container's 30 minute background limit with no output at all. Load average at the time: 27 to 29. Not restarted a third time; the machine is too contended right now for a clean read, and the merge is already verified by four other gates (engine 4550/0, practitioner 35/0, collide 831/0, design 187/0). Queued to actually run once load drops, not skipped.
