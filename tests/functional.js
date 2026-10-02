@@ -344,7 +344,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   trace.click(); await fr();
   let card=rail.querySelector('.chr-trace');
   const tabs=card?[...card.querySelectorAll('.chr-tabs [data-chtrace]')]:[];
-  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+) of 10/.exec(ct);
+  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+)/.exec(ct);
   const N=am?+am[1]:-1, af=addrField().filter(a=>a.i===N)[0];
   const q=card&&card.querySelector('.chr-q'), qt=q?q.textContent.replace(/^“|”$/g,'').replace(/\.\.\.$/,''):'';
   out.trace={pressed:trace.getAttribute('aria-pressed'),tracing:host.classList.contains('chp-tracing'),card:!!card,sel:CHV.sel,
@@ -409,9 +409,9 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   'the card names a real address at the traced seat with its own charge, '+JSON.stringify(T.addr));
  ok(T.story.own,'and the story it quotes is one of this person\'s own entries, '+JSON.stringify(T.story.q.slice(0,60)));
  ok(!mv.closed.card&&mv.closed.pressed==='false'&&!mv.closed.tracing&&mv.closed.sel===-1,'Close trace puts the card, the toggle and the stage down, '+JSON.stringify(mv.closed));
- ok(mv.hover.txt.indexOf(mv.hover.name)===0&&mv.hover.txt.indexOf('Charge '+mv.hover.charge+' of 10')>=0,
+ ok(mv.hover.txt.indexOf(mv.hover.name)===0&&mv.hover.txt.indexOf('Charge '+mv.hover.charge+'.')>=0,
   'a hovered point names its own address and charge, '+JSON.stringify(mv.hover));
- ok(/^Hover a point/.test(mv.hover.off),'and leaving the canvas puts the line back, '+mv.hover.off);
+ ok(mv.hover.off==='\u2013','and leaving the canvas puts the line back, '+mv.hover.off);
  ok(mv.drill.shown&&mv.drill.t.indexOf(mv.drill.pick)>=0&&/Worn over the/.test(mv.drill.t)&&/Carrying the most/.test(mv.drill.t),
   'Read this mask opens '+mv.drill.pick+'\'s summary in Selection, '+mv.drill.t.slice(0,60));
  ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chp,

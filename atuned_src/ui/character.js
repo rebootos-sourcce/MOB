@@ -255,10 +255,12 @@ function chHoverText(j,seat){
  if(j>=0){var a=CHC.addr()[j];
   return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
    +(a.fld?esc(a.b):esc(chSeatName(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
-   +'. Charge '+(sc.achT[j]*10).toFixed(1)+' of 10.';}
+   +'. Charge '+(sc.achT[j]*10).toFixed(1)+'.';}
  if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
   return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+Math.round(sh*100)+' percent shadow. Press to trace it.';}
- return 'Hover a point to read which address it is.';}
+ /* nothing under the pointer is the empty value, a dash. The sentence that
+    stood here explained how to use the line (CO-27, section-explains-itself) */
+ return '\u2013';}
 function chHover(j,seat){
  var t=chHoverText(j,seat); CHV.hov=j>=0?j:-1;
  var el=$('chhover'); if(el&&el.getAttribute('data-h')!==t){el.innerHTML=t;el.setAttribute('data-h',t);}}
@@ -317,7 +319,7 @@ function chTraceCard(r){
  if(ch.story)h+='<div class="chr-step"><div class="chr-k">Story'+(ch.when?', '+esc(ch.when):'')+'<i>'+esc(ch.src)+'</i></div><p class="chr-q">“'+chStoryHtml(ch.story)+'”</p></div><div class="chr-edge">supports</div>';
  else h+='<div class="chr-step"><div class="chr-k">Story<i>none</i></div><p class="chr-m">No story has landed here. The charge is from your intake.</p></div><div class="chr-edge">supports</div>';
  if(ch.addr){var n=BY[ch.addr.i];
-  h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+ch.addr.sq.toFixed(1)+' of 10',ink:PAL[ch.addr.seat]})
+  h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+ch.addr.sq.toFixed(1),ink:PAL[ch.addr.seat]})
    +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' seat'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
  h+='<div class="chr-edge">worn under</div><div class="chr-step"><div class="chr-k">Mask<i>known</i></div><p class="chr-m"><b>'
   +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' seat.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
@@ -352,7 +354,7 @@ function chRailHtml(r){
   +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
   +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>';
  /* the seven seats: root first as everywhere, each a button that traces it */
- h+='<div class="pm-eye chr-sp plain">The seven seats. Press one to trace it.</div><div class="chr-seats">'
+ h+='<div class="pm-eye chr-sp plain">The seven seats</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
@@ -360,7 +362,7 @@ function chRailHtml(r){
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
-  +'<p class="ad-p">Each point round the body is one of the 112 addresses. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
+  +'<p class="ad-p">Each point round the body is one address. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
   +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
   +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
