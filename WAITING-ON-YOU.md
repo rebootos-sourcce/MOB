@@ -16,7 +16,15 @@ This is separate from, and does not replace, the J0 decision itself below. Fixin
 
 ## Then read this one
 
-**J0: no stranger's first story should reach the engine until there's a distress check.** Three separate reviews tonight independently landed on the same gap: the Story screen writes a reading into your field the moment you finish typing, with no chance to confirm, correct or reject it, and no check at all for whether what was typed is a crisis, not a pattern to work on. This is also exactly the thing you said "not yet" to a few hours ago (the clinician and counsel review). I have not built anything here and will not without your word, it's a safety and clinical call, not an engineering one. When you're ready: either green-light a first version so it can be reviewed with real behavior to look at, or say who should design it before any code gets written.
+**J0: no stranger's first story should reach the engine until there's a distress check.** Three separate reviews tonight independently landed on the same gap: the Story screen writes a reading into your field the moment you finish typing, with no chance to confirm, correct or reject it, and no check at all for whether what was typed is a crisis, not a pattern to work on. This is also exactly the thing you said "not yet" to a few hours ago (the clinician and counsel review).
+
+The third review (the final funnel spec) split this into two pieces, and that split matters: the detector itself (does this story read as a crisis, yes or no) shows nothing to anybody and changes nothing anybody sees, so I'm treating that half as ordinary engineering and building it now, same as anything else tonight. What it does when it fires, meaning the actual words shown to someone in crisis and whether that's safe without a clinician checking it first, is the part I will not build without your word. Three ways to go, costs attached to each:
+
+- **A. Ship a plain first version of the response now,** that stops before the reading is saved, says plainly it may have misread, and shows a card with a person to call. You'd be reviewing real working behavior rather than a plan. Cost: the words go out before anyone with clinical training has checked them.
+- **B. Tell me who should write those words first,** you, a clinician you pick, or someone else. Cost: the response, and the public link going live for real strangers, both wait for that person.
+- **C. Keep the public link dark until a clinician has reviewed the words,** no matter how long that takes. Cost: same wait as B, but open-ended rather than tied to one person.
+
+If you don't answer soon I'll keep building the invisible detector either way, since it's safe to, and I will not point the public domain at this branch again until you've picked one of the three above.
 
 ## Listen to this one when you're near a speaker
 
