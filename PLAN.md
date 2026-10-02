@@ -59,12 +59,15 @@ own closing line, and are not scheduled here.
 **What is real and checked directly, not just reported:**
 - The claims hierarchy (section 38: sort every public statement into observed/inferred/hypothesis/
   validated/clinical/etc) is MISSING. Nothing in the code does this.
-- **The live funnel breaks the document's own claims rules, and no gate stops it.** Checked directly:
-  `marketing/refuse.js` passes "Mindset programming is the cause", "is making us ill", "shows up as
-  mental, physical and spiritual disease", "An AI therapist in your pocket", and "predicts illness" with
-  zero violations found on each, and this checker is not wired into any test or `BUILD.sh` step. The voice
-  checker's own accepted-findings file (`brief-baseline.json`) holds the medical lines as pre-cleared.
-  Several of these are his own words; see `WAITING-ON-YOU.md`.
+- **FIXED, round QI/QJ.** The live funnel really did ship claims the document's own rules forbid, and
+  nothing was stopping it: `marketing/refuse.js` passed "Mindset programming is the cause," "is making us
+  ill," and two versions of "shows up as mental, physical and spiritual disease" with zero violations, and
+  wasn't wired into any build step. A correction owed here: this section first also named "An AI therapist
+  in your pocket" and "predicts illness" as live, which was a checking error (one combined search that
+  didn't confirm each phrase separately) — those two were never shipped, only test sentences inside the
+  audit document itself. The real four lines are all his own words (`TASKS.md` rounds FN, AJ2, IN, QZ3) and
+  are now held by a real gate, `tests/claims.js`, wired into `BUILD.sh`: it fails if any of the four changes
+  or a new line like them ships. 108 passed, 0 failed on the current tree.
 - Section 21 ("Sight is not for sale") was already reversed by his own ruling 1 October (`DECISIONS.md`,
   "Sight by tier, round OK"); the live build correctly follows the reversal, the document does not.
 - The document's "Tier One" (progressive disclosure concept) collides by name with the shipped paid plan
@@ -75,10 +78,7 @@ own closing line, and are not scheduled here.
   1,000 still active at day 90, run and confirmed directly.
 
 **First steps, ordered:**
-1. Make the claims gate real: wire `marketing/refuse.js` into the funnel's own test path, add section 20's
-   and section 5's banned phrases to its rule set, strip the medical lines from `brief-baseline.json`'s
-   acceptance. His own lines that then fail go on a named list for him, never auto-rewritten. Depends on
-   nothing; dispatched.
+1. DONE (above). The claims gate.
 2. A claim-type register: every public number and causal sentence tagged with one of the nine claim types
    and its source. Depends on step 1.
 3. The "no sensation is also information" lines, into the release card. Waits on the release-carousel

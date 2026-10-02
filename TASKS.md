@@ -32310,3 +32310,11 @@ Five builds have run tonight; three now remain: the full-screen onboarding, the 
 ## A session restart killed three agents mid-task; recovered, nothing lost
 
 His "how are you looking?" landed right after a restart (new session identity, all three background agents unreachable). Checked each one's worktree rather than assume: the release-carousel and full-screen-onboarding builds both had real uncommitted work, checkpointed and pushed (`611e47a`, `0c0f2b6`). The claims-gate build had made no commits yet, so nothing to save there. All three re-dispatched, each told explicitly to resume from its pushed checkpoint and verify what was already done before continuing, not restart from scratch. Pruned the now-stale worktrees after confirming each was clean and either merged or safely preserved on its own branch.
+
+## Round QI closed, and a correction owed: the claims gate is real now
+
+`claims-gate-real` (`7302e1d`). Verified directly: `tests/claims.js` is wired into `BUILD.sh` and `tests/README.md`, checks itself against known-bad lines before trusting itself (7 of 28 caught with the old rule set, 28 of 28 with the new one), and a planted "An AI therapist in your pocket." on a real page stopped the build when run. Full run on the merged tree: 108 passed, 0 failed, 8 occurrences held.
+
+The correction: this file told him two lines were live on the funnel, "An AI therapist in your pocket" and "predicts illness," and that was wrong. A single combined search across all five lines had confirmed files matched at least one of them, not each one, and I reported "all five" without checking each phrase on its own. Those two were never shipped; they only appear in `reviews/MASTER-BMT-AUDIT.md` as test sentences run through the checker to show it was blind, not as quotes of real copy. Caught this round by re-verifying each phrase individually before trusting the agent that built the gate, the same discipline this file keeps naming and keeps having to relearn. `WAITING-ON-YOU.md` item 12 is corrected with the real four lines, all traced to his own quoted words (`TASKS.md` rounds FN, AJ2, IN, QZ3), each now held by name so the gate fails if any of them ever changes or a line like them ships new.
+
+Two builds remain: the full-screen onboarding and the release carousel.
