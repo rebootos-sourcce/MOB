@@ -31463,3 +31463,15 @@ the connector. PLAN.md rewritten for 2 October, with a section I on getting file
     review.
 12. Plan: review twice, block it in, and move onboarding and tutorial UP so he can review
     them while the rest is built.
+
+## Round PK, 2 October
+
+> "review this three times. Figure out the steps to execute this efficiently. And to put
+> it in the plan. As part of our improvements for MVP." (followed by a six-area
+> architecture proposal; the full text is verbatim in `REVIEW-arch/OWNER-INPUT.md`)
+
+**Read as.** Run the standing review framework three times on the proposal (AI agent
+orchestration, the 90 day engine, evidence and verification, safety, privacy, commerce and
+identity, as one connected architecture), turn it into executable slices, and put them in
+the plan as MVP work. One conflict is already visible: the proposal says "Sight is not for
+sale"; he reversed that on 1 October (round OK). Entitlements follow the SIGHT table.

@@ -481,11 +481,12 @@ async function PIXDIFF(a){
  const N=await dec(a.n),H=await dec(a.h);
  let max=0;const diffs=[];
  for(let i=0;i<N.length;i+=4){const d=Math.max(Math.abs(N[i]-H[i]),Math.abs(N[i+1]-H[i+1]),Math.abs(N[i+2]-H[i+2]));diffs.push(d);if(d>max)max=d;}
+ /* the ground is the commonest colour of the blanked photograph over the whole box. (The first cut took the
+    colour under the changed pixels, which for an overdrawn label is the fringe of the copy on top, and read a
+    light ground for a label that sits on a mid blue fill.) */
  const hist={};
- for(let k=0;k<diffs.length;k++){if(diffs[k]>=Math.max(6,max*0.5)){const i=k*4,q=(H[i]>>2)+','+(H[i+1]>>2)+','+(H[i+2]>>2);hist[q]=(hist[q]||0)+1;}}
- /* ground = the commonest blanked-photo colour under the glyph pixels; if there are none, the commonest of all */
+ for(let i=0;i<H.length;i+=4){const q=(H[i]>>2)+','+(H[i+1]>>2)+','+(H[i+2]>>2);hist[q]=(hist[q]||0)+1;}
  let best=null,bn=0;for(const q in hist)if(hist[q]>bn){bn=hist[q];best=q;}
- if(!best){const h2={};for(let i=0;i<H.length;i+=4){const q=(H[i]>>2)+','+(H[i+1]>>2)+','+(H[i+2]>>2);h2[q]=(h2[q]||0)+1;}for(const q in h2)if(h2[q]>bn){bn=h2[q];best=q;}}
  const g=best.split(',').map(v=>v*4+2);
  const al=a.fg[3],f=[a.fg[0]*al+g[0]*(1-al),a.fg[1]*al+g[1]*(1-al),a.fg[2]*al+g[2]*(1-al)];
  const D0=Math.max(Math.abs(f[0]-g[0]),Math.abs(f[1]-g[1]),Math.abs(f[2]-g[2]));

@@ -24,6 +24,12 @@ End button on the release opening screens; his recorded opening voice saved
 
 ## C. Next, in order
 
+0. **Onboarding and tutorial, moved to the top (round PJ).** He dislikes the whole
+   look and wants an automatic slider, no button presses. Run the standing review
+   framework on it (`REVIEW-FRAMEWORK/`, `REVIEW-onboarding/`: pass 1 running with 13
+   seats), then pass 2, pass 3 with the ICP simulation, then a mockup of the auto
+   slider sent to him FIRST so he can review it while the rest is built, then the
+   build behind his pick. Takes his recorded voice (`audio/`).
 1. **Finish the skin review** (round PH): pass 3, then one tally and one ranked
    list, as a page he can read. Every seat so far agrees on the same top items:
    - the avatar is not on screen (Character locked and empty) and must be a free
@@ -77,6 +83,34 @@ Plain words as if he is ten. Pictures for anything visual before it is built.
 One gate run on the merged tree, on a quiet machine. No pushing ungated. Every
 agent runs on Sonnet in its own sparse copy of the repository. Seats decide and
 record the reason; one question only if blocked.
+
+## J. Round PJ and PK, blocked in (2 October)
+
+Reviewed twice before it was frozen (see the review notes at the end of this section).
+Blocks that touch the same files run one after the other; the rest run in parallel, each
+in its own sparse worktree, each merged only after the gates.
+
+| Block | What | Files it owns | After | Size |
+|---|---|---|---|---|
+| J1 | Onboarding and tutorial: review, auto slider mockup to him, then build | `ui/onboard.js`, `ui/tutorial.js`, `.ob-*` css, release opening | review pass 3 and his pick | L |
+| J2 | Small shell bugs: sound on but silent; sound off prints "Nothing saved on a worked example" (the sound switch must be a device setting, not a profile write); status and errors move to a bottom log, shown 3 seconds unless held open; protocol screen gets an X before running and an End on the run | `ui/component.js` (status), `ui/sound.js`, `ui/release.js`, `shell/head.html` | nothing | M |
+| J3 | Profile menu: examples sorted by tier; the app loads on the profile he left on; "Custom, new" lets him enter his own information and creates a profile; the active profile is remembered | `ui/panels.js`, `ui/ui.js`, store | J2 (same files) | M |
+| J4 | Field page, summary first: macro field down to the fetters at the top, a link to the Summary page; "By weight" and "By assemblage point" become collapsible sections under it; the "Carrying, Filled in, Heaviest, Most shut" block is explained or cut; the energetic summary rebuilt to the rules and checked for accuracy | right rail in `ui/ui.js`, `ui/summary.js`, `ui/imprints.js` | J3 | L |
+| J5 | Masks by tier in the SIGHT table and the Character page: provisional reading of his dictation, tier one sees Child and Preteen; tier two adds Ideological and Professional; tier three adds Teen and Adult (all six); tier four all. He said "limiter", which is not a mask in the data (it is a sniffer idea), so Professional stands in until he says | `engine/plan.js`, `ui/character.js`, `ui/lock.js`, `tests/engine.js` | nothing | S |
+| J6 | Flow menu becomes mini routines, set up from the Ritual builder, built from the lineup in his reading | `ui/ritual*.js`, recipe engine | recipe engine merge | L |
+| J7 | Copy verification: the narrative seat walks the whole site, every tooltip and info line, against the voice rules; QA independently re-checks; evidence file `COPY-VERIFY.md` with counts; fixes land in data files and strings | many files; runs LAST, after J2 to J5 merge | J2 to J5 | M |
+| K1 to K6 | The six-area architecture (orchestrator and one contract, the 90-day state machine, the evidence ledger, the safety gate, privacy as architecture, identity and entitlement): review in 3 passes, then the executable slices are written into this table | `REVIEW-arch/` | review pass 3 | L |
+
+**Round PK, what is already clear.** The proposal quotes "Sight is not for sale, new
+ground is". He reversed that on 1 October: the tier table now sells how far up the chain
+a person may look, plus velocity. The entitlement design must follow the table. What
+survives from the proposal: a downgrade never takes away ground already opened.
+
+**Review notes (two reviews).** First review: the order puts the shell bugs (J2, J3)
+before the Field rewrite (J4) because all three edit `ui.js` and `component.js`. Second
+review: J7 runs last because it touches strings in every other block; J5 is tiny and
+independent so it goes first; J1 stays at the top because he asked to review it while
+the rest is built.
 
 ## I. Getting files to him
 
