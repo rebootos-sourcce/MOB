@@ -31556,3 +31556,16 @@ above what their own data said (one worked example read one tier higher than it 
 have). 30 new example people added, one per coherence step across all ten tiers, each
 with a measured score and a plain one-line story. Staged for the merged gate run once
 the other two round PM builds land.
+
+## Round PN, 2 October. Cover polish, Stripe by API, the plan list, the MVP gap
+
+His words, first message: "no test. with Stripe, can't you just auto set it up if I hook you up with the API? The two dots over the U of attuned are white. Okay, so now I want the UI UX team to design this cover a bit more, so it's a bit more attractive. And then the rings I want in the background, I want them animating subtly. Get rid of that lower thing that says show stop frame. I want more symmetry in the spacing of this. I think everything's kind of like unevenly spaced. So I'll just future design the symmetry is important to me. And font, so go out and find the most amazing modern fonts that says this is future technology. It's frictionless, it's easy to read, people love it."
+
+His words, second message: "Show me the plan. List. What's being built? What's been built? What's remaining? Show me the backlog. Of what's being built as well. And then do an, an analysis analysis of the software and find out how close we are to being MVP, what's our gap. Do the gap analysis. Like I don't hear sound effects. I haven't seen the Practitioner layer. So you got work to do."
+
+Read as:
+- Stripe: yes, by API. Blocked today by the network policy of this box (api.stripe.com answers 403) and by no key. Steps are in the reply. Tiers five to nine need his prices.
+- Cover: white dots on the u, rings animating subtly, no stop frame link, strict symmetry measured, a font pick from real candidates. Agents running in `/home/user/MOB-pm-cover` and `/home/user/MOB-pm-fonts`.
+- Plan list sent as `PLAN-LIST.md`. Gap analysis running as `MVP-GAP-2.md`, with the Practitioner layer and the sound gap named.
+- Sound: J2 builder running in `/home/user/MOB-pm-j2` (silent sound, sound switch writing the profile, bottom log, protocol X and End).
+- J12 and J14 merged locally on my side (J13 still running); one gate run follows when J13 lands.
