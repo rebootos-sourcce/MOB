@@ -664,6 +664,12 @@ function profMenu(){
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
     +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
     +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
+  /* THE LOG IS REACHABLE WHEN NOTHING IS ON SCREEN. The dock shows for three
+     seconds, so its Log button is only there while a message is, and a person
+     who looked away needs a door that does not depend on timing. */
+  +'<button type="button" role="menuitem" class="pm-it" data-pmlog="1">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5h14M5 12h14M5 17.5h9"/></svg></span>'
+  +'<span>Message log</span></button>'
   +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
   +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
@@ -677,6 +683,8 @@ function profMenu(){
   var want=!sfxIsOn();
   sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
   if(want&&typeof sfx==='function')sfx('kept');};
+ var lg=m.querySelector('[data-pmlog]');
+ if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();

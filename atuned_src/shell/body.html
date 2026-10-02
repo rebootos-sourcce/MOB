@@ -497,9 +497,6 @@
    <div class="gmenu-hd">Lighting</div>
    <div class="navth" id="navthemes"></div>
   </div>
-  <!-- One status region for the whole app. Polite so it does not interrupt,
-       and it carries the message rather than a button lying about it. -->
-  <div id="status" role="status" aria-live="polite"></div>
   <div class="spacer"></div>
   <!-- "Whose field" is gone on the owner's ruling. It was a question the
        product asked itself out loud. The control is a profile picker, so it
@@ -1064,3 +1061,20 @@
   </div></div>
  </div>
 </div>
+<!-- THE MESSAGE DOCK, bottom of the screen, 2 October. Every status() message
+     and every error used to print in a line under the secondary navigation,
+     which the owner had already asked to move: "command output errors down to
+     a bottom navigation... have it spit out that information to a log, and
+     maybe have that only show for three seconds unless the person presses a
+     button to keep it up longer." So the line is out of the bar and here.
+     #status is still the one status region, polite, so a screen reader still
+     hears every message, and it still carries the text and nothing else. The
+     dock around it is hidden until there is something to say. The log is a
+     list of this session's last fifty, behind the Log button and the profile
+     menu, so a message that faded is never gone. -->
+<div id="msgdock" class="msgdock">
+ <div id="status" role="status" aria-live="polite"></div>
+ <button type="button" class="msg-b" id="msgkeep" aria-pressed="false">Keep</button>
+ <button type="button" class="msg-b" id="msglogbtn" aria-haspopup="dialog">Log<i id="msgbadge" hidden></i></button>
+</div>
+<div id="msglog" class="msglog" role="dialog" aria-label="Message log" hidden></div>
