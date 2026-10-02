@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1349 8e05776 2026-10-02 11:33"><head><meta charset="utf-8">
+<html lang="en" data-build="v1351 779dd66 2026-10-02 11:58"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -38929,7 +38929,7 @@ function tutRender(){
   /* THE FIRST RELEASE'S SIZE, F5: the same plan and the same sentence as the
      onboarding bridge (ui/onboard.js, obMini), so both doors into a first
      release open the ruled twelve lines and say the true count. */
-  var pl=TUT.plan=(off&&kept.length&&typeof obMini==='function')?obMini(TUT.parsed):null;
+  var pl=TUT.plan=(off&&kept.length&&typeof obMini==='function')?obMini(obImprints(TUT.parsed)):null;
   var go=!!(pl&&pl.ok);
   var body;
   if(off&&kept.length){
@@ -39003,7 +39003,7 @@ addEventListener('click',function(e){
  if(k==='next'){ TUT.step++; tutRender(); return; }
  if(k==='release'){
   /* the plan's addresses, never every address the entry read (F5) */
-  var pl=TUT.plan||(typeof obMini==='function'?obMini(TUT.parsed):null), ids=(pl&&pl.ok)?pl.addrs:[];
+  var pl=TUT.plan||(typeof obMini==='function'?obMini(obImprints(TUT.parsed)):null), ids=(pl&&pl.ok)?pl.addrs:[];
   tutClose();
   if(ids.length&&typeof relPick==='function')relPick(ids);
   return;}
@@ -59236,10 +59236,17 @@ function obAdjust(){
    The Day One tutorial is the other door into the same first release and
    calls the same two functions, so there is one size and one sentence.
    ============================================================ */
-function obMini(parsed){
+/* THE SIGNAL IS A LIST, and the caller says which list. Today both doors pass
+   parseStory's imprints, which carry node, stated and inferred exactly as
+   onbMiniPlan reads them. A door that lets a person answer yes or no per
+   address (F4) passes its yes rows in the same shape, and nothing here
+   changes. */
+function obMini(list){
  if(typeof onbMiniPlan!=='function'||typeof CURP==='undefined'||!CURP)return {ok:false, why:'no record'};
- var ims=(parsed&&Array.isArray(parsed.imprints))?parsed.imprints:[];
+ var ims=Array.isArray(list)?list:[];
  return onbMiniPlan(CURP,{unread:!ims.length, imprints:ims});}
+/* parseStory's imprints, or none, for a door that kept the parse */
+function obImprints(parsed){ return (parsed&&Array.isArray(parsed.imprints))?parsed.imprints:[]; }
 /* WHAT THE CARD SAYS ABOUT THE PLAN. Every number is the plan's. "Address" is
    the product's word and he ruled it means nothing to a person (SX1), so the
    card says place, which is what the mirror above already says. A line is
@@ -59283,7 +59290,7 @@ function obMiniWhy(pl){
  return '';}
 function obBridgeCard(){
  var c=OB.commit, kept=(c&&c.kept)||[];
- var pl=OB.plan=(c&&c.ok&&c.k&&kept.length)?obMini(OB.parsed):null;
+ var pl=OB.plan=(c&&c.ok&&c.k&&kept.length)?obMini(obImprints(OB.parsed)):null;
  if(pl&&pl.ok){
   var first=(typeof journeyRead==='function')?journeyRead(CURP).first:true;
   return obCard('Next',first?'Next is your first release.':'Next is a release.',
@@ -59325,7 +59332,7 @@ addEventListener('click',function(e){
  if(k==='mirroryes'){ OB.step=7; obRender(); return; }
  if(k==='release'){
   /* the plan's addresses, never every address the story read (F5) */
-  var pl=OB.plan||obMini(OB.parsed), ids=(pl&&pl.ok)?pl.addrs:[];
+  var pl=OB.plan||obMini(obImprints(OB.parsed)), ids=(pl&&pl.ok)?pl.addrs:[];
   obClose();
   if(ids.length&&typeof relPick==='function')relPick(ids);
   return;}
@@ -61468,5 +61475,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004010596"></div>
+<div id="eof" hidden data-len="004011093"></div>
 </body></html>
