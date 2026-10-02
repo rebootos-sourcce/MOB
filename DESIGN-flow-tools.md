@@ -65,11 +65,11 @@ question in the round and it is written down open.
 
 | | Inputting new (`#flownew`) | The ritual (`#rit`) | The tracker (`#flowrail`) |
 |---|---|---|---|
-| Question it answers | What shall I start? | What am I doing? | Did I do it? |
-| Holds | New ritual closed to one press and seven tags; open, the builder | The chain (imprints, held, goal), the becoming prompt, the Active list | Due today, Done, Missed, the Record |
-| Reads | `PRACTICE`, the avatar's pairs, the bank | plans, the bank, the avatar's pairs | plans, the record, the ladder |
-| Writes | start, edit, move, stop, again, delete a ritual; the timer | mark a day done; the timer | mark a day done or take it off; delete an entry and put it back |
-| Files | `ui/ritual.js` | `ui/ritual.js` | `ui/accountability.js`, written by `ritRender` |
+| Question it answers | What shall I start? | What am I doing, and is it working? | Did I do it? |
+| Holds | New ritual closed to one press and seven tags, and Suggested; open, the builder | Six cards, round QN: Ritual to avatar, Ongoing goal, Active today, Did it work, Keep or delete, Practice analytics (the chain is inside it) | Due today, Thirty days, Done, Missed, History, the Record |
+| Reads | `PRACTICE`, `ritFor`, the Avatar page's queue `avRituals`, the bank's `relQueueOf` | plans, the record, `avCycles`, `avRows`, `ritBecoming`, `ladderRead.next`, the snapshot history, `compute().loaded` | plans, the record, the ladder |
+| Writes | start, edit, move, stop, delete a ritual; start a suggested one; the timer | mark a day done; the timer; a release schedule; keep a week more; delete and put back | mark a day done or take it off; delete an entry and put it back; back in rotation |
+| Files | `ui/ritual.js`, `ui/ritstage.js` | `ui/ritual.js`, `ui/ritstage.js` | `ui/accountability.js`, written by `ritRender` |
 
 All three are painted by `ritRender` on every paint, because a column written
 only on some paths is a column that goes stale.
@@ -121,12 +121,15 @@ front on a phone.
 
 Gate: `tests/flowtools.js`, `FT4:`.
 
-### FT5. The Ritual stage holds no accountability.
+### FT5. The Ritual stage holds no tracker.
 
-No streak, rings, figures, marks, month or key. The one exception is the ring
-on an Active row that marks today done, which is the same writer as the
-tracker's and is the press a ritual list needs. On a phone it is also the
-reason the centre can go first.
+Due today, the streak and its figures, the earned marks, Missed and the Record
+month are the right column's and none of them is drawn on the stage. Round QN
+put reads on the stage (the six cards of FT17), and none of them is a tracker
+part under another name: the avatar's cycles, the next mark, before and after,
+and kept days by seat are reads of what the practice did. The one press the
+stage shares with the tracker is still the ring on an Active row that marks
+today done.
 
 Gate: `tests/flowtools.js`, `FT5:`.
 
@@ -134,8 +137,8 @@ Gate: `tests/flowtools.js`, `FT5:`.
 
 `setTab(TAB.ACCOUNT)` lands on the Ritual page, the Flow group has no button
 for 14, and there is no `#acct` in the document. The right column holds Due
-today, Done, Missed and the Record, in that order, on a blank profile and a
-loaded one.
+today, Thirty days, Done, Missed, History and the Record, in that order, on a
+blank profile and a loaded one.
 
 Gate: `tests/flowtools.js`, `FT6:`; `tools/monitor.js`, which walks every
 surface `TABDEF` names at both widths and exits non zero on an empty one;
@@ -239,6 +242,100 @@ file and names the gate.
 
 Gate: `tests/flowtools.js`, `FT15:`.
 
+### FT16. Inputting new lists every ritual suggested, and each one is a real read.
+
+Round QN, his words: "on the left hand side ... I not only want the input there
+but I want all the suggested ones that have come from the sniffer." Shut, the
+left column holds New ritual, the seven tags, and Suggested. The sniffer
+(`engine/sourceai.js`) suggests nothing itself, so Suggested lists the three
+reads that already turn the sniffer's seat reading into a practice: the
+practice the seat carrying the most calls for (`ritFor`, which was the chain's
+own Start and moved here), the Avatar page's own queue (`avRituals`: each
+avatar story's bad day line goes through `readSeat`, the seat carries a load,
+and the seat names its practice), and the heaviest held place at each seat as
+a release schedule (`relQueueOf`). One card per practice, each reason on its
+own line, the seat as its tag. The becoming's seat is the Ongoing goal card's,
+so the bank offers nothing at that seat. Start for a week goes through
+`ritStartPlan`, says so, and the card leaves the list. The chain carries no
+Start. Achievements do not exist yet, so nothing on the page names one: the
+link point is the row `ritSuggest` returns, named in `ui/ritstage.js`.
+
+Gate: `tests/flowtools.js`, `FT16:`.
+
+### FT17. The centre is six cards in his slots.
+
+Round QN: "ideally this would be about six stack tall my upper right would be my
+ongoing goal challenge the middle would be my active challenge and then my top
+left would be Ritual to avatar." At 1600, Ritual to avatar is top left and
+Ongoing goal top right on one row; Active today is the middle, across both;
+Did it work and Keep or delete share the row under it; Practice analytics is
+last, across both. At 390 they stack in that order. Active today is his
+"active challenge", kept under his own word Active.
+
+Gate: `tests/flowtools.js`, `FT17:`.
+
+### FT18. Ritual to avatar reads the Avatar page's own cycle and the seats it is feeding.
+
+The days kept are `avCycles`, the read the Avatar page draws its Cycles from,
+so the two pages cannot disagree: distinct days with a ritual marked done.
+Three rings, one a cycle, each cut in three turns of seven days, and a full
+cycle takes a tick. Under them, each seat an avatar story sits at says which
+active ritual is kept at that seat, or that none is.
+
+Gate: `tests/flowtools.js`, `FT18:`.
+
+### FT19. The ongoing goal is the avatar's own line, the place held in its way, and the next mark.
+
+The becoming is the newest avatar line whose seat holds a place at four or
+more, quoted and never paraphrased, with that place named and a schedule for
+it offered once (A week, Two weeks). Once scheduled it says so and offers
+nothing. The next mark is the ladder's own (`ladderRead`) and is on this card
+only; the right column keeps the marks already earned.
+
+Gate: `tests/flowtools.js`, `FT19:`.
+
+### FT20. Did it work and Keep or delete say what happened and offer the decision at the end.
+
+Did it work lists a ritual from its third day: kept days and missed days off
+the record, and the held places the last reading before it started recorded
+against the field now, or that there was no reading before it. It says the two
+moved together and not that one moved the other. Keep or delete lists a
+ritual in its last three days. Keep runs it a week more through the one
+writer; Delete takes it off with Put back offered in the same card. A ritual
+with no end never comes here.
+
+Gate: `tests/flowtools.js`, `FT20:`.
+
+### FT21. The thirty day loop is the record of thirty days, and the summary under it is counts.
+
+One track per ritual round one loop, outermost first, thirty pieces each, today
+closing the loop at the top; at most four tracks and the rest named as more. A
+piece is done, planned or missed off `ritDaySegs`, the month's own read, so the
+loop and the month cannot disagree. The figure in its middle is the days kept
+in those thirty, and the line under it says days kept, days missed, minutes
+and rituals, never a rate.
+
+Gate: `tests/flowtools.js`, `FT21:`.
+
+### FT22. History is one card per ritual run, and one that ended goes back in rotation with one press.
+
+Read off the plans and the record and no third store, grouped by the steps a
+ritual carries. Active cards say Active. An ended one offers Back in rotation,
+which starts it again from today through `ritStartPlan`, for the span it ran
+last, and says so. The Record list no longer carries Ended rows and Again,
+which were the same choice under a second name.
+
+Gate: `tests/flowtools.js`, `FT22:`.
+
+### FT23. Alive at rest, and still for a person who asked for stillness.
+
+Behind the stage, one soft pool per seat holding charge, at the seat's angle
+on the Avatar ring, breathing on the product's own breath; with nothing held,
+one quiet pool. The readings draw in once when the page is arrived at and not
+on every press. Under `prefers-reduced-motion` no animation runs on the page.
+
+Gate: `tests/flowtools.js`, `FT23:`.
+
 ## 5. Not built, and why
 
 These are in the practice TDD and are not in this change. Each is named so the
@@ -252,7 +349,23 @@ gap is not read as an oversight.
   practised). They need the practice domain's own records wired to this
   surface, which is the P1 build order, and the surface would otherwise print
   an outcome nobody recorded.
-- **The 30, 60 and 90 day change record** (TDD section 35).
+- **The 30, 60 and 90 day change record** (TDD section 35). Round QN built the
+  first thirty as a record of days (FT21) and the held places before and
+  after a ritual as a read (FT20). The TDD's change record, an outcome per
+  practice event, still waits on the practice domain being written by a
+  ritual, which nothing does yet.
+- **Achievements.** His round QN words, "links it up with the achievements when
+  that system comes online". It does not exist (`POINTS-AUDIT.md`). The link
+  point is the row `ritSuggest` returns in `ui/ritstage.js`, named in its
+  header, and nothing on the page promises one (FT16).
+- **What "a second design" means.** Round QN ends "I think I mentioned we're
+  going to use a second design." Searched `TASKS.md`, `DECISIONS.md`, the
+  `DESIGN-*.md` files, `mockups/` and `proto/` for it. Two older candidates
+  exist and neither is certain: round RC, 20 September, "for the ritual design,
+  let's start with B" (the board, `proto/ritual/board.html`), and
+  `proto/ritual/ritual2.html`, which names itself "the ritual page, second
+  rebuild". Both were folded into the build long ago. This round is built in
+  the product's current skin and the question is open.
 - **Points lost for a miss.** His line from the original ritual brief, "if I
   fail an accountability I lose points", is a gamification rule, and the TDD
   says a miss is investigated and not punished. The two disagree and the
@@ -262,7 +375,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT15 | `tests/flowtools.js` |
+| FT1 to FT23 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |

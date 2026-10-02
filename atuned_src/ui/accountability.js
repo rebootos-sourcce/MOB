@@ -137,7 +137,146 @@ function acctDoneHtml(st){
   +ritTodayHtml(st.act.filter(function(p){return ritDue(p,st.today);}),st.today,st.L)
   +'<p class="rv-mean">Streak is your current run of days with a ritual on the record. One skipped day is forgiven and a longer gap halves it. '
   +'Best is your longest run with no gap. Kept is the days you marked a ritual done. Practised is the minutes you put in.</p>'
-  +ritMarksHtml(st.L)+'</div>';}
+  /* the earned marks stay here, with the record that earned them. The next one
+     moved to the Ongoing goal card in the centre, round QN, because the next
+     mark is a goal and that card is where he asked the goal to sit. */
+  +ritMarksHtml(st.L,true)+'</div>';}
+
+/* ---------------- THE THIRTY DAY LOOP, round QN ----------------
+   His words: "on the accountability tracker slide on the right hand side the
+   thirty day loop." A loop and not a list, which is his standing ruling for
+   anything that turns ("we're showing a core game loop mechanic"): thirty
+   days round one circle, the oldest just after the top and running clockwise,
+   and today closing it at the top. One track round the loop per ritual,
+   outermost first, the same ring grammar the month and the Active row already
+   use, so solid is done, faint is planned and dashed is missed everywhere on
+   the page. A small mark outside the loop falls every seven days back from
+   today, because seven kept days are one turn of the avatar (avCycles).
+
+   It reads ritDaySegs, the month's own read of a day, and nothing else, so
+   the loop and the month cannot disagree about a day. The summary under it is
+   counts of days and minutes, never a rate: the ruling for every surface that
+   shows a record. */
+var ACCT_LOOP=30, ACCT_RINGS=4;
+var ACCT_RANK={done:4, plan:3, miss:2, ahead:1};
+function acctLoopRead(st){
+ var today=st.today, t0=today-ACCT_LOOP+1, by={}, keys=[];
+ var get=function(k,col,nm){
+  if(!by[k]){by[k]={k:k, col:col, nm:nm, days:{}, last:-1, act:false}; keys.push(by[k]);}
+  return by[k];};
+ st.act.forEach(function(p){get(ritKey(p.steps),ritCol(p),ritName(p.steps)).act=true;});
+ var kept={}, miss={}, mins=0;
+ for(var d=t0;d<=today;d++)ritDaySegs(d,st.plans,today).forEach(function(s){
+  var R=get(ritKey(s.x?s.x.steps:s.p.steps),s.col,s.nm), was=R.days[d];
+  if(!was||ACCT_RANK[s.st]>ACCT_RANK[was])R.days[d]=s.st;
+  if(s.st!=='ahead'&&d>R.last)R.last=d;
+  if(s.st==='done'){kept[d]=1; mins+=(s.x&&+s.x.min)||0;}
+  if(s.st==='miss')miss[d]=1;});
+ var used=keys.filter(function(R){return R.last>=0;})
+  .sort(function(a,b){return (b.act-a.act)||(b.last-a.last);});
+ return {t0:t0, today:today, rings:used.slice(0,ACCT_RINGS), more:Math.max(0,used.length-ACCT_RINGS),
+  n:used.length, kept:Object.keys(kept).length, miss:Object.keys(miss).length, mins:mins};}
+function acctArc(r,a0,a1){
+ var p=function(a){a=a*Math.PI/180; return ritP(110+r*Math.cos(a))+' '+ritP(110+r*Math.sin(a));};
+ return 'M'+p(a0)+' A'+r+' '+r+' 0 0 1 '+p(a1);}
+function acctLoopSvg(L){
+ var R0=92, step=12, w=8, seg=360/ACCT_LOOP, gap=2.2, out='<svg viewBox="0 0 220 220" class="rv-loop" aria-hidden="true">';
+ var rings=L.rings.length?L.rings:[{col:'var(--dim)', days:{}}];
+ rings.forEach(function(R,ri){
+  var r=R0-ri*step;
+  for(var i=0;i<ACCT_LOOP;i++){
+   var d=L.t0+i, s=R.days[d]||'none';
+   out+='<path class="rv-ld rv-ld-'+s+(d===L.today?' rv-ld-now':'')+'" d="'+acctArc(r,-90+i*seg+gap/2,-90+(i+1)*seg-gap/2)
+    +'" style="stroke-width:'+w+';--i:'+(i+ri*4)+(s==='none'||s==='miss'?'':';stroke:'+R.col)+'"/>';}});
+ /* a turn every seven days back from today, outside the outer track */
+ for(var j=1;j*7<ACCT_LOOP;j++){
+  var a=(-90+(ACCT_LOOP-j*7)*seg)*Math.PI/180, r1=R0+w/2+3, r2=R0+w/2+8;
+  out+='<path class="rv-ltk" d="M'+ritP(110+r1*Math.cos(a))+' '+ritP(110+r1*Math.sin(a))
+   +' L'+ritP(110+r2*Math.cos(a))+' '+ritP(110+r2*Math.sin(a))+'"/>';}
+ out+='<circle class="rv-lnow" cx="110" cy="'+ritP(110-R0-w/2-7)+'" r="3.4"/>';
+ return out+'</svg>';}
+function acctLoopHtml(st){
+ var L=acctLoopRead(st);
+ var key=L.rings.length?'<ul class="rv-lkey">'+L.rings.map(function(R,i){
+  return '<li style="--c:'+R.col+'"><i aria-hidden="true"></i>'+esc(R.nm)+(i===0?' <small>outermost</small>':'')+'</li>';}).join('')
+  +(L.more?'<li style="--c:var(--dim)"><i aria-hidden="true"></i><small>and '+L.more+' more in the Record</small></li>':'')+'</ul>':'';
+ var sum=!L.n?'<p class="rv-lsum">Nothing on the record in the last thirty days yet.</p>'
+  :'<p class="rv-lsum">In the last thirty days you kept a ritual on <b>'+acctDays(L.kept)+'</b> and missed one on <b>'
+   +acctDays(L.miss)+'</b>. <b>'+L.mins+' minutes</b> in all, across <b>'+L.n+(L.n===1?' ritual':' rituals')+'</b>.</p>';
+ return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty days</span></div>'
+  +'<p class="rv-mean">The last thirty days as one loop. It starts just after the top, runs clockwise, and today closes it at the top. '
+  +'Each track round it is one ritual. A mark outside falls every seven days, one turn of your avatar.</p>'
+  +'<div class="rv-loopb">'+acctLoopSvg(L)+'<div class="rv-lmid"><b>'+(L.kept||'–')+'</b><span>days kept</span></div></div>'
+  +key+'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-done"></i>Done</span><span><i class="rv-k-plan"></i>Planned</span>'
+  +'<span><i class="rv-k-miss"></i>Missed</span></div>'+sum+'</div>';}
+
+/* ---------------- HISTORY, round QN ----------------
+   His words: "I want to be able to track my accountability history. I want my
+   ritual history and the cards that I've done so far. Which I can always put a
+   card from there back in rotation."
+
+   ONE CARD PER RITUAL EVER RUN, read off the two stores that already hold it
+   and no third: the plans beside the record (ritPlans, active and ended) and
+   the record itself (CURP.rituals), grouped by the steps they carry, which is
+   how the page already decides two entries are the same ritual (ritKey). The
+   practice domain (engine/practice.js) holds no ritual events, because nothing
+   writes them yet, and a second history built beside these two would be two
+   answers to "what did I do".
+
+   BACK IN ROTATION is one press and goes through ritStartPlan, the writer the
+   builder and the Compass use, so it starts again from today for the span it
+   ran last, carrying its seat, tags, days and timer, and reports through
+   status(). It replaces the Record list's Ended rows and their Again press,
+   which were the same choice under a second name. */
+function acctHistRead(st){
+ var by={}, out=[], today=st.today;
+ var get=function(k,steps){
+  if(!by[k]){by[k]={k:k, steps:steps.slice(), days:{}, last:null, plan:null, act:false, band:''}; out.push(by[k]);}
+  return by[k];};
+ st.plans.forEach(function(p){var H=get(ritKey(p.steps),p.steps);
+  if(!H.plan||ritStart0(p)>=ritStart0(H.plan))H.plan=p;
+  if(ritActive(p,today))H.act=true;
+  var s=ritStart0(p); if(H.last===null||s>H.last)H.last=s;});
+ ((CURP&&CURP.rituals)||[]).forEach(function(x){
+  if(!x||!Array.isArray(x.steps)||!x.steps.length)return;
+  var d=pracDay(x.t); if(d===null)return;
+  var H=get(ritKey(x.steps),x.steps);
+  if(!H.band&&x.band&&BANDS.indexOf(x.band)>=0)H.band=x.band;
+  if(ritIsDone(x))H.days[d]=1;
+  if(H.last===null||d>H.last)H.last=d;});
+ return out.filter(function(H){return H.steps.every(function(k){return !!ritPr(k);});})
+  .map(function(H){var ds=Object.keys(H.days).map(Number);
+   H.kept=ds.length; H.lastDone=ds.length?Math.max.apply(null,ds):null;
+   H.col=H.plan?ritCol(H.plan):(H.band?seatCol(H.band):'var(--accent)');
+   H.nm=ritName(H.steps); return H;})
+  .sort(function(a,b){return (b.act-a.act)||((b.last||0)-(a.last||0));});}
+function acctHistHtml(st){
+ var list=acctHistRead(st); RIT.hist=list;
+ var body;
+ if(!list.length)body='<p class="rv-empty">Nothing on the record yet.</p>';
+ else{
+  body='<ul class="rv-hl">'+list.slice(0,RIT.hh).map(function(H,i){
+   var last=H.lastDone===null?'never kept':'last kept '+String(ritDayName(H.lastDone,st.today)).replace(/^(Today|Yesterday)$/,function(m){return m.toLowerCase();});
+   return '<li class="rv-hc'+(H.act?' rv-hon':'')+'" style="--c:'+H.col+'">'
+    +'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13" class="rv-track" style="stroke-width:4"/>'
+    +ritArcs(20,20,13,H.steps.map(function(){return {col:H.col, st:H.kept?'done':'plan'};}),4)+'</svg>'
+    +'<span class="rv-hct"><span class="rv-hcn">'+esc(H.nm)+'</span><span class="rv-hcs">Kept '+acctDays(H.kept)+', '+esc(last)+'</span></span>'
+    +(H.act?'<span class="rv-tag" style="--c:'+H.col+'">Active</span>'
+     :'<button type="button" class="btn" data-act="rot" data-i="'+i+'" aria-label="Put '+esc(H.nm)+' back in rotation">Back in rotation</button>')
+    +'</li>';}).join('')+'</ul>';
+  if(list.length>RIT.hh)body+='<button type="button" class="rit-more" data-act="hmore">Show more</button>';}
+ return '<div class="rv-sec rv-hist"><div class="rv-hd"><span class="rv-h">History</span></div>'
+  +'<p class="rv-mean">Every ritual you have run, active first and then the most recent, with the days you kept it. '
+  +'One that has ended goes back into rotation with one press, from today, for the span it ran last.</p>'+body+'</div>';}
+function acctRotate(i){
+ var H=(RIT.hist||[])[i]; if(!H)return false;
+ var p=H.plan, span=(p&&RIT_SPAN_D.indexOf(p.days)>=0)?p.days:7;
+ var sp=RIT_SPANS.filter(function(s){return s.d===span;})[0];
+ return ritStartPlan({steps:H.steps, band:p?p.band:H.band, track:p?p.track:'', days:span,
+  when:p?p.when:'', where:p?p.where:'', rel:(p&&p.rel!=null&&BY[p.rel])?p.rel:null,
+  tc:(p&&p.tc&&typeof becomingOf==='function'&&becomingOf(p.tc))?p.tc:null,
+  tags:p?p.tags:null, on:p?p.on:null, tm:p?p.tm:null},
+  'Back in rotation. '+H.nm+(span?', '+sp.nm.toLowerCase()+' from today.':', with no end.'));}
 
 /* THE WHOLE COLUMN, AS ONE STRING, and ritRender writes it. It returns markup
    rather than painting a host of its own, because there is no host of its own
@@ -147,6 +286,11 @@ function acctDoneHtml(st){
 
    The worked example note is not repeated here. The centre already carries it
    once, ritNote in ui/ritual.js, and one page says a thing once. */
-function acctSideHtml(st){
- return '<div class="rvr-wrap">'+acctDueHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
-  +ritRecordHtml(st.plans,st.today)+'</div>';}
+/* ROUND QN put two parts in it, and the order is still what a person came for:
+   Due today first, the press; then the thirty day loop with its summary, which
+   is the answer to whether it is holding at a glance; Done and Missed, the
+   figures under it; History, the rituals as cards; the Record last, the month
+   and the list a person reads day by day. */
+function acctSideHtml(st,arrive){
+ return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctDueHtml(st)+acctLoopHtml(st)+acctDoneHtml(st)+acctMissHtml(st)
+  +acctHistHtml(st)+ritRecordHtml(st.plans,st.today)+'</div>';}

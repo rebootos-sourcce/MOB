@@ -70,6 +70,7 @@ ui/intakeui.js
 ui/release.js
 ui/ritual.js
 ui/accountability.js
+ui/ritstage.js
 ui/cone.js
 ui/drills.js
 ui/knowledge.js

@@ -728,12 +728,9 @@ function ritStop(id){
  ritWrite(function(plans){
   plans.forEach(function(p){if(p.id===id)p.stop=new Date().toISOString();});
   return plans;},'Stopped. The days you did stay on the record.');}
-function ritAgain(id){
- var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
- RIT.sel={}; RIT.order=p.steps.slice(); p.steps.forEach(function(k){RIT.sel[k]=true;});
- RIT.when=p.when; RIT.where=p.where; RIT.days=RIT_SPAN_D.indexOf(p.days)>=0?p.days:7; RIT.add=true; RIT.edit=null;
- RIT.tags=p.tags.slice(); RIT.on=p.on?p.on.slice():null; RIT.tm=p.tm;
- ritRender();}
+/* ritAgain is gone, round QN: its one caller was the Record list's Ended row,
+   and History's Back in rotation (ui/accountability.js, acctRotate) is that
+   choice now, one press and through the same writer. */
 /* DELETE, AND PUT IT BACK. Undo beats confirm, rule 5. The engine's undo
    holds the field and not this list, so the one thing deleted last is held
    here until the next write, and the page offers it back in place. */
@@ -789,22 +786,9 @@ function ritBecoming(){
   var n=held.filter(function(x){return x.b===b&&x.cf;})[0];
   if(n)return {be:String(pr.be).trim(), seat:b, n:n};}
  return null;}
-function ritBecomingHtml(bc,act){
- if(!bc)return '';
- /* already scheduled, it is on the Active list and not asked again */
- if(act.some(function(p){return p.rel===bc.n.i;}))return '';
- var col=seatCol(bc.seat);
- return '<div class="rv-why" style="--c:'+col+'">'
-  +'<div class="rv-why-t"><span class="rv-lb">Your avatar wants to be</span>'
-  +'<p class="rv-why-be">"'+esc(bc.be.replace(/^"+|"+$/g,''))+'"</p>'
-  +'<p class="rv-why-p">You are holding on to <b>'+esc(String(bc.n.k).toLowerCase())+'</b> at the '
-  +esc(ritSeatNm(bc.seat))+'. Set up a release schedule for it?</p></div>'
-  +'<div class="rv-acts rv-why-a">'
-  /* one job, the schedule. Release now is on the row the schedule makes,
-     so the card does not add a third choice to a question with two answers. */
-  +'<button type="button" class="btn pri" data-act="why" data-d="7">A week</button>'
-  +'<button type="button" class="btn pri" data-act="why" data-d="14">Two weeks</button>'
-  +'</div></div>';}
+/* ritBecomingHtml is gone, round QN. The becoming is the Ongoing goal card's
+   now (ui/ritstage.js, ritGoalHtml), in the slot he named for it, and a second
+   renderer of the same card is how one of the two goes stale. */
 
 /* ---------------- drawing ---------------- */
 function ritP(n){return (+n).toFixed(2);}
@@ -876,9 +860,6 @@ function ritChainHtml(c,r,act){
     seat called for, so it takes the accent and not Root's colour. */
  var p=c.called, col=r.unread?'var(--accent)':seatCol(c.band);
  var running=act.some(function(x){return x.steps.indexOf(p&&p.k)>=0;});
- /* the builder below already holds it, with its own Start: a second Start
-    here is the same choice offered twice */
- var drafted=!!(p&&RIT.sel[p.k]);
  var fromN=(RIT.from&&RIT.from.length)||0;
  /* ROUND LT, five cuts on this chain, his words and in his reading order:
     "Get rid of the text 'your words', just put 'Imprints'. Get rid of the
@@ -927,8 +908,11 @@ function ritChainHtml(c,r,act){
   +'<span class="rv-nv"><svg viewBox="0 0 24 24" class="rv-nic" aria-hidden="true"><circle cx="12" cy="12" r="8" style="stroke:'+col+'"/></svg>'
   +'<b class="rv-pn">'+esc(p?p.nm:'')+'</b></span>'
   +'<span class="rv-ns">'+(p?p.min+' minutes':'')+'</span>'
-  +(running?'<span class="rv-tag">Active</span>'
-   :drafted?'':'<button type="button" class="btn pri rv-go" data-act="start-called">Start</button>')
+  /* THE START LEFT THE CHAIN, round QN. The left column is where a ritual is
+     started, and its Suggested list now carries this same practice first, with
+     the reason the seat calls for it. Two Starts for one practice on one page
+     is the same choice offered twice, so the chain is a read now. */
+  +(running?'<span class="rv-tag">Active</span>':'')
   +'</div>';
  return out+'</div>';}
 
@@ -1239,15 +1223,11 @@ function ritDayRows(day,plans,today){
 function ritListHtml(plans,today){
  var rows=((CURP&&CURP.rituals)||[]).map(function(x,i){return {x:x,i:i,d:pracDay(x&&x.t)};})
   .filter(function(e){return e.d!==null;}).sort(function(a,b){return b.d-a.d||b.i-a.i;});
- var ended=plans.filter(function(p){return !ritActive(p,today);}).reverse();
+ /* THE ENDED ROWS AND THEIR AGAIN ARE GONE FROM HERE, round QN. History, one
+    section up in the same column, carries every ritual that has ended with
+    Back in rotation beside it, which is the same choice. Offered twice under
+    two names, a person is left asking whether the two do different things. */
  var out='';
- if(ended.length){
-  out+='<div class="rv-h rv-h2">Ended</div><ul class="rv-days">';
-  ended.forEach(function(p){
-   out+='<li class="rv-dr" style="--c:'+ritCol(p)+'"><i class="rv-dot rv-s-plan"></i><span class="rv-dn">'+esc(ritName(p.steps))+'</span>'
-    +'<button type="button" class="btn" data-act="again" data-id="'+p.id+'">Again</button>'
-    +'<button type="button" class="rv-ib" data-act="del-plan" data-id="'+p.id+'" aria-label="Delete">'+ritIc('x')+'</button></li>';});
-  out+='</ul>';}
  if(!rows.length)return out+'<p class="rv-empty">Nothing on the record yet.</p>';
  var last=null, n=0;
  out+='<ul class="rv-days">';
@@ -1264,7 +1244,8 @@ function ritListHtml(plans,today){
  return out;}
 /* the marks, which are the ladder's and drawn as its own icons. Earned ones
    are shown and the next one is named. Never how many of how many. */
-function ritMarksHtml(L){
+function ritMarksHtml(L,earnedOnly){
+ if(earnedOnly)L={earned:L.earned, next:null};
  if(!L.earned.length&&!L.next)return '';
  return '<div class="rv-marks"><span class="rv-h">Marks</span><div class="rv-mk">'
   +L.earned.map(function(m){
@@ -1287,7 +1268,9 @@ function ritRecordHtml(plans,today){
   +[['month','Month'],['list','List']].map(function(v){var on=RIT.view===v[0];
    return '<button type="button" role="tab" aria-selected="'+on+'" class="rv-sg'+(on?' rv-on':'')+'" data-act="view" data-v="'+v[0]+'">'+v[1]+'</button>';}).join('')
   +'</div>')+'</div>';
- if(RIT.gone)out+='<div class="rv-gone" role="status"><span>Deleted.</span><button type="button" class="btn" data-act="putback">Put back</button></div>';
+ /* Put back is offered where the delete was pressed. A delete from the Keep or
+    delete card offers it there, round QN, and not one column over. */
+ if(RIT.gone&&RIT.goneAt!=='keep')out+='<div class="rv-gone" role="status"><span>Deleted.</span><button type="button" class="btn" data-act="putback">Put back</button></div>';
  if(RIT.view==='list')out+=ritListHtml(plans,today);
  else out+=ritCalHtml(plans,today,empty)
   /* THE KEY UNDER THE MONTH IS THREE WORDS AND A DRAWING, and the drawing is
@@ -1306,10 +1289,13 @@ function ritRecordHtml(plans,today){
    It names itself, because the three columns each say what they are for and a
    centre with no name is the one a stranger cannot place. The sentence under
    the name is the unpack rule: a word a person has to guess is a defect. */
+/* ROUND QN made the centre six cards in his slots, ui/ritstage.js. The chain
+   and the Active list are two of the six; the becoming card is inside the
+   Ongoing goal. The still layer sits first so it is behind everything. */
 function ritLayout(P){
- return '<div class="rv-pagehd"><span class="rv-pagenm">'+ritIc('ring','rv-nic')+'Ritual</span>'
+ return P.live+'<div class="rv-pagehd"><span class="rv-pagenm">'+ritIc('ring','rv-nic')+'Ritual</span>'
   +'<span class="rv-pagesay">A set of practices you repeat on days you choose.</span></div>'
-  +P.note+P.why+'<div class="rv-main">'+P.chain+P.active+'</div>';}
+  +P.note+'<div class="rv-main">'+P.stage+'</div>';}
 
 /* WHAT BOTH TOOL SETS READ, and nothing they write. Pure: the builder's own
    opening on a first visit is not here, because it writes RIT.sel and a read
@@ -1360,8 +1346,10 @@ function ritRender(){
  if(!onR){
   if(left)left.innerHTML=''; if(side)side.innerHTML='';
   if(document.body)document.body.classList.remove('ritbuild');
+  /* the next arrival draws in again, round QN */
+  RIT.arrive=true;
   return;}
- ritCss();
+ ritCss(); ritStageCss();
  if(!h||!RIT.open)return;
  h.style.display='flex';
  var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;
@@ -1370,15 +1358,20 @@ function ritRender(){
     builder is open with the called practice ready and nothing else to find. */
  if(!act.length&&!drafting&&!RIT.edit&&c.called){RIT.sel[c.called.k]=true; RIT.order=[c.called.k]; drafting=true;}
  var building=!!RIT.edit||RIT.add||drafting;
- var P={
-  note:ritNote(),
-  why:ritBecomingHtml(ritBecoming(),act),
+ /* the page draws in on arrival and not on every press: a press repaints the
+    whole page, and a reading that replayed its entrance each time would read
+    as a page that cannot sit still */
+ var arrive=!!RIT.arrive; RIT.arrive=false;
+ var P={note:ritNote(), live:ritLiveHtml(),
   chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today,building)};
- h.innerHTML='<div class="rel-card rit-card rv">'+ritLayout(P)+'</div>';
+ P.stage=ritStageHtml(st,P);
+ h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
  flowHeadAt('flownewhd','New','Start a ritual, or change one you already have.','plus');
  flowHead('Accountability','Whether you did what you set.','check');
- if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml());
- if(side)side.innerHTML=acctSideHtml(st);
+ /* the builder holds the column while it is open; shut, the column is the one
+    press, the seven tags and every ritual suggested, round QN */
+ if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml()+ritSugHtml(st));
+ if(side)side.innerHTML=acctSideHtml(st,arrive);
  if(document.body)document.body.classList.toggle('ritbuild',building);
  ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);}
 
@@ -1390,7 +1383,7 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore'].indexOf(a)<0)RIT.gone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1403,7 +1396,6 @@ function ritWire(h,c){
    case 'miss-edit': ritEditOpen(id); return;
    case 'go-bank': if(typeof setTab==='function')setTab(TAB.STORY);
     if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
-   case 'start-called': RIT.sel={}; RIT.order=[]; if(c.called)ritPick(c.called.k); RIT.add=true; RIT.edit=null; break;
    case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null;
     if(c.called)ritPick(c.called.k); break;
    /* a tag on the closed panel is a new ritual from that seat: the builder
@@ -1445,9 +1437,16 @@ function ritWire(h,c){
    case 'edit': ritEditOpen(id); return;
    case 'up': ritMove(id); return;
    case 'stop': ritStop(id); return;
-   case 'again': ritAgain(id); return;
-   case 'del-plan': ritDelPlan(id); return;
-   case 'del-entry': ritDelEntry(+b.getAttribute('data-i')); return;
+   case 'del-plan': RIT.goneAt='record'; ritDelPlan(id); return;
+   case 'del-entry': RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
+   /* round QN, ui/ritstage.js and ui/accountability.js. Each goes through the
+      one writer, so a failed save says so and a worked example is refused. */
+   case 'sug': ritSugStart(+b.getAttribute('data-i')); return;
+   case 'keep': ritKeep(id); return;
+   case 'del-keep': RIT.goneAt='keep'; ritDelPlan(id); return;
+   case 'rot': acctRotate(+b.getAttribute('data-i')); return;
+   case 'hmore': RIT.hh+=6; break;
+   case 'go-avatar': if(typeof setTab==='function')setTab(TAB.INTAKE); return;
    case 'putback': ritPutBack(); return;
    case 'view': RIT.view=b.getAttribute('data-v'); break;
    case 'mo': RIT.mo=Math.min(1,RIT.mo+(+b.getAttribute('data-d'))); RIT.day=null; break;
@@ -1517,7 +1516,6 @@ function ritCss(){
   '.rv-bar-s.rv-on{opacity:1;box-shadow:0 0 0 1.5px var(--ink)}',
   '.rv-do{border-color:color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 8%,var(--panel));cursor:default}',
   '.rv-do svg circle{fill:none;stroke-width:3}',
-  '.rv-go{margin-top:4px}',
   '.rv-tag{margin-top:4px;padding:3px 10px;border-radius:999px;font-size:12.5px;color:var(--c);border:1px solid var(--c)}',
   '.rv-arr{display:flex;align-items:center;justify-content:center;color:var(--dim)}',
   '.rv-arr .rv-ic{width:14px;height:14px}',
@@ -1528,7 +1526,7 @@ function ritCss(){
   '@container (max-width:619px){.rv .rv-node{padding:9px 8px;gap:3px;border-radius:12px}',
   ' .rv .rv-nv{gap:5px;flex-wrap:wrap} .rv .rv-nv b{font-size:20px} .rv .rv-nv em{font-size:12.5px}',
   ' .rv .rv-nv .rv-pn{font-size:14px} .rv .rv-nic{width:18px;height:18px} .rv .rv-lb{font-size:12px}',
-  ' .rv .rv-ns{font-size:12px} .rv .rv-go{padding:0 14px}}',
+  ' .rv .rv-ns{font-size:12px} }',
   /* THE CENTRE IS ONE COLUMN, round QF, and that is the whole of this rule
      now. Round LT had a grid of six areas on this card, the chain, the new
      ritual, today, the list, the marks and the record, and it needed three
