@@ -18,8 +18,8 @@
    the ruling enterStart carries for the wheel: a heading and a row slide 10px
    in and fade over 220ms, a tile comes up out of .8 scale with one overshoot
    to 1.06 over 260ms, all on the wheel's own ENTER_STAGGER of 62ms and done
-   inside the wheel's own ENTER_TOTAL. The six bars take the first six places
-   of the stagger, so the tiles start as the last bar is charging. The column
+   inside the wheel's own ENTER_TOTAL. The lines take the first places of the
+   stagger, so the tiles start as the last line is charging. The column
    opens shut on a wide screen, so this is usually the person's first sight of
    it, and the bars' own sweep is started here if no render found them open.
    After the first time, opening the column or a section is a surface and not
@@ -84,9 +84,11 @@ function railFirstSight(){
  rbMotion([document.getElementById('key'),document.getElementById('keylo')]);
  if(rbStill())return;
  var p=document.getElementById('lpanel');
- var items=rmVisible('.rblk,.lsec.re,.lsec:not(.re)>.lsec-hd,.tier1,.fdl,.rootlegend,.cap,.rootb,.ib,.aw-r,.ax',p);
- /* the six bars take the first six places of the stagger and what is under
-    them starts as the last bar is charging */
+ var items=rmVisible('.rl-pair,.rl-seats,.rl-split,.rblk,.lsec.re,.lsec:not(.re)>.lsec-hd,.tier1,.rootlegend,.cap,.rootb,.ib,.aw-r',p);
+ /* THE LINES TAKE THE FIRST PLACES OF THE STAGGER, round PD. The pair and its
+    strip come in with the head, the five lines under them take their own
+    places in rbMotion, and what is under them starts as the last is charging.
+    The first .rbar is vitality, the line under the pair. */
  var bar0=document.querySelector('#fdock .rbar'), top0=bar0?bar0.getBoundingClientRect().top:0;
  var head=items.filter(function(it){return it.r.top<top0-2;});
  var rest=items.filter(function(it){return it.r.top>=top0-2;});

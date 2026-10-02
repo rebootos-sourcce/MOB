@@ -687,26 +687,20 @@
      <div class="key" id="key" aria-label="What the instrument reads"></div>
     </div>
     <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
-    <!-- ORIENTATION AND BALANCE JOINED THE READINGS, round OM. His words:
-         "Let's move masculine and feminine and benign and malignant here, and
-         I want a more uniform way to create cohesion between these aesthetics
-         so they don't look like separate elements." They were a section of
-         their own under Psyche, drawn on a track that had been made to match
-         the bars and still read as another page. They sit under the six
-         readings now, on the same left edge, at the same height, in the same
-         ink, and they are rewritten by the same render. The ids are the ones
-         every gate already reads: #polbar is orientation, benign against
-         malignant, #bal is balance, masculine against feminine, and #axpick
-         is the switch for the two designs of both. One mechanic, FJ in
-         TASKS.md, and so one place. -->
+    <!-- ORIENTATION AND BALANCE ARE LINES NOW, round PD. They joined the
+         readings in round OM as two dials with a heading each and a switch
+         for their style. The owner ruled the dials out and the switch with
+         them: each is one line, two colours and a static edge, the halo at
+         the left end and the pitchfork at the right for orientation, the
+         masculine and feminine marks for balance, drawn by rlnSplit in
+         ui/raillines.js. The ids are the ones every gate already read, #polbar
+         for orientation and #bal for balance, now the buttons themselves.
+         #axpick, the style switch, is gone. -->
     <div class="fdial" id="fdial">
-     <div class="fdl"><svg class="fdl-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 6.4l2.4 5.6L12 17.6 9.6 12z"/></svg>Orientation</div>
-     <div class="polbar" id="polbar"></div>
-     <div class="fdl"><svg class="fdl-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M6 20h12M4.5 8.5h15"/><path d="M4.5 8.5l-2 5a2.6 2.6 0 004 0zM19.5 8.5l-2 5a2.6 2.6 0 004 0z"/></svg>Balance</div>
-     <button type="button" class="bal" id="bal"
+     <button type="button" class="kb rl-split" id="polbar" data-q="ori"
+      aria-label="Orientation. Benign against malignant. Opens the reading."></button>
+     <button type="button" class="kb rl-split" id="bal" data-q="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
-     <div class="ax-pick" id="axpick" role="radiogroup"
-      aria-label="Two designs for orientation and balance. The one picked draws both."></div>
     </div>
    </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to

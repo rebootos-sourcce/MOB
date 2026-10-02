@@ -386,23 +386,24 @@ function rbOn(p,bad){var c=cqRamp(bad?100-p:p),f=function(v){v/=255;return v<=.0
      o.pull   the share of the fill the shadow is holding down. Coherence is
               scaled by what the shadow leaves, so a hatched band along the
               fill's foot says how much of it is not getting through.
-     o.hash   Decoherence as the seven seats, root to crown, round OM. His
-              words: "for shadow, have hashes for each of the shadow chakra
-              colors. And have those bars moving. Vertically." Each hash is
-              one seat in its own colour and stands as high as the charge on
-              that seat's addresses against what they could hold, so the
-              seven heights average to the percent the row prints.
      o.wave   Flow as a sine wave, round OM. His words: "Let's use an actual
               sine wave. When a person's sine wave is healthy, it ranges full
               spectrum zero to one. Otherwise, we get to show how choppy it
               is. By the weights of the chakra." o.wave is the seven seat
               passes, root to crown, the numbers flSeats() already keeps and
-              Flow is the product of. rbWave draws them (below).
-   THE GATE'S SIX ROWS STAY SIX. A row that draws a hash or a wave is still a
-   button, still .rbar with its data-q, its --c and --w, its 44px floor at
-   least, and still carries .rb-t i at its figure's width. The fill is only
-   not drawn on those two rows: a percent bar under seven columns and a wave
-   would be three drawings of one number. */
+              Flow is the product of. rbWaveHtml draws them (below).
+
+   ROUND PD, THE LINES. The rows are lines now (mockups/rail-lines): the mark
+   inside at the left, the figure at the right, no word, and the word and the
+   numbers live in the tooltip and in the reading a press opens on the right.
+   Coherence and Decoherence left this function for the one two colour bar
+   in ui/raillines.js, and Decoherence's seven hashes with them, to a strip
+   under that bar. What is left here is the four that move through a person,
+   each a seat's colour (o.col, o.on), and Flow, a live band. A row that
+   draws a wave is still a button, still .rbar with its data-q, its --c and
+   --w and its 44px floor, and still carries .rb-t i at its figure's width,
+   which is simply not drawn on it: a percent bar under a wave would be two
+   drawings of one number. */
 var RB_IC={cq:'<path d="M3 9c3-3.5 6 3.5 9 0s6 3.5 9 0M3 15c3-3.5 6 3.5 9 0s6 3.5 9 0"/>',
  dq:'<path d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17M4.2 14.2h15.6"/>'};
 function rbIcon(k){var d=RB_IC[k]||(k&&QICON[k])||'';
@@ -427,7 +428,7 @@ function rbSeatPass(){var by={};
    own, so a seat carrying a lot is rough where it sits and the ones either
    side of it are not. Nothing is random: the same person draws the same
    wave. Seven paths, one a seat, in the seat's own colour. */
-var RB_WV={W:216,H:34,N:84};
+var RB_WV={W:216,H:28,N:84};
 /* A SEAT CARRYING HALF OF WHAT IT COULD HOLD STANDS FULL HEIGHT. The seven
    marks average to DQ over a hundred, and a person at 11 has seven marks at
    about a tenth of the column, which is honest and is also a row of ticks
@@ -435,52 +436,74 @@ var RB_WV={W:216,H:34,N:84};
    the half of the scale people actually live on, and the row's tooltip says
    so. Nothing is clipped that a person can carry: a seat past half reads full. */
 var RB_GAIN=2;
-function rbWavePts(pass){
- var W0=RB_WV.W,H0=RB_WV.H,N=RB_WV.N,cum=[],c=1,i;
+/* THE WAVE TRAVELS, round PD. It was a still picture with a bead riding it;
+   the line is a live band now, so the phase moves the base and the chop and
+   there is no bead to read the motion off. ph is radians, 0 for the settled
+   picture every still mode draws, and the chop runs at one and seven tenths
+   of the base's rate so the rough seats shimmer and the clean ones glide.
+   Nothing is random: the same person at the same phase draws the same wave. */
+function rbWavePts(pass,ph){
+ ph=ph||0;
+ var W0=RB_WV.W,H0=RB_WV.H,N=RB_WV.N,cum=[],c=1,i,TAU2=Math.PI*2;
  for(i=0;i<7;i++){c*=pass[i];cum.push(c);}
  var pts=[];
- for(i=0;i<=N;i++){var x=i/N*W0, f=i/N*7, s=Math.min(6,Math.floor(f)), u=f-s;
+ for(i=0;i<=N;i++){var x=i/N*W0, f=i/N*7, s=Math.min(6,Math.floor(f)), u=f-s, uu=i/N;
   var a0=s===0?1:cum[s-1], A=a0+(cum[s]-a0)*u;
   var ld=(1-pass[s]), ldp=s>0?(1-pass[s-1]):ld, ldn=s<6?(1-pass[s+1]):ld,
    L=u<.5?ldp+(ld-ldp)*(u+.5):ld+(ldn-ld)*(u-.5);
-  var base=Math.sin(Math.PI*4*i/N),
-   chop=L*(.55*Math.sin(Math.PI*2*(7*2.1)*i/N+s*1.9)+.3*Math.sin(Math.PI*2*(7*3.3)*i/N+s*.7));
+  var base=Math.sin(TAU2*2*uu-ph),
+   chop=L*(.55*Math.sin(TAU2*14.7*uu+s*1.9-ph*1.7)+.3*Math.sin(TAU2*23.1*uu+s*.7-ph*2.3));
   var y01=Math.max(0,Math.min(1,.5+.5*(A*base+chop)));
   pts.push([x,3+(H0-6)*(1-y01)]);}
  return {pts:pts,cum:cum};}
-function rbWaveD(pass){
- var P=rbWavePts(pass), N=RB_WV.N, d=[];
+function rbWaveD(pass,ph){
+ var P=rbWavePts(pass,ph), N=RB_WV.N, d=[];
  for(var s=0;s<7;s++){var a=Math.round(s*N/7), b=Math.round((s+1)*N/7), q='';
   for(var i=a;i<=b;i++)q+=(i===a?'M':'L')+P.pts[i][0].toFixed(1)+' '+P.pts[i][1].toFixed(1);
   d.push(q);}
- return {seg:d,all:P.pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(''),cum:P.cum};}
-function rbWaveHtml(pass,rate){
- var D=rbWaveD(pass), W0=RB_WV.W, H0=RB_WV.H, bands='', segs='', i;
+ return {seg:d,cum:P.cum};}
+/* the phase every wave on the page is drawn at, written by the Field's frame
+   (ui/raillines.js) and read by a tween that redraws mid sweep, so a morph and
+   the loop never fight over where the wave is */
+var RB_PH=0;
+function rbWaveDraw(wv,ps){
+ var D=rbWaveD(ps,RB_PH), segs=wv.querySelectorAll('path.wv');
+ for(var z=0;z<segs.length&&z<7;z++)segs[z].setAttribute('d',D.seg[z]);}
+/* THE ROOM SQ LEAVES. The wave can swing the whole band when nothing is
+   held, and the charge on the addresses takes a margin off both edges: the
+   dotted limits are where the wave would have to stay if the shadow's whole
+   weight were laid across it. sqp is DQ over a hundred, which is SQ's own
+   share of what the 112 addresses can hold. */
+function rbWaveHtml(pass,sqp){
+ var D=rbWaveD(pass,0), W0=RB_WV.W, H0=RB_WV.H, bands='', segs='', i;
  for(i=0;i<7;i++){var col=seatCol(BANDS[i]);
-  bands+='<rect x="'+(i*W0/7).toFixed(1)+'" y="0" width="'+(W0/7).toFixed(1)+'" height="'+H0+'" style="fill:'+col+'"/>';
+  bands+='<rect x="'+(i*W0/7).toFixed(1)+'" y="0" width="'+(W0/7+.3).toFixed(1)+'" height="'+H0+'" style="fill:'+col+'"/>';
   segs+='<path class="wv" d="'+D.seg[i]+'" style="stroke:'+col+'"/>';}
- var per=(2.8/Math.max(.4,rate||1)).toFixed(2), vals=[1].concat(D.cum).map(function(v){return Math.max(.12,v).toFixed(2);}).join(';');
- var bead=rbStill()?'':'<circle class="rb-bead" r="2.6" opacity="1"><animateMotion dur="'+per+'s" repeatCount="indefinite" path="'+D.all+'"/>'
-  +'<animate attributeName="opacity" dur="'+per+'s" repeatCount="indefinite" values="'+vals+'" keyTimes="0;.143;.286;.429;.571;.714;.857;1"/></circle>';
+ var lim=(sqp===null||sqp===undefined)?'':'<path class="sq" d="M0 '+(3+(H0-6)*sqp/2).toFixed(1)+'H'+W0
+  +'M0 '+(H0-3-(H0-6)*sqp/2).toFixed(1)+'H'+W0+'"/>';
  return '<span class="rb-wave" aria-hidden="true"><svg viewBox="0 0 '+W0+' '+H0+'" preserveAspectRatio="none">'
-  +'<g class="wb">'+bands+'</g><path class="wm" d="M0 '+(H0/2)+'H'+W0+'"/>'+segs+bead+'</svg></span>';}
+  +'<g class="wb">'+bands+'</g><path class="wm" d="M0 '+(H0/2)+'H'+W0+'"/>'+lim+segs+'</svg></span>';}
 function rbRow(q,nm,pct,raw,o){
  o=o||{};
  var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread, w=read?p.toFixed(2):'0';
- var cells='<span class="rb-n">'+rbIcon(o.ic)+esc(nm)+'</span><span class="rb-v">'+esc(raw)+'</span>';
+ /* THE NAME IS ON THE LINE ONLY WHEN THE CALLER GIVES ONE. Round PD: a line
+    is a mark inside it at the left and its figure at the right, and the word
+    lives in the tooltip and in the reading on the right. The button still has
+    a name for a screen reader, which is the full word and the figure, said
+    once, because the visible copy is an icon. */
+ var cells='<span class="rb-n">'+rbIcon(o.ic)+(nm?esc(nm):'')+'</span><span class="rb-v">'+esc(raw)+'</span>';
  var pull=(read&&o.pull>0.003)?'<s class="rb-pull" style="width:'+(Math.min(1,o.pull)*100).toFixed(1)+'%"></s>':'';
  var cl=function(v){return Math.max(0,Math.min(1,+v||0));};
  var sv=null, inner='', cls='';
- if(read&&o.hash&&o.hash.length===7){sv=o.hash.map(function(v){return cl(v*RB_GAIN);}); cls=' rb-hashrow';
-  inner='<span class="rb-hash" aria-hidden="true">'+sv.map(function(v,i){
-   return '<s style="--k:'+seatCol(BANDS[i])+';--q:'+i+'"><b style="transform:scaleY('+v.toFixed(3)+')"><u></u></b></s>';}).join('')+'</span>';}
- else if(o.wave&&o.wave.length===7){cls=' rb-waverow';
-  if(read){sv=o.wave.map(cl); inner=rbWaveHtml(sv,o.rate);}
+ if(o.wave&&o.wave.length===7){cls=' rb-waverow';
+  if(read){sv=o.wave.map(cl); inner=rbWaveHtml(sv,o.sqp);}
   else inner='<span class="rb-wave" aria-hidden="true"><svg viewBox="0 0 '+RB_WV.W+' '+RB_WV.H+'"><path class="wm" d="M0 '+(RB_WV.H/2)+'H'+RB_WV.W+'"/></svg></span>';}
+ var col=o.col||rbCol(p,o.bad), on=o.on||rbOn(p,o.bad);
  return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
-  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +' aria-label="'+esc((o.lbl||nm)+(read?', '+raw:', not read yet'))+'"'
+  +' style="--c:'+(read?col:'var(--dim)')+(o.col?'':';--on:'+(read?on:'var(--ink)'))+';--w:'+w+'%"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
   +'<span class="rb-t" aria-hidden="true"><i style="width:'+w+'%">'+pull+'</i><em class="rb-h"></em></span>'
   +inner
   +'<span class="rb-d" aria-hidden="true"></span>'
@@ -531,7 +554,7 @@ function rbRate(r){
    outlive the element it is painted on.
    ============================================================ */
 var RBMO={}, RB_LIVE=false, RB_WHO=null;
-var RB_ENTER=260, RB_HEAD=700, RB_CHIP=2400, RB_GHOST=2400, RB_SEAT=55;
+var RB_ENTER=260, RB_HEAD=700, RB_CHIP=2400, RB_GHOST=2400;
 function rbStill(){var c=document.body.classList;return !!REDUCED||c.contains('quiet')||c.contains('rm');}
 function rbE3(x){return x<=0?0:x>=1?1:1-Math.pow(1-x,3);}
 /* WHAT CHANGED, SAID ONCE AND LET GO. The hairline where the fill stood and
@@ -579,18 +602,15 @@ function rbPaint(m,now){
  el.style.setProperty('--w',w);
  if(m.n0!==null&&m.n1!==null){var txt=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;
   el.querySelectorAll('.rb-v').forEach(function(pv){pv.textContent=txt;});}
- if(m.s1){
-  /* the seven hashes rise or fall on the same stagger the bars take, seat by
-     seat from the root; the wave is redrawn between the old passes and the
-     new on the row's own ease, and its bead waits until it has settled */
-  var cs=el.querySelectorAll('.rb-hash b'), wv=el.querySelector('.rb-wave');
-  if(cs.length)for(var q=0;q<cs.length&&q<m.s1.length;q++){
-   var kk=(now-m.t0-q*RB_SEAT)/m.dur, ec=kk<=0?0:kk>=1?1:1-Math.pow(1-kk,3), s0=m.s0?m.s0[q]:m.s1[q];
-   cs[q].style.transform='scaleY('+(s0+(m.s1[q]-s0)*ec).toFixed(3)+')';}
-  else if(wv&&m.s0&&m.s1!==m.s0){
-   var ps=m.s1.map(function(v,q){return m.s0[q]+(v-m.s0[q])*e;}), D=rbWaveD(ps), segs=wv.querySelectorAll('path.wv');
-   for(var z=0;z<segs.length&&z<7;z++)segs[z].setAttribute('d',D.seg[z]);
-   var bd=wv.querySelector('.rb-bead'); if(bd)bd.style.opacity=e<1?'0':'';}}
+ if(m.s1&&m.s0){
+  /* the wave is redrawn between the old passes and the new on the row's own
+     ease. The loop redraws it at the Field's phase every frame and reads the
+     passes off the row (el._ps), so a morph in flight and the loop agree on
+     where each seat stands and neither undoes the other. */
+  var wv=el.querySelector('.rb-wave');
+  if(wv&&m.s1!==m.s0){
+   var ps=m.s1.map(function(v,q){return m.s0[q]+(v-m.s0[q])*e;});
+   el._ps=ps; rbWaveDraw(wv,ps);}}
  rbFx(m,el,f,now);}
 function rbTick(now){
  var live=false;
@@ -618,7 +638,7 @@ function rbMotion(hosts){
     t0:now,done:false,tw:tt?tt.offsetWidth:0,bad:el.hasAttribute('data-bad'),dir:0,first:false,still:still,
     s0:sv,s1:sv,chip:'',ct:0,chipBad:false,dsum:0};
    if(still){nm.w0=to;nm.n0=n1;nm.done=true;}
-   else if(!m){nm.w0=0;nm.n0=n1===null?null:0;nm.first=true;nm.dir=1;nm.s0=sv?(el.querySelector('.rb-wave')?sv:sv.map(function(){return 0;})):null;
+   else if(!m){nm.w0=0;nm.n0=n1===null?null:0;nm.first=true;nm.dir=1;nm.s0=sv;
     nm.span=Math.max(ENTER_SPAN,RB_HEAD,RB_ENTER);
     fresh.push({m:nm,r:el.getBoundingClientRect()});}
    else{
@@ -629,8 +649,6 @@ function rbMotion(hosts){
     if(m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
     nm.dir=to>m.w1+.05?1:to<m.w1-.05?-1:0;
     nm.span=Math.max(ENTER_SPAN,nm.dir?RB_HEAD:0);}
-   /* the seven hashes stagger root to crown, so the row runs on until the last */
-   if(sv&&!still&&el.querySelector('.rb-hash'))nm.span=Math.max(nm.span,ENTER_SPAN+6*RB_SEAT);
    /* a figure that moved, and not the first sight of one and not a different
       person's, says so */
    if(m&&!arrival){
@@ -686,7 +704,12 @@ const QICON_D={
  /* FLOW. Every seat multiplied by the next, root to crown, so it is what
     rises through and keeps rising. */
  flow:'M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'
-   +'M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'};
+   +'M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8',
+ /* RADIANCE, round PD. The three of them summed into the light they make
+    together, so it is a source with its rays: a small disc and eight short
+    strokes. It had no mark while it was a caption under the wire. */
+ radiance:'M12 8.4a3.6 3.6 0 100 7.2 3.6 3.6 0 000-7.2M12 3.2v2.6M12 18.2v2.6M3.2 12h2.6M18.2 12h2.6'
+   +'M5.8 5.8l1.8 1.8M16.4 16.4l1.8 1.8M18.2 5.8l-1.8 1.8M7.6 16.4l-1.8 1.8'};
 const QICON={};
 Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
 /* an address, a saboteur or a seat, rendered as one object */

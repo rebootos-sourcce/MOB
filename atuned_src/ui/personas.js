@@ -233,6 +233,14 @@ function cqRange(cq){
  cq=Math.max(0,Math.min(100,cq));
  var swing=(1-cq/100), band=2.5+swing*swing*26;
  return {cq:cq, band:band, lo:Math.max(0,cq-band/2), hi:Math.min(100,cq+band/2)};}
+/* THE DRIFT, LIFTED OUT FOR THE SAME REASON cqRange WAS, round PD. The rail's
+   two colour bar (ui/raillines.js) puts its termination point where coherence
+   stands and swings it by this and by cqRange's band, so the bar's edge and
+   the compass's marker are one motion drawn twice. Two incommensurate slow
+   sines, so the swing never repeats inside a minute. It returns what t gives
+   and knows nothing of reduced motion: a caller that is still passes t as 0
+   and multiplies by zero itself, because sin(1.1) at t of 0 is not zero. */
+function cqDrift(t){return Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38;}
 function renderPol2(r){
  var el=$('pol2'); if(!el)return;
  /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
@@ -240,7 +248,7 @@ function renderPol2(r){
  var H=360,Wd=104,top=30,bot=H-30,x=34;
  var rg=cqRange(r.CQ), cq=rg.cq, bandPts=rg.band;
  var t=REDUCED?0:S.t;
- var drift=REDUCED?0:(Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38);
+ var drift=REDUCED?0:cqDrift(t);
  var live=cq+drift*(bandPts/2);
  var y=bot-(Math.max(0,Math.min(100,live))/100)*(bot-top);
  /* the marker is DRAWN at the undrifted position and MOVED from there */

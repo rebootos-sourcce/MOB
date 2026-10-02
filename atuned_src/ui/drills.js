@@ -384,7 +384,12 @@ function runCoreDrill(){
  var r=compute();
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'not read yet'
-    :'CQ '+Math.round(r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
+    :'Coherence '+Math.round(r.CQ)+' of 100, '+tierSay(r).toLowerCase())+'</div>'
+  /* THE RAIL PRINTS CQ AND DQ AND NOTHING ELSE, round PD, so the full word and
+     the two figures are said here, where a press on the bar arrives. */
+  +(r.unread?'':'<p class="ad-p">CQ is coherence, <b>'+Math.round(r.CQ)+'</b>. DQ is decoherence, <b>'
+    +Math.round(r.DQ)+'</b>. The edge on the bar stands at '+Math.round(r.CQ)+' and swings by how far coherence '
+    +'wanders, '+cqRange(r.CQ).band.toFixed(1)+' points.</p>')
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
   +'it, the way you read what arrives, the intention behind it, and the action '
@@ -455,13 +460,22 @@ function runQDrill(q){
  if(q==='cq'){runCoreDrill();return;}
  if(q==='xyz'){runXYZDrill();return;}
  if(q==='flow'){runFlowDrill();return;}
+ /* ROUND PD: every line on the rail is a door, and these three had none. */
+ if(q==='rad'){runRadDrill();return;}
+ if(q==='ori'){runOriDrill();return;}
+ if(q==='bal'){runBalDrill();return;}
  var r=compute(), h='';
  if(q==='dq'){
   var top=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
   /* REWRITTEN 25 SEPTEMBER. It said DQ was every address above its floor
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
-  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+Math.round(r.DQ)+'%</div>'
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">Decoherence '+Math.round(r.DQ)+' of 100</div>'
+   +'<p class="ad-p">DQ is decoherence, the weight the shadow carries.</p>'
+   +'<div class="pm-eye">By seat</div><div class="ad-rows">'
+   +rbSeatShadow().map(function(v,i){
+     return '<div class="ad-r static"><span class="ad-k">'+cr(BANDS[i],v*100,{size:'xs',raw:Math.round(v*100)+'',hot:false})
+      +esc(BANDS[i])+'</span><span class="ad-m">'+Math.round(v*100)+'%</span></div>';}).join('')+'</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
    +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
    +'<div class="pm-eye">Where it sits</div><p class="ad-p"><b>'+r.loaded.length+'</b> addresses carry it. The heaviest:</p>'
@@ -570,6 +584,34 @@ function runFlowDrill(){
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
     +'seats above it open with them.'
    :'No seat is holding enough to close the column.')+'</p>';
+ rdShell(h);}
+
+/* RADIANCE. The three that move through a person, summed into the light they
+   make together. It had no drill: it was a caption under a wire, and a line
+   on the rail is a door, so a press on it arrives here with the word, the
+   figure and the three figures it is made of. */
+function runRadDrill(){
+ var r=compute();
+ var h='<div class="pm-eye">Radiance</div><div class="ad-nm">'+(r.unread?'not read yet'
+   :'Radiance '+r.radiance.toFixed(2)+' of 1')+'</div>'
+  +'<div class="pm-eye">How it is built</div><p class="ad-p">Vitality, awareness and will, combined as the '
+  +'root of their squares, so the strongest of the three leads and a weak one drags it down without '
+  +'cancelling it. It sets how bright the field behind the wheel is.</p>'
+  +(r.unread?'':'<div class="ad-rows">'+[['Vitality',r.X],['Awareness',r.Y],['Will',r.Z]].map(function(a){
+    return '<div class="ad-r static"><span class="ad-k">'+esc(a[0])+'</span><span class="ad-m">'+a[1].toFixed(2)+' of 1</span></div>';}).join('')+'</div>');
+ rdShell(h);}
+/* ORIENTATION. Benign against malignant, two shares of one whole, read from the
+   field and from the cues the stories carry. It had a tooltip and no door. */
+function runOriDrill(){
+ var r=compute(), L=r.unread?{read:false}:leanRead(r), read=L.read!==false;
+ var h='<div class="pm-eye">Orientation</div><div class="ad-nm">'+(read?'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)
+   :'not read yet')+'</div>'
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">Two shares of one whole. The halo end is benign: charge that is held '
+  +'and is not costing you. The pitchfork end is malignant: charge that is held and is taking something from you. '
+  +'The edge on the rail line stands at the benign share.</p>'
+  +'<div class="pm-eye">Where it is read from</div><p class="ad-p">'
+  +(read?'<b>'+esc(L.src)+'</b>.'+(L.cues?'':' No story yet, so this is the field alone.')
+    :(r.unread?'Nothing has been read yet, so there is no lean to show.':'Coherence is still filling, so there is no lean to show.'))+'</p>';
  rdShell(h);}
 
 /* BALANCE. which way the field discharges, and what it is built from. */

@@ -678,11 +678,9 @@ function colFold(){
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);
   /* the column's first opening is the rail's first sight, ui/railmotion.js */
   if(!now)requestAnimationFrame(railOpened);};}
-/* OPTION TWO OF THE READINGS, round OM, behind the address and nowhere else:
-   ?rail=2 draws the six readings as fields of colour with a ring each. The page
-   opens on option one, the bars, and a person who never types the address
-   never meets this. The sheet that draws it is the last in head.html. */
-try{if(/[?&]rail=2(&|$)/.test(location.search))document.body.classList.add('rail2');}catch(e){}
+/* OPTION TWO OF THE READINGS, ?rail=2, WENT IN ROUND PD. It drew the six rows as
+   fields of colour with a ring each, behind the address, and the readings are
+   lines now, so there is no second option to be behind anything. */
 /* THE RIGHT COLUMN CLOSES, LO in TASKS.md: "Add a widget to the right menu to
    collapse it." colFold's shape, and deliberately not its default. The left
    starts shut on his ruling, GO; nobody has ruled the right shut, and it holds
@@ -819,165 +817,13 @@ function railStack(r){
    The centre is a hairline, the same one the compass draws down its axis. */
 const GLYPH_M='<circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M15.5 4H20v4.5"/>';
 const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
-/* ============================================================
-   ORIENTATION AND BALANCE ARE ONE MECHANIC, AND NOW ONE DRAWING.
-   FJ in TASKS.md, his words: "Orientation and balance, those two elements
-   need to be designed the same way, it's the same mechanic. If I choose
-   one, give me two different designs."
-
-   He is right about the mechanic, measured rather than agreed with. Each is
-   two shares of one whole. Orientation is benign against malignant, leanRead,
-   and the two add to 100. Balance is the outward mean against the inward
-   mean, balance(), and as shares of their sum they add to 100 as well, and
-   the lean the strip always printed is exactly their difference: lean times
-   100 is the masculine share less the feminine one. So both are the same
-   four things: a symbol and a share at each end, a break at the centre where
-   even sits, and a fill running out of the break toward the heavier end, as
-   long as the difference.
-
-   And they were drawn differently in a way that said the opposite. Balance
-   ran its fill toward the end it leaned to, which is his ruling for it. The
-   orientation bar ran its fill away from it: a benign lean grew toward the
-   malignant figure. One drawing now, and the fill goes toward the heavier
-   end on both.
-
-   TWO DESIGNS, BOTH LIVE, one switch at the head of the section, and the
-   pick applies to both dials at once, which is the point of the ask.
-     Bar   the trough, as the orientation bar shipped: the figures in pills
-           at the two ends, the fill under them.
-     Arc   a gauge: a half ring over the top with the break at twelve, the
-           fill round the ring toward the heavier end and a needle that lands
-           on the lean with a small overshoot, the figures outside the ring.
-   The choice is kept the way the Field's picture is, one key in the store,
-   because it is how this person likes to look and not a reading about them.
-
-   IN PLACE, NOT REWRITTEN. The dial is built once per design and state and
-   then only its numbers, widths and angles are written, so a change of
-   reading moves: the fill slides out of the break in 380ms on the wheel's
-   own entrance curve and the needle lands on an overshoot, instead of a new picture
-   being swapped in. Reduced motion gets the end state.
-
-   UNREAD SAYS NOTHING. Both ends keep their symbols and the break stays, at
-   the same height, and no figure, fill or needle is drawn, which is the
-   rule the orientation dial's gate holds and balance now keeps too.
-   ============================================================ */
-/* each design carries a drawing of itself, FV: "everything should have an
-   icon." The trough with its break at the centre, and the half ring. */
-const AXDS=[{k:'bar',nm:'Bar',g:'<rect x="3.4" y="8.6" width="17.2" height="6.8" rx="1.6"/><path d="M12 7v10"/>'},
- {k:'arc',nm:'Arc',g:'<path d="M4 17a8 8 0 0116 0"/><path d="M12 17l3.4-5"/>'}];
-/* read on first use and not at load, because the browser's store is bound
-   further down this file and at load the engine's no op store answers */
-var AXD=null;
-function axdNow(){if(AXD===null){try{var v=STORE.get('axdial')||'';AXD=v==='arc'?'arc':'bar';}catch(e){AXD='bar';}}
- return AXD;}
-function axdSet(k){AXD=k==='arc'?'arc':'bar';try{STORE.set('axdial',AXD);}catch(e){}
- axdPaint(); render();}
-function axdPaint(){var el=document.getElementById('axpick'); if(!el)return;
- if(!el.firstChild)el.innerHTML='<span class="ax-pl">Style</span>'+AXDS.map(function(d){
-  return '<button type="button" class="ax-pb" role="radio" data-axd="'+d.k+'">'+axGlyph(d.g)+d.nm+'</button>';}).join('');
- el.querySelectorAll('[data-axd]').forEach(function(b){var on=b.getAttribute('data-axd')===axdNow();
-  b.setAttribute('aria-checked',String(on)); b.classList.toggle('on',on);});}
-function axGlyph(g){return '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg>';}
-/* the arc's own geometry, in its viewBox: the ring's centre, its radius, and
-   the two quarter paths the fill runs along, from twelve o'clock outward */
-const AXA={cx:60,cy:54,r:40};
-function axArcD(side){var c=AXA,x=side<0?c.cx-c.r:c.cx+c.r;
- return 'M'+c.cx+' '+(c.cy-c.r)+'A'+c.r+' '+c.r+' 0 0 '+(side<0?0:1)+' '+x+' '+c.cy;}
-/* o: {read, L:{g,nm,v,c,t}, R:{same}, tick:'l'|'r'|null, title} */
-/* the pill's figure counts to its value on the wheel's beat, from wherever it
-   stood, so the number and the fill move together rather than the number
-   landing first and the fill catching up */
-function axCount(b,to){
- var from=parseFloat(b.textContent); if(!isFinite(from))from=0;
- if(REDUCED||from===to){b.textContent=String(to);return;}
- var t0=performance.now();
- b._axc=t0;
- (function step(now){if(b._axc!==t0)return;
-  var k=Math.min(1,(now-t0)/ENTER_SPAN), e=1-Math.pow(1-k,3);
-  b.textContent=String(Math.round(from+(to-from)*e));
-  if(k<1)requestAnimationFrame(step);})(t0);}
-function axDial(host,o){
- var built=false;
- var sig=axdNow()+'|'+(o.read?1:0)+'|'+(o.tick||'');
- var end=function(side,e){return '<div class="lb '+side+'"><span class="ax-g" title="'+esc(e.t)+'">'+axGlyph(e.g)+'</span>'
-   +(o.read?'<b></b>':'')+'</div>';};
- if(host.getAttribute('data-axs')!==sig){
-  var tickAt=o.tick==='l'?25:o.tick==='r'?75:null, h;
-  if(axdNow()==='arc'){var c=AXA,ta=o.tick==='l'?-45:45;
-   h='<div class="ax ax-arc">'+end('l',o.L)
-    +'<svg class="ax-svg" viewBox="0 0 120 60" aria-hidden="true">'
-    +'<path class="ax-trk" d="M'+(c.cx-c.r)+' '+c.cy+'A'+c.r+' '+c.r+' 0 0 1 '+(c.cx+c.r)+' '+c.cy+'"/>'
-    +(o.read?'<path class="fill lt" d="'+axArcD(-1)+'" pathLength="100"/><path class="fill rt" d="'+axArcD(1)+'" pathLength="100"/>':'')
-    +(tickAt!==null?'<line class="ax-sx" x1="'+(c.cx+Math.sin(ta*Math.PI/180)*(c.r-7)).toFixed(1)+'" y1="'+(c.cy-Math.cos(ta*Math.PI/180)*(c.r-7)).toFixed(1)
-      +'" x2="'+(c.cx+Math.sin(ta*Math.PI/180)*(c.r+7)).toFixed(1)+'" y2="'+(c.cy-Math.cos(ta*Math.PI/180)*(c.r+7)).toFixed(1)+'"/>':'')
-    +'<line class="mid" x1="'+c.cx+'" y1="'+(c.cy-c.r-8)+'" x2="'+c.cx+'" y2="'+(c.cy-c.r+8)+'"/>'
-    +(o.read?'<g class="ax-nd"><line x1="'+c.cx+'" y1="'+c.cy+'" x2="'+c.cx+'" y2="'+(c.cy-c.r+11)+'"/><circle cx="'+c.cx+'" cy="'+c.cy+'" r="3.4"/></g>':'')
-    +'</svg>'+end('r',o.R)+'</div>';}
-  else{
-   h='<div class="ax ax-bar"><div class="ax-tr">'+(o.read?'<div class="fill"></div>':'')+'<div class="mid"></div>'
-    +(tickAt!==null?'<span class="ax-sx" style="left:'+tickAt+'%"></span>':'')
-    +end('l',o.L)+end('r',o.R)+'</div></div>';}
-  host.innerHTML=h+'<div class="ax-nm"><span class="ax-nl"></span><span class="ax-nr"></span></div>';
-  host.setAttribute('data-axs',sig);
-  /* THE FIRST FILL IS WATCHED TOO. FV in TASKS.md: "Where's the animation of
-     the bands animating?" A change of reading already slid, on the width and
-     dash transitions below, but a dial built fresh, which is every profile
-     load and every switch of design, had its fill written in the same frame
-     it was created, and a transition needs a value to leave from. The empty
-     state is committed first, one read of the layout, so the fill grows out
-     of the break the way a change does. */
-  built=true; void host.offsetWidth;}
- host.title=o.title||'';
- var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
- var col=heavy<0?L.c:R.c;
- /* the pole names only once there is a reading to name, so an unread dial
-    prints nothing at all, which is what its gate asserts */
- var nl=host.querySelector('.ax-nl'), nr=host.querySelector('.ax-nr');
- nl.textContent=o.read?L.nm:''; nr.textContent=o.read?R.nm:'';
- nl.classList.toggle('on',heavy<0); nr.classList.toggle('on',heavy>0);
- host.querySelectorAll('.lb').forEach(function(lb){var left=lb.classList.contains('l'),e=left?L:R,on=left?heavy<0:heavy>0;
-  lb.classList.toggle('on',on); lb.style.setProperty('--c',e.c);
-  /* a dial just built states its figure, so what the document says is the
-     reading from the frame it exists; one already standing counts to the new
-     value beside its sliding fill */
-  var b=lb.querySelector('b'); if(b){if(built)b.textContent=String(Math.round(e.v));else axCount(b,Math.round(e.v));}});
- if(!o.read)return;
- if(axdNow()==='arc'){
-  host.querySelectorAll('.fill').forEach(function(f){var mine=f.classList.contains('lt')?heavy<0:heavy>0;
-   f.style.stroke=col; f.style.strokeDasharray=(mine?diff:0).toFixed(1)+' 100';});
-  var nd=host.querySelector('.ax-nd');
-  if(nd){nd.style.transform='rotate('+((heavy<0?-1:1)*diff/100*90).toFixed(1)+'deg)'; nd.style.setProperty('--c',col);}}
- else{var f=host.querySelector('.fill');
-  f.className='fill'+(heavy<0?' lt':' rt'); f.style.width=(diff/2).toFixed(1)+'%'; f.style.background=col;}}
-function renderBal(r){
- axdPaint();
- var e=document.getElementById('bal'); if(!e)return;
- var b=r.balance;
- /* THE STRIP'S FOUR RULINGS HOLD in the one drawing: masculine on the left
-    and feminine on the right, the break at the centre, the fill from the
-    centre out toward the side the field leans, and the figures in pills.
-    Masculine on the left is the opposite handedness from the body, which is
-    what a mirror is, logged in BOOK-ERRATA. An engine refusal, read false, is
-    not a reading and is never printed as one: the dial draws its ends and
-    its break and nothing else, and the refusal keeps its full sentence one
-    door in, in runBalDrill.
-
-    The two figures are the two means as shares of their sum, so they add to
-    100 like orientation's, and their difference is the lean this strip has
-    always printed: 62 against 38 is the old "24% masculine". */
- var t=b.outMean+b.inMean, m=t?b.outMean/t*100:50;
- var sx=CURP&&CURP.who?CURP.who.sex:'';
- /* sex at birth is a reference point and not a reading, drawn only when a
-    person has given it, and mirrored with everything else */
- axDial(e,{read:!!b.read,tick:sx==='m'?'l':sx==='f'?'r':null,
-  L:{g:GLYPH_M,nm:'masculine',v:m,c:seatCol('Solar'),
-   t:'Masculine. Structure and direction, expressed outward. Not men: the codex is explicit about that.'},
-  R:{g:GLYPH_F,nm:'feminine',v:100-m,c:seatCol('Throat'),
-   t:'Feminine. Energy and receptivity, held inward. Not women: the codex is explicit about that.'},
-  title:b.read
-   ?'Balance. '+(b.lean===0?'even':Math.round(Math.abs(b.lean)*100)+' percent '+(b.lean>0?'masculine':'feminine'))
-    +', masculine '+Math.round(m)+' against feminine '+Math.round(100-m)+'. Open this for the rest.'
-   :'Balance. Not read yet. Neither side reaches 1, so no direction is named. Open this for the rest.'});}
+/* ORIENTATION AND BALANCE ARE ONE MECHANIC, FJ in TASKS.md, and they are the
+   one drawing it asked for: two shares of one whole, a mark and a figure at
+   each end, a static edge between two colours. They are drawn by rlnSplit in
+   ui/raillines.js now. The dial with its Bar and Arc styles, its needle and
+   the switch that picked between them went in round PD: the owner took the
+   Arc out ("bars only"), and a switch with one position is not a switch. The
+   stored key, axdial, is left in any browser that has it and read by nothing. */
 /* ---- the rail's doors. one delegated set, on the rail itself ---- */
 var _KBJ=false;
 function wireKbJump(){
@@ -1113,116 +959,15 @@ function render(){
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */
  (function(){var e=$('howto'); if(e){e.textContent=''; e.style.display='none';}})();
- /* ORIENTATION. It read left to right, which draws two competing quantities and
-    makes the reader do the subtraction. It now grows from the centre out, so
-    the thing a person sees is the lean itself: which way, and how far. Fifty
-    fifty is a bar with nothing sticking out either side.
-    The note under it came out on the owner's ruling. The numbers are on the
-    bar and the rest is in the tooltip. */
- (function(){
-  var pb=$('polbar'); if(!pb)return;
-  /* AND IT SILENCES ITSELF ON AN UNREAD FIELD, like every other surface that
-     prints a reading. #pol two inches above this one has done it since the
-     ruling and this one had not caught up, so selecting somebody who has
-     entered nothing printed "84" benign against "16" malignant with the bar
-     reaching 34 per cent of the way out, directly under a rail correctly
-     saying nothing had been read. Measured on loadP(0) in the shipped build.
-
-     The bar is left in the document with nothing in it rather than hidden,
-     because an empty trough is the honest picture of an empty field and the
-     Field's own layout is measured against its height. */
-  /* one drawing with balance, axDial above. The dial is left in the document
-     with nothing in it rather than hidden, because an empty trough is the
-     honest picture of an empty field, and the Field's own layout is measured
-     against its height */
-  var gB='<circle cx="12" cy="12" r="8"/><path d="M8.6 14.2l2.6-3.1 2.2 2 2-3.4"/>';
-  var gM='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/><path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
-  var L=r.unread?{read:false}:leanRead(r);
-  /* BENIGN AND MALIGNANT GET SYMBOLS, ruled. Benign is a closed ring with a
-     rising stroke inside it: contained, and going up. Malignant is the same
-     ring broken at its lower right with the stroke falling out of the gap:
-     one form, two states, which is the reading. */
-  var spec={read:L.read!==false,
-   L:{g:gB,nm:'benign',v:L.ben||0,c:PAL.Heart,t:'Benign. Charge that is held and is not costing you.'},
-   R:{g:gM,nm:'malignant',v:L.mal||0,c:PAL.Root,t:'Malignant. Charge that is held and is taking something from you.'}};
-  /* and it silences itself on an unread field, and on a field whose CQ is
-     still filling with no story cue yet, which has no lean to show either:
-     leanRead says so rather than printing 100 to 0 */
-  spec.title=r.unread?'Orientation. Nothing read yet, so there is no lean to show.'
-   :L.read===false?'Orientation. Coherence is still filling, so there is no lean to show.'
-   :(L.cues?'Orientation. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
-     :'Orientation. No story yet, so this is the field alone. ')
-    +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src
-    +'. The fill grows from the centre toward the heavier end: the further it reaches, the harder the lean.';
-  axDial(pb,spec);})();
- /* the key. three quotients, three elements. */
- /* The key sat on top of the wheel as a 288px card. It is now a strip in
-    flow above the canvas, one ring and one word per element, and each is a
-    door to the reading on the right. Nothing on the stage covers the wheel. */
- /* THE READINGS ARE BARS, round OG. His words, on the circles under Root
-    Energetics: "we've got a bunch of icons all varying size. So for the root
-    energetics, instead of the circles, have those horizontal bars stacked on
-    top of each other with the text, with their name, and the color of the bar
-    based off of the percent. This should tighten up that root energetics
-    area." Six rows, one reading each, still buttons that open the reading on
-    the right and still carrying the sentence that says what each one is.
-
-    What the circles had learned stays true here. CQ leads, DQ is the shadow
-    and is read the other way up (a high figure is the wrong end, so its bar is
-    coloured from its own inverse), the other four are what moves through a
-    person and high is the good end, so none of them reddens past a threshold
-    the way a shadow figure does. The colour is the wheel's own ramp, cqRamp,
-    alarm at the floor, slate at the median, the accent at the crown, so the
-    bar and the core above it agree about what a figure means. SQ stays off
-    this strip (EZ: "SQ is a total sum of the DQ anyway") and on the glass
-    bar. Accuracy keeps its circle on the stage (round LR). An unread field
-    draws an empty bar and a dash, never a number nobody entered.
-    The scale is kept as it was printed: CQ and DQ in percent, the other four
-    out of one. The bar fills to the same figure either way. */
- $('key').innerHTML=
-   rbRow('cq','Coherence',r.unread?0:r.CQ,r.unread?'\u2013':Math.round(r.CQ)+'%',
-    {unread:r.unread,fk:'laws',ic:'cq',pull:r.PULL,title:'Coherence. '+(r.unread?'Not read yet.'
-      :(r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')
-       +(r.PULL>0.003?' Decoherence is holding '+(r.CQ-r.EX).toFixed(0)+' points of it back, the hatched foot of the bar, '
-        +'so what gets out is '+Math.round(r.EX)+'.':''))})
-  +rbRow('dq','Decoherence',r.DQ,r.unread?'\u2013':Math.round(r.DQ)+'%',
-    {unread:r.unread,bad:true,fk:'shadow',ic:'dq',hash:rbSeatShadow(),title:'Decoherence. All the charge on all 112 addresses, '
-       +'against the most they could hold. The seven marks are the seats, root to crown, each as high as the charge on its '
-       +'own addresses, and a seat holding half of what it could stands full height.'});
- /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
-    one kind of reading. Vitality, awareness, will and flow are another, and
-    they go lower left.
-
-    Eight chips on one line wrapped to two rows of unequal length, which is
-    what he circled and called a jumble. They are not one list: the first three
-    are the instrument reading itself, the last four are what is moving through
-    the person. Splitting them by kind is what makes the row mean something
-    rather than just fit. */
- (function(){
-  var f=flSpeed(), lo=$('keylo'); if(!lo)return;
-  /* SYMBOLIC ICONS AND NO LABELS, ruled in the same breath as the letters
-     above. These four had no icon because the word was always beside them,
-     and the word is what is being removed. Every title now carries the scale
-     as well as the name, because the tooltip is the only place the name lives
-     and a name without its scale is the thing the copy editor rule stops. */
-  lo.innerHTML=
-   rbRow('xyz','Vitality',r.X*100,r.unread?'\u2013':r.X.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'vitality',title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
-       +'. How much energy is left once apathy and the decoherence are taken off. Seventy percent of it is what '
-       +'decoherence leaves, and decoherence is at '+Math.round(r.DQ)+'.'})
-  +rbRow('xyz','Awareness',r.Y*100,r.unread?'\u2013':r.Y.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'awareness',title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
-       +'. How strong what you mean is, and how little of it gets bent on the way out.'})
-  +rbRow('xyz','Will',r.Z*100,r.unread?'\u2013':r.Z.toFixed(2),
-    {unread:r.unread,fk:'core',ic:'will',title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
-       +'. How much of your integrity gets through the charge you are carrying.'})
-  +rwRadRow(r)
-  +rbRow('flow','Flow',f*100,r.unread?'\u2013':f.toFixed(2),
-    {unread:r.unread,fk:'seats',ic:'flow',wave:rbSeatPass(),rate:lerp(PUL_LO,PUL_HI,clamp((+r.DQ||0)/100,0,1)),
-     title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
-       +'. How much gets from the base of your spine to the top of your head, each seat passing on part of what it gets. '
-       +'The wave runs root to crown. A clean wave that spans the whole range is every seat passing everything; a seat '
-       +'that holds charge back roughens the wave where it sits and shrinks it from there on.'});})();
+ /* THE READINGS ARE LINES, round PD. Everything that was written here by
+    hand, the orientation dial, the key's two bars and the four under it, is
+    one call now (ui/raillines.js). Its history is not lost: the rulings that
+    made each of these (OG for bars, OM for the hashes, the wave and the move
+    of orientation and balance in, FJ for the one drawing they share) are in
+    TASKS.md and are carried in raillines.js, which says what each became.
+    Written before the stack and the drills below, as the bars always were,
+    so one stagger runs across the block in reading order. */
+ rlnRender(r);
  /* who, and what is running hottest in them. */
  (function(){
   function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
@@ -1369,7 +1114,7 @@ function render(){
    +row('Heaviest',r.darkB,r.darkV.toFixed(1))
    +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
- railStack(r); renderBal(r);
+ railStack(r);
  /* EVERY ONE OF THESE SAYS WHAT IT IS OUT OF. His instruction, and this
     panel broke it five times in six lines: integrity 1.9, intention 1.9, pole
     in 0.00, overshoot 0.00, distortion 10.0, on four different scales, with
@@ -1446,7 +1191,7 @@ function render(){
  crMotion([$('acc')]); rbMotion([$('key'),$('keylo')]); rbRate(r); rlArcs(r);
  /* the six rows hang on one wire, ui/railwire.js, dressed after the rows have
     been written and have taken their motion */
- rwDress(r); railFirstSight();
+ railFirstSight();
  /* and the rails' readings on the same beat, each list sweeping in its own
     order the first time it is seen and moving only when its values do */
  crMotion([$('railtop'),$('person'),$('stack')]);
@@ -1506,9 +1251,9 @@ function loop(ts){
  /* the wheel breathes, so it is drawn every frame. A rendition does not move,
     and ringsDraw builds it only when its signature does */
  if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);
-  /* the rail's wire runs on the Field's rate, ui/railwire.js, and nothing it
-     does is drawn on the stage */
-  rwFrame(r);}
+  /* the rail's edge and wave run on the Field's clock, ui/raillines.js, and
+     nothing they do is drawn on the stage */
+  rlnFrame(r);}
  /* only the Body stands on the wash now. The Masks door did because it was
     the Body's figure; the Character page draws its own grids on an opaque
     stage, so it takes the still wash every other page takes. Round MQ gave
@@ -1575,10 +1320,6 @@ document.addEventListener('click',function(e){
   var pe=e.target.closest('[data-polend]');
   if(pe)runPoleDrill(pe.getAttribute('data-polend')); else runCompassDrill();
   return;}
- if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
- /* the two dial designs, FJ: a press picks one for both dials */
- var axb=e.target.closest?e.target.closest('[data-axd]'):null;
- if(axb){axdSet(axb.getAttribute('data-axd'));return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  if(!row)return;
  var n=BY[+row.getAttribute('data-addr')];
