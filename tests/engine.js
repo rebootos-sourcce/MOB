@@ -2810,6 +2810,19 @@ console.log('\n27 · the ladder');
    +streakRead(p,NOW).run);
   ok(ledgerRead(p).minutes===10,'and both count toward minutes');}
 
+ /* 21.J2. Pressing Start writes a done:false entry for today (ritWake,
+    ui/ritual.js) before anything has actually been done. That entry must
+    not lengthen the streak; a day with only a set-but-not-done entry is no
+    different from a day with nothing on it at all. */
+ {const p=mk([1,2,3]); p.rituals.push({t:day(0),min:10,steps:['a'],done:false});
+  ok(streakRead(p,NOW).run===3,
+   'a set-but-not-done entry for today does not extend yesterday\'s run of three, got '
+   +streakRead(p,NOW).run);
+  const q=blankProfile('L'); q.rituals.push({t:day(0),min:10,steps:['a'],done:false});
+  ok(streakRead(q,NOW).run===0,
+   'a profile with only a set-but-not-done entry has no streak, got '
+   +streakRead(q,NOW).run);}
+
  /* THE LEDGER COUNTS EVENTS AND NEVER A SHARE OF ANYTHING. */
  {const p=mk([0,1]); p.meter.unique=['a','b','c']; p.meter.lines=9;
   const l=ledgerRead(p);

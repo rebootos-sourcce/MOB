@@ -28,10 +28,16 @@ function pracDay(t){
  var d=new Date(t); if(isNaN(d))return null;
  return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/DAY_MS);}
 
-/* every distinct day carrying a saved ritual, newest first. */
+/* every distinct day a ritual was actually DONE, newest first. 21.J2: this
+   used to count any entry at all, so pressing Start wrote a done:false entry
+   for today (ui/ritual.js ritWake) and the streak counted a day nothing had
+   been done on yet. done===undefined means an older entry predating the
+   field, read as done, same reading ritIsDone (ui/ritual.js) gives it; only
+   done===false is excluded. */
 function pracDays(p){
  var seen={}, out=[];
  ((p&&p.rituals)||[]).forEach(function(x){
+  if(x&&x.done===false)return;
   var k=pracDay(x&&x.t); if(k===null||seen[k])return; seen[k]=1; out.push(k);});
  return out.sort(function(a,b){return b-a;});}
 

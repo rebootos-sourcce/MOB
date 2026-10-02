@@ -5,7 +5,7 @@ One list, in the order I'd look at it if I were you. Each line says what I sent,
 ## Look at these first — pictures and files already in your hands
 
 1. **The cover and landing page**: CONFIRMED, round PU. "Let's run with that attuned landing page for now."
-2. **Avatar, Story, Summary, Accountability, Ritual, and now the archetype intake**: FAILED, confirmed again round PW ("those are all the components I'm not seeing updates to, so great, do it"). Not waiting on you, waiting on the rebuilds already dispatched.
+2. **The ten-pass visual review is back**, with your standard turned into a probe: one hero, shows first, fills half the first screen, nothing beside it, informs in the Field's style. Before/after pictures sent, all five surfaces, scores attached (Story 30 to 87 projected, Avatar 43 to 90, Summary 3 to 86, Ritual 5 to 88, Accountability 24 to 90). The "after" pictures are proposed layout sketches, not a build. Say go, or say what's wrong with the direction, before anyone builds it. Separately, the archetype intake is also still queued for its own rebuild (symbol, description, question order).
 3. **Headers**: sent before/after, waiting on your look. One open question inside it: should the Field, body map, avatar wheel and character page (drawings, not text) also carry a small name label, or stay bare?
 4. **The onboarding video** (door, pick a start, feel, body, mirror, release, actually moving). Sent as a real video. Say yes, or what to change.
 5. **The MVP gap report**, with a headline number: 25 percent of what blocks a first paying stranger is done. Say if that number or the ten risks under it feel right.
