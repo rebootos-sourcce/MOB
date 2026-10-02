@@ -32400,3 +32400,7 @@ This is a real elaboration of the three-column build already pushed and sitting 
 - **Visual, alive, not static**-feeling even at rest. "A second design" named without enough context to say what it refers to; searched `TASKS.md`/`DECISIONS.md`, found nothing that resolves it, flagged for the build to look harder for or ask about rather than guess.
 
 Dispatched as a continuation of `flow-three-column`, same discipline as every round tonight: check the real current code before building, push without merging, screenshots before it lands.
+
+## Correction: the claims gate was verified but never actually merged
+
+Caught while starting the next task: task #88 was marked done after the branch was rebuilt and checked in its own worktree, but the merge into the dev branch itself was never run, only logged. `tests/claims.js` did not exist on `claude/laughing-feynman-xhfyj3` until just now. Unlike the three visual builds tonight (onboarding, Flow, release carousel), which are deliberately held unmerged for his look, this one is pure backend infrastructure with no visual component and nothing to wait on, so holding it back was a mistake and not a deliberate choice. Merged now (clean, no conflicts), rebuilt, `tests/engine.js` 4436/0, `BUILD.sh` runs the claims gate itself and reports 108/0. Pushed.
