@@ -13,7 +13,7 @@
  --ease-out:cubic-bezier(.22,1,.36,1); --ease-in:cubic-bezier(.4,0,1,1); --ease-land:cubic-bezier(.34,1.56,.64,1);
  /* THE ONE PLACE THE TYPEFACE IS NAMED. A font swap is this line, plus the @font-face that build.js inlines. Everything
     else reads --sans, which is only an alias, and the canvas reads this variable at draw time (see FONT in app.js). */
- --font-ui:'Geist','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --font-ui:'Onest','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
  --sans:var(--font-ui);
  --um:#FFFFFF;   /* the umlaut on the wordmark, same token name and value as the product's (head.html --um): white */
  --accent-16:rgba(126,184,212,.16);
