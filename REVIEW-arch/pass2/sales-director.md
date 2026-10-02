@@ -1,6 +1,6 @@
 # Pass 2, sales director (Camille Boucher). Round PK, 2 October
 
-Read: all eight pass 1 files, and the pass 2 files from creative, technical, systems and game. Checked `engine/plan.js` (lines 21 to 130, 256 to 330) and `funnel/buy.html` against what they say. ICPs used: Ana and Nkem (distress), Gordon (refuses a frame), Derek (checks the number), Sofia (practitioner), the phone only arrival.
+Read: all eight pass 1 files and the pass 2 files from creative, technical, systems and game. Checked `engine/plan.js` and `funnel/buy.html`. ICPs: Ana and Nkem (distress), Gordon (refuses a frame), Derek (checks the number), Sofia (practitioner), the phone only arrival.
 
 ## 1. Agreements
 
@@ -13,7 +13,7 @@ Read: all eight pass 1 files, and the pass 2 files from creative, technical, sys
 
 ## 2. Disagreements, and where I land
 
-- **The gift shows through the character layer (mine) vs base sight only (game).** I change sides. Reason one: the status quo is already base sight only. `DECISIONS.md` says "a new person sees no saboteurs until they pay", so my default was a change, not a hold. Reason two: game is right that showing the layer for 100 patterns and then greying it is a take-away. A person who reads their own saboteurs and then loses them feels a loss. The clean moment is the first tap on a lock after a first release: the lock names what the layer shows ("Which saboteurs are running on your charge") and the person decides. That is curiosity, not loss. Cost: no demo of the layer on their own data. I accept it. Creative should move to match.
+- **The gift shows through the character layer (mine) vs base sight only (game).** I change sides. The status quo is already base sight only (`DECISIONS.md`: "a new person sees no saboteurs until they pay"), so my default was a change. And game is right that showing the layer for 100 patterns and then greying it is a take-away. A person who reads their own saboteurs and then loses them feels a loss. The clean moment is the first tap on a lock after a first release: the lock names what the layer shows ("Which saboteurs are running on your charge") and the person decides. That is curiosity, not loss. Cost: no demo of the layer on their own data. I accept it. Creative should move to match.
 - **Clamp `granted` (me, technical) vs refuse by name (systems).** Systems wins. A clamp on the stored number hides a forged one. Refuse a record whose `plan.granted` is above the largest grant in the table (1,200), and have `planAllowance` read the smaller of `granted` and the tier's own grant. An honest record can never trip it.
 - **Banking cap never mentioned (game) vs stated once (me).** I keep mine. The cap is 120 patterns (12 weeks at 10). A rule found by hitting it is a surprise. Printed once, flat, on the tiers page, it is not a timer. I ban the warning inside the flow ("you are close to your cap"), which meets game's concern.
 - **Creative: tier four is sold as written.** Nobody else raised this, see section 3.
@@ -23,7 +23,7 @@ Read: all eight pass 1 files, and the pass 2 files from creative, technical, sys
 - **Tier four sells something not built.** `plan.js` 126: tier four is tier three plus the lead suite, and `funnel/buy.html` 402 to 429 promises "only a lead that person has said yes to, by name". Technical confirms there is no grants table (R5). So $99 buys the same 1,200 patterns and the same sight as $59, plus an empty roster. This is the same defect the owner already ruled on for the Kundalini: `built:false`, "nothing sells it until it is built". I missed it in pass 1. Decision: tier four checkout reads "Opens with the lead suite" until R5 ships, and `lead` gets a `built` flag in the same table. Level 7 buyers (85 percent, the primary) buy tier three meanwhile. That costs revenue for a while; taking $99 for a consent list we cannot show costs more, and Sofia would find it first.
 - **Sign up can fail on the Worker itself** (technical): 10 ms CPU on a free plan against a 100,000 round password hash, never run on a real D1. R0's gate must include one timed sign up on the deployed Worker.
 - **Safari may clear a phone's storage after about seven days** (technical, from memory, to verify). A paying phone only person could return to an empty record. Tier and plan come back from the server. Ground opened, journal and history do not. Prompt for the encrypted backup after the first release, with a restore drill (export, wipe, import, same hash) proven before any tier three or four push.
-- **Copy that is false at the account step** (narrative): "Nobody reads what you write here" is false once a locked copy sits on our server. The sign up box needs the separate consent line.
+- **Copy that is false at the account step** (narrative): "Nobody reads what you write here" is false once a locked copy sits on our server. The sign up box needs the consent line.
 - **Efficacy claims on a sales page** (narrative). `funnel/buy.html` must pass the same sensation rule gate as the app, and "Tool of Unified LLC" must read Tula Unified LLC.
 - **Refunds cost almost nothing.** Content is templates. Honour a refund in the ruled seven days, hear `charge.refunded`, build no clawback of opened ground.
 
@@ -37,7 +37,7 @@ Read: all eight pass 1 files, and the pass 2 files from creative, technical, sys
 
 **Free banking.** `min(weeks x 10, 120)`. Stated once on the tiers page. Never shown as a countdown.
 
-**Commerce in care.** The lock, "See tiers", the ladder and any checkout render nothing while the runtime `care` argument is not ordinary (creative and uiux quiet register). No upsell push, ever. Push and email from billing are receipts and failed card notices only. The `care` value is passed in, never read from the record.
+**Commerce in care.** The lock, "See tiers", the ladder and any checkout render nothing while the runtime `care` argument is not ordinary. No upsell push, ever. Billing push and email are receipts and failed card notices only.
 
 **Funnel measurement.** Nothing about behaviour leaves the device (`OB_NEVER`). The server already knows four counts: accounts made, checkout started, subscription live, cancelled. Reasons are asked by a person, with the three questions in my pass 1, price shown last.
 

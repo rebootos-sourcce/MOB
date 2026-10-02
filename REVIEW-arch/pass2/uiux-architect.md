@@ -41,7 +41,7 @@ Read: BRIEF, OWNER-INPUT, all eight pass 1 files, and the four pass 2 files alre
 
 **Why chain.** Opens in place under the claim; a bottom sheet on a phone. Six rows, fixed order, closed keys: Said, Heard, Maybe, Felt, Changed, Confirmed, led by narrative's verbs (You wrote, The instrument read, The instrument infers, You marked, You reported, You confirmed). Top three open, the rest unfold. Rows quote the person's raw words, dates as relative words. Confirmed fills only after the person's own tap or a meter line.
 
-**Care register.** Three outcomes, state names never printed. Ordinary: nothing. Strong: one line in the Source AI lane quoting the person, one pace line, the release stays open. Needs a person now: the card in disagreement 4. Layout stays. Motion 0 ms. No red, no modal, no siren icon, neutral surface. Body 18 px, buttons 48 px high. "Quiet is on for this entry. Turn it off." is always present. Choices fall below the prior page. One dismissal holds for the entry.
+**Care register.** Three outcomes, state names never printed. Ordinary: nothing. Strong: one line in the Source AI lane quoting the person, one pace line, the release stays open. Needs a person now: the card in disagreement 4. Layout stays. Motion 0 ms. No red, modal or siren icon; neutral surface. Body 18 px, buttons 48 px high. "Quiet is on for this entry. Turn it off." always shows. Choices fall below the prior page. One dismissal holds for the entry.
 
 **Loop ring (art seat draws it).** Four quarters, the four ruled words. A quarter lights from the newest dated act in it and dims after 14 days of none (my judgement; art may move it). No stage, number or day.
 
