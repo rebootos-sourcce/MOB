@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1258 3c54a6d 2026-10-02 02:30"><head><meta charset="utf-8">
+<html lang="en" data-build="v1259 87d6310 2026-10-02 02:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -53669,7 +53669,7 @@ function accAccount(){
     of the switch: it says the page it opens is a sketch before a person
     turns it on expecting clients. */
  h+=accGroup('Practitioner',
-   accTog('Practitioner mode','acprac',!!(CURP&&CURP.ui&&CURP.ui.practitioner),
+   accTog('Practitioner mode','acprac',pracOn(),
     'adds Practitioner to the menu'),
    'Turned on, it opens a sketch with no clients on it.');
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
@@ -54072,7 +54072,8 @@ function accWire(){
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');
- if(pr)pr.onclick=function(){uiSet('practitioner',!(CURP.ui&&CURP.ui.practitioner)); renderAccount();};
+ /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
+ if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
  if(ex)ex.onclick=function(){var t=pExport();
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
@@ -54201,8 +54202,10 @@ function uiSet(k,v){
 function applyUiPrefs(){
  var q=!!(CURP&&CURP.ui&&CURP.ui.quiet);
  document.body.classList.toggle('quiet',q);
- /* the practitioner door follows its switch, and follows the profile, since
-    the switch is stored on the profile like every preference here */
+ /* the practitioner door follows its switch. The switch is the device's and
+    not the profile's since 2 October, so a change of profile no longer moves
+    the door; this still runs on one because a legacy profile that carries the
+    old flag is read until the device has been asked. */
  if(typeof pracPaint==='function')pracPaint();}
 /* DELETE IS A REAL CONTROL AND IT SAYS EXACTLY WHAT IT DID. It removes this
    record from this browser. There is no store, so it does not claim to have
@@ -54356,7 +54359,8 @@ try{window.__at&&window.__at('ui/account.js');}catch(e){}
    being added when I toggle it on and a very rough framework."
 
    So three things and no fourth. The switch is accTog in ui/account.js,
-   stored as CURP.ui.practitioner through uiSet like every other preference.
+   stored as a DEVICE setting through pracSwitch below and never on a profile,
+   see pracOn.
    The door is the fifth section in the bar, written shut into the document
    and opened here. The sketch is the page behind it.
 
@@ -54368,8 +54372,36 @@ try{window.__at&&window.__at('ui/account.js');}catch(e){}
    opacity, the real label, "not built yet" where a value would sit, and
    nothing that takes a press and then refuses.
    ============================================================ */
+/* A DEVICE SETTING, THE SAME FIX AS THE SOUND SWITCH, 2 October. This was
+   stored on the profile through uiSet, which saves the profile, so on a worked
+   example the switch slid on, the save was refused with "Nothing saved on a
+   worked example.", the door never opened and the person was left looking at a
+   switch that said on over a menu that said nothing. Whether this browser
+   shows the Practitioner section is a fact about the person using it, not
+   about whose record is loaded, and a worked example has no record to write.
+
+   The device key wins once written. A device never asked reads the profile's
+   own ui.practitioner, which is what a person who turned it on before this
+   existed wrote, so nobody loses the door to an update. PRAC_SESSION is what
+   was asked for this visit, first, so a browser that would not keep the
+   setting still does what the switch says until the page is closed. */
+var PRAC_SESSION=null;
 function pracOn(){
+ if(PRAC_SESSION!==null)return PRAC_SESSION;
+ var d=(typeof devGet==='function')?devGet('practitioner'):null;
+ if(d!==null)return d===true;
  return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.practitioner);}
+/* the one writer. It reports a store that will not keep it, in words that are
+   true, and opens or shuts the door either way, because what a person sees is
+   the state and not the write. */
+function pracSwitch(on){
+ PRAC_SESSION=!!on;
+ var r=(typeof devSet==='function')?devSet('practitioner',!!on):{ok:false,err:'NoStore'};
+ if(r.ok)PRAC_SESSION=null;
+ if(typeof applyUiPrefs==='function')applyUiPrefs(); else pracPaint();
+ if(typeof status==='function'&&!r.ok)
+  status('Practitioner mode is '+(on?'on':'off')+' for this visit only. This browser would not keep the setting.','fail');
+ return r.ok;}
 
 /* THE SURFACE'S OWN RULES, injected once, the way accProfCss carries the
    profiles section's, because the shell stylesheet is held by another seat.
@@ -58373,5 +58405,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="003801473"></div>
+<div id="eof" hidden data-len="003803337"></div>
 </body></html>

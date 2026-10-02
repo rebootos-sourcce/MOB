@@ -177,7 +177,7 @@ function accAccount(){
     of the switch: it says the page it opens is a sketch before a person
     turns it on expecting clients. */
  h+=accGroup('Practitioner',
-   accTog('Practitioner mode','acprac',!!(CURP&&CURP.ui&&CURP.ui.practitioner),
+   accTog('Practitioner mode','acprac',pracOn(),
     'adds Practitioner to the menu'),
    'Turned on, it opens a sketch with no clients on it.');
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
@@ -580,7 +580,8 @@ function accWire(){
  var mo=$('acmodel');
  if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');
- if(pr)pr.onclick=function(){uiSet('practitioner',!(CURP.ui&&CURP.ui.practitioner)); renderAccount();};
+ /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
+ if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
  if(ex)ex.onclick=function(){var t=pExport();
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
@@ -709,8 +710,10 @@ function uiSet(k,v){
 function applyUiPrefs(){
  var q=!!(CURP&&CURP.ui&&CURP.ui.quiet);
  document.body.classList.toggle('quiet',q);
- /* the practitioner door follows its switch, and follows the profile, since
-    the switch is stored on the profile like every preference here */
+ /* the practitioner door follows its switch. The switch is the device's and
+    not the profile's since 2 October, so a change of profile no longer moves
+    the door; this still runs on one because a legacy profile that carries the
+    old flag is read until the device has been asked. */
  if(typeof pracPaint==='function')pracPaint();}
 /* DELETE IS A REAL CONTROL AND IT SAYS EXACTLY WHAT IT DID. It removes this
    record from this browser. There is no store, so it does not claim to have
