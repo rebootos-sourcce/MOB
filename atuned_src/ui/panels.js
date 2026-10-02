@@ -244,6 +244,8 @@ function setTab(i){
      release went into the Story's own third column, round IJ, so it has no
      rail section left to open. */
   WANT[TAB.STORY]={right:['simp']};
+  /* the Character page's words are the right rail's own section, round PE */
+  WANT[TAB.MASKS]={right:['chr']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
