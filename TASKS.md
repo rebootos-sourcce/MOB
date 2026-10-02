@@ -31714,6 +31714,18 @@ Read as two things. First, a new copy rule: a number stated to the person ("you'
 
 Dispatched `pu-visualfail` (creative-director, pulling art-director and uiux-architect) to review the current state of all five surfaces against that one standard, ten passes amongst themselves as he asked, before anything is rebuilt. Nothing from `pr-avatar` or `pq-ritual` merges to main until that review names a direction. Copy examples for the numbers rule given directly in reply, not pointed to a file.
 
+## Round PV, 2 October. The Ritual Builder TDD, archetype intake order, 10 clients in the practitioner, 11Labs priority, verify the paywall
+
+He attached `ATUNED_Ritual_Builder_Accountability_Desktop_TDD_v1.md`, 70 sections, a desktop-first redesign of Ritual/Practice/Accountability against the existing Goal/Behavior/Protocol/Ritual/PracticeEvent/Evidence/Outcome/Trace Graph model. His words: "Review this three times." Then, verbatim: "No, for the archetype intake, I want to see the symbol of the archetype and a description, and then the question. Uh, also review the layout. This isn't very symmetrical even. It's not using any of the design aesthetics that we've come up with. So fail on design. Wire in the practitioner and with three or four of the client, actually just do 10 of the clients from our profiles in the practitioner side. Let's see what data we can, re we can see. I can't see the backlog. Bring me the backlog. You should be focusing on eleven labs to release these new elements. Verify that the paywall is in. and the customers can buy cancel. Change their tiers."
+
+Read as six things:
+- Three-pass review of the Ritual Builder TDD against the real code and against the `pq-ritual` rebuild already in the visual-fail review, named not silently merged with it.
+- A fail on the archetype intake screens just sent (`pq-arch`): order should be symbol, then description, then the question, and the layout itself is not symmetrical and does not carry the product's own design language. Rebuild, not polish.
+- Practitioner: wire ten real example profiles in as clients, not three or four, see what data actually surfaces. Sent to the agent already building the real Practitioner layer.
+- Backlog: brought to him directly in the reply, not pointed to a file.
+- ElevenLabs: made the priority, now dispatched (the Claude/ElevenLabs server wiring worktrees were scaffolded earlier this session but no build agent had actually started on them).
+- Paywall: verify checkout, cancel and tier change actually work end to end, not just the billing test suite.
+
 ## pq-arch landed, round PQ
 
 The triangulated archetype questions are built, committed `ad82df0` on branch `pq-arch`, not merged. Twelve archetypes, no built-in opposite pairing in `engine/data/canon.js` (checked; only field is which body seat each sits at, and that's uneven), so the agent paired them by hand the same way the beggar/kids-fighting examples were built, same as the rest of the dilemma set. Eighteen questions, each archetype asked three times against a different rival each time so one answer can't decide it; nine are two-button scenes, nine are slider either/or on the app's own slider; plain addition, no name shown until finished. Logic gate 4415 of 4415. Browser timing gates (fade, frame rate) flaky again; the agent reproduced the same flakes on the old unmodified build under tonight's shared-machine load before saying so, which is exactly the proof round PT asked for, from a second, independent source. Pictures sent: desktop and phone, blank and finished, a dilemma press and a slider press. Not merged, waiting on his look before it joins the five surfaces already in review.
