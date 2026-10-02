@@ -3140,6 +3140,7 @@ ok(pmn.glow.field===4&&pmn.glow.body===4&&pmn.glow.compass===4&&pmn.glow.charact
  'OI: the same four pools of faint colour sit behind the Field, the Body, the Compass and Character, '+JSON.stringify(pmn.glow));
 
 await require('./msglog.js').msgGate(page,ok);
+await require('./protocol.js').protocolGate(browser,FILE,ok,booted);
 
 console.log('\n=== the avatar, and what it aims the work at ===');
 /* The becoming half. The right hand sentence resolves to a seat and the seat
@@ -5409,6 +5410,10 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  await tp.click('#relskip'); await tp.waitForTimeout(150);
  const quietRun=await tp.evaluate(()=>({phase:RUN.phase,
   node:(document.querySelector('#rel .rel-node')||{}).textContent||''}));
+ /* a pass has been said before End, 2 October: End at the very first line,
+    before anything is said, closes the release and charges nothing, so a run
+    that is meant to reach the cooldown has to have reached a line first */
+ await tp.evaluate(()=>{ clearTimeout(RUN.timer); RUN.pass=1; });
  await tp.click('#relstop'); await tp.waitForTimeout(200);
  const quietEnd=await tp.evaluate(()=>({phase:RUN.phase,
   eye:(document.querySelector('#rel .pm-eye')||{}).textContent||'',
